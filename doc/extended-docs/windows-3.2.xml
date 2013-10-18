@@ -53,6 +53,83 @@ univention-run-join-scripts
 </programlisting>
 
         </section>
+
+        <section id="ext-win-s4-uninstall">
+		  <title>Uninstallation of a Samba 4 domain controller</title>
+		  <para>
+			The removal of an Samba 4 domain controller (Active Directory-compatible domain
+			controller) is a far-reaching configuration step and should be prepared thoroughly.
+		  </para>
+
+		  <para>
+			If the domain should continue to be provide Active Directory-compatible services, the
+			<emphasis>univention-samba4</emphasis> package must remain installed on the &ucsMaster;
+			or a &ucsBackup; system.
+		  </para>
+
+		  <para>
+			Before uninstalling the packages, the domain controller registration must be removed
+			from the Samba 4 database. This can be done with the helper script
+			<command>purge_s4_computer.py</command>. It must be run on the &ucsMaster; or a
+			&ucsBackup; system. The query <guimenu>Really remove master from Samba 4?</guimenu> must
+			be answered with <emphasis>Yes</emphasis> and the question <guimenu>Really remove master
+			from UDM as well?</guimenu> must be answered with <emphasis>No</emphasis>.
+			e.g:
+		  </para>
+
+<programlisting language="sh">
+root@backup:~# /usr/share/univention-samba4/scripts/purge_s4_computer.py --computername=master
+Really remove master from Samba 4? [y/N]: Yes
+If you are really sure type YES and hit enter: YES
+Ok, continuing as requested.
+
+[...]
+Removing CN=MASTER,CN=Computers,$ldap_BASE from SAM database.
+Really remove master from UDM as well? [y/N]: No
+Ok, stopping as requested.
+
+root@backup:~#
+</programlisting>
+
+			<para>
+			  The Univention S4 connector must be run on the &ucsMaster; or a &ucsBackup; in the
+			  domain. After Samba 4 was uninstalled, the join script of the S4 connector
+			  (97univention-s4-connector) script should be re-executed on thje &ucsMaster; or a
+			  another &ucsBackup;. This can be done via the &ucsUMC; module <guimenu>Domain
+			  join</guimenu>:
+			</para>
+
+			<figure id="s4connector-rejoin">
+			  <title>Re-execute S4 connector join script</title>
+			  <graphic scalefit="1" width="80%" fileref="illustrations/s4connector-re-execute.png"/>
+			</figure>
+
+			<para>
+			  The FSMO (Flexible Single Master Operations) roles should be checked. In case the
+			  roles were provided by the removed DC, they must be transfered, for example:
+			</para>
+<programlisting language="sh">
+root@backup:~# samba-tool fsmo show
+InfrastructureMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom,DC=local
+RidAllocationMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom,DC=local
+PdcEmulationMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom,DC=local
+DomainNamingMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom,DC=local
+SchemaMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom,DC=local
+
+root@backup:~# samba-tool fsmo seize --role=all --force
+Will not attempt transfer, seizing...
+FSMO transfer of 'rid' role successful
+Will not attempt transfer, seizing...
+FSMO transfer of 'pdc' role successful
+Will not attempt transfer, seizing...
+FSMO transfer of 'naming' role successful
+Will not attempt transfer, seizing...
+FSMO transfer of 'infrastructure' role successful
+Will not attempt transfer, seizing...
+FSMO transfer of 'schema' role successful
+root@backup:~# 
+</programlisting>
+        </section>
     </chapter>
 
     <chapter>
