@@ -39,21 +39,19 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/Text",
-	"umc/widgets/TextArea",
 	"umc/widgets/TitlePane",
 	"umc/widgets/Button",
-	"umc/widgets/Uploader",
 	"dojo/text!umc/modules/udm/license.html",
 	"dojo/text!umc/modules/udm/license_v2.html",
 	"dojo/text!umc/modules/udm/license_gpl.html",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, style, Dialog, tools, dialog, render, ContainerWidget, StandbyMixin, Text, TextArea, TitlePane, Button, Uploader, licenseHtml, license_v2Html, license_gplHtml, _) {
+], function(declare, lang, style, Dialog, tools, dialog, render, ContainerWidget, StandbyMixin, Text, TitlePane, Button, licenseHtml, license_v2Html, license_gplHtml, _) {
 
 	var ffpu_license_info = _('<p>The "free for personal use" edition of Univention Corporate Server is a special software license which allows users free use of the Univention Corporate Server and software products based on it for private purposes acc. to § 13 BGB (German Civil Code).</p><p>In the scope of this license, UCS can be downloaded, installed and used from our servers. It is, however, not permitted to make the software available to third parties to download or use it in the scope of a predominantly professional or commercial usage.</p><p>The license of the "free for personal use" edition of UCS occurs in the scope of a gift contract. We thus exclude all warranty and liability claims, except in the case of deliberate intention or gross negligence. We emphasise that the liability, warranty, support and maintance claims arising from our commercial software contracts do not apply to the "free for personal use" edition.</p><p>We wish you a lot of happiness using the "free for personal use" edition of Univention Corporate Server and look forward to receiving your feedback. If you have any questions, please consult our forum, which can be found on the Internet at http://forum.univention.de/.</p>');
 
 	return declare('umc.modules.udm.LicenseDialog', [Dialog, StandbyMixin], {
 		// summary:
-		//		Class that provides the license Dialog for UCS. It shows details about the current license and support importing a new one.
+		//		Class that provides the license Dialog for UCS. It shows details about the current license.
 
 		// the widget's class name as CSS class
 		'class': 'umcPopup',
@@ -86,67 +84,20 @@ define([
 				style : 'width: 100%',
 				content : ''
 			}, {
-				type : TextArea,
-				name : 'licenseText',
-				label : _('License text')
-			}, {
-				type : Uploader,
-				name : 'licenseUpload',
-				label : _('License file upload'),
-				command: 'udm/license/import',
-				onUploaded: lang.hitch(this, function(result) {
-					if (typeof result == "string") {
-						return;
-					}
-					if (result.success) {
-						dialog.alert(_('The license has been imported successfully'));
-					} else {
-						dialog.alert(_('The import of the license has failed: ') + result.message);
-					}
-				})
-			}, {
 				type : TitlePane,
 				name : 'ffpu',
 				open: false,
 				title: _('Information about the "free for personal use" license'),
 				_setVisibleAttr: lang.hitch(this, function(visible) {
 					if (this._widgets && this._widgets.ffpu) {
-						var visibility = visible ? 'visible' : 'hidden';
-						style.set(this._widgets.ffpu.domNode, 'visibility', visibility);
+						var display = visible ? 'block' : 'none';
+						style.set(this._widgets.ffpu.domNode, 'display', display);
 					}
-				})
-			}, {
-				type : Text,
-				name : 'titleImport',
-				style : 'width: 100%',
-				content : lang.replace('<h1>{title}</h1>', { title: _('License import') })
-			}, {
-				type: Text,
-				name: 'spacer',
-				content: '&nbsp;&nbsp;'
-			}];
-
-			var buttons = [{
-				type : Button,
-				name : 'btnLicenseText',
-				label : _('Upload'),
-				callback: lang.hitch(this, function() {
-					var importing = tools.umcpCommand('udm/license/import', {
-						'license': this._widgets.licenseText.get('value')
-					}).then(lang.hitch(this, function(response) {
-						if (!response.result  instanceof Array || false === response.result[0].success) {
-							dialog.alert(_('The import of the license has failed: ') + response.result[0].message);
-						} else {
-							dialog.alert(_('The license has been imported successfully'));
-						}
-					}));
-					this.standbyDuring(importing);
 				})
 			}];
 
 			this._widgets = render.widgets(widgets);
-			var _buttons = render.buttons(buttons);
-			var _container = render.layout(['message', 'ffpu', 'titleImport', 'licenseUpload', 'spacer', 'licenseText', 'btnLicenseText'], this._widgets, _buttons);
+			var _container = render.layout(['message', 'ffpu'], this._widgets);
 
 			var _content = new ContainerWidget({});
 			_content.addChild(_container);
@@ -164,7 +115,7 @@ define([
 
 			// attach layout to dialog
 			// this.set('content', this._container);
-			this.set('title', _('UCS license'));
+			this.set('title', _('Information about the current UCS license'));
 
 			this._widgets.ffpu.addChild(this._ffpuText = new Text({'content': ''}));
 
