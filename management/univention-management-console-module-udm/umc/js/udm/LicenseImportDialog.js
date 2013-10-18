@@ -74,9 +74,22 @@ define([
 			}));
 
 			var widgets = [{
+				type : Text,
+				name : 'titleImport',
+				style : 'width: 100%',
+				content : lang.replace('<h1>{title}</h1>', { title: _('Import new license') })
+			}, {
+				type: Text,
+				name: 'message',
+				content: _('New licenses that have been received after the activation of UCS or after a license purchase can be imported below. The license information can either be uploaded directly as file or it can be imported via copy and paste into the text field.') + '<br><br>' +
+					_('To request an activated license key, the menu item "%s" in the settings menu can be chosen.',
+						'<a onclick="require(\'dojo/topic\').publish(\'/umc/license/activation\'); return false;" href="#">' + _('Activation of UCS') + '</a>') + '<br><br>'
+			}, {
 				type : TextArea,
 				name : 'licenseText',
-				label : _('License (as text)')
+				label : _('License (as text)'),
+				rows: 5,
+				cols: 25
 			}, {
 				type : Uploader,
 				name : 'licenseUpload',
@@ -87,13 +100,8 @@ define([
 						// Apache gateway timeout error (?)
 						return;
 					}
-					this.handleUploaded(result);
+					this._handleUploaded(result);
 				})
-			}, {
-				type : Text,
-				name : 'titleImport',
-				style : 'width: 100%',
-				content : lang.replace('<h1>{title}</h1>', { title: _('Import new license') })
 			}, {
 				type: Text,
 				name: 'spacer',
@@ -108,7 +116,7 @@ define([
 					var license = this._widgets.licenseText.get('value');
 					this.standbyDuring(tools.umcpCommand('udm/license/import', { 'license': license }).then(
 						lang.hitch(this, function(response) {
-							this.handleUploaded(response.result[0]);
+							this._handleUploaded(response.result[0]);
 						})
 					));
 				})
@@ -116,7 +124,7 @@ define([
 
 			this._widgets = render.widgets(widgets);
 			var _buttons = render.buttons(buttons);
-			var _container = render.layout(['titleImport', 'licenseUpload', 'spacer', 'licenseText', 'btnLicenseText'], this._widgets, _buttons);
+			var _container = render.layout(['titleImport', 'message', 'licenseUpload', 'spacer', 'licenseText', 'btnLicenseText'], this._widgets, _buttons);
 
 			var _content = new ContainerWidget({});
 			_content.addChild(_container);
@@ -133,7 +141,7 @@ define([
 			}));
 		},
 
-		handleUploaded: function(result) {
+		_handleUploaded: function(result) {
 			if (result.success) {
 				dialog.alert(_('The license has been imported successfully'));
 			} else {

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.51-1) unstable; urgency=low
+
+  * Bug #32389: adaptions to license import dialog
+
+ -- Florian Best <best@univention.de>  Fri, 18 Oct 2013 12:56:35 +0200
+
 univention-management-console-module-udm (4.0.50-1) unstable; urgency=low
 
   * Bug #32389: split license dialog into two dialogues: import new license,
