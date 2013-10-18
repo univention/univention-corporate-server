@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.43-1) unstable; urgency=low
+
+  * Bug #30629: Adapt wording in case license request dialog is unavailable.
+    Use SSO to switch to master system
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 18 Oct 2013 18:01:29 +0200
+
 univention-management-console-module-appcenter (3.0.42-1) unstable; urgency=low
 
   * Bug #32389: move license request into UDM module
