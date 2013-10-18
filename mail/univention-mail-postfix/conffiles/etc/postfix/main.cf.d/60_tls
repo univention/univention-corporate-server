@@ -7,6 +7,10 @@ smtpd_timeout = 300s
 fqdn = '%s.%s' % (baseConfig.get('hostname'), baseConfig.get('domainname'))
 print 'smtpd_tls_cert_file = %s' % baseConfig.get('mail/postfix/ssl/certificate', '/etc/univention/ssl/%s/cert.pem' % fqdn)
 print 'smtpd_tls_key_file = %s' % baseConfig.get('mail/postfix/ssl/key', '/etc/univention/ssl/%s/private.key' % fqdn)
+if baseConfig.get('mail/postfix/ssl/cafile'):
+	print 'smtpd_tls_CAfile = %s' % baseConfig['mail/postfix/ssl/cafile']
+if baseConfig.get('mail/postfix/ssl/capath'):
+	print 'smtpd_tls_CApath = %s' % baseConfig['mail/postfix/ssl/capath']
 @!@
 smtpd_tls_received_header = no
 smtpd_tls_session_cache_timeout = 3600s

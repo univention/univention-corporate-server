@@ -185,6 +185,18 @@ Description[en]=This variable configures the use of TLS encryption in SMTP: 'may
 Type=str
 Categories=service-mail
 
+[mail/postfix/ssl/cafile]
+Description[de]=Eine Datei mit (PEM-Format) CA-Zertifikaten von vertrauenswürdigen Stammzertifizierungsstellen, um entweder Remote-SMTP-Client-Zertifikate oder Zwischen-CA Zertifikate signieren (default: none)
+Description[en]=A file containing (PEM format) CA certificates of root CAs trusted to sign either remote SMTP client certificates or intermediate CA certificates (default: none)
+Type=str
+Categories=service-mail
+
+[mail/postfix/ssl/capath]
+Description[de]=Ein Verzeichnis mit (PEM-Format) CA-Zertifikaten von vertrauenswürdigen Stammzertifizierungsstellen, um entweder Remote-SMTP-Client-Zertifikate oder Zwischen-CA Zertifikate signieren (default: none)
+Description[en]=A directory containing (PEM format) CA certificates of root CAs trusted to sign either remote SMTP client certificates or intermediate CA certificates. (default: none)
+Type=str
+Categories=service-mail
+
 [mail/postfix/inet/protocols]
 Description[de]=Ist diese Variable auf 'ipv4' gesetzt oder nicht gesetzt, verwendet Postfix nur IPv4 für den Verbindungsaufbau. 'all' konfiguriert zusätzlich die Verwendung von IPv6.
 Description[en]=If this variable is set to 'ipv4' or unset, Postfix only uses IPv4 for its connections. 'all' configures to also use IPv6.

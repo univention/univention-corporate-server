@@ -66,6 +66,8 @@ Subfile: etc/postfix/main.cf.d/60_tls
 Variables: mail/postfix/ssl/certificate
 Variables: mail/postfix/ssl/key
 Variables: mail/postfix/tls/client/level
+Variables: mail/postfix/ssl/capath
+Variables: mail/postfix/ssl/cafile
 
 Type: subfile
 Multifile: etc/postfix/main.cf
