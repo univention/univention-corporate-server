@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+        <module id="udm" icon="udm/module" version="1.0">
+                <name>Univention Directory Manager</name>
+                <description>Manages all UDM modules</description>
+                <keywords></keywords>
+                <flavor icon="ucstest-test" priority="123" id="ucstest/test">
+                        <name>ucstest-test</name>
+                        <description>Creation, removal and management of domain users</description>
+                        <keywords>users</keywords>
+                </flavor>
+		</module>
+</umc>
