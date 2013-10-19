@@ -1,3 +1,9 @@
+ucs-test (4.0.148-1) unstable; urgency=low
+
+  * Bug #32554: added new checks for ucs_registerLDAPExtension
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 20 Oct 2013 00:44:07 +0200
+
 ucs-test (4.0.147-1) unstable; urgency=low
 
   * Workaround for timing issue in 10_ldap/70schema_unregistration_basis
