@@ -219,7 +219,7 @@ def get_extension_buffer(extension_type, name=None, identifier=None):
 	  }[extension_type](name, identifier)
 
 
-def get_postinst_script_buffer(extension_type, filename, app_id=None, version_start=None, version_end=None):
+def get_postinst_script_buffer(extension_type, filename, app_id=None, version_start=None, version_end=None, options=None):
 	"""
 	Returns a postinst script that registers the given file as UDM extension with extension type ('hook', 'syntax' or 'module').
 	Optionally UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.
@@ -237,16 +237,22 @@ def get_postinst_script_buffer(extension_type, filename, app_id=None, version_st
 		version_end = ''
 	else:
 		version_end = '--ucsversionend %s' % version_end
+	other_options = ''
+	for key in options:
+		if type(options[key]) == str:
+			other_options += ' --%s %s' % (key, options[key])
+		else:
+			other_options += ' --%s ' % (key,) + ' --%s '.join(options[key])
 
 	return '''#!/bin/sh
 set -e
 #DEBHELPER#
 %(app_id)s
 . /usr/share/univention-lib/ldap.sh
-ucs_registerLDAPExtension "$@" --udm_%(extension_type)s %(filename)s %(version_start)s %(version_end)s
+ucs_registerLDAPExtension "$@" --udm_%(extension_type)s %(filename)s %(version_start)s %(version_end)s %(other_options)s
 exit 0
 ''' % {'filename': filename, 'extension_type': extension_type, 'app_id': app_id,
-	   'version_start': version_start, 'version_end': version_end}
+	   'version_start': version_start, 'version_end': version_end, 'other_options': other_options}
 
 
 def get_postrm_script_buffer(extension_type, extension_name, package_name):
@@ -266,7 +272,7 @@ exit 0
 ''' % {'package_name': package_name, 'extension_name': extension_name, 'extension_type': extension_type}
 
 
-def get_join_script_buffer(extension_type, filename, app_id=None, joinscript_version=1, version_start=None, version_end=None):
+def get_join_script_buffer(extension_type, filename, app_id=None, joinscript_version=1, version_start=None, version_end=None, options=None):
 	"""
 	Returns a join script that registers the given file as UDM extension with extension type ('hook', 'syntax' or 'module').
 	Optionally a joinscript version, UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.
@@ -284,6 +290,12 @@ def get_join_script_buffer(extension_type, filename, app_id=None, joinscript_ver
 		version_end = ''
 	else:
 		version_end = '--ucsversionend %s' % version_end
+	other_options = ''
+	for key in options:
+		if type(options[key]) == str:
+			other_options += ' --%s %s' % (key, options[key])
+		else:
+			other_options += ' --%s ' % (key,) + (' --%s ' % (key,)).join(options[key])
 
 	return '''#!/bin/sh
 VERSION=%(joinscript_version)s
@@ -292,11 +304,11 @@ set -e
 joinscript_init
 %(app_id)s
 . /usr/share/univention-lib/ldap.sh
-ucs_registerLDAPExtension "$@" --udm_%(extension_type)s %(filename)s %(version_start)s %(version_end)s
+ucs_registerLDAPExtension "$@" --udm_%(extension_type)s %(filename)s %(version_start)s %(version_end)s %(other_options)s
 joinscript_save_current_version
 exit 0
 ''' % {'filename': filename, 'joinscript_version': joinscript_version, 'extension_type': extension_type, 'app_id': app_id,
-	   'version_start': version_start, 'version_end': version_end}
+	   'version_start': version_start, 'version_end': version_end, 'other_options': other_options}
 
 def get_unjoin_script_buffer(extension_type, extension_name, package_name):
 	"""
