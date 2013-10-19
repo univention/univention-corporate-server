@@ -290,12 +290,12 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 	  	</para>
 	  </section>
 
-	  <section>
+	  <section id="repo:verify">
 		<title>Operating a local repository server / pre-up/ post-up scripts</title>
 		<para>
 		  Pre-up and postup scripts are scripts which are run before and after release updates
 		  (e.g., for post-processing the update, for example by uninstalling obsolete packages).
-		  As of UCS 3.2, these scripts are cryptographically signed to prevent modification.
+		  As of UCS 3.2, these scripts are cryptographically signed to prevent unauthorized modification.
 		  During the update and when mirroring the repository these signatures are checked.
 		  If they're invalid or missing, the action is aborted.
 		</para>
@@ -306,7 +306,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		</para>
 
 		<para>
-		  If it is not possible to update the repository server, the signature files must also be downloaded manually:
+		  If it is not possible to update the repository server, the signature files must be downloaded manually:
 		</para>
 
 <programlisting language="sh">

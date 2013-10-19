@@ -295,12 +295,12 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		</para>
 	  </section>
 
-	  <section>
+	  <section id="repo:verify">
 		<title>Betrieb eines lokalen Repository-Servers / Preup / Postup-Skripte</title>
 		<para>
 		  Preup- und Postup-Skripte sind Skripte, die vor und nach Release-Updates aufgerufen
 		  werden (z.B. zur Nachbereitung des Updates, etwa die Deinstallation obsoleter Pakete).
-		  Ab UCS 3.2 werden diese Skripte kryptographisch signiert, um eine Modifikation zu verhindern.
+		  Ab UCS 3.2 werden diese Skripte kryptographisch signiert, um eine unerlaubte Modifikation zu verhindern.
 		  Beim Update und Spiegeln des Repositories werden diese Signaturen überprüft.
 		  Sind diese ungültig oder fehlen, so wird die Aktion abgebrochen.
 		</para>
@@ -311,7 +311,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		</para>
 
 		<para>
-		  Wenn ein Update des Repository-Servers nicht möglich ist, müssen die Signaturdateien auch manuell heruntergeladen werden:
+		  Wenn ein Update des Repository-Servers nicht möglich ist, müssen die Signaturdateien manuell heruntergeladen werden:
 		</para>
 
 <programlisting language="sh">
