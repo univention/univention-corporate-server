@@ -36,19 +36,41 @@
 			additional package that arranges for deeper integration into &ucsUCS;.
 			This package could be named
 			<package>univention-<replaceable>appname</replaceable></package> and have
-			a Dependency on the core application (on <literal>dpkg</literal> level).
-			Depending on whether the application wants to extend the LDAP another
+			a dependency on the core application (on <literal>dpkg</literal> level).
+			Depending on whether the application wants to extend the LDAP, another
 			(independent) package needs to be provided, say,
-			<package>univention-<replaceable>appname</replaceable></package>. It does
-			not need to be installed on each system the core application is installed
-			but needs to stay installed even when the core application is removed.
-			Thus it should be as independent as possible from the the core
+			<package>univention-<replaceable>appname</replaceable>-master</package>.
+			It does not need to be installed on each system the core application is
+			installed but needs to stay installed even when the core application is
+			removed.  Thus it should be as independent as possible from the the core
 			application (and
 			<package>univention-<replaceable>appname</replaceable></package>).
 		</para>
 		<para>
 			See <xref linkend="chap:debian"/> for further details on how to build
 			Debian packages.
+		</para>
+		<para>
+			In most cases the core application depends on several other packages,
+			e.g. <package>apache</package>, <package>python</package>, etc. Those
+			packages are automatically installed by the App Center (via
+			<literal>apt</literal>). All packages (except games) from Debian were
+			rebuilt for &ucsUCS;, but not all packages are maintained by Univention.
+			The maintained repository for &ucsUCS; contains the most common packages,
+			but it may be that the application needs some specific packages not found
+			there. If this packages exists for Debian, it can be found in the
+			unmaintained repository. But as the unmaintained repository is not
+			activated by default the App Center cannot install the application
+			without user configuration if some packages are only available through
+			the unmaintained repository. But this is a requirement for any
+			application!  To workaround this issue, the vendor has to do the
+			following: In a first step he has to grab the packages from the
+			unmaintained repository (see for example <ulink
+				url="http://apt.software-univention.de/3.1/unmaintained/" />) and
+			bundle it with his own packages so that they are put into the app's own
+			repository. In a second step he should inform Univention about these
+			packages. We will probably move them into maintained so that this
+			procedure will become obsolete in future versions of the application.
 		</para>
 	</section>
 	<section id="app:iniFile">
@@ -136,8 +158,8 @@
 					<simpara>
 						A list of packages that will be installed. It is recommended to
 						keep this list as small as possible and install other packages as
-						Dependencies as this is less error prone. Preferably only a package
-						like
+						dependencies as this is less error prone. Preferably only one
+						package like
 						<package>univention-<replaceable>appname</replaceable></package> is
 						given here.
 					</simpara>
@@ -326,29 +348,140 @@
 					</simpara>
 				</listitem>
 			</varlistentry>
+			<varlistentry>
+				<term>WebInterface</term>
+				<listitem>
+					<simpara>
+						If a web frontend is installed by the application, one may state
+						this here. Should probably start with a "/".
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>UCSOverviewCategory</term>
+				<listitem>
+					<simpara>
+						New in UCS 3.2: If there is a <literal>WebInterface</literal> the
+						App Center automatically registers a link in the overview page of
+						the UCS server. By default these are added in the
+						<envar>services</envar> section of the overview page. If
+						<literal>UCSOverviewCategory</literal> is set to
+						<envar>admin</envar> the link will be generated there. Can be
+						disabled completely if set to <envar>False</envar>. See also
+						<xref linkend="app:integration-by-app-center" />.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>ServerRole</term>
+				<listitem>
+					<simpara>
+						Roles that may use this application, separate by comma. Possible
+						roles are <envar>domaincontroller_master</envar>,
+						<envar>domaincontroller_backup</envar>,
+						<envar>domaincontroller_slave</envar>, and
+						<envar>memberserver</envar>. In UCS 3.1 these applications were
+						visible but not installable (an error message was shown). Since UCS
+						3.2 they are completely hidden. This means that
+						<literal>ServerRole</literal> must not change throughout the
+						lifetime of an application (at least not more restrictive).
+					</simpara>
+				</listitem>
+			</varlistentry>
 		</variablelist>
 	</section>
 	<section id="app:integration">
 		<title>Integrating the Application in UCS</title>
-		<para>
-			Reuse users, groups, computers already administered in domain.
-			See <xref linkend="udm:ldap:common-attributes"/>.
-		</para>
-		<para>
-			An Application may need more attributes than there are present. For
-			example something like <emphasis>This user is allowed to use the
-				app</emphasis>. For this an app will have to extend the LDAP schema
-			(this should be done in the <literal>DefaultPackagesMaster</literal> of
-			the Application). Furthermore it needs to add Extended Attributes (see
-			<xref linkend="udm:ea"/>) in a Join Script (see <xref
-				linkend="chap:join"/>) in a package from
-			<literal>DefaultPackages</literal>.
-		</para>
-		<para>
-			If the application wants to sync certain attributes (for example
-			passwords) there are listener modules. See <xref
-				linkend="chap:listener"/>.
-		</para>
+	  <section id="app:integration-by-app-center">
+		  <title>Automatic integration done by the App Center</title>
+			<para>
+				Some tasks can be done automatically be the App Center and do not need any (or much) help from the vendor.
+			</para>
+			<para>
+				New in UCS 3.2: The overview of any UCS system (i.e. plain
+				https://<replaceable>IP</replaceable>/) can link to various web
+				frontends, e.g. the Univention Management Console. If the application
+				provides a <literal>WebInterface</literal> in the ini file, a link is
+				built automatically, with the ini's <literal>Name</literal> and
+				<literal>Description</literal> as text.
+			</para>
+			<para>
+				This feature can be disabled by stating
+				<literal>UCSOverviewCategory=False</literal>. This may be a good idea if
+				there are multiple web frontends and they should be maintained
+				manually and in one place. In this case the following UCR variables
+				should be set in <filename>postinst</filename> (and removed in
+				<filename>postrm</filename>!):
+				<variablelist>
+					<varlistentry>
+						<term>ucs/web/overview/service/<replaceable>appid</replaceable>/icon</term>
+						<listitem>
+							<simpara>
+								Path to the icon for the link.
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term>ucs/web/overview/service/<replaceable>appid</replaceable>/label</term>
+						<listitem>
+							<simpara>
+								English version of the headline. German version is
+								<literal>ucs/web/overview/service/<replaceable>appid</replaceable>/label/de</literal>
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term>ucs/web/overview/service/<replaceable>appid</replaceable>/description</term>
+						<listitem>
+							<simpara>
+								English version of the short text below the headline. German
+								version is
+								<literal>ucs/web/overview/service/<replaceable>appid</replaceable>/description/de</literal>
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term>ucs/web/overview/service/<replaceable>appid</replaceable>/link</term>
+						<listitem>
+							<simpara>
+								Link to the web interface. Probably something like
+								<literal>/<replaceable>appid</replaceable></literal>.
+							</simpara>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+			</para>
+			<para>
+				New in UCS 3.2: Each application registers itself in the LDAP directory
+				and sets the hosts on which it is installed automatically. These
+				information can be accessed by any <literal>machine
+					connection</literal>. The path is
+				<literal>univentionAppID=<replaceable>appid</replaceable>_<replaceable>appversion</replaceable>,cn=<replaceable>appid</replaceable>,cn=apps,cn=univention,<replaceable>ldap_base</replaceable></literal>.
+				See also <xref linkend="chap:udm" /> if this data shall be accessed.
+			</para>
+		</section>
+	  <section>
+		  <title>Scope of the vendor</title>
+			<para>
+				Reuse users, groups, computers already administered in domain.
+				See <xref linkend="udm:ldap:common-attributes"/>.
+			</para>
+			<para>
+				An Application may need more attributes than there are present. For
+				example something like <emphasis>This user is allowed to use the
+					app</emphasis>. For this an app will have to extend the LDAP schema
+				(this should be done in the <literal>DefaultPackagesMaster</literal> of
+				the Application). Furthermore it needs to add Extended Attributes (see
+				<xref linkend="udm:ea"/>) in a Join Script (see <xref
+					linkend="chap:join"/>) in a package from
+				<literal>DefaultPackages</literal>.
+			</para>
+			<para>
+				If the application wants to sync certain attributes (for example
+				passwords) there are listener modules. See <xref
+					linkend="chap:listener"/>.
+			</para>
+		</section>
 	</section>
 
 	<section id="app:bestpractices">
