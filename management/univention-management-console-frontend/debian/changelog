@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.113-1) unstable; urgency=low
+
+  * Bug #32902: Make sure to set value of MultiInput, even when delayed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 19 Oct 2013 02:27:04 +0200
+
 univention-management-console-frontend (3.0.112-1) unstable; urgency=low
 
   * Added new widget UnixAccessRightsExtended which provides additional

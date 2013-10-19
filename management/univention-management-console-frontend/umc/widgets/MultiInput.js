@@ -250,6 +250,7 @@ define([
 						}
 					}
 				}, this);
+				this._set('value', this.get('value'));
 				this._blockChangeEvents = false;
 			}));
 		},
@@ -265,7 +266,6 @@ define([
 
 			// set the values
 			this._setAllValues(vals);
-			this._set('value', this.get('value'));
 		},
 
 		_setDisabledAttr: function ( value ) {

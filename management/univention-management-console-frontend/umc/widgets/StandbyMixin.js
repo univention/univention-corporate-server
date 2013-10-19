@@ -134,15 +134,18 @@ define([
 		},
 
 		standbyDuring: function(deferred, content) {
-			this.standby(true, content);
-			deferred.then(
-				lang.hitch(this, function() {
-					this.standby(false);
-				}),
-				lang.hitch(this, function() {
-					this.standby(false);
-				})
-			);
+			if (!deferred.isFulfilled()) {
+				// dont standby if already finished
+				this.standby(true, content);
+				deferred.then(
+					lang.hitch(this, function() {
+						this.standby(false);
+					}),
+					lang.hitch(this, function() {
+						this.standby(false);
+					})
+				);
+			}
 			return deferred;
 		}
 	});
