@@ -77,6 +77,6 @@ def random_version(elements=3):
 		version.append(random_int(0, 9))
 	return '.'.join(version)
 
-def random_ucs_version(min_major=1, max_major=9, min_minor=0, max_minor=9, min_patchlevel=0, max_patchlevel=9):
+def random_ucs_version(min_major=1, max_major=9, min_minor=0, max_minor=99, min_patchlevel=0, max_patchlevel=99):
 	return '%s.%s-%s' % (random_int(min_major, max_major), random_int(min_minor, max_minor), random_int(min_patchlevel, max_patchlevel))
 
