@@ -62,7 +62,7 @@
 
 		<itemizedlist>
 		  <listitem>
-			<para> 
+			<para>
 			  TODO
 			</para>
 		  </listitem>
@@ -94,7 +94,7 @@
 		<para>
 		  Bei der Verwendung von 3rd-Party-Software ist generell <emphasis>vor</emphasis> dem Update
 		  mit dem Hersteller/Vertriebspartner der Software zu klären, ob diese mit der neuen Version
-		  von Univention Corporate Server weiterhin uneingeschränkt einsetzbar ist. 
+		  von Univention Corporate Server weiterhin uneingeschränkt einsetzbar ist.
 		</para>
 
 		<para>
@@ -150,11 +150,11 @@
 		  Die Default-Werte der UCR-Variablen für die Konfiguration der BDB-Datenbank sind:
 
 		  <itemizedlist>
-			<listitem><para> 
+			<listitem><para>
 			  mail/cyrus/bdb/dbconfig/set_lg_regionmax : "2097152"
 			</para></listitem>
 
-			<listitem><para> 
+			<listitem><para>
 			  mail/cyrus/bdb/dbconfig/set_cachesize : "0 2097152 1"
 			</para></listitem>
 		  </itemizedlist>
@@ -203,12 +203,12 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		  Einige Komponenten sind entfernt worden und werden mit UCS 3.2 nicht mehr ausgeliefert:
 
 		  <itemizedlist>
-			<listitem><para> 
+			<listitem><para>
 			  Das UMC-Modul <guimenu>VNC</guimenu> wurde entfernt. Für einen grafischen Remote-Login
 			  auf UCS-Server kann alternativ Xrdp aus dem Univention App Center installiert werden.
 			</para></listitem>
 
-			<listitem><para> 
+			<listitem><para>
 			  Das Paket <emphasis>univention-local-users</emphasis> (nur Bestandteil von
 			  unmaintained) wurde entfernt.
 			</para></listitem>
@@ -300,39 +300,38 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		<para>
 		  Preup- und Postup-Skripte sind Skripte, die vor und nach Release-Updates aufgerufen
 		  werden (z.B. zur Nachbereitung des Updates, etwa die Deinstallation obsoleter Pakete).
-		  Ab UCS 3.2 werden diese Skripte über DEB-Pakete ausgeliefert (in früheren Versionen wurden
-		  sie als Dateien ausgeliefert, wurden dadurch aber nicht durch Secure Apt abgedeckt).
+		  Ab UCS 3.2 werden diese Skripte kryptographisch signiert, um eine Modifikation zu verhindern.
+		  Beim Update und Spiegeln des Repositories werden diese Signaturen überprüft.
+		  Sind diese ungültig oder fehlen, so wird die Aktion abgebrochen.
 		</para>
 
 		<para>
-		  Wird ein Repository-Server mit UCS 3.1-x betrieben, sollte dieser auf UCS 3.2 aktualisiert
+		  Wird ein Repository-Server mit UCS 3.1-x betrieben, muß dieser auf UCS 3.2 aktualisiert
 		  werden, bevor weitere Systeme auf UCS 3.2-1 aktualisiert werden können.
 		</para>
 
 		<para>
-		  Wenn ein Update des Repository-Servers nicht möglich ist, können die Dateien auch manuell
-		  synchronisiert werden:
+		  Wenn ein Update des Repository-Servers nicht möglich ist, müssen die Signaturdateien auch manuell heruntergeladen werden:
+		</para>
 
 <programlisting language="sh">
-LOCAL_DIR=/var/lib//univention-repository/mirror
-SERVER=http://updates.software-univention.de
+LOCAL_DIR="/var/lib//univention-repository/mirror"
+SERVER="http://updates.software-univention.de"
 for release in 3.2-0 3.2-1; do
-  for f in preup postup; do
-    FILE=3.2/maintained/$release/all/${f}.sh.gpg
-    wget $SERVER/$FILE -O $LOCAL_DIR/$FILE
+  for script in preup postup; do
+    file="3.2/maintained/$release/all/$script.sh.gpg"
+    wget -O "$LOCAL_DIR/$file" "$SERVER/$file"
   done
 done
 </programlisting>
-		</para>
 
 		<para>
-		  Alternativ kann die Prüfung der Signaturen auch deaktiviert werden. Dazu muss die
-		  &ucsUCR;-Variable <envar>repository/online/verify</envar> auf <emphasis>false</emphasis>
-		  gesetzt werden.
+		  Alternativ kann die Prüfung der Signaturen auch deaktiviert werden, was ein Sicherheitsrisiko darstellen kann.
+		  Für dem Repository-Server kann dazu die &ucsUCRV; <envar>repository/mirror/verify</envar> auf <emphasis>false</emphasis> gesetzt werden.
+		  Für das Update muß auf allen Systemen die &ucsUCRV; <envar>repository/online/verify</envar> auf <emphasis>false</emphasis> gesetzt werden.
 		</para>
 	  </section>
 	</chapter>
-
 
 
     <chapter>
@@ -416,7 +415,7 @@ done
 		  </itemizedlist>
 
 		<para>
-		  Auf älteren Browsern können Darstellungs- oder Performanceprobleme auftreten. 
+		  Auf älteren Browsern können Darstellungs- oder Performanceprobleme auftreten.
 		</para>
 	  </section>
 
@@ -430,7 +429,7 @@ done
 
 		  <itemizedlist>
 			<listitem>
-			  <para> 
+			  <para>
 				Microsoft Windows Domänencontroller dürfen aktuell nicht in eine Samba 4-Domäne
 				gejoint werden.
 			  </para>
@@ -446,12 +445,12 @@ done
 
 			<listitem>
 			  <para>
-				Samba 4 unterstützt aktuell keine Forest-Domänen. 
+				Samba 4 unterstützt aktuell keine Forest-Domänen.
 			  </para>
 			</listitem>
 
 			<listitem>
-			  <para> 
+			  <para>
 				Samba 4 unterstützt aktuell keine Vertrauensstellungen.
 			  </para>
 			</listitem>
@@ -486,14 +485,14 @@ done
 
 		<itemizedlist>
 		<listitem>
-		  <para> 
+		  <para>
 			Aufbau einer parallelen Samba 4-Domäne. Beide Domänen verwenden unterschiedliche
 			NetBIOS-Namen und SIDs. Die Clients treten dann schrittweise der Samba 4-Domäne bei.
 		  </para>
 		</listitem>
 
 		<listitem>
-		  <para> 
+		  <para>
 			Migration aller Systeme innerhalb eines Wartungsfensters.
 		  </para>
 		</listitem>
@@ -507,7 +506,7 @@ done
 
 	  <section>
 		<title>Xen</title>
-		<para> 
+		<para>
 		  Wenn der Xen Hypervisor benutzt wird und das Speicherlimit über die &ucsUCR;-Variable
 		  <envar>grub/xenhopt</envar> begrenzt wurde, sollte der Wert aktualisiert und um die
 		  <emphasis>,max:</emphasis>-Angabe erweitert werden. Weitere Details finden sich unter

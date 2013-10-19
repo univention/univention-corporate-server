@@ -62,7 +62,7 @@
 
 		<itemizedlist>
 		  <listitem>
-			<para> 
+			<para>
 			  TODO
 			</para>
 		  </listitem>
@@ -79,14 +79,14 @@
 
 		<para>
 		  The authoritative version of the LDAP directory service is maintained on the master domain
-		  controller and replicated on all the remaining LDAP servers of the UCS domain. As changes 
+		  controller and replicated on all the remaining LDAP servers of the UCS domain. As changes
 		  to the LDAP schemes can occur during release updates), the master domain controller must
 		  always be the first system to be updated during a release update.
 		</para>
 
 		<para>
 		  It is generally advisable to update all UCS systems in one maintenance window whenever
-		  possible. 
+		  possible.
 		</para>
 
 	  <section>
@@ -94,7 +94,7 @@
 		<para>
 		  When using third-party software it should generally be clarified with the
 		  manufacturer/reseller <emphasis>before</emphasis> the update whether it can still be used
-		  without restrictions with the latest version of Univention Corporate Server. 
+		  without restrictions with the latest version of Univention Corporate Server.
 		</para>
 
 		<para>
@@ -146,11 +146,11 @@
 		  The default values of the UCR variables for the configuration of the BDB database are:
 
 		  <itemizedlist>
-			<listitem><para> 
+			<listitem><para>
 			  mail/cyrus/bdb/dbconfig/set_lg_regionmax : "2097152"
 			</para></listitem>
 
-			<listitem><para> 
+			<listitem><para>
 			  mail/cyrus/bdb/dbconfig/set_cachesize : "0 2097152 1"
 			</para></listitem>
 		  </itemizedlist>
@@ -294,9 +294,10 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		<title>Operating a local repository server / pre-up/ post-up scripts</title>
 		<para>
 		  Pre-up and postup scripts are scripts which are run before and after release updates
-		  (e.g., for post-processing the update, for example by uninstalling obsolete packages). As
-		  of UCS 3.2, these scripts are supplied via DEB packages (in earlier versions they were
-		  supplied as files, but as such were not covered by Secure Apt).
+		  (e.g., for post-processing the update, for example by uninstalling obsolete packages).
+		  As of UCS 3.2, these scripts are cryptographically signed to prevent modification.
+		  During the update and when mirroring the repository these signatures are checked.
+		  If they're invalid or missing, the action is aborted.
 		</para>
 
 		<para>
@@ -305,28 +306,28 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		</para>
 
 		<para>
-		  If it is not possible to update the repository server, the files can also be synchronised
-		  manually:
+		  If it is not possible to update the repository server, the signature files must also be downloaded manually:
+		</para>
 
 <programlisting language="sh">
-LOCAL_DIR=/var/lib//univention-repository/mirror
-SERVER=http://updates.software-univention.de
+LOCAL_DIR="/var/lib//univention-repository/mirror"
+SERVER="http://updates.software-univention.de"
 for release in 3.2-0 3.2-1; do
-  for f in preup postup; do
-    FILE=3.2/maintained/$release/all/${f}.sh.gpg
-    wget $SERVER/$FILE -O $LOCAL_DIR/$FILE
+  for script in preup postup; do
+    file="3.2/maintained/$release/all/$script.sh.gpg"
+    wget -O "$LOCAL_DIR/$file" "$SERVER/$file"
   done
 done
 </programlisting>
-		</para>
 
 		<para>
-		  Alternatively, it is also possible to disable the signature checks. This is done by
-		  setting the &ucsUCR; variable <envar>repository/online/verify</envar> to
-		  <emphasis>false</emphasis>.
+		  Alternatively, it is also possible to disable the signature checks, which can be a security risk.
+		  For the repository server this can be done by setting the &ucsUCRV; <envar>repository/mirror/verify</envar> to <emphasis>false</emphasis>.
+		  For the update the &ucsUCRV; <envar>repository/online/verify</envar> must be set to <emphasis>false</emphasis> on all systems.
 		</para>
 	  </section>
 	</chapter>
+
 
     <chapter>
 	  <title>Further notes on selected packages</title>
@@ -404,7 +405,7 @@ done
 		  </itemizedlist>
 
 		<para>
-		  Users with older browsers may experience display or performance problems. 
+		  Users with older browsers may experience display or performance problems.
 		</para>
 	  </section>
 
@@ -418,9 +419,9 @@ done
 
 		  <itemizedlist>
 			<listitem>
-			  <para> 
+			  <para>
 				Microsoft Windows domain controllers cannot be joined in a Samba 4 domain
-				currently. 
+				currently.
 			  </para>
 			</listitem>
 
@@ -434,12 +435,12 @@ done
 
 			<listitem>
 			  <para>
-				Samba 4 does not currently support forest domains. 
+				Samba 4 does not currently support forest domains.
 			  </para>
 			</listitem>
 
 			<listitem>
-			  <para> 
+			  <para>
 				Samba 4 does not currently support trust relationships.
 			  </para>
 			</listitem>
@@ -456,7 +457,7 @@ done
 		  During the installation of UCS in the virtualization solution VirtualBox, a bug may appear
 		  which has been corrected in version 4.2: if UCS has been successfully installed and the
 		  DVD is still in the disk drive, the installation DVD offers the option <guimenu>Boot from
-		  first harddisk partition</guimenu>. If you select this option, VirtualBox freezes. 
+		  first harddisk partition</guimenu>. If you select this option, VirtualBox freezes.
 		</para>
 
 		<para>
@@ -475,14 +476,14 @@ done
 
 		<itemizedlist>
 		<listitem>
-		  <para> 
+		  <para>
 			Setup of a parallel Samba 4 domain. Both domains use different NetBIOS names and
 			SIDs. The clients then join the Samba 4 step by step.
 		  </para>
 		</listitem>
 
 		<listitem>
-		  <para> 
+		  <para>
 			Migration of all systems within one maintenance window.
 		  </para>
 		</listitem>
@@ -496,7 +497,7 @@ done
 
 	  <section>
 		<title>Xen</title>
-		<para> 
+		<para>
 		  If the Xen hypervisor is used and the memory limit for the Dom0 has been configured using
 		  the &ucsUCR;-Variable <envar>grub/xenhopt</envar>, the value should be updated to include
 		  the <emphasis>,max:</emphasis> part as well. See the

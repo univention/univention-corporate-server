@@ -116,11 +116,11 @@
 	</para>
 
 	<para>
-	  A <emphasis>preup script</emphasis> is run before every release update. This checks for
-	  example whether there are any problems which could lead to the controlled cancelling of the
-	  update. The <emphasis>postup script</emphasis> is run at the end of the update.
+	  The <emphasis>pre-update script</emphasis> <filename>preup.sh</filename> is run before every release update.
+	  This checks for example whether there are any problems, in which case the update is cancelled in a controlled way.
+	  The <emphasis>post-update script</emphasis> <filename>postup.sh</filename> is run at the end of the update, which performs for example additional cleanups.
 	</para>
-	
+
 	<para>
 	  Errata updates always refer to certain minor releases, e.g., for UCS
 	  3.0. Errata updates can generally be installed for all patch level versions of
@@ -149,7 +149,7 @@
 	  the Univention Bugzilla.
 	</para>
   </section>
-  
+
   <section id="software:appcenter">
 	<title>Univention App Center</title>
 	<para>
@@ -221,7 +221,7 @@
 	<!-- </para> -->
 	<!-- MENU: Upgrade -->
 
-	<para> 
+	<para>
 	  An overview of the existing applications can be opened under <guimenu>Installed
 	  applications</guimenu> on the UMC start page.
 	</para>
@@ -283,7 +283,7 @@
 	  A local repository can require a lot of disk space - particularly if the
 	  unmaintained branch is activated.
 	</para>
-	
+
 	<section id="computers:Configuration_via_the_Univention_Management_Console">
 	  <title>Configuration via the Univention Management Console</title>
 	  <para>
@@ -306,7 +306,7 @@
 		<envar>repository/online/unmaintained</envar> to <emphasis>yes</emphasis>.
 	  </para>
 	</section>
-	
+
 	<section id="computers:Policy-based_configuration_of_the_repository_server">
 	  <title>Policy-based configuration of the repository server</title>
 	  <para>
@@ -481,7 +481,7 @@ univention-repository-update -h
 		<filename>/var/log/univention/updater.log</filename>
 	  </para>
 	</section>
-	
+
 	<section id="computers:Updating_individual_systems_via_the_command_line">
 	  <title>Updating individual systems via the command line</title>
 	  <para>
@@ -565,7 +565,7 @@ univention-repository-update -h
 		<filename>/var/log/univention/updater.log</filename>
 	  </para>
 	</section>
-	
+
 	<section id="computers:Postprocessing_of_release_updates">
 	  <title>Postprocessing of release updates</title>
 	  <para>
@@ -612,7 +612,7 @@ univention-repository-update -h
 	  However, individual packages can also be specifically installed and removed for
 	  further tasks.
 	</para>
-	
+
 	<para>
 	  When installing a package, it is sometimes necessary to install additional
 	  packages, which are required for the proper functioning of the package. These
@@ -630,7 +630,7 @@ univention-repository-update -h
 	  directories. These directories are not used for installing UCS packages, thus a
 	  clean separation between UCS packages and other software is ensured.
 	</para>
-	
+
 	<para>
 	  There are several possibilities for installing further packages subsequently on
 	  an installed system:
@@ -744,7 +744,7 @@ apt-cache search fax
 		module of the &ucsUMC; with the <guimenu>Policy: Packages + system
 		role</guimenu>.
 	  </para>
-	
+
 	  <table>
 		<title>'General' tab</title>
 		<tgroup cols="2">
@@ -935,7 +935,7 @@ apt-cache search fax
 		</listitem>
 	  </varlistentry>
 	</variablelist>
-	
+
 	<section id="computers:Integration_of_repository_components_via_the_Univention_Management_Console">
 	  <title>Integration of repository components via the Univention Management Console</title>
 	  <para>
@@ -973,14 +973,14 @@ apt-cache search fax
 		A software component is only available once <guimenu>Enable this
 		component</guimenu> has been activated.
 	  </para>
-	
+
 	  <para>
 		A differentiation is also made for components between
 		<emphasis>maintained</emphasis> and <emphasis>unmaintained</emphasis>
 		components, see <xref linkend="software::configrepo"/>.
 	  </para>
 	</section>
-	
+
 	<section id="computers::softwaremanagement::repoadducr">
 	  <title>Integration of repository components via Univention Configuration Registry</title>
 	  <para>
@@ -1084,7 +1084,7 @@ apt-cache search fax
 		  </listitem>
 		</varlistentry>
 	  </variablelist>
-	  
+
 	  <para>
 		For example, to integrate the UCS@School component, the following variables
 		must be set:
@@ -1183,7 +1183,7 @@ ucr set repository/online/component/ucsschool/description="UCS@School packages" 
 	  <command>univention-pkgdb-scan</command> must be executed to ensure that
 	  package versions installed in the meanwhile are also adopted in the database.
 	</para>
-	
+
 	<para>
 	  The following command can be used to remove a system's program inventory from the database again:
 	</para>

@@ -116,10 +116,9 @@
 	</para>
 
 	<para>
-	  Vor jedem Release-Update wird ein <emphasis>Preup-Skript</emphasis>
-	  aufgerufen. Dieses prüft z.B. ob Probleme bestehen, die zum kontrollierten Abbruch des
-	  Updates führen. Als Abschluss eines Updates wird das
-	  <emphasis>Postup-Skript</emphasis> aufgerufen.
+	  Vor jedem Release-Update wird das <emphasis>Pre-update-Skript</emphasis> <filename>preup.sh</filename> aufgerufen.
+	  Dieses prüft z.B. ob Probleme bestehen und bricht das Update dann kontrolliert ab.
+	  Nach dem Update wird das <emphasis>Post-Update-Skript</emphasis> <filename>postup.sh</filename> aufgerufen, das ggf. weitere Aufräumarbeiten durchführt.
 	</para>
 
 	<para>
@@ -156,10 +155,10 @@
 	<para>
 	  Das Univention App Center erlaubt die einfache Einbindung von Softwarekomponenten in eine
 	  UCS-Installation. Die Applikationen werden sowohl von Drittanbietern wie auch von
-	  Univention selbst (z.B. UCS@school) bereitgestellt. Die Maintenance und der 
+	  Univention selbst (z.B. UCS@school) bereitgestellt. Die Maintenance und der
 	  Support für die Applikationen erfolgt durch den jeweiligen Hersteller.
 	</para>
-	
+
 	<figure id="appcenter-overview"><title>Überblick der verfügbaren Applikationen im App Center</title>
 	<graphic scalefit="1" width="100%" fileref="illustrations/appcenter_overview_de.png"/>
 	</figure>
@@ -171,7 +170,7 @@
 	  angezeigten Applikationen eingeschränkt werden, außerdem können die Applikationen anhand
 	  der <guimenu>Kategorien</guimenu> geordnet werden.
 	</para>
-	
+
 	<para>
 	  Klickt man auf eine der angezeigten Applikationen, werden weitergehende Details zu der
 	  Komponente angezeigt (u.a. Beschreibung, Hersteller, Ansprechpartner und ein
@@ -203,7 +202,7 @@
 	  wird die Installation abgebrochen. Außerdem werden die Pakete auf allen erreichbaren
 	  &ucsBackup;-Systemen eingerichtet.
 	</para>
-	
+
 	<para>
 	  Nach der Installation einer Applikation werden nach einem Klick auf das Icon einer Applikation
 	  eine oder mehrere neue Optionen angezeigt: <guimenu>Deinstallieren</guimenu> entfernt eine Applikation.
@@ -283,7 +282,7 @@
 	  Ein lokales Repository kann - gerade bei Einbindung des
 	  unmaintained-Zweiges - viel Plattenplatz in Anspruch nehmen.
 	</para>
-	
+
 	<section id="computers:Konfiguration_ueber_die_Univention_Management_Console">
 	  <title>Konfiguration über die Univention Management Console</title>
 	  <para>
@@ -353,7 +352,7 @@ ucr set repository/online/architectures="i386 amd64"
 univention-repository-update net
 		</programlisting>
 	  </para>
-			  
+
 	  <para>
 		Der Zugriff auf das Univention Online-Repository wird durch Verwendung von Secure Apt
 		über Signaturen kryptografisch gesichert. Für lokale Repositorys besteht diese
@@ -366,7 +365,7 @@ univention-repository-update net
 	  <para>
 		Mit dem Tool <command>univention-repository-update</command> werden die Pakete im
 		Repository aktualisiert. Es unterstützt zwei Modi:
-				
+
 	  </para>
 	  <itemizedlist>
 		<listitem> <simpara>
@@ -400,7 +399,7 @@ univention-repository-update -h
 	  </para>
 	</section>
   </section>
-  
+
   <section id="software::ucs-updates">
 	<title>Aktualisierung von UCS-Systemen</title>
 	<para>
@@ -408,7 +407,7 @@ univention-repository-update -h
 	  (über die &ucsUMC; oder auf der Kommandozeile) oder für größere Gruppen von
 	  UCS-Systemen automatisiert über eine Rechner-Richtlinie der &ucsUMC;.
 	</para>
-	
+
 	<section id="computers:Update-Strategie_in_Umgebungen_mit_mehr_als_einem_UCS-System">
 	  <title>Update-Strategie in Umgebungen mit mehr als einem UCS-System</title>
 	  <para>
@@ -632,7 +631,7 @@ univention-repository-update -h
 	  Um auf einem bereits installierten System nachträglich weitere Pakete
 	  zu installieren, stehen mehrere Möglichkeiten zur Verfügung:
 	</para>
-	
+
 	<section id="computers:softwareselection">
 	  <title>Installation/Deinstallation von UCS-Komponenten im Univention App Center</title>
 	  <para>
@@ -1118,32 +1117,32 @@ ucr set repository/online/component/ucsschool/description="UCS@school-Pakete" \
 	  werden. Alternativ kann das Paket <package>univention-pkgdb</package> installiert
 	  werden.
 	</para>
-	
+
 	<para>
 	  UCS-Systeme aktualisieren ihre Einträge bei der Installation, Entfernung und
 	  Aktualisierung von Software selbsttätig. Das System, auf dem der Software-Monitor
 	  betrieben wird, wird dabei durch den DNS-Service-Record <command>_pkgdb._tcp</command>
 	  lokalisiert.
 	</para>
-	
+
 	<para>
 	  Die webbasierte Abfrageschnittstelle des Software-Monitors integriert sich in die
 	  &ucsUMC; und kann über das Modul <guimenu>Software-Monitor</guimenu> erreicht
 	  werden. Folgende Funktionen stehen zur Verfügung:
-	  
+
 	</para>
 	<itemizedlist>
 	  <listitem><simpara>
 		<emphasis>Systeme</emphasis> erlaubt die Suche nach den installierten Versionsständen
 		von UCS-Systemen. Es kann nach Systemnamen, UCS-Versionen und Systemrollen gesucht werden.
 	  </simpara></listitem>
-	  
+
 	  <listitem> <para>
 		<emphasis>Pakete</emphasis> ermöglicht die Suche in den von der Paketstatusdatenbank
 		erfassten Installationsdaten. Neben der Suche nach <emphasis>Paketnamen</emphasis>
 		gibt es auch die folgenden Suchmöglichkeiten zu den Installationszuständen von Paketen:
 	  </para>
-	  
+
 	  <itemizedlist>
 		<listitem> <simpara>
 		  Der <emphasis>Selektionsstatus</emphasis> beeinflusst das Verhalten bei der
@@ -1169,15 +1168,15 @@ ucr set repository/online/component/ucsschool/description="UCS@school-Pakete" \
 		  <emphasis>ConfigFiles</emphasis> für entfernte Pakete, alle übrigen Zustände
 		  entstehen, wenn die Installation des Pakets in verschiedenen Phasen abgebrochen wurde.
 		</simpara></listitem>
-		
+
 	  </itemizedlist>
 	  </listitem>
-	  
+
 	</itemizedlist>
 	<figure id="software-monitor"><title>Suche nach Paketen im Software-Monitor</title>
 	<graphic scalefit="1" width="80%" fileref="illustrations/software_softwaremonitor_de.png"/>
 	</figure>
-	
+
 	<para>
 	  Wenn verhindert werden soll, dass UCS-Systeme Installations-Vorgänge im Software-Monitor
 	  aufzeichnen (etwa weil keine Netzwerkverbindung zur Datenbank besteht), kann dies durch
