@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.53-1) unstable; urgency=low
+
+  * Bug #23214: Add IP, MAC, network to computers wizard
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 19 Oct 2013 02:47:16 +0200
+
 univention-management-console-module-udm (4.0.52-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)

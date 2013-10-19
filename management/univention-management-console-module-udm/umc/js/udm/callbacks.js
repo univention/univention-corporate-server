@@ -33,6 +33,24 @@ define([
 	"dojo/_base/array",
 	"umc/tools"
 ], function(lang, array, tools) {
+	// helper function also used by wizard. Needs to defined here to be accessible by setNetwork
+	var _setNetworkValues = function(vals, widgets) {
+		widgets.ip.set('value', [vals.ip]);
+		widgets.dnsEntryZoneForward.set('value', [[vals.dnsEntryZoneForward, vals.ip]]);
+		widgets.dnsEntryZoneReverse.set('value', [[vals.dnsEntryZoneReverse, vals.ip]]);
+		if (vals.mac.length && vals.dhcpEntryZone) {
+			// at least one MAC address is specified, update the DHCP entries
+			widgets.dhcpEntryZone.set('value', [[vals.dhcpEntryZone, vals.ip, vals.mac[0]]]);
+		} else if (vals.dhcpEntryZone) {
+			// no MAC address given, enter the DHCP entry and make sure that the MAC
+			// is chosen as soon as it is specified later on (via 'null' value)
+			widgets.dhcpEntryZone.set('value', [[vals.dhcpEntryZone, vals.ip, null]]);
+		} else {
+			// DHCP entry zone does not exist
+			widgets.dhcpEntryZone.set('value', []);
+		}
+	};
+
 	return {
 		setDynamicValues: function(dict) {
 			// return the list specified by the property '$name$'
@@ -70,29 +88,15 @@ define([
 			else {
 				tools.umcpCommand('udm/network', {
 					networkDN: newVal
-				}, true, 'computers/computer').then(function(data) {
+				}, true, 'computers/computer').then(lang.hitch(this, function(data) {
 					// got values... update corresponding widgets
-					var vals = data.result;
-					widgets.ip.set('value', [vals.ip]);
-					widgets.dnsEntryZoneForward.set('value', [[vals.dnsEntryZoneForward, vals.ip]]);
-					widgets.dnsEntryZoneReverse.set('value', [[vals.dnsEntryZoneReverse, vals.ip]]);
-					var mac = widgets.mac.get('value');
-					if (mac.length && vals.dhcpEntryZone) {
-						// at least one MAC address is specified, update the DHCP entries
-						widgets.dhcpEntryZone.set('value', [[vals.dhcpEntryZone, vals.ip, mac[0]]]);
-					}
-					else if (vals.dhcpEntryZone) {
-						// no MAC address given, enter the DHCP entry and make sure that the MAC
-						// is chosen as soon as it is specified later on (via 'null' value)
-						widgets.dhcpEntryZone.set('value', [[vals.dhcpEntryZone, vals.ip, null]]);
-					}
-					else {
-						// DHCP entry zone does not exist
-						widgets.dhcpEntryZone.set('value', []);
-					}
-				});
+					var vals = lang.mixin(data.result, {mac: widgets.mac.get('value')});
+					_setNetworkValues(vals, widgets);
+				}));
 			}
-		}
+		},
+
+		_setNetworkValues: _setNetworkValues
 	};
 });
 

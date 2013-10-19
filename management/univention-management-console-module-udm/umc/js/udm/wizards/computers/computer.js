@@ -30,57 +30,51 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/lang",
 	"dojo/_base/array",
+	"umc/modules/udm/callbacks",
 	"umc/modules/udm/wizards/CreateWizard",
 	"umc/i18n!umc/modules/udm"
-], function(declare, array, CreateWizard, _) {
+], function(declare, lang, array, udmCallbacks, CreateWizard, _) {
 
 	return declare("umc.modules.udm.wizards.computers.computer", [ CreateWizard ], {
 		widgetPages: [
-			{ // page one
+			{
 				title: _('Computer information'),
 				widgets: [
-					['name']
-					//['default_network'],
-					//['mac', 'ip']
+					['name'],
+					['network'],
+					['mac', 'ip']
 				]
 			}
 		],
 
-		//buildWidget: function(widgetName, originalWidgetDefinition) {
-		//	if (widgetName == 'default_network') {
-		//		return {
-		//			name: widgetName,
-		//			sizeClass: 'One',
-		//			label: _('Use default network'),
-		//			required: false,
-		//			value: true,
-		//			type: 'CheckBox'
-		//		};
-		//	} else {
-		//		return this.inherited(arguments);
-		//	}
-		//},
-
-		getValues: function() {
-			var values = this.inherited(arguments);
-			var networkWidget = this.detailPage._form.getWidget('network');
-			var value;
-			array.some(networkWidget.store._getItemsArray(), function(item) {
-				if (item.label[0] == 'default') {
-					value = item.id[0];
-					return true;
-				}
-				if (!value) {
-					// first non empty element is fallback
-					value = item.id[0];
-				}
-				return false;
-			});
-			if (value) {
-				values.network = value;
+		buildWidget: function(widgetName, originalWidgetDefinition) {
+			var widget = this.inherited(arguments);
+			if (widgetName == 'network') {
+				widget.type = 'ComboBox'; // not UDMComboBox
+				widget.umcpCommand = this.umcpCommand;
+				widget.dynamicValues = 'udm/syntax/choices';
+				widget.dynamicOptions = {'syntax' : 'network'};
+				widget.onChange = lang.hitch(this, function(newVal, widgets) {
+					if (newVal) {
+						this.umcpCommand('udm/network', {networkDN: newVal}).then(lang.hitch(this, function(data) {
+							this._networkVals = data.result;
+							widgets.ip.set('value', this._networkVals.ip);
+						}));
+					} else {
+						this._networkVals = null;
+					}
+				});
 			}
-			return values;
+			return widget;
+		},
+
+		setCustomValues: function(values, detailPageForm) {
+			if (this._networkVals && values.ip[0]) {
+				var vals = lang.mixin(this._networkVals, {ip: values.ip[0], mac: values.mac});
+				udmCallbacks._setNetworkValues(vals, detailPageForm._widgets);
+			}
 		}
 
 	});

@@ -78,6 +78,9 @@ define([
 			return values;
 		},
 
+		setCustomValues: function(values, detailPageForm) {
+		},
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this._mayFinishDeferred = this.detailPage.loadedDeferred;

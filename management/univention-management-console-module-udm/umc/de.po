@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Thu, 25 Oct 2012 16:53:33 +0200\n"
+"POT-Creation-Date: Fri, 18 Oct 2013 23:38:02 +0200\n"
 "PO-Revision-Date: 2011-10-21 17:59+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -20,6 +20,47 @@ msgstr "Passwort ändern"
 
 msgid "Computers"
 msgstr "Rechner"
+
+msgid "Configuration of domain DHCP settings"
+msgstr "Konfiguration von DHCP-Einstellungen der Domäne"
+
+msgid "Configuration of domain DNS settings"
+msgstr "Konfiguration von DNS-Einstellungen der Domäne"
+
+msgid "Configuration of domain E-mail settings"
+msgstr "Konfiguration von E-Mail Einstellungen der Domäne"
+
+msgid "Configuration of domain nagios settings"
+msgstr "Konfiguration von Nagios Einstellungen der Domäne"
+
+msgid "Configuration of domain network settings"
+msgstr "Konfiguration von Netzwerkeinstellungen der Domäne"
+
+msgid "Creation, removal and management directory shares in the domain"
+msgstr ""
+"Erstellen, Löschen und Verwalten von Verzeichnisfreigaben in der Domäne"
+
+msgid "Creation, removal and management domain wide policies"
+msgstr "Erstellen, Löschen und Verwalten von domänenweiten Richtlinien"
+
+msgid "Creation, removal and management of computers in the domain"
+msgstr "Erstellen, Löschen und Verwalten von Rechnern in der Domäne"
+
+msgid "Creation, removal and management of domain users"
+msgstr "Erstellen, Löschen und Verwalten von Benutzern in der Domäne"
+
+msgid ""
+"Creation, removal and management of user and computer groups in the domain"
+msgstr ""
+"Erstellen, Löschen und Verwalten von Benutzer- und Rechnergruppen in der "
+"Domäne"
+
+msgid ""
+"Creation, removal and management printer shares and printer share groups in "
+"the domain"
+msgstr ""
+"Erstellen, Löschen und Verwalten von Druckerfreigaben und Gruppen von "
+"Druckerfreigaben in der Domäne"
 
 msgid "DHCP"
 msgstr "DHCP"
@@ -42,53 +83,20 @@ msgstr "E-Mail"
 msgid "Manages all UDM modules"
 msgstr "Verwaltet alle UDM-Module"
 
-msgid "Configuration of domain DHCP settings"
-msgstr "Konfiguration von DHCP-Einstellungen der Domäne"
-
-msgid "Configuration of domain DNS settings"
-msgstr "Konfiguration von DNS-Einstellungen der Domäne"
-
-msgid "Configuration of domain nagios settings"
-msgstr "Konfiguration von Nagios Einstellungen der Domäne"
-
-msgid "Creation, removal and management of computers in the domain"
-msgstr "Erstellen, Löschen und Verwalten von Rechnern in der Domäne"
-
-msgid "Creation, removal and management of user and computer groups in the domain"
-msgstr "Erstellen, Löschen und Verwalten von Benutzer- und Rechnergruppen in der Domäne"
-
-msgid "Configuration of domain E-mail settings"
-msgstr "Konfiguration von E-Mail Einstellungen der Domäne"
-
-msgid "Network configuration of domain network settings"
-msgstr "Konfiguration von Netzwerkeinstellungen der Domäne"
-
-msgid "Creation, removal and management domain wide policies"
-msgstr "Erstellen, Löschen und Verwalten von domänenweiten Richtlinien"
-
-msgid "Creation, removal and management printer shares and printer share groups in the domain"
-msgstr "Erstellen, Löschen und Verwalten von Druckerfreigaben und Gruppen von Druckerfreigaben in der Domäne"
-
-msgid "Creation, removal and management directory shares in the domain"
-msgstr "Erstellen, Löschen und Verwalten von Verzeichnisfreigaben in der Domäne"
-
-msgid "Creation, removal and management of domain users"
-msgstr "Erstellen, Löschen und Verwalten von Benutzern in der Domäne"
-
 msgid "Nagios"
 msgstr "Nagios"
 
 msgid "Networks"
 msgstr "Netzwerke"
 
+msgid "Password change for the current user"
+msgstr "Passwortänderung für den momentanen Benutzer"
+
 msgid "Policies"
 msgstr "Richtlinien"
 
 msgid "Printers"
 msgstr "Drucker"
-
-msgid "Password change for the current user"
-msgstr "Passwortänderung für den momentanen Benutzer"
 
 msgid "Shares"
 msgstr "Freigaben"

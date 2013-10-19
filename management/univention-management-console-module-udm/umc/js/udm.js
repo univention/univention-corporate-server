@@ -1375,6 +1375,7 @@ define([
 						}
 						var wizard = new WizardClass({
 							style: 'width: 630px; height:310px;',
+							umcpCommand: this.umcpCommand,
 							detailPage: this._detailPage,
 							template: template,
 							properties: properties
@@ -1393,6 +1394,7 @@ define([
 									tools.forIn(values, lang.hitch(this, function(key, val) {
 										this._detailPage._form.getWidget(key).set('value', val);
 									}));
+									wizard.setCustomValues(values, this._detailPage._form);
 									this.selectChild(this._detailPage);
 									if (submit) {
 										this._detailPage._form.ready().then(lang.hitch(this, function() {
