@@ -1,6 +1,7 @@
 univention-installer (9.0.28-1) unstable; urgency=low
 
   * Bug #32634: add UEFI graphic modules
+  * Bug #32634: switched video mode from 788 (800x600x16) to 789 (800x600x24)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 21 Oct 2013 17:04:14 +0200
 
