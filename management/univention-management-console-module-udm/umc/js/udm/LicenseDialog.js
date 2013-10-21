@@ -104,7 +104,7 @@ define([
 
 			// put the layout together
 			this._container = new ContainerWidget({
-				style: 'width: 600px'
+				style: 'width: 450px'
 			});
 			this._container.addChild(_content);
 			this._container.addChild(_buttonContainer);

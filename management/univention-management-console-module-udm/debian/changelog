@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.54-1) unstable; urgency=low
+
+  * Bug #32389: small adaptions to license import dialog
+
+ -- Florian Best <best@univention.de>  Mon, 21 Oct 2013 10:53:33 +0200
+
 univention-management-console-module-udm (4.0.53-1) unstable; urgency=low
 
   * Bug #23214: Add IP, MAC, network to computers wizard

@@ -81,9 +81,7 @@ define([
 			}, {
 				type: Text,
 				name: 'message',
-				content: _('New licenses that have been received after the activation of UCS or after a license purchase can be imported below. The license information can either be uploaded directly as file or it can be imported via copy and paste into the text field.') + '<br><br>' +
-					_('To request an activated license key, the menu item "%s" in the settings menu can be chosen.',
-						'<a onclick="require(\'dojo/topic\').publish(\'/umc/license/activation\'); return false;" href="#">' + _('Activation of UCS') + '</a>') + '<br><br>'
+				content: _('New licenses that have been received after the activation of UCS or after a license purchase can be imported below. The license information can either be uploaded directly as file or it can be imported via copy and paste into the text field.') + '<br><br>'
 			}, {
 				type : TextArea,
 				name : 'licenseText',
