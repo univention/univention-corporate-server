@@ -1682,41 +1682,39 @@ univention-directory-manager settings/extended_attribute create \
 		web interface.
 	</para>
 
-	<section id="central-management-umc:Creating_reports_in_the_Univention_Management_Console">
-		<title>Creating reports in the Univention Management Console</title>
-		<para>
-			To create a report, you need to switch to the domain module for users,
-			groups or hosts. The report is created for all the objects shown in
-			the overview. The selection can be limited based on a
-			<guimenu>Property</guimenu> using filters. Clicking on
-			<guimenu>Create report</guimenu> allows to choose between the
-			<guimenu>Standard Report</guimenu> in PDF format and the
-			<guimenu>Standard CSV Report</guimenu> in CSV format.
-		</para>
-		<figure id="umc-report">
-			<title>Creating a report</title>
-			<graphic scalefit="1" width="20%" fileref="illustrations/umc_report_en2.png"/>
-		</figure>
-		<para>
-		The reports created via &ucsUMC; are stored for 12 hours and then
-		deleted by a cron job. The settings for when the cron job should run
-		and how long the reports should be stored for can be defined via two
-		&ucsUCR; variables:
-		</para>
-		<itemizedlist>
-			<listitem>
-				<simpara>
-				<envar>directory/reports/cleanup/cron</envar>
-				Defines when the cron job should be run.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<envar>directory/reports/cleanup/age</envar>
-				Defines the maximum age of a report document in seconds before it is deleted.
-				</simpara>
-			</listitem>
-		</itemizedlist>
+	<section id="central:reports:create">
+	  <title>Creating reports in the Univention Management Console</title>
+	  <para>
+		To create a report, you need to switch to the domain module for users, groups or hosts. 
+		<!-- Anschließend müssen alle vom Report erfassten Objekte ausgewählt werden -->
+		<!-- (durch einen Klick auf den Button links von <guimenu>Name</guimenu> können alle Objekte -->
+		<!-- selektiert werden). -->
+		Clicking on <guimenu>more &ar; Create report</guimenu> allows to choose between the
+		<guimenu>Standard Report</guimenu> in PDF format and the <guimenu>Standard CSV
+		Report</guimenu> in CSV format.
+	  </para>
+
+	  <figure id="umc-report">
+		<title>Creating a report</title>
+		<graphic scalefit="1" width="20%" fileref="illustrations/umc_report_en2.png"/>
+	  </figure>
+	  
+	  <para>
+		The reports created via &ucsUMC; are stored for 12 hours and then deleted by a cron job. The
+		settings for when the cron job should run and how long the reports should be stored for can
+		be defined via two &ucsUCR; variables:
+	  </para>
+
+	  <itemizedlist>
+		<listitem><simpara>
+		  <envar>directory/reports/cleanup/cron</envar> Defines when the cron job should be run.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  <envar>directory/reports/cleanup/age</envar>Defines the maximum age of a report document
+		  in seconds before it is deleted.
+		</simpara></listitem>
+	  </itemizedlist>
 	</section>
 
 	<section id="central-management-umc:Creating_reports_on_the_command_line">

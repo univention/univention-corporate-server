@@ -1720,42 +1720,39 @@ univention-directory-manager settings/extended_attribute create \
 		Web-Interface der &ucsUMC; erstellt werden.
 	</para>
 
-	<section id="central-management-umc:Erstellen_von_Reports_in_der_Univention_Management_Console">
-		<title>Erstellen von Reports in der Univention Management Console</title>
-		<para>
-			Um einen Report zu erstellen, muss in die Domänen-Module für Benutzer,
-			Gruppen oder Rechner gewechselt werden. Der Report wird dabei über
-			alle in der Übersichtsliste angezeigten Objekte erstellt. Die Auswahl
-			kann über Filter anhand der <guimenu>Eigenschaft</guimenu> eingeschränkt
-			werden. Ein Klick auf <guimenu>Report erstellen</guimenu> ermöglicht die
-			Auswahl zwischen dem <guimenu>Standard-Report</guimenu> im PDF-Format und
-			dem <guimenu>CSV-Report</guimenu> im CSV-Format.
-		</para>
-		<figure id="umc-report">
-			<title>Erstellen eines Reports</title>
-			<graphic scalefit="1" width="30%" fileref="illustrations/umc_report_de2.png"/>
-		</figure>
-		<para>
-			Die über &ucsUDM; erzeugten Reports werden für 12 Stunden aufbewahrt
-			und danach durch einen Cron-Job entfernt. Die Einstellungen, wann dieser
-			Cron-Job laufen soll und wie lange diese Reports aufbewahrt werden
-			sollen, kann über zwei &ucsUCR;-Variablen definiert werden:
-		</para>
-		<itemizedlist>
-			<listitem>
-				<simpara>
-				<envar>directory/reports/cleanup/cron</envar>
-				definiert den Zeitpunkt zu dem der Cron-Job ausgeführt werden soll.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				<envar>directory/reports/cleanup/age</envar>
-				bestimmt das maximale Alter eines Report-Dokumentes in Sekunden
-				bevor es gelöscht wird.
-				</simpara>
-			</listitem>
-		</itemizedlist>
+	<section id="central:reports:create">
+	  <title>Erstellen von Reports in der Univention Management Console</title>
+	  <para>
+		Um einen Report zu erstellen, muss in die Domänen-Module für Benutzer, Gruppen oder Rechner
+		gewechselt werden. Anschließend müssen alle vom Report erfassten Objekte ausgewählt werden
+		(durch einen Klick auf den Button links von <guimenu>Name</guimenu> können alle Objekte
+		selektiert werden).
+		Ein Klick auf <guimenu>Mehr &ar; Report erstellen</guimenu> ermöglicht die
+		Auswahl zwischen dem <guimenu>Standard-Report</guimenu> im PDF-Format und
+		dem <guimenu>CSV-Report</guimenu> im CSV-Format.
+	  </para>
+
+	  <figure id="umc-report">
+		<title>Erstellen eines Reports</title>
+		<graphic scalefit="1" width="30%" fileref="illustrations/umc_report_de2.png"/>
+	  </figure>
+
+	  <para>
+		Die über &ucsUDM; erzeugten Reports werden für 12 Stunden aufbewahrt und danach durch einen
+		Cron-Job entfernt. Die Einstellungen, wann dieser Cron-Job laufen soll und wie lange diese
+		Reports aufbewahrt werden sollen, kann über zwei &ucsUCR;-Variablen definiert werden:
+	  </para>
+	  <itemizedlist>
+		<listitem><simpara>
+		  <envar>directory/reports/cleanup/cron</envar> definiert den Zeitpunkt zu dem der Cron-Job
+		  ausgeführt werden soll.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  <envar>directory/reports/cleanup/age</envar> bestimmt das maximale Alter eines
+		  Report-Dokumentes in Sekunden bevor es gelöscht wird.
+		</simpara></listitem>
+	  </itemizedlist>
 	</section>
 
 	<section id="central-management-umc:Erstellen_von_Reports_auf_der_Kommandozeile">
