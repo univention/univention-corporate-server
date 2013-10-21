@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/topic",
+	"dojo/when",
 	"dojo/Deferred",
 	"umc/tools",
 	"umc/widgets/TitlePane",
@@ -42,7 +43,7 @@ define([
 	"umc/widgets/Page",
 	"umc/modules/appcenter/requirements",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, topic, Deferred, tools, TitlePane, Text, Form, ContainerWidget, Page, requirements, _) {
+], function(declare, lang, array, topic, when, Deferred, tools, TitlePane, Text, Form, ContainerWidget, Page, requirements, _) {
 	return declare("umc.modules.appcenter.AppDetailsDialog", [ Page ], {
 		app: null,
 		_container: null,
@@ -125,7 +126,8 @@ define([
 							defaultButton: true,
 							callback: lang.hitch(this, function() {
 								opts.action = this.actionLabel;
-								foundRequirement.solution(opts, details);
+								var deferred = foundRequirement.solution(opts, details);
+								when(deferred, lang.hitch(this, 'onBack', false), lang.hitch(this, 'onBack', false));
 							})
 						}];
 						container.addChild(new Form({

@@ -147,9 +147,7 @@ define([
 			},
 			solution: function(opts, details) {
 				opts.appDetailsPage.set('app', details[0]);
-				opts.appDetailsPage.appLoadingDeferred.then(function() {
-					opts.appDetailsDialog.onBack(false);
-				});
+				return opts.appDetailsPage.appLoadingDeferred;
 			}
 		}),
 		must_have_no_conflicts_packages: new Requirement({
@@ -176,9 +174,7 @@ define([
 			},
 			solution: function(opts, details) {
 				opts.appDetailsPage.set('app', details[0]);
-				opts.appDetailsPage.appLoadingDeferred.then(function() {
-					opts.appDetailsDialog.onBack(false);
-				});
+				return opts.appDetailsPage.appLoadingDeferred;
 			}
 		}),
 		must_not_be_depended_on: new Requirement({
@@ -195,9 +191,7 @@ define([
 			},
 			solution: function(opts, details) {
 				opts.appDetailsPage.set('app', details[0]);
-				opts.appDetailsPage.appLoadingDeferred.then(function() {
-					opts.appDetailsDialog.onBack(false);
-				});
+				return opts.appDetailsPage.appLoadingDeferred;
 			}
 		}),
 		shall_have_enough_ram: new Requirement({

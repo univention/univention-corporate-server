@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.45-1) unstable; urgency=low
+
+  * Bug #30629: Switch back to app details after solution button is clicked
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 21 Oct 2013 17:16:51 +0200
+
 univention-management-console-module-appcenter (3.0.44-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)
