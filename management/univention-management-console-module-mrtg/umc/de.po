@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Overview of local systems usage and performance statistics"
-msgstr "Überblick der Benutzungs- und Leistungssatistiken des lokalen Systems"
+msgid "Overview of usage statistics for the local system"
+msgstr "Überblick der Nutzungsstatistiken des lokalen Systems"
 
 msgid "Statistics"
 msgstr "Statistiken"
