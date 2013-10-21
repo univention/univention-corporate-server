@@ -9,7 +9,8 @@
   <para>
 	Die Bereitstellung für die zugreifenden Clients kann über CIFS (unterstützt von
 	Windows/Linux-Clients) und/oder NFS (vorrangig unterstützt von Linux/Unix) erfolgen. Die in der
-	&ucsUMC; verwalteten NFS-Freigaben werden momentan nur über NFSv3 bereitgestellt.
+	&ucsUMC; verwalteten NFS-Freigaben können von Clients sowohl über NFSv3, als auch über NFSv4
+	eingebunden werden.
   </para>
 
   <para>

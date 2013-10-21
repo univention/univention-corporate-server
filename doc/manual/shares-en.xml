@@ -7,8 +7,9 @@
 
   <para>
 	Provision for accessing clients can occur via CIFS (supported by Windows/Linux clients) and/or
-	NFS (primarily supported by Linux/Unix). The NFS shares managed in the &ucsUMC; are currently
-	only provided via NFSv3.
+	NFS (primarily supported by Linux/Unix). 
+	<!-- Die in der &ucsUMC; verwalteten NFS-Freigaben können von Clients sowohl über NFSv3, als auch über NFSv4 -->
+	<!-- eingebunden werden. -->
   </para>
 
   <para>
