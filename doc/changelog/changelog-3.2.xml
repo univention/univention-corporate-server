@@ -2924,7 +2924,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <listitem><simpara>
 		Under certain circumstances Samba 3.6.8 reports a timeout for the unix password sync during
 		password changes. Since the password change is successful nonetheless, two test cases have
-		been adjusted to tolerate this flaw (<ulink url="&ucsbug;31794">Bug 31794</ulink>).
+		been adjusted to tolerate this flaw (<ulink url="&ucsbug;29052">Bug 29052</ulink>, <ulink url="&ucsbug;29053">Bug 29053</ulink>, <ulink url="&ucsbug;31794">Bug 31794</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
