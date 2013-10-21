@@ -591,6 +591,41 @@ might have security-relevant effects.
 </tgroup>
 </table>
 
+<table>
+  <title>'NFS custom settings' tab (advanced settings)</title>
+  <tgroup cols="2">
+	<colspec colnum="1" colname="col1" colwidth="1*"/>
+	<colspec colnum="2" colname="col2" colwidth="2*"/>
+	<thead>
+	  <row>
+		<entry>Attribute</entry>
+		<entry>Description</entry>
+	  </row>
+	</thead>
+	<tbody>
+
+	  <row>
+		<entry>Custom NFS share settings</entry>
+		<entry>
+		  <para>
+			Apart from the properties in the <guimenu>NFS</guimenu> tab, this setting makes it
+			possible to define further arbitrary NFS settings for the share. A list of available
+			options can be obtained by the command <command>man 5 exports</command>. Double entries
+			of configuration options are not checked.
+		  </para>
+
+		  <caution>
+			<para>
+			  The definition of extended NFS settings is only necessary in special cases. The
+			  options should be thoroughly checked before setting since they might have
+			  security-relevant effects.
+			</para>
+		  </caution>
+		</entry>
+	  </row>
+	</tbody>
+  </tgroup>
+</table>
 
 <para>
 If a new file is created on a Samba server from a Windows client, the file
