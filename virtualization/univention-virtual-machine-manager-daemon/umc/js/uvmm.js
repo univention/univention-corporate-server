@@ -67,12 +67,17 @@ define([
 	tools, dialog, Module, Page, Form, ExpandingTitlePane, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
 	CheckBox, ComboBox, TextBox, Button, TreeModel, DomainPage, DomainWizard, types, _) {
 
-	var canStart = function(item) {
-		return !(item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
+	var isRunning = function(item) {
+		return (item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
 	};
 
+	var canStart = function(item) {
+		return !isRunning(item);
+	};
+
+
 	var canVNC = function(item) {
-		return (item.state == 'RUNNING' || item.state == 'IDLE') && item.vnc_port && item.node_available;
+		return isRunning(item) && item.vnc_port;
 	};
 
 	return declare("umc.modules.uvmm", [ Module ], {
@@ -191,7 +196,7 @@ define([
 				// register event
 				this._grid.on('FilterDone', lang.hitch(this, '_selectInputText')); // FIXME: ?
 
-				this._grid.on('StyleRow', lang.hitch(this, '_onGridStyleRow'));
+				this._grid._grid.on('StyleRow', lang.hitch(this, '_onGridStyleRow'));
 			} ) );
 			// generate the navigation tree
 			var model = new TreeModel({
@@ -642,6 +647,7 @@ define([
 			});
 			_dialog.show();
 		},
+
 		_changeState: function(/*String*/ newState, action, ids, items ) {
 			// chain all UMCP commands
 			var deferred = new Deferred();
@@ -784,6 +790,7 @@ define([
 				name: 'start',
 				label: _('Start'),
 				width: '50px',
+				'class': 'uvmmStartColumn',
 				description: _( 'Start the virtual machine' ),
 				formatter: lang.hitch(this, '_startFormatter')
 			}, {
@@ -798,13 +805,20 @@ define([
 		},
 
 		_onGridStyleRow: function(row) {
-//			var nd = query('td[idx="1"]', row.node)[0];
+			var cellIds = [this._grid._grid.getCellByField('start').index, this._grid._grid.getCellByField('vnc').index];
+			array.forEach(cellIds, function(cellId) {
+				var node = query('td[idx="' + cellId + '"]', row.node)[0];
+				node.style['text-align'] = 'center';
+			});
 		},
 
 		_startFormatter: function(val, rowIndex, col) {
 			var item = this._grid._grid.getItem(rowIndex);
 			if (!canStart(item)) {
 				return '';
+			}
+			if (item._univention_cache_button_start) {
+				return item._univention_cache_button_start;
 			}
 			var id = item[this._grid.moduleStore.idProperty];
 			var btn = new Button({
@@ -819,6 +833,7 @@ define([
 				connectId: [btn.domNode]
 			});
 			btn.own(tooltip);
+			item._univention_cache_button_start = btn;
 			return btn;
 		},
 
@@ -826,6 +841,9 @@ define([
 			var item = this._grid._grid.getItem(rowIndex);
 			if (!canVNC(item)) {
 				return '';
+			}
+			if (item._univention_cache_button_vnc) {
+				return item._univention_cache_button_vnc;
 			}
 			var id = item[this._grid.moduleStore.idProperty];
 			var btn = new Button({
@@ -841,6 +859,7 @@ define([
 				connectId: [btn.domNode]
 			});
 			btn.own(tooltip);
+			item._univention_cache_button_vnc = btn;
 			return btn;
 		},
 
@@ -893,7 +912,7 @@ define([
 					/* newState */ 'SHUTOFF',
 					/* action */ 'stop'),
 				canExecute: function(item) {
-					return (item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
+					return isRunning(item);
 				}
 			}, {
 				name: 'pause',
@@ -903,7 +922,7 @@ define([
 				isMultiAction: true,
 				callback: lang.hitch(this, '_changeState', 'PAUSE', 'pause' ),
 				canExecute: function(item) {
-					return (item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
+					return isRunning(item);
 				}
 			}, {
 				name: 'suspend',
@@ -913,7 +932,7 @@ define([
 				isMultiAction: true,
 				callback: lang.hitch(this, '_changeState', 'SUSPEND', 'suspend' ),
 				canExecute: function(item) {
-					return (item.state == 'RUNNING' || item.state == 'IDLE') && types.getNodeType(item.id) == 'qemu' && item.node_available;
+					return isRunning(item) && types.getNodeType(item.id) == 'qemu';
 				}
 			}, /* { FIXME: not yet fully supported
 				name: 'restart',
@@ -922,7 +941,7 @@ define([
 				isMultiAction: true,
 				callback: lang.hitch(this, '_changeState', 'RESTART', 'restart' ),
 				canExecute: function(item) {
-					return (item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
+					return isRunning(item);
 				}
 			}, */ {
 				name: 'clone',
