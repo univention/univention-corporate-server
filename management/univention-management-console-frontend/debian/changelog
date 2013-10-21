@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.114-1) unstable; urgency=low
+
+  * Bug #15087: fix de.po which was broken due to svn45333
+
+ -- Florian Best <best@univention.de>  Mon, 21 Oct 2013 10:51:35 +0200
+
 univention-management-console-frontend (3.0.113-1) unstable; urgency=low
 
   * Bug #32902: Make sure to set value of MultiInput, even when delayed
