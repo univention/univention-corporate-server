@@ -1,29 +1,27 @@
-<chapter id="shares::general"><title>Fileshare management</title>
-<para>
-UCS supports the central management of directory shares. A share
-registered in the &ucsUMC; is created on an arbitrary UCS server
-system as part of the UCS domain replication.
-</para>
+<chapter id="shares::general">
+  <title>Fileshare management</title>
+  <para>
+	UCS supports the central management of directory shares. A share registered in the &ucsUMC; is
+	created on an arbitrary UCS server system as part of the UCS domain replication.
+  </para>
 
-<para>
-Provision for accessing clients can occur via CIFS (supported by
-Windows/Linux clients) and/or NFS (primarily supported by Linux/Unix).
-The NFS shares managed in the &ucsUMC; are currently only provided
-via NFSv3.
-</para>
-<para>
-If a file share is deleted on a server, the shared files in the
-directory are preserved.
-</para>
+  <para>
+	Provision for accessing clients can occur via CIFS (supported by Windows/Linux clients) and/or
+	NFS (primarily supported by Linux/Unix). The NFS shares managed in the &ucsUMC; are currently
+	only provided via NFSv3.
+  </para>
 
-<para>
-To be able to use access control lists on a share, the underlying
-Linux file system must support POSIX ACLs. In UCS the file systems
-ext3, ext4 and XFS support POSIX ACLs. The Samba configuration also
-allows storing DOS file attributes in extended attributes of the
-Unix file system. To use extended attributes, the partition must be
-mounted using the mount option <emphasis>user_xattr</emphasis>.
-</para>
+  <para>
+	If a file share is deleted on a server, the shared files in the directory are preserved.
+  </para>
+
+  <para>
+	To be able to use access control lists on a share, the underlying Linux file system must support
+	POSIX ACLs. In UCS the file systems ext3, ext4 and XFS support POSIX ACLs. The Samba
+	configuration also allows storing DOS file attributes in extended attributes of the Unix file
+	system. To use extended attributes, the partition must be mounted using the mount option
+	<emphasis>user_xattr</emphasis>.
+  </para>
 
 <section id="shares::permissions"><title>Access rights to data in shares</title>
 <para>
