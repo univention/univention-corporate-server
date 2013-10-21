@@ -53,7 +53,7 @@ univention-dojo: /usr/share/univention-dojo
 	cp -r /usr/share/univention-dojo $@
 	cp -r /usr/share/univention-management-console-frontend-src/umc $@
 	# workarounds for referenced external modules
-	for imodule in umc/modules/udm/LicenseDialog.js umc/modules/undefined.js https://www.piwik.univention.de/piwik.js.js; do \
+	for imodule in umc/modules/udm/LicenseImportDialog.js umc/modules/udm/LicenseDialog.js umc/modules/undefined.js https://www.piwik.univention.de/piwik.js.js; do \
 		mkdir -p univention-dojo/$${imodule%/*}; \
 		echo 'define([],function(){});' > univention-dojo/$${imodule}; \
 	done

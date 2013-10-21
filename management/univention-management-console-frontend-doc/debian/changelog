@@ -1,3 +1,9 @@
+univention-management-console-frontend-doc (7.0.1-1) unstable; urgency=low
+
+  * Bug #32782: fix build process
+
+ -- Florian Best <best@univention.de>  Mon, 21 Oct 2013 15:41:35 +0200
+
 univention-management-console-frontend-doc (7.0.0-1) unstable; urgency=low
 
   * Bug #32782: fix build process
