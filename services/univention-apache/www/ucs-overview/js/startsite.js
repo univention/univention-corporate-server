@@ -29,6 +29,7 @@
 /*global define require console window $*/
 
 define([
+	"dojo/io-query",
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
 	"dojo/_base/array",
@@ -42,7 +43,7 @@ define([
 	"dojo/text!entries.json",
 	"dojo/text!languages.json",
 	"/ucs-overview/js/i18n!js"
-], function(lang, kernel, array, query, domConstruct, domAttr, domStyle, domClass, on, json, entriesStr, languagesStr, _) {
+], function(ioQuery, lang, kernel, array, query, domConstruct, domAttr, domStyle, domClass, on, json, entriesStr, languagesStr, _) {
 	var entries = json.parse(entriesStr);
 	var ucr = entries.ucr;
 
@@ -231,9 +232,12 @@ define([
 		},
 
 		_updateAvailableLocales: function() {
+			queryParams = window.location.search.substring(1, window.location.search.length);
+			queryObject = ioQuery.queryToObject(queryParams);
 			var menuNode = query('#header-right #language-switcher')[0];
 			array.forEach(this._availableLocales, function(ilocale) {
-				domConstruct.place(lang.replace('<li role="presentation"><a role="menuitem" tabindex="-1" href="./?lang={id}">{label}</a></li>', ilocale), menuNode);
+				queryObject.lang = ilocale.id;
+				domConstruct.place(lang.replace('<li role="presentation"><a role="menuitem" tabindex="-1" href="?{0}">{1}</a></li>', [ioQuery.objectToQuery(queryObject), ilocale.label]), menuNode);
 			});
 		},
 

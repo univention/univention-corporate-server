@@ -1,3 +1,9 @@
+univention-apache (6.0.12-1) unstable; urgency=low
+
+  * Preserve additional query parameters when switching language (Bug #32932) 
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 21 Oct 2013 16:23:00 +0200
+
 univention-apache (6.0.11-1) unstable; urgency=low
 
   * Bug #32613: adjust links in footer of ucs overview
