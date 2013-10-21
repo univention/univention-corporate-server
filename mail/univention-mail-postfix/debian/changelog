@@ -1,3 +1,9 @@
+univention-mail-postfix (8.0.7-3) unstable; urgency=low
+
+  * Update UCR variable descriptions (Bug #32444, Bug #28124)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 21 Oct 2013 09:50:07 +0200
+
 univention-mail-postfix (8.0.7-2) unstable; urgency=low
 
   * added mail/postfix/smtpd/banner (Bug #32444)

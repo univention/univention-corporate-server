@@ -18,8 +18,8 @@ ReadOnly=yes
 Categories=service-mail
 
 [mail/postfix/smtpd/banner]
-Description[de]=Der Text, der auf den Status-Code 220 im SMTP Grußbanner folgt (default: $myhostname ESMTP $mail_name)
-Description[en]=The text that follows the 220 status code in the SMTP greeting banner (default: $myhostname ESMTP $mail_name)
+Description[de]=Mit dieser Variable kann der SMTP-Banner (verwendet zur Identifikation im SMTP-Protokoll) angepasst werden. Das Format ist unter http://www.postfix.org/postconf.5.html#smtpd_banner beschrieben.
+Description[en]=This variable allows the configuration of the SMTP banner (used for identification in the SMTP protocol). The format is documented at http://www.postfix.org/postconf.5.html#smtpd_banner .
 Type=str
 Categories=service-mail
 
@@ -192,14 +192,14 @@ Type=str
 Categories=service-mail
 
 [mail/postfix/ssl/cafile]
-Description[de]=Eine Datei mit (PEM-Format) CA-Zertifikaten von vertrauenswürdigen Stammzertifizierungsstellen, um entweder Remote-SMTP-Client-Zertifikate oder Zwischen-CA Zertifikate signieren (default: none)
-Description[en]=A file containing (PEM format) CA certificates of root CAs trusted to sign either remote SMTP client certificates or intermediate CA certificates (default: none)
+Description[de]=Eine Datei mit CA-Zertifikaten (im PEM-Format) von vertrauenswürdigen Stammzertifizierungsstellen, um entweder Remote-SMTP-Client-Zertifikate oder Zwischen-CA-Zertifikate zu signieren.
+Description[en]=A file containing  CA certificates (in PEM format) of root CAs trusted to sign either remote SMTP client certificates or intermediate CA certificates.
 Type=str
 Categories=service-mail
 
 [mail/postfix/ssl/capath]
-Description[de]=Ein Verzeichnis mit (PEM-Format) CA-Zertifikaten von vertrauenswürdigen Stammzertifizierungsstellen, um entweder Remote-SMTP-Client-Zertifikate oder Zwischen-CA Zertifikate signieren (default: none)
-Description[en]=A directory containing (PEM format) CA certificates of root CAs trusted to sign either remote SMTP client certificates or intermediate CA certificates. (default: none)
+Description[de]=Ein Verzeichnis mit CA-Zertifikaten (im PEM-Format) von vertrauenswürdigen Stammzertifizierungsstellen, um entweder Remote-SMTP-Client-Zertifikate oder Zwischen-CA Zertifikate signieren.
+Description[en]=A directory containing CA certificates (in PEM format) of root CAs trusted to sign either remote SMTP client certificates or intermediate CA certificates.
 Type=str
 Categories=service-mail
 
