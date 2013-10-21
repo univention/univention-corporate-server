@@ -106,506 +106,508 @@ eingetragen/modifiziert oder entfernt.
 </figure>
 
 <table>
-<title>Reiter 'Allgemein'</title>
-<tgroup cols="2">
-<colspec colnum="1" colname="col1" colwidth="1*"/>
-<colspec colnum="2" colname="col2" colwidth="2*"/>
-<thead>
-<row>
-<entry>Attribut</entry>
-<entry>Beschreibung</entry>
-</row>
-</thead>
-<tbody>
+  <title>Reiter 'Allgemein'</title>
+  <tgroup cols="2">
+	<colspec colnum="1" colname="col1" colwidth="1*"/>
+	<colspec colnum="2" colname="col2" colwidth="2*"/>
+	<thead>
+	  <row>
+		<entry>Attribut</entry>
+		<entry>Beschreibung</entry>
+	  </row>
+	</thead>
+	<tbody>
 
-<row>
-<entry>Name</entry>
-<entry>
-Hier ist der Name der Freigabe einzutragen.
-Der Name darf nur aus Buchstaben, Ziffern, Punkten oder Leerzeichen bestehen
-und muss mit mit einem Buchstaben oder einer Ziffer beginnen und enden.
-</entry>
-</row>
+	  <row>
+		<entry>Name</entry>
+		<entry>
+		  Hier ist der Name der Freigabe einzutragen.
+		  Der Name darf nur aus Buchstaben, Ziffern, Punkten oder Leerzeichen bestehen
+		  und muss mit mit einem Buchstaben oder einer Ziffer beginnen und enden.
+		</entry>
+	  </row>
 
-<row>
-<entry>Server</entry>
-<entry>
-Der Server, auf dem die Freigabe liegt. Zur Wahl stehen alle im
-LDAP-Verzeichnis für die Domäne eingetragenen Rechner vom Typ
-Domänencontroller Master/Backup/Slave und &ucsMember;, die in einer DNS
-Forward Lookup Zone im LDAP-Verzeichnis eingetragen sind. Die Einstellung kann
-nachträglich nicht mehr bearbeitet werden.
-</entry>
-</row>
+	  <row>
+		<entry>Server</entry>
+		<entry>
+		  Der Server, auf dem die Freigabe liegt. Zur Wahl stehen alle im
+		  LDAP-Verzeichnis für die Domäne eingetragenen Rechner vom Typ
+		  Domänencontroller Master/Backup/Slave und &ucsMember;, die in einer DNS
+		  Forward Lookup Zone im LDAP-Verzeichnis eingetragen sind. Die Einstellung kann
+		  nachträglich nicht mehr bearbeitet werden.
+		</entry>
+	  </row>
 
-<row>
-<entry>Pfad</entry>
-<entry>
-<para>
-Der absolute Pfad des freizugebenden Verzeichnisses ohne Anführungszeichen
-(auch wenn der Pfad z.B. Leerzeichen enthält). Wenn das Verzeichnis noch nicht
-existiert, wird es automatisch auf dem ausgewählten Server angelegt.
-</para>
-<para>
-Ist die &ucsUCRV; <envar>listener/shares/rename</envar> auf <emphasis>yes</emphasis> gesetzt, wird
-bei der Änderung des Pfads der Inhalt eines bestehenden Verzeichnises verschoben.
-</para>
-<para>
-Auf und unterhalb von <filename>/proc</filename>, <filename>/tmp</filename>, <filename>/root</filename>, <filename>/dev</filename>
-und <filename>/sys</filename> können keine Freigaben angelegt oder dorthin
-verschoben werden.
-</para>
-</entry>
-</row>
+	  <row>
+		<entry>Pfad</entry>
+		<entry>
+		  <para>
+			Der absolute Pfad des freizugebenden Verzeichnisses ohne Anführungszeichen
+			(auch wenn der Pfad z.B. Leerzeichen enthält). Wenn das Verzeichnis noch nicht
+			existiert, wird es automatisch auf dem ausgewählten Server angelegt.
+		  </para>
 
-<row>
-<entry>Verzeichnis-Besitzer</entry>
-<entry>
-Der Benutzer, der das Wurzelverzeichnis der Freigabe gehören soll, siehe
-<xref linkend="shares::permissions"/>.
-</entry>
-</row>
+		  <para>
+			Ist die &ucsUCRV; <envar>listener/shares/rename</envar> auf <emphasis>yes</emphasis> gesetzt, wird
+			bei der Änderung des Pfads der Inhalt eines bestehenden Verzeichnises verschoben.
+		  </para>
+		  <para>
+			Auf und unterhalb von <filename>/proc</filename>, <filename>/tmp</filename>, <filename>/root</filename>, <filename>/dev</filename>
+			und <filename>/sys</filename> können keine Freigaben angelegt oder dorthin
+			verschoben werden.
+		  </para>
+		</entry>
+	  </row>
 
-<row>
-<entry>Verzeichnis-Gruppe</entry>
-<entry>
-Die Gruppe, der das Wurzelverzeichnis der Freigabe gehören soll, siehe
-<xref linkend="shares::permissions"/>.
-</entry>
-</row>
+	  <row>
+		<entry>Verzeichnis-Besitzer</entry>
+		<entry>
+		  Der Benutzer, der das Wurzelverzeichnis der Freigabe gehören soll, siehe
+		  <xref linkend="shares::permissions"/>.
+		</entry>
+	  </row>
+	  
+	  <row>
+		<entry>Verzeichnis-Gruppe</entry>
+		<entry>
+		  Die Gruppe, der das Wurzelverzeichnis der Freigabe gehören soll, siehe
+		  <xref linkend="shares::permissions"/>.
+		</entry>
+	  </row>
 
-<row>
-<entry>Verzeichnis-Modus</entry>
-<entry>
-Die Lese-, Schreib- und Zugriffsrechte für das Wurzelverzeichnis der Freigabe,
-siehe <xref linkend="shares::permissions"/>.
-</entry>
-</row>
-
-</tbody>
-</tgroup>
+	  <row>
+		<entry>Verzeichnis-Modus</entry>
+		<entry>
+		  Die Lese-, Schreib- und Zugriffsrechte für das Wurzelverzeichnis der Freigabe,
+		  siehe <xref linkend="shares::permissions"/>.
+		</entry>
+	  </row>
+	  
+	</tbody>
+  </tgroup>
 </table>
 
-
-
 <table>
-<title>Reiter 'NFS'</title>
-<tgroup cols="2">
-<colspec colnum="1" colname="col1" colwidth="1*"/>
-<colspec colnum="2" colname="col2" colwidth="2*"/>
-<thead>
-<row>
-<entry>Attribut</entry>
-<entry>Beschreibung</entry>
-</row>
-</thead>
-<tbody>
+  <title>Reiter 'NFS'</title>
+  <tgroup cols="2">
+	<colspec colnum="1" colname="col1" colwidth="1*"/>
+	<colspec colnum="2" colname="col2" colwidth="2*"/>
+	<thead>
+	  <row>
+		<entry>Attribut</entry>
+		<entry>Beschreibung</entry>
+	  </row>
+	</thead>
+	<tbody>
 
-<row>
-<entry>NFS-Schreibzugriff</entry>
-<entry>
-Erlaubt schreibenden NFS-Zugriff auf diese Freigabe, ansonsten kann die
-Freigabe nur lesend verwendet werden.
-</entry>
-</row>
+	  <row>
+		<entry>NFS-Schreibzugriff</entry>
+		<entry>
+		  Erlaubt schreibenden NFS-Zugriff auf diese Freigabe, ansonsten kann die
+		  Freigabe nur lesend verwendet werden.
+		</entry>
+	  </row>
+	  
+	  <row>
+		<entry>Subtree-Überprüfung</entry>
+		<entry>
+		  Wird nur ein Unterverzeichnis eines Dateisystems exportiert, muss der
+		  NFS-Server bei jedem Zugriff überprüfen, ob die zugriffene Datei auf dem
+		  exportierten Dateisystem und in dem exportierten Pfad liegt. Für diese Prüfung
+		  werden Pfad-Informationen an den Client übergeben. Die Aktivierung dieser
+		  Funktion kann zu Problemen führen, wenn eine auf dem Client geöffnete Datei
+		  umbenannt wird.
+		</entry>
+	  </row>
 
-<row>
-<entry>Subtree-Überprüfung</entry>
-<entry>
-Wird nur ein Unterverzeichnis eines Dateisystems exportiert, muss der
-NFS-Server bei jedem Zugriff überprüfen, ob die zugriffene Datei auf dem
-exportierten Dateisystem und in dem exportierten Pfad liegt. Für diese Prüfung
-werden Pfad-Informationen an den Client übergeben. Die Aktivierung dieser
-Funktion kann zu Problemen führen, wenn eine auf dem Client geöffnete Datei
-umbenannt wird.
-</entry>
-</row>
+	  <row>
+		<entry>Root-Zugriff umlenken</entry>
+		<entry>
+		  <para>
+			Die Identifikation von Nutzern im NFS-Standardverfahren erfolgt über
+			User-IDs. Um zu verhindern, dass ein lokaler Root-Nutzer auf fremden Freigaben
+			ebenfalls mit Root-Rechten arbeitet, kann der Root-Zugriff umgelenkt
+			werden. Ist diese Option aktiviert, erfolgen Root-Zugriffe als Benutzer nobody.
+		  </para>
 
-<row>
-<entry>Root-Zugriff umlenken</entry>
-<entry>
-<para>
-Die Identifikation von Nutzern im NFS-Standardverfahren erfolgt über
-User-IDs. Um zu verhindern, dass ein lokaler Root-Nutzer auf fremden Freigaben
-ebenfalls mit Root-Rechten arbeitet, kann der Root-Zugriff umgelenkt
-werden. Ist diese Option aktiviert, erfolgen Root-Zugriffe als Benutzer nobody.
-</para>
-<para>
-Die standardmäßig leere lokale Gruppe <emphasis>staff</emphasis> verfügt über Privilegien, die
-<emphasis>root</emphasis>-Rechten recht nahe kommen, wird aber vom Umlenkungs-Mechanismus
-nicht berücksichtigt. Dies sollte bei der Aufnahme von Nutzern in diese Gruppe
-berücksichtigt werden!
-</para>
-</entry>
-</row>
+		  <para>
+			Die standardmäßig leere lokale Gruppe <emphasis>staff</emphasis> verfügt über Privilegien, die
+			<emphasis>root</emphasis>-Rechten recht nahe kommen, wird aber vom Umlenkungs-Mechanismus
+			nicht berücksichtigt. Dies sollte bei der Aufnahme von Nutzern in diese Gruppe
+			berücksichtigt werden!
+		  </para>
+		</entry>
+	  </row>
 
-<row>
-<entry>NFS-Synchronisation</entry>
-<entry>
-Der Synchronisations-Modus für die Freigabe. Mit der Einstellung <emphasis>sync</emphasis>
-werden Daten direkt auf das unterliegende Speichermedium geschrieben. Die
-gegenteilige Einstellung - <emphasis>async</emphasis> - kann die Performance verbessern,
-birgt aber auch das Risiko von Datenverlusten wenn der Server ohne
-kontrolliertes Herunterfahren abgeschaltet wird.
-</entry>
-</row>
+	  <row>
+		<entry>NFS-Synchronisation</entry>
+		<entry>
+		  Der Synchronisations-Modus für die Freigabe. Mit der Einstellung <emphasis>sync</emphasis>
+		  werden Daten direkt auf das unterliegende Speichermedium geschrieben. Die
+		  gegenteilige Einstellung - <emphasis>async</emphasis> - kann die Performance verbessern,
+		  birgt aber auch das Risiko von Datenverlusten wenn der Server ohne
+		  kontrolliertes Herunterfahren abgeschaltet wird.
+		</entry>
+	  </row>
+	  
+	  <row>
+		<entry>Zugelassene Rechner</entry>
+		<entry>
+		  Standardmäßig wird allen Rechnern der Zugriff auf eine Freigabe erlaubt. In
+		  die Auswahlliste können Rechnernamen und IP-Adressen aufgenommen werden, auf
+		  die dann der Zugriff auf die Freigabe beschränkt wird. Hier liesse sich etwa der
+		  Zugriff auf eine Freigabe mit Maildaten auf den Mailserver der Domäne einschränken.
+		</entry>
+	  </row>
 
-<row>
-<entry>Zugelassene Rechner</entry>
-<entry>
-Standardmäßig wird allen Rechnern der Zugriff auf eine Freigabe erlaubt. In
-die Auswahlliste können Rechnernamen und IP-Adressen aufgenommen werden, auf
-die dann der Zugriff auf die Freigabe beschränkt wird. Hier liesse sich etwa der
-Zugriff auf eine Freigabe mit Maildaten auf den Mailserver der Domäne einschränken.
-</entry>
-</row>
-
-</tbody>
-</tgroup>
-</table>
-
-
-<table>
-<title>Reiter 'Samba'</title>
-<tgroup cols="2">
-<colspec colnum="1" colname="col1" colwidth="1*"/>
-<colspec colnum="2" colname="col2" colwidth="2*"/>
-<thead>
-<row>
-<entry>Attribut</entry>
-<entry>Beschreibung</entry>
-</row>
-</thead>
-<tbody>
-
-<row>
-<entry>Samba-Name</entry>
-<entry>
-Der NetBIOS-Name der Freigabe. Unter diesem Namen wird die Freigabe auf
-auf Windows-Rechnern in der Netzwerkumgebung angezeigt.. &ucsUMC; übernimmt
-beim Hinzufügen einer Verzeichnisfreigabe als Vorgabe den Namen, der auf der
-Karteikarte <guimenu>Allgemein</guimenu> im Feld <guimenu>Name</guimenu>
-eingetragen ist.
-</entry>
-</row>
-
-<row>
-<entry>Sichtbar</entry>
-<entry>
-Konfiguriert, ob diese Freigabe auf Windows-Rechnern in der Netzwerkumgebung
-angezeigt werden soll.
-</entry>
-</row>
-
-<row>
-<entry>Öffentlich</entry>
-<entry>
-Erlaubt den Zugriff auf diese Freigabe ohne Passwortabfrage. Alle Zugriffe
-werden dabei über einen gemeinsamen Gast-Nutzer <emphasis>nobody</emphasis> durchgeführt.
-</entry>
-</row>
-
-<row>
-<entry>MSDFS-Wurzel</entry>
-<entry>
-Diese Option ist in <xref linkend="shares::msdfs"/> dokumentiert.
-</entry>
-</row>
-
-<row>
-<entry>Benutzer mit Schreibrechten dürfen die Berechtigungen verändern</entry>
-<entry>
-Wird diese Option aktiviert, erhalten alle Benutzer mit
-Schreibrechten auf eine Datei auch die Möglichkeiten Berechtigungen,
-ACL-Einträge und Dateibesitzrechte zu ändern, siehe
-<xref linkend="shares::permissions"/>.
-</entry>
-</row>
-
-<row>
-<entry>Verstecke nicht lesbare Dateien und Verzeichnisse</entry>
-<entry>
-Wenn diese Option aktiviert ist, werden Dateien, die anhand der Dateirechte
-für einen Benutzer nicht lesbar sind, für diesen nicht angezeigt.
-</entry>
-</row>
-
-<row>
-<entry>VFS-Objekte</entry>
-<entry>
-Virtual File System (VFS)-Module werden in Samba verwendet, um Aktionen vor dem Zugriff auf das
-Dateisystem einer Freigabe auszuführen, z.B. ein Virenscanner, der jede
-infizierte Datei, auf die in der Freigabe zugegriffen wird, in einem
-Quarantänebereich ablegt oder eine serverseitige Implementierung einer
-Papierkorb-Löschung von Dateien.
-</entry>
-</row>
-
-<row>
-<entry>Postexec-Skript</entry>
-<entry>
-Ein Skript oder ein Befehl, der auf dem Server ausgeführt werden soll, wenn die Verbindung zu
-dieser Freigabe beendet wird.
-</entry>
-</row>
-
-<row>
-<entry>Preexec-Skript</entry>
-<entry>
-Ein Skript oder ein Befehl, der auf dem Server bei jeder Verbindungsaufnahme zu dieser
-Freigabe ausgeführt werden soll.
-</entry>
-</row>
-
-</tbody>
-</tgroup>
+	</tbody>
+  </tgroup>
 </table>
 
 
 <table>
-<title>Reiter 'Samba-Rechte' (erweiterte Einstellungen)</title>
-<tgroup cols="2">
-<colspec colnum="1" colname="col1" colwidth="1*"/>
-<colspec colnum="2" colname="col2" colwidth="2*"/>
-<thead>
-<row>
-<entry>Attribut</entry>
-<entry>Beschreibung</entry>
-</row>
-</thead>
-<tbody>
+  <title>Reiter 'Samba'</title>
+  <tgroup cols="2">
+	<colspec colnum="1" colname="col1" colwidth="1*"/>
+	<colspec colnum="2" colname="col2" colwidth="2*"/>
+	<thead>
+	  <row>
+		<entry>Attribut</entry>
+		<entry>Beschreibung</entry>
+	  </row>
+	</thead>
+	<tbody>
 
-<row>
-<entry>Samba-Schreibzugriff</entry>
-<entry>
-Erlaubt den Schreibzugriff auf diese Freigabe.
-</entry>
-</row>
+	  <row>
+		<entry>Samba-Name</entry>
+		<entry>
+		  Der NetBIOS-Name der Freigabe. Unter diesem Namen wird die Freigabe auf
+		  auf Windows-Rechnern in der Netzwerkumgebung angezeigt.. &ucsUMC; übernimmt
+		  beim Hinzufügen einer Verzeichnisfreigabe als Vorgabe den Namen, der auf der
+		  Karteikarte <guimenu>Allgemein</guimenu> im Feld <guimenu>Name</guimenu>
+		  eingetragen ist.
+		</entry>
+	  </row>
 
-<row>
-<entry>Erzwungener Benutzer</entry>
-<entry>
-Der Benutzername, mit dessen Namen, Rechten und primärer Gruppe alle
-Dateioperationen zugreifender Benutzer ausgeführt werden sollen. Der Benutzername
-wird erst verwendet, nachdem der Benutzer mit seinem tatsächlichen
-Benutzernamen und gültigem Passwort eine Verbindung zur Samba-Freigabe
-aufgebaut hat. Ein gemeinsamer Benutzername ist nützlich, um Dateien
-gemeinsam zu benutzen, kann bei falscher Anwendung aber Sicherheitsprobleme
-verursachen.
-</entry>
-</row>
+	  <row>
+		<entry>Sichtbar</entry>
+		<entry>
+		  Konfiguriert, ob diese Freigabe auf Windows-Rechnern in der Netzwerkumgebung
+		  angezeigt werden soll.
+		</entry>
+	  </row>
 
-<row>
-<entry>Erzwungene Gruppe</entry>
-<entry>
-<para>
-Eine Gruppe, die alle Benutzer, die sich mit dieser Freigabe verbinden, als
-primäre Gruppe verwenden sollen. Dadurch gelten die Rechte dieser Gruppe als
-Gruppenrechte für alle diese Benutzer. Eine hier eingetragene Gruppe hat
-Vorrang über eine Gruppe, die über das Eingabefeld <guimenu>Erzwungener
-</guimenu> zur primären Gruppe eines Benutzers geworden ist.
-</para>
-<para>
-Wird dem Gruppennamen ein Plus-Zeichen vorangestellt, wird die Gruppe nur
-solchen Benutzern als primäre Gruppe zugeschrieben, die bereits Mitglied
-dieser Gruppe sind. Alle anderen Benutzer behalten ihre gewöhnliche primäre
-Gruppe
-</para>
-</entry>
-</row>
+	  <row>
+		<entry>Öffentlich</entry>
+		<entry>
+		  Erlaubt den Zugriff auf diese Freigabe ohne Passwortabfrage. Alle Zugriffe
+		  werden dabei über einen gemeinsamen Gast-Nutzer <emphasis>nobody</emphasis> durchgeführt.
+		</entry>
+	  </row>
 
-<row>
-<entry>Gültige Benutzer oder Gruppen</entry>
-<entry>
-<para>
-Namen von Benutzern oder Gruppen, die auf diese Samba-Freigabe zugreifen
-dürfen. Alle anderen Benutzern wird der Zugriff verweigert.
-Wenn das Feld leer ist, dürfen alle Benutzer - ggf. mit ihrem
-Passwort - auf die Freigabe zugreifen. Diese Option ist nützlich, um Zugriffe
-auf eine Freigabe über die Dateiberechtigungen hinaus auf Ebene des
-Fileservers abzusichern.
-</para>
-<para>
-Die Einträge sind durch Leerzeichen zu trennen. Durch die Zeichen @, + und &amp; in
-Verbindung mit einem Gruppennamen kann den Mitgliedern der angegebenen Gruppe
-die Berechtigung zum Zugriff auf die Samba-Freigabe erteilt werden:
-</para>
-<itemizedlist>
-	<listitem>
-		<simpara>
-			Ein Name, der mit @ beginnt, wird zunächst als NIS-Netgroup
-  interpretiert. Wenn keine NIS-Netgroup mit diesem Namen gefunden wird, wird
-  der Name als UNIX-Gruppe angesehen.
-		</simpara>
-	</listitem>
-	<listitem>
-		<simpara>
-			Ein Name, der mit + beginnt, wird ausschließlich als UNIX-Gruppe
-			aufgefasst, ein Name, der mit &amp; beginnt, ausschließlich als NIS-Netgroup.
-		</simpara>
-	</listitem>
-	<listitem>
-		<simpara>
-Ein Name, der mit +&amp; beginnt, wird zunächst als UNIX-Gruppe
-interpretiert. Wenn keine UNIX-Gruppe mit diesem Namen gefunden wird, wird der
-Name als NIS-Netgroup betrachtet. Die Zeichen &amp;+ als Namensanfang entsprechen @.
-		</simpara>
-	</listitem>
-</itemizedlist>
+	  <row>
+		<entry>MSDFS-Wurzel</entry>
+		<entry>
+		  Diese Option ist in <xref linkend="shares::msdfs"/> dokumentiert.
+		</entry>
+	  </row>
 
-</entry>
-</row>
+	  <row>
+		<entry>Benutzer mit Schreibrechten dürfen die Berechtigungen verändern</entry>
+		<entry>
+		  Wird diese Option aktiviert, erhalten alle Benutzer mit
+		  Schreibrechten auf eine Datei auch die Möglichkeiten Berechtigungen,
+		  ACL-Einträge und Dateibesitzrechte zu ändern, siehe
+		  <xref linkend="shares::permissions"/>.
+		</entry>
+	  </row>
 
-<row>
-<entry>Nicht erlaubte Benutzer oder Gruppen</entry>
-<entry>
-Die hier aufgeführten Benutzer oder Gruppen dürfen auf diese Samba-Freigabe
-nicht zugreifen. Die Syntax ist identisch zu den gültigen Benutzern. Wenn ein
-Benutzer oder eine Gruppe in der Liste der gültigen Benutzer und der nicht
-erlaubten Benutzer enthalten ist, so wird der Zugriff verweigert.
-</entry>
-</row>
+	  <row>
+		<entry>Verstecke nicht lesbare Dateien und Verzeichnisse</entry>
+		<entry>
+		  Wenn diese Option aktiviert ist, werden Dateien, die anhand der Dateirechte
+		  für einen Benutzer nicht lesbar sind, für diesen nicht angezeigt.
+		</entry>
+	  </row>
 
-<row>
-<entry>Zugelassene Rechner</entry>
-<entry>
-Namen von Rechnern, die auf diese Samba-Freigabe zugreifen dürfen. Allen
-anderen Rechnern wird der Zugriff verweigert.
-Neben Rechnernamen können auch IP- oder Netzwerkadressen angegeben werden, bspw.
-<command>192.168.0.0/255.255.255.0</command>.
-</entry>
-</row>
+	  <row>
+		<entry>VFS-Objekte</entry>
+		<entry>
+		  Virtual File System (VFS)-Module werden in Samba verwendet, um Aktionen vor dem Zugriff auf das
+		  Dateisystem einer Freigabe auszuführen, z.B. ein Virenscanner, der jede
+		  infizierte Datei, auf die in der Freigabe zugegriffen wird, in einem
+		  Quarantänebereich ablegt oder eine serverseitige Implementierung einer
+		  Papierkorb-Löschung von Dateien.
+		</entry>
+	  </row>
 
-<row>
-<entry>Nicht zugelassene Rechner</entry>
-<entry>
-Das Gegenteil von den zugelassenen Rechnern. Sollte ein Rechner in beiden
-Listen auftauchen, so wird dem Rechner der Zugriff auf die Samba-Freigabe
-gestattet.
-</entry>
-</row>
+	  <row>
+		<entry>Postexec-Skript</entry>
+		<entry>
+		  Ein Skript oder ein Befehl, der auf dem Server ausgeführt werden soll, wenn die Verbindung zu
+		  dieser Freigabe beendet wird.
+		</entry>
+	  </row>
 
-<row>
-<entry>Liste von Schreibberechtigten</entry>
-<entry>
-Nur die aufgeführten Benutzer oder Gruppen erhalten Schreibrecht auf die
-diese Freigabe.
-</entry>
-</row>
-
-<row>
-<entry>Verstecke Dateien</entry>
-<entry>
-<para>
-Dateien und Verzeichnisse, die unter Windows nicht sichtbar sein sollen. Die
-Dateien bzw. Verzeichnisse erhalten das Datei-Attribut <emphasis>hidden</emphasis>.
-</para>
-<para>
-Datei- bzw. Verzeichnisnamen müssen unter Beachtung von Groß- und
-Kleinschreibung angegeben werden. Die
-einzelnen Einträge sind durch Schrägstriche zu trennen. Da der
-Schrägstrich nicht als Verzeichnistrenner eingegeben werden kann, dürfen
-nur Namen, aber keine Pfade eingetragen werden. Alle Dateien bzw. Verzeichnisse mit diesen
-Namen innerhalb der Freigabe werden dann versteckt. Die Namen dürfen
-Leerzeichen und die Platzhalter * und ? enthalten.
-</para>
-<para>
-<emphasis>/.*/test/</emphasis> z.B. versteckt alle Dateien und Verzeichnisse, die mit
-einem Punkt beginnen oder test heißen.
-</para>
-<note>
-	<para>
-Einträge in diesem Feld beeinflussen die Geschwindigkeit von Samba, da vor Anzeige
-von Freigabeinhalten alle Dateien und Verzeichnisse auf Übereinstimmung mit
-den gesetzten Filtern geprüft werden müssen.
-	</para>
-</note>
-</entry>
-</row>
-
-<row>
-<entry>NT ACL-Support</entry>
-<entry>
-<para>
-Ist diese Option aktiviert, versucht Samba, POSIX-ACLs unter
-Windows anzuzeigen und Änderungen an den ACLs, die unter Windows vorgenommen
-werden, in die POSIX-ACLs zu übernehmen.
-</para>
-<para>
-Wenn die Option nicht gesetzt ist, werden vorhandene POSIX-ACLs beachtet, aber
-nicht unter Windows angezeigt und können von dort nicht verändert werden.
-</para>
-</entry>
-</row>
-
-<row>
-<entry>Ererbte ACLs</entry>
-<entry>
-Bei Aktivierung dieser Option erbt jede in dieser Freigabe neu erzeugte
-Datei die ACL (Access Control List) des Verzeichnisses, in dem sie angelegt
-wird.
-</entry>
-</row>
-
-<row>
-<entry>Besitzer erben</entry>
-<entry>
-Bei Aktivierung dieser Option wird jede neu erzeugte Datei dem Besitzer des
-übergeordneten Verzeichnis zugeordnet und nicht dem Benutzer, der die Datei
-erstellt hat.
-</entry>
-</row>
-
-<row>
-<entry>Rechte erben</entry>
-<entry>
-Bei Aktivierung dieser Option werden für jede Datei oder jedes Verzeichnis,
-die in einer Freigabe neu erzeugt werden, automatisch die UNIX-Rechte des
-übergeordneten Verzeichnisses übernommen.
-</entry>
-</row>
-
-</tbody>
-</tgroup>
+	  <row>
+		<entry>Preexec-Skript</entry>
+		<entry>
+		  Ein Skript oder ein Befehl, der auf dem Server bei jeder Verbindungsaufnahme zu dieser
+		  Freigabe ausgeführt werden soll.
+		</entry>
+	  </row>
+	  
+	</tbody>
+  </tgroup>
 </table>
 
 
+<table>
+  <title>Reiter 'Samba-Rechte' (erweiterte Einstellungen)</title>
+  <tgroup cols="2">
+	<colspec colnum="1" colname="col1" colwidth="1*"/>
+	<colspec colnum="2" colname="col2" colwidth="2*"/>
+	<thead>
+	  <row>
+		<entry>Attribut</entry>
+		<entry>Beschreibung</entry>
+	  </row>
+	</thead>
+	<tbody>
+	  
+	  <row>
+		<entry>Samba-Schreibzugriff</entry>
+		<entry>
+		  Erlaubt den Schreibzugriff auf diese Freigabe.
+		</entry>
+	  </row>
+	  
+	  <row>
+		<entry>Erzwungener Benutzer</entry>
+		<entry>
+		  Der Benutzername, mit dessen Namen, Rechten und primärer Gruppe alle
+		  Dateioperationen zugreifender Benutzer ausgeführt werden sollen. Der Benutzername
+		  wird erst verwendet, nachdem der Benutzer mit seinem tatsächlichen
+		  Benutzernamen und gültigem Passwort eine Verbindung zur Samba-Freigabe
+		  aufgebaut hat. Ein gemeinsamer Benutzername ist nützlich, um Dateien
+		  gemeinsam zu benutzen, kann bei falscher Anwendung aber Sicherheitsprobleme
+		  verursachen.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Erzwungene Gruppe</entry>
+		<entry>
+		  <para>
+			Eine Gruppe, die alle Benutzer, die sich mit dieser Freigabe verbinden, als
+			primäre Gruppe verwenden sollen. Dadurch gelten die Rechte dieser Gruppe als
+			Gruppenrechte für alle diese Benutzer. Eine hier eingetragene Gruppe hat
+			Vorrang über eine Gruppe, die über das Eingabefeld <guimenu>Erzwungener
+			</guimenu> zur primären Gruppe eines Benutzers geworden ist.
+		  </para>
+
+		  <para>
+			Wird dem Gruppennamen ein Plus-Zeichen vorangestellt, wird die Gruppe nur
+			solchen Benutzern als primäre Gruppe zugeschrieben, die bereits Mitglied
+			dieser Gruppe sind. Alle anderen Benutzer behalten ihre gewöhnliche primäre
+			Gruppe
+		  </para>
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Gültige Benutzer oder Gruppen</entry>
+		<entry>
+		  <para>
+			Namen von Benutzern oder Gruppen, die auf diese Samba-Freigabe zugreifen
+			dürfen. Alle anderen Benutzern wird der Zugriff verweigert.
+			Wenn das Feld leer ist, dürfen alle Benutzer - ggf. mit ihrem
+			Passwort - auf die Freigabe zugreifen. Diese Option ist nützlich, um Zugriffe
+			auf eine Freigabe über die Dateiberechtigungen hinaus auf Ebene des
+			Fileservers abzusichern.
+		  </para>
+
+		  <para>
+			Die Einträge sind durch Leerzeichen zu trennen. Durch die Zeichen @, + und &amp; in
+			Verbindung mit einem Gruppennamen kann den Mitgliedern der angegebenen Gruppe
+			die Berechtigung zum Zugriff auf die Samba-Freigabe erteilt werden:
+		  </para>
+		  <itemizedlist>
+			<listitem>
+			  <simpara>
+				Ein Name, der mit @ beginnt, wird zunächst als NIS-Netgroup
+				interpretiert. Wenn keine NIS-Netgroup mit diesem Namen gefunden wird, wird
+				der Name als UNIX-Gruppe angesehen.
+			  </simpara>
+			</listitem>
+			<listitem>
+			  <simpara>
+				Ein Name, der mit + beginnt, wird ausschließlich als UNIX-Gruppe
+				aufgefasst, ein Name, der mit &amp; beginnt, ausschließlich als NIS-Netgroup.
+			  </simpara>
+			</listitem>
+			<listitem>
+			  <simpara>
+				Ein Name, der mit +&amp; beginnt, wird zunächst als UNIX-Gruppe
+				interpretiert. Wenn keine UNIX-Gruppe mit diesem Namen gefunden wird, wird der
+				Name als NIS-Netgroup betrachtet. Die Zeichen &amp;+ als Namensanfang entsprechen @.
+			  </simpara>
+			</listitem>
+		  </itemizedlist>
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Nicht erlaubte Benutzer oder Gruppen</entry>
+		<entry>
+		  Die hier aufgeführten Benutzer oder Gruppen dürfen auf diese Samba-Freigabe
+		  nicht zugreifen. Die Syntax ist identisch zu den gültigen Benutzern. Wenn ein
+		  Benutzer oder eine Gruppe in der Liste der gültigen Benutzer und der nicht
+		  erlaubten Benutzer enthalten ist, so wird der Zugriff verweigert.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Zugelassene Rechner</entry>
+		<entry>
+		  Namen von Rechnern, die auf diese Samba-Freigabe zugreifen dürfen. Allen
+		  anderen Rechnern wird der Zugriff verweigert.
+		  Neben Rechnernamen können auch IP- oder Netzwerkadressen angegeben werden, bspw.
+		  <command>192.168.0.0/255.255.255.0</command>.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Nicht zugelassene Rechner</entry>
+		<entry>
+		  Das Gegenteil von den zugelassenen Rechnern. Sollte ein Rechner in beiden
+		  Listen auftauchen, so wird dem Rechner der Zugriff auf die Samba-Freigabe
+		  gestattet.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Liste von Schreibberechtigten</entry>
+		<entry>
+		  Nur die aufgeführten Benutzer oder Gruppen erhalten Schreibrecht auf die
+		  diese Freigabe.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Verstecke Dateien</entry>
+		<entry>
+		  <para>
+			Dateien und Verzeichnisse, die unter Windows nicht sichtbar sein sollen. Die
+			Dateien bzw. Verzeichnisse erhalten das Datei-Attribut <emphasis>hidden</emphasis>.
+		  </para>
+
+		  <para>
+			Datei- bzw. Verzeichnisnamen müssen unter Beachtung von Groß- und
+			Kleinschreibung angegeben werden. Die
+			einzelnen Einträge sind durch Schrägstriche zu trennen. Da der
+			Schrägstrich nicht als Verzeichnistrenner eingegeben werden kann, dürfen
+			nur Namen, aber keine Pfade eingetragen werden. Alle Dateien bzw. Verzeichnisse mit diesen
+			Namen innerhalb der Freigabe werden dann versteckt. Die Namen dürfen
+			Leerzeichen und die Platzhalter * und ? enthalten.
+		  </para>
+
+		  <para>
+			<emphasis>/.*/test/</emphasis> z.B. versteckt alle Dateien und Verzeichnisse, die mit
+			einem Punkt beginnen oder test heißen.
+		  </para>
+		  <note>
+
+			<para>
+			  Einträge in diesem Feld beeinflussen die Geschwindigkeit von Samba, da vor Anzeige
+			  von Freigabeinhalten alle Dateien und Verzeichnisse auf Übereinstimmung mit
+			  den gesetzten Filtern geprüft werden müssen.
+			</para>
+		  </note>
+		</entry>
+	  </row>
+	  
+	  <row>
+		<entry>NT ACL-Support</entry>
+		<entry>
+		  <para>
+			Ist diese Option aktiviert, versucht Samba, POSIX-ACLs unter
+			Windows anzuzeigen und Änderungen an den ACLs, die unter Windows vorgenommen
+			werden, in die POSIX-ACLs zu übernehmen.
+		  </para>
+
+		  <para>
+			Wenn die Option nicht gesetzt ist, werden vorhandene POSIX-ACLs beachtet, aber
+			nicht unter Windows angezeigt und können von dort nicht verändert werden.
+		  </para>
+		</entry>
+	  </row>
+	  
+	  <row>
+		<entry>Ererbte ACLs</entry>
+		<entry>
+		  Bei Aktivierung dieser Option erbt jede in dieser Freigabe neu erzeugte
+		  Datei die ACL (Access Control List) des Verzeichnisses, in dem sie angelegt
+		  wird.
+		</entry>
+	  </row>
+	  
+	  <row>
+		<entry>Besitzer erben</entry>
+		<entry>
+		  Bei Aktivierung dieser Option wird jede neu erzeugte Datei dem Besitzer des
+		  übergeordneten Verzeichnis zugeordnet und nicht dem Benutzer, der die Datei
+		  erstellt hat.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Rechte erben</entry>
+		<entry>
+		  Bei Aktivierung dieser Option werden für jede Datei oder jedes Verzeichnis,
+		  die in einer Freigabe neu erzeugt werden, automatisch die UNIX-Rechte des
+		  übergeordneten Verzeichnisses übernommen.
+		</entry>
+	  </row>
+	  
+	</tbody>
+  </tgroup>
+</table>
 
 <table>
-<title>Reiter 'Samba-Erweiterte-Einstellungen' (erweiterte Einstellungen)</title>
-<tgroup cols="2">
-<colspec colnum="1" colname="col1" colwidth="1*"/>
-<colspec colnum="2" colname="col2" colwidth="2*"/>
-<thead>
-<row>
-<entry>Attribut</entry>
-<entry>Beschreibung</entry>
-</row>
-</thead>
-<tbody>
+  <title>Reiter 'Samba-Erweiterte-Einstellungen' (erweiterte Einstellungen)</title>
+  <tgroup cols="2">
+	<colspec colnum="1" colname="col1" colwidth="1*"/>
+	<colspec colnum="2" colname="col2" colwidth="2*"/>
+	<thead>
+	  <row>
+		<entry>Attribut</entry>
+		<entry>Beschreibung</entry>
+	  </row>
+	</thead>
+	<tbody>
 
-<row>
-<entry>Erweiterte Einstellungen für Freigaben</entry>
-<entry>
-<para>
-Neben den standardmäßig konfigurierbaren Eigenschaften einer Samba-Freigabe
-ermöglicht diese Einstellung beliebige weitere Samba-Einstellungen an einer
-Freigabe zu setzen. Eine Liste der verfügbaren Optionen kann mit dem Befehl
-<command>man smb.conf</command> abgerufen werden. Unter <guimenu>Schlüssel</guimenu> ist der
-Name der Option anzugeben und unter <guimenu>Value</guimenu> der zu setzende Wert.
-Doppelt angegebene Konfigurationsoptionen werden nicht überprüft.
-</para>
-<caution>
-	<para>
-Das Setzen erweiterter Samba-Einstellungen ist nur in Sonderfällen nötig. Die
-Optionen sollten vor dem Setzen gründlich geprüft werden, da sie
-unter Umständen sicherheitsrelevante Auswirkungen haben können.
-	</para>
-</caution>
-</entry>
-</row>
-
-</tbody>
+	  <row>
+		<entry>Erweiterte Einstellungen für Freigaben</entry>
+		<entry>
+		  <para>
+			Neben den standardmäßig konfigurierbaren Eigenschaften einer Samba-Freigabe
+			ermöglicht diese Einstellung beliebige weitere Samba-Einstellungen an einer
+			Freigabe zu setzen. Eine Liste der verfügbaren Optionen kann mit dem Befehl
+			<command>man smb.conf</command> abgerufen werden. Unter <guimenu>Schlüssel</guimenu> ist der
+			Name der Option anzugeben und unter <guimenu>Value</guimenu> der zu setzende Wert.
+			Doppelt angegebene Konfigurationsoptionen werden nicht überprüft.
+		  </para>
+		  <caution>
+			<para>
+			  Das Setzen erweiterter Samba-Einstellungen ist nur in Sonderfällen nötig. Die
+			  Optionen sollten vor dem Setzen gründlich geprüft werden, da sie
+			  unter Umständen sicherheitsrelevante Auswirkungen haben können.
+			</para>
+		  </caution>
+		</entry>
+	  </row>
+	</tbody>
 </tgroup>
 </table>
 

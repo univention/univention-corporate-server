@@ -98,496 +98,496 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 </figure>
 
 <table>
-<title>'General' tab</title>
-<tgroup cols="2">
-<colspec colnum="1" colname="col1" colwidth="1*"/>
-<colspec colnum="2" colname="col2" colwidth="2*"/>
-<thead>
-<row>
-<entry>Attribute</entry>
-<entry>Description</entry>
-</row>
-</thead>
-<tbody>
+  <title>'General' tab</title>
+  <tgroup cols="2">
+	<colspec colnum="1" colname="col1" colwidth="1*"/>
+	<colspec colnum="2" colname="col2" colwidth="2*"/>
+	<thead>
+	  <row>
+		<entry>Attribute</entry>
+		<entry>Description</entry>
+	  </row>
+	</thead>
+	<tbody>
 
-<row>
-<entry>Name</entry>
-<entry>
-The name of the share is to be entered here. The name must be composed
-of letters, numerals, full stops or blank spaces and must begin and
-end with a letter or numeral.
-</entry>
-</row>
+	  <row>
+		<entry>Name</entry>
+		<entry>
+		  The name of the share is to be entered here. The name must be composed
+		  of letters, numerals, full stops or blank spaces and must begin and
+		  end with a letter or numeral.
+		</entry>
+	  </row>
 
-<row>
-<entry>Host</entry>
-<entry>
-The server where the share is located. This setting cannot be subsequently edited.
-All of the domain controller master/backup/slave computers and &ucsMember;s
-entered in the LDAP directory for the domain are available for selection which
-are entered in a DNS forward lookup zone in the LDAP directory. This setting
-cannot be subsequently edited.
-</entry>
-</row>
+	  <row>
+		<entry>Host</entry>
+		<entry>
+		  The server where the share is located. This setting cannot be subsequently edited.
+		  All of the domain controller master/backup/slave computers and &ucsMember;s
+		  entered in the LDAP directory for the domain are available for selection which
+		  are entered in a DNS forward lookup zone in the LDAP directory. This setting
+		  cannot be subsequently edited.
+		</entry>
+	  </row>
 
-<row>
-<entry>Directory</entry>
-<entry>
-<para>
-The absolute path of the directory to be shared, without quotation marks (this
-also applies if the name includes special characters such as spaces). If the
-directory does not exist, it will be created automatically on the selected
-server.
-</para>
-<para>
-If the &ucsUCRV; <envar>listener/shares/rename</envar> is set to <emphasis>yes</emphasis>, the
-contents of the existing directory are moved when the path is
-modified.
-</para>
-<para>
-No shares can be created in and below <filename>/proc</filename>, <filename>/tmp</filename>,
-<filename>/root</filename>, <filename>/dev</filename> and <filename>/sys</filename> and no files can be moved there.
-</para>
-</entry>
-</row>
+	  <row>
+		<entry>Directory</entry>
+		<entry>
+		  <para>
+			The absolute path of the directory to be shared, without quotation marks (this
+			also applies if the name includes special characters such as spaces). If the
+			directory does not exist, it will be created automatically on the selected
+			server.
+		  </para>
+		  <para>
+			If the &ucsUCRV; <envar>listener/shares/rename</envar> is set to <emphasis>yes</emphasis>, the
+			contents of the existing directory are moved when the path is
+			modified.
+		  </para>
+		  <para>
+			No shares can be created in and below <filename>/proc</filename>, <filename>/tmp</filename>,
+			<filename>/root</filename>, <filename>/dev</filename> and <filename>/sys</filename> and no files can be moved there.
+		  </para>
+		</entry>
+	  </row>
 
-<row>
-<entry>Directory owner</entry>
-<entry>
-The user to whom the root directory of the share should belong, see
-<xref linkend="shares::permissions"/>.
-</entry>
-</row>
+	  <row>
+		<entry>Directory owner</entry>
+		<entry>
+		  The user to whom the root directory of the share should belong, see
+		  <xref linkend="shares::permissions"/>.
+		</entry>
+	  </row>
 
-<row>
-<entry>Directory owner group</entry>
-<entry>
-The group to whom the root directory of the share should belong, see
-<xref linkend="shares::permissions"/>.
-</entry>
-</row>
+	  <row>
+		<entry>Directory owner group</entry>
+		<entry>
+		  The group to whom the root directory of the share should belong, see
+		  <xref linkend="shares::permissions"/>.
+		</entry>
+	  </row>
 
-<row>
-<entry>Directory mode</entry>
-<entry>
-The read, write and access permissions for the root directory of the
-share, see <xref linkend="shares::permissions"/>.
-</entry>
-</row>
+	  <row>
+		<entry>Directory mode</entry>
+		<entry>
+		  The read, write and access permissions for the root directory of the
+		  share, see <xref linkend="shares::permissions"/>.
+		</entry>
+	  </row>
 
-</tbody>
-</tgroup>
+	</tbody>
+  </tgroup>
 </table>
 
 
 <table>
-<title>'NFS' tab</title>
-<tgroup cols="2">
-<colspec colnum="1" colname="col1" colwidth="1*"/>
-<colspec colnum="2" colname="col2" colwidth="2*"/>
-<thead>
-<row>
-<entry>Attribute</entry>
-<entry>Description</entry>
-</row>
-</thead>
-<tbody>
+  <title>'NFS' tab</title>
+  <tgroup cols="2">
+	<colspec colnum="1" colname="col1" colwidth="1*"/>
+	<colspec colnum="2" colname="col2" colwidth="2*"/>
+	<thead>
+	  <row>
+		<entry>Attribute</entry>
+		<entry>Description</entry>
+	  </row>
+	</thead>
+	<tbody>
 
-<row>
-<entry>NFS write access</entry>
-<entry>
-Allows NFS write access to this share; otherwise the share can only
-be used in read-only mode.
-</entry>
-</row>
+	  <row>
+		<entry>NFS write access</entry>
+		<entry>
+		  Allows NFS write access to this share; otherwise the share can only
+		  be used in read-only mode.
+		</entry>
+	  </row>
 
-<row>
-<entry>Subtree checking</entry>
-<entry>
-If only one subdirectory of a file system is exported, the NFS server has to
-check whether an accessed file is located on the exported file system and in
-the exported path, each time access is made. Path information is passed on to
-the client for this check. Activating this function might cause problems if a
-file opened by the client, is renamed.
-</entry>
-</row>
+	  <row>
+		<entry>Subtree checking</entry>
+		<entry>
+		  If only one subdirectory of a file system is exported, the NFS server has to
+		  check whether an accessed file is located on the exported file system and in
+		  the exported path, each time access is made. Path information is passed on to
+		  the client for this check. Activating this function might cause problems if a
+		  file opened by the client, is renamed.
+		</entry>
+	  </row>
 
-<row>
-<entry>Redirect root access</entry>
-<entry>
-	<para>
-In the NFS standard procedure, identification of users is achieved via user
-IDs. To prevent a local root user from working with root permissions on
-other shares, root access can be redirected. If this option is activated,
-access operations are executed as user <emphasis>nobody</emphasis>.
-	</para>
+	  <row>
+		<entry>Redirect root access</entry>
+		<entry>
+		  <para>
+			In the NFS standard procedure, identification of users is achieved via user
+			IDs. To prevent a local root user from working with root permissions on
+			other shares, root access can be redirected. If this option is activated,
+			access operations are executed as user <emphasis>nobody</emphasis>.
+		  </para>
 
-<caution>
-	<para>
-The local group <emphasis>staff</emphasis>, which is by default empty, owns privileges which come
-quite close to <emphasis>root</emphasis> permissions, yet this group is not considered by the
-redirection mechanism. This fact should be borne in mind when adding users to
-this group.
-	</para>
-</caution>
-</entry>
-</row>
+		  <caution>
+			<para>
+			  The local group <emphasis>staff</emphasis>, which is by default empty, owns privileges which come
+			  quite close to <emphasis>root</emphasis> permissions, yet this group is not considered by the
+			  redirection mechanism. This fact should be borne in mind when adding users to
+			  this group.
+			</para>
+		  </caution>
+		</entry>
+	  </row>
 
-<row>
-<entry>NFS synchronisation</entry>
-<entry>
-The synchronisation mode for the share. The <emphasis>sync</emphasis> setting is
-used to write data directly on the underlying storage device. The
-opposite setting - <emphasis>async</emphasis> - can improve performance but also
-imparts the risk of data loss if the server is shut down incorrectly.
-</entry>
-</row>
+	  <row>
+		<entry>NFS synchronisation</entry>
+		<entry>
+		  The synchronisation mode for the share. The <emphasis>sync</emphasis> setting is
+		  used to write data directly on the underlying storage device. The
+		  opposite setting - <emphasis>async</emphasis> - can improve performance but also
+		  imparts the risk of data loss if the server is shut down incorrectly.
+		</entry>
+	  </row>
 
-<row>
-<entry>Allowed hosts</entry>
-<entry>
-By default, all hosts are permitted access to a share. In this select list,
-host names and IP addresses can be included, to which the access to the share
-is to be restricted. For example, access to a share containing mail data could
-be restricted to the mail server of the domain.
-</entry>
-</row>
+	  <row>
+		<entry>Allowed hosts</entry>
+		<entry>
+		  By default, all hosts are permitted access to a share. In this select list,
+		  host names and IP addresses can be included, to which the access to the share
+		  is to be restricted. For example, access to a share containing mail data could
+		  be restricted to the mail server of the domain.
+		</entry>
+	  </row>
 
-</tbody>
-</tgroup>
+	</tbody>
+  </tgroup>
 </table>
 
 
 
 <table>
-<title>'Samba' tab</title>
-<tgroup cols="2">
-<colspec colnum="1" colname="col1" colwidth="1*"/>
-<colspec colnum="2" colname="col2" colwidth="2*"/>
-<thead>
-<row>
-<entry>Attribute</entry>
-<entry>Description</entry>
-</row>
-</thead>
-<tbody>
+  <title>'Samba' tab</title>
+  <tgroup cols="2">
+	<colspec colnum="1" colname="col1" colwidth="1*"/>
+	<colspec colnum="2" colname="col2" colwidth="2*"/>
+	<thead>
+	  <row>
+		<entry>Attribute</entry>
+		<entry>Description</entry>
+	  </row>
+	</thead>
+	<tbody>
 
-<row>
-<entry>Samba name</entry>
-<entry>
-<para>
-The NetBIOS name of the share. This is the name under which the share
-is displayed on Windows computers in the network environment. When
-adding a directory share, &ucsUMC; adopts the name entered in
-the <guimenu>Name</guimenu> field of the <guimenu>General</guimenu> tab
-as the default.
-</para>
-<para>
-The name must be composed of letters, numerals, full stops or blank
-spaces and must begin and end with a letter or numeral.
-</para>
-</entry>
-</row>
+	  <row>
+		<entry>Samba name</entry>
+		<entry>
+		  <para>
+			The NetBIOS name of the share. This is the name under which the share
+			is displayed on Windows computers in the network environment. When
+			adding a directory share, &ucsUMC; adopts the name entered in
+			the <guimenu>Name</guimenu> field of the <guimenu>General</guimenu> tab
+			as the default.
+		  </para>
+		  <para>
+			The name must be composed of letters, numerals, full stops or blank
+			spaces and must begin and end with a letter or numeral.
+		  </para>
+		</entry>
+	  </row>
 
-<row>
-<entry>Browseable</entry>
-<entry>
-Specifies whether the share in question is to show up on Windows clients
-within the network environment.
-</entry>
-</row>
+	  <row>
+		<entry>Browseable</entry>
+		<entry>
+		  Specifies whether the share in question is to show up on Windows clients
+		  within the network environment.
+		</entry>
+	  </row>
 
-<row>
-<entry>Public</entry>
-<entry>
-Permits access to this share without a password. Every access is carried out
-by means of the common guest user <emphasis>nobody</emphasis>.
-</entry>
-</row>
+	  <row>
+		<entry>Public</entry>
+		<entry>
+		  Permits access to this share without a password. Every access is carried out
+		  by means of the common guest user <emphasis>nobody</emphasis>.
+		</entry>
+	  </row>
 
-<row>
-<entry>MSDFS Root</entry>
-<entry>
-This option is documented in <xref linkend="shares::msdfs"/>.
-</entry>
-</row>
+	  <row>
+		<entry>MSDFS Root</entry>
+		<entry>
+		  This option is documented in <xref linkend="shares::msdfs"/>.
+		</entry>
+	  </row>
 
-<row>
-<entry>Users with write access may modify permissions</entry>
-<entry>
-If this option is activated, all users with write permission to a file
-are allowed to change permissions, ACL entries, and file ownership
-rights, see <xref linkend="shares::permissions"/>.
-</entry>
-</row>
+	  <row>
+		<entry>Users with write access may modify permissions</entry>
+		<entry>
+		  If this option is activated, all users with write permission to a file
+		  are allowed to change permissions, ACL entries, and file ownership
+		  rights, see <xref linkend="shares::permissions"/>.
+		</entry>
+	  </row>
 
-<row>
-<entry>Hide unreadable files/directories</entry>
-<entry>
-If this option is activated, all files which are nonreadable for the user due
-to their file permissions, will be hidden.
-</entry>
-</row>
+	  <row>
+		<entry>Hide unreadable files/directories</entry>
+		<entry>
+		  If this option is activated, all files which are nonreadable for the user due
+		  to their file permissions, will be hidden.
+		</entry>
+	  </row>
 
-<row>
-<entry>VFS Objects</entry>
-<entry>
-Virtual File System (VFS) modules are used in Samba for performing
-actions before an access to the file system of a share is made, e.g.,
-a virus scanner which stores every infected file accessed in the share
-in quarantine or server-side implementation of recycle bin deletion of
-files.
-</entry>
-</row>
+	  <row>
+		<entry>VFS Objects</entry>
+		<entry>
+		  Virtual File System (VFS) modules are used in Samba for performing
+		  actions before an access to the file system of a share is made, e.g.,
+		  a virus scanner which stores every infected file accessed in the share
+		  in quarantine or server-side implementation of recycle bin deletion of
+		  files.
+		</entry>
+	  </row>
 
-<row>
-<entry>Postexec script</entry>
-<entry>
-A script or command which is to be executed on the server if the connection to this share is
-finished.
-</entry>
-</row>
+	  <row>
+		<entry>Postexec script</entry>
+		<entry>
+		  A script or command which is to be executed on the server if the connection to this share is
+		  finished.
+		</entry>
+	  </row>
 
-<row>
-<entry>Preexec script</entry>
-<entry>
-A script or command which is to be executed on the server each time a connection to this
-share is established.
-</entry>
-</row>
+	  <row>
+		<entry>Preexec script</entry>
+		<entry>
+		  A script or command which is to be executed on the server each time a connection to this
+		  share is established.
+		</entry>
+	  </row>
 
-</tbody>
-</tgroup>
+	</tbody>
+  </tgroup>
 </table>
 
 
 <table>
-<title>'Samba permissions' tab (advanced settings)</title>
-<tgroup cols="2">
-<colspec colnum="1" colname="col1" colwidth="1*"/>
-<colspec colnum="2" colname="col2" colwidth="2*"/>
-<thead>
-<row>
-<entry>Attribute</entry>
-<entry>Description</entry>
-</row>
-</thead>
-<tbody>
+  <title>'Samba permissions' tab (advanced settings)</title>
+  <tgroup cols="2">
+	<colspec colnum="1" colname="col1" colwidth="1*"/>
+	<colspec colnum="2" colname="col2" colwidth="2*"/>
+	<thead>
+	  <row>
+		<entry>Attribute</entry>
+		<entry>Description</entry>
+	  </row>
+	</thead>
+	<tbody>
 
-<row>
-<entry>Samba write access</entry>
-<entry>
-Permits write access to this share.
-</entry>
-</row>
+	  <row>
+		<entry>Samba write access</entry>
+		<entry>
+		  Permits write access to this share.
+		</entry>
+	  </row>
 
-<row>
-<entry>Force user</entry>
-<entry>
-This username and its permissions and primary group is used for performing all the
-file operations of accessing users. The username is only used once the user has
-established a connection to the Samba share by using his real username and
-password. A common username is useful for using data in a shared way, yet
-improper application might cause security problems.
-</entry>
-</row>
+	  <row>
+		<entry>Force user</entry>
+		<entry>
+		  This username and its permissions and primary group is used for performing all the
+		  file operations of accessing users. The username is only used once the user has
+		  established a connection to the Samba share by using his real username and
+		  password. A common username is useful for using data in a shared way, yet
+		  improper application might cause security problems.
+		</entry>
+	  </row>
 
-<row>
-<entry>Force group</entry>
-<entry>
-<para>
-A group which is to be used by all users connecting with this share, as their
-primary group. Thereby, the permissions of this group automatically apply
-as the group permissions of all these users. A group registered here has a
-higher priority than a group which was assigned as the primary group of a user
-via the <guimenu>Force user</guimenu> entry field.
-</para>
-<para>
-If a + sign is prefixed to the group name, then the group is assigned as a
-primary group solely to those users which are already members of this
-group. All other users retain their primary groups.
-</para>
-</entry>
-</row>
+	  <row>
+		<entry>Force group</entry>
+		<entry>
+		  <para>
+			A group which is to be used by all users connecting with this share, as their
+			primary group. Thereby, the permissions of this group automatically apply
+			as the group permissions of all these users. A group registered here has a
+			higher priority than a group which was assigned as the primary group of a user
+			via the <guimenu>Force user</guimenu> entry field.
+		  </para>
+		  <para>
+			If a + sign is prefixed to the group name, then the group is assigned as a
+			primary group solely to those users which are already members of this
+			group. All other users retain their primary groups.
+		  </para>
+		</entry>
+	  </row>
 
-<row>
-<entry>Valid users or groups</entry>
-<entry>
-<para>
-Names of users or groups which are authorised to access this Samba share. To
-all other users, access is denied. If the field is empty, all users may access
-the share - if necessary after entering a password. This option is
-useful for securing accesses to a share at file server level beyond
-the file permissions.
-</para>
-<para>
-The entries are to be separated by spaces. The special characters @, + and &amp;
-can be used in connection with the group name for assigning certain
-permissions to the users of the stated group for accessing the Samba share:
-</para>
+	  <row>
+		<entry>Valid users or groups</entry>
+		<entry>
+		  <para>
+			Names of users or groups which are authorised to access this Samba share. To
+			all other users, access is denied. If the field is empty, all users may access
+			the share - if necessary after entering a password. This option is
+			useful for securing accesses to a share at file server level beyond
+			the file permissions.
+		  </para>
+		  <para>
+			The entries are to be separated by spaces. The special characters @, + and &amp;
+			can be used in connection with the group name for assigning certain
+			permissions to the users of the stated group for accessing the Samba share:
+		  </para>
 
-<itemizedlist>
-<listitem><simpara>A name beginning with the character @ will first be interpreted as a NIS
-Netgroup. Should no NIS Netgroup of this name be found, the name will be
-considered as a UNIX group.</simpara></listitem>
-<listitem><simpara>A name beginning with the character + will be exclusively considered as a UNIX
-group, a name beginning with the character &amp; will be exclusively considered
-as a NIS Netgroup.</simpara></listitem>
-<listitem><simpara>A name beginning with the characters +&amp;, will first be interpreted as a UNIX
-group. Should no UNIX group of this name be found, the name will be
-considered as a NIS Netgroup. The characters &amp;+ as the beginning of a name
-correspond to the character @.</simpara></listitem>
-</itemizedlist>
-</entry>
-</row>
+		  <itemizedlist>
+			<listitem><simpara>A name beginning with the character @ will first be interpreted as a NIS
+			Netgroup. Should no NIS Netgroup of this name be found, the name will be
+			considered as a UNIX group.</simpara></listitem>
+			<listitem><simpara>A name beginning with the character + will be exclusively considered as a UNIX
+			group, a name beginning with the character &amp; will be exclusively considered
+			as a NIS Netgroup.</simpara></listitem>
+			<listitem><simpara>A name beginning with the characters +&amp;, will first be interpreted as a UNIX
+			group. Should no UNIX group of this name be found, the name will be
+			considered as a NIS Netgroup. The characters &amp;+ as the beginning of a name
+			correspond to the character @.</simpara></listitem>
+		  </itemizedlist>
+		</entry>
+	  </row>
 
-<row>
-<entry>Invalid users or groups</entry>
-<entry>
-The users or groups listed here cannot access the Samba share. The syntax is identical to the one
-for valid users. If a user or group is included in the list of valid users and unauthorised users,
-access is denied.
-</entry>
-</row>
+	  <row>
+		<entry>Invalid users or groups</entry>
+		<entry>
+		  The users or groups listed here cannot access the Samba share. The syntax is identical to the one
+		  for valid users. If a user or group is included in the list of valid users and unauthorised users,
+		  access is denied.
+		</entry>
+	  </row>
 
-<row>
-<entry>Allowed hosts</entry>
-<entry>
-Names of computers which are authorised to access this Samba share. All other computers are denied
-access. In addition to computer names, it is also possible to specify IP or network addresses, e.g.,
-<command>192.168.0.0/255.255.255.0</command>.
-</entry>
-</row>
+	  <row>
+		<entry>Allowed hosts</entry>
+		<entry>
+		  Names of computers which are authorised to access this Samba share. All other computers are denied
+		  access. In addition to computer names, it is also possible to specify IP or network addresses, e.g.,
+		  <command>192.168.0.0/255.255.255.0</command>.
+		</entry>
+	  </row>
 
-<row>
-<entry>Denied hosts</entry>
-<entry>
-The opposite to the authorised computers. If a computer appears in both lists, the computer is
-permitted to access the Samba share.
-</entry>
-</row>
+	  <row>
+		<entry>Denied hosts</entry>
+		<entry>
+		  The opposite to the authorised computers. If a computer appears in both lists, the computer is
+		  permitted to access the Samba share.
+		</entry>
+	  </row>
 
-<row>
-<entry>Hide files</entry>
-<entry>
-<para>
-Files and directories to be accessed under Windows, yet not to be
-visible. Such files or directories are assigned the DOS attribute <emphasis>hidden</emphasis>.
-</para>
-<para>
-When entering the names of files and directories, upper and lower case letters
-are to be differentiated. Each entry is to be separated from the next by a
-slash. Since the slash can thus not be used for structuring path names, the
-input of path names is not possible. All files and directories of this name
-within the share will be hidden. The names may include spaces and the
-wildcards * and ?.
-</para>
-<para>
-As an example, <emphasis>/.*/test/</emphasis> hides all files and directories the names of which
-  begin with a dot, or which are called test.
-</para>
-<note>
-	<para>
-	Entries in this field have an impact on the speed of Samba since every time
-particular contents of the share are to be displayed, all files and
-directories have to be checked according to the active filters.
-	</para>
-</note>
-</entry>
-</row>
+	  <row>
+		<entry>Hide files</entry>
+		<entry>
+		  <para>
+			Files and directories to be accessed under Windows, yet not to be
+			visible. Such files or directories are assigned the DOS attribute <emphasis>hidden</emphasis>.
+		  </para>
+		  <para>
+			When entering the names of files and directories, upper and lower case letters
+			are to be differentiated. Each entry is to be separated from the next by a
+			slash. Since the slash can thus not be used for structuring path names, the
+			input of path names is not possible. All files and directories of this name
+			within the share will be hidden. The names may include spaces and the
+			wildcards * and ?.
+		  </para>
+		  <para>
+			As an example, <emphasis>/.*/test/</emphasis> hides all files and directories the names of which
+			begin with a dot, or which are called test.
+		  </para>
+		  <note>
+			<para>
+			  Entries in this field have an impact on the speed of Samba since every time
+			  particular contents of the share are to be displayed, all files and
+			  directories have to be checked according to the active filters.
+			</para>
+		  </note>
+		</entry>
+	  </row>
 
-<row>
-<entry>NT ACL support</entry>
-<entry>
-<para>
-If this option is activated, Samba will try to show POSIX ACLs under Windows,
-and to adopt changes to the ACLs, which were performed under Windows, for the
-POSIX ACLs.
-</para>
-<para>
-If this option is not set, existing POSIX ACLs are effective but not shown
-under Windows, and consequently cannot be changed under Windows.
-</para>
-</entry>
-</row>
+	  <row>
+		<entry>NT ACL support</entry>
+		<entry>
+		  <para>
+			If this option is activated, Samba will try to show POSIX ACLs under Windows,
+			and to adopt changes to the ACLs, which were performed under Windows, for the
+			POSIX ACLs.
+		  </para>
+		  <para>
+			If this option is not set, existing POSIX ACLs are effective but not shown
+			under Windows, and consequently cannot be changed under Windows.
+		  </para>
+		</entry>
+	  </row>
 
-<row>
-<entry>Users with write access</entry>
-<entry>
-Only the users and groups listed here have write permission for the
-corresponding share.
-</entry>
-</row>
+	  <row>
+		<entry>Users with write access</entry>
+		<entry>
+		  Only the users and groups listed here have write permission for the
+		  corresponding share.
+		</entry>
+	  </row>
 
-<row>
-<entry>Inherit ACLs</entry>
-<entry>
-When activating this option, each file created in this share will inherit the
-ACL (Access Control List) of the directory where the file was created.
-</entry>
-</row>
+	  <row>
+		<entry>Inherit ACLs</entry>
+		<entry>
+		  When activating this option, each file created in this share will inherit the
+		  ACL (Access Control List) of the directory where the file was created.
+		</entry>
+	  </row>
 
-<row>
-<entry>Inherit owner</entry>
-<entry>
-When activating this option, each newly created file will not be assigned of
-the user who created the file, but to the owner of the superior directory
-instead.
-</entry>
-</row>
+	  <row>
+		<entry>Inherit owner</entry>
+		<entry>
+		  When activating this option, each newly created file will not be assigned of
+		  the user who created the file, but to the owner of the superior directory
+		  instead.
+		</entry>
+	  </row>
 
-<row>
-<entry>Inherit permissions</entry>
-<entry>
-When activating this option, for each file or directory created in this share,
-the UNIX permissions of the superior directory will automatically be
-adopted.
-</entry>
-</row>
+	  <row>
+		<entry>Inherit permissions</entry>
+		<entry>
+		  When activating this option, for each file or directory created in this share,
+		  the UNIX permissions of the superior directory will automatically be
+		  adopted.
+		</entry>
+	  </row>
 
-</tbody>
-</tgroup>
+	</tbody>
+  </tgroup>
 </table>
 
 
 <table>
-<title>'Samba custom settings' tab (advanced settings)</title>
-<tgroup cols="2">
-<colspec colnum="1" colname="col1" colwidth="1*"/>
-<colspec colnum="2" colname="col2" colwidth="2*"/>
-<thead>
-<row>
-<entry>Attribute</entry>
-<entry>Description</entry>
-</row>
-</thead>
-<tbody>
+  <title>'Samba custom settings' tab (advanced settings)</title>
+  <tgroup cols="2">
+	<colspec colnum="1" colname="col1" colwidth="1*"/>
+	<colspec colnum="2" colname="col2" colwidth="2*"/>
+	<thead>
+	  <row>
+		<entry>Attribute</entry>
+		<entry>Description</entry>
+	  </row>
+	</thead>
+	<tbody>
 
-<row>
-<entry>Custom share settings</entry>
-<entry>
-	<para>
-Apart from the properties which can, as a standard feature, be
-configured in a Samba share, this setting makes it possible to define
-further arbitrary Samba settings within the share. A list of available
-options can be obtained by the command <command>man smb.conf</command>.
-In <guimenu>Key</guimenu> the name of the option is to be
-entered, and in the <guimenu>Value</guimenu> field the value to be
-set. Double entries of configuration options are not checked.
-	</para>
+	  <row>
+		<entry>Custom share settings</entry>
+		<entry>
+		  <para>
+			Apart from the properties which can, as a standard feature, be
+			configured in a Samba share, this setting makes it possible to define
+			further arbitrary Samba settings within the share. A list of available
+			options can be obtained by the command <command>man smb.conf</command>.
+			In <guimenu>Key</guimenu> the name of the option is to be
+			entered, and in the <guimenu>Value</guimenu> field the value to be
+			set. Double entries of configuration options are not checked.
+		  </para>
 
-<caution>
-	<para>
-The definition of extended Samba settings is only necessary in very special
-cases. The options should be thoroughly checked before setting since they
-might have security-relevant effects.
-	</para>
-</caution>
-</entry>
-</row>
+		  <caution>
+			<para>
+			  The definition of extended Samba settings is only necessary in very special
+			  cases. The options should be thoroughly checked before setting since they
+			  might have security-relevant effects.
+			</para>
+		  </caution>
+		</entry>
+	  </row>
 
-</tbody>
-</tgroup>
+	</tbody>
+  </tgroup>
 </table>
 
 <table>
