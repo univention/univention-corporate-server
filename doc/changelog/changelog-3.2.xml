@@ -1306,6 +1306,7 @@
 		<listitem><simpara>
 			A link to the UCS online documentation has been added to the network interface creation wizard
 			(<ulink url="&ucsbug;29119">Bug 29119</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
