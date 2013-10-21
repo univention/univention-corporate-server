@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.115-1) unstable; urgency=low
+
+  * Bug #30811: s/Lizenz-Informationen/Lizenzinformationen/
+
+ -- Florian Best <best@univention.de>  Mon, 21 Oct 2013 11:10:37 +0200
+
 univention-management-console-frontend (3.0.114-1) unstable; urgency=low
 
   * Bug #15087: fix de.po which was broken due to svn45333
