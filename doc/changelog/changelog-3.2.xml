@@ -730,6 +730,11 @@
 		<listitem><simpara>
 		  Some CSS adaptions have been made (<ulink url="&ucsbug;32318">Bug 32318</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  Fixed a bug which prevented the possibility to scroll within drop down menus on touch devices (<ulink url="&ucsbug;32264">Bug 32264</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -759,6 +764,12 @@
 		  The host matching with wildcards in UMC ACLs has been re-enabled.
 		  (<ulink url="&ucsbug;32850">Bug 32850</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  	Metainformation about modules are now reloaded on every successful authentication request
+		  	(<ulink url="&ucsbug;32299">Bug 32299</ulink>).
+		</simpara></listitem>
+
 
 	  </itemizedlist>
   </section>
@@ -1444,7 +1455,7 @@
   </section>
 
   <section>
-	<title>Other modules module</title>
+	<title>Other modules</title>
 	  <itemizedlist>
 		<listitem><simpara>
 		  A mapping which broke the representation of TXT records for DNS forward zones has been
@@ -1532,6 +1543,16 @@
 
 		<listitem><simpara>
 			The setuid, setgid and sticky bit flags can now be set for share root-directories (<ulink url="&ucsbug;15087">Bug 15087</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			The AD-Connector download site has been integrated into the <guimenu>UCS Active Directory Connector</guimenu> module
+			(<ulink url="&ucsbug;32698">Bug 32698</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			Fixed stability when uploading new certificates or searching for possible hostnames in the <guimenu>UCS Active Directory Connector</guimenu> module
+			(<ulink url="&ucsbug;31990">Bug 31990</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -2042,6 +2063,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	
 		<listitem><simpara>
 		  On systems which are no domain controller master, the UCS overview page will contain a link to the domain controller master. On systems which neither are domain controller master nor domain controller backups, certificate related links will not be shown anymore (<ulink url="&ucsbug;32647">Bug 32647</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			The overview page has been fixed for clients without enabled javascript
+			(<ulink url="&ucsbug;32820">Bug 32820</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
