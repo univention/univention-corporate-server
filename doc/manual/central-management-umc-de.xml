@@ -547,428 +547,448 @@
 </section>
 
 <section id="central:extendedattrs">
-	<title>Erweiterung der in UMC verwalteten Attribute mit erweiterten Attributen</title>
+	<title>Erweiterung der UMC mit erweiterten Attributen</title>
 	<para>
-		Die Domänenverwaltung der &ucsUMC; ermöglicht die umfassende
-		Verwaltung der Daten einer Domäne. <emphasis>Erweiterte Attribute</emphasis>
-		bieten eine Möglichkeit, neue Attribute in die Domänenverwaltung zu
-		integrieren, die durch den UCS-Standardumfang nicht abgedeckt sind.
-		Erweiterte Attribute werden auch von Drittanbietern für die
-		Integration von Lösungen in UCS eingesetzt.
+	  Die Domänenverwaltung der &ucsUMC; ermöglicht die umfassende Verwaltung der Daten einer
+	  Domäne. <emphasis>Erweiterte Attribute</emphasis> bieten eine Möglichkeit, neue Attribute in
+	  die Domänenverwaltung zu integrieren, die durch den UCS-Standardumfang nicht abgedeckt
+	  sind. Erweiterte Attribute werden auch von Drittanbietern für die Integration von Lösungen in
+	  UCS eingesetzt.
 	</para>
+
 	<para>
-		Erweiterte Attribute werden im Modul <guimenu>LDAP-Verzeichnis</guimenu>
-		der &ucsUMC; verwaltet. Sie befinden sich im Container <emphasis>univention</emphasis> und dessen
-		Untercontainer <emphasis>custom attributes</emphasis>. Hier
-		können bestehende Attribute bearbeitet werden oder mit
-		<guimenu>LDAP-Objekt hinzufügen</guimenu> ein Objekt vom Typ
-		<guimenu>Einstellungen: Erweitertes Attribut</guimenu> angelegt werden.
+	  Erweiterte Attribute werden im Modul <guimenu>LDAP-Verzeichnis</guimenu> der &ucsUMC;
+	  verwaltet. Sie befinden sich im Container <emphasis>univention</emphasis> und dessen
+	  Untercontainer <emphasis>custom attributes</emphasis>. Hier können bestehende Attribute
+	  bearbeitet werden oder mit <guimenu>LDAP-Objekt hinzufügen</guimenu> ein Objekt vom Typ
+	  <guimenu>Einstellungen: Erweitertes Attribut</guimenu> angelegt werden.
 	</para>
+
 	<figure id="umc-extended-attr">
-		<title>Erweitertes Attribut zur Verwaltung von KFZ-Kennzeichen</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/umc_extended_attribute_de.png"/>
+	  <title>Erweitertes Attribut zur Verwaltung von KFZ-Kennzeichen</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/umc_extended_attribute_de.png"/>
 	</figure>
+
 	<para>
-		Erweiterte Attribute können internationalisiert werden. In diesem Fall
-		sollten Namen und Beschreibungen in Englisch verfasst werden, da dies
-		der Standardsprache des &ucsUMC; entspricht.
+	  Erweiterte Attribute können internationalisiert werden. In diesem Fall sollten Namen und
+	  Beschreibungen in Englisch verfasst werden, da dies der Standardsprache des &ucsUMC;
+	  entspricht.
 	</para>
+
 	<table>
-		<title>Karteikarte 'Allgemein'</title>
-		<tgroup cols="2">
-			<colspec colnum="1" colname="col1" colwidth="1*"/>
-			<colspec colnum="2" colname="col2" colwidth="2*"/>
-			<thead>
-				<row>
-					<entry>Attribut</entry>
-					<entry>Beschreibung</entry>
-				</row>
-			</thead>
-			<tbody>
-				<row>
-					<entry>Name</entry>
-					<entry>
-						Der Name des LDAP-Objektes, als welches das erweiterte Attribut
-						gespeichert wird. Innerhalb eines Containers muss der Name eindeutig
-						sein.
-					</entry>
-				</row>
-				<row>
-					<entry>Standard-Kurzbeschreibung</entry>
-					<entry>
-						Wird als Überschrift des Eingabefelds in der &ucsUMC;, bzw. als
-						Attribut-Beschreibung in der Kommandozeilenschnittstelle
-						verwendet.
-					</entry>
-				</row>
-				<row>
-					<entry>Ausführliche Standardbeschreibung</entry>
-					<entry>
-						Diese erweiterte Beschreibung wird in Eingabefeldern der &ucsUMC; als
-						Tooltip angezeigt.
-					</entry>
-				</row>
-				<row>
-					<entry>Übersetzte Kurzbeschreibung</entry>
-					<entry>
-						Damit der Titel von erweiterten Attributen auch mit anderen
-						Spracheinstellungen in der jeweiligen Landessprache ausgegeben wird,
-						können übersetzte Kurzbeschreibungen für mehrere Sprachen hinterlegt
-						werden. Dazu kann in diesem Eingabefeld einem Sprachcode
-						(z.B. <emphasis>de_DE</emphasis> oder <emphasis>fr_FR</emphasis>)
-						die entsprechend übersetzte Kurzbeschreibung zugeordnet werden.
-					</entry>
-				</row>
-				<row>
-					<entry>Übersetzte Langbeschreibung</entry>
-					<entry>
-						Zusätzliche Hinweise, die im Tooltip für ein erweitertes Attribut
-						angezeigt werden, können ebenfalls für mehrere Sprachen hinterlegt
-						werden. Dazu kann in diesem Eingabefeld einem Sprachcode
-						(z.B. <emphasis>de_DE</emphasis> oder <emphasis>fr_FR</emphasis>) die entsprechend übersetzte
-						Langbeschreibung zugeordnet werden.
-					</entry>
-				</row>
-			</tbody>
-		</tgroup>
+	  <title>Karteikarte 'Allgemein'</title>
+	  <tgroup cols="2">
+		<colspec colnum="1" colname="col1" colwidth="1*"/>
+		<colspec colnum="2" colname="col2" colwidth="2*"/>
+		<thead>
+		  <row>
+			<entry>Attribut</entry>
+			<entry>Beschreibung</entry>
+		  </row>
+		</thead>
+		<tbody>
+		  <row>
+			<entry>Eindeutiger Name</entry>
+			<entry>
+			  Der Name des LDAP-Objektes, als welches das erweiterte Attribut gespeichert
+			  wird. Innerhalb eines Containers muss der Name eindeutig sein.
+			</entry>
+		  </row>
+		  <row>
+			<entry>UDM-CLI Name</entry>
+			<entry>
+			  Der angegebene Attributname ist bei der Verwendung der Kommandozeilenschnittstelle
+			  &ucsUDM; zu verwenden. Beim Anlegen des erweiterten Attributs wird hier automatisch
+			  <emphasis>Eindeutiger Name</emphasis> von der Karteikarte <emphasis>Allgemein</emphasis>
+			übernommen und kann nachträglich modifiziert werden. 
+			</entry>
+		  </row>
+		  <row>
+			<entry>Kurzbeschreibung</entry>
+			<entry>
+			  Wird als Überschrift des Eingabefelds in der &ucsUMC;, bzw. als Attribut-Beschreibung
+			  in der Kommandozeilenschnittstelle verwendet.
+			</entry>
+		  </row>
+		  <row>
+			<entry>Übersetzungen der Kurzbeschreibung</entry>
+			<entry>
+			  Damit der Titel von erweiterten Attributen auch mit anderen Spracheinstellungen in der
+			  jeweiligen Landessprache ausgegeben wird, können übersetzte Kurzbeschreibungen für
+			  mehrere Sprachen hinterlegt werden. Dazu kann in diesem Eingabefeld einem Sprachcode
+			  (z.B. <emphasis>de_DE</emphasis> oder <emphasis>fr_FR</emphasis>) die entsprechend
+			  übersetzte Kurzbeschreibung zugeordnet werden.
+			</entry>
+		  </row>
+		  <row>
+			<entry>Ausführliche Beschreibung</entry>
+			<entry>
+			  Diese erweiterte Beschreibung wird in Eingabefeldern der &ucsUMC; als Tooltip
+			  angezeigt.
+			</entry>
+		  </row>
+		  <row>
+			<entry>Übersetzungen der ausführlichen Beschreibung</entry>
+			<entry>
+			  Zusätzliche Hinweise, die im Tooltip für ein erweitertes Attribut angezeigt werden,
+			  können ebenfalls für mehrere Sprachen hinterlegt werden. Dazu kann in diesem
+			  Eingabefeld einem Sprachcode (z.B. <emphasis>de_DE</emphasis> oder
+			  <emphasis>fr_FR</emphasis>) die entsprechend übersetzte Langbeschreibung zugeordnet werden.
+			</entry>
+		  </row>
+		</tbody>
+	  </tgroup>
 	</table>
 
 	<table>
-		<title>UDM Web</title>
-		<tgroup cols="2">
-			<colspec colnum="1" colname="col1" colwidth="1*"/>
-			<colspec colnum="2" colname="col2" colwidth="2*"/>
-			<thead>
-				<row>
-					<entry>Attribut</entry>
-					<entry>Beschreibung</entry>
-				</row>
-			</thead>
-			<tbody>
-				<row>
-					<entry>Name der Karteikarte</entry>
-					<entry>
-						<para>
-							Der Name der Karteikarte in der &ucsUMC;, auf der das erweiterte
-							Attribut angezeigt werden soll. Hier können auch neue Karteikarten
-							hinzugefügt werden.
-						</para>
-						<para>
-							Wird kein Karteikartenname angegeben, wird <emphasis>Benutzerdefiniert</emphasis>
-							verwendet.
-						</para>
-					</entry>
-				</row>
-				<row>
-					<entry>Layoutposition des erweiterten Attributs</entry>
-					<entry>
-						<para>
-							Sollen mehrere erweiterte Attribute auf einer Karteikarte verwaltet
-							werden, kann anhand dieser Positionsnummer die Reihenfolge der
-							Attribute beeinflusst werden. Sie werden in aufsteigender
-							Reihenfolge bestimmt durch diese Positionsnummer jeweils am das Ende der betreffenden
-							Gruppe und Karteikarte angehängt.
-						</para>
-						<para>
-							Fortlaufend vergebene Positionsnummern führen dazu, dass die Attribute jeweils abwechselnd links und rechts zweispaltig angeordnet werden.
-							Ansonsten beginnt die Plazierung in der linken Spalte.
-							Weisen erweiterte Attribute die gleiche Positionsnummer auf, ist deren Reihenfolge zufällig.
-						</para>
-					</entry>
-				</row>
-				<row>
-					<entry>Übersetzter Karteikartenname</entry>
-					<entry>
-						Um den Namen der Karteikarte zu übersetzen, können in diesem
-						Eingabefeld übersetzte Karteikartennamen zum entsprechenden Sprachcode
-						(z.B. <emphasis>de_DE</emphasis> oder <emphasis>fr_FR</emphasis>) hinterlegt werden.
-					</entry>
-				</row>
-				<row>
-					<entry>Gruppenname</entry>
-					<entry>
-						<para>
-							Gruppen ermöglichen die Strukturierung einer Karteikarte. Eine Gruppe wird
-							durch einen grauen Querbalken abgetrennt und kann ein- und ausgeklappt
-							werden.
-						</para>
-						<para>
-							Wird bei einem erweiterten Attribute kein Gruppenname angegeben, wird
-							das erweiterte Attribut oberhalb der ersten Gruppe plaziert.
-						</para>
-					</entry>
-				</row>
-				<row>
-					<entry>Layoutposition der Gruppe des erweiterten Attributs</entry>
-					<entry>
-						Sollen mehrere Gruppen auf einer Karteikarte verwaltet werden, kann anhand
-						dieser Positionsnummer die Darstellungsreihenfolge beeinflusst werden. Sie
-						werden in aufsteigender Reihenfolge ihrer Positionsnummern dargestellt.
-					</entry>
-				</row>
-				<row>
-					<entry>Übersetzter Gruppenname</entry>
-					<entry>
-						Um den Namen der Gruppe zu übersetzen, können in diesem
-						Eingabefeld übersetzte Gruppennamen zum entsprechenden Sprachcode
-						(z.B. <emphasis>de_DE</emphasis> oder <emphasis>fr_FR</emphasis>) hinterlegt werden.
-					</entry>
-				</row>
-				<row>
-				  <entry>Existierendes Eingabefeld überschreiben</entry>
-				  <entry>
-					In einigen Fällen ist es sinnvoll, vorgegebene Eingabefelder mit erweiterten
-					Attributen zu überschreiben. Wird hier der interne UDM-Name eines Attributs
-					konfiguriert, wird dessen Eingabefeld von diesem erweiterten Attribut
-					überschrieben. Der UDM-Attributname kann nur durch eine Suche unterhalb des
-					Verzeichnisses
-					<filename class="directory">/usr/share/pyshared/univention/admin/handlers/</filename> ermittelt
-					werden. Es handelt sich dabei um den Namen, der in den Deklarationen von
-					univention.admin.property-Objekten vor dem Doppelpunkt steht,
-					z.B. <emphasis>roomNumber</emphasis> für die Raumnummer eines Benutzers.
-					Es ist zu beachten, daß diese Option bei Pflichtfeldern zu Problemen führen kann.
-				  </entry>
-				</row>
-				<row>
-					<entry>Beide Spalten umfassen</entry>
-					<entry>
-						Alle Eingabefelder werden standardmäßig in zwei Spalten
-						gruppiert. Diese Option kann für überlange Eingabefelder verwendet
-						werden, die sich über die komplette Breite beider Spalten erstrecken
-						sollen.
-					</entry>
-				</row>
-				<row>
-				  <entry>Existierende Karteikarte überschreiben</entry>
-				  <entry>
-					Ist diese Option aktiviert, wird die betreffende Karteikarte überschrieben,
-					bevor erweiterte Attribute darauf platziert werden. Mit Hilfe dieser Option
-					können alle vorhandenen Eingabefelder auf einer vorgegebenen Karteikarte
-					ausgeblendet werden. Es ist zu beachten, daß diese Option bei Pflichtfeldern zu
-					Problemen führen kann. Verwendet die zu überschreibende Karteikarte
-					Übersetzungen muss die überschreibende Karteikarte ebenfalls identische Übersetzungen mitbringen.
-				  </entry>
-				</row>
-				<row>
-					<entry>Karteikarte mit erweiterten Einstellungen</entry>
-					<entry>
-						Einstellungsmöglichkeiten, die selten verwendet werden, können
-						auf Karteikarten in den erweiterten Einstellungen platziert werden.
-					</entry>
-				</row>
-				<row>
-					<entry>In UDM Web nicht anzeigen</entry>
-					<entry>
-						Wenn ein Attribut anstatt durch den Administrator nur intern verwaltet
-						werden soll, - z.B. indirekt durch Skripte - kann diese Option aktiviert
-						werden. Das Attribut kann dann nur über das Kommandozeilen-Interface
-						&ucsUDM; gesetzt werden und wird in der &ucsUMC; nicht angezeigt.
-					</entry>
-				</row>
-			</tbody>
-		</tgroup>
+	  <title>Modul</title>
+	  <tgroup cols="2">
+		<colspec colnum="1" colname="col1" colwidth="1*"/>
+		<colspec colnum="2" colname="col2" colwidth="2*"/>
+		<thead>
+		  <row>
+			<entry>Attribut</entry>
+			<entry>Beschreibung</entry>
+		  </row>
+		</thead>
+		<tbody>
+		  <row>
+			<entry>Benötigtes Modul</entry>
+			<entry>
+			  Das &ucsUDM;-Modul, welches durch das erweiterte Attribut ergänzt werden soll. Ein
+			  erweitertes Attribut kann auch für mehrere Module gelten.
+			</entry>
+		  </row>
+		  
+		  <row>
+			<entry>Aktivierende Optionen</entry>
+			<entry>
+			  Einige erweiterte Attribute können nur sinnvoll verwendet werden, wenn auf der
+			  Karteikarte <emphasis>(Optionen)</emphasis> bestimmte Objektklassen aktiviert
+			  sind. In diesem Eingabefeld können optional eine oder mehrere Optionen hinterlegt
+			  werden, die am betreffenden Objekt aktiviert sein müssen, damit dieses erweiterte
+			  Attribut angezeigt bzw. editierbar ist.
+			</entry>
+		  </row>
+		  
+		  <row>
+			<entry>Hook-Klasse</entry>
+			<entry>
+			  Die Funktionen der hier angegebenen Hook-Klasse werden während des Anlegens,
+			  Modifizierens und Löschens von Objekten mit dem erweitertem Attribut
+			  aufgerufen. Weiterführende Dokumentation findet sich in der Entwickler-Dokumentation
+			  <xref linkend="developer-reference"/>
+			</entry>
+		  </row>
+
+		  <row>
+			<entry>Von der Suche aussschließen</entry>
+			<entry>
+			  <para>
+				Soll im Suchdialog eines Assistenten nicht nach einem erweiterten Attribut gesucht
+				werden können, kann diese Option aktiviert werden, um das erweiterte Attribut aus
+				der Liste der möglichen Sucheigenschaften zu entfernen.
+			  </para>
+			  
+			  <para>
+				Dies ist nur in Sonderfällen nötig.
+			  </para>
+			</entry>
+		  </row>
+		</tbody>
+	  </tgroup>
 	</table>
 
 	<table>
-		<title>UDM Allgemein</title>
+		<title>LDAP-Abbildung</title>
 		<tgroup cols="2">
-			<colspec colnum="1" colname="col1" colwidth="1*"/>
-			<colspec colnum="2" colname="col2" colwidth="2*"/>
-			<thead>
-				<row>
-					<entry>Attribut</entry>
-					<entry>Beschreibung</entry>
-				</row>
-			</thead>
-			<tbody>
-				<row>
-					<entry>UDM-CLI Attributname</entry>
-					<entry>
-						Der angegebene Attributname ist bei der Verwendung der
-						Kommandozeilenschnittstelle zu verwenden. Beim Anlegen des erweiterten
-						Attributs wird hier automatisch <emphasis>Name</emphasis> von der Karteikarte
-						<emphasis>Allgemein</emphasis> übernommen und kann nachträglich modifiziert werden.
-					</entry>
-				</row>
-				<row>
-					<entry>Hook</entry>
-					<entry>
-						Die Funktionen der hier angegebenen Hook-Klasse werden während des
-						Anlegens, Modifizierens und Löschens von Objekten mit dem erweitertem
-						Attribut aufgerufen. Weiterführende Dokumentation findet sich unter
-						<ulink url="http://sdb.univention.de/1080"/>.
-					</entry>
-				</row>
-				<row>
-					<entry>Optionen</entry>
-					<entry>
-						Einige erweiterte Attribute können nur sinnvoll verwendet
-						werden, wenn auf der Karteikarte <emphasis>(Optionen)</emphasis> bestimmte Objektklassen aktiviert
-						sind. In diesem Eingabefeld können optional eine oder mehrere Optionen hinterlegt
-						werden, die am betreffenden Objekt aktiviert sein müssen, damit dieses erweiterte
-						Attribut angezeigt bzw. editierbar ist.
-					</entry>
-				</row>
-				<row>
-					<entry>Benötigtes Modul</entry>
-					<entry>
-						Das &ucsUDM;-Modul, welches durch das erweiterte Attribut ergänzt
-						werden soll. Ein erweitertes Attribut kann auch für mehrere Module gelten.
-					</entry>
-				</row>
-			</tbody>
-		</tgroup>
-	</table>
+		  <colspec colnum="1" colname="col1" colwidth="1*"/>
+		  <colspec colnum="2" colname="col2" colwidth="2*"/>
+		  <thead>
+			<row>
+			  <entry>Attribut</entry>
+			  <entry>Beschreibung</entry>
+			</row>
+		  </thead>
+		  <tbody>
+			<row>
+			  <entry>LDAP-Objektklasse</entry>
+			  <entry>
+				<para>
+				  Die Objektklasse, zu welcher das unter <emphasis>LDAP-Abbildung</emphasis>
+				  eingetragene Attribut gehört.
+				</para>
 
-	<table>
+				<para>
+				  Für erweiterte Attribute stehen mit der Objektklasse
+				  <emphasis>univentionFreeAttributes</emphasis> vordefinierte
+				  LDAP-Schema-Erweiterungen zur Verfügung. Weitere Hinweise finden sich in <xref
+				  linkend="domain:ldap:extensions"/>.
+				</para>
+
+				<para>
+				  Jedes LDAP-Objekt, das um ein Attribut erweitert werden soll, wird automatisch um
+				  die hier angegebene LDAP-Objektklasse erweitert, wenn vom Benutzer ein Wert für
+				  das erweiterte Attribut angegeben wurde.
+				</para>
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>LDAP-Attribut</entry>
+			  <entry>
+				Der Name des LDAP-Attributs, in dem die Werte am LDAP-Objekt gespeichert werden
+				sollen. Das LDAP-Attribut muss in der angegebenen Objektklasse enthalten sein.
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Objektklasse löschen wenn der Wert leer gesetzt wird</entry>
+			  <entry>
+				Wird für ein erweitertes Attribut in der &ucsUMC; der Wert gelöscht, wird das
+				Attribut vom LDAP-Objekt entfernt. Werden an diesem LDAP-Objekt keine weiteren
+				Attribute der angegebenen <emphasis>Objektklasse</emphasis> verwendet, wird auch die
+				Objektklasse vom LDAP-Objekt entfernt, sofern diese Option aktiviert ist.
+			  </entry>
+			</row>
+		  </tbody>
+		</tgroup>
+	  </table>
+
+	  <table>
+		<title>UMC</title>
+		<tgroup cols="2">
+		  <colspec colnum="1" colname="col1" colwidth="1*"/>
+		  <colspec colnum="2" colname="col2" colwidth="2*"/>
+		  <thead>
+			<row>
+			  <entry>Attribut</entry>
+			  <entry>Beschreibung</entry>
+			</row>
+		  </thead>
+		  <tbody>
+			<row>
+			  <entry>Dieses erweiterte Attribut nicht in der UMC anzeigen</entry>
+			  <entry>
+				Wenn ein Attribut anstatt durch den Administrator nur intern verwaltet werden soll,
+				- z.B. indirekt durch Skripte - kann diese Option aktiviert werden. Das Attribut
+				kann dann nur über das Kommandozeilen-Interface &ucsUDM; gesetzt werden und wird in
+				der &ucsUMC; nicht angezeigt.
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Ordnungsnummer</entry>
+			  <entry>
+				<para>
+				  Sollen mehrere erweiterte Attribute auf einer Karteikarte verwaltet werden, kann
+				  anhand dieser Positionsnummer die Reihenfolge der Attribute beeinflusst
+				  werden. Sie werden in aufsteigender Reihenfolge bestimmt durch diese
+				  Positionsnummer jeweils am das Ende der betreffenden Gruppe und Karteikarte
+				  angehängt.
+				</para>
+
+				<para>
+				  Fortlaufend vergebene Positionsnummern führen dazu, dass die Attribute jeweils
+				  abwechselnd links und rechts zweispaltig angeordnet werden. Ansonsten beginnt die
+				  Plazierung in der linken Spalte. Weisen erweiterte Attribute die gleiche
+				  Positionsnummer auf, ist deren Reihenfolge zufällig.
+				</para>
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Existierende Eigenschaft mit diesem Namen überschreiben</entry>
+			  <entry>
+				In einigen Fällen ist es sinnvoll, vorgegebene Eingabefelder mit erweiterten
+				Attributen zu überschreiben. Wird hier der interne UDM-Name eines Attributs
+				konfiguriert, wird dessen Eingabefeld von diesem erweiterten Attribut
+				überschrieben. Der UDM-Attributname kann nur durch eine Suche unterhalb des
+				Verzeichnisses <filename
+				class="directory">/usr/share/pyshared/univention/admin/handlers/</filename>
+				ermittelt werden. Es handelt sich dabei um den Namen, der in den Deklarationen von
+				univention.admin.property-Objekten vor dem Doppelpunkt steht,
+				z.B. <emphasis>roomNumber</emphasis> für die Raumnummer eines Benutzers. Es ist zu
+				beachten, daß diese Option bei Pflichtfeldern zu Problemen führen kann.
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Beide Spalten umfassen</entry>
+			  <entry>
+				Alle Eingabefelder werden standardmäßig in zwei Spalten gruppiert. Diese Option kann
+				für überlange Eingabefelder verwendet werden, die sich über die komplette Breite
+				beider Spalten erstrecken sollen.
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Name der Karteikarte</entry>
+			  <entry>
+				<para> 
+				  Der Name der Karteikarte in der &ucsUMC;, auf der das erweiterte Attribut
+				  angezeigt werden soll. Hier können auch neue Karteikarten hinzugefügt werden.
+				</para>
+
+				<para>
+				  Wird kein Karteikartenname angegeben, wird <emphasis>Benutzerdefiniert</emphasis>
+				  verwendet.
+				</para>
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Übersetzung des Karteikartennamens</entry>
+			  <entry>
+				Um den Namen der Karteikarte zu übersetzen, können in diesem Eingabefeld übersetzte
+				Karteikartennamen zum entsprechenden Sprachcode (z.B. <emphasis>de_DE</emphasis>
+				oder <emphasis>fr_FR</emphasis>) hinterlegt werden.
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Existierende Karteikarte überschreiben</entry>
+			  <entry>
+				Ist diese Option aktiviert, wird die betreffende Karteikarte überschrieben, bevor
+				erweiterte Attribute darauf platziert werden. Mit Hilfe dieser Option können alle
+				vorhandenen Eingabefelder auf einer vorgegebenen Karteikarte ausgeblendet werden. Es
+				ist zu beachten, daß diese Option bei Pflichtfeldern zu Problemen führen
+				kann. Verwendet die zu überschreibende Karteikarte Übersetzungen muss die
+				überschreibende Karteikarte ebenfalls identische Übersetzungen mitbringen.
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Karteikarte mit erweiterten Einstellungen</entry>
+			  <entry>
+				Einstellungsmöglichkeiten, die selten verwendet werden, können auf Karteikarten in
+				den erweiterten Einstellungen platziert werden.
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Gruppenname</entry>
+			  <entry>
+				<para>
+				  Gruppen ermöglichen die Strukturierung einer Karteikarte. Eine Gruppe wird durch
+				  einen grauen Querbalken abgetrennt und kann ein- und ausgeklappt werden.
+				</para>
+
+				<para>
+				  Wird bei einem erweiterten Attribute kein Gruppenname angegeben, wird das
+				  erweiterte Attribut oberhalb der ersten Gruppe plaziert.
+				</para>
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Übersetzung des Gruppennamens</entry>
+			  <entry>
+				Um den Namen der Gruppe zu übersetzen, können in diesem Eingabefeld übersetzte
+				Gruppennamen zum entsprechenden Sprachcode (z.B. <emphasis>de_DE</emphasis> oder
+				<emphasis>fr_FR</emphasis>) hinterlegt werden.
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Gruppen-Ordnungsnnummer</entry>
+			  <entry>
+				Sollen mehrere Gruppen auf einer Karteikarte verwaltet werden, kann anhand dieser
+				Positionsnummer die Darstellungsreihenfolge beeinflusst werden. Sie werden in
+				aufsteigender Reihenfolge ihrer Positionsnummern dargestellt.
+			  </entry>
+			</row>
+		  </tbody>
+		</tgroup>
+	  </table>
+
+	  <table>
 		<title>Datentyp</title>
 		<tgroup cols="2">
-			<colspec colnum="1" colname="col1" colwidth="1*"/>
-			<colspec colnum="2" colname="col2" colwidth="2*"/>
-			<thead>
-				<row>
-					<entry>Attribut</entry>
-					<entry>Beschreibung</entry>
-				</row>
-			</thead>
-			<tbody>
-				<row>
-					<entry>Syntax</entry>
-					<entry>
-						<para>
-							Bei der Eingabe von Werten nimmt die &ucsUMC; eine Syntaxprüfung vor.
-						</para>
-						<para>
-							Neben Standard-Syntaxdefinitionen für Zeichenketten (<emphasis>string</emphasis>), Zahlen
-							(<emphasis>integer</emphasis>) gibt es drei Möglichkeiten einen binären Zustand auszudrücken:
-							Die Syntax <emphasis>TrueFalse</emphasis> wird auf LDAP-Ebene durch die
-							Zeichenketten <emphasis>true</emphasis> und <emphasis>false</emphasis> abgebildet, die Syntax
-							<emphasis>TrueFalseUpper</emphasis> verwendet dagegen die Werte
-							<emphasis>TRUE</emphasis> und <emphasis>FALSE</emphasis>.
-							Die Syntax <emphasis>boolean</emphasis> dagegen
-							speichert keinen Wert bzw. die Zeichenkette <emphasis>1</emphasis>.
-						</para>
-						<para>
-						  Standardmäßig wird die Syntax <emphasis>string</emphasis> verwendet. Eine
-						  Übersicht über die weiteren verfügbaren Syntax-Definitionen und eine
-						  Anleitung zur Integration eigener Syntaxen sind in <xref
-						  linkend="developer-reference"/> zu finden.
-						</para>
-					</entry>
-				</row>
-				<row>
-					<entry>Vorgabewert</entry>
-					<entry>
-						Ist hier ein Vorgabewert definiert, werden Objekte beim Anlegen mit
-						diesem Wert initialisiert. Der Wert kann während des Anlegens noch
-						manuell bearbeitet werden. Bereits bestehende Objekte werden nicht
-						verändert.
-					</entry>
-				</row>
-				<row>
-					<entry>Mehrfachwert</entry>
-					<entry>
-						Diese Option legt fest, ob ein einzelner Wert oder mehrere Werte in
-						der Eingabemaske eingetragen werden können. Die Einstellung muß zur Schema-Definition passen, in der für
-						das verwendete LDAP-Attributes festgelegt ist, ob nur eine oder mehrere Instanzen
-						des Attributs an einem LDAP-Objekt verwendet werden dürfen.
-					</entry>
-				</row>
-				<row>
-					<entry>Nachträglich modifizierbar</entry>
-					<entry>
-						Diese Option legt fest, ob der im erweiterten Attribut gespeicherte
-						Wert nur während des Anlegens eines Objektes oder auch nachträglich
-						modifiziert werden kann.
-					</entry>
-				</row>
-				<row>
-					<entry>Wert wird benötigt</entry>
-					<entry>
-						Ist diese Option aktiv, muss ein gültiger Wert für das erweiterte
-						Attribut eingetragen sein, um das betreffende Objekt anzulegen oder zu
-						speichern.
-					</entry>
-				</row>
-				<row>
-					<entry>Nicht durchsuchbar</entry>
-					<entry>
-						<para>
-							Soll im Suchdialog eines Assistenten nicht nach einem erweiterten
-							Attribut gesucht werden können, kann diese Option aktiviert werden, um
-							das erweiterte Attribut aus der Liste der möglichen Sucheigenschaften
-							zu entfernen.
-						</para>
-						<para>
-							Dies ist nur in Sonderfällen nötig.
-						</para>
-					</entry>
-				</row>
-				<row>
-					<entry>Wert ist nicht änderbar</entry>
-					<entry>
-						Ist diese Option aktiviert, kann das Attribut nicht manuell gesetzt
-						werden, weder beim Anlegen des Objekts, noch nachträglich. Dies ist
-						sinnvoll für automatisch generierte interne Zustände, die über Hook-Funktionen
-						oder intern in einem Modul gepflegt werden.
-					</entry>
-				</row>
-			</tbody>
-		</tgroup>
-	</table>
+		  <colspec colnum="1" colname="col1" colwidth="1*"/>
+		  <colspec colnum="2" colname="col2" colwidth="2*"/>
+		  <thead>
+			<row>
+			  <entry>Attribut</entry>
+			  <entry>Beschreibung</entry>
+			</row>
+		  </thead>
+		  <tbody>
+			<row>
+			  <entry>Syntax-Name</entry>
+			  <entry>
+				<para>
+				  Bei der Eingabe von Werten nimmt die &ucsUMC; eine Syntaxprüfung vor.
+				</para>
 
-	<table>
-		<title>LDAP</title>
-		<tgroup cols="2">
-			<colspec colnum="1" colname="col1" colwidth="1*"/>
-			<colspec colnum="2" colname="col2" colwidth="2*"/>
-			<thead>
-				<row>
-					<entry>Attribut</entry>
-					<entry>Beschreibung</entry>
-				</row>
-			</thead>
-			<tbody>
-				<row>
-					<entry>Objektklasse</entry>
-					<entry>
-						<para>
-							Die Objektklasse, zu welcher das unter <emphasis>LDAP-Abbildung</emphasis>
-							eingetragene Attribut gehört.
-						</para>
-						<para>
-							Für erweiterte Attribute stehen mit der Objektklasse <emphasis>univentionFreeAttributes</emphasis>
-							vordefinierte LDAP-Schema-Erweiterungen zur Verfügung.
-							Weitere Hinweise finden sich in <xref linkend="domain:ldap:extensions"/>.
-						</para>
-						<para>
-							Jedes LDAP-Objekt, das um ein Attribut erweitert werden soll, wird
-							automatisch um die hier angegebene LDAP-Objektklasse erweitert, wenn
-							vom Benutzer ein Wert für das erweiterte Attribut angegeben wurde.
-						</para>
-					</entry>
-				</row>
-				<row>
-					<entry>LDAP-Abbildung</entry>
-					<entry>
-						Der Name des LDAP-Attributs, in dem die Werte am LDAP-Objekt
-						gespeichert werden sollen. Das LDAP-Attribut muss in der angegebenen
-						Objektklasse enthalten sein.
-					</entry>
-				</row>
-				<row>
-					<entry>Objektklasse löschen</entry>
-					<entry>
-						Wird für ein erweitertes Attribut in der &ucsUMC; der Wert gelöscht,
-						wird das Attribut vom LDAP-Objekt entfernt. Werden an diesem
-						LDAP-Objekt keine weiteren Attribute der angegebenen
-						<emphasis>Objektklasse</emphasis> verwendet, wird auch die Objektklasse vom
-						LDAP-Objekt entfernt, sofern diese Option aktiviert ist.
-					</entry>
-				</row>
-			</tbody>
+				<para>
+				  Neben Standard-Syntaxdefinitionen für Zeichenketten (<emphasis>string</emphasis>),
+				  Zahlen (<emphasis>integer</emphasis>) gibt es drei Möglichkeiten einen binären
+				  Zustand auszudrücken: Die Syntax <emphasis>TrueFalse</emphasis> wird auf
+				  LDAP-Ebene durch die Zeichenketten <emphasis>true</emphasis> und
+				  <emphasis>false</emphasis> abgebildet, die Syntax
+				  <emphasis>TrueFalseUpper</emphasis> verwendet dagegen die Werte
+				  <emphasis>TRUE</emphasis> und <emphasis>FALSE</emphasis>. Die Syntax
+				  <emphasis>boolean</emphasis> dagegen speichert keinen Wert bzw. die Zeichenkette
+				  <emphasis>1</emphasis>.
+				</para>
+
+				<para>
+				  Standardmäßig wird die Syntax <emphasis>string</emphasis> verwendet. Eine
+				  Übersicht über die weiteren verfügbaren Syntax-Definitionen und eine Anleitung zur
+				  Integration eigener Syntaxen sind in <xref linkend="developer-reference"/> zu
+				  finden.
+				</para>
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Vorgabewert</entry>
+			  <entry>
+				Ist hier ein Vorgabewert definiert, werden Objekte beim Anlegen mit diesem Wert
+				initialisiert. Der Wert kann während des Anlegens noch manuell bearbeitet
+				werden. Bereits bestehende Objekte werden nicht verändert.
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Mehrfachwert</entry>
+			  <entry>
+				Diese Option legt fest, ob ein einzelner Wert oder mehrere Werte in der Eingabemaske
+				eingetragen werden können. Die Einstellung muß zur Schema-Definition passen, in der
+				für das verwendete LDAP-Attributes festgelegt ist, ob nur eine oder mehrere
+				Instanzen des Attributs an einem LDAP-Objekt verwendet werden dürfen.
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Wert wird benötigt</entry>
+			  <entry>
+				Ist diese Option aktiv, muss ein gültiger Wert für das erweiterte Attribut
+				eingetragen sein, um das betreffende Objekt anzulegen oder zu speichern.
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Nachträglich modifizierbar</entry>
+			  <entry>
+				Diese Option legt fest, ob der im erweiterten Attribut gespeicherte Wert nur während
+				des Anlegens eines Objektes oder auch nachträglich modifiziert werden kann.
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Wert nicht durch die UMC oder das Kommandozeilenprogramm änderbar</entry>
+			  <entry>
+				Ist diese Option aktiviert, kann das Attribut nicht manuell gesetzt werden, weder
+				beim Anlegen des Objekts, noch nachträglich. Dies ist sinnvoll für automatisch
+				generierte interne Zustände, die über Hook-Funktionen oder intern in einem Modul
+				gepflegt werden.
+			  </entry>
+			</row>
+		  </tbody>
 		</tgroup>
-	</table>
+	  </table>
 </section>
 
 <section id="central:cn-and-ous">
