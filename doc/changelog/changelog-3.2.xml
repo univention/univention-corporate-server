@@ -735,6 +735,11 @@
 		  Fixed a bug which prevented the possibility to scroll within drop down menus on touch devices (<ulink url="&ucsbug;32264">Bug 32264</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+			All actions from umc.widgets.Grid have been moved from the bottom or from the grid columns to the top of the grid.
+			(<ulink url="&ucsbug;26418">Bug 26418</ulink>, <ulink url="&ucsbug;32751">Bug 32751</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -1297,6 +1302,10 @@
 		<listitem><simpara>
 			A profile parsing function was fixed to not strip all double quotes from supplied values, which now allows to use quotes in passwords (<ulink url="&ucsbug;32463">Bug 32463</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			A link to the UCS online documentation has been added to the network interface creation wizard
+			(<ulink url="&ucsbug;29119">Bug 29119</ulink>).
 	  </itemizedlist>
   </section>
 
