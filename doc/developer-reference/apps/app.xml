@@ -19,17 +19,106 @@
 		easy-to-use entry point for &ucsUCS; users to extend their environment with
 		business software.
 	</para>
-
+	<para>
+		Univention App Center is the simplest form to install applications on
+		&ucsUCS;. In the Univention Management Console it is the first entry point
+		for their installation. Univention App Center is no app store in a
+		classical point of view as known from iOS or Android and no license
+		management for applications. The sale of licenses, maintenance or support
+		for applications follows the default procedure of the respective vendor.
+	</para>
+	<para>
+		This chapter mainly aims at software vendors that want to provide their
+		software in Univention App Center and describes the necessary steps. An
+		overview of the advantages and benefits can be found in a <ulink
+			url="http://www.univention.de/fileadmin/download/whitepaper/Univention_App_Center_Summary.pdf">PDF
+			document</ulink> on the Univention website.
+	</para>
+	<para>
+		A catalogue with the available applications can be viewed on the <ulink
+			url="http://www.univention.de/en/products/ucs/app-catalogue-for-univention-corporate-server/">Univention
+			website</ulink>.
+	</para>
+	<section id="app:requirements">
+		<title>Requirements</title>
+		<para>
+			The requirements for providing a software solution in Univention App
+			Center are:
+			<itemizedlist>
+				<listitem><simpara>
+					Formally: The certification of the software solution for UCS and sign
+					the Univention Logoprogram <ulink
+						url="http://wiki.univention.de/index.php?title=Certification_Certified_for_Univention_Corporate_Server">Certified
+						for Univention Corporate Server</ulink>
+				</simpara></listitem>
+				<listitem><simpara>
+					Technically: The packaging of the software solution in the Debian
+					package format (see <xref linkend="app:package" />), provided for the
+					architectures i386 and amd64
+				</simpara></listitem>
+				<listitem><simpara>
+					Out-of-the-Box functionality: The app has to work already after
+					installation
+				</simpara></listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			The following items are <emphasis>no</emphasis> disqualifying criteria:
+			<itemizedlist>
+				<listitem><simpara>
+					Missing documentation
+				</simpara></listitem>
+				<listitem><simpara>
+					No or little integration of the app with Univention Corporate Server
+				</simpara></listitem>
+				<listitem><simpara>
+					Poor usability
+				</simpara></listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			The following items are important for packaging:
+			<itemizedlist>
+				<listitem><simpara>
+					The application has to be installed without any user interaction
+					(unattended). The installation process is not allowed to be
+					interrupted or cancelled which would result in an inconsistent state
+					of the package management.
+				</simpara></listitem>
+				<listitem><simpara>
+					The application has to be installed and uninstalled cleanly.
+					"Uninstalled cleanly" especially aims for removing Extended
+					Attributes the application created during installation. See <xref
+						linkend="join:unjoin"/>.
+				</simpara></listitem>
+				<listitem><simpara>
+					The application does not (neither after installation nor after
+					uninstallation) break &ucsUCS; functionality.
+				</simpara></listitem>
+				<listitem><simpara>
+					Recommended: The application is integrated in UCS and the UCS
+					management system (see <xref linkend="app:integration"/>). 
+				</simpara></listitem>
+			</itemizedlist>
+		</para>
+		<note>
+			<para>
+				The software vendor is responsible for the maintenance of his
+				application(s). Package updates are provided for Univention App Center
+				in a contemporary way (see also <xref linkend="app:update" />). 
+			</para>
+		</note>
+	</section>
 	<section id="app:package">
 		<title>Packaging for the App Center</title>
 		<para>
-			The App Center is based on the Debian package system.
-			From a technical point of view, the installation of an application via the App Center contains
-			of two rough steps: (1) adding a new repository to the system which
-			resides on the App Center server and (2) <command>apt-get</command> which
-			installs the required package. This means that 3rd party
-			vendors need to package their application as a <literal>.deb</literal>
-			file and send that to Univention.
+			The App Center is based on the Debian package system.  From a technical
+			point of view, the installation of an application via the App Center
+			consists roughly of two steps: (1) adding a new repository to the system
+			which resides on the App Center server and (2) <command>apt-get</command>
+			which installs the required package. This means that 3rd party vendors
+			need to package their application as a <literal>.deb</literal> file and
+			send that to Univention.
 		</para>
 		<para>
 			It is recommended (and probably necessary) to provide at least one
@@ -42,7 +131,7 @@
 			<package>univention-<replaceable>appname</replaceable>-master</package>.
 			It does not need to be installed on each system the core application is
 			installed but needs to stay installed even when the core application is
-			removed.  Thus it should be as independent as possible from the the core
+			removed. Thus it should be as independent as possible from the the core
 			application (and
 			<package>univention-<replaceable>appname</replaceable></package>).
 		</para>
@@ -63,7 +152,7 @@
 			activated by default the App Center cannot install the application
 			without user configuration if some packages are only available through
 			the unmaintained repository. But this is a requirement for any
-			application!  To workaround this issue, the vendor has to do the
+			application! To workaround this issue, the vendor has to do the
 			following: In a first step he has to grab the packages from the
 			unmaintained repository (see for example <ulink
 				url="http://apt.software-univention.de/3.1/unmaintained/" />) and
@@ -73,12 +162,56 @@
 			procedure will become obsolete in future versions of the application.
 		</para>
 	</section>
+	<section id="app:nextsteps">
+		<title>Next Steps</title>
+		<para>
+			As soon as the software complies to the requirements the following steps
+			are to be taken:
+			<itemizedlist>
+				<listitem><simpara>
+					Collect the meta data for the software for the App Center (see
+					<xref linkend="app:iniFile" /> and <xref linkend="app:optionalFiles"
+						/>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Upload the packages along with the ini file, some README files, an
+					icon and (maybe) a screenshot in a file archive (everything should
+					go in one "directory"). See <xref linkend="app:upload" />.
+				</simpara></listitem>
+				<listitem><simpara>
+					Test the software solution with Univention Test App Center
+					(more information is given by Univention after the upload).
+					<important>
+						<para>
+							Univention will not test if the application works as expected. We
+							have a test suite that is run before we publish the application
+							but it only covers base functionality of &ucsUCS; itself (e.g.
+							LDAP, Join, etc.)
+						</para>
+					</important>
+				</simpara></listitem>
+				<listitem><simpara>
+					Give approval for provisioning in the productive Univention App
+					Center towards Univention.
+				</simpara></listitem>
+				<listitem><simpara>
+					Show with the badge "Available in Univention App Center" that the App
+					is ready to use. The HTML snippet will be provided by Univention.
+				</simpara></listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			See also <xref linkend="app:update" /> for how to procede if an update is
+			to be released.
+		</para>
+	</section>
 	<section id="app:iniFile">
 		<title>Application meta file</title>
 		<para>
 			The App Center needs some meta information about the application to
 			handle the installation and to present information to the user. The
-			application needs a so-called <literal>.ini</literal> file for that.
+			application needs a so-called <literal>.ini</literal> file for that. The
+			particulars in the meta data have to be in English at least.
 		</para>
 		<para>
 			A minimal example along with some comments on the variables is attached:
@@ -90,151 +223,222 @@
 			<literal>Version</literal>.
 		</para>
 		<para>
-			A few variables need further explanation:
+			Besides the text file and the above mentioned statements, a product logo and a screenshot, if given, are needed:
+			<itemizedlist>
+				<listitem><simpara>
+					Product logo in PNG format, size: 50x50 pixels, with transparent
+					background. Required.
+				</simpara></listitem>
+				<listitem><simpara>
+					Screenshot of the application. Format can be JPG or (preferably) PNG.
+					Optional.
+				</simpara></listitem>
+			</itemizedlist>
 		</para>
-		<variablelist>
-			<varlistentry>
-				<term>ID</term>
-				<listitem>
-					<simpara>
-						Needs to stay the same all the time. It is used to connect
-						different versions.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Version</term>
-				<listitem>
-					<simpara>
-						Has to rise every time. Needs to be comparable, i.e. versions
-						consisting only of a codename are not useful. In the App Center,
-						only the newest version (or the currently installed one) is shown.
-						It is possible to install one specific version but this needs
-						knowledge of internal IDs (beyond control even for the application
-						vendor).
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>MinPhysicalRAM</term>
-				<listitem>
-					<simpara>
-						The minimal amount of free memory in MB when trying to install the
-						application. The application should work fluently above that limit
-						at least for smaller environments. If this limit is set very high
-						many testers will be unable to install this application as there is
-						no easy way to skip this test.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>RequiredApps</term>
-				<listitem>
-					<simpara>
-						Application IDs for apps that need to be installed in order to run
-						this one correctly. These applications will not be installed
-						automatically. New in UCS 3.2.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>ConflictedSystemPackages</term>
-				<listitem>
-					<simpara>
-						Package names that may not be installed along with the application.
-						It is highly recommended that this list is reflected on
-						<literal>dpkg</literal> level in some other package of the
-						application. This list is just to show the user conflicts
-						<emphasis>before</emphasis> the application is to be installed.
-						Conflicts on package level are resolved automatically and the user
-						has to confirm if some packages will be uninstalled. Same for
-						<literal>ConflictedApps</literal>.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>DefaultPackages</term>
-				<listitem>
-					<simpara>
-						A list of packages that will be installed. It is recommended to
-						keep this list as small as possible and install other packages as
-						dependencies as this is less error prone. Preferably only one
-						package like
-						<package>univention-<replaceable>appname</replaceable></package> is
-						given here.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>DefaultPackagesMaster</term>
-				<listitem>
-					<simpara>
-						Installing an application may require an extension of the LDAP
-						schema. This is done by providing a separate package for this
-						schema file and install it on the &ucsMaster; (and all &ucsBackup;
-						servers). The App Center will install these packages automatically
-						throughout the domain — in opposite to the
-						<literal>DefaultPackages</literal> which are only installed
-						locally. Another difference is that these packages will not be
-						uninstalled even when the whole application is removed because a
-						schema that was used before it is removed again will break the
-						whole LDAP server.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Screenshot</term>
-				<listitem>
-					<simpara>
-						Name of a screenshot file illustratin the application in action.
-						Format can be JPG or (preferably)	PNG.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>UseShop</term>
-				<listitem>
-					<simpara>
-						Boolean value whether a link shall be displayed leading directly to
-						some kind of shop. If <literal>ShopURL</literal> is not given
-						<literal>https://shop.univention.com</literal> is used by default.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>ShopURL</term>
-				<listitem>
-					<simpara>
-						Only makes sense in combination with
-						<literal>UseShop=True</literal>. The following parameters are sent
-						to this URL via GET:
-					</simpara>
-					<itemizedlist>
-						<listitem><simpara>
-								key_id (Key ID of the License)
-						</simpara></listitem>
-						<listitem><simpara>
-								ucs_version (major and minor version of UCS, e.g. 3.2)
-						</simpara></listitem>
-						<listitem><simpara>
-								app_id (internal ID of the Application)
-						</simpara></listitem>
-						<listitem><simpara>
-								app_version (current version of the Application)
-						</simpara></listitem>
-						<listitem><simpara>
-								locale (locale used in the frontend, e.g. de)
-						</simpara></listitem>
-					</itemizedlist>
-				</listitem>
-			</varlistentry>
-		</variablelist>
+		<para>
+			A few variables of the ini file need further explanation:
+			<variablelist>
+				<varlistentry>
+					<term>ID</term>
+					<listitem>
+						<simpara>
+							Needs to stay the same all the time. It is used to connect
+							different versions.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Version</term>
+					<listitem>
+						<simpara>
+							Has to rise every time. Needs to be comparable, i.e. versions
+							consisting only of a codename are not useful. In the App Center,
+							only the newest version (or the currently installed one) is shown.
+							It is possible to install one specific version but this needs
+							knowledge of internal IDs (beyond control even for the application
+							vendor).
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>MinPhysicalRAM</term>
+					<listitem>
+						<simpara>
+							The minimal amount of free memory in MB when trying to install the
+							application. The application should work fluently above that limit
+							at least for smaller environments.
+						</simpara>
+						<simpara>
+							In UCS 3.1 an installation was prevented when this test failed. If
+							this limit is set very high many testers will be unable to install
+							this application for UCS 3.1 as there is no easy way to skip this
+							test. Since UCS 3.2 this test only shows a warning that can be
+							overridden by the user.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>RequiredApps</term>
+					<listitem>
+						<simpara>
+							Application IDs for apps that need to be installed in order to run
+							this one correctly. These applications will not be installed
+							automatically. New in UCS 3.2.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>ConflictedSystemPackages</term>
+					<listitem>
+						<simpara>
+							Package names that may not be installed along with the application.
+							It is highly recommended that this list is reflected on
+							<literal>dpkg</literal> level in some other package of the
+							application. This list is just to show the user conflicts
+							<emphasis>before</emphasis> the application is to be installed.
+							Conflicts on package level are resolved automatically and the user
+							has to confirm if some packages will be uninstalled. Same for
+							<literal>ConflictedApps</literal>.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>DefaultPackages</term>
+					<listitem>
+						<simpara>
+							A list of packages that will be installed. It is recommended to
+							keep this list as small as possible and install other packages as
+							dependencies as this is less error prone. Preferably only one
+							package like
+							<package>univention-<replaceable>appname</replaceable></package> is
+							given here.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>DefaultPackagesMaster</term>
+					<listitem>
+						<simpara>
+							Installing an application may require an extension of the LDAP
+							schema. This is done by providing a separate package for this
+							schema file and install it on the &ucsMaster; (and all &ucsBackup;
+							servers). The App Center will install these packages automatically
+							throughout the domain — in opposite to the
+							<literal>DefaultPackages</literal> which are only installed
+							locally. Another difference is that these packages will not be
+							uninstalled even when the whole application is removed because a
+							schema that was used before it is removed again will break the
+							whole LDAP server.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Screenshot</term>
+					<listitem>
+						<simpara>
+							In contrast to the product logo, the screenshot has to be given
+							explicitely in the ini file. That is the filename (with file
+							extension, without any webserver or directory).
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>NotifyVendor</term>
+					<listitem>
+						<simpara>
+							See <xref linkend="app:notification" /> for further explanation.
+							Has to be set to <literal>True</literal> to be activated.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>UseShop</term>
+					<listitem>
+						<simpara>
+							New in UCS 3.2: Boolean value whether a link shall be displayed
+							leading directly to some kind of shop. If
+							<literal>ShopURL</literal> is not given
+							<literal>https://shop.univention.com</literal> is used by
+							default.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>ShopURL</term>
+					<listitem>
+						<simpara>
+							New in UCS 3.2: Only makes sense in combination with
+							<literal>UseShop=True</literal>. The following parameters are
+							sent to this URL via GET:
+						</simpara>
+						<itemizedlist>
+							<listitem><simpara>
+									key_id (Key ID of the License)
+							</simpara></listitem>
+							<listitem><simpara>
+									ucs_version (major and minor version of UCS, e.g. 3.2)
+							</simpara></listitem>
+							<listitem><simpara>
+									app_id (internal ID of the Application)
+							</simpara></listitem>
+							<listitem><simpara>
+									app_version (current version of the Application)
+							</simpara></listitem>
+							<listitem><simpara>
+									locale (locale used in the frontend, e.g. de)
+							</simpara></listitem>
+						</itemizedlist>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>WebInterface</term>
+					<listitem>
+						<simpara>
+							If a web frontend is installed by the application, one may state
+							this here. Should probably start with a "/".
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>UCSOverviewCategory</term>
+					<listitem>
+						<simpara>
+							New in UCS 3.2: If there is a <literal>WebInterface</literal> the
+							App Center automatically registers a link in the overview page of
+							the UCS server. By default these are added in the
+							<envar>services</envar> section of the overview page. If
+							<literal>UCSOverviewCategory</literal> is set to
+							<envar>admin</envar> the link will be generated there. Can be
+							disabled completely if set to <envar>False</envar>. See also
+							<xref linkend="app:integration-by-app-center" />.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>ServerRole</term>
+					<listitem>
+						<simpara>
+							Roles that may use this application, separate by comma. Possible
+							roles are <envar>domaincontroller_master</envar>,
+							<envar>domaincontroller_backup</envar>,
+							<envar>domaincontroller_slave</envar>, and
+							<envar>memberserver</envar>. In UCS 3.1 these applications were
+							visible but not installable (an error message was shown). Since UCS
+							3.2 they are completely hidden. This means that
+							<literal>ServerRole</literal> must not change throughout the
+							lifetime of an application (at least not more restrictive).
+						</simpara>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
 	</section>
 	<section id="app:optionalFiles">
 		<title>Optional application files</title>
 		<para>
 			Along with the <literal>.ini</literal> file, there are more files that
-			can be shipped along with the Application, each of them optionally:
+			can be shipped along with the Application, each of them optionally (at
+			least in English if given):
 		</para>
 		<variablelist>
 			<varlistentry>
@@ -348,54 +552,138 @@
 					</simpara>
 				</listitem>
 			</varlistentry>
-			<varlistentry>
-				<term>WebInterface</term>
-				<listitem>
-					<simpara>
-						If a web frontend is installed by the application, one may state
-						this here. Should probably start with a "/".
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>UCSOverviewCategory</term>
-				<listitem>
-					<simpara>
-						New in UCS 3.2: If there is a <literal>WebInterface</literal> the
-						App Center automatically registers a link in the overview page of
-						the UCS server. By default these are added in the
-						<envar>services</envar> section of the overview page. If
-						<literal>UCSOverviewCategory</literal> is set to
-						<envar>admin</envar> the link will be generated there. Can be
-						disabled completely if set to <envar>False</envar>. See also
-						<xref linkend="app:integration-by-app-center" />.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>ServerRole</term>
-				<listitem>
-					<simpara>
-						Roles that may use this application, separate by comma. Possible
-						roles are <envar>domaincontroller_master</envar>,
-						<envar>domaincontroller_backup</envar>,
-						<envar>domaincontroller_slave</envar>, and
-						<envar>memberserver</envar>. In UCS 3.1 these applications were
-						visible but not installable (an error message was shown). Since UCS
-						3.2 they are completely hidden. This means that
-						<literal>ServerRole</literal> must not change throughout the
-						lifetime of an application (at least not more restrictive).
-					</simpara>
-				</listitem>
-			</varlistentry>
 		</variablelist>
+	</section>
+	<section id="app:upload">
+		<title>Uploading the application</title>
+		<para>
+			If the meta data (text file, logo and screenshot) and the packages are
+			ready for upload, they can be put into a file archive (.zip or
+			(preferably) .tar.gz) and uploaded to <ulink
+				url="http://upload.univention.de">http://upload.univention.de</ulink>.
+			If the archive is larger than 150 MB it has to be split into single parts
+			not larger than 150 MB.
+		</para>
+		<para>
+			A unique upload ID will be displayed after the download that has to be
+			forwarded to Univention. Please send the following information via e-mail
+			to <email><ulink
+					url="mailto:appcenter@univention.de">appcenter@univention.de</ulink></email>:
+			<itemizedlist>
+				<listitem><simpara>
+					Upload ID for the file archive. Please provide all upload IDs if the
+					archive had to be splitted.
+				</simpara></listitem>
+				<listitem><simpara>
+					Grant permission to Univention to distribute the software through
+					Univention App Center.
+				</simpara></listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			All further communication will be done through the ticket system after
+			the upload. 
+		</para>
+	</section>
+	<section id="app:notification">
+		<title>Notifications</title>
+		<para>
+			Univention always receives an estranged notification for statistical
+			purposes upon installation and uninstallation of an application in
+			Univention App Center that is only saved at Univention for data
+			processing and will not be forwarded to any third party.
+		</para>
+		<para>
+			Depending on the guideline of the respective application vendor an
+			updated UCS license key with so-called key identification (Key ID) is
+			required for the installation of an application. In this case, the Key ID
+			will be sent to Univention together with the notification. As a result
+			the application vendor regularly receives a message from Univention with
+			the following information:
+			<itemizedlist>
+				<listitem><simpara>
+					Name of the installed application
+				</simpara></listitem>
+				<listitem><simpara>
+					Registered email address
+				</simpara></listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			The description of every application includes a respective indication for
+			such cases and is shown before installation.
+		</para>
+		<para>
+			If a UCS environment does not have such a key at its disposal (e.g. UCS
+			Free-for-personal-Use Edition) and the vendor requires a Key ID, the user
+			will be asked to request an updated license key directly from Univention.
+			Afterwards the new key can be applied and the application installed.
+		</para>
+	</section>
+	<section id="app:update">
+		<title>Updates for the application</title>
+		<para>
+			If an update for an application is available, the software vendor has to
+			provide the recent packages to Univention. The updated packages go in
+			general through the same procedure as with the initial process described
+			in <xref linkend="app:nextsteps" />.
+		</para>
+		<para>
+			This holds for minor updates (i.e. just small bug fixes) as well as major
+			updates (added functionality, overhauled interface, etc.). The vendor is
+			responsible for a smooth transition from one version to another.
+			<important>
+				<para>
+					The App Center always installs the newest version, i.e. we do not
+					incrementally upgrade an application. So each newer version needs to
+					make sure that the update from <emphasis>any</emphasis> older version
+					works.
+				</para>
+			</important>
+		</para>
+		<para>
+			For the App Center, there is no difference between a minor and a major
+			update. The old version is completely replaced by the newer one. We do
+			not natively support two (more or less independent) "versions lines" of
+			the same application (e.g. one for those who want the newest features and
+			one for those who wish to have a stable platform with nothing but
+			conservative bug fixes). If this is desired, two separate applications
+			need to be uploaded to the App Center that will show up next to each
+			other. In this case the <literal>ID</literal> in the ini file needs to be
+			changed and the application somehow needs to make sure that they cannot
+			both be installed in parallel (e.g. a version dependency on
+			<literal>dpkg</literal> level of some meta package). Univention may help
+			you with the details.
+		</para>
+		<para>
+			Updates for the application description (.ini file), the product logo,
+			the screenshot, readme files (especially
+			<literal>README_UPDATE</literal>) and the packages are all submitted to
+			<email><ulink
+					url="mailto:appcenter@univention.de">appcenter@univention.de</ulink></email>.
+			Only those files that changed need to be uploaded again, everything else
+			can be copied by Univention. The ini file needs to change every time,
+			because the <literal>Version</literal> has to be increased. If this is
+			the only change in the ini file, this may be stated in the email instead
+			of shipping the file and we will take care of that during copying. Please
+			use the upload if a higher amount of data has to be transfered (<xref
+				linkend="app:upload" />).
+		</para>
+		<para>
+			As the application has already gone through the initial approval process
+			and passed, Univention will offer to "semi-automatically" publish the
+			application. I.e. we will run our test suite while giving you the chance
+			to test your application. If our tests go well and we do not hear
+			anything contrary from you, we will publish the application by then.
+		</para>
 	</section>
 	<section id="app:integration">
 		<title>Integrating the Application in UCS</title>
 	  <section id="app:integration-by-app-center">
 		  <title>Automatic integration done by the App Center</title>
 			<para>
-				Some tasks can be done automatically be the App Center and do not need any (or much) help from the vendor.
+				Some tasks can be done automatically by the App Center and do not need
+				any (or much) help from the vendor.
 			</para>
 			<para>
 				New in UCS 3.2: The overview of any UCS system (i.e. plain
@@ -493,35 +781,6 @@
 		  <title>Registration of LDAP and UDM Extensions</title>
 			<acronym>LDAP</acronym> schema and ACL extensions as well as UDM syntax, UDM hook and UDM extension modules can be installed via the library function <literal>ucs_registerLDAPExtension</literal>, see <xref linkend="join:libraries:shell"/>.
 		</section>
-	</section>
-
-	<section id="app:checklist">
-		<title>Checklist</title>
-		<para>
-			Any Application needs to pass the following tests:
-		</para>
-		<itemizedlist>
-			<listitem>
-				<simpara>
-					App can be installed and does not break UCS functionality.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-					App can be removed and does not break UCS functionality.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-					App cleans up every change it made. This holds especially for extended attributes. See <xref linkend="join:unjoin"/>
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-					Can be upgraded.
-				</simpara>
-			</listitem>
-		</itemizedlist>
 	</section>
 
 	<section id="app:testcenter">
