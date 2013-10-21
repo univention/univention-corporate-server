@@ -1718,6 +1718,11 @@
 			DC master system and can authenticate to the LDAP with the join credentials
 			(<ulink url="&ucsbug;32578">Bug 32578</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			Several functions of <command>univention-ipcalc6</command> to compute DNS names have been moved to the new Python module <package>univention.ipcalc</package> (<ulink url="&ucsbug;32931">Bug 32931</ulink>).
+		</simpara></listitem>
+
 	</itemizedlist>
 </section>
 

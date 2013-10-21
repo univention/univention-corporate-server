@@ -1,2 +1,3 @@
 univention-ipcalc usr/bin/
 univention-ipcalc6 usr/bin/
+univention/ipcalc.py usr/share/pyshared/univention/

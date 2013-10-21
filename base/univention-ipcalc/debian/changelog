@@ -1,3 +1,10 @@
+univention-ipcalc (5.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2
+  * Split IP calculation into re-usable module (Bug #32931)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 21 Oct 2013 13:09:08 +0200
+
 univention-ipcalc (4.0.0-3) unstable; urgency=low
 
   * Convert spaces to tab (Bug #28143, Bug #25626)
