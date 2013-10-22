@@ -118,7 +118,7 @@ if [ $server_role != "domaincontroller_master" ]; then
 		ucs/web/overview/entries/admin/ldap-master/label/de?"Domaincontroller Master" \
 		ucs/web/overview/entries/admin/ldap-master/description?"Domaincontroller Master of UCS domain $domainname" \
 		ucs/web/overview/entries/admin/ldap-master/description/de?"Domänencontroller Master der UCS Domäne $domainname" \
-		ucs/web/overview/entries/admin/ldap-master/link?"http://$ldap_master/" \
+		ucs/web/overview/entries/admin/ldap-master/link?"https://$ldap_master/" \
 		ucs/web/overview/entries/admin/ldap-master/priority?"09"
 fi
 
