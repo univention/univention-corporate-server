@@ -1356,6 +1356,7 @@ Dies muss auf allen Samba-Anmeldeservern ausgeführt werden.
 <programlisting language="sh">
 net rpc trustdom establish &lt;Windowsdomain&gt;
 net setauthuser -UAdministrator
+echo -e "[global]\nwinbind rpc only = yes" >> /etc/samba/local.conf
 /etc/init.d/winbind restart
 ucr set auth/methods="krb5 ldap unix winbind"
 /etc/init.d/nscd restart
