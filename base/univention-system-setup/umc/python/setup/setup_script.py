@@ -30,24 +30,23 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+import os
 import sys
-import re
 from datetime import datetime
-
-# translation: manually set_language() because
-# for some reason, the default locale is not used by default
-import locale
-from univention.lib.i18n import Translation
-translation = Translation('univention-system-setup-scripts')
-default_locale = locale.getdefaultlocale()
-translation.set_language(default_locale[0])
-_ = translation.translate
-locale.setlocale(locale.LC_ALL, default_locale) # needed for external translation (e.g. apt)
 
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 from util import PATH_SETUP_SCRIPTS, PATH_PROFILE
 ucr = ConfigRegistry()
+
+
+def setup_i18n():
+	import locale
+	locale.setlocale(locale.LC_ALL, '')
+	from univention.lib.i18n import Translation
+	return Translation('univention-system-setup-scripts').translate
+_ = setup_i18n()
+
 
 class SetupScript(object):
 	'''Baseclass for all Python-based Setup-Scripts.
@@ -395,6 +394,7 @@ class AptScript(SetupScript):
 	def down(self):
 		self.package_manager.unlock()
 
+
 def main(setup_script, exit=True):
 	'''Helper function to run the setup_script and evaluate its
 	return code as a "shell-compatible" one. You may sys.exit immediately
@@ -405,4 +405,3 @@ def main(setup_script, exit=True):
 		sys.exit(ret_code)
 	else:
 		return ret_code
-
