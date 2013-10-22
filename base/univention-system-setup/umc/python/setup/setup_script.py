@@ -44,7 +44,8 @@ translation.set_language(default_locale[0])
 _ = translation.translate
 locale.setlocale(locale.LC_ALL, default_locale) # needed for external translation (e.g. apt)
 
-from univention.config_registry import ConfigRegistry, handler_set
+from univention.config_registry import ConfigRegistry
+from univention.config_registry.frontend import ucr_update
 from util import PATH_SETUP_SCRIPTS, PATH_PROFILE
 ucr = ConfigRegistry()
 
@@ -204,12 +205,9 @@ class SetupScript(object):
 		call it manually if you need to
 		do it (e.g. in down())'''
 		if self._ucr_changes:
-			changes = ['%s=%s' % (var_name, value) for var_name, value in self._ucr_changes.iteritems()]
-			handler_set(changes)
-			# reset (in case it is called multiple)
-			# times in a script
+			ucr_update(ucr, self._ucr_changes)
+			# reset (in case it is called multiple) times in a script
 			self._ucr_changes.clear()
-		ucr.load()
 
 	def get_ucr_var(self, var_name, search_in_changes=True):
 		'''Retrieve the value of var_name from ucr.
