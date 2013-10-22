@@ -1,3 +1,9 @@
+univention-nagios (7.0.3-2) unstable; urgency=low
+
+  * call unjoin script when removing, not puring (Bug #32453)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 22 Oct 2013 16:19:58 +0200
+
 univention-nagios (7.0.3-1) unstable; urgency=low
 
   * adapted unjoin script for univention-nagios-server (Bug #32453)

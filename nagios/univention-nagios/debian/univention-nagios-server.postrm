@@ -46,7 +46,7 @@ univention-config-registry unset \
 	ucs/web/overview/entries/admin/nagios/priority
 
 
-if [ "$1" = "purge" ] ; then
+if [ "$1" = "remove" ] ; then
 	call_unjoinscript 28univention-nagios-server.uinst
 fi
 
