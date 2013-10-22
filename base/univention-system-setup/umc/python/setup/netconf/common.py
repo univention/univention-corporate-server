@@ -91,7 +91,7 @@ class AddressMap(AddressChange):
 		for name, iface in self.changeset.old_interfaces.ipv4_interfaces:
 			old_addr = iface.ipv4_address()
 			new_addr = ipv4s.get(name, default)
-			if old_addr != new_addr:
+			if old_addr.ip != new_addr.ip if new_addr else None:
 				mapping[old_addr] = new_addr
 		return mapping
 
@@ -105,7 +105,7 @@ class AddressMap(AddressChange):
 		for iface, name in self.changeset.old_interfaces.ipv6_interfaces:
 			old_addr = iface.ipv6_address(name)
 			new_addr = ipv6s.get((iface.name, name), default)
-			if old_addr != new_addr:
+			if old_addr.ip != new_addr.ip if new_addr else None:
 				mapping[old_addr] = new_addr
 		return mapping
 

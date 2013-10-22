@@ -1,3 +1,9 @@
+univention-system-setup (7.0.51-6) unstable; urgency=low
+
+  * Detect more interface changes (Bug #28670)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 22 Oct 2013 16:24:45 +0200
+
 univention-system-setup (7.0.51-5) unstable; urgency=low
 
   * Unset empty values to forget old interfaces (Bug #28670)
