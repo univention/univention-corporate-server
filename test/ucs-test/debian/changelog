@@ -1,3 +1,9 @@
+ucs-test (4.0.151-2) unstable; urgency=low
+
+  * Fix ftbfs (Bug #32554)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 Oct 2013 16:27:14 +0200
+
 ucs-test (4.0.151-1) unstable; urgency=low
 
   * Minor cleanups for the samba printer test (Bug #29059)
