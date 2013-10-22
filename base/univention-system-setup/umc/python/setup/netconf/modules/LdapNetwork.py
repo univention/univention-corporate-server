@@ -3,7 +3,7 @@ from univention.management.console.modules.setup.netconf.common import LdapChang
 import univention.admin.objects
 import univention.admin.uldap as uldap
 import univention.admin.modules as modules
-from univention.admin.uexceptions import ldapError
+from univention.admin.uexceptions import base as UniventionBaseException
 from ldap import LDAPError
 
 
@@ -37,7 +37,7 @@ class PhaseLdapNetwork(LdapChange):
 			# first part.
 			#self._update_network()
 			self._recreate_network()
-		except ldapError as ex:
+		except (LDAPError, UniventionBaseException) as ex:
 			self.logger.warn("Failed LDAP: %s", ex)
 			raise
 
@@ -50,7 +50,7 @@ class PhaseLdapNetwork(LdapChange):
 		else:
 			try:
 				self.ldap.modify(network_dn, changes)
-			except LDAPError as ex:
+			except (LDAPError, UniventionBaseException) as ex:
 				self.logger.warn("Failed to update default network '%s': %s", network_dn, ex)
 
 	def _recreate_network(self):

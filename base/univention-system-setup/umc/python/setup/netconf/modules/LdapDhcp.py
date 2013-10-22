@@ -1,7 +1,8 @@
 from univention.management.console.modules.setup.netconf.common import LdapChange
 import univention.admin.objects
 import univention.admin.modules as modules
-from univention.admin.uexceptions import ldapError
+from univention.admin.uexceptions import base as UniventionBaseException
+from ldap import LDAPError
 
 
 class PhaseLdapDhcp(LdapChange):
@@ -14,7 +15,7 @@ class PhaseLdapDhcp(LdapChange):
 		try:
 			self.open_ldap()
 			self._create_subnet()
-		except ldapError as ex:
+		except (LDAPError, UniventionBaseException) as ex:
 			self.logger.warn("Failed LDAP: %s", ex)
 			raise
 

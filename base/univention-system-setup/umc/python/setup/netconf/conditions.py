@@ -129,6 +129,8 @@ class Ldap(Phase):
 		super(Ldap, self).check()
 		if self.available is None:
 			self.load_state()
+		if not self.available:
+			raise SkipPhase("Missing LDAP")
 
 	def load_state(self):
 		self.check_available()
@@ -162,7 +164,10 @@ class Ldap(Phase):
 
 	def load_admin_credentials(self):
 		self.binddn = "cn=admin,%(ldap/base)s" % self.changeset.ucr
-		self.bindpwd = open("/etc/ldap.secret", "r").read()
+		try:
+			self.bindpwd = open("/etc/ldap.secret", "r").read()
+		except IOError:
+			self.available = False
 
 	def load_remote_credentials(self):
 		try:
@@ -170,7 +175,7 @@ class Ldap(Phase):
 			self.bindpwd = self.changeset.profile["ldap_password"]
 			self.lookup_user(username)
 		except KeyError:
-			return
+			self.available = False
 
 	def lookup_user(self, username):
 		try:
@@ -183,3 +188,4 @@ class Ldap(Phase):
 			self.binddn = result[0]
 		except LDAPError as ex:
 			self.logger.warn("Failed LDAP search for '%s': %s", username, ex)
+			self.available = False

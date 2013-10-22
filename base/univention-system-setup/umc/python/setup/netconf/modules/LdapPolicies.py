@@ -1,7 +1,8 @@
 from univention.management.console.modules.setup.netconf.common import AddressMap, LdapChange
 import univention.admin.objects
 import univention.admin.modules as modules
-from univention.admin.uexceptions import ldapError
+from univention.admin.uexceptions import base as UniventionBaseException
+from ldap import LDAPError
 
 
 class PhaseLdapPolicies(AddressMap, LdapChange):
@@ -39,7 +40,7 @@ class PhaseLdapPolicies(AddressMap, LdapChange):
 				policies = module.lookup(None, self.ldap, None)
 				for policy in policies:
 					self._rewrite_policy(policy, udm_property, mapping)
-		except ldapError as ex:
+		except (LDAPError, UniventionBaseException) as ex:
 			self.logger.warn("Failed LDAP: %s", ex, exc_info=True)
 
 	def _get_address_mapping(self):

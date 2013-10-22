@@ -2,7 +2,8 @@ from univention.management.console.modules.setup.netconf.common import AddressMa
 from univention.management.console.modules.setup.netconf.conditions import Executable
 import univention.admin.objects
 import univention.admin.modules as modules
-from univention.admin.uexceptions import ldapError
+from univention.admin.uexceptions import base as UniventionBaseException
+from ldap import LDAPError
 from ldap.filter import escape_filter_chars
 import os
 
@@ -32,7 +33,7 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
 				self.logger.warn("Failed to find self in LDAP")
 				return
 			self._update(computer)
-		except ldapError as ex:
+		except (LDAPError, UniventionBaseException) as ex:
 			self.logger.warn("Failed LDAP: %s", ex, exc_info=True)
 
 	def _get_module(self):
