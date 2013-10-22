@@ -933,11 +933,6 @@ The installation packages are also provided via the setup
 wizard &ucsUMC;.
 </para>
 <para>
-Selecting <guimenu>Download the password service for Windows and the UCS certificate</guimenu>
-opens a new browser window in which five files are available to
-download:
-</para>
-<para>
 <figure><title>Packages for the password service</title>
  <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_6-en_de.png"/>
  </figure>

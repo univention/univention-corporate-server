@@ -973,12 +973,7 @@ Windows-Server erfordert.
 </para>
 <para>
 Die Installations-Pakete werden ebenfalls über den
-Einrichtungs-Assistenten der &ucsUMC; bereitgestellt.
-</para>
-<para>
-Nach Auswahl von <guimenu>Herunterladen des UCS-Zertifikats und
-  des Passwort-Dienstes für Windows</guimenu> öffnet sich ein neues
-Browser-Fenster, in dem fünf Dateien zum Download angeboten werden:
+Einrichtungs-Assistenten der &ucsUMC; bereitgestellt:
 </para>
 <para>
 <figure><title>Download der Pakete für den Passwortdienst</title>
