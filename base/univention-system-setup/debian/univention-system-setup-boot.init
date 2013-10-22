@@ -82,7 +82,7 @@ case "$1" in
 		log_action_end_msg 0
 		;;
 	*)
-		log_action_msg "Usage: /etc/init.d/univention-system-setup-boot {start}."
+		log_action_msg "Usage: /etc/init.d/univention-system-setup-boot {start|stop}."
 		exit 1
 		;;
 esac
