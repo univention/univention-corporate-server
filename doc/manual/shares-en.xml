@@ -38,6 +38,23 @@
 	same; the execute permission here refers to the permission to enter a
 	directory.
   </para>
+
+  <!-- <para> -->
+  <!-- 	Ist die <emphasis>setuid</emphasis>-Option für eine ausführbare Datei gesetzt, kann diese von -->
+  <!-- 	Benutzern mit den Rechten des Besitzers oder der Besitzergruppe ausgeführt werden. -->
+  <!-- </para> -->
+
+  <!-- <para> -->
+  <!-- 	Wird die Option <emphasis>setgid</emphasis> für ein Verzeichnis gesetzt, erben dort angelegte -->
+  <!-- 	Dateien die Besitzergruppe des Verzeichnisses. Werden weitere Verzeichnisse angelegt, erben -->
+  <!-- 	diese ebenfalls die Option. -->
+  <!-- </para> -->
+
+  <!-- <para> -->
+  <!-- 	Ist die Option <emphasis>sticky</emphasis> für ein Verzeichnis aktiviert, können Dateien in dem -->
+  <!-- 	Verzeichnis nur von dem Besitzer der Datei oder durch den root-Benutzer gelöscht werden. -->
+  <!-- </para> -->
+
   <para>
 	Each file/directory is owned by a user and a group. The three
 	permission outlined above can be applied to the user owner, the owner group
