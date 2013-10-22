@@ -1,3 +1,10 @@
+ucs-test (4.0.149-1) unstable; urgency=low
+
+  * lib/computer.sh: use role=${2:-windows} in computer_dn and
+    computer_remove as well (Bug #32780)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Oct 2013 13:49:27 +0200
+
 ucs-test (4.0.148-1) unstable; urgency=low
 
   * Bug #32554: added new checks for ucs_registerLDAPExtension
