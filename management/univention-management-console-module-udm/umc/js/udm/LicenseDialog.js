@@ -32,53 +32,49 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/dom-style",
-	"dijit/Dialog",
 	"umc/tools",
 	"umc/dialog",
 	"umc/render",
-	"umc/widgets/ContainerWidget",
+	"umc/widgets/ConfirmDialog",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/Text",
 	"umc/widgets/TitlePane",
-	"umc/widgets/Button",
 	"dojo/text!umc/modules/udm/license.html",
 	"dojo/text!umc/modules/udm/license_v2.html",
 	"dojo/text!umc/modules/udm/license_gpl.html",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, style, Dialog, tools, dialog, render, ContainerWidget, StandbyMixin, Text, TitlePane, Button, licenseHtml, license_v2Html, license_gplHtml, _) {
+], function(declare, lang, style, tools, dialog, render, ConfirmDialog, StandbyMixin, Text, TitlePane, licenseHtml, license_v2Html, license_gplHtml, _) {
 
 	var ffpu_license_info = _('<p>The "free for personal use" edition of Univention Corporate Server is a special software license which allows users free use of the Univention Corporate Server and software products based on it for private purposes acc. to § 13 BGB (German Civil Code).</p><p>In the scope of this license, UCS can be downloaded, installed and used from our servers. It is, however, not permitted to make the software available to third parties to download or use it in the scope of a predominantly professional or commercial usage.</p><p>The license of the "free for personal use" edition of UCS occurs in the scope of a gift contract. We thus exclude all warranty and liability claims, except in the case of deliberate intention or gross negligence. We emphasise that the liability, warranty, support and maintance claims arising from our commercial software contracts do not apply to the "free for personal use" edition.</p><p>We wish you a lot of happiness using the "free for personal use" edition of Univention Corporate Server and look forward to receiving your feedback. If you have any questions, please consult our forum, which can be found on the Internet at http://forum.univention.de/.</p>');
 
-	return declare('umc.modules.udm.LicenseDialog', [Dialog, StandbyMixin], {
+	return declare('umc.modules.udm.LicenseDialog', [ConfirmDialog, StandbyMixin], {
 		// summary:
 		//		Class that provides the license Dialog for UCS. It shows details about the current license.
 
-		// the widget's class name as CSS class
-		'class': 'umcPopup',
+		// umcPopup for content styling; umcConfirmDialog for max-width
+		'class': 'umcPopup umcConfirmDialog',
 
 		_widgets: null,
 
-		_container: null,
-
 		licenseInfo: null,
 
-		buildRendering: function() {
+		standbyOpacity: 1.0,
+		closable: true,
+
+		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			// put buttons into separate container
-			var _buttonContainer = new ContainerWidget({
-				style: 'text-align: center;',
-				'class': 'umcButtonRow'
-			});
-			_buttonContainer.addChild(new Button({
-				label: _('Close'),
-				defaultButton: true,
-				onClick: lang.hitch(this, function() {
-					this.hide();
-				})
-			}));
+			this.title = _('Information about the current UCS license');
 
-			var widgets = [{
+			this.options = [{
+				name: 'close',
+				label: _('Close'),
+				callback: lang.hitch(this, function() {
+					this.close();
+				})
+			}];
+
+			this._widgets = render.widgets([{
 				type : Text,
 				name : 'message',
 				style : 'width: 100%',
@@ -94,40 +90,14 @@ define([
 						style.set(this._widgets.ffpu.domNode, 'display', display);
 					}
 				})
-			}];
+			}]);
 
-			this._widgets = render.widgets(widgets);
-			var _container = render.layout(['message', 'ffpu'], this._widgets);
+			this.message = render.layout(['message', 'ffpu'], this._widgets);
 
-			var _content = new ContainerWidget({});
-			_content.addChild(_container);
-
-			// put the layout together
-			this._container = new ContainerWidget({
-				style: 'width: 450px'
-			});
-			this._container.addChild(_content);
-			this._container.addChild(_buttonContainer);
-			this.addChild(this._container);
-			this.on('hide', lang.hitch(this, function() {
-				this.destroyRecursive();
-			}));
-
-			// attach layout to dialog
-			// this.set('content', this._container);
-			this.set('title', _('Information about the current UCS license'));
-
-			this._widgets.ffpu.addChild(this._ffpuText = new Text({'content': ''}));
+			this._ffpuText = new Text({'content': ''});
+			this._widgets.ffpu.addChild(this._ffpuText);
 
 			this.updateLicense();
-		},
-
-		_limitInfo: function(limit) {
-			if (this.licenseInfo.licenses[limit] === null) {
-				return  _('unlimited');
-			} else {
-				return _('%s (used: %s)', this.licenseInfo.licenses[limit], this.licenseInfo.real[limit]);
-			}
 		},
 
 		updateLicense: function() {
@@ -233,10 +203,14 @@ define([
 			}
 
 			this._widgets.message.set('content', lang.replace(message, keys));
+		},
 
-			// recenter dialog
-			this._size();
-			this._position();
+		_limitInfo: function(limit) {
+			if (this.licenseInfo.licenses[limit] === null) {
+				return  _('unlimited');
+			} else {
+				return _('%s (used: %s)', this.licenseInfo.licenses[limit], this.licenseInfo.real[limit]);
+			}
 		}
 	});
 });

@@ -31,49 +31,40 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dijit/Dialog",
 	"umc/tools",
 	"umc/dialog",
 	"umc/render",
-	"umc/widgets/ContainerWidget",
+	"umc/widgets/ConfirmDialog",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/Text",
 	"umc/widgets/TextArea",
 	"umc/widgets/Button",
 	"umc/widgets/Uploader",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, Dialog, tools, dialog, render, ContainerWidget, StandbyMixin, Text, TextArea, Button, Uploader, _) {
+], function(declare, lang, tools, dialog, render, ConfirmDialog, StandbyMixin, Text, TextArea, Button, Uploader, _) {
 
-	return declare('umc.modules.udm.LicenseImportDialog', [Dialog, StandbyMixin], {
+	return declare('umc.modules.udm.LicenseImportDialog', [ConfirmDialog, StandbyMixin], {
 		// summary:
 		//		Class that provides the license import Dialog for UCS. It support importing a new license.
 
-		// the widget's class name as CSS class
-		'class': 'umcPopup',
+		closable: true,
 
 		_widgets: null,
 
-		_container: null,
-
 		title: _('Import of new UCS license'),
 
-		buildRendering: function() {
+		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			// put buttons into separate container
-			var _buttonContainer = new ContainerWidget({
-				style: 'text-align: center;',
-				'class': 'umcButtonRow'
-			});
-			_buttonContainer.addChild(new Button({
+			this.options = [{
+				name: 'close',
 				label: _('Close'),
-				defaultButton: true,
-				onClick: lang.hitch(this, function() {
-					this.hide();
+				callback: lang.hitch(this, function() {
+					this.close();
 				})
-			}));
+			}];
 
-			var widgets = [{
+			this._widgets = render.widgets([{
 				type : Text,
 				name : 'titleImport',
 				style : 'width: 100%',
@@ -104,7 +95,7 @@ define([
 				type: Text,
 				name: 'spacer',
 				content: '&nbsp;&nbsp;'
-			}];
+			}]);
 
 			var buttons = [{
 				type : Button,
@@ -120,23 +111,7 @@ define([
 				})
 			}];
 
-			this._widgets = render.widgets(widgets);
-			var _buttons = render.buttons(buttons);
-			var _container = render.layout(['titleImport', 'message', 'licenseUpload', 'spacer', 'licenseText', 'btnLicenseText'], this._widgets, _buttons);
-
-			var _content = new ContainerWidget({});
-			_content.addChild(_container);
-
-			// put the layout together
-			this._container = new ContainerWidget({
-				style: 'width: 600px'
-			});
-			this._container.addChild(_content);
-			this._container.addChild(_buttonContainer);
-			this.addChild(this._container);
-			this.on('hide', lang.hitch(this, function() {
-				this.destroyRecursive();
-			}));
+			this.message = render.layout(['titleImport', 'message', 'licenseUpload', 'spacer', 'licenseText', 'btnLicenseText'], this._widgets, render.buttons(buttons));
 		},
 
 		_handleUploaded: function(result) {
