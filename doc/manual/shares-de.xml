@@ -26,63 +26,63 @@
 	Mount-Option <emphasis>user_xattr</emphasis> eingebunden werden.
   </para>
 
-<section id="shares::permissions"><title>Zugriffsrechte auf Daten in Freigaben</title>
-<para>
-Die Verwaltung von Zugriffsrechten auf Dateien erfolgt in UCS anhand von Benutzern
-und Gruppen. Alle Fileserver der UCS-Domäne greifen über das LDAP-Verzeichnis
-auf identische Benutzer- und Gruppendaten zu.
-</para>
-<para>
-Pro Datei werden drei Zugriffsrechte unterschieden: Lesen, Schreiben und
-Ausführen.
-</para>
-<para>
-Pro Verzeichnis gelten ebenfalls drei Zugriffsrechte: Ebenso Lesen und
-Schreiben, das Ausführ-Recht bezieht sich hier auf die Berechtigung in ein
-Verzeichnis zu wechseln.
-</para>
-<para>
-Jede Datei/Verzeichnis wird von einem Benutzer und einer Gruppe besessen. Die
-drei oben genannten Rechte können jeweils auf den Besitzer, die
-Besitzer-Gruppe und alle anderen angewendet werden.
-</para>
-<para>
-Mit Access Control Lists sind noch mächtigere Berechtigungsmodelle
-möglich. Die Konfiguration von ACLs ist in der Univention SDB
-beschrieben <biblioref linkend="sdb-acls"/>.
-</para>
-<para>
-Im Unix-Berechtigungsmodell - und somit unter UCS - reicht das Schreibreicht
-auf eine Datei nicht aus, um die Berechtigungen einer Datei zu verändern. Dies
-bleibt den Besitzern/der Besitzergruppe einer Datei vorbehalten.
-Unter Microsoft Windows hingegen verfügen alle Benutzer mit Schreibrechten
-auch die über Berechtigung, die Berechtigungen anzupassen. Dieses
-Verhalten kann für CIFS-Freigaben angepasst werden (siehe
-<xref linkend="shares::management"/>).
-</para>
-<para>
-Beim Anlegen einer Verzeichnisfreigabe werden nur initiale Besitzer und Zugriffsrechte
-vergeben. Existiert das Verzeichnis bereits, werden die Berechtigungen des vorhandenen
-Verzeichnisses angepasst.
-</para>
-<para>
-Berechtigungsänderungen an einem freigegebenen Verzeichnis, die direkt im Dateisystem
-vorgenommen wurden, werden nicht an das LDAP-Verzeichnis weitergeleitet.
-Wird das Freigabe-Objekt in der &ucsUMC; bearbeitet, werden die Änderungen im
-Dateisystem überschrieben. Einstellungen der Freigabewurzel sollten deshalb nur mit
-&ucsUMC; gesetzt und bearbeitet werden. Die weitere Anpassung der
-Zugriffsrechte der unterliegenden Verzeichnisses erfolgt dann von den
-zugreifenden Clients, z.B. über den Windows-Explorer, oder direkt über
-Kommandozeilenbefehle auf dem Fileserver.
-</para>
-<para>
-Die Freigabe <emphasis>homes</emphasis> nimmt unter Samba eine Sonderstellung ein. Sie dient
-der Freigabe der Heimatverzeichnisse der Benutzer. Für jeden Benutzer wird
-diese Freigabe automatisch in das eigene Heimatverzeichnis
-umgewandelt. Deswegen ignoriert Samba die der Freigabe zugewiesenen Rechte
-und verwendet die Rechte des jeweiligen Heimatverzeichnisses.
-</para>
-</section>
+  <section id="shares::permissions"><title>Zugriffsrechte auf Daten in Freigaben</title>
+  <para>
+	Die Verwaltung von Zugriffsrechten auf Dateien erfolgt in UCS anhand von Benutzern
+	und Gruppen. Alle Fileserver der UCS-Domäne greifen über das LDAP-Verzeichnis
+	auf identische Benutzer- und Gruppendaten zu.
+  </para>
+  <para>
+	Pro Datei werden drei Zugriffsrechte unterschieden: Lesen, Schreiben und
+	Ausführen.
+  </para>
+  <para>
+	Pro Verzeichnis gelten ebenfalls drei Zugriffsrechte: Ebenso Lesen und
+	Schreiben, das Ausführ-Recht bezieht sich hier auf die Berechtigung in ein
+	Verzeichnis zu wechseln.
+  </para>
+  <para>
+	Jede Datei/Verzeichnis wird von einem Benutzer und einer Gruppe besessen. Die
+	drei oben genannten Rechte können jeweils auf den Besitzer, die
+	Besitzer-Gruppe und alle anderen angewendet werden.
+  </para>
+  <para>
+	Mit Access Control Lists sind noch mächtigere Berechtigungsmodelle
+	möglich. Die Konfiguration von ACLs ist in der Univention SDB
+	beschrieben <biblioref linkend="sdb-acls"/>.
+  </para>
+  <para>
+	Im Unix-Berechtigungsmodell - und somit unter UCS - reicht das Schreibreicht
+	auf eine Datei nicht aus, um die Berechtigungen einer Datei zu verändern. Dies
+	bleibt den Besitzern/der Besitzergruppe einer Datei vorbehalten.
+	Unter Microsoft Windows hingegen verfügen alle Benutzer mit Schreibrechten
+	auch die über Berechtigung, die Berechtigungen anzupassen. Dieses
+	Verhalten kann für CIFS-Freigaben angepasst werden (siehe
+	<xref linkend="shares::management"/>).
+  </para>
+  <para>
+	Beim Anlegen einer Verzeichnisfreigabe werden nur initiale Besitzer und Zugriffsrechte
+	vergeben. Existiert das Verzeichnis bereits, werden die Berechtigungen des vorhandenen
+	Verzeichnisses angepasst.
+  </para>
+  <para>
+	Berechtigungsänderungen an einem freigegebenen Verzeichnis, die direkt im Dateisystem
+	vorgenommen wurden, werden nicht an das LDAP-Verzeichnis weitergeleitet.
+	Wird das Freigabe-Objekt in der &ucsUMC; bearbeitet, werden die Änderungen im
+	Dateisystem überschrieben. Einstellungen der Freigabewurzel sollten deshalb nur mit
+	&ucsUMC; gesetzt und bearbeitet werden. Die weitere Anpassung der
+	Zugriffsrechte der unterliegenden Verzeichnisses erfolgt dann von den
+	zugreifenden Clients, z.B. über den Windows-Explorer, oder direkt über
+	Kommandozeilenbefehle auf dem Fileserver.
+  </para>
+  <para>
+	Die Freigabe <emphasis>homes</emphasis> nimmt unter Samba eine Sonderstellung ein. Sie dient
+	der Freigabe der Heimatverzeichnisse der Benutzer. Für jeden Benutzer wird
+	diese Freigabe automatisch in das eigene Heimatverzeichnis
+	umgewandelt. Deswegen ignoriert Samba die der Freigabe zugewiesenen Rechte
+	und verwendet die Rechte des jeweiligen Heimatverzeichnisses.
+  </para>
+  </section>
 
 <section id="shares::management"><title>Verwaltung von Freigaben in der Univention Management Console</title>
 <para>

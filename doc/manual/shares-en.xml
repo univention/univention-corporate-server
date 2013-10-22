@@ -24,60 +24,60 @@
 	<emphasis>user_xattr</emphasis>.
   </para>
 
-<section id="shares::permissions"><title>Access rights to data in shares</title>
-<para>
-Access permissions to files are managed in UCS using users and
-groups. All the file servers in the UCS domain access identical user
-and group data via the LDAP directory.
-</para>
-<para>
-Three access rights are differentiated per file: read, write and execute.
-</para>
-<para>
-Three access rights also apply per directory: read and write are the
-same; the execute permission here refers to the permission to enter a
-directory.
-</para>
-<para>
-Each file/directory is owned by a user and a group. The three
-permission outlined above can be applied to the user owner, the owner group
-and all others.
-</para>
-<para>
-Access control lists allow even more complex permission models.
-The configuration of ACLs is described in the Univention SDB <biblioref linkend="sdb-acls"/>.
-</para>
-<para>
-In the Unix permission model - and thus under UCS - write permission
-is not sufficient to change the permissions of a file. Tis iss limited
-to the owner/owner group of a file. In contrast, under Microsoft Windows
-all users with write permissions also have the permission to change
-the permissions. This scheme can be adjusted for CIFS shares (see
-<xref linkend="shares::management"/>).
-</para>
-<para>
-Only initial users and access permissions are assigned when a
-directory share is created. If the directory already exists, the
-permissions of the existing directory are adjusted.
-</para>
-<para>
-Changes to the permissions of a shared directory performed directly
-in the file system are not forwarded to the LDAP directory. If the
-share object is edited within the &ucsUMC;, the changes in the field
-system are overwritten. Settings to the root directory of a file share
-should thus only be set and edited with &ucsUMC;. Additional adjustment of the access
-permissions of the subordinate directories are then performed via the
-accessing clients, e.g., via Windows Explorer, or directly via command
-line commands on the file server.
-</para>
-<para>
-The <emphasis>homes</emphasis> share plays a special role within Samba. This share is used for
-sharing the home directories of the users. This share is automatically
-converted to the user's home directory. Samba therefore ignores the rights
-assigned to the share, and uses the rights of the respective home directory
-instead.
-</para>
-</section>
+  <section id="shares::permissions"><title>Access rights to data in shares</title>
+  <para>
+	Access permissions to files are managed in UCS using users and
+	groups. All the file servers in the UCS domain access identical user
+	and group data via the LDAP directory.
+  </para>
+  <para>
+	Three access rights are differentiated per file: read, write and execute.
+  </para>
+  <para>
+	Three access rights also apply per directory: read and write are the
+	same; the execute permission here refers to the permission to enter a
+	directory.
+  </para>
+  <para>
+	Each file/directory is owned by a user and a group. The three
+	permission outlined above can be applied to the user owner, the owner group
+	and all others.
+  </para>
+  <para>
+	Access control lists allow even more complex permission models.
+	The configuration of ACLs is described in the Univention SDB <biblioref linkend="sdb-acls"/>.
+  </para>
+  <para>
+	In the Unix permission model - and thus under UCS - write permission
+	is not sufficient to change the permissions of a file. Tis iss limited
+	to the owner/owner group of a file. In contrast, under Microsoft Windows
+	all users with write permissions also have the permission to change
+	the permissions. This scheme can be adjusted for CIFS shares (see
+	<xref linkend="shares::management"/>).
+  </para>
+  <para>
+	Only initial users and access permissions are assigned when a
+	directory share is created. If the directory already exists, the
+	permissions of the existing directory are adjusted.
+  </para>
+  <para>
+	Changes to the permissions of a shared directory performed directly
+	in the file system are not forwarded to the LDAP directory. If the
+	share object is edited within the &ucsUMC;, the changes in the field
+	system are overwritten. Settings to the root directory of a file share
+	should thus only be set and edited with &ucsUMC;. Additional adjustment of the access
+	permissions of the subordinate directories are then performed via the
+	accessing clients, e.g., via Windows Explorer, or directly via command
+	line commands on the file server.
+  </para>
+  <para>
+	The <emphasis>homes</emphasis> share plays a special role within Samba. This share is used for
+	sharing the home directories of the users. This share is automatically
+	converted to the user's home directory. Samba therefore ignores the rights
+	assigned to the share, and uses the rights of the respective home directory
+	instead.
+  </para>
+  </section>
 
 <section id="shares::management"><title>Management of shares in the Univention Management Console</title>
 <para>
