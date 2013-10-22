@@ -72,7 +72,6 @@ class AddressMap(AddressChange):
 		]
 		self.net_changes = self._map_ip()
 		self.ip_mapping = self._get_address_mapping()
-		self.gone_ips = self._calculate_gone()
 
 	def _map_ip(self):
 		ipv4_changes = self.ipv4_changes()
@@ -116,13 +115,6 @@ class AddressMap(AddressChange):
 			for (old_ip, new_ip) in self.net_changes.items()
 		))
 		return mapping
-
-	def _calculate_gone(self):
-		old_networks = self.changeset.old_ipv4s | self.changeset.old_ipv6s
-		new_networks = self.changeset.new_ipv4s | self.changeset.new_ipv6s
-		gone_networks = old_networks - new_networks
-		gone_ips = set((_.ip for _ in gone_networks))
-		return gone_ips
 
 
 class LdapChange(AddressChange, Ldap):
