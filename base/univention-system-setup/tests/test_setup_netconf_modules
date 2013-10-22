@@ -1,0 +1,58 @@
+#!/usr/bin/python2.6
+"""Unit test for univention.management.console.modules.setup.netconf.modules.KernelModules"""
+# pylint: disable-msg=C0103,E0611,R0904
+import unittest
+import os
+import univention.management.console.modules
+univention.management.console.modules.__path__.append(os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
+from univention.management.console.modules.setup.netconf import ChangeSet
+from univention.management.console.modules.setup.netconf.modules import KernelModules
+
+
+class DummyOption(object):
+	def __init__(self):
+		self.no_act = True
+
+
+class TestModulesUnconfigured(unittest.TestCase):
+	def setUp(self):
+		ucr = {}
+		profile = {}
+		options = DummyOption()
+		self.cs = ChangeSet(ucr, profile, options)
+		self.phase = KernelModules.PhaseKernelModules(self.cs)
+
+	def test_modules(self):
+		self.phase.pre()
+		self.assertFalse(self.cs.ucr_changes.get("kernel/modules"))
+
+
+class TestModulesChanged(unittest.TestCase):
+	def setUp(self):
+		ucr = {
+			"kernel/modules": "dummy;bonding",
+		}
+		profile = {
+			"interfaces/eth0/type": "manual",
+			"interfaces/eth0/start": "true",
+			"interfaces/br0/type": "static",
+			"interfaces/br0/start": "true",
+			"interfaces/br0/address": "2.3.4.5",
+			"interfaces/br0/network": "2.3.0.0",
+			"interfaces/br0/netmask": "255.255.255.0",
+			"interfaces/br0/broadcast": "2.3.4.255",
+			"interfaces/br0/options/1": "bridge_ports eth0",
+			"interfaces/br0/ipv6/default/address": "2222:3333:4444::5555",
+			"interfaces/br0/ipv6/default/prefix": "80",
+		}
+		options = DummyOption()
+		self.cs = ChangeSet(ucr, profile, options)
+		self.phase = KernelModules.PhaseKernelModules(self.cs)
+
+	def test_modules(self):
+		self.phase.pre()
+		self.assertEqual("bridge;dummy", self.cs.ucr_changes.get("kernel/modules"))
+
+
+if __name__ == '__main__':
+	unittest.main()
