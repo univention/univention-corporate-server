@@ -85,7 +85,11 @@ define([
 				this._defaultActionHandle.remove();
 				this._defaultActionHandle = null;
 			}
+			var hasContextActions = false;
 			array.forEach(actions, lang.hitch(this, function(action) {
+				if (action.isContextAction !== false) {
+					hasContextActions = true;
+				}
 				if (action.isDefaultAction) {
 					if (this._defaultActionHandle) {
 						console.warn('More than one defaultAction specified. Overwriting old one, taking new one:', action.name);
@@ -101,7 +105,7 @@ define([
 				}
 			}));
 			this._destroyContextMenu();
-			if (this.actions.length) {
+			if (hasContextActions) {
 				this._createContextMenu();
 			}
 		},

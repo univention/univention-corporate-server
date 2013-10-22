@@ -1,4 +1,4 @@
-univention-management-console-frontend (3.0.116-1) unstable; urgency=low
+univention-management-console-frontend (3.0.116-2) unstable; urgency=low
 
   * Bug #32168: Refactor context menu of gallery pane to avoid issues with
     popup
