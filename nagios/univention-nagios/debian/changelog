@@ -1,3 +1,9 @@
+univention-nagios (7.0.4-1) unstable; urgency=low
+
+  * fixed typo in univention-nagios-server unjoin script (Bug #32453)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 22 Oct 2013 17:24:26 +0200
+
 univention-nagios (7.0.3-3) unstable; urgency=low
 
   * version bump for changelog fix (Bug #32453)

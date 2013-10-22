@@ -41,6 +41,6 @@ joinscript_init
 
 udm groups/group remove "$@" --dn "cn=Nagios Admins,cn=groups,$ldap_base" || die
 
-join_script_remove_script_from_status_file univention-nagios-server
+joinscript_remove_script_from_status_file univention-nagios-server
 
 exit 0
