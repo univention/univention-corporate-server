@@ -3008,6 +3008,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		(<ulink url="&ucsbug;19016">Bug 19016</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
+
+	<listitem><simpara>
+	  A test for Samba printing has been added
+	  (<ulink url="&ucsbug;29059">Bug 29059</ulink>).
+	</simpara></listitem>
+
 </section>
 
 <section>
