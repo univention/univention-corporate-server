@@ -276,7 +276,7 @@ def clean():
 def postrun():
 	listener.setuid(0)
 	try:
-		initscript='/etc/init.d/samba-ad-dc'
-		os.spawnv(os.P_WAIT, initscript, ['samba-ad-dc', 'reload'])
+		initscript='/etc/init.d/samba'
+		os.spawnv(os.P_WAIT, initscript, ['samba', 'reload'])
 	finally:
 		listener.unsetuid()
