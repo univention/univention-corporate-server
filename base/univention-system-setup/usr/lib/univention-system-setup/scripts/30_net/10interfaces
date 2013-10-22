@@ -1,8 +1,8 @@
-#!/bin/bash
-#
-# Univention Setup
-#  interfaces change script
-#
+#!/usr/bin/python2.6
+"""
+Univention Setup:
+Configure IPvX network interfaces.
+"""
 # Copyright 2004-2013 Univention GmbH
 #
 # http://www.univention.de/
@@ -30,589 +30,96 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-network_only=0
-appliance_mode=0
-
-while [ "$#" -gt 0 ]; do
-	case $1 in
-	--network-only)
-		network_only=1
-		shift 1
-		;;
-	--appliance-mode)
-		appliance_mode=1
-		shift 1
-		;;
-	*)
-		echo "WARNING: Unknown parameter $1"
-		shift 1
-		;;
-	esac
-done
-
-. /usr/lib/univention-system-setup/scripts/setup_utils.sh
-
-info_header "$0" "$(gettext "Configuring IPv4 network devices")"
-
-to_change=""
-ifdown=""
-ifup=""
-ldap_available=1
-serversystem=0
-restart_ifplugd=0
-dhcp_in_use=0
-
-eval "$(univention-config-registry shell server/role interfaces/handler)"
-
-if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ] || [ "$server_role" = "domaincontroller_slave" ] || [ "$server_role" = "memberserver" ]; then
-	serversystem=1
-fi
-
-var=$(get_profile_var interfaces/primary)
-if [ -n "$var" ]; then
-	baseconfig_set="$baseconfig_set interfaces/primary=$var"
-fi
-
-while read interface
-do
-	for attr in address broadcast netmask network type; do
-		is_variable_set "interfaces/$interface/$attr"
-
-		if [ $? = 0 ]; then
-			continue
-		fi
-
-		var=`get_profile_var "interfaces/$interface/$attr"`
-		if [ -z "$var" ]; then
-			baseconfig_unset="$baseconfig_unset interfaces/$interface/$attr"
-			if [ "$attr" = "address" ]; then
-				ifdown="$ifdown $interface"
-			fi
-
-		else
-			if [ "$attr" = "type" ]; then
-				baseconfig_set="$baseconfig_set interfaces/$interface/$attr=dhcp"
-				# restart ifplugd due to changed dhcp settings
-				if [ "$interfaces_handler" = "ifplugd" ] ; then
-					restart_ifplugd=1
-					ifdown="$ifdown $interface"
-					ifup="$ifup $interface"
-				fi
-				dhcp_in_use=1
-			else
-				baseconfig_set="$baseconfig_set interfaces/$interface/$attr=$var"
-			fi
-			if [ "$attr" = "address" ]; then
-				old_address=`univention-config-registry get interfaces/$interface/address`
-				baseconfig_unset="$baseconfig_unset interfaces/$interface/type"
-				if [ -z "$old_address" ]; then
-					ifup="$ifup $interface"
-				fi
-				# keep alive the current ip address (otherwise the user will lose the connection during setup if ip changed)
-				if [ $appliance_mode = 1 ]
-				then
-					virtual='0'
-					while :
-					do
-						# check if virtual interface is free
-						if [ -z "$(univention-config-registry search "interfaces/${interface}_${virtual}.*"; grep -Es "interfaces/${interface}_${virtual}" $profile_file)" ]
-						then
-							echo "interfaces/${interface}_${virtual}/netmask=$(univention-config-registry get "interfaces/$interface/netmask")" >> "$profile_file"
-							echo "interfaces/${interface}_${virtual}/address=$(univention-config-registry get "interfaces/$interface/address")" >> "$profile_file"
-							echo "interfaces/${interface}_${virtual}/broadcast=$(univention-config-registry get "interfaces/$interface/broadcast")" >> "$profile_file"
-							echo "interfaces/${interface}_${virtual}/network=$(univention-config-registry get "interfaces/$interface/network")" >> "$profile_file"
-							univention-config-registry set "interfaces/${interface}_${virtual}/type=appliance-mode-temporary"
-							break
-						fi
-						virtual=$((virtual + 1))
-					done
-				fi
-			fi
-		fi
-
-		if [ "$attr" = "address" ]; then
-			to_change="$to_change $interface"
-			if [ "$check_ldap_access" = "1" ]; then
-				if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-					exit 0
-				else
-					exit 1
-				fi
-			fi
-		fi
-	done
-
-	# interface dhcp type handling for server roles
-	if [ $serversystem -eq 1 ]; then
-		is_variable_set "interfaces/$interface/type"
-		if [ $? = 0 ]; then
-			# the type has not changed
-			type=$(univention-config-registry get interfaces/$interface/type)
-			if [ "$type" = "dynamic" -o "$type" = "dhcp" ]; then
-				# * the address might have changed meanwhile,
-				#   must get it from the fallback settings
-				#   that where noted after last run of
-				#   univention-installerlast or u-s-s-net
-				eval ${interface}_hook_old_type="get_old_from_fallback"
-				# we must save the fallback interface configuration
-				eval ${interface}_hook_new_type="save_fallback"
-				dhcp_in_use=1
-			fi
-		else
-			# whoopa, the type changed as well
-			type=$(get_profile_var "interfaces/$interface/type")
-			if [ "$type" = "dynamic" -o "$type" = "dhcp" ]; then
-				# we must save the fallback interface configuration
-				eval ${interface}_hook_new_type="save_fallback"
-				# restart ifplugd due to changed dhcp settings
-				if [ "$interfaces_handler" = "ifplugd" ] ; then
-					restart_ifplugd=1
-					ifdown="$ifdown $interface"
-					ifup="$ifup $interface"
-				fi
-				dhcp_in_use=1
-			elif [ -z "$type" ]; then
-				# the type changed to unset, i.e from dhcp to static
-				# 1. the address might have changed meanwhile,
-				#    must get it from the fallback settings
-				#    that where noted after last run of
-				#    univention-installerlast or u-s-s-net
-				# 2. we must note all current values to LDAP
-				eval ${interface}_hook_old_type="'get_old_from_fallback get_new_from_profile_or_ucr'"
-				# we should unset the fallback interface configuration
-				eval ${interface}_hook_new_type="unset_fallback"
-				# restart ifplugd due to changed dhcp settings
-				if [ "$interfaces_handler" = "ifplugd" ] ; then
-					restart_ifplugd=1
-					ifdown="$ifdown $interface"
-					ifup="$ifup $interface"
-				fi
-			fi
-		fi
-		if eval test -n \"\$${interface}_hook_old_type\" -o -n \"\$${interface}_hook_new_type\"; then
-			found=0
-			for device in $to_change; do
-				if [ "$device" = "$interface" ]; then
-					found=1
-				fi
-			done
-			if [ $found -ne 1 ]; then
-				to_change="$to_change $interface"
-				if [ "$check_ldap_access" = "1" ]; then
-					if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-						exit 0
-					else
-						exit 1
-					fi
-				fi
-			fi
-		fi
-	fi
-done < <(sed -rne 's,^interfaces/([^/]+)/(address|broadcast|netmask|network|type)=("([^"#]+)"|([^"# ]+)) *(#.*)?$,\1,p' "$profile_file" | sort -u)
-
-if [ "$check_ldap_access" = "1" ]; then
-	exit 0
-fi
-
-if [ "$(cat /var/run/univention-system-setup.ldap)" = "no-ldap" ]; then
-	ldap_available=0
-fi
-
-if [ "$network_only" = 1 ]; then
-	ldap_available=0
-fi
-
-while IFS='	' read interface virtual type var
-do
-			if [ -z "$var" ]; then
-				baseconfig_unset="$baseconfig_unset interfaces/${interface}_${virtual}/$type"
-				if [ "$type" = "address" ]; then
-					ifdown="$ifdown ${interface}_${virtual}"
-				fi
-			else
-				baseconfig_set="$baseconfig_set interfaces/${interface}_${virtual}/$type=$var"
-				if [ "$type" = "address" ]; then
-					old_address=`univention-config-registry get interfaces/${interface}_${virtual}/address`
-					if [ -z "$old_address" ]; then
-						ifup="$ifup ${interface}_${virtual}"
-					fi
-				fi
-			fi
-done < <(sed -rne 's,^interfaces/([^/_]+)_([0-9]+)/(address|broadcast|netmask|network|type)=("([^"#]+)"|([^"# ]+)) *(#.*)?$,\1\t\2\t\3\t\5\6,p' "$profile_file")
-
-if [ -x /usr/sbin/univention-dnsedit ]; then
-	UNIVENTION_DNSEDIT="/usr/sbin/univention-dnsedit"
-else
-	UNIVENTION_DNSEDIT="/usr/share/univention-directory-manager-tools/univention-dnsedit"
-fi
-
-oldvalues=""
-newvalues=""
-
-save_fallback () {
-	is_variable_set "interfaces/$device/address"
-	if [ $? = 0 ]; then
-		baseconfig_set="$baseconfig_set interfaces/$device/fallback/address=$old_ip"
-	else
-		baseconfig_set="$baseconfig_set interfaces/$device/fallback/address=$new_ip"
-	fi
-
-	is_variable_set "interfaces/$device/network"
-	if [ $? = 0 ]; then
-		baseconfig_set="$baseconfig_set interfaces/$device/fallback/network=$old_network"
-	else
-		baseconfig_set="$baseconfig_set interfaces/$device/fallback/network=$new_network"
-	fi
-
-	is_variable_set "interfaces/$device/netmask"
-	if [ $? = 0 ]; then
-		baseconfig_set="$baseconfig_set interfaces/$device/fallback/netmask=$old_netmask"
-	else
-		baseconfig_set="$baseconfig_set interfaces/$device/fallback/netmask=$new_netmask"
-	fi
-
-	is_variable_set "interfaces/$device/broadcast"
-	if [ $? = 0 ]; then
-		baseconfig_set="$baseconfig_set interfaces/$device/fallback/broadcast=$old_broadcast"
-	else
-		baseconfig_set="$baseconfig_set interfaces/$device/fallback/broadcast=$new_broadcast"
-	fi
-}
-
-get_old_from_fallback () {
-	old_ip=$(univention-config-registry get interfaces/$device/fallback/address)
-	old_netmask=$(univention-config-registry get interfaces/$device/fallback/netmask)
-	old_network=$(univention-config-registry get interfaces/$device/fallback/network)
-	old_broadcast=$(univention-config-registry get interfaces/$device/fallback/broadcast)
-}
-
-get_new_from_profile_or_ucr () {
-	is_variable_set "interfaces/$device/address"
-	if [ $? = 0 ]; then
-		new_ip=$(univention-config-registry get interfaces/$device/address)
-	else
-		new_ip=$(get_profile_var "interfaces/$device/address")
-	fi
-
-	is_variable_set "interfaces/$device/netmask"
-	if [ $? = 0 ]; then
-		new_netmask=$(univention-config-registry get interfaces/$device/netmask)
-	else
-		new_netmask=$(get_profile_var "interfaces/$device/netmask")
-	fi
-
-	is_variable_set "interfaces/$device/network"
-	if [ $? = 0 ]; then
-		new_network=$(univention-config-registry get interfaces/$device/network)
-	else
-		new_network=$(get_profile_var "interfaces/$device/network")
-	fi
-
-	is_variable_set "interfaces/$device/broadcast"
-	if [ $? = 0 ]; then
-		new_broadcast=$(univention-config-registry get interfaces/$device/broadcast)
-	else
-		new_broadcast=$(get_profile_var "interfaces/$device/broadcast")
-	fi
-}
-
-unset_fallback () {
-	baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/address"
-	baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/netmask"
-	baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/network"
-	baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/broadcast"
-}
-
-if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
-
-	binddn=`ldap_binddn`
-	bindpwd=`ldap_bindpwd`
-
-	eval "$(univention-config-registry shell)"
-	[ "$network_only" = 0 ] || service_stop nscd samba cupsys
-
-	for device in $to_change; do
-		device=`echo "$device" | sed -e 's|^ *||'`
-		if [ -z "$device" ]; then continue; fi
-
-		old_ip=$(univention-config-registry get interfaces/$device/address)
-		if ! is_variable_set "interfaces/$device/address"; then
-			new_ip="$(get_profile_var "interfaces/$device/address")"
-		else
-			new_ip="$old_ip"
-		fi
-
-		old_network=$(univention-config-registry get interfaces/$device/network)
-		if ! is_variable_set "interfaces/$device/network"; then
-			new_network=$(get_profile_var "interfaces/$device/network")
-		else
-			new_network="$old_network"
-		fi
-
-		old_netmask=$(univention-config-registry get interfaces/$device/netmask)
-		if ! is_variable_set "interfaces/$device/netmask"; then
-			new_netmask=$(get_profile_var "interfaces/$device/netmask")
-		else
-			new_netmask="$old_netmask"
-		fi
-
-		old_broadcast=$(univention-config-registry get interfaces/$device/broadcast)
-		if ! is_variable_set "interfaces/$device/broadcast"; then
-			new_broadcast=$(get_profile_var "interfaces/$device/broadcast")
-		else
-			new_broadcast="$old_broadcast"
-		fi
-
-		# interface dhcp type handling for server roles
-		if eval test -n \"\$${device}_hook_old_type\"; then
-			eval hookfunctions=\"\$${device}_hook_old_type\"
-			for funct in $hookfunctions; do
-				eval $funct
-			done
-		fi
-		if eval test -n \"\$${device}_hook_new_type\"; then
-			eval hookfunctions=\"\$${device}_hook_new_type\"
-			for funct in $hookfunctions; do
-				eval $funct
-			done
-		fi
-
-		# edit LDAP entry
-		if [ "$server_role" = "fatclient" ]; then
-			server_role="client"
-		fi
-
-		if [ -z "$old_ip" ]; then
-			# There was a new interface created
-			continue
-		fi
-
-		if [ $ldap_available = 1 ]; then
-			ldap_dn=`univention-directory-manager computers/$server_role list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(&(cn=$hostname)(aRecord=$old_ip))" | sed -ne 's|^DN: ||p;T;q'`
-			if [ -n "$ldap_dn" ]; then
-				#change the ldap entry
-				if [ -z "$new_ip" ]; then
-					univention-directory-manager computers/$server_role modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$ldap_dn" --set ip=""
-					mac=`/sbin/ifconfig $device | grep HWaddr | cut -c 39-55`
-					univention-directory-manager computers/$server_role modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$ldap_dn" --set mac="$mac"
-				fi
-				if [ -n "$new_ip" ]; then
-					# check reverse zone
-					new_netmask=`get_profile_var "interfaces/$device/netmask"`
-					if [ -z "$new_netmask" ]; then
-						new_netmask=`univention-config-registry get interfaces/$device/netmask`
-					fi
-					reverse="$(univention-ipcalc6 --netmask "$new_netmask" --ip "$new_ip" --output reverse --calcdns)"
-					$UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists --reverse $reverse add zone root@$domainname. 1 28800 10800 604800 108001 $hostname.$domainname.
-
-					ptr="$(univention-ipcalc6 --netmask "$new_netmask" --ip "$new_ip" --output pointer --calcdns)"
-					$UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists --reverse $reverse add ptr $ptr $hostname.$domainname.
-
-					univention-directory-manager computers/$server_role modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$ldap_dn" --set ip=$new_ip
-
-					if [ -n "$new_network" ]; then
-						if [ "$server_role" = "domaincontroller_master" ]; then
-							echo "dn: cn=default,cn=networks,$ldap_base" >/var/cache/univention-system-setup/default-network.rename.ldif
-							echo "changetype: modify" >>/var/cache/univention-system-setup/default-network.rename.ldif
-							echo "replace: univentionNetwork" >>/var/cache/univention-system-setup/default-network.rename.ldif
-							echo "univentionNetwork: "$new_network >>/var/cache/univention-system-setup/default-network.rename.ldif
-							ldapmodify -x -D "$binddn" -w "$bindpwd" -f /var/cache/univention-system-setup/default-network.rename.ldif
-							rm /var/cache/univention-system-setup/default-network.rename.ldif
-						fi
-					fi
-				fi
-			fi
-		fi
-
-		oldvalues="$oldvalues#$device-$old_ip-$old_network-$old_netmask"
-		newvalues="$newvalues#$device-$new_ip-$new_network-$new_netmask"
-
-		# change ip in baseconfig
-		# change other values in baseconfig, for example ldap/server/ip
-		univention-config-registry search --brief --value "^$old_ip$" | sed -e 's|: .*||' | grep -v "interfaces/$device/address" | while read baseconfig_name; do
-			univention-config-registry set "$baseconfig_name"="$new_ip"
-		done
-
-		# set value in /etc files
-		if [ -d /etc/bind/univention.conf.d ]; then
-			for i in /etc/bind/univention.conf.d/*; do
-				sed -i "s|$old_ip\([:/].\)|$new_ip\1|g" $i
-			done
-		fi
-		if [ -d /var/lib/univention-client-boot/pxelinux.cfg ]; then
-			for i in /var/lib/univention-client-boot/pxelinux.cfg/*; do
-				sed -i "s|$old_ip:|$new_ip:|g" $i
-			done
-		fi
-
-		if [ -e /var/lib/samba/wins.dat ]; then
-			sed -i "s|$old_ip |$new_ip |g" /var/lib/samba/wins.dat
-		fi
-	done
-
-	if [ -n "$new_network" ]; then
-		net=$new_network
-	else
-		net=$old_network
-	fi
-
-	if [ -n "$new_netmask" ]; then
-		mask=$new_netmask
-	else
-		mask=$old_netmask
-	fi
-
-	#create new DHCP zone
-	if [ $ldap_available = 1 ]; then
-		univention-directory-manager dhcp/service list --binddn "$binddn" --bindpwd "$bindpwd" | sed -ne 's|^DN: ||p;T;q' | while read super; do
-			univention-directory-manager dhcp/subnet list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --filter cn=$old_network | sed -ne 's|^DN: ||p;T;q' | while read old_subnet_dn; do
-				univention-directory-manager dhcp/subnet create --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --ignore_exists --set subnet="$net" --set subnetmask="$mask"
-			done
-		done
-	fi
-
-	admin_replace_ip () {
-		admin_module="$1"
-		ldap_attribute="$2"
-		admin_attribute="$3"
-		univention-directory-manager $admin_module list --binddn "$binddn" --bindpwd "$bindpwd" --filter "($ldap_attribute=$old_ip)" | sed -ne 's|^DN: ||p;T;q' | while read dn; do
-			if [ -n "$4" ]; then
-				univention-directory-manager $admin_module modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --set $admin_attribute="$new_ip"
-			else
-				univention-directory-manager $admin_module modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --append $admin_attribute="$new_ip" --remove $admin_attribute="$old_ip"
-			fi
-		done
-	}
-
-	if [ $ldap_available = 1 ]; then
-		admin_replace_ip "policies/thinclient" "univentionFileServer" "fileServer"
-		admin_replace_ip "policies/thinclient" "univentionAuthServer" "authServer"
-		admin_replace_ip "policies/thinclient" "univentionDesktopServer" "linuxTerminalServer"
-		admin_replace_ip "policies/ldapserver" "univentionLDAPServer" "ldapServer"
-		admin_replace_ip "policies/dhcp_boot" "univentionDhcpBootServer" "boot_server" "1"
-		admin_replace_ip "policies/dhcp_dns" "univentionDhcpDomainNameServers" "domain_name_servers"
-		admin_replace_ip "policies/dhcp_netbios" "univentionDhcpNetbiosNameServers" "netbios_name_servers"
-		admin_replace_ip "policies/dhcp_routing" "univentionDhcpRouters" "routers"
-		admin_replace_ip "policies/printserver" "univentionPrintServer" "printServer"
-		admin_replace_ip "policies/repositoryserver" "univentionRepositoryServer" "repositoryServer"
-		admin_replace_ip "shares/share" "univentionShareHost" "host" "1"
-		admin_replace_ip "shares/printer" "univentionPrinterSpoolHost" "spoolHost"
-
-		# Change IP at the forward_zone, need by Samba 4
-		admin_replace_ip "dns/forward_zone" "aRecord" "a"
-	fi
-
-	old_pkgdb=$(univention-config-registry get pgsql/pkgdb/network)
-	new_pkgnetwork=$(get_profile_var "interfaces/$device/network")
-
-	if [ "$old_pkgdb" = "$old_network" ]; then
-		if [ -n "$new_pkgnetwork" ]; then
-			echo `date` : "Configure permitted pkgdb hosts in baseconfig : " $new_pkgnetwork >> /var/log/univention/setup.log
-			univention-config-registry set pgsql/pkgdb/network=$new_pkgnetwork
-		else
-			echo `date` : "Configure permitted pkgdb hosts in baseconfig : " $old_pkgdb >> /var/log/univention/setup.log
-			univention-config-registry set pgsql/pkgdb/network=$old_pkgdb
-		fi
-	else
-		echo `date` : "Configure permitted pkgdb hosts in baseconfig : " $old_pkgdb >> /var/log/univention/setup.log
-		univention-config-registry set pgsql/pkgdb/network=$old_pkgdb
-	fi
-
-	old_pkgnetmask=$(univention-config-registry get pgsql/pkgdb/netmask)
-	new_pkgnetmask=$(get_profile_var "interfaces/$device/netmask")
-
-	if [ "$old_pkgnetmask" = "$old_netmask" ]; then
-		if [ -n "$new_pkgnetmask" ]; then
-			echo `date` : "Configure netmask for permitted pkgdb hosts in baseconfig : " $new_pkgnetmask >> /var/log/univention/setup.log
-			univention-config-registry set pgsql/pkgdb/netmask=$new_pkgnetmask
-		else
-			echo `date` : "Configure netmask for permitted pkgdb hosts in baseconfig : " $old_pkgnetmask >> /var/log/univention/setup.log
-			univention-config-registry set pgsql/pkgdb/netmask=$old_pkgnetmask
-		fi
-	else
-		univention-config-registry set pgsql/pkgdb/network=$old_pkgnetmask
-	fi
-
-	if [ "$ldap_available" = 1 ]; then
-		if [ "$server_role" = "domaincontroller_master" ]; then
-			if [ "$device" = "${interfaces_primary:-eth0}" ];then
-				univention-directory-manager networks/network remove --dn "cn=default,cn=networks,$ldap_base"
-				forwardZone=`univention-directory-manager dns/forward_zone list --filter zone=\$domainname | sed -ne 's/^DN: //p' | tail -1`
-				reverseZone=`univention-directory-manager dns/reverse_zone list | sed -ne 's/^DN: //p' | tail -1`
-				dhcpService=`univention-directory-manager dhcp/service list | sed -ne 's/^DN: //p' | tail -1`
-				univention-directory-manager networks/network create --position "cn=networks,$ldap_base" --set name=default --set "netmask=$new_netmask" --set "network=$net" --set "dnsEntryZoneForward=$forwardZone" --set "dnsEntryZoneReverse=$reverseZone" --set "dhcpEntryZone=$dhcpService"
-			fi
-		fi
-	fi
-
-	# shutdown ifplugd due to changed dhcp settings if neccessary
-	if [ "$restart_ifplugd" = 1 ] ; then
-		if [ -x "/etc/init.d/ifplugd" ] ; then
-			/etc/init.d/ifplugd stop
-		fi
-	fi
-
-	# remove dupes and shutdown interfaces
-	ifdown=$(echo $ifdown | tr ' ' '\n' | sort -u | tr '\n' ' ')
-	for i in $ifdown; do
-		ifdown `echo $i | sed -e 's|_|:|g'`
-	done
-
-	if [ -n "$baseconfig_unset" ]; then
-		univention-config-registry unset $baseconfig_unset
-	fi
-
-	if [ -n "$baseconfig_set" ]; then
-		univention-config-registry set $baseconfig_set
-	fi
-
-	# commit /etc/resolv.conf if dhcp is not (no longer) in use
-	# so resolv.conf gets rewritten after being modified by dhclient
-	if [ "$dhcp_in_use" = 0 ] ; then
-		univention-config-registry commit /etc/resolv.conf
-	fi
-
-	# remove dupes and (re)init interfaces
-	ifup=$(echo $ifup | tr ' ' '\n' | sort -u | tr '\n' ' ')
-	for i in $ifup; do
-		ifup `echo $i | sed -e 's|_|:|g'`
-	done
-
-	# restart ifplugd due to changed dhcp settings if neccessary
-	if [ "$restart_ifplugd" = 1 ] ; then
-		if [ -x "/etc/init.d/ifplugd" ] ; then
-			/etc/init.d/ifplugd start
-		fi
-	fi
-
-	if [ "$network_only" = 0 ]; then
-		if [ -x /usr/sbin/apache2ctl ]; then
-			/usr/sbin/apache2ctl stop
-			for count in $(seq 1 20); do
-				if ! pidof apache2 > /dev/zero; then
-					break
-				fi
-				sleep 1
-			done
-			/usr/sbin/apache2ctl start
-		fi
-	fi
-	service_start nscd
-
-	if [ "$network_only" = 0 ]; then
-		# stop the dns server and remove the cache
-		service_stop univention-bind univention-bind-proxy univention-dhcp heimdal-kdc cupsys samba univention-directory-listener postgresql samba4
-		rm -f /var/cache/bind/*
-		service_start univention-bind univention-bind-proxy univention-dhcp heimdal-kdc cupsys samba univention-directory-listener postgresql samba4
-	fi
-fi
-
-if [ -d "/var/lib/univention-system-setup/interfaces.post" ]; then
-	run-parts /var/lib/univention-system-setup/interfaces.post --arg=$oldvalues --arg=$newvalues
-fi
-
-if [ $ldap_available = 1 -o "$network_only" = 1 ]; then
-	exit 0
-else
-	exit 100
-fi
+import sys
+from optparse import OptionParser
+from univention.config_registry.frontend import ucr_update
+from univention.management.console.modules.setup.setup_script import SetupScript, main, _
+from univention.management.console.modules.setup.netconf import ChangeSet
+from univention.management.console.modules.setup.netconf.modules import RunPhases
+import logging
+
+
+UCR_IFACE_RESTART = "interfaces/restart/auto"
+
+
+class NetworkSetup(SetupScript):
+
+	def __init__(self):
+		super(NetworkSetup, self).__init__()
+		self.options = None
+		self.args = None
+		self.changeset = None
+		self.phases = RunPhases()
+		self.logger = logging.getLogger("uss.network")
+
+	def inner_run(self):
+		self.parse_options()
+		self.name = _("Configuring IPvX network interfaces")
+		self.setup_logging()
+		self.prepare_changeset()
+		self.setup_phases()
+		self.reconfigure_network()
+
+	def parse_options(self):
+		usage = "%prog [options]"
+		description = sys.modules[__name__].__doc__
+		parser = OptionParser(usage=usage, description=description)
+		parser.add_option(
+			"--network-only",
+			action="store_true", dest="network_only",
+			help="Only re-configure network, but don't modify LDAP data")
+		parser.add_option(
+			"--appliance-mode",
+			action="store_true", dest="appliance_mode",
+			help="Configure new address as additional virtual address instead of replacing current addresses")
+		parser.add_option(
+			"--verbose", "-v",
+			action="count", dest="verbose", default=0,
+			help="Log verbose")
+		parser.add_option(
+			"--no-act", "--dry-run", "-n",
+			action="store_true", dest="no_act",
+			help="Don't run any commands")
+
+		self.options, self.args = parser.parse_args()
+
+	LEVEL = (logging.FATAL, logging.ERROR, logging.WARN, logging.INFO, logging.DEBUG)
+
+	def setup_logging(self):
+		try:
+			level = self.LEVEL[self.options.verbose]
+		except IndexError:
+			level = self.LEVEL[-1]
+		logging.basicConfig(stream=sys.stderr, level=level)
+
+	def prepare_changeset(self):
+		self.changeset = ChangeSet(self.ucr.ucr, self.profile, self.options)
+
+	def setup_phases(self):
+		self.phases.load()
+		self.phases.setup(self.changeset)
+
+	def reconfigure_network(self):
+		old_restart = self.ucr.ucr.get(UCR_IFACE_RESTART, None)
+		try:
+			self.ucr_update({UCR_IFACE_RESTART: "false"})
+
+			self.apply_profile()
+		finally:
+			self.ucr_update({UCR_IFACE_RESTART: old_restart})
+
+	def apply_profile(self):
+		self.phases.pre()
+
+		self.logger.info("Applying %r", self.changeset.ucr_changes)
+		self.ucr_update(self.changeset.ucr_changes)
+
+		self.phases.post()
+
+	def ucr_update(self, changes):
+		if not self.options.no_act:
+			ucr_update(self.ucr.ucr, changes)
+
+
+if __name__ == "__main__":
+	main(NetworkSetup())

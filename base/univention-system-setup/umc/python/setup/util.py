@@ -238,8 +238,7 @@ class ProgressParser( object ):
 	FRACTIONS = {
 		'10_basis/12domainname' : 5,
 		'10_basis/14ldap_basis' : 10,
-		'30_net/10interfaces' : 5,
-		'30_net/11ipv6interfaces' : 5,
+		'30_net/10interfaces' : 10,
 		'50_software/10software' : 50,
 	}
 

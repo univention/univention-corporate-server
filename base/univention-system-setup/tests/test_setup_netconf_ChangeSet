@@ -1,0 +1,217 @@
+#!/usr/bin/python2.6
+"""Unit test for univention.management.console.modules.setup.netconf.ChangeSet"""
+# pylint: disable-msg=C0103,E0611,R0904
+import unittest
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
+import setup
+sys.modules['univention.management.console.modules.setup'] = sys.modules['setup']
+import setup.netconf
+sys.modules['univention.management.console.modules.setup.netconf'] = sys.modules['setup.netconf']
+import setup.netconf.common
+sys.modules['univention.management.console.modules.setup.netconf.common'] = sys.modules['setup.netconf.common']
+import ipaddr
+
+
+class DummyOption(object):
+	def __init__(self):
+		self.no_act = True
+
+
+class TestChangeSetEmpty(unittest.TestCase):
+	"""
+	No old and no new addresses.
+	"""
+	def setUp(self):
+		ucr = {}
+		profile = {}
+		options = DummyOption()
+		self.cs = setup.netconf.ChangeSet(ucr, profile, options)
+
+	def test_cs(self):
+		self.assertEqual(set(), self.cs.old_names)
+		self.assertEqual(set(), self.cs.new_names)
+		self.assertEqual(set(), self.cs.old_ipv4s)
+		self.assertEqual(set(), self.cs.new_ipv4s)
+		self.assertEqual(set(), self.cs.old_ipv6s)
+		self.assertEqual(set(), self.cs.new_ipv6s)
+
+	def test_am(self):
+		am = setup.netconf.common.AddressMap(self.cs)
+		self.assertEqual({}, am.ip_changes)
+		self.assertEqual(set(), am.gone_ips)
+
+
+class TestChangeSetRemoved(unittest.TestCase):
+	"""
+	Old address removed.
+	"""
+	def setUp(self):
+		ucr = {
+			"interfaces/eth0/type": "static",
+			"interfaces/eth0/start": "true",
+			"interfaces/eth0/address": "1.2.3.4",
+			"interfaces/eth0/network": "1.2.0.0",
+			"interfaces/eth0/netmask": "255.255.0.0",
+			"interfaces/eth0/broadcast": "1.2.255.255",
+			"interfaces/eth0/ipv6/default/address": "1111:2222::3333",
+			"interfaces/eth0/ipv6/default/prefix": "64",
+		}
+		profile = {}
+		options = DummyOption()
+		self.cs = setup.netconf.ChangeSet(ucr, profile, options)
+
+	def test_cs(self):
+		self.assertEqual(set(["eth0"]), self.cs.old_names)
+		self.assertEqual(set(), self.cs.new_names)
+		self.assertEqual(set([ipaddr.IPv4Network("1.2.3.4/16")]), self.cs.old_ipv4s)
+		self.assertEqual(set(), self.cs.new_ipv4s)
+		self.assertEqual(set([ipaddr.IPv6Network("1111:2222::3333/64")]), self.cs.old_ipv6s)
+		self.assertEqual(set(), self.cs.new_ipv6s)
+
+	def test_am(self):
+		am = setup.netconf.common.AddressMap(self.cs)
+		ipv4 = ipaddr.IPv4Network("1.2.3.4/16")
+		ipv6 = ipaddr.IPv6Network("1111:2222::3333/64")
+		self.assertEqual({
+			ipv4: None,
+			ipv6: None,
+		}, am.ip_changes)
+		self.assertEqual(set([
+			ipv4.ip,
+			ipv6.ip,
+		]), am.gone_ips)
+
+
+class TestChangeSetAdded(unittest.TestCase):
+	"""
+	New address added.
+	"""
+	def setUp(self):
+		ucr = {}
+		profile = {
+			"interfaces/eth0/type": "static",
+			"interfaces/eth0/start": "true",
+			"interfaces/eth0/address": "1.2.3.4",
+			"interfaces/eth0/network": "1.2.0.0",
+			"interfaces/eth0/netmask": "255.255.0.0",
+			"interfaces/eth0/broadcast": "1.2.255.255",
+			"interfaces/eth0/ipv6/default/address": "1111:2222::3333",
+			"interfaces/eth0/ipv6/default/prefix": "64",
+		}
+		options = DummyOption()
+		self.cs = setup.netconf.ChangeSet(ucr, profile, options)
+
+	def test_cs(self):
+		self.assertEqual(set(), self.cs.old_names)
+		self.assertEqual(set(["eth0"]), self.cs.new_names)
+		self.assertEqual(set(), self.cs.old_ipv4s)
+		self.assertEqual(set([ipaddr.IPv4Network("1.2.3.4/16")]), self.cs.new_ipv4s)
+		self.assertEqual(set(), self.cs.old_ipv6s)
+		self.assertEqual(set([ipaddr.IPv6Network("1111:2222::3333/64")]), self.cs.new_ipv6s)
+
+	def test_am(self):
+		am = setup.netconf.common.AddressMap(self.cs)
+		self.assertEqual({}, am.ip_changes)
+		self.assertEqual(set(), am.gone_ips)
+
+
+class TestChangeSetChanged(unittest.TestCase):
+	"""
+	Old address changed to new address.
+	"""
+	def setUp(self):
+		ucr = {
+			"interfaces/eth0/type": "static",
+			"interfaces/eth0/start": "true",
+			"interfaces/eth0/address": "1.2.3.4",
+			"interfaces/eth0/network": "1.2.0.0",
+			"interfaces/eth0/netmask": "255.255.0.0",
+			"interfaces/eth0/broadcast": "1.2.255.255",
+			"interfaces/eth0/ipv6/default/address": "1111:2222::3333",
+			"interfaces/eth0/ipv6/default/prefix": "64",
+		}
+		profile = {
+			"interfaces/eth0/type": "static",
+			"interfaces/eth0/start": "true",
+			"interfaces/eth0/address": "2.3.4.5",
+			"interfaces/eth0/network": "2.3.0.0",
+			"interfaces/eth0/netmask": "255.255.255.0",
+			"interfaces/eth0/broadcast": "2.3.4.255",
+			"interfaces/eth0/ipv6/default/address": "2222:3333:4444::5555",
+			"interfaces/eth0/ipv6/default/prefix": "80",
+		}
+		options = DummyOption()
+		self.cs = setup.netconf.ChangeSet(ucr, profile, options)
+
+	def test_cs(self):
+		self.assertEqual(set(["eth0"]), self.cs.old_names)
+		self.assertEqual(set(["eth0"]), self.cs.new_names)
+		self.assertEqual(set([ipaddr.IPv4Network("1.2.3.4/16")]), self.cs.old_ipv4s)
+		self.assertEqual(set([ipaddr.IPv4Network("2.3.4.5/24")]), self.cs.new_ipv4s)
+		self.assertEqual(set([ipaddr.IPv6Network("1111:2222::3333/64")]), self.cs.old_ipv6s)
+		self.assertEqual(set([ipaddr.IPv6Network("2222:3333:4444::5555/80")]), self.cs.new_ipv6s)
+
+	def test_am(self):
+		am = setup.netconf.common.AddressMap(self.cs)
+		ipv4_old = ipaddr.IPv4Network("1.2.3.4/16")
+		ipv4_new = ipaddr.IPv4Network("2.3.4.5/24")
+		ipv6_old = ipaddr.IPv6Network("1111:2222::3333/64")
+		ipv6_new = ipaddr.IPv6Network("2222:3333:4444::5555/80")
+		self.assertEqual({
+			ipv4_old: ipv4_new,
+			ipv6_old: ipv6_new,
+		}, am.ip_changes)
+		self.assertEqual(set([
+			ipv4_old.ip,
+			ipv6_old.ip,
+		]), am.gone_ips)
+
+
+class TestChangeSetMoved(unittest.TestCase):
+	"""
+	Old address moved to new interface.
+	"""
+	def setUp(self):
+		ucr = {
+			"interfaces/eth0/type": "static",
+			"interfaces/eth0/start": "true",
+			"interfaces/eth0/address": "1.2.3.4",
+			"interfaces/eth0/network": "1.2.0.0",
+			"interfaces/eth0/netmask": "255.255.0.0",
+			"interfaces/eth0/broadcast": "1.2.255.255",
+			"interfaces/eth0/ipv6/default/address": "1111:2222::3333",
+			"interfaces/eth0/ipv6/default/prefix": "64",
+		}
+		profile = {
+			"interfaces/br0/type": "static",
+			"interfaces/br0/start": "true",
+			"interfaces/br0/address": "1.2.3.4",
+			"interfaces/br0/network": "1.2.0.0",
+			"interfaces/br0/netmask": "255.255.0.0",
+			"interfaces/br0/broadcast": "1.2.255.255",
+			"interfaces/br0/ipv6/default/address": "1111:2222::3333",
+			"interfaces/br0/ipv6/default/prefix": "64",
+		}
+		options = DummyOption()
+		self.cs = setup.netconf.ChangeSet(ucr, profile, options)
+
+	def test_cs(self):
+		self.assertEqual(set(["eth0"]), self.cs.old_names)
+		self.assertEqual(set(["br0"]), self.cs.new_names)
+		self.assertEqual(set([ipaddr.IPv4Network("1.2.3.4/16")]), self.cs.old_ipv4s)
+		self.assertEqual(set([ipaddr.IPv4Network("1.2.3.4/16")]), self.cs.new_ipv4s)
+		self.assertEqual(set([ipaddr.IPv6Network("1111:2222::3333/64")]), self.cs.old_ipv6s)
+		self.assertEqual(set([ipaddr.IPv6Network("1111:2222::3333/64")]), self.cs.new_ipv6s)
+
+	def test_am(self):
+		am = setup.netconf.common.AddressMap(self.cs)
+		ipv4 = ipaddr.IPv4Network("1.2.3.4/16")
+		ipv6 = ipaddr.IPv6Network("1111:2222::3333/64")
+		self.assertEqual({}, am.ip_changes)
+		self.assertEqual(set(), am.gone_ips)
+
+
+if __name__ == '__main__':
+	unittest.main()

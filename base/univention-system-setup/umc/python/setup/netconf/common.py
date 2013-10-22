@@ -1,0 +1,146 @@
+"""
+Univention Setup: network configuration abstract common classes
+"""
+# Copyright 2004-2013 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import os
+from abc import ABCMeta
+from univention.management.console.modules.setup.netconf import SkipPhase
+from univention.management.console.modules.setup.netconf.conditions import Executable, AddressChange, Ldap
+import univention.admin.uldap as uldap
+
+
+class RestartService(Executable):
+	"""
+	Helper to restart a single service.
+	"""
+	__metaclass__ = ABCMeta
+	service = None
+	PREFIX = "/etc/init.d"
+
+	@property
+	def executable(self):
+		return os.path.join(self.PREFIX, self.service)
+
+	def pre(self):
+		super(RestartService, self).pre()
+		self.call(["invoke-rc.d", self.service, "stop"])
+
+	def post(self):
+		super(RestartService, self).pre()
+		self.call(["invoke-rc.d", self.service, "start"])
+
+
+class AddressMap(AddressChange):
+	"""
+	Helper to provide a mapping from old addresses to new addresses.
+	"""
+	__metaclass__ = ABCMeta
+
+	def __init__(self, changeset):
+		super(AddressMap, self).__init__(changeset)
+		self.old_primary, self.new_primary = [
+			iface.get_default_ip_address()
+			for iface in (
+				self.changeset.old_interfaces,
+				self.changeset.new_interfaces,
+			)
+		]
+		self.ip_changes = self._map_ip()
+		self.gone_ips = self._calculate_gone()
+
+	def _map_ip(self):
+		ipv4_changes = self.ipv4_changes()
+		ipv6_changes = self.ipv6_changes()
+		ip_changes = {}
+		ip_changes.update(ipv4_changes)
+		ip_changes.update(ipv6_changes)
+		return ip_changes
+
+	def ipv4_changes(self):
+		ipv4s = dict((
+			(name, iface.ipv4_address())
+			for name, iface in self.changeset.new_interfaces.ipv4_interfaces
+		))
+		default = self.changeset.new_interfaces.get_default_ipv4_address()
+		mapping = {}
+		for name, iface in self.changeset.old_interfaces.ipv4_interfaces:
+			old_addr = iface.ipv4_address()
+			new_addr = ipv4s.get(name, default)
+			if old_addr != new_addr:
+				mapping[old_addr] = new_addr
+		return mapping
+
+	def ipv6_changes(self):
+		ipv6s = dict((
+			((iface.name, name), iface.ipv6_address(name))
+			for (iface, name) in self.changeset.new_interfaces.ipv6_interfaces
+		))
+		default = self.changeset.new_interfaces.get_default_ipv6_address()
+		mapping = {}
+		for iface, name in self.changeset.old_interfaces.ipv6_interfaces:
+			old_addr = iface.ipv6_address(name)
+			new_addr = ipv6s.get((iface.name, name), default)
+			if old_addr != new_addr:
+				mapping[old_addr] = new_addr
+		return mapping
+
+	def _calculate_gone(self):
+		old_networks = self.changeset.old_ipv4s | self.changeset.old_ipv6s
+		new_networks = self.changeset.new_ipv4s | self.changeset.new_ipv6s
+		gone_networks = old_networks - new_networks
+		gone_ips = set((_.ip for _ in gone_networks))
+		return gone_ips
+
+	def check(self):
+		super(AddressMap, self).check()
+		if not self.ip_changes:
+			raise SkipPhase("No IP address changes")
+
+
+class LdapChange(AddressChange, Ldap):
+	"""
+	Helper to provide access to LDAP through UDM.
+	"""
+	__metaclass__ = ABCMeta
+
+	def __init__(self, changeset):
+		super(LdapChange, self).__init__(changeset)
+		self.ldap = None
+		self.position = None
+
+	def open_ldap(self):
+		ldap_host = self.changeset.ucr["ldap/master"]
+		ldap_base = self.changeset.ucr["ldap/base"]
+		self.ldap = uldap.access(
+			host=ldap_host,
+			base=ldap_base,
+			binddn=self.binddn,
+			bindpw=self.bindpwd,
+		)
+		self.position = uldap.position(ldap_base)

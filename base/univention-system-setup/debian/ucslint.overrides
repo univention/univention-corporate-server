@@ -7,3 +7,7 @@
 0009-2: tests/test_setup_script_profile
 0010-2: tests/test_setup_script_ucr
 0009-2: tests/test_setup_script_ucr
+0010-2: tests/test_setup_netconf_ldap
+0010-2: tests/test_setup_netconf_ChangeSet
+0010-2: tests/test_setup_netconf_pkgdb
+0010-2: tests/test_setup_netconf_policies

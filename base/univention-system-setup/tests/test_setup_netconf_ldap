@@ -1,0 +1,68 @@
+#!/usr/bin/python2.6
+"""Unit test for univention.management.console.modules.setup.netconf.modules.LdapSelf"""
+# pylint: disable-msg=C0103,E0611,R0904
+import unittest
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
+import setup
+sys.modules['univention.management.console.modules.setup'] = sys.modules['setup']
+import setup.netconf
+sys.modules['univention.management.console.modules.setup.netconf'] = sys.modules['setup.netconf']
+import setup.netconf.common
+sys.modules['univention.management.console.modules.setup.netconf.common'] = sys.modules['setup.netconf.common']
+import setup.netconf.modules
+sys.modules['univention.management.console.modules.setup.netconf.modules'] = sys.modules['setup.netconf.modules']
+import setup.netconf.modules.LdapSelf
+sys.modules['univention.management.console.modules.setup.netconf.modules.LdapSelf'] = sys.modules['setup.netconf.modules.LdapSelf']
+import logging
+
+
+class DummyOption(object):
+	def __init__(self):
+		self.no_act = True
+
+
+class TestLdapChanged(unittest.TestCase):
+	"""
+	Old address changed to new address.
+	"""
+	def setUp(self):
+		logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+		ucr = {
+			"interfaces/eth0/type": "static",
+			"interfaces/eth0/start": "true",
+			"interfaces/eth0/address": "192.168.122.11",
+			"interfaces/eth0/network": "192.168.122.0",
+			"interfaces/eth0/netmask": "255.255.255.0",
+			"interfaces/eth0/broadcast": "192.168.122.255",
+			"interfaces/eth0/ipv6/default/address": "1111:2222::3333",
+			"interfaces/eth0/ipv6/default/prefix": "64",
+			"ldap/master": "mas11.phahn.dev",
+			"ldap/base": "dc=phahn,dc=dev",
+			"server/role": "domaincontroller_master",
+			"ldap/hostdn": "cn=mas11,cn=dc,cn=computers,dc=phahn,dc=dev",
+			"hostname": "mas11",
+			"domainname": "phahn.dev",
+		}
+		profile = {
+			"interfaces/eth0/type": "static",
+			"interfaces/eth0/start": "true",
+			"interfaces/eth0/address": "2.3.4.5",
+			"interfaces/eth0/network": "2.3.0.0",
+			"interfaces/eth0/netmask": "255.255.255.0",
+			"interfaces/eth0/broadcast": "2.3.4.255",
+			"interfaces/eth0/ipv6/default/address": "2222:3333:4444::5555",
+			"interfaces/eth0/ipv6/default/prefix": "80",
+		}
+		options = DummyOption()
+		self.cs = setup.netconf.ChangeSet(ucr, profile, options)
+		self.phase = setup.netconf.modules.LdapSelf.PhaseLdapSelf(self.cs)
+
+	def disabled_test_ldap(self):
+		self.phase.check()
+		self.phase.post()
+
+
+if __name__ == '__main__':
+	unittest.main()

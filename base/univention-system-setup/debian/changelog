@@ -1,3 +1,9 @@
+univention-system-setup (7.0.51-1) unstable; urgency=low
+
+  * Convert network script to Python (Bug #28670)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 22 Oct 2013 01:18:50 +0200
+
 univention-system-setup (7.0.50-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)
