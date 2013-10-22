@@ -70,16 +70,17 @@ class AddressMap(AddressChange):
 				self.changeset.new_interfaces,
 			)
 		]
-		self.ip_changes = self._map_ip()
+		self.net_changes = self._map_ip()
+		self.ip_mapping = self._get_address_mapping()
 		self.gone_ips = self._calculate_gone()
 
 	def _map_ip(self):
 		ipv4_changes = self.ipv4_changes()
 		ipv6_changes = self.ipv6_changes()
-		ip_changes = {}
-		ip_changes.update(ipv4_changes)
-		ip_changes.update(ipv6_changes)
-		return ip_changes
+		net_changes = {}
+		net_changes.update(ipv4_changes)
+		net_changes.update(ipv6_changes)
+		return net_changes
 
 	def ipv4_changes(self):
 		ipv4s = dict((
@@ -107,6 +108,13 @@ class AddressMap(AddressChange):
 			new_addr = ipv6s.get((iface.name, name), default)
 			if new_addr is None or old_addr.ip != new_addr.ip:
 				mapping[old_addr] = new_addr
+		return mapping
+
+	def _get_address_mapping(self):
+		mapping = dict((
+			(str(old_ip.ip), str(new_ip.ip) if new_ip else None)
+			for (old_ip, new_ip) in self.net_changes.items()
+		))
 		return mapping
 
 	def _calculate_gone(self):

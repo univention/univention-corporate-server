@@ -35,7 +35,7 @@ class TestChangeSetEmpty(unittest.TestCase):
 
 	def test_am(self):
 		am = AddressMap(self.cs)
-		self.assertEqual({}, am.ip_changes)
+		self.assertEqual({}, am.net_changes)
 		self.assertEqual(set(), am.gone_ips)
 
 
@@ -73,7 +73,7 @@ class TestChangeSetRemoved(unittest.TestCase):
 		self.assertEqual({
 			ipv4: None,
 			ipv6: None,
-		}, am.ip_changes)
+		}, am.net_changes)
 		self.assertEqual(set([
 			ipv4.ip,
 			ipv6.ip,
@@ -109,7 +109,7 @@ class TestChangeSetAdded(unittest.TestCase):
 
 	def test_am(self):
 		am = AddressMap(self.cs)
-		self.assertEqual({}, am.ip_changes)
+		self.assertEqual({}, am.net_changes)
 		self.assertEqual(set(), am.gone_ips)
 
 
@@ -158,7 +158,7 @@ class TestChangeSetChanged(unittest.TestCase):
 		self.assertEqual({
 			ipv4_old: ipv4_new,
 			ipv6_old: ipv6_new,
-		}, am.ip_changes)
+		}, am.net_changes)
 		self.assertEqual(set([
 			ipv4_old.ip,
 			ipv6_old.ip,
@@ -203,7 +203,7 @@ class TestChangeSetMoved(unittest.TestCase):
 
 	def test_am(self):
 		am = AddressMap(self.cs)
-		self.assertEqual({}, am.ip_changes)
+		self.assertEqual({}, am.net_changes)
 		self.assertEqual(set(), am.gone_ips)
 
 

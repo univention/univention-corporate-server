@@ -16,14 +16,13 @@ class PhaseRewriteWins(AddressMap):
 			raise SkipPhase("No wins.dat")
 
 	def pre(self):
-		mapping = self._get_address_mapping()
 		tmp_wins = "%s.%d" % (self.filename, os.getpid())
 		with open(self.filename, "r") as read_wins:
 			with open(tmp_wins, "w") as write_wins:
 				for line in read_wins:
 					try:
 						name, ttl, address, flags = line.split(None, 3)
-						new_ip = mapping[address]
+						new_ip = self.ip_mapping[address]
 						line = ' '.join((name, ttl, new_ip, flags))
 					except (ValueError, KeyError):
 						pass
@@ -33,10 +32,3 @@ class PhaseRewriteWins(AddressMap):
 			os.unlink(tmp_wins)
 		else:
 			os.rename(tmp_wins, self.filename)
-
-	def _get_address_mapping(self):
-		mapping = dict((
-			(str(old_ip.ip), str(new_ip.ip))
-			for (old_ip, new_ip) in self.ip_changes.items()
-		))
-		return mapping

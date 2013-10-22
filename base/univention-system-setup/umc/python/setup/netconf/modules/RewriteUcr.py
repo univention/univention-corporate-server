@@ -23,22 +23,14 @@ class PhaseRewriteUcr(AddressMap):
 			raise SkipPhase('No old primary IP')
 
 	def pre(self):
-		mapping = self._get_address_mapping()
 		for key in self.variables:
 			value = self.changeset.ucr.get(key, None)
 			if value is None:
 				continue
 			try:
-				new_ip = mapping[value]
+				new_ip = self.ip_mapping[value]
 			except KeyError:
 				self.logger.debug("Keeping '%s'='%s'", key, value)
 				continue
 			self.logger.info("Updating '%s'='%s'", key, new_ip)
 			self.changeset.ucr_changes[key] = new_ip
-
-	def _get_address_mapping(self):
-		mapping = dict((
-			(str(old_ip.ip), str(new_ip.ip))
-			for (old_ip, new_ip) in self.ip_changes.items()
-		))
-		return mapping

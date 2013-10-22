@@ -31,7 +31,6 @@ class PhaseLdapPolicies(AddressMap, LdapChange):
 		modules.update()
 
 	def post(self):
-		mapping = self._get_address_mapping()
 		try:
 			self.open_ldap()
 			for module, udm_property in self._iterate_policies():
@@ -39,16 +38,9 @@ class PhaseLdapPolicies(AddressMap, LdapChange):
 				#force = not module.property_descriptions[udm_property].multivalue
 				policies = module.lookup(None, self.ldap, None)
 				for policy in policies:
-					self._rewrite_policy(policy, udm_property, mapping)
+					self._rewrite_policy(policy, udm_property)
 		except (LDAPError, UniventionBaseException) as ex:
 			self.logger.warn("Failed LDAP: %s", ex, exc_info=True)
-
-	def _get_address_mapping(self):
-		mapping = dict((
-			(str(old_ip.ip), str(new_ip.ip))
-			for (old_ip, new_ip) in self.ip_changes.items()
-		))
-		return mapping
 
 	def _iterate_policies(self):
 		for module_name, udm_property in self.policies:
@@ -60,11 +52,11 @@ class PhaseLdapPolicies(AddressMap, LdapChange):
 			modules.init(self.ldap, self.position, module)
 			yield module, udm_property
 
-	def _rewrite_policy(self, policy, udm_property, mapping):
+	def _rewrite_policy(self, policy, udm_property):
 		try:
 			old_values = set(policy.info[udm_property])
 			new_values = set((
-				mapping.get(value, value)
+				self.ip_mapping.get(value, value)
 				for value in old_values
 			))
 			if old_values == new_values:
