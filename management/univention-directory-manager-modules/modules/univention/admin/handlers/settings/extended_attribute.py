@@ -38,8 +38,8 @@ import univention.debug
 
 translation=univention.admin.localization.translation('univention.admin.handlers.settings')
 _=translation.translate
-
 module='settings/extended_attribute'
+
 operations=['add','edit','remove','search','move']
 superordinate='settings/cn'
 childs=0
@@ -49,8 +49,8 @@ options={
 }
 property_descriptions={
 	'name': univention.admin.property(
-			short_description=_('Unique Name'),
-			long_description=_('Name which by default is used by the command line programm and internally to identify the extended attribute'),
+			short_description=_('Unique name'),
+			long_description=_('Name which by default is used by UDM CLI and internally to identify the extended attribute'),
 			syntax=univention.admin.syntax.string_numbers_letters_dots,
 			multivalue=0,
 			include_in_default_search=1,
@@ -125,7 +125,7 @@ property_descriptions={
 		),
 	'syntax': univention.admin.property(
 			short_description=_('Syntax class'),
-			long_description=_("Name of a python class implementing the univention.admin.syntax Python interface. \"string\" by default"),
+			long_description=_("When values are entered, the UMC performs a syntax check. Apart from standard syntax definitions (string) and (integer), there are three possibilities for expressing a binary condition. The syntax TrueFalse is represented at LDAP level using the strings true and false, the syntax TrueFalseUppercorresponds to the OpenLDAP boolean values TRUE and FALSE and the syntax boolean does not save any value or the string 1"),
 			syntax=univention.admin.syntax.string_numbers_letters_dots,
 			multivalue=0,
 			options=[],
@@ -166,7 +166,7 @@ property_descriptions={
 		),
 	'disableUDMWeb': univention.admin.property(
 			short_description=_("Do not show this extended attribute in the UMC"),
-			long_description=_('The extended attribute is not shown in the UMC. It can only be used from the commandline programm or the Python interface'),
+			long_description=_('The extended attribute is not shown in the UMC. It can only be used from the UDM CLI or the Python interface'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=[],
@@ -235,8 +235,8 @@ property_descriptions={
 			identifies=0
 		),
 	'overwritePosition': univention.admin.property(
-			short_description=_('Overwrite existing property with this name'),
-			long_description=_('The pre-defined property with this name is replaced by this extended attribute'),
+			short_description=_('Overwrite existing widget'),
+			long_description=_("In some cases it is useful to overwrite predefined input fields with extended attributes. If the internal UDM name of an attribute is configured here, its  input field is overwritten by this extended attribute. The UDM attribute name can only be determined by searching within /usr/share/pyshared/univention/admin/handlers directory. It is the name which comes before the colon in the declarations of univention.admin.property objects, e.g., roomNumber for a  user's room number"),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -256,7 +256,7 @@ property_descriptions={
 		),
 	'ldapMapping': univention.admin.property(
 			short_description=_('LDAP attribute'),
-			long_description=_('Name of the LDAP attribute used to store this extended attribute'),
+			long_description=_('Univention Corporate Server provides its own LDAP scheme for customer extensions. The LDAP object class univentionFreeAttributes can be used for extended attributes without restrictions. It offers 20 freely usable attributes (univentionFreeAttribute1 to univentionFreeAttribute20) and can be used in connection with any LDAP object (e.g., a user object)'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -275,8 +275,8 @@ property_descriptions={
 			identifies=0
 		),
 	'notEditable': univention.admin.property(
-			short_description=_('Value not editable through UMC or the command line programm'),
-			long_description=_("This extended attribute can not be changed through UMC or the command line programm, but only through the Python API or by hooks"),
+			short_description=_('Value is only managed internally'),
+			long_description=_("This extended attribute can not be changed through UMC or UDM CLI, but only through the Python API or by hooks"),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=False,
 			options=[],
@@ -297,7 +297,7 @@ property_descriptions={
 		),
 	'objectClass': univention.admin.property(
 			short_description=_('LDAP object class'),
-			long_description=_('Name of the LDAP object class used to store this extended attribute'),
+			long_description=_('Univention Corporate Server provides its own LDAP scheme for customer extensions. The LDAP object class univentionFreeAttributes can be used for extended attributes without restrictions. It offers 20 freely usable attributes (univentionFreeAttribute1 to univentionFreeAttribute20) and can be used in connection with any LDAP object (e.g., a user object)'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -306,7 +306,7 @@ property_descriptions={
 			identifies=0
 		),
 	'deleteObjectClass': univention.admin.property(
-			short_description=_('Delete object class when value is unset'),
+			short_description=_('Remove object class if the attribute is removed'),
 			long_description=_('If possible, the LDAP object class is removed when this extended attribute gets unset'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -338,7 +338,7 @@ property_descriptions={
 		),
 	'CLIName': univention.admin.property(
 			short_description = _('UDM CLI name'),
-			long_description=_('The name for the extended attribute as used by the command line programm'),
+			long_description=_('The name for the extended attribute as used by UDM CLI'),
 			syntax=univention.admin.syntax.string_numbers_letters_dots,
 			multivalue=0,
 			options=[],
@@ -348,7 +348,7 @@ property_descriptions={
 			default='<name>',
 		),
 	'options': univention.admin.property(
-			short_description=_('Enabling options'),
+			short_description=_('Required options/object classes'),
 			long_description=_('This extended attribute is only used when at least one of these options is enabled, e.g. "posix" or "samba"'),
 			syntax=univention.admin.syntax.string_numbers_letters_dots,
 			multivalue=1,
@@ -383,13 +383,13 @@ layout = [
 			["translationLongDescription"]
 		]),
 	]),
-	Tab(_('Module'), _('Module related settings'), layout=[
+	Tab(_('Module'), _('Settings of the modules to be extended'), layout=[
 		["module"],
 		["options"],
 		["hook"],
 		["doNotSearch"],
 	]),
-	Tab(_('LDAP mapping'), _('Mapping to LDAP object class and attribute'), layout=[
+	Tab(_('LDAP mapping'), _('Configuration of the LDAP settings used to store the extended attribute'), layout=[
 		["objectClass", "ldapMapping"],
 		["deleteObjectClass"],
 	]),

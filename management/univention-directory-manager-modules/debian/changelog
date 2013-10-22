@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.68-1) unstable; urgency=low
+
+  * revised settings/extended_attribute descriptions again (Bug #28629)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 22 Oct 2013 13:50:10 +0200
+
 univention-directory-manager-modules (9.0.67-2) unstable; urgency=low
 
   * Added syntax UNIX_AccessRight_extended. The widget should provide
