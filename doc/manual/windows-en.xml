@@ -217,7 +217,7 @@ in the Univention Wiki <biblioref linkend="wiki-samba-update"/>.
   	  </simpara></listitem>
 
   	  <listitem><simpara>
-  		<emphasis>SMB3</emphasis> configures SMB3 (supported as of Windows 8)
+  		<emphasis>SMB3</emphasis> configures SMB3 (supported as of Windows 8) (currently not covered by Univention support)
   	  </simpara></listitem>
   	</itemizedlist>
   </para>

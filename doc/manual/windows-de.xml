@@ -226,7 +226,7 @@ unterstützt und werden im Univention Wiki <biblioref linkend="wiki-samba-update
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		<emphasis>SMB3</emphasis> konfiguriert SMB3 (unterstützt ab Windows 8)
+		<emphasis>SMB3</emphasis> konfiguriert SMB3 (unterstützt ab Windows 8) (aktuell nicht durch Univention-Support abgedeckt)
 	  </simpara></listitem>
 	</itemizedlist>
   </para>
