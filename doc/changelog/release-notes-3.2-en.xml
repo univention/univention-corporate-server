@@ -451,7 +451,7 @@ done
 		</para>
 	  </section>
 
-	  <section>
+	  <section id="relnotes:virtualbox">
 		<title>Installation in VirtualBox</title>
 		<para>
 		  During the installation of UCS in the virtualization solution VirtualBox, a bug may appear
@@ -468,7 +468,7 @@ done
 		</para>
 	  </section>
 
-<!-- 	  <section> -->
+<!-- 	  <section id="relnotes:xenserver"> -->
 <!-- 		<title>Installation in Citrix XenServer</title> -->
 <!-- 		<para> -->
 <!-- 		  Bei der Installation von UCS in der Virtualisierungslösung Citrix XenServer 6.0 - 6.2 wird -->
