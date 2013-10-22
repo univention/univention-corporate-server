@@ -41,7 +41,7 @@ case "$1" in
 	;;
 esac
 
-if [ "$1" = "purge" ] ; then
+if [ "$1" = "remove" ] ; then
 	call_unjoinscript 67univention-mail-server.uinst
 fi
 
