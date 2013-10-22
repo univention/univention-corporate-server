@@ -63,7 +63,6 @@ define([
 	"dijit/form/DropDownButton",
 	"dijit/layout/BorderContainer",
 	"dijit/layout/TabContainer",
-	"dijit/popup",
 	"dijit/registry",
 	"umc/tools",
 	"umc/dialog",
@@ -77,7 +76,7 @@ define([
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, string, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, popup, registry, tools, dialog, store, ProgressInfo, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, string, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, registry, tools, dialog, store, ProgressInfo, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -106,7 +105,6 @@ define([
 
 
 	var _OverviewPane = declare([ GalleryPane ], {
-		showTooltips: false,
 		categories: null,
 
 		constructor: function(props) {
@@ -173,14 +171,6 @@ define([
 			this._updateCategoryHeaderVisiblity(items);
 			return result;
 		},
-
-		getStatusIconClass: function(item) {
-			return tools.getIconClass('context-menu', 24);
-		},
-
-		getStatusIconTooltip: lang.hitch(this, function(item) {
-			return _('Open context menu');
-		}),
 
 		getItemDescription: function(item) {
 			return item.description;
@@ -535,7 +525,6 @@ define([
 		_helpMenu: null,
 		_headerRight: null,
 		_settingsMenu: null,
-		_moduleContextMenu: null,
 		_hostInfo: null,
 		_categoriesContainer: null,
 
@@ -1151,7 +1140,23 @@ define([
 				'class': 'umcOverviewPane',
 				categories: this.getCategories(),
 				store: this._moduleStore,
-				region: 'center'
+				region: 'center',
+				actions: [{
+					name: 'open',
+					label: _('Open module'),
+					isDefaultAction: true,
+					callback: lang.hitch(this, function(id, item) {
+						this.openModule(item);
+					})
+				}, {
+					name: 'toggle_favorites',
+					label: function(item) {
+						return item._isFavorite ? _('Remove from favorites') : _('Add to favorites');
+					},
+					callback: lang.hitch(this, function(id, item) {
+						this._toggleFavoriteModule(item);
+					})
+				}]
 			});
 			this._overviewPage.addChild(this._grid);
 			this._registerGridEvents();
@@ -1160,136 +1165,6 @@ define([
 
 		_registerGridEvents: function() {
 			this._searchSidebar.on('search', lang.hitch(this, '_updateQuery'));
-
-			this._grid.on('.umcGalleryStatusIcon:click', lang.hitch(this, function(evt) {
-				evt.stopImmediatePropagation();
-				var row = this._grid.row(evt);
-				this._openModuleContextMenu(row.data, row.element, evt.pageX, evt.pageY);
-			}));
-
-			this._registerGridNonTouchEvents();
-			this._registerGridTouchEvents();
-
-			// open module upon click on grid item
-			this._grid.on('.umcGalleryItem:click', lang.hitch(this, function(evt) {
-				evt.stopImmediatePropagation();
-				if (this._closeModuleContextMenu()) {
-					return;
-				}
-				var module = this._grid.row(evt).data;
-				this.openModule(module);
-			}));
-
-			// enable closing of context menu by clicking somewhere
-			on(baseWin.body(), 'click', lang.hitch(this, function() {
-				if (this._tabContainer.selectedChildWidget == this._overviewPage) {
-					this._closeModuleContextMenu();
-				}
-			}));
-
-			this._grid.on('scroll', lang.hitch(this, '_closeModuleContextMenu'));
-		},
-
-		_registerGridNonTouchEvents: function() {
-			if (has('touch')) {
-				return;
-			}
-
-			// event for context menu
-			this._grid.on('.umcGalleryItem:contextmenu', lang.hitch(this, function(evt) {
-				evt.preventDefault();
-				var row = this._grid.row(evt);
-				this._openModuleContextMenu(row.data, row.element, evt.pageX, evt.pageY);
-			}));
-		},
-
-		_registerGridTouchEvents: function() {
-			// special handling for touch devices... when pressed long enough,
-			// the context menu is shown, this needs to be handled explicitely
-			// via touchstart and touchend...
-
-			if (!has('touch')) {
-				return;
-			}
-
-			var _contextTouchTimeout = null;
-			var _cancelContextTouch = function() {
-				if (_contextTouchTimeout !== null) {
-					window.clearTimeout(_contextTouchTimeout);
-					_contextTouchTimeout = null;
-					return true;
-				}
-				return false;
-			};
-
-			this._grid.on('.umcGalleryItem:touchstart', lang.hitch(this, function(evt) {
-				_contextTouchTimeout = setTimeout(lang.hitch(this, function() {
-					var row = this._grid.row(evt);
-					this._openModuleContextMenu(row.data, row.element, evt.pageX, evt.pageY);
-					_contextTouchTimeout = null;
-				}), 1000);
-			}));
-			this._grid.on('.umcGalleryItem:touchend', lang.hitch(this, function(evt) {
-				if (!_cancelContextTouch()) {
-					evt.preventDefault();
-				}
-			}));
-			this._grid.on('scroll', lang.hitch(this, _cancelContextTouch));
-		},
-
-		_closeModuleContextMenu: function() {
-			// force ative tooltips to hide
-			Tooltip._masterTT && Tooltip._masterTT.fadeOut.play();
-
-			// if necessary, close currently open context menu
-			if (this._moduleContextMenu) {
-				this._moduleContextMenu.onCancel();
-				return true;
-			}
-			return false;
-		},
-
-		_openModuleContextMenu: function(module, node, x, y) {
-			this._closeModuleContextMenu();
-			var menu = this._moduleContextMenu = this._createModuleContextMenu(module);
-			domClass.add(node, 'umcGalleryItemActive');
-
-			var _close = lang.hitch(this, function() {
-				// close popup and remove internal reference to avoid
-				// collisions with other popups
-				popup.close(menu);
-				domClass.remove(node, 'umcGalleryItemActive');
-				this._moduleContextMenu = null;
-			});
-
-			popup.open({
-				popup: menu,
-				parent: this._grid,
-				x: x,
-				y: y,
-				onExecute: _close,
-				onCancel: _close,
-				onClose: lang.hitch(menu, 'destroyRecursive')
-			});
-		},
-
-		_createModuleContextMenu: function(module) {
-			var menu = new Menu({
-				targetNodes: [ this._grid.id ],
-				selector: '.umcGalleryItem'
-			});
-			menu.addChild(new MenuItem({
-				label: _('Open module'),
-				onClick : lang.hitch(this, 'openModule', module)
-			}));
-			if (!_favoritesDisabled) {
-				menu.addChild(new MenuItem({
-					label: module._isFavorite ? _('Remove from favorites') : _('Add to favorites'),
-					onClick : lang.hitch(this, '_toggleFavoriteModule', module)
-				}));
-			}
-			menu.startup();
-			return menu;
 		},
 
 		_runChecks: function() {

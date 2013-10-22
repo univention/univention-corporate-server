@@ -1354,6 +1354,15 @@ p {
 			width: 24px;
 			height: 24px;
 		}
+
+		.umcGalleryContextIcon {
+			position: absolute;
+			top: 5px;
+			left: auto;
+			right: 10px;
+			width: 24px;
+			height: 24px;
+		}
 	}
 
 	.umcGalleryItemActive,
@@ -1363,21 +1372,16 @@ p {
 		cursor: pointer;
 	}
 
-	.umcGalleryItemActive .umcGalleryStatusIcon {
-		visibility: visible!important;
-	}
-
 }
 
 /* UMC overview page icons */
 .umcOverviewPane {
-	.umcGalleryItem:hover .umcGalleryStatusIcon {
-		visibility: visible;
+	.umcGalleryItemActive .umcGalleryContextIcon,
+	.umcGalleryItem:hover .umcGalleryContextIcon {
+		visibility: visible!important;
 	}
-	.umcGalleryItem	.umcGalleryStatusIcon {
+	.umcGalleryItem	.umcGalleryContextIcon {
 		visibility: hidden;
-		right: 10px;
-		left: auto;
 	}
 
 	.umcGalleryName,

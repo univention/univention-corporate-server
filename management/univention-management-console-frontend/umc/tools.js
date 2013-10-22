@@ -1383,14 +1383,15 @@ define([
 
 		openRemoteSession: function(/*string*/ host) {
 
+			var remoteWin;
 			if (this.isTrue(this.status('umcWebSsoNewwindow'))) {
 				// open window immediately, so the window is part of the click event and is not counted as popup
-				var remoteWin = window.open('', '_blank', 'location=yes,menubar=yes,status=yes,toolbar=yes,scrollbars=yes', false);
+				remoteWin = window.open('', '_blank', 'location=yes,menubar=yes,status=yes,toolbar=yes,scrollbars=yes', false);
 			}
 
 			var jumpToUrl = lang.hitch(this, function(url) {
 				console.log('openRemoteSession:', url);
-				if (this.isTrue(this.status('umcWebSsoNewwindow'))) {
+				if (remoteWin) {
 					// use pre-opened window
 					remoteWin.location = url;
 				} else {

@@ -26,26 +26,26 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define */
+/*global define console window setTimeout*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/query",
+	"dojo/on",
+	"dojo/has",
 	"dojo/dom-class",
 	"dojo/dom-style",
 	"dojo/dom-construct",
+	"dijit/Menu",
+	"dijit/MenuItem",
 	"dijit/Destroyable",
 	"umc/tools",
 	"umc/widgets/Tooltip",
-	"umc/widgets/ContainerWidget",
 	"dgrid/List",
 	"dgrid/extensions/DijitRegistry",
-	"put-selector/put",
-	"umc/i18n!umc/app"
-], function(declare, lang, array, query, domClass, domStyle, domConstruct, Destroyable,
-		tools, Tooltip, ContainerWidget, List, DijitRegistry, put, _) {
+	"put-selector/put"
+], function(declare, lang, array, on, has, domClass, domStyle, domConstruct, Menu, MenuItem, Destroyable, tools, Tooltip, List, DijitRegistry, put) {
 	return declare("umc.widgets.GalleryPane", [ List, DijitRegistry, Destroyable ], {
 		style: "",
 
@@ -56,6 +56,8 @@ define([
 		query: {},
 
 		queryOptions: {},
+
+		_defaultActionHandle: null,
 
 		_setStore: function(value) {
 			this.store = value;
@@ -75,6 +77,105 @@ define([
 		_renderQuery: function() {
 			this.refresh();
 			this.renderArray(this.store.query(this.query, this.queryOptions));
+		},
+
+		_setActions: function(actions) {
+			this._set('actions', actions);
+			if (this._defaultActionHandle) {
+				this._defaultActionHandle.remove();
+				this._defaultActionHandle = null;
+			}
+			array.forEach(actions, lang.hitch(this, function(action) {
+				if (action.isDefaultAction) {
+					if (this._defaultActionHandle) {
+						console.warn('More than one defaultAction specified. Overwriting old one, taking new one:', action.name);
+						this._defaultActionHandle.remove();
+						this._defaultActionHandle = null;
+					}
+					this._defaultActionHandle = this.on('.umcGalleryItem:click', lang.hitch(this, function(evt) {
+						evt.stopImmediatePropagation();
+						var item = this.row(evt).data;
+						var id = item.id;
+						action.callback(id, item);
+					}));
+				}
+			}));
+			this._destroyContextMenu();
+			if (this.actions.length) {
+				this._createContextMenu();
+			}
+		},
+
+		_destroyContextMenu: function() {
+			if (this._contextMenu) {
+				this._contextMenu.destroyRecursive();
+				this._contextMenu = null;
+			}
+		},
+
+		_closeContextMenu: function() {
+			if (this._contextMenu) {
+				this._contextMenu.onCancel();
+			}
+		},
+
+		_createContextMenu: function() {
+			this._contextMenu = new Menu({
+				targetNodes: [ this.id ],
+				selector: '.umcGalleryItem'
+			});
+			this.own(this._contextMenu);
+			array.forEach(this.actions, lang.hitch(this, function(action) {
+				if (action.isContextAction === false) {
+					return;
+				}
+				var label = action.label;
+				if (typeof label == 'function') {
+					label = 'Placeholder';
+				}
+				this._contextMenu.addChild(new MenuItem({
+					label: label,
+					iconClass: action.iconClass,
+					onClick: lang.hitch(this, function() {
+						var item = this._contextItem;
+						var canExecute = typeof action.canExecute == "function" ? action.canExecute(item) : true;
+						if (canExecute && action.callback) {
+							var id = item.id;
+							action.callback(id, item);
+						}
+					}),
+					_action: action
+				}));
+			}));
+			this._contextMenu.startup();
+		},
+
+		_openContextMenu: function(item, node, x, y) {
+			this._closeContextMenu();
+			this._contextItem = item;
+
+			if (!this._contextMenu) {
+				return;
+			}
+			array.forEach(this._contextMenu.getChildren(), function(menuItem) {
+				var action = menuItem._action;
+				var disabled = action.canExecute && !action.canExecute(item);
+				var iconClass = typeof action.iconClass == "function" ? action.iconClass(item) : action.iconClass;
+				var label = typeof action.label == "function" ? action.label(item) : action.label;
+				menuItem.set('disabled', disabled);
+				menuItem.set('label', label);
+				menuItem.set('iconClass', iconClass);
+			}, this);
+
+			domClass.add(node, 'umcGalleryItemActive');
+
+			this._contextMenu._openMyself({
+				target: node,
+				coords: {x: x, y: y}
+			});
+			on.once(this._contextMenu, 'close', lang.hitch(this, function() {
+				domClass.remove(node, 'umcGalleryItemActive');
+			}));
 		},
 
 		postCreate: function() {
@@ -101,6 +202,46 @@ define([
 				}
 			}
 
+			// set handlers
+			this.on('scroll', lang.hitch(this, '_closeContextMenu'));
+			this.on('.umcGalleryContextIcon:click', lang.hitch(this, function(evt) {
+				evt.stopImmediatePropagation();
+				var row = this.row(evt);
+				this._openContextMenu(row.data, row.element, evt.pageX, evt.pageY);
+			}));
+			this.on('.umcGalleryItem:contextmenu', lang.hitch(this, function(evt) {
+				evt.preventDefault();
+				var row = this.row(evt);
+				this._openContextMenu(row.data, row.element, evt.pageX, evt.pageY);
+			}));
+			if (has('touch')) {
+				var _contextTouchTimeout = null;
+				var _cancelContextTouch = function() {
+					if (_contextTouchTimeout !== null) {
+						window.clearTimeout(_contextTouchTimeout);
+						_contextTouchTimeout = null;
+						return true;
+					}
+					return false;
+				};
+
+				this.on('.umcGalleryItem:touchstart', lang.hitch(this, function(evt) {
+					_contextTouchTimeout = setTimeout(lang.hitch(this, function() {
+						var row = this._grid.row(evt);
+						this._openContextMenu(row.data, row.element, evt.pageX, evt.pageY);
+						_contextTouchTimeout = null;
+					}), 1000);
+				}));
+				this.on('.umcGalleryItem:touchend', lang.hitch(this, function(evt) {
+					if (!_cancelContextTouch()) {
+						evt.preventDefault();
+					}
+				}));
+			}
+
+			if (this.actions) {
+				this._setActions(this.actions);
+			}
 			// set the store
 			if (this.store) {
 				this.set('store', this.store);
@@ -123,7 +264,7 @@ define([
 			return item.description || '';
 		},
 
-		renderRow: function(item, options) {
+		renderRow: function(item) {
 			// create gallery item
 			var div = put(lang.replace('div.umcGalleryItem[moduleID={moduleID}]', {
 				moduleID: item.$id$
@@ -132,6 +273,9 @@ define([
 			put(div, 'div.umcGalleryIcon.' + this.getIconClass(item));
 			put(div, 'div.umcGalleryName', item.name || '');
 			put(div, 'div.umcGalleryDescription', description);
+			if (this._contextMenu) {
+				put(div, 'div.umcGalleryContextIcon.' + tools.getIconClass('context-menu', 24));
+			}
 
 			// create status icon
 			var statusIconClass = this.getStatusIconClass(item);
