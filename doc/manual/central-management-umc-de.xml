@@ -197,31 +197,45 @@
 			beschrieben.
 		</para>
 
-		<section id="central-management-umc:Suche_nach_Objekten">
+		<section id="umc:usage:search">
 			<title>Suche nach Objekten</title>
 			<para>
-				In der Modul-Übersicht werden alle von diesem Modul verwalteten
-				Objekte aufgeführt. Über das Auswahlfeld
-				<guimenu>Eigenschaft</guimenu> kann ein Attribut ausgewählt
-				werden, nach dem die Objekte gefiltert werden. Die Suchmaske
-				wird im Eingabefeld dahinter eingegeben. In der
-				Benutzerverwaltung werden beispielsweise mit der Auswahl von
-				<emphasis>Benutzername</emphasis> und der Suchmaske
-				<emphasis>m*</emphasis> nur die mit <emphasis>m</emphasis>
-				beginnenden Benutzernamen dargestellt.
+			  In der Modul-Übersicht werden alle von diesem Modul verwalteten Objekte
+			  aufgeführt. Mit <guimenu>Suche</guimenu> erfolgt eine Suche über eine Auswahl
+			  wichtiger Attribute (z.B. für Benutzerobjekte nach Vor- und Nachname, primärer E-Mail-Adresse,
+			  Beschreibung, Mitarbeiternummer und Benutzername). Es kann auch mit Wildcards gesucht
+			  werden, z.B. <emphasis>m*</emphasis>.
+			</para>
+
+			<para>
+			  Durch Klick auf <guimenu>Erweiterte Optionen</guimenu> werden weitere Suchoptionen
+			  angezeigt:
+
+			  <itemizedlist>
+				<listitem><simpara>
+				  Mit dem Auswahlfeld <guimenu>Suche in</guimenu> kann bestimmt werden, ob bei der
+				  Suche nach LDAP-Objekten das komplette LDAP-Verzeichnis oder nur einzelne
+				  LDAP-Container/OUs durchsucht werden. Weitere Informationen zur Strukturierung des
+				  LDAP-Verzeichisdienstes finden sich in <xref linkend="central:cn-and-ous"/>.
+				</simpara></listitem>
+
+				<listitem><simpara>
+				  Über das Auswahlfeld <guimenu>Eigenschaft</guimenu> kann gezielt nach einem
+				  bestimmten Attribut gesucht werden.
+				</simpara></listitem>
+
+				<listitem><simpara>
+				  Einige nur intern verwendete Benutzer- und Gruppen (z.B. für den Domänenbeitritt)
+				  werden standardmäßig ausgeblendet. Wird die Option <guimenu>Versteckte Objekte
+				  anzeigen</guimenu> aktiviert, werden diese Objekte ebenfalls angezeigt.
+				</simpara></listitem>
+			  </itemizedlist>
+
 			</para>
 			<figure id="umc-search">
 			<title>Suche nach Benutzern</title>
 				<graphic scalefit="1" width="80%" fileref="illustrations/umc_user_de.png"/>
 			</figure>
-			<para>
-				Durch Klick auf <guimenu>Erweiterte Optionen</guimenu> wird ein weiteres
-				Auswahlfeld <guimenu>Suche in</guimenu> angezeigt. Mit diesem Auswahlfeld kann
-				bestimmt werden, ob bei der Suche nach LDAP-Objekten das komplette
-				LDAP-Verzeichnis oder nur einzelne LDAP-Container durchsucht werden.
-				Weitere Informationen zur Strukturierung des LDAP-Verzeichisdienstes finden
-				sich in <xref linkend="central:cn-and-ous"/>.
-			</para>
 		</section>
 
 		<section id="central-management-umc:create">
