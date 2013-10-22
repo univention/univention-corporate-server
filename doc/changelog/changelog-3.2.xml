@@ -2087,10 +2087,6 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 	
 		<listitem><simpara>
-		  On systems which are no domain controller master, the UCS overview page will contain a link to the domain controller master. On systems which neither are domain controller master nor domain controller backups, certificate related links will not be shown anymore (<ulink url="&ucsbug;32647">Bug 32647</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
 			The overview page has been fixed for clients without enabled javascript
 			(<ulink url="&ucsbug;32820">Bug 32820</ulink>).
 		</simpara></listitem>
