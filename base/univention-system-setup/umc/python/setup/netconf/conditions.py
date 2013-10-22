@@ -38,7 +38,7 @@ from ldap.filter import filter_format
 
 class AddressChange(Phase):
 	"""
-	Check for at least on removed or added address.
+	Check for at least one removed or added address.
 	"""
 	__metaclass__ = ABCMeta
 

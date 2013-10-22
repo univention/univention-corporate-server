@@ -76,13 +76,14 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
 
 	def _get_computer_at_dn(self, dn):
 		computer = univention.admin.objects.get(self.module, None, self.ldap, self.position, dn)
+		computer.open()
 		return computer
 
 	def _update(self, computer):
 		self._update_ips(computer)
 		self._update_mac(computer)
 		if self.changeset.no_act:
-			self.logger.info("Would update '%r'", computer.diff())
+			self.logger.info("Would update '%s' with '%r'", computer.dn, computer.diff())
 		else:
 			computer.modify()
 

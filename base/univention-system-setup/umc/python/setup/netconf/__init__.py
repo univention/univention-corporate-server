@@ -49,7 +49,7 @@ class ChangeSet(object):
 		config = dict()
 		for key, value in profile.items():
 			if key.startswith("interfaces/"):
-				config[key] = value
+				config[key] = value or None
 		return config
 
 	def update_config(self, changes):

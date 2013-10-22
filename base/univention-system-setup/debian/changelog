@@ -1,6 +1,12 @@
+univention-system-setup (7.0.51-5) unstable; urgency=low
+
+  * Unset empty values to forget old interfaces (Bug #28670)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 22 Oct 2013 13:50:09 +0200
+
 univention-system-setup (7.0.51-4) unstable; urgency=low
 
-  * Remove handling for Package Databse (Bug #29783)
+  * Remove handling for Package Database (Bug #29783)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 22 Oct 2013 12:33:10 +0200
 

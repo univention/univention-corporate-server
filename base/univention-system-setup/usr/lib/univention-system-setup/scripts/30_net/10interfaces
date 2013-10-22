@@ -37,6 +37,7 @@ from univention.management.console.modules.setup.setup_script import SetupScript
 from univention.management.console.modules.setup.netconf import ChangeSet
 from univention.management.console.modules.setup.netconf.modules import RunPhases
 import logging
+import univention.debug as ud
 
 
 UCR_IFACE_RESTART = "interfaces/restart/auto"
@@ -56,6 +57,7 @@ class NetworkSetup(SetupScript):
 		self.parse_options()
 		self.name = _("Configuring IPvX network interfaces")
 		self.setup_logging()
+		self.setup_ud_logging()
 		self.prepare_changeset()
 		self.setup_phases()
 		self.reconfigure_network()
@@ -91,6 +93,16 @@ class NetworkSetup(SetupScript):
 		except IndexError:
 			level = self.LEVEL[-1]
 		logging.basicConfig(stream=sys.stderr, level=level)
+
+	UD_LEVEL = (ud.ERROR, ud.WARN, ud.PROCESS, ud.INFO, ud.ALL)
+
+	def setup_ud_logging(self):
+		try:
+			level = self.UD_LEVEL[self.options.verbose]
+		except IndexError:
+			level = self.UD_LEVEL[-1]
+		ud.init("stderr", ud.NO_FLUSH, ud.FUNCTION)
+		ud.set_level(ud.ADMIN, level)
 
 	def prepare_changeset(self):
 		self.changeset = ChangeSet(self.ucr.ucr, self.profile, self.options)

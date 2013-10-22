@@ -30,7 +30,6 @@ Univention Setup: network configuration abstract common classes
 
 import os
 from abc import ABCMeta
-from univention.management.console.modules.setup.netconf import SkipPhase
 from univention.management.console.modules.setup.netconf.conditions import Executable, AddressChange, Ldap
 import univention.admin.uldap as uldap
 
@@ -116,11 +115,6 @@ class AddressMap(AddressChange):
 		gone_networks = old_networks - new_networks
 		gone_ips = set((_.ip for _ in gone_networks))
 		return gone_ips
-
-	def check(self):
-		super(AddressMap, self).check()
-		if not self.ip_changes:
-			raise SkipPhase("No IP address changes")
 
 
 class LdapChange(AddressChange, Ldap):
