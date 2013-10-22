@@ -230,6 +230,13 @@
 			In der Zeile über der Tabelle mit den Objekten findet sich eine Aktionsleiste, über
 			die mit <guimenu>Hinzufügen</guimenu> ein neues Objekt angelegt werden kann.
 		  </para>
+
+		  <para>
+			Für einige UMC-Module (Benutzer, Rechner) existieren vereinfachte Assistenten, in denen
+			nur die wichtigsten Einstellungen abfragt werden. Durch einen Klick auf <guimenu>Erweitert</guimenu>
+			werden alle Attribute angezeigt.
+		  </para>
+
 		</section>
 
 		<section id="central:user-interface:edit">

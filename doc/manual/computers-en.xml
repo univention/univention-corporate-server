@@ -33,6 +33,25 @@
 		Computer accounts are managed in the <guimenu>Computers</guimenu> module of
 		the &ucsUMC;.
 	</para>
+
+		<!-- <para> -->
+		<!--   In der Grundeinstellung wird zum Anlegen eines Rechners ein vereinfachter Assistent -->
+		<!--   angezeigt, der nur die wichtigsten Einstellungen abfragt. Durch einen Klick auf -->
+		<!--   <guimenu>Erweitert</guimenu> werden alle Attribute angezeigt. Ist dem ausgewählten -->
+		<!--   Netzwerk-Objekt (siehe <xref linkend="networks::introduction"/>) eine DNS-Forward-Zone -->
+		<!--   und/oder eine DNS-Reverse-Zone zugeordnet (siehe <xref linkend="networks:dns"/>), wird für -->
+		<!--   den Rechner automatisch ein Host-Record und/oder Pointer-Record angelegt. Ist für das -->
+		<!--   Netzwerk-Objekt ein DHCP-Service konfiguriert und wird eine MAC-Adresse konfiguriert, wird -->
+		<!--   ein DHCP-Rechner-Eintrag angelegt (siehe <xref linkend="module:dhcp:dhcp"/>) -->
+		<!-- </para> -->
+
+		<!-- <para> -->
+		<!--   Der vereinfachte Assistent kann für alle Systemrollen deaktiviert werden, in dem die &ucsUCRV; -->
+		<!--   <envar>directory/manager/web/modules/computers/computer/wizard/disabled</envar> auf -->
+		<!--   <emphasis>true</emphasis> gesetzt wird (oder auch selektiv für einzelne Rollen, -->
+		<!--   z.B. <envar>directory/manager/web/modules/computers/windows/wizard/disabled</envar>). -->
+		<!-- </para> -->
+
 	<table>
 		<title>'General' tab</title>
 		<tgroup cols="2">

@@ -24,9 +24,19 @@
             Benutzer werden im Modul <emphasis>Benutzer</emphasis> der &ucsUMC; verwaltet.
         </para>
         <figure id="user-create">
-            <title>Anlegen eines Benutzers in UMC</title>
-            <graphic scalefit="1" width="80%" fileref="illustrations/users_user_de.png"/>
+		  <title>Anlegen eines Benutzers in UMC</title>
+		  <graphic scalefit="1" width="80%" fileref="illustrations/users_user_de.png"/>
         </figure>
+
+        <para>
+		  In der Grundeinstellung wird zum Anlegen eines Benutzers ein vereinfachter Assistent
+		  angezeigt, der nur die wichtigsten Einstellungen abfragt. Durch einen Klick auf
+		  <guimenu>Erweitert</guimenu> werden alle Attribute angezeigt. Der vereinfachte Assistent
+		  kann deaktiviert werden, in dem die &ucsUCRV;
+		  <envar>directory/manager/web/modules/users/user/wizard/disabled</envar> auf
+		  <emphasis>true</emphasis> gesetzt wird.
+		</para>
+
         <para>
             Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
             der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
