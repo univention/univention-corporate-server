@@ -21,8 +21,8 @@ if __name__ == '__main__':
 			package_version='99.%s-%s' % (uts.random_int(), uts.random_int())
 			package = uts.random_name(),
 			appidentifier = '%s' % uts.random_name(),
-			ucsversionstart = '1.2'
-			ucsversionend = '1.3'
+			ucsversionstart = '1.2-0'
+			ucsversionend = '1.3-99'
 
 			acl = udm.create_object('settings/ldapacl',
 							name = acl_name,
