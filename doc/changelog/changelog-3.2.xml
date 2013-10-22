@@ -1311,6 +1311,10 @@
 		<listitem><simpara>
 			The part of system setup doing basic IP configuration has been re-written in Python to support VLANs, Bridging and Bonding (<ulinkt url="&ucsbug;28670">Bug 28670</ulinkt>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			The special handling for the Univention Package Database has been removed from system setup (<ulink url="&ucsbug;29783">Bug 29783</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
