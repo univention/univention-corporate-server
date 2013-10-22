@@ -43,12 +43,9 @@ case "$1" in
 		# deconfigure temporary interfaces
 		ucr search --brief --value '^appliance-mode-temporary$'|cut -f1 -d:|grep -E '^interfaces/[^/]+_[^/]/type$' | while read
 		do
-			interface="${REPLY%type}"
-			for subvar in netmask address broadcast network type
-			do
-				ucr unset "$interface$subvar"
-			done
-		done
+			echo "${REPLY%type}"{netmask,address,broadcast,network,type}
+		done |
+		xargs -r ucr unset
 
 		# Show corret IP in motd
 		if [ -e /etc/motd.setup ]; then
