@@ -733,6 +733,12 @@ define([
 				this.own(aspect.before(menu, '_openMyself', lang.hitch(this, function() {
 					this._navContextItem = this._navContextItemFocused;
 				})));
+				// in the case of changes, reload the navigation, as well (could have
+				// changes referring to container objects)
+				this.on('objectsaved', lang.hitch(this, function(dn, objectType) {
+					this.resetPathAndReloadTreeAndFilter([dn]);
+				}));
+
 
 				// keep superordinate widget in sync with the tree for DHCP / DNS
 				this.own(aspect.after(this._tree, 'reload', lang.hitch(this, function() {
@@ -743,18 +749,6 @@ define([
 
 				titlePane.addChild(treePane);
 			}
-
-			// in the case of changes, reload the navigation, as well (could have
-			// changes referring to container objects)
-			this.on('objectsaved', lang.hitch(this, function(dn, objectType, reopen) {
-				if (reopen) {
-					this.createDetailPage(objectType, dn);
-				} else {
-					if (this.moduleFlavor === 'navigation') {
-						this.resetPathAndReloadTreeAndFilter([dn]);
-					}
-				}
-			}));
 
 			// register to onShow as well as onFilterDone events in order on focus to the
 			// input widget when the tab is changed
@@ -1398,7 +1392,7 @@ define([
 									this.selectChild(this._detailPage);
 									if (submit) {
 										this._detailPage._form.ready().then(lang.hitch(this, function() {
-											this._detailPage.validateChanges(null);
+											this._detailPage.validateChanges();
 										}));
 									}
 								}));
@@ -1456,7 +1450,7 @@ define([
 			topic.publish("/umc/tabs/focus", this);
 		},
 
-		onObjectSaved: function(dn, objectType, reopen) {
+		onObjectSaved: function(dn, objectType) {
 			// event stub
 		},
 

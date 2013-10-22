@@ -1138,7 +1138,7 @@ define([
 			return nChanges > 0;
 		},
 
-		validateChanges: function(e, reopen) {
+		validateChanges: function(e) {
 			// summary:
 			//		Validate the user input through the server and save changes upon success.
 
@@ -1227,7 +1227,7 @@ define([
 			this.umcpCommand('udm/validate', params).then(lang.hitch(this, function(data) {
 				// if all elements are valid, save element
 				if (this._parseValidation(data.result)) {
-					this.saveChanges(vals, reopen);
+					this.saveChanges(vals);
 				} else {
 					this.standby(false);
 				}
@@ -1301,7 +1301,7 @@ define([
 			}
 		},
 
-		saveChanges: function(vals, reopen) {
+		saveChanges: function(vals) {
 			// summary:
 			//		Save the user changes for the edited object.
 
@@ -1350,7 +1350,7 @@ define([
 				} else if (success) {
 					// everything ok, close page
 					this.onCloseTab();
-					this.onSave(result.$dn$, this.objectType, reopen);
+					this.onSave(result.$dn$, this.objectType);
 				} else {
 					// print error message to user
 					dialog.alert(msg);

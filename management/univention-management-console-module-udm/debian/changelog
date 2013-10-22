@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.57-1) unstable; urgency=low
+
+  * Bug #23214: Revert changes from previous approach, set UCR variable
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 22 Oct 2013 23:47:31 +0200
+
 univention-management-console-module-udm (4.0.56-1) unstable; urgency=low
 
   * Bug #32389: fix default button
