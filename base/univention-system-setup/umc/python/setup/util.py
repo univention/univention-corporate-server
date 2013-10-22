@@ -131,7 +131,7 @@ def load_values():
 def _xkeymap(keymap):
 	'''Determine the x-keymap which belongs to 'keymap' by
 	parsing /lib/univention-installer/locale/all-kmaps'''
-	
+
 	xkeymap = {'layout' : '', 'variant' : ''}
 	fp = open('/lib/univention-installer/locale/all-kmaps', 'r')
 	for line in fp:
@@ -480,13 +480,17 @@ def detect_interfaces():
 	"""
 	interfaces = []
 
-	dirnames = [dirname for dirname in os.listdir(PATH_SYS_CLASS_NET) if os.path.isdir(os.path.join(PATH_SYS_CLASS_NET, dirname))]
-	for dirname in dirnames:
+	if not os.path.exists(PATH_SYS_CLASS_NET):
+		return interfaces
+	for dirname in os.listdir(PATH_SYS_CLASS_NET):
+		pathname = os.path.join(PATH_SYS_CLASS_NET, dirname)
+		if not os.path.isdir(pathname):
+			continue
 		# filter out lo, etc. interfaces
-		if open(os.path.join(PATH_SYS_CLASS_NET, dirname, 'type'),'r').read().strip() not in ('1', '2', '3', '4', '5', '6', '7', '8', '15', '19'):
+		if open(os.path.join(pathname, 'type'), 'r').read().strip() not in ('1', '2', '3', '4', '5', '6', '7', '8', '15', '19'):
 			continue
 		# filter out bridge, bond devices
-		if any(os.path.exists(os.path.join(PATH_SYS_CLASS_NET, dirname, path)) for path in ('bridge', 'bonding')):
+		if any(os.path.exists(os.path.join(pathname, path)) for path in ('bridge', 'bonding')):
 			continue
 		# filter out vlan devices
 		if '.' in dirname:
@@ -494,7 +498,7 @@ def detect_interfaces():
 		mac = None
 		try:
 			# try to read mac address
-			mac = open(os.path.join(PATH_SYS_CLASS_NET, dirname, 'address'),'r').read().strip()
+			mac = open(os.path.join(pathname, 'address'), 'r').read().strip()
 		except (OSError, IOError):
 			pass
 		interfaces.append({'name': dirname, 'mac': mac})
@@ -569,7 +573,7 @@ def get_components(role=None):
 
 	# reload for correct locale
 	imp.reload(package_list)
-	pkglist = [ jpackage for icategory in package_list.PackageList 
+	pkglist = [ jpackage for icategory in package_list.PackageList
 			for jpackage in icategory['Packages']
 			if 'all' in jpackage['Possible'] or role in jpackage['Possible'] ]
 

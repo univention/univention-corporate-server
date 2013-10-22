@@ -131,6 +131,10 @@ msgstr "Zugriffseinstellungen"
 msgid "Account data"
 msgstr "Kontodaten"
 
+#: umc/js/setup/InterfaceGrid.js:92
+msgid "Add"
+msgstr "Hinzufügen"
+
 #: umc/js/setup/InterfaceGrid.js:313
 msgid "Add a network interface"
 msgstr "Ein Netzwerkgerät hinzufügen"
