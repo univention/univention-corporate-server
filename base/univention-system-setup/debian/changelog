@@ -1,3 +1,9 @@
+univention-system-setup (7.0.52-1) unstable; urgency=low
+
+  * Bug #29119: Fixed translation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 22 Oct 2013 17:12:45 +0200
+
 univention-system-setup (7.0.51-7) unstable; urgency=low
 
   * Detect more interface changes (Bug #28670)
@@ -69,7 +75,7 @@ univention-system-setup (7.0.46-1) unstable; urgency=low
 univention-system-setup (7.0.45-1) unstable; urgency=low
 
   * Bug #30816: fix label
-  * Bug #29119: add link to UCS documenation
+  * Bug #29119: add link to UCS documentation
 
  -- Florian Best <best@univention.de>  Tue, 01 Oct 2013 15:43:45 +0200
 
