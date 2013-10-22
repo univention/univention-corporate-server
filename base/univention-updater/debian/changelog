@@ -1,3 +1,10 @@
+univention-updater (9.0.25-1) unstable; urgency=low
+
+  * pre upgrade grub-common to avoid update-grub error
+    during upgrade (Bug #32657) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 22 Oct 2013 16:26:03 +0200
+
 univention-updater (9.0.24-1) unstable; urgency=low
 
   * fixed typo in UMC module description (Bug #32022)
