@@ -468,6 +468,30 @@ done
 		</para>
 	  </section>
 
+<!-- 	  <section> -->
+<!-- 		<title>Installation in Citrix XenServer</title> -->
+<!-- 		<para> -->
+<!-- 		  Bei der Installation von UCS in der Virtualisierungslösung Citrix XenServer 6.0 - 6.2 wird -->
+<!-- 		  mit der standardmässig emulierten Cirrus-Grafikkarte das Grub-Menü des Univention -->
+<!-- 		  Installers nicht angezeigt. Der Univention Installer kann durch Drücken der ENTER-Taste -->
+<!-- 		  direkt gestartet werden; alternativ startet die Installation automatisch nach sechzig -->
+<!-- 		  Sekunden. Der dann gestartete Univention Installer wird normal dargestellt. -->
+<!-- 		</para> -->
+
+<!-- 		<para> -->
+<!-- 		  Um Grub korrekt darzustellen, muss die von XenServer emulierte Grafikkarte umkonfiguriert -->
+<!-- 		  werden. Dazu muss eine Anmeldung als Benutzer <emphasis>root</emphasis> auf dem -->
+<!-- 		  XenServer-System folgen. Mit dem Befehl <command>xe vm-list</command> muss zuerst die UUID -->
+<!-- 		  der virtuellen Maschine ermittelt werden. Mit dem folgenden Befehl wird dann die emulierte -->
+<!-- 		  Grafikkarte auf VGA umkonfiguriert: -->
+
+<!-- <programlisting language="sh"> -->
+<!-- xe vm-param-set uuid=UUIDVM platform:vga=std  -->
+<!-- </programlisting> -->
+<!-- 		</para> -->
+<!-- 	  </section> -->
+
+
 	  <section>
 		<title>Migration of a Samba 3 environment to Samba 4</title>
 		<para>
