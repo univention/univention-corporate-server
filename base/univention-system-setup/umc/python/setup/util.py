@@ -70,7 +70,7 @@ CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-res
 CMD_ENABLE_EXEC_WITH_RESTART = '/usr/share/univention-updater/enable-apache2-umc'
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
 
-RE_IPV4_TYPE = re.compile('interfaces/[^/]*/type')
+RE_IPV4_TYPE = re.compile('^interfaces/[^/]*/type$')
 RE_LOCALE = re.compile(r'([^.@ ]+).*')
 
 # list of all needed UCR variables
