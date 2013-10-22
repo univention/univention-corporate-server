@@ -88,12 +88,16 @@ then
 	get_credentials
 
 	uvmm_base="cn=Virtual Machine Manager,$ldap_base"
+	master="$(ucr get ldap/master)"
+	port="$(ucr get ldap/master/port)"
+	[ -z "$port" ] && port=7389
+	ldapuri="ldap://$master:$port"	
 	if [ -n "$bindpwdfile" ]
 	then
-		ldapdelete -ZZ -h "$ldap_master" -D "$binddn" -y "$bindpwdfile" -r "$uvmm_base"
+		ldapdelete -ZZ -H "$ldapuri" -D "$binddn" -y "$bindpwdfile" -r "$uvmm_base"
 	elif [ -n "$bindpwd" ]
 	then
-		ldapdelete -ZZ -h "$ldap_master" -D "$binddn" -w "$bindpwd" -r "$uvmm_base"
+		ldapdelete -ZZ -H "$ldapuri" -D "$binddn" -w "$bindpwd" -r "$uvmm_base"
 	else
 		die "Missing LDAP credentials"
 	fi
