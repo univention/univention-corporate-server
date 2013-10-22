@@ -33,6 +33,7 @@
 import ldap
 import univention.uldap
 import string
+import time
 import univention.admin.localization
 import univention.config_registry
 
@@ -55,6 +56,12 @@ def getBaseDN(host='localhost', port=None, uri=None):
 		if not port:
 			port = int(configRegistry.get('ldap/server/port', 7389))
 		uri = "ldap://%s:%s" % (host, port)
+	try:
+		l = ldap.ldapobject.ReconnectLDAPObject(uri, trace_stack_limit=None)
+		result=l.search_s('',ldap.SCOPE_BASE,'objectClass=*',['NamingContexts'])
+		return result[0][1]['namingContexts'][0]
+	except ldap.SERVER_DOWN:
+		time.sleep(60)
 	l = ldap.ldapobject.ReconnectLDAPObject(uri, trace_stack_limit=None)
 	result=l.search_s('',ldap.SCOPE_BASE,'objectClass=*',['NamingContexts'])
 	return result[0][1]['namingContexts'][0]

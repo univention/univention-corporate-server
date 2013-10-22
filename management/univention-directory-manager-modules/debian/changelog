@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.69-1) unstable; urgency=low
+
+  * add reconnect to getBaseDN (Bug #32617)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Oct 2013 17:08:45 +0200
+
 univention-directory-manager-modules (9.0.68-1) unstable; urgency=low
 
   * revised settings/extended_attribute descriptions again (Bug #28629)
