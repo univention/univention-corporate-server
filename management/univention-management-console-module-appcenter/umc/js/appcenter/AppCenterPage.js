@@ -96,7 +96,17 @@ define([
 				this._searchSidebar.on('search', lang.hitch(this, 'filterApplications'));
 			}
 
-			this._grid = new AppCenterGallery({});
+			this._grid = new AppCenterGallery({
+				actions: [{
+					name: 'open',
+					isDefaultAction: true,
+					isContextAction: false,
+					label: _('Open'),
+					callback: lang.hitch(this, function(id, item) {
+						this.showDetails(item);
+					})
+				}]
+			});
 			this.addChild(this._grid);
 
 			when(this.getAppCenterSeen(), lang.hitch(this, function(appcenterSeen) {
@@ -136,12 +146,6 @@ define([
 			}), lang.hitch(this, function() {
 				this.updateApplications();
 			}));
-
-			// register event handlers
-			this.own(this._grid.on('.dgrid-row:click', lang.hitch(this, function(evt) {
-				var app = this._grid.row(evt).data;
-				this.showDetails(app);
-			})));
 		},
 
 		getAppCenterSeen: function() {

@@ -709,6 +709,7 @@ class Application(object):
 
 	@HardRequirement('install', 'update')
 	def must_have_valid_license(self):
+		LICENSE.reload()
 		return LICENSE.allows_using(self.get('notifyvendor'))
 
 	@HardRequirement('install')
