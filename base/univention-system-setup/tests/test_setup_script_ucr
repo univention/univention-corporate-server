@@ -1,0 +1,72 @@
+#!/usr/bin/python
+"""Unit test for univention.management.console.modules.setup.setup_script"""
+# pylint: disable-msg=C0103,E0611,R0904
+import unittest
+from tempfile import mkdtemp
+from shutil import rmtree
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python/setup'))
+from setup_script import TransactionalUcr
+from univention.config_registry import ConfigRegistry
+
+
+class TestProfile(unittest.TestCase):
+	"""Unit test for univention.management.console.modules.setup.setup_script"""
+	def setUp(self):
+		"""Create object."""
+		self.temp = mkdtemp()
+		os.environ['UNIVENTION_BASECONF'] = os.path.join(self.temp, 'test.conf')
+		self.ucr = ConfigRegistry()
+		self.ucr.load()
+		self.wrap = TransactionalUcr()
+
+	def tearDown(self):
+		rmtree(self.temp)
+
+	def test_same(self):
+		"""Test reading unmodified."""
+		self.failUnlessEqual(self.ucr.get('foo'), self.wrap.get('foo'))
+
+	def test_uncommited(self):
+		"""Test reading uncommitted."""
+		self.wrap.set('foo', 'bar')
+		self.failIfEqual(self.ucr.get('foo'), self.wrap.get('foo'))
+
+	def test_committed(self):
+		"""Test reading committed."""
+		self.wrap.set('foo', 'bar')
+		self.wrap.commit()
+		self.ucr.load()
+		self.failUnlessEqual(self.ucr.get('foo'), self.wrap.get('foo'))
+
+	def test_revert(self):
+		"""Test reading revert."""
+		self.wrap.set('foo', 'bar')
+		self.wrap.set('foo', None)
+		self.wrap.commit()
+		self.failUnlessEqual(self.ucr.get('foo'), self.wrap.get('foo'))
+
+	def test_transaction(self):
+		"""Test transaction commit."""
+		with self.wrap:
+			self.wrap.set('foo', 'bar')
+		self.ucr.load()
+		self.failUnlessEqual(self.ucr.get('foo'), 'bar')
+
+	def test_transaction_fail(self):
+		"""Test transaction aborted."""
+		self.wrap.set('foo', 'bar')
+		try:
+			with self.wrap:
+				raise ValueError()
+		except ValueError:
+			pass
+		else:
+			self.fail('Failed to propagate exception')
+		self.ucr.load()
+		self.failIfEqual(self.ucr.get('foo'), 'bar')
+
+
+if __name__ == '__main__':
+	unittest.main()

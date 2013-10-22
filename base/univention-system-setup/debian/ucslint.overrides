@@ -5,3 +5,5 @@
 # Tests
 0010-2: tests/test_setup_script_profile
 0009-2: tests/test_setup_script_profile
+0010-2: tests/test_setup_script_ucr
+0009-2: tests/test_setup_script_ucr

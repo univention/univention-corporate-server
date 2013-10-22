@@ -37,7 +37,6 @@ from datetime import datetime
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 from util import PATH_SETUP_SCRIPTS, PATH_PROFILE
-ucr = ConfigRegistry()
 
 
 def setup_i18n():
@@ -73,14 +72,66 @@ class Profile(dict):
 		return value.split(split_by) if value else []
 
 
+class TransactionalUcr(object):
+	def __init__(self):
+		self.ucr = ConfigRegistry()
+		self.ucr.load()
+		self.changes = {}
+
+	def set(self, key, value):
+		'''
+		Set the value of key of UCR.
+		Does not save immediately.
+		commit() is called at the end of inner_run(). If you need to commit
+		changes immediately, you can call commit() at any time.
+		'''
+		orig_val = self.ucr.get(key)
+		if orig_val == value:
+			# in case it was overwritten previously
+			self.changes.pop(key, None)
+		else:
+			self.changes[key] = value
+
+	def commit(self):
+		'''
+		Saves UCR variables previously set by set_ucr_var(). Also commits
+		changes (if done any). Is called automatically *if inner_run() did not
+		raise an exception*. You can call it manually if you need to
+		do it (e.g. in down()).
+		'''
+		if self.changes:
+			ucr_update(self.ucr, self.changes)
+			# reset (in case it is called multiple) times in a script
+			self.changes.clear()
+
+	def get(self, key, search_in_changes=True):
+		'''
+		Retrieve the value of key from ucr.
+		If search_in_changes, it first looks in (not yet commited) values.
+		'''
+		if search_in_changes:
+			try:
+				return self.changes[key]
+			except KeyError:
+				pass
+		return self.ucr.get(key)
+
+	def __enter__(self):
+		return self
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		if exc_type is None:
+			self.commit()
+
+
 class SetupScript(object):
 	'''Baseclass for all Python-based Setup-Scripts.
 
 	Script lifecycle:
 	  __init__() -> up()
-	  run() -> (inner_run() -> commit_ucr()) -> down()
+	  run() -> (inner_run() -> commit()) -> down()
 
-	up(), (inner_run() -> commit_ucr), and down() and encapsulated by
+	up(), (inner_run() -> commit), and down() and encapsulated by
 	try-blocks, so the script should under no cirucumstances break.
 
 	You should define name and script_name class (or instance) variables
@@ -122,10 +173,8 @@ class SetupScript(object):
 		run() is called. You should make sure that this does not
 		happen.
 		'''
-		# get a fresh ucr in every script
-		ucr.load()
+		self.ucr = TransactionalUcr()
 		self._step = 1
-		self._ucr_changes = {}
 
 		# remove script path from name
 		self.script_name = os.path.abspath(sys.argv[0])
@@ -212,43 +261,6 @@ class SetupScript(object):
 			print msg,
 		print
 
-	def set_ucr_var(self, var_name, value):
-		'''Set the value of var_name of ucr.
-		Does not save immediately.
-		commit_ucr() is called at the end
-		of inner_run(). If you need to
-		commit changes immediately, you
-		can call commit_ucr() at any time.'''
-		oldval = self.get_ucr_var(var_name, search_in_changes=False)
-		if oldval == value:
-			# in case it was overwritten previously
-			self._ucr_changes.pop(var_name, None)
-			return
-		self._ucr_changes[var_name] = value
-
-	def commit_ucr(self):
-		'''Saves ucr variables previously
-		set by set_ucr_var(). Also commits
-		changes (if done any). Is called
-		automatically *if inner_run() did
-		not raise an exception*. You can
-		call it manually if you need to
-		do it (e.g. in down())'''
-		if self._ucr_changes:
-			ucr_update(ucr, self._ucr_changes)
-			# reset (in case it is called multiple) times in a script
-			self._ucr_changes.clear()
-
-	def get_ucr_var(self, var_name, search_in_changes=True):
-		'''Retrieve the value of var_name from ucr.
-		If search_in_changes, it first looks in (not
-		yet commited) values.
-		'''
-		if search_in_changes:
-			if var_name in self._ucr_changes:
-				return self._ucr_changes[var_name]
-		return ucr.get(var_name)
-
 	def run(self):
 		'''Run the SetupScript.
 		Dont override this method, instead define your own
@@ -273,7 +285,7 @@ class SetupScript(object):
 				# is called only if inner_run
 				# really returned and did not
 				# raise an exception
-				self.commit_ucr()
+				self.ucr.commit()
 		except Exception as e:
 			self.error(str(e))
 			success = False
@@ -309,8 +321,10 @@ class SetupScript(object):
 		'''
 		pass
 
+
 from univention.lib.package_manager import PackageManager
 from contextlib import contextmanager
+
 
 class AptScript(SetupScript):
 	'''More or less just a wrapper around
@@ -335,7 +349,7 @@ class AptScript(SetupScript):
 			'fatclient' : 'univention-managed-client',
 			'mobileclient' : 'univention-mobile-client',
 		}
-		self.current_server_role = self.get_ucr_var('server/role')
+		self.current_server_role = self.ucr.get('server/role')
 		self.wanted_server_role = self.profile.get('server/role')
 
 	def set_always_install(self, *packages):
