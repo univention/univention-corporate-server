@@ -48,6 +48,31 @@ def setup_i18n():
 _ = setup_i18n()
 
 
+class Profile(dict):
+	def load(self, filename=PATH_PROFILE):
+		with open(filename, 'r') as profile:
+			for line in profile:
+				line = line.strip()
+				if not line:
+					continue
+				if line.startswith('#'):
+					continue
+				key, value = line.split('=', 1)
+				for delim in ("'", '"'):
+					if value.startswith(delim) and value.endswith(delim):
+						value = value[1:-1]
+						break
+				self[key] = value
+
+	def get_list(self, key, split_by=' '):
+		'''
+		Retrieve the value of var_name from the profile file.
+		Return the string as a list split by split_by.
+		'''
+		value = self.get(key)
+		return value.split(split_by) if value else []
+
+
 class SetupScript(object):
 	'''Baseclass for all Python-based Setup-Scripts.
 
@@ -107,6 +132,8 @@ class SetupScript(object):
 		if self.script_name.startswith(PATH_SETUP_SCRIPTS):
 			self.script_name = self.script_name[len(PATH_SETUP_SCRIPTS):]
 
+		self.profile = self.parse_profile()
+
 		try:
 			self.up(*args, **kwargs)
 		except Exception as e:
@@ -114,6 +141,12 @@ class SetupScript(object):
 			self._broken = e
 		else:
 			self._broken = False
+
+	@staticmethod
+	def parse_profile():
+		profile = Profile()
+		profile.load()
+		return profile
 
 	def inform_progress_parser(self, progress_attribute, msg):
 		'''Internal method to inform progress parser.
@@ -216,30 +249,6 @@ class SetupScript(object):
 				return self._ucr_changes[var_name]
 		return ucr.get(var_name)
 
-	def get_profile_var(self, var_name, default=''):
-		'''Retrieve the value of var_name from the profile file.
-		If not found, return default.
-		'''
-		if not hasattr(self, '_profile_vars'):
-			self._profile_vars = {}
-			with open(PATH_PROFILE) as f:
-				for line in f.readlines():
-					match = re.match(r'^(.+)="(.*)"\n$', line)
-					if match:
-						var, val = match.groups()
-						self._profile_vars[var] = val
-		return self._profile_vars.get(var_name, default)
-
-	def get_profile_var_list(self, var_name, split_by=' '):
-		'''Retrieve the value of var_name from the profile file.
-		Return the string as a list split by split_by.
-		'''
-		val = self.get_profile_var(var_name)
-		if not val:
-			return []
-		else:
-			return val.split(split_by)
-
 	def run(self):
 		'''Run the SetupScript.
 		Dont override this method, instead define your own
@@ -327,7 +336,7 @@ class AptScript(SetupScript):
 			'mobileclient' : 'univention-mobile-client',
 		}
 		self.current_server_role = self.get_ucr_var('server/role')
-		self.wanted_server_role = self.get_profile_var('server/role')
+		self.wanted_server_role = self.profile.get('server/role')
 
 	def set_always_install(self, *packages):
 		self.package_manager.always_install(packages)

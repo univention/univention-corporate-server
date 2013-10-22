@@ -1,0 +1,93 @@
+#!/usr/bin/python
+"""Unit test for univention.management.console.modules.setup.setup_script"""
+# pylint: disable-msg=C0103,E0611,R0904
+import unittest
+from tempfile import NamedTemporaryFile
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python/setup'))
+from setup_script import Profile
+
+
+class TestProfile(unittest.TestCase):
+	"""Unit test for univention.management.console.modules.setup.setup_script"""
+	def setUp(self):
+		"""Create object."""
+		self.profile = Profile()
+		self.temp = NamedTemporaryFile()
+
+	def load(self, content):
+		self.temp.write(content)
+		self.temp.flush()
+		self.profile.load(self.temp.name)
+
+	def test_empty(self):
+		"""Empty profile."""
+		self.load('')
+		self.failUnlessEqual({}, self.profile)
+
+	def test_comment(self):
+		"""Only one comment."""
+		self.load('#foo=bar')
+		self.failUnlessEqual({}, self.profile)
+
+	def test_comments(self):
+		"""Indented comment."""
+		self.load('  # foo=bar')
+		self.failUnlessEqual({}, self.profile)
+
+	def test_unquoted(self):
+		"""Unquoted setting."""
+		self.load('foo=bar')
+		self.failUnlessEqual({'foo': 'bar'}, self.profile)
+
+	def test_single_quoted(self):
+		"""Single-quoted setting."""
+		self.load("foo='bar'")
+		self.failUnlessEqual({'foo': 'bar'}, self.profile)
+
+	def test_double_quoted(self):
+		"""Double-quoted setting."""
+		self.load('foo="bar"')
+		self.failUnlessEqual({'foo': 'bar'}, self.profile)
+
+	def test_multiple(self):
+		"""Multiple settings."""
+		self.load(
+			'''
+			# start
+			foo="bar"
+			bar='baz'
+			baz=foo
+			 # end
+			'''
+		)
+		self.failUnlessEqual({
+			'foo': 'bar',
+			'bar': 'baz',
+			'baz': 'foo',
+		}, self.profile)
+
+	def test_special(self):
+		"""Shell special setting."""
+		self.load('foo=" a$b\'c"d`e "')
+		self.failUnlessEqual({'foo': ' a$b\'c"d`e '}, self.profile)
+
+	def test_empty_list(self):
+		"""Empty list."""
+		self.load('foo=""')
+		self.failUnlessEqual([], self.profile.get_list('foo'))
+
+	def test_one_list(self):
+		"""List with one element."""
+		self.load('foo="bar"')
+		self.failUnlessEqual(['bar'], self.profile.get_list('foo'))
+
+	def test_two_list(self):
+		"""List with two elements."""
+		self.load('foo="bar baz"')
+		self.failUnlessEqual(['bar', 'baz'], self.profile.get_list('foo'))
+
+
+if __name__ == '__main__':
+	unittest.main()

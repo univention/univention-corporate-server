@@ -41,8 +41,8 @@ class SoftwareScript(AptScript):
 		super(SoftwareScript, self).up()
 
 		# get this scripts configuration options
-		self.packages_remove = self.get_profile_var_list('packages_remove')
-		self.packages_install = self.get_profile_var_list('packages_install')
+		self.packages_remove = self.profile.get_list('packages_remove')
+		self.packages_install = self.profile.get_list('packages_install')
 
 	def inner_run(self):
 		if not (self.packages_remove or self.packages_install):
