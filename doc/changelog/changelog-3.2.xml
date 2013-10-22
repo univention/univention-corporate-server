@@ -1584,7 +1584,9 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  An error in <command>univention-dnsedit</command> which occurred when trying to remove the only location from a SRV record has been corrected. When removing the only location, the whole SRV record will be removed now (<ulink url="&ucsbug;32592">Bug 32592</ulink>).
+		  An error in <command>univention-dnsedit</command> which occurred when trying to remove the last 
+		  location from a SRV record has been corrected. When removing the last location, the whole 
+		  SRV record will be removed now (<ulink url="&ucsbug;32592">Bug 32592</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
