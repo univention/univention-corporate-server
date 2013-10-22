@@ -30,15 +30,14 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-import os.path
 import shutil
 import glob
 
 from univention.management.console.modules.setup.setup_script import AptScript, main, _
 
+
 class RoleScript(AptScript):
 	name = _('Configuring server role')
-	script_name = os.path.abspath(__file__)
 	brutal_apt_options = True
 
 	def inner_run(self):
@@ -117,7 +116,7 @@ class RoleScript(AptScript):
 
 		return True
 
+
 if __name__ == '__main__':
 	script = RoleScript()
 	main(script)
-

@@ -62,11 +62,10 @@ class SetupScript(object):
 	You should define name and script_name class (or instance) variables
 	where name is localised and will show up at top of the progress and
 	script_name is for logging and internal infos found at
-	univention.management.console.modules.setup.util.ProgressParser.FRACTIONS
-	You probably want to set script_name to os.path.abspath(__file__)
+	univention.management.console.modules.setup.util.ProgressParser.FRACTIONS.
 
 	You should define your own inner_run-method, and, if needed,
-	override (initially dummy) up() and down()
+	override (initially dummy) up() and down().
 
 	You should execute a script like so:
 	script = MySetupScript()
@@ -86,9 +85,6 @@ class SetupScript(object):
 	'''
 	name = ''
 
-	# you almost definitely want to assign os.path.abspath(__file__)
-	script_name = '' 
-
 	def __init__(self, *args, **kwargs):
 		'''Initialise Script. Will call self.up() with same *args
 		and **kwargs as __init__() (which itself will leave them
@@ -106,10 +102,12 @@ class SetupScript(object):
 		ucr.load()
 		self._step = 1
 		self._ucr_changes = {}
+
 		# remove script path from name
-		if self.script_name:
-			if self.script_name.startswith(PATH_SETUP_SCRIPTS):
-				self.script_name = self.script_name[len(PATH_SETUP_SCRIPTS):]
+		self.script_name = os.path.abspath(sys.argv[0])
+		if self.script_name.startswith(PATH_SETUP_SCRIPTS):
+			self.script_name = self.script_name[len(PATH_SETUP_SCRIPTS):]
+
 		try:
 			self.up(*args, **kwargs)
 		except Exception as e:

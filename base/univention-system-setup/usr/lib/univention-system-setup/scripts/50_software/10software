@@ -30,13 +30,11 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-import os.path
-
 from univention.management.console.modules.setup.setup_script import AptScript, main, _
+
 
 class SoftwareScript(AptScript):
 	name = _('Configuring software components')
-	script_name = os.path.abspath(__file__)
 	brutal_apt_options = False
 
 	def up(self):
@@ -84,4 +82,3 @@ class SoftwareScript(AptScript):
 if __name__ == '__main__':
 	script = SoftwareScript()
 	main(script)
-
