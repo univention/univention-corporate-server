@@ -69,6 +69,7 @@ define([
 			this.options = [{
 				name: 'close',
 				label: _('Close'),
+				'default': true,
 				callback: lang.hitch(this, function() {
 					this.close();
 				})

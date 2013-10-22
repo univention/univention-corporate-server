@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.56-1) unstable; urgency=low
+
+  * Bug #32389: fix default button
+
+ -- Florian Best <best@univention.de>  Tue, 22 Oct 2013 15:57:32 +0200
+
 univention-management-console-module-udm (4.0.55-1) unstable; urgency=low
 
   * Bug #32389: use umc.widgets.ConfirmDialog as base class for LiceneDialog
