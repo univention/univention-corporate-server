@@ -1,3 +1,9 @@
+univention-samba4 (3.0.28-2) unstable; urgency=low
+
+  * Fixed bash typo in 98univention-samba4-dns.inst (Bug #32871)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Oct 2013 10:09:29 +0200
+
 univention-samba4 (3.0.28-1) unstable; urgency=low
 
   * Wait for dns- replication only if it is not ignored (Bug #32871)

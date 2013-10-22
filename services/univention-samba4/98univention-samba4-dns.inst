@@ -65,7 +65,7 @@ if [ "$samba4_role" != "RODC" ]; then
 fi
 
 
-if !  echo "$connector_s4_mapping_user_ignorelist" | egrep -q "(^dns-$[hostname},|^dns-${hostname}$|,dns-${hostname}$|,dns-${hostname},)"; then
+if !  echo "$connector_s4_mapping_user_ignorelist" | egrep -q "(^dns-${hostname},|^dns-${hostname}$|,dns-${hostname}$|,dns-${hostname},)"; then
 	# wait 5 minutes until the dns-$hostname account is synchronized to OpenLDAP
 	echo -n "Wait until dns-$hostname is replicated: "
 	count=0
