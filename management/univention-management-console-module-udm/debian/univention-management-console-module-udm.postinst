@@ -55,7 +55,7 @@ univention-config-registry set directory/reports/cleanup/cron?"0 0 * * *" \
 	directory/reports/cleanup/age?43200
 
 # simple forms (wizards)
-univention-config-registry set directory/manager/web/modules/wizards/disabled=no
+univention-config-registry set directory/manager/web/modules/wizards/disabled?no
 
 VARIABLES=
 # remove default search
