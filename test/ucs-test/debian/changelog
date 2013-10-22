@@ -1,3 +1,9 @@
+ucs-test (4.0.151-1) unstable; urgency=low
+
+  * Minor cleanups for the samba printer test (Bug #29059)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 Oct 2013 16:21:34 +0200
+
 ucs-test (4.0.150-1) unstable; urgency=low
 
   * Use a valid ucs version (Bug #32412, Bug #32411)

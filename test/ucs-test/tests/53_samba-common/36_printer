@@ -26,24 +26,27 @@ password=univention
 
 eval "$(ucr shell)"
 
+printsharebasedn="cn=shares,$ldap_base"
+
 trap '
 user_remove "$username";
 rm -rf "/tmp/$printername"/ /tmp/print_input;
-udm-test shares/printer remove --dn="$printername,$ldap_base"
+udm-test shares/printer remove --dn="cn=$printername,$printsharebasedn"
 wait_for_replication_and_postrun
 ' INT TERM EXIT
+
 user_create "$username" || fail_fast 1 "Could not create user $username."
 
 #create printer
 echo "----create printer"
 udm-test shares/printer create \
+	--position "$printsharebasedn" \
 	--set "name=$printername" \
 	--set "spoolHost=$hostname.$domainname" \
 	--set "uri=file:/ tmp/$printername" \
 	--set "model=None"
 
 wait_for_replication_and_postrun
-sleep 2
 
 ## look for printer and user
 echo "----Testing wether printer share '$printername' and user '$username' have been created"
@@ -65,12 +68,13 @@ done
 #create input file
 echo "----Creating input file"
 
-echo "$(uname -a)" > "/tmp/print_input"
+tmp_filename=$(mktemp)
+echo "$(uname -a)" > "$tmp_filename"
 
 ## initiate print
 echo "initiate print"
 i=0
-while ! smbclient -U"$username%$password" "//$hostname.$domainname/$printername" -c "print /tmp/print_input"
+while ! smbclient -U"$username%$password" "//$hostname.$domainname/$printername" -c "print \"$tmp_filename\""
 do
 	let i=$i+1
 	if [ $i = 20 ]; then
@@ -78,6 +82,7 @@ do
 	fi
 	sleep 1
 done
+rm "$tmp_filename"
 
 ## check output
 echo "check output"
