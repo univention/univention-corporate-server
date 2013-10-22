@@ -1,3 +1,9 @@
+univention-apache (6.0.12-2) unstable; urgency=low
+
+  * added trailing "/" to UCS overview ldap master link (Bug #32647)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 22 Oct 2013 15:15:36 +0200
+
 univention-apache (6.0.12-1) unstable; urgency=low
 
   * Preserve additional query parameters when switching language (Bug #32932) 
