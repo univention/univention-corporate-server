@@ -911,10 +911,15 @@
 
 
 <section id="installation:xenserver">
-<title>Installation in Citrix XenServer</title>
-	<para>
-		Die Einrichtung einer UCS-Instanz in Citrix XenServer ist im
-		Univention Wiki dokumentiert <biblioref linkend="xenserver-installation"/>.
-	</para>
+  <title>Installation in Citrix XenServer</title>
+  <para>
+	Die Einrichtung einer UCS-Instanz in Citrix XenServer ist im
+	Univention Wiki dokumentiert <biblioref linkend="xenserver-installation"/>.
+  </para>
+
+  <para>
+	Um das Grub-Menü korrekt darzustellen ist eine Anpassung an der XenServer-Konfiguration nötig;
+	diese ist in <xref linkend="release-notes"/> beschrieben.
+  </para>
 </section>
 </chapter>

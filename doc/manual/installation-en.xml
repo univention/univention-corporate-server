@@ -917,5 +917,12 @@
 		The process for setting up a UCS instance in Citrix XenServer is
 		documented in the Univention Wiki <biblioref linkend="xenserver-installation"/>.
 	</para>
+
+  <!-- <para> -->
+  <!-- 	Um das Grub-Menü korrekt darzustellen ist eine Anpassung an der XenServer-Konfiguration nötig; -->
+  <!-- 	diese ist in <xref linkend="release-notes"/> beschrieben. -->
+  <!-- </para> -->
+
+
 </section>
 </chapter>
