@@ -4,7 +4,7 @@
 import unittest
 import os
 import univention.management.console.modules
-univention.management.console.modules.__path__.append(os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
+univention.management.console.modules.__path__.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
 from univention.management.console.modules.setup.netconf import ChangeSet
 from univention.management.console.modules.setup.netconf.modules import KernelModules
 
