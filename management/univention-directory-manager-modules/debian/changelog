@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.69-2) unstable; urgency=low
+
+  * Bug #23214: Document UCR variables for disabling UDM wizards
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 22 Oct 2013 23:45:45 +0200
+
 univention-directory-manager-modules (9.0.69-1) unstable; urgency=low
 
   * add reconnect to getBaseDN (Bug #32617)

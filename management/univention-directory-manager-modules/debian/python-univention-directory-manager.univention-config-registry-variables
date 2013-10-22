@@ -46,6 +46,18 @@ Description[en]=The automatic search of the UMC domain management modules (see '
 Type=bool
 Categories=management-umc
 
+[directory/manager/web/modules/wizard/disabled]
+Description[de]=Einige Module bringen in den Domänenmanagement-Modulen der Univention Management Console ein vereinfachtes Formular zum Anlegen von Objekten mit. Es wird dann statt des gesamten Formulars gezeigt. Dieses Verhalten kann durch diese Option abgeschaltet werden. Die Wizards können auch pro Modul aktiviert werden (siehe 'directory/manager/web/modules/.*/.*/wizard/disabled').
+Description[en]=Some modules provide a simplified form for creating objects in the domain management modules of the Univention Management Console. It is shown instead of the full form. This behaviour can be disabled through this option. The wizards can also be disabled per module (see 'directory/manager/web/modules/.*/.*/wizard/disabled').
+Type=bool
+Categories=management-umc
+
+[directory/manager/web/modules/.*/.*/wizard/disabled]
+Description[de]=Das vereinfachte Formular zum Anlegen von Objekten (siehe 'directory/manager/web/modules/wizard/disabled') kann pro Modul deaktiviert werden, z.B. 'directory/manager/web/modules/users/user/wizard/disabled=true'.
+Description[en]=The simplified form for creating new objects (see 'directory/manager/web/modules/wizard/disabled') can be disabled per module, e.g. 'directory/manager/web/modules/users/user/wizard/disabled=true'.
+Type=bool
+Categories=management-umc
+
 [directory/manager/web/modules/.*/.*/search/default]
 Description[de]=Mit dieser Variable kann pro Modul das Attribut, nach dem standardmäßig gesucht wird konfiguriert werden, z.B. 'directory/manager/web/modules/users/user/search/default=lastname'.
 Description[en]=This variable allows to configure for every module which attribute should be searched for by default, e.g. 'directory/manager/web/modules/users/user/search/default=lastname'.
