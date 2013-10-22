@@ -152,7 +152,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Directory owner</entry>
+		<entry>Directory owner of the share's root directory</entry>
 		<entry>
 		  The user to whom the root directory of the share should belong, see
 		  <xref linkend="shares::permissions"/>.
@@ -160,7 +160,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Directory owner group</entry>
+		<entry>Directory owner group of the share's root directory</entry>
 		<entry>
 		  The group to whom the root directory of the share should belong, see
 		  <xref linkend="shares::permissions"/>.
@@ -168,7 +168,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Directory mode</entry>
+		<entry>Permissions for the share's root directory</entry>
 		<entry>
 		  The read, write and access permissions for the root directory of the
 		  share, see <xref linkend="shares::permissions"/>.
@@ -213,7 +213,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Redirect root access</entry>
+		<entry>Redirect root access uid</entry>
 		<entry>
 		  <para>
 			In the NFS standard procedure, identification of users is achieved via user
@@ -244,7 +244,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Allowed hosts</entry>
+		<entry>Allowed hosts, ip addresses or networks</entry>
 		<entry>
 		  By default, all hosts are permitted access to a share. In this select list,
 		  host names and IP addresses can be included, to which the access to the share
@@ -290,7 +290,14 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Browseable</entry>
+		<entry>Samba write access</entry>
+		<entry>
+		  Permits write access to this share.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Show in Windows network environment</entry>
 		<entry>
 		  Specifies whether the share in question is to show up on Windows clients
 		  within the network environment.
@@ -298,7 +305,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Public</entry>
+		<entry>Allow anonymous access with a guest user</entry>
 		<entry>
 		  Permits access to this share without a password. Every access is carried out
 		  by means of the common guest user <emphasis>nobody</emphasis>.
@@ -306,7 +313,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>MSDFS Root</entry>
+		<entry>MSDFS root</entry>
 		<entry>
 		  This option is documented in <xref linkend="shares::msdfs"/>.
 		</entry>
@@ -340,22 +347,6 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		</entry>
 	  </row>
 
-	  <row>
-		<entry>Postexec script</entry>
-		<entry>
-		  A script or command which is to be executed on the server if the connection to this share is
-		  finished.
-		</entry>
-	  </row>
-
-	  <row>
-		<entry>Preexec script</entry>
-		<entry>
-		  A script or command which is to be executed on the server each time a connection to this
-		  share is established.
-		</entry>
-	  </row>
-
 	</tbody>
   </tgroup>
 </table>
@@ -373,13 +364,6 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 	</thead>
 	<tbody>
-
-	  <row>
-		<entry>Samba write access</entry>
-		<entry>
-		  Permits write access to this share.
-		</entry>
-	  </row>
 
 	  <row>
 		<entry>Force user</entry>
@@ -451,6 +435,326 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
+		<entry>NT ACL support</entry>
+		<entry>
+		  <para>
+			If this option is activated, Samba will try to show POSIX ACLs under Windows,
+			and to adopt changes to the ACLs, which were performed under Windows, for the
+			POSIX ACLs.
+		  </para>
+		  <para>
+			If this option is not set, existing POSIX ACLs are effective but not shown
+			under Windows, and consequently cannot be changed under Windows.
+		  </para>
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Inherit ACLs</entry>
+		<entry>
+		  When activating this option, each file created in this share will inherit the
+		  ACL (Access Control List) of the directory where the file was created.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Inherit owner</entry>
+		<entry>
+		  When activating this option, each newly created file will not be assigned of
+		  the user who created the file, but to the owner of the superior directory
+		  instead.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Inherit permissions</entry>
+		<entry>
+		  When activating this option, for each file or directory created in this share,
+		  the UNIX permissions of the superior directory will automatically be
+		  adopted.
+		</entry>
+	  </row>
+
+	</tbody>
+  </tgroup>
+</table>
+
+<para>
+  If a new file is created on a Samba server from a Windows client, the file
+  permissions will be set in several steps:
+</para>
+<orderedlist>
+  <listitem><simpara>First, only the DOS permissions are translated into UNIX permissions.</simpara></listitem>
+  <listitem><simpara>Then the permissions are filtered via the <guimenu>Filemode</guimenu>.
+  UNIX permissions which are marked in <guimenu>File mode</guimenu>,
+  are the only ones preserved. Permissions not set here, will be
+  removed. Thus, the permissions have to be set as UNIX permissions and
+  in <guimenu>File mode</guimenu> in order to be preserved.</simpara></listitem>
+  <listitem><simpara>In the next step, the permissions under <guimenu>Force file mode</guimenu>
+  are added. As a result, the file will have all the permissions
+  set after step 2 or under <guimenu>Force file mode</guimenu>. This means,
+  permissions marked under <guimenu>Force file mode</guimenu> are set in any case.</simpara></listitem>
+</orderedlist>
+<para>
+  Accordingly, a newly created directory will initially be assigned the
+  same permissions as that which are set as UNIX permissions and
+  in <guimenu>Directory mode</guimenu> at the same time. Then these
+  permissions are completed by those marked under <guimenu>Force directory mode</guimenu>.
+</para>
+<para>
+  In a similar way, the security settings are adopted for existing files and
+  directories the permissions of which are edited under Windows:
+</para>
+<para>
+  Only those permissions can be changed under Windows, which are marked
+  in <guimenu>Security mode</guimenu> or in <guimenu>Directory security mode</guimenu>.
+  Once this is done, the permissions marked
+  under <guimenu>Force security mode</guimenu> of under <guimenu>Force directory security mode</guimenu>
+  are set in any case.
+</para>
+<para>
+  Thus, the parameters <guimenu>File mode</guimenu> and <guimenu>Force file mode</guimenu>,
+  or <guimenu>Directory mode</guimenu> and <guimenu>Force directory mode</guimenu>
+  are applied during the creation of a file or
+  directory, while the parameters <guimenu>Security mode</guimenu>
+  and <guimenu>Force Security Mode</guimenu> or <guimenu>Security directory mode</guimenu>
+  and <guimenu>Force security directory mode</guimenu> are
+  applied when changing permissions.
+</para>
+<note>
+  <para>
+	The security settings only relate to the access via Samba.
+  </para>
+  <para>
+	The user on the Windows side does not receive any notification of the fact
+	that the file or directory authorisations might by changed according to the
+	Samba settings on this tab.
+  </para>
+</note>
+
+<table>
+  <title>'Samba extended permissions' tab (advanced settings)</title>
+  <tgroup cols="2">
+	<colspec colnum="1" colname="col1" colwidth="1*"/>
+	<colspec colnum="2" colname="col2" colwidth="2*"/>
+	<thead>
+	  <row>
+		<entry>Attribute</entry>
+		<entry>Description</entry>
+	  </row>
+	</thead>
+	<tbody>
+
+	  <row>
+		<entry>File mode</entry>
+		<entry>
+		  The permissions Samba is to adopt when creating a file, provided they are
+		  set under Windows.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Directory mode</entry>
+		<entry>
+		  The permissions Samba is to adopt when creating a directory, provided they
+		  are set under Windows.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Force file mode</entry>
+		<entry>
+		  The permissions Samba is to set in any case when creating a file,
+		  irrespective of whether they are set under Windows or not.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Force directory mode</entry>
+		<entry>
+		  The permissions Samba is to set in any case when creating a directory,
+		  irrespective of whether they are set under Windows or not.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Security mode</entry>
+		<entry>
+		  The file permissions to which Samba is to permit changes made from Windows
+		  side.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Directory security mode</entry>
+		<entry>
+		  The directory authorisations to which Samba is to permit changes made from
+		  Windows side.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Force security mode</entry>
+		<entry>
+		  The permissions Samba is to set in any case (irrespective of whether they
+		  are set under Windows or not), if file permissions are changed from Windows
+		  side.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Force directory security mode</entry>
+		<entry>
+		  The permissions Samba is to set in any case if directory permissions are
+		  changed from Windows side (irrespective of whether they are set under Windows
+		  or not).
+		</entry>
+	  </row>
+
+	</tbody>
+  </tgroup>
+</table>
+
+
+
+
+
+
+
+<table>
+  <title>'Samba options' tab (advanced settings)</title>
+  <tgroup cols="2">
+	<colspec colnum="1" colname="col1" colwidth="1*"/>
+	<colspec colnum="2" colname="col2" colwidth="2*"/>
+	<thead>
+	  <row>
+		<entry>Attribute</entry>
+		<entry>Description</entry>
+	  </row>
+	</thead>
+	<tbody>
+
+	  <row>
+		<entry>Locking</entry>
+		<entry>
+		  <para>
+			Locking means preventing concurrent access to a file, making an
+			exclusive access possible. When activating this checkbox, Samba will
+			lock the access to files on the client's request.
+		  </para>
+		  <para>
+			Deactivating this option can be useful for improving performance, yet
+			it should generally not be set in shares with write access, since
+			without locking, files might be corrupted due to concurrent access.
+		  </para>
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Blocking locks</entry>
+		<entry>
+		  <para>
+			Clients can send a lock request with a time limit for a certain area of an
+			open file.
+		  </para>
+		  <para>
+			In case Samba is unable to comply with a the lock request, and this option is
+			activated, then Samba will - in periodical intervals until the expiry of the
+			time limit - try to lock the requested file area. If the option is
+			deactivated, no further attempt will be made.
+		  </para>
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Strict locking</entry>
+		<entry>
+		  <para>
+			If this option is activated, Samba will with each read or write access check
+			if the file is locked, and will deny access if required. On some systems, this
+			procedure can take a long time.
+		  </para>
+		  <para>
+			If this option is deactivated, Samba will check if the file is locked on the
+			client's request exclusively. Well configured clients ask for a check in all
+			important cases, so that this option is usually unnecessary.
+		  </para>
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Oplocks</entry>
+		<entry>
+		  If this option is activated, Samba will use so-called <emphasis>opportunistic locks</emphasis>.
+		  This can improve the speed of file access considerably. However, the
+		  option permits clients local caching of files on a large scale. In unreliable
+		  networks it might therefore be necessary to do without Oplocks.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Level 2 oplocks</entry>
+		<entry>
+		  <para>When activating this option, Samba will support an extended form of Oplocks,
+		  the so-called <emphasis>opportunistic read-only locks</emphasis> or <emphasis>Level 2 Oplocks</emphasis>. Windows
+		  clients receiving a read/write Oplock for a file can then scale down this
+		  Oplock to a read-only Oplock instead of having to abandon the Oplock
+		  completely as soon as a second client opens the file. All clients supporting
+		  Level 2 Oplocks, will then cache read access processes to the file
+		  exclusively. Should one of the clients write to the file, all the other
+		  clients will be asked to abandon their Oplocks, and to empty their caches.
+		  </para>
+		  <para>
+			It is recommended to activate this option to speed up access to files which
+			are normally not written to (e.g. programs / executable files).
+		  </para>
+		  <note>
+			<para>
+			  If kernel Oplocks are supported, Level 2 Oplocks will not be allowed, even if
+			  the option is activated. Only if the checkbox <guimenu>Oplocks</guimenu> is also ticked, this
+			  option will become valid.
+			</para>
+		  </note>
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Fake oplocks</entry>
+		<entry>
+		  <para>
+			When activating this option, Samba will allow all Oplock requests irrespective
+			of the number of clients having access to a file. This method considerably
+			improves performance, and is useful for shares which can only be accessed for
+			reading (e.g. CD-ROMs), or where it is ensured that there can never occur a
+			situation when several clients make access at the same time.
+		  </para>
+		  <para>
+			If it cannot be excluded that several clients make reading and writing access
+			to a file at the same time, this option should not be activated, since it may
+			cause data loss.
+		  </para>
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Block size</entry>
+		<entry>
+		  The block size in bytes in which unoccupied disk space is to be reported to the
+		  clients. By default, this size is defined as 1024 bytes.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Client-side caching policy</entry>
+		<entry>
+		  This option specifies in which way the clients are to cache the files of this
+		  share offline. The available alternatives
+		  are <emphasis>manual</emphasis>, <emphasis>documents</emphasis>, <emphasis>programs</emphasis>,
+		  and <emphasis>disable</emphasis>.
+		</entry>
+	  </row>
+
+	  <row>
 		<entry>Allowed hosts</entry>
 		<entry>
 		  Names of computers which are authorised to access this Samba share. All other computers are denied
@@ -464,6 +768,14 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		<entry>
 		  The opposite to the authorised computers. If a computer appears in both lists, the computer is
 		  permitted to access the Samba share.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Users with write access</entry>
+		<entry>
+		  Only the users and groups listed here have write permission for the
+		  corresponding share.
 		</entry>
 	  </row>
 
@@ -497,57 +809,26 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>NT ACL support</entry>
+		<entry>Postexec script</entry>
 		<entry>
-		  <para>
-			If this option is activated, Samba will try to show POSIX ACLs under Windows,
-			and to adopt changes to the ACLs, which were performed under Windows, for the
-			POSIX ACLs.
-		  </para>
-		  <para>
-			If this option is not set, existing POSIX ACLs are effective but not shown
-			under Windows, and consequently cannot be changed under Windows.
-		  </para>
+		  A script or command which is to be executed on the server if the connection to this share is
+		  finished.
 		</entry>
 	  </row>
 
 	  <row>
-		<entry>Users with write access</entry>
+		<entry>Preexec script</entry>
 		<entry>
-		  Only the users and groups listed here have write permission for the
-		  corresponding share.
+		  A script or command which is to be executed on the server each time a connection to this
+		  share is established.
 		</entry>
 	  </row>
 
-	  <row>
-		<entry>Inherit ACLs</entry>
-		<entry>
-		  When activating this option, each file created in this share will inherit the
-		  ACL (Access Control List) of the directory where the file was created.
-		</entry>
-	  </row>
-
-	  <row>
-		<entry>Inherit owner</entry>
-		<entry>
-		  When activating this option, each newly created file will not be assigned of
-		  the user who created the file, but to the owner of the superior directory
-		  instead.
-		</entry>
-	  </row>
-
-	  <row>
-		<entry>Inherit permissions</entry>
-		<entry>
-		  When activating this option, for each file or directory created in this share,
-		  the UNIX permissions of the superior directory will automatically be
-		  adopted.
-		</entry>
-	  </row>
 
 	</tbody>
   </tgroup>
 </table>
+
 
 
 <table>
@@ -626,313 +907,36 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
   </tgroup>
 </table>
 
-<para>
-If a new file is created on a Samba server from a Windows client, the file
-permissions will be set in several steps:
-</para>
-<orderedlist>
-<listitem><simpara>First, only the DOS permissions are translated into UNIX permissions.</simpara></listitem>
-<listitem><simpara>Then the permissions are filtered via the <guimenu>Filemode</guimenu>.
-UNIX permissions which are marked in <guimenu>File mode</guimenu>,
-are the only ones preserved. Permissions not set here, will be
-removed. Thus, the permissions have to be set as UNIX permissions and
-in <guimenu>File mode</guimenu> in order to be preserved.</simpara></listitem>
-<listitem><simpara>In the next step, the permissions under <guimenu>Force file mode</guimenu>
-are added. As a result, the file will have all the permissions
-set after step 2 or under <guimenu>Force file mode</guimenu>. This means,
-permissions marked under <guimenu>Force file mode</guimenu> are set in any case.</simpara></listitem>
-</orderedlist>
-<para>
-Accordingly, a newly created directory will initially be assigned the
-same permissions as that which are set as UNIX permissions and
-in <guimenu>Directory mode</guimenu> at the same time. Then these
-permissions are completed by those marked under <guimenu>Force directory mode</guimenu>.
-</para>
-<para>
-In a similar way, the security settings are adopted for existing files and
-directories the permissions of which are edited under Windows:
-</para>
-<para>
-Only those permissions can be changed under Windows, which are marked
-in <guimenu>Security mode</guimenu> or in <guimenu>Directory security mode</guimenu>.
-Once this is done, the permissions marked
-under <guimenu>Force security mode</guimenu> of under <guimenu>Force directory security mode</guimenu>
-are set in any case.
-</para>
-<para>
-Thus, the parameters <guimenu>File mode</guimenu> and <guimenu>Force file mode</guimenu>,
-or <guimenu>Directory mode</guimenu> and <guimenu>Force directory mode</guimenu>
-are applied during the creation of a file or
-directory, while the parameters <guimenu>Security mode</guimenu>
-and <guimenu>Force Security Mode</guimenu> or <guimenu>Security directory mode</guimenu>
-and <guimenu>Force security directory mode</guimenu> are
-applied when changing permissions.
-</para>
-<note>
-<para>
-The security settings only relate to the access via Samba.
-</para>
-<para>
-The user on the Windows side does not receive any notification of the fact
-that the file or directory authorisations might by changed according to the
-Samba settings on this tab.
-</para>
-</note>
 
 <table>
-<title>'Samba extended permissions' tab (advanced settings)</title>
-<tgroup cols="2">
-<colspec colnum="1" colname="col1" colwidth="1*"/>
-<colspec colnum="2" colname="col2" colwidth="2*"/>
-<thead>
-<row>
-<entry>Attribute</entry>
-<entry>Description</entry>
-</row>
-</thead>
-<tbody>
+  <title>'(Options)' tab</title>
+  <tgroup cols="2">
+	<colspec colnum="1" colname="col1" colwidth="1*"/>
+	<colspec colnum="2" colname="col2" colwidth="2*"/>
+	<thead>
+	  <row>
+		<entry>Attribute</entry>
+		<entry>Description</entry>
+	  </row>
+	</thead>
+	<tbody>
 
-<row>
-<entry>File mode</entry>
-<entry>
-The permissions Samba is to adopt when creating a file, provided they are
-set under Windows.
-</entry>
-</row>
+	  <row>
+		<entry>Export for Samba clients</entry>
+		<entry>
+		  This option defines whether the share is to be exported for Samba clients.
+		</entry>
+	  </row>
 
-<row>
-<entry>Directory mode</entry>
-<entry>
-The permissions Samba is to adopt when creating a directory, provided they
-are set under Windows.
-</entry>
-</row>
+	  <row>
+		<entry>Export for NFS clients</entry>
+		<entry>
+		  This option defines whether the share is to be exported for NFS clients.
+		</entry>
+	  </row>
 
-<row>
-<entry>Force file mode</entry>
-<entry>
-The permissions Samba is to set in any case when creating a file,
-irrespective of whether they are set under Windows or not.
-</entry>
-</row>
-
-<row>
-<entry>Force directory mode</entry>
-<entry>
-The permissions Samba is to set in any case when creating a directory,
-irrespective of whether they are set under Windows or not.
-</entry>
-</row>
-
-<row>
-<entry>Security mode</entry>
-<entry>
-The file permissions to which Samba is to permit changes made from Windows
-side.
-</entry>
-</row>
-
-<row>
-<entry>Directory security mode</entry>
-<entry>
-The directory authorisations to which Samba is to permit changes made from
-Windows side.
-</entry>
-</row>
-
-<row>
-<entry>Force security mode</entry>
-<entry>
-The permissions Samba is to set in any case (irrespective of whether they
-are set under Windows or not), if file permissions are changed from Windows
-side.
-</entry>
-</row>
-
-<row>
-<entry>Force directory security mode</entry>
-<entry>
-The permissions Samba is to set in any case if directory permissions are
-changed from Windows side (irrespective of whether they are set under Windows
-or not).
-</entry>
-</row>
-
-</tbody>
-</tgroup>
-</table>
-
-
-
-<table>
-<title>'Samba options' tab (advanced settings)</title>
-<tgroup cols="2">
-<colspec colnum="1" colname="col1" colwidth="1*"/>
-<colspec colnum="2" colname="col2" colwidth="2*"/>
-<thead>
-<row>
-<entry>Attribute</entry>
-<entry>Description</entry>
-</row>
-</thead>
-<tbody>
-
-<row>
-<entry>Locking</entry>
-<entry>
-<para>
-Locking means preventing concurrent access to a file, making an
-exclusive access possible. When activating this checkbox, Samba will
-lock the access to files on the client's request.
-</para>
-<para>
-Deactivating this option can be useful for improving performance, yet
-it should generally not be set in shares with write access, since
-without locking, files might be corrupted due to concurrent access.
-</para>
-</entry>
-</row>
-
-<row>
-<entry>Blocking locks</entry>
-<entry>
-<para>
-Clients can send a lock request with a time limit for a certain area of an
-open file.
-</para>
-<para>
-In case Samba is unable to comply with a the lock request, and this option is
-activated, then Samba will - in periodical intervals until the expiry of the
-time limit - try to lock the requested file area. If the option is
-deactivated, no further attempt will be made.
-</para>
-</entry>
-</row>
-
-<row>
-<entry>Strict locking</entry>
-<entry>
-<para>
-If this option is activated, Samba will with each read or write access check
-if the file is locked, and will deny access if required. On some systems, this
-procedure can take a long time.
-</para>
-<para>
-If this option is deactivated, Samba will check if the file is locked on the
-client's request exclusively. Well configured clients ask for a check in all
-important cases, so that this option is usually unnecessary.
-</para>
-</entry>
-</row>
-
-<row>
-<entry>Oplocks</entry>
-<entry>
-If this option is activated, Samba will use so-called <emphasis>opportunistic locks</emphasis>.
-This can improve the speed of file access considerably. However, the
-option permits clients local caching of files on a large scale. In unreliable
-networks it might therefore be necessary to do without Oplocks.
-</entry>
-</row>
-
-<row>
-<entry>Level 2 oplocks</entry>
-<entry>
-<para>When activating this option, Samba will support an extended form of Oplocks,
-the so-called <emphasis>opportunistic read-only locks</emphasis> or <emphasis>Level 2 Oplocks</emphasis>. Windows
-clients receiving a read/write Oplock for a file can then scale down this
-Oplock to a read-only Oplock instead of having to abandon the Oplock
-completely as soon as a second client opens the file. All clients supporting
-Level 2 Oplocks, will then cache read access processes to the file
-exclusively. Should one of the clients write to the file, all the other
-clients will be asked to abandon their Oplocks, and to empty their caches.
-</para>
-<para>
-It is recommended to activate this option to speed up access to files which
-are normally not written to (e.g. programs / executable files).
-</para>
-<note>
-	<para>
-If kernel Oplocks are supported, Level 2 Oplocks will not be allowed, even if
-the option is activated. Only if the checkbox <guimenu>Oplocks</guimenu> is also ticked, this
-option will become valid.
-	</para>
-</note>
-</entry>
-</row>
-
-<row>
-<entry>Fake oplocks</entry>
-<entry>
-<para>
-When activating this option, Samba will allow all Oplock requests irrespective
-of the number of clients having access to a file. This method considerably
-improves performance, and is useful for shares which can only be accessed for
-reading (e.g. CD-ROMs), or where it is ensured that there can never occur a
-situation when several clients make access at the same time.
-</para>
-<para>
-If it cannot be excluded that several clients make reading and writing access
-to a file at the same time, this option should not be activated, since it may
-cause data loss.
-</para>
-</entry>
-</row>
-
-<row>
-<entry>Block size</entry>
-<entry>
-The block size in bytes in which unoccupied disk space is to be reported to the
-clients. By default, this size is defined as 1024 bytes.
-</entry>
-</row>
-
-<row>
-<entry>Client-side caching policy</entry>
-<entry>
-This option specifies in which way the clients are to cache the files of this
-share offline. The available alternatives
-are <emphasis>manual</emphasis>, <emphasis>documents</emphasis>, <emphasis>programs</emphasis>,
-and <emphasis>disable</emphasis>.
-</entry>
-</row>
-
-</tbody>
-</tgroup>
-</table>
-
-
-
-
-<table>
-<title>'(Options)' tab</title>
-<tgroup cols="2">
-<colspec colnum="1" colname="col1" colwidth="1*"/>
-<colspec colnum="2" colname="col2" colwidth="2*"/>
-<thead>
-<row>
-<entry>Attribute</entry>
-<entry>Description</entry>
-</row>
-</thead>
-<tbody>
-
-<row>
-<entry>Export for Samba clients</entry>
-<entry>
-This option defines whether the share is to be exported for Samba clients.
-</entry>
-</row>
-
-<row>
-<entry>Export for NFS clients</entry>
-<entry>
-This option defines whether the share is to be exported for NFS clients.
-</entry>
-</row>
-
-</tbody>
-</tgroup>
+	</tbody>
+  </tgroup>
 </table>
 
 </section>
