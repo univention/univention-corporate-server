@@ -3,19 +3,10 @@
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest
 import os
-import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
-import setup
-sys.modules['univention.management.console.modules.setup'] = sys.modules['setup']
-import setup.netconf
-sys.modules['univention.management.console.modules.setup.netconf'] = sys.modules['setup.netconf']
-import setup.netconf.common
-sys.modules['univention.management.console.modules.setup.netconf.common'] = sys.modules['setup.netconf.common']
-import setup.netconf.modules
-sys.modules['univention.management.console.modules.setup.netconf.modules'] = sys.modules['setup.netconf.modules']
-import setup.netconf.modules.LdapPolicies
-sys.modules['univention.management.console.modules.setup.netconf.modules.LdapPolicies'] = sys.modules['setup.netconf.modules.LdapPolicies']
-import logging
+import univention.management.console.modules
+univention.management.console.modules.__path__.append(os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
+from univention.management.console.modules.setup.netconf import ChangeSet
+from univention.management.console.modules.setup.netconf.modules import LdapPolicies
 
 
 class DummyOption(object):
@@ -28,7 +19,6 @@ class Testpolicyhanged(unittest.TestCase):
 	Old address changed to new address.
 	"""
 	def setUp(self):
-		logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 		ucr = {
 			"interfaces/eth0/type": "static",
 			"interfaces/eth0/start": "true",
@@ -38,7 +28,7 @@ class Testpolicyhanged(unittest.TestCase):
 			"interfaces/eth0/broadcast": "192.168.122.255",
 			"interfaces/eth0/ipv6/default/address": "1111:2222::3333",
 			"interfaces/eth0/ipv6/default/prefix": "64",
-			"ldap/master": "mas11.phahn.dev",
+			"ldap/master": "localhost",
 			"ldap/base": "dc=phahn,dc=dev",
 			"server/role": "domaincontroller_master",
 			"ldap/hostdn": "cn=mas11,cn=dc,cn=computers,dc=phahn,dc=dev",
@@ -56,8 +46,8 @@ class Testpolicyhanged(unittest.TestCase):
 			"interfaces/eth0/ipv6/default/prefix": "80",
 		}
 		options = DummyOption()
-		self.cs = setup.netconf.ChangeSet(ucr, profile, options)
-		self.phase = setup.netconf.modules.LdapPolicies.PhaseLdapPolicies(self.cs)
+		self.cs = ChangeSet(ucr, profile, options)
+		self.phase = LdapPolicies.PhaseLdapPolicies(self.cs)
 
 	def disabled_test_ldap(self):
 		self.phase.check()

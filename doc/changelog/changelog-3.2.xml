@@ -1307,6 +1307,10 @@
 			A link to the UCS online documentation has been added to the network interface creation wizard
 			(<ulink url="&ucsbug;29119">Bug 29119</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			The part of system setup doing basic IP configuration has been re-written in Python to support VLANs, Bridging and Bonding (<ulinkt url="&ucsbug;28670">Bug 28670</ulinkt>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 

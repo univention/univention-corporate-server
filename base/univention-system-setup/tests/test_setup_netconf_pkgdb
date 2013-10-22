@@ -3,18 +3,10 @@
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest
 import os
-import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
-import setup
-sys.modules['univention.management.console.modules.setup'] = sys.modules['setup']
-import setup.netconf
-sys.modules['univention.management.console.modules.setup.netconf'] = sys.modules['setup.netconf']
-import setup.netconf.common
-sys.modules['univention.management.console.modules.setup.netconf.common'] = sys.modules['setup.netconf.common']
-import setup.netconf.modules
-sys.modules['univention.management.console.modules.setup.netconf.modules'] = sys.modules['setup.netconf.modules']
-import setup.netconf.modules.RewritePackageDatabase
-sys.modules['univention.management.console.modules.setup.netconf.modules.RewritePackageDatabase'] = sys.modules['setup.netconf.modules.RewritePackageDatabase']
+import univention.management.console.modules
+univention.management.console.modules.__path__.append(os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
+from univention.management.console.modules.setup.netconf import ChangeSet, SkipPhase
+from univention.management.console.modules.setup.netconf.modules import RewritePackageDatabase
 
 
 class DummyOption(object):
@@ -27,12 +19,12 @@ class TestPkgDbUnconfigured(unittest.TestCase):
 		ucr = {}
 		profile = {}
 		options = DummyOption()
-		self.cs = setup.netconf.ChangeSet(ucr, profile, options)
-		self.phase = setup.netconf.modules.RewritePackageDatabase.PhaseRewritePackageDatabase(self.cs)
+		self.cs = ChangeSet(ucr, profile, options)
+		self.phase = RewritePackageDatabase.PhaseRewritePackageDatabase(self.cs)
 
 	def test_pkgdb(self):
 		self.assertRaises(
-			setup.netconf.SkipPhase,
+			SkipPhase,
 			self.phase.check
 		)
 
@@ -65,8 +57,8 @@ class TestPkgDbChanged(unittest.TestCase):
 			"interfaces/eth0/ipv6/default/prefix": "80",
 		}
 		options = DummyOption()
-		self.cs = setup.netconf.ChangeSet(ucr, profile, options)
-		self.phase = setup.netconf.modules.RewritePackageDatabase.PhaseRewritePackageDatabase(self.cs)
+		self.cs = ChangeSet(ucr, profile, options)
+		self.phase = RewritePackageDatabase.PhaseRewritePackageDatabase(self.cs)
 
 	def test_pkgdb(self):
 		self.phase.check()
