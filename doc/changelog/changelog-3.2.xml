@@ -1205,9 +1205,16 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+			Removed the label "Default properties" when searching in default
+			properties. Instead nothing is shown and the page has more space for the
+			results (<ulink url="&ucsbug;32753">Bug 32753</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 			Several internal users and groups are now hidden from the UMC modules, for example the
 			AD pseudo groups like Authenticated Users or Everyone
-			(<ulink url="&ucsbug;32871">Bug 32871</ulink>).
+			(<ulink url="&ucsbug;32871">Bug 32871</ulink>, <ulink
+				url="&ucsbug;32750">Bug 32750</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
