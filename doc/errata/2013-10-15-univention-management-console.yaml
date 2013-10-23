@@ -6,5 +6,5 @@ fix: 5.0.62-8.765.201310151748
 note:
 version: [1]
 desc: |
-  The wildcard evaluation of UMC ACLs has been re-enabled.
+  The wildcard evaluation of hostnames in UMC ACLs has been re-enabled.
 bug: [32850]
