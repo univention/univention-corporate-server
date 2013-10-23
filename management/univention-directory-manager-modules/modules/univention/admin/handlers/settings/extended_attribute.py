@@ -358,8 +358,8 @@ property_descriptions={
 			identifies=0
 		),
 	'doNotSearch': univention.admin.property(
-			short_description=_('Exclude from search'),
-			long_description=_('Values of this extended attribute are not available for searching'),
+			short_description=_('Exclude from UMC search'),
+			long_description=_('Values of this extended attribute are not available for searching in the UMC'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=[],
@@ -387,14 +387,13 @@ layout = [
 		["module"],
 		["options"],
 		["hook"],
-		["doNotSearch"],
 	]),
 	Tab(_('LDAP mapping'), _('Configuration of the LDAP settings used to store the extended attribute'), layout=[
 		["objectClass", "ldapMapping"],
 		["deleteObjectClass"],
 	]),
-	Tab(_('UMC'),_('Settings for UMC web layout'), layout=[
-		["disableUDMWeb"],
+	Tab(_('UMC'),_('Settings for UMC'), layout=[
+		["disableUDMWeb", "doNotSearch"],
 		Group(_('Attribute layout'), layout=[
 			["tabPosition", "overwritePosition"],
 			["fullWidth"],
