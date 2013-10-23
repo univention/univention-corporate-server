@@ -1,3 +1,10 @@
+univention-lib (3.0.23-1) unstable; urgency=low
+
+  * Modify share directory permissions, owner and group only if
+    their defining udm attributes have been modified (Bug #15087)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 23 Oct 2013 09:41:21 +0200
+
 univention-lib (3.0.22-1) unstable; urgency=low
 
   * Added update_nss_group_cache () for updating the group cache

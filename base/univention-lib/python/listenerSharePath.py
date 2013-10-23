@@ -222,10 +222,19 @@ def createOrRename(old, new, cr):
 		if newPath.startswith(dir):
 			return "custom permissions for %s not allowed" % newPath
 
-	# set permissions
+	# set permissions, only modify them if a change has occured
 	try:
-		os.chmod(newPath, int(mode, 0))
-		os.chown(newPath, uid, gid)
+		if (new.get("univentionShareDirectoryMode") and old.get("univentionShareDirectoryMode") and 
+				new["univentionShareDirectoryMode"][0] != old["univentionShareDirectoryMode"][0]):
+			os.chmod(newPath, int(mode, 0))
+		
+		if (new.get("univentionShareUid") and old.get("univentionShareUid") and
+				new["univentionShareUid"][0] != old["univentionShareUid"][0]):
+			os.chown(newPath, uid, -1)
+
+		if (new.get("univentionShareGid") and old.get("univentionShareGid") and
+				new["univentionShareGid"][0] != old["univentionShareGid"][0]):
+			os.chown(newPath, -1, gid)
 	except:
 		return "setting custom permissions for %s failed" % newPath
 
