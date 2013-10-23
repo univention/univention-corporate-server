@@ -1223,6 +1223,17 @@
 		  (<ulink url="&ucsbug;31408">Bug 31408</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+			Only UDM properties that are part of the layout are transmitted to the UMC frontend now.
+			Invisible property widgets led to problems loading the detail page of UDM objects
+		  (<ulink url="&ucsbug;32877">Bug 32877</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			The design of the UMC header has been revised along with the design of the UCS start site
+		  (<ulink url="&ucsbug;32610">Bug 32610</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
