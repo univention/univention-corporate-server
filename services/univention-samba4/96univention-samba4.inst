@@ -498,7 +498,7 @@ add: univentionGroupType
 univentionGroupType: -2147483643
 -
 add: sambaGroupType
-sambaGroupType: 5" | ldapmodify -x -D "$binddn" -w "$bindpwd" 
+sambaGroupType: 5" | ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" -D "$binddn" -w "$bindpwd" 
 		
 		if [ "$name" = "Authenticated Users" ]; then
 			udm groups/group modify "$@" --dn "cn=$name,$position,$ldap_base" \
@@ -555,7 +555,7 @@ _update_pseudo_group ()
 
 	shift 1
 	
-	group_dn="$(univention-ldapsearch -x "(&(objectClass=univentionGroup)(cn=$name))" | sed -ne 's|dn: ||p')"
+	group_dn="$(univention-ldapsearch -x "(&(objectClass=univentionGroup)(cn=$name)(!(univentionGroupType=-2147483643)))" | sed -ne 's|dn: ||p')"
 
 	if [ -n "$group_dn" ]; then
 		extract_binddn_and_bindpwd_from_args "$@"
@@ -571,7 +571,7 @@ add: univentionGroupType
 univentionGroupType: -2147483643
 -
 replace: sambaGroupType
-sambaGroupType: 5" | ldapmodify -x -D "$binddn" -w "$bindpwd" 
+sambaGroupType: 5" | ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" -D "$binddn" -w "$bindpwd" 
 	fi
 }
 

@@ -1,3 +1,9 @@
+univention-samba4 (3.0.32-1) unstable; urgency=low
+
+  * Run ldapmodify against ldap master (Bug #2900)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Oct 2013 15:35:18 +0200
+
 univention-samba4 (3.0.31-2) unstable; urgency=low
 
   * Hide the dns- user at a later point (Bug #32871)
