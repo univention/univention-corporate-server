@@ -28,14 +28,13 @@
             <graphic scalefit="1" width="80%" fileref="illustrations/users_user_en.png"/>
         </figure>
 
-        <!-- <para> -->
-		<!--   In der Grundeinstellung wird zum Anlegen eines Benutzers ein vereinfachter Assistent -->
-		<!--   angezeigt, der nur die wichtigsten Einstellungen abfragt. Durch einen Klick auf -->
-		<!--   <guimenu>Erweitert</guimenu> werden alle Attribute angezeigt. Der vereinfachte Assistent -->
-		<!--   kann deaktiviert werden, in dem die &ucsUCRV; -->
-		<!--   <envar>directory/manager/web/modules/users/user/wizard/disabled</envar> auf -->
-		<!--   <emphasis>true</emphasis> gesetzt wird. -->
-		<!-- </para> -->
+        <para>
+		  In the default setting, a simplified wizard for creating a user is shown, which only
+		  requests the most important settings. All attributes can be shown by clicking on
+		  <guimenu>Advanced</guimenu>. The simplified wizard can be deactivated by setting the
+		  &ucsUCRV; <envar>directory/manager/web/modules/users/user/wizard/disabled</envar> to
+		  <emphasis>true</emphasis>.
+		</para>
 
         <para>
             General information on the operation of the domain management modules

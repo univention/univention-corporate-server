@@ -89,14 +89,13 @@
 	in which arbitrary options can be defined.
   </para>
 
-  <!-- <para> -->
-  <!-- 	Tritt bei der Verarbeitung einer Drucker-Queue ein Fehler auf (z.B. weil der angebundene Drucker -->
-  <!-- 	ausgeschaltet ist), wird in der Grundeinstellung die weitere Bearbeitung der Warteschlange -->
-  <!-- 	gestoppt. Diese muss dann durch den Administrator wieder aktiviert werden (siehe <xref -->
-  <!-- 	linkend="umc:modules:printer"/>). Wird die &ucsUCRV; <envar>cups/errorpolicy</envar> auf -->
-  <!-- 	<emphasis>retry-job</emphasis> gesetzt, versucht CUPS alle dreissig Sekunden automatisch  -->
-  <!-- 	erfolglose Druckaufträge erneut durchzuführen. -->
-  <!-- </para> -->
+  <para>
+	If an error occurs when working through a printer queue (e.g., because the connected printer is
+	switched off), the further processing of the queue is stopped in the default setting. This must
+	then be reactivated by the administrator (see <xref linkend="umc:modules:printer"/>). If the
+	&ucsUCRV; <envar>cups/errorpolicy</envar> is set to <emphasis>retry-job</emphasis>, CUPS
+	automatically attempts to process unsuccessful print jobs again every 30 seconds.
+  </para>
 
 </section>
 
