@@ -31,8 +31,9 @@
 define([
 	"dojo/_base/declare",
 	"umc/tools",
+	"umc/dialog",
 	"umc/store"
-], function(declare, tools, store) {
+], function(declare, tools, dialog, store) {
 
 	return declare("umc.widgets._ModuleMixin", null, {
 		// summary:
@@ -82,6 +83,14 @@ define([
 
 		umcpProgressCommand: function( /*Object*/ progressBar, /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor, /*Object?*/ longPollingOptions ) {
 			return tools.umcpProgressCommand( progressBar, commandStr, dataObj, handleErrors, flavor || this.moduleFlavor, longPollingOptions );
+		},
+
+		addNotification: function(/*String*/ message, /*String?*/ component) {
+			dialog.notify(message, component || this.title);
+		},
+
+		addWarning: function(/*String*/ message, /*String?*/ component) {
+			dialog.warn(message, component || this.title);
 		}
 	});
 });
