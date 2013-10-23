@@ -1567,7 +1567,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			The setuid, setgid and sticky bit flags can now be set for share root-directories (<ulink url="&ucsbug;15087">Bug 15087</ulink>).
+			The setgid and sticky bit flags can now be set for share root-directories (<ulink url="&ucsbug;15087">Bug 15087</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			The share root-directory permissions, owner and group will now only be set if their udm attributes have been modified (<ulink url="&ucsbug;15087">Bug 15087</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
