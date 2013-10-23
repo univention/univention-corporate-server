@@ -1,0 +1,5 @@
+univention-uefi (1.0.0-1) unstable; urgency=low
+
+  * Initial release
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 22 Oct 2013 13:00:07 +0200
