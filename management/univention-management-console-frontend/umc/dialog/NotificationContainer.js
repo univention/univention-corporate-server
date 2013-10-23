@@ -42,11 +42,12 @@ define([
 	"dojo/store/Memory",
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
+	"dojox/string/sprintf",
 	"umc/widgets/Button",
 	"umc/widgets/Text",
 	"umc/tools",
 	"umc/i18n!umc/app"
-], function(declare, lang, query, win, on, topic, fx, domStyle, domConstruct, domGeometry, Memory, _WidgetBase, _TemplatedMixin, Button, Text, tools, _) {
+], function(declare, lang, query, win, on, topic, fx, domStyle, domConstruct, domGeometry, Memory, _WidgetBase, _TemplatedMixin, sprintf, Button, Text, tools, _) {
 	var _getWrapper = function() {
 		return query('.umcNotificationTopWrapper')[0];
 	};
@@ -186,7 +187,6 @@ define([
 		_renderRow: function(item, options) {
 			// create gallery item
 			var cssClass = 'umcNotificationMessage';
-			console.log('# _renderRow:', item.id, item.confirmed, this.get('view'));
 			if (this.get('view') == 'all' && !item.confirmed) {
 				cssClass += ' umcNewNotification';
 			}
@@ -195,7 +195,7 @@ define([
 				innerHTML: item.message
 			});
 
-			var infoStr = lang.replace('{h}:{m}', {
+			var infoStr = sprintf('%(h)02d:%(m)02d', {
 				h: item.time.getHours(),
 				m: item.time.getMinutes()
 			});
@@ -212,7 +212,11 @@ define([
 
 		render: function() {
 			domConstruct.empty(this.scrollerNode);
-			this.store.query(this.query, this.queryOptions).forEach(lang.hitch(this, function(iitem) {
+			this.store.query(this.query, this.queryOptions).forEach(lang.hitch(this, function(iitem, idx) {
+				if (idx >= 50) {
+					// render at maximum the last 50 messages
+					return;
+				}
 				var node = this._renderRow(iitem);
 				domConstruct.place(node, this.scrollerNode);
 			}));
@@ -262,7 +266,6 @@ define([
 		},
 
 		_clearTimeout: function() {
-			console.log('# _clearTimeout: ', this._timeoutID);
 			if (this._timeoutID) {
 				clearTimeout(this._timeoutID);
 				this._timeoutID = null;
@@ -272,11 +275,9 @@ define([
 		_addTimeout: function() {
 			this._clearTimeout();
 			this._timeoutID = setTimeout(lang.hitch(this, function() {
-				console.log('# timeout done -> close');
 				this._timeoutID = null;
 				this.wipeOut();
 			}), this.timeout * 1000);
-			console.log('# _addTimeout');
 		},
 
 		_addTimeoutIfOnlyAutoCloseMessages: function() {
@@ -290,7 +291,6 @@ define([
 		},
 
 		wipeIn: function(viewAll) {
-			console.log('# wipeIn');
 			this._stopActiveAnimation();
 			this._clearTimeout();
 
@@ -318,7 +318,6 @@ define([
 		},
 
 		wipeOut: function() {
-			console.log('# wipeOut');
 			this._stopActiveAnimation();
 			this._clearTimeout();
 			var anim = fx.animateProperty({
@@ -338,7 +337,6 @@ define([
 		},
 
 		_markMessages: function(property, currentValue, newValue) {
-			console.log('# _markMessages: ', property, ' ', currentValue, ' ', newValue);
 			var query = {};
 			query[property] = currentValue;
 			var newProperty = {};

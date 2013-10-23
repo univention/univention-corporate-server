@@ -569,7 +569,7 @@ define([
 				tab.startup();
 				tools.checkReloadRequired();
 			} catch (err) {
-				console.log('Error initializing module ' + module.id + ':', err);
+				console.warn('Error initializing module ' + module.id + ':', err);
 				tools.checkReloadRequired();
 			}
 		},
@@ -805,7 +805,7 @@ define([
 						modules.push(loadedModule);
 						incDeps(imod);
 					}), function(err) {
-						console.log('Error loading module ' + imod.id + ':', err);
+						console.warn('Error loading module ' + imod.id + ':', err);
 						incDeps(imod);
 					});
 				}, this);
@@ -1206,7 +1206,7 @@ define([
 						dialog.warn(msg);
 					}
 				}), function() {
-					console.log('WARNING: An error occurred while verifying the license. Ignoring error.');
+					console.warn('WARNING: An error occurred while verifying the license. Ignoring error.');
 				});
 			}
 		},
@@ -1267,7 +1267,7 @@ define([
 							dialog.notify(_('Not all installed components have been registered. Please visit the %s to register the remaining components.', joinModuleLink));
 						}
 					}), function() {
-						console.log('WARNING: An error occurred while verifying the join state. Ignoring error.');
+						console.warn('WARNING: An error occurred while verifying the join state. Ignoring error.');
 					}
 				);
 			}
