@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.47-1) unstable; urgency=low
+
+  * Bug #32930: Also search in LongDescription
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 23 Oct 2013 22:20:09 +0200
+
 univention-management-console-module-appcenter (3.0.46-1) unstable; urgency=low
 
   * Bug #30629: Reload license directly before checking it
