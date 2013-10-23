@@ -231,7 +231,10 @@ define([
 						footerButtons: buttons,
 						moduleFlavor: this.moduleFlavor,
 						wizard_mode: this.wizard_mode,
-						local_mode: this.local_mode
+						local_mode: this.local_mode,
+						addNotification: lang.hitch(this, 'addNotification'),
+						addWarning: lang.hitch(this, 'addWarning'),
+						isLoading: lang.hitch(this, 'isLoading')
 					});
 					ipage.on('save', lang.hitch(this, function() {
 						if (i < allPages.length - 1) {
@@ -310,7 +313,10 @@ define([
 						local_mode: this.local_mode,
 						onSave: lang.hitch(this, function() {
 							this.save();
-						})
+						}),
+						addNotification: lang.hitch(this, 'addNotification'),
+						addWarning: lang.hitch(this, 'addWarning'),
+						isLoading: lang.hitch(this, 'isLoading')
 					});
 					tabContainer.addChild(ipage);
 					this._pages.push(ipage);
@@ -388,6 +394,10 @@ define([
 			}), lang.hitch(this, function() {
 				this.standby(false);
 			}));
+		},
+
+		isLoading: function() {
+			return Boolean(this.get('standingBy'));
 		},
 
 		_getNewIpAddress: function(interfaces, primary_interface) {
@@ -808,7 +818,7 @@ define([
 
 				// notify user that saving was successful
 				var _success = lang.hitch(this, function() {
-					dialog.notify(_('The changes have been applied successfully.'));
+					this.addNotification(_('The changes have been applied successfully.'));
 					this.load(); // sets 'standby(false)'
 				});
 

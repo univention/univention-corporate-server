@@ -65,6 +65,8 @@ define([
 
 		_currentRole: null,
 
+		_interfacesWatchHandler: null,
+
 		physical_interfaces: [],
 
 		postMixInProperties: function() {
@@ -164,6 +166,12 @@ define([
 			}));
 		},
 
+		destroy: function() {
+			this.inherited(arguments);
+			this._interfacesWatchHandler.unwatch();
+			this._interfacesWatchHandler = null;
+		},
+
 		setValues: function(_vals) {
 
 			// save a copy of all original values that may be lists
@@ -216,17 +224,18 @@ define([
 			// set values
 			this._form.setFormValues(vals);
 
-			this.clearNotes();
-
 			// show a note if interfaces changes
-			if (!this.wizard_mode) {
+			if (!this.wizard_mode && !this._interfacesWatchHandler) {
 				// only show notes in an joined system in productive mode
-				var handler = this._form._widgets.interfaces.watch('value', lang.hitch(this, function() {
-					// TODO: only show it when IP changes??
-					this.addNote(_('Changing IP address configurations may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment.'));
-					handler.unwatch();
+				this._interfacesWatchHandler = this._form._widgets.interfaces.watch('value', lang.hitch(this, function() {
+					if (this.isLoading() || !this.get('selected')) {
+						return;
+					}
+					this.addWarning(_('Changing IP address configurations may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment.'));
+
+					this._interfacesWatchHandler.unwatch();
+					this._interfacesWatchHandler = null;
 				}));
-				this.own(handler);
 			}
 		},
 

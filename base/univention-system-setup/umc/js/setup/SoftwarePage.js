@@ -128,7 +128,7 @@ define([
 
 			if (!this._noteShowed[key]) {
 				this._noteShowed[key] = true;
-				this.addNote(this._myNotes[key]);
+				this.addWarning(this._myNotes[key]);
 			}
 		},
 
@@ -159,7 +159,6 @@ define([
 			}
 			// show note when changing software only on a joined system in productive mode
 			this._noteShowed.software = this.wizard_mode;
-			this.clearNotes();
 		},
 
 		getValues: function() {

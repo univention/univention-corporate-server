@@ -122,7 +122,7 @@ define([
 				}
 
 				if (count(newVal) < 2) {
-					this.addNote(_("For Active Directory domains the fully qualified domain name must have at least two dots (e.g. host.example.com). This warning is shown only once, the installation can be continued with the name currently given."));
+					this.addWarning(_("For Active Directory domains the fully qualified domain name must have at least two dots (e.g. host.example.com). This warning is shown only once, the installation can be continued with the name currently given."));
 				}
 				fc.remove();
 			}));

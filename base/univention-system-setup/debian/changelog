@@ -1,3 +1,10 @@
+univention-system-setup (7.0.55-1) unstable; urgency=low
+
+  * Bug #30004: adjustements for new notifications, make sure changes on
+    interfaces are only shown once
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Oct 2013 17:16:19 +0200
+
 univention-system-setup (7.0.54-1) unstable; urgency=low
 
   * Bug #32949: enhance usability when deleting interfaces
