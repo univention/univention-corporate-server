@@ -65,8 +65,16 @@ define([
 
 		style: 'overflow: auto;',
 
+		// searchableAttributes: String[]
+		//		Array of strings that shall be searched.
+		//		defaults to ['name', 'description', 'categories', 'keywords']
+		searchableAttributes: null,
+
 		buildRendering: function() {
 			this.inherited(arguments);
+			if (this.searchableAttributes === null) {
+				this.searchableAttributes = ['name', 'description', 'categories', 'keywords'];
+			}
 
 			this._searchTextBox = new TextBox({
 				inlineLabel: _('Search term'),
@@ -173,15 +181,17 @@ define([
 
 			// build together the search function
 			var regex  = new RegExp(searchPattern, 'i');
+			var searchableAttributes = this.searchableAttributes;
 			var query = {
 				test: function(value, obj) {
-					var string = lang.replace(
-						'{name} {description} {categories} {keywords}', {
-							name: obj.name,
-							description: obj.description,
-							categories: obj.categories.join(' '),
-							keywords: (obj.keywords || []).join(' ')
-						});
+					var string = '';
+					array.forEach(searchableAttributes, function(attr) {
+						var val = obj[attr] || '';
+						if (val instanceof Array) {
+							val = val.join(' ');
+						}
+						string += val + ' ';
+					});
 					return regex.test(string);
 				}
 			};

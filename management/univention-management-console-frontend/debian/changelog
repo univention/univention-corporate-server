@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.124-1) unstable; urgency=low
+
+  * Bug #32930: Make attributes to be searched for in LiveSearchSidebar
+    configurable
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 23 Oct 2013 22:15:27 +0200
+
 univention-management-console-frontend (3.0.123-1) unstable; urgency=low
 
   * Bug #30004: removed comments, changed console.log() to console.warn(),
