@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # UCS test
-#  postinst script for the ucs-test-framework package
+#  postrm script for the ucs-test-framework package
 #
 # Copyright 2013 Univention GmbH
 #

@@ -238,11 +238,12 @@ def get_postinst_script_buffer(extension_type, filename, app_id=None, version_st
 	else:
 		version_end = '--ucsversionend %s' % version_end
 	other_options = ''
-	for key in options:
-		if type(options[key]) == str:
-			other_options += ' --%s %s' % (key, options[key])
-		else:
-			other_options += ' --%s ' % (key,) + ' --%s '.join(options[key])
+	if options:
+		for key in options:
+			if type(options[key]) == str:
+				other_options += ' --%s %s' % (key, options[key])
+			else:
+				other_options += ' --%s ' % (key,) + ' --%s '.join(options[key])
 
 	return '''#!/bin/sh
 set -e
@@ -291,11 +292,12 @@ def get_join_script_buffer(extension_type, filename, app_id=None, joinscript_ver
 	else:
 		version_end = '--ucsversionend %s' % version_end
 	other_options = ''
-	for key in options:
-		if type(options[key]) == str:
-			other_options += ' --%s %s' % (key, options[key])
-		else:
-			other_options += ' --%s ' % (key,) + (' --%s ' % (key,)).join(options[key])
+	if options:
+		for key in options:
+			if type(options[key]) == str:
+				other_options += ' --%s %s' % (key, options[key])
+			else:
+				other_options += ' --%s ' % (key,) + (' --%s ' % (key,)).join(options[key])
 
 	return '''#!/bin/sh
 VERSION=%(joinscript_version)s
