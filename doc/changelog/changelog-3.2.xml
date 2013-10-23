@@ -823,6 +823,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+			The searchbar also searches the long description of an app (<ulink
+				url="&ucsbug;32930">Bug 32930</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 				Applications now register themselves automatically in the LDAP
 				directory (<ulink url="&ucsbug;32416">Bug 32416</ulink>).
 		</simpara></listitem>
