@@ -675,7 +675,7 @@
 			</row>
 
 			<row>
-			  <entry>Enabling options</entry>
+			  <entry>Required options/object classes</entry>
 			  <entry>
 				Some extended attributes can only be used practically if certain object classes are
 				activated on the <emphasis>(Options)</emphasis> tab. One or more options can
@@ -755,7 +755,7 @@
 		  </row>
 
 		  <row>
-			<entry>Delete object class when value is unset</entry>
+			<entry>Remove object class if the attribute is removed</entry>
 			<entry>
 			  If the value of a extended attribute in &ucsUMC; is deleted, the attribute is removed
 			  from the LDAP object. If no further attributes of the registered object class are used
@@ -980,7 +980,7 @@
 		  </row>
 
 		  <row>
-			<entry>Value not editable through UMC or the command line programm</entry>
+			<entry>Value is only managed internally</entry>
 			<entry>
 			  If this option is activated, the attribute cannot be modified manually, neither at
 			  creation time, nor later. This is useful for internal state information configured

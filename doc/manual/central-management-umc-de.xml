@@ -681,7 +681,7 @@
 		  </row>
 		  
 		  <row>
-			<entry>Aktivierende Optionen</entry>
+			<entry>Benötigte Optionen/Objektklassen</entry>
 			<entry>
 			  Einige erweiterte Attribute können nur sinnvoll verwendet werden, wenn auf der
 			  Karteikarte <emphasis>(Optionen)</emphasis> bestimmte Objektklassen aktiviert
@@ -763,7 +763,7 @@
 			</row>
 
 			<row>
-			  <entry>Objektklasse löschen wenn der Wert leer gesetzt wird</entry>
+			  <entry>Objektklasse löschen, wenn das Attribut entfernt wird</entry>
 			  <entry>
 				Wird für ein erweitertes Attribut in der &ucsUMC; der Wert gelöscht, wird das
 				Attribut vom LDAP-Objekt entfernt. Werden an diesem LDAP-Objekt keine weiteren
@@ -818,7 +818,7 @@
 			</row>
 
 			<row>
-			  <entry>Existierende Eigenschaft mit diesem Namen überschreiben</entry>
+			  <entry>Existierendes Eingabefeld überschreiben</entry>
 			  <entry>
 				In einigen Fällen ist es sinnvoll, vorgegebene Eingabefelder mit erweiterten
 				Attributen zu überschreiben. Wird hier der interne UDM-Name eines Attributs
@@ -998,7 +998,7 @@
 			</row>
 
 			<row>
-			  <entry>Wert nicht durch die UMC oder das Kommandozeilenprogramm änderbar</entry>
+			  <entry>Wert wird nur intern verwaltet</entry>
 			  <entry>
 				Ist diese Option aktiviert, kann das Attribut nicht manuell gesetzt werden, weder
 				beim Anlegen des Objekts, noch nachträglich. Dies ist sinnvoll für automatisch
