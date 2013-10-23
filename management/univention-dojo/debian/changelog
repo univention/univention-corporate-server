@@ -1,3 +1,9 @@
+univention-dojo (7.0.6-1) unstable; urgency=low
+
+  * Bug #32972: imported new version of put-selector
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Oct 2013 18:36:58 +0200
+
 univention-dojo (7.0.5-1) unstable; urgency=low
 
   * Bug #32264: rename patch
