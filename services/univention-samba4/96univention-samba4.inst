@@ -481,8 +481,7 @@ _create_group_with_special_sid ()
 
 		udm groups/group create "$@" --ignore_exists --option=posix \
 				--position "$position,$ldap_base" \
-				--set name="$name" \
-				--set objectFlag=hidden
+				--set name="$name"
 
 		echo "dn: cn=$name,$position,$ldap_base
 changetype: modify
@@ -491,6 +490,9 @@ objectClass: sambaGroupMapping
 -
 add: sambaSID
 sambaSID: $sid
+-
+replace: univentionObjectFlag
+univentionObjectFlag: hidden
 -
 add: univentionGroupType
 univentionGroupType: -2147483643

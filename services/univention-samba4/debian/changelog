@@ -1,3 +1,10 @@
+univention-samba4 (3.0.31-1) unstable; urgency=low
+
+  * Also set univentionObjectFlag via ldapmodify. It is possible that
+    the objectFlag is unknown during the upgrade (Bug #29000)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Oct 2013 07:28:49 +0200
+
 univention-samba4 (3.0.30-1) unstable; urgency=low
 
   * Update existing pseudo groups with new flags (Bug #29000)
