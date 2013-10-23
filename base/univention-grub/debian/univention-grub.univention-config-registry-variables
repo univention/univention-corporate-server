@@ -28,6 +28,12 @@ Description[en]=If this variable is set to 'yes', messages are suppressed during
 Type=str
 Categories=system-base
 
+[grub/efi]
+Description[de]=Gibt an, ob das System mit EFI-Unterstütung installiert wurde.
+Description[en]=Defines if the local system has been installed with EFI support.
+Type=boolean
+Categories=system-base
+
 [grub/loglevel]
 Description[de]=Alle Kernelmeldungen mit einem Loglevel kleiner als der hier angegebene Wert werden auf die Konsole ausgegeben (0 für kritische Meldungen bis 7 für Debugmeldungen).
 Description[en]=All kernel messages with a loglevel smaller than the loglevel specified here will be printed to the console (ranging from 0 for critical messages to 7 for debugging output).

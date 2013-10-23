@@ -34,6 +34,8 @@
 
 eval "$(univention-config-registry shell)"
 
+. /usr/share/univention-lib/ucr.sh
+
 # Bug #24858: xen-4.1 needs 800x600
 univention-config-registry set grub/timeout?5 \
 	kernel/postinst_hook?"/usr/sbin/update-grub" \
@@ -70,13 +72,24 @@ if [ "$1" = configure -a -z "$2" ];  then
 	# invoke grub-mkdevicemap (required for KVM machines
 	grub-mkdevicemap $grub_boot
 	# source the update-grub file, so we could use the grub helper functions
-	if [ -n "$grub_boot" ]; then
-		/usr/sbin/grub-install --no-floppy "$grub_boot"
+	if ! is_ucr_true grub/efi ; then
+		# no EFI found
+		if [ -n "$grub_boot" ]; then
+			/usr/sbin/grub-install --no-floppy "$grub_boot"
+		fi
+	else
+		# EFI found
+		modprobe efivars
+		# add efivars to /etc/modules
+		if ! ucr get kernel/modules | grep -q "\<efivars\>" ; then
+			ucr set kernel/modules="$(ucr get kernel/modules);efivars"
+		fi
+		# install grub
+		/usr/sbin/grub-install
+		# add EFI boot entry
+		efibootmgr -c -l "\\grub.efi" -L "Univention Corporate Server"
 	fi
 	update-grub
-	# grub/boot is set in the installer and need for the initial passing of
-	# the boot loader device. It can not be safely removed since grub2 doesn't use it
-	univention-config-registry unset grub/boot
 fi
 
 if ! [ -e /boot/grub/menu.lst ] ; then
