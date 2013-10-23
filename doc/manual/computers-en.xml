@@ -34,23 +34,22 @@
 		the &ucsUMC;.
 	</para>
 
-		<!-- <para> -->
-		<!--   In der Grundeinstellung wird zum Anlegen eines Rechners ein vereinfachter Assistent -->
-		<!--   angezeigt, der nur die wichtigsten Einstellungen abfragt. Durch einen Klick auf -->
-		<!--   <guimenu>Erweitert</guimenu> werden alle Attribute angezeigt. Ist dem ausgewählten -->
-		<!--   Netzwerk-Objekt (siehe <xref linkend="networks::introduction"/>) eine DNS-Forward-Zone -->
-		<!--   und/oder eine DNS-Reverse-Zone zugeordnet (siehe <xref linkend="networks:dns"/>), wird für -->
-		<!--   den Rechner automatisch ein Host-Record und/oder Pointer-Record angelegt. Ist für das -->
-		<!--   Netzwerk-Objekt ein DHCP-Service konfiguriert und wird eine MAC-Adresse konfiguriert, wird -->
-		<!--   ein DHCP-Rechner-Eintrag angelegt (siehe <xref linkend="module:dhcp:dhcp"/>) -->
-		<!-- </para> -->
+	<para>
+	  In the default setting, a simplified wizard for creating a computer is shown, which only requests
+	  the most important settings. All attributes can be shown by clicking on
+	  <guimenu>Advanced</guimenu>. If there is a DNS forward zone and/or a DNS reverse zone (see
+	  <xref linkend="networks:dns"/>) assigned to the selected network object (see <xref
+	  linkend="networks::introduction"/>), a host record and/or pointer record is automatically
+	  created for the host. If there is a DHCP service configured for the network object and a MAC
+	  address is configured, a DHCP host entry is created (see <xref linkend="module:dhcp:dhcp"/>).
+	</para>
 
-		<!-- <para> -->
-		<!--   Der vereinfachte Assistent kann für alle Systemrollen deaktiviert werden, in dem die &ucsUCRV; -->
-		<!--   <envar>directory/manager/web/modules/computers/computer/wizard/disabled</envar> auf -->
-		<!--   <emphasis>true</emphasis> gesetzt wird (oder auch selektiv für einzelne Rollen, -->
-		<!--   z.B. <envar>directory/manager/web/modules/computers/windows/wizard/disabled</envar>). -->
-		<!-- </para> -->
+	<para>
+	  The simplified wizard can be disabled for all system roles by setting the &ucsUCRV;
+	  <envar>directory/manager/web/modules/computers/computer/wizard/disabled</envar> to
+	  <emphasis>true</emphasis> (or also selectively for individual roles, e.g.,
+	  <envar>directory/manager/web/modules/computers/windows/wizard/disabled</envar>).
+	</para>
 
 	<table>
 		<title>'General' tab</title>

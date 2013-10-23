@@ -7,9 +7,8 @@
 
   <para>
 	Provision for accessing clients can occur via CIFS (supported by Windows/Linux clients) and/or
-	NFS (primarily supported by Linux/Unix). 
-	<!-- Die in der &ucsUMC; verwalteten NFS-Freigaben können von Clients sowohl über NFSv3, als auch über NFSv4 -->
-	<!-- eingebunden werden. -->
+	NFS (primarily supported by Linux/Unix). The NFS shares managed in the &ucsUMC; can be mounted
+	by clients both via NFSv3 and via NFSv4.
   </para>
 
   <para>
@@ -39,21 +38,20 @@
 	directory.
   </para>
 
-  <!-- <para> -->
-  <!-- 	Ist die <emphasis>setuid</emphasis>-Option für eine ausführbare Datei gesetzt, kann diese von -->
-  <!-- 	Benutzern mit den Rechten des Besitzers oder der Besitzergruppe ausgeführt werden. -->
-  <!-- </para> -->
+  <para>
+	If the <emphasis>setuid</emphasis> option is set for an executable file, it can be run by users
+	with the privileges of the owner of the file.
+  </para>
 
-  <!-- <para> -->
-  <!-- 	Wird die Option <emphasis>setgid</emphasis> für ein Verzeichnis gesetzt, erben dort angelegte -->
-  <!-- 	Dateien die Besitzergruppe des Verzeichnisses. Werden weitere Verzeichnisse angelegt, erben -->
-  <!-- 	diese ebenfalls die Option. -->
-  <!-- </para> -->
+  <para>
+	If the <emphasis>setgid</emphasis> option is set for a directory, files saved there inherit the
+	directory's owner group. If further directories are created, they also inherit the option.
+  </para>
 
-  <!-- <para> -->
-  <!-- 	Ist die Option <emphasis>sticky</emphasis> für ein Verzeichnis aktiviert, können Dateien in dem -->
-  <!-- 	Verzeichnis nur von dem Besitzer der Datei oder durch den root-Benutzer gelöscht werden. -->
-  <!-- </para> -->
+  <para>
+	If the <emphasis>sticky</emphasis> option is enabled for a directory, files in this directory
+	can only be deleted by the owner of the file or the root user.
+  </para>
 
   <para>
 	Each file/directory is owned by a user and a group. The three
