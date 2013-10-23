@@ -196,7 +196,7 @@ define([
 				// register event
 				this._grid.on('FilterDone', lang.hitch(this, '_selectInputText')); // FIXME: ?
 
-				this._grid._grid.on('StyleRow', lang.hitch(this, '_onGridStyleRow'));
+				this._grid._grid.on('StyleRow', lang.hitch(this, '_adjustIconColumns'));
 			} ) );
 			// generate the navigation tree
 			var model = new TreeModel({
@@ -804,9 +804,14 @@ define([
 			}];
 		},
 
-		_onGridStyleRow: function(row) {
-			var cellIds = [this._grid._grid.getCellByField('start').index, this._grid._grid.getCellByField('vnc').index];
-			array.forEach(cellIds, function(cellId) {
+		_adjustIconColumns: function(row) {
+			var cells = [this._grid._grid.getCellByField('start'), this._grid._grid.getCellByField('vnc')];
+			array.forEach(cells, function(cell) {
+				if (!cell) {
+					// probably we're currently searching for nodes
+					return;
+				}
+				var cellId = cell.index;
 				var node = query('td[idx="' + cellId + '"]', row.node)[0];
 				node.style['text-align'] = 'center';
 			});
