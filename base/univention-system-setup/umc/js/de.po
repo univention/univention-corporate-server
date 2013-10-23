@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-10-22 16:51+0200\n"
+"POT-Creation-Date: 2013-10-23 10:46+0200\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -132,7 +132,7 @@ msgstr "Kontodaten"
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: umc/js/setup/InterfaceGrid.js:313
+#: umc/js/setup/InterfaceGrid.js:351
 msgid "Add a network interface"
 msgstr "Ein Netzwerkgerät hinzufügen"
 
@@ -168,7 +168,7 @@ msgstr ""
 "Mindestens eine IP-Adresse muss angegeben werden oder DHCP oder SLAAC muss "
 "eingeschaltet sein."
 
-#: umc/js/setup/Interfaces.js:120 umc/js/setup/InterfaceWizard.js:320
+#: umc/js/setup/InterfaceWizard.js:320 umc/js/setup/Interfaces.js:120
 msgid "Autoconfiguration (SLAAC)"
 msgstr "Automatische Konfiguration (SLAAC)"
 
@@ -196,7 +196,7 @@ msgstr "Bond Netzwerkkonfiguration"
 msgid "Bond primary"
 msgstr "Primäre Bond-Netzwerkschnittstellen"
 
-#: umc/js/setup/Interfaces.js:168 umc/js/setup/InterfaceWizard.js:400
+#: umc/js/setup/InterfaceWizard.js:400 umc/js/setup/Interfaces.js:168
 msgid "Bond slaves"
 msgstr "Bond Kindnetzwerkschnittstellen"
 
@@ -216,7 +216,7 @@ msgstr "Bridge-Konfiguration"
 msgid "Bridge interface configuration"
 msgstr "Bridge Netzwerkkonfiguration"
 
-#: umc/js/setup/Interfaces.js:190 umc/js/setup/InterfaceWizard.js:365
+#: umc/js/setup/InterfaceWizard.js:365 umc/js/setup/Interfaces.js:190
 msgid "Bridge ports"
 msgstr "Bridge ports"
 
@@ -224,9 +224,9 @@ msgstr "Bridge ports"
 msgid "Business unit"
 msgstr "Abteilung"
 
+#: umc/js/setup/InterfaceGrid.js:124 umc/js/setup/BasisPage.js:263
 #: umc/js/setup.js:279 umc/js/setup.js:446 umc/js/setup.js:667
-#: umc/js/setup.js:714 umc/js/setup.js:746 umc/js/setup/InterfaceGrid.js:107
-#: umc/js/setup/BasisPage.js:263
+#: umc/js/setup.js:714 umc/js/setup.js:746
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -295,7 +295,7 @@ msgstr "Konfiguration der IPv4 und IPv6 Adressen"
 msgid "Configuration of the UCS system role"
 msgstr "Konfiguration der UCS-Systemrolle"
 
-#: umc/js/setup.js:449 umc/js/setup/BasisPage.js:267
+#: umc/js/setup/BasisPage.js:267 umc/js/setup.js:449
 msgid "Continue"
 msgstr "Fortfahren"
 
@@ -327,7 +327,7 @@ msgstr "DHCP-Anfrage"
 msgid "Default system locale"
 msgstr "Standard-System-Sprachdefinition"
 
-#: umc/js/setup/InterfaceGrid.js:98 umc/js/setup/InterfaceGrid.js:104
+#: umc/js/setup/InterfaceGrid.js:98 umc/js/setup/InterfaceGrid.js:128
 msgid "Delete"
 msgstr "Löschen"
 
@@ -351,7 +351,7 @@ msgstr "Domänen-DNS-Server"
 msgid "Domain name server (max. 3)"
 msgstr "Domänen-DNS-Server (max. 3)"
 
-#: umc/js/setup/Interfaces.js:117 umc/js/setup/InterfaceWizard.js:288
+#: umc/js/setup/InterfaceWizard.js:288 umc/js/setup/Interfaces.js:117
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
@@ -363,7 +363,7 @@ msgstr "Jedes IPv6 Gerät muss einen Bezeichner haben"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: umc/js/setup/InterfaceGrid.js:322
+#: umc/js/setup/InterfaceGrid.js:351
 msgid "Edit a network interface"
 msgstr "Bearbeite ein Netzwerkgerät"
 
@@ -557,7 +557,7 @@ msgstr "Installation von Softwarekomponenten"
 msgid "Interface"
 msgstr "Gerät"
 
-#: umc/js/setup/InterfaceGrid.js:255
+#: umc/js/setup/InterfaceGrid.js:284
 #, python-format
 msgid "Interface \"%s\" already exists."
 msgstr "Netzwerkgerät \"%s\" existiert bereits."
@@ -723,17 +723,16 @@ msgid "Please choose a network interface before querying a DHCP address."
 msgstr ""
 "Bitte wählen Sie ein Netzwerkgerät bevor Sie eine DHCP-Adresse anfragen."
 
-#: umc/js/setup/InterfaceGrid.js:103
-#, python-format
-msgid "Please confirm the removal of the %d selected interfaces!"
-msgstr "Bitte Löschung der %d Netzwerkgeräte bestätigen!"
-
 #: umc/js/setup.js:662
 msgid ""
 "Please confirm to apply these changes to the system. This may take some time."
 msgstr ""
 "Bitte bestätigen Sie, dass diese Änderungen auf das System übertragen "
 "werden. Dies kann einige Zeit in Anspruch nehmen."
+
+#: umc/js/setup/InterfaceGrid.js:132
+msgid "Please confirm to delete the following interfaces:"
+msgstr "Bitte Löschung der folgenden Netzwerkgeräte bestätigen:"
 
 #: umc/js/setup/NetworkPage.js:92 umc/js/setup/NetworkPage.js:305
 msgid "Primary network interface"
@@ -852,6 +851,14 @@ msgstr "Die folgenden Änderungen werden auf das System übertragen:"
 msgid "The following entries could not be validated:"
 msgstr "Die folgenden Einträge konnten nicht validiert werden:"
 
+#: umc/js/setup/InterfaceGrid.js:136
+msgid ""
+"The following interfaces are already used by other interfaces and can not be "
+"deleted:"
+msgstr ""
+"Die folgenden Netzwerkgeräte sind bereits von anderen Netzwerkgeräten in "
+"verwendung und können nicht gelöscht werden:"
+
 #: umc/js/setup.js:867
 msgid ""
 "The settings can be changed in the UMC module \"Basic settings\" after the "
@@ -891,7 +898,7 @@ msgstr ""
 "Der Domänenbeitritt war erfolgreich, allerdings sind Fehler beim Setzen der "
 "Konfigurationseinstellungen aufgetreten:"
 
-#: umc/js/setup/InterfaceGrid.js:276
+#: umc/js/setup/InterfaceGrid.js:305
 msgid "There are no more physical interfaces to create."
 msgstr "Es gibt keine weiteren physikalischen Netzwerkgeräte zum hinzufügen."
 
@@ -957,12 +964,3 @@ msgstr "nicht setzen"
 #: umc/js/setup/InterfaceWizard.js:660
 msgid "set"
 msgstr "setzen"
-
-#~ msgid "Add interface"
-#~ msgstr "Netzwerkgerät hinzufügen"
-
-#~ msgid "Configure as primary network interface"
-#~ msgstr "Als primäres Netzwerkgerät konfigurieren"
-
-#~ msgid "network interface"
-#~ msgstr "Netzwerkgerät"

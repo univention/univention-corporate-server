@@ -99,23 +99,52 @@ define([
 					iconClass: 'umcIconDelete',
 					isMultiAction: true,
 					isStandardAction: true,
-					callback: lang.hitch(this, function(ids) {
-						dialog.confirm(_('Please confirm the removal of the %d selected interfaces!', ids.length), [{
-							label: _('Delete'),
-							callback: lang.hitch(this, '_removeInterfaces', ids)
-						}, {
+					callback: lang.hitch(this, function(ids, items) {
+						
+						var unremoveableInterfaces = [];
+						var removeableInterfaceIDs = [];
+						array.forEach(items, lang.hitch(this, function(item) {
+							if (!item.isVLAN()) {
+								// interface is not removeable if used as parent device in a VLAN
+								var deletable = array.every(this.get('value'), function(iface) {
+									return !iface.isVLAN() || item.name !== iface.parent_device;
+								});
+
+								if (!deletable) {
+									unremoveableInterfaces.push(item.name);
+								} else {
+									removeableInterfaceIDs.push(item.name);
+								}
+							} else {
+								removeableInterfaceIDs.push(item.name);
+							}
+						}));
+
+						var buttons = [{
 							label: _('Cancel'),
 							'default': true
-						}]);
-					}),
-					canExecute: lang.hitch(this, function(item) {
-						if (!item.isVLAN()) {
-							// interface is not removeable if used as parent device in a VLAN
-							return array.every(this.get('value'), function(iface) {
-								return !iface.isVLAN() || item.name !== iface.parent_device;
-							});
+						}, {
+							// will be removed near line 142!
+							label: _('Delete'),
+							callback: lang.hitch(this, '_removeInterfaces', removeableInterfaceIDs)
+						}];
+
+						var msg = _('Please confirm to delete the following interfaces:');
+						msg += '<ul><li>' + removeableInterfaceIDs.join('</li><li>') + '</li></ul>';
+
+						if (unremoveableInterfaces.length) {
+							var _msg = _('The following interfaces are already used by other interfaces and can not be deleted:');
+							_msg += '<ul><li>' + unremoveableInterfaces.join('</li><li>') + '</li></ul>';
+
+							if (ids.length <= unremoveableInterfaces.length) {
+								// remove the delete button
+								buttons.pop();
+							} else {
+								msg = _msg + msg;
+							}
 						}
-						return true;
+
+						dialog.confirm(msg, buttons);
 					})
 				}]
 			});
