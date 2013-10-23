@@ -589,12 +589,15 @@
 				Über UVMM angelegte Maschinen sind im initialen Zustand ausgeschaltet.
 				Mit dem Icon, das einen Pfeil nach rechts darstellt, kann eine virtuelle Maschine gestartet werden.
 			</para>
+
 			<para>
-				Auf laufende Maschinen kann - sofern konfiguriert - über das VNC-Protokoll zugegriffen werden.
-				Das Icon mit der stilisierten Leinwand öffnet eine Verbindung mit einem Java-basierten VNC-Client.
-				Für den Zugriff können auch beliebige andere VNC-Clients verwendet werden;
-				der VNC-Zugriffsport wird in einem Tooltip über dem Rechnernamen angezeigt.
+			  Auf laufende Maschinen kann - sofern konfiguriert - über das VNC-Protokoll zugegriffen
+			  werden. Das Icon mit der stilisierten Leinwand öffnet eine Verbindung über noVNC,
+			  einen HTML5-basierten VNC-Client. Für den Zugriff können auch beliebige andere
+			  VNC-Clients verwendet werden; der VNC-Zugriffsport wird in einem Tooltip über dem
+			  Rechnernamen angezeigt.
 			</para>
+
 			<para>
 				Mit dem Auswahlfeld <guimenu>mehr</guimenu> können weitere Aktionen durchgeführt werden.
 				Folgende Operationen stehen auf laufenden Maschinen zur Verfügung:

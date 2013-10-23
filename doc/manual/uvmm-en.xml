@@ -584,12 +584,14 @@
 				Instances created via UVMM are turned off in the initial status.
 				The icon showing an arrow pointing right can be used to start a virtual instance.
 			</para>
+
 			<para>
-				Running instances can be accessed via the VNC protocol - insofar as this is configured.
-				The icon with the stylised screen opens a connection with a Java-based client.
-				Any other VNC client can also be used for the access;
-				the VNC port is displayed in a tooltip above the computer name.
+			  Running instances can be accessed via the VNC protocol - insofar as this is
+			  configured.The icon with the stylised screen opens a connection with noVNC, a
+			  HTML5-based client. Any other VNC client can also be used for the access; the VNC port
+			  is displayed in a tooltip above the computer name.
 			</para>
+
 			<para>
 				The <guimenu>more</guimenu> choice box can be used to perform other operations:
 				The following operations are available on running instances:
