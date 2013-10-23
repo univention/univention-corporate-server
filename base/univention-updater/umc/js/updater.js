@@ -451,7 +451,7 @@ define([
 						);
 
 
-						dialog.notify(_("Your current session has expired, or the connection to the server was lost. You must authenticate yourself again."));
+						this.addNotification(_("Your current session has expired, or the connection to the server was lost. You must authenticate yourself again."));
 					}
 	//				else
 	//				{
@@ -466,7 +466,7 @@ define([
 					if (this._error_count < 5)
 					{
 						// this toaster thingy is not really usable!
-						//dialog.notify(_("Connection to server lost. Trying to reconnect."));
+						//this.addNotification(_("Connection to server lost. Trying to reconnect."));
 					}
 					else
 					{

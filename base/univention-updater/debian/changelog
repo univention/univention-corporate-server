@@ -1,3 +1,9 @@
+univention-updater (9.0.26-1) unstable; urgency=low
+
+  * Bug #30004: adjustements for new notifications
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Oct 2013 17:19:51 +0200
+
 univention-updater (9.0.25-1) unstable; urgency=low
 
   * pre upgrade grub-common to avoid update-grub error
