@@ -210,16 +210,12 @@
 	  interface or a UMC module.
 	</para>
 
-	<!-- <para> -->
-	<!--   Aktualisierungen für Applikationen erfolgen unabhängig von den Release-Zyklen für -->
-	<!--   &ucsUCS;. Ist eine neue Version einer Applikation verfügbar, wird der Menüpunkt -->
-	<!--   <guimenu>Aktualisieren</guimenu> angezeigt, die die Installation der neuen Version -->
-	<!--   startet. -->
-<!-- Wenn Aktualisierungen verfügbar sind, wird außerdem bei der Anmeldung an der -->
-<!-- &ucsUMC; ein entsprechender Hinweis ausgegeben. -->
-<!-- ANPASSEN: in UMC module Software update -->
-	<!-- </para> -->
-	<!-- MENU: Upgrade -->
+	<para>
+	  Updates for applications are published independently of the &ucsUCS; release cycles. If a new
+	  version of an application is available, the <guimenu>Upgrade</guimenu> menu item is
+	  shown, which starts the installation of the new version. If updates are available, a
+	  corresponding message is also shown in the UMC module <guimenu>Software update</guimenu>.
+	</para>
 
 	<para>
 	  An overview of the existing applications can be opened under <guimenu>Installed

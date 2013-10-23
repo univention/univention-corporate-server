@@ -65,16 +65,15 @@
 			can be selected during login.
 		</para>
 
-		<!-- <para> -->
-		<!--   Auf jedem UCS-System kann die Übersichtsseite über die URL <uri>https://servername/</uri> -->
-		<!--   aufgerufen werden, alternativ ist der Zugriff auch über die IP-Adresse des Servers -->
-		<!--   möglich. Hier sind alle Web-Dienste verlinkt, die auf dem System angeboten werden. Im -->
-		<!--   Reiter <guimenu>Administration</guimenu> kann dann die &ucsUMC; über den Link -->
-		<!--   <guimenu>Univention Management Console</guimenu> aufgerufen werden. Sind auf dem System -->
-		<!--   Dienste installiert, die einen eigenen Webdienst mitbringen (z.B. Horde-Webmail-Oberfläche) -->
-		<!--   sind diese im Reiter <guimenu>Installierte Web-Dienste</guimenu> verlinkt. -->
-		<!-- </para> -->
-		<!-- TODO: Horde-Webmail -->
+		<para>
+		  The overview page can be opened on any UCS system via the URL
+		  <uri>https://servername/</uri>. Alternatively, access is also possible via the server's
+		  IP address. All the services which are offered on a system are linked here. In the
+		  <guimenu>Administration</guimenu> tab, the &ucsUMC; can then be opened using the
+		  <guimenu>Univention Management Console</guimenu> link. If there are services installed on
+		  the system which include their own web service (e.g., Horde web mail), they are linked
+		  in the <guimenu>Installed web services</guimenu> tab.
+		</para>
 
 		<para>
 			The web interface of the &ucsUMC; can be opened via the
@@ -206,37 +205,37 @@
 		<section id="umc:usage:search">
 			<title>Searching for objects</title>
 
-			<!-- <para> -->
-			<!--   In der Modul-Übersicht werden alle von diesem Modul verwalteten Objekte -->
-			<!--   aufgeführt. Mit <guimenu>Suche</guimenu> erfolgt eine Suche über eine Auswahl -->
-			<!--   wichtiger Attribute (z.B. für Benutzerobjekte nach Vor- und Nachname, primärer E-Mail-Adresse, -->
-			<!--   Beschreibung, Mitarbeiternummer und Benutzername). Es kann auch mit Wildcards gesucht -->
-			<!--   werden, z.B. <emphasis>m*</emphasis>. -->
-			<!-- </para> -->
+			<para>
+			  The module overview lists all the objects managed by this
+			  module. <guimenu>Search</guimenu> performs a search for a selection of important
+			  attributes (e.g., for user objects by first and last name, primary e-mail address,
+			  description, employee number and user name). A wildcard search is also possible, e.g.,
+			  <emphasis>m*</emphasis>.
+			</para>
 
-			<!-- <para> -->
-			<!--   Durch Klick auf <guimenu>Erweiterte Optionen</guimenu> werden weitere Suchoptionen -->
-			<!--   angezeigt: -->
+			<para>
+			  Clicking on <guimenu>Advanced options</guimenu> displays additional search options:
 
-			<!--   <itemizedlist> -->
-			<!-- 	<listitem><simpara> -->
-			<!-- 	  Mit dem Auswahlfeld <guimenu>Suche in</guimenu> kann bestimmt werden, ob bei der -->
-			<!-- 	  Suche nach LDAP-Objekten das komplette LDAP-Verzeichnis oder nur einzelne -->
-			<!-- 	  LDAP-Container/OUs durchsucht werden. Weitere Informationen zur Strukturierung des -->
-			<!-- 	  LDAP-Verzeichisdienstes finden sich in <xref linkend="central:cn-and-ous"/>. -->
-			<!-- 	</simpara></listitem> -->
+			  <itemizedlist>
+				<listitem><simpara>
+				  The <guimenu>Search in</guimenu> field can be used to select whether the complete
+				  LDAP directory or only individual LDAP containers/OUs are searched. Further
+				  information on the structure of the LDAP directory service can be found in <xref
+				  linkend="central:cn-and-ous"/>.
+				</simpara></listitem>
 
-			<!-- 	<listitem><simpara> -->
-			<!-- 	  Über das Auswahlfeld <guimenu>Eigenschaft</guimenu> kann gezielt nach einem -->
-			<!-- 	  bestimmten Attribut gesucht werden. -->
-			<!-- 	</simpara></listitem> -->
+				<listitem><simpara>
+				  The <guimenu>Property</guimenu> field can be used to search for a certain
+				  attribute directly.
+				</simpara></listitem>
 
-			<!-- 	<listitem><simpara> -->
-			<!-- 	  Einige nur intern verwendete Benutzer- und Gruppen (z.B. für den Domänenbeitritt) -->
-			<!-- 	  werden standardmäßig ausgeblendet. Wird die Option <guimenu>Versteckte Objekte -->
-			<!-- 	  anzeigen</guimenu> aktiviert, werden diese Objekte ebenfalls angezeigt. -->
-			<!-- 	</simpara></listitem> -->
-			<!--   </itemizedlist> -->
+				<listitem><simpara>
+				  Some of the internally used user groups and groups (e.g., for domain joins) are
+				  hidden in the default setting. If the <guimenu>Include hidden objects</guimenu>
+				  option is enabled, these objects are also shown.
+				</simpara></listitem>
+			  </itemizedlist>
+			</para>
 
 			<figure id="umc-search">
 				<title>Searching for users</title>
@@ -251,12 +250,11 @@
 			  used to create a new object using <guimenu>Add</guimenu>.
 			</para>
 
-		  <!-- <para> -->
-		  <!-- 	Für einige UMC-Module (Benutzer, Rechner) existieren vereinfachte Assistenten, in denen -->
-		  <!-- 	nur die wichtigsten Einstellungen abfragt werden. Durch einen Klick auf <guimenu>Erweitert</guimenu> -->
-		  <!-- 	werden alle Attribute angezeigt. -->
-		  <!-- </para> -->
-
+		  <para>
+			There are simplified wizards for some UMC modules (users, hosts), in which only the most
+			important settings are requested. All attributes can be shown by clicking on
+			<guimenu>Advanced</guimenu>.
+		  </para>
 
 		</section>
 
@@ -1734,10 +1732,9 @@ univention-directory-manager settings/extended_attribute create \
 	<section id="central:reports:create">
 	  <title>Creating reports in the Univention Management Console</title>
 	  <para>
-		To create a report, you need to switch to the domain module for users, groups or hosts. 
-		<!-- Anschließend müssen alle vom Report erfassten Objekte ausgewählt werden -->
-		<!-- (durch einen Klick auf den Button links von <guimenu>Name</guimenu> können alle Objekte -->
-		<!-- selektiert werden). -->
+		To create a report, you need to switch to the domain module for users, groups or hosts. Then
+		all the objects covered by the report must be selected (you can select all objects by
+		clicking the button on the left of <guimenu>Name</guimenu>).
 		Clicking on <guimenu>more &ar; Create report</guimenu> allows to choose between the
 		<guimenu>Standard Report</guimenu> in PDF format and the <guimenu>Standard CSV
 		Report</guimenu> in CSV format.
