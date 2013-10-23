@@ -277,7 +277,9 @@ define([
 					this.selectChild(this._searchPage);
 					this.set( 'title', this.defaultTitle );
 				}),
-				moduleWidget: this
+				moduleWidget: this,
+				addNotification: lang.hitch(this, 'addNotification'),
+				addWarning: lang.hitch(this, 'addWarning')
 			});
 			this.addChild(this._domainPage);
 
