@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.59-1) unstable; urgency=low
+
+  * Bug #32389: add umcPopUp CSS class
+
+ -- Florian Best <best@univention.de>  Wed, 23 Oct 2013 13:24:29 +0200
+
 univention-management-console-module-udm (4.0.58-1) unstable; urgency=low
 
   * Bug #32389: recenter Licence Dialog after loading license information
