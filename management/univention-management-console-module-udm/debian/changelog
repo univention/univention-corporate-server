@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.58-1) unstable; urgency=low
+
+  * Bug #32389: recenter Licence Dialog after loading license information
+
+ -- Florian Best <best@univention.de>  Wed, 23 Oct 2013 13:19:04 +0200
+
 univention-management-console-module-udm (4.0.57-1) unstable; urgency=low
 
   * Bug #23214: Revert changes from previous approach, set UCR variable

@@ -204,6 +204,10 @@ define([
 			}
 
 			this._widgets.message.set('content', lang.replace(message, keys));
+
+			// recenter dialog
+			this._size();
+			this._position();
 		},
 
 		_limitInfo: function(limit) {
