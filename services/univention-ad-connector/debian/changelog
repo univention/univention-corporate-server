@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.10-1) unstable; urgency=low
+
+  * Bug #30004: fixed scope handling for notifications
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Oct 2013 17:27:37 +0200
+
 univention-ad-connector (8.0.9-1) unstable; urgency=low
 
   * Bug #30004: adjusted handling of notifications

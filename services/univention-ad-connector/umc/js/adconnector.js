@@ -252,7 +252,7 @@ define([
 				this._wizard = new ADConnectorWizard({
 					style: 'width: 500px; height: 400px;',
 					variables: response.result,
-					addNotification: this.addNotification
+					addNotification: lang.hitch(this, 'addNotification')
 				});
 				this.set('content', this._wizard);
 				this._wizard.on('Finished', lang.hitch(this, function() {
@@ -339,7 +339,7 @@ define([
 				callback: lang.hitch(this, function() {
 					var dlg = new ADConnectorWizardDialog({
 						title: _('UCS Active Directory Connector Wizard'),
-						addNotification: this.addNotification
+						addNotification: lang.hitch(this, 'addNotification')
 					});
 					dlg.show();
 					dlg.on('saved', lang.hitch(this, function() {
