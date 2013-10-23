@@ -348,7 +348,16 @@
 		Systemgruppen bezeichnet). Diese werden nur intern von Active Directory/Samba 4 verwaltet,
 		z.B. enthält die Gruppe <emphasis>Authenticated Users</emphasis> eine Liste aller aktuell an
 		einem System angemeldeten Benutzer. Pseudo-Gruppen sind im UCS-Verzeichnisdienst vorhanden,
-		sind aber leer.
+		sind aber leer. Dies betrifft die folgenden Gruppen:
+
+		<itemizedlist>
+		  <listitem><simpara>Authenticated Users</simpara></listitem>
+		  <listitem><simpara>World Authority</simpara></listitem>
+		  <listitem><simpara>Everyone</simpara></listitem>
+		  <listitem><simpara>Null Authority</simpara></listitem>
+		  <listitem><simpara>Nobody</simpara></listitem>
+		  <listitem><simpara>Enterprise Domain Controllers</simpara></listitem>
+		</itemizedlist>
 	  </para>
 
 	  <para>
