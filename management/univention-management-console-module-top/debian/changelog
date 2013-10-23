@@ -1,3 +1,9 @@
+univention-management-console-module-top (3.0.2-1) unstable; urgency=low
+
+  * Bug #30004: adjustements for new notifications
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Oct 2013 15:52:02 +0200
+
 univention-management-console-module-top (3.0.1-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)

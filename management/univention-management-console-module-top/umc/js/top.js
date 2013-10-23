@@ -68,7 +68,7 @@ define([
 				label: _('OK'),
 				callback: lang.hitch(this, function() {
 					this.umcpCommand('top/kill', params).then(lang.hitch(this, function() {
-						dialog.notify(_('Signal (%s) sent successfully', signal));
+						this.addNotification(_('Signal (%s) sent successfully', signal));
 					}));
 				})
 			}, {
