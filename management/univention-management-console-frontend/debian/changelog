@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.121-1) unstable; urgency=low
+
+  * Bug #30004: adjustements for new notifications
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Oct 2013 16:18:43 +0200
+
 univention-management-console-frontend (3.0.120-1) unstable; urgency=low
 
   * Bug #30004: provide addNotification() and addWarning() as Module functions

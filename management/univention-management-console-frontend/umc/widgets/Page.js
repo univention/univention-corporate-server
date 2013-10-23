@@ -80,6 +80,8 @@ define([
 		//		If set to true, forces the help text to be shown.
 		forceHelpText: false,
 
+		addNotification: dialog.notify,
+
 		// the widget's class name as CSS class
 		'class': 'umcPage',
 
@@ -268,44 +270,10 @@ define([
 		},
 
 		addNote: function(message) {
-			dialog.notify(message);
-//			var closeButton = '<span class="dijitTabCloseButton dijitTabCloseIcon" style="float:right" title="' + _('Close') + '"></span>';
-//
-//			var note = new Text({
-//				content: closeButton + '<b>' + _('Note') + ':</b> ' + message,
-//				region: 'top',
-//				'class': 'umcPageNote'
-//			});
-//			query('.dijitTabCloseButton', note.domNode).forEach(function(inode) {
-//				this.own(on(inode, 'mousedown', function() {
-//					domClass.add(inode, 'dijitTabCloseButtonActive');
-//				}));
-//				this.own(on(inode, 'mouseup', function() {
-//					domClass.remove(inode, 'dijitTabCloseButtonActive');
-//				}));
-//				this.own(on(inode, mouse.enter, function() {
-//					domClass.add(inode, 'dijitTabCloseButtonHover');
-//				}));
-//				this.own(on(inode, mouse.leave, function() {
-//					domClass.remove(inode, 'dijitTabCloseButtonHover');
-//				}));
-//				this.own(on(inode, 'click', lang.hitch(this, function() {
-//					baseFX.fadeOut({
-//						node: note.domNode,
-//						duration: 500,
-//						onEnd: lang.hitch(this, function() {
-//							this.removeChild(note);
-//							note.destroyRecursive();
-//							this._notes = array.filter( this._notes, function( inote ) {
-//								return inote !== note;
-//							} );
-//						})
-//					}).play();
-//				})));
-//			}, this);
-//			this.addChild(note);
-//			this._notes.push(note);
-//			return note;
+			// summary:
+			//		Show a notification. This is a deprecated method, use dialog.notify(),
+			//		dialog.warn(), Module.addNotification(), or Module.addWarning() instead.
+			this.addNotification(message);
 		},
 
 		clearNotes: function() {

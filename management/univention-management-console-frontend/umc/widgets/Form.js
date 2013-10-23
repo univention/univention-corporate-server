@@ -121,6 +121,10 @@ define([
 
 		progressDeferred: null,
 
+		addNotification: function(message, component) {
+			dialog.notify(message, component);
+		},
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
@@ -576,9 +580,7 @@ define([
 					console.log(iwidget, e);
 				}
 				if (!worked) {
-					// notify is buggy (adding messages
-					// during animation). maybe use <ul> in alert?
-					dialog.notify(error_msg);
+					this.addNotification(error_msg);
 				}
 			}));
 		},
