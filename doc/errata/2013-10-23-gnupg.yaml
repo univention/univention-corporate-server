@@ -1,0 +1,13 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: gnupg
+fix: 1.4.10-4.53.201310231002
+note:
+version: [1]
+desc: |
+  Two security issues were found in GnuPG: In some corner cases key flags were incorrectly
+  parsed and endless recursion in the packet parser could result in denial of service.
+cve:
+ - CVE-2013-4351
+ - CVE-2013-4402
