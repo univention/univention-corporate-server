@@ -99,14 +99,15 @@ define([
 					name: 'empty',
 					content: ''
 				},
-				{ type: 'Text', name: 'setuid', content: _( 'Setuid' ) },
 				{ type: 'Text', name: 'setgid', content: _( 'Setgid' ) },
 				{ type: 'Text', name: 'stickybit', content: _( 'Sticky bit' ) },
 				{ type: 'Text', name: 'empty1', content: '' },
 				{ type: 'Text', name: 'empty2', content: '' },
+				{ type: 'Text', name: 'empty3', content: '' },
+				{ type: 'Text', name: 'empty4', content: '' },
 			] );
 			
-			array.forEach( [ 'Setuid', 'Setgid', 'Stickybit' ], lang.hitch( this, function( item) {
+			array.forEach( [ 'Setgid', 'Stickybit' ], lang.hitch( this, function( item ) {
 				this.widgets.push( { type: 'CheckBox', name: item + 'CheckBox', disabled: this.disabled } ); 
 			} ) );
 
@@ -126,13 +127,14 @@ define([
 				this._container.addChild( this._widgets[ item + 'Execute' ] );
 			} ) );
 
-			// Next two rows: setuid, setgid, stickybit settings
+			// Next two rows: setgid, stickybit settings
 			this._container.addChild( this._widgets.empty1 );
-			this._container.addChild( this._widgets.setuid);
+			this._container.addChild( this._widgets.empty2 );
 			this._container.addChild( this._widgets.setgid );
 			this._container.addChild( this._widgets.stickybit );
-			this._container.addChild( this._widgets.empty2 );
-			array.forEach( [ 'Setuid', 'Setgid', 'Stickybit' ], lang.hitch( this, function( item) {
+			this._container.addChild( this._widgets.empty3 );
+			this._container.addChild( this._widgets.empty4 );
+			array.forEach( [ 'Setgid', 'Stickybit' ], lang.hitch( this, function( item) {
 				this._container.addChild( this._widgets[ item + 'CheckBox' ] ); 
 			} ) );
 
@@ -155,7 +157,6 @@ define([
 
 			rights += this._widgets[ 'StickybitCheckBox' ].get( 'checked' ) ? 1 : 0;
 			rights += this._widgets[ 'SetgidCheckBox' ].get( 'checked' ) ? 2 : 0;
-			rights += this._widgets[ 'SetuidCheckBox' ].get( 'checked' ) ? 4 : 0;
 			rights <<= 3;
 
 			array.forEach( [ 'owner', 'group', 'other' ], lang.hitch( this, function( item ) {
@@ -182,7 +183,6 @@ define([
 
 			this._widgets[ 'StickybitCheckBox' ].set( 'checked', rights & 1 );
 			this._widgets[ 'SetgidCheckBox' ].set( 'checked', rights & 2 );
-			this._widgets[ 'SetuidCheckBox' ].set( 'checked', rights & 4 );
 		}
 	});
 });

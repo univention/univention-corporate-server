@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.117-1) unstable; urgency=low
+
+  * UnixAccessRightsExtended widget: Remove setuid-bit option (Bug #15708)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 23 Oct 2013 10:57:30 +0200
+
 univention-management-console-frontend (3.0.116-2) unstable; urgency=low
 
   * Bug #32168: Refactor context menu of gallery pane to avoid issues with
