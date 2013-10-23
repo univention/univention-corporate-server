@@ -1563,6 +1563,10 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+			The samba share option 'strict locking' can now be set to 'Auto' (default), 'Yes' or 'No' (<ulink url="&ucsbug;32882">Bug 32882</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 			Custom NFS settings can now be added to NFS Shares (<ulink url="&ucsbug;18708">Bug 18708</ulink>).
 		</simpara></listitem>
 
