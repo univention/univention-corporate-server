@@ -872,10 +872,11 @@
 						<row>
 							<entry>Direct access (VNC)</entry>
 							<entry>
-								Defines whether VNC access to the virtual machine is available.
-								If the option is activated, the UMC module can be used to start a VNC program directly.
-								The VNC URL is displayed in a tool tip.
-								A Java VNC program is used for this in the default setting.
+							  Defines whether VNC access to the virtual machine is available. 
+							  <!-- Ist die Option aktiv, kann über das UMC-Modul durch einen -->
+							  <!-- HTML5-basierten VNC-Client - oder einen beliebigen anderen Client - -->
+							  <!-- direkt auf die virtuelle Maschine zugegriffen werden. -->
+							  The VNC URL is displayed in a tool tip.
 							</entry>
 						</row>
 						<row>

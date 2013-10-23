@@ -870,10 +870,10 @@
 						<row>
 							<entry>Direktzugriff (VNC)</entry>
 							<entry>
-								Definiert, ob der VNC-Zugriff zur virtuellen Maschine aktiviert werden soll.
-								Ist die Option aktiv, kann über das UMC-Modul direkt ein VNC-Programm gestartet werden.
-
-								In der Voreinstellung wird hierfür ein Java-VNC-Programm verwendet.
+							  Definiert, ob der VNC-Zugriff zur virtuellen Maschine aktiviert werden
+							  soll. Ist die Option aktiv, kann über das UMC-Modul durch einen
+							  HTML5-basierten VNC-Client - oder einen beliebigen anderen Client -
+							  direkt auf die virtuelle Maschine zugegriffen werden. Die VNC-URL wird in einem Tooltip angezeigt.
 							</entry>
 						</row>
 						<row>
