@@ -1,3 +1,11 @@
+univention-directory-manager-modules (9.0.69-3) unstable; urgency=low
+
+  * More improvements to share module texts and layout (Bug #32882)
+  * The samba share option 'strict locking' can now be set to
+    'auto' (default), 'yes' or 'no'
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 23 Oct 2013 11:44:51 +0200
+
 univention-directory-manager-modules (9.0.69-2) unstable; urgency=low
 
   * Bug #23214: Document UCR variables for disabling UDM wizards

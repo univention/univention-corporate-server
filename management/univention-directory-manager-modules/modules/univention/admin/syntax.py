@@ -1923,6 +1923,13 @@ class booleanNone( IStates ):
 		( False, ( 'no', _('No') ) )
 	)
 
+class auto_one_zero( select ):
+	choices=[
+		('Auto', _('Auto')),
+		('1', _('Yes')),
+		('0', _('No'))
+	]
+
 class TrueFalse( IStates ):
 	values = (
 		( None, ( '', '' ) ),
@@ -2431,7 +2438,7 @@ class MinuteSimple(select):
 class UNIX_AccessRight( simple ):
 	pass
 
-# Widget supports setuid/setgid/sticky bit 
+# Widget supports setgid/sticky bit 
 class UNIX_AccessRight_extended( simple ):
 	pass
 
@@ -2895,27 +2902,27 @@ class mailHomeServer(LDAP_Search):
 			appendEmptyValue = True
 		)
 
-class list_of_hostnames_and_ipadresses_and_networks(simple):
+class hostname_or_ipadress_or_network(simple):
 	"""
-	>>> list_of_hostnames_and_networks().parse('hostname')
+	>>> hostname_or_ipadress_or_network().parse('hostname')
 	'hostname'
-	>>> list_of_hostnames_and_networks().parse('10.10.10.0/24')
+	>>> hostname_or_ipadress_or_network().parse('10.10.10.0/24')
 	'10.10.10.0/24'
-	>>> list_of_hostnames_and_networks().parse('10.10.10.0/255.255.255.0')
+	>>> hostname_or_ipadress_or_network().parse('10.10.10.0/255.255.255.0')
 	'10.10.10.0/255.255.255.0'
-	>>> list_of_hostnames_and_networks().parse('illegalhostname$!"§%&/(') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> hostname_or_ipadress_or_network().parse('illegalhostname$!"§%&/(') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError:
-	>>> list_of_hostnames_and_networks().parse('10.10.10.0/') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> hostname_or_ipadress_or_network().parse('10.10.10.0/') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError:
-	>>> list_of_hostnames_and_networks().parse('/24') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> hostname_or_ipadress_or_network().parse('/24') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError:
-	>>> list_of_hostnames_and_networks().parse('10.10.10.0/255') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> hostname_or_ipadress_or_network().parse('10.10.10.0/255') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError:

@@ -71,7 +71,7 @@ options={
 			default=1
 		),
 	'nfs': univention.admin.option(
-			short_description=_('Export for NFS clients'),
+			short_description=_('Export for NFS clients (NFSv3 and NFSv4)'),
 			editable=1,
 			default=1
 		),
@@ -188,7 +188,7 @@ property_descriptions={
 			default='1'
 		),
 	'root_squash': univention.admin.property(
-			short_description=_('Redirect root access uid'),
+			short_description=_('Modify user ID for root user (root squashing)'),
 			long_description=_('Redirect root user access to a non-privileged uid.'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -199,9 +199,9 @@ property_descriptions={
 			default='1'
 		),
 	'nfs_hosts': univention.admin.property(
-			short_description=_('Allowed hosts, ip addresses or networks'),
+			short_description=_('Only allow access for these hosts, IP addresses or networks'),
 			long_description=_('May contain hostnames, ip addresses or networks (e.g. 10.1.1.1/24 or 10.1.1.1/255.255.255.0'),
-			syntax=univention.admin.syntax.list_of_hostnames_and_ipadresses_and_networks,
+			syntax=univention.admin.syntax.hostname_or_ipadress_or_network,
 			multivalue=1,
 			options=['nfs'],
 			required=0,
@@ -242,7 +242,7 @@ property_descriptions={
 			default='1'
 		),
 	'sambaPublic': univention.admin.property(
-			short_description=_('Allow anonymous access with a guest user'),
+			short_description=_('Allow anonymous read-only access with a guest user'),
 			long_description=_('Allow guest access'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -394,14 +394,14 @@ property_descriptions={
 		),
 	'sambaStrictLocking': univention.admin.property(
 			short_description=_('Strict locking'),
-			long_description=_('This is a boolean that controls the handling of file locking in the server. When this is set to yes, the server will check every read and write access for file locks, and deny access if locks exist. This can be slow on some systems. When strict locking is disabled, the server performs file lock checks only when the client explicitly asks for them.'),
-			syntax=univention.admin.syntax.boolean,
+			long_description=_('This value controls the handling of file locking in the server. If strict locking is set to Auto (the default), the server performs file lock checks only on non-oplocked files. As most Windows redirectors perform file locking checks locally on oplocked files this is a good trade-off for improved performance. If set to yes, the server will check every read and write access for file locks, and deny access if locks exist. This can be slow on some systems. If strict locking is disabled, the server performs file lock checks only if the client explicitly asks for them.'),
+			syntax=univention.admin.syntax.auto_one_zero,
 			multivalue=0,
 			options=['samba'],
 			required=0,
 			may_change=1,
 			identifies=0,
-			default='0'
+			default='Auto'
 		),
 	'sambaOplocks': univention.admin.property(
 			short_description=_('Oplocks'),
@@ -459,7 +459,7 @@ property_descriptions={
 			default='manual'
 		),
 	'sambaHostsAllow': univention.admin.property(
-			short_description=_('Allowed hosts'),
+			short_description=_('Allowed hosts/networks'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -469,7 +469,7 @@ property_descriptions={
 			identifies=0
 		),
 	'sambaHostsDeny': univention.admin.property(
-			short_description=_('Denied hosts'),
+			short_description=_('Denied hosts/networks'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -571,7 +571,7 @@ property_descriptions={
 			identifies=0
 		),
 	'sambaWriteList': univention.admin.property(
-			short_description=_('Users with write access'),
+			short_description=_('Restrict write access to these users/groups'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -592,7 +592,7 @@ property_descriptions={
 		),
 	'sambaMSDFSRoot': univention.admin.property(
 			short_description=_('MSDFS root'),
-			long_description=_('Export share as MSDFS root'),
+			long_description=_('Export share as MSDFS root. Please consult the "Fileshare management" chapter in the manual for more information'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=['samba'],
@@ -602,7 +602,7 @@ property_descriptions={
 			default='0'
 		),
 	'sambaInheritOwner': univention.admin.property(
-			short_description=_('Inherit owner'),
+			short_description=_('Create files/directories with the owner of the parent directory'),
 			long_description=_('Ownership for new files and directories is controlled by the ownership of the parent directory.'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -613,7 +613,7 @@ property_descriptions={
 			default='0'
 		),
 	'sambaInheritPermissions': univention.admin.property(
-			short_description=_('Inherit permissions'),
+			short_description=_('Create files/directories with permissions of the parent directory'),
 			long_description=_('New files and directories inherit the mode of the parent directory.'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -679,6 +679,7 @@ layout = [
 		Group( _( 'Samba permissions' ), layout = [
 			[ 'sambaForceUser', 'sambaForceGroup' ],
 			[ 'sambaValidUsers', 'sambaInvalidUsers' ],
+			[ 'sambaWriteList' ],
 			[ 'sambaNtAclSupport', 'sambaInheritAcls' ],
 			[ 'sambaInheritOwner', 'sambaInheritPermissions' ],
 		] ),
@@ -694,11 +695,11 @@ layout = [
 	Tab( _( 'Samba options' ), _( 'Samba options' ), advanced = True, layout = [
 		Group( _( 'Samba options' ), layout = [
 			[ 'sambaLocking', 'sambaBlockingLocks' ],
-			[ 'sambaStrictLocking', 'sambaOplocks' ],
-			[ 'sambaLevel2Oplocks', 'sambaFakeOplocks' ],
+			[ 'sambaStrictLocking' ],
+			[ 'sambaOplocks', 'sambaLevel2Oplocks', 'sambaFakeOplocks' ],
 			[ 'sambaBlockSize', 'sambaCscPolicy' ],
 			[ 'sambaHostsAllow', 'sambaHostsDeny' ],
-			[ 'sambaWriteList', 'sambaHideFiles' ],
+			[ 'sambaHideFiles' ],
 			[ 'sambaPostexec', 'sambaPreexec'],
 		] ),
 	] ),
