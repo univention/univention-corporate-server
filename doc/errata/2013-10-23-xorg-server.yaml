@@ -1,0 +1,13 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-errata3.1-1
+src: xorg-server
+fix: 2:1.7.7-17.97.201310230833
+desc: |
+ It was discovered that a use-after-free in the handling of ImageText
+ requests in the Xorg Xserverh could result in denial of service
+ or privilege escalation.
+note:
+cve:
+ - CVE-2013-4396
