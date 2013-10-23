@@ -1040,7 +1040,8 @@
 
 		<listitem><simpara>
 				The internal default of multi value attributes has been changed to a
-				more reasonable one. This addresses several issues in the frontend,
+				more reasonable one (the empty list [] instead of a list containing the
+				empty string ['']). This addresses several issues in the frontend,
 				including a bogus empty user remaining in a group when removing all
 				users was intended (<ulink url="&ucsbug;29680">Bug 29680</ulink>).
 		</simpara></listitem>
