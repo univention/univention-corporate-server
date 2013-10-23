@@ -889,26 +889,26 @@
 	</para>
 </section>
 
-<!-- <section id="installation:vmware"> -->
-<!--   <title>Installation in VMware</title> -->
-<!--   <para> -->
-<!-- 	Wird UCS als Gast in VMware installiert muss als <guimenu>Gastbetriebssystem</guimenu> die -->
-<!-- 	Option <guimenu>Linux &ar; Anderes Linux-System</guimenu> ausgewählt werden (UCS basiert zwar -->
-<!-- 	auf Debian, die Vorlagen für Debian können aber nicht verwendet werden). -->
-<!--   </para> -->
+<section id="installation:vmware">
+  <title>Installation in VMware</title>
+  <para>
+	If UCS is installed as a guest in Vmware, the <guimenu>Linux &ar; Other Linux system</guimenu>
+	option must be selected as the <guimenu>Guest operating system</guimenu> (UCS is based on Debian but
+	the templates for Debian cannot be used).
+  </para>
 
-<!--   <para> -->
-<!-- 	Der in UCS verwendete Linux-Kernel bringt alle nötigen Unterstützungstreiber für den Betrieb in -->
-<!-- 	VMware direkt mit (vmw_balloon, vmw_pvsci, vmw_vmci, vmwgfx und vmxnet3). -->
-<!--   </para> -->
+  <para>
+	The Linux kernel used in UCS includes all the support drivers necessary for operation in VMware
+	(vmw_balloon, vmw_pvsci, vmw_vmci, vmwgfx and vmxnet3).
+  </para>
 
-<!--   <para> -->
-<!-- 	Die Open-Source-Variante der VMware Tools (Open VM Tools) wird mit UCS ausgeliefert. Die Tools -->
-<!-- 	können über das Paket <package>open-vm-tools</package> installiert werden (sie sind nicht -->
-<!-- 	zwingend notwendig, erlauben aber z.B. die Synchronisation der Zeit auf dem -->
-<!-- 	Virtualisierungsserver mit dem Gastsystem). -->
-<!--   </para> -->
-<!-- </section> -->
+  <para>
+	The open source version of the VMware Tools (Open VM Tools) is delivered with UCS. The tools can
+	be installed using the <package>open-vm-tools</package> package (they are not required
+	but do, for example, allow synchronisation of the time on the virtualization server with the
+	guest system).
+  </para>
+</section>
 
 
 <section id="installation:xenserver">
@@ -918,10 +918,10 @@
 		documented in the Univention Wiki <biblioref linkend="xenserver-installation"/>.
 	</para>
 
-  <!-- <para> -->
-  <!-- 	Um das Grub-Menü korrekt darzustellen ist eine Anpassung an der XenServer-Konfiguration nötig; -->
-  <!-- 	diese ist in <xref linkend="release-notes"/> beschrieben. -->
-  <!-- </para> -->
+	<para>
+	  To display the Grub menu correctly, an adaption to the XenServer configuration is necessary;
+	  this is described in <xref linkend="release-notes"/>.
+	</para>
 
 
 </section>

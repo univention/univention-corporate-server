@@ -875,10 +875,9 @@ postmap /etc/postfix/smtp_auth
 	<para>
 	  The use of IMAP is recommended for using a mail client with the UCS mail server. STARTTLS is
 	  used to switch to a TLS-secured connection after an initial negotiation phase when using SMTP
-	  (for sending mail) and IMAP (for receiving/synchronising mail). 
-	  <!-- Als Authentifizierungsmethode sollte <emphasis>Passwort (plain text)</emphasis> -->
-	  <!-- in Verbindung mit <emphasis>STARTTLS</emphasis> verwendet werden. Die Benennung der Methode -->
-	  <!-- unterscheidet sich je nach Mail-Client.  -->
+	  (for sending mail) and IMAP (for receiving/synchronising mail). <emphasis>Password (plain
+	  text)</emphasis> should be used in combination with <emphasis>STARTTLS</emphasis> as the
+	  authentication method. The method may have a different name depending on the mail client.
 	  The following screenshot shows
 	  the setup of Mozilla Thunderbird as an example.
 	</para>
