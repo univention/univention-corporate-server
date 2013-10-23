@@ -1,3 +1,10 @@
+univention-apache (6.0.12-6) unstable; urgency=low
+
+  * localised LDAP master link in ucs-overview (Bug #32647)
+  * corrected legacy UCRV unset behaviour of postinst (Bug #32678)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 23 Oct 2013 15:20:59 +0200
+
 univention-apache (6.0.12-5) unstable; urgency=low
 
   * Improve startsite.js javascript code (Bug #32932) 

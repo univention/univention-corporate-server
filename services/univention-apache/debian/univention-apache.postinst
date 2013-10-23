@@ -118,7 +118,8 @@ if [ $server_role != "domaincontroller_master" ]; then
 		ucs/web/overview/entries/admin/ldap-master/label/de?"Domaincontroller Master" \
 		ucs/web/overview/entries/admin/ldap-master/description?"Domaincontroller Master of UCS domain $domainname" \
 		ucs/web/overview/entries/admin/ldap-master/description/de?"Domänencontroller Master der UCS Domäne $domainname" \
-		ucs/web/overview/entries/admin/ldap-master/link?"https://$ldap_master/" \
+		ucs/web/overview/entries/admin/ldap-master/link?"https://$ldap_master/ucs-overview/?lang=en" \
+		ucs/web/overview/entries/admin/ldap-master/link/de?"https://$ldap_master/ucs-overview/?lang=de" \
 		ucs/web/overview/entries/admin/ldap-master/priority?"09"
 fi
 
@@ -126,16 +127,12 @@ fi
 # configuare language settings
 if dpkg --compare-versions "$2" le-nl 6.0.7-2
 then
-	ORIGINAL_IFS=$IFS
-	IFS="_"
-	for key in "${!umc_server_languages_@}"
-	do
-		declare -a key_split=($key)
-		ucr set ucs/server/languages/${key_split[3]}="${!key}"
-	done	
-	IFS=$ORIGINAL_IFS
-
-	unset "${!umc_server_languages_@}"
+	langs=($(ucr search umc/server/languages/ | cut -d: -f 1))
+	for lang in ${langs[@]}; do
+		newLang="ucs/${lang#umc/}"
+		ucr set $newLang="$(ucr get "$lang")"
+		ucr unset "$lang"
+	done
 
 fi
 
