@@ -517,7 +517,7 @@
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			The new attribute <envar>univentionShareNFSCustomSetting</envar> to support custom NFS share settings has been added (<ulink url="&ucsbug;18708">Bug 18708</ulink>).
+			The new udm-attribute <envar>nfsCustomSettings</envar> to support custom NFS share settings has been added (<ulink url="&ucsbug;18708">Bug 18708</ulink>).
 		  </simpara></listitem>
 
 		</itemizedlist>
