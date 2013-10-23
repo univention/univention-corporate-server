@@ -165,37 +165,47 @@
 						</entry>
 					</row>
 					<row>
-						<entry>Windows &ar; Samba group type</entry>
-						<entry>
-							Three types of Windows groups can be distinguished:
-							<itemizedlist>
-								<listitem>
-									<simpara>
-									<emphasis>Domain Groups</emphasis> are known across the domain. This is the
-									default group time.
-									</simpara>
-								</listitem>
-								<listitem>
-									<simpara>
-									<emphasis>Local groups</emphasis> are relevant on Windows servers
-									exclusively. If a local group is created on a Windows server, this
-									group is known solely to the server; it is not available across the
-									domain. UCS, in contrast, does not differentiate between local and
-									global groups. After taking over an NT domain, local groups in UCS
-									can be handled in the same way as global groups.
-									</simpara>
-								</listitem>
-								<listitem>
-									<simpara>
-									<emphasis>Well-Known Group:</emphasis>
-									This type contains groups pre-configured by Samba servers or by
-									Windows servers, which can be available across the domain or locally
-									restricted, e.g. <emphasis>Adminusers, Printer Admins, etc.</emphasis>.
-									</simpara>
-								</listitem>
-							</itemizedlist>
-						</entry>
+					  <entry>Windows &ar; NT group type</entry>
+					  <entry>
+						<!-- Dieser Gruppentyp wird ausgewertet, wenn der Benutzer sich an einer Domäne -->
+						<!-- auf Basis von Samba 3 anmeldet (das NT-Domänendienste bereitstellt). Man -->
+						<!-- unterscheidet zwischen drei NT-Gruppentypen: -->
+
+						<itemizedlist>
+						  <listitem><simpara>
+							<emphasis>Domain Groups</emphasis> are known across the domain. This is the
+							default group time.
+						  </simpara></listitem>
+
+						  <listitem><simpara>
+							<emphasis>Local groups</emphasis> are only relevant on Windows servers
+							If a local group is created on a Windows server, this group is known
+							solely to the server; it is not available across the domain. UCS, in
+							contrast, does not differentiate between local and global groups. After
+							taking over an NT domain, local groups in UCS can be handled in the same
+							way as global groups.
+						  </simpara></listitem>
+
+						  <listitem><simpara>
+							<!-- <emphasis>Bekannte Gruppe:</emphasis> Unter diesem Gruppentyp werden von -->
+							<!-- Samba- bzw. Windows-Servern vorkonfigurierte Gruppen zusammengefasst, -->
+							<!-- die in der Regel über besondere Berechtigungen verfügen, -->
+							<!-- z.B. <emphasis>Power Users</emphasis>. -->
+							<!-- TRANS: Well-Known Group: -->
+						  </simpara> </listitem>
+						</itemizedlist>
+					  </entry>
 					</row>
+
+					<!-- <row> -->
+					<!--   <entry>Windows &ar; AD group type</entry> -->
+					<!--   <entry> -->
+					<!-- 	Dieser Gruppentyp wird nur ausgewertet, wenn der Benutzer sich an einer Domäne -->
+					<!-- 	auf Basis von Samba 4 anmeldet (das Active Directory-Domänendienste -->
+					<!-- 	bereitstellt).  Diese Gruppen sind in <xref linkend="groups:adgroups"/> beschrieben. -->
+					<!--   </entry> -->
+					<!-- </row> -->
+
 					<row>
 						<entry>Windows &ar; Samba privileges</entry>
 						<entry>
@@ -308,6 +318,66 @@
 		  <emphasis>false</emphasis>.
 		</para>
 	</section>
+
+	<!-- <section id="groups:adgroups"> -->
+	<!--   <title>Synchronisation von Active Directory-Gruppen bei Verwendung von Samba 4</title> -->
+	<!--   <para> -->
+	<!-- 	Wird Samba 4 eingesetzt, werden die Gruppenmitgliedschaften werden zwischen dem Samba -->
+	<!-- 	4-Verzeichnisdienst und dem OpenLDAP-Verzeichnisdienst durch den Univention S4-Connector -->
+	<!-- 	synchronisiert, d.h. jede Gruppe auf UCS-Seite ist einer Gruppe im Active Directory assoziiert. Allgemeine -->
+	<!-- 	Hinweise zum Univention S4 Connector finden sich in <xref linkend="windows:s4connector"/>. -->
+	<!--   </para> -->
+
+	<!--   <para> -->
+	<!-- 	Einzige Ausnahme sind die <emphasis>Pseudo-Gruppen</emphasis> (manchmal auch als -->
+	<!-- 	Systemgruppen bezeichnet). Diese werden nur intern von Active Directory/Samba 4 verwaltet, -->
+	<!-- 	z.B. enthält die Gruppe <emphasis>Authenticated Users</emphasis> eine Liste aller aktuell an -->
+	<!-- 	einem System angemeldeten Benutzer. Pseudo-Gruppen sind im UCS-Verzeichnisdienst vorhanden, -->
+	<!-- 	sind aber leer. -->
+	<!--   </para> -->
+
+	<!--   <para> -->
+	<!-- 	Man unterscheidet in Samba 4/Active Directory zwischen den folgenden vier -->
+	<!-- 	AD-Gruppentypen. Diese Gruppentypen können auf zwei Arten von Gruppen angewendet werden; -->
+	<!-- 	<emphasis>Sicherheitsgruppen</emphasis> konfigurieren Berechtigungen (entsprechend den -->
+	<!-- 	UCS-Gruppen), während <emphasis>Verteilungsgruppen</emphasis> für Mailverteiler genutzt -->
+	<!-- 	werden: -->
+
+	<!-- 	<itemizedlist> -->
+	<!-- 	  <listitem><simpara> -->
+	<!-- 		<emphasis>Lokale Gruppen</emphasis> existieren immer nur lokal auf einem Rechner. Eine -->
+	<!-- 		lokale Gruppe, die in Samba 4 angelegt wurde, wird durch den Univention S4 Connector -->
+	<!-- 		synchronisiert und erscheint daher auch in der UMC. Es besteht aber keine Notwendigkeit -->
+	<!-- 		lokale Gruppen in der UMC anzulegen. -->
+	<!-- 	  </simpara></listitem> -->
+
+	<!-- 	  <listitem><simpara> -->
+	<!-- 		<emphasis>Globale Gruppen</emphasis> sind der Standardtyp für neu angelegte Gruppen in -->
+	<!-- 		der UMC. Eine globale Gruppe gilt für eine Domäne, es können aber keine Konten anderer -->
+	<!-- 		Domänen aufgenommen werden. Besteht eine Vertrauensstellung zu einer Domäne, werden die -->
+	<!-- 		Gruppen dort angezeigt und es können Berechtigungen zugewiesen werden. Die aktuelle -->
+	<!-- 		Version von Samba 4 unterstützt allerdings weder mehrfache Domänen/Forests, noch -->
+	<!-- 		Vertrauensstellungen. -->
+	<!-- 	  </simpara></listitem> -->
+
+	<!-- 	  <listitem><simpara> -->
+	<!-- 		<emphasis>Domänenlokale Gruppen</emphasis> können auch Mitglieder anderer Domänen -->
+	<!-- 		aufnehmen (sofern zu diesen eine Vertrauenstellung besteht oder sie Teil eines Forests -->
+	<!-- 		ist). Domänenlokale Gruppen werden aber nur in der eigenen Domäne angezeigt. Die -->
+	<!-- 		aktuelle Version von Samba 4 unterstützt allerdings weder mehrfache Domänen/Forests, -->
+	<!-- 		noch Vertrauensstellungen. -->
+	<!-- 	  </simpara></listitem> -->
+
+	<!-- 	  <listitem><simpara> -->
+	<!-- 		<emphasis>Universelle Gruppen</emphasis> können Mitglieder aus allen Domänen aufnehmen -->
+	<!-- 		und diese Mitglieder werden auch in allen Domänen eines Forests angezeigt. Diese Gruppen -->
+	<!-- 		werden in einem separaten Segment des Verzeichnisdienstes gespeichert, dem sogenannten -->
+	<!-- 		Global Catalog. Domänen-Forests werden aktuell von Samba 4 nicht unterstützt. -->
+	<!-- 	  </simpara></listitem> -->
+	<!-- 	</itemizedlist> -->
+	<!--   </para> -->
+	<!-- </section> -->
+
 
 	<section id="groups::memberof">
 	  <title>Overlay module for displaying the group information on user objects</title>
