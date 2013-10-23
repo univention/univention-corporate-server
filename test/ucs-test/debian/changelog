@@ -1,3 +1,9 @@
+ucs-test (4.0.152-1) unstable; urgency=low
+
+  * Bug #32850: adapt UMC ACL test
+
+ -- Florian Best <best@univention.de>  Wed, 23 Oct 2013 08:57:48 +0200
+
 ucs-test (4.0.151-2) unstable; urgency=low
 
   * Fix ftbfs (Bug #32554)
