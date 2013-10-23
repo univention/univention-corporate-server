@@ -1,6 +1,7 @@
 univention-grub (7.0.2-1) unstable; urgency=low
 
   * Bug #28191: merged UEFI specific code from ucs-3.1/component/uefi/univention-grub
+  * Bug #28191: added dependencies to univention-uefi and univention-uefi-secureboot
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 16 Oct 2013 11:01:37 +0200
 

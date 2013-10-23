@@ -10,8 +10,7 @@ Build-Depends: debhelper,
 Package: univention-grub
 Architecture: all
 Depends: ${misc:Depends},
- grub-pc | grub-efi,
- efibootmgr,
+ grub-pc | univention-uefi | univention-uefi-secureboot,
  initramfs-tools,
  lvm2,
  memtest86+,
