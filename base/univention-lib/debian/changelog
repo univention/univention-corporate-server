@@ -1,3 +1,10 @@
+univention-lib (3.0.24-1) unstable; urgency=low
+
+  * Modify share directory permissions, owner and group if it is new or
+    their defining udm attributes have been modified (Bug #15087)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 23 Oct 2013 16:31:19 +0200
+
 univention-lib (3.0.23-1) unstable; urgency=low
 
   * Modify share directory permissions, owner and group only if

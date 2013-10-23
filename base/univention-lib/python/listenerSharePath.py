@@ -83,7 +83,6 @@ def checkDirFileSystem(path, cr):
 	return "filesystem %s for %s is not on a known filesystem" % (myFs, path)	
 
 def createOrRename(old, new, cr):
-
 	# create or rename
 	rename = False
 	if cr.is_true("listener/shares/rename", False) and old:
@@ -224,16 +223,16 @@ def createOrRename(old, new, cr):
 
 	# set permissions, only modify them if a change has occured
 	try:
-		if (new.get("univentionShareDirectoryMode") and old.get("univentionShareDirectoryMode") and 
-				new["univentionShareDirectoryMode"][0] != old["univentionShareDirectoryMode"][0]):
+		if (not old or (new.get("univentionShareDirectoryMode") and old.get("univentionShareDirectoryMode") and 
+				new["univentionShareDirectoryMode"][0] != old["univentionShareDirectoryMode"][0])):
 			os.chmod(newPath, int(mode, 0))
 		
-		if (new.get("univentionShareUid") and old.get("univentionShareUid") and
-				new["univentionShareUid"][0] != old["univentionShareUid"][0]):
+		if (not old or (new.get("univentionShareUid") and old.get("univentionShareUid") and
+				new["univentionShareUid"][0] != old["univentionShareUid"][0])):
 			os.chown(newPath, uid, -1)
 
-		if (new.get("univentionShareGid") and old.get("univentionShareGid") and
-				new["univentionShareGid"][0] != old["univentionShareGid"][0]):
+		if (not old or (new.get("univentionShareGid") and old.get("univentionShareGid") and
+				new["univentionShareGid"][0] != old["univentionShareGid"][0])):
 			os.chown(newPath, -1, gid)
 	except:
 		return "setting custom permissions for %s failed" % newPath
