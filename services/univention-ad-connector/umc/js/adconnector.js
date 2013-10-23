@@ -55,6 +55,8 @@ define([
 
 		variables: null,
 
+		addNotification: dialog.notify,
+
 		constructor: function() {
 			this.pages = [{
 				name: 'fqdn',
@@ -192,7 +194,7 @@ define([
 							this.getWidget('ldap', 'LDAP_BindDN').set('value', 'cn=Administrator,cn=users,' + response.result.LDAP_Base);
 							this.getWidget('ldap', 'KerberosDomain').set('value', tools.explodeDn(response.result.LDAP_Base, true).join('.'));
 						} else {
-							dialog.notify(response.result.message);
+							this.addNotification(response.result.message);
 						}
 						this.standby(false);
 					}));
@@ -226,7 +228,7 @@ define([
 				if (!response.result.success) {
 					dialog.alert(response.result.message);
 				} else {
-					dialog.notify(response.result.message);
+					this.addNotification(response.result.message);
 				}
 				this.standby(false);
 			}));
@@ -241,13 +243,16 @@ define([
 
 		_wizard: null,
 
+		addNotification: dialog.notify,
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
 			tools.umcpCommand('adconnector/load').then(lang.hitch(this, function(response) {
 				this._wizard = new ADConnectorWizard({
 					style: 'width: 500px; height: 400px;',
-					variables: response.result
+					variables: response.result,
+					addNotification: this.addNotification
 				});
 				this.set('content', this._wizard);
 				this._wizard.on('Finished', lang.hitch(this, function() {
@@ -300,7 +305,7 @@ define([
 						return;
 					}
 					if (result.success) {
-						dialog.notify(_('The certificate was imported successfully'));
+						this.addNotification(_('The certificate was imported successfully'));
 						this.showHideElements();
 					} else {
 						dialog.alert(_('Failed to import the certificate') + ': ' + result.message);
@@ -333,7 +338,8 @@ define([
 				label: _('Configure UCS Active Directory Connector'),
 				callback: lang.hitch(this, function() {
 					var dlg = new ADConnectorWizardDialog({
-						title: _('UCS Active Directory Connector Wizard')
+						title: _('UCS Active Directory Connector Wizard'),
+						addNotification: this.addNotification
 					});
 					dlg.show();
 					dlg.on('saved', lang.hitch(this, function() {
