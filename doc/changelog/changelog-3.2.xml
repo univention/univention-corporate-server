@@ -3084,8 +3084,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		Deprecated checks for some multivalue attributes have been removed (<ulink url="&ucsbug;18929">Bug 18929</ulink>).
 	  </simpara></listitem>
 
-	   <listitem><simpara>
-		Several language misstakes in various packages have been corrected (<ulink url="&ucsbug;32662">Bug 32662</ulink>).
+	  <listitem><simpara>
+			Several spelling mistakes in various packages have been corrected (<ulink url="&ucsbug;32662">Bug 32662</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
