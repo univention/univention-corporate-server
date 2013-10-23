@@ -369,7 +369,7 @@ define([
 							this.reinit(true);
 						}));
 					} else {
-						dialog.notify(successmsg || _('The join process was successful.'));
+						this.addNotification(successmsg || _('The join process was successful.'));
 						this.reinit(true);
 					}
 				}),

@@ -1,3 +1,9 @@
+univention-join (6.0.14-1) unstable; urgency=low
+
+  * Bug #30004: adjustements for new notifications
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Oct 2013 16:20:23 +0200
+
 univention-join (6.0.13-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)
