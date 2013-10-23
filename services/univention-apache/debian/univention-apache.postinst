@@ -125,7 +125,6 @@ fi
 
 # configuare language settings
 if dpkg --compare-versions "$2" le-nl 6.0.7-2
-echo "we are in"
 then
 	ORIGINAL_IFS=$IFS
 	IFS="_"
@@ -138,14 +137,14 @@ then
 
 	unset "${!umc_server_languages_@}"
 
-else
-	ucr set "ucs/server/languages/en_US?English" \
-		"ucs/server/languages/de_DE?Deutsch" \
-		"ucs/server/languages/en_GB?English (United Kingdom)" \
-		"ucs/server/languages/de_AT?Deutsch (Österreich)" \
-		"ucs/server/languages/de_CH?Deutsch (Schweiz)" 
-
 fi
+
+ucr set "ucs/server/languages/en_US?English" \
+	"ucs/server/languages/de_DE?Deutsch" \
+	"ucs/server/languages/en_GB?English (United Kingdom)" \
+	"ucs/server/languages/de_AT?Deutsch (Österreich)" \
+	"ucs/server/languages/de_CH?Deutsch (Schweiz)" 
+
 
 exit 0
 
