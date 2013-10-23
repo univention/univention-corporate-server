@@ -1,3 +1,9 @@
+univention-samba4 (3.0.31-2) unstable; urgency=low
+
+  * Hide the dns- user at a later point (Bug #32871)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Oct 2013 08:09:31 +0200
+
 univention-samba4 (3.0.31-1) unstable; urgency=low
 
   * Also set univentionObjectFlag via ldapmodify. It is possible that
