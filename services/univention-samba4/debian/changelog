@@ -1,3 +1,10 @@
+univention-samba4 (3.0.30-1) unstable; urgency=low
+
+  * Update existing pseudo groups with new flags (Bug #29000)
+  * Set sambaGroupType to 5 for pseudo groups (Bug #29000)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Oct 2013 06:39:23 +0200
+
 univention-samba4 (3.0.29-1) unstable; urgency=low
 
   * Fix samba reload (Bug #31698)

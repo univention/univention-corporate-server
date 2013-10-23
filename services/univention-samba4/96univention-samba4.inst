@@ -482,7 +482,6 @@ _create_group_with_special_sid ()
 		udm groups/group create "$@" --ignore_exists --option=posix \
 				--position "$position,$ldap_base" \
 				--set name="$name" \
-				--set adGroupType="-2147483643" \
 				--set objectFlag=hidden
 
 		echo "dn: cn=$name,$position,$ldap_base
@@ -493,8 +492,11 @@ objectClass: sambaGroupMapping
 add: sambaSID
 sambaSID: $sid
 -
+add: univentionGroupType
+univentionGroupType: -2147483643
+-
 add: sambaGroupType
-sambaGroupType: 2" | ldapmodify -x -D "$binddn" -w "$bindpwd" 
+sambaGroupType: 5" | ldapmodify -x -D "$binddn" -w "$bindpwd" 
 		
 		if [ "$name" = "Authenticated Users" ]; then
 			udm groups/group modify "$@" --dn "cn=$name,$position,$ldap_base" \
@@ -503,6 +505,7 @@ sambaGroupType: 2" | ldapmodify -x -D "$binddn" -w "$bindpwd"
 		fi
 	fi
 }
+
 
 create_pseudo_groups ()
 {
@@ -542,6 +545,42 @@ create_pseudo_groups ()
 	_create_group_with_special_sid "IUSR" "S-1-5-17" "cn=Builtin" "$@"
 	_create_group_with_special_sid "Self" "S-1-5-10" "cn=Builtin" "$@"
 
+}
+
+_update_pseudo_group ()
+{
+	local name="$1"
+
+	shift 1
+	
+	group_dn="$(univention-ldapsearch -x "(&(objectClass=univentionGroup)(cn=$name))" | sed -ne 's|dn: ||p')"
+
+	if [ -n "$group_dn" ]; then
+		extract_binddn_and_bindpwd_from_args "$@"
+		test -z "$binddn" && binddn="cn=admin,$ldap_base"
+		test -z "$bindpwd" && bindpwd="$(cat /etc/ldap.secret)"
+
+		echo "dn: $group_dn
+changetype: modify
+replace: univentionObjectFlag
+univentionObjectFlag: hidden
+-
+add: univentionGroupType
+univentionGroupType: -2147483643
+-
+replace: sambaGroupType
+sambaGroupType: 5" | ldapmodify -x -D "$binddn" -w "$bindpwd" 
+	fi
+}
+
+update_pseudo_groups ()
+{
+	_update_pseudo_group "Authenticated Users" "$@" || die
+	_update_pseudo_group "World Authority" "$@" || die
+	_update_pseudo_group "Everyone" "$@" || die
+	_update_pseudo_group "Null Authority" "$@" || die
+	_update_pseudo_group "Nobody" "$@" || die
+	_update_pseudo_group "Enterprise Domain Controllers" "$@" || die
 }
 
 ### --- END helper functions ---
@@ -586,6 +625,10 @@ if [ -n "$samba4_join_site" ]; then
 fi
 
 create_pseudo_groups "$@"
+
+if [ $JS_LAST_EXECUTED_VERSION -gt 0 ] && [ $JS_LAST_EXECUTED_VERSION -lt 6 ]; then
+	update_pseudo_groups "$@"
+fi
 
 if [ "$samba4_role" = 'DC' ]; then
 
