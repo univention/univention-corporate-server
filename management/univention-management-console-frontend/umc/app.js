@@ -1193,7 +1193,7 @@ define([
 			var today = new Date().getTime() / 1000 / 60 / 60 / 24; // now in days
 			var days = certExp - today;
 			if ( days <= warning ) {
-				this._overviewPage.addNote( _( 'The %s will expire in %d days and should be renewed!', certType, days ) );
+				dialog.warn( _( 'The %s will expire in %d days and should be renewed!', certType, days ) );
 			}
 		},
 
@@ -1203,7 +1203,7 @@ define([
 				tools.umcpCommand('udm/license', {}, false).then(lang.hitch(this, function(data) {
 					var msg = data.result.message;
 					if (msg) {
-						this._overviewPage.addNote(msg);
+						dialog.warn(msg);
 					}
 				}), function() {
 					console.log('WARNING: An error occurred while verifying the license. Ignoring error.');
@@ -1214,7 +1214,7 @@ define([
 		_checkUpdateAvailable: function() {
 			if (this.getModule('updater') && tools.isTrue(_ucr['update/available'])) {
 				var link = this.linkToModule('updater');
-				this._overviewPage.addNote(_( 'An update for UCS is available. Please visit the %s to install the updates.', link));
+				dialog.notify(_( 'An update for UCS is available. Please visit the %s to install the updates.', link));
 			}
 		},
 
@@ -1227,7 +1227,7 @@ define([
 				// IE 8 is also known to cause timeouts when under heavy load
 				// (presumably because of many async requests to the server
 				// during UDM-Form loading)
-				this._overviewPage.addNote( _( 'Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.' ) );
+				dialog.warn( _( 'Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.' ) );
 			}
 		},
 
@@ -1235,9 +1235,9 @@ define([
 			if (tools.status('username') == 'root' && tools.isFalse(_ucr['system/setup/showloginmessage'])) {
 				var login_as_admin_tag = '<a href="javascript:void(0)" onclick="require(\'umc/app\').relogin(\'Administrator\')">Administrator</a>';
 				if (_ucr['server/role'] == 'domaincontroller_slave') {
-					this._overviewPage.addNote( _( 'As %s you do not have access to the App Center. For this you need to log in as %s.', '<strong>root</strong>', login_as_admin_tag ) );
+					dialog.notify( _( 'As %s you do not have access to the App Center. For this you need to log in as %s.', '<strong>root</strong>', login_as_admin_tag ) );
 				} else { // master, backup
-					this._overviewPage.addNote( _( 'As %s you have neither access to the domain administration nor to the App Center. For this you need to log in as %s.', '<strong>root</strong>', login_as_admin_tag ) );
+					dialog.notify( _( 'As %s you have neither access to the domain administration nor to the App Center. For this you need to log in as %s.', '<strong>root</strong>', login_as_admin_tag ) );
 				}
 			}
 		},
@@ -1245,7 +1245,7 @@ define([
 		_checkRebootRequired: function() {
 			if ( this.getModule('reboot') && tools.isTrue(_ucr['update/reboot/required']) ) {
 				var link = this.linkToModule('reboot');
-				this._overviewPage.addNote(_('This system has been updated recently. Please visit the %s and reboot this system to finish the update.', link));
+				dialog.notify(_('This system has been updated recently. Please visit the %s and reboot this system to finish the update.', link));
 			}
 		},
 
@@ -1262,9 +1262,9 @@ define([
 						});
 						var joinModuleLink = this.linkToModule('join');
 						if (!systemJoined) {
-							this._overviewPage.addNote(_('The system has not been joined into a domain so far. Please visit the %s to join the system.', joinModuleLink));
+							dialog.warn(_('The system has not been joined into a domain so far. Please visit the %s to join the system.', joinModuleLink));
 						} else if (!allScriptsConfigured) {
-							this._overviewPage.addNote(_('Not all installed components have been registered. Please visit the %s to register the remaining components.', joinModuleLink));
+							dialog.notify(_('Not all installed components have been registered. Please visit the %s to register the remaining components.', joinModuleLink));
 						}
 					}), function() {
 						console.log('WARNING: An error occurred while verifying the join state. Ignoring error.');

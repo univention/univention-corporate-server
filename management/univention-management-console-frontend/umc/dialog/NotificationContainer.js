@@ -158,6 +158,13 @@ define([
 			this.inherited(arguments);
 			domConstruct.place(this.domNode, _getWrapper());
 
+			on(this.domNode, 'mouseover,touch', lang.hitch(this, '_clearTimeout'));
+			on(this.domNode, 'mouseout', lang.hitch(this, function(e) {
+				if (this.get('view') != 'all') {
+					this._addTimeout();
+				}
+			}));
+
 			topic.subscribe('/umc/actions', lang.hitch(this, function(actionRootName) {
 				if (actionRootName != 'startup-wizard') {
 					this.wipeOut();
@@ -243,7 +250,8 @@ define([
 				component: component,
 				time: new Date(),
 				seen: false,
-				confirmed: false
+				confirmed: false,
+				autoClose: Boolean(autoClose)
 			});
 			++this._nextID;
 			this.render();
@@ -251,13 +259,10 @@ define([
 
 			++this._nNewNotifications;
 			this._updateBubble();
-
-			if (autoClose) {
-				this._addTimeout();
-			}
 		},
 
 		_clearTimeout: function() {
+			console.log('# _clearTimeout: ', this._timeoutID);
 			if (this._timeoutID) {
 				clearTimeout(this._timeoutID);
 				this._timeoutID = null;
@@ -265,13 +270,23 @@ define([
 		},
 
 		_addTimeout: function() {
-			console.log('# _addTimeout');
 			this._clearTimeout();
 			this._timeoutID = setTimeout(lang.hitch(this, function() {
 				console.log('# timeout done -> close');
 				this._timeoutID = null;
 				this.wipeOut();
 			}), this.timeout * 1000);
+			console.log('# _addTimeout');
+		},
+
+		_addTimeoutIfOnlyAutoCloseMessages: function() {
+			var nManualCloseMessages = this.store.query({
+				seen: false,
+				autoClose: false
+			}).length;
+			if (!nManualCloseMessages) {
+				this._addTimeout();
+			}
 		},
 
 		wipeIn: function(viewAll) {
@@ -296,6 +311,8 @@ define([
 			this.set('animation', anim);
 
 			on(anim, 'End', lang.hitch(this, '_resetAnimation'));
+
+			this._addTimeoutIfOnlyAutoCloseMessages();
 
 			anim.play();
 		},
