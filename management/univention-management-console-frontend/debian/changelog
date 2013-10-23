@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.122-1) unstable; urgency=low
+
+  * Bug #30004: clean up old notification handling in Page, minor CSS fix,
+    add property 'standingBy' to StandbyMixin (for Basic settings module)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Oct 2013 17:31:38 +0200
+
 univention-management-console-frontend (3.0.121-1) unstable; urgency=low
 
   * Bug #30004: adjustements for new notifications

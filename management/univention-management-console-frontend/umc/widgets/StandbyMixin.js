@@ -40,6 +40,8 @@ define([
 		// summary:
 		//		Mixin class to make a widget "standby-able"
 
+		standingBy: false,
+
 		_standbyWidget: null,
 
 		standbyOpacity: 0.75,
@@ -118,6 +120,9 @@ define([
 		},
 
 		standby: function(/*Boolean*/ doStandby, /*mixed?*/ content) {
+			if (doStandby) {
+				this.set('standingBy', true);
+			}
 			this._standbyStartedDeferred.then(lang.hitch(this, function() {
 				if (doStandby) {
 					// update the content of the standby widget
@@ -125,9 +130,11 @@ define([
 
 					// show standby widget
 					this._standbyWidget.show();
+					this.set('standingBy', doStandby);
 				} else {
 					// hide standby widget
 					this._standbyWidget.hide();
+					this.set('standingBy', doStandby);
 				}
 			}));
 		},

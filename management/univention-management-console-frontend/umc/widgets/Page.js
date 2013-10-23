@@ -95,7 +95,6 @@ define([
 		_headerTextPane: null,
 		_subscriptionHandle: null,
 		_footer: null,
-		_notes: null,
 		_footerButtons: null,
 
 		_setTitleAttr: function(title) {
@@ -129,9 +128,6 @@ define([
 
 			// remove title from the attributeMap
 			delete this.attributeMap.title;
-
-			// initiate array for notes
-			this._notes = [];
 		},
 
 		buildRendering: function() {
@@ -277,11 +273,8 @@ define([
 		},
 
 		clearNotes: function() {
-			array.forEach(this._notes, function(inote) {
-				this.removeChild(inote);
-				inote.destroyRecursive();
-			}, this);
-			this._notes = [];
+			// summary:
+			//		Deprecated method.
 		},
 
 		startup: function() {
