@@ -1,3 +1,9 @@
+univention-apache (6.0.12-5) unstable; urgency=low
+
+  * Improve startsite.js javascript code (Bug #32932) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 23 Oct 2013 11:25:43 +0200
+
 univention-apache (6.0.12-4) unstable; urgency=low
 
   * also create new languages UCRVs when updating (Bug #32678)

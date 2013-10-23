@@ -232,12 +232,12 @@ define([
 		},
 
 		_updateAvailableLocales: function() {
-			queryParams = window.location.search.substring(1, window.location.search.length);
-			queryObject = ioQuery.queryToObject(queryParams);
+			var queryParams = window.location.search.substring(1, window.location.search.length);
+			var queryObject = ioQuery.queryToObject(queryParams);
 			var menuNode = query('#header-right #language-switcher')[0];
 			array.forEach(this._availableLocales, function(ilocale) {
 				queryObject.lang = ilocale.id;
-				domConstruct.place(lang.replace('<li role="presentation"><a role="menuitem" tabindex="-1" href="?{0}">{1}</a></li>', [ioQuery.objectToQuery(queryObject), ilocale.label]), menuNode);
+				domConstruct.place(lang.replace('<li role="presentation"><a role="menuitem" tabindex="-1" href="{0}?{1}">{2}</a></li>', [window.location.pathname, ioQuery.objectToQuery(queryObject), ilocale.label]), menuNode);
 			});
 		},
 
