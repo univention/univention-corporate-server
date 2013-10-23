@@ -241,10 +241,10 @@
 }
 
 /* shadow effect for hovered button */
-.umc .dijitToggleButton.dijitButtonHover,
-.umc .dijitButton.dijitButtonHover,
-.umc .dijitDropDownButton.dijitDropDownButtonHover,
-.umc .dijitComboButton.dijitComboButtonHover {
+.umc .dijitButtonHover,
+.umc .dijitButtonHover,
+.umc .dijitDropDownButtonHover,
+.umc .dijitComboButtonHover {
   .box-shadow(1px 2px 2px rgba(0, 0, 0, 0.1));
 }
 
@@ -468,12 +468,14 @@
 
 /* tooltip styling */
 
+.umc .umcNotification,
 .umc .dijitTooltipContainer.dijitTooltipContents {
 	border: 1px solid white;
 	background: @grayShip;
 	color: white;
 }
 
+.umc .umcNotification,
 .umc .dijitTooltipContainer {
   background-color: @grayShip;
   background-image: url(images/tooltipGradient.png);
@@ -491,6 +493,8 @@
 .dj_ie6 .umc .dijitTooltipConnector {
   background-image: url(images/tooltip8bit.png);
 }
+
+/* other elements */
 
 .umc .dijitAccordionTitle {
   background-image: url(layout/images/accordion.png);
@@ -910,8 +914,7 @@
 /* grid styling */
 
 /* handle special styling of action buttons */
-.umc .dojoxGridCell,
-.umc .umcGridFooter {
+.umc .dojoxGridCell {
 	.dijitButton {
 		margin-left: 0;
 		margin-right: 0;
@@ -934,18 +937,19 @@
 	}
 }
 
-/* switch off left padding for action buttons in the grid footer */
-.umc .umcGridFooter .dijitButton .dijitButtonNode {
-	padding-left: 0;
-}
-
-.umcGridFooter {
+/* adjust padding in the grid footer */
+.umc .umcGridFooter {
 	margin-bottom: 0.416em;
 	padding-top: 0.416em;
 	padding-bottom: 0.416em;
 	background-color: @grayAthens;
 	border-top: 1px solid black;
 	border-bottom: 2px solid @grayDusty;
+}
+
+/* make sure that elements inside a grid cell do not have margins */
+.umc .dojoxGrid .dojoxGridCell > * {
+  margin: 0px;
 }
 
 
@@ -955,57 +959,7 @@
 	margin-bottom: 1.25em;
 }
 
-
-/* @group umc input sizes */
-.umc {
-	.umcSize-One {
-		width: 25em;
-	}
-
-	.umcSize-OneThird {
-		width: 9em;
-	}
-
-	.umcSize-Half {
-		width: 12em;
-	}
-
-	.umcSize-TwoThirds {
-		width: 15em;
-	}
-
-	.umcSize-FourThirds {
-		width: 35em;
-	}
-
-	.umcSize-OneAndAHalf {
-		width: 38em;
-	}
-
-	.umcSize-FiveThirds {
-		width: 41em;
-	}
-}
-
-
 /* @from style css */
-html {
-	background: url(bg_images/page.png) repeat-y center #eeeeef;
-	height: 100%;
-}
-
-body {
-	/* disable scrollbars for the main window, long combo boxes may cause scrollbars to be shown */
-	overflow-y: hidden;
-	color: @grayShip;
-	height: 100%;
-	width: 100%;
-}
-
-a {
-	color: @greenMantis;
-}
-
 .umc form {
 	margin-bottom: 10px;
 }
@@ -1242,154 +1196,6 @@ p {
 .umc .dijitComboBoxMenuPopup .dijitMenuItem {
 	background-image: none;
 }
-
-/* LiveSearchSidebar */
-.umcLiveSearchSidebar {
-	.umcButton {
-		font-size: 100%;
-		background: none;
-		border: none;
-		display: block;
-		margin: 0.4em 0 0 0;
-		padding: 0;
-
-		.dijitButtonContents {
-			outline: none;
-		}
-
-		.dijitButtonText {
-			text-decoration: none;
-			padding-left: 0.416em;
-			padding-right: 0.416em;
-		}
-
-		.dijitButtonNode {
-			text-align: left;
-			display: block;
-		}
-	}
-
-	.umcButton.umcCategorySelected .dijitButtonText {
-		font-weight: bold;
-	}
-
-	.dijitButtonHover .dijitButtonNode {
-		text-shadow: none;
-	}
-
-	.dijitButtonHover .dijitButtonNode,
-	.dijitButtonActive .dijitButtonNode {
-		background-color: @grayAthens;
-		.border-radius(5px);
-	}
-}
-
-/* GalleryPane */
-.umcGalleryPane.dgrid {
-	overflow: auto;
-	height: auto;
-	border: none;
-
-	.dgrid-scroller {
-		outline: none;
-	}
-
-	.dgrid-selected {
-		background-color: inherit;
-	}
-}
-
-.umcGalleryPane {
-	// disable selection on touch devices
-	// taken from: http://stackoverflow.com/a/11237968
-	-webkit-touch-callout:none;
-	-webkit-user-select:none;
-
-	.umcGalleryCategoryHeader {
-		display: block;
-		border-bottom: 1px solid @border-color;
-		padding-bottom: 0.416em;
-		margin-bottom: 5px;
-		font-size: 1.166em;
-		clear: left;
-		// on the android tablet the border would only be displayed at width ~300px
-		// this background image hack fixes the problem, see:
-		//   http://stackoverflow.com/a/13550951
-		background-image:url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
-	}
-
-	.umcGalleryItem {
-		position: relative;
-		float: left;
-		outline: none;
-		.box-sizing(border-box);
-
-		// definitions in px instead of em due to size of image in px
-		padding: 15px 20px;
-		margin: 0 20px 5px 0;
-		height: 85px;
-		width: 345px;
-
-		.umcGalleryName,
-		.umcGalleryDescription {
-			text-align: left;
-			display: block;
-			padding-left: 72px;
-		}
-
-		.umcGalleryDescription {
-			color: @gray;
-		}
-
-		.umcGalleryIcon {
-			margin: 0;
-			padding-bottom: 0;
-			position: absolute;
-		}
-
-		.umcGalleryStatusIcon {
-			position: absolute;
-			top: 5px;
-			left: 66px;
-			width: 24px;
-			height: 24px;
-		}
-
-		.umcGalleryContextIcon {
-			position: absolute;
-			top: 5px;
-			left: auto;
-			right: 10px;
-			width: 24px;
-			height: 24px;
-		}
-	}
-
-	.umcGalleryItemActive,
-	.umcGalleryItem:hover {
-		background-color: @grayAthens;
-		.border-radius(5px);
-		cursor: pointer;
-	}
-
-}
-
-/* UMC overview page icons */
-.umcOverviewPane {
-	.umcGalleryItemActive .umcGalleryContextIcon,
-	.umcGalleryItem:hover .umcGalleryContextIcon {
-		visibility: visible!important;
-	}
-	.umcGalleryItem	.umcGalleryContextIcon {
-		visibility: hidden;
-	}
-
-	.umcGalleryName,
-	.umcGalleryDescription {
-		//padding-left: 60px !important;
-	}
-}
-
 
 /* TextBox - CSS for inline label */
 .dijitTextBox {

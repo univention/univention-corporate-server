@@ -648,7 +648,7 @@ define([
 					// session has expired
 					topic.publish('/umc/actions', 'session', 'expired');
 					dialog.login();
-					dialog.notify(statusMessage);
+					dialog._loginDialog.updateForm(false, statusMessage, message);
 				} else if (409 == status && handleErrors && handleErrors.onValidationError) {
 					// validation error
 					topic.publish('/umc/actions', 'error', status);

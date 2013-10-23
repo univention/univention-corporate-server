@@ -74,9 +74,10 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
+	"umc/widgets/Tooltip",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, string, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, registry, tools, dialog, store, ProgressInfo, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, string, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, registry, tools, dialog, store, ProgressInfo, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Text, Button, UMCTooltip, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -1441,15 +1442,8 @@ define([
 			});
 			this._topContainer.addChild( header );
 
-			// we need containers aligned to the left and the right
-			var headerLeft = new Text({
-				style: 'float: left',
-				'class': 'univentionLogo',
-				content: ''
-			});
-			header.addChild(headerLeft);
-
 			this._headerRight = new ContainerWidget({
+				'class': 'umcHeaderRight',
 				style: 'float: right; display: none;'
 			});
 			header.addChild(this._headerRight);
@@ -1483,9 +1477,17 @@ define([
 				}));
 			}
 
+			var _addToHeader = lang.hitch(this, function(tooltipLabel, button) {
+				new UMCTooltip({
+					label: tooltipLabel,
+					connectId: [ button.domNode ]
+				});
+				this._headerRight.addChild(button);
+			});
+
 			// the settings context menu
 			this._settingsMenu = new Menu({});
-			this._headerRight.addChild(new DropDownButton({
+			_addToHeader(_('Settings'), new DropDownButton({
 				id: 'umcMenuSettings',
 				iconClass: 'icon24-umc-menu-settings',
 				dropDown: this._settingsMenu
@@ -1493,14 +1495,21 @@ define([
 
 			// the help context menu
 			this._helpMenu = new Menu({});
-			this._headerRight.addChild(new DropDownButton({
+			_addToHeader(_('Help'), new DropDownButton({
 				id: 'umcMenuHelp',
 				iconClass: 'icon24-umc-menu-help',
 				dropDown: this._helpMenu
 			}));
 
+			// the notification button
+			_addToHeader(_('Notifications'), new Button({
+				id: 'umcMenuNotifications',
+				iconClass: 'icon24-umc-menu-notifications',
+				onClick: lang.hitch(dialog, 'toggleNotifications')
+			}));
+
 			// the logout button
-			this._headerRight.addChild(new Button({
+			_addToHeader(_('Logout'), new Button({
 				id: 'umcMenuLogout',
 				iconClass: 'icon24-umc-menu-logout',
 				onClick: lang.hitch(this, function() {

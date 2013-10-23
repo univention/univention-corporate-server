@@ -1,5 +1,53 @@
 @import "variables";
 
+html {
+	background: url(bg_images/page.png) repeat-y center #eeeeef;
+	height: 100%;
+}
+
+body {
+	/* disable scrollbars for the main window, long combo boxes may cause scrollbars to be shown */
+	overflow-y: hidden;
+	color: @grayShip;
+	height: 100%;
+	width: 100%;
+}
+
+a {
+	color: @greenMantis;
+}
+
+/* umc input sizes */
+.umc {
+	.umcSize-One {
+		width: 25em;
+	}
+
+	.umcSize-OneThird {
+		width: 9em;
+	}
+
+	.umcSize-Half {
+		width: 12em;
+	}
+
+	.umcSize-TwoThirds {
+		width: 15em;
+	}
+
+	.umcSize-FourThirds {
+		width: 35em;
+	}
+
+	.umcSize-OneAndAHalf {
+		width: 38em;
+	}
+
+	.umcSize-FiveThirds {
+		width: 41em;
+	}
+}
+
 /* special rule for the Univention logo */
 .umc #univentionLogoWrapper {
 	position: absolute;
@@ -20,59 +68,62 @@
 .has-mozilla .umc .umcHeader,
 .umc .umcHeader {
 	height: 46px;
-	overflow: hidden;
+	overflow: visible;
 	padding: 10px 26px 0 26px;
 
-	.umcHeaderSeparator {
-		height: 24px;
-		margin: 5px 10px;
-		border-right: 1px solid #58585a;
-		display: inline-block;
-		float: left;
-	}
+	.umcHeaderRight {
 
-	/* style for user and host information */
-	.umcHeaderText {
-		display: block;
-		float: left;
-		background: none;
-		box-shadow: none;
-		font-size: 15px;
-		padding: 9px 0 5px 0;
-		margin: 0;
-		height: 24px;
-	}
+		.umcHeaderSeparator {
+			height: 24px;
+			margin: 5px 10px;
+			border-right: 1px solid #58585a;
+			display: inline-block;
+			float: left;
+		}
 
-	.dijitDropDownButton {
-		#umcMenuHelp, #umcMenuSettings {
-			.dijitArrowButtonInner {
-				display: none;
+		/* style for user and host information */
+		.umcHeaderText {
+			display: block;
+			float: left;
+			background: none;
+			box-shadow: none;
+			font-size: 15px;
+			padding: 9px 0 5px 0;
+			margin: 0;
+			height: 24px;
+		}
+
+		.dijitDropDownButton {
+			#umcMenuHelp, #umcMenuSettings {
+				.dijitArrowButtonInner {
+					display: none;
+				}
 			}
 		}
-	}
 
-	/* special style for buttons */
-	.dijitDropDownButton.dijitDropDownButtonHover,
-	.dijitButton.dijitButtonHover {
-		.box-shadow(none);
-	}
-
-	.dijitDropDownButton,
-	.dijitButton {
-		margin: 0;
-		display: block;
-		float: left;
-		height: 24px;
-		padding: 5px 0 5px 0;
-		border: none;
-		background: none;
-
-		.dijitButtonText {
-			display: none;
+		/* special style for buttons */
+		.dijitDropDownButton.dijitDropDownButtonHover,
+		.dijitButton.dijitButtonHover {
+			.box-shadow(none);
 		}
 
-		.dijitButtonNode {
-			padding: 0 4px;
+		.dijitDropDownButton,
+		.dijitButton {
+			margin: 0;
+			display: block;
+			float: left;
+			height: 24px;
+			padding: 5px 0 5px 0;
+			border: none;
+			background: none;
+
+			.dijitButtonText {
+				display: none;
+			}
+
+			.dijitButtonNode {
+				padding: 0 4px;
+			}
 		}
 	}
 
@@ -175,7 +226,245 @@ div[dijitpopupparent=umcMenuHelp] {
 	}
 }
 
+/* notifications */
+
+.umc .umcNotificationTopWrapper {
+	position: relative;
+	margin: 0 auto;
+	height: 0;
+	overflow: visible;
+	z-index: 20;
+	width: 960px;
+}
+
+.umc .umcNotification {
+	position: absolute;
+	display: block;
+	box-sizing: border-box;
+	top: 56px;
+	left: 0;
+	overflow: hidden;
+	background-color: rgba(65, 65, 66, 0.8);
+	max-width: 100%;
+
+	.umcNotificationWrapper {
+		padding: 0.5em 20px 0.5em 26px;
+
+		.umcNotificationScroller {
+			max-height: 300px;
+			overflow-y: auto;
+			padding-right: 6px;
+
+			.umcNotificationMessage {
+				padding: 0.5em 0;
+				border-bottom: solid 1px white;
+				width: 100%;
+				display: inline-block;
+			}
+
+			.umcNotificationMessageInfo {
+				float: right;
+
+			}
+
+			.umcNotificationMessage.umcNewNotification {
+				font-style:italic;
+			}
+		}
+
+		.umcNotificationCloseButton {
+			background: none;
+			border: none;
+			font-size: 100%;
+
+			/* account for right alignment with the message time stamp */
+			padding-right: 0;
+			margin-right: 6px;
+
+			.dijitButtonNode {
+				padding-right: 0;
+
+				.dijitButtonText {
+					padding-left: 0;
+					padding-right: 0;
+				}
+			}
+		}
+
+		.umcNotificationCloseButton.dijitButtonHover .dijitButtonText {
+			text-decoration: underline;
+		}
+	}
+}
+
+.umc .umcNotificationBubble {
+	position: absolute;
+	right: 55px;
+	top: 7px;
+	background-image: url("bg_images/red_circle.png");
+	width: 17px;
+	height: 17px;
+	color: white;
+	font-size: 9px;
+	line-height: 17px;
+	text-align: center;
+	font-weight: bold;
+}
+
+/* Main tab container */
+
 .umc .umcMainTabContainer {
 	padding: 20px 30px 10px 30px;
 }
+
+/* LiveSearchSidebar */
+.umcLiveSearchSidebar {
+	.dijitButton {
+		font-size: 100%;
+		background: none;
+		border: none;
+		display: block;
+		margin: 0.4em 0 0 0;
+		padding: 0;
+
+		.dijitButtonContents {
+			outline: none;
+		}
+
+		.dijitButtonText {
+			text-decoration: none;
+			padding-left: 0.416em;
+			padding-right: 0.416em;
+		}
+
+/*		.dijitButtonNode {
+			text-align: left;
+			display: block;
+		}*/
+	}
+
+	.umcButton.umcCategorySelected .dijitButtonText {
+		font-weight: bold;
+	}
+
+	.dijitButtonHover,
+	.dijitButtonActive {
+		.box-shadow(none);
+		background-color: @grayAthens;
+		.border-radius(5px);
+		.transition-duration(0.3s);
+
+		.dijitButtonNode {
+			text-shadow: none;
+			background: none;
+		}
+	}
+}
+
+/* GalleryPane */
+.umcGalleryPane.dgrid {
+	overflow: auto;
+	height: auto;
+	border: none;
+
+	.dgrid-scroller {
+		outline: none;
+	}
+
+	.dgrid-selected {
+		background-color: inherit;
+	}
+}
+
+.umcGalleryPane {
+	// disable selection on touch devices
+	// taken from: http://stackoverflow.com/a/11237968
+	-webkit-touch-callout:none;
+	-webkit-user-select:none;
+
+	.umcGalleryCategoryHeader {
+		display: block;
+		border-bottom: 1px solid @border-color;
+		padding-bottom: 0.416em;
+		margin-bottom: 5px;
+		font-size: 1.166em;
+		clear: left;
+		// on the android tablet the border would only be displayed at width ~300px
+		// this background image hack fixes the problem, see:
+		//   http://stackoverflow.com/a/13550951
+		background-image:url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
+	}
+
+	.umcGalleryItem {
+		position: relative;
+		float: left;
+		outline: none;
+		.box-sizing(border-box);
+
+		// definitions in px instead of em due to size of image in px
+		padding: 15px 20px;
+		margin: 0 20px 5px 0;
+		height: 85px;
+		width: 345px;
+
+		.umcGalleryName,
+		.umcGalleryDescription {
+			text-align: left;
+			display: block;
+			padding-left: 72px;
+		}
+
+		.umcGalleryDescription {
+			color: @gray;
+		}
+
+		.umcGalleryIcon {
+			margin: 0;
+			padding-bottom: 0;
+			position: absolute;
+		}
+
+		.umcGalleryStatusIcon {
+			position: absolute;
+			top: 5px;
+			left: 66px;
+			width: 24px;
+			height: 24px;
+		}
+
+		.umcGalleryContextIcon {
+			position: absolute;
+			top: 5px;
+			left: auto;
+			right: 10px;
+			width: 24px;
+			height: 24px;
+		}
+	}
+
+	.umcGalleryItemActive,
+	.umcGalleryItem:hover {
+		background-color: @grayAthens;
+		.border-radius(5px);
+		cursor: pointer;
+	}
+
+}
+
+/* UMC overview page icons */
+.umcOverviewPane {
+	.umcGalleryItemActive .umcGalleryContextIcon,
+	.umcGalleryItem:hover .umcGalleryContextIcon {
+		visibility: visible!important;
+	}
+	.umcGalleryItem	.umcGalleryContextIcon {
+		visibility: hidden;
+	}
+
+	.umcGalleryName,
+	.umcGalleryDescription {
+		//padding-left: 60px !important;
+	}
+}
+
 

@@ -41,11 +41,12 @@ define([
 	"dojo/topic",
 	"dijit/layout/BorderContainer",
 	"umc/tools",
+	"umc/dialog",
 	"umc/render",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!umc/app"
-], function(declare, lang, array, baseFX, on, mouse, query, style, domClass, topic, BorderContainer, tools, render, Text, ContainerWidget, _) {
+], function(declare, lang, array, baseFX, on, mouse, query, style, domClass, topic, BorderContainer, tools, dialog, render, Text, ContainerWidget, _) {
 	return declare("umc.widgets.Page", BorderContainer, {
 		// summary:
 		//		Class that abstracts a displayable page for a module.
@@ -267,43 +268,44 @@ define([
 		},
 
 		addNote: function(message) {
-			var closeButton = '<span class="dijitTabCloseButton dijitTabCloseIcon" style="float:right" title="' + _('Close') + '"></span>';
-
-			var note = new Text({
-				content: closeButton + '<b>' + _('Note') + ':</b> ' + message,
-				region: 'top',
-				'class': 'umcPageNote'
-			});
-			query('.dijitTabCloseButton', note.domNode).forEach(function(inode) {
-				this.own(on(inode, 'mousedown', function() {
-					domClass.add(inode, 'dijitTabCloseButtonActive');
-				}));
-				this.own(on(inode, 'mouseup', function() {
-					domClass.remove(inode, 'dijitTabCloseButtonActive');
-				}));
-				this.own(on(inode, mouse.enter, function() {
-					domClass.add(inode, 'dijitTabCloseButtonHover');
-				}));
-				this.own(on(inode, mouse.leave, function() {
-					domClass.remove(inode, 'dijitTabCloseButtonHover');
-				}));
-				this.own(on(inode, 'click', lang.hitch(this, function() {
-					baseFX.fadeOut({
-						node: note.domNode,
-						duration: 500,
-						onEnd: lang.hitch(this, function() {
-							this.removeChild(note);
-							note.destroyRecursive();
-							this._notes = array.filter( this._notes, function( inote ) {
-								return inote !== note;
-							} );
-						})
-					}).play();
-				})));
-			}, this);
-			this.addChild(note);
-			this._notes.push(note);
-			return note;
+			dialog.notify(message);
+//			var closeButton = '<span class="dijitTabCloseButton dijitTabCloseIcon" style="float:right" title="' + _('Close') + '"></span>';
+//
+//			var note = new Text({
+//				content: closeButton + '<b>' + _('Note') + ':</b> ' + message,
+//				region: 'top',
+//				'class': 'umcPageNote'
+//			});
+//			query('.dijitTabCloseButton', note.domNode).forEach(function(inode) {
+//				this.own(on(inode, 'mousedown', function() {
+//					domClass.add(inode, 'dijitTabCloseButtonActive');
+//				}));
+//				this.own(on(inode, 'mouseup', function() {
+//					domClass.remove(inode, 'dijitTabCloseButtonActive');
+//				}));
+//				this.own(on(inode, mouse.enter, function() {
+//					domClass.add(inode, 'dijitTabCloseButtonHover');
+//				}));
+//				this.own(on(inode, mouse.leave, function() {
+//					domClass.remove(inode, 'dijitTabCloseButtonHover');
+//				}));
+//				this.own(on(inode, 'click', lang.hitch(this, function() {
+//					baseFX.fadeOut({
+//						node: note.domNode,
+//						duration: 500,
+//						onEnd: lang.hitch(this, function() {
+//							this.removeChild(note);
+//							note.destroyRecursive();
+//							this._notes = array.filter( this._notes, function( inote ) {
+//								return inote !== note;
+//							} );
+//						})
+//					}).play();
+//				})));
+//			}, this);
+//			this.addChild(note);
+//			this._notes.push(note);
+//			return note;
 		},
 
 		clearNotes: function() {

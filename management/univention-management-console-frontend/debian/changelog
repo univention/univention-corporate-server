@@ -1,3 +1,11 @@
+univention-management-console-frontend (3.0.118-1) unstable; urgency=low
+
+  * Bug #30004: added new system notifications, refactored some CSS code into
+    correct files, moved LoginDialog into umc/dialog/, added login messages
+    into login Form
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Oct 2013 14:29:17 +0200
+
 univention-management-console-frontend (3.0.117-1) unstable; urgency=low
 
   * UnixAccessRightsExtended widget: Remove setuid-bit option (Bug #15708)

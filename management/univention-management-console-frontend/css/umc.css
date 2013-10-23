@@ -57,7 +57,7 @@
 
 @import url("claro_rtl.css");
 
-@import url("site.css");
 @import url("umc-modifications.css"); /* umc specific modifications to claro */
+@import url("site.css");
 @import url("touch-devices.css");
 @import url("icons.css");

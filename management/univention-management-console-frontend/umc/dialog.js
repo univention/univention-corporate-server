@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require*/
+/*global define require setTimeout */
 
 define([
 	"dojo/_base/lang",
@@ -37,15 +37,15 @@ define([
 	"dojo/Deferred",
 	"dojo/dom-class",
 	"dojo/dom-style",
-	"umc/widgets/LoginDialog",
-	"umc/widgets/Toaster",
+	"umc/dialog/LoginDialog",
+	"umc/dialog/NotificationContainer",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
 	"umc/widgets/Form",
 	"umc/tools",
 	"umc/i18n/tools",
 	"umc/i18n!umc/app"
-], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, LoginDialog, Toaster, ConfirmDialog, Text, Form, tools, i18nTools, _) {
+], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, LoginDialog, NotificationContainer, ConfirmDialog, Text, Form, tools, i18nTools, _) {
 	var dialog = {};
 	lang.mixin(dialog, {
 		_loginDialog: null, // internal reference to the login dialog
@@ -144,21 +144,60 @@ define([
 			return this._loginDialog && this._loginDialog.open; // Boolean
 		},
 
-		_toaster: null, // internal reference to the toaster
+		_notificationMaster: null,
 
-		notify: function(/*String*/ message) {
+		_createNotificationMaster: function() {
+			if (!this._notificationMaster) {
+				this._notificationMaster = new NotificationContainer({});
+			}
+		},
+
+		showNotifications: function() {
+			this._createNotificationMaster();
+			this._notificationMaster.wipeIn(true);
+		},
+
+		hideNotifications: function() {
+			this._createNotificationMaster();
+			this._notificationMaster.wipeOut();
+		},
+
+		toggleNotifications: function() {
+			this._createNotificationMaster();
+
+			var isVisible = this._notificationMaster.get('visible');
+			var allMessagesAreShown = this._notificationMaster.get('view') != 'new';
+			var hasOldMessages = this._notificationMaster.store.query({ seen: true }).length > 0;
+
+			if (isVisible && !allMessagesAreShown && hasOldMessages) {
+				this._notificationMaster.wipeIn(true);
+			}
+			else if (isVisible) {
+				this._notificationMaster.confirm();
+			}
+			else {
+				this._notificationMaster.wipeIn(true);
+			}
+		},
+
+		notify: function(/*String*/ message, /*String?*/ component) {
 			// summary:
 			//		Show a toaster notification with the given message string.
 			// message:
 			//		The message that is displayed in the notification.
 
-			// create toaster the first time
-			if (!this._toaster) {
-				this._toaster = new Toaster({});
-			}
+			this._createNotificationMaster();
+			this._notificationMaster.addMessage(message, component, true);
+		},
 
-			// show the toaster
-			this._toaster.setContent(message, 'message');
+		warn: function(/*String*/ message, /*String?*/ component) {
+			// summary:
+			//		Show a toaster notification with the given message string.
+			// message:
+			//		The message that is displayed in the notification.
+
+			this._createNotificationMaster();
+			this._notificationMaster.addMessage(message, component, false);
 		},
 
 		_alertDialog: null, // internal reference for the alert dialog

@@ -61,7 +61,6 @@ define([
 			this._standbyWidget = this.own(new Standby({
 				target: this.domNode,
 				duration: 200,
-				//zIndex: 99999999,
 				opacity: this.standbyOpacity,
 				color: '#FFF'
 			}))[0];

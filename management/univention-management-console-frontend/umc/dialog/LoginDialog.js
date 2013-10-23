@@ -53,7 +53,7 @@ define([
 	"umc/i18n!umc/app",
 	"dojo/domReady!"
 ], function(declare, lang, array, win, aspect, has, on, mouse, dom, query, attr, domClass, Deferred, Dialog, DialogUnderlay, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
-	return declare("umc.widgets.LoginDialog", [StandbyMixin], {
+	return declare("umc.dialog.LoginDialog", [StandbyMixin], {
 		// our own variables
 		_connections: null,
 		_iframe: null,
@@ -167,6 +167,8 @@ define([
 						break;
 					case 'The password does not contain enough different characters':
 						newPasswordFailed = _('The password does not contain enough different characters');
+						break;
+					case 'The authentication has failed':
 						break;
 					default:
 						if (detail.slice(0, 2) === ': ') { // Kerberos error message starts with :
