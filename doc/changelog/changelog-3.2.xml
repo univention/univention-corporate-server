@@ -1576,7 +1576,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			The share root-directory permissions, owner and group will now only be set if their udm attributes have been modified (<ulink url="&ucsbug;15087">Bug 15087</ulink>).
+			The share root-directory permissions, owner and group will now only be set on new shares, or if their udm attributes have been modified (<ulink url="&ucsbug;15087">Bug 15087</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
