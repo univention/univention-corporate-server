@@ -238,12 +238,9 @@ define([
 		},
 
 		_updateBubble: function() {
-			var nMessages = 0;
-			if (tools.status('setupGui')) {
-				nMessages = this.store.query({
-					confirmed: false
-				}).length;
-			}
+			var nMessages = this.store.query({
+				confirmed: false
+			}).length;
 			this._notificationBubble.setNumOfNotifications(nMessages);
 		},
 
@@ -285,7 +282,7 @@ define([
 				seen: false,
 				autoClose: false
 			}).length;
-			if (!nManualCloseMessages) {
+			if (!nManualCloseMessages && this.get('view') != 'all') {
 				this._addTimeout();
 			}
 		},

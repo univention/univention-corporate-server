@@ -1,3 +1,11 @@
+univention-management-console-frontend (3.0.125-1) unstable; urgency=low
+
+  * Bug #30004: make sure that initial notifications are shown with the red
+    bubble, remove automatic closing when clicking on "i" button, convert menu
+    icon for notifications to path
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Oct 2013 12:25:33 +0200
+
 univention-management-console-frontend (3.0.124-1) unstable; urgency=low
 
   * Bug #32930: Make attributes to be searched for in LiveSearchSidebar
