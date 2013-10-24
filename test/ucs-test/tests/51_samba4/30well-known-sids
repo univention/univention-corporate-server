@@ -83,9 +83,15 @@ test_group_sid "Users" S-1-5-32-545
 test_group_sid "Guests" S-1-5-32-546
 # test_group_sid "Power Users" S-1-5-32-547
 test_group_sid "Account Operators" S-1-5-32-548
-test_group_sid "Server Operators" S-1-5-32-549
+if getent group "Server Operators" >/dev/null; then
+	# Server Operators is not available on an updated 3.1 to 3.2 system
+	test_group_sid "Server Operators" S-1-5-32-549
+fi
 test_group_sid "Backup Operators" S-1-5-32-551
-test_group_sid "Replicator" S-1-5-32-552
+if getent group "Replicator" >/dev/null; then
+	# Replicator is not available on an updated 3.1 to 3.2 system
+	test_group_sid "Replicator" S-1-5-32-552
+fi
 
 test_group_sid_s4 "Print Operators" S-1-5-32-550
 test_group_sid_openldap "Printer-Admins" S-1-5-32-550

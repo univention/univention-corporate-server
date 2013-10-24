@@ -1,3 +1,10 @@
+ucs-test (4.0.156-1) unstable; urgency=low
+
+  * 51_samba4/30well-known-sids: Server Operators and Replicator do not
+    exist on an updated system (Bug #32461)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Oct 2013 14:03:58 +0200
+
 ucs-test (4.0.155-1) unstable; urgency=low
 
   * skip 00_base/30overview_https in ucs3.2-0 (Bug #32976)
