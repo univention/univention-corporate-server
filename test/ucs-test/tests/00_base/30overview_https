@@ -7,6 +7,9 @@
 ##  - apptest
 ## joined: true
 ## exposure: safe
+## versions:
+##  - 3.2-0: skip
+
 eval "$(univention-config-registry shell ldap/master)"
 
 outfile="$(mktemp)"

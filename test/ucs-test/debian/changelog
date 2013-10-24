@@ -1,3 +1,9 @@
+ucs-test (4.0.155-1) unstable; urgency=low
+
+  * skip 00_base/30overview_https in ucs3.2-0 (Bug #32976)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 24 Oct 2013 13:48:07 +0200
+
 ucs-test (4.0.154-1) unstable; urgency=low
 
   * Bug #32554: added missing files
