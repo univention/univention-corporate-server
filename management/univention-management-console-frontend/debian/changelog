@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.128-1) unstable; urgency=low
+
+  * Bug #26418: fix memory leaks in Grid
+  * Bug #26418: only select one row
+
+ -- Florian Best <best@univention.de>  Thu, 24 Oct 2013 13:57:01 +0200
+
 univention-management-console-frontend (3.0.127-1) unstable; urgency=low
 
   * Bug #32218: adjusted buttons for Safari on iOS

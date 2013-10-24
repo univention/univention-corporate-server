@@ -152,6 +152,11 @@ define([
 
 		disabled: false,
 
+//		// cacheRowWidgets: Boolean (default: true)
+//		//      If this option is enabled, the grid take advantage of caching.
+//		//      e.g. cache Buttons or DropDown menu
+//		cacheRowWidgets: true,
+
 		_contextMenu: null,
 
 		// temporary div elements to estimate width of text for columns
@@ -172,6 +177,8 @@ define([
 
 		// internal flag in order to ignore the next onFetch events
 		_ignoreNextFetch: false,
+
+		_selectionChangeTimeout: null,
 
 		_iconFormatter: function(valueField, iconField) {
 			// summary:
@@ -219,6 +226,7 @@ define([
 			this._dataStore = new ObjectStore({
 				objectStore: this.moduleStore
 			});
+			this.own(this._dataStore);
 
 			this._disabledIDs = {};
 		},
@@ -336,27 +344,49 @@ define([
 				var isDefaultActionColumn = (!this.defaultActionColumn && colNum === 0) || (this.defaultActionColumn && col.name == this.defaultActionColumn);
 
 				if (defaultActionExists && isDefaultActionColumn) {
-					col.formatter = lang.hitch(this, function(value, rowIndex) {
-						value = icol.formatter ? icol.formatter(value, rowIndex) : value;
+					var formatter = lang.hitch(this, function(value, rowIndex) {
 						var item = this._grid.getItem(rowIndex);
+
+						value = icol.formatter ? icol.formatter(value, rowIndex) : value;
+
 						if (!this._getDefaultActionForItem(item)) {
+							if (value && value.domNode) {
+								this.own(value);
+							}
 							return value;
 						}
-						if (value.domNode) {
+
+						if (value && value.domNode) {
 							var container = new ContainerWidget({
 								'class': 'umcGridDefaultAction',
 								'style': 'display: inline!important;'
 							});
 							container.addChild(value);
+							this.own(container);
 							return container;
 						} else {
-							return new Text({
+							return this.own(new Text({
 								content: value,
 								'class': 'umcGridDefaultAction',
 								'style': 'display: inline!important;'
-							});
+							}))[0];
 						}
 					});
+//					if (this.cacheRowWidgets) {
+//						col.formatter = lang.hitch(this, function(value, rowIndex) {
+//							var item = this._grid.getItem(rowIndex);
+//
+//							var cacheName = '_univention_cache_formatter_' + col.name;
+//							if (item[cacheName] !== undefined) {
+//								return item[cacheName];
+//							}
+//
+//							item[cacheName] = formatter(value, rowIndex);
+//							return item[cacheName];
+//						});
+//					} else {
+						col.formatter = formatter;
+//					}
 				}
 
 				// check whether the width shall be computed automatically
@@ -434,6 +464,8 @@ define([
 		_setContextActions: function() {
 			this._contextActionsToolbar = new ContainerWidget({ style: 'float: left' });
 			this._contextActionsMenu = new Menu({});
+			this.own(this._contextActionsToolbar);
+			this.own(this._contextActionsMenu);
 
 			array.forEach(this._getContextActions(), function(iaction) {
 				var getCallback = lang.hitch(this, function(prefix) {
@@ -473,7 +505,6 @@ define([
 						} catch (error) {}
 					}
 					this._contextActionsToolbar.addChild(btn);
-					this.own(btn);
 				} else {
 					// add action to the more menu
 					this._contextActionsMenu.addChild(new MenuItem(lang.mixin(props, getCallback('multi-'))));
@@ -509,6 +540,7 @@ define([
 				style: 'float: left',
 				'class': 'umcGridToolBar'
 			});
+			this.own(this._toolbar);
 
 			var buttonsCfg = array.map(this._getGlobalActions(), function(iaction) {
 				var jaction = iaction;
@@ -551,9 +583,15 @@ define([
 		},
 
 		_selectionChanged: function() {
-			this._updateContextActions();
+			if (this._selectionChangeTimeout) {
+				clearTimeout(this._selectionChangeTimeout);
+			}
 
-			this._updateFooterContent();
+			this._selectionChangeTimeout = setTimeout(lang.hitch(this, function() {
+				this._updateContextActions();
+
+				this._updateFooterContent();
+			}), 50);
 		},
 
 		_getContextActionItems: function() {
@@ -588,7 +626,9 @@ define([
 			if (rowDisabled) {
 				return;
 			}
-			if (!this._grid.selection.isSelected(evt.rowIndex)) {
+
+			var hasClickedOnDefaultAction = (evt.target != evt.cellNode);
+			if (!this._grid.selection.isSelected(evt.rowIndex) || hasClickedOnDefaultAction) {
 				this._grid.selection.select(evt.rowIndex);
 			}
 		},
@@ -606,19 +646,19 @@ define([
 				return;
 			}
 
+			this._grid.selection.select(evt.rowIndex);
+
 			var item = this._grid.getItem(evt.rowIndex);
 			var identity = item[this.moduleStore.idProperty];
 
 			var defaultAction = this._getDefaultActionForItem(item);
 			var isDefaultActionColumn = ((!this.defaultActionColumn && evt.cellIndex === 1) || (this.defaultActionColumn && evt.cell.field == this.defaultActionColumn));
-			var hasClickedOnText = (evt.target != evt.cellNode);
+			var hasClickedOnDefaultAction = (evt.target != evt.cellNode);
 
 			// execute default action or toggle selection
-			if (defaultAction && isDefaultActionColumn && hasClickedOnText) {
+			if (defaultAction && isDefaultActionColumn && hasClickedOnDefaultAction) {
 				this._publishAction('default-' + defaultAction.name);
 				defaultAction.callback([identity], [item]);
-			} else {
-				this._grid.selection.toggleSelect(evt.rowIndex);
 			}
 		},
 
@@ -676,7 +716,8 @@ define([
 		_createFooter: function() {
 			// add a legend that states how many objects are currently selected
 			this._footerLegend = new Text({
-				content: _('No object selected')
+				content: _('No object selected'),
+				style: 'padding-left: 5px'
 			});
 			this._footer.addChild(this._footerLegend);
 
