@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.29-1) unstable; urgency=low
+
+  * Consider UCR variable rename from
+    connector/s4/mapping/group/synclocal to .../grouptype (Bug #29486)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Oct 2013 20:14:36 +0200
+
 univention-s4-connector (8.0.28-1) unstable; urgency=low
 
   * Extend group ignorelist on upgrade (Bug #29000)

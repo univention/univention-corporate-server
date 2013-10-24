@@ -69,7 +69,7 @@ ucr unset connector/s4/autostart \
 	connector/s4/mapping/gpo \
 	connector/s4/mapping/user/ignorelist \
 	connector/s4/mapping/group/ignorelist \
-	connector/s4/mapping/group/synclocal \
+	connector/s4/mapping/group/grouptyp \
 	connector/s4/mapping/container/ignorelist \
 	connector/s4/mapping/dns/ignorelist
 
