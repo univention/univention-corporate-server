@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (3.0.2-1) unstable; urgency=low
+
+  * Bug #26418: fix memory leak
+
+ -- Florian Best <best@univention.de>  Thu, 24 Oct 2013 09:14:05 +0200
+
 univention-management-console-module-ucr (3.0.1-1) unstable; urgency=low
 
   * Bug #32048: Add keywords to UMC module definition
@@ -7,6 +13,7 @@ univention-management-console-module-ucr (3.0.1-1) unstable; urgency=low
 univention-management-console-module-ucr (3.0.0-1) unstable; urgency=low
 
   * Bug #31523: use getattr instead of eval
+  * version bump (UCS 3.2)
 
  -- Florian Best <best@univention.de>  Mon, 17 Jun 2013 13:33:17 +0200
 

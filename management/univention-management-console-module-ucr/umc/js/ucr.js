@@ -389,6 +389,7 @@ define([
 			var widget = new Text({
 				content: label
 			});
+			this.own(widget);
 
 			var item = this._grid.getRowValues(rowIndex);
 			if (item.description) {
