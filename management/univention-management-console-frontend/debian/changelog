@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.126-1) unstable; urgency=low
+
+  * Bug #32218: background color to default button
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Oct 2013 12:40:43 +0200
+
 univention-management-console-frontend (3.0.125-1) unstable; urgency=low
 
   * Bug #30004: make sure that initial notifications are shown with the red
