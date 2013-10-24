@@ -1,3 +1,9 @@
+univention-system-setup (7.0.56-1) unstable; urgency=low
+
+  * Fix wrong method name (Bug #28670)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Oct 2013 19:20:52 +0200
+
 univention-system-setup (7.0.55-1) unstable; urgency=low
 
   * Bug #30004: adjustements for new notifications, make sure changes on

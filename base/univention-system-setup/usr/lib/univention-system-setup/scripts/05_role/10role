@@ -108,7 +108,7 @@ class RoleScript(AptScript):
 
 		self.finish_task()
 
-		self.ucr.ucr('server/role', self.wanted_server_role)
+		self.ucr.set('server/role', self.wanted_server_role)
 
 		# Cleanup
 		## rm -f /etc/apt/sources.list/05univention-system-setup.list
