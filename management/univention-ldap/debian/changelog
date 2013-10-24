@@ -1,3 +1,10 @@
+univention-ldap (10.0.17-4) unstable; urgency=low
+
+  * Only set call mark_active on the DC master, avoiding unnecessary
+    LDAP connections (Bug #32392)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Oct 2013 12:43:58 +0200
+
 univention-ldap (10.0.17-3) unstable; urgency=low
 
   * Revert last change (Bug #32411)

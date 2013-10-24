@@ -65,7 +65,8 @@ def postrun():
 	"""Restart LDAP server Master and mark new extension objects active"""
 	global schema_handler, acl_handler
 
-	if not listener.configRegistry.get('server/role') == 'domaincontroller_master':
+	server_role = listener.configRegistry.get('server/role')
+	if not server_role == 'domaincontroller_master':
 		if not acl_handler._todo_list:
 			## In case of schema changes only restart slapd on Master
 			return
@@ -87,9 +88,10 @@ def postrun():
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: LDAP server restart returned %s.' % (name, p.returncode))
 					return
 
-			for handler_object in (schema_handler, acl_handler,):
-				handler_object.mark_active()
+			## Only set active flags on Master
+			if server_role == 'domaincontroller_master':
+				for handler_object in (schema_handler, acl_handler,):
+					handler_object.mark_active()
 
 		finally:
 			listener.unsetuid()
-
