@@ -38,8 +38,11 @@ create_logfile /var/log/univention/connector-s4-status.log "root:adm" 640
 
 #DEBHELPER#
 
+eval "$(ucr shell)"
+
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.0-1; then
-	univention-config-registry set connector/s4/mapping/group/grouptype?false
+	univention-config-registry set connector/s4/mapping/group/grouptype?false \
+				connector/s4/mapping/group/ignorelist?"${connector_s4_mapping_group_ignorelist},Remote Interactive Logon,SChannel Authentication,Digest Authentication,Terminal Server User,NTLM Authentication,Other Organization,This Organization,Anonymous Logon,Network Service,Creator Group,Creator Owner,Local Service,Owner Rights,Interactive,Restricted,Network,Service,Dialup,System,Batch,Proxy,IUSR,Self"
 fi
 
 univention-config-registry set connector/s4/listener/dir?/var/lib/univention-connector/s4 \
