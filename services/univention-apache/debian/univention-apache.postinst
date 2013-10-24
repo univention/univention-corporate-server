@@ -127,13 +127,8 @@ fi
 # configuare language settings
 if dpkg --compare-versions "$2" le-nl 6.0.7-2
 then
-	langs=($(ucr search umc/server/languages/ | cut -d: -f 1))
-	for lang in ${langs[@]}; do
-		newLang="ucs/${lang#umc/}"
-		ucr set $newLang="$(ucr get "$lang")"
-		ucr unset "$lang"
-	done
-
+	ucr search --brief umc/server/languages/ |sed -ne 's|^umc/server/languages/|ucs/server/languages/|p' |sed -e "s|: |='|;s|$|'|" |xargs ucr set
+	ucr --keys-only search umc/server/languages/ |xargs ucr unset
 fi
 
 ucr set "ucs/server/languages/en_US?English" \

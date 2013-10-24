@@ -1,3 +1,10 @@
+univention-apache (6.0.12-7) unstable; urgency=low
+
+  * when updating umc/server/languages UCRVs, set/unset all at once
+  (Bug #32678)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 24 Oct 2013 10:48:59 +0200
+
 univention-apache (6.0.12-6) unstable; urgency=low
 
   * localised LDAP master link in ucs-overview (Bug #32647)
