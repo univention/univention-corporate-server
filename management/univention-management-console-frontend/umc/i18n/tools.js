@@ -51,7 +51,7 @@ define([
 	i18nTools.availableLanguages = [];
 	try {
 		// TODO
-		i18nTools.availableLanguages = json.parse(require.getText('/univention-management-console/languages.json', false));
+		i18nTools.availableLanguages = json.parse(require.getText('/ucs-overview/languages.json', false));
 	}
 	catch(e) { }
 

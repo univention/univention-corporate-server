@@ -1,3 +1,12 @@
+univention-management-console-frontend (3.0.129-1) unstable; urgency=low
+
+  * use new languages.json file for UMC i18n
+  * remove old languages.json file when updating from a version below
+    3.0.129-1
+  (Bug #32678)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 24 Oct 2013 17:29:55 +0200
+
 univention-management-console-frontend (3.0.128-1) unstable; urgency=low
 
   * Bug #26418: fix memory leaks in Grid

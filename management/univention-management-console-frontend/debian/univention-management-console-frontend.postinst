@@ -52,4 +52,9 @@ univention-config-registry set "umc/web/feedback/mail?feedback@univention.de" \
 	"ucs/web/overview/entries/admin/umc/link?/univention-management-console" \
 	"ucs/web/overview/entries/admin/umc/priority?10" \
 
+if dpkg --compare-versions "$2" le-nl 3.0.129-1
+then
+	rm -f /usr/share/univention-management-console-frontend/languages.json
+fi
+
 exit 0
