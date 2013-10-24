@@ -21,3 +21,9 @@ Description[de]=Ist diese Option aktiviert, wird das für einen Benutzer in den 
 Description[en]=If this option is activated, the home directory configured for a user in the attributes 'Home share' and 'Home share path' is automatically created through a Univention Directory Listener module.
 Type=bool
 Categories=nfs
+
+[nfs/common/gssd]
+Description[de]=Diese Variable bestimmt, ob der gssd Dämon gestartet werden soll. Ausgewertet werden die Werte 'yes', 'no' oder <undefiniert> (default=yes).
+Description[en]=This variable defines if the gssd daemon should be started. Evaluated values are 'yes', 'no' or <undefined> (default=yes).
+Type=str
+Categories=nfs

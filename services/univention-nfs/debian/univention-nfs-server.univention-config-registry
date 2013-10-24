@@ -6,6 +6,7 @@ Variables: nfs/nfsd/nfs4
 Type: file
 File: etc/default/nfs-common
 Variables: nfs/ports
+Variables: nfs/common/gssd
 
 Type: file
 File: etc/default/quota

@@ -1,3 +1,10 @@
+univention-nfs (6.0.2-1) unstable; urgency=low
+
+  * Make /etc/default/nfs-common option NEED_GSSD configurable with the UCRV
+    nfs/common/gssd, which defaults to yes (Bug #21556)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 24 Oct 2013 11:34:03 +0200
+
 univention-nfs (6.0.1-5) unstable; urgency=low
 
   * Activate NFSv4 by default (Bug #21556) 

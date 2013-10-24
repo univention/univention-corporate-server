@@ -23,4 +23,9 @@ else:
 NEED_IDMAPD=
 
 # Do you want to start the gssd daemon? It is required for Kerberos mounts.
-NEED_GSSD=
+@!@
+if configRegistry.get('nfs/common/gssd'):
+	print 'NEED_GSSD=%s' % configRegistry.get('nfs/common/gssd')
+else:
+	print 'NEED_GSSD='
+@!@
