@@ -947,7 +947,7 @@ class object(univention.admin.handlers.simpleLdap):
 		except ValueError:
 			return False
 
-	def _has_another_global_member(self):
+	def _is_global_member(self):
 		searchResult = self.lo.search(base=self.position.getDomain(), filter='(uniqueMember=%s)' % self.dn, attr=['univentionGroupType'])
 		for (dn,attr) in searchResult:
 			groupType = attr.get('univentionGroupType', [None])[0]
@@ -955,20 +955,22 @@ class object(univention.admin.handlers.simpleLdap):
 				return True
 		return False
 
-	def _has_another_domain_local_member(self):
-		searchResult = self.lo.search(base=self.position.getDomain(), filter='(uniqueMember=%s)' % self.dn, attr=['univentionGroupType'])
-		for (dn,attr) in searchResult:
-			groupType = attr.get('univentionGroupType', [None])[0]
-			if self.__is_groupType_domain_local(groupType):
-				return True
+	def _has_domain_local_member(self):
+		for member_dn in self.oldattr.get('uniqueMember', []):
+			searchResult = self.lo.search(base=member_dn, attr=['univentionGroupType'])
+			for (dn,attr) in searchResult:
+				groupType = attr.get('univentionGroupType', [None])[0]
+				if self.__is_groupType_domain_local(groupType):
+					return True
 		return False
 
-	def _has_another_universal_member(self):
-		searchResult = self.lo.search(base=self.position.getDomain(), filter='(uniqueMember=%s)' % self.dn, attr=['univentionGroupType'])
-		for (dn,attr) in searchResult:
-			groupType = attr.get('univentionGroupType', [None])[0]
-			if self.__is_groupType_universal(groupType):
-				return True
+	def _has_universal_member(self):
+		for member_dn in self.oldattr.get('uniqueMember', []):
+			searchResult = self.lo.search(base=member_dn, attr=['univentionGroupType'])
+			for (dn,attr) in searchResult:
+				groupType = attr.get('univentionGroupType', [None])[0]
+				if self.__is_groupType_universal(groupType):
+					return True
 		return False
 
 	def check_ad_group_type_change(self):
@@ -1001,20 +1003,20 @@ class object(univention.admin.handlers.simpleLdap):
 			# Global to universal:
 			#  This conversion is allowed only if the group that you want to change is not a member of
 			#  another global scope group.
-			if self._has_another_global_member():
+			if self._is_global_member():
 				raise univention.admin.uexceptions.adGroupTypeChangeGlobalToUniversal
 		elif self.__is_groupType_domain_local(old_groupType) and self.__is_groupType_universal(new_groupType):
 			# Domain local to universal:
 			#  This conversion is allowed only if the group that you want to change does not have
 			#  another domain local group as a member.
-			if self._has_another_domain_local_member():
+			if self._has_domain_local_member():
 				raise univention.admin.uexceptions.adGroupTypeChangeDomainLocalToUniversal
 		elif self.__is_groupType_universal(old_groupType) and self.__is_groupType_global(new_groupType):
 			# Universal to global:
 			#  This conversion is allowed only if the group that you want to change does not have
 			#  another universal group as a member.
-			if self._has_another_universal_member():
-					raise univention.admin.uexceptions.adGroupTypeChangeUniversalToGlobal
+			if self._has_universal_member():
+				raise univention.admin.uexceptions.adGroupTypeChangeUniversalToGlobal
 
 	def __generate_group_sid(self, gidNum):
 		groupSid = None

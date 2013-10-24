@@ -109,9 +109,9 @@ class adGroupTypeChangeToLocal(base):
 class adGroupTypeChangeGlobalToUniversal(base):
 	message = _('The AD group type can not be changed from global to universal, because the group is member of another global group.')
 class adGroupTypeChangeDomainLocalToUniversal(base):
-	message = _("The AD group type can not be changed from domain local to universal, because the group is member of another domain local group.")
+	message = _("The AD group type can not be changed from domain local to universal, because the group has another domain local group as member.")
 class adGroupTypeChangeUniversalToGlobal(base):
-	message = _("The AD group type can not be changed from universal to global, because the group is member of another universal group.")
+	message = _("The AD group type can not be changed from universal to global, because the group has another universal group as member.")
 
 class adGroupTypeChangeGlobalToDomainLocal(base):
 	message = _("The AD group type can not be changed from global to domain local.")
