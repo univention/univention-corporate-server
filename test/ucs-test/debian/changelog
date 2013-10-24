@@ -1,6 +1,7 @@
 ucs-test (4.0.154-1) unstable; urgency=low
 
   * Bug #32554: added missing files
+  * Bug #32554: use udm-test wrapper in udm_extensions.py
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 24 Oct 2013 12:10:22 +0200
 

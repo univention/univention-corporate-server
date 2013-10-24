@@ -365,7 +365,7 @@ def remove_extension_by_name(extension_type, extension_name, fail_on_error=True)
 	"""
 	assert(extension_type in VALID_EXTENSION_TYPES)
 	for dn in get_dn_of_extension_by_name(extension_type, extension_name):
-		cmd = ['udm', 'settings/udm_%s' % extension_type, 'remove', '--dn', dn]
+		cmd = ['/usr/sbin/udm-test', 'settings/udm_%s' % extension_type, 'remove', '--dn', dn]
 		print 'CMD: %r' % cmd
 		sys.stdout.flush()
 		if subprocess.call(cmd):
