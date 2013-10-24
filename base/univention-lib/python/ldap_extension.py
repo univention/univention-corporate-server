@@ -298,24 +298,25 @@ class UniventionLDAPExtension(object):
 		print stdout
 
 	def mark_active(self):
-		try:
-				lo, ldap_position = udm_uldap.getAdminConnection()
-				udm_modules.update()
-				udm_module = udm_modules.get(self.udm_module_name)
-				udm_modules.init(lo, ldap_position, udm_module)
+		if self._todo_list:
+			try:
+					lo, ldap_position = udm_uldap.getAdminConnection()
+					udm_modules.update()
+					udm_module = udm_modules.get(self.udm_module_name)
+					udm_modules.init(lo, ldap_position, udm_module)
 
-				for object_dn in self._todo_list:
-					try:
-						udm_object = udm_module.object(None, lo, ldap_position, object_dn)
-						udm_object.open()
-						udm_object['active']=True
-						udm_object.modify()
-					except udm_errors.ldapError, e:
-						ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: %s.' % (object_dn, e))
-				self._todo_list = []
+					for object_dn in self._todo_list:
+						try:
+							udm_object = udm_module.object(None, lo, ldap_position, object_dn)
+							udm_object.open()
+							udm_object['active']=True
+							udm_object.modify()
+						except udm_errors.ldapError, e:
+							ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: %s.' % (object_dn, e))
+					self._todo_list = []
 
-		except udm_errors.ldapError, e:
-			ud.debug(ud.LISTENER, ud.ERROR, 'Error accessing UDM: %s' % (e,))
+			except udm_errors.ldapError, e:
+				ud.debug(ud.LISTENER, ud.ERROR, 'Error accessing UDM: %s' % (e,))
 
 
 class UniventionLDAPExtensionWithListenerHandler(UniventionLDAPExtension):
