@@ -80,7 +80,7 @@ if [ -z "$credentials" ]; then
 	fi
 fi
 while read dn; do
-	ldapmodify -x "${credentials[@]}" <<-%EOR
+	ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" "${credentials[@]}" <<-%EOR
 	dn: $dn
 	changetype: modify
 	delete: univentionPrinterUseClientDriver

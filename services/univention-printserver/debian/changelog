@@ -1,3 +1,9 @@
+univention-printserver (7.0.10-4) unstable; urgency=low
+
+  * Fix ldapmodify call (Bug #31624)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Oct 2013 19:12:30 +0200
+
 univention-printserver (7.0.10-3) unstable; urgency=low
 
   * Also remove univentionPrinterUseClientDriver=0 (Bug #31624)
