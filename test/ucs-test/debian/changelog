@@ -1,3 +1,9 @@
+ucs-test (4.0.154-1) unstable; urgency=low
+
+  * Bug #32554: added missing files
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 24 Oct 2013 12:10:22 +0200
+
 ucs-test (4.0.153-1) unstable; urgency=low
 
   * Bug #32554: fixed traceback in udm_extensions.py
