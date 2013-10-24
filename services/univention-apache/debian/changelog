@@ -1,3 +1,10 @@
+univention-apache (6.0.12-8) unstable; urgency=low
+
+  * adapted univention-apache.postinst to not fail when unsetting legacy UCRVs
+    which contain quotes in there values (Bug #32678)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 24 Oct 2013 13:34:07 +0200
+
 univention-apache (6.0.12-7) unstable; urgency=low
 
   * when updating umc/server/languages UCRVs, set/unset all at once
