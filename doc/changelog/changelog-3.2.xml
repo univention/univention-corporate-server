@@ -2140,7 +2140,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  An unjoin script for <package>univention-nagios-server</package> has been added (<ulink url="&ucsbug;32453">Bug 32453</ulink>).
+	      The <package>univention-nagios-server</package> join script will append a <emphasis>NAGIOS</emphasis> service entry to the LDAP object of the host which is joining. Additionally, an unjoin script for <package>univention-nagios-server</package> has been added (<ulink url="&ucsbug;32453">Bug 32453</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>

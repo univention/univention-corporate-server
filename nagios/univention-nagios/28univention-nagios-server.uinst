@@ -39,7 +39,12 @@ eval "$(ucr shell)"
 
 joinscript_init
 
-udm groups/group remove "$@" --dn "cn=Nagios Admins,cn=groups,$ldap_base" || die
+ucs_removeServiceFromLocalhost "NAGIOS" "$@"
+
+if ucs_isServiceUnused "NAGIOS" "$@"
+then
+	udm groups/group remove "$@" --dn "cn=Nagios Admins,cn=groups,$ldap_base" || die
+fi
 
 joinscript_remove_script_from_status_file univention-nagios-server
 
