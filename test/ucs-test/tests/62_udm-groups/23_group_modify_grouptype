@@ -90,15 +90,16 @@ def _test_domain_local_group_change():
 
 		udm.modify_object('groups/group', dn = group3, adGroupType=GROUP_TYPE_UNIVERSAL)
 
-		udm.modify_object('groups/group', dn = group5, adGroupType=GROUP_TYPE_UNIVERSAL)
 
 		try:
-			udm.modify_object('groups/group', dn = group6, adGroupType=GROUP_TYPE_UNIVERSAL)
+			udm.modify_object('groups/group', dn = group5, adGroupType=GROUP_TYPE_UNIVERSAL)
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 		else:
-			print 'E: Domain local group is member of another domain local group. Change to universal group was possible which should not be.'
+			print 'E: Domain local group has another domain local group as member. Change to universal group was possible which should not be.'
 			raise GroupChangePossible
+
+		udm.modify_object('groups/group', dn = group6, adGroupType=GROUP_TYPE_UNIVERSAL)
 
 		udm.modify_object('groups/group', dn = group9, adGroupType=GROUP_TYPE_UNIVERSAL)
 		udm.modify_object('groups/group', dn = group11, adGroupType=GROUP_TYPE_UNIVERSAL)
@@ -189,15 +190,15 @@ def _test_universal_group_change():
 
 		udm.modify_object('groups/group', dn = group3, adGroupType=GROUP_TYPE_GLOBAL)
 
-		udm.modify_object('groups/group', dn = group5, adGroupType=GROUP_TYPE_GLOBAL)
-
 		try:
-			udm.modify_object('groups/group', dn = group6, adGroupType=GROUP_TYPE_GLOBAL)
+			udm.modify_object('groups/group', dn = group5, adGroupType=GROUP_TYPE_GLOBAL)
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 		else:
-			print 'E: Universal group is member of another universal group. Change to global group was possible which should not be.'
+			print 'E: Universal group has another universal group as member. Change to global group was possible which should not be.'
 			raise GroupChangePossible
+
+		udm.modify_object('groups/group', dn = group6, adGroupType=GROUP_TYPE_GLOBAL)
 
 		udm.modify_object('groups/group', dn = group9, adGroupType=GROUP_TYPE_GLOBAL)
 		udm.modify_object('groups/group', dn = group11, adGroupType=GROUP_TYPE_GLOBAL)

@@ -1,3 +1,10 @@
+ucs-test (4.0.156-2) unstable; urgency=low
+
+  * 62_udm-groups/23_group_modify_grouptype: Adjust test case
+    (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Oct 2013 22:00:38 +0200
+
 ucs-test (4.0.156-1) unstable; urgency=low
 
   * 51_samba4/30well-known-sids: Server Operators and Replicator do not
