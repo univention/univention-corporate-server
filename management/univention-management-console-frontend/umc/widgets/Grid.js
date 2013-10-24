@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require*/
+/*global define require setTimeout clearTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -151,11 +151,6 @@ define([
 		defaultActionColumn: '',
 
 		disabled: false,
-
-//		// cacheRowWidgets: Boolean (default: true)
-//		//      If this option is enabled, the grid take advantage of caching.
-//		//      e.g. cache Buttons or DropDown menu
-//		cacheRowWidgets: true,
 
 		_contextMenu: null,
 
@@ -344,7 +339,7 @@ define([
 				var isDefaultActionColumn = (!this.defaultActionColumn && colNum === 0) || (this.defaultActionColumn && col.name == this.defaultActionColumn);
 
 				if (defaultActionExists && isDefaultActionColumn) {
-					var formatter = lang.hitch(this, function(value, rowIndex) {
+					col.formatter = lang.hitch(this, function(value, rowIndex) {
 						var item = this._grid.getItem(rowIndex);
 
 						value = icol.formatter ? icol.formatter(value, rowIndex) : value;
@@ -372,21 +367,6 @@ define([
 							}))[0];
 						}
 					});
-//					if (this.cacheRowWidgets) {
-//						col.formatter = lang.hitch(this, function(value, rowIndex) {
-//							var item = this._grid.getItem(rowIndex);
-//
-//							var cacheName = '_univention_cache_formatter_' + col.name;
-//							if (item[cacheName] !== undefined) {
-//								return item[cacheName];
-//							}
-//
-//							item[cacheName] = formatter(value, rowIndex);
-//							return item[cacheName];
-//						});
-//					} else {
-						col.formatter = formatter;
-//					}
 				}
 
 				// check whether the width shall be computed automatically
