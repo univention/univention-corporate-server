@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-22 15:58+0200\n"
+"POT-Creation-Date: 2013-10-24 10:20+0200\n"
 "PO-Revision-Date: 2011-09-21 20:05+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -264,7 +264,7 @@ msgstr "Verzeichnis, das freigegeben wird."
 
 #: share.py:124
 msgid "Directory owner of the share's root directory"
-msgstr "Besitzer des freigegebenen Verzeichnisses"
+msgstr "Besitzer des Wurzelverzeichnis der Freigabe"
 
 #: share.py:125
 msgid ""
@@ -274,14 +274,14 @@ msgstr "Besitzer des Wurzelverzeichnisses der Freigabe. Vorgabe ist root."
 
 #: share.py:135
 msgid "Directory owner group of the share's root directory"
-msgstr "Benutzergruppe für das Wurzelverzeichnis der Freigabe."
+msgstr "Besitzergruppe für das Wurzelverzeichnis der Freigabe"
 
 #: share.py:136
 msgid ""
 "The primary group of the exported root directory, if none is given group 0 "
 "will be used."
 msgstr ""
-"Primäre Benutzergruppe für das Wurzelverzeichnis der Freigabe. Ohne Angabe "
+"Primäre Besitzergruppe für das Wurzelverzeichnis der Freigabe. Ohne Angabe "
 "wird 0 verwendet."
 
 #: share.py:146
@@ -866,7 +866,7 @@ msgstr ""
 msgid "Create files/directories with the owner of the parent directory"
 msgstr ""
 "Neue Dateien und Verzeichnisse erhalten den Besitzer des übergeordneten "
-"Verzeichnisses."
+"Verzeichnisses"
 
 #: share.py:606
 msgid ""
@@ -880,7 +880,7 @@ msgstr ""
 msgid "Create files/directories with permissions of the parent directory"
 msgstr ""
 "Neue Dateien und Verzeichnisse erhalten die Zugriffsrechte des "
-"übergeordneten Verzeichnisses."
+"übergeordneten Verzeichnisses"
 
 #: share.py:617
 msgid "New files and directories inherit the mode of the parent directory."
@@ -889,16 +889,27 @@ msgstr ""
 "übergeordneten Verzeichnisses."
 
 #: share.py:627
-msgid "Custom Samba share settings"
-msgstr "Erweiterte Einstellungen für Samba-Freigaben"
+msgid "Option name in smb.conf and its value"
+msgstr "Optionsname aus smb.conf und ihr Wert"
 
-#: share.py:628 share.py:638
-msgid "Set new custom share settings"
-msgstr "Setzen von erweiterten Freigabe-Einstellungen"
+#: share.py:628
+msgid ""
+"Configure additional smb.conf settings for this share, which are added in "
+"the form key = value"
+msgstr "Konfigurieren von zusätzlichen smb.conf Einstellungen für diese "
+"Freigabe. Diese werden in der Form Schlüssel = Wert der Freigabendefinition "
+"hinzugefügt."
 
 #: share.py:637
-msgid "Custom NFS share settings"
-msgstr "Erweiterte NFS-Einstellungen für Freigaben"
+msgid "Option name in exports file"
+msgstr "Optionsname aus exports Datei"
+
+#: share.py:638
+msgid ""
+"Configure additional settings for this share which are added to the /etc/"
+"exports file."
+msgstr "Konfigurieren von zusätzlichen Einstellungen für diese Freigabe, die "
+"der Datei /etc/exports hinzugefügt werden."
 
 #: share.py:657 share.py:658
 msgid "NFS"
@@ -916,7 +927,7 @@ msgstr "Samba"
 msgid "General Samba settings"
 msgstr "Samba-Grundeinstellungen"
 
-#: share.py:678 share.py:679
+#: share.py:678
 msgid "Samba permissions"
 msgstr "Samba-Rechte"
 
@@ -924,7 +935,7 @@ msgstr "Samba-Rechte"
 msgid "Samba permission settings"
 msgstr "Samba-Zugriffsrechte"
 
-#: share.py:687 share.py:688
+#: share.py:687
 msgid "Samba extended permissions"
 msgstr "Erweiterte Samba-Rechte"
 
@@ -932,127 +943,59 @@ msgstr "Erweiterte Samba-Rechte"
 msgid "Samba extended permission settings"
 msgstr "Samba erweiterte Zugriffsrechte"
 
-#: share.py:695 share.py:696
+#: share.py:694
 msgid "Samba options"
 msgstr "Samba-Optionen"
 
-#: share.py:706 share.py:707
+#: share.py:703
 msgid "Samba custom settings"
 msgstr "Erweiterte Samba-Einstellungen"
 
-#: share.py:706
+#: share.py:703
 msgid "Custom settings for Samba shares"
 msgstr "Erweiterte Einstellungen für Samba-Freigaben"
 
-#: share.py:711 share.py:712
+#: share.py:707
 msgid "NFS custom settings"
 msgstr "Erweiterte NFS-Einstellungen"
 
-#: share.py:711
+#: share.py:707
 msgid "Custom settings for NFS shares"
 msgstr "Erweiterte Einstellungen für NFS-Freigaben"
 
-#: share.py:871
+#: share.py:866
 #, python-format
 msgid "It is not valid to set %s as a share."
 msgstr "Es ist nicht erlaubt, %s als Freigabe einzutragen"
 
-#: share.py:928
+#: share.py:923
 msgid "uses"
 msgstr "benutzt"
 
-#: share.py:929
+#: share.py:924
 msgid "user"
 msgstr "Benutzer"
 
-#: share.py:931
+#: share.py:926
 msgid "users"
 msgstr "Benutzer"
 
-#: share.py:932
+#: share.py:927
 msgid "use"
 msgstr "nutzt"
 
-#: share.py:936
+#: share.py:931
 #, python-format
 msgid " and %s more"
 msgstr "und %s mehr"
 
-#: share.py:947
+#: share.py:942
 #, python-format
 msgid "The %s %s%s %s this share as home share!"
 msgstr "Die/Der %s %s%s %s diese Freigabe als Heimatverzeichnisfreigabe"
 
-#: share.py:952
+#: share.py:947
 #, python-format
 msgid "%s (%s on %s)"
 msgstr "%s (%s auf %s)"
 
-#~ msgid "Inherit owner"
-#~ msgstr "Besitzer erben"
-
-#~ msgid "Inherit permissions"
-#~ msgstr "Rechte erben"
-
-#~ msgid "Users with write access"
-#~ msgstr "Liste von Schreibberechtigten"
-
-#~ msgid "Export share as MSDFS root"
-#~ msgstr "Freigabe als MSDFS-Wurzel freigeben"
-
-#~ msgid "Redirect root access uid"
-#~ msgstr "Uid bei Root-Zugriff umlenken"
-
-#~ msgid "Set new custom Samba share settings"
-#~ msgstr "Setzen von erweiterten Samba-Einstellungen im Key-Value-Format"
-
-#~ msgid "Directory owner"
-#~ msgstr "Verzeichnis-Besitzer"
-
-#~ msgid "Directory owner group"
-#~ msgstr "Verzeichnis-Gruppe"
-
-#~ msgid "Mode of the directory."
-#~ msgstr "Verzeichnis-Modus"
-
-#~ msgid "A network or a selection of hosts that may mount this share."
-#~ msgstr ""
-#~ "Ein Netzwerk, oder eine Auswahl von Rechnern, die diese Freigabe "
-#~ "einbinden dürfen."
-
-#~ msgid "Browseable"
-#~ msgstr "Sichtbar"
-
-#~ msgid "Public"
-#~ msgstr "Öffentlich"
-
-#~ msgid "Need  %s or %s in options to create a share."
-#~ msgstr ""
-#~ "%s oder %s wird in den Optionen benötigt, um eine Freigabe anzulegen."
-
-#~ msgid "Export for Web clients"
-#~ msgstr "Für Web-Clients exportieren"
-
-#~ msgid "IP address"
-#~ msgstr "IP Adresse"
-
-#~ msgid "IP address of the web access share host."
-#~ msgstr "Die IP Adresse des Rechners, der die Freigabe bereitstellt"
-
-#~ msgid "Web access general"
-#~ msgstr "Webzugriff-Allgemein"
-
-#~ msgid "General Webaccess Settings"
-#~ msgstr "Allgemeine Webzugriff-Einstellungen"
-
-#~ msgid "Need  %s option to create a %s share."
-#~ msgstr "Die Option %s wird benötigt, um eine %s Freigabe anzulegen."
-
-#~ msgid "Protocol"
-#~ msgstr "Protokoll"
-
-#~ msgid "Access Control"
-#~ msgstr "Zugriffskontrolle"
-
-#~ msgid "Access list"
-#~ msgstr "Zugriffslisten"

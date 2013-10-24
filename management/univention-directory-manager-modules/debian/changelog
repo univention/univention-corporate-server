@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.71-1) unstable; urgency=low
+
+  * More improvements to share module texts and layout (Bug #32882) 
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 24 Oct 2013 10:57:49 +0200
+
 univention-directory-manager-modules (9.0.70-1) unstable; urgency=low
 
   * minor change of settings/extended_attribute layout (Bug #28629)

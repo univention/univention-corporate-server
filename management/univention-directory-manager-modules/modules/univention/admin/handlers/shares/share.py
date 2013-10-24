@@ -548,7 +548,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
-			default='0'
+			default='1'
 		),
 	'sambaPostexec': univention.admin.property(
 			short_description=_('Postexec script'),
@@ -624,8 +624,8 @@ property_descriptions={
 			default='0'
 		),
 	'sambaCustomSettings': univention.admin.property(
-			short_description=_('Custom Samba share settings'),
-			long_description=_('Set new custom share settings'),
+			short_description=_('Option name in smb.conf and its value'),
+			long_description=_('Configure additional smb.conf settings for this share, which are added in the form key = value'),
 			syntax=univention.admin.syntax.keyAndValue,
 			multivalue=1,
 			options=['samba'],
@@ -634,8 +634,8 @@ property_descriptions={
 			identifies=0,
 		),
 	'nfsCustomSettings': univention.admin.property(
-			short_description=_('Custom NFS share settings'),
-			long_description=_('Set new custom share settings'),
+			short_description=_('Option name in exports file'),
+			long_description=_('Configure additional settings for this share which are added to the /etc/exports file.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
 			options=['nfs'],
@@ -670,48 +670,43 @@ layout = [
 			'sambaBrowseable',
 			'sambaPublic',
 			'sambaMSDFSRoot',
-			[ 'sambaDosFilemode'],
-			[ 'sambaHideUnreadable' ],
-			[ 'sambaVFSObjects'],
+			'sambaDosFilemode',
+			'sambaHideUnreadable',
+			'sambaVFSObjects',
 		] ),
 	] ),
-	Tab( _( 'Samba permissions' ), _( 'Samba permission settings' ), advanced = True, layout = [
-		Group( _( 'Samba permissions' ), layout = [
+	Tab( _( 'Samba permissions' ), _( 'Samba permission settings' ), advanced = True,
+		layout = [
 			[ 'sambaForceUser', 'sambaForceGroup' ],
 			[ 'sambaValidUsers', 'sambaInvalidUsers' ],
 			[ 'sambaWriteList' ],
-			[ 'sambaNtAclSupport', 'sambaInheritAcls' ],
+			[ 'sambaHostsAllow', 'sambaHostsDeny' ],
+			[ 'sambaNtAclSupport' ],
 			[ 'sambaInheritOwner', 'sambaInheritPermissions' ],
-		] ),
 	] ),
-	Tab( _( 'Samba extended permissions' ), _( 'Samba extended permission settings' ), advanced = True, layout = [
-		Group( _( 'Samba extended permissions' ), layout = [
+	Tab( _( 'Samba extended permissions' ), _( 'Samba extended permission settings' ), advanced = True,
+		 layout = [
 			[ 'sambaCreateMode', 'sambaDirectoryMode' ],
 			[ 'sambaForceCreateMode', 'sambaForceDirectoryMode' ],
 			[ 'sambaSecurityMode', 'sambaDirectorySecurityMode' ],
 			[ 'sambaForceSecurityMode', 'sambaForceDirectorySecurityMode' ],
-		] ),
 	] ),
-	Tab( _( 'Samba options' ), _( 'Samba options' ), advanced = True, layout = [
-		Group( _( 'Samba options' ), layout = [
+	Tab( _( 'Samba options' ), _( 'Samba options' ), advanced = True,
+		layout = [
 			[ 'sambaLocking', 'sambaBlockingLocks' ],
 			[ 'sambaStrictLocking' ],
 			[ 'sambaOplocks', 'sambaLevel2Oplocks', 'sambaFakeOplocks' ],
 			[ 'sambaBlockSize', 'sambaCscPolicy' ],
-			[ 'sambaHostsAllow', 'sambaHostsDeny' ],
 			[ 'sambaHideFiles' ],
 			[ 'sambaPostexec', 'sambaPreexec'],
-		] ),
 	] ),
-	Tab( _( 'Samba custom settings' ), _( 'Custom settings for Samba shares' ), advanced = True, layout = [
-		Group( _( 'Samba custom settings' ), layout = [
+	Tab( _( 'Samba custom settings' ), _( 'Custom settings for Samba shares' ), advanced = True,
+		layout = [
 			'sambaCustomSettings'
-		] ),
 	] ),
-	Tab( _( 'NFS custom settings' ), _( 'Custom settings for NFS shares' ), advanced = True, layout = [
-		Group( _( 'NFS custom settings' ), layout = [
+	Tab( _( 'NFS custom settings' ), _( 'Custom settings for NFS shares' ), advanced = True,
+		layout = [
 			'nfsCustomSettings'
-		] ),
 	] ),
 ]
 
