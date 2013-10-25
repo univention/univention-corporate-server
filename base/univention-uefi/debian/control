@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 8),
 Standards-Version: 3.9.4
 
 Package: univention-uefi
-Architecture: amd64
+Architecture: all
 Depends: ${misc:Depends}, efibootmgr, shim, grub-efi, grub-efi-amd64
 Description: Meta package for UEFI support on UCS Systems
  This meta package installs all required packages for UEFI support on
@@ -20,7 +20,7 @@ Description: Meta package for UEFI support on UCS Systems
  refer to: http://www.univention.de/
 
 Package: univention-uefi-secureboot
-Architecture: amd64
+Architecture: all
 Depends: ${misc:Depends}, univention-uefi (= ${source:Version}), shim-signed, grub-efi-amd64-signed
 Description: Meta package for UEFI SecureBoot support on UCS Systems
  This meta package installs all required packages for UEFI SecureBoot 
