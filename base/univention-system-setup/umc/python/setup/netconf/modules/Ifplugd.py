@@ -8,7 +8,7 @@ class PhaseIfplugd(RestartService, Server, Dhcp):
 	Stop and restart ifplugd if DHCP is used.
 	"""
 	service = "ifplugd"
-	priority = 25
+	priority = 20
 
 	def check(self):
 		super(PhaseIfplugd, self).check()

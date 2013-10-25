@@ -2,6 +2,6 @@ from univention.management.console.modules.setup.netconf.common import RestartSe
 from univention.management.console.modules.setup.netconf.conditions import NotNetworkOnly
 
 
-class PhaseRestartPostgresql(RestartService, NotNetworkOnly):
-	service = "postgresql"
-	priority = 16
+class PhaseRestartSamba4(RestartService, NotNetworkOnly):
+	service = "samba-ad-dc"
+	priority = 30

@@ -9,7 +9,7 @@ class PhaseLdapDhcp(LdapChange):
 	"""
 	Re-create DHCP subnet.
 	"""
-	priority = 47
+	priority = 48
 
 	def post(self):
 		try:

@@ -2,6 +2,6 @@ from univention.management.console.modules.setup.netconf.common import RestartSe
 from univention.management.console.modules.setup.netconf.conditions import NotNetworkOnly
 
 
-class PhaseRestartPostgresql(RestartService, NotNetworkOnly):
-	service = "postgresql"
-	priority = 16
+class PhaseRestartListener(RestartService, NotNetworkOnly):
+	service = "univention-directory-listener"
+	priority = 22

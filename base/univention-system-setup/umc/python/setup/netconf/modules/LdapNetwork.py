@@ -11,7 +11,7 @@ class PhaseLdapNetwork(LdapChange):
 	"""
 	Rewrite default network.
 	"""
-	priority = 45
+	priority = 44
 
 	def check(self):
 		super(PhaseLdapNetwork, self).check()

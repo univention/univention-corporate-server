@@ -12,7 +12,7 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
 	"""
 	Rewrite IP configuration in self LDAP object.
 	"""
-	priority = 45
+	priority = 40
 	executable = "/usr/share/univention-directory-manager-tools/univention-dnsedit"
 
 	def __init__(self, changeset):

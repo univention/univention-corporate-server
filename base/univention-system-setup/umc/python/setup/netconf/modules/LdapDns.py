@@ -7,7 +7,7 @@ class PhaseLdapDns(AddressMap, Ldap, Executable):
 	"""
 	Create reverse DNS zones.
 	"""
-	priority = 47
+	priority = 46
 	executable = "/usr/share/univention-directory-manager-tools/univention-dnsedit"
 
 	def post(self):

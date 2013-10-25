@@ -4,4 +4,4 @@ from univention.management.console.modules.setup.netconf.conditions import NotNe
 
 class PhaseRestartCups(RestartService, NotNetworkOnly):
 	service = "cupsys"
-	priority = 21
+	priority = 14

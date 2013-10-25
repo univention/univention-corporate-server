@@ -2,6 +2,7 @@ univention-system-setup (7.0.58-1) unstable; urgency=low
 
   * Enable debugging by default (Bug #28670)
   * Remove Apache restart.
+  * Split service restart into separate modules.
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 25 Oct 2013 19:00:03 +0200
 

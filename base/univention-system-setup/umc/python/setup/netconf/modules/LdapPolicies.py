@@ -9,7 +9,7 @@ class PhaseLdapPolicies(AddressMap, LdapChange):
 	"""
 	Rewrite IP configuration in LDAP object.
 	"""
-	priority = 45
+	priority = 42
 	policies = (
 		("policies/thinclient", "fileServer"),
 		("policies/thinclient", "authServer"),
