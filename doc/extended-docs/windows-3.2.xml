@@ -94,7 +94,7 @@ root@backup:~#
 			<para>
 			  The Univention S4 connector must be run on the &ucsMaster; or a &ucsBackup; in the
 			  domain. After Samba 4 was uninstalled, the join script of the S4 connector
-			  (97univention-s4-connector) script should be re-executed on thje &ucsMaster; or a
+			  (97univention-s4-connector) script should be re-executed on the &ucsMaster; or a
 			  another &ucsBackup;. This can be done via the &ucsUMC; module <guimenu>Domain
 			  join</guimenu>:
 			</para>
@@ -110,11 +110,11 @@ root@backup:~#
 			</para>
 <programlisting language="sh">
 root@backup:~# samba-tool fsmo show
-InfrastructureMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom,DC=local
-RidAllocationMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom,DC=local
-PdcEmulationMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom,DC=local
-DomainNamingMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom,DC=local
-SchemaMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom,DC=local
+InfrastructureMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
+RidAllocationMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
+PdcEmulationMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
+DomainNamingMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
+SchemaMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
 
 root@backup:~# samba-tool fsmo seize --role=all --force
 Will not attempt transfer, seizing...
