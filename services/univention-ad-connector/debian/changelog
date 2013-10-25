@@ -1,3 +1,10 @@
+univention-ad-connector (8.0.11-1) unstable; urgency=low
+
+  * Bug #32698: fix buttons when unconfigured
+  * Bug #32698: fix translation file from backend
+
+ -- Florian Best <best@univention.de>  Fri, 25 Oct 2013 14:49:52 +0200
+
 univention-ad-connector (8.0.10-1) unstable; urgency=low
 
   * Bug #30004: fixed scope handling for notifications

@@ -396,8 +396,10 @@ define([
 			downloadText += '</ul>';
 			this._widgets.download.set('content', downloadText);
 
-			this.placeButton('adconnector/private.key');
-			this.placeButton('adconnector/cert.pem');
+			if (result.configured) {
+				this.placeButton('adconnector/private.key');
+				this.placeButton('adconnector/cert.pem');
+			}
 		},
 
 		placeButton: function(url) {

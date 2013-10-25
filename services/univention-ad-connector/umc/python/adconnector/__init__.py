@@ -52,7 +52,7 @@ import time
 import pipes
 from pwd import getpwnam
 
-_ = Translation('univention-management-console-module-top').translate
+_ = Translation('univention-management-console-module-adconnector').translate
 
 FN_BINDPW = '/etc/univention/connector/ad/bindpw'
 DO_NOT_CHANGE_PWD = '********************'
