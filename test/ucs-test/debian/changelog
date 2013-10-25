@@ -1,3 +1,10 @@
+ucs-test (4.0.156-3) unstable; urgency=low
+
+  * 00_base/30overview_https: fixed syntax error in version defintion
+    which aborts ucs-test (Bug #32976)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Oct 2013 06:41:14 +0200
+
 ucs-test (4.0.156-2) unstable; urgency=low
 
   * 62_udm-groups/23_group_modify_grouptype: Adjust test case
