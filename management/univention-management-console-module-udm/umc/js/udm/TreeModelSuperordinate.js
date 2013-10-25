@@ -36,8 +36,19 @@ define([
 	"umc/modules/udm/TreeModel"
 ], function(declare, lang, array, tools, TreeModel) {
 	return declare('umc.modules.udm.TreeModelSuperordinate', [TreeModel], {
+
+		rootName: null,
+		moduleFlavor: null,
+
 		getRoot: function(onItem) {
-			this.root = {objectType: "container/dc", icon: "udm-container-dc", id: "None", label: this.rootName, root: true, operations: []};
+			this.root = {
+				objectType: this.moduleFlavor,
+				icon: "udm-" + this.moduleFlavor.replace('/', '-'),
+				id: "None",
+				label: this.rootName,
+				root: true,
+				operations: []
+			};
 			onItem(this.root);
 		},
 
@@ -55,15 +66,13 @@ define([
 
 				try {
 					onComplete(superordinates);
-				}
-				catch (error) {
+				} catch (error) {
 					// don't do anything
 				}
 			}), lang.hitch(this, function() {
 				try {
 					onComplete([]);
-				}
-				catch (error) {
+				} catch (error) {
 					// don't do anything
 				}
 			}));

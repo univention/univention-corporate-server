@@ -650,6 +650,7 @@ define([
 				var ModelClass = ('navigation' == this.moduleFlavor) ? TreeModel : TreeModelSuperordinate;
 				var model = new ModelClass({
 					umcpCommand: umcpCmd,
+					moduleFlavor: this.moduleFlavor,
 					rootName: _('All %s', superordinateName)
 				});
 
