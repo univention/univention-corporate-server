@@ -58,6 +58,7 @@ define([
 		postCreate: function() {
 			this.inherited(arguments);
 			this.placeAt(_getWrapper());
+			this.setNumOfNotifications(0);
 		},
 
 		setNumOfNotifications: function(num) {
@@ -71,7 +72,7 @@ define([
 		// description:
 		//		Combination of Widget and Container class.
 		templateString: '' +
-			'<div class="umcNotification" data-dojo-attach-point="domNode">' +
+			'<div class="umcNotification" data-dojo-attach-point="domNode" style="height:0;">' +
 				'<div class="umcNotificationWrapper" data-dojo-attach-point="wrapperNode">' +
 					'<div class="umcNotificationScroller" data-dojo-attach-point="scrollerNode"></div>' +
 					'<div style="text-align: right;" data-dojo-attach-point="footerNode"></div>' +
@@ -153,6 +154,7 @@ define([
 			this._closeButton.placeAt(this.footerNode);
 
 			this._notificationBubble = new _NotificationBubble({});
+			this.own(this._notificationBubble);
 		},
 
 		postCreate: function() {
