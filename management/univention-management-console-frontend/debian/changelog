@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.130-1) unstable; urgency=low
+
+  * Bug #30004: fixed scoping problem with addNotification in umc/widgets/Page
+  * Bug #32218: changed order of buttons in logout dialogue
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Oct 2013 13:20:41 +0200
+
 univention-management-console-frontend (3.0.129-1) unstable; urgency=low
 
   * use new languages.json file for UMC i18n

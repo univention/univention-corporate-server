@@ -80,7 +80,7 @@ define([
 		//		If set to true, forces the help text to be shown.
 		forceHelpText: false,
 
-		addNotification: dialog.notify,
+		addNotification: lang.hitch(dialog, 'notify'),
 
 		// the widget's class name as CSS class
 		'class': 'umcPage',

@@ -1661,8 +1661,10 @@ define([
 
 		relogin: function(username) {
 			dialog.confirm(_('Do you really want to logout?'), [{
+				label: _('Cancel')
+			}, {
 				label: _('Logout'),
-				auto: true,
+				'default': true,
 				callback: lang.hitch(this, function() {
 					topic.publish('/umc/actions', 'session', 'logout');
 					tools.closeSession();
@@ -1672,9 +1674,6 @@ define([
 						window.location.search = 'username=' + username;
 					}
 				})
-			}, {
-				label: _('Cancel'),
-				'default': true
 			}]);
 		},
 
