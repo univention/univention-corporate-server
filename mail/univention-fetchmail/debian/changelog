@@ -1,3 +1,9 @@
+univention-fetchmail (7.0.0-2) unstable; urgency=low
+
+  * remove fetchmail component UCRVs (Bug #32541)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 25 Oct 2013 16:45:53 +0200
+
 univention-fetchmail (7.0.0-1) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30945)
