@@ -1,3 +1,12 @@
+univention-mail-postfix (8.0.8-1) unstable; urgency=low
+
+  * remove unjoin script in postinst
+  * only remove mail domains in unjoin when SMTP service is fully remove
+    from the domain
+  (Bug #32454)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 25 Oct 2013 10:16:17 +0200
+
 univention-mail-postfix (8.0.7-4) unstable; urgency=low
 
   * call unjoin script when removing, not purging (Bug #32454)

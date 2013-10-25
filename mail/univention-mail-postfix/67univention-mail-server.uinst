@@ -48,9 +48,11 @@ if [ "$mail_default_domains" ] ; then
 	domain_list="$mail_default_domains"
 fi
 
-for domain in $domain_list ; do
-	udm mail/domain remove "$@" --ignore_exists --dn "cn=$domain,cn=domain,cn=mail,$ldap_base" || die
-
-done
+if ucs_isServiceUnused "SMTP" "$@"
+then
+	for domain in $domain_list ; do
+		udm mail/domain remove "$@" --ignore_exists --dn "cn=$domain,cn=domain,cn=mail,$ldap_base" || die
+	done
+fi
 
 joinscript_remove_script_from_status_file univention-mail-server

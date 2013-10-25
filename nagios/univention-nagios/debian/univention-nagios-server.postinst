@@ -132,6 +132,10 @@ if [ "$1" = "configure" ]; then
 	fi
 
 	/etc/init.d/nagios3 restart
+	
+	# remove unjoin script
+	uinst=/usr/lib/univention-install/28univention-nagios-server.uinst
+	[ -e "$uinst" ] && rm "$uinst"
 fi
 
 

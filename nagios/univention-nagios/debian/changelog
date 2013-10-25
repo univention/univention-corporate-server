@@ -1,3 +1,9 @@
+univention-nagios (7.0.5-2) unstable; urgency=low
+
+  * remove unjoin script in postinst (Bug #32453)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 25 Oct 2013 10:12:45 +0200
+
 univention-nagios (7.0.5-1) unstable; urgency=low
 
   * append NAGIOS service to local host in join script
