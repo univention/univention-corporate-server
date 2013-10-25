@@ -21,7 +21,7 @@ Description: Meta package for UEFI support on UCS Systems
 
 Package: univention-uefi-secureboot
 Architecture: amd64
-Depends: ${misc:Depends}, univention-uefi (= ${source:Version}), shim-signed, grub-signed
+Depends: ${misc:Depends}, univention-uefi (= ${source:Version}), shim-signed, grub-efi-amd64-signed
 Description: Meta package for UEFI SecureBoot support on UCS Systems
  This meta package installs all required packages for UEFI SecureBoot 
  support on an UCS system.

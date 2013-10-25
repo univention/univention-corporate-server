@@ -1,3 +1,9 @@
+univention-uefi (1.0.0-3) unstable; urgency=low
+
+  * Bug #28191: updated dependencies
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 23 Oct 2013 11:01:52 +0200
+
 univention-uefi (1.0.0-2) unstable; urgency=low
 
   * Bug #28191: fixed typo in dependency
