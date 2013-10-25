@@ -27,3 +27,9 @@ Description[de]=Diese Variable bestimmt, ob der gssd Dämon gestartet werden sol
 Description[en]=This variable defines if the gssd daemon should be started. Evaluated values are 'yes', 'no' or <undefined> (default=yes).
 Type=str
 Categories=nfs
+
+[nfs/common/idmapd]
+Description[de]=Diese Variable bestimmt, ob der idmap Dämon gestartet werden soll. Ausgewertet werden die Werte 'yes', 'no' oder <undefiniert> (default=yes).
+Description[en]=This variable defines if the idmap daemon should be started. Evaluated values are 'yes', 'no' or <undefined> (default=yes).
+Type=str
+Categories=nfs

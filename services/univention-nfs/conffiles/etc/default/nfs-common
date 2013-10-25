@@ -20,7 +20,12 @@ else:
 @!@
 
 # Do you want to start the idmapd daemon? It is only needed for NFSv4.
-NEED_IDMAPD=
+@!@
+if configRegistry.get('nfs/common/idmapd'):
+	print 'NEED_IDMAPD=%s' % configRegistry.get('nfs/common/idmapd')
+else:
+	print 'NEED_IDMAPD='
+@!@
 
 # Do you want to start the gssd daemon? It is required for Kerberos mounts.
 @!@

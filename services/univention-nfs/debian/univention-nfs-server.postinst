@@ -41,7 +41,8 @@ case "$1" in
 			nfs/ports?static \
 			nfs/nfsd/nfs4?true \
 			nfs/create/homesharepath?true \
-			nfs/common/gssd?yes
+			nfs/common/gssd?yes \
+			nfs/common/idmapd?yes
 
 		# configure firewall
 		ucr set security/packetfilter/package/univention-nfs/tcp/111/all="ACCEPT" \

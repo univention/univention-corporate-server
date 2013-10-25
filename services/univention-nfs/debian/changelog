@@ -1,3 +1,10 @@
+univention-nfs (6.0.3-1) unstable; urgency=low
+
+  * Added idmapd configuration option nfs/common/idmapd (default=yes)
+    for NFSv4 support (Bug #21556) 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 25 Oct 2013 10:43:43 +0200
+
 univention-nfs (6.0.2-2) unstable; urgency=low
 
   * Fix nfs/common/gssd default value (Bug #21556) 
