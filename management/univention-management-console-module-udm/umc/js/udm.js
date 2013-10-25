@@ -50,6 +50,8 @@ define([
 	"umc/store",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
+	"umc/widgets/CheckBox",
+	"umc/widgets/ComboBox",
 	"umc/widgets/Module",
 	"umc/widgets/Page",
 	"umc/widgets/Grid",
@@ -68,7 +70,12 @@ define([
 	"umc/modules/udm/MultiObjectSelect",
 	"umc/modules/udm/ComboBox",
 	"umc/modules/udm/CertificateUploader"
-], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json, domStyle, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, ProgressBar, TreeModel, TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, _) {
+], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json,
+	domStyle, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog,
+	store, ContainerWidget, Text, CheckBox, ComboBox, Module, Page, Grid,
+	ExpandingTitlePane, Form, SearchForm, Button, Tree, ProgressBar, TreeModel,
+	TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, _)
+{
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
 		//		Module to interface (Univention Directory Manager) LDAP objects.
@@ -475,7 +482,7 @@ define([
 			} else if (superordinates && superordinates.length) {
 				// superordinates...
 				widgets.push({
-					type: 'ComboBox',
+					type: ComboBox,
 					name: 'superordinate',
 					description: _( 'The superordinate in which the search is carried out.' ),
 					label: _('Superordinate'),
@@ -491,7 +498,7 @@ define([
 				// containers...
 				containers.unshift({ id: 'all', label: _( 'All containers' ) });
 				widgets.push({
-					type: 'ComboBox',
+					type: ComboBox,
 					name: 'container',
 					description: _( 'The container in which the query is executed.' ),
 					label: _('Search in:'),
@@ -506,13 +513,13 @@ define([
 
 			// add remaining elements of the search form
 			widgets = widgets.concat([{
-				type: 'CheckBox',
+				type: CheckBox,
 				name: 'hidden',
 				visible: false,
 				label: _('Include hidden objects'),
 				value: this.moduleFlavor == 'navigation'
 			}, {
-				type: 'ComboBox',
+				type: ComboBox,
 				name: 'objectType',
 				description: _( 'The type of the LDAP object.' ),
 				label: _('%s type', tools.capitalize(this.objectNameSingular)),
@@ -530,7 +537,7 @@ define([
 					objTypeWidget.setInitialValue(null, false);
 				})
 			}, {
-				type: 'ComboBox',
+				type: ComboBox,
 				name: 'objectProperty',
 				description: _( 'The object property on which the query is filtered.' ),
 				label: _( 'Property' ),
@@ -633,10 +640,17 @@ define([
 					}))[0];
 				}
 
+				var superordinateName = this.objectNamePlural;
+				if ('dhcp/dhcp' == this.moduleFlavor) {
+					superordinateName = _('DHCP services');
+				} else if ('dns/dns' == this.moduleFlavor) {
+					superordinateName = _('DNS zones');
+				}
+
 				var ModelClass = ('navigation' == this.moduleFlavor) ? TreeModel : TreeModelSuperordinate;
 				var model = new ModelClass({
 					umcpCommand: umcpCmd,
-					rootName: _('All %s', this.objectNamePlural)
+					rootName: _('All %s', superordinateName)
 				});
 
 				this._tree = new Tree({
@@ -1191,15 +1205,19 @@ define([
 					recursive: recursive
 				};
 
+				if (this._tree && this._tree.get('selectedItems')[0].id == ids[0]) {
+					// when we are removing objects which are selected in the tree
+					// a reload would fail... so set the superordinate to all superordinates
+					// this triggers a reload of the path
+					this._searchForm.getWidget('superordinate').set('value', 'None');
+				}
+
 				// remove the selected elements via a transaction on the module store
 				var transaction = this.moduleStore.transaction();
 				array.forEach(ids, function(iid) {
 					this.moduleStore.remove( iid, options );
 				}, this);
-				transaction.commit().then(lang.hitch(this, function(data) {
-
-					// disable standby animation
-					this.standby(false);
+				this.standbyDuring(transaction.commit()).then(lang.hitch(this, function(data) {
 
 					// see whether all objects could be removed successfully
 					var success = true;
@@ -1216,9 +1234,8 @@ define([
 					if (!success) {
 						dialog.alert(message);
 					}
+
 					this.resetPathAndReloadTreeAndFilter(ids);
-				}), lang.hitch(this, function() {
-					this.standby(false);
 				}));
 
 				// remove dialog
@@ -1229,12 +1246,12 @@ define([
 			// objects are deleted, as well
 			form = new Form({
 				widgets: [{
-					type: 'Text',
+					type: Text,
 					label: '',
 					name: 'text',
 					content: '<p>' + msg + '</p>'
 				}, {
-					type: 'CheckBox',
+					type: CheckBox,
 					label: _('Delete referring objects.'),
 					name: 'deleteReferring',
 					value: cleanup

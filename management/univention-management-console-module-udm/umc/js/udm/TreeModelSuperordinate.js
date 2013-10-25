@@ -37,7 +37,6 @@ define([
 ], function(declare, lang, array, tools, TreeModel) {
 	return declare('umc.modules.udm.TreeModelSuperordinate', [TreeModel], {
 		getRoot: function(onItem) {
-
 			this.root = {objectType: "container/dc", icon: "udm-container-dc", id: "None", label: this.rootName, root: true, operations: []};
 			onItem(this.root);
 		},
