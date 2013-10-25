@@ -119,7 +119,10 @@ def __is_groupType_local(groupType):
 		return False
 
 def check_for_local_group_and_extend_serverctrls_and_sid(s4connector, property_type, object, add_or_modlist, serverctrls):
-	groupType = object.get('attributes', {}).get('univentionGroupType', [])[0]
+	groupType = object.get('attributes', {}).get('univentionGroupType', [None])[0]
+	if not groupType:
+		return
+
 	ud.debug(ud.LDAP, ud.INFO, "groupType: %s" % groupType)
 	if __is_groupType_local(groupType):
 		LDB_CONTROL_RELAX_OID = '1.3.6.1.4.1.4203.666.5.12'
