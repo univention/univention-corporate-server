@@ -76,7 +76,7 @@ class NetworkSetup(SetupScript):
 			help="Configure new address as additional virtual address instead of replacing current addresses")
 		parser.add_option(
 			"--verbose", "-v",
-			action="count", dest="verbose", default=0,
+			action="count", dest="verbose", default=3,
 			help="Log verbose")
 		parser.add_option(
 			"--no-act", "--dry-run", "-n",
