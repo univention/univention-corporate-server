@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Management Console Module Appcenter
 #  postinst file for the debian package
@@ -38,5 +38,16 @@ if dpkg --compare-versions "$2" lt-nl 3.0.40-1; then
 	/usr/share/univention-management-console-module-appcenter/remove-app-errata-repositories-from-ucr
 fi
 
+
+if dpkg --compare-versions "$2" lt-nl 3.0.48-1; then
+	ucrErrataToRemove=()
+	for app  in agorumcore-pro asterisk4ucs_20130304 kixbox-errata sep-sesam-errata ucc_20130429-errata univention-demoapp-errataxrdp-errata; do
+		for var in description server prefix password username defaultpackages version localmirror unmaintained; do
+			ucrErrataToRemove[${#ucrErrataToRemove[@]}]="repository/online/component/$app/$var"
+		done
+		ucrErrataToRemove[${#ucrErrataToRemove[@]}]="repository/online/component/$app"
+	done
+	univention-config-registry unset "${ucrErrataToRemove[@]}"
+fi
 exit 0
 

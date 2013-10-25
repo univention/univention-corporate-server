@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.48-1) unstable; urgency=low
+
+  * remove obsolete component-errata UCRVs in postinst directly instead of
+    using an external script (Bug #30904)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 25 Oct 2013 15:38:22 +0200
+
 univention-management-console-module-appcenter (3.0.47-1) unstable; urgency=low
 
   * Bug #32930: Also search in LongDescription
