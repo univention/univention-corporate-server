@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.48-2) unstable; urgency=low
+
+  * also remove fetch mail errata UCRVs (Bug #30904)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 25 Oct 2013 16:04:30 +0200
+
 univention-management-console-module-appcenter (3.0.48-1) unstable; urgency=low
 
   * remove obsolete component-errata UCRVs in postinst directly instead of
