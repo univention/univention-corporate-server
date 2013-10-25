@@ -1,3 +1,10 @@
+ucs-test (4.0.156-4) unstable; urgency=low
+
+  * 10_ldap/70schema_unregistration_basis: some minor timeout cleanups
+    (Bug #32392)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Oct 2013 15:28:36 +0200
+
 ucs-test (4.0.156-3) unstable; urgency=low
 
   * 00_base/30overview_https: fixed syntax error in version defintion
