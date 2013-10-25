@@ -2171,8 +2171,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  NFSv4 is now activated by default in UCS 3.2. Shares are accessible by clients depending on their capabilities. 
 		  To disable NFSv4 support the &ucsUCRV; <envar>nfs/nfsd/nfs4</envar> can be set to false (<ulink url="&ucsbug;21556">Bug 21556</ulink>).
 		</simpara></listitem>
+
 		<listitem><simpara>
 		  The /etc/default/nfs-common option NEED_GSSD is now configurable with the UCRV <envar>nfs/common/gssd</envar>, which defaults to yes (<ulink url="&ucsbug;21556">Bug 21556</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The /etc/default/nfs-common option NEED_IDMAPD is now configurable with the UCRV <envar>nfs/common/idmapd</envar>, which defaults to yes (<ulink url="&ucsbug;21556">Bug 21556</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
