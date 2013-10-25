@@ -1,3 +1,10 @@
+ucs-test (4.0.156-5) unstable; urgency=low
+
+  * 10_ldap/70schema_registration_basis: test if the schema file is
+    created on dc master and dc backup (Bug #31801)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Oct 2013 16:24:08 +0200
+
 ucs-test (4.0.156-4) unstable; urgency=low
 
   * 10_ldap/70schema_unregistration_basis: some minor timeout cleanups

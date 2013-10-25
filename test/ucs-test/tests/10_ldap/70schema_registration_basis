@@ -15,6 +15,7 @@ from univention.testing.utils import fail
 from univention.config_registry import ConfigRegistry
 from ldap_extension_utils import *
 from time import sleep
+import os
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -70,5 +71,11 @@ package.remove()
 if not success:
 	fail('The attribue was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
 	sys.exit(100)
+
+if ucr.get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']:
+	schema_file = os.path.join('/var/lib/univention-ldap/local-schema/', schema_name)
+	if not os.path.exists(schema_file):
+		fail('The schema file was not found: %s' % schema_file)
+		sys.exit(100)
 
 # vim: set ft=python :
