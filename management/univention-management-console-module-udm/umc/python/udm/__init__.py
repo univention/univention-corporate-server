@@ -458,6 +458,10 @@ class Instance( Base, ProgressMixin ):
 				if obj is None:
 					continue
 				module = get_module( object_type, obj.dn )
+				if module is None:
+					# This happens when concurrent a object is removed between the module.search() and get_module() call
+					MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
+					continue
 				if module.module is None:
 					MODULE.warn( 'Could not identify LDAP object %s (flavor: %s). The object is ignored.' % ( obj.dn, request.flavor ) )
 					continue

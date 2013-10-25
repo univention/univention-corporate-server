@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.61-1) unstable; urgency=low
+
+  * Bug #32381: fix an error which happens when a object is removed concurrent
+  	to a search query
+
+ -- Florian Best <best@univention.de>  Fri, 25 Oct 2013 10:13:53 +0200
+
 univention-management-console-module-udm (4.0.60-1) unstable; urgency=low
 
   * Bug #32381: fix traceback when deleting a object which is selected in the
