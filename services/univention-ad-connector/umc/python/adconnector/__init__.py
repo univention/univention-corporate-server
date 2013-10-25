@@ -168,20 +168,20 @@ class Instance( Base ):
 
 		self.finished(request.id, { 'success' : True, 'message' :  _('UCS Active Directory Connector settings have been saved.')})
 
-		def _create_certificate(self, request):
-			ssldir = '/etc/univention/ssl/%s' % request.options.get('LDAP_Host')
-			def _return(pid, status, buffer, request):
-				if not os.path.exists(ssldir):
-					MODULE.error( 'Creation of certificate failed (%s)' % ssldir )
-					self.finished(request.id,  {'success' : False, 'message': _('Creation of certificate failed (%s)') % ssldir})
-				self.finished(request.id,  {'success' : True, 'message' :  _('UCS Active Directory Connector settings have been saved and a new certificate for the Active Directory server has been created.')})
+	def _create_certificate(self, request):
+		ssldir = '/etc/univention/ssl/%s' % request.options.get('LDAP_Host')
+		def _return(pid, status, buffer, request):
+			if not os.path.exists(ssldir):
+				MODULE.error( 'Creation of certificate failed (%s)' % ssldir )
+				self.finished(request.id,  {'success' : False, 'message': _('Creation of certificate failed (%s)') % ssldir})
+			self.finished(request.id,  {'success' : True, 'message' :  _('UCS Active Directory Connector settings have been saved and a new certificate for the Active Directory server has been created.')})
 
-			cmd = '/usr/sbin/univention-certificate new -name %s' % pipes.quote(request.options['LDAP_Host'])
-			MODULE.info( 'Creating new SSL certificate: %s' % cmd )
-			proc = notifier.popen.Shell( cmd, stdout = True )
-			cb = notifier.Callback( _return, request )
-			proc.signal_connect( 'finished', cb )
-			proc.start()
+		cmd = '/usr/sbin/univention-certificate new -name %s' % pipes.quote(request.options['LDAP_Host'])
+		MODULE.info( 'Creating new SSL certificate: %s' % cmd )
+		proc = notifier.popen.Shell( cmd, stdout = True )
+		cb = notifier.Callback( _return, request )
+		proc.signal_connect( 'finished', cb )
+		proc.start()
 
 	@sanitize(LDAP_Host=StringSanitizer(required=True))
 	def guess( self, request ):
