@@ -54,7 +54,6 @@ define([
 				ip6: [],
 				ip4dynamic: false,
 				ip6dynamic: false,
-				primary: false,
 				options: []
 			};
 		},

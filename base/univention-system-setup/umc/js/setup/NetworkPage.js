@@ -90,6 +90,10 @@ define([
 				dynamicValues: function(values) {
 					return array.map(values.interfaces, function(iface) { return {id: iface.name, label: iface.name}; });
 				},
+				staticValues: [{
+					id: '',
+					label: _('None')
+				}],
 				name: 'interfaces/primary',
 				label: _('Primary network interface')
 			}, {

@@ -49,6 +49,8 @@ define([
 
 	return declare("umc.modules.setup.InterfaceWizard", [ Wizard ], {
 
+		autoValidate: true,
+
 		ucsversion: null,
 		wizard_mode: null,
 		interfaces: null,
@@ -536,32 +538,7 @@ define([
 				dialog.alert(_('Each IPv6 interface must have an identifier'));
 				return false;
 			}
-
-			var pages = ['network'];
-			if (this.creation) {
-				pages.push('interfaceType');
-			}
-			array.forEach(['Bond', 'Bridge'], lang.hitch(this, function(type) {
-				if (this.getInterfaceType() === type) {
-					pages.push(type);
-				}
-			}));
-
-			var valid = true;
-			array.forEach(pages, lang.hitch(this, function(page) {
-				tools.forIn(this._pages[page]._form._widgets, function(iname, iwidget) {
-					if (iwidget.get('visible')) {
-						valid = valid && (!iwidget.isValid || false !== iwidget.isValid());
-						valid = valid && (!iwidget.validate || false !== iwidget.validate());
-					}
-					return valid;
-				}, this);
-			}));
-
-			if (!valid) {
-				dialog.alert(_('The entered data is not valid. Please correct the input.'));
-			}
-			return valid;
+			return true;
 		},
 
 		pageMap: { 'true': {

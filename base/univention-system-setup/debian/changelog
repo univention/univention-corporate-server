@@ -1,3 +1,9 @@
+univention-system-setup (7.0.57-1) unstable; urgency=low
+
+  * Bug #30816: fix detection of changes
+
+ -- Florian Best <best@univention.de>  Fri, 25 Oct 2013 15:09:23 +0200
+
 univention-system-setup (7.0.56-1) unstable; urgency=low
 
   * Fix wrong method name (Bug #28670)
