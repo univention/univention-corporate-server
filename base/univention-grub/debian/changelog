@@ -1,3 +1,9 @@
+univention-grub (7.0.3-1) unstable; urgency=low
+
+  * Bug #28191: in UEFI mode check for shim and add boot entry for shim
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 25 Oct 2013 12:26:40 +0200
+
 univention-grub (7.0.2-1) unstable; urgency=low
 
   * Bug #28191: merged UEFI specific code from ucs-3.1/component/uefi/univention-grub

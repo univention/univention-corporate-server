@@ -71,13 +71,8 @@ if [ "$1" = configure -a -z "$2" ];  then
 
 	# invoke grub-mkdevicemap (required for KVM machines
 	grub-mkdevicemap $grub_boot
-	# source the update-grub file, so we could use the grub helper functions
-	if ! is_ucr_true grub/efi ; then
-		# no EFI found
-		if [ -n "$grub_boot" ]; then
-			/usr/sbin/grub-install --no-floppy "$grub_boot"
-		fi
-	else
+	# if EFI is enabled and shim has been found
+	if is_ucr_true grub/efi && [ -f /usr/lib/shim/shim.efi ] ; then
 		# EFI found
 		modprobe efivars
 		# add efivars to /etc/modules
@@ -87,7 +82,12 @@ if [ "$1" = configure -a -z "$2" ];  then
 		# install grub
 		/usr/sbin/grub-install
 		# add EFI boot entry
-		efibootmgr -c -l "\\grub.efi" -L "Univention Corporate Server"
+		efibootmgr -c -l "\\shim.efi" -L "Univention Corporate Server"
+	else
+		# no EFI found
+		if [ -n "$grub_boot" ]; then
+			/usr/sbin/grub-install --no-floppy "$grub_boot"
+		fi
 	fi
 	update-grub
 fi
