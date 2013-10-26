@@ -1,3 +1,11 @@
+ucs-test (4.0.156-7) unstable; urgency=low
+
+  * 53_samba-common/50quota: from time to time one smbcquotas login
+    failed. In this case a warning is printed and the smbcquotas command
+    is re-executed (Bug #31210)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 26 Oct 2013 20:34:38 +0200
+
 ucs-test (4.0.156-6) unstable; urgency=low
 
   * 10_ldap/80acl_unregistration_basis: increase the waiting time
