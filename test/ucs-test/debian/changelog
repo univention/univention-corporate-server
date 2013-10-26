@@ -1,3 +1,10 @@
+ucs-test (4.0.156-6) unstable; urgency=low
+
+  * 10_ldap/80acl_unregistration_basis: increase the waiting time
+    (Bug #32392)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 26 Oct 2013 20:24:02 +0200
+
 ucs-test (4.0.156-5) unstable; urgency=low
 
   * 10_ldap/70schema_registration_basis: test if the schema file is

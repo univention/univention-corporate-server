@@ -80,7 +80,7 @@ set_container_description(user_dn, container)
 call_unjoin_script(unjoin_script_name)
 
 # The postrun needs a few seconds
-sleep(20)
+sleep(30)
 
 try:
 	set_container_description(user_dn, container)
