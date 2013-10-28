@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.63-1) unstable; urgency=low
+
+  * Bug #32381: fix selected item in superordinate widget after a tree reload
+
+ -- Florian Best <best@univention.de>  Mon, 28 Oct 2013 10:59:44 +0100
+
 univention-management-console-module-udm (4.0.62-1) unstable; urgency=low
 
   * Bug #32877: add $dn$ to layout properties

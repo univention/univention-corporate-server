@@ -825,6 +825,10 @@ define([
 					var currentVals = array.map(widget.get('staticValues'), function(i) { return i.id; });
 					var newVals = array.map(data.result, function(i) { return i.id; });
 					if (!tools.isEqual(currentVals, newVals)) {
+						var curVal = widget.get('value');
+						if (newVals.indexOf(curVal) !== -1) {
+							widget.setInitialValue(curVal);
+						}
 						widget.set('staticValues', data.result);
 					}
 				}));
