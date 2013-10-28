@@ -344,7 +344,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 
 	def handler(self, dn, new, old, name=None):
 		"""Handle LDAP schema extensions on Master and Backup"""
-		if not listener.configRegistry.get('ldap/server/type') == 'master':
+		if not listener.configRegistry.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup'):
 			return
 
 		if new:
