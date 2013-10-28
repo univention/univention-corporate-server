@@ -126,22 +126,13 @@
 			Example usage in join script:
 		</para>
 		<programlisting language="sh"><![CDATA[
-eval "$(ucr shell)"
-pkg_name="mypackage"
-schema_file="/usr/share/$pkg_name/schema1"
+export UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
+. /usr/share/univention-lib/ldap.sh
 
-pkg_version="$(dpkg-query -W -f='${Version}' "$pkg_name")"
-schema_data_encoded="$(cat "$schema_file" | bzip2 | base64 -w0)"
-
-udm settings/ldapschema create "$@" \
-	--ignore_exists \
-	--position "cn=ldapschema,cn=univention,$ldap_base" \
-	--set name=MySchema1 \
-	--set data="$schema_data_encoded" \
-	--set filename="$pkg_name".schema1 \
-	--set package="$pkg_name" \
-	--set packageversion="$pkg_version" \
-	--set appidentifier="MyApp"
+ucs_registerLDAPExtension "$@" \
+  --schema /path/to/appschemaextension.schema \
+  --ucsversionstart 3.2-0 \
+  --ucsversionend 3.2-99
 		]]></programlisting>
 	</section>
 
@@ -237,24 +228,11 @@ udm settings/ldapschema create "$@" \
 			Example usage in join script:
 		</para>
 		<programlisting language="sh"><![CDATA[
-eval "$(ucr shell)"
-pkg_name="mypackage"
-acl_file="/usr/share/$pkg_name/acl1"
+export UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
+. /usr/share/univention-lib/ldap.sh
 
-pkg_version="$(dpkg-query -W -f='${Version}' "$pkg_name")"
-acl_data_encoded="$(cat "$acl_file" | bzip2 | base64 -w0)"
-
-udm settings/ldapacl create "$@" \
-	--ignore_exists \
-	--position "cn=ldapacl,cn=univention,$ldap_base" \
-	--set name=MyACL1 \
-	--set data="$acl_data_encoded" \
-	--set filename="$pkg_name".acl1 \
-	--set package="$pkg_name" \
-	--set packageversion="$pkg_version" \
-	--set appidentifier="MyApp" \
-	--set ucsversionstart="3.2-0" \
-	--set ucsversionend="3.2-99"
+ucs_registerLDAPExtension "$@" \
+  --acl /path/to/appaclextension.acl
 		]]></programlisting>
 	</section>
 </chapter>
