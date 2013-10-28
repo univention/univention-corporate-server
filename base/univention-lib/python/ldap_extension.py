@@ -311,7 +311,7 @@ class UniventionLDAPExtension(object):
 							udm_object.open()
 							udm_object['active']=True
 							udm_object.modify()
-						except univention.admin.uexceptions.noObject, e:
+						except udm_errors.noObject, e:
 							ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: object not found.' % (object_dn,))
 						except udm_errors.ldapError, e:
 							ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: %s.' % (object_dn, e))
