@@ -143,7 +143,7 @@ class UniventionLDAPExtension(object):
 				filename_parts = os.path.splitext(os.path.basename(messagecatalog))
 				language = filename_parts[0]
 				with open(messagecatalog, 'r') as f:
-					common_udm_options.extend(["--set", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()),),])
+					common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()),),])
 			if options.umcregistration:
 				try:
 					with open(options.umcregistration, 'r') as f:
@@ -154,7 +154,7 @@ class UniventionLDAPExtension(object):
 				common_udm_options.extend(["--set", "umcregistration=%s" % (base64.b64encode(compressed_data),),])
 			for icon in options.icon:
 				with open(icon, 'r') as f:
-					common_udm_options.extend(["--set", "icon=%s" % (base64.b64encode(f.read()),),])
+					common_udm_options.extend(["--append", "icon=%s" % (base64.b64encode(f.read()),),])
 
 		rc, self.object_dn, stdout = self.udm_find_object_dn()
 		if not self.object_dn:

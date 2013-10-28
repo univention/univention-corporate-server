@@ -1,3 +1,10 @@
+univention-lib (3.0.25-5) unstable; urgency=low
+
+  * fix setting multivalued udm property with complex syntax
+    (Bug #32407)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 Oct 2013 19:22:49 +0100
+
 univention-lib (3.0.25-4) unstable; urgency=low
 
   * Fix restart of slapd in ldapschema listener (Bug #32392)
