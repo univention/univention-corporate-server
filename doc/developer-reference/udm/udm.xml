@@ -761,57 +761,6 @@ udm settings/extended_attribute modify \
 			</section>
 	</section>
 
-	<section id="udm:ldap">
-		<title>LDAP basics
-			<indexterm><primary>LDAP</primary></indexterm>
-		</title>
-		<para>
-			Schema extension.
-			Install on master.
-			Replicated to backup and slaves.
-		</para>
-		<para>
-			<ulink url="https://forge.univention.org/bugzilla3/show_bug.cgi?id=30596"/>
-		</para>
-		<para>
-			<ulink url="http://www.zytrax.com/books/ldap/ch3/"/>
-		</para>
-
-		<section id="udm:ldap:objectclass">
-			<title>LDAP objectclass
-				<indexterm><primary>LDAP</primary><secondary>objectclass</secondary></indexterm>
-			</title>
-			<para>
-				NAME.
-				DESC.
-				OBSOLETE.
-				SUP(erior).
-				STRUCTURAL, AUXILIARY, ABSTRACT.
-				MUST, MAY.
-			</para>
-		</section>
-
-		<section id="udm:ldap:attribute">
-			<title>LDAP attribute
-				<indexterm><primary>LDAP</primary><secondary>objectclass</secondary></indexterm>
-			</title>
-			<para>
-				OID.
-				NAME.
-				DESC.
-				OBSOLETE.
-				SUP(erior).
-				EQUALITY, ORDERING, SUBSTR.
-				SYNTAX.
-				SINGLE-VALUE, MULTI-VALUE.
-				COLLECTIVE.
-				NO-USER-MODIFICATION.
-				USAGE.
-			</para>
-		</section>
-
-	</section>
-
 	<section id="udm:modules">
 		<title>UDM Modules</title>
 		<remark>PMH: Bug #29525</remark>
