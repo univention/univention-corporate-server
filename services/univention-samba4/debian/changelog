@@ -1,3 +1,9 @@
+univention-samba4 (3.0.32-1.1) unstable; urgency=low
+
+  * Fix python syntax in scripts/purge_s4_computer.py (Bug #30763)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 Oct 2013 16:56:27 +0100
+
 univention-samba4 (3.0.32-1) unstable; urgency=low
 
   * Run ldapmodify against ldap master (Bug #2900)

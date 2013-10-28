@@ -136,7 +136,7 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
 						print >>sys.stderr, "Removal of location '%s' from dns/srv_record %s via UDM failed: %s" % (target_location, srv_record_name, e)
 						sys.exit(1)
 				else:
-					print "Removing dns/srv_record %s via UDM" % (target_location, srv_record_name)
+					print "Removing dns/srv_record %s via UDM" % (srv_record_name,)
 					try:
 						obj.delete()
 					except univention.admin.uexceptions.ldapError, e:
