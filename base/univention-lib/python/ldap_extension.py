@@ -311,8 +311,11 @@ class UniventionLDAPExtension(object):
 							udm_object.open()
 							udm_object['active']=True
 							udm_object.modify()
+						except univention.admin.uexceptions.noObject, e:
+							ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: object not found.' % (object_dn,))
 						except udm_errors.ldapError, e:
 							ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: %s.' % (object_dn, e))
+							raise
 					self._todo_list = []
 
 			except udm_errors.ldapError, e:
@@ -357,13 +360,14 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 				return
 
 			if old:	## check for trivial changes
-				diff_keys = [ key for key in new.keys() if new.get(key) != old.get(key)  and key not in ('entryCSN', 'modifyTimestamp')]
+				diff_keys = [ key for key in new.keys() if new.get(key) != old.get(key) and key not in ('entryCSN', 'modifyTimestamp', 'modifiersName')]
 				if diff_keys == ['univentionLDAPSchemaActive'] and new.get('univentionLDAPSchemaActive') == 'TRUE':
 					ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: activation status changed.' % (name, new['cn'][0]))
 					return
 				elif diff_keys == ['univentionAppIdentifier']:
 					ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: App identifier changed.' % (name, new['cn'][0]))
 					return
+				ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: changed attributes: %s' % (name, new['cn'][0], diff_keys))
 
 				if new_pkgname == old.get('univentionOwnedByPackage', [None])[0]:
 					old_version = old.get('univentionOwnedByPackageVersion', ['0'])[0]
@@ -497,8 +501,6 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 					self._do_reload = True
 					if dn in self._todo_list:
 						self._todo_list = [ x for x in self._todo_list if x != dn ]
-						if not self._todo_list:
-							self._do_reload = False
 
 				finally:
 					listener.unsetuid()
@@ -541,13 +543,14 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 				return
 
 			if old:	## check for trivial changes
-				diff_keys = [ key for key in new.keys() if new.get(key) != old.get(key)  and key not in ('entryCSN', 'modifyTimestamp', 'modifiersName')]
+				diff_keys = [ key for key in new.keys() if new.get(key) != old.get(key) and key not in ('entryCSN', 'modifyTimestamp', 'modifiersName')]
 				if diff_keys == ['univentionLDAPACLActive'] and new.get('univentionLDAPACLActive')[0] == 'TRUE':
 					ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: activation status changed.' % (name, new['cn'][0]))
 					return
 				elif diff_keys == ['univentionAppIdentifier']:
 					ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: App identifier changed.' % (name, new['cn'][0]))
 					return
+				ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: changed attributes: %s' % (name, new['cn'][0], diff_keys))
 
 				if new_pkgname == old.get('univentionOwnedByPackage', [None])[0]:
 					old_version = old.get('univentionOwnedByPackageVersion', ['0'])[0]
