@@ -216,6 +216,12 @@ define([
 
 		_next: function(/*String*/ currentPage) {
 			// update visibilty of buttons and show next page
+			if (this.autoValidate) {
+				var page = this._pages[currentPage];
+				if (page && page._form && !page._form.validate()) {
+					return;
+				}
+			}
 			when(this.next(currentPage), lang.hitch(this, function(nextPage) {
 				if (!nextPage) {
 					throw new Error('ERROR: received invalid page name [' + json.stringify(nextPage) + '] for Wizard.next(' + json.stringify(currentPage) + ')');
@@ -249,14 +255,6 @@ define([
 			//		by the `pages` property.
 			if ((null === pageName || undefined === pageName) && this.pages.length) {
 				return this.pages[0].name;
-			}
-			if (this.autoValidate) {
-				var form = this._pages[pageName]._form;
-				if (form) {
-					if (!form.validate()) {
-						return pageName;
-					}
-				}
 			}
 			var i = this._getPageIndex(pageName);
 			if (i < 0) {
@@ -298,6 +296,12 @@ define([
 		},
 
 		_finish: function(/*String*/ pageName) {
+			if (this.autoValidate) {
+				var page = this._pages[pageName];
+				if (page && page._form && !page._form.validate()) {
+					return;
+				}
+			}
 			// gather all values
 			var values = this.getValues();
 			if (this.canFinish(values, pageName)) {
@@ -332,12 +336,6 @@ define([
 		canFinish: function(/*Object*/ values, /*String*/ pageName) {
 			// summary:
 			//		Specifies whether the onFinished event can be called
-			if (this.autoValidate) {
-				var form = this._pages[pageName]._form;
-				if (form) {
-					return form.validate();
-				}
-			}
 			return true;
 		},
 

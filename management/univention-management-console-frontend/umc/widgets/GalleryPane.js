@@ -231,7 +231,7 @@ define([
 
 				this.on('.umcGalleryItem:touchstart', lang.hitch(this, function(evt) {
 					_contextTouchTimeout = setTimeout(lang.hitch(this, function() {
-						var row = this._grid.row(evt);
+						var row = this.row(evt);
 						this._openContextMenu(row.data, row.element, evt.pageX, evt.pageY);
 						_contextTouchTimeout = null;
 					}), 1000);
