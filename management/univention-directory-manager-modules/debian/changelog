@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.72-3) unstable; urgency=low
+
+  * Adjust german translation of "universal group" (Bug #32767)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 Oct 2013 19:33:37 +0100
+
 univention-directory-manager-modules (9.0.72-2) unstable; urgency=low
 
   * Bug #32565: Stop UDM cli in postinst: Syntax or handlers may have changed

@@ -976,7 +976,7 @@ msgstr "Global (Typ: Sicherheit)"
 
 #: syntax.py:2458
 msgid "Universal (Type: Security)"
-msgstr "Universal (Typ: Sicherheit)"
+msgstr "Universell (Typ: Sicherheit)"
 
 #: syntax.py:2459
 msgid "Domain local (Type: Security)"
@@ -992,7 +992,7 @@ msgstr "Global (Typ: Verteilung)"
 
 #: syntax.py:2462
 msgid "Universal (Type: Distribution)"
-msgstr "Universal (Typ: Verteilung)"
+msgstr "Universell (Typ: Verteilung)"
 
 #: syntax.py:2466
 msgid "Sun"
@@ -1396,7 +1396,7 @@ msgid ""
 "The AD group type can not be changed from global to universal, because the "
 "group is member of another global group."
 msgstr ""
-"Der AD Gruppentyp kann nicht von Global auf Universal geändert werden, weil "
+"Der AD Gruppentyp kann nicht von Global auf Universell geändert werden, weil "
 "die Gruppe ist Mitglied einer anderen Globalen Gruppe."
 
 #: uexceptions.py:112
@@ -1404,7 +1404,7 @@ msgid ""
 "The AD group type can not be changed from domain local to universal, because "
 "the group has another domain local group as member."
 msgstr ""
-"Der AD Gruppentyp kann nicht von Domänenlokal auf Universal geändert werden, "
+"Der AD Gruppentyp kann nicht von Domänenlokal auf Universell geändert werden, "
 "weil die Gruppe eine andere Domänenlokalen Gruppe als Mitglied hat."
 
 #: uexceptions.py:114
@@ -1412,8 +1412,8 @@ msgid ""
 "The AD group type can not be changed from universal to global, because the "
 "group has another universal group as member."
 msgstr ""
-"Der AD Gruppentyp kann nicht von Universal auf Global geändert werden, weil "
-"die Gruppe eine andere Universal Gruppe als Mitglied hat."
+"Der AD Gruppentyp kann nicht von Universell auf Global geändert werden, weil "
+"die Gruppe eine andere Universelle Gruppe als Mitglied hat."
 
 #: uexceptions.py:117
 msgid "The AD group type can not be changed from global to domain local."
