@@ -10,5 +10,5 @@
 0010-2: tests/test_setup_netconf_ldap
 0010-2: tests/test_setup_netconf_ChangeSet
 0010-2: tests/test_setup_netconf_pkgdb
-0010-2: tests/test_setup_netconf_policies
+0010-2: tests/test_setup_netconf_references
 0010-2: tests/test_setup_netconf_modules

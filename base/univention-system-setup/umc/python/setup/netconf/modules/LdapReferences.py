@@ -5,12 +5,12 @@ from univention.admin.uexceptions import base as UniventionBaseException
 from ldap import LDAPError
 
 
-class PhaseLdapPolicies(AddressMap, LdapChange):
+class PhaseLdapReferences(AddressMap, LdapChange):
 	"""
 	Rewrite IP configuration in LDAP object.
 	"""
 	priority = 42
-	policies = (
+	referers = (
 		("policies/thinclient", "fileServer"),
 		("policies/thinclient", "authServer"),
 		("policies/thinclient", "linuxTerminalServer"),
@@ -24,26 +24,26 @@ class PhaseLdapPolicies(AddressMap, LdapChange):
 		("shares/share", "host"),
 		("shares/printer", "spoolHost"),
 		("dns/forward_zone", "a"),
-   )
+	)
 
 	def __init__(self, changeset):
-		super(PhaseLdapPolicies, self).__init__(changeset)
+		super(PhaseLdapReferences, self).__init__(changeset)
 		modules.update()
 
 	def post(self):
 		try:
 			self.open_ldap()
-			for module, udm_property in self._iterate_policies():
+			for module, udm_property in self._iterate_objects():
 				#ldap_attribute = module.mapping.mapName(udm_property)
 				#force = not module.property_descriptions[udm_property].multivalue
-				policies = module.lookup(None, self.ldap, None)
-				for policy in policies:
-					self._rewrite_policy(policy, udm_property)
+				objects = module.lookup(None, self.ldap, None)
+				for obj in objects:
+					self._rewrite_object(obj, udm_property)
 		except (LDAPError, UniventionBaseException) as ex:
 			self.logger.warn("Failed LDAP: %s", ex, exc_info=True)
 
-	def _iterate_policies(self):
-		for module_name, udm_property in self.policies:
+	def _iterate_objects(self):
+		for module_name, udm_property in self.referers:
 			module = modules.get(module_name)
 			if not module:
 				self.logger.debug("Unknown module '%s", module_name)
@@ -52,19 +52,20 @@ class PhaseLdapPolicies(AddressMap, LdapChange):
 			modules.init(self.ldap, self.position, module)
 			yield module, udm_property
 
-	def _rewrite_policy(self, policy, udm_property):
+	def _rewrite_object(self, obj, udm_property):
+		obj.open()
 		try:
-			old_values = set(policy.info[udm_property])
+			old_values = set(obj.info[udm_property])
 			new_values = set((
 				self.ip_mapping.get(value, value)
 				for value in old_values
 			))
 			if old_values == new_values:
 				return
-			policy.info[udm_property] = list(new_values)
+			obj.info[udm_property] = list(new_values)
 			if self.changeset.no_act:
-				self.logger.info("Would update '%r'", policy.diff())
+				self.logger.info("Would update '%r'", obj.diff())
 			else:
-				policy.modify()
+				obj.modify()
 		except KeyError:
 			pass

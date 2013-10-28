@@ -1,12 +1,12 @@
 #!/usr/bin/python2.6
-"""Unit test for univention.management.console.modules.setup.netconf.modules.LdapPolicies"""
+"""Unit test for univention.management.console.modules.setup.netconf.modules.LdapReferences"""
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest
 import os
 import univention.management.console.modules
 univention.management.console.modules.__path__.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
 from univention.management.console.modules.setup.netconf import ChangeSet
-from univention.management.console.modules.setup.netconf.modules import LdapPolicies
+from univention.management.console.modules.setup.netconf.modules import LdapReferences
 
 
 class DummyOption(object):
@@ -47,7 +47,7 @@ class Testpolicyhanged(unittest.TestCase):
 		}
 		options = DummyOption()
 		self.cs = ChangeSet(ucr, profile, options)
-		self.phase = LdapPolicies.PhaseLdapPolicies(self.cs)
+		self.phase = LdapReferences.PhaseLdapReferences(self.cs)
 
 	def disabled_test_ldap(self):
 		self.phase.check()
