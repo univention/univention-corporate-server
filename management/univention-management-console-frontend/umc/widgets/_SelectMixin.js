@@ -151,11 +151,6 @@ define([
 					this.set('value', this._firstValueInList);
 				}
 			}));
-		},
-
-		startup: function() {
-			//console.log('### startup ['+this.name+']');
-			this.inherited(arguments);
 
 			this._loadValues();
 		},

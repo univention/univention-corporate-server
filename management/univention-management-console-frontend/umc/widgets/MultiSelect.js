@@ -103,6 +103,11 @@ define([
 			}));
 		},
 
+		startup: function() {
+			this.inherited(arguments);
+			this.resize();
+		},
+
 		_getSizeAttr: function() {
 			return this.get('autoHeight');
 		},
