@@ -1,0 +1,109 @@
+#!/usr/bin/python2.6
+"""Unit test for univention.management.console.modules.setup.netconf.modules.RewritePxe"""
+# pylint: disable-msg=C0103,E0611,R0904
+import unittest
+import os
+import univention.management.console.modules
+univention.management.console.modules.__path__.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
+from univention.management.console.modules.setup.netconf import ChangeSet
+from univention.management.console.modules.setup.netconf.modules import RewritePxe
+
+
+class DummyOption(object):
+	def __init__(self):
+		self.no_act = True
+
+
+class TestPxeRewrite(unittest.TestCase):
+	def setUp(self):
+		ucr = {
+			"interfaces/eth0/address": "2.3.4.5",
+			"interfaces/eth0/netmask": "255.255.255.0",
+		}
+		profile = {
+			"interfaces/eth0/address": "2.3.4.100",
+			"interfaces/eth0/netmask": "255.255.255.0",
+		}
+		options = DummyOption()
+		self.cs = ChangeSet(ucr, profile, options)
+		self.phase = RewritePxe.PhaseRewritePxe(self.cs)
+		self.mapping = RewritePxe.Mapping(self.phase.ipv4_changes())
+
+	def test_plain(self):
+		self.assertEqual("2.3.4.100", self.mapping.apply("2.3.4.5"))
+
+	def test_other(self):
+		self.assertEqual("2.3.4.6", self.mapping.apply("2.3.4.6"))
+
+	def test_multiple(self):
+		self.assertEqual("2.3.4.100 2.3.4.100", self.mapping.apply("2.3.4.5 2.3.4.5"))
+
+	def test_prefix(self):
+		self.assertEqual("2.3.4.55", self.mapping.apply("2.3.4.55"))
+
+	def test_suffix(self):
+		self.assertEqual("22.3.4.5", self.mapping.apply("22.3.4.5"))
+
+	def test_embedded(self):
+		self.assertEqual("foo=2.3.4.100:123", self.mapping.apply("foo=2.3.4.5:123"))
+
+
+class TestPxeRewriteMultiple(unittest.TestCase):
+	def setUp(self):
+		ucr = {
+			"interfaces/eth0/address": "2.3.4.5",
+			"interfaces/eth0/netmask": "255.255.255.0",
+			"interfaces/eth1/address": "9.8.7.6",
+			"interfaces/eth1/netmask": "255.255.0.0",
+		}
+		profile = {
+			"interfaces/eth0/address": "2.3.4.100",
+			"interfaces/eth0/netmask": "255.255.255.0",
+			"interfaces/eth1/address": "9.8.7.100",
+			"interfaces/eth1/netmask": "255.255.0.0",
+		}
+		options = DummyOption()
+		self.cs = ChangeSet(ucr, profile, options)
+		self.phase = RewritePxe.PhaseRewritePxe(self.cs)
+		self.mapping = RewritePxe.Mapping(self.phase.ipv4_changes())
+
+	def test_first(self):
+		self.assertEqual("2.3.4.100", self.mapping.apply("2.3.4.5"))
+
+	def test_second(self):
+		self.assertEqual("9.8.7.100", self.mapping.apply("9.8.7.6"))
+
+	def test_both(self):
+		self.assertEqual("2.3.4.100 9.8.7.100", self.mapping.apply("2.3.4.5 9.8.7.6"))
+
+
+class TestPxeRewriteRemoved(unittest.TestCase):
+	def setUp(self):
+		ucr = {
+			"interfaces/eth0/address": "2.3.4.5",
+			"interfaces/eth0/netmask": "255.255.255.0",
+			"interfaces/eth1/address": "9.8.7.6",
+			"interfaces/eth1/netmask": "255.255.0.0",
+		}
+		profile = {
+			"interfaces/eth1/address": "9.8.7.100",
+			"interfaces/eth1/netmask": "255.255.0.0",
+			"interfaces/primary": "eth1",
+		}
+		options = DummyOption()
+		self.cs = ChangeSet(ucr, profile, options)
+		self.phase = RewritePxe.PhaseRewritePxe(self.cs)
+		self.mapping = RewritePxe.Mapping(self.phase.ipv4_changes())
+
+	def test_first(self):
+		self.assertEqual("9.8.7.100", self.mapping.apply("2.3.4.5"))
+
+	def test_second(self):
+		self.assertEqual("9.8.7.100", self.mapping.apply("9.8.7.6"))
+
+	def test_both(self):
+		self.assertEqual("9.8.7.100 9.8.7.100", self.mapping.apply("2.3.4.5 9.8.7.6"))
+
+
+if __name__ == '__main__':
+	unittest.main()
