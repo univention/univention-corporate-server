@@ -60,10 +60,11 @@ define([
 	"umc/modules/udm/Template",
 	"umc/modules/udm/OverwriteLabel",
 	"umc/modules/udm/UMCPBundle",
+	"umc/modules/udm/cache",
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/widgets"
-], function(declare, lang, array, on, Deferred, when, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, ProgressBar, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, _ ) {
+], function(declare, lang, array, on, Deferred, when, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, ProgressBar, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
 	return declare("umc.modules.udm.DetailPage", [ ContentPane, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -84,6 +85,9 @@ define([
 		// objectType: String
 		//		The object type of the LDAP object that is edited.
 		objectType: null,
+
+		// ldapBase: String
+		ldapBase: null,
 
 		// ldapName: String?|String[]?
 		//		The LDAP DN of the object that is edited. This property needs not to be set
@@ -187,30 +191,28 @@ define([
 
 			// for the detail page, we first need to query property data from the server
 			// for the layout of the selected object type, then we can render the page
+			var objectDN = this._multiEdit ? null : this.ldapName || null;
 			var params = {
 				objectType: this.objectType,
 				// when editing multiple items, get the properties as for a new object
-				objectDN: this._multiEdit ? null : this.ldapName || null
+				objectDN: objectDN
 			};
 
-			// udm/objects/properties will be bundled
-			this._bundledCommands = {};
-
 			// prepare parallel queries
-			this.propertyQuery = this.umcpCommandBundle('udm/properties', params);
+			var moduleCache = cache.get(this.moduleFlavor);
+			this.propertyQuery = moduleCache.getProperties(this.objectType, objectDN);
 			var commands = {
 				properties: this.propertyQuery,
-				layout: this.umcpCommandBundle('udm/layout', params)
+				layout: moduleCache.getLayout(this.objectType, objectDN)
 			};
 			if (!this._multiEdit) {
 				// query policies for normal edit
-				commands.policies = this.umcpCommand('udm/policies', params);
+				commands.policies = moduleCache.getPolicies(this.objectType)
 			} else {
 				// for multi-edit, mimic an empty list of policies
 				commands.policies = new Deferred();
 				commands.policies.resolve();
 			}
-			commands.ucr = tools.ucr( [ 'ldap/base' ] );
 
 			// in case an object template has been chosen, add the umcp request for the template
 			var objTemplate = lang.getObject('objectTemplate', false, this.newObjectOptions);
@@ -227,12 +229,8 @@ define([
 				this.standbyDuring(this.loadedDeferred, this._progressBar);
 			}));
 			(new all(commands)).then(lang.hitch(this, function(results) {
-				var properties = lang.getObject('properties.result', false, results);
-				var layout = lang.getObject('layout.result', false, results);
-				var policies = lang.getObject('policies.result', false, results);
-				this.ldapBase = results.ucr[ 'ldap/base' ];
 				var template = lang.getObject('template.result', false, results) || null;
-				this.renderDetailPage(properties, layout, policies, template).then(lang.hitch(this, function() {
+				this.renderDetailPage(results.properties, results.layout, results.policies, template).then(lang.hitch(this, function() {
 					this.loadedDeferred.resolve();
 				}), lang.hitch(this, function() {
 					this.loadedDeferred.resolve();
@@ -851,6 +849,9 @@ define([
 		// TODO: this could very well go into tools.
 		// for now, it is only tested to work with udm/object/policies
 		umcpCommandBundle: function(command, params) {
+			if (!this._bundledCommands) {
+				this._bundledCommands = {};
+			}
 			if (this._bundledCommands[command] === undefined) {
 				this._bundledCommands[command] = new UMCPBundle(command, this.umcpCommand);
 			}

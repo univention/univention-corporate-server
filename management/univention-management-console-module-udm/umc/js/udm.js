@@ -66,6 +66,7 @@ define([
 	"umc/modules/udm/CreateReportDialog",
 	"umc/modules/udm/NewObjectDialog",
 	"umc/modules/udm/DetailPage",
+	"umc/modules/udm/cache",
 	"umc/i18n!umc/modules/udm",
 	"umc/modules/udm/MultiObjectSelect",
 	"umc/modules/udm/ComboBox",
@@ -74,7 +75,7 @@ define([
 	domStyle, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog,
 	store, ContainerWidget, Text, CheckBox, ComboBox, Module, Page, Grid,
 	ExpandingTitlePane, Form, SearchForm, Button, Tree, ProgressBar, TreeModel,
-	TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, _)
+	TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, cache, _)
 {
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
@@ -252,6 +253,7 @@ define([
 				// in order to correctly render the search form...
 				// query also necessary UCR variables for the UDM module
 				this.standby(true);
+				cache.get(this.moduleFlavor).preloadModuleInformation();
 				all({
 					containers: this.umcpCommand('udm/containers'),
 					superordinates: this.umcpCommand('udm/superordinates'),
@@ -1358,6 +1360,7 @@ define([
 				moduleStore: this.moduleStore,
 				moduleFlavor: this.moduleFlavor,
 				objectType: objectType,
+				ldapBase: this._ucr['ldap/base'],
 				ldapName: ldapName,
 				newObjectOptions: newObjOptions,
 				moduleWidget: this,

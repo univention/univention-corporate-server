@@ -750,8 +750,20 @@ class Instance( Base, ProgressMixin ):
 
 	def policies( self, request ):
 		"""Returns a list of policy types that apply to the given object type"""
-		module = self._get_module_by_request( request )
-		self.finished( request.id, module.policies )
+		bundled = True
+		all_options = request.options
+		if not isinstance(request.options, list):
+			all_options = [request.options]
+			bundled = False
+
+		result = []
+		for options in all_options:
+			module = self._get_module_by_request(request, options.get('objectType'))
+			result.append(module.policies)
+
+		if not bundled:
+			result = result[0]
+		self.finished( request.id, result )
 
 	def validate( self, request ):
 		"""Validates the correctness of values for properties of the

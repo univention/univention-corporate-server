@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.66-1) unstable; urgency=low
+
+  * Bug #32978: added caching of static UDM object values for optimization
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 28 Oct 2013 16:18:53 +0100
+
 univention-management-console-module-udm (4.0.65-1) unstable; urgency=low
 
   * fixed typo in UMC UDM policy module description (Bug #32022)
