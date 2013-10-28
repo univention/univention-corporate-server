@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define window*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
@@ -41,14 +41,13 @@ define([
 	"umc/widgets/Wizard",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/Text",
-	"umc/widgets/Button",
 	"umc/widgets/TextBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/PasswordBox",
 	"umc/widgets/InfoUploader",
 	"umc/i18n!umc/modules/adconnector"
-], function(declare, lang, array, DijitDialog, dialog, tools, render, Module, Page, Wizard, StandbyMixin, Text, Button, TextBox, CheckBox, ComboBox, PasswordBox, InfoUploader, _) {
+], function(declare, lang, array, DijitDialog, dialog, tools, render, Module, Page, Wizard, StandbyMixin, Text, TextBox, CheckBox, ComboBox, PasswordBox, InfoUploader, _) {
 
 	var ADConnectorWizard = declare("umc.modules._adconnector.Wizard", [Wizard], {
 		pages: null,
@@ -384,37 +383,17 @@ define([
 			+ '</li>';
 
 			if (result.configured) {
-				downloadText += '<li id="adconnector/cert.pem"><br>'
+				downloadText += '<li><a target="_blank" href="/umcp/command/adconnector/cert.pem" type="application/octet-stream">cert.pem</a><br>'
 				+ _('The <b>cert.pem</b> file contains the SSL certificates created in UCS for secure communication.') + ' '
 				+ _('It must be copied into the installation directory of the password service.')
 				+ _('<br />Please verify that the file has been downloaded as <b>cert.pem</b>, Internet Explorer appends a .txt under some circumstances.')
-				+ '</li><li id="adconnector/private.key"><br>'
+				+ '</li><li><a target="_blank" href="/umcp/command/adconnector/private.key" type="application/octet-stream">private.key</a><br>'
 				+ _('The <b>private.key</b> file contains the private key to the SSL certificates.') + ' '
 				+ _('It must be copied into the installation directory of the password service.')
 				+ '</li>';
 			}
 			downloadText += '</ul>';
 			this._widgets.download.set('content', downloadText);
-
-			if (result.configured) {
-				this.placeButton('adconnector/private.key');
-				this.placeButton('adconnector/cert.pem');
-			}
-		},
-
-		placeButton: function(url) {
-			var label = _('Download %s', url.substring(url.indexOf('/') + 1));
-			var button = new Button({
-				label: label,
-				callback: function() {
-					var remoteWin = window.open('', '_blank');
-					tools.umcpCommand(url).then(function(response) {
-						remoteWin.location = response.result;
-					});
-				}
-			});
-			this.own(button);
-			button.placeAt(url, 'first');
 		},
 
 		showHideElements: function() {

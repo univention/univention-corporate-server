@@ -36,21 +36,18 @@ from univention.lib import Translation
 from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
-from univention.management.console.modules.decorators import simple_response, file_upload, sanitize
+from univention.management.console.modules.decorators import file_upload, sanitize
 from univention.management.console.modules.sanitizers import StringSanitizer
 from univention.management.console.modules import UMC_CommandError
 
 import notifier.popen
 
-import uuid
-import shutil
 import fnmatch
 import psutil
 import os.path
 import subprocess
 import time
 import pipes
-from pwd import getpwnam
 
 _ = Translation('univention-management-console-module-adconnector').translate
 
@@ -223,50 +220,27 @@ class Instance( Base ):
 		proc.signal_connect( 'finished', cb )
 		proc.start()
 
-	@simple_response
-	def private_key(self):
-		return self._serve_file('private.key')
+	def private_key(self, request):
+		self._serve_file(request, 'private.key')
 
-	@simple_response
-	def cert_pem(self):
-		return self._serve_file('cert.pem')
+	def cert_pem(self, request):
+		self._serve_file(request, 'cert.pem')
 
-	def _serve_file(self, filename):
+	def _serve_file(self, request, filename):
 		ucr.load()
 
 		host = ucr.get('connector/ad/ldap/host')
-		filepath = '/etc/univention/ssl/%s/%s' % (host, filename)
-
 		if not host:
 			raise UMC_CommandError('Not configured yet')
+
+		host = host.replace('/', '')
+		filepath = '/etc/univention/ssl/%s/%s' % (host, filename)
+
 		if not os.path.exists(filepath):
 			raise UMC_CommandError('File does not exists')
 
-		tempdirname = str(uuid.uuid4())
-		destination = '/var/www/univention-ad-connector/%s/' % (tempdirname,)
-		destfile = os.path.join(destination, filename)
-
-		try:
-			uid = getpwnam('www-data').pw_uid
-			os.mkdir(destination, 0700)
-			os.chown(destination, uid, 0)
-			shutil.copy(filepath, destfile)
-			os.chown(destfile, uid, 0)
-		except Exception, exc:
-			MODULE.error('Creation of %r failed: %s' % (destfile, exc))
-			raise
-		else:
-			def remove_tempfile():
-				try:
-					os.remove(destfile)
-					os.removedirs(destination)
-				except Exception, exc:
-					MODULE.error('Removing failed: %s' % (exc,))
-				finally:
-					return False  # stops timer
-			notifier.timer_add(30000, remove_tempfile)
-
-		return '/univention-ad-connector/%s/%s' % (tempdirname, filename)
+		with open(filepath, 'rb') as fd:
+			self.finished(request.id, fd.read(), mimetype='application/octet-stream')
 
 	@file_upload
 	def upload_certificate( self, request ):

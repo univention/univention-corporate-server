@@ -60,11 +60,6 @@ msgstr "UCS Active Directory Connector einrichten"
 msgid "Debug level of Active Directory Connector"
 msgstr "Debug-level des UCS Active Directory Connector"
 
-#: umc/js/adconnector.js:406
-#, python-format
-msgid "Download %s"
-msgstr "%s herunterladen"
-
 #: umc/js/adconnector.js:365
 msgid "Download the password service for Windows and the UCS certificate"
 msgstr ""

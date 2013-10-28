@@ -6,9 +6,6 @@ scripts/prepare-new-instance usr/share/univention-ad-connector/scripts
 conffiles/etc/univention/connector/ad/mapping etc/univention/connector/ad/
 files/var/www/univention-ad-connector/.htaccess var/www/univention-ad-connector/
 
-# apache config
-apache2.conf etc/apache2/conf.d/univention-ad-connector
-
 19univention-ad-connector.uinst usr/lib/univention-uninstall/
 81univention-ad-connector.inst usr/lib/univention-install/
 
