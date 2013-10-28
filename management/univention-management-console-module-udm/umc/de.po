@@ -40,7 +40,7 @@ msgid "Management of directory shares in the domain"
 msgstr ""
 "Verwaltung von Verzeichnisfreigaben in der Domäne"
 
-msgid "Management domain wide policies"
+msgid "Management of domain wide policies"
 msgstr "Verwaltung von domänenweiten Richtlinien"
 
 msgid "Management of computers in the domain"

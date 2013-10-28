@@ -2,7 +2,7 @@
 <umc version="2.0">
 	<module id="adconnector" icon="adconnector" priority="3" version="1.0">
 		<name>UCS Active Directory Connector</name>
-		<description>Configuration of the UCS Active Directory Connector</description>
+		<description>Configuration of the UCS Active Directory Connector of the local system</description>
 		<keywords>adconnector</keywords>
 
 		<categories>

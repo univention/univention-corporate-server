@@ -56,7 +56,7 @@
 		</flavor>
 		<flavor icon="udm-policies" priority="3" id="policies/policy">
 			<name>Policies</name>
-			<description>Management domain wide policies</description>
+			<description>Management of domain wide policies</description>
 			<keywords>policy,policies</keywords>
 		</flavor>
 		<flavor icon="udm-navigation" priority="2" id="navigation">

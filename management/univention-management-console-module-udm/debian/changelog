@@ -1,6 +1,12 @@
+univention-management-console-module-udm (4.0.65-1) unstable; urgency=low
+
+  * fixed typo in UMC UDM policy module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 28 Oct 2013 16:02:27 +0100
+
 univention-management-console-module-udm (4.0.64-1) unstable; urgency=low
 
-  * revised udm module descriptions again (Bug #32022)
+  * revised UMC UDM module descriptions again (Bug #32022)
 
  -- Lukas Walter <walter@univention.de>  Mon, 28 Oct 2013 11:22:49 +0100
 
