@@ -65,8 +65,7 @@
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 		</para>
 		<para>
-			The UDM module <literal>settings/ldapschema</literal> requires several parameters.
-			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
+			The UDM module <literal>settings/ldapschema</literal> requires several parameters:
 		</para>
 		<variablelist>
 			<varlistentry><term><literal>name</literal> (required)</term>
@@ -120,6 +119,30 @@
 				</listitem>
 			</varlistentry>
 		</variablelist>
+		<para>
+			Since many of these parameters are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
+		</para>
+		<para>
+			Example usage in join script:
+		</para>
+		<programlisting language="sh"><![CDATA[
+eval "$(ucr shell)"
+pkg_name="mypackage"
+schema_file="/usr/share/$pkg_name/schema1"
+
+pkg_version="$(dpkg-query -W -f='${Version}' "$pkg_name")"
+schema_data_encoded="$(cat "$schema_file" | bzip2 | base64 -w0)"
+
+udm settings/ldapschema create "$@" \
+	--ignore_exists \
+	--position "cn=ldapschema,cn=univention,$ldap_base" \
+	--set name=MySchema1 \
+	--set data="$schema_data_encoded" \
+	--set filename="$pkg_name".schema1 \
+	--set package="$pkg_name" \
+	--set packageversion="$pkg_version" \
+	--set appidentifier="MyApp"
+		]]></programlisting>
 	</section>
 
 	<section id="settings:ldapacl">
@@ -139,8 +162,7 @@
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 		</para>
 		<para>
-			The UDM module <literal>settings/ldapacl</literal> requires several parameters.
-			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
+			The UDM module <literal>settings/ldapacl</literal> requires several parameters:
 		</para>
 		<variablelist>
 			<varlistentry><term><literal>name</literal> (required)</term>
@@ -208,5 +230,31 @@
 				</listitem>
 			</varlistentry>
 		</variablelist>
+		<para>
+			Since many of these parameters are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
+		</para>
+		<para>
+			Example usage in join script:
+		</para>
+		<programlisting language="sh"><![CDATA[
+eval "$(ucr shell)"
+pkg_name="mypackage"
+acl_file="/usr/share/$pkg_name/acl1"
+
+pkg_version="$(dpkg-query -W -f='${Version}' "$pkg_name")"
+acl_data_encoded="$(cat "$acl_file" | bzip2 | base64 -w0)"
+
+udm settings/ldapacl create "$@" \
+	--ignore_exists \
+	--position "cn=ldapacl,cn=univention,$ldap_base" \
+	--set name=MyACL1 \
+	--set data="$acl_data_encoded" \
+	--set filename="$pkg_name".acl1 \
+	--set package="$pkg_name" \
+	--set packageversion="$pkg_version" \
+	--set appidentifier="MyApp" \
+	--set ucsversionstart="3.2-0" \
+	--set ucsversionend="3.2-99"
+		]]></programlisting>
 	</section>
 </chapter>
