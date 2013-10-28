@@ -44,7 +44,7 @@ class PhaseKernelModules(Executable):
 
 	def set_configured_modules(self, modules):
 		value = self.variable_separator.join(sorted(modules)) or None
-		self.logger.info("Updating '%s'='%s'", self.variable_name, value)
+		self.logger.info("Updating '%s'='%s'...", self.variable_name, value)
 		self.changeset.ucr_changes[self.variable_name] = value
 
 	def load_modules(self, modules):

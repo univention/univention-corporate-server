@@ -16,7 +16,6 @@ class PhaseResolvConv(Dhcp):
 
 	def post(self):
 		super(PhaseResolvConv, self).post()
-		if self.changeset.no_act:
-			self.logger.info("Committing /etc/resolv.conf")
-		else:
+		self.logger.info("Committing /etc/resolv.conf...")
+		if not self.changeset.no_act:
 			handler_commit(["/etc/resolv.conf"])

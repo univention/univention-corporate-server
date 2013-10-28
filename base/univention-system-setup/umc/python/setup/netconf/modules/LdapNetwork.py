@@ -39,15 +39,13 @@ class PhaseLdapNetwork(LdapChange):
 			self._recreate_network()
 		except (LDAPError, UniventionBaseException) as ex:
 			self.logger.warn("Failed LDAP: %s", ex)
-			raise
 
 	def _update_network(self):
 		network_dn = "cn=default,cn=networks,%(ldap/base)s" % self.changeset.ucr
 		new_default = str(self.changeset.new_interfaces.get_default_ipv4_address().network)
 		changes = [("univentionNetwork", "UNKNOWN", new_default)]
-		if self.changeset.no_act:
-			self.logger.info("Would update '%s' with '%r'", network_dn, changes)
-		else:
+		self.logger.info("Updating '%s' with '%r'...", network_dn, changes)
+		if not self.changeset.no_act:
 			try:
 				self.ldap.modify(network_dn, changes)
 			except (LDAPError, UniventionBaseException) as ex:
@@ -67,9 +65,8 @@ class PhaseLdapNetwork(LdapChange):
 		network = univention.admin.objects.get(network_module, None, self.ldap, self.position, network_dn)
 		if not network.exists():
 			return
-		if self.changeset.no_act:
-			self.logger.info("Would remove '%s'", network_dn)
-		else:
+		self.logger.info("Removing '%s'...", network_dn)
+		if not self.changeset.no_act:
 			network.remove()
 
 	def _find_forward_zone(self):
@@ -111,7 +108,6 @@ class PhaseLdapNetwork(LdapChange):
 			network.info["dnsEntryZoneReverse"] = reverse_zone
 		if dhcp_service:
 			network.info["dhcpEntryZone"] = dhcp_service
-		if self.changeset.no_act:
-			self.logger.info("Would create '%s' with '%r'", network.position.getDn(), network.info)
-		else:
+		self.logger.info("Creating '%s' with '%r'...", network.position.getDn(), network.info)
+		if not self.changeset.no_act:
 			network.create()

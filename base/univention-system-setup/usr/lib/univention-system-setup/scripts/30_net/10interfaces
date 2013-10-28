@@ -79,6 +79,10 @@ class NetworkSetup(SetupScript):
 			action="count", dest="verbose", default=3,
 			help="Log verbose")
 		parser.add_option(
+			"--quiet", "-q",
+			action="store_const", dest="verbose", const=0,
+			help="Disable verbose logging")
+		parser.add_option(
 			"--no-act", "--dry-run", "-n",
 			action="store_true", dest="no_act",
 			help="Don't run any commands")
@@ -101,7 +105,7 @@ class NetworkSetup(SetupScript):
 			level = self.UD_LEVEL[self.options.verbose]
 		except IndexError:
 			level = self.UD_LEVEL[-1]
-		ud.init("stderr", ud.NO_FLUSH, ud.FUNCTION)
+		ud.init("stderr", ud.NO_FLUSH, ud.NO_FUNCTION)
 		ud.set_level(ud.ADMIN, level)
 
 	def prepare_changeset(self):

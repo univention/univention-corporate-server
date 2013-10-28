@@ -63,9 +63,8 @@ class PhaseLdapReferences(AddressMap, LdapChange):
 			if old_values == new_values:
 				return
 			obj.info[udm_property] = list(new_values)
-			if self.changeset.no_act:
-				self.logger.info("Would update '%r'", obj.diff())
-			else:
+			self.logger.info("Updating '%s' with '%r'...", obj.dn, obj.diff())
+			if not self.changeset.no_act:
 				obj.modify()
 		except KeyError:
 			pass

@@ -89,17 +89,23 @@ class RunPhases(object):
 				phase = clazz(changeset)
 				self.logger.debug("Calling %s.check()...", phase)
 				phase.check()
-				self.logger.info("Adding phase %s", phase)
+				self.logger.info("Adding phase %s as %02d", phase, phase.priority)
 				self.phases.append(phase)
 			except SkipPhase as ex:
 				self.logger.warn("Phase skipped: %s", ex)
 
 	def pre(self):
 		for phase in sorted(self.phases):
-			self.logger.debug("Calling %s.pre()...", phase)
-			phase.pre()
+			self.logger.info("Calling %s.pre() at %02d...", phase, phase.priority)
+			try:
+				phase.pre()
+			except Exception as ex:
+				self.logger.warn("Failed %s.pre(): %s", phase, ex, exc_info=True)
 
 	def post(self):
 		for phase in sorted(self.phases, reverse=True):
-			self.logger.debug("Calling %s.post()...", phase)
-			phase.post()
+			self.logger.info("Calling %s.post() at %02d...", phase, phase.priority)
+			try:
+				phase.post()
+			except Exception as ex:
+				self.logger.warn("Failed %s.post(): %s", phase, ex, exc_info=True)

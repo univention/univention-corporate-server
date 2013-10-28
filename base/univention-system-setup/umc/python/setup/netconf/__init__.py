@@ -147,8 +147,8 @@ class Phase(object):
 		"""
 		Call external command using subprocess.call(shell=False).
 		"""
+		self.logger.debug("Running %r", command)
 		if self.changeset.no_act:
-			self.logger.debug("Would run %r", command)
 			ret = 0
 		else:
 			ret = subprocess.call(command)

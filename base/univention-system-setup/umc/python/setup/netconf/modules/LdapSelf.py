@@ -83,9 +83,8 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
 	def _update(self, computer):
 		self._update_ips(computer)
 		self._update_mac(computer)
-		if self.changeset.no_act:
-			self.logger.info("Would update '%s' with '%r'", computer.dn, computer.diff())
-		else:
+		self.logger.info("Updating '%s' with '%r'...", computer.dn, computer.diff())
+		if not self.changeset.no_act:
 			computer.modify()
 
 	def _update_ips(self, computer):

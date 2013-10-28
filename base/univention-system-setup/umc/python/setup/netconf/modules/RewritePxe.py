@@ -35,9 +35,8 @@ class PhaseRewritePxe(AddressMap):
 		if orig == config:
 			self.logger.debug("No change in %s", pathname)
 			return
+		self.logger.debug("Updating '%s'...", pathname)
 		if self.changeset.no_act:
-			self.logger.debug("Would update %s", pathname)
 			return
-		self.logger.info("Updating %s'", pathname)
 		with open(pathname, "w") as write_pxe:
 			write_pxe.write(config)
