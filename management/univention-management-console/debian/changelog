@@ -1,3 +1,10 @@
+univention-management-console (6.0.19-1) unstable; urgency=low
+
+  * Bug #32698: fix possibility to response with content types !=
+  	application/json
+
+ -- Florian Best <best@univention.de>  Mon, 28 Oct 2013 13:02:14 +0100
+
 univention-management-console (6.0.18-1) unstable; urgency=low
 
   * Bug #32565: Avoid reloading UDM users module: If handler and syntax are of

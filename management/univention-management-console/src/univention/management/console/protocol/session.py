@@ -326,8 +326,16 @@ class Processor( signals.Provider ):
 				# initiate the users/user UDM module
 				udm_modules.init(self.lo, self.po, users_module)
 				self.__udm_users_module_initialised = True
+
 			# open an LDAP connection with the user password and credentials
-			lo = udm_uldap.access(host = ucr.get('ldap/server/name'), base = ucr.get('ldap/base'), port = int(ucr.get('ldap/server/port', '7389')), binddn = self.__user_dn, bindpw = self.__password, follow_referral=True)
+			lo = udm_uldap.access(
+				host=ucr.get('ldap/server/name'),
+				base=ucr.get('ldap/base'),
+				port=int(ucr.get('ldap/server/port', '7389')),
+				binddn=self.__user_dn,
+				bindpw=self.__password,
+				follow_referral=True
+			)
 
 			# try to open the user object
 			userObj = udm_objects.get(users_module, None, lo, self.po, self.__user_dn)

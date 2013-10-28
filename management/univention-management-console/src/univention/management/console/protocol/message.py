@@ -292,20 +292,22 @@ class Response( Message ):
 
 	recreate_id = None
 
-	def set_body( self, filename ):
+	def set_body(self, filename, mimetype = None):
 		'''Set body of response by guessing the mime type of the given
-		file and adding the content of the file to the body. The mime
+		file if not specified and adding the content of the file to the body. The mime
 		type is guessed using the extension of the filename.'''
-		self.mimetype, encoding = mimetypes.guess_type( filename )
+		if mimetype is None:
+			self.mimetype, encoding = mimetypes.guess_type( filename )
+		else:
+			self.mimetype = mimetype
 
 		if self.mimetype is None:
 			PROTOCOL.process( 'Failed to guess MIME type of %s' % filename )
 			raise TypeError( _( 'Unknown mime type' ) )
 
-		fd = open( filename, 'b' )
-		# FIXME: should check size first
-		self.body = fd.read()
-		fd.close()
+		with open( filename, 'rb' ) as fd:
+			# FIXME: should check size first
+			self.body = fd.read()
 
 	def __str__( self ):
 		'''Returns the formatted message without request options'''

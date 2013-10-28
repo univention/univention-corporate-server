@@ -65,7 +65,7 @@ import operator
 from fnmatch import fnmatch
 
 from .config import ucr
-from .log import *
+from .log import ACL
 
 import univention.admin.modules
 import univention.admin.handlers.computers.domaincontroller_master as dc_master

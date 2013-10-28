@@ -130,7 +130,7 @@ import notifier.signals as signals
 import univention.debug as ud
 from univention.lib.i18n import Translation
 
-from ..protocol import Response
+from ..protocol import Response, MIMETYPE_JSON
 from ..protocol.definitions import *
 from ..log import MODULE
 
@@ -242,21 +242,26 @@ class Base( signals.Provider, Translation ):
 			return False
 		return self.__acls.is_command_allowed( command, options = options, flavor = flavor )
 
-	def finished( self, id, response, message = None, success = True, status = None ):
+	def finished(self, id, response, message = None, success = True, status = None, mimetype=None):
 		"""Should be invoked by module to finish the processing of a
 		request. 'id' is the request command identifier, 'dialog' should
 		contain the result as UMC dialog and 'success' defines if the
 		request could be fulfilled or not. If there is a definition of a
 		'_post' processing function it is called immediately."""
 
-		if not id in self.__requests:
+		if id not in self.__requests:
 			return
 		object, method = self.__requests[ id ]
 
 		if not isinstance( response, Response ):
 			res = Response( object )
-			res.result = response
-			res.message = message
+
+			if mimetype and mimetype != MIMETYPE_JSON:
+				res.mimetype = mimetype
+				res.body = response
+			else:
+				res.result = response
+				res.message = message
 		else:
 			res = response
 
@@ -280,5 +285,3 @@ class Base( signals.Provider, Translation ):
 				response.module = [ 'failure' ]
 				self.signal_emit( 'failure', response )
 			del self.__requests[ response.id ]
-
-
