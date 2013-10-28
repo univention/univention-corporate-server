@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.13-1) unstable; urgency=low
+
+  * Bug #31990: fix quoting error in the UCR module
+
+ -- Florian Best <best@univention.de>  Mon, 28 Oct 2013 09:06:38 +0100
+
 univention-ad-connector (8.0.12-1) unstable; urgency=low
 
   * Bug #32698: fix indentation error
