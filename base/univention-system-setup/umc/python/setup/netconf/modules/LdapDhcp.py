@@ -31,7 +31,7 @@ class PhaseLdapDhcp(LdapChange):
 		for service in services:
 			subnet = subnet_module.object(None, self.ldap, service.position, superordinate=service)
 			subnet.info["subnet"] = str(ipv4.network)
-			subnet.info["subnetmask"] = str(ipv4.netmask)
+			subnet.info["subnetmask"] = str(ipv4.prefixlen)
 			self.logger.info("Creating '%s' with '%r'...", subnet.position.getDn(), subnet.info)
 			if not self.changeset.no_act:
 				subnet.create()
