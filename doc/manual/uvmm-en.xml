@@ -587,7 +587,7 @@
 
 			<para>
 			  Running instances can be accessed via the VNC protocol - insofar as this is
-			  configured.The icon with the stylised screen opens a connection with noVNC, a
+			  configured. The icon with the stylised screen opens a connection with noVNC, a
 			  HTML5-based client. Any other VNC client can also be used for the access; the VNC port
 			  is displayed in a tooltip above the computer name.
 			</para>
@@ -872,7 +872,7 @@
 						<row>
 							<entry>Direct access (VNC)</entry>
 							<entry>
-							  Defines whether VNC access to the virtual machine is available. 
+							  Defines whether VNC access to the virtual machine is available.
 							  <!-- Ist die Option aktiv, kann über das UMC-Modul durch einen -->
 							  <!-- HTML5-basierten VNC-Client - oder einen beliebigen anderen Client - -->
 							  <!-- direkt auf die virtuelle Maschine zugegriffen werden. -->
