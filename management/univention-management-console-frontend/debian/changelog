@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.133-1) unstable; urgency=low
+
+  * correctly remove obsolete conffiles (Bug #32678)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 28 Oct 2013 13:56:51 +0100
+
 univention-management-console-frontend (3.0.132-1) unstable; urgency=low
 
   * Bug #32168: Fix touch events of GalleryPane
