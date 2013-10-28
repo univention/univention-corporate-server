@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.72-2) unstable; urgency=low
+
+  * Bug #32565: Stop UDM cli in postinst: Syntax or handlers may have changed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 28 Oct 2013 15:57:24 +0100
+
 univention-directory-manager-modules (9.0.72-1) unstable; urgency=low
 
   * Update groupType change restrictions (Bug #32767)

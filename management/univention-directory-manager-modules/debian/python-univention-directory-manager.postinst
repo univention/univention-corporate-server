@@ -53,6 +53,8 @@ if [ "$1" = "configure" ]; then
 	/etc/init.d/univention-directory-listener crestart
 fi
 
+stop_udm_cli_server
+
 call_joinscript 18python-univention-directory-manager.inst
 
 exit 0
