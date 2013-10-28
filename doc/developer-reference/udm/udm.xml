@@ -242,14 +242,14 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 					<simpara>
 						The default value is used when a new <acronym>UDM</acronym> object is created.
 						<remark>PMH: check next</remark>
-						It is also used when for an object an option is enabled, which only then activates a property.
+						It is also used when for an object if the option is enabled, which only then activates the property.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>valueRequired</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						An value must be entered for the property.
+						A value must be entered for the property.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -471,8 +471,8 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 			<remark>PMH: Bug #21912</remark>
 			<para>
 				<acronym>UDM</acronym> properties can be enabled and disabled via <firstterm>options</firstterm>.
-				For example all properties of an user related to samba can be switched on or off to reduce the settings shown to an administrator.
-				If many Extended Attributes are added to an <acronym>UDM</acronym> module, it might proof necessary to also create new options.
+				For example all properties of a user related to Samba can be switched on or off to reduce the settings shown to an administrator.
+				If many Extended Attributes are added to a <acronym>UDM</acronym> module, it might proof necessary to also create new options.
 				Options are per <acronym>UDM</acronym> module.
 			</para>
 			<para>
@@ -574,7 +574,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 			<!-- http://wiki.univention.de/index.php?title=Erstellen_eines_erweiterten_Attributs_mit_Hook -->
 			<para>
 				Hooks provide a mechanism to pre- and post-process the values of Extended Attributes.
-				Normally <acronym>UDM</acronym> properties are are stored as-is in <acronym>LDAP</acronym> attributes.
+				Normally <acronym>UDM</acronym> properties are stored as-is in <acronym>LDAP</acronym> attributes.
 				Hooks can modify the <acronym>LDAP</acronym> operations when an object is created, modified, deleted or retrieved.
 				They are implemented in Python and the file must be placed in the directory <filename class="directory">/usr/share/pyshared/univention/admin/hooks.d/</filename><footnote>
 					<simpara>
@@ -582,7 +582,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 						If the file is installed manually, it must be placed on a path listed in <literal>sys.path</literal>.
 					</simpara>
 				</footnote>.
-				The file name must end with <filename class="suffix">.py</filename>.
+				The file name must end with <filename class="extension">.py</filename>.
 			</para>
 			<para>
 				The module <package>univention.admin.hook</package> provides the class <classname>simpleHook</classname>, which implements all required hook functions.
@@ -615,7 +615,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 					</term>
 					<listitem>
 						<simpara>
-							This method is called before an <acronym>UDM</acronym> object is created.
+							This method is called before a <acronym>UDM</acronym> object is created.
 							It is called after the module validated all properties but before the <firstterm>add-list</firstterm> is created.
 						</simpara>
 					</listitem>
@@ -632,7 +632,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 					</term>
 					<listitem>
 						<simpara>
-							This method is called before an <acronym>UDM</acronym> object is created.
+							This method is called before a <acronym>UDM</acronym> object is created.
 							It gets passed a list of two-tuples <literal>(ldap-attribute-name, list-of-values)</literal> which will be used to create the <acronym>LDAP</acronym> object.
 							The method must return the (modified) list.
 							Notice that <methodname>hook_ldap_modlist</methodname> will also be called next.
@@ -663,7 +663,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 					</term>
 					<listitem>
 						<simpara>
-							This method is called before an <acronym>UDM</acronym> object is modified.
+							This method is called before a <acronym>UDM</acronym> object is modified.
 							It is called after the module validated all properties but before the <firstterm>modification-list</firstterm> is created.
 						</simpara>
 					</listitem>
@@ -680,7 +680,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 					</term>
 					<listitem>
 						<simpara>
-							This method is called before an <acronym>UDM</acronym> object is created or modified.
+							This method is called before a <acronym>UDM</acronym> object is created or modified.
 							It gets passed a list of tuples, which are either two-tuples <literal>(ldap-attribute-name, list-of-new-values)</literal> or three-tuples <literal>(ldap-attribute-name, list-of-old-values, list-of-new-values)</literal>.
 							It will be used to create or modify the <acronym>LDAP</acronym> object.
 							The method must return the (modified) list.
@@ -711,7 +711,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 					</term>
 					<listitem>
 						<simpara>
-							This method is called before an <acronym>UDM</acronym> object is removed.
+							This method is called before a <acronym>UDM</acronym> object is removed.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -909,7 +909,7 @@ udm settings/extended_attribute modify \
 			</para>
 			<para>
 				Since UCR variables only affect the local system, the variables must be set on all systems were <acronym>UDM</acronym> is used.
-				This can be either done through an &ucsUCR; policy (see <olink targetdoc="manual-3.1-1" targetptr="central:policies"/>) or by setting the variable in the <filename>.postinst</filename> script of some package, which is installed on all hosts.
+				This can be either done through a &ucsUCR; policy (see <olink targetdoc="manual-3.1-1" targetptr="central:policies"/>) or by setting the variable in the <filename>.postinst</filename> script of some package, which is installed on all hosts.
 			</para>
 		</section>
 
@@ -928,7 +928,7 @@ udm settings/extended_attribute modify \
 					<listitem>
 						<!-- univention-management-console-module-udm/umc/python/udm/udm_ldap.py -->
 						<para>
-							This class does an <acronym>UDM</acronym> search.
+							This class does a <acronym>UDM</acronym> search.
 							For each object found all values of a multi-valued property are returned.
 						</para>
 						<para>
@@ -1023,7 +1023,7 @@ class DelegateTelephonedNumber(UDM_Attribute):
 				<varlistentry><term><classname>UDM_Objects</classname></term>
 					<listitem>
 						<para>
-							This class performs an <acronym>UDM</acronym> search returning each object found.
+							This class performs a <acronym>UDM</acronym> search returning each object found.
 						</para>
 						<para>
 							For a derived class the following class variables can be used to customize the search:
@@ -1121,7 +1121,7 @@ class MyServers(UDM_Objects):
 								<term><firstterm>UDM API</firstterm></term>
 								<listitem>
 									<simpara>
-										By creating an <acronym>UDM</acronym> object in <acronym>LDAP</acronym> using the module <literal>settings/syntax</literal>.
+										By creating a <acronym>UDM</acronym> object in <acronym>LDAP</acronym> using the module <literal>settings/syntax</literal>.
 									</simpara>
 								</listitem>
 							</varlistentry>

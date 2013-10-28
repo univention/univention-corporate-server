@@ -178,9 +178,11 @@
 					icon and (maybe) a screenshot in a file archive (everything should
 					go in one "directory"). See <xref linkend="app:upload" />.
 				</simpara></listitem>
-				<listitem><simpara>
+				<listitem>
+					<para>
 					Test the software solution with Univention Test App Center
 					(more information is given by Univention after the upload).
+					</para>
 					<important>
 						<para>
 							Univention will not test if the application works as expected. We
@@ -189,7 +191,7 @@
 							LDAP, Join, etc.)
 						</para>
 					</important>
-				</simpara></listitem>
+				</listitem>
 				<listitem><simpara>
 					Give approval for provisioning in the productive Univention App
 					Center towards Univention.
@@ -779,7 +781,9 @@
 		</para>
 	  <section id="app:ucs_registerLDAPExtension">
 		  <title>Registration of LDAP and UDM Extensions</title>
+			<para>
 			<acronym>LDAP</acronym> schema and ACL extensions as well as UDM syntax, UDM hook and UDM extension modules can be installed via the library function <literal>ucs_registerLDAPExtension</literal>, see <xref linkend="join:libraries:shell"/>.
+			</para>
 		</section>
 	</section>
 
