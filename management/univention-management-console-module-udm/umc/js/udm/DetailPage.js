@@ -65,6 +65,9 @@ define([
 	"dijit/registry",
 	"umc/widgets"
 ], function(declare, lang, array, on, Deferred, when, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, ProgressBar, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
+
+	var _StandbyPage = declare([Page, StandbyMixin], {});
+
 	return declare("umc.modules.udm.DetailPage", [ ContentPane, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -111,7 +114,7 @@ define([
 
 		// showProgressBarDeferred: Deferred
 		//		When to start showing the progress bar
-		showProgressBarDeferred: null,
+		//showProgressBarDeferred: null,
 
 		// internal reference to the formular containing all form widgets of an LDAP object
 		_form: null,
@@ -151,9 +154,6 @@ define([
 		// the widget of the options if available
 		_optionsWidget: null,
 
-		// reference to the template object in order to monitor user input changes
-		_template: null,
-
 		ldapBase: null,
 
 		_multiEdit: false,
@@ -180,10 +180,12 @@ define([
 			//		and initiate the rendering process.
 			this.inherited(arguments);
 
+			this.standby(true);
+
 			// create a progressbar
-			this.progressMessage = _('Loading %s...', this.objectNameSingular);
+			/*this.progressMessage = _('Loading %s...', this.objectNameSingular);
 			this._progressBar = this.own(new ProgressBar())[0];
-			this._progressBar.reset(this.progressMessage);
+			this._progressBar.reset(this.progressMessage);*/
 			this.loadedDeferred = new Deferred();
 
 			// remember the objectType of the object we are going to edit
@@ -225,21 +227,26 @@ define([
 			}
 
 			// when the commands have been finished, create the detail page
-			this.showProgressBarDeferred.then(lang.hitch(this, function() {
+			/*this.showProgressBarDeferred.then(lang.hitch(this, function() {
 				this.standbyDuring(this.loadedDeferred, this._progressBar);
-			}));
+			}));*/
 			(new all(commands)).then(lang.hitch(this, function(results) {
 				var template = lang.getObject('template.result', false, results) || null;
 				var layout = lang.clone(results.layout);
 				var policies = lang.clone(results.policies);
 				var properties = lang.clone(results.properties);
-				this.renderDetailPage(properties, layout, policies, template).then(lang.hitch(this, function() {
-					this.loadedDeferred.resolve();
-				}), lang.hitch(this, function() {
-					this.loadedDeferred.resolve();
-				}));
+				setTimeout(lang.hitch(this, function() {
+					this.renderDetailPage(properties, layout, policies, template).then(lang.hitch(this, function() {
+						this.loadedDeferred.resolve();
+						this.standby(false);
+					}), lang.hitch(this, function() {
+						this.loadedDeferred.resolve();
+						this.standby(false);
+					}));
+				}), 50);
 			}), lang.hitch(this, function() {
 				this.loadedDeferred.resolve();
+				this.standby(false);
 			}));
 		},
 
@@ -256,7 +263,7 @@ define([
 					// hide the type info and ldap path in case of a new object
 					this._form.getWidget( '$objecttype$' ).set( 'visible', false);
 					this._form.getWidget( '$location$' ).set( 'visible', false);
-					this._progressBar.feedFromDeferred(this._form.ready(), _('Loading %s...', this.objectNameSingular));
+					//this._progressBar.feedFromDeferred(this._form.ready(), _('Loading %s...', this.objectNameSingular));
 				}));
 				return;
 			}
@@ -307,30 +314,181 @@ define([
 			}));
 		},
 
-		_loadPolicies: function() {
-
+		_renderPolicyTab: function(policies) {
+			this._policyWidgets = {};
+			if (policies && policies.length) {
+				// in case we have policies that apply to the current object, we need an extra
+				// sub tab that groups all policies together
+				this._policiesTab = new _StandbyPage({
+					title: _('[Policies]'),
+					noFooter: true,
+					headerText: _('Properties inherited from policies'),
+					helpText: _('List of all object properties that are inherited by policies. The values cannot be edited directly. In order to edit a policy, click on the "edit" button to open a particular policy in a new tab.')
+				});
+				this._tabs.addChild(this._policiesTab);
+				this._policiesTab.watch('selected', lang.hitch(this, function(name, oldVal, newVal) {
+					if (!newVal || this._policyDeferred.isFulfilled()) {
+						return;
+					}
+					this._loadPolicies(policies).then(lang.hitch(this, function() {
+						this._policyDeferred.resolve();
+					}));
+				}));
+			} else {
+				// in case there are no policies, we use a dummy Deferred object
+				this._policyDeferred.resolve();
+			}
 		},
 
-		renderDetailPage: function(_properties, _layout, policies, _template) {
-			// summary:
-			//		Render the form with subtabs containing all object properties that can
-			//		be edited by the user.
-			
-			var formBuiltDeferred = new Deferred();
-			var policiesDeferred = new Deferred();
-			var loadedDeferred = this._loadObject(formBuiltDeferred, policiesDeferred);
-
-			if (_template && _template.length > 0) {
-				_template = _template[0];
-			} else {
-				_template = null;
+		_loadPolicies: function(policies) {
+			if (!policies || !policies.length) {
+				return;
 			}
-			// create detail page
-			this._tabs = new TabContainer({
-				nested: true,
-				region: 'center'
-			});
 
+			this._policiesTab.standby(true);
+
+			var policiesContainer = new ContainerWidget({
+				scrollable: true
+			});
+			this._policiesTab.addChild(policiesContainer);
+
+			// sort policies by its label
+			policies.sort(tools.cmpObjects({attribute: 'label'}));
+
+			// we need to query for each policy object its properties and its layout
+			// this can be done asynchronously
+			var commands = [];
+			array.forEach(policies, function(ipolicy) {
+				var params = { objectType: ipolicy.objectType };
+				commands.push(this.umcpCommandBundle('udm/properties', params));
+				commands.push(this.umcpCommandBundle('udm/layout', params));
+			}, this);
+
+			// wait until we have results for all queries
+			return all(commands).then(lang.hitch(this, function(results) {
+				// parse the widget configurations
+				var i;
+				for (i = 0; i < results.length; i += 2) {
+					var ipolicy = policies[Math.floor(i / 2)];
+					var ipolicyType = ipolicy.objectType;
+					var iproperties = results[i].result;
+					var ilayout = results[i + 1].result;
+					var newLayout = [];
+
+					// we only need to show the general properties of the policy... the "advanced"
+					// properties would be rendered on the subtab "advanced settings" which we do
+					// not need in this case
+					array.forEach(ilayout, function(jlayout) {
+						if (false === jlayout.advanced) {
+							// we found the general properties of the policy
+							newLayout = jlayout.layout;
+
+							// break the loop
+							return false;
+						}
+					});
+
+					// build up a small map that indicates which policy properties will be shown
+					// filter out the property 'name'
+					var usedProperties = {};
+					array.forEach(newLayout, function(jlayout) {
+					   if ( jlayout instanceof Array || typeof jlayout == "object" ) {
+						   var nestedLayout = (undefined === jlayout.layout) ? jlayout : jlayout.layout;
+							array.forEach( nestedLayout, function(klayout) {
+								array.forEach(tools.stringOrArray(klayout), function(llayout) {
+									if (typeof llayout == "string") {
+										if ('name' != llayout) {
+											usedProperties[llayout] = true;
+										}
+									}
+								});
+							});
+						} else if (typeof jlayout == "string") {
+							if ('name' != jlayout) {
+								usedProperties[jlayout] = true;
+							}
+						}
+					});
+
+					// get only the properties that need to be rendered
+					var newProperties = [];
+					array.forEach(iproperties, function(jprop) {
+						var jname = jprop.id || jprop.name;
+						if (jname in usedProperties) {
+							if (jprop.multivalue && 'MultiInput' != jprop.type) {
+								// handle multivalue inputs
+								jprop.subtypes = [{
+									type: jprop.type,
+									dynamicValues: jprop.dynamicValues,
+									dynamicValuesInfo: jprop.dynamicValuesInfo,
+									dynamicOptions: jprop.dynamicOptions,
+									staticValues: jprop.staticValues,
+									size: jprop.size,
+									depends: jprop.depends
+								}];
+								jprop.type = 'MultiInput';
+							}
+							jprop.disabled = true; // policies cannot be edited
+							jprop.$orgLabel$ = jprop.label; // we need the original label
+
+							// add an empty label to ComboBox so that _firstValueInList
+							//   is an empty string. This will empty the choice of
+							//   this widget in case there is no value set (instead of the first)
+							//   see Bug #31017
+							if (jprop.type.indexOf('ComboBox') >= 0) {
+								if (jprop.staticValues) {
+									jprop.staticValues = lang.clone(jprop.staticValues);
+									jprop.staticValues.unshift({id: '', label: ''});
+								} else {
+									jprop.staticValues = [{id: '', label: ''}];
+								}
+							}
+							newProperties.push(jprop);
+						}
+					}, this);
+
+					// make sure that the widget use the flavored umcpCommand
+					array.forEach( newProperties, function( iprop ) {
+						iprop.umcpCommand = this.umcpCommand;
+					}, this );
+
+					// for the policy group, we need a ComboBox that allows to link an object
+					// to a particular policy
+					newProperties.push({
+						type: ComboBox,
+						name: '$policy$',
+						staticValues: [{ id: 'None', label: _('Inherited') }],
+						dynamicValues: lang.hitch(this, '_queryPolicies', ipolicyType),
+						label: _('Select policy configuration'),
+						description: _('Select a policy that should be directly linked to the current LDAP object'),
+						onChange: lang.hitch(this, '_updatePolicy', ipolicyType)
+					});
+					var buttonsConf = [{
+						type: Button,
+						name: '$addPolicy$',
+						iconClass: 'umcIconAdd',
+						label: _('Create new policy'),
+						callback: lang.hitch(this, '_openPolicy', ipolicyType, undefined)
+					}];
+					newLayout.unshift(['$policy$', '$addPolicy$']);
+
+					// render the group of properties
+					var widgets = render.widgets(newProperties, this);
+					this._policyWidgets[ipolicyType] = widgets;
+					var buttons = render.buttons(buttonsConf, this);
+					policiesContainer.addChild(new TitlePane({
+						title: ipolicy.label,
+						description: ipolicy.description,
+						open: false,
+						content: render.layout(newLayout, widgets, buttons)
+					}));
+				}
+
+				this._policiesTab.standby(false);
+			}));
+		},
+
+		_prepareWidgets: function(_properties) {
 			// parse the widget configurations
 			var properties = [];
 			var optionMap = {};
@@ -389,7 +547,25 @@ define([
 			}, this);
 			this._propertyOptionMap = optionMap;
 
-			// ### Advanved settings
+			// special case for password, it is only required when a new user is added
+			if (!this.newObjectOptions) {
+				array.forEach(properties, function(iprop) {
+					if ('password' == iprop.id) {
+						iprop.required = false;
+						return false;
+					}
+				});
+			}
+
+			// make sure that the widget use the flavored umcpCommand
+			array.forEach( properties, function( iprop ) {
+				iprop.umcpCommand = this.umcpCommand;
+			}, this );
+
+			return properties;
+		},
+
+		_prepareAdvancedSettings: function(_layout) {
 			// parse the layout configuration... we would like to group all groups of advanced
 			// settings on a special sub tab
 			var advancedGroup = {
@@ -412,8 +588,10 @@ define([
 			if (advancedGroup.layout.length) {
 				layout.push(advancedGroup);
 			}
+			return layout;
+		},
 
-			// ### Options
+		_prepareOptions: function(properties, layout, template, formBuiltDeferred) {
 			var option_values = {};
 			var option_prop = null;
 			array.forEach( properties, function( item ) {
@@ -436,8 +614,8 @@ define([
 				array.forEach( option_prop.widgets, function ( option ) {
 					option = lang.clone(option);
 					// special case: bring options from template into the widget
-					if (_template && _template._options) {
-						option.value = _template._options.indexOf(option.id) > -1;
+					if (template && template._options) {
+						option.value = template._options.indexOf(option.id) > -1;
 					}
 					option_widgets.push( lang.mixin( {
 						disabled: create ? false : ! option.editable
@@ -453,33 +631,26 @@ define([
 				} );
 			}
 
-			// special case for password, it is only required when a new user is added
-			if (!this.newObjectOptions) {
-				array.forEach(properties, function(iprop) {
-					if ('password' == iprop.id) {
-						iprop.required = false;
-						return false;
-					}
-				});
-			}
+			formBuiltDeferred.then(lang.hitch(this, function() {
+				var widgets = this._form.widgets;
+				if (!('$options$' in widgets) || this._multiEdit) {
+					return
+				}
 
-			// make sure that the widget use the flavored umcpCommand
-			array.forEach( properties, function( iprop ) {
-				iprop.umcpCommand = this.umcpCommand;
-			}, this );
-
-
-			// render all widgets
-			var widgets = render.widgets( properties, this );
-
-			// connect to onChange for the options property if it exists
-			if ( '$options$' in widgets ) {
+				// connect to onChange for the options property if it exists
 				this._optionsWidget = widgets.$options$;
 				this.own(this._optionsWidget.watch('value', lang.hitch(this, function(attr, oldVal, newVal) {
 					this.onOptionsChanged(newVal);
 				})));
-			}
 
+				// set options... required when creating a new object
+				this._optionsWidget.set( 'value', option_values );
+			}));
+
+			return properties;
+		},
+
+		_autoUpdateTabTitle: function(widgets) {
 			if (this._multiEdit) {
 				this.moduleWidget.set( 'title', this.moduleWidget.defaultTitle + ' ' + _('(multi-edit)'));
 			} else {
@@ -495,13 +666,15 @@ define([
 					}
 				}, this );
 			}
+		},
 
+		_renderSubTabs: function(widgets, layout) {
 			// render the layout for each subtab
 			this._propertySubTabMap = {}; // map to remember which form element is displayed on which subtab
 			this._detailPages = [];
 
 			layout[ 0 ].layout.unshift( [ '$objecttype$', '$location$' ] );
-			array.forEach(layout, function(ilayout, i) {
+			return tools.forEachAsync(layout, function(ilayout, i) {
 				// create a new page, i.e., subtab
 				var subTab = new Page({
 					title: ilayout.label || ilayout.name, //TODO: 'name' should not be necessary
@@ -534,174 +707,26 @@ define([
 						layoutStack.push(ielement.layout);
 					}
 				}
+			}, this, 1, 10).then(lang.hitch(this, function() {
+				this._layoutMap = layout;
+			}));
+		},
+
+		_renderMultiEditCheckBoxes: function(widgets) {
+			if (!this._multiEdit) {
+				return;
+			}
+
+			// in multi-edit mode, hook a 'overwrite?' checkbox after each widget
+			tools.forIn(widgets, function(iname, iwidget) {
+				if (iwidget.$refLabel$ && !iwidget.disabled) {
+					iwidget.$refOverwrite$ = this.own(new OverwriteLabel({}))[0];
+					construct.place(iwidget.$refOverwrite$.domNode, iwidget.$refLabel$.domNode);
+				}
 			}, this);
-			this._layoutMap = layout;
+		},
 
-			if (this._multiEdit) {
-				// in multi-edit mode, hook a 'overwrite?' checkbox after each widget
-				tools.forIn(widgets, function(iname, iwidget) {
-					if (iwidget.$refLabel$ && !iwidget.disabled) {
-						iwidget.$refOverwrite$ = this.own(new OverwriteLabel({}))[0];
-						construct.place(iwidget.$refOverwrite$.domNode, iwidget.$refLabel$.domNode);
-					}
-				}, this);
-			}
-
-			// #### Policies
-			// in case we have policies that apply to the current object, we need an extra
-			// sub tab that groups all policies together
-			this._policyWidgets = {};
-			if (policies && policies.length) {
-				this._policiesTab = new Page({
-					title: _('[Policies]'),
-					noFooter: true,
-					headerText: _('Properties inherited from policies'),
-					helpText: _('List of all object properties that are inherited by policies. The values cannot be edited directly. In order to edit a policy, click on the "edit" button to open a particular policy in a new tab.')
-				});
-				this._tabs.addChild(this._policiesTab);
-				var policiesContainer = new ContainerWidget({
-					scrollable: true
-				});
-				this._policiesTab.addChild(policiesContainer);
-
-				// sort policies by its label
-				policies.sort(tools.cmpObjects({attribute: 'label'}));
-
-				// we need to query for each policy object its properties and its layout
-				// this can be done asynchronously
-				var commands = [];
-				array.forEach(policies, function(ipolicy) {
-					var params = { objectType: ipolicy.objectType };
-					commands.push(this.umcpCommandBundle('udm/properties', params));
-					commands.push(this.umcpCommandBundle('udm/layout', params));
-				}, this);
-
-				// wait until we have results for all queries
-				this._policyDeferred = all(commands).then(lang.hitch(this, function(results) {
-					// parse the widget configurations
-					var i;
-					for (i = 0; i < results.length; i += 2) {
-						var ipolicy = policies[Math.floor(i / 2)];
-						var ipolicyType = ipolicy.objectType;
-						var iproperties = results[i].result;
-						var ilayout = results[i + 1].result;
-						var newLayout = [];
-
-						// we only need to show the general properties of the policy... the "advanced"
-						// properties would be rendered on the subtab "advanced settings" which we do
-						// not need in this case
-						array.forEach(ilayout, function(jlayout) {
-							if (false === jlayout.advanced) {
-								// we found the general properties of the policy
-								newLayout = jlayout.layout;
-
-								// break the loop
-								return false;
-							}
-						});
-
-						// build up a small map that indicates which policy properties will be shown
-						// filter out the property 'name'
-						var usedProperties = {};
-						array.forEach(newLayout, function(jlayout) {
-						   if ( jlayout instanceof Array || typeof jlayout == "object" ) {
-							   var nestedLayout = (undefined === jlayout.layout) ? jlayout : jlayout.layout;
-								array.forEach( nestedLayout, function(klayout) {
-									array.forEach(tools.stringOrArray(klayout), function(llayout) {
-										if (typeof llayout == "string") {
-											if ('name' != llayout) {
-												usedProperties[llayout] = true;
-											}
-										}
-									});
-								});
-							} else if (typeof jlayout == "string") {
-								if ('name' != jlayout) {
-									usedProperties[jlayout] = true;
-								}
-							}
-						});
-
-						// get only the properties that need to be rendered
-						var newProperties = [];
-						array.forEach(iproperties, function(jprop) {
-							var jname = jprop.id || jprop.name;
-							if (jname in usedProperties) {
-								if (jprop.multivalue && 'MultiInput' != jprop.type) {
-									// handle multivalue inputs
-									jprop.subtypes = [{
-										type: jprop.type,
-										dynamicValues: jprop.dynamicValues,
-										dynamicValuesInfo: jprop.dynamicValuesInfo,
-										dynamicOptions: jprop.dynamicOptions,
-										staticValues: jprop.staticValues,
-										size: jprop.size,
-										depends: jprop.depends
-									}];
-									jprop.type = 'MultiInput';
-								}
-								jprop.disabled = true; // policies cannot be edited
-								jprop.$orgLabel$ = jprop.label; // we need the original label
-
-								// add an empty label to ComboBox so that _firstValueInList
-								//   is an empty string. This will empty the choice of
-								//   this widget in case there is no value set (instead of the first)
-								//   see Bug #31017
-								if (jprop.type.indexOf('ComboBox') >= 0) {
-									if (jprop.staticValues) {
-										jprop.staticValues = lang.clone(jprop.staticValues);
-										jprop.staticValues.unshift({id: '', label: ''});
-									} else {
-										jprop.staticValues = [{id: '', label: ''}];
-									}
-								}
-								newProperties.push(jprop);
-							}
-						}, this);
-
-						// make sure that the widget use the flavored umcpCommand
-						array.forEach( newProperties, function( iprop ) {
-							iprop.umcpCommand = this.umcpCommand;
-						}, this );
-
-						// for the policy group, we need a ComboBox that allows to link an object
-						// to a particular policy
-						newProperties.push({
-							type: ComboBox,
-							name: '$policy$',
-							staticValues: [{ id: 'None', label: _('Inherited') }],
-							dynamicValues: lang.hitch(this, '_queryPolicies', ipolicyType),
-							label: _('Select policy configuration'),
-							description: _('Select a policy that should be directly linked to the current LDAP object'),
-							onChange: lang.hitch(this, '_updatePolicy', ipolicyType)
-						});
-						var buttonsConf = [{
-							type: Button,
-							name: '$addPolicy$',
-							iconClass: 'umcIconAdd',
-							label: _('Create new policy'),
-							callback: lang.hitch(this, '_openPolicy', ipolicyType, undefined)
-						}];
-						newLayout.unshift(['$policy$', '$addPolicy$']);
-
-						// render the group of properties
-						var widgets = render.widgets(newProperties, this);
-						this._policyWidgets[ipolicyType] = widgets;
-						var buttons = render.buttons(buttonsConf, this);
-						policiesContainer.addChild(new TitlePane({
-							title: ipolicy.label,
-							description: ipolicy.description,
-							open: false,
-							content: render.layout(newLayout, widgets, buttons)
-						}));
-					}
-				}));
-			} else {
-				// in case there are no policies, we use a dummy Deferred object
-				this._policyDeferred = new Deferred();
-				this._policyDeferred.resolve();
-			}
-
+		_renderBorderContainer: function(widgets) {
 			// setup detail page, needs to be wrapped by a form (for managing the
 			// form entries) and a BorderContainer (for the footer with buttons)
 			var borderLayout = this.own(new BorderContainer({
@@ -730,37 +755,62 @@ define([
 				onSubmit: lang.hitch(this, 'validateChanges'),
 				style: 'margin:0'
 			}))[0];
-			formBuiltDeferred.resolve();
-			this._policyDeferred.then(lang.hitch(this, function() {
-				this.set('content', this._form);
-			}));
-
-			// set options
-			if ( '$options$' in widgets && !this._multiEdit) {
-				// required when creating a new object
-				this._optionsWidget.set( 'value', option_values );
-			}
-
-			// initiate the template mechanism (only for new objects)
-			if (!this.ldapName && !this._multiEdit) {
-				// search for given default values in the properties... these will be replaced
-				this.templateObject = this.buildTemplate(_template, _properties, widgets);
-				this.own(this.templateObject);
-			}
-
-			var ret = new Deferred();
-			when(loadedDeferred).then(lang.hitch(this, function() {
-				this._form.ready().then(function() {
-					ret.resolve();
-				});
-			}));
-			return ret;
+			this.set('content', this._form);
 		},
 
-		buildTemplate: function(_template, _properties, widgets) {
+		renderDetailPage: function(properties, layout, policies, template) {
+			// summary:
+			//		Render the form with subtabs containing all object properties that can
+			//		be edited by the user.
+
+			var formBuiltDeferred = new Deferred();
+			this._policyDeferred = new Deferred();
+			var loadedDeferred = this._loadObject(formBuiltDeferred, this._policyDeferred);
+
+			if (template && template.length > 0) {
+				template = template[0];
+			} else {
+				template = null;
+			}
+			// create detail page
+			this._tabs = new TabContainer({
+				nested: true,
+				region: 'center'
+			});
+
+			// prepare widgets and layout
+			properties = this._prepareWidgets(properties);
+			layout = this._prepareAdvancedSettings(layout);
+			properties = this._prepareOptions(properties, layout, template, formBuiltDeferred);
+
+			// render widgets and full layout
+			var widgets = render.widgets( properties, this );
+			this._autoUpdateTabTitle(widgets);
+			this._renderMultiEditCheckBoxes(widgets);
+			this._renderSubTabs(widgets, layout).then(lang.hitch(this, function() {
+				this._renderPolicyTab();
+				this._renderBorderContainer(widgets);
+				formBuiltDeferred.resolve();
+				this._buildTemplate(template, properties, widgets);
+
+				// initiate the template mechanism (only for new objects)
+				if (!this.ldapName && !this._multiEdit) {
+					// search for given default values in the properties... these will be replaced
+				}
+			}));
+
+			return all([loadedDeferred, formBuiltDeferred]);
+		},
+
+		_buildTemplate: function(template, properties, widgets) {
+			if (this.ldapName || this._multiEdit) {
+				return;
+			}
+
+			// search for given default values in the properties... these will be replaced
 			// by the template mechanism
 			var template = {};
-			array.forEach(_properties, function(iprop) {
+			array.forEach(properties, function(iprop) {
 				if (iprop['default']) {
 					var defVal = iprop['default'];
 					if (typeof defVal == "string" && iprop.multivalue) {
@@ -771,12 +821,12 @@ define([
 			});
 
 			// mixin the values set in the template object (if given)
-			if (_template) {
-				tools.forIn(_template, lang.hitch(this, function(key, value) {
+			if (template) {
+				tools.forIn(template, lang.hitch(this, function(key, value) {
 					// $dn$, $options$, etc of the template
 					// should not be values for the object
 					if ((/^\$.*\$$/).test(key)) {
-						delete _template[key];
+						delete template[key];
 					}
 					if ((/^_.+$/).test(key)) {
 						var specialWidget = this[key + 'Widget'];
@@ -790,17 +840,18 @@ define([
 						if (specialWidget) {
 							specialWidget.set('value', specialValue);
 						}
-						delete _template[key];
+						delete template[key];
 					}
 				}));
-				template = lang.mixin(template, _template);
+				template = lang.mixin(template, template);
 			}
 
 			// create a new template object that takes care of updating the elements in the form
-			return new Template({
+			this.templateObject = new Template({
 				widgets: widgets,
 				template: template
 			});
+			this.own(this.templateObject);
 		},
 
 		getButtonDefinitions: function() {

@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.69-1) unstable; urgency=low
+
+  * Bug #32978: added asynchronous widget rendering, refactorization of
+    renderDetailPage() into small chunks
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Oct 2013 17:31:53 +0100
+
 univention-management-console-module-udm (4.0.68-1) unstable; urgency=low
 
   * Bug #32978: WIP early loading of form values

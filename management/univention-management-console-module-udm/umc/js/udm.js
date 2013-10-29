@@ -1337,7 +1337,7 @@ define([
 			//		Creates and views the detail page for editing LDAP objects.
 
 			var wizardDeferred = new Deferred();
-			var showProgressBarDeferred = new Deferred();
+			//var showProgressBarDeferred = new Deferred();
 			if (newObjOptions && !tools.isTrue(this._wizardsDisabled)) {
 				// make sure that container and superordinate are at least set to null
 				newObjOptions = lang.mixin({
@@ -1353,12 +1353,12 @@ define([
 					}),
 					lang.hitch(this, function() {
 						wizardDeferred.reject();
-						showProgressBarDeferred.resolve();
+						//showProgressBarDeferred.resolve();
 					})
 				);
 			} else {
 				wizardDeferred.reject();
-				showProgressBarDeferred.resolve();
+				//showProgressBarDeferred.resolve();
 			}
 
 			this._detailPage = new DetailPage({
@@ -1371,7 +1371,7 @@ define([
 				newObjectOptions: newObjOptions,
 				moduleWidget: this,
 				isClosable: isClosable,
-				showProgressBarDeferred: showProgressBarDeferred,
+				//showProgressBarDeferred: showProgressBarDeferred,
 				note: note || null,
 				objectNamePlural: this.objectNamePlural,
 				objectNameSingular: this.objectNameSingular
@@ -1412,7 +1412,7 @@ define([
 							}));
 						}));
 						var gotoDetailPage = lang.hitch(this, function(values, submit) {
-							showProgressBarDeferred.resolve();
+							//showProgressBarDeferred.resolve();
 							this._createObjectWizard.hide().then(lang.hitch(this, function() {
 								this.standbyDuring(this._detailPage.loadedDeferred).then(lang.hitch(this, function() {
 									lang.mixin(this._detailPage.templateObject._userChanges, wizard.templateObject._userChanges);
