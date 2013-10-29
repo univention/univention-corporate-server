@@ -1,3 +1,9 @@
+univention-management-console (6.0.21-1) unstable; urgency=low
+
+  * Bug #32565: Improve fallback logging
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 29 Oct 2013 11:53:44 +0100
+
 univention-management-console (6.0.20-1) unstable; urgency=low
 
   * Bug #32565: Catch unknown syntax nonetheless, write error message. May
