@@ -1,3 +1,12 @@
+univention-samba4 (3.0.33-1) unstable; urgency=low
+
+  * Don't hide the dns-* users by default because the DRS replication
+    took in most cases about five minutes which increases the
+    installation time too much compared to the benefit. Wait for Bug
+    #30115 (Bug #32871)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Oct 2013 06:07:24 +0100
+
 univention-samba4 (3.0.32-1.1) unstable; urgency=low
 
   * Fix python syntax in scripts/purge_s4_computer.py (Bug #30763)

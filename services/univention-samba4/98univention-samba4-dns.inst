@@ -150,26 +150,6 @@ if is_ucr_true samba4/join/dnsupdate; then
 	samba_dnsupdate --local
 fi
 
-if [ "$samba4_role" != "RODC" ]; then
-	if !  echo "$connector_s4_mapping_user_ignorelist" | egrep -q "(^dns-${hostname},|^dns-${hostname}$|,dns-${hostname}$|,dns-${hostname},)"; then
-		# wait 5 minutes until the dns-$hostname account is synchronized to OpenLDAP
-		echo -n "Wait until dns-$hostname is replicated: "
-		count=0
-		while [ $count -le 600 ]; do
-			dn="$(univention-ldapsearch -LLL "(&(uid=dns-$hostname)(objectClass=sambaSamAccount))" dn | sed -ne 's|^dn: ||p')"
-			if [ -n "$dn" ]; then
-				echo " done"
-				udm users/user modify "$@" --dn "$dn" --set objectFlag=hidden
-				break
-			else
-				echo -n "."
-				count=$((count+1))
-				sleep 1
-			fi
-		done
-	fi
-fi
-
 joinscript_save_current_version
 
 exit 0
