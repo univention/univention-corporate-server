@@ -1,3 +1,13 @@
+univention-apache (6.0.13-2) unstable; urgency=low
+
+  * do not call xargs with "-0" in postinst (leads to some UCRVs with invalid
+    values)
+  * use json module in languages.json template instead of joining a list to a
+    string
+  (Bug #32678)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 29 Oct 2013 11:50:33 +0100
+
 univention-apache (6.0.13-1) unstable; urgency=low
 
   * Bug #32613: adjust links in footer of ucs overview
