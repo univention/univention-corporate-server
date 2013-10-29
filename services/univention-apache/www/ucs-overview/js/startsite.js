@@ -79,23 +79,15 @@ define([
 			sdb: _('Univention Support Database'),
 			manual: _('Manual for Univention Corporate Server'),
 			apps: _('App Catalogue'),
-			products: _('Additional Products'),
-			solutions: _('Solutions based on UCS'),
+			products: _('Further Products'),
 			univention_website: _('Univention Website'),
-			news: _('News'),
-			dates: _('Dates'),
-			univention_partner: _('Univention Partners'),
 			'http://wiki.univention.de/': _('http://wiki.univention.de/'),
 			'http://forum.univention.de/': _('http://forum.univention.de/'),
 			'http://sdb.univention.de/': _('http://sdb.univention.de/'),
 			'http://docs.univention.de/en.html': _('http://docs.univention.de/en.html'),
 			'http://www.univention.de/en/products/ucs/app-catalogue/': _('http://www.univention.de/en/products/ucs/app-catalogue/'),
 			'http://www.univention.de/en/products/': _('http://www.univention.de/en/products/'),
-			'http://www.univention.de/en/ucs-solutions/': _('http://www.univention.de/en/ucs-solutions/'),
-			'http://www.univention.de/en/': _('http://www.univention.de/en/'),
-			'http://www.univention.de/en/univention/news/news-releases/': _('http://www.univention.de/en/univention/news/news-releases/'),
-			'http://www.univention.de/en/univention/dates/': _('http://www.univention.de/en/univention/dates/'),
-			'http://www.univention.de/en/partner/': _('http://www.univention.de/en/partner/')
+			'http://www.univention.de/en/': _('http://www.univention.de/en/')
 		},
 
 		_localizeString: function(str) {

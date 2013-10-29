@@ -269,7 +269,7 @@ ul.nav.nav-tabs li.active a {
 
 #footer ul {
 	padding: 0 10px 25px 10px;
-	width: 33.3%;
+	width: 50%;
 	float: left;
 	margin-left: auto;
 	margin-right: auto;
@@ -343,7 +343,7 @@ ul.nav.nav-tabs li.active a {
 	}
 
 	#footer ul {
-		width: 50%;
+		width: 100%;
 	}
 
 	#footer ul:last-child {

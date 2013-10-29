@@ -1,3 +1,9 @@
+univention-apache (6.0.13-1) unstable; urgency=low
+
+  * Bug #32613: adjust links in footer of ucs overview
+
+ -- Florian Best <best@univention.de>  Tue, 29 Oct 2013 10:00:30 +0100
+
 univention-apache (6.0.12-8) unstable; urgency=low
 
   * adapted univention-apache.postinst to not fail when unsetting legacy UCRVs
