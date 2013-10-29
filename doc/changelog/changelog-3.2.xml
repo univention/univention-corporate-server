@@ -424,7 +424,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  When <command>slapd</command> can not be started by its Init script, <command>slapschema</command> is called
+		  When <command>slapd</command> can not be started by its init script, <command>slapschema</command> is called
 		  to determine the cause and the output is displayed (<ulink url="&ucsbug;23055">Bug 23055</ulink>).
 		</simpara></listitem>
 
@@ -728,7 +728,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Some CSS adaptions have been made (<ulink url="&ucsbug;32318">Bug 32318</ulink>).
+		  Some CSS adaptations have been made (<ulink url="&ucsbug;32318">Bug 32318</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -783,7 +783,7 @@
 	<title>Univention App Center</title>
 	  <itemizedlist>
 		<listitem><simpara>
-			Basic UCS components (such as Samba, KDE, nagios, print server etc.) have been integrated
+			Basic UCS components (such as Samba, KDE, Nagios, print server etc.) have been integrated
 			into the App Center and can now be installed from there
 			(Bugs <ulink url="&ucsbug;32301">32301</ulink>, <ulink url="&ucsbug;32302">32302</ulink>).
 		</simpara></listitem>
@@ -1163,7 +1163,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			A traceback which occured when renaming computer objects with set DNS reverse zone has been fixed.
+			A traceback which occurred when renaming computer objects with set DNS reverse zone has been fixed.
 			(<ulink url="&ucsbug;31435">Bug 31435</ulink>).
 		</simpara></listitem>
 
@@ -1295,7 +1295,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Added support to configure Bridge, Bond and VLAN devices (<ulink url="&ucsbug;30816">Bug 30816</ulink>,
+		  Added support to configure Bridge, Bond and VLAN interfaces (<ulink url="&ucsbug;30816">Bug 30816</ulink>,
 		  <ulink url="&ucsbug;30878">Bug 30878</ulink>).
 		</simpara></listitem>
 
@@ -1372,7 +1372,7 @@
 	<title>Extended attributes</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The descriptions of exteneded attribute properties have been improved and the layout of the module has been rebuilt (<ulink url="&ucsbug;28629">Bug 28629</ulink>).
+		  The descriptions of extended attribute properties have been improved and the layout of the module has been rebuilt (<ulink url="&ucsbug;28629">Bug 28629</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -2251,8 +2251,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  By default the mysql server package does not set a password for the mysql root user during
-		  a non-interactive installation. With this update the mysql package sets a password and
+		  By default the MySQL server package does not set a password for the MySQL root user during
+		  a non-interactive installation. With this update the MySQL package sets a password and
 		  writes the password to <filename>/etc/mysql.secret</filename>. This file can be read by root.  If a password is
 		  already set, nothing will be done (<ulink url="&ucsbug;19354">Bug 19354</ulink>).
 		</simpara></listitem>
@@ -2549,7 +2549,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The nameserver process is no longer restarted after each samba4 restart
+		  The nameserver process is no longer restarted after each Samba4 restart
 		  (<ulink url="&ucsbug;30543">Bug 30543</ulink>).
 		</simpara></listitem>
 
@@ -2678,7 +2678,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The Samba 4 daemon will now be restarted during the server password roatation
+		  The Samba 4 daemon will now be restarted during the server password rotation
 		  (<ulink url="&ucsbug;32468">Bug 32468</ulink>).
 		</simpara></listitem>
 
@@ -2696,7 +2696,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A traceback has been fixed in the script <filename>purge_s4_computer.py</filename>, which could occurr if a DC was removed from a Samba4/AD site.
+		  A traceback has been fixed in the script <filename>purge_s4_computer.py</filename>, which could occur if a DC was removed from a Samba4/AD site.
 		  (<ulink url="&ucsbug;30763">Bug 30763</ulink>).
 		</simpara></listitem>
 
@@ -3033,7 +3033,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 	  <listitem><simpara>
 	    The test case 10_ldap/44replication_binary has been modified in order to fulfill the requirements of the new UDM syntax for JPEG photos
-		(<ulink url="&ucsbug;32664">Bug 32664</ulink>).:wq
+		(<ulink url="&ucsbug;32664">Bug 32664</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -3068,9 +3068,9 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Provide a modprobe configuration file for vmwgfx (the DRM driver for vmware) to enable fbdev
+		Provide a modprobe configuration file for vmwgfx (the DRM driver for VMware) to enable fbdev
 		support. Otherwise startup freezes in bootsplash and on the command line occur when
-		installed in Vmware ESXi (<ulink url="&ucsbug;32536">Bug 32536</ulink>).
+		installed in VMware ESXi (<ulink url="&ucsbug;32536">Bug 32536</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -3167,7 +3167,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		When uninstall the package <package>univention-debmirror</package> the apache2 site
+		When un-installing the package <package>univention-debmirror</package> the apache2 site
 		<filename>/etc/apache2/sites-enabled/univention-repository</filename> will be disabled (<ulink url="&ucsbug;29262">Bug 29262</ulink>).
 	  </simpara></listitem>
 
