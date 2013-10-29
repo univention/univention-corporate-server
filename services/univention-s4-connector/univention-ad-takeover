@@ -95,6 +95,9 @@ well_known_sids = {
 	"Windows Authorization Access Group": "S-1-5-32-560",
 	"Terminal Server License Servers": "S-1-5-32-561",
 	"Distributed COM Users": "S-1-5-32-562",
+	"Cryptographic Operators": "S-1-5-32-569",
+	"Event Log Readers": "S-1-5-32-573",
+	"Certificate Service DCOM Access": "S-1-5-32-574",
 	"All Services": "S-1-5-80-0",
 }
 
