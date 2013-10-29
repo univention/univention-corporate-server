@@ -1,3 +1,10 @@
+univention-system-setup (7.0.60-1) unstable; urgency=low
+
+  * Fix dnsedit call (Bug #28670)
+  * Also rewrite several UCC UCRVs.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 29 Oct 2013 17:37:39 +0100
+
 univention-system-setup (7.0.59-1) unstable; urgency=low
 
   * Bug #32949: enhance interface removal

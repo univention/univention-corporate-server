@@ -26,7 +26,7 @@ class PhaseLdapDns(AddressMap, Ldap, Executable):
 			] + self._soa())
 			self.call([
 				self.executable,
-				"--bimaggnddn", self.binddn,
+				"--binddn", self.binddn,
 				"--bindpwd", self.bindpwd,
 				"--ignore-exists",
 				"--reverse", ipcalc.calculate_ipv4_reverse(ipv4),
