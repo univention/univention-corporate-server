@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.70-1) unstable; urgency=low
+
+  * Bug #32978: fixed policy tab, disable submit button until form.ready()
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Oct 2013 18:04:40 +0100
+
 univention-management-console-module-udm (4.0.69-1) unstable; urgency=low
 
   * Bug #32978: added asynchronous widget rendering, refactorization of

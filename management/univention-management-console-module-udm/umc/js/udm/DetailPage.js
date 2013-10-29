@@ -707,7 +707,7 @@ define([
 						layoutStack.push(ielement.layout);
 					}
 				}
-			}, this, 1, 10).then(lang.hitch(this, function() {
+			}, this, 1, 20).then(lang.hitch(this, function() {
 				this._layoutMap = layout;
 			}));
 		},
@@ -735,16 +735,15 @@ define([
 			borderLayout.addChild(this._tabs);
 
 			// buttons
-			var buttons = render.buttons(this.getButtonDefinitions(), this);
+			this._footerButtons = render.buttons(this.getButtonDefinitions(), this);
 			var footer = new ContainerWidget({
 				'class': 'umcPageFooter',
 				region: 'bottom'
 			});
-			array.forEach(buttons.$order$, function(i) {
+			array.forEach(this._footerButtons.$order$, function(i) {
 				footer.addChild(i);
 			});
 			borderLayout.addChild(footer);
-			borderLayout.startup();
 
 			// create the form containing the whole BorderContainer as content and add
 			// the form as content of this class
@@ -756,6 +755,16 @@ define([
 				style: 'margin:0'
 			}))[0];
 			this.set('content', this._form);
+			borderLayout.startup();
+		},
+
+		_disableSubmitButtonUntilReady: function() {
+			// make sure that the submit button can only be pressed when the
+			// whole form is ready and all its dynamic values have been loaded
+			this._footerButtons.submit.set('disabled', true);
+			all([this._form.ready(), this.loadedDeferred]).then(lang.hitch(this, function() {
+				this._footerButtons.submit.set('disabled', false);
+			}));
 		},
 
 		renderDetailPage: function(properties, layout, policies, template) {
@@ -784,12 +793,13 @@ define([
 			properties = this._prepareOptions(properties, layout, template, formBuiltDeferred);
 
 			// render widgets and full layout
-			var widgets = render.widgets( properties, this );
+			var widgets = render.widgets(properties, this);
 			this._autoUpdateTabTitle(widgets);
 			this._renderMultiEditCheckBoxes(widgets);
 			this._renderSubTabs(widgets, layout).then(lang.hitch(this, function() {
-				this._renderPolicyTab();
+				this._renderPolicyTab(policies);
 				this._renderBorderContainer(widgets);
+				this._disableSubmitButtonUntilReady();
 				formBuiltDeferred.resolve();
 				this._buildTemplate(template, properties, widgets);
 
