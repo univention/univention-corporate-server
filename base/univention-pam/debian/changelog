@@ -1,3 +1,9 @@
+univention-pam (7.0.4-1) unstable; urgency=low
+
+  * fixed common spelling mistakes (Bug #32662)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 29 Oct 2013 13:18:59 +0100
+
 univention-pam (7.0.3-2) unstable; urgency=low
 
   * Fixed typo in ldap-group-to-file.py, use null for stdin instead of
