@@ -1,3 +1,10 @@
+ucs-test (4.0.159-1) unstable; urgency=low
+
+  * 10_ldap/83acl_registration_versioncheck: Test case for ucsversionend
+    (Bug #32676)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Oct 2013 15:55:51 +0100
+
 ucs-test (4.0.158-1) unstable; urgency=low
 
   * fixed common spelling mistakes (Bug #32662)
