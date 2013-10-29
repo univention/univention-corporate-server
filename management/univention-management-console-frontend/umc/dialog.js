@@ -59,6 +59,12 @@ define([
 			//		A Deferred object that is called upon successful login.
 			//		The callback receives the authorized username as parameter.
 
+			if (!dialog._loginDialog) {
+				// create the login dialog for the first time
+				this._loginDialog = new LoginDialog({});
+				this._loginDialog.startup();
+			}
+
 			if (this._loginDeferred) {
 				// a login attempt is currently running
 				return this._loginDeferred;
@@ -91,12 +97,6 @@ define([
 
 			this._loginDeferred = this._loginDeferred.then(null, lang.hitch(dialog, function() {
 				// auto authentication could not be executed or failed...
-
-				if (!this._loginDialog) {
-					// create the login dialog for the first time
-					this._loginDialog = new LoginDialog({});
-					this._loginDialog.startup();
-				}
 
 				// show dialog
 				this._loginDialog.show();
@@ -461,6 +461,7 @@ define([
 			return deferred;
 		}
 	});
+
 	return dialog;
 });
 

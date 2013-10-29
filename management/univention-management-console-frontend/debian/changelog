@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.135-1) unstable; urgency=low
+
+  * Bug #30004: make sure LoginDialog is loaded earlier
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Oct 2013 14:03:45 +0100
+
 univention-management-console-frontend (3.0.134-1) unstable; urgency=low
 
   * Bug #32978: load combo box data earlier for optimization purposes
