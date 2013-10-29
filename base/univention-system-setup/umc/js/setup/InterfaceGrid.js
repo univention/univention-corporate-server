@@ -107,7 +107,15 @@ define([
 							if (!item.isVLAN()) {
 								// interface is not removeable if used as parent device in a VLAN
 								var deletable = array.every(this.get('value'), function(iface) {
-									return !iface.isVLAN() || item.name !== iface.parent_device;
+									if (!iface.isVLAN()) {
+										// we don't have to check here because items != VLAN are disabled if used
+										return true;
+									}
+									if (item.name !== iface.parent_device) {
+										return true;
+									}
+									// if every subdevice will be deleted item is removable
+									return ids.indexOf(iface.name) !== -1;
 								});
 
 								if (!deletable) {
@@ -138,6 +146,7 @@ define([
 
 							if (ids.length <= unremoveableInterfaces.length) {
 								// remove the delete button
+								msg = _msg;
 								buttons.pop();
 							} else {
 								msg = _msg + msg;

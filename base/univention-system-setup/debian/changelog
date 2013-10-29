@@ -1,3 +1,9 @@
+univention-system-setup (7.0.59-1) unstable; urgency=low
+
+  * Bug #32949: enhance interface removal
+
+ -- Florian Best <best@univention.de>  Tue, 29 Oct 2013 11:22:38 +0100
+
 univention-system-setup (7.0.58-2) unstable; urgency=low
 
   * Fix PXE, DHCP, Samba, DNS rewrite (Bug #28670)

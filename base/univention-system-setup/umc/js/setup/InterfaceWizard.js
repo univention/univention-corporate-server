@@ -131,18 +131,6 @@ define([
 							// require devicename
 							this.getWidget('name_b').set('required', interfaceType == 'Bridge' || interfaceType == 'Bond');
 
-							if (interfaceType === 'VLAN' && this.creation) {
-								// FIXME: the parent_device does not have a value at this point when opening the wizard
-								var vlanSubDevices = array.filter(this.interfaces.getAllInterfaces(), lang.hitch(this, function(iface) {
-									return iface.isVLAN() && iface.parent_device == this.getWidget('parent_device').get('value');
-								}));
-								var vlan_id = 2; // some machines do not support 1, so we use 2 as default value
-								vlan_id += vlanSubDevices.length;
-								// important!!! triggers a reset of name
-								this.getWidget('vlan_id').set('value', null);
-								this.getWidget('vlan_id').set('value', vlan_id);
-							}
-
 							// a restriction in UCR enforces that Bridge, VLAN and Bond interfaces can not have multiple IP addresses (Bug #31767)
 							// FIXME: the + button hides on Ethernet page when switch to != Ethernet and switch back
 							this.getWidget('ip4').set('max', (interfaceType !== 'Ethernet') ? 1 : undefined);
@@ -231,6 +219,15 @@ define([
 						onChange: lang.hitch(this, function(parent_device) {
 							if (!this.getWidget('parent_device').get('visible')) { return; }
 							if (!this.creation) { return; }
+
+							var vlanSubDevices = array.filter(this.interfaces.getAllInterfaces(), lang.hitch(this, function(iface) {
+								return iface.isVLAN() && iface.parent_device == parent_device;
+							}));
+							var vlan_id = 2; // some machines do not support 1, so we use 2 as default value
+							vlan_id += vlanSubDevices.length;
+
+							this.getWidget('vlan_id').set('value', vlan_id);
+
 							this.getWidget('name').set('value', parent_device + '.' + String(this.getWidget('vlan_id').get('value')));
 						})
 					}, {
