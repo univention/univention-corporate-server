@@ -46,7 +46,6 @@ from univention.config_registry import ConfigRegistry
 # no exceptions from logging
 # otherwise shutdown the server will raise an exception that the logging stream could not be closed
 logging.raiseExceptions = 0
-logging.basicConfig(format='%(asctime)s.%(msecs)03d  %(component)-11s ( %(level)-7s ) : %(message)s', datefmt='%d.%m.%y %H:%M:%S', level=10)
 
 #: list of available debugging components
 COMPONENTS = ( ud.MAIN, ud.NETWORK, ud.SSL, ud.ADMIN, ud.MODULE, ud.AUTH, ud.PARSER, ud.LOCALE, ud.ACL, ud.RESOURCES, ud.PROTOCOL )
@@ -92,11 +91,16 @@ class ILogger( object ):
 	"""
 	def __init__( self, id ):
 		self._id = getattr(ud, id)
+		fallbackLoggingFormatter = logging.Formatter('%%(asctime)s.%%(msecs)03d  %(component)-11s ( %%(level)-7s ) : %%(message)s' % {'component' : id}, '%d.%m.%y %H:%M:%S')
+		fallbackLoggingHandler = logging.StreamHandler()
+		fallbackLoggingHandler.setFormatter(fallbackLoggingFormatter)
+		self._fallbackLogger = logging.Logger(logging.DEBUG)
+		self._fallbackLogger.addHandler(fallbackLoggingHandler)
 		self._extras = [
-			{'component': id, 'level': 'ERROR'},
-			{'component': id, 'level': 'WARN'},
-			{'component': id, 'level': 'PROCESS'},
-			{'component': id, 'level': 'INFO'},
+			{'level': 'ERROR'},
+			{'level': 'WARN'},
+			{'level': 'PROCESS'},
+			{'level': 'INFO'},
 		]
 
 	def error( self, message ):
@@ -104,28 +108,28 @@ class ILogger( object ):
 		if _debug_ready:
 			ud.debug( self._id, ud.ERROR, message )
 		elif _debug_loglevel >= ud.ERROR:
-			logging.error(message, extra=self._extras[ud.ERROR])
+			self._fallbackLogger.error(message, extra=self._extras[ud.ERROR])
 
 	def warn( self, message ):
 		"""Write a debug message with level WARN"""
 		if _debug_ready:
 			ud.debug( self._id, ud.WARN, message )
 		elif _debug_loglevel >= ud.WARN:
-			logging.warning(message, extra=self._extras[ud.WARN])
+			self._fallbackLogger.warning(message, extra=self._extras[ud.WARN])
 
 	def process( self, message ):
 		"""Write a debug message with level PROCESS"""
 		if _debug_ready:
 			ud.debug( self._id, ud.PROCESS, message )
 		elif _debug_loglevel >= ud.PROCESS:
-			logging.info(message, extra=self._extras[ud.PROCESS])
+			self._fallbackLogger.info(message, extra=self._extras[ud.PROCESS])
 
 	def info( self, message ):
 		"""Write a debug message with level INFO"""
 		if _debug_ready:
 			ud.debug( self._id, ud.INFO, message )
 		elif _debug_loglevel >= ud.INFO:
-			logging.debug(message, extra=self._extras[ud.INFO])
+			self._fallbackLogger.debug(message, extra=self._extras[ud.INFO])
 
 CORE = ILogger( 'MAIN' )
 NETWORK = ILogger( 'NETWORK' )
