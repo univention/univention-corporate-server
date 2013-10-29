@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.72-5) unstable; urgency=low
+
+  * workaround for delayed pysupport call during update (Bug #32409)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Oct 2013 14:47:57 +0100
+
 univention-directory-manager-modules (9.0.72-4) unstable; urgency=low
 
   * fixed common spelling mistakes (Bug #32662)

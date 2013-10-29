@@ -37,7 +37,10 @@ import univention.debug
 import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.localization
-from univention.lib.ucs import UCS_Version
+try:
+	from univention.lib.ucs import UCS_Version
+except ImportError:
+	pass	## workaround for delayed pysupport call during update. Should be removed after UCS 3.2-0
 import base64
 import zlib
 import bz2
