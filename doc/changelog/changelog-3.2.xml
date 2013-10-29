@@ -1300,8 +1300,10 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Added support to configure Bridge, Bond and VLAN interfaces (<ulink url="&ucsbug;30816">Bug 30816</ulink>,
-		  <ulink url="&ucsbug;30878">Bug 30878</ulink>).
+			Added support to configure Bridge, Bond and VLAN interfaces.
+			This is blocked while the deprecated KVM and Xen script are still used, which normally setup a network bridge for virtualisation.
+			See <ulink url="http://docs.univention.de/computers-3.2.html#uvmm"/> for detailed instructions
+			(<ulink url="&ucsbug;30816">Bug 30816</ulink>, <ulink url="&ucsbug;30878">Bug 30878</ulink>, <ulink url="&ucsbug;33006">Bug 33006</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2368,6 +2370,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 			The Java based VNC viewer has been replaced by <ulink ulr="http://novnc.com/">noVNC</ulink>, a JavaScript and HTML5 based VNC client (<ulink url="&ucsbug;30540">Bug 30540</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			Added support to configure Bridge, Bond and VLAN interfaces.
+			This is blocked while the deprecated KVM and Xen script are still used, which normally setup a bnetwork ridge for virtualisation.
+			See <ulink url="http://docs.univention.de/computers-3.2.html#uvmm"/> for detailed instructions
+			(<ulink url="&ucsbug;30816">Bug 30816</ulink>, <ulink url="&ucsbug;30878">Bug 30878</ulink>, <ulink url="&ucsbug;33006">Bug 33006</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>

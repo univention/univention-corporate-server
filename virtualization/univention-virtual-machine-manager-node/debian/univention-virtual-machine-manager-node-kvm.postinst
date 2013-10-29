@@ -37,9 +37,16 @@ univention-config-registry set uvmm/kvm/bridge/autostart?yes \
 	uvmm/libvirt/action/boot?start \
 	uvmm/libvirt/action/shutdown?suspend
 
+# Bug #33006: incompatible with bridge configuration through UMC
+case "$(univention-config-registry get uvmm/kvm/bridge/autostart)" in
+false|no) ;;
+manually) ;;
+*) univention-config-registry set umc/modules/setup/network=33006 ;;
+esac
+
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]
 then
-    /usr/lib/univention-install/44univention-virtual-machine-manager-node-kvm.inst || true
+	/usr/lib/univention-install/44univention-virtual-machine-manager-node-kvm.inst || true
 fi
 
 adduser --quiet libvirt-qemu cdrom

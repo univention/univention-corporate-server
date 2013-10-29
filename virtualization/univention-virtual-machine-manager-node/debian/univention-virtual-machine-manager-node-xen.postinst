@@ -34,7 +34,13 @@ eval "$(univention-config-registry shell server/role)"
 
 univention-config-registry set xen/server/relocation?yes \
 	uvmm/libvirt/action/boot?ignore \
-	uvmm/libvirt/action/shutdown?ignore 
+	uvmm/libvirt/action/shutdown?ignore
+
+# Bug #33006: incompatible with bridge configuration through UMC
+case "$(univention-config-registry get xen/bridge/interface)" in
+none) ;;
+*) univention-config-registry set umc/modules/setup/network=33006 ;;
+esac
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	univention-config-registry set xen/server/unix_server?yes
@@ -42,7 +48,7 @@ fi
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]
 then
-    /usr/lib/univention-install/44univention-virtual-machine-manager-node-xen.inst || true
+	/usr/lib/univention-install/44univention-virtual-machine-manager-node-xen.inst || true
 fi
 
 ucr set security/packetfilter/package/univention-virtual-machine-manager-node-xen/tcp/8002/all="ACCEPT" \

@@ -69,7 +69,7 @@
             The following examples only configure IPv4, but all examples can be used with IPv6 as well.
         </para>
 
-        <section>
+        <section id="bridge">
             <title>Bridging</title>
             <para>
                 Bridging allows a physical network interface to be shared by multiple virtual
@@ -156,7 +156,7 @@ END_CONFIG
             </section>
         </section>
 
-        <section>
+        <section id="bonding">
             <title>Bonding</title>
             <para>
                 Bonding allows two (or more) physical network interfaces to be coupled
@@ -246,7 +246,7 @@ END_CONFIG
             </section>
         </section>
 
-        <section>
+        <section id="vlan">
             <title>Virtual LANs</title>
             <para>
                 Virtual LANs (VLANs) can be used to separate network traffic into
@@ -350,7 +350,7 @@ END_CONFIG
             </section>
         </section>
 
-        <section>
+        <section id="combined">
             <title>Combined setup</title>
             <para>
                 Bonding, VLANs and bridging can also be combined.
@@ -421,7 +421,7 @@ END_CONFIG
             </programlisting>
         </section>
 
-        <section>
+        <section id="uvmm">
             <title>Setup for &ucsUVMM;</title>
             <para>
                 &ucsUVMM; normally replaces eth0 with a bridge interface to connect virtual
@@ -431,7 +431,7 @@ END_CONFIG
             </para>
 
             <para>
-                If you configure your own bridges, bonds or VLANs using the &ucsUCR;
+                If you configure your own bridges, bonds or VLANs using the UMC or the &ucsUCR;
                 variables described above you need to deactivate these scripts by
                 setting the following UCR variables:
             </para>
@@ -441,6 +441,8 @@ END_CONFIG
 ucr set uvmm/kvm/bridge/autostart=no
 # for Xen:
 ucr set xen/bridge/interface=none
+# After that re-enable the UMC basic setup
+ucr unset umc/modules/setup/network
             </programlisting>
 
             <para>
@@ -454,7 +456,7 @@ udm uvmm/profile list --filter interface=eth0 |
             </programlisting>
         </section>
 
-        <section>
+        <section id="troubleshooting">
             <title>Troubleshooting</title>
             <para>
                 The name of an interface depends on the loading order of kernel modules and

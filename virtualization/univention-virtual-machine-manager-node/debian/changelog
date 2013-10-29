@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-node (2.0.4-1) unstable; urgency=low
+
+  * Disable UMC basic settings network configuration while KVM and Xen scripts
+    doing the network bridge magic are still active (Bug #33006)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 29 Oct 2013 16:44:29 +0100
+
 univention-virtual-machine-manager-node (2.0.3-7) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30949)
@@ -8,7 +15,7 @@ univention-virtual-machine-manager-node (2.0.3-6) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30949)
     Remove UCR variable descriptions for uvmm/kvm/qemu/user, uvmm/kvm/qemu/group
-    and uvmm/kvm/qemu/dynamic_ownership. This is a legacy feature no longer relevant.	
+    and uvmm/kvm/qemu/dynamic_ownership. This is a legacy feature no longer relevant.
   * Bump version for UCS 3.2, update copyright to 2013
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 10 Sep 2013 15:38:24 +0200
@@ -21,7 +28,7 @@ univention-virtual-machine-manager-node (2.0.3-5) UNRELEASED; urgency=low
 
 univention-virtual-machine-manager-node (2.0.3-4) UNRELEASED; urgency=low
 
-  * Re-construct bridge afer init script (Bug #30590)
+  * Re-construct bridge after init script (Bug #30590)
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 27 Feb 2013 09:49:30 +0100
 
@@ -203,13 +210,13 @@ univention-virtual-machine-manager-node (0.1.23-1) unstable; urgency=low
 
 univention-virtual-machine-manager-node (0.1.22-1) unstable; urgency=low
 
-  * added package "Recommends:" to nagios plugins (Bug #21328) 
+  * added package "Recommends:" to nagios plugins (Bug #21328)
 
  -- Felix Botner <botner@univention.de>  Thu, 10 Mar 2011 11:05:23 +0100
 
 univention-virtual-machine-manager-node (0.1.21-1) unstable; urgency=low
 
-  * Move UCR temaplate etc/default/libvirt-guests to common package
+  * Move UCR templlate etc/default/libvirt-guests to common package
     (Bug #21733)
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Mar 2011 12:14:36 +0100
@@ -286,7 +293,7 @@ univention-virtual-machine-manager-node (0.1.14-1) unstable; urgency=low
 
   * add script to restore virtual instances; Bug #19864
   * add README describing the usage of the restore tool
-  * add UCR variable uvmm/backup/directory defining the diretory for
+  * add UCR variable uvmm/backup/directory defining the directory for
     backups
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 09 Sep 2010 16:22:38 +0200
