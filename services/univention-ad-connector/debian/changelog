@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.16-1) unstable; urgency=low
+
+  * Bug #32698: fix permissions of /univention-ad-connector/*
+
+ -- Florian Best <best@univention.de>  Tue, 29 Oct 2013 15:04:50 +0100
+
 univention-ad-connector (8.0.15-2) unstable; urgency=low
 
   * fixed common spelling mistakes (Bug #32662)

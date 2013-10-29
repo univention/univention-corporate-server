@@ -77,7 +77,8 @@ call_joinscript 81univention-ad-connector.inst
 
 #DEBHELPER#
 
-dpkg-statoverride --update --add root www-data 0710 /var/www/univention-ad-connector
+dpkg-statoverride --update --add root www-data 0750 /var/www/univention-ad-connector
+dpkg-statoverride --update --add root www-data 0750 /var/www/univention-ad-connector/.htaccess
 
 if [ -x /etc/init.d/univention-management-console-server ]; then
 	/etc/init.d/univention-management-console-server crestart
