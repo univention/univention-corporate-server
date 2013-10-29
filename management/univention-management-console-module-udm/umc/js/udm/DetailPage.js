@@ -268,7 +268,7 @@ define([
 				// save the original data we received from the server
 				var vals = result.object;
 				this._receivedObjOrigData = vals;
-				this._form.set('value', vals);
+				this._form.setFormValues(vals);
 
 				// as soon as the policy widgets are rendered, update the policy values
 				policyDeferred.then(lang.hitch(this, function() {
