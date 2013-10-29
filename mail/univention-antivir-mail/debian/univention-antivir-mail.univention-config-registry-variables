@@ -24,7 +24,7 @@ Categories=service-mail
 
 [clamav/database/mirror]
 Description[de]=Von diesen/diesem Server(n) werden Virensignatur-Updates durch den Freshclam-Dienst heruntergeladen. Mehrere Werte müssen durch Leerzeichen getrennt werden.
-Description[en]=Virus signature updates are downloaded by the Freshclam service from this/these server(s). Multiple values must be separated by commas.
+Description[en]=Virus signature updates are downloaded by the Freshclam service from this/these server(s). Multiple values must be separated by spaces.
 Type=str
 Categories=service-mail
 

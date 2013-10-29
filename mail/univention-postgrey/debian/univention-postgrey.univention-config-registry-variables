@@ -47,14 +47,14 @@ Type=int
 Categories=service-mail
 
 [mail/postfix/greylisting/client/whitelist]
-Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable eine Liste von Konfigurationsdateien, in denen Mail-Domänen konfiguriert sind, für die kein Greylisting durchgeführt wird. Ein Beispiel für das Format der Dateien findet sich in /etc/postgrey/whitelist_clients. Mehrere Dateinamen werden durch Kommata getrennt.
-Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures a list of configuration files in which mail domains are configured for which no greylisting is made. An example for the file format is /etc/postgrey/whitelist_clients. Multiple file names must be separated by commas.
+Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable eine Liste von Konfigurationsdateien, in denen Mail-Domänen konfiguriert sind, für die kein Greylisting durchgeführt wird. Ein Beispiel für das Format der Dateien findet sich in /etc/postgrey/whitelist_clients. Mehrere Dateinamen werden durch Leerzeichen getrennt.
+Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures a list of configuration files in which mail domains are configured for which no greylisting is made. An example for the file format is /etc/postgrey/whitelist_clients. Multiple file names must be separated by spaces.
 Type=str
 Categories=service-mail
 
 [mail/postfix/greylisting/recipient/whitelist]
-Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable eine Liste von Konfigurationsdateien, in denen Mailadressen konfiguriert sind, für die kein Greylisting durchgeführt wird. Ein Beispiel für das Format der Dateien findet sich in /etc/postgrey/whitelist_recipients. Mehrere Dateinamen werden durch Kommata getrennt.
-Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures a list of configuration files in which e-mail addresses are configured for which no greylisting is made. An example for the file format is /etc/postgrey/whitelist_recipients. Multiple file names must be separated by commas.
+Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable eine Liste von Konfigurationsdateien, in denen Mailadressen konfiguriert sind, für die kein Greylisting durchgeführt wird. Ein Beispiel für das Format der Dateien findet sich in /etc/postgrey/whitelist_recipients. Mehrere Dateinamen werden durch Leerzeichen getrennt.
+Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures a list of configuration files in which e-mail addresses are configured for which no greylisting is made. An example for the file format is /etc/postgrey/whitelist_recipients. Multiple file names must be separated by spaces.
 Type=str
 Categories=service-mail
 

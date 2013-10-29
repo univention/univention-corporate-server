@@ -150,7 +150,7 @@ Categories=service-mail
 
 [mail/cyrus/folder/predefined_folders]
 Description[de]=Hier kann eine optionale Liste von IMAP-Ordner-Namen angegeben werden, die beim Anlegen eines Mail-Kontos automatisch erzeugt werden. Mehrere Werte müssen durch Semikolons getrennt werden.
-Description[en]=A list of IMAP folder names can be configured here which are created automatically when creating a new mail account. Multiple values must be separated by commas.
+Description[en]=A list of IMAP folder names can be configured here which are created automatically when creating a new mail account. Multiple values must be separated by semicolons.
 Type=str
 Categories=service-mail
 

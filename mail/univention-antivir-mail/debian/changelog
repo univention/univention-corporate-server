@@ -1,3 +1,9 @@
+univention-antivir-mail (5.0.0-4) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30945)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 29 Oct 2013 09:19:03 +0100
+
 univention-antivir-mail (5.0.0-3) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30945)

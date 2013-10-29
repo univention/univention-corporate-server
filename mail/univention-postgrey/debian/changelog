@@ -1,3 +1,9 @@
+univention-postgrey (2.0.0-2) unstable; urgency=low
+
+  * Bug #30945: updated UCR variable descriptions
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 29 Oct 2013 09:39:09 +0100
+
 univention-postgrey (2.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013

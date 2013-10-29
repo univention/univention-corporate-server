@@ -91,13 +91,13 @@ Categories=service-mail
 
 [mail/postfix/softbounce]
 Description[de]=Bei einer Reihe von Fehlersituationen (z.B. bei nicht vorhandenen Benutzern) kann es zu einem Bounce der betroffenen Mail kommen, d.h. die Mail wird an den Absender zurückgesendet. Ist diese Option aktiviert werden E-Mails nie mit einem Bounce zurückgesendet, sondern immer weiterhin in der Queue vorgehalten. Diese Einstellung ist insbesondere für Konfigurationsarbeiten am Mailserver nützlich. Ist die Variable nicht gesetzt, werden Bounces verwendet.
-Description[en]=If a number of error situations (e.g., for non-existent users) the result may be a mail bounce, i.e., the mail cannot be delivered and is returned to the sender. If this option is enabled e-mails are never returned as bounces, but instead are held in the queue. This setting is particularly useful during configuration work on the mail server. If the variable is unset, bounces are made.
+Description[en]=In a number of error situations (e.g., for non-existent users) the result may be a mail bounce, i.e., the mail cannot be delivered and is returned to the sender. If this option is enabled e-mails are never returned as bounces, but instead are held in the queue. This setting is particularly useful during configuration work on the mail server. If the variable is unset, bounces are made.
 Type=bool
 Categories=service-mail
 
 [mail/postfix/dnslookups]
 Description[de]=In der Grundeinstellung baut Postfix beim Versenden einer E-Mail an eine nicht-lokale Adresse eine direkte SMTP-Verbindung an den für diese Domain zuständigen Mailserver auf. Ist diese Option aktiviert oder die Variable nicht gesetzt, wird dieser Server durch eine Abfrage des MX-Records im DNS ermittelt. Wird sie deaktiviert erfolgt die Auflösung über die Systemfunktion getaddrinfo() (dies ist nur in Sonderfällen nötig).
-Description[en]=In the default setting, Postfix creates a direct STMP connection to the mail server responsible for the domain when an e-mail is sent to a non-local address. If this option is enabled of the variable unset, this server is determined by querying the MX record in the DNS. If the option is disabled, the system function getaddrinfo() is used (this is only needed in exceptional cases).
+Description[en]=In the default setting, Postfix creates a direct STMP connection to the mail server responsible for the domain when an e-mail is sent to a non-local address. If this option is enabled or the variable unset, this server is determined by querying the MX record in the DNS. If the option is disabled, the system function getaddrinfo() is used (this is only needed in exceptional cases).
 Type=bool
 Categories=service-mail
 
