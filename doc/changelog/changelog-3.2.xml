@@ -2374,7 +2374,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 			Added support to configure Bridge, Bond and VLAN interfaces.
-			This is blocked while the deprecated KVM and Xen script are still used, which normally setup a bnetwork ridge for virtualisation.
+			This is blocked while the deprecated KVM and Xen script are still used, which normally setup a network bridge for virtualisation.
 			See <ulink url="http://docs.univention.de/computers-3.2.html#uvmm"/> for detailed instructions
 			(<ulink url="&ucsbug;30816">Bug 30816</ulink>, <ulink url="&ucsbug;30878">Bug 30878</ulink>, <ulink url="&ucsbug;33006">Bug 33006</ulink>).
 		</simpara></listitem>
