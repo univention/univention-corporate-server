@@ -433,7 +433,7 @@ define([
 
 		// pop up to ask for credentials when running join scripts
 		getCredentials: function(scripts) {
-			var msg = _('<p>Please enter credentials of an user account with administrator rights to run the selected join scripts.</p>') + scripts;
+			var msg = _('<p>Please enter credentials of a user account with administrator rights to run the selected join scripts.</p>') + scripts;
 			var deferred = dialog.confirmForm({
 				widgets: [{
 					name: 'text',

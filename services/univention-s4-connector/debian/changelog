@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.31-2) unstable; urgency=low
+
+  * fixed common spelling mistakes (Bug #32662)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 29 Oct 2013 13:01:59 +0100
+
 univention-s4-connector (8.0.31-1) unstable; urgency=low
 
   * univention-ad-takeover: update group mapping (Bug #29486)
@@ -1224,7 +1230,7 @@ univention-s4-connector (6.0.126-1) unstable; urgency=low
 
 univention-s4-connector (6.0.125-1) unstable; urgency=low
 
-  * If an user was added in UCS, the primary group setting will be synced
+  * If a user was added in UCS, the primary group setting will be synced
     from UCS to S4 like expected. This means the user will no longer added
     automatically to the group Domain Users (Bug #26808)
 

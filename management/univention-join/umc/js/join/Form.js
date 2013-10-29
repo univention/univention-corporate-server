@@ -50,7 +50,7 @@ define([
 				type:			Text,
 				name:			'text',
 				style:			'margin-bottom:1em;',
-				content:		_("Please enter credentials of an user account with administrator rights to join the system.")
+				content:		_("Please enter credentials of a user account with administrator rights to join the system.")
 			}, {
 				type:			TextBox,
 				name:			'username',

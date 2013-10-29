@@ -1,3 +1,9 @@
+univention-management-console-module-luga (2.0.0-1) unstable; urgency=low
+
+  * fixed common spelling mistakes (Bug #32662)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 29 Oct 2013 13:05:15 +0100
+
 univention-management-console-module-luga (1.0.0-1) unstable; urgency=low
 
   * Initial release (Bug #9899)

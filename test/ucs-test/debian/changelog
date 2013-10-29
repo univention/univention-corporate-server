@@ -1,3 +1,9 @@
+ucs-test (4.0.158-1) unstable; urgency=low
+
+  * fixed common spelling mistakes (Bug #32662)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 29 Oct 2013 13:03:00 +0100
+
 ucs-test (4.0.157-1) unstable; urgency=low
 
   * Bug #32554: updated ignore filter for file extensions and fixed test

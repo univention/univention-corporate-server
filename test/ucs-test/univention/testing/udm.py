@@ -299,7 +299,7 @@ class UCSTestUDM(object):
 
 	def create_user(self, wait_for_replication = True, **kwargs): # :pylint: disable-msg=W0613
 		"""
-		Creates an user via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
+		Creates a user via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
 		have to exactly match UDM property names (case-sensitive!). Some properties have default values:
 		position: 'cn=users,$ldap_base'
 		password: 'univention'

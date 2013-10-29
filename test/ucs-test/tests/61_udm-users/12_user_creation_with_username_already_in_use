@@ -25,4 +25,4 @@ if __name__ == '__main__':
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 
-	utils.fail('Successfully created an user with an username which is already in use, which should not be possible')
+	utils.fail('Successfully created a user with a username which is already in use, which should not be possible')

@@ -1,3 +1,9 @@
+univention-join (6.0.15-1) unstable; urgency=low
+
+  * fixed common spelling mistakes (Bug #32662)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 29 Oct 2013 13:04:43 +0100
+
 univention-join (6.0.14-1) unstable; urgency=low
 
   * Bug #30004: adjustements for new notifications

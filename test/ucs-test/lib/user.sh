@@ -148,7 +148,7 @@ user_change_pw_next_login () { # Set the Flag for changing the Password on the n
 		--set pwdChangeNextLogin=1
 }
 
-user_check_pw_expiry () { # Checks if there is an expiry-date for the password of an user returns 0 if user has one, otherwise 1 Usage: user_check_pw_expiry $NAME
+user_check_pw_expiry () { # Checks if there is an expiry-date for the password of a user returns 0 if user has one, otherwise 1 Usage: user_check_pw_expiry $NAME
 	local USERNAME=${1?:missing parameter: name}
 	info "check the password expriry of user $USERNAME"
 

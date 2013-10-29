@@ -282,7 +282,7 @@ Categories=service-samba
 
 [samba/auth/methods]
 Description[de]=Diese Variable konfiguriert die Authentifizierungsmethoden auf einem Memberserver während der Benutzeranmeldung. Mögliche Werte sind in 'man smb.conf' unter 'auth methods' dokumentiert. Ist die Variable nicht gesetzt, gilt 'guest sam winbind'.
-Description[en]=This variable configures what authentication methods Samba will use when authenticating an user on a member server. Possible values are documented in 'man smb.conf' under 'auth methods'. If the variable is unset, 'guest sam winbind' applies.
+Description[en]=This variable configures what authentication methods Samba will use when authenticating a user on a member server. Possible values are documented in 'man smb.conf' under 'auth methods'. If the variable is unset, 'guest sam winbind' applies.
 Type=str
 Categories=service-samba
 

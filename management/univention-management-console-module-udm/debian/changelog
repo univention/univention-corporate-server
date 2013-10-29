@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.67-2) unstable; urgency=low
+
+  * fixed common spelling mistakes (Bug #32662)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 29 Oct 2013 13:06:15 +0100
+
 univention-management-console-module-udm (4.0.67-1) unstable; urgency=low
 
   * Bug #32978: fix problems with caching, fix direct loading of UDM objects
@@ -493,7 +499,7 @@ univention-management-console-module-udm (3.0.74-1) unstable; urgency=low
 
 univention-management-console-module-udm (3.0.73-1) unstable; urgency=low
 
-  * display a notification if an user successfully changed his password with
+  * display a notification if a user successfully changed his password with
     the udm/self command (Bug #29251)
 
  -- Lukas Walter <walter@univention.de>  Mon, 11 Mar 2013 14:29:41 +0100

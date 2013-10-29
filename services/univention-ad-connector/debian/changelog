@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.15-2) unstable; urgency=low
+
+  * fixed common spelling mistakes (Bug #32662)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 29 Oct 2013 13:02:35 +0100
+
 univention-ad-connector (8.0.15-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)
@@ -386,7 +392,7 @@ univention-ad-connector (6.0.57-1) unstable; urgency=low
 
 univention-ad-connector (6.0.56-1) unstable; urgency=low
 
-  * If an user was added in UCS, the primary group setting will be synced
+  * If a user was added in UCS, the primary group setting will be synced
     from UCS to S4 like expected. This means the user will no longer added
     automatically to the group Domain Users (Bug #26809)
 

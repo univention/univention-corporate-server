@@ -623,7 +623,7 @@ define([
 
 		load: function(id) {
 		// summary:
-		//		open the detailpage for adding or modifiing an user or group
+		//		open the detailpage for adding or modifiing a user or group
 			this._newObject = (id === undefined);
 			this._resetForm();
 

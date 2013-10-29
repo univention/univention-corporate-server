@@ -32,7 +32,7 @@ msgstr "1 Skript ausgewählt"
 
 #: umc/js/join.js:428
 msgid ""
-"<p>Please enter credentials of an user account with administrator rights to "
+"<p>Please enter credentials of a user account with administrator rights to "
 "run the selected join scripts.</p>"
 msgstr ""
 "<p>Bitte Zugangsdaten eines Benutzerkontos mit Administratorrechten "
@@ -160,7 +160,7 @@ msgstr "Passwort des Domänen-Administrators"
 
 #: umc/js/join/Form.js:53
 msgid ""
-"Please enter credentials of an user account with administrator rights to "
+"Please enter credentials of a user account with administrator rights to "
 "join the system."
 msgstr ""
 "Bitte Zugangsdaten eines Benutzerkontos mit Administratorrechten eingeben, "

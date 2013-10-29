@@ -1,3 +1,9 @@
+univention-samba (8.0.13-1) unstable; urgency=low
+
+  * fixed common spelling mistakes (Bug #32662)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 29 Oct 2013 13:01:11 +0100
+
 univention-samba (8.0.12-2) unstable; urgency=low
 
   * Fix problem detected by ucs-lint (Bug #32049)
@@ -1002,7 +1008,7 @@ univention-samba (5.0.4-1) unstable; urgency=low
 
 univention-samba (5.0.3-1) unstable; urgency=low
 
-  * added set_privilege script to give an user SeMachineAccount
+  * added set_privilege script to give a user SeMachineAccount
     privilege. Bug #18616
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Jun 2010 16:26:40 +0200
