@@ -214,6 +214,12 @@ define([
 			}, this);
 		},
 
+		_loadUCRVariables: function(ucr) {
+			return tools.ucr(['directory/manager/web*', 'ldap/base']).then(lang.hitch(this, function(ucr) {
+				this._ucr = lang.setObject('umc.modules.udm.ucr', ucr);
+			}));
+		},
+
 		buildRendering: function() {
 			// call superclass method
 			this.inherited(arguments);
@@ -227,11 +233,15 @@ define([
 
 			// check whether we need to open directly the detail page of a given or a new object
 			if (this.openObject) {
-				this.createDetailPage(this.openObject.objectType, this.openObject.objectDN, undefined, true, this.openObject.note);
+				this._loadUCRVariables().then(lang.hitch(this, 'createDetailPage',
+					this.openObject.objectType, this.openObject.objectDN, undefined, true, this.openObject.note)
+				);
 				return; // do not render the search page
 			}
 			if (this.newObject) {
-				this.createDetailPage(this.newObject.objectType, undefined, this.newObject, true, this.newObject.note);
+				this._loadUCRVariables().then(lang.hitch(this, 'createDetailPage',
+					this.newObject.objectType, undefined, this.newObject, true, this.newObject.note)
+				);
 				return; // do not render the search page
 			}
 			this._progressBar = new ProgressBar({});
@@ -241,13 +251,10 @@ define([
 			if ('navigation' == this.moduleFlavor) {
 				// for the UDM navigation, we only query the UCR variables
 				this.standby(true);
-				tools.ucr( [ 'directory/manager/web*', 'ldap/base' ] ).then(lang.hitch(this, function(ucr) {
-					// save the ucr variables locally and also globally
-					this._ucr = lang.setObject('umc.modules.udm.ucr', ucr);
-					this.renderSearchPage();
-				}), lang.hitch(this, function() {
-					this.standby(false);
-				}));
+				this._loadUCRVariables().then(
+					lang.hitch(this, 'renderSearchPage'),
+					lang.hitch(this, 'standby', false)
+				);
 			} else {
 				// render search page, we first need to query lists of containers/superordinates
 				// in order to correctly render the search form...
@@ -258,10 +265,9 @@ define([
 					containers: this.umcpCommand('udm/containers'),
 					superordinates: this.umcpCommand('udm/superordinates'),
 					reports: this.umcpCommand('udm/reports/query'),
-					ucr: tools.ucr( [ 'directory/manager/web*', 'ldap/base' ] )
+					ucr: this._loadUCRVariables()
 				}).then(lang.hitch(this, function(results) {
 					this._reports = results.reports.result;
-					this._ucr = lang.setObject('umc.modules.udm.ucr', results.ucr);
 					this.renderSearchPage(results.containers.result, results.superordinates.result);
 				}), lang.hitch(this, function() {
 					this.standby(false);

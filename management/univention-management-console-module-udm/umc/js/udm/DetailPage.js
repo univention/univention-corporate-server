@@ -191,7 +191,7 @@ define([
 
 			// for the detail page, we first need to query property data from the server
 			// for the layout of the selected object type, then we can render the page
-			var objectDN = this._multiEdit ? null : this.ldapName || null;
+			var objectDN = this._multiEdit || this.moduleFlavor == 'users/self' ? null : this.ldapName || null;
 			var params = {
 				objectType: this.objectType,
 				// when editing multiple items, get the properties as for a new object
@@ -230,7 +230,10 @@ define([
 			}));
 			(new all(commands)).then(lang.hitch(this, function(results) {
 				var template = lang.getObject('template.result', false, results) || null;
-				this.renderDetailPage(results.properties, results.layout, results.policies, template).then(lang.hitch(this, function() {
+				var layout = lang.clone(results.layout);
+				var policies = lang.clone(results.policies);
+				var properties = lang.clone(results.properties);
+				this.renderDetailPage(properties, layout, policies, template).then(lang.hitch(this, function() {
 					this.loadedDeferred.resolve();
 				}), lang.hitch(this, function() {
 					this.loadedDeferred.resolve();

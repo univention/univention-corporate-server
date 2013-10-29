@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.67-1) unstable; urgency=low
+
+  * Bug #32978: fix problems with caching, fix direct loading of UDM objects
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Oct 2013 11:59:36 +0100
+
 univention-management-console-module-udm (4.0.66-1) unstable; urgency=low
 
   * Bug #32978: added caching of static UDM object values for optimization

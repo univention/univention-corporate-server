@@ -140,16 +140,19 @@ define([
 					objectDN: objDN
 				};
 			});
-			return tools.umcpCommand('udm/' + infoType, types, true, this.superModule).then(lang.hitch(this, function(response) {
+			var ret = tools.umcpCommand('udm/' + infoType, types, true, this.superModule).then(lang.hitch(this, function(response) {
 				// resolve Deferreds in cache
 				array.forEach(response.result, function(ires, idx) {
 					var imodule = modules[idx];
 					var deferred = this._get(infoType, imodule);
 					deferred.resolve(ires);
 				}, this);
-
-				return response.result;
 			}));
+
+			// return array of Deferreds
+			return array.map(modules, function(imodule) {
+				return this._get(infoType, imodule);
+			}, this);
 		},
 
 		getProperties: function(module, objDN) {
