@@ -46,7 +46,7 @@ __all__ = ['TEST_BASE', 'LOG_BASE', 'setup_environment', 'setup_debug',
 TEST_BASE = '/usr/share/ucs-test'
 RE_SECTION = re.compile(r'^[0-9]{2}_(.+)$')
 RE_PREFIX = re.compile(r'^[0-9]{2}(.+)')
-RE_SUFFIX = re.compile(r'\.lib$|\.sh$|\.py[co]?$|\.bak$|~$')
+RE_SUFFIX = re.compile(r'(?:~|\.(?:lib|sh|py[co]|bak|mo|po|png|jpg|xml|csv))$')  # ends with ~, .lib, .sh, .pyo, .pyc, .bak, .mo, .po, .png, .jpg, .xml, .csv
 LOG_BASE = '/var/log/univention/test_%d.log'
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 
@@ -244,7 +244,7 @@ def get_tests(sections):
 			if not RE_PREFIX.match(filename):
 				logger.debug('Skipped file %s' % (fname,))
 				continue
-			if RE_SUFFIX.match(filename):
+			if RE_SUFFIX.search(filename):
 				logger.debug('Skipped file %s' % (fname,))
 				continue
 			logger.debug('Adding file %s' % (fname,))
