@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 1.0.103-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-10-18 15:13+0200\n"
+"POT-Creation-Date: 2013-10-29 15:19+0100\n"
 "PO-Revision-Date: 2013-07-24 19:03+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -47,21 +47,25 @@ msgstr ""
 msgid " ({avail} free)"
 msgstr " ({avail} frei)"
 
-#: umc/js/uvmm.js:184
+#: umc/js/uvmm.js:189
 #, python-format
 msgid "%(nSelected)d %(objPlural)s of %(nTotal)d selected"
 msgstr "%(nSelected)d %(objPlural)s von %(nTotal)d ausgewählt"
 
-#: umc/js/uvmm.js:181
+#: umc/js/uvmm.js:186
 #, python-format
 msgid "%(nSelected)d %(objSingular)s of %(nTotal)d selected"
 msgstr "%(nSelected)d %(objSingular)s von %(nTotal)d ausgewählt"
+
+#: umc/js/uvmm.js:645
+msgid "%s domain"
+msgstr "%s der Domäne"
 
 #: umc/js/uvmm/types.js:78
 msgid "(saved state)"
 msgstr "(gespeicherter Zustand)"
 
-#: umc/js/uvmm.js:369 umc/js/uvmm/DomainPage.js:459
+#: umc/js/uvmm.js:376 umc/js/uvmm/DomainPage.js:460
 msgid ""
 "<p>For fail over the virtual machine can be migrated to another physical "
 "server re-using the last known configuration and all disk images. This can "
@@ -87,7 +91,7 @@ msgstr ""
 "Zurückmigrieren oder Löschen der Maschine. Stellen Sie dabei sicher, dass "
 "keine mehrfach eingebundenen Image-Dateien gelöscht werden.</p>"
 
-#: umc/js/uvmm.js:583
+#: umc/js/uvmm.js:590
 msgid ""
 "<p>Shutting down virtual machines cleanly required the cooperation of their "
 "guest operating system.</p><p>For KVM ACPI must be enabled.</p><p>For XEN PV-"
@@ -100,7 +104,7 @@ msgstr ""
 "nicht kooperiert kann \"Beenden\" benutzt werden, um die virtuelle Maschine "
 "zwangsweise auszuschalten.</p>"
 
-#: umc/js/uvmm.js:126
+#: umc/js/uvmm.js:131
 msgid ""
 "<p>This module provides a management interface for physical servers that are "
 "registered within the UCS domain.</p><p>The tree view on the left side shows "
@@ -137,7 +141,7 @@ msgstr ""
 "Der Name für die virtuelle Maschine wird benötigt und sollte nicht der "
 "vorgeschlagenen Namenspräfix entsprechen"
 
-#: umc/js/uvmm.js:706
+#: umc/js/uvmm.js:714
 msgid "A valid clone name cannot contain \"/\" and may not start with \".\" ."
 msgstr ""
 "Ein gültiger Klonname darf keine \"/\" enthalten und kann nicht mit \".\" "
@@ -176,11 +180,11 @@ msgstr "Laufwerk hinzufügen"
 msgid "Add network interface"
 msgstr "Hinzufügen einer Netzwerkschnittstelle"
 
-#: umc/js/uvmm/DomainPage.js:163
+#: umc/js/uvmm/DomainPage.js:165
 msgid "Advanced"
 msgstr "Erweitert"
 
-#: umc/js/uvmm/DomainPage.js:162
+#: umc/js/uvmm/DomainPage.js:164
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
@@ -202,7 +206,7 @@ msgstr "Ein Fehler trat während der Bearbeitung Ihrer Anfrage auf."
 msgid "Arabic"
 msgstr "Arabisch"
 
-#: umc/js/uvmm/DomainPage.js:183
+#: umc/js/uvmm/DomainPage.js:185
 msgid "Architecture"
 msgstr "Architektur"
 
@@ -224,16 +228,16 @@ msgstr ""
 "Sind Sie sicher, dass die virtuelle Maschine auf den Sicherungspunkt "
 "zurückgesetzt werden soll?"
 
-#: umc/js/uvmm/DomainPage.js:93 umc/js/uvmm/DomainPage.js:165
-#: umc/js/uvmm/DomainPage.js:300 umc/js/uvmm/DomainPage.js:359
+#: umc/js/uvmm/DomainPage.js:95 umc/js/uvmm/DomainPage.js:167
+#: umc/js/uvmm/DomainPage.js:302 umc/js/uvmm/DomainPage.js:361
 msgid "Back to overview"
 msgstr "Zurück zur Übersicht"
 
-#: umc/js/uvmm/DomainPage.js:224
+#: umc/js/uvmm/DomainPage.js:226
 msgid "Boot device"
 msgstr "Bootmedium"
 
-#: umc/js/uvmm/DomainPage.js:216
+#: umc/js/uvmm/DomainPage.js:218
 msgid "Boot order"
 msgstr "Bootreihenfolge"
 
@@ -266,7 +270,7 @@ msgstr "CDROM-Laufwerk"
 msgid "CDROM drive"
 msgstr "CDROM-Laufwerk"
 
-#: umc/js/uvmm.js:761 umc/js/uvmm.js:779
+#: umc/js/uvmm.js:769 umc/js/uvmm.js:787
 msgid "CPU usage"
 msgstr "CPU-Auslastung"
 
@@ -274,7 +278,7 @@ msgstr "CPU-Auslastung"
 msgid "Caching"
 msgstr "Caching"
 
-#: umc/js/uvmm.js:396 umc/js/uvmm.js:517 umc/js/uvmm.js:631 umc/js/uvmm.js:731
+#: umc/js/uvmm.js:403 umc/js/uvmm.js:524 umc/js/uvmm.js:638 umc/js/uvmm.js:739
 #: umc/js/uvmm/InterfaceGrid.js:133 umc/js/uvmm/SnapshotGrid.js:180
 #: umc/js/uvmm/SnapshotGrid.js:206 umc/js/uvmm/SnapshotGrid.js:243
 #: umc/js/uvmm/DriveGrid.js:310 umc/js/uvmm/DriveGrid.js:341
@@ -290,7 +294,7 @@ msgstr "Medium wechseln"
 msgid "Choose existing image"
 msgstr "Auswahl einer vorhandenen Image-Datei"
 
-#: umc/js/uvmm.js:929
+#: umc/js/uvmm.js:955
 msgid "Clone"
 msgstr "Klonen"
 
@@ -298,7 +302,7 @@ msgstr "Klonen"
 msgid "Configure cache behaviour of host."
 msgstr "Cache-Verhalten des Hosts konfigurieren."
 
-#: umc/js/uvmm/DomainPage.js:119
+#: umc/js/uvmm/DomainPage.js:121
 msgid "Contact"
 msgstr "Kontakt"
 
@@ -306,11 +310,11 @@ msgstr "Kontakt"
 msgid "Coordinated Universal Time"
 msgstr "Koordinierte Weltzeit (UTC)"
 
-#: umc/js/uvmm.js:718 umc/js/uvmm.js:966 umc/js/uvmm/SnapshotGrid.js:168
+#: umc/js/uvmm.js:726 umc/js/uvmm.js:992 umc/js/uvmm/SnapshotGrid.js:168
 msgid "Create"
 msgstr "Erstellen"
 
-#: umc/js/uvmm.js:738
+#: umc/js/uvmm.js:746
 msgid "Create a clone"
 msgstr "Erstellen eines Klons"
 
@@ -371,13 +375,13 @@ msgstr "Datum"
 msgid "Default (RealTek RTL-8139)"
 msgstr "Voreinstellung (RealTek RTL-8139)"
 
-#: umc/js/uvmm.js:232 umc/js/uvmm/SnapshotGrid.js:64
+#: umc/js/uvmm.js:237 umc/js/uvmm/SnapshotGrid.js:64
 #: umc/js/uvmm/SnapshotGrid.js:239 umc/js/uvmm/DriveGrid.js:97
 #: umc/js/uvmm/DriveGrid.js:337
 msgid "Delete"
 msgstr "Löschen"
 
-#: umc/js/uvmm/DomainPage.js:130 umc/js/uvmm/DomainWizard.js:124
+#: umc/js/uvmm/DomainPage.js:132 umc/js/uvmm/DomainWizard.js:124
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -389,15 +393,15 @@ msgstr "Aushängen"
 msgid "Device filename"
 msgstr "Gerätedateiname"
 
-#: umc/js/uvmm/DomainPage.js:298
+#: umc/js/uvmm/DomainPage.js:300
 msgid "Devices"
 msgstr "Geräte"
 
-#: umc/js/uvmm/DomainPage.js:246 umc/js/uvmm/DomainWizard.js:158
+#: umc/js/uvmm/DomainPage.js:248 umc/js/uvmm/DomainWizard.js:158
 msgid "Direct access (VNC)"
 msgstr "Direktzugriff (VNC)"
 
-#: umc/js/uvmm.js:143
+#: umc/js/uvmm.js:148
 msgid "Displayed type"
 msgstr "Angezeigter Typ"
 
@@ -413,7 +417,7 @@ msgstr "Laufwerktyp"
 msgid "Driver"
 msgstr "Treiber"
 
-#: umc/js/uvmm/DomainPage.js:325 umc/js/uvmm/DomainWizard.js:70
+#: umc/js/uvmm/DomainPage.js:327 umc/js/uvmm/DomainWizard.js:70
 msgid "Drives"
 msgstr "Laufwerke"
 
@@ -448,7 +452,7 @@ msgstr ""
 "Speicherbereich ausgewählt, wird die Liste der verfügbaren ISO-Images "
 "aktualisiert."
 
-#: umc/js/uvmm.js:225 umc/js/uvmm.js:857 umc/js/uvmm/InterfaceGrid.js:91
+#: umc/js/uvmm.js:230 umc/js/uvmm.js:883 umc/js/uvmm/InterfaceGrid.js:91
 #: umc/js/uvmm/DriveGrid.js:86
 msgid "Edit"
 msgstr "Bearbeiten"
@@ -461,7 +465,7 @@ msgstr "Laufwerk bearbeiten"
 msgid "Edit network interface"
 msgstr "Bearbeiten einer Netzwerkschnittstelle"
 
-#: umc/js/uvmm.js:861
+#: umc/js/uvmm.js:887
 msgid "Edit the configuration of the virtual machine"
 msgstr "Konfiguration der virtuellen Maschinen bearbeiten"
 
@@ -530,15 +534,15 @@ msgstr "Voll-Virtualisierung (KVM)"
 msgid "Full virtualization (XEN)"
 msgstr "Voll-Virtualisierung (XEN)"
 
-#: umc/js/uvmm/DomainPage.js:91
+#: umc/js/uvmm/DomainPage.js:93
 msgid "General"
 msgstr "Allgemein"
 
-#: umc/js/uvmm/DomainPage.js:90
+#: umc/js/uvmm/DomainPage.js:92
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
-#: umc/js/uvmm.js:713
+#: umc/js/uvmm.js:721
 msgid "Generate new MAC addresses"
 msgstr "Neue MAC-Adressen erzeugen"
 
@@ -550,7 +554,7 @@ msgstr "Deutsch"
 msgid "German-Switzerland"
 msgstr "Deutsch-Schweiz"
 
-#: umc/js/uvmm/DomainPage.js:250
+#: umc/js/uvmm/DomainPage.js:252
 msgid "Globally available"
 msgstr "Global verfügbar"
 
@@ -627,7 +631,7 @@ msgstr "Image"
 msgid "Image format"
 msgstr "Image-Format"
 
-#: umc/js/uvmm.js:712
+#: umc/js/uvmm.js:720
 msgid "Inherit MAC addresses"
 msgstr "MAC-Adressen übernehmen"
 
@@ -651,7 +655,7 @@ msgstr "Italienisch"
 msgid "Japanese"
 msgstr "Japanisch"
 
-#: umc/js/uvmm/DomainPage.js:264
+#: umc/js/uvmm/DomainPage.js:266
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
@@ -671,7 +675,7 @@ msgstr "Lokale Zeitzone"
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: umc/js/uvmm.js:710
+#: umc/js/uvmm.js:718
 msgid "MAC addresses"
 msgstr "MAC-Adressen"
 
@@ -683,11 +687,11 @@ msgstr "MAC-Adresse"
 msgid "Macedonian"
 msgstr "Mazedonisch"
 
-#: umc/js/uvmm/DomainPage.js:268
+#: umc/js/uvmm/DomainPage.js:270
 msgid "Machine"
 msgstr "Maschine"
 
-#: umc/js/uvmm/DomainPage.js:212
+#: umc/js/uvmm/DomainPage.js:214
 msgid "Memory"
 msgstr "Speicher"
 
@@ -695,15 +699,15 @@ msgstr "Speicher"
 msgid "Memory (default unit MB)"
 msgstr "Größe des Arbeitsspeichers (Standardeinheit MB)"
 
-#: umc/js/uvmm.js:766
+#: umc/js/uvmm.js:774
 msgid "Memory usage"
 msgstr "Arbeitsspeichernutzung"
 
-#: umc/js/uvmm.js:384 umc/js/uvmm.js:947
+#: umc/js/uvmm.js:391 umc/js/uvmm.js:973
 msgid "Migrate"
 msgstr "Migrieren"
 
-#: umc/js/uvmm.js:404 umc/js/uvmm.js:638
+#: umc/js/uvmm.js:411
 msgid "Migrate domain"
 msgstr "Migriere virtuelle Maschine"
 
@@ -711,7 +715,7 @@ msgstr "Migriere virtuelle Maschine"
 msgid "NAT"
 msgstr "NAT"
 
-#: umc/js/uvmm.js:757 umc/js/uvmm.js:775 umc/js/uvmm/DomainPage.js:111
+#: umc/js/uvmm.js:765 umc/js/uvmm.js:783 umc/js/uvmm/DomainPage.js:113
 #: umc/js/uvmm/DomainWizard.js:118 umc/js/uvmm/SnapshotGrid.js:56
 msgid "Name"
 msgstr "Name"
@@ -720,11 +724,11 @@ msgstr "Name"
 msgid "Network"
 msgstr "Netzwerk"
 
-#: umc/js/uvmm/DomainPage.js:340
+#: umc/js/uvmm/DomainPage.js:342
 msgid "Network interfaces"
 msgstr "Netzwerkschnittstellen"
 
-#: umc/js/uvmm.js:178
+#: umc/js/uvmm.js:183
 #, python-format
 msgid "No %(objPlural)s could be found"
 msgstr "Es konnten keine %(objPlural)s gefunden werden"
@@ -749,19 +753,19 @@ msgstr "Keine Sicherungspunkte wurden ausgewählt!"
 msgid "Norwegian"
 msgstr "Norwegisch"
 
-#: umc/js/uvmm.js:493
+#: umc/js/uvmm.js:500
 msgid "Not removable"
 msgstr "Nicht löschbar"
 
-#: umc/js/uvmm/DomainPage.js:188 umc/js/uvmm/DomainWizard.js:152
+#: umc/js/uvmm/DomainPage.js:190 umc/js/uvmm/DomainWizard.js:152
 msgid "Number of CPUs"
 msgstr "Anzahl der CPUs"
 
-#: umc/js/uvmm.js:794 umc/js/uvmm.js:942
+#: umc/js/uvmm.js:803 umc/js/uvmm.js:968
 msgid "Open a view to the virtual machine {label} on {nodeName}"
 msgstr "Öffne eine Anzeige der virtuellen Maschine {label} auf {nodeName}"
 
-#: umc/js/uvmm/DomainPage.js:115
+#: umc/js/uvmm/DomainPage.js:117
 msgid "Operating system"
 msgstr "Betriebssystem"
 
@@ -799,11 +803,11 @@ msgstr ""
 "installiert werden, siehe <a href=\"http://wiki.univention.de/index.php?"
 "title=UVMM_Technische_Details\">Univention Wiki.</a>"
 
-#: umc/js/uvmm.js:900
+#: umc/js/uvmm.js:926
 msgid "Pause"
 msgstr "Pausieren"
 
-#: umc/js/uvmm.js:146 umc/js/uvmm/DomainWizard.js:90
+#: umc/js/uvmm.js:151 umc/js/uvmm/DomainWizard.js:90
 msgid "Physical server"
 msgstr "Physikalischer Server"
 
@@ -811,7 +815,7 @@ msgstr "Physikalischer Server"
 msgid "Physical servers"
 msgstr "Physikalische Server"
 
-#: umc/js/uvmm.js:704
+#: umc/js/uvmm.js:712
 msgid "Please enter the name for the clone:"
 msgstr "Geben die den Namen für den Klon ein:"
 
@@ -819,15 +823,15 @@ msgstr "Geben die den Namen für den Klon ein:"
 msgid "Please enter the name for the snapshot:"
 msgstr "Geben Sie den Namen für den Sicherungspunkt ein:"
 
-#: umc/js/uvmm.js:1081
+#: umc/js/uvmm.js:1107
 msgid "Please select a valid search type."
 msgstr "Bitte wählen Sie einen gültigen Suchtypen."
 
-#: umc/js/uvmm.js:373
+#: umc/js/uvmm.js:380
 msgid "Please select the destination server:"
 msgstr "Auswahl des Zielservers"
 
-#: umc/js/uvmm.js:266
+#: umc/js/uvmm.js:271
 msgid "Please wait, your requests are being processed..."
 msgstr "Bitte warten Sie, Ihre Anfrage wird bearbeitet..."
 
@@ -852,11 +856,11 @@ msgstr "Portugiesisch-Brasilien"
 msgid "Profile"
 msgstr "Profil"
 
-#: umc/js/uvmm.js:152
+#: umc/js/uvmm.js:157
 msgid "Query pattern"
 msgstr "Suchmuster"
 
-#: umc/js/uvmm/DomainPage.js:241
+#: umc/js/uvmm/DomainPage.js:243
 msgid "RTC reference"
 msgstr "RTC-Referenz"
 
@@ -876,28 +880,28 @@ msgstr "Lese-/Schreib-Caching, kein erzwungenes sync (write-back)"
 msgid "Read/write caching, sync filtered out (unsafe)"
 msgstr "Lese-/Schreib-Caching, herausgefiltertes sync (unsafe)"
 
-#: umc/js/uvmm.js:239
+#: umc/js/uvmm.js:244
 msgid "Reload"
 msgstr "Neu laden"
 
-#: umc/js/uvmm/DomainPage.js:279
+#: umc/js/uvmm/DomainPage.js:281
 msgid "Remote access"
 msgstr "VNC-Fernzugriff"
 
-#: umc/js/uvmm.js:956 umc/js/uvmm/InterfaceGrid.js:103
+#: umc/js/uvmm.js:982 umc/js/uvmm/InterfaceGrid.js:103
 #: umc/js/uvmm/InterfaceGrid.js:129
 msgid "Remove"
 msgstr "Löschen"
 
-#: umc/js/uvmm.js:524
+#: umc/js/uvmm.js:531
 msgid "Remove a virtual machine"
 msgstr "Löschen einer virtuellen Maschine"
 
-#: umc/js/uvmm.js:876
+#: umc/js/uvmm.js:902
 msgid "Request virtual machine shutdown using ACPI"
 msgstr "Herunterfahren der virtuellen Maschine mittels ACPI"
 
-#: umc/js/uvmm.js:920
+#: umc/js/uvmm.js:946
 msgid "Restart"
 msgstr "Neu starten"
 
@@ -909,25 +913,25 @@ msgstr "Wiederherstellen"
 msgid "Russian"
 msgstr "Russisch"
 
-#: umc/js/uvmm/DomainPage.js:97 umc/js/uvmm/DomainPage.js:169
-#: umc/js/uvmm/DomainPage.js:304 umc/js/uvmm/DomainPage.js:363
+#: umc/js/uvmm/DomainPage.js:99 umc/js/uvmm/DomainPage.js:171
+#: umc/js/uvmm/DomainPage.js:306 umc/js/uvmm/DomainPage.js:365
 #: umc/js/uvmm/DriveGrid.js:303
 msgid "Save"
 msgstr "Speichern"
 
-#: umc/js/uvmm.js:130
+#: umc/js/uvmm.js:135
 msgid "Search for virtual machines and physical servers"
 msgstr "Suchen nach virtuellen Maschinen und Virtualisierungsservern"
 
-#: umc/js/uvmm/DomainPage.js:134
+#: umc/js/uvmm/DomainPage.js:136
 msgid "Send email"
 msgstr "E-Mail senden"
 
-#: umc/js/uvmm/DomainPage.js:143
+#: umc/js/uvmm/DomainPage.js:145
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: umc/js/uvmm/DomainPage.js:297
+#: umc/js/uvmm/DomainPage.js:299
 msgid "Settings for devices"
 msgstr "Geräteeinstellungen"
 
@@ -947,19 +951,19 @@ msgstr ""
 "Soll das ausgewählte Laufwerk gelöscht oder nur bei der virtuellen Maschine "
 "ausgehängt werden?"
 
-#: umc/js/uvmm.js:420
+#: umc/js/uvmm.js:427
 msgid "Should the selected virtual machine {label} be removed?"
 msgstr "Soll die ausgewählte virtuelle Maschine {label} gelöscht werden?"
 
-#: umc/js/uvmm.js:588
+#: umc/js/uvmm.js:595
 msgid "Show this warning again"
 msgstr "Diese Warnung erneut anzeigen"
 
-#: umc/js/uvmm.js:887
+#: umc/js/uvmm.js:913
 msgid "Shut off the virtual machine"
 msgstr "Ausschalten einer virtuellen Maschine"
 
-#: umc/js/uvmm.js:591 umc/js/uvmm.js:874
+#: umc/js/uvmm.js:598 umc/js/uvmm.js:900
 msgid "Shutdown"
 msgstr "Herunterfahren"
 
@@ -979,7 +983,7 @@ msgstr "Größe (Standardeinheit MB)"
 msgid "Slovene"
 msgstr "Slowenisch"
 
-#: umc/js/uvmm/DomainPage.js:357 umc/js/uvmm/DomainPage.js:377
+#: umc/js/uvmm/DomainPage.js:359 umc/js/uvmm/DomainPage.js:379
 msgid "Snapshots"
 msgstr "Sicherungspunkte"
 
@@ -990,7 +994,7 @@ msgstr ""
 "Sicherungspunkte für laufende Domains mit 4 GB oder mehr RAM werden nicht "
 "unterstützt!"
 
-#: umc/js/uvmm/DomainPage.js:356
+#: umc/js/uvmm/DomainPage.js:358
 msgid "Snapshots settings"
 msgstr "Einstellungen für Sicherungspunkte"
 
@@ -1006,26 +1010,26 @@ msgstr "Spanisch"
 msgid "Specify the capacity for the new volume"
 msgstr "Geben Sie die Speicherkapazität für das neue Image an"
 
-#: umc/js/uvmm.js:785 umc/js/uvmm.js:865
+#: umc/js/uvmm.js:793 umc/js/uvmm.js:891
 msgid "Start"
 msgstr "Starten"
 
-#: umc/js/uvmm.js:787 umc/js/uvmm.js:867
+#: umc/js/uvmm.js:796 umc/js/uvmm.js:893
 msgid "Start the virtual machine"
 msgstr "Starten einer virtuellen Maschine"
 
-#: umc/js/uvmm.js:1056
+#: umc/js/uvmm.js:1082
 msgid ""
 "State: {state}<br>Server: {node}<br>Description: {description}<br>{vnc_port}"
 msgstr ""
 "Status: {state}<br>Server: {node}<br>Beschreibung: {description}<br>"
 "{vnc_port}"
 
-#: umc/js/uvmm.js:885 umc/js/uvmm.js:892
+#: umc/js/uvmm.js:911 umc/js/uvmm.js:918
 msgid "Stop"
 msgstr "Beenden"
 
-#: umc/js/uvmm.js:891
+#: umc/js/uvmm.js:917
 msgid ""
 "Stopping the virtual machine will turn it off without shutting down the "
 "operating system. Should the operation be continued?"
@@ -1033,7 +1037,7 @@ msgstr ""
 "Das Beenden der virtuellen Maschine schaltet diese aus ohne das "
 "Betriebssystem zuvor herunterzufahren. Soll die Aktion fortgesetzt werden?"
 
-#: umc/js/uvmm.js:910
+#: umc/js/uvmm.js:936
 msgid "Suspend"
 msgstr "Speichern & Beenden"
 
@@ -1049,7 +1053,7 @@ msgstr "Thailand"
 msgid "The device cannot be modified by the guest."
 msgstr "Das Gerät kann nicht vom Gast modifiziert werden."
 
-#: umc/js/uvmm/DomainPage.js:402 umc/js/uvmm/DriveWizard.js:332
+#: umc/js/uvmm/DomainPage.js:404 umc/js/uvmm/DriveWizard.js:332
 msgid "The entered data is not valid. Please correct your input."
 msgstr ""
 "Die eingegebenen Daten sind nicht gültig. Bitte korrigieren Sie ihre Eingabe."
@@ -1068,7 +1072,7 @@ msgstr ""
 "Die angegebene Speicherkapazität überschreitet die verfügbare Kapazität des "
 "Speicherbereichs"
 
-#: umc/js/uvmm/DomainPage.js:211 umc/js/uvmm/DomainWizard.js:147
+#: umc/js/uvmm/DomainPage.js:213 umc/js/uvmm/DomainWizard.js:147
 msgid "The memory size is invalid (e.g. 3GB or 1024 MB), minimum 4 MB"
 msgstr ""
 "Die angegebenen Speicherkapazität is ungültig (bspw. 3GB oder 1024 MB), "
@@ -1100,7 +1104,7 @@ msgstr ""
 "Das ausgewählte Laufwerk ist scheinbar mit einer anderen virtuellen Maschine "
 "verknüpft und sollte daher nicht gelöscht werden."
 
-#: umc/js/uvmm.js:337
+#: umc/js/uvmm.js:344
 msgid ""
 "The selected virtual machines are not all located on the same physical "
 "server. The migration will not be performed."
@@ -1116,7 +1120,7 @@ msgstr ""
 "Die Quelle ist der Name der Netzwerkschnittstelle des physikalischen Server "
 "die als Bridge konfiguriert ist. Normalerweise ist dies eth0."
 
-#: umc/js/uvmm.js:611 umc/js/uvmm.js:652
+#: umc/js/uvmm.js:618 umc/js/uvmm.js:660
 msgid "The state of the selected virtual machines can not be changed"
 msgstr ""
 "Der Status der ausgewählten virtuellen Maschinen kann nicht geändert werden"
@@ -1186,7 +1190,7 @@ msgstr ""
 msgid "Type"
 msgstr "Typ"
 
-#: umc/js/uvmm.js:489
+#: umc/js/uvmm.js:496
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -1194,37 +1198,37 @@ msgstr "Unbekannt"
 msgid "Use a local device"
 msgstr "Verwenden eines lokalen Gerätes"
 
-#: umc/js/uvmm/DomainPage.js:256
+#: umc/js/uvmm/DomainPage.js:258
 msgid "VNC Port"
 msgstr "VNC Port"
 
-#: umc/js/uvmm/DomainPage.js:260
+#: umc/js/uvmm/DomainPage.js:262
 msgid "VNC password"
 msgstr "VNC-Passwort"
 
-#: umc/js/uvmm.js:1060
+#: umc/js/uvmm.js:1086
 #, python-format
 msgid "VNC-Port: %s"
 msgstr "VNC-Port: %s"
 
-#: umc/js/uvmm.js:791 umc/js/uvmm.js:938
+#: umc/js/uvmm.js:800 umc/js/uvmm.js:964
 msgid "View"
 msgstr "Anzeigen"
 
-#: umc/js/uvmm.js:145
+#: umc/js/uvmm.js:150
 msgid "Virtual machine"
 msgstr "Virtuelle Maschine"
 
-#: umc/js/uvmm.js:578
+#: umc/js/uvmm.js:585
 msgid "Virtual machine shutdown"
 msgstr "Virtuelle Maschine herunterfahren"
 
-#: umc/js/uvmm/DomainPage.js:138
+#: umc/js/uvmm/DomainPage.js:140
 #, python-format
 msgid "Virtual machine: %s"
 msgstr "Virtuellen Maschine: %s"
 
-#: umc/js/uvmm/DomainPage.js:236
+#: umc/js/uvmm/DomainPage.js:238
 msgid "Virtualization technology"
 msgstr "Virtualisierungstechnik"
 
@@ -1232,7 +1236,7 @@ msgstr "Virtualisierungstechnik"
 msgid "What type of drive should be created?"
 msgstr "Welche Art von Laufwerk soll erstellt werden?"
 
-#: umc/js/uvmm/DomainPage.js:521
+#: umc/js/uvmm/DomainPage.js:522
 msgid ""
 "While the virtual machine is running most of the settings can not be changed."
 msgstr ""
@@ -1243,7 +1247,7 @@ msgstr ""
 msgid "automatic"
 msgstr "Automatisch"
 
-#: umc/js/uvmm.js:509
+#: umc/js/uvmm.js:516
 msgid "delete"
 msgstr "Löschen"
 
@@ -1272,784 +1276,6 @@ msgstr "ausgeschaltet (abgestürzt)"
 msgid "unknown"
 msgstr "Unbekannt"
 
-#: umc/js/uvmm.js:484 umc/js/uvmm.js:493
+#: umc/js/uvmm.js:491 umc/js/uvmm.js:500
 msgid "{volumeFilename} (Pool: {pool})"
 msgstr "{volumeFilename} (Speicherbereich: {pool})"
-
-#~ msgid "%(dn)s on %(nn)s"
-#~ msgstr "%(dn)s auf %(nn)s"
-
-#~ msgid "%s (Physical server)"
-#~ msgstr "%s (Physikalischer Server)"
-
-#~ msgid "<li>%(type)s: %(size)s (image file %(image)s in pool %(pool)s)</li>"
-#~ msgstr ""
-#~ "<li>%(type)s: %(size)s (Image-Datei %(image)s im Speicherbereich %(pool)s)"
-#~ "</li>"
-
-#~ msgid "<li>%(type)s: empty device</li>"
-#~ msgstr "<li>%(type)s: leeres Gerät</li>"
-
-#~ msgid "<li>%(type)s: local device %(device)s</li>"
-#~ msgstr "<li>%(type)s: lokales Gerät %(device)s</li>"
-
-#~ msgid "A virtual instance must at least have 4 MB memory."
-#~ msgstr "Eine virtuelle Instanz muss mindestens 4 MB Speicher haben."
-
-#~ msgid "Add a drive"
-#~ msgstr "Laufwerk hinzufügen"
-
-#~ msgid "Add drive to <i>%(name)s</i>"
-#~ msgstr "Laufwerk zu <i>%(name)s</i> hinzufügen"
-
-#~ msgid "Add new network interface"
-#~ msgstr "Neue Netzwerkschnittstelle hinzufügen"
-
-#~ msgid "Advanved kernel configuration"
-#~ msgstr "Erweiterte Kernelkonfiguration verwenden"
-
-#~ msgid "All"
-#~ msgstr "Alle"
-
-#~ msgid ""
-#~ "All selected snapshots of instance <i>%(domain)s</i> were deleted "
-#~ "successfully:<br/>%(snapshots)s"
-#~ msgstr ""
-#~ "Alle ausgewählten Sicherungspunkte der virtuellen Instanz <i>%(domain)s</"
-#~ "i> wurden erfolgreich gelöscht:<br/>%(snapshots)s"
-
-#~ msgid ""
-#~ "An image with this name already exists and is used by virtual instance "
-#~ "%(domain)s. The name must be unique for a new image."
-#~ msgstr ""
-#~ "Ein Image mit diesem Namen existiert bereits und wird von der virtuellen "
-#~ "Instanz %(domain)s verwendet. Der Name für ein neues Image muß eindeutig "
-#~ "sein."
-
-#~ msgid ""
-#~ "An unused image with this name already exists. The name must be unique "
-#~ "for a new image."
-#~ msgstr ""
-#~ "Ein unbenutztes Image mit diesem Namen existiert bereits. Der Name für "
-#~ "ein neues Image muß eindeutig sein."
-
-#~ msgid "Are you sure that the instance should be reverted to this snapshot?"
-#~ msgstr ""
-#~ "Sind Sie sicher, dass die virtuelle Instanz auf den Sicherungspunkt "
-#~ "zurückgesetzt werden soll?"
-
-#~ msgid "Are you sure that the snapshot should be removed?"
-#~ msgstr "Sind Sie sicher, dass der Sicherungspunkt gelöscht werden soll?"
-
-#~ msgid "Attached drives"
-#~ msgstr "Eingebundene Laufwerk"
-
-#~ msgid "By default the private network is 192.168.122.0/24"
-#~ msgstr "Vorgegeben ist das private Netzwerk 192.168.122.0/24"
-
-#~ msgid ""
-#~ "By selecting a profile for the virtual instance most of the settings will "
-#~ "be filled out with default values. In the following step these values may "
-#~ "be modified."
-#~ msgstr ""
-#~ "Durch die Auswahl eines Profils werden viele der Einstellungen für die "
-#~ "virtuelle Instanz vorausgefüllt. Im folgenden Schritt können diese Werte "
-#~ "angepasst werden."
-
-#~ msgid "CD/DVD-ROM"
-#~ msgstr "CD/DVD-ROM"
-
-#~ msgid "CPU usage not available"
-#~ msgstr "CPU-Auslastung nicht verfügbar"
-
-#~ msgid "CPUs"
-#~ msgstr "CPUs"
-
-#~ msgid "Change media from device"
-#~ msgstr "Das Medium des Geräts wechseln"
-
-#~ msgid "Change state of a virtual instance"
-#~ msgstr "Ändern des Status einer virtuellen Instanz"
-
-#~ msgid "Change state of virtual instances"
-#~ msgstr "Ändern des Status von virtuellen Instanzen"
-
-#~ msgid "Chossen between using an existing image or using a local device."
-#~ msgstr ""
-#~ "Auswahl zwischen einer vorhandenen Image-Datei oder einem lokalen Gerät."
-
-#~ msgid "Contact information"
-#~ msgstr "Kontaktinformationen"
-
-#~ msgid "Container"
-#~ msgstr "Container"
-
-#~ msgid "Continue editing"
-#~ msgstr "Bearbeiten fortführen"
-
-#~ msgid "Could not open LDAP connection"
-#~ msgstr "Konnte Verbindung zum LDAP-Server nicht aufbauen"
-
-#~ msgid "Create a new network interface"
-#~ msgstr "Erstellen einer Netzwerkschnittstelle"
-
-#~ msgid "Create a virtual instance <i>%(name)s</i>"
-#~ msgstr "Erstellen einer virtuellen Instanz <i>%(name)s</i>"
-
-#~ msgid "Create new virtual instance"
-#~ msgstr "Neue virtuelle Maschine erstellen"
-
-#~ msgid "Create snapshot"
-#~ msgstr "Sicherungspunkt erstellen"
-
-#~ msgid "Delete list of states of a virtual instance"
-#~ msgstr "Sicherungspunkte einer virtuellen Instanz löschen"
-
-#~ msgid "Delete selected snapshots"
-#~ msgstr "Ausgewählte Sicherungspunkte löschen"
-
-#~ msgid "Delete snapshot"
-#~ msgstr "Sicherungspunkt löschen"
-
-#~ msgid "Delete the state of a virtual instance"
-#~ msgstr "Sicherungspunkt einer virtuellen Instanz löschen"
-
-#~ msgid ""
-#~ "Deleting the snapshot <i>%(snapshot)s</i> of instance <i>%(domain)s</i> "
-#~ "failed"
-#~ msgstr ""
-#~ "Das Löschen des Sicherungspunktes <i>%(snapshot)s</i> der virtuellen "
-#~ "Instanz <i>%(domain)s</i> ist fehlgeschlagen"
-
-#~ msgid "Descriptions"
-#~ msgstr "Beschreibungen"
-
-#~ msgid "Destination host"
-#~ msgstr "Zielserver"
-
-#~ msgid "Detaching the drive <i>%(drive)s</i> failed"
-#~ msgstr "Das Aushängen des Laufwerks <i>%(drive)s</i> ist fehlgeschlagen"
-
-#~ msgid "Direct"
-#~ msgstr "Direkt"
-
-#~ msgid "Discard changes"
-#~ msgstr "Änderungen verwerfen"
-
-#~ msgid "Drive"
-#~ msgstr "Laufwerk"
-
-#~ msgid ""
-#~ "Each hard drive image is located within a so called storage pool, which "
-#~ "might be a local directory, a device, an LVM volume or any type of share "
-#~ "(e.g. mounted via iSCSI, NFS or CIFS). The newly create image will have "
-#~ "the specified name and size provided by the following settings. Currently "
-#~ "these was been set to default images. It has to be ensured that there is "
-#~ "enough space left in the defined storage pool."
-#~ msgstr ""
-#~ "Jedes Festplatten-Image liegt einem so genannten Speicherbereich. Dies "
-#~ "kann ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder "
-#~ "eine Freigabe (beispielsweise eingebunden über iSCSI, NFS oder CIFS) "
-#~ "sein. Das neu angelegte Festplatten-Image wird mit dem angegebenen Namen "
-#~ "und der Größe aus den folgenden Einstellungen erzeugt. Es sollte "
-#~ "sichergestellt werden, dass in dem Speicherbereich ausreichend Platz "
-#~ "verfügbar ist."
-
-#~ msgid ""
-#~ "Each hard drive image is located within a so called storage pool, which "
-#~ "might be a local directory, a device, an LVM volume or any type of share "
-#~ "(e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the "
-#~ "list of available images is updated."
-#~ msgstr ""
-#~ "Jedes Festplatten-Image liegt einem so genannten Speicherbereich. Dies "
-#~ "kann ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder "
-#~ "eine Freigabe (beispielsweise eingebunden über iSCSI, NFS oder CIFS) "
-#~ "sein. Wird ein Speicherbereich ausgewählt, wird die Liste der verfügbaren "
-#~ "Festplatten-Images aktualisiert."
-
-#~ msgid "Edit a network interface"
-#~ msgstr "Bearbeiten einer Netzwerkschnittstelle"
-
-#~ msgid "Edit drive settings"
-#~ msgstr "Bearbeiten der Laufwerkskonfiguration"
-
-#~ msgid "Eject or change media from device"
-#~ msgstr "Medium eines Geräts auswerfen oder wechseln"
-
-#~ msgid "Extended format (qcow)"
-#~ msgstr "Erweitertes Format (qcow)"
-
-#~ msgid "Failed to add network interface: %s"
-#~ msgstr "Hinzufügen der Netzwerkschnittstelle ist fehlgeschlagen: %s"
-
-#~ msgid "Failed to modify network interface: %s"
-#~ msgstr "Das Bearbeiten der Netzwerkschnittstelle ist fehlgeschlagen: %s"
-
-#~ msgid "Failed to remove network interface: %s"
-#~ msgstr "Entfernen der Netzwerkschnittstelle ist fehlgeschlagen: %s"
-
-#~ msgid "Filter"
-#~ msgstr "Filter"
-
-#~ msgid "Image filename"
-#~ msgstr "Image-Datei"
-
-#~ msgid "Image not found"
-#~ msgstr "Image-Datei nicht gefunden"
-
-#~ msgid "Image size"
-#~ msgstr "Image-Größe"
-
-#~ msgid "Instance"
-#~ msgstr "Instanz"
-
-#~ msgid "Instance (Description)"
-#~ msgstr "Instanz (Beschreibung)"
-
-#~ msgid "Instance <i>%(domain)s</i> is unavailable"
-#~ msgstr "Die virtuellen Instanz <i>%(domain)s</i> ist nicht verfügbar"
-
-#~ msgid "Instance names"
-#~ msgstr "Instanznamen"
-
-#~ msgid "Interface"
-#~ msgstr "Netzwerkschnittstelle"
-
-#~ msgid "Interface type"
-#~ msgstr "Netzwerktyp"
-
-#~ msgid "Kernel"
-#~ msgstr "Kernel"
-
-#~ msgid "Kernel parameter"
-#~ msgstr "Kernelparameter"
-
-#~ msgid "Local directory"
-#~ msgstr "Lokales Verzeichnis"
-
-#~ msgid "Location:"
-#~ msgstr "Ort:"
-
-#~ msgid "Media image"
-#~ msgstr "Medien-Datei"
-
-#~ msgid "Memory (in MB)"
-#~ msgstr "Arbeitsspeicher (in MB)"
-
-#~ msgid "Memory avail."
-#~ msgstr "Speicher"
-
-#~ msgid ""
-#~ "Migrate virtual instance %(domain)s from physical server %(source)s to:"
-#~ msgstr ""
-#~ "Migriere die virtuelle Instanz %(domain)s vom physikalischen Server "
-#~ "%(source)s zu:"
-
-#~ msgid ""
-#~ "Migrating the virtual instance is not possible because there is just one "
-#~ "physical server available."
-#~ msgstr ""
-#~ "Das Migrieren der virtuellen Instanz ist nicht möglich, da nur ein "
-#~ "physikalischer Server verfügbar ist."
-
-#~ msgid "Migration of virtual instances"
-#~ msgstr "Migration von virtuellen Instanzen"
-
-#~ msgid ""
-#~ "Most settings of the virtual instance can not be modified while it is "
-#~ "running."
-#~ msgstr ""
-#~ "Die meisten Einstellungen einer virtuellen Instanz können nicht geändert "
-#~ "werden, solange diese läuft."
-
-#~ msgid "New Drive"
-#~ msgstr "Neues Laufwerk"
-
-#~ msgid "New network interface"
-#~ msgstr "Neue Netzwerkschnittstelle"
-
-#~ msgid ""
-#~ "No profiles could be found! Please check your installation and run all "
-#~ "join scripts, e.g. using univention-run-join-scripts."
-#~ msgstr ""
-#~ "Es wurden keine Profile gefunden. Bitte prüfen Sie Ihre Installation und "
-#~ "führen Sie alle Joinskripte aus, z.B. mit Hilfe von univention-run-join-"
-#~ "scripts."
-
-#~ msgid ""
-#~ "No profiles could be found! These are required to create new virtual "
-#~ "instances. Ensure that the LDAP server can be reached."
-#~ msgstr ""
-#~ "Es konnte kein Profil gefunden werden! Diese werden benötigt, um neue "
-#~ "virtuelle Instanzen anzulegen. Stellen Sie sicher, daß der LDAP-Server "
-#~ "erreichbar ist."
-
-#~ msgid ""
-#~ "Not all of the selected snapshots of instance <i>%(domain)s</i> could be "
-#~ "deleted! The following snapshots still exists:<br/>%(snapshots)s"
-#~ msgstr ""
-#~ "Es konnten nicht alle Singerungspunkte der Instanz <i>%(domain)s</i> "
-#~ "gelöscht werden. Die folgenden Sicherungspunkte existieren noch:<br/>"
-#~ "%(snapshots)s"
-
-#~ msgid "Operations"
-#~ msgstr "Operationen"
-
-#~ msgid "Overview"
-#~ msgstr "Überblick"
-
-#~ msgid "Qemu copy-on-write 2"
-#~ msgstr "Qemu copy-on-write 2"
-
-#~ msgid "RAM disk"
-#~ msgstr "RAM-Disk"
-
-#~ msgid "Raw format"
-#~ msgstr "Rohformat"
-
-#~ msgid "Refresh"
-#~ msgstr "Aktualisieren"
-
-#~ msgid "Remove %s"
-#~ msgstr "Lösche %s"
-
-#~ msgid "Remove Drive"
-#~ msgstr "Laufwerk entfernen"
-
-#~ msgid "Remove a network interface"
-#~ msgstr "Löschen einer Netzwerkschnittstelle"
-
-#~ msgid "Remove drives of a virtual instance"
-#~ msgstr "Laufwerke einer virtuellen Instanz löschen"
-
-#~ msgid "Remove network interface"
-#~ msgstr "Löschen einer Netzwerkschnittstelle"
-
-#~ msgid "Remove snapshot"
-#~ msgstr "Sicherungspunkt löschen"
-
-#~ msgid "Remove snapshots"
-#~ msgstr "Sicherungspunkte löschen"
-
-#~ msgid "Remove the virtual instance %(instance)s?"
-#~ msgstr "Virtuelle Instanz %(instance)s löschen?"
-
-#~ msgid "Remove virtual instance"
-#~ msgstr "Löschen einer virtuellen Instanz"
-
-#~ msgid "Removes a drive"
-#~ msgstr "Ein Laufwerk entfernen"
-
-#~ msgid "Removing the instance <i>%(domain)s</i> failed"
-#~ msgstr ""
-#~ "Das Löschen der virtuellen Instanz <i>%(domain)s</i> ist fehlgeschlagen"
-
-#~ msgid "Restarts libvirt service"
-#~ msgstr "Startet den libvirt Dienst neu"
-
-#~ msgid "Restore the state of a virtual instance"
-#~ msgstr "Zustand der virtuellen Instanz aus Sicherungspunkt wiederherstellen"
-
-#~ msgid "Restore virtual instance"
-#~ msgstr "Wiederherstellen einer virtuellen Instanz"
-
-#~ msgid "Resume"
-#~ msgstr "Wiederherstellen"
-
-#~ msgid "Resynchronisation has failed!"
-#~ msgstr "Resynchronisation fehlgeschlagen"
-
-#~ msgid "Resynchronize"
-#~ msgstr "Resynchronisation"
-
-#~ msgid "Revert to %s"
-#~ msgstr "Wiederherstellen von %s"
-
-#~ msgid "Revert to snapshot"
-#~ msgstr "Sicherungspunkt wiederherstellen"
-
-#~ msgid ""
-#~ "Reverting to snapshot <i>%(snapshot)s</i> of instance <i>%(domain)s</i> "
-#~ "failed"
-#~ msgstr ""
-#~ "Das Wiederherstellen des Sicherungspunktes <i>%(snapshot)s</i> der "
-#~ "virtuellen Instanz <i>%(domain)s</i> ist fehlgeschlagen"
-
-#~ msgid "Saves the state of a virtual instance"
-#~ msgstr "Zustand der virtuellen Instanz sichern"
-
-#~ msgid "Saving the drive configuration has failed"
-#~ msgstr "Das Speichern der Laufwerkskonfiguration ist fehlgeschlagen"
-
-#~ msgid "Search"
-#~ msgstr "Suchen"
-
-#~ msgid "Search in"
-#~ msgstr "Suchen in"
-
-#~ msgid "Search results"
-#~ msgstr "Suchergebnisse"
-
-#~ msgid ""
-#~ "Select a storage pool that should be used for the image. The filename and "
-#~ "size for the virtual harddrive have been set to default values. You may "
-#~ "change these values to fit your needs."
-#~ msgstr ""
-#~ "Wählen Sie den Speicherbereich in dem die Image-Datei erstellt werden "
-#~ "soll. Die Größe der Image-Datei wurde mit einem Vorgabewert belegt. "
-#~ "Diesen können Sie wie gewünscht anpassen."
-
-#~ msgid "Select the storage pool and afterwards one of the existing ISO image"
-#~ msgstr ""
-#~ "Wählen Sie einen Speicherbereich und anschließend eine existierende ISO-"
-#~ "Datei"
-
-#~ msgid ""
-#~ "Select the storage pool and afterwards one of the existing disk images"
-#~ msgstr ""
-#~ "Wählen Sie einen Speicherbereich und anschließend eine existierende Image-"
-#~ "Datei"
-
-#~ msgid "Selection"
-#~ msgstr "Auswahl"
-
-#~ msgid "Set drive as boot device"
-#~ msgstr "Das Laufwerk ans Boot-Medium setzen"
-
-#~ msgid "Setting the drive <i>%(drive)s</i> as boot device as failed"
-#~ msgstr ""
-#~ "Das Setzen des Laufwerks <i>%(drive)s</i> als Boot-Medium ist "
-#~ "fehlgeschlagen"
-
-#~ msgid "Setup as paravirtual drive"
-#~ msgstr "Einrichten als paravirtualisiertes Laufwerk"
-
-#~ msgid "Show group information"
-#~ msgstr "Anzeigen der Gruppeninformationen"
-
-#~ msgid "Show instance information"
-#~ msgstr "Anzeigen der Instanzinformationen"
-
-#~ msgid "Show physical server information"
-#~ msgstr "Anzeigen der physikalischen Server-Informationen"
-
-#~ msgid ""
-#~ "Snapshoting the instance <i>%(domain)s</i> to <i>%(snapshot)s</i> failed"
-#~ msgstr ""
-#~ "Das Speichern der virtuellen Maschine <i>%(domain)s</i> in <i>%(snapshot)"
-#~ "s</i> ist fehlgeschlagen"
-
-#~ msgid "Snapshots can not be created for suspended domains."
-#~ msgstr ""
-#~ "Sicherungspunkte können nicht für gespeicherte virtuelle Maschinen "
-#~ "angelegt werden."
-
-#~ msgid "Some information of the virtual instance could not be saved!<br/>"
-#~ msgstr ""
-#~ "Einige der Informationen zur virtuellen Instanz konnten nicht gespeichert "
-#~ "werden!<br/>"
-
-#~ msgid ""
-#~ "Some of the settings can not be modified currently. The reason therefore "
-#~ "are the available snapshots. Modifying these settings would make the "
-#~ "snapshots invalid, i.e. the snapshots can not be restored anymore. If "
-#~ "these settings must be edited the snapshots have to be removed first."
-#~ msgstr ""
-#~ "Einige der Einstellungen können momentan nicht bearbeitet werden, weil "
-#~ "Sicherungspunkte genutzt werden. Änderungen würden dazu führen, dass die "
-#~ "Sicherungspunkte ungültig weden und nicht wieder hergestellt werden "
-#~ "können. Wenn diese Einstellungen geändert werden sollen, dann müssen "
-#~ "zuvor alle Sicherungspunkte gelöscht werden."
-
-#~ msgid "Status"
-#~ msgstr "Status"
-
-#~ msgid "Stop a virtual instances"
-#~ msgstr "Beenden einer virtuellen Instanz"
-
-#~ msgid "Storage pool"
-#~ msgstr "Speicherbereich"
-
-#~ msgid "TUN"
-#~ msgstr "TUN"
-
-#~ msgid ""
-#~ "The chosen name for the virtual instance is not unique. Another one "
-#~ "should be chosen."
-#~ msgstr ""
-#~ "Der gewählte Name ist nicht eindeutig, daher sollte ein anderer gewählt "
-#~ "werden."
-
-#~ msgid ""
-#~ "The connection to the UCS Virtual Machine Manager service could not be "
-#~ "established. Please verify that it is started. You may use the UMC "
-#~ "service module therefor."
-#~ msgstr ""
-#~ "Die Verbindung zum UCS Virtual Machine Manager-Dienst konnte nicht "
-#~ "hergestellt werden. Bitte prüfen Sie, ob der Dienst gestartet ist. Dafür "
-#~ "können Sie das UMC Dienste-Modul verwenden."
-
-#~ msgid ""
-#~ "The drive <i>%(drive)s</i> was detached and image <i>%(image)s</i> "
-#~ "removed successfully."
-#~ msgstr ""
-#~ "Das Laufwerk <i>%(drive)s</i> wurde ausgehängt und die Datei <i>%(image)"
-#~ "s</i> erfolgreich gelöscht."
-
-#~ msgid ""
-#~ "The drive <i>%(drive)s</i> was detached successfully, but removing the "
-#~ "image <i>%(image)s</i> failed. It must be removed manually."
-#~ msgstr ""
-#~ "Das Laufwerk <i>%(drive)s</i> wurde ausgehängt, aber das Löschen des "
-#~ "Images <i>%(image)s</i> ist fehlgeschlagen. Es muß manuell entfernt "
-#~ "werden."
-
-#~ msgid "The drive <i>%(drive)s</i> was detached successfully."
-#~ msgstr "Das Laufwerk <i>%(drive)s</i> wurde erfolgreich ausgehängt."
-
-#~ msgid "The drive configuration has been saved successfully"
-#~ msgstr "Die Laufwerkskonfiguration wurde erfolgreich gespeichert"
-
-#~ msgid ""
-#~ "The drive will be detached from the virtual instance.<br/>Additionally "
-#~ "the associated image <i>%(image)s</i> may be deleted permanently."
-#~ msgstr ""
-#~ "Das Laufwerk wird im folgenden Schritt ausgehängt.<br/>Zusätzlich kann "
-#~ "das verknüpfte Image <i>%(image)s</i> permanent gelöscht werden."
-
-#~ msgid "The following drive will be created:"
-#~ msgstr "Das folgende Laufwerk wird eingebunden:"
-
-#~ msgid "The following drive will be updated:"
-#~ msgstr "Das folgende Laufwerk wird aktualisiert:"
-
-#~ msgid ""
-#~ "The information about the virtual instance could not be retrieved. "
-#~ "Clicking the refresh button will retry to collect the information. If "
-#~ "this does not work a resynchronization can be triggered by clicking the "
-#~ "following button."
-#~ msgstr ""
-#~ "Die Informationen über die virtuelle Instanz konnten nicht abgerufen "
-#~ "werden. Mit der Aktualisieren-Schaltfläche kann ein erneuter Versuch "
-#~ "gestartet werden. Sollte dies nicht funktionieren, kann eine "
-#~ "Resynchronisation über die folgende Schaltfläche ausgeführt werden."
-
-#~ msgid "The instance <i>%(domain)s</i> was removed successfully"
-#~ msgstr "Die virtuelle Instanz <i>%(domain)s</i> wurde erfolgreich gelöscht"
-
-#~ msgid ""
-#~ "The instance <i>%(domain)s</i> was reverted to snapshot <i>%(snapshot)s</"
-#~ "i> successfully"
-#~ msgstr ""
-#~ "Die virtuelle Instanz <i>%(domain)s</i> wurde auf den Sicherungspunkt <i>"
-#~ "%(snapshot)s</i> zurückgesetzt."
-
-#~ msgid ""
-#~ "The instance <i>%(domain)s</i> was snapshoted to <i>%(snapshot)s</i> "
-#~ "successfully"
-#~ msgstr ""
-#~ "Die virtuelle Instanz <i>%(domain)s</i> wurde im Sicherungspunkt <i>"
-#~ "%(snapshot)s</i> gesichert."
-
-#~ msgid ""
-#~ "The list of available images is empty! To add an image the file needs to "
-#~ "be copied into the storage pool, e.g. to /var/lib/libvirt/images/ which "
-#~ "is the directory of the storage pool <i>local directory</i>. After that "
-#~ "go to the previous page an return to this one. The image should now be "
-#~ "listed."
-#~ msgstr ""
-#~ "Die Liste der verfügbaren Image-Dateien ist leer! Um das gewünschte Image "
-#~ "hinzuzufügen kann dies in den Speicherbereich kopiert werden. "
-#~ "Beispielsweise in das Verzeichnis /var/lib/libvirt/images welches den "
-#~ "Speicherbereich <i>Lokales Verzeichnis</i> darstellt. Anschließend kann "
-#~ "auf die vorherige Seite des Assistenten gewechselt und zu dieser wieder "
-#~ "zurückgesprungen werden. Die neue Image-Datei sollte angezeigt werden."
-
-#~ msgid ""
-#~ "The name of a virtual instance may not be longer than %(maxlength)d "
-#~ "characters!"
-#~ msgstr ""
-#~ "Der Name einer virtuellen Instanz darf maximal %(maxlength)d Zeichen "
-#~ "haben!"
-
-#~ msgid ""
-#~ "The physical server does not have that much memory. As a suggestion the a "
-#~ "mount of memory was set to 75% of the available memory."
-#~ msgstr ""
-#~ "Der physikalische Server hat nicht so viel Arbeitspeicher. Als Vorschlag "
-#~ "wurde die Speichermenge auf 75% des verfügbaren Arbeitsspeichers gesetzt."
-
-#~ msgid "The physical server is not available at the moment"
-#~ msgstr "Der physikalische Server ist momentan nicht erreichbar"
-
-#~ msgid ""
-#~ "The selected image is already used by the virtual instance %(domain)s. It "
-#~ "should be considered to choose another image. Continuing might cause "
-#~ "problems."
-#~ msgstr ""
-#~ "Das ausgewählte Image wird bereits von der virtuellen Instanz %(domain)s "
-#~ "verwendet. Es sollte eventuell ein anderes Image verwendet werden, da "
-#~ "ansonsten Probleme nicht ausgeschlossen werden können."
-
-#~ msgid ""
-#~ "The selected profile could not be read! Without the information the new "
-#~ "virtual instance can not be created. Ensure that the LDAP server can be "
-#~ "reached."
-#~ msgstr ""
-#~ "Das ausgewählte Profil konnte nicht gelesen werden! Ohne diese "
-#~ "Information kann die neue Instanz nicht erstellt werden. Stellen Sie "
-#~ "sicher, daß der LDAP-Server erreichbar ist."
-
-#~ msgid ""
-#~ "The selected snapshots of instance <i>%(domain)s</i> could not be deleted:"
-#~ "<br/>%(snapshots)s"
-#~ msgstr ""
-#~ "Die ausgewählten Sicherungspunkte der virtuellen Instanz <i>%(domain)s</"
-#~ "i> konnten nicht gelöscht werden:<br/>%(snapshots)s"
-
-#~ msgid ""
-#~ "The server does not have the virtualization extension (Intel VT or AMD-"
-#~ "V). For virtualization with KVM this extension is required."
-#~ msgstr ""
-#~ "Der Server hat keine CPU mit Virtualisierungs-Erweiterung (Intel VT oder "
-#~ "AMD-V). Für die Virtualisierung mit KVM wird eine Virtualisierungs-"
-#~ "Erweiterung benötigt."
-
-#~ msgid ""
-#~ "The server does not have the virtualization extension (Intel VT or AMD-"
-#~ "V). Only profiles using paravirtualization will work."
-#~ msgstr ""
-#~ "Der Server hat keine CPU mit Virtualisierungs-Erweiterung (Intel VT oder "
-#~ "AMD-V). Nur Profile für Paravirtualisierung werden angezeigt."
-
-#~ msgid "The server is currently offline!"
-#~ msgstr "Der Virtualisierungsserver ist momentan nicht erreichbar!"
-
-#~ msgid ""
-#~ "The settings shown below are all read from the selected profile. Please "
-#~ "verify that these values fits your environment. At least the name for the "
-#~ "virtual instance should be modified."
-#~ msgstr ""
-#~ "The unten angezeigten Einstellungen kommen alle aus dem ausgewählten "
-#~ "Profil. Stellen Sie sicher, dass die Werte in Ihrer Umgebung gültig sind. "
-#~ "Mindestens der Name der Instanz sollte angepasst werden."
-
-#~ msgid ""
-#~ "The snapshot <i>%(snapshot)s of instance <i>%(domain)s</i> could not be "
-#~ "deleted"
-#~ msgstr ""
-#~ "Der Sicherungspunkt <i>%(snapshot)s</i> der virtuelle Instanz <i>%(domain)"
-#~ "s</i> konnte nicht gelöscht werden"
-
-#~ msgid ""
-#~ "The snapshot <i>%(snapshot)s of instance <i>%(domain)s</i> was deleted "
-#~ "successfully"
-#~ msgstr ""
-#~ "Der Sicherungspunkt <i>%(snapshot)s</i> der virtuelle Instanz <i>%(domain)"
-#~ "s</i> wurde erfolgreich gelöscht"
-
-#~ msgid ""
-#~ "The virtual instance will be created with the settings shown below. The "
-#~ "button <i>Add drive</i> can be used to attach another drive."
-#~ msgstr ""
-#~ "Die virtuelle Instanz wird mit den unten aufgeführten Einstellungen "
-#~ "angelegt. Über die Schaltfläche <i>Laufwerk hinzufügen</i> kann ein "
-#~ "weiteres Laufwerk eingebunden werden."
-
-#~ msgid "There are no snapshots available"
-#~ msgstr "Es sind keine Sicherungspunkte verfügbar"
-
-#~ msgid "There are unsaved changes. Are you sure to cancel nevertheless?"
-#~ msgstr ""
-#~ "Einige Änderungen sind noch nicht gespeichert. Möchten Sie trotzdem "
-#~ "abbrechen?"
-
-#~ msgid "This is not a valid email address (e.g., someone@example.com)"
-#~ msgstr "Dies ist keine gültige E-Mail-Adresse (z.B. someone@example.com)"
-
-#~ msgid "Typ"
-#~ msgstr "Typ"
-
-#~ msgid "Type of drive"
-#~ msgstr "Art des Laufwerks"
-
-#~ msgid "UCS Virtual Machine Manager"
-#~ msgstr "UCS Virtual Machine Manager"
-
-#~ msgid "Unpause"
-#~ msgstr "Fortführen"
-
-#~ msgid "User"
-#~ msgstr "Benutzer"
-
-#~ msgid "VMWare Disk"
-#~ msgstr "VMware Disk"
-
-#~ msgid "VNC access"
-#~ msgstr "VNC-Fernzugriff"
-
-#~ msgid "Virtual Hard Disk"
-#~ msgstr "Virtuelle Festplatte"
-
-#~ msgid "Virtual instance %(domain)s - <i>%(tech)s</i>"
-#~ msgstr "Virtuelle Instanz %(domain)s - <i>%(tech)s</i>"
-
-#~ msgid "Virtualization sever"
-#~ msgstr "Virtualisierungsserver"
-
-#~ msgid ""
-#~ "When removing a virtual instance the disk images bind to it may be "
-#~ "removed also. Please select the disks that should be remove with the "
-#~ "virtual instance. Be sure that none of the images to be delete are used "
-#~ "by any other instance."
-#~ msgstr ""
-#~ "Beim Entfernen einer virtuellen Instanz können die damit assoziierten "
-#~ "Festplatten-Images auch entfernt werden. Bitte wählen Sie die Platten "
-#~ "aus, die entfernt werden sollen. Stellen Sie sicher, dass keins der "
-#~ "Images von einer anderen Instanz genutzt wird."
-
-#~ msgid "You must at least use 4 MB for a virtual instance."
-#~ msgstr ""
-#~ "Es müssen mindestens 4 MB für eine virtuelle Instanz verwendet werden"
-
-#~ msgid "You should modify the name of the virtual instance"
-#~ msgstr "Sie sollten den Namen der virtuellen Instanz anpassen"
-
-#~ msgid "activated"
-#~ msgstr "aktiviert"
-
-#~ msgid "crashed"
-#~ msgstr "abgestürzt"
-
-#~ msgid "currently not available"
-#~ msgstr "momentan nicht verfügbar"
-
-#~ msgid "deactivated"
-#~ msgstr "deaktiviert"
-
-#~ msgid "domain"
-#~ msgstr "Domäne"
-
-#~ msgid "empty"
-#~ msgstr "leer"
-
-#~ msgid "floppy drive"
-#~ msgstr "Diskettenlaufwerk"
-
-#~ msgid "hard drive"
-#~ msgstr "Festplatte"
-
-#~ msgid "idle"
-#~ msgstr "idle"
-
-#~ msgid "path: %(path)s"
-#~ msgstr "Pfad: %(path)s"
-
-#~ msgid "shut down"
-#~ msgstr "wird ausgeschaltet"
-
-#~ msgid "snapshot name"
-#~ msgstr "Name für den Sicherungspunkt"
-
-#~ msgid "unknown value"
-#~ msgstr "Unbekannter Wert"

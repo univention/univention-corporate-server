@@ -642,7 +642,7 @@ define([
 			});
 
 			_dialog = new Dialog({
-				title: _('Migrate domain'),
+				title: _('%s domain', buttonLabel),
 				content: form,
 				'class': 'umcPopup',
 				style: 'max-width: 400px;'

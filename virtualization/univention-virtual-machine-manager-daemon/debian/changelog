@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.15-1) unstable; urgency=low
+
+  * Bug #26418: fix typo
+
+ -- Florian Best <best@univention.de>  Tue, 29 Oct 2013 15:21:51 +0100
+
 univention-virtual-machine-manager-daemon (3.0.14-1) unstable; urgency=low
 
   * Bug #30004: adjustements for new notifications
