@@ -740,6 +740,11 @@
 			(<ulink url="&ucsbug;26418">Bug 26418</ulink>, <ulink url="&ucsbug;32751">Bug 32751</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+			The UMC page has been fixed for clients without enabled javascript
+			(<ulink url="&ucsbug;32820">Bug 32820</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -2117,12 +2122,6 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  As &ucsUCRV; <envar>umc/server/languages/.*</envar> has been renamed to &ucsUCRV; <envar>ucs/server/languages/.*</envar>, possible user defined variables will be adopted during package update. In addtion, locales will be read from <filename>/var/www/ucs-overview/languages.json</filename> in the future instead of <filename>/var/www/ucs-overview/entries.json</filename> (<ulink url="&ucsbug;32678">Bug 32678</ulink>).
 		</simpara></listitem>
-	
-		<listitem><simpara>
-			The overview page has been fixed for clients without enabled javascript
-			(<ulink url="&ucsbug;32820">Bug 32820</ulink>).
-		</simpara></listitem>
-
 	  </itemizedlist>
   </section>
 
