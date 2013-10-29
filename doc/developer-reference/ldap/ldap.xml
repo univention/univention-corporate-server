@@ -130,9 +130,7 @@ export UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
 . /usr/share/univention-lib/ldap.sh
 
 ucs_registerLDAPExtension "$@" \
-  --schema /path/to/appschemaextension.schema \
-  --ucsversionstart 3.2-0 \
-  --ucsversionend 3.2-99
+  --schema /path/to/appschemaextension.schema
 		]]></programlisting>
 	</section>
 
