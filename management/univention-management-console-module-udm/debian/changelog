@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.68-1) unstable; urgency=low
+
+  * Bug #32978: WIP early loading of form values
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Oct 2013 13:35:10 +0100
+
 univention-management-console-module-udm (4.0.67-2) unstable; urgency=low
 
   * fixed common spelling mistakes (Bug #32662)

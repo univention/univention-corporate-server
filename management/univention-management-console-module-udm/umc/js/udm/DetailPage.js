@@ -248,10 +248,77 @@ define([
 			this._parentModule = tools.getParentModule(this);
 		},
 
+		_loadObject: function(formBuiltDeferred, policyDeferred) {
+			//TODO: policyDeferred -> cancel
+			if (!this.ldapName || this._multiEdit) {
+				// no DN given or multi edit mode
+				formBuiltDeferred.then(lang.hitch(this, function() {
+					// hide the type info and ldap path in case of a new object
+					this._form.getWidget( '$objecttype$' ).set( 'visible', false);
+					this._form.getWidget( '$location$' ).set( 'visible', false);
+					this._progressBar.feedFromDeferred(this._form.ready(), _('Loading %s...', this.objectNameSingular));
+				}));
+				return;
+			}
+
+			return all({
+				object: this.moduleStore.get(this.ldapName),
+				formBuilt: formBuiltDeferred
+			}).then(lang.hitch(this, function(result) {
+				// save the original data we received from the server
+				var vals = result.object;
+				this._receivedObjOrigData = vals;
+				this._form.set('value', vals);
+
+				// as soon as the policy widgets are rendered, update the policy values
+				policyDeferred.then(lang.hitch(this, function() {
+					var policies = lang.getObject('_receivedObjOrigData.$policies$', false, this) || {};
+					tools.forIn(policies, function(ipolicyType, ipolicyDN) {
+						// get the ComboBox to update its value with the new DN
+						if (ipolicyType in this._policyWidgets) {
+							var iwidget = this._policyWidgets[ipolicyType].$policy$;
+							iwidget.setInitialValue(ipolicyDN, true);
+						}
+					}, this);
+				}));
+
+				// var objecttype = vals.$labelObjectType$;
+				var path = tools.ldapDn2Path( this.ldapName, this.ldapBase );
+				this._form.getWidget( '$objecttype$' ).set( 'content', _( 'Type: <i>%(type)s</i>', { type: vals.$labelObjectType$ } ) );
+				this._form.getWidget( '$location$' ).set( 'content', _( 'Position: <i>%(path)s</i>', { path: path } ) );
+
+				// save the original form data
+				this._form.ready().then(lang.hitch(this, function() {
+					this._receivedObjFormData = this.getValues();
+					tools.forIn(this._receivedObjFormData, lang.hitch(this, function(ikey, ivalue) {
+						var widget = this._form.getWidget(ikey);
+						if (!(ikey in this._receivedObjOrigData) && tools.inheritsFrom(widget, 'umc.widgets.ComboBox')) {
+							// ikey was not received from server and it is a ComboBox
+							// => the value may very well be set because there is
+							// no empty choice (in this case the first choice is selected).
+							// this means that this value would not be
+							// recognized as a change!
+							// console.log(ikey, ivalue); // uncomment this to see which values will be send to the server
+							this._receivedObjFormData[ikey] = '';
+						}
+					}));
+					this._receivedObjFormData.$policies$ = this._receivedObjOrigData.$policies$;
+				}));
+			}));
+		},
+
+		_loadPolicies: function() {
+
+		},
+
 		renderDetailPage: function(_properties, _layout, policies, _template) {
 			// summary:
 			//		Render the form with subtabs containing all object properties that can
 			//		be edited by the user.
+			
+			var formBuiltDeferred = new Deferred();
+			var policiesDeferred = new Deferred();
+			var loadedDeferred = this._loadObject(formBuiltDeferred, policiesDeferred);
 
 			if (_template && _template.length > 0) {
 				_template = _template[0];
@@ -663,6 +730,7 @@ define([
 				onSubmit: lang.hitch(this, 'validateChanges'),
 				style: 'margin:0'
 			}))[0];
+			formBuiltDeferred.resolve();
 			this._policyDeferred.then(lang.hitch(this, function() {
 				this.set('content', this._form);
 			}));
@@ -680,59 +748,8 @@ define([
 				this.own(this.templateObject);
 			}
 
-			// load form data
-			var loaded = null;
-			if (this.ldapName && !this._multiEdit) {
-				loaded = this._form.load(this.ldapName).then(lang.hitch(this, function(vals) {
-					// start the progress bar
-					this._progressBar.feedFromDeferred(this._form.ready(), _('Loading %s...', this.objectNameSingular));
-
-					// save the original data we received from the server
-					this._receivedObjOrigData = vals;
-
-					// as soon as the policy widgets are rendered, update the policy values
-					this._policyDeferred.then(lang.hitch(this, function() {
-						var policies = lang.getObject('_receivedObjOrigData.$policies$', false, this) || {};
-						tools.forIn(policies, function(ipolicyType, ipolicyDN) {
-							// get the ComboBox to update its value with the new DN
-							if (ipolicyType in this._policyWidgets) {
-								var iwidget = this._policyWidgets[ipolicyType].$policy$;
-								iwidget.setInitialValue(ipolicyDN, true);
-							}
-						}, this);
-					}));
-
-					// var objecttype = vals.$labelObjectType$;
-					var path = tools.ldapDn2Path( this.ldapName, this.ldapBase );
-					this._form.getWidget( '$objecttype$' ).set( 'content', _( 'Type: <i>%(type)s</i>', { type: vals.$labelObjectType$ } ) );
-					this._form.getWidget( '$location$' ).set( 'content', _( 'Position: <i>%(path)s</i>', { path: path } ) );
-
-					// save the original form data
-					this._form.ready().then(lang.hitch(this, function() {
-						this._receivedObjFormData = this.getValues();
-						tools.forIn(this._receivedObjFormData, lang.hitch(this, function(ikey, ivalue) {
-							var widget = this._form.getWidget(ikey);
-							if (!(ikey in this._receivedObjOrigData) && tools.inheritsFrom(widget, 'umc.widgets.ComboBox')) {
-								// ikey was not received from server and it is a ComboBox
-								// => the value may very well be set because there is
-								// no empty choice (in this case the first choice is selected).
-								// this means that this value would not be
-								// recognized as a change!
-								// console.log(ikey, ivalue); // uncomment this to see which values will be send to the server
-								this._receivedObjFormData[ikey] = '';
-							}
-						}));
-						this._receivedObjFormData.$policies$ = this._receivedObjOrigData.$policies$;
-					}));
-				}));
-			} else {
-				// hide the type info and ldap path in case of a new object
-				this._form.getWidget( '$objecttype$' ).set( 'visible', false);
-				this._form.getWidget( '$location$' ).set( 'visible', false);
-				this._progressBar.feedFromDeferred(this._form.ready(), _('Loading %s...', this.objectNameSingular));
-			}
 			var ret = new Deferred();
-			when(loaded).then(lang.hitch(this, function() {
+			when(loadedDeferred).then(lang.hitch(this, function() {
 				this._form.ready().then(function() {
 					ret.resolve();
 				});
