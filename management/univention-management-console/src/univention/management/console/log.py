@@ -45,9 +45,12 @@ import os
 # no exceptions from logging
 # otherwise shutdown the server will raise an exception that the logging stream could not be closed
 logging.raiseExceptions = 0
+logging.basicConfig(format='%(asctime)s.%(msecs)3d  %(component)-11s ( %(level)-7s ) : %(message)s', datefmt='%d.%m.%y %H:%M:%S', level=10)
 
 #: list of available debugging components
 COMPONENTS = ( ud.MAIN, ud.NETWORK, ud.SSL, ud.ADMIN, ud.MODULE, ud.AUTH, ud.PARSER, ud.LOCALE, ud.ACL, ud.RESOURCES, ud.PROTOCOL )
+
+debug_ready = False
 
 def log_init( filename, log_level = 2 ):
 	"""Initializes Univention debug.
@@ -63,6 +66,9 @@ def log_init( filename, log_level = 2 ):
 	os.chown( filename, 0, adm.gr_gid )
 	os.chmod( filename, 0640 )
 	log_set_level( log_level )
+
+	global debug_ready
+	debug_ready = True
 
 	return fd
 
@@ -81,32 +87,50 @@ class ILogger( object ):
 	:param int id: id of the component to use
 	"""
 	def __init__( self, id ):
-		self._id = id
+		self._id = getattr(ud, id)
+		self._extras = [
+			{'component': id, 'level': 'ERROR'},
+			{'component': id, 'level': 'WARN'},
+			{'component': id, 'level': 'PROCESS'},
+			{'component': id, 'level': 'INFO'},
+		]
 
 	def error( self, message ):
 		"""Write a debug message with level ERROR"""
-		ud.debug( self._id, ud.ERROR, message )
+		if debug_ready:
+			ud.debug( self._id, ud.ERROR, message )
+		else:
+			logging.error(message, extra=self._extras[ud.ERROR])
 
 	def warn( self, message ):
 		"""Write a debug message with level WARN"""
-		ud.debug( self._id, ud.WARN, message )
+		if debug_ready:
+			ud.debug( self._id, ud.WARN, message )
+		else:
+			logging.warning(message, extra=self._extras[ud.WARN])
 
 	def process( self, message ):
 		"""Write a debug message with level PROCESS"""
-		ud.debug( self._id, ud.PROCESS, message )
+		if debug_ready:
+			ud.debug( self._id, ud.PROCESS, message )
+		else:
+			logging.info(message, extra=self._extras[ud.PROCESS])
 
 	def info( self, message ):
 		"""Write a debug message with level INFO"""
-		ud.debug( self._id, ud.INFO, message )
+		if debug_ready:
+			ud.debug( self._id, ud.INFO, message )
+		else:
+			logging.debug(message, extra=self._extras[ud.INFO])
 
-CORE = ILogger( ud.MAIN )
-NETWORK = ILogger( ud.NETWORK )
-CRYPT = ILogger( ud.SSL )
-UDM = ILogger( ud.ADMIN )
-MODULE = ILogger( ud.MODULE )
-AUTH = ILogger( ud.AUTH )
-PARSER = ILogger( ud.PARSER )
-LOCALE = ILogger( ud.LOCALE )
-ACL = ILogger( ud.ACL )
-RESOURCES = ILogger( ud.RESOURCES )
-PROTOCOL = ILogger( ud.PROTOCOL )
+CORE = ILogger( 'MAIN' )
+NETWORK = ILogger( 'NETWORK' )
+CRYPT = ILogger( 'SSL' )
+UDM = ILogger( 'ADMIN' )
+MODULE = ILogger( 'MODULE' )
+AUTH = ILogger( 'AUTH' )
+PARSER = ILogger( 'PARSER' )
+LOCALE = ILogger( 'LOCALE' )
+ACL = ILogger( 'ACL' )
+RESOURCES = ILogger( 'RESOURCES' )
+PROTOCOL = ILogger( 'PROTOCOL' )

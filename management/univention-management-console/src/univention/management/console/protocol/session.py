@@ -71,6 +71,14 @@ try:
 except udm_errors.base as e:
 	# UDM error, user module coule not be initiated
 	CORE.warn('An error occurred getting the UDM users/user module: %s' % e)
+except AttributeError as e:
+	# Strange error that should not have happened. Probably because of
+	#   udm_syntax.SomeUnknownSytax in a handler which is not yet loaded.
+	#   This is a problem as users_module is not initialized but should happen
+	#   only outside real UMC usage (e.g. when using a script which imports
+	#   univention.management.console.log.MODULE or something)
+	#   See Bug #32565
+	CORE.warn('An error occurred loading UDM handlers. Probably an unknown syntax. This error message is only a problem when not executed in helper scripts like postinst or similar. %s' % e)
 
 TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
 

@@ -1,3 +1,10 @@
+univention-management-console (6.0.20-1) unstable; urgency=low
+
+  * Bug #32565: Catch unknown syntax nonetheless, write error message. May
+    happen in postinst (e.g. umc-modules-apps) - not critical there
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 29 Oct 2013 00:57:23 +0100
+
 univention-management-console (6.0.19-1) unstable; urgency=low
 
   * Bug #32698: fix possibility to response with content types !=
