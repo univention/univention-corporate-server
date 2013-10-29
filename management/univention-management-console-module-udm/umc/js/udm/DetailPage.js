@@ -1389,6 +1389,10 @@ define([
 
 			var deferred = null;
 			topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'save');
+			if (this.objectType == 'settings/extended_attribute') {
+				// reset cache as layout and property information may have changed
+				cache.reset();
+			}
 			if (this._multiEdit) {
 				// save the changes for each object once
 				var transaction = this.moduleStore.transaction();

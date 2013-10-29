@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.71-1) unstable; urgency=low
+
+  * Bug #32978: clean cache for UDM objects if extended attributes are modified
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Oct 2013 18:20:55 +0100
+
 univention-management-console-module-udm (4.0.70-1) unstable; urgency=low
 
   * Bug #32978: fixed policy tab, disable submit button until form.ready()

@@ -1212,6 +1212,15 @@ define([
 				// enable standby animation
 				this.standby(true);
 
+				// reset cache if extended attribute is being removed
+				var isExtendedAttribute = array.some(objects, function(iobj) {
+					return iobj.objectType == 'settings/extended_attribute';
+				});
+				if (isExtendedAttribute) {
+					// reset cache as layout and property information may have changed
+					cache.reset();
+				}
+
 				// set the options
 				var options = {
 					cleanup: form.getWidget('deleteReferring').get('value'),
