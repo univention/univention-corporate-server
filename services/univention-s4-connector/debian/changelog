@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.32-1) unstable; urgency=low
+
+  * Added well known sid for IIS_IUSRS (Bug #29486)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Oct 2013 14:46:16 +0100
+
 univention-s4-connector (8.0.31-3) unstable; urgency=low
 
   * Add well knwon groups from SBS 2008 (Bug #29486)

@@ -99,6 +99,7 @@ well_known_sids = {
 	"Event Log Readers": "S-1-5-32-573",
 	"Certificate Service DCOM Access": "S-1-5-32-574",
 	"All Services": "S-1-5-80-0",
+	"IIS_IUSRS": "S-1-5-32-568",
 }
 
 well_known_domain_rids = {
