@@ -101,13 +101,26 @@ let_samba4_manage_etc_krb5_keytab() {
 		cp /etc/krb5.keytab /etc/krb5.keytab.SAVE
 	fi
 
-	ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
-	dn: flatname=$windows_domain,cn=Primary Domains
-	changetype: modify
-	add: krb5Keytab
-	krb5Keytab: /etc/krb5.keytab
-	-
-	%EOF
+	keytab_file="$(ldbsearch -H /var/lib/samba/private/secrets.ldb samAccountName="$hostname\$" krb5Keytab | sed -n 's/^krb5Keytab: //p')"
+	if [ "$keytab_file" != "/etc/krb5.keytab" ]; then
+		ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
+		dn: flatname=$windows_domain,cn=Primary Domains
+		changetype: modify
+		add: krb5Keytab
+		krb5Keytab: /etc/krb5.keytab
+		-
+		%EOF
+	else
+		echo "/etc/krb5.keytab is already registered in samba4."
+	fi
+
+	if ! [ -r "/etc/krb5.keytab" ]; then
+		echo "/etc/krb5.keytab does not exist yet, triggering samba4 commit."
+		/usr/share/univention-samba4/scripts/create-keytab.sh
+	fi
+	if ! [ -r "/etc/krb5.keytab" ]; then
+		echo "WARNING: /etc/krb5.keytab not created."
+	fi
 }
 
 add_servicePrincipals() {
@@ -242,9 +255,15 @@ run_samba_provision() {
 	fi
 	univention-config-registry set windows/wins-support=yes windows/wins-server?"localhost"
 
+	if ! [ -r "/etc/krb5.keytab" ]; then
+		echo "/etc/krb5.keytab does not exist yet."
+	fi
 	# Re-commit /etc/krb5.keytab
 	#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27426
 	/usr/share/univention-samba4/scripts/create-keytab.sh
+	if ! [ -r "/etc/krb5.keytab" ]; then
+		echo "WARNING: /etc/krb5.keytab not created."
+	fi
 }
 
 samba_domain_join() {
@@ -292,9 +311,15 @@ samba_domain_join() {
 		exit 1
 	fi
 
+	if ! [ -r "/etc/krb5.keytab" ]; then
+		echo "/etc/krb5.keytab does not exist yet."
+	fi
 	# Re-commit /etc/krb5.keytab
 	#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27426
 	/usr/share/univention-samba4/scripts/create-keytab.sh
+	if ! [ -r "/etc/krb5.keytab" ]; then
+		echo "WARNING: /etc/krb5.keytab not created."
+	fi
 }
 
 disable_slapd_on_standard_port() {
@@ -906,6 +931,14 @@ if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
 	univention-config-registry unset create/home/share
 fi
 
+if ! [ -r "/etc/krb5.keytab" ]; then
+	echo "/etc/krb5.keytab does not exist after initial samba4 start, re-triggering samba4 commit."
+	/usr/share/univention-samba4/scripts/create-keytab.sh
+fi
+if ! [ -r "/etc/krb5.keytab" ]; then
+	echo "WARNING: /etc/krb5.keytab not created."
+fi
+
 /etc/init.d/samba-ad-dc restart
 
 # To prevent a DRS replication conflict: 
@@ -913,10 +946,6 @@ fi
 wait_until_dc_was_replicated_to_connector_dc
 
 ucs_addServiceToLocalhost "${NAME}" "$@"
-
-# re-create /etc/krb5.keytab
-#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27426
-/usr/share/univention-samba4/scripts/create-keytab.sh
 
 joinscript_save_current_version
 

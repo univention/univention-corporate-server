@@ -1,3 +1,11 @@
+univention-samba4 (3.0.33-1.1) unstable; urgency=low
+
+  * Re-commit /etc/krb5.keytab after join and before final samba4 restart
+    (Bug #31698)
+  * Add more debug messages to track this issue.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Oct 2013 11:12:09 +0100
+
 univention-samba4 (3.0.33-1) unstable; urgency=low
 
   * Don't hide the dns-* users by default because the DRS replication
