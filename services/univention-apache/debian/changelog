@@ -1,3 +1,10 @@
+univention-apache (6.0.13-3) unstable; urgency=low
+
+  * ignore empty values when migrating umc/server/languages UCRVs, quoting
+    improved (Bug #32678)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 29 Oct 2013 16:01:30 +0100
+
 univention-apache (6.0.13-2) unstable; urgency=low
 
   * do not call xargs with "-0" in postinst (leads to some UCRVs with invalid

@@ -126,8 +126,8 @@ fi
 # configuare language settings
 if dpkg --compare-versions "$2" le-nl 6.0.7-2
 then
-	ucr search --brief ^umc/server/languages/ |sed -ne 's|^umc/server/languages/|ucs/server/languages/|p' |sed -e "s|: |='|;s|$|'|" |xargs ucr set
-	ucr --keys-only search ^umc/server/languages/ |xargs ucr unset
+	ucr search --non-empty --brief ^umc/server/languages/ | sed -ne 's|^umc/server/languages/|ucs/server/languages/|;T;s|: |=|;p' | xargs -r -d '\n' ucr set
+	ucr --keys-only search umc/server/languages/ | xargs -r ucr unset
 fi
 
 ucr set "ucs/server/languages/en_US?English" \
