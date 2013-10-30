@@ -34,12 +34,8 @@
 
 univention-config-registry set repository/app_center/server?appcenter.test.software-univention.de
 
-if dpkg --compare-versions "$2" lt-nl 3.0.40-1; then
-	/usr/share/univention-management-console-module-appcenter/remove-app-errata-repositories-from-ucr
-fi
 
-
-if dpkg --compare-versions "$2" lt-nl 3.0.48-1; then
+if dpkg --compare-versions "$2" lt-nl 3.0.48-3; then
 	ucrErrataToRemove=()
 	for app  in agorumcore-pro asterisk4ucs_20130304 kixbox-errata sep-sesam-errata ucc_20130429-errata univention-demoapp-errataxrdp-errata fetchmail; do
 		for var in description server prefix password username defaultpackages version localmirror unmaintained; do
