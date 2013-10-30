@@ -12,9 +12,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Manage defined printers"
-msgstr "Drucker verwalten"
+msgid "Management of print jobs of local printers"
+msgstr "Verwaltung von Druckaufträgen der lokalen Drucker"
 
-msgid "Printer Administration"
-msgstr "Druckerverwaltung"
+msgid "Print jobs"
+msgstr "Druckaufträge"
 

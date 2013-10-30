@@ -1,3 +1,9 @@
+univention-join (6.0.16-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 30 Oct 2013 16:44:34 +0100
+
 univention-join (6.0.15-1) unstable; urgency=low
 
   * fixed common spelling mistakes (Bug #32662)

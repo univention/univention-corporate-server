@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
 	<module id="printers" icon="printers" priority="6" version="1.0">
-		<name>Printer Administration</name>
-		<description>Manage defined printers</description>
+		<name>Print jobs</name>
+		<description>Management of print jobs of local printers</description>
 		<keywords>printer</keywords>
 		<categories>
 			<category name="system"/>

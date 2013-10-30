@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.74-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 30 Oct 2013 16:47:32 +0100
+
 univention-management-console-module-udm (4.0.73-1) unstable; urgency=low
 
   * Bug #32978: fix cache reload with superordinates, reset users/user cache

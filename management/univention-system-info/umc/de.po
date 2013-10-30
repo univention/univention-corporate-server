@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Collection of hardware information of the local system for the Univention support"
-msgstr "Ermittlung von Hardwareinformationen des lokalen Systems für den Univention Support"
+msgid "Overview of local systems hardware information"
+msgstr "Überblick der Hardwareinformationen des lokalen Systems"
 
-msgid "System information"
-msgstr "Systeminformation"
+msgid "Hardware information"
+msgstr "Hardwareinformationen"

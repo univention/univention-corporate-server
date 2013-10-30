@@ -21,20 +21,20 @@ msgstr "Passwort ändern"
 msgid "Computers"
 msgstr "Rechner"
 
-msgid "Configuration of domain DHCP settings"
-msgstr "Konfiguration von DHCP-Einstellungen der Domäne"
+msgid "Management of DHCP in the domain"
+msgstr "Verwaltung von DHCP in der Domäne"
 
-msgid "Configuration of domain DNS settings"
-msgstr "Konfiguration von DNS-Einstellungen der Domäne"
+msgid "Management of DNS in the domain"
+msgstr "Verwaltung von DNS in der Domäne"
 
-msgid "Configuration of domain E-mail settings"
-msgstr "Konfiguration von E-Mail Einstellungen der Domäne"
+msgid "Management of mail domains and mailing lists"
+msgstr "Verwaltung von Mail-Domänen und Mailing-Listen"
 
-msgid "Configuration of domain nagios settings"
-msgstr "Konfiguration von Nagios Einstellungen der Domäne"
+msgid "Management of Nagios in the domain"
+msgstr "Verwaltung von Nagios in der Domäne"
 
-msgid "Configuration of domain network settings"
-msgstr "Konfiguration von Netzwerkeinstellungen der Domäne"
+msgid "Management of networks in the domain"
+msgstr "Verwaltung von Netzwerken in der Domäne"
 
 msgid "Management of directory shares in the domain"
 msgstr ""
@@ -89,8 +89,8 @@ msgstr "Nagios"
 msgid "Networks"
 msgstr "Netzwerke"
 
-msgid "Password change for the current user"
-msgstr "Passwortänderung für den momentanen Benutzer"
+msgid "Password change for the user currently logged in"
+msgstr "Änderung des Passworts des angemeldeten Benutzers"
 
 msgid "Policies"
 msgstr "Richtlinien"

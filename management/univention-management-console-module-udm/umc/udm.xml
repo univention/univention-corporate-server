@@ -21,17 +21,17 @@
 		</flavor>
 		<flavor icon="udm-networks" priority="10" id="networks/network">
 			<name>Networks</name>
-			<description>Configuration of domain network settings</description>
+			<description>Management of networks in the domain</description>
 			<keywords>networks</keywords>
 		</flavor>
 		<flavor icon="udm-dns" priority="9" id="dns/dns">
 			<name>DNS</name>
-			<description>Configuration of domain DNS settings</description>
+			<description>Management of DNS in the domain</description>
 			<keywords>dns</keywords>
 		</flavor>
 		<flavor icon="udm-dhcp" priority="8" id="dhcp/dhcp">
 			<name>DHCP</name>
-			<description>Configuration of domain DHCP settings</description>
+			<description>Management of DHCP in the domain</description>
 			<keywords>dhcp</keywords>
 		</flavor>
 		<flavor icon="udm-shares" priority="7" id="shares/share">
@@ -46,12 +46,12 @@
 		</flavor>
 		<flavor icon="udm-mail" priority="5" id="mail/mail">
 			<name>Mail</name>
-			<description>Configuration of domain E-mail settings</description>
+			<description>Management of mail domains and mailing lists</description>
 			<keywords>mail,e-mail,email</keywords>
 		</flavor>
 		<flavor icon="udm-nagios" priority="4" id="nagios/nagios">
 			<name>Nagios</name>
-			<description>Configuration of domain nagios settings</description>
+			<description>Management of Nagios in the domain</description>
 			<keywords>nagios</keywords>
 		</flavor>
 		<flavor icon="udm-policies" priority="3" id="policies/policy">
@@ -66,7 +66,7 @@
 		</flavor>
 		<flavor icon="udm-self" priority="1" id="users/self">
 			<name>Change Password</name>
-			<description>Password change for the current user</description>
+			<description>Password change for the user currently logged in</description>
 			<keywords>change password,password</keywords>
 		</flavor> 
 		<categories>

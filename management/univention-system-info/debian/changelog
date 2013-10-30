@@ -1,3 +1,9 @@
+univention-system-info (4.0.4-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 30 Oct 2013 16:47:10 +0100
+
 univention-system-info (4.0.3-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)
