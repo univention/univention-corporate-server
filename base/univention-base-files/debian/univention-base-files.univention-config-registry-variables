@@ -482,7 +482,7 @@ Description[en]=Cron jobs can be defined in Univention Configuration Registry. E
 Type=str
 Categories=system-base
 
-[cron/*/time]
+[cron/*/command]
 Description[de]=Cron-Jobs können in Univention Configuration Registry definiert werden. Jeder Cron-Job setzt sich dabei aus mehreren Variablen zusammen. Es müssen min. die Variablen 'cron/JOBNAME/command' und 'cron/JOBNAME/time' gesetzt werden. Diese Variable legt den auszuführenden Befehl fest.
 Description[en]=Cron jobs can be defined in Univention Configuration Registry. Each cron job is composed of various variables. At least the variables 'cron/JOBNAME/command' and 'cron/JOBNAME/time' must be set. This variable specifies the command to be run.
 Type=str
@@ -501,7 +501,7 @@ Type=str
 Categories=system-base
 
 [cron/*/description]
-Description[de]=Cron-Jobs können in Univention Configuration Registry definiert werden. Jeder Cron-Job setzt sich dabei aus mehreren Variablen zusammen. Es müssen min. die Variablen 'cron/JOBNAME/command' und 'cron/JOBNAME/time' gesetzt werden. Mit dieser Variable kann eine Beschreibung hinterlegt werden. 
+Description[de]=Cron-Jobs können in Univention Configuration Registry definiert werden. Jeder Cron-Job setzt sich dabei aus mehreren Variablen zusammen. Es müssen min. die Variablen 'cron/JOBNAME/command' und 'cron/JOBNAME/time' gesetzt werden. Mit dieser Variable kann eine Beschreibung hinterlegt werden.
 Description[en]=Cron jobs can be defined in Univention Configuration Registry. Each cron job is composed of various variables. At least the variables 'cron/JOBNAME/command' and 'cron/JOBNAME/time' must be set. This variable can be used to provide a description.
 Type=str
 Categories=system-base
