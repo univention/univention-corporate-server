@@ -1,3 +1,9 @@
+univention-apache (6.0.15-1) unstable; urgency=low
+
+  * Bug #33026: adjusted icon for DC master
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 30 Oct 2013 17:36:37 +0100
+
 univention-apache (6.0.14-1) unstable; urgency=low
 
   * Bug #32613: localize link to wiki.univention.de
