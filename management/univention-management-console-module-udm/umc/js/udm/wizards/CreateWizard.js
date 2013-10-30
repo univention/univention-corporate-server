@@ -135,7 +135,7 @@ define([
 				var finishButton = page._footerButtons.finish;
 				var originalLabel = finishButton.get('label');
 				finishButton.set('disabled', true);
-				finishButton.set('label', this.detailPage.progressMessage);
+				finishButton.set('label', _('Loading %s...', this.detailPage.objectNameSingular));
 				this._mayFinishDeferred.then(function() {
 					finishButton.set('label', originalLabel);
 					finishButton.set('disabled', false);

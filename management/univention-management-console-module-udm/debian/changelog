@@ -1,4 +1,4 @@
-univention-management-console-module-udm (4.0.74-1) unstable; urgency=low
+univention-management-console-module-udm (4.0.75-1) unstable; urgency=low
 
   * Bug #23214: Merge NewObjectDialog and NewObjectWizards
 
