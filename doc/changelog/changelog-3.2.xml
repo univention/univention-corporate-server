@@ -1197,7 +1197,9 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			The create report action now applies to the selection instead of the whole search result (<ulink url="&ucsbug;32749">Bug 32749</ulink>).
+			The create report action now applies to the selection instead of the whole search result.
+			Therefore the button has been moved into the grid's <guimenu>more</guimenu> menu
+			(<ulink url="&ucsbug;32749">Bug 32749</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
