@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.138-2) unstable; urgency=low
+
+  * Bug #33026: adjusted title and description of UMC entry on UCS start site
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 30 Oct 2013 17:35:39 +0100
+
 univention-management-console-frontend (3.0.138-1) unstable; urgency=low
 
   * Bug #33026: adjusted UMC icon
