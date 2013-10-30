@@ -1,3 +1,11 @@
+univention-mail-postfix (8.0.9-1) unstable; urgency=low
+
+  * do not remove mail domain objects in univention-mail-server unjoin script,
+    but only remove the SMTP service from local host
+  (Bug #32454)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 30 Oct 2013 10:52:36 +0100
+
 univention-mail-postfix (8.0.8-2) unstable; urgency=low
 
   * Bug #30945: Update UCR variable descriptions
