@@ -1001,6 +1001,11 @@
 	<title>Univention Management Console / Univention Directory Manager modules</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  UMC modules for management of UDM objects have been optimized with respect
+		  to their speed on the browser side (<ulink url="&ucsbug;32978">Bug 32978</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  The UCS license check now ignores temporary user objects (<ulink url="&ucsbug;31167">Bug 31167</ulink>).
 		</simpara></listitem>
 
