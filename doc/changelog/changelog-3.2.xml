@@ -3056,17 +3056,17 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	    The test case 00_base/47faillog_ssh-smb-krb has been disabled for UCS 3.2-0
 		(<ulink url="&ucsbug;19016">Bug 19016</ulink>).
 	  </simpara></listitem>
-	</itemizedlist>
 
-	<listitem><simpara>
-	  A test for Samba printing has been added
-	  (<ulink url="&ucsbug;29059">Bug 29059</ulink>).
-	</itemizedlist>
+	  <listitem><simpara>
+		A test for Samba printing has been added
+		(<ulink url="&ucsbug;29059">Bug 29059</ulink>).
+	  </simpara></listitem>
 
-	<listitem><simpara>
+	  <listitem><simpara>
 		The <function>random_*</function> functions from <filename>random.sh</filename> now encode timestamp information into the output to hopefully guarantee better uniqueness. Several unused and subtly broken functions have been removed (<ulink url="&ucsbug;32793">Bug 32793</ulink>).
-	</simpara></listitem>
+	  </simpara></listitem>
 
+	</itemizedlist>
 </section>
 
 <section>
