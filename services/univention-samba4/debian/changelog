@@ -1,4 +1,11 @@
-univention-samba4 (3.0.33-1.1) unstable; urgency=low
+univention-samba4 (3.0.33-4) unstable; urgency=low
+
+  * Fix python-udm syntax in scripts/purge_s4_computer.py (Bug #30763)
+  * Fix versioning in changelog
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Oct 2013 17:01:40 +0100
+
+univention-samba4 (3.0.33-2) unstable; urgency=low
 
   * Re-commit /etc/krb5.keytab after join and before final samba4 restart
     (Bug #31698)
@@ -15,7 +22,7 @@ univention-samba4 (3.0.33-1) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Oct 2013 06:07:24 +0100
 
-univention-samba4 (3.0.32-1.1) unstable; urgency=low
+univention-samba4 (3.0.32-2) unstable; urgency=low
 
   * Fix python syntax in scripts/purge_s4_computer.py (Bug #30763)
 
