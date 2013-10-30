@@ -214,7 +214,15 @@ define([
 			}, this);
 		},
 
-		_loadUCRVariables: function(ucr) {
+		_loadUCRVariables: function() {
+			var ucr = lang.getObject('umc.modules.udm.ucr');
+			if (ucr) {
+				// UCR variables have already been loaded
+				this._ucr = ucr;
+				var deferred = new Deferred();
+				deferred.resolve(ucr);
+				return deferred;
+			}
 			return tools.ucr(['directory/manager/web*', 'ldap/base']).then(lang.hitch(this, function(ucr) {
 				this._ucr = lang.setObject('umc.modules.udm.ucr', ucr);
 			}));
@@ -260,15 +268,16 @@ define([
 				// in order to correctly render the search form...
 				// query also necessary UCR variables for the UDM module
 				this.standby(true);
-				cache.get(this.moduleFlavor).preloadModuleInformation();
+				var moduleCache = cache.get(this.moduleFlavor);
+				moduleCache.preloadModuleInformation();
 				all({
-					containers: this.umcpCommand('udm/containers'),
-					superordinates: this.umcpCommand('udm/superordinates'),
-					reports: this.umcpCommand('udm/reports/query'),
+					containers: moduleCache.getContainers(),
+					superordinates: moduleCache.getSuperordinates(),
+					reports: moduleCache.getReports(),
 					ucr: this._loadUCRVariables()
 				}).then(lang.hitch(this, function(results) {
-					this._reports = results.reports.result;
-					this.renderSearchPage(results.containers.result, results.superordinates.result);
+					this._reports = results.reports;
+					this.renderSearchPage(results.containers, results.superordinates);
 				}), lang.hitch(this, function() {
 					this.standby(false);
 				}));
@@ -533,7 +542,14 @@ define([
 				label: _('%s type', tools.capitalize(this.objectNameSingular)),
 				//value: objTypes.length ? this.moduleFlavor : undefined,
 				staticValues: objTypes,
-				dynamicValues: 'udm/types',
+				dynamicValues: lang.hitch(this, function(options) {
+					var moduleCache = cache.get(this.moduleFlavor);
+					return moduleCache.getChildModules(options.superordinate).then(function(properties) {
+						return array.filter(properties, function(iprop) {
+							return iprop.searchable;
+						});
+					});
+				}),
 				umcpCommand: umcpCmd,
 				depends: objTypeDependencies,
 				onChange: lang.hitch(this, function(newObjType) {
@@ -550,8 +566,14 @@ define([
 				description: _( 'The object property on which the query is filtered.' ),
 				label: _( 'Property' ),
 				staticValues: objProperties,
-				dynamicValues: 'udm/properties',
-				dynamicOptions: { searchable: true },
+				dynamicValues: lang.hitch(this, function(options) {
+					var moduleCache = cache.get(this.moduleFlavor);
+					return moduleCache.getProperties(options.objectType || this.moduleFlavor).then(function(properties) {
+						return array.filter(properties, function(iprop) {
+							return iprop.searchable;
+						});
+					});
+				}),
 				umcpCommand: umcpCmd,
 				depends: 'objectType',
 				value: autoObjProperty,
@@ -579,7 +601,10 @@ define([
 				type: 'MixedInput',
 				name: 'objectPropertyValue',
 				label: _( 'Property value' ),
-				dynamicValues: 'udm/values',
+				dynamicValues: lang.hitch(this, function(options) {
+					var moduleCache = cache.get(this.moduleFlavor);
+					return moduleCache.getValues(options.objectType, options.objectProperty);
+				}),
 				umcpCommand: umcpCmd,
 				depends: [ 'objectProperty', 'objectType' ]
 			}]);
@@ -829,7 +854,9 @@ define([
 		_reloadSuperordinates: function() {
 			var widget = this._searchForm.getWidget('superordinate');
 			if (widget) {
-				this.umcpCommand('udm/superordinates').then(lang.hitch(this, function(data) {
+				// force reloading of superordinates
+				var superordinatesDeferred = cache.get(this.moduleFlavor).getSuperordinates(null, true);
+				superordinatesDeferred.then(lang.hitch(this, function(data) {
 					var currentVals = array.map(widget.get('staticValues'), function(i) { return i.id; });
 					var newVals = array.map(data.result, function(i) { return i.id; });
 					if (!tools.isEqual(currentVals, newVals)) {

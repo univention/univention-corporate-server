@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.72-1) unstable; urgency=low
+
+  * Bug #32978: cache more UDM values to speed up opening a UMC module
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 30 Oct 2013 13:09:34 +0100
+
 univention-management-console-module-udm (4.0.71-1) unstable; urgency=low
 
   * Bug #32978: clean cache for UDM objects if extended attributes are modified

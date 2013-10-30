@@ -76,8 +76,27 @@ define([
 			this._cache[indexStr] = data;
 		},
 
-		getChildModules: function(asIdLabelPair) {
-			var result = this._get('childModules', this.superModule);
+		preloadModuleInformation: function() {
+			if (_isPolicy(this.superModule)) {
+				// preloading layout information cannot be done for policies as
+				// referring objects are rendered into the layout, as well, and
+				// thus the object DN needs to be sent to the server
+				return;
+			}
+
+			this.getContainers(this.superModule);
+			this.getSuperordinates(this.superModule);
+			this.getChildModules().then(lang.hitch(this, function(modules) {
+				this._loadPropertiesMulti(modules);
+				this._loadLayoutMulti(modules);
+				this._loadPoliciesMulti(modules);
+			}));
+		},
+
+		getChildModules: function(superordinate, container, asIdLabelPair) {
+			superordinate = superordinate || null;
+			container = container || null;
+			var result = this._get('childModules', superordinate, container);
 			if (result) {
 				if (asIdLabelPair) {
 					return result;
@@ -85,7 +104,10 @@ define([
 				return result.then(_idLabelPair2Id);
 			}
 
-			result = tools.umcpCommand('udm/types', {}, true, this.superModule).then(lang.hitch(this, function(response) {
+			result = tools.umcpCommand('udm/types', {
+				superordinate: superordinate,
+				container: container
+			}, true, this.superModule).then(lang.hitch(this, function(response) {
 				if (!response.result.length) {
 					// has no sub modules
 					return [{
@@ -96,23 +118,77 @@ define([
 				return response.result;
 			}));
 
-			this._set(result, 'childModules', this.superModule);
+			this._set(result, 'childModules', superordinate, container);
 			return result.then(_idLabelPair2Id);
 		},
 
-		preloadModuleInformation: function() {
-			if (_isPolicy(this.superModule)) {
-				// preloading layout information cannot be done for policies as
-				// referring objects are rendered into the layout, as well, and
-				// thus the object DN needs to be sent to the server
-				return;
+		_getInfo: function(udmCommand, udmOptions, flavor, module, forceLoad) {
+			module = module || this.superModule;
+
+			// extend the cache arguments with the additional UDM option values
+			// ... make sure that the key order is stable
+			var keys = [];
+			tools.forIn(udmOptions, function(ikey, ival) {
+				keys.push(ikey)
+			});
+			keys.sort();
+
+			var args = [udmCommand, module];
+			array.forEach(keys, function(ikey) {
+				args.push(udmOptions[ikey]);
+			});
+			var result = this._get.apply(this, args);
+			if (result && !forceLoad) {
+				return result;
 			}
 
-			this.getChildModules().then(lang.hitch(this, function(modules) {
-				this._loadPropertiesMulti(modules, true);
-				this._loadLayoutMulti(modules, true);
-				this._loadPoliciesMulti(modules, true);
-			}));
+			// perform UDM command
+			var params = lang.mixin({
+				objectType: module
+			}, udmOptions || {});
+			result = tools.umcpCommand('udm/' + udmCommand, params, true, flavor).then(function(response) {
+				return response.result;
+			});
+
+			args.unshift(result);
+			this._set.apply(this, args);
+			return result;
+		},
+
+		getContainers: function(module, forceLoad) {
+			return this._getInfo('containers', {}, this.superModule, module, forceLoad);
+		},
+
+		getSuperordinates: function(module, forceLoad) {
+			return this._getInfo('superordinates', {}, this.superModule, module, forceLoad);
+		},
+
+		getValues: function(module, property, forceLoad) {
+			return this._getInfo('values', {
+				objectProperty: property || null
+			}, this.superModule, module, forceLoad);
+		},
+
+		getReports: function(module, forceLoad) {
+			module = module || this.superModule;
+			return this._getInfo('reports/query', {}, module, module, forceLoad);
+		},
+
+		getTemplates: function(module, forceLoad) {
+			module = module || this.superModule;
+			var result = this._get('templates', module);
+			if (result && !forceLoad) {
+				return result;
+			}
+
+			result = tools.umcpCommand('udm/templates/query', {
+				objectType: module
+			}, true, this.superModule).then(function(response) {
+				return response.result;
+			});
+
+			this._set(result, 'templates', module);
+			return result;
 		},
 
 		_getInfos: function(infoType, modules, objDN, forceLoad) {
@@ -155,28 +231,28 @@ define([
 			}, this);
 		},
 
-		getProperties: function(module, objDN) {
-			return this._getInfos('properties', [module], objDN, false)[0];
+		getProperties: function(module, objDN, forceLoad) {
+			return this._getInfos('properties', [module], objDN, forceLoad)[0];
 		},
 
-		_loadPropertiesMulti: function(modules, forceLoad) {
-			this._getInfos('properties', modules, null, forceLoad);
+		_loadPropertiesMulti: function(modules) {
+			this._getInfos('properties', modules, null, false);
 		},
 
-		getLayout: function(module, objDN) {
-			return this._getInfos('layout', [module], objDN, false)[0];
+		getLayout: function(module, objDN, forceLoad) {
+			return this._getInfos('layout', [module], objDN, forceLoad)[0];
 		},
 
-		_loadLayoutMulti: function(modules, forceLoad) {
-			this._getInfos('layout', modules, null, forceLoad);
+		_loadLayoutMulti: function(modules) {
+			this._getInfos('layout', modules, null, false);
 		},
 
-		getPolicies: function(module) {
-			return this._getInfos('policies', [module], null, false)[0];
+		getPolicies: function(module, forceLoad) {
+			return this._getInfos('policies', [module], null, forceLoad)[0];
 		},
 
-		_loadPoliciesMulti: function(modules, forceLoad) {
-			this._getInfos('policies', modules, null, forceLoad);
+		_loadPoliciesMulti: function(modules) {
+			this._getInfos('policies', modules, null, false);
 		}
 	});
 
