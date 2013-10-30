@@ -1,3 +1,10 @@
+univention-heimdal (7.0.1-1) unstable; urgency=low
+
+  * The keytab listener must not remove the keytab during the cleanup
+    phase in case samba4/role is DC or RODC (Bug #31698)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Oct 2013 16:48:04 +0100
+
 univention-heimdal (7.0.0-3) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30943)

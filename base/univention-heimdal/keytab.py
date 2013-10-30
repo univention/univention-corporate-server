@@ -48,7 +48,12 @@ etypes = ['des-cbc-crc', 'des-cbc-md4', 'des3-cbc-sha1', 'des-cbc-md5', 'arcfour
 listener.setuid(0)
 
 def clean():
-	global keytab
+	## don't do anything here if this system is joined as a Samba 4 DC 
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+	samba4_role = ucr.get('samba4/role', '')
+	if samba4_role.upper() in ('DC', 'RODC'):
+		return
 
 	listener.setuid(0)
 	try:
@@ -58,8 +63,6 @@ def clean():
 		listener.unsetuid()
 
 def handler(dn, new, old):
-	global keytab
-
 	## don't do anything here if this system is joined as a Samba 4 DC 
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
