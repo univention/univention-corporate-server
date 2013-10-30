@@ -3061,6 +3061,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<listitem><simpara>
 	  A test for Samba printing has been added
 	  (<ulink url="&ucsbug;29059">Bug 29059</ulink>).
+	</itemizedlist>
+
+	<listitem><simpara>
+		The <function>random_*</function> functions from <filename>random.sh</filename> now encode timestamp information into the output to hopefully guarantee better uniqueness. Several unused and subtly broken functions have been removed (<ulink url="&ucsbug;32793">Bug 32793</ulink>).
 	</simpara></listitem>
 
 </section>
