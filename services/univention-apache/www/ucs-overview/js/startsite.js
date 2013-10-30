@@ -81,7 +81,7 @@ define([
 			apps: _('App Catalogue'),
 			products: _('Further Products'),
 			univention_website: _('Univention Website'),
-			'http://wiki.univention.de/': _('http://wiki.univention.de/'),
+			'http://wiki.univention.de/index.php?title=Hauptseite': _('http://wiki.univention.de/index.php?title=Hauptseite'),
 			'http://forum.univention.de/': _('http://forum.univention.de/'),
 			'http://sdb.univention.de/': _('http://sdb.univention.de/'),
 			'http://docs.univention.de/en.html': _('http://docs.univention.de/en.html'),

@@ -82,8 +82,8 @@ msgid "http://sdb.univention.de/"
 msgstr ""
 
 #: www/ucs-overview/js/startsite.js:84
-msgid "http://wiki.univention.de/"
-msgstr ""
+msgid "http://wiki.univention.de/index.php?title=Hauptseite"
+msgstr "http://wiki.univention.de/index.php?title=Main_Page"
 
 #: www/ucs-overview/js/startsite.js:90
 msgid "http://www.univention.de/en/"
@@ -96,6 +96,3 @@ msgstr "http://www.univention.de/produkte/"
 #: www/ucs-overview/js/startsite.js:88
 msgid "http://www.univention.de/en/products/ucs/app-catalogue/"
 msgstr "http://www.univention.de/produkte/ucs/app-katalog/"
-
-#~ msgid "Univention Partners"
-#~ msgstr "Univention Partner"

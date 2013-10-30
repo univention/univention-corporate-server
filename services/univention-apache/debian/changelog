@@ -1,3 +1,9 @@
+univention-apache (6.0.14-1) unstable; urgency=low
+
+  * Bug #32613: localize link to wiki.univention.de
+
+ -- Florian Best <best@univention.de>  Wed, 30 Oct 2013 12:03:18 +0100
+
 univention-apache (6.0.13-4) unstable; urgency=low
 
   * fixed typo (Bug #32678)
