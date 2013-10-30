@@ -43,8 +43,9 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/Form",
 	"umc/modules/udm/wizards/FirstPageWizard",
+	"umc/modules/udm/cache",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, has, topic, all, Deferred, Dialog, StackContainer, ContainerWidget, tools, Text, Form, FirstPageWizard, _) {
+], function(declare, lang, array, has, topic, all, Deferred, Dialog, StackContainer, ContainerWidget, tools, Text, Form, FirstPageWizard, cache, _) {
 
 	return declare("umc.modules.udm.NewObjectDialog", [ Dialog ], {
 		// summary:
@@ -100,28 +101,30 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
+			var moduleCache = cache.get(this.moduleFlavor);
 			if ('navigation' != this.moduleFlavor) {
 				// query the necessary elements to display the add-dialog correctly
+				var superordinate = this.selectedSuperordinate !== undefined ? this.selectedSuperordinate : null;
 				all({
-					types: this.umcpCommand('udm/types', {
-						superordinate: this.selectedSuperordinate !== undefined ? this.selectedSuperordinate : null
-					} ),
-					containers: this.umcpCommand('udm/containers'),
-					superordinates: this.umcpCommand('udm/superordinates'),
-					templates: this.umcpCommand('udm/templates')
+					types: moduleCache.getChildModules(superordinate, null, true),
+					containers: moduleCache.getContainers().then(function(result) {
+						return array.filter(result, function(icontainer) {
+							return icontainer.id != 'all';
+						});
+					}),
+					superordinates: moduleCache.getSuperordinates(),
+					templates: moduleCache.getTemplates()
 				}).then(lang.hitch(this, function(results) {
-					var types = lang.getObject('types.result', false, results) || [];
-					var containers = lang.getObject('containers.result', false, results) || [];
-					var superordinates = lang.getObject('superordinates.result', false, results) || [];
-					var templates = lang.getObject('templates.result', false, results) || [];
+					var types = lang.getObject('types', false, results) || [];
+					var containers = lang.getObject('containers', false, results) || [];
+					var superordinates = lang.getObject('superordinates', false, results) || [];
+					var templates = lang.getObject('templates', false, results) || [];
 					this._renderForm(types, containers, superordinates, templates);
 				}));
 			} else {
 				// for the UDM navigation, only query object types
-				this.umcpCommand('udm/types', {
-					container: this.selectedContainer.id
-				}).then(lang.hitch(this, function(data) {
-					this._renderForm(data.result);
+				moduleCache.getChildModules(null, this.selectedContainer.id).then(lang.hitch(this, function(result) {
+					this._renderForm(result);
 				}));
 			}
 		},
@@ -173,7 +176,10 @@ define([
 						value: this.defaultObjectType,
 						description: _('The exact %s type.', this.objectNameSingular),
 						umcpCommand: this.umcpCommand,
-						dynamicValues: 'udm/types',
+						dynamicValues: lang.hitch(this, function(options) {
+							var moduleCache = cache.get(this.moduleFlavor);
+							return moduleCache.getChildModules(options.superordinate);
+						}),
 						depends: 'superordinate'
 					});
 					layout.push('superordinate', 'objectType');
@@ -232,7 +238,10 @@ define([
 					description: _('A template defines rules for default object properties.'),
 					depends: 'objectType',
 					umcpCommand: this.umcpCommand,
-					dynamicValues: 'udm/templates',
+					dynamicValues: lang.hitch(this, function(options) {
+						var moduleCache = cache.get(this.moduleFlavor);
+						return moduleCache.getTemplates(options.objectType);
+					}),
 					staticValues: [ { id: 'None', label: _('None') } ]
 				}];
 				layout = [ 'container', 'container_help', 'objectType', 'objectTemplate' ];

@@ -33,8 +33,9 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"umc/tools",
-	"umc/modules/udm/TreeModel"
-], function(declare, lang, array, tools, TreeModel) {
+	"umc/modules/udm/TreeModel",
+	"umc/modules/udm/cache"
+], function(declare, lang, array, tools, TreeModel, cache) {
 	return declare('umc.modules.udm.TreeModelSuperordinate', [TreeModel], {
 
 		rootName: null,
@@ -57,9 +58,9 @@ define([
 		},
 
 		getChildren: function(parentItem, onComplete) {
-			this.umcpCommand('udm/superordinates', undefined, false).then(lang.hitch(this, function(data) {
+			cache.get(this.moduleFlavor).getSuperordinates().then(lang.hitch(this, function(data) {
 				// sort items alphabetically
-				var superordinates = data.result instanceof Array ? data.result : [];
+				var superordinates = data instanceof Array ? data : [];
 				superordinates.sort(tools.cmpObjects('label'));
 				// remove None superordinate
 				superordinates = array.filter(superordinates, function(item) { return item.id !== 'None'; });

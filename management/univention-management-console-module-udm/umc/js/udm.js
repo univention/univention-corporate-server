@@ -1338,6 +1338,7 @@ define([
 			var superordinate = this._searchForm.getWidget('superordinate');
 			superordinate = superordinate && superordinate.get('value') || null;
 
+			var moduleCache = cache.get(this.moduleFlavor);
 			if ('navigation' == this.moduleFlavor) {
 				var items = this._tree.get('selectedItems');
 				if (items.length) {
@@ -1347,25 +1348,21 @@ define([
 					return;
 				}
 				// for the UDM navigation, only query object types
-				this.umcpCommand('udm/types', {
-					container: selectedContainer.id
-				}).then(lang.hitch(this, function(data) {
-					firstPageDeferred.resolve({types: data.result});
+				moduleCache.getChildModules(null, this.selectedContainer.id).then(lang.hitch(this, function(result) {
+					firstPageDeferred.resolve({types: result});
 				}));
 			} else {
 				// query the necessary elements to display the add-dialog correctly
 				all({
-					types: this.umcpCommand('udm/types', {
-						superordinate: superordinate
-					}),
-					containers: this.umcpCommand('udm/containers'),
-					superordinates: this.umcpCommand('udm/superordinates'),
-					templates: this.umcpCommand('udm/templates')
+					types: moduleCache.getChildModules(superordinate),
+					containers: moduleCache.getContainers(),
+					superordinates: moduleCache.getSuperordinates(),
+					templates: moduleCache.getTemplates()
 				}).then(lang.hitch(this, function(results) {
-					var types = lang.getObject('types.result', false, results);
-					var containers = lang.getObject('containers.result', false, results);
-					var superordinates = lang.getObject('superordinates.result', false, results);
-					var templates = lang.getObject('templates.result', false, results);
+					var types = lang.getObject('types', false, results);
+					var containers = lang.getObject('containers', false, results);
+					var superordinates = lang.getObject('superordinates', false, results);
+					var templates = lang.getObject('templates', false, results);
 					firstPageDeferred.resolve({
 						types: types,
 						containers: containers,
