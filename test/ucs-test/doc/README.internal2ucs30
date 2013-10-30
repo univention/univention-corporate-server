@@ -2,16 +2,10 @@
 # random
 randomchars	random_chars
 _getchar
-getlowercasedigit	random_lowercasedigit
-getmaildigit	random_maildigit
-getletter	random_letter
-getuppercasedigit	random_upercasedigit
 getstring	random_string
-getstringstartinguppercase	random_stringstartinguppercase
 getstringformailaddress	random_mailaddress
 getstringforhostname	random_hostname
 getstringforshares	random_share
-getoctet	random_octet
 
 # base
 is_package_installed	checkpkg
