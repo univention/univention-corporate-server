@@ -72,7 +72,11 @@ define([
 
 		setCustomValues: function(values, detailPageForm) {
 			if (this._networkVals && values.ip[0]) {
-				var vals = lang.mixin(this._networkVals, {ip: values.ip[0], mac: values.mac});
+				var vals = lang.mixin({}, this._networkVals, {ip: values.ip[0], mac: values.mac});
+				if (vals.mac[0] === '') {
+					vals.mac = [];
+					vals.dhcpEntryZone = null;
+				}
 				udmCallbacks._setNetworkValues(vals, detailPageForm._widgets);
 			}
 		}

@@ -33,15 +33,18 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/has",
+	"dojo/topic",
 	"dojo/promise/all",
 	"dojo/Deferred",
 	"dijit/Dialog",
+	"dijit/layout/StackContainer",
+	"umc/widgets/ContainerWidget",
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/Form",
-	"umc/widgets/ContainerWidget",
+	"umc/modules/udm/wizards/FirstPageWizard",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, has, all, Deferred, Dialog, tools, Text, Form, ContainerWidget, _) {
+], function(declare, lang, array, has, topic, all, Deferred, Dialog, StackContainer, ContainerWidget, tools, Text, Form, FirstPageWizard, _) {
 
 	return declare("umc.modules.udm.NewObjectDialog", [ Dialog ], {
 		// summary:
@@ -84,6 +87,8 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.canContinue = new Deferred();
+			this.createWizardAdded = new Deferred();
+			this._readyForCreateWizard = new Deferred();
 
 			// mixin the dialog title
 			lang.mixin(this, {
@@ -233,42 +238,43 @@ define([
 				layout = [ 'container', 'container_help', 'objectType', 'objectTemplate' ];
 			}
 
-			// buttons
-			var buttons = [{
-				name: 'add',
-				label: _('Add'),
-				defaultButton: true,
-				callback: lang.hitch(this, function() {
-					this.onDone(this._form.get('value'));
-					this.destroyRecursive();
-				}),
-				style: 'float:right;'
-			}, {
-				name: 'close',
-				label: _('Close'),
-				callback: lang.hitch(this, function() {
-					this.destroyRecursive();
-				})
-			}];
-
-			// now create a Form
-			this._form = new Form({
-				widgets: widgets,
-				buttons: buttons,
-				layout: layout
+			this._wizardContainer = new StackContainer({
+				style: 'width: 630px; height:310px;'
 			});
-			this._form.on('submit', lang.hitch(this, function() {
-				this.onDone(this._form.get('value'));
-				this.destroyRecursive();
+			var firstPageWizard = new FirstPageWizard({
+				pages: [{
+					name: 'firstPage',
+					headerText: this.get('title'),
+					widgets: widgets,
+					layout: layout
+				}]
+			});
+			this._wizardContainer.addChild(firstPageWizard);
+			this._wizardContainer.startup();
+			this._wizardContainer.selectChild(firstPageWizard);
+			this.own(this._wizardContainer);
+			this.set('content', this._wizardContainer);
+
+			firstPageWizard.on('Cancel', lang.hitch(this, function() {
+				this.hide();
+			}));
+			firstPageWizard.on('Finished', lang.hitch(this, function() {
+				var firstPageValues = firstPageWizard.getValues();
+				firstPageValues.objectType = firstPageValues.objectType || this.moduleFlavor;
+				var objectTypeName = this.objectNameSingular;
+				array.some(types, function(type) {
+					if (type.id == firstPageValues.objectType) {
+						objectTypeName = type.label;
+						return true;
+					}
+				});
+				this.buildCreateWizard(firstPageWizard, firstPageValues, objectTypeName);
 			}));
 
-			var container = new ContainerWidget({});
-			container.addChild(this._form);
-			this.set('content', container);
-
-			this._form.ready().then(lang.hitch(this, function() {
+			var form = firstPageWizard._pages['firstPage']._form;
+			form.ready().then(lang.hitch(this, function() {
 				var formNecessary = false;
-				tools.forIn(this._form._widgets, function(iname, iwidget) {
+				tools.forIn(form._widgets, function(iname, iwidget) {
 					if (iwidget.getAllItems) { // ComboBox, but not HiddenInput
 						var items = iwidget.getAllItems();
 						if (items.length > 1) {
@@ -280,17 +286,130 @@ define([
 					this.canContinue.reject();
 				} else {
 					this.canContinue.resolve();
-					this._form.submit();
+					firstPageWizard._finish();
 				}
 			}));
-			this.show();
 		},
 
-		onDone: function(options) {
+		buildCreateWizard: function(firstPageWizard, firstPageValues, objectTypeName) {
+			this._readyForCreateWizard = new Deferred();
+			var wizardDeferred = new Deferred();
+			firstPageWizard.standbyDuring(this.createWizardAdded);
+			this.onFirstPageFinished(firstPageValues);
+			if (this.wizardsDisabled) {
+				wizardDeferred.reject();
+			} else {
+				// make sure that container and superordinate are at least set to null
+				var wizardModuleURL = 'umc/modules/udm/wizards/' + firstPageValues.objectType || this.moduleFlavor;
+				tools.urlExists(wizardModuleURL).then(
+					lang.hitch(this, function() {
+						require([wizardModuleURL], lang.hitch(this, function(WizardClass) {
+							wizardDeferred.resolve(WizardClass);
+						}));
+					}),
+					lang.hitch(this, function() {
+						wizardDeferred.reject();
+					})
+				);
+			}
+			wizardDeferred.then(
+				lang.hitch(this, function(WizardClass) {
+					this._readyForCreateWizard.then(lang.hitch(this, function(detailsValues) {
+						var createWizard = new WizardClass({
+							umcpCommand: this.umcpCommand,
+							objectTypeName: objectTypeName,
+							detailPage: detailsValues.detailPage,
+							template: detailsValues.template,
+							firstPageAvailable: this.canContinue.isRejected(),
+							properties: detailsValues.properties
+						});
+						// insert at position 1. If another createWizard is added
+						//   (after successfully saving the object) that
+						//   wizard is also insert at 1, and removing this createWizard will
+						//   selectChild(that_wizard), not firstPageWizard
+						this._wizardContainer.addChild(createWizard, 1);
+						this._wizardContainer.selectChild(createWizard);
+						this.createWizardAdded.resolve();
+						createWizard.focusFirstWidget('page0');
+						var finishWizard = lang.hitch(this, function(wizardFormValues, submit) {
+							createWizard.standbyDuring(detailsValues.detailPage.loadedDeferred).then(lang.hitch(this, function() {
+								lang.mixin(detailsValues.detailPage.templateObject._userChanges, createWizard.templateObject._userChanges);
+								tools.forIn(wizardFormValues, lang.hitch(this, function(key, val) {
+									detailsValues.detailPage._form.getWidget(key).set('value', val);
+								}));
+								createWizard.setCustomValues(wizardFormValues, detailsValues.detailPage._form);
+								if (submit) {
+									detailsValues.detailPage._form.ready().then(lang.hitch(this, function() {
+										var saveDeferred = detailsValues.detailPage.save();
+										if (saveDeferred.then) {
+											createWizard.standbyDuring(saveDeferred);
+											saveDeferred.then(
+												lang.hitch(this, function() {
+													this.addNotification(_('%s created', createWizard.objectName()));
+													this.createWizardAdded = new Deferred();
+													this.buildCreateWizard(firstPageWizard, firstPageValues, objectTypeName);
+													this.createWizardAdded.then(lang.hitch(this, function() {
+														// new createWizard added, now we can remove this one
+														this._wizardContainer.removeChild(createWizard);
+														createWizard.destroyRecursive();
+													}));;
+												}),
+												lang.hitch(this, function() {
+													this.onDone();
+												})
+											);
+										} else {
+											this.onDone();
+										}
+									}));
+								} else {
+									this.onDone();
+								}
+							}));
+						});
+						createWizard.on('BackToFirstPage', lang.hitch(this, function() {
+							this.createWizardAdded = new Deferred();
+							this._wizardContainer.selectChild(firstPageWizard);
+							this._wizardContainer.removeChild(createWizard);
+							createWizard.destroyRecursive();
+						}));
+						createWizard.on('Advanced', lang.hitch(this, function(values) {
+							topic.publish('/umc/actions', 'udm', this.moduleFlavor, 'create-wizard', 'advance');
+							finishWizard(values, false);
+						}));
+						createWizard.on('Cancel', lang.hitch(this, function() {
+							topic.publish('/umc/actions', 'udm', this.moduleFlavor, 'create-wizard', 'cancel');
+							this.hide().then(function() {
+								detailsValues.detailPage.onCloseTab();
+							});
+						}));
+						createWizard.on('Finished', lang.hitch(this, function(values) {
+							finishWizard(values, true);
+						}));
+					}));
+				}), lang.hitch(this, function() {
+					this.createWizardAdded.reject();
+					this.onDone();
+				})
+			);
+		},
+
+		setDetails: function(detailPage, template, properties) {
+			this._readyForCreateWizard.resolve({
+				detailPage: detailPage,
+				template: template,
+				properties: properties
+			});
+		},
+
+		onDone: function() {
 			// event stub
 		},
 
 		onCancel: function() {
+		},
+
+		onFirstPageFinished: function(values) {
 		}
 	});
 });

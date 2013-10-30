@@ -51,7 +51,6 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
-	"umc/widgets/ProgressBar",
 	"umc/widgets/TabContainer",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
@@ -64,7 +63,7 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/widgets"
-], function(declare, lang, array, on, Deferred, when, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, ProgressBar, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
+], function(declare, lang, array, on, Deferred, when, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
 
 	var _StandbyPage = declare([Page, StandbyMixin], {});
 
@@ -111,10 +110,6 @@ define([
 		// note: String?
 		//		If given, this string is displayed as note on the first page.
 		note: null,
-
-		// showProgressBarDeferred: Deferred
-		//		When to start showing the progress bar
-		//showProgressBarDeferred: null,
 
 		// internal reference to the formular containing all form widgets of an LDAP object
 		_form: null,
@@ -182,10 +177,6 @@ define([
 
 			this.standby(true);
 
-			// create a progressbar
-			/*this.progressMessage = _('Loading %s...', this.objectNameSingular);
-			this._progressBar = this.own(new ProgressBar())[0];
-			this._progressBar.reset(this.progressMessage);*/
 			this.loadedDeferred = new Deferred();
 
 			// remember the objectType of the object we are going to edit
@@ -227,9 +218,6 @@ define([
 			}
 
 			// when the commands have been finished, create the detail page
-			/*this.showProgressBarDeferred.then(lang.hitch(this, function() {
-				this.standbyDuring(this.loadedDeferred, this._progressBar);
-			}));*/
 			(new all(commands)).then(lang.hitch(this, function(results) {
 				var template = lang.getObject('template.result', false, results) || null;
 				var layout = lang.clone(results.layout);
@@ -263,7 +251,6 @@ define([
 					// hide the type info and ldap path in case of a new object
 					this._form.getWidget( '$objecttype$' ).set( 'visible', false);
 					this._form.getWidget( '$location$' ).set( 'visible', false);
-					//this._progressBar.feedFromDeferred(this._form.ready(), _('Loading %s...', this.objectNameSingular));
 				}));
 				return;
 			}
@@ -751,7 +738,7 @@ define([
 				widgets: widgets,
 				content: borderLayout,
 				moduleStore: this.moduleStore,
-				onSubmit: lang.hitch(this, 'validateChanges'),
+				onSubmit: lang.hitch(this, 'save'),
 				style: 'margin:0'
 			}))[0];
 			this.set('content', this._form);
@@ -801,7 +788,8 @@ define([
 				this._renderBorderContainer(widgets);
 				this._disableSubmitButtonUntilReady();
 				formBuiltDeferred.resolve();
-				this._buildTemplate(template, properties, widgets);
+				this.templateObject = this.buildTemplate(template, properties, widgets);
+				this.own(this.templateObject);
 
 				// initiate the template mechanism (only for new objects)
 				if (!this.ldapName && !this._multiEdit) {
@@ -812,7 +800,7 @@ define([
 			return all([loadedDeferred, formBuiltDeferred]);
 		},
 
-		_buildTemplate: function(template, properties, widgets) {
+		buildTemplate: function(template, properties, widgets) {
 			if (this.ldapName || this._multiEdit) {
 				return;
 			}
@@ -857,11 +845,10 @@ define([
 			}
 
 			// create a new template object that takes care of updating the elements in the form
-			this.templateObject = new Template({
+			return new Template({
 				widgets: widgets,
 				template: template
 			});
-			this.own(this.templateObject);
 		},
 
 		getButtonDefinitions: function() {
@@ -1220,7 +1207,7 @@ define([
 			return nChanges > 0;
 		},
 
-		validateChanges: function(e) {
+		save: function(e) {
 			// summary:
 			//		Validate the user input through the server and save changes upon success.
 
@@ -1305,17 +1292,88 @@ define([
 				objectType: this._editedObjType,
 				properties: valsNonEmpty
 			};
-			this.standby(true);
-			this.umcpCommand('udm/validate', params).then(lang.hitch(this, function(data) {
+			var validationDeferred = this.umcpCommand('udm/validate', params);
+			var saveDeferred = new Deferred();
+			validationDeferred.then(lang.hitch(this, function(data) {
 				// if all elements are valid, save element
 				if (this._parseValidation(data.result)) {
-					this.saveChanges(vals);
+					var deferred = null;
+					topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'save');
+					// check whether the internal cache needs to be reset
+					// as layout and property information may have changed
+					if (this.objectType == 'settings/extended_attribute') {
+						cache.reset();
+					}
+					if (this.objectType == 'settings/usertemplate') {
+						cache.reset('users/user');
+					}
+					if (this._multiEdit) {
+						// save the changes for each object once
+						var transaction = this.moduleStore.transaction();
+						array.forEach(this.ldapName, function(idn) {
+							// shallow copy with corrected DN
+							var ivals = lang.mixin({}, vals);
+							ivals[this.moduleStore.idProperty] = idn;
+							this.moduleStore.put(ivals);
+						}, this);
+						deferred = transaction.commit();
+					} else if (this.newObjectOptions) {
+						deferred = this.moduleStore.add(vals, this.newObjectOptions);
+					} else {
+						deferred = this.moduleStore.put(vals);
+					}
+					deferred.then(lang.hitch(this, function(result) {
+						// see whether saving was successfull
+						var success = true;
+						var msg = '';
+						if (result instanceof Array) {
+							msg = '<p>' + _('The following LDAP objects could not be saved:') + '</p><ul>';
+							array.forEach(result, function(iresult) {
+								success = success && iresult.success;
+								if (!iresult.success) {
+									msg += lang.replace('<li>{' + this.moduleStore.idProperty + '}: {details}</li>', iresult);
+								}
+							}, this);
+							msg += '</ul>';
+						} else {
+							success = result.success;
+							if (!result.success) {
+								msg = _('The LDAP object could not be saved: %(details)s', result);
+							}
+						}
+
+						if (success && this.moduleFlavor == 'users/self') {
+							this._form.clearFormValues();
+							this._form.load(this.ldapName);
+							dialog.alert(_('The changes have been successfully applied.'));
+						} else if (success) {
+							// everything ok, close page
+							this.onCloseTab();
+							this.onSave(result.$dn$, this.objectType);
+							saveDeferred.resolve();
+						} else {
+							// print error message to user
+							saveDeferred.reject();
+							dialog.alert(msg);
+						}
+					}), lang.hitch(this, function() {
+						saveDeferred.reject();
+					}));
 				} else {
-					this.standby(false);
+					saveDeferred.reject();
 				}
-			}), lang.hitch(this, function() {
-				this.standby(false);
 			}));
+			var validatedAndSaved = all([validationDeferred, saveDeferred]);
+			this.standbyDuring(validatedAndSaved);
+			validatedAndSaved.then(
+				lang.hitch(this, function() {
+					this.onSave();
+				}),
+				lang.hitch(this, function() {
+					this.onSaveFailed();
+				})
+			);
+			return validatedAndSaved;
 		},
 
 		_parseValidation: function(validationList) {
@@ -1381,75 +1439,6 @@ define([
 				page.$titleOrig$ = page.title;
 				page.set('title', '<span style="color:red">' + page.title + ' (!)</span>');
 			}
-		},
-
-		saveChanges: function(vals) {
-			// summary:
-			//		Save the user changes for the edited object.
-
-			var deferred = null;
-			topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'save');
-
-			// check whether the internal cache needs to be reset
-			// as layout and property information may have changed
-			if (this.objectType == 'settings/extended_attribute') {
-				cache.reset();
-			}
-			if (this.objectType == 'settings/usertemplate') {
-				cache.reset('users/user');
-			}
-
-			if (this._multiEdit) {
-				// save the changes for each object once
-				var transaction = this.moduleStore.transaction();
-				array.forEach(this.ldapName, function(idn) {
-					// shallow copy with corrected DN
-					var ivals = lang.mixin({}, vals);
-					ivals[this.moduleStore.idProperty] = idn;
-					this.moduleStore.put(ivals);
-				}, this);
-				deferred = transaction.commit();
-			} else if (this.newObjectOptions) {
-				deferred = this.moduleStore.add(vals, this.newObjectOptions);
-			} else {
-				deferred = this.moduleStore.put(vals);
-			}
-			deferred.then(lang.hitch(this, function(result) {
-				// see whether saving was successfull
-				this.standby(false);
-				var success = true;
-				var msg = '';
-				if (result instanceof Array) {
-					msg = '<p>' + _('The following LDAP objects could not be saved:') + '</p><ul>';
-					array.forEach(result, function(iresult) {
-						success = success && iresult.success;
-						if (!iresult.success) {
-							msg += lang.replace('<li>{' + this.moduleStore.idProperty + '}: {details}</li>', iresult);
-						}
-					}, this);
-					msg += '</ul>';
-				} else {
-					success = result.success;
-					if (!result.success) {
-						msg = _('The LDAP object could not be saved: %(details)s', result);
-					}
-				}
-
-				if (success && this.moduleFlavor == 'users/self') {
-					this._form.clearFormValues();
-					this._form.load(this.ldapName);
-					dialog.alert(_('The changes have been successfully applied.'));
-				} else if (success) {
-					// everything ok, close page
-					this.onCloseTab();
-					this.onSave(result.$dn$, this.objectType);
-				} else {
-					// print error message to user
-					dialog.alert(msg);
-				}
-			}), lang.hitch(this, function() {
-				this.standby(false);
-			}));
 		},
 
 		getAlteredValues: function() {

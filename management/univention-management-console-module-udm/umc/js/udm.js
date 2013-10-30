@@ -151,7 +151,7 @@ define([
 		_menuDelete: null,
 		_menuMove: null,
 
-		_createObjectWizard: null,
+		_newObjectDialog: null,
 
 		constructor: function() {
 			this._default_columns = [{
@@ -1331,8 +1331,13 @@ define([
 			// summary:
 			//		Open a user dialog for creating a new LDAP object.
 
+			var firstPageDeferred = new Deferred();
+
 			// when we are in navigation mode, make sure the user has selected a container
 			var selectedContainer = { id: '', label: '', path: '' };
+			var superordinate = this._searchForm.getWidget('superordinate');
+			superordinate = superordinate && superordinate.get('value') || null;
+
 			if ('navigation' == this.moduleFlavor) {
 				var items = this._tree.get('selectedItems');
 				if (items.length) {
@@ -1341,62 +1346,88 @@ define([
 					dialog.alert(_('Please select a container in the LDAP directory tree. The new object will be placed at this location.'));
 					return;
 				}
+				// for the UDM navigation, only query object types
+				this.umcpCommand('udm/types', {
+					container: selectedContainer.id
+				}).then(lang.hitch(this, function(data) {
+					firstPageDeferred.resolve({types: data.result});
+				}));
+			} else {
+				// query the necessary elements to display the add-dialog correctly
+				all({
+					types: this.umcpCommand('udm/types', {
+						superordinate: superordinate
+					}),
+					containers: this.umcpCommand('udm/containers'),
+					superordinates: this.umcpCommand('udm/superordinates'),
+					templates: this.umcpCommand('udm/templates')
+				}).then(lang.hitch(this, function(results) {
+					var types = lang.getObject('types.result', false, results);
+					var containers = lang.getObject('containers.result', false, results);
+					var superordinates = lang.getObject('superordinates.result', false, results);
+					var templates = lang.getObject('templates.result', false, results);
+					firstPageDeferred.resolve({
+						types: types,
+						containers: containers,
+						superordinates: superordinates,
+						templates: templates
+					});
+				}));
 			}
 
 			// open the dialog
-			var superordinate = this._searchForm.getWidget('superordinate');
-			var _dialog = new NewObjectDialog({
-				umcpCommand: lang.hitch(this, 'umcpCommand'),
-				moduleFlavor: this.moduleFlavor,
-				selectedContainer: selectedContainer,
-				selectedSuperordinate: superordinate && superordinate.get('value'),
-				defaultObjectType: this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/add/default'] || null,
-				onDone: lang.hitch(this, function(options) {
-					// reinitiate standby when it stopped because
-					// of dialog
-					if (_dialog.canContinue.isRejected()) {
-						this.standbyDuring(this._wizardStandby);
-					}
-
-					// when the options are specified, create a new detail page
-					options.objectType = options.objectType || this.moduleFlavor; // default objectType is the module flavor
+			firstPageDeferred.then(lang.hitch(this, function(values) {
+				this._newObjectDialog = new NewObjectDialog({
+					addNotification: lang.hitch(this, 'addNotification'),
+					umcpCommand: lang.hitch(this, 'umcpCommand'),
+					wizardsDisabled: tools.isTrue(this._wizardsDisabled),
+					moduleFlavor: this.moduleFlavor,
+					selectedContainer: selectedContainer,
+					selectedSuperordinate: superordinate,
+					defaultObjectType: this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/add/default'] || null,
+					types: values.types || [],
+					containers: values.containers || [],
+					superordinates: values.superordinates || [],
+					templates: values.templates || [],
+					objectNamePlural: this.objectNamePlural,
+					objectNameSingular: this.objectNameSingular
+				});
+				this._newObjectDialog.on('FirstPageFinished', lang.hitch(this, function(options) {
 					this.createDetailPage(options.objectType, undefined, options);
-				}),
-				objectNamePlural: this.objectNamePlural,
-				objectNameSingular: this.objectNameSingular
-			});
-			this.own(_dialog);
-			this.standbyDuring(all([_dialog.canContinue, this._wizardStandby]));
+				}));
+				this._newObjectDialog.on('Done', lang.hitch(this, function() {
+					this._newObjectDialog.hide().then(lang.hitch(this, function() {
+						this.selectChild(this._detailPage);
+					}));
+				}));
+				this._newObjectDialog.on('hide', lang.hitch(this, function() {
+					this._newObjectDialog.destroyRecursive();
+					this._newObjectDialog = null;
+				}));
+				this.standbyDuring(this._newObjectDialog.canContinue);
+				this._newObjectDialog.canContinue.then(
+					lang.hitch(this, function() {
+						// wizard continues immediately! Show only
+						// if (and only if) the createWizard is ready
+						this.standbyDuring(this._newObjectDialog.createWizardAdded);
+						this._newObjectDialog.createWizardAdded.then(lang.hitch(this, function() {
+							this._newObjectDialog.show();
+						}));
+					}),
+					lang.hitch(this, function() {
+						// canContinue.rejected! Ask the user
+						this._newObjectDialog.show();
+						wizardDeferred.reject();
+					})
+				);
+			}));
+			this.standbyDuring(firstPageDeferred);
 		},
 
 		createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String?*/ note) {
 			// summary:
 			//		Creates and views the detail page for editing LDAP objects.
-
-			var wizardDeferred = new Deferred();
-			//var showProgressBarDeferred = new Deferred();
-			if (newObjOptions && !tools.isTrue(this._wizardsDisabled)) {
-				// make sure that container and superordinate are at least set to null
-				newObjOptions = lang.mixin({
-					container: null,
-					superordinate: null
-				}, newObjOptions);
-				var wizardModuleURL = 'umc/modules/udm/wizards/' + objectType;
-				tools.urlExists(wizardModuleURL).then(
-					lang.hitch(this, function() {
-						require([wizardModuleURL], lang.hitch(this, function(WizardClass) {
-							wizardDeferred.resolve(WizardClass);
-						}));
-					}),
-					lang.hitch(this, function() {
-						wizardDeferred.reject();
-						//showProgressBarDeferred.resolve();
-					})
-				);
-			} else {
-				wizardDeferred.reject();
-				//showProgressBarDeferred.resolve();
-			}
+			var showProgressBarDeferred = new Deferred();
 
 			this._detailPage = new DetailPage({
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
@@ -1418,80 +1449,24 @@ define([
 			this._detailPage.on('save', lang.hitch(this, 'onObjectSaved'));
 			this._detailPage.on('focusModule', lang.hitch(this, 'focusModule'));
 			this.addChild(this._detailPage);
-			wizardDeferred.then(
-				lang.hitch(this, function(WizardClass) {
-					var getFromDetailPage = {
-						properties: this._detailPage.propertyQuery,
-						template: this._detailPage.templateQuery
-					};
-					all(getFromDetailPage).then(lang.hitch(this, function(results) {
-						this._wizardStandby.resolve();
-						this._wizardStandby = new Deferred();
-
-						var properties = lang.getObject('properties.result', false, results);
-						var template = lang.getObject('template.result', false, results) || null;
-						if (template && template.length > 0) {
-							template = template[0];
-						} else {
-							template = null;
-						}
-						var wizard = new WizardClass({
-							style: 'width: 630px; height:310px;',
-							umcpCommand: this.umcpCommand,
-							detailPage: this._detailPage,
-							template: template,
-							properties: properties
-						});
-						wizard.on('Cancel', lang.hitch(this, function() {
-							topic.publish('/umc/actions', 'udm', this.moduleFlavor, 'create-wizard', 'cancel');
-							this._createObjectWizard.hide().then(lang.hitch(this, function() {
-								this._detailPage.onCloseTab();
-							}));
-						}));
-						var gotoDetailPage = lang.hitch(this, function(values, submit) {
-							//showProgressBarDeferred.resolve();
-							this._createObjectWizard.hide().then(lang.hitch(this, function() {
-								this.standbyDuring(this._detailPage.loadedDeferred).then(lang.hitch(this, function() {
-									lang.mixin(this._detailPage.templateObject._userChanges, wizard.templateObject._userChanges);
-									tools.forIn(values, lang.hitch(this, function(key, val) {
-										this._detailPage._form.getWidget(key).set('value', val);
-									}));
-									wizard.setCustomValues(values, this._detailPage._form);
-									this.selectChild(this._detailPage);
-									if (submit) {
-										this._detailPage._form.ready().then(lang.hitch(this, function() {
-											this._detailPage.validateChanges();
-										}));
-									}
-								}));
-							}));
-						});
-						wizard.on('Advanced', lang.hitch(this, function(values) {
-							topic.publish('/umc/actions', 'udm', this.moduleFlavor, 'create-wizard', 'advance');
-							gotoDetailPage(values, false);
-						}));
-						wizard.on('Finished', lang.hitch(this, function(values) {
-							gotoDetailPage(values, true);
-						}));
-						this._createObjectWizard = new Dialog({
-							title: _('Add a new %s', this.objectNameSingular),
-							content: wizard,
-							autofocus: false // interferes with wizard.autoFocus
-						});
-						this.own(this._createObjectWizard);
-						this._createObjectWizard.show();
-						this._createObjectWizard.on('hide', lang.hitch(this, function() {
-							this._createObjectWizard.destroyRecursive();
-							this._createObjectWizard = null;
-						}));
-					}));
-				}),
-				lang.hitch(this, function() {
-					this._wizardStandby.resolve();
-					this._wizardStandby = new Deferred();
-					this.selectChild(this._detailPage);
-				})
-			);
+			if (this._newObjectDialog) {
+				var getFromDetailPage = {
+					properties: this._detailPage.propertyQuery,
+					template: this._detailPage.templateQuery
+				};
+				all(getFromDetailPage).then(lang.hitch(this, function(results) {
+					var properties = results.properties;
+					var template = results.template && results.template.result;
+					if (template && template.length > 0) {
+						template = template[0];
+					} else {
+						template = null;
+					}
+					this._newObjectDialog.setDetails(this._detailPage, template, properties);
+				}));
+			} else {
+				this.selectChild(this._detailPage);
+			}
 		},
 
 		closeDetailPage: function() {

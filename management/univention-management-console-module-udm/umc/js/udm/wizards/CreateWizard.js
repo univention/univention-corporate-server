@@ -53,6 +53,19 @@ define([
 			return widgets;
 		},
 
+		objectName: function() {
+			var name = this.objectTypeName;
+			var idx = name.indexOf(':');
+			if (idx > -1) {
+				// "Computers: Linux" -> "Linux"
+				name = name.slice(idx + 2);
+			}
+			if (this._identifyingValue) {
+				name = name + ' "' + this._identifyingValue + '"';
+			}
+			return name;
+		},
+
 		buildWidget: function(widgetName, originalWidgetDefinition) {
 			if (originalWidgetDefinition.multivalue) {
 				this._multiValuesWidgets.push(widgetName);
@@ -86,6 +99,7 @@ define([
 			this._mayFinishDeferred = this.detailPage.loadedDeferred;
 			this._detailButtons = this.detailPage.getButtonDefinitions();
 			this._multiValuesWidgets = [];
+			this._identifyingAttribute = null;
 			var pages = [];
 			this._connectWidgets = [];
 			array.forEach(this.widgetPages, lang.hitch(this, function(page) {
@@ -95,6 +109,9 @@ define([
 				var pageWidgets = this._getPageWidgets(layout);
 				array.forEach(pageWidgets, lang.hitch(this, function(widgetName) {
 					var originalWidgetDefinition = array.filter(this.properties, function(prop) { return prop.id == widgetName; })[0];
+					if (originalWidgetDefinition.identifies) {
+						this._identifyingAttribute = widgetName;
+					}
 					widgets.push(this.buildWidget(widgetName, originalWidgetDefinition));
 					this._connectWidgets.push({page: pageName, widget: widgetName});
 				}));
@@ -130,7 +147,7 @@ define([
 			this.own(this.templateObject);
 		},
 
-		getFooterButtons: function() {
+		getFooterButtons: function(pageName) {
 			var buttons = this.inherited(arguments);
 			array.forEach(buttons, lang.hitch(this, function(button) {
 				if (button.name === 'finish') {
@@ -142,6 +159,16 @@ define([
 					});
 				}
 			}));
+			if (pageName == 'page0' && this.firstPageAvailable) {
+				buttons.unshift({
+					name: 'back_to_first_page',
+					label: _('Back'),
+					align: 'right',
+					callback: lang.hitch(this, function() {
+						this.onBackToFirstPage();
+					})
+				});
+			}
 			buttons.unshift({
 				name: 'advance',
 				label: _('Advanced'),
@@ -153,8 +180,17 @@ define([
 			return buttons;
 		},
 
+		_finish: function() {
+			var values = this.getValues();
+			this._identifyingValue = values[this._identifyingAttribute];
+			return this.inherited(arguments);
+		},
+
 		canFinish: function() {
 			return this.inherited(arguments) && this._mayFinishDeferred.isResolved();
+		},
+
+		onBackToFirstPage: function() {
 		},
 
 		onAdvanced: function() {

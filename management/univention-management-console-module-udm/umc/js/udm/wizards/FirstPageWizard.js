@@ -30,53 +30,23 @@
 
 define([
 	"dojo/_base/declare",
-	"umc/modules/udm/wizards/CreateWizard",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"umc/tools",
+	"umc/widgets/Wizard",
 	"umc/i18n!umc/modules/udm"
-], function(declare, CreateWizard, _) {
+], function(declare, lang, array, tools, Wizard, _) {
 
-	return declare("umc.modules.udm.wizards.users.user", [ CreateWizard ], {
-		widgetPages: [
-			{ // page one
-				title: _('User information'),
-				widgets: [
-					['title', 'firstname', 'lastname'], // row one
-					['username'], // row two
-					['mailPrimaryAddress'] // row three
-				]
-			}, { // page two
-				title: _('Password'),
-				widgets: [
-					['password'],
-					['pwdChangeNextLogin', 'overridePWLength'],
-					['disabled']
-				]
-			}
-		],
-
-		buildWidget: function(widgetName, originalWidgetDefinition) {
-			if (widgetName == 'disabled') {
-				return {
-					name: widgetName,
-					sizeClass: 'One',
-					label: _('Account disabled'),
-					required: false,
-					type: 'CheckBox'
-				};
-			} else {
-				return this.inherited(arguments);
-			}
-		},
-
-		getValues: function() {
-			var values = this.inherited(arguments);
-			var disabled = values.disabled;
-			delete values.disabled;
-			if (disabled) {
-				values.disabled = 'all';
-			}
-			return values;
+	return declare("umc.modules.udm.wizards.FirstPageWizard", [ Wizard ], {
+		getFooterButtons: function() {
+			var buttons = this.inherited(arguments);
+			array.forEach(buttons, lang.hitch(this, function(button) {
+				if (button.name === 'finish') {
+					button.label = _('Next');
+				}
+			}));
+			return buttons;
 		}
-
 	});
 });
 
