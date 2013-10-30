@@ -57,6 +57,7 @@ define([
 
 		constructor: function(params) {
 			lang.mixin(this, params);
+			this._groupedTransactions = [];
 		},
 
 		getIdentity: function(object) {
@@ -221,7 +222,7 @@ define([
 		//		Internal variable that tells user whether we are performing an transaction.
 		_doingTransaction: false,
 
-		_groupedTransactions: [],
+		_groupedTransactions: null,
 
 		_addTransactions: function(type, params) {
 			var lastGroupType = (0 === this._groupedTransactions.length ?
