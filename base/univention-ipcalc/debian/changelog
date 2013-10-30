@@ -1,3 +1,9 @@
+univention-ipcalc (5.0.0-3) unstable; urgency=low
+
+  * Add missing Depends: python-ipaddr (Bug #32931)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 30 Oct 2013 17:09:22 +0100
+
 univention-ipcalc (5.0.0-2) unstable; urgency=low
 
   * Add missing Build-Depends: python-ipaddr (Bug #32931)

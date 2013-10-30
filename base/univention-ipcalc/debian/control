@@ -5,11 +5,12 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.2
 Build-Depends: debhelper,
  ucslint-univention,
- python-ipaddr
+ python-ipaddr,
 
 Package: univention-ipcalc
 Architecture: all
-Depends: python2.6
+Depends: python-ipaddr,
+ ${python:Depends}
 Description: UCS - ipcalc tool for network
  This package contain the ipcalc tool.
  .
