@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.137-1) unstable; urgency=low
+
+  * Bug #32978: allow MixedInput::dynamicValues to be a function
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 30 Oct 2013 12:47:02 +0100
+
 univention-management-console-frontend (3.0.136-1) unstable; urgency=low
 
   * Bug #32820: adjust <noscript> message

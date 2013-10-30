@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/Deferred",
+	"dojo/when",
 	"dojo/json",
 	"dijit/layout/ContentPane",
 	"umc/tools",
@@ -39,7 +40,7 @@ define([
 	"umc/widgets/TextBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/CheckBox"
-], function(declare, lang, Deferred, json, ContentPane, tools, _FormWidgetMixin) {
+], function(declare, lang, Deferred, when, json, ContentPane, tools, _FormWidgetMixin) {
 	return declare("umc.widgets.MixedInput", [ ContentPane, _FormWidgetMixin ], {
 		// umcpCommand:
 		//		Reference to the umcpCommand the widget should use.
@@ -156,9 +157,9 @@ define([
 			}
 
 			// get new values from the server and create a new form widget dynamically
-			this.umcpCommand(this.dynamicValues, params).then(lang.hitch(this, function(data) {
-				this._setValues(data.result);
-			}));
+			var func = tools.stringOrFunction(this.dynamicValues, this.umcpCommand);
+			var deferredOrValues = func(params);
+			when(deferredOrValues, lang.hitch(this, '_setValues'));
 		},
 
 		_setValues: function(values) {
