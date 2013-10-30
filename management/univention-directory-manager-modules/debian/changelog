@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.74-1) unstable; urgency=low
+
+  * additional minor change to exended attribute descriptions (Bug #29629)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 30 Oct 2013 14:48:56 +0100
+
 univention-directory-manager-modules (9.0.73-1) unstable; urgency=low
 
   * fixed a traceback which could occur when opening an object connected with

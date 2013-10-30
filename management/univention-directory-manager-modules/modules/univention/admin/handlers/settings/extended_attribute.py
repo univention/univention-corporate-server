@@ -388,7 +388,7 @@ layout = [
 		["options"],
 		["hook"],
 	]),
-	Tab(_('LDAP mapping'), _('LDAP object class and attribute'), layout=[
+	Tab(_('LDAP mapping'), _('Configuration of LDAP object class and LDAP attribute'), layout=[
 		["objectClass", "ldapMapping"],
 		["deleteObjectClass"],
 	]),

@@ -592,8 +592,8 @@ msgid "LDAP mapping"
 msgstr "LDAP-Abbildung"
 
 #: extended_attribute.py:391
-msgid "LDAP object class and attribute"
-msgstr "LDAP-Objektklasse und Attribut"
+msgid "Configuration of LDAP object class and LDAP attribute"
+msgstr "Konfiguration der LDAP-Objektklasse und des LDAP-Attributs"
 
 #: extended_attribute.py:395
 msgid "UMC"
