@@ -1,3 +1,12 @@
+univention-directory-manager-modules (9.0.73-1) unstable; urgency=low
+
+  * fixed a traceback which could occur when opening an object connected with
+    an extended attribute
+  * some more change to the descriptions/layout of extended attributes
+  (Bug #28629)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 30 Oct 2013 14:26:44 +0100
+
 univention-directory-manager-modules (9.0.72-5) unstable; urgency=low
 
   * workaround for delayed pysupport call during update (Bug #32409)

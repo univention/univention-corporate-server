@@ -316,7 +316,7 @@ property_descriptions={
 			identifies=0
 		),
 	'module': univention.admin.property(
-			short_description=_( 'Needed module' ),
+			short_description=_( 'Modules to be extended' ),
 			long_description=_('Modules this extended attribute is added to, e.g. "users/user" or "computers/windows"'),
 			syntax = univention.admin.syntax.univentionAdminModules,
 			multivalue = True,
@@ -383,17 +383,20 @@ layout = [
 			["translationLongDescription"]
 		]),
 	]),
-	Tab(_('Module'), _('Settings of the modules to be extended'), layout=[
+	Tab(_('Module'), _('Configuration of the modules to be extended'), layout=[
 		["module"],
 		["options"],
 		["hook"],
 	]),
-	Tab(_('LDAP mapping'), _('Configuration of the LDAP settings used to store the extended attribute'), layout=[
+	Tab(_('LDAP mapping'), _('LDAP object class and attribute'), layout=[
 		["objectClass", "ldapMapping"],
 		["deleteObjectClass"],
 	]),
 	Tab(_('UMC'),_('Settings for UMC'), layout=[
-		["disableUDMWeb", "doNotSearch"],
+		Group(_('General'), layout=[
+			"disableUDMWeb",
+			"doNotSearch"
+		]),
 		Group(_('Attribute layout'), layout=[
 			["tabPosition", "overwritePosition"],
 			["fullWidth"],

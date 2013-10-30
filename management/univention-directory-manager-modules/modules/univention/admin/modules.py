@@ -596,7 +596,7 @@ def update_extended_attributes(lo, module, position):
 					if not ea_layout.groupName:
 						replaced, layout = currentTab.replace( ea_layout.overwrite, ea_layout.name, recursive = True )
 						if not replaced: # the property was not found so we'll append it
-							currentTab.layout.append( ea_layout.label )
+							currentTab.layout.append( ea_layout.name )
 					else:
 						for item in currentTab.layout:
 							if isinstance( item, ILayoutElement ) and item.label == ea_layout.groupName:

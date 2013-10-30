@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-23 16:15+0200\n"
+"POT-Creation-Date: 2013-10-30 13:14+0100\n"
 "PO-Revision-Date: 2011-12-01 09:47+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -53,16 +53,17 @@ msgid "Name"
 msgstr "Name"
 
 #: cn.py:65 default.py:144 default.py:145 directory.py:179 directory.py:180
-#: extended_attribute.py:373 extended_options.py:152 extended_options.py:153
-#: ldapacl.py:152 ldapacl.py:153 ldapschema.py:132 ldapschema.py:133
-#: license.py:292 lock.py:78 lock.py:79 packages.py:79 packages.py:80
-#: printermodel.py:82 printermodel.py:83 printeruri.py:80 printeruri.py:81
-#: prohibited_username.py:79 prohibited_username.py:80 sambaconfig.py:183
-#: sambaconfig.py:184 sambadomain.py:230 sambadomain.py:231 service.py:65
-#: service.py:66 syntax.py:160 syntax.py:161 udm_hook.py:152 udm_hook.py:153
-#: udm_module.py:181 udm_module.py:182 udm_syntax.py:152 udm_syntax.py:153
-#: umc_operationset.py:104 umc_operationset.py:105 usertemplate.py:352
-#: usertemplate.py:353 xconfig_choices.py:169 xconfig_choices.py:170
+#: extended_attribute.py:373 extended_attribute.py:396 extended_options.py:152
+#: extended_options.py:153 ldapacl.py:152 ldapacl.py:153 ldapschema.py:132
+#: ldapschema.py:133 license.py:292 lock.py:78 lock.py:79 packages.py:79
+#: packages.py:80 printermodel.py:82 printermodel.py:83 printeruri.py:80
+#: printeruri.py:81 prohibited_username.py:79 prohibited_username.py:80
+#: sambaconfig.py:183 sambaconfig.py:184 sambadomain.py:230 sambadomain.py:231
+#: service.py:65 service.py:66 syntax.py:160 syntax.py:161 udm_hook.py:152
+#: udm_hook.py:153 udm_module.py:181 udm_module.py:182 udm_syntax.py:152
+#: udm_syntax.py:153 umc_operationset.py:104 umc_operationset.py:105
+#: usertemplate.py:352 usertemplate.py:353 xconfig_choices.py:169
+#: xconfig_choices.py:170
 msgid "General"
 msgstr "Allgemein"
 
@@ -272,7 +273,7 @@ msgstr "Übersetzung des Gruppennamens in andere Sprachen"
 
 #: extended_attribute.py:127
 msgid "Syntax class"
-msgstr "Syntax-Name"
+msgstr "Syntax-Klasse"
 
 #: extended_attribute.py:128
 msgid ""
@@ -437,8 +438,8 @@ msgstr ""
 "konfiguriert, wird dessen Eingabefeld von diesem erweiterten Attribut "
 "überschrieben. Der UDM-Attributname kann nur durch eine Suche unterhalb des "
 "Verzeichnisses /usr/share/pyshared/univention/admin/handlers/ ermittelt "
-"werden. Es handelt sich dabei um den Namen, der in den Deklarationen "
-"vonunivention.admin.property-Objekten vor dem Doppelpunkt steht, z.B. "
+"werden. Es handelt sich dabei um den Namen, der in den Deklarationen von "
+"univention.admin.property-Objekten vor dem Doppelpunkt steht, z.B. "
 "roomNumber für die Raumnummer eines Benutzers"
 
 #: extended_attribute.py:248
@@ -520,9 +521,9 @@ msgstr ""
 "Entferne die LDAP-Klasse (wenn möglich) wenn dieses erweitere Attribut leer "
 "gesetzt wird"
 
-#: extended_attribute.py:319 extended_options.py:130
-msgid "Needed module"
-msgstr "Benötigtes Modul"
+#: extended_attribute.py:319
+msgid "Modules to be extended"
+msgstr "Zu erweiternde Module"
 
 #: extended_attribute.py:320
 msgid ""
@@ -566,9 +567,9 @@ msgstr "Von der UMC-Suche ausschließen"
 
 #: extended_attribute.py:362
 msgid ""
-"Values of this extended attribute are not available for searching "
-"in the UMC"
-msgstr "Nach Werten dieses erweiterten Attributs kann nicht in der UMC gesucht werden"
+"Values of this extended attribute are not available for searching in the UMC"
+msgstr ""
+"Nach Werten dieses erweiterten Attributs kann nicht in der UMC gesucht werden"
 
 #: extended_attribute.py:373
 msgid "General settings"
@@ -583,18 +584,16 @@ msgid "Module"
 msgstr "Modul"
 
 #: extended_attribute.py:386
-msgid "Settings of the modules to be extended"
-msgstr "Einstellungen der zu erweiternden Module"
+msgid "Configuration of the modules to be extended"
+msgstr "Konfiguration der zu erweiternden Module"
 
 #: extended_attribute.py:391
 msgid "LDAP mapping"
 msgstr "LDAP-Abbildung"
 
 #: extended_attribute.py:391
-msgid "Configuration of the LDAP settings used to store the extended attribute"
-msgstr ""
-"Konfiguration der zur Speicherung des erweiterten Attributs verwendeten LDAP-"
-"Einstellungen"
+msgid "LDAP object class and attribute"
+msgstr "LDAP-Objektklasse und Attribut"
 
 #: extended_attribute.py:395
 msgid "UMC"
@@ -604,23 +603,23 @@ msgstr "UMC"
 msgid "Settings for UMC"
 msgstr "UMC-spezifische Einstellungen"
 
-#: extended_attribute.py:397
+#: extended_attribute.py:400
 msgid "Attribute layout"
 msgstr "Attributdarstellung"
 
-#: extended_attribute.py:401
+#: extended_attribute.py:404
 msgid "Tab layout"
 msgstr "Karteikartendarstellung"
 
-#: extended_attribute.py:406
+#: extended_attribute.py:409
 msgid "Group layout"
 msgstr "Gruppendarstellung"
 
-#: extended_attribute.py:412
+#: extended_attribute.py:415
 msgid "Data type"
 msgstr "Datentyp"
 
-#: extended_attribute.py:412
+#: extended_attribute.py:415
 msgid "Data type definition"
 msgstr "Datentyp-Definition"
 
@@ -681,6 +680,10 @@ msgstr "Editierbar"
 #: extended_options.py:121
 msgid "Option may be repeatedly turned on and off."
 msgstr "Die Option kann wiederholt gesetzt und entfernt werden."
+
+#: extended_options.py:130
+msgid "Needed module"
+msgstr "Benötigtes Modul"
 
 #: extended_options.py:131
 msgid "List of modules this option applies to."
@@ -1557,6 +1560,12 @@ msgstr "Bildschirm Grösse (mm)"
 #: xconfig_choices.py:169
 msgid "X Configuration Choices"
 msgstr "X Konfiguration Auswahl"
+
+#~ msgid ""
+#~ "Configuration of the LDAP settings used to store the extended attribute"
+#~ msgstr ""
+#~ "Konfiguration der zur Speicherung des erweiterten Attributs verwendeten "
+#~ "LDAP-Einstellungen"
 
 #~ msgid "Translations of the label text for other languages"
 #~ msgstr "Übersetzungen des Labeltextes in andere Sprachen"
