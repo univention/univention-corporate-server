@@ -1178,7 +1178,8 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			A bug in the CLI version of the UDM has been fixed
+			The properties of the superordinate module are now ignored in the UDM modules while creating or 
+			modifying UDM objects on the command line
 			(<ulink url="&ucsbug;32671">Bug 32671</ulink>).
 		</simpara></listitem>
 
@@ -1765,8 +1766,8 @@
 	  </simpara></listitem>
 
 		<listitem><simpara>
-			The function <function>ucs_isServiceUnused</function> now always searches on the 
-			DC master system and can authenticate to the LDAP with the join credentials
+			The function <function>ucs_isServiceUnused</function> now always searches in the LDAP
+		 	directory of the DC master and uses proper LDAP bind credentials
 			(<ulink url="&ucsbug;32578">Bug 32578</ulink>).
 		</simpara></listitem>
 
