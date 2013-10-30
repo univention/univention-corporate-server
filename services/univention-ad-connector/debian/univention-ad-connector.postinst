@@ -38,6 +38,11 @@ create_logfile /var/log/univention/connector-status.log "root:adm" 640
 
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.0-1; then
 	univention-config-registry set connector/ad/mapping/group/grouptype?false
+
+	# remove eventually created private keys
+	for file_ in "/var/www/univention-ad-connector/cert.pem" "/var/www/univention-ad-connector/private.key"; do
+		[ -e "$file_" ] && /bin/rm -f "$file_"
+	done
 fi
 
 univention-config-registry set connector/ad/listener/dir?/var/lib/univention-connector/ad \
@@ -77,7 +82,7 @@ call_joinscript 81univention-ad-connector.inst
 
 #DEBHELPER#
 
-dpkg-statoverride --update --add root www-data 0750 /var/www/univention-ad-connector
+dpkg-statoverride --force --update --add root www-data 0750 /var/www/univention-ad-connector
 dpkg-statoverride --update --add root www-data 0750 /var/www/univention-ad-connector/.htaccess
 
 if [ -x /etc/init.d/univention-management-console-server ]; then
