@@ -1365,14 +1365,6 @@ define([
 			}));
 			var validatedAndSaved = all([validationDeferred, saveDeferred]);
 			this.standbyDuring(validatedAndSaved);
-			validatedAndSaved.then(
-				lang.hitch(this, function() {
-					this.onSave();
-				}),
-				lang.hitch(this, function() {
-					this.onSaveFailed();
-				})
-			);
 			return validatedAndSaved;
 		},
 

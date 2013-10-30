@@ -38,6 +38,11 @@ define([
 ], function(declare, lang, array, tools, Wizard, _) {
 
 	return declare("umc.modules.udm.wizards.FirstPageWizard", [ Wizard ], {
+		focusFirstWidget: function(pageName) {
+			var buttons = this._pages[pageName]._footerButtons;
+			buttons.finish.focus();
+		},
+
 		getFooterButtons: function() {
 			var buttons = this.inherited(arguments);
 			array.forEach(buttons, lang.hitch(this, function(button) {

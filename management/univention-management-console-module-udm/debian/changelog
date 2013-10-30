@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.77-1) unstable; urgency=low
+
+  * Bug #23214: Fixes for wizards, especially regarding cache and focus
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 31 Oct 2013 00:06:33 +0100
+
 univention-management-console-module-udm (4.0.76-1) unstable; urgency=low
 
   * Bug #32978: integrated cache into wizard

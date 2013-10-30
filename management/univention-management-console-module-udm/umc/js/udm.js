@@ -605,11 +605,12 @@ define([
 				depends: [ 'objectProperty', 'objectType' ]
 			}]);
 			layout[0].push('objectType');
-			layout[0].push('hidden');
 			if (superordinates && superordinates.length) {
 				layout[0].push('objectProperty');
+				layout[0].push('hidden');
 				layout[1].push('objectPropertyValue');
 			} else {
+				layout[0].push('hidden');
 				layout[1].push('objectProperty', 'objectPropertyValue');
 			}
 
@@ -1348,7 +1349,7 @@ define([
 					return;
 				}
 				// for the UDM navigation, only query object types
-				moduleCache.getChildModules(null, this.selectedContainer.id).then(lang.hitch(this, function(result) {
+				moduleCache.getChildModules(null, selectedContainer.id).then(lang.hitch(this, function(result) {
 					firstPageDeferred.resolve({types: result});
 				}));
 			} else {
@@ -1374,11 +1375,14 @@ define([
 
 			// open the dialog
 			firstPageDeferred.then(lang.hitch(this, function(values) {
+				var onHandlerRegistered = new Deferred();
 				this._newObjectDialog = new NewObjectDialog({
 					addNotification: lang.hitch(this, 'addNotification'),
 					umcpCommand: lang.hitch(this, 'umcpCommand'),
 					wizardsDisabled: tools.isTrue(this._wizardsDisabled),
+					mayCreateWizard: onHandlerRegistered,
 					moduleFlavor: this.moduleFlavor,
+					moduleCache: cache.get(this.moduleFlavor),
 					selectedContainer: selectedContainer,
 					selectedSuperordinate: superordinate,
 					defaultObjectType: this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/add/default'] || null,
@@ -1387,7 +1391,8 @@ define([
 					superordinates: values.superordinates || [],
 					templates: values.templates || [],
 					objectNamePlural: this.objectNamePlural,
-					objectNameSingular: this.objectNameSingular
+					objectNameSingular: this.objectNameSingular,
+					autofocus: false // interferes with Wizard.autoFocus
 				});
 				this._newObjectDialog.on('FirstPageFinished', lang.hitch(this, function(options) {
 					this.createDetailPage(options.objectType, undefined, options);
@@ -1401,6 +1406,7 @@ define([
 					this._newObjectDialog.destroyRecursive();
 					this._newObjectDialog = null;
 				}));
+				onHandlerRegistered.resolve();
 				this.standbyDuring(this._newObjectDialog.canContinue);
 				this._newObjectDialog.canContinue.then(
 					lang.hitch(this, function() {
@@ -1414,7 +1420,6 @@ define([
 					lang.hitch(this, function() {
 						// canContinue.rejected! Ask the user
 						this._newObjectDialog.show();
-						wizardDeferred.reject();
 					})
 				);
 			}));

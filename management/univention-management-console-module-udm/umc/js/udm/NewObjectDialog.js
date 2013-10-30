@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/on",
 	"dojo/has",
 	"dojo/topic",
 	"dojo/promise/all",
@@ -45,7 +46,7 @@ define([
 	"umc/modules/udm/wizards/FirstPageWizard",
 	"umc/modules/udm/cache",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, has, topic, all, Deferred, Dialog, StackContainer, ContainerWidget, tools, Text, Form, FirstPageWizard, cache, _) {
+], function(declare, lang, array, on, has, topic, all, Deferred, Dialog, StackContainer, ContainerWidget, tools, Text, Form, FirstPageWizard, cache, _) {
 
 	return declare("umc.modules.udm.NewObjectDialog", [ Dialog ], {
 		// summary:
@@ -101,19 +102,18 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			var moduleCache = cache.get(this.moduleFlavor);
 			if ('navigation' != this.moduleFlavor) {
 				// query the necessary elements to display the add-dialog correctly
 				var superordinate = this.selectedSuperordinate !== undefined ? this.selectedSuperordinate : null;
 				all({
-					types: moduleCache.getChildModules(superordinate, null, true),
-					containers: moduleCache.getContainers().then(function(result) {
+					types: this.moduleCache.getChildModules(superordinate, null, true),
+					containers: this.moduleCache.getContainers().then(function(result) {
 						return array.filter(result, function(icontainer) {
 							return icontainer.id != 'all';
 						});
 					}),
-					superordinates: moduleCache.getSuperordinates(),
-					templates: moduleCache.getTemplates()
+					superordinates: this.moduleCache.getSuperordinates(),
+					templates: this.moduleCache.getTemplates()
 				}).then(lang.hitch(this, function(results) {
 					var types = lang.getObject('types', false, results) || [];
 					var containers = lang.getObject('containers', false, results) || [];
@@ -123,7 +123,7 @@ define([
 				}));
 			} else {
 				// for the UDM navigation, only query object types
-				moduleCache.getChildModules(null, this.selectedContainer.id).then(lang.hitch(this, function(result) {
+				this.moduleCache.getChildModules(null, this.selectedContainer.id, true).then(lang.hitch(this, function(result) {
 					this._renderForm(result);
 				}));
 			}
@@ -177,8 +177,7 @@ define([
 						description: _('The exact %s type.', this.objectNameSingular),
 						umcpCommand: this.umcpCommand,
 						dynamicValues: lang.hitch(this, function(options) {
-							var moduleCache = cache.get(this.moduleFlavor);
-							return moduleCache.getChildModules(options.superordinate);
+							return this.moduleCache.getChildModules(options.superordinate, null, true);
 						}),
 						depends: 'superordinate'
 					});
@@ -239,8 +238,7 @@ define([
 					depends: 'objectType',
 					umcpCommand: this.umcpCommand,
 					dynamicValues: lang.hitch(this, function(options) {
-						var moduleCache = cache.get(this.moduleFlavor);
-						return moduleCache.getTemplates(options.objectType);
+						return this.moduleCache.getTemplates(options.objectType);
 					}),
 					staticValues: [ { id: 'None', label: _('None') } ]
 				}];
@@ -258,6 +256,11 @@ define([
 					layout: layout
 				}]
 			});
+			on.once(this, 'show', function() {
+				if (!this.canContinue.isResolved()) {
+					firstPageWizard.focusFirstWidget('firstPage');
+				}
+			});
 			this._wizardContainer.addChild(firstPageWizard);
 			this._wizardContainer.startup();
 			this._wizardContainer.selectChild(firstPageWizard);
@@ -270,14 +273,20 @@ define([
 			firstPageWizard.on('Finished', lang.hitch(this, function() {
 				var firstPageValues = firstPageWizard.getValues();
 				firstPageValues.objectType = firstPageValues.objectType || this.moduleFlavor;
-				var objectTypeName = this.objectNameSingular;
+				var objectTypeName;
 				array.some(types, function(type) {
 					if (type.id == firstPageValues.objectType) {
 						objectTypeName = type.label;
 						return true;
 					}
 				});
-				this.buildCreateWizard(firstPageWizard, firstPageValues, objectTypeName);
+				if (!objectTypeName) {
+					// cache may return empty label for no sub modules
+					objectTypeName = this.objectNameSingular;
+				}
+				this.mayCreateWizard.then(lang.hitch(this, function() {
+					this.buildCreateWizard(firstPageWizard, firstPageValues, objectTypeName);
+				}));
 			}));
 
 			var form = firstPageWizard._pages['firstPage']._form;

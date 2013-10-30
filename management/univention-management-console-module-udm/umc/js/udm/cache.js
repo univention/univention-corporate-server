@@ -50,7 +50,7 @@ define([
 	};
 
 	var _isPolicy = function(module) {
-		return module.indexOf('policies/') == 0;
+		return module.indexOf('policies/') === 0;
 	};
 
 	var _Cache = declare([], {
@@ -119,6 +119,9 @@ define([
 			}));
 
 			this._set(result, 'childModules', superordinate, container);
+			if (asIdLabelPair) {
+				return result;
+			}
 			return result.then(_idLabelPair2Id);
 		},
 
@@ -129,7 +132,7 @@ define([
 			// ... make sure that the key order is stable
 			var keys = [];
 			tools.forIn(udmOptions, function(ikey, ival) {
-				keys.push(ikey)
+				keys.push(ikey);
 			});
 			keys.sort();
 
