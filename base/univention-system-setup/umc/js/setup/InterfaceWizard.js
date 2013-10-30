@@ -103,7 +103,6 @@ define([
 						name: 'interfaceType',
 						type: ComboBox,
 						label: _('Interface type'),
-						value: device.interfaceType,
 						disabled: !this.creation,
 						sortDynamicValues: false,
 						dynamicValues: lang.hitch(this, function() {
@@ -170,7 +169,6 @@ define([
 						content: ''
 					}, {
 						name: 'name',
-						value: device.name,
 						type: TextBox,
 						validator: function(value) {
 							return (/^[a-z]+[0-9]+(\.[0-9]+)?$/).test(value);
@@ -320,7 +318,6 @@ define([
 					}, {
 						type: MultiInput,
 						name: 'options',
-						value: device.options,
 						subtypes: [{ type: TextBox }]
 					}, {
 						// required for DHCP query
@@ -517,6 +514,17 @@ define([
 			this.inherited(arguments);
 			if (this.device) {
 				this.setValues(this.device);
+			} else {
+				var itype = this.getInterfaceType();
+				var parent_device = this.getWidget('parent_device').get('value');
+
+				this.getWidget('interfaceType').set('value', null);
+				this.getWidget('parent_device').set('value', null);
+
+				this.setValues({
+					interfaceType: itype,
+					parent_device: parent_device
+				});
 			}
 		},
 
@@ -529,6 +537,7 @@ define([
 //				}
 //			}
 
+			// TODO: move into MultiInput.validate: Bug #33016
 			if (array.filter(values.ip6, function(ip6) {
 				return (!ip6[2] && (ip6[0] || ip6[1]));
 			}).length) {

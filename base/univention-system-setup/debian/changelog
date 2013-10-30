@@ -1,3 +1,10 @@
+univention-system-setup (7.0.61-1) unstable; urgency=low
+
+  * Bug #30816: disable network page and implement notification when using
+  	UVMM with special setup
+
+ -- Florian Best <best@univention.de>  Wed, 30 Oct 2013 11:02:36 +0100
+
 univention-system-setup (7.0.60-1) unstable; urgency=low
 
   * Fix dnsedit call (Bug #28670)

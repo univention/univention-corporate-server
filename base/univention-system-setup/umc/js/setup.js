@@ -107,7 +107,14 @@ define([
 			};
 
 			// load some ucr variables
-			var deferred_ucr = tools.ucr(['server/role', 'system/setup/boot/select/role', 'system/setup/boot/pages/whitelist', 'system/setup/boot/pages/blacklist']);
+			var deferred_ucr = tools.ucr([
+				'server/role',
+				'system/setup/boot/select/role',
+				'system/setup/boot/pages/whitelist',
+				'system/setup/boot/pages/blacklist',
+				'umc/modules/setup/network',
+				'version/version'
+			]);
 			// load system setup values (e.g. join status)
 			var deferred_variables = this.umcpCommand('setup/load');
 			// wait for deferred objects to be completed
@@ -139,6 +146,14 @@ define([
 
 			// save current values
 			this._orgValues = lang.clone(values);
+
+			// disable network page, See Bug #33006
+			if (ucr['umc/modules/setup/network'] == '33006') {
+				var version = ucr['version/version'];
+				var link = '<a href="' + _('http://docs.univention.de/computers-%s.html#uvmm', version) + '">"' + _('Setup for UCS Virtual Machine Manager') + '"</a>';
+				this.addWarning(_('Changing network settings is disabled due to specific UVMM settings. See %s for further information.', link));
+				allPages.splice(allPages.indexOf('NetworkPage'), 1);
+			}
 
 			// add the SoftwarePage, SystemRolePage and HelpPage to the list of pages for the wizard mode
 			if (this.wizard_mode) {
