@@ -175,20 +175,7 @@ define([
 		},
 
 		getTemplates: function(module, forceLoad) {
-			module = module || this.superModule;
-			var result = this._get('templates', module);
-			if (result && !forceLoad) {
-				return result;
-			}
-
-			result = tools.umcpCommand('udm/templates/query', {
-				objectType: module
-			}, true, this.superModule).then(function(response) {
-				return response.result;
-			});
-
-			this._set(result, 'templates', module);
-			return result;
+			return this._getInfo('templates', {}, this.superModule, module, forceLoad);
 		},
 
 		_getInfos: function(infoType, modules, objDN, forceLoad) {
