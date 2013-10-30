@@ -544,11 +544,7 @@ define([
 				staticValues: objTypes,
 				dynamicValues: lang.hitch(this, function(options) {
 					var moduleCache = cache.get(this.moduleFlavor);
-					return moduleCache.getChildModules(options.superordinate).then(function(properties) {
-						return array.filter(properties, function(iprop) {
-							return iprop.searchable;
-						});
-					});
+					return moduleCache.getChildModules(options.superordinate);
 				}),
 				umcpCommand: umcpCmd,
 				depends: objTypeDependencies,
@@ -858,13 +854,13 @@ define([
 				var superordinatesDeferred = cache.get(this.moduleFlavor).getSuperordinates(null, true);
 				superordinatesDeferred.then(lang.hitch(this, function(data) {
 					var currentVals = array.map(widget.get('staticValues'), function(i) { return i.id; });
-					var newVals = array.map(data.result, function(i) { return i.id; });
+					var newVals = array.map(data, function(i) { return i.id; });
 					if (!tools.isEqual(currentVals, newVals)) {
 						var curVal = widget.get('value');
 						if (newVals.indexOf(curVal) !== -1) {
 							widget.setInitialValue(curVal);
 						}
-						widget.set('staticValues', data.result);
+						widget.set('staticValues', data);
 					}
 				}));
 			}
@@ -1239,13 +1235,18 @@ define([
 				// enable standby animation
 				this.standby(true);
 
-				// reset cache if extended attribute is being removed
+				// reset cache if extended attribute or user template is being removed
 				var isExtendedAttribute = array.some(objects, function(iobj) {
 					return iobj.objectType == 'settings/extended_attribute';
 				});
 				if (isExtendedAttribute) {
-					// reset cache as layout and property information may have changed
 					cache.reset();
+				}
+				var isUserTemplate = array.some(objects, function(iobj) {
+					return iobj.objectType == 'settings/usertemplate';
+				});
+				if (isUserTemplate) {
+					cache.reset('users/user');
 				}
 
 				// set the options
