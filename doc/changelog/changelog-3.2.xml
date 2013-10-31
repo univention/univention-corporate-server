@@ -605,7 +605,12 @@
 	<title>Univention Management Console web interface</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The UMC overview page has been redesigned along with a search for modules
+		  The design of UCS start site and the UMC header have been revised
+		  (<ulink url="&ucsbug;31700">Bug 31700</ulink>, <ulink url="&ucsbug;32610">Bug 32610</ulink>, <ulink url="&ucsbug;33026">Bug 33026</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The UMC overview page has been redesigned, and a search for modules has been added
 		  (Bugs <ulink url="&ucsbug;31699">31699</ulink>, <ulink url="&ucsbug;32022">32022</ulink>, <ulink url="&ucsbug;32023">32023</ulink>, <ulink url="&ucsbug;32048">32048</ulink>).
 		</simpara></listitem>
 
@@ -1250,11 +1255,6 @@
 			Only UDM properties that are part of the layout are transmitted to the UMC frontend now.
 			Invisible property widgets led to problems loading the detail page of UDM objects
 		  (<ulink url="&ucsbug;32877">Bug 32877</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			The design of the UMC header has been revised along with the design of the UCS start site
-		  (<ulink url="&ucsbug;32610">Bug 32610</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
