@@ -34,7 +34,6 @@ define([
 	"dojo/_base/array",
 	"dojo/on",
 	"dojo/Deferred",
-	"dojo/when",
 	"dojo/promise/all",
 	"dojo/dom-style",
 	"dojo/dom-construct",
@@ -63,7 +62,7 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/widgets"
-], function(declare, lang, array, on, Deferred, when, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
+], function(declare, lang, array, on, Deferred, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
 
 	var _StandbyPage = declare([Page, StandbyMixin], {});
 
@@ -149,8 +148,6 @@ define([
 		// the widget of the options if available
 		_optionsWidget: null,
 
-		ldapBase: null,
-
 		_multiEdit: false,
 
 		_bundledCommands: null,
@@ -185,12 +182,6 @@ define([
 			// for the detail page, we first need to query property data from the server
 			// for the layout of the selected object type, then we can render the page
 			var objectDN = this._multiEdit || this.moduleFlavor == 'users/self' ? null : this.ldapName || null;
-			var params = {
-				objectType: this.objectType,
-				// when editing multiple items, get the properties as for a new object
-				objectDN: objectDN
-			};
-
 			// prepare parallel queries
 			var moduleCache = cache.get(this.moduleFlavor);
 			this.propertyQuery = moduleCache.getProperties(this.objectType, objectDN);
@@ -200,7 +191,7 @@ define([
 			};
 			if (!this._multiEdit) {
 				// query policies for normal edit
-				commands.policies = moduleCache.getPolicies(this.objectType)
+				commands.policies = moduleCache.getPolicies(this.objectType);
 			} else {
 				// for multi-edit, mimic an empty list of policies
 				commands.policies = new Deferred();
@@ -621,7 +612,7 @@ define([
 			formBuiltDeferred.then(lang.hitch(this, function() {
 				var widgets = this._form.widgets;
 				if (!('$options$' in widgets) || this._multiEdit) {
-					return
+					return;
 				}
 
 				// connect to onChange for the options property if it exists
@@ -800,7 +791,7 @@ define([
 			return all([loadedDeferred, formBuiltDeferred]);
 		},
 
-		buildTemplate: function(template, properties, widgets) {
+		buildTemplate: function(_template, properties, widgets) {
 			if (this.ldapName || this._multiEdit) {
 				return;
 			}
@@ -819,12 +810,12 @@ define([
 			});
 
 			// mixin the values set in the template object (if given)
-			if (template) {
-				tools.forIn(template, lang.hitch(this, function(key, value) {
+			if (_template) {
+				tools.forIn(_template, lang.hitch(this, function(key, value) {
 					// $dn$, $options$, etc of the template
 					// should not be values for the object
 					if ((/^\$.*\$$/).test(key)) {
-						delete template[key];
+						delete _template[key];
 					}
 					if ((/^_.+$/).test(key)) {
 						var specialWidget = this[key + 'Widget'];
@@ -838,10 +829,10 @@ define([
 						if (specialWidget) {
 							specialWidget.set('value', specialValue);
 						}
-						delete template[key];
+						delete _template[key];
 					}
 				}));
-				template = lang.mixin(template, template);
+				template = lang.mixin(template, _template);
 			}
 
 			// create a new template object that takes care of updating the elements in the form

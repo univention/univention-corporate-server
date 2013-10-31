@@ -26,27 +26,22 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define require*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/on",
-	"dojo/has",
 	"dojo/topic",
 	"dojo/promise/all",
 	"dojo/Deferred",
 	"dijit/Dialog",
 	"dijit/layout/StackContainer",
-	"umc/widgets/ContainerWidget",
 	"umc/tools",
-	"umc/widgets/Text",
-	"umc/widgets/Form",
 	"umc/modules/udm/wizards/FirstPageWizard",
-	"umc/modules/udm/cache",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, on, has, topic, all, Deferred, Dialog, StackContainer, ContainerWidget, tools, Text, Form, FirstPageWizard, cache, _) {
+], function(declare, lang, array, on, topic, all, Deferred, Dialog, StackContainer, tools, FirstPageWizard, _) {
 
 	return declare("umc.modules.udm.NewObjectDialog", [ Dialog ], {
 		// summary:
@@ -79,9 +74,6 @@ define([
 		// LDAP object type name in singular and plural
 		objectNameSingular: '',
 		objectNamePlural: '',
-
-		// internal reference to the dialog's form
-		_form: null,
 
 		// force max-width
 		//style: 'max-width: 300px;',
@@ -289,7 +281,7 @@ define([
 				}));
 			}));
 
-			var form = firstPageWizard._pages['firstPage']._form;
+			var form = firstPageWizard._pages.firstPage._form;
 			form.ready().then(lang.hitch(this, function() {
 				var formNecessary = false;
 				tools.forIn(form._widgets, function(iname, iwidget) {
@@ -370,7 +362,7 @@ define([
 														// new createWizard added, now we can remove this one
 														this._wizardContainer.removeChild(createWizard);
 														createWizard.destroyRecursive();
-													}));;
+													}));
 												}),
 												lang.hitch(this, function() {
 													this.onDone();

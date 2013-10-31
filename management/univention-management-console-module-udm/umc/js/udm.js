@@ -1429,8 +1429,6 @@ define([
 		createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String?*/ note) {
 			// summary:
 			//		Creates and views the detail page for editing LDAP objects.
-			var showProgressBarDeferred = new Deferred();
-
 			this._detailPage = new DetailPage({
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				moduleStore: this.moduleStore,
@@ -1441,7 +1439,6 @@ define([
 				newObjectOptions: newObjOptions,
 				moduleWidget: this,
 				isClosable: isClosable,
-				//showProgressBarDeferred: showProgressBarDeferred,
 				note: note || null,
 				objectNamePlural: this.objectNamePlural,
 				objectNameSingular: this.objectNameSingular

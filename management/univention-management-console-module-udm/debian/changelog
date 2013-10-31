@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.78-1) unstable; urgency=low
+
+  * Bug #23214: Remove mailPrimaryAddress, fix templates
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 31 Oct 2013 11:58:33 +0100
+
 univention-management-console-module-udm (4.0.77-1) unstable; urgency=low
 
   * Bug #23214: Fixes for wizards, especially regarding cache and focus

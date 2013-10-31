@@ -101,7 +101,6 @@ define([
 			this._multiValuesWidgets = [];
 			this._identifyingAttribute = null;
 			var pages = [];
-			this._connectWidgets = [];
 			array.forEach(this.widgetPages, lang.hitch(this, function(page) {
 				var layout = page.widgets;
 				var widgets = [];
@@ -113,7 +112,6 @@ define([
 						this._identifyingAttribute = widgetName;
 					}
 					widgets.push(this.buildWidget(widgetName, originalWidgetDefinition));
-					this._connectWidgets.push({page: pageName, widget: widgetName});
 				}));
 				pages.push({
 					name: pageName,

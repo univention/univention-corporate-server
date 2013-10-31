@@ -40,8 +40,9 @@ define([
 				title: _('User information'),
 				widgets: [
 					['title', 'firstname', 'lastname'], // row one
-					['username'], // row two
-					['mailPrimaryAddress'] // row three
+					['username'] // row two
+					// TODO: show mailPrimaryAddress iff there is a mail domain
+					// ['mailPrimaryAddress'] // row three
 				]
 			}, { // page two
 				title: _('Password'),
