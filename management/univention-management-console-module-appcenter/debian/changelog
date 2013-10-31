@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.48-4) unstable; urgency=low
+
+  * only iterate over errata components in postinst (Bug #30904)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 31 Oct 2013 17:51:40 +0100
+
 univention-management-console-module-appcenter (3.0.48-3) unstable; urgency=low
 
   * removed obsolete code (Bug #30904)
