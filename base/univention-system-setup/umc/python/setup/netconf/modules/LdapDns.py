@@ -5,7 +5,7 @@ from univention import ipcalc
 
 class PhaseLdapDns(AddressMap, Ldap, Executable):
 	"""
-	Create reverse DNS zones.
+	Create reverse DNS zones and add pointer records for host.
 	"""
 	priority = 46
 	executable = "/usr/share/univention-directory-manager-tools/univention-dnsedit"
@@ -31,7 +31,7 @@ class PhaseLdapDns(AddressMap, Ldap, Executable):
 				"--ignore-exists",
 				"--reverse", ipcalc.calculate_ipv4_reverse(ipv4),
 				"add", "ptr",
-				ipcalc.calculate_ipv4_network(ipv4),
+				ipcalc.calculate_ipv4_pointer(ipv4),
 				"%(hostname)s.%(domainname)s." % self.changeset.ucr,
 			])
 
@@ -47,12 +47,12 @@ class PhaseLdapDns(AddressMap, Ldap, Executable):
 			] + self._soa())
 			self.call([
 				self.executable,
-				"--bimaggnddn", self.binddn,
+				"--binddn", self.binddn,
 				"--bindpwd", self.bindpwd,
 				"--ignore-exists",
 				"--reverse", ipcalc.calculate_ipv6_reverse(ipv6),
 				"add", "ptr",
-				ipcalc.calculate_ipv6_network(ipv6),
+				ipcalc.calculate_ipv6_pointer(ipv6),
 				"%(hostname)s.%(domainname)s." % self.changeset.ucr,
 			])
 
