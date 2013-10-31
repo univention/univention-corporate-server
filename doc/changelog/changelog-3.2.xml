@@ -2937,6 +2937,14 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		not be executed on DC slaves anymore (<ulink url="&ucsbug;11417">Bug 11417</ulink>).
 	  </simpara></listitem>
 
+	  <listitem><simpara> 
+		<program>ucs-test</program> exited with a traceback if files without hash
+		bang (like <emphasis>.png</emphasis> or <emphasis>.xml</emphasis>) have been found by 
+		<program>ucs-test</program> within the testscript directories. To prevent the traceback, the 
+        existing check for known non-test files has been fixed and the list of known non-test file 
+        suffixes has been updated (<ulink url="&ucsbug;32554">Bug 32554</ulink>).
+	  </simpara></listitem>
+
 	  <listitem><simpara>
 		The &ucsUCRV;s <envar>tests/domainadmin/account</envar>,
 		<envar>tests/domainadmin/pwd</envar> and <envar>tests/domainadmin/pwdfile</envar>
