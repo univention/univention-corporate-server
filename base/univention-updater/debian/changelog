@@ -1,3 +1,10 @@
+univention-updater (9.0.28-1) unstable; urgency=low
+
+  * Pre-upgrade python-univention-directory-manager-uvmm in preup.sh
+    (Bug #24774)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 Oct 2013 15:51:09 +0100
+
 univention-updater (9.0.27-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)
