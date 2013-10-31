@@ -1,3 +1,9 @@
+univention-system-setup (7.0.61-2) unstable; urgency=low
+
+  * Fix several DNS reverse zone issues (Bug #28670)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 31 Oct 2013 11:30:47 +0100
+
 univention-system-setup (7.0.61-1) unstable; urgency=low
 
   * Bug #30816: disable network page and implement notification when using

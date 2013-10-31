@@ -1,4 +1,4 @@
-from univention.management.console.modules.setup.netconf.common import AddressMap, LdapChange
+from univention.management.console.modules.setup.netconf.common import AddressMap, LdapChange, convert_udm_subnet_to_network
 from univention.management.console.modules.setup.netconf.conditions import Executable
 import univention.admin.objects
 import univention.admin.modules as modules
@@ -6,6 +6,7 @@ from univention.admin.uexceptions import base as UniventionBaseException
 from ldap import LDAPError
 from ldap.filter import escape_filter_chars
 import os
+from ipaddr import IPAddress
 
 
 class PhaseLdapSelf(AddressMap, LdapChange, Executable):
@@ -82,6 +83,7 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
 
 	def _update(self, computer):
 		self._update_ips(computer)
+		self._update_reverse_zones(computer)
 		self._update_mac(computer)
 		self.logger.info("Updating '%s' with '%r'...", computer.dn, computer.diff())
 		if not self.changeset.no_act:
@@ -89,6 +91,20 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
 
 	def _update_ips(self, computer):
 		computer.info["ip"] = [str(addr.ip) for addr in self.changeset.new_ipv4s | self.changeset.new_ipv6s]
+
+	def _update_reverse_zones(self, computer):
+		reverse_module = modules.get("dns/reverse_zone")
+		modules.init(self.ldap, self.position, reverse_module)
+		reverse_zones = reverse_module.lookup(None, self.ldap, None)
+		for zone in reverse_zones:
+			zone.open()  # may be unneeded
+
+		computer.info["dnsEntryZoneReverse"] = [
+			[zone.dn, str(addr.ip)]
+			for zone in reverse_zones
+			for addr in self.changeset.new_ipv4s | self.changeset.new_ipv6s
+			if addr.ip in convert_udm_subnet_to_network(zone.info["subnet"])
+		]
 
 	def _update_mac(self, computer):
 		macs = set()

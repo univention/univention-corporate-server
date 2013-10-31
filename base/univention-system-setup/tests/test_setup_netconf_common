@@ -1,0 +1,75 @@
+#!/usr/bin/python2.6
+"""Unit test for univention.management.console.modules.setup.netconf.common"""
+# pylint: disable-msg=C0103,E0611,R0904
+import unittest
+import os
+import univention.management.console.modules
+univention.management.console.modules.__path__.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
+from univention.management.console.modules.setup.netconf.common import convert_udm_subnet_to_network
+from univention.management.console.modules.setup.netconf.common import convert_udm_subnet_to_ipv4_network
+from univention.management.console.modules.setup.netconf.common import convert_udm_subnet_to_ipv6_network
+from ipaddr import IPNetwork, IPv4Network, IPv6Network
+
+
+class TestIpv4Subnet(unittest.TestCase):
+	def _test(self, expected, actual):
+		self.assertEqual(
+			IPv4Network(expected),
+			convert_udm_subnet_to_ipv4_network(actual))
+
+	def test_class_a(self):
+		self._test("10.0.0.0/8", "10")
+
+	def test_class_b(self):
+		self._test("172.16.0.0/16", "172.16")
+
+	def test_class_c(self):
+		self._test("192.168.0.0/24", "192.168.0")
+
+
+class TestIpv6Subnet(unittest.TestCase):
+	def _test(self, expected, actual):
+		self.assertEqual(
+			IPv6Network(expected),
+			convert_udm_subnet_to_ipv6_network(actual))
+
+	def test_prefix_16(self):
+		self._test("1111::/20", "1111:2")
+
+	def test_prefix_32(self):
+		self._test("1111:2222::/32", "1111:2222")
+
+	def test_prefix_48(self):
+		self._test("1111:2222:3333::/48", "1111:2222:3333")
+
+	def test_prefix_64(self):
+		self._test("1111:2222:3333:4444::/64", "1111:2222:3333:4444")
+
+	def test_prefix_80(self):
+		self._test("1111:2222:3333:4444:5555::/80", "1111:2222:3333:4444:5555")
+
+	def test_prefix_96(self):
+		self._test("1111:2222:3333:4444:5555:6666::/96", "1111:2222:3333:4444:5555:6666")
+
+	def test_prefix_112(self):
+		self._test("1111:2222:3333:4444:5555:6666:7777::/112", "1111:2222:3333:4444:5555:6666:7777")
+
+	def test_prefix_116(self):
+		self._test("1111:2222:3333:4444:5555:6666:7777:8/116", "1111:2222:3333:4444:5555:6666:7777:8")
+
+	def test_prefix_120(self):
+		self._test("1111:2222:3333:4444:5555:6666:7777:88/120", "1111:2222:3333:4444:5555:6666:7777:88")
+
+	def test_prefix_124(self):
+		self._test("1111:2222:3333:4444:5555:6666:7777:888/124", "1111:2222:3333:4444:5555:6666:7777:888")
+
+
+class TestGenericSubnet(TestIpv4Subnet, TestIpv6Subnet):
+	def _test(self, expected, actual):
+		self.assertEqual(
+			IPNetwork(expected),
+			convert_udm_subnet_to_network(actual))
+
+
+if __name__ == '__main__':
+	unittest.main()
