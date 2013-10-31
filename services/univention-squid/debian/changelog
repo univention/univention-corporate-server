@@ -1,3 +1,9 @@
+univention-squid (7.0.3-2) unstable; urgency=low
+
+  * removed squid/sslports (Bug #32183) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 31 Oct 2013 10:51:40 +0100
+
 univention-squid (7.0.3-1) unstable; urgency=low
 
   * cleaned up squid.conf (Bug #32183)
