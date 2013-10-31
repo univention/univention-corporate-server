@@ -39,6 +39,7 @@ import univention.admin.uexceptions
 import univention.admin.localization
 try:
 	from univention.lib.ucs import UCS_Version
+	from univention.lib.umc_module import get_mime_type, get_mime_description, image_mime_type_of_buffer
 except ImportError:
 	pass	## workaround for delayed pysupport call during update. Should be removed after UCS 3.2-0
 import base64
@@ -445,7 +446,6 @@ class jpegPhoto( Upload ):
 		except:
 			raise univention.admin.uexceptions.valueError(_('Value must be Base64 encoded jpeg'))
 
-from univention.lib.umc_module import get_mime_type, get_mime_description, image_mime_type_of_buffer
 class Base64Bzip2XML( TextArea ):
 	@classmethod
 	def parse( self, text ):

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.75-3) unstable; urgency=low
+
+  * workaround for delayed pysupport call during update (Bug #32409)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 31 Oct 2013 17:52:54 +0100
+
 univention-directory-manager-modules (9.0.75-2) unstable; urgency=low
 
   * Add versioned dependency on univention-ldap-server to ensure
