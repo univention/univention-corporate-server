@@ -2,7 +2,7 @@
 <umc version="2.0">
 	<module id="ucr" icon="ucr" priority="13" version="1.0">
 		<name>Univention Configuration Registry</name>
-		<description>Managing UCR variables</description>
+		<description>Managing UCR variables of the local system</description>
 		<keywords>ucr,config,registry,univention config registry,configuration</keywords>
 		<categories>
 			<category name="system"/>

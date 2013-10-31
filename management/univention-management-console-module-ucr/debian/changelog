@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (3.0.3-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 31 Oct 2013 13:44:02 +0100
+
 univention-management-console-module-ucr (3.0.2-1) unstable; urgency=low
 
   * Bug #26418: fix memory leak

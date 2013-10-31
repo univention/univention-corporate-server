@@ -1,3 +1,9 @@
+univention-updater (9.0.27-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 31 Oct 2013 13:38:07 +0100
+
 univention-updater (9.0.26-1) unstable; urgency=low
 
   * Bug #30004: adjustements for new notifications

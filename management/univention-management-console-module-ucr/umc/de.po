@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Managing UCR variables"
-msgstr "Verwaltung von UCR-Variablen"
+msgid "Managing UCR variables of the local system"
+msgstr "Verwaltung von UCR-Variablen des lokalen Systems"
 
 msgid "Univention Configuration Registry"
 msgstr "Univention Configuration Registry"

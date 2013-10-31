@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.83-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 31 Oct 2013 13:42:59 +0100
+
 univention-management-console-module-udm (4.0.82-1) unstable; urgency=low
 
   * Bug #32978: added caching for module wizards

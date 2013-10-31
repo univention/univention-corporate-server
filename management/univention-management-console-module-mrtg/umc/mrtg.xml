@@ -2,7 +2,7 @@
 <umc version="2.0">
 	<module id="mrtg" icon="mrtg" priority="16" version="1.0">
 		<name>Statistics</name>
-		<description>Overview of usage statistics for the local system</description>
+		<description>Usage statistics and load of the local system</description>
 		<keywords>system,usage,statistics</keywords>
 		<categories>
 			<category name="system"/>

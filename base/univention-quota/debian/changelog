@@ -1,3 +1,9 @@
+univention-quota (8.0.6-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 31 Oct 2013 13:39:43 +0100
+
 univention-quota (8.0.5-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)

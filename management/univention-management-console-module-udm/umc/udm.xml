@@ -41,7 +41,7 @@
 		</flavor>
 		<flavor icon="udm-printers" priority="6" id="shares/print">
 			<name>Printers</name>
-			<description>Management of printer shares and printer share groups in the domain</description>
+			<description>Management of printers and printer groups in the domain</description>
 			<keywords>printers</keywords>
 		</flavor>
 		<flavor icon="udm-mail" priority="5" id="mail/mail">
