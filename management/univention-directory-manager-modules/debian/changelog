@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.75-1) unstable; urgency=low
+
+  * Add dependency on python-univention-lib (Bug #32409)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 31 Oct 2013 16:08:21 +0100
+
 univention-directory-manager-modules (9.0.74-1) unstable; urgency=low
 
   * additional minor change to exended attribute descriptions (Bug #29629)
