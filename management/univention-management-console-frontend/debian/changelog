@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.141-1) unstable; urgency=low
+
+  * Bug #32389: resize confirm dialog which title panes hide or show
+
+ -- Florian Best <best@univention.de>  Thu, 31 Oct 2013 15:38:07 +0100
+
 univention-management-console-frontend (3.0.140-1) unstable; urgency=low
 
   * Bug #32978: revert changes in _SelectMixin from version 3.0.134-1

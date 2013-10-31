@@ -145,10 +145,12 @@ define([
 					if (tools.inheritsFrom(widget, 'dijit.TitlePane')) {
 						widget._wipeIn.on('End', lang.hitch(this, function() {
 							this._relativePosition = null;
+							this._size();
 							this._position();
 						}));
 						widget._wipeOut.on('End', lang.hitch(this, function() {
 							this._relativePosition = null;
+							this._size();
 							this._position();
 						}));
 					}
