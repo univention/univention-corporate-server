@@ -39,7 +39,7 @@ univention-config-registry set xen/server/relocation?yes \
 # Bug #33006: incompatible with bridge configuration through UMC
 case "$(univention-config-registry get xen/bridge/interface)" in
 none) ;;
-*) univention-config-registry set umc/modules/setup/network=33006 ;;
+*) univention-config-registry set umc/modules/setup/network/disabled/by=xen ;;
 esac
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then

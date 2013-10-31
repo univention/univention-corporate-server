@@ -41,7 +41,7 @@ univention-config-registry set uvmm/kvm/bridge/autostart?yes \
 case "$(univention-config-registry get uvmm/kvm/bridge/autostart)" in
 false|no) ;;
 manually) ;;
-*) univention-config-registry set umc/modules/setup/network=33006 ;;
+*) univention-config-registry set umc/modules/setup/network/disabled/by=kvm ;;
 esac
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]

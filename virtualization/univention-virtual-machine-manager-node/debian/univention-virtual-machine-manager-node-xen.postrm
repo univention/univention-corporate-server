@@ -62,6 +62,7 @@ esac
 
 case "$1" in
     remove)
+    [ "$(ucr get umc/modules/setup/network/disabled/by)" = "kvm" ] && ucr unset umc/modules/setup/network/disabled/by
     . /usr/share/univention-lib/all.sh
     call_unjoinscript 56univention-virtual-machine-manager-node-xen.uinst
     ;;
