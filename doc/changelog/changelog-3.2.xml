@@ -615,6 +615,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The styling of buttons has been revised to improve the distinction between actions and links
+		  (Bug <ulink url="&ucsbug;32218">32218</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  The packages <package>univention-nagios-server</package>, <package>univention-doc</package> and
 		  <package>univention-system-setup</package> have been adapted to the new UMC overview page
 		  (<ulink url="&ucsbug;32611">Bug 32611</ulink>).
