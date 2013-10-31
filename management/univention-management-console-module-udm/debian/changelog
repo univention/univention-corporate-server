@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.84-1) unstable; urgency=low
+
+  * Bug #32978: fixed problems with option handling
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 31 Oct 2013 16:48:32 +0100
+
 univention-management-console-module-udm (4.0.83-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)

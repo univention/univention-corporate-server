@@ -145,9 +145,6 @@ define([
 		// reference to the policies tab
 		_policiesTab: null,
 
-		// the widget of the options if available
-		_optionsWidget: null,
-
 		_multiEdit: false,
 
 		_bundledCommands: null,
@@ -570,14 +567,17 @@ define([
 		},
 
 		_prepareOptions: function(properties, layout, template, formBuiltDeferred) {
+			var isNewObject = !this.ldapName;
+
+			var _getOptionProperty = function(properties) {
+				var result = array.filter(properties, function(item) {
+					return item.id == '$options$';
+				});
+				return result.length ? result[0] : null;
+			}
+
+			var option_prop = _getOptionProperty(properties);
 			var option_values = {};
-			var option_prop = null;
-			array.forEach( properties, function( item ) {
-				if ( item.id == '$options$' ) {
-					option_prop = item;
-					return false;
-				}
-			} );
 			if ( option_prop && option_prop.widgets.length > 0 && !this._multiEdit ) {
 				var optiontab = {
 					label: _( '[Options]' ),
@@ -588,7 +588,6 @@ define([
 
 				var option_widgets = [];
 				var option_layout = [];
-				var create = this.ldapName === undefined;
 				array.forEach( option_prop.widgets, function ( option ) {
 					option = lang.clone(option);
 					// special case: bring options from template into the widget
@@ -596,7 +595,7 @@ define([
 						option.value = template._options.indexOf(option.id) > -1;
 					}
 					option_widgets.push( lang.mixin( {
-						disabled: create ? false : ! option.editable
+						disabled: isNewObject ? false : ! option.editable
 					}, option ) );
 					option_values[ option.id ] = option.value;
 					option_layout.push( option.id );
@@ -610,22 +609,25 @@ define([
 			}
 
 			formBuiltDeferred.then(lang.hitch(this, function() {
-				var widgets = this._form.widgets;
-				if (!('$options$' in widgets) || this._multiEdit) {
+				var hasOptions = '$options$' in this._form.widgets;
+				if (!hasOptions || this._multiEdit || !isNewObject) {
 					return;
 				}
 
-				// connect to onChange for the options property if it exists
-				this._optionsWidget = widgets.$options$;
-				this.own(this._optionsWidget.watch('value', lang.hitch(this, function(attr, oldVal, newVal) {
-					this.onOptionsChanged(newVal);
-				})));
-
 				// set options... required when creating a new object
-				this._optionsWidget.set( 'value', option_values );
+				var optionsWidget = this._form.widgets.$options$;
+				optionsWidget.set( 'value', option_values );
 			}));
 
 			return properties;
+		},
+
+		_registerOptionWatchHandler: function() {
+			// connect to onChange for the options property if it exists
+			var optionsWidget = this._form.widgets.$options$;
+			this.own(optionsWidget.watch('value', lang.hitch(this, function(attr, oldVal, newVal) {
+				this.onOptionsChanged(newVal);
+			})));
 		},
 
 		_autoUpdateTabTitle: function(widgets) {
@@ -778,6 +780,7 @@ define([
 				this._renderPolicyTab(policies);
 				this._renderBorderContainer(widgets);
 				this._disableSubmitButtonUntilReady();
+				this._registerOptionWatchHandler();
 				formBuiltDeferred.resolve();
 				this.templateObject = this.buildTemplate(template, properties, widgets);
 
@@ -820,7 +823,7 @@ define([
 						var specialWidget = this[key + 'Widget'];
 						// TODO: it may be important to solve this generically
 						// by now, only _options will go this path
-						// and _optionsWidget needs a special format
+						// and optionsWidget needs a special format
 						var specialValue = {};
 						array.forEach(value, function(val) {
 							specialValue[val] = true;
@@ -1089,7 +1092,8 @@ define([
 			var activeOptions = [];
 
 			// retrieve active options
-			tools.forIn( this._optionsWidget.get( 'value' ), function( item, value ) {
+			var optionsWidget = this._form.widgets.$options$;
+			tools.forIn( optionsWidget.get( 'value' ), function( item, value ) {
 				if ( value === true ) {
 					activeOptions.push( item );
 				}
