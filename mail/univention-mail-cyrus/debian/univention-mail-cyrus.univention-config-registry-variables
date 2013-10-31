@@ -180,13 +180,13 @@ Categories=service-mail
 
 [mail/cyrus/ssl/cafile]
 Description[de]=Der vollständige Dateiname der Datei mit den Schlüsseln der Stammzertifizierungsstelle (CA). Ist die Variable nicht gesetzt und wird die Cyrus Murder-Erweiterung nicht verwendet, wird /etc/univention/ssl/ucsCA/CAcert.pem verwendet. Alternativ kann auch ein Verzeichnis mit mehreren CAs konfiguriert werden, siehe 'mail/cyrus/ssl/capath'.
-Description[en]=The full path of the file containing the certificates of the certificate authority (CA). If the variable is unset and if the Cyrus Murder extension is in use, /etc/univention/ssl/ucsCA/CAcert.pem is used. Alternatively a directory with several CAs can be configured, see 'mail/cyrus/ssl/capath'.
+Description[en]=The full path of the file containing the certificates of the certificate authority (CA). If the variable is unset and if the Cyrus Murder extension is not in use, /etc/univention/ssl/ucsCA/CAcert.pem is used. Alternatively a directory with several CAs can be configured, see 'mail/cyrus/ssl/capath'.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/ssl/capath]
 Description[de]=Der Pfad zu einem Verzeichnis mit verschiedenen Zertifikatsdateien von Stammzertifizierungsstellen (CAs). Wird die Cyrus-Murder-Erweiterung genutzt und ist die Variable nicht gesetzt, gilt '/etc/univention/ssl/ucsCA/certs/'. Alternativ kann auch eine einzelne CA-Datei konfiguriert werden, siehe 'mail/cyrus/ssl/cafile'.
-Description[en]=The path to a directory containing several certificate files of certificate authorities (CAs). If the Cyrus Murder extension is in use and if the variabl is unset, '/etc/univention/ssl/ucsCA/certs/' applies. Alternatively a single CA file can be configured, see 'mail/cyrus/ssl/cafile'.
+Description[en]=The path to a directory containing several certificate files of certificate authorities (CAs). If the Cyrus Murder extension is in use and if the variable is unset, '/etc/univention/ssl/ucsCA/certs/' applies. Alternatively a single CA file can be configured, see 'mail/cyrus/ssl/cafile'.
 Type=str
 Categories=service-mail
 

@@ -1,3 +1,9 @@
+univention-mail-cyrus (6.0.5-4) unstable; urgency=low
+
+  * fixed UCR variable descriptions (Bug #28123) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 31 Oct 2013 12:16:06 +0100
+
 univention-mail-cyrus (6.0.5-3) unstable; urgency=low
 
   * Bug #30945: Improved UCR variable description for mail/cyrus/folder/predefined_folders
