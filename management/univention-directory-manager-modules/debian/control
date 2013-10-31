@@ -20,7 +20,8 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-smbpasswd,
  shell-univention-lib,
  python-univention-lib (>= 3.0.25-5),
- python-univention-directory-manager-cli (= ${binary:Version})
+ python-univention-directory-manager-cli (= ${binary:Version}),
+ univention-ldap-server (>=10.0.17-4) | univention-server-member | univention-basesystem
 Provides: ${python:Provides}
 Replaces: python-univention-lib (<< 1.0.15-1)
 Description: UCS - Modules for administration tools

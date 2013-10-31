@@ -1,3 +1,12 @@
+univention-directory-manager-modules (9.0.75-2) unstable; urgency=low
+
+  * Add versioned dependency on univention-ldap-server to ensure
+    that the new LDAP schema objectclass used by settings/udmmodule etc.
+    is available at the time umc-module-appcenter calls the module in it's
+    postinst/joinscript (Bug #32409).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 31 Oct 2013 17:47:40 +0100
+
 univention-directory-manager-modules (9.0.75-1) unstable; urgency=low
 
   * Add dependency on python-univention-lib (Bug #32409)
