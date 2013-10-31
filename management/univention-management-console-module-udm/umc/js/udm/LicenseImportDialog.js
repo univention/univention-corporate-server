@@ -80,13 +80,15 @@ define([
 			}, {
 				type : TextArea,
 				name : 'licenseText',
-				label : _('License (as text)'),
-				rows: 5,
-				cols: 25
+				label : _('Import license as text'),
+				rows: 9,
+				cols: 25,
+				style: 'width: 620px'
 			}, {
 				type : Uploader,
 				name : 'licenseUpload',
-				label : _('License (as file upload)'),
+				label : _('Import license file'),
+				buttonLabel: _('Choose file...'),
 				command: 'udm/license/import',
 				onUploaded: lang.hitch(this, function(result) {
 					if (typeof result == "string") {
@@ -104,7 +106,7 @@ define([
 			var buttons = [{
 				type : Button,
 				name : 'btnLicenseText',
-				label : _('Upload'),
+				label : _('Import'),
 				callback: lang.hitch(this, function() {
 					var license = this._widgets.licenseText.get('value');
 					this.standbyDuring(tools.umcpCommand('udm/license/import', { 'license': license }).then(
@@ -120,7 +122,22 @@ define([
 
 		_handleUploaded: function(result) {
 			if (result.success) {
-				dialog.alert(_('The license has been imported successfully'));
+				var btns = [{
+					name: 'relogin',
+					label: _('Logout'),
+					'default': true,
+					callback: function() {
+						tools.closeSession();
+						window.location.reload();
+					}
+				}, {
+					name: 'cancel',
+					label: _('Cancel'),
+					callback: lang.hitch(this, function() {
+						this.hide();
+					})
+				}];
+				dialog.confirm(_('The license has been imported successfully.') + '<br>' + _('Please login again to complete the import process.'), btns);
 			} else {
 				dialog.alert(_('The import of the license has failed: ') + result.message);
 			}

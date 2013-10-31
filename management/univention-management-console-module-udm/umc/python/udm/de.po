@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-10-18 12:31+0200\n"
+"POT-Creation-Date: 2013-10-31 15:41+0100\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,12 @@ msgstr ""
 msgid "%($dn$)s moved"
 msgstr "%($dn$)s verschoben"
 
-#: umc/python/udm/__init__.py:1083
+#: umc/python/udm/__init__.py:1099
 #, python-format
 msgid "An error occurred while sending the request: %s"
 msgstr "Ein Fehler ist während des Anforderns aufgetreten: %s"
 
-#: umc/python/udm/__init__.py:1067
+#: umc/python/udm/__init__.py:1083
 msgid "Cannot parse License from LDAP"
 msgstr "Fehler beim Auslesen der Lizenz aus dem LDAP"
 
@@ -85,11 +85,11 @@ msgstr "Keins"
 msgid "Objects referencing this policy object"
 msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
 
-#: umc/python/udm/__init__.py:509
+#: umc/python/udm/__init__.py:513
 msgid "PDF document"
 msgstr "PDF Dokument"
 
-#: umc/python/udm/__init__.py:773 umc/python/udm/udm_ldap.py:272
+#: umc/python/udm/__init__.py:789 umc/python/udm/udm_ldap.py:272
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
@@ -263,7 +263,7 @@ msgstr ""
 "Sie über eine Lizenz verfügen, wenden Sie sich bitte an Univention oder "
 "Ihren Univention Partner."
 
-#: umc/python/udm/__init__.py:513
+#: umc/python/udm/__init__.py:517
 msgid "text file"
 msgstr "Textdatei"
 
