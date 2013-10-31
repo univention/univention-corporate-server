@@ -37,6 +37,14 @@ class LDAPConnection:
 
 	def connect(self, no_starttls=False):
 		self.ldapdeleteControl = LDAPControl('1.2.840.113556.1.4.417',criticality=1)
+
+		self.serverctrls_for_add_and_modify = []
+		if 'univention_samaccountname_ldap_check' in baseConfig.get('samba4/ldb/sam/module/prepend', '').split():
+			## The S4 connector must bypass this LDB module if it is activated via samba4/ldb/sam/module/prepend
+			## The OID of the 'bypass_samaccountname_ldap_check' control is defined in ldb.h
+			ldb_ctrl_bypass_samaccountname_ldap_check = LDAPControl('1.3.6.1.4.1.10176.1004.0.4.1', criticality=0)
+			self.serverctrls_for_add_and_modify.append( ldb_ctrl_bypass_samaccountname_ldap_check )
+
 		self.timeout = 5
 		use_starttls = 2
 		if no_starttls:
@@ -89,7 +97,7 @@ class LDAPConnection:
 
 	def create(self, dn, attrs):
 		ldif = modlist.addModlist(attrs)
-		self.lo.add_s(s4.compatible_modstring (unicode (dn)),ldif)
+		self.lo.add_ext_s(s4.compatible_modstring (unicode (dn)),ldif, serverctrls=self.serverctrls_for_add_and_modify)
 
 	def delete(self, dn):
 		self.lo.delete_s(s4.compatible_modstring (unicode (dn)))
@@ -108,17 +116,17 @@ class LDAPConnection:
 							 s4.compatible_modstring (unicode (newrdn)))
 
 	def set_attribute(self, dn, key, value):
-		self.lo.modify_s (s4.compatible_modstring (unicode (dn)),
-						  [(ldap.MOD_REPLACE, key, s4.compatible_modstring (unicode (value)))])
+		self.lo.modify_ext_s (s4.compatible_modstring (unicode (dn)),
+						  [(ldap.MOD_REPLACE, key, s4.compatible_modstring (unicode (value)))], serverctrls=self.serverctrls_for_add_and_modify)
 
 	def delete_attribute(self, dn, key):
-		self.lo.modify_s (s4.compatible_modstring (unicode (dn)),
-						  [(ldap.MOD_DELETE, key, None)])
+		self.lo.modify_ext_s (s4.compatible_modstring (unicode (dn)),
+						  [(ldap.MOD_DELETE, key, None)], serverctrls=self.serverctrls_for_add_and_modify)
 
 	def append_to_attribute(self, dn, key, value):
-		self.lo.modify_s (s4.compatible_modstring (unicode (dn)),
-						  [(ldap.MOD_ADD, key, s4.compatible_modstring (unicode (value)))])
+		self.lo.modify_ext_s (s4.compatible_modstring (unicode (dn)),
+						  [(ldap.MOD_ADD, key, s4.compatible_modstring (unicode (value)))], serverctrls=self.serverctrls_for_add_and_modify)
 
 	def remove_from_attribute(self, dn, key, value):
-		self.lo.modify_s (s4.compatible_modstring (unicode (dn)),
-						  [(ldap.MOD_DELETE, key, s4.compatible_modstring (unicode (value)))])
+		self.lo.modify_ext_s (s4.compatible_modstring (unicode (dn)),
+						  [(ldap.MOD_DELETE, key, s4.compatible_modstring (unicode (value)))], serverctrls=self.serverctrls_for_add_and_modify)
