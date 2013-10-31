@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.80-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 31 Oct 2013 12:14:44 +0100
+
 univention-management-console-module-udm (4.0.79-1) unstable; urgency=low
 
   * Bug #23214: Fix newObjectDialog.hide

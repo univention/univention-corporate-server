@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Browsing and managing the LDAP tree of the domain"
-msgstr "Durchsuchen und Verwalten des LDAP-Verzeichisbaums der Domäne"
+msgid "Browsing and managing the LDAP tree"
+msgstr "Durchsuchen und Verwalten des LDAP-Verzeichisbaums"
 
 msgid "Change Password"
 msgstr "Passwort ändern"
@@ -21,20 +21,20 @@ msgstr "Passwort ändern"
 msgid "Computers"
 msgstr "Rechner"
 
-msgid "Management of DHCP in the domain"
-msgstr "Verwaltung von DHCP in der Domäne"
+msgid "Configuration of DHCP settings in the domain"
+msgstr "Konfiguration von DHCP-Einstellungen der Domäne"
 
-msgid "Management of DNS in the domain"
-msgstr "Verwaltung von DNS in der Domäne"
+msgid "Configuration of DNS settings in the domain"
+msgstr "Konfiguration von DNS-Einstellungen der Domäne"
 
 msgid "Management of mail domains and mailing lists"
 msgstr "Verwaltung von Mail-Domänen und Mailing-Listen"
 
-msgid "Management of Nagios in the domain"
-msgstr "Verwaltung von Nagios in der Domäne"
+msgid "Configuration of Nagios settings in the domain"
+msgstr "Konfiguration von Nagios-Einstellungen der Domäne"
 
-msgid "Management of networks in the domain"
-msgstr "Verwaltung von Netzwerken in der Domäne"
+msgid "Configuration of network settings in the domain"
+msgstr "Konfiguration von Netzwerkeinstellungen der Domäne"
 
 msgid "Management of directory shares in the domain"
 msgstr ""

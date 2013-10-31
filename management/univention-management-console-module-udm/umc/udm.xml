@@ -21,17 +21,17 @@
 		</flavor>
 		<flavor icon="udm-networks" priority="10" id="networks/network">
 			<name>Networks</name>
-			<description>Management of networks in the domain</description>
+			<description>Configuration of network settings in the domain</description>
 			<keywords>networks</keywords>
 		</flavor>
 		<flavor icon="udm-dns" priority="9" id="dns/dns">
 			<name>DNS</name>
-			<description>Management of DNS in the domain</description>
+			<description>Configuration of DNS settings in the domain</description>
 			<keywords>dns</keywords>
 		</flavor>
 		<flavor icon="udm-dhcp" priority="8" id="dhcp/dhcp">
 			<name>DHCP</name>
-			<description>Management of DHCP in the domain</description>
+			<description>Configuration of DHCP settings in the domain</description>
 			<keywords>dhcp</keywords>
 		</flavor>
 		<flavor icon="udm-shares" priority="7" id="shares/share">
@@ -51,7 +51,7 @@
 		</flavor>
 		<flavor icon="udm-nagios" priority="4" id="nagios/nagios">
 			<name>Nagios</name>
-			<description>Management of Nagios in the domain</description>
+			<description>Configuration of Nagios settings in the domain</description>
 			<keywords>nagios</keywords>
 		</flavor>
 		<flavor icon="udm-policies" priority="3" id="policies/policy">
@@ -61,7 +61,7 @@
 		</flavor>
 		<flavor icon="udm-navigation" priority="2" id="navigation">
 			<name>LDAP directory</name>
-			<description>Browsing and managing the LDAP tree of the domain</description>
+			<description>Browsing and managing the LDAP tree</description>
 			<keywords>ldap,directory,udm</keywords>
 		</flavor>
 		<flavor icon="udm-self" priority="1" id="users/self">
