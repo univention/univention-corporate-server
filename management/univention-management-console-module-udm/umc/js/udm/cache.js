@@ -49,10 +49,6 @@ define([
 		});
 	};
 
-	var _isPolicy = function(module) {
-		return module.indexOf('policies/') === 0;
-	};
-
 	var _Cache = declare([], {
 		superModule: null,
 		_cache: null,
@@ -77,7 +73,8 @@ define([
 		},
 
 		preloadModuleInformation: function() {
-			if (_isPolicy(this.superModule)) {
+			var isPolicyModule = this.superModule.indexOf('policies/') === 0;
+			if (isPolicyModule) {
 				// preloading layout information cannot be done for policies as
 				// referring objects are rendered into the layout, as well, and
 				// thus the object DN needs to be sent to the server

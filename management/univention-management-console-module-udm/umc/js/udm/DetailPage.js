@@ -780,7 +780,6 @@ define([
 				this._disableSubmitButtonUntilReady();
 				formBuiltDeferred.resolve();
 				this.templateObject = this.buildTemplate(template, properties, widgets);
-				this.own(this.templateObject);
 
 				// initiate the template mechanism (only for new objects)
 				if (!this.ldapName && !this._multiEdit) {

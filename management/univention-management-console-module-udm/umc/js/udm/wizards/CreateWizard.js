@@ -142,7 +142,6 @@ define([
 			}));
 
 			this.templateObject = this.detailPage.buildTemplate(this.template, this.properties, allWidgets);
-			this.own(this.templateObject);
 		},
 
 		getFooterButtons: function(pageName) {

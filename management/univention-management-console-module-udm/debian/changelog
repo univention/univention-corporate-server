@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.81-1) unstable; urgency=low
+
+  * Bug #32978: fixed reference error
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 31 Oct 2013 12:59:47 +0100
+
 univention-management-console-module-udm (4.0.80-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)
