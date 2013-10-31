@@ -5,6 +5,7 @@ import univention.admin.uldap as uldap
 import univention.admin.modules as modules
 from univention.admin.uexceptions import base as UniventionBaseException
 from ldap import LDAPError
+from ipaddr import IPv4Network
 
 
 class PhaseLdapNetwork(LdapChange):
@@ -77,11 +78,25 @@ class PhaseLdapNetwork(LdapChange):
 			return forward_zones[0].dn
 
 	def _find_reverse_zone(self):
+		new_default = self.changeset.new_interfaces.get_default_ipv4_address()
 		reverse_module = modules.get("dns/reverse_zone")
 		modules.init(self.ldap, self.position, reverse_module)
 		reverse_zones = reverse_module.lookup(None, self.ldap, None)
-		if reverse_zones:
-			return reverse_zones[0].dn
+		for zone in reverse_zones:
+			zone.open()  # may be unneeded
+			network = self._convert_udm_subnet_to_network(zone.info["subnet"])
+			if new_default in network:
+				return zone.dn
+
+	@staticmethod
+	def _convert_udm_subnet_to_network(subnet):
+		octets = subnet.split('.')
+		count = len(octets)
+		assert 1 <= count <= 4
+		prefix_length = 8 * count
+		octets += ["0"] * (4 - count)
+		address = '.'.join(octets)
+		return IPv4Network("%s/%d" % (address, prefix_length))
 
 	def _find_dhcp_service(self):
 		dhcp_module = modules.get("dhcp/service")
