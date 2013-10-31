@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.82-1) unstable; urgency=low
+
+  * Bug #32978: added caching for module wizards
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 31 Oct 2013 13:15:09 +0100
+
 univention-management-console-module-udm (4.0.81-1) unstable; urgency=low
 
   * Bug #32978: fixed reference error

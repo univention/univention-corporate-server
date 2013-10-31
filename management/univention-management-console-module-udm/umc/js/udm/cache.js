@@ -87,6 +87,7 @@ define([
 				this._loadPropertiesMulti(modules);
 				this._loadLayoutMulti(modules);
 				this._loadPoliciesMulti(modules);
+				this._loadWizardMulti(modules);
 			}));
 		},
 
@@ -120,6 +121,35 @@ define([
 				return result;
 			}
 			return result.then(_idLabelPair2Id);
+		},
+
+		getWizard: function(module) {
+			var result = this._get('wizard', module);
+			if (result) {
+				return result;
+			}
+
+			var wizardModuleURL = 'umc/modules/udm/wizards/' + (module || this.superModule);
+			var deferred = new Deferred();
+			tools.urlExists(wizardModuleURL).then(
+				lang.hitch(this, function() {
+					require([wizardModuleURL], lang.hitch(this, function(WizardClass) {
+						deferred.resolve(WizardClass);
+					}));
+				}),
+				lang.hitch(this, function() {
+					deferred.reject();
+				})
+			);
+
+			this._set(deferred, 'wizard', module);
+			return deferred;
+		},
+
+		_loadWizardMulti: function(modules) {
+			array.forEach(modules, function(imodule) {
+				this.getWizard(imodule);
+			}, this);
 		},
 
 		_getInfo: function(udmCommand, udmOptions, flavor, module, forceLoad) {

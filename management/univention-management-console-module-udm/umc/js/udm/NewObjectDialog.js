@@ -39,9 +39,10 @@ define([
 	"dijit/Dialog",
 	"dijit/layout/StackContainer",
 	"umc/tools",
+	"umc/modules/udm/cache",
 	"umc/modules/udm/wizards/FirstPageWizard",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, on, topic, all, Deferred, Dialog, StackContainer, tools, FirstPageWizard, _) {
+], function(declare, lang, array, on, topic, all, Deferred, Dialog, StackContainer, tools, cache, FirstPageWizard, _) {
 
 	return declare("umc.modules.udm.NewObjectDialog", [ Dialog ], {
 		// summary:
@@ -302,26 +303,16 @@ define([
 		},
 
 		buildCreateWizard: function(firstPageWizard, firstPageValues, objectTypeName) {
+			var moduleCache = cache.get(this.moduleFlavor);
+			var wizardDeferred = moduleCache.getWizard(firstPageValues.objectType || this.moduleFlavor);
+			if (this.wizardsDisabled) {
+				wizardDeferred = new Deferred();
+				wizardDeferred.reject();
+			}
 			this._readyForCreateWizard = new Deferred();
-			var wizardDeferred = new Deferred();
 			firstPageWizard.standbyDuring(this.createWizardAdded);
 			this.onFirstPageFinished(firstPageValues);
-			if (this.wizardsDisabled) {
-				wizardDeferred.reject();
-			} else {
-				// make sure that container and superordinate are at least set to null
-				var wizardModuleURL = 'umc/modules/udm/wizards/' + firstPageValues.objectType || this.moduleFlavor;
-				tools.urlExists(wizardModuleURL).then(
-					lang.hitch(this, function() {
-						require([wizardModuleURL], lang.hitch(this, function(WizardClass) {
-							wizardDeferred.resolve(WizardClass);
-						}));
-					}),
-					lang.hitch(this, function() {
-						wizardDeferred.reject();
-					})
-				);
-			}
+
 			wizardDeferred.then(
 				lang.hitch(this, function(WizardClass) {
 					this._readyForCreateWizard.then(lang.hitch(this, function(detailsValues) {
