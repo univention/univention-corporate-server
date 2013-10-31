@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.79-1) unstable; urgency=low
+
+  * Bug #23214: Fix newObjectDialog.hide
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 31 Oct 2013 12:07:56 +0100
+
 univention-management-console-module-udm (4.0.78-1) unstable; urgency=low
 
   * Bug #23214: Remove mailPrimaryAddress, fix templates

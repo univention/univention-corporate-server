@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/has",
 	"dojo/Deferred",
+	"dojo/when",
 	"dojo/promise/all",
 	"dojo/on",
 	"dojo/topic",
@@ -71,7 +72,7 @@ define([
 	"umc/modules/udm/MultiObjectSelect",
 	"umc/modules/udm/ComboBox",
 	"umc/modules/udm/CertificateUploader"
-], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json,
+], function(declare, lang, array, has, Deferred, when, all, on, topic, aspect, json,
 	domStyle, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog,
 	store, ContainerWidget, Text, CheckBox, ComboBox, Module, Page, Grid,
 	ExpandingTitlePane, Form, SearchForm, Button, Tree, ProgressBar, TreeModel,
@@ -1398,7 +1399,10 @@ define([
 					this.createDetailPage(options.objectType, undefined, options);
 				}));
 				this._newObjectDialog.on('Done', lang.hitch(this, function() {
-					this._newObjectDialog.hide().then(lang.hitch(this, function() {
+					var hideDeferred = this._newObjectDialog.hide();
+					// do it this way: if dialog was never shown
+					//   hide returns undefined
+					when(hideDeferred).then(lang.hitch(this, function() {
 						this.selectChild(this._detailPage);
 					}));
 				}));
