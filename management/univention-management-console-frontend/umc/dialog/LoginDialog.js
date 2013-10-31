@@ -174,7 +174,7 @@ define([
 						if (detail.slice(0, 2) === ': ') { // Kerberos error message starts with :
 							newPasswordFailed = _('The reason could not be determined') + '. ' + _('In case it helps, the raw error message will be displayed') + detail;
 						} else {
-							console.warn('Unknown error message', detail);
+							//console.warn('Unknown error message', detail);
 							if (this._newPassword) {
 								// obviously we wanted to change the password
 								newPasswordFailed = _('The reason could not be determined');

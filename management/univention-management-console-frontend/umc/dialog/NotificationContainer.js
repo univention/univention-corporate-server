@@ -90,6 +90,8 @@ define([
 
 		visible: false,
 
+		_wipedInTimestamp: 0,
+
 		// timeout: Number
 		//		Timeout in seconds after which the notification is hidden again.
 		timeout: 4,
@@ -167,9 +169,15 @@ define([
 					this._addTimeout();
 				}
 			}));
+			on(this.domNode, 'a:click', lang.hitch(this, 'confirm'));
 
 			topic.subscribe('/umc/actions', lang.hitch(this, function(actionRootName) {
-				if (actionRootName != 'startup-wizard') {
+				if (actionRootName == 'startup-wizard') {
+					return;
+				}
+
+				var notificationVisibleTime = (new Date()).getTime() - this._wipedInTimestamp;
+				if (this.get('visible') && !this.get('animation') && notificationVisibleTime > 500) {
 					this.wipeOut();
 				}
 			}));
@@ -309,7 +317,10 @@ define([
 			});
 			this.set('animation', anim);
 
-			on(anim, 'End', lang.hitch(this, '_resetAnimation'));
+			on(anim, 'End', lang.hitch(this, function() {
+				this._resetAnimation();
+				this._wipedInTimestamp = (new Date()).getTime();
+			}));
 
 			this._addTimeoutIfOnlyAutoCloseMessages();
 

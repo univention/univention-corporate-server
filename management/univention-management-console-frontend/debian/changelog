@@ -1,3 +1,11 @@
+univention-management-console-frontend (3.0.142-1) unstable; urgency=low
+
+  * Bug #30004: added delay to auto closing of notifications, mark
+    notifications as read when clicking on a link, adjust 411 error
+    notification during long polling
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 31 Oct 2013 17:47:50 +0100
+
 univention-management-console-frontend (3.0.141-1) unstable; urgency=low
 
   * Bug #32389: resize confirm dialog which title panes hide or show
