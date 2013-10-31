@@ -1,3 +1,10 @@
+univention-lib (3.0.25-6) unstable; urgency=low
+
+  * generalize the versioned dependency of shell-univention-lib on
+    python-univention-lib (Bug #32409)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 31 Oct 2013 17:49:30 +0100
+
 univention-lib (3.0.25-5) unstable; urgency=low
 
   * fix setting multivalued udm property with complex syntax

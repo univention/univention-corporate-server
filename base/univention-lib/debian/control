@@ -28,7 +28,7 @@ Package: shell-univention-lib
 Architecture: all
 Depends: ${misc:Depends},
  python-univention-config-registry (>= 8.0.2-1),
- python-univention-lib (>= 3.0.12-4),
+ python-univention-lib (= ${binary:Version}),
  pwgen
 Description: UCS - common scripting functions for shell scripts
  This package contains shell functions used by various
