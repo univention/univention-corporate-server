@@ -151,7 +151,10 @@ define([
 					this.set('value', this._firstValueInList);
 				}
 			}));
+		},
 
+		startup: function() {
+			this.inherited(arguments);
 			this._loadValues();
 		},
 
