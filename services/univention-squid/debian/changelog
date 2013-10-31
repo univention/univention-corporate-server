@@ -1,3 +1,10 @@
+univention-squid (7.0.3-1) unstable; urgency=low
+
+  * cleaned up squid.conf (Bug #32183)
+    added http_access allow CONNECT AuthorizedUsers
+
+ -- Felix Botner <botner@univention.de>  Thu, 31 Oct 2013 10:41:35 +0100
+
 univention-squid (7.0.2-1) unstable; urgency=low
 
   * added unjoin scripts (Bug #32447) 
