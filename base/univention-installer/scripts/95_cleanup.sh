@@ -66,17 +66,19 @@ chroot /instmnt ./tmp/cleanup.sh
 
 cat >/instmnt/tmp/cleanup.sh <<__EOT__
 #!/bin/sh
-if [ -x /etc/init.d/nscd ]; then
-	/etc/init.d/nscd stop
-fi
 
-if [ -x /etc/init.d/nfs-kernel-server ]; then
-	/etc/init.d/nfs-kernel-server stop
-fi
-
-if [ -x /etc/init.d/nfs-common ]; then
-	/etc/init.d/nfs-common stop
-fi
+for service in nscd \
+			nfs-kernel-server \
+			nfs-common \
+			univention-directory-listener \
+			univention-directory-notifier \
+			winbind \
+			samba4 \
+			samba \
+			slapd;
+do
+	test -x "/etc/init.d/\$service" && invoke-rc.d "\$service" stop
+done
 
 # Bug 28473: reenable automatic configuration of interfaces
 ucr unset --force interfaces/restart/auto

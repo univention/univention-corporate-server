@@ -1,3 +1,11 @@
+univention-installer (9.0.29-1) unstable; urgency=low
+
+  * Stopping some major services like listener or samba with their init
+    script. Otherwise the global killall5 -15 will terminate the jobs
+    which is OK but probably not the best (Bug #33025)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 Oct 2013 06:42:24 +0100
+
 univention-installer (9.0.28-2) unstable; urgency=low
 
   * Bug #28672: install univention-uefi-secureboot if UEFI has been detected/chosen
