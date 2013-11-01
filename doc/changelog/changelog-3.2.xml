@@ -1035,6 +1035,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+			Wizards for easy and fast creation of objects were added. Supported are
+			users and computers (<ulink url="&ucsbug;23214">Bug 23214</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  The attributes <guimenu>User ID</guimenu> <guimenu>Group ID</guimenu> and
 		  <guimenu>GECOS</guimenu> in the users module, <guimenu>FQDN</guimenu> in the computers
 		  module and <guimenu>Next IP</guimenu> in the network module have been removed from the
