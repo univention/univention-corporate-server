@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.89-1) unstable; urgency=low
+
+  * Bug #32978: adapt handling of cache resetting
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 01 Nov 2013 14:28:38 +0100
+
 univention-management-console-module-udm (4.0.88-1) unstable; urgency=low
 
   * Bug #32381: Bug #32978: don't cache superordinates

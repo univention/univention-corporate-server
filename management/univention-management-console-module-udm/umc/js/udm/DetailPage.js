@@ -1298,11 +1298,10 @@ define([
 					topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'save');
 					// check whether the internal cache needs to be reset
 					// as layout and property information may have changed
-					if (this.objectType == 'settings/extended_attribute') {
+					var isExtendedAttribute = this.objectType == 'settings/extended_attribute';
+					var isUserTemplate = this.objectType == 'settings/usertemplate';
+					if (isExtendedAttribute || isUserTemplate) {
 						cache.reset();
-					}
-					if (this.objectType == 'settings/usertemplate') {
-						cache.reset('users/user');
 					}
 					if (this._multiEdit) {
 						// save the changes for each object once

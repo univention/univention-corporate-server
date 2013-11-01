@@ -1259,14 +1259,11 @@ define([
 				var isExtendedAttribute = array.some(objects, function(iobj) {
 					return iobj.objectType == 'settings/extended_attribute';
 				});
-				if (isExtendedAttribute) {
-					cache.reset();
-				}
 				var isUserTemplate = array.some(objects, function(iobj) {
 					return iobj.objectType == 'settings/usertemplate';
 				});
-				if (isUserTemplate) {
-					cache.reset('users/user');
+				if (isExtendedAttribute || isUserTemplate) {
+					cache.reset();
 				}
 
 				// set the options
