@@ -58,7 +58,7 @@ define([
 		},
 
 		getChildren: function(parentItem, onComplete) {
-			cache.get(this.moduleFlavor).getSuperordinates().then(lang.hitch(this, function(data) {
+			cache.get(this.moduleFlavor).getSuperordinates(undefined, true).then(lang.hitch(this, function(data) {
 				// sort items alphabetically
 				var superordinates = data instanceof Array ? data : [];
 				superordinates.sort(tools.cmpObjects('label'));

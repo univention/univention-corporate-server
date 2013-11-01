@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.88-1) unstable; urgency=low
+
+  * Bug #32381: Bug #32978: don't cache superordinates
+
+ -- Florian Best <best@univention.de>  Fri, 01 Nov 2013 13:36:03 +0100
+
 univention-management-console-module-udm (4.0.87-1) unstable; urgency=low
 
   * Bug #32750: Improve layout of search page with "hidden" widget for special
