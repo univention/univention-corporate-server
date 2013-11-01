@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-1) unstable; urgency=low
+
+  * Bug #32698: remove target="_blank"
+
+ -- Florian Best <best@univention.de>  Fri, 01 Nov 2013 13:42:05 +0100
+
 univention-ad-connector (8.0.16-2) unstable; urgency=low
 
   * Bug #32698: remove private keys on update
