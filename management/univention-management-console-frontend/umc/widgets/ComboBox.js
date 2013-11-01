@@ -66,15 +66,17 @@ define([
 			}
 		},
 
+		_updateVisibility: function() {
+			if (this.autoHide) {
+				// show the widget in case there are more than 1 values
+				var values = this.getAllItems();
+				this.set('visible', values.length > 1);
+			}
+		},
+
 		postCreate: function() {
 			this.inherited(arguments);
-
-			on.once(this, 'valuesLoaded', function(values) {
-				if (this.autoHide) {
-					// show the widget in case there are more than 1 values
-					this.set('visible', values.length > 1);
-				}
-			});
+			this.on('valuesLoaded', lang.hitch(this, '_updateVisibility'));
 		}
 	});
 });

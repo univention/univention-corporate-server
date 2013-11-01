@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.144-1) unstable; urgency=low
+
+  * Bug #23214: make autoHide feature of ComboBox dynamic
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 01 Nov 2013 11:55:20 +0100
+
 univention-management-console-frontend (3.0.143-1) unstable; urgency=low
 
   * Bug #32902: fix handling of errors in Uploader
