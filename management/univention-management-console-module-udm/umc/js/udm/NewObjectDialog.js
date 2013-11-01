@@ -200,7 +200,7 @@ define([
 							value: this.defaultObjectType,  // see Bug #13073, for users/user, there exists only one object type
 							label: _('%s template', tools.capitalize(this.objectNameSingular)),
 							description: _('A template defines rules for default object properties.'),
-							visible: templates.length > 1,
+							autoHide: true,
 							staticValues: templates
 						});
 						layout.push('objectTemplate');
@@ -233,7 +233,8 @@ define([
 					dynamicValues: lang.hitch(this, function(options) {
 						return this.moduleCache.getTemplates(options.objectType);
 					}),
-					staticValues: [ { id: 'None', label: _('None') } ]
+					staticValues: [ { id: 'None', label: _('None') } ],
+					autoHide: true
 				}];
 				layout = [ 'container', 'container_help', 'objectType', 'objectTemplate' ];
 			}

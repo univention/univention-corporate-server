@@ -1,3 +1,11 @@
+univention-management-console-module-udm (4.0.86-1) unstable; urgency=low
+
+  * Bug #23214: removed unneeded Deferred for NewObjectDialog, added autoHide
+    for template combo box
+  * Bug #32978: adjusted calls to getChildModules() to return id-label pairs
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 01 Nov 2013 11:57:51 +0100
+
 univention-management-console-module-udm (4.0.85-1) unstable; urgency=low
 
   * Bug #32978: handle UDM objects without options properly

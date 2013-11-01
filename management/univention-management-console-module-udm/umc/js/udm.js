@@ -545,7 +545,7 @@ define([
 				staticValues: objTypes,
 				dynamicValues: lang.hitch(this, function(options) {
 					var moduleCache = cache.get(this.moduleFlavor);
-					return moduleCache.getChildModules(options.superordinate);
+					return moduleCache.getChildModules(options.superordinate, null, true);
 				}),
 				umcpCommand: umcpCmd,
 				depends: objTypeDependencies,
@@ -1333,8 +1333,6 @@ define([
 			// summary:
 			//		Open a user dialog for creating a new LDAP object.
 
-			var firstPageDeferred = new Deferred();
-
 			// when we are in navigation mode, make sure the user has selected a container
 			var selectedContainer = { id: '', label: '', path: '' };
 			var superordinate = this._searchForm.getWidget('superordinate');
@@ -1349,14 +1347,10 @@ define([
 					dialog.alert(_('Please select a container in the LDAP directory tree. The new object will be placed at this location.'));
 					return;
 				}
-				// for the UDM navigation, only query object types
-				moduleCache.getChildModules(null, selectedContainer.id).then(lang.hitch(this, function(result) {
-					firstPageDeferred.resolve({types: result});
-				}));
 			} else {
 				// query the necessary elements to display the add-dialog correctly
 				all({
-					types: moduleCache.getChildModules(superordinate),
+					types: moduleCache.getChildModules(superordinate, null, true),
 					containers: moduleCache.getContainers(),
 					superordinates: moduleCache.getSuperordinates(),
 					templates: moduleCache.getTemplates()
@@ -1365,69 +1359,56 @@ define([
 					var containers = lang.getObject('containers', false, results);
 					var superordinates = lang.getObject('superordinates', false, results);
 					var templates = lang.getObject('templates', false, results);
-					firstPageDeferred.resolve({
-						types: types,
-						containers: containers,
-						superordinates: superordinates,
-						templates: templates
-					});
 				}));
 			}
 
 			// open the dialog
-			firstPageDeferred.then(lang.hitch(this, function(values) {
-				var onHandlerRegistered = new Deferred();
-				this._newObjectDialog = new NewObjectDialog({
-					addNotification: lang.hitch(this, 'addNotification'),
-					umcpCommand: lang.hitch(this, 'umcpCommand'),
-					wizardsDisabled: tools.isTrue(this._wizardsDisabled),
-					mayCreateWizard: onHandlerRegistered,
-					moduleFlavor: this.moduleFlavor,
-					moduleCache: cache.get(this.moduleFlavor),
-					selectedContainer: selectedContainer,
-					selectedSuperordinate: superordinate,
-					defaultObjectType: this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/add/default'] || null,
-					types: values.types || [],
-					containers: values.containers || [],
-					superordinates: values.superordinates || [],
-					templates: values.templates || [],
-					objectNamePlural: this.objectNamePlural,
-					objectNameSingular: this.objectNameSingular,
-					autofocus: false // interferes with Wizard.autoFocus
-				});
-				this._newObjectDialog.on('FirstPageFinished', lang.hitch(this, function(options) {
-					this.createDetailPage(options.objectType, undefined, options);
-				}));
-				this._newObjectDialog.on('Done', lang.hitch(this, function() {
-					var hideDeferred = this._newObjectDialog.hide();
-					// do it this way: if dialog was never shown
-					//   hide returns undefined
-					when(hideDeferred).then(lang.hitch(this, function() {
-						this.selectChild(this._detailPage);
-					}));
-				}));
-				this._newObjectDialog.on('hide', lang.hitch(this, function() {
-					this._newObjectDialog.destroyRecursive();
-					this._newObjectDialog = null;
-				}));
-				onHandlerRegistered.resolve();
-				this.standbyDuring(this._newObjectDialog.canContinue);
-				this._newObjectDialog.canContinue.then(
-					lang.hitch(this, function() {
-						// wizard continues immediately! Show only
-						// if (and only if) the createWizard is ready
-						this.standbyDuring(this._newObjectDialog.createWizardAdded);
-						this._newObjectDialog.createWizardAdded.then(lang.hitch(this, function() {
-							this._newObjectDialog.show();
-						}));
-					}),
-					lang.hitch(this, function() {
-						// canContinue.rejected! Ask the user
-						this._newObjectDialog.show();
-					})
-				);
+			var onHandlerRegistered = new Deferred();
+			this._newObjectDialog = new NewObjectDialog({
+				addNotification: lang.hitch(this, 'addNotification'),
+				umcpCommand: lang.hitch(this, 'umcpCommand'),
+				wizardsDisabled: tools.isTrue(this._wizardsDisabled),
+				mayCreateWizard: onHandlerRegistered,
+				moduleFlavor: this.moduleFlavor,
+				moduleCache: cache.get(this.moduleFlavor),
+				selectedContainer: selectedContainer,
+				selectedSuperordinate: superordinate,
+				defaultObjectType: this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/add/default'] || null,
+				objectNamePlural: this.objectNamePlural,
+				objectNameSingular: this.objectNameSingular,
+				autofocus: false // interferes with Wizard.autoFocus
+			});
+			this._newObjectDialog.on('FirstPageFinished', lang.hitch(this, function(options) {
+				this.createDetailPage(options.objectType, undefined, options);
 			}));
-			this.standbyDuring(firstPageDeferred);
+			this._newObjectDialog.on('Done', lang.hitch(this, function() {
+				var hideDeferred = this._newObjectDialog.hide();
+				// do it this way: if dialog was never shown
+				//   hide returns undefined
+				when(hideDeferred).then(lang.hitch(this, function() {
+					this.selectChild(this._detailPage);
+				}));
+			}));
+			this._newObjectDialog.on('hide', lang.hitch(this, function() {
+				this._newObjectDialog.destroyRecursive();
+				this._newObjectDialog = null;
+			}));
+			onHandlerRegistered.resolve();
+			this.standbyDuring(this._newObjectDialog.canContinue);
+			this._newObjectDialog.canContinue.then(
+				lang.hitch(this, function() {
+					// wizard continues immediately! Show only
+					// if (and only if) the createWizard is ready
+					this.standbyDuring(this._newObjectDialog.createWizardAdded);
+					this._newObjectDialog.createWizardAdded.then(lang.hitch(this, function() {
+						this._newObjectDialog.show();
+					}));
+				}),
+				lang.hitch(this, function() {
+					// canContinue.rejected! Ask the user
+					this._newObjectDialog.show();
+				})
+			);
 		},
 
 		createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String?*/ note) {
