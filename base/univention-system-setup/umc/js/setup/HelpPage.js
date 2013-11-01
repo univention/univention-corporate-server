@@ -91,6 +91,7 @@ define([
 					// create one button per language
 					langContainer.addChild(new Button({
 						iconClass: "country-" + ilang.id.substring(3).toLowerCase(), // country flags, i.e. "us", not "en"
+						'class': 'umcIconOnly',
 						callback: function() {
 							i18nTools.setLanguage(ilang.id);
 						}
