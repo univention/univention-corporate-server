@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.145-1) unstable; urgency=low
+
+  * Bug #33093: make sure that a single available module is not opened twice,
+    add CSS class for buttons with only icons
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 01 Nov 2013 16:16:04 +0100
+
 univention-management-console-frontend (3.0.144-1) unstable; urgency=low
 
   * Bug #23214: make autoHide feature of ComboBox dynamic

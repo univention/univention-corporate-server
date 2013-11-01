@@ -470,6 +470,12 @@ define([
 			if (typeof props.module == "string") {
 				// a startup module is specified
 				on.once(this, 'GuiDone', lang.hitch(this, function() {
+					var hasOnlyOneModule = this._getLaunchableModules().length == 1;
+					if (hasOnlyOneModule) {
+						// this module is launched automatically anyways
+						return;
+					}
+
 					this.openModule(props.module, props.flavor);
 					this._tabContainer.layout();
 
