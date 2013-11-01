@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.143-1) unstable; urgency=low
+
+  * Bug #32902: fix handling of errors in Uploader
+
+ -- Florian Best <best@univention.de>  Fri, 01 Nov 2013 10:17:24 +0100
+
 univention-management-console-frontend (3.0.142-1) unstable; urgency=low
 
   * Bug #30004: added delay to auto closing of notifications, mark

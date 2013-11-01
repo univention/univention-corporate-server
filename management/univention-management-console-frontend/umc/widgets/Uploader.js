@@ -201,7 +201,7 @@ define([
 					var error = tools.parseError(data);
 					if (200 !== error.status) {
 						if (this.displayErrorMessage) {
-							dialog.alert(error.message);
+							tools.handleErrorStatus(data);
 						}
 						this.onError(error);
 					} else {
