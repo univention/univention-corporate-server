@@ -229,6 +229,19 @@ define([
 			}));
 		},
 
+		_reloadCache: function(objects) {
+			// reset cache if extended attribute or user template is being removed
+			var isExtendedAttribute = array.some(objects, function(iobj) {
+				return iobj.objectType == 'settings/extended_attribute';
+			});
+			var isUserTemplate = array.some(objects, function(iobj) {
+				return iobj.objectType == 'settings/usertemplate';
+			});
+			if (isExtendedAttribute || isUserTemplate) {
+				cache.reset();
+			}
+		},
+
 		buildRendering: function() {
 			// call superclass method
 			this.inherited(arguments);
@@ -1050,6 +1063,9 @@ define([
 					return;
 				}
 
+				// reset cache if extended attribute or user template is being moved
+				this._reloadCache(objects);
+
 				// prepare data array
 				var params = [];
 				array.forEach(ids, function(idn) {
@@ -1256,15 +1272,7 @@ define([
 				this.standby(true);
 
 				// reset cache if extended attribute or user template is being removed
-				var isExtendedAttribute = array.some(objects, function(iobj) {
-					return iobj.objectType == 'settings/extended_attribute';
-				});
-				var isUserTemplate = array.some(objects, function(iobj) {
-					return iobj.objectType == 'settings/usertemplate';
-				});
-				if (isExtendedAttribute || isUserTemplate) {
-					cache.reset();
-				}
+				this._reloadCache(objects);
 
 				// set the options
 				var options = {

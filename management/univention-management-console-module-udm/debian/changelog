@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.90-1) unstable; urgency=low
+
+  * Bug #32978: added cache resetting when objects are moved
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 01 Nov 2013 15:22:09 +0100
+
 univention-management-console-module-udm (4.0.89-1) unstable; urgency=low
 
   * Bug #32978: adapt handling of cache resetting
