@@ -1,3 +1,10 @@
+ucs-test (4.0.161-2) unstable; urgency=low
+
+  * 10_ldap/65univention-admingrp-user-passwordreset-ldapdiff: wait for
+    s4 connector replication (Bug #33051)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Nov 2013 20:43:37 +0100
+
 ucs-test (4.0.161-1) unstable; urgency=low
 
   * Support UCS@school ldbcontrol in s4 connector tests (Bug #32798)
