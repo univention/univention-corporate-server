@@ -625,6 +625,9 @@ define([
 		_registerOptionWatchHandler: function() {
 			// connect to onChange for the options property if it exists
 			var optionsWidget = this._form.widgets.$options$;
+			if (!optionsWidget) {
+				return;
+			}
 			this.own(optionsWidget.watch('value', lang.hitch(this, function(attr, oldVal, newVal) {
 				this.onOptionsChanged(newVal);
 			})));
