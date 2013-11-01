@@ -763,7 +763,7 @@ msgstr "Anzahl der CPUs"
 
 #: umc/js/uvmm.js:803 umc/js/uvmm.js:968
 msgid "Open a view to the virtual machine {label} on {nodeName}"
-msgstr "Öffne eine Anzeige der virtuellen Maschine {label} auf {nodeName}"
+msgstr "Öffnet eine Anzeige der virtuellen Maschine {label} auf {nodeName}"
 
 #: umc/js/uvmm/DomainPage.js:117
 msgid "Operating system"
