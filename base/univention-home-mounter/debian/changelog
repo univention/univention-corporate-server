@@ -1,11 +1,11 @@
-univention-home-mounter (5.0.1-3) unstable; urgency=low
+univention-home-mounter (5.0.1-4) unstable; urgency=low
 
   * convert to python
   * remove obsolete thin client functionality
   * improve logging output
   * performance enhancements (Bug #31256)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 26 Sep 2013 17:13:04 +0200
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 01 Nov 2013 14:51:34 +0100
 
 univention-home-mounter (5.0.0-1) unstable; urgency=low
 

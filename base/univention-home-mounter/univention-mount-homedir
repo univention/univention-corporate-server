@@ -57,7 +57,10 @@ def hostname_fqdn():
 
 def get_homeattr(username):
 	'''return automountInformation of <username>, if any'''
-	connection = univention.uldap.getMachineConnection(ldap_master=False)
+	try:
+		connection = univention.uldap.getMachineConnection(ldap_master=False)
+	except Exception, err:
+		return None
 	search_filter = ldap.filter.filter_format(
 		"(&(objectClass=posixAccount)(objectClass=automount)(uid=%s))",
 		(username, )
