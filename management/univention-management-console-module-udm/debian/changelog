@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.91-1) unstable; urgency=low
+
+  * Bug #32381: clone array reference for superordinates before sorting
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 01 Nov 2013 15:47:57 +0100
+
 univention-management-console-module-udm (4.0.90-1) unstable; urgency=low
 
   * Bug #32978: added cache resetting when objects are moved

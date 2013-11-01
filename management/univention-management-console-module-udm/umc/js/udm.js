@@ -1370,19 +1370,6 @@ define([
 					dialog.alert(_('Please select a container in the LDAP directory tree. The new object will be placed at this location.'));
 					return;
 				}
-			} else {
-				// query the necessary elements to display the add-dialog correctly
-				all({
-					types: moduleCache.getChildModules(superordinate, null, true),
-					containers: moduleCache.getContainers(),
-					superordinates: moduleCache.getSuperordinates(),
-					templates: moduleCache.getTemplates()
-				}).then(lang.hitch(this, function(results) {
-					var types = lang.getObject('types', false, results);
-					var containers = lang.getObject('containers', false, results);
-					var superordinates = lang.getObject('superordinates', false, results);
-					var templates = lang.getObject('templates', false, results);
-				}));
 			}
 
 			// open the dialog
