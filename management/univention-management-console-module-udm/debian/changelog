@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.87-1) unstable; urgency=low
+
+  * Bug #32750: Improve layout of search page with "hidden" widget for special
+    cases
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 01 Nov 2013 12:40:37 +0100
+
 univention-management-console-module-udm (4.0.86-1) unstable; urgency=low
 
   * Bug #23214: removed unneeded Deferred for NewObjectDialog, added autoHide

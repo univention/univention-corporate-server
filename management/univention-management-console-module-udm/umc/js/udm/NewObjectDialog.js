@@ -304,14 +304,13 @@ define([
 		},
 
 		buildCreateWizard: function(firstPageWizard, firstPageValues, objectTypeName) {
-			var moduleCache = cache.get(this.moduleFlavor);
-			var wizardDeferred = moduleCache.getWizard(firstPageValues.objectType || this.moduleFlavor);
+			var wizardDeferred = this.moduleCache.getWizard(firstPageValues.objectType || this.moduleFlavor);
 			if (this.wizardsDisabled) {
 				wizardDeferred = new Deferred();
 				wizardDeferred.reject();
 			}
 			this._readyForCreateWizard = new Deferred();
-			firstPageWizard.standbyDuring(this.createWizardAdded);
+			firstPageWizard.standbyDuring(all([this.createWizardAdded, wizardDeferred]));
 			this.onFirstPageFinished(firstPageValues);
 
 			wizardDeferred.then(

@@ -911,6 +911,24 @@ define([
 				var toggleButton = this._searchForm._buttons.toggleSearch;
 				if (this._isAdvancedSearch) {
 					widgets.objectType.set('visible', widgets.objectType.getAllItems().length > 2);
+					// now it gets dirty
+					//   we do not have a fluid or dynamic layout
+					//   DNS: we have the tree on the left -> only space for two widgets per row
+					//        we want ['objectType', 'objectProperty', 'hidden'] normally but here
+					//        only ['objectType', 'hidden'], ['objectProperty']
+					//        we do this by switching hidden to the middle. objectProperty will
+					//        be in the next row because of space limitations...
+					//        but in DHCP we want ['objectProperty', 'hidden']...
+					if (this._tree) {
+						var hiddenLabel = widgets.hidden.getParent();
+						if (widgets.objectType.get('visible') && this._tree) {
+							var objectTypeLabel = widgets.objectType.getParent();
+							hiddenLabel.placeAt(objectTypeLabel.domNode, 'after');
+						} else {
+							var objectPropertyLabel = widgets.objectProperty.getParent();
+							hiddenLabel.placeAt(objectPropertyLabel.domNode, 'after');
+						}
+					}
 					if ('container' in widgets) {
 						widgets.container.set('visible', true);
 					}
