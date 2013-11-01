@@ -828,6 +828,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+				Applications now automatically register themselves in UCS start site
+				(<ulink url="&ucsbug;32609">Bug 32609</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 				Added a <emphasis>Shop</emphasis> button for those applications
 				supporting it (<ulink url="&ucsbug;32282">Bug 32282</ulink>).
 		</simpara></listitem>
