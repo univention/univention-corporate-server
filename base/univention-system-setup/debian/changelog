@@ -1,3 +1,10 @@
+univention-system-setup (7.0.62-1) unstable; urgency=low
+
+  * Bug #30816: update UCR variable used for disabling network
+    configuration
+
+ -- Florian Best <best@univention.de>  Fri, 01 Nov 2013 08:54:10 +0100
+
 univention-system-setup (7.0.61-2) unstable; urgency=low
 
   * Fix several DNS reverse zone issues (Bug #28670)

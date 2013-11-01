@@ -112,8 +112,7 @@ define([
 				'system/setup/boot/select/role',
 				'system/setup/boot/pages/whitelist',
 				'system/setup/boot/pages/blacklist',
-				'umc/modules/setup/network',
-				'version/version'
+				'umc/modules/setup/network/disabled/by'
 			]);
 			// load system setup values (e.g. join status)
 			var deferred_variables = this.umcpCommand('setup/load');
@@ -148,10 +147,9 @@ define([
 			this._orgValues = lang.clone(values);
 
 			// disable network page, See Bug #33006
-			if (ucr['umc/modules/setup/network'] == '33006') {
-				var version = ucr['version/version'];
-				var link = '<a href="' + _('http://docs.univention.de/computers-%s.html#uvmm', version) + '">"' + _('Setup for UCS Virtual Machine Manager') + '"</a>';
-				this.addWarning(_('Changing network settings is disabled due to specific UVMM settings. See %s for further information.', link));
+			var networkDisabledBy = ucr['umc/modules/setup/network/disabled/by'];
+			if (networkDisabledBy) {
+				this._displayNetworkPageWarning(networkDisabledBy);
 				allPages.splice(allPages.indexOf('NetworkPage'), 1);
 			}
 
@@ -367,6 +365,18 @@ define([
 
 			this.startup();
 			this.standby(false);
+		},
+
+		_displayNetworkPageWarning: function(networkDisabledBy) {
+			var version = tools.status('ucsVersion').split('-')[0];
+			var link = '<a href="' + _('http://docs.univention.de/computers-%s.html#uvmm', version) + '">"' + _('Setup for UCS Virtual Machine Manager') + '"</a>';
+			var uvmmWarning = _('Changing network settings is disabled due to specific UVMM settings. See %s for further information.', link);
+			var warning = {
+				xen: uvmmWarning,
+				kvm: uvmmWarning
+			}[networkDisabledBy] || _('Changing network settings is disabled. It can be re enabled by unsetting the UCR variable "umc/modules/setup/network/disabled/by".');
+
+			this.addWarning(warning);
 		},
 
 		ready: function() {
