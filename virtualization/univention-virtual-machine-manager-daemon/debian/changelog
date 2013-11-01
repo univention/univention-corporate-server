@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.17-1) unstable; urgency=low
+
+  * Fix change detection for noVNC (Bug #30540)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 01 Nov 2013 14:38:32 +0100
+
 univention-virtual-machine-manager-daemon (3.0.16-1) unstable; urgency=low
 
   * Bug #26418: fix typo

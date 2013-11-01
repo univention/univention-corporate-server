@@ -482,6 +482,17 @@ class Domain(PersistentCached):
 			uuid = self.pd.uuid
 		return os.path.join(self.node.cache_dom_dir(), uuid + suffix)
 
+	def calc_cache_id(self):
+		key = hash((self.pd.uuid, self.pd.name, self.pd.maxMem))
+		for disk in self.pd.disks:
+			key ^= hash((disk.target_dev, disk.source))
+		for iface in self.pd.interfaces:
+			key ^= hash((iface.mac_address, iface.source, iface.model))
+		for gfx in self.pd.graphics:
+			key ^= hash(gfx.port)
+		return key
+
+
 class _DomainDict(dict):
 	"""Dictionary for handling domains of a node and their persistent cache."""
 	def __delitem__(self, uuid):
@@ -793,8 +804,14 @@ class Node(PersistentCached):
 
 	def calc_cache_id(self):
 		"""Calculate key for disk cache."""
-		key = hash((self.pd.phyMem, self.pd.cores, self.pd.supports_suspend, self.pd.supports_snapshot))
-		key ^= reduce(operator.xor, map(hash, self.domains.keys()), 0)
+		key = hash((
+			self.pd.phyMem,
+			self.pd.cores,
+			self.pd.supports_suspend,
+			self.pd.supports_snapshot,
+		))
+		for dom in self.domains.values():
+			key ^= dom.calc_cache_id()
 		return key
 
 	def cache_file_name(self, uri=None, suffix='.pic'):

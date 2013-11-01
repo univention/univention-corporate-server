@@ -73,12 +73,6 @@ case "$1" in
 		update-rc.d -f univention-virtual-machine-manager-daemon remove >/dev/null
 	fi
 
-	# Bug #30540: force cache update for noVNC
-	if dpkg --compare-versions "$2" lt-nl '3.0.9'
-	then
-		rm -f /var/cache/univention-virtual-machine-manager-daemon/*.pic
-	fi
-
 	invoke-rc.d univention-directory-listener restart
 	;;
 
