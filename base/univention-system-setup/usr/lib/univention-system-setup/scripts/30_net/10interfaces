@@ -110,6 +110,9 @@ class NetworkSetup(SetupScript):
 
 	def prepare_changeset(self):
 		self.changeset = ChangeSet(self.ucr.ucr, self.profile, self.options)
+		if not self.changeset.ucr_changes:
+			self.logger.info("No chnages to apply. Exiting.")
+			sys.exit(0)
 
 	def setup_phases(self):
 		self.phases.load()
