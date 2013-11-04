@@ -620,6 +620,13 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The grid representation of result lists has been revised: action buttons have been merged into
+		  a tool bar above the grid to improve visibilty, entries can be selected by clicking on a row, 
+		  an entry is opened directly when clicking on its name
+		  (<ulink url="&ucsbug;26418">Bug 26418</ulink>, <ulink url="&ucsbug;32751">Bug 32751</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  The representation of system notifications has been revised
 		  (Bug <ulink url="&ucsbug;30004">30004</ulink>).
 		</simpara></listitem>
@@ -758,11 +765,6 @@
 
 		<listitem><simpara>
 		  Fixed a bug which prevented the possibility to scroll within drop down menus on touch devices (<ulink url="&ucsbug;32264">Bug 32264</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			All actions from umc.widgets.Grid have been moved from the bottom or from the grid columns to the top of the grid.
-			(<ulink url="&ucsbug;26418">Bug 26418</ulink>, <ulink url="&ucsbug;32751">Bug 32751</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
