@@ -14,3 +14,4 @@
 0010-2: tests/test_setup_netconf_modules
 0010-2: tests/test_setup_netconf_pxe
 0010-2: tests/test_setup_netconf_common
+0010-2: tests/30net_10interfaces
