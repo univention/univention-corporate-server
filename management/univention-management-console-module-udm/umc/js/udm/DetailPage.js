@@ -230,7 +230,10 @@ define([
 		},
 
 		_loadObject: function(formBuiltDeferred, policyDeferred) {
-			//TODO: policyDeferred -> cancel
+			formBuiltDeferred.then(lang.hitch(this, function() {
+				this._displayProgressOnSubmitButton();
+			}));
+
 			if (!this.ldapName || this._multiEdit) {
 				// no DN given or multi edit mode
 				formBuiltDeferred.then(lang.hitch(this, function() {
@@ -270,8 +273,6 @@ define([
 				this._form.getWidget( '$objecttype$' ).set( 'content', _( 'Type: <i>%(type)s</i>', { type: vals.$labelObjectType$ } ) );
 				this._form.getWidget( '$location$' ).set( 'content', _( 'Position: <i>%(path)s</i>', { path: path } ) );
 
-				this._displayProgressOnSubmitButton();
-
 				return this._form.ready();
 			}));
 		},
@@ -304,9 +305,11 @@ define([
 		_displayProgressOnSubmitButton: function() {
 			var submitButton = this._footerButtons.submit;
 			var origLabel = submitButton.get('label');
+			submitButton.set('disabled', true);
 			this._form.ready().then(lang.hitch(this, function() {
 				// reset label of submit button
 				submitButton.set('label', origLabel);
+				submitButton.set('disabled', false);
 			}), null, lang.hitch(this, function(progress) {
 				// output loading progress as button label
 				var label = _('Loading: %s', progress.message);
@@ -766,15 +769,6 @@ define([
 			borderLayout.startup();
 		},
 
-		_disableSubmitButtonUntilReady: function(loadedDeferred) {
-			// make sure that the submit button can only be pressed when the
-			// whole form is ready and all its dynamic values have been loaded
-			this._footerButtons.submit.set('disabled', true);
-			loadedDeferred.then(lang.hitch(this, function() {
-				this._footerButtons.submit.set('disabled', false);
-			}));
-		},
-
 		renderDetailPage: function(properties, layout, policies, template) {
 			// summary:
 			//		Render the form with subtabs containing all object properties that can
@@ -809,7 +803,6 @@ define([
 				this._renderMultiEditCheckBoxes(widgets);
 				this._registerOptionWatchHandler();
 				formBuiltDeferred.resolve();
-				this._disableSubmitButtonUntilReady(loadedDeferred);
 				this.standby(false);
 				this.templateObject = this.buildTemplate(template, properties, widgets);
 

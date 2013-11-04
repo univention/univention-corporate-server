@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.94-1) unstable; urgency=low
+
+  * Bug #32978: disable submit button when creating a new UDM object
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 04 Nov 2013 17:31:01 +0100
+
 univention-management-console-module-udm (4.0.93-1) unstable; urgency=low
 
   * Bug #32978: fixed multi edit mode
