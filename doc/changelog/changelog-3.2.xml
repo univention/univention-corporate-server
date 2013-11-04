@@ -1059,13 +1059,6 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			Opening certain LDAP objects took very long. Now a progress bar is shown
-			upon opening any LDAP object and widgets for attributes that may have
-			multiple values do not block anymore while being built (<ulink
-				url="&ucsbug;31376">Bug 31376</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
 				Added a progress bar while moving objects. This will prevent a timeout
 				when moving a lot of them at once (<ulink url="&ucsbug;25465">Bug 25465</ulink>).
 		</simpara></listitem>
