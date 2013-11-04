@@ -20,6 +20,8 @@ class PhaseLdapDhcp(LdapChange):
 
 	def _create_subnet(self):
 		ipv4 = self.changeset.new_interfaces.get_default_ipv4_address()
+		if not ipv4:
+			return
 
 		service_module = modules.get("dhcp/service")
 		modules.init(self.ldap, self.position, service_module)

@@ -9,7 +9,9 @@ class Mapping(object):
 		self.mapping = dict((
 			(str(old_ip.ip), str(new_ip.ip))
 			for (old_ip, new_ip) in ipv4_changes.items()
+			if new_ip
 		))
+		assert self.mapping
 		pattern = '''\
 		(?:^|(?<![0-9]))
 		(%s)
@@ -38,7 +40,7 @@ class PhaseRewritePxe(AddressMap):
 		super(PhaseRewritePxe, self).check()
 		if not os.path.exists(self.dirname):
 			raise SkipPhase("No '%s'" % (self.dirname,))
-		if not self.ipv4_changes():
+		if not any(self.ipv4_changes().values()):
 			raise SkipPhase("No IPv4 changes")
 
 	def pre(self):

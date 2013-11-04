@@ -24,7 +24,7 @@ class PhaseRewriteWins(AddressMap):
 						name, ttl, address, flags = line.split(None, 3)
 						new_ip = self.ip_mapping[address]
 						line = ' '.join((name, ttl, new_ip, flags))
-					except (ValueError, KeyError):
+					except (TypeError, ValueError, KeyError):
 						pass
 					write_wins.write(line)
 		self.logger.info("Updating %s'", self.filename)

@@ -60,6 +60,7 @@ class PhaseLdapReferences(AddressMap, LdapChange):
 				self.ip_mapping.get(value, value)
 				for value in old_values
 			))
+			new_values.discard(None)
 			if old_values == new_values:
 				return
 			obj.info[udm_property] = list(new_values)

@@ -28,6 +28,8 @@ class PhaseLdapNetwork(LdapChange):
 	def _check_network(self):
 		old_default = self.changeset.old_interfaces.get_default_ipv4_address()
 		new_default = self.changeset.new_interfaces.get_default_ipv4_address()
+		if not new_default:
+			raise SkipPhase("No new default network")
 		if old_default == new_default:
 			raise SkipPhase("No change in default network")
 

@@ -43,6 +43,7 @@ class PhaseLdapSamba(AddressMap, LdapChange):
 				self.ip_mapping.get(value, value)
 				for value in old_values
 			))
+			new_values.discard(None)
 			if old_values == new_values:
 				return
 			obj.info["a"] = list(new_values)
