@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.150-1) unstable; urgency=low
+
+  * Bug #30811: fixed typos
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 04 Nov 2013 16:53:26 +0100
+
 univention-management-console-frontend (3.0.149-1) unstable; urgency=low
 
   * Bug #30811: validate email address before jumping to the next page
