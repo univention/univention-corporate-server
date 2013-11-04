@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.147-1) unstable; urgency=low
+
+  * Bug #32751: adjust font size for buttons in grid rows
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 04 Nov 2013 10:50:15 +0100
+
 univention-management-console-frontend (3.0.146-1) unstable; urgency=low
 
   * Bug #30811: fixed several usability points
