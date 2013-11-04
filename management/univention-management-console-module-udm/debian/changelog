@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.92-1) unstable; urgency=low
+
+  * Bug #32978: save initial form value as soon as each widget is ready,
+    display progress of form loading
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 04 Nov 2013 14:17:33 +0100
+
 univention-management-console-module-udm (4.0.91-1) unstable; urgency=low
 
   * Bug #32381: clone array reference for superordinates before sorting

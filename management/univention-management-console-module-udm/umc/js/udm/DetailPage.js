@@ -214,10 +214,8 @@ define([
 				setTimeout(lang.hitch(this, function() {
 					this.renderDetailPage(properties, layout, policies, template).then(lang.hitch(this, function() {
 						this.loadedDeferred.resolve();
-						this.standby(false);
 					}), lang.hitch(this, function() {
 						this.loadedDeferred.resolve();
-						this.standby(false);
 					}));
 				}), 50);
 			}), lang.hitch(this, function() {
@@ -240,7 +238,9 @@ define([
 					this._form.getWidget( '$objecttype$' ).set( 'visible', false);
 					this._form.getWidget( '$location$' ).set( 'visible', false);
 				}));
-				return;
+				var deferred = new Deferred();
+				deferred.resolve();
+				return deferred;
 			}
 
 			return all({
@@ -251,6 +251,7 @@ define([
 				var vals = result.object;
 				this._receivedObjOrigData = vals;
 				this._form.setFormValues(vals);
+				this._getInitialFormValues();
 
 				// as soon as the policy widgets are rendered, update the policy values
 				policyDeferred.then(lang.hitch(this, function() {
@@ -269,23 +270,47 @@ define([
 				this._form.getWidget( '$objecttype$' ).set( 'content', _( 'Type: <i>%(type)s</i>', { type: vals.$labelObjectType$ } ) );
 				this._form.getWidget( '$location$' ).set( 'content', _( 'Position: <i>%(path)s</i>', { path: path } ) );
 
-				// save the original form data
-				this._form.ready().then(lang.hitch(this, function() {
-					this._receivedObjFormData = this.getValues();
-					tools.forIn(this._receivedObjFormData, lang.hitch(this, function(ikey, ivalue) {
-						var widget = this._form.getWidget(ikey);
-						if (!(ikey in this._receivedObjOrigData) && tools.inheritsFrom(widget, 'umc.widgets.ComboBox')) {
-							// ikey was not received from server and it is a ComboBox
-							// => the value may very well be set because there is
-							// no empty choice (in this case the first choice is selected).
-							// this means that this value would not be
-							// recognized as a change!
-							// console.log(ikey, ivalue); // uncomment this to see which values will be send to the server
-							this._receivedObjFormData[ikey] = '';
-						}
+				this._displayProgressOnSubmitButton();
+
+				return this._form.ready();
+			}));
+		},
+
+		_getInitialFormValues: function() {
+			this._receivedObjFormData = {
+				$policies$: this._receivedObjOrigData.$policies$
+			};
+			tools.forIn(this._form._widgets, lang.hitch(this, function(iname, iwidget) {
+				if (!(iname in this._receivedObjOrigData) && tools.inheritsFrom(iwidget, 'umc.widgets.ComboBox')) {
+					// iname was not received from server and it is a ComboBox
+					// => the value may very well be set because there is
+					// no empty choice (in this case the first choice is selected).
+					// this means that this value would not be
+					// recognized as a change!
+					// console.log(iname, ivalue); // uncomment this to see which values will be send to the server
+					this._receivedObjFormData[iname] = '';
+				} else if (iwidget.ready) {
+					// get the initial value as soon as the widget is ready
+					iwidget.ready().then(lang.hitch(this, function() {
+						this._receivedObjFormData[iname] = iwidget.get('value');
 					}));
-					this._receivedObjFormData.$policies$ = this._receivedObjOrigData.$policies$;
-				}));
+				} else {
+					// no ready method -> get initial value immediately
+					this._receivedObjFormData[iname] = iwidget.get('value');
+				}
+			}));
+		},
+
+		_displayProgressOnSubmitButton: function() {
+			var submitButton = this._footerButtons.submit;
+			var origLabel = submitButton.get('label');
+			this._form.ready().then(lang.hitch(this, function() {
+				// reset label of submit button
+				submitButton.set('label', origLabel);
+			}), null, lang.hitch(this, function(progress) {
+				// output loading progress as button label
+				var label = _('Loading: %s', progress.message);
+				submitButton.set('label', label);
 			}));
 		},
 
@@ -741,11 +766,11 @@ define([
 			borderLayout.startup();
 		},
 
-		_disableSubmitButtonUntilReady: function() {
+		_disableSubmitButtonUntilReady: function(loadedDeferred) {
 			// make sure that the submit button can only be pressed when the
 			// whole form is ready and all its dynamic values have been loaded
 			this._footerButtons.submit.set('disabled', true);
-			all([this._form.ready(), this.loadedDeferred]).then(lang.hitch(this, function() {
+			loadedDeferred.then(lang.hitch(this, function() {
 				this._footerButtons.submit.set('disabled', false);
 			}));
 		},
@@ -782,9 +807,10 @@ define([
 			this._renderSubTabs(widgets, layout).then(lang.hitch(this, function() {
 				this._renderPolicyTab(policies);
 				this._renderBorderContainer(widgets);
-				this._disableSubmitButtonUntilReady();
 				this._registerOptionWatchHandler();
 				formBuiltDeferred.resolve();
+				this._disableSubmitButtonUntilReady(loadedDeferred);
+				this.standby(false);
 				this.templateObject = this.buildTemplate(template, properties, widgets);
 
 				// initiate the template mechanism (only for new objects)

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-10-31 15:41+0100\n"
+"POT-Creation-Date: 2013-11-04 05:47-0500\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,7 +32,7 @@ msgid "Could not find a matching UDM module for the LDAP object %s"
 msgstr ""
 "Es konnte kein passendes UDM-Modul für das LDAP-Object %s gefunden werden"
 
-#: umc/python/udm/__init__.py:451 umc/python/udm/udm_ldap.py:333
+#: umc/python/udm/udm_ldap.py:333 umc/python/udm/__init__.py:451
 #, python-format
 msgid "Could not find an UDM module for the superordinate object %s"
 msgstr ""
@@ -89,7 +89,7 @@ msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
 msgid "PDF document"
 msgstr "PDF Dokument"
 
-#: umc/python/udm/__init__.py:789 umc/python/udm/udm_ldap.py:272
+#: umc/python/udm/udm_ldap.py:272 umc/python/udm/__init__.py:789
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"

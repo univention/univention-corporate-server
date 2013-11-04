@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Fri, 18 Oct 2013 23:38:02 +0200\n"
+"POT-Creation-Date: Mon, 04 Nov 2013 05:47:43 -0500\n"
 "PO-Revision-Date: 2011-10-21 17:59+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -27,40 +27,11 @@ msgstr "Konfiguration von DHCP-Einstellungen der Domäne"
 msgid "Configuration of DNS settings in the domain"
 msgstr "Konfiguration von DNS-Einstellungen der Domäne"
 
-msgid "Management of mail domains and mailing lists"
-msgstr "Verwaltung von Mail-Domänen und Mailing-Listen"
-
 msgid "Configuration of Nagios settings in the domain"
 msgstr "Konfiguration von Nagios-Einstellungen der Domäne"
 
 msgid "Configuration of network settings in the domain"
 msgstr "Konfiguration von Netzwerkeinstellungen der Domäne"
-
-msgid "Management of directory shares in the domain"
-msgstr ""
-"Verwaltung von Verzeichnisfreigaben in der Domäne"
-
-msgid "Management of domain wide policies"
-msgstr "Verwaltung von domänenweiten Richtlinien"
-
-msgid "Management of computers in the domain"
-msgstr "Verwaltung von Rechnern in der Domäne"
-
-msgid "Management of domain users"
-msgstr "Verwaltung von Benutzern in der Domäne"
-
-msgid ""
-"Management of user and computer groups in the domain"
-msgstr ""
-"Verwaltung von Benutzer- und Rechnergruppen in der "
-"Domäne"
-
-msgid ""
-"Management of printers and printer groups in "
-"the domain"
-msgstr ""
-"Verwaltung von Druckern und "
-"Druckergruppen in der Domäne"
 
 msgid "DHCP"
 msgstr "DHCP"
@@ -79,6 +50,27 @@ msgstr "LDAP-Verzeichnis"
 
 msgid "Mail"
 msgstr "E-Mail"
+
+msgid "Management of computers in the domain"
+msgstr "Verwaltung von Rechnern in der Domäne"
+
+msgid "Management of directory shares in the domain"
+msgstr "Verwaltung von Verzeichnisfreigaben in der Domäne"
+
+msgid "Management of domain users"
+msgstr "Verwaltung von Benutzern in der Domäne"
+
+msgid "Management of domain wide policies"
+msgstr "Verwaltung von domänenweiten Richtlinien"
+
+msgid "Management of mail domains and mailing lists"
+msgstr "Verwaltung von Mail-Domänen und Mailing-Listen"
+
+msgid "Management of printers and printer groups in the domain"
+msgstr "Verwaltung von Druckern und Druckergruppen in der Domäne"
+
+msgid "Management of user and computer groups in the domain"
+msgstr "Verwaltung von Benutzer- und Rechnergruppen in der Domäne"
 
 msgid "Manages all UDM modules"
 msgstr "Verwaltet alle UDM-Module"
