@@ -803,10 +803,10 @@ define([
 			// render widgets and full layout
 			var widgets = render.widgets(properties, this);
 			this._autoUpdateTabTitle(widgets);
-			this._renderMultiEditCheckBoxes(widgets);
 			this._renderSubTabs(widgets, layout).then(lang.hitch(this, function() {
 				this._renderPolicyTab(policies);
 				this._renderBorderContainer(widgets);
+				this._renderMultiEditCheckBoxes(widgets);
 				this._registerOptionWatchHandler();
 				formBuiltDeferred.resolve();
 				this._disableSubmitButtonUntilReady(loadedDeferred);
