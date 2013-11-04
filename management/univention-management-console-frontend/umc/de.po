@@ -401,7 +401,7 @@ msgstr "Passwort"
 
 #: umc/app.js:1605
 msgid "Please enter a valid email address!"
-msgstr "Bitte eine gültige E-Mail-Adresse angeben!"
+msgstr "Bitte geben Sie eine gültige E-Mail-Adresse an!"
 
 #: umc/tools.js:671
 msgid "Please take a second to provide the following information:"

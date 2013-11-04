@@ -154,7 +154,7 @@ define([
 					if (idx < docs.length - 1) {
 						footerRight.addChild(new Button({
 							label: _('Next'),
-							callback: lang.hitch(this, '_gotoPage', idx + 1),
+							callback: lang.hitch(this, '_gotoPage', idx + 1, idx),
 							defaultButton: true
 						}));
 					}
@@ -223,7 +223,14 @@ define([
 			this.inherited(arguments);
 		},
 
-		_gotoPage: function(idx) {
+		_gotoPage: function(idx, oldIdx) {
+			if (oldIdx >= 0 && query('#umc_app_activation_email', this._pages[oldIdx].domNode).length) {
+				// activiation page is visible
+				if (this._isValidEmail() === false) {
+					dialog.alert(_('Please enter a valid email address!'));
+					return;
+				}
+			}
 			this._stackContainer.selectChild(this._pages[idx]);
 		},
 
@@ -265,17 +272,30 @@ define([
 			}
 		},
 
-		_evaluateActivation: function() {
-			// license activation page may not be shown -> make sure email widget exists
+		_getEmail: function() {
 			var emailWidget = registry.byId('umc_app_activation_email');
 			if (!emailWidget) {
-				return;
+				return null;
 			}
+			return emailWidget.get('value');
+		},
 
+		_isValidEmail: function() {
+			var emailWidget = registry.byId('umc_app_activation_email');
+			if (!emailWidget) {
+				return null;
+			}
 			var email = emailWidget.get('value');
-			if (emailWidget.isValid() && email) {
+			if (!email) {
+				return null;
+			}
+			return emailWidget.isValid();
+		},
+
+		_evaluateActivation: function() {
+			if (this._isValidEmail()) {
 				tools.umcpCommand('udm/request_new_license', {
-					email: email
+					email: this._getEmail()
 				}, false).then(function() {}, lang.hitch(this, function() {
 					dialog.alert(_('The activation of UCS failed. Please re-try to perform the the activation again via the settings menu.'));
 				}));
