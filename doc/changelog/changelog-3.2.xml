@@ -1053,6 +1053,13 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+			Opening certain LDAP objects takes very long. Now widgets for
+			attributes that may have multiple values do not block anymore while
+			being built (<ulink url="&ucsbug;31376">Bug 31376</ulink>).
+		</simpara></listitem>
+
+
+		<listitem><simpara>
 				Moved dialog for requesting a new license with key ID from
 				<application>Univention App Center</application> to the global license dialog
 				(<ulink url="&ucsbug;32389">Bug 32389</ulink>).
