@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.148-1) unstable; urgency=low
+
+  * Bug #30811: added email validation in activiation dialogue, fixed typos
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 04 Nov 2013 14:39:57 +0100
+
 univention-management-console-frontend (3.0.147-1) unstable; urgency=low
 
   * Bug #32751: adjust font size for buttons in grid rows

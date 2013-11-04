@@ -1600,14 +1600,13 @@ define([
 				}
 
 				var emailWidget = registry.byId('umc_app_activation_email');
-				var email = emailWidget.get('value');
-				if (!email || email.indexOf('@') < 1) {
+				if (!emailWidget.isValid()) {
 					_reopenActivationDialog().then(function() {
 						dialog.alert(_('Please enter a valid email address!'));
 					});
 				} else {
 					tools.umcpCommand('udm/request_new_license', {
-						email: email
+						email: emailWidget.get('value')
 					}, false).then(lang.hitch(this, function() {
 						this._showLicenseImportDialog();
 					}), lang.hitch(this, function(error) {
