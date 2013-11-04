@@ -38,11 +38,12 @@ class ChangeSet(object):
 	def __init__(self, ucr, profile, options):
 		self.ucr = ucr
 		self.profile = profile
-		self.ucr_changes = self.only_network_config(profile)
 		self.options = options
+		self.ucr_changes = {}
 		self.old_interfaces = Interfaces(ucr)
-		self.new_interfaces = Interfaces(self.ucr_changes)
 		self.logger = logging.getLogger("uss.network.change")
+
+		self.update_config(self.only_network_config(profile))
 
 	@staticmethod
 	def only_network_config(profile):
@@ -54,7 +55,9 @@ class ChangeSet(object):
 
 	def update_config(self, changes):
 		self.ucr_changes.update(changes)
-		self.new_interfaces = Interfaces(self.ucr_changes)
+		new_ucr = dict(self.ucr.items())  # Bug #33101
+		new_ucr.update(changes)
+		self.new_interfaces = Interfaces(new_ucr)
 
 	@property
 	def no_act(self):

@@ -1,3 +1,9 @@
+univention-system-setup (7.0.65-3) unstable; urgency=low
+
+  * Handle primary interface only change (Bug #28670)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 04 Nov 2013 13:40:04 +0100
+
 univention-system-setup (7.0.65-2) unstable; urgency=low
 
   * Improve network reconfiguration rebustness (Bug #28670)

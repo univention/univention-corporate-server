@@ -20,10 +20,11 @@ class TestPxeRewrite(unittest.TestCase):
 			"interfaces/eth0/address": "2.3.4.5",
 			"interfaces/eth0/netmask": "255.255.255.0",
 		}
-		profile = {
+		profile = dict((key, None) for key in ucr.keys() if key.startswith("interfaces/"))
+		profile.update({
 			"interfaces/eth0/address": "2.3.4.100",
 			"interfaces/eth0/netmask": "255.255.255.0",
-		}
+		})
 		options = DummyOption()
 		self.cs = ChangeSet(ucr, profile, options)
 		self.phase = RewritePxe.PhaseRewritePxe(self.cs)
@@ -56,12 +57,13 @@ class TestPxeRewriteMultiple(unittest.TestCase):
 			"interfaces/eth1/address": "9.8.7.6",
 			"interfaces/eth1/netmask": "255.255.0.0",
 		}
-		profile = {
+		profile = dict((key, None) for key in ucr.keys() if key.startswith("interfaces/"))
+		profile.update({
 			"interfaces/eth0/address": "2.3.4.100",
 			"interfaces/eth0/netmask": "255.255.255.0",
 			"interfaces/eth1/address": "9.8.7.100",
 			"interfaces/eth1/netmask": "255.255.0.0",
-		}
+		})
 		options = DummyOption()
 		self.cs = ChangeSet(ucr, profile, options)
 		self.phase = RewritePxe.PhaseRewritePxe(self.cs)
@@ -85,11 +87,12 @@ class TestPxeRewriteRemoved(unittest.TestCase):
 			"interfaces/eth1/address": "9.8.7.6",
 			"interfaces/eth1/netmask": "255.255.0.0",
 		}
-		profile = {
+		profile = dict((key, None) for key in ucr.keys() if key.startswith("interfaces/"))
+		profile.update({
 			"interfaces/eth1/address": "9.8.7.100",
 			"interfaces/eth1/netmask": "255.255.0.0",
 			"interfaces/primary": "eth1",
-		}
+		})
 		options = DummyOption()
 		self.cs = ChangeSet(ucr, profile, options)
 		self.phase = RewritePxe.PhaseRewritePxe(self.cs)

@@ -1,0 +1,307 @@
+#!/bin/bash
+set -e
+# As a security measure you have to pass the name of the domain to unlock this test script.
+case "$(printf "%s" "${1:-}" | sha256sum)" in
+"167bce9f7392de0ca3b9fcdfd2fdb30b398705ded3eb9f93a508cc5005234fa9  -") shift ;;
+-h|--help) echo "$0 \$SECRET [(reset|profile|run|dump|default) [profile]]" ; exit 0 ;;
+*) echo "Disabled" >&2 ; exit 0 ;;
+esac
+
+DN () {
+	sed -ne 's/^DN: //p'
+}
+zap_udm () {
+	local module="${1?:missing module name}"
+	udm "$module" list |
+		DN |
+		xargs -r -n 1 -d '\n' udm "$module" remove --remove_referring --dn
+}
+reset () {
+	reset_locks
+	reset_dhcp
+	reset_dns
+	reset_network
+	reset_computer
+	reset_ucr
+	reset_pxe
+}
+reset_locks () {
+	zap_udm settings/lock
+}
+reset_dhcp () {
+	zap_udm dhcp/service
+	udm dhcp/service create \
+		--position "cn=dhcp,dc=phahn,dc=dev" \
+		--set service="phahn.dev"
+	udm dhcp/server create \
+		--position "cn=phahn.dev,cn=dhcp,dc=phahn,dc=dev" \
+		--superordinate "cn=phahn.dev,cn=dhcp,dc=phahn,dc=dev" \
+		--set server="mas11"
+	udm dhcp/subnet create \
+		--position "cn=phahn.dev,cn=dhcp,dc=phahn,dc=dev" \
+		--superordinate "cn=phahn.dev,cn=dhcp,dc=phahn,dc=dev" \
+		--set subnet="192.168.122.0" \
+		--set subnetmask="24"
+}
+reset_dns () {
+	zap_udm dns/forward_zone
+	udm dns/forward_zone create \
+		--position "cn=dns,dc=phahn,dc=dev" \
+		--set zone="phahn.dev" \
+		--set nameserver="mas11.phahn.dev" \
+		--set contact="root@phahn.dev"
+	zap_udm dns/reverse_zone
+	udm dns/reverse_zone create \
+		--position "cn=dns,dc=phahn,dc=dev" \
+		--set subnet="192.168.122" \
+		--set nameserver="mas11.phahn.dev" \
+		--set contact="root@phahn.dev"
+}
+reset_network () {
+	zap_udm networks/network
+	udm networks/network create \
+		--position "cn=networks,dc=phahn,dc=dev" \
+		--set name="default" \
+		--set network="192.168.122.0" \
+		--set netmask="24" \
+		--set dnsEntryZoneForward="zoneName=phahn.dev,cn=dns,dc=phahn,dc=dev" \
+		--set dnsEntryZoneReverse="zoneName=122.168.192.in-addr.arpa,cn=dns,dc=phahn,dc=dev" \
+		--set dhcpEntryZone="cn=phahn.dev,cn=dhcp,dc=phahn,dc=dev"
+}
+reset_computer () {
+	zap_udm computers/domaincontroller_master
+	udm computers/domaincontroller_master create \
+		--position "cn=dc,cn=computers,dc=phahn,dc=dev" \
+		--set name="mas11" \
+		--set domain="phahn.dev" \
+		--set dnsEntryZoneForward="zoneName=phahn.dev,cn=dns,dc=phahn,dc=dev 192.168.122.11" \
+		--set dnsEntryZoneReverse="zoneName=122.168.192.in-addr.arpa,cn=dns,dc=phahn,dc=dev 192.168.122.11" \
+		--set dnsEntryZoneAlias="phahn.dev zoneName=phahn.dev,cn=dns,dc=phahn,dc=dev a036b529-bbe7-4b87-b062-76e251603f9d._msdcs" \
+		$(: --set dhcpEntryZone="cn=phahn.dev,cn=dhcp,dc=phahn,dc=dev 192.168.122.11 52:54:00:06:57:f2") \
+		--set groups="cn=DC Backup Hosts,cn=groups,dc=phahn,dc=dev" \
+		--set groups="cn=Domain Controllers,cn=groups,dc=phahn,dc=dev" \
+		--set groups="cn=Enterprise Domain Controllers,cn=groups,dc=phahn,dc=dev" \
+		--set primaryGroup="cn=DC Backup Hosts,cn=groups,dc=phahn,dc=dev" \
+		--set serverRole="master" \
+		--set dnsAlias="a036b529-bbe7-4b87-b062-76e251603f9d._msdcs" \
+		--set ip="192.168.122.11" \
+		--set mac="52:54:00:06:57:f2" \
+		--set mac="52:54:00:c5:0d:48" \
+		--set service="LDAP" \
+		--set service="DNS" \
+		--set service="NFS" \
+		--set service="Samba 4" \
+		--set service="S4 Connector" \
+		--set service="DHCP" \
+		--set sambaRID="1000" \
+		--set password="$(</etc/machine.secret)"
+}
+reset_ucr () {
+	tmp=$(mktemp -d)
+	mkfifo "$tmp/set"
+	mkfifo "$tmp/unset"
+	xargs -r -d '\n' ucr set <"$tmp/set" &
+	ucr --keys-only search --non-empty --brief '^interfaces/' |
+		grep --fixed-strings --invert-match --line-regexp --file "$tmp/unset" |
+		xargs -r -d '\n' ucr unset &
+	while IFS='=' read key value
+	do
+		case "$key" in
+		"#"*) continue ;;
+		esac
+		echo "$key=$value" >&3
+		echo "$key" >&4
+	done 3>"$tmp/set" 4>"$tmp/unset" <<__UCR__
+interfaces/eth0/address=192.168.122.11
+interfaces/eth0/broadcast=192.168.122.255
+interfaces/eth0/ipv6/acceptRA=false
+interfaces/eth0/netmask=255.255.255.0
+interfaces/eth0/network=192.168.122.0
+interfaces/eth0/start=true
+interfaces/eth0/type=static
+#interfaces/eth1/address=10.0.0.11
+#interfaces/eth1/broadcast=10.255.255.255
+#interfaces/eth1/ipv6/acceptRA=false
+#interfaces/eth1/netmask=255.0.0.0
+#interfaces/eth1/network=10.0.0.0
+#interfaces/eth1/start=true
+#interfaces/eth1/type=static
+#interfaces/eth1/ipv6/default/address=2001:4dd0:f8fc::5054:00ff:fec5:0d48
+#interfaces/eth1/ipv6/default/prefix=64
+interfaces/primary=eth0
+interfaces/handler=ifplugd
+ldap/server/ip=192.168.122.11
+kernel/modules=quota_v2
+gateway=192.168.122.1
+nameserver1=192.168.122.1
+dns/forwarder1=192.168.122.1
+__UCR__
+	wait
+	rm -rf "$tmp"
+}
+reset_pxe () {
+	mkdir -p /var/lib/univention-client-boot/pxelinux.cfg
+	cat >/var/lib/univention-client-boot/pxelinux.cfg/0AC811CD <<__PXE__
+# profile 192.168.122.11
+PROMPT 0
+DEFAULT linux
+IPAPPEND 3
+
+APPEND root=/dev/ram rw nomodeset initrd=linux.bin ramdisk_size=260000 quiet vga=788 loglevel=0 flavor=linux nfs  profile=memberserver 192.168.122.11:/profile syslogserver=192.168.122 DNSSERVER=192.168.122.11 
+
+LABEL linux
+  KERNEL linux-server
+__PXE__
+}
+
+profile () {
+	local profile="${1:-empty}"
+	local func="profile_${profile}"
+	case "$(type -t "$func")" in
+	function) "$func" ;;
+	*) echo "Unknown profile: $profile" >&2 ; exit 2 ;;
+	esac
+}
+profile_empty () {
+	: >/var/cache/univention-system-setup/profile
+}
+profile_sub_old () {
+	cat >/var/cache/univention-system-setup/profile <<__PROFILE__
+interfaces/eth0/address="192.168.122.12"
+interfaces/eth0/broadcast="192.168.122.255"
+interfaces/eth0/ipv6/acceptRA="false"
+interfaces/eth0/netmask="255.255.255.0"
+interfaces/eth0/network="192.168.122.0"
+interfaces/eth0/start="true"
+interfaces/eth0/type="static"
+__PROFILE__
+}
+profile_sub_new () {
+	cat >/var/cache/univention-system-setup/profile <<__PROFILE__
+interfaces/eth0/address="10.0.0.11"
+interfaces/eth0/broadcast="10.255.255.255"
+interfaces/eth0/ipv6/acceptRA="false"
+interfaces/eth0/netmask="255.0.0.0"
+interfaces/eth0/network="10.0.0.0"
+interfaces/eth0/start="true"
+interfaces/eth0/type="static"
+__PROFILE__
+}
+profile_add_v4 () {
+	cat >/var/cache/univention-system-setup/profile <<__PROFILE__
+interfaces/eth0/address="192.168.122.11"
+interfaces/eth0/broadcast="192.168.122.255"
+interfaces/eth0/ipv6/acceptRA="false"
+interfaces/eth0/netmask="255.255.255.0"
+interfaces/eth0/network="192.168.122.0"
+interfaces/eth0/start="true"
+interfaces/eth0/type="static"
+interfaces/eth1/address="10.0.0.11"
+interfaces/eth1/broadcast="10.255.255.255"
+interfaces/eth1/ipv6/acceptRA="false"
+interfaces/eth1/netmask="255.0.0.0"
+interfaces/eth1/network="10.0.0.0"
+interfaces/eth1/start="true"
+interfaces/eth1/type="static"
+__PROFILE__
+}
+profile_add_v6 () {
+	cat >/var/cache/univention-system-setup/profile <<__PROFILE__
+interfaces/eth0/address="192.168.122.11"
+interfaces/eth0/broadcast="192.168.122.255"
+interfaces/eth0/ipv6/acceptRA="false"
+interfaces/eth0/netmask="255.255.255.0"
+interfaces/eth0/network="192.168.122.0"
+interfaces/eth0/start="true"
+interfaces/eth0/type="static"
+interfaces/eth1/broadcast=""
+interfaces/eth1/ipv6/acceptRA="false"
+interfaces/eth1/ipv6/default/address="2001:4dd0:f8fc::5054:00ff:fec5:0d48"
+interfaces/eth1/ipv6/default/prefix="64"
+interfaces/eth1/network=""
+interfaces/eth1/start="true"
+interfaces/eth1/type="static"
+__PROFILE__
+}
+profile_add_vx () {
+	cat >/var/cache/univention-system-setup/profile <<__PROFILE__
+interfaces/eth0/address="192.168.122.11"
+interfaces/eth0/broadcast="192.168.122.255"
+interfaces/eth0/ipv6/acceptRA="false"
+interfaces/eth0/netmask="255.255.255.0"
+interfaces/eth0/network="192.168.122.0"
+interfaces/eth0/start="true"
+interfaces/eth0/type="static"
+interfaces/eth1/address="10.0.0.11"
+interfaces/eth1/broadcast="10.255.255.255"
+interfaces/eth1/ipv6/acceptRA="false"
+interfaces/eth1/ipv6/default/address="2001:4dd0:f8fc::5054:00ff:fec5:0d48"
+interfaces/eth1/ipv6/default/prefix="64"
+interfaces/eth1/netmask="255.0.0.0"
+interfaces/eth1/network="10.0.0.0"
+interfaces/eth1/start="true"
+interfaces/eth1/type="static"
+__PROFILE__
+}
+profile_add_vx_primary () {
+	cat >/var/cache/univention-system-setup/profile <<__PROFILE__
+interfaces/eth0/address="192.168.122.11"
+interfaces/eth0/broadcast="192.168.122.255"
+interfaces/eth0/ipv6/acceptRA="false"
+interfaces/eth0/netmask="255.255.255.0"
+interfaces/eth0/network="192.168.122.0"
+interfaces/eth0/start="true"
+interfaces/eth0/type="static"
+interfaces/eth1/address="10.0.0.11"
+interfaces/eth1/broadcast="10.255.255.255"
+interfaces/eth1/ipv6/acceptRA="false"
+interfaces/eth1/ipv6/default/address="2001:4dd0:f8fc::5054:00ff:fec5:0d48"
+interfaces/eth1/ipv6/default/prefix="64"
+interfaces/eth1/netmask="255.0.0.0"
+interfaces/eth1/network="10.0.0.0"
+interfaces/eth1/start="true"
+interfaces/eth1/type="static"
+interfaces/primary="eth1"
+__PROFILE__
+}
+run () {
+	/usr/lib/univention-system-setup/scripts/30_net/10interfaces -v 2>&1 |
+		grep -v ADMIN
+}
+
+dump () {
+	echo === LDAP:
+	slapcat -d0 | egrep '10.0.0.|192.168.122.|2001:4dd0:f8fc:'
+	echo === UCR:
+	ucr search --brief --value '10.0.0.|192.168.122.|2001:4dd0:f8fc:'
+	echo === computer:
+	udm computers/domaincontroller_master list | egrep '^DN|mac|EntryZone'
+	echo === DNS:
+	udm dns/forward_zone list | DN
+	echo === DNS-rev:
+	udm dns/reverse_zone list | DN
+	echo === Network:
+	udm networks/network list | DN
+	echo === DHCP:
+	udm dhcp/subnet list --superordinate "$(udm dhcp/service list | DN)" | DN
+	echo === PXE:
+	egrep '10.0.0.|192.168.122.|2001:4dd0:f8fc:' /var/lib/univention-client-boot/pxelinux.cfg/0AC811CD
+}
+
+default () {
+	reset "$@"
+	echo ======================================================================
+	profile "$@"
+	run "$@"
+	echo ======================================================================
+	dump "$@"
+}
+
+if [ "30net_10interfaces" = "${0##*/}" ]
+then
+	case "${1:-default}" in
+	reset|profile|run|dump|default) "$@" ;;
+	*) echo "Unknown: $1" >&2 ; exit 2 ;;
+	esac
+	exit $?
+fi

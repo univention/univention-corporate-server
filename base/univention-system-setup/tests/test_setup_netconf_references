@@ -35,7 +35,8 @@ class Testpolicyhanged(unittest.TestCase):
 			"hostname": "mas11",
 			"domainname": "phahn.dev",
 		}
-		profile = {
+		profile = dict((key, None) for key in ucr.keys() if key.startswith("interfaces/"))
+		profile.update({
 			"interfaces/eth0/type": "static",
 			"interfaces/eth0/start": "true",
 			"interfaces/eth0/address": "2.3.4.5",
@@ -44,7 +45,7 @@ class Testpolicyhanged(unittest.TestCase):
 			"interfaces/eth0/broadcast": "2.3.4.255",
 			"interfaces/eth0/ipv6/default/address": "2222:3333:4444::5555",
 			"interfaces/eth0/ipv6/default/prefix": "80",
-		}
+		})
 		options = DummyOption()
 		self.cs = ChangeSet(ucr, profile, options)
 		self.phase = LdapReferences.PhaseLdapReferences(self.cs)

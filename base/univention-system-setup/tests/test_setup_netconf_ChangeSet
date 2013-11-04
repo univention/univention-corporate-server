@@ -53,7 +53,7 @@ class TestChangeSetRemoved(unittest.TestCase):
 			"interfaces/eth0/ipv6/default/address": "1111:2222::3333",
 			"interfaces/eth0/ipv6/default/prefix": "64",
 		}
-		profile = {}
+		profile = dict((key, None) for key in ucr.keys() if key.startswith("interfaces/"))
 		options = DummyOption()
 		self.cs = ChangeSet(ucr, profile, options)
 
@@ -122,7 +122,8 @@ class TestChangeSetChanged(unittest.TestCase):
 			"interfaces/eth0/ipv6/default/address": "1111:2222::3333",
 			"interfaces/eth0/ipv6/default/prefix": "64",
 		}
-		profile = {
+		profile = dict((key, None) for key in ucr.keys() if key.startswith("interfaces/"))
+		profile.update({
 			"interfaces/eth0/type": "static",
 			"interfaces/eth0/start": "true",
 			"interfaces/eth0/address": "2.3.4.5",
@@ -131,7 +132,7 @@ class TestChangeSetChanged(unittest.TestCase):
 			"interfaces/eth0/broadcast": "2.3.4.255",
 			"interfaces/eth0/ipv6/default/address": "2222:3333:4444::5555",
 			"interfaces/eth0/ipv6/default/prefix": "80",
-		}
+		})
 		options = DummyOption()
 		self.cs = ChangeSet(ucr, profile, options)
 
@@ -170,7 +171,8 @@ class TestChangeSetMoved(unittest.TestCase):
 			"interfaces/eth0/ipv6/default/address": "1111:2222::3333",
 			"interfaces/eth0/ipv6/default/prefix": "64",
 		}
-		profile = {
+		profile = dict((key, None) for key in ucr.keys() if key.startswith("interfaces/"))
+		profile.update({
 			"interfaces/br0/type": "static",
 			"interfaces/br0/start": "true",
 			"interfaces/br0/address": "1.2.3.4",
@@ -179,7 +181,7 @@ class TestChangeSetMoved(unittest.TestCase):
 			"interfaces/br0/broadcast": "1.2.255.255",
 			"interfaces/br0/ipv6/default/address": "1111:2222::3333",
 			"interfaces/br0/ipv6/default/prefix": "64",
-		}
+		})
 		options = DummyOption()
 		self.cs = ChangeSet(ucr, profile, options)
 
