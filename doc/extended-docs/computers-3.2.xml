@@ -442,7 +442,7 @@ ucr set uvmm/kvm/bridge/autostart=no
 # for Xen:
 ucr set xen/bridge/interface=none
 # After that re-enable the UMC basic setup
-ucr unset umc/modules/setup/network
+ucr unset umc/modules/setup/network/disabled/by
             </programlisting>
 
             <para>
