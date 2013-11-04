@@ -1583,7 +1583,8 @@ define([
 
 			var confirmDeferred = dialog.templateDialog('umc/app', 'activation.' + _getLang()  + '.html', {
 				path: require.toUrl('umc/app'),
-				leaveFieldFreeDisplay: 'none'
+				leaveFieldFreeDisplay: 'none',
+				version: tools.status('ucsVersion').split('-')[0]
 			}, _('Activation of UCS'), [{
 				name: 'cancel',
 				label: _('Cancel')
@@ -1650,7 +1651,8 @@ define([
 			topic.publish('/umc/actions', 'menu-help', 'piwik');
 			dialog.templateDialog('umc/app', 'feedback.' + _getLang()  + '.html', {
 				path: require.toUrl('umc/app'),
-				hardwareStatisticsCheckboxDisplay: 'none'
+				hardwareStatisticsCheckboxDisplay: 'none',
+				version: tools.status('ucsVersion').split('-')[0]
 			}, _('Usage statistics'), _('Close'));
 		},
 

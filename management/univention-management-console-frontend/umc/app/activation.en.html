@@ -3,9 +3,9 @@
 	<p>You may now enter a valid email address in order to activate the UCS system for usage of the App Center. Within a short time, you will receive an updated license key. This key can then be uploaded via the license dialog in the settings menu (on the top right).
 	<p>
 		<form>
-			<input name="email" id="umc_app_activation_email" data-dojo-type="umc/widgets/TextBox" data-dojo-props="inlineLabel:'Email address'"/>
+			<input name="email" id="umc_app_activation_email" data-dojo-type="umc/widgets/TextBox" data-dojo-props="inlineLabel:'Email address', regExp:'.+@.+', invalidMessage:'No valid email address.'"/>
 		</form>
 	</p>
 	<p style="display:{leaveFieldFreeDisplay}">Leave the field empty to perform the activation at a later point in time via the settings menu.</p>
-	<p>Details about the activation of a UCS license can be found in the <a href="http://docs.univention.de/manual.html#software:appcenter" target="_blank">UCS manual</a>.</p>
+	<p>Details about the activation of a UCS license can be found in the <a href="http://docs.univention.de/manual-{version}.html#software:appcenter" target="_blank">UCS manual</a>.</p>
 </div>

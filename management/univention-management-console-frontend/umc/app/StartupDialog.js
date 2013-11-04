@@ -37,6 +37,7 @@ define([
 	"dojo/parser",
 	"dojo/dom-attr",
 	"dojo/dom-class",
+	"dojo/dom-geometry",
 	"dojo/Deferred",
 	"dojo/when",
 	"dojo/topic",
@@ -45,11 +46,12 @@ define([
 	"dijit/layout/StackContainer",
 	"dijit/form/RadioButton",
 	"umc/tools",
+	"umc/dialog",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
 	"umc/i18n!umc/app"
-], function(declare, lang, kernel, array, query, parser, domAttr, domClass, Deferred, when, topic, registry, Dialog, StackContainer, RadioButton, tools, Text, ContainerWidget, Button, _) {
+], function(declare, lang, kernel, array, query, parser, domAttr, domClass, domGeometry, Deferred, when, topic, registry, Dialog, StackContainer, RadioButton, tools, dialog, Text, ContainerWidget, Button, _) {
 	var _lang = kernel.locale.split('-')[0];
 	var _getDocumentDependency = function(key) {
 		return lang.replace('dojo/text!umc/app/{key}.{lang}.html', {
@@ -91,7 +93,8 @@ define([
 		return lang.replace(doc, {
 			path: require.toUrl('umc/app'),
 			feedbackUrl: _('umcFeedbackUrl'),
-			hardwareStatisticsCheckboxDisplay: 'block'
+			hardwareStatisticsCheckboxDisplay: 'block',
+			version: tools.status('ucsVersion').split('-')[0]
 		});
 	};
 
@@ -134,7 +137,7 @@ define([
 					if (idx < docs.length - 1) {
 						footer.addChild(new Button({
 							label: _('Cancel'),
-							callback: lang.hitch(this, 'close'),
+							callback: lang.hitch(this, 'close', false),
 							style: 'float:left'
 						}));
 					}
@@ -160,7 +163,7 @@ define([
 					if (idx == docs.length - 1) {
 						footerRight.addChild(new Button({
 							label: _('Close'),
-							callback: lang.hitch(this, 'close'),
+							callback: lang.hitch(this, 'close', true),
 							defaultButton: true
 						}));
 					}
@@ -179,8 +182,7 @@ define([
 					this._stackContainer.addChild(page);
 				}, this);
 
-				this.show();
-				this.set('content', this._stackContainer);
+				this._adjustWizardHeight();
 			}));
 
 			this.on('hide', lang.hitch(this, function() {
@@ -189,8 +191,31 @@ define([
 			}));
 		},
 
-		close: function() {
-			this._wizardCompleted = true;
+		_adjustWizardHeight: function() {
+			domClass.add(this.domNode, 'dijitOffScreen');
+			this.show();
+			var height = this._getMaxHeight();
+			array.forEach(this._pages, function(ipage) {
+				var icontent = ipage.getChildren()[0];
+				domGeometry.setMarginBox(icontent.domNode, { h: height });
+			});
+			domClass.remove(this.domNode, 'dijitOffScreen');
+			this._position();
+		},
+
+		_getMaxHeight: function() {
+			this.set('content', this._stackContainer);
+			var heights = array.map(this._pages, lang.hitch(this, function(ipage) {
+				this._stackContainer.selectChild(ipage);
+				var icontent = ipage.getChildren()[0];
+				return domGeometry.getMarginBox(icontent.domNode).h;
+			}));
+			this._stackContainer.selectChild(this._pages[0]);
+			return Math.max.apply(window, heights);
+		},
+
+		close: function(closed) {
+			this._wizardCompleted = closed;
 			this.hide();
 		},
 
@@ -248,10 +273,12 @@ define([
 			}
 
 			var email = emailWidget.get('value');
-			if (email && email.indexOf('@') > 0) {
+			if (emailWidget.isValid() && email) {
 				tools.umcpCommand('udm/request_new_license', {
 					email: email
-				});
+				}, false).then(function() {}, lang.hitch(this, function() {
+					dialog.alert(_('The activation of UCS failed. Please re-try to perform the the activation again via the settings menu.'));
+				}));
 			}
 		},
 
