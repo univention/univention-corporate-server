@@ -2882,7 +2882,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  global and universal) if the &ucsUCRV; <envar>connector/s4/mapping/group/grouptype</envar>
 		  is set to true. By default this is activated for new UCS 3.2 installations only. All other
 		  systems have to be migrated manually
-		  (<ulink url="&ucsbug;32768">Bug 32768</ulink>, <ulink url="&ucsbug;29486">Bug 29486</ulink>).
+		  (<ulink url="&ucsbug;32768">Bug 32768</ulink>, <ulink url="&ucsbug;29486">Bug 29486</ulink>,
+		   <ulink url="&ucsbug;33121">Bug 33121</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
