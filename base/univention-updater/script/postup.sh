@@ -129,6 +129,10 @@ if is_ucr_true grub/efi ; then
 	grub-install || echo -e "Warning: Installation of GRUB failed!\nPlease run 'grub-install' manually, to update GRUB on your boot device." | tee -a "$UPDATER_LOG" >&2
 fi
 
+# For UCS 3.2 update scenario, should be removed after the UCS 3.2 release
+#  https://forge.univention.org/bugzilla/show_bug.cgi?id=33121
+ucr set connector/s4/mapping/group/grouptype?false
+
 # For UCS 3.2-0 a reboot is required
 univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
 
