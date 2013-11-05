@@ -812,7 +812,12 @@ define([
 			// register to onShow as well as onFilterDone events in order on focus to the
 			// input widget when the tab is changed
 			this._searchPage.on('show', lang.hitch(this, '_selectInputText'));
-			this._grid.on('filterDone', lang.hitch(this, '_selectInputText'));
+			this._grid.on('filterDone', lang.hitch(this, function() {
+				if (!this._newObjectDialog) {
+					// not during "wizard phase"
+					this._selectInputText();
+				}
+			}));
 
 			// register event to update hiding/showing of form fields
 			this._searchForm.ready().then(lang.hitch(this, '_updateSearch'));
@@ -1385,8 +1390,7 @@ define([
 				selectedSuperordinate: superordinate,
 				defaultObjectType: this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/add/default'] || null,
 				objectNamePlural: this.objectNamePlural,
-				objectNameSingular: this.objectNameSingular,
-				autofocus: false // interferes with Wizard.autoFocus
+				objectNameSingular: this.objectNameSingular
 			});
 			this._newObjectDialog.on('FirstPageFinished', lang.hitch(this, function(options) {
 				this.createDetailPage(options.objectType, undefined, options);
@@ -1416,7 +1420,9 @@ define([
 				}),
 				lang.hitch(this, function() {
 					// canContinue.rejected! Ask the user
-					this._newObjectDialog.show();
+					this._newObjectDialog.show().then(lang.hitch(this, function() {
+						this._newObjectDialog.focusNextOnFirstPage();
+					}));
 				})
 			);
 		},

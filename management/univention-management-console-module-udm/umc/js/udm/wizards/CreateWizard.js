@@ -32,14 +32,15 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/has",
 	"umc/tools",
 	"umc/widgets/Wizard",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, tools, Wizard, _) {
+], function(declare, lang, array, has, tools, Wizard, _) {
 
 	return declare("umc.modules.udm.wizards.CreateWizard", [ Wizard ], {
 		autoValidate: true,
-		autoFocus: true,
+		autoFocus: !has('touch'),
 
 		detailPage: null,
 
@@ -84,7 +85,7 @@ define([
 		getValues: function() {
 			var values = this.inherited(arguments);
 			tools.forIn(lang.clone(values), lang.hitch(this, function(key, value) {
-				if (this._multiValuesWidgets.indexOf(key) !== -1) {
+				if (array.indexOf(this._multiValuesWidgets, key) !== -1) {
 					values[key] = [value];
 				}
 			}));

@@ -79,6 +79,8 @@ define([
 		// force max-width
 		//style: 'max-width: 300px;',
 
+		autofocus: false, // interferes with Wizard.autoFocus
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.canContinue = new Deferred();
@@ -156,7 +158,7 @@ define([
 						type: 'ComboBox',
 						name: 'superordinate',
 						label: _('Superordinate'),
-						description: _('The corresponding superordinate for the LDAP object.', this.objectNameSingular),
+						description: _('The corresponding superordinate for the LDAP object.'),
 						staticValues: array.map(superordinates, function(superordinate) {
 							return superordinate.title ? {id: superordinate.id, label: superordinate.title + ': ' + superordinate.label } : superordinate;
 						}),
@@ -242,7 +244,7 @@ define([
 			this._wizardContainer = new StackContainer({
 				style: 'width: 630px; height:310px;'
 			});
-			var firstPageWizard = new FirstPageWizard({
+			this._firstPageWizard = new FirstPageWizard({
 				pages: [{
 					name: 'firstPage',
 					headerText: this.get('title'),
@@ -250,22 +252,17 @@ define([
 					layout: layout
 				}]
 			});
-			on.once(this, 'show', function() {
-				if (!this.canContinue.isResolved()) {
-					firstPageWizard.focusFirstWidget('firstPage');
-				}
-			});
-			this._wizardContainer.addChild(firstPageWizard);
+			this._wizardContainer.addChild(this._firstPageWizard);
 			this._wizardContainer.startup();
-			this._wizardContainer.selectChild(firstPageWizard);
+			this._wizardContainer.selectChild(this._firstPageWizard);
 			this.own(this._wizardContainer);
 			this.set('content', this._wizardContainer);
 
-			firstPageWizard.on('Cancel', lang.hitch(this, function() {
+			this._firstPageWizard.on('Cancel', lang.hitch(this, function() {
 				this.hide();
 			}));
-			firstPageWizard.on('Finished', lang.hitch(this, function() {
-				var firstPageValues = firstPageWizard.getValues();
+			this._firstPageWizard.on('Finished', lang.hitch(this, function() {
+				var firstPageValues = this._firstPageWizard.getValues();
 				firstPageValues.objectType = firstPageValues.objectType || this.moduleFlavor;
 				var objectTypeName;
 				array.some(types, function(type) {
@@ -279,11 +276,11 @@ define([
 					objectTypeName = this.objectNameSingular;
 				}
 				this.mayCreateWizard.then(lang.hitch(this, function() {
-					this.buildCreateWizard(firstPageWizard, firstPageValues, objectTypeName);
+					this.buildCreateWizard(firstPageValues, objectTypeName);
 				}));
 			}));
 
-			var form = firstPageWizard._pages.firstPage._form;
+			var form = this._firstPageWizard._pages.firstPage._form;
 			form.ready().then(lang.hitch(this, function() {
 				var formNecessary = false;
 				tools.forIn(form._widgets, function(iname, iwidget) {
@@ -298,19 +295,19 @@ define([
 					this.canContinue.reject();
 				} else {
 					this.canContinue.resolve();
-					firstPageWizard._finish();
+					this._firstPageWizard._finish();
 				}
 			}));
 		},
 
-		buildCreateWizard: function(firstPageWizard, firstPageValues, objectTypeName) {
+		buildCreateWizard: function(firstPageValues, objectTypeName) {
 			var wizardDeferred = this.moduleCache.getWizard(firstPageValues.objectType || this.moduleFlavor);
 			if (this.wizardsDisabled) {
 				wizardDeferred = new Deferred();
 				wizardDeferred.reject();
 			}
 			this._readyForCreateWizard = new Deferred();
-			firstPageWizard.standbyDuring(all([this.createWizardAdded, wizardDeferred]));
+			this._firstPageWizard.standbyDuring(all([this.createWizardAdded, wizardDeferred]));
 			this.onFirstPageFinished(firstPageValues);
 
 			wizardDeferred.then(
@@ -331,7 +328,6 @@ define([
 						this._wizardContainer.addChild(createWizard, 1);
 						this._wizardContainer.selectChild(createWizard);
 						this.createWizardAdded.resolve();
-						createWizard.focusFirstWidget('page0');
 						var finishWizard = lang.hitch(this, function(wizardFormValues, submit) {
 							createWizard.standbyDuring(detailsValues.detailPage.loadedDeferred).then(lang.hitch(this, function() {
 								lang.mixin(detailsValues.detailPage.templateObject._userChanges, createWizard.templateObject._userChanges);
@@ -348,7 +344,7 @@ define([
 												lang.hitch(this, function() {
 													this.addNotification(_('%s created', createWizard.objectName()));
 													this.createWizardAdded = new Deferred();
-													this.buildCreateWizard(firstPageWizard, firstPageValues, objectTypeName);
+													this.buildCreateWizard(firstPageValues, objectTypeName);
 													this.createWizardAdded.then(lang.hitch(this, function() {
 														// new createWizard added, now we can remove this one
 														this._wizardContainer.removeChild(createWizard);
@@ -370,7 +366,7 @@ define([
 						});
 						createWizard.on('BackToFirstPage', lang.hitch(this, function() {
 							this.createWizardAdded = new Deferred();
-							this._wizardContainer.selectChild(firstPageWizard);
+							this._wizardContainer.selectChild(this._firstPageWizard);
 							this._wizardContainer.removeChild(createWizard);
 							createWizard.destroyRecursive();
 						}));
@@ -393,6 +389,10 @@ define([
 					this.onDone();
 				})
 			);
+		},
+
+		focusNextOnFirstPage: function() {
+			this._firstPageWizard.focusFirstWidget('firstPage');
 		},
 
 		setDetails: function(detailPage, template, properties) {

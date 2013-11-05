@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.95-1) unstable; urgency=low
+
+  * Bug #23214: Fixes for wizards, especially regarding focus
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 05 Nov 2013 17:57:30 +0100
+
 univention-management-console-module-udm (4.0.94-1) unstable; urgency=low
 
   * Bug #32978: disable submit button when creating a new UDM object
