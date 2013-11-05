@@ -764,10 +764,6 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Fixed a bug which prevented the possibility to scroll within drop down menus on touch devices (<ulink url="&ucsbug;32264">Bug 32264</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
 			The UMC page has been fixed for clients without enabled javascript
 			(<ulink url="&ucsbug;32820">Bug 32820</ulink>).
 		</simpara></listitem>
