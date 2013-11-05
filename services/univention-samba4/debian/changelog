@@ -1,3 +1,10 @@
+univention-samba4 (3.0.34-1) unstable; urgency=low
+
+  * samba4-idmap: map special (e.g. Builtin) group SIDs as ID_TYPE_BOTH
+    (Bug #33129)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 05 Nov 2013 20:38:50 +0100
+
 univention-samba4 (3.0.33-4) unstable; urgency=low
 
   * Fix python-udm syntax in scripts/purge_s4_computer.py (Bug #30763)

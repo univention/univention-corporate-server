@@ -59,7 +59,40 @@ sidAttribute='sambaSID'
 if listener.configRegistry.is_false('connector/s4/mapping/sid', False):
 	sidAttribute='univentionSamba4SID'
 
+__SPECIAL_ACCOUNT_SIDS = {
+	"Null Authority":                "S-1-0",
+	"World Authority":               "S-1-1",
+	"Everyone":                      "S-1-1-0",
+	"Nobody":                        "S-1-0-0",
+	"Creator Group":                 "S-1-3-1",
+	"Creator Owner":                 "S-1-3-0",
+	"Owner Rights":                  "S-1-3-4",
+	"Dialup":                        "S-1-5-1",
+	"Network":                       "S-1-5-2",
+	"Batch":                         "S-1-5-3",
+	"Interactive":                   "S-1-5-4",
+	"Service":                       "S-1-5-6",
+	"Anonymous Logon":               "S-1-5-7",
+	"Proxy":                         "S-1-5-8",
+	"Enterprise Domain Controllers": "S-1-5-9",
+	"Self":                          "S-1-5-10",
+	"Authenticated Users":           "S-1-5-11",
+	"Restricted":                    "S-1-5-12",
+	"Terminal Server User":          "S-1-5-13",
+	"Remote Interactive Logon":      "S-1-5-14",
+	"This Organization":             "S-1-5-15",
+	"IUSR":                          "S-1-5-17",
+	"System":                        "S-1-5-18",
+	"Local Service":                 "S-1-5-19",
+	"Network Service":               "S-1-5-20",
+	"NTLM Authentication":           "S-1-5-64-10",
+	"SChannel Authentication":       "S-1-5-64-14",
+	"Digest Authentication":         "S-1-5-64-21",
+	"Other Organization":            "S-1-5-1000",
+}
 
+__SPECIAL_SIDS = set(__SPECIAL_ACCOUNT_SIDS.values())
+	
 def open_idmap():
 	global lp
 	listener.setuid(0)
@@ -216,6 +249,8 @@ def handler(dn, new, old, operation):
 			new_xid = new.get(xid_attr, [''] )[0]
 			if new_xid:
 				new_sambaSID = new.get(sidAttribute, [''])[0]
+				if xid_type == 'ID_TYPE_GID' and new_sambaSID in __SPECIAL_SIDS:
+					xid_type = 'ID_TYPE_BOTH'
 				old_sambaSID = old.get(sidAttribute, [''])[0]
 				if old and old_sambaSID:
 					if new_sambaSID != old_sambaSID:
@@ -242,7 +277,10 @@ def handler(dn, new, old, operation):
 			
 			old_xid = old.get(xid_attr, [''] )[0]
 			if old_xid:
-				remove_idmap_entry(old[sidAttribute][0], old_xid, xid_type)
+				old_sambaSID = old.get(sidAttribute, [''])[0]
+				if xid_type == 'ID_TYPE_GID' and old_sambaSID in __SPECIAL_SIDS:
+					xid_type = 'ID_TYPE_BOTH'
+				remove_idmap_entry(old_sambaSID, old_xid, xid_type)
 		except ldb.LdbError, (enum, estr):
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
 				"%s: entry for %s could not be updated" % (name, old[sidAttribute][0]) )
