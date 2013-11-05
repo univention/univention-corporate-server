@@ -2756,6 +2756,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  Special groups (well known security principals) are now registerd in <filename>idmap.ldb</filename> as ID_TYPE_BOTH
+		  (<ulink url="&ucsbug;33129">Bug 33129</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  The option force group=Authenticated Users has been removed from the sysvol share
 		  definition. Now it is possible for users with the primary group Domain Admins to
 		  create and to modify GPOs
@@ -2966,7 +2971,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		bang (like <emphasis>.png</emphasis> or <emphasis>.xml</emphasis>) have been found by 
 		<program>ucs-test</program> within the testscript directories. To prevent the traceback, the 
         existing check for known non-test files has been fixed and the list of known non-test file 
-        suffixes has been updated (<ulink url="&ucsbug;32554">Bug 32554</ulink>).
+		suffixes has been updated (<ulink url="&ucsbug;32554">Bug 32554</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
