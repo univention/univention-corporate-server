@@ -321,8 +321,8 @@
 						<simpara>
 							Since UCS 3.2 it is possible (and preferable) to register schema
 							extensions via the Join Script (see <xref
-								linkend="udm:ea-with-schema" />). In most cases this makes
-							<literal>DefaultPackagesMaster</literal> unnecessary.
+								linkend="app:ucs_registerLDAPExtension" />). In most cases this
+							makes <literal>DefaultPackagesMaster</literal> unnecessary.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -756,8 +756,8 @@
 					linkend="chap:join"/>) in a package from
 				<literal>DefaultPackages</literal>. It will also have to extend the
 				LDAP schema. This can also be done in the Join Script (see <xref
-					linkend="udm:ea-with-schema" />) or, alternatively, in a package of
-				<literal>DefaultPackagesMaster</literal>.
+					linkend="app:ucs_registerLDAPExtension" />) or, alternatively, in a
+				package of <literal>DefaultPackagesMaster</literal>.
 			</para>
 			<para>
 				If the application wants to sync certain attributes (for example
@@ -767,11 +767,11 @@
 		</section>
 	</section>
 
-	<!--section id="app:bestpractices">
+	<section id="app:bestpractices">
 		<title>Best practices</title>
-		<para>
+		<!--para>
 			TBD. Minimal example app. Examples. Important: #DEBHELPER#.
-		</para>
+		</para-->
 	  <section id="app:ucs_registerLDAPExtension">
 		  <title>Registration of LDAP and UDM Extensions</title>
 			<para>
@@ -780,7 +780,7 @@
 		</section>
 	</section>
 
-	<section id="app:testcenter">
+	<!--section id="app:testcenter">
 		<title>Setup test app center</title>
 		<para>
 			TBD
