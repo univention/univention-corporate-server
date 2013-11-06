@@ -903,7 +903,9 @@ define([
 			// get also policy values... can not be handled as standard form entry
 			// explicitely exclude users/self. FIXME: find a way
 			// to receive some udm-module-configuration for that
-			if (this.objectType != 'users/self') {
+			var policiesLoaded = this._policyDeferred.isFulfilled();
+			var isUsersSelf = this.objectType != 'users/self';
+			if (!isUsersSelf && policiesLoaded) {
 				vals.$policies$ = {};
 				tools.forIn(this._policyWidgets, function(ipolicyType, iwidgets) {
 					var ival = iwidgets.$policy$.get('value');
