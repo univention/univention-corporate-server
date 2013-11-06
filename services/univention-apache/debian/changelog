@@ -1,3 +1,13 @@
+univention-apache (6.0.16-1) unstable; urgency=low
+
+  * use join script to add link to DC master on non DC master system, not
+    package postinst
+  * increased join script version in order to have the new link being added on
+    updated systems, too
+  (Bug #32647)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 06 Nov 2013 12:36:42 +0100
+
 univention-apache (6.0.15-1) unstable; urgency=low
 
   * Bug #33026: adjusted icon for DC master
