@@ -7,13 +7,6 @@
 	<title>App Center
 		<indexterm><primary>App center</primary></indexterm>
 	</title>
-	<remark>PMH: Bug #31226</remark>
-	<important>
-		<para>
-			This chapter is a draft and work in progress! Feedback is very much
-			appreciated.
-		</para>
-	</important>
 	<para>
 		The Univention App Center provides a platform for software vendors and an
 		easy-to-use entry point for &ucsUCS; users to extend their environment with
@@ -21,11 +14,11 @@
 	</para>
 	<para>
 		Univention App Center is the simplest form to install applications on
-		&ucsUCS;. In the Univention Management Console it is the first entry point
-		for their installation. Univention App Center is no app store in a
-		classical point of view as known from iOS or Android and no license
-		management for applications. The sale of licenses, maintenance or support
-		for applications follows the default procedure of the respective vendor.
+		&ucsUCS;. In the &ucsUMC; it is the first entry point for their
+		installation. Univention App Center is no app store in a classical point of
+		view as known from iOS or Android and no license management for
+		applications. The sale of licenses, maintenance or support for applications
+		follows the default procedure of the respective vendor.
 	</para>
 	<para>
 		This chapter mainly aims at software vendors that want to provide their
@@ -121,19 +114,12 @@
 			send that to Univention.
 		</para>
 		<para>
-			It is recommended (and probably necessary) to provide at least one
-			additional package that arranges for deeper integration into &ucsUCS;.
-			This package could be named
+			For deeper integration in &ucsUCS; it is necessary to add at least one more
+			file, a Join Script (see <xref linkend="app:integration-by-vendor" />).
+			This file can be included in the core package of the application or in a
+			dedicated package for &ucsUCS; integration, say,
 			<package>univention-<replaceable>appname</replaceable></package> and have
 			a dependency on the core application (on <literal>dpkg</literal> level).
-			Depending on whether the application wants to extend the LDAP, another
-			(independent) package needs to be provided, say,
-			<package>univention-<replaceable>appname</replaceable>-master</package>.
-			It does not need to be installed on each system the core application is
-			installed but needs to stay installed even when the core application is
-			removed. Thus it should be as independent as possible from the the core
-			application (and
-			<package>univention-<replaceable>appname</replaceable></package>).
 		</para>
 		<para>
 			See <xref linkend="chap:debian"/> for further details on how to build
@@ -216,7 +202,7 @@
 			particulars in the meta data have to be in English at least.
 		</para>
 		<para>
-			A minimal example along with some comments on the variables is attached:
+			An example along with some comments on the variables is attached:
 		</para>
 		<programlisting language="ini"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="application.ini" parse="text"/></programlisting>
 		<para>
@@ -331,6 +317,12 @@
 							uninstalled even when the whole application is removed because a
 							schema that was used before it is removed again will break the
 							whole LDAP server.
+						</simpara>
+						<simpara>
+							Since UCS 3.2 it is possible (and preferable) to register schema
+							extensions via the Join Script (see <xref
+								linkend="udm:ea-with-schema" />). In most cases this makes
+							<literal>DefaultPackagesMaster</literal> unnecessary.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -523,12 +515,12 @@
 				<term>README</term>
 				<listitem>
 					<simpara>
-						A README file that the user may see in a dedicated Univention
-						Management Console Module for the installed application. Should
-						contain something like first steps with the installed application
-						and explain what can be done with it and how. HTML is allowed. It
-						may be localised by using the files <literal>README_EN</literal>
-						resp <literal>README_DE</literal>.
+						A README file that the user may see in a dedicated &ucsUMC; module
+						for the installed application. Should contain something like first
+						steps with the installed application and explain what can be done
+						with it and how. HTML is allowed. It may be localised by using the
+						files <literal>README_EN</literal> resp
+						<literal>README_DE</literal>.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -690,9 +682,9 @@
 			<para>
 				New in UCS 3.2: The overview of any UCS system (i.e. plain
 				https://<replaceable>IP</replaceable>/) can link to various web
-				frontends, e.g. the Univention Management Console. If the application
-				provides a <literal>WebInterface</literal> in the ini file, a link is
-				built automatically, with the ini's <literal>Name</literal> and
+				frontends, e.g. the &ucsUMC;. If the application provides a
+				<literal>WebInterface</literal> in the ini file, a link is built
+				automatically, with the ini's <literal>Name</literal> and
 				<literal>Description</literal> as text.
 			</para>
 			<para>
@@ -750,7 +742,7 @@
 				See also <xref linkend="chap:udm" /> if this data shall be accessed.
 			</para>
 		</section>
-	  <section>
+	  <section id="app:integration-by-vendor">
 		  <title>Scope of the vendor</title>
 			<para>
 				Reuse users, groups, computers already administered in domain.
@@ -759,12 +751,13 @@
 			<para>
 				An Application may need more attributes than there are present. For
 				example something like <emphasis>This user is allowed to use the
-					app</emphasis>. For this an app will have to extend the LDAP schema
-				(this should be done in the <literal>DefaultPackagesMaster</literal> of
-				the Application). Furthermore it needs to add Extended Attributes (see
+					app</emphasis>. For this it needs to add Extended Attributes (see
 				<xref linkend="udm:ea"/>) in a Join Script (see <xref
 					linkend="chap:join"/>) in a package from
-				<literal>DefaultPackages</literal>.
+				<literal>DefaultPackages</literal>. It will also have to extend the
+				LDAP schema. This can also be done in the Join Script (see <xref
+					linkend="udm:ea-with-schema" />) or, alternatively, in a package of
+				<literal>DefaultPackagesMaster</literal>.
 			</para>
 			<para>
 				If the application wants to sync certain attributes (for example
@@ -774,7 +767,7 @@
 		</section>
 	</section>
 
-	<section id="app:bestpractices">
+	<!--section id="app:bestpractices">
 		<title>Best practices</title>
 		<para>
 			TBD. Minimal example app. Examples. Important: #DEBHELPER#.
@@ -792,7 +785,7 @@
 		<para>
 			TBD
 		</para>
-	</section>
+	</section-->
 
 </chapter>
 <!-- vim:set ts=2 sw=2 noet ft=docbk:-->
