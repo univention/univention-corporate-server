@@ -285,6 +285,16 @@
 	<title>Boot loader</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  GRUB has been updated to version 2.00. If the update process can clearly
+		  determine the block device the GRUB bootmanager is installed on, GRUB will be updated from version
+		  1.98 to 2.00 automatically. In all other cases the update of GRUB has to be done manually via the
+		  command <command>grub-install <emphasis>&lt;device&gt;</emphasis></command> after the update has
+		  completed successfully. Alternatively if the GRUB device is known in advance, the &ucsUCRV;
+		  <envar>update/grub/boot</envar> may be set to the corresponding devicename
+		  (e.g. <envar>update/grub/boot=/dev/sda</envar>) (<ulink url="&ucsbug;28191">Bug 28191</ulink>,
+		  <ulink url="&ucsbug;32634">Bug 32634</ulink>, <ulink url="&ucsbug;33125">Bug 33125</ulink>)
+		</simpara></listitem>
+		<listitem><simpara>
 		  The &ucsUCRV; descriptions in <package>univention-grub</package> and <package>univention-bootsplash</package> have been
 		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
 		</simpara></listitem>
