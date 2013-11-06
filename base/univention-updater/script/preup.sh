@@ -312,7 +312,7 @@ fi
 eval "$(ucr shell update/grub/boot)"
 if ! is_ucr_true grub/efi ; then
 	if [ -z "$update_grub_boot" ] && ! is_ucr_true grub/efi ; then
-		for device in $(egrep '^\s*[0-9]+' /proc/partitions | awk '{print $4}') ; do
+		for device in $(egrep '^\s*[0-9]+' /proc/partitions | awk '{print $4}' | egrep -v "^(fd|sr|scd|dm-)" ) ; do
 			# code borrowed from grub-common.postinst:
 			# a) find "GRUB" within boot sector
 			# b) GRUB2 uses assembler codes "63eb" (JMP) as first two bytes

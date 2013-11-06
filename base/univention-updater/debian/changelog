@@ -1,3 +1,10 @@
+univention-updater (9.0.29-2) unstable; urgency=low
+
+  * Bug #33125: ignore certain devices (cdrom, floppy, ...) during GRUB
+    device detection
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 05 Nov 2013 17:39:22 +0100
+
 univention-updater (9.0.29-1) unstable; urgency=low
 
   * Set connector/s4/mapping/group/grouptype to false in postup.sh
