@@ -904,7 +904,7 @@ define([
 			// explicitely exclude users/self. FIXME: find a way
 			// to receive some udm-module-configuration for that
 			var policiesLoaded = this._policyDeferred.isFulfilled();
-			var isUsersSelf = this.objectType != 'users/self';
+			var isUsersSelf = this.objectType == 'users/self';
 			if (!isUsersSelf && policiesLoaded) {
 				vals.$policies$ = {};
 				tools.forIn(this._policyWidgets, function(ipolicyType, iwidgets) {

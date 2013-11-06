@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.97-1) unstable; urgency=low
+
+  * Bug #33150: fixed typo
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 06 Nov 2013 13:28:13 +0100
+
 univention-management-console-module-udm (4.0.96-1) unstable; urgency=low
 
   * Bug #33150: fixed problems with saving policies
