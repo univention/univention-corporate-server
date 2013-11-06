@@ -321,12 +321,14 @@ if ! is_ucr_true grub/efi ; then
 					if [ -z "$update_grub_boot" ] ; then
 						update_grub_boot="/dev/$device"
 					else
+						unset update_grub_boot
 						echo "WARNING: Cannot determine the GRUB boot device clearly."
 						echo "		   After the update has been completed, please install GRUB with"
 						echo "		   the following command on your boot device:"
 						echo
 						echo "		   grub-install <DEVICE>"
 						sleep 5s
+						break
 					fi
 				fi
 			fi

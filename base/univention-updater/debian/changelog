@@ -1,3 +1,10 @@
+univention-updater (9.0.29-3) unstable; urgency=low
+
+  * Bug #33125: do not use first device found for GRUB reinstallation if
+    more than one device has been found
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 06 Nov 2013 13:34:22 +0100
+
 univention-updater (9.0.29-2) unstable; urgency=low
 
   * Bug #33125: ignore certain devices (cdrom, floppy, ...) during GRUB
