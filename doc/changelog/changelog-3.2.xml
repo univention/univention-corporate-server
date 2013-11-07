@@ -1818,6 +1818,10 @@
 			Several functions of <command>univention-ipcalc6</command> to compute DNS names have been moved to the new Python module <package>univention.ipcalc</package> (<ulink url="&ucsbug;32931">Bug 32931</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+			The function <function>ucs_removeServiceFromHost</function> was made idempotent and can now also be used when the service does not exist (<ulink url="&ucsbug;33138">Bug 33138</ulink>).
+		</simpara></listitem>
+
 	</itemizedlist>
 </section>
 
