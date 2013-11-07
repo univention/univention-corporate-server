@@ -257,7 +257,7 @@
 				<para>General/General settings</para>
 				<itemizedlist>
 					<listitem><simpara>Name: UVMM-Pool</simpara></listitem>
-					<listitem><simpara>Host: Der Rechnername des UVMM-Servers</simpara></listitem>
+					<listitem><simpara>Host: The hostname of the UVMM server</simpara></listitem>
 					<listitem><simpara>Directory: /var/lib/libvirt/images</simpara></listitem>
 					<listitem><simpara>Directory owner, Directory owner group and Directory mode can remain in the default setting</simpara></listitem>
 				</itemizedlist>
