@@ -1,3 +1,10 @@
+univention-grub (7.0.4-2) unstable; urgency=low
+
+  * Bug #28191: explicitly install EFI version of GRUB
+  * Bug #28191: removed shim detection / moved some UEFI stuff to univention-uefi
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 07 Nov 2013 11:31:03 +0100
+
 univention-grub (7.0.4-1) unstable; urgency=low
 
   * Bug #33123: moved GRUB background image to /usr/share/univention-grub
