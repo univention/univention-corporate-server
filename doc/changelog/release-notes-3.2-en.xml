@@ -482,7 +482,7 @@ done
 		  To display Grub correctly, the graphics card emulated by XenServer must be
 		  reconfigured. This is done by logging on to the XenServer system as the
 		  <emphasis>root</emphasis> user. Firstly, the <command>xe vm-list</command> command is used to
-		  determine the UID of the virtual machine. The following command is then used to
+		  determine the UUID of the virtual machine. The following command is then used to
 		  reconfigure the emulated graphics card to VGA:
 
 <programlisting language="sh">
