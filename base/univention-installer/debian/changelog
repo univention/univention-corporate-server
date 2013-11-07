@@ -1,3 +1,9 @@
+univention-installer (9.0.30-4) unstable; urgency=low
+
+  * Bug #28191: added special chainloading target for UEFI
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 07 Nov 2013 17:03:48 +0100
+
 univention-installer (9.0.30-3) unstable; urgency=low
 
   * Bug #28191: disable chainloading during UEFI boot
