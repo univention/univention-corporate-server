@@ -72,8 +72,8 @@ def MiB2MB(value):
 
 
 # some autopartitioning config values
-PARTSIZE_EFI = MiB2B(256)           # size of EFI Partition 256 MiB
-PARTSIZE_EFI_MIN = MiB2B(32)        # minimum size of EFI Partition 32 MiB
+PARTSIZE_EFI = MiB2B(260)           # size of EFI Partition 260 MiB
+PARTSIZE_EFI_MIN = MiB2B(260)       # minimum size of EFI Partition 260 MiB (min. size is 260 MB due to limitation of FAT32 on 4k-sector-drives: see also http://technet.microsoft.com/en-us/library/hh824839.aspx)
 PARTSIZE_BIOS_GRUB = MiB2B(8)       # size of BIOS Boot Partition 8 MiB
 PARTSIZE_BOOT = MiB2B(512)          # size of /boot partition: 512 MiB
 PARTSIZE_SYSTEM_MIN = MiB2B(4096)   # minimum free space for system: 4 GiB

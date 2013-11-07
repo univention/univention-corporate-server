@@ -1,3 +1,10 @@
+univention-installer (9.0.30-2) unstable; urgency=low
+
+  * Bug #33179: The minimal size of the EFI System Partition (ESP/EFISYS)
+    is 260 MiB due to a limitation of FAT32 on 4k-sector-drives
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 07 Nov 2013 10:46:52 +0100
+
 univention-installer (9.0.30-1) unstable; urgency=low
 
   * Bug #28191: switch back from univention-uefi-secureboot to univention-uefi
