@@ -701,20 +701,6 @@
 			</entry>
 		  </row>
 
-		  <row>
-			<entry>Von der Suche aussschließen</entry>
-			<entry>
-			  <para>
-				Soll im Suchdialog eines Assistenten nicht nach einem erweiterten Attribut gesucht
-				werden können, kann diese Option aktiviert werden, um das erweiterte Attribut aus
-				der Liste der möglichen Sucheigenschaften zu entfernen.
-			  </para>
-			  
-			  <para>
-				Dies ist nur in Sonderfällen nötig.
-			  </para>
-			</entry>
-		  </row>
 		</tbody>
 	  </tgroup>
 	</table>
@@ -794,6 +780,21 @@
 				- z.B. indirekt durch Skripte - kann diese Option aktiviert werden. Das Attribut
 				kann dann nur über das Kommandozeilen-Interface &ucsUDM; gesetzt werden und wird in
 				der &ucsUMC; nicht angezeigt.
+			  </entry>
+			</row>
+
+			<row>
+			  <entry>Von der UMC-Suche aussschließen</entry>
+			  <entry>
+				<para>
+				  Soll im Suchdialog eines Assistenten nicht nach einem erweiterten Attribut gesucht
+				  werden können, kann diese Option aktiviert werden, um das erweiterte Attribut aus
+				  der Liste der möglichen Sucheigenschaften zu entfernen.
+				</para>
+			  
+				<para>
+				  Dies ist nur in Sonderfällen nötig.
+				</para>
 			  </entry>
 			</row>
 

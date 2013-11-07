@@ -691,20 +691,6 @@
 			  </entry>
 			</row>
 
-			<row>
-			  <entry>Exlude from search</entry>
-			  <entry>
-				<para>
-				  If it should not be possible to search for an extended attribute in the search
-				  window of a wizard, this option can be activated to remove the extended attribute
-				  from the list of possible search criteria.
-				</para>
-				
-				<para>
-				  This is only needed in exceptional cases.
-				</para>
-			  </entry>
-			</row>
 		  </tbody>
 		</tgroup>
 	</table>
@@ -785,6 +771,21 @@
 			  instead of by the administrator, e.g., indirectly by scripts. The attribute can then
 			  only be set via the command line interface &ucsUDM; and is not displayed in the
 			  &ucsUMC;.
+			</entry>
+		  </row>
+
+		  <row>
+			<entry>Exclude from UMC search</entry>
+			<entry>
+			  <para>
+				If it should not be possible to search for an extended attribute in the search
+				window of a wizard, this option can be activated to remove the extended attribute
+				from the list of possible search criteria.
+			  </para>
+			  
+			  <para>
+				This is only needed in exceptional cases.
+			  </para>
 			</entry>
 		  </row>
 
