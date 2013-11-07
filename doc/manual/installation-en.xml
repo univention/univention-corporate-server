@@ -430,9 +430,7 @@
   <para>
 	Even though only the first hard drive is integrated in the LVM, the data on all the present hard
 	drives is lost in this step! Should the proposed partitioning be undesirable, it can be rejected
-	by pressing the <keycap>F5</keycap> function key. The disk space of external storage media, such
-	as USB sticks and USB hard drives, is also included in the automatic partitioning procedure, so
-	these media should be disconnected if necessary.
+	by pressing the <keycap>F5</keycap> function key.
   </para>
 </caution>
 
