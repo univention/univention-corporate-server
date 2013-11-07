@@ -1,3 +1,10 @@
+univention-grub (7.0.4-1) unstable; urgency=low
+
+  * Bug #33123: moved GRUB background image to /usr/share/univention-grub
+    due to dpkg problems with symlinks on FAT32 filesystems.
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 07 Nov 2013 11:29:58 +0100
+
 univention-grub (7.0.3-1) unstable; urgency=low
 
   * Bug #28191: in UEFI mode check for shim and add boot entry for shim

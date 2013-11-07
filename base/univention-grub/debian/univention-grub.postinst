@@ -66,6 +66,12 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 7.0.1-1; then
 	fi
 fi
 
+# Bug #33123:
+# dpkg tries to use symlinks during package extraction which fails usually on FAT32.
+# /boot/grub may be FAT32, so the following files are extracted somewhere else and
+# copied back to /boot/grub.
+cp -f /usr/share/univention-grub/uniboot.{xpm.gz,png} /boot/grub/
+
 # New installation, the 
 if [ "$1" = configure -a -z "$2" ];  then
 
