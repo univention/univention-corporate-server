@@ -1,3 +1,9 @@
+univention-installer (9.0.30-3) unstable; urgency=low
+
+  * Bug #28191: disable chainloading during UEFI boot
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 07 Nov 2013 10:57:04 +0100
+
 univention-installer (9.0.30-2) unstable; urgency=low
 
   * Bug #33179: The minimal size of the EFI System Partition (ESP/EFISYS)
