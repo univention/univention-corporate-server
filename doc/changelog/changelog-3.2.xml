@@ -312,6 +312,13 @@
 		  <envar>grub/vga=788</envar>. To prevent this change during the update, set the &ucsUCRV;
 		  <envar>update32/grub/changecolordepth=no</envar> prior to the update (<ulink url="&ucsbug;32634">Bug 32634</ulink>).
 		</simpara></listitem>
+		<listitem><simpara> 
+		  The background images of GRUB (<filename>uniboot.png</filename> and
+		  <filename>uniboot.xpm.gz</filename>) are now stored in
+		  <filename>/usr/share/univention-grub/</filename> and will be copied to
+		  <filename>/boot/grub/</filename> during package updates. This change has been done because of an
+		  incompatibility between FAT32 and dpkg (<ulink url="&ucsbug;33123">Bug 33123</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
