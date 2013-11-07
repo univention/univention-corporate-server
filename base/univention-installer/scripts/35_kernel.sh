@@ -88,7 +88,11 @@ chroot /instmnt ./install_kernel.sh
 
 export grub_package="grub-pc"
 if [ "$use_efi" = "yes" ] ; then
-	export grub_package="univention-uefi-secureboot"
+	export grub_package="univention-uefi"
+	eval "$(ucr shell grub/efi/secureboot)"
+	if [ "$grub_efi_secureboot" = "yes" ] ; then
+		export grub_package="univention-uefi-secureboot"
+	fi
 fi
 
 # install mdadm if necessary and then grub
