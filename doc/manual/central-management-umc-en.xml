@@ -665,7 +665,7 @@
 		  </thead>
 		  <tbody>
 			<row>
-			  <entry>Needed module</entry>
+			  <entry>Modules to be extended</entry>
 			  <entry>
 				The &ucsUDM; module which is to be expanded with the extended attribute. An extended
 				attribute can apply for multiple modules.

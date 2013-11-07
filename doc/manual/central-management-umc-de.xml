@@ -673,7 +673,7 @@
 		</thead>
 		<tbody>
 		  <row>
-			<entry>Benötigtes Modul</entry>
+			<entry>Zu erweiternde Module</entry>
 			<entry>
 			  Das &ucsUDM;-Modul, welches durch das erweiterte Attribut ergänzt werden soll. Ein
 			  erweitertes Attribut kann auch für mehrere Module gelten.
@@ -936,7 +936,7 @@
 		  </thead>
 		  <tbody>
 			<row>
-			  <entry>Syntax-Name</entry>
+			  <entry>Syntax-Klasse</entry>
 			  <entry>
 				<para>
 				  Bei der Eingabe von Werten nimmt die &ucsUMC; eine Syntaxprüfung vor.
