@@ -34,7 +34,7 @@
 # e.g. ucs_getAttrOfDN "krb5PasswordEnd" "uid=testuser,cn=users,dc=test,dc=system"
 # ==> 20110622112559Z
 #
-ucs_getAttrOfDN() { # <attr> <dn> [<ldapsearch-credentials>]
+ucs_getAttrOfDN () { # <attr> <dn> [<ldapsearch-credentials>]
 	local attr="$1"
 	local base="$2"
 	if ! shift 2
@@ -53,7 +53,7 @@ ucs_getAttrOfDN() { # <attr> <dn> [<ldapsearch-credentials>]
 # ucs_convertUID2DN <uid> [<ldapsearch-credentials>]
 # e.g. ucs_convertUID2DN "testuser"
 #
-ucs_convertUID2DN() { # <uid> [<ldapsearch-credentials>]
+ucs_convertUID2DN () { # <uid> [<ldapsearch-credentials>]
 	local uid="$1"
 	if ! shift 1
 	then
@@ -70,7 +70,7 @@ ucs_convertUID2DN() { # <uid> [<ldapsearch-credentials>]
 # ucs_convertDN2UID <user dn> [<ldapsearch-credentials>]
 # e.g. ucs_convertDN2UID "uid=testuser,cn=users,dc=test,dc=system"
 #
-ucs_convertDN2UID() { # <userdn> [<ldapsearch-credentials>]
+ucs_convertDN2UID () { # <userdn> [<ldapsearch-credentials>]
 	local userdn="$1"
 	if ! shift 1
 	then
@@ -85,7 +85,7 @@ ucs_convertDN2UID() { # <userdn> [<ldapsearch-credentials>]
 # ucs_getGroupMembersDirect <group dn> [<ldapsearch-credentials>]
 # e.g. ucs_getGroupMembersDirect "cn=Domain Admins,cn=groups,dc=test,dc=system"
 #
-ucs_getGroupMembersDirect() { # <groupDN> [<ldapsearch-credentials>]
+ucs_getGroupMembersDirect () { # <groupDN> [<ldapsearch-credentials>]
 	local groupdn="$1"
 	if ! shift 1
 	then
@@ -96,13 +96,13 @@ ucs_getGroupMembersDirect() { # <groupDN> [<ldapsearch-credentials>]
 }
 
 #
-# ucs_getGroupMembersDirect returns all members of specified group and of all nested groups
-# ucs_getGroupMembersDirect <group dn> [<ldapsearch-credentials>]
-# e.g. ucs_getGroupMembersDirect "cn=Domain Admins,cn=groups,dc=test,dc=system"
+# ucs_getGroupMembersRecursive returns all members of specified group and of all nested groups
+# ucs_getGroupMembersRecursive <group dn> [<ldapsearch-credentials>]
+# e.g. ucs_getGroupMembersRecursive "cn=Domain Admins,cn=groups,dc=test,dc=system"
 #
 # optional environment: ldap_binddn and ldap_bindpw
 #
-ucs_getGroupMembersRecursive(){ # <groupDN> [<ldapsearch-credentials>]
+ucs_getGroupMembersRecursive () { # <groupDN> [<ldapsearch-credentials>]
 	local reply
 	local ldif
 	local groupdn="$1"
@@ -135,15 +135,20 @@ ucs_getGroupMembersRecursive(){ # <groupDN> [<ldapsearch-credentials>]
 # e.g. ucs_addServiceToLocalhost "nagios-server" "$@"
 #
 ucs_addServiceToLocalhost () { # <servicename> [<udm-credentials>]
-	local server_role ldap_base ldap_hostdn
+	local server_role ldap_hostdn
 	local servicename="$1"
-	eval "$(ucr shell server/role ldap/base ldap/hostdn)"
+	if ! shift 1
+	then
+		echo "ucs_addServiceToLocalhost: wrong argument number" >&2
+		return 2
+	fi
+	eval "$(ucr shell server/role ldap/hostdn)"
 	shift
 	ucs_addServiceToHost "$servicename" "$server_role" "$ldap_hostdn" "$@"
 }
 
 #
-# ucs_addServiceToLocalhost adds a new service entry to specified UDM host object. This can be easily used
+# ucs_addServiceToHost adds a new service entry to specified UDM host object. This can be easily used
 # in e.g. join scripts to add a new service. Additional arguments like UDM credentials will be passed 
 # through.
 # ucs_addServiceToHost <servicename> <udm-module-name> <dn> [<udm-credentials>]
@@ -159,9 +164,12 @@ ucs_addServiceToHost () { # <servicename> <udm-module-name> <dn> [options]
 		echo "ucs_addServiceToHost: wrong argument number" >&2
 		return 2
 	fi
-	univention-directory-manager container/cn create "$@" --ignore_exists --set name="services" --position "cn=univention,$ldap_base"
-	univention-directory-manager settings/service create "$@" --ignore_exists --set name="$servicename" --position "cn=services,cn=univention,$ldap_base"
-	univention-directory-manager "computers/$modulename" modify "$@" --dn "$hostdn" --append service="$servicename"
+	univention-directory-manager container/cn create "$@" --ignore_exists \
+		--set name="services" --position "cn=univention,$ldap_base"
+	univention-directory-manager settings/service create "$@" --ignore_exists \
+		--set name="$servicename" --position "cn=services,cn=univention,$ldap_base"
+	univention-directory-manager "computers/$modulename" modify "$@" \
+		--dn "$hostdn" --append service="$servicename"
 }
 
 #
@@ -173,15 +181,20 @@ ucs_addServiceToHost () { # <servicename> <udm-module-name> <dn> [options]
 # e.g. ucs_removeServiceFromLocalhost "nagios-server" "$@"
 #
 ucs_removeServiceFromLocalhost () { # <servicename> [<udm-credentials>]
-	local server_role ldap_base ldap_hostdn
+	local server_role ldap_hostdn
 	local servicename="$1"
-	eval "$(ucr shell server/role ldap/base ldap/hostdn)"
+	if ! shift 1
+	then
+		echo "ucs_removeServiceFromLocalhost: wrong argument number" >&2
+		return 2
+	fi
+	eval "$(ucr shell server/role ldap/hostdn)"
 	shift
 	ucs_removeServiceFromHost "$servicename" "$server_role" "$ldap_hostdn" "$@"
 }
 
 #
-# ucs_removeServiceFromHosz removes a service entry from specified UDM host object. This can be easily used
+# ucs_removeServiceFromHost removes a service entry from specified UDM host object. This can be easily used
 # in e.g. join scripts to remove a service. Additional arguments like UDM credentials will be passed 
 # through.
 # ucs_removeServiceFromHost <servicename> <udm-module-name> <dn> [<udm-credentials>]
@@ -197,9 +210,14 @@ ucs_removeServiceFromHost () { # <servicename> <udm-module-name> <dn> [options]
 		echo "ucs_removeServiceFromHost: wrong argument number" >&2
 		return 2
 	fi
-	univention-directory-manager "computers/$modulename" modify "$@" --dn "$hostdn" --remove service="$servicename"
-	if ucs_isServiceUnused "$servicename" "$@" ; then
-		univention-directory-manager settings/service remove "$@" --ignore_exists --dn "cn=$servicename,cn=services,cn=univention,$ldap_base"
+	univention-directory-manager "computers/$modulename" modify "$@" \
+		--dn "$hostdn" --remove service="$servicename"
+	if ucs_isServiceUnused "$servicename" "$@" &&
+		univention-directory-manager settings/service list "$@" \
+			--position "cn=$servicename,cn=services,cn=univention,$ldap_base" >/dev/null
+	then
+		univention-directory-manager settings/service remove "$@" \
+			--dn "cn=$servicename,cn=services,cn=univention,$ldap_base"
 	fi
 }
 
@@ -207,10 +225,9 @@ ucs_removeServiceFromHost () { # <servicename> <udm-module-name> <dn> [options]
 # parse join credentials and save them in
 # binddn bindpwd (bindpwdfile)
 # ucs_parseCredentials "$@"
-#  $binddn 
+#  $binddn
 #
 ucs_parseCredentials () {
-
 	while [ $# -ge 1 ]
 	do
 		case "$1" in
@@ -239,7 +256,7 @@ ucs_parseCredentials () {
 # ucs_isServiceUnused <servicename> [<udm-credentials>]
 # e.g.  if ucs_isServiceUnused "DNS" "$@"; then uninstall DNS; fi
 #
-ucs_isServiceUnused () {
+ucs_isServiceUnused () { # <servicename>
 	local servicename="$1"
 	local master="$(ucr get ldap/master)"
 	local port="$(ucr get ldap/master/port)"
@@ -271,7 +288,7 @@ ucs_isServiceUnused () {
 
 	# create a tempfile to get the real return code of the ldapsearch command,
 	# otherwise we get only the code of the sed command
-	local tempfile=$(mktemp)
+	local tempfile="$(mktemp)"
 	univention-ldapsearch univentionService="${servicename}" "$@" cn >"$tempfile"
 	if [ $? != 0 ]; then
 		rm -f "$tempfile"
@@ -365,4 +382,3 @@ ucs_registerLDAPSchema () {
 
 	test -x /etc/init.d/slapd && /etc/init.d/slapd crestart
 }
-
