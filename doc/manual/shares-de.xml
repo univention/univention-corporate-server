@@ -101,7 +101,7 @@
   </para>
   </section>
 
-<section id="shares::management"><title>Verwaltung von Freigaben in der Univention Management Console</title>
+<section id="shares::management"><title>Verwaltung von Freigaben in der UMC</title>
 <para>
 Verzeichnisfreigaben werden im Modul <emphasis>Freigaben</emphasis> der &ucsUMC; verwaltet.
 </para>
@@ -177,7 +177,7 @@ eingetragen/modifiziert oder entfernt.
 	  </row>
 
 	  <row>
-		<entry>Besitzer des freigegebenen Verzeichnisses</entry>
+		<entry>Besitzer des Wurzelverzeichnis der Freigabe</entry>
 		<entry>
 		  Der Benutzer, der das Wurzelverzeichnis der Freigabe gehören soll, siehe
 		  <xref linkend="shares::permissions"/>.
@@ -238,7 +238,7 @@ eingetragen/modifiziert oder entfernt.
 	  </row>
 
 	  <row>
-		<entry>Uid bei Root-Zugriff umlenken</entry>
+		<entry>User-ID für Root-Benutzer ändern (Root-Squashing)</entry>
 		<entry>
 		  <para>
 			Die Identifikation von Nutzern im NFS-Standardverfahren erfolgt über
@@ -268,7 +268,7 @@ eingetragen/modifiziert oder entfernt.
 	  </row>
 	  
 	  <row>
-		<entry>Erlaubte Hosts, IP-Adressen oder Netze</entry>
+		<entry>Zugriff nur für diese Rechner, IP-Adressen oder Netze erlauben</entry>
 		<entry>
 		  Standardmäßig wird allen Rechnern der Zugriff auf eine Freigabe erlaubt. In
 		  die Auswahlliste können Rechnernamen und IP-Adressen aufgenommen werden, auf
@@ -322,7 +322,7 @@ eingetragen/modifiziert oder entfernt.
 	  </row>
 
 	  <row>
-		<entry>Anonymen Zugriff mit Gastbenutzer erlauben</entry>
+		<entry>Anonymen Nur-Lese-Zugriff mit Gastbenutzer erlauben</entry>
 		<entry>
 		  Erlaubt den Zugriff auf diese Freigabe ohne Passwortabfrage. Alle Zugriffe
 		  werden dabei über einen gemeinsamen Gast-Nutzer <emphasis>nobody</emphasis> durchgeführt.
@@ -469,7 +469,33 @@ eingetragen/modifiziert oder entfernt.
 		</entry>
 	  </row>
 
- 
+	  <row>
+		<entry>Schreibberechtigung auf diese Benutzer/Gruppen beschränken</entry>
+		<entry>
+		  Nur die aufgeführten Benutzer oder Gruppen erhalten Schreibrecht auf die
+		  diese Freigabe.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Zugelassene Rechner/Netze</entry>
+		<entry>
+		  Namen von Rechnern, die auf diese Samba-Freigabe zugreifen dürfen. Allen
+		  anderen Rechnern wird der Zugriff verweigert.
+		  Neben Rechnernamen können auch IP- oder Netzwerkadressen angegeben werden, bspw.
+		  <command>192.168.0.0/255.255.255.0</command>.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Nicht zugelassene Rechner/Netze</entry>
+		<entry>
+		  Das Gegenteil von den zugelassenen Rechnern. Sollte ein Rechner in beiden
+		  Listen auftauchen, so wird dem Rechner der Zugriff auf die Samba-Freigabe
+		  gestattet.
+		</entry>
+	  </row>
+
 	  <row>
 		<entry>NT ACL-Support</entry>
 		<entry>
@@ -487,16 +513,7 @@ eingetragen/modifiziert oder entfernt.
 	  </row>
 	  
 	  <row>
-		<entry>Ererbte ACLs</entry>
-		<entry>
-		  Bei Aktivierung dieser Option erbt jede in dieser Freigabe neu erzeugte
-		  Datei die ACL (Access Control List) des Verzeichnisses, in dem sie angelegt
-		  wird.
-		</entry>
-	  </row>
-	  
-	  <row>
-		<entry>Besitzer erben</entry>
+		<entry>Neue Dateien und Verzeichnisse erhalten den Besitzer des übergeordneten Verzeichnisses</entry>
 		<entry>
 		  Bei Aktivierung dieser Option wird jede neu erzeugte Datei dem Besitzer des
 		  übergeordneten Verzeichnis zugeordnet und nicht dem Benutzer, der die Datei
@@ -505,7 +522,7 @@ eingetragen/modifiziert oder entfernt.
 	  </row>
 
 	  <row>
-		<entry>Rechte erben</entry>
+		<entry>Neue Dateien und Verzeichnisse erhalten die Zugriffsrechte des übergeordneten Verzeichnisses</entry>
 		<entry>
 		  Bei Aktivierung dieser Option werden für jede Datei oder jedes Verzeichnis,
 		  die in einer Freigabe neu erzeugt werden, automatisch die UNIX-Rechte des
@@ -805,33 +822,6 @@ dieser Karteikarte verändert werden.
 		  Konfiguriert, auf welche Weise Clients Dateien aus dieser Freigabe offline
 		  zwischenspeichern sollen. Zur Wahl stehen <emphasis>manuell</emphasis>, <emphasis>Dokumente</emphasis>,
 		  <emphasis>Programme</emphasis> und <emphasis>deaktiviert</emphasis>.
-		</entry>
-	  </row>
-
-	  <row>
-		<entry>Zugelassene Rechner</entry>
-		<entry>
-		  Namen von Rechnern, die auf diese Samba-Freigabe zugreifen dürfen. Allen
-		  anderen Rechnern wird der Zugriff verweigert.
-		  Neben Rechnernamen können auch IP- oder Netzwerkadressen angegeben werden, bspw.
-		  <command>192.168.0.0/255.255.255.0</command>.
-		</entry>
-	  </row>
-
-	  <row>
-		<entry>Nicht zugelassene Rechner</entry>
-		<entry>
-		  Das Gegenteil von den zugelassenen Rechnern. Sollte ein Rechner in beiden
-		  Listen auftauchen, so wird dem Rechner der Zugriff auf die Samba-Freigabe
-		  gestattet.
-		</entry>
-	  </row>
-
-	  <row>
-		<entry>Liste von Schreibberechtigten</entry>
-		<entry>
-		  Nur die aufgeführten Benutzer oder Gruppen erhalten Schreibrecht auf die
-		  diese Freigabe.
 		</entry>
 	  </row>
 

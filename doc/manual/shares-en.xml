@@ -94,7 +94,7 @@
   </para>
   </section>
 
-<section id="shares::management"><title>Management of shares in the Univention Management Console</title>
+<section id="shares::management"><title>Management of shares in the UMC</title>
 <para>
 File shares are managed in the <emphasis>Shares</emphasis> module of the &ucsUMC;.
 </para>
@@ -228,7 +228,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Redirect root access uid</entry>
+		<entry>Modify user ID for root user (root squashing)</entry>
 		<entry>
 		  <para>
 			In the NFS standard procedure, identification of users is achieved via user
@@ -259,7 +259,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Allowed hosts, ip addresses or networks</entry>
+		<entry>Only allow access for these hosts, IP addresses or networks</entry>
 		<entry>
 		  By default, all hosts are permitted access to a share. In this select list,
 		  host names and IP addresses can be included, to which the access to the share
@@ -320,7 +320,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Allow anonymous access with a guest user</entry>
+		<entry>Allow anonymous read-only access with a guest user</entry>
 		<entry>
 		  Permits access to this share without a password. Every access is carried out
 		  by means of the common guest user <emphasis>nobody</emphasis>.
@@ -450,6 +450,31 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
+		<entry>Restrict write access to these users/groups</entry>
+		<entry>
+		  Only the users and groups listed here have write permission for the
+		  corresponding share.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Allowed hosts/networks</entry>
+		<entry>
+		  Names of computers which are authorised to access this Samba share. All other computers are denied
+		  access. In addition to computer names, it is also possible to specify IP or network addresses, e.g.,
+		  <command>192.168.0.0/255.255.255.0</command>.
+		</entry>
+	  </row>
+
+	  <row>
+		<entry>Denied hosts/networks</entry>
+		<entry>
+		  The opposite to the authorised computers. If a computer appears in both lists, the computer is
+		  permitted to access the Samba share.
+		</entry>
+	  </row>
+
+	  <row>
 		<entry>NT ACL support</entry>
 		<entry>
 		  <para>
@@ -465,15 +490,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Inherit ACLs</entry>
-		<entry>
-		  When activating this option, each file created in this share will inherit the
-		  ACL (Access Control List) of the directory where the file was created.
-		</entry>
-	  </row>
-
-	  <row>
-		<entry>Inherit owner</entry>
+		<entry>Create files/directories with the owner of the parent directory</entry>
 		<entry>
 		  When activating this option, each newly created file will not be assigned of
 		  the user who created the file, but to the owner of the superior directory
@@ -482,7 +499,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Inherit permissions</entry>
+		<entry>Create files/directories with permissions of the parent directory</entry>
 		<entry>
 		  When activating this option, for each file or directory created in this share,
 		  the UNIX permissions of the superior directory will automatically be
@@ -766,31 +783,6 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		  share offline. The available alternatives
 		  are <emphasis>manual</emphasis>, <emphasis>documents</emphasis>, <emphasis>programs</emphasis>,
 		  and <emphasis>disable</emphasis>.
-		</entry>
-	  </row>
-
-	  <row>
-		<entry>Allowed hosts</entry>
-		<entry>
-		  Names of computers which are authorised to access this Samba share. All other computers are denied
-		  access. In addition to computer names, it is also possible to specify IP or network addresses, e.g.,
-		  <command>192.168.0.0/255.255.255.0</command>.
-		</entry>
-	  </row>
-
-	  <row>
-		<entry>Denied hosts</entry>
-		<entry>
-		  The opposite to the authorised computers. If a computer appears in both lists, the computer is
-		  permitted to access the Samba share.
-		</entry>
-	  </row>
-
-	  <row>
-		<entry>Users with write access</entry>
-		<entry>
-		  Only the users and groups listed here have write permission for the
-		  corresponding share.
 		</entry>
 	  </row>
 
