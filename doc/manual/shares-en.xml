@@ -875,8 +875,8 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		  <caution>
 			<para>
 			  The definition of extended Samba settings is only necessary in very special
-			  cases. The options should be thoroughly checked before setting since they
-			  might have security-relevant effects.
+			  cases. The options should be thoroughly checked since they might have
+			  security-relevant effects.
 			</para>
 		  </caution>
 		</entry>
@@ -912,8 +912,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		  <caution>
 			<para>
 			  The definition of extended NFS settings is only necessary in special cases. The
-			  options should be thoroughly checked before setting since they might have
-			  security-relevant effects.
+			  options should be thoroughly checked since they might have security-relevant effects.
 			</para>
 		  </caution>
 		</entry>
