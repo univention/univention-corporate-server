@@ -59,7 +59,7 @@
   </para>
 
   <para>
-	Ist die Option <emphasis>sticky</emphasis> für ein Verzeichnis aktiviert, können Dateien in dem
+	Ist die Option <emphasis>sticky bit</emphasis> für ein Verzeichnis aktiviert, können Dateien in dem
 	Verzeichnis nur von dem Besitzer der Datei oder durch den root-Benutzer gelöscht werden.
   </para>
 
@@ -85,7 +85,7 @@
   <para>
 	Berechtigungsänderungen an einem freigegebenen Verzeichnis, die direkt im Dateisystem
 	vorgenommen wurden, werden nicht an das LDAP-Verzeichnis weitergeleitet.
-	Wird das Freigabe-Objekt in der &ucsUMC; bearbeitet, werden die Änderungen im
+	Wird die Berechtigungen/Besitzer in der &ucsUMC; bearbeitet, werden die Änderungen im
 	Dateisystem überschrieben. Einstellungen der Freigabewurzel sollten deshalb nur mit
 	&ucsUMC; gesetzt und bearbeitet werden. Die weitere Anpassung der
 	Zugriffsrechte der unterliegenden Verzeichnisses erfolgt dann von den

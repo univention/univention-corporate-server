@@ -49,7 +49,7 @@
   </para>
 
   <para>
-	If the <emphasis>sticky</emphasis> option is enabled for a directory, files in this directory
+	If the <emphasis>sticky bit</emphasis> option is enabled for a directory, files in this directory
 	can only be deleted by the owner of the file or the root user.
   </para>
 
@@ -78,7 +78,7 @@
   <para>
 	Changes to the permissions of a shared directory performed directly
 	in the file system are not forwarded to the LDAP directory. If the
-	share object is edited within the &ucsUMC;, the changes in the field
+	permissions/owners are edited within the &ucsUMC;, the changes in the file
 	system are overwritten. Settings to the root directory of a file share
 	should thus only be set and edited with &ucsUMC;. Additional adjustment of the access
 	permissions of the subordinate directories are then performed via the
