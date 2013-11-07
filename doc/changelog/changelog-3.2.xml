@@ -239,6 +239,12 @@
 		The automatic partitioning has been adapted. It still requires the erasure of all harddisk but as of UCS 3.2-0 the new auto partitioning layout will only use the first available harddisk. If installation profiles are used, the keyword <emphasis>auto_part</emphasis> only accepts the value <emphasis>yes</emphasis> from now on (<ulink url="&ucsbug;31705">Bug 31705</ulink>).
 	  </simpara></listitem>
 
+	  <listitem><simpara> 
+		The default size for the EFI system partition created by the automatic
+		partitioning has been increased to 260 MiB due to limitations of FAT32 on 4k-sector harddrives
+		(<ulink url="&ucsbug;33179">Bug 33179</ulink>).  
+	  </simpara></listitem>
+
 	  <listitem><simpara>
 		At the end of the installation the UCS installer now stops several services with the init scripts
 		(<ulink url="&ucsbug;33025">Bug 33025</ulink>).
