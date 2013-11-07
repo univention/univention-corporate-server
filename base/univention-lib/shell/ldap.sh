@@ -143,7 +143,6 @@ ucs_addServiceToLocalhost () { # <servicename> [<udm-credentials>]
 		return 2
 	fi
 	eval "$(ucr shell server/role ldap/hostdn)"
-	shift
 	ucs_addServiceToHost "$servicename" "$server_role" "$ldap_hostdn" "$@"
 }
 
@@ -189,7 +188,6 @@ ucs_removeServiceFromLocalhost () { # <servicename> [<udm-credentials>]
 		return 2
 	fi
 	eval "$(ucr shell server/role ldap/hostdn)"
-	shift
 	ucs_removeServiceFromHost "$servicename" "$server_role" "$ldap_hostdn" "$@"
 }
 

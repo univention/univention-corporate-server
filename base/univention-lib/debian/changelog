@@ -1,3 +1,9 @@
+univention-lib (3.0.26-2) unstable; urgency=low
+
+  * Fix double shift in service removal (Bug #33138)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Nov 2013 16:05:11 +0100
+
 univention-lib (3.0.26-1) unstable; urgency=low
 
   * Fix service removal (Bug #33138)
