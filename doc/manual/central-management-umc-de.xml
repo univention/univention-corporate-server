@@ -661,7 +661,7 @@
 	</table>
 
 	<table>
-	  <title>Modul</title>
+	  <title>Karteikarte 'Modul'</title>
 	  <tgroup cols="2">
 		<colspec colnum="1" colname="col1" colwidth="1*"/>
 		<colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -706,7 +706,7 @@
 	</table>
 
 	<table>
-		<title>LDAP-Abbildung</title>
+		<title>Karteikarte 'LDAP-Abbildung'</title>
 		<tgroup cols="2">
 		  <colspec colnum="1" colname="col1" colwidth="1*"/>
 		  <colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -762,7 +762,7 @@
 	  </table>
 
 	  <table>
-		<title>UMC</title>
+		<title>Karteikarte 'UMC'</title>
 		<tgroup cols="2">
 		  <colspec colnum="1" colname="col1" colwidth="1*"/>
 		  <colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -824,13 +824,10 @@
 				In einigen Fällen ist es sinnvoll, vorgegebene Eingabefelder mit erweiterten
 				Attributen zu überschreiben. Wird hier der interne UDM-Name eines Attributs
 				konfiguriert, wird dessen Eingabefeld von diesem erweiterten Attribut
-				überschrieben. Der UDM-Attributname kann nur durch eine Suche unterhalb des
-				Verzeichnisses <filename
-				class="directory">/usr/share/pyshared/univention/admin/handlers/</filename>
-				ermittelt werden. Es handelt sich dabei um den Namen, der in den Deklarationen von
-				univention.admin.property-Objekten vor dem Doppelpunkt steht,
-				z.B. <emphasis>roomNumber</emphasis> für die Raumnummer eines Benutzers. Es ist zu
-				beachten, daß diese Option bei Pflichtfeldern zu Problemen führen kann.
+				überschrieben. Der UDM-Attributname kann mit dem Befehl
+				<command>univention-directory-manager</command> ermittelt werden (siehe <xref
+				linkend="central:udm"/>). Es ist zu beachten, daß diese Option bei Pflichtfeldern zu
+				Problemen führen kann.
 			  </entry>
 			</row>
 
@@ -924,7 +921,7 @@
 	  </table>
 
 	  <table>
-		<title>Datentyp</title>
+		<title>Karteikarte 'Datentyp'</title>
 		<tgroup cols="2">
 		  <colspec colnum="1" colname="col1" colwidth="1*"/>
 		  <colspec colnum="2" colname="col2" colwidth="2*"/>

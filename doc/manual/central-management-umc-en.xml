@@ -653,7 +653,7 @@
 	</table>
 
 	<table>
-	  <title>Module</title>
+	  <title>'Module' tab</title>
 		<tgroup cols="2">
 		  <colspec colnum="1" colname="col1" colwidth="1*"/>
 		  <colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -696,7 +696,7 @@
 	</table>
 
 	<table>
-	  <title>LDAP</title>
+	  <title>'LDAP' tab</title>
 	  <tgroup cols="2">
 		<colspec colnum="1" colname="col1" colwidth="1*"/>
 		<colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -752,7 +752,7 @@
 	</table>
 
 	<table>
-	  <title>UMC</title>
+	  <title>'UMC' tab</title>
 	  <tgroup cols="2">
 		<colspec colnum="1" colname="col1" colwidth="1*"/>
 		<colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -812,12 +812,10 @@
 			<entry>
 			  In some cases it is useful to overwrite predefined input fields with extended
 			  attributes. If the internal UDM name of an attribute is configured here, its
-			  input field is overwritten by this extended attribute. The UDM attribute name
-			  can only be determined by searching within the
-			  <filename>/usr/share/pyshared/univention/admin/handlers</filename> directory. It
-			  is the name which comes before the colon in the declarations of
-			  univention.admin.property objects, e.g., <emphasis>roomNumber</emphasis> for a
-			  user's room number.
+			  input field is overwritten by this extended attribute. The UDM attribute name can be
+			  identified with the command <command>univention-directory-manager</command> (see <xref
+			  linkend="central:udm"/>). This option may cause problems if it is applied to a
+			  mandatory attribute.
 			</entry>
 		  </row>
 		  
@@ -907,7 +905,7 @@
 	</table>
 
 	<table>
-	  <title>Data type</title>
+	  <title>'Data type' tab</title>
 	  <tgroup cols="2">
 		<colspec colnum="1" colname="col1" colwidth="1*"/>
 		<colspec colnum="2" colname="col2" colwidth="2*"/>
