@@ -270,12 +270,12 @@
 	  prevent unnecessary or incorrect printing.
 	</para>
 
-	<!-- <para> -->
-	<!--   <figure id="schule-drucker"> -->
-	<!-- 	<title>Printer moderation</title> -->
-	<!-- 	<graphic scalefit="1" width="60%" fileref="illustrations/schule-drucker_en.png"/> -->
-	<!--   </figure> -->
-	<!-- </para> -->
+	<para>
+	  <figure id="schule-drucker">
+		<title>Printer moderation</title>
+		<graphic scalefit="1" width="60%" fileref="illustrations/schule-drucker_en.png"/>
+	  </figure>
+	</para>
 
 	<para>
 	  The <guimenu>Distribute materials</guimenu> module simplifies the
