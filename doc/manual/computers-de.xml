@@ -45,7 +45,7 @@
 		</para>
 
 		<para>
-		  Der vereinfachte Assistent kann für alle Systemrollen deaktiviert werden, in dem die &ucsUCRV;
+		  Der vereinfachte Assistent kann für alle Systemrollen deaktiviert werden, indem die &ucsUCRV;
 		  <envar>directory/manager/web/modules/computers/computer/wizard/disabled</envar> auf
 		  <emphasis>true</emphasis> gesetzt wird (oder auch selektiv für einzelne Rollen,
 		  z.B. <envar>directory/manager/web/modules/computers/windows/wizard/disabled</envar>).

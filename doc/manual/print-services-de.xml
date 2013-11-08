@@ -95,7 +95,7 @@
 	ausgeschaltet ist), wird in der Grundeinstellung die weitere Bearbeitung der Warteschlange
 	gestoppt. Diese muss dann durch den Administrator wieder aktiviert werden (siehe <xref
 	linkend="umc:modules:printer"/>). Wird die &ucsUCRV; <envar>cups/errorpolicy</envar> auf
-	<emphasis>retry-job</emphasis> gesetzt, versucht CUPS alle dreissig Sekunden automatisch 
+	<emphasis>retry-job</emphasis> gesetzt, versucht CUPS alle dreißig Sekunden automatisch
 	erfolglose Druckaufträge erneut durchzuführen.
   </para>
 </section>
