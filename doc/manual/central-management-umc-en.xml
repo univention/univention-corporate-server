@@ -137,7 +137,7 @@
 		<title>Activation of UCS license / license overview</title>
 		<para>
 			The UCS license can be set up by clicking on the gear-wheel symbol in
-			the top right line of the screen. To do so, the <guimenu>License</guimenu>
+			the top right line of the screen. To do so, the <guimenu>License information</guimenu>
 			menu entry must be selected. The current license status is shown
 			under <guimenu>Current license</guimenu>.
 		</para>
@@ -146,16 +146,18 @@
 			<graphic scalefit="1" width="40%" fileref="illustrations/umc_ffpu_en.png"/>
 		</figure>
 		<para>
-			<guimenu>License upload</guimenu> can be used to select a license
-			file. Alternatively, the license key can be copied into
-			the <guimenu>License text</guimenu> input field and activated
-			with <guimenu>Upload</guimenu>.
+		  <!-- Mit der Option <guimenu>Import new license</guimenu> kann ein Lizenzschlüssel -->
+		  <!-- aktiviert werden (ansonsten greift die standardmäßig installierte -->
+		  <!-- Free-for-Personal-Use-Lizenz).  -->
+		  <guimenu>Import license file</guimenu> can be used to select a license file. Alternatively, the
+		  license key can be copied into the <guimenu>Import license as text</guimenu> input field and
+		  activated with <guimenu>Import</guimenu>.
 		</para>
 
 		<para>
 		  Installation of most of the applications in the Univention App Center requires a
 		  personalised license key. UCS license keys granted for UCS versions older than 3.1 can
-		  be converted by clicking <guimenu>Request updated license key with idenfication</guimenu>.
+		  be converted by clicking <guimenu>Activation of UCS</guimenu>.
 		  The current license key is sent to Univention and the updated key
 		  returned to a specified e-mail address within a few minutes. The new key can be imported
 		  directly. The conversion does not affect the scope of the license.

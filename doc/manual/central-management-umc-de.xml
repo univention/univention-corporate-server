@@ -129,7 +129,7 @@
 		<para>
 			Die UCS-Lizenz kann eingerichtet werden, indem in der oberen rechten
 			Bildschirmzeile auf das Zahnrad-Symbol geklickt wird. Hier muss der
-			Menüpunkt <guimenu>Lizenz</guimenu> ausgewählt werden. Unter
+			Menüpunkt <guimenu>Lizenzinformationen</guimenu> ausgewählt werden. Unter
 			<guimenu>Aktuelle Lizenz</guimenu> ist der momentane Lizenzierungszustand
 			aufgeführt.
 		</para>
@@ -137,19 +137,21 @@
 			<title>Anzeige der UCS-Lizenz</title>
 			<graphic scalefit="1" width="40%" fileref="illustrations/umc_ffpu_de.png"/>
 		</figure>
+
 		<para>
-			Mit <guimenu>Lizenz hochladen</guimenu> kann eine Lizenz-Datei ausgewählt werden,
-			alternativ kann der Lizenz-Schlüssel in das Eingabefeld
-			<guimenu>Lizenztext</guimenu> kopiert und mit <guimenu>Hochladen</guimenu>
-			aktiviert werden.
+		  Mit der Option <guimenu>Neue Lizenz einspielen</guimenu> kann ein Lizenzschlüssel
+		  aktiviert werden (ansonsten greift die standardmäßig installierte
+		  Free-for-Personal-Use-Lizenz). Mit <guimenu>Datei auswählen</guimenu> kann eine
+		  Lizenz-Datei ausgewählt werden, alternativ kann der Lizenz-Schlüssel in das Eingabefeld
+		  <guimenu>Lizenz als Text importieren</guimenu> kopiert und mit
+		  <guimenu>Importieren</guimenu> aktiviert werden.
 		</para>
 
 		<para>
 		  Die Installation der meisten Anwendungen aus dem Univention App Center erfordert einen individuell
 		  ausgestellten Lizenzschlüssel mit eindeutiger Schlüsselidentifikation. UCS-Lizenzschlüssel,
 		  die für UCS-Versionen vor 3.1 ausgestellt wurden können durch Klick auf die die
-		  Schaltfläche <guimenu>Aktualisierten Lizenzschlüssel mit Identifikation
-		  anfordern</guimenu> aktualisiert werden. Der aktuelle Lizenzschlüssel wird dabei an Univention geschickt
+		  Schaltfläche <guimenu>Aktivierung von UCS</guimenu> aktualisiert werden. Der aktuelle Lizenzschlüssel wird dabei an Univention geschickt
 		  und der aktualisierte Schlüssel nach einigen Minuten an eine angegebene E-Mail-Adresse
 		  versendet. Der neue Schlüssel kann dann direkt eingespielt werden. Der Lizenzumfang bleibt
 		  durch die Konvertierung unverändert.
