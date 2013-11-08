@@ -335,13 +335,19 @@
 	<!-- 	einem System angemeldeten Benutzer. Pseudo-Gruppen sind im UCS-Verzeichnisdienst vorhanden, -->
 	<!-- 	sind aber leer. Dies betrifft die folgenden Gruppen:-->
 
+	<!-- MODIFY: -->
+	<!-- sie werden aber nicht durch den Univention S4 Connector synchronisiert und müssen -->
+	<!-- normalerweise nicht bearbeitet werden. -->
+
 		<!-- <itemizedlist> -->
-		<!--   <listitem><simpara>Authenticated Users</simpara></listitem> -->
-		<!--   <listitem><simpara>World Authority</simpara></listitem> -->
-		<!--   <listitem><simpara>Everyone</simpara></listitem> -->
-		<!--   <listitem><simpara>Null Authority</simpara></listitem> -->
-		<!--   <listitem><simpara>Nobody</simpara></listitem> -->
-		<!--   <listitem><simpara>Enterprise Domain Controllers</simpara></listitem> -->
+		  <!-- <listitem><simpara>Anonymous Logon, Authenticated Users, Batch, Creator Group</simpara></listitem> -->
+		  <!-- <listitem><simpara>Creator Owner, Dialup, Digest Authentication</simpara></listitem> -->
+		  <!-- <listitem><simpara>Enterprise Domain Controllers, Everyone, IUSR, Interactive</simpara></listitem> -->
+		  <!-- <listitem><simpara>Local Service, NTLM Authentication, Network Service, Network</simpara></listitem> -->
+		  <!-- <listitem><simpara>Nobody, Null Authority, Other Organization, Owner Rights</simpara></listitem> -->
+		  <!-- <listitem><simpara>Proxy, Remote Interactive Logon, Restricted, SChannel Authentication</simpara></listitem> -->
+		  <!-- <listitem><simpara>Self, Service, System, Terminal Server User, This Organization</simpara></listitem> -->
+		  <!-- <listitem><simpara>World Authority</simpara></listitem> -->
 		<!-- </itemizedlist> -->
 
 	<!--   </para> -->
