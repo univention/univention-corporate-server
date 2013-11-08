@@ -1104,10 +1104,10 @@ ucr set repository/online/component/ucsschool/description="UCS@School packages" 
 	</para>
 
 	<para>
-	  The software monitor can be set up by selecting the <emphasis>Software
-	  installation monitor</emphasis> component in the Univention
-	  Installer. Alternatively, the <package>univention-pkgdb</package> package can
-	  be installed.
+	  The software monitor can be installed from the Univention App Center with the application
+	  <emphasis>Software installation monitor</emphasis>. Alternatively, the software package
+	  <package>univention-pkgdb</package> can be installed. Additional information can be found in
+	  <xref linkend="computers::softwaremanagement::installsoftware"/>.
 	</para>
 
 	<para>

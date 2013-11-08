@@ -70,14 +70,15 @@
 </section>
 
 <section id="print-services:Installing_a_print_server">
-<title>Installing a print server</title>
-	<para>
-		A print server can be set up on all domain controllers and member
-		servers by selecting the installer component <emphasis>Print server
-		(CUPS)</emphasis> or via subsequent installation of
-		the <package>univention-printserver</package> package. After installation of
-		the package, <command>univention-run-join-scripts</command> must be run.
-	</para>
+  <title>Installing a print server</title>
+  <para>
+	A printserver can be installed from the Univention App Center with the application
+	<emphasis>Print server (CUPS)</emphasis>. Alternatively, the software package
+	<package>univention-printserver</package> can be installed
+	(<command>univention-run-join-scripts</command> must be executed after installation).
+	Additional information can be found in <xref
+	linkend="computers::softwaremanagement::installsoftware"/>.
+  </para>
 </section>
 
 <section id="print-services:configuration">

@@ -93,14 +93,13 @@
 
   <section id="mail::installation">
 	<title>Installation</title>
+
 	<para>
-	  The mail server can be set up in the Univention installer by selecting
-	  the <emphasis>Mail server (Postfix, Cyrus IMAPd)</emphasis> component. On an
-	  already installed system, the installation is performed using
-	  the <package>univention-mail-server</package> package.
-	</para>
-	<para>
-	  The package can be installed on all server system roles. The use of a
+	  A mail server can be installed from the Univention App Center with the application
+	  <emphasis>Mail server</emphasis>. Alternatively, the software package
+	  <package>univention-mail-server</package> can be installed. Additional information can be found in
+	  <xref linkend="computers::softwaremanagement::installsoftware"/>.
+	  A mail server can be installed on all server system roles. The use of a
 	  domain controller is recommended because of frequent LDAP accesses.
 	</para>
 

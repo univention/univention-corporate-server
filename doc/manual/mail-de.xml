@@ -96,15 +96,12 @@
 
   <section id="mail::installation">
 	<title>Installation</title>
-	<para>
-	  Der Mailserver kann im Univention Installer durch Auswahl der Komponente <emphasis>Mail
-	  server (Postfix, Cyrus IMAPd)</emphasis> eingerichtet werden. Auf einem bereits
-	  installierten System erfolgt die Installation durch das
-	  Paket <package>univention-mail-server</package>.
-	</para>
 
 	<para>
-	  Das Paket kann auf allen Server-Systemrollen installiert werden. Die
+	  Ein Mailserver kann mit der Applikation <emphasis>Mailserver</emphasis> aus dem Univention App Center installiert
+	  werden. Alternativ kann das Softwarepaket <package>univention-mail-server</package> installiert
+	  werden. Weitere Informationen finden sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
+	  Mailserver können auf allen Server-Systemrollen installiert werden. Die
 	  Verwendung eines Domänencontrollers wird wg. häufiger LDAP-Zugriffe empfohlen.
 	</para>
 

@@ -92,51 +92,59 @@ point. (For Samba 3 this function is not available because of
 the lack of support for the Active Directory technology.)
 </para>
 
-<section id="windows:Installation_and_components_of_a_Samba_3_domain"><title>Installation and components of a Samba 3 domain</title>
-<para>
-Samba 3 can be installed on all UCS domain controllers by selecting the
-installer component <emphasis>NT-compatible domaincontroller (Samba 3)</emphasis>
-or via subsequent installation of the <emphasis>univention-samba</emphasis>
-package. In the subsequent installation,
-the <command>univention-run-join-scripts</command> command must be run after
-installation.
-</para>
-<para>
-On &ucsMember;s, the installer component is called <emphasis>Windows
-memberserver (Samba 3 / Samba 4)</emphasis>. Alternatively, the
-packages <package>univention-samba</package> and <package>winbind</package> can be installed.
-</para>
+<section id="windows:setup3">
+  <title>Installation and components of a Samba 3 domain</title>
+
+  <para>
+	Samba 3 as a domain controller can be installed on all UCS domain controllers from the Univention App Center with the application
+	<emphasis>Windows NT-compatible domain controller</emphasis>. Alternatively, the software package
+	<package>univention-samba</package> can be installed
+	(<command>univention-run-join-scripts</command> command must be run after installation).
+	Additional information can be found in <xref
+	linkend="computers::softwaremanagement::installsoftware"/>.
+  </para>
+
+  <para>
+	A Samba member server can be installed on UCS member servers from the Univention App Center with the application
+	<emphasis>Windows-compatible Fileserver</emphasis>. Alternatively, the software packages
+	<package>univention-samba</package> and <package>winbind</package> can be installed
+	(<command>univention-run-join-scripts</command> command must be run after installation).
+	Additional information can be found in <xref
+	linkend="computers::softwaremanagement::installsoftware"/>.
+  </para>
 </section>
 
-<section id="windows:Installation_and_components_of_a_Samba_4_domain"><title>Installation and components of a Samba 4 domain</title>
-<para>
-Samba 4 can only be installed on UCS domain controllers.
-</para>
-<para>
-The <emphasis>Active Directory-compatible domaincontroller (Samba 4)</emphasis>
-component must be selected in the Univention Installer. Installation
-on the command line is performed with the <package>univention-samba4</package>
-package. On the system roles &ucsMaster; and &ucsBackup;,
-the <package>univention-s4-connector</package> must also be installed (in
-installation via the Univention Installer, the connector package is
-automatically installed at the same time).
-</para>
-<para>
-For the installation of a Samba member server,
-the <guimenu>Windows Memberserver (Samba 3 / Samba 4)</guimenu> component
-in the Univention Installer must be selected on a UCS &ucsMember; or
-alternatively the packages <package>univention-samba</package>
-and <package>winbind</package> must be subsequently installed.
-</para>
-<para>
-The signing of NTP replies should be set on all Samba domain
-controllers, see <xref linkend="basicservices::ntp"/>.
-</para>
+<section id="windows:setup4">
+  <title>Installation and components of a Samba 4 domain</title>
 
-<para>
-  Samba 4 supports the operation as a <emphasis>read-only domain controller</emphasis>. The setup is
-  documented in <biblioref linkend="ext-doc-win"/>.
-</para>
+  <para>
+	Samba 4 as a domain controller can be installed on all UCS domain controllers from the Univention App Center with the application
+	<emphasis>Active Directory-compatible domain controller</emphasis>. Alternatively, the software package
+	<package>univention-samba4</package> can be installed. On the system roles &ucsMaster; and
+	&ucsBackup; the <package>univention-s4-connector</package> package must also be installed
+	(<command>univention-run-join-scripts</command> command must be run after installation).
+	Additional information can be found in <xref
+	linkend="computers::softwaremanagement::installsoftware"/>.
+  </para>
+
+  <para>
+	A Samba member server can be installed on UCS member servers from the Univention App Center with the application
+	<emphasis>Windows-compatible Fileserver</emphasis>. Alternatively, the software packages
+	<package>univention-samba</package> and <package>winbind</package> can be installed
+	(<command>univention-run-join-scripts</command> command must be run after installation).
+	Additional information can be found in <xref
+	linkend="computers::softwaremanagement::installsoftware"/>.
+  </para>
+
+  <para>
+	The signing of NTP replies should be set on all Samba domain
+	controllers, see <xref linkend="basicservices::ntp"/>.
+  </para>
+
+  <para>
+	Samba 4 supports the operation as a <emphasis>read-only domain controller</emphasis>. The setup is
+	documented in <biblioref linkend="ext-doc-win"/>.
+  </para>
 
 <para>
 Samba 4 implements Active Directory directory services which allow a multi-master replication, i.e.,
@@ -647,25 +655,32 @@ This feature is only available in Samba 3.
 	</para>
 </section>
 
-<section id="ad-connector:einrichtung"><title>Setup of the UCS AD connector</title>
-<para>
-The installation is performed installing the
-<package>univention-ad-connector</package> package.
-</para>
-<para>
-The UCS AD connector can only be installed on a &ucsMaster; or
-&ucsBackup; system.
-</para>
-<para>
-Despite intensive tests it is not possible to rule out that the
-results of the synchronisation may affect the operation of a
-productive domain. The connector should therefore be tested for the
-respective requirements in a separate environment in advance.
-</para>
-<para>
-All Active Directory and UCS servers in a connector environment must
-use the same time zone.
-</para>
+<section id="ad-connector:einrichtung">
+  <title>Setup of the UCS AD connector</title>
+
+  <para>
+	The connector can be installed from the Univention App Center with the application
+	<emphasis>UCS Active Directory Connector</emphasis>. Alternatively, the software package
+	<package>univention-ad-connector</package> can be installed. Additional information can be found in
+	<xref linkend="computers::softwaremanagement::installsoftware"/>.
+  </para>
+  
+  <para>
+	The UCS AD connector can only be installed on a &ucsMaster; or
+	&ucsBackup; system.
+  </para>
+
+  <para>
+	Despite intensive tests it is not possible to rule out that the
+	results of the synchronisation may affect the operation of a
+	productive domain. The connector should therefore be tested for the
+	respective requirements in a separate environment in advance.
+  </para>
+
+  <para>
+	All Active Directory and UCS servers in a connector environment must
+	use the same time zone.
+  </para>
 
 <section id="ad-connector:basicsetup">
   <title>Basic configuration of the connector</title>

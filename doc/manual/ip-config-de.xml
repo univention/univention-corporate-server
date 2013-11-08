@@ -989,13 +989,22 @@
 		Konfigurationsparameter werden am DHCP-Service angegeben,
 		spezifische Parameter in den Objekten darunter.
 	  </para>
+
 	  <para>
-		Jeder UCS-Server, auf dem bei der Installation die Komponente
-		<emphasis>DHCP-Server</emphasis> aufgewählt wurde oder das Paket
-		<package>univention-dhcp</package> nachinstalliert wurde, verteilt IP-Adressen
-		über DHCP. In der Grundeinstellungen werden nur statische IP-Adressen
-		an im UCS-LDAP registrierte Rechnerobjekte vergeben.
+		Ein DHCP-Server kann mit der Applikation
+		<emphasis>DHCP-Server</emphasis> aus dem Univention App Center
+		installiert werden. Alternativ kann das Softwarepaket
+		<package>univention-dhcp</package> installiert werden. Weitere
+		Informationen finden sich in <xref
+		linkend="computers::softwaremanagement::installsoftware"/>.
 	  </para>
+
+	  <para>
+		Jeder DHCP-Server verteilt IP-Adressen über DHCP. In der
+		Grundeinstellungen werden nur statische IP-Adressen an im
+		UCS-LDAP registrierte Rechnerobjekte vergeben.
+	  </para>
+
 	  <para>
 		Werden ausschließlich feste IP-Adressen vergeben, können beliebig
 		viele DHCP-Server in einem DHCP-Service verwendet werden. Alle
@@ -1792,10 +1801,14 @@
 	</para>
 	<section id="ip-config:Installation">
 	  <title>Installation</title>
+
 	  <para>
-		Der Web-Proxy kann auf jeder UCS Server-Systemrolle mit dem
-		Paket <package>univention-squid</package> installiert werden.
+		Squid kann mit der Applikation
+		<emphasis>Proxyserver / Webcache (Squid)</emphasis> aus dem Univention App Center installiert
+		werden. Alternativ kann das Softwarepaket <package>univention-squid</package> installiert
+		werden. Weitere Informationen finden sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
 	  </para>
+
 	  <para>
 		Der Dienst wird mit für den Betrieb ausreichenden Standardeinstellungen
 		konfiguriert, sodass eine sofortige Verwendung möglich ist. Der Port, auf dem

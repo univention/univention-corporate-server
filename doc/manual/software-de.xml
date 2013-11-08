@@ -1112,10 +1112,10 @@ ucr set repository/online/component/ucsschool/description="UCS@school-Pakete" \
 	</para>
 
 	<para>
-	  Der Software-Monitor kann durch Auswahl der Komponente
-	  <emphasis>Paketstatus-Überwachung</emphasis> im Univention Installer eingerichtet
-	  werden. Alternativ kann das Paket <package>univention-pkgdb</package> installiert
-	  werden.
+	  Der Software-Monitor kann mit der Applikation
+	  <emphasis>Software-Installationsmonitor</emphasis> aus dem Univention App Center installiert
+	  werden. Alternativ kann das Softwarepaket <package>univention-pkgdb</package> installiert
+	  werden. Weitere Informationen finden sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
 	</para>
 
 	<para>

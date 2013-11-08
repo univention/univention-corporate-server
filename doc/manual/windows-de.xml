@@ -94,53 +94,60 @@ Unterstützung der Active Directory-Technologie ohnehin nicht zur
 Verfügung).
 </para>
 
-<section id="windows:Installation__Aufbau_einer_Domaene_mit_Samba_3"><title>Installation / Aufbau einer Domäne mit Samba 3</title>
-<para>
-Samba 3 kann auf allen UCS-Domänencontrollern durch Auswahl der
-Installer-Komponente <emphasis>NT-kompatibler Domänencontroller (Samba
-3)</emphasis> oder durch nachträgliche Installation des
-Pakets <package>univention-samba</package> eingerichtet werden. Bei der
-nachträglichen Installation muss zum Abschluss der
-Befehl <command>univention-run-join-scripts</command> aufgerufen werden.
-</para>
-<para>
-Auf &ucsMember;n heißt die Installer-Komponente <emphasis>Windows
-&ucsMember; (Samba 3 / Samba 4)</emphasis>. Alternativ können die
-Pakete <package>univention-samba</package> und <package>winbind</package> installiert
-werden.
-</para>
+<section id="windows:setup3">
+  <title>Installation / Aufbau einer Domäne mit Samba 3</title>
+
+  <para>
+	Samba 3 als Domänencontroller kann auf allen UCS-Domänencontrollern mit der Applikation
+	<emphasis>Windows-NT-kompatibler Domänencontroller</emphasis> aus dem Univention App Center
+	installiert werden. Alternativ kann das Softwarepaket <package>univention-samba</package>
+	installiert werden (anschließend muss der Befehl <command>univention-run-join-scripts</command>
+	aufgerufen werden). Weitere Informationen finden sich in <xref
+	linkend="computers::softwaremanagement::installsoftware"/>.
+  </para>
+
+  <para>
+	Ein Samba-Memberserver kann auf UCS-Memberservern mit der Applikation
+	<emphasis>Windows-kompatibler Fileserver auf der Basis von Samba 3</emphasis> aus dem Univention App Center
+	installiert werden. Alternativ können die Softwarepakete <package>univention-samba</package> und
+	<package>winbind</package> installiert werden (anschließend muss der Befehl
+	<command>univention-run-join-scripts</command> aufgerufen werden). Weitere Informationen finden
+	sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
+  </para>
+
 </section>
 
-<section id="windows:Installation__Aufbau_einer_Domaene_mit_Samba_4"><title>Installation / Aufbau einer Domäne mit Samba 4</title>
-<para>
-Samba 4 kann nur auf UCS-Domänencontrollern installiert werden.
-</para>
-<para>
-Im Univention Installer ist die Komponente <guimenu>Active
-Directory-kompatibler Domänencontroller (Samba 4)</guimenu> auszuwählen.
-Eine Installation auf der Kommandozeile erfolgt mit dem Paket
-<package>univention-samba4</package>. Auf den Systemrollen &ucsMaster; und
-&ucsBackup; muss zusätzlich <package>univention-s4-connector</package>
-installiert werden (bei der Installation über den Univention Installer
-wird das Connector-Paket automatisch mitinstalliert).
-</para>
-<para>
-Zur Installation eines Samba-Member-Servers ist auf einem
-UCS-&ucsMember; im Univention Installer die
-Komponente <guimenu>Windows &ucsMember; (Samba 3 / Samba 4)</guimenu>
-auszuwählen. Alternativ können die
-Pakete <package>univention-samba</package> und <package>winbind</package> installiert
-werden.
-</para>
-<para>
-Auf allen Samba-Domänencontrollern sollte die Signierung der
-NTP-Pakete aktiviert werden, siehe <xref linkend="basicservices::ntp"/>.
-</para>
+<section id="windows:setup4">
+  <title>Installation / Aufbau einer Domäne mit Samba 4</title>
 
-<para>
-  Samba 4 unterstützt auf den Betrieb als <emphasis>read-only domain controller</emphasis>. Die
-  Einrichtung ist in <biblioref linkend="ext-doc-win"/> dokumentiert.
-</para>
+  <para>
+	Samba 4 als Domänencontroller kann auf allen UCS-Domänencontrollern mit der Applikation
+	<emphasis>Active Directory-kompatibler Domänencontroller</emphasis> aus dem Univention App Center
+	installiert werden. Alternativ kann das Softwarepaket <package>univention-samba4</package>
+	installiert werden. Auf den Systemrollen &ucsMaster; und &ucsBackup; muss zusätzlich
+	<package>univention-s4-connector</package> installiert werden (anschließend muss der Befehl
+	<command>univention-run-join-scripts</command> aufgerufen werden). Weitere Informationen finden sich in <xref
+	linkend="computers::softwaremanagement::installsoftware"/>.
+  </para>
+
+  <para>
+	Ein Samba-Memberserver kann auf UCS-Memberservern mit der Applikation
+	<emphasis>Windows-kompatibler Fileserver auf der Basis von Samba 3</emphasis> aus dem Univention App Center
+	installiert werden. Alternativ können die Softwarepakete <package>univention-samba</package> und
+	<package>winbind</package> installiert werden (anschließend muss der Befehl
+	<command>univention-run-join-scripts</command> aufgerufen werden). Weitere Informationen finden
+	sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
+  </para>
+
+  <para>
+	Auf allen Samba-Domänencontrollern sollte die Signierung der
+	NTP-Pakete aktiviert werden, siehe <xref linkend="basicservices::ntp"/>.
+  </para>
+
+  <para>
+	Samba 4 unterstützt auf den Betrieb als <emphasis>read-only domain controller</emphasis>. Die
+	Einrichtung ist in <biblioref linkend="ext-doc-win"/> dokumentiert.
+  </para>
 
 <para>
 Samba 4 implementiert Active Directory Verzeichnisdienste, die eine
@@ -673,8 +680,12 @@ Diese Funktionalität steht nur unter Samba 3 zur Verfügung.
 
 <section id="ad-connector:einrichtung">
   <title>Einrichtung des UCS AD Connectors</title>
+
   <para>
-	Die Installation erfolgt durch Installation des Pakets <package>univention-ad-connector</package>.
+	Der Connector kann mit der Applikation <emphasis>UCS Active Directory Connector</emphasis>
+	aus dem Univention App Center installiert werden. Alternativ kann das Softwarepaket
+	<package>univention-ad-connector</package> installiert werden. Weitere Informationen finden sich in
+	<xref linkend="computers::softwaremanagement::installsoftware"/>.
   </para>
 
   <para>

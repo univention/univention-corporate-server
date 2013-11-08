@@ -52,57 +52,44 @@
 
 	<section id="uvmm::installation">
 		<title>Installation</title>
+
 		<para>
-			&ucsUVMM; comprises three different packages.
-			They can all be selected directly when installing the UCS system or alternatively installed subsequently via &ucsUMC;.
+		  Univention Virtual Machine Manager can be installed from the Univention App Center with the application
+		  <emphasis>Management server for KVM or Xen</emphasis>. Alternatively, the software package
+		  <package>univention-virtual-machine-manager-daemon</package> can be installed (if UVMM is
+		  installed on a &ucsSlave; or &ucsBackup;, the package
+		  <emphasis>univention-virtual-machine-manager-schema</emphasis> needs to be installed on
+		  the &ucsMaster; beforehand). Additional information can be found in
+		  <xref linkend="computers::softwaremanagement::installsoftware"/>.The installation on
+		  &ucsMember;s requires additional configuration steps, which are documented in
+		  <biblioref linkend="uvmm-technical-details"/>.
 		</para>
-		<variablelist>
-			<varlistentry>
-				<term>
-					Virtual Machine Manager (UVMM) (Package: univention-virtual-machine-manager-daemon)
-				</term>
-				<listitem>
-					<simpara>
-					This package must be installed on the management system.
-					In doing so, both an additional service and the &ucsUMC; module are set up.
-					This package should be installed on a domain controller in the UCS domain.
-					The installation on &ucsMember;s requires additional configuration steps, which are documented in <biblioref linkend="uvmm-technical-details"/>.
-					If UVMM is installed on a &ucsSlave; or &ucsBackup;, the package <emphasis>univention-virtual-machine-manager-schema</emphasis> needs to be installed on the &ucsMaster; beforehand.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>
-					Xen virtualization server (Package: univention-virtual-machine-manager-node-xen)
-				</term>
-				<listitem>
-					<simpara>
-					This package must be installed on each system which is to be used as a Xen-based virtualization server.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>
-					KVM virtualization server (Package: univention-virtual-machine-manager-node-kvm)
-				</term>
-				<listitem>
-					<simpara>
-					If KVM is to be used for the virtualization, this package should be installed on the virtualization servers.
-					</simpara>
-				</listitem>
-			</varlistentry>
-		</variablelist>
+
 		<para>
-			The two packages for the virtualization servers register the service in the LDAP directory.
-			Additionally, a particular kernel is installed on Xen systems, which is necessary to allow Xen to be used.
+		  When installing the virtualization servers, only one virtualization technology should be
+		  used per server:
 		</para>
+
 		<para>
-			When installing the virtualization servers, only one virtualization technology should be used per server.
+		  A Xen virtualization server can be installed from the Univention App Center with the
+		  application <emphasis>Xen virtualization server</emphasis>. Alternatively, the software
+		  package <package>univention-virtual-machine-manager-node-xen</package> can be
+		  installed. Additional information can be found in  <xref
+		  linkend="computers::softwaremanagement::installsoftware"/>.
 		</para>
+
 		<para>
-			Additionally, the architecture must also be taken into account during installation of the virtualization servers.
-			64 bit systems can only be virtualized on UCS systems where are installed using the amd64 architecture.
-			A 64-bit system (amd64) is recommended for use as the virtualization server.
+		  A KVM virtualization server can be installed from the Univention App Center with the
+		  application <emphasis>KVM virtualization server</emphasis>. Alternatively, the software
+		  package <package>univention-virtual-machine-manager-node-kvm</package> can be
+		  installed. Additional information can be found in  <xref
+		  linkend="computers::softwaremanagement::installsoftware"/>.
+		</para>
+
+		<para>
+		  Additionally, the architecture must also be taken into account during installation of the virtualization servers.
+		  64 bit systems can only be virtualized on UCS systems where are installed using the amd64 architecture.
+		  A 64-bit system (amd64) is recommended for use as the virtualization server.
 		</para>
 	</section>
 

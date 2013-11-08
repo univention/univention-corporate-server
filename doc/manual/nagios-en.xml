@@ -106,21 +106,18 @@
 
 <section id="Nagios:Installation">
 	<title>Installation</title>
+
 	<para>
-	The Nagios server can be installed on any system role; the use of a
-	domain controller system is recommended. The
-	<emphasis>univention-nagios-server</emphasis> package must be installed for the
-	commissioning. After the installation of the package,
-	<command>univention-run-join-scripts</command> must be run.
+	  A Nagios server can be installed from the Univention App Center with the application
+	  <emphasis>Network monitoring (Nagios)</emphasis>. Alternatively, the software package
+	  <package>univention-nagios-server</package> can be installed (subsequently
+	  <command>univention-run-join-scripts</command> must be run). Additional information can be
+	  found in <xref linkend="computers::softwaremanagement::installsoftware"/>. The Nagios server
+	  can be installed on any system role; the use of a domain controller system is recommended.
 	</para>
 
 	<para>
-	The Nagios client can be installed on any system role. The
-	<emphasis>univention-nagios-client</emphasis> package must be installed for the
-	commissioning. After the installation of the package, the
-	<command>univention-run-join-scripts</command> must be run.
-	The Nagios client has been automatically installed with new
-	installations since UCS 3.0.
+	  The Nagios client is installed by default on all system roles.
 	</para>
 
 	<para>

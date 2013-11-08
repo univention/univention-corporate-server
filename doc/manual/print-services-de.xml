@@ -70,14 +70,14 @@
 	</para>
 </section>
 <section id="print-services:Installation_eines_Druckservers">
-<title>Installation eines Druckservers</title>
-	<para>
-		Ein Druckserver kann auf allen Domänencontroller und auf &ucsMember;n
-		durch Auswahl der Installer-Komponente <emphasis>Druckserver (CUPS)</emphasis> oder
-		durch nachträgliche Installation des Pakets <package>univention-printserver</package>
-		eingerichtet werden. Nach Installation des Pakets
-		sollte <command>univention-run-join-scripts</command> aufgerufen werden.
-	</para>
+  <title>Installation eines Druckservers</title>
+  <para>
+	Ein Druckserver kann mit der Applikation <emphasis>Druckserver (CUPS)</emphasis> aus dem
+	Univention App Center installiert werden. Alternativ kann das Softwarepaket
+	<package>univention-printserver</package> installiert und
+	<command>univention-run-join-scripts</command> aufgerufen werden. Weitere Informationen finden sich
+	in <xref linkend="computers::softwaremanagement::installsoftware"/>.
+  </para>
 </section>
 
 <section id="print-services:configuration">

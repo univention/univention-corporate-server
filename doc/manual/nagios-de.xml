@@ -108,21 +108,19 @@
 
 <section id="Nagios:Installation">
 	<title>Installation</title>
+
 	<para>
-	Der Nagios-Server kann auf beliebigen Systemrollen installiert
-	werden, wobei die Verwendung eines Domänencontroller-Systems empfohlen
-	wird. Zur Inbetriebnahme muss das Paket <emphasis>univention-nagios-server</emphasis>
-	installiert werden. Nach der Installation des Pakets
-	sollte <command>univention-run-join-scripts</command> aufgerufen werden.
+	  Ein Nagios-Server kann mit der Applikation <emphasis>Netzwerküberwachung (Nagios)</emphasis>
+	  aus dem Univention App Center installiert werden. Alternativ kann das Softwarepaket
+	  <package>univention-nagios-server</package> installiert werden (anschließend muss
+	  <command>univention-run-join-scripts</command> aufgerufen werden). Weitere Informationen
+	  finden sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
+	  Der Nagios-Server kann auf beliebigen Systemrollen installiert werden, wobei die Verwendung
+	  eines Domänencontroller-Systems empfohlen wird. 
 	</para>
 
 	<para>
-	Der Nagios-Client kann auf beliebigen Systemrollen installiert werden.
-	Zur Inbetriebnahme muss das Paket <emphasis>univention-nagios-client</emphasis>
-	installiert werden. Nach der Installation des Pakets
-	sollte <command>univention-run-join-scripts</command> aufgerufen werden.
-	Seit UCS 3.0 wird der Nagios-Client bei Neuinstallationen automatisch
-	mitinstalliert.
+	  Der Nagios-Client ist auf allen Systemrollen standardmäßig installiert.
 	</para>
 
 	<para>

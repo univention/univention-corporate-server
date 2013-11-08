@@ -1191,13 +1191,20 @@
 		entered in the DHCP service; specific parameters in the subordinate
 		objects.
 	  </para>
+
 	  <para>
-		Every UCS server on which the <emphasis>DHCP server</emphasis> component was
-		selected during installation or the <package>univention-dhcp</package> package
-		has been subsequently installed assigns IP addresses via DHCP. In the
+		A DHCP server can be installed from the Univention App Center with the application
+		<emphasis>DHCP server</emphasis>. Alternatively, the software package
+		<package>univention-dhcp</package> can be installed. Additional information can be found in
+		<xref linkend="computers::softwaremanagement::installsoftware"/>.
+	  </para>
+
+	  <para>
+		Every DHCP assigns IP addresses via DHCP. In the
 		default setting, only static IP addresses are assigned to computer
 		objects registered in the UCS LDAP.
 	  </para>
+
 	  <para>
 		If only fixed IP addresses are assigned, as many DHCP servers as
 		required may be used in a DHCP service. All the DHCP servers procure
@@ -2144,10 +2151,14 @@ closest to the object always applies.
 
 	<section id="ip-config:Installation">
 	  <title>Installation</title>
+
 	  <para>
-		The web proxy can be installed on any UCS server system role with the
-		package <package>univention-squid</package>.
+		Squid can be installed from the Univention App Center with the application
+		<emphasis>Web proxy / web cache (Squid)</emphasis>. Alternatively, the software package
+		<package>univention-squid</package> can be installed. Additional information can be found in
+		<xref linkend="computers::softwaremanagement::installsoftware"/>.
 	  </para>
+
 	  <para>
 		The service is configured with standard settings sufficient for
 		operation so that it can be used immediately. It is possible to
@@ -2169,7 +2180,7 @@ closest to the object always applies.
 		configuration options in the <filename>/etc/squid3/local.conf</filename>.
 	  </para>
 	  <para>
-		<emphasis>Dansguardian</emphasis>can be installed via the
+		<emphasis>Dansguardian</emphasis> can be installed via the
 		package <package>univention-dansguardian</package>,
 		see <xref linkend="proxy:contentfilter"/>.
 	  </para>
