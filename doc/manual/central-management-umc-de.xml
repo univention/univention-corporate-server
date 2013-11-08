@@ -329,6 +329,20 @@
 	  UCS und zur &ucsUMC; gegeben werden.
 	</para>
 	</section>
+
+	<section id="central-management-umc:notifications">
+	  <title>Anzeige von Systembenachrichtigungen</title>
+	  <para>
+		UMC-Module können den Benutzer durch Systembenachrichtigungen auf potentielle Fehler -
+		z.B. nicht ausgeführte Join-Skripte - oder nötige Aktionen wie verfügbare Updates hinweisen.
+	  </para>
+
+	  <para>
+		Mit einem Klick auf das stilisierte 'i' in der oberen Navigationsleiste der &ucsUMC; werden
+		alle Systembenachtigungen angezeigt.
+	</para>
+	</section>
+
 </section>
 
 <section id="central-management-umc:piwik">
