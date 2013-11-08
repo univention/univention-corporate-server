@@ -51,7 +51,7 @@
 
     </bookinfo>
 
-    <chapter>
+    <chapter id="relnotes:highlights">
 	  <title>Release-Highlights</title>
 
 		<para>
@@ -69,7 +69,7 @@
 		</itemizedlist>
     </chapter>
 
-    <chapter>
+    <chapter id="relnotes:order">
 	  <title>Empfohlene Update-Reihenfolge für Umgebungen mit mehr als einem UCS-Server / Update von Systemen mit UCS-Komponenten</title>
 
 		<para>
@@ -89,7 +89,7 @@
 		  aktualisieren.
 		</para>
 
-	  <section>
+	  <section id="relnotes:3rdparty">
 		<title>Hinweise zu Umgebungen mit anderer Dritt-Software</title>
 		<para>
 		  Bei der Verwendung von 3rd-Party-Software ist generell <emphasis>vor</emphasis> dem Update
@@ -112,7 +112,7 @@
 	  </section>
 	</chapter>
 
-    <chapter>
+    <chapter id="relnotes:prepare">
 	  <title>Vorbereitung des Updates</title>
 
 		<para>
@@ -138,7 +138,7 @@
 		  Systemrollen installiert sind.
 		</para>
 
-	  <section>
+	  <section id="relnotes:bdb">
 		<title>Prüfung der BDB-Einstellungen bei Systemen mit Cyrus IMAP-Server (univention-mail-cyrus)</title>
 		<para>
 		  Ab UCS 3.2 wird von dem Paket univention-mail-cyrus ein neues &ucsUCR;-Template für die
@@ -175,7 +175,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 </programlisting>
 	  </section>
 
-	  <section>
+	  <section id="relnotes:cyruslistener">
 		<title>Anpassungen am Univention Directory Listener-Modul für Cyrus-Benutzer</title>
 		<para>
 		  Das Listener Modul für die Verwaltung der Postfächer wurde überarbeitet. Postfächer werden
@@ -197,7 +197,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 	  </section>
 
 
-	  <section>
+	  <section id="relnotes:removed">
 		<title>Entfernte/nicht mehr unterstützte Komponenten</title>
 		<para>
 		  Einige Komponenten sind entfernt worden und werden mit UCS 3.2 nicht mehr ausgeliefert:
@@ -234,7 +234,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		  Anschließend sollte das UCS-System neu gestartet werden.
 		</para>
 
-	  <section>
+	  <section id="relnotes:grub2">
 		<title>Migration auf GRUB 2</title>
 		<para>
 		  Bei einer Neuinstallation ab UCS 3.0 wird vom Univention Installer direkt GRUB 2 in den
@@ -253,7 +253,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		</para>
 	  </section>
 
-	  <section>
+	  <section id="relnotes:postgres">
 		<title>Migration von PostgreSQL 8.3 auf PostgreSQL 8.4</title>
 		<para>
 		  Ab UCS 3.0 wird neben PostgreSQL 8.3 auch PostgreSQL 8.4 angeboten. Bei Aktualisierungen
@@ -267,7 +267,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		</para>
 	  </section>
 
-	  <section>
+	  <section id="relnotes:horde">
 		<title>Update/Installation der Horde Grouware Webmail Edition</title>
 		<para>
 		  Ab UCS 3.2 wird die Horde Grouware Webmail Edition nicht mehr über das Paket
@@ -278,7 +278,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		</para>
 	  </section>
 
-	  <section>
+	  <section id="relnotes:sambaproto">
 		<title>Aktualisierung der unterstützen Protokolle für Samba-Dateidienste</title>
 		<para>
 		  In Versionen vor UCS 3.2 verwendete Samba zur Bereitstellung von Dateidiensten das
@@ -337,7 +337,7 @@ done
     <chapter>
 	  <title>Hinweise zum Einsatz einzelner Pakete</title>
 
-	  <section>
+	  <section id="relnotes:usage">
 		<title>Erfassung von Nutzungsstatistiken bei Verwendung der Free-For-Personal-Use-Version</title>
 		<para>
 		  Bei Verwendung der <emphasis>Free for personal use</emphasis>-Version von UCS (die in der
@@ -364,7 +364,7 @@ done
 		</para>
 	  </section>
 
-	  <section>
+	  <section id="relnotes:uefi">
 		<title>Bootprobleme bei Verwendung der UEFI-Installations-DVD</title>
 		<para>
 		  Ab UCS 3.1 steht für amd64 neben der Standard-Installations-DVD auch ein Medium mit
@@ -377,7 +377,7 @@ done
 		</para>
 	  </section>
 
-	  <section>
+	  <section id="relnotes:secbrowsers">
 		<title>Umfang des Sicherheits-Supports von Webkit, Konqueror und QtWebKit</title>
 		<para>
 		  Webkit, Konqueror und QtWebkit werden in UCS im maintained-Zweig des Repositorys
@@ -387,7 +387,7 @@ done
 		</para>
 	  </section>
 
-	  <section>
+	  <section id="relnotes:browsers">
 		<title>Empfohlene Browser für den Zugriff auf die Univention Management Console</title>
 
 		<para>
@@ -419,7 +419,7 @@ done
 		</para>
 	  </section>
 
-	  <section>
+	  <section id="relnotes:s4limits">
 		<title>Einschränkungen im Samba 4-Betrieb</title>
 		<para>
 		  Die aktuell vom Samba-Projekt veröffentlichten Versionen von Samba 4 unterliegen in der
@@ -501,7 +501,7 @@ xe vm-param-set uuid=UUIDVM platform:vga=std
 	  </section>
 
 
-	  <section>
+	  <section id="relnotes:s3tos4">
 		<title>Migration einer Samba 3-Umgebung auf Samba 4</title>
 		<para>
 		  Es existieren zwei grundlegende Verfahren zur Migration von Samba 3 auf Samba 4:
@@ -528,7 +528,7 @@ xe vm-param-set uuid=UUIDVM platform:vga=std
 		</para>
 	  </section>
 
-	  <section>
+	  <section id="relnotes:xenhopt">
 		<title>Xen</title>
 		<para>
 		  Wenn der Xen Hypervisor benutzt wird und das Speicherlimit über die &ucsUCR;-Variable
