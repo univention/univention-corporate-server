@@ -483,15 +483,6 @@
 				</row>
 
 				<row>
-				  <entry>Use Windows client driver</entry>
-				  <entry>
-					<para>
-					  This option is documented in <xref linkend="print-services:Mounting_of_print_shares_in_Windows_clients"/>.
-					</para>
-				  </entry>
-				</row>
-
-				<row>
 					<entry>Price per page</entry>
 					<entry>
 						The user is charged the value given in this input field for every page
@@ -597,10 +588,7 @@
 <para>
   The printer shares set up in the &ucsUMC; can be added to Windows systems as network printers. The
   printer drivers need to be set up during the first access. To facilitate user access to the drivers,
-  the drivers can also be stored on the server, as is described below. Alternatively, the
-  option <guimenu>Use Windows client driver</guimenu> can also be activated on a
-  printer share. This is necessary for Samba to accept print jobs from printer drivers only
-  installed by users locally.
+  the drivers can also be stored on the server.
 </para>
 
 	<para>

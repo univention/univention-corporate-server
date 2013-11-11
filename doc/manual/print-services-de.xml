@@ -291,16 +291,6 @@
 				</row>
 
 				<row>
-				  <entry>Clientseitigen Windows Treiber verwenden</entry>
-				  <entry>
-					<para>
-					  Diese Einstellung ist in <xref linkend="print-services:Einbinden_von_Druckerfreigaben_auf_Windows-Clients"/>
-					  dokumentiert.
-					</para>
-				  </entry>
-				</row>
-
-				<row>
 					<entry>Preis pro Druckauftrag</entry>
 					<entry>
 						<para>
@@ -609,10 +599,7 @@
   Die in der &ucsUMC; eingerichteten Druckerfreigaben können auf Windows-Systemen als
   Netzwerkdrucker hinzugefügt werden. Die Druckertreiber müssen beim ersten Zugriff eingerichtet
   werden. Um den Benutzern den Zugriff auf die Treiber zu erleichtern, können die Treiber auf dem
-  Server hinterlegt werden, das ist unten beschrieben. Alternativ kann die Option
-  <guimenu>Clientseitigen Windows Treiber verwenden</guimenu> an einer Druckerfreigabe aktiviert
-  werden. Dies ist notwendig, damit Samba Druckaufträge solchen Druckertreibern akzeptiert, die von
-  Benutzern nur lokal installiert wurden.
+  Server hinterlegt werden.
 </para>
 
 <para>
