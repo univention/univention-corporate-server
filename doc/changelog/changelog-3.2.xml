@@ -504,8 +504,11 @@
 	  <title>LDAP ACL changes</title>
 		<itemizedlist>
 		  <listitem><simpara>
-			The &ucsUCR; variable descriptions in <package>univention-admingrp-user-passwordreset</package>
-			have been revised (<ulink url="&ucsbug;30946">Bug 30946</ulink>).
+			The package <package>univention-admingrp-user-passwordreset</package> has been updated
+			to work with UCS 3.2 (<ulink url="&ucsbug;25408">Bug 25408</ulink>). It now also supports the
+			protection of groups through the &ucsUCR; variable <envar>ldap/acl/user/passwordreset/protected/gid</envar>.
+			By default the group <emphasis>Domain Admins</emphasis> is protected (<ulink url="&ucsbug;29710">Bug 29710</ulink>).
+			The &ucsUCR; variable descriptions have been revised (<ulink url="&ucsbug;30946">Bug 30946</ulink>).
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -663,6 +666,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  Added a button to easily send traceback information of unexpected
+		  errors to Univention (<ulink url="&ucsbug;31056">Bug 31056</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Fixed a design issue when trying to horizontally align a certain widget
 		  class (<ulink url="&ucsbug;25389">Bug 25389</ulink>).
 		</simpara></listitem>
@@ -803,6 +811,18 @@
 		  	(<ulink url="&ucsbug;32299">Bug 32299</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  A typo in the command line tool <command>umc-get</command> was fixed (<ulink url="&ucsbug;30605">Bug 30605</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Some redundant log messages have been removed (<ulink url="&ucsbug;29603">Bug 29603</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  A problem which caused to crash the UMC server when setting an invalid locale has been
+		  corrected (<ulink url="&ucsbug;28657">Bug 28657</ulink>).
+		</simpara></listitem>
 
 	  </itemizedlist>
   </section>
@@ -813,7 +833,9 @@
 		<listitem><simpara>
 		  Standard UCS components (such as Samba, KDE, Nagios, print server etc.) are now
 		  installed/removed through the new category <guimenu>UCS components</guimenu>
-		  (Bugs <ulink url="&ucsbug;32301">32301</ulink>, <ulink url="&ucsbug;32302">32302</ulink>).
+		  (Bugs <ulink url="&ucsbug;32301">32301</ulink>, <ulink url="&ucsbug;32308">Bug
+		  32308</ulink>, <ulink url="&ucsbug;32309">Bug 32309</ulink>, <ulink
+		  url="&ucsbug;32302">32302</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -829,7 +851,8 @@
 
 		<listitem><simpara>
 		  If an application doesn't detect sufficient required memory, a warning is emitted.
-		  (<ulink url="&ucsbug;31856">Bug 31856</ulink>).
+		  (<ulink url="&ucsbug;31856">Bug 31856</ulink>, <ulink url="&ucsbug;31354">Bug 31354</ulink>). The detection of free memory when running
+		  in OpenVZ containers was fixed (<ulink url="&ucsbug;30659">Bug 30659</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -847,22 +870,20 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			Applications that require a server role other than the used server role
-			are removed from the App Center Page (<ulink url="&ucsbug;32426">Bug 32426</ulink>).
+		  Applications which cannot be installed on the current system role are no longer displayed
+		  (<ulink url="&ucsbug;32426">Bug 32426</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-			The searchbar also searches the long description of an app (<ulink
-				url="&ucsbug;32930">Bug 32930</ulink>).
+		  The search bar now also searches for the long description of an app (<ulink url="&ucsbug;32930">Bug 32930</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-				Applications now register themselves automatically in the LDAP
-				directory (<ulink url="&ucsbug;32416">Bug 32416</ulink>).
+		  Applications are now registered in the LDAP directory (<ulink url="&ucsbug;32416">Bug 32416</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Added a progress bar while fetching software changes in App Center and speeded up the
+		  Added a progress bar while fetching software changes in the App Center and speeded up the
 		  process of retrieving this information (<ulink url="&ucsbug;30798">Bug 30798</ulink>).
 		</simpara></listitem>
 
@@ -873,37 +894,26 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-				Moved the dialog showing all App details to a dedicated page and use
-				this also for the <emphasis>Installed Apps</emphasis> module (<ulink
-					url="&ucsbug;31891">Bug 31891</ulink>).
+		  The details pages of apps have been improved (<ulink url="&ucsbug;31891">Bug
+		  31891</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-				The <emphasis>Open</emphasis> button now opens a dedicated
-				administration module within <acronym>UMC</acronym> or the web
-				interface (<ulink url="&ucsbug;30759">Bug 30759</ulink>).
+		  Apps can provide a link to a &ucsUMC; module or a web interface (accessible with
+		  <guimenu>Open</guimenu>) (<ulink url="&ucsbug;30759">Bug 30759</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-				Tests whether the user may continue are run after the "Install" (or
-				"Upgrade" or "Uninstall") button is clicked. They are all run at once
-				and for some failed tests solutions are offered (<ulink
-					url="&ucsbug;31737">Bug 31737</ulink>, <ulink url="&ucsbug;30289">Bug
-					30289</ulink>, <ulink url="&ucsbug;32163">Bug 32163</ulink>) .
+		  Tests whether the user may continue are run after the "Install" (or
+		  "Upgrade" or "Uninstall") button is clicked. They are all run at once
+		  and for some failed tests solutions are offered (<ulink
+		  url="&ucsbug;31737">Bug 31737</ulink>, <ulink url="&ucsbug;30289">Bug
+		  30289</ulink>, <ulink url="&ucsbug;32163">Bug 32163</ulink>) .
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Added system components to the App Center (<ulink url="&ucsbug;32308">Bug 32308</ulink>,
-		  <ulink url="&ucsbug;32309">Bug 32309</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Made free memory calculation more robust in OpenVZ environments (<ulink url="&ucsbug;30659">Bug 30659</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-				Made component registration in <command>univention-add-app</command>
-				more robust (<ulink url="&ucsbug;32398">Bug 32398</ulink>).
+		  Made component registration in <command>univention-add-app</command>
+		  more robust (<ulink url="&ucsbug;32398">Bug 32398</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -921,15 +931,9 @@
 		  on other servers in the domain (<ulink url="&ucsbug;31184">Bug 31184</ulink>).
 		</simpara></listitem>
 
-		<!--listitem><simpara>
-				When the App Center contains two applications that want to install
-				packages with the same name and one of these apps was installed, both
-				were marked as such (<ulink url="&ucsbug;32144">Bug 32144</ulink>).
-		</simpara></listitem-->
-
 		<listitem><simpara>
-			Applications now can state that they depend on other Applications (<ulink
-				url="&ucsbug;30077">Bug 30077</ulink>).
+		  Applications can now declare dependencies on other applications (<ulink
+		  url="&ucsbug;30077">Bug 30077</ulink>, <ulink url="&ucsbug;31055">Bug 31055</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -939,7 +943,8 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Allow HTML in the LongDescription of the ini file (<ulink url="&ucsbug;31185">Bug 31185</ulink>).
+		  The INI file of an application may now contain HTML in the long description (<ulink
+		  url="&ucsbug;31185">Bug 31185</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -948,36 +953,13 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A typo in the command line tool <command>univention-management-console-client</command>
-		  has been corrected (<ulink url="&ucsbug;30605">Bug 30605</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  <emphasis>UNIVENTION_DEBUG_BEGIN</emphasis> and <emphasis>UNIVENTION_DEBUG_END</emphasis>
-		  information are no longer logged (<ulink url="&ucsbug;29603">Bug 29603</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Fixed resolving dependencies of packages: Errors from apt are handled correctly (<ulink url="&ucsbug;31055">Bug 31055</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
 		  Under certain circumstances packages installed directly by the App Center could be marked
 		  as automatically installed and thus be autoremoved. This has been corrected (<ulink url="&ucsbug;31155">Bug 31155</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A problem which caused to crash the UMC server when setting an invalid locale has been
-		  corrected (<ulink url="&ucsbug;28657">Bug 28657</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
 		  Fixed a segmentation fault that happened while upgrading an App under certain circumstances. Now the
 		  package manager always uses the latest package cache (<ulink url="&ucsbug;31282">Bug 31282</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Checking hardware requirements when upgrading an App has been disabled (<ulink url="&ucsbug;31354">Bug 31354</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1030,26 +1012,10 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The UCS license check now ignores temporary user objects (<ulink url="&ucsbug;31167">Bug 31167</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
 		  Listener modules for the replication of UDM syntax extensions, UDM hook extensions and
 		  UDM module extensions have been implemented (<ulink url="&ucsbug;32402">Bug
 		  32402</ulink>, <ulink url="&ucsbug;32405">Bug 32405</ulink>, <ulink
 		  url="&ucsbug;32408">Bug 32408</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			Wizards for easy and fast creation of objects were added. Supported are
-			users and computers (<ulink url="&ucsbug;23214">Bug 23214</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The attributes <guimenu>User ID</guimenu> <guimenu>Group ID</guimenu> and
-		  <guimenu>GECOS</guimenu> in the users module, <guimenu>FQDN</guimenu> in the computers
-		  module and <guimenu>Next IP</guimenu> in the network module have been removed from the
-		  advanced search as they are not searchable in the UMC (<ulink url="&ucsbug;28803">Bug 28803</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1066,28 +1032,10 @@
 
 
 		<listitem><simpara>
-				Moved dialog for requesting a new license with key ID from
-				<application>Univention App Center</application> to the global license dialog
-				(<ulink url="&ucsbug;32389">Bug 32389</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
 				Added a progress bar while moving objects. This will prevent a timeout
 				when moving a lot of them at once (<ulink url="&ucsbug;25465">Bug 25465</ulink>).
 		</simpara></listitem>
 
-		<listitem><simpara>
-				Forcing a user to change the password upon next login has been changed
-				internally when using <emphasis>Samba</emphasis>. It has been adapted
-				to newer versions of Samba and do not require <emphasis>PAM</emphasis>
-				anymore (<ulink url="&ucsbug;17890">Bug 17890</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-				Widgets in the policy tab of an object now show an empty value if the
-				attribute is not set (previously they showed the first all the
-				available choices) (<ulink url="&ucsbug;31017">Bug 31017</ulink>).
-		</simpara></listitem>
 
 		<listitem><simpara>
 				The internal default of multi value attributes has been changed to a
@@ -1101,16 +1049,6 @@
 				Univention Directory Manager modules that support superordinates now
 				respect the autosearch setting via UCR when changing the superordinate
 				in the advanced search form (<ulink url="&ucsbug;29498">Bug 29498</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-				Added a button to easily send traceback information of unexpected
-				errors to Univention (<ulink url="&ucsbug;31056">Bug 31056</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  A broken LDAP authentication in <command>proof_dns_dhcp_records</command> has been
-		  corrected (<ulink url="&ucsbug;30903">Bug 30903</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1133,22 +1071,6 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Removed duplicate mapping.register call for univentionInventoryNumber (<ulink url="&ucsbug;24102">Bug 24102</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The package <package>univention-admingrp-user-passwordreset</package> has been updated
-		  to work with UCS 3.2 (<ulink url="&ucsbug;25408">Bug 25408</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The package <package>univention-admingrp-user-passwordreset</package> does now support the
-		  protection of groups through the &ucsUCR; variable <envar>ldap/acl/user/passwordreset/protected/gid</envar>.
-		  By default the group <emphasis>Domain Admins</emphasis> is protected
-		  (<ulink url="&ucsbug;29710">Bug 29710</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
 			Various text changes have been made, translations have been adapted and
 			added. Descriptions were added or made clearer (<ulink
 				url="&ucsbug;24727">Bug 24727</ulink>, <ulink url="&ucsbug;29552">Bug 29552</ulink>, <ulink url="&ucsbug;23691">Bug 23691</ulink>, <ulink
@@ -1165,58 +1087,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			A sometimes erroneous evaluation of policies as shown in the detail view of UDM objects in UMC has been corrected (<ulink url="&ucsbug;31916">Bug 31916</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			Moving and deleting the LDAP base is now prevented in the LDAP directory in UMC (<ulink url="&ucsbug;24642">Bug 24642</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			A new UDM module <emphasis>settings/ldapschema</emphasis> has been implemented for registration and replication of LDAP schema extensions
-			(<ulink url="&ucsbug;32412">Bug 32412</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			A new UDM module <emphasis>settings/ldapacl</emphasis> has been implemented for registration and replication of LDAP ACL extensions
-			(<ulink url="&ucsbug;32411">Bug 32411</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			A new UDM module <emphasis>settings/udm_hook</emphasis> has been implemented for registration and replication of UDM hook extensions
-			(<ulink url="&ucsbug;32403">Bug 32403</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			A new UDM module <emphasis>settings/udm_syntax</emphasis> has been implemented for registration and replication of UDM syntax extensions
-			(<ulink url="&ucsbug;32406">Bug 32406</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			A new UDM module <emphasis>settings/udm_module</emphasis> has been implemented for registration and replication of UDM module extensions
-			(<ulink url="&ucsbug;32409">Bug 32409</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
 			Avoid problems when reloading UDM modules. This could cause the UMC
 			Server to crash when UDM modules and UDM syntax definitions were out of
 			sync (<ulink url="&ucsbug;32565">Bug 32565</ulink>).
 		</simpara></listitem>
 
-		<listitem><simpara>
-			The representation of the DHCP and DNS module have been revised
-			(<ulink url="&ucsbug;32381">Bug 32381</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			A traceback which occurred when renaming computer objects with set DNS reverse zone has been fixed.
-			(<ulink url="&ucsbug;31435">Bug 31435</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			The enforcement of required multivalue attributes now also works when using the UDM CLI.
-			(<ulink url="&ucsbug;31302">Bug 31302</ulink>).
-		</simpara></listitem>
 
 		<listitem><simpara>
 			The properties of the superordinate module are now ignored in the UDM modules while creating or 
@@ -1224,15 +1099,6 @@
 			(<ulink url="&ucsbug;32671">Bug 32671</ulink>).
 		</simpara></listitem>
 
-		<listitem><simpara>
-			An mistake in the <emphasis>jpegPhoto</emphasis> UDM syntax has been corrected which lead to invalid data getting stored in the LDAP with some jpeg Photos.
-			(<ulink url="&ucsbug;30342">Bug 30342</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			Passwords are now stored in the password history as salted password hashes 
-			plus the salt and the ID of the hashing algorithm (<ulink url="&ucsbug;30981">Bug 30981</ulink>).
-		</simpara></listitem>
 
 		<listitem><simpara>
 			Fix marking of invalid widgets when saving (<ulink url="&ucsbug;25500">Bug 25500</ulink>).
@@ -1398,6 +1264,34 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  Passwords are now stored in the password history as salted password hashes 
+		  plus the salt and the ID of the hashing algorithm (<ulink url="&ucsbug;30981">Bug 30981</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Forcing a user to change the password upon next login has been changed
+		  internally when using <emphasis>Samba</emphasis>. It has been adapted
+		  to newer versions of Samba and do not require <emphasis>PAM</emphasis>
+		  anymore (<ulink url="&ucsbug;17890">Bug 17890</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The attributes <guimenu>User ID</guimenu>, <guimenu>Group ID</guimenu> and
+		  <guimenu>GECOS</guimenu> have been removed from the advanced search as they are not
+		  searchable(<ulink url="&ucsbug;28803">Bug 28803</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  An bug in the <emphasis>jpegPhoto</emphasis> UDM syntax has been corrected which lead to
+		  invalid data getting stored in the LDAP with some JPEG photos. (<ulink
+		  url="&ucsbug;30342">Bug 30342</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  An optional simplified wizard for creating users has been added (<ulink url="&ucsbug;23214">Bug 23214</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Some old code has been removed (<ulink url="&ucsbug;28671">Bug 28671</ulink>).
 		</simpara></listitem>
 
@@ -1431,6 +1325,10 @@
 		<listitem><simpara>
 		  The dialogue for requesting a new license with key ID has been moved from the App Center
 		  into the license dialogue (<ulink url="&ucsbug;32389">Bug 32389</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The license check now ignores temporary user objects (<ulink url="&ucsbug;31167">Bug 31167</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1484,6 +1382,21 @@
 	<title>Computers module</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  An optional simplified wizard for creating users has been added (<ulink url="&ucsbug;23214">Bug 23214</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  A traceback which occurred when renaming computer objects with set DNS reverse zone has
+		  been fixed. (<ulink url="&ucsbug;31435">Bug 31435</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Removed duplicate mapping.register call for univentionInventoryNumber (<ulink url="&ucsbug;24102">Bug 24102</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The attribute <guimenu>FQDN</guimenu> has been removed from the advanced search as they
+		  are not searchable (<ulink url="&ucsbug;28803">Bug 28803</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1495,6 +1408,11 @@
 		  A problem has been corrected which led to invalid PTR records when changing the DNS
 		  forward zone of a computer object, or to the loss of PTR records when changing it's DNS
 		  reverse zone (<ulink url="&ucsbug;30905">Bug 30905</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The representation of the DNS module was revised/simplified (<ulink
+		  url="&ucsbug;32381">Bug 32381</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1514,6 +1432,17 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  A sometimes erroneous evaluation of policies as shown in the detail view of UDM objects in
+		  UMC has been corrected (<ulink url="&ucsbug;31916">Bug 31916</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Widgets in the policy tab of an object now show an empty value if the
+		  attribute is not set (previously they showed the first of all the
+		  available choices) (<ulink url="&ucsbug;31017">Bug 31017</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  A typo has been fixed (<ulink url="&ucsbug;21997">Bug 21997</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
@@ -1523,6 +1452,8 @@
 	<title>DHCP module</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  The representation of the DHCP module was revised/simplified (<ulink
+		  url="&ucsbug;32381">Bug 32381</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1556,6 +1487,7 @@
 	<title>LDAP directory browser</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  Moving and deleting the LDAP base is now prevented (<ulink url="&ucsbug;24642">Bug 24642</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1566,6 +1498,11 @@
 		<listitem><simpara>
 		  A mapping which broke the representation of TXT records for DNS forward zones has been
 		  fixed (<ulink url="&ucsbug;29681">Bug 29681</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The attribute <guimenu>Next IP</guimenu> in the network module has been removed from the
+		  advanced search as it is are not searchable (<ulink url="&ucsbug;28803">Bug 28803</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1680,6 +1617,16 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The enforcement of required multivalue attributes now also works when using the UDM CLI.
+		  (<ulink url="&ucsbug;31302">Bug 31302</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  A broken LDAP authentication in <command>proof_dns_dhcp_records</command> has been
+		  corrected (<ulink url="&ucsbug;30903">Bug 30903</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  An error message regarding an existing directory has been corrected (<ulink url="&ucsbug;29074">Bug 29074</ulink>.
 		</simpara></listitem>
 
@@ -1694,8 +1641,32 @@
   <section>
 	<title>Development of modules for Univention Management Console</title>
 	  <itemizedlist>
+
 		<listitem><simpara>
+			A new UDM module <emphasis>settings/ldapschema</emphasis> has been implemented for registration and replication of LDAP schema extensions
+			(<ulink url="&ucsbug;32412">Bug 32412</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			A new UDM module <emphasis>settings/ldapacl</emphasis> has been implemented for registration and replication of LDAP ACL extensions
+			(<ulink url="&ucsbug;32411">Bug 32411</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			A new UDM module <emphasis>settings/udm_hook</emphasis> has been implemented for registration and replication of UDM hook extensions
+			(<ulink url="&ucsbug;32403">Bug 32403</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			A new UDM module <emphasis>settings/udm_syntax</emphasis> has been implemented for registration and replication of UDM syntax extensions
+			(<ulink url="&ucsbug;32406">Bug 32406</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			A new UDM module <emphasis>settings/udm_module</emphasis> has been implemented for registration and replication of UDM module extensions
+			(<ulink url="&ucsbug;32409">Bug 32409</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 </section>
