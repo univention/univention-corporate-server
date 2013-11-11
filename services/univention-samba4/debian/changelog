@@ -1,3 +1,10 @@
+univention-samba4 (3.0.35-1) unstable; urgency=low
+
+  * Create special groups with univentionSamba4SID attribute
+    in Samba3 to Samba4 migration scenario I (Bug #33234)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 11 Nov 2013 19:25:48 +0100
+
 univention-samba4 (3.0.34-1) unstable; urgency=low
 
   * samba4-idmap: map special (e.g. Builtin) group SIDs as ID_TYPE_BOTH

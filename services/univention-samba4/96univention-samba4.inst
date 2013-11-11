@@ -493,6 +493,7 @@ _create_group_with_special_sid ()
 	local name="$1"
 	local sid="$2"
 	local position="$3"
+	local ldif
 
 	shift 3
 	
@@ -508,7 +509,7 @@ _create_group_with_special_sid ()
 				--position "$position,$ldap_base" \
 				--set name="$name"
 
-		echo "dn: cn=$name,$position,$ldap_base
+		ldif="dn: cn=$name,$position,$ldap_base
 changetype: modify
 add: objectClass
 objectClass: sambaGroupMapping
@@ -523,7 +524,17 @@ add: univentionGroupType
 univentionGroupType: -2147483643
 -
 add: sambaGroupType
-sambaGroupType: 5" | ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" -D "$binddn" -w "$bindpwd" 
+sambaGroupType: 5"
+
+		if is_ucr_true directory/manager/samba3/legacy && univention_samba4_is_ucr_false connector/s4/mapping/sid; then
+			ldif="$ldif
+-
+add: univentionSamba4SID
+univentionSamba4SID: $sid
+"
+		fi
+
+		echo "$ldif" | ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" -D "$binddn" -w "$bindpwd" 
 		
 		if [ "$name" = "Authenticated Users" ]; then
 			udm groups/group modify "$@" --dn "cn=$name,$position,$ldap_base" \
