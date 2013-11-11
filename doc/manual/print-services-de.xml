@@ -113,7 +113,7 @@
 	</para>
 	<figure id="create-printershare">
 	<title>Anlegen einer Druckerfreigabe</title>
-		<graphic scalefit="1" width="60%" fileref="illustrations/create_printershare_de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations/create_printershare_de.png"/>
 	</figure>
 	<para>
 		Beim Hinzufügen, Entfernen oder Bearbeiten einer Druckerfreigabe wird der

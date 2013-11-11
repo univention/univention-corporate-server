@@ -511,7 +511,7 @@
 			<itemizedlist>
 				<listitem><simpara>univention-kernel-image - Standard-Kernel</simpara></listitem>
 			</itemizedlist>
-        </section><!-- Verfügbare Kernel-Variante -->
+        </section>
 
         <section id="computers:Treiber-Management__Kernel-Module"><title>Treiber-Management / Kernel-Module</title>
             <para>
@@ -550,7 +550,7 @@
                 Dazu müssen neben dem Paket <emphasis>dkms</emphasis> auch die Kernel-Header-Pakete <emphasis>univention-kernel-headers</emphasis> für die gewünschten Kernel installiert werden.
                 Zu beachten ist, dass nicht alle externen Kernelmodule mit allen Kerneln kompatibel sind.
             </para>
-        </section><!-- Treiber-Management / Kernel-Module -->
+        </section>
 
         <section id="grub"><title>GRUB Boot-Manager</title>
             <para>
@@ -1081,7 +1081,7 @@
 					</simpara>
 				</listitem>
             </itemizedlist>
-        </section><!-- Konfiguration der Bildschirmeinstellungen -->
+        </section>
 
         <section id="computers:Einbinden_von_NFS-Freigaben"><title>Einbinden von NFS-Freigaben</title>
 			<para>
@@ -1094,7 +1094,7 @@
                 <graphic scalefit="1" width="60%" fileref="illustrations/computers_policy_nfsshare_de.png"/>
             </figure>
 			</para>
-        </section><!-- Einbinden von NFS-Freigaben -->
+        </section>
 
         <section id="computers:hardware:sysinfo"><title>Erfassung von unterstützter Hardware</title>
             <para>

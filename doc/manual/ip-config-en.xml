@@ -816,7 +816,7 @@
 		</para>
 		<figure id="net-srv-record">
 		  <title>
-			Configuring a service records
+			Configuring a service record
 		  </title>
 		  <graphic fileref="illustrations/srv-record_EN.png" scalefit="1" width="100%"/>
 		</figure>

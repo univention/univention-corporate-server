@@ -572,6 +572,13 @@
 			booted. GRUB can also access file systems directly and can thus, for example,
 			load another kernel in case of an error.
 		</para>
+
+		<para>
+		  <figure id="grub-selection"><title>GRUB menu</title>
+		  <graphic scalefit="1" width="80%" fileref="illustrations/computers_grub.png"/>
+		  </figure>
+		</para>
+
 		<para>
 			GRUB gets loades in a two-step procedure; in the Master
 			Boot Record of the hard drive, the Stage 1 loader is written which refers to

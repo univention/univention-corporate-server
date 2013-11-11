@@ -475,7 +475,7 @@
 
 		<figure id="nagios-service">
 			<title>Configuring a Nagios service</title>
-			<graphic scalefit="1" width="90%" fileref="illustrations/nagios-object_EN.png"/>
+			<graphic scalefit="1" width="60%" fileref="illustrations/nagios-object_EN.png"/>
 		</figure>
 
 		<para>

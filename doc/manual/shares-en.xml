@@ -109,7 +109,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 </para>
 
 <figure><title>Creating a share in UMC</title>
- <graphic scalefit="1" width="50%" fileref="illustrations/projekt-freigabe_EN.png"/>
+ <graphic scalefit="1" width="80%" fileref="illustrations/projekt-freigabe_EN.png"/>
 </figure>
 
 <table>

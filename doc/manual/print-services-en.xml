@@ -114,7 +114,7 @@
 	</para>
 	<figure id="create-printershare">
 	<title>Creating a printer share</title>
-		<graphic scalefit="1" width="60%" fileref="illustrations/create_printershare_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations/create_printershare_en.png"/>
 	</figure>
 	<para>
 		When adding/deleting/editing a printer share, the printer is
