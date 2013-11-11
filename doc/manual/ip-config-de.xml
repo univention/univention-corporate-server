@@ -335,7 +335,7 @@
 
 	</section>
 
-	<section id="ip-config:Konfiguration_der_DNS-Daten_in_der_Univention_Management_Console">
+	<section id="ip-config:dns:umc">
 	  <title>Konfiguration der DNS-Daten in der Univention Management Console</title>
 	  <para>
 		DNS-Daten werden standardmäßig im Container <emphasis>cn=dns,&lt;Basis-DN></emphasis>
@@ -343,6 +343,7 @@
 		Container abgelegt. In den jeweiligen Zonen können
 		zusätzliche DNS-Objekte wie z.B. Pointer-Records angelegt werden.
 	  </para>
+
 	  <para>
 		In Eingabefeldern für Rechner sollte immer der relative
 		oder vollqualifizierte Domänenname und nicht die IP-Adresse des
@@ -350,14 +351,26 @@
 		erneut angehängt wird, sollte ein FQDN immer mit einem Punkt
 		abgeschlossen werden.
 	  </para>
+
+	  <para>
+		In der linken Spalte des UMC-Moduls <guimenu>DNS</guimenu> befindet sich eine Liste alle Forward- und
+		Reverse-Lookup-Zonen. Um ein Objekt einer Zone hinzuzufügen - etwa einen Alias-Record zu
+		einer Forward-Zone - muss die entsprechende Zone ausgewählt werden. Durch <guimenu>Hinzufügen</guimenu> wird
+		das Objekt dann in dieser Zone angelegt. Um eine neue Forward- oder Reverse-Zone anzulegen,
+		muss zuerst <guimenu>Alle DNS-Zonen</guimenu> selektiert werden, der Klick auf
+		<guimenu>Hinzufügen</guimenu> legt dann eine neue Zone an. Wird ein Objekt unterhalb einer
+		Zone angelegt, wird die Zone in den UMC-Dialogen als <emphasis>übergeordnetes
+		Objekt</emphasis> bezeichnet.
+	  </para>
+
 	  <section id="networks::dns::forwardzone">
 		<title>Forward Lookup Zonen</title>
 		<para>
 		  Forward Lookup Zonen enthalten Informationen, die zum Auflösen von
 		  DNS-Namen in IP-Adressen verwendet werden. Sie werden im Modul
 		  <emphasis>DNS</emphasis> der &ucsUMC; verwaltet. Um eine weitere Forward Lookup
-		  Zone anzulegen, muss als <guimenu>Übergeordnetes Objekt</guimenu>
-		  <guimenu>Keins</guimenu> angegeben werden.
+		  Zone anzulegen, muss <guimenu>Alle DNS-Zonen</guimenu> selektiert werden und
+		  <guimenu>Hinzufügen &ar; DNS: Forward Lookup Zone</guimenu> ausgewählt werden.
 		</para>
 		  <figure id="net-dns-forward">
 			<title>Konfiguration einer Forward Lookup Zone in UMC</title>
@@ -590,10 +603,11 @@
 		<title>CNAME-Record (Alias-Records)</title>
 		<para>
 		  CNAME-Records / Alias-Records werden im Modul <emphasis>DNS</emphasis> der
-		  &ucsUMC; verwaltet. Um einen weiteren Record anzulegen, muss als
-		  <guimenu>Übergeordnetes Objekt</guimenu> eine Forward Lookup Zone
-		  und der Objekttyp <guimenu>Alias Record</guimenu> ausgewählt werden.
+		  &ucsUMC; verwaltet. Um einen weiteren Record anzulegen, muss in der linken Spalte eine
+		  Forward Lookup Zone ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DNS: Alias
+		  Record</guimenu> kann dann ein neuer Record angelegt werden.
 		</para>
+
 		<para>
 		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
 		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
@@ -634,9 +648,10 @@
 		<title>A/AAAA-Records (Host Records)</title>
 		<para>
 		  Host-Records werden im Modul <emphasis>DNS</emphasis> der
-		  &ucsUMC; verwaltet. Um einen weiteren Record anzulegen, muss als
-		  <guimenu>Übergeordnetes Objekt</guimenu> eine Forward Lookup Zone
-		  und der Objekttyp <guimenu>Host Record</guimenu> ausgewählt werden.
+		  &ucsUMC; verwaltet. 
+		  Um einen weiteren Record anzulegen, muss in der linken Spalte eine
+		  Forward Lookup Zone ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DNS: Host
+		  Record</guimenu> kann dann ein neuer Record angelegt werden.
 		</para>
 		<para>
 		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
@@ -688,9 +703,10 @@
 		<title>Service Records</title>
 		<para>
 		  Service Records werden im Modul <emphasis>DNS</emphasis> der
-		  &ucsUMC; verwaltet. Um einen weiteren Record anzulegen, muss als
-		  <guimenu>Übergeordnetes Objekt</guimenu> eine Forward Lookup Zone
-		  und der Objekttyp <guimenu>Service Record</guimenu> ausgewählt werden.
+		  &ucsUMC; verwaltet. 
+		  Um einen weiteren Record anzulegen, muss in der linken Spalte eine
+		  Forward Lookup Zone ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DNS: Service
+		  Record</guimenu> kann dann ein neuer Record angelegt werden.
 		</para>
 		<figure id="net-srv-record">
 		  <title>Konfiguration eines Service Records</title>
@@ -796,12 +812,12 @@
 	  <section id="ip-config:Reverse_Lookup_Zonen">
 		<title>Reverse Lookup Zonen</title>
 		<para>
-		  Eine Reverse Lookup Zone dient zur Umwandlung von IP-Adressen in
-		  Rechnernamen. Sie werden im Modul
-		  <emphasis>DNS</emphasis> der &ucsUMC; verwaltet. Um eine weitere Reverse Lookup
-		  Zone anzulegen, muss als <guimenu>Übergeordnetes Objekt</guimenu>
-		  <guimenu>Keins</guimenu> angegeben werden.
+		  Eine Reverse Lookup Zone dient zur Umwandlung von IP-Adressen in Rechnernamen. Sie werden
+		  im Modul <emphasis>DNS</emphasis> der &ucsUMC; verwaltet. Um eine weitere Reverse Lookup
+		  Zone anzulegen, muss <guimenu>Alle DNS-Zonen</guimenu> selektiert werden und
+		  <guimenu>Hinzufügen &ar; DNS: Reverse Lookup Zone</guimenu> ausgewählt werden.
 		</para>
+
 		<para>
 		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
 		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
@@ -909,9 +925,10 @@
 		<title>Pointer Records</title>
 		<para>
 		  Pointer-Records werden im Modul <emphasis>DNS</emphasis> der
-		  &ucsUMC; verwaltet. Um einen weiteren Record anzulegen, muss als
-		  <guimenu>Übergeordnetes Objekt</guimenu> eine Forward Lookup Zone
-		  und der Objekttyp <guimenu>Pointer Record</guimenu> ausgewählt werden.
+		  &ucsUMC; verwaltet. 
+		  Um einen weiteren Record anzulegen, muss in der linken Spalte eine
+		  Reverse Lookup Zone ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DNS: Pointer
+		  Record</guimenu> kann dann ein neuer Record angelegt werden.
 		</para>
 		<para>
 		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
@@ -1053,16 +1070,28 @@
 
 	<section id="networks::dhcp::general">
 	  <title>Aufbau der DHCP-Konfiguration durch DHCP-LDAP-Objekte</title>
+
+	  <para>
+		In der linken Spalte des UMC-Moduls <guimenu>DHCP</guimenu> befindet sich eine Liste aller
+		DHCP-Services. Um einem DHCP-Service ein Objekt hinzuzufügen - etwa ein weiteres Subnetz -
+		muss der entsprechende Service ausgewählt werden. Durch <guimenu>Hinzufügen</guimenu> wird
+		das Objekt dann in diesem Service angelegt. Um einen neuen DHCP-Service anzulegen,
+		muss zuerst <guimenu>Alle DHCP-Dienste</guimenu> selektiert werden, der Klick auf
+		<guimenu>Hinzufügen</guimenu> legt dann einen neue Service an. Wird ein Objekt unterhalb eines
+		Services angelegt, wird der Service in den UMC-Dialogen als <emphasis>übergeordnetes
+		Objekt</emphasis> bezeichnet.
+	  </para>
+
 	  <section id="networks::dhcp::services">
 		<title>Verwaltung von DHCP-Services</title>
 		<para>
-		  DHCP-Services werden im Modul <emphasis>DHCP</emphasis> der &ucsUMC;
-		  verwaltet. Um einen weiteren Service anzulegen, muss als
-		  <guimenu>Übergeordnetes Objekt</guimenu> <guimenu>Keins</guimenu> angegeben
-		  werden.
+		  DHCP-Services werden im Modul <emphasis>DHCP</emphasis> der &ucsUMC; verwaltet. Um einen
+		  neuen DHCP-Service anzulegen muss zuerst <guimenu>Alle DHCP-Dienste</guimenu> selektiert
+		  werden, der Klick auf <guimenu>Hinzufügen</guimenu> legt dann einen neue Service an.
 		</para>
+
 		<para>
-		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
+		  Allgemeine Hinweise zur Bedienung der Domänenmanagement-Module
 		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
 		  Objekten finden sich in <xref linkend="central:user-interface"/>.
 		</para>
@@ -1115,21 +1144,22 @@
 	  <section id="ip-config:Verwaltung_von_DHCP-Server-Eintraegen">
 		<title>Verwaltung von DHCP-Server-Einträgen</title>
 		<para>
-		  DHCP-Server werden im Modul <emphasis>DHCP</emphasis> der &ucsUMC;
-		  verwaltet. Um einen weiteren DHCP-Server-Eintrag anzulegen, muss als
-		  <guimenu>Übergeordnetes Objekt</guimenu> ein DHCP-Service ausgewählt werden.
+		  Jeder Server, der den DHCP-Dienst anbieten soll, benötigt zwingend
+		  einen <emphasis>DHCP-Server</emphasis>-Eintrag im LDAP-Verzeichnis. Der Eintrag
+		  muss in der Regel nicht von Hand angelegt werden, sondern wird durch
+		  das Join-Skript des <package>univention-dhcp</package>-Pakets angelegt.
+		  Um dennoch manuell einen weiteren Record anzulegen, muss im Modul
+		  <emphasis>DHCP</emphasis> der &ucsUMC; in der linken Spalte ein
+		  DHCP-Service ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DHCP Server</guimenu>
+		  kann dann ein neuer Server registriert werden.
 		</para>
+
 		<para>
 		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
 		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
 		  Objekten finden sich in <xref linkend="central:user-interface"/>.
 		</para>
-		<para>
-		  Jeder Server, der den DHCP-Dienst anbieten soll, benötigt zwingend
-		  einen <emphasis>DHCP-Server</emphasis>-Eintrag im LDAP-Verzeichnis. Der Eintrag
-		  muss in der Regel nicht von Hand angelegt werden, sondern wird durch
-		  das Join-Skript des <package>univention-dhcp</package>-Pakets angelegt.
-		</para>
+
 		<table>
 		  <title>Reiter 'Allgemein'</title>
 		  <tgroup cols="2">
@@ -1162,27 +1192,32 @@
 	  <section id="ip-config:Verwaltung_von_DHCP-Subnetzen">
 		<title>Verwaltung von DHCP-Subnetzen</title>
 		<para>
-		  DHCP-Subnetze werden im Modul <emphasis>DHCP</emphasis> der &ucsUMC;
-		  verwaltet. Um einen weiteren DHCP-Subnet-Eintrag anzulegen, muss als
-		  <guimenu>Übergeordnetes Objekt</guimenu> ein DHCP-Service ausgewählt werden.
+		  DHCP-Subnetze werden im Modul <emphasis>DHCP</emphasis> der &ucsUMC; verwaltet. Um ein
+		  weiteres Subnetz anzulegen, muss in der linken Spalte ein DHCP-Service ausgewählt
+		  werden. Mit <guimenu>Hinzufügen &ar; DHCP: Subnetz</guimenu> kann dann ein neues Subnetz
+		  angelegt werden.
 		</para>
+
 		<para>
 		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
 		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
 		  Objekten finden sich in <xref linkend="central:user-interface"/>.
 		</para>
+
 		<para>
 		  Ein DHCP-Subnetz-Eintrag ist für jedes Subnetz, aus dem variable oder
 		  feste IP-Adressen vergeben werden sollen, zwingend erforderlich. Das
 		  Eintragen von IP-Adressbereichen ist nur notwendig, wenn IP-Adressen
 		  dynamisch vergeben werden sollen.
 		</para>
+
 		<para>
 		  Falls <emphasis>DHCP:Shared Subnet</emphasis>-Objekte verwendet werden sollen,
 		  sollten die entsprechenden Subnetze unterhalb des dafür angelegten
 		  <emphasis>DHCP:Shared Network</emphasis>-Containers angelegt werden (siehe
 		  <xref linkend="networks::dhcp::sharedsubnets"/>).
 		</para>
+
 		<table>
 		  <title>Reiter 'Allgemein'</title>
 		  <tgroup cols="2">
@@ -1326,11 +1361,14 @@
 		  manuell DHCP-Rechner-Einträge hinzuzufügen oder bestehende
 		  Einträge, egal ob manuell oder automatisch erzeugt, zu bearbeiten.
 		</para>
+
 		<para>
 		  DHCP-Rechner-Objekte werden im Modul <emphasis>DHCP</emphasis> der &ucsUMC;
-		  verwaltet. Um einen weiteren DHCP-Server-Eintrag anzulegen, muss als
-		  <guimenu>Übergeordnetes Objekt</guimenu> ein DHCP-Service ausgewählt werden.
+		  verwaltet. Um einen Rechner manuell im DHCP zu registrieren, muss in der linken Spalte des
+		  &ucsUMC;-Moduls <guimenu>DHCP</guimenu> ein DHCP-Service ausgewählt werden. Mit
+		  <guimenu>Hinzufügen &ar; DHCP: Rechner</guimenu> kann dann ein Rechner registriert werden.
 		</para>
+
 		<para>
 		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
 		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
@@ -1394,11 +1432,15 @@
 		  <emphasis>DHCP:Shared Network</emphasis>-Objekte nehmen Subnetze auf, die ein
 		  physikalisches Netzwerk gemeinsam nutzen.
 		</para>
+
 		<para>
 		  DHCP-Shared-Network-Objekte werden im Modul <emphasis>DHCP</emphasis> der &ucsUMC;
-		  verwaltet. Um einen weiteren DHCP-Server-Eintrag anzulegen, muss als
-		  <guimenu>Übergeordnetes Objekt</guimenu> ein DHCP-Service ausgewählt werden.
+		  verwaltet. Um ein Shared Network anzulegen, muss in der linken Spalte des
+		  &ucsUMC;-Moduls <guimenu>DHCP</guimenu> ein DHCP-Service ausgewählt werden. Mit
+		  <guimenu>Hinzufügen &ar; DHCP: Shared Network</guimenu> kann dann ein Netzwerk registriert
+		  werden.
 		</para>
+
 		<para>
 		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
 		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von

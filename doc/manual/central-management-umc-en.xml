@@ -177,6 +177,8 @@
 			All of the domain modules in &ucsUMC; are controlled identically from
 			a structural perspective. The following examples are presented using
 			the user management but apply equally for all modules.
+			<!-- Die  Bedienung der DNS- und DHCP-Module weicht etwas ab, weitere Hinweise finden -->
+			<!-- sich in <xref linkend="ip-config:dns:umc"/> und <xref linkend="networks::dhcp::general"/>. -->
 		</para>
 		<figure id="umc-modules">
 			<title>Module overview</title>

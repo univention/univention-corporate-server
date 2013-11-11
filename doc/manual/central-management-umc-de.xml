@@ -169,10 +169,12 @@
 	<section id="central-management-umc:Bedienung_der_Domaenen-Module">
 		<title>Bedienung der Domänen-Module</title>
 		<para>
-			Alle Domänen-Module der &ucsUMC; werden strukturell identisch
-			bedient. Die folgenden Beispiele werden anhand der Benutzerverwaltung
-			dargestellt, gelten aber analog für alle Module.
+		  Alle Domänen-Module der &ucsUMC; werden strukturell identisch bedient. Die folgenden
+		  Beispiele werden anhand der Benutzerverwaltung dargestellt, gelten aber analog für alle
+		  Module. Die  Bedienung der DNS- und DHCP-Module weicht etwas ab, weitere Hinweise finden
+		  sich in <xref linkend="ip-config:dns:umc"/> und <xref linkend="networks::dhcp::general"/>.
 		</para>
+
 		<figure id="umc-modules">
 			<title>Modulübersicht</title>
 			<graphic scalefit="1" width="80%" fileref="illustrations/umc_modules_de.png"/>
