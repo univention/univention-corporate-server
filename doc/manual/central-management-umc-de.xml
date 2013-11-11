@@ -227,6 +227,12 @@
 				</simpara></listitem>
 
 				<listitem><simpara>
+				  Die meisten Module verwalten mehrere verschiedene Arten von LDAP-Objekten;
+				  die Rechnerverwaltung z.B. verwaltet verschiedene Objekte für die einzelnen
+				  Systemrollen. Die Suche kann auf eine Art von LDAP-Objekt beschränkt werden.
+				</simpara></listitem>
+
+				<listitem><simpara>
 				  Einige nur intern verwendete Benutzer- und Gruppen (z.B. für den Domänenbeitritt)
 				  werden standardmäßig ausgeblendet. Wird die Option <guimenu>Versteckte Objekte
 				  anzeigen</guimenu> aktiviert, werden diese Objekte ebenfalls angezeigt.

@@ -231,6 +231,12 @@
 				  attribute directly.
 				</simpara></listitem>
 
+				<!-- <listitem><simpara> -->
+				<!--   Die meisten Module verwalten mehrere verschiedene Arten von LDAP-Objekten; -->
+				<!--   die Rechnerverwaltung z.B. verwaltet verschiedene Objekte für die einzelnen -->
+				<!--   Systemrollen. Die Suche kann auf eine Art von LDAP-Objekt beschränkt werden. -->
+				<!-- </simpara></listitem> -->
+
 				<listitem><simpara>
 				  Some of the internally used user groups and groups (e.g., for domain joins) are
 				  hidden in the default setting. If the <guimenu>Include hidden objects</guimenu>
