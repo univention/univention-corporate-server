@@ -237,6 +237,12 @@
 		(<ulink url="&ucsbug;33179">Bug 33179</ulink>).  
 	  </simpara></listitem>
 
+	  <listitem><simpara> 
+		Several installation problems on UEFI systems have been fixed. Especially
+		the GRUB error message "error: file not found." followed by a black screen or kernel traceback has
+		been fixed (<ulink url="&ucsbug;33179">Bug 33179</ulink>).
+	  </simpara></listitem>
+
 	  <listitem><simpara>
 		At the end of the installation the UCS installer now stops several services with the init scripts
 		(<ulink url="&ucsbug;33025">Bug 33025</ulink>).
