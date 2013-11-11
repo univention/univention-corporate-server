@@ -47,8 +47,7 @@
 	<para>
 	  The simplified wizard can be disabled for all system roles by setting the &ucsUCRV;
 	  <envar>directory/manager/web/modules/computers/computer/wizard/disabled</envar> to
-	  <emphasis>true</emphasis> (or also selectively for individual roles, e.g.,
-	  <envar>directory/manager/web/modules/computers/windows/wizard/disabled</envar>).
+	  <emphasis>true</emphasis>.
 	</para>
 
 	<table>
