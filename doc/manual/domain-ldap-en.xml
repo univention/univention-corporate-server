@@ -777,6 +777,14 @@ slapcat &gt; ldapdata.txt
 			<filename>70univention-ldap-server_acl-master-end</filename> files or the
 			existing templates expanded upon.
 		</para>
+
+		<!-- <para> -->
+		<!--   Wenn LDAP-ACL-Erweiterungen als Teil von Softwarepaketen ausgeliefert werden sollen, -->
+		<!--   besteht auch die Möglichkeit diese zu paketieren und durch ein Univention Directory -->
+		<!--   Listener-Modul an alle LDAP-Server der Domäne zu verteilen. Weitere Hinweise finden sich -->
+		<!--   in <xref linkend="packaging-acl-extensions"/>. -->
+		<!-- </para> -->
+
 		<para>
 			The default setting of the LDAP server after new installations with UCS does
 			not allow anonymous access to the LDAP directory. This behaviour is configured
