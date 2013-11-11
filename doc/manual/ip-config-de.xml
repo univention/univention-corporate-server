@@ -990,7 +990,7 @@
 		Das <emphasis>Dynamic Host Configuration Protocol</emphasis> (DHCP) weist Rechnern eine
 		IP-Adresse, die Subnetz-Maske und gegebenenfalls weitere Einstellungen
 		wie Gateway oder NetBIOS-Server zu. Die IP-Adresse kann fest oder
-		variabel vergeben werden.
+		dynamisch vergeben werden.
 	  </para>
 	  <para>
 		Die Verwendung von DHCP ermöglicht eine zentrale Vergabe und Kontrolle
@@ -1030,7 +1030,7 @@
 		akzeptieren dann die erste Antwort und verwerfen die übrigen.
 	  </para>
 	  <para>
-		Werden auch variable IP-Adressen verteilt, muss der
+		Werden auch dynamisch IP-Adressen verteilt, muss der
 		DHCP-Failover-Mechanismus eingesetzt werden. Dabei können maximal zwei
 		DHCP-Server pro Subnetz verwendet werden.
 	  </para>
@@ -1039,24 +1039,24 @@
 		DHCP-Service bekannt gemacht. Für Rechner, die per DHCP eine feste
 		IP-Adresse beziehen sollen, ist ein DHCP-Rechner-Objekt zwingend erforderlich.
 		DHCP-Rechner-Objekte müssen in der Regel nicht manuell erstellt
-		werden, sondern werden erzeugt, wenn einem Rechnerobjekt mit fester
+		werden, weil diese automatisch angelegt werden, wenn einem Rechnerobjekt mit fester
 		IP-Adresse ein DHCP-Service zugewiesen wird.
 	  </para>
 	  <para>
 		Für jedes Subnetz wird ein <emphasis>DHCP-Subnetz</emphasis>-Eintrag
-		benötigt, unabhängig davon, ob variable IP-Adressen aus diesen
+		benötigt, unabhängig davon, ob dynamische IP-Adressen aus diesen
 		Subnetzen vergeben werden sollen.
 	  </para>
 	  <para>
 		Über die Einrichtung von <emphasis>DHCP-Pools</emphasis> innerhalb von Subnetzen
 		können den verschiedenen IP-Adressbereichen unterschiedliche
 		Konfigurationsparameter zugeordnet werden. Auf diese Weise können
-		unbekannte Rechner in einem IP-Adressbereich zugelassen und in einem
+		unbekannte Rechner in einem IP-Adressbereich zugelassen und von einem
 		anderen IP-Adressbereich ausgeschlossen werden. DHCP-Pools können
 		nur unterhalb von DHCP-Subnetz-Objekten angelegt werden.
 	  </para>
 	  <para>
-		Falls mehrere Subnetze gemeinsam dasselbe physikalische Netzwerk verwenden, sollten diese als
+		Falls mehrere IP-Subnetze gemeinsam dasselbe physikalische Ethernet-Netzwerk verwenden, sollten diese als
 		<emphasis>DHCP Shared Subnet</emphasis> unterhalb eines <guimenu>DHCP Shared Network</guimenu> eingetragen werden.
 		<guimenu>DHCP Shared Subnet</guimenu>-Objekte können nur unterhalb von <guimenu>DHCP Shared Network</guimenu>-Objekten angelegt werden.
 	  </para>
@@ -1132,8 +1132,8 @@
 			  <row>
 				<entry>Service-Name</entry>
 				<entry>
-				  In dieses Eingabefeld kann ein beliebiger eindeutiger Name für den
-				  DHCP-Service eingetragen werden, z.B <emphasis>firma.com</emphasis>.
+				  In dieses Eingabefeld muss ein beliebiger, aber eindeutiger Name für den
+				  DHCP-Service eingetragen werden, z.B. <emphasis>firma.com</emphasis>.
 				</entry>
 			  </row>
 			</tbody>
@@ -1180,7 +1180,7 @@
 					einzutragen, z.B. <emphasis>ucs-master</emphasis>.
 				  </para>
 				  <para>
-					Ein Server kann nicht gleichzeitig in mehreren DHCP-Services eingetragen sein.
+					Ein Server kann immer nur einen einzigen DHCP-Dienst anbieten und kann deshalb nicht gleichzeitig in mehreren DHCP-Services eingetragen sein.
 				  </para>
 				</entry>
 			  </row>
@@ -1205,7 +1205,7 @@
 		</para>
 
 		<para>
-		  Ein DHCP-Subnetz-Eintrag ist für jedes Subnetz, aus dem variable oder
+		  Ein DHCP-Subnetz-Eintrag ist für jedes Subnetz, aus dem dynamische oder
 		  feste IP-Adressen vergeben werden sollen, zwingend erforderlich. Das
 		  Eintragen von IP-Adressbereichen ist nur notwendig, wenn IP-Adressen
 		  dynamisch vergeben werden sollen.
@@ -1256,7 +1256,7 @@
 				  Oktettschreibweise.
 				  <caution>
 					  <para>
-					IP-Adressbereiche für ein Subnetz sind immer entweder ausschließlich
+					Dynamische IP-Adressbereiche für ein Subnetz sind immer entweder ausschließlich
 					im Subnetz-Eintrag oder ausschließlich in einem oder mehreren
 					gesonderten Pool-Einträgen anzugeben. Die
 					IP-Adressbereich-Eintragstypen innerhalb eines Subnetzes dürfen nicht
@@ -1271,8 +1271,8 @@
 		  </tgroup>
 		</table>
 		<para>
-		  Auf dieser Ebene wird häufig über das Eingabefeld
-		  <guimenu>Router</guimenu> auf der Karteikarte <guimenu>Richtlinie: DHCP Routing</guimenu> das Gateway für alle Rechner in diesem Subnetz festgelegt (es
+		  Auf dieser Ebene wird häufig über
+		  dir Karteikarte <guimenu>Richtlinie: DHCP Routing</guimenu> das Gateway für alle Rechner in diesem Subnetz festgelegt (es
 		  sei denn, es werden an DHCP-Pools andere Angaben gemacht).
 		</para>
 	  </section>
@@ -1306,7 +1306,7 @@
 			  <row>
 				<entry>Name</entry>
 				<entry>
-				  In dieses Eingabefeld kann ein beliebiger eindeutiger Name für den
+				  In dieses Eingabefeld muss ein beliebiger, aber eindeutiger Name für den
 				  DHCP-Pool eingetragen werden, z.B. <emphasis>testnetz.firma.com</emphasis>.
 				</entry>
 			  </row>
@@ -1350,8 +1350,8 @@
 		<para>
 		  Mit einem <emphasis>DHCP:Rechner</emphasis>-Eintrag wird der betreffende Rechner
 		  im DHCP-Service registriert. Rechner können in Abhängigkeit von ihrem
-		  Registrierungs-Status behandelt werden. Nur bekannte Rechner erhalten
-		  feste IP-Adressen vom DHCP-Service; unbekannte Rechner erhalten nur
+		  Registrierungs-Status behandelt werden. Bekannte Rechner können
+		  feste oder dynamische IP-Adressen vom DHCP-Service beziehen; unbekannte Rechner erhalten nur
 		  dynamische IP-Adressen.
 		</para>
 		<para>
@@ -1418,7 +1418,7 @@
 				  Hier können dem Rechner eine oder mehrere feste
 				  IP-Adressen zugewiesen werden. Neben einer IP-Adresse kann auch ein
 				  vollqualifizierter Domänenname angegeben werden, der vom
-				  DNS-Server in eine oder mehrere IP-Adressen aufgelöst wird.
+				  DHCP-Server in eine oder mehrere IP-Adressen aufgelöst wird.
 				</entry>
 			  </row>
 			</tbody>
@@ -1446,12 +1446,12 @@
 		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
 		  Objekten finden sich in <xref linkend="central:user-interface"/>.
 		</para>
-		<para>
-		  In das Shared Network sollte unbedingt ein Shared Subnet (siehe
-		  unten) eingetragen werden, da sich der
-		  DHCP-Service sonst beendet und neu gestartet werden muss, wenn sich ein
-		  leeres Shared Network in seiner Konfiguration befindet.
-		</para>
+		<caution>
+			<para>
+				Ein Shared-Network muss mindestens einen Shared-Subnet-Eintrag enthalten.
+				Anderenfalls beendet sich der DHCP-Dienst und kann nicht gestartet werden, bis die Konfiguration korrigiert ist.
+			</para>
+		</caution>
 		<table>
 		  <title>Reiter 'Allgemein'</title>
 		  <tgroup cols="2">
@@ -1476,14 +1476,14 @@
 		<para>
 		  Als <emphasis>DHCP:Shared Subnet</emphasis> werden Subnetze deklariert, die
 		  gemeinsam dasselbe physikalische Netzwerk verwenden. Alle Subnetze,
-		  die dasselbe Netzwerk verwenden, sollten unterhalb desselben Shared
+		  die dasselbe Netzwerk verwenden, müssen unterhalb desselben Shared
 		  Network-Containers angelegt werden. Für jedes Subnetz ist ein eigenes
 		  <emphasis>DHCP:Shared Subnet</emphasis>-Objekt anzulegen.
 		</para>
 		<para>
 		  DHCP-Shared-Subnet-Objekte können nur über das Modul <emphasis>LDAP-Verzeichnis</emphasis> der &ucsUMC;
-		  verwaltet werden. Dazu muss in ein DHCP-Subnetz-Objekt navigiert
-		  werden - ein DHCP-Shared-Subnet-Objekt muss immer unterhalb eines
+		  verwaltet werden. Dazu muss in ein DHCP-Shared Network-Objekt navigiert
+		  werden - ein DHCP-Shared Subnet-Objekt muss immer unterhalb eines
 		  DHCP-Shared Network-Objektes angelegt werden - und dort mit
 		  <guimenu>LDAP-Objekt hinzufügen</guimenu> ein <guimenu>DHCP: Shared Subnet</guimenu>-Objekt eingefügt werden.
 		</para>
@@ -1610,7 +1610,7 @@
 				<entry>NetBIOS Scope</entry>
 				<entry>
 				  Der NetBIOS over TCP/IP-Scope für den Client nach der Spezifikation
-				  in RFC1001 und RFC1002. Bei der Angabe des NetBIOS Scopes ist die
+				  in <ulink url="http://www.ietf.org/rfc/rfc1001.txt">RFC1001</ulink> und <ulink url="http://www.ietf.org/rfc/rfc1002.txt">RFC1002</ulink>. Bei der Angabe des NetBIOS Scopes ist die
 				  Groß- und Kleinschreibung zu beachten.
 				</entry>
 			  </row>
@@ -1753,14 +1753,15 @@
 			<listitem>
 				<simpara>
 			  <emphasis>DNS Aktualisierung</emphasis> erlaubt die Konfiguration von
-			  dynamischen DNS-Aktualisierungen. Diese können bislang noch nicht gegen einen UCS-basierten DNS-Dienst
-			  durchgeführt werden, sondern nur gegen externe Server.
+			  dynamischen DNS-Aktualisierungen.
+			  Diese können bislang noch nicht gegen einen LDAP-basierten DNS-Dienst
+			  durchgeführt werden, wie er von UCS bereitgestellt wird.
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
-			  <emphasis>DHCP Erlauben/Verbieten</emphasis> erlaubt die feingranulierte
-			  Vergabe von Zugriffsberechtigungen auf den DHCP-Server.
+					<emphasis>DHCP Erlauben/Verbieten</emphasis> erlaubt die Konfiguration verschiedener Optionen, die kontrollieren was für DHCP-Clients erlaubt ist.
+					Diese sind nur in Ausnahmefällen nötig.
 				</simpara>
 			</listitem>
 			<listitem>

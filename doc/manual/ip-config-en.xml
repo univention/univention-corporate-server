@@ -1230,7 +1230,7 @@
 		multiple times. DHCP clients then accept the first answer and ignore the rest.
 	  </para>
 	  <para>
-		If variable IP addresses are also assigned, the DHCP failover
+		If dynamic IP addresses are also assigned, the DHCP failover
 		mechanism must be employed and a maximum of two DHCP servers can be
 		used per subnet.
 	  </para>
@@ -1238,23 +1238,23 @@
 		A <emphasis>DHCP host</emphasis> entry is used to make the DHCP service aware of
 		a computer. A DHCP host object is required for computers
 		attempting to retrieve a fixed IP address over DHCP. DHCP computer
-		objects do not normally need to be created manually, instead they are
-		created when a DHCP service is assigned to a computer object with a
+		objects do not normally need to be created manually, because they are
+		created automatically when a DHCP service is assigned to a computer object with a
 		fixed IP address.
 	  </para>
 	  <para>
 		A <emphasis>DHCP subnet</emphasis> entry is required for every subnet,
-		irrespective of whether variable IP addresses are to be assigned from
+		irrespective of whether dynamic IP addresses are to be assigned from
 		this subnet.
 	  </para>
 	  <para>
 		Configuration parameters can be assigned to the different IP ranges by
 		creating <emphasis>DHCP pools</emphasis> within subnets. In this way unknown
-		computers can be allowed in one IP range and excluded in another IP
+		computers can be allowed in one IP range and excluded from another IP
 		range. DHCP pools can only be created below DHCP subnet objects.
 	  </para>
 	  <para>
-		If several subnets use the same common, physical network, this should
+		If several IP subnets are used in a physical ethernet network, this should
 		be entered as a <emphasis>DHCP shared subnet</emphasis> below
 		a <guimenu>DHCP shared network</guimenu>.
 		<guimenu>DHCP shared subnet</guimenu> objects can only be created below
@@ -1340,7 +1340,7 @@ closest to the object always applies.
 				  </entry>
 				  <entry>
 					<para>
-					  An unambiguous name for the DHCP service can be entered in this input
+					  An unambiguous name for the DHCP service must be entered in this input
 					  field, e.g., <emphasis>company.example</emphasis>.
 					</para>
 				  </entry>
@@ -1397,7 +1397,7 @@ closest to the object always applies.
 					  this input field, e.g., <emphasis>ucs-master</emphasis>.
 					</para>
 					<para>
-					  A server cannot be entered in more than one DHCP service at the same
+					  A server can only ever provide a single DHCP service and therefore cannot be entered in more than one DHCP service at the same
 					  time.
 					</para>
 				  </entry>
@@ -1487,7 +1487,7 @@ closest to the object always applies.
 					</para>
 					<caution>
 						<para>
-						IP ranges for a subnet should always either be specified exclusively
+						Dynamic IP ranges for a subnet should always either be specified exclusively
 						in the subnet entry or exclusively in one or more special pool
 						entries. The types of IP range entries within a subnet must not be
 						mixed! If different IP ranges with different configurations are be set
@@ -1501,9 +1501,9 @@ closest to the object always applies.
 		  </table>
 		<para>
 		  At this level, the gateway for all computers in a subnet is often set
-		  using the <guimenu>Router</guimenu> input field on
+		  using
 		  the <guimenu>Policy: DHCP Routing</guimenu> tab (unless other entries
-		  are perfomed at lower levels).
+		  are performed at lower levels).
 		</para>
 	  </section>
 
@@ -1519,7 +1519,7 @@ closest to the object always applies.
 		</para>
 		<para>
 		  If DHCP pools are created in a subnet, no IP address range should be
-		  defined in the subnet entry. These should only be created in the pool
+		  defined in the subnet entry. These should only be specified via the pool
 		  entries.
 		</para>
 		  <table>
@@ -1544,7 +1544,7 @@ closest to the object always applies.
 				  </entry>
 				  <entry>
 					<para>
-					  An unambiguous name for the DHCP pool can be entered in this input
+					  An unambiguous name for the DHCP pool must be entered in this input
 					  field, e.g., <emphasis>testnet.compaby.example</emphasis>.
 					</para>
 				  </entry>
@@ -1601,8 +1601,8 @@ closest to the object always applies.
 		<para>
 		  A <emphasis>DHCP host</emphasis> entry is used to register the respective
 		  computer in the DHCP service. Computers can be handled depending on
-		  their registration status. Only known computers receive fixed IP
-		  addresses from the DHCP service; unknown computers only receive
+		  their registration status. Known computers may get fixed and dynamic IP
+		  addresses from the DHCP service; unknown computers only get
 		  dynamic IP addresses.
 		</para>
 		<para>
@@ -1683,7 +1683,7 @@ closest to the object always applies.
 					  One or more fixed IP addresses can be assigned to the computer
 					  here. In addition to an IP address, a fully qualified domain names can
 					  also be entered, which is resolved into one or more IP addresses by
-					  the DNS server.
+					  the DHCP server.
 					</para>
 				  </entry>
 				</row>
@@ -1711,12 +1711,12 @@ closest to the object always applies.
 		  of the &ucsUMC; and on the adding, editing, searching for and
 		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
 		</para>
-		<para>
-		  A shared subnet (see below) should be entered in the shared network
-		  under all circumstances as otherwise the DHCP service will need to be
-		  ended and restarted if there is an empty shared network in its
-		  configuration.
-		</para>
+		<caution>
+			<para>
+				A shared network must contain at least one shared subnet object.
+				Otherwise the DHCP service will terminate itself and cannot be restarted until the configuration is fixed.
+			</para>
+		</caution>
 		  <table>
 			<title>'General' tab</title>
 			<tgroup cols="2">
@@ -1739,8 +1739,7 @@ closest to the object always applies.
 				  </entry>
 				  <entry>
 					<para>
-					  A name for the shared network should be entered in this input field.
-
+					  A name for the shared network must be entered in this input field.
 					</para>
 				  </entry>
 				</row>
@@ -1750,14 +1749,14 @@ closest to the object always applies.
 		<para>
 		  Subnets are declared as a <emphasis>DHCP shared subnet</emphasis> when they use the
 		  same, common physical network. All subnets which use the same network
-		  should be stored below the same shared network container. A
+		  must be stored below the same shared network container. A
 		  separate <emphasis>DHCP shared subnet</emphasis> object must be created for each
 		  subnet.
 		</para>
 		<para>
 		  DHCP shared subnet objects can only be managed via
 		  the <emphasis>LDAP directory</emphasis> module of the &ucsUMC;. To do so, one must
-		  always be in a DHCP subnet object - a DHCP shared subnet object
+		  always be in a DHCP shared network object - a DHCP shared subnet object
 		  must always be created below a DHCP shared network object - and
 		  a <guimenu>DHCP shared subnet</guimenu> object added
 		  with <guimenu>Add LDAP object</guimenu>.
@@ -1803,7 +1802,6 @@ closest to the object always applies.
 					  must be verified that the DHCP server can resolve these names in IP
 					  addresses. The routers are contacted by the client in the order in
 					  which they stand in the selection list.
-
 					</para>
 				  </entry>
 				</row>
@@ -1862,7 +1860,6 @@ closest to the object always applies.
 					  servers can be added. When using FQDNs, it must be verified that the
 					  DHCP server can resolve the names in IP addresses. The DNS servers are
 					  contacted by the clients according to the order specified here.
-
 					</para>
 				  </entry>
 				</row>
@@ -1919,7 +1916,7 @@ closest to the object always applies.
 				  <entry>
 					<para>
 					  The NetBIOS over TCP/IP scope for the client according to the
-					  specification in RFC1001 and RFC1002. Attention must be paid to
+					  specification in <ulink url="http://www.ietf.org/rfc/rfc1001.txt">RFC1001</ulink> and <ulink url="http://www.ietf.org/rfc/rfc1002.txt">RFC1002</ulink>. Attention must be paid to
 					  uppercase and lowercase when entering the NetBIOS scope.
 					</para>
 				  </entry>
@@ -2020,7 +2017,6 @@ closest to the object always applies.
 					  The minimum lease time specifies the shortest period of time for which
 					  a lease can be granted. If this input field is left empty, the DHCP
 					  server's default value is used.
-
 					</para>
 				  </entry>
 				</row>
@@ -2097,15 +2093,15 @@ closest to the object always applies.
 			  <para>
 				<emphasis>DHCP Dynamic DNS</emphasis>
 				allows the configuration of dynamic
-				DNS updates. These cannot yet be performed with a UCS-based DNS
-				service, but only with external servers.
+				DNS updates. These cannot yet be performed with a LDAP-based DNS
+				service as provided out-of-the-box by UCS.
 			  </para>
 			</listitem>
 			<listitem>
 			  <para>
 				<emphasis>DHCP Allow/Deny</emphasis>
-				allows the detailed assignment of
-				access rights on the DHCP servers.
+				allows the configuration of different DHCP options, which control what clients are allowed to do.
+				The are only useful in exceptional cases.
 			  </para>
 			</listitem>
 			<listitem>
