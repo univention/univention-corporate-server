@@ -110,6 +110,13 @@
 			Modulen findet sich in <xref linkend="delegated-administration"/>.
 		  </simpara></listitem>
 		</itemizedlist>
+
+		<para>
+		  Bei der ersten Anmeldung wird ein Einführungsassistent angezeigt, der u.a. auf die Erfassung
+		  von Nutzungsstatistiken hinweist (siehe <xref linkend="central-management-umc:piwik"/>)
+		  und die Aktivierung der Lizenz anbietet (siehe <xref linkend="central:license" />).
+		</para>
+
 		<para>
 			Nach zehn Minuten Inaktivität wird die Browser-Sitzung automatisch
 			geschlossen und eine Neuanmeldung ist notwendig. Dieses Intervall kann

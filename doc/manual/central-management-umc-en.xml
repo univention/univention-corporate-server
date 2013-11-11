@@ -119,6 +119,12 @@
 			</listitem>
 		</itemizedlist>
 
+		<!-- <para> -->
+		<!--   Bei der ersten Anmeldung wird ein Einführungsassistent angezeigt, der u.a. auf die Erfassung -->
+		<!--   von Nutzungsstatistiken hinweist (siehe <xref linkend="central-management-umc:piwik"/>) -->
+		<!--   und die Aktivierung der Lizenz anbietet (siehe <xref linkend="central:license" />). -->
+		<!-- </para> -->
+
 		<para>
 		  Following ten minutes of inactivity, the browser session is automatically closed and it is
 		  necessary to login again. This interval can be adjusted in seconds with the &ucsUCRV;
