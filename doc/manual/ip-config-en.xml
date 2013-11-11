@@ -1291,6 +1291,13 @@ closest to the object always applies.
 		  <!-- muss zuerst <guimenu>Alle DNS-Dienste</guimenu> selektiert werden, der Klick auf -->
 		  <!-- <guimenu>Hinzufügen</guimenu> legt dann einen neue Service an. -->
 		</para>
+
+		<!-- <para> -->
+		<!--   Ein DHCP-Server kann nur einen DHCP-Service bedienen; wenn ein weiterer DHCP-Service -->
+		<!--   verwendet werden soll, muss dafür ein separater DHCP-Server eingerichtet werden (siehe -->
+		<!--   <xref linkend="networks:dhcp:dhcpsever"/>). -->
+		<!-- </para> -->
+
 		<para>
 		  General information on the operation of the domain management modules
 		  of the &ucsUMC; and on the adding, editing, searching for and
@@ -1350,7 +1357,7 @@ closest to the object always applies.
 		  </table>
 	  </section>
 
-	  <section id="ip-config:Administration_of_DHCP_server_entries">
+	  <section id="networks:dhcp:dhcpsever">
 		<title>Administration of DHCP server entries</title>
 		<para>
 		  Each server which should offer the DCHP service requires

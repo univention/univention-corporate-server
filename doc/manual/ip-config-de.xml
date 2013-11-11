@@ -1091,6 +1091,12 @@
 		</para>
 
 		<para>
+		  Ein DHCP-Server kann nur einen DHCP-Service bedienen; wenn ein weiterer DHCP-Service
+		  verwendet werden soll, muss dafür ein separater DHCP-Server eingerichtet werden (siehe
+		  <xref linkend="networks:dhcp:dhcpsever"/>).
+		</para>
+
+		<para>
 		  Allgemeine Hinweise zur Bedienung der Domänenmanagement-Module
 		  der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
 		  Objekten finden sich in <xref linkend="central:user-interface"/>.
@@ -1141,7 +1147,7 @@
 		</table>
 	  </section>
 
-	  <section id="ip-config:Verwaltung_von_DHCP-Server-Eintraegen">
+	  <section id="networks:dhcp:dhcpsever">
 		<title>Verwaltung von DHCP-Server-Einträgen</title>
 		<para>
 		  Jeder Server, der den DHCP-Dienst anbieten soll, benötigt zwingend
