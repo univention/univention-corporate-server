@@ -308,6 +308,18 @@ then
 	exit 1
 fi
 
+# check for users with mailaddress but no mailhomeserver (Bug #29605)
+if is_ucr_true mail/cyrus/mailbox/delete; then
+	users_without_univentionMailHomeServer=$(univention-ldapsearch -xLLL '(&(mailPrimaryAddress=*)(!(univentionMailHomeServer=*)))' dn | sed -e 's/dn: //g;/^$/d')
+	if [ -n "$users_without_univentionMailHomeServer" ]; then
+		echo "ERROR: Detected users with an e-mail address, but without the attribute"
+		echo "       univentionMailHomeServer. As the Univention Config Registry"
+		echo "       variable mail/cyrus/mailbox/delete is set to true, the update will"
+		printf "       be blocked, otherwise the following user mailboxes would be deleted:\n"
+		printf "%s\n" "$users_without_univentionMailHomeServer"
+	fi
+fi
+
 # check for possible GRUB2 partitions on non-EFI systems (Bug #32634)
 eval "$(ucr shell update/grub/boot)"
 if ! is_ucr_true grub/efi ; then

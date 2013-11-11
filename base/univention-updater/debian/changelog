@@ -1,3 +1,10 @@
+univention-updater (9.0.30-1) unstable; urgency=low
+
+  * preup: Check for usermailboxes that would be deleted
+    and abort with an errormessage (Bug #29605)
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 11 Nov 2013 11:42:37 +0100
+
 univention-updater (9.0.29-3) unstable; urgency=low
 
   * Bug #33125: do not use first device found for GRUB reinstallation if
