@@ -61,11 +61,14 @@
 		</para>
 
 		<itemizedlist>
-		  <listitem>
-			<para>
-			  TODO
-			</para>
-		  </listitem>
+		  <listitem><para>
+			Das Debian Squeeze 6.0.8 Point-Update wurde integriert.
+		  </para></listitem>
+
+		  <listitem><para>
+			Der Linux-Kernel wurde auf 3.10.15 aktualisiert.
+		  </para></listitem>
+
 		</itemizedlist>
     </chapter>
 
