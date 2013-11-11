@@ -58,6 +58,7 @@
 	permission outlined above can be applied to the user owner, the owner group
 	and all others.
   </para>
+
   <para>
 	Access control lists allow even more complex permission models.
 	The configuration of ACLs is described in the Univention SDB <biblioref linkend="sdb-acls"/>.

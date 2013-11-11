@@ -41,11 +41,6 @@
 	Schreiben, das Ausführ-Recht bezieht sich hier auf die Berechtigung in ein
 	Verzeichnis zu wechseln.
   </para>
-  <para>
-	Jede Datei/Verzeichnis wird von einem Benutzer und einer Gruppe besessen. Die
-	drei oben genannten Rechte können jeweils auf den Besitzer, die
-	Besitzer-Gruppe und alle anderen angewendet werden.
-  </para>
 
   <para>
 	Ist die <emphasis>setuid</emphasis>-Option für eine ausführbare Datei gesetzt, kann diese von
@@ -61,6 +56,12 @@
   <para>
 	Ist die Option <emphasis>sticky bit</emphasis> für ein Verzeichnis aktiviert, können Dateien in dem
 	Verzeichnis nur von dem Besitzer der Datei oder durch den root-Benutzer gelöscht werden.
+  </para>
+
+  <para>
+	Jede Datei/Verzeichnis wird von einem Benutzer und einer Gruppe besessen. Die
+	drei oben genannten Rechte können jeweils auf den Besitzer, die
+	Besitzer-Gruppe und alle anderen angewendet werden.
   </para>
 
   <para>
