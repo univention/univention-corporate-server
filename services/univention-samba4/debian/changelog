@@ -1,3 +1,11 @@
+univention-samba4 (3.0.36-1) unstable; urgency=low
+
+  * Copy /var/lib/samba3/private/secrets.tdb to
+    /var/lib/samba3/secrets.tdb for the S3 to S4 migration
+    (Bug #33251)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Nov 2013 13:51:20 +0100
+
 univention-samba4 (3.0.35-1) unstable; urgency=low
 
   * Create special groups with univentionSamba4SID attribute
