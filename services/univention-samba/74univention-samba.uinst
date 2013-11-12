@@ -39,7 +39,7 @@ SERVICE="Samba 3"
 
 eval "$(ucr shell)"
 
-. /usr/share/univention-lib/ldap.sh
+. /usr/share/univention-lib/all.sh
 ucs_removeServiceFromLocalhost "$SERVICE" "$@" || die
 
 ucr unset samba/autostart \
@@ -53,8 +53,13 @@ var_lib_samba_is_s4 ()
 }
 
 if ! var_lib_samba_is_s4; then
-	mv /var/lib/samba "/var/lib/samba_backup_$(date +%Y%m%d%H%M%S)"
-	mkdir -p /var/lib/samba/private
+	if is_ucr_true samba4/ignore/mixsetup; then
+		# samba4/ignore/mixsetup is set during the S3 to S4 migration
+		# in this case the directory is used during the migration
+		#	http://wiki.univention.de/index.php?title=Migration_from_Samba_3_to_Samba_4#Update_Scenario_2_-_In_place_upgrade_of_the_Samba_3.2FNT4_to_a_Samba_4.2FAD_domain
+		mv /var/lib/samba "/var/lib/samba_backup_$(date +%Y%m%d%H%M%S)"
+		mkdir -p /var/lib/samba/private
+	fi
 fi
 
 joinscript_remove_script_from_status_file univention-samba
