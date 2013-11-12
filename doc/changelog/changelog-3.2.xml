@@ -2898,6 +2898,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;32262">Bug 32262</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+			The <command>univention-ad-takeover</command> script now runs a consistency check on the samba database at the end of the takeover process
+		  (<ulink url="&ucsbug;33339">Bug 33339</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
