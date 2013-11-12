@@ -31,6 +31,10 @@
 		  </simpara></listitem>
 
 		  <listitem><simpara>
+			proftpd-dfsg: CVE-2013-4359 (<ulink url="&ucsbug;32712">Bug 32712</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
 			libmodplug: CVE-2013-4233 CVE-2013-4234 (<ulink url="&ucsbug;32215">Bug 32215</ulink>).
 		  </simpara></listitem>
 
