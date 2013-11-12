@@ -1,3 +1,11 @@
+univention-bind (8.0.1-1) unstable; urgency=low
+
+  * Set permissions for /etc/bind/univention.conf.proxy and
+    /etc/bind/univention.conf to 644 to prevent errors while joining via
+    UMC (Bug #33157)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Nov 2013 14:01:58 +0100
+
 univention-bind (8.0.0-5) unstable; urgency=low
 
   * fixed common spelling mistakes (Bug #32662)

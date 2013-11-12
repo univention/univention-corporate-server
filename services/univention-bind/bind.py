@@ -289,6 +289,9 @@ def postrun():
 		named_conf.close()
 		proxy_conf.close()
 
+		os.chmod(NAMED_CONF_FILE, 0644)
+		os.chmod(PROXY_CONF_FILE, 0644)
+
 		# Restart is needed when new zones are added or old zones removed.
 		restart = False
 		do_reload = True
