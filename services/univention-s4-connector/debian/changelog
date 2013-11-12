@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-1) unstable; urgency=low
+
+  * univention-ad-takeover:
+    Run samba-tool dbfix at the end of the process (Bug #33339)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 12 Nov 2013 17:45:53 +0100
+
 univention-s4-connector (8.0.32-1) unstable; urgency=low
 
   * Added well known sid for IIS_IUSRS (Bug #29486)

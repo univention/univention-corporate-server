@@ -1765,6 +1765,7 @@ def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
 		log.error("univention-run-join-scripts failed, please run univention-run-join-scripts manually after the script finished")
 
 	run_and_output_to_log(["univention-config-registry", "unset", "univention/ad/takeover/ad/server/ip"], log.debug)
+	run_and_output_to_log(["samba-tool", "dbcheck", "--fix", "--yes"], log.debug)
 
 	msg=[]
 	msg.append("")
