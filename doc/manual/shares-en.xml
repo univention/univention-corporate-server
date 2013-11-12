@@ -31,11 +31,15 @@
   </para>
   <para>
 	Three access rights are differentiated per file: read, write and execute.
-  </para>
-  <para>
 	Three access rights also apply per directory: read and write are the
 	same; the execute permission here refers to the permission to enter a
 	directory.
+  </para>
+
+  <para>
+	Each file/directory is owned by a user and a group. The three
+	permission outlined above can be applied to the user owner, the owner group
+	and all others.
   </para>
 
   <para>
@@ -51,12 +55,6 @@
   <para>
 	If the <emphasis>sticky bit</emphasis> option is enabled for a directory, files in this directory
 	can only be deleted by the owner of the file or the root user.
-  </para>
-
-  <para>
-	Each file/directory is owned by a user and a group. The three
-	permission outlined above can be applied to the user owner, the owner group
-	and all others.
   </para>
 
   <para>
