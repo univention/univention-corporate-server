@@ -143,6 +143,8 @@ def _new_zone(ucr, zonename, dn):
 	proxy_zone.write('\tmasters port 7777 { 127.0.0.1; };\n')
 	proxy_zone.write('};\n')
 	proxy_zone.close()
+	os.chmod(proxy_zone, 0640)
+
 	global __zone_created_or_removed
 	__zone_created_or_removed = True
 

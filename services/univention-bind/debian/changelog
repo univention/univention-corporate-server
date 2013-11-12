@@ -1,3 +1,9 @@
+univention-bind (8.0.2-1) unstable; urgency=low
+
+  * Also set permissions for the proxy config to 0640 (Bug #33157)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Nov 2013 15:26:35 +0100
+
 univention-bind (8.0.1-1) unstable; urgency=low
 
   * Set permissions for /etc/bind/univention.conf.proxy and
