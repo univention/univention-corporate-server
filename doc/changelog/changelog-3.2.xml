@@ -31,6 +31,10 @@
 		  </simpara></listitem>
 
 		  <listitem><simpara>
+			libmodplug: CVE-2013-4233 CVE-2013-4234 (<ulink url="&ucsbug;32215">Bug 32215</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
 			libxvmc: CVE-2013-1990 CVE-2013-1999 (<ulink url="&ucsbug;31455">Bug 31455</ulink>).
 		  </simpara></listitem>
 
