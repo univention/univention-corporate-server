@@ -136,7 +136,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  <row>
 		<entry>Host</entry>
 		<entry>
-		  The server where the share is located. This setting cannot be subsequently edited.
+		  The server where the share is located. 
 		  All of the domain controller master/backup/slave computers and &ucsMember;s
 		  entered in the LDAP directory for the domain are available for selection which
 		  are entered in a DNS forward lookup zone in the LDAP directory. This setting
@@ -236,14 +236,12 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 			access operations are executed as user <emphasis>nobody</emphasis>.
 		  </para>
 
-		  <caution>
-			<para>
-			  The local group <emphasis>staff</emphasis>, which is by default empty, owns privileges which come
-			  quite close to <emphasis>root</emphasis> permissions, yet this group is not considered by the
-			  redirection mechanism. This fact should be borne in mind when adding users to
-			  this group.
-			</para>
-		  </caution>
+		  <para>
+			The local group <emphasis>staff</emphasis>, which is by default empty, owns privileges which come
+			quite close to <emphasis>root</emphasis> permissions, yet this group is not considered by the
+			redirection mechanism. This fact should be borne in mind when adding users to
+			this group.
+		  </para>
 		</entry>
 	  </row>
 
@@ -253,7 +251,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		  The synchronisation mode for the share. The <emphasis>sync</emphasis> setting is
 		  used to write data directly on the underlying storage device. The
 		  opposite setting - <emphasis>async</emphasis> - can improve performance but also
-		  imparts the risk of data loss if the server is shut down incorrectly.
+		  involves the risk of data loss if the server is shut down incorrectly.
 		</entry>
 	  </row>
 
@@ -295,10 +293,6 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 			adding a directory share, &ucsUMC; adopts the name entered in
 			the <guimenu>Name</guimenu> field of the <guimenu>General</guimenu> tab
 			as the default.
-		  </para>
-		  <para>
-			The name must be composed of letters, numerals, full stops or blank
-			spaces and must begin and end with a letter or numeral.
 		  </para>
 		</entry>
 	  </row>
@@ -415,7 +409,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 			Names of users or groups which are authorised to access this Samba share. To
 			all other users, access is denied. If the field is empty, all users may access
 			the share - if necessary after entering a password. This option is
-			useful for securing accesses to a share at file server level beyond
+			useful for securing access to a share at file server level beyond
 			the file permissions.
 		  </para>
 		  <para>

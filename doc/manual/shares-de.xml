@@ -270,7 +270,7 @@ eingetragen/modifiziert oder entfernt.
 		<entry>
 		  Standardmäßig wird allen Rechnern der Zugriff auf eine Freigabe erlaubt. In
 		  die Auswahlliste können Rechnernamen und IP-Adressen aufgenommen werden, auf
-		  die dann der Zugriff auf die Freigabe beschränkt wird. Hier liesse sich etwa der
+		  die dann der Zugriff auf die Freigabe beschränkt wird. Hier ließe sich etwa der
 		  Zugriff auf eine Freigabe mit Maildaten auf den Mailserver der Domäne einschränken.
 		</entry>
 	  </row>
