@@ -186,11 +186,6 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		  If the <envar>mail/cyrus/mailbox/delete</envar> &ucsUCRV; has been activated on the mail
 		  server and the attribute is removed from the user object, the mailbox is deleted.
 		</para>
-
-		<para>
-		  Prior to the update, the preup scripts validates whether the mail home server is set for
-		  all Cyrus users.
-		</para>
 	  </section>
 
 

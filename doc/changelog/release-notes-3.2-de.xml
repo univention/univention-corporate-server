@@ -192,11 +192,6 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		  und wird das Mail-Home-Server-Attribut vom Benutzerobjekt entfernt, wird dadurch das Postfach
 		  gelöscht.
 		</para>
-
-		<para>
-		  Vor dem Update wird durch das Preup-Skript geprüft, ob der Mail-Home-Server für alle Cyrus-Benutzer
-		  gesetzt ist.
-		</para>
 	  </section>
 
 
