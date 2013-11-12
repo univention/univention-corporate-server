@@ -1111,7 +1111,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			The create report action now applies to the selection instead of the whole search result.
+			The <guimenu>Create report</guimenu> action now applies to the selection instead of the whole search result.
 			Therefore the button has been moved into the grid's <guimenu>more</guimenu> menu
 			(<ulink url="&ucsbug;32749">Bug 32749</ulink>).
 		</simpara></listitem>
@@ -1121,27 +1121,9 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			The groups/group module now considers the options flag via UDM CLI (<ulink url="&ucsbug;32853">Bug 32853</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			It is now possible to set the AD group type for groups. The group type is synchronized to
-			Samba 4 via the Univention S4 connector if the &ucsUCR; variable
-			<envar>connector/s4/mapping/group/grouptype</envar> is set to true
-			(<ulink url="&ucsbug;32767">Bug 32767</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
 			Removed the label "Default properties" when searching in default
 			properties. Instead nothing is shown and the page has more space for the
 			results (<ulink url="&ucsbug;32753">Bug 32753</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			Several internal users and groups are now hidden from the UMC modules, for example the
-			AD pseudo groups like Authenticated Users or Everyone
-			(<ulink url="&ucsbug;32871">Bug 32871</ulink>, <ulink
-				url="&ucsbug;32750">Bug 32750</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1150,8 +1132,8 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			Only UDM properties that are part of the layout are transmitted to the UMC frontend now.
-			Invisible property widgets led to problems loading the detail page of UDM objects
+		  Only UDM properties that are part of the layout are transmitted to the UMC frontend now.
+		  Invisible property widgets led to problems loading the detail page of UDM objects
 		  (<ulink url="&ucsbug;32877">Bug 32877</ulink>).
 		</simpara></listitem>
 
@@ -1163,7 +1145,8 @@
 	  <itemizedlist>
 		<listitem><simpara>
 		  The &ucsUCR; variable <envar>apache2/startsite</envar> will be set to correct values when
-		  reinstalling, uninstalling and updating univention-system-setup-boot (<ulink url="&ucsbug;31385">Bug 31385</ulink>, <ulink url="&ucsbug;31643">Bug 31643</ulink>).
+		  reinstalling, uninstalling and updating univention-system-setup-boot (<ulink
+		  url="&ucsbug;31385">Bug 31385</ulink>, <ulink url="&ucsbug;31643">Bug 31643</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1178,84 +1161,81 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			The progress during (un)installation of software components was broken
-			(<ulink url="&ucsbug;32148">Bug 32148</ulink>).
+		  The software page has been removed. Software components are now managed in the
+		  Univention App Center. The software page is still available in the appliance setup
+		  (<ulink url="&ucsbug;32471">Bug 32471</ulink>). The progress bar during (un)installation
+		  of software components was fixed (<ulink url="&ucsbug;32148">Bug 32148</ulink>).
+		  Packages are now installed in the correct order (<ulink url="&ucsbug;31960">Bug
+		  31960</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-			The software page has been removed from basic settings. Software
-			components should be managed in the <application>Univention App
-			Center</application>. The software page is still available in the appliance setup
-			(<ulink url="&ucsbug;32471">Bug 32471</ulink>).
+		  Firefox update notifications are now suppressed during appliance setup (<ulink
+		  url="&ucsbug;30980">Bug 30980</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Disabled Firefox update popups during appliance setup (<ulink url="&ucsbug;30980">Bug 30980</ulink>).
+		  The NetBIOSs domain name is no longer queried (or displayed) on systems other than a
+		  master domain controller (<ulink url="&ucsbug;24442">Bug 24442</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The windows domain name is no longer queried (or displayed) in the basic settings on non
-		  DC master systems (<ulink url="&ucsbug;24442">Bug 24442</ulink>).
+		  Fixed an infinite loop when validating the domainname and windows domainname (<ulink
+		  url="&ucsbug;28574">Bug 28574</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Fixed an infinite loop when validating the domainname and windows domainname (<ulink url="&ucsbug;28574">Bug 28574</ulink>).
+		  When changing the SSL certificate a dialog is displayed to restart the server components
+		  (<ulink url="&ucsbug;29480">Bug 29480</ulink>).
+		  When running in English, the SSL module now refers to the English version of the
+		  Univention Support Database article (<ulink url="&ucsbug;30776">Bug 30776</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The URL to a SDB article has been internationalised (<ulink url="&ucsbug;30776">Bug 30776</ulink>).
+		  The SSL input fiels are now proposing values based on the default locale (<ulink
+		  url="&ucsbug;29658">Bug 29658</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The SSL fields are now updated automatically during appliance setup, depending on default locale chosen (<ulink url="&ucsbug;29658">Bug 29658</ulink>).
+		  Added support to configure bridges, bondings and VLAN interfaces. This is blocked while
+		  the deprecated KVM and Xen script are still used, which normally setup a network bridge
+		  for virtualisation. See <ulink url="http://docs.univention.de/computers-3.2.html#uvmm"/>
+		  for detailed instructions (<ulink url="&ucsbug;30816">Bug 30816</ulink>, <ulink
+		  url="&ucsbug;30878">Bug 30878</ulink>, <ulink url="&ucsbug;33006">Bug 33006</ulink>).
+		  The code for basic IP configuration has been re-written in Python (<ulink
+		  url="&ucsbug;28670">Bug 28670</ulink).
 		</simpara></listitem>
 
 		<listitem><simpara>
-			Added support to configure Bridge, Bond and VLAN interfaces.
-			This is blocked while the deprecated KVM and Xen script are still used, which normally setup a network bridge for virtualisation.
-			See <ulink url="http://docs.univention.de/computers-3.2.html#uvmm"/> for detailed instructions
-			(<ulink url="&ucsbug;30816">Bug 30816</ulink>, <ulink url="&ucsbug;30878">Bug 30878</ulink>, <ulink url="&ucsbug;33006">Bug 33006</ulink>).
+		  The description of server roles has been unified (<ulink url="&ucsbug;30773">Bug 30773</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The wording in the description of server roles has been unified (<ulink url="&ucsbug;30773">Bug 30773</ulink>).
+		  The setup scripts are now always processed in fixed order (<ulink url="&ucsbug;29714">Bug
+		  29714</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The system setup script order is now defined properly (<ulink url="&ucsbug;29714">Bug 29714</ulink>).
+		  When inserting invalid values, the invalid input field is now focused (<ulink
+		  url="&ucsbug;31021">Bug 31021</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  When inserting invalid values (e.g. password) the invalid field is now focused (<ulink url="&ucsbug;31021">Bug 31021</ulink>).
+		  A link to the UCS online documentation has been added to the network settings (<ulink
+		  url="&ucsbug;29119">Bug 29119</ulink>).
+		  The redirection to the new &ucsUMC; URL after IP address changes has been made more robust
+		  (<ulink url="&ucsbug;29973">Bug 29973</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The software setup now maintains the defined package order (<ulink url="&ucsbug;31960">Bug 31960</ulink>).
+		  A profile parsing function was fixed to not strip all double quotes from supplied values,
+		  which now allows to use quotes in passwords (<ulink url="&ucsbug;32463">Bug
+		  32463</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-			The redirection to the new UMC URL when changing IP configuration in system setup has been made more robust (<ulink url="&ucsbug;29973">Bug 29973</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			When changing the SSL certificate a dialog is displayed to restart the server components (<ulink url="&ucsbug;29480">Bug 29480</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			A profile parsing function was fixed to not strip all double quotes from supplied values, which now allows to use quotes in passwords (<ulink url="&ucsbug;32463">Bug 32463</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			A link to the UCS online documentation has been added to the network interface creation wizard
-			(<ulink url="&ucsbug;29119">Bug 29119</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			The part of system setup doing basic IP configuration has been re-written in Python to support VLANs, Bridging and Bonding (<ulinkt url="&ucsbug;28670">Bug 28670</ulinkt>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			The special handling for the Univention Package Database has been removed from system setup (<ulink url="&ucsbug;29783">Bug 29783</ulink>).
+		  The special handling for the Univention Software Monitor Database has been removed (<ulink
+		  url="&ucsbug;29783">Bug 29783</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1267,6 +1247,13 @@
 		  Spaces are no longer allowed in the username (this can be overwritten by setting the
 		  &ucsUCR; variable <envar>directory/manager/web/modules/users/user/properties/username/syntax</envar> to
 		  <emphasis>string</emphasis>, <ulink url="&ucsbug;19441">Bug 19441</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Several internal users and groups are now hidden from the UMC modules, for example the AD
+		  pseudo groups like <emphasis>Authenticated Users</emphasis>or
+		  <emphasis>Everyone</emphasis> (<ulink url="&ucsbug;32871">Bug 32871</ulink>, <ulink
+		  url="&ucsbug;32750">Bug 32750</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1298,27 +1285,53 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Some old code has been removed (<ulink url="&ucsbug;28671">Bug 28671</ulink>).
+		  Some unused code has been removed (<ulink url="&ucsbug;28671">Bug 28671</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The mail option is not connected to any password related properties anymore (<ulink url="&ucsbug;31868">Bug 31868</ulink>).
+		  If the <emphasis>mail</emphasis> option is enabled for a user, a password is no longer
+		  required (<ulink url="&ucsbug;31868">Bug 31868</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A traceback which occurred when creating a user with just the person option set has been
-		  corrected (<ulink url="&ucsbug;24351">Bug 24351</ulink>).
+		  A traceback which occurred when creating a user with just the <emphasis>person</emphasis>
+		  option set has been corrected (<ulink url="&ucsbug;24351">Bug 24351</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
   </section>
 
+  <section>
+	<title>Groups module</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  The options flag is now considered during group creation via UDM CLI (<ulink
+		  url="&ucsbug;32853">Bug 32853</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Several internal users and groups are now hidden from the UMC modules, for example the AD
+		  pseudo groups like <emphasis>Authenticated Users</emphasis>or
+		  <emphasis>Everyone</emphasis> (<ulink url="&ucsbug;32871">Bug 32871</ulink>, <ulink
+		  url="&ucsbug;32750">Bug 32750</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  It is now possible to set the AD group type for groups. The group type is synchronized to
+		  Samba 4 via the Univention S4 connector if the &ucsUCR; variable
+		  <envar>connector/s4/mapping/group/grouptype</envar> is set to true (<ulink
+		  url="&ucsbug;32767">Bug 32767</ulink>).
+		</simpara></listitem>
+	  </itemizedlist>
+  </section>
 
   <section>
 	<title>Extended attributes</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The descriptions of extended attribute properties have been improved and the layout of the module has been rebuilt (<ulink url="&ucsbug;28629">Bug 28629</ulink>).
+		  The descriptions of extended attribute properties have been improved and the layout of the
+		  module has been rebuilt (<ulink url="&ucsbug;28629">Bug 28629</ulink>, <ulink
+		  url="&ucsbug;27948">Bug 27948</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1366,9 +1379,8 @@
 	<title>Domain join module</title>
 	  <itemizedlist>
 		<listitem><simpara>
-			After a re-join a complete restart of the system can now be
-			performed directly via a confirmation dialog (<ulink
-			  url="&ucsbug;9927">Bug 9927</ulink>).
+		  After a rejoin a restart of the system can now be performed directly via a
+		  confirmation dialog (<ulink url="&ucsbug;9927">Bug 9927</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1377,9 +1389,8 @@
 	<title>Online update module</title>
 	  <itemizedlist>
 		<listitem><simpara>
-			The module now shows available Application updates from the App Center.
-			Updates can be installed in the App Center module (<ulink
-				url="&ucsbug;30548">Bug 30548</ulink>).
+		  The module now shows available application updates from the App Center. Updates are
+		  installed in the App Center module (<ulink url="&ucsbug;30548">Bug 30548</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1388,22 +1399,51 @@
 	<title>Computers module</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  An optional simplified wizard for creating users has been added (<ulink url="&ucsbug;23214">Bug 23214</ulink>).
+		  An optional simplified wizard for creating computers has been added (<ulink
+		  url="&ucsbug;23214">Bug 23214</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A traceback which occurred when renaming computer objects with set DNS reverse zone has
+		  The module mapping for the inventory number was duplicated. This has been fixed (<ulink
+		  url="&ucsbug;24102">Bug 24102</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  A traceback which occurred when renaming computer objects with a configured DNS reverse zone has
 		  been fixed. (<ulink url="&ucsbug;31435">Bug 31435</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Removed duplicate mapping.register call for univentionInventoryNumber (<ulink url="&ucsbug;24102">Bug 24102</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  The attribute <guimenu>FQDN</guimenu> has been removed from the advanced search as they
 		  are not searchable (<ulink url="&ucsbug;28803">Bug 28803</ulink>).
 		</simpara></listitem>
+	  </itemizedlist>
+  </section>
+
+  <section>
+	<title>Shares module</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  The layout, descriptions and attribute name in UMC module have been improved (<ulink
+		  url="&ucsbug;32882">Bug 32882</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The Samba share option <emphasis>strict locking</emphasis> can now be set to 'Auto' (default), 'Yes' or 'No'
+		  (<ulink url="&ucsbug;32882">Bug 32882</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Custom NFS settings can now be added to NFS Shares (<ulink url="&ucsbug;18708">Bug 18708</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The setgid and sticky bit flags can now be set for the root directory of the share (<ulink
+		  url="&ucsbug;15087">Bug 15087</ulink>). The  permissions, owner and group will now only be
+		  set on new shares, or if the values have been modified (previously they were rewritten
+		  with every change to made to the share) (<ulink url="&ucsbug;15087">Bug 15087</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -1422,9 +1462,30 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  <guimenu>DNS: Pointer</guimenu> objects are now called <guimenu>DNS: Pointer
+		  records</guimenu> to be consistent with the naming conventions of other DNS resource
+		  records in UDM modules (<ulink url="&ucsbug;24661">Bug 24661</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  When appending name servers to DNS forward and DNS reverse zones, a trailing dot will be
+		  added to every entry if missing, not only the first one (<ulink url="&ucsbug;29568">Bug 29568</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  A mapping which broke the representation of TXT records for DNS forward zones has been
+		  fixed (<ulink url="&ucsbug;29681">Bug 29681</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  A traceback which occurred when removing the MAC address or network from a computer with
 		  DHCP entry has been fixed (<ulink url="&ucsbug;28945">Bug 28945</ulink>,
 		  <ulink url="&ucsbug;29676">Bug 29676</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The pointer record attribute of the DNS pointer module is now a multi value attribute
+		  (<ulink url="&ucsbug;28667">Bug 28667</ulink>, <ulink url="&ucsbug;31103">Bug 31103</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -1449,7 +1510,8 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A typo has been fixed (<ulink url="&ucsbug;21997">Bug 21997</ulink>).
+		  A typo has been fixed in the display policy (<ulink url="&ucsbug;21997">Bug
+		  21997</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1468,8 +1530,8 @@
 	<title>Printers module</title>
 	  <itemizedlist>
 		<listitem><simpara>
-			The selectable print servers are now limited to servers with
-			univentionService=Print (<ulink url="&ucsbug;25216">Bug 25216</ulink>).
+		  The selectable print servers are now limited to servers which are registered for the
+		  print service service (<ulink url="&ucsbug;25216">Bug 25216</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1478,13 +1540,8 @@
 	<title>Univention Configuration Registry module</title>
 	  <itemizedlist>
 		<listitem><simpara>
-
-		<listitem><simpara>
-		  Reloading of UCR variables has been improved, and references to the external library pyinotify have been removed
-		  (<ulink url="&ucsbug;31752">Bug 31752</ulink>).
-		</simpara></listitem>
-
-
+		  Reloading of UCR variables has been improved, and references to the external library
+		  pyinotify have been removed (<ulink url="&ucsbug;31752">Bug 31752</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1501,24 +1558,10 @@
   <section>
 	<title>Other modules</title>
 	  <itemizedlist>
-		<listitem><simpara>
-		  A mapping which broke the representation of TXT records for DNS forward zones has been
-		  fixed (<ulink url="&ucsbug;29681">Bug 29681</ulink>).
-		</simpara></listitem>
 
 		<listitem><simpara>
 		  The attribute <guimenu>Next IP</guimenu> in the network module has been removed from the
 		  advanced search as it is are not searchable (<ulink url="&ucsbug;28803">Bug 28803</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The pointer record attribute of the DNS pointer module is now a multi value attribute
-		  (<ulink url="&ucsbug;28667">Bug 28667</ulink>, <ulink url="&ucsbug;31103">Bug 31103</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The term <wordasword>UDM Web</wordasword> in the extended attributes module has been replaced by <wordasword>UMC</wordasword>
-		  (<ulink url="&ucsbug;27948">Bug 27948</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1532,18 +1575,14 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Support of ext4 partitions has been added to the filesystem quota module (<ulink url="&ucsbug;24357">Bug 24357</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  A typo in the German localization in
-		  <package>univention-management-console-module-quota</package> has been corrected (<ulink url="&ucsbug;28377">Bug 28377</ulink>).
+		  Support of ext4 partitions has been added to the filesystem quota module (<ulink
+		  url="&ucsbug;24357">Bug 24357</ulink>). In addition a typo in the German localization has been fixed
+		  (<ulink url="&ucsbug;28377">Bug 28377</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  The shutdown/reboot message in the <emphasis>Reboot</emphasis> module has been
-		  adapted. Furthermore the <emphasis>cancel</emphasis> button in the confirmation dialog is
-		  the default now (<ulink url="&ucsbug;22831">Bug 22831</ulink>).
+		  reworded and the button layout was improved (<ulink url="&ucsbug;22831">Bug 22831</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1551,65 +1590,16 @@
 		  (<ulink url="&ucsbug;31523">Bug 31523</ulink>).
 		</simpara></listitem>
 
-		<listitem><simpara>
-		  The <guimenu>Software monitor</guimenu> module has been thoroughly revised (<ulink url="&ucsbug;30967">Bug 30967</ulink>,
-		  <ulink url="&ucsbug;29655">Bug 29655</ulink>, <ulink url="&ucsbug;24360">Bug 24360</ulink>,
-		  <ulink url="&ucsbug;24633">Bug 24633</ulink>, <ulink url="&ucsbug;9706">Bug 9706</ulink>,
-		  <ulink url="&ucsbug;28787">Bug 28787</ulink>, <ulink url="&ucsbug;28804">Bug 28804</ulink>,
-		  <ulink url="&ucsbug;29610">Bug 29610</ulink>).
-		</simpara></listitem>
 
 		<listitem><simpara>
-			The VNC module has been removed (<ulink url="&ucsbug;30158">Bug 30158</ulink>).
-			As an alternative <application>xrdp</application> can be used
-			for remote administration. It is available in the <application>Univention
-				App Center</application>.
+		  The VNC module has been removed (<ulink url="&ucsbug;30158">Bug 30158</ulink>). As an
+		  alternative <application>xrdp</application> can be used for remote administration. It is
+		  available in the <application>Univention App Center</application>.
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  The search pattern have been more secured and unified in the UVMM and
 		  Printers modules (<ulink url="&ucsbug;28260">Bug 28260</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  <guimenu>DNS: Pointer</guimenu> objects are now called <guimenu>DNS: Pointer
-		  records</guimenu> to be consistent with the naming conventions of other DNS resource
-		  records in UDM modules (<ulink url="&ucsbug;24661">Bug 24661</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  When appending name servers to DNS forward and DNS reverse zones, a trailing dot will be
-		  added to every entry if missing, not only the first one (<ulink url="&ucsbug;29568">Bug 29568</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			The UMC Share module layout and texts have been improved (<ulink url="&ucsbug;32882">Bug 32882</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			The samba share option 'strict locking' can now be set to 'Auto' (default), 'Yes' or 'No' (<ulink url="&ucsbug;32882">Bug 32882</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			Custom NFS settings can now be added to NFS Shares (<ulink url="&ucsbug;18708">Bug 18708</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			The setgid and sticky bit flags can now be set for share root-directories (<ulink url="&ucsbug;15087">Bug 15087</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			The share root-directory permissions, owner and group will now only be set on new shares, or if their udm attributes have been modified (<ulink url="&ucsbug;15087">Bug 15087</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			The AD-Connector download site has been integrated into the <guimenu>UCS Active Directory Connector</guimenu> module
-			(<ulink url="&ucsbug;32698">Bug 32698</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			Fixed stability when uploading new certificates or searching for possible hostnames in the <guimenu>UCS Active Directory Connector</guimenu> module
-			(<ulink url="&ucsbug;31990">Bug 31990</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -1619,7 +1609,8 @@
 	<title>Univention Directory Manager command line interface and related tools</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The code of the command line programs has been modernized (<ulink url="&ucsbug;30974">Bug 30974</ulink>.
+		  The code of the command line programs has been cleaned up (<ulink url="&ucsbug;30974">Bug
+		  30974</ulink>.
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1649,28 +1640,33 @@
 	  <itemizedlist>
 
 		<listitem><simpara>
-			A new UDM module <emphasis>settings/ldapschema</emphasis> has been implemented for registration and replication of LDAP schema extensions
-			(<ulink url="&ucsbug;32412">Bug 32412</ulink>).
+		  A new UDM module <emphasis>settings/ldapschema</emphasis> has been implemented for
+		  registration and replication of LDAP schema extensions <ulink url="&ucsbug;32412">Bug
+		  32412</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-			A new UDM module <emphasis>settings/ldapacl</emphasis> has been implemented for registration and replication of LDAP ACL extensions
-			(<ulink url="&ucsbug;32411">Bug 32411</ulink>).
+		  A new UDM module <emphasis>settings/ldapacl</emphasis> has been implemented for
+		  registration and replication of LDAP ACL extensions (<ulink url="&ucsbug;32411">Bug
+		  32411</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-			A new UDM module <emphasis>settings/udm_hook</emphasis> has been implemented for registration and replication of UDM hook extensions
-			(<ulink url="&ucsbug;32403">Bug 32403</ulink>).
+		  A new UDM module <emphasis>settings/udm_hook</emphasis> has been implemented for
+		  registration and replication of UDM hook extensions (<ulink url="&ucsbug;32403">Bug
+		  32403</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-			A new UDM module <emphasis>settings/udm_syntax</emphasis> has been implemented for registration and replication of UDM syntax extensions
-			(<ulink url="&ucsbug;32406">Bug 32406</ulink>).
+		  A new UDM module <emphasis>settings/udm_syntax</emphasis> has been implemented for
+		  registration and replication of UDM syntax extensions (<ulink url="&ucsbug;32406">Bug
+		  32406</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-			A new UDM module <emphasis>settings/udm_module</emphasis> has been implemented for registration and replication of UDM module extensions
-			(<ulink url="&ucsbug;32409">Bug 32409</ulink>).
+		  A new UDM module <emphasis>settings/udm_module</emphasis> has been implemented for
+		  registration and replication of UDM module extensions (<ulink url="&ucsbug;32409">Bug
+		  32409</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -1685,8 +1681,8 @@
 	<title>Repository handling</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The recommendation for setting up a UCR policy has been fixed to mention the correct
-		  &ucsUCR; variable <envar>updater/secure_apt</envar> (<ulink url="&ucsbug;24808">Bug 24808</ulink>).
+		  If a local repository is created, instructions are provided to disable Secure Apt. This
+		  message has been simplified and corrected (<ulink url="&ucsbug;24808">Bug 24808</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1697,7 +1693,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The pre- and post-updater scripts of locally mirrored but disabled components are now also
+		  The pre- and post-updater scripts of locally mirrored, but disabled components are now also
 		  retrieved (<ulink url="&ucsbug;30756">Bug 30756</ulink>).
 		</simpara></listitem>
 
@@ -1734,6 +1730,14 @@
 	<title>Software monitor (univention-pkgdb)</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  The <guimenu>Software monitor</guimenu> module has been thoroughly revised (<ulink url="&ucsbug;30967">Bug 30967</ulink>,
+		  <ulink url="&ucsbug;29655">Bug 29655</ulink>, <ulink url="&ucsbug;24360">Bug 24360</ulink>,
+		  <ulink url="&ucsbug;24633">Bug 24633</ulink>, <ulink url="&ucsbug;9706">Bug 9706</ulink>,
+		  <ulink url="&ucsbug;28787">Bug 28787</ulink>, <ulink url="&ucsbug;28804">Bug 28804</ulink>,
+		  <ulink url="&ucsbug;29610">Bug 29610</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  The &ucsUCR; variable descriptions in <package>univention-pkgdb</package> have been
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
@@ -1755,13 +1759,13 @@
 	<itemizedlist>
 	  <listitem><simpara>
 		The function <function>call_joinscript()</function> has been modified. The start and end of every
-		executed joinscript will be displayed on console (<ulink url="&ucsbug;29263">Bug 29263</ulink>).
+		executed join script will be displayed on console (<ulink url="&ucsbug;29263">Bug 29263</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 		The generation of internally used passwords (e.g. machine passwords) has been
 		unified. Several packages now using a special function from <package>shell-univention-lib</package>
-		respectively <package>python-univention-lib</package> to create such password. The length and complexity can be
+		respectively <package>python-univention-lib</package> to create such passwords. The length and complexity can be
 		configured via the &ucsUCR; variable <envar>machine/password/length</envar> and
 		<envar>machine/password/complexity</envar> (<ulink url="&ucsbug;31281">Bug 31281</ulink>).
 	  </simpara></listitem>
@@ -1771,14 +1775,12 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Added UMCConnection to the Python lib, moved from the <application>Univention App Center</application>
-		(<ulink url="&ucsbug;31058">Bug 31058</ulink>,
-		<ulink url="&ucsbug;31908">Bug 31908</ulink>).
+		Added UMCConnection to the Python lib, previously part of the App Center (<ulink
+		url="&ucsbug;31058">Bug 31058</ulink>, <ulink url="&ucsbug;31908">Bug 31908</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		PackageManager now checks installation status correctly
-		(<ulink url="&ucsbug;31261">Bug 31261</ulink>).
+		PackageManager now checks the installation status correctly (<ulink url="&ucsbug;31261">Bug 31261</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -1874,7 +1876,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The PAM tool pam_univentionmailcyrus supports a comma-separated list for the option
+		  The PAM module pam_univentionmailcyrus supports a comma-separated list for the option
 		  ldap_host (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 		</simpara></listitem>
 
@@ -1886,7 +1888,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  The &ucsUCR; variables <envar>mail/cyrus/ssl/cafile</envar> and <envar>mail/cyrus/ssl/capath</envar> have been
-		  added to <package>univention-mail-cyrus</package> to configure the cyrus ca certificates
+		  added to <package>univention-mail-cyrus</package> to configure the Cyrus CA certificates
 		  (<ulink url="&ucsbug;28123">Bug 28123</ulink>).
 		</simpara></listitem>
 
@@ -1902,12 +1904,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The description for an obsolete &ucsUCR; variable has been removed in (<ulink url="&ucsbug;24715">Bug 24715</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The Postfix configuration now uses the LDAP servers configured through the &ucsUCR; variable
-		  <envar>ldap/server/addition</envar> too (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
+		  The Postfix configuration now also uses the LDAP servers configured through the &ucsUCR; variable
+		  <envar>ldap/server/addition</envar> (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1916,7 +1914,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  The &ucsUCR; variable descriptions in <package>univention-mail-postfix</package> have been revised
-		  (<ulink url="&ucsbug;30945">Bug 30945</ulink>).
+		  (<ulink url="&ucsbug;30945">Bug 30945</ulink>, <ulink url="&ucsbug;24715">Bug 24715</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1936,29 +1934,21 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Spam/virus detection and countermeasures</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  <package>univention-antivir-mail </package> has been modified. Postfix configuration will be reloaded after
-		  installation (<ulink url="&ucsbug;17967">Bug 17967</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  <package>univention-spamassassin</package> has been modified. Obsolete &ucsUCR; variable
-		  <envar>mail/antispam/globalfolder</envar> has been removed (<ulink url="&ucsbug;31072">Bug 31072</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Unused &ucsUCR; variables have been removed from
-		  <package>univention-antivir-mail</package> (<ulink url="&ucsbug;30900">Bug 30900</ulink>).
+		  The Postfix configuration is now reloaded after installation of
+		  <package>univention-antivir-mail</package> (<ulink url="&ucsbug;17967">Bug 17967</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  The &ucsUCR; variable descriptions in <package>univention-antivir-mail</package>,
 		  <package>univention-postgrey</package>, and <package>univention-spamassassin</package>
-		  have been revised (<ulink url="&ucsbug;30945">Bug 30945</ulink>).
+		  have been revised (<ulink url="&ucsbug;30945">Bug 30945</ulink>, <ulink
+		  url="&ucsbug;30900">Bug 30900</ulink>, <ulink url="&ucsbug;31072">Bug 31072</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The licensing information of <package>univention-antivir-mail</package> has been updated
-		  (<ulink url="&ucsbug;31332">Bug 31332</ulink>).
+		  The licensing information of the initial virus definitions shipped in
+		  <package>univention-antivir-mail</package> has been updated (<ulink
+		  url="&ucsbug;31332">Bug 31332</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1967,9 +1957,6 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Printing services</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  Changed the <emphasis>SystemGroup</emphasis> parameter. SystemGroups are now separated by a blank character
-		  and not by a comma in <filename>cupsd.conf</filename>. The &ucsUCR; variable must remain a comma separated list
-		  though (<ulink url="&ucsbug;28884">Bug 28884</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1978,38 +1965,34 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Added <emphasis>ErrorPolicy</emphasis> in <package>univention-printserver</package> to the CUPS template. ErrorPolicy can be set
-		  over the &ucsUCR; variable <envar>cups/errorpolicy</envar>. The change will be applied to all
-		  printers (<ulink url="&ucsbug;28877">Bug 28877</ulink>).
+		  New configuration directive in the &ucsUCR; template of the CUPS configuration:
+		  <emphasis>ErrorPolicy</emphasis> can be set with the &ucsUCR; variable
+		  <envar>cups/errorpolicy</envar>. The change will be applied to all printers (<ulink
+		  url="&ucsbug;28877">Bug 28877</ulink>). The <emphasis>SystemGroup</emphasis> parameter has
+		  changed. System groups are now separated by a blank character and not by a comma in
+		  <filename>cupsd.conf</filename>. The &ucsUCR; variable must remain a comma separated list
+		  though (<ulink url="&ucsbug;28884">Bug 28884</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Modified <package>univention-ldapsearch</package> in join scripts to request LDAP on DC-Master not on local
-		  DC. Credentials of the join user will be used for authentication.(<ulink url="&ucsbug;19101">Bug 19101</ulink>).
+		  The join script was fixed in setups with selective replication (e.g. UCS@school) (<ulink
+		  url="&ucsbug;19101">Bug 19101</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-			Modified <package>univention-lpadmin</package>. <command>lpadmin</command> output (info, errors, warnings) enabled.(<ulink url="&ucsbug;17660">Bug 17660</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <package>univention-printclient</package> have been
-		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Descriptions for the Univention Configuration Registry variables used in
-		  univention-check-printers have been added (<ulink url="&ucsbug;22544">Bug 22544</ulink>).
+		  The output of <package>univention-lpadmin</package> now includes the output of
+		  <command>lpadmin</command> (<ulink url="&ucsbug;17660">Bug 17660</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  Modified and improved checking for disabled printers in
-		  <command>univention-check-printers</command> (<ulink url="&ucsbug;28558">Bug 28558</ulink>).
+		  <command>univention-check-printers</command> (<ulink url="&ucsbug;28558">Bug
+		  28558</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Package dependencies to univention-printserver and bsd-mailx have been added to
-		  univention-check-printers (<ulink url="&ucsbug;29123">Bug 29123</ulink>).
+		  Package dependencies to <package>univention-printserver</package> and <package>bsd-mailx</package> have been added to
+		  <package>univention-check-printers</package> (<ulink url="&ucsbug;29123">Bug 29123</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2025,13 +2008,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  The &ucsUCR; variable descriptions in <package>univention-printserver</package>,
-		  <package>univention-check-printers</package> and
+		  <package>univention-check-printers</package>, <package>univention-printclient</package>, <package>univention-check-printers</package> and
 		  <package>univention-printquota</package> have been revised (<ulink
-		  url="&ucsbug;30948">Bug 30948</ulink>).
+		  url="&ucsbug;30948">Bug 30948</ulink>, <ulink url="&ucsbug;22544">Bug 22544</ulink>, <ulink url="&ucsbug;30943">Bug 30943</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Added a pop-up message in case of editing print quota without installed package univention-printquota 
+		  Added a popup message in case of editing print quota without installed package univention-printquota 
 		  (<ulink url="&ucsbug;29001">Bug 29001</ulink>).
 		</simpara></listitem>
 
@@ -2047,21 +2030,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The handling of the univentionPrinterUseClientDriver attribute has been fixed in the cups-printers 
-		  listener module (<ulink url="&ucsbug;32669">Bug 32669</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  CUPS has been re-built against the updated heimdal library
-		  (<ulink url="&ucsbug;32438">Bug 32438</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
 		  The property <emphasis>Use Windows client driver</emphasis> has been removed from the printer shares.
 		  During update the corresponding LDAP attribute will be removed on all printers hosted by the updated
 		  server, which in turn will remove the corresponding Samba option from the local printer share definitions.
 		  The Samba option is not required any longer because the print spool code has been updated in the new Samba
-		  version (<ulink url="&ucsbug;31624">Bug 31624</ulink>).
+		  version (<ulink url="&ucsbug;31624">Bug 31624</ulink>, <ulink url="&ucsbug;32669">Bug 32669</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -2071,8 +2044,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Kerberos</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  Heimdal Kerberos has been updated to Version 1.6
-		  (<ulink url="&ucsbug;32195">Bug 32195</ulink>).
+		  Heimdal Kerberos has been updated to Version 1.6 (<ulink url="&ucsbug;32195">Bug
+		  32195</ulink>). Various packages have been rebuilt (<ulink url="&ucsbug;32438">Bug 32438</ulink>).
+		  The package <package>pam-krb5-migrate</package> has been updated to 0.0.10-1 (<ulink
+		  url="&ucsbug;32438">Bug 32438</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2088,28 +2063,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  The process <command>kpasswdd</command> is now only started on the UCS master (<ulink url="&ucsbug;20167">Bug #20167</ulink>).
 		</simpara></listitem>
-
-		<listitem><simpara>
-		  The package <package>pam-krb5-migrate</package> has been updated to 0.0.10-1
-		  (<ulink url="&ucsbug;32438">Bug 32438</ulink>).
-		</simpara></listitem>
-
 	  </itemizedlist>
   </section>
 
   <section>
 	<title>Proxy services</title>
 	  <itemizedlist>
-		<listitem><simpara>
-		  Fixed a regression in group authentication if &ucsUCR; variable
-		  <envar>squid/auth/allowed_groups</envar> was not set (<ulink url="&ucsbug;30969">Bug 30969</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  When using NTLM authentication it is now checked if the user account is locked or disabled
-		  (<ulink url="&ucsbug;29492">Bug 29492</ulink>).
-		</simpara></listitem>
-
 		<listitem><simpara>
 		  Proxy NEGOTIATE authentication support has been added to <package>univention-squid</package>.
 		  In this mode the authenticator squid_ldap_ntlm_auth is a negotiate wrapper for either Kerberos 
@@ -2119,7 +2078,17 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A problem in the squid the ntlm authentication helper in interaction with office2013
+		  Fixed a regression in group authentication if the &ucsUCR; variable
+		  <envar>squid/auth/allowed_groups</envar> was not set (<ulink url="&ucsbug;30969">Bug 30969</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  When using NTLM authentication it is now checked if the user account is locked or disabled
+		  (<ulink url="&ucsbug;29492">Bug 29492</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  A problem in the NTLM authentication helper in interaction with Office 2013
 		  has been fixed (<ulink url="&ucsbug;32183">Bug 32183</ulink>).
 		</simpara></listitem>
 
@@ -2129,12 +2098,15 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The package <package>univention-squid-kerberos</package> does not depend on <package>univention-samba4</package> anymore. In addition, the joinscript <filename>98univention-squid-samba4.inst</filename> now corectly saves its status when not in a Samba 4 environment (<ulink url="&ucsbug;32011">Bug 32011</ulink>).
+		  The package <package>univention-squid-kerberos</package> does not depend on
+		  <package>univention-samba4</package> anymore. In addition, the join script
+		  <filename>98univention-squid-samba4.inst</filename> now correctly saves its status when
+		  not in a Samba 4 environment (<ulink url="&ucsbug;32011">Bug 32011</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  The join script of the package <package>univention-squid-kerberos</package> failed
-		  on Samba 3 dc slaves in a Samba 3/Samba 4 mixed environment. This bug has been
+		  on Samba 3 DC slaves in a Samba 3/Samba 4 mixed environment. This bug has been
 		  fixed (<ulink url="&ucsbug;32186">Bug 32186</ulink>).
 		</simpara></listitem>
 
@@ -2539,7 +2511,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  The &ucsUCR; variable <envar>windows/wins-server</envar> and &ucsUCR; variable
-		  <envar>windows/wins-support</envar> are now set in the Samba joinscript
+		  <envar>windows/wins-support</envar> are now set in the Samba join script
 		  (<ulink url="&ucsbug;31814">Bug 31814</ulink>, <ulink url="&ucsbug;32745">Bug 32745</ulink>).
 		</simpara></listitem>
 
@@ -2907,6 +2879,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <itemizedlist>
 		<listitem><simpara>
 		  Additional hints are shown during the Active Directory Connector setup about possibilities to configure DNS resolution for the required Windows server FQDN (<ulink url="&ucsbug;24903">Bug 24903</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The AD-Connector download site has been integrated into the <guimenu>UCS Active Directory
+		  Connector</guimenu> UMC module (<ulink url="&ucsbug;32698">Bug 32698</ulink>). Improve
+		  internal escaping of values (<ulink url="&ucsbug;31990">Bug 31990</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
