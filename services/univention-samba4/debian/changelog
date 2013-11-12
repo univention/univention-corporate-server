@@ -1,3 +1,10 @@
+univention-samba4 (3.0.37-1) unstable; urgency=low
+
+  * Remove the sambaGroupType rewrite from S3 to S4 classicupdate code
+    (Bug #33338)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Nov 2013 18:46:47 +0100
+
 univention-samba4 (3.0.36-1) unstable; urgency=low
 
   * Copy /var/lib/samba3/private/secrets.tdb to

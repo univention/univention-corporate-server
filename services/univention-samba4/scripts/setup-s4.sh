@@ -274,51 +274,6 @@ else
 		fi
 	done
 
-	### create ldifs to temporarily fix sambaGroupType 5 and 2 for samba3upgrade
-	### unfortunately udm currently does not allow setting sambaGroupType=4
-	create_modify_ldif() {
-		record="$1"
-		dn=$(echo "$record" | sed -n "s/dn: \(.*\)/\1/p")
-		if [ -n "$dn" ]; then
-			cat <<-%EOF
-			dn: $dn
-			changetype: modify
-			replace: sambaGroupType
-			sambaGroupType: 4
-			-
-
-			%EOF
-		fi
-	}
-
-	ldif_records() {
-		func="$1"; shift
-		if ! declare -F "$func" >/dev/null; then
-			echo "ldif_records: First argument must be a valid function name"
-			echo "ldif_records: "$func" is not a valid function name"
-			return 1
-		fi
-		while read -d '' record; do
-			"$func" "$record" "$@"
-		done < <(sed 's/^$/\x0/')	## beware: skips last record, but that's ok with usual univention-ldapsearch output
-	}
-
-	ldif_sambaGroupType_5_to_4=$(univention-ldapsearch sambaGroupType=5 dn sambaGroupType | ldapsearch-wrapper | ldif_records create_modify_ldif)
-	reverse_ldif_sambaGroupType_5_to_4="${ldif_sambaGroupType_5_to_4//sambaGroupType: 4/sambaGroupType: 5}"
-
-	ldif_sambaGroupType_2_to_4=$(univention-ldapsearch sambaGroupType=2 dn sambaGroupType | ldapsearch-wrapper | ldif_records create_modify_ldif)
-	reverse_ldif_sambaGroupType_2_to_4="${ldif_sambaGroupType_2_to_4//sambaGroupType: 4/sambaGroupType: 2}"
-
-	reverse_sambaGroupType_change() {
-		echo "$reverse_ldif_sambaGroupType_5_to_4" | ldapmodify -h "$ldap_master" -p "$ldap_master_port" -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
-		echo "$reverse_ldif_sambaGroupType_2_to_4" | ldapmodify -h "$ldap_master" -p "$ldap_master_port" -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
-	}
-	trap reverse_sambaGroupType_change EXIT
-
-	## now adjust sambaGroupType 2 and 5
-	echo "$ldif_sambaGroupType_5_to_4" | ldapmodify -h "$ldap_master" -p "$ldap_master_port" -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
-	echo "$ldif_sambaGroupType_2_to_4" | ldapmodify -h "$ldap_master" -p "$ldap_master_port" -D "$binddn" -w "$bindpwd" | tee -a "$LOGFILE"
-
 	## commit samba3 smb.conf
 	mkdir -p /var/lib/samba3/etc/samba
 	cat /usr/share/univention-samba4/samba3upgrade/smb.conf.d/* | ucr filter > /var/lib/samba3/etc/samba/smb.conf
@@ -338,10 +293,6 @@ else
 	samba-tool domain classicupgrade /var/lib/samba3/etc/samba/smb.conf --dbdir /var/lib/samba3 | tee -a "$LOGFILE"
 	## move univention-samba4 config back again, overwriting minimal smb.conf created by samba3upgrade
 	mv /var/tmp/univention-samba4_smb.conf /etc/samba/smb.conf
-
-	### revert changes for sambaGroupType 5 and 2
-	reverse_sambaGroupType_change
-	trap - EXIT
 
 	## set the samba4 machine account secret in secrets.ldb to /etc/machine.secret
 	set_machine_secret
