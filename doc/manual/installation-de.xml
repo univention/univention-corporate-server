@@ -419,7 +419,7 @@
 </para>
 <caution>
 	<para>
-	  Auch wenn nur die erste Festplatte in das LVM eingebunden wird, gehen bei bei diesem Schritt die Daten aller vorhandenen Festplatten verloren!
+	  Auch wenn nur die erste Festplatte in das LVM eingebunden wird, gehen bei diesem Schritt die Daten aller vorhandenen Festplatten verloren!
   Sollte der Partitionierungsvorschlag unpassend sein, kann er durch die
   Funktionstaste <keycap>F5</keycap> verworfen werden.
 	</para>
