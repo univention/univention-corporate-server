@@ -35,6 +35,14 @@
 		  </simpara></listitem>
 
 		  <listitem><simpara>
+			nas: CVE-2013-4256 CVE-2013-4257 CVE-2013-4258 (<ulink url="&ucsbug;32267">Bug 32267</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			pyopenssl: CVE-2013-4314 (<ulink url="&ucsbug;32524">Bug 32524</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
 			libxvmc: CVE-2013-1990 CVE-2013-1999 (<ulink url="&ucsbug;31455">Bug 31455</ulink>).
 		  </simpara></listitem>
 
