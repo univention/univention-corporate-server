@@ -35,6 +35,10 @@
 		  </simpara></listitem>
 
 		  <listitem><simpara>
+			gnupg2: CVE-2013-4402 CVE-2013-4351 (<ulink url="&ucsbug;32810">Bug 32810</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
 			libmodplug: CVE-2013-4233 CVE-2013-4234 (<ulink url="&ucsbug;32215">Bug 32215</ulink>).
 		  </simpara></listitem>
 
