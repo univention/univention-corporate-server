@@ -331,6 +331,12 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  Provide a modprobe configuration file for vmwgfx (the DRM driver for VMware) to enable fbdev
+		  support. Otherwise startup freezes in bootsplash and on the command line occur when
+		  installed in VMware ESXi (<ulink url="&ucsbug;32536">Bug 32536</ulink>).
+		</simpara></listitem>
+		
+		<listitem><simpara>
 		  The kernel meta packages now enable the &ucsUCR; variable <envar>update/reboot/required</envar>,
 		  which triggers a note to the user that the system requires a reboot to complete the update
 		  (<ulink url="&ucsbug;24287">Bug 24287</ulink>).
@@ -614,6 +620,17 @@
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
+
+  <section>
+	<title>Backup2Master</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  <command>univention-backup2master</command> now also replaces the &ucsUCR; variable <envar>kerberos/kpasswdserver</envar>
+		  with the new masters's FQDN (<ulink url="&ucsbug;31077">Bug 31077</ulink>).
+		</simpara></listitem>
+	  </itemizedlist>
+  </section>
+
 
 </section>
 
@@ -1098,11 +1115,14 @@
 			sync (<ulink url="&ucsbug;32565">Bug 32565</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  Deprecated checks for some multivalue attributes have been removed (<ulink url="&ucsbug;18929">Bug 18929</ulink>).
+		</simpara></listitem>
 
 		<listitem><simpara>
-			The properties of the superordinate module are now ignored in the UDM modules while creating or 
-			modifying UDM objects on the command line
-			(<ulink url="&ucsbug;32671">Bug 32671</ulink>).
+		  The properties of the superordinate module are now ignored in the UDM modules while creating or 
+		  modifying UDM objects on the command line
+		  (<ulink url="&ucsbug;32671">Bug 32671</ulink>).
 		</simpara></listitem>
 
 
@@ -1203,7 +1223,7 @@
 		  for detailed instructions (<ulink url="&ucsbug;30816">Bug 30816</ulink>, <ulink
 		  url="&ucsbug;30878">Bug 30878</ulink>, <ulink url="&ucsbug;33006">Bug 33006</ulink>).
 		  The code for basic IP configuration has been re-written in Python (<ulink
-		  url="&ucsbug;28670">Bug 28670</ulink).
+		  url="&ucsbug;28670">Bug 28670</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1371,6 +1391,15 @@
 	<title>System services module</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  Support for Xen has been added (<ulink url="&ucsbug;10962">Bug 10962</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Fixed handling of PostgreSQL (<ulink url="&ucsbug;16848">Bug 16848</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Support for Winbind was added (<ulink url="&ucsbug;9560">Bug 9560</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1700,6 +1729,11 @@
 		<listitem><simpara>
 		  On a local repository server a repository policy no longer sets the source server to
 		  itself (<ulink url="&ucsbug;31426">Bug 31426</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  When un-installing the package <package>univention-debmirror</package> the apache2 site
+		  <filename>/etc/apache2/sites-enabled/univention-repository</filename> will be disabled (<ulink url="&ucsbug;29262">Bug 29262</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2128,11 +2162,16 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The package <package>univention-apache</package> now offers the file <filename>/var/www/ucs-overview/languages.json</filename>, which contains available server languages and can be controlled by &ucsUCR; variables <envar>ucs/server/languages/*</envar> (<ulink url="&ucsbug;32677">Bug 32677</ulink>).
+		  The package <package>univention-apache</package> now ships the file
+		  <filename>/var/www/ucs-overview/languages.json</filename>, which contains available server
+		  languages and can be controlled by &ucsUCR; variables
+		  <envar>ucs/server/languages/*</envar> (<ulink url="&ucsbug;32677">Bug 32677</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  &ucsUCR; variable <envar>umc/server/languages/.*</envar> has been renamed to &ucsUCR; variable <envar>ucs/server/languages/.*</envar>, possible user defined variables will be adopted during package update (<ulink url="&ucsbug;32678">Bug 32678</ulink>).
+		  &ucsUCR; variable <envar>umc/server/languages/.*</envar> has been renamed to &ucsUCR;
+		  variable <envar>ucs/server/languages/.*</envar>, possible user defined variables will be
+		  adopted during package update (<ulink url="&ucsbug;32678">Bug 32678</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -2215,7 +2254,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  The tool <command>ldap-group-to-file.py</command> does now support postrun hooks located in
 		  <filename class="directory">/var/lib/ldap-group-to-file-hooks.d/</filename>. Thus scripts can be executed after
-		  changing the group memberships <ulink url="&ucsbug;32581">Bug 32581</ulink>).
+		  changing the group memberships (<ulink url="&ucsbug;32581">Bug 32581</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -2224,33 +2263,23 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Other services</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The config option nss_srv (to deny DNS SRV record lookups) has been add to <package>libnss-ldap</package>
-		  (<ulink url="&ucsbug;30779">Bug 30779</ulink>).
+		  Create empty PostgreSQL configuration files during package removal so that PostgreSQL can
+		  be reinstalled later (<ulink url="&ucsbug;27786">Bug 27786</ulink>).
+		  The PostgreSQL configuration file <filename>/etc/postgresql/pam_ldap.conf</filename> now uses
+		  the univention Python lib to generate the LDAP URI
+		  (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Create empty PostgreSQL configuration files during postrm so that PostgreSQL can be reinstalled
+		  Restart PostgreSQL server in postinst script of <package>univention-bacula</package>
 		  (<ulink url="&ucsbug;27786">Bug 27786</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-				Fixed PostgreSQL service not controllable by the <guimenu>System
-					services</guimenu> module (<ulink url="&ucsbug;16848">Bug 16848</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Restart PostgreSQL server in postinst (<ulink url="&ucsbug;27786">Bug 27786</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		 The PostgreSQL configuration file <filename>/etc/postgresql/pam_ldap.conf</filename> now uses
-		 the univention Python lib to generate the LDAP URI
-		 (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
 		  The rotation of machine passwords is performed in intervals of days configurable through the &ucsUCR; variable <envar>server/password/change</envar>.
-		  The date is now calculated relative to the date of the last password change instead of being relative to the start of the current year (<ulink url="&ucsbug;31068">Bug 31068</ulink>).
+		  The date is now calculated relative to the date of the last password change instead of
+		  being relative to the start of the current year (<ulink url="&ucsbug;31068">Bug
+		  31068</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2269,15 +2298,9 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The logging of <command>univention-mount-homedir</command> now uses
-		  <emphasis>univention-mount-homedir</emphasis> instead of <emphasis>logger</emphasis>
-		  at the start of every message and the log messages were improved
-		  (<ulink url="&ucsbug;31256">Bug 31256</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The performance of <command>univention-mount-homedir</command> was improved to reduce server load during
-		  concurrent logins (<ulink url="&ucsbug;31256">Bug 31256</ulink>).
+		  The performance of <command>univention-mount-homedir</command> was improved to reduce
+		  server load during concurrent logins. The logging was cleaned up (<ulink
+		  url="&ucsbug;31256">Bug 31256</ulink>) 
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -2311,83 +2334,83 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A typo in the German translation has been fixed (<ulink url="&ucsbug;22377">Bug 22377</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  To fix the ordering of snapshots their creation time is now display in ISO 8601 format
+		  To fix the ordering of snapshots their creation time is now displayed in ISO 8601 format
 		  (<ulink url="&ucsbug;29901">Bug 29901</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Shutting down virtual machines using 'ACPI power off' and 'Xen shutdown' was added (<ulink url="&ucsbug;21397">Bug 21397</ulink>).
+		  Shutting down virtual machines using 'ACPI power off' and 'Xen shutdown' was added (<ulink
+		  url="&ucsbug;21397">Bug 21397</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The internal code of UVMM was cleaned up (<ulink url="&ucsbug;30897">Bug 30897</ulink>, <ulink url="&ucsbug;32091">Bug 32091</ulink>).
+		  The code was cleaned up (<ulink url="&ucsbug;30897">Bug 30897</ulink>,
+		  <ulink url="&ucsbug;32091">Bug 32091</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Support for the <guimenu>System services</guimenu> module has been added for Xen (<ulink url="&ucsbug;10962">Bug 10962</ulink>).
+		  Creating snapshots of suspended virtual machines is now prevented (<ulink
+		  url="&ucsbug;23436">Bug 23436</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Creating snapshots of suspended virtual machines is now prevented (<ulink url="&ucsbug;23436">Bug 23436</ulink>).
+		  Various menu labels and translations have been updated (<ulink url="&ucsbug;31947">Bug
+		  31947</ulink>, <ulink url="&ucsbug;22377">Bug 22377</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The labels to enable VNC have been synchronized (<ulink url="&ucsbug;31947">Bug 31947</ulink>).
+		  The profile of a virtual machine can be selected in a drop-down box (<ulink
+		  url="&ucsbug;24774">Bug 24774</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The syntax for the profile DN in LDAP info objects has been changed to do an LDAP search and provide a drop-down list of available profiles (<ulink url="&ucsbug;24774">Bug 24774</ulink>).
+		  Comments for a virtual machine can now be entered in a multi-line textbox (<ulink
+		  url="&ucsbug;32044">Bug 32044</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The syntax for the comment field in UVMM info LDAP objects has been changed to a multi-line text field (<ulink url="&ucsbug;32044">Bug 32044</ulink>).
+		  The values entered for the memory size and storage volumes is now validated in the frontend (<ulink
+		  url="&ucsbug;27778">Bug 27778</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The value for the memory size and storage volumes is now validated in the frontend (<ulink url="&ucsbug;27778">Bug 27778</ulink>).
+		  The dialog for editing network interfaces now correctly starts with the current
+		  values. Multicast MAC addresses are now detected and rejected (<ulink
+		  url="&ucsbug;30806">Bug 30806</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  When creating a new storage volume, the available storage size is shown for each storage pool.
-		  A warning is printed when the size for a new storage volume exceeds the available size in the storage pool (<ulink url="&ucsbug;19281">Bug 19281</ulink>).
+		  New domains are now created on the selected node by default (<ulink
+		  url="&ucsbug;24579">Bug 24579</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The dialog for editing network interfaces now correctly starts with the current values. Multicast MAC addresses are now detected and rejected (<ulink url="&ucsbug;30806">Bug 30806</ulink>).
+		  The storage pool handling has been overhauled and now better supports different storage
+		  pools. Especially a bug has been fixed, which could result in deleting the wrong storage
+		  volume when multiple storage pools were used (<ulink url="&ucsbug;32098">Bug
+		  32098</ulink>).
+		  When creating a new storage volume, the available storage size is shown for each storage
+		  pool and a warning is printed if the size for a new storage volume exceeds the available
+		  size in the storage pool (<ulink url="&ucsbug;19281">Bug 19281</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  New domains are now created on the selected node by default (<ulink url="&ucsbug;24579">Bug 24579</ulink>).
+		  Profiles for UCS-3.0 are no longer created. Instead profiles for UCS-3.2 are created
+		  (<ulink url="&ucsbug;32261">Bug 32261</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The storage pool handling has been overhauled and now better supports different storage pools. Especially a bug has been fixed, which could result in deleting the wrong storage volume when multiple storage pools were used (<ulink url="&ucsbug;32098">Bug 32098</ulink>).
+		  An unjoin script has been added. The unjoin script removes the UVMM service from the
+		  server object and removes the default &ucsUCR; variables (<ulink url="&ucsbug;32449">Bug
+		  32449</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Profiles for UCS-3.0 are no longer created.
-		  Instead profiles for UCS-3.2 are created (<ulink url="&ucsbug;32261">Bug 32261</ulink>).
+		  The Java based VNC viewer has been replaced by <ulink
+		  ulr="http://novnc.com/">noVNC</ulink>, a JavaScript and HTML5 based VNC client (<ulink
+		  url="&ucsbug;30540">Bug 30540</ulink>).
 		</simpara></listitem>
 
-		<listitem><simpara>
-			An unjoin script has been added to package <package>univention-virtual-machine-manager-daemon</package>.
-			The unjoin script removes the UVMM service from the server object and removes the default &ucsUCR; variables (<ulink url="&ucsbug;32449">Bug 32449</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			The Java based VNC viewer has been replaced by <ulink ulr="http://novnc.com/">noVNC</ulink>, a JavaScript and HTML5 based VNC client (<ulink url="&ucsbug;30540">Bug 30540</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			Added support to configure Bridge, Bond and VLAN interfaces.
-			This is blocked while the deprecated KVM and Xen script are still used, which normally setup a network bridge for virtualisation.
-			See <ulink url="http://docs.univention.de/computers-3.2.html#uvmm"/> for detailed instructions
-			(<ulink url="&ucsbug;30816">Bug 30816</ulink>, <ulink url="&ucsbug;30878">Bug 30878</ulink>, <ulink url="&ucsbug;33006">Bug 33006</ulink>).
-		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
@@ -2395,7 +2418,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Xen</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  A logic bug in the init script for <command>xenstore</command> was fixed (<ulink url="&ucsbug;28309">Bug 28309</ulink>).
+		  The Xenstore TDB file is now correctly removed with every reboot (<ulink
+		  url="&ucsbug;28309">Bug 28309</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2404,20 +2428,18 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  CD-ROM media changes is now also supported with Xen-HVM domains (<ulink url="&ucsbug;23394">Bug 23394</ulink>).
+		  CD-ROM media changes is now also supported with Xen-HVM domains (<ulink
+		  url="&ucsbug;23394">Bug 23394</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Support for the <guimenu>system services</guimenu>module has been added (<ulink url="&ucsbug;10962">Bug 10962</ulink>).
+		  An obsolete dependency has been removed in <package>univention-xen</package> (<ulink
+		  url="&ucsbug;31373">Bug 31373</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  An obsolete dependency has been removed in the univention-xen meta package (<ulink url="&ucsbug;31373">Bug 31373</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			An unjoin script has been added to package <package>univention-virtual-machine-manager-node-xen</package>.
-			The unjoin script removes the Xen service from the server object and removes the default &ucsUCR; variables (<ulink url="&ucsbug;32450">Bug 32450</ulink>).
+		  An unjoin script has been added. It removes the Xen service from the server object and
+		  removes the default &ucsUCR; variables (<ulink url="&ucsbug;32450">Bug 32450</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2438,8 +2460,9 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-			An unjoin script has been added to package <package>univention-virtual-machine-manager-node-kvm</package>.
-			The unjoin script removes the KVM service from the server object and removes the default &ucsUCR; variables (<ulink url="&ucsbug;32448">Bug 32448</ulink>).
+		  An unjoin script has been added to package. It removes the KVM service from the server
+		  object and removes the default &ucsUCR; variables (<ulink url="&ucsbug;32448">Bug
+		  32448</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -2449,7 +2472,9 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
   <title>Desktop packages</title>
 	<itemizedlist>
 	  <listitem><simpara>
-		<package>univention-x-core</package> no longer depends on the package <package>univention-gdm</package> but recommends it (<ulink url="&ucsbug;31004">Bug 31004</ulink>).
+		<package>univention-x-core</package> no longer depends on the package
+		<package>univention-gdm</package> but recommends it (<ulink url="&ucsbug;31004">Bug
+		31004</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -2480,33 +2505,24 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Samba 3 does now support quota on XFS file systems like expected, for example the
-		  calculation of the partition limit or the used space (<ulink url="&ucsbug;31210">Bug 31210</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  There is now a service definition for winbind (<ulink url="&ucsbug;9560">Bug 9560</ulink>).
+		  Samba 3 now supports quota on XFS file systems (<ulink url="&ucsbug;31210">Bug
+		  31210</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  The Winbind init script did not ensure that the daemon actually got stopped. This could
-		  lead  to a non running winbind daemon after the server password change. This issue has
+		  lead  to a non-running winbind daemon after the server password change. This issue has
 		  been fixed (<ulink url="&ucsbug;31289">Bug 31289</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The file <filename>/etc/samba/shares.conf</filename> is now refreshed directly after
+		  The file <filename>/etc/samba/shares.conf</filename> is now updated directly after
 		  changing a share (<ulink url="&ucsbug;29399">Bug 29399</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  The &ucsUCR; variable descriptions in <package>univention-samba</package> have been
-		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The configuration of the &ucsUCR; variable <envar>windows/domain</envar> has been removed from the
-		  postinst script of univention-samba (<ulink url="&ucsbug;24442">Bug 24442</ulink>).
+		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>, <ulink url="&ucsbug;32049">Bug 32049</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2516,18 +2532,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  To minimize the time where <filename>/etc/samba/shares.conf</filename> includes non-existing
-		  files, it is now updated directly after a share was added/removed or renamed (<ulink url="&ucsbug;29399">Bug 29399</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
 		  The &ucsUCR; variable <envar>samba/max_protocol</envar> has been renamed to &ucsUCR; variable
 		  <envar>samba/max/protocol</envar> (<ulink url="&ucsbug;31921">Bug 31921</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  An unjoin script has been added to the package <package>univention-samba</package>. The unjoin
-		  script removes the Samba 3 service from the server object and removes the default Samba UCR
+		  An unjoin script has been added to the package <package>univention-samba</package>. It
+		  removes the Samba 3 service from the server object and removes the default Samba UCR
 		  variables (<ulink url="&ucsbug;32445">Bug 32445</ulink>).
 		</simpara></listitem>
 
@@ -2549,11 +2560,6 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;32789">Bug 32789</ulink>).
 		</simpara></listitem>
 
-		<listitem><simpara>
-		  The spelling mistake in the &ucsUCR; variable description for <varname>samba/max_openfiles</varname> was fixed.
-		  (<ulink url="&ucsbug;32049">Bug 32049</ulink>).
-		</simpara></listitem>
-
 	  </itemizedlist>
   </section>
 
@@ -2567,7 +2573,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The nameserver process is no longer restarted after each Samba4 restart
+		  The nameserver process is no longer restarted after each Samba 4 restart
 		  (<ulink url="&ucsbug;30543">Bug 30543</ulink>).
 		</simpara></listitem>
 
@@ -2578,35 +2584,35 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Samba 4 does now support quota on XFS file systems (<ulink url="&ucsbug;31234">Bug 31234</ulink>).
+		  Samba 4 now supports quota on XFS file systems (<ulink url="&ucsbug;31234">Bug 31234</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  The &ucsUCR; variable descriptions in <package>univention-samba4</package> have been
-		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
+		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>). The unused &ucsUCR; variables
+		  <envar>samba/client_use_spnego</envar> and &ucsUCR; variable
+		  <envar>samba/time_server</envar> have been removed (<ulink url="&ucsbug;26389">Bug
+		  26389</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Joining into a new <envar>samba4/join/site</envar> without Samba4 on the Master now respects the
-		  chosen <envar>samba4/dc</envar> (<ulink url="&ucsbug;30792">Bug 30792</ulink>).
+		  Joining into a new <envar>samba4/join/site</envar> without Samba4 on the master domain
+		  controller now respects the chosen <envar>samba4/dc</envar> (<ulink
+		  url="&ucsbug;30792">Bug 30792</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The script <command>sysvol-sync.py</command> did not preserve timestamps, now it does (<ulink url="&ucsbug;30823">Bug 30823</ulink>).
+		  The script <command>sysvol-sync.py</command> now preserves timestamps (<ulink
+		  url="&ucsbug;30823">Bug 30823</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The script <filename>sysvol-cleanup.py</filename> moved the PolicyDefinitions away. Now it considers only GPO
+		  The script <filename>sysvol-cleanup.py</filename> moved the policy definitions away. Now it considers only GPO
 		  paths (<ulink url="&ucsbug;31186">Bug 31186</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The unused &ucsUCR; variables <envar>samba/client_use_spnego</envar> and &ucsUCR; variable
-		  <envar>samba/time_server</envar> have been removed (<ulink url="&ucsbug;26389">Bug 26389</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Periodic refresh of sysvol fACLs for the group Authenticated Users can now be disabled
+		  The periodic refresh of sysvol fACLs for the group <emphasis>Authenticated Users</emphasis> can now be disabled
 		  with the new &ucsUCR; variable <envar>samba4/sysvol/sync/setfacl/AU</envar> <ulink url="&ucsbug;31271">Bug 31271</ulink>).
 		</simpara></listitem>
 
@@ -2616,7 +2622,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The listener module samba4-idmap now also works in case <filename>smb.conf</filename> includes files readable
+		  The listener module <filename>samba4-idmap</filename> now also works in case <filename>smb.conf</filename> includes files readable
 		  only for root (<ulink url="&ucsbug;31538">Bug 31538</ulink>).
 		</simpara></listitem>
 
@@ -2637,15 +2643,19 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Support for the &ucsUCR; variable <envar>samba/max/protocol</envar> has been added (<ulink url="&ucsbug;31145">Bug 31145</ulink>).
+		  Support for the &ucsUCR; variable <envar>samba/max/protocol</envar> has been added (<ulink
+		  url="&ucsbug;31145">Bug 31145</ulink>).
+		  New Samba 4 installations now uses <emphasis>SMB2</emphasis> as the maximum supported SMB
+		  protocol. On updated systems <emphasis>NT1</emphasis> is still used.
+		  (<ulink url="&ucsbug;32394">Bug 32394</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Samba4 DCs are now configured to use the local KDC (<ulink url="&ucsbug;29291">Bug 29291</ulink>).
+		  Samba4 domain controllers are now configured to use the local KDC (<ulink url="&ucsbug;29291">Bug 29291</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The config file <filename>/etc/krb5.conf</filename> will get comitted from the updated UCR
+		  The configuration file <filename>/etc/krb5.conf</filename> will get comitted from the updated UCR
 		  template on update (<ulink url="&ucsbug;31306">Bug 31306</ulink>).
 		</simpara></listitem>
 
@@ -2672,21 +2682,14 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  An unjoin script has been added to the package <package>univention-samba4</package>. The unjoin
-		  script removes the Samba 4 service from the server object and removes the default Samba UCR
+		  An unjoin script has been added to the package <package>univention-samba4</package>. It
+		  removes the Samba 4 service from the server object and removes the default Samba UCR
 		  variables (<ulink url="&ucsbug;32446">Bug 32446</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  New Samba 4 installations now uses <emphasis>SMB2</emphasis> as the maximum supported SMB
-		  protocol. On updated systems <emphasis>NT1</emphasis> is still used.
-		  (<ulink url="&ucsbug;32394">Bug 32394</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  During the update to UCS 3.2 the local Samba 4 DC is added to the group Enterprise Domain
-		  Controllers
-		  (<ulink url="&ucsbug;31572">Bug 31572</ulink>).
+		  During the update to UCS 3.2 the local Samba 4 DC is added to the group
+		  <emphasis>Enterprise Domain Controllers</emphasis> (<ulink url="&ucsbug;31572">Bug 31572</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2719,7 +2722,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The sysvol synchronization is started after the Samba 4 join scripts are finished
+		  The sysvol synchronization is only started after the Samba 4 join scripts are finished
 		  (<ulink url="&ucsbug;29662">Bug 29662</ulink>).
 		</simpara></listitem>
 
@@ -2735,24 +2738,24 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The option force group=Authenticated Users has been removed from the sysvol share
-		  definition. Now it is possible for users with the primary group Domain Admins to
-		  create and to modify GPOs
-		  (<ulink url="&ucsbug;30999">Bug 30999</ulink>).
+		  Previously the Sysvol share was restricted to the group <emphasis>Authenticated
+		  Users</emphasis>. Now it is possible for users with the primary group <emphasis>Domain
+		  Admins</emphasis> to create and to modify GPOs (<ulink url="&ucsbug;30999">Bug 30999</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The default for &ucsUCR; variable <varname>samba/max_open_files</varname> is now raised to 32786, like it is the case in <filename>univention-samba</filename>
-		  (<ulink url="&ucsbug;32221">Bug 32221</ulink>).
+		  The default for the &ucsUCR; variable <varname>samba/max_open_files</varname> is now raised to
+		  32786 (<ulink url="&ucsbug;32221">Bug 32221</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-			The script <filename>create_spn_account.sh</filename> now also sets the <emphasis>saltPrincipal</emphasis> attribute, for compatibility with kinit
+			The script <filename>create_spn_account.sh</filename> now also sets the
+			<emphasis>saltPrincipal</emphasis> attribute, ensuring compatibility with kinit
 		  (<ulink url="&ucsbug;32291">Bug 32291</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-			A missing shell include was fixed in <filename>setup-s4.sh</filename>
+		  A missing shell include was fixed in <filename>setup-s4.sh</filename>
 		  (<ulink url="&ucsbug;31106">Bug 31106</ulink>).
 		</simpara></listitem>
 
@@ -2773,12 +2776,14 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Univention S4 Connector</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The attribute sambaMaxPwdAge can be set to -1 in OpenLDAP. This will now be mapped to 0 in
-		  Samba 4 since -1 is not allowed for the attribute maxPwdAge (<ulink url="&ucsbug;29775">Bug 29775</ulink>).
+		  The attribute <emphasis>sambaMaxPwdAge</emphasis> can be set to -1 in OpenLDAP. This will
+		  now be mapped to 0 in Samba 4 since -1 is not allowed for the attribute maxPwdAge (<ulink
+		  url="&ucsbug;29775">Bug 29775</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Samba4 DCs are now added to the group Enterprise Domain Controllers (<ulink url="&ucsbug;31437">Bug 31437</ulink>).
+		  Samba4 DCs are now added to the group <emphasis>Enterprise Domain
+		  Controllers</emphasis>(<ulink url="&ucsbug;31437">Bug 31437</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2793,22 +2798,19 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  The <varname>displayName</varname> attribute definition has been moved from post_attributes to attributes in the user mapping
-		  definition. This increases the synchronization performance (<ulink url="&ucsbug;32323">Bug 32323</ulink>).
+		  definition. This increases the synchronisation performance (<ulink url="&ucsbug;32323">Bug 32323</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A separate SID compare function has been added which considers the SID coding in Samba 4. This increases the
-		  synchronization performance, since the SID will only be set if it differs (<ulink url="&ucsbug;32322">Bug 32322</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  If the LDAP connection was closed the connector tries to re-open the LDAP connection automatically
+		  If the LDAP connection was closed, the connector now tries to re-open the LDAP connection automatically
 		  (<ulink url="&ucsbug;32274">Bug 32274</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  To improve synchronisation performance the group mapping now uses set objects instead of list objects
-		  (<ulink url="&ucsbug;32276">Bug 32276</ulink>).
+		  (<ulink url="&ucsbug;32276">Bug 32276</ulink>). Also, a separate SID compare function has
+		  been added which considers the SID coding in Samba 4. This increases the synchronisation
+		  performance, since the SID will only be set if it differs (<ulink url="&ucsbug;32322">Bug 32322</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2817,18 +2819,18 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A cast from string to long has been added while synchronizing time values
+		  A cast from string to long has been added while synchronising time values
           (<ulink url="&ucsbug;32329">Bug 32329</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  An unjoin script has been added to the package <package>univention-s4-connector</package>. The unjoin
-		  script removes the S4 Connector service from the server object and removes the default S4 Connector UCR
+		  An unjoin script has been added to the package <package>univention-s4-connector</package>. It
+		  removes the S4 Connector service from the server object and removes the default S4 Connector UCR
 		  variables (<ulink url="&ucsbug;32451">Bug 32451</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The synchronization of Samba4 password change timestamps now correctly considers the local timezone
+		  The synchronisation of Samba4 password change timestamps now correctly considers the local timezone
 		  variables (<ulink url="&ucsbug;32227">Bug 32227</ulink>).
 		</simpara></listitem>
 
@@ -2878,13 +2880,18 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Univention Active Directory Connector</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  Additional hints are shown during the Active Directory Connector setup about possibilities to configure DNS resolution for the required Windows server FQDN (<ulink url="&ucsbug;24903">Bug 24903</ulink>).
+		  Additional hints are shown during the configuration wizard about possibilities
+		  to configure DNS resolution for the required fully qualified domain name of the Windows
+		  server (<ulink url="&ucsbug;24903">Bug 24903</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The AD-Connector download site has been integrated into the <guimenu>UCS Active Directory
-		  Connector</guimenu> UMC module (<ulink url="&ucsbug;32698">Bug 32698</ulink>). Improve
-		  internal escaping of values (<ulink url="&ucsbug;31990">Bug 31990</ulink>).
+		  The download site has been integrated into the <guimenu>UCS Active Directory
+		  Connector</guimenu> UMC module (<ulink url="&ucsbug;32698">Bug 32698</ulink>). 
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Improve internal escaping of values (<ulink url="&ucsbug;31990">Bug 31990</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2899,13 +2906,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  An unjoin script has been added to the package <package>univention-nagios-ad-connector</package>. The unjoin
-		  script removes the server entry from the AD connector nagios service object
-		  (<ulink url="&ucsbug;32455">Bug 32455</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The AD connector can now synchronizes the different group types (domain local, 
+		  The AD connector can now synchronise the different group types (domain local, 
 		  global and universal) if the &ucsUCR; variable <envar>connector/ad/mapping/group/grouptype</envar>
 		  is set to true. By default this is activated for new UCS 3.2 installations only. All other
 		  systems have to be migrated manually
@@ -2922,13 +2923,14 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
   <title>UCS test framework</title>
 	<itemizedlist>
 	  <listitem><simpara>
-		A test has been added to check if the ,,Administrator'' user may execute
+		A test has been added to check if the <emphasis>Administrator</emphasis> user may execute
 		<command>univention-directory-manager users/user list --filter uid=Administrator</command>
 		(<ulink url="&ucsbug;30116">Bug 30116</ulink>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		A test case for <command>univention-dnsedit</command> has been added (<ulink url="&ucsbug;31104">Bug 31104</ulink>).
+		A test case for <command>univention-dnsedit</command> has been added (<ulink
+		url="&ucsbug;31104">Bug 31104</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -2962,15 +2964,17 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The connector tests have been reordered to avoid a connector restart for every test (<ulink url="&ucsbug;31677">Bug 31677</ulink>).
+		The connector tests have been reordered to avoid a connector restart for every test (<ulink
+		url="&ucsbug;31677">Bug 31677</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The different return codes of <package>ucs-test</package> have been merged (<ulink url="&ucsbug;31734">Bug 31734</ulink>).
+		The different return codes of <package>ucs-test</package> have been merged (<ulink
+		url="&ucsbug;31734">Bug 31734</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		New functions have been added to get a better support of non DC Master systems, for example
+		New functions have been added to get a better support of non DC-master systems, for example
 		<command>udm-test</command> or <command>wait_for_replication</command>. The existing test cases have been adapted
 		(<ulink url="&ucsbug;31687">Bug 31687</ulink>, <ulink url="&ucsbug;31678">Bug 31678</ulink>,
 		 <ulink url="&ucsbug;31679">Bug 31679</ulink>, <ulink url="&ucsbug;31680">Bug 31680</ulink>,
@@ -2985,7 +2989,9 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <listitem><simpara>
 		Now there is a test block <emphasis>samba-common</emphasis> for tests that are common to
 		Samba versions 3 and 4. The robustness against DRS and rsync replication delays has been
-		improved in some tests (<ulink url="&ucsbug;28343">Bug 28343</ulink>, <ulink url="&ucsbug;28348">Bug 28348</ulink>, <ulink url="&ucsbug;29057">Bug 29057</ulink>, <ulink url="&ucsbug;29058">Bug 29058</ulink>, <ulink url="&ucsbug;29062">Bug 29062</ulink>).
+		improved in some tests (<ulink url="&ucsbug;28343">Bug 28343</ulink>, <ulink
+		url="&ucsbug;28348">Bug 28348</ulink>, <ulink url="&ucsbug;29057">Bug 29057</ulink>, <ulink
+		url="&ucsbug;29058">Bug 29058</ulink>, <ulink url="&ucsbug;29062">Bug 29062</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -2993,11 +2999,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Samba4 NTACL tests have been improved a bit (<ulink url="&ucsbug;29230">Bug 29230</ulink>).
+		Samba4 NTACL tests have been improved (<ulink url="&ucsbug;29230">Bug 29230</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The tests for Samba share permissions have been improved (<ulink url="&ucsbug;29054">Bug 29054</ulink>).
+		The tests for Samba share permissions have been improved (<ulink url="&ucsbug;29054">Bug
+		29054</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -3008,11 +3015,17 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <listitem><simpara>
 		Under certain circumstances Samba 3.6.8 reports a timeout for the unix password sync during
 		password changes. Since the password change is successful nonetheless, two test cases have
-		been adjusted to tolerate this flaw (<ulink url="&ucsbug;29052">Bug 29052</ulink>, <ulink url="&ucsbug;29053">Bug 29053</ulink>, <ulink url="&ucsbug;31794">Bug 31794</ulink>).
+		been adjusted to tolerate this flaw (<ulink url="&ucsbug;29052">Bug 29052</ulink>, <ulink
+		url="&ucsbug;29053">Bug 29053</ulink>, <ulink url="&ucsbug;31794">Bug 31794</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Several UDM test cases have been added (<ulink url="&ucsbug;31652">Bug 31652</ulink>, <ulink url="&ucsbug;31653">Bug 31653</ulink>, <ulink url="&ucsbug;31654">Bug 31654</ulink>, <ulink url="&ucsbug;31655">Bug 31655</ulink>, <ulink url="&ucsbug;31656">Bug 31656</ulink>, <ulink url="&ucsbug;31658">Bug 31658</ulink>, <ulink url="&ucsbug;31657">Bug 31657</ulink>, <ulink url="&ucsbug;31659">Bug 31659</ulink>, <ulink url="&ucsbug;31661">Bug 31661</ulink>, <ulink url="&ucsbug;31660">Bug 31660</ulink>).
+		Several UDM test cases have been added (<ulink url="&ucsbug;31652">Bug 31652</ulink>, <ulink
+		url="&ucsbug;31653">Bug 31653</ulink>, <ulink url="&ucsbug;31654">Bug 31654</ulink>, <ulink
+		url="&ucsbug;31655">Bug 31655</ulink>, <ulink url="&ucsbug;31656">Bug 31656</ulink>, <ulink
+		url="&ucsbug;31658">Bug 31658</ulink>, <ulink url="&ucsbug;31657">Bug 31657</ulink>, <ulink
+		url="&ucsbug;31659">Bug 31659</ulink>, <ulink url="&ucsbug;31661">Bug 31661</ulink>, <ulink
+		url="&ucsbug;31660">Bug 31660</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -3027,7 +3040,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The LDAP tests to check replication have been improved (<ulink url="&ucsbug;27662">Bug 27662</ulink>, <ulink url="&ucsbug;29337">Bug 29337</ulink>, <ulink url="&ucsbug;31721">Bug 31721</ulink>, <ulink url="&ucsbug;31722">Bug 31722</ulink>, <ulink url="&ucsbug;32537">Bug 32537</ulink>, <ulink url="&ucsbug;32795">Bug 32795</ulink>).
+		The LDAP tests to check replication have been improved (<ulink url="&ucsbug;27662">Bug
+		27662</ulink>, <ulink url="&ucsbug;29337">Bug 29337</ulink>, <ulink url="&ucsbug;31721">Bug
+		31721</ulink>, <ulink url="&ucsbug;31722">Bug 31722</ulink>, <ulink url="&ucsbug;32537">Bug
+		32537</ulink>, <ulink url="&ucsbug;32795">Bug 32795</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -3039,20 +3055,30 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-	    For it's duration, the test "16packages_default" from section "base" will disable the cron daemon (<ulink url="&ucsbug;32006">Bug 32006</ulink>)
+	    For it's duration, the test <emphasis>16packages_default</emphasis> will disable the cron
+		daemon (<ulink url="&ucsbug;32006">Bug 32006</ulink>)
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		An improved test case for concurrent authenticated smbclient sessions is now available (<ulink url="&ucsbug;26807">Bug 26807</ulink>, <ulink url="&ucsbug;32715">Bug 32715</ulink>).
+		An improved test case for concurrent authenticated smbclient sessions is now available
+		(<ulink url="&ucsbug;26807">Bug 26807</ulink>, <ulink url="&ucsbug;32715">Bug
+		32715</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-	   Improved test cases for Samba share and folder access permissions are now available (<ulink url="&ucsbug;29056">Bug 29056</ulink>)
+	   Improved test cases for Samba share and folder access permissions are now available (<ulink
+	   url="&ucsbug;29056">Bug 29056</ulink>)
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 	   Performance test cases for large environments have been added to ucs-test
 	   (<ulink url="&ucsbug;31695">Bug 31695</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara> 
+		The package <package>ucs-test-horde</package> has been added. The test package creates users
+		and tests the horde login
+		(<ulink url="&ucsbug;32230">Bug 32230</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -3070,12 +3096,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-	    The test case 10_ldap/44replication_binary has been modified in order to fulfill the requirements of the new UDM syntax for JPEG photos
-		(<ulink url="&ucsbug;32664">Bug 32664</ulink>).
+	    The test case <emphasis>44replication_binary</emphasis> has been modified in order to
+		fulfill the requirements of the new UDM syntax for JPEG photos (<ulink url="&ucsbug;32664">Bug 32664</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-	    The test case 00_base/47faillog_ssh-smb-krb has been disabled for UCS 3.2-0
+	    The test case <emphasis>00_base/47faillog_ssh-smb-krb</emphasis> has been disabled.
 		(<ulink url="&ucsbug;19016">Bug 19016</ulink>).
 	  </simpara></listitem>
 
@@ -3085,7 +3111,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The <function>random_*</function> functions from <filename>random.sh</filename> now encode timestamp information into the output to hopefully guarantee better uniqueness. Several unused and subtly broken functions have been removed (<ulink url="&ucsbug;32793">Bug 32793</ulink>).
+		The <function>random_*</function> functions from <filename>random.sh</filename> now encode
+		timestamp information into the output to hopefully guarantee better uniqueness. Several
+		unused and subtly broken functions have been removed (<ulink url="&ucsbug;32793">Bug
+		32793</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -3115,12 +3144,6 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Provide a modprobe configuration file for vmwgfx (the DRM driver for VMware) to enable fbdev
-		support. Otherwise startup freezes in bootsplash and on the command line occur when
-		installed in VMware ESXi (<ulink url="&ucsbug;32536">Bug 32536</ulink>).
-	  </simpara></listitem>
-
-	  <listitem><simpara>
 		<package>ocfs2-tools</package> was updated to version 1.6.4 (<ulink url="&ucsbug;28979">Bug 28979</ulink>).
 	  </simpara></listitem>
 
@@ -3147,16 +3170,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		<command>univention-backup2master</command> now also replaces the &ucsUCR; variable <envar>kerberos/kpasswdserver</envar>
-		with the new masters's FQDN (<ulink url="&ucsbug;31077">Bug 31077</ulink>).
-	  </simpara></listitem>
-
-	  <listitem><simpara>
-		Deprecated checks for some multivalue attributes have been removed (<ulink url="&ucsbug;18929">Bug 18929</ulink>).
-	  </simpara></listitem>
-
-	  <listitem><simpara>
-			Several spelling mistakes in various packages have been corrected (<ulink url="&ucsbug;32662">Bug 32662</ulink>).
+		Several spelling mistakes in various packages have been corrected (<ulink
+		url="&ucsbug;32662">Bug 32662</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -3214,12 +3229,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		When un-installing the package <package>univention-debmirror</package> the apache2 site
-		<filename>/etc/apache2/sites-enabled/univention-repository</filename> will be disabled (<ulink url="&ucsbug;29262">Bug 29262</ulink>).
+ 	    Unjoin scripts have been added to <package>univention-mail-horde</package>
+	    (<ulink url="&ucsbug;32899">Bug 32899</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The package <package>univention-local-users</package> is no longer maintained
+		The package <package>univention-local-users</package> has been removed
 		(<ulink url="&ucsbug;29835">Bug 29835</ulink>).
 	  </simpara></listitem>
 
@@ -3237,18 +3252,4 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	</itemizedlist>
 </section>
 
-<section>
-  <title>Horde App</title>
-	<itemizedlist>
-	  <listitem><simpara> 
-		The package <package>ucs-test-horde</package> has been added. The test package creates users
-		and tests the horde login
-		(<ulink url="&ucsbug;32230">Bug 32230</ulink>).
-	  </simpara></listitem>
-	  <listitem><simpara>
- 	    Unjoin scripts have been added to <package>univention-mail-horde</package>
-	    (<ulink url="&ucsbug;32899">Bug 32899</ulink>).
-	  </simpara></listitem>
-	</itemizedlist>
-</section>
 <!-- vim: set ts=4 sw=2 noet: -->
