@@ -150,7 +150,8 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The input of non-ASCII characters in input fields has been disabled (<ulink url="&ucsbug;24904">Bug 24904</ulink>).
+		The input of non-ASCII characters in input fields has been
+		disabled (<ulink url="&ucsbug;24904">Bug 24904</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>

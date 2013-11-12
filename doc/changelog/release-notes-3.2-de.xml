@@ -189,12 +189,12 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 
 		<para>
 		  Ist die &ucsUCR;-Variable <envar>mail/cyrus/mailbox/delete</envar> auf dem Mailserver aktiviert
-		  wurde und wird das Attribut vom Benutzerobjekt entfernt, wird das dadurch das Postfach
+		  und wird das Mail-Home-Server-Attribut vom Benutzerobjekt entfernt, wird dadurch das Postfach
 		  gelöscht.
 		</para>
 
 		<para>
-		  Vor dem Update sollte geprüft werden, ob der Mail Home Server für alle Cyrus-Benutzer
+		  Vor dem Update wird durch das Preup-Skript geprüft, ob der Mail-Home-Server für alle Cyrus-Benutzer
 		  gesetzt ist.
 		</para>
 	  </section>
@@ -468,7 +468,7 @@ done
 		<title>Installation in VirtualBox</title>
 		<para>
 		  Bei der Installation von UCS in der Virtualisierungslösung VirtualBox vor Version 4.2 kann
-		  folgender Bug auftreten: Wenn von der Installations-DVD gebotet wird bietet GRUB die
+		  folgender VirtualBox-Bug auftreten: Wenn von der Installations-DVD gebootet wird, bietet GRUB die
 		  Option <guimenu>Boot from first harddisk partition</guimenu> an. Wählt man diese Option
 		  aus, friert VirtualBox ein.
 		</para>

@@ -188,7 +188,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		</para>
 
 		<para>
-		  Prior to the update, a check should be made for whether the mail home server is set for
+		  Prior to the update, the preup scripts validates whether the mail home server is set for
 		  all Cyrus users.
 		</para>
 	  </section>
@@ -457,7 +457,7 @@ done
 	  <section id="relnotes:virtualbox">
 		<title>Installation in VirtualBox</title>
 		<para>
-		  During the installation of UCS in the virtualization solution VirtualBox, a bug may appear
+		  During the installation of UCS in the virtualization solution VirtualBox, a VirtualBox bug may appear
 		  which has been corrected in version 4.2: if UCS has been successfully installed and the
 		  DVD is still in the disk drive, the installation DVD offers the option <guimenu>Boot from
 		  first harddisk partition</guimenu>. If you select this option, VirtualBox freezes.
