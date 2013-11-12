@@ -1895,6 +1895,12 @@
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The bind config files <filename>/etc/bind/univention.conf</filename> and
+		  <filename>/etc/bind/univention.conf.proxy</filename> are now created with the correct
+		  permissions, regardless of the umask settings (<ulink url="&ucsbug;33157">Bug 33157</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
