@@ -281,11 +281,13 @@ else
 	touch /etc/samba/base.conf /etc/samba/installs.conf /etc/samba/printers.conf /etc/samba/shares.conf
 	echo -e "[global]\n\trealm = $kerberos_realm" >> /var/lib/samba3/etc/samba/smb.conf
 
-	# The upgrade tool uses /var/lib/samba3/secrets.tdb
+	# The upgrade tool uses /var/lib/samba3/ for these files
 	#  https://forge.univention.org/bugzilla/show_bug.cgi?id=33251
-	if [ -e /var/lib/samba3/private/secrets.tdb -a ! -e /var/lib/samba3/secrets.tdb ]; then
-		cp /var/lib/samba3/private/secrets.tdb /var/lib/samba3/secrets.tdb
-	fi
+	for tdbfile in schannel_store.tdb idmap2.tdb passdb.tdb secrets.tdb; do
+		if [ -e /var/lib/samba3/private/$tdbfile -a ! -e /var/lib/samba3/$tdbfile ]; then
+			cp /var/lib/samba3/private/$tdbfile /var/lib/samba3/$tdbfile
+		fi
+	done
 
 	## move  univention-samba4 default smb.conf out of the way
 	mv /etc/samba/smb.conf /var/tmp/univention-samba4_smb.conf
