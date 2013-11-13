@@ -650,12 +650,12 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 				with any LDAP object (e.g., a user object).
 			</para>
 
-			<!-- <para> -->
-			<!--   Wenn LDAP-Schema-Erweiterungen als Teil von Softwarepaketen ausgeliefert werden sollen, -->
-			<!--   besteht auch die Möglichkeit diese zu paketieren und durch ein Univention Directory -->
-			<!--   Listener-Modul an alle &ucsBackup;-Server der Domäne zu verteilen. Weitere Hinweise finden sich -->
-			<!--   in <xref linkend="packaging-schema-extensions"/>. -->
-			<!-- </para> -->
+			<para>
+			  If LDAP schema extensions are to be delivered as part of software packages, there is
+			  also the possibility of packaging them and distributing them to all the &ucsBackup;
+			  servers in the domain using a Univention Directory listener module. Further
+			  information is available in <xref linkend="packaging-schema-extensions"/>.
+			</para>
 
 		</section>
 
@@ -786,12 +786,12 @@ slapcat &gt; ldapdata.txt
 			existing templates expanded upon.
 		</para>
 
-		<!-- <para> -->
-		<!--   Wenn LDAP-ACL-Erweiterungen als Teil von Softwarepaketen ausgeliefert werden sollen, -->
-		<!--   besteht auch die Möglichkeit diese zu paketieren und durch ein Univention Directory -->
-		<!--   Listener-Modul an alle LDAP-Server der Domäne zu verteilen. Weitere Hinweise finden sich -->
-		<!--   in <xref linkend="packaging-acl-extensions"/>. -->
-		<!-- </para> -->
+		<para>
+		  If LDAP ACL extensions are to be delivered as part of software packages, there is also the
+		  possibility of packaging them and distributing them to all the LDAP servers in the domain
+		  using a Univention Directory listener module. Further information is available in <xref
+		  linkend="packaging-acl-extensions"/>.
+		</para>
 
 		<para>
 			The default setting of the LDAP server after new installations with UCS does

@@ -355,27 +355,24 @@
 		added anew.
 	  </para>
 
-	  <!-- <para> -->
-	  <!-- 	In der linken Spalte des UMC-Moduls <guimenu>DNS</guimenu> befindet sich eine Liste alle Forward- und -->
-	  <!-- 	Reverse-Lookup-Zonen. Um ein Objekt einer Zone hinzuzufügen - etwa einen Alias-Record zu -->
-	  <!-- 	einer Forward-Zone - muss die entsprechende Zone ausgewählt werden. Durch <guimenu>Hinzufügen</guimenu> wird -->
-	  <!-- 	das Objekt dann in dieser Zone angelegt. Um eine neue Forward- oder Reverse-Zone anzulegen -->
-	  <!-- 	muss zuerst <guimenu>Alle DNS-Zonen</guimenu> selektiert werden, der Klick auf -->
-	  <!-- 	<guimenu>Hinzufügen</guimenu> legt dann eine neue Zone an. -->
-	  <!-- Wird ein Objekt unterhalb einer -->
-	  <!-- 	Zone angelegt, wird die Zone in den UMC-Dialogen als <emphasis>übergeordnetes -->
-	  <!-- 	Objekt</emphasis> bezeichnet. -->
-	  <!-- </para> -->
+	  <para>
+		The left column of the UMC module <guimenu>DNS</guimenu> includes a list of all the forward
+		and reverse lookup zones. To add an object to a zone - for example an alias record to a
+		forward zone - the corresponding zone must be selected. <guimenu>Add</guimenu>
+		is then used to create the object in this zone. To create a new forward or reverse zone,
+		start by selecting <guimenu>All DNS zones</guimenu>. Clicking on
+		<guimenu>Add</guimenu> then creates a new zone. If an object is created within the
+		zone, the zone is labelled in the UMC dialogues as a <emphasis>superordinate
+		object</emphasis>.
+	  </para>
 
 	  <section id="networks::dns::forwardzone">
 		<title>Forward lookup zone</title>
 		<para>
 		  Forward lookup zones contain information which is used to resolve DNS
 		  names into IP addresses. They are managed in the <emphasis>DNS</emphasis> module
-		  of the &ucsUMC;. 
-		  <!-- Um eine weitere Forward Lookup -->
-		  <!-- Zone anzulegen, muss <guimenu>Alle DNS-Zonen</guimenu> selektiert werden und -->
-		  <!-- <guimenu>Hinzufügen &ar; DNS: Forward Lookup Zone</guimenu> ausgewählt werden. -->
+		  of the &ucsUMC;. To add another forward lookup zone, select <guimenu>All DNS
+		  zones</guimenu> and <guimenu>Add &ar; DNS: Forward lookup zone</guimenu>.
 		</para>
 		<figure id="net-dns-forward">
 		  <title>Configuring a forward lookup zone in UMC</title>
@@ -675,10 +672,9 @@
 		<title>CNAME-Record (Alias-Records)</title>
 		<para>
 		  CNAME records / alias records are managed in the <emphasis>DNS</emphasis> module
-		  of the &ucsUMC;. 
-		  <!-- Um einen weiteren Record anzulegen, muss in der linken Spalte eine -->
-		  <!-- Forward Lookup Zone ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DNS: Alias -->
-		  <!-- Record</guimenu> kann dann ein neuer Record angelegt werden. -->
+		  of the &ucsUMC;.  To create another record, the forward lookup zone must be selected in
+		  the left column. <guimenu>Add &ar; DNS: Alias record</guimenu> can be used to create a new
+		  record.
 		</para>
 		<para>
 		  General information on the operation of the domain management modules
@@ -736,10 +732,8 @@
 		<title>A/AAAA records (host records)</title>
 		<para>
 		  Host records are managed in the <emphasis>DNS</emphasis> module of the
-		  &ucsUMC;. 
-		  <!-- Um einen weiteren Record anzulegen, muss in der linken Spalte eine -->
-		  <!-- Forward Lookup Zone ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DNS: Host -->
-		  <!-- Record</guimenu> kann dann ein neuer Record angelegt werden. -->
+		  &ucsUMC;. To create another record, the forward lookup zone must be selected in the left
+		  column. <guimenu>Add &ar; DNS: Host record</guimenu> can be used to create a new record.
 		</para>
 		<para>
 		  General information on the operation of the domain management modules
@@ -809,10 +803,9 @@
 		<title>Service records</title>
 		<para>
 		  Service records are managed in the <emphasis>DNS</emphasis> module of the
-		  &ucsUMC;. 
-		  <!-- Um einen weiteren Record anzulegen, muss in der linken Spalte eine -->
-		  <!-- Forward Lookup Zone ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DNS: Service -->
-		  <!-- Record</guimenu> kann dann ein neuer Record angelegt werden. -->
+		  &ucsUMC;. To create another record, the forward lookup zone must be selected in the left
+		  column. <guimenu>Add &ar; DNS: Service record</guimenu> can be used to create a new
+		  record.
 		</para>
 		<figure id="net-srv-record">
 		  <title>
@@ -959,9 +952,8 @@
 		<para>
 		  A reverse lookup zone is used to resolve IP address into host names.
 		  They are managed in the <emphasis>DNS</emphasis> module of the &ucsUMC;. 
-		  <!-- Um eine weitere Reverse Lookup -->
-		  <!-- Zone anzulegen, muss <guimenu>Alle DNS-Zonen</guimenu> selektiert werden und -->
-		  <!-- <guimenu>Hinzufügen &ar; DNS: Reverse Lookup Zone</guimenu> ausgewählt werden. -->
+		  To add another reverse lookup zone, select <guimenu>All DNS zones</guimenu> and
+		  <guimenu>Add &ar; DNS: Reverse lookup zone</guimenu>.
 		</para>
 		  <table>
 			<title>'General' tab</title>
@@ -1114,10 +1106,9 @@
 		<title>Pointer record</title>
 		<para>
 		  Pointer records are managed in the <emphasis>DNS</emphasis>
-		  module of the &ucsUMC;. 
-		  <!-- Um einen weiteren Record anzulegen, muss in der linken Spalte eine -->
-		  <!-- Reverse Lookup Zone ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DNS: Pointer -->
-		  <!-- Record</guimenu> kann dann ein neuer Record angelegt werden. -->
+		  module of the &ucsUMC;.  To create another record, the reverse lookup zone must be
+		  selected in the left column. <guimenu>Add &ar; DNS: Pointer record</guimenu> can be used
+		  to create a new record.
 		</para>
 		<para>
 		  General information on the operation of the domain management modules
@@ -1271,32 +1262,28 @@ closest to the object always applies.
 	<section id="networks::dhcp::general">
 	  <title>Composition of the DHCP configuration via DHCP LDAP objects</title>
 
-	  <!-- <para> -->
-	  <!-- 	In der linken Spalte des UMC-Moduls <guimenu>DHCP</guimenu> befindet sich eine Liste aller -->
-	  <!-- 	DHCP-Services. Um einem DHCP-Service ein Objekt hinzuzufügen - etwa ein weiteres Subnetz - -->
-	  <!-- 	muss der entsprechende Service ausgewählt werden. Durch <guimenu>Hinzufügen</guimenu> wird -->
-	  <!-- 	das Objekt dann in diesem Service angelegt. Um einen neuen DHCP-Service anzulegen -->
-	  <!-- 	muss zuerst <guimenu>Alle DNS-Dienste</guimenu> selektiert werden, der Klick auf -->
-	  <!-- 	<guimenu>Hinzufügen</guimenu> legt dann einen neue Service an. Wird ein Objekt unterhalb eines -->
-	  <!-- 	Services angelegt, wird der Service in den UMC-Dialogen als <emphasis>übergeordnetes -->
-	  <!-- 	Objekt</emphasis> bezeichnet. -->
-	  <!-- </para> -->
+	  <para>
+		The left column of the UMC module <guimenu>DHCP</guimenu> includes a list of all the DHCP
+		services. To add an object to a DHCP service - for example in an additional subnet
+		- the corresponding service must be selected. <guimenu>Add</guimenu> is then
+		used to create the object in this service. To create a new DHCP service, start by selecting
+		<guimenu>All DHCP services</guimenu>. Clicking on <guimenu>Add</guimenu> then
+		creates a new service. If an object is saved within a service, the service is labelled in
+		UMC dialogues as a <emphasis>superordinate object</emphasis>.
+	  </para>
 
 	  <section id="networks::dhcp::services">
 		<title>Administration of DHCP services</title>
 		<para>
 		  DHCP services are managed in the <emphasis>DHCP</emphasis> module of
-		  the &ucsUMC;. 
-		  <!-- Um einen neuen DHCP-Service anzulegen -->
-		  <!-- muss zuerst <guimenu>Alle DNS-Dienste</guimenu> selektiert werden, der Klick auf -->
-		  <!-- <guimenu>Hinzufügen</guimenu> legt dann einen neue Service an. -->
+		  the &ucsUMC;. To create a new DHCP service, <guimenu>All DHCP services</guimenu> needs to
+		  be selected. Clicking on <guimenu>Add</guimenu> then creates a new service.
 		</para>
 
-		<!-- <para> -->
-		<!--   Ein DHCP-Server kann nur einen DHCP-Service bedienen; wenn ein weiterer DHCP-Service -->
-		<!--   verwendet werden soll, muss dafür ein separater DHCP-Server eingerichtet werden (siehe -->
-		<!--   <xref linkend="networks:dhcp:dhcpsever"/>). -->
-		<!-- </para> -->
+		<para>
+		  A DHCP server can only serve one DHCP service; to use another DHCP service, a separate
+		  DHCP server must be set up (see <xref linkend="networks:dhcp:dhcpserver"/>).
+		</para>
 
 		<para>
 		  General information on the operation of the domain management modules
@@ -1357,17 +1344,16 @@ closest to the object always applies.
 		  </table>
 	  </section>
 
-	  <section id="networks:dhcp:dhcpsever">
+	  <section id="networks:dhcp:dhcpserver">
 		<title>Administration of DHCP server entries</title>
 		<para>
 		  Each server which should offer the DCHP service requires
 		  a <emphasis>DHCP server</emphasis> entry in the LDAP directory. The entry does
 		  not normally need to be created manually, instead it is created by the
 		  join script of the <package>univention-dhcp</package> package.
-		  <!-- Um dennoch manuell einen weiteren Record anzulegen, muss im Modul -->
-		  <!-- <emphasis>DHCP</emphasis> der &ucsUMC; in der linken Spalte ein -->
-		  <!-- DHCP-Service ausgewählt werden. Mit <guimenu>Hinzufügen &ar; DHCP Server</guimenu> -->
-		  <!-- kann dann ein neuer Server registriert werden. -->
+		  However, to create another record manually, a DHCP service must be selected in the left
+		  column of the <emphasis>DHCP</emphasis> module of the &ucsUMC;. <guimenu>Add
+		  &ar; DHCP Server</guimenu> can then be used to register a new server.
 		</para>
 
 		<para>
@@ -1418,11 +1404,8 @@ closest to the object always applies.
 		<title>Administration of DHCP subnets</title>
 		<para>
 		  DHCP subnets are managed in the <emphasis>DHCP</emphasis> module of
-		  the &ucsUMC;. 
-		  <!-- Um ein -->
-		  <!-- weiteres Subnetz anzulegen, muss in der linken Spalte ein DHCP-Service ausgewählt -->
-		  <!-- werden. Mit <guimenu>Hinzufügen &ar; DHCP: Subnetz</guimenu> kann dann ein neues Subnetz -->
-		  <!-- angelegt werden. -->
+		  the &ucsUMC;. To create another subnet, a DHCP service must be selected in the left
+		  column. <guimenu>Add &ar; DHCP: Subnet</guimenu> can be used to create a new subnet.
 		</para>
 
 		<para>
@@ -1621,11 +1604,11 @@ closest to the object always applies.
 		</para>
 		<para>
 		  DHCP host objects are managed in the <emphasis>DHCP</emphasis> module of
-		  the &ucsUMC;. 
-		  <!-- Um einen Rechner manuell im DHCP zu registrieren, muss in der linken Spalte des -->
-		  <!-- &ucsUMC;-Moduls <guimenu>DHCP</guimenu> ein DHCP-Service ausgewählt werden. Mit -->
-		  <!-- <guimenu>Hinzufügen &ar; DHCP: Rechner</guimenu> kann dann ein Rechner registriert werden. -->
-		</para>		<para>
+		  the &ucsUMC;. To register a host in the DHCP manually, a DHCP service must be selected in
+		  the left column of the &ucsUMC; module <guimenu>DHCP</guimenu>. <guimenu>Add &ar; DHCP:
+		  Host</guimenu> can be used to register a host.
+		</para>
+		<para>
 		  General information on the operation of the domain management modules
 		  of the &ucsUMC; and on the adding, editing, searching for and
 		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
@@ -1708,10 +1691,9 @@ closest to the object always applies.
 		</para>
 		<para>
 		  DHCP shared network objects are managed in the <emphasis>DHCP</emphasis> module
-		  of the &ucsUMC;. 
-		  <!-- Um ein Shared Network anzulegen, muss in der linken Spalte des -->
-		  <!-- &ucsUMC;-Moduls <guimenu>DHCP</guimenu> ein DHCP-Service ausgewählt werden. Mit -->
-		  <!-- <guimenu>Hinzufügen &ar; DHCP: Shared Network</guimenu> kann dann ein Netzwerk registriert -->
+		  of the &ucsUMC;. To create a shared network, a DHCP service must be selected in the left
+		  column of the &ucsUMC; module <guimenu>DHCP</guimenu>. <guimenu>Add &ar; DHCP: Shared
+		  Network</guimenu> can be used to register a network.
 		</para>
 		<para>
 		  General information on the operation of the domain management modules

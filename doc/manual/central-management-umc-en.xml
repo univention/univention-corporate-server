@@ -119,11 +119,11 @@
 			</listitem>
 		</itemizedlist>
 
-		<!-- <para> -->
-		<!--   Bei der ersten Anmeldung wird ein Einführungsassistent angezeigt, der u.a. auf die Erfassung -->
-		<!--   von Nutzungsstatistiken hinweist (siehe <xref linkend="central-management-umc:piwik"/>) -->
-		<!--   und die Aktivierung der Lizenz anbietet (siehe <xref linkend="central:license" />). -->
-		<!-- </para> -->
+		<para>
+		  During the first login, an introduction wizard is shown, which informs the user of the
+		  collection of usage statistics (see <xref linkend="central-management-umc:piwik"/>) and
+		  allows license activation (see <xref linkend="central:license" />) among other things.
+		</para>
 
 		<para>
 		  Following ten minutes of inactivity, the browser session is automatically closed and it is
