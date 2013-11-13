@@ -1,3 +1,10 @@
+univention-samba4 (3.0.39-1) unstable; urgency=low
+
+  * Fix samba4-idmap traceback in cases where the sid attribute is missing
+    (either sambaSid or univentionSamba4SID) (Bug #33234)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 13 Nov 2013 18:00:09 +0100
+
 univention-samba4 (3.0.38-1) unstable; urgency=low
 
   * Copy more file from private dir in classicupdate mode (Bug #33251)

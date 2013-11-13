@@ -46,7 +46,7 @@ from samba.param import LoadParm
 name='samba4-idmap'
 description='Update local IDmap entries'
 filter='(&(|(objectClass=sambaSamAccount)(objectClass=sambaGroupMapping))(sambaSID=*))'
-attributes=['sambaSID', 'univentionSamba4SID', 'uidNumber', 'gidNumber']
+attributes=['uid', 'cn', 'sambaSID', 'univentionSamba4SID', 'uidNumber', 'gidNumber']
 modrdn='1'
 
 ### Globals
@@ -242,9 +242,11 @@ def handler(dn, new, old, operation):
 			if 'sambaSamAccount' in new['objectClass']:
 				xid_attr = 'uidNumber'
 				xid_type = 'ID_TYPE_UID'
+				samaccountname = new.get('uid', [None])[0]
 			elif 'sambaGroupMapping' in new['objectClass']:
 				xid_attr = 'gidNumber'
 				xid_type = 'ID_TYPE_GID'
+				samaccountname = new.get('cn', [None])[0]
 
 			new_xid = new.get(xid_attr, [''] )[0]
 			if new_xid:
@@ -253,12 +255,18 @@ def handler(dn, new, old, operation):
 					xid_type = 'ID_TYPE_BOTH'
 				old_sambaSID = old.get(sidAttribute, [''])[0]
 				if old and old_sambaSID:
+					if not new_sambaSID:
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "Samba account '%s' has no attribute '%s', cannot update" % (samaccountname, sidAttribute))
+						return
 					if new_sambaSID != old_sambaSID:
 						rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, new_xid, xid_type)
 					old_xid = old.get(xid_attr, [''] )[0]
 					if new_xid != old_xid:
 						add_or_modify_idmap_entry(new_sambaSID, new_xid, xid_type)
 				else:
+					if not new_sambaSID:
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "Samba account '%s' has no attribute '%s', cannot add" % (samaccountname, sidAttribute))
+						return
 					add_or_modify_idmap_entry(new_sambaSID, new_xid, xid_type)
 		except ldb.LdbError, (enum, estr):
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
@@ -271,13 +279,18 @@ def handler(dn, new, old, operation):
 			if 'sambaSamAccount' in old['objectClass']:
 				xid_attr = 'uidNumber'
 				xid_type = 'ID_TYPE_UID'
+				samaccountname = old.get('uid', [None])[0]
 			elif 'sambaGroupMapping' in old['objectClass']:
 				xid_attr = 'gidNumber'
 				xid_type = 'ID_TYPE_GID'
+				samaccountname = old.get('cn', [None])[0]
 			
 			old_xid = old.get(xid_attr, [''] )[0]
 			if old_xid:
 				old_sambaSID = old.get(sidAttribute, [''])[0]
+				if not old_sambaSID:
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "Samba account '%s' has no attribute '%s', cannot remove" % (samaccountname, sidAttribute))
+					return
 				if xid_type == 'ID_TYPE_GID' and old_sambaSID in __SPECIAL_SIDS:
 					xid_type = 'ID_TYPE_BOTH'
 				remove_idmap_entry(old_sambaSID, old_xid, xid_type)
