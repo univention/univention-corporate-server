@@ -2595,7 +2595,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  The Samba packages have been updated to version 4.1.0. The components providing Active Directory compatible
 		  domain services are now provided by the package <package>samba-ad-dc</package>. The file server component is provided
-		  by the package <package>samba</package> as usual (<ulink url="&ucsbug;31698">Bug 31698</ulink>).
+		  by the package <package>samba</package> as usual (<ulink url="&ucsbug;31698">Bug 31698</ulink>,
+		  <ulink url="&ucsbug;33338">Bug 33338</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
