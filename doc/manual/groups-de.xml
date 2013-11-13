@@ -337,7 +337,7 @@
 	<section id="groups:adgroups">
 	  <title>Synchronisation von Active Directory-Gruppen bei Verwendung von Samba 4</title>
 	  <para>
-		Wird Samba 4 eingesetzt, werden die Gruppenmitgliedschaften werden zwischen dem Samba
+		Wird Samba 4 eingesetzt, werden die Gruppenmitgliedschaften zwischen dem Samba
 		4-Verzeichnisdienst und dem OpenLDAP-Verzeichnisdienst durch den Univention S4-Connector
 		synchronisiert, d.h. jede Gruppe auf UCS-Seite ist einer Gruppe im Active Directory assoziiert. Allgemeine
 		Hinweise zum Univention S4 Connector finden sich in <xref linkend="windows:s4connector"/>.
