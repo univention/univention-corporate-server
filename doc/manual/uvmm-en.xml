@@ -859,10 +859,9 @@
 						<row>
 							<entry>Direct access (VNC)</entry>
 							<entry>
-							  Defines whether VNC access to the virtual machine is available.
-							  <!-- Ist die Option aktiv, kann über das UMC-Modul durch einen -->
-							  <!-- HTML5-basierten VNC-Client - oder einen beliebigen anderen Client - -->
-							  <!-- direkt auf die virtuelle Maschine zugegriffen werden. -->
+							  Defines whether VNC access to the virtual machine is available. If the
+							  option is enabled, the virtual machine can be accessed directly via
+							  the UMC module using an HTML5-based VNC client or any other VNC client.
 							  The VNC URL is displayed in a tool tip.
 							</entry>
 						</row>

@@ -152,9 +152,8 @@
 			<graphic scalefit="1" width="40%" fileref="illustrations/umc_ffpu_en.png"/>
 		</figure>
 		<para>
-		  <!-- Mit der Option <guimenu>Import new license</guimenu> kann ein Lizenzschlüssel -->
-		  <!-- aktiviert werden (ansonsten greift die standardmäßig installierte -->
-		  <!-- Free-for-Personal-Use-Lizenz).  -->
+		  The <guimenu>Import new license</guimenu> option can be used to activate a license key
+		  (otherwise the free-for-personal-use license installed as standard is used). 
 		  <guimenu>Import license file</guimenu> can be used to select a license file. Alternatively, the
 		  license key can be copied into the <guimenu>Import license as text</guimenu> input field and
 		  activated with <guimenu>Import</guimenu>.
@@ -183,8 +182,9 @@
 			All of the domain modules in &ucsUMC; are controlled identically from
 			a structural perspective. The following examples are presented using
 			the user management but apply equally for all modules.
-			<!-- Die  Bedienung der DNS- und DHCP-Module weicht etwas ab, weitere Hinweise finden -->
-			<!-- sich in <xref linkend="ip-config:dns:umc"/> und <xref linkend="networks::dhcp::general"/>. -->
+			The operation of the DNS and DHCP modules is slightly different. Further information can
+			be found in <xref linkend="ip-config:dns:umc"/> and <xref
+			linkend="networks::dhcp::general"/>.
 		</para>
 		<figure id="umc-modules">
 			<title>Module overview</title>
@@ -239,11 +239,11 @@
 				  attribute directly.
 				</simpara></listitem>
 
-				<!-- <listitem><simpara> -->
-				<!--   Die meisten Module verwalten mehrere verschiedene Arten von LDAP-Objekten; -->
-				<!--   die Rechnerverwaltung z.B. verwaltet verschiedene Objekte für die einzelnen -->
-				<!--   Systemrollen. Die Suche kann auf eine Art von LDAP-Objekt beschränkt werden. -->
-				<!-- </simpara></listitem> -->
+				<listitem><simpara>
+				  The majority of the modules administrate a range of types of LDAP objects; the
+				  computer management for example administrates different objects for the individual
+				  system roles. The search can be limited to one type of LDAP object.
+				</simpara></listitem>
 
 				<listitem><simpara>
 				  Some of the internally used user groups and groups (e.g., for domain joins) are
@@ -347,20 +347,18 @@
 	</para>
 	</section>
 
-	<!-- <section id="central-management-umc:notifications"> -->
-	<!--   <title>Anzeige von Systembenachrichtigungen</title> -->
-	<!--   <para> -->
-	<!-- 	UMC-Module können den Benutzer durch Systembenachrichtigungen auf potentielle Fehler - -->
-	<!-- 	z.B. nicht ausgeführte Join-Skripte - oder nötige Aktionen wie verfügbare Updates hinweisen. -->
-	<!--   </para> -->
+	<section id="central-management-umc:notifications">
+	  <title>Display of system notifications</title>
+	  <para>
+		UMC modules can deploy system messages to alert the user to potential errors - e.g., join
+		scripts which have not been run - or necessary actions such as available updates.
+	  </para>
 
-	<!--   <para> -->
-	<!-- 	Mit einem Klick auf das stilisierte 'i' in der oberen Navigationsleiste der &ucsUMC; werden -->
-	<!-- 	alle Systembenachtigungen angezeigt. -->
-	<!-- </para> -->
-	<!-- </section> -->
-
-
+	  <para>
+		Clicking on the stylised 'i' in the upper navigation bar of the &ucsUMC; displays all system
+		notifications.
+	  </para>
+	</section>
 </section>
 
 <section id="central-management-umc:piwik">
