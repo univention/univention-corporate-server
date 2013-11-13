@@ -165,6 +165,46 @@ fi
 
 ##
 
+#################### Bug #33342
+
+trusts_other_domains() {
+	local trusts_other_domains
+	if [ -x /usr/bin/net ] ; then
+		trustdom_list_output=$(net rpc trustdom list -Uwhat%ever)
+		trustdom_list_output="${trustdom_list_output%%$'\n\n'Trusting domains list:*}"
+		trustdom_list_output="${trustdom_list_output##Trusted domains list:$'\n\n'}"
+
+		trusts_other_domains=0
+		while read -a line; do
+			netbios_name="${line[0]}"
+			if [ -n "$netbios_name" ] && [ "$netbios_name" != "none" ] ; then
+				echo "Local samba domain trusts domain $netbios_name"
+				trusts_other_domains=1
+			fi
+		done <<<"$trustdom_list_output"
+		if [ "$trusts_other_domains" != 0 ]; then
+			return 0
+		else
+			return 1
+		fi
+	else
+		echo "net command not available, probably not a Samba system."
+		return 2
+	fi
+}
+
+if trusts_other_domains; then
+	echo "WARNING: The local UCS Samba domain trusts other Windows domains,"
+	echo "         i.e. it allows logins by users from other Windows domains."
+	echo "         Samba 4.1 currently does not support this, it's better to block the update."
+	echo "         To continue anyway the UCR variable update32/ignore_samba_trust can be set to yes"
+	if is_ucr_true update32/ignore_samba_trust; then
+		echo "WARNING: update32/ignore_samba_trust is set to true. Continue as requested."
+	else
+		exit 1
+	fi
+fi
+
 #################### Bug #22093
 
 get_latest_kernel_pkg () {

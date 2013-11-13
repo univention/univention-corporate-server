@@ -1,3 +1,9 @@
+univention-updater (9.0.31-2) unstable; urgency=low
+
+  * Add check for update32/ignore_samba_trust (Bug #33342)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 13 Nov 2013 19:15:53 +0100
+
 univention-updater (9.0.31-1) unstable; urgency=low
 
   * Revert last change(Bug #29605) 
