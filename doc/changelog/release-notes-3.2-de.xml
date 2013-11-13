@@ -55,64 +55,85 @@
 	  <title>Release-Highlights</title>
 
 		<para>
-		  Mit Univention Corporate Server 3.2 steht das zweite Point-Release für Univention
+		  Mit Univention Corporate Server 3.2 steht das zweite Minor-Release für Univention
 		  Corporate Server (UCS) zur Verfügung. Es umfasst diverse Detailverbesserungen und
 		  Fehlerkorrekturen:
 		</para>
 
 		<itemizedlist>
 		  <listitem><para>
-			Das Debian Squeeze 6.0.8 Point-Update wurde integriert.
+			Die &ucsUMC; bietet nun Single-Sign-On; mit einer Anmeldung kann auf verschiedene
+			UMC-Instanzen zugegriffen werden.
+		  </para></listitem>
+
+		  <listitem><para>
+			SAML (Security Assertion Markup Language) ist ein XML-basierter Standard zum Austausch
+			von Authentifizierungsinformationen, der u.a. Single-Sign-On über Domänengrenzen hinweg
+			erlaubt. UCS stellt nun einen SAML Identity Provider bereit: Der externe Dienst
+			(z.B. Salesforce) wird dabei über ein kryptografisches Zertifikat fest registriert und
+			vertraut dann dem Identity Provider. Der Benutzer authentifiziert sich dann nur noch in
+			UCS und kann den eingebundenen Dienst ohne erneute Authentifizierung nutzen.
+		  </para></listitem>
+
+		  <listitem><para>
+			Das Univention App Center wurde weiter ausgebaut und bietet weitergehende
+			Integrationsmöglichkeiten für Drittanbieter (z.B. Relationen von Apps und optionale
+			Bestellfunktionen von Apps aus dem App Center). Auch die Standard-UCS-Komponenten werden
+			nur über das App Center verwaltet.
+		  </para></listitem>
+
+		  <listitem><para>
+			Samba 4 wurde auf Version 4.1 aktualisiert. SMB2 wird nun anstelle von CIFS als
+			bevorzugtes Protokoll für Dateidienste eingesetzt. Der Univention S4 Connector wurde
+			deutlich beschleunigt und die Synchronisation von Gruppen verbessert.
+		  </para></listitem>
+
+		  <listitem><para>
+			Bridges, Bondings und VLANs können nun auch in der &ucsUMC; konfiguriert werden.
+		  </para></listitem>
+
+		  <listitem><para>
+			Die unterliegende Debian-Version wurde auf Version 6.0.8 aktualisiert; dies bringt
+			zahlreiche Verbesserungen und Fehlerkorrekturen mit sich.
 		  </para></listitem>
 
 		  <listitem><para>
 			Der Linux-Kernel wurde auf 3.10.15 aktualisiert.
 		  </para></listitem>
 
+		  <listitem><para>
+			Die Bedienung der &ucsUMC; wurde an vielen Stellen optimiert und vereinfacht, z.B. gibt
+			es nun vereinfachte Assistente zum Anlegen von Benutzern und interne Systembenutzer
+			werden in der Grundeinstellung nicht mehr angezeigt.
+		  </para></listitem>
+
+		  <listitem><para>
+			Die Verwaltung von Freigaben wurde vereinfacht. Für NFS-Freigaben wird nun auch NFSv4
+			unterstützt.
+		  </para></listitem>
+
 		</itemizedlist>
     </chapter>
 
     <chapter id="relnotes:order">
-	  <title>Empfohlene Update-Reihenfolge für Umgebungen mit mehr als einem UCS-Server / Update von Systemen mit UCS-Komponenten</title>
+	  <title>Empfohlene Update-Reihenfolge für Umgebungen mit mehr als einem UCS-Server</title>
 
-		<para>
-		  In Umgebungen mit mehr als einem UCS-System muss die Update-Reihenfolge der UCS-Systeme
-		  beachtet werden:
-		</para>
+	  <para>
+		In Umgebungen mit mehr als einem UCS-System muss die Update-Reihenfolge der UCS-Systeme
+		beachtet werden:
+	  </para>
 
-		<para>
-		  Auf dem &ucsMaster; wird die maßgebliche (authoritative) Version des
-		  LDAP-Verzeichnis-dienstes vorgehalten, die an alle übrigen LDAP-Server der UCS-Domäne
-		  repliziert wird. Da bei Release-Updates Veränderungen an den LDAP-Schemata auftreten
-		  können muss der &ucsMaster; bei einem Release-Update immer als erstes System aktualisiert werden.
-		</para>
+	  <para>
+		Auf dem &ucsMaster; wird die maßgebliche (authoritative) Version des
+		LDAP-Verzeichnis-dienstes vorgehalten, die an alle übrigen LDAP-Server der UCS-Domäne
+		repliziert wird. Da bei Release-Updates Veränderungen an den LDAP-Schemata auftreten
+		können muss der &ucsMaster; bei einem Release-Update immer als erstes System aktualisiert werden.
+	  </para>
 
-		<para>
-		  Generell ist es empfehlenswert alle UCS-Systeme möglichst in einem Wartungsfenster zu
-		  aktualisieren.
-		</para>
-
-	  <section id="relnotes:3rdparty">
-		<title>Hinweise zu Umgebungen mit anderer Dritt-Software</title>
-		<para>
-		  Bei der Verwendung von 3rd-Party-Software ist generell <emphasis>vor</emphasis> dem Update
-		  mit dem Hersteller/Vertriebspartner der Software zu klären, ob diese mit der neuen Version
-		  von Univention Corporate Server weiterhin uneingeschränkt einsetzbar ist.
-		</para>
-
-		<para>
-		  Die Hersteller/Vertriebspartner von auf Univention Corporate Server basierenden Produkten
-		  sorgen eigenständig für die Veröffentlichung. Updates müssen daher von dort bezogen
-		  werden.
-		</para>
-
-		<para>
-		  Falls Ihnen von Univention angepasste Paketversionen bereitgestellt wurden, so sollte
-		  geprüft werden, ob durch die Aktualisierung angepasste Pakete überschrieben werden -
-		  vorzugsweise in einer Testumgebung. Sollten Sie hier Probleme feststellen, so wenden Sie
-		  sich bitte an Univention.
-		</para>
-	  </section>
+	  <para>
+		Generell ist es empfehlenswert alle UCS-Systeme möglichst in einem Wartungsfenster zu
+		aktualisieren.
+	  </para>
 	</chapter>
 
     <chapter id="relnotes:prepare">
@@ -211,10 +232,41 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 			  unmaintained) wurde entfernt.
 			</para></listitem>
 
+			<listitem><para>
+			  Das Installationsprogramm für das Flash-Plugin wird nicht mehr ausgeliefert.
+			</para></listitem>
 		  </itemizedlist>
-
 		</para>
 	  </section>
+
+	  <section id="relnotes:erratas">
+		<title>Ausstehende Errata-Updates</title>
+		<para>
+		  Die folgenden Fehler konnten zum finalen UCS 3.2-Release nicht mehr berücksichtigt werden
+		  und werden zeitnah in einem Errata-Update korrigiert. Ggf. sollte eine Aktualisierung
+		  zurückgestellt werden, bis die Updates verfügbar sind:
+
+		  <itemizedlist>
+			<listitem><para>
+			  Vertrauensstellungen mit Samba 3, in denen Samba einer Windows-Domäne vertraut
+			  funktionieren nicht (die Namensauflösung über Winbind scheitert) (<ulink url="&ucsbug;33303">Bug 33303</ulink>).
+			</para></listitem>
+
+			<listitem><para>
+			  Der Univention S4 Connector (nötig für den Betrieb von Samba 4) startet in einer
+			  reinen IPv6-Umgebung nicht. Als Workaround kann ein virtuelles IPv4-Interface
+			  konfiguriert werden (<ulink url="&ucsbug;33250">Bug 33250</ulink>).
+			</para></listitem>
+
+			<listitem><para>
+			  Windows-Druckertreiber können auf dem Samba-Server bereitgestellt werden
+			  (Point'n'Print). Die Bereitstellung der Treiber funktioniert für Windows 8-Clients
+			  aktuell noch nicht (<ulink url="&ucsbug;33197">Bug 33197</ulink>).
+			</para></listitem>
+		  </itemizedlist>
+		</para>
+	  </section>
+
 
 	</chapter>
 
@@ -272,7 +324,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		  <emphasis>univention-horde4</emphasis> sondern über das Univention App Center
 		  bereitgestellt. Das Update von univention-horde4 auf bzw. die Neuinstallation von Horde
 		  5.1.0 erfolgt über die Installation der App <emphasis>Horde Grouware Webmail
-		  Edition</emphasis> im UniventionApp Center.
+		  Edition</emphasis> im Univention App Center.
 		</para>
 	  </section>
 
@@ -329,6 +381,35 @@ done
 		  Für das Update muß auf allen Systemen die &ucsUCRV; <envar>repository/online/verify</envar> auf <emphasis>false</emphasis> gesetzt werden.
 		</para>
 	  </section>
+
+	  <section id="relnotes:grouptype">
+		<title>Nachträgliche Einrichtung der Synchronisation der Active Directory-Gruppentypen</title>
+		<para>
+		  Bei Neuinstallationen ab UCS 3.2 werden bei Verwendung von Samba 4 die
+		  Gruppenmitgliedschaften zwischen dem Samba 4-Verzeichnisdienst und dem
+		  OpenLDAP-Verzeichnisdienst durch den Univention S4-Connector synchronisiert, d.h. jede
+		  Gruppe auf UCS-Seite ist einer Gruppe im Active Directory assoziiert.
+		</para>
+
+		<para>
+		  Systeme, die mit UCS-Versionen vor 3.2 installiert wurden, müssen nachträglich umgestellt
+		  werden. Weitere Informationen finden sich unter <ulink
+		  url="http://sdb.univention.de/1237"/>.
+		</para>
+	  </section>
+
+	  <section id="relnotes:startpage">
+		<title>Migration von Anpassungen der UCS-Startseite</title>
+		<para>
+		  Die UCS-Startseite konnte in früheren UCS-Versionen durch &ucsUCR;-Templates im
+		  Verzeichnis <filename>/etc/univention/templates/files/var/www/ucs-overview</filename>
+		  erweitert werden. Ab UCS 3.2 wird die Startseite durch &ucsUCR;-Variablen erweitert 
+		  (<envar>ucs/web/overview/entries/*</envar>, weitere Informationen finden sich in den
+		  UCR-Variablenbeschreibungen). Eventuell bestehende Erweiterungen müssen daher manuell
+		  migriert werden.
+		</para>
+	  </section>
+
 	</chapter>
 
 
@@ -349,7 +430,7 @@ done
 		<para>
 		  Diese Protokollierung erfolgt nur bei Verwendung der Free-for-Personal-Use-Lizenz. Der
 		  Lizenzstatus kann durch einen Klick auf das Zahnrad-Symbol in der rechten, oberen Ecke der
-		  &ucsUMC; und die Auswahl von <guimenu>Lizenz</guimenu> geprüft werden. Steht hier unter
+		  &ucsUMC; und die Auswahl von <guimenu>Lizenzinformationen</guimenu> geprüft werden. Steht hier unter
 		  <guimenu>LDAP-Basis</guimenu> <emphasis>Free for personal use edition</emphasis> wird eine
 		  solche Version verwendet. Bei Einsatz einer regulären UCS-Lizenz erfolgt keine
 		  Nutzungsstatistik.
@@ -363,7 +444,7 @@ done
 	  </section>
 
 	  <section id="relnotes:uefi">
-		<title>Bootprobleme bei Verwendung der UEFI-Installations-DVD</title>
+		<title>UEFI-Installations-DVD</title>
 		<para>
 		  Ab UCS 3.1 steht für amd64 neben der Standard-Installations-DVD auch ein Medium mit
 		  Unterstützung für den Unified Extensible Firmware Interface-Standard (UEFI) bereit.
