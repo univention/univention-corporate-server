@@ -132,7 +132,7 @@ Verfügung).
 
   <para>
 	Ein Samba-Memberserver kann auf UCS-Memberservern mit der Applikation
-	<emphasis>Windows-kompatibler Fileserver auf der Basis von Samba 3</emphasis> aus dem Univention App Center
+	<emphasis>Windows-kompatibler Fileserver</emphasis> aus dem Univention App Center
 	installiert werden. Alternativ können die Softwarepakete <package>univention-samba</package> und
 	<package>winbind</package> installiert werden (anschließend muss der Befehl
 	<command>univention-run-join-scripts</command> aufgerufen werden). Weitere Informationen finden

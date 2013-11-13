@@ -178,7 +178,7 @@
 		<para>
 		  Alle Domänen-Module der &ucsUMC; werden strukturell identisch bedient. Die folgenden
 		  Beispiele werden anhand der Benutzerverwaltung dargestellt, gelten aber analog für alle
-		  Module. Die  Bedienung der DNS- und DHCP-Module weicht etwas ab, weitere Hinweise finden
+		  Module. Die Bedienung der DNS- und DHCP-Module weicht etwas ab, weitere Hinweise finden
 		  sich in <xref linkend="ip-config:dns:umc"/> und <xref linkend="networks::dhcp::general"/>.
 		</para>
 
@@ -242,7 +242,7 @@
 				</simpara></listitem>
 
 				<listitem><simpara>
-				  Einige nur intern verwendete Benutzer- und Gruppen (z.B. für den Domänenbeitritt)
+				  Einige nur intern verwendete Benutzer und Gruppen (z.B. für den Domänenbeitritt)
 				  werden standardmäßig ausgeblendet. Wird die Option <guimenu>Versteckte Objekte
 				  anzeigen</guimenu> aktiviert, werden diese Objekte ebenfalls angezeigt.
 				</simpara></listitem>

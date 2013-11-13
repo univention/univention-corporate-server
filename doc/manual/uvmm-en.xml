@@ -58,9 +58,9 @@
 		  <emphasis>Management server for KVM or Xen</emphasis>. Alternatively, the software package
 		  <package>univention-virtual-machine-manager-daemon</package> can be installed (if UVMM is
 		  installed on a &ucsSlave; or &ucsBackup;, the package
-		  <emphasis>univention-virtual-machine-manager-schema</emphasis> needs to be installed on
+		  <package>univention-virtual-machine-manager-schema</package> needs to be installed on
 		  the &ucsMaster; beforehand). Additional information can be found in
-		  <xref linkend="computers::softwaremanagement::installsoftware"/>.The installation on
+		  <xref linkend="computers::softwaremanagement::installsoftware"/>. The installation on
 		  &ucsMember;s requires additional configuration steps, which are documented in
 		  <biblioref linkend="uvmm-technical-details"/>.
 		</para>
@@ -88,7 +88,7 @@
 
 		<para>
 		  Additionally, the architecture must also be taken into account during installation of the virtualization servers.
-		  64 bit systems can only be virtualized on UCS systems where are installed using the amd64 architecture.
+		  64-bit systems can only be virtualized on UCS systems where are installed using the amd64 architecture.
 		  A 64-bit system (amd64) is recommended for use as the virtualization server.
 		</para>
 	</section>
@@ -815,7 +815,7 @@
 							<entry>Architecture</entry>
 							<entry>
 								Specifies the architecture of the emulated hardware.
-								It must be noted that virtual 64 bit machines can only be created on virtualization servers using the amd64 architecture.
+								It must be noted that virtual 64-bit machines can only be created on virtualization servers using the amd64 architecture.
 								This setting is not shown on i386 and Xen systems.
 							</entry>
 						</row>

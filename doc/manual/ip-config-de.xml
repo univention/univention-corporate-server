@@ -353,7 +353,7 @@
 	  </para>
 
 	  <para>
-		In der linken Spalte des UMC-Moduls <guimenu>DNS</guimenu> befindet sich eine Liste alle Forward- und
+		In der linken Spalte des UMC-Moduls <guimenu>DNS</guimenu> befindet sich eine Liste aller Forward- und
 		Reverse-Lookup-Zonen. Um ein Objekt einer Zone hinzuzufügen - etwa einen Alias-Record zu
 		einer Forward-Zone - muss die entsprechende Zone ausgewählt werden. Durch <guimenu>Hinzufügen</guimenu> wird
 		das Objekt dann in dieser Zone angelegt. Um eine neue Forward- oder Reverse-Zone anzulegen,

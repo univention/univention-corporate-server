@@ -58,7 +58,7 @@
 		  installiert werden. Alternativ kann das Softwarepaket <package>univention-virtual-machine-manager-daemon</package>
 		  installiert werden (wird es auf einem &ucsSlave; oder &ucsBackup; installiert, muss auf
 		  dem &ucsMaster; vorher das Paket
-		  <emphasis>univention-virtual-machine-manager-schema</emphasis> installiert werden). Weitere Informationen finden sich in <xref
+		  <package>univention-virtual-machine-manager-schema</package> installiert werden). Weitere Informationen finden sich in <xref
 		  linkend="computers::softwaremanagement::installsoftware"/>.
 		  UVMM sollte sollte auf einem Domänencontroller installiert werden, die Installation auf
 		  &ucsMember;n erfordert weitere Anpassungen und ist unter <biblioref
@@ -90,8 +90,8 @@
 
 		<para>
 		  Zusätzlich sollte bei der Installation der Virtualisierungsserver die Architektur beachtet werden.
-		  Nur auf UCS-Systemen, die mit der amd64-Architektur installiert sind, können auch 64 Bit-Systeme virtualisiert werden.
-		  Für den Einsatz als Virtualisierungsserver wird die Verwendung eines 64 Bit-Systems (amd64) empfohlen.
+		  Nur auf UCS-Systemen, die mit der amd64-Architektur installiert sind, können auch 64-Bit-Systeme virtualisiert werden.
+		  Für den Einsatz als Virtualisierungsserver wird die Verwendung eines 64-Bit-Systems (amd64) empfohlen.
 		</para>
 	</section>
 	<section id="uvmm::imagefiles">
@@ -814,7 +814,7 @@
 							<entry>Architektur</entry>
 							<entry>
 								Legt die Architektur der emulierten Hardware fest.
-								Dabei ist zu beachten, dass nur auf Virtualisierungsservern der Architektur amd64 virtuelle 64 Bit-Maschinen angelegt werden können.
+								Dabei ist zu beachten, dass nur auf Virtualisierungsservern der Architektur amd64 virtuelle 64-Bit-Maschinen angelegt werden können.
 								Diese Option wird auf i386-Systemen und bei Xen nicht angezeigt.
 							</entry>
 						</row>
