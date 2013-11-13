@@ -1200,7 +1200,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Some unused code has been removed (<ulink url="&ucsbug;28671">Bug 28671</ulink>).
+		  The deprecated function <emphasis>set_uid_umlauts</emphasis> has been removed (<ulink url="&ucsbug;28671">Bug 28671</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
