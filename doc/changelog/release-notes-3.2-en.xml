@@ -111,6 +111,10 @@
 		  <!-- 	unterstützt. -->
 		  <!-- </para></listitem> -->
 
+		  <!-- <listitem><para> -->
+		  <!-- 	Die Proxy-Authentifizierung kann nun auch über Kerberos erfolgen. -->
+		  <!-- </para></listitem> -->
+
     </chapter>
 
     <chapter id="relnotes:order">
