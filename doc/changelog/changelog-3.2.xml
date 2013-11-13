@@ -155,7 +155,10 @@
   <title>Upgrade provisions (preup and postup scripts)</title>
 	<itemizedlist>
 	  <listitem><simpara>
-		The LDAP schema is now checked in <filename>preup.sh</filename> if slapd is installed (<ulink url="&ucsbug;25674">Bug 25674</ulink>).
+		The consistency of the installed LDAP schemas is now checked in
+		<filename>preup.sh</filename> using <command>slapschema</command>
+		(<ulink url="&ucsbug;25674">Bug 25674</ulink>).
+
 	  </simpara></listitem>
 	</itemizedlist>
 </section>
@@ -164,14 +167,14 @@
   <title>Univention Installer</title>
 	<itemizedlist>
 	  <listitem><simpara>
-		<package>univention-horde4</package> has been removed from the software selection. Horde is
-		now available in the <application>Univention App Center</application> (<ulink
-		url="&ucsbug;31812">Bug 31812</ulink>).
+		The input of non-ASCII characters in input fields has been
+		disabled (<ulink url="&ucsbug;24904">Bug 24904</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The input of non-ASCII characters in input fields has been
-		disabled (<ulink url="&ucsbug;24904">Bug 24904</ulink>).
+		Horde has been removed from the software selection. Horde is now available in the
+		<application>Univention App Center</application> (<ulink url="&ucsbug;31812">Bug
+		31812</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -192,11 +195,6 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The input field for the NetBIOS domain name in the basic settings dialogue has been removed
-		for systems which are not a master domain controller (<ulink url="&ucsbug;24442">Bug 24442</ulink>).
-	  </simpara></listitem>
-
-	  <listitem><simpara>
 		The DHCP query button in the network settings dialogue has been removed, instead the DHCP
 		query is performed if DHCP is selected for an interface (<ulink url="&ucsbug;31174">Bug 31174</ulink>).
 	  </simpara></listitem>
@@ -212,7 +210,9 @@
 
 	  <listitem><simpara>
 		The domain name and NetBIOS/Windows domain name syntax tests in the basic settings have been fixed
-		(<ulink url="&ucsbug;24888">Bug 24888</ulink>).
+		(<ulink url="&ucsbug;24888">Bug 24888</ulink>). The input field for the NetBIOS/Windows
+		domain name is no longre displayed on systems which are not a master domain controller
+		(<ulink url="&ucsbug;24442">Bug 24442</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -225,23 +225,20 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The second password field for entering the join password has been removed (<ulink url="&ucsbug;31965">Bug 31965</ulink>).
+		The second password field for entering the join password has been removed (<ulink
+		url="&ucsbug;31965">Bug 31965</ulink>). In addition an error message was improved (<ulink
+		url="&ucsbug;23903">Bug 23903</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The error message has been fixed, which is displayed when the join password is not specified (<ulink url="&ucsbug;23903">Bug 23903</ulink>).
+		During the boot loader installation more device details are displayed. The installation
+		device is automatically ignored (<ulink url="&ucsbug;25046">Bug 25046</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		During the boot loader installation more device details are displayed. The installation device is automatically ignored (<ulink url="&ucsbug;25046">Bug 25046</ulink>).
-	  </simpara></listitem>
-
-	  <listitem><simpara>
-		The installer now makes sure that LVM signatures are removed by <command>pvremove</command> before <command>pvcreate</command> is called (<ulink url="&ucsbug;31925">Bug 31925</ulink>).
-	  </simpara></listitem>
-
-	  <listitem><simpara>
-		The installer now shows occurring errors and warning during initial device scan and offers to format the problematic devices with an empty GPT (<ulink url="&ucsbug;31899">Bug 31899</ulink>).
+		The installer now displays errors/warnings caused by the initial device scan and offers to
+		format the problematic devices with an empty GPT (<ulink url="&ucsbug;31899">Bug
+		31899</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -249,7 +246,9 @@
 		but as of UCS 3.2-0 the new auto partitioning layout will only use the first available
 		harddisk. If installation profiles are used, the keyword <emphasis>auto_part</emphasis> only
 		accepts the value <emphasis>yes</emphasis> from now on (<ulink url="&ucsbug;31705">Bug
-		31705</ulink>).
+		31705</ulink>). The partitioning module now also ensures that LVM signatures are removed by
+		<command>pvremove</command> before <command>pvcreate</command> is called (<ulink
+		url="&ucsbug;31925">Bug 31925</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara> 
@@ -265,8 +264,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		At the end of the installation the UCS installer now stops several services with the init scripts
-		(<ulink url="&ucsbug;33025">Bug 33025</ulink>).
+		Various servics are now restarted at the end of the installation (<ulink url="&ucsbug;33025">Bug 33025</ulink>).
 	  </simpara></listitem>
 
 	</itemizedlist>
@@ -275,7 +273,7 @@
 	<title>Profile-based installation</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The determination of the hostname (<emphasis>scan="hostname"</emphasis>), has
+		  The detection of the hostname (<emphasis>scan="hostname"</emphasis>), has
 		  been fixed (<ulink url="&ucsbug;29469">Bug 29469</ulink>).
 		</simpara></listitem>
 
@@ -286,10 +284,10 @@
 
 		<listitem><simpara>
 		  The package <package>univention-net-installer-daemon</package> has been added.
-		  It contains a daemon listening on port 49173 that accepts hostnames and removes the
-		  re-installation flag of the computer. The host can be configured with
+		  It contains a daemon that accepts hostnames and removes the
+		  reinstallation flag for these systems. The host can be configured with
 		  <emphasis>installation_feedback_host</emphasis> and the port with
-		  <emphasis>installation_feedback_port</emphasis>.
+		  <emphasis>installation_feedback_port</emphasis>
 		  (<ulink url="&ucsbug;1156">Bug 1156</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
@@ -304,19 +302,21 @@
 	<title>Boot loader</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  GRUB has been updated to version 2.00. If the update process can clearly
+		  GRUB has been updated to version 2.00. If the update process can unambiguously
 		  determine the block device the GRUB bootmanager is installed on, GRUB will be updated from version
 		  1.98 to 2.00 automatically. In all other cases the update of GRUB has to be done manually via the
 		  command <command>grub-install <emphasis>&lt;device&gt;</emphasis></command> after the update has
 		  completed successfully. Alternatively if the GRUB device is known in advance, the &ucsUCR; variable
 		  <envar>update/grub/boot</envar> may be set to the corresponding devicename
 		  (e.g. <envar>update/grub/boot=/dev/sda</envar>) (<ulink url="&ucsbug;28191">Bug 28191</ulink>,
-		  <ulink url="&ucsbug;32634">Bug 32634</ulink>, <ulink url="&ucsbug;33125">Bug 33125</ulink>)
+		  <ulink url="&ucsbug;32634">Bug 32634</ulink>, <ulink url="&ucsbug;33125">Bug 33125</ulink>).
 		</simpara></listitem>
+
 		<listitem><simpara>
 		  The &ucsUCR; variable descriptions in <package>univention-grub</package> and <package>univention-bootsplash</package> have been
 		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
 		</simpara></listitem>
+
 		<listitem><simpara>
 		  Prior to UCS 3.2 a terminal resolution of 800x600 pixels with a colour
 		  depth of 16 bits has been used as default (<envar>grub/vga=788</envar>).  During the update to UCS
@@ -329,8 +329,8 @@
 		  The background images of GRUB (<filename>uniboot.png</filename> and
 		  <filename>uniboot.xpm.gz</filename>) are now stored in
 		  <filename>/usr/share/univention-grub/</filename> and will be copied to
-		  <filename>/boot/grub/</filename> during package updates. This change has been done because of an
-		  incompatibility between FAT32 and dpkg (<ulink url="&ucsbug;33123">Bug 33123</ulink>).
+		  <filename>/boot/grub/</filename> during package updates (<ulink url="&ucsbug;33123">Bug
+		  33123</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -339,16 +339,11 @@
 	<title>Linux kernel and firmware packages</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The Linux kernel was updated to 3.10.15. The nouveau KMS kernel module is incompatible
-		  with the Xorg version in UCS 3.2 and now blacklisted (<ulink url="&ucsbug;31701">Bug 31701</ulink>, <ulink url="&ucsbug;32203">Bug 32203</ulink>). This
+		  The Linux kernel was updated to 3.10.15 (<ulink url="&ucsbug;31701">Bug 31701</ulink>, <ulink url="&ucsbug;32203">Bug 32203</ulink>). This
 		  update also resolves occasional kernel traces when operating a UCS installation in Amazon
 		  EC2 (<ulink url="&ucsbug;30369">Bug 30369</ulink>). The firmware packages have been updated to current versions as well.
 		  In addition various packages have been updated to ensure compatibility of their DKMS
 		  out-of-tree kernel modules with Linux 3.10: openafs, xtables-addons, open-vm-tools, iscsitarget, virtualbox and ndiswrapper.
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The kernel 2.6.32 transition packages have been removed (<ulink url="&ucsbug;31593">Bug 31593</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -360,7 +355,8 @@
 		<listitem><simpara>
 		  The kernel meta packages now enable the &ucsUCR; variable <envar>update/reboot/required</envar>,
 		  which triggers a note to the user that the system requires a reboot to complete the update
-		  (<ulink url="&ucsbug;24287">Bug 24287</ulink>).
+		  (<ulink url="&ucsbug;24287">Bug 24287</ulink>). The kernel 2.6.32 transition packages have
+		  been removed (<ulink url="&ucsbug;31593">Bug 31593</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -402,18 +398,15 @@
 		<listitem><simpara>
 		  The &ucsUCR; layers were processed in the wrong order when using the
 		  'search' subcommand. Now all commands consistently return the value from the layer with
-		  the highest priority, which are 'force', 'schedule', 'ldap' and 'normal' (<ulink url="&ucsbug;29632">Bug 29632</ulink>).
+		  the highest priority, which are 'force', 'schedule', 'ldap' and 'normal' (<ulink
+		  url="&ucsbug;29632">Bug 29632</ulink>). The C library - used by e.g. Univention Directory
+		  Listener - now considers all layers (<ulink url="&ucsbug;29964">Bug 29964</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  Changes are now first written to a temporary file first and the file moved in a second
-		  step, otherwise the file might be not completely written if UCR tries to read a variable
+		  step, otherwise the file might be not completely written if a variable is read
 		  (<ulink url="&ucsbug;31725">Bug 31725</ulink>, <ulink url="&ucsbug;31853">Bug 31853</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The C library - used by Univention Directory Listener - now considers all layers of &ucsUCR;
-		  (<ulink url="&ucsbug;29964">Bug 29964</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -452,7 +445,7 @@
 		  &ucsUCR; variable <envar>interfaces/restart/auto</envar> to <literal>false</literal> (<ulink
 		  url="&ucsbug;31844">Bug 31844</ulink>). In the past this has caused time-outs and
 		  re-connect problems. The previous value is restored after the package
-		  univention-base-files has been updated successfully.
+		  <package>univention-base-files</package> has been updated successfully.
 	  </simpara></listitem>
 
 	  </itemizedlist>
@@ -482,18 +475,18 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A segmentation fault in the <command>slapd</command> LDAP server process in cases where non-UTF-8 passwords
+		  A segmentation fault in the LDAP server process in cases where non-UTF-8 passwords
 		  were used for LDAP bind against the <literal>{K5KEY}</literal> scheme has been fixed (<ulink url="&ucsbug;31352">Bug 31352</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  When <command>slapd</command> can not be started by its init script, <command>slapschema</command> is called
-		  to determine the cause and the output is displayed (<ulink url="&ucsbug;23055">Bug 23055</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The unused &ucsUCR; variable <envar>ldap/server/additional</envar> has been
-		  removed. <envar>ldap/server/addition</envar> can be used instead (<ulink url="&ucsbug;24507">Bug 24507</ulink>).
+		  The <command>slapd</command> init script now supports <emphasis>graceful-restart</emphasis>
+		  and <emphasis>graceful-stop</emphasis>, both asking the slapd kindly to
+		  stop and then waiting for 120 seconds before forcefully killing the process
+		  (<ulink url="&ucsbug;31998">Bug 31998</ulink>). If <command>slapd</command> can not be
+		  started, <command>slapschema</command> is called to determine the cause and the output is
+		  displayed (<ulink url="&ucsbug;23055">Bug 23055</ulink>). The temporary schema file is now
+		  properly removed (<ulink url="&ucsbug;31989">Bug 31989</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -503,19 +496,10 @@
 		<listitem><simpara>
 		  The &ucsUCR; variable descriptions in <package>univention-ldap</package>, <package>univention-directory-logger</package>
 		  and <package>univention-ldap-overlay-memberof</package> have been revised (<ulink
-		  url="&ucsbug;30946">Bug 30946</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The <command>slapd</command> init script now supports <emphasis>graceful-restart</emphasis>
-		  and <emphasis>graceful-stop</emphasis>, both asking the slapd kindly to
-		  stop and then waiting for 120 seconds before forcefully killing the process
-		  (<ulink url="&ucsbug;31998">Bug 31998</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  <command>univention-backup2master</command> now cleans up Samba 4 related objects
-		  (<ulink url="&ucsbug;27893">Bug 27893</ulink>).
+		  url="&ucsbug;30946">Bug 30946</ulink>). The unused &ucsUCR; variable
+		  <envar>ldap/server/additional</envar> has been
+		  removed. <envar>ldap/server/addition</envar> can be used instead (<ulink
+		  url="&ucsbug;24507">Bug 24507</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -523,11 +507,6 @@
 		  process in <filename class="directory">/var/univention-backup/</filename> (<ulink
 		  url="&ucsbug;31997">Bug 31997</ulink>). A bug which could lead to truncated
 		  <command>slapcat</command> output was fixed (<ulink url="&ucsbug;31170">Bug 31170</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			The <filename>slapd</filename> init script now removes the temporary schema file
-		  (<ulink url="&ucsbug;31989">Bug 31989</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -546,16 +525,12 @@
 
 		  <listitem><simpara>
 			LDAP ACLs with regular expressions have been made more efficient and robust
-			(<ulink url="&ucsbug;29421">Bug 29421</ulink>).
+			(<ulink url="&ucsbug;29421">Bug 29421</ulink>). The LDAP ACLs for computer objects have
+			been tightened (<ulink url="&ucsbug;31305">Bug 31305</ulink>).
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			LDAP ACLs have been improved with respect to security
-			(<ulink url="&ucsbug;31305">Bug 31305</ulink>).
-		  </simpara></listitem>
-
-		  <listitem><simpara>
-		    A Listener module for the replication of LDAP ACL extensions has been implemented
+		    A listener module for the replication of LDAP ACL extensions has been implemented
 		    (<ulink url="&ucsbug;32393">Bug 32393</ulink>).
 		  </simpara></listitem>
 
@@ -566,9 +541,16 @@
 	  <title>LDAP schema changes</title>
 		<itemizedlist>
 		  <listitem><simpara>
-			There are new schema extensions <filename>univention-object-metadata.schema</filename> and
+			New new schema extensions <filename>univention-object-metadata.schema</filename>,
+			<filename>udm_extension.schema</filename> and
 			<filename>univention-ldap-extension.schema</filename>.
-			(<ulink url="&ucsbug;32391">Bug 32391</ulink>).
+			(<ulink url="&ucsbug;32391">Bug 32391</ulink>, <ulink url="&ucsbug;32410">Bug 32410</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			The package for the App Center UMC module now ships a new LDAP schema extension
+			<filename>univention-app.schema</filename> using the new mechanism implemented via
+			<ulink url="&ucsbug;32412">Bug 32412</ulink>). 
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -577,22 +559,13 @@
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			There is a new schema extension <filename>udm_extension.schema</filename>.
-			(<ulink url="&ucsbug;32410">Bug 32410</ulink>).
-		  </simpara></listitem>
-
-		  <listitem><simpara>
-		    A Listener module for the replication of LDAP schema extensions has been implemented
+		    A listener module for the replication of LDAP schema extensions has been implemented
 		    (<ulink url="&ucsbug;31801">Bug 31801</ulink>).
 		  </simpara></listitem>
 
 		  <listitem><simpara>
 			The &ucsUCR; variable descriptions in <filename>univention-legacy-kolab-schema</filename>
 			have been revised (<ulink url="&ucsbug;30946">Bug 30946</ulink>).
-		  </simpara></listitem>
-
-		  <listitem><simpara>
-			The new udm-attribute <envar>nfsCustomSettings</envar> to support custom NFS share settings has been added (<ulink url="&ucsbug;18708">Bug 18708</ulink>).
 		  </simpara></listitem>
 
 		</itemizedlist>
@@ -649,6 +622,12 @@
 		  <command>univention-backup2master</command> now also replaces the &ucsUCR; variable <envar>kerberos/kpasswdserver</envar>
 		  with the new masters's FQDN (<ulink url="&ucsbug;31077">Bug 31077</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  <command>univention-backup2master</command> now cleans up Samba 4 related objects
+		  (<ulink url="&ucsbug;27893">Bug 27893</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -689,13 +668,19 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The representation of system notifications has been revised
-		  (Bug <ulink url="&ucsbug;30004">30004</ulink>).
+		  UMC modules can now display system notifications (Bug <ulink url="&ucsbug;30004">30004</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  A welcome dialogue has been added when UMC is started for the first time
 		  (Bug <ulink url="&ucsbug;30811">30811</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  A single-sign-on feature has been implemented for &ucsUMC;. The head line of UMC now
+		  provides a drop down for selecting other UCS systems.  The UMC of the selected UCS system
+		  will be opened in a new browser window (Bugs <ulink url="&ucsbug;24422">24422</ulink>,
+		  <ulink url="&ucsbug;30744">30744</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -705,64 +690,25 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A single-sign-on feature has been implemented for &ucsUMC;. The head line of UMC now provides a drop down for selecting other UCS systems. 
-		  The UMC of the selected UCS system will be opened in a new browser window (Bugs <ulink url="&ucsbug;24422">24422</ulink>, <ulink url="&ucsbug;30744">30744</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
 		  Added a button to easily send traceback information of unexpected
 		  errors to Univention (<ulink url="&ucsbug;31056">Bug 31056</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Fixed a design issue when trying to horizontally align a certain widget
-		  class (<ulink url="&ucsbug;25389">Bug 25389</ulink>).
+		  The robustness of the initial UMC module loading was improved (<ulink
+		  url="&ucsbug;32140">Bug 32140</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The version of the JavaScript Dojo Toolkit has been updated to 1.9 (<ulink url="&ucsbug;31639">Bug 31639</ulink>).
+		  Inside the <guimenu>favorite</guimenu> category, favorites can no longer be removed
+		  (<ulink url="&ucsbug;29555">Bug 29555</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Adjusted initial module loading to be more robust (<ulink url="&ucsbug;32140">Bug 32140</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Fixed regression in form validation with certain FormWidgets (<ulink url="&ucsbug;30965">Bug 30965</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Fixed width of ConfirmDialog in Firefox (<ulink url="&ucsbug;30102">Bug 30102</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The width of <emphasis>textarea</emphasis> fields has been fixed (<ulink url="&ucsbug;30889">Bug 30889</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  A problem in the Text widget has been corrected which caused to a 404 error (<ulink url="&ucsbug;28810">Bug 28810</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Inside the "favorite" category, favorites can no longer be removed (<ulink url="&ucsbug;29555">Bug 29555</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The username input field of the login dialog stays disabled after a failed relogin (<ulink url="&ucsbug;27989">Bug 27989</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  A problem with scrollbars in the Dialog widget has been corrected (<ulink url="&ucsbug;30796">Bug 30796</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  UMC login problems with the demo configuration package installed have been corrected
-		  (<ulink url="&ucsbug;31091">Bug 31091</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Fixed problems in the login dialog when changing an expired password. Under some
-		  circumstances the username sent was wrong and the standby animation did never stop (<ulink url="&ucsbug;31898">Bug 31898</ulink>).
+		  The username input field of the login dialog now remains disabled after a failed relogin
+		  (<ulink url="&ucsbug;27989">Bug 27989</ulink>). Also problems were fixed after changing an
+		  expired password: Under some circumstances the username sent was wrong and the standby
+		  animation never stopped (<ulink url="&ucsbug;31898">Bug 31898</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -772,33 +718,14 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The package <package>univention-demo-configuration</package> has been updated in order
-		  to allow two new UMCP commands. The former package version led to an error message when
-		  opening the Univention App center or the UMC online update module. This issue has been fixed (<ulink url="&ucsbug;31567">Bug 31567</ulink>).
+		  Only the origin host without path is now logged in Piwik (<ulink url="&ucsbug;30961">Bug
+		  30961</ulink>). The cancellation of UDM object creations/modifications is now also logged
+		  in Piwik (<ulink url="&ucsbug;31161">Bug 31161</ulink>). 
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The validate function of the <emphasis>Form</emphasis> widget has been
-		  corrected. Previously, no exclamation mark has been displayed when a widget had an invalid
-		  value (<ulink url="&ucsbug;31337">Bug 31337</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  A static array reference in umc/widgets/MultiSelect causing re-occurring entries in
-		  umc/widgets/MultiUploader has been corrected (<ulink url="&ucsbug;31318">Bug 31318</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  As page URLs for Piwik, only the origin host without path is specified (<ulink url="&ucsbug;30961">Bug 30961</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  In umc/widgets/Grid:actions a specific tooltip class can now be defined for actions
-		  (<ulink url="&ucsbug;31308">Bug 31308</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The UMC session is now kept active during the dialog for restarting the UMC server (<ulink url="&ucsbug;31642">Bug 31642</ulink>).
+		  The UMC session is now kept active during the dialogue for restarting the UMC server (<ulink
+		  url="&ucsbug;31642">Bug 31642</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -807,26 +734,13 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The actions saving and cancel editing UDM objects are published now for the Piwik system
-		  (<ulink url="&ucsbug;31161">Bug 31161</ulink>).
+		  Support for the following locales has been added: German (Austria), German (Switzerland),
+		  English (United Kingdom) (<ulink url="&ucsbug;31377">Bug 31377</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Support for the following locales has been added to UMC: German (Austria), German (Switzerland), English (United Kingdom)
-		  (<ulink url="&ucsbug;31377">Bug 31377</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Umlauts in certificates are now imported and shown correctly (<ulink url="&ucsbug;30722">Bug 30722</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Some CSS adaptations have been made (<ulink url="&ucsbug;32318">Bug 32318</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			The UMC page has been fixed for clients without enabled javascript
-			(<ulink url="&ucsbug;32820">Bug 32820</ulink>).
+		  The UMC page has been fixed for browsers without Javascript support (<ulink
+		  url="&ucsbug;32820">Bug 32820</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -843,16 +757,13 @@
 		<listitem><simpara>
 		  The UMC ACL evaluation has been simplified, resulting in improved login performance
 		  (<ulink url="&ucsbug;28059">Bug 28059</ulink>, <ulink url="&ucsbug;32747">Bug 32747</ulink>).
+		  The host matching with wildcards in UMC ACLs has been re-enabled. (<ulink
+		  url="&ucsbug;32850">Bug 32850</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The host matching with wildcards in UMC ACLs has been re-enabled.
-		  (<ulink url="&ucsbug;32850">Bug 32850</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  	Meta information about modules are now reloaded on every successful authentication request
-		  	(<ulink url="&ucsbug;32299">Bug 32299</ulink>).
+		  Meta information of modules are now reloaded on every successful login (<ulink
+		  url="&ucsbug;32299">Bug 32299</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -864,7 +775,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A problem which caused to crash the UMC server when setting an invalid locale has been
+		  A problem which caused the UMC server to crash  when setting an invalid locale has been
 		  corrected (<ulink url="&ucsbug;28657">Bug 28657</ulink>).
 		</simpara></listitem>
 
@@ -879,11 +790,7 @@
 		  installed/removed through the new category <guimenu>UCS components</guimenu>
 		  (Bugs <ulink url="&ucsbug;32301">32301</ulink>, <ulink url="&ucsbug;32308">Bug
 		  32308</ulink>, <ulink url="&ucsbug;32309">Bug 32309</ulink>, <ulink
-		  url="&ucsbug;32302">32302</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The deinstallation of Samba 4 has been fixed (<ulink url="&ucsbug;30982">Bug 30982</ulink>).
+		  url="&ucsbug;32302">32302</ulink>, <ulink url="&ucsbug;30982">Bug 30982</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -895,18 +802,16 @@
 
 		<listitem><simpara>
 		  If an application doesn't detect sufficient required memory, a warning is emitted.
-		  (<ulink url="&ucsbug;31856">Bug 31856</ulink>, <ulink url="&ucsbug;31354">Bug 31354</ulink>). The detection of free memory when running
-		  in OpenVZ containers was fixed (<ulink url="&ucsbug;30659">Bug 30659</ulink>).
+		  (<ulink url="&ucsbug;31856">Bug 31856</ulink>, <ulink url="&ucsbug;31354">Bug
+		  31354</ulink>, <ulink url="&ucsbug;32117">Bug 32117</ulink>). The detection of free memory
+		  when running in OpenVZ containers was fixed (<ulink url="&ucsbug;30659">Bug
+		  30659</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Applications now automatically register themselves in UCS start site
-		  (<ulink url="&ucsbug;32609">Bug 32609</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Added a <emphasis>Shop</emphasis> button for those applications
-		  supporting it (<ulink url="&ucsbug;32282">Bug 32282</ulink>).
+		  Applications now automatically register themselves in the UCS start site and the LDAP
+		  directory (<ulink url="&ucsbug;32416">Bug 32416</ulink>, <ulink url="&ucsbug;32609">Bug
+		  32609</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -923,18 +828,8 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Applications are now registered in the LDAP directory (<ulink url="&ucsbug;32416">Bug 32416</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Added a progress bar while fetching software changes in the App Center and speeded up the
-		  process of retrieving this information (<ulink url="&ucsbug;30798">Bug 30798</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-			Clarified the German translation of the error message when there is
-			insufficient RAM available while trying to install an application (<ulink
-				url="&ucsbug;32117">Bug 32117</ulink>).
+		  The retrieval of available apps in the App Center was accelerated. A progress bar has been
+		  added (<ulink url="&ucsbug;30798">Bug 30798</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -944,7 +839,8 @@
 
 		<listitem><simpara>
 		  Apps can provide a link to a &ucsUMC; module or a web interface (accessible with
-		  <guimenu>Open</guimenu>) (<ulink url="&ucsbug;30759">Bug 30759</ulink>).
+		  <guimenu>Open</guimenu>) (<ulink url="&ucsbug;30759">Bug 30759</ulink>) and 
+		  <emphasis>Shop</emphasis> button(<ulink url="&ucsbug;32282">Bug 32282</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -957,22 +853,15 @@
 
 		<listitem><simpara>
 		  Made component registration in <command>univention-add-app</command>
-		  more robust (<ulink url="&ucsbug;32398">Bug 32398</ulink>).
+		  more robust (<ulink url="&ucsbug;32398">Bug 32398</ulink>). A new option allows  to
+		  install the latest version of the application (<ulink url="&ucsbug;31157">Bug
+		  31157</ulink>). Fixed app installation with --all and --master when pointing to an
+		  outdated version (<ulink url="&ucsbug;31279">Bug 31279</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Added switch to install the latest version of the application in
-		  <command>univention-add-app</command> (<ulink url="&ucsbug;31157">Bug 31157</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  Fixed App installation with --all and --master when pointing to an outdated App version in
-		  <command>univention-add-app</command> (<ulink url="&ucsbug;31279">Bug 31279</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The full progress bar is used while installing an application when not installing packages
-		  on other servers in the domain (<ulink url="&ucsbug;31184">Bug 31184</ulink>).
+		  The progress bar to display the installation progress was improved (<ulink
+		  url="&ucsbug;31184">Bug 31184</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -988,11 +877,13 @@
 
 		<listitem><simpara>
 		  The INI file of an application may now contain HTML in the long description (<ulink
-		  url="&ucsbug;31185">Bug 31185</ulink>).
+		  url="&ucsbug;31185">Bug 31185</ulink>). Additional information can be provided:
+		  INSTALL, POST_UPDATE, POST_INSTALL, UNINSTALL, POST_UNINSTALL (<ulink url="&ucsbug;31803">Bug 31803</ulink>,
+		  <ulink url="&ucsbug;32502">Bug 32502</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The button to request a new license is shown even when the application cannot be installed
+		  The button to request a new license is shown even if the application cannot be installed
 		  (<ulink url="&ucsbug;31166">Bug 31166</ulink>).
 		</simpara></listitem>
 
@@ -1007,17 +898,13 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Added helpful messages when new license is not yet installed and no UDM is present (<ulink url="&ucsbug;30629">Bug 30629</ulink>).
+		  The error messages in case of no available license have been improved (<ulink
+		  url="&ucsbug;30629">Bug 30629</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-			Supporting new HTML READMEs INSTALL, POST_UPDATE, POST_INSTALL,
-			UNINSTALL, POST_UNINSTALL (<ulink url="&ucsbug;31803">Bug 31803</ulink>,
-			<ulink url="&ucsbug;32502">Bug 32502</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  The session is now kept alive after having installed an App until confirmation (<ulink url="&ucsbug;31886">Bug 31886</ulink>).
+		  The session is now kept alive after having installed an app until confirmation (<ulink
+		  url="&ucsbug;31886">Bug 31886</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1025,7 +912,8 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Speedup updates by committing repository files only once (<ulink url="&ucsbug;31228">Bug 31228</ulink>).
+		  Repository sources are now only commited once to improve update performance 
+		  (<ulink url="&ucsbug;31228">Bug 31228</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1034,15 +922,18 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Added a link to the campaign "Vote for app!" (<ulink url="&ucsbug;31625">Bug 31625</ulink>).
+		  Users can now suggest apps they are missing in the App Center (<ulink
+		  url="&ucsbug;31625">Bug 31625</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The package for the App Center UMC module now ships a new LDAP schema extension <filename>univention-app.schema</filename> using the new mechanism implemented via <ulink url="&ucsbug;32412">Bug 32412</ulink>). Building on this new LDAP schema the package installs a new UDM module <emphasis>appcenter/app</emphasis> for the registration of App metadata (<ulink url="&ucsbug;32414">Bug 32414</ulink>).
+		  A new UDM module (<emphasis>appcenter/app</emphasis>) is provided for the registration of
+		  App metadata (<ulink url="&ucsbug;32414">Bug 32414</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The app errata repositories will be removed from UCR during the update (<ulink url="&ucsbug;30904">Bug 30904</ulink>).
+		  The app errata repositories will be removed from UCR during the update (<ulink
+		  url="&ucsbug;30904">Bug 30904</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1216,7 +1107,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The NetBIOSs domain name is no longer queried (or displayed) on systems other than a
+		  The NetBIOS domain name is no longer queried (or displayed) on systems other than a
 		  master domain controller (<ulink url="&ucsbug;24442">Bug 24442</ulink>).
 		</simpara></listitem>
 
@@ -1234,7 +1125,8 @@
 
 		<listitem><simpara>
 		  The SSL input fiels are now proposing values based on the default locale (<ulink
-		  url="&ucsbug;29658">Bug 29658</ulink>).
+		  url="&ucsbug;29658">Bug 29658</ulink>). Umlauts in certificates are now imported and shown
+		  correctly (<ulink url="&ucsbug;30722">Bug 30722</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1688,6 +1580,68 @@
   <section>
 	<title>Development of modules for Univention Management Console</title>
 	  <itemizedlist>
+
+		<listitem><simpara>
+		  The horizontal alignment of some widget classes was fixed  (<ulink url="&ucsbug;25389">Bug 25389</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Some CSS adaptations have been made (<ulink url="&ucsbug;32318">Bug 32318</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  In umc/widgets/Grid:actions a specific tooltip class can now be defined for actions
+		  (<ulink url="&ucsbug;31308">Bug 31308</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The package <package>univention-demo-configuration</package> has been updated in order
+		  to allow two new UMCP commands. The former package version led to an error message when
+		  opening the Univention App center or the UMC online update module. This issue has been fixed (<ulink url="&ucsbug;31567">Bug 31567</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The validate function of the <emphasis>Form</emphasis> widget has been
+		  corrected. Previously, no exclamation mark has been displayed when a widget had an invalid
+		  value (<ulink url="&ucsbug;31337">Bug 31337</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  A static array reference in umc/widgets/MultiSelect causing re-occurring entries in
+		  umc/widgets/MultiUploader has been corrected (<ulink url="&ucsbug;31318">Bug 31318</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  A problem with scrollbars in the Dialog widget has been corrected (<ulink url="&ucsbug;30796">Bug 30796</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  UMC login problems with the demo configuration package installed have been corrected
+		  (<ulink url="&ucsbug;31091">Bug 31091</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  A problem in the Text widget has been corrected which caused to a 404 error (<ulink
+		  url="&ucsbug;28810">Bug 28810</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Fixed a regression in form validation with certain FormWidgets (<ulink
+		  url="&ucsbug;30965">Bug 30965</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Fixed the width of the ConfirmDialog in Firefox (<ulink url="&ucsbug;30102">Bug 30102</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The width of <emphasis>textarea</emphasis> fields has been fixed (<ulink
+		  url="&ucsbug;30889">Bug 30889</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The version of the JavaScript Dojo toolkit has been updated to 1.9 (<ulink url="&ucsbug;31639">Bug 31639</ulink>).
+		</simpara></listitem>
 
 		<listitem><simpara>
 		  A new UDM module <emphasis>settings/ldapschema</emphasis> has been implemented for
