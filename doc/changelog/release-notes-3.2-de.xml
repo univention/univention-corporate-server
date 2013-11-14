@@ -63,7 +63,7 @@
 		<itemizedlist>
 		  <listitem><para>
 			Die Bedienung der &ucsUMC; wurde an vielen Stellen optimiert und vereinfacht, z.B. gibt
-			es nun vereinfachte Assistente zum Anlegen von Benutzern und interne Systembenutzer
+			es nun vereinfachte Assistenten zum Anlegen von Benutzern und interne Systembenutzer
 			werden in der Grundeinstellung nicht mehr angezeigt.
 			Die &ucsUMC; bietet außerdem nun Single-Sign-On; mit einer Anmeldung kann auf verschiedene
 			UMC-Instanzen zugegriffen werden.
@@ -254,14 +254,13 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 			</para></listitem>
 
 			<listitem><para>
-			  Der Univention S4 Connector (nötig für den Betrieb von Samba 4) startet in einer
+			  Samba 4 (4.1) startet aktuell in einer
 			  reinen IPv6-Umgebung nicht. Als Workaround kann ein virtuelles IPv4-Interface
 			  konfiguriert werden (<ulink url="&ucsbug;33250">Bug 33250</ulink>).
 			</para></listitem>
 
 			<listitem><para>
-			  Windows-Druckertreiber können auf dem Samba-Server bereitgestellt werden
-			  (Point'n'Print). Die Bereitstellung der Treiber funktioniert für Windows 8-Clients
+			  Das Drucken über native, lokal installierte Windows 8 Druckertreiber funktioniert
 			  aktuell noch nicht (<ulink url="&ucsbug;33197">Bug 33197</ulink>).
 			</para></listitem>
 		  </itemizedlist>
@@ -568,7 +567,7 @@ done
 		</para>
 
 		<para>
-		  Um Grub korrekt darzustellen, muss die von XenServer emulierte Grafikkarte umkonfiguriert
+		  Um Grub korrekt darzustellen, kann die von XenServer emulierte Grafikkarte umkonfiguriert
 		  werden. Dazu muss eine Anmeldung als Benutzer <emphasis>root</emphasis> auf dem
 		  XenServer-System folgen. Mit dem Befehl <command>xe vm-list</command> muss zuerst die UUID
 		  der virtuellen Maschine ermittelt werden. Mit dem folgenden Befehl wird dann die emulierte

@@ -251,15 +251,14 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		  	</para></listitem>
 
 		  	<listitem><para>
-			  The Univention S4 Connector (required for the operation of Samba 4) does not start in
+			  Samba 4 (4.1) currently does not start in
 			  a pure IPv6 environment. A virtual IPv4 interface can be configured as a workaround
 			  (<ulink url="&ucsbug;33250">Bug 33250</ulink>).
 			</para></listitem>
 
 		  	<listitem><para>
-			  Windows printer drivers can be provided on the Samba server (Point'n'Print). The
-			  provision of drivers for Windows 8 clients currently doesn't work (<ulink
-			  url="&ucsbug;33197">Bug 33197</ulink>).
+			  Printing via native, locally installed Windows 8 printer drivers currently doesn't work 
+			  (<ulink url="&ucsbug;33197">Bug 33197</ulink>).
 		  	</para></listitem>
 		  </itemizedlist>
 		</para>
@@ -560,7 +559,7 @@ done
 		</para>
 
 		<para>
-		  To display Grub correctly, the graphics card emulated by XenServer must be
+		  To display Grub correctly, the graphics card emulated by XenServer can be
 		  reconfigured. This is done by logging on to the XenServer system as the
 		  <emphasis>root</emphasis> user. Firstly, the <command>xe vm-list</command> command is used to
 		  determine the UUID of the virtual machine. The following command is then used to

@@ -15,7 +15,7 @@
 
 	  <listitem>
 		<para>
-		The Debian point update 6.0.8 was incorporated. Among other changes it also fixes several security issues:  <ulink url="&ucsbug;31956">Bug 31956</ulink>).
+		The Debian point update 6.0.8 was incorporated. Among other changes it also fixes several security issues (<ulink url="&ucsbug;31956">Bug 31956</ulink>):
 		</para>
 		<itemizedlist>
 		  <listitem><simpara>
@@ -155,7 +155,7 @@
   <title>Upgrade provisions (preup and postup scripts)</title>
 	<itemizedlist>
 	  <listitem><simpara>
-		The consistency of the installed LDAP schemas is now checked in
+		The consistency of the installed LDAP schema is now checked in
 		<filename>preup.sh</filename> using <command>slapschema</command>
 		(<ulink url="&ucsbug;25674">Bug 25674</ulink>).
 
@@ -211,7 +211,7 @@
 	  <listitem><simpara>
 		The domain name and NetBIOS/Windows domain name syntax tests in the basic settings have been fixed
 		(<ulink url="&ucsbug;24888">Bug 24888</ulink>). The input field for the NetBIOS/Windows
-		domain name is no longre displayed on systems which are not a master domain controller
+		domain name is no longer displayed on systems which are not a master domain controller
 		(<ulink url="&ucsbug;24442">Bug 24442</ulink>).
 	  </simpara></listitem>
 
@@ -490,7 +490,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable <envar>ldap/server/port</envar> is now set to 7389 by default (<ulink url="&ucsbug;26888)">Bug 26888)</ulink>.
+		  The &ucsUCR; variable <envar>ldap/server/port</envar> is now set to 7389 by default (<ulink url="&ucsbug;26888">Bug 26888</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -543,14 +543,14 @@
 		  <listitem><simpara>
 			New new schema extensions <filename>univention-object-metadata.schema</filename>,
 			<filename>udm_extension.schema</filename> and
-			<filename>univention-ldap-extension.schema</filename>.
+			<filename>univention-ldap-extension.schema</filename>
 			(<ulink url="&ucsbug;32391">Bug 32391</ulink>, <ulink url="&ucsbug;32410">Bug 32410</ulink>).
 		  </simpara></listitem>
 
 		  <listitem><simpara>
 			The package for the App Center UMC module now ships a new LDAP schema extension
 			<filename>univention-app.schema</filename> using the new mechanism implemented via
-			<ulink url="&ucsbug;32412">Bug 32412</ulink>). 
+			<ulink url="&ucsbug;32412">Bug 32412</ulink>. 
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -835,7 +835,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  If an application doesn't detect sufficient required memory, a warning is emitted.
+		  If an application doesn't detect sufficient required memory, a warning is emitted
 		  (<ulink url="&ucsbug;31856">Bug 31856</ulink>, <ulink url="&ucsbug;31354">Bug
 		  31354</ulink>, <ulink url="&ucsbug;32117">Bug 32117</ulink>). The detection of free memory
 		  when running in OpenVZ containers was fixed (<ulink url="&ucsbug;30659">Bug
@@ -874,7 +874,7 @@
 		<listitem><simpara>
 		  Apps can provide a link to a &ucsUMC; module or a web interface (accessible with
 		  <guimenu>Open</guimenu>) (<ulink url="&ucsbug;30759">Bug 30759</ulink>) and 
-		  <emphasis>Shop</emphasis> button(<ulink url="&ucsbug;32282">Bug 32282</ulink>).
+		  <emphasis>Shop</emphasis> button (<ulink url="&ucsbug;32282">Bug 32282</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -882,7 +882,7 @@
 		  "Upgrade" or "Uninstall") button is clicked. They are all run at once
 		  and for some failed tests solutions are offered (<ulink
 		  url="&ucsbug;31737">Bug 31737</ulink>, <ulink url="&ucsbug;30289">Bug
-		  30289</ulink>, <ulink url="&ucsbug;32163">Bug 32163</ulink>) .
+		  30289</ulink>, <ulink url="&ucsbug;32163">Bug 32163</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1555,7 +1555,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The enforcement of required multivalue attributes now also works when using the UDM CLI.
+		  The enforcement of required multivalue attributes now also works when using the UDM CLI
 		  (<ulink url="&ucsbug;31302">Bug 31302</ulink>).
 		</simpara></listitem>
 
@@ -1651,7 +1651,7 @@
 
 		<listitem><simpara>
 		  A new UDM module <emphasis>settings/ldapschema</emphasis> has been implemented for
-		  registration and replication of LDAP schema extensions <ulink url="&ucsbug;32412">Bug
+		  registration and replication of LDAP schema extensions (<ulink url="&ucsbug;32412">Bug
 		  32412</ulink>).
 		</simpara></listitem>
 
@@ -2011,7 +2011,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  Added support for denying client access based on IP addresses, configurable via &ucsUCR; variable
-		  <envar>cups/printmode/hosts/none</envar>. This functionality is needed for UCS@School.
+		  <envar>cups/printmode/hosts/none</envar>. This functionality is needed for UCS@School
 		  (<ulink url="&ucsbug;32055">Bug 32055</ulink>).
 		</simpara></listitem>
 
@@ -2219,7 +2219,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  Added a test in the postinst script of <package>libnss-ldap</package> to prevent the override of
-		  <filename>libnss-ldap.secret</filename> if it is a link <ulink url="&ucsbug;30779">Bug 30779</ulink>).
+		  <filename>libnss-ldap.secret</filename> if it is a link (<ulink url="&ucsbug;30779">Bug 30779</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2271,7 +2271,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  The performance of <command>univention-mount-homedir</command> was improved to reduce
 		  server load during concurrent logins. The logging was cleaned up (<ulink
-		  url="&ucsbug;31256">Bug 31256</ulink>) 
+		  url="&ucsbug;31256">Bug 31256</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -2512,7 +2512,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  New Samba 3 installations now uses <emphasis>SMB2</emphasis> as the maximum supported SMB
-		  protocol. On updated systems <emphasis>NT1</emphasis> is still used.
+		  protocol. On updated systems <emphasis>NT1</emphasis> is still used
 		  (<ulink url="&ucsbug;32394">Bug 32394</ulink>).
 		</simpara></listitem>
 
@@ -2583,7 +2583,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  The periodic refresh of sysvol fACLs for the group <emphasis>Authenticated Users</emphasis> can now be disabled
-		  with the new &ucsUCR; variable <envar>samba4/sysvol/sync/setfacl/AU</envar> <ulink
+		  with the new &ucsUCR; variable <envar>samba4/sysvol/sync/setfacl/AU</envar> (<ulink
 		  url="&ucsbug;31271">Bug 31271</ulink>, <ulink url="&ucsbug;31275">Bug 31275</ulink>).
 		</simpara></listitem>
 
@@ -2617,7 +2617,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  Support for the &ucsUCR; variable <envar>samba/max/protocol</envar> has been added (<ulink
 		  url="&ucsbug;31145">Bug 31145</ulink>).
 		  New Samba 4 installations now uses <emphasis>SMB2</emphasis> as the maximum supported SMB
-		  protocol. On updated systems <emphasis>NT1</emphasis> is still used.
+		  protocol. On updated systems <emphasis>NT1</emphasis> is still used
 		  (<ulink url="&ucsbug;32394">Bug 32394</ulink>).
 		</simpara></listitem>
 
@@ -2634,7 +2634,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  In some cases the sysvol ownership was not yet updated correctly
 		  after the installation or join of <package>univention-samba4</package>. This is now detected and fixed during
-		  updates and new installations.
+		  updates and new installations
 		  (<ulink url="&ucsbug;31640">Bug 31640</ulink>).
 		</simpara></listitem>
 
@@ -2642,7 +2642,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  In some cases the join of a Samba domain controller results in a conflicted host
 		  account. To prevent this issue, the <package>univention-samba4</package> join script
 		  waits until the host account was replicated to the S4 connector host
-		  through the DRS replication.
+		  through the DRS replication
 		  (<ulink url="&ucsbug;32257">Bug 32257</ulink>).
 		</simpara></listitem>
 
@@ -2683,7 +2683,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  A traceback has been fixed in the script <filename>purge_s4_computer.py</filename>, which
-		  could occur if a DC was removed from a Samba 4/AD site.
+		  could occur if a DC was removed from a Samba 4/AD site
 		  (<ulink url="&ucsbug;30763">Bug 30763</ulink>).
 		</simpara></listitem>
 
@@ -2726,7 +2726,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A couple of checks for the &ucsUCR; variable <varname>samba4/service/smb</varname> have been fixed.
+		  A couple of checks for the &ucsUCR; variable <varname>samba4/service/smb</varname> have been fixed
 		  (<ulink url="&ucsbug;30968">Bug 30968</ulink>).
 		</simpara></listitem>
 
@@ -2803,20 +2803,20 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  The S4 connector now considers the scenario that an object was moved to a position
-		  which is not replicated to this server. This is for example the case in UCS@school.
-		  <ulink url="&ucsbug;32542">Bug 32542</ulink>).
+		  which is not replicated to this server. This is for example the case in UCS@school
+		  (<ulink url="&ucsbug;32542">Bug 32542</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  The S4 connector no longer synchronises the password for Slave PDC DCs from Samba 4 to
-		  OpenLDAP. This prevents a synchronisation loop in some selective replication scenarios.
-		  <ulink url="&ucsbug;32690">Bug 32690</ulink>).
+		  OpenLDAP. This prevents a synchronisation loop in some selective replication scenarios
+		  (<ulink url="&ucsbug;32690">Bug 32690</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  The S4 connector does no longer synchronises rejected objects before the initialization
 		  phase is complete
-		  <ulink url="&ucsbug;32852">Bug 32852</ulink>).
+		  (<ulink url="&ucsbug;32852">Bug 32852</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -3067,7 +3067,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-	    The test case <emphasis>00_base/47faillog_ssh-smb-krb</emphasis> has been disabled.
+	    The test case <emphasis>00_base/47faillog_ssh-smb-krb</emphasis> has been disabled
 		(<ulink url="&ucsbug;19016">Bug 19016</ulink>).
 	  </simpara></listitem>
 
@@ -3084,7 +3084,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		A test for the UMCP <function>umc/object/policies</function> command has been added.
+		A test for the UMCP <function>umc/object/policies</function> command has been added
 		(<ulink url="&ucsbug;32271">Bug 32271</ulink>
 	  </simpara></listitem>
 
