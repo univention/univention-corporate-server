@@ -1198,7 +1198,7 @@ Before continuing the installation the following ucr variables have to be set to
 about the partition layout.
 </para>
 <programlisting>
-ucr set installer/device/0/fs=ext4
+ucr set installer/device/0/fs=ext3
 ucr set installer/device/0/mp=/
 ucr set installer/device/0/name=/dev/mapper/vg_ucs-rootfs
 ucr set installer/device/1/fs=ext4
