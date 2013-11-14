@@ -44,7 +44,7 @@ if [ "$1" = configure -a -z "$2" ];	 then
 		ucr set kernel/modules="$(ucr get kernel/modules);efivars"
 	fi
 	# add EFI boot entry
-	efibootmgr -c -l "\\\\grubx64.efi" -L "Univention Corporate Server"
+	efibootmgr -c -l "\\EFI\\univention\\grubx64.efi" -L "UCS"
 fi
 
 exit 0

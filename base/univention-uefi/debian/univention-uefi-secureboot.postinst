@@ -40,7 +40,7 @@ if [ "$1" = configure -a -z "$2" ];	 then
 	# load EFI variable support kernel module
 	modprobe efivars
 	# add EFI boot entry
-	efibootmgr -c -l "\\\\shim.efi" -L "Univention Corporate Server (SecureBoot)"
+	efibootmgr -c -l "\\shim.efi" -L "UCS (SecureBoot)"
 fi
 
 exit 0
