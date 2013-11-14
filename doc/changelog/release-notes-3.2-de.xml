@@ -62,7 +62,10 @@
 
 		<itemizedlist>
 		  <listitem><para>
-			Die &ucsUMC; bietet nun Single-Sign-On; mit einer Anmeldung kann auf verschiedene
+			Die Bedienung der &ucsUMC; wurde an vielen Stellen optimiert und vereinfacht, z.B. gibt
+			es nun vereinfachte Assistente zum Anlegen von Benutzern und interne Systembenutzer
+			werden in der Grundeinstellung nicht mehr angezeigt.
+			Die &ucsUMC; bietet außerdem nun Single-Sign-On; mit einer Anmeldung kann auf verschiedene
 			UMC-Instanzen zugegriffen werden.
 		  </para></listitem>
 
@@ -99,12 +102,6 @@
 
 		  <listitem><para>
 			Der Linux-Kernel wurde auf 3.10.15 aktualisiert.
-		  </para></listitem>
-
-		  <listitem><para>
-			Die Bedienung der &ucsUMC; wurde an vielen Stellen optimiert und vereinfacht, z.B. gibt
-			es nun vereinfachte Assistente zum Anlegen von Benutzern und interne Systembenutzer
-			werden in der Grundeinstellung nicht mehr angezeigt.
 		  </para></listitem>
 
 		  <listitem><para>

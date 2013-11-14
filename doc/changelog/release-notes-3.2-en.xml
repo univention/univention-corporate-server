@@ -60,60 +60,57 @@
 		  Server (UCS) 3.1 is now available. It provides several improvements and bugfixes:
 		</para>
 
-		  <!-- <listitem><para> -->
-		  <!-- 	Die &ucsUMC; bietet nun Single-Sign-On; mit einer Anmeldung kann auf verschiedene -->
-		  <!-- 	UMC-Instanzen zugegriffen werden. -->
-		  <!-- </para></listitem> -->
+		<itemizedlist>
+		  <listitem><para>
+			The operation of the &ucsUMC; has been optimised and simplified in a number of points,
+			e.g., there are now simplified wizards for creating users and internal system users are
+			no longer shown in the basic setting. In addition, the &ucsUMC; now offers single
+			sign-on; logging in once allows users to access different UMC instances.
+		  </para></listitem>
 
-		  <!-- <listitem><para> -->
-		  <!-- 	SAML (Security Assertion Markup Language) ist ein XML-basierter Standard zum Austausch -->
-		  <!-- 	von Authentifizierungsinformationen, der u.a. Single-Sign-On über Domänengrenzen hinweg -->
-		  <!-- 	erlaubt. UCS stellt nun einen SAML Identity Provider bereit: Der externe Dienst -->
-		  <!-- 	(z.B. Salesforce) wird dabei über ein kryptografisches Zertifikat fest registriert und -->
-		  <!-- 	vertraut dann dem Identity Provider. Der Benutzer authentifiziert sich dann nur noch in -->
-		  <!-- 	UCS und kann den eingebundenen Dienst ohne erneute Authentifizierung nutzen. -->
-		  <!-- </para></listitem> -->
+		  <listitem><para>
+			SAML (Security Assertion Markup Language) is an XML-based standard for exchanging
+			authentication information, which allows single sign-on across domain boundaries.
+			UCS now provides a SAML identity provider: The external service (e.g.,
+			Salesforce) is then registered via a cryptographic certificate and trusted by
+			the identity provider. The user then only needs to authenticate himself in UCS and can
+			use the integrated service without renewed authentication.
+		  </para></listitem>
 
-		  <!-- <listitem><para> -->
-		  <!-- 	Das Univention App Center wurde weiter ausgebaut und bietet weitergehende -->
-		  <!-- 	Integrationsmöglichkeiten für Drittanbieter (z.B. Relationen von Apps und optionale -->
-		  <!-- 	Bestellfunktionen von Apps aus dem App Center). Auch die Standard-UCS-Komponenten werden -->
-		  <!-- 	nur über das App Center verwaltet. -->
-		  <!-- </para></listitem> -->
+		  <listitem><para>
+			The Univention App Center has been expanded further and offers more extensive
+			integration possibilities for third-parties (e.g., relations of apps and optional
+			ordering of apps from the App Center). The standard UCS components are now
+			also installed/removed via the App Center.
+		  </para></listitem>
 
-		  <!-- <listitem><para> -->
-		  <!-- 	Samba 4 wurde auf Version 4.1 aktualisiert. SMB2 wird nun anstelle von CIFS als -->
-		  <!-- 	bevorzugtes Protokoll für Dateidienste eingesetzt. Der Univention S4 Connector wurde -->
-		  <!-- 	deutlich beschleunigt und die Synchronisation von Gruppen verbessert. -->
-		  <!-- </para></listitem> -->
+		  <listitem><para>
+			Samba 4 has been updated to Version 4.1. SMB2 is used as the preferred protocol for file
+			services instead of CIFS. The Univention S4 Connector has been considerably speeded up
+			and the synchronization of groups improved.
+		  </para></listitem>
 
-		  <!-- <listitem><para> -->
-		  <!-- 	Bridges, Bondings und VLANs können nun auch in der &ucsUMC; konfiguriert werden. -->
-		  <!-- </para></listitem> -->
+		  <listitem><para>
+			Bridges, bondings and VLANs can now also be configured in the &ucsUMC;.
+		  </para></listitem>
 
-		  <!-- <listitem><para> -->
-		  <!-- 	Die unterliegende Debian-Version wurde auf Version 6.0.8 aktualisiert; dies bringt -->
-		  <!-- 	zahlreiche Verbesserungen und Fehlerkorrekturen mit sich. -->
-		  <!-- </para></listitem> -->
+		  <listitem><para>
+			The underlying Debian base has been updated to version 6.0.8; this imparts numerous
+			improvements and bug fixes.
+		  </para></listitem>
 
-		  <!-- <listitem><para> -->
-		  <!-- 	Der Linux-Kernel wurde auf 3.10.15 aktualisiert. -->
-		  <!-- </para></listitem> -->
+		  <listitem><para>
+			The Linux kernel has been updated to 3.10.15.
+		  </para></listitem>
 
-		  <!-- <listitem><para> -->
-		  <!-- 	Die Bedienung der &ucsUMC; wurde an vielen Stellen optimiert und vereinfacht, z.B. gibt -->
-		  <!-- 	es nun vereinfachte Assistente zum Anlegen von Benutzern und interne Systembenutzer -->
-		  <!-- 	werden in der Grundeinstellung nicht mehr angezeigt. -->
-		  <!-- </para></listitem> -->
+		  <listitem><para>
+			The management of shares has been simplified. NFSv4 is now also supported for NFS shares.
+		  </para></listitem>
 
-		  <!-- <listitem><para> -->
-		  <!-- 	Die Verwaltung von Freigaben wurde vereinfacht. Für NFS-Freigaben wird nun auch NFSv4 -->
-		  <!-- 	unterstützt. -->
-		  <!-- </para></listitem> -->
-
-		  <!-- <listitem><para> -->
-		  <!-- 	Die Proxy-Authentifizierung kann nun auch über Kerberos erfolgen. -->
-		  <!-- </para></listitem> -->
+		  <listitem><para>
+			Proxy authentication is now also possible via Kerberos.
+		  </para></listitem>
+		</itemizedlist>
 
     </chapter>
 
@@ -246,28 +243,27 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		  fixed in errata updates in a timely manner. If necessary, the update should be postponed
 		  until the updates are available.
 
-		  <!-- <itemizedlist> -->
-		  <!-- 	<listitem><para> -->
-		  <!-- 	  Vertrauensstellungen mit Samba 3, in denen Samba einer Windows-Domäne vertraut, -->
-		  <!-- 	  funktionieren nicht (die Namensauflösung über Winbind scheitert) (<ulink url="&ucsbug;33303">Bug 33303</ulink>). -->
-		  <!-- 	</para></listitem> -->
+		  <itemizedlist>
+		  	<listitem><para>
+			  Trust relationships with Samba 3, in which Samba trusts a Windows domain, do not
+			  function (the name resolution via Winbind fails) (<ulink url="&ucsbug;33303">Bug
+			  33303</ulink>). 
+		  	</para></listitem>
 
-		  <!-- 	<listitem><para> -->
-		  <!-- 	  Der Univention S4 Connector (nötig für den Betrieb von Samba 4) startet in einer -->
-		  <!-- 	  reinen IPv6-Umgebung nicht. Als Workaround kann ein virtuelles IPv4-Interface -->
-		  <!-- 	  konfiguriert werden (<ulink url="&ucsbug;33250">Bug 33250</ulink>). -->
-		  <!-- 	</para></listitem> -->
+		  	<listitem><para>
+			  The Univention S4 Connector (required for the operation of Samba 4) does not start in
+			  a pure IPv6 environment. A virtual IPv4 interface can be configured as a workaround
+			  (<ulink url="&ucsbug;33250">Bug 33250</ulink>).
+			</para></listitem>
 
-		  <!-- 	<listitem><para> -->
-		  <!-- 	  Windows-Druckertreiber können auf dem Samba-Server bereitgestellt werden -->
-		  <!-- 	  (Point'n'Print). Die Bereitstellung der Treiber funktioniert für Windows 8-Clients -->
-		  <!-- 	  aktuell noch nicht (<ulink url="&ucsbug;33197">Bug 33197</ulink>). -->
-		  <!-- 	</para></listitem> -->
-		  <!-- </itemizedlist> -->
+		  	<listitem><para>
+			  Windows printer drivers can be provided on the Samba server (Point'n'Print). The
+			  provision of drivers for Windows 8 clients currently doesn't work (<ulink
+			  url="&ucsbug;33197">Bug 33197</ulink>).
+		  	</para></listitem>
+		  </itemizedlist>
 		</para>
 	  </section>
-
-
 	</chapter>
 
     <chapter>
@@ -382,21 +378,34 @@ done
 		</para>
 	  </section>
 
-"/>. -->
-	  <!-- 	</para> -->
-	  <!-- </section> -->
 
-	  <!-- <section id="relnotes:startpage"> -->
-	  <!-- 	<title>Migration von Anpassungen der UCS-Startseite</title> -->
-	  <!-- 	<para> -->
-	  <!-- 	  Die UCS-Startseite konnte in früheren UCS-Versionen durch &ucsUCR;-Templates im -->
-	  <!-- 	  Verzeichnis <filename>/etc/univention/templates/files/var/www/ucs-overview</filename> -->
-	  <!-- 	  erweitert werden. Ab UCS 3.2 wird die Startseite durch &ucsUCR;-Variablen erweitert  -->
-	  <!-- 	  (<envar>ucs/web/overview/entries/*</envar>, weitere Informationen finden sich in den -->
-	  <!-- 	  UCR-Variablenbeschreibungen). Eventuell bestehende Erweiterungen müssen daher manuell -->
-	  <!-- 	  migriert werden. -->
-	  <!-- 	</para> -->
-	  <!-- </section> -->
+	  <section id="relnotes:grouptype">
+		<title>Subsequent setting up of synchronisation of Active Directory group types</title>
+		<para>
+		  In new installations as of UCS 3.2 in which Samba 4 is used, the group memberships are
+		  synchronised between the Samba 4 directory service and the OpenLDAP directory service by
+		  the Univention S4 connector, i.e., each group on the UCS side is associated with a group
+		  in Active Directory.
+		</para>
+
+		<para>
+		  Systems installed with earlier UCS versions than 3.2 need to be changed over
+		  subsequently. Further information can be found at <ulink
+		  url="http://sdb.univention.de/1238"/>.
+		</para>
+	  </section>
+
+
+	  <section id="relnotes:startpage">
+	  	<title>Migration of adjustments on the UCS start page</title>
+	  	<para>
+		  In earlier UCS versions, the UCS start page could be expanded with &ucsUCR; templates in
+		  the <filename>/etc/univention/templates/files/var/www/ucs-overview</filename>
+		  directory. As of UCS 3.2, the start page is expanded with &ucsUCR; variables
+		  (<envar>ucs/web/overview/entries/*</envar>, further information can be found in the UCR
+		  variable descriptions). Any existing expansions must therefore be migrated manually.
+	  	</para>
+	  </section>
 
 	</chapter>
 
