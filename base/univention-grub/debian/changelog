@@ -1,3 +1,9 @@
+univention-grub (7.0.5-1) unstable; urgency=low
+
+  * Bug #33123: remove uniboot.png/.xpm.gz in preinst to prevent update failure
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 14 Nov 2013 10:33:39 +0100
+
 univention-grub (7.0.4-2) unstable; urgency=low
 
   * Bug #28191: explicitly install EFI version of GRUB
