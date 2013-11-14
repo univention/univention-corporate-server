@@ -817,6 +817,16 @@ written. The entry is not necessary with automatic partitioning.
 </entry>
 </row>
 
+<row>
+  <entry>partitiontable_type</entry>
+  <entry>
+	If this variable is set to <emphasis>GPT</emphasis>, the partitioning is performed in the  GUID
+	Partition Table standard (GPT). If configured to <emphasis>MBR</emphasis>, a master boot record
+	is written (this is deprecated). The entry is not necessary with automatic partitioning.
+  </entry>
+</row>
+
+
 </tbody>
 </tgroup>
 </table>
