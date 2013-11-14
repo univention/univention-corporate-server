@@ -628,6 +628,11 @@
 		  (<ulink url="&ucsbug;27893">Bug 27893</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+			<command>univention-backup2master</command> now transfers the Samba/AD FSMO roles before removing the old DC account from Samba4
+		  (<ulink url="&ucsbug;33382">Bug 33382</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
