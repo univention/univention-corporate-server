@@ -1,3 +1,9 @@
+univention-bind (8.0.5-1) unstable; urgency=low
+
+  * Change group to bind for the zone files (Bug #33157)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Nov 2013 13:45:48 +0100
+
 univention-bind (8.0.4-1) unstable; urgency=low
 
   * Fix permissions for /etc/bind/univention.conf.d (Bug #33157)

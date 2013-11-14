@@ -44,6 +44,7 @@ import univention.debug as ud  # pylint: disable-msg=E0611
 import time
 import errno
 import signal
+import grp
 
 name = 'bind'
 description = 'Update BIND zones'
@@ -71,6 +72,15 @@ def prerun():
 	"""Called before busy period."""
 	listener.configRegistry.load()
 
+def chgrp_bind(filename):
+	try:
+		bind_gid = grp.getgrnam("bind").gr_gid
+	except KeyError:
+		ud.debug(ud.LISTENER, ud.WARNING, 'Failed to change grp to bind for %s. gid for bind not found' % filename)
+		return
+
+	os.chown(filename, 0, bind_gid)
+
 
 def handler(dn, new, old):
 	"""Handle LDAP changes."""
@@ -93,6 +103,7 @@ def handler(dn, new, old):
 			proxy_cache = open(zonefile, 'w')
 			proxy_cache.close()
 			os.chmod(zonefile, 0640)
+			chgrp_bind(zonefile)
 	finally:
 		listener.unsetuid()
 
@@ -120,6 +131,7 @@ def _new_zone(ucr, zonename, dn):
 	named_zone = open(zonefile, 'w')
 	named_zone.close()
 	os.chmod(zonefile, 0640)
+	chgrp_bind(zonefile)
 
 	# Now fill zone file
 	ldap_uri = "ldap://%s:%s/%s%s" % (
@@ -146,6 +158,7 @@ def _new_zone(ucr, zonename, dn):
 	proxy_zone.write('};\n')
 	proxy_zone.close()
 	os.chmod(proxy_file, 0640)
+	chgrp_bind(proxy_file)
 
 	global __zone_created_or_removed
 	__zone_created_or_removed = True
