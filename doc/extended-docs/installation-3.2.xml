@@ -809,12 +809,12 @@ formatted using the Logical Volume Manager (LVM).
 </row>
 
 <row>
-<entry>create_partitiontable</entry>
-<entry>
-This variable can be used to
-specify partitions on which a DOS partition table should be
-written. The entry is not necessary with automatic partitioning.
-</entry>
+  <entry>create_partitiontable</entry>
+  <entry>
+	This variable can be used to specify partitions on which a partition table should be
+	written. The type of partition table depends on <emphasis>partitiontable_type</emphasis>. The
+	entry is not necessary with automatic partitioning.
+  </entry>
 </row>
 
 <row>
