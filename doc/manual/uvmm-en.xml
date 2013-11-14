@@ -56,10 +56,8 @@
 		<para>
 		  Univention Virtual Machine Manager can be installed from the Univention App Center with the application
 		  <emphasis>Management server for KVM or Xen</emphasis>. Alternatively, the software package
-		  <package>univention-virtual-machine-manager-daemon</package> can be installed (if UVMM is
-		  installed on a &ucsSlave; or &ucsBackup;, the package
-		  <package>univention-virtual-machine-manager-schema</package> needs to be installed on
-		  the &ucsMaster; beforehand). Additional information can be found in
+		  <package>univention-virtual-machine-manager-daemon</package> can be installed.
+		  Additional information can be found in
 		  <xref linkend="computers::softwaremanagement::installsoftware"/>. The installation on
 		  &ucsMember;s requires additional configuration steps, which are documented in
 		  <biblioref linkend="uvmm-technical-details"/>.
