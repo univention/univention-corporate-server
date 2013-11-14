@@ -136,14 +136,15 @@ def _new_zone(ucr, zonename, dn):
 	named_zone.close()
 
 	# Create proxy configuration file
-	proxy_zone = open(os.path.join(NAMED_CONF_DIR, zonename+'.proxy'), 'w')
+	proxy_file = os.path.join(NAMED_CONF_DIR, zonename+'.proxy')
+	proxy_zone = open(proxy_file, 'w')
 	proxy_zone.write('zone "%s" {\n' % (zonename,))
 	proxy_zone.write('\ttype slave;\n')
 	proxy_zone.write('\tfile "%s.zone";\n' % (zonename,))
 	proxy_zone.write('\tmasters port 7777 { 127.0.0.1; };\n')
 	proxy_zone.write('};\n')
 	proxy_zone.close()
-	os.chmod(proxy_zone, 0640)
+	os.chmod(proxy_file, 0640)
 
 	global __zone_created_or_removed
 	__zone_created_or_removed = True

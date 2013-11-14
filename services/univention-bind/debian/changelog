@@ -1,3 +1,9 @@
+univention-bind (8.0.3-1) unstable; urgency=low
+
+  * Bug #33157: fix typo when setting permissions for the proxy config
+
+ -- Florian Best <best@univention.de>  Thu, 14 Nov 2013 11:11:06 +0100
+
 univention-bind (8.0.2-1) unstable; urgency=low
 
   * Also set permissions for the proxy config to 0640 (Bug #33157)
