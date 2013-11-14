@@ -112,6 +112,7 @@ def _new_zone(ucr, zonename, dn):
 	ud.debug(ud.LISTENER, ud.INFO, 'DNS: Creating zone %s' % (zonename,))
 	if not os.path.exists(NAMED_CONF_DIR):
 		os.mkdir(NAMED_CONF_DIR)
+		os.chmod(NAMED_CONF_DIR, 0755)
 
 	zonefile = os.path.join(NAMED_CONF_DIR, zonename)
 

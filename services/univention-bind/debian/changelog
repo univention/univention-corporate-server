@@ -1,3 +1,9 @@
+univention-bind (8.0.4-1) unstable; urgency=low
+
+  * Fix permissions for /etc/bind/univention.conf.d (Bug #33157)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Nov 2013 12:11:43 +0100
+
 univention-bind (8.0.3-1) unstable; urgency=low
 
   * Bug #33157: fix typo when setting permissions for the proxy config
