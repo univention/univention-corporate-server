@@ -1,3 +1,10 @@
+univention-ldap (10.0.17-5) unstable; urgency=low
+
+  * backup2master: transfer roles before removing the old master
+    account from samba4 (Bug #33382)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 14 Nov 2013 15:04:21 +0100
+
 univention-ldap (10.0.17-4) unstable; urgency=low
 
   * Only set call mark_active on the DC master, avoiding unnecessary

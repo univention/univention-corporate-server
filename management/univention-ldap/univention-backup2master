@@ -465,6 +465,14 @@ udm_remove_dns_service_account(){
 }
 
 if [ -e "$samdb" ]; then
+	# Move Samba4 FSMO roles to this host
+	#  https://forge.univention.org/bugzilla/show_bug.cgi?id=26986
+	if [ -x /usr/bin/samba-tool ]; then
+		if samba-tool fsmo show | grep -qi "CN=${old_ldap_master_hostname},CN=Servers,CN=[^,]*,CN=Sites,CN=Configuration"; then
+			samba-tool fsmo seize --role=all --force
+		fi
+	fi
+
 	samdb_remove_dc_account "$old_ldap_master_hostname"
 fi
 ## =========================== </remove Samba objects> ===========================
@@ -520,14 +528,6 @@ ldapdelete -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" "krb5Princip
 # This way no dependent packages get removed.
 printf "\nReplacing package univention-server-backup with univention-server-master.\n"
 apt-get -y install univention-server-master univention-server-backup-
-
-# Move Samba4 FSMO roles to this host
-#  https://forge.univention.org/bugzilla/show_bug.cgi?id=26986
-if [ -x /usr/bin/samba-tool ]; then
-	if samba-tool fsmo show | grep -qi "CN=${old_ldap_master_hostname},CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration"; then
-		samba-tool fsmo seize --role=all --force
-	fi
-fi
 
 udm_remove_dns_service_account "$old_ldap_master_hostname"
 
