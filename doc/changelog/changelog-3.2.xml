@@ -260,7 +260,7 @@
 	  <listitem><simpara> 
 		Several installation problems on UEFI systems have been fixed. Especially
 		the GRUB error message "error: file not found." followed by a black screen or kernel traceback has
-		been fixed (<ulink url="&ucsbug;33179">Bug 33179</ulink>).
+		been fixed (<ulink url="&ucsbug;28672">Bug 28672</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
