@@ -258,7 +258,7 @@
 		<section id="central-management-umc:create">
 		  <title>Anlegen von Objekten</title>
 		  <para>
-			In der Zeile unter der Tabelle mit den Objekten findet sich eine Aktionsleiste, über
+			In der Zeile über der Tabelle mit den Objekten findet sich eine Aktionsleiste, über
 			die mit <guimenu>OBJEKTTYP Hinzufügen</guimenu> (z.B. <guimenu>Benutzer
 			hinzufügen</guimenu>) ein neues Objekt angelegt werden kann.
 		  </para>
