@@ -146,7 +146,7 @@
 		</figure>
 
 		<para>
-		  Mit der Option <guimenu>Neue Lizenz einspielen</guimenu> kann ein Lizenzschlüssel
+		  Über den Menüpunkt <guimenu>Neue Lizenz einspielen</guimenu> kann ein Lizenzschlüssel
 		  aktiviert werden (ansonsten greift die standardmäßig installierte
 		  Free-for-Personal-Use-Lizenz). Mit <guimenu>Datei auswählen</guimenu> kann eine
 		  Lizenz-Datei ausgewählt werden, alternativ kann der Lizenz-Schlüssel in das Eingabefeld
@@ -157,7 +157,7 @@
 		<para>
 		  Die Installation der meisten Anwendungen aus dem Univention App Center erfordert einen individuell
 		  ausgestellten Lizenzschlüssel mit eindeutiger Schlüsselidentifikation. UCS-Lizenzschlüssel,
-		  die für UCS-Versionen vor 3.1 ausgestellt wurden können durch Klick auf die die
+		  die für UCS-Versionen vor 3.1 ausgestellt wurden und Free-for-Personal-Use-Lizenzen können durch Klick auf die die
 		  Schaltfläche <guimenu>Aktivierung von UCS</guimenu> aktualisiert werden. Der aktuelle Lizenzschlüssel wird dabei an Univention geschickt
 		  und der aktualisierte Schlüssel nach einigen Minuten an eine angegebene E-Mail-Adresse
 		  versendet. Der neue Schlüssel kann dann direkt eingespielt werden. Der Lizenzumfang bleibt

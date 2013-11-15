@@ -152,7 +152,7 @@
 			<graphic scalefit="1" width="40%" fileref="illustrations/umc_ffpu_en.png"/>
 		</figure>
 		<para>
-		  The <guimenu>Import new license</guimenu> option can be used to activate a license key
+		  The <guimenu>Import new license</guimenu> menu entry can be used to activate a license key
 		  (otherwise the free-for-personal-use license installed as standard is used). 
 		  <guimenu>Import license file</guimenu> can be used to select a license file. Alternatively, the
 		  license key can be copied into the <guimenu>Import license as text</guimenu> input field and
@@ -161,7 +161,7 @@
 
 		<para>
 		  Installation of most of the applications in the Univention App Center requires a
-		  personalised license key. UCS license keys granted for UCS versions older than 3.1 can
+		  personalised license key. UCS license keys granted for UCS versions older than 3.1 and free-for-personal-use licenses can
 		  be converted by clicking <guimenu>Activation of UCS</guimenu>.
 		  The current license key is sent to Univention and the updated key
 		  returned to a specified e-mail address within a few minutes. The new key can be imported
