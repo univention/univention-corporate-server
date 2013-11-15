@@ -1,3 +1,11 @@
+univention-updater (9.0.31-3) unstable; urgency=low
+
+  * Reroute errormessages to logfile while checking for samba domain
+    trust (Bug #33342)
+  * Add note to clarify that samba trust will be fixed with erratum 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 15 Nov 2013 11:55:29 +0100
+
 univention-updater (9.0.31-2) unstable; urgency=low
 
   * Add check for update32/ignore_samba_trust (Bug #33342)
