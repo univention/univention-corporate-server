@@ -1,3 +1,9 @@
+univention-updater (9.0.34-1) unstable; urgency=low
+
+  * Redirect output in preup.sh even more (Bug #33342) 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 15 Nov 2013 14:34:56 +0100
+
 univention-updater (9.0.33-1) unstable; urgency=low
 
   * Redirect output for ucr set in postup.sh (Bug #33121)

@@ -170,7 +170,7 @@ fi
 trusts_other_domains() {
 	local trusts_other_domains
 	if [ -x /usr/bin/net ] ; then
-		trustdom_list_output=$(net rpc trustdom list -Uwhat%ever 2>&3)
+		trustdom_list_output=$(net rpc trustdom list -Uwhat%ever 2>/dev/null)
 		trustdom_list_output="${trustdom_list_output%%$'\n\n'Trusting domains list:*}"
 		trustdom_list_output="${trustdom_list_output##Trusted domains list:$'\n\n'}"
 
