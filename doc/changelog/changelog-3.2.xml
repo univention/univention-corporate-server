@@ -2523,6 +2523,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  Samba trust relations to other domains is currently broken in the Samba version shipped with UCS 3.2.
+		  This will be fixed in an upcomping errata update.
 		  To avoid breaking existing trust relations the updater checks for this condition and blocks the update
 		  in case an outgoing trust relation is detected. This check can be overridden by setting the UCR variable
 		  <envar>update32/ignore_samba_trust</envar> to <emphasis>yes</emphasis> before the update
