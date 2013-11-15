@@ -1,3 +1,10 @@
+univention-updater (9.0.35-1) unstable; urgency=low
+
+  * Switch back to official repository 
+    updates.software-univention.de (Bug #32217)
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 15 Nov 2013 15:06:53 +0100
+
 univention-updater (9.0.34-1) unstable; urgency=low
 
   * Redirect output in preup.sh even more (Bug #33342) 
