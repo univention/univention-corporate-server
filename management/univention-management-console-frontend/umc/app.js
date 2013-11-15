@@ -1180,7 +1180,6 @@ define([
 			this._checkLicense();
 			this._checkUpdateAvailable();
 			this._checkBrowser();
-			this._checkForUserRoot();
 			this._checkRebootRequired();
 			this._checkJoinStatus();
 			this._checkShowStartupDialog();
@@ -1268,9 +1267,17 @@ define([
 						});
 						var joinModuleLink = this.linkToModule('join');
 						if (!systemJoined) {
-							dialog.warn(_('The system has not been joined into a domain so far. Please visit the %s to join the system.', joinModuleLink));
+							// Bug #33389: do not prompt any hint if the system is not joined
+							// otherwise we might display this hint if a user runs the appliance
+							// setup from an external client.
+							//dialog.warn(_('The system has not been joined into a domain so far. Please visit the %s to join the system.', joinModuleLink));
 						} else if (!allScriptsConfigured) {
 							dialog.notify(_('Not all installed components have been registered. Please visit the %s to register the remaining components.', joinModuleLink));
+						}
+
+						if (systemJoined) {
+							// Bug #33333: only show the hint for root login if system is joined
+							this._checkForUserRoot();
 						}
 					}), function() {
 						console.warn('WARNING: An error occurred while verifying the join state. Ignoring error.');

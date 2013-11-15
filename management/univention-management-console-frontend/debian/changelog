@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.152-1) unstable; urgency=low
+
+  * Bug #33333: check join status before pointing out the login as root
+  * Bug #33389: do not display a warning if system is not joined
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 15 Nov 2013 14:39:04 +0100
+
 univention-management-console-frontend (3.0.151-1) unstable; urgency=low
 
   * Bug #30811: fixed typos
