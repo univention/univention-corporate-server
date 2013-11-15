@@ -1173,7 +1173,7 @@ can be checked with <command>cat /proc/mdstat</command>. Only after the devices 
 filesystems can be setup.
 </para>
 <programlisting>
-mkfs.ext3 /dev/md0
+mkfs.ext4 /dev/md0
 
 lvm pvcreate /dev/md1
 lvm vgcreate vg_ucs /dev/md1
