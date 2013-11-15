@@ -1,3 +1,9 @@
+univention-updater (9.0.33-1) unstable; urgency=low
+
+  * Redirect output for ucr set in postup.sh (Bug #33121)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Nov 2013 13:44:48 +0100
+
 univention-updater (9.0.31-4) unstable; urgency=low
 
   * Update link for release notes (Bug #33415)

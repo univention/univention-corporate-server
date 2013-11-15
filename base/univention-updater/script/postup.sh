@@ -131,7 +131,7 @@ fi
 
 # For UCS 3.2 update scenario, should be removed after the UCS 3.2 release
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=33121
-ucr set connector/s4/mapping/group/grouptype?false
+ucr set connector/s4/mapping/group/grouptype?false >>"$UPDATER_LOG" 2>&1
 
 # For UCS 3.2-0 a reboot is required
 univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
