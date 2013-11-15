@@ -661,7 +661,7 @@
 		<section id="uvmm::instanz::erstellen">
 			<title>Creating a virtual instance</title>
 			<para>
-				Virtual machines can be created with the assistant in a few steps in UVMM by clicking on <guimenu>Create virtual instance</guimenu>.
+				Virtual machines can be created with the assistant in a few steps in UVMM by clicking on <guimenu>Create</guimenu>.
 			</para>
 			<para>
 				The input mask <guimenu>Physical server</guimenu> can be used to select on which virtualization server the virtual machine should be created.

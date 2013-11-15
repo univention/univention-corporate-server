@@ -798,8 +798,7 @@
 					</para>
 
 					<para>
-					  Um eine Bridge zu konfigurieren muss unter <guimenu>Netzwerkgerät
-					  hinzufügen</guimenu> als <guimenu>Netzwerkgerätetyp</guimenu>
+					  Um eine Bridge zu konfigurieren muss unter <guimenu>Hinzufügen</guimenu> als <guimenu>Netzwerkgerätetyp</guimenu>
 					  <emphasis>Bridge</emphasis> ausgewählt werden. Der <guimenu>Name des neuen
 					  Bridge-Netzwerkgerätes</guimenu> kann beliebig gewählt werden. Anschließend
 					  muss auf <guimenu>Weiter</guimenu> geklickt werden.
@@ -855,8 +854,7 @@
 					</para>
 
 					<para>
-					  Um ein Bonding zu konfigurieren muss unter <guimenu>Netzwerkgerät
-					  hinzufügen</guimenu> als <guimenu>Netzwerkgerätetyp</guimenu>
+					  Um ein Bonding zu konfigurieren muss unter <guimenu>Hinzufügen</guimenu> als <guimenu>Netzwerkgerätetyp</guimenu>
 					  <emphasis>Kanalbündelung (Bonding)</emphasis> ausgewählt werden. Der <guimenu>Name des neuen
 					  Bonding-Netzwerkgerätes</guimenu> kann beliebig gewählt werden. Anschließend
 					  muss auf <guimenu>Weiter</guimenu> geklickt werden.
@@ -973,8 +971,7 @@
 					</para>
 
 					<para>
-					  Um ein VLAN zu konfigurieren muss unter <guimenu>Netzwerkgerät
-					  hinzufügen</guimenu> als <guimenu>Netzwerkgerätetyp</guimenu>
+					  Um ein VLAN zu konfigurieren muss unter <guimenu>Hinzufügen</guimenu> als <guimenu>Netzwerkgerätetyp</guimenu>
 					  <emphasis>Virtuelles LAN</emphasis> ausgewählt werden. Die
 					  Netzwerkschnittstelle, für die das VLAN konfiguriert wird, wird mit
 					  <guimenu>Übergeordnetes Netzwerkgerät</guimenu> angegeben. Die <guimenu>VLAN

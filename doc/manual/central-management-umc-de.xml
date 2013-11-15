@@ -259,8 +259,7 @@
 		  <title>Anlegen von Objekten</title>
 		  <para>
 			In der Zeile über der Tabelle mit den Objekten findet sich eine Aktionsleiste, über
-			die mit <guimenu>OBJEKTTYP Hinzufügen</guimenu> (z.B. <guimenu>Benutzer
-			hinzufügen</guimenu>) ein neues Objekt angelegt werden kann.
+			die mit <guimenu>Hinzufügen</guimenu> ein neues Objekt angelegt werden kann.
 		  </para>
 
 		  <para>
@@ -274,12 +273,11 @@
 		<section id="central:user-interface:edit">
 			<title>Bearbeiten von Objekten</title>
 			<para>
-				Durch Klick auf den stilisierten Stift hinter einem LDAP-Objekt in der
-				Suchübersicht wird das Objekt bearbeitet. Die einzelnen Attribute sind
-				in den entsprechenden Dokumentations-Kapiteln beschrieben. Ein Klick auf
-				<guimenu>Änderungen speichern</guimenu> übernimmt alle vorgenommenen
-				Anpassungen in das LDAP-Verzeichnis, <guimenu>Zurück zur Suche</guimenu>
-				bricht die Bearbeitung ab.
+			  Durch Rechtsklick auf ein LDAP-Objekt und Auswahl von <guimenu>Bearbeiten</guimenu>
+			  kann ein Objekt bearbeitet werden. Die einzelnen Attribute sind in den entsprechenden Dokumentations-Kapiteln
+			  beschrieben. Ein Klick auf <guimenu>Änderungen speichern</guimenu> übernimmt alle
+			  vorgenommenen Anpassungen in das LDAP-Verzeichnis, <guimenu>Zurück zur Suche</guimenu>
+			  bricht die Bearbeitung ab.
 			</para>
 			<para>
 				Vor jedem Eintrag in der Ergebnisliste ist ein Auswahlfeld, mit dem einzelne Objekte
@@ -295,33 +293,33 @@
 			</para>
 		</section>
 
-		<section id="central-management-umc:Loeschen_von_Objekten">
+		<section id="central:user-interface:remove">
 			<title>Löschen von Objekten</title>
 			<para>
-				Durch Klick auf das stilisierten Minuszeichen hinter einem LDAP-Objekt in der
-				Ergebnisliste wird das Objekt nach Bestätigung einer Rückfrage gelöscht.
-				Einige Objekte verwenden interne Referenzen - z.B. kann zu
-				Rechner-Objekten ein DNS- oder DHCP-Objekt assoziiert werden. Diese
-				können durch Auswahl der Option <guimenu>Zugehörige Objekte löschen</guimenu>
-				ebenfalls entfernt werden.
+			  Durch Rechtsklick auf ein LDAP-Objekt und Auswahl von <guimenu>Löschen</guimenu> wird
+			  das Objekt nach Bestätigung einer Rückfrage gelöscht. Einige Objekte verwenden interne
+			  Referenzen - z.B. kann zu Rechner-Objekten ein DNS- oder DHCP-Objekt assoziiert
+			  werden. Diese können durch Auswahl der Option <guimenu>Zugehörige Objekte
+			  löschen</guimenu> ebenfalls entfernt werden.
 			</para>
+
 			<para>
 				Analog zur Auswahl mehrerer Objekte bei der Bearbeitung von Objekten
 				können auch mehrere Objekte auf einmal entfernt werden.
 			</para>
 		</section>
 
-		<section id="central-management-umc:Verschieben_von_Objekten">
+		<section id="central:user-interface:move">
 			<title>Verschieben von Objekten</title>
 			<para>
-				Über das Auswahlfeld <guimenu>mehr</guimenu> hinter einem LDAP-Objekt in der
-				Suchübersicht kann nach Auswahl von <guimenu>Verschieben nach...</guimenu>
-				eine LDAP-Position ausgewählt werden, an die das Objekt verschoben
-				werden soll.
+			  Durch Rechtsklick auf ein LDAP-Objekt und Auswahl von <guimenu>Verschieben
+			  nach...</guimenu> kann eine LDAP-Position ausgewählt werden, an die das Objekt
+			  verschoben werden soll.
 			</para>
+
 			<para>
-				Analog zur Auswahl mehrerer Objekte bei der Bearbeitung von Objekten
-				können auch mehrere Objekte auf einmal verschoben werden.
+			  Analog zur Auswahl mehrerer Objekte bei der Bearbeitung von Objekten
+			  können auch mehrere Objekte auf einmal verschoben werden.
 			</para>
 		</section>
 	</section>
@@ -409,7 +407,7 @@
 		Anzeige auf ausgewählte Attribute eingeschränkt werden.
 	</para>
 	<para>
-		Mit der Option <guimenu>LDAP-Objekt hinzufügen</guimenu> können hier auch
+		Mit der Option <guimenu>Hinzufügen</guimenu> können hier auch
 		neue Objekte eingefügt werden. Analog zu den in <xref linkend="central:user-interface"/>
 		beschriebenen Bedienelementen können hier auch bestehende Objekte
 		editiert, gelöscht oder verschoben werden.
@@ -612,7 +610,7 @@
 	  Erweiterte Attribute werden im Modul <guimenu>LDAP-Verzeichnis</guimenu> der &ucsUMC;
 	  verwaltet. Sie befinden sich im Container <emphasis>univention</emphasis> und dessen
 	  Untercontainer <emphasis>custom attributes</emphasis>. Hier können bestehende Attribute
-	  bearbeitet werden oder mit <guimenu>LDAP-Objekt hinzufügen</guimenu> ein Objekt vom Typ
+	  bearbeitet werden oder mit <guimenu>Hinzufügen</guimenu> ein Objekt vom Typ
 	  <guimenu>Einstellungen: Erweitertes Attribut</guimenu> angelegt werden.
 	</para>
 
@@ -1065,7 +1063,7 @@
 	</itemizedlist>
 	<para>
 		Container und Organisationseinheiten werden im Modul <guimenu>LDAP-Verzeichnis</guimenu>
-		der &ucsUMC; verwaltet und werden mit <guimenu>LDAP-Objekt hinzufügen</guimenu>
+		der &ucsUMC; verwaltet und werden mit <guimenu>Hinzufügen</guimenu>
 		und den Objekt-Typen <guimenu>Container: Container</guimenu>
 		und <guimenu>Container: Organisationseinheit</guimenu> angelegt.
 	</para>

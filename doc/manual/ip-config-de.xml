@@ -1290,7 +1290,7 @@
 		  verwaltet werden. Dazu muss in ein DHCP-Subnetz-Objekt navigiert
 		  werden - ein DHCP-Pool-Objekt muss immer unterhalb eines
 		  DHCP-Subnetz-Objektes angelegt werden - und dort mit
-		  <guimenu>LDAP-Objekt hinzufügen</guimenu> ein <guimenu>DHCP: Pool</guimenu>-Objekt eingefügt werden.
+		  <guimenu>Hinzufügen</guimenu> ein <guimenu>DHCP: Pool</guimenu>-Objekt eingefügt werden.
 		</para>
 		<para>
 		  Wenn in einem Subnetz DHCP-Pools angelegt werden, sollten keine
@@ -1491,7 +1491,7 @@
 		  verwaltet werden. Dazu muss in ein DHCP-Shared Network-Objekt navigiert
 		  werden - ein DHCP-Shared Subnet-Objekt muss immer unterhalb eines
 		  DHCP-Shared Network-Objektes angelegt werden - und dort mit
-		  <guimenu>LDAP-Objekt hinzufügen</guimenu> ein <guimenu>DHCP: Shared Subnet</guimenu>-Objekt eingefügt werden.
+		  <guimenu>Hinzufügen</guimenu> ein <guimenu>DHCP: Shared Subnet</guimenu>-Objekt eingefügt werden.
 		</para>
 	  </section>
 	</section>

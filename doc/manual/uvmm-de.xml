@@ -668,7 +668,7 @@
 		<section id="uvmm::instanz::erstellen">
 			<title>Erstellen einer virtuellen Maschine</title>
 			<para>
-				Virtuelle Maschinen können in UVMM durch Klick auf <guimenu>Erstellen einer virtuellen Instanz</guimenu> mit einem Assistenten in wenigen Schritten erstellt werden.
+				Virtuelle Maschinen können in UVMM durch Klick auf <guimenu>Erstellen</guimenu> mit einem Assistenten in wenigen Schritten erstellt werden.
 			</para>
 			<para>
 				In der Eingabemaske <guimenu>Physikalischer Server</guimenu> kann ausgewählt werden, auf welchem Virtualisierungs-Server die virtuelle Maschine angelegt werden soll.

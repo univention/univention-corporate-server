@@ -1149,7 +1149,7 @@
             Benutzervorlagen werden im Modul <guimenu>LDAP-Verzeichnis</guimenu>
             der &ucsUMC; verwaltet. Dort muss in den Container <emphasis>univention</emphasis> und dort in den
             Untercontainer <emphasis>templates</emphasis> gewechselt werden. Hier kann
-            über <guimenu>LDAP-Objekt hinzufügen</guimenu> mit dem
+            über <guimenu>Hinzufügen</guimenu> mit dem
             Objekt-Typ <guimenu>Einstellungen: Benutzervorlage</guimenu> eine neue
             Benutzervorlage angelegt werden.
         </para>

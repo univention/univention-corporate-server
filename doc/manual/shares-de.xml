@@ -1115,7 +1115,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 	  Die benutzerspezifischen Quota können im UMC-Modul <guimenu>Dateisystem Quota</guimenu>
 	  editiert werden. Für alle
 	  aktivierten Partitionen kann mit dem Bleistift-Symbol die erlaubten Speichermengen festgelegt
-	  werden. Alle Einstellungen werden benutzerspezifisch festgelegt. Mit <guimenu>Benutzer hinzufügen</guimenu>
+	  werden. Alle Einstellungen werden benutzerspezifisch festgelegt. Mit <guimenu>Hinzufügen</guimenu>
 	  können die Schwellwerte für Soft- und Hard-Limits für einen Benutzer festgelegt werden.
 	</para>
 

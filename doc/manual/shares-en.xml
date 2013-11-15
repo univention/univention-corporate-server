@@ -1068,7 +1068,7 @@ Microsoft Distributed File System Tree'.
 	  The user-specific quota settings can be configured with the UMC module <guimenu>Filesystem
 	  quotas</guimenu>. The permitted storage quantities can
 	  be set with the pencil symbol for all enabled partitions. All the settings are set
-	  user-specifically. <guimenu>Add user</guimenu> can be used to set the thresholds for soft and
+	  user-specifically. <guimenu>Add</guimenu> can be used to set the thresholds for soft and
 	  hard limits for a user.
 	</para>
 

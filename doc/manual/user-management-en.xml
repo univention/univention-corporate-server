@@ -1117,7 +1117,7 @@
             module of the &ucsUMC;. There one needs to switch to the
             <emphasis>univention</emphasis> container and then to the <emphasis>templates</emphasis>
             subcontainer. A new user template can be created here via the
-            <guimenu>Add LDAP object</guimenu> with the object type
+            <guimenu>Add</guimenu> with the object type
             <guimenu>Settings: User template</guimenu>.
         </para>
         <para>

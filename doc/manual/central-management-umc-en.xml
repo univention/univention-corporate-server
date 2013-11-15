@@ -263,8 +263,7 @@
 			<title>Creating objects</title>
 			<para>
 			  The line above the table with the objects includes an actions toolbar which can be
-			  used to create a new object using <guimenu>Add OBJECTTYPE</guimenu> (e.g. <guimenu>Add
-			  user</guimenu>).
+			  used to create a new object using <guimenu>Add</guimenu>.
 			</para>
 
 		  <para>
@@ -278,13 +277,12 @@
 		<section id="central:user-interface:edit">
 			<title>Editing objects</title>
 			<para>
-				Clicking on the stylised pen behind an LDAP object in the search
-				overview allows to edit the object. The individual attributes are
-				described in the individual documentation chapters. Clicking
-				on <guimenu>Save changes</guimenu> accepts all the changes made in
-				the LDAP directory; <guimenu>Back to search</guimenu> cancels the
-				editing.
+			  Right-clicking on an LDAP object and selecting <guimenu>Edit</guimenu> allows to edit
+			  the object. The individual attributes are described in the individual documentation
+			  chapters. Clicking on <guimenu>Save changes</guimenu> accepts all the changes made in
+			  the LDAP directory; <guimenu>Back to search</guimenu> cancels the editing.
 			</para>
+
 			<para>
 				In front of every item in the result list is a selection field with which the
 				individual objects can be selected. The selection status is also
@@ -298,30 +296,28 @@
 			</para>
 		</section>
 
-		<section id="central-management-umc:Deleting_objects">
+		<section id="central:user-interface:remove">
 			<title>Deleting objects</title>
 			<para>
-				Clicking on the stylised minus sign behind an LDAP object in the
-				search overview allows to delete the object. The prompt must be
-				confirmed. Some objects use internal references - e.g., a DNS or
-				DHCP object - can be associated with computer objects. These can also be
-				deleted by selecting the <guimenu>Delete referring objects</guimenu>
-				option.
+			  Right-clicking on an LDAP object and selecting <guimenu>Delete</guimenu> allows to
+			  delete the object. The prompt must be confirmed. Some objects use internal references
+			  - e.g., a DNS or DHCP object - can be associated with computer objects. These can also
+			  be deleted by selecting the <guimenu>Delete referring objects</guimenu> option.
 			</para>
+
 			<para>
 				Similar to the selection of multiple objects when editing objects, it
 				is also possible to delete multiple objects at once.
 			</para>
 		</section>
 
-		<section id="central-management-umc:Moving_objects">
+		<section id="central:user-interface:move">
 			<title>Moving objects</title>
 			<para>
-				The <guimenu>more</guimenu> selection field behind an LDAP object in the
-				search overview can be used, after the selection
-				of <guimenu>Move to...</guimenu>, to select an LDAP position to
-				which the object should be moved.
+			  Right-clicking on an LDAP object and selecting <guimenu>Move to...</guimenu> allows to
+			  to select an LDAP position to which the object should be moved.
 			</para>
+
 			<para>
 				Similar to the selection of multiple objects when editing objects, it
 				is also possible to move multiple objects at once.
@@ -409,7 +405,7 @@
 		to selected attributes.
 	</para>
 	<para>
-		The <guimenu>Add LDAP object</guimenu> option can be used to add new
+		The <guimenu>Add</guimenu> option can be used to add new
 		objects here too. Similar to the control elements described in
 		<xref linkend="central:user-interface"/>, existing objects can also be edited,
 		deleted or moved here.
@@ -600,7 +596,7 @@
 		the <emphasis>univention</emphasis> container and then to the <emphasis>custom attributes</emphasis>
 		subcontainer. Existing attributes can be edited here or a
 		new <guimenu>Settings: extended attribute</guimenu> object created
-		here with <guimenu>Add LDAP object</guimenu>.
+		here with <guimenu>Add</guimenu>.
 	</para>
 	<figure id="umc-extended-attr">
 		<title>Extended attribute for managing a car license</title>
@@ -1044,7 +1040,7 @@
 	<para>
 		Containers and organisational units are managed in
 		the <guimenu>LDAP directory</guimenu> module of the &ucsUMC; and are created
-		with <guimenu>Add LDAP object</guimenu> and the object
+		with <guimenu>Add</guimenu> and the object
 		types <guimenu>Container: Container</guimenu> and
 		<guimenu>Container:	Organisational unit</guimenu>.
 	</para>

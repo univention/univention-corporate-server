@@ -1505,7 +1505,7 @@ closest to the object always applies.
 		  the &ucsUMC;. To do so, one must always be in a DHCP subnet object
 		  - a DHCP pool object must always be created below a DHCP subnet
 		  object - and a <guimenu>DHCP: Pool</guimenu>
-		  object added with <guimenu>Add LDAP object</guimenu>.
+		  object added with <guimenu>Add</guimenu>.
 		</para>
 		<para>
 		  If DHCP pools are created in a subnet, no IP address range should be
@@ -1748,7 +1748,7 @@ closest to the object always applies.
 		  always be in a DHCP shared network object - a DHCP shared subnet object
 		  must always be created below a DHCP shared network object - and
 		  a <guimenu>DHCP shared subnet</guimenu> object added
-		  with <guimenu>Add LDAP object</guimenu>.
+		  with <guimenu>Add</guimenu>.
 		</para>
 	  </section>
 	</section>
