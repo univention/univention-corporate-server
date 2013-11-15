@@ -150,6 +150,12 @@ ucr set \
 # Reset errata level
 univention-config-registry set version/erratalevel=0 >>"$UPDATER_LOG" 2>&1
 
+# make sure that UMC server is restarted (Bug #33426)
+echo -n "Restart UMC server components to finish update... "
+/usr/share/univention-updater/disable-apache2-umc --exclude-apache >>"$UPDATER_LOG" 2>&1
+/usr/share/univention-updater/enable-apache2-umc >>"$UPDATER_LOG" 2>&1
+echo "restart done"
+
 echo "done."
 date >>"$UPDATER_LOG"
 

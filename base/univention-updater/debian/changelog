@@ -1,3 +1,9 @@
+univention-updater (9.0.36-1) unstable; urgency=low
+
+  * Bug #33426: restart UMC server after update
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 15 Nov 2013 15:56:35 +0100
+
 univention-updater (9.0.35-1) unstable; urgency=low
 
   * Switch back to official repository 
