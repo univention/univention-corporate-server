@@ -528,6 +528,7 @@ define([
 						var target = window.location.href.replace(new RegExp( "/univention-management-console.*", "g" ), '/univention-management-console/?username=' + username);
 
 						// Consider IP changes, replace old ip in url by new ip
+						var values = this.getValues();
 						var newIp = this._getNewIpAddress(values.interfaces, values['interfaces/primary'] || 'eth0');
 						if (newIp) {
 							var oldIp = window.location.host;
