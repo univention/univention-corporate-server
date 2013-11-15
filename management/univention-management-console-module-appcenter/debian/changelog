@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.50-1) unstable; urgency=low
+
+  * Switch to official appcenter for release (Bug #32217) 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 15 Nov 2013 15:11:15 +0100
+
 univention-management-console-module-appcenter (3.0.49-1) unstable; urgency=low
 
   * Remove UCS@school specific ACLs from ldap/66univention-
