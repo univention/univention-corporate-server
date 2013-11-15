@@ -1,3 +1,9 @@
+univention-updater (9.0.31-4) unstable; urgency=low
+
+  * Update link for release notes (Bug #33415)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 15 Nov 2013 12:29:10 +0100
+
 univention-updater (9.0.31-3) unstable; urgency=low
 
   * Reroute errormessages to logfile while checking for samba domain
