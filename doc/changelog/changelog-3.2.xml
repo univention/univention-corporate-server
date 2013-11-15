@@ -673,7 +673,8 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  UMC modules can now display system notifications (Bug <ulink url="&ucsbug;30004">30004</ulink>).
+		  UMC modules can now display system notifications (Bugs <ulink url="&ucsbug;30004">30004</ulink>,
+		  <ulink url="&ucsbug;33333">33333</ulink>, <ulink url="&ucsbug;33389">33389</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
