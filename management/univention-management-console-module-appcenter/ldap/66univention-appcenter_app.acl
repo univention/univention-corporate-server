@@ -6,28 +6,16 @@ print '''
 access to dn.regex="^univentionAppID=([^,]+),cn=([^,]+),cn=apps,cn=univention,%(base)s$" filter="(objectClass=univentionApp)"
 	by dn.onelevel="cn=dc,cn=computers,%(base)s" write
 	by dn.onelevel="cn=memberserver,cn=computers,%(base)s" write
-	by group/univentionGroup/uniqueMember="cn=DC-Edukativnetz,cn=ucsschool,cn=groups,%(base)s" write
-	by group/univentionGroup/uniqueMember="cn=DC-Verwaltungsnetz,cn=ucsschool,cn=groups,%(base)s" write
-	by group/univentionGroup/uniqueMember="cn=Member-Edukativnetz,cn=ucsschool,cn=groups,%(base)s" write
-	by group/univentionGroup/uniqueMember="cn=Member-Verwaltungsnetz,cn=ucsschool,cn=groups,%(base)s" write
 	by * read break
 
 access to dn.regex="^cn=([^,]+),cn=apps,cn=univention,%(base)s$" attrs=children,entry
 	by dn.onelevel="cn=dc,cn=computers,%(base)s" write
 	by dn.onelevel="cn=memberserver,cn=computers,%(base)s" write
-	by group/univentionGroup/uniqueMember="cn=DC-Edukativnetz,cn=ucsschool,cn=groups,%(base)s" write
-	by group/univentionGroup/uniqueMember="cn=DC-Verwaltungsnetz,cn=ucsschool,cn=groups,%(base)s" write
-	by group/univentionGroup/uniqueMember="cn=Member-Edukativnetz,cn=ucsschool,cn=groups,%(base)s" write
-	by group/univentionGroup/uniqueMember="cn=Member-Verwaltungsnetz,cn=ucsschool,cn=groups,%(base)s" write
 	by * read break
 
 access to dn.regex="^cn=apps,cn=univention,%(base)s$" attrs=children,entry
 	by dn.onelevel="cn=dc,cn=computers,%(base)s" write
 	by dn.onelevel="cn=memberserver,cn=computers,%(base)s" write
-	by group/univentionGroup/uniqueMember="cn=DC-Edukativnetz,cn=ucsschool,cn=groups,%(base)s" write
-	by group/univentionGroup/uniqueMember="cn=DC-Verwaltungsnetz,cn=ucsschool,cn=groups,%(base)s" write
-	by group/univentionGroup/uniqueMember="cn=Member-Edukativnetz,cn=ucsschool,cn=groups,%(base)s" write
-	by group/univentionGroup/uniqueMember="cn=Member-Verwaltungsnetz,cn=ucsschool,cn=groups,%(base)s" write
 	by * read break
 ''' % params
 @!@
