@@ -34,13 +34,13 @@
 
 # umc overview
 univention-config-registry unset \
-        ucs/web/overview/entries/service/demo-configuration/description/de \
-        ucs/web/overview/entries/service/demo-configuration/description \
-        ucs/web/overview/entries/service/demo-configuration/icon \
-        ucs/web/overview/entries/service/demo-configuration/label \
-        ucs/web/overview/entries/service/demo-configuration/label/de \
-        ucs/web/overview/entries/service/demo-configuration/link \
-        ucs/web/overview/entries/service/demo-configuration/priority
+        ucs/web/overview/entries/admin/demo-configuration/description/de \
+        ucs/web/overview/entries/admin/demo-configuration/description \
+        ucs/web/overview/entries/admin/demo-configuration/icon \
+        ucs/web/overview/entries/admin/demo-configuration/label \
+        ucs/web/overview/entries/admin/demo-configuration/label/de \
+        ucs/web/overview/entries/admin/demo-configuration/link \
+        ucs/web/overview/entries/admin/demo-configuration/priority
 
 case "$1" in
 	remove|purge|disappear|failed-upgrade|abort-install)

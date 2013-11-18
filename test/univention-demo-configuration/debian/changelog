@@ -1,6 +1,7 @@
 univention-demo-configuration (2.0.1-1) unstable; urgency=low
 
-  * Bug #33083: adapted package to changes in UCS 3.2
+  * Bug #33083: adapted package to changes in UCS 3.2, hide Administrator
+    account in UMC
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 18 Nov 2013 10:42:47 +0100
 

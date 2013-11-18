@@ -41,7 +41,7 @@ case "$1" in
 				/usr/share/univention-management-console/modules/"$module".xml
 		done
 		for file in \
-			/usr/share/univention-management-console-frontend/js/umc/login.html \
+			/usr/share/univention-management-console-frontend/js/umc/app/login.html \
 			/etc/univention/templates/files/etc/nagios3/apache2.conf
 		do
 			dpkg-divert --package univention-demo-configuration --add --rename --divert "$file.real" "$file"
@@ -57,6 +57,14 @@ case "$1" in
 				/usr/share/univention-management-console/modules/"$module".xml.real \
 				/usr/share/univention-management-console/modules/"$module".xml
 		done
+
+		# login.html changed its location (Bug #33083), for update to UCS 3.2
+		for file in \
+			/usr/share/univention-management-console-frontend/js/umc/app/login.html
+		do
+			dpkg-divert --package univention-demo-configuration --add --rename --divert "$file.real" "$file"
+		done
+
 		for file in \
 			/etc/univention/templates/files/etc/nagios3/apache2.conf
 		do

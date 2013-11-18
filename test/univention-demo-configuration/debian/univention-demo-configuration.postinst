@@ -34,15 +34,17 @@
 
 . /usr/share/univention-lib/all.sh
 
+eval "$(ucr shell)"
+
 # umc overview
 univention-config-registry set \
-	ucs/web/overview/entries/service/demo-configuration/description/de?'Die Univention-Support-Datenbank' \
-	ucs/web/overview/entries/service/demo-configuration/description?'The Univention support database' \
-	ucs/web/overview/entries/service/demo-configuration/icon?'/icon/50x50/univention-logo.png' \
-	ucs/web/overview/entries/service/demo-configuration/label?'Univention SDB' \
-	ucs/web/overview/entries/service/demo-configuration/label/de?'Univention SDB' \
-	ucs/web/overview/entries/service/demo-configuration/link?'http://sdb.univention.de' \
-	ucs/web/overview/entries/service/demo-configuration/priority?'90'
+	ucs/web/overview/entries/admin/demo-configuration/description/de?'Die Univention-Support-Datenbank' \
+	ucs/web/overview/entries/admin/demo-configuration/description?'The Univention support database' \
+	ucs/web/overview/entries/admin/demo-configuration/icon?'/icon/50x50/univention-logo.png' \
+	ucs/web/overview/entries/admin/demo-configuration/label?'Univention SDB' \
+	ucs/web/overview/entries/admin/demo-configuration/label/de?'Univention SDB' \
+	ucs/web/overview/entries/admin/demo-configuration/link?'http://sdb.univention.de' \
+	ucs/web/overview/entries/admin/demo-configuration/priority?'80'
 
 if  [ "$1" = 'configure' -a -n "$2" ] && dpkg --compare-versions "$2" lt '2.0.0-0'; then
         mkdir -p /etc/univention/templates/removed/
@@ -61,6 +63,8 @@ case "$1" in
 		invoke-rc.d univention-management-console-server reload
 		univention-config-registry commit /etc/nagios3/apache2.conf
 		invoke-rc.d apache2 reload
+		# hide the Administrator account by default
+		udm users/user modify --dn "uid=Administrator,cn=users,$ldap_base" --set objectFlag=hidden
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 		;;
