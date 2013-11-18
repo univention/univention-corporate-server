@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+
+  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+
+  %entities;
+]>
+<book lang="en" id="computers-3.2">
+    <bookinfo>
+      <title>Univention Corporate Server</title>
+      <subtitle>Extended computer management documentation</subtitle>
+
+        <revhistory>
+            <revision>
+                <revnumber>3.2-0</revnumber>
+                <date>1 Dec 2013</date>
+            </revision>
+        </revhistory>
+    </bookinfo>
+
+    <chapter>
+        <title>Advanced networking configuration</title>
+
+        <section id="uvmm">
+            <title>Setup for &ucsUVMM;</title>
+            <para>
+                &ucsUVMM; normally replaces eth0 with a bridge interface to connect virtual
+                machines to a network. This was achieved by two init scripts renaming the physical
+                interface eth0 to peth0 and creating a bridge called eth0, into which
+                the physical interface was connected.
+            </para>
+
+            <para>
+                If you configure your own bridges, bonds or VLANs using the UMC or the &ucsUCR;
+                variables described above you need to deactivate these scripts by
+                setting the following UCR variables:
+            </para>
+
+            <programlisting language="sh">
+# for KVM:
+ucr set uvmm/kvm/bridge/autostart=no
+# for Xen:
+ucr set xen/bridge/interface=none
+# After that re-enable the UMC basic setup
+ucr unset umc/modules/setup/network/disabled/by
+            </programlisting>
+
+            <para>
+                The UVMM profiles need to be updated as well, since the name of the network bridge is stored in them.
+                The following command updates all profiles currently using interface <literal>eth0</literal> to use the new bridge <literal>br0</literal>.
+            </para>
+            <programlisting language="sh">
+udm uvmm/profile list --filter interface=eth0 |
+       sed -ne 's/^DN: //p' |
+       xargs -r -n 1 -d '\n' udm uvmm/profile modify --set interface=br0 --dn
+            </programlisting>
+        </section>
+
+	</chapter>
+    <?dbhtml-include href="../stylesheets/piwiki.html"?>
+</book>
