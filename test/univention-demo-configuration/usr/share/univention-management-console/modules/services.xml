@@ -2,12 +2,11 @@
 <umc version="2.0">
 	<module id="services" icon="services" priority="5" version="1.0">
 		<name>System services</name>
-		<description>Control over system services</description>
+		<description>Overview and configuraton of services on the local system</description>
+		<keywords>system,services,daemon</keywords>
 		<categories>
 			<category name="system"/>
 		</categories>
-		<command name="services/query" function="query">
-			<return syntax="Dictionary"/>
-		</command>
+		<command name="services/query" function="query" />
 	</module>
 </umc>

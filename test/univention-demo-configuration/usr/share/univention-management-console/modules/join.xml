@@ -2,13 +2,12 @@
 <umc version="2.0">
 	<module id="join" icon="join" priority="14" version="1.0">
 		<name>Domain join</name>
-		<description>Show overview of join scripts</description>
+		<description>Overview of the domain join status of the local system</description>
+		<keywords>join scripts,domain join,join</keywords>
 		<categories>
 			<category name="system"/>
 		</categories>
-		<!-- should be used only for the grid, so no arg is needed -->
 		<command name="join/scripts/query" function="query" />
-		<!-- Status queries, distinct URLs now -->
 		<command name="join/logview" function="logview"/>
 		<command name="join/joined" function="joined"/>
 		<command name="join/running" function="running"/>

@@ -2,16 +2,20 @@
 <umc version="2.0">
 	<module id="appcenter" icon="appcenter-module" priority="15" version="1.0">
 		<name>App Center</name>
-		<description>Manage (install/uninstall) software packages on your machine</description>
+		<description>Installation of apps and software packages on the local system, repository server configuration</description>
+		<keywords>app center,install,packages,software,updates,components</keywords>
 		<categories>
 			<category name="system"/>
 		</categories>
 
 		<command name="appcenter/working" function="working" />
+		<command name="appcenter/version" function="version" />
+		<command name="appcenter/app_updates" function="app_updates" />
 		<command name="appcenter/query" function="query" />
 		<command name="appcenter/get" function="get" />
 		<!-- ATTENTION: same progress function as in packages -->
 		<command name="appcenter/progress" function="progress"/>
+		<command name="appcenter/buy" function="buy"/>
 
 		<!-- Query: all args are filter args. -->
 		<command name="appcenter/packages/query" function="packages_query" />

@@ -3,17 +3,12 @@
 	<module id="ucr" icon="ucr" priority="13" version="1.0">
 		<name>Univention Configuration Registry</name>
 		<description>Managing UCR variables</description>
+		<keywords>ucr,config,registry,univention config registry,configuration</keywords>
 		<categories>
 			<category name="system"/>
 		</categories>
-		<command name="ucr/get" function="get">
-			<return syntax="Dictionary"/>
-		</command>
-		<command name="ucr/categories" function="categories">
-			<return syntax="Dictionary"/>
-		</command>
-		<command name="ucr/query" function="query">
-			<return syntax="UCR-Variables"/>
-		</command>
+		<command name="ucr/get" function="get" />
+		<command name="ucr/categories" function="categories" />
+		<command name="ucr/query" function="query" />
 	</module>
 </umc>

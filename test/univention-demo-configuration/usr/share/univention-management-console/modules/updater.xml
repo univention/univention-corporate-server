@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
 	<module id="updater" icon="updater" priority="8" version="1.0">
-		<name>Online Update</name>
-		<description>Online Software Update</description>
+		<name>Software update</name>
+		<description>Overview and installation of available updates for the local system</description>
+		<keywords>updater</keywords>
 		<categories>
 			<category name="system"/>
 		</categories>
