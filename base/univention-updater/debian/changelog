@@ -1,3 +1,9 @@
+univention-updater (9.0.38-1) unstable; urgency=low
+
+  * Bug #33426: added a hint to preform a page reload in UMC
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 18 Nov 2013 09:37:41 +0100
+
 univention-updater (9.0.37-1) unstable; urgency=low
 
   * Redirect postup.sh output (Bug #33426)
