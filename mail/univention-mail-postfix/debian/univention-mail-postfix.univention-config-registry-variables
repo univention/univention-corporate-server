@@ -219,3 +219,9 @@ Description[de]=Aktiviert die Unterstützung für virtuelle Mail-Domains
 Description[en]=Activated the support for virtual mail domains
 Type=bool
 Categories=service-mail
+
+[mail/postfix/smtpd/debug]
+Description[de]=Ist diese Option aktiviert, wird der smtpd im Debug-Modus gestartet. Ist die Variable nicht gesetzt, wird der Dienst normal gestartet.
+Description[en]=If this option is enabled, the smtpd is started in debug mode. If the variable is unset, the service is started normally.
+Type=bool
+Categories=service-mail

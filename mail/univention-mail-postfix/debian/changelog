@@ -1,3 +1,9 @@
+univention-mail-postfix (7.0.3-2) unstable; urgency=low
+
+  * added mail/postfix/smtpd/debug (Bug #33201)
+
+ -- Felix Botner <botner@univention.de>  Tue, 18 Jun 2013 13:29:21 +0200
+
 univention-mail-postfix (7.0.3-1) unstable; urgency=low
 
   * changed permissions of mail.warn and mail.err to 640
