@@ -32,46 +32,20 @@
 
 #DEBHELPER#
 
+_divert() {
+	dpkg-divert --package univention-demo-configuration --add --rename --divert "$1.real" "$1"
+}
+
 case "$1" in
-	install)
-		for module in join packages quota reboot services setup sysinfo top ucr updater appcenter
+	install|upgrade)
+		# create necessary diversions
+		_divert /usr/share/univention-management-console-frontend/js/umc/app/login.html
+		for module in join packages quota reboot services setup sysinfo top ucr updater appcenter lib ipchange
 		do
-			dpkg-divert --package univention-demo-configuration --add --rename --divert \
-				/usr/share/univention-management-console/modules/"$module".xml.real \
-				/usr/share/univention-management-console/modules/"$module".xml
-		done
-		for file in \
-			/usr/share/univention-management-console-frontend/js/umc/app/login.html \
-			/etc/univention/templates/files/etc/nagios3/apache2.conf
-		do
-			dpkg-divert --package univention-demo-configuration --add --rename --divert "$file.real" "$file"
-			# copy diverted files such that conf files are not recognized as having been changed
-			[ ! -e "$file" ] && cp "$file.real" "$file"
+			_divert /usr/share/univention-management-console/modules/"$module".xml
 		done
 		;;
-	upgrade|abort-upgrade)
-		# new diverts (Bug #29595), can be removed after the release of UCS 3.1
-		for module in appcenter
-		do
-			dpkg-divert --package univention-demo-configuration --add --rename --divert \
-				/usr/share/univention-management-console/modules/"$module".xml.real \
-				/usr/share/univention-management-console/modules/"$module".xml
-		done
-
-		# login.html changed its location (Bug #33083), for update to UCS 3.2
-		for file in \
-			/usr/share/univention-management-console-frontend/js/umc/app/login.html
-		do
-			dpkg-divert --package univention-demo-configuration --add --rename --divert "$file.real" "$file"
-		done
-
-		for file in \
-			/etc/univention/templates/files/etc/nagios3/apache2.conf
-		do
-			dpkg-divert --package univention-demo-configuration --add --rename --divert "$file.real" "$file"
-			# copy diverted files such that conf files are not recognized as having been changed
-			[ ! -e "$file" ] && cp "$file.real" "$file"
-		done
+	abort-upgrade)
 		;;
 	*)
 		echo "preinst called with unknown argument \`$1'" >&2

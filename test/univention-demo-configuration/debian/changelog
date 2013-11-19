@@ -1,3 +1,10 @@
+univention-demo-configuration (2.0.2-1) unstable; urgency=low
+
+  * Bug #33083: removed /etc/nagios3/apache2.conf, added more XML module
+    files to disallow cretain UMC commands, cleaned up maintainer scripts
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 19 Nov 2013 17:29:31 +0100
+
 univention-demo-configuration (2.0.1-1) unstable; urgency=low
 
   * Bug #33083: adapted package to changes in UCS 3.2, hide Administrator

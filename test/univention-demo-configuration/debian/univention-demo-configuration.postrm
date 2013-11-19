@@ -32,30 +32,49 @@
 
 #DEBHELPER#
 
-# umc overview
-univention-config-registry unset \
-        ucs/web/overview/entries/admin/demo-configuration/description/de \
-        ucs/web/overview/entries/admin/demo-configuration/description \
-        ucs/web/overview/entries/admin/demo-configuration/icon \
-        ucs/web/overview/entries/admin/demo-configuration/label \
-        ucs/web/overview/entries/admin/demo-configuration/label/de \
-        ucs/web/overview/entries/admin/demo-configuration/link \
-        ucs/web/overview/entries/admin/demo-configuration/priority
+eval "$(ucr shell)"
+
+_undivert() {
+	[ -e "$1" -a -e "$file.real" ] && rm -f "$1"  # make sure that also config files are removed
+	dpkg-divert --package univention-demo-configuration --remove --rename "$1"
+}
+
+_list_diverted_files() {
+	LC_ALL=C dpkg-divert --list univention-demo-configuration | sed 's/diversion of \(.*\) to .*/\1/'
+}
 
 case "$1" in
-	remove|purge|disappear|failed-upgrade|abort-install)
+	remove|disappear|failed-upgrade|abort-install)
+		# umc overview
+		univention-config-registry unset \
+			ucs/web/overview/entries/admin/demo-configuration/description/de \
+			ucs/web/overview/entries/admin/demo-configuration/description \
+			ucs/web/overview/entries/admin/demo-configuration/icon \
+			ucs/web/overview/entries/admin/demo-configuration/label \
+			ucs/web/overview/entries/admin/demo-configuration/label/de \
+			ucs/web/overview/entries/admin/demo-configuration/link \
+			ucs/web/overview/entries/admin/demo-configuration/priority
+
 		# remove all diversions associated with this package
-		LC_ALL=C dpkg-divert --list univention-demo-configuration | sed 's/diversion of \(.*\) to .*/\1/' | while read file
+		_list_diverted_files | while read file
 		do
-			[ -e "$file" ] && rm -f "$file"  # make sure that also config files are removed
-			dpkg-divert --package univention-demo-configuration --remove --rename "$file"
+			echo "###   removing file: [ -e "$file" -a -e "$file.real" ]"
+			_undivert "$file"
 		done
 
+		# show the Administrator account by default
+		udm users/user modify --dn "uid=Administrator,cn=users,$ldap_base" --set objectFlag=""
+
+		# disallow anonymous access to nagios
+		ucr set nagios/server/authenticate=yes
+
 		# reload services
-		univention-config-registry commit /etc/nagios3/apache2.conf
+		umc_frontend_new_hash
 		invoke-rc.d apache2 reload
 		invoke-rc.d slapd restart
 		invoke-rc.d univention-management-console-server reload
+		;;
+	purge)
 		;;
 	upgrade)
 		;;

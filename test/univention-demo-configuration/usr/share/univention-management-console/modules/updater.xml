@@ -36,6 +36,5 @@
 		<command name="updater/installer/logfile" function="updater_log_file" />
 		<!-- STATUS: get job status, even if job has finished -->
 		<command name="updater/installer/status" function="updater_job_status" />
-		<command name="updater/hooks/call" function="call_hooks"/>
 	</module>
 </umc>

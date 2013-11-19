@@ -36,35 +36,50 @@
 
 eval "$(ucr shell)"
 
-# umc overview
-univention-config-registry set \
-	ucs/web/overview/entries/admin/demo-configuration/description/de?'Die Univention-Support-Datenbank' \
-	ucs/web/overview/entries/admin/demo-configuration/description?'The Univention support database' \
-	ucs/web/overview/entries/admin/demo-configuration/icon?'/icon/50x50/univention-logo.png' \
-	ucs/web/overview/entries/admin/demo-configuration/label?'Univention SDB' \
-	ucs/web/overview/entries/admin/demo-configuration/label/de?'Univention SDB' \
-	ucs/web/overview/entries/admin/demo-configuration/link?'http://sdb.univention.de' \
-	ucs/web/overview/entries/admin/demo-configuration/priority?'80'
+_divert () {
+	file="$1"
+	dpkg-divert --package univention-demo-configuration --add --rename --divert "$file.real" "$file"
+}
 
-if  [ "$1" = 'configure' -a -n "$2" ] && dpkg --compare-versions "$2" lt '2.0.0-0'; then
-        mkdir -p /etc/univention/templates/removed/
-        files="en.html.d/90sdb_en.html de.html.d/90sdb_de.html"
-        for file in $files; do
-                if [ -e "/etc/univention/templates/files/var/www/ucs-overview/$file" ]; then
-                        mv "/etc/univention/templates/files/var/www/ucs-overview/$file" /etc/univention/templates/removed/
-                fi
-        done
-fi
+_undivert() {
+	[ -e "$1" -a -e "$file.real" ] && rm -f "$1"  # make sure that also config files are removed
+	dpkg-divert --package univention-demo-configuration --remove --rename "$1"
+}
 
 case "$1" in
 	configure)
-		umc_frontend_new_hash
-		invoke-rc.d slapd restart
-		invoke-rc.d univention-management-console-server reload
-		univention-config-registry commit /etc/nagios3/apache2.conf
-		invoke-rc.d apache2 reload
+		# umc overview
+		univention-config-registry set \
+			ucs/web/overview/entries/admin/demo-configuration/description/de?'Die Univention-Support-Datenbank' \
+			ucs/web/overview/entries/admin/demo-configuration/description?'The Univention support database' \
+			ucs/web/overview/entries/admin/demo-configuration/icon?'/icon/50x50/univention-logo.png' \
+			ucs/web/overview/entries/admin/demo-configuration/label?'Univention SDB' \
+			ucs/web/overview/entries/admin/demo-configuration/label/de?'Univention SDB' \
+			ucs/web/overview/entries/admin/demo-configuration/link?'http://sdb.univention.de' \
+			ucs/web/overview/entries/admin/demo-configuration/priority?'80'
+
 		# hide the Administrator account by default
 		udm users/user modify --dn "uid=Administrator,cn=users,$ldap_base" --set objectFlag=hidden
+
+		# remove obsolete nagios template and allow anonymous access
+		_undivert /etc/univention/templates/files/etc/nagios3/apache2.conf
+		ucr set nagios/server/authenticate=no
+
+		if  [ -n "$2" ] && dpkg --compare-versions "$2" lt '2.0.0-0'; then
+				mkdir -p /etc/univention/templates/removed/
+				files="en.html.d/90sdb_en.html de.html.d/90sdb_de.html"
+				for file in $files; do
+						if [ -e "/etc/univention/templates/files/var/www/ucs-overview/$file" ]; then
+								mv "/etc/univention/templates/files/var/www/ucs-overview/$file" /etc/univention/templates/removed/
+						fi
+				done
+		fi
+
+		# reload services
+		umc_frontend_new_hash
+		invoke-rc.d apache2 reload
+		invoke-rc.d slapd restart
+		invoke-rc.d univention-management-console-server reload
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 		;;
