@@ -160,7 +160,7 @@ echo "
 ****************************************************
 
 
-"
+" >>"$UPDATER_LOG" 2>&1
 
 echo -n "Restart UMC server components to finish update... " >>"$UPDATER_LOG" 2>&1
 sleep 10s
