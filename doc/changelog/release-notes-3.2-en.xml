@@ -16,7 +16,7 @@
         <revhistory>
             <revision>
                 <revnumber>3.2-0</revnumber>
-                <date>16 Jul 2013</date>
+                <date>19 Nov 2013</date>
             </revision>
         </revhistory>
 
@@ -388,7 +388,7 @@ done
 		</para>
 
 		<para>
-		  Systems installed with earlier UCS versions than 3.2 need to be changed over
+		  Systems installed with earlier UCS versions than 3.2 can optionally to be changed over
 		  subsequently. Further information can be found at <ulink
 		  url="http://sdb.univention.de/1238"/>.
 		</para>

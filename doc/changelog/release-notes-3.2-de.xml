@@ -15,7 +15,7 @@
         <revhistory>
             <revision>
                 <revnumber>3.2-0</revnumber>
-                <date>16 Jul 2013</date>
+                <date>19 Nov 2013</date>
             </revision>
         </revhistory>
 
@@ -392,7 +392,7 @@ done
 		</para>
 
 		<para>
-		  Systeme, die mit UCS-Versionen vor 3.2 installiert wurden, müssen nachträglich umgestellt
+		  Systeme, die mit UCS-Versionen vor 3.2 installiert wurden, können optional nachträglich umgestellt
 		  werden. Weitere Informationen finden sich unter <ulink
 		  url="http://sdb.univention.de/1237"/>.
 		</para>
