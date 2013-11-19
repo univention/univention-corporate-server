@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-mail-postfix
+fix: 7.0.3-2.207.201311191049
+note:
+version: [1]
+desc: |
+  * The new UCR variable "mail/postfix/smtpd/debug" has been added to configure
+    whether the smtpd should be started in debug mode (default: false).
+bug: [33201]
