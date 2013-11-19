@@ -3,7 +3,7 @@
 	<!ENTITY % entities SYSTEM "../../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<chapter id="chap:udm" status="draft">
+<chapter id="chap:udm">
 	<title>Univention Directory Manager (<acronym>UDM</acronym>)
 		<indexterm><primary>Directory Manager</primary><see>LDAP</see></indexterm>
 		<indexterm><primary>Univention Directory Manager</primary><see>LDAP</see></indexterm>

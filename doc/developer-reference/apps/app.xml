@@ -3,7 +3,7 @@
 	<!ENTITY % entities SYSTEM "../../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<chapter id="chap:app" status="draft">
+<chapter id="chap:app">
 	<title>App Center
 		<indexterm><primary>App center</primary></indexterm>
 	</title>

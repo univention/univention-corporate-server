@@ -3,17 +3,9 @@
 	<!ENTITY % entities SYSTEM "../../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<chapter id="chap:ldap" status="draft">
+<chapter id="chap:ldap">
 	<title>Lightweight Directory Access Protocol (<acronym>LDAP</acronym>) in UCS
 	</title>
-	<remark>PMH: Bug #31269</remark>
-	<important>
-		<para>
-			This chapter is a draft and work in progress!
-			Feedback is appreciated.
-		</para>
-	</important>
-
 	<section id="ldap:general">
 		<title>General</title>
 		<para>
