@@ -37,12 +37,11 @@
 eval "$(ucr shell)"
 
 _divert () {
-	file="$1"
-	dpkg-divert --package univention-demo-configuration --add --rename --divert "$file.real" "$file"
+	dpkg-divert --package univention-demo-configuration --add --rename --divert "$1.real" "$1"
 }
 
 _undivert() {
-	[ -e "$1" -a -e "$file.real" ] && rm -f "$1"  # make sure that also config files are removed
+	[ -e "$1" -a -e "$1.real" ] && rm -f "$1"  # make sure that also config files are removed
 	dpkg-divert --package univention-demo-configuration --remove --rename "$1"
 }
 

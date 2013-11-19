@@ -1,3 +1,9 @@
+univention-demo-configuration (2.0.2-2) unstable; urgency=low
+
+  * Bug #33083: fixed typo in if clause
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 19 Nov 2013 18:03:47 +0100
+
 univention-demo-configuration (2.0.2-1) unstable; urgency=low
 
   * Bug #33083: removed /etc/nagios3/apache2.conf, added more XML module
