@@ -1,3 +1,9 @@
+univention-apache (6.0.16-2) unstable; urgency=low
+
+  * Bug #33130: prevent to cache entries.json and langauges.json in IE < 10
+
+ -- Florian Best <best@univention.de>  Tue, 19 Nov 2013 16:00:48 +0100
+
 univention-apache (6.0.16-1) unstable; urgency=low
 
   * use join script to add link to DC master on non DC master system, not

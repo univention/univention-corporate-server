@@ -35,6 +35,7 @@
 a2enmod auth_pam || true
 a2enmod unique_id || true
 a2enmod rewrite || true
+a2enmod headers || true
 
 if [ "$1" = configure -a -z "$2" ]; then
 	a2dismod ssl || true

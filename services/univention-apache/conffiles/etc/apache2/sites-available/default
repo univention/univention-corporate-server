@@ -43,4 +43,8 @@ print 'RedirectMatch ^/$ /%s' % baseConfig.get('apache2/startsite', 'ucs-overvie
 <Directory /var/www/ucs-overview/>
 	RewriteEngine On
 	RewriteRule ^(de|en).html$ /ucs-overview?lang=$1 [L,R]
+	<FilesMatch "(entries|languages).json">
+		# prevent to cache these files in IE<10
+		Header set Cache-Control "max-age=0, must-revalidate, no-cache, no-store"
+	</FilesMatch>
 </Directory>
