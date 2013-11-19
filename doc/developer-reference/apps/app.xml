@@ -689,14 +689,14 @@
 			</para>
 			<para>
 				This feature can be disabled by stating
-				<literal>UCSOverviewCategory=False</literal>. This may be a good idea if
-				there are multiple web frontends and they should be maintained
+				<literal>UCSOverviewCategory=False</literal>. This may be a good idea
+				if there are multiple web frontends and they should be maintained
 				manually and in one place. In this case the following UCR variables
-				should be set in <filename>postinst</filename> (and removed in
-				<filename>postrm</filename>!):
+				should be set in <filename>postinst</filename> and removed in
+				<filename>postrm</filename> (see also <xref linkend="www:overview" />):
 				<variablelist>
 					<varlistentry>
-						<term>ucs/web/overview/service/<replaceable>appid</replaceable>/icon</term>
+						<term>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/icon</term>
 						<listitem>
 							<simpara>
 								Path to the icon for the link.
@@ -704,26 +704,26 @@
 						</listitem>
 					</varlistentry>
 					<varlistentry>
-						<term>ucs/web/overview/service/<replaceable>appid</replaceable>/label</term>
+						<term>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/label</term>
 						<listitem>
 							<simpara>
 								English version of the headline. German version is
-								<literal>ucs/web/overview/service/<replaceable>appid</replaceable>/label/de</literal>
+								<literal>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/label/de</literal>
 							</simpara>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
-						<term>ucs/web/overview/service/<replaceable>appid</replaceable>/description</term>
+						<term>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/description</term>
 						<listitem>
 							<simpara>
 								English version of the short text below the headline. German
 								version is
-								<literal>ucs/web/overview/service/<replaceable>appid</replaceable>/description/de</literal>
+								<literal>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/description/de</literal>
 							</simpara>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
-						<term>ucs/web/overview/service/<replaceable>appid</replaceable>/link</term>
+						<term>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/link</term>
 						<listitem>
 							<simpara>
 								Link to the web interface. Probably something like
@@ -775,7 +775,7 @@
 	  <section id="app:ucs_registerLDAPExtension">
 		  <title>Registration of LDAP and UDM Extensions</title>
 			<para>
-			<acronym>LDAP</acronym> schema and ACL extensions as well as UDM syntax, UDM hook and UDM extension modules can be installed via the library function <literal>ucs_registerLDAPExtension</literal>, see <xref linkend="join:libraries:shell"/>.
+				<acronym>LDAP</acronym> schema and ACL extensions as well as UDM syntax, UDM hook and UDM extension modules can be installed via the library function <literal>ucs_registerLDAPExtension</literal>, see <xref linkend="join:libraries:shell"/>.
 			</para>
 		</section>
 	</section>
