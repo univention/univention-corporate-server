@@ -3,7 +3,7 @@
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<chapter id="chap:listener" status="draft">
+<chapter id="chap:listener">
 	<title>Univention Directory Listener
 		<indexterm><primary>Directory Listener</primary></indexterm>
 		<indexterm><primary>Listener</primary><see>Directory Listener</see></indexterm>
@@ -11,23 +11,50 @@
 	</title>
 
 	<remark>PMH: Bug #29420</remark>
-	<important>
-		<para>
-			This chapter is a draft and work in progress!
-		</para>
-	</important>
+
 	<para>
-		The Univention Directory Listener is a local service, which is running on all Domain Controller and Member Server System roles. It acts on changes in the LDAP database and locally executes various modules, which configure the local system with data retrieved from global <acronym>LDAP</acronym>.
+	  Replication of the directory data within a UCS domain occurs via the Univention
+	  Directory Listener/Notifier mechanism: 
+
+	  <itemizedlist>
+		<listitem> <simpara>
+		  The &ucsUDL; service runs on all UCS systems.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  On the &ucsMaster; (and possibly existing &ucsBackup; systems) the <emphasis>&ucsUDN;</emphasis> service monitors
+		  changes in the LDAP directory and makes the selected changes available to the &ucsUDL;
+		  services on the other UCS systems.
+		</simpara></listitem>
+	  </itemizedlist>
+
 	</para>
+
 	<para>
-		Listen on LDAP changes.
+	  The active &ucsUDL; instances in the domain connect to a &ucsUDN;
+	  service. If an LDAP change is performed on the &ucsMaster; (all other LDAP
+	  servers in the domain are read-only), this is registered by the &ucsUDN;
+	  and notified to the listener instances.
 	</para>
+
 	<para>
-		Trigger local actions, like re-configuring non-LDAP-aware services.
+	  Each &ucsUDL; instance uses a range of &ucsUDL;
+	  modules. These modules are shipped by the installed applications; the print server package
+	  includes, for example, listener modules which generate the CUPS configuration.
+	</para>
+
+	<para>
+	  &ucsUDL; modules can be used to communicate domain changes to services which are not
+	  LDAP-compatible. The print server CUPS is an example of this: The printer definitions are not
+	  read from the LDAP, but instead from the <filename>/etc/cups/printers.conf</filename>
+	  file. Now, if a printer is saved in the printer management of the &ucsUMC;, it is stored
+	  in the LDAP directory. This change is detected by the &ucsUDL; module
+	  <emphasis>cups-printers</emphasis> and an entry added to, modified or deleted in
+	  <filename>/etc/cups/printers.conf</filename> based on the data in the LDAP.
 	</para>
 
 	<section id="listener:handler">
-		<title>How to write a Listener handler</title>
+		<title>How to write a Listener module</title>
 
 		<para>
 			Header
@@ -98,43 +125,44 @@ modrdn = "1"
 			</varlistentry>
 		</variablelist>
 
-		<para>
-			Handle additions.
-		</para>
-		<para>
-			Handle removal.
-		</para>
-		<para>
-			Handle changes.
-		</para>
-		<para>
-			Handle renames.
-		</para>
+		<!-- <para> -->
+		<!-- 	Handle additions. -->
+		<!-- </para> -->
+		<!-- <para> -->
+		<!-- 	Handle removal. -->
+		<!-- </para> -->
+		<!-- <para> -->
+		<!-- 	Handle changes. -->
+		<!-- </para> -->
+		<!-- <para> -->
+		<!-- 	Handle renames. -->
+		<!-- </para> -->
 </section>
 
-	<section id="listener:packaging">
-		<title>How to package a Listener handler</title>
-		<para>
-			invoke-rc.d univention-directory-listener reload
-		</para>
-	</section>
+	<!-- <section id="listener:packaging"> -->
+	<!-- 	<title>How to package a Listener module</title> -->
+	<!-- 	<para> -->
+	<!-- 		invoke-rc.d univention-directory-listener reload -->
+	<!-- 	</para> -->
+	<!-- </section> -->
 
 	<section id="listener:example">
-		<title>Example</title>
-		<para>
-			<ulink url="http://wiki.univention.de/index.php?title=Entwicklung_von_Univention_Directory_Listener-Modulen"/>
-		</para>
+	  <title>Example</title>
+	  <para>
+		An example module can be found here (currently only available in German):
+		<ulink url="http://wiki.univention.de/index.php?title=Entwicklung_von_Univention_Directory_Listener-Modulen"/>
+	  </para>
 	</section>
 
-	<section id="listener:internal">
-		<title>Internals</title>
-		<para>
-			<filename class="directory">/var/lib/univention-directory-listener/</filename>
-		</para>
-		<para>
-			<ulink url="https://hutten.knut.univention.de/mediawiki/index.php/Arvid_memo/Listener"/>
-		</para>
-	</section>
+	<!-- <section id="listener:internal"> -->
+	<!-- 	<title>Internals</title> -->
+	<!-- 	<para> -->
+	<!-- 		<filename class="directory">/var/lib/univention-directory-listener/</filename> -->
+	<!-- 	</para> -->
+	<!-- 	<para> -->
+	<!-- 		<ulink url="https://hutten.knut.univention.de/mediawiki/index.php/Arvid_memo/Listener"/> -->
+	<!-- 	</para> -->
+	<!-- </section> -->
 
 </chapter>
 <!-- vim:set ts=2 sw=2 noet ft=docbk:-->

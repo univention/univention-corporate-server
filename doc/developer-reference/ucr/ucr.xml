@@ -4,7 +4,7 @@
 	%entities;
 ]>
 <chapter id="chap:ucr">
-	<title>Univention Config Registry (<acronym>UCR</acronym>)
+	<title>Univention Config Registry
 		<indexterm><primary>Config Registry</primary></indexterm>
 		<indexterm><primary>UCR</primary><see>Config Registry</see></indexterm>
 		<indexterm><primary>Registry</primary><see>Config Registry</see></indexterm>

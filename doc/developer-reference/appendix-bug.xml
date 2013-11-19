@@ -3,17 +3,11 @@
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<appendix id="chap:bug" status="draft">
+<appendix id="chap:bug">
 	<title>Bug reporting
 		<indexterm><primary>Bugzilla</primary></indexterm>
 		<indexterm><primary>Bug</primary><see>Bugzilla</see></indexterm>
 	</title>
-	<important>
-		<para>
-			This chapter is a draft and work in progress!
-			Feedback is already appreciated.
-		</para>
-	</important>
 	<para><acronym>UCS</acronym> is neither error free nor feature complete. Issues are tracked using Bugzilla at <ulink url="https://forge.univention.org/bugzilla/"/>.</para>
 	<para>Create an account.</para>
 	<para>Search for existing entries before opening new reports.</para>
@@ -23,13 +17,13 @@
 	<para>Search <ulink url="http://wiki.univention.de/"/></para>
 	<para>Search <ulink url="http://forum.univention.de/"/> and ask for help. In addition to our support team many of our partners are also present there. Your questions might also help other users while you may profit from issues already solved for other users.</para>
 
-	<section id="bug:contributing">
-		<title>Contributing back</title>
-		<para>
-			Send patches.
-			FIXME: http://wiki.univention.de/index.php?title=Development → Contribution to UCS
-		</para>
-	</section>
+	<!-- <section id="bug:contributing"> -->
+	<!-- 	<title>Contributing back</title> -->
+	<!-- 	<para> -->
+	<!-- 		Send patches. -->
+	<!-- 		FIXME: http://wiki.univention.de/index.php?title=Development → Contribution to UCS -->
+	<!-- 	</para> -->
+	<!-- </section> -->
 
 </appendix>
 <!-- vim:set ts=2 sw=2 noet ft=docbk:-->

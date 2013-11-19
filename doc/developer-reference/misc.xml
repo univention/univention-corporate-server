@@ -5,14 +5,8 @@
 ]>
 <chapter id="chap:misc">
 	<title>Miscellaneous</title>
-	<important>
-		<para>
-			This chapter is a draft and work in progress!
-			Feedback is already appreciated.
-		</para>
-	</important>
 
-	<section id="misc:database" status="draft">
+	<section id="misc:database">
 		<title>Databases
 			<indexterm><primary>Database</primary></indexterm>
 		</title>
@@ -308,14 +302,14 @@ override_dh_auto_test:
 		</section>
 	</section>
 
-	<section id="misc:acl" status="draft">
+	<section id="misc:acl">
 		<title>Login Access Control</title>
 		<para>
 			<filename>/etc/security/access-*.conf</filename>
 		</para>
 	</section>
 
-	<section id="misc:nacl" status="draft">
+	<section id="misc:nacl">
 		<title>Network Packet Filter</title>
 		<remark>PMH: Bug #24589 is outdated, see Bug #23577 for latest format</remark>
 

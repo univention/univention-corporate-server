@@ -3,7 +3,7 @@
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<chapter id="chap:updater" status="draft">
+<chapter id="chap:updater">
 	<title>Univention Updater
 		<indexterm><primary>Updater</primary><secondary>System update</secondary></indexterm>
 		<indexterm><primary>Update</primary><see>Updater</see></indexterm>

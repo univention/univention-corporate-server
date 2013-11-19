@@ -4,17 +4,17 @@
 	%entities;
 ]>
 <preface id="intro:foreword">
-	<title>Forword</title>
-	<para>This document is for persons interested in extending &ucsUCS; (<acronym>UCS</acronym>) and developing applications on UCS.</para>
+  <title>Foreword</title>
+  <para>
+	This developer guide provides information to extend &ucsUCS;. It it targeted at third party
+	vendors who intend to provide applications for the Univention App Center and for power users who
+	wish to deploy locally built or modified software.
+  </para>
 
-	<section id="intro:audience">
-		<title>Audience</title>
-		<para>This guide is for software developers and application providers.</para>
-	</section>
+  <para>
+	Feedback is very welcome! Please either file a bug (see <xref linkend="chap:bug"/>) or send an
+	e-mail to feedback@univention.de
+  </para>
 
-	<section id="intro:convention">
-		<title>Conventions</title>
-		<para>The following sytles are used in this document:</para>
-	</section>
 </preface>
 <!-- vim:set ts=2 sw=2 noet ft=docbk:-->

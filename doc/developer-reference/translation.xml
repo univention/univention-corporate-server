@@ -5,14 +5,8 @@
 ]>
 <chapter id="chap:translation">
 	<title>Translating UCS</title>
-	<important>
-		<para>
-			This chapter is a draft and work in progress!
-			Feedback is already appreciated.
-		</para>
-	</important>
 
-	<section id="misc:translation" status="draft">
+	<section id="misc:translation">
 		<title>&ucsUMC; translations
 			<indexterm><primary>Translation</primary></indexterm>
 			<indexterm><primary>Localisation</primary><see>Translation</see></indexterm>

@@ -28,40 +28,18 @@
 			</para>
 
 			<para>
-				<trademark class="registered">Linux</trademark> is a registered trademark of Linus Torvalds.
+			  <trademark class="registered">Linux</trademark> is a registered trademark of Linus Torvalds.
 			</para>
 		</legalnotice>
-		<releaseinfo>Draft</releaseinfo>
 		<revhistory>
 			<revision>
 				<revnumber>3.2-0</revnumber>
-				<date><?dbtimestamp format="Y-m-d"?></date>
-				<authorinitials>pmh</authorinitials>
-				<revremark>Draft</revremark>
+				<date>19th of November 2013</date>
 			</revision>
 		</revhistory>
 	</bookinfo>
 
-	<!--
-	<dedication>
-		<para>This is dedicated to all fellow Open Source developers.</para>
-	</dedication>
-	-->
-
-	<colophon>
-		<!--
-		<para>Almost no animals were harmed during the making of this manual.</para>
-		-->
-		<important>
-		<para>
-			This document is still <emphasis>work in progress</emphasis> and is released only as a first draft.
-			Feedback is already appreciated.
-		</para>
-		</important>
-	</colophon>
-	<!--
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="introduction.xml"/>
-	-->
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="packaging/packaging.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ucr/ucr.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join/join.xml"/>

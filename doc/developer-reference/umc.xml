@@ -3,19 +3,13 @@
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<chapter id="chap:umc" status="draft">
+<chapter id="chap:umc">
 	<title>Univention Management Console (<acronym>UMC</acronym>)
 		<indexterm><primary>Management Console</primary></indexterm>
 		<indexterm><primary>Univention Management Console</primary><see>Management Console</see></indexterm>
 		<indexterm><primary>UMC</primary><see>Management Console</see></indexterm>
 	</title>
 	<remark>PMH: Bug #31269</remark>
-	<important>
-		<para>
-			This chapter is a draft and work in progress!
-			Feedback is already appreciated.
-		</para>
-	</important>
 	<para>
 		The Univention Management Console (<acronym>UMC</acronym>) is the web-based management application provided by <acronym>UCS</acronym>.
 	</para>
@@ -121,16 +115,6 @@ Icons: umc/icons
 			]]></programlisting>
 		</section>
 
-		<section id="umc:translation">
-			<title>UMC Translation Files
-				<indexterm><primary>Management Console</primary><secondary>Translations</secondary></indexterm>
-			</title>
-			<para>
-				Translation for Python code files.
-				Translation for JavaScript code files.
-				Translation for XML files.
-			</para>
-		</section>
 	</section>
 
 	<section id="umc:module">

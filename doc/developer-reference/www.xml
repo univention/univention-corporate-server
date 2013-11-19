@@ -8,12 +8,6 @@
 		<indexterm><primary>Web Services</primary></indexterm>
 		<indexterm><primary>Apache</primary><see>Web Services</see></indexterm>
 	</title>
-	<important>
-		<para>
-			This chapter is a draft and work in progress!
-			Feedback is already appreciated.
-		</para>
-	</important>
 	<para>
 		<acronym>UCS</acronym> systems are managed by <xref linkend="chap:umc"/>, but additional web services might be provided by hosts. Opening the <acronym>URL</acronym> <ulink url="http://localhost/ucs-overview/"/> will show a overview page, which links to additional web resources.
 	</para>
@@ -83,13 +77,13 @@ Subfile: var/www/ucs-overview/en.html.d/50univention-wiki.html
 		</variablelist>
 	</section>
 
-	<section id="www:rest" status="draft">
-		<title>RESTful</title>
-		<para>
-			See <command>umc-client</command> and <command>umc-command</command>.
-			Until then: JSON.
-		</para>
-	</section>
+	<!-- <section id="www:rest"> -->
+	<!-- 	<title>RESTful</title> -->
+	<!-- 	<para> -->
+	<!-- 		See <command>umc-client</command> and <command>umc-command</command>. -->
+	<!-- 		Until then: JSON. -->
+	<!-- 	</para> -->
+	<!-- </section> -->
 
 </chapter>
 <!-- vim:set ts=2 sw=2 noet ft=docbk:-->

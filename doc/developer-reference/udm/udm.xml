@@ -10,12 +10,7 @@
 		<indexterm><primary>UDM</primary><see>LDAP</see></indexterm>
 	</title>
 	<remark>PMH: Bug #31269</remark>
-	<important>
-		<para>
-			This chapter is a draft and work in progress!
-			Feedback is already appreciated.
-		</para>
-	</important>
+
 	<para>
 		The Univention Directory Manager (<acronym>UDM</acronym>) is a wrapper for <acronym>LDAP</acronym> objects.
 		Traditionally <acronym>LDAP</acronym> stores objects as a collection of attributes, which are defines by so called schemata.
@@ -765,7 +760,9 @@ udm settings/extended_attribute modify \
 		<title>UDM Modules</title>
 		<remark>PMH: Bug #29525</remark>
 		<para>
-			<ulink url="http://wiki.univention.de/index.php?title=Entwicklung_und_Integration_eigener_Module_in_Univention_Directory_Manager"/>
+		  The development of Univention Directory Manager modules is currently only documented in
+		  Univention Wiki (currently only available in German):
+		  <ulink url="http://wiki.univention.de/index.php?title=Entwicklung_und_Integration_eigener_Module_in_Univention_Directory_Manager"/>
 		</para>
 	</section>
 
@@ -1559,25 +1556,25 @@ udm settings/syntax create "$@" --ignore_exists \
 		</variablelist>
 	</section>
 
-	<section id="udm:acl">
-		<title>LDAP Access Control Lists
-			<indexterm><primary>LDAP</primary><secondary>ACL</secondary></indexterm>
-		</title>
-		<remark>SG: might be too much</remark>
-		<remark>PMH: but needed by us</remark>
-		<para>
-			OpenLDAP ACLs: break, continue, ...
-		</para>
-	</section>
+	<!-- <section id="udm:acl"> -->
+	<!-- 	<title>LDAP Access Control Lists -->
+	<!-- 		<indexterm><primary>LDAP</primary><secondary>ACL</secondary></indexterm> -->
+	<!-- 	</title> -->
+	<!-- 	<remark>SG: might be too much</remark> -->
+	<!-- 	<remark>PMH: but needed by us</remark> -->
+	<!-- 	<para> -->
+	<!-- 		OpenLDAP ACLs: break, continue, ... -->
+	<!-- 	</para> -->
+	<!-- </section> -->
 
-	<section id="udm:ldap:common-attributes">
-		<title>Common LDAP Attributes
-			<indexterm><primary>LDAP</primary><secondary>attributes</secondary></indexterm>
-		</title>
-		<para>
-			Do not re-invent the wheel, use existing LDAP attributes.
-		</para>
-	</section>
+	<!-- <section id="udm:ldap:common-attributes"> -->
+	<!-- 	<title>Common LDAP Attributes -->
+	<!-- 		<indexterm><primary>LDAP</primary><secondary>attributes</secondary></indexterm> -->
+	<!-- 	</title> -->
+	<!-- 	<para> -->
+	<!-- 		Do not re-invent the wheel, use existing LDAP attributes. -->
+	<!-- 	</para> -->
+	<!-- </section> -->
 
 </chapter>
 <!-- vim:set ts=2 sw=2 noet ft=docbk:-->
