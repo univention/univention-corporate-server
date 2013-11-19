@@ -196,7 +196,7 @@ of the profile variables can be retrieved dynamically during the
 installation. At present, <varname>hostname</varname> is the only profile
 variable supported. If <literal>scan=hostname</literal> is entered, the
 computer name is procured via the computer's IP address by means of
-a name server request during the installation. <varname>scan</varname>supports
+a name server request during the installation. <varname>scan</varname> supports
 the parameter <literal>all</literal>. If <literal>scan=all</literal> is used, all the
 profile variables supported by <varname>scan</varname> are imported during the
 installation. If more than one value is specified, the values are
@@ -207,7 +207,7 @@ separated by blank spaces.
 <row>
 <entry>ignore</entry>
 <entry>
-The value for the <varname>ignore</varname>option can
+The value for the <varname>ignore</varname> option can
 include profile variables that are not to be checked. If, for
 example, <literal>scan=hostname</literal> is set, <literal>ignore=hostname</literal>
 must also be set. <varname>ignore</varname> must also be used if system
@@ -293,7 +293,7 @@ underscores and must begin with a letter.
 The system role. You may choose
 from <literal>domaincontroller_master</literal>, <literal>domaincontroller_backup</literal>,
 <literal>domaincontroller_slave</literal> <literal>memberserver</literal>, <literal>managed_client</literal>,
-<literal>mobile_client</literal>and <literal>base</literal>. The properties of the
+<literal>mobile_client</literal> and <literal>base</literal>. The properties of the
 system roles are described in the domain services chapter of the UCS
 manual <biblioref linkend="ucs-handbuch"/>.
 </entry>
