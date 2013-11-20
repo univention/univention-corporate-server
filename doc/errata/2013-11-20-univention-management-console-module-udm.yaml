@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-management-console-module-udm
+fix: 4.0.97-2.418.201311201441
+note:
+version: [0]
+desc: |
+  This errata update fixes several issues:
+  * After cancelling the creation of an LDAP object it may have been impossible
+    to open an existing object.
+bug: [33244]
