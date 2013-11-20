@@ -1,3 +1,9 @@
+firefox-de (1:24.1.1esr-6) unstable; urgency=low
+
+  * Update to Firefox 21.1.1esr (Bug #33451)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 20 Nov 2013 18:20:30 +0100
+
 firefox-de (1:17.0.9esr-4) unstable; urgency=low
 
   * Update to Firefox 17.0.9esr (Bug #32624)
