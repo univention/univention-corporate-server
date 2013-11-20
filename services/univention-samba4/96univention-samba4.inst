@@ -253,7 +253,14 @@ run_samba_provision() {
 	if [ "$rc" != 0 ]; then
 		exit "$rc"
 	fi
-	univention-config-registry set windows/wins-support=yes windows/wins-server?"localhost"
+
+	# do not start wins in an ipv6 (only) setup
+	wins=yes
+	if [ -z "$(get_default_ipv4_address)" ]; then
+		wins=no
+		echo "WARNING: Wins support deactivated (this is an ipv6 only environment)."
+	fi
+	univention-config-registry set windows/wins-support="$wins" windows/wins-server?"localhost"
 
 	if ! [ -r "/etc/krb5.keytab" ]; then
 		echo "/etc/krb5.keytab does not exist yet."
