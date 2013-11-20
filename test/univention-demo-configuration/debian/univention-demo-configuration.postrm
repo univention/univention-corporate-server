@@ -57,6 +57,12 @@ case "$1" in
 			ucs/web/overview/entries/admin/demo-configuration/link \
 			ucs/web/overview/entries/admin/demo-configuration/priority
 
+		# enable update checks again
+		ucr set update/check/cron/enabled=yes
+		ucr unset --force \
+			update/reboot/required \
+			update/available
+
 		# remove all diversions associated with this package
 		_list_diverted_files | while read file
 		do

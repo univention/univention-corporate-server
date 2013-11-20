@@ -54,6 +54,12 @@ case "$1" in
 			ucs/web/overview/entries/admin/demo-configuration/link?'http://sdb.univention.de' \
 			ucs/web/overview/entries/admin/demo-configuration/priority?'80'
 
+		# disable update checks and hints for available updates
+		ucr set update/check/cron/enabled=no
+		ucr set --force \
+			update/reboot/required=false \
+			update/available=false
+
 		# hide the Administrator account by default
 		udm users/user modify --dn "uid=Administrator,cn=users,$ldap_base" --set objectFlag=hidden
 
