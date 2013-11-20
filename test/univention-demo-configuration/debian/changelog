@@ -1,3 +1,9 @@
+univention-demo-configuration (2.0.2-4) unstable; urgency=low
+
+  * Bug #33083: fixed path typo in preinst script
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 20 Nov 2013 17:20:16 +0100
+
 univention-demo-configuration (2.0.2-3) unstable; urgency=low
 
   * Bug #33083: fixed problems in maintainer scripts, do not allow renaming of

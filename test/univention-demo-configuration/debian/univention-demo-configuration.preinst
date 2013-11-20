@@ -41,8 +41,8 @@ case "$1" in
 		# create necessary diversions
 		for file in \
 			/usr/share/univention-management-console-frontend/js/umc/app/login.html \
-			/usr/share/univention-management-console-frontend/js/umc/app/i18n/de/branding.json \
-			/usr/share/univention-management-console-frontend/js/umc/app/i18n/en/branding.json
+			/usr/share/univention-management-console-frontend/js/umc/i18n/de/branding.json \
+			/usr/share/univention-management-console-frontend/js/umc/i18n/en/branding.json
 		do
 			_divert  $file
 		done
