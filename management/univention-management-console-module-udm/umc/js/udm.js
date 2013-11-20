@@ -1400,6 +1400,13 @@ define([
 				// do it this way: if dialog was never shown
 				//   hide returns undefined
 				when(hideDeferred).then(lang.hitch(this, function() {
+					// really remove _newObjectDialog (on('hide') tried before):
+					//   dialog may never have been shown
+					//   so no onHide() call. See comment above
+					if (this._newObjectDialog) {
+						this._newObjectDialog.destroyRecursive();
+						this._newObjectDialog = null;
+					}
 					this.selectChild(this._detailPage);
 				}));
 			}));

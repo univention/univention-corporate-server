@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.97-2) unstable; urgency=low
+
+  * Bug #33244: Fixed UDM wizard preventing opening of existing UDM objects
+    when the creation of an object was cancelled before.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 20 Nov 2013 14:34:40 +0100
+
 univention-management-console-module-udm (4.0.97-1) unstable; urgency=low
 
   * Bug #33150: fixed typo
