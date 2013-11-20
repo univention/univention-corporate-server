@@ -927,74 +927,76 @@ The generated profiles are copied into the
 repository server.
 </para>
 
-<section><title>Assignment of a computer for automatic installation</title>
-<para>
-A computer to be installed via Univention Net Installer must firstly
-be registered in the computer management of the &ucsUMC;. The
-following values must be set as a minimum:
-</para>
-<itemizedlist>
-<listitem><simpara>Hostname (General tab)</simpara></listitem>
-<listitem><simpara>MAC address (General tab)</simpara></listitem>
-<listitem><simpara>IP address (General tab)</simpara></listitem>
-<listitem><simpara>DNS forward and reverse zone entries (General tab)</simpara></listitem>
-<listitem><simpara>DHCP service entry (General tab)</simpara></listitem>
-</itemizedlist>
-<para>
-The <guimenu>(Re-)install on next boot</guimenu> option must now be
-activated in the <guimenu>Advanced settings</guimenu> tab
-under <guimenu>Deployment</guimenu>.
-</para>
-<para>
-The name of the installation profile under
-<filename class="directory">/var/lib/univention-repository/profiles/</filename> can be
-entered under <guimenu>Name of installation profile</guimenu>. The
-file name of the profile should be entered without specifying the
-path.
-</para>
-<para>
-Options entered under <guimenu>Additonal start options</guimenu> are
-passed on to the kernel in network-based installations, e.g., for the
-deactivation of ACPI during system start.
-</para>
-<para>
-A profile-based installation is performed as standard in installations
-with the Univention Net Installer. If one wishes to perform an
-interactive installation instead, the <guimenu>Interactive
-installation</guimenu> option must be activated. If any installation
-profile is entered, then it is no longer used.
-</para>
-<para>
-A PXE configuration file is created for every computer object
-under <filename class="directory">/var/lib/univention-client-boot/</filename>.
-</para>
-<para>
-It must be verified that the boot order in BIOS of the system to be
-installed prefers a PXE network boot over hard disks or CD-ROMs.
-</para>
-<para>
-The next time a restart is performed, the computer boots via PXE and
-is installed via the network. If no profile has been specified, a list
-of existing profiles is shown at the beginning of the installation for
-selection. If the selected profile includes an error, meaning it
-can't be loaded, an error message is emitted. It is then possible
-to select another profile.
-</para>
-<para>
-User inputs are only required for profile-based installations if a
-profile password is specified in the profile or variables with
-<varname>to_check</varname> are explicitly entered for requests (see 
-<xref linkend="profile:variables:general"/>). If
-<varname>to_check</varname> is not used, a request may be given for
-essential variables with missing or erroneous values.
-</para>
-<caution>
+<section>
+  <title>Assignment of a computer for automatic installation</title>
+  <para>
+	A computer to be installed via Univention Net Installer must firstly
+	be registered in the computer management of the &ucsUMC;. The
+	following values must be set as a minimum:
+  </para>
+
+  <itemizedlist>
+	<listitem><simpara>Hostname (General tab)</simpara></listitem>
+	<listitem><simpara>MAC address (General tab)</simpara></listitem>
+	<listitem><simpara>IP address (General tab)</simpara></listitem>
+	<listitem><simpara>DNS forward and reverse zone entries (General tab)</simpara></listitem>
+	<listitem><simpara>DHCP service entry (General tab)</simpara></listitem>
+  </itemizedlist>
+  <para>
+	The <guimenu>(Re-)install on next boot</guimenu> option must now be
+	activated in the <guimenu>Advanced settings</guimenu> tab
+	under <guimenu>Deployment</guimenu>.
+  </para>
+  <para>
+	The name of the installation profile under
+	<filename class="directory">/var/lib/univention-repository/profiles/</filename> can be
+	entered under <guimenu>Name of installation profile</guimenu>. The
+	file name of the profile should be entered without specifying the
+	path.
+  </para>
+  <para>
+	Options entered under <guimenu>Additonal start options</guimenu> are
+	passed on to the kernel in network-based installations, e.g., for the
+	deactivation of ACPI during system start.
+  </para>
+  <para>
+	A profile-based installation is performed as standard in installations
+	with the Univention Net Installer. If one wishes to perform an
+	interactive installation instead, the <guimenu>Interactive
+	installation</guimenu> option must be activated. If any installation
+	profile is entered, then it is no longer used.
+  </para>
+  <para>
+	A PXE configuration file is created for every computer object
+	under <filename class="directory">/var/lib/univention-client-boot/</filename>.
+  </para>
+  <para>
+	It must be verified that the boot order in BIOS of the system to be
+	installed prefers a PXE network boot over hard disks or CD-ROMs.
+  </para>
+  <para>
+	The next time a restart is performed, the computer boots via PXE and
+	is installed via the network. If no profile has been specified, a list
+	of existing profiles is shown at the beginning of the installation for
+	selection. If the selected profile includes an error, meaning it
+	can't be loaded, an error message is emitted. It is then possible
+	to select another profile.
+  </para>
+  <para>
+	User inputs are only required for profile-based installations if a
+	profile password is specified in the profile or variables with
+	<varname>to_check</varname> are explicitly entered for requests (see 
+	<xref linkend="profile:variables:general"/>). If
+	<varname>to_check</varname> is not used, a request may be given for
+	essential variables with missing or erroneous values.
+  </para>
+  <caution>
     <para>
-The UMC option <guimenu>(Re-)install on next boot</guimenu>
-must be removed again during or after the installation or
-else it will be reinstalled every time the host is booted!
+	  The UMC option <guimenu>(Re-)install on next boot</guimenu>
+	  must be removed again during or after the installation or
+	  else it will be reinstalled every time the host is booted!
     </para>
-</caution>
+  </caution>
 </section>
 
 </section>
