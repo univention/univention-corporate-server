@@ -252,6 +252,26 @@ system was started.
 </entry>
 </row>
 
+<row>
+  <entry>installation_feedback_host</entry>
+  <entry>
+	If <emphasis>univention-net-installer-daemon</emphasis> has been setup to reset the
+	<guimenu>(Re-)install on next boot</guimenu> option in the &ucsUMC; (see <xref
+	linkend="profile:assign"/>), this variable specifies the host where the daemon is running.
+  </entry>
+</row>
+
+<row>
+  <entry>installation_feedback_port</entry>
+  <entry>
+	If the daemon for resetting the <guimenu>(Re-)install on next boot</guimenu> flag has been
+	configured (see profile variable <emphasis>installation_feedback_host</emphasis>), this variable
+	can be used to specify the port where the daemon is listening for connections. This variable
+	only needs to be configured if the daemon is running on a non-default port. If unset, 49173 is
+	used.
+  </entry>
+</row>
+
 </tbody>
 </tgroup>
 </table>
@@ -927,7 +947,7 @@ The generated profiles are copied into the
 repository server.
 </para>
 
-<section>
+<section id="profile:assign">
   <title>Assignment of a computer for automatic installation</title>
   <para>
 	A computer to be installed via Univention Net Installer must firstly
@@ -990,11 +1010,22 @@ repository server.
 	<varname>to_check</varname> is not used, a request may be given for
 	essential variables with missing or erroneous values.
   </para>
+
+  <para>
+	By default the <guimenu>(Re-)install on next boot</guimenu> option needs to be reset manually
+	after the installation has finished. If the package
+	<emphasis>univention-net-installer-daemon</emphasis> is installed on the server, the flag can be
+	reset automatically. The daemon needs to be configured in the installation profile using the
+	variables <emphasis>installation_feedback_host</emphasis> and
+	<emphasis>installation_feedback_port</emphasis> (see <xref
+	linkend="profile:variables:general"/>).
+  </para>
+
   <caution>
     <para>
-	  The UMC option <guimenu>(Re-)install on next boot</guimenu>
-	  must be removed again during or after the installation or
-	  else it will be reinstalled every time the host is booted!
+	  If the <emphasis>univention-net-installer-daemon</emphasis> isn't setup, the option
+	  <guimenu>(Re-)install on next boot</guimenu>  must be removed again during or after the
+	  installation or  else it will be reinstalled every time the host is booted!
     </para>
   </caution>
 </section>
