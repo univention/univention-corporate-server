@@ -7,5 +7,6 @@
 		<categories>
 			<category name="system"/>
 		</categories>
+		<command name="sysinfo/traceback" function="upload_traceback" />
 	</module>
 </umc>

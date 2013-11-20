@@ -32,6 +32,8 @@
 
 #DEBHELPER#
 
+. /usr/share/univention-lib/umc.sh
+
 eval "$(ucr shell)"
 
 _undivert() {
@@ -58,7 +60,6 @@ case "$1" in
 		# remove all diversions associated with this package
 		_list_diverted_files | while read file
 		do
-			echo "###   removing file: [ -e "$file" -a -e "$file.real" ]"
 			_undivert "$file"
 		done
 

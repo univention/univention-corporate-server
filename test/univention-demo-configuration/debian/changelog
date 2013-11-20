@@ -1,3 +1,10 @@
+univention-demo-configuration (2.0.2-3) unstable; urgency=low
+
+  * Bug #33083: fixed problems in maintainer scripts, do not allow renaming of
+    Administrator, enable sysinfo UMC module, added branding.json files
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 20 Nov 2013 17:14:08 +0100
+
 univention-demo-configuration (2.0.2-2) unstable; urgency=low
 
   * Bug #33083: fixed typo in if clause
@@ -20,13 +27,13 @@ univention-demo-configuration (2.0.1-1) unstable; urgency=low
 
 univention-demo-configuration (2.0.0-3) unstable; urgency=low
 
-  * new ucs overview (Bug #32611) 
+  * new ucs overview (Bug #32611)
 
  -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2013 14:46:35 +0200
 
 univention-demo-configuration (2.0.0-2) unstable; urgency=low
 
-  * new ucs overview (Bug #32611) 
+  * new ucs overview (Bug #32611)
 
  -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2013 14:41:46 +0200
 

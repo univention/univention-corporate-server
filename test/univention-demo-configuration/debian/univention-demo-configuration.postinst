@@ -33,12 +33,9 @@
 #DEBHELPER#
 
 . /usr/share/univention-lib/all.sh
+. /usr/share/univention-lib/umc.sh
 
 eval "$(ucr shell)"
-
-_divert () {
-	dpkg-divert --package univention-demo-configuration --add --rename --divert "$1.real" "$1"
-}
 
 _undivert() {
 	[ -e "$1" -a -e "$1.real" ] && rm -f "$1"  # make sure that also config files are removed
