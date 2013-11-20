@@ -13,7 +13,7 @@
   <revhistory>
      <revision>
         <revnumber>3.2-0</revnumber>
-        <date>1 Dec 2013</date>
+        <date>19 Nov 2013</date>
      </revision>
   </revhistory>
 </bookinfo>
@@ -822,7 +822,7 @@ formatted using the Logical Volume Manager (LVM).
   <entry>
 	If this variable is set to <emphasis>GPT</emphasis>, the partitioning is performed in the  GUID
 	Partition Table standard (GPT). If configured to <emphasis>MBR</emphasis>, a master boot record
-	is written (this is deprecated). The entry is not necessary with automatic partitioning.
+	is written (this is deprecated).
   </entry>
 </row>
 
