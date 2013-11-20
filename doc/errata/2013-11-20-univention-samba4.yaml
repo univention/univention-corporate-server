@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-samba4
+fix: 3.0.39-2.558.201311201522
+note:
+version: [0]
+desc: |
+  Samba4 could not be started on host with only IPv6 interfaces.
+  This has been fixed by deactivating wins support on IPv6 hosts.
+bug: [33250]
