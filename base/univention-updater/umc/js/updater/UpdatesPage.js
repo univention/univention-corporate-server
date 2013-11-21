@@ -138,7 +138,6 @@ define([
 							this.onQuerySuccess('updater/updates/query');
 							var element_releases = this._form.getWidget('releases');
 							var to_show = false;
-							var to_show_msg = true;
 
 							var element_updatestext = this._form.getWidget('ucs_updates_text');
 							element_updatestext.set('content', _("There are no release updates available."));
@@ -147,7 +146,6 @@ define([
 							{
 								var val = values[values.length-1].id;
 								to_show = true;
-								to_show_msg = false;
 								element_releases.set('value', val);
 							}
 
@@ -156,15 +154,21 @@ define([
 							if ((blocking_component) && (! appliance_mode)) {
 								// further updates are available but blocked by specified component which is required for update
 								element_updatestext.set('content', lang.replace(_("Further release updates are available but cannot be installed because the component '{0}' is not available for newer release versions."), [blocking_component]));
-								to_show_msg = true;
+								this._form.showWidget('ucs_updates_text', true);
+								tools.umcpCommand('appcenter/get_by_component_id', {component_id: blocking_component}, false).then(
+									lang.hitch(this, function(data) {
+										var app = data.result;
+										var appCenterModuleLink = '<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'appcenter\')">' + _('"App Center" module') + '</a>';
+										// further updates are available but blocked by an app not yet updated
+										element_updatestext.set('content', _('Version %(version)s of the application %(name)s is not available for the new release. Use the %(module)s to upgrade this application if possible.', lang.mixin({module: appCenterModuleLink}, app)));
+									})
+								);
 							}
 
 							// hide or show combobox, spacers and corresponding button
 							this._form.showWidget('releases', to_show);
 							this._form.showWidget('hspacer_180px', to_show);
 							this._form.showWidget('vspacer_1em', to_show);
-
-							this._form.showWidget('ucs_updates_text', to_show_msg);
 
 							var but = this._form._buttons.run_release_update;
 							but.set('visible', to_show);
