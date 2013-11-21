@@ -144,6 +144,18 @@ class Instance(umcm.Base):
 				result.append(props)
 		return result
 
+	# used in updater-umc
+	@simple_response
+	def get_by_component_id(self, component_id):
+		try:
+			for app in Application.all(force_reread=True):
+				for version in app.versions:
+					if version.component_id == component_id:
+						return version.to_dict(self.package_manager)
+		except (urllib2.HTTPError, urllib2.URLError) as e:
+			raise umcm.UMC_CommandError(_('Could not query App Center: %s') % e)
+		raise umcm.UMC_CommandError(_('Could not find an application for %s' % component_id))
+
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
 	@simple_response
 	def get(self, application):

@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.139-22) unstable; urgency=low
+
+  * Bug #33484: Give possibility to query for component_id
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 21 Nov 2013 17:51:55 +0100
+
 univention-management-console-module-appcenter (2.0.139-21) unstable; urgency=low
 
   * Fixed string formatting (Bug #32193)
