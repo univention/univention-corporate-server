@@ -1289,7 +1289,10 @@ define([
 					// when we are removing objects which are selected in the tree
 					// a reload would fail... so set the superordinate to all superordinates
 					// this triggers a reload of the path
-					this._searchForm.getWidget('superordinate').set('value', 'None');
+					var superordinate = this._searchForm.getWidget('superordinate');
+					if (superordinate) {
+						superordinate.set('value', 'None');
+					}
 				}
 
 				// remove the selected elements via a transaction on the module store
