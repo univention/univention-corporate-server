@@ -1,3 +1,9 @@
+univention-demo-configuration (2.0.2-6) unstable; urgency=low
+
+  * Bug #33083: do not allow renaming of Administrator
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 21 Nov 2013 11:17:28 +0100
+
 univention-demo-configuration (2.0.2-5) unstable; urgency=low
 
   * Bug #33083: added updater related variables
