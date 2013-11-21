@@ -1,3 +1,13 @@
+univention-updater (9.0.38-2) unstable; urgency=low
+
+  * Bug #33484: If a component is blocking a release update and this component
+    is from the App Center, link to the app instead of showing a cryptic error
+    message
+  * Bug #33443: Fixed error handling in case UMC server is restarted
+  * Bug #33408: Fixed a JavaScript error when installing package updates
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 21 Nov 2013 13:39:46 +0100
+
 univention-updater (9.0.38-1) unstable; urgency=low
 
   * Bug #33426: added a hint to preform a page reload in UMC

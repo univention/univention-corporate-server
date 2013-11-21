@@ -35,15 +35,17 @@ define([
 	"dojo/promise/all",
 	"dojo/dom-class",
 	"dojo/topic",
+	"dojo/Deferred",
 	"dojox/string/sprintf",
 	"umc/dialog",
+	"umc/app",
 	"umc/tools",
 	"umc/store",
 	"umc/widgets/TitlePane",
 	"umc/modules/updater/Page",
 	"umc/modules/updater/Form",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, all, domClass, topic, sprintf, dialog, tools, store, TitlePane, Page, Form, _) {
+], function(declare, lang, array, all, domClass, topic, Deferred, sprintf, dialog, UMCApplication, tools, store, TitlePane, Page, Form, _) {
 	return declare("umc.modules.updater.UpdatesPage", Page, {
 
 		_last_reboot:	false,
@@ -140,7 +142,6 @@ define([
 							this.onQuerySuccess('updater/updates/query');
 							var element_releases = this._form.getWidget('releases');
 							var to_show = false;
-							var to_show_msg = true;
 
 							var element_updatestext = this._form.getWidget('ucs_updates_text');
 							element_updatestext.set('content', _("There are no release updates available."));
@@ -149,24 +150,37 @@ define([
 							{
 								var val = values[values.length-1].id;
 								to_show = true;
-								to_show_msg = false;
 								element_releases.set('value', val);
 							}
 
+							var componentQueryDeferred = new Deferred();
 							var appliance_mode = (this._form.getWidget('appliance_mode').get('value') === 'true');
 							var blocking_component = this._form.getWidget('release_update_blocking_component').get('value');
 							if ((blocking_component) && (! appliance_mode)) {
-								// further updates are available but blocked by specified component which is required for update
-								element_updatestext.set('content', lang.replace(_("Further release updates are available but cannot be installed because the component '{0}' is not available for newer release versions."), [blocking_component]));
-								to_show_msg = true;
+								tools.umcpCommand('appcenter/get_by_component_id', {component_id: blocking_component}, false).then(
+									lang.hitch(this, function(data) {
+										var app = data.result;
+										// further updates are available but blocked by an app not yet updated
+										element_updatestext.set('content', _('Version %(version)s of the application %(name)s is not available for the new release. Use the %(module)s to upgrade this application if possible.', lang.mixin({module: UMCApplication.linkToModule('apps', app.id)}, app)));
+										this._form.showWidget('ucs_updates_text', true);
+										componentQueryDeferred.resolve();
+									}),
+									lang.hitch(this, function() {
+										// further updates are available but blocked by specified component which is required for update
+										element_updatestext.set('content', lang.replace(_("Further release updates are available but cannot be installed because the component '{0}' is not available for newer release versions."), [blocking_component]));
+										this._form.showWidget('ucs_updates_text', true);
+										componentQueryDeferred.resolve();
+
+									})
+								);
+							} else {
+								componentQueryDeferred.resolve();
 							}
 
 							// hide or show combobox, spacers and corresponding button
 							this._form.showWidget('releases', to_show);
 							this._form.showWidget('hspacer_180px', to_show);
 							this._form.showWidget('vspacer_1em', to_show);
-
-							this._form.showWidget('ucs_updates_text', to_show_msg);
 
 							var but = this._form._buttons.run_release_update;
 							but.set('visible', to_show);
@@ -178,7 +192,7 @@ define([
 								this._set_updates_button(false, _("Package update status not yet checked"));
 							}
 
-							this.standbyDuring(all([this._check_dist_upgrade(), this._check_app_updates()]));
+							this.standbyDuring(all([componentQueryDeferred, this._check_dist_upgrade(), this._check_app_updates()]));
 						}
 						catch(error)
 						{
@@ -292,7 +306,10 @@ define([
 					name:		'run_packages_update',
 					label:		_("Check for package updates"),
 					callback:	lang.hitch(this, function() {
-						this.standbyDuring(this._check_dist_upgrade());
+						var distUpdgradeDeferred = this._check_dist_upgrade();
+						if (distUpdgradeDeferred) {
+							this.standbyDuring(distUpdgradeDeferred);
+						}
 						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'package-update');
 					})
 				},

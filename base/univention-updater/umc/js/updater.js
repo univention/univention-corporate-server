@@ -34,12 +34,13 @@ define([
 	"dojo/_base/array",
 	"dijit/Dialog",
 	"umc/dialog",
+	"umc/tools",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Module",
 	"umc/modules/updater/UpdatesPage",
 	"umc/modules/updater/ProgressPage",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, Dialog, dialog, ConfirmDialog, Module, UpdatesPage, ProgressPage, _) {
+], function(declare, lang, array, Dialog, dialog, tools, ConfirmDialog, Module, UpdatesPage, ProgressPage, _) {
 	return declare("umc.modules.updater", Module, {
 
 		// some variables related to error handling
@@ -421,13 +422,15 @@ define([
 			{
 				// While the login dialog is open -> all queries return at the
 				// error callback, but without data! (should be documented)
+				// FIXME: remove this if()
 				if (typeof(data) == 'undefined')
 				{
 					//console.error("QUERY '" + subject + "' without DATA");
 					return;
 				}
 				//console.error("QUERY '" + subject + "' STATUS = " + data.status);
-				if (data.status == 401)
+				var result = tools.parseError(data);
+				if (result.status == 401)
 				{
 					if (this._connection_status != 2)
 					{
