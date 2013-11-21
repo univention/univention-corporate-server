@@ -1,0 +1,15 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-updater
+fix: 3.0.50-2.214.201311211316
+note:
+version: [0]
+desc: |
+  This errata update fixes several issues:
+  * If a component is blocking a release update and this component is from the
+    App Center, link to the app instead of showing a cryptic error message
+  * Fixed the error handling in case the UMC server is restarted during an
+    update
+  * Fixed a JavaScript error when installing package updates
+bug: [33484, 33443, 33408]
