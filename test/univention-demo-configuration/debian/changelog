@@ -1,3 +1,10 @@
+univention-demo-configuration (2.0.2-7) unstable; urgency=low
+
+  * Bug #30803: added test data including user photos
+  * Bug #33083: added test data, added dependency to nagios
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 21 Nov 2013 12:53:42 +0100
+
 univention-demo-configuration (2.0.2-6) unstable; urgency=low
 
   * Bug #33083: do not allow renaming of Administrator

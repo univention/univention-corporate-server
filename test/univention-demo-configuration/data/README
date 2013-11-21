@@ -1,0 +1,15 @@
+Beschreibung:
+Skript zum Import von Demo-Accounts. Angelegt werden ca. 60 User und Rechner sowie ca. 20 Gruppen in einer kleinen OU-Struktur nach Standorten der imaginären Firma.
+
+Ablauf:
+* Alle Dateien im Verzeichnis auf ein UCS-Master kopieren:
+  rsync -a data root@<ip>:
+* Auf dem Zielsystem inidividualisiertes Import-Skript für UDM erstellen:
+  root@ucs-master:~/data# ./import.py > import.sh 
+* Import starten:
+  root@ucs-master:~/data# sh import.sh
+
+Import-Dauer: ca. 3-4 Minuten
+
+Link auf die Bilder:
+http://www.freedigitalphotos.net/images/search.php?search=faces

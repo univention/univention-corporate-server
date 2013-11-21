@@ -10,4 +10,5 @@ Build-Depends: debhelper (>= 7.0.50~),
 Package: univention-demo-configuration
 Architecture: all
 Description: restricted configuration for demo.univention.de
-Depends: univention-config | ${misc:Depends}
+Depends: univention-config | ${misc:Depends},
+ univention-nagios-server

@@ -82,6 +82,11 @@ case "$1" in
 		invoke-rc.d apache2 reload
 		invoke-rc.d slapd restart
 		invoke-rc.d univention-management-console-server reload
+
+		# add test data only upon initial installation
+		if [ -z "$2" ]; then
+			/usr/share/univention-demo-configuration/data/create_import_commands.py | bash
+		fi
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 		;;
