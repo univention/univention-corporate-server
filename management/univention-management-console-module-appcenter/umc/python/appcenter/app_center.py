@@ -567,8 +567,6 @@ class Application(object):
 		if something_changed:
 			# some variables could change apps.xml
 			# e.g. Name, Description
-			# TODO: changes take effect only after a restart of UMC
-			#   and we cannot tell at the moment
 			cls.update_conffiles()
 
 			# TODO: would be nice if vendors provided ${app}16.png
@@ -1240,6 +1238,8 @@ class Application(object):
 		return status == 200
 
 	def _send_information(self, action, status):
+		if not self.get('notifyvendor'):
+			return
 		ucr.load()
 		server = self.get_server(with_scheme=True)
 		url = '%s/postinst' % (server, )

@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.50-2) unstable; urgency=low
+
+  * Bug #33484: Give possibility to query for component_id
+  * Bug #33362: Do not send notification if app does not say so
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 21 Nov 2013 13:14:07 +0100
+
 univention-management-console-module-appcenter (3.0.50-1) unstable; urgency=low
 
   * Switch to official appcenter for release (Bug #32217) 

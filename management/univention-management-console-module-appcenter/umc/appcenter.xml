@@ -10,6 +10,7 @@
 
 		<command name="appcenter/working" function="working" />
 		<command name="appcenter/version" function="version" />
+		<command name="appcenter/get_by_component_id" function="get_by_component_id" />
 		<command name="appcenter/app_updates" function="app_updates" />
 		<command name="appcenter/query" function="query" />
 		<command name="appcenter/get" function="get" />
