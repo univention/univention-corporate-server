@@ -593,72 +593,119 @@
   </para>
 </section>
 
-<section id="print-services:Einbinden_von_Druckerfreigaben_auf_Windows-Clients">
-<title>Einbinden von Druckerfreigaben auf Windows-Clients</title>
-<para>
-  Die in der &ucsUMC; eingerichteten Druckerfreigaben können auf Windows-Systemen als
-  Netzwerkdrucker hinzugefügt werden. Die Druckertreiber müssen beim ersten Zugriff eingerichtet
-  werden. Um den Benutzern den Zugriff auf die Treiber zu erleichtern, können die Treiber auf dem
-  Server hinterlegt werden.
-</para>
+<section id="print-services:winclients">
+  <title>Einbinden von Druckerfreigaben auf Windows-Clients</title>
+  <para>
+	Die in der &ucsUMC; eingerichteten Druckerfreigaben können auf Windows-Systemen als
+	Netzwerkdrucker hinzugefügt werden. Dies erfolgt über die Systemsteuerung unter <guimenu>Drucker
+	&ar; Netzwerkdrucker hinzufügen</guimenu>. Die Druckertreiber müssen beim ersten Zugriff eingerichtet
+	werden. Werden die Treiber serverseitig hinterlegt (siehe unten), erfolgt die Zuweisung des
+	Treibers automatisch.
+  </para>
 
-<para>
-  Druckerfreigaben werden in der Regel mit den mitgelieferten
-  Windows-Druckertreibern betrieben.
-</para>
-<para>
-  Der Netzwerkdrucker kann auf Windows-Seite alternativ mit einem
-  Standard-PostScript-Druckertreiber eingerichtet werden. Wenn auf
-  einen Farbdrucker zugegriffen werden soll, sollte auf Windows-Seite
-  ein Treiber für einen PostScript-fähigen Farbdrucker verwendet werden,
-  z.B. HP Color Laserjet 8550.
-</para>
-<caution>
+  <para>
+	Druckerfreigaben werden in der Regel mit den mitgelieferten Windows-Druckertreibern
+	betrieben. Der Netzwerkdrucker kann auf Windows-Seite alternativ mit einem
+	Standard-PostScript-Druckertreiber eingerichtet werden. Wenn auf einen Farbdrucker zugegriffen
+	werden soll, sollte auf Windows-Seite ein Treiber für einen PostScript-fähigen Farbdrucker
+	verwendet werden, z.B. HP Color Laserjet 8550.
+  </para>
+
+  <caution>
 	<para>
-  Der Zugriff auf einen Drucker ist für einen regulären Benutzer nur
-  möglich wenn dieser über lokale Rechte zur Treiberinstallation verfügt
-  oder ein entsprechender Druckertreiber auf dem Druckserver
-  hinterlegt wurde. Ist dies nicht der Fall kann es zu einer Windows
-  Fehlermeldung kommen, die besagt, dass die Berechtigungen nicht
-  ausreichen, um eine Verbindung mit dem Drucker herzustellen.
+	  Der Zugriff auf einen Drucker ist für einen regulären Benutzer nur
+	  möglich wenn dieser über lokale Rechte zur Treiberinstallation verfügt
+	  oder ein entsprechender Druckertreiber auf dem Druckserver
+	  hinterlegt wurde. Ist dies nicht der Fall kann es zu einer Windows
+	  Fehlermeldung kommen, die besagt, dass die Berechtigungen nicht
+	  ausreichen, um eine Verbindung mit dem Drucker herzustellen.
 	</para>
-</caution>
-<para>
-  Um einen neuen Druckertreiber auf dem Druckserver zu hinterlegen,
-  sind folgende Schritte notwendig:
-</para>
-<orderedlist>
-	<listitem>
-		<simpara>
-		Windows-Anmeldung als <emphasis>Administrator</emphasis>
-		</simpara>
-	</listitem>
-  <listitem>
-	  <simpara>
-	Zugriff auf die Netzwerkumgebung des Druckservers, dort ist der
-	Ordner mit den Druckern zu öffnen
-	  </simpara>
-  </listitem>
-  <listitem>
-	  <simpara>
-	Ein Rechtsklick in einen freien Bereich des Fensters öffnet ein
-	Kontext-Menü, über das der Dialog <guimenu>Servereigenschaften</guimenu> geöffnet
-	werden kann. Auf dem Reiter <guimenu>Treiber</guimenu> kann durch einen Klick auf
-	<guimenu>Hinzufügen</guimenu> menügeführt ein Druckertreiber für die gewünschte
-	Systemarchitektur gewählt und auf den Server geladen werden.
-	  </simpara>
-  </listitem>
-  <listitem>
-	  <simpara>
-	Nun kann durch einen Rechtsklick auf den Drucker der
-	<guimenu>Eigenschaften</guimenu>-Dialog aufgerufen werden. Auf dem Reiter <guimenu>Erweitert</guimenu>
-	findet sich ein Auswahlfeld für die bereits installierten Treiber. Mit
-	einem Klick auf <mousebutton>OK</mousebutton> wird der Treiber dem Drucker zugewiesen und
-	Benutzer können sich mit dem Drucker verbinden ohne
-	einen Treiber installieren zu müssen.
-	  </simpara>
-  </listitem>
-</orderedlist>
+  </caution>
+
+  <para>
+	Windows unterstützt ein Verfahren zur serverseitigen Bereitstellung von Druckertreibern auf dem
+	Druckserver (<emphasis>Point 'n' Print</emphasis>). Die folgende Anleitung beschreibt die
+	Bereitstellung der Druckertreiber unter Windows 7 für eine in der UMC konfigurierte
+	Druckerfreigabe. Zuerst müssen die Druckertreiber auf dem Druckserver hinterlegt werden.
+	Die Benutzerführung unter Windows bietet zahlreiche Stolperfallen, es ist wichtig den einzelnen
+	Schritten exakt zu folgen!
+  </para>
+
+  <para>
+	<orderedlist>
+	  <listitem><simpara>
+		Zuerst müssen die Druckertreiber von der Webseite des Herstellers heruntergeladen
+		werden. Wird eine Umgebung verwendet, in der neben den 32 Bit-Versionen von Windows auch 64
+		Bit-Installationen verwendet werden, müssen die Treiber unbedingt in beiden Versionen
+		bezogen werden. Benötigt werden die INF-Dateien.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Nun muss der Windows Explorer gestartet und dort die Netzwerkumgebung geöffnet werden. Dort
+		muss der Druckserver ausgewählt werden, auf dem die Druckerfreigabe angelegt wurde. In der
+		oberen Menüleiste wird nach einem Klick auf <guimenu>Remotedrucker anzeigen</guimenu> eine
+		Liste mit allen Druckerfreigaben angezeigt.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Nun muss mit der rechten Maustaste auf die freie Fläche unter den Druckerfreigaben geklickt
+		werden (nicht auf eine der Freigaben, sonst öffnet sich das kontextsensitive Menü der
+		Druckerfreigabe!). Dort im Reiter <guimenu>Treiber</guimenu> mit <guimenu>Hinzufügen &ar;
+		Weiter &ar; x86 und x64 &ar; Datenträger</guimenu> auswählen. Im sich dabei öffnenden
+		Dateidialog muss dann die INF-Datei des 64 Bit-Treibers ausgewählt werden (x64). Nach dem
+		mit <guimenu>Fertig stellen</guimenu> bestätigt wurde wird der 64 Bit-Treiber auf den
+		Druckserver kopiert. Nun öffnet sich ein weiterer Dateidialog, in dem analog der 32
+		Bit-Treiber (x86) hochgeladen werden kann.
+	  </simpara></listitem> 
+
+	  <listitem><simpara>
+		Nun sind die Treiber auf dem Druckserver im Verzeichnis <filename>/var/lib/samba/printers</filename> gespeichert.
+	  </simpara></listitem>
+	</orderedlist>
+  </para>
+
+  <para>
+	Nun wird die Druckerfreigabe mit dem hochgeladenen Druckertreiber verknüpft:
+	<orderedlist>
+	  <listitem><simpara>
+		Nun muss der Windows Explorer gestartet und dort die Netzwerkumgebung geöffnet werden. Dort
+		muss der Druckserver ausgewählt werden, auf dem die Druckerfreigabe angelegt wurde. In der
+		oberen Menüleiste wird nach einem Klick auf <guimenu>Remotedrucker anzeigen</guimenu> eine
+		Liste mit allen Druckerfreigaben angezeigt. Nun muss durch einen Klick mit der linken
+		Maustaste ein Drucker ausgewählt werden, so dass dieser blau hinterlegt ist. Nun ein
+		Rechtsklick und dann <guimenu>Eigenschaften</guimenu> auswählen (Achtung: Wurde der Drucker
+		nicht durch Linksklick ausgewählt öffnet sich ein anderer Dialog!).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Ist noch kein Druckertreiber hinterlegt, wird die folgende Fehlermeldung angezeigt, die mit
+		<guimenu>Nein</guimenu> bestätigt werden muss.
+
+		<figure>
+		  <title>Fehlermeldung beim ersten Zugriff</title>
+		  <graphic scalefit="1" width="40%" fileref="illustrations/windows-printerdriver-en.png"/>
+		</figure>
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Nun muss im Reiter <guimenu>Erweitert</guimenu> unter <guimenu>Treiber</guimenu> der
+		hochgeladene Treiber aus dem Dropdown-Menü ausgewählt werden. Anschließend muss auf
+		<guimenu>Übernehmen</guimenu> geklickt werden (Wichtig: Nicht auf <guimenu>OK</guimenu>!).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Nun wird ein Dialog angezeigt, in dem gefragt wird, ob dem Drucker vertraut wird. Dies muss
+		mit <guimenu>Treiber installieren</guimenu> bestätigt werden. Wichtig: Nun darf nicht direkt
+		auf <guimenu>OK</guimenu> geklickt werden, sondern es muss auf den Reiter
+		<guimenu>Allgemein</guimenu> gewechselt werden. In dem Reiter muss weiterhin der alte Name
+		der Druckerfreigabe angezeigt werden. Es kann vorkommen, dass die Druckerfreigabe umbenannt
+		wurde, damit ist sie dann nicht mehr mit der Freigabe assoziert! Anschließend auf
+		<guimenu>Übernehmen</guimenu> und <guimenu>OK</guimenu> klicken. Nun werden die
+		serverseitig hinterlegten Druckertreiber auf den Client heruntergeladen.
+	  </simpara></listitem>
+
+	</orderedlist>
+  </para>
 </section>
 
 <section id="print::ppdlisten">

@@ -582,67 +582,64 @@
 
 </section>
 
-<section id="print-services:Mounting_of_print_shares_in_Windows_clients">
-<title>Mounting of print shares in Windows clients</title>
+<section id="print-services:winclients">
+  <title>Mounting of print shares in Windows clients</title>
 
-<para>
-  The printer shares set up in the &ucsUMC; can be added to Windows systems as network printers. The
-  printer drivers need to be set up during the first access. To facilitate user access to the drivers,
-  the drivers can also be stored on the server.
-</para>
+  <para>
+	The printer shares set up in the &ucsUMC; can be added to Windows systems as network printers. The
+	printer drivers need to be set up during the first access. To facilitate user access to the drivers,
+	the drivers can also be stored on the server.
+  </para>
 
+  <para>
+	Printer shares are usually operated using the Windows printer drivers
+	provided. The network printer can alternatively be set up on the
+	Windows side with a standard Postscript printer driver. If a colour
+	printer should be accessed, a driver for a Postscript-compatible
+	colour printer should be used on the Windows side, e.g., HP Color
+	Laserjet 8550.
+  </para>
+  <caution>
 	<para>
-		Printer shares are usually operated using the Windows printer drivers
-		provided.
+	  The printer can only be accessed by a regular user when he has local
+	  permissions for driver installation or the respective printer drivers
+	  were stored on the printer server. If this is not the case, Windows
+	  may issue an error warning that the permissions are insufficient to
+	  establish a connection to the printer.
 	</para>
-	<para>
-		The network printer can alternatively be set up on the
-		Windows side with a standard Postscript printer driver. If a colour
-		printer should be accessed, a driver for a Postscript-compatible
-		colour printer should be used on the Windows side, e.g., HP Color
-		Laserjet 8550.
-	</para>
-	<caution>
-		<para>
-		The printer can only be accessed by a regular user when he has local
-		permissions for driver installation or the respective printer drivers
-		were stored on the printer server. If this is not the case, Windows
-		may issue an error warning that the permissions are insufficient to
-		establish a connection to the printer.
-		</para>
-	</caution>
-	<para>
-		The following steps make it possible to install a new printer driver
-		on the printer server:
-	</para>
-	<orderedlist>
-		<listitem>
-			<simpara>
-			When logged on to Windows as <emphasis>Administrator</emphasis> you can
-			open the printer server and the printer directory it contains.
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			Right clicking in a free area of the window opens the context
-			menu where you can open the <guimenu>Server properties</guimenu>
-			dialogue. Clicking on <guimenu>Add</guimenu> on the
-			<guimenu>Drivers</guimenu> tab allows you to select a printer driver for
-			the system architecture required and load this onto the server all
-			via menus.
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			A right click on the printer will now run the
-			<guimenu>Properties</guimenu> dialogue. The <guimenu>Properties</guimenu>
-			tab contains a selction field for the drivers already
-			installed. Clicking on <mousebutton>OK</mousebutton> assigns the driver to the
-			printer and means that users privileges can access the
-			printer without the need to install a driver.
-			</simpara>
-		</listitem>
-	</orderedlist>
+  </caution>
+  <para>
+	The following steps make it possible to install a new printer driver
+	on the printer server:
+  </para>
+  <orderedlist>
+	<listitem>
+	  <simpara>
+		When logged on to Windows as <emphasis>Administrator</emphasis> you can
+		open the printer server and the printer directory it contains.
+	  </simpara>
+	</listitem>
+	<listitem>
+	  <simpara>
+		Right clicking in a free area of the window opens the context
+		menu where you can open the <guimenu>Server properties</guimenu>
+		dialogue. Clicking on <guimenu>Add</guimenu> on the
+		<guimenu>Drivers</guimenu> tab allows you to select a printer driver for
+		the system architecture required and load this onto the server all
+		via menus.
+	  </simpara>
+	</listitem>
+	<listitem>
+	  <simpara>
+		A right click on the printer will now run the
+		<guimenu>Properties</guimenu> dialogue. The <guimenu>Properties</guimenu>
+		tab contains a selction field for the drivers already
+		installed. Clicking on <mousebutton>OK</mousebutton> assigns the driver to the
+		printer and means that users privileges can access the
+		printer without the need to install a driver.
+	  </simpara>
+	</listitem>
+  </orderedlist>
 </section>
 
 <section id="print::ppdlisten">
