@@ -160,6 +160,18 @@
 		  which are installed on all system roles.
 		</para>
 
+ 	  <section id="relnotes:appupdate">
+		<title>Updating installed applications from the Univention App Center</title>
+		<para>
+		  Applications which were installed from the Univention App Center need to be updated before
+		  the release update. If e.g. the error message <guimenu>Further release updates are
+		  available but cannot be installed because the component 'zarafa_20130228' is not available
+		  for newer release versions</guimenu> is displayed, the installed application (in this example Zarafa) must be
+		  updated in the Univention App Center using <guimenu>Upgrade</guimenu> before the release
+		  update can be initiated.
+		</para>
+	  </section>
+
 	  <section id="relnotes:bdb">
 		<title>Checking the size of the BDB database of systems with Cyrus IMAP server (univention-mail-cyrus)</title>
 		<para>

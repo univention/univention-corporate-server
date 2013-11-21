@@ -163,6 +163,19 @@
 		  Systemrollen installiert sind.
 		</para>
 
+ 	  <section id="relnotes:appupdate">
+		<title>Aktualisierung installierter Applikationen aus dem Univention App Center</title>
+		<para>
+		  Applikationen, die aus dem Univention App Center installiert wurden, müssen vor dem Update
+		  aktualisiert werden. Wird beispielsweise im Online-Update-Modul die Fehlermeldung
+		  <guimenu>Weitere Releaseupdates sind verfügbar, können jedoch nicht installiert werden, da
+		  die Komponente 'zarafa_20130228' noch nicht für neuere Releaseversionen bereitgestellt
+		  wurde</guimenu> angezeigt, muss die installierte Applikation (in diesem Fall Zarafa) im Univention App Center mit
+		  <guimenu>Aktualisieren</guimenu> aktualisiert werden, bevor das Release-Update initiiert
+		  werden kann.
+		</para>
+	  </section>
+
 	  <section id="relnotes:bdb">
 		<title>Prüfung der BDB-Einstellungen bei Systemen mit Cyrus IMAP-Server (univention-mail-cyrus)</title>
 		<para>
