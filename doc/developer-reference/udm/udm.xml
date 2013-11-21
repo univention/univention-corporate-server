@@ -157,7 +157,7 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 		</para>
 		<para>
 			The module <literal>settings/extended_attribute</literal> requires many parameters.
-			They are described in <olink targetdoc="manual-3.1-1" targetptr="central:extendedattrs"/>.
+			They are described in <olink targetdoc="ucs-3.2-0" targetptr="central:extendedattrs"/>.
 		</para>
 		<variablelist>
 			<varlistentry><term><literal>name</literal> (required)</term>
@@ -906,7 +906,7 @@ udm settings/extended_attribute modify \
 			</para>
 			<para>
 				Since UCR variables only affect the local system, the variables must be set on all systems were <acronym>UDM</acronym> is used.
-				This can be either done through a &ucsUCR; policy (see <olink targetdoc="manual-3.1-1" targetptr="central:policies"/>) or by setting the variable in the <filename>.postinst</filename> script of some package, which is installed on all hosts.
+				This can be either done through a &ucsUCR; policy (see <olink targetdoc="ucs-3.2-0" targetptr="central:policies"/>) or by setting the variable in the <filename>.postinst</filename> script of some package, which is installed on all hosts.
 			</para>
 		</section>
 

@@ -34,7 +34,7 @@
 			Only at the end of a successful update are the &ucsUCRV;s updated.
 		</para>
 		<para>
-			Additional components can be added as separate repositories using &ucsUCRV;s <envar>repository/online/component/…</envar>, which are described in <olink targetdoc="manual-3.1-1" targetptr="computers::softwaremanagement::repoadd"/> manual.
+			Additional components can be added as separate repositories using &ucsUCRV;s <envar>repository/online/component/…</envar>, which are described in <olink targetdoc="ucs-3.2-0" targetptr="computers::softwaremanagement::repoadd"/> manual.
 			Setting the variable <envar>…/version=current</envar> can be used to mark a component as required, which blocks an upgrade until the component is available for the new release.
 		</para>
 	</section>
