@@ -1,0 +1,13 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-management-console-frontend
+fix: 3.0.152-2.799.201311221250
+note:
+version: [0]
+desc: |
+  This errata update fixes several issues:
+  * Requests to outdated UMC web files (such as images, HTML files, JavaScript
+    source files) are now redirected in order to avoid problems in the
+    representation.
+bug: [29588]
