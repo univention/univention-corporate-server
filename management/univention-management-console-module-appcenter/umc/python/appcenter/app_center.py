@@ -460,9 +460,16 @@ class Application(object):
 
 	@classmethod
 	def get_metainf_url(cls):
+		# during a release upgrade, find ini files
+		#   of the new release
+		version = ucr.get('version/version/target')
+		if version is None:
+			version = ucr.get('version/version', '')
+			# temporary hack, see Bug #33535
+			version = '3.2'
 		return '%s/meta-inf/%s' % (
 			cls.get_server(with_scheme=True),
-			ucr.get('version/version', ''),
+			version,
 		)
 
 	@classmethod

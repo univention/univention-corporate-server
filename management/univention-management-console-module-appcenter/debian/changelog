@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.50-3) unstable; urgency=low
+
+  * Bug #33535: Use UCS 3.2 Apps while updating from UCS 3.1
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 22 Nov 2013 21:39:58 +0100
+
 univention-management-console-module-appcenter (3.0.50-2) unstable; urgency=low
 
   * Bug #33484: Give possibility to query for component_id
