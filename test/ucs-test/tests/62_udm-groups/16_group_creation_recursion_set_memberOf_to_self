@@ -18,7 +18,7 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		group_name = uts.random_groupname()
 		try:
-			udm.create_group(memberOf = 'cn=%s,%s' % (group_name, udm.DEFAULT_GROUP_CONTAINER))
+			udm.create_group(memberOf = 'cn=%s,cn=groups,%s' % (group_name, udm.LDAP_BASE))
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 				sys.exit(0)
 			

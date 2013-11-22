@@ -105,10 +105,6 @@ class UCSTestUDM(object):
 	LDAP_BASE = _ucr['ldap/base']
 	UNIVENTION_CONTAINER = 'cn=univention,%s' % LDAP_BASE
 	UNIVENTION_TEMPORARY_CONTAINER = 'cn=temporary,cn=univention,%s' % LDAP_BASE
-	DEFAULT_USER_CONTAINER = _lo.getAttr('cn=default containers,cn=univention,%s' % LDAP_BASE, 'univentionUsersObject')[0]
-	DEFAULT_GROUP_CONTAINER = _lo.getAttr('cn=default containers,cn=univention,%s' % LDAP_BASE, 'univentionGroupsObject')[0]
-	DEFAULT_SHARE_CONTAINER = _lo.getAttr('cn=default containers,cn=univention,%s' % LDAP_BASE, 'univentionSharesObject')[0]
-
 	
 
 	def __init__(self):
@@ -312,7 +308,7 @@ class UCSTestUDM(object):
 		Return value: (dn, username)
 		"""
 
-		attr = self._set_module_default_attr(kwargs, (( 'position', self.DEFAULT_USER_CONTAINER ),
+		attr = self._set_module_default_attr(kwargs, (( 'position', 'cn=users,%s' % self.LDAP_BASE ),
 											    ( 'password', 'univention' ),
 											    ( 'username', uts.random_username()),
 											    ( 'lastname', uts.random_name()),
@@ -332,7 +328,7 @@ class UCSTestUDM(object):
 
 		Return value: (dn, groupname)
 		"""
-		attr = self._set_module_default_attr(kwargs, (( 'position', self.DEFAULT_GROUP_CONTAINER ),
+		attr = self._set_module_default_attr(kwargs, (( 'position', 'cn=groups,%s' % self.LDAP_BASE ),
 											   ( 'name', uts.random_groupname() ) ))
 		
 		return (self.create_object('groups/group', wait_for_replication, **attr), attr['name'])
