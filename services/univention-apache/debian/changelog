@@ -1,4 +1,4 @@
-univention-apache (6.0.16-2) unstable; urgency=low
+univention-apache (6.0.16-3) unstable; urgency=low
 
   * Bug #33130: prevent to cache entries.json and languages.json in IE < 10
 
