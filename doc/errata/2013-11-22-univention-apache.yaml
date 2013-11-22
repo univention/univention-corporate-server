@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-apache
+fix: 6.0.16-2.189.201311191637
+note:
+version: [0]
+desc: |
+  This errata update fixes that entries and available languages on the UCS-overview 
+  aren't cached anymore.
+bug: [33130]
