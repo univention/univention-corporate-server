@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-management-console-frontend
-fix: 3.0.152-2.799.201311221250
+fix: 3.0.152-3.800.201311221527
 note:
 version: [0]
 desc: |
@@ -10,4 +10,5 @@ desc: |
   * Requests to outdated UMC web files (such as images, HTML files, JavaScript
     source files) are now redirected in order to avoid problems in the
     representation.
-bug: [29588]
+  * Fixed rendering of "Activate UCS" dialog in Internet Explorer 9 and 10.
+bug: [29588,33133]
