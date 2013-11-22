@@ -6,6 +6,10 @@ fix: 8.0.78-8.1237.201311211757
 note:
 version: [0]
 desc: |
-  If a component is blocking a release update and this component is from the
-  App Center, link to the App Center instead of showing a cryptic error message
-bug: [33484]
+  This errata update fixes several issues:
+  * If a component is blocking a release update and this component is from the
+    App Center, link to the App Center instead of showing a cryptic error
+    message
+  * Fixed the error handling in case the UMC server is restarted during an
+    update
+bug: [33484, 33503]
