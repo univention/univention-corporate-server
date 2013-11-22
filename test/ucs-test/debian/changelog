@@ -1,3 +1,9 @@
+ucs-test (4.0.161-4) unstable; urgency=low
+
+  * version bump (Bug #33048, Bug #33049)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 22 Nov 2013 13:44:47 +0100
+
 ucs-test (4.0.161-3) unstable; urgency=low
 
   * 66_udm-computers/16_all_roles_modification_set_network and
