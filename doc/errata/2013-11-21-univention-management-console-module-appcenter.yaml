@@ -8,5 +8,7 @@ version: [0]
 desc: |
   This errata update fixes several issues:
   * Added a function to query application based on their component_id
-  * Fixed sending a notification to Univention although the app did require it
-bug: [33484, 33362]
+  * Fixed sending a notification to Univention although the app did not require
+    it
+  * Now using UCS 3.2 Apps while updating from UCS 3.1
+bug: [33484, 33362, 33535]
