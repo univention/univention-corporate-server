@@ -24,6 +24,16 @@ RewriteCond %{DOCUMENT_ROOT}univention-management-console/images/%1 -f [OR]
 RewriteCond %{DOCUMENT_ROOT}univention-management-console/images/%1 -d
 RewriteRule ^/univention-management-console/js[^/]*/dijit/themes/umc/(.*) /univention-management-console/images/$1 [R=301]
 
+# make sure that requests for files in an old hashed javascript directory
+# are redirected; this applies only to GET requests as a HEAD request
+# should still fail to allow the detection of changes by JavaScript;
+# see Bug #29588
+RewriteCond %{REQUEST_URI} ^/(univention-management-console/js_[^/]*)/.*
+RewriteCond %{DOCUMENT_ROOT}/%1 !-f
+RewriteCond %{DOCUMENT_ROOT}/%1 !-d
+RewriteCond %{REQUEST_METHOD} ^GET
+RewriteRule ^(/univention-management-console/js)_[^/]*/(.*) $1/$2 [R=301]
+
 # fix for bug in cherrypy returnin 408/409 errors out of the blue:
 #   http://cherrypy.org/ticket/853
 SetEnv proxy-nokeepalive 1

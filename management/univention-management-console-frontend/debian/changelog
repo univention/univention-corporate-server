@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-2) unstable; urgency=low
+
+  * Bug #29588: added redirect rule for requests to outdated JS/graphics files
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 22 Nov 2013 12:46:16 +0100
+
 univention-management-console-frontend (3.0.152-1) unstable; urgency=low
 
   * Bug #33333: check join status before pointing out the login as root
