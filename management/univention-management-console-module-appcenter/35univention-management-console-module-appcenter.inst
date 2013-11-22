@@ -77,7 +77,7 @@ install_opener(ucr)
 
 for app in Application.all_installed(package_manager): app.register(component_manager, package_manager, tell_ldap=True)
 EOF
-)"
+)" || die
 
 joinscript_save_current_version
 

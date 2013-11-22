@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.50-5) unstable; urgency=low
+
+  * Bug #33341: The joinscript now fails when registering the apps did not
+    succeed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 22 Nov 2013 22:08:07 +0100
+
 univention-management-console-module-appcenter (3.0.50-4) unstable; urgency=low
 
   * Bug #33535: Re-register apps (may have failed during update)
