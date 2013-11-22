@@ -1,3 +1,12 @@
+ucs-test (4.0.161-3) unstable; urgency=low
+
+  * 66_udm-computers/16_all_roles_modification_set_network and
+    66_udm-computers/31_all_roles_creation_set_network: rely on previosly
+    found aRecord when veryfing expected PTR record
+  (Bug #33048, Bug #33049 )
+
+ -- Lukas Walter <walter@univention.de>  Fri, 22 Nov 2013 13:37:47 +0100
+
 ucs-test (4.0.161-2) unstable; urgency=low
 
   * 10_ldap/65univention-admingrp-user-passwordreset-ldapdiff: wait for
