@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-updater
-fix: 8.0.78-8.1237.201311211757
+fix: 8.0.78-9.1238.201311231948
 note:
 version: [0]
 desc: |
@@ -12,4 +12,5 @@ desc: |
     message
   * Fixed the error handling in case the UMC server is restarted during an
     update
-bug: [33484, 33503]
+  * The updater now uses the individual user agent string for more HTTP requests
+bug: [33484, 33503, 33552]
