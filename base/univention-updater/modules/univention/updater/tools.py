@@ -567,8 +567,11 @@ class UniventionUpdater:
 		# UniventionMirror needs to provide its own settings
 		self.config_repository()
 
+		# generate user agent string
+		user_agent = self._get_user_agent_string()
+
 		# Auto-detect prefix
-		self.server = UCSHttpServer(server=self.repository_server, port=self.repository_port, prefix=self.repository_prefix)
+		self.server = UCSHttpServer(server=self.repository_server, port=self.repository_port, prefix=self.repository_prefix, user_agent = user_agent)
 		try:
 			if not self.repository_prefix:
 				try:
@@ -1395,14 +1398,7 @@ class UniventionUpdater:
 		username = self.configRegistry.get('repository/online/component/%s/username' % component, None)
 		password = self.configRegistry.get('repository/online/component/%s/password' % component, None)
 
-		# USER_AGENT='updater/identify - version/version-version/patchlevel errata version/erratalevel - uuid/system - uuid/license'
-		# USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 4c52d2da-d04d-4b05-a593-1974ee851fc8'
-		# USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 00000000-0000-0000-0000-000000000000'
-		user_agent = '%s - %s-%s errata%s - %s - %s' % ( self.configRegistry.get('updater/identify', 'UCS'), 
-									self.configRegistry.get('version/version'), self.configRegistry.get('version/patchlevel'),
-									self.configRegistry.get('version/erratalevel'),
-									self.configRegistry.get('uuid/system', '00000000-0000-0000-0000-000000000000'),
-									self.configRegistry.get('uuid/license', '00000000-0000-0000-0000-000000000000') )
+		user_agent = self._get_user_agent_string()
 
 		server = UCSHttpServer(server=server, port=port, prefix='', username=username, password=password, user_agent=user_agent)
 		try:
@@ -1571,6 +1567,15 @@ class UniventionUpdater:
 				result.append('# %s: %s' % (e, component))
 		return '\n'.join(result)
 
+	def _get_user_agent_string(self):
+		# USER_AGENT='updater/identify - version/version-version/patchlevel errata version/erratalevel - uuid/system - uuid/license'
+		# USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 4c52d2da-d04d-4b05-a593-1974ee851fc8'
+		# USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 00000000-0000-0000-0000-000000000000'
+		return '%s - %s-%s errata%s - %s - %s' % ( self.configRegistry.get('updater/identify', 'UCS'), 
+								self.configRegistry.get('version/version'), self.configRegistry.get('version/patchlevel'),
+								self.configRegistry.get('version/erratalevel'),
+								self.configRegistry.get('uuid/system', '00000000-0000-0000-0000-000000000000'),
+								self.configRegistry.get('uuid/license', '00000000-0000-0000-0000-000000000000') )
 
 	@staticmethod
 	def call_sh_files(scripts, logname, *args):
