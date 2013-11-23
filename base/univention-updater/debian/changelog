@@ -1,3 +1,9 @@
+univention-updater (9.0.38-3) unstable; urgency=low
+
+  * Use user agent string for all requests (Bug #33552)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 23 Nov 2013 19:43:49 +0100
+
 univention-updater (9.0.38-2) unstable; urgency=low
 
   * Bug #33484: If a component is blocking a release update and this component
