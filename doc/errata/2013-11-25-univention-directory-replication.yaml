@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-directory-replication
+fix: 6.0.6-2.68.201311250845
+note:
+version: [0]
+desc: |
+  The LDAP replication handling for modrdn has been improved which avoids the
+  duplication of LDAP objects.
+bug: [33555]
