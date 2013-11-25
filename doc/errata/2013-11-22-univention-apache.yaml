@@ -2,10 +2,14 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-apache
-fix: 6.0.16-3.192.201311221533
+fix: 6.0.16-4.193.201311251649
 note:
 version: [0]
 desc: |
-  This errata update fixes that entries and available languages on the UCS-overview 
-  aren't cached anymore.
-bug: [33130]
+  This errata update fixes several issues:
+  * Entries and available languages on the UCS-overview aren't cached anymore.
+  * This update corrects the generation of ucs-overview links. The links
+    are now generated in the domain-joinscript. This ensures that
+    host- and domain-identifiers match the current settings in case of
+    a domain-rejoin and after completing the appliance setup.
+bug: [33130,33447]
