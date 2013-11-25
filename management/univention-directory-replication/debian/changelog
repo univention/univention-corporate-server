@@ -1,3 +1,13 @@
+univention-directory-replication (6.0.6-2) unstable; urgency=low
+
+  * Improve the modrdn detection which avoids the duplication of LDAP
+    objects. In the second modrdn phase it is possible that new and old
+    are given for example if an old corrupted cache is used. The modrdn
+    status file is not deleted until the modrdn operation was successful
+    (Bug #33555)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 25 Nov 2013 08:42:05 +0100
+
 univention-directory-replication (6.0.6-1) unstable; urgency=low
 
   * removed unnecessary log messages in replication.py (Bug #15567) 
