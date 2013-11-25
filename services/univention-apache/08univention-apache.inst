@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
@@ -45,16 +45,35 @@ if [ -z "$UMC_MODE" ]; then
 fi
 
 
+# configure default entries for UCS overview site
+if [ $server_role = "domaincontroller_master" ] || [ $server_role = "domaincontroller_backup" ]; then
+	ucr set \
+		ucs/web/overview/entries/admin/root-certificate/icon="/icon/50x50/root-certificate.png" \
+		ucs/web/overview/entries/admin/root-certificate/label="Root certificate" \
+		ucs/web/overview/entries/admin/root-certificate/label/de="Wurzelzertifikat" \
+		ucs/web/overview/entries/admin/root-certificate/description="Certificate of the Certification Authority for UCS domain $domainname" \
+		ucs/web/overview/entries/admin/root-certificate/description/de="Zertifikat der Zertifizierungsstelle für die UCS-Domäne $domainname" \
+		ucs/web/overview/entries/admin/root-certificate/link="../ucs-root-ca.crt" \
+		ucs/web/overview/entries/admin/root-certificate/priority="90" \
+		ucs/web/overview/entries/admin/invalid-certificate-list/icon="/icon/50x50/invalid-certificate-list.png" \
+		ucs/web/overview/entries/admin/invalid-certificate-list/label="Certificate revocation list" \
+		ucs/web/overview/entries/admin/invalid-certificate-list/label/de="Zertifikat-Sperrliste" \
+		ucs/web/overview/entries/admin/invalid-certificate-list/description="List of withdrawn certificates" \
+		ucs/web/overview/entries/admin/invalid-certificate-list/description/de="Liste der widerrufenen Zertifikate" \
+		ucs/web/overview/entries/admin/invalid-certificate-list/link="../ucsCA.crl" \
+		ucs/web/overview/entries/admin/invalid-certificate-list/priority="91"
+fi
+
 if [ $server_role != "domaincontroller_master" ]; then
 	ucr set \
-		ucs/web/overview/entries/admin/ldap-master/icon?"/icon/50x50/domaincontroller_master.png" \
-		ucs/web/overview/entries/admin/ldap-master/label?"Domain controller master" \
-		ucs/web/overview/entries/admin/ldap-master/label/de?"Domaincontroller Master" \
-		ucs/web/overview/entries/admin/ldap-master/description?"Domain controller master of UCS domain $domainname" \
-		ucs/web/overview/entries/admin/ldap-master/description/de?"Domänencontroller Master der UCS Domäne $domainname" \
-		ucs/web/overview/entries/admin/ldap-master/link?"https://$ldap_master/ucs-overview/?lang=en" \
-		ucs/web/overview/entries/admin/ldap-master/link/de?"https://$ldap_master/ucs-overview/?lang=de" \
-		ucs/web/overview/entries/admin/ldap-master/priority?"09"
+		ucs/web/overview/entries/admin/ldap-master/icon="/icon/50x50/domaincontroller_master.png" \
+		ucs/web/overview/entries/admin/ldap-master/label="Domain controller master" \
+		ucs/web/overview/entries/admin/ldap-master/label/de="Domaincontroller Master" \
+		ucs/web/overview/entries/admin/ldap-master/description="Domain controller master of UCS domain $domainname" \
+		ucs/web/overview/entries/admin/ldap-master/description/de="Domänencontroller Master der UCS Domäne $domainname" \
+		ucs/web/overview/entries/admin/ldap-master/link="https://$ldap_master/ucs-overview/?lang=en" \
+		ucs/web/overview/entries/admin/ldap-master/link/de="https://$ldap_master/ucs-overview/?lang=de" \
+		ucs/web/overview/entries/admin/ldap-master/priority="09"
 fi
 
 

@@ -94,25 +94,6 @@ if [ -x /etc/init.d/apache2 ]; then
 	/etc/init.d/apache2 start
 fi
 
-# configure default entries for UCS overview site
-if [ $server_role = "domaincontroller_master" ] || [ $server_role = "domaincontroller_backup" ]; then
-	ucr set \
-		ucs/web/overview/entries/admin/root-certificate/icon?"/icon/50x50/root-certificate.png" \
-		ucs/web/overview/entries/admin/root-certificate/label?"Root certificate" \
-		ucs/web/overview/entries/admin/root-certificate/label/de?"Wurzelzertifikat" \
-		ucs/web/overview/entries/admin/root-certificate/description?"Certificate of the Certification Authority for UCS domain $domainname" \
-		ucs/web/overview/entries/admin/root-certificate/description/de?"Zertifikat der Zertifizierungsstelle für die UCS-Domäne $domainname" \
-		ucs/web/overview/entries/admin/root-certificate/link?"../ucs-root-ca.crt" \
-		ucs/web/overview/entries/admin/root-certificate/priority?"90" \
-		ucs/web/overview/entries/admin/invalid-certificate-list/icon?"/icon/50x50/invalid-certificate-list.png" \
-		ucs/web/overview/entries/admin/invalid-certificate-list/label?"Certificate revocation list" \
-		ucs/web/overview/entries/admin/invalid-certificate-list/label/de?"Zertifikat-Sperrliste" \
-		ucs/web/overview/entries/admin/invalid-certificate-list/description?"List of withdrawn certificates" \
-		ucs/web/overview/entries/admin/invalid-certificate-list/description/de?"Liste der widerrufenen Zertifikate" \
-		ucs/web/overview/entries/admin/invalid-certificate-list/link?"../ucsCA.crl" \
-		ucs/web/overview/entries/admin/invalid-certificate-list/priority?"91"
-fi
-
 # configuare language settings
 if dpkg --compare-versions "$2" le-nl 6.0.7-2
 then
