@@ -914,8 +914,7 @@ def handler(dn, new, listener_old, operation):
 			old=listener_old
 
 		# add
-		if new and not old:
-
+		if new:
 			new_entryUUID = new['entryUUID'][0]
 			modrdn_cache = os.path.join(STATE_DIR, new_entryUUID)
 			if os.path.exists(modrdn_cache):	## check if a modrdn is pending
@@ -926,17 +925,21 @@ def handler(dn, new, listener_old, operation):
 						old_dn = f.read()
 				except Exception, e:
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to open/read modrdn file %s: %s' % (modrdn_cache, str(e)))
+
+				(new_rdn, new_parent) = dn.split(',',1)
+				l.rename_s(old_dn, new_rdn, new_parent)
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: modrdn from %s to %s,%s' % (old_dn, new_rdn, new_parent))
 				try:
 					os.remove(modrdn_cache)
 				except Exception, e:
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to remove modrdn file %s: %s' % (modrdn_cache, str(e)))
-
 				listener.unsetuid()
-				(new_rdn, new_parent) = dn.split(',',1)
-				l.rename_s(old_dn, new_rdn, new_parent)
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: modrdn from %s to %s,%s' % (old_dn, new_rdn, new_parent))
-
-			else:
+			elif old: # modify: new and old
+				ml=modlist(old, new)
+				if ml:
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: modify: %s' % dn)
+					l.modify_s(dn, ml)
+			else: # add: new and not old
 				al=addlist(new)
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: add: %s' % dn)
 				try:
@@ -974,12 +977,6 @@ def handler(dn, new, listener_old, operation):
 				dns.reverse()
 				for dn in dns:
 					l.delete_s(dn)
-		# modify
-		else:
-			ml=modlist(old, new)
-			if ml:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: modify: %s' % dn)
-				l.modify_s(dn, ml)
 	except ldap.SERVER_DOWN, msg:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: retrying' % msg[0]['desc'])
 		if 'info' in msg[0]:
