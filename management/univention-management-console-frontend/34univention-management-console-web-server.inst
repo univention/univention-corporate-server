@@ -31,11 +31,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 
 joinscript_init
+
+eval "$(ucr shell)"
+
+ucr set	ucs/web/overview/entries/admin/umc/icon="/univention-management-console/js/dijit/themes/umc/icons/50x50/univention-management-console.png" \
+	ucs/web/overview/entries/admin/umc/label="System and domain settings" \
+	ucs/web/overview/entries/admin/umc/label/de="System- und Domäneneinstellungen" \
+	ucs/web/overview/entries/admin/umc/description="Univention Management Console for administrating the UCS domain $domainname and the system $hostname" \
+	ucs/web/overview/entries/admin/umc/description/de="Univention Management Console für die Verwaltung der UCS-Domäne $domainname und des Systems $hostname" \
+	ucs/web/overview/entries/admin/umc/link="/univention-management-console" \
+	ucs/web/overview/entries/admin/umc/priority="10" 
 
 /etc/init.d/univention-management-console-web-server restart
 
