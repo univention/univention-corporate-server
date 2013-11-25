@@ -48,6 +48,11 @@ if [ $JS_LAST_EXECUTED_VERSION -eq 1 ]; then
 	udm settings/umc_operationset remove "$@" --dn "cn=appcenter-all,cn=operations,cn=UMC,cn=univention,$ldap_base" || die
 fi
 
+if [ $JS_LAST_EXECUTED_VERSION -eq 6 ]; then
+	# remove accidently registered app from UCS 3.1
+	udm appcenter/app remove "$@" --dn "univentionAppID=drbd_8.4.2 ucs31,cn=drbd,cn=apps,cn=univention,$ldap_base" || true
+fi
+
 umc_operation_create "appcenter-all" "Manage Software packages" "" "appcenter/*" "lib/server/*"
 umc_policy_append "default-umc-all" "appcenter-all"
 

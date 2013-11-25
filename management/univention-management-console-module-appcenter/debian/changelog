@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.50-6) unstable; urgency=low
+
+  * Bug #33535: Fixed re-registration
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 25 Nov 2013 11:36:59 +0100
+
 univention-management-console-module-appcenter (3.0.50-5) unstable; urgency=low
 
   * Bug #33341: The joinscript now fails when registering the apps did not

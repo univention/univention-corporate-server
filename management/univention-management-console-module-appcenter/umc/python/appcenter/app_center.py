@@ -465,8 +465,6 @@ class Application(object):
 		version = ucr.get('version/version/target')
 		if version is None:
 			version = ucr.get('version/version', '')
-			# temporary hack, see Bug #33535
-			version = '3.2'
 		return '%s/meta-inf/%s' % (
 			cls.get_server(with_scheme=True),
 			version,
@@ -1050,8 +1048,8 @@ class Application(object):
 				#   walk in reversed order so that
 				#   previously_registered will be the latest if
 				#   there are multiple already registered
+				app.set_ucs_overview_ucr_variables(super_ucr, unset=True)
 				if app is not to_be_registered: # dont remove the one we want to register (may be already added)
-					app.set_ucs_overview_ucr_variables(super_ucr, unset=True)
 					if app.unregister(component_manager, super_ucr, tell_ldap=tell_ldap):
 						# this app actually was registered!
 						previously_registered = app
