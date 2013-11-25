@@ -206,7 +206,7 @@ class ApplicationLDAPObject(object):
 			MODULE.info('Adding %s to %s' % (self._localhost, self._udm_obj.dn))
 			self._udm_obj.modify()
 		else:
-			MODULE.info('%s already in list' % self._localhost)
+			MODULE.info('%s: %s already in list' % (self._udm_obj.dn, self._localhost))
 
 	def remove_localhost(self):
 		self.reload()
@@ -997,7 +997,7 @@ class Application(object):
 	def set_ucs_overview_ucr_variables(self, super_ucr, unset=False):
 		ucsoverviewcategory = self.get('ucsoverviewcategory')
 		webinterface = self.get('webinterface')
-		if ucsoverviewcategory and webinterface:
+		if unset or ucsoverviewcategory and webinterface:
 			registry_key = 'ucs/web/overview/entries/%s/%s/%%s' % (ucsoverviewcategory, self.id)
 			variables = {
 				'icon' : '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s.png' % self.get('icon'),
