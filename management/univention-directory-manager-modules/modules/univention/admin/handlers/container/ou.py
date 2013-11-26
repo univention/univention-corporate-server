@@ -39,6 +39,7 @@ import univention.admin.handlers
 import univention.admin.localization
 import string
 import univention.debug
+import ldap
 
 translation=univention.admin.localization.translation('univention.admin.handlers.container')
 _=translation.translate
@@ -273,7 +274,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('name'):
-			newdn = string.replace(self.dn, 'ou=%s,' % self.oldinfo['name'], 'ou=%s,' % self.info['name'], 1)
+			newdn = 'ou=%s,%s' % (self.info['name'], ','.join(ldap.explode_dn(self.dn)[1:]))
 			self.move(newdn)
 
 	def _ldap_post_move(self, olddn):
