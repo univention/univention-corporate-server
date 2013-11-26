@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.143-27) unstable; urgency=low
+
+  * Fixed more rename issues for containers and ous triggered by the
+    connector (Bug #33566)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Nov 2013 09:11:31 +0100
+
 univention-directory-manager-modules (8.0.143-26) unstable; urgency=low
 
   * Operate on lowercase converted DNs while moving subtree objects.
