@@ -599,7 +599,7 @@
 	Die in der &ucsUMC; eingerichteten Druckerfreigaben können auf Windows-Systemen als
 	Netzwerkdrucker hinzugefügt werden. Dies erfolgt über die Systemsteuerung unter <guimenu>Drucker
 	&ar; Netzwerkdrucker hinzufügen</guimenu>. Die Druckertreiber müssen beim ersten Zugriff eingerichtet
-	werden. Werden die Treiber serverseitig hinterlegt (siehe unten), erfolgt die Zuweisung des
+	werden. Wurden die Treiber serverseitig hinterlegt (siehe unten), erfolgt die Zuweisung des
 	Treibers automatisch.
   </para>
 
@@ -614,7 +614,7 @@
   <caution>
 	<para>
 	  Der Zugriff auf einen Drucker ist für einen regulären Benutzer nur
-	  möglich wenn dieser über lokale Rechte zur Treiberinstallation verfügt
+	  möglich, wenn dieser über lokale Rechte zur Treiberinstallation verfügt
 	  oder ein entsprechender Druckertreiber auf dem Druckserver
 	  hinterlegt wurde. Ist dies nicht der Fall kann es zu einer Windows
 	  Fehlermeldung kommen, die besagt, dass die Berechtigungen nicht
@@ -650,17 +650,18 @@
 	  <listitem><simpara>
 		Nun muss mit der rechten Maustaste auf die freie Fläche unter den Druckerfreigaben geklickt
 		werden (nicht auf eine der Freigaben, sonst öffnet sich das kontextsensitive Menü der
-		Druckerfreigabe!). Dort im Reiter <guimenu>Treiber</guimenu> mit <guimenu>Hinzufügen &ar;
-		Weiter &ar; x86 und x64 &ar; Datenträger</guimenu> auswählen. Im sich dabei öffnenden
+		Druckerfreigabe!) und <guimenu>Servereigenschaften</guimenu> gewählt werden. Dort im Reiter <guimenu>Treiber</guimenu> mit <guimenu>Hinzufügen &ar;
+		Weiter &ar; x86 und x64 auswählen &ar; Weiter &ar; Datenträger</guimenu> auswählen. Im sich dabei öffnenden
 		Dateidialog muss dann die INF-Datei des 64 Bit-Treibers ausgewählt werden (x64). Nach dem
-		mit <guimenu>Fertig stellen</guimenu> bestätigt wurde wird der 64 Bit-Treiber auf den
+		mit <guimenu>Weiter &ar; Fertig stellen</guimenu> bestätigt wurde wird der 64 Bit-Treiber auf den
 		Druckserver kopiert. Nun öffnet sich ein weiterer Dateidialog, in dem analog der 32
 		Bit-Treiber (x86) hochgeladen werden kann.
 	  </simpara></listitem> 
 
-	  <listitem><simpara>
-		Nun sind die Treiber auf dem Druckserver im Verzeichnis <filename>/var/lib/samba/printers</filename> gespeichert.
-	  </simpara></listitem>
+ 	  <listitem><simpara>
+		Nach diesen Schritten sind die Treiber auf dem Druckserver im Verzeichnis <filename>/var/lib/samba/printers</filename> gespeichert.
+ 	  </simpara></listitem>
+
 	</orderedlist>
   </para>
 
@@ -683,7 +684,7 @@
 
 		<figure>
 		  <title>Fehlermeldung beim ersten Zugriff</title>
-		  <graphic scalefit="1" width="40%" fileref="illustrations/windows-printerdriver-en.png"/>
+		  <graphic scalefit="1" width="40%" fileref="illustrations/windows-printerdriver-de.png"/>
 		</figure>
 	  </simpara></listitem>
 
@@ -699,9 +700,17 @@
 		auf <guimenu>OK</guimenu> geklickt werden, sondern es muss auf den Reiter
 		<guimenu>Allgemein</guimenu> gewechselt werden. In dem Reiter muss weiterhin der alte Name
 		der Druckerfreigabe angezeigt werden. Es kann vorkommen, dass die Druckerfreigabe umbenannt
-		wurde, damit ist sie dann nicht mehr mit der Freigabe assoziert! Anschließend auf
-		<guimenu>Übernehmen</guimenu> und <guimenu>OK</guimenu> klicken. Nun werden die
-		serverseitig hinterlegten Druckertreiber auf den Client heruntergeladen.
+		wurde, damit ist sie dann nicht mehr mit der Freigabe assoziert! Ist das der Fall, muss der
+		Name des Druckers im Reiter <guimenu>Allgemein</guimenu> (das erste Eingabefeld, neben dem
+		stilisierten Druckersymbol) wieder auf den Namen der Druckerfreigabe geändert werden. Hier
+		ist das in der Druckerverwaltung der UMC konfigurierte Feld <guimenu>Samba-Name</guimenu> zu
+		verwenden, falls es leer ist, dann der Wert aus <guimenu>Name</guimenu>.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Anschließend auf <guimenu>Übernehmen</guimenu> und <guimenu>OK</guimenu> klicken. Nun werden die
+		serverseitig hinterlegten Druckertreiber auf den Client heruntergeladen, sodass
+		von dort aus z.B. direkt eine Testseite gedruckt werden kann.
 	  </simpara></listitem>
 
 	</orderedlist>

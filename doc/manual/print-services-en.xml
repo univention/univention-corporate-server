@@ -585,11 +585,13 @@
 <section id="print-services:winclients">
   <title>Mounting of print shares in Windows clients</title>
 
-  <para>
-	The printer shares set up in the &ucsUMC; can be added to Windows systems as network printers. The
-	printer drivers need to be set up during the first access. To facilitate user access to the drivers,
-	the drivers can also be stored on the server.
-  </para>
+  <!-- <para> -->
+  <!-- 	Die in der &ucsUMC; eingerichteten Druckerfreigaben können auf Windows-Systemen als -->
+  <!-- 	Netzwerkdrucker hinzugefügt werden. Dies erfolgt über die Systemsteuerung unter <guimenu>Drucker -->
+  <!-- 	&ar; Netzwerkdrucker hinzufügen</guimenu>. Die Druckertreiber müssen beim ersten Zugriff eingerichtet -->
+  <!-- 	werden. Werden die Treiber serverseitig hinterlegt (siehe unten), erfolgt die Zuweisung des -->
+  <!-- 	Treibers automatisch. -->
+  <!-- </para> -->
 
   <para>
 	Printer shares are usually operated using the Windows printer drivers
@@ -608,38 +610,97 @@
 	  establish a connection to the printer.
 	</para>
   </caution>
-  <para>
-	The following steps make it possible to install a new printer driver
-	on the printer server:
-  </para>
-  <orderedlist>
-	<listitem>
-	  <simpara>
-		When logged on to Windows as <emphasis>Administrator</emphasis> you can
-		open the printer server and the printer directory it contains.
-	  </simpara>
-	</listitem>
-	<listitem>
-	  <simpara>
-		Right clicking in a free area of the window opens the context
-		menu where you can open the <guimenu>Server properties</guimenu>
-		dialogue. Clicking on <guimenu>Add</guimenu> on the
-		<guimenu>Drivers</guimenu> tab allows you to select a printer driver for
-		the system architecture required and load this onto the server all
-		via menus.
-	  </simpara>
-	</listitem>
-	<listitem>
-	  <simpara>
-		A right click on the printer will now run the
-		<guimenu>Properties</guimenu> dialogue. The <guimenu>Properties</guimenu>
-		tab contains a selction field for the drivers already
-		installed. Clicking on <mousebutton>OK</mousebutton> assigns the driver to the
-		printer and means that users privileges can access the
-		printer without the need to install a driver.
-	  </simpara>
-	</listitem>
-  </orderedlist>
+
+  <!-- <para> -->
+  <!-- 	Windows unterstützt ein Verfahren zur serverseitigen Bereitstellung von Druckertreibern auf dem -->
+  <!-- 	Druckserver (<emphasis>Point 'n' Print</emphasis>). Die folgende Anleitung beschreibt die -->
+  <!-- 	Bereitstellung der Druckertreiber unter Windows 7 für eine in der UMC konfigurierte -->
+  <!-- 	Druckerfreigabe. Zuerst müssen die Druckertreiber auf dem Druckserver hinterlegt werden. -->
+  <!-- 	Die Benutzerführung unter Windows bietet zahlreiche Stolperfallen, es ist wichtig den einzelnen -->
+  <!-- 	Schritten exakt zu folgen! -->
+  <!-- </para> -->
+
+  <!-- <para> -->
+  <!-- 	<orderedlist> -->
+  <!-- 	  <listitem><simpara> -->
+  <!-- 		Zuerst müssen die Druckertreiber von der Webseite des Herstellers heruntergeladen -->
+  <!-- 		werden. Wird eine Umgebung verwendet, in der neben den 32 Bit-Versionen von Windows auch 64 -->
+  <!-- 		Bit-Installationen verwendet werden, müssen die Treiber unbedingt in beiden Versionen -->
+  <!-- 		bezogen werden. Benötigt werden die INF-Dateien. -->
+  <!-- 	  </simpara></listitem> -->
+
+  <!-- 	  <listitem><simpara> -->
+  <!-- 		Nun muss der Windows Explorer gestartet und dort die Netzwerkumgebung geöffnet werden. Dort -->
+  <!-- 		muss der Druckserver ausgewählt werden, auf dem die Druckerfreigabe angelegt wurde. In der -->
+  <!-- 		oberen Menüleiste wird nach einem Klick auf <guimenu>Remotedrucker anzeigen</guimenu> eine -->
+  <!-- 		Liste mit allen Druckerfreigaben angezeigt. -->
+  <!-- 	  </simpara></listitem> -->
+
+  <!-- 	  <listitem><simpara> -->
+  <!-- 		Nun muss mit der rechten Maustaste auf die freie Fläche unter den Druckerfreigaben geklickt -->
+  <!-- 		werden (nicht auf eine der Freigaben, sonst öffnet sich das kontextsensitive Menü der -->
+  <!-- 		Druckerfreigabe!) und <guimenu>Servereigenschaften</guimenu> gewählt werden. Dort im Reiter <guimenu>Treiber</guimenu> mit <guimenu>Hinzufügen &ar; -->
+  <!-- 		Weiter &ar; x86 und x64 auswählen &ar; Weiter &ar; Datenträger</guimenu> auswählen. Im sich dabei öffnenden -->
+  <!-- 		Dateidialog muss dann die INF-Datei des 64 Bit-Treibers ausgewählt werden (x64). Nach dem -->
+  <!-- 		mit <guimenu>Weiter &ar; Fertig stellen</guimenu> bestätigt wurde wird der 64 Bit-Treiber auf den -->
+  <!-- 		Druckserver kopiert. Nun öffnet sich ein weiterer Dateidialog, in dem analog der 32 -->
+  <!-- 		Bit-Treiber (x86) hochgeladen werden kann. -->
+  <!-- 	  </simpara></listitem>  -->
+  <!-- 	</orderedlist> -->
+  <!-- </para> -->
+
+
+  <!-- <para> -->
+  <!-- 	Nun wird die Druckerfreigabe mit dem hochgeladenen Druckertreiber verknüpft: -->
+  <!-- 	<orderedlist> -->
+  <!-- 	  <listitem><simpara> -->
+  <!-- 		Nun muss der Windows Explorer gestartet und dort die Netzwerkumgebung geöffnet werden. Dort -->
+  <!-- 		muss der Druckserver ausgewählt werden, auf dem die Druckerfreigabe angelegt wurde. In der -->
+  <!-- 		oberen Menüleiste wird nach einem Klick auf <guimenu>Remotedrucker anzeigen</guimenu> eine -->
+  <!-- 		Liste mit allen Druckerfreigaben angezeigt. Nun muss durch einen Klick mit der linken -->
+  <!-- 		Maustaste ein Drucker ausgewählt werden, so dass dieser blau hinterlegt ist. Nun ein -->
+  <!-- 		Rechtsklick und dann <guimenu>Eigenschaften</guimenu> auswählen (Achtung: Wurde der Drucker -->
+  <!-- 		nicht durch Linksklick ausgewählt öffnet sich ein anderer Dialog!). -->
+  <!-- 	  </simpara></listitem> -->
+
+  <!-- 	  <listitem><simpara> -->
+  <!-- 		Ist noch kein Druckertreiber hinterlegt, wird die folgende Fehlermeldung angezeigt, die mit -->
+  <!-- 		<guimenu>Nein</guimenu> bestätigt werden muss. -->
+
+  <!-- 		<figure> -->
+  <!-- 		  <title>Fehlermeldung beim ersten Zugriff</title> -->
+  <!-- 		  <graphic scalefit="1" width="40%" fileref="illustrations/windows-printerdriver-de.png"/> -->
+  <!-- 		</figure> -->
+  <!-- 	  </simpara></listitem> -->
+
+  <!-- 	  <listitem><simpara> -->
+  <!-- 		Nun muss im Reiter <guimenu>Erweitert</guimenu> unter <guimenu>Treiber</guimenu> der -->
+  <!-- 		hochgeladene Treiber aus dem Dropdown-Menü ausgewählt werden. Anschließend muss auf -->
+  <!-- 		<guimenu>Übernehmen</guimenu> geklickt werden (Wichtig: Nicht auf <guimenu>OK</guimenu>!). -->
+  <!-- 	  </simpara></listitem> -->
+
+  <!-- 	  <listitem><simpara> -->
+  <!-- 		Nun wird ein Dialog angezeigt, in dem gefragt wird, ob dem Drucker vertraut wird. Dies muss -->
+  <!-- 		mit <guimenu>Treiber installieren</guimenu> bestätigt werden. Wichtig: Nun darf nicht direkt -->
+  <!-- 		auf <guimenu>OK</guimenu> geklickt werden, sondern es muss auf den Reiter -->
+  <!-- 		<guimenu>Allgemein</guimenu> gewechselt werden. In dem Reiter muss weiterhin der alte Name -->
+  <!-- 		der Druckerfreigabe angezeigt werden. Es kann vorkommen, dass die Druckerfreigabe umbenannt -->
+  <!-- 		wurde, damit ist sie dann nicht mehr mit der Freigabe assoziert! Ist das der Fall, muss der -->
+  <!-- 		Name des Druckers im Reiter <guimenu>Allgemein</guimenu> (das erste Eingabefeld, neben dem -->
+  <!-- 		stilisierten Druckersymbol) wieder auf den Namen der Druckerfreigabe geändert werden. Hier -->
+  <!-- 		ist das in der Druckerverwaltung der UMC konfigurierte Feld <guimenu>Samba-Name</guimenu> zu -->
+  <!-- 		verwenden, falls es leer ist, dann der Wert aus <guimenu>Name</guimenu>. -->
+  <!-- 	  </simpara></listitem> -->
+
+  <!-- 	  <listitem><simpara> -->
+  <!-- 		Anschließend auf <guimenu>Übernehmen</guimenu> und <guimenu>OK</guimenu> klicken. Nun werden die -->
+  <!-- 		serverseitig hinterlegten Druckertreiber auf den Client heruntergeladen. -->
+<!-- ADD: sodass	von dort aus z.B. direkt eine Testseite gedruckt werden kann. -->
+  <!-- 	  </simpara></listitem> -->
+
+
+  <!-- 	</orderedlist> -->
+  <!-- </para> -->
 </section>
 
 <section id="print::ppdlisten">
