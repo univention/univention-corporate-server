@@ -231,6 +231,12 @@
 	  <filename>/var/log/univention/management-console-module-appcenter.log</filename>
 	  protokolliert.
 	</para>
+
+	<para>
+	  Bei Verwendung eines lokalen Repositorys können Applikationen auch lokal gespiegelt
+	  werden. Dies ist in <xref linkend="software::createrepo"/> beschrieben. Dies wird nur für
+	  große Installationen empfohlen.
+	</para>
   </section>
 
   <section id="software::configrepo">
@@ -397,6 +403,37 @@ univention-repository-update -h
 		Durch die &ucsUCRV; <envar>local/repository</envar> kann das lokale Repository
 		aktiviert/deaktiviert werden.
 	  </para>
+
+	  <para>
+		Komponenten aus dem Univention App Center (siehe <xref linkend="software:appcenter"/>)
+		können ebenfalls in ein lokales Repository gespiegelt werden. Dies geschieht mit dem
+		folgenden Befehl:
+
+	  <programlisting language="sh">
+		univention-add-app -l APPID
+	  </programlisting>
+	  
+	  Die APPID kann anhand des Eintrags <emphasis>ID=</emphasis> in den INI-Dateien unter
+	  <uri>http://appcenter.software-univention.de/meta-inf/3.2/</uri> ermittelt werden, also für
+	  UCS@school beispielsweise <emphasis>ucsschool</emphasis>. Die Option <emphasis>-l</emphasis>
+	  stellt sicher, das die aktuellste Version der Applikation eingebunden wird.
+	  </para>
+
+	  <para>
+		<command>univention-add-app</command> registriert pro Applikation eine Reihe von
+		&ucsUCR;-Variablen. Anschließend muss die auf <emphasis>localmirror</emphasis> endende
+		Variable aktiviert werden (z.B:
+		<envar>repository/online/component/ucsschool_20131007/localmirror</envar>) und
+		<command>univention-repository-update net</command> aufgerufen werden. Die &UCRV;
+		<envar>repository/app_center/server</envar> sollte nicht verändert werden!
+	  </para>
+
+	  <para>
+		Erscheinen Aktualisierungen für eine Applikation muss <command>univention-add-app</command>
+		wie oben beschrieben erneut aufgerufen werden und die <envar>localmirror</envar>-Variable
+		erneut aktiviert werden.
+	  </para>
+
 	</section>
   </section>
 
