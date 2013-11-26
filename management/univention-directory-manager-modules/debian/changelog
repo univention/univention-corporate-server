@@ -1,3 +1,11 @@
+univention-directory-manager-modules (9.0.75-4) unstable; urgency=low
+
+  * Operate on lowercase converted DNs while moving subtree objects.
+    This is necessary if the python UDM lib is used by the connector
+    for example when an ou is moved in AD (Bug #33482)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Nov 2013 07:35:03 +0100
+
 univention-directory-manager-modules (9.0.75-3) unstable; urgency=low
 
   * workaround for delayed pysupport call during update (Bug #32409)
