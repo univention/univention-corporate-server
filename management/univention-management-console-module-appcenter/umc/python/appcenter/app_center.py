@@ -597,10 +597,22 @@ class Application(object):
 
 	@classmethod
 	def all_installed(cls, package_manager, force_reread=False, only_local=False, localize=True):
-		applications = cls.all(force_reread=force_reread, only_local=only_local, localize=localize)
-		for app in applications:
-			MODULE.info('%s: is_installed: %r, is_allowed: %r' % (app, app.is_installed(package_manager), app.allowed_on_local_server()))
-		return [app for app in applications if app.is_installed(package_manager) and app.allowed_on_local_server()]
+		ret = []
+		for app in cls.all(force_reread=force_reread, only_local=only_local, localize=localize):
+			if app.allowed_on_local_server():
+				# app.is_installed(package_manager)
+				#   uses apt_pkg.CURSTATE. Not desired
+				#   when called during installation of
+				#   umc-module-appcenter together with
+				#   serveral other (app relevant)
+				#   packages; for example in postinst or
+				#   joinscript (on master).
+				#   see Bug #33535 and Bug #31261
+				packages = package_manager.get_packages(app.get('defaultpackages'))
+				is_installed = all(package.is_installed for package in packages)
+				if is_installed:
+					ret.append(app)
+		return ret
 
 	@classmethod
 	def all(cls, force_reread=False, only_local=False, localize=True):
