@@ -609,7 +609,7 @@ class Application(object):
 				#   joinscript (on master).
 				#   see Bug #33535 and Bug #31261
 				packages = package_manager.get_packages(app.get('defaultpackages'))
-				is_installed = all(package.is_installed for package in packages)
+				is_installed = bool(packages) and all(package.is_installed for package in packages)
 				if is_installed:
 					ret.append(app)
 		return ret

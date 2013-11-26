@@ -1,8 +1,8 @@
-univention-management-console-module-appcenter (3.0.50-9) unstable; urgency=low
+univention-management-console-module-appcenter (3.0.50-10) unstable; urgency=low
 
   * Bug #33535: Fixed re-registration
 
- -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Nov 2013 10:23:17 +0100
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Nov 2013 16:09:58 +0100
 
 univention-management-console-module-appcenter (3.0.50-5) unstable; urgency=low
 

@@ -81,7 +81,6 @@ package_manager = PackageManager(lock=False)
 install_opener(ucr)
 
 for app in Application.all_installed(package_manager):
-  MODULE.process('%r installed. (Re-)Registering...' % app)
   app.register(component_manager, package_manager, tell_ldap=True)
 EOF
 )" || die
