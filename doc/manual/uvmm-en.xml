@@ -222,8 +222,11 @@
 		</para>
 	</section>
 
-	<section id="uvmm::defaultpool">
-	  <title>Accessing the default storage pool through a file share</title>
+	<section id="uvmm::storagepools">
+	  <title>Storage pools</title>
+
+	  <section id="uvmm::defaultpool">
+		<title>Accessing the default storage pool through a file share</title>
 		<para>
 		  Each virtualization server provides a storage pool with the name
 		  <emphasis>default</emphasis> in the standard configuration. It can be found on the
@@ -259,6 +262,76 @@
 		  system! The <guimenu>Valid users or groups</guimenu> option ensures that, irrespective
 		  of the file system permissions, only the Administrator user can access the share.
 		</para>
+	  </section>
+
+<!-- 	  <section id="uvmm::addpool"> -->
+<!-- 		<title>Hinzufügen eines Speicherbereichs</title> -->
+<!-- 		<para> -->
+<!-- 		  Ein weiterer Speicherbereich kann nicht über die &ucsUMC; angelegt werden. Stattdessen muss eine -->
+<!-- 		  Anmeldung als Benutzer <emphasis>root</emphasis> auf einen Virtualisierungs-Server -->
+<!-- 		  erfolgen. Die folgenden Schritte sind dafür nötig: -->
+
+<!-- 		  <itemizedlist> -->
+<!-- 			<listitem><simpara> -->
+<!-- 			  Das Verzeichnis, in dem die Daten des Speicherbereichs abgelegt werden sollen, muss -->
+<!-- 			  angelegt werden, in diesem Beispiel <filename>/mnt/storage</filename>. -->
+<!-- 			</simpara></listitem> -->
+
+<!-- 			<listitem><simpara> -->
+<!-- 			  Mit dem folgenden Befehl wird der neue Speicherbereich <emphasis>Testpool</emphasis> erstellt: -->
+<!-- 			  <programlisting language="sh"> -->
+<!-- virsh pool-define-as Testpool dir - - - - "/mnt/storage" -->
+<!-- 			  </programlisting> -->
+<!-- 			</simpara></listitem> -->
+
+<!-- 			<listitem><simpara> -->
+<!-- 			  Die von UVMM verwendete Bibliothek libvirt unterscheidet zwischen aktiven und -->
+<!-- 			  inaktiven Speicherbereichen. Um den Speicherbereich direkt verwenden zu können, muss er -->
+<!-- 			  aktiviert werden: -->
+
+<!-- 			  <programlisting language="sh"> -->
+<!-- virsh pool-start Testpool -->
+<!-- 			  </programlisting> -->
+
+<!-- 			  Der folgende Befehl stellt sicher, dass der Pool automatisch beim nächsten Systemstart -->
+<!-- 			  aktiviert wird: -->
+
+<!-- 			  <programlisting language="sh"> -->
+<!-- virsh pool-autostart Testpool -->
+<!-- 			  </programlisting> -->
+<!-- 			</simpara></listitem> -->
+<!-- 		  </itemizedlist> -->
+<!-- 		</para> -->
+<!-- 	  </section> -->
+
+<!-- 	  <section id="uvmm::movepool"> -->
+<!-- 		<title>Verschieben des default-Speicherbereichs</title> -->
+<!-- 		<para> -->
+<!-- 		  Um den unterliegenden Dateipfad eines Speicherbereichs nachträglich zu ändern, muss eine -->
+<!-- 		  Anmeldung als Benutzer <emphasis>root</emphasis> auf dem Virtualisierungs-Server -->
+<!-- 		  erfolgen. Die folgenden Schritte sind dafür nötig: -->
+
+<!-- 		  <itemizedlist> -->
+<!-- 			<listitem><simpara> -->
+<!-- 			  Die &ucsUCRV; <envar>uvmm/pool/default/path</envar> muss auf das neue Verzeichnis geändert werden. -->
+<!-- 			</simpara></listitem> -->
+
+<!-- 			<listitem><simpara> -->
+<!-- 			  Die folgenden Befehle entfernen den alten Speicherbereich; durch einen Neustart des -->
+<!-- 			  UVMM wird der Speicherbereich unter dem neuen Pfad angelegt: -->
+<!-- 			  <programlisting language="sh"> -->
+<!-- virsh pool-destroy default -->
+<!-- virsh pool-undefine default -->
+<!-- invoke-rc.d univention-virtual-machine-manager-daemon restart -->
+<!-- invoke-rc.d univention-virtual-machine-manager-node-common restart -->
+<!-- 			  </programlisting> -->
+<!-- 			</simpara></listitem> -->
+<!-- 		  </itemizedlist> -->
+<!-- 		</para> -->
+<!-- 	  </section> -->
+<!-- 	</section> -->
+
+
 	</section>
 
 	<section id="uvmm::drives">
@@ -514,7 +587,7 @@
 		<para>
 			During the migration it must be noted that the images of the mounted hard drives and CD-ROM drive must be accesible by both virtualization servers.
 			This can be achieved, for example, by storing the images in a central storage system.
-			Notes on the setting up of this type of environment can be found under <biblioref linkend="uvmm-technical-details"/>.
+			Notes on the setting up of this type of environment can be found under <xref linkend="uvmm::defaultpool"/>.
 		</para>
 		<section id="uvmm:Migration_of_virtual_machines_from_failed_virtualization_servers">
 			<title>Migration of virtual machines from failed virtualization servers</title>
