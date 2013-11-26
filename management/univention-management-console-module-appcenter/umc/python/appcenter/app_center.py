@@ -598,6 +598,8 @@ class Application(object):
 	@classmethod
 	def all_installed(cls, package_manager, force_reread=False, only_local=False, localize=True):
 		applications = cls.all(force_reread=force_reread, only_local=only_local, localize=localize)
+		for app in applications:
+			MODULE.info('%s: is_installed: %r, is_allowed: %r' % (app, app.is_installed(package_manager), app.allowed_on_local_server()))
 		return [app for app in applications if app.is_installed(package_manager) and app.allowed_on_local_server()]
 
 	@classmethod
