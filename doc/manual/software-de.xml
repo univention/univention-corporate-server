@@ -424,7 +424,7 @@ univention-repository-update -h
 		&ucsUCR;-Variablen. Anschließend muss die auf <emphasis>localmirror</emphasis> endende
 		Variable aktiviert werden (z.B:
 		<envar>repository/online/component/ucsschool_20131007/localmirror</envar>) und
-		<command>univention-repository-update net</command> aufgerufen werden. Die &UCRV;
+		<command>univention-repository-update net</command> aufgerufen werden. Die &ucsUCRV;
 		<envar>repository/app_center/server</envar> sollte nicht verändert werden!
 	  </para>
 
