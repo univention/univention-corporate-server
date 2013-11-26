@@ -385,7 +385,13 @@ class base(object):
 				try:
 					for subolddn, suboldattrs in subelements:
 						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: subelement %s' % subolddn)
-						subnewdn = subolddn.replace(self.dn,newdn)
+						# Convert the DNs to lowercase before the replacement. The cases might be mixed up if the python lib is
+						# used by the connector, for example:
+						#   subolddn: uid=user_test_h80,ou=TEST_H81,LDAP_BASE
+						#   self.dn: ou=test_h81,LDAP_BASE
+						#   newdn: OU=TEST_H81,ou=test_h82,$LDAP_BASE
+						subolddn_lowercase = subolddn.lower()
+						subnewdn = subolddn_lowercase.replace(self.dn.lower(),newdn)
 						submodule = univention.admin.modules.identifyOne(subolddn, suboldattrs)
 						submodule = univention.admin.modules.get(submodule)
 						subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
