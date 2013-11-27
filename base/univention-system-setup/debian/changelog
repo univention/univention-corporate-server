@@ -1,3 +1,12 @@
+univention-system-setup (7.0.66-2) unstable; urgency=low
+
+  * System-setup-boot: urandom init-script is deactivated until system
+    setup finishes, to avoid having the same random seed 
+    in templates (Bug #30034)
+  * Recreate ssh and ssl keys during boot if the files are missing (Bug #30034)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 27 Nov 2013 13:49:55 +0100
+
 univention-system-setup (7.0.66-1) unstable; urgency=low
 
   * Bug #33393: fixed error when clicking on "Continue" in appliance mode

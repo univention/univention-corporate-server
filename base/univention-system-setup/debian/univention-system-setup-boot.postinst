@@ -100,4 +100,9 @@ fi
 
 #DEBHELPER#
 
+update-rc.d univention-system-setup-boot-prepare defaults 15
+# Remove urandom init-script from runlevels (Bug #30034). Will be reactivated by scripts/10_basis/20initscripts
+update-rc.d -f urandom remove
+rm /var/lib/urandom/random-seed
+
 exit 0

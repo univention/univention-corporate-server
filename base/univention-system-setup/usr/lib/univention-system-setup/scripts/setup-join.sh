@@ -107,6 +107,9 @@ fi
 # set root password
 /usr/lib/univention-system-setup/scripts/10_basis/18root_password
 
+# set init-script configuration
+/usr/lib/univention-system-setup/scripts/10_basis/20initscripts
+
 if [ "$server_role" = "domaincontroller_master" ]; then
 	realm="$(echo $domainname | tr "[:lower:]" "[:upper:]")"
 	univention-config-registry set ldap/server/name="$hostname.$domainname" \

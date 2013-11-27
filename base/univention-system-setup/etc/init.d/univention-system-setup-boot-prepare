@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 #
-# Univention System Setup
-#  postrm script
+# Univention System Setup preparations
+#  boot init script for univention system setup
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,26 +30,35 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell)"
+. /lib/lsb/init-functions
 
-. /usr/share/univention-lib/all.sh
+. /usr/share/univention-lib/ucr.sh
 
-# Reset apache2/startsite
-system_setup_boot_startsite='univention-management-console/?module=setup\&username=root'
-if [ "$apache2_startsite" = "$system_setup_boot_startsite" ] ; then
-	ucr set apache2/startsite="$system_setup_prev_apache2_startsite"
-	ucr unset system/setup/prev/apache2/startsite
-	if [ -x /etc/init.d/apache2 ]; then
-		/etc/init.d/apache2 restart
-	fi
-fi
+case "$1" in
+	start)
+		log_action_msg "Starting univention-system setup preparations"
+		
+		# recreate openssh-hostkeys if they are missing
+		host_key_missing=0
+		for line in "$(grep HostKey /etc/ssh/sshd_config | awk '{print $2}')"
+		do
+			[ ! -f "$line" ] && host_key_missing=1 && break
+		done    
 
-update-rc.d -f univention-system-setup-boot-prepare remove
+		[ "$host_key_missing" -eq "1" ] && dpkg-reconfigure openssh-server
+		
+		# recreate ssl certificates if they are missing
+		[ ! -d /etc/univention/ssl ] && dpkg-reconfigure univention-ssl
 
-# Activate urandom init script, was deactivated when installing univention-system-setup-boot
-# Runlevel settings should equal initscripts.postinst values
-update-rc.d urandom start 55 S . start 30 0 6 . || exit $?
+		log_action_end_msg 0
+		;;
+	stop)
+		log_action_end_msg 0
+		;;
+	*)
+		log_action_msg "Usage: /etc/init.d/univention-system-setup-boot {start|stop}."
+		exit 1
+		;;
+esac
 
-#DEBHELPER#
 
-exit 0

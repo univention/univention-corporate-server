@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention System Setup
-#  postrm script
+# Univention Setup
+#  Reactivate and setup init-scripts
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,26 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell)"
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
-. /usr/share/univention-lib/all.sh
-
-# Reset apache2/startsite
-system_setup_boot_startsite='univention-management-console/?module=setup\&username=root'
-if [ "$apache2_startsite" = "$system_setup_boot_startsite" ] ; then
-	ucr set apache2/startsite="$system_setup_prev_apache2_startsite"
-	ucr unset system/setup/prev/apache2/startsite
-	if [ -x /etc/init.d/apache2 ]; then
-		/etc/init.d/apache2 restart
-	fi
-fi
-
-update-rc.d -f univention-system-setup-boot-prepare remove
+info_header "$0" "$(gettext "Configuring init-scripts")"
 
 # Activate urandom init script, was deactivated when installing univention-system-setup-boot
 # Runlevel settings should equal initscripts.postinst values
 update-rc.d urandom start 55 S . start 30 0 6 . || exit $?
 
-#DEBHELPER#
-
 exit 0
+
