@@ -44,6 +44,8 @@ import urllib
 import urllib2
 import traceback
 
+from ldap import UNDEFINED_TYPE
+
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
@@ -63,6 +65,7 @@ from univention.management.console.protocol.definitions import MODULE_ERR_COMMAN
 
 from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, set_credentials, container_modules, info_syntax_choices, search_syntax_choices_by_key
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
+
 _ = Translation( 'univention-management-console-module-udm' ).translate
 
 class Instance( Base, ProgressMixin ):
@@ -226,8 +229,10 @@ class Instance( Base, ProgressMixin ):
 
 		self.finished( request.id, license_data )
 
-	@LDAP_Connection
-	def license_import( self, request, ldap_connection = None, ldap_position = None ):
+	def license_import(self, request):
+		# Bug #30156
+		ldap_position = LDAP_Connection(lambda ldap_connection=None, ldap_position=None: ldap_position)()
+
 		filename = None
 		if isinstance(request.options, (list, tuple)) and request.options:
 			# file upload
@@ -248,16 +253,29 @@ class Instance( Base, ProgressMixin ):
 			lic_file.close()
 			filename = lic_file.name
 
-		importer = LicenseImport( open( filename, 'rb' ) )
-		os.unlink( filename )
-		# check license
 		try:
-			importer.check( ldap_position.getBase() )
-		except LicenseError, e:
-			self.finished( request.id, [ { 'success' : False, 'message' : str( e ) } ] )
+			with open(filename, 'rb') as fd:
+				importer = LicenseImport(fd)
+
+				# check license
+				try:
+					importer.check( ldap_position.getBase() )
+				except LicenseError as e:
+					self.finished( request.id, [ { 'success' : False, 'message' : str( e ) } ] )
+					return
+
+				# write license
+				importer.write( self._user_dn, self._password )
+		except (ValueError, AttributeError, UNDEFINED_TYPE) as exc:
+			MODULE.error('License import failed (malformed LDIF): %r' % (exc))
+			# AttributeError: missing univentionLicenseBaseDN
+			# ValueError raised by ldif.LDIFParser when e.g. dn is duplicated
+			# UNDEFINED_TYPE e.g. LDIF contained non existing attributes
+			self.finished( request.id, [ { 'success' : False, 'message' : _('The uploaded LDIF file is malformed.') } ] )
 			return
-		# write license
-		importer.write( self._user_dn, self._password )
+		finally:
+			os.unlink( filename )
+
 		self.finished( request.id, [ { 'success' : True } ] )
 
 	@multi_response(progress=[_('Moving %d object(s)'), _('%($dn$)s moved')])

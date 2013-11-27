@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.97-4) unstable; urgency=low
+
+  * Bug #30156: display error message when importing of malicious LDIF file
+  	failed
+
+ -- Florian Best <best@univention.de>  Wed, 27 Nov 2013 16:03:53 +0100
+
 univention-management-console-module-udm (4.0.97-3) unstable; urgency=low
 
   * Bug #33343: Fixed deleting a selected object from the LDAP tree.
