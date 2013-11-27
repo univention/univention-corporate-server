@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.97-5) unstable; urgency=low
+
+  * Bug #30156: add missing translation
+
+ -- Florian Best <best@univention.de>  Wed, 27 Nov 2013 16:39:27 +0100
+
 univention-management-console-module-udm (4.0.97-4) unstable; urgency=low
 
   * Bug #30156: display error message when importing of malicious LDIF license file

@@ -271,7 +271,7 @@ class Instance( Base, ProgressMixin ):
 			# AttributeError: missing univentionLicenseBaseDN
 			# ValueError raised by ldif.LDIFParser when e.g. dn is duplicated
 			# UNDEFINED_TYPE e.g. LDIF contained non existing attributes
-			self.finished( request.id, [ { 'success' : False, 'message' : _('The uploaded LDIF file is malformed.') } ] )
+			self.finished( request.id, [ { 'success' : False, 'message' : _('The license could not be imported: malformed LDIF format') } ] )
 			return
 		finally:
 			os.unlink( filename )
