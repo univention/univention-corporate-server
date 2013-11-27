@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-system-setup
+fix: 7.0.66-2.551.201311271351
+note:
+version: [0]
+desc: |
+  * System-setup-boot: urandom init-script is deactivated until system
+  setup finishes, to avoid having the same random seed in templates
+  * Recreate ssh and ssl keys during boot if the files are missing
+bug: [30034]
