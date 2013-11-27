@@ -4,78 +4,93 @@
 	%entities;
 ]>
 <chapter id="chap:www">
-	<title>Web services
-		<indexterm><primary>Web Services</primary></indexterm>
-		<indexterm><primary>Apache</primary><see>Web Services</see></indexterm>
-	</title>
+  <title>Web services
+  <indexterm><primary>Web Services</primary></indexterm>
+  <indexterm><primary>Apache</primary><see>Web Services</see></indexterm>
+  </title>
+
+  <section id="www:overview">
+	<title>Extending the overview page</title>
 	<para>
-		<acronym>UCS</acronym> systems are managed by <xref linkend="chap:umc"/>, but additional web services might be provided by hosts. Opening the <acronym>URL</acronym> <ulink url="http://localhost/ucs-overview/"/> will show a overview page, which links to additional web resources.
+	  When a user opens <uri>http://localhost/</uri> or
+	  <uri>http://<replaceable>hostname</replaceable>/</uri> in a browser, she is redirected to the
+	  <firstterm>UCS overview</firstterm> page.
 	</para>
 
-	<section id="www:overview">
-		<title>Extending the overview page</title>
-		<para>
-			When a user opens <uri>http://localhost/</uri> or <uri>http://<replaceable>hostname</replaceable>/</uri> in a browser, she is redirected to the <firstterm>UCS overview</firstterm>.
-			Depending on the preferred language negotiated by the browser the user is either redirected to the German version <filename>/var/www/ucs-overview/de.html</filename> or English version <filename>/var/www/ucs-overview/en.html</filename>.
-		</para>
-		<para>
-			By default this page provides the following links:
-		</para>
-		<itemizedlist>
-			<listitem><simpara>UCS Management Console (<acronym>UMC</acronym>)</simpara></listitem>
-			<listitem><simpara>Certificate of the Certification Authority</simpara></listitem>
-			<listitem><simpara>List of withdrawn certificates</simpara></listitem>
-			<listitem><simpara>Link to &ucsMaster;</simpara></listitem>
-			<listitem><simpara>Website of Univention GmbH</simpara></listitem>
-			<listitem><simpara>Link to the Univention forum</simpara></listitem>
-			<listitem><simpara>Link to Documentation for &ucsUCS;</simpara></listitem>
-		</itemizedlist>
-		<para>
-			These overview pages are &ucsUCR; Multifile templates (<xref linkend="ucr:multifile"/>) and can be extended by adding additional subfiles.
-			The pages use a <acronym>HTML</acronym> table with a three column layout.
-			It is opened in subfile <filename>01en.html</filename> and closed in <filename>99en.html</filename>.
-			In between each entry is rendered as a table row with the follosing columns:
-		</para>
-		<orderedlist>
-			<listitem><simpara>The first column may contain an icon of size 24×24 pixels.</simpara></listitem>
-			<listitem><simpara>The second column should contain a link to the resource.</simpara></listitem>
-			<listitem><simpara>The third column should contain a short descriptive text.</simpara></listitem>
-		</orderedlist>
-		<para>
-			The following example extends the English page with a link to the Univention Wiki.
-		</para>
-		<variablelist>
-			<varlistentry>
-				<term><filename>conffiles/var/www/ucs-overview/en.html.d/50univention-wiki.html</filename></term>
-				<listitem>
-					<programlisting><![CDATA[
-<tr>
-	<td class="overview">
-		<a href="http://wiki.univention.de/">
-			<img src="../icon/about.png" alt="" style="border:0" />
-		</a>
-	</td>
-	<td class="overview">
-		<a href="http://wiki.univention.de/">Univention Wiki</a>
-	</td>
-	<td class="overview">The Univention Wiki</td>
-	<td>
-</tr>
-					]]></programlisting>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term><filename>debian/<replaceable>package</replaceable>.univention-config-registry</filename></term>
-				<listitem>
-					<programlisting><![CDATA[
-Type: subfile
-Multifile: var/www/ucs-overview/en.html
-Subfile: var/www/ucs-overview/en.html.d/50univention-wiki.html
-					]]></programlisting>
-				</listitem>
-			</varlistentry>
-		</variablelist>
-	</section>
+	<para>
+	  Depending on the preferred language negotiated by the web browser the user is either
+	  redirected to the German or English version. The overview page is split between
+	  <guimenu>Installed web services</guimenu> and <guimenu>Administration</guimenu> entries.
+	</para>
+
+	<para>
+	  The start page can be extended using &ucsUCR; variables. PACKAGE refers to a unique identifier, typically the name of the package
+	  shipping the extensions to the overview page. The configurable options are explained below:
+
+	  <itemizedlist>
+		<listitem><simpara>
+		  <envar>ucs/web/overview/entries/admin/PACKAGE/OPTION</envar> variables extend the
+		  administrative section.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  <envar>ucs/web/overview/entries/service/PACKAGE/OPTION</envar> variables extend the
+		  web services section.
+		</simpara></listitem>
+	  </itemizedlist>
+	</para>
+
+	<para>
+	  To configure an extension of the overview page the following options must/can be set using the
+	  pattern
+	  <envar>ucs/web/overview/entries/admin/PACKAGE/OPTION</envar>=<emphasis>VALUE</emphasis> (and
+	  likewise for services).
+
+	  <itemizedlist>
+		<listitem><simpara>
+		  <envar>link</envar> defines a link to either an URL or a file representing the service (usually a web interface).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  <envar>label</envar> specifies a title for an overview entry. The descriptions
+		  can also be translated; e.g. <envar>label/de</envar> can be used for a title
+		  in German.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  <envar>description</envar> configures a longer description of an overview entry. The descriptions
+		  can also be translated; e.g. <envar>description/de</envar> can be used for a description
+		  in German.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Optionally an icon can be displayed. Using <envar>icon</envar> either a filename or an URI
+		  can be provided. When specifying a filename, the name must be relative to the directory
+		  <filename>/var/www</filename>, i.e. with a leading '/'. All file formats typically
+		  displayed by browsers can be used (e.g. PNG/JPG). All icons must be scaled to 50x50 pixels.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The display order can be specified using <envar>priority</envar>. Depending on the values
+		  the entries are displayed in lexicographical order.
+		</simpara></listitem>
+	  </itemizedlist>
+	</para>
+
+	<para>
+	  The following example configures the link to the Nagios web interface:
+
+	  <programlisting>
+ucs/web/overview/entries/admin/nagios/description/de: Netzwerk-, Host- und Serviceüberwachung
+ucs/web/overview/entries/admin/nagios/description: Network, host and service monitoring system
+ucs/web/overview/entries/admin/nagios/icon: /icon/50x50/nagios.png
+ucs/web/overview/entries/admin/nagios/label/de: Univention Nagios
+ucs/web/overview/entries/admin/nagios/label: Univention Nagios
+ucs/web/overview/entries/admin/nagios/link: /nagios/
+ucs/web/overview/entries/admin/nagios/priority: 50
+	  </programlisting>
+	</para>
+  </section>
 
 	<!-- <section id="www:rest"> -->
 	<!-- 	<title>RESTful</title> -->
