@@ -51,6 +51,7 @@ fi
 if [ $JS_LAST_EXECUTED_VERSION -eq 6 ]; then
 	# remove accidently registered UCS 3.1 app
 	udm appcenter/app remove "$@" --dn "univentionAppID=drbd_8.4.2 ucs31,cn=drbd,cn=apps,cn=univention,$ldap_base" || true
+	ucr unset $(ucr --keys-only search "ucs/web/overview/entries/service/(zarafa|oxseforucs)/.*")
 fi
 
 umc_operation_create "appcenter-all" "Manage Software packages" "" "appcenter/*" "lib/server/*"

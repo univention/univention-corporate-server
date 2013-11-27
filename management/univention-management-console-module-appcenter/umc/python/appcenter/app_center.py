@@ -1011,7 +1011,7 @@ class Application(object):
 	def set_ucs_overview_ucr_variables(self, super_ucr, unset=False):
 		ucsoverviewcategory = self.get('ucsoverviewcategory')
 		webinterface = self.get('webinterface')
-		if unset or ucsoverviewcategory and webinterface:
+		if ucsoverviewcategory and webinterface:
 			registry_key = 'ucs/web/overview/entries/%s/%s/%%s' % (ucsoverviewcategory, self.id)
 			variables = {
 				'icon' : '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s.png' % self.get('icon'),
@@ -1062,21 +1062,21 @@ class Application(object):
 				#   walk in reversed order so that
 				#   previously_registered will be the latest if
 				#   there are multiple already registered
-				app.set_ucs_overview_ucr_variables(super_ucr, unset=True)
 				if app is not to_be_registered: # dont remove the one we want to register (may be already added)
+					app.set_ucs_overview_ucr_variables(super_ucr, unset=True)
 					if app.unregister(component_manager, super_ucr, tell_ldap=tell_ldap):
 						# this app actually was registered!
 						previously_registered = app
 						should_update = True
-				if to_be_registered:
-					to_be_registered.set_ucs_overview_ucr_variables(super_ucr)
-					if not to_be_registered.is_registered(component_manager.ucr): # does not hold for withoutrepository
-						# add the new repository component for the app
-						component_manager.put_app(to_be_registered, super_ucr)
-						should_update = True
-					if tell_ldap:
-						ldap_obj = self.get_ldap_object(or_create=True)
-						ldap_obj.add_localhost()
+			if to_be_registered:
+				to_be_registered.set_ucs_overview_ucr_variables(super_ucr)
+				if not to_be_registered.is_registered(component_manager.ucr): # does not hold for withoutrepository
+					# add the new repository component for the app
+					component_manager.put_app(to_be_registered, super_ucr)
+					should_update = True
+				if tell_ldap:
+					ldap_obj = self.get_ldap_object(or_create=True)
+					ldap_obj.add_localhost()
 		if should_update:
 			# component was added or removed. apt-get update
 			package_manager.update()

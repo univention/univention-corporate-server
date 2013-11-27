@@ -219,7 +219,7 @@ class Instance(umcm.Base):
 						result['software_changes_computed'] = True
 						serious_problems = bool(result['broken'] or result['master_unreachable'] or result['serious_problems_with_hosts'])
 						if serious_problems or (not force and (result['unreachable'] or result['install'] or result['remove'] or result['problems_with_hosts'])):
-							MODULE.process('Problems encountered or confirmation required. Removing component %s' % application.id)
+							MODULE.process('Problems encountered or confirmation required. Removing component %s' % application.component_id)
 							if not remove_component:
 								# component was not removed automatically after dry_run
 								if application.candidate:
