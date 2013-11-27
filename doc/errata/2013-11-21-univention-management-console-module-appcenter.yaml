@@ -6,6 +6,6 @@ fix: 2.0.139-22.215.201311211754
 note:
 version: [0]
 desc: |
-  This errata update added a function to query application based on their
-  component_id
+  This errata update adds internal functionality needed for the UMC online
+  update module.
 bug: [33484]
