@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-management-console-module-udm
-fix: 4.0.97-3.419.201311211107
+fix: 4.0.97-5.421.201311271640
 note:
 version: [0]
 desc: |
@@ -11,4 +11,5 @@ desc: |
     to open an existing object.
   * Deleting a container from the LDAP tree in the LDAP directory failed when
     this container was selected.
-bug: [33244, 33343]
+  * Display a correct error message if an invalid license has been imported.
+bug: [33244, 33343, 30156]
