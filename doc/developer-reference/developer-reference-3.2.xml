@@ -121,6 +121,14 @@
 			<pubdate>2012</pubdate>
 			<title><ulink url="http://www.debian.org/doc/developers-reference/">Debian Developer's Reference</ulink></title>
 		</biblioentry>
+		<biblioentry id="appcenter-whitepaper">
+			<abbrev>App Center Whitepaper</abbrev>
+			<publishername>Univention GmbH</publishername>
+			<pubdate>2013</pubdate>
+			<title><ulink url="http://www.univention.de/fileadmin/download/whitepaper/Univention_App_Center_Summary_en.pdf">App Center White Paper</ulink></title>
+		</biblioentry>
+
+
 	</bibliography>
 	<!--
 	<?dbhtml-include href="../stylesheets/piwiki.html"?>

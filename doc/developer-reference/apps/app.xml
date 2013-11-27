@@ -21,11 +21,10 @@
 		follows the default procedure of the respective vendor.
 	</para>
 	<para>
-		This chapter mainly aims at software vendors that want to provide their
-		software in Univention App Center and describes the necessary steps. An
-		overview of the advantages and benefits can be found in a <ulink
-			url="http://www.univention.de/fileadmin/download/whitepaper/Univention_App_Center_Summary.pdf">PDF
-			document</ulink> on the Univention website.
+	  This chapter mainly aims at software vendors that want to provide their
+	  software in Univention App Center and describes the necessary steps. An
+	  overview of the advantages and benefits from a business perspective can
+	  can be found in <xref linkend="appcenter-whitepaper"/>.
 	</para>
 	<para>
 		A catalogue with the available applications can be viewed on the <ulink
