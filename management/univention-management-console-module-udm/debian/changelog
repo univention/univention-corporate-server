@@ -1,6 +1,6 @@
 univention-management-console-module-udm (4.0.97-4) unstable; urgency=low
 
-  * Bug #30156: display error message when importing of malicious LDIF file
+  * Bug #30156: display error message when importing of malicious LDIF license file
   	failed
 
  -- Florian Best <best@univention.de>  Wed, 27 Nov 2013 16:03:53 +0100
