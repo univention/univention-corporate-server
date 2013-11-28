@@ -139,7 +139,7 @@ define([
 				}];
 				dialog.confirm(_('The license has been imported successfully.') + '<br>' + _('Please login again to complete the import process.'), btns);
 			} else {
-				dialog.alert(_('The import of the license has failed: ') + result.message);
+				dialog.alert(result.message);
 			}
 		}
 	});

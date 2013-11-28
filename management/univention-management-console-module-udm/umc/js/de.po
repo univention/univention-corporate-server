@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-11-28 17:56+0100\n"
+"POT-Creation-Date: 2013-11-28 18:35+0100\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -792,10 +792,6 @@ msgid "The following properties need to be specified or are invalid:"
 msgstr ""
 "Die folgenden Eigenschaften wurden nicht angegeben oder sind nicht gültig:"
 
-#: umc/js/udm/LicenseImportDialog.js:142
-msgid "The import of the license has failed: "
-msgstr "Der Import der Lizenz ist fehlgeschlagen: "
-
 #: umc/js/udm/LicenseImportDialog.js:140
 msgid "The license has been imported successfully."
 msgstr "Die Lizenz wurde erfolgreich importiert."
@@ -985,3 +981,6 @@ msgstr "Benutzer"
 #: umc/js/udm.js:183
 msgid "users"
 msgstr "Benutzer"
+
+#~ msgid "The import of the license has failed: "
+#~ msgstr "Der Import der Lizenz ist fehlgeschlagen: "

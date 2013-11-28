@@ -249,7 +249,10 @@ class Instance( Base, ProgressMixin ):
 			lic_file.close()
 			filename = lic_file.name
 
-		def _error(msg):
+		def _error(detailInfo = None):
+			msg = _('The import of the license failed. Check the integrity of the original file given to you. If this error persists, please contact Univention or your Univention partner.')
+			if detailInfo:
+				msg += '<br>' + detailInfo
 			self.finished(request.id, [{
 				'success' : False, 'message' : msg
 			}])
@@ -265,7 +268,7 @@ class Instance( Base, ProgressMixin ):
 							MODULE.error('The license DN does not match LDAP base (%s): %s' % (ldapBase, dn))
 							_error(_('The LDAP base of the license does not match the LDAP base of the UCS domain (%s).') % ldapBase)
 							return
-				
+
 			with open(filename, 'rb') as fd:
 				importer = LicenseImport(fd)
 
@@ -284,10 +287,10 @@ class Instance( Base, ProgressMixin ):
 			# AttributeError: missing univentionLicenseBaseDN
 			# ValueError raised by ldif.LDIFParser when e.g. dn is duplicated
 			# LDAPError e.g. LDIF contained non existing attributes
-			msg = _('The import of the license failed. Check the integrity of the original file given to you. If this error persists, please contact Univention or your Univention partner.')
 			if isinstance(exc, LDAPError) and len(exc.args) and isinstance(exc.args[0], dict) and exc.args[0].get('info'):
-				msg += '<br>' + _('LDAP error message was: %s.') % exc.args[0].get('info')
-			_error(msg)
+				_error(_('LDAP error message was: %s.') % exc.args[0].get('info'))
+			else:
+				_error()
 			return
 		finally:
 			os.unlink( filename )
