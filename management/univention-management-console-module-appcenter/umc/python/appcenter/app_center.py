@@ -736,7 +736,7 @@ class Application(object):
 	@HardRequirement('install', 'update')
 	def must_be_joined_if_master_packages(self):
 		is_joined = os.path.exists('/var/univention-join/joined')
-		return bool(is_joined or self.get('defaultpackagesmaster'))
+		return bool(is_joined or not self.get('defaultpackagesmaster'))
 
 	@HardRequirement('install', 'update', 'uninstall')
 	def must_not_have_concurrent_operation(self, package_manager):
