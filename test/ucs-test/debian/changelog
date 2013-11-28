@@ -1,3 +1,10 @@
+ucs-test (4.0.161-6) unstable; urgency=low
+
+  * 10_ldap/45replication_modrdn: added test case to check replication
+    after udm move operation (Bug #33495, Bug #32244)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 Nov 2013 08:39:13 +0100
+
 ucs-test (4.0.161-5) unstable; urgency=low
 
   * removed constants from udm.py#UCSTestUDM() which could not be determined

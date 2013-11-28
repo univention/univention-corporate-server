@@ -49,6 +49,7 @@ RE_PREFIX = re.compile(r'^[0-9]{2}(.+)')
 RE_SUFFIX = re.compile(r'(?:~|\.(?:lib|sh|py[co]|bak|mo|po|png|jpg|xml|csv))$')  # ends with ~, .lib, .sh, .pyo, .pyc, .bak, .mo, .po, .png, .jpg, .xml, .csv
 LOG_BASE = '/var/log/univention/test_%d.log'
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
+LISTENER_INIT_SCRIPT = '/etc/init.d/univention-directory-listener'
 
 
 
@@ -145,6 +146,14 @@ def stop_s4connector():
 
 def start_s4connector():
 	subprocess.call((S4CONNECTOR_INIT_SCRIPT, 'start'))
+
+
+def stop_listener():
+	subprocess.call((LISTENER_INIT_SCRIPT, 'stop'))
+
+
+def start_listener():
+	subprocess.call((LISTENER_INIT_SCRIPT, 'start'))
 
 
 def wait_for_replication():
