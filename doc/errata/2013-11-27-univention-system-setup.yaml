@@ -2,11 +2,12 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-system-setup
-fix: 7.0.66-2.551.201311271351
+fix: 7.0.66-3.552.201311281048
 note:
 version: [0]
 desc: |
-  * System-setup-boot: urandom init-script is deactivated until system
-  setup finishes, to avoid having the same random seed in templates
+  * urandom init-script is deactivated until system setup finishes, 
+    to avoid having the same random seed in templates
   * Recreate ssh and ssl keys during boot if the files are missing
-bug: [30034]
+  * Disable firefox default browser check
+bug: [30034,33592]
