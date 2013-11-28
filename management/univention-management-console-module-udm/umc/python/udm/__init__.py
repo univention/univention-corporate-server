@@ -249,10 +249,7 @@ class Instance( Base, ProgressMixin ):
 			lic_file.close()
 			filename = lic_file.name
 
-		def _error(detailInfo = None):
-			msg = _('The import of the license failed. Check the integrity of the original file given to you. If this error persists, please contact Univention or your Univention partner.')
-			if detailInfo:
-				msg += '<br>' + detailInfo
+		def _error(msg = None):
 			self.finished(request.id, [{
 				'success' : False, 'message' : msg
 			}])
@@ -288,7 +285,7 @@ class Instance( Base, ProgressMixin ):
 			# ValueError raised by ldif.LDIFParser when e.g. dn is duplicated
 			# LDAPError e.g. LDIF contained non existing attributes
 			if isinstance(exc, LDAPError) and len(exc.args) and isinstance(exc.args[0], dict) and exc.args[0].get('info'):
-				_error(_('LDAP error message was: %s.') % exc.args[0].get('info'))
+				_error(_('LDAP error: %s.') % exc.args[0].get('info'))
 			else:
 				_error()
 			return

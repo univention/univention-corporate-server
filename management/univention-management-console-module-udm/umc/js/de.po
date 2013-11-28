@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-11-28 18:35+0100\n"
+"POT-Creation-Date: 2013-11-28 18:50+0100\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -708,6 +708,10 @@ msgstr ""
 msgid "Select policy configuration"
 msgstr "Richtlinien-Konfiguration"
 
+#: umc/js/udm/LicenseImportDialog.js:144
+msgid "Server error message:"
+msgstr "Server-Fehlermeldung:"
+
 #: umc/js/udm/LicenseDialog.js:177
 msgid "Servers"
 msgstr "Server"
@@ -791,6 +795,16 @@ msgstr "Die folgenden Eigenschaften konnten nicht validiert werden:"
 msgid "The following properties need to be specified or are invalid:"
 msgstr ""
 "Die folgenden Eigenschaften wurden nicht angegeben oder sind nicht gültig:"
+
+#: umc/js/udm/LicenseImportDialog.js:142
+msgid ""
+"The import of the license failed. Check the integrity of the original file "
+"given to you. If this error persists, please contact Univention or your "
+"Univention partner."
+msgstr ""
+"Der Lizenzimport schlug fehl. Bitte überprüfen Sie die Vollständigkeit Ihrer "
+"Originaldatei. Sollte dieser Fehler wiederholt auftreten, wenden Sie sich "
+"bitte an Univention oder Ihren Univention-Partner."
 
 #: umc/js/udm/LicenseImportDialog.js:140
 msgid "The license has been imported successfully."

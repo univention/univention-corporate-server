@@ -139,7 +139,11 @@ define([
 				}];
 				dialog.confirm(_('The license has been imported successfully.') + '<br>' + _('Please login again to complete the import process.'), btns);
 			} else {
-				dialog.alert(result.message);
+				var msg = _('The import of the license failed. Check the integrity of the original file given to you. If this error persists, please contact Univention or your Univention partner.');
+				if (result.message) {
+					msg = '<p>' + msg + '</p><p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + result.message + '</p>';
+				}
+				dialog.alert(msg);
 			}
 		}
 	});
