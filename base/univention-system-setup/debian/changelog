@@ -1,3 +1,9 @@
+univention-system-setup (7.0.66-3) unstable; urgency=low
+
+  * System-setup-boot: Disable firefox default browser check (Bug #33592)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 28 Nov 2013 10:35:00 +0100
+
 univention-system-setup (7.0.66-2) unstable; urgency=low
 
   * System-setup-boot: urandom init-script is deactivated until system
