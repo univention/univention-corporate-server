@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-management-console-module-appcenter
-fix: 3.0.50-5.218.201311222209
+fix: 3.0.50-12.225.201311280308
 note:
 version: [0]
 desc: |
@@ -10,6 +10,6 @@ desc: |
   * Added a function to query application based on their component_id
   * Fixed sending a notification to Univention although the app did not require
     it
-  * Now using UCS 3.2 Apps while updating from UCS 3.1
+  * Fixed registration of UCS 3.1 apps when updating from UCS 3.1
   * The joinscript now fails when registering the apps did not succeed
 bug: [33484, 33362, 33535, 33341]
