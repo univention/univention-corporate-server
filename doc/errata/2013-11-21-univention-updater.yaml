@@ -4,7 +4,7 @@ scope: ucs_3.1-0-errata3.1-1
 src: univention-updater
 fix: 8.0.78-9.1238.201311231948
 note:
-version: [0]
+version: [1]
 desc: |
   This errata update fixes several issues:
   * If a component is blocking a release update and this component is from the

@@ -4,7 +4,7 @@ scope: ucs_3.1-0-errata3.1-1
 src: univention-management-console-module-appcenter
 fix: 2.0.139-22.215.201311211754
 note:
-version: [0]
+version: [1]
 desc: |
   This errata update adds internal functionality needed for the UMC online
   update module.
