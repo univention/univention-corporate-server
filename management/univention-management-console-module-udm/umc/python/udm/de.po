@@ -119,7 +119,7 @@ msgid ""
 "The import of the license failed. Check the integrity of the original file "
 "given to you. If this error persists, please contact Univention or your "
 "Univention partner."
-msgstr "Der Lizenzimport schlug fehl. Bitte überprüfen Sie die Vollständigkeit Ihrer Originaldatei. Sollte dieser Fehler wiederholt auftreten, wenden Sie sich bite an Univention oder Ihren Univention-Partner."
+msgstr "Der Lizenzimport schlug fehl. Bitte überprüfen Sie die Vollständigkeit Ihrer Originaldatei. Sollte dieser Fehler wiederholt auftreten, wenden Sie sich bitte an Univention oder Ihren Univention-Partner."
 
 #: umc/python/udm/tools.py:72
 #, python-format

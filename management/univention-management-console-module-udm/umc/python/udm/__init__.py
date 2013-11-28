@@ -43,7 +43,6 @@ import tempfile
 import urllib
 import urllib2
 import traceback
-import mmap
 
 from ldap import LDAPError
 from univention.lib.i18n import Translation
@@ -275,7 +274,7 @@ class Instance( Base, ProgressMixin ):
 					importer.check(ldapBase)
 				except LicenseError as exc:
 					MODULE.error('LicenseImport check failed: %r' % (exc, ))
-					_error(str(e))
+					_error(str(exc))
 					return
 
 				# write license

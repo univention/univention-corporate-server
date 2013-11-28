@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.97-7) unstable; urgency=low
+
+  * Bug #30156: fixed typos
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 28 Nov 2013 18:25:59 +0100
+
 univention-management-console-module-udm (4.0.97-6) unstable; urgency=low
 
   * Bug #30156: adjusted error handling and messages for license import
