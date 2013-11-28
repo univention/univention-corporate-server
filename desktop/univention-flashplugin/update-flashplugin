@@ -38,7 +38,7 @@ eval "$(univention-config-registry shell)"
 
 DOWNLOAD_DIR=/var/cache/flashplugin-nonfree
 DOWNLOAD_FILE=install_flash_player_11_linux.i386
-DOWNLOAD_URL=http://fpdownload.macromedia.com/get/flashplayer/pdc/11.2.202.310/install_flash_player_11_linux.i386.tar.gz
+DOWNLOAD_URL=http://fpdownload.macromedia.com/get/flashplayer/pdc/11.2.202.327/install_flash_player_11_linux.i386.tar.gz
 TARGET_DIR=/usr/lib/flashplugin-nonfree
 
 fp_exit_with_error() {
