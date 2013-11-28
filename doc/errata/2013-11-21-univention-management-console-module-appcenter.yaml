@@ -10,6 +10,7 @@ desc: |
   * Added a function to query application based on their component_id
   * Fixed sending a notification to Univention although the app did not require
     it
-  * Fixed registration of UCS 3.1 apps when updating from UCS 3.1
+  * When updating from UCS 3.1, apps from UCS 3.1 were registered by mistake.
+    Fixed that
   * The joinscript now fails when registering the apps did not succeed
 bug: [33484, 33362, 33535, 33341]
