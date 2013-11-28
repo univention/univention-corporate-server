@@ -43,9 +43,9 @@ import tempfile
 import urllib
 import urllib2
 import traceback
+import mmap
 
-from ldap import UNDEFINED_TYPE
-
+from ldap import LDAPError
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
@@ -230,9 +230,6 @@ class Instance( Base, ProgressMixin ):
 		self.finished( request.id, license_data )
 
 	def license_import(self, request):
-		# Bug #30156
-		ldap_position = LDAP_Connection(lambda ldap_connection=None, ldap_position=None: ldap_position)()
-
 		filename = None
 		if isinstance(request.options, (list, tuple)) and request.options:
 			# file upload
@@ -253,25 +250,45 @@ class Instance( Base, ProgressMixin ):
 			lic_file.close()
 			filename = lic_file.name
 
+		def _error(msg):
+			self.finished(request.id, [{
+				'success' : False, 'message' : msg
+			}])
+
 		try:
+			ldapBase = ucr.get('ldap/base', '')
+			with open(filename, 'rb') as fd:
+				for line in fd:
+					if line.startswith('dn: '):
+						dn = line.strip()[4:]
+						dnWithoutBase = dn[:-len(ldapBase)]
+						if not dn.endswith(ldapBase) or not dnWithoutBase.endswith('cn=univention,'):
+							MODULE.error('The license DN does not match LDAP base (%s): %s' % (ldapBase, dn))
+							_error(_('The LDAP base of the license does not match the LDAP base of the UCS domain (%s).') % ldapBase)
+							return
+				
 			with open(filename, 'rb') as fd:
 				importer = LicenseImport(fd)
 
 				# check license
 				try:
-					importer.check( ldap_position.getBase() )
-				except LicenseError as e:
-					self.finished( request.id, [ { 'success' : False, 'message' : str( e ) } ] )
+					importer.check(ldapBase)
+				except LicenseError as exc:
+					MODULE.error('LicenseImport check failed: %r' % (exc, ))
+					_error(str(e))
 					return
 
 				# write license
 				importer.write( self._user_dn, self._password )
-		except (ValueError, AttributeError, UNDEFINED_TYPE) as exc:
-			MODULE.error('License import failed (malformed LDIF): %r' % (exc))
+		except (ValueError, AttributeError, LDAPError) as exc:
+			MODULE.error('License import failed (malformed LDIF): %r' % (exc, ))
 			# AttributeError: missing univentionLicenseBaseDN
 			# ValueError raised by ldif.LDIFParser when e.g. dn is duplicated
-			# UNDEFINED_TYPE e.g. LDIF contained non existing attributes
-			self.finished( request.id, [ { 'success' : False, 'message' : _('The license could not be imported: malformed LDIF format') } ] )
+			# LDAPError e.g. LDIF contained non existing attributes
+			msg = _('The import of the license failed. Check the integrity of the original file given to you. If this error persists, please contact Univention or your Univention partner.')
+			if isinstance(exc, LDAPError) and len(exc.args) and isinstance(exc.args[0], dict) and exc.args[0].get('info'):
+				msg += '<br>' + _('LDAP error message was: %s.') % exc.args[0].get('info')
+			_error(msg)
 			return
 		finally:
 			os.unlink( filename )

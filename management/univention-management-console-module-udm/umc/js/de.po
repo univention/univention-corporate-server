@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-11-27 16:31+0100\n"
+"POT-Creation-Date: 2013-11-28 17:56+0100\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,8 +42,8 @@ msgstr "%s angelegt"
 msgid "%s template"
 msgstr "%s-Vorlage"
 
-#: umc/js/udm/NewObjectDialog.js:170 umc/js/udm/NewObjectDialog.js:188
-#: umc/js/udm/NewObjectDialog.js:224 umc/js/udm.js:556
+#: umc/js/udm.js:556 umc/js/udm/NewObjectDialog.js:170
+#: umc/js/udm/NewObjectDialog.js:188 umc/js/udm/NewObjectDialog.js:224
 #, python-format
 msgid "%s type"
 msgstr "%styp"
@@ -134,7 +134,7 @@ msgstr "Konto deaktiviert"
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: umc/js/udm/NewObjectDialog.js:93 umc/js/udm.js:365
+#: umc/js/udm.js:365 umc/js/udm/NewObjectDialog.js:93
 #, python-format
 msgid "Add a new %s"
 msgstr "%s neu hinzufügen"
@@ -188,8 +188,8 @@ msgstr "Zurück zur Suche"
 msgid "Boot"
 msgstr "Boot"
 
-#: umc/js/udm/CreateReportDialog.js:113 umc/js/udm/DetailPage.js:881
-#: umc/js/udm/LicenseImportDialog.js:135 umc/js/udm.js:1053 umc/js/udm.js:1344
+#: umc/js/udm.js:1053 umc/js/udm.js:1344 umc/js/udm/DetailPage.js:881
+#: umc/js/udm/LicenseImportDialog.js:135 umc/js/udm/CreateReportDialog.js:113
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -209,8 +209,8 @@ msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 msgid "Clients"
 msgstr "Clients"
 
-#: umc/js/udm/CreateReportDialog.js:161 umc/js/udm/LicenseDialog.js:71
-#: umc/js/udm/LicenseImportDialog.js:64
+#: umc/js/udm/LicenseDialog.js:71 umc/js/udm/LicenseImportDialog.js:64
+#: umc/js/udm/CreateReportDialog.js:161
 msgid "Close"
 msgstr "Schließen"
 
@@ -300,7 +300,7 @@ msgstr "DVS Benutzer"
 msgid "Data type"
 msgstr "Datentyp"
 
-#: umc/js/udm/MultiObjectSelect.js:108 umc/js/udm.js:543
+#: umc/js/udm.js:543 umc/js/udm/MultiObjectSelect.js:108
 msgid "Default properties"
 msgstr "Standardeigenschaften"
 
@@ -645,8 +645,8 @@ msgstr "Durch Richtlinien ererbte Eigenschaften"
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: umc/js/udm/MultiObjectSelect.js:116 umc/js/udm/MultiObjectSelect.js:131
-#: umc/js/udm.js:593 umc/js/udm.js:613
+#: umc/js/udm.js:593 umc/js/udm.js:613 umc/js/udm/MultiObjectSelect.js:116
+#: umc/js/udm/MultiObjectSelect.js:131
 msgid "Property value"
 msgstr "Eigenschaftswert"
 
@@ -728,7 +728,7 @@ msgstr "Vereinfachte Optionen"
 msgid "Start of authority"
 msgstr "Start of Authority Eintrag"
 
-#: umc/js/udm/NewObjectDialog.js:160 umc/js/udm.js:519
+#: umc/js/udm.js:519 umc/js/udm/NewObjectDialog.js:160
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
@@ -800,7 +800,7 @@ msgstr "Der Import der Lizenz ist fehlgeschlagen: "
 msgid "The license has been imported successfully."
 msgstr "Die Lizenz wurde erfolgreich importiert."
 
-#: umc/js/udm/MultiObjectSelect.js:106 umc/js/udm.js:576
+#: umc/js/udm.js:576 umc/js/udm/MultiObjectSelect.js:106
 msgid "The object property on which the query is filtered."
 msgstr "Die Objekteigenschaft, nach der gesucht wird."
 
