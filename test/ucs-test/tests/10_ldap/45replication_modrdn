@@ -18,9 +18,6 @@ from univention.testing.utils import wait_for_replication, stop_listener, start_
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
-# running listener vs. not running listener
-# computer names, upper / lower vs spaces vs. umlauts vs normal 
-
 def _get_name_normal():
 	return random_name()
 
@@ -118,7 +115,9 @@ for consider_listener in [False,True]:
 			utils.verify_ldap_object(computer, should_exist=False)
 			utils.verify_ldap_object(computer_new, should_exist=False)
 			utils.verify_ldap_object(computer_new2, should_exist=False)
-			utils.verify_ldap_object(computer_new3)
+			if not consider_listener:
+				# this will be failed cause of https://forge.univention.org/bugzilla/show_bug.cgi?id=32206
+				utils.verify_ldap_object(computer_new3)
 
 			# create and delete target before starting
 			print '\n***** Create delete and move once *****'

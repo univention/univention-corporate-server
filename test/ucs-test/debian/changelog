@@ -1,3 +1,11 @@
+ucs-test (4.0.161-7) unstable; urgency=low
+
+  * 10_ldap/46replication_modrdn_local_modification: added a test case
+    which moves a computer objects to a position exists local as
+    container (Bug #33495)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Nov 2013 12:43:55 +0100
+
 ucs-test (4.0.161-6) unstable; urgency=low
 
   * 10_ldap/45replication_modrdn: added test case to check replication
