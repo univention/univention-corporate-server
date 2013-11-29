@@ -1,4 +1,4 @@
-univention-management-console-module-appcenter (3.0.50-14) unstable; urgency=low
+univention-management-console-module-appcenter (3.0.50-15) unstable; urgency=low
 
   * Bug #33573: Inform about LDAP manipulation errors when registering apps;
     sync the apps when opening App Center

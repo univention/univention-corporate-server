@@ -505,7 +505,6 @@ class Application(object):
 
 	@classmethod
 	def sync_with_server(cls):
-		return
 		something_changed = False
 		json_url = urljoin('%s/' % cls.get_metainf_url(), 'index.json.gz')
 		MODULE.process('Downloading "%s"...' % json_url)
