@@ -827,6 +827,7 @@ def _backup_dn_recursive(l, dn):
 	fd = open(backup_file, 'w+')
 	fd.close()
 	os.chmod(backup_file, 0600)
+	univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: dump %s to %s' % (dn, backup_file))
 	
 	fd = open(backup_file, 'w+')
 	ldif_writer = ldifparser.LDIFWriter(fd)
@@ -950,7 +951,7 @@ def handler(dn, new, listener_old, operation):
 			new_entryUUID = new['entryUUID'][0]
 			modrdn_cache = os.path.join(STATE_DIR, new_entryUUID)
 			if os.path.exists(modrdn_cache):	## check if a modrdn is pending
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: rename phase II: %s (entryUUID=%s)' % (dn, new_entryUUID))
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: rename phase II: %s (entryUUID=%s)' % (dn, new_entryUUID))
 				listener.setuid(0)
 				try:
 					with open(modrdn_cache,'r') as f:
@@ -963,17 +964,18 @@ def handler(dn, new, listener_old, operation):
 
 				if old:
 					# this means the target already exists, we have to delete this old object
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: the rename target already exists in the local LDAP, backup and remove the dn: %s' % (dn))
 					_backup_dn_recursive(l, dn)
 					_delete_dn_recursive(l, dn)
 
 				if getOldValues(l, old_dn):
 					# the normal rename is possible
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: rename from %s to %s,%s' % (old_dn, new_rdn, new_parent))
 					l.rename_s(old_dn, new_rdn, new_parent)
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: modrdn from %s to %s,%s' % (old_dn, new_rdn, new_parent))
 				else:
 					# the old object does not exists, so we have to re-create the new object
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: the local target does not exist, so the object will be added: %s' % dn)
 					al=addlist(new)
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: add: %s' % dn)
 					try:
 						l.add_s(dn, al)
 					except ldap.OBJECT_CLASS_VIOLATION, msg:
@@ -1000,7 +1002,7 @@ def handler(dn, new, listener_old, operation):
 		elif old and not new:
 			if operation == 'r':	## check for modrdn phase 1
 				old_entryUUID = old['entryUUID'][0]
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: rename phase I: %s (entryUUID=%s)' % (dn, old_entryUUID))
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: rename phase I: %s (entryUUID=%s)' % (dn, old_entryUUID))
 				modrdn_cache = os.path.join(STATE_DIR, old_entryUUID)
 				listener.setuid(0)
 				try:
