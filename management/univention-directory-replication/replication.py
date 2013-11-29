@@ -43,6 +43,8 @@ import os
 import pwd
 import ldap
 import ldap.schema
+# import ldif as ldifparser since the local module already uses ldif as variable
+import ldif as ldifparser
 import re
 import time
 import base64
@@ -803,6 +805,36 @@ def flatmode_reconnect():
 			if flatmode_ldap['lo'] is None:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode: ldap reconnect failed')
 
+def _delete_dn_recursive(l, dn):
+	try:
+		l.delete_s(dn)
+	except ldap.NOT_ALLOWED_ON_NONLEAF, msg:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'Failed to delete non leaf object: dn=[%s];' % dn)
+		dns=[]
+		for dn,attr in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)'):
+			dns.append(dn)
+		dns.reverse()
+		for dn in dns:
+			l.delete_s(dn)
+
+def _backup_dn_recursive(l, dn):
+	backup_directory = '/var/univention-backup/replication'
+	if not os.path.exists(backup_directory):
+		os.makedirs(backup_directory)
+		os.chmod(backup_directory, 0700)
+	
+	backup_file = os.path.join(backup_directory, str(time.time()))
+	fd = open(backup_file, 'w+')
+	fd.close()
+	os.chmod(backup_file, 0600)
+	
+	fd = open(backup_file, 'w+')
+	ldif_writer = ldifparser.LDIFWriter(fd)
+	for dn,entry in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)', attrlist=['*', '+']):
+		ldif_writer.unparse(dn,entry)
+	fd.close()
+		
+
 def handler(dn, new, listener_old, operation):
 	global reconnect
 	global slave
@@ -926,9 +958,26 @@ def handler(dn, new, listener_old, operation):
 				except Exception, e:
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to open/read modrdn file %s: %s' % (modrdn_cache, str(e)))
 
-				(new_rdn, new_parent) = dn.split(',',1)
-				l.rename_s(old_dn, new_rdn, new_parent)
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: modrdn from %s to %s,%s' % (old_dn, new_rdn, new_parent))
+				new_parent = ','.join(ldap.explode_dn(dn)[1:])
+				new_rdn = ldap.explode_rdn(dn)[0]
+
+				if old:
+					# this means the target already exists, we have to delete this old object
+					_backup_dn_recursive(l, dn)
+					_delete_dn_recursive(l, dn)
+
+				if getOldValues(l, old_dn):
+					# the normal rename is possible
+					l.rename_s(old_dn, new_rdn, new_parent)
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: modrdn from %s to %s,%s' % (old_dn, new_rdn, new_parent))
+				else:
+					# the old object does not exists, so we have to re-create the new object
+					al=addlist(new)
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: add: %s' % dn)
+					try:
+						l.add_s(dn, al)
+					except ldap.OBJECT_CLASS_VIOLATION, msg:
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: object class violation while adding %s' % dn)
 				try:
 					os.remove(modrdn_cache)
 				except Exception, e:
@@ -967,16 +1016,7 @@ def handler(dn, new, listener_old, operation):
 				listener.unsetuid()
 
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: delete: %s' % dn)
-			try:
-				l.delete_s(dn)
-			except ldap.NOT_ALLOWED_ON_NONLEAF, msg:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'Failed to delete non leaf object: dn=[%s];' % dn)
-				dns=[]
-				for dn,attr in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)'):
-					dns.append(dn)
-				dns.reverse()
-				for dn in dns:
-					l.delete_s(dn)
+			_delete_dn_recursive(l, dn)
 	except ldap.SERVER_DOWN, msg:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: retrying' % msg[0]['desc'])
 		if 'info' in msg[0]:

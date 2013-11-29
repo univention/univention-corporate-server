@@ -1,3 +1,12 @@
+univention-directory-replication (7.0.1-3) unstable; urgency=low
+
+  * More updates on the modrdn detection. If the local target already
+    exists, the replication module now dumps the object to
+    /var/univention-backup/replication and removes the local entry. Thus
+    the modrdn can be executed (Bug #33495)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Nov 2013 13:15:48 +0100
+
 univention-directory-replication (7.0.1-2) unstable; urgency=low
 
   * Improve the modrdn detection which avoids the duplication of LDAP
