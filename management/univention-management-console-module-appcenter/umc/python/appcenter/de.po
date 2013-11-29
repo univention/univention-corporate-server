@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-09-02 10:51+0200\n"
+"POT-Creation-Date: 2013-11-29 14:18+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,12 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/appcenter/__init__.py:121
-#, python-format
-msgid "An error occurred while sending the request: %s"
-msgstr "Ein Fehler ist während des Anforderns aufgetreten: %s"
-
-#: umc/python/appcenter/__init__.py:278 umc/python/appcenter/__init__.py:412
+#: umc/python/appcenter/__init__.py:270 umc/python/appcenter/__init__.py:404
 msgid "Another package operation is in progress"
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 
@@ -26,34 +21,44 @@ msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 msgid "Any of %r must be given"
 msgstr "Ein Wert aus %r muss gegeben sein"
 
-#: umc/python/appcenter/__init__.py:105
-msgid "Cannot parse License from LDAP"
-msgstr "Fehler beim Auslesen der Lizenz aus dem LDAP"
+#: umc/python/appcenter/__init__.py:131
+#, python-format
+msgid "Could not find an application for %s"
+msgstr "Konnte keine Applikation für %s finden"
 
-#: umc/python/appcenter/__init__.py:132 umc/python/appcenter/__init__.py:147
+#: umc/python/appcenter/__init__.py:103 umc/python/appcenter/__init__.py:130
+#: umc/python/appcenter/__init__.py:140
 #, python-format
 msgid "Could not query App Center: %s"
 msgstr "Konnte das App Center nicht erreichen: %s"
 
-#: umc/python/appcenter/app_center.py:931
+#: umc/python/appcenter/app_center.py:1193
 #, python-format
 msgid "Installing LDAP packages on %s"
 msgstr "Installiere LDAP Pakete auf %s"
 
-#: umc/python/appcenter/app_center.py:892
+#: umc/python/appcenter/app_center.py:1154
 #, python-format
 msgid "Output from %(host)s: %(info)s"
 msgstr "Ausgabe von %(host)s: %(info)s"
 
-#: umc/python/appcenter/__init__.py:72
+#: umc/python/appcenter/__init__.py:70
 msgid "Package not found in repository"
 msgstr "Paket wurde in keinem Repository gefunden"
+
+#: umc/python/appcenter/app_center.py:1111
+msgid ""
+"Registration of the application in LDAP failed. It will be retried every "
+"time the App Center module is opened."
+msgstr ""
+"Die Registrierung der Applikation im LDAP ist fehlgeschlagen. Sie wird bei "
+"jedem Öffnen des App Center Moduls wiederholt werden."
 
 #: umc/python/appcenter/sanitizers.py:22
 msgid "There already is a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
-#: umc/python/appcenter/__init__.py:606
+#: umc/python/appcenter/__init__.py:598
 msgid ""
 "There is no repository at this server (or at least none for the current UCS "
 "version)"
@@ -61,24 +66,14 @@ msgstr ""
 "Auf dem Server befindet sich kein Repository (oder zumindest keins für die "
 "aktuelle UCS Version)"
 
-#: umc/python/appcenter/__init__.py:456
+#: umc/python/appcenter/__init__.py:448
 msgid "installed"
 msgstr "installiert"
 
-#: umc/python/appcenter/__init__.py:458
+#: umc/python/appcenter/__init__.py:450
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/appcenter/__init__.py:454
+#: umc/python/appcenter/__init__.py:446
 msgid "upgradable"
 msgstr "aktualisierbar"
-
-#~ msgid "No license file available for application: %s"
-#~ msgstr "Für die Anwendung ist keine Lizenzdatei vorhanden: %s"
-
-#~ msgid ""
-#~ "The application requires %(minimum)d MB of free RAM but only %(current)d "
-#~ "MB are available."
-#~ msgstr ""
-#~ "Die Anwendung erfordert %(minimum)d MB freien Arbeitsspeicher, es sind "
-#~ "aber nur %(current)d MB verfügbar."

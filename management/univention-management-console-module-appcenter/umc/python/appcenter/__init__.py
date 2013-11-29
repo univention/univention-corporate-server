@@ -109,6 +109,15 @@ class Instance(umcm.Base):
 				result.append(props)
 		return result
 
+	@simple_response
+	def sync_ldap(self, application=None):
+		if application is not None:
+			applications = [Application.find(application)]
+		else:
+			applications = Application.all()
+		for application in applications:
+			application.tell_ldap(self.ucr, self.package_manager, inform_about_error=False)
+
 	# used in updater-umc
 	@simple_response
 	def get_by_component_id(self, component_id):

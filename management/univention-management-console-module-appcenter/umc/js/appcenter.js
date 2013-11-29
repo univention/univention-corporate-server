@@ -105,6 +105,7 @@ define([
 			this._appCenterPage = new AppCenterPage({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
+				addWarning: lang.hitch(this, 'addWarning'),
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
 			this._appDetailsDialog = new AppDetailsDialog({

@@ -170,6 +170,12 @@ define([
 		getApplications: function() {
 			if (!this._applications) {
 				return tools.umcpCommand('appcenter/query', {}).then(lang.hitch(this, function(data) {
+					tools.umcpCommand('appcenter/sync_ldap', {}, false).then(
+						undefined,
+						lang.hitch(this, function() {
+							this.addWarning(_('Registration of the applications in the domain failed. It will be retried when opening this module again. This may also cause problems when installing applications.'));
+						})
+					);
 					// sort by name
 					this._applications = data.result;
 					this._applications.sort(tools.cmpObjects({
