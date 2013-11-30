@@ -15,9 +15,6 @@ import sys
 
 
 if __name__ == '__main__':
-	# Skip this test
-	#   https://forge.univention.org/bugzilla/show_bug.cgi?id=20841
-	sys.exit(131)
 
 	with udm_test.UCSTestUDM() as udm:
 		ou_name = uts.random_string()

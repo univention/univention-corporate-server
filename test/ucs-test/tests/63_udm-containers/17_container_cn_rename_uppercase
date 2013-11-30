@@ -1,0 +1,44 @@
+#!/usr/share/ucs-test/runner python
+## desc: Rename a container/cn with subobjects from lower to upper case
+## tags: [udm,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.config_registry as configRegistry
+import sys
+
+
+if __name__ == '__main__':
+	ucr = configRegistry.ConfigRegistry()
+	ucr.load()
+
+	with udm_test.UCSTestUDM() as udm:
+		user_name = uts.random_string()
+
+		cn_name = uts.random_string()
+		cn_name_new = cn_name.upper()
+
+		cn = udm.create_object('container/cn', name = cn_name)
+		user = udm.create_user(position=cn, username=user_name)
+
+		try:
+			udm.modify_object('container/cn', dn = cn, name = cn_name_new)
+		except AssertionError:
+			pass
+
+		new_cn = 'cn=%s,%s' % (cn_name_new,ucr.get('ldap/base'))
+		new_user = 'uid=%s,cn=%s,%s' % (user_name, cn_name_new, ucr.get('ldap/base'))
+		utils.verify_ldap_object(new_cn, should_exist = True)
+		utils.verify_ldap_object(new_user, should_exist = True)
+
+		lo = utils.get_ldap_connection()
+		for dn, entry in lo.search(filter='cn=%s' % cn_name_new):
+			if entry.get('cn')[0] != cn_name_new:
+				utils.fail('cn = %s; expected: %s' % (entry.get('cn')[0], cn_name_new))

@@ -1,3 +1,10 @@
+ucs-test (4.0.161-8) unstable; urgency=low
+
+  * tests/63_udm-containers: Added test cases for the rename of
+    containers and ou's (Bug #33482)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 30 Nov 2013 15:48:50 +0100
+
 ucs-test (4.0.161-7) unstable; urgency=low
 
   * 10_ldap/46replication_modrdn_local_modification: added a test case
