@@ -395,7 +395,7 @@ class base(object):
 				self.dn = new_dn
 
 		if self.dn.lower() == newdn.lower()[-len(self.dn):]:
-			raise univention.admin.uexceptions.ldapError, _("Moving into one's own sub container not allowed. self.dn: %s, newdn: %s" % (self.dn, newdn))
+			raise univention.admin.uexceptions.ldapError, _("Moving into one's own sub container not allowed.")
 
 		if univention.admin.modules.supports(self.module,'subtree_move'):
 			# check if is subtree:
