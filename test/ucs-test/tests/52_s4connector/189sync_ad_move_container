@@ -3,13 +3,8 @@
 ## exposure: dangerous
 ## packages:
 ## - univention-s4-connector
-## bugs:
-##  - 28697
 ## versions:
-##  3.0-0: skip
-
-# skip test, see https://forge.univention.org/bugzilla/show_bug.cgi?id=28696
-exit 131
+##  3.2-0: fixed
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/udm.sh" || exit 137
@@ -54,7 +49,9 @@ section "Create initial Tree structure"
 
 ad_container_create "$CONTAINER1" || fail_test 110
 ad_container_create "$CONTAINER2" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
 ad_container_create "$CONTAINER3" "" "CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
 ad_createuser "$USER" "" "CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 
@@ -122,5 +119,7 @@ ad_exists "$AD_USER_DN"; fail_bool 1 110
 
 ad_set_retry_rejected "$RETRYREJECTED"
 ad_set_sync_mode "$SYNCMODE"
+
+ad_wait_for_synchronization; fail_bool 0 110
 
 exit "$RETVAL"

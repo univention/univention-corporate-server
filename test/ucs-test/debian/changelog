@@ -1,3 +1,10 @@
+ucs-test (4.0.161-9) unstable; urgency=low
+
+  * 52_s4connector: update and add a new test for ou moving in AD
+    (Bug #33482)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Nov 2013 07:41:04 +0100
+
 ucs-test (4.0.161-8) unstable; urgency=low
 
   * tests/63_udm-containers: Added test cases for the rename of

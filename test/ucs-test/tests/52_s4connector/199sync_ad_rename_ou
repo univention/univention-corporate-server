@@ -1,0 +1,61 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Check whether ou can be renamed on ad-side in sync-mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## bugs:
+##  - 33482
+## versions:
+##  3.2-0: fixed
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+RETRYREJECTED="$(ucr get connector/s4/retryrejected)"
+ad_set_retry_rejected 2
+
+OU1="$(random_chars)A_1"
+OU2="$(random_chars)A 1"
+AD_OU1_DN="OU=$OU1,$(ad_get_base)"
+AD_OU2_DN="OU=$OU2,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+ad_createou "$OU1" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+UDM_container_ou_name="$OU1"
+udm_exists "container/ou"; fail_bool 0 110
+
+section "Rename $OU1 to $OU2"
+
+ad_move "OU=$OU1,$(ad_get_base)" "OU=$OU2,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+UDM_container_ou_name="$OU1"
+udm_exists "container/ou"; fail_bool 1 110
+ad_exists "$AD_OU1_DN"; fail_bool 1 110
+
+UDM_container_ou_name="$OU2"
+udm_exists "container/ou"; fail_bool 0 110
+ad_exists "$AD_OU2_DN"; fail_bool 0 110
+
+section "Clean up"
+
+ad_delete "OU=$OU2,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+UDM_container_ou_name="$OU2"
+udm_exists "container/ou"; fail_bool 1 110
+ad_exists "$AD_OU2_DN"; fail_bool 1 110
+
+ad_set_retry_rejected "$RETRYREJECTED"
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

@@ -1,0 +1,61 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Check whether cn can be renamed on ad-side in sync-mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## bugs:
+##  - 33482
+## versions:
+##  3.2-0: fixed
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+RETRYREJECTED="$(ucr get connector/s4/retryrejected)"
+ad_set_retry_rejected 2
+
+CN1="$(random_chars)A_1"
+CN2="$(random_chars)A 1"
+AD_CN1_DN="CN=$CN1,$(ad_get_base)"
+AD_CN2_DN="CN=$CN2,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+ad_container_create "$CN1" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+UDM_container_cn_name="$CN1"
+udm_exists "container/cn"; fail_bool 0 110
+
+section "Rename $CN1 to $CN2"
+
+ad_move "CN=$CN1,$(ad_get_base)" "CN=$CN2,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+UDM_container_cn_name="$CN1"
+udm_exists "container/cn"; fail_bool 1 110
+ad_exists "$AD_CN1_DN"; fail_bool 1 110
+
+UDM_container_cn_name="$CN2"
+udm_exists "container/cn"; fail_bool 0 110
+ad_exists "$AD_CN2_DN"; fail_bool 0 110
+
+section "Clean up"
+
+ad_delete "CN=$CN2,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+UDM_container_cn_name="$CN2"
+udm_exists "container/cn"; fail_bool 1 110
+ad_exists "$AD_CN2_DN"; fail_bool 1 110
+
+ad_set_retry_rejected "$RETRYREJECTED"
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
