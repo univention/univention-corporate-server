@@ -34,6 +34,7 @@ import copy
 import types
 import re
 import string
+import time
 import ldap
 import ipaddr
 
@@ -343,9 +344,30 @@ class base(object):
 			raise univention.admin.uexceptions.insufficientInformation
 		return self._modify(modify_childs,ignore_license=ignore_license)
 
+	def _create_temporary_ou(self):
+		name = 'temporary_move_container_%s' % time.time()
+
+		module = univention.admin.modules.get('container/ou')
+		position = univention.admin.uldap.position('cn=univention,%s' % self.lo.base)
+
+		temporary_object = module.object(None, self.lo, position)
+		temporary_object.open()
+		temporary_object['name'] = name
+		temporary_object.create()
+
+		return 'ou=%s,cn=univention' % name
+
+	def _delete_temporary_ou(self, dn):
+		module = univention.admin.modules.get('container/ou')
+		temporary_object = univention.admin.modules.lookup(module, None, self.lo, scope='base', base=dn, required=1, unique=1)[0]
+		temporary_object.open()
+		temporary_object.remove()
+
 	def move(self, newdn, ignore_license=0):
 		'''move object'''
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: called for %s'%self.dn)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: called for %s to %s'% (self.dn,newdn))
+
+		temp_container = None
 
 		if not (univention.admin.modules.supports(self.module,'move')
 				or univention.admin.modules.supports(self.module,'subtree_move')): # this should have been checked before, but I want to be sure...
@@ -354,27 +376,37 @@ class base(object):
 		if not self.exists():
 			raise univention.admin.uexceptions.noObject
 
-		if self.dn.lower() == newdn.lower():
-			raise univention.admin.uexceptions.ldapError, _('Moving not possible: old and new DN are identical.')
-		if self.dn.lower() == newdn.lower()[-len(self.dn):]:
-			raise univention.admin.uexceptions.ldapError, _("Moving into one's own sub container not allowed.")
-
-		goaldn = newdn[newdn.find(',')+1:]
+		goaldn = ','.join(ldap.explode_dn(newdn)[1:])
 		goalmodule = univention.admin.modules.identifyOne(goaldn, self.lo.get(goaldn))
 		goalmodule = univention.admin.modules.get(goalmodule)
 		if not goalmodule or not hasattr(goalmodule,'childs') or not goalmodule.childs == 1:
 			raise univention.admin.uexceptions.invalidOperation, _("Destination object can't have sub objects.")
+
+		if self.dn.lower() == newdn.lower():
+			if self.dn == newdn:
+				raise univention.admin.uexceptions.ldapError, _('Moving not possible: old and new DN are identical.')
+			else:
+				# We must use a temporary folder because OpenLDAP does not allow a rename of an container with subobjects
+				temp_container = self._create_temporary_ou()
+				new_rdn = ldap.explode_rdn(newdn)[0]
+				new_position = ','.join(ldap.explode_dn(newdn)[1:])
+				new_dn = '%s,%s,%s' %(new_rdn,temp_container,new_position)
+				self.move(new_dn, ignore_license)
+				self.dn = new_dn
+
+		if self.dn.lower() == newdn.lower()[-len(self.dn):]:
+			raise univention.admin.uexceptions.ldapError, _("Moving into one's own sub container not allowed. self.dn: %s, newdn: %s" % (self.dn, newdn))
 
 		if univention.admin.modules.supports(self.module,'subtree_move'):
 			# check if is subtree:
 			subelements = self.lo.search(base=self.dn, scope='one', attr=[])
 			if subelements:
 				olddn = self.dn
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: found subelements, do subtree move')
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: found subelements, do subtree move: newdn: %s' % newdn)
 				# create copy of myself
 				module = univention.admin.modules.get(self.module)
 				position = univention.admin.uldap.position(self.lo.base)
-				position.setDn(newdn[newdn.find(',')+1:])
+				position.setDn(','.join(ldap.explode_dn(newdn)[1:]))
 				copyobject = module.object(None, self.lo, position)
 				copyobject.open()
 				for key in self.keys():
@@ -405,7 +437,7 @@ class base(object):
 				except:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'move: subtree move failed, trying to move back.')
 					position=univention.admin.uldap.position(self.lo.base)
-					position.setDn(newdn[olddn.find(',')+1:])
+					position.setDn(','.join(ldap.explode_dn(olddn)[1:]))
 					for subolddn, subnewdn in moved:
 						submodule = univention.admin.modules.identifyOne(subnewdn, self.lo.get(subnewdn))
 						submodule = univention.admin.modules.get(submodule)
@@ -414,6 +446,8 @@ class base(object):
 						subobject.move(subolddn)
 					copyobject.remove()
 					raise
+				if temp_container:
+					self._delete_temporary_ou('%s,%s' %(temp_container,self.lo.base))
 			else:
 				# normal move, fails on subtrees
 				return self._move(newdn, ignore_license=ignore_license)
