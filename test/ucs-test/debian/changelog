@@ -1,3 +1,12 @@
+ucs-test (4.0.161-10) unstable; urgency=low
+
+  * wait_for_LDAP_replication_of_domain_sambaSid: Wait up to 60 seconds
+    for the synchronisation of the domain sid. If OpenLDAP was restarted
+    in a previous run the connector might wait for 30 seconds before
+    trying a reconnect (Bug #33051)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 30 Nov 2013 19:30:16 +0100
+
 ucs-test (4.0.161-9) unstable; urgency=low
 
   * 52_s4connector: update and add a new test for ou moving in AD
