@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.75-7) unstable; urgency=low
+
+  * Removed debug from exception message (Bug #33482)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 30 Nov 2013 15:52:33 +0100
+
 univention-directory-manager-modules (9.0.75-6) unstable; urgency=low
 
   * Allow the rename from upper to lowercase of an container or ou.
