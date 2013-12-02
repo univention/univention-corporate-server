@@ -599,19 +599,8 @@ class Application(object):
 	def all_installed(cls, package_manager, force_reread=False, only_local=False, localize=True):
 		ret = []
 		for app in cls.all(force_reread=force_reread, only_local=only_local, localize=localize):
-			if app.allowed_on_local_server():
-				# app.is_installed(package_manager)
-				#   uses apt_pkg.CURSTATE. Not desired
-				#   when called during installation of
-				#   umc-module-appcenter together with
-				#   serveral other (app relevant)
-				#   packages; for example in postinst or
-				#   joinscript (on master).
-				#   see Bug #33535 and Bug #31261
-				packages = package_manager.get_packages(app.get('defaultpackages'))
-				is_installed = bool(packages) and all(package.is_installed for package in packages)
-				if is_installed:
-					ret.append(app)
+			if app.allowed_on_local_server() and app.is_installed(package_manager, strict=False):
+				ret.append(app)
 		return ret
 
 	@classmethod
@@ -841,8 +830,18 @@ class Application(object):
 			return ret
 		return _check(True), _check(False)
 
-	def is_installed(self, package_manager):
-		return all(package_manager.is_installed(package) for package in self.get('defaultpackages'))
+	def is_installed(self, package_manager, strict=True):
+		if strict:
+			return all(package_manager.is_installed(package) for package in self.get('defaultpackages'))
+		else:
+			# app.is_installed(package_manager, strict=True) uses
+			# apt_pkg.CURSTATE. Not desired when called during
+			# installation of umc-module-appcenter together with
+			# serveral other (app relevant) packages; for example
+			# in postinst or joinscript (on master).
+			# see Bug #33535 and Bug #31261
+			packages = package_manager.get_packages(self.get('defaultpackages'))
+			return bool(packages) and all(package.is_installed for package in packages)
 
 	def uninstall(self, package_manager, component_manager):
 		# reload ucr variables
@@ -1091,7 +1090,7 @@ class Application(object):
 			co = None #univention.admin.config.config(ucr.get('ldap/server/name'))
 			localhost = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 			for iapp in versions:
-				if iapp.is_registered(ucr) and iapp.is_installed(package_manager) and iapp.allowed_on_local_server():
+				if iapp.is_registered(ucr) and iapp.is_installed(package_manager, strict=False) and iapp.allowed_on_local_server():
 					installed_version = iapp.version
 					ldap_object = iapp.get_ldap_object(or_create=True)
 					ldap_object.add_localhost()

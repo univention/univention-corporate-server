@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.50-16) unstable; urgency=low
+
+  * Bug #33573: Identify unpacked packages as installed when reporting
+    installed applications to LDAP
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 02 Dec 2013 14:24:59 +0100
+
 univention-management-console-module-appcenter (3.0.50-15) unstable; urgency=low
 
   * Bug #33573: Inform about LDAP manipulation errors when registering apps;
