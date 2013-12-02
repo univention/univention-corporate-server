@@ -2,10 +2,14 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-samba4
-fix: 3.0.39-2.558.201311201522
+fix: 3.0.39-6.562.201312021513
 note:
 version: [0]
 desc: |
-  Samba4 could not be started on host with only IPv6 interfaces.
-  This has been fixed by deactivating wins support on IPv6 hosts.
-bug: [33250]
+  This errata update fixes several issues:
+  * Samba4 could not be started on host with only IPv6 interfaces.
+    This has been fixed by deactivating wins support on IPv6 hosts.
+  * Multiple logroate configurations for samba log files could lead 
+    to warning messages via cron. These redundant configurations are
+    removed with this update.
+bug: [33250, 33529]
