@@ -1,3 +1,10 @@
+ucs-test (4.0.161-11) unstable; urgency=low
+
+  * 10_ldap/47replication_modrdn_local_different_entryuuid: Change the
+    entryUUID in the local LDAP server and test a ldapmodrdn (Bug #33495)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 02 Dec 2013 21:43:55 +0100
+
 ucs-test (4.0.161-10) unstable; urgency=low
 
   * wait_for_LDAP_replication_of_domain_sambaSid: Wait up to 60 seconds

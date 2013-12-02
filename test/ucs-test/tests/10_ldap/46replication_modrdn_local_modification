@@ -22,9 +22,6 @@ import ldap
 import re
 import sys
 
-def _get_ou_name():
-	return random_name()
-
 success = True
 
 ucr = ConfigRegistry()
