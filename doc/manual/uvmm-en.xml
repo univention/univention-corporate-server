@@ -264,74 +264,70 @@
 		</para>
 	  </section>
 
-<!-- 	  <section id="uvmm::addpool"> -->
-<!-- 		<title>Hinzufügen eines Speicherbereichs</title> -->
-<!-- 		<para> -->
-<!-- 		  Ein weiterer Speicherbereich kann nicht über die &ucsUMC; angelegt werden. Stattdessen muss eine -->
-<!-- 		  Anmeldung als Benutzer <emphasis>root</emphasis> auf einen Virtualisierungs-Server -->
-<!-- 		  erfolgen. Die folgenden Schritte sind dafür nötig: -->
+	  <section id="uvmm::addpool">
+		<title>Adding a storage pool</title>
+		<para>
+		  It is not possible to create an additional storage pool via the &ucsUMC;. Instead, this
+		  must be done by logging in to the virtualization server as the <emphasis>root</emphasis>
+		  user. The following steps are required for this:
 
-<!-- 		  <itemizedlist> -->
-<!-- 			<listitem><simpara> -->
-<!-- 			  Das Verzeichnis, in dem die Daten des Speicherbereichs abgelegt werden sollen, muss -->
-<!-- 			  angelegt werden, in diesem Beispiel <filename>/mnt/storage</filename>. -->
-<!-- 			</simpara></listitem> -->
+		  <itemizedlist>
+			<listitem><simpara>
+			  The directory in which the data from the storage pool are to be saved must be created;
+			  in this case <filename>/mnt/storage</filename>. 
+			</simpara></listitem>
 
-<!-- 			<listitem><simpara> -->
-<!-- 			  Mit dem folgenden Befehl wird der neue Speicherbereich <emphasis>Testpool</emphasis> erstellt: -->
-<!-- 			  <programlisting language="sh"> -->
-<!-- virsh pool-define-as Testpool dir - - - - "/mnt/storage" -->
-<!-- 			  </programlisting> -->
-<!-- 			</simpara></listitem> -->
+			<listitem><simpara>
+			  The following command is used to create the new <emphasis>Testpool</emphasis> storage pool:
+			  <programlisting language="sh">
+virsh pool-define-as Testpool dir - - - - "/mnt/storage"
+			  </programlisting>
+			</simpara></listitem>
 
-<!-- 			<listitem><simpara> -->
-<!-- 			  Die von UVMM verwendete Bibliothek libvirt unterscheidet zwischen aktiven und -->
-<!-- 			  inaktiven Speicherbereichen. Um den Speicherbereich direkt verwenden zu können, muss er -->
-<!-- 			  aktiviert werden: -->
+			<listitem><simpara>
+			  The libvirt library used by UVMM differentiates between active and inactive storage
+			  pools. To be able to use the storage pool directly, it must be activated:
 
-<!-- 			  <programlisting language="sh"> -->
-<!-- virsh pool-start Testpool -->
-<!-- 			  </programlisting> -->
+			  <programlisting language="sh">
+virsh pool-start Testpool
+			  </programlisting>
 
-<!-- 			  Der folgende Befehl stellt sicher, dass der Pool automatisch beim nächsten Systemstart -->
-<!-- 			  aktiviert wird: -->
+			  The following command ensures that the pool is activated automatically the next time
+			  the system is started:
 
-<!-- 			  <programlisting language="sh"> -->
-<!-- virsh pool-autostart Testpool -->
-<!-- 			  </programlisting> -->
-<!-- 			</simpara></listitem> -->
-<!-- 		  </itemizedlist> -->
-<!-- 		</para> -->
-<!-- 	  </section> -->
+			  <programlisting language="sh">
+virsh pool-autostart Testpool
+			  </programlisting>
+			</simpara></listitem>
+		  </itemizedlist>
+		</para>
+	  </section>
 
-<!-- 	  <section id="uvmm::movepool"> -->
-<!-- 		<title>Verschieben des default-Speicherbereichs</title> -->
-<!-- 		<para> -->
-<!-- 		  Um den unterliegenden Dateipfad eines Speicherbereichs nachträglich zu ändern, muss eine -->
-<!-- 		  Anmeldung als Benutzer <emphasis>root</emphasis> auf dem Virtualisierungs-Server -->
-<!-- 		  erfolgen. Die folgenden Schritte sind dafür nötig: -->
+	  <section id="uvmm::movepool">
+		<title>Moving the default storage pool</title>
+		<para>
+		  To change the underlying file path of the default storage pool at a later point in time,
+		  one must log in to the virtualization server as the <emphasis>root</emphasis> user. The
+		  following steps are required for this:
 
-<!-- 		  <itemizedlist> -->
-<!-- 			<listitem><simpara> -->
-<!-- 			  Die &ucsUCRV; <envar>uvmm/pool/default/path</envar> muss auf das neue Verzeichnis geändert werden. -->
-<!-- 			</simpara></listitem> -->
+		  <itemizedlist>
+			<listitem><simpara>
+			  The &ucsUCRV; <envar>uvmm/pool/default/path</envar> must be changed to the new directory.
+			</simpara></listitem>
 
-<!-- 			<listitem><simpara> -->
-<!-- 			  Die folgenden Befehle entfernen den alten Speicherbereich; durch einen Neustart des -->
-<!-- 			  UVMM wird der Speicherbereich unter dem neuen Pfad angelegt: -->
-<!-- 			  <programlisting language="sh"> -->
-<!-- virsh pool-destroy default -->
-<!-- virsh pool-undefine default -->
-<!-- invoke-rc.d univention-virtual-machine-manager-daemon restart -->
-<!-- invoke-rc.d univention-virtual-machine-manager-node-common restart -->
-<!-- 			  </programlisting> -->
-<!-- 			</simpara></listitem> -->
-<!-- 		  </itemizedlist> -->
-<!-- 		</para> -->
-<!-- 	  </section> -->
-<!-- 	</section> -->
-
-
+			<listitem><simpara>
+			  The following commands remove the old storage pool; the pool is changed over to the
+			  new path the next time the UVMM is restarted:
+			  <programlisting language="sh">
+virsh pool-destroy default
+virsh pool-undefine default
+invoke-rc.d univention-virtual-machine-manager-daemon restart
+invoke-rc.d univention-virtual-machine-manager-node-common restart
+			  </programlisting>
+			</simpara></listitem>
+		  </itemizedlist>
+		</para>
+	  </section>
 	</section>
 
 	<section id="uvmm::drives">
