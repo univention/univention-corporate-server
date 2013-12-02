@@ -85,6 +85,8 @@ Variables: logrotate/.*
 Type: file
 File: etc/logrotate.d/winbind
 Variables: logrotate/.*
+Variables: windows/domain
+Variables: hostname
 
 Type: file
 File: etc/pam.d/samba
