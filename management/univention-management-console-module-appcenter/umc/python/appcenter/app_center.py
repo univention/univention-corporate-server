@@ -990,17 +990,6 @@ class Application(object):
 		result.update(remote_info)
 		return result
 
-	def register(self, component_manager, package_manager):
-		'''Registers the component of the app in UCR and unregisters
-		all other versions in one operation ("atomic"). Does an apt-get
-		update if necessary.
-		Can add localhost to app record in LDAP and create the
-		whole record if necessary.
-		Returns the latest previously registered version of this app if
-		there was one.
-		'''
-		return self.unregister_all_and_register(self, component_manager, package_manager)
-
 	def get_ldap_object(self, ldap_id=None, or_create=False):
 		if ldap_id is None:
 			ldap_id = self.ldap_id
@@ -1031,10 +1020,21 @@ class Application(object):
 					value = ''
 				super_ucr.set_registry_var(registry_key % key, value)
 
-	def unregister(self, component_manager, super_ucr=None, tell_ldap=None):
+	def register(self, component_manager, package_manager, tell_ldap=False):
+		'''Registers the component of the app in UCR and unregisters
+		all other versions in one operation ("atomic"). Does an apt-get
+		update if necessary.
+		Returns the latest previously registered version of this app if
+		there was one.
+		tell_ldap does nothing!
+		'''
+		return self.unregister_all_and_register(self, component_manager, package_manager, tell_ldap=tell_ldap)
+
+	def unregister(self, component_manager, super_ucr=None, tell_ldap=False):
 		'''Removes its component from UCR.
 		Returns whether this has been necessary (i.e. False if it was
 		not registered)
+		tell_ldap does nothing!
 		'''
 		got_unregistered = False
 		if not self.get('withoutrepository') and self.is_registered(component_manager.ucr):
@@ -1042,12 +1042,13 @@ class Application(object):
 			got_unregistered = True
 		return got_unregistered
 
-	def unregister_all_and_register(self, to_be_registered, component_manager, package_manager, tell_ldap=None):
+	def unregister_all_and_register(self, to_be_registered, component_manager, package_manager, tell_ldap=False):
 		'''Removes all versions of this app and registers
 		`to_be_registered` if given (may be None). Does an apt-get
 		update if necessary.
 		Returns the latest previously registered version of this app if
 		there was one.
+		tell_ldap does nothing!
 		'''
 		should_update = False
 		previously_registered = None
@@ -1090,7 +1091,7 @@ class Application(object):
 			co = None #univention.admin.config.config(ucr.get('ldap/server/name'))
 			localhost = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 			for iapp in versions:
-				if iapp.is_registered(ucr) and iapp.is_installed(package_manager):
+				if iapp.is_registered(ucr) and iapp.is_installed(package_manager) and iapp.allowed_on_local_server():
 					installed_version = iapp.version
 					ldap_object = iapp.get_ldap_object(or_create=True)
 					ldap_object.add_localhost()
