@@ -17,15 +17,15 @@ for setting in settings.keys():
 	print "\t%s" % settings[setting]
 print "}"
 
-for name in ('samba', 'smbd', 'nmbd'):
-	settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-	print "/var/log/samba/log.%s {" % name
-	for setting in settings.keys():
-		print "\t%s" % settings[setting]
-	print "\tpostrotate"
-	print "\t\t/usr/bin/killall -HUP /usr/sbin/%s" % name
-	print "\tendscript"
-	print "}"
+name = "samba"
+settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+print "/var/log/samba/log.%s {" % name
+for setting in settings.keys():
+	print "\t%s" % settings[setting]
+print "\tpostrotate"
+print "\t\t/usr/bin/killall -HUP /usr/sbin/%s" % name
+print "\tendscript"
+print "}"
 
 daemon = 'winbindd'
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(daemon, configRegistry)
