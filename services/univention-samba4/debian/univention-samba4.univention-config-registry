@@ -83,4 +83,8 @@ File: etc/logrotate.d/samba
 Variables: logrotate/.*
 
 Type: file
+File: etc/logrotate.d/winbind
+Variables: logrotate/.*
+
+Type: file
 File: etc/pam.d/samba

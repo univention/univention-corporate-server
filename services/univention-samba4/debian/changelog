@@ -1,3 +1,10 @@
+univention-samba4 (3.0.39-4) unstable; urgency=low
+
+  * added logrotate config for winbind to overwrite
+    default config (Bug #33529) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 02 Dec 2013 14:04:43 +0100
+
 univention-samba4 (3.0.39-3) unstable; urgency=low
 
   * added logrotate config for samba to overwrite
