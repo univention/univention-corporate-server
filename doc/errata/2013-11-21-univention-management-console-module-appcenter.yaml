@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-management-console-module-appcenter
-fix: 3.0.50-13.226.201311280353
+fix: 3.0.50-16.229.201312021426
 note:
 version: [0]
 desc: |
@@ -13,4 +13,6 @@ desc: |
   * When updating from UCS 3.1, apps from UCS 3.1 were registered by mistake.
     Fixed that
   * The joinscript now fails when registering the apps did not succeed
-bug: [33484, 33362, 33535, 33341]
+  * Show an error message when application registration fails after
+    installation. Register applications upon each opening of the module
+bug: [33484, 33362, 33535, 33341, 33573]
