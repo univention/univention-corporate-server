@@ -639,6 +639,15 @@
   background: @grayAthens url(images/progressBarAnim.gif) repeat-x top;
 }
 
+.umc .noTransition .dijitProgressBarFull {
+  -webkit-transition-property: none;
+  -moz-transition-property: none;
+  transition-property: none;
+  -webkit-transition-duration: 0;
+  -moz-transition-duration: 0;
+  transition-duration: 0;
+}
+
 .umc .dijitTimePickerItem {
   background-image: url(images/commonHighlight.png);
 }

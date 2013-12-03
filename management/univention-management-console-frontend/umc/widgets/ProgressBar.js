@@ -32,13 +32,14 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/dom-class",
 	"dijit/ProgressBar",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/i18n!umc/app"
-], function(declare, lang, array, ProgressBar, tools, dialog, ContainerWidget, Text, _) {
+], function(declare, lang, array, domClass, ProgressBar, tools, dialog, ContainerWidget, Text, _) {
 	return declare("umc.widgets.ProgressBar", ContainerWidget, {
 		// summary:
 		//		This class provides a widget providing detailed progress information
@@ -64,6 +65,13 @@ define([
 
 			this._progressBar.set('value', 0);
 			this._progressBar.set('maximum', 100);
+
+			this._progressBar.watch('value', lang.hitch(this, function(attr, oldValue, newValue) {
+				// looks buggy when setting value to Infinity and then back to 0
+				//   (like going backwards). Used in App Center; Bug #32649
+				var comesFromOrGoesToInfinity = oldValue === Infinity || newValue === Infinity;
+				domClass.toggle(this.domNode, 'noTransition', comesFromOrGoesToInfinity);
+			}));
 
 			this.reset();
 			this.startup();
