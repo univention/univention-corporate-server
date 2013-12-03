@@ -816,6 +816,8 @@ def _delete_dn_recursive(l, dn):
 		dns.reverse()
 		for dn in dns:
 			l.delete_s(dn)
+	except ldap.NO_SUCH_OBJECT, msg:
+		pass
 
 def _backup_dn_recursive(l, dn):
 	backup_directory = '/var/univention-backup/replication'
@@ -835,6 +837,39 @@ def _backup_dn_recursive(l, dn):
 		ldif_writer.unparse(dn,entry)
 	fd.close()
 		
+def _get_current_modrdn_link():
+	return os.path.join(STATE_DIR, 'current_modrdn')
+
+def _remove_current_modrdn_link():
+	current_modrdn_link = _get_current_modrdn_link()
+	try:
+		os.remove(current_modrdn_link)
+	except Exception, e:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to remove current_modrdn file %s: %s' % (current_modrdn_link, str(e)))
+
+def _add_object_from_new(l, dn, new):
+	al=addlist(new)
+	try:
+		l.add_s(dn, al)
+	except ldap.OBJECT_CLASS_VIOLATION, msg:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: object class violation while adding %s' % dn)
+
+def _modify_object_from_old_and_new(l, dn, old, new):
+	ml=modlist(old, new)
+	if ml:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: modify: %s' % dn)
+		l.modify_s(dn, ml)
+
+def _read_dn_from_file(filename):
+	old_dn = None
+
+	try:
+		with open(filename,'r') as f:
+			old_dn = f.read()
+	except Exception, e:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to open/read modrdn file %s: %s' % (filename, str(e)))
+
+	return old_dn
 
 def handler(dn, new, listener_old, operation):
 	global reconnect
@@ -843,6 +878,7 @@ def handler(dn, new, listener_old, operation):
 	if not slave:
 		return 1
 
+	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'replication: Running handler for: %s' % dn)
 	if dn == 'cn=Subschema':
 		return update_schema(new)
 
@@ -950,53 +986,70 @@ def handler(dn, new, listener_old, operation):
 		if new:
 			new_entryUUID = new['entryUUID'][0]
 			modrdn_cache = os.path.join(STATE_DIR, new_entryUUID)
-			if os.path.exists(modrdn_cache):	## check if a modrdn is pending
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: rename phase II: %s (entryUUID=%s)' % (dn, new_entryUUID))
-				listener.setuid(0)
-				try:
-					with open(modrdn_cache,'r') as f:
-						old_dn = f.read()
-				except Exception, e:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to open/read modrdn file %s: %s' % (modrdn_cache, str(e)))
 
-				new_parent = ','.join(ldap.explode_dn(dn)[1:])
-				new_rdn = ldap.explode_rdn(dn)[0]
+			current_modrdn_link = _get_current_modrdn_link()
+			if os.path.exists(current_modrdn_link):
+				target_uuid_file = os.readlink(current_modrdn_link)
+				if modrdn_cache == target_uuid_file and os.path.exists(modrdn_cache):
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: rename phase II: %s (entryUUID=%s)' % (dn, new_entryUUID))
+					listener.setuid(0)
 
-				if old:
-					# this means the target already exists, we have to delete this old object
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: the rename target already exists in the local LDAP, backup and remove the dn: %s' % (dn))
-					_backup_dn_recursive(l, dn)
-					_delete_dn_recursive(l, dn)
+					old_dn = _read_dn_from_file(modrdn_cache)
 
-				if getOldValues(l, old_dn):
-					# the normal rename is possible
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: rename from %s to %s,%s' % (old_dn, new_rdn, new_parent))
-					l.rename_s(old_dn, new_rdn, new_parent)
-				else:
-					# the old object does not exists, so we have to re-create the new object
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: the local target does not exist, so the object will be added: %s' % dn)
-					al=addlist(new)
+					new_parent = ','.join(ldap.explode_dn(dn)[1:])
+					new_rdn = ldap.explode_rdn(dn)[0]
+
+					if old:
+						# this means the target already exists, we have to delete this old object
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: the rename target already exists in the local LDAP, backup and remove the dn: %s' % (dn))
+						_backup_dn_recursive(l, dn)
+						_delete_dn_recursive(l, dn)
+
+					if getOldValues(l, old_dn):
+						# the normal rename is possible
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: rename from %s to %s,%s' % (old_dn, new_rdn, new_parent))
+						l.rename_s(old_dn, new_rdn, new_parent)
+					else:
+						# the old object does not exists, so we have to re-create the new object
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: the local target does not exist, so the object will be added: %s' % dn)
+						_add_object_from_new(l, dn, new)
 					try:
-						l.add_s(dn, al)
-					except ldap.OBJECT_CLASS_VIOLATION, msg:
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: object class violation while adding %s' % dn)
-				try:
-					os.remove(modrdn_cache)
-				except Exception, e:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to remove modrdn file %s: %s' % (modrdn_cache, str(e)))
-				listener.unsetuid()
+						os.remove(modrdn_cache)
+					except Exception, e:
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to remove modrdn file %s: %s' % (modrdn_cache, str(e)))
+					_remove_current_modrdn_link()
+					listener.unsetuid()
+				else: #current_modrdn points to a different file
+					listener.setuid(0)
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: the current modrdn points to a different entryUUID: %s' % os.readlink(current_modrdn_link))
+
+					old_dn = _read_dn_from_file(current_modrdn_link)
+
+					if old_dn:
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: the DN %s from the current_modrdn_link has to be backuped and removed' % (old_dn))
+						try:
+							_backup_dn_recursive(l, old_dn)
+						except AttributeError:
+							# The backup will fail in LDIF mode
+							pass
+						_delete_dn_recursive(l, old_dn)
+					else:
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'replication: no old dn has been found')
+					
+					if not old:
+						_add_object_from_new(l, dn, new)
+					elif old:
+						_modify_object_from_old_and_new(l, dn, old, new)
+
+					_remove_current_modrdn_link()
+
+					listener.unsetuid()
+
 			elif old: # modify: new and old
-				ml=modlist(old, new)
-				if ml:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: modify: %s' % dn)
-					l.modify_s(dn, ml)
+				_modify_object_from_old_and_new(l, dn, old, new)
+
 			else: # add: new and not old
-				al=addlist(new)
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: add: %s' % dn)
-				try:
-					l.add_s(dn, al)
-				except ldap.OBJECT_CLASS_VIOLATION, msg:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: object class violation while adding %s' % dn)
+				_add_object_from_new(l, dn, new)
 
 		# delete
 		elif old and not new:
@@ -1009,6 +1062,10 @@ def handler(dn, new, listener_old, operation):
 					with open(modrdn_cache, 'w') as f:
 						os.chmod(modrdn_cache, 0600)
 						f.write(dn)
+					current_modrdn_link = os.path.join(STATE_DIR, 'current_modrdn')
+					if os.path.exists(current_modrdn_link):
+						os.remove(current_modrdn_link)
+					os.symlink(modrdn_cache, current_modrdn_link)
 					listener.unsetuid()
 					## that's it for now for command 'r' ==> modrdn will follow in the next step
 					return
