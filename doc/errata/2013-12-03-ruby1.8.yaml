@@ -1,0 +1,17 @@
+---
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: ruby1.8
+fix: 1.8.7.302-2.27.201312030756
+version: [0]
+note: This update fixes these vulnerabilities.
+desc: |
+ Multiple security issues have been fixed in Ruby:
+ * The expansion of XML entities isn't limited, allowing DoS (CVE-2013-1821)
+ * Incorrect validation of SSL certificates with NULL bytes in the hostname (CVE-2013-4073)
+ * Buffer overflow in the floating point parsing code for strtod() (CVE-2013-4164)
+cve:
+ - CVE-2013-1821
+ - CVE-2013-4073
+ - CVE-2013-4164
