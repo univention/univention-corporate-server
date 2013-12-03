@@ -331,12 +331,12 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 	  </section>
 
 	  <section id="relnotes:horde">
-		<title>Update/Installation der Horde Grouware Webmail Edition</title>
+		<title>Update/Installation der Horde Groupware Webmail Edition</title>
 		<para>
-		  Ab UCS 3.2 wird die Horde Grouware Webmail Edition nicht mehr über das Paket
+		  Ab UCS 3.2 wird die Horde Groupware Webmail Edition nicht mehr über das Paket
 		  <emphasis>univention-horde4</emphasis> sondern über das Univention App Center
 		  bereitgestellt. Das Update von univention-horde4 auf bzw. die Neuinstallation von Horde
-		  5.1.0 erfolgt über die Installation der App <emphasis>Horde Grouware Webmail
+		  5.1.0 erfolgt über die Installation der App <emphasis>Horde Groupware Webmail
 		  Edition</emphasis> im Univention App Center.
 		</para>
 	  </section>
