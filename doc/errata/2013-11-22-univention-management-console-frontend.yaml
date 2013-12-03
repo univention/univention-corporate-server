@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-management-console-frontend
-fix: 3.0.152-4.801.201311251638
+fix: 3.0.152-5.802.201312031648
 note:
 version: [0]
 desc: |
@@ -15,4 +15,6 @@ desc: |
     are now generated in the domain-joinscript. This ensures that
     host- and domain-identifiers match the current settings in case of
     a domain-rejoin and after completing the appliance setup.
-bug: [29588,33133,33447]
+  * The progress bar does not have a transition anymore if the value is
+    "indeterminate".
+bug: [29588,33133,33447,32649]
