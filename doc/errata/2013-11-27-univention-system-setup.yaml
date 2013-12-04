@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-system-setup
-fix: 7.0.66-3.552.201311281048
+fix: 7.0.66-4.553.201312041624
 note:
 version: [0]
 desc: |
@@ -10,4 +10,5 @@ desc: |
     to avoid having the same random seed in templates
   * Recreate ssh and ssl keys during boot if the files are missing
   * Disable firefox default browser check
-bug: [30034,33592]
+  * A warning about an FQDN with less then two dots was shown twice
+bug: [30034,33592,33437]
