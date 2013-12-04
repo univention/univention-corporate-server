@@ -60,6 +60,9 @@ define([
 		// internal flag whether setValues() has been called at least once or not
 		_firstSetValues: true,
 
+		// internal flag to not show the FQDN warning twice. See Bug #33437
+		_fqdnWarningAdded: false,
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
@@ -121,10 +124,11 @@ define([
 					return n;
 				}
 
-				if (count(newVal) < 2) {
+				if (count(newVal) < 2 && !this._fqdnWarningAdded) {
+					this._fqdnWarningAdded = true;
 					this.addWarning(_("For Active Directory domains the fully qualified domain name must have at least two dots (e.g. host.example.com). This warning is shown only once, the installation can be continued with the name currently given."));
+					fc.remove();
 				}
-				fc.remove();
 			}));
 			this.own(fc);
 

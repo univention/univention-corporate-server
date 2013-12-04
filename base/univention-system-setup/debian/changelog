@@ -1,3 +1,10 @@
+univention-system-setup (7.0.66-4) unstable; urgency=low
+
+  * Bug #33437: The warning about an FQDN with only one dot was shown twice.
+    Fixed that.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 04 Dec 2013 16:22:10 +0100
+
 univention-system-setup (7.0.66-3) unstable; urgency=low
 
   * System-setup-boot: Disable firefox default browser check (Bug #33592)
