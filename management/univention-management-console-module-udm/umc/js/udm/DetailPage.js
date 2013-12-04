@@ -975,11 +975,7 @@ define([
 							edit: _('not defined')
 						});
 						iwidget.set('label', label);
-						if (!iinfo instanceof Array) {
-							iwidget.set('value', '');
-						} else {
-							iwidget.set('value', []);
-						}
+						iwidget.set('value', ''); // also sets CheckBox to false
 					} else if (!(iinfo instanceof Array)) {
 						// standard policy
 						iwidget.set('value', iinfo.value);

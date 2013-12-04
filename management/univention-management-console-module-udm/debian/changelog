@@ -1,3 +1,11 @@
+univention-management-console-module-udm (4.0.97-10) unstable; urgency=low
+
+  * Bug #32845: Boolean attributes of policies are rendered as CheckBoxes. If
+    these attributes were not defined, the CheckBox was shown as ticked. This
+    has been changed to unticked.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 04 Dec 2013 22:40:55 +0100
+
 univention-management-console-module-udm (4.0.97-9) unstable; urgency=low
 
   * Bug #30156: adjusted error representation in frontend
