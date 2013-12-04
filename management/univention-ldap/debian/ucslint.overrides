@@ -1,2 +1,5 @@
 0010-2: conffiles/etc/init.d/slapd
 0006-2: debian/univention-ldap-server.postinst
+0004-13: conffiles/etc/ldap/slapd.conf.d/60univention-ldap-server_acl-master
+0004-13: conffiles/etc/ldap/slapd.conf.d/70univention-ldap-server_acl-master-end
+0004-13: conffiles/etc/ldap/slapd.conf.d/60univention-ldap-server_acl-slave
