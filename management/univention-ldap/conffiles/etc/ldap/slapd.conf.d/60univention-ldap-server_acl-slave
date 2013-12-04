@@ -9,8 +9,11 @@ access to attrs=userPassword
 
 access to attrs=userPassword,krb5Key,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,sambaPwdCanChange,sambaPwdMustChange,sambaPasswordHistory,sambaClearTextPassword,sambaPreviousClearTextPassword
    by sockname="PATH=/var/run/slapd/ldapi" read
-   by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,@%@ldap/base@%@" read
 @!@
+groups_l10n_Domain_Admins = configRegistry.get('groups/l10n/Domain Admins', 'Domain Admins')
+ldap_base = configRegistry['ldap/base']
+print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" read' % ( groups_l10n_Domain_Admins, ldap_base )
+
 if baseConfig['ldap/hostdn']:
 	print '   by dn.base="%s" read' % baseConfig['ldap/hostdn']
 @!@   by * none

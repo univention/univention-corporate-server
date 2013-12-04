@@ -6,6 +6,8 @@ if baseConfig['ldap/server/type']=="master":
 else:
 	usr="read"
 
+groups_l10n_Domain_Admins = configRegistry.get('groups/l10n/Domain Admins', 'Domain Admins')
+
 print 'sasl-regexp'
 print '    uid=(.*),cn=gssapi,cn=auth'
 print '    ldap://0.0.0.0:%s/"%s"??sub?uid=$1' % (ldap_port, ldap_base)
@@ -29,28 +31,28 @@ print '    by * none break'
 print ''
 
 print 'access to dn="uid=Administrator,cn=users,%s"' % ( ldap_base )
-print '    by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,%s" %s' % ( ldap_base, usr)
+print '    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % ( groups_l10n_Domain_Admins, ldap_base, usr)
 print '    by dn.base="cn=admin,%s" %s' % ( ldap_base, usr)
 print '    by self %s' % ( usr )
 print '    by * read break'
 print ''
 
 print 'access to dn="uid=join-backup,cn=users,%s"' % ( ldap_base )
-print '    by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,%s" %s' % ( ldap_base, usr)
+print '    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % ( groups_l10n_Domain_Admins, ldap_base, usr)
 print '    by dn.base="cn=admin,%s" %s' % ( ldap_base, usr)
 print '    by self %s' % ( usr )
 print '    by * read break'
 print ''
 
 print 'access to dn="uid=join-slave,cn=users,%s"' % ( ldap_base )
-print '    by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,%s" %s' % ( ldap_base, usr)
+print '    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % ( groups_l10n_Domain_Admins, ldap_base, usr)
 print '    by dn.base="cn=admin,%s" %s' % ( ldap_base, usr)
 print '    by self %s' % ( usr )
 print '    by * read break'
 print ''
 
 print 'access to attrs=entry,objectClass,uniqueMember,ou,uid,loginShell,homeDirectory,uidNumber,gidNumber,sn,cn,gecos,description,memberUid'
-print '    by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,%s" %s' % ( ldap_base, usr)
+print '    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % ( groups_l10n_Domain_Admins, ldap_base, usr)
 print '    by dn.base="cn=admin,%s" %s' % ( ldap_base, usr)
 print '    by * read break'
 print ''

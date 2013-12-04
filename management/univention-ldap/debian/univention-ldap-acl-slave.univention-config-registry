@@ -5,6 +5,7 @@ Variables: ldap/master
 Variables: ldap/replog
 Variables: ldap/base
 Variables: ldap/hostdn
+Variables: groups/l10n/.*
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf

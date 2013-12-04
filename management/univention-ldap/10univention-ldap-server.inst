@@ -54,6 +54,8 @@ IP="$(get_default_ip_address)"
 NETMASK="$(get_default_netmask)"
 NETWORK="$(get_default_network)"
 
+groups_l10n_Domain_Admins = "${groups_l10n_Domain_Admins:-Domain Admins}"
+
 reverse=$(univention-ipcalc6 --netmask "$NETMASK" --ip "$IP" --output reverse --calcdns)
 
 wait_named () {
@@ -228,9 +230,9 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		if [ -f /var/lib/univention-ldap/root.secret ] ; then
 			# mailPrimaryAddress is required on ox systems
 			if [ -n "$ox_primary_maildomain" ] ; then
-				univention-directory-manager users/user create "$@" --position="cn=users,$ldap_base" --set mailPrimaryAddress="administrator@$ox_primary_maildomain" --set firstname="Admin" --set username=Administrator --set sambaRID=500 --set unixhome=/home/Administrator --set lastname=Administrator --set password="$(cat /var/lib/univention-ldap/root.secret)" --set primaryGroup="cn=Domain Admins,cn=groups,$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,$ldap_base" || die
+				univention-directory-manager users/user create "$@" --position="cn=users,$ldap_base" --set mailPrimaryAddress="administrator@$ox_primary_maildomain" --set firstname="Admin" --set username=Administrator --set sambaRID=500 --set unixhome=/home/Administrator --set lastname=Administrator --set password="$(cat /var/lib/univention-ldap/root.secret)" --set primaryGroup="cn=$groups_l10n_Domain_Admins,cn=groups,$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,$ldap_base" || die
 			else	
-				univention-directory-manager users/user create "$@" --position="cn=users,$ldap_base" --set username=Administrator --set sambaRID=500 --set unixhome=/home/Administrator --set lastname=Administrator --set password="$(cat /var/lib/univention-ldap/root.secret)" --set primaryGroup="cn=Domain Admins,cn=groups,$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,$ldap_base" || die
+				univention-directory-manager users/user create "$@" --position="cn=users,$ldap_base" --set username=Administrator --set sambaRID=500 --set unixhome=/home/Administrator --set lastname=Administrator --set password="$(cat /var/lib/univention-ldap/root.secret)" --set primaryGroup="cn=$groups_l10n_Domain_Admins,cn=groups,$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,$ldap_base" || die
 			fi
 		fi
 		univention-directory-manager groups/group modify "$@" --dn "cn=DC Backup Hosts,cn=groups,$ldap_base" --append users="uid=Administrator,cn=users,$ldap_base" || die
