@@ -1,0 +1,14 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-ldap
+fix: 10.0.17-7.649.201312041727
+note:
+version: [0]
+desc: |
+  The LDAP ACL templates now support the localization of
+  the Domain Admins group name via the new UCR variable
+  "groups/l10n/Domain Admins". Currently this is only useful
+  in special cases and should not be adjusted without prior
+  consultation as it may cause access problems for this group.
+bug: [33645]
