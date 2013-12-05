@@ -119,9 +119,9 @@ random_name () # create objectnames
 
 user () # create a users/user object
 {
-	eval "$(ucr shell "groups/l10n/Domain Users")"
-	groups_l10n_Domain_Users = "${groups_l10n_Domain_Users:-Domain Users}"
-	univention-admin "$module" create --set username="$rand1" --set lastname="$rand2" --set password=univention --set unixhome="/home/$rand1" --set primaryGroup="cn=$groups_l10n_Domain_Users,cn=groups,$ldap_base" --position="cn=users,$ldap_base"
+	eval "$(ucr shell "groups/default/domainusers")"
+	groups_default_domainusers = "${groups_default_domainusers:-Domain Users}"
+	univention-admin "$module" create --set username="$rand1" --set lastname="$rand2" --set password=univention --set unixhome="/home/$rand1" --set primaryGroup="cn=$groups_default_domainusers,cn=groups,$ldap_base" --position="cn=users,$ldap_base"
 }
 
 group () # create a groups/group object
