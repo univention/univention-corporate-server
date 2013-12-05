@@ -1,0 +1,14 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: samba
+fix: 4.0.3-1.381.201311261648
+note: This update fixes these vulnerabilities.
+version: [1]
+desc: |
+ This errata update fixes a security issue in Samba:
+ * Incorrect length checks on DCE-RPC fragment lengths
+   allow client utilities including winbindd to be vulnerable
+   to buffer overrun exploits (CVE-2013-4408).
+cve:
+ - CVE-2013-4408
