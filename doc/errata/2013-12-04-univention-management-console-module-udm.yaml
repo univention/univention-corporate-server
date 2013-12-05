@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-management-console-module-udm
-fix: 4.0.97-10.426.201312042251
+fix: 4.0.97-11.427.201312051248
 note:
 version: [0]
 desc: |
@@ -10,4 +10,7 @@ desc: |
   * Boolean attributes of policies are rendered as CheckBoxes. If these
     attributes were not defined, the CheckBox was shown as ticked. This has
     been changed to unticked.
-bug: [32845]
+  * If the initial search attribute for a UDM module is configured and its
+    value was not any searchable attribute, it caused LDAP errors. Now the
+    module falls back to search for "Default properties"
+bug: [32845, 33556]
