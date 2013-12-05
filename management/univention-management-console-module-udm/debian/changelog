@@ -1,3 +1,11 @@
+univention-management-console-module-udm (4.0.97-11) unstable; urgency=low
+
+  * Bug #33556: If the initial search attribute for a UDM module is configured
+    and its value was not any searchable attribute, it caused LDAP errors. Now
+    the module falls back to search for "Default properties"
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 05 Dec 2013 12:41:40 +0100
+
 univention-management-console-module-udm (4.0.97-10) unstable; urgency=low
 
   * Bug #32845: Boolean attributes of policies are rendered as CheckBoxes. If

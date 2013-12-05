@@ -590,6 +590,13 @@ define([
 				onChange: lang.hitch(this, function(newVal) {
 					// get the current label of objectPropertyValue
 					var widget = this._searchForm.getWidget('objectProperty');
+					if (!newVal) {
+						// object property is ''
+						//   probably because of invalid autoObjProperty
+						//   -> leads to traceback in the backend (LDAP filter)
+						widget.set('value', 'None'); // 'Default properties'
+						return
+					}
 					var label = _( 'Property value' );
 					array.some(widget.getAllItems(), function(iitem) {
 						if (newVal == iitem.id) {
