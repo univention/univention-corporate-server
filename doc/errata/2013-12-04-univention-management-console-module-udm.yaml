@@ -12,5 +12,5 @@ desc: |
     been changed to unticked.
   * If the initial search attribute for a UDM module is configured and its
     value was not any searchable attribute, it caused LDAP errors. Now the
-    module falls back to search for "Default properties"
+    module falls back to search for "Default properties".
 bug: [32845, 33556]
