@@ -1,102 +1,92 @@
-<chapter id="windows:Services_for_Windows"><title>Services for Windows</title>
-<section id="windows:general">
-<title>Introduction</title>
-<para>
-For the purposes of Windows systems, UCS can assume the tasks of Windows server systems:
-</para>
-<itemizedlist>
-<listitem>
-<para>Domain controller function</para>
-</listitem>
-<listitem>
-<para>File services</para>
-</listitem>
-<listitem>
-<para>Authentication services</para>
-</listitem>
-<listitem>
-<para>Print services</para>
-</listitem>
-</itemizedlist>
-<para>
-All these services are provided by Samba in UCS. Two different Samba
-versions can be employed in UCS:
-</para>
-<itemizedlist>
-<listitem>
-<para><emphasis>Samba 3</emphasis> implements domain services based on the domain
-technology of Microsoft Windows NT. Samba 3 is the current, stable and
-tried-and-tested main release series of the Samba project and has been
-integrated in UCS for many years.</para>
-</listitem>
-<listitem>
-<para><emphasis>Samba 4</emphasis> is the next generation of the Samba suite. The
-most important innovation of Samba 4 is the support of domain,
-directory and authentication services which are compatible with
-Microsoft Active Directory. This means that Active
-Directory-compatible Windows domains can be constructed with Samba
-4. These also allow the use of the tools provided by Microsoft for the
-management of users or group policies (GPOs) for example. The versions
-of Samba 4 currently published by the Samba project are expected to
-undergo more intensive changes in their further development than Samba
-3. Univention has tested the required components for the provision of Active
-Directory-compatible domain services with Samba 4 and integrated them
-in UCS in close cooperation with the Samba team. Parallel to this,
-Samba 3 was integrated with Samba 4 for UCS. This means that the
-tried-and-tested file and print service of Samba 3 can be used at the
-same time as the use of Active Directory-compatible domain services.</para>
-</listitem>
-</itemizedlist>
-<para>
-An overview of the functional differences between Samba 3 and Samba 4
-can be found in the Univention Wiki <biblioref linkend="wiki-samba4"/>.
-</para>
-<para>
-In addition to Samba 4, UCS also integrates an additional component
-for the syncronisation with Active Directory (AD): the Univention Active
-Directory Connector. In contrast to Samba 4, however, this operates a
-separate AD domain based on Microsoft Windows, which can be
-bidirectionally or unidirectionally synchronised, see
-<xref linkend="ad-connector:general"/>.
-</para>
-</section>
+<chapter id="windows:Services_for_Windows">
+  <title>Services for Windows</title>
+  <section id="windows:general">
+	<title>Introduction</title>
+	<para>
+	  For the purposes of Windows systems, UCS can assume the tasks of Windows server systems:
+	</para>
 
-<section id="windows:Installation_and_components_of_a_Samba_domain"><title>Installation and components of a Samba domain</title>
-<para>
-A Samba domain is composed of at least one domain controller.
-Windows clients and UCS &ucsMember;s can join the trust context of
-the Samba domain as domain members.
-Such servers do not provide login services, but may offer file and
-print services, for example. Login to these servers is then performed
-against the UCS user data. UCS-based &ucsMember;s are only provided
-via Samba 3.
-</para>
-<para>
-Domain joining of Windows clients is described in
-<xref linkend="windows-domaenenbeitritt"/>.
-</para>
-<para>
-Windows domain controllers can neither join the domain with Samba 3
-nor with Samba 4. This function is planned for Samba 4 at a later
-point in time.
-</para>
-<para>
-The name of the Samba domain is specified during installation of
-the &ucsMaster;, depending on whether Samba is installed on the
-system or not. The name of the domain is saved in
-the &ucsUCRV; <envar>windows/domain</envar>.
-</para>
-<para>
-Samba 4 can not join an Active Directory Forest yet at this
-point. (For Samba 3 this function is not available because of
-the lack of support for the Active Directory technology.)
-</para>
+	<itemizedlist>
+	  <listitem>
+		<para>Domain controller function</para>
+	  </listitem>
+
+	  <listitem>
+		<para>File services</para>
+	  </listitem>
+
+	  <listitem>
+		<para>Authentication services</para>
+	  </listitem>
+
+	  <listitem>
+		<para>Print services</para>
+	  </listitem>
+	</itemizedlist>
+	<para>
+	  All these services are provided by Samba in UCS. When acting as a domain controller Samba can
+	  provide two types of domain controller functionality:
+	</para>
+
+	<itemizedlist>
+	  <listitem>
+		Samba can provide a NT domain controller. In UCS releases prior to UCS 3.0 only NT domain
+		services were provided.
+	  </listitem>
+
+	  <listitem>
+		Starting with UCS 3.0 Samba can also provide an Active Directory-compatible domain
+		controller e.g. Samba provides an Active Directory compatible Windows domain. This allows
+		the use of tools provided by Microsoft, e.g. for the management of users or for managing
+		group policy objects.
+	  </listitem>
+	</itemizedlist>
+
+	<para>
+	  The migration from an NT-based Samba domain to an AD-based domain is documented in the
+	  Univention Wiki <biblioref linkend="wiki-samba-update"/>.
+	</para>
+
+	<para>
+	  In addition to Samba, UCS also integrates an additional component
+	  for the syncronisation with Active Directory (AD): the Univention Active
+	  Directory Connector. In contrast to Samba AD services, however, this operates a
+	  separate AD domain based on Microsoft Windows, which can be
+	  bidirectionally or unidirectionally synchronised, see
+	  <xref linkend="ad-connector:general"/>.
+	</para>
+  </section>
+
+  <section id="windows:setupsamba">
+	<title>Installation and components of a Samba domain</title>
+
+	<para>
+	  A Samba domain is composed of at least one domain controller.
+	  Windows clients and member servers can join the trust context of
+	  the Samba domain as domain members. Member servers do not provide login services, but may
+	  offer file and print services, for example. In addition to a member server domain join of
+	  Windows Server systems, Samba can also act as a member server.
+	</para>
+
+	<para>
+	  Domain joining of Windows clients and Microsoft Windows member servers is described in
+	  <xref linkend="windows-domaenenbeitritt"/>.
+	</para>
+
+	<para>
+	  Microsoft Windows domain controllers cannot join the Samba domain. This functionality is
+	  planned at a later point in time.
+	</para>
+
+	<para>
+	  Samba can not join an Active Directory Forest yet at this point. 
+	</para>
 
 <section id="windows:setup3">
-  <title>Installation and components of a Samba 3 domain</title>
+  <title>Installation and components of a Samba domain providing NT domain services</title>
 
   <para>
-	Samba 3 as a domain controller can be installed on all UCS domain controllers from the Univention App Center with the application
+	Samba as a NT domain controller can be installed on all UCS domain controllers from the Univention App Center with the application
 	<emphasis>Windows NT-compatible domain controller</emphasis>. Alternatively, the software package
 	<package>univention-samba</package> can be installed
 	(<command>univention-run-join-scripts</command> command must be run after installation).
@@ -115,10 +105,10 @@ the lack of support for the Active Directory technology.)
 </section>
 
 <section id="windows:setup4">
-  <title>Installation and components of a Samba 4 domain</title>
+  <title>Installation and components of a Samba domain providing Active Directory domain services</title>
 
   <para>
-	Samba 4 as a domain controller can be installed on all UCS domain controllers from the Univention App Center with the application
+	Samba as an AD domain controller can be installed on all UCS domain controllers from the Univention App Center with the application
 	<emphasis>Active Directory-compatible domain controller</emphasis>. Alternatively, the software package
 	<package>univention-samba4</package> can be installed. On the system roles &ucsMaster; and
 	&ucsBackup; the <package>univention-s4-connector</package> package must also be installed
@@ -137,52 +127,49 @@ the lack of support for the Active Directory technology.)
   </para>
 
   <para>
-	The signing of NTP replies should be set on all Samba domain
-	controllers, see <xref linkend="basicservices::ntp"/>.
+	The signing of NTP replies should be enabled on all Samba domain controllers, see <xref
+	linkend="basicservices::ntp"/>.
   </para>
 
   <para>
-	Samba 4 supports the operation as a <emphasis>read-only domain controller</emphasis>. The setup is
+	Samba supports the operation as a <emphasis>read-only domain controller</emphasis>. The setup is
 	documented in <biblioref linkend="ext-doc-win"/>.
   </para>
 
-<para>
-Samba 4 implements Active Directory directory services which allow a multi-master replication, i.e.,
-the writing changes of several domain controllers are synchronised at protocol level. Consequently,
-the use of snapshots in virtualization solutions should be avoided when using Samba 4 and Samba 4
-should be operated on a server which is never switched off or suspended.
-</para>
+  <para>
+	Samba implements Active Directory directory services which allow a multi-master replication, i.e.,
+	the writing changes of several domain controllers are synchronised at protocol level. Consequently,
+	the use of snapshots in virtualization solutions should be avoided when using Samba 4 and Samba 4
+	should be operated on a server which is never switched off or suspended.
+  </para>
 </section>
 </section>
 
-<section id="windows:Services_of_a_Samba_domain"><title>Services of a Samba domain</title>
-<section id="windows:Authentication_services"><title>Authentication services</title>
-<para>
-In Samba 3, the user passwords are saved in the UCS LDAP. Users are
-authenticated against the LDAP directory when logging into the domain
-with their username and password, and can then access all the shared
-resources of the domain without having to enter their username and
-password again. Computers with any kind of Windows operating systems
-are authenticated in the same way as in Windows NT domains, via the
-NTLMv2 protocol.
-</para>
-<para>
-Users who log on to a Windows system joined in a Samba 4 server are supplied with a
-Kerberos ticket when they log on. The ticket is then used for the further
-authentication. This ticket allows access to the domain's
-resources. Synchronisation of the system times is essential for
-functioning Kerberos authentication.
-</para>
-<para>
-User logins can only be performed on Microsoft Windows systems joined
-in the Samba domain. Domain joins are documented in
-<xref linkend="windows-domaenenbeitritt"/>.
-</para>
-<para>
-Mixed environments containing both Samba 3 and Samba 4 are only
-supported for update scenarios and are described in more detail
-in the Univention Wiki <biblioref linkend="wiki-samba-update"/>.
-</para>
+<section id="windows:samba:services">
+  <title>Services of a Samba domain</title>
+  <section id="windows:samba:services:auth">
+	<title>Authentication services</title>
+
+	<para>
+	  User logins can only be performed on Microsoft Windows systems joined
+	  in the Samba domain. Domain joins are documented in
+	  <xref linkend="windows-domaenenbeitritt"/>.
+	</para>
+
+	<para>
+	  In a Samba NT domain, the user passwords are saved in the UCS LDAP. Users are authenticated
+	  against the LDAP directory when logging into the domain with their username and password, and
+	  can then access all the shared resources of the domain without having to enter their username
+	  and password again. Computers with any kind of Windows operating systems are authenticated in
+	  the same way as in Windows NT domains, via the NTLMv2 protocol.
+	</para>
+
+	<para>
+	  In a Samba AD domain, users who log on to a Windows system are supplied with a Kerberos ticket
+	  when they log on. The ticket is then used for the further authentication. This ticket allows
+	  access to the domain's resources. Synchronisation of the system times is essential for
+	  functioning Kerberos authentication.
+	</para>
 </section>
 
 <section id="windows:fileservices">
@@ -191,11 +178,11 @@ in the Univention Wiki <biblioref linkend="wiki-samba-update"/>.
 	The file services integrated in UCS support the provision of shares using the CIFS protocol (see
 	<xref linkend="shares::general"/>). Insofar as the underlying file system supports Access
 	Control Lists (ACLs) (can be used with ext3, ext4 and XFS), the ACLs can also be used by Windows
-	clients. Samba 4 requires a file system with XATTR support.
+	clients. Samba requires a file system with XATTR support.
   </para>
 
   <para>
-	Samba 4 domain controllers can also provide file services. As a general rule, it is recommended
+	Samba Active Directory domain controllers can also provide file services. As a general rule, it is recommended
 	to separate domain controllers and file/print services in Samba environments - the same as the
 	recommendations for Active Directory - that means using domain controllers for
 	logins/authentication and member services for file/print services. This ensures that a high
@@ -229,29 +216,31 @@ in the Univention Wiki <biblioref linkend="wiki-samba-update"/>.
   	  </simpara></listitem>
   	</itemizedlist>
   </para>
-
-
 </section>
 
-<section id="windows:Print_services"><title>Print services</title>
-<para>
-Samba offers the possibility of sharing printers set up under Linux as
-network printers for Windows clients. The management of the printer
-shares and the integration of the printer drivers is described in
-<xref linkend="print::general"/>.
-</para>
-<para>
-Samba 4 domain controllers can also provide print services. In this case, the restrictions described
-in <xref linkend="windows:fileservices"/> must be taken into consideration.
-</para>
+<section id="windows:samba:services:print">
+  <title>Print services</title>
+  <para>
+	Samba offers the possibility of sharing printers set up under Linux as network printers for
+	Windows clients. The management of the printer shares and the provision of the printer drivers
+	is described in <xref linkend="print::general"/>.
+  </para>
+
+  <para>
+	Samba AD domain controllers can also provide print services. In this case, the restrictions
+	described in <xref linkend="windows:fileservices"/> must be taken into consideration.
+  </para>
 </section>
 
-<section id="windows:s4connector"><title>Univention S4 connector / Samba 4 LDAP directory</title>
-<para>
-  In Samba 4, the Samba user accounts are managed completely bySamba. Samba 4 provides a separate
-  LDAP directory service. The synchronisation between the UCS LDAP and the Samba LDAP occurs via an
-  internal system service, the Univention S4 connector.
-</para>
+<section id="windows:s4connector">
+  <title>Univention S4 connector</title>
+
+  <para>
+	When using Samba as an Active Directory domain controller, Samba provides a separate LDAP
+	directory service. The synchronisation between the UCS LDAP and the Samba LDAP occurs via an
+	internal system service, the Univention S4 connector. The connector is enabled on the
+	&ucsMaster; by default and typically requires no further configuration.
+  </para>
 
 <para>
   Further information on the status of the synchronisation can be found in the log file
@@ -283,7 +272,6 @@ instanceType: 4
 </programlisting>
 </para>
 
-
 </section>
 
 
@@ -305,59 +293,58 @@ instanceType: 4
 </section>
 
 
-<section id="windows:NetBIOS_name_service"><title>NetBIOS name service</title>
-<para>
-Windows systems use NetBIOS, a TCP/IP-based network protocol for
-resolving host names and for network communication. Samba provides
-NetBIOS functions with the <emphasis>nmbd</emphasis> system service.
-</para>
-<para>
-NetBIOS computer names can have a maximum of 13 characters. The
-NetBIOS name of a UCS system corresponds to the host name by
-default. A different name can be configured with
-the &ucsUCRV; <envar>samba/netbios/name</envar> and alias names defined with
-the &ucsUCRV; <envar>samba/netbios/aliases</envar>.
-</para>
-<para>
-In a native Active Directory environment, there are no NetBIOS
-services provided as standard. In an AD environment based on Samba 4,
-however, it is activated. This can be deactivated with
-the &ucsUCRV; <envar>samba4/service/nmb</envar>.
-</para>
-<para>
-Samba 3 and Samba 4 offer the same scope of functions in terms of
-NetBIOS services.
-</para>
+<section id="windows:netbios">
+  <title>NetBIOS name service</title>
+
+  <para>
+	NetBIOS is a network protocol for host names and for network communication of Windows
+	clients. It is primarily used for NT-compatible domains; the name resolution in Active Directory
+	is based on DNS. Samba provides NetBIOS functions with the <emphasis>nmbd</emphasis>
+	system service.
+  </para>
+
+  <para>
+	NetBIOS computer names can have a maximum of 13 characters. The NetBIOS name of a UCS system
+	corresponds to the host name by default.
+  </para>
+
+  <para>
+	In a native Active Directory environment, there are no NetBIOS services provided as standard. In
+	an AD environment based on Samba, however, it is activated. This can be deactivated with the
+	&ucsUCRV; <envar>samba4/service/nmb</envar>.
+  </para>
 </section>
 
-<section id="windows:wins"><title>Name resolution using WINS</title>
-<para>
-Similar to DNS in TCP/IP networks, the <emphasis>Windows Internet Name
-Service (WINS)</emphasis> is used for resolving NetBIOS names into IP
-addresses. In addition, WINS provides information on the services of
-the hosts.
-</para>
-<para>
-WINS is used in Samba 3-based, NT-compatible domains; in Samba 4
-domains, the name resolution generally occurs via DNS.
-</para>
-<para>
-The WINS service can also be provided by Samba. WINS support is
-activated on the &ucsMaster; in the default setting and can also be
-operated on another server by setting the &ucsUCRV; <envar>windows/wins-support</envar>. WINS can only be operated without
-adjustments on one Samba server in the domain; distribution across
-several servers requires the setup of WINS replication. Information
-on the commissioning of the WINS replication can be found in the
-Univention Support database at <ulink url="http://sdb.univention.de/1107"/>.
-</para>
-<para>
-The WINS server can assign Windows clients via a DHCP-NetBIOS policy,
-see <xref linkend="networks:dhcp:wins"/>.
-</para>
+<section id="windows:wins">
+  <title>Name resolution using WINS</title>
+  <para>
+	Similar to DNS in TCP/IP networks, the <emphasis>Windows Internet Name Service (WINS)</emphasis>
+	is used for resolving NetBIOS names into IP addresses. In addition, WINS provides information on
+	the services of the hosts.
+  </para>
+
+  <para>
+	WINS is used in NT-compatible Samba domains; in Samba AD domains, the name resolution generally
+	occurs via DNS.
+  </para>
+
+  <para>
+	WINS support is activated on the &ucsMaster; in the default setting and can also be operated on
+	another server by setting the &ucsUCRV; <envar>windows/wins-support</envar>. WINS can only be
+	operated without adjustments on one Samba server in the domain; distribution across several
+	servers requires the setup of WINS replication. Information on the commissioning of the WINS
+	replication can be found in the Univention Support database at <ulink
+	url="http://sdb.univention.de/1107"/>.
+  </para>
+
+  <para>
+	The WINS server can be assigned to Windows clients via a DHCP-NetBIOS policy, see <xref
+	linkend="networks:dhcp:wins"/>.
+  </para>
 </section>
 </section>
 
-<section id="windows:Configuration_and_management_of_Windows_desktops">
+<section id="windows:desktopmanagement">
   <title>Configuration and management of Windows desktops</title>
 
   <section id="gruppenrichtlinien"><title>Group policies</title>
@@ -366,7 +353,7 @@ see <xref linkend="networks:dhcp:wins"/>.
   </figure>
   <para>
 	Group policies are an Active Directory feature which allows the central configuration of
-	computers and user settings. They are only supported by Samba 4.
+	computers and user settings. They are only supported in Samba AD domains.
   </para>
 
   <para>
@@ -391,23 +378,23 @@ see <xref linkend="networks:dhcp:wins"/>.
   </para>
 </section>
 
-<section id="netlogon-freigabe"><title>Logon scripts / NETLOGON share</title>
-<para>
-The NETLOGON share serves the purpose of providing logon scripts in
-Windows domains. The logon scripts are executed following after the
-user login and allow the adaptation of the user's working
-environment. Scripts have to be saved in a format which can be
-executed by Windows, such as <emphasis>bat</emphasis>.
-</para>
-<para>
-The NETLOGON share must be available on all Samba domain controllers
-and always contain the same contents.
-</para>
-
-<section id="windows:netlogon:Samba_3">
-  <title>Samba 3</title>
+<section id="netlogon-freigabe">
+  <title>Logon scripts / NETLOGON share</title>
   <para>
-	Under Samba 3, the directory <filename>/var/lib/samba/netlogon</filename> is set up as the Samba
+	The NETLOGON share serves the purpose of providing logon scripts in Windows domains. The logon
+	scripts are executed following after the user login and allow the adaptation of the user's
+	working environment. Scripts have to be saved in a format which can be executed by Windows, such
+	as <emphasis>bat</emphasis>.
+  </para>
+
+  <para>
+	The NETLOGON share is synchronised between all Samba domain controllers.
+  </para>
+
+  <section id="windows:netlogon:Samba_3">
+  <title>Samba NT domains</title>
+  <para>
+	In Samba NT domains, the directory <filename>/var/lib/samba/netlogon</filename> is set up as the Samba
 	share <emphasis>NETLOGON</emphasis>.
   </para>
 
@@ -445,143 +432,138 @@ and always contain the same contents.
   </para>
 </section>
 
-<section id="windows:netlogon:Samba_4"><title>Samba 4</title>
-<para>
-In Samba 4 the logon scripts are stored
-in <filename>/var/lib/samba/sysvol/&lt;Domainname&gt;/scripts/</filename> and
-similarly provided under the share name <emphasis>NETLOGON</emphasis>.
-</para>
-<para>
-The NETLOGON share is replicated within the scope of the SYSVOL
-replication.
-</para>
+<section id="windows:netlogon:Samba_4">
+  <title>Samba AD domains</title>
+
+  <para>
+	In Samba AD domains the logon scripts are stored in
+	<filename>/var/lib/samba/sysvol/&lt;Domainname&gt;/scripts/</filename> and similarly provided
+	under the share name <emphasis>NETLOGON</emphasis>.
+  </para>
+
+  <para>
+	The NETLOGON share is replicated within the scope of the SYSVOL
+	replication.
+  </para>
 </section>
 </section>
 
-<section id="windows:Configuration_of_the_file_server_for_the_home_directory"><title>Configuration of the file server for the home directory</title>
-<section id="windows:Configuration_with_Samba_3"><title>Configuration with Samba 3</title>
-<para>
-As standard, the home directory of each user is shared by Samba and
-connected with the <emphasis>I:</emphasis> drive after login in Windows.
-</para>
-<para>
-The &ucsUCRV; <envar>samba/homedirserver</envar> can be used to specify the server on
-which the home directories should be stored;
-the &ucsUCRV; <envar>samba/homedirpath</envar> can be used to specify the
-directory. These values will then be valid for all the users.
-</para>
-<para>
-It it also possible to make individual assignment in the user settings - see
-<xref linkend="users::management"/> - with the
-setting <guimenu>Windows home path</guimenu>, e.g., <emphasis>\\ucs-file-server\smith</emphasis>.
-</para>
-<para>
-If instead of the user's UNIX home directory, a different UNIX
-directory is to be displayed as the home directory on the Windows
-drive, then this server and the home directory need to be entered in
-the <guimenu>Windows home path</guimenu> entry field.
-</para>
-</section>
-
-<section id="windows:Configuration_with_Samba_4"><title>Configuration with Samba 4</title>
-<para>
-In Samba 4 the home directory can only be defined user-specifically in
-the &ucsUMC;, see <xref linkend="users::management"/>. This is performed
-with the setting <guimenu>Windows home path</guimenu>,
-e.g., <emphasis>\\ucs-file-server\smith</emphasis>.
-</para>
-<para>
-The multi edit mode of the &ucsUMC; can be used to assign the
-home directory to multiple users at one time, see
-<xref linkend="central:user-interface:edit"/>.
-</para>
-</section>
-</section>
-
-<section id="windows:Roaming_profiles"><title>Roaming profiles</title>
-<para>
-Samba supports roaming profiles, i.e., user settings are
-saved on a central server. This directory is also used for storing the files
-which the user saves in the <emphasis>My Documents</emphasis> folder. Initially,
-these files are stored locally on the Windows computer and then
-synchronised onto the Samba server when the user logs off.
-</para>
-<para>
-If the profile path is changed in the &ucsUMC;, then a new profile
-directory will be created. The data in the old profile directory will
-be kept. These data can be manually copied or moved to the new profile
-directory. Finally, the old profile directory can be deleted.
-</para>
-
-<section id="windows:Samba_3"><title>Samba 3</title>
-<para>
-In Samba 3, the user profiles are saved in
-the <filename>windows-profiles\&lt;Windows-Version&gt;</filename> subdirectory on the
-Samba server that the user logged on to.
-</para>
-<para>
-&ucsUCRV; <envar>samba/profileserver</envar> can be used to specify another server
-and <envar>samba/profilepath</envar>to specify another
-directory. These settings must be set on all Samba domain controllers.
-</para>
-<para>
-In the user management of the &ucsUMC;, the input
-field <guimenu>Windows profile directory</guimenu> can be set to configure a
-different path or another server for the profile directory for the
-user.
-</para>
-<para>
-Roaming profiles can be deactivated by configuring
-the &ucsUCR; variables <envar>samba/profilepath</envar>
-and <envar>samba/profileserver</envar> to <emphasis>local</emphasis> and restarting the
-Samba server.
-</para>
-</section>
-
-<section id="windows:Samba_4"><title>Samba 4</title>
-<para>
-No roaming profiles are used in the default setting in Samba 4.
-</para>
-<para>
-Roaming profiles can be enabled per user; their use must be configured
-via the <guimenu>Windows profile directory</guimenu> field in
-the <guimenu>Account</guimenu> tab of the user management. The path
-entered may include Windows variables, e.g.,
-</para>
-<programlisting>
-sambaProfilePath: \\ucsmaster\%UserName%\windows-profiles
-</programlisting>
-<para>
-This path can also be set via a user template, see <xref linkend="users:templates"/>.
-</para>
-
-<para>
-Alternatively, it is possible to configure the profile directory via a
-group policy found under <guimenu>Computer configuration &ar; Policies
-&ar; Administrative templates &ar; System &ar; User profiles &ar; Set roaming
-profile path for all users logging onto this computer</guimenu>.
-</para>
-<note>
+<section id="windows:serverhome">
+  <title>Configuration of the file server for the home directory</title>
+  <section id="windows:serverhome:nt">
+	<title>Samba NT domains</title>
 	<para>
-As standard, the Administrator accesses shares with root rights. If as
-a result the profile directory is created with the root user, it
-should be manually assigned to the Administrator with the command
-<command>chown</command>.
+	  As standard, the home directory of each user is shared by Samba and connected with the
+	  <emphasis>I:</emphasis> drive after login in Windows.
 	</para>
-</note>
+
+	<para>
+	  The &ucsUCRV; <envar>samba/homedirserver</envar> can be used to specify the server on which
+	  the home directories should be stored; the &ucsUCRV; <envar>samba/homedirpath</envar> can be
+	  used to specify the directory. These values will then be valid for all the users.
+	</para>
+
+	<para>
+	  It it also possible to make individual assignment in the user settings - see <xref
+	  linkend="users::management"/> - with the setting <guimenu>Windows home path</guimenu>, e.g.,
+	<emphasis>\\ucs-file-server\smith</emphasis>. </para>
+
+	<para>
+	  If instead of the user's UNIX home directory, a different UNIX directory is to be displayed as
+	  the home directory on the Windows drive, then this server and the home directory need to be
+	  entered in the <guimenu>Windows home path</guimenu> entry field.
+	</para>
+  </section>
+
+  <section id="windows:serverhome:ad"><title>Configuration with Samba 4</title>
+  <para>
+	In Samba AD domains the home directory can only be defined user-specifically in
+	the &ucsUMC;, see <xref linkend="users::management"/>. This is performed
+	with the setting <guimenu>Windows home path</guimenu>,
+	e.g., <emphasis>\\ucs-file-server\smith</emphasis>.
+  </para>
+
+  <para>
+	The multi edit mode of the &ucsUMC; can be used to assign the home directory to multiple users
+	at one time, see <xref linkend="central:user-interface:edit"/>.
+  </para>
+  </section>
+</section>
+
+<section id="windows:roamingprofiles">
+  <title>Roaming profiles</title>
+  <para>
+	Samba supports roaming profiles, i.e., user settings are saved on a central server. This
+	directory is also used for storing the files which the user saves in the <emphasis>My
+	Documents</emphasis> folder. Initially, these files are stored locally on the Windows computer
+	and then synchronised onto the Samba server when the user logs off.
+  </para>
+
+  <para>
+	If the profile path is changed in the &ucsUMC;, then a new profile directory will be
+	created. The data in the old profile directory will be kept. These data can be manually copied
+	or moved to the new profile directory. Finally, the old profile directory can be deleted.
+  </para>
+
+  <section id="windows:roamingprofiles:nt">
+	<title>Samba NT domains</title>
+
+	<para>
+	  In Samba 3, the user profiles are saved in the
+	  <filename>windows-profiles\&lt;Windows-Version&gt;</filename> subdirectory on the Samba server
+	  that the user logged on to.
+	</para>
+
+	<para>
+	  &ucsUCRV; <envar>samba/profileserver</envar> can be used to specify another server and
+	  <envar>samba/profilepath</envar>to specify another directory. These settings must be set on
+	  all Samba domain controllers.
+	</para>
+
+	<para>
+	  In the user management of the &ucsUMC;, the input field <guimenu>Windows profile
+	  directory</guimenu> can be set to configure a different path or another server for the profile
+	  directory for the user.
+	</para>
+
+	<para>
+	  Roaming profiles can be deactivated by configuring the &ucsUCR; variables
+	  <envar>samba/profilepath</envar> and <envar>samba/profileserver</envar> to
+	  <emphasis>local</emphasis> and restarting the Samba server.
+	</para>
+  </section>
+
+<section id="windows:roamingprofiles:ad">
+  <title>Samba AD domains</title>
+  <para>
+	No roaming profiles are used in the default setting in Samba 4.
+  </para>
+
+  <para>
+	Roaming profiles can be configured via a group policy found under <guimenu>Computer
+	configuration &ar; Policies &ar; Administrative templates &ar; System &ar; User profiles &ar;
+	Set roaming profile path for all users logging onto this computer</guimenu>.
+  </para>
+
+  <note>
+	<para>
+	  As standard, the Administrator accesses shares with root rights. If as
+	  a result the profile directory is created with the root user, it
+	  should be manually assigned to the Administrator with the command
+	  <command>chown</command>.
+	</para>
+  </note>
 </section>
 </section>
 
-<section id="windows:Granting_additional_Windows_privileges_to_users"><title>Granting additional Windows privileges to users</title>
-<para>
-The <guimenu>Samba privileges</guimenu> selection mask in the user
-management can be used to assign a user selected Windows system
-rights, such as the right to manage printers or to restart computers,
-see <xref linkend="users::management"/>.
-</para>
-<para>
-This feature is only available in Samba 3.
-</para>
+<section id="windows:privs">
+  <title>Granting additional Windows privileges to users</title>
+  <para>
+	The <guimenu>Samba privileges</guimenu> selection mask in the user management can be used to
+	assign a user selected Windows system rights, such as the right to manage printers or to restart
+	computers, see <xref linkend="users::management"/>. This feature is only available in Samba NT
+	domains.
+  </para>
 </section>
 </section>
 
@@ -1263,92 +1245,105 @@ The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are e
 </section>
 </section>
 
-<section id="vertrauensstellungen_generell"><title>Trust relationships</title>
-<para>
-Trust relationships between domains make it possible for users from
-one domain to log on to computers from another domain.
-</para>
-<para>
-Trust settings are only supported by Samba 3.
-</para>
-<para>
-If a Windows domain trusts a Samba 3 domain, there is also the possibility to log
-on to the Samba domain alongside the Windows domain when logging on to
-computers belonging to the Windows domain.
-</para>
-<para>
-If a Samba 3 domain trusts a Windows domain, users from the Windows
-domain enter the user name <emphasis>&lt;name-of-windows-domain&gt;+&lt;username&gt;</emphasis> when logging on to a
-Linux computer belonging to the Samba domain.
-</para>
-<para>
-When setting up and using the trust relationship the domain
-controllers of both domains must be able to reach each other over the
-network and identify each other using broadcasts or WINS.
-</para>
+<section id="vertrauensstellungen_generell">
+  <title>Trust relationships</title>
+  <para>
+	Trust relationships between domains make it possible for users from one domain to log on to
+	computers from another domain.
+  </para>
 
-<section id="windows:Windows_domain_trusts_Samba_3_domain"><title>Windows domain trusts Samba 3 domain</title>
-<para>
-A <emphasis>Domain Trust Account</emphasis> with a name reflecting the NetBIOS
-name of the Windows domain and a password issued for the account must
-be created in the computer management module of &ucsUMC;.
-The password quality requirements which may apply to
-Windows domains must be observed.
-</para>
-<para>
-Trust settings can only be set up on domain controllers.
-</para>
-<para>
-A trust relationship must be created on the Windows PDC.
-</para>
-<para>
-The trust relationship between the Windows domain and the Samba
-domain can be removed by deleting the trust relationship on the
-Windows PDC and the domain trust account in the &ucsUMC;.
-</para>
-</section>
+  <para>
+	Trust settings are only supported by Samba NT domains.
+  </para>
 
-<section id="windows:Samba_3_domain_trusts_Windows_domain"><title>Samba 3 domain trusts Windows domain</title>
-<para>
-The following steps are used to set up the trust setting on a
-&ucsSlave; as a <emphasis>root</emphasis> user:
-</para>
-<para>
-The <package>winbind</package> package must be installed. Winbind maps UNIX IDs
-to Windows users and groups
-</para>
-<para>
-A trust relationship must be created on the Windows PDC.
-</para>
-<para>
-If Univention Firewall is used, replies to NetBIOS broadcasts need to
-be allowed:
-</para>
-<programlisting language="sh">
+  <para>
+	If a Windows domain trusts a Samba domain, there is also the possibility to log on to the
+	Samba domain alongside the Windows domain when logging on to computers belonging to the Windows
+	domain.
+  </para>
+
+  <para>
+	If a Samba domain trusts a Windows domain, users from the Windows domain enter the user name
+	<emphasis>&lt;name-of-windows-domain&gt;+&lt;username&gt;</emphasis> when logging on to a Linux
+	computer belonging to the Samba domain.
+  </para>
+
+  <para>
+	When setting up and using the trust relationship the domain controllers of both domains must be
+	able to reach each other over the network and identify each other using broadcasts or WINS.
+  </para>
+
+  <section id="windows:trustdom:windows-trusts-samba">
+	<title>Windows domain trusts Samba domain</title>
+	<para>
+	  A <emphasis>Domain Trust Account</emphasis> with a name reflecting the NetBIOS name of the
+	  Windows domain and a password issued for the account must be created in the computer
+	  management module of &ucsUMC;  The password quality requirements which may apply to Windows
+	  domains must be observed.
+	</para>
+
+	<para>
+	  Trust settings can only be set up on domain controllers.
+	</para>
+
+	<para>
+	  A trust relationship must be created on the Windows PDC.
+	</para>
+
+	<para>
+	  The trust relationship between the Windows domain and the Samba domain can be removed by
+	  deleting the trust relationship on the Windows PDC and the domain trust account in the
+	  &ucsUMC;.
+	</para>
+  </section>
+
+  <section id="windows:trustdom:samba-trusts-windows">
+	<title>Samba domain trusts Windows domain</title>
+	<para>
+	  The following steps are used to set up the trust setting on a &ucsSlave; as a
+	  <emphasis>root</emphasis> user:
+	</para>
+
+	<para>
+	  The <package>winbind</package> package must be installed. Winbind maps UNIX IDs to Windows
+	  users and groups
+	</para>
+
+	<para>
+	  A trust relationship must be created on the Windows PDC.
+	</para>
+
+	<para>
+	  If Univention Firewall is used, replies to NetBIOS broadcasts need to be allowed:
+	</para>
+
+	<programlisting language="sh">
 echo "iptables -I INPUT 1 -p udp --sport 137 -j ACCEPT" \
     &gt;&gt; /etc/security/packetfilter.d/50_local.sh
 /etc/init.d/univention-firewall restart
-</programlisting>
-<para>
-The trust relationship is now initiated and Winbind restarted.
-This command must be run on all Samba login servers:
-</para>
-<programlisting language="sh">
+	</programlisting>
+
+	<para>
+	  The trust relationship is now initiated and Winbind restarted. This command must be run on all
+	  Samba login servers:
+	</para>
+	<programlisting language="sh">
 net rpc trustdom establish &lt;Windows domain&gt;
 net setauthuser -UAdministrator
 echo -e "[global]\nwinbind rpc only = yes" >> /etc/samba/local.conf
 /etc/init.d/winbind restart
 ucr set auth/methods="krb5 ldap unix winbind"
 /etc/init.d/nscd restart
-</programlisting>
-<para>
-The following command can be used to check that the trust relationship
-has been added correctly:
-</para>
-<programlisting language="sh">
+	</programlisting>
+
+	<para>
+	  The following command can be used to check that the trust relationship has been added
+	  correctly:
+	</para>
+	<programlisting language="sh">
 net rpc trustdom list
-</programlisting>
-</section>
+	</programlisting>
+  </section>
 </section>
 
 </chapter>
