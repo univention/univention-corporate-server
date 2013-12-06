@@ -7,8 +7,7 @@ note: This update fixes these vulnerabilities.
 version: [1]
 desc: |
  This errata update fixes a security issue in Samba:
- * Incorrect length checks on DCE-RPC fragment lengths
-   allow client utilities including winbindd to be vulnerable
-   to buffer overrun exploits (CVE-2013-4408).
+ Incorrect length checks on DCE-RPC fragment lengths allow
+ the execution of arbitrary code through buffer overflows.
 cve:
  - CVE-2013-4408
