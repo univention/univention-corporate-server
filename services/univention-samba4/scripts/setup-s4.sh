@@ -86,7 +86,7 @@ while getopts  "h-:W:" option; do
 	esac
 done
 
-DOMAIN_SID="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | sed -n 's/sambaSID: \(.*\)/\1/p')"
+DOMAIN_SID="$(univention-ldapsearch -x "(&(objectclass=sambadomain)(sambaDomainName=$windows_domain))" sambaSID | ldapsearch-wrapper | sed -n 's/sambaSID: \(.*\)/\1/p')"
 
 ## helper function
 stop_conflicting_services() {
@@ -144,7 +144,7 @@ set_machine_secret() {
 }
 
 # Search for Samba 3 DCs
-S3_DCS="$(univention-ldapsearch -x "(&(objectclass=univentionDomainController)(univentionService=Samba 3))" cn | sed -n 's/cn: \(.*\)/\1/p')"
+S3_DCS="$(univention-ldapsearch -x "(&(objectclass=univentionDomainController)(univentionService=Samba 3))" cn | ldapsearch-wrapper | sed -n 's/cn: \(.*\)/\1/p')"
 if [ -n "$S3_DCS" ]; then
 	## safty belt
 	if is_ucr_true samba4/ignore/mixsetup; then
@@ -228,7 +228,7 @@ if [ -z "$S3_DCS" ] || [ -z "$DOMAIN_SID" ] || is_ucr_true samba4/provision/seco
 
 else
 	## Before starting the upgrade check for Samba accounts that are not POSIX accounts:
-	non_posix_sambaSamAccount_dns=$(univention-ldapsearch -xLLL "(&(objectClass=sambaSamAccount)(!(objectClass=posixAccount)))" dn | sed -n 's/^dn: \(.*\)/\1/p')
+	non_posix_sambaSamAccount_dns=$(univention-ldapsearch -xLLL "(&(objectClass=sambaSamAccount)(!(objectClass=posixAccount)))" dn | ldapsearch-wrapper | sed -n 's/^dn: \(.*\)/\1/p')
 	if [ -n "$non_posix_sambaSamAccount_dns" ]; then
 		echo "ERROR: Found Samba accounts in LDAP that are not POSIX accounts, please remove these before updating to Samba 4" >&2
 		echo "$non_posix_sambaSamAccount_dns" | while read dn; do
@@ -240,7 +240,7 @@ else
 	## Before starting the upgrade check for group names colliding with user names
 	uid_ldap_check_function() {
 		local filter="$1"
-		collision=$(univention-ldapsearch -xLLL "(&(objectClass=posixAccount)(|$filter))" uid | sed -n 's/^uid: \(.*\)/\1/p')
+		collision=$(univention-ldapsearch -xLLL "(&(objectClass=posixAccount)(|$filter))" uid | ldapsearch-wrapper | sed -n 's/^uid: \(.*\)/\1/p')
 		if [ -n "$collision" ]; then
 			echo "ERROR: Group names and user names must be unique, please rename these before updating to Samba 4" >&2
 			echo "The following user names are also present as group names:" >&2
@@ -257,7 +257,7 @@ else
 			uid_ldap_check_function "$filter"
 			filter="(uid=$name)"
 		fi
-	done < <(univention-ldapsearch -xLLL "(objectClass=posixGroup)" cn | sed -n 's/^cn: \(.*\)/\1/p')
+	done < <(univention-ldapsearch -xLLL "(objectClass=posixGroup)" cn | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')
 	if [ -n "$filter" ]; then
 		uid_ldap_check_function "$filter"
 	fi

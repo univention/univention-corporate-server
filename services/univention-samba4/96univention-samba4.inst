@@ -412,7 +412,7 @@ register_server_ips_with_domain() {
 	zone="$(udm dns/forward_zone list "$@" --filter zoneName="$domainname" | sed -ne 's|^DN: ||p')"
 	if [ -n "$zone" ]; then
 		IPs=$(univention-ldapsearch "(&(relativeDomainname=$hostname)(zoneName=$domainname))" aRecord aAAARecord \
-		      | sed -ne 's|^aRecord: ||p;s|^aAAARecord: ||p')
+		      | ldapsearch-wrapper | sed -ne 's|^aRecord: ||p;s|^aAAARecord: ||p')
 		for ip in $IPs; do
 			udm dns/forward_zone modify "$@" --ignore_exists --dn "$zone" --append a="$ip"
 		done
@@ -460,7 +460,7 @@ sysvol_fixup() {
 }
 
 get_s4connector_dc () {
-	univention-ldapsearch "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p'
+	univention-ldapsearch "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p'
 }
 
 wait_until_dc_was_replicated_to_connector_dc () {
@@ -504,7 +504,7 @@ _create_group_with_special_sid ()
 
 	shift 3
 	
-	group_dn="$(univention-ldapsearch -x "(&(objectClass=univentionGroup)(cn=$name))" | sed -ne 's|dn: ||p')"
+	group_dn="$(univention-ldapsearch -x "(&(objectClass=univentionGroup)(cn=$name))" | ldapsearch-wrapper | sed -ne 's|dn: ||p')"
 
 	if [ -z "$group_dn" ]; then
 
@@ -598,7 +598,7 @@ _update_pseudo_group ()
 
 	shift 1
 	
-	group_dn="$(univention-ldapsearch -x "(&(objectClass=univentionGroup)(cn=$name)(!(univentionGroupType=-2147483643)))" | sed -ne 's|dn: ||p')"
+	group_dn="$(univention-ldapsearch -x "(&(objectClass=univentionGroup)(cn=$name)(!(univentionGroupType=-2147483643)))" | ldapsearch-wrapper | sed -ne 's|dn: ||p')"
 
 	if [ -n "$group_dn" ]; then
 		extract_binddn_and_bindpwd_from_args "$@"
@@ -805,7 +805,7 @@ if [ "$samba4_role" = 'DC' ]; then
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 6 ]; then
 		## add server to Enterprise Domain Controllers group if it exists
-		if univention-ldapsearch -x sambaSID='S-1-5-9' cn | grep -q '^cn:'; then
+		if univention-ldapsearch -x sambaSID='S-1-5-9' cn | ldapsearch-wrapper | grep -q '^cn:'; then
 			# While Bug #28756 is not fixed, do not die
 			udm groups/group modify "$@" --ignore_exists \
 							--dn "cn=Enterprise Domain Controllers,cn=groups,$ldap_base" \
