@@ -281,6 +281,8 @@ class ConfigRegistry(dict):
 			changed[key] = (old_value, new_value)
 		return changed
 
+	def groupNameMapping(self, group):
+			return self.get("groups/default/" + group.lower().replace(" ", ""), group)
 
 class _ConfigRegistry(dict):
 	"""
