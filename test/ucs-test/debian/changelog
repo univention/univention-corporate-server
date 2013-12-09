@@ -1,3 +1,10 @@
+ucs-test (4.0.161-12) unstable; urgency=low
+
+  * Bug #33482: Added tests for renaming subcontainers, test for remaining
+    temporary ou's.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 09 Dec 2013 17:43:01 +0100
+
 ucs-test (4.0.161-11) unstable; urgency=low
 
   * 10_ldap/47replication_modrdn_local_different_entryuuid: Change the
