@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-config-registry
+fix: 9.0.5-2.443.201312091553
+note:
+version: [0]
+desc: |
+  The function "groupNameMapping()" has been added
+  to the ConfigRegistry class to easily convert group
+  name localizations.
+bug: [33650]
