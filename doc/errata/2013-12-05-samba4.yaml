@@ -1,7 +1,7 @@
 product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
-src: samba
+src: samba4
 fix: 4.0.3-1.381.201311261648
 note: This update fixes these vulnerabilities.
 version: [1]
