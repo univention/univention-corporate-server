@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-management-console
+fix: 5.0.57-1.725.201302221321
+note:
+version: [0]
+desc: |
+  This erratum automatically installs the new UMC module listing all installed
+  applications.
+bug: [30561]

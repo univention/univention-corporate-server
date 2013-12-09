@@ -1,0 +1,18 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-ad-connector
+fix: 7.0.11-3.329.201303061510
+note:
+version: [0]
+desc: |
+  This errata update fixes several issues:
+  * the daemon function could be called multiple times which results in
+    an unusable status log file
+  * the connector could exit if the UCR variable connector/ad/listener/dir
+    points to a directory where a partition is mounted
+  * the group membership synchronisation could lack in an inconsistence
+    result
+  * a too fast import could overwrite the changes just made to an object
+    due to concurrent processes.
+bug: [30150,18125,29874,30652]

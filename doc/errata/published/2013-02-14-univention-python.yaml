@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-python
+fix: 7.0.0-1.130.201302141308
+note:
+version: [0]
+desc: |
+  This errata fixes the handling of additional LDAP servers configured
+  through the UCR variable 'ldap/server/addition'.
+bug: [30436]

@@ -1,0 +1,13 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: qemu-kvm
+fix: 1.1.2+dfsg-2.27.201212180917
+note:
+version: [0]
+desc: |
+ This update fixes two data corruption issues with qcow2 files.
+ Qcow2 files backed by other files showed file system corruption
+ when old data is partly overwritten.
+ Too few memory was allocated for the reference count table.
+bug: [29355]

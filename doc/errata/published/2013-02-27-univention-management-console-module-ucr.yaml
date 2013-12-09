@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-management-console-module-ucr
+fix: 2.0.7-1.43.201302281701
+note:
+version: [0]
+desc: |
+  This erratum improves the usability of the Unvention config registry UMC
+  module on mobile devices (especially tablets).
+bug: [30167]

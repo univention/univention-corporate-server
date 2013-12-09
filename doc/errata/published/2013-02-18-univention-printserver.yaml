@@ -1,0 +1,14 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-printserver
+fix: 6.0.17-1.595.201302212041
+note:
+version: [0]
+desc: |
+  This errata update fixes several bugs in the package univention-printserver:
+  * description of the UCR variable cups/cups-pdf/anonymous has been fixed.
+  * a problem in the cups-printers listener module when creating printer
+    groups for pykota has been fixed
+  * change default cups/server to localhost
+bug: [17549,29742,29699]

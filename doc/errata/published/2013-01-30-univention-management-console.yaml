@@ -1,0 +1,12 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-management-console
+fix: 5.0.57-1.717.201301301749
+note:
+version: [0]
+desc: |
+  This errata update raises the log level of UMC (server and modules) to
+  2 (= PROCESS) as some important notifications are suppressed otherwise
+  (notably App Center installations and all tracebacks).
+bug: [30033]

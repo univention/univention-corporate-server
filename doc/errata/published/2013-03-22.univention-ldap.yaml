@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-ldap
+fix: 9.0.20-1.580.201303211526
+note:
+version: [0]
+desc: |
+  This erratum added support for a schema registration which will be
+  used by several App Center apps.
+bug: [30596]

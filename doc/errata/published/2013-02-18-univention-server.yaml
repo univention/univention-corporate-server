@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-server
+fix: 8.0.0-1.196.201302181240
+note:
+version: [0]
+desc: |
+  This errata update fixes a bug in the package univention-server:
+  * Samba 3 idmap secret was not updated properly after server password rotation
+bug: [30170]

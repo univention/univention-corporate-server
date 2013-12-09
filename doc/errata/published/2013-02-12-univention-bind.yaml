@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-bind
+fix: 7.0.10-1.185.201302222136
+note:
+version: [0]
+desc: |
+  This errata update fixes a bug in the package univention-bind:
+  * enable rndc control in named.conf.samba4 and restart bind9 if dns/backend is samba4 and rnds reload fails
+bug: [30321]

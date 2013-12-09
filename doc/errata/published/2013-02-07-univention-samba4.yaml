@@ -1,0 +1,19 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-samba4
+fix: 2.0.30-2.428.201302211857
+note:
+version: [0]
+desc: |
+  This errata update fixes several bugs in the package univention-samba4:
+  * quoting error while parsing credential options in joinscript
+  * Covered more winbind logfiles with logrotate
+  * New samba/max_log_size with new default 0
+  * Add description for samba/interfaces
+  * Duplicate UCRWARNING header removed in smb.conf template subfile
+  * Fixes for check_essential_samba4_dns_records
+  * New script purge_s4_computer.py to manually remove a computer account from Samba 4
+  * Improve resilience of s4search-decode against broken supplementalCredentials
+  * Make s4search-decode output AD timestamps in a human parseable format
+bug: [28814,29953,29542,28014,28426,28891,29460,28931,29992]

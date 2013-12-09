@@ -1,0 +1,17 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-management-console-module-appcenter
+fix: 2.0.91-1.46.201301111400
+note:
+version: [0]
+desc: |
+  This errata update fixes several issues:
+  * Fixed univention-add-app not using the correct app name.
+  * Removal of packages when uninstalling an application has to be confirmed.
+  * Conflicts between packages found before installing an application are
+    prompted to the user.
+  * Allowed apache restart during the installing of an application.
+  * Correctly displaying links in README and LICENSE of applications.
+  * Talking to the remote app center over HTTPS.
+bug: [29734,29273,29598,29809,29875,29446]

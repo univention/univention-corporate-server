@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-system-setup
+fix: 6.0.56-1.426.201212181215
+note:
+version: [0]
+desc: |
+  This errata update fixes issues with language settings in the UMC module
+  Basic settings.
+bug: [29770]

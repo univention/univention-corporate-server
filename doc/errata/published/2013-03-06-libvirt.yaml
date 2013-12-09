@@ -1,0 +1,12 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: libvirt
+fix: 0.9.12-5.123.201303061845
+note:
+version: [0]
+desc: |
+  This errata update re-allows certificates still using the MD5
+  algorithm, which is cryptographically broken and should be
+  considered insecure.
+bug: [30702]

@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-virtual-machine-manager-node
+fix: 2.0.2-2.61.201301252219
+note:
+version: [0]
+desc: |
+  A bug in the runit script of 'univention-libvirt' has been fixed,
+  which prevented 'libvirtd' from being automatically restarted.
+bug: [29667]

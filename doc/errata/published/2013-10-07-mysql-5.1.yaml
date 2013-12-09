@@ -1,0 +1,44 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-errata3.1-1
+src: mysql-5.1
+fix: 5.1.72-1.33.201310071441
+desc: |
+ Multiple security issues have been fixed in MySQL 5.1.72.
+ Since Oracle does not disclose sufficient information to
+ provide backported patches, we needed to update MySQL
+ to the new release.
+note:
+cve:
+ - CVE-2013-1861
+ - CVE-2012-0553
+ - CVE-2012-5614
+ - CVE-2012-5611
+ - CVE-2012-0572
+ - CVE-2012-0574
+ - CVE-2012-1702
+ - CVE-2012-1705
+ - CVE-2012-5060
+ - CVE-2013-0375
+ - CVE-2013-0383
+ - CVE-2013-0384
+ - CVE-2013-0385
+ - CVE-2013-0389
+ - CVE-2013-1492
+ - CVE-2013-1506
+ - CVE-2013-1521
+ - CVE-2013-1531
+ - CVE-2013-1532
+ - CVE-2013-1544
+ - CVE-2013-1548
+ - CVE-2013-1552
+ - CVE-2013-1555
+ - CVE-2013-2375
+ - CVE-2013-2378
+ - CVE-2013-2389
+ - CVE-2013-2391
+ - CVE-2013-2392
+ - CVE-2013-3802
+ - CVE-2013-3804
+ - CVE-2013-3808

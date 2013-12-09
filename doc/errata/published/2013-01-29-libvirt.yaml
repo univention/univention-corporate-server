@@ -1,0 +1,16 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: libvirt
+fix: 0.9.12-5.122.201302221846
+note:
+version: [0]
+desc: |
+  This errata update fixes several issues:
+  * A memory corruption issue has been fixed when snapshots are
+    created or deleted.
+  * A crash in message dispatching on error paths was fixed.
+  * Snapshots of VMs with floppy images are no longer allowed.
+  * In 32 bit environments libvirtd failed to start the default
+    storage pool.
+bug: [30052,30213,30472,29380]

@@ -1,8 +1,0 @@
-src: univention-virtual-machine-manager-node
-fix: 2.0.2-2.61.201301252219
-note:
-desc: |
-  A bug in the runit script of 'univention-libvirt' has been fixed,
-  which prevented 'libvirtd' from being automatically restarted.
-ref: Bug 29667
-version: 0

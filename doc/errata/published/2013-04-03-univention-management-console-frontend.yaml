@@ -1,0 +1,12 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-management-console-frontend
+fix: 2.0.244-3.619.201304041347
+note:
+version: [1]
+desc: |
+  This update fixes several issues:
+  * Fixed regression in form validation with certain FormWidgets.
+  * Fixed width of ConfirmDialog in Firefox.
+bug: [30965,30102]

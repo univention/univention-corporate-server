@@ -1,0 +1,10 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-base-files
+fix: 2.0.12-1.115.201212191331
+note:
+version: [0]
+desc: |
+  This errata update fixes the ntpsigndsocket path in ntp.conf.
+bug: [29688]

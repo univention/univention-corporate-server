@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-printquota
+fix: 5.0.1-2.53.201212141046
+note:
+version: [0]
+desc: |
+  This errata update corrects a problem when printing
+  on printers with printer quotas.
+bug: [29715]

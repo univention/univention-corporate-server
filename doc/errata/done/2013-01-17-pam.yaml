@@ -1,9 +1,0 @@
-src: pam
-fix: 1.1.1-6.1.41.201301171014
-note: 
-desc: |
-  The option 'maxent' was added to 'pam_access' to configure the
-  maximum buffer size needed to check group membership in large
-  environments.
-ref: Bug 29393
-version: 0

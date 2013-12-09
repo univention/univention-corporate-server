@@ -1,0 +1,23 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-management-console-module-appcenter
+fix: 2.0.91-1.61.201302061804
+note:
+version: [0]
+desc: |
+  This errata update fixes several issues:
+  * Corrected the statement before installing an application: The order in
+    which LDAP-schema extensions are installed is important. They have to be
+    installed first on the DC master and then on the DC backups.
+    If an application requires an extension of the LDAP schema, a reminder was
+    shown just before installation that the domain has to be prepared. This
+    reminder is removed when installing on an DC master.
+  * Upgrades of an application are now correctly identified as "update".
+  * Allows requesting a new license while trying to upgrade an already
+    installed application.
+  * Fixed an error when searching for packages apt knows about but which do not
+    have a candidate in any repository.
+  * Added hardware requirements for an app: Check if enough memory is currently
+    available.
+bug: [30037,29638,30169,29899,29113]

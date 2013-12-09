@@ -1,0 +1,12 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: python-notifier
+fix: 0.9.5-1.15.201301151627
+note:
+version: [0]
+desc: |
+ This erratum corrects an erroneous handling of the python-notifier with
+ command output. In certain cases this could lead to the loss of some output
+ data.
+bug: [29549]

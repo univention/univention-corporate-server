@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-bootsplash
+fix: 4.0.7-1.80.201301141334
+note:
+version: [0]
+desc: |
+ * The bootsplash background will be redrawn when a message is printed.
+   This fix avoids black lines during the boot.
+bug: [29768]

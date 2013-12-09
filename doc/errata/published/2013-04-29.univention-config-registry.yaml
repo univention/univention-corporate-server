@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-config-registry
+fix: 8.0.7-2.424.201304261506
+note:
+version: [1]
+desc: |
+  The process handling has been improved to prevent issues with process
+  signals during system calls
+bug: [31140]

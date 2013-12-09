@@ -1,0 +1,12 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-samba
+fix: 7.0.17-5.423.201304151619
+note:
+version: [1]
+desc: |
+  This errata update fixes a bug in the package univention-samba:
+  * the idmap secret must not be changed on DC Master and DC Backup
+    during server_password_change
+bug: [31052]

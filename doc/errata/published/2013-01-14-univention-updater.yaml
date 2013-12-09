@@ -1,0 +1,13 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-updater
+fix: 8.0.58-1.1141.201301141257
+note:
+version: [0]
+desc: |
+  * A deprecated call was removed from a cron file
+  * The repository path used by univention-repository-create
+    is now correctly determined from cdrom/iso information
+  * Add option to not prevent restart of the apache web server.
+bug: [29367,29626,29808]

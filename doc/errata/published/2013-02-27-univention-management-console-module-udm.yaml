@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-management-console-module-udm
+fix: 3.0.61-1.304.201303011208
+note:
+version: [0]
+desc: |
+  This erratum improves the usability of the domain management UMC modules on
+  mobile devices (especially tablets).
+bug: [30167]

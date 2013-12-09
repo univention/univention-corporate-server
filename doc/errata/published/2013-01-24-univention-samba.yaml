@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-samba
+fix: 7.0.12-3.404.201301242107
+note:
+version: [0]
+desc: |
+  This errata update adds a UCR variable to the package univention-samba:
+  * Netlogon path adjustable via samba/share/netlogon/path
+bug: [29801]

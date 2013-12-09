@@ -1,0 +1,13 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: libxml2
+fix: 2.7.8.dfsg-2.41.201301030931
+note: This update fixes these vulnerabilities.
+version: [0]
+desc: |
+ Heap-based buffer underflow in the xmlParseAttValueComplex function in parser.c in libxml2
+ allows remote attackers to cause a denial of service or possibly execute arbitrary code
+ via crafted entities in an XML document.
+cve:
+ - CVE-2012-5134

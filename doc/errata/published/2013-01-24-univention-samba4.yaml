@@ -1,0 +1,30 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-samba4
+fix: 2.0.30-2.416.201301281429
+note:
+version: [0]
+desc: |
+  This errata update fixes several bugs in the package univention-samba4:
+  * During reinstallations of previously joined Samba 4 DCs
+    the 98univention-samba4-dns join script could abort due
+    to an objectSid conflict. If a Samba 4 DC needs to be
+    reinstalled this errata needs to be installed first and
+    the sam.ldb in the directory /var/lib/samba/private on that DC
+    must not contain any data yet. This condition may be fulfilled
+    by moving the directory out of the way on that DC before initiating
+    the domain join.
+  * The join script now also removes leftover Samba 4 DNS
+    alias records pointing to the FQDN of the joining DC.
+  * During the join of a Samba 4 DC with samba4/role=RODC
+    the 98univention-samba4-dns join script failed.
+  * The samba3 to samba4 migration could fail parsing
+    long LDAP DNs.
+  * The ntp server did not have access to /var/lib/samba/ntp_signd
+  * The Samba 4 nbt_server was started even though the
+    UCR variable samba4/service/nmb was set to nmbd.
+  * Misnamed UCR variable samba4/service/nbtd.
+  * Missing default for samba/debug/level in smb.conf template
+  * Netlogon path adjustable via samba/share/netlogon/path
+bug: [29083,29504,29537,29335,29688,29865,24868,29961,29801]

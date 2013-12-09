@@ -1,0 +1,17 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: samba4
+fix: 4.0.3-1.375.201304101253
+note:
+version: [1]
+desc: |
+  This errata update fixes two bugs in the package samba4:
+  * Fix large reads/writes from some Linux clients
+  * Two errata patches were missing in ucs3.1-1:
+    * samba-tool classicupgrade doesn't create
+      userPrincipalNames (3.1-errata7)
+    * denial of access to file shares with
+      option "force group" or "valid users = @group".
+      (3.1-errata26)
+bug: [30942,31011]

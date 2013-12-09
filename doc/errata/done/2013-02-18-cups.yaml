@@ -1,7 +1,0 @@
-src: cups
-fix: 1.4.4-7.46.201302181740
-note: 
-desc: |
-  Output redirection in the Cups init script has been fixed.
-ref: Bug 17663
-version: 0

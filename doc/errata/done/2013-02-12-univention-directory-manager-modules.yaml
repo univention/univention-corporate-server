@@ -1,8 +1,0 @@
-src: univention-directory-manager-modules
-fix: 8.0.99-1.969.201302120941
-note:
-version: 0
-desc: |
-  This errata update fixes a failure in assigning DHCP objects to computers when
-  the MAC address has a certain format.
-ref: Bug 30140

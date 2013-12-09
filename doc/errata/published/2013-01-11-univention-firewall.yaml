@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-firewall
+fix: 4.0.6-7.72.201301150943
+note:
+version: [0]
+desc: |
+  Firewall scripts in /etc/security/packetfilter.d/ may not contain a "." in
+  their name, however, they may end on ".sh".
+bug: [29706]

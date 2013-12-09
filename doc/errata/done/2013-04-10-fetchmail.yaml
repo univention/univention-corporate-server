@@ -1,7 +1,0 @@
-src: fetchmail
-fix: 6.3.18-2.33.201304101148
-note:
-version: 0,1
-desc: |
-  * Adjusted fetchmail prerm script to stop fetchmail without errors.
-ref: Bug 31007

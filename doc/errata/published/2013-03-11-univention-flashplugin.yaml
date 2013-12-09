@@ -1,0 +1,34 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-flashplugin
+fix: 7.0.1-1.134.201303111223
+note: This update downloads the new release 11.2.202.273, which fixes these vulnerabilities.
+version: [0]
+desc: |
+  Multiple security issues have been discovered in the Adobe Flash
+  plugin, which can lead to the execution of arbitrary code.
+cve:
+ - CVE-2012-5676
+ - CVE-2012-5677
+ - CVE-2012-5678
+ - CVE-2013-0630
+ - CVE-2013-0633
+ - CVE-2013-0634
+ - CVE-2013-1372
+ - CVE-2013-0645
+ - CVE-2013-1373
+ - CVE-2013-1369
+ - CVE-2013-1370
+ - CVE-2013-1366
+ - CVE-2013-0649
+ - CVE-2013-1365
+ - CVE-2013-1374
+ - CVE-2013-1368
+ - CVE-2013-0642
+ - CVE-2013-0644
+ - CVE-2013-0647
+ - CVE-2013-1367
+ - CVE-2013-0639
+ - CVE-2013-0638
+ - CVE-2013-0637

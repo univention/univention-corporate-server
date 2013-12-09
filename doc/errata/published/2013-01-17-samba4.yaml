@@ -1,0 +1,14 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: samba4
+fix: 4.0.0~rc6-1.360.201301241757
+note:
+version: [0]
+desc: |
+  This errata update fixes three bugs in the package samba4:
+  * denial of access to file shares with
+    option "force group" or "valid users = @group".
+  * truncation of large read SMB requests triggering a bug
+    in recent MacOS X clients causing target file corruption.
+bug: [29553,29983,30007]

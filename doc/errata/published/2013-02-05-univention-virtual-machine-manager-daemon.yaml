@@ -1,0 +1,18 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-virtual-machine-manager-daemon
+fix: 2.0.29-1.426.201302181558
+note:
+version: [0]
+desc: |
+  This errata update fixes several issues:
+  * UVMM failed to start when its internal cache files were truncated.
+    This has been fixed.
+  * Snapshots of VMs with writeable raw images are no longer allowed.
+  * Floppies are now by default attached read-only.
+  * Empty drives are allowed for snapshots.
+  * Removing empty drives no longer asks for deleting the volume.
+  * Snapshot operations are still accessible even when
+    non-snapshotable images are attached.
+bug: [30174,30472]

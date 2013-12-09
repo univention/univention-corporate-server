@@ -1,0 +1,17 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-s4-connector
+fix: 7.0.22-9.365.201301241501
+note:
+version: [0]
+desc: |
+  This update fixes the following S4 connector issues:
+  * Invalid temporary pickle files could result in a termination of the
+    process.
+  * The S4 connector got stuck for a few minutes if the process used a
+    network interface, which was shut down. The running connector
+    will now be restarted if a network device is shutdown.
+  * The S4 connector calls the daemon function too late thus can result in
+    a crash of the connector.
+bug: [29625,30119,30149]

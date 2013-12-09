@@ -1,0 +1,16 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: bind9
+fix: 1:9.8.0.P4-1.101.201305231528
+note: This update fixes these vulnerabilities
+version: [1]
+desc: |
+  Multiple denial of service vulnerabilities have been fixed in
+  the Bind nameserver.
+cve:
+ - CVE-2012-3817
+ - CVE-2012-4244
+ - CVE-2012-5166
+ - CVE-2012-5688
+ - CVE-2013-2266

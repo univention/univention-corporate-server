@@ -1,0 +1,10 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: heimdal
+fix: 1.4.0+git201110101743~lorikeet-3.210.201301081204
+note:
+version: [0]
+desc: |
+  This update activates log messages from an abort.
+bug: [29342]

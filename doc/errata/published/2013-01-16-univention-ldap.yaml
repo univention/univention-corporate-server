@@ -1,0 +1,14 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-ldap
+fix: 9.0.20-1.574.201301161631
+note:
+version: [0]
+desc: |
+  This errata update fixes two bugs in univention-backup2master:
+  * Set correct forward_zone and reverse_zone nameserver if there is more
+    than one backup controller
+  * Fix regression in univention-backup2master which prevents the transfer
+    of Samba 4 FSMO roles.
+bug: [29242,29508]

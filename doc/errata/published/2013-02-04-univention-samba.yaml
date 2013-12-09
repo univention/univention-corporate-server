@@ -1,0 +1,16 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-samba
+fix: 7.0.12-3.414.201302111939
+note:
+version: [0]
+desc: |
+  This errata update fixes several bugs in the package univention-samba:
+  * some UCR variables not yet set during initial join
+  * quoting error while parsing credential options in joinscript
+  * Covered more winbind logfiles with logrotate
+  * New samba/max_log_size with new default 0
+  * Add description for samba/interfaces
+  * Duplicate UCRWARNING header removed in smb.conf template subfile
+bug: [30271,28814,29953,29542,28014,28426]

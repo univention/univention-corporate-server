@@ -1,0 +1,18 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: samba4
+fix: 4.0.0~rc6-1.368.201303131315
+note:
+version: [0]
+desc: |
+  This errata update fixes a security bug in the package samba4:
+  * Samba 4 used a default create mask (aka create mode) of 777 for new files
+    in shares other than the special sysvol and netlogon shares.
+    Since Univention Corporate Server does not rely on the Samba 4 default
+    create mask, it is not affected directly:
+    Shares created with the Univention Management Console or with the
+    Univention Directory Manager (CLI) define a more restricted create mask
+    (744) by default.
+cve:
+ - CVE-2013-1863

@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: univention-management-console-frontend
+fix: 2.0.180-1.573.201302281659
+note:
+version: [0]
+desc: |
+  This erratum improves the usability of UMC on mobile devices (especially
+  tablets).
+bug: [30167]

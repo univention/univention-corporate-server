@@ -1,0 +1,12 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-0
+src: samba4
+fix: 4.0.0~rc6-1.358.201301161143
+note:
+version: [0]
+desc: |
+  This errata update fixes a bug in the package samba4
+  which caused a regression in the performance of the
+  Samba 4 DNS server backend.
+bug: [29985]
