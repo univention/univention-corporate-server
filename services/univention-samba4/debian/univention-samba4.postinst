@@ -68,6 +68,13 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0; the
 fi
 
 
+# do not start wins in an ipv6 (only) setup Bug #33250
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.39-8 ; then
+	if [ -z "$(get_default_ipv4_address)" ]; then
+		echo "WARNING: Wins support deactivated (this is an ipv6 only environment)."
+		univention-config-registry set windows/wins-support="no"
+	fi
+fi
 
 ## samba3 defaults copied from univention-samba
 univention-config-registry set \

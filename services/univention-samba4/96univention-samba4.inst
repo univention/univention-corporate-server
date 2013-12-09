@@ -52,7 +52,7 @@ fi
 
 s3setup="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret \
 		   '(&(univentionService=Samba 3)(objectClass=univentionDomainController))' -LLL dn \
-		   | sed -ne 's|dn: ||p')"
+		   | ldapsearch-wrapper | sed -ne 's|dn: ||p')"
 if [ -n "$s3setup" ] && is_domain_controller; then
 
 	if is_ucr_true samba4/ignore/mixsetup; then
@@ -298,7 +298,7 @@ samba_domain_join() {
 			# try again with --server
 			cn=($(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret \
 						"(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn \
-										| sed -n 's/^cn: \(.*\)/\1/p' ))
+										| ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p' ))
 			
 			for name in "${cn[@]}"; do
 				samba-tool domain join "$domainname" "$samba4_role" --server "$name.$domainname" \
@@ -424,7 +424,7 @@ set_samba4_sysvol_sync_host() {
 	if [ -z "$samba4_sysvol_sync_host" ]; then
 		s4connectorservicedcs=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret \
 		                        "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn \
-								| sed -n 's/^cn: \(.*\)/\1/p')      ## currently there is no u-d-m module computers/dc
+								| ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')      ## currently there is no u-d-m module computers/dc
 		if [ -n "$s4connectorservicedcs" ]; then
 			univention-config-registry set samba4/sysvol/sync/host="$s4connectorservicedcs"
 		fi
@@ -684,7 +684,7 @@ if [ "$samba4_role" = 'DC' ]; then
 	## check if we there already is a **domaincontroller** providing the service "Samba 4"
 	samba4servicedcs=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret \
 	                   "(&(univentionService=${NAME})(objectClass=univentionDomainController))" cn \
-					   | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
+					   | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
 
 	/etc/init.d/samba-ad-dc stop
 

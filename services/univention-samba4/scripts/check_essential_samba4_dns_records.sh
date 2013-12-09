@@ -53,13 +53,13 @@ kpasswd udp
 ## retrive DC specific GUID
 NTDS_objectGUIDs=()
 sites=()
-samba4servicedcs=$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')      ## currently there is no u-d-m module computers/dc
+samba4servicedcs=$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')      ## currently there is no u-d-m module computers/dc
 
 for s4dc in $samba4servicedcs; do
 	server_object_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${s4dc}\$" \
 							serverReferenceBL | ldapsearch-wrapper | sed -n 's/^serverReferenceBL: \(.*\)/\1/p')
 	NTDS_objectGUID=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$server_object_dn" \
-							"CN=NTDS Settings" objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')
+							"CN=NTDS Settings" objectGUID | ldapsearch-wrapper | sed -n 's/^objectGUID: \(.*\)/\1/p')
 	NTDS_objectGUIDs+=($NTDS_objectGUID)
 
 	## Determine sitename
