@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-pam
+fix: 7.0.4-2.223.201312091621
+note:
+version: [0]
+desc: |
+  univention-pam now checks mapping of group names
+  (localization) in the config registry templates.
+bug: [33650]
