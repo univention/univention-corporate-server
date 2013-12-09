@@ -9,7 +9,7 @@ Build-Depends: debhelper,
 Package: univention-pam
 Architecture: all
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config-registry (>= 9.0.5-2.443.201312091553),
  libpam-ldap (>= 161),
  libnss-ldap (>= 204),
  libpam-heimdal,

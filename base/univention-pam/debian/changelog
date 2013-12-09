@@ -1,3 +1,10 @@
+univention-pam (7.0.4-2) unstable; urgency=low
+
+  * consider group name localization in 
+    templates (Bug #33650)  
+
+ -- Felix Botner <botner@univention.de>  Mon, 09 Dec 2013 16:17:42 +0100
+
 univention-pam (7.0.4-1) unstable; urgency=low
 
   * fixed common spelling mistakes (Bug #32662)
