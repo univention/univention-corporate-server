@@ -1,3 +1,10 @@
+univention-pam (7.0.4-3) unstable; urgency=low
+
+  * replaces spaces with tabs in conffiles/etc/security/limits.conf
+    (Bug #33650)
+
+ -- Felix Botner <botner@univention.de>  Mon, 09 Dec 2013 17:04:16 +0100
+
 univention-pam (7.0.4-2) unstable; urgency=low
 
   * consider group name localization in 
