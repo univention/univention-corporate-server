@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-pam
-fix: 7.0.4-2.223.201312091621
+fix: 7.0.4-3.224.201312091705
 note:
 version: [0]
 desc: |
