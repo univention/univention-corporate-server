@@ -23,7 +23,7 @@ if __name__ == '__main__':
 		def test_organizational_unit(parent, add_user):
 			if parent is None:
 				parent = ucr.get('ldap/base')
-			user_name = uts.random_string()
+			user_name = 'X' + uts.random_string() # test preserving name (case sensitivity)
 
 			ou_name = uts.random_string()
 			ou_name_new = ou_name.upper()
@@ -47,8 +47,12 @@ if __name__ == '__main__':
 
 			new_ou = 'ou=%s,%s' % (ou_name_new, parent)
 			new_user = 'uid=%s,%s' % (user_name, new_ou)
+
 			utils.verify_ldap_object(new_ou, should_exist = True)
 			if add_user:
+				for dn, entry in lo.search(filter='uid=%s' % user_name):
+					if entry.get('uid')[0] != user_name:
+						utils.fail('CASE SENSITIVITY: uid = %s; expected: %s' % (entry.get('uid')[0], user_name))
 				utils.verify_ldap_object(new_user, should_exist = True)
 
 			for dn, entry in lo.search(filter='ou=%s' % ou_name_new):
