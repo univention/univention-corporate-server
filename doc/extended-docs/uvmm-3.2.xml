@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+
+  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+
+  %entities;
+]>
+<book lang="en" id="uvmm-3.2">
+    <bookinfo>
+      <title>Univention Corporate Server</title>
+      <subtitle>Extended virtualization documentation</subtitle>
+
+	  <revhistory>
+		<revision>
+		  <revnumber>3.2-0</revnumber>
+		  <date>10 Dec 2013</date>
+		</revision>
+	  </revhistory>
+    </bookinfo>
+
+    <chapter id="uvmmext:iscsi">
+	  <title>Operating storage pools using iSCSI</title>
+	  <para>
+		iSCSI is a standard for connecting SCSI storage devices via a TCP-based network
+		connection. iSCSI makes it possible to use a wide range of professional storage solutions
+		for the storage of virtual machines. This documentation describes the connection of an iSCSI
+		storage device (also known as a <emphasis>target</emphasis>) as a storage pool for the
+		&ucsUVMM;.
+	  </para>
+
+	  <section id="uvmmext:iscsi:precon">
+		<title>Requirements</title>
+		<para>
+		  <itemizedlist>
+			<listitem><simpara>
+			  The <emphasis>open-iscsi</emphasis> package must be installed on the virtualization
+			  servers. 
+			</simpara></listitem>
+
+			<listitem><simpara>
+			  The iSCSI storage device must be configured in such a way that the virtualization
+			  servers can access it: The servers use the name stored in the
+			  <filename>/etc/iscsi/initiatorname.iscsi</filename> file as the initiator name. The
+			  name may still need to be generated automatically, which can be done by running
+			  <command>/etc/init.d/open-iscsi restart</command> once.
+			</simpara></listitem>
+
+			<listitem><simpara>
+			  The libvirt interface used by UVMM does not currently support any authentication. If
+			  CHAP is used, the <filename>/etc/iscsi/iscsid.conf</filename> file must be
+			  adjusted by hand. 
+			</simpara></listitem>
+		  </itemizedlist>
+		</para>
+	  </section>
+
+	  <section id="uvmmext:iscsi:integration">
+		<title>Integration of iSCSI storage pools</title>
+		<para>
+		  UVMM does not yet support the creation of storage pools via the UMC. The creation of
+		  storage pools is described below.
+		</para>
+
+		<para>
+		  To make an additional storage pool available on a virtualization server, it is necessary
+		  to create an XML file with a description. The creation of storage pools is documented in
+		  the virtualization chapter of the UCS manual. Below, a storage pool is defined which
+		  accesses an iSCSI storage device.
+		</para>
+
+		<para>
+		  <itemizedlist>
+			<listitem><simpara>
+			  The <emphasis>type</emphasis> attribute must be set to the <emphasis>iscsi</emphasis>
+			  value in the <emphasis>pool</emphasis> element.
+			</simpara></listitem>
+
+			<listitem><simpara>
+			  A <emphasis>source</emphasis> element is used to specify the source servers (iSCSI
+			  target).
+			</simpara></listitem>
+
+			<listitem><simpara>
+			  The <emphasis>target</emphasis> element is used to define the path to the device
+			  files. The <filename>/dev/disk/by-path</filename> should be used there for stable
+			  names. 
+			</simpara></listitem>
+		  </itemizedlist>
+		</para>
+
+		<para>
+		  In the following example, a storage pool is defined, which mounts the
+		  <emphasis>iqn.2010-08.local.ucs:sdb</emphasis> iSCSI target from the
+		  <emphasis>xen6.ucs.local</emphasis> server: 
+
+		  <programlisting language="sh">
+&lt;pool type='iscsi'&gt;
+  &lt;name&gt;iscsi&lt;/name&gt;
+  &lt;source&gt;
+    &lt;host name='xen6.ucs.local' port='3260'/&gt;
+    &lt;device path='iqn.2010-08.local.ucs:sdb'/&gt;
+  &lt;/source&gt;
+  &lt;target&gt;
+    &lt;path&gt;/dev/disk/by-path&lt;/path&gt;
+  &lt;/target&gt;
+&lt;/pool&gt;
+		  </programlisting>
+		</para>
+
+		<para>
+		  This description must firstly be saved in a file (for example, in the
+		  <filename>iscsi-pool.xml</filename> file). For it to be possible to use this storage pool,
+		  the following commands must be run:
+
+		  <programlisting language="sh">
+virsh pool-define iscsi-pool.xml
+virsh pool-start iscsi
+virsh pool-autostart iscsi
+		  </programlisting>
+
+		  The UVMM service will detect the new storage pool automatically after a certain period of
+		  time. Alternatively, the service can also be restarted once so that this new storage pool
+		  information is detected immediately:
+
+		  <programlisting language="sh">
+/etc/init.d/univention-virtual-machine-manager-daemon restart
+		  </programlisting>
+		</para>
+	  </section>
+
+	  <section id="uvmmext:iscsi:use">
+		<title>Use of iSCSI storage pools</title>
+		<para>
+		  Hard disks in UVMM can then be used from the storage pool. When doing so, ensure that no
+		  new images are saved in an iSCSI storage pool and only existing ones are selected. The
+		  individual LUNs are offered as possible images.
+		</para>
+
+		<para>
+		  If new iSCSI LUNs are set up, the iSCSI storage pool must still be reimported manually at
+		  present. This can be done using the following command:
+
+		  <programlisting language="sh">
+virsh pool-refresh "$pool_name"
+		  </programlisting>
+
+		  For the example above:
+
+		  <programlisting language="sh">
+virsh pool-refresh iscsi
+		  </programlisting>
+		</para>
+	  </section>
+	</chapter>
+    <?dbhtml-include href="../stylesheets/piwiki.html"?>
+</book>
