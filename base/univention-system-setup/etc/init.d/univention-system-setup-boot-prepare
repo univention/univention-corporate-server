@@ -40,7 +40,7 @@ case "$1" in
 		
 		# recreate openssh-hostkeys if they are missing
 		host_key_missing=0
-		for line in "$(grep HostKey /etc/ssh/sshd_config | awk '{print $2}')"
+		for line in $(grep HostKey /etc/ssh/sshd_config | awk '{print $2}')
 		do
 			[ ! -f "$line" ] && host_key_missing=1 && break
 		done    

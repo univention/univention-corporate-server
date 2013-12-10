@@ -1,3 +1,9 @@
+univention-system-setup (7.0.66-5) unstable; urgency=low
+
+  * Use correct quoting in system-setup-boot initscript (Bug #30034) 
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 10 Dec 2013 15:43:30 +0100
+
 univention-system-setup (7.0.66-4) unstable; urgency=low
 
   * Bug #33437: The warning about an FQDN with only one dot was shown twice.
