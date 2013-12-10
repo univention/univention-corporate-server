@@ -1,11 +1,11 @@
-univention-apache (6.0.16-4) unstable; urgency=low
+univention-apache (6.0.16-5) unstable; urgency=low
 
   * This update corrects the generation of ucs-overview links. The links
   are now generated in the domain-joinscript. This ensures that
   host- and domain-identifiers match the current settings in case of
   a domain-rejoin and after completing the appliance setup. (Bug #33447) 
 
- -- Erik Damrose <damrose@univention.de>  Mon, 25 Nov 2013 16:48:14 +0100
+ -- Erik Damrose <damrose@univention.de>  Tue, 10 Dec 2013 12:43:02 +0100
 
 univention-apache (6.0.16-3) unstable; urgency=low
 
