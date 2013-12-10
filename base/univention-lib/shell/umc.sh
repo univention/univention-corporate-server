@@ -69,7 +69,7 @@ umc_init () {
 
 	# link default admin policy to the group "Domain Admins"
 	group_admins="${groups_default_domainadmins:-Domain Admins}"
-	udm groups/group modify $BIND_ARGS --ignore_exists --dn "cn=Domain Admins,cn=groups,$ldap_base" \
+	udm groups/group modify $BIND_ARGS --ignore_exists --dn "cn=$group_admins,cn=groups,$ldap_base" \
 		--policy-reference="cn=default-umc-all,cn=UMC,cn=policies,$ldap_base" || exit $?
 
 	# default user policy
