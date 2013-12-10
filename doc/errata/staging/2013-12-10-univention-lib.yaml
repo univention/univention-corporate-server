@@ -2,10 +2,13 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-lib
-fix: 3.0.26-4.199.201312101053
+fix: 3.0.26-5.200.201312101601
 note:
 version: [0]
 desc: |
-  Group name localization has been added to
-  univention-lib.
-bug: [33649]
+  This errata update fixes several issues:
+  * Group name localization has been added to
+    univention-lib.
+  * A new pyhton lib "s4" has been added for
+    samba4 related stuff.
+bug: [33649,33710]
