@@ -1,3 +1,12 @@
+univention-s4-connector (8.0.33-2) unstable; urgency=low
+
+  * univention-ad-takeover:
+    Rename well known groups in UDM to match the name in AD (Bug #33644)
+  * The well_known_sids/rids dictionaries have been moved to univention-lib
+  * Exception for group "Windows Hosts" is not necessary
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 Dec 2013 16:04:15 +0100
+
 univention-s4-connector (8.0.33-1) unstable; urgency=low
 
   * univention-ad-takeover:
