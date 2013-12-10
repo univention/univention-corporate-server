@@ -6,9 +6,7 @@ fix: 10.0.17-8.650.201312051542
 note:
 version: [0]
 desc: |
-  The LDAP ACL templates now support the localization of
+  The LDAP ACL templates now support the configuration of
   default group names via the new UCR variable family
-  "groups/default/.*".  This should not be set without prior
-  tests as it may cause access problems for members of this
-  group other than the user "Administrator".
+  "groups/default/.*".
 bug: [33645]
