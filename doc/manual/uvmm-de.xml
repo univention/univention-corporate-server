@@ -208,10 +208,6 @@
 		</para>
 
 		<para>
-			Image-Dateien werden in sogenannten Speicherbereichen abgelegt. Diese können entweder
-			lokal auf dem Virtualisierungsserver oder auf einer Freigabe abgelegt werden.
-		</para>
-		<para>
 			Wenn eine Live-Migration virtueller Maschinen zwischen verschiedenen Virtualisierungsservern erfolgen soll, muss der Speicherbereich auf einem System abgelegt werden, auf das alle Virtualisierungsserver zugreifen können (z.B. eine NFS-Freigabe oder ein iSCSI-Target).
 			Dies wird in <xref linkend="uvmm::defaultpool"/> beschrieben.
 		</para>
@@ -228,6 +224,12 @@
 
 	<section id="uvmm::storagepools">
 	  <title>Speicherbereiche</title>
+
+	  <para>
+		Image-Dateien werden in sogenannten Speicherbereichen abgelegt. Diese können entweder
+		lokal auf dem Virtualisierungsserver oder auf einer Freigabe abgelegt werden. Die Anbindung
+		eines Speicherbereichs über iSCSI ist in <xref linkend="ext-doc-uvmm"/> beschrieben.
+	  </para>
 	  
 	  <section id="uvmm::defaultpool">
 		<title>Zugriff auf den Standard-Speicherbereich über eine Freigabe</title>

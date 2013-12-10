@@ -209,10 +209,6 @@
 		</para>
 
 		<para>
-			These image files are stored in so-called storage pools. They can either be stored
-			locally on the virtualization server or on a file share.
-		</para>
-		<para>
 			If a live migration of virtual machines between different virtualization servers is planned, the storage pool must be stored on a system which can be accessed by all virtualization servers (e.g., an NFS share or an iSCSI target).
 			This is described in <biblioref linkend="uvmm-technical-details"/>.
 		</para>
@@ -224,6 +220,12 @@
 
 	<section id="uvmm::storagepools">
 	  <title>Storage pools</title>
+
+	  <para>
+		These image files are stored in so-called storage pools. They can either be stored locally
+		on the virtualization server or on a file share. The connection of a storage pool over iSCSI
+		is documented in <xref linkend="ext-doc-uvmm"/>.
+	  </para>
 
 	  <section id="uvmm::defaultpool">
 		<title>Accessing the default storage pool through a file share</title>
