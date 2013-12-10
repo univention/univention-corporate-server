@@ -1,3 +1,9 @@
+univention-nagios (7.0.5-3) unstable; urgency=low
+
+  * added group name localization (Bug #33646) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 10 Dec 2013 10:55:57 +0100
+
 univention-nagios (7.0.5-2) unstable; urgency=low
 
   * remove unjoin script in postinst (Bug #32453)
