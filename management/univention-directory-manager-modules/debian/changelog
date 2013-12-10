@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.75-9) unstable; urgency=low
+
+  * Preserve the case for subelements during the subtree move
+    (Bug #33482)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Dec 2013 12:28:54 +0100
+
 univention-directory-manager-modules (9.0.75-8) unstable; urgency=low
 
   * More updates on subtree move. Ensure the temporary container will be
