@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.75-10) unstable; urgency=low
+
+  * Fixed german translation for unable to move (Bug #33482)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Dec 2013 12:40:04 +0100
+
 univention-directory-manager-modules (9.0.75-9) unstable; urgency=low
 
   * Preserve the case for subelements during the subtree move
