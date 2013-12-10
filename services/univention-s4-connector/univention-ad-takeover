@@ -645,7 +645,7 @@ class GroupRenameHandler:
 		self.module_settings_default = udm_modules.get('settings/default')
 		udm_modules.init(self.lo, self.position, self.module_settings_default)
 
-	def udm_rename_ucs_group(groupdn, new_name):
+	def udm_rename_ucs_group(self, groupdn, new_name):
 		try:
 			group = self.module_groups_group.object(None, self.lo, self.position, groupdn)
 			group.open()
@@ -667,7 +667,7 @@ class GroupRenameHandler:
 
 		return new_groupdn
 
-	def udm_rename_ucs_defaultGroup(groupdn, new_groupdn):
+	def udm_rename_ucs_defaultGroup(self, groupdn, new_groupdn):
 		if not new_groupdn:
 			return
 
@@ -676,14 +676,14 @@ class GroupRenameHandler:
 
 		lookup_filter = udm_filter.conjunction('|', [
 			udm_filter.expression(propertyname, groupdn)
-			for propertyname in GroupRenamingHandler._SETTINGS_DEFAULT_UDM_PROPERTIES
+			for propertyname in GroupRenameHandler._SETTINGS_DEFAULT_UDM_PROPERTIES
 		])
 
 		referring_objects = udm_modules.lookup('settings/default',
 			None, self.lo, scope = 'sub', base = self.lo.base, filter = lookup_filter)
 		for referring_object in referring_objects:
 			changed = False
-			for propertyname in GroupRenamingHandler._SETTINGS_DEFAULT_UDM_PROPERTIES:
+			for propertyname in GroupRenameHandler._SETTINGS_DEFAULT_UDM_PROPERTIES:
 				if groupdn in referring_object[propertyname]:
 					referring_object[propertyname] = new_groupdn
 					changed = True
@@ -692,7 +692,7 @@ class GroupRenameHandler:
 				referring_object.modify()
 
 
-	def rename_ucs_group(ucsldap_object_name, ad_object_name):
+	def rename_ucs_group(self, ucsldap_object_name, ad_object_name):
 		groupdns = self.lo.searchDn(
 			filter="(&(objectClass=sambaGroupMapping)(cn=%s))" % (ucsldap_object_name, ),
 			base=self.lo.base)
@@ -701,8 +701,8 @@ class GroupRenameHandler:
 			log.warn("Warning: Found more than one Samba group with name '%s' in UCS LDAP." % (ucsldap_object_name,))
 
 		for groupdn in groupdns:
-			new_groupdn = udm_rename_ucs_group(groupdn, ad_object_name)
-			udm_rename_ucs_defaultGroup(groupdn, new_groupdn)
+			new_groupdn = self.udm_rename_ucs_group(groupdn, ad_object_name)
+			self.udm_rename_ucs_defaultGroup(groupdn, new_groupdn)
 
 		run_and_output_to_log(["univention-config-registry", "set", "groups/default/%s=%s" % (ucsldap_object_name.lower().replace(' ',''), ad_object_name)], log.debug)
 

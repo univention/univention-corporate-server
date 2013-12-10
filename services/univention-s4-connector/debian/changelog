@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-3) unstable; urgency=medium
+
+  * Python syntax fixes (Bug #33644)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 Dec 2013 16:14:24 +0100
+
 univention-s4-connector (8.0.33-2) unstable; urgency=low
 
   * univention-ad-takeover:
