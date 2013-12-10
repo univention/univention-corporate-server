@@ -55,6 +55,9 @@ umc_frontend_new_hash () {
 }
 
 umc_init () {
+
+	eval "$(ucr shell groups/default/domainadmins groups/default/domainusers)"
+
 	# containers
 	udm container/cn create $BIND_ARGS --ignore_exists --position cn=univention,$ldap_base --set name=UMC || exit $?
 	udm container/cn create $BIND_ARGS --ignore_exists --position cn=policies,$ldap_base --set name=UMC --set policyPath=1 || exit $?
@@ -65,6 +68,7 @@ umc_init () {
 		--position cn=UMC,cn=policies,$ldap_base || exit $?
 
 	# link default admin policy to the group "Domain Admins"
+	group_admins="${groups_default_domainadmins:-Domain Admins}"
 	udm groups/group modify $BIND_ARGS --ignore_exists --dn "cn=Domain Admins,cn=groups,$ldap_base" \
 		--policy-reference="cn=default-umc-all,cn=UMC,cn=policies,$ldap_base" || exit $?
 
@@ -73,7 +77,8 @@ umc_init () {
 		--position cn=UMC,cn=policies,$ldap_base || exit $?
 
 	# link default user policy to the group "Domain Users"
-	udm groups/group modify $BIND_ARGS --ignore_exists --dn "cn=Domain Users,cn=groups,$ldap_base" \
+	group_users="${groups_default_domainusers:-Domain Users}"
+	udm groups/group modify $BIND_ARGS --ignore_exists --dn "cn=$group_users,cn=groups,$ldap_base" \
 		--policy-reference="cn=default-umc-users,cn=UMC,cn=policies,$ldap_base" || exit $?
 }
 
