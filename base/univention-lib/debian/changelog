@@ -1,3 +1,9 @@
+univention-lib (3.0.26-6) unstable; urgency=medium
+
+  * Remove legacy names from well_known_sids dictionary (Bug #33644)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 Dec 2013 18:54:50 +0100
+
 univention-lib (3.0.26-5) unstable; urgency=low
 
   * added univention.lib.s4 (Bug #33710) 
