@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-system-setup
-fix: 7.0.66-4.553.201312041624
+fix: 7.0.66-5.554.201312101640
 note:
 version: [0]
 desc: |
