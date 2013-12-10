@@ -692,19 +692,27 @@ class GroupRenameHandler:
 				referring_object.modify()
 
 
-	def rename_ucs_group(self, ucsldap_object_name, ad_object_name):
+	def rename_ucs_group(self, ucsldap_object_name, ad_object_name, canonical_name=None):
 		groupdns = self.lo.searchDn(
 			filter="(&(objectClass=sambaGroupMapping)(cn=%s))" % (ucsldap_object_name, ),
 			base=self.lo.base)
 
 		if len(groupdns) > 1:
-			log.warn("Warning: Found more than one Samba group with name '%s' in UCS LDAP." % (ucsldap_object_name,))
+			log.warn("Warning: Found more than one Samba group with name '%s' in UCS LDAP." %
+				(ucsldap_object_name,))
 
 		for groupdn in groupdns:
 			new_groupdn = self.udm_rename_ucs_group(groupdn, ad_object_name)
 			self.udm_rename_ucs_defaultGroup(groupdn, new_groupdn)
 
-		run_and_output_to_log(["univention-config-registry", "set", "groups/default/%s=%s" % (ucsldap_object_name.lower().replace(' ',''), ad_object_name)], log.debug)
+		if canonical_name:
+			ucr_name = canonical_name
+		else:
+			ucr_name = ucsldap_object_name
+
+		run_and_output_to_log(["univention-config-registry", "set",
+			"groups/default/%s=%s" % (ucr_name.lower().replace(' ',''), ad_object_name)],
+			log.debug)
 
 
 def run_phaseI(ucr, lp, opts, args):
@@ -1196,9 +1204,7 @@ def run_phaseI(ucr, lp, opts, args):
 		if udm_type:
 			run_and_output_to_log(["/usr/sbin/univention-directory-manager", udm_type, "create", "--ignore_exists", "--position", position, "--set" , "name=%s" % ou_name], log.debug)
 	
-	## construct locale mapping
-	ucs_ad_name_map = { }
-	
+	## Identify and rename UCS group names to match Samba4 (localized) group names
 	AD_well_known_sids = {}
 	for name in univention.lib.s4.well_known_domain_rids.keys():
 		AD_well_known_sids[name] = "%s-%s" % (ad_domainsid, univention.lib.s4.well_known_domain_rids[name])
@@ -1206,7 +1212,10 @@ def run_phaseI(ucr, lp, opts, args):
 
 	groupRenameHandler = GroupRenameHandler(lo)
 
-	for (name, sid) in AD_well_known_sids.items():
+	for (canonical_name, sid) in AD_well_known_sids.items():
+		if sid == "S-1-5-32-550":	## Exception: Printer-Admins / Print Operators / ...
+			continue
+
 		msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 							expression="(objectSid=%s)" % (sid),
 							attrs=["sAMAccountName", "objectClass"])
@@ -1217,8 +1226,8 @@ def run_phaseI(ucr, lp, opts, args):
 			if not ad_object_name:
 				continue
 
-			ucsldap_object_name = name	## default
-			## lookup name in UCSLDAP, for non-unique cases like "Replicator/Replicators"
+			ucsldap_object_name = canonical_name	## default
+			## lookup canonical_name in UCSLDAP, for non-unique cases like "Replicator/Replicators"
 			ldap_result = lo.search(filter="(sambaSID=%s)" % (sid,), attr=["sambaSID", "cn"])
 			if len(ldap_result) == 1:
 				ucsldap_object_name = ldap_result[0][1].get("cn", [None])[0]
@@ -1233,8 +1242,7 @@ def run_phaseI(ucr, lp, opts, args):
 			if ad_object_name.lower() != ucsldap_object_name.lower():
 				oc = obj["objectClass"]
 				if "group" in oc or "foreignSecurityPrincipal" in oc:
-					groupRenameHandler.rename_ucs_group(ucsldap_object_name, ad_object_name)
-					ucs_ad_name_map[ucsldap_object_name] = ad_object_name
+					groupRenameHandler.rename_ucs_group(ucsldap_object_name, ad_object_name, canonical_name)
 				elif "user" in oc:
 					pass
 
@@ -1253,15 +1261,8 @@ def run_phaseI(ucr, lp, opts, args):
 		if old_sid.startswith(old_domainsid):
 			old_sambaSID_dict[old_sid] = ucs_name
 
-			## lookup new sid
-			new_sid = None
-			if ucs_name in ucs_ad_name_map:
-				lookup_name = ucs_ad_name_map[ucs_name]
-			else:
-				lookup_name = ucs_name
-
 			msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
-			                    expression="(sAMAccountName=%s)" % lookup_name,
+			                    expression="(sAMAccountName=%s)" % ucs_name,
 			                    attrs=["dn", "objectSid"])
 			if not msgs:
 				continue
@@ -1283,15 +1284,8 @@ def run_phaseI(ucr, lp, opts, args):
 		if old_sid.startswith(old_domainsid):
 			old_sambaSID_dict[old_sid] = ucs_name
 
-			## lookup new sid
-			new_sid = None
-			if ucs_name in ucs_ad_name_map:
-				lookup_name = ucs_ad_name_map[ucs_name]
-			else:
-				lookup_name = ucs_name
-
 			msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
-			                    expression="(sAMAccountName=%s)" % lookup_name,
+			                    expression="(sAMAccountName=%s)" % ucs_name,
 			                    attrs=["objectSid"])
 			if msgs:
 				obj = msgs[0]
