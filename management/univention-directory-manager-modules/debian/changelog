@@ -1,3 +1,11 @@
+univention-directory-manager-modules (8.0.143-30) unstable; urgency=low
+
+  * More updates on subtree move. Ensure the temporary container will be
+    deleted in rollback mode as well and alwasy use the temporary folder
+    below cn=univention (Bug #33566)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Dec 2013 07:42:04 +0100
+
 univention-directory-manager-modules (8.0.143-29) unstable; urgency=low
 
   * Removed debug from exception message (Bug #33566)
