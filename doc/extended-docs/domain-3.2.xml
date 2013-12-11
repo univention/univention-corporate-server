@@ -1053,14 +1053,14 @@ ServerName printserver.example.com
 <!-- 		  SSL-Zertifikats zu ermöglichen. -->
 <!-- 		</para> -->
 
-<!-- <\!-- 		<para> -\-> -->
-<!-- <\!-- TODO: Check: -\-> -->
-<!-- <\!-- Um eine ebenso bequeme LDAP-Suche per "ldapsearch -x Ausdruck" auf dem externen LDAP-Serversystem zu ermöglichen wie dies auf UCS Systemen funktioniert, sollten dort in der Datei "/etc/ldap/ldap.conf" die folgenden Parameter gesetzt werden: -\-> -->
+<!-- 		<para> -->
+<!-- TODO: Check: -->
+<!-- Um eine ebenso bequeme LDAP-Suche per "ldapsearch -x Ausdruck" auf dem externen LDAP-Serversystem zu ermöglichen wie dies auf UCS Systemen funktioniert, sollten dort in der Datei "/etc/ldap/ldap.conf" die folgenden Parameter gesetzt werden: -->
 
-<!-- <\!-- TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem -\-> -->
-<!-- <\!-- HOST FQDN -\-> -->
-<!-- <\!-- BASE    LDAPBASIS -\-> -->
-<!-- <\!-- 		</para> -\-> -->
+<!-- TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem -->
+<!-- HOST FQDN -->
+<!-- BASE    LDAPBASIS -->
+<!-- 		</para> -->
 <!-- 	  </section> -->
 
 <!-- 	  <section> -->
