@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-s4-connector
+fix: 8.0.33-5.430.201312110723
+note:
+version: [0]
+desc: |
+  The sync mode is now configurable for every connector property such
+  as users, groups, containers etc. through UCR.
+bug: [33711]
