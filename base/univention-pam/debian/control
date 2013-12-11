@@ -18,7 +18,8 @@ Depends: ${misc:Depends},
  univention-skel,
  nscd,
  univention-home-mounter,
- shell-univention-lib,
+ shell-univention-lib (>= 3.0.26-7.202.201312111504),
+ python-univention-lib (>= 3.0.26-9.203.201312111519),
  libnss-extrausers
 Description: UCS - login configuration
  This package contains the configuration for the pluggable

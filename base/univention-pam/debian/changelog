@@ -1,3 +1,10 @@
+univention-pam (7.0.4-4) unstable; urgency=low
+
+  * added group-name-mapping.py for autmatically
+    setting group localization vars (Bug #33710) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 11 Dec 2013 15:37:47 +0100
+
 univention-pam (7.0.4-3) unstable; urgency=low
 
   * replaces spaces with tabs in conffiles/etc/security/limits.conf

@@ -6,4 +6,5 @@ univention-nscd usr/lib/univention-server/server_password_change.d/
 univention-libnss-ldap usr/lib/univention-server/server_password_change.d/
 nss.py usr/lib/univention-directory-listener/system/
 ldap-group-to-file.py usr/lib/univention-pam/
+group-name-mapping.py usr/lib/univention-pam/
 11univention-pam.inst usr/lib/univention-install/
