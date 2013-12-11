@@ -12,6 +12,7 @@ Package: python-univention-lib
 Architecture: all
 Depends: ${python:Depends},
  ${misc:Depends},
+ python-univention-config-registry (>= 9.0.5-2.443.201312091553),
  pwgen,
  python-magic
 Provides: ${python:Provides}
@@ -27,7 +28,7 @@ Description: UCS - common scripting functions for Python scripts
 Package: shell-univention-lib
 Architecture: all
 Depends: ${misc:Depends},
- python-univention-config-registry (>= 8.0.2-1),
+ python-univention-config-registry (>= 9.0.5-2.443.201312091553),
  python-univention-lib (= ${binary:Version}),
  pwgen
 Description: UCS - common scripting functions for shell scripts
