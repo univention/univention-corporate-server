@@ -2,10 +2,14 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-pam
-fix: 7.0.4-3.224.201312091705
+fix: 7.0.4-4.225.201312111539
 note:
 version: [0]
 desc: |
-  univention-pam now checks mapping of group names
-  (localization) in the config registry templates.
-bug: [33650]
+  This errata update fixes several issues:
+  * univention-pam now checks mapping of group names (localization) 
+    in the config registry templates.
+  * The listener module group-name-mapping.py has been added to 
+    automatically set group name localization UCR variables 
+    (groups/default/.*) if well known groups are renamed.
+bug: [33650, 33710]
