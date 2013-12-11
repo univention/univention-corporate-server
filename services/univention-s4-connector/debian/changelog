@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-5) unstable; urgency=low
+
+  * The sync mode is now configurable for every connector property such
+    as users, groups, containers etc. (Bug #33711)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Dec 2013 07:16:43 +0100
+
 univention-s4-connector (8.0.33-4) unstable; urgency=medium
 
   * univention-ad-takeover: (Bug #33644)

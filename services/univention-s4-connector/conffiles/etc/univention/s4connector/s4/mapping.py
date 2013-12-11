@@ -85,7 +85,12 @@ s4_mapping = {
 			ucs_module='users/user',
 
 			# read, write, sync, none
-			sync_mode='@%@connector/s4/mapping/syncmode@%@',
+			@!@
+if configRegistry.get('connector/s4/mapping/user/syncmode'):
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/user/syncmode')
+else:
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/syncmode')
+@!@
 			scope='sub',
 
 			con_search_filter='(&(objectClass=user)(!(objectClass=computer))(userAccountControl:1.2.840.113556.1.4.803:=512))',
@@ -278,7 +283,12 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 
 			ucs_module='groups/group',
 
-			sync_mode='@%@connector/s4/mapping/syncmode@%@',
+			@!@
+if configRegistry.get('connector/s4/mapping/group/syncmode'):
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/group/syncmode')
+else:
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/syncmode')
+@!@
 			scope='sub',
 
 @!@
@@ -404,6 +414,13 @@ if ignore_filter:
 	print "			ignore_filter='(|%s)'," % ignore_filter
 @!@
 	
+			@!@
+if configRegistry.get('connector/s4/mapping/compter_dc/syncmode'):
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/compter_dc/syncmode')
+else:
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/syncmode')
+@!@
+
 			con_create_objectclass=['top', 'computer' ],
 			
 			con_create_attributes=[
@@ -468,7 +485,12 @@ univention.s4connector.s4.sid_mapping.print_sid_mapping(configRegistry)
 			ucs_module='computers/windows',
 			ucs_module_others=['computers/memberserver', 'computers/ucc', 'computers/linux', 'computers/ubuntu', 'computers/macos' ],
 
-			sync_mode='@%@connector/s4/mapping/syncmode@%@',
+			@!@
+if configRegistry.get('connector/s4/mapping/computer/syncmode'):
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/computer/syncmode')
+else:
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/syncmode')
+@!@
 
 			scope='sub',
 
@@ -587,17 +609,21 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 	for gpo in configRegistry.get('connector/s4/mapping/gpo/ignorelist', '').split(','):
 		if gpo:
 			ignore_filter += '(cn=%s)' % (gpo)
+	if configRegistry.get('connector/s4/mapping/ou/syncmode'):
+		sync_mode_ou=configRegistry.get('connector/s4/mapping/ou/syncmode')
+	else:
+		sync_mode_ou=configRegistry.get('connector/s4/mapping/syncmode')
 	print '''
 	'msGPO': univention.s4connector.property (
 			ucs_module='container/msgpo',
 
-			sync_mode='@%@connector/s4/mapping/syncmode@%@',
+			sync_mode='%(sync_mode_ou)s',
 
 			scope='sub',
 
 			con_search_filter='(&(objectClass=container)(objectClass=groupPolicyContainer))',
 
-			ignore_filter='%s',
+			ignore_filter='%(ignore_filter)s',
 
 			ignore_subtree = global_ignore_subtree,
 			
@@ -659,12 +685,17 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 				},
 
 		),
-''' % ignore_filter
+''' % {'ignore_filter': ignore_filter, 'sync_mode_ou': sync_mode_ou}
 @!@
 	'container': univention.s4connector.property (
 			ucs_module='container/cn',
 
-			sync_mode='@%@connector/s4/mapping/syncmode@%@',
+			@!@
+if configRegistry.get('connector/s4/mapping/container/syncmode'):
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/container/syncmode')
+else:
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/syncmode')
+@!@
 
 			scope='sub',
 
@@ -713,7 +744,12 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 	'ou': univention.s4connector.property (
 			ucs_module='container/ou',
 
-			sync_mode='@%@connector/s4/mapping/syncmode@%@',
+			@!@
+if configRegistry.get('connector/s4/mapping/ou/syncmode'):
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/ou/syncmode')
+else:
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/syncmode')
+@!@
 
 			scope='sub',
 
