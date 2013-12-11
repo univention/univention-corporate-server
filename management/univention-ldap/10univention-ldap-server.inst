@@ -54,8 +54,8 @@ IP="$(get_default_ip_address)"
 NETMASK="$(get_default_netmask)"
 NETWORK="$(get_default_network)"
 
-groups_default_domainadmins = "${groups_default_domainadmins:-Domain Admins}"
-groups_default_domainusers = "${groups_default_domainusers:-Domain Users}"
+groups_default_domainadmins="${groups_default_domainadmins:-Domain Admins}"
+groups_default_domainusers="${groups_default_domainusers:-Domain Users}"
 
 reverse=$(univention-ipcalc6 --netmask "$NETMASK" --ip "$IP" --output reverse --calcdns)
 
