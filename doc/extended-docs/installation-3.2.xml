@@ -257,7 +257,7 @@ system was started.
   <entry>
 	If <emphasis>univention-net-installer-daemon</emphasis> has been setup to reset the
 	<guimenu>(Re-)install on next boot</guimenu> option in the &ucsUMC; (see <xref
-	linkend="profile:assign"/>), this variable specifies the host where the daemon is running.
+	linkend="profile:assign"/>), this variable specifies the IP address of the host where the daemon is running.
   </entry>
 </row>
 
