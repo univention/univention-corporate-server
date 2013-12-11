@@ -6,6 +6,5 @@ fix: 7.0.5-3.256.201312101059
 note:
 version: [0]
 desc: |
-  Group name localization has been added to
-  univention-nagios.
+  Group name mapping has been added to univention-nagios.
 bug: [33646]

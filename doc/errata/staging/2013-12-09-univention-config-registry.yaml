@@ -8,5 +8,5 @@ version: [0]
 desc: |
   The function "groupNameMapping()" has been added
   to the ConfigRegistry class to easily convert group
-  name localizations.
+  names.
 bug: [33650]

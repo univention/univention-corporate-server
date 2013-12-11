@@ -7,9 +7,9 @@ note:
 version: [0]
 desc: |
   This errata update fixes several issues:
-  * univention-pam now checks mapping of group names (localization) 
+  * univention-pam now checks mapping of group names 
     in the config registry templates.
   * The listener module group-name-mapping.py has been added to 
-    automatically set group name localization UCR variables 
+    automatically set group name mapping UCR variables 
     (groups/default/.*) if well known groups are renamed.
 bug: [33650, 33710]

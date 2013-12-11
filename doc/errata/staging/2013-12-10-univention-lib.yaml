@@ -7,8 +7,8 @@ note:
 version: [0]
 desc: |
   This errata update fixes several issues:
-  * Group name localization has been added to univention-lib. 
-    The new function "custom_groupname" maps the default UCS groups
-    to the localized group name.
+  * Group name mapping has been added to univention-lib. 
+    The new function "custom_groupname" maps the default group names
+    to the actual name.
   * A new pyhton lib "s4" has been added for samba4 related stuff.
 bug: [33649,33710]
