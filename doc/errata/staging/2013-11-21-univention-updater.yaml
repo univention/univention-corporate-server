@@ -13,4 +13,4 @@ desc: |
     update
   * Fixed a JavaScript error when installing package updates
   * The updater now uses the individual user agent string for more HTTP requests
-bug: [33484, 33443, 33408, 33553]
+bug: [33721, 33443, 33408, 33553]
