@@ -59,6 +59,7 @@ import logging
 import traceback
 from univention.admin.handlers.dns.reverse_zone import mapSubnet
 import univention.lib
+import univention.lib.s4
 
 # load UDM modules
 udm_modules.update()
@@ -342,8 +343,7 @@ def count_ad_object_numbers(ucr, remote_samdb, ignored_users_list = []):
 		## identify well known names, abstracting from locale
 		sambaSID = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
 		sambaRID = sambaSID[len(ad_domainsid)+1:]
-		for _name in univention.lib.s4.well_known_domain_rids.keys():
-			_rid = univention.lib.s4.well_known_domain_rids[_name]
+		for (_rid, _name) in univention.lib.s4.well_known_domain_rids.items():
 			if _rid == sambaRID:
 				log.debug("Found Account %s with well known RID %s (%s)" % (sAMAccountName, sambaRID, _name))
 				sAMAccountName = _name
@@ -1206,13 +1206,13 @@ def run_phaseI(ucr, lp, opts, args):
 	
 	## Identify and rename UCS group names to match Samba4 (localized) group names
 	AD_well_known_sids = {}
-	for name in univention.lib.s4.well_known_domain_rids.keys():
-		AD_well_known_sids[name] = "%s-%s" % (ad_domainsid, univention.lib.s4.well_known_domain_rids[name])
+	for (rid, name) in univention.lib.s4.well_known_domain_rids.items():
+		AD_well_known_sids[name] = "%s-%s" % (ad_domainsid, rid)
 	AD_well_known_sids.update(univention.lib.s4.well_known_sids)
 
 	groupRenameHandler = GroupRenameHandler(lo)
 
-	for (canonical_name, sid) in AD_well_known_sids.items():
+	for (sid, canonical_name) in AD_well_known_sids.items():
 		if sid == "S-1-5-32-550":	## Exception: Printer-Admins / Print Operators / ...
 			continue
 
@@ -1227,7 +1227,7 @@ def run_phaseI(ucr, lp, opts, args):
 				continue
 
 			ucsldap_object_name = canonical_name	## default
-			## lookup canonical_name in UCSLDAP, for non-unique cases like "Replicator/Replicators"
+			## lookup canonical_name in UCSLDAP, for cases like "Replicator/Replicators" and "Server Operators"/"System Operators" that changed in UCS 3.2, see Bug #32461#c2
 			ldap_result = lo.search(filter="(sambaSID=%s)" % (sid,), attr=["sambaSID", "cn"])
 			if len(ldap_result) == 1:
 				ucsldap_object_name = ldap_result[0][1].get("cn", [None])[0]

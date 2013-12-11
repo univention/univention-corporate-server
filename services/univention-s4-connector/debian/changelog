@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-7) unstable; urgency=medium
+
+  * Adjust univention-ad-takeover to univention.lib.s4 change (Bug #33644)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 11 Dec 2013 17:47:45 +0100
+
 univention-s4-connector (8.0.33-6) unstable; urgency=low
 
   * Fixed typos (Bug #33711)
