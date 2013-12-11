@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-6) unstable; urgency=low
+
+  * Fixed typos (Bug #33711)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Dec 2013 17:20:28 +0100
+
 univention-s4-connector (8.0.33-5) unstable; urgency=low
 
   * The sync mode is now configurable for every connector property such

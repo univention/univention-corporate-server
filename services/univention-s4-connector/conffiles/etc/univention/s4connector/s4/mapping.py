@@ -415,8 +415,8 @@ if ignore_filter:
 @!@
 	
 			@!@
-if configRegistry.get('connector/s4/mapping/compter_dc/syncmode'):
-	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/compter_dc/syncmode')
+if configRegistry.get('connector/s4/mapping/computer_dc/syncmode'):
+	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/computer_dc/syncmode')
 else:
 	print "sync_mode='%s'," % configRegistry.get('connector/s4/mapping/syncmode')
 @!@
