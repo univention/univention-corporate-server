@@ -1,0 +1,25 @@
+---
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: firefox-de
+fix: 1:24.2.0esr-6.37.201312111143
+version: [0]
+note: This update fixes these vulnerabilities.
+desc: |
+ This update consists of two updates for firefox-en and firefox-de.
+ Several vulnerabilities have been fixed with the update to Firefox ESR 24.2:
+ * Use-after free in event listeners, input handling and garbage collection (CVE-2013-5613, CVE-2013-5616, CVE-2013-5618) 
+ * Memory corruption in the browser engine and the Javascript engine (CVE-2013-5609, CVE-2013-5615, CVE-2013-6671)
+ * Incorrect handling of trust settings in EV certificate validation (CVE-2013-6673)
+ * Information leak in the processing of JPEG images (CVE-2013-6629, CVE-2013-6630)
+cve:
+ - CVE-2013-5613
+ - CVE-2013-5616
+ - CVE-2013-5618
+ - CVE-2013-5609
+ - CVE-2013-5615
+ - CVE-2013-6671
+ - CVE-2013-6673
+ - CVE-2013-6629
+ - CVE-2013-6630
