@@ -1,3 +1,9 @@
+univention-lib (3.0.26-7) unstable; urgency=low
+
+  * added custom_groupname (Bug #33710)
+
+ -- Felix Botner <botner@univention.de>  Wed, 11 Dec 2013 15:03:12 +0100
+
 univention-lib (3.0.26-6) unstable; urgency=medium
 
   * Remove legacy names from well_known_sids dictionary (Bug #33644)

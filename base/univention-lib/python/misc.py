@@ -72,3 +72,20 @@ def getLDAPServersCommaList(configRegistryInstance = None):
 		ldap_servers = ','.join(ldaphosts)
 
 	return ldap_servers
+
+def custom_groupname(groupname, configRegistryInstance = None):
+	"""
+	Returns the customized group name configured via UCR
+	"""
+
+	if not groupname:
+		raise ValueError
+
+	if configRegistryInstance:
+		ucr = configRegistryInstance
+	else:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+
+	tmp_ucr_groupid = groupname.lower().replace(' ', '')
+	return configRegistry.get("groups/default/%s" % tmp_ucr_groupid, groupname)

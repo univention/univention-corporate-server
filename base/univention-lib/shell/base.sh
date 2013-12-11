@@ -255,4 +255,23 @@ update_nss_group_cache () {
 	fi
 }
 
+#
+# Get to localized name for a group
+#
+custom_groupname() {
+	local groupname
+	local ucr_varname
+	local result
+	groupname="${1:?Usage: custom_groupname <groupname>}"
+	ucr_varname="$(echo $groupname | tr [A-Z] [a-z] | sed 's| ||g')"
+	ucr_varname="groups/default/$ucr_varname"
+
+	result="$(ucr get "$ucr_varname")"
+	if [ -n "$result" ]; then
+		echo -n "$result"
+	else
+		echo -n "$groupname"
+	fi
+}
+
 # vim:set sw=4 ts=4 noet:
