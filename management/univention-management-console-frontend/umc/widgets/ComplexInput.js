@@ -120,6 +120,18 @@ define([
 			this._set(value);
 		},
 
+		setInitialValue: function(value) {
+			array.forEach(this._order, function(iname, i) {
+				var widget = this._widgets[iname];
+				if (widget.setInitialValue) {
+					widget.setInitialValue(value[i]);
+				} else {
+					widget.set('value', value[i]);
+				}
+			}, this);
+			this._set(value);
+		},
+
 		setValid: function(/*Boolean|Boolean[]*/ areValid, /*String?|String[]?*/ messages) {
 			// summary:
 			//		Set all child elements to valid/invalid.
