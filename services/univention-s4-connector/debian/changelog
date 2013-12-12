@@ -1,3 +1,11 @@
+univention-s4-connector (8.0.33-8) unstable; urgency=medium
+
+  * univention-ad-takeover (Bug #33644):
+  * Don't set the UCR groups/default/.. this is now done by a listener
+  * Relax groups/group/properties/name/syntax
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 Dec 2013 17:31:56 +0100
+
 univention-s4-connector (8.0.33-7) unstable; urgency=medium
 
   * Adjust univention-ad-takeover to univention.lib.s4 change (Bug #33644)

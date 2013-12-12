@@ -653,8 +653,8 @@ class GroupRenameHandler:
 			log.debug("Opening group '%s' failed: %s." % (groupdn, exc,))
 
 		try:
-			group['name'] = new_name
 			log.debug("Renaming '%s' to '%s' in UCS LDAP." % (group.dn, new_name))
+			group['name'] = new_name
 			group.modify()
 		except uexceptions.ldapError as exc:
 			log.debug("Renaming of group '%s' failed: %s." % (groupdn, exc,))
@@ -692,7 +692,7 @@ class GroupRenameHandler:
 				referring_object.modify()
 
 
-	def rename_ucs_group(self, ucsldap_object_name, ad_object_name, canonical_name=None):
+	def rename_ucs_group(self, ucsldap_object_name, ad_object_name):
 		groupdns = self.lo.searchDn(
 			filter="(&(objectClass=sambaGroupMapping)(cn=%s))" % (ucsldap_object_name, ),
 			base=self.lo.base)
@@ -704,15 +704,6 @@ class GroupRenameHandler:
 		for groupdn in groupdns:
 			new_groupdn = self.udm_rename_ucs_group(groupdn, ad_object_name)
 			self.udm_rename_ucs_defaultGroup(groupdn, new_groupdn)
-
-		if canonical_name:
-			ucr_name = canonical_name
-		else:
-			ucr_name = ucsldap_object_name
-
-		run_and_output_to_log(["univention-config-registry", "set",
-			"groups/default/%s=%s" % (ucr_name.lower().replace(' ',''), ad_object_name)],
-			log.debug)
 
 
 def run_phaseI(ucr, lp, opts, args):
@@ -1049,9 +1040,11 @@ def run_phaseI(ucr, lp, opts, args):
 		                         "nameserver1/local=%s" % nameserver1_orig,
 		                         "nameserver1=%s" % ad_server_ip,
 		                         "directory/manager/web/modules/users/user/properties/username/syntax=string",
+		                         "directory/manager/web/modules/groups/group/properties/name/syntax=string",
 		                         "dns/backend=ldap"], log.debug)
 
 	ucr.load()
+	univention.admin.configRegistry.load()	## otherwise the modules do not use the new syntax
 
 	## Stop the NSCD
 	run_and_output_to_log(["/etc/init.d/nscd", "stop"], log.debug)
@@ -1242,7 +1235,7 @@ def run_phaseI(ucr, lp, opts, args):
 			if ad_object_name.lower() != ucsldap_object_name.lower():
 				oc = obj["objectClass"]
 				if "group" in oc or "foreignSecurityPrincipal" in oc:
-					groupRenameHandler.rename_ucs_group(ucsldap_object_name, ad_object_name, canonical_name)
+					groupRenameHandler.rename_ucs_group(ucsldap_object_name, ad_object_name)
 				elif "user" in oc:
 					pass
 
