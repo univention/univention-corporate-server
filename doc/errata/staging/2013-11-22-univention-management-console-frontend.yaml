@@ -10,11 +10,11 @@ desc: |
   * Requests to outdated UMC web files (such as images, HTML files, JavaScript
     source files) are now redirected in order to avoid problems in the
     representation.
-  * Fixed rendering of "Activate UCS" dialog in Internet Explorer 9 and 10.
-  * This update corrects the generation of ucs-overview links. The links
-    are now generated in the domain-joinscript. This ensures that
-    host- and domain-identifiers match the current settings in case of
-    a domain-rejoin and after completing the appliance setup.
+  * Fixed rendering of the "Activate UCS" dialog in Internet Explorer 9 and 10.
+  * This update corrects the generation of overview links. The links
+    are now generated in the join script. This ensures that
+    host and domain identifiers match the current settings in case of
+    a rejoin and after completing the appliance setup.
   * The progress bar does not have a transition anymore if the value is
     "indeterminate".
 bug: [29588,33133,33447,32649]

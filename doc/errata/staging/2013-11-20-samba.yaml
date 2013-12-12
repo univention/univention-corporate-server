@@ -6,7 +6,7 @@ fix: 4.1.0-1.598.201311201446
 note:
 version: [0]
 desc: |
-  Winows 8 clients were not able to print to samba printserver
-  if client-side printer drivers were used. This errata updated fixes
+  Windows 8 clients were not able to print to Samba printservers
+  if client-side printer drivers were used. This errata update fixes
   this issue.
 bug: [33197]

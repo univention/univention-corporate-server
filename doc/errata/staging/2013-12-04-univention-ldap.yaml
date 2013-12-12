@@ -6,7 +6,7 @@ fix: 10.0.17-8.650.201312051542
 note:
 version: [0]
 desc: |
-  The LDAP ACL templates now support the configuration of
+  The LDAP ACLs now support the configuration of
   default group names via the new UCR variable family
   "groups/default/.*".
 bug: [33645]

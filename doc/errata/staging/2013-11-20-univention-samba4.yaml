@@ -7,8 +7,8 @@ note:
 version: [0]
 desc: |
   This errata update fixes several issues:
-  * Samba4 could not be started on host with only IPv6 interfaces.
-    This has been fixed by deactivating wins support on IPv6 hosts.
+  * Samba4 could not be started on hosts with only IPv6 interfaces.
+    This has been fixed by deactivating WINS support on IPv6 hosts.
   * Multiple logrotate configurations for samba log files could lead 
     to warning messages via cron. These redundant configurations are
     removed with this update.
