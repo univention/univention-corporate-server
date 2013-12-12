@@ -7,5 +7,5 @@ note:
 version: [1]
 desc: |
   The sync mode is now configurable for every connector property such
-  as users, groups, containers etc. through UCR.
+  as users, groups, containers through UCR, e.g. connector/s4/mapping/group/syncmode
 bug: [33712]
