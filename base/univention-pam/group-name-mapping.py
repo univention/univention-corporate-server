@@ -71,7 +71,7 @@ def checkAndSet(obj, delete=False):
 				toSet = "groups/default/%s=%s" % (customName, cn)
 				univention.debug.debug(
 					univention.debug.LISTENER,
-					univention.debug.ERROR,
+					univention.debug.PROCESS,
 					"group-name-mapping: setting ucrv %s" % toSet
 				)
 				listener.setuid(0)
@@ -88,7 +88,7 @@ def checkAndSet(obj, delete=False):
 				if ucr.get(toUnset):
 					univention.debug.debug(
 						univention.debug.LISTENER,
-						univention.debug.ERROR,
+						univention.debug.PROCESS,
 						"group-name-mapping: unsetting ucrv %s" % toUnset
 					)
 					listener.setuid(0)
