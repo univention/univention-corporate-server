@@ -1,6 +1,6 @@
 univention-management-console-frontend (3.0.152-7) unstable; urgency=low
 
-  * Bug #33383: add setInitialValue method to teh ComplexInput widget
+  * Bug #33383: add setInitialValue method to the ComplexInput widget
 
  -- Florian Best <best@univention.de>  Thu, 12 Dec 2013 14:27:46 +0100
 
