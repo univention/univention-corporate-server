@@ -6,6 +6,6 @@ fix: 8.0.143-32.1163.201312101241
 note:
 version: [1]
 desc: |
-  Moving objects now also supports mixed-case scenarios. This is relvant when
+  Moving objects now also supports mixed-case scenarios. This is relevant when
   moving organizational units or containers in Samba 4/Active Directory.
 bug: [33566]
