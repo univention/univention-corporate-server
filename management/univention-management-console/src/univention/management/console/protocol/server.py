@@ -353,7 +353,7 @@ class MagicBucket( object ):
 			return
 
 		# module process wants to exit
-		if msg.status == 250:
+		if msg.status == SUCCESS_SHUTDOWN:
 			module_name = state.processor.get_module_name( msg.arguments[ 0 ] )
 			if module_name:
 				state.processor._purge_child( module_name )

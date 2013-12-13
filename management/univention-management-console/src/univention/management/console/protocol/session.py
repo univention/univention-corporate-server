@@ -39,6 +39,7 @@ import ldap
 import os
 import time
 import json
+import traceback
 
 import notifier
 import notifier.signals as signals
@@ -54,7 +55,9 @@ from univention.lib.i18n import Translation, I18N_Error
 from .message import Response, Request, MIMETYPE_JSON, InvalidOptionsError
 from .client import Client, NoSocketError
 from .version import VERSION
-from .definitions import SUCCESS, BAD_REQUEST_INVALID_OPTS, BAD_REQUEST_INVALID_ARGS, status_description, BAD_REQUEST_UNAVAILABLE_LOCALE, BAD_REQUEST_FORBIDDEN, BAD_REQUEST_NOT_FOUND, SERVER_ERR_MODULE_FAILED
+from .definitions import (SUCCESS, BAD_REQUEST_INVALID_OPTS, BAD_REQUEST_INVALID_ARGS,
+	status_description, BAD_REQUEST_UNAVAILABLE_LOCALE, BAD_REQUEST_FORBIDDEN,
+	BAD_REQUEST_NOT_FOUND, SERVER_ERR_MODULE_FAILED, SUCCESS_SHUTDOWN)
 
 from ..resources import moduleManager, categoryManager
 from ..auth import AuthHandler
@@ -177,6 +180,10 @@ class ModuleProcess( Client ):
 		if msg.command == 'EXIT' and 'internal' in msg.arguments:
 			return
 
+		if msg.command == 'SET' and msg.status == SUCCESS_SHUTDOWN:
+			CORE.error('Commiting suicide (status==SUCCESS_SHUTDOWN)')
+			os.kill(self.pid(), 9)
+
 		self.signal_emit( 'result', msg )
 
 	def pid( self ):
@@ -250,7 +257,7 @@ class Processor( signals.Provider ):
 
 		:param str command: the command name
 		"""
-		return moduleManager.module_providing( self.__comand_list, command )
+		return moduleManager.module_providing( self.__command_list, command )
 
 	def request( self, msg ):
 		"""Handles an incoming UMCP request and passes the requests to
@@ -658,11 +665,15 @@ class Processor( signals.Provider ):
 				CORE.info( 'Starting new module process and passing new request to module %s: %s' % (module_name, str(msg._id)) )
 				mod_proc = ModuleProcess( module_name, debug = MODULE_DEBUG_LEVEL, locale = self.i18n.locale )
 				mod_proc.signal_connect( 'result', self._mod_result )
+
 				cb = notifier.Callback( self._socket_died, module_name )
 				mod_proc.signal_connect( 'closed', cb )
+
 				cb = notifier.Callback( self._mod_died, module_name )
 				mod_proc.signal_connect( 'finished', cb )
+
 				self.__processes[ module_name ] = mod_proc
+
 				cb = notifier.Callback( self._mod_connect, mod_proc, msg )
 				notifier.timer_add( 50, cb )
 			else:
@@ -702,7 +713,7 @@ class Processor( signals.Provider ):
 			mod._connect_retries += 1
 			return True
 		except Exception, e:
-			CORE.process( 'Unknown error while trying to connect to module process: %s' % str( e ) )
+			CORE.error('Unknown error while trying to connect to module process: %s\n%s' % (e, traceback.format_exc()))
 			_send_error()
 			return False
 		else:
@@ -738,7 +749,7 @@ class Processor( signals.Provider ):
 		return False
 
 	def _mod_inactive( self, module ):
-		CORE.info( 'The module %s is inactive for to long. Sending EXIT request to module' % module.name )
+		CORE.info( 'The module %s is inactive for too long. Sending EXIT request to module' % module.name )
 		if module.openRequests:
 			CORE.info( 'There are unfinished requests. Waiting for %s' % ', '.join( module.openRequests ) )
 			return True

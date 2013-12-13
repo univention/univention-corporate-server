@@ -36,18 +36,22 @@ the UMC server class
 :class:`~univention.management.console.protocol.server.Server`.
 """
 
-from .server import *
-from .message import *
-from .definitions import *
+from .server import Server
+from .message import Response, Message, IncompleteMessageError, ParseError, UnknownCommandError
+from .definitions import (BAD_REQUEST_NOT_FOUND, BAD_REQUEST_INVALID_OPTS, SUCCESS_SHUTDOWN,
+	MODULE_ERR_COMMAND_FAILED, MODULE_ERR, SUCCESS, RECV_BUFFER_SIZE, status_description)
 
 from ..acl import ACLs
 from ..module import Module
-from ..log import MODULE
+from ..log import MODULE, PROTOCOL
 
 from univention.lib.i18n import Locale, NullTranslation
 
 _ = NullTranslation( 'univention.management.console' ).translate
 
+import sys
+import traceback
+import socket
 import locale
 import notifier
 import notifier.threads as threads
@@ -76,6 +80,8 @@ class ModuleServer( Server ):
 		self.__username = None
 		self.__user_dn = None
 		self.__password = None
+		self.__init_error_message = None
+		self.__handler = None
 		self._load_module()
 		Server.__init__( self, ssl = False, unix = socket, magic = False, load_ressources = False )
 		self.signal_connect( 'session_new', self._client )
@@ -84,24 +90,25 @@ class ModuleServer( Server ):
 		try:
 			modname = self.__module
 			self.__module = None
-			for type in ( 'modules', 'wizards' ):
+			try:
+				file_ = 'univention.management.console.modules.%s' % (modname,)
+				self.__module = __import__(file_, [], [], modname)
+			except ImportError, e:
 				try:
-					file = 'univention.management.console.%s.%s' % ( type, modname )
-					self.__module = __import__( file, [], [], modname )
-					break
-				except BaseException, e:
-					MODULE.error( 'Failed to import module %s: %s' % ( modname, str( e ) ) )
-					import traceback
-					traceback.print_exc()
-			if not self.__module:
-				raise Exception( "Module '%s' could not be found. Exiting ..." % modname )
+					file_ = 'univention.management.console.wizards.%s' % (modname,)
+					self.__module = __import__(file_, [], [], modname)
+				except ImportError, imperr:
+					if not str(imperr).startswith('No module named'):
+						raise
+				if not self.__module:
+					raise
 			self.__handler = self.__module.Instance()
 			self.__handler.signal_connect( 'success', notifier.Callback( self._reply, True ) )
 			self.__handler.signal_connect( 'failure', notifier.Callback( self._reply, True ) )
 		except Exception, e:
-			import traceback
-			traceback.print_exc()
-			sys.exit( 5 )
+			error = _('Failed to import module %s: %s\n%s') % (modname, e, traceback.format_exc())
+			MODULE.error(error)
+			self.__init_error_message = error
 
 	def _reply( self, msg, final ):
 		if final:
@@ -112,7 +119,8 @@ class ModuleServer( Server ):
 
 	def _timed_out( self ):
 		MODULE.info( "Commiting suicide" )
-		self.__handler.destroy()
+		if self.__handler:
+			self.__handler.destroy()
 		self.exit()
 		sys.exit( 0 )
 
@@ -178,6 +186,13 @@ class ModuleServer( Server ):
 			self.__timer = notifier.timer_add( shutdown_timeout, self._timed_out )
 			return
 
+		if not self.__handler:
+			resp = Response(msg)
+			resp.status = MODULE_ERR_COMMAND_FAILED
+			resp.message = self.__init_error_message
+			self.response(resp)
+			return
+
 		if msg.command == 'SET':
 			resp = Response( msg )
 			resp.status = SUCCESS
@@ -220,11 +235,18 @@ class ModuleServer( Server ):
 			if 'acls' in msg.options and 'commands' in msg.options and 'credentials' in msg.options:
 				try:
 					self.__handler.init()
-				except BaseException, e:
-					import traceback, sys
-					resp.status = MODULE_ERR
-					exc_info = sys.exc_info()
-					resp.message = _( 'The init function of the module has failed: %s: %s\n%s' ) % ( exc_info[ 0 ].__name__, exc_info[ 1 ], '\n'.join( traceback.format_tb( exc_info[ 2 ] ) ) )
+				except BaseException as e:
+					self.__handler = None
+					error = _('The init function of the module has failed: %s: %s\n%s') % (
+						e.__class__.__name__,
+						e,
+						traceback.format_exc()
+					)
+					self.__init_error_message = error
+					MODULE.error(error)
+					resp.status = SUCCESS_SHUTDOWN
+					resp.message = error
+
 			self.response( resp )
 
 			if not self.__active_requests and self.__timer == None:

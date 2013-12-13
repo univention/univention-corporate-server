@@ -1,3 +1,10 @@
+univention-management-console (6.0.23-1) unstable; urgency=low
+
+  * Bug #33673: improve error handling when initializing of a module failed.
+  	Now a feedback is sent to the client.
+
+ -- Florian Best <best@univention.de>  Fri, 13 Dec 2013 16:45:21 +0100
+
 univention-management-console (6.0.22-1) unstable; urgency=low
 
   * Add dependency on python-udm (Bug #32409)
