@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-management-console-module-udm
+fix: 4.0.97-12.428.201312131728
+note:
+version: [0]
+desc: |
+  This errata update fixes several issues:
+  * Certain policies did not get a link to directly edit them when
+    opening the "Policies" tab of LDAP objects. Fixed that.
+bug: [33004]
