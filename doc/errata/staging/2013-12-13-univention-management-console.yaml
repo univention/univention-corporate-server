@@ -1,0 +1,10 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-management-console
+fix: 6.0.23-1.773.201312131648
+note:
+version: [0]
+desc: |
+ This erratum improves the error handling of UMC module. A feedback is send to the client when the initializing of a module failed.
+bug: [33673]
