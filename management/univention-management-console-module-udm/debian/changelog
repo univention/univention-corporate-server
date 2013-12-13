@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.97-12) unstable; urgency=low
+
+  * Bug #33004: Certain policies did not get a link to directly edit them when
+    opening the "Policies" tab of LDAP objects. Fixed that
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 13 Dec 2013 17:25:30 +0100
+
 univention-management-console-module-udm (4.0.97-11) unstable; urgency=low
 
   * Bug #33556: If the initial search attribute for a UDM module is configured

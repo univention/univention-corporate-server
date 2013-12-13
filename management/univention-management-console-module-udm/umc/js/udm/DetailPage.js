@@ -994,52 +994,56 @@ define([
 						// we got probably a UCR-Policy, this is a special case:
 						// -> a list of values where each value might have been inherited
 						//    by different policies
+						// FIXME: THIS IS NOT TRUE!
+						//   UCC desktop policy also goes this way. Did not search further
 						iwidget.set('value', array.map(iinfo, function(ival) {
 							return ival.value;
 						}));
 
-						array.forEach(iinfo, function(jinfo, j) {
-							if (iwidget._rowContainers.length < j) {
-								// something is wrong... there are not enough entries it seems
-								return false;
-							}
+						iwidget.ready().then(lang.hitch(this, function() {
+							array.forEach(iinfo, function(jinfo, j) {
+								if (iwidget._rowContainers.length < j) {
+									// something is wrong... there are not enough entries it seems
+									return false;
+								}
 
-							// prepare the HTML code to link to the policy
-							var label = lang.replace('(<a href="javascript:void(0)" ' +
-									'onclick=\'require("dijit/registry").byId("{id}")._openPolicy("{type}", "{dn}")\' ' +
-									'title="{title}: {dn}">{edit}</a>)', {
-								id: this.id,
-								type: policyType,
-								dn: jinfo.policy,
-								title: _('Click to edit the inherited properties of the policy'),
-								edit: _('edit')
-							});
-
-							var container = iwidget._rowContainers[j];
-							if (!container.$linkWidget$) {
-								// add an additional widget with the link the the UCR policy to the row
-								container.$linkWidget$ = new LabelPane({
-									label: j === 0 ? '&nbsp;' : '',
-									content: new Text({
-										content: label
-									})
+								// prepare the HTML code to link to the policy
+								var label = lang.replace('(<a href="javascript:void(0)" ' +
+										'onclick=\'require("dijit/registry").byId("{id}")._openPolicy("{type}", "{dn}")\' ' +
+										'title="{title}: {dn}">{edit}</a>)', {
+									id: this.id,
+									type: policyType,
+									dn: jinfo.policy,
+									title: _('Click to edit the inherited properties of the policy'),
+									edit: _('edit')
 								});
 
-								// get the correct row container
-								container.addChild(container.$linkWidget$);
-							} else {
-								// link widget already exists, update its content
-								container.$linkWidget$.set('content', label);
-							}
-						}, this);
+								var container = iwidget._rowContainers[j];
+								if (!container.$linkWidget$) {
+									// add an additional widget with the link the the UCR policy to the row
+									container.$linkWidget$ = new LabelPane({
+										label: j === 0 ? '&nbsp;' : '',
+										content: new Text({
+											content: label
+										})
+									});
 
-						// make sure that the last row does not contain a link widget
-						var lastContainer = iwidget._rowContainers[iwidget._rowContainers.length - 1];
-						if (lastContainer.$linkWidget$) {
-							lastContainer.removeChild(lastContainer.$linkWidget$);
-							lastContainer.$linkWidget$.destroyRecursive();
-							lastContainer.$linkWidget$ = null;
-						}
+									// get the correct row container
+									container.addChild(container.$linkWidget$);
+								} else {
+									// link widget already exists, update its content
+									container.$linkWidget$.set('content', label);
+								}
+							}, this);
+
+							// make sure that the last row does not contain a link widget
+							var lastContainer = iwidget._rowContainers[iwidget._rowContainers.length - 1];
+							if (lastContainer.$linkWidget$) {
+								lastContainer.removeChild(lastContainer.$linkWidget$);
+								lastContainer.$linkWidget$.destroyRecursive();
+								lastContainer.$linkWidget$ = null;
+							}
+						}));
 					} else {
 						// fallback
 						var value = array.map( iinfo, function( item ) {
