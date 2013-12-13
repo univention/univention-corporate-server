@@ -279,3 +279,9 @@ Description[de]=Definiert, ob das Einbinden von Heimatverzeichnissen von Benutze
 Description[en]=Defines whether a successful mount of the users home directory is required for the login.
 Type=bool
 Categories=system-base
+
+[listener/module/groupnamemapping]
+Description[de]=Aktiviert bzw. deaktiviert das Listener-Modul group-name-mapping.
+Description[en]=Enables or disables the listener module group-name-mapping.
+Type=bool
+Categories=system-base

@@ -1,3 +1,4 @@
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention group name mapping
@@ -49,6 +50,9 @@ attributes = ["cn", "sambaSid"]
 FN_CACHE='/var/cache/univention-directory-listener/group-name-mapping.pickle'
 modrdn='1'
 
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+
 def sidToName(sid):
 	rid = sid.split("-")[-1]
 	if univention.lib.s4.well_known_sids.get(sid):
@@ -99,6 +103,14 @@ def checkAndSet(obj, delete=False):
 
 
 def handler(dn, new, old, command):
+
+	if ucr.is_false("listener/module/groupnamemapping", False):
+		univention.debug.debug(
+			univention.debug.LISTENER,
+			univention.debug.INFO,
+			'group-name-mapping: deactivated by listener/module/groupnamemapping'
+		)
+		return
 
 	old = copy.deepcopy(old)
 

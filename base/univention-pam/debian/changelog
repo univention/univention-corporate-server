@@ -1,3 +1,10 @@
+univention-pam (7.0.4-7) unstable; urgency=low
+
+  * added listener/module/groupnamemapping to deactivate
+    group-name-mapping.py (Bug #33710) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 13 Dec 2013 08:53:10 +0100
+
 univention-pam (7.0.4-6) unstable; urgency=low
 
   * fixed debian/install (Bug #33710) 
