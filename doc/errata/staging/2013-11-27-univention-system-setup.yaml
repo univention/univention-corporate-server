@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-system-setup
-fix: 7.0.66-5.554.201312101640
+fix: 7.0.66-6.555.201312131458
 note:
 version: [0]
 desc: |
@@ -11,4 +11,7 @@ desc: |
   * Recreate ssh and ssl keys during boot if the files are missing
   * Disable firefox default browser check
   * A warning about an FQDN with less then two dots was shown twice
-bug: [30034,33592,33437]
+  * Add cleanup -pre and -post hookdirectories
+  * Added a notifier and listener restart script to be executed after
+    appliance setup cleanup.
+bug: [30034,33592,33437,33729]
