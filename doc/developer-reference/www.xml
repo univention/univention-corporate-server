@@ -48,23 +48,23 @@
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  <envar>link</envar> defines a link to either an URL or a file representing the service (usually a web interface).
+		  <envar>link</envar> defines a link to a URL representing the service (usually a web interface).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  <envar>label</envar> specifies a title for an overview entry. The descriptions
+		  <envar>label</envar> specifies a title for an overview entry. The title
 		  can also be translated; e.g. <envar>label/de</envar> can be used for a title
 		  in German.
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  <envar>description</envar> configures a longer description of an overview entry. The descriptions
+		  <envar>description</envar> configures a longer description of an overview entry. The description
 		  can also be translated; e.g. <envar>description/de</envar> can be used for a description
 		  in German.
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Optionally an icon can be displayed. Using <envar>icon</envar> either a filename or an URI
+		  Optionally an icon can be displayed. Using <envar>icon</envar> either a filename or a URI
 		  can be provided. When specifying a filename, the name must be relative to the directory
 		  <filename>/var/www</filename>, i.e. with a leading '/'. All file formats typically
 		  displayed by browsers can be used (e.g. PNG/JPG). All icons must be scaled to 50x50 pixels.
@@ -72,7 +72,8 @@
 
 		<listitem><simpara>
 		  The display order can be specified using <envar>priority</envar>. Depending on the values
-		  the entries are displayed in lexicographical order.
+			the entries are displayed in <emphasis>lexicographical</emphasis> order (i.e.
+			<envar>100</envar> &lt; <envar>50</envar>).
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
