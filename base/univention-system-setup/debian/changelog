@@ -1,3 +1,11 @@
+univention-system-setup (7.0.66-6) unstable; urgency=low
+
+  * Add cleanup -pre and -post hookdirectories (Bug #33729)
+  * Added a notifier and listener restart script to be executed after
+    appliance setup cleanup. 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 13 Dec 2013 14:50:53 +0100
+
 univention-system-setup (7.0.66-5) unstable; urgency=low
 
   * Use correct quoting in system-setup-boot initscript (Bug #30034) 

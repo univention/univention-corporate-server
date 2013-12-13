@@ -61,6 +61,8 @@ ucr.load()
 
 PATH_SYS_CLASS_NET = '/sys/class/net'
 PATH_SETUP_SCRIPTS = '/usr/lib/univention-system-setup/scripts/'
+PATH_CLEANUP_PRE_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-pre.d/'
+PATH_CLEANUP_POST_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-post.d/'
 PATH_JOIN_SCRIPT = '/usr/lib/univention-system-setup/scripts/setup-join.sh'
 PATH_PROFILE = '/var/cache/univention-system-setup/profile'
 LOG_FILE = '/var/log/univention/setup.log'
@@ -451,6 +453,9 @@ def cleanup():
 			if p.name == 'python2.6' and '/usr/share/univention-system-setup/univention-system-setup' in p.cmdline:
 				p.kill()
 
+	# Run cleanup-pre scripts
+	run_scripts_in_path(PATH_CLEANUP_PRE_SCRIPTS, f, "cleanup-pre")
+
 	# unset the temporary interface if set
 	for var in ucr.keys():
 		if RE_IPV4_TYPE.match(var) and ucr.get(var) == 'appliance-mode-temporary':
@@ -466,11 +471,27 @@ def cleanup():
 	subprocess.call( CMD_DISABLE_EXEC, stdout = f, stderr = f )
 	subprocess.call( CMD_ENABLE_EXEC_WITH_RESTART, stdout = f, stderr = f )
 
+	# Run cleanup-post scripts
+	run_scripts_in_path(PATH_CLEANUP_POST_SCRIPTS, f, "cleanup-post")
+
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.flush()
 	f.close()
 
 	return True
+
+def run_scripts_in_path(path, logfile, category_name=""):
+	logfile.write('\n=== Running %s scripts (%s) ===\n' % (category_name, timestamp()))
+	logfile.flush()
+
+	if os.path.isdir(path):
+		for filename in sorted(os.listdir(path)):
+			logfile.write('Running %s' % filename);
+			subprocess.call(os.path.join(path, filename), stdout=logfile, stderr=logfile)
+			logfile.flush()
+
+	logfile.write('\n=== done (%s) ===\n' % timestamp())
+	logfile.flush()
 
 def detect_interfaces():
 	"""
