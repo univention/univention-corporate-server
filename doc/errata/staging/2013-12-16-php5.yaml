@@ -1,0 +1,14 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-errata3.1-1
+src: php5
+fix: 5.3.3-7.189.201312160807
+desc: |
+ Two security issues have been discovered in the PHP scripting language:
+ * Denial of service when processing DateInterval objects (CVE-2013-6712)
+ * Memory corruption when parsing X509 certificates
+note:
+cve:
+ - CVE-2013-6712
+ - CVE-2013-6420
