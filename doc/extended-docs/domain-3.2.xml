@@ -826,232 +826,220 @@ ServerName printserver.example.com
 <!-- 	</chapter> -->
 
 
-<!--     <chapter id="ext-dom-syncrepl"> -->
-<!-- 	  <title>Anbindung eines externen OpenLDAP-Servers über SyncRepl</title> -->
+    <chapter id="ext-dom-syncrepl">
+	  <title>Connecting an external OpenLDAP server via Syncrepl</title>
 
-<!-- 	  <section> -->
-<!-- 	  	<title>Einführung</title> -->
+	  <section>
+	  	<title>Introduction</title>
 
-<!-- 	  	<para> -->
-<!-- 	  	  Dieses Kapitel beschreibt die Ready-Only-Anbindung eines externen OpenLDAP-Servers über -->
-<!-- 	  	  einen Syncrepl-Proxy. Das externe System kann so auf die LDAP-Daten der UCS-Domäne zugreifen -->
-<!-- 	  	  ohne selbst Mitglied der Domäne zu sein. Diese Anleitung gilt prinzipiell für jedes -->
-<!-- 	  	  Unix-System mit OpenLDAP aber Version FIXME. Getestet wurde die Anleitung mit CentOS FIXME. -->
-<!-- 	  	  TODO: Ab wann ist syncrepl in OpenLDAP unterstützt -->
-<!-- 	  	</para> -->
+	  	<para>
+		  This chapter describes the read-only integration of an external OpenLDAP server via a
+		  Syncrepl proxy. This allows the external system to access the LDAP data of the UCS domain
+		  without being a member of the domain itself. This guide principally applies to any Unix
+		  system with OpenLDAP. The guide has been tested with Debian 7 Wheezy. Syncrepl is part of
+		  OpenLDAP starting with version 2.2.
+	  	</para>
 		
-<!-- 	  	<para> -->
-<!-- 	  	  Der externe OpenLDAP-Server wird im folgenden als -->
-<!-- 	  	  <emphasis>extldap.univention.test</emphasis> bezeichnet und synchronisiert sich mit dem -->
-<!-- 	  	  &ucsMaster;, der die LDAP-Basis <emphasis>dc=univention,dc=test</emphasis> verwendet. -->
-<!-- 	  	</para> -->
+	  	<para>
+		  The external OpenLDAP server is described as <emphasis>extldap.univention.test</emphasis>
+		  below and synchronises with the &ucsMaster;, which uses the LDAP base
+		  <emphasis>dc=univention,dc=test</emphasis>.
+	  	</para>
 		
-<!-- 	  	<para> -->
-<!-- 	  	  Die folgenden Schritte müssen auf dem OpenLDAP-System und dem UCS-System jeweils als -->
-<!-- 	  	  Benutzer <emphasis>root</emphasis> ausgeführt werden. -->
-<!-- 	  	</para> -->
-<!-- 	  </section> -->
+	  	<para>
+		  The following steps must be run on the OpenLDAP system and the UCS system as the
+		  <emphasis>root</emphasis> user:
+	  	</para>
+	  </section>
 
-<!-- 	  <section> -->
-<!-- 	  	<title>Anlegen eines Rechnerkontos</title> -->
-<!-- 	  	<para> -->
-<!-- 	  	  Für <emphasis>extldap.univention.test</emphasis> muss in der Rechnerverwaltung der -->
-<!-- 	  	  &ucsUMC; ein Rechnerobjekt vom Type <emphasis>IP managed client</emphasis> angelegt -->
-<!-- 	  	  werden und dem Rechner eine DNS-Forward- und Reverse-Zone zugewiesen werden. -->
-<!-- 	  	</para> -->
+	  <section>
+	  	<title>Creating a computer account</title>
+	  	<para>
+		  For <emphasis>extldap.univention.test</emphasis>, a <emphasis>Linux</emphasis>
+		  computer object must be created in the &ucsUMC; computer management and
+		  a DNS forward and reverse zone assigned to the computer.
+	  	</para>
 
-<!-- 	  	<para> -->
-<!-- 	  	  TODO: Geschieht das Erzeugen der SSL-Zertifikate nicht automatisch? -->
-<!-- 	  	  Außerdem müssen SSL-Zertifikate für das System erzeugt werden. -->
+	  </section>
 
-<!-- 		  <programlisting language="sh"> -->
-<!-- 	  	  univention-certificate new -name extldap.univention.test -days 730 -->
-<!-- 	  	  ln -s /etc/univention/ssl/extldap.univention.test  /etc/univention/ssl/extldap -->
-<!-- 		  </programlisting> -->
-<!-- 	  	</para> -->
-<!-- 	  </section> -->
+	  <section>
+		<title>Activation of Syncrepl on the master domain controller</title>
+		<!-- Can be trimmed drastically once 33709 is fixed -->
+		<para>
+		  Now a Syncrepl proxy needs to be set up on the &ucsMaster;. The required configuration
+		  files are downloaded from FIXME as a Tar archive.
+		</para>
 
-<!-- 	  <section> -->
-<!-- 		<title>Aktivierung von SyncRepl auf dem Domänencontroller Master</title> -->
-<!-- 		<para> -->
-<!-- 		  TODO: Bug anlegen, diese Dateien sollten in UCS integriert werden. -->
-<!-- 		  Nun muss auf dem &ucsMaster; ein SyncRepl-Proxy eingerichtet werden. Die nötigen -->
-<!-- 		  Konfigurationdateien werden können als Tar-Archiv von FIXME heruntergeladen werden. -->
-<!-- 		</para> -->
+		<para>
+		  The downloaded archive must firstly be extracted on the &ucsMaster;:
+		  <programlisting language="sh">
+tar -xvf syncrepl-proxy-setup.tgz
+		  </programlisting>
+		</para>
 
-<!-- 		<para> -->
-<!-- 		  Das heruntergeladene Archiv muss zuerst auf dem &ucsMaster; entpackt werden: -->
-<!-- 		  <programlisting language="sh"> -->
-<!-- tar -xvf syncrepl-proxy-setup.tgz -->
-<!-- 		  </programlisting> -->
-<!-- 		</para> -->
+		<para>
+		  The <filename>UCS_dc_master</filename> subdirectory contains two &ucsUCR; subfile
+		  templates for the LDAP server configuration file
+		  (<filename>/etc/ldap/slapd.conf</filename>). Subfiles are a mechanism in &ucsUCR; which
+		  can be used to generate a configuration file from several individual templates. More
+		  detailed information can be found in the UCS manual. The two subfiles are now copied into
+		  the template directory:
 
-<!-- 		<para> -->
-<!-- 		  Im Unterverzeichnis <filename>UCS_dc_master</filename> befinden sich zwei -->
-<!-- 		  &ucsUCR;-Subfile-Templates für die Konfigurationsdatei des LDAP-Servers -->
-<!-- 		  (<filename>/etc/ldap/slapd.conf</filename>). Subfiles sind ein Mechanismus in &ucsUCR; mit -->
-<!-- 		  dem eine Konfigurationsdatei aus mehreren Einzel-Templates generiert werden -->
-<!-- 		  kann. Weiterführende Informationen finden sich im UCS-Handbuch. Diese beiden Subfiles -->
-<!-- 		  müssen nun in das Template-Verzeichnis kopiert werden: -->
+		  <programlisting language="sh">
+mv UCS_dc_master/8*.conf /etc/univention/templates/files/etc/ldap/slapd.conf.d/
+mv UCS_dc_master/syncrepl-proxy.conf /etc/univention/templates/files/etc/ldap/
+		  </programlisting>
+		</para>
 
-<!-- 		  <programlisting language="sh"> -->
-<!-- mv UCS_dc_master/8*.conf /etc/univention/templates/files/etc/ldap/slapd.conf.d/ -->
-<!-- mv UCS_dc_master/syncrepl-proxy.conf /etc/univention/templates/files/etc/ldap/ -->
-<!-- 		  </programlisting> -->
-<!-- 		</para> -->
+		<para>
+		  The info file now needs to be copied. It registers the subfile templates and the &ucsUCR;
+		  variables used:
 
-<!-- 		<para> -->
-<!-- 		  Nun muss die info-Datei kopiert werden. Sie registriert die Subfile-Templates und die -->
-<!-- 		  verwendeten &ucsUCR;-Variablen: -->
+		  <programlisting language="sh">
+mv UCS_dc_master/syncrepl-proxy.info /etc/univention/templates/info/
+		  </programlisting>
 
-<!-- 		  <programlisting language="sh"> -->
-<!-- mv UCS_dc_master/syncrepl-proxy.info /etc/univention/templates/info/ -->
-<!-- 		  </programlisting> -->
+		  Then the <filename>slapd.conf</filename> is regenerated from the template:
 
-<!-- 		  Anschließend wird die <filename>slapd.conf</filename> aus dem Template neu generiert: -->
+		  <programlisting language="sh">
+ucr commit /etc/ldap/slapd.conf
+ucr commit /etc/ldap/syncrepl-proxy.conf
+		  </programlisting>
+		</para>
+	  </section>
 
-<!-- 		  <programlisting language="sh"> -->
-<!-- ucr commit /etc/ldap/slapd.conf -->
-<!-- ucr commit /etc/ldap/syncrepl-proxy.conf -->
-<!-- 		  </programlisting> -->
-<!-- 		</para> -->
-<!-- 	  </section> -->
+	  <section>
+		<title>Initial transfer of the LDAP data</title>
 
-<!-- 	  <section> -->
-<!-- 		<title>Initialer Transfer der LDAP-Daten</title> -->
-<!-- 		<para> -->
-<!-- 		  Nun wird ein initialer Datenauszug des UCS-Daten erstellt und auf das externe System -->
-<!-- 		  übertragen. Außerdem wird eine initiale Konfigurationsdatei für den OpenLDAP-Dienst -->
-<!-- 		  auf dem externen System kopiert (<filename>slapd.conf</filename>). -->
+		<para>
+		  Now an initial copy of the UCS data is created and transferred to the external system. In
+		  addition, an initial configuration file for the OpenLDAP service is copied onto the
+		  external system (<filename>slapd.conf</filename>).
 
-<!-- 		  TODO: Ist das Anhalten des slapd nötig? -->
-<!-- 		  <programlisting language="sh"> -->
-<!-- /etc/init.d/slapd stop -->
-<!-- slapcat > data.ldif -->
-<!-- /etc/init.d/slapd start -->
-<!-- scp remote_system/slapd.conf data.ldif extldap.univention.test: -->
-<!-- rm data.ldif -->
-<!-- 		  </programlisting> -->
-<!-- 		</para> -->
+		  <programlisting language="sh">
+slapcat > data.ldif
+scp remote_system/slapd.conf data.ldif extldap.univention.test:
+rm data.ldif
+		  </programlisting>
+		</para>
 
-<!-- 		<para> -->
-<!-- 		  Nun werden die LDAP-Schema-Dateien und die SSL-Zertifikate vom UCS-Master auf den externen -->
-<!-- 		  LDAP-Server übertragen: -->
+		<para>
+		  The LDAP schema data and the SSL certificates from the UCS master are now passed to the
+		  external LDAP server:
 
-<!-- 		  <programlisting language="sh"> -->
-<!-- rsync -aR /usr/share/univention-ldap/schema extldap.univention.test:/ -->
-<!-- rsync -aR /etc/univention/ssl/extldap.univention.test extldap.univention.test:/ -->
-<!-- rsync -aR /etc/univention/ssl/ucsCA/CAcert.pem extldap.univention.test:/ -->
-<!-- 		  </programlisting> -->
-<!-- 		</para> -->
-<!-- 	  </section> -->
+		  <programlisting language="sh">
+rsync -aR /usr/share/univention-ldap/schema extldap.univention.test:/
+rsync -aR /etc/univention/ssl/extldap.univention.test extldap.univention.test:/
+rsync -aR /etc/univention/ssl/ucsCA/CAcert.pem extldap.univention.test:/
+		  </programlisting>
+		</para>
+	  </section>
 
-<!-- 	  <section> -->
-<!-- 		<title>Konfiguration des LDAP-Dienstes auf dem Fremdsystem</title> -->
-<!-- 		<para> -->
-<!-- 		  Nun wird die Konfiguration des externen LDAP-Servers angepasst. Es ist zu beachten, dass -->
-<!-- 		  hier nur eine minimale <filename>slapd.conf</filename> installiert wird, die nach Bedarf -->
-<!-- 		  um lokale Anpassungen zu ergänzen ist: -->
+	  <section>
+		<title>Configuration of the LDAP service on the third-party system</title>
+		<para>
+		  The configuration of the external LDAP server is now adapted. It must be noted that only a
+		  minimal <filename>slapd.conf</filename> is installed here, which should be expanded with
+		  local adaptations as necessary:
 
-<!-- 		  <programlisting language="sh"> -->
-<!-- /etc/init.d/slapd stop -->
-<!-- cp /etc/ldap/slapd.conf /root/backup-slapd.conf -->
-<!-- cp /root/slapd.conf /etc/ldap -->
-<!-- 		  </programlisting> -->
-<!-- 		</para> -->
+		  <programlisting language="sh">
+/etc/init.d/slapd stop
+cp /etc/ldap/slapd.conf /root/backup-slapd.conf
+cp /root/slapd.conf /etc/ldap
+		  </programlisting>
+		</para>
 
-<!-- 		<para> -->
-<!-- 		  In der bereitgestellten Vorlage der <filename>/etc/ldap/slapd.conf</filename> müssen -->
-<!-- 		  nun verschiedene Einstellungen angepasst werden: -->
+		<para>
+		  A number of settings now need to be adapted in the provided
+		  <filename>/etc/ldap/slapd.conf</filename> template:
 
-<!-- 		  <itemizedlist> -->
-<!-- 			<listitem><simpara> -->
-<!-- 			  <emphasis>extldap.univention.test</emphasis> ist zu ersetzen durch den fully qualified -->
-<!-- 			  domain name des externen LDAP-Servers -->
-<!-- 			</simpara></listitem> -->
+		  <itemizedlist>
+			<listitem><simpara>
+			  <emphasis>extldap.univention.test</emphasis> must be replaced with the fully qualified
+			  domain name of the external LDAP server
+			</simpara></listitem>
 
-<!-- 			<listitem><simpara> -->
-<!-- 			  <emphasis>dc=univention,dc=test</emphasis> ist zu ersetzen durch die tatsächlich -->
-<!-- 			  verwendete LDAP-Basis -->
-<!-- 			</simpara></listitem> -->
+			<listitem><simpara>
+			  <emphasis>dc=univention,dc=test</emphasis> must be replaced with the LDAP base
+			  actually used
+			</simpara></listitem>
 
-<!-- 			<listitem><simpara> -->
-<!-- 			  <emphasis>REMOTE_UPDATE_PASSWORD</emphasis> ist zu ersetzen durch das Passwort mit dem -->
-<!-- 			  auf die LDAP-Datenbank zugegriffen werden soll -->
-<!-- 			</simpara></listitem> -->
-<!-- 		  </itemizedlist> -->
-<!-- 		</para> -->
-<!-- 	  </section> -->
+			<listitem><simpara>
+			  <emphasis>REMOTE_UPDATE_PASSWORD</emphasis> must be replaced with the password used to
+			  access the LDAP database
+			</simpara></listitem>
+		  </itemizedlist>
+		</para>
+	  </section>
 
-<!-- 	  <section> -->
-<!-- 		<title>Einspielen der initialen LDAP-Kopie</title> -->
-<!-- 		<para> -->
-<!-- 		  Nun wird die initiale Kopie der UCS-Verzeichnisdaten eingespielt und der LDAP-Server -->
-<!-- 		  wieder gestartet. Die Besitzrechte des Verzeichnis <filename>/var/lib/ldap/</filename> und -->
-<!-- 		  der Datei <filename>/etc/ldap/slapd.conf</filename> sind je nach Linux/Unix-Variante -->
-<!-- 		  unterschiedlich: -->
+	  <section>
+		<title>Importing the initial LDAP copy</title>
+		<para>
+		  The initial copy of the UCS directory data is now imported and the LDAP server
+		  restarted. The file permissions of the <filename>/var/lib/ldap/</filename> directory and
+		  the <filename>/etc/ldap/slapd.conf</filename> file differ depending on the Linux/Unix
+		  version:
 
-<!-- 		  <programlisting language="sh"> -->
-<!-- mkdir /root/ldap_backup_dir -->
-<!-- mv /var/lib/ldap/*.* /root/ldap_backup_dir -->
-<!-- slapadd -f /etc/ldap/slapd.conf -l /root/data.ldif -->
-<!-- chown openldap.openldap /var/lib/ldap/*.* -->
-<!-- chgrp openldap /etc/ldap/slapd.conf -->
-<!-- chgrp -R openldap /etc/univention/ssl -->
-<!-- /etc/init.d/slapd start -->
-<!-- 		  </programlisting> -->
-<!-- 		</para> -->
+		  <programlisting language="sh">
+mkdir /root/ldap_backup_dir
+mv /var/lib/ldap/*.* /root/ldap_backup_dir
+slapadd -f /etc/ldap/slapd.conf -l /root/data.ldif
+chown openldap.openldap /var/lib/ldap/*.*
+chgrp openldap /etc/ldap/slapd.conf
+chgrp -R openldap /etc/univention/ssl
+/etc/init.d/slapd start
+		  </programlisting>
+		</para>
 
-<!-- 		<para> -->
-<!-- 		  Damit ist die Konfiguration des externen LDAP-Servers abgeschlossen. Mit dem folgenden -->
-<!-- 		  Befehl (auszuführen auf dem &ucsMaster;) kann geprüft werden, ob der externe LDAP-Server -->
-<!-- 		  per LDAPS-Protokoll erreichbar ist: -->
+		<para>
+		  The configuration of the external LDAP server is now complete. The following command
+		  (performed on the &ucsMaster;) can be used to check whether the external LDAP server can
+		  be reached via the LDAPS protocol:
 
-<!-- 		  <programlisting language="sh"> -->
-<!-- ldapsearch -x -H ldaps://extldap.univention.test -b cn=Subschema -s base -->
-<!-- 		  </programlisting> -->
-<!-- 		</para> -->
+		  <programlisting language="sh">
+ldapsearch -x -H ldaps://extldap.univention.test -b cn=Subschema -s base
+		  </programlisting>
+		</para>
 
-<!-- 		<para> -->
-<!-- 		  TODO: Noch nötig? -->
-<!-- 		  Falls es sich bei dem externen System um ein Debian-System handelt, ist dazu ggf. die -->
-<!-- 		  Variable 'SLAPD_SERVICES' in /etc/default/slapd anzupassen. Außerdem kann hier über die -->
-<!-- 		  Variable 'SLAPD_CONF' die Datei "/etc/ldap/slapd.conf" als Konfigurationsdatei für den -->
-<!-- 		  SLAPD festgelegt werden, falls dies nicht der Standard der verwendeten OpenLDAP Version -->
-<!-- 		  ist. -->
-<!-- 		</para> -->
-<!-- 	  </section> -->
+		<para>
+		  TODO: Noch nötig?
+		  If the external system is a Debian system, the 'SLAPD_SERVICES' variable may need to be
+		  adapted in /etc/default/slapd. In addition, the 'SLAPD_CONF' variable can be used to
+		  specify the "/etc/ldap/slapd.conf" file as the configuration file for the SLAPD, if this
+		  is not the standard for the OpenLDAP version used.
+		</para>
+	  </section>
 
-<!-- 	  <section> -->
-<!-- 		<title>Aktivierung des SyncRepl-Proxys</title> -->
-<!-- 		<para> -->
-<!-- 		  Wenn die LDAPS-Verbindung funktioniert, kann die Konfiguration des Syncrepl-Proxys auf dem -->
-<!-- 		  &ucsMaster; aktiviert werden. Dazu ist das oben konfigurierte Passwort 'REMOTE_UPDATE_PASSWORD' in -->
-<!-- 		  der Datei <filename>/etc/replica-001.secret</filename> zu hinterlegen und die Adresse des externen LDAP-Servers in Form einer LDAP-URI in die -->
-<!-- 		  &ucsUCRV; <envar>ldap/replica/uri</envar> einzutragen: -->
+	  <section>
+		<title>Activation of the Syncrepl proxy</title>
+		<para>
+		  If the LDAPS connection functions, the configuration of the Syncrepl proxy can be
+		  activated on the &ucsMaster;. This is done by saving the 'REMOTE_UPDATE_PASSWORD' password
+		  configured above in the <filename>/etc/replica-001.secret</filename> file and entering the
+		  address of the external LDAP server in the form of a LDAP-URI in the &ucsUCRV;
+		  <envar>ldap/replica/uri</envar>:
 
-<!-- 		  <programlisting language="sh"> -->
-<!-- echo -n 'REMOTE_UPDATE_PASSWORD' >  /etc/replica-001.secret -->
-<!-- chmod 600 /etc/replica-001.secret -->
-<!-- univention-config-registry set ldap/replica/uri='ldaps://extldap.univention.test/' -->
-<!-- ucr commit /etc/ldap/syncrepl-proxy.conf -->
-<!-- /etc/init.d/slapd restart -->
-<!-- 		  </programlisting> -->
-<!-- 		</para> -->
+		  <programlisting language="sh">
+echo -n 'REMOTE_UPDATE_PASSWORD' >  /etc/replica-001.secret
+chmod 600 /etc/replica-001.secret
+univention-config-registry set ldap/replica/uri='ldaps://extldap.univention.test/'
+ucr commit /etc/ldap/syncrepl-proxy.conf
+/etc/init.d/slapd restart
+		  </programlisting>
+		</para>
 		
-<!-- 		<para> -->
-<!-- 		  Sollen mehrere Systeme angebunden werden, so können die entsprechenden LDAP-URIs durch -->
-<!-- 		  Leerzeichen getrennt in die Variable eingetragen werden und weitere -->
-<!-- 		  replica-Passwort-Dateien angelegt werden. Die Nummer im Namen der Passwortdateien ist für -->
-<!-- 		  jedes weitere System um eins zu erhöhen. -->
-<!-- 		</para> -->
+		<para>
+		  If several systems are connected, the corresponding LDAP-URIs can be entered in the
+		  variable separated with commas and additional replica password files created. The number
+		  in the name of the password files is incremented by one for each additional system.
+		</para>
 
-<!-- 		<para> -->
-<!-- 		  Die Replikation findet ausgehend vom &ucsMaster; über LDAPS zum Hostnamen des externen -->
-<!-- 		  LDAP-Serversystems statt. Dafür ist eine Namensauflösung notwendig (typischerweise per -->
-<!-- 		  DNS). Der Hostname muss vollständig angegeben sein, damit die Überprüfung des -->
-<!-- 		  SSL-Zertifikats zu ermöglichen. -->
-<!-- 		</para> -->
+		<para>
+		  The replication originates from the &ucsMaster; and is performed via LDAPS to the host
+		  name of the external LDAP server system. This requires working name resolution (typically via
+		  DNS). The host name must be specified as a fully qualified domain name to allow checking
+		  of the SSL certificate.
+		</para>
 
 <!-- 		<para> -->
 <!-- TODO: Check: -->
@@ -1061,17 +1049,17 @@ ServerName printserver.example.com
 <!-- HOST FQDN -->
 <!-- BASE    LDAPBASIS -->
 <!-- 		</para> -->
-<!-- 	  </section> -->
+	  </section>
 
-<!-- 	  <section> -->
-<!-- 		<title>Test der Replikation</title> -->
-<!-- 		<para> -->
-<!-- 		  Um die Replikation durch SyncRepl zu testen kann z.B. die Beschreibung eines existierenden -->
-<!-- 		  Benutzers geändert werden. Bei der LDAP-Suche auf dem externen Server sollte die geänderte -->
-<!-- 		  Beschreibung dann angezeigt werden. -->
-<!-- 		</para> -->
-<!-- 	  </section> -->
-<!-- 	</chapter> -->
+	  <section>
+		<title>Testing the replication</title>
+		<para>
+		  The replication via SyncRepl can be tested by changing the description of an existing user
+		  for example. When an LDAP search is performed on the external server, the changed
+		  description should then be displayed.
+		</para>
+	  </section>
+	</chapter>
 
     <?dbhtml-include href="../stylesheets/piwiki.html"?>
 </book>
