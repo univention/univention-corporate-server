@@ -1,9 +1,9 @@
-univention-system-setup (7.0.66-8) unstable; urgency=low
+univention-system-setup (7.0.66-9) unstable; urgency=low
 
   * Add appliance hook script which removes a forced setting
     for the UCRV update/available (Bug #33762)
 
- -- Erik Damrose <damrose@univention.de>  Tue, 17 Dec 2013 15:01:06 +0100
+ -- Erik Damrose <damrose@univention.de>  Tue, 17 Dec 2013 15:27:52 +0100
 
 univention-system-setup (7.0.66-7) unstable; urgency=low
 
