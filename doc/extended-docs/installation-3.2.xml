@@ -18,7 +18,7 @@
   </revhistory>
 </bookinfo>
 
-<chapter><title>Profile-based installation</title>
+<chapter id="profile:intro"><title>Profile-based installation</title>
 
 <para>
   In addition to the interactive installation described in the UCS

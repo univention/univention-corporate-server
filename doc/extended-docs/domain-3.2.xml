@@ -864,7 +864,7 @@ ServerName printserver.example.com
 
 <!-- 	  <section> -->
 <!-- 		<title>Activation of Syncrepl on the master domain controller</title> -->
-<!-- 		<\!-- Can be trimmed drastically once 33709 is fixed -\-> -->
+		<!-- Can be trimmed drastically once 33709 is fixed -->
 <!-- 		<para> -->
 <!-- 		  Now a Syncrepl proxy needs to be set up on the &ucsMaster;. The required configuration -->
 <!-- 		  files are downloaded from FIXME as a Tar archive. -->
@@ -1041,14 +1041,14 @@ ServerName printserver.example.com
 <!-- 		  of the SSL certificate. -->
 <!-- 		</para> -->
 
-<!-- <\!-- 		<para> -\-> -->
-<!-- <\!-- TODO: Check: -\-> -->
-<!-- <\!-- Um eine ebenso bequeme LDAP-Suche per "ldapsearch -x Ausdruck" auf dem externen LDAP-Serversystem zu ermöglichen wie dies auf UCS Systemen funktioniert, sollten dort in der Datei "/etc/ldap/ldap.conf" die folgenden Parameter gesetzt werden: -\-> -->
+<!-- 		<para> -->
+<!-- TODO: Check: -->
+<!-- Um eine ebenso bequeme LDAP-Suche per "ldapsearch -x Ausdruck" auf dem externen LDAP-Serversystem zu ermöglichen wie dies auf UCS Systemen funktioniert, sollten dort in der Datei "/etc/ldap/ldap.conf" die folgenden Parameter gesetzt werden: -->
 
-<!-- <\!-- TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem -\-> -->
-<!-- <\!-- HOST FQDN -\-> -->
-<!-- <\!-- BASE    LDAPBASIS -\-> -->
-<!-- <\!-- 		</para> -\-> -->
+<!-- TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem -->
+<!-- HOST FQDN -->
+<!-- BASE    LDAPBASIS -->
+<!-- 		</para> -->
 <!-- 	  </section> -->
 
 <!-- 	  <section> -->
