@@ -486,7 +486,8 @@ def run_scripts_in_path(path, logfile, category_name=""):
 
 	if os.path.isdir(path):
 		for filename in sorted(os.listdir(path)):
-			logfile.write('Running %s' % filename);
+			logfile.write('= Running %s\n' % filename);
+			logfile.flush()
 			subprocess.call(os.path.join(path, filename), stdout=logfile, stderr=logfile)
 			logfile.flush()
 
