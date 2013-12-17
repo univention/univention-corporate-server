@@ -1,3 +1,9 @@
+univention-system-setup (7.0.66-10) unstable; urgency=low
+
+  * Restart amavis in cleanup hook script (Bug #33765)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 17 Dec 2013 16:23:19 +0100
+
 univention-system-setup (7.0.66-9) unstable; urgency=low
 
   * Add appliance hook script which removes a forced setting
