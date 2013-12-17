@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-system-setup
-fix: 7.0.66-9.558.201312171529
+fix: 7.0.66-10.559.201312171632
 note:
 version: [0]
 desc: |
@@ -16,4 +16,5 @@ desc: |
     appliance setup cleanup.
   * Add appliance hook script which removes a forced setting
     for the UCRV update/available
-bug: [30034,33592,33437,33729,33762]
+  * Restart amavis in cleanup hook script
+bug: [30034,33592,33437,33729,33762,33765]
