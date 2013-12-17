@@ -1,0 +1,5 @@
+#!/bin/sh
+
+ucr unset --forced update/available
+
+exit 0
