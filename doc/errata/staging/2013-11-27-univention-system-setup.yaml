@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-system-setup
-fix: 7.0.66-7.556.201312170926
+fix: 7.0.66-9.558.201312171529
 note:
 version: [0]
 desc: |
@@ -14,4 +14,6 @@ desc: |
   * Add cleanup -pre and -post hookdirectories
   * Added a notifier and listener restart script to be executed after
     appliance setup cleanup.
-bug: [30034,33592,33437,33729]
+  * Add appliance hook script which removes a forced setting
+    for the UCRV update/available
+bug: [30034,33592,33437,33729,33762]
