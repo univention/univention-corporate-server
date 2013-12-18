@@ -37,6 +37,10 @@ print '\n\twinbind max clients = %s' % configRegistry.get('samba/winbind/max/cli
 
 if configRegistry.get('samba/winbind/nested/groups'):
 	print '\twinbind nested groups = %s' % configRegistry['samba/winbind/nested/groups']
+
+winbind_rpc_only = configRegistry.get('samba/winbind/rpc/only')
+if winbind_rpc_only:
+	print '\twinbind rpc only = %s' % winbind_rpc_only
 @!@
 	winbind enum users = yes
 	winbind enum groups = yes

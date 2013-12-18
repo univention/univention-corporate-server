@@ -1,3 +1,9 @@
+univention-samba (8.0.15-2) unstable; urgency=medium
+
+  * New UCR variable samba/winbind/rpc/only (Bug #33303)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 18 Dec 2013 13:44:07 +0100
+
 univention-samba (8.0.15-1) unstable; urgency=low
 
   * Don't remove the service entry from localhost in case of the S3 to

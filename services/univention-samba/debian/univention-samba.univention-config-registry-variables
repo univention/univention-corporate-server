@@ -238,6 +238,12 @@ Description[en]=UCS supports nested groups (groups as members of groups). If thi
 Type=str
 Categories=service-samba
 
+[samba/winbind/rpc/only]
+Description[de]=Ist diese Variable auf 'yes' gesetzt, verwendet Winbind RPC statt LDAP um Informationen von AD-kompatiblen Domänencontrollern abzufragen.
+Description[en]=If this variable is set to 'yes', Winbind will use RPC instead of LDAP to retrieve information from AD compatible Domain Controllers.
+Type=str
+Categories=service-samba
+
 [samba/netlogon/sync]
 Description[de]=Mit dieser Variable wird konfiguriert, wie das Netlogon-Verzeichnis des DC Master auf DC Backup/Slave-Systeme synchronisiert wird. Die folgenden Werte sind möglich: 'sync' synchronisiert die Dateien vom Master und löscht Skripte, die auf dem Master nicht mehr vorhanden sind. 'download' synchronisiert die Dateien vom Master, entfernt aber keine obsoleten Dateien. 'none' deaktiviert die Synchronisation. Ist die Variable nicht gesetzt, gilt 'sync'.
 Description[en]=This variable configures the synchronisation of the netlogon share from the DC master to DC backup/slave systems. The following values are possible: 'sync' synchronises the files from the master and removes scripts which are no longer present on the master. 'download' synchronises the files, but doesn't remove obsolete files. 'none' disables the synchronisation. If the variable is unset, 'sync' applies.
