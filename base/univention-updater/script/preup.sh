@@ -194,16 +194,7 @@ trusts_other_domains() {
 }
 
 if trusts_other_domains; then
-	echo "WARNING: The local UCS Samba domain trusts other Windows domains,"
-	echo "         i.e. it allows logins by users from other Windows domains."
-	echo "         Samba 4.1 currently does not support this, it's better to block the update."
-	echo "         This behaviour will be fixed in an upcoming errata update for UCS."
-	echo "         To continue anyway the UCR variable update32/ignore_samba_trust can be set to yes"
-	if is_ucr_true update32/ignore_samba_trust; then
-		echo "WARNING: update32/ignore_samba_trust is set to true. Continue as requested."
-	else
-		exit 1
-	fi
+	ucr set samba/winbind/rpc/only="yes"
 fi
 
 #################### Bug #22093
