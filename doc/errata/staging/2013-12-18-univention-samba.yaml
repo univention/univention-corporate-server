@@ -1,0 +1,16 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-samba
+fix: 8.0.15-2.450.201312181351
+note:
+version: [0]
+desc: |
+  This update fixes a bug in the configuration file parsing of the
+  UCS 3.2-0 Samba winbind daemon, which caused trust relations to
+  Windows Active Directory domains to fail (direction: UCS Samba
+  NT domain trusts Windows AD domain).
+  Now there is a new UCR variable samba/winbind/rpc/only.
+  In UCS 3.2-0 Samba NT domains this needs to be set to "yes" to make
+  trusts relations to Windows AD domains work.
+bug: [33303]
