@@ -771,7 +771,7 @@ static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEnt
 	   the replication handler should be checked for the changed object in any case,
 	   especially if we have an incomplete cache
 	*/
-	if ( (!strcmp(handler->name, "replication")) || cache_entry_module_present(old, handler->name)) {
+	if ( (strcmp(handler->name, "replication")) && cache_entry_module_present(old, handler->name)) {
 		char **cur;
 		bool uptodate = false;
 
