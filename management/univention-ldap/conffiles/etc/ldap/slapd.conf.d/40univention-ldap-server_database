@@ -33,7 +33,7 @@ if configRegistry['ldap/database/type'] == "bdb":
 		print 'checkpoint 1024 30'
 
 index_attrs={}
-indextypes=['eq','pres','sub','approx']
+indextypes=['pres','eq','sub','approx']
 
 for indextype in indextypes:
 	if configRegistry.has_key('ldap/index/%s'%indextype):
@@ -45,7 +45,11 @@ for indextype in indextypes:
 	else:
 		index_attrs['%s'%indextype]=[]
 
-indexcombinations=[['pres','eq','sub','approx'],['pres','eq','approx'],['pres','eq','sub'],['eq','approx'],['sub','approx'],['pres','eq'],['eq'],['sub'],['approx']]
+import itertools
+indexcombinations=[]
+for r in range(len(indextypes), 0, -1):
+	for indexcombination  in itertools.combinations(indextypes, r):
+		indexcombinations.append(indexcombination)
 
 found_attribs=[]
 for indexcombination in indexcombinations:

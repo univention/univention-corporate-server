@@ -1,3 +1,9 @@
+univention-ldap (10.0.17-10) unstable; urgency=medium
+
+  * Cover all possible index combinations (Bug #33430)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 19 Dec 2013 15:12:48 +0100
+
 univention-ldap (10.0.17-9) unstable; urgency=low
 
   * fixed small typo in 10univention-ldap-server.inst (Bug #33645) 
