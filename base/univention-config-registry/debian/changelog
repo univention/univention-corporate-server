@@ -1,3 +1,10 @@
+univention-config-registry (9.0.5-3) unstable; urgency=medium
+
+  * Make univention-ldapsearch accept standard udm authentication options
+    like --binddn, --bindpwd and --bindpwdfile (Bug #32560)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 19 Dec 2013 15:42:52 +0100
+
 univention-config-registry (9.0.5-2) unstable; urgency=low
 
   * added groupNameMapping() (Bug #33650) 

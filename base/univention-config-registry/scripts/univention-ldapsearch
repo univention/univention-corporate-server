@@ -34,25 +34,33 @@ eval "$(/usr/sbin/univention-config-registry shell)"
 
 ## check for option -D to avoid "ldapsearch: -D previously specified"
 ## check for option -w to avoid "ldapsearch: -y incompatible with -w"
+args=()
 for arg in "$@"; do
-	if [ "$arg" = "-D" ]; then
-		option_D_given=true
-	elif [ "$arg" = "-w" ]; then
-		option_w_given=true
+	if [ "$arg" = "-D" ] || [ "$arg" = "--binddn" ]; then
+		binddn_given=true
+		args[${#args[@]}]="-D"
+	elif [ "$arg" = "-w" ] || [ "$arg" = "--bindpwd" ]; then
+		password_given=true
+		args[${#args[@]}]="-w"
+	elif [ "$arg" = "--bindpwdfile" ]; then
+		password_given=true
+		args[${#args[@]}]="-y"
+	else
+		args[${#args[@]}]="$arg"
 	fi
 done
 
-if [ -z "$option_D_given" ]; then
+if [ -z "$binddn_given" ]; then
 	binddn="$ldap_binddn"
 	if [ -z "$binddn" ]; then
 		binddn="$ldap_hostdn"
 	fi
-	if [ -z "$option_w_given" ]; then
+	if [ -z "$password_given" ]; then
 		bindpw_file="/etc/machine.secret"
-		exec ldapsearch -ZZ -D "$binddn" -y $bindpw_file "$@"
+		exec ldapsearch -ZZ -D "$binddn" -y $bindpw_file "${args[@]}"
 	else
-		exec ldapsearch -ZZ -D "$binddn" "$@"
+		exec ldapsearch -ZZ -D "$binddn" "${args[@]}"
 	fi
 else
-	exec ldapsearch -ZZ "$@"
+	exec ldapsearch -ZZ "${args[@]}"
 fi
