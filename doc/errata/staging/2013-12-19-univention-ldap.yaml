@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-ldap
+fix: 10.0.17-10.652.201312191515
+note:
+version: [0]
+desc: |
+  The LDAP indices are now generated for all combinations
+  of LDAP search types configured via UCR "ldap/index/*".
+bug: [33430]
