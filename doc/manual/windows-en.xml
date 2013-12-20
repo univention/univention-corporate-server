@@ -1362,7 +1362,7 @@ net rpc trustdom list
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Manual copying of the group policy files from the AD SYSVOL share to UCS
+		  Copying of the group policy files from the Active Directory to UCS
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1388,8 +1388,7 @@ net rpc trustdom list
 
 		<listitem><simpara>
 		  The UCS domain controller needs to be installed with a unique IPv4 address in the same IP
-		  subnet as the Active Directory domain controller that is used for the takeover (an IPv4
-		  network is currently required) 
+		  subnet as the Active Directory domain controller that is used for the takeover.
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
@@ -1414,9 +1413,24 @@ net rpc trustdom list
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  If user logins to the AD server are possible  (e.g. through domain logins or terminal
+		  server sessions) it is recommended to deactivate them and to stop any services in the AD
+		  domain, which deliver data, e.g. mail servers. This ensures that no data is lost in case
+		  of a rollback to the original snapshot/backup. 
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  It is recommended to set the same password for the <emphasis>Administrator</emphasis>
+		  account on the AD server as the corresponding account in the UCS domain. In case different
+		  passwords are used, the password that was set last, will be the one that is finally valid
+		  after the takeover process (timestamps are compared for this).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  In a default installation the <emphasis>Administrator</emphasis> account of the AD server
 		  is deactivated. It should be activated in the local user management module. 
 		</simpara></listitem>
+
 	  </itemizedlist>
 	</para>
 
@@ -1430,20 +1444,8 @@ net rpc trustdom list
 net user administrator /active:yes
 net user administrator PASSWORD
 	  </programlisting>
-
-	  PASSWORD needs to be replaced by the actual password. To simplify matters it is recommended to
-	  set the same password for the Administrator account on the AD server as the corresponding account
-	  in the UCS domain. In case different passwords are used, the password that was set last, will
-	  be the one that is finally valid after the takeover process (timestamps are compared for
-	  this).
 	</para>
 
-	<para>
-	  If user logins to the AD server are possible  (e.g. through domain logins or terminal server
-	  sessions) it is recommended to deactivate them and to stop any services in the AD domain,
-	  which deliver data, e.g. mail servers. This ensures that no data is lost in case of a rollback
-	  to the original snapshot/backup. 
-	</para>
   </section>
 
   <section id="windows:adtakeover:phase1">
@@ -1463,9 +1465,6 @@ net user administrator PASSWORD
 	  <programlisting language="sh">
 /etc/init.d/samba4 stop
 	  </programlisting>
-
-	  After the AD takeover is finished, all other UCS domain controllers offering Active Directory
-	  services will need to be re-joined.
 	</para>
 
 	<para>
@@ -1487,8 +1486,7 @@ univention-ad-takeover IP-of-the-AD-server
 	</para>
 
 	<para>
-	  The script will try to access the LDAP directory of the specified Active Directory server. If
-	  no additional options are provived, the script will ask for the password of the <emphasis>Administrator</emphasis>
+	  The script will try to access the LDAP directory of the specified Active Directory server and asks for the password of the <emphasis>Administrator</emphasis>
 	  account on the AD server. By adding the <emphasis>-U</emphasis> option a different member account of the Active
 	  Directory group <emphasis>Domain Admins</emphasis> can be used.
 	</para>
@@ -1514,10 +1512,6 @@ univention-ad-takeover IP-of-the-AD-server
 		  Start Samba and the Univention S4 connector to replicate the Active Directory objects into
 		  the UCS OpenLDAP directory
 		</simpara></listitem>
-
-		<listitem><simpara>
-		  Report the successful completion of phase I and display instructions for phase II 
-		</simpara></listitem>
 	  </itemizedlist>
 	</para>
 	
@@ -1538,9 +1532,8 @@ univention-ad-takeover IP-of-the-AD-server
 	<para>
 	  This phase requires to log onto the Active Directory domain controller as the
 	  <emphasis>Administrator</emphasis>. There a command needs to be started to copy the group
-	  policy files from the Active Directory system volume share to the UCS system volume
-	  share. (The system volume share contains data required for user logins, such as group policy
-	  data and logon scripts).
+	  policy files from the Active Directory SYSVOL share to the UCS SYSVOL share. Further
+	  information on the SYSVOL share can be found at <xref linkend="windows:sysvolshare"/>.
 	</para>
 
 	<para>
@@ -1552,7 +1545,7 @@ robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\\sysvol
 	  </programlisting>
 
 	  It may be necessary to install the required robocopy tool, which is part of the Windows Server
-	  2003 Resource Kit Tools. On Windows 2008 [R2] the tool is already installed.
+	  2003 Resource Kit Tools. Starting with Windows 2008 the tool is already installed.
 	</para>
 
 	<para>
@@ -1576,9 +1569,6 @@ robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\\sysvol
 	</para>
 
 	<para>
-	</para>
-
-	<para>
 	  The script performs the following steps:
 
 	  <itemizedlist>
@@ -1589,7 +1579,8 @@ robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\\sysvol
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Use the name of the Active Directory domain controller as an alias in the UCS DNS server
+		  Use the name of the Active Directory domain controller as a DNS alias (see <xref
+		  linkend="ip-config:CNAME-Record_Alias-Records"/>) for the UCS DNS server.
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1598,8 +1589,8 @@ robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\\sysvol
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Perform some cleanup, e.g. removal of the domain controller account and related objects in
-		  the Samba 4 SAM account database.
+		  Perform some cleanup, e.g. removal of the AD domain controller account and related objects in
+		  the Samba SAM account database.
 		</simpara></listitem>
 
 		<listitem><simpara>
