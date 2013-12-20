@@ -44,6 +44,13 @@
 	</itemizedlist>
 
 	<para>
+	  UCS unterstützt die weitgehend automatische Migration einer bestehenden Microsoft Active
+	  Directory Domäne zu UCS. Dabei werden alle Benutzern, Gruppen, Rechnerobjekte und
+	  Gruppenrichtlinien übernommen ohne das die Windows-Clients erneut der Domäne beitreten
+	  müssen. Dies ist in <xref linkend="windows:adtakeover"/> beschrieben.
+	</para>
+
+	<para>
 	  Die Migration von einer Samba-Domäne auf NT-Basis zu einer Domäne mit Active
 	  Directory-Diensten ist im Univention Wiki <biblioref linkend="wiki-samba-update"/>
 	  beschrieben.
