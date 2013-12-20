@@ -227,11 +227,6 @@
 	  <filename>/var/log/univention/management-console-module-appcenter.log</filename> log file.
 	</para>
 
-	<para>
-	  When using a local repository, applications can also be mirrored locally. This is described in
-	  <xref linkend="software::createrepo"/>. This is only recommended for large installations.
-	</para>
-
   </section>
 
   <section id="software::configrepo">
@@ -401,33 +396,6 @@ univention-repository-update -h
 	  <para>
 		The local repository can be activated/deactivated using the &ucsUCRV;
 		<envar>local/repository</envar>.
-	  </para>
-
-	  <para>
-		Components from the Univention App Center (see <xref linkend="software:appcenter"/>) can
-		also be mirrored in a local repository. This is done using the following command:
-
-	  <programlisting language="sh">
-	  	univention-add-app -l APPID
-	  </programlisting>
-	  
-	  The APPID can be determined using the <emphasis>ID=</emphasis> entry in the INI files at
-	  <uri>http://appcenter.software-univention.de/meta-inf/3.2/</uri>; for UCS@school, for example,
-	  <emphasis>ucsschool</emphasis>. The <emphasis>-l</emphasis> option ensures that the latest
-	  version of the application is mounted.
-	  </para>
-
-	  <para>
-		<command>univention-add-app</command> registers a range of &ucsUCR; variables per
-		application. The variable ending in <emphasis>localmirror</emphasis> must then be activated
-		(e.g.: <envar>repository/online/component/ucsschool_20131007/localmirror</envar>) and the command
-		<command>univention-repository-update net</command> executed. The &ucsUCRV;
-		<envar>repository/app_center/server</envar> should not be modified!
-	  </para>
-
-	  <para>
-		If updates are released for an application, <command>univention-add-app</command> must be
-		run again as described above and the <envar>localmirror</envar> variable activated again.
 	  </para>
 
 	</section>
