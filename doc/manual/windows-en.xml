@@ -1346,4 +1346,345 @@ net rpc trustdom list
   </section>
 </section>
 
+<section id="windows:adtakeover">
+  <title>Migrating an Active Directory domain to UCS using Univention AD Takeover</title>
+
+  <section id="windows:adtakeover:intro">
+	<title>Introduction</title>
+	<para>
+	  UCS supports the takeover of user, groups and computer objects as well as Group Policy Objects
+	  (GPOs) from a Microsoft Active Directory (AD) domain. The takeover is an interactive process
+	  consisting of three distinct phases:
+
+	  <itemizedlist>
+		<listitem><simpara>
+		  Joining the UCS domain controller into the Active Directory domain
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Manual copying of the group policy files from the AD SYSVOL share to UCS
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Deactivation of the AD server und assignment of all FSMO roles to the UCS DC 
+		</simpara></listitem>
+	  </itemizedlist>
+	</para>
+
+	<para>
+	  The following requirements must be met for the takeover:
+
+	  <itemizedlist>
+		<listitem><simpara>
+		  The UCS domain controller (&ucsMaster;, &ucsBackup; or &ucsSlave;) needs to be installed
+		  with a unique hostname, not used in the AD domain.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The UCS domain controller needs to be installed with the same DNS domain name, NetBIOS
+		  (pre-Windows 2000) domain name and Kerberos realm as the AD domain. It is also recommended
+		  to configure the same LDAP base DN.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The UCS domain controller needs to be installed with a unique IPv4 address in the same IP
+		  subnet as the Active Directory domain controller that is used for the takeover (an IPv4
+		  network is currently required) 
+		</simpara></listitem>
+	  </itemizedlist>
+	</para>
+
+	<para>
+	  The <command>univention-ad-takeover</command> script is installed as a part of the package
+	  <package>univention-s4-connector</package> and needs to be run as the
+	  <emphasis>root</emphasis> user on the domain controller that runs the Univention S4 Connector
+	  (usually the master domain controller). 
+	</para>
+  </section>
+
+  <section id="windows:adtakeover:preparations">
+	<title>Preparation</title>
+	<para>
+	  The following steps are strongly recommended before attempting the takeover:
+
+	  <itemizedlist>
+		<listitem><simpara>
+		  A backup of the AD server(s) should be performed. If the AD server is running on a
+		  virtualization solution, a snapshot should be made. 
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  In a default installation the <emphasis>Administrator</emphasis> account of the AD server
+		  is deactivated. It should be activated in the local user management module. 
+		</simpara></listitem>
+	  </itemizedlist>
+	</para>
+
+	<para>
+	  The activation of the <emphasis>Administrator</emphasis> account on the AD server is
+	  recommended because this account has all the required privileges to copy the GPO sysvol
+	  files. The activation can be achieved by means of the <guimenu>Active Directory Users and
+	  Computers</guimenu> module or by running the following two commands:
+
+	  <programlisting language="sh">
+net user administrator /active:yes
+net user administrator PASSWORD
+	  </programlisting>
+
+	  PASSWORD needs to be replaced by the actual password. To simplify matters it is recommended to
+	  set the same password for the Administrator account on the AD server as the corresponding account
+	  in the UCS domain. In case different passwords are used, the password that was set last, will
+	  be the one that is finally valid after the takeover process (timestamps are compared for
+	  this).
+	</para>
+
+	<para>
+	  If user logins to the AD server are possible  (e.g. through domain logins or terminal server
+	  sessions) it is recommended to deactivate them and to stop any services in the AD domain,
+	  which deliver data, e.g. mail servers. This ensures that no data is lost in case of a rollback
+	  to the original snapshot/backup. 
+	</para>
+  </section>
+
+  <section id="windows:adtakeover:phase1">
+	<title>Takeover phase 1</title>
+	<para>
+	  The takeover must be initiated on the UCS domain controller that runs the Univention S4 Connector
+	  (by default the &ucsMaster;). During the takeover process Samba must only run on this UCS
+	  system. If other Samba domain controllers have been added to the UCS domain, they need to be
+	  stopped! This is important to avoid data corruption by mixing directory data taken over from
+	  Active Directory with Samba 4 directory data replicated from other UCS domain controllers.
+	</para>
+
+	<para>
+	  Other Samba systems can be stopped by logging into each of the other UCS domain controllers as
+	  root user and running
+
+	  <programlisting language="sh">
+/etc/init.d/samba4 stop
+	  </programlisting>
+
+	  After the AD takeover is finished, all other UCS domain controllers offering Active Directory
+	  services will need to be re-joined.
+	</para>
+
+	<para>
+	  After ensuring that only the Univention S4 Connector host runs Samba 4, the takeover process
+	  can be started. If the UCS domain was installed initially with a UCS version before UCS 3.2,
+	  the following &ucsUCRV; needs to be set first:
+
+	  <programlisting language="sh">
+ucr set connector/s4/mapping/group/grouptype=false
+	  </programlisting>
+	</para>
+
+	<para>
+	  The takeover process can be started from the command line by running the following command as the root user:
+
+	  <programlisting language="sh">
+univention-ad-takeover IP-of-the-AD-server
+	  </programlisting>
+	</para>
+
+	<para>
+	  The script will try to access the LDAP directory of the specified Active Directory server. If
+	  no additional options are provived, the script will ask for the password of the <emphasis>Administrator</emphasis>
+	  account on the AD server. By adding the <emphasis>-U</emphasis> option a different member account of the Active
+	  Directory group <emphasis>Domain Admins</emphasis> can be used.
+	</para>
+
+	<para>
+	  The script performs the following steps:
+
+	  <itemizedlist>
+		<listitem><simpara>
+		  Check that the AD domain controller can be accessed
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Adjust the system time of the UCS system to the system time of the Active Directory domain
+		  controller in case they differ by more than three minutes.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Join the UCS domain controller into the Active Directory domain
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Start Samba and the Univention S4 connector to replicate the Active Directory objects into
+		  the UCS OpenLDAP directory
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Report the successful completion of phase I and display instructions for phase II 
+		</simpara></listitem>
+	  </itemizedlist>
+	</para>
+	
+	<para>
+	  The script output is shown on the terminal. Additional information is logged to
+	  <filename>/var/log/univention/ad-takeover.log</filename>.
+	</para>
+  </section>
+
+  <section id="windows:adtakeover:phase2">
+	<title>Takeover phase 2</title>
+	<para>
+	  With the completion of phase I the UCS domain controller now contains all users, groups and
+	  computers of the Active Directory domain. This is required for the correct takeover of
+	  permissions of the files and directories that will be copied in phase II.
+	</para>
+
+	<para>
+	  This phase requires to log onto the Active Directory domain controller as the
+	  <emphasis>Administrator</emphasis>. There a command needs to be started to copy the group
+	  policy files from the Active Directory system volume share to the UCS system volume
+	  share. (The system volume share contains data required for user logins, such as group policy
+	  data and logon scripts).
+	</para>
+
+	<para>
+	  For convenience the <command>univention-ad-takeover</command> script prints this command line
+	  to the screen at the end of phase I:
+
+	  <programlisting language="sh">
+robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\\sysvol
+	  </programlisting>
+
+	  It may be necessary to install the required robocopy tool, which is part of the Windows Server
+	  2003 Resource Kit Tools. On Windows 2008 [R2] the tool is already installed.
+	</para>
+
+	<para>
+	  Note: The <emphasis>/mir</emphasis> option of robocopy mirrors the specified source
+	  directory to the destination directory. Please be aware that if you delete data in the
+	  source directory and execute this command a second time, this data will also be deleted in
+	  the destination directory.
+	</para>
+
+	<para>
+	  After successful completion of this step, it is now necessary to shutdown all domain
+	  controllers of the Active Directory domain. 
+	</para>
+  </section>
+
+  <section id="windows:adtakeover:phase3">
+	<title>Takeover phase 3</title>
+	<para>
+	  The takeover process proceeds on the command line of the UCS domain controller, where the
+	  <command>univention-ad-takeover</command> commands keeps waiting to continue with phase III.
+	</para>
+
+	<para>
+	</para>
+
+	<para>
+	  The script performs the following steps:
+
+	  <itemizedlist>
+		<listitem><simpara>
+		  Ensure that the AD server is no longer accessible. This is important, because the script
+		  will claim all FSMO roles for the UCS domain controller to finalise the AD takeover
+		  process.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Use the name of the Active Directory domain controller as an alias in the UCS DNS server
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Configure the IP address of the Active Directory domain controller as a virtual ethernet
+		  interface
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Perform some cleanup, e.g. removal of the domain controller account and related objects in
+		  the Samba 4 SAM account database.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Finally restart Samba and the DNS server 
+		</simpara></listitem>
+	  </itemizedlist>
+	</para>
+  </section>
+
+  <section id="windows:adtakeover:finalsteps">
+	<title>Final steps of the takeover</title>
+	<para>
+	  After completion of the AD Takeover script the following steps are required:
+
+	  <itemizedlist>
+		<listitem><simpara>
+		  The domain function level of the migrated Active Directory domain needs to be checked by
+		  running the following command:
+
+		  <programlisting language="sh">
+samba-tool domain level show
+		  </programlisting>
+
+		  In case this command returns the message <guimenu>ATTENTION: You run SAMBA 4 on a forest
+		  function level lower than Windows 2000 (Native).</guimenu> the following commands should
+		  be run to fix this:
+
+		  <programlisting language="sh">
+samba-tool domain level raise --forest-level=2003 --domain-level=2003
+samba-tool dbcheck --fix --yes
+		  </programlisting>
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  In case there has been more than one Active Directory domain controller in the original
+		  Active Directory domain, all the host accounts of the other domain controllers must be
+		  removed in the computers management module of the Univention Management Console.
+		  In addition their accounts must be removed from the Samba SAM database. This may be done
+		  by logging on to a migrated Windows client as the <emphasis>Administrator</emphasis> and
+		  running the <guimenu>Active Directory Users and Computers tool</guimenu>.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  If more than one UCS domain controller with Samba domain controller has been installed,
+		  these servers need to be re-joined.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  All Windows clients need to be rebooted.
+		</simpara></listitem>
+	  </itemizedlist>
+	</para>
+  </section>
+
+  <section id="windows:adtakeover:tests">
+	<title>Tests</title>
+	<para>
+	  It is recommended to perform thorough tests with Windows client systems, e.g.
+
+	  <itemizedlist>
+		<listitem><simpara>
+		  Login to a migrated client as a migrated user
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Login to a migrated client as the Administrator
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Testing group policies
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Join of a new Windows client
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Creation of a new UCS user and login to a Windows client 
+		</simpara></listitem>
+	  </itemizedlist>
+	</para>
+  </section>
+
+</section>
+
+
+
 </chapter>
