@@ -1358,7 +1358,7 @@ net rpc trustdom list
   <section id="windows:adtakeover:intro">
 	<title>Introduction</title>
 	<para>
-	  UCS supports the takeover of user, groups and computer objects as well as Group Policy Objects
+	  UCS supports the takeover of user, group and computer objects as well as Group Policy Objects
 	  (GPOs) from a Microsoft Active Directory (AD) domain. The takeover is an interactive process
 	  consisting of three distinct phases:
 
@@ -1368,7 +1368,7 @@ net rpc trustdom list
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Copying of the group policy files from the Active Directory to UCS
+		  Copying of the group policy files from the AD server to UCS
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1507,7 +1507,7 @@ univention-ad-takeover IP-of-the-AD-server
 
 		<listitem><simpara>
 		  Adjust the system time of the UCS system to the system time of the Active Directory domain
-		  controller in case they differ by more than three minutes.
+		  controller in case the UCS time is behind by more than three minutes.
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1585,7 +1585,7 @@ robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\\sysvol
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Use the name of the Active Directory domain controller as a DNS alias (see <xref
+		  Register the name of the Active Directory domain controller as a DNS alias (see <xref
 		  linkend="ip-config:CNAME-Record_Alias-Records"/>) for the UCS DNS server.
 		</simpara></listitem>
 
@@ -1635,8 +1635,9 @@ samba-tool dbcheck --fix --yes
 		  Active Directory domain, all the host accounts of the other domain controllers must be
 		  removed in the computers management module of the Univention Management Console.
 		  In addition their accounts must be removed from the Samba SAM database. This may be done
-		  by logging on to a migrated Windows client as the <emphasis>Administrator</emphasis> and
-		  running the <guimenu>Active Directory Users and Computers tool</guimenu>.
+		  by logging on to a migrated Windows client as member of the group
+		  <emphasis>Domain Admins</emphasis> and running the tool
+		  <guimenu>Active Directory Users and Computers</guimenu>.
 		</simpara></listitem>
 
 		<listitem><simpara>

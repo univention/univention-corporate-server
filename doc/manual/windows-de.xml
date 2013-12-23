@@ -1482,11 +1482,11 @@ net user administrator PASSWORT
 	  Die Übernahme muss auf dem UCS Domänencontroller gestartet werden, auf dem der Univention S4
 	  Connector läuft (normalerweise der &ucsMaster;). Während der Übernahme sollte Samba nur auf
 	  diesem UCS-System laufen. Gibt es weitere Samba-Domänencontroller müssen diese angehalten
-	  werden. Dies ist wichtig um replikationsbedingte Datenkonsistenzen zu vermeiden.
+	  werden. Dies ist wichtig um replikationsbedingte Dateninkonsistenzen zu vermeiden.
 	</para>
 
 	<para>
-	  Andere Samba-System können mit dem folgenden Befehl gestoppt werden:
+	  Andere Samba-Systeme können gestoppt werden, indem auf jedem UCS-Domänencontroller als root z.B. über eine SSH-Verbindung folgender Befehl ausfgeführt wird:
 
 	  <programlisting language="sh">
 /etc/init.d/samba4 stop
@@ -1494,7 +1494,7 @@ net user administrator PASSWORT
 	</para>
 
 	<para>
-	  Nachdem sichergestellt wurde das keine anderen Samba-Domänencontroller laufen kann die
+	  Nachdem sichergestellt wurde, dass keine anderen Samba-Domänencontroller laufen, kann die
 	  Übernahme beginnen. Wurde die UCS-Domäne mit einer UCS-Version vor 3.2 installiert muss zuerst
 	  die folgende &ucsUCRV; gesetzt werden:
 
@@ -1515,7 +1515,7 @@ univention-ad-takeover IP-des-AD-Servers
 	  Das Skript versucht auf das LDAP-Verzeichnis des angegebenen Active Directory-Servers
 	  zuzugreifen und fragt das Passwort des <emphasis>Administrator</emphasis> auf dem AD-Server
 	  ab. Mit der Option <emphasis>-U</emphasis> kann die Übernahme auch mit einem abweichenden
-	  Benutzer erfolgen (dieser muss Mitglied der Gruppe  <emphasis>Domain Admins</emphasis> sein).
+	  Benutzer erfolgen (dieser muss Mitglied der AD-Gruppe  <emphasis>Domain Admins</emphasis> sein).
 	</para>
 
 	<para>
@@ -1528,7 +1528,7 @@ univention-ad-takeover IP-des-AD-Servers
 
 		<listitem><simpara>
 		  Anpassung der Systemzeit des UCS-Systems auf die Systemzeit der Active Directory-Domäne
-		  wenn diese um mehr als drei Minuten differieren
+		  wenn diese um mehr als drei Minuten nachgeht
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1582,7 +1582,7 @@ robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\\sysvol
 	</para>
 
 	<para>
-	  Nach erfolgreichem Abschluss dieser Schritte können der/die AD-Domänencontroller nun
+	  Nach erfolgreichem Abschluss dieser Schritte sollten der/die AD-Domänencontroller nun
 	  heruntergefahren werden.
 	</para>
   </section>
@@ -1600,7 +1600,7 @@ robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\\sysvol
 	  <itemizedlist>
 		<listitem><simpara>
 		  Sicherstellung, dass der AD-Server nicht länger erreichbar ist. Dies ist wichtig, da das
-		  Skript alle FSMO-Rollen des UCS-Domänencontrollers übernimmt.
+		  Skript alle FSMO-Rollen auf den UCS-Domänencontroller überträgt.
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1613,7 +1613,7 @@ robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\\sysvol
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Verschiedene Anpassungen, z.B. Entfernen der alten AD-Domänencontroller-Eintrag aus der
+		  Verschiedene Anpassungen, z.B. Entfernen des alten AD-Domänencontroller-Eintrags aus der
 		  Samba SAM-Datenbank.
 		</simpara></listitem>
 
@@ -1653,13 +1653,13 @@ samba-tool dbcheck --fix --yes
 		  Gab es in der migrierten AD-Domäne mehr als einen Domänencontroller, müssen die
 		  Rechnerkonten der weiteren Domänencontroller in der Rechnerverwaltung der UMC gelöscht
 		  werden. Außerdem müssen sie aus der Samba SAM-Datenbank gelöscht werden. Dies kann
-		  erfolgen, in dem von einem migrierten Windows-Client eine Anmeldung als
-		  <emphasis>Administrator</emphasis> erfolgt und das AD-Verwaltungstool für Benutzer und
+		  erfolgen, indem von einem migrierten Windows-Client eine Anmeldung als Mitglied der Gruppe
+		  <emphasis>Domain Admins</emphasis> erfolgt und das AD-Verwaltungstool für Benutzer und
 		  Computer aufgerufen wird.
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Gibt es weitere Samba-Domänencontroller müssen diese neu der Domäne beitreten.
+		  Gibt es weitere Samba-Domänencontroller, müssen diese neu der Domäne beitreten.
 		</simpara></listitem>
 
 		<listitem><simpara>
