@@ -45,7 +45,7 @@
 
 	<para>
 	  UCS unterstützt die weitgehend automatische Migration einer bestehenden Microsoft Active
-	  Directory Domäne zu UCS. Dabei werden alle Benutzern, Gruppen, Rechnerobjekte und
+	  Directory Domäne zu UCS. Dabei werden alle Benutzer, Gruppen, Rechnerobjekte und
 	  Gruppenrichtlinien übernommen ohne das die Windows-Clients erneut der Domäne beitreten
 	  müssen. Dies ist in <xref linkend="windows:adtakeover"/> beschrieben.
 	</para>
