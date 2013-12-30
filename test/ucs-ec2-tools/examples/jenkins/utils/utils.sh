@@ -34,10 +34,12 @@ basic_setup ()
 	/etc/network/if-up.d/z_route
 	sleep 10 # just wait a few seconds to give the amazone cloud some time
 	ucr set updater/identify="UCS (EC2 Test)"
+	ucr set update/check/cron/enabled=false update/check/boot/enabled=false
 }
 
 upgrade_to_latest_errata ()
 {
+	/root/activate-3.2-errata-test-scope.sh
 	univention-upgrade --noninteractive --ignoreterm --ignoressh
 	# Workaround for Bug #31561
 	sleep 10
