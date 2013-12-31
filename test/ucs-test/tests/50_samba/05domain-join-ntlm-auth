@@ -27,7 +27,6 @@ echo "----Create Domain Admin"
 ## create samba domain admin
 udm-test users/user create --option posix --option samba \
 	--set "primaryGroup=cn=Domain Admins,cn=groups,$ldap_base" \
-	--set "unixhome=/tmp" \
 	--set "password=$password" \
 	--set "lastname=$username" \
 	--set "username=$username" \
