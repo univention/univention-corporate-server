@@ -92,7 +92,13 @@ switch_to_test_app_center ()
 
 install_apps ()
 {
+ 	for app in $@; do echo "$app" >>/var/cache/appcenter-installed.txt; done
 	for app in $@; do univention-add-app -a --latest $app; done
+}
+
+install_apps_master_packages ()
+{
+	for app in $@; do univention-add-app -m --latest $app; done
 }
 
 install_ucs_test ()
