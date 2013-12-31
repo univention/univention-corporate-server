@@ -39,12 +39,21 @@ basic_setup ()
 
 upgrade_to_latest_errata ()
 {
+	univention-upgrade --noninteractive --ignoreterm --ignoressh
+	# Workaround for Bug #31561
+	sleep 10
+	univention-upgrade --noninteractive --ignoreterm --ignoressh
+}
+
+upgrade_to_latest_test_errata ()
+{
 	/root/activate-3.2-errata-test-scope.sh
 	univention-upgrade --noninteractive --ignoreterm --ignoressh
 	# Workaround for Bug #31561
 	sleep 10
 	univention-upgrade --noninteractive --ignoreterm --ignoressh
 }
+
 
 upgrade_to_3.2 ()
 {
