@@ -69,7 +69,7 @@ removeObject ()
 }
 
 # These objects should be counted as managed clients
-for m in "computers/linux" "computers/macos" "computers/managedclient" \
+for m in "computers/linux" "computers/macos" \
 			"computers/mobileclient" \
 			"computers/ubuntu" "computers/windows" \
 			"computers/windows_domaincontroller"; do

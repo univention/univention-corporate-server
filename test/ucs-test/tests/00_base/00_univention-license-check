@@ -49,18 +49,8 @@ if __name__ == '__main__':
 					}
 				} for module in ('computers/windows',
 								 'computers/windows_domaincontroller',
-								 'computers/managedclient',
 								 'computers/macos')
 			],
-			'Desktops':
-			[
-				{
-					'computers/managedclient':
-					{
-						'name': uts.random_name()
-					}
-				}
-			]
 		},
 		'2': {
 			'Users':
@@ -97,8 +87,7 @@ if __name__ == '__main__':
 				} for module in ('computers/ubuntu',
 								 'computers/linux',
 								 'computers/windows',
-								 'computers/macos',
-								 'computers/managedclient')
+								 'computers/macos')
 			]
 		}
 	}
