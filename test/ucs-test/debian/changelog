@@ -1,11 +1,17 @@
-ucs-test (4.0.161-16) precise; urgency=low
+ucs-test (4.0.161-17) unstable; urgency=low
+
+  * Remove computers/mobileclient from 00_base/45license_v2 (Bug #33813)
+
+ -- stefan <gohmann@univention.de>  Tue, 31 Dec 2013 12:59:25 +0100
+
+ucs-test (4.0.161-16) unstable; urgency=low
 
   * Remove computers/managedclient from 00_base/00_univention-license-
     check and 00_base/45license_v2 (Bug #33813)
 
  -- stefan <gohmann@univention.de>  Tue, 31 Dec 2013 11:36:03 +0100
 
-ucs-test (4.0.161-15) precise; urgency=low
+ucs-test (4.0.161-15) unstable; urgency=low
 
   * Don't use /tmp as home. In UCS@school the home directory is moved if
     the user is removed (Bug #33812)
