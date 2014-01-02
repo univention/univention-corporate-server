@@ -33,7 +33,7 @@ basic_setup ()
 	chmod +x /etc/network/if-up.d/z_route
 	/etc/network/if-up.d/z_route
 	sleep 10 # just wait a few seconds to give the amazone cloud some time
-	ucr set updater/identify="UCS (EC2 Test)"
+	ucr set --force updater/identify="UCS (EC2 Test)"
 	ucr set update/check/cron/enabled=false update/check/boot/enabled=false
 }
 
@@ -69,6 +69,7 @@ run_setup_join ()
 	/usr/lib/univention-system-setup/scripts/setup-join.sh
 	ucr set apache2/startsite='ucs-overview/' # Bug #31682
 	for srv in univention-management-console-server univention-management-console-web-server apache2; do invoke-rc.d $srv restart; done
+	test -x /usr/lib/univention-system-setup/appliance-hooks.d/remove_ucr_force_update_available && /usr/lib/univention-system-setup/appliance-hooks.d/remove_ucr_force_update_available
 }
 
 run_setup_join_on_non_master ()
@@ -78,6 +79,7 @@ run_setup_join_on_non_master ()
 	/usr/lib/univention-system-setup/scripts/setup-join.sh --dcaccount Administrator --password_file /tmp/univention
 	ucr set apache2/startsite='ucs-overview/' # Bug #31682
 	for srv in univention-management-console-server univention-management-console-web-server apache2; do invoke-rc.d $srv restart; done
+	test -x /usr/lib/univention-system-setup/appliance-hooks.d/remove_ucr_force_update_available && /usr/lib/univention-system-setup/appliance-hooks.d/remove_ucr_force_update_available
 }
 
 wait_for_reboot ()
