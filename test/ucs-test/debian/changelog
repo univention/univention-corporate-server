@@ -1,3 +1,11 @@
+ucs-test (4.0.161-18) unstable; urgency=low
+
+  * 10_ldap/60failedldif: Re-create smb.conf which could be corrupted
+    while testing the failed LDIF handling. This is only a workaround
+    (Bug #33050)
+
+ -- stefan <gohmann@univention.de>  Fri, 03 Jan 2014 23:03:31 +0100
+
 ucs-test (4.0.161-17) unstable; urgency=low
 
   * Remove computers/mobileclient from 00_base/45license_v2 (Bug #33813)
