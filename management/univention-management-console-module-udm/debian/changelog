@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.97-13) unstable; urgency=low
+
+  * Bug #33004: Fixed links when having multiple UCR policies active at the
+    same time
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 06 Jan 2014 14:02:26 +0100
+
 univention-management-console-module-udm (4.0.97-12) unstable; urgency=low
 
   * Bug #33004: Certain policies did not get a link to directly edit them when

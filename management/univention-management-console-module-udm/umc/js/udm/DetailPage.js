@@ -1032,7 +1032,7 @@ define([
 									container.addChild(container.$linkWidget$);
 								} else {
 									// link widget already exists, update its content
-									container.$linkWidget$.set('content', label);
+									container.$linkWidget$.get('content').set('content', label);
 								}
 							}, this);
 
