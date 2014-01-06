@@ -1200,7 +1200,7 @@ def run_phaseI(ucr, lp, opts, args):
 	## Identify and rename UCS group names to match Samba4 (localized) group names
 	AD_well_known_sids = {}
 	for (rid, name) in univention.lib.s4.well_known_domain_rids.items():
-		AD_well_known_sids[name] = "%s-%s" % (ad_domainsid, rid)
+		AD_well_known_sids["%s-%s" % (ad_domainsid, rid)] = name
 	AD_well_known_sids.update(univention.lib.s4.well_known_sids)
 
 	groupRenameHandler = GroupRenameHandler(lo)
@@ -1212,32 +1212,36 @@ def run_phaseI(ucr, lp, opts, args):
 		msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 							expression="(objectSid=%s)" % (sid),
 							attrs=["sAMAccountName", "objectClass"])
-		if msgs:
-			obj = msgs[0]
-			ad_object_name = obj.get("sAMAccountName", [None])[0]
+		if not msgs:
+			log.info("Well known SID %s not found in Samba" % (sid,))
+			continue
 
-			if not ad_object_name:
-				continue
+		obj = msgs[0]
+		ad_object_name = obj.get("sAMAccountName", [None])[0]
 
-			ucsldap_object_name = canonical_name	## default
-			## lookup canonical_name in UCSLDAP, for cases like "Replicator/Replicators" and "Server Operators"/"System Operators" that changed in UCS 3.2, see Bug #32461#c2
-			ldap_result = lo.search(filter="(sambaSID=%s)" % (sid,), attr=["sambaSID", "cn"])
-			if len(ldap_result) == 1:
-				ucsldap_object_name = ldap_result[0][1].get("cn", [None])[0]
-			elif len(ldap_result) > 0:
-				log.error('Error: Found more than one object with sambaSID=%s' % (sid,))
-			else:
-				log.debug('Info: Did not find an object with sambaSID=%s' % (sid,))
+		if not ad_object_name:
+			continue
 
-			if not ucsldap_object_name:
-				continue
+		ucsldap_object_name = canonical_name	## default
+		## lookup canonical_name in UCSLDAP, for cases like "Replicator/Replicators" and "Server Operators"/"System Operators" that changed in UCS 3.2, see Bug #32461#c2
+		ucssid = sid.replace(ad_domainsid, old_domainsid, 1)
+		ldap_result = lo.search(filter="(sambaSID=%s)" % (ucssid,), attr=["sambaSID", "cn"])
+		if len(ldap_result) == 1:
+			ucsldap_object_name = ldap_result[0][1].get("cn", [None])[0]
+		elif len(ldap_result) > 0:
+			log.error('Error: Found more than one object with sambaSID=%s' % (sid,))
+		else:
+			log.debug('Info: Did not find an object with sambaSID=%s' % (sid,))
 
-			if ad_object_name.lower() != ucsldap_object_name.lower():
-				oc = obj["objectClass"]
-				if "group" in oc or "foreignSecurityPrincipal" in oc:
-					groupRenameHandler.rename_ucs_group(ucsldap_object_name, ad_object_name)
-				elif "user" in oc:
-					pass
+		if not ucsldap_object_name:
+			continue
+
+		if ad_object_name.lower() != ucsldap_object_name.lower():
+			oc = obj["objectClass"]
+			if "group" in oc or "foreignSecurityPrincipal" in oc:
+				groupRenameHandler.rename_ucs_group(ucsldap_object_name, ad_object_name)
+			elif "user" in oc:
+				pass
 
 	takeover_ignore_list = ["Gast", "Guest"]
 	run_and_output_to_log(["univention-config-registry", "set", "connector/s4/mapping/user/ignorelist=%s,%s" % (ucr["connector/s4/mapping/user/ignorelist"], ','.join(takeover_ignore_list))], log.debug)
@@ -1280,11 +1284,13 @@ def run_phaseI(ucr, lp, opts, args):
 			msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 			                    expression="(sAMAccountName=%s)" % ucs_name,
 			                    attrs=["objectSid"])
-			if msgs:
+			if not msgs:
+				continue
+			else:
 				obj = msgs[0]
 				new_sid = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
 				samba_sid_map[old_sid] = new_sid
-			if new_sid:
+
 				log.debug("Rewriting group '%s' SID %s to %s" % (old_sambaSID_dict[old_sid], old_sid, new_sid))
 				ml = [("sambaSID", old_sid, new_sid)]
 				lo.modify(ucs_object_dn, ml)
