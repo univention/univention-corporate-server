@@ -1,3 +1,9 @@
+univention-demo-configuration (2.0.2-8) unstable; urgency=low
+
+  * Bug #33845: Allow usage of new App Center methods
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 06 Jan 2014 10:22:52 +0100
+
 univention-demo-configuration (2.0.2-7) unstable; urgency=low
 
   * Bug #30803: added test data including user photos
