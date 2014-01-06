@@ -8,6 +8,7 @@ Variables: samba/share/printers
 Variables: samba/share/netlogon
 Variables: samba/share/sysvol
 Variables: samba/share/sysvol/readonly
+Variables: samba/share/sysvol/update_mtime
 Variables: samba4/service/smb
 Variables: samba4/ntacl/backend
 Variables: samba/share/netlogon/path

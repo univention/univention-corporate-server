@@ -1,3 +1,9 @@
+univention-samba4 (3.0.39-10) unstable; urgency=medium
+
+  * New UCR variable samba/share/sysvol/update_mtime (Bug #33751)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 06 Jan 2014 21:15:33 +0100
+
 univention-samba4 (3.0.39-9) unstable; urgency=low
 
   * added ldapsearch-wrapper to ldapsearch (Bug #33583) 

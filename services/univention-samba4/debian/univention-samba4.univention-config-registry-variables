@@ -262,6 +262,12 @@ Description[en]=If this variable is set to 'yes' the SYSVOL share is not writabl
 Type=str
 Categories=service-samba
 
+[samba/share/sysvol/update_mtime]
+Description[de]=Ist diese Variable auf 'no' gesetzt, wird bei NTACL-Änderungen an einer Datei im SYSVOL durch Samba der Modifikations-Zeitstempel nicht aktualisiert. Diese Einstellung sollte im Regelfall nicht gesetzt werden.
+Description[en]=If this variable is set to 'no', Samba will not update the modification timestamp of SYSVOL files during NTACL changes. This setting shouldn't usually be set.
+Type=str
+Categories=service-samba
+
 [samba/short_preserve_case]
 Description[de]=Ist diese Variable auf 'no' gesetzt, werden Dateien im 8.3-Format nicht mit der vom Client gesendeten Groß-/Kleinschreibung angelegt, sondern in Kleinbuchstaben umgewandelt.
 Description[en]=If this variable is set to 'no', files in 8.3 format created by clients are created with lower case letters instead of the original filename.
