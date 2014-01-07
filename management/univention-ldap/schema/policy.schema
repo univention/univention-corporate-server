@@ -71,8 +71,8 @@ objectclass ( 1.3.6.1.4.1.10176.1000.2.2.1 NAME 'univentionPolicy'
 
 attributetype ( 1.3.6.1.4.1.10176.1000.2.1.10 NAME 'univentionRegistry'
 	DESC 'registry entry'
-	EQUALITY caseIgnoreIA5Match
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 objectclass ( 1.3.6.1.4.1.10176.1000.2.2.10 NAME 'univentionPolicyRegistry'
 	SUP 'univentionPolicy' STRUCTURAL
