@@ -7,6 +7,7 @@
 		<categories>
 			<category name="system"/>
 		</categories>
+		<command name="join/locked" function="dpkg_locked"/>
 		<command name="join/scripts/query" function="query"/>
 		<command name="join/logview" function="logview"/>
 		<command name="join/joined" function="joined"/>

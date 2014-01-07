@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: system usage statistics
 #
-# Copyright 2011-2013 Univention GmbH
+# Copyright 2011-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -41,12 +41,12 @@ import re
 import dns.resolver
 
 import notifier.threads
+import apt_pkg
 
 import univention.management.console as umc
 from univention.management.console.log import MODULE
 from univention.management.console.modules import Base, UMC_CommandError
 from univention.management.console.config import ucr
-from univention.management.console.protocol.definitions import *
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import StringSanitizer, ListSanitizer, BooleanSanitizer
 
@@ -63,7 +63,7 @@ def get_master_dns_lookup():
 		result = dns.resolver.query(query, 'SRV')
 		if result:
 			return result[0].target.canonicalize().split(1)[0].to_text()
-	except dns.resolver.NXDOMAIN as err:
+	except dns.resolver.NXDOMAIN:
 		MODULE.error('Error to perform a DNS query for service record: %s' % query)
 	return ''
 
@@ -250,6 +250,21 @@ class Instance(Base):
 
 	def init(self):
 		self.progress_state = Progress()
+
+	@simple_response
+	def dpkg_locked(self):
+		"""Do not execute join scripts when dpkg is running (e.g. via
+		App Center)
+		This check is only for the frontend (e.g. issues a warning).
+		For the backend, this check here is repeated in the script
+		univention-run-join-scripts (and skips join-scripts)!
+		"""
+		fd = apt_pkg.get_lock('/var/lib/dpkg/lock')
+		if fd == -1:
+			return True
+		else:
+			os.close(fd)
+			return False
 
 	@simple_response
 	def query(self):

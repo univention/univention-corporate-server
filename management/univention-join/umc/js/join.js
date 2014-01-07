@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -159,8 +159,8 @@ define([
 
 	return declare("umc.modules.join", [ Module ], {
 
-		standbyOpacity:		1,
-		region: 			'center',
+		standbyOpacity: 1,
+		region: 'center',
 
 		_serverRole: null,
 
@@ -217,7 +217,7 @@ define([
 			this._statuspage._grid.on('runScripts', lang.hitch(this, function(scripts, force) {
 				var txtscripts = '<ul style="max-height: 200px; overflow: auto;"><li>' + scripts.join('</li><li>') + '</ul>';
 				if (this._serverRole == 'domaincontroller_master') {
-					// we don't need credentials on DC master
+					// we do not need credentials on DC master
 					dialog.confirm(_('The following join scripts will be executed: ') + txtscripts, [{
 						name: 'run',
 						label: _('Run join scripts'),
@@ -236,6 +236,11 @@ define([
 				}
 			}));
 
+			tools.umcpCommand('join/locked').then(lang.hitch(this, function(data) {
+				if (data.result) {
+					this.addWarning(_('The package management is currently active. Join scripts will not run.'));
+				}
+			}));
 			// show the join logfile
 			this._statuspage._grid.on('ShowLogfile', lang.hitch(this, function() {
 				this._switchView('log');
@@ -360,7 +365,7 @@ define([
 					this.standby(false);
 					var errors = this._progressBar.getErrors();
 					if (errors.critical) {
-						// invalid credentials... don't show the restart dialog
+						// invalid credentials... do not show the restart dialog
 						dialog.alert(errors.errors[0], _('Join error'));
 						this.reinit(false);
 					} else if (errors.errors.length) {
