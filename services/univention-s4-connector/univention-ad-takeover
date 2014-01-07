@@ -1,4 +1,5 @@
 #!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
 #
 # Univention AD takeover script
 #  Migrates an AD server to the local UCS Samba 4 DC
