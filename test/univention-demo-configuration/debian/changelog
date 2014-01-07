@@ -1,3 +1,9 @@
+univention-demo-configuration (2.0.2-9) unstable; urgency=low
+
+  * Bug #33793: Allow usage of new Join module methods
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Jan 2014 13:22:59 +0100
+
 univention-demo-configuration (2.0.2-8) unstable; urgency=low
 
   * Bug #33845: Allow usage of new App Center methods
