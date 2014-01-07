@@ -1,3 +1,10 @@
+univention-join (6.0.16-3) unstable; urgency=low
+
+  * Bug #33793: Reverted change, univention-run-join-scripts works while dpkg
+    is running; but the UMC module will prevent the execution of the script
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Jan 2014 16:32:45 +0100
+
 univention-join (6.0.16-2) unstable; urgency=low
 
   * Bug #33793: univention-run-join-scripts no longer works while dpkg is

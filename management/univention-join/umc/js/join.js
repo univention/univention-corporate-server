@@ -238,7 +238,7 @@ define([
 
 			tools.umcpCommand('join/locked').then(lang.hitch(this, function(data) {
 				if (data.result) {
-					this.addWarning(_('The package management is currently active. Join scripts will not run.'));
+					this.addWarning(_('Currently, software is being installed or uninstalled. Join scripts should not be run right now.'));
 				}
 			}));
 			// show the join logfile

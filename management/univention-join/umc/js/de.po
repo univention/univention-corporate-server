@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-01-07 13:00+0100\n"
+"POT-Creation-Date: 2014-01-07 16:30+0100\n"
 "PO-Revision-Date: 2012-04-23 16:17+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -70,6 +70,14 @@ msgstr "Kann Join-Skripte nicht ausführen:<br>"
 #: umc/js/join.js:306
 msgid "Can't start join process:<br>"
 msgstr "Konnte Join-Vorgang nicht starten:<br>"
+
+#: umc/js/join.js:241
+msgid ""
+"Currently, software is being installed or uninstalled. Join scripts should "
+"not be run right now."
+msgstr ""
+"Momentan wird Software installiert oder deinstalliert. Join-Skripte sollten "
+"jetzt nicht ausgeführt werden."
 
 #: umc/js/join.js:352
 msgid "Error"
@@ -224,10 +232,6 @@ msgstr "Der Join-Vorgang war erfolgreich."
 #: umc/js/join.js:276
 msgid "The join scripts have successfully been executed."
 msgstr "Die Join-Skripte wurden erfolgreich ausgeführt"
-
-#: umc/js/join.js:241
-msgid "The package management is currently active. Join scripts will not run."
-msgstr "Die Paketverwaltung läuft momentan. Join-Skripte können nicht ausgeführt werden."
 
 #: umc/js/join.js:463
 msgid "The password may not be empty."

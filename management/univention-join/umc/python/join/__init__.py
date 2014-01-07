@@ -255,10 +255,10 @@ class Instance(Base):
 	def dpkg_locked(self):
 		"""Do not execute join scripts when dpkg is running (e.g. via
 		App Center)
-		This check is only for the frontend (e.g. issues a warning).
-		For the backend, this check here is repeated in the script
-		univention-run-join-scripts (and skips join-scripts)!
 		"""
+		return self._dpkg_locked()
+
+	def _dpkg_locked(self):
 		fd = apt_pkg.get_lock('/var/lib/dpkg/lock')
 		if fd == -1:
 			return True
@@ -368,11 +368,15 @@ class Instance(Base):
 
 		# Check if already a join process is running
 		if self._running:
-			_error(_('A join process is already running.'))
+			return _error(_('A join process is already running.'))
 
 		# check for valid server role
 		if ucr.get('server/role') == 'domaincontroller_master':
-			_error(_('Invalid server role! A master domain controller can not be joined.'))
+			return _error(_('Invalid server role! A master domain controller can not be joined.'))
+
+		# check for dpkg lock
+		if self._dpkg_locked():
+			return _error(_('Currently, software is being installed or uninstalled. Join scripts should not be run right now.'))
 
 		def _thread():
 			self.progress_state.reset()
@@ -418,7 +422,11 @@ class Instance(Base):
 
 		# Check if already a join process is running
 		if self._running:
-			_error(_('A join process is already running.'))
+			return _error(_('A join process is already running.'))
+
+		# check for dpkg lock
+		if self._dpkg_locked():
+			return _error(_('Currently, software is being installed or uninstalled. Join scripts should not be run right now.'))
 
 		scripts, username, password, force = (request.options['scripts'], request.options.get('username'), request.options.get('password'), request.options.get('force', False))
 

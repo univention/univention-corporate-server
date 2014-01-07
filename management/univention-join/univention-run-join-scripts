@@ -79,11 +79,6 @@ failed_message () {
 	exit 1
 }
 
-check_dpkg_locked() {
-	fuser /var/lib/dpkg/lock > /dev/null 2> /dev/null
-	return $?
-}
-
 while [ $# -gt 0 ]
 do
 	case "$1" in
@@ -234,11 +229,6 @@ then
 		if joinscript_check_already_executed && [ -z "$JOIN_FORCE" ]; then
 			echo -e "\033[60Gskipped (already executed)" >&3
 			echo "EXITCODE=already_executed"
-			continue
-		fi
-		if check_dpkg_locked; then
-			echo -e "\033[60Gskipped (dpkg process running)" >&3
-			echo "EXITCODE=dpkg_locked"
 			continue
 		fi
 
