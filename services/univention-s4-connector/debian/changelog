@@ -1,3 +1,11 @@
+univention-s4-connector (8.0.33-10) unstable; urgency=medium
+
+  * univention-ad-takeover (Bug #33644):
+    Adjust mapping/group/table/Printer-Admins for non-english ADs
+  * Fix duplicate encoding in univention-s4connector-list-rejected
+
+ -- Arvid Requate <requate@univention.de>  Tue, 07 Jan 2014 11:19:41 +0100
+
 univention-s4-connector (8.0.33-9) unstable; urgency=medium
 
   * univention-ad-takeover (Bug #33644):

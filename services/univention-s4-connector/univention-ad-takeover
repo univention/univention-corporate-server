@@ -1206,20 +1206,23 @@ def run_phaseI(ucr, lp, opts, args):
 	groupRenameHandler = GroupRenameHandler(lo)
 
 	for (sid, canonical_name) in AD_well_known_sids.items():
-		if sid == "S-1-5-32-550":	## Exception: Printer-Admins / Print Operators / ...
-			continue
 
 		msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 							expression="(objectSid=%s)" % (sid),
 							attrs=["sAMAccountName", "objectClass"])
 		if not msgs:
-			log.info("Well known SID %s not found in Samba" % (sid,))
+			log.debug("Well known SID %s not found in Samba" % (sid,))
 			continue
 
 		obj = msgs[0]
 		ad_object_name = obj.get("sAMAccountName", [None])[0]
 
 		if not ad_object_name:
+			continue
+
+		if sid == "S-1-5-32-550":	## Special: Printer-Admins / Print Operators / Opérateurs d’impression
+			## don't rename, adjust group name mapping for S4 connector instead.
+			run_and_output_to_log(["univention-config-registry", "set", "connector/s4/mapping/group/table/Printer-Admins=%s" % (ad_object_name,)], log.debug)
 			continue
 
 		ucsldap_object_name = canonical_name	## default
