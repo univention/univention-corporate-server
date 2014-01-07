@@ -2131,7 +2131,7 @@ nscd -i hosts
                 Windows-Clients, die in eine Samba 4-Domäne gejoint wurden,
                 akzeptieren nur signierte NTP-Zeitanfragen. Wird die
                 &ucsUCRV; <envar>ntp/signed</envar> auf <emphasis>yes</emphasis> gesetzt, werden die NTP-Pakete
-                durch Samba 4 signiert. Diese Einstellung sollte auf Samba 4-Domänencontrollern gesetzt werden.
+                durch Samba 4 signiert.
             </para>
         </section>
     </section>

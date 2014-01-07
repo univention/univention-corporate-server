@@ -2180,8 +2180,7 @@ nscd -i hosts
 		<para>
 			Windows clients joined in a Samba 4 domain only accept signed NTP time
 			requests. If the &ucsUCRV; <envar>ntp/signed</envar> is set to
-			<emphasis>yes</emphasis>, the NTP replies are signed by Samba 4. This setting
-			should be set on Samba 4 domain controllers.
+			<emphasis>yes</emphasis>, the NTP replies are signed by Samba 4.
 		</para>
 	</section>
 </section>

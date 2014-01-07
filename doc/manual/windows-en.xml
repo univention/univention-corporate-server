@@ -132,11 +132,6 @@
   </para>
 
   <para>
-	The signing of NTP replies should be enabled on all Samba domain controllers, see <xref
-	linkend="basicservices::ntp"/>.
-  </para>
-
-  <para>
 	Samba supports the operation as a <emphasis>read-only domain controller</emphasis>. The setup is
 	documented in <biblioref linkend="ext-doc-win"/>.
   </para>

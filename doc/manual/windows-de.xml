@@ -137,11 +137,6 @@
   </para>
 
   <para>
-	Auf allen Samba-Domänencontrollern sollte die Signierung der
-	NTP-Pakete aktiviert werden, siehe <xref linkend="basicservices::ntp"/>.
-  </para>
-
-  <para>
 	Samba unterstützt auch den Betrieb als <emphasis>read-only domain controller</emphasis>. Die
 	Einrichtung ist in <biblioref linkend="ext-doc-win"/> dokumentiert.
   </para>
