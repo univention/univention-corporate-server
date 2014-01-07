@@ -2,10 +2,13 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-ldap
-fix: 10.0.17-10.652.201312191515
+fix: 10.0.17-11.653.201401071700
 note:
 version: [0]
 desc: |
-  The LDAP indices are now generated for all combinations
-  of LDAP search types configured via UCR "ldap/index/*".
-bug: [33430]
+  This errata update fixes several issues:
+  * The LDAP indices are now generated for all combinations of LDAP search
+    types configured via UCR "ldap/index/*".
+  * The encoding of UCR policies changed so that values can also contain
+    umlauts.
+bug: [33430, 33704]
