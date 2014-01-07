@@ -31,15 +31,15 @@
 
 	<itemizedlist>
 	  <listitem><simpara>
-		Samba kann als NT-Domänencontroller arbeiten. In UCS-Versionen vor UCS 3.0 standen nur
-		NT-Domänendienste zur Verfügung.
+		Samba kann als NT-Domänencontroller arbeiten.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Samba kann seit UCS 3.0 auch als Active Directory-kompatibler Domänencontroller verwendet werden,
+		Samba kann auch als Active Directory-kompatibler Domänencontroller verwendet werden,
 		d.h. Samba stellt eine Active Directory-kompatible Windows-Domäne bereit. Dies ermöglicht
 		auch die Verwendung der von Microsoft bereit gestellten Werkzeuge beispielsweise für die
-		Verwaltung von Benutzern oder Gruppenrichtlinien (GPOs). 
+		Verwaltung von Benutzern oder Gruppenrichtlinien (GPOs). Diese Funktionalität steht seit UCS
+		3.0 zur Verfügung.
 	  </simpara> </listitem>
 	</itemizedlist>
 
@@ -83,7 +83,7 @@
 	</para>
 
 	<para>
-	  Microsoft Windows-Domänencontroller aktuell nicht einer UCS-Samba-Domäne beitreten. Diese
+	  Microsoft Windows-Domänencontroller können aktuell nicht einer UCS-Samba-Domäne beitreten. Diese
 	  Funktionalität ist zu einem späteren Zeitpunkt geplant.
 	</para>
 
@@ -106,8 +106,8 @@
   <para>
 	Ein Samba-Memberserver kann auf UCS-Memberservern mit der Applikation
 	<emphasis>Windows-kompatibler Fileserver auf der Basis von Samba 3</emphasis> aus dem Univention App Center
-	installiert werden. Alternativ können die Softwarepakete <package>univention-samba</package> und
-	<package>winbind</package> installiert werden (anschließend muss der Befehl
+	installiert werden. Alternativ kann das Softwarepaket <package>univention-samba</package> 
+	installiert werden (anschließend muss der Befehl
 	<command>univention-run-join-scripts</command> aufgerufen werden). Weitere Informationen finden
 	sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
   </para>

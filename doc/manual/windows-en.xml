@@ -7,21 +7,21 @@
 	</para>
 
 	<itemizedlist>
-	  <listitem>
-		<para>Domain controller function</para>
-	  </listitem>
+	  <listitem><simpara>
+		Domain controller function
+	  </simpara></listitem>
 
-	  <listitem>
-		<para>File services</para>
-	  </listitem>
+	  <listitem><simpara>
+		File services
+	  </simpara></listitem>
 
-	  <listitem>
-		<para>Authentication services</para>
-	  </listitem>
+	  <listitem><simpara>
+		Authentication services
+	  </simpara></listitem>
 
-	  <listitem>
-		<para>Print services</para>
-	  </listitem>
+	  <listitem><simpara>
+		Print services
+	  </simpara></listitem>
 	</itemizedlist>
 	<para>
 	  All these services are provided by Samba in UCS. When acting as a domain controller Samba can
@@ -30,15 +30,14 @@
 
 	<itemizedlist>
 	  <listitem>
-		Samba can provide a NT domain controller. In UCS releases prior to UCS 3.0 only NT domain
-		services were provided.
+		Samba can provide a NT domain controller.
 	  </listitem>
 
 	  <listitem>
-		Starting with UCS 3.0 Samba can also provide an Active Directory-compatible domain
+		Samba can also provide an Active Directory-compatible domain
 		controller e.g. Samba provides an Active Directory compatible Windows domain. This allows
 		the use of tools provided by Microsoft, e.g. for the management of users or for managing
-		group policy objects.
+		group policy objects. This feature has been introduced in UCS 3.0.
 	  </listitem>
 	</itemizedlist>
 
@@ -102,8 +101,8 @@
 
   <para>
 	A Samba member server can be installed on UCS member servers from the Univention App Center with the application
-	<emphasis>Windows-compatible Fileserver</emphasis>. Alternatively, the software packages
-	<package>univention-samba</package> and <package>winbind</package> can be installed
+	<emphasis>Windows-compatible Fileserver</emphasis>. Alternatively, the software package
+	<package>univention-samba</package> can be installed
 	(<command>univention-run-join-scripts</command> command must be run after installation).
 	Additional information can be found in <xref
 	linkend="computers::softwaremanagement::installsoftware"/>.
