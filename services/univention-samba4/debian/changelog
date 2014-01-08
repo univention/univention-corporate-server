@@ -1,3 +1,9 @@
+univention-samba4 (3.0.39-11) unstable; urgency=low
+
+  * increase max number of open files for smbd Bug #33031 
+
+ -- Felix Botner <botner@univention.de>  Wed, 08 Jan 2014 16:59:37 +0100
+
 univention-samba4 (3.0.39-10) unstable; urgency=medium
 
   * New UCR variable samba/share/sysvol/update_mtime (Bug #33751)
