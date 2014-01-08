@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-lib
+fix: 3.0.26-11.205.201401081823
+note:
+version: [0]
+desc: |
+  This errata update adjusts the behaviour of ucs_registerLDAPExtension,
+  to let join scripts continue in case an LDAP extension could not be
+  registered because a newer one is already active in the domain.
+bug: [33582]
