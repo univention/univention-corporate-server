@@ -1,3 +1,10 @@
+ucs-test (4.0.161-19) unstable; urgency=low
+
+  * Added test cases for concurrent changes in S4 and UCS
+    (Bug #33621 and Bug #33466)
+
+ -- stefan <gohmann@univention.de>  Wed, 08 Jan 2014 07:20:32 +0100
+
 ucs-test (4.0.161-18) unstable; urgency=low
 
   * 10_ldap/60failedldif: Re-create smb.conf which could be corrupted
