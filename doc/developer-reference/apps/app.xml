@@ -235,6 +235,39 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
+					<term>Categories</term>
+					<listitem>
+						<para>
+							Comma separated list of categories. In order to keep the overall
+							list clean and simple an application should use categories from
+							this list:
+							<itemizedlist>
+								<listitem><simpara>
+									Administration
+								</simpara></listitem>
+								<listitem><simpara>
+									Business
+								</simpara></listitem>
+								<listitem><simpara>
+								  Collaboration
+								</simpara></listitem>
+								<listitem><simpara>
+								  Education
+								</simpara></listitem>
+								<listitem><simpara>
+								  System services
+								</simpara></listitem>
+								<listitem><simpara>
+								  UCS components
+								</simpara></listitem>
+								<listitem><simpara>
+								  Virtualization
+								</simpara></listitem>
+							</itemizedlist>
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
 					<term>Version</term>
 					<listitem>
 						<simpara>
