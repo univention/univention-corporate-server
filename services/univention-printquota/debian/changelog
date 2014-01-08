@@ -1,3 +1,9 @@
+univention-printquota (6.0.2-4) unstable; urgency=low
+
+  * made univention-prinquota executable (Bug #33791) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 08 Jan 2014 09:33:13 +0100
+
 univention-printquota (6.0.2-3) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)
