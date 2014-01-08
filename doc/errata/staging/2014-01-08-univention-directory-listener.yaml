@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-directory-listener
+fix: 7.0.9-2.211.201401081837
+note:
+version: [1]
+desc: |
+  This update improves the reliability of the univention-directory-listener
+  replication handling.
+bug: [33731]
