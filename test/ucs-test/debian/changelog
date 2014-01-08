@@ -1,9 +1,16 @@
+ucs-test (4.0.161-20) unstable; urgency=low
+
+  * 10_ldap/48replication_listener_cache_up_to_date_check: added test
+    case for listener up-to-date check (Bug #33732)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 08 Jan 2014 10:32:03 +0100
+
 ucs-test (4.0.161-19) unstable; urgency=low
 
   * Added test cases for concurrent changes in S4 and UCS
     (Bug #33621 and Bug #33466)
 
- -- stefan <gohmann@univention.de>  Wed, 08 Jan 2014 07:20:32 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 08 Jan 2014 07:20:32 +0100
 
 ucs-test (4.0.161-18) unstable; urgency=low
 
@@ -11,27 +18,27 @@ ucs-test (4.0.161-18) unstable; urgency=low
     while testing the failed LDIF handling. This is only a workaround
     (Bug #33050)
 
- -- stefan <gohmann@univention.de>  Fri, 03 Jan 2014 23:03:31 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 03 Jan 2014 23:03:31 +0100
 
 ucs-test (4.0.161-17) unstable; urgency=low
 
   * Remove computers/mobileclient from 00_base/45license_v2 (Bug #33813)
 
- -- stefan <gohmann@univention.de>  Tue, 31 Dec 2013 12:59:25 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 31 Dec 2013 12:59:25 +0100
 
 ucs-test (4.0.161-16) unstable; urgency=low
 
   * Remove computers/managedclient from 00_base/00_univention-license-
     check and 00_base/45license_v2 (Bug #33813)
 
- -- stefan <gohmann@univention.de>  Tue, 31 Dec 2013 11:36:03 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 31 Dec 2013 11:36:03 +0100
 
 ucs-test (4.0.161-15) unstable; urgency=low
 
   * Don't use /tmp as home. In UCS@school the home directory is moved if
     the user is removed (Bug #33812)
 
- -- stefan <gohmann@univention.de>  Tue, 31 Dec 2013 11:25:36 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 31 Dec 2013 11:25:36 +0100
 
 ucs-test (4.0.161-14) unstable; urgency=low
 

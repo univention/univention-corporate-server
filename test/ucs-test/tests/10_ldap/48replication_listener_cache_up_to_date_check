@@ -1,0 +1,87 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check whether the listener ignores the up-to-date check for the replication module
+## bugs: [33732]
+## tags:
+##  - basic
+## roles:
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+## packages:
+##  - univention-config
+##  - univention-directory-manager-tools
+##  - ldap-utils
+## exposure: dangerous
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/container.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/samba.sh" || exit 137
+
+get_description ()
+{
+	containername="$1"
+
+	univention-ldapsearch -b "cn=$containername,cn=groups,$ldap_base" -LLL description  | sed -ne 's|^description: ||p'
+}
+
+set_description ()
+{
+	containername="$1"
+	description="$2"
+
+	update_pwd="$(cat /etc/ldap/rootpw.conf  | sed -e 's|^rootpw "||;s|"$||')"
+	ldapmodify -x -h "$hostname.$domainname" -p "$ldap_server_port" -D "cn=update,$ldap_base" -w "$update_pwd" <<EOF
+dn: cn=$containername,cn=groups,$ldap_base
+changetype: modify
+replace: description
+description: univention
+EOF
+
+	wait_for_replication
+}
+
+call_replicate_one ()
+{
+	containername="$1"
+
+	password_file="$(mktemp)"
+	echo "$(ucr get tests/domainadmin/pwd)" >>"$password_file"
+	univention-ssh "$password_file" root@$(ucr get ldap/master) /usr/sbin/univention-replicate-one --dn "cn=$containername,cn=groups,$ldap_base"
+
+	wait_for_replication
+}
+
+check_description ()
+{
+	containername="$1"
+	expected_value="$2"
+
+	description="$(get_description "$containername")"
+	if [ "$description" != "$expected_value" ]; then
+		echo "Local description is wrong. Value: $description; Expected value: $expected_value"
+		fail_test 110
+	fi
+}
+
+
+containername="$(random_hostname)"
+container_create "$containername" "test1" "cn=groups,$ldap_base" || fail_test 110
+wait_for_replication
+
+check_description "$containername" "test1"
+
+set_description "$containername" "univention"
+
+check_description "$containername" "univention"
+
+call_replicate_one "$containername"
+
+check_description "$containername" "test1"
+
+container_remove "cn=$containername,cn=groups,$ldap_base"
+wait_for_replication
+
+rm "$password_file"
+
+exit $RETVAL
