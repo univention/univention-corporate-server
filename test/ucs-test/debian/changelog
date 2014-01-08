@@ -1,3 +1,10 @@
+ucs-test (4.0.161-21) unstable; urgency=low
+
+  * Bug #33757: 20_appcenter/17app_status now checks for the seven supported
+    app categories
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 08 Jan 2014 16:00:42 +0100
+
 ucs-test (4.0.161-20) unstable; urgency=low
 
   * 10_ldap/48replication_listener_cache_up_to_date_check: added test

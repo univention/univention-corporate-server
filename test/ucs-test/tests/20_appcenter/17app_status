@@ -40,6 +40,12 @@ for appID in fd.readlines():
 
 	print 'Checking App: %s' % appID
 	requested_app = Application.find(appID)
+
+	for category in requested_app.get('unlocalised_categories'):
+		if category not in ['Administration', 'Business', 'Collaboration'. 'Education', 'System services', 'UCS components', 'Virtualization']:
+			print ' Test failed: Requested App has unsupported category: %s' % category
+			returncode = 1
+
 	if not requested_app:
 		print ' Test failed: Requested App not found: %s' % appID
 		returncode = 1
