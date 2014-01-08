@@ -120,7 +120,7 @@ if [ "$1" = "configure" ]; then
 	fi
 fi
 
-# increase max number of open files for smbd Bug #33031
+# increase max number of open files for smbd Bug #32415
 univention-config-registry set \
 	"security/limits/user/*/hard/nofile"?"32828" \
 	"security/limits/user/*/soft/nofile"?"32828"
