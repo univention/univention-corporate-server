@@ -1,3 +1,10 @@
+univention-directory-listener (7.0.9-2) unstable; urgency=medium
+
+  * Always run replication handler, fixing boolean logic twist in patch
+    for Bug #29475 (Bug #33731)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 08 Jan 2014 18:34:49 +0100
+
 univention-directory-listener (7.0.9-1) unstable; urgency=low
 
   * Hide password in debug message (Bug #31053)
