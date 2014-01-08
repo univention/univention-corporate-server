@@ -1,3 +1,9 @@
+univention-samba4 (3.0.39-12) unstable; urgency=low
+
+  * increase max number of open files for smbd Bug #32415 
+
+ -- Felix Botner <botner@univention.de>  Wed, 08 Jan 2014 17:08:36 +0100
+
 univention-samba4 (3.0.39-11) unstable; urgency=low
 
   * increase max number of open files for smbd Bug #33031 
