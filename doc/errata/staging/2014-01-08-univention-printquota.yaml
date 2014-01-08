@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-printquota
+fix: 6.0.2-4.63.201401080935
+note:
+version: [0]
+desc: |
+  This errata update adds execute permissions for the password rotation
+  helper in univention-printquota.
+bug: [33791]
