@@ -1,3 +1,10 @@
+univention-nagios (7.0.5-4) unstable; urgency=low
+
+  * fixed quoting in 30univention-nagios-client.inst and
+    28univention-nagios-server.inst (Bug #33593) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 08 Jan 2014 11:12:39 +0100
+
 univention-nagios (7.0.5-3) unstable; urgency=low
 
   * added group name localization (Bug #33646) 

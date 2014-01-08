@@ -53,9 +53,9 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
     # Enable Nagios for this host
     # Managed clients are still called "fatclient" in Config Registry
     if [ "$server_role" = "fatclient" ] ; then
-        univention-directory-manager computers/managedclient modify "$@" --dn ${ldap_hostdn} --append-option="nagios" || die
+        univention-directory-manager computers/managedclient modify "$@" --dn "$ldap_hostdn" --append-option="nagios" || die
     else
-        univention-directory-manager computers/${server_role} modify "$@" --dn ${ldap_hostdn} --append-option="nagios" || die
+        univention-directory-manager computers/${server_role} modify "$@" --dn "$ldap_hostdn" --append-option="nagios" || die
     fi
 
 	# remove obsolete services from host

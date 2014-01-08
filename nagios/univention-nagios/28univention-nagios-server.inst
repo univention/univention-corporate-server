@@ -47,10 +47,10 @@ fi
 
 /etc/init.d/nagios3 restart 2> /dev/null > /dev/null || true
 
-univention-directory-manager container/cn create "$@" --ignore_exists --position cn=univention,$ldap_base --set name=console || die
-univention-directory-manager container/cn create "$@" --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=acls || die
-univention-directory-manager container/cn create "$@" --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=operations || die
-univention-directory-manager container/cn create "$@" --ignore_exists --position cn=policies,$ldap_base --set name=console --set policyPath=1 || die
+univention-directory-manager container/cn create "$@" --ignore_exists --position cn="univention,$ldap_base" --set name=console || die
+univention-directory-manager container/cn create "$@" --ignore_exists --position cn="console,cn=univention,$ldap_base" --set name=acls || die
+univention-directory-manager container/cn create "$@" --ignore_exists --position cn="console,cn=univention,$ldap_base" --set name=operations || die
+univention-directory-manager container/cn create "$@" --ignore_exists --position cn="policies,$ldap_base" --set name=console --set policyPath=1 || die
 
 univention-directory-manager groups/group create "$@" --ignore_exists \
     --position "cn=groups,$ldap_base" \
