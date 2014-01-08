@@ -1,0 +1,39 @@
+#!/usr/share/ucs-test/runner python
+## desc: Univention-s4-connector dns forward zone syncronisation
+## tags: [basic]
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+##   - univention-s4-connector
+##   - dnsutils
+## bugs:
+##   - 29211
+import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+import dnstests
+
+
+
+with udm_test.UCSTestUDM() as udm:
+
+	random_zone = dnstests.random_zone()
+	host = dnstests.get_hostname()
+	random_name1 = uts.random_string()
+	random_name2 = uts.random_string()
+
+
+	forward_zone = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = host)
+	dns_alias = udm.create_object('dns/alias', superordinate = forward_zone, name = random_name1, cname = random_name2)
+
+	dnstests.check_ldap_object(dns_alias, 'alias', 'cNAMERecord' ,random_name2)
+
+	dnstests.wait_for_sync(4)
+
+	test_string = random_name1 + '.' +random_zone
+
+	dnstests.test_dns_alias(test_string,random_name2)
+
+	dnstests.check_ldap_object(dns_alias, 'alias', 'cNAMERecord' ,random_name2 + '.')
+
