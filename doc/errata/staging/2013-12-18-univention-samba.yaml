@@ -16,4 +16,4 @@ desc: |
     trusts relations to Windows AD domains work.
   * The limit for the maximum number of open files has been increased 
     for all users.
-bug: [33303, 33031]
+bug: [33303, 32415]
