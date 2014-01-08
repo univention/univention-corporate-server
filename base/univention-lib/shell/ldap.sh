@@ -342,6 +342,9 @@ ucs_registerLDAPExtension () {
 	PYTHONPATH="/usr/lib/pymodules/$(pyversions -d)/univention/lib" \
 		python -c 'import ldap_extension; ldap_extension.ucs_registerLDAPExtension()' \
 			--packagename "$package_name" --packageversion "$package_version" "$@"
+
+	[ $? == 4 ] && true	## mask non-fatal return code
+
 }
 
 # ucs_unregisterLDAPExtension removes an LDAP schema or ACL extension from UDM.

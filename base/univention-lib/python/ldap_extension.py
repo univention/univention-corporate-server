@@ -212,7 +212,7 @@ class UniventionLDAPExtension(object):
 				rc = apt.apt_pkg.version_compare(options.packageversion, registered_package_version)
 				if not rc > -1:
 					print >>sys.stderr, "ERROR: Registered package version %s is newer, refusing registration." % (registered_package_version,)
-					sys.exit(1)
+					sys.exit(4)
 			else:
 				print >>sys.stderr, "WARNING: Object %s was registered by package %s version %s, changing ownership." % (self.objectname, registered_package, registered_package_version,)
 
