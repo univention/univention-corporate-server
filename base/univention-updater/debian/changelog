@@ -1,3 +1,9 @@
+univention-updater (9.0.38-7) unstable; urgency=low
+
+  * Bug #33610: Fixed dependencies
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 09 Jan 2014 17:46:32 +0100
+
 univention-updater (9.0.38-6) unstable; urgency=low
 
   * Bug #33610: Releases newer than the one specified in the applied release
