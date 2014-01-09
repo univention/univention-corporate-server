@@ -73,12 +73,12 @@ def getLDAPServersCommaList(configRegistryInstance = None):
 
 	return ldap_servers
 
-def custom_groupname(groupname, configRegistryInstance = None):
+def custom_username(name, configRegistryInstance = None):
 	"""
-	Returns the customized group name configured via UCR
+	Returns the customized username configured via UCR
 	"""
 
-	if not groupname:
+	if not name:
 		raise ValueError
 
 	if configRegistryInstance:
@@ -87,4 +87,20 @@ def custom_groupname(groupname, configRegistryInstance = None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	return ucr.groupNameMapping(groupname)
+	return ucr.userNameMapping(name)
+
+def custom_groupname(name, configRegistryInstance = None):
+	"""
+	Returns the customized groupname configured via UCR
+	"""
+
+	if not name:
+		raise ValueError
+
+	if configRegistryInstance:
+		ucr = configRegistryInstance
+	else:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+
+	return ucr.groupNameMapping(name)

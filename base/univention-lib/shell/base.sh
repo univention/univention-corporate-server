@@ -256,21 +256,40 @@ update_nss_group_cache () {
 }
 
 #
+# Get to localized name for a user
+#
+custom_username() {
+	local name
+	local ucr_varname
+	local result
+	name="${1:?Usage: custom_username <username>}"
+	ucr_varname="$(echo "$name" | tr [A-Z] [a-z] | sed 's| ||g')"
+	ucr_varname="users/default/$ucr_varname"
+
+	result="$(ucr get "$ucr_varname")"
+	if [ -n "$result" ]; then
+		echo -n "$result"
+	else
+		echo -n "$name"
+	fi
+}
+
+#
 # Get to localized name for a group
 #
 custom_groupname() {
-	local groupname
+	local name
 	local ucr_varname
 	local result
-	groupname="${1:?Usage: custom_groupname <groupname>}"
-	ucr_varname="$(echo $groupname | tr [A-Z] [a-z] | sed 's| ||g')"
+	name="${1:?Usage: custom_groupname <groupname>}"
+	ucr_varname="$(echo "$name" | tr [A-Z] [a-z] | sed 's| ||g')"
 	ucr_varname="groups/default/$ucr_varname"
 
 	result="$(ucr get "$ucr_varname")"
 	if [ -n "$result" ]; then
 		echo -n "$result"
 	else
-		echo -n "$groupname"
+		echo -n "$name"
 	fi
 }
 

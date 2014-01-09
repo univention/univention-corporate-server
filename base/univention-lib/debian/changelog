@@ -1,3 +1,9 @@
+univention-lib (3.0.26-14) unstable; urgency=medium
+
+  * Add custom_username function to shell and python lib (Bug #33644)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Jan 2014 18:25:19 +0100
+
 univention-lib (3.0.26-13) unstable; urgency=medium
 
   * Fix return code passing (Bug #33582)
