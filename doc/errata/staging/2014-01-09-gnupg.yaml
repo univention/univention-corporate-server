@@ -4,7 +4,7 @@ scope: ucs_3.2-0-errata3.2-0
 src: gnupg
 fix: 1.4.10-4.56.201401091550
 note:
-version: [1]
+version: [0]
 desc: |
  A security issue has been discovered in GNU Privacy Guard:
  * RSA key extraction via low bandwidth acoustic cryptanalysis attack (CVE-2013-4576)
