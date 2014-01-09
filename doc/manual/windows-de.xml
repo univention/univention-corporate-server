@@ -38,8 +38,7 @@
 		Samba kann auch als Active Directory-kompatibler Domänencontroller verwendet werden,
 		d.h. Samba stellt eine Active Directory-kompatible Windows-Domäne bereit. Dies ermöglicht
 		auch die Verwendung der von Microsoft bereit gestellten Werkzeuge beispielsweise für die
-		Verwaltung von Benutzern oder Gruppenrichtlinien (GPOs). Diese Funktionalität steht seit UCS
-		3.0 zur Verfügung.
+		Verwaltung von Benutzern oder Gruppenrichtlinien (GPOs).
 	  </simpara> </listitem>
 	</itemizedlist>
 
@@ -65,209 +64,176 @@
 	  <xref linkend="ad-connector:general"/>.
 	</para>
   </section>
-  
-  <section id="windows:setupsamba">
-	<title>Installation und Aufbau einer Samba-Domäne</title>
 
-	<para>
-	  Eine Samba-Domäne besteht aus min. einem Domänencontroller. Windows-Clients und
-	  Memberserver können als Domänenmitglieder dem Vertrauenskontext der Samba-Domäne
-	  beitreten. Memberserver stellen keine Anmeldedienste bereit, bieten aber beispielsweise Datei-
-	  oder Druckdienste an. Neben dem Domänenbeitritt als Memberserver von Windows Server-Systemen
-	  kann auch Samba als Memberserver arbeiten.
-	</para>
+  <section id="windows:addomain">
+	<title>Betrieb einer Samba-Domäne auf Basis von Active Directory</title>
 
-	<para>
-	  Der Domänenbeitritt von Windows-Clients und Microsoft
-	  Windows-Domänencontrollern wird in <xref linkend="windows-domaenenbeitritt"/> beschrieben.
-	</para>
+	<section id="windows:adsetup">
+	  <title>Bestandteile einer Samba-Domäne</title>
 
-	<para>
-	  Microsoft Windows-Domänencontroller können aktuell nicht einer UCS-Samba-Domäne beitreten. Diese
-	  Funktionalität ist zu einem späteren Zeitpunkt geplant.
-	</para>
+	  <para>
+		Eine Samba-Domäne besteht aus min. einem Domänencontroller. Windows-Clients und Memberserver
+		können als Domänenmitglieder dem Vertrauenskontext der Samba-Domäne beitreten. Memberserver
+		stellen keine Anmeldedienste bereit, bieten aber beispielsweise Datei- oder Druckdienste
+		an. Neben dem Domänenbeitritt als Memberserver von Windows Server-Systemen kann auch Samba
+		als Memberserver arbeiten.
+	  </para>
 
-	<para>
-	  Samba kann zum jetzigen Zeitpunkt noch nicht einem Active Directory Forest beitreten.
-	</para>
+	  <para>
+		Der Domänenbeitritt von Windows-Clients und Microsoft Windows-Domänencontrollern wird in
+		<xref linkend="windows-domaenenbeitritt"/> beschrieben.
+	  </para>
 
-<section id="windows:setup3">
-  <title>Installation / Aufbau einer Domäne mit NT-Domänendiensten</title>
+	  <para>
+		Microsoft Windows-Domänencontroller können aktuell nicht einer UCS-Samba-Domäne
+		beitreten. Diese Funktionalität ist zu einem späteren Zeitpunkt geplant.
+	  </para>
 
-  <para>
-	Samba als NT-Domänencontroller kann auf allen UCS-Domänencontrollern mit der Applikation
-	<emphasis>Windows-NT-kompatibler Domänencontroller</emphasis> aus dem Univention App Center
-	installiert werden. Alternativ kann das Softwarepaket <package>univention-samba</package>
-	installiert werden (anschließend muss der Befehl <command>univention-run-join-scripts</command>
-	aufgerufen werden). Weitere Informationen finden sich in <xref
-	linkend="computers::softwaremanagement::installsoftware"/>.
-  </para>
+	  <para>
+		Samba kann zum jetzigen Zeitpunkt noch nicht einem Active Directory Forest beitreten.
+	  </para>
+	</section>
 
-  <para>
-	Ein Samba-Memberserver kann auf UCS-Memberservern mit der Applikation
-	<emphasis>Windows-kompatibler Fileserver auf der Basis von Samba 3</emphasis> aus dem Univention App Center
-	installiert werden. Alternativ kann das Softwarepaket <package>univention-samba</package> 
-	installiert werden (anschließend muss der Befehl
-	<command>univention-run-join-scripts</command> aufgerufen werden). Weitere Informationen finden
-	sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
-  </para>
 
-</section>
 
-<section id="windows:setup4">
-  <title>Installation / Aufbau einer Domäne mit Active Directory-Domänendiensten</title>
+	<section id="windows:setup4">
+	  <title>Installation</title>
 
-  <para>
-	Samba als AD-Domänencontroller kann auf allen UCS-Domänencontrollern mit der Applikation
-	<emphasis>Active Directory-kompatibler Domänencontroller</emphasis> aus dem Univention App Center
-	installiert werden. Alternativ kann das Softwarepaket <package>univention-samba4</package>
-	installiert werden. Auf den Systemrollen &ucsMaster; und &ucsBackup; muss zusätzlich
-	<package>univention-s4-connector</package> installiert werden (anschließend muss der Befehl
-	<command>univention-run-join-scripts</command> aufgerufen werden). Weitere Informationen finden sich in <xref
-	linkend="computers::softwaremanagement::installsoftware"/>.
-  </para>
+	  <para>
+		Samba als AD-Domänencontroller kann auf allen UCS-Domänencontrollern mit der Applikation
+		<emphasis>Active Directory-kompatibler Domänencontroller</emphasis> aus dem Univention App
+		Center installiert werden. Alternativ kann das Softwarepaket
+		<package>univention-samba4</package> installiert werden. Auf den Systemrollen &ucsMaster;
+		und &ucsBackup; muss zusätzlich <package>univention-s4-connector</package> installiert
+		werden (anschließend muss der Befehl <command>univention-run-join-scripts</command>
+		aufgerufen werden). Weitere Informationen finden sich in <xref
+		linkend="computers::softwaremanagement::installsoftware"/>.
+	  </para>
 
-  <para>
-	Ein Samba-Memberserver kann auf UCS-Memberservern mit der Applikation
-	<emphasis>Windows-kompatibler Fileserver</emphasis> aus dem Univention App Center
-	installiert werden. Alternativ können die Softwarepakete <package>univention-samba</package> und
-	<package>winbind</package> installiert werden (anschließend muss der Befehl
-	<command>univention-run-join-scripts</command> aufgerufen werden). Weitere Informationen finden
-	sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
-  </para>
+	  <para>
+		Ein Samba-Memberserver kann auf UCS-Memberservern mit der Applikation
+		<emphasis>Windows-kompatibler Fileserver</emphasis> aus dem Univention App Center
+		installiert werden. Alternativ können die Softwarepakete <package>univention-samba</package>
+		und <package>winbind</package> installiert werden (anschließend muss der Befehl
+		<command>univention-run-join-scripts</command> aufgerufen werden). Weitere Informationen
+		finden sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
+	  </para>
 
-  <para>
-	Samba unterstützt auch den Betrieb als <emphasis>read-only domain controller</emphasis>. Die
-	Einrichtung ist in <biblioref linkend="ext-doc-win"/> dokumentiert.
-  </para>
+	  <para>
+		Samba unterstützt auch den Betrieb als <emphasis>read-only domain controller</emphasis>. Die
+		Einrichtung ist in <biblioref linkend="ext-doc-win"/> dokumentiert.
+	  </para>
+	</section>
 
-  <para>
-	Samba implementiert Active Directory Verzeichnisdienste, die eine Multimasterreplikation
-	erlauben, d.h. die schreibenden Änderungen mehrerer Domänencontroller werden auf Protokollebene
-	synchronisiert. Die Verwendung von Snapshots in Virtualisierungslösungen sollte daher beim
-	Einsatz von Samba 4 vermieden und Samba 4 auf einem Server betrieben werden, der durchgehend
-	eingeschaltet bleibt.
-  </para>
-</section>
-</section>
+	<section id="windows:samba4:services">
+	  <title>Dienste einer Samba-Domäne</title>
 
-<section id="windows:samba:services">
-  <title>Dienste einer Samba-Domäne</title>
-  <section id="windows:samba:services:auth">
-	<title>Authentifizierungsdienst</title>
+	  <section id="windows:samba4:services:auth">
+		<title>Authentifizierungsdienst</title>
 
-	<para>
-	  Benutzeranmeldungen können nur auf Microsoft Windows-Systemen
-	  erfolgen, die der Samba-Domäne beigetreten sind. Der Domänenbeitritt
-	  ist in <xref linkend="windows-domaenenbeitritt"/> dokumentiert.
-	</para>
+		<para>
+		  Benutzeranmeldungen können nur auf Microsoft Windows-Systemen erfolgen, die der
+		  Samba-Domäne beigetreten sind. Der Domänenbeitritt  ist in <xref
+		  linkend="windows-domaenenbeitritt"/> dokumentiert.
+		</para>
 
-	<para>
-	  In einer Samba-NT-Domäne werden die Benutzerkennwörter im UCS-LDAP gespeichert. Benutzer
-	  werden bei der Domänenanmeldung mit Benutzernamen und Passwort gegen das LDAP-Verzeichnis
-	  authentifiziert und können dann auf alle freigegebenen Ressourcen der Domäne zugreifen ohne
-	  Benutzernamen und Passwort erneut eingeben zu müssen. Rechner mit jeglicher Art von
-	  Windows-Betriebssystem werden wie in Windows NT-Domänen über das NTLMv2-Protokoll
-	  authentifiziert.
-	</para>
+		<para>
+		  Benutzer, die sich an einem Windows-System anmelden erhalten bei der Anmeldung ein
+		  Kerberos-Ticket, mit dem die weitere Authentifizierung durchgeführt wird. Mit diesem
+		  Ticket wird dann auf die Ressourcen der Domäne zugegriffen. Für eine funktionierende
+		  Kerberos-Authentifizierung ist eine Synchronisation der Systemzeiten zwingend
+		  erforderlich.
+		</para>
+	  </section>
 
-	<para>
-	  In einer Samba-AD-Domäne erhalten Benutzer, die sich an einem Windows-System anmelden, bei der
-	  Anmeldung ein Kerberos-Ticket, mit dem die weitere Authentifizierung durchgeführt wird. Mit
-	  diesem Ticket wird dann auf die Ressourcen der Domäne zugegriffen. Für eine funktionierende
-	  Kerberos-Authentifizierung ist eine Synchronisation der Systemzeiten zwingend erforderlich.
-	</para>
+	  <section id="windows:samba4:fileservices">
+		<title>Dateidienste / File-Server</title>
+		<para>
+		  Die in UCS integrierten Dateidienste unterstützen eine Bereitstellung von Freigaben auf
+		  Basis von CIFS/SMB (siehe <xref linkend="shares::general"/>). Sofern das unterliegende
+		  Dateisystem Access Control Lists (ACLs) unterstützt (verwendbar bei ext3, ext4 und XFS)
+		  sind ACLs auch von Windows-Clients verwendbar. Samba setzt zwingend ein Dateisystem mit
+		  XATTR-Unterstützung voraus.
+		</para>
 
-</section>
+		<para>
+		  Dateidienste können auch mit Samba Active Directory-Domänencontrollern bereitgestellt
+		  werden. Generell wird in Samba-Umgebungen - analog zu den Empfehlungen für Active
+		  Directory - empfohlen Domänencontroller- und Datei/Druckdienste zu trennen,
+		  d.h. Domänencontroller für die Anmeldung und Memberserver für Datei-/Druckdienste zu
+		  verwenden. Dies stellt sicher, dass hohe Last auf einem Fileserver nicht zu Störungen im
+		  Anmeldedienst führen. Für kleine Umgebungen, in denen keine Möglichkeit für den Betrieb
+		  zweier Server gegeben ist, können Datei- und Druckdienste auch mit auf einem
+		  Domänencontroller betrieben werden.
+		</para>
 
-<section id="windows:fileservices">
-  <title>Dateidienste / File-Server</title>
-  <para>
-	Die in UCS integrierten Dateidienste unterstützen eine Bereitstellung von Freigaben auf Basis
-	von CIFS/SMB (siehe <xref linkend="shares::general"/>). Sofern das unterliegende Dateisystem Access
-	Control Lists (ACLs) unterstützt (verwendbar bei ext3, ext4 und XFS) sind ACLs auch von
-	Windows-Clients verwendbar. Samba setzt zwingend ein Dateisystem mit XATTR-Unterstützung
-	voraus.
-  </para>
+		<para>
+		  In Versionen vor UCS 3.2 verwendete Samba zur Bereitstellung von Dateidiensten das
+		  CIFS-Protokoll. Bei Neuinstallationen ab UCS 3.2 wird standardmäßig der Nachfolger SMB2
+		  aktiviert. Verwendet man einen Client, der SMB2 unterstützt (ab Windows Vista, also auch
+		  Windows 7/8), verbessert sich die Performance und die Skalierbarkeit.
+		</para>
 
-  <para>
-	Dateidienste können auch mit Samba Active Directory-Domänencontrollern bereitgestellt werden. Generell wird in
-	Samba-Umgebungen - analog zu den Empfehlungen für Active Directory - empfohlen
-	Domänencontroller- und Datei/Druckdienste zu trennen, d.h. Domänencontroller für die Anmeldung
-	und Memberserver für Datei-/Druckdienste zu verwenden. Dies stellt sicher, dass hohe Last auf
-	einem Fileserver nicht zu Störungen im Anmeldedienst führen. Für kleine Umgebungen, in denen
-	keine Möglichkeit für den Betrieb zweier Server gegeben ist, können Datei- und Druckdienste auch
-	mit auf einem Domänencontroller betrieben werden.
-  </para>
+		<para>
+		  Das Protokoll kann über die &ucsUCR;-Variable <envar>samba/max/protocol</envar>
+		  konfiguriert werden. Sie muss auf allen Samba-Servern gesetzt und anschließend der/die
+		  Samba-Server neu gestartet werden.
 
-  <para>
-	In Versionen vor UCS 3.2 verwendete Samba zur Bereitstellung von Dateidiensten das
-	CIFS-Protokoll. Bei Neuinstallationen ab UCS 3.2 wird standardmäßig der Nachfolger SMB2
-	aktiviert. Verwendet man einen Client, der SMB2 unterstützt (ab Windows Vista, also auch Windows
-	7/8), verbessert sich die Performance und die Skalierbarkeit.
-  </para>
+		  <itemizedlist>
+			<listitem><simpara>
+			  <emphasis>NT1</emphasis> konfiguriert CIFS (unterstützt von allen Windows-Versionen)
+			</simpara></listitem>
 
-  <para>
-	Das Protokoll kann über die &ucsUCR;-Variable <envar>samba/max/protocol</envar> konfiguriert
-	werden. Sie muss auf allen Samba-Servern gesetzt und anschließend der/die Samba-Server neu
-	gestartet werden.
+			<listitem><simpara>
+			  <emphasis>SMB2</emphasis> konfiguriert SMB2 (unterstützt ab Windows Vista/Windows 7)
+			</simpara></listitem>
 
-	<itemizedlist>
-	  <listitem><simpara>
-		<emphasis>NT1</emphasis> konfiguriert CIFS (unterstützt von allen Windows-Versionen)
-	  </simpara></listitem>
+			<listitem><simpara>
+			  <emphasis>SMB3</emphasis> konfiguriert SMB3 (unterstützt ab Windows 8) (aktuell nicht durch Univention-Support abgedeckt)
+			</simpara></listitem>
+		  </itemizedlist>
+		</para>
+	  </section>
 
-	  <listitem><simpara>
-		<emphasis>SMB2</emphasis> konfiguriert SMB2 (unterstützt ab Windows Vista/Windows 7)
-	  </simpara></listitem>
 
-	  <listitem><simpara>
-		<emphasis>SMB3</emphasis> konfiguriert SMB3 (unterstützt ab Windows 8) (aktuell nicht durch Univention-Support abgedeckt)
-	  </simpara></listitem>
-	</itemizedlist>
-  </para>
-</section>
+	  <section id="windows:samba4:services:print">
+		<title>Druckdienste / Print-Server</title>
+		<para>
+		  Samba bietet die Möglichkeit, unter Linux eingerichtete Drucker als Netzwerkdrucker für
+		  Windows-Clients freizugeben. Die Verwaltung der Druckerfreigaben und die Integration der
+		  Druckertreiber ist in <xref linkend="print::general"/> beschrieben.
+		</para>
 
-<section id="windows:samba:services:print">
-  <title>Druckdienste / Print-Server</title>
-  <para>
-	Samba bietet die Möglichkeit, unter Linux eingerichtete Drucker als Netzwerkdrucker für
-	Windows-Clients freizugeben. Die Verwaltung der Druckerfreigaben und die Integration der
-	Druckertreiber ist in <xref linkend="print::general"/> beschrieben.
-  </para>
+		<para>
+		  Druckdienste können auch mit Samba AD-Domänencontrollern bereitgestellt werden. Hierbei
+		  sind die in <xref linkend="windows:samba4:fileservices"/> beschriebenen Einschränkungen zu
+		  beachten.
+		</para>
+	  </section>
 
-  <para>
-	Druckdienste können auch mit Samba AD-Domänencontrollern bereitgestellt werden. Hierbei sind die
-	in <xref linkend="windows:fileservices"/> beschriebenen Einschränkungen zu beachten.
-  </para>
-</section>
 
-<section id="windows:s4connector">
-  <title>Univention S4 Connector</title>
-  <para>
-	Bei Verwendung von Samba als AD-Domänencontroller stellt Samba einen separaten
-	LDAP-Verzeichnisdienst bereit. Die Synchronisation zwischen dem UCS-LDAP und dem Samba-LDAP
-	erfolgt durch einen internen Systemdienst, den Univention S4 Connector. Der Connector ist
-	standardmässig auf dem &ucsMaster; aktiviert und benötigt normalerweise keine weitere Konfiguration.
-  </para>
+	  <section id="windows:s4connector">
+		<title>Univention S4 Connector</title>
+		<para>
+		  Samba stellt einen separaten LDAP-Verzeichnisdienst bereit. Die Synchronisation zwischen
+		  dem UCS-LDAP und dem Samba-LDAP erfolgt durch einen internen Systemdienst, den Univention
+		  S4 Connector. Der Connector ist standardmässig auf dem &ucsMaster; aktiviert und benötigt
+		  normalerweise keine weitere Konfiguration.
+		</para>
 
-  <para>
-	Hinweise zum Status der Synchronisation finden sich in der
-	Logdatei <filename>/var/log/univention/connector-s4.log</filename>.
-  </para>
+		<para>
+		  Hinweise zum Status der Synchronisation finden sich in der Logdatei
+		  <filename>/var/log/univention/connector-s4.log</filename>. Weitere Informationen zur
+		  Fehleranalyse von eventuellen Connectorproblemen finden sich in <xref linkend="sdb-s4trouble"/>.
+		</para>
 
-  <para>
-	Der Befehl <command>unvention-s4connector-list-rejected</command> zeigt alle nicht
-	synchronisierbaren Objekt an.
-  </para>
+		<para>
+		  Mit dem Befehl <command>univention-s4search</command> kann im Samba-Verzeichnisdienst
+		  gesucht werden. <command>univention-s4search</command> ist ein Wrapper um das Kommando
+		  <command>ldbsearch</command>. Wird es als Benutzer <emphasis>root</emphasis> aufgerufen,
+		  werden automatisch die nötigen Credentials des Maschinenkontos verwendet:
 
-  <para>
-	Mit dem Befehl <command>univention-s4search</command> kann im Samba-Verzeichnisdienst gesucht
-	werden. <command>univention-s4search</command> ist ein Wrapper um das Kommando
-	<command>ldbsearch</command>. Wird es als Benutzer <emphasis>root</emphasis> aufgerufen, werden
-	automatisch die nötigen Credentials des Maschinenkontos verwendet:
-
-<programlisting>
+		  <programlisting>
 root@master:~# univention-s4search sAMAccountName=Administrator
 # record 1
 dn: CN=Administrator,CN=Users,DC=example,DC=com
@@ -278,315 +244,574 @@ objectClass: user
 cn: Administrator
 instanceType: 4
 (..)
-</programlisting>
-</para>
+		  </programlisting>
+		</para>
+	  </section>
 
-</section>
 
-<section id="windows:sysvolshare">
-  <title>Synchronisation der SYSVOL-Freigabe</title>
-  <para>
-	Die SYSVOL-Freigabe ist eine Freigabe, die in Active Directory/Samba Gruppenrichtlinien
-	und Anmeldeskripte bereitstellt. Sie wird zwischen allen Domänencontrollern synchronisiert und
-	im Verzeichnis <filename>/var/lib/samba/sysvol</filename> gespeichert.
-  </para>
+	  <section id="windows:multimaster">
+		<title>DRS-Replikation der Verzeichnisdaten</title>
 
-  <para>
-	In Microsoft Active Directory wird die SYSVOL-Freigabe durch den File Replication Service
-	(eingeführt mit Windows 2000), bzw. durch das Distributed File System (ab Windows 2008 R2)
-	synchronisiert. Diese Replikationsmethoden sind in Samba noch nicht vollständig
-	implementiert. Die Synchronisation zwischen den Samba-Domänencontrollern erfolgt in UCS
-	durch einen Cron-Job (standardmäßig alle fünf Minuten, konfigurierbar durch die &ucsUCRV;
-	<envar>samba4/sysvol/sync/cron</envar>.
-  </para>
-</section>
+		<para>
+		  Samba-AD-Domänen verwenden das Directory Replication System (DRS) zur Replikation der
+		  Verzeichnisdaten. DRS erlaubt Multimasterreplikation, d.h. die schreibenden Änderungen
+		  mehrerer Domänencontroller werden auf Protokollebene synchronisiert. Die Verwendung von
+		  Snapshots in Virtualisierungslösungen sollte daher beim Einsatz von Samba 4 vermieden und
+		  Samba 4 auf einem Server betrieben werden, der durchgehend eingeschaltet bleibt.
+		</para>
 
-<section id="windows:netbios">
-  <title>NetBIOS-Netzwerkdienst</title>
+		<para>
+		  Mit jedem weiteren Samba-AD-Domänencontroller steigt die Komplexität der
+		  Multimasterreplikation. Es sollte daher geprüft werden, ob weitere
+		  Samba-AD-Domänencontroller nötig sind oder für neue Server nicht ein Memberserver die
+		  bessere Wahl ist.
+		</para>
 
-  <para>
-	NetBIOS ist ein Netzwerkprotokoll zur Namensauflösung und Netzwerkkommunikation von
-	Windows-Clients. Es wird primär für NT-kompatible Domänen verwendet; die Namensauflösung in
-	Active Directory-Domänen erfolgt über DNS. Samba bildet NetBIOS-Funktionalität durch den
-	Systemdienst <emphasis>nmbd</emphasis> ab.
-  </para>
+		<para>
+		  Hinweise zur Analyse von DRS-Replikationsproblemen finden sich in <xref
+		  linkend="sdb-s4trouble"/>.
+		</para>
+	  </section>
 
-  <para>
-	NetBIOS-Rechnernamen können maximal 13 Zeichen umfassen. Der NetBIOS-Name eines UCS-Systems
-	entspricht standardmäßig dem Rechnernamen.
-  </para>
 
-  <para>
-	In einer nativen Active Directory-Umgebung werden standardmäßig keine NetBIOS-Dienste
-	bereitgestellt. In einer AD-Umgebung auf Basis von Samba sind sie hingegen aktiviert. Dies kann
-	mit der &ucsUCRV; <envar>samba4/service/nmb</envar> deaktiviert werden.
-  </para>
-</section>
+	  <section id="windows:sysvolshare">
+		<title>Synchronisation der SYSVOL-Freigabe</title>
+		<para>
+		  Die SYSVOL-Freigabe ist eine Freigabe, die in Active Directory/Samba Gruppenrichtlinien
+		  und Anmeldeskripte bereitstellt. Sie wird zwischen allen Domänencontrollern synchronisiert
+		  und im Verzeichnis <filename>/var/lib/samba/sysvol</filename> gespeichert.
+		</para>
 
-<section id="windows:wins">
-  <title>Namensauflösung über WINS</title>
+		<para>
+		  In Microsoft Active Directory wird die SYSVOL-Freigabe durch den File Replication Service
+		  (eingeführt mit Windows 2000), bzw. durch das Distributed File System (ab Windows 2008 R2)
+		  synchronisiert. Diese Replikationsmethoden sind in Samba noch nicht vollständig
+		  implementiert. Die Synchronisation zwischen den Samba-Domänencontrollern erfolgt in UCS
+		  durch einen Cron-Job (standardmäßig alle fünf Minuten, konfigurierbar durch die &ucsUCRV;
+		  <envar>samba4/sysvol/sync/cron</envar>.
+		</para>
+	  </section>
+	</section>
 
-  <para>
-	Der <emphasis>Windows Internet Name Service (WINS)</emphasis> ist ein Dienst zur Auflösung von
-	NetBIOS-Namen in IP-Adressen ähnlich DNS in TCP/IP-Netzwerken. Außerdem stellt WINS
-	Informationen über die Aufgaben der Rechner bereit.
-  </para>
 
-  <para>
-	WINS wird in NT-kompatiblen Samba-Domänen verwendet, in Samba-AD-Domänen erfolgt die
-	Namensauflösung in der Regel über DNS.
-  </para>
+	<section id="windows:samba4:desktopmanagement">
+	  <title>Konfiguration und Management von Windows-Desktops</title>
 
-  <para>
-	WINS-Unterstützung ist in der Grundeinstellung auf dem &ucsMaster; aktiviert und kann mit der
-	&ucsUCRV; <envar>windows/wins-support</envar> auch auf einem anderen Server in Betrieb genommen
-	werden. WINS kann ohne Anpassungen nur auf jeweils einem Samba-Server der Domäne betrieben
-	werden, die Verteilung auf mehrere Server erfordert die Einrichtung von
-	WINS-Replikation. Informationen zur Inbetriebnahme der WINS-Replikation finden sich in der
-	Univention Support Datenbank unter <ulink url="http://sdb.univention.de/1107"/>.
-  </para>
+	  <section id="gruppenrichtlinien">
+		<title>Gruppenrichtlinien</title>
+		<para>
+		  <figure><title>Gruppenrichtlinien-Editor</title>
+		  <graphic scalefit="1" width="80%" fileref="illustrations/win_policy_de.png"/>
+		  </figure>
+		</para>
 
-  <para>
-	Der WINS-Server kann Windows-Clients in der &ucsUMC; über eine DHCP-NetBIOS-Richtlinie
-	zugewiesen werden, siehe <xref linkend="networks:dhcp:wins"/>.
-  </para>
-</section>
-</section>
+		<para>
+		  Gruppenrichtlinien sind eine Active Directory-Funktion, die die zentrale Konfiguration von
+		  Rechner- und Benutzereinstellungen erlaubt. Sie werden nur in Samba-AD-Domänen
+		  unterstützt.
+		</para>
 
-<section id="windows:desktopmanagement#">
-  <title>Konfiguration und Management von Windows-Desktops</title>
-  <section id="gruppenrichtlinien"><title>Gruppenrichtlinien</title>
-  <para>
-	<figure><title>Gruppenrichtlinien-Editor</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/win_policy_de.png"/>
-	</figure>
-  </para>
+		<para>
+		  Die Einrichtung von Gruppenrichtlinien kann mit dem <emphasis>Remote Server Administration
+		  Tools (RSAT) for Windows 7</emphasis> <footnote><para><ulink
+		  url="http://www.microsoft.com/downloads/details.aspx?FamilyID=7d2f6ad7-656b-4313-a005-4e344e43997d"/></para></footnote>
+		  oder den <emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
+		  <footnote><para><ulink
+		  url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>
+		  erfolgen. Nach der Installation muss der Gruppenrichtlinieneditor in der Windows-Systemsteuerung
+		  aktiviert werden, in dem unter <guimenu>Start -> Systemsteuerung -> Programme -> Windows-Funktionen
+		  aktivieren und deaktivieren -> Remoteserver-Verwaltungstools ->
+		  Featureverwaltungs-Tools</guimenu> die Option <guimenu>Tools für die
+		  Gruppenrichtlinienverwaltung</guimenu> aktiviert wird.
+		</para>
 
-  <para>
-	Gruppenrichtlinien sind eine Active Directory-Funktion, die die zentrale Konfiguration von
-	Rechner- und Benutzereinstellungen erlaubt. Sie werden nur in Samba-AD-Domänen unterstützt.
-  </para>
+		<para>
+		  Die Gruppenrichtlinien werden in der SYSVOL-Freigabe gespeichert, siehe <xref
+		  linkend="windows:sysvolshare"/>.
+		</para>
 
-  <para>
-	Die Einrichtung von Gruppenrichtlinien kann mit dem <emphasis>Remote Server Administration Tools
-	(RSAT) for Windows 7</emphasis> <footnote><para><ulink
-	url="http://www.microsoft.com/downloads/details.aspx?FamilyID=7d2f6ad7-656b-4313-a005-4e344e43997d"/></para></footnote>
-	oder den <emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
-	<footnote><para><ulink
-	url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>
-	erfolgen.
-	Nach der Installation muss der Gruppenrichtlinieneditor in der Windows-Systemsteuerung aktiviert
-	werden, in dem unter <guimenu>Start -> Systemsteuerung -> Programme -> Windows-Funktionen
-	aktivieren und deaktivieren -> Remoteserver-Verwaltungstools ->
-	Featureverwaltungs-Tools</guimenu> die Option <guimenu>Tools für die
-	Gruppenrichtlinienverwaltung</guimenu> aktiviert wird.
-  </para>
+		<para>
+		  Gruppenrichtlinien werden von Mac OS X-Clients nicht unterstützt.
+		</para>
+	  </section>
 
-  <para>
-	Die Gruppenrichtlinien werden in der SYSVOL-Freigabe gespeichert, siehe <xref
-	linkend="windows:sysvolshare"/>.
-  </para>
 
-  <para>
-	Gruppenrichtlinien werden von Mac OS X-Clients nicht unterstützt.
-  </para>
+	  <section id="netlogon-freigabe:samba4">
+		<title>Anmeldeskripte / NETLOGON-Freigabe</title>
+		<para>
+		  Die NETLOGON-Freigabe dient der Bereitstellung von Anmeldeskripten in Windows-Domänen. Die
+		  Anmeldeskripte werden nach der erfolgreichen Anmeldung eines Benutzers ausgeführt und
+		  ermöglichen die Anpassung der Arbeitsumgebung des Benutzers. Die Skripte müssen in einem
+		  für Windows ausführbaren Format gespeichert werden, wie z.B. <emphasis>bat</emphasis>.
+		</para>
+
+		<para>
+		  Die Anmeldeskripte unter werden
+		  <filename>/var/lib/samba/sysvol/&lt;Domänenname&gt;/scripts/</filename> abgelegt und
+		  werden unter dem Freigabennamen <emphasis>NETLOGON</emphasis> bereitgestellt. Die
+		  NETLOGON-Freigabe wird im Rahmen der SYSVOL-Replikation repliziert.
+		</para>
+
+		<para>
+		  Um ein globales Anmeldeskript für alle Benutzer zu definieren, steht die &ucsUCRV;
+		  <envar>samba/logonscript</envar> zur Verfügung. Ist diese Variable auf einem Samba-Server
+		  gesetzt, wird allen Benutzern, die sich an diesem Samba-Server anmelden, standardmäßig das
+		  dort angegebene Anmeldeskript zugeordnet. Das Anmeldeskript kann auch benutzerspezifisch
+		  zugewiesen werden, siehe <xref linkend="users::management"/>.
+		</para>
+	  </section>
+
+
+	  <section id="windows:serverhome:samba4">
+		<title>Konfiguration des Servers, auf dem das Heimatverzeichnis abgelegt wird</title>
+
+		<para>
+		  Das Heimatverzeichnis wird benutzerbezogen in der &ucsUMC; definiert siehe <xref
+		  linkend="users::management"/>. Dies erfolgt mit der Einstellung
+		  <guimenu>Windows-Heimatverzeichnis</guimenu>,
+		  z.B. <emphasis>\\ucs-file-server\meier</emphasis>.
+		</para>
+
+		<para>
+		  Für das Zuweisen des Heimatverzeichnis-Servers an mehrere Benutzer auf einmal kann der
+		  Mehrfachbearbeitungsmodus der &ucsUMC; verwendet  werden, siehe <xref
+		  linkend="central:user-interface:edit"/>.
+		</para>
+	  </section>
+
+
+	  <section id="windows:roamingprofiles:samba4">
+		<title>Servergespeicherte Profile</title>
+
+		<para>
+		  Samba unterstützt servergespeicherte Profile, d.h. Einstellungen der Benutzer werden auf
+		  einem Server gespeichert. In diesem Verzeichnis werden auch die Dateien gespeichert, die
+		  der Benutzer im Ordner <emphasis>Eigene Dateien</emphasis> speichert. Sie werden
+		  zwischenzeitlich lokal auf dem Windows-Rechner vorgehalten und erst bei der Abmeldung auf
+		  den Samba-Server synchronisiert.
+		</para>
+
+		<para>
+		  Wird der Profilpfad in der &ucsUMC; geändert, wird ein neues Profilverzeichnis
+		  angelegt. Die Daten aus dem alten Profilverzeichnis bleiben dabei erhalten und können
+		  manuell in das neue Profilverzeichnis kopiert beziehungsweise verschoben
+		  werden. Abschließend kann das alte Profilverzeichnis gelöscht werden.
+		</para>
+
+		<para>
+		  In Samba-Domänen mit Active Directory-Support werden in der Voreinstellung keine
+		  serverseitigen Profile verwendet.
+		</para>
+
+		<para>
+		  Das Profilverzeichnis kann über eine Gruppenrichtlinie konfiguriert werden, die unter
+		  <guimenu>Computerkonfiguration &ar; Richtlinien &ar; Administrative Vorlagen &ar; System
+		  &ar; Benutzerprofile &ar; Pfad des servergespeicherten Profils für alle Benutzer
+		  festlegen</guimenu> zu finden ist.
+		</para>
+
+		<note>
+		  <para>
+			Der Administrator-Benutzer greift standardmäßig mit root-Berechtigungen auf Freigaben
+			zu. Wenn dadurch das Profilverzeichnis mit root als Benutzer angelegt wird, sollte es
+			manuell mit dem Befehl <command>chown</command> an den Administrator vergeben werden.
+		  </para>
+		</note>
+	  </section>
+	</section>
 
   </section>
 
-<section id="netlogon-freigabe">
-  <title>Anmeldeskripte / NETLOGON-Freigabe</title>
-  <para>
-	Die NETLOGON-Freigabe dient der Bereitstellung von Anmeldeskripten in Windows-Domänen. Die
-	Anmeldeskripte werden nach der erfolgreichen Anmeldung eines Benutzers ausgeführt und
-	ermöglichen die Anpassung der Arbeitsumgebung des Benutzers. Die Skripte müssen in einem für
-	Windows ausführbaren Format gespeichert werden, wie z.B. <emphasis>bat</emphasis>.
-  </para>
 
-  <para>
-	Die NETLOGON-Freigabe wird zwischen allen Samba-Domänencontrollern automatisch synchronisiert.
-  </para>
 
-<section id="windows:netlogon:Samba_3">
-  <title>Samba NT-Domänen</title>
-  <para>
-	In Samba NT-Domänen ist standardmäßig das Verzeichnis
-	<filename>/var/lib/samba/netlogon</filename> als Samba-Freigabe <emphasis>NETLOGON</emphasis>
-	eingerichtet.
-  </para>
 
-  <para>
-	In der Grundeinstellung werden alle Anpassungen im Verzeichnis
-	<filename>/var/lib/samba/netlogon</filename> auf dem &ucsMaster; vorgenommen und stündlich mit
-	dem <emphasis>rsync</emphasis>-Tool auf alle Domänencontroller mit installiertem Samba
-	synchronisiert. Der Synchronisations-Modus kann durch die &ucsUCRV;
-	<envar>samba/netlogon/sync</envar> konfiguriert werden:
 
-	<itemizedlist>
-	  <listitem><simpara>
-		Mit <emphasis>sync</emphasis> werden die Netlogon-Skripte vom &ucsMaster; auf den
-		Samba-Server repliziert und auf dem Master nicht mehr vorhandene Dateien lokal gelöscht. Das
-		ist die Standardeinstellung.
-	  </simpara></listitem>
+  
 
-	  <listitem><simpara>
-		Mit <emphasis>download</emphasis> werden die Daten ebenfalls vom &ucsMaster; kopiert,
-		entfernte Dateien jedoch nicht gelöscht.
-	  </simpara></listitem>
 
-	  <listitem><simpara>
-		<emphasis>none</emphasis> deaktiviert die Synchronisation.
-	  </simpara></listitem>
-	</itemizedlist>
-  </para>
+  <section id="windows:ntdomain">
+	<title>Betrieb einer Samba-Domäne auf Basis von NT-Domänendiensten</title>
 
-  <para>
-	Um ein globales Anmeldeskript für alle Benutzer zu definieren, steht die &ucsUCRV;
-	<envar>samba/logonscript</envar> zur Verfügung. Ist diese Variable auf einem Samba-Server
-	gesetzt, wird allen Benutzern, die sich an diesem Samba-Server anmelden, standardmäßig das dort
-	angegebene Anmeldeskript zugeordnet. Das Anmeldeskript kann auch benutzerspezifisch zugewiesen
-	werden, siehe <xref linkend="users::management"/>.
-  </para>
-</section>
+	<section id="windows:ntsetup">
+	  <title>Bestandteile einer Samba-Domäne</title>
 
-<section id="windows:netlogon:Samba_4">
-  <title>Samba AD-Domänen</title>
-  <para>
-	In Samba-AD-Domänen werden die Anmeldeskripte unter
-	<filename>/var/lib/samba/sysvol/&lt;Domänenname&gt;/scripts/</filename> abgelegt und werden
-	ebenfalls unter dem Freigabennamen <emphasis>NETLOGON</emphasis> bereitgestellt.
-  </para>
+	  <para>
+		Eine Samba-Domäne besteht aus min. einem Domänencontroller. Windows-Clients und Memberserver
+		können als Domänenmitglieder dem Vertrauenskontext der Samba-Domäne beitreten. Memberserver
+		stellen keine Anmeldedienste bereit, bieten aber beispielsweise Datei- oder Druckdienste
+		an. Neben dem Domänenbeitritt als Memberserver von Windows Server-Systemen kann auch Samba
+		als Memberserver arbeiten.
+	  </para>
 
-  <para>
-	Die NETLOGON-Freigabe wird im Rahmen der SYSVOL-Replikation repliziert.
-  </para>
-</section>
-</section>
+	  <para>
+		Der Domänenbeitritt von Windows-Clients und Microsoft Windows-Domänencontrollern wird in
+		<xref linkend="windows-domaenenbeitritt"/> beschrieben.
+	  </para>
 
-<section id="windows:serverhome">
-  <title>Konfiguration des Servers, auf dem das Heimatverzeichnis abgelegt wird</title>
-  <section id="windows:serverhome:nt">
-	<title>Samba-NT-Domänen</title>
-	<para>
-	  Das Heimatverzeichnis eines Benutzers wird durch Samba freigegeben und nach der Anmeldung
-	  unter Windows in der Grundeinstellung mit dem Laufwerk <emphasis>I:</emphasis> verbunden.
-	</para>
+	  <para>
+		Microsoft Windows-Domänencontroller können nicht einer UCS-Samba-Domäne beitreten.
+	  </para>
 
-	<para>
-	  Mit der &ucsUCRV; <envar>samba/homedirserver</envar> kann der Server festgelegt werden, auf
-	  dem die Heimatverzeichnisse vorgehalten werden, mit der &ucsUCRV;
-	  <envar>samba/homedirpath</envar> kann das Verzeichnis vorgegeben werden. Diese Werte gelten
-	  dann für alle Benutzer.
-	</para>
+	</section>
 
-	<para>
-	  Sie können aber in den Benutzereinstellungen - siehe <xref linkend="users::management"/> - mit
-	  der Einstellung <guimenu>Windows-Heimatverzeichnis</guimenu> auch individuell zugewiesen
-	  werden, z.B. <emphasis>\\ucs-file-server\meier</emphasis>.
-	</para>
+	<section id="windows:setup3">
+	  <title>Installation</title>
 
-	<para>
-	  Wenn anstelle des UNIX-Heimatverzeichnisses des Benutzers ein anderes UNIX-Verzeichnis auf dem
-	  Windows-Laufwerk für das Heimatverzeichnis angezeigt werden soll, muss dieser Server und das
-	  Verzeichnis in das Eingabefeld <guimenu>Windows-Heimatverzeichnis</guimenu> eingetragen
-	  werden.
-	</para>
+	  <para>
+		Samba als NT-Domänencontroller kann auf allen UCS-Domänencontrollern mit der Applikation
+		<emphasis>Windows-NT-kompatibler Domänencontroller</emphasis> aus dem Univention App Center
+		installiert werden. Alternativ kann das Softwarepaket <package>univention-samba</package>
+		installiert werden (anschließend muss der Befehl <command>univention-run-join-scripts</command>
+		aufgerufen werden). Weitere Informationen finden sich in <xref
+		linkend="computers::softwaremanagement::installsoftware"/>.
+	  </para>
+
+	  <para>
+		Ein Samba-Memberserver kann auf UCS-Memberservern mit der Applikation
+		<emphasis>Windows-kompatibler Fileserver auf der Basis von Samba 3</emphasis> aus dem Univention App Center
+		installiert werden. Alternativ kann das Softwarepaket <package>univention-samba</package> 
+		installiert werden (anschließend muss der Befehl
+		<command>univention-run-join-scripts</command> aufgerufen werden). Weitere Informationen finden
+		sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
+	  </para>
+	</section>
+
+	<section id="windows:samba3:services">
+	  <title>Dienste einer Samba-Domäne</title>
+
+	  <section id="windows:samba3:services:auth">
+		<title>Authentifizierungsdienst</title>
+
+		<para>
+		  Benutzeranmeldungen können nur auf Microsoft Windows-Systemen  erfolgen, die der
+		  Samba-Domäne beigetreten sind. Der Domänenbeitritt  ist in <xref
+		  linkend="windows-domaenenbeitritt"/> dokumentiert.
+		</para>
+
+		<para>
+		  Die Benutzerkennwörter werden im UCS-LDAP gespeichert. Benutzer werden bei der
+		  Domänenanmeldung mit Benutzernamen und Passwort gegen das LDAP-Verzeichnis authentifiziert
+		  und können dann auf alle freigegebenen Ressourcen der Domäne zugreifen ohne Benutzernamen
+		  und Passwort erneut eingeben zu müssen. Rechner mit jeglicher Art von
+		  Windows-Betriebssystem werden wie in Windows NT-Domänen über das NTLMv2-Protokoll
+		  authentifiziert.
+		</para>
+	  </section>
+
+
+	  <section id="windows:samba3:fileservices">
+		<title>Dateidienste / File-Server</title>
+		<para>
+		  Die in UCS integrierten Dateidienste unterstützen eine Bereitstellung von Freigaben auf
+		  Basis von CIFS/SMB (siehe <xref linkend="shares::general"/>). Sofern das unterliegende
+		  Dateisystem Access Control Lists (ACLs) unterstützt (verwendbar bei ext3, ext4 und XFS)
+		  sind ACLs auch von Windows-Clients verwendbar. Samba setzt zwingend ein Dateisystem mit
+		  XATTR-Unterstützung voraus.
+		</para>
+
+		<para>
+		  In Versionen vor UCS 3.2 verwendete Samba zur Bereitstellung von Dateidiensten das
+		  CIFS-Protokoll. Bei Neuinstallationen ab UCS 3.2 wird standardmäßig der Nachfolger SMB2
+		  aktiviert. Verwendet man einen Client, der SMB2 unterstützt (ab Windows Vista, also auch
+		  Windows 7/8), verbessert sich die Performance und die Skalierbarkeit.
+		</para>
+
+		<para>
+		  Das Protokoll kann über die &ucsUCR;-Variable <envar>samba/max/protocol</envar>
+		  konfiguriert werden. Sie muss auf allen Samba-Servern gesetzt und anschließend der/die
+		  Samba-Server neu gestartet werden.
+
+		  <itemizedlist>
+			<listitem><simpara>
+			  <emphasis>NT1</emphasis> konfiguriert CIFS (unterstützt von allen Windows-Versionen)
+			</simpara></listitem>
+
+			<listitem><simpara>
+			  <emphasis>SMB2</emphasis> konfiguriert SMB2 (unterstützt ab Windows Vista/Windows 7)
+			</simpara></listitem>
+			
+			<listitem><simpara>
+			  <emphasis>SMB3</emphasis> konfiguriert SMB3 (unterstützt ab Windows 8) (aktuell nicht durch Univention-Support abgedeckt)
+			</simpara></listitem>
+		  </itemizedlist>
+		</para>
+	  </section>
+
+
+	  <section id="windows:samba3:services:print">
+		<title>Druckdienste / Print-Server</title>
+		<para>
+		  Samba bietet die Möglichkeit, unter Linux eingerichtete Drucker als Netzwerkdrucker für
+		  Windows-Clients freizugeben. Die Verwaltung der Druckerfreigaben und die Integration der
+		  Druckertreiber ist in <xref linkend="print::general"/> beschrieben.
+		</para>
+	  </section>
+	  
+
+	  <section id="windows:netbios">
+		<title>NetBIOS-Netzwerkdienst</title>
+
+		<para>
+		  NetBIOS ist ein Netzwerkprotokoll zur Namensauflösung und Netzwerkkommunikation von
+		  Windows-Clients. Es wird primär für NT-kompatible Domänen verwendet; die Namensauflösung
+		  in Active Directory-Domänen erfolgt über DNS. Samba bildet NetBIOS-Funktionalität durch
+		  den Systemdienst <emphasis>nmbd</emphasis> ab.
+		</para>
+
+		<para>
+		  NetBIOS-Rechnernamen können maximal 13 Zeichen umfassen. Der NetBIOS-Name eines
+		  UCS-Systems entspricht standardmäßig dem Rechnernamen.
+		</para>
+	  </section>
+
+
+	  <section id="windows:wins">
+		<title>Namensauflösung über WINS</title>
+
+		<para>
+		  Der <emphasis>Windows Internet Name Service (WINS)</emphasis> ist ein Dienst zur Auflösung
+		  von NetBIOS-Namen in IP-Adressen ähnlich DNS in TCP/IP-Netzwerken. Außerdem stellt WINS
+		  Informationen über die Aufgaben der Rechner bereit.
+		</para>
+
+		<para>
+		  WINS wird in NT-kompatiblen Samba-Domänen verwendet, in Samba-AD-Domänen erfolgt die
+		  Namensauflösung in der Regel über DNS.
+		</para>
+
+		<para>
+		  WINS-Unterstützung ist in der Grundeinstellung auf dem &ucsMaster; aktiviert und kann mit
+		  der &ucsUCRV; <envar>windows/wins-support</envar> auch auf einem anderen Server in Betrieb
+		  genommen werden. WINS kann ohne Anpassungen nur auf jeweils einem Samba-Server der Domäne
+		  betrieben werden, die Verteilung auf mehrere Server erfordert die Einrichtung von
+		  WINS-Replikation. Informationen zur Inbetriebnahme der WINS-Replikation finden sich in der
+		  Univention Support Datenbank unter <ulink url="http://sdb.univention.de/1107"/>.
+		</para>
+
+		<para>
+		  Der WINS-Server kann Windows-Clients in der &ucsUMC; über eine DHCP-NetBIOS-Richtlinie
+		  zugewiesen werden, siehe <xref linkend="networks:dhcp:wins"/>.
+		</para>
+	  </section>
+	</section>
+
+
+	<section id="windows:samba3:desktopmanagement">
+	  <title>Konfiguration und Management von Windows-Desktops</title>
+
+	  <section id="netlogon-freigabe:samba3">
+		<title>Anmeldeskripte / NETLOGON-Freigabe</title>
+		<para>
+		  Die NETLOGON-Freigabe dient der Bereitstellung von Anmeldeskripten in Windows-Domänen. Die
+		  Anmeldeskripte werden nach der erfolgreichen Anmeldung eines Benutzers ausgeführt und
+		  ermöglichen die Anpassung der Arbeitsumgebung des Benutzers. Die Skripte müssen in einem
+		  für Windows ausführbaren Format gespeichert werden, wie z.B. <emphasis>bat</emphasis>.
+		</para>
+
+		<para>
+		  Standardmäßig ist das Verzeichnis <filename>/var/lib/samba/netlogon</filename> als
+		  Samba-Freigabe <emphasis>NETLOGON</emphasis> eingerichtet.
+		</para>
+
+		<para>
+		  In der Grundeinstellung werden alle Anpassungen im Verzeichnis
+		  <filename>/var/lib/samba/netlogon</filename> auf dem &ucsMaster; vorgenommen und stündlich
+		  mit dem <emphasis>rsync</emphasis>-Tool auf alle Domänencontroller mit installiertem Samba
+		  synchronisiert.
+		</para>
+
+		<para>
+		  Um ein globales Anmeldeskript für alle Benutzer zu definieren, steht die &ucsUCRV;
+		  <envar>samba/logonscript</envar> zur Verfügung. Ist diese Variable auf einem Samba-Server
+		  gesetzt, wird allen Benutzern, die sich an diesem Samba-Server anmelden, standardmäßig das dort
+		  angegebene Anmeldeskript zugeordnet. Das Anmeldeskript kann auch benutzerspezifisch zugewiesen
+		  werden, siehe <xref linkend="users::management"/>.
+		</para>
+	  </section>
+
+	  <section id="windows:serverhome:samba3">
+		<title>Konfiguration des Servers, auf dem das Heimatverzeichnis abgelegt wird</title>
+
+		<para>
+		  Das Heimatverzeichnis eines Benutzers wird durch Samba freigegeben und nach der Anmeldung
+		  unter Windows in der Grundeinstellung mit dem Laufwerk <emphasis>I:</emphasis> verbunden.
+		</para>
+
+		<para>
+		  Mit der &ucsUCRV; <envar>samba/homedirserver</envar> kann der Server festgelegt werden,
+		  auf dem die Heimatverzeichnisse vorgehalten werden, mit der &ucsUCRV;
+		  <envar>samba/homedirpath</envar> kann das Verzeichnis vorgegeben werden. Diese Werte
+		  gelten dann für alle Benutzer.
+		</para>
+
+		<para>
+		  Sie können aber in den Benutzereinstellungen - siehe <xref linkend="users::management"/> -
+		  mit der Einstellung <guimenu>Windows-Heimatverzeichnis</guimenu> auch individuell
+		  zugewiesen werden, z.B. <emphasis>\\ucs-file-server\meier</emphasis>.
+		</para>
+
+		<para>
+		  Wenn anstelle des UNIX-Heimatverzeichnisses des Benutzers ein anderes UNIX-Verzeichnis auf
+		  dem Windows-Laufwerk für das Heimatverzeichnis angezeigt werden soll, muss dieser Server
+		  und das Verzeichnis in das Eingabefeld <guimenu>Windows-Heimatverzeichnis</guimenu>
+		  eingetragen werden.
+		</para>
+	  </section>
+
+	  <section id="windows:roamingprofiles:samba3">
+		<title>Servergespeicherte Profile</title>
+
+		<para>
+		  Samba unterstützt servergespeicherte Profile, d.h. Einstellungen der Benutzer werden auf
+		  einem Server gespeichert. In diesem Verzeichnis werden auch die Dateien gespeichert, die
+		  der Benutzer im Ordner <emphasis>Eigene Dateien</emphasis> speichert. Sie werden
+		  zwischenzeitlich lokal auf dem Windows-Rechner vorgehalten und erst bei der Abmeldung auf
+		  den Samba-Server synchronisiert.
+		</para>
+
+		<para>
+		  Wird der Profilpfad in der &ucsUMC; geändert, wird ein neues Profilverzeichnis
+		  angelegt. Die Daten aus dem alten Profilverzeichnis bleiben dabei erhalten und können
+		  manuell in das neue Profilverzeichnis kopiert beziehungsweise verschoben
+		  werden. Abschließend kann das alte Profilverzeichnis gelöscht werden.
+		</para>
+
+		<para>
+		  Die Benutzerprofile werden standardmäßig im Unterverzeichnis <filename>windows-profiles\
+		  &lt;Windows-Version&gt;</filename> auf dem Samba-Server gespeichert, an dem sich der
+		  Benutzer angemeldet hat.
+		</para>
+
+		<para>
+		  Mit der &ucsUCRV; <envar>samba/profileserver</envar> kann ein anderer Server und mit
+		  <envar>samba/profilepath</envar> ein anderes Verzeichnis festgelegt werden. Diese
+		  Einstellungen müssen auf allen Samba-Domänencontrollern gesetzt werden.
+		</para>
+
+		<para>
+		  In der Benutzerverwaltung der &ucsUMC; kann mit der Einstellung
+		  <guimenu>Profilverzeichnis</guimenu> ein abweichender Pfad oder ein anderer Server für das
+		  Profilverzeichnis für den Benutzer konfiguriert werden.
+		</para>
+
+		<para>
+		  Durch Konfiguration der &ucsUCR;-Variablen <envar>samba/profilepath</envar> und
+		  <envar>samba/profileserver</envar> auf <emphasis>local</emphasis> und Neustart des
+		  Samba-Servers können servergespeicherten Profile deaktiviert werden.
+		</para>
+	  </section>
+	</section>
+
+	<section id="vertrauensstellungen_generell">
+	  <title>Vertrauensstellungen</title>
+	  <para>
+		Vertrauensstellungen zwischen Domänen ermöglichen es den Benutzern
+		einer Domäne, sich an Rechnern einer anderen Domäne anzumelden.
+	  </para>
+
+	  <para>
+		Vertrauensstellungen werden in auf Active Directory basierenden Samba-Domänen nicht
+		unterstützt.
+	  </para>
+
+	  <para>
+		Vertraut eine Windows-Domäne einer Samba-Domäne, steht bei der Anmeldung an Rechnern der
+		Windows-Domäne neben der Windows-Domäne auch die Samba-Domäne zur Auswahl.
+	  </para>
+
+	  <para>
+		Vertraut eine Samba-Domäne einer Windows-Domäne, geben die Benutzer der Windows-Domäne bei
+		der Anmeldung an einem Linux-Rechner als Benutzernamen <emphasis>Name der
+		Windows-Domäne>+&lt;Benutzername&gt;</emphasis> ein.
+	  </para>
+
+	  <para>
+		Während der Einrichtung und Nutzung von Vertrauensstellungen müssen sich die
+		Domänencontroller der beiden Domänen über das Netzwerk erreichen und per Broadcast oder WINS
+		gegenseitig identifizieren können.
+	  </para>
+
+	  <section id="windows:trustdom:windows-trusts-samba">
+		<title>Windows-Domäne vertraut Samba-Domäne</title>
+
+		<para>
+		  In der Rechnerverwaltung der &ucsUMC; muss ein <emphasis>Domain Trust Account</emphasis>
+		  angelegt werden, dessen Name dem NetBIOS-Namen der Windows-Domäne entspricht, und ein
+		  Passwort für das Konto vergeben werden. Die möglicherweise in der Windows-Domäne geltenden
+		  Anforderungen an sichere Passwörter sind dabei zu beachten.
+		</para>
+
+		<para>
+		  Auf dem Windows-PDC muss eine Vertrauensstellung angelegt werden.
+		</para>
+
+		<para>
+		  Die Vertrauensstellung der Windows-Domäne zur Samba-Domäne kann durch Löschung der
+		  Vertrauensstellung auf dem Windows-PDC und des Domain Trust Accounts in der &ucsUMC;
+		  wieder aufgehoben werden.
+		</para>
+	  </section>
+
+	  <section id="windows:trustdom:samba-trusts-windows">
+		<title>Samba-3-Domäne vertraut Windows-Domäne</title>
+		<para>
+		  Mit den folgenden Schritten wird die Vertrauensstellung auf einem &ucsSlave; als Benutzer
+		  <emphasis>root</emphasis> eingerichtet:
+		</para>
+
+		<para>
+		  Vertrauensstellungen können nur auf Domänencontrollern eingerichtet werden.
+		</para>
+
+		<para>
+		  Das Paket <package>winbind</package> muss installiert werden. Winbind ordnet
+		  Windows-Benutzer- und Gruppennamen UNIX-IDs zu.
+		</para>
+
+		<para>
+		  Auf dem Windows-PDC muss nun eine Vertrauensstellung angelegt werden.
+		</para>
+
+		<para>
+		  Wird Univention Firewall verwendet, müssen Antworten auf NetBIOS-Broadcasts zugelassen werden:
+		</para>
+
+		<programlisting language="sh">
+echo "iptables -I INPUT 1 -p udp --sport 137 -j ACCEPT" \
+    &gt;&gt; /etc/security/packetfilter.d/50_local.sh
+/etc/init.d/univention-firewall restart
+		</programlisting>
+
+		<para>
+		  Nun wird die Vertrauensstellung initiiert und Winbind neu gestartet. Dies muss auf allen
+		  Samba-Anmeldeservern ausgeführt werden.
+		</para>
+
+		<programlisting language="sh">
+net rpc trustdom establish &lt;Windowsdomain&gt;
+net setauthuser -UAdministrator
+echo -e "[global]\nwinbind rpc only = yes" >> /etc/samba/local.conf
+/etc/init.d/winbind restart
+ucr set auth/methods="krb5 ldap unix winbind"
+/etc/init.d/nscd restart
+		</programlisting>
+
+		<para>
+		  Mit folgendem Befehl kann geprüft werden, ob die Vertrauensstellung korrekt hinzugefügt
+		  wurde:
+		</para>
+
+		<programlisting language="sh">
+	  net rpc trustdom list
+		</programlisting>
+	  </section>
+	</section>
   </section>
 
-  <section id="windows:serverhome:ad">
-	<title>Samba-AD-Domänen</title>
-	<para>
-	  In Samba-AD-Domänen kann das Heimatverzeichnis nur benutzerbezogen in der &ucsUMC; definiert
-	  werden, siehe <xref linkend="users::management"/>. Dies erfolgt mit der Einstellung
-	  <guimenu>Windows-Heimatverzeichnis</guimenu>,
-	  z.B. <emphasis>\\ucs-file-server\meier</emphasis>.
-	</para>
 
-	<para>
-	  Für das Zuweisen des Heimatverzeichnis-Servers an mehrere Benutzer auf
-	  einmal kann der Mehrfachbearbeitungsmodus der &ucsUMC; verwendet
-	  werden, siehe <xref linkend="central:user-interface:edit"/>.
-	</para>
-  </section>
-</section>
 
-<section id="windows:roamingprofiles">
-  <title>Servergespeicherte Profile</title>
 
-  <para>
-	Samba unterstützt servergespeicherte Profile, d.h. Einstellungen der Benutzer werden auf einem
-	Server gespeichert. In diesem Verzeichnis werden auch die Dateien gespeichert, die der Benutzer
-	im Ordner <emphasis>Eigene Dateien</emphasis> speichert. Sie werden zwischenzeitlich lokal auf
-	dem Windows-Rechner vorgehalten und erst bei der Abmeldung auf den Samba-Server synchronisiert.
-  </para>
 
-  <para>
-	Wird der Profilpfad in der &ucsUMC; geändert, wird ein neues Profilverzeichnis angelegt. Die
-	Daten aus dem alten Profilverzeichnis bleiben dabei erhalten und können manuell in das neue
-	Profilverzeichnis kopiert beziehungsweise verschoben werden. Abschließend kann das alte
-	Profilverzeichnis gelöscht werden.
-</para>
-
-<section id="windows:roamingprofiles:nt">
-  <title>Samba NT-Domänen</title>
-
-  <para>
-	Unter Samba NT-Domänen werden die Benutzerprofile standardmäßig im Unterverzeichnis
-	<filename>windows-profiles\ &lt;Windows-Version&gt;</filename> auf dem Samba-Server gespeichert,
-	an dem sich der Benutzer angemeldet hat.
-  </para>
-
-  <para>
-	Mit der &ucsUCRV; <envar>samba/profileserver</envar> kann ein anderer Server und mit
-	<envar>samba/profilepath</envar> ein anderes Verzeichnis festgelegt werden. Diese Einstellungen
-	müssen auf allen Samba-Domänencontrollern gesetzt werden.
-  </para>
-
-  <para>
-	In der Benutzerverwaltung der &ucsUMC; kann mit der Einstellung
-	<guimenu>Profilverzeichnis</guimenu> ein abweichender Pfad oder ein anderer Server für das
-	Profilverzeichnis für den Benutzer konfiguriert werden.
-  </para>
-
-  <para>
-	Durch Konfiguration der &ucsUCR;-Variablen <envar>samba/profilepath</envar> und
-	<envar>samba/profileserver</envar> auf <emphasis>local</emphasis> und Neustart des Samba-Servers
-	können servergespeicherten Profile deaktiviert werden.
-  </para>
-</section>
-
-<section id="windows:roamingprofiles:ad">
-  <title>Samba AD-Domänen</title>
-  <para>
-	Unter Samba 4 werden in der Voreinstellung keine serverseitigen Profile verwendet.
-  </para>
-
-  <para>
-	Das Profilverzeichnis kann über eine Gruppenrichtlinie konfiguriert werden, die unter
-	<guimenu>Computerkonfiguration &ar; Richtlinien &ar; Administrative Vorlagen &ar; System &ar;
-	Benutzerprofile &ar; Pfad des servergespeicherten Profils für alle Benutzer festlegen</guimenu>
-	zu finden ist.
-  </para>
-
-  <note>
-	<para>
-	  Der Administrator-Benutzer greift standardmäßig mit root-Berechtigungen auf Freigaben
-	  zu. Wenn dadurch das Profilverzeichnis mit root als Benutzer angelegt wird, sollte
-	  es manuell mit dem Befehl <command>chown</command> an den Administrator vergeben werden.
-	</para>
-  </note>
-</section>
-</section>
-
-<section id="windows:privs">
-  <title>Vergabe erweiterter Windows-Berechtigungen an Benutzer</title>
-  <para>
-	Mit der Auswahlmaske <guimenu>Samba-Privilegien</guimenu> in der Benutzerverwaltung können einem
-	Benutzer ausgewählte Windows-Systemrechte zugewiesen werden, etwa die Berechtigung zur
-	Verwaltung von Druckern, siehe <xref linkend="users::management"/>. Diese Funktionalität steht
-	nur unter Samba 3 zur Verfügung.
-  </para>
-</section>
-</section>
 
 <section id="ad-connector:general">
   <title>UCS Active Directory Connector</title>
@@ -1266,109 +1491,6 @@ immer in dieser Gruppe Mitglied.
 </section>
 </section>
 
-<section id="vertrauensstellungen_generell">
-  <title>Vertrauensstellungen</title>
-  <para>
-	Vertrauensstellungen zwischen Domänen ermöglichen es den Benutzern
-	einer Domäne, sich an Rechnern einer anderen Domäne anzumelden.
-  </para>
-
-  <para>
-	Vertrauensstellungen werden nur mit Samba-NT-Domänen unterstützt.
-  </para>
-
-  <para>
-	Vertraut eine Windows-Domäne einer Samba-Domäne, steht bei der Anmeldung an Rechnern der
-	Windows-Domäne neben der Windows-Domäne auch die Samba-Domäne zur Auswahl.
-  </para>
-
-  <para>
-	Vertraut eine Samba-Domäne einer Windows-Domäne, geben die Benutzer der Windows-Domäne bei der
-	Anmeldung an einem Linux-Rechner als Benutzernamen <emphasis>Name der 
-  Windows-Domäne>+&lt;Benutzername&gt;</emphasis> ein.
-  </para>
-
-  <para>
-	Während der Einrichtung und Nutzung von Vertrauensstellungen müssen sich die Domänencontroller
-	der beiden Domänen über das Netzwerk erreichen und per Broadcast oder WINS gegenseitig
-	identifizieren können.
-  </para>
-
-  <section id="windows:trustdom:windows-trusts-samba">
-	<title>Windows-Domäne vertraut Samba-Domäne</title>
-
-	<para>
-	  In der Rechnerverwaltung der &ucsUMC; muss ein <emphasis>Domain Trust Account</emphasis>
-	  angelegt werden, dessen Name dem NetBIOS-Namen der Windows-Domäne entspricht, und ein Passwort
-	  für das Konto vergeben werden. Die möglicherweise in der Windows-Domäne geltenden
-	  Anforderungen an sichere Passwörter sind dabei zu beachten.
-	</para>
-
-	<para>
-	  Auf dem Windows-PDC muss eine Vertrauensstellung angelegt werden.
-	</para>
-
-	<para>
-	  Die Vertrauensstellung der Windows-Domäne zur Samba-Domäne kann durch Löschung der
-	  Vertrauensstellung auf dem Windows-PDC und des Domain Trust Accounts in der &ucsUMC; wieder
-	  aufgehoben werden.
-	</para>
-  </section>
-
-  <section id="windows:trustdom:samba-trusts-windows">
-	<title>Samba-3-Domäne vertraut Windows-Domäne</title>
-	<para>
-	  Mit den folgenden Schritten wird die Vertrauensstellung auf einem &ucsSlave; als Benutzer
-	  <emphasis>root</emphasis> eingerichtet:
-	</para>
-
-	<para>
-	  Vertrauensstellungen können nur auf Domänencontrollern eingerichtet werden.
-	</para>
-
-	<para>
-	  Das Paket <package>winbind</package> muss installiert werden. Winbind ordnet 
-	  Windows-Benutzer- und Gruppennamen UNIX-IDs zu.
-	</para>
-
-	<para>
-	  Auf dem Windows-PDC muss nun eine Vertrauensstellung angelegt werden.
-	</para>
-
-	<para>
-	  Wird Univention Firewall verwendet, müssen Antworten auf NetBIOS-Broadcasts zugelassen werden:
-	</para>
-
-	<programlisting language="sh">
-echo "iptables -I INPUT 1 -p udp --sport 137 -j ACCEPT" \
-    &gt;&gt; /etc/security/packetfilter.d/50_local.sh
-/etc/init.d/univention-firewall restart
-	</programlisting>
-
-	<para>
-	  Nun wird die Vertrauensstellung initiiert und Winbind neu gestartet. Dies muss auf allen
-	  Samba-Anmeldeservern ausgeführt werden.
-	</para>
-
-	<programlisting language="sh">
-net rpc trustdom establish &lt;Windowsdomain&gt;
-net setauthuser -UAdministrator
-echo -e "[global]\nwinbind rpc only = yes" >> /etc/samba/local.conf
-/etc/init.d/winbind restart
-ucr set auth/methods="krb5 ldap unix winbind"
-/etc/init.d/nscd restart
-	</programlisting>
-
-	<para>
-	  Mit folgendem Befehl kann geprüft werden, ob die Vertrauensstellung
-	  korrekt hinzugefügt wurde:
-	</para>
-
-	<programlisting language="sh">
-	  net rpc trustdom list
-	</programlisting>
-  </section>
-</section>
 
 <section id="windows:adtakeover">
   <title>Migration einer Active Directory-Domäne zu UCS mit Univention AD Takeover</title>
