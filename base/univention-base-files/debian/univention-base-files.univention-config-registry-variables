@@ -501,6 +501,12 @@ Description[en]=Maximum time difference to the NTP server in seconds which is sy
 Type=int
 Categories=system-base
 
+[ntp/noquery]
+Description[de]=ntpq und ntpdc Abfragen von entfernten Rechnern ablehnen. (Zeitdienst ist nicht betroffen)
+Description[en]=Deny ntpq and ntpdc queries from remote hosts. (Time service is not affected)
+Type=bool
+Categories=system-base
+
 [timeserver]
 Description[de]=Der erste NTP-Server
 Description[en]=The first NTP server

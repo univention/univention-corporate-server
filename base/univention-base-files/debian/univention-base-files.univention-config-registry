@@ -73,6 +73,7 @@ Variables: timeserver2
 Variables: timeserver3
 Variables: ntp/signed
 Variables: ntp/tinker/panic
+Variables: ntp/noquery
 
 Type: file
 File: etc/default/ntpdate
