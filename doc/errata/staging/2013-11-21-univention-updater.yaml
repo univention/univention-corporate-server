@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-updater
-fix: 9.0.38-3.1239.201311231948
+fix: 9.0.38-5.1240.201401091119
 note:
 version: [0]
 desc: |
@@ -13,4 +13,7 @@ desc: |
     update
   * Fixed a JavaScript error when installing package updates
   * The updater now uses the individual user agent string for more HTTP requests
-bug: [33721, 33443, 33408, 33553]
+  * univention-add-app now works through proxies
+  * Fixed an error in the documentation of the option --latest of
+    univention-add-app
+bug: [33721, 33443, 33408, 33553, 33542, 31410]
