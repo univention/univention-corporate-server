@@ -406,6 +406,12 @@ Description[en]=The maximum time difference to the NTP server in seconds which i
 Type=int
 Categories=system-base
 
+[ntp/noquery]
+Description[de]=ntpq und ntpdc Abfragen von entfernten Rechnern ablehnen. (Zeitdienst ist nicht betroffen)
+Description[en]=Deny ntpq and ntpdc queries from remote hosts. (Time service is not affected)
+Type=bool
+Categories=system-base
+
 [timeserver]
 Description[de]=In einer UCS-Domäne dient standardmäßig der Domänencontroller Master als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
 Description[en]=Usually the master domain controller functions as the time server of a UCS domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
