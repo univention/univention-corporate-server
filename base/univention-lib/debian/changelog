@@ -1,3 +1,9 @@
+univention-lib (3.0.26-12) unstable; urgency=medium
+
+  * Fix pythonism (Bug #33582)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Jan 2014 11:39:46 +0100
+
 univention-lib (3.0.26-11) unstable; urgency=medium
 
   * Issue a WARNING instead of an ERROR message (Bug #33582)
