@@ -39,7 +39,7 @@ from univention.lib.package_manager import PackageManager
 from univention.config_registry import ConfigRegistry
 from univention.updater import UniventionUpdater
 try:
-	from univention.management.console.modules.appcenter.util import ComponentManager
+	from univention.management.console.modules.appcenter.util import ComponentManager, install_opener
 	from univention.management.console.modules.appcenter.app_center import Application, LICENSE
 except ImportError:
 	sys.stderr.write('univention-management-console-module-appcenter must be installed\n')
@@ -60,7 +60,7 @@ if __name__ == '__main__':
 	parser.add_option("-m", "--master", action="store_true", dest="install_master", default=False,
 			help="If DC master or backup, installs DefaultPackagesMaster. Performs dist-upgrade when upgrading an existing app! Has no meaning when used together with --all")
 	parser.add_option("-l", "--latest", action="store_true", dest="install_latest", default=False,
-			help="<component> is not the component's name but the ID of the application. And always the latest available gets added. Has to be combined with --all or --master!")
+			help="<component> is not the component's name but the ID of the application. And always the latest available gets added.")
 	options, args = parser.parse_args()
 	try:
 		component_id = args[0]
@@ -73,6 +73,7 @@ if __name__ == '__main__':
 
 	ucr = ConfigRegistry()
 	ucr.load()
+	install_opener(ucr)
 	updater = UniventionUpdater(False)
 	component_manager = ComponentManager(ucr, updater)
 	package_manager = PackageManager(info_handler=simple_handler(sys.stdout), error_handler=simple_handler(sys.stderr), always_noninteractive=True)
@@ -80,7 +81,7 @@ if __name__ == '__main__':
 	function = 'install'
 	if options.install_latest:
 		requested_app = Application.find(component_id)
-		if requested_app.candidate:
+		if requested_app and requested_app.candidate:
 			function = 'update'
 			requested_app = requested_app.candidate
 	else:
@@ -103,7 +104,7 @@ if __name__ == '__main__':
 	if options.install_all or options.install_master:
 		only_master_packages = not options.install_all
 		requested_app.versions = Application.find(requested_app.id).versions
-		requested_app.candidate = None # delete a possible candidate (newer version)
+		requested_app.candidate = None # delete any possible candidate (newer version)
 		if only_master_packages:
 			function = '%s-schema' % function
 		success = requested_app.install(package_manager, component_manager, add_component=False, send_as=function, only_master_packages=only_master_packages) and success

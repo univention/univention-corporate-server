@@ -443,7 +443,7 @@ msgid ""
 "release. Use the %(module)s to upgrade this application if possible."
 msgstr ""
 "Version %(version)s der Applikation %(name)s ist für das neue Release nicht "
-"verfügbar. Benutzen Sie das %(module)s um die Applikation zu aktualisieren, "
+"verfügbar. Benutzen Sie das %(module)s, um die Applikation zu aktualisieren, "
 "falls möglich."
 
 #: umc/js/updater/UpdatesPage.js:85
