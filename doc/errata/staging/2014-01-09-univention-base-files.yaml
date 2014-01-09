@@ -1,0 +1,13 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-base-files
+fix: 2.0.15-5.152.201401091923
+note:
+version: [1]
+desc: |
+ NTP servers reachable from the public internet that respond to the "monlist" query can be used to facilitate DDoS attacks. (CVE-2013-5211)
+ This update adds the UCR variable "ntp/noquery" which can be set to "true" to disable most queries including the "monlist" function and thus mitigates this issue.
+ It is recommended to set this UCRV on any UCS system that exposes the NTP service to the internet.
+cve:
+ - CVE-2013-5211
