@@ -42,7 +42,7 @@ for appID in fd.readlines():
 	requested_app = Application.find(appID)
 
 	for category in requested_app.get('unlocalised_categories'):
-		if category not in ['Administration', 'Business', 'Collaboration'. 'Education', 'System services', 'UCS components', 'Virtualization']:
+		if category not in ['Administration', 'Business', 'Collaboration', 'Education', 'System services', 'UCS components', 'Virtualization']:
 			print ' Test failed: Requested App has unsupported category: %s' % category
 			returncode = 1
 
