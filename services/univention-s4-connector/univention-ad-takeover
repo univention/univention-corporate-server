@@ -623,6 +623,52 @@ def cleanup_failed_join(ucr, ad_server_ip):
 	run_and_output_to_log(["/etc/init.d/nscd", "restart"], log.debug)
 
 
+class UserRenameHandler:
+	''' Provides methods for renaming users in UDM
+	'''
+
+	def __init__(self, lo):
+		self.lo = lo
+		self.position = univention.admin.uldap.position(self.lo.base)
+
+		self.module_users_user = udm_modules.get('users/user')
+		udm_modules.init(self.lo, self.position, self.module_users_user)
+
+	def udm_rename_ucs_user(self, userdn, new_name):
+		try:
+			user = self.module_users_user.object(None, self.lo, self.position, userdn)
+			user.open()
+		except uexceptions.ldapError as exc:
+			log.debug("Opening user '%s' failed: %s." % (userdn, exc,))
+
+		try:
+			log.debug("Renaming '%s' to '%s' in UCS LDAP." % (user.dn, new_name))
+			user['name'] = new_name
+			user.modify()
+		except uexceptions.ldapError as exc:
+			log.debug("Renaming of user '%s' failed: %s." % (userdn, exc,))
+			return
+
+		dnparts = ldap.explode_dn(userdn)
+		rdn = dnparts[0].split('=', 1)
+		dnparts[0] = '='.join((rdn[0], new_name))
+		new_userdn = ",".join(dnparts)
+
+		return new_userdn
+
+	def rename_ucs_user(self, ucsldap_object_name, ad_object_name):
+		userdns = self.lo.searchDn(
+			filter="(&(objectClass=sambaSamAccount)(cn=%s))" % (ucsldap_object_name, ),
+			base=self.lo.base)
+
+		if len(userdns) > 1:
+			log.warn("Warning: Found more than one Samba user with name '%s' in UCS LDAP." %
+				(ucsldap_object_name,))
+
+		for userdn in userdns:
+			new_userdn = self.udm_rename_ucs_user(userdn, ad_object_name)
+
+
 class GroupRenameHandler:
 	''' Provides methods for renaming groups in UDM
 	'''
@@ -1205,6 +1251,7 @@ def run_phaseI(ucr, lp, opts, args):
 	AD_well_known_sids.update(univention.lib.s4.well_known_sids)
 
 	groupRenameHandler = GroupRenameHandler(lo)
+	userRenameHandler = UserRenameHandler(lo)
 
 	for (sid, canonical_name) in AD_well_known_sids.items():
 
@@ -1217,6 +1264,7 @@ def run_phaseI(ucr, lp, opts, args):
 
 		obj = msgs[0]
 		ad_object_name = obj.get("sAMAccountName", [None])[0]
+		oc = obj["objectClass"]
 
 		if not ad_object_name:
 			continue
@@ -1231,7 +1279,10 @@ def run_phaseI(ucr, lp, opts, args):
 		ucssid = sid.replace(ad_domainsid, old_domainsid, 1)
 		ldap_result = lo.search(filter="(sambaSID=%s)" % (ucssid,), attr=["sambaSID", "cn"])
 		if len(ldap_result) == 1:
-			ucsldap_object_name = ldap_result[0][1].get("cn", [None])[0]
+			if "group" in oc or "foreignSecurityPrincipal" in oc:
+				ucsldap_object_name = ldap_result[0][1].get("cn", [None])[0]
+			elif "user" in oc:
+				ucsldap_object_name = ldap_result[0][1].get("uid", [None])[0]
 		elif len(ldap_result) > 0:
 			log.error('Error: Found more than one object with sambaSID=%s' % (sid,))
 		else:
@@ -1241,11 +1292,10 @@ def run_phaseI(ucr, lp, opts, args):
 			continue
 
 		if ad_object_name.lower() != ucsldap_object_name.lower():
-			oc = obj["objectClass"]
 			if "group" in oc or "foreignSecurityPrincipal" in oc:
 				groupRenameHandler.rename_ucs_group(ucsldap_object_name, ad_object_name)
 			elif "user" in oc:
-				pass
+				userRenameHandler.rename_ucs_user(ucsldap_object_name, ad_object_name)
 
 	takeover_ignore_list = ["Gast", "Guest"]
 	run_and_output_to_log(["univention-config-registry", "set", "connector/s4/mapping/user/ignorelist=%s,%s" % (ucr["connector/s4/mapping/user/ignorelist"], ','.join(takeover_ignore_list))], log.debug)
