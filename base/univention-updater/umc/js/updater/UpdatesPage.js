@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -510,6 +510,31 @@ define([
 
 		},
 
+		_attemptReconnect: function() {
+			tools.umcpCommand('updater/poll', {}, false).then(
+				lang.hitch(this, function() {
+					this.onQuerySuccess('updater/poll');
+					// most probably not restarted yet
+					setTimeout(lang.hitch(this, function() {
+						this._attemptReconnect();
+					}), 5000);
+				}),
+				lang.hitch(this, function(data) {
+					var result = tools.parseError(data);
+					if (result.status == 401) {
+						// to reset this._updates_available
+						// see this._check_dist_upgrade()
+						this.refreshPage(true);
+					} else {
+						setTimeout(lang.hitch(this, function() {
+							this._attemptReconnect();
+						}), 5000);
+					}
+					this.onQueryError('updater/poll', data);
+				})
+			);
+		},
+
 		_update_errata_link: function(version) {
 			var versionWithoutPatchlevel;
 			try {
@@ -664,6 +689,7 @@ define([
 						callback:	lang.hitch(this, function() {
 							this.standbyDuring(tools.umcpCommand('updater/installer/reboot').then(lang.hitch(this, function() {
 								this._show_reboot_pane(true, true);
+								this._attemptReconnect();
 							})));
 						})
 					}

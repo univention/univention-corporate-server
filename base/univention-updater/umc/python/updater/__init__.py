@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: updater
 #
-# Copyright 2011-2013 Univention GmbH
+# Copyright 2011-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -48,7 +48,8 @@ import univention.hooks
 import notifier.threads
 
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import *
+from univention.management.console.modules.decorators import simple_response
+from univention.management.console.protocol.definitions import SUCCESS, MODULE_ERR
 
 from univention.updater import UniventionUpdater
 
@@ -234,6 +235,10 @@ class Instance(umcm.Base):
 		except Exception, ex:
 			MODULE.error("init() ERROR: %s" % str(ex))
 
+	@simple_response
+	def poll(self):
+		return True
+
 	def query_releases(self,request):
 		""" Returns a list of system releases suitable for the
 			corresponding ComboBox
@@ -275,7 +280,7 @@ class Instance(umcm.Base):
 				result[-1]['label'] = '%s (%s)' % (result[-1]['label'],_('latest version'))
 
 		except Exception,ex:
-			request.status = FAILURE
+			request.status = MODULE_ERR
 			self.finished(request.id, [], str(ex))
 			return
 

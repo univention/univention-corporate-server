@@ -1,3 +1,9 @@
+univention-updater (9.0.38-9) unstable; urgency=low
+
+  * Bug #33443: UMC Module: Reconnect after reboot
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 10 Jan 2014 11:16:35 +0100
+
 univention-updater (9.0.38-8) unstable; urgency=low
 
   * Bug #33610: Revert changes
