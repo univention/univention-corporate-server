@@ -1,3 +1,9 @@
+univention-pam (7.0.4-9) unstable; urgency=low
+
+  * fixed template (Bug #32415) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 10 Jan 2014 11:59:45 +0100
+
 univention-pam (7.0.4-8) unstable; urgency=low
 
   * increase default nofile limit to 8192 (Bug #32415)
