@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
 		forward_zone = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = host)
 
-		dnstests.check_ldap_object(forward_zone,'Forward Zone',)
+		dnstests.check_ldap_object(forward_zone,'Forward Zone')
 
 		dnstests.wait_for_sync(4)
 
