@@ -1,8 +1,8 @@
-univention-base-files (3.0.4-2) unstable; urgency=low
+univention-base-files (3.0.4-3) unstable; urgency=medium
 
   * Add ntp/noquery (Bug #33834)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 09 Jan 2014 19:08:59 +0100
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 10 Jan 2014 11:16:39 +0100
 
 univention-base-files (3.0.4-1) unstable; urgency=low
 

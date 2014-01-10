@@ -68,10 +68,12 @@ univention-config-registry set cron/autostart?yes \
 # syslog
 if [ "$1" = configure -a -z "$2" ]; then
 	# installation
-	univention-config-registry set syslog/mail/mirrorto/syslog?no
+	univention-config-registry set syslog/mail/mirrorto/syslog?no \
+		'ntp/noquery?true'
 else
 	# update
-	univention-config-registry set syslog/mail/mirrorto/syslog?yes
+	univention-config-registry set syslog/mail/mirrorto/syslog?yes \
+		'ntp/noquery?false'
 fi
 
 # this must be done _before_ dephelper runs
