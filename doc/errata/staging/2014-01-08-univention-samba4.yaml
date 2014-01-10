@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-samba4
-fix: 3.0.39-12.567.201401081712
+fix: 3.0.39-13.568.201401101147
 note:
 version: [0]
 desc: |
@@ -15,6 +15,4 @@ desc: |
   * ldapsearch-wrapper has been added to univention-ldapsearch calls
     in samba4 related setup scripts to prevent line wrapping of 
     search results.
-  * The limit for the maximum number of open files has been increased
-    for all users.
-bug: [33250, 33529, 33583, 32415]
+bug: [33250, 33529, 33583]
