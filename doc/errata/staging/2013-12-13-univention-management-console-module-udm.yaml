@@ -2,11 +2,13 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-management-console-module-udm
-fix: 4.0.97-13.429.201401061404
+fix: 4.0.97-15.431.201401101635
 note:
 version: [0]
 desc: |
   This errata update fixes several issues:
-  * Certain policies did not get a link to directly edit them when
-    opening the "Policies" tab of LDAP objects. Fixed that.
-bug: [33004]
+  * Certain policies did not get a link to directly edit them when opening the
+    "Policies" tab of LDAP objects. Fixed that.
+  * A user's empty mail server was overwritten with the first non-emtpy one
+    even for existing users. Fixed that.
+bug: [33004, 33329]
