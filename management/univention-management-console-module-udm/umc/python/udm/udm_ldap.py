@@ -661,7 +661,7 @@ class UDM_Module( object ):
 				'multivalue' : bool( prop.multivalue ),
 				'identifies' : bool( prop.identifies ),
 				'threshold' : prop.threshold,
-				'nonempty_is_default' : bool( prop.nonempty_is_default ),
+				'nonempty_is_default' : ucr.is_true( value=str(prop.nonempty_is_default) ),
 			}
 
 			# default value

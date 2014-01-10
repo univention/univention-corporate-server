@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.97-15) unstable; urgency=low
+
+  * Bug #33329: default beats nonempty_is_default; allow overwriting of
+    perperty by ucr
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 10 Jan 2014 16:29:50 +0100
+
 univention-management-console-module-udm (4.0.97-14) unstable; urgency=low
 
   * Bug #33329: Support properties that allow an empty value, but the frontend
