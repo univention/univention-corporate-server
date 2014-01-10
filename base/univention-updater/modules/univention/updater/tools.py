@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: manages updates
 #
-# Copyright 2008-2014 Univention GmbH
+# Copyright 2008-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,7 +35,6 @@ try:
 	import univention.debug as ud
 except ImportError:
 	import univention.debug2 as ud
-from univention.lib.policy_result import policy_result
 
 # TODO: Convert to absolute imports only AFTER the unit test has been adopted
 from commands import cmd_update, cmd_dist_upgrade_sim, cmd_dist_upgrade
@@ -50,9 +49,11 @@ import copy
 import httplib
 import socket
 import univention.config_registry
+import traceback
 import urllib2
 from urllib import quote
 import subprocess
+from operator import attrgetter, itemgetter
 import new
 import tempfile
 import shutil
@@ -158,9 +159,6 @@ class UCS_Version( object ):
 		if not match:
 			raise ValueError( 'string does not match UCS version pattern' )
 		self.major, self.minor, self.patchlevel = map(int, match.groups())
-
-	def to_dict(self):
-		return {'major' : self.major, 'minor' : self.minor, 'patchlevel' : self.patchlevel}
 
 	def __getitem__(self, k):
 		'''Dual natured dictionary: retrieve value from attribute.'''
@@ -556,7 +554,6 @@ class UniventionUpdater:
 		self.architectures = [ os.popen('dpkg --print-architecture 2>/dev/null').readline()[:-1] ]
 
 		self.ucr_reinit()
-		self._policy_limit = None
 
 	def config_repository( self ):
 		'''Retrieve configuration to access repository. Overridden in UniventionMirror.'''
@@ -571,7 +568,6 @@ class UniventionUpdater:
 		'''Re-initialize settings'''
 		self.configRegistry=univention.config_registry.ConfigRegistry()
 		self.configRegistry.load()
-		self._policy_limit = None
 
 		self.is_repository_server = self.configRegistry.is_true('local/repository', False)
 
@@ -632,28 +628,6 @@ class UniventionUpdater:
 				self.log.exception('Failed server detection: %s' % (e,))
 				raise
 
-	def _get_policy_limit(self):
-		if self._policy_limit is None:
-			ucs_version = UCS_Version((100, 100, 100))
-			try:
-				result, policies = policy_result(self.configRegistry['ldap/hostdn'])
-			except Exception as e:
-				ud.debug(ud.NETWORK, ud.WARN, str(e))
-			else:
-				try:
-					active = result['univentionUpdateActivate'][0]
-					version = result['univentionUpdateVersion'][0]
-				except (KeyError, IndexError):
-					pass
-				else:
-					if active == 'TRUE':
-						try:
-							ucs_version = UCS_Version(version)
-						except (ValueError, TypeError):
-							ud.debug(ud.NETWORK, ud.WARN, 'Unable to parse univentionUpdateVersion %s' % version)
-			self._policy_limit = ucs_version
-		return self._policy_limit
-
 	def get_next_version(self, version, components=[], errorsto='stderr'):
 		'''Check if a new patchlevel, minor or major release is available for the given version.
 		   Components must be available for the same major.minor version.
@@ -663,19 +637,12 @@ class UniventionUpdater:
 
 		def versions(major, minor, patchlevel):
 			"""Generate next valid version numbers as hash."""
-			next_versions = []
-			policy_limit = self._get_policy_limit()
 			if patchlevel < 99:
-				next_versions.append(UCS_Version((major, minor, patchlevel + 1)))
+				yield {'major':major,   'minor':minor,   'patchlevel':patchlevel+1}
 			if minor < 99:
-				next_versions.append(UCS_Version((major, minor + 1, 0)))
+				yield {'major':major,   'minor':minor+1, 'patchlevel':0}
 			if major < 99:
-				next_versions.append(UCS_Version((major + 1, 0, 0)))
-			for next_version in next_versions:
-				if next_version <= policy_limit:
-					yield next_version.to_dict()
-				else:
-					ud.debug(ud.NETWORK, ud.PROCESS, '%s not used because Policy only allows releases up to %s' % (next_version, policy_limit))
+				yield {'major':major+1, 'minor':0,       'patchlevel':0}
 
 		for ver in versions(version.major, version.minor, version.patchlevel):
 			repo = UCSRepoPool(prefix=self.server, part='maintained', **ver)

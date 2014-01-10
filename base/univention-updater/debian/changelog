@@ -1,3 +1,9 @@
+univention-updater (9.0.38-8) unstable; urgency=low
+
+  * Bug #33610: Revert changes
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 10 Jan 2014 08:50:09 +0100
+
 univention-updater (9.0.38-7) unstable; urgency=low
 
   * Bug #33610: Fixed dependencies
