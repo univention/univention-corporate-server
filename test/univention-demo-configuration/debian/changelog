@@ -1,3 +1,9 @@
+univention-demo-configuration (2.0.2-10) unstable; urgency=low
+
+  * Bug #33443: Allow usage of new Updater module methods
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 10 Jan 2014 11:26:24 +0100
+
 univention-demo-configuration (2.0.2-9) unstable; urgency=low
 
   * Bug #33793: Allow usage of new Join module methods

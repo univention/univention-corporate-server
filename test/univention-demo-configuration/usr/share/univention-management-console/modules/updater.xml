@@ -14,6 +14,8 @@
 		-->
 		<!-- GET: the only call really needed -->
 		<command name="updater/updates/get" function="status"/>
+		<!-- POLL: for handling during reboot -->
+		<command name="updater/poll" function="poll"/>
 		<!-- QUERY: to fill the 'available releases' ComboBox -->
 		<command name="updater/updates/query" function="query_releases"/>
 		<!-- SERIAL: check if something has changed. -->
