@@ -115,11 +115,6 @@ then
 								   samba/homedirletter?I
 fi
 
-# increase max number of open files for smbd Bug #32415
-univention-config-registry set \
-	"security/limits/user/*/hard/nofile"?"32828" \
-	"security/limits/user/*/soft/nofile"?"32828"
-
 univention-config-registry set \
 	samba/debug/level?1 \
 	samba4/sysvol/sync/jitter?60 \

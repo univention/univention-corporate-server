@@ -1,12 +1,18 @@
+univention-samba4 (3.0.39-13) unstable; urgency=low
+
+  * removed nofile limit stuff (Bug #32415) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 10 Jan 2014 11:45:57 +0100
+
 univention-samba4 (3.0.39-12) unstable; urgency=low
 
-  * increase max number of open files for smbd Bug #32415 
+  * increase max number of open files for smbd (Bug #32415)
 
  -- Felix Botner <botner@univention.de>  Wed, 08 Jan 2014 17:08:36 +0100
 
 univention-samba4 (3.0.39-11) unstable; urgency=low
 
-  * increase max number of open files for smbd Bug #33031 
+  * increase max number of open files for smbd (Bug #33031)
 
  -- Felix Botner <botner@univention.de>  Wed, 08 Jan 2014 16:59:37 +0100
 
