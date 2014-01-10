@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.75-11) unstable; urgency=low
+
+  * Bug #33329: Add properties that allow an empty value, but the frontend
+    chooses the first non-empty one as default for new objects
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 10 Jan 2014 15:09:39 +0100
+
 univention-directory-manager-modules (9.0.75-10) unstable; urgency=low
 
   * Fixed german translation for unable to move (Bug #33482)

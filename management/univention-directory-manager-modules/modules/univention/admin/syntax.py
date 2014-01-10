@@ -1785,6 +1785,11 @@ class ServicePrint_FQDN( IComputer_FQDN ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
 	udm_filter = 'service=Print'
 
+class MailHomeServer( IComputer_FQDN ):
+	udm_modules = ( 'computers/computer', )
+	udm_filter = '(&(objectClass=univentionHost)(service=IMAP))'
+	empty_value = True
+
 class KDE_Profile( UDM_Attribute ):
 	udm_module = 'settings/default'
 	attribute = 'defaultKdeProfiles'
@@ -2895,6 +2900,7 @@ class policyName(string):
 		raise univention.admin.uexceptions.valueError(_('May only contain letters (except umlauts), digits, space as well as "#", "!", "$", "%", "&" "|", "^", ".", "~", "_", "-". Has to begin with a letter or digit and must not and with space.'))
 
 
+# DEPRECATED! Use MailHomeServer
 class mailHomeServer(LDAP_Search):
 	def __init__(self):
 		LDAP_Search.__init__(
