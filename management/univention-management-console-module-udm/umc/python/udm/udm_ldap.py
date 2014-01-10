@@ -647,10 +647,22 @@ class UDM_Module( object ):
 		props = [ { 'id' : '$dn$', 'type' : 'HiddenInput', 'label' : '', 'searchable' : False } ]
 		for key, prop in getattr( self.module, 'property_descriptions', {} ).items():
 			if key == 'filler': continue # FIXME: should be removed from all UDM modules
-			item = { 'id' : key, 'label' : prop.short_description, 'description' : prop.long_description, 'syntax' : prop.syntax.name, 'size' : prop.syntax.size,
-					 'required' : bool( prop.required ), 'editable' : bool( prop.may_change ), 'options' : prop.options, 'readonly' : not bool( prop.editable ),
-					 'searchable' : not prop.dontsearch, 'multivalue' : bool( prop.multivalue ), 'identifies' : bool( prop.identifies ),
-					 'threshold' : prop.threshold }
+			item = {
+				'id' : key,
+				'label' : prop.short_description,
+				'description' : prop.long_description,
+				'syntax' : prop.syntax.name,
+				'size' : prop.syntax.size,
+				'required' : bool( prop.required ),
+				'editable' : bool( prop.may_change ),
+				'options' : prop.options,
+				'readonly' : not bool( prop.editable ),
+				'searchable' : not prop.dontsearch,
+				'multivalue' : bool( prop.multivalue ),
+				'identifies' : bool( prop.identifies ),
+				'threshold' : prop.threshold,
+				'nonempty_is_default' : bool( prop.nonempty_is_default ),
+			}
 
 			# default value
 			if prop.base_default is not None:

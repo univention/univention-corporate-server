@@ -236,10 +236,30 @@ define([
 
 			if (!this.ldapName || this._multiEdit) {
 				// no DN given or multi edit mode
-				formBuiltDeferred.then(lang.hitch(this, function() {
+				all({
+					formBuild: formBuiltDeferred,
+					properties: this.propertyQuery
+				}).then(lang.hitch(this, function(result) {
 					// hide the type info and ldap path in case of a new object
 					this._form.getWidget( '$objecttype$' ).set( 'visible', false);
 					this._form.getWidget( '$location$' ).set( 'visible', false);
+					if (!this._multiEdit) {
+						this._form.ready().then(lang.hitch(this, function() {
+							var vals = {};
+							array.forEach(result.properties, lang.hitch(this, function(iprop) {
+								if (iprop.nonempty_is_default) {
+									var widget = this._form.getWidget(iprop.id);
+									if (widget.getAllItems) {
+										var item = array.filter(widget.getAllItems(), function(item) { return item.id; })[0];
+										if (item !== undefined) {
+											vals[iprop.id] = item.id;
+										}
+									}
+								}
+							}));
+							this._form.setFormValues(vals);
+						}));
+					}
 				}));
 				var deferred = new Deferred();
 				deferred.resolve();

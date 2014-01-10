@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.97-14) unstable; urgency=low
+
+  * Bug #33329: Support properties that allow an empty value, but the frontend
+    chooses the first non-empty one as default for new objects
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 10 Jan 2014 15:11:37 +0100
+
 univention-management-console-module-udm (4.0.97-13) unstable; urgency=low
 
   * Bug #33004: Fixed links when having multiple UCR policies active at the
