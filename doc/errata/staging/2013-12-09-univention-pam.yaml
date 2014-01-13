@@ -2,20 +2,20 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-pam
-fix: 7.0.4-9.230.201401101200
+fix: 7.0.4-10.231.201401132002
 note:
 version: [0]
 desc: |
   This errata update fixes several issues:
   * univention-pam now checks mapping of group names 
     in the config registry templates.
-  * The listener module group-name-mapping.py has been added to 
-    automatically set group name mapping UCR variables 
-    (groups/default/.*) if well known groups are renamed.
+  * The new listener module well-known-sid-name-mapping.py implements
+    a mechanism for domain wide customization of account names for
+    well known Windows/Samba SIDs. It sets UCR variables groups/default/.*
+    and users/default/.* in case accounts with well known sids are renamed.
   * The default limit for "max open files" (nofile) in 
     /etc/security/limits.conf has been increased to "8192".
     This value can be changed by setting the ucr variables
     "security/limits/user/default/soft/nofile" and
     "security/limits/user/default/hard/nofile".
-    
-bug: [33650, 33710, 32415]
+bug: [33650, 33710, 32415, 33897]
