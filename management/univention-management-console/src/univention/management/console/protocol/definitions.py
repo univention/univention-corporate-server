@@ -4,7 +4,7 @@
 # Univention Management Console
 #  UMCP definitions like commands, error codes etc.
 #
-# Copyright 2006-2013 Univention GmbH
+# Copyright 2006-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -103,7 +103,7 @@ STATUS = (
 	Status( 'SUCCESS_PARTIAL'					, 206, _( 'OK, partial response' ) ), # not yet used
 	Status( 'SUCCESS_SHUTDOWN'					, 250, _( 'OK, operation successful ask for shutdown of connection' ) ),
 
-	Status( 'CLIENT_ERR_NONFATAL'				, 301, _( 'A non-fatal error has occured processing may continue' ) ),
+	Status( 'CLIENT_ERR_NONFATAL'				, 301, _( 'A non-fatal error has occurred processing may continue' ) ),
 
 	# the UMCP request was parsable but within the context it is not valid
 	Status( 'BAD_REQUEST'						, 400, _( 'Bad request' ) ),
@@ -131,7 +131,7 @@ STATUS = (
 	Status( 'UMCP_ERR_UNPARSABLE_BODY'			, 554, _( 'Unparsable message body' ) ),
 
 	# errors occuring during command process in module process
-	Status( 'MODULE_ERR'						, 590, _( 'Error occured during command processing' ) ),
+	Status( 'MODULE_ERR'						, 590, _( 'Error occurred during command processing' ) ),
 	Status( 'MODULE_ERR_COMMAND_FAILED'			, 591, _( 'The execution of a command caused a fatal error' ) ),
 	Status( 'MODULE_ERR_INIT_FAILED'			, 592, _( 'The initialization of the module caused a fatal error' ) )
 )

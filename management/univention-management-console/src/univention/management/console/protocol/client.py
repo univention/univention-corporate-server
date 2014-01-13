@@ -3,7 +3,7 @@
 # Univention Management Console
 #  UMCP client implementation
 #
-# Copyright 2006-2013 Univention GmbH
+# Copyright 2006-2014 Univention GmbH
 #
 # http://www.univention.de/
 #

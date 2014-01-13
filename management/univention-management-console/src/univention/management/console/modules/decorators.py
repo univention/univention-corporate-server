@@ -4,7 +4,7 @@
 # Univention Management Console
 #  Decorators for functions in UMC 2.0 modules
 #
-# Copyright 2012-2013 Univention GmbH
+# Copyright 2012-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
