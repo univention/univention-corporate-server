@@ -450,7 +450,13 @@ remove_dc_ntds_guid_records_from_dns() {
 sysvol_fixup() {
 	## determine default sysvol parent for this host from univentionService="S4 Connector"
 	set_samba4_sysvol_sync_host
-	/usr/share/univention-samba4/scripts/sysvol-sync.sh
+
+	is_ucr_true samba4/provision/secondary
+	if [ $? -eq 0 ]; then
+		/usr/share/univention-samba4/scripts/sysvol-sync.sh --overwrite-local
+	else
+		/usr/share/univention-samba4/scripts/sysvol-sync.sh
+	fi
 
 	## set the default sysvol and GPO NTACLs
 	samba-tool ntacl sysvolreset

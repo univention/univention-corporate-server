@@ -58,6 +58,12 @@ if ! univention_samba4_is_ucr_false samba4/sysvol/sync/setfacl/AU; then
 	setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' /var/lib/samba/sysvol
 fi
 
+if [ "$1" = '--overwrite-local' ]; then
+	rsync_options=("-aAX")
+else
+	rsync_options=("-auAX")
+fi
+
 ## merge updates pushed to us by other s4DCs
 for triggerfile in $(find "${SYSVOL_SYNC_TRIGGERDIR}" -mindepth 1 -maxdepth 1 -type f); do
 	## clear flag
@@ -72,11 +78,11 @@ for triggerfile in $(find "${SYSVOL_SYNC_TRIGGERDIR}" -mindepth 1 -maxdepth 1 -t
 	importdir="${SYSVOL_SYNCDIR}/${s4dc}"
 
 	## step one: pull over network from downstream s4dc
-	univention-ssh-rsync /etc/machine.secret -atAX --delete \
+	univention-ssh-rsync /etc/machine.secret -aAX --delete \
 		"${hostname}\$"@"${s4dc}":"${SYSVOL_PATH}"/ "$importdir" 2>/dev/null
 
 	## step two: sync into hot target dir with local filesystem speed
-	rsync -autAX "$importdir"/ "$SYSVOL_PATH"
+	rsync "${rsync_options[@]}" "$importdir"/ "$SYSVOL_PATH"
 done
 
 for s4dc in $samba4_sysvol_sync_host; do	## usually there should only be one..
@@ -85,7 +91,7 @@ for s4dc in $samba4_sysvol_sync_host; do	## usually there should only be one..
 	fi
 
 	## pull from parent s4dc
-	univention-ssh-rsync /etc/machine.secret -autAX \
+	univention-ssh-rsync /etc/machine.secret "${rsync_options[@]}" \
 		"${hostname}\$"@"${s4dc}":"${SYSVOL_PATH}"/ "$SYSVOL_PATH" 2>/dev/null
 
 	## trigger the next pull by the parent s4dc

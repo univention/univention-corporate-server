@@ -1,3 +1,10 @@
+univention-samba4 (3.0.39-14) unstable; urgency=medium
+
+  * call sysvol-sync with --overwrite-local after provision of
+    a secondary Slave PDC (Bug #33881)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 13 Jan 2014 18:02:11 +0100
+
 univention-samba4 (3.0.39-13) unstable; urgency=low
 
   * removed nofile limit stuff (Bug #32415) 
