@@ -8,15 +8,12 @@
 
 	<itemizedlist>
 	  <listitem><simpara>
-		Domain controller function
+		Domain controller function / authentication services
+
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 		File services
-	  </simpara></listitem>
-
-	  <listitem><simpara>
-		Authentication services
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -30,14 +27,14 @@
 
 	<itemizedlist>
 	  <listitem>
-		Samba can provide a NT domain controller.
-	  </listitem>
-
-	  <listitem>
 		Samba can also provide an Active Directory-compatible domain
 		controller e.g. Samba provides an Active Directory compatible Windows domain. This allows
 		the use of tools provided by Microsoft, e.g. for the management of users or for managing
 		group policy objects. 
+	  </listitem>
+
+	  <listitem>
+		Samba can provide a NT-compatible domain controller.
 	  </listitem>
 	</itemizedlist>
 
@@ -55,10 +52,9 @@
 	<para>
 	  In addition to Samba, UCS also integrates an additional component
 	  for the syncronisation with Active Directory (AD): the Univention Active
-	  Directory Connector. In contrast to Samba AD services, however, this operates a
-	  separate AD domain based on Microsoft Windows, which can be
-	  bidirectionally or unidirectionally synchronised, see
-	  <xref linkend="ad-connector:general"/>.
+	  Directory Connector. The connector synchronises the content of a Microsoft Active Directory
+	  domain with a UCS domain. Further information can be found in <xref
+	  linkend="ad-connector:general"/>.
 	</para>
   </section>
 
@@ -69,7 +65,7 @@
 	  <title>Components of a Samba domain</title>
 
 	  <para>
-		A Samba domain is composed of at least one domain controller. Windows clients and member
+		An Active Directory domain is composed of at least one domain controller. Windows clients and member
 		servers can join the trust context of the Samba domain as domain members. Member servers do
 		not provide login services, but may offer file and print services, for example. In addition to
 		a member server domain join of Windows Server systems, Samba can also act as a member server.
@@ -81,13 +77,19 @@
 	  </para>
 
 	  <para>
-		Microsoft Windows domain controllers cannot join the Samba domain. This functionality is
+		Microsoft Active Directory domain controllers cannot join the Samba domain. This functionality is
 		planned at a later point in time.
 	  </para>
 
 	  <para>
 		Samba can not join an Active Directory Forest yet at this point. 
 	  </para>
+
+	  <para>
+		Trust relationships to other domains are currently only possible when using NT-compatible
+		domains (see <xref linkend="vertrauensstellungen_generell"/>).
+	  </para>
+
 	</section>
 
 
@@ -141,6 +143,12 @@
 
 	  <section id="windows:samba4:fileservices">
 		<title>File services</title>
+
+		<para>
+		  A file services provides files over the network and allows concentrating the storage of user data on a
+		  central server.
+		</para>
+
 		<para>
 		  The file services integrated in UCS support the provision of shares using the CIFS
 		  protocol (see  <xref linkend="shares::general"/>). Insofar as the underlying file system
@@ -159,8 +167,7 @@
 		</para>
 
 		<para>
-		  In versions before UCS 3.2, Samba used the CIFS protocol to provide file services. In new
-		  installations as of UCS 3.2, the successor SMB2 is enabled as standard. Using a client
+		  Samba supports the CIFS protocol and the successor SMB2 to provide file services. Using a client
 		  which supports SMB2 (as of Windows Vista, i.e., Windows 7/8 too) improves the performance
 		  and scalability.
 		</para>
@@ -420,7 +427,7 @@ instanceType: 4
 	  <title>Components of a Samba domain</title>
 
 	  <para>
-		A Samba domain is composed of at least one domain controller. Windows clients and member
+		A Samba NT domain is composed of at least one domain controller. Windows clients and member
 		servers can join the trust context of the Samba domain as domain members. Member servers do
 		not provide login services, but may offer file and print services, for example. In addition to
 		a member server domain join of Windows Server systems, Samba can also act as a member server.
@@ -481,6 +488,12 @@ instanceType: 4
 
 	  <section id="windows:samba3:fileservices">
 		<title>File services</title>
+
+		<para>
+		  A file services provides files over the network and allows concentrating the storage of user data on a
+		  central server.
+		</para>
+
 		<para>
 		  The file services integrated in UCS support the provision of shares using the CIFS
 		  protocol (see <xref linkend="shares::general"/>). Insofar as the underlying file system
@@ -489,8 +502,7 @@ instanceType: 4
 		</para>
 
 		<para>
-		  In versions before UCS 3.2, Samba used the CIFS protocol to provide file services. In new
-		  installations as of UCS 3.2, the successor SMB2 is enabled as standard. Using a client
+		  Samba supports the CIFS protocol and the successor SMB2 to provide file services. Using a client
 		  which supports SMB2 (as of Windows Vista, i.e., Windows 7/8 too) improves the performance
 		  and scalability.
 		</para>
@@ -559,7 +571,7 @@ instanceType: 4
 
 		<para>
 		  WINS is used in NT-compatible Samba domains; in Samba AD domains, the name resolution
-		  generally occurs via DNS.
+		  generally occurs primarily via DNS (WINS is also available).
 		</para>
 
 		<para>

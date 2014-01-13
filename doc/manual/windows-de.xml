@@ -8,15 +8,11 @@
 
 	<itemizedlist>
 	  <listitem><simpara>
-		Domänencontrollerfunktionalität
+		Domänencontrollerfunktionalität / Authentifizierungsdienste
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 		Dateidienste
-	  </simpara></listitem>
-
-	  <listitem><simpara>
-		Authentifizierungsdienste
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -31,15 +27,15 @@
 
 	<itemizedlist>
 	  <listitem><simpara>
-		Samba kann als NT-Domänencontroller arbeiten.
-	  </simpara></listitem>
-
-	  <listitem><simpara>
 		Samba kann auch als Active Directory-kompatibler Domänencontroller verwendet werden,
 		d.h. Samba stellt eine Active Directory-kompatible Windows-Domäne bereit. Dies ermöglicht
-		auch die Verwendung der von Microsoft bereit gestellten Werkzeuge beispielsweise für die
+		auch die Verwendung der von Microsoft bereit gestellten Werkzeuge, beispielsweise für die
 		Verwaltung von Benutzern oder Gruppenrichtlinien (GPOs).
 	  </simpara> </listitem>
+
+	  <listitem><simpara>
+		Samba kann als NT-kompatibler Domänencontroller arbeiten.
+	  </simpara></listitem>
 	</itemizedlist>
 
 	<para>
@@ -58,10 +54,8 @@
 	<para>
 	  UCS integriert neben Samba noch eine zusätzliche Komponente zur
 	  Anbindung an Active Directory (AD); den Univention Active Directory
-	  Connector. Im Gegensatz zu Samba-AD-Diensten wird hierbei allerdings eine
-	  separate AD-Domäne auf Basis von Microsoft Windows betrieben, die
-	  bidirektional oder unidirektional synchronisiert wird, siehe
-	  <xref linkend="ad-connector:general"/>.
+	  Connector. Der Connector synchronisiert den Inhalt einer Microsoft Active Directory-Domäne mit
+	  einer UCS-Domäne. Weitere Informationen finden sich in <xref linkend="ad-connector:general"/>.
 	</para>
   </section>
 
@@ -72,7 +66,7 @@
 	  <title>Bestandteile einer Samba-Domäne</title>
 
 	  <para>
-		Eine Samba-Domäne besteht aus min. einem Domänencontroller. Windows-Clients und Memberserver
+		Eine Active Directory-Domäne besteht aus min. einem Domänencontroller. Windows-Clients und Memberserver
 		können als Domänenmitglieder dem Vertrauenskontext der Samba-Domäne beitreten. Memberserver
 		stellen keine Anmeldedienste bereit, bieten aber beispielsweise Datei- oder Druckdienste
 		an. Neben dem Domänenbeitritt als Memberserver von Windows Server-Systemen kann auch Samba
@@ -80,18 +74,24 @@
 	  </para>
 
 	  <para>
-		Der Domänenbeitritt von Windows-Clients und Microsoft Windows-Domänencontrollern wird in
+		Der Domänenbeitritt von Windows-Clients und Microsoft Windows-Memberservern wird in
 		<xref linkend="windows-domaenenbeitritt"/> beschrieben.
 	  </para>
 
 	  <para>
-		Microsoft Windows-Domänencontroller können aktuell nicht einer UCS-Samba-Domäne
+		Microsoft Active Directory-Domänencontroller können aktuell nicht einer UCS-Samba-Domäne
 		beitreten. Diese Funktionalität ist zu einem späteren Zeitpunkt geplant.
 	  </para>
 
 	  <para>
 		Samba kann zum jetzigen Zeitpunkt noch nicht einem Active Directory Forest beitreten.
 	  </para>
+
+	  <para>
+		Vertrauensstellungen mit anderen Domänen sind aktuell nur bei Verwendung NT-kompatibler
+		Domänen möglich (siehe <xref linkend="vertrauensstellungen_generell"/>.
+	  </para>
+
 	</section>
 
 
@@ -148,6 +148,12 @@
 
 	  <section id="windows:samba4:fileservices">
 		<title>Dateidienste / File-Server</title>
+
+		<para>
+		  Ein Dateiserver stellt zentral benötigte Dateien über das Netz bereit und ermöglicht es
+		  unter anderem Benutzerdaten auf einem zentralen Server zu bündeln.
+		</para>
+
 		<para>
 		  Die in UCS integrierten Dateidienste unterstützen eine Bereitstellung von Freigaben auf
 		  Basis von CIFS/SMB (siehe <xref linkend="shares::general"/>). Sofern das unterliegende
@@ -168,10 +174,9 @@
 		</para>
 
 		<para>
-		  In Versionen vor UCS 3.2 verwendete Samba zur Bereitstellung von Dateidiensten das
-		  CIFS-Protokoll. Bei Neuinstallationen ab UCS 3.2 wird standardmäßig der Nachfolger SMB2
-		  aktiviert. Verwendet man einen Client, der SMB2 unterstützt (ab Windows Vista, also auch
-		  Windows 7/8), verbessert sich die Performance und die Skalierbarkeit.
+		  Samba unterstützt das CIFS-Protokoll und den Nachfolger SMB2. Verwendet man einen Client,
+		  der SMB2 unterstützt (ab Windows Vista, also auch Windows 7/8), verbessert sich die
+		  Performance und die Skalierbarkeit.
 		</para>
 
 		<para>
@@ -436,7 +441,7 @@ instanceType: 4
 	  <title>Bestandteile einer Samba-Domäne</title>
 
 	  <para>
-		Eine Samba-Domäne besteht aus min. einem Domänencontroller. Windows-Clients und Memberserver
+		Eine Samba-NT-Domäne besteht aus min. einem Domänencontroller. Windows-Clients und Memberserver
 		können als Domänenmitglieder dem Vertrauenskontext der Samba-Domäne beitreten. Memberserver
 		stellen keine Anmeldedienste bereit, bieten aber beispielsweise Datei- oder Druckdienste
 		an. Neben dem Domänenbeitritt als Memberserver von Windows Server-Systemen kann auch Samba
@@ -444,7 +449,7 @@ instanceType: 4
 	  </para>
 
 	  <para>
-		Der Domänenbeitritt von Windows-Clients und Microsoft Windows-Domänencontrollern wird in
+		Der Domänenbeitritt von Windows-Clients und Microsoft Windows-Memberservern wird in
 		<xref linkend="windows-domaenenbeitritt"/> beschrieben.
 	  </para>
 
@@ -501,6 +506,12 @@ instanceType: 4
 
 	  <section id="windows:samba3:fileservices">
 		<title>Dateidienste / File-Server</title>
+
+		<para>
+		  Ein Dateiserver stellt zentral benötigte Dateien über das Netz bereit und ermöglicht es
+		  unter anderem Benutzerdaten auf einem zentralen Server zu bündeln.
+		</para>
+
 		<para>
 		  Die in UCS integrierten Dateidienste unterstützen eine Bereitstellung von Freigaben auf
 		  Basis von CIFS/SMB (siehe <xref linkend="shares::general"/>). Sofern das unterliegende
@@ -510,10 +521,9 @@ instanceType: 4
 		</para>
 
 		<para>
-		  In Versionen vor UCS 3.2 verwendete Samba zur Bereitstellung von Dateidiensten das
-		  CIFS-Protokoll. Bei Neuinstallationen ab UCS 3.2 wird standardmäßig der Nachfolger SMB2
-		  aktiviert. Verwendet man einen Client, der SMB2 unterstützt (ab Windows Vista, also auch
-		  Windows 7/8), verbessert sich die Performance und die Skalierbarkeit.
+		  Samba unterstützt das CIFS-Protokoll und den Nachfolger SMB2. Verwendet man einen Client,
+		  der SMB2 unterstützt (ab Windows Vista, also auch Windows 7/8), verbessert sich die
+		  Performance und die Skalierbarkeit.
 		</para>
 
 		<para>
@@ -576,7 +586,7 @@ instanceType: 4
 
 		<para>
 		  WINS wird in NT-kompatiblen Samba-Domänen verwendet, in Samba-AD-Domänen erfolgt die
-		  Namensauflösung in der Regel über DNS.
+		  Namensauflösung primär über DNS (WINS ist dort ebenfalls verfügbar).
 		</para>
 
 		<para>
