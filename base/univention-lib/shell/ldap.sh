@@ -343,6 +343,7 @@ ucs_registerLDAPExtension () {
 		python -c 'import ldap_extension; ldap_extension.ucs_registerLDAPExtension()' \
 			--packagename "$package_name" --packageversion "$package_version" "$@"
 
+	local rc
 	rc=$?
 	case $rc in
 		4) return 0	## mask non-fatal return code

@@ -1,3 +1,9 @@
+univention-lib (3.0.26-15) unstable; urgency=medium
+
+  * minor shell code polishing (Bug #33582)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 13 Jan 2014 20:29:16 +0100
+
 univention-lib (3.0.26-14) unstable; urgency=medium
 
   * Add custom_username function to shell and python lib (Bug #33644)
