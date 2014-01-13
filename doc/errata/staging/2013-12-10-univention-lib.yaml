@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-lib
-fix: 3.0.26-13.207.201401091516
+fix: 3.0.26-14.208.201401091923
 note:
 version: [0]
 desc: |
@@ -14,5 +14,8 @@ desc: |
   * Group name mapping has been added to univention-lib. 
     The new function "custom_groupname" maps the default group names
     to the actual name.
+  * User name mapping has been added to univention-lib. 
+    The new function "custom_username" maps the default user names
+    to the actual name.
   * A new pyhton lib "s4" has been added for samba4 related stuff.
-bug: [33582,33649,33710]
+bug: [33582,33649,33710,33893]
