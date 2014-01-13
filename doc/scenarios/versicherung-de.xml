@@ -295,7 +295,7 @@
 		<listitem><simpara>Es müssen Qualitätsstandards für Passwörter etabliert werden. In UCS kann
 		für Passwörter beispielsweise eine Mindestanzahl von Klein- und Großbuchstaben,
 		Sonderzeichen oder Ziffern konfiguriert werden. Außerdem können Passwörter gegen Listen
-		unsicherer Passwörter (z.B. ``secret'') abgeglichen werden.</simpara>
+		unsicherer Passwörter (z.B. <emphasis>secret</emphasis>) abgeglichen werden.</simpara>
 		</listitem>
 
 	  </itemizedlist>
@@ -355,7 +355,7 @@
 	<title>Citrix Terminal Services</title>
 	<para>
 	  In der Zentrale arbeiten 150 Benutzer mit Terminaldiensten auf Basis
-	  von Citrix XenApp 6.0. Der XenApp-Terminalserver läuft auf einem
+	  von Citrix XenApp. Der XenApp-Terminalserver läuft auf einem
 	  Microsoft Windows Memberserver, der in die Samba 4-Domäne gejoint ist.
 	</para>
 
@@ -397,7 +397,7 @@
   <section>
 	<title>Integration von SugarCRM</title>
 	<para>
-	  Als CRM-Lösung für Vertriebsmitarbeiter wird SugarCRM 6.5
+	  Als CRM-Lösung für Vertriebsmitarbeiter wird SugarCRM
 	  eingesetzt. Die Verwaltung der SugarCRM-Benutzer- und -rollen
 	  integriert sich direkt in die &ucsUMC;. Die Installation erfolgt mit wenigen Klicks aus dem App Center.
 	</para>

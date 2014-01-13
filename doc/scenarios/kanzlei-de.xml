@@ -89,6 +89,22 @@
   </section>
 
   <section>
+	<title>Single-Sign-On mit einer juristischen Fachanwendung</title>
+	<para>
+	  Die Kanzlei greift auf einen webbasierten juristischen Fachdienst zu. Dieser benutzt eine
+	  eigenständige Benutzerverwaltung. Um zu vermeiden das Benutzerkennungen und Passwörter doppelt
+	  gepflegt werden müssen wird der UCS SAML Identity Provider eingebunden.
+	  SAML (Security Assertion Markup Language) ist ein XML-basierter Standard zum Austausch von
+	  Authentifizierungsinformationen, der u.a. Single-Sign-On über Domänengrenzen hinweg erlaubt.
+	  Der juristische Fachdienst wird über ein kryptografisches Zertifikat fest registriert und
+	  vertraut dann dem UCS Identity Provider. Der Benutzer authentifiziert sich dann nur noch in
+	  UCS und kann den eingebundenen juristischen Dienst ohne erneute Authentifizierung nutzen.
+	  Der SAML Identity Provider kann über das Univention App Center installiert werden.
+	</para>
+  </section>
+
+
+  <section>
 	<title>Druckdienste</title>
 	<para>
 	  Das UCS-System stellt über die Software CUPS Druckdienste bereit. Es können sowohl
@@ -160,7 +176,7 @@
 	  <itemizedlist>
 		<listitem><simpara><ulink url="http://docs.univention.de/handbuch.html"/> (UCS-Handbuch)</simpara></listitem>
 		<listitem><simpara><ulink url="http://www.univention.de/produkte/ucs/app-katalog/app/details/zarafa"/> (Zarafa Collaboration Platform)</simpara></listitem>
-		<listitem><simpara><ulink url="http://wiki.univention.de/index.php?title=UCS_3.1_Univention_AD_Takeover"/></simpara></listitem>
+		<listitem><simpara><ulink url="http://docs.univention.de/handbuch.html#windows:adtakeover"/></simpara></listitem>
 	  </itemizedlist>
   </section>
 </chapter>

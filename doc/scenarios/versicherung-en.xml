@@ -343,7 +343,7 @@
 	<title>Citrix terminal services</title>
 	<para>
 	  In the headquarters 150 users work with terminal services based on
-	  Citrix XenApp 6.0. The XenApp terminal server runs on a Windows member server,
+	  Citrix XenApp. The XenApp terminal server runs on a Windows member server,
 	  which joined the local Samba 4 domain.
 	</para>
 
@@ -385,7 +385,7 @@
   <section>
 	<title>Integration of SugarCRM</title>
 	<para>
-	  SugarCRM 6.5 is employed as the CRM solution for sales personnel. The
+	  SugarCRM is employed as the CRM solution for sales personnel. The
 	  administration of the SugarCRM users and roles integrates directly in
 	  the &ucsUMC;. The installation can be performed with a few clicks
 	  using the Univention App Center.
