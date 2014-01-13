@@ -1,3 +1,10 @@
+univention-samba4 (3.0.39-15) unstable; urgency=medium
+
+  * During join call sysvol-sync with --overwrite-local except on primary DC
+    (Bug #33881)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 13 Jan 2014 18:19:58 +0100
+
 univention-samba4 (3.0.39-14) unstable; urgency=medium
 
   * call sysvol-sync with --overwrite-local after provision of

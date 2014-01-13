@@ -451,8 +451,7 @@ sysvol_fixup() {
 	## determine default sysvol parent for this host from univentionService="S4 Connector"
 	set_samba4_sysvol_sync_host
 
-	is_ucr_true samba4/provision/secondary
-	if [ $? -eq 0 ]; then
+	if [ "$1" = '--overwrite-local' ]; then
 		/usr/share/univention-samba4/scripts/sysvol-sync.sh --overwrite-local
 	else
 		/usr/share/univention-samba4/scripts/sysvol-sync.sh
@@ -741,7 +740,7 @@ if [ "$samba4_role" = 'DC' ]; then
 				## provision erases the idmap.ldb
 				/usr/lib/univention-directory-listener/system/samba4-idmap.py --direct-resync 2>/dev/null
 
-				sysvol_fixup
+				sysvol_fixup --overwrite-local
 
 				## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
 				/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${SITE_OPTION[@]}"
@@ -791,7 +790,7 @@ if [ "$samba4_role" = 'DC' ]; then
 			## write UCS posix IDs into the idmap.ldb
 			/usr/lib/univention-directory-listener/system/samba4-idmap.py --direct-resync 2>/dev/null
 
-			sysvol_fixup
+			sysvol_fixup --overwrite-local
 
 			## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
 			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${SITE_OPTION[@]}"
@@ -872,7 +871,7 @@ elif [ "$samba4_role" = "RODC" ]; then
 
 		samba_domain_join "${samba_join_options[@]}"
 
-		sysvol_fixup
+		sysvol_fixup --overwrite-local
 
 		## if the key version number increased, merge the old keys into the new keytab
 		merge_backup_samba4_keytab
