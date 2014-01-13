@@ -1,8 +1,8 @@
 #!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
-# Univention group name mapping
-#  listener module: mapping group names for well known sids
+# Univention custom user and group name mapping
+#  listener module: mapping custom user and group names for well known sids
 #
 # Copyright 2013 Univention GmbH
 #
@@ -43,11 +43,11 @@ import univention.debug
 import univention.lib.s4
 import univention.config_registry
 
-name = "group-name-mapping"
-description = "mapp group names for well known sids"
-filter = "(univentionObjectType=groups/group)"
+name = "well-known-sid-name-mapping"
+description = "map user and group names for well known sids"
+filter = "(|(univentionObjectType=groups/group)(univentionObjectType=users/user))"
 attributes = ["cn", "sambaSid"]
-FN_CACHE='/var/cache/univention-directory-listener/group-name-mapping.pickle'
+FN_CACHE='/var/cache/univention-directory-listener/well-known-sid-name-mapping_modrdn.pickle'
 modrdn='1'
 
 ucr = univention.config_registry.ConfigRegistry()
@@ -63,52 +63,58 @@ def sidToName(sid):
 
 def checkAndSet(obj, delete=False):
 	sambaSid = obj.get("sambaSID", [None])[0]
-	cn = obj.get("cn", [None])[0]
-	if cn and sambaSid:
-		name = sidToName(sambaSid)
+
+	object_type = obj.get('univentionObjectType', [])
+	if object_type == 'users/user':
+		obj_name = obj.get('uid', [None])[0]
+		ucr_base = 'users/default'
+	else:
+		obj_name = obj.get('cn', [None])[0]
+		ucr_base = 'groups/default'
+
+	if obj_name and sambaSid:
+		default_name = sidToName(sambaSid)
 		if name:
-			customName = name.lower().replace(" ", "")
-			customNameCn = cn.lower().replace(" ", "")
-			if not customNameCn == customName and not delete:
-				# create mapping if name of group in UCS is not
-				# equal to the name in the sidlist
-				toSet = "groups/default/%s=%s" % (customName, cn)
+			default_name_lower = default_name.lower().replace(" ", "")
+			custom_name_lower = obj_name.lower().replace(" ", "")
+			if not custom_name_lower == default_name_lower and not delete:
+				ucr_key_value = "%s/%s=%s" % (ucr_base, default_name_lower, obj_name)
 				univention.debug.debug(
 					univention.debug.LISTENER,
 					univention.debug.PROCESS,
-					"group-name-mapping: setting ucrv %s" % toSet
+					"%s: ucr set %s" % (name, ucr_key_value)
 				)
 				listener.setuid(0)
 				try:
-					univention.config_registry.handler_set([toSet])
+					univention.config_registry.handler_set([ucr_key_value])
 				finally:
 					listener.unsetuid()
 			else:
-				# unset mapping var if name of group in UCS is equal
-				# to the name in the sidlist, or if group was deleted
-				toUnset = "groups/default/%s" % customName
+				# unset ucr var if the custom name of user/group matches the default one,
+				# or if object was deleted
+				unset_ucr_key = "%s/%s" % (ucr_base, default_name)
 				ucr = univention.config_registry.ConfigRegistry()
 				ucr.load()
-				if ucr.get(toUnset):
+				if ucr.get(unset_ucr_key):
 					univention.debug.debug(
 						univention.debug.LISTENER,
 						univention.debug.PROCESS,
-						"group-name-mapping: unsetting ucrv %s" % toUnset
+						"%s: ucr unset %s" % (name, unset_ucr_key)
 					)
 					listener.setuid(0)
 					try:
-						univention.config_registry.handler_unset([toUnset])
+						univention.config_registry.handler_unset([unset_ucr_key])
 					finally:
 						listener.unsetuid()
 
 
 def handler(dn, new, old, command):
 
-	if ucr.is_false("listener/module/groupnamemapping", False):
+	if ucr.is_false("listener/module/wellknownsidnamemapping", False):
 		univention.debug.debug(
 			univention.debug.LISTENER,
 			univention.debug.INFO,
-			'group-name-mapping: deactivated by listener/module/groupnamemapping'
+			'%s: deactivated by listener/module/wellknownsidnamemapping' % (name,)
 		)
 		return
 
@@ -125,13 +131,13 @@ def handler(dn, new, old, command):
 			univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.ERROR,
-				'group-name-mapping: failed to open/write pickle file: %s' % str(e))
+				'%s: failed to open/write pickle file: %s' % (name, str(e)))
 		finally:
 			listener.unsetuid()
 		return
 
 	# check modrdn changes
-	if os.path.exists(FN_CACHE):
+	if new and os.path.exists(FN_CACHE) and not old:
 		listener.setuid(0)
 		try:
 			with open(FN_CACHE,'r') as f:
@@ -140,49 +146,61 @@ def handler(dn, new, old, command):
 			univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.ERROR,
-				'group-name-mapping: failed to open/read pickle file: %s' % str(e))
+				'%s: failed to open/read pickle file: %s' % (name, str(e)))
 		try:
 		    os.remove(FN_CACHE)
 		except Exception, e:
 			univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.ERROR,
-				'group-name-mapping: cannot remove pickle file: %s' % str(e))
+				'%s: cannot remove pickle file: %s' % (name, str(e)))
 			univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.ERROR,
-				'group-name-mapping: for safty reasons group-name-mapping ignores change of LDAP object: %s' % dn)
+				'%s: for safety reasons well-known-sid-name-mapping ignores change of LDAP object: %s' % (name, dn))
 			listener.unsetuid()
 			return
 		listener.unsetuid()
 
+
+	object_type = None
+	if new:
+		object_type = new.get('univentionObjectType', [None])[0]
+	elif old:
+		object_type = old.get('univentionObjectType', [None])[0]
 
 	# new
 	if new and not old:
 		univention.debug.debug(
 			univention.debug.LISTENER,
 			univention.debug.INFO,
-			"group-name-mapping: new %s" % new.get("sambaSID")
+			"%s: new %s" % (name, new.get("sambaSID"))
 		)
 		checkAndSet(new)
 		
 	# modify
 	elif new and old:
-		oldCn = old.get("cn", [None])[0]
-		newCn = new.get("cn", [None])[0]
-		# group name has changed
-		if not oldCn == newCn:
+		if 'users/user' == object_type:
+			name_attr='uid'
+		else:
+			name_attr='cn'
+		
+		old_name = old.get(name_attr, [None])[0]
+		new_name = new.get(name_attr, [None])[0]
+
+		if not old_name == new_name:
 			univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.INFO,
-				"group-name-mapping: mod %s %s %s" % (new.get("sambaSID"), newCn, oldCn)
+				"%s: mod %s %s %s" % (name, new.get("sambaSID"), new_name, old_name)
 			)
 			checkAndSet(new)
+
 	# delete
 	elif not new and old:
 		univention.debug.debug(
 			univention.debug.LISTENER,
 			univention.debug.INFO,
-			"group-name-mapping: del %s" % old.get("sambaSID")
+			"%s: del %s" % (name, old.get("sambaSID"))
 		)
 		checkAndSet(old, delete=True)

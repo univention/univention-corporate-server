@@ -1,3 +1,9 @@
+univention-pam (7.0.4-10) unstable; urgency=medium
+
+  * Turn group-name-mapping into well-known-sid-name-mapping (Bug #33897)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 13 Jan 2014 20:00:10 +0100
+
 univention-pam (7.0.4-9) unstable; urgency=low
 
   * fixed template (Bug #32415) 
