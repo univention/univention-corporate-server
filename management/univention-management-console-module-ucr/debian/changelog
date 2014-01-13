@@ -1,3 +1,10 @@
+univention-management-console-module-ucr (3.0.3-2) unstable; urgency=low
+
+  * Bug #33118: fix typos
+  * update copyright
+
+ -- Florian Best <best@univention.de>  Mon, 13 Jan 2014 11:34:15 +0100
+
 univention-management-console-module-ucr (3.0.3-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)
