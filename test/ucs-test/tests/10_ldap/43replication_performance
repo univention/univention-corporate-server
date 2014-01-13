@@ -4,6 +4,7 @@
 ## tags:
 ##  - basic
 ##  - performance
+##  - replication
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup

@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Checking for getent group crash
-## bugs: [10558]
+## bugs:
+##  - 10558
+##  - 33904
 ## tags: [BASIC]
 ## roles:
 ##  - domaincontroller_master
@@ -14,6 +16,9 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/maildomain.sh" || exit 137
 . "$TESTLIBPATH/undo.sh" || exit 137
+
+echo "The test case is disabled due to Bug #33904"
+exit 137
 
 section "Preparing"
 

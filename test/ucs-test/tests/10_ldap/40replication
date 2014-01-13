@@ -3,6 +3,7 @@
 ## tags:
 ##  - basic
 ##  - apptest
+##  - replication
 ## roles:
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave

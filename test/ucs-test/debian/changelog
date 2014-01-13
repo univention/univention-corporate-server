@@ -1,3 +1,10 @@
+ucs-test (4.0.161-23) unstable; urgency=low
+
+  * Disable 10_ldap/61getent_crash due to Bug #33904 (Bug #33050)
+  * Added replication tags for the replication test cases
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 13 Jan 2014 07:13:43 +0100
+
 ucs-test (4.0.161-22) unstable; urgency=low
 
   * Bug #33757: 20_appcenter/17app_status typo fixed

@@ -3,6 +3,7 @@
 ## tags:
 ##  - basic
 ##  - apptest
+##  - replication
 ## roles-not: [basesystem]
 ## packages:
 ##  - univention-directory-listener

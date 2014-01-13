@@ -3,6 +3,7 @@
 ## bugs: [31722]
 ## tags:
 ##  - basic
+##  - replication
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup

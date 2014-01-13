@@ -7,6 +7,7 @@
 ##  3.1-0-55: fixed
 ## tags:
 ##  - basic
+##  - replication
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup

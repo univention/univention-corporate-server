@@ -1,5 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Checking whether failed.ldif is created with right permissions.
+## tags:
+##  - replication
 ## roles:
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave

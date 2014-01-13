@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner python
 # -*- coding: utf-8 -*
 ## desc: ldapmodrdn / udm move replication tests
+## tags:
+##  - replication
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
