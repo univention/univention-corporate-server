@@ -2,16 +2,19 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-config-registry
-fix: 9.0.5-3.444.201312191545
+fix: 9.0.5-4.445.201401091921
 note:
 version: [0]
 desc: |
   univention-config has been improved with repect to the
   following points:
   * The function "groupNameMapping()" has been added
-    to the ConfigRegistry class to easily convert group
-    names.
+    to the ConfigRegistry class to help customizing
+    group names.
+  * The function "userNameMapping()" has been added
+    to the ConfigRegistry class to help customizing
+    user names.
   * univention-ldapsearch now accepts standard UDM
     command line options --binddn, --bindpwd and
     --bindpwdfile for authentiaction.
-bug: [33650, 32560]
+bug: [33650, 32560, 33889]
