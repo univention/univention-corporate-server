@@ -6,6 +6,9 @@ fix: 3.0.152-7.804.201312121429
 note:
 version: [0]
 desc: |
- The protocol of a printer URI in the printers UMC module was always set to "cups-pdf://".
- Fixed this by adding setInitialValue method to ComplexInput widget.
-bug: [33383]
+ This errata update fixes several issues:
+ * The protocol of a printer URI in the printers UMC module was always set to "cups-pdf://".
+   Fixed this by adding setInitialValue method to ComplexInput widget.
+ * Added branding translation scope to all UMC files
+
+bug: [33383,33493]
