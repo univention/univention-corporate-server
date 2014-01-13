@@ -44,10 +44,14 @@
 			virtIO- und Xen-Beschleunigungs-Treiber für Microsoft Windows werden direkt mitgeliefert.
 			Die Einrichtung ist in <xref linkend="uvmm::gplpvvirtio"/> dokumentiert.
 		</para>
-		<para>
-			Im Univention Wiki (<ulink url="http://wiki.univention.de/"/>) findet sich eine Schritt-für-Schritt-Kurzanleitung <biblioref linkend="uvmm-quickstart"/> und weiterführende technische Dokumentation und HOWTOs <biblioref linkend="uvmm-technical-details"/>.
 
+		<para>
+		  Im Univention Wiki (<ulink url="http://wiki.univention.de/"/>) findet sich eine
+		  Schritt-für-Schritt-Kurzanleitung zur Inbetriebnahme von UVMM <biblioref
+		  linkend="uvmm-quickstart"/>. Weiterführende Informationen finden sich in der erweiterten
+		  Dokumentation zur Virtualisierung <biblioref linkend="ext-doc-uvmm"/>.
 		</para>
+
 	</section>
 	<section id="uvmm::installation">
 		<title>Installation</title>
@@ -58,9 +62,6 @@
 		  installiert werden. Alternativ kann das Softwarepaket <package>univention-virtual-machine-manager-daemon</package>
 		  installiert werden. Weitere Informationen finden sich in <xref
 		  linkend="computers::softwaremanagement::installsoftware"/>.
-		  UVMM sollte sollte auf einem Domänencontroller installiert werden, die Installation auf
-		  &ucsMember;n erfordert weitere Anpassungen und ist unter <biblioref
-		  linkend="uvmm-technical-details"/> dokumentiert.
 		</para>
 
 		<para>
@@ -590,11 +591,15 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			<title>Migrieren einer virtuellen Maschine</title>
 			<graphic scalefit="1" width="40%" fileref="illustrations/uvmm_migrate_de.png"/>
 		</figure>
+
 		<para>
-			Bei der Migration ist zu beachten, dass die Image-Dateien der eingebundenen Festplatten und CD-ROM-Laufwerk von beiden Virtualisierungsservern zugreifbar sein müssen.
-			Dies kann beispielsweise dadurch realisiert werden, dass die Images auf einem zentralen Storage abgelegt werden.
-			Hinweise zur Einrichtung einer solchen Umgebung finden sich unter <biblioref linkend="uvmm-technical-details"/>.
+		  Bei der Migration ist zu beachten, dass die Image-Dateien der eingebundenen Festplatten
+		  und CD-ROM-Laufwerk von beiden Virtualisierungsservern zugreifbar sein müssen. Dies kann
+		  beispielsweise dadurch realisiert werden, dass die Images auf einem zentralen Storage
+		  abgelegt werden. Hinweise zur Einrichtung einer solchen Umgebung finden sich unter <xref
+		  linkend="uvmm::storagepools"/>.
 		</para>
+
 		<section id="uvmm:Migration_virtueller_Maschinen_ausgefallener_Virtualisierungsserver">
 			<title>Migration virtueller Maschinen ausgefallener Virtualisierungsserver</title>
 			<para>
