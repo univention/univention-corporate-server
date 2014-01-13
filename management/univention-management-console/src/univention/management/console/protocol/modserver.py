@@ -38,8 +38,8 @@ the UMC server class
 
 from .server import Server
 from .message import Response, Message, IncompleteMessageError, ParseError, UnknownCommandError
-from .definitions import (BAD_REQUEST_NOT_FOUND, BAD_REQUEST_INVALID_OPTS, SUCCESS_SHUTDOWN,
-	MODULE_ERR_COMMAND_FAILED, MODULE_ERR, SUCCESS, RECV_BUFFER_SIZE, status_description)
+from .definitions import (BAD_REQUEST_NOT_FOUND, BAD_REQUEST_INVALID_OPTS,
+	MODULE_ERR_INIT_FAILED, SUCCESS, RECV_BUFFER_SIZE, status_description)
 
 from ..acl import ACLs
 from ..module import Module
@@ -86,35 +86,25 @@ class ModuleServer( Server ):
 		Server.__init__( self, ssl = False, unix = socket, magic = False, load_ressources = False )
 		self.signal_connect( 'session_new', self._client )
 
-	def _load_module( self ):
+	def _load_module(self):
+		modname = self.__module
 		try:
-			modname = self.__module
-			self.__module = None
-			try:
-				file_ = 'univention.management.console.modules.%s' % (modname,)
-				self.__module = __import__(file_, [], [], modname)
-			except ImportError, e:
-				try:
-					file_ = 'univention.management.console.wizards.%s' % (modname,)
-					self.__module = __import__(file_, [], [], modname)
-				except ImportError, imperr:
-					if not str(imperr).startswith('No module named'):
-						raise
-				if not self.__module:
-					raise
+			file_ = 'univention.management.console.modules.%s' % (modname,)
+			self.__module = __import__(file_, [], [], modname)
 			self.__handler = self.__module.Instance()
-			self.__handler.signal_connect( 'success', notifier.Callback( self._reply, True ) )
-			self.__handler.signal_connect( 'failure', notifier.Callback( self._reply, True ) )
-		except Exception, e:
-			error = _('Failed to import module %s: %s\n%s') % (modname, e, traceback.format_exc())
+		except Exception as exc:
+			error = _('Failed to import module %s: %s\n%s') % (modname, exc, traceback.format_exc())
 			MODULE.error(error)
 			self.__init_error_message = error
+		else:
+			self.__handler.signal_connect('success', notifier.Callback(self._reply, True))
+			self.__handler.signal_connect('failure', notifier.Callback(self._reply, True))
 
 	def _reply( self, msg, final ):
 		if final:
 			self.__active_requests -= 1
 		self.response( msg )
-		if not self.__active_requests and self.__timer == None:
+		if not self.__active_requests and self.__timer is None:
 			self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 
 	def _timed_out( self ):
@@ -130,9 +120,9 @@ class ModuleServer( Server ):
 		notifier.socket_add( self.__comm, self._recv )
 
 	def _recv( self, socket ):
-		if self.__timer:
+		if self.__timer is not None:
 			notifier.timer_remove( self.__timer )
-			self.__timer == None
+			self.__timer = None
 
 		data = socket.recv( RECV_BUFFER_SIZE )
 
@@ -188,9 +178,10 @@ class ModuleServer( Server ):
 
 		if not self.__handler:
 			resp = Response(msg)
-			resp.status = MODULE_ERR_COMMAND_FAILED
+			resp.status = MODULE_ERR_INIT_FAILED
 			resp.message = self.__init_error_message
 			self.response(resp)
+			self.__timer = notifier.timer_add(2000, self._timed_out)
 			return
 
 		if msg.command == 'SET':
@@ -244,12 +235,12 @@ class ModuleServer( Server ):
 					)
 					self.__init_error_message = error
 					MODULE.error(error)
-					resp.status = SUCCESS_SHUTDOWN
+					resp.status = MODULE_ERR_INIT_FAILED
 					resp.message = error
 
 			self.response( resp )
 
-			if not self.__active_requests and self.__timer == None:
+			if not self.__active_requests and self.__timer is None:
 				self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 			return
 
@@ -259,7 +250,7 @@ class ModuleServer( Server ):
 			if cmd_obj and ( not self.__check_acls or self.__acls.is_command_allowed( cmd, options = msg.options, flavor = msg.flavor ) ):
 				self.__active_requests += 1
 				self.__handler.execute( cmd_obj.method, msg )
-				if not self.__active_requests and self.__timer == None:
+				if not self.__active_requests and self.__timer is None:
 					self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 				return
 			else:
@@ -269,7 +260,7 @@ class ModuleServer( Server ):
 				resp.message = status_description( resp.status )
 				self.response( resp )
 
-		if not self.__active_requests and self.__timer == None:
+		if not self.__active_requests and self.__timer is None:
 			self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 
 	def command_get( self, command_name ):

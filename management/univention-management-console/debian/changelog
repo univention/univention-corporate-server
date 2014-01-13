@@ -1,3 +1,10 @@
+univention-management-console (6.0.24-1) unstable; urgency=low
+
+  * Bug #33673: let module process stop when initialization fails, don't
+  	import modules from management.console.wizards anymore
+
+ -- Florian Best <best@univention.de>  Mon, 13 Jan 2014 11:26:42 +0100
+
 univention-management-console (6.0.23-1) unstable; urgency=low
 
   * Bug #33673: improve error handling when initializing of a module failed.

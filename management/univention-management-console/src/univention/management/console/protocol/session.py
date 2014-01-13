@@ -57,7 +57,7 @@ from .client import Client, NoSocketError
 from .version import VERSION
 from .definitions import (SUCCESS, BAD_REQUEST_INVALID_OPTS, BAD_REQUEST_INVALID_ARGS,
 	status_description, BAD_REQUEST_UNAVAILABLE_LOCALE, BAD_REQUEST_FORBIDDEN,
-	BAD_REQUEST_NOT_FOUND, SERVER_ERR_MODULE_FAILED, SUCCESS_SHUTDOWN)
+	BAD_REQUEST_NOT_FOUND, SERVER_ERR_MODULE_FAILED)
 
 from ..resources import moduleManager, categoryManager
 from ..auth import AuthHandler
@@ -179,10 +179,6 @@ class ModuleProcess( Client ):
 			return
 		if msg.command == 'EXIT' and 'internal' in msg.arguments:
 			return
-
-		if msg.command == 'SET' and msg.status == SUCCESS_SHUTDOWN:
-			CORE.error('Commiting suicide (status==SUCCESS_SHUTDOWN)')
-			os.kill(self.pid(), 9)
 
 		self.signal_emit( 'result', msg )
 

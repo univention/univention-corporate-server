@@ -131,8 +131,9 @@ STATUS = (
 	Status( 'UMCP_ERR_UNPARSABLE_BODY'			, 554, _( 'Unparsable message body' ) ),
 
 	# errors occuring during command process in module process
-	Status( 'MODULE_ERR'						, 590, _( 'Error occuried during command processing' ) ),
-	Status( 'MODULE_ERR_COMMAND_FAILED'			, 591, _( 'The execution of a command caused an fatal error' ) )
+	Status( 'MODULE_ERR'						, 590, _( 'Error occured during command processing' ) ),
+	Status( 'MODULE_ERR_COMMAND_FAILED'			, 591, _( 'The execution of a command caused a fatal error' ) ),
+	Status( 'MODULE_ERR_INIT_FAILED'			, 592, _( 'The initialization of the module caused a fatal error' ) )
 )
 
 # create symbols for status codes
