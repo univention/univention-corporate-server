@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -41,7 +41,7 @@ define([
 	"umc/widgets/Uploader",
 	"umc/widgets/MultiSelect",
 	"umc/widgets/ProgressInfo",
-	"umc/i18n!umc/app"
+	"umc/i18n!umc/branding,umc/app"
 ], function(declare, lang, array, when, on, domStyle, ContainerWidget, _FormWidgetMixin, Button, Uploader, MultiSelect, ProgressInfo, _) {
 	return declare("umc.widgets.MultiUploader", [ ContainerWidget, _FormWidgetMixin ], {
 		'class': 'umcMultiUploader',

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Univention GmbH
+ * Copyright 2013-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require window*/
+/*global define require window Piwik*/
 
 define([
 	"dojo/topic",
@@ -116,9 +116,9 @@ define([
 	}
 
 	// subscribe to all topics containing interesting actions
-	topic.subscribe('/umc/actions', sendAction)
+	topic.subscribe('/umc/actions', sendAction);
 
 	// subscribe for disabling piwik
-	topic.subscribe('/umc/piwik/disable', disablePiwik)
+	topic.subscribe('/umc/piwik/disable', disablePiwik);
 });
 

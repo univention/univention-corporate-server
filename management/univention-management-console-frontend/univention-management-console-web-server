@@ -4,7 +4,7 @@
 # Univention Management Console
 #  UMC web server
 #
-# Copyright 2011-2013 Univention GmbH
+# Copyright 2011-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -61,7 +61,7 @@ configRegistry.load()
 # global objects
 try:
 	_session_timeout = int( configRegistry.get( 'umc/http/session/timeout', 300 ) )
-except TypeError, ValueError:
+except (TypeError, ValueError):
 	CORE.process( 'Failed to read session timeout from UCR variable umc/http/session/timeout. Using default of 300 seconds' )
 	_session_timeout = 300
 _thread_http = None

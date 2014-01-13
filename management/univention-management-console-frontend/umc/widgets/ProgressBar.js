@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -38,7 +38,7 @@ define([
 	"umc/dialog",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
-	"umc/i18n!umc/app"
+	"umc/i18n!umc/branding,umc/app"
 ], function(declare, lang, array, domClass, ProgressBar, tools, dialog, ContainerWidget, Text, _) {
 	return declare("umc.widgets.ProgressBar", ContainerWidget, {
 		// summary:

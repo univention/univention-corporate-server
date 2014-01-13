@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -53,7 +53,7 @@ define([
 	"umc/widgets/Tooltip",
 	"umc/tools",
 	"umc/render",
-	"umc/i18n!umc/app",
+	"umc/i18n!umc/branding,umc/app",
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
 ], function(declare, lang, array, win, construct, attr, geometry, style,

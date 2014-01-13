@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -32,7 +32,7 @@ define([
 	"dojo/_base/declare",
 	"umc/widgets/Uploader",
 	"umc/widgets/Image",
-	"umc/i18n!umc/app"
+	"umc/i18n!umc/branding,umc/app"
 ], function(declare, Uploader, Image, _) {
 	return declare("umc.widgets.ImageUploader", Uploader, {
 		'class': 'umcImageUploader',

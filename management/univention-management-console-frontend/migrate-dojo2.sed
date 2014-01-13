@@ -1,6 +1,6 @@
 #!/bin/sed -f
 #
-# Copyright 2012-2013 Univention GmbH
+# Copyright 2012-2014 Univention GmbH
 #
 # http://www.univention.de/
 #

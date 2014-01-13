@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -41,7 +41,7 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
-	"umc/i18n!umc/app"
+	"umc/i18n!umc/branding,umc/app"
 ], function(declare, lang, array, event, domClass, when, json, StackContainer, tools, Form, Page, StandbyMixin, _) {
 	return declare("umc.widgets.Wizard", [ StackContainer, StandbyMixin ], {
 		// summary:

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -37,7 +37,7 @@ define([
 	"dojo/topic",
 	"dijit/layout/TabContainer",
 	"umc/tools",
-	"umc/i18n!umc/app"
+	"umc/i18n!umc/branding,umc/app"
 ], function(declare, lang, array, domClass, on, topic, TabContainer, tools, _) {
 	return declare("umc.widgets.TabContainer", TabContainer, {
 		// summary:

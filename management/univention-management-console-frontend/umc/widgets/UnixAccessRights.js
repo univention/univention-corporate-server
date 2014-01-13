@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -37,7 +37,7 @@ define([
 	"umc/render",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_FormWidgetMixin",
-	"umc/i18n!umc/app"
+	"umc/i18n!umc/branding,umc/app"
 ], function(declare, lang, array, TableContainer, tools, render, ContainerWidget, _FormWidgetMixin, _) {
 	return declare("umc.widgets.UnixAccessRights", [ ContainerWidget, _FormWidgetMixin ], {
 		// summary:

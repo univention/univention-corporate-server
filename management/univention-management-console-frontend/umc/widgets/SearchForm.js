@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -35,7 +35,7 @@ define([
 	"dojo/topic",
 	"umc/tools",
 	"umc/widgets/Form",
-	"umc/i18n!umc/app"
+	"umc/i18n!umc/branding,umc/app"
 ], function(declare, lang, array, topic, tools, Form, _) {
 	return declare("umc.widgets.SearchForm", Form, {
 		// summary:

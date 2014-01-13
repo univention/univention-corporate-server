@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -44,7 +44,7 @@ define([
 	"umc/widgets/Form",
 	"umc/tools",
 	"umc/i18n/tools",
-	"umc/i18n!umc/app"
+	"umc/i18n!umc/branding,umc/app"
 ], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, LoginDialog, NotificationContainer, ConfirmDialog, Text, Form, tools, i18nTools, _) {
 	var dialog = {};
 	lang.mixin(dialog, {

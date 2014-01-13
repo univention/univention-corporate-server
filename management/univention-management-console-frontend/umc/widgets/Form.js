@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -40,7 +40,7 @@ define([
 	"dijit/form/Form",
 	"umc/tools",
 	"umc/render",
-	"umc/i18n!umc/app"
+	"umc/i18n!umc/branding,umc/app"
 ], function(declare, lang, array, kernel, Deferred, when, all, style, Form, tools, render, _) {
 
 	// in order to break circular dependencies (umc.dialog needs a Form and

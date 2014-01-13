@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -46,7 +46,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
-	"umc/i18n!umc/app"
+	"umc/i18n!umc/branding,umc/app"
 ], function(lang, array, _window, xhr, basexhr, Deferred, json, topic, cookie, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, _) {
 
 	// in order to break circular dependencies (umc.tools needs a Widget and
@@ -563,7 +563,8 @@ define([
 			554: _( 'Internal UMC protocol error: The UMCP message body could not be parsed.' ),
 
 			590: _( 'Internal module error: An error occured during command processing.' ),
-			591: _( 'Could not process the request.' )
+			591: _( 'Could not process the request.' ),
+			592: _( 'Internal module error: The initialization of the module caused a fatal error.' )
 		},
 
 		_parseStatus: function(stat) {
@@ -659,78 +660,14 @@ define([
 				}
 				/*else if (591 == status) {
 					// the command could not be executed, e.g., since the user data was not correct
-					// this error deserves a special treatment as it is not critical, but rather a
+					// this error deserves a special treatment as it is not critical, but rather
 					// a user error
 					dialog.alert('<p>' + statusMessage + (message ? ': ' + message : '.') + '</p>');
 				}*/
 				// handle Tracebacks; on InternalServerErrors(500) they don't contain the word 'Traceback'
 				else if(message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
-
 					topic.publish('/umc/actions', 'error', 'traceback');
-					var feedbackBody = lang.replace("{0}\n\n1) {1}\n2) {2}\n3) {3}\n\n----------\n\n{4}\n\n----------\n\n{5} {6}", [
-						_('Please take a second to provide the following information:'),
-						_('steps to reproduce the failure'),
-						_('expected result'),
-						_('actual result'),
-						message.replace(/<br *\/?>/g, "\n"),
-						'univention-management-console-frontend',
-						tools.status('version')
-					]);
-
-					var feedbackMailto = lang.replace('mailto:{email}?body={body}&subject={subject}', {
-						email: encodeURIComponent(this.status('feedbackAddress')),
-						body: encodeURIComponent(feedbackBody),
-						subject: encodeURIComponent(this.status('feedbackSubject'))
-					});
-					var feedbackLabel = _('Send as email');
-					var feedbackLink = '<a href="' + feedbackMailto + '">' + feedbackLabel + '</a>';
-
-					var content = '<pre>' + message + '</pre>';
-					var hideLink = _('Hide server error message');
-					var showLink = _('Show server error message');
-
-					var titlePane = new TitlePane({
-						title: showLink,
-						content: content,
-						'class': 'umcTracebackPane',
-						open: false,
-						onHide: function() { titlePane.set('title', showLink); },
-						onShow: function() { titlePane.set('title', hideLink); }
-					});
-
-					var container = new ContainerWidget({});
-					container.addChild(new Text({
-						content: '<p>' + statusMessage + '</p>'
-					}));
-					container.addChild(titlePane);
-
-					var options = [{
-						name: 'close',
-						label: _('Close')
-					}, {
-						name: 'as_email',
-						label: feedbackLabel,
-						callback: function() {
-							window.location.href = feedbackMailto;
-						}
-					}];
-					var systemInfoLib = null;
-					try {
-						systemInfoLib = require('umc/modules/sysinfo/lib');
-					} catch(e) { }
-					if (systemInfoLib) {
-						options.push({
-							name: 'send',
-							'default': true,
-							label: _('Inform vendor'),
-							callback: lang.hitch(this, function() {
-								systemInfoLib.traceback(message, feedbackLink);
-							})
-						});
-					} else {
-						options[1]['default'] = true; // fallback: as_email is default
-					}
-					dialog.confirm( container, options, statusMessage );
+					tools._handleTraceback(message, statusMessage);
 				} else {
 					// all other cases
 					topic.publish('/umc/actions', 'error', status);
@@ -744,6 +681,73 @@ define([
 				// probably server timeout, could also be a different error
 				dialog.alert(_('An error occurred while connecting to the server, please try again later.'));
 			}
+		},
+
+		_handleTraceback: function(message, statusMessage) {
+			var feedbackBody = lang.replace("{0}\n\n1) {1}\n2) {2}\n3) {3}\n\n----------\n\n{4}\n\n----------\n\n{5} {6}", [
+				_('Please take a second to provide the following information:'),
+				_('steps to reproduce the failure'),
+				_('expected result'),
+				_('actual result'),
+				message.replace(/<br *\/?>/g, "\n"),
+				'univention-management-console-frontend',
+				tools.status('version')
+			]);
+
+			var feedbackMailto = lang.replace('mailto:{email}?body={body}&subject={subject}', {
+				email: encodeURIComponent(this.status('feedbackAddress')),
+				body: encodeURIComponent(feedbackBody),
+				subject: encodeURIComponent(this.status('feedbackSubject'))
+			});
+			var feedbackLabel = _('Send as email');
+			var feedbackLink = '<a href="' + feedbackMailto + '">' + feedbackLabel + '</a>';
+
+			var content = '<pre>' + message + '</pre>';
+			var hideLink = _('Hide server error message');
+			var showLink = _('Show server error message');
+
+			var titlePane = new TitlePane({
+				title: showLink,
+				content: content,
+				'class': 'umcTracebackPane',
+				open: false,
+				onHide: function() { titlePane.set('title', showLink); },
+				onShow: function() { titlePane.set('title', hideLink); }
+			});
+
+			var container = new ContainerWidget({});
+			container.addChild(new Text({
+				content: '<p>' + statusMessage + '</p>'
+			}));
+			container.addChild(titlePane);
+
+			var options = [{
+				name: 'close',
+				label: _('Close')
+			}, {
+				name: 'as_email',
+				label: feedbackLabel,
+				callback: function() {
+					window.location.href = feedbackMailto;
+				}
+			}];
+			var systemInfoLib = null;
+			try {
+				systemInfoLib = require('umc/modules/sysinfo/lib');
+			} catch(e) { }
+			if (systemInfoLib) {
+				options.push({
+					name: 'send',
+					'default': true,
+					label: _('Inform vendor'),
+					callback: lang.hitch(this, function() {
+						systemInfoLib.traceback(message, feedbackLink);
+					})
+				});
+			} else {
+				options[1]['default'] = true; // fallback: as_email is default
+			}
+			dialog.confirm(container, options, statusMessage);
 		},
 
 		forIn: function(/*Object*/ obj, /*Function*/ callback, /*Object?*/ scope, /*Boolean?*/ inheritedProperties) {

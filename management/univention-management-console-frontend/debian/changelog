@@ -1,3 +1,11 @@
+univention-management-console-frontend (3.0.152-8) unstable; urgency=low
+
+  * Bug #33493: add branding scope to translations
+  * Bug #33673: adapt umcp status code definitions
+  * update copyrights
+
+ -- Florian Best <best@univention.de>  Mon, 13 Jan 2014 11:52:18 +0100
+
 univention-management-console-frontend (3.0.152-7) unstable; urgency=low
 
   * Bug #33383: add setInitialValue method to the ComplexInput widget

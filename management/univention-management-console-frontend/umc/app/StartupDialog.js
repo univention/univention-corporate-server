@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Univention GmbH
+ * Copyright 2013-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -50,7 +50,7 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
-	"umc/i18n!umc/app"
+	"umc/i18n!umc/branding,umc/app"
 ], function(declare, lang, kernel, array, query, parser, domAttr, domClass, domGeometry, Deferred, when, topic, registry, Dialog, StackContainer, RadioButton, tools, dialog, Text, ContainerWidget, Button, _) {
 	var _lang = kernel.locale.split('-')[0];
 	var _getDocumentDependency = function(key) {

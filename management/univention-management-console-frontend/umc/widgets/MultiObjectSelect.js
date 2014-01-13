@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -41,7 +41,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/MultiSelect",
 	"umc/widgets/LabelPane",
-	"umc/i18n!umc/app"
+	"umc/i18n!umc/branding,umc/app"
 ], function(declare, lang, array, aspect, when, DataStore, tools, ContainerWidget, _FormWidgetMixin, Button, MultiSelect, LabelPane, _) {
 
 	// lazy defining of the dialog in order to avoid circular dependencies with umc/render

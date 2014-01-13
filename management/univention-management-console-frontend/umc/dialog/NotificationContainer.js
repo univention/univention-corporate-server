@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Univention GmbH
+ * Copyright 2013-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -46,7 +46,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/Text",
 	"umc/tools",
-	"umc/i18n!umc/app"
+	"umc/i18n!umc/branding,umc/app"
 ], function(declare, lang, query, win, on, topic, fx, domStyle, domConstruct, domGeometry, Memory, _WidgetBase, _TemplatedMixin, sprintf, Button, Text, tools, _) {
 	var _getWrapper = function() {
 		return query('.umcNotificationTopWrapper')[0];
