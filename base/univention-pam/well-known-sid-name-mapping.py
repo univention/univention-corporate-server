@@ -45,7 +45,7 @@ import univention.config_registry
 
 name = "well-known-sid-name-mapping"
 description = "map user and group names for well known sids"
-filter = "(|(univentionObjectType=groups/group)(univentionObjectType=users/user))"
+filter = "(|(objectClass=sambaSamAccount)(objectClass=sambaGroupMapping))"
 attributes = ["cn", "sambaSid"]
 FN_CACHE='/var/cache/univention-directory-listener/well-known-sid-name-mapping_modrdn.pickle'
 modrdn='1'
@@ -64,13 +64,20 @@ def sidToName(sid):
 def checkAndSet(obj, delete=False):
 	sambaSid = obj.get("sambaSID", [None])[0]
 
-	object_type = obj.get('univentionObjectType', [])
-	if object_type == 'users/user':
+	ocs = obj.get('objectClass', [])
+	if 'sambaSamAccount' in ocs:
 		obj_name = obj.get('uid', [None])[0]
 		ucr_base = 'users/default'
-	else:
+	elif 'sambaGroupMapping' in ocs:
 		obj_name = obj.get('cn', [None])[0]
 		ucr_base = 'groups/default'
+	else:
+		univention.debug.debug(
+			univention.debug.LISTENER,
+			univention.debug.ERROR,
+			"%s: invalid object: %s" % (name, obj)
+		)
+		return
 
 	if obj_name and sambaSid:
 		default_name = sidToName(sambaSid)
@@ -163,11 +170,11 @@ def handler(dn, new, old, command):
 		listener.unsetuid()
 
 
-	object_type = None
+	ocs = []
 	if new:
-		object_type = new.get('univentionObjectType', [None])[0]
+		ocs = new.get('objectClass', [])
 	elif old:
-		object_type = old.get('univentionObjectType', [None])[0]
+		ocs = old.get('objectClass', [])
 
 	# new
 	if new and not old:
@@ -180,7 +187,7 @@ def handler(dn, new, old, command):
 		
 	# modify
 	elif new and old:
-		if 'users/user' == object_type:
+		if 'sambaSamAccount' in ocs:
 			name_attr='uid'
 		else:
 			name_attr='cn'
