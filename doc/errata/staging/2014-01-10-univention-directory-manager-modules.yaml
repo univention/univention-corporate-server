@@ -2,11 +2,13 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-directory-manager-modules
-fix: 9.0.75-11.1164.201401101516
+fix: 9.0.75-12.1165.201401141503
 note:
 version: [0]
 desc: |
-  This errata update adds support for properties that offer empty values while
-  the frontend chooses the first non-empty one if a new object is to be
-  created.
-bug: [33329]
+  This errata update fixes several issues:
+  * Add support for properties that offer empty values while the frontend
+    chooses the first non-empty one if a new object is to be created.
+  * The 'inherit ACL' option for samba shares can be set again
+    via the univention-management-console
+bug: [33329, 33772]
