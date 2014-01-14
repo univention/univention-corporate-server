@@ -4,7 +4,7 @@
 # Univention custom user and group name mapping
 #  listener module: mapping custom user and group names for well known sids
 #
-# Copyright 2013 Univention GmbH
+# Copyright 2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,13 +35,13 @@ __package__=''  # workaround for PEP 366
 
 import os
 import re
-import copy
 import cPickle
 
 import listener
 import univention.debug
 import univention.lib.s4
 import univention.config_registry
+import subprocess
 
 name = "well-known-sid-name-mapping"
 description = "map user and group names for well known sids"
@@ -52,6 +52,7 @@ modrdn = '1'
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
+slapd_restart = False
 
 def sidToName(sid):
 	rid = sid.split("-")[-1]
@@ -62,6 +63,8 @@ def sidToName(sid):
 	return None
 
 def checkAndSet(obj, delete=False):
+	global slapd_restart
+
 	ocs = obj.get('objectClass', [])
 	if 'sambaSamAccount' in ocs:
 		obj_name = obj.get('uid', [None])[0]
@@ -94,23 +97,25 @@ def checkAndSet(obj, delete=False):
 				listener.setuid(0)
 				try:
 					univention.config_registry.handler_set([ucr_key_value])
+					slapd_restart = True
 				finally:
 					listener.unsetuid()
 			else:
 				# unset ucr var if the custom name of user/group matches the default one,
 				# or if object was deleted
-				unset_ucr_key = "%s/%s" % (ucr_base, default_name)
-				ucr = univention.config_registry.ConfigRegistry()
+				unset_ucr_key = "%s/%s" % (ucr_base, default_name_lower)
 				ucr.load()
-				if ucr.get(unset_ucr_key):
+				ucr_value = ucr.get(unset_ucr_key)
+				if ucr_value:
 					univention.debug.debug(
 						univention.debug.LISTENER,
 						univention.debug.PROCESS,
-						"%s: ucr unset %s" % (name, unset_ucr_key)
+						"%s: ucr unset %s=%s" % (name, unset_ucr_key, ucr_value)
 					)
 					listener.setuid(0)
 					try:
 						univention.config_registry.handler_unset([unset_ucr_key])
+						slapd_restart = True
 					finally:
 						listener.unsetuid()
 
@@ -132,6 +137,11 @@ def no_relevant_change(new, old):
 		if old_name == new_name:
 			return True
 		else:
+			univention.debug.debug(
+				univention.debug.LISTENER,
+				univention.debug.INFO,
+				"%s: mod %s %s %s" % (name, new.get("sambaSID"), new_name, old_name)
+			)
 			return False
 
 def handler(dn, new, old, command):
@@ -144,10 +154,11 @@ def handler(dn, new, old, command):
 		)
 		return
 
-	old = copy.deepcopy(old)
-
-	# do nothing if command is 'r' ==> modrdn
-	if command == 'r':
+	if command == 'r':	# modrdn pase I: store old object
+		univention.debug.debug(
+			univention.debug.LISTENER,
+			univention.debug.INFO,
+			'%s: modrdn phase I: %s' % (name, dn))
 		listener.setuid(0)
 		try:
 			with open(FN_CACHE, 'w+') as f:
@@ -162,12 +173,16 @@ def handler(dn, new, old, command):
 			listener.unsetuid()
 		return
 
-	# check modrdn changes
+	## check for modrdn pase II in case of an add
 	if new and os.path.exists(FN_CACHE) and not old:
+		univention.debug.debug(
+			univention.debug.LISTENER,
+			univention.debug.INFO,
+			'%s: modrdn phase II: %s' % (name, dn))
 		listener.setuid(0)
 		try:
 			with open(FN_CACHE,'r') as f:
-				old = cPickle.load(f)
+				pickled_object = cPickle.load(f)
 		except Exception, e:
 			univention.debug.debug(
 				univention.debug.LISTENER,
@@ -188,6 +203,16 @@ def handler(dn, new, old, command):
 			return
 		listener.unsetuid()
 
+		# Normally we see two steps for the modrdn operation. But in case of the selective replication we
+		# might only see the first step. This was discovered first in the s4-connector listener,
+		# see https://forge.univention.org/bugzilla/show_bug.cgi?id=32542
+		if pickled_object and new.get('entryUUID') == pickled_object.get('entryUUID'):
+			old = pickled_object
+		else:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario." % (pickled_object.get('entryDN'), dn))
+
+
+	## handle all the usual cases: add, modify, delete
 	if new:
 		if not old:	# add
 			univention.debug.debug(
@@ -201,11 +226,6 @@ def handler(dn, new, old, command):
 			if no_relevant_change(new, old):
 				return
 
-			univention.debug.debug(
-				univention.debug.LISTENER,
-				univention.debug.INFO,
-				"%s: mod %s %s %s" % (name, new.get("sambaSID"), new_name, old_name)
-			)
 			checkAndSet(new)
 
 	elif old:	# delete
@@ -215,3 +235,24 @@ def handler(dn, new, old, command):
 			"%s: del %s" % (name, old.get("sambaSID"))
 		)
 		checkAndSet(old, delete=True)
+
+def postrun():
+	global slapd_restart
+	if not slapd_restart:
+		return
+
+	run_dir = '/usr/lib/univention-pam/well-known-sid-name-mapping.d'
+
+	listener.setuid(0)
+	try:
+		p1 = subprocess.Popen(("/bin/run-parts", "--regex", ".*", run_dir), close_fds=True, stderr=subprocess.STDOUT)
+		(stdout, stderr) = p1.communicate()
+		slapd_restart=False
+	finally:
+		listener.unsetuid()
+
+	univention.debug.debug(
+		univention.debug.LISTENER,
+		univention.debug.ERROR,
+		"%s: postrun: %s" % (name, stdout)
+	)
