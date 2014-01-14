@@ -1,5 +1,6 @@
 fix_setmaxmem_in_libxl.patch
 fix_save_in_libxl.patch
+fix_hotplug_race.patch
 # 0001-xc_domain_restore-reset-the-completed-flag.patch
 0002-pygrub-add-debug-flag.patch
 0003-pygrub-hybridiso.patch

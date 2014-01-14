@@ -1,0 +1,29 @@
+# Bug #20481: Fix race during device hotplug
+# Sometimes qemu/the kernel takes too long for the first domain to start. The
+# hotplug script then finds the device still in state 1=Initialising and aborts.
+# Add an artifical delay of 1 seconds and try again.
+diff --git a/tools/hotplug/Linux/block b/tools/hotplug/Linux/block
+index 06de5c9..cbf2af3 100644
+--- a/tools/hotplug/Linux/block
++++ b/tools/hotplug/Linux/block
+@@ -255,12 +255,16 @@ case "$command" in
+ 
+         # Avoid a race with the remove if the path has been deleted, or
+ 	# otherwise changed from "InitWait" state e.g. due to a timeout
+-        xenbus_state=$(xenstore_read_default "$XENBUS_PATH/state" 'unknown')
+-        if [ "$xenbus_state" != '2' ]
+-        then
++        while true
++        do
++          xenbus_state=$(xenstore_read_default "$XENBUS_PATH/state" 'unknown')
++          case "$xenbus_state" in
++          1) log notice "Path still initializing: $XENBUS_PATH" ; sleep 1 ; continue ;;
++          2) break ;;
++          esac
+           release_lock "block"
+           fatal "Path closed or removed during hotplug add: $XENBUS_PATH state: $xenbus_state"
+-        fi
++        done
+ 
+         if [ "$mode" = 'w' ] && ! stat "$file" -c %A | grep -q w
+         then
