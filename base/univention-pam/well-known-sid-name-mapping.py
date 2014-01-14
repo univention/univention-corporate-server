@@ -242,6 +242,8 @@ def postrun():
 		return
 
 	run_dir = '/usr/lib/univention-pam/well-known-sid-name-mapping.d'
+	if not os.path.isdir(run_dir):
+		return
 
 	listener.setuid(0)
 	try:
