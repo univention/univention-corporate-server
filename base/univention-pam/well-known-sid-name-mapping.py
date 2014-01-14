@@ -247,7 +247,7 @@ def postrun():
 
 	listener.setuid(0)
 	try:
-		p1 = subprocess.Popen(("/bin/run-parts", "--regex", ".*", run_dir), close_fds=True, stderr=subprocess.STDOUT)
+		p1 = subprocess.Popen(("/bin/run-parts", "--regex", ".*", run_dir), close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		(stdout, stderr) = p1.communicate()
 		slapd_restart=False
 	finally:

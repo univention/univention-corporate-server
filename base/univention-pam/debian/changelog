@@ -1,3 +1,9 @@
+univention-pam (7.0.4-16) unstable; urgency=medium
+
+  * Improve logging of run-parts in postrun (Bug #33897)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Jan 2014 17:20:04 +0100
+
 univention-pam (7.0.4-15) unstable; urgency=medium
 
   * Only call run-parts if the directory exists (Bug #33897)
