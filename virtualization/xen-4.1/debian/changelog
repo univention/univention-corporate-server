@@ -1,3 +1,13 @@
+xen-4.1 (4.1.3-14) unstable; urgency=low
+
+  * Fix multiple security issues:  (Bug #33316)
+    - Information leak on AVX and/or LWP capable CPUs (CVE-2013-1442)
+    - Lock order reversal between page_alloc_lock and mm_rwlock (CVE-2013-4553)
+    - Information leaks through I/O instruction emulation (CVE-2013-4355)
+    - Information leak through fbld instruction emulation (CVE-2013-4361)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 14 Jan 2014 10:53:19 +0100
+
 xen-4.1 (4.1.3-13) unstable; urgency=low
 
   * Merge security fixes from errata update for 3.1 (Bug #31395)
