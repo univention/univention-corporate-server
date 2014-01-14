@@ -35,6 +35,7 @@ Type: file
 File: etc/security/access-nagios.conf
 Variables: auth/nagios/group/.*
 Variables: auth/nagios/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file

@@ -1,3 +1,9 @@
+univention-nagios (7.0.5-6) unstable; urgency=medium
+
+  * Register users/default/.* with /etc/security/.* templates (Bug #33646)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Jan 2014 19:16:07 +0100
+
 univention-nagios (7.0.5-5) unstable; urgency=medium
 
   * added user name localization (Bug #33646)
