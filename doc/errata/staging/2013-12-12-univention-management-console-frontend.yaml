@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-management-console-frontend
-fix: 3.0.152-7.804.201312121429
+fix: 3.0.152-8.805.201401141007
 note:
 version: [0]
 desc: |
@@ -10,5 +10,4 @@ desc: |
  * The protocol of a printer URI in the printers UMC module was always set to "cups-pdf://".
    Fixed this by adding setInitialValue method to ComplexInput widget.
  * Added branding translation scope to all UMC files
-
 bug: [33383,33493]
