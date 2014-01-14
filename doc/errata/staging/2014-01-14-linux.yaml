@@ -34,6 +34,11 @@ desc: |
  * Race conditions in IPC handling (CVE-2013-7026)
  * Various memory leaks in socket handling (CVE-2013-7263, CVE-2013-7264, CVE-2013-7265, CVE-2013-7281)
  * Various memory leaks in socket handling (CVE-2013-7266, CVE-2013-7267, CVE-2013-7268, CVE-2013-7269, CVE-2013-7270, CVE-2013-7271)
+
+ This kernel also fixes an ABI breakage: The kernel update to linux-3.10 for
+ UCS-3.2 caused the header files to move from /usr/include/adm/ to the
+ different location /ucr/include/gnu-*-linux/asm/, which broke compiling other
+ software. The change was reverted.
 cve:
  - CVE-2013-2147
  - CVE-2013-4343
@@ -70,3 +75,5 @@ cve:
  - CVE-2013-7269
  - CVE-2013-7270
  - CVE-2013-7271
+bug:
+ - 33924
