@@ -643,7 +643,7 @@ class UserRenameHandler:
 
 		try:
 			log.debug("Renaming '%s' to '%s' in UCS LDAP." % (user.dn, new_name))
-			user['name'] = new_name
+			user['username'] = new_name
 			user.modify()
 		except uexceptions.ldapError as exc:
 			log.debug("Renaming of user '%s' failed: %s." % (userdn, exc,))
@@ -658,7 +658,7 @@ class UserRenameHandler:
 
 	def rename_ucs_user(self, ucsldap_object_name, ad_object_name):
 		userdns = self.lo.searchDn(
-			filter="(&(objectClass=sambaSamAccount)(cn=%s))" % (ucsldap_object_name, ),
+			filter="(&(objectClass=sambaSamAccount)(uid=%s))" % (ucsldap_object_name, ),
 			base=self.lo.base)
 
 		if len(userdns) > 1:
@@ -1277,7 +1277,7 @@ def run_phaseI(ucr, lp, opts, args):
 		ucsldap_object_name = canonical_name	## default
 		## lookup canonical_name in UCSLDAP, for cases like "Replicator/Replicators" and "Server Operators"/"System Operators" that changed in UCS 3.2, see Bug #32461#c2
 		ucssid = sid.replace(ad_domainsid, old_domainsid, 1)
-		ldap_result = lo.search(filter="(sambaSID=%s)" % (ucssid,), attr=["sambaSID", "cn"])
+		ldap_result = lo.search(filter="(sambaSID=%s)" % (ucssid,), attr=["sambaSID", "uid", "cn"])
 		if len(ldap_result) == 1:
 			if "group" in oc or "foreignSecurityPrincipal" in oc:
 				ucsldap_object_name = ldap_result[0][1].get("cn", [None])[0]
@@ -1296,9 +1296,6 @@ def run_phaseI(ucr, lp, opts, args):
 				groupRenameHandler.rename_ucs_group(ucsldap_object_name, ad_object_name)
 			elif "user" in oc:
 				userRenameHandler.rename_ucs_user(ucsldap_object_name, ad_object_name)
-
-	takeover_ignore_list = ["Gast", "Guest"]
-	run_and_output_to_log(["univention-config-registry", "set", "connector/s4/mapping/user/ignorelist=%s,%s" % (ucr["connector/s4/mapping/user/ignorelist"], ','.join(takeover_ignore_list))], log.debug)
 
 	## construct dict of old UCS sambaSIDs
 	old_sambaSID_dict = {}

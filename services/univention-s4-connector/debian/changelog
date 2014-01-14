@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-13) unstable; urgency=medium
+
+  * univention-ad-takeover: Fix renaming of well known users (Bug #33644)
+  * remove special handling for 'Guest'/'Gast'
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Jan 2014 16:28:56 +0100
+
 univention-s4-connector (8.0.33-12) unstable; urgency=medium
 
   * univention-ad-takeover:
