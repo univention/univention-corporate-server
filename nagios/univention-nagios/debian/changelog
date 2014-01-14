@@ -1,3 +1,9 @@
+univention-nagios (7.0.5-5) unstable; urgency=medium
+
+  * added user name localization (Bug #33646)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Jan 2014 18:20:14 +0100
+
 univention-nagios (7.0.5-4) unstable; urgency=low
 
   * fixed quoting in 30univention-nagios-client.inst and
