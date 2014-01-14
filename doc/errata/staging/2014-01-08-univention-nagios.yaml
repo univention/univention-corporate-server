@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-nagios
-fix: 7.0.5-5.258.201401141824
+fix: 7.0.5-6.259.201401141920
 note:
 version: [0]
 desc: |
