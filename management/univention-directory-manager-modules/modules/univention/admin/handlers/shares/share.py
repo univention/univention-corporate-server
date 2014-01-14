@@ -681,7 +681,7 @@ layout = [
 			[ 'sambaValidUsers', 'sambaInvalidUsers' ],
 			[ 'sambaWriteList' ],
 			[ 'sambaHostsAllow', 'sambaHostsDeny' ],
-			[ 'sambaNtAclSupport' ],
+			[ 'sambaNtAclSupport', 'sambaInheritAcls' ],
 			[ 'sambaInheritOwner', 'sambaInheritPermissions' ],
 	] ),
 	Tab( _( 'Samba extended permissions' ), _( 'Samba extended permission settings' ), advanced = True,

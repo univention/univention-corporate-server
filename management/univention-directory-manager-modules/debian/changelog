@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.75-12) unstable; urgency=low
+
+  * The 'inherit ACL' option for samba shares can be set again
+    via the univention-management-console (Bug #33772)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 14 Jan 2014 14:59:42 +0100
+
 univention-directory-manager-modules (9.0.75-11) unstable; urgency=low
 
   * Bug #33329: Add properties that allow an empty value, but the frontend
