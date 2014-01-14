@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-ldap
-fix: 10.0.17-11.653.201401071700
+fix: 10.0.17-14.655.201401141646
 note:
 version: [0]
 desc: |
@@ -11,4 +11,7 @@ desc: |
     types configured via UCR "ldap/index/*".
   * The encoding of UCR policies changed so that values can also contain
     umlauts.
-bug: [33430, 33704]
+  * The LDAP ACLs now support the configuration of a
+    custom Administrator name via the new UCR variable family
+    "users/default/.*".
+bug: [33430, 33704, 33890]
