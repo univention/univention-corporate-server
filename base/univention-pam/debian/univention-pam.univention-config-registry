@@ -58,6 +58,7 @@ Variables: pamldap/auth
 Type: file
 File: etc/security/limits.conf
 Variables: security/limits(/[^/]+){4}
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -145,6 +146,7 @@ Type: file
 File: etc/security/access-chfn.conf
 Variables: auth/chfn/group/.*
 Variables: auth/chfn/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -157,6 +159,7 @@ Type: file
 File: etc/security/access-chsh.conf
 Variables: auth/chsh/group/.*
 Variables: auth/chsh/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -169,6 +172,7 @@ Type: file
 File: etc/security/access-cron.conf
 Variables: auth/cron/group/.*
 Variables: auth/cron/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -181,6 +185,7 @@ Type: file
 File: etc/security/access-ftp.conf
 Variables: auth/ftp/group/.*
 Variables: auth/ftp/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -193,6 +198,7 @@ Type: file
 File: etc/security/access-gdm.conf
 Variables: auth/gdm/group/.*
 Variables: auth/gdm/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -205,6 +211,7 @@ Type: file
 File: etc/security/access-kcheckpass.conf
 Variables: auth/kcheckpass/group/.*
 Variables: auth/kcheckpass/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -217,6 +224,7 @@ Type: file
 File: etc/security/access-kde.conf
 Variables: auth/kde/group/.*
 Variables: auth/kde/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -229,6 +237,7 @@ Type: file
 File: etc/security/access-kscreensaver.conf
 Variables: auth/kscreensaver/group/.*
 Variables: auth/kscreensaver/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -241,6 +250,7 @@ Type: file
 File: etc/security/access-login.conf
 Variables: auth/login/group/.*
 Variables: auth/login/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -253,6 +263,7 @@ Type: file
 File: etc/security/access-other.conf
 Variables: auth/other/group/.*
 Variables: auth/other/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -265,6 +276,7 @@ Type: file
 File: etc/security/access-passwd.conf
 Variables: auth/passwd/group/.*
 Variables: auth/passwd/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -277,6 +289,7 @@ Type: file
 File: etc/security/access-ppp.conf
 Variables: auth/ppp/group/.*
 Variables: auth/ppp/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -289,6 +302,7 @@ Type: file
 File: etc/security/access-rlogin.conf
 Variables: auth/rlogin/group/.*
 Variables: auth/rlogin/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -301,6 +315,7 @@ Type: file
 File: etc/security/access-rsh.conf
 Variables: auth/rsh/group/.*
 Variables: auth/rsh/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -313,6 +328,7 @@ Type: file
 File: etc/security/access-screen.conf
 Variables: auth/screen/group/.*
 Variables: auth/screen/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -327,6 +343,7 @@ Type: file
 File: etc/security/access-sshd.conf
 Variables: auth/sshd/group/.*
 Variables: auth/sshd/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -339,6 +356,7 @@ Type: file
 File: etc/security/access-su.conf
 Variables: auth/su/group/.*
 Variables: auth/su/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
@@ -351,6 +369,7 @@ Type: file
 File: etc/security/access-sudo.conf
 Variables: auth/sudo/group/.*
 Variables: auth/sudo/user/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
