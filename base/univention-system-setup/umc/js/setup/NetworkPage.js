@@ -41,9 +41,10 @@ define([
 	"umc/widgets/MultiInput",
 	"umc/widgets/Form",
 	"umc/modules/setup/InterfaceGrid",
+	"umc/modules/setup/Interfaces",
 	"umc/i18n!umc/modules/setup",
 	"umc/modules/setup/InterfaceWizard"
-], function(declare, lang, array, aspect, tools, Page, StandbyMixin, ComboBox, TextBox, MultiInput, Form, InterfaceGrid, _) {
+], function(declare, lang, array, aspect, tools, Page, StandbyMixin, ComboBox, TextBox, MultiInput, Form, InterfaceGrid, Interfaces, _) {
 	return declare("umc.modules.setup.NetworkPage", [ Page, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -62,6 +63,7 @@ define([
 
 		// dicts of the original IPv4/v6 values
 		_orgValues: null,
+		_orgInterfaces: null,
 
 		_currentRole: null,
 
@@ -186,6 +188,7 @@ define([
 					this._orgValues[ikey] = ival;
 				}
 			}, this);
+			this._orgInterfaces = _vals.interfaces;
 
 			// set all available interfaces
 			this.physical_interfaces = _vals.physical_interfaces;
@@ -279,15 +282,6 @@ define([
 
 			var vals = this._form.get('value');
 
-			var network_summary = '<ul>';
-			array.forEach(vals.interfaces, function(iface) {
-				network_summary += '<li>';
-				network_summary += iface.name + ' (' + iface.label + '): ';
-				network_summary += iface.getSummary();
-				network_summary += '</li>';
-			});
-			network_summary += '</ul>';
-
 			// create a verbose list of all settings
 			return [{
 				variables: ['gateway'],
@@ -312,12 +306,83 @@ define([
 			}, {
 				variables: ['interfaces'],
 				description: _('Network interfaces'),
-				values: network_summary
+				values: this._getInterfaceSummary(vals.interfaces)
 			}, {
 				variables: ['interfaces/primary'],
 				description: _('Primary network interface'),
 				values: vals['interfaces/primary']
 			}];
+		},
+
+		_getInterfaceSummary: function(interfaces) {
+			var orgInterfaces = this._getOrgInterfaces();
+
+			var removed = [];
+			var created = [];
+			var modified = [];
+
+			array.forEach(interfaces, function(iface) {
+				var oldIface = orgInterfaces.getInterface(iface.name);
+				var isNew = !oldIface;
+				if (isNew) {
+					created.push(iface);
+					return;
+				}
+
+				var hasChanged = !tools.isEqual(iface.toObject(), oldIface.toObject());
+				if (hasChanged) {
+					modified.push(iface);
+				}
+			});
+			array.forEach(orgInterfaces.getAllInterfaces(), function(iface) {
+				var wasRemoved = array.every(interfaces, function(iiface) { return iiface.name != iface.name; });
+				if (wasRemoved) {
+					removed.push(iface);
+				}
+			});
+
+			var summary = '<ul>';
+			if (created.length) {
+				summary += '<li>' + _('Created:') + '<ul>';
+				array.forEach(created, function(iface) {
+					summary += '<li>';
+					summary += iface.name + ' (' + iface.label + '): ';
+					summary += iface.getSummary();
+					summary += '</li>';
+				});
+				summary += '</ul></li>';
+			}
+			if (modified.length) {
+				summary += '<li>' + _('Modified:') + '<ul>';
+				array.forEach(modified, function(iface) {
+					summary += '<li>';
+					summary += iface.name + ' (' + iface.label + '): ';
+					summary += iface.getSummary();
+					summary += '</li>';
+				});
+				summary += '</ul></li>';
+			}
+			if (removed.length) {
+				summary += '<li>' + _('Removed') + '<ul>';
+				summary += '<li>';
+				summary += array.map(removed, function(iface) {
+					return iface.name + ' (' + iface.label + ')';
+				}).join(', ');
+				summary += '</li></ul>';
+			}
+			summary += '</li>';
+			summary += '</ul>';
+			return summary;
+		},
+
+		_getOrgInterfaces: function() {
+			var data = [];
+			var orgInterfaces = new Interfaces({idProperty: 'name'});
+			tools.forIn(this._orgInterfaces, function(iname, iface) {
+				data.push(orgInterfaces.createDevice(iface));
+			}, this);
+			orgInterfaces.setData(data);
+			return orgInterfaces;
 		},
 
 		onSave: function() {

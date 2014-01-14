@@ -1,3 +1,12 @@
+univention-system-setup (7.0.67-1) unstable; urgency=low
+
+  * Bug #32996: display all relevant information in the network page summary
+  * Bug #33407: fix setting of multiple IP addresses on ethernet network
+  	interfaces
+  * update copyright
+
+ -- Florian Best <best@univention.de>  Tue, 14 Jan 2014 16:36:43 +0100
+
 univention-system-setup (7.0.66-10) unstable; urgency=low
 
   * Restart amavis in cleanup hook script (Bug #33765)
