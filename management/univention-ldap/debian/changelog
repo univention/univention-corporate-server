@@ -1,3 +1,11 @@
+univention-ldap (10.0.17-12) unstable; urgency=medium
+
+  * Make the default name of the Administrator account configurable
+  * use custom_groupname and custom_username from univention-lib
+    (Bug #33890)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Jan 2014 16:38:19 +0100
+
 univention-ldap (10.0.17-11) unstable; urgency=low
 
   * Bug #33704: Change UCR policy attribute encoding from ASCII to UTF-8

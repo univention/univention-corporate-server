@@ -1,12 +1,14 @@
 @!@
+from univention.lib.misc import custom_groupname
+
 ldap_base = configRegistry['ldap/base']
 if configRegistry.get('ldap/server/type') == "master":
 	usr="write"
 else:
 	usr="read"
 
-groups_default_domainadmins = configRegistry.get('groups/default/domainadmins', 'Domain Admins')
-groups_default_windowshosts = configRegistry.get('groups/default/windowshosts', 'Windows Hosts')
+groups_default_domainadmins = custom_groupname('Domain Admins')
+groups_default_windowshosts = custom_groupname('Windows Hosts')
 
 nestedGroups = configRegistry.is_true('ldap/acl/nestedgroups', True)
 

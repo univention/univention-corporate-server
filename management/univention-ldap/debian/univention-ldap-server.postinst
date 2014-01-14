@@ -215,9 +215,9 @@ sambaSID: $sid
 
 if [ "$1" = "configure" -a "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions "$2" lt-nl 8.0.71-1; then
 
-	groups_default_authenticatedusers="${groups_default_authenticatedusers:-Authenticated Users}"
-	groups_default_enterpriseadmins="${groups_default_enterpriseadmins:-Enterprise Admins}"
-	groups_default_windowshosts="${groups_default_windowshosts:-Windows Hosts}"
+	groups_default_authenticatedusers=$(custom_groupname "Authenticated Users")
+	groups_default_enterpriseadmins=$(custom_groupname "Enterprise Admins")
+	groups_default_windowshosts=$(custom_groupname "Windows Hosts")
 
 	sambaSID="$(univention-ldapsearch -x sambaDomainName="$windows_domain" sambaSID | sed -ne 's|^sambaSID: ||p')"
 	if [ -n "$sambaSID" ]; then

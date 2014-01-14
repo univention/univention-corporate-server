@@ -1,4 +1,6 @@
 @!@
+from univention.lib.misc import custom_username, custom_groupname
+
 ldap_base=baseConfig['ldap/base']
 ldap_port=baseConfig['slapd/port']
 if baseConfig['ldap/server/type']=="master":
@@ -6,7 +8,8 @@ if baseConfig['ldap/server/type']=="master":
 else:
 	usr="read"
 
-groups_default_domainadmins = configRegistry.get('groups/default/domainadmins', 'Domain Admins')
+groups_default_domainadmins = custom_groupname('Domain Admins')
+users_default_administrator = custom_username('Administrator')
 
 print 'sasl-regexp'
 print '    uid=(.*),cn=gssapi,cn=auth'
@@ -26,11 +29,11 @@ print ''
 print 'access to *'
 print '    by sockname="PATH=/var/run/slapd/ldapi" %s' % (usr)
 print '    by dn.base="cn=admin,%s" %s' % ( ldap_base, usr)
-print '    by dn.base="uid=Administrator,cn=users,%s" %s' % ( ldap_base, usr)
+print '    by dn.base="uid=%s,cn=users,%s" %s' % ( users_default_administrator, ldap_base, usr)
 print '    by * none break'
 print ''
 
-print 'access to dn="uid=Administrator,cn=users,%s"' % ( ldap_base )
+print 'access to dn="uid=%s,cn=users,%s"' % ( users_default_administrator, ldap_base )
 print '    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % ( groups_default_domainadmins, ldap_base, usr)
 print '    by dn.base="cn=admin,%s" %s' % ( ldap_base, usr)
 print '    by self %s' % ( usr )
