@@ -2,13 +2,14 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-s4-connector
-fix: 8.0.33-13.439.201401141631
+fix: 8.0.33-14.440.201401141728
 note:
 version: [0]
 desc: |
   This errata update fixes two issues:
+  * The handling of DNS timeouts has been improved in univention-ad-takeover
   * The sync mode is now configurable for every connector property such
     as users, groups, containers etc. through UCR.
   * fix a problem in the handling of non-english user and group names in
     univention-ad-takeover.
-bug: [33711, 33644]
+bug: [31731, 33711, 33644]
