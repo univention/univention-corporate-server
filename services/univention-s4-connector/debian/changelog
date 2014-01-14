@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-14) unstable; urgency=medium
+
+  * Fix handling of initial DNS lookup error in univention-ad-takeover
+    (Bug #31731)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Jan 2014 17:26:25 +0100
+
 univention-s4-connector (8.0.33-13) unstable; urgency=medium
 
   * univention-ad-takeover: Fix renaming of well known users (Bug #33644)

@@ -908,9 +908,10 @@ def run_phaseI(ucr, lp, opts, args):
 			sys.exit(1)
 
 		log.debug("output of %s\nstdout: '%s'\nstderr: '%s'" % (cmd, stdout.rstrip(), stderr.rstrip()))
-		lines = stdout.rstrip('\n').split('\n')
-		if not stdout:
-			log.debug("Error: DNS lookup for DC at IP %s failed." % ad_server_ip)
+		lines = stdout.strip('\n').split('\n')
+		lines = [line for line in lines if not line.startswith(';')]
+		if len(lines) == 0:
+			log.error("Error: DNS lookup for DC at IP %s failed: %s" % (ad_server_ip, stdout))
 			try:
 				msgs = remote_samdb.search(base="", scope=samba.ldb.SCOPE_BASE,
 											attrs=["defaultNamingContext"])
@@ -926,6 +927,7 @@ def run_phaseI(ucr, lp, opts, args):
 					else:
 						log.error("Please retry by passing the AD server name as additional command line argument.")
 				else:
+					log.debug("Remote domain lookup in AD failed as well.")
 					log.error("Please retry by passing the AD server name as additional command line argument.")
 				sys.exit(1)
 			except ldb.LdbError:
@@ -1000,7 +1002,7 @@ def run_phaseI(ucr, lp, opts, args):
 				log.info("Sucessfull determined AD DC FQDN %s for given IP %s" % (ad_server_fqdn, ad_server_ip))
 			except:
 				msg = []
-				msg.append("Error: Parsing of DNS SRV record failed: '%s'." % lines.rstrip())
+				msg.append("Error: Parsing of DNS SRV record failed: '%s'." % lines[0].rstrip())
 				msg.append("Please retry by passing the AD server name as additional command line argument.")
 				log.error("\n".join(msg))
 				sys.exit(1)
