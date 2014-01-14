@@ -47,8 +47,8 @@ name = "well-known-sid-name-mapping"
 description = "map user and group names for well known sids"
 filter = "(|(objectClass=sambaSamAccount)(objectClass=sambaGroupMapping))"
 attributes = ["cn", "sambaSid"]
-FN_CACHE='/var/cache/univention-directory-listener/well-known-sid-name-mapping_modrdn.pickle'
-modrdn='1'
+FN_CACHE = '/var/cache/univention-directory-listener/well-known-sid-name-mapping_modrdn.pickle'
+modrdn = '1'
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -62,8 +62,6 @@ def sidToName(sid):
 	return None
 
 def checkAndSet(obj, delete=False):
-	sambaSid = obj.get("sambaSID", [None])[0]
-
 	ocs = obj.get('objectClass', [])
 	if 'sambaSamAccount' in ocs:
 		obj_name = obj.get('uid', [None])[0]
@@ -79,9 +77,11 @@ def checkAndSet(obj, delete=False):
 		)
 		return
 
+	sambaSid = obj.get("sambaSID", [None])[0]
+
 	if obj_name and sambaSid:
 		default_name = sidToName(sambaSid)
-		if name:
+		if default_name:
 			default_name_lower = default_name.lower().replace(" ", "")
 			custom_name_lower = obj_name.lower().replace(" ", "")
 			if not custom_name_lower == default_name_lower and not delete:
@@ -114,6 +114,25 @@ def checkAndSet(obj, delete=False):
 					finally:
 						listener.unsetuid()
 
+
+def no_relevant_change(new, old):
+		assert new
+		assert old
+
+		ocs = new.get('objectClass', [])
+
+		if 'sambaSamAccount' in ocs:
+			name_attr = 'uid'
+		else:
+			name_attr = 'cn'
+		
+		old_name = old.get(name_attr, [None])[0]
+		new_name = new.get(name_attr, [None])[0]
+
+		if old_name == new_name:
+			return True
+		else:
+			return False
 
 def handler(dn, new, old, command):
 
@@ -169,33 +188,19 @@ def handler(dn, new, old, command):
 			return
 		listener.unsetuid()
 
-
-	ocs = []
 	if new:
-		ocs = new.get('objectClass', [])
-	elif old:
-		ocs = old.get('objectClass', [])
+		if not old:	# add
+			univention.debug.debug(
+				univention.debug.LISTENER,
+				univention.debug.INFO,
+				"%s: new %s" % (name, new.get("sambaSID"))
+			)
+			checkAndSet(new)
 
-	# new
-	if new and not old:
-		univention.debug.debug(
-			univention.debug.LISTENER,
-			univention.debug.INFO,
-			"%s: new %s" % (name, new.get("sambaSID"))
-		)
-		checkAndSet(new)
-		
-	# modify
-	elif new and old:
-		if 'sambaSamAccount' in ocs:
-			name_attr='uid'
-		else:
-			name_attr='cn'
-		
-		old_name = old.get(name_attr, [None])[0]
-		new_name = new.get(name_attr, [None])[0]
+		else:	# modify
+			if no_relevant_change(new, old):
+				return
 
-		if not old_name == new_name:
 			univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.INFO,
@@ -203,8 +208,7 @@ def handler(dn, new, old, command):
 			)
 			checkAndSet(new)
 
-	# delete
-	elif not new and old:
+	elif old:	# delete
 		univention.debug.debug(
 			univention.debug.LISTENER,
 			univention.debug.INFO,

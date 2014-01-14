@@ -1,3 +1,9 @@
+univention-pam (7.0.4-13) unstable; urgency=medium
+
+  * Fix variable naming issue, improve code readability (Bug #33897)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Jan 2014 12:44:52 +0100
+
 univention-pam (7.0.4-11) unstable; urgency=medium
 
   * Use samba specific objectclasses to determine object type (Bug #33897)
