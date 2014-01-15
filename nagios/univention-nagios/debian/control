@@ -29,6 +29,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  univention-nagios-cups,
  univention-nagios-squid,
  univention-nagios-dansguardian,
+ python-univention-lib (>= 3.0.26-14),
  shell-univention-lib
 Provides: ${python:Provides},
  univention-nagios-group-access

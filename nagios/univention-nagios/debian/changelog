@@ -1,3 +1,9 @@
+univention-nagios (7.0.5-7) unstable; urgency=medium
+
+  * use custom_username and custom_groupname (Bug #33646)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 15 Jan 2014 12:34:02 +0100
+
 univention-nagios (7.0.5-6) unstable; urgency=medium
 
   * Register users/default/.* with /etc/security/.* templates (Bug #33646)
