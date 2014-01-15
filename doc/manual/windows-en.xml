@@ -222,9 +222,8 @@
 
 		<para>
 		  Further information on the status of the synchronisation can be found in the log file
-		  <filename>/var/log/univention/connector-s4.log</filename>. 
-		  <!-- Weitere Informationen zur -->
-		  <!-- Fehleranalyse von Connectorproblemen finden sich in <xref linkend="sdb-s4trouble"/>. -->
+		  <filename>/var/log/univention/connector-s4.log</filename>. Additional information on analysing
+		  connector replication problems can be found in <xref linkend="sdb-s4trouble"/>.
 		</para>
 
 		<para>
@@ -249,34 +248,35 @@ instanceType: 4
 	  </section>
 
 
-<!-- <section id="windows:multimaster"> -->
-<!--   <title>Replikation der Verzeichnisdaten</title> -->
+	  <section id="windows:multimaster">
+		<title>Replication of directory data</title>
 
-<!--   <para> -->
-<!-- 	Samba-AD-Domänen verwenden das Directory Replication System (DRS) zur Replikation der -->
-<!-- 	Verzeichnisdaten. DRS erlaubt Multimasterreplikation, d.h. die schreibenden Änderungen mehrerer -->
-<!-- 	Domänencontroller werden auf Protokollebene synchronisiert. Die Verwendung von Snapshots in -->
-<!-- 	Virtualisierungslösungen sollte daher beim Einsatz von Samba 4 vermieden und Samba 4 auf einem -->
-<!-- 	Server betrieben werden, der durchgehend eingeschaltet bleibt. -->
-<!--   </para> -->
+		<para>
+		  Samba AD domains use the Directory Replication System (DRS) to replicate the directory
+		  data. DRS allows multi-master replication, i.e., the write changes from multiple domain
+		  controllers are synchronised at protocol level. Consequently, the use of snapshots in
+		  virtualization solutions should be avoided when using Samba 4 and Samba 4 should be
+		  operated on a server which is never switched off.
+		</para>
 
-<!--   <para> -->
-<!-- 	Mit jedem weiteren Samba-AD-Domänencontroller steigt die Komplexität der -->
-<!-- 	Multimasterreplikation. Es sollte daher geprüft werden, ob weitere Samba-AD-Domänencontroller -->
-<!-- 	nötig sind oder für neue Server nicht ein Memberserver die bessere Wahl ist. -->
-<!--   </para> -->
+		<para>
+		  The complexity of the multi-master replication increases with each additional Samba AD
+		  domain controller. Consequently, it must be checked whether additional Samba AD domain
+		  controllers are necessary or if a member server would not be a better choice for new
+		  servers.
+		</para>
 
-  <!-- <para> -->
-  <!-- 	Hinweise zur Analyse von DRS-Replikationsproblemen finden sich in <xref -->
-  <!-- 	linkend="sdb-s4trouble"/>. -->
-  <!-- </para> -->
+		<para>
+		  Additional information on troubleshooting replication problems can be found in <xref
+		  linkend="sdb-s4trouble"/>.
+		</para>
 
-<!--   <para> -->
-<!-- 	Samba-NT-Domänen greifen auf die Daten im OpenLDAP-Verzeichnisdaten zu, die über die -->
-<!-- 	Listener-Notifier-Replikation verteilt wird (siehe <xref linkend="domain:listenernotifier"/>). -->
-<!--   </para> -->
+		<para>
+		  Samba NT domains access the data in the OpenLDAP directory data, which are distributed via
+		  listener-notifier replication (see <xref linkend="domain:listenernotifier"/>).
+		</para>
+	  </section>
 
-<!-- </section> -->
 
 	  <section id="windows:sysvolshare">
 		<title>Synchronisation of the SYSVOL share</title>
