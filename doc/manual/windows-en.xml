@@ -111,7 +111,7 @@
 	  <para>
 		A Samba member server can be installed on UCS member servers from the Univention App Center
 		with the application <emphasis>Windows-compatible Fileserver</emphasis>. Alternatively, the
-		software packages <package>univention-samba</package> and <package>winbind</package> can be
+		software package <package>univention-samba</package> can be
 		installed (<command>univention-run-join-scripts</command> command must be run after
 		installation). Additional information can be found in <xref
 		linkend="computers::softwaremanagement::installsoftware"/>.
@@ -136,9 +136,27 @@
 		<para>
 		  Users who log on to a Windows system are supplied with a Kerberos ticket when they log
 		  on. The ticket is then used for the further authentication. This ticket allows access to
-		  the domain's resources. Synchronisation of the system times is essential for functioning
-		  Kerberos authentication.
+		  the domain's resources.
 		</para>
+
+		<!-- <para> -->
+		<!--   Häufige Fehlerquellen bei fehlschlagenden Anmeldungen sind: -->
+
+		<!--   <itemizedlist> -->
+		<!-- 	<listitem><simpara> -->
+		<!-- 	  Für eine funktionierende Kerberos-Authentifizierung ist eine Synchronisation der -->
+		<!-- 	  Systemzeiten zwischen Windows-Client und Domänencontroller zwingend erforderlich. In -->
+		<!-- 	  der Grundeinstellung wird beim Systemstart die Systemzeit über NTP aktualisiert. Dies -->
+		<!-- 	  kann mit dem Befehl <command>w32tm /resync</command> auch manuell erfolgen. -->
+		<!-- 	</simpara></listitem> -->
+
+		<!-- 	<listitem><simpara> -->
+		<!-- 	  Während der Anmeldung müssen DNS-Service-Records aufgelöst werden. Der Windows-Client -->
+		<!-- 	  sollte daher als DNS-Nameserver die IP-Adresse des Domänencontrollers verwenden. -->
+		<!-- 	</simpara></listitem> -->
+		<!--   </itemizedlist> -->
+		<!-- </para> -->
+
 	  </section>
 
 	  <section id="windows:samba4:fileservices">
@@ -153,13 +171,13 @@
 		  The file services integrated in UCS support the provision of shares using the CIFS
 		  protocol (see  <xref linkend="shares::general"/>). Insofar as the underlying file system
 		  supports Access Control Lists (ACLs) (can be used with ext3, ext4 and XFS), the ACLs can
-		  also be used by Windows clients. Samba requires a file system with XATTR support.
+		  also be used by Windows clients.
 		</para>
 
 		<para>
 		  Samba Active Directory domain controllers can also provide file services. As a general
 		  rule, it is recommended to separate domain controllers and file/print services in Samba
-		  environments - the same as the recommendations for Active Directory - that means using
+		  environments - the same as the Microsoft recommendations for Active Directory - that means using
 		  domain controllers for logins/authentication and member services for file/print
 		  services. This ensures that a high system load on a file server does not result in
 		  disruptions to the authentication service. For smaller environments in which it is not
@@ -228,8 +246,7 @@
 
 		<para>
 		  The <command>univention-s4search</command> command can be used to search in the Samba
-		  directory service. <command>univention-s4search</command> is a wrapper for the command
-		  <command>ldbsearch</command>. If it is run as the <emphasis>root</emphasis> user, the
+		  directory service. If it is run as the <emphasis>root</emphasis> user, the
 		  required credentials of the machine account are used automatically:
 
 		  <programlisting>
@@ -426,6 +443,14 @@ instanceType: 4
 	<section id="windows:ntsetup">
 	  <title>Components of a Samba domain</title>
 
+	  <!-- <para> -->
+	  <!-- 	NT-Domänen sind der technische Vorgänger von Active Directory. Dieses Kapitel ist vor allem -->
+	  <!-- 	für Bestandsinstallationen relevant, die noch keine Migration auf eine AD-basierte Domäne -->
+	  <!-- 	durchgeführt haben. Die Migration von einer Samba-Domäne auf NT-Basis zu einer Domäne mit -->
+	  <!-- 	Active Directory-Diensten ist im Univention Wiki <biblioref linkend="wiki-samba-update"/> -->
+	  <!-- 	beschrieben. Für Neuinstallationen wird die Verwendung einer AD-basierten Domäne empfohlen. -->
+	  <!-- </para> -->
+
 	  <para>
 		A Samba NT domain is composed of at least one domain controller. Windows clients and member
 		servers can join the trust context of the Samba domain as domain members. Member servers do
@@ -498,7 +523,7 @@ instanceType: 4
 		  The file services integrated in UCS support the provision of shares using the CIFS
 		  protocol (see <xref linkend="shares::general"/>). Insofar as the underlying file system
 		  supports Access Control Lists (ACLs) (can be used with ext3, ext4 and XFS), the ACLs can
-		  also be used by Windows clients. Samba requires a file system with XATTR support.
+		  also be used by Windows clients.
 		</para>
 
 		<para>
@@ -580,7 +605,7 @@ instanceType: 4
 		  <envar>windows/wins-support</envar>. WINS can only be operated without adjustments on one
 		  Samba server in the domain; distribution across several servers requires the setup of WINS
 		  replication. Information on the commissioning of the WINS replication can be found in the
-		  Univention Support database at <ulink url="http://sdb.univention.de/1107"/>.
+		  Univention Support database at <xref linkend="sdb-winsrepl"/>.
 		</para>
 
 		<para>
