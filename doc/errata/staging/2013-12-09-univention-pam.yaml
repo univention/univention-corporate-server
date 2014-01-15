@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-pam
-fix: 7.0.4-19.239.201401151236
+fix: 7.0.4-21.241.201401151617
 note:
 version: [0]
 desc: |
@@ -16,6 +16,6 @@ desc: |
   * The default limit for "max open files" (nofile) in 
     /etc/security/limits.conf has been increased to "8192".
     This value can be changed by setting the ucr variables
-    "security/limits/user/default/soft/nofile" and
-    "security/limits/user/default/hard/nofile".
+    "security/limits/user/.*/soft/nofile" and
+    "security/limits/user/.*/hard/nofile".
 bug: [33650, 33710, 32415, 33897]
