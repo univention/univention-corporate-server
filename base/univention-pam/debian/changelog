@@ -1,6 +1,6 @@
 univention-pam (7.0.4-19) unstable; urgency=medium
 
-  * user custom_username and custom_groupname (Bug #33650)
+  * use custom_username and custom_groupname (Bug #33650)
 
  -- Arvid Requate <requate@univention.de>  Wed, 15 Jan 2014 12:32:57 +0100
 
