@@ -87,7 +87,7 @@ def custom_username(name, configRegistryInstance = None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	return ucr.userNameMapping(name)
+	return ucr.get("users/default/" + name.lower().replace(" ", ""), name)
 
 def custom_groupname(name, configRegistryInstance = None):
 	"""
@@ -103,4 +103,4 @@ def custom_groupname(name, configRegistryInstance = None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	return ucr.groupNameMapping(name)
+	return ucr.get("groups/default/" + name.lower().replace(" ", ""), name)
