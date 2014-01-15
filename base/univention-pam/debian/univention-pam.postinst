@@ -144,8 +144,8 @@ test -x /etc/init.d/nscd && /etc/init.d/nscd restart
 
 # default limits
 univention-config-registry set \
-	security/limits/user/default/soft/nofile?'8192' \
-	security/limits/user/default/hard/nofile?'8192' \
+	security/limits/user/.*/soft/nofile?'8192' \
+	security/limits/user/.*/hard/nofile?'8192' \
 	'security/limits/group/Domain Users/hard/nproc?1000'
 
 
