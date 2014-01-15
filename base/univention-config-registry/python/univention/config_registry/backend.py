@@ -281,12 +281,6 @@ class ConfigRegistry(dict):
 			changed[key] = (old_value, new_value)
 		return changed
 
-	def groupNameMapping(self, name):
-			return self.get("groups/default/" + name.lower().replace(" ", ""), name)
-
-	def userNameMapping(self, name):
-			return self.get("users/default/" + name.lower().replace(" ", ""), name)
-
 class _ConfigRegistry(dict):
 	"""
 	Persistent value store.
