@@ -71,7 +71,7 @@ global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base
 			'cn=opsi,@%@ldap/base@%@',
 			'cn=Microsoft Exchange System Objects,@%@connector/s4/ldap/base@%@']
 
-if configRegistry.is_false('connector/s4/mapping/wmifilter', False):
+if configRegistry.is_false('connector/s4/mapping/wmifilter', True):
 	global_ignore_subtree.append('CN=WMIPolicy,CN=System,@%@connector/s4/ldap/base@%@')
 
 if configRegistry.is_false('connector/s4/mapping/group/grouptype', False):
