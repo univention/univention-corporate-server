@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-system-setup
+fix: 7.0.69-1.562.201401161201
+note:
+version: [0]
+desc: |
+  This errata update fixes several issues:
+  * Adding multiple IP addresses to one network interface has been fixed.
+  * The summary of the network interface changes is more detailful now.
+bug: [32996, 33407]
