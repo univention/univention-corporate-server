@@ -90,7 +90,8 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
 			computer.modify()
 
 	def _update_ips(self, computer):
-		computer.info["ip"] = [str(addr.ip) for addr in self.changeset.new_ipv4s | self.changeset.new_ipv6s]
+		all_addr = [str(addr.ip) for addr in (self.changeset.new_ipv4s + self.changeset.new_ipv6s)]
+		computer.info["ip"] = list(set(all_addr))
 
 	def _update_reverse_zones(self, computer):
 		reverse_module = modules.get("dns/reverse_zone")
@@ -102,7 +103,7 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
 		computer.info["dnsEntryZoneReverse"] = [
 			[zone.dn, str(addr.ip)]
 			for zone in reverse_zones
-			for addr in self.changeset.new_ipv4s | self.changeset.new_ipv6s
+			for addr in (self.changeset.new_ipv4s + self.changeset.new_ipv6s)
 			if addr.ip in convert_udm_subnet_to_network(zone.info["subnet"])
 		]
 

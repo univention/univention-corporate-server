@@ -48,7 +48,7 @@ class AddressChange(Phase):
 		new_ipv4s = set((_.ip for _ in self.changeset.new_ipv4s))
 		old_ipv6s = set((_.ip for _ in self.changeset.old_ipv6s))
 		new_ipv6s = set((_.ip for _ in self.changeset.new_ipv6s))
-		if (old_ipv4s == new_ipv4s and old_ipv6s == new_ipv6s):
+		if old_ipv4s == new_ipv4s and old_ipv6s == new_ipv6s:
 			raise SkipPhase("No address change")
 
 

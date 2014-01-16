@@ -15,7 +15,7 @@ class PhaseLdapDns(AddressMap, Ldap, Executable):
 		self._create_reverse_dns_ipv6()
 
 	def _create_reverse_dns_ipv4(self):
-		for ipv4 in self.changeset.new_ipv4s - self.changeset.old_ipv4s:
+		for ipv4 in set(self.changeset.new_ipv4s) - set(self.changeset.old_ipv4s):
 			self.call([
 				self.executable,
 				"--binddn", self.binddn,
@@ -36,7 +36,7 @@ class PhaseLdapDns(AddressMap, Ldap, Executable):
 			])
 
 	def _create_reverse_dns_ipv6(self):
-		for ipv6 in self.changeset.new_ipv6s - self.changeset.old_ipv6s:
+		for ipv6 in set(self.changeset.new_ipv6s) - set(self.changeset.old_ipv6s):
 			self.call([
 				self.executable,
 				"--binddn", self.binddn,

@@ -73,19 +73,19 @@ class ChangeSet(object):
 
 	@property
 	def old_ipv4s(self):
-		return set(iface.ipv4_address() for _name, iface in self.old_interfaces.ipv4_interfaces)
+		return [iface.ipv4_address() for _name, iface in self.old_interfaces.ipv4_interfaces]
 
 	@property
 	def new_ipv4s(self):
-		return set(iface.ipv4_address() for _name, iface in self.new_interfaces.ipv4_interfaces)
+		return [iface.ipv4_address() for _name, iface in self.new_interfaces.ipv4_interfaces]
 
 	@property
 	def old_ipv6s(self):
-		return set(iface.ipv6_address(name) for iface, name in self.old_interfaces.ipv6_interfaces)
+		return [iface.ipv6_address(name) for iface, name in self.old_interfaces.ipv6_interfaces]
 
 	@property
 	def new_ipv6s(self):
-		return set(iface.ipv6_address(name) for iface, name in self.new_interfaces.ipv6_interfaces)
+		return [iface.ipv6_address(name) for iface, name in self.new_interfaces.ipv6_interfaces]
 
 
 class SkipPhase(Exception):

@@ -1,3 +1,9 @@
+univention-system-setup (7.0.68-1) unstable; urgency=low
+
+  * Fix duplicate network error (Bug #33258)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 12 Nov 2013 09:53:21 +0100
+
 univention-system-setup (7.0.67-1) unstable; urgency=low
 
   * Bug #32996: display all relevant information in the network page summary
