@@ -1,3 +1,10 @@
+univention-ldap (10.0.17-15) unstable; urgency=medium
+
+  * mswmi.schema (Bug #33937)
+  * Add msGPOWQLFilter to msgo.schema
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Jan 2014 14:26:56 +0100
+
 univention-ldap (10.0.17-14) unstable; urgency=medium
 
   * Add copyright header (Bug #33890)
