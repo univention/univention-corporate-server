@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-s4-connector
-fix: 8.0.33-14.440.201401141728
+fix: 8.0.33-15.441.201401161438
 note:
 version: [0]
 desc: |
@@ -12,4 +12,5 @@ desc: |
     as users, groups, containers etc. through UCR.
   * fix a problem in the handling of non-english user and group names in
     univention-ad-takeover.
-bug: [31731, 33711, 33644]
+  * Added support for synchronization of MS WMI filters (disabled by default).
+bug: [31731, 33711, 33644, 33936]
