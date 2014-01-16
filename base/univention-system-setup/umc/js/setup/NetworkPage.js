@@ -363,7 +363,7 @@ define([
 				summary += '</ul></li>';
 			}
 			if (removed.length) {
-				summary += '<li>' + _('Removed') + '<ul>';
+				summary += '<li>' + _('Removed:') + '<ul>';
 				summary += '<li>';
 				summary += array.map(removed, function(iface) {
 					return iface.name + ' (' + iface.label + ')';
