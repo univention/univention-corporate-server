@@ -3,7 +3,7 @@
 # Univention S4 Connector
 #  join script
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -134,7 +134,7 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 		s4connectorservicehost_dns="$(univention-directory-manager computers/computer list "$@" --filter "(&(univentionService=${NAME})(!(cn=$hostname)))" | sed -ne 's|^DN: ||p')"
 
 		# By default the connector will overwrite all Samba 4 objects by the UCS objects.
-		# On a normal Samba 4 DC is is necessary that the MS GPO settings will not be overwritten.
+		# On a normal Samba 4 DC is is necessary that the MS GPO links will not be overwritten.
 		# But on a "Slave PDC" the settings from the Master must be used
 		if [ -z "$s4connectorservicehost_dns" ]; then
 			# First Sama 4 server

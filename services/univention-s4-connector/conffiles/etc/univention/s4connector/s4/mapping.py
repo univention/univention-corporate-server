@@ -3,7 +3,7 @@
 # Univention S4 Connector
 #  this file defines the mapping beetween S4 and UCS
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -62,7 +62,6 @@ global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base
 			'CN=RpcServices,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=Meetings,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=AdminSDHolder,CN=System,@%@connector/s4/ldap/base@%@',
-			'CN=WMIPolicy,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=BCKUPKEY_c490e871-a375-4b76-bd24-711e9e49fe5e Secret,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=BCKUPKEY_PREFERRED Secret,CN=System,@%@connector/s4/ldap/base@%@',
 			'ou=Grp Policy Users,@%@connector/s4/ldap/base@%@',
@@ -71,6 +70,9 @@ global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base
 			'cn=Configuration,@%@connector/s4/ldap/base@%@',
 			'cn=opsi,@%@ldap/base@%@',
 			'cn=Microsoft Exchange System Objects,@%@connector/s4/ldap/base@%@']
+
+if configRegistry.is_false('connector/s4/mapping/wmifilter', False):
+	global_ignore_subtree.append('CN=WMIPolicy,CN=System,@%@connector/s4/ldap/base@%@')
 
 if configRegistry.is_false('connector/s4/mapping/group/grouptype', False):
 	global_ignore_subtree.append('cn=Builtin,@%@connector/s4/ldap/base@%@')
@@ -681,6 +683,124 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 							ucs_attribute='msGPOUserExtensionNames',
 							ldap_attribute='msGPOUserExtensionNames',
 							con_attribute='gPCUserExtensionNames'
+						),
+					'msGPOWQLFilter': univention.s4connector.attribute (
+							ucs_attribute='msGPOWQLFilter',
+							ldap_attribute='msGPOWQLFilter',
+							con_attribute='gPCWQLFilter'
+						),
+				},
+
+		),
+''' % {'ignore_filter': ignore_filter, 'sync_mode_ou': sync_mode_ou}
+
+if configRegistry.is_true('connector/s4/mapping/wmifilter', False):
+	ignore_filter = ''
+	for wmifilter in configRegistry.get('connector/s4/mapping/wmifilter/ignorelist', '').split(','):
+		if wmifilter:
+			ignore_filter += '(cn=%s)' % (wmifilter)
+	if configRegistry.get('connector/s4/mapping/ou/syncmode'):
+		sync_mode_ou=configRegistry.get('connector/s4/mapping/ou/syncmode')
+	else:
+		sync_mode_ou=configRegistry.get('connector/s4/mapping/syncmode')
+	print '''
+	'msWMIFilter': univention.s4connector.property (
+			ucs_module='container/mswmifilter',
+
+			sync_mode='%(sync_mode_ou)s',
+
+			scope='sub',
+
+			con_search_filter='(&(objectClass=container)(objectClass=msWMI-Som))',
+
+			ignore_filter='%(ignore_filter)s',
+
+			ignore_subtree = global_ignore_subtree,
+			
+			con_create_objectclass=['top', 'container', 'msWMI-Som' ],
+
+			attributes= {
+					'cn': univention.s4connector.attribute (
+							ucs_attribute='id',
+							ldap_attribute='msWMIID',
+							con_attribute='msWMI-ID',
+							required=1,
+						),
+					'name': univention.s4connector.attribute (
+							ucs_attribute='name',
+							ldap_attribute='msWMIName',
+							con_attribute='msWMI-Name',
+							required=1,
+						),
+					'description': univention.s4connector.attribute (
+							ucs_attribute='description',
+							ldap_attribute='description',
+							con_attribute='description'
+						),
+					'displayName': univention.s4connector.attribute (
+							ucs_attribute='displayName',
+							ldap_attribute='displayName',
+							con_attribute='displayName'
+						),
+					'author': univention.s4connector.attribute (
+							ucs_attribute='author',
+							ldap_attribute='msWMIAuthor',
+							con_attribute='msWMI-Author'
+						),
+					'creationDate': univention.s4connector.attribute (
+							ucs_attribute='creationDate',
+							ldap_attribute='msWMICreationDate',
+							con_attribute='msWMI-CreationDate'
+						),
+					'changeDate': univention.s4connector.attribute (
+							ucs_attribute='changeDate',
+							ldap_attribute='msWMIChangeDate',
+							con_attribute='msWMI-ChangeDate'
+						),
+					'parm1': univention.s4connector.attribute (
+							ucs_attribute='parm1',
+							ldap_attribute='msWMIParm1',
+							con_attribute='msWMI-Parm1'
+						),
+					'parm2': univention.s4connector.attribute (
+							ucs_attribute='parm2',
+							ldap_attribute='msWMIParm2',
+							con_attribute='msWMI-Parm2'
+						),
+					'parm3': univention.s4connector.attribute (
+							ucs_attribute='parm3',
+							ldap_attribute='msWMIParm3',
+							con_attribute='msWMI-Parm3'
+						),
+					'parm4': univention.s4connector.attribute (
+							ucs_attribute='parm4',
+							ldap_attribute='msWMIParm4',
+							con_attribute='msWMI-Parm4'
+						),
+					'flags1': univention.s4connector.attribute (
+							ucs_attribute='flags1',
+							ldap_attribute='msWMIFlags1',
+							con_attribute='msWMI-Flags1'
+						),
+					'flags2': univention.s4connector.attribute (
+							ucs_attribute='flags2',
+							ldap_attribute='msWMIFlags2',
+							con_attribute='msWMI-Flags2'
+						),
+					'flags3': univention.s4connector.attribute (
+							ucs_attribute='flags3',
+							ldap_attribute='msWMIFlags3',
+							con_attribute='msWMI-Flags3'
+						),
+					'flags4': univention.s4connector.attribute (
+							ucs_attribute='flags4',
+							ldap_attribute='msWMIFlags4',
+							con_attribute='msWMI-Flags4'
+						),
+					'sourceOrganization': univention.s4connector.attribute (
+							ucs_attribute='sourceOrganization',
+							ldap_attribute='msWMISourceOrganization',
+							con_attribute='msWMI-SourceOrganization'
 						),
 				},
 

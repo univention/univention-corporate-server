@@ -1,3 +1,12 @@
+univention-s4-connector (8.0.33-15) unstable; urgency=medium
+
+  * New UDM module container/mswmifilter (Bug #33936)
+  * New UCR variables connector/s4/mapping/wmifilter etc.
+  * Mapping extended for WMI filters
+  * Scripts adjusted/added for upgrading
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Jan 2014 14:34:04 +0100
+
 univention-s4-connector (8.0.33-14) unstable; urgency=medium
 
   * Fix handling of initial DNS lookup error in univention-ad-takeover

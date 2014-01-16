@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
-#  Upgrade script for gPLink
+#  Upgrade script for msGPOWQLFilter attributes
 #
-# Copyright 2012-2013 Univention GmbH
+# Copyright 2013-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -65,13 +65,12 @@ def _connect_ucs(configRegistry, binddn, bindpwd):
 
 
 def search_s4():
-	''' Search all S4 objects with gPLink attribute and return a
-		dictonary with dn as key and gPLink as result. The gPLink
-		will only be set on containers, OUs and DCs, therefore
-		is a mapping not necessary.
+	''' Search all S4 objects with msGPOWQLFilter attribute and return a
+		dictonary with dn as key and msGPOWQLFilter as result. The msGPOWQLFilter
+		will only be set on groupPolicyContainer objects.
 	'''
 
-	p1 = subprocess.Popen(['ldbsearch -H /var/lib/samba/private/sam.ldb gPLink=* dn gPLink | ldapsearch-wrapper'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+	p1 = subprocess.Popen(['ldbsearch -H /var/lib/samba/private/sam.ldb msGPOWQLFilter=* dn msGPOWQLFilter | ldapsearch-wrapper'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 	(stdout,stderr) = p1.communicate()
 
 	if p1.returncode != 0:
@@ -85,9 +84,9 @@ def search_s4():
 		line=line.strip()
 		if line.startswith('dn: '):
 			dn=line[4:]
-		if line.startswith('gPLink: '):
-			gPLink=line[len('gPLink: '):]
-			result[dn] = gPLink
+		if line.startswith('msGPOWQLFilter: '):
+			msGPOWQLFilter=line[len('msGPOWQLFilter: '):]
+			result[dn] = msGPOWQLFilter
 			dn=None
 
 	return result
@@ -126,27 +125,27 @@ def write_to_s4(configRegistry, ucs_result):
 
 		if True:
 			mod_str = 'dn: %s\nchangetype: modify\n' % s4_dn
-			mod_str += 'replace: gPLink\ngPLink: %s\n' % ucs_result[ucs_dn]
+			mod_str += 'replace: msGPOWQLFilter\nmsGPOWQLFilter: %s\n' % ucs_result[ucs_dn]
 			mod_str += '\n'
 			p1 = subprocess.Popen(['ldbmodify', '-H', '/var/lib/samba/private/sam.ldb'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=False)
 			(stdout,stderr) = p1.communicate(mod_str)
 			if p1.returncode != 0:
-				print 'Failed to set gPLink for Samba 4 object (%s)' % (s4_dn)
+				print 'Failed to set msGPOWQLFilter for Samba 4 object (%s)' % (s4_dn)
 			else:
-				print 'Set gPLink for Samba 4 object (%s)' % (s4_dn)
+				print 'Set msGPOWQLFilter for Samba 4 object (%s)' % (s4_dn)
 
 
 def search_ucs(configRegistry, binddn, bindpwd):
-	''' Search all UCS objects with msGPOLink attribute and return a
-		dictonary with dn as key and msGPOLink as result
+	''' Search all UCS objects with msGPOWQLFilter attribute and return a
+		dictonary with dn as key and msGPOWQLFilter as result
 	'''
 
 	lo = _connect_ucs(configRegistry, binddn, bindpwd)
 
 	result = {}
-	ldap_result = lo.search('(msGPOLink=*)')
+	ldap_result = lo.search('(msGPOWQLFilter=*)')
 	for dn, attributes in ldap_result:
-		result[dn] = attributes.get('msGPOLink', [])[0]
+		result[dn] = attributes.get('msGPOWQLFilter', [])[0]
 
 	return result
 
@@ -163,24 +162,22 @@ def write_to_ucs(configRegistry,  s4_result, binddn, bindpwd):
 		ml = []
 		try:
 			for dn, attributes in lo.search(base=ucs_dn, scope=ldap.SCOPE_BASE):
-				if not 'msGPO' in attributes.get('objectClass'):
-					ml.append( ('objectClass', attributes.get('objectClass'), attributes.get('objectClass') + ['msGPO']) )
-				ml.append( ('msGPOLink', attributes.get('msGPOLink'), s4_result[s4_dn]) )
+				ml.append( ('msGPOWQLFilter', attributes.get('msGPOWQLFilter'), s4_result[s4_dn]) )
 			if ml:
-				print 'Set msGPOLink for UCS object (%s)' % (ucs_dn)
+				print 'Set msGPOWQLFilter for UCS object (%s)' % (ucs_dn)
 				lo.modify(ucs_dn, ml)
 		except univention.admin.uexceptions.noObject:
 			pass
 		except:
-			print 'Failed to set msGPOLink for UCS object (%s)' % (ucs_dn)
+			print 'Failed to set msGPOWQLFilter for UCS object (%s)' % (ucs_dn)
 	pass
 
 
 if __name__ == '__main__':
 
-	parser = OptionParser(usage='msgpo.py (--write2ucs|--write2samba4)')
-	parser.add_option("--write2ucs", dest="write2ucs", action="store_true", help="Write MS GPO settings from Samba 4 to UCS", default=False)
-	parser.add_option("--write2samba4", dest="write2samba4", action="store_true", help="Write MS GPO settings from UCS to Samba 4", default=False)
+	parser = OptionParser(usage='msGPOWQLFilter.py (--write2ucs|--write2samba4)')
+	parser.add_option("--write2ucs", dest="write2ucs", action="store_true", help="Write MS WMI filters from Samba 4 to UCS", default=False)
+	parser.add_option("--write2samba4", dest="write2samba4", action="store_true", help="Write MS WMI filters from UCS to Samba 4", default=False)
 	parser.add_option("--binddn", dest="binddn", action="store", help="Binddn for UCS LDAP connection")
 	parser.add_option("--bindpwd", dest="bindpwd", action="store", help="Password for UCS LDAP connection")
 	(options, args) = parser.parse_args()

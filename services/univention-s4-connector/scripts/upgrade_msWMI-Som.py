@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
-#  Added groupPolicyContainer objects to rejected table
+#  Add msWMI-Som objects to rejected table
 #
-# Copyright 2012-2014 Univention GmbH
+# Copyright 2013-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -38,7 +38,7 @@ import univention.config_registry
 
 
 def search_s4(filter, attribute):
-	''' Search all S4 objects with objectClass=groupPolicyContainer
+	''' Search all S4 objects with objectClass=msWMI-Som
 		and return a dictonary with dn as key and uSNChanged as result.
 	'''
 
@@ -90,8 +90,8 @@ if __name__ == '__main__':
 	result = search_s4('-s base -b CN=Policies,CN=System,%s' % configRegistry.get('connector/s4/ldap/base'), 'uSNChanged')
 	add_to_sqlite(result)
 
-	# Add all GPO containers to the reject list
-	result = search_s4('objectClass=groupPolicyContainer', 'uSNChanged')
+	# Add all WMI filters to the reject list
+	result = search_s4('objectClass=msWMI-Som', 'uSNChanged')
 	add_to_sqlite(result)
 
 	sys.exit(0)
