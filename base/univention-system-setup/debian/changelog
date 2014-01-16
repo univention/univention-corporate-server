@@ -1,3 +1,9 @@
+univention-system-setup (7.0.69-1) unstable; urgency=low
+
+  * Bug #33258: fix tests;
+
+ -- Florian Best <best@univention.de>  Thu, 16 Jan 2014 12:00:33 +0100
+
 univention-system-setup (7.0.68-2) unstable; urgency=low
 
   * Bug #32996: version bump;

@@ -28,10 +28,10 @@ class TestChangeSetEmpty(unittest.TestCase):
 	def test_cs(self):
 		self.assertEqual(set(), self.cs.old_names)
 		self.assertEqual(set(), self.cs.new_names)
-		self.assertEqual(set(), self.cs.old_ipv4s)
-		self.assertEqual(set(), self.cs.new_ipv4s)
-		self.assertEqual(set(), self.cs.old_ipv6s)
-		self.assertEqual(set(), self.cs.new_ipv6s)
+		self.assertEqual([], self.cs.old_ipv4s)
+		self.assertEqual([], self.cs.new_ipv4s)
+		self.assertEqual([], self.cs.old_ipv6s)
+		self.assertEqual([], self.cs.new_ipv6s)
 
 	def test_am(self):
 		am = AddressMap(self.cs)
@@ -60,10 +60,10 @@ class TestChangeSetRemoved(unittest.TestCase):
 	def test_cs(self):
 		self.assertEqual(set(["eth0"]), self.cs.old_names)
 		self.assertEqual(set(), self.cs.new_names)
-		self.assertEqual(set([ipaddr.IPv4Network("1.2.3.4/16")]), self.cs.old_ipv4s)
-		self.assertEqual(set(), self.cs.new_ipv4s)
-		self.assertEqual(set([ipaddr.IPv6Network("1111:2222::3333/64")]), self.cs.old_ipv6s)
-		self.assertEqual(set(), self.cs.new_ipv6s)
+		self.assertEqual([ipaddr.IPv4Network("1.2.3.4/16")], self.cs.old_ipv4s)
+		self.assertEqual([], self.cs.new_ipv4s)
+		self.assertEqual([ipaddr.IPv6Network("1111:2222::3333/64")], self.cs.old_ipv6s)
+		self.assertEqual([], self.cs.new_ipv6s)
 
 	def test_am(self):
 		am = AddressMap(self.cs)
@@ -97,10 +97,10 @@ class TestChangeSetAdded(unittest.TestCase):
 	def test_cs(self):
 		self.assertEqual(set(), self.cs.old_names)
 		self.assertEqual(set(["eth0"]), self.cs.new_names)
-		self.assertEqual(set(), self.cs.old_ipv4s)
-		self.assertEqual(set([ipaddr.IPv4Network("1.2.3.4/16")]), self.cs.new_ipv4s)
-		self.assertEqual(set(), self.cs.old_ipv6s)
-		self.assertEqual(set([ipaddr.IPv6Network("1111:2222::3333/64")]), self.cs.new_ipv6s)
+		self.assertEqual([], self.cs.old_ipv4s)
+		self.assertEqual([ipaddr.IPv4Network("1.2.3.4/16")], self.cs.new_ipv4s)
+		self.assertEqual([], self.cs.old_ipv6s)
+		self.assertEqual([ipaddr.IPv6Network("1111:2222::3333/64")], self.cs.new_ipv6s)
 
 	def test_am(self):
 		am = AddressMap(self.cs)
@@ -139,10 +139,10 @@ class TestChangeSetChanged(unittest.TestCase):
 	def test_cs(self):
 		self.assertEqual(set(["eth0"]), self.cs.old_names)
 		self.assertEqual(set(["eth0"]), self.cs.new_names)
-		self.assertEqual(set([ipaddr.IPv4Network("1.2.3.4/16")]), self.cs.old_ipv4s)
-		self.assertEqual(set([ipaddr.IPv4Network("2.3.4.5/24")]), self.cs.new_ipv4s)
-		self.assertEqual(set([ipaddr.IPv6Network("1111:2222::3333/64")]), self.cs.old_ipv6s)
-		self.assertEqual(set([ipaddr.IPv6Network("2222:3333:4444::5555/80")]), self.cs.new_ipv6s)
+		self.assertEqual([ipaddr.IPv4Network("1.2.3.4/16")], self.cs.old_ipv4s)
+		self.assertEqual([ipaddr.IPv4Network("2.3.4.5/24")], self.cs.new_ipv4s)
+		self.assertEqual([ipaddr.IPv6Network("1111:2222::3333/64")], self.cs.old_ipv6s)
+		self.assertEqual([ipaddr.IPv6Network("2222:3333:4444::5555/80")], self.cs.new_ipv6s)
 
 	def test_am(self):
 		am = AddressMap(self.cs)
@@ -188,10 +188,10 @@ class TestChangeSetMoved(unittest.TestCase):
 	def test_cs(self):
 		self.assertEqual(set(["eth0"]), self.cs.old_names)
 		self.assertEqual(set(["br0"]), self.cs.new_names)
-		self.assertEqual(set([ipaddr.IPv4Network("1.2.3.4/16")]), self.cs.old_ipv4s)
-		self.assertEqual(set([ipaddr.IPv4Network("1.2.3.4/16")]), self.cs.new_ipv4s)
-		self.assertEqual(set([ipaddr.IPv6Network("1111:2222::3333/64")]), self.cs.old_ipv6s)
-		self.assertEqual(set([ipaddr.IPv6Network("1111:2222::3333/64")]), self.cs.new_ipv6s)
+		self.assertEqual([ipaddr.IPv4Network("1.2.3.4/16")], self.cs.old_ipv4s)
+		self.assertEqual([ipaddr.IPv4Network("1.2.3.4/16")], self.cs.new_ipv4s)
+		self.assertEqual([ipaddr.IPv6Network("1111:2222::3333/64")], self.cs.old_ipv6s)
+		self.assertEqual([ipaddr.IPv6Network("1111:2222::3333/64")], self.cs.new_ipv6s)
 
 	def test_am(self):
 		am = AddressMap(self.cs)
