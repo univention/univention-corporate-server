@@ -1,3 +1,10 @@
+univention-system-setup (7.0.69-2) unstable; urgency=low
+
+  * Fix unit test for duplicate network error (Bug #33258)
+  * Fix installation of empty hook directories (Bug #33729)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 16 Jan 2014 11:52:58 +0100
+
 univention-system-setup (7.0.69-1) unstable; urgency=low
 
   * Bug #33258: fix tests;

@@ -198,5 +198,45 @@ class TestChangeSetMoved(unittest.TestCase):
 		self.assertEqual({}, am.net_changes)
 
 
+class TestChangeSetMultipleSameSubnet(unittest.TestCase):
+	"""
+	Test multiple addresses in the same subnet.
+	"""
+	def setUp(self):
+		ucr = {}
+		profile = {
+			"interfaces/eth0/type": "static",
+			"interfaces/eth0/start": "true",
+			"interfaces/eth0/address": "1.2.3.4",
+			"interfaces/eth0/network": "1.2.0.0",
+			"interfaces/eth0/netmask": "255.255.0.0",
+			"interfaces/eth0/broadcast": "1.2.255.255",
+			"interfaces/eth0/ipv6/default/address": "1111:2222::3333",
+			"interfaces/eth0/ipv6/default/prefix": "64",
+			"interfaces/eth1/type": "static",
+			"interfaces/eth1/start": "true",
+			"interfaces/eth1/address": "1.2.3.5",
+			"interfaces/eth1/network": "1.2.0.0",
+			"interfaces/eth1/netmask": "255.255.0.0",
+			"interfaces/eth1/broadcast": "1.2.255.255",
+			"interfaces/eth1/ipv6/default/address": "1111:2222::4444",
+			"interfaces/eth1/ipv6/default/prefix": "64",
+		}
+		options = DummyOption()
+		self.cs = ChangeSet(ucr, profile, options)
+
+	def test_cs(self):
+		self.assertEqual(set(), self.cs.old_names)
+		self.assertEqual(set(["eth0", "eth1"]), self.cs.new_names)
+		self.assertEqual([], self.cs.old_ipv4s)
+		self.assertEqual([ipaddr.IPv4Network("1.2.3.4/16"), ipaddr.IPv4Network("1.2.3.5/16")], sorted(self.cs.new_ipv4s))
+		self.assertEqual([], self.cs.old_ipv6s)
+		self.assertEqual([ipaddr.IPv6Network("1111:2222::3333/64"), ipaddr.IPv6Network("1111:2222::4444/64")], sorted(self.cs.new_ipv6s))
+
+	def test_am(self):
+		am = AddressMap(self.cs)
+		self.assertEqual({}, am.net_changes)
+
+
 if __name__ == '__main__':
 	unittest.main()
