@@ -711,13 +711,13 @@ if configRegistry.is_true('connector/s4/mapping/wmifilter', False):
 
 			scope='sub',
 
-			con_search_filter='(&(objectClass=container)(objectClass=msWMI-Som))',
+			con_search_filter='(objectClass=msWMI-Som)',
 
 			ignore_filter='%(ignore_filter)s',
 
 			ignore_subtree = global_ignore_subtree,
 			
-			con_create_objectclass=['top', 'container', 'msWMI-Som' ],
+			con_create_objectclass=['top', 'msWMI-Som' ],
 
 			attributes= {
 					'cn': univention.s4connector.attribute (

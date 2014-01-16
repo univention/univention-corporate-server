@@ -86,8 +86,12 @@ if __name__ == '__main__':
 	result = search_s4('-s base -b CN=System,%s' % configRegistry.get('connector/s4/ldap/base'), 'uSNChanged')
 	add_to_sqlite(result)
 
-	# Add CN=Policies,CN=System to the reject list
-	result = search_s4('-s base -b CN=Policies,CN=System,%s' % configRegistry.get('connector/s4/ldap/base'), 'uSNChanged')
+	# Add CN=WMIPolicy,CN=System to the reject list
+	result = search_s4('-s base -b CN=WMIPolicy,CN=System,%s' % configRegistry.get('connector/s4/ldap/base'), 'uSNChanged')
+	add_to_sqlite(result)
+
+	# Add CN=SOM,CN=WMIPolicy,CN=System to the reject list
+	result = search_s4('-s base -b CN=SOM,CN=WMIPolicy,CN=System,%s' % configRegistry.get('connector/s4/ldap/base'), 'uSNChanged')
 	add_to_sqlite(result)
 
 	# Add all WMI filters to the reject list

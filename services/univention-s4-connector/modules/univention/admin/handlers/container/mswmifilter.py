@@ -271,11 +271,11 @@ class object(univention.admin.handlers.simpleLdap):
 		self.save()
 
 	def _ldap_pre_create(self):
-		self.dn='cn=%s,%s' % (mapping.mapValue('name', self.info['name']), self.position.getDn())
+		self.dn='cn=%s,%s' % (mapping.mapValue('id', self.info['id']), self.position.getDn())
 
 	def _ldap_pre_modify(self):
-		if self.hasChanged('name'):
-			newdn = string.replace(self.dn, 'cn=%s,' % self.oldinfo['name'], 'cn=%s,' % self.info['name'], 1)
+		if self.hasChanged('id'):
+			newdn = string.replace(self.dn, 'cn=%s,' % self.oldinfo['id'], 'cn=%s,' % self.info['id'], 1)
 			self.move(newdn)
 
 	def _ldap_addlist(self):

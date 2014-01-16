@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-17) unstable; urgency=medium
+
+  * Some LDAP mapping fixes for Bug #33936
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Jan 2014 16:18:02 +0100
+
 univention-s4-connector (8.0.33-16) unstable; urgency=medium
 
   * succomb to the intricate logic of configRegistry.is_false (Bug #33936)
