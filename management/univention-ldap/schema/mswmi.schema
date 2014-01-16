@@ -73,22 +73,22 @@ attributetype ( 1.3.6.1.4.1.10176.4106.1.9 NAME 'msWMIParm4'
 
 attributetype ( 1.3.6.1.4.1.10176.4106.1.10 NAME 'msWMIintFlags1'
 	DESC 'MS WMI Integer Flags 1'
-	EQUALITY caseExactMatch
+	EQUALITY integerMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
 
 attributetype ( 1.3.6.1.4.1.10176.4106.1.11 NAME 'msWMIintFlags2'
 	DESC 'MS WMI Integer Flags 2'
-	EQUALITY caseExactMatch
+	EQUALITY integerMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
 
 attributetype ( 1.3.6.1.4.1.10176.4106.1.12 NAME 'msWMIintFlags3'
 	DESC 'MS WMI Integer Flags 3'
-	EQUALITY caseExactMatch
+	EQUALITY integerMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
 
 attributetype ( 1.3.6.1.4.1.10176.4106.1.13 NAME 'msWMIintFlags4'
 	DESC 'MS WMI Integer Flags 4'
-	EQUALITY caseExactMatch
+	EQUALITY integerMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
 
 attributetype ( 1.3.6.1.4.1.10176.4106.1.14 NAME 'msWMISourceOrganization'
@@ -96,13 +96,13 @@ attributetype ( 1.3.6.1.4.1.10176.4106.1.14 NAME 'msWMISourceOrganization'
 	EQUALITY caseExactMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
-objectclass ( 1.3.6.1.4.1.10176.4105.2.1 NAME 'msWMISom'
+objectclass ( 1.3.6.1.4.1.10176.4106.2.1 NAME 'msWMISom'
 	DESC 'MS WMI SOM'
 	SUP top STRUCTURAL
 	Must (
 		msWMIName $
 		msWMIID
-	)
+		)
 	MAY (
 		msWMIAuthor $
 		msWMICreationDate $
@@ -116,5 +116,5 @@ objectclass ( 1.3.6.1.4.1.10176.4105.2.1 NAME 'msWMISom'
 		msWMIintFlags3 $
 		msWMIintFlags4 $
 		msWMISourceOrganization
+		)
 	)
-)
