@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.152-9) unstable; urgency=low
+
+  * Bug #33798: Reverse traceback when sending it via mail because web or mail
+    clients could truncate the interesting part
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 17 Jan 2014 17:07:32 +0100
+
 univention-management-console-frontend (3.0.152-8) unstable; urgency=low
 
   * Bug #33493: add branding scope to translations
@@ -36,7 +43,7 @@ univention-management-console-frontend (3.0.152-4) unstable; urgency=low
 
 univention-management-console-frontend (3.0.152-3) unstable; urgency=low
 
-  * Bug #33130: fix max-width of dialog.confirm() (e.g. activation dialog in
+  * Bug #33133: fix max-width of dialog.confirm() (e.g. activation dialog in
   	IE 10)
 
  -- Florian Best <best@univention.de>  Fri, 22 Nov 2013 15:17:53 +0100
