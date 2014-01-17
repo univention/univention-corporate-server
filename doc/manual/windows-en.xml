@@ -163,7 +163,7 @@
 		<title>File services</title>
 
 		<para>
-		  A file services provides files over the network and allows concentrating the storage of user data on a
+		  A file server provides files over the network and allows concentrating the storage of user data on a
 		  central server.
 		</para>
 
@@ -516,7 +516,7 @@ instanceType: 4
 		<title>File services</title>
 
 		<para>
-		  A file services provides files over the network and allows concentrating the storage of user data on a
+		  A file server provides files over the network and allows concentrating the storage of user data on a
 		  central server.
 		</para>
 
