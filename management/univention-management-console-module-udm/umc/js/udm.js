@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -230,14 +230,17 @@ define([
 		},
 
 		_reloadCache: function(objects) {
-			// reset cache if extended attribute or user template is being removed
+			// reset cache if extended attribute or user template or default container changes
 			var isExtendedAttribute = array.some(objects, function(iobj) {
 				return iobj.objectType == 'settings/extended_attribute';
 			});
 			var isUserTemplate = array.some(objects, function(iobj) {
 				return iobj.objectType == 'settings/usertemplate';
 			});
-			if (isExtendedAttribute || isUserTemplate) {
+			var isContainer = array.some(objects, function(iobj) {
+				return iobj.objectType == 'container/cn' || iobj.objectType == 'container/ou';
+			});
+			if (isExtendedAttribute || isUserTemplate || isContainer) {
 				cache.reset();
 			}
 		},

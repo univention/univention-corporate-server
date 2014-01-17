@@ -1,3 +1,11 @@
+univention-management-console-module-udm (4.0.97-16) unstable; urgency=low
+
+  * Bug #33554: fix typo
+  * Bug #33651: invalidate cache when default container or container changes
+  * update copyright
+
+ -- Florian Best <best@univention.de>  Mon, 13 Jan 2014 11:36:03 +0100
+
 univention-management-console-module-udm (4.0.97-15) unstable; urgency=low
 
   * Bug #33329: default beats nonempty_is_default; allow overwriting of

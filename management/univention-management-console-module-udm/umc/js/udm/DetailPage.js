@@ -1338,10 +1338,13 @@ define([
 					var deferred = null;
 					topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'save');
 					// check whether the internal cache needs to be reset
-					// as layout and property information may have changed
+					// as layout, property and default container information may have changed
 					var isExtendedAttribute = this.objectType == 'settings/extended_attribute';
 					var isUserTemplate = this.objectType == 'settings/usertemplate';
-					if (isExtendedAttribute || isUserTemplate) {
+					var isDefaultContainerSetting = this.objectType == 'settings/directory';
+					var isContainer = this.objectType == "container/cn" || this.objectType == "container/ou";
+
+					if (isExtendedAttribute || isUserTemplate || isDefaultContainerSetting || isContainer) {
 						cache.reset();
 					}
 					if (this._multiEdit) {

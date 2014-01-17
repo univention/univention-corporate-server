@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Browsing and managing the LDAP tree"
-msgstr "Durchsuchen und Verwalten des LDAP-Verzeichisbaums"
+msgstr "Durchsuchen und Verwalten des LDAP-Verzeichnisbaums"
 
 msgid "Change Password"
 msgstr "Passwort ändern"
