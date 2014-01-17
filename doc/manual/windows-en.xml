@@ -51,7 +51,7 @@
 
 	<para>
 	  In addition to Samba, UCS also integrates an additional component
-	  for the syncronisation with Active Directory (AD): the Univention Active
+	  for the synchronisation with Active Directory (AD): the Univention Active
 	  Directory Connector. The connector synchronises the content of a Microsoft Active Directory
 	  domain with a UCS domain. Further information can be found in <xref
 	  linkend="ad-connector:general"/>.
@@ -181,7 +181,7 @@
 		  domain controllers for logins/authentication and member services for file/print
 		  services. This ensures that a high system load on a file server does not result in
 		  disruptions to the authentication service. For smaller environments in which it is not
-		  possible to run two servers, file and print services can lso be run on a domain controller.
+		  possible to run two servers, file and print services can also be run on a domain controller.
 		</para>
 
 		<para>
