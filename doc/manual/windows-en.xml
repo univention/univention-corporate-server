@@ -139,23 +139,23 @@
 		  the domain's resources.
 		</para>
 
-		<!-- <para> -->
-		<!--   Häufige Fehlerquellen bei fehlschlagenden Anmeldungen sind: -->
+		<para>
+		  Common sources of error in failed logins are:
 
-		<!--   <itemizedlist> -->
-		<!-- 	<listitem><simpara> -->
-		<!-- 	  Für eine funktionierende Kerberos-Authentifizierung ist eine Synchronisation der -->
-		<!-- 	  Systemzeiten zwischen Windows-Client und Domänencontroller zwingend erforderlich. In -->
-		<!-- 	  der Grundeinstellung wird beim Systemstart die Systemzeit über NTP aktualisiert. Dies -->
-		<!-- 	  kann mit dem Befehl <command>w32tm /resync</command> auch manuell erfolgen. -->
-		<!-- 	</simpara></listitem> -->
+		  <itemizedlist>
+			<listitem><simpara>
+			  Synchronisation of the system times between the Windows client and domain controller
+			  is essential for functioning Kerberos authentication. In the default setting, the
+			  system time is updated via NTP during system startup. This can also be done manually
+			  using the command <command>w32tm /resync</command>.
+			</simpara></listitem>
 
-		<!-- 	<listitem><simpara> -->
-		<!-- 	  Während der Anmeldung müssen DNS-Service-Records aufgelöst werden. Der Windows-Client -->
-		<!-- 	  sollte daher als DNS-Nameserver die IP-Adresse des Domänencontrollers verwenden. -->
-		<!-- 	</simpara></listitem> -->
-		<!--   </itemizedlist> -->
-		<!-- </para> -->
+			<listitem><simpara>
+			  DNS service records need to be resolved during login. For this reason, the Windows
+			  client should use the domain controller's IP address as its DNS name server.
+			</simpara></listitem>
+		  </itemizedlist>
+		</para>
 
 	  </section>
 
@@ -443,13 +443,14 @@ instanceType: 4
 	<section id="windows:ntsetup">
 	  <title>Components of a Samba domain</title>
 
-	  <!-- <para> -->
-	  <!-- 	NT-Domänen sind der technische Vorgänger von Active Directory. Dieses Kapitel ist vor allem -->
-	  <!-- 	für Bestandsinstallationen relevant, die noch keine Migration auf eine AD-basierte Domäne -->
-	  <!-- 	durchgeführt haben. Die Migration von einer Samba-Domäne auf NT-Basis zu einer Domäne mit -->
-	  <!-- 	Active Directory-Diensten ist im Univention Wiki <biblioref linkend="wiki-samba-update"/> -->
-	  <!-- 	beschrieben. Für Neuinstallationen wird die Verwendung einer AD-basierten Domäne empfohlen. -->
-	  <!-- </para> -->
+	  <para>
+		NT domains are the predecessor of Active Directory from a technical perspective. This
+		chapter is predominantly relevant for existing installations which have yet to perform
+		migration to an AD-based domain. Migration from a NT-based Samba domain to a domain with
+		Active Directory services is described in the Univention Wiki <biblioref
+		linkend="wiki-samba-update"/>. For new installations, we recommend the use of an AD-based
+		domain.
+	  </para>
 
 	  <para>
 		A Samba NT domain is composed of at least one domain controller. Windows clients and member
