@@ -73,13 +73,17 @@ class object(content):
 			if len(parts) > 1:
 				# we want only utf-8 locales
 				if parts[1].lower() == "utf-8":
-
+					# append .UTF-8 if necessary
+					if not parts[0].upper().endswith(".UTF-8"):
+						parts[0] = "%s.UTF-8" % parts[0]
 					# check if language_countrycode locale exist
 					if parts[0].replace(".UTF-8", "") == lang_code:
 						return parts[0] + ":UTF-8"
 
 		# non found, return fallback locale from locale/languagelist or en_US locale
 		fallback = self.cmdline.get("DEFAULT_LOCALE", "en_US.UTF-8")
+		if not fallback.endswith(".UTF-8"):
+			fallback = fallback + ".UTF-8"
 		if not fallback.endswith(":UTF-8"):
 			fallback = fallback + ":UTF-8"
 		return fallback
