@@ -57,6 +57,7 @@ import fnmatch
 import re
 import random
 from xml.sax.saxutils import escape as xml_escape
+import tempfile
 try:
 	import xml.etree.ElementTree as ET
 except ImportError:
@@ -688,6 +689,7 @@ class Node(PersistentCached):
 					try:
 						domStat = self.domains[uuid]
 						domStat.update( dom )
+						self.write_novnc_tokens()
 					except KeyError:
 						# during migration events are not ordered causal
 						pass
@@ -735,7 +737,6 @@ class Node(PersistentCached):
 			for name in self.conn.listDefinedDomains():
 				yield self.conn.lookupByName(name)
 
-		novnc_mapping = {}
 		for dom in all_domains():
 			uuid = dom.UUIDString()
 			if uuid in self.domains:
@@ -753,7 +754,6 @@ class Node(PersistentCached):
 			curMem += domStat.pd.curMem
 			maxMem += domStat.pd.maxMem
 			cpu_usage += domStat._cpu_usage
-			self.get_novnc_mapping(domStat, novnc_mapping)
 		for uuid in cached_domains:
 			# Remove obsolete domains
 			del self.domains[uuid]
@@ -769,25 +769,25 @@ class Node(PersistentCached):
 				self._cache_id = cache_id
 			except IOError, ex:
 				logger.exception("Failed to write cached node %s: %s" % (self.pd.uri, ex))
-			self.write_novnc_tokens(novnc_mapping)
+			self.write_novnc_tokens()
 
-	def get_novnc_mapping(self, domStat, mapping):
-		try:
-			gfx = domStat.pd.graphics[0]
-		except (AttributeError, IndexError), ex:
-			pass
-		else:
-			if gfx.type == Graphic.TYPE_VNC and gfx.listen == '0.0.0.0' and gfx.port > 0:
-				mapping[domStat.pd.uuid] = (self.pd.name, gfx.port)
-
-	def write_novnc_tokens(self, mapping):
+	def write_novnc_tokens(self):
 		path = os.path.join(self.cache_dir, 'novnc.tokens', uri_encode(self.pd.uri))
 		logger.debug("Writing noVNC tokens to '%s'", path)
-		tmp_path = path + '.new'
-		with open(tmp_path, 'w') as token_file:
-			for uuid, (host, port) in mapping.iteritems():
-				print >> token_file, '%s: %s:%d' % (uuid, host, port)
-		os.rename(tmp_path, path)
+		with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+			for uuid, domStat in self.domains.iteritems():
+				try:
+					gfx = domStat.pd.graphics[0]
+				except (AttributeError, IndexError):
+					continue
+				if gfx.type != Graphic.TYPE_VNC:
+					continue
+				if gfx.listen != '0.0.0.0':
+					continue
+				if gfx.port <= 0:
+					continue
+				print >> tmp_file, '%s: %s:%d' % (uuid, self.pd.name, gfx.port)
+		os.rename(tmp_file.name, path)
 
 	def wait_update(self, domain, state_key, timeout=10):
 		"""Wait until domain gets updated."""
