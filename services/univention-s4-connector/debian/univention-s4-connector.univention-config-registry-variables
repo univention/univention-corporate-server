@@ -236,3 +236,15 @@ Description[de]=Eine statische Liste von Zuordnungen von Gruppenamen im UCS-LDAP
 Description[en]=A static list mapping group names in UCS-LDAP to group names in the Samba 4 user directory. Group names in UCS-LDAP are always English. The mapping "connector/s4/mapping/group/table/'Domain Users'=Domänen-Benutzer" e.g. advises the S4 Connector to synchronize a group object called "Domain Users" in UCS-LDAP with a group object called "Domänen-Benutzer" in the Samba 4 user directory.
 Type=str
 Categories=service-adcon
+
+[connector/s4/mapping/wmifilter]
+Description[de]=WMI-Filter sind im Samba 4-LDAP gespeichter. Diese Option legt fest, ob die WMI-Filter in das UCS-LDAP synchronisiert werden sollen. Bei nicht gesetzter Variable werden die WMI-Filter nicht synchronisiert.
+Description[en]=WMI filters are stored in Samba 4 LDAP. This option controls if the WMI filters are synchronised to the UCS LDAP. If the variable is unset, the WMI filters are not synchronised.
+Type=bool
+Categories=service-adcon
+
+[connector/s4/mapping/wmifilter/ignorelist]
+Description[de]=Wenn die Synchronisation von WMI-Filtern aktiviert wurde (siehe 'connector/s4/mapping/wmifilter'), können hier IDs von WMI-Filtern angegeben werden, die durch den Connector nicht synchronisiert werden sollen. Mehrere Werte müssen durch Komma getrennt werden.
+Description[en]=If the synchronisation of WMI filters has been activated (see 'connector/s4/mapping/wmifilter'), WMI filter IDs can be specified here which shall not be synchronised by the connector. Multiple values need to be separated by commas.
+Type=str
+Categories=service-adcon

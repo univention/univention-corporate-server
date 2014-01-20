@@ -1,3 +1,12 @@
+univention-s4-connector (7.0.33-1) unstable; urgency=medium
+
+  * New UDM module container/mswmifilter (Bug #33956)
+  * New UCR variables connector/s4/mapping/wmifilter etc.
+  * Mapping extended for WMI filters
+  * Scripts adjusted/added for upgrading
+
+ -- Arvid Requate <requate@univention.de>  Mon, 20 Jan 2014 18:15:35 +0100
+
 univention-s4-connector (7.0.32-12) unstable; urgency=low
 
   * Fixed typos (Bug #33711)

@@ -3,7 +3,7 @@
 # Univention S4 Connector
 #  UDM module for MS GPOs
 #
-# Copyright 2012 Univention GmbH
+# Copyright 2012-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -38,13 +38,13 @@ import univention.admin.handlers
 import univention.admin.localization
 import string
 
-translation=univention.admin.localization.translation('univention.admin.handlers.container.msgpo')
+translation=univention.admin.localization.translation('univention.admin.handlers.container.mswmifilter')
 _=translation.translate
 
-module='container/msgpo'
+module='container/mswmifilter'
 operations=['add','edit','remove','search','move','subtree_move']
 childs=1
-short_description=_('Container: MS Group Policy')
+short_description=_('Container: MS WMI Filter')
 long_description=''
 options={
 }
@@ -79,8 +79,18 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'msGPOFlags': univention.admin.property(
-			short_description=_('MS Group Policy Flags'),
+	'id': univention.admin.property(
+			short_description=_('MS WMI ID'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=1
+		),
+	'author': univention.admin.property(
+			short_description=_('MS WMI Author'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -89,8 +99,8 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'msGPOVersionNumber': univention.admin.property(
-			short_description=_('MS Group Policy Version Number'),
+	'creationDate': univention.admin.property(
+			short_description=_('MS WMI Creation Date'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -99,8 +109,8 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'msGPOSystemFlags': univention.admin.property(
-			short_description=_('MS Group Policy System Flags'),
+	'changeDate': univention.admin.property(
+			short_description=_('MS WMI Change Date'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -109,8 +119,8 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'msGPOFunctionalityVersion': univention.admin.property(
-			short_description=_('MS Group Policy Functionality Version'),
+	'parm1': univention.admin.property(
+			short_description=_('MS WMI Parameter1'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -119,8 +129,8 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'msGPOFileSysPath': univention.admin.property(
-			short_description=_('MS Group Policy File Sys Path'),
+	'parm2': univention.admin.property(
+			short_description=_('MS WMI Parameter2'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -129,8 +139,8 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'msGPOUserExtensionNames': univention.admin.property(
-			short_description=_('MS Group Policy User Extension Names'),
+	'parm3': univention.admin.property(
+			short_description=_('MS WMI Parameter3'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -139,8 +149,8 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'msGPOMachineExtensionNames': univention.admin.property(
-			short_description=_('MS Group Policy Machine Extension Names'),
+	'parm4': univention.admin.property(
+			short_description=_('MS WMI Parameter4'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -149,8 +159,48 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'msGPOWQLFilter': univention.admin.property(
-			short_description=_('MS Group Policy WQL Filter'),
+	'flags1': univention.admin.property(
+			short_description=_('MS WMI Flags1'),
+			long_description='',
+			syntax=univention.admin.syntax.integer,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'flags2': univention.admin.property(
+			short_description=_('MS WMI Flags2'),
+			long_description='',
+			syntax=univention.admin.syntax.integer,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'flags3': univention.admin.property(
+			short_description=_('MS WMI Flags3'),
+			long_description='',
+			syntax=univention.admin.syntax.integer,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'flags4': univention.admin.property(
+			short_description=_('MS WMI Flags4'),
+			long_description='',
+			syntax=univention.admin.syntax.integer,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'sourceOrganization': univention.admin.property(
+			short_description=_('MS WMI Source Organization'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -168,31 +218,42 @@ layout = [
 			[ "displayName" ],
 			] ),
 	] ),
-	Tab(_('GPO settings'),_('MS GPO settings'), advanced = True, layout = [
-		Group( _( 'GPO settings' ), layout = [
-			[ 'msGPOFlags' ],
-			[ 'msGPOVersionNumber' ],
-			[ 'msGPOSystemFlags' ],
-			[ 'msGPOFunctionalityVersion' ],
-			[ 'msGPOFileSysPath' ],
-			[ 'msGPOWQLFilter' ],
-			[ 'msGPOMachineExtensionNames' ],
+	Tab(_('WMI filter'),_('MS WMI filter'), advanced = True, layout = [
+		Group( _( 'WMI filter' ), layout = [
+			[ 'id' ],
+			[ 'author' ],
+			[ 'creationDate' ],
+			[ 'changeDate' ],
+			[ 'parm1' ],
+			[ 'parm2' ],
+			[ 'parm3' ],
+			[ 'parm4' ],
+#			[ 'flags1' ],
+#			[ 'flags2' ],
+#			[ 'flags3' ],
+#			[ 'flags4' ],
+#			[ 'sourceOrganization' ],
 		] ),
 	] )
 ]
 
 mapping=univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
-mapping.register('msGPOFlags', 'msGPOFlags',  None, univention.admin.mapping.ListToString)
-mapping.register('msGPOVersionNumber', 'msGPOVersionNumber',  None, univention.admin.mapping.ListToString)
-mapping.register('msGPOSystemFlags', 'msGPOSystemFlags',  None, univention.admin.mapping.ListToString)
-mapping.register('msGPOFunctionalityVersion', 'msGPOFunctionalityVersion',  None, univention.admin.mapping.ListToString)
-mapping.register('msGPOFileSysPath', 'msGPOFileSysPath',  None, univention.admin.mapping.ListToString)
-mapping.register('msGPOWQLFilter', 'msGPOWQLFilter',  None, univention.admin.mapping.ListToString)
-mapping.register('msGPOUserExtensionNames', 'msGPOUserExtensionNames',  None, univention.admin.mapping.ListToString)
-mapping.register('msGPOMachineExtensionNames', 'msGPOMachineExtensionNames',  None, univention.admin.mapping.ListToString)
+mapping.register('name', 'msWMIName', None, univention.admin.mapping.ListToString)
+mapping.register('id', 'msWMIID', None, univention.admin.mapping.ListToString)
+mapping.register('author', 'msWMIAuthor',  None, univention.admin.mapping.ListToString)
+mapping.register('creationDate', 'msWMICreationDate',  None, univention.admin.mapping.ListToString)
+mapping.register('changeDate', 'msWMIChangeDate',  None, univention.admin.mapping.ListToString)
+mapping.register('parm1', 'msWMIParm1',  None, univention.admin.mapping.ListToString)
+mapping.register('parm2', 'msWMIParm2',  None, univention.admin.mapping.ListToString)
+mapping.register('parm3', 'msWMIParm3',  None, univention.admin.mapping.ListToString)
+mapping.register('parm4', 'msWMIParm4',  None, univention.admin.mapping.ListToString)
+mapping.register('flags1', 'msWMIintFlags1',  None, univention.admin.mapping.ListToString)
+mapping.register('flags2', 'msWMIintFlags2',  None, univention.admin.mapping.ListToString)
+mapping.register('flags3', 'msWMIintFlags3',  None, univention.admin.mapping.ListToString)
+mapping.register('flags4', 'msWMIintFlags4',  None, univention.admin.mapping.ListToString)
+mapping.register('sourceOrganization', 'msWMISourceOrganization',  None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
@@ -210,22 +271,22 @@ class object(univention.admin.handlers.simpleLdap):
 		self.save()
 
 	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
+		self.dn='cn=%s,%s' % (mapping.mapValue('id', self.info['id']), self.position.getDn())
 
 	def _ldap_pre_modify(self):
-		if self.hasChanged('name'):
-			newdn = string.replace(self.dn, 'cn=%s,' % self.oldinfo['name'], 'cn=%s,' % self.info['name'], 1)
+		if self.hasChanged('id'):
+			newdn = string.replace(self.dn, 'cn=%s,' % self.oldinfo['id'], 'cn=%s,' % self.info['id'], 1)
 			self.move(newdn)
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', ['top', 'msGPOContainer'])
+			('objectClass', ['top', 'msWMISom'])
 		]
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'msGPOContainer'),
+		univention.admin.filter.expression('objectClass', 'msWMISom'),
 		])
 
 	if filter_s:
@@ -240,4 +301,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 def identify(dn, attr, canonical=0):
 
-	return 'msGPOContainer' in attr.get('objectClass', [])
+	return 'msWMISom' in attr.get('objectClass', [])
