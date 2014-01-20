@@ -1570,21 +1570,78 @@ closest to the object always applies.
 			  </thead>
 			  <tbody>
 				<row>
-				  <entry/>
-				  <entry>
-					<para>
-					  Configuration options can be set in this tab which are only needed for
-					  a few scenarios.
-					</para>
-					<!-- They are documented in Univention Wiki under WIKIREF-24604.-->
-				  </entry>
+					<entry>
+						<para>Failover peer</para>
+					</entry>
+					<entry>
+						<para>
+							The name of a failover configuration, which must to be configured
+							manually in file <filename>/etc/dhcp/local.conf</filename>. Further
+							information can be found at <xref linkend="dhcp-failover"/>.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>
+						<para>Allow known clients</para>
+					</entry>
+					<entry>
+						<para>
+						  A computer is identified by its MAC address. If this input field is set to
+						  <guimenu>allow</guimenu> or unset, a computer with a matching DHCP host
+						  entry (see <xref linkend="ip-config:dhcp:objects:hosts"/>) is eligible
+						  to receive an IP address from this pool. If set to
+						  <guimenu>deny</guimenu>, the computer doesn't receive an IP address from
+						  the pool.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>
+						<para>Allow unknown clients</para>
+					</entry>
+					<entry>
+					  <para>
+						A computer is identified by its MAC address. If this input field is set to
+						<guimenu>allow</guimenu> or unset, a computer without a matching DHCP host
+						entry (see <xref linkend="ip-config:dhcp:objects:hosts"/>) is eligible
+						to receive an IP address from this pool. If set to
+						<guimenu>deny</guimenu>, the computer doesn't receive an IP address from
+						the pool.
+					  </para>
+					</entry>
+				</row>
+				<row>
+					<entry>
+						<para>Allow dynamic BOOTP clients</para>
+					</entry>
+					<entry>
+						<para>
+						  <firstterm>BOOTP</firstterm> is the predecessor of the DHCP protocol. It
+						  has no mechanism to renew leases and by default assigns leases infinitely,
+						  which can deplete the pool. If this options is set to
+						  <guimenu>allow</guimenu> clients can retrieve an IP address from this pool
+						  using BOOTP.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>
+						<para>All clients</para>
+					</entry>
+					<entry>
+					  <para>
+						If this option is set to <guimenu>deny</guimenu> the pool is disabled
+						globally. This is only useful in exceptional scenarios.
+					  </para>
+					</entry>
 				</row>
 			  </tbody>
 			</tgroup>
 		  </table>
 	  </section>
 
-	  <section id="ip-config:Registration_of_computers_with_DHCP_computer_objects">
+	  <section id="ip-config:dhcp:objects:hosts">
 		<title>
 		  Registration of computers with DHCP computer objects
 		</title>

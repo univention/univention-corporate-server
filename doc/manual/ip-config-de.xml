@@ -1338,20 +1338,79 @@
 			  </row>
 			</thead>
 			<tbody>
-			  <row>
-				<entry></entry>
-				<entry>
-				  In diesem Reiter können Konfigurations-Optionen gesetzt werden, die
-				  nur in wenigen Szenarien nötig sind.
-				  <!-- Sie sind im Univention Wiki unter WIKIREF-24604 dokumentiert. -->
-				</entry>
-			  </row>
+				<row>
+					<entry>
+						<para>Failover Peer</para>
+					</entry>
+					<entry>
+						<para>
+							Der Name einer Failover-Konfiguration, die von Hand in der Datei
+							<filename>/etc/dhcp/local.conf</filename> konfiguriert werden werden. Hinweise
+							zur Einrichtung finden sich in <xref linkend="dhcp-failover"/>.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>
+						<para>Erlaube bekannte Clients</para>
+					</entry>
+					<entry>
+					  <para>
+						Ein Computer wird durch seine MAC-Adresse identifiziert. Ist dieses Feld auf
+						<guimenu>erlauben</guimenu> gesetzt oder nicht gesetzt, ist ein Computer mit
+						einem DHCP-Rechner-Eintrag (siehe <xref
+						linkend="ip-config:dhcp:objects:hosts"/>) berechtigt eine IP-Adresse aus diesem Pool zu
+						beziehen. Ist es auf <guimenu>verbieten</guimenu> gesetzt, erhalten diese
+						Computer keine IP-Adresse aus dem Pool.
+					  </para>
+					</entry>
+				</row>
+				<row>
+					<entry>
+						<para>Erlaube unbekannte Clients</para>
+					</entry>
+					<entry>
+					  <para>
+						Ein Computer wird durch seine MAC-Adresse identifiziert. Ist dieses Feld auf
+						<guimenu>erlauben</guimenu> gesetzt oder nicht gesetzt, ist ein Computer ohne
+						DHCP-Rechner-Eintrag (siehe <xref linkend="ip-config:dhcp:objects:hosts"/>)
+						berechtigt eine IP-Adresse aus diesem Pool zu beziehen. Ist es auf
+						<guimenu>verbieten</guimenu> gesetzt, erhalten diese Computer keine
+						IP-Adresse aus dem Pool.
+					  </para>
+					</entry>
+				</row>
+				<row>
+					<entry>
+						<para>Dynamische BOOTP-Clients erlauben</para>
+					</entry>
+					<entry>
+						<para>
+						  <firstterm>BOOTP</firstterm> ist das Vorgängerprotokoll von DHCP. Es kennt
+						  keinen Mechanismus zum Aktualisieren eines Leases und weist Adressen
+						  zeitlich unbeschränkt zu, was den Pool erschöpfen kann. Ist diese Option
+						  auf <guimenu>erlauben</guimenu> gesetzt können Clients auch über BOOTP
+						  eine Adresse aus diesem Pool zu beziehen.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>
+						<para>Alle Clients</para>
+					</entry>
+					<entry>
+						<para>
+						  Wird diese Option auf <guimenu>verbieten</guimenu> gesetzt, wird der
+						  Pool global deaktiviert. Diese Option ist nur in Ausnahmefällen sinnvoll.
+						</para>
+					</entry>
+				</row>
 			</tbody>
 		  </tgroup>
 		</table>
 	  </section>
 
-	  <section id="ip-config:Registrierung_von_Rechnern_mit_DHCP-Rechner-Objekten">
+	  <section id="ip-config:dhcp:objects:hosts">
 		<title>Registrierung von Rechnern mit DHCP-Rechner-Objekten</title>
 		<para>
 		  Mit einem <emphasis>DHCP:Rechner</emphasis>-Eintrag wird der betreffende Rechner
