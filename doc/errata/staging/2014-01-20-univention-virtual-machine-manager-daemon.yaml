@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-virtual-machine-manager-daemon
+fix: 3.0.17-2.481.201401201652
+note:
+version: [0]
+desc: |
+  Act on libvirt events to write VNC token file directly after starting
+  a virtual machine. A VNC connection initiated from the Univention
+  Directory Manager module can now be used immediately.
+bug: [33166]
