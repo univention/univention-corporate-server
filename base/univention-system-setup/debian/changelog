@@ -1,3 +1,10 @@
+univention-system-setup (7.0.69-4) unstable; urgency=low
+
+  * Bug #33407: fix overwriting of IP addresses when opening an interface
+  	again
+
+ -- Florian Best <best@univention.de>  Mon, 20 Jan 2014 15:38:16 +0100
+
 univention-system-setup (7.0.69-3) unstable; urgency=low
 
   * Fix unit test for duplicate network error (Bug #33258)

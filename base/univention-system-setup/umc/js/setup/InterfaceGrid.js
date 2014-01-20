@@ -40,10 +40,11 @@ define([
 	"umc/widgets/Grid",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/modules/setup/InterfaceWizard",
+	"umc/modules/setup/InterfaceTypeChooseWizard",
 	"umc/modules/setup/Interfaces",
 	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, Memory, Observable, Dialog, dialog, tools, Grid, _FormWidgetMixin, InterfaceWizard, Interfaces, types, _) {
+], function(declare, lang, array, Memory, Observable, Dialog, dialog, tools, Grid, _FormWidgetMixin, InterfaceWizard, InterfaceTypeChooseWizard, Interfaces, types, _) {
 	return declare("umc.modules.setup.InterfaceGrid", [ Grid, _FormWidgetMixin ], {
 		moduleStore: null,
 		wizard_mode: null,
@@ -302,7 +303,7 @@ define([
 
 		_editInterfaces: function(name, devices) {
 			// grid action
-			this._showWizard(devices[0]);
+			this._showInterfaceEditWizard(devices[0]);
 		},
 
 		_addInterface: function() {
@@ -316,7 +317,7 @@ define([
 			}
 
 			// grid action
-			this._showWizard(null);
+			this._askInterfaceType();
 		},
 
 		_removeInterfaces: function(ids) {
@@ -327,7 +328,40 @@ define([
 			this._set('value', this.get('value'));
 		},
 
-		_showWizard: function(device) {
+		_askInterfaceType: function() {
+			var _dialog = null;
+
+			var _cleanup = function() {
+				_dialog.hide().then(lang.hitch(_dialog, 'destroyRecursive'));
+			};
+
+			var _finished = lang.hitch(this, function(values) {
+				_cleanup();
+				values = {
+					name: values.name,
+					interfaceType: values.interfaceType
+				};
+				this._showInterfaceEditWizard(values, true);
+			});
+
+			var wizard = new InterfaceTypeChooseWizard({
+				interfaces: this.moduleStore,
+				ucsversion: this.ucsversion,
+				wizard_mode: this.wizard_mode,
+				onCancel: _cleanup,
+				onFinished: _finished
+			});
+
+			_dialog = new Dialog({
+				title: _('Add a network interface'),
+				content: wizard
+			});
+			_dialog.own(wizard);
+			this.own(_dialog);
+			_dialog.show();
+		},
+
+		_showInterfaceEditWizard: function(device, creation) {
 			// show an InterfaceWizard for the given device
 			// and insert data into the grid when saving the new values
 			var _dialog = null;
@@ -340,16 +374,15 @@ define([
 				var data = {};
 				data.gateway = values.gateway;
 				data.nameserver = values.nameserver;
-				data.creation = values.creation;
+				data.creation = creation;
 				data.values = values;
-				data.original_name = values.original_name;
+				data.original_name = values.name;
 				this.updateInterface(data);
 				_cleanup();
 			});
 
 			var wizard = new InterfaceWizard({
 				interfaces: this.moduleStore,
-				ucsversion: this.ucsversion,
 				wizard_mode: this.wizard_mode,
 				device: device,
 				onCancel: _cleanup,
@@ -357,7 +390,7 @@ define([
 			});
 
 			_dialog = new Dialog({
-				title: device ? _('Edit a network interface') : _('Add a network interface'),
+				title: !creation ? _('Edit a network interface') : _('Add a network interface'),
 				content: wizard
 			});
 			_dialog.own(wizard);
