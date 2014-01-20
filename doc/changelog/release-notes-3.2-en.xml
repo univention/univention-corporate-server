@@ -320,7 +320,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 
 		<para>
 		  The update to PostgreSQL 8.4 is described in the SDB article <ulink
-		  url="http://sdb.univention.de/1220"/>.
+		  url="http://sdb.univention.de/1249"/>.
 		</para>
 	  </section>
 
