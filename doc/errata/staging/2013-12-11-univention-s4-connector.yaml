@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-s4-connector
+fix: 7.0.33-1.444.201401201825
+note:
+version: [1]
+desc: |
+  This errata update fixes two issues:
+  * Added support for synchronization of MS WMI filters (disabled by default).
+bug: [33956]
