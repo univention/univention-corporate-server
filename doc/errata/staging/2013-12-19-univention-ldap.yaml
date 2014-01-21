@@ -17,4 +17,4 @@ desc: |
   * New schema extension for MS WMI filters
   * The local schema inclusion code now detects extensions included by
     template subfiles
-bug: [33430, 33704, 33890, 33937, 33962]
+bug: [33430, 33704, 33890, 33961, 33962]
