@@ -12,6 +12,8 @@ def getRegisteredFiles():
 		for line in open(os.path.join(registeredDirectory,f), 'r').readlines():
 			if line.startswith('File: '):
 				files.append(line.replace('File: ', '').strip())
+			elif line.startswith('Subfile: '):
+				files.append(line.replace('Subfile: ', '').strip())
 
 	return files
 		
