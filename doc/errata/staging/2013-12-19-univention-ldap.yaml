@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-ldap
-fix: 10.0.17-16.657.201401161620
+fix: 10.0.17-18.659.201401211252
 note:
 version: [0]
 desc: |
@@ -15,4 +15,6 @@ desc: |
     custom Administrator name via the new UCR variable family
     "users/default/.*".
   * New schema extension for MS WMI filters
-bug: [33430, 33704, 33890, 33937]
+  * The local schema inclusion code now detects extensions included by
+    template subfiles
+bug: [33430, 33704, 33890, 33937, 33962]
