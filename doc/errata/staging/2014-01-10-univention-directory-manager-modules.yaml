@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-directory-manager-modules
-fix: 9.0.75-12.1165.201401141503
+fix: 9.0.75-13.1166.201401211304
 note:
 version: [0]
 desc: |
@@ -10,5 +10,7 @@ desc: |
   * Add support for properties that offer empty values while the frontend
     chooses the first non-empty one if a new object is to be created.
   * The 'inherit ACL' option for samba shares can be set again
-    via the univention-management-console
-bug: [33329, 33772]
+    via the univention-management-console.
+  * Fixed setting and displaying 'sambaLogonHours' using the udm command line
+    interface.
+bug: [33329, 33772, 33703]
