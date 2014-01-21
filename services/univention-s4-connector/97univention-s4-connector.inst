@@ -91,10 +91,10 @@ fi
 
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/msgpo.schema \
+	--schema /usr/share/univention-s4-connector/ldap/mswmi.schema \
 	--udm_module /usr/share/pyshared/univention/admin/handlers/container/msgpo.py || die
 
 ucs_registerLDAPExtension "$@" \
-	--schema /usr/share/univention-s4-connector/ldap/mswmi.schema \
 	--udm_module /usr/share/pyshared/univention/admin/handlers/container/mswmifilter.py || die
 
 if ! is_ucr_true 'connector/s4/allow/secondary'; then

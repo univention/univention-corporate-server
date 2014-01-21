@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-20) unstable; urgency=medium
+
+  * Reduce waiting time for ucs_registerLDAPExtension (Bug #33936).
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Jan 2014 18:17:41 +0100
+
 univention-s4-connector (8.0.33-19) unstable; urgency=medium
 
   * Move package update operations for mswmi to join script,
