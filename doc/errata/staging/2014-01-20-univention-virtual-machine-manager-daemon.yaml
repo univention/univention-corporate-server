@@ -6,7 +6,6 @@ fix: 3.0.17-2.481.201401201652
 note:
 version: [0]
 desc: |
-  Act on libvirt events to write VNC token file directly after starting
-  a virtual machine. A VNC connection initiated from the Univention
-  Directory Manager module can now be used immediately.
+  A VNC connection initiated from the Univention Directory Manager module 
+  can now be used immediately after the start of the virtual machine.
 bug: [33166]
