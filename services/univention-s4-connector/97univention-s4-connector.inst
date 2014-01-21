@@ -89,6 +89,13 @@ udm container/ou create "$@" --ignore_exists \
 			--set description="Default container for domain controllers" || die
 fi
 
+ucs_registerLDAPExtension "$@" \
+	--schema /usr/share/univention-s4-connector/ldap/msgpo.schema \
+	--udm_module /usr/share/pyshared/univention/admin/handlers/container/msgpo.py || die
+
+ucs_registerLDAPExtension "$@" \
+	--schema /usr/share/univention-s4-connector/ldap/mswmi.schema \
+	--udm_module /usr/share/pyshared/univention/admin/handlers/container/mswmifilter.py || die
 
 if ! is_ucr_true 'connector/s4/allow/secondary'; then
 	s4connectorservicehost_dns="$(univention-directory-manager computers/computer list "$@" --filter "(&(univentionService=${NAME})(!(cn=$hostname)))" | sed -ne 's|^DN: ||p')"
