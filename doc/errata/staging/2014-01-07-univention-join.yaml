@@ -6,6 +6,6 @@ fix: 6.0.16-3.462.201401071633
 note:
 version: [0]
 desc: |
-  This errata update aborts the execution of join scripts via the UMC module
-  while software is being (un)installed.
+  This errata update disables the execution of join scripts via the UMC module
+  while software is being installed or uninstalled.
 bug: [33793]
