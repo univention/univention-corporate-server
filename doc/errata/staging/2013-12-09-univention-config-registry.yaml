@@ -6,7 +6,7 @@ fix: 9.0.5-5.446.201401151242
 note:
 version: [0]
 desc: |
-  univention-config has been improved with repect to the
+  univention-config has been improved with respect to the
   following points:
   * univention-ldapsearch now accepts standard UDM
     command line options --binddn, --bindpwd and
