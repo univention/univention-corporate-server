@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the user objects
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -1019,6 +1019,11 @@ def logonHoursMap(logontimes):
 
 	# convert list of bit numbers to bit-string
 	# bitstring = '0' * 168
+
+	if logontimes == '':
+		# if unsetting it, see Bug #33703
+		return None
+
 	bitstring = ''.join( map( lambda x: x in logontimes and '1' or '0', range( 168 ) ) )
 
 	# for idx in logontimes:
