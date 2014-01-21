@@ -216,7 +216,8 @@ define([
 			this.addToDetails(_('Vendor'), 'Vendor');
 			this.addToDetails(_('Maintainer'), 'Maintainer');
 			this.addToDetails(_('Contact'), 'Contact');
-			this.addToDetails(_('Website'), 'Website');
+			this.addToDetails(_('More information'), 'Website');
+			this.addToDetails(_('Support'), 'SupportURL');
 			this.addToDetails(_('Installed version'), 'Version');
 			this.addToDetails(_('Candidate version'), 'CandidateVersion');
 			this.addToDetails(_('Screenshot'), 'Screenshot');
@@ -581,6 +582,22 @@ define([
 			var website = this.app.website;
 			if (name && website) {
 				return '<a href="' + website + '" target="_blank">' + name + '</a>';
+			}
+		},
+
+		_detailFieldCustomSupportURL: function() {
+			var supportURL = this.app.supporturl;
+			if (supportURL) {
+				if (supportURL == 'None') {
+					return _('No support option provided');
+				}
+				return '<a href="' + supportURL + '" target="_blank">' + _('Available support options') + '</a>';
+			} else {
+				if (this.app.maintainer && this.app.maintainer !== this.app.vendor) {
+					return _('Please contact the maintainer of the application');
+				} else {
+					return _('Please contact the vendor of the application');
+				}
 			}
 		},
 
