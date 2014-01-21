@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-management-console-module-appcenter
+fix: 3.0.50-17.230.201401211203
+note:
+version: [0]
+desc: |
+  This errata update fixes several issues:
+  * Added Support URLs for apps
+  * Renamed app detail "Website" to "More information"
+bug: [33958, 31344]
