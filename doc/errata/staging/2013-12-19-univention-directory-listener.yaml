@@ -6,6 +6,6 @@ fix: 8.0.0-5.210.2013121913041
 note:
 version: [0]
 desc: |
-  This update improves the reliability of the univention-directory-listener
+  This update improves the reliability of the Univention Directory Listener
   replication handling.
 bug: [33732]
