@@ -37,7 +37,6 @@ if baseConfig['ldap/server/type']=="master":
 	print 'include         /usr/share/univention-ldap/schema/univention-directory.schema'
 	print 'include         /usr/share/univention-ldap/schema/univention-objecttype.schema'
 	print 'include         /usr/share/univention-ldap/schema/msgpo.schema'
-	print 'include         /usr/share/univention-ldap/schema/mswmi.schema'
 	print 'include         /usr/share/univention-ldap/schema/univention-object-metadata.schema'
 	print 'include         /usr/share/univention-ldap/schema/univention-ldap-extension.schema'
 	print 'include         /usr/share/univention-ldap/schema/udm-extension.schema'

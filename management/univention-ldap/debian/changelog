@@ -1,14 +1,20 @@
+univention-ldap (10.0.17-17) UNRELEASED; urgency=medium
+
+  * Remove mswmi.schema (Bug #33936)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Jan 2014 11:53:05 +0100
+
 univention-ldap (10.0.17-16) unstable; urgency=medium
 
   * Inculde mswmi.schema by default
-  * Fix schema syntax (Bug #33937)
+  * Fix schema syntax (Bug #33936)
 
  -- Arvid Requate <requate@univention.de>  Thu, 16 Jan 2014 16:09:25 +0100
 
 univention-ldap (10.0.17-15) unstable; urgency=medium
 
-  * mswmi.schema (Bug #33937)
-  * Add msGPOWQLFilter to msgpo.schema
+  * mswmi.schema (33936 #33937)
+  * Add msGPOWQLFilter to msgpo.schema (Bug #33961)
 
  -- Arvid Requate <requate@univention.de>  Thu, 16 Jan 2014 14:26:56 +0100
 
