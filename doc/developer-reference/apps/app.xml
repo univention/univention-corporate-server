@@ -390,6 +390,18 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
+					<term>SupportURL</term>
+					<listitem>
+						<simpara>
+							New in UCS 3.2: Points to a website where the user can get/buy
+							support for the app. If not set, the user will instead be
+							encouraged to contact the app vendor
+							(<literal>Contact</literal>). If set to <envar>None</envar>,
+							the user will see something like "No support option provided".
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
 					<term>ShopURL</term>
 					<listitem>
 						<simpara>
