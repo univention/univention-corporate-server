@@ -509,6 +509,14 @@ eingetragen/modifiziert oder entfernt.
 		  </para>
 		</entry>
 	  </row>
+
+	  <row>
+		<entry>Ererbte ACLs</entry>
+		<entry>
+		  Bei Aktivierung dieser Option erbt jede in dieser Freigabe neu erzeugte Datei die ACL
+		  (Access Control List) des Verzeichnisses, in dem sie angelegt wird.
+		</entry>
+	  </row>
 	  
 	  <row>
 		<entry>Neue Dateien und Verzeichnisse erhalten den Besitzer des übergeordneten Verzeichnisses</entry>

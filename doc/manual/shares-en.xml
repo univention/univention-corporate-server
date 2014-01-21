@@ -483,6 +483,14 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
+		<entry>Inherit ACLs</entry>
+		<entry>
+		  When activating this option, each file created in this share will inherit the ACL (Access
+		  Control List) of the directory where the file was created.
+		</entry>
+	  </row>
+
+	  <row>
 		<entry>Create files/directories with the owner of the parent directory</entry>
 		<entry>
 		  When activating this option, each newly created file will not be assigned of
