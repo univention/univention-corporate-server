@@ -14,7 +14,7 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="noVNC websockify"
 NAME=univention-novnc
 DAEMON=/usr/share/novnc/utils/websockify
-DAEMON_ARGS="--target-config /var/cache/univention-virtual-machine-manager-daemon/novnc.tokens"
+DAEMON_ARGS="--target-config /var/cache/univention-virtual-machine-manager-daemon/novnc.tokens --web /usr/share/novnc"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 

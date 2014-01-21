@@ -282,9 +282,15 @@ function init(protocols) {
     // TODO: this sucks, the property should exist on the prototype
     // but it does not.
     try {
-        if (bt && ('binaryType' in (new WebSocket("wss://localhost:17523")))) {
+        if (bt && ("WebSocket" in window)) {
+            wsbt = "binaryType" in WebSocket.prototype;
+            if (!wsbt) {
+                var protocol = ('https:' == location.protocol) ? 'wss' : 'ws';
+                wsbt = !!(new WebSocket(protocol+'://.').binaryType);
+            }
+        }
+        if (wsbt) {
             Util.Info("Detected binaryType support in WebSockets");
-            wsbt = true;
         }
     } catch (exc) {
         // Just ignore failed test localhost connections
