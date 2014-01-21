@@ -6,8 +6,8 @@ fix: 1:1.4.1-4.33.201401171710
 note:
 version: [0]
 desc: |
- A security issue has been discovered in X11 font rasterisation library (libxfont)
- * Buffer overflow in parsing BDF fonts (CVE-2013-6462)
+ A buffer overflow has been discovered in the X11 font rasterisation library 
+ (libxfont), which could result in privilege escalation.
 cve:
  - CVE-2013-6462
 bug:
