@@ -2,11 +2,10 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-novnc
-fix: 0.4+0+20131014+git142aa45-2.3.201401211307
+fix: 0.4+0+20131014+git142aa45-3.4.201401212016
 note:
 version: [0]
 desc: |
-  noVNC was changed to use the secured protocol wss:// when checking the
-  browser for WebSocket support, as newer Firefox versions block the unsecured
-  protocol ws:// when the Browser connection uses secured https://.
+  The noVNC service is now served fully on TCP port 6080, as newer Firefox
+  browsers had problems accessing the service through https://.
 bug: [33587]
