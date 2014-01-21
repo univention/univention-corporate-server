@@ -7,6 +7,7 @@ Variables: slapd/port
 Variables: ldap/debug/level
 Variables: ldap/replog
 Variables: ldap/acl/.*
+Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: subfile
