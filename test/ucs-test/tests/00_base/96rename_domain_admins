@@ -1,0 +1,66 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Rename Domain Admins
+## tags:
+##  - basic
+##  - rename_default_account
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+##  - memberserver
+## exposure: dangerous
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/group.sh" || exit 137
+
+GROUPNAME=$(group_randomnameme)
+
+udm-test groups/group modify --dn "cn=Domain Admins,cn=groups,$ldap_base" --set name="$GROUPNAME"
+
+trap "udm-test groups/group modify --dn \"cn=$GROUPNAME,cn=groups,$ldap_base\" --set name=\"Domain Admins\"; wait_for_replication_and_postrun" EXIT
+
+
+wait_for_replication_and_postrun
+
+if [ "$(ucr get groups/default/domainadmins)" != "$GROUPNAME" ]; then
+	echo "UCR variable groups/default/domainadmin is set to $(ucr get groups/default/domainadmins) instead of $GROUPNAME"
+	exit 1
+fi
+
+# Search templates
+cat /etc/univention/templates/info/*.info | sed -ne 's|^File: ||p;s|^Multifile: ||p' | sort -u  | while read template; do
+	echo -n "Checking $template: "
+	grep -i "Domain Admins" "/$template" && exit 1
+	echo "done"
+done
+
+# Search for new admin name
+for file in /etc/security/access-*.conf; do
+	echo "Checking whether new admin group name ($GROUPNAME) is set to $file: "
+	if egrep -q "($GROUPNAME,|,$GROUPNAME)" $file; then
+		echo "done"
+	else
+		echo "failed"
+		echo "************** $file ***************"
+		cat $file
+		echo "****************************************"
+		exit 1
+	fi
+done
+
+for file in /etc/ldap/slapd.conf; do
+	echo -n "Checking if new admin group name is set to $file: "
+	if grep -q "$GROUPNAME" $file; then
+		echo "done"
+	else
+		echo "failed"
+		echo "************** $file ***************"
+		cat $file
+		echo "****************************************"
+		exit 1
+	fi
+done
+
+exit "$RETVAL"
+

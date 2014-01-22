@@ -1,0 +1,54 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Rename Domain Users
+## tags:
+##  - basic
+##  - rename_default_account
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+##  - memberserver
+## exposure: dangerous
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/group.sh" || exit 137
+
+GROUPNAME=$(group_randomnameme)
+
+udm-test groups/group modify --dn "cn=Domain Users,cn=groups,$ldap_base" --set name="$GROUPNAME"
+
+trap "udm-test groups/group modify --dn \"cn=$GROUPNAME,cn=groups,$ldap_base\" --set name=\"Domain Users\"; wait_for_replication_and_postrun" EXIT
+
+
+wait_for_replication_and_postrun
+
+if [ "$(ucr get groups/default/domainusers)" != "$GROUPNAME" ]; then
+	echo "UCR variable groups/default/domainusers is set to $(ucr get groups/default/domainusers) instead of $GROUPNAME"
+	exit 1
+fi
+
+# Search templates
+cat /etc/univention/templates/info/*.info | sed -ne 's|^File: ||p;s|^Multifile: ||p' | sort -u  | while read template; do
+	[ "$template" = etc/security/limits.conf ] && continue #ignore comment
+
+	echo -n "Checking $template: "
+	grep -i "Domain Users" "/$template" && exit 1
+	echo "done"
+done
+
+for file in /etc/security/limits.conf; do
+	echo -n "Checking if new users group name is set to $file: "
+	if grep -q "$GROUPNAME" $file; then
+		echo "done"
+	else
+		echo "failed"
+		echo "************** $file ***************"
+		cat $file
+		echo "****************************************"
+		exit 1
+	fi
+done
+
+exit "$RETVAL"
+
