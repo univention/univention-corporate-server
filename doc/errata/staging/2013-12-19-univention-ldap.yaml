@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-ldap
-fix: 10.0.17-20.667.201401211628
+fix: 10.0.17-23.670.201401221613
 note:
 version: [0]
 desc: |
@@ -13,7 +13,9 @@ desc: |
     umlauts.
   * The LDAP ACLs now support the configuration of a
     custom Administrator name via the new UCR variable family
-    "users/default/.*".
+    "users/default/.*". These variables are managed automatically by
+    a listener module (introduced via Bug 33897) and should usually not be
+    adjusted manually.
   * New schema extension for MS WMI filters
   * The local schema inclusion code now detects extensions included by
     template subfiles
