@@ -37,7 +37,18 @@ done
 
 # Search for new admin name
 for file in /etc/security/access-*.conf; do
-	echo "Checking whether new admin group name ($GROUPNAME) is set to $file: "
+	[ "$file" = /etc/security/access-chfn.conf ] && continue # ignore this file
+	[ "$file" = /etc/security/access-chsh.conf ] && continue # ignore this file
+	[ "$file" = /etc/security/access-cron.conf ] && continue # ignore this file
+	[ "$file" = /etc/security/access-kcheckpass.conf ] && continue # ignore this file
+	[ "$file" = /etc/security/access-kde.conf ] && continue # ignore this file
+	[ "$file" = /etc/security/access-kscreensaver.conf ] && continue # ignore this file
+	[ "$file" = /etc/security/access-passwd.conf ] && continue # ignore this file
+	[ "$file" = /etc/security/access-rsh.conf ] && continue # ignore this file
+	[ "$file" = /etc/security/access-su.conf ] && continue # ignore this file
+	[ "$file" = /etc/security/access-sudo.conf ] && continue # ignore this file
+
+	echo -n "Checking whether new admin group name ($GROUPNAME) is set to $file: "
 	if egrep -q "($GROUPNAME,|,$GROUPNAME)" $file; then
 		echo "done"
 	else
