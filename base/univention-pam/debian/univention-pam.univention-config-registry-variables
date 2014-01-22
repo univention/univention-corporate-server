@@ -162,25 +162,37 @@ Categories=system-base
 
 [security/limits/user/.*/hard/.*]
 Description[de]=Erlaubt die Konfiguration von Systemlimits für Benutzer (z.B. die maximale Anzahl offener Dateien). Der erste Platzhalter ist ein Benutzername, der zweite der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Hard-Limit definiert die Obergrenze, die ein Benutzer maximal einem Prozess zuweisen kann.
-Description[en]=Allow the configuration of system limits for users (e.g. the maximum number of open files). The first placeholder ist a user name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The hard limit defines the upper limit a user can assign to a process.
+Description[en]=Allow the configuration of system limits for users (e.g. the maximum number of open files). The first placeholder is a user name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The hard limit defines the upper limit a user can assign to a process.
 Type=str
 Categories=system-base
 
 [security/limits/user/.*/soft/.*]
 Description[de]=Erlaubt die Konfiguration von Systemlimits für Benutzer (z.B. die maximale Anzahl offener Dateien). Der erste Platzhalter ist ein Benutzername, der zweite der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Soft-Limit definiert den Standardwert, der für die Prozesse des Benutzer gilt.
-Description[en]=Allow the configuration of system limits for users (e.g. the maximum number of open files). The first placeholder ist a user name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The soft limit defines the default setting for the processes of the user.
+Description[en]=Allow the configuration of system limits for users (e.g. the maximum number of open files). The first placeholder is a user name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The soft limit defines the default setting for the processes of the user.
 Type=int
 Categories=system-base
 
 [security/limits/group/.*/hard/.*]
 Description[de]=Erlaubt die Konfiguration von Systemlimits für Gruppen (z.B. die maximale Anzahl offener Dateien). Der erste Platzhalter ist ein Gruppenname, der zweite der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Hard-Limit definiert die Obergrenze, die ein Gruppenmitglied maximal einem Prozess zuweisen kann.
-Description[en]=Allow the configuration of system limits for groups (e.g. the maximum number of open files). The first placeholder ist a group name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The hard limit defines the upper limit a group member can assign to a process.
+Description[en]=Allow the configuration of system limits for groups (e.g. the maximum number of open files). The first placeholder is a group name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The hard limit defines the upper limit a group member can assign to a process.
 Type=int
 Categories=system-base
 
 [security/limits/group/.*/soft/.*]
 Description[de]=Erlaubt die Konfiguration von Systemlimits für Gruppen (z.B. die maximale Anzahl offener Dateien). Der erste Platzhalter ist ein Gruppenname, der zweite der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Soft-Limit definiert den Standardwert, der für die Prozesse der Gruppenmitglieder gilt.
-Description[en]=Allow the configuration of system limits for groups (e.g. the maximum number of open files). The first placeholder ist a group name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The soft limit defines the default setting for processes of the group members.
+Description[en]=Allow the configuration of system limits for groups (e.g. the maximum number of open files). The first placeholder is a group name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The soft limit defines the default setting for processes of the group members.
+Type=int
+Categories=system-base
+
+[security/limits/default/user/hard/.*]
+Description[de]=Erlaubt die Konfiguration von Standard-Systemlimits für Benutzer (z.B. die maximale Anzahl offener Dateien). Der Platzhalter ist der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Hard-Limit definiert die Obergrenze, die ein Benutzer maximal einem Prozess zuweisen kann.
+Description[en]=Allow the configuration of default system limits for users (e.g. the maximum number of open files). The placeholder is the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The hard limit defines the upper limit a user can assign to a process.
+Type=str
+Categories=system-base
+
+[security/limits/default/user/soft/.*]
+Description[de]=Erlaubt die Konfiguration von Standard-Systemlimits für Benutzer (z.B. die maximale Anzahl offener Dateien). Der Platzhalter ist der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Soft-Limit definiert den Standardwert, der für die Prozesse des Benutzer gilt.
+Description[en]=Allow the configuration of default system limits for users (e.g. the maximum number of open files). The placeholder is the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The soft limit defines the default setting for the processes of the user.
 Type=int
 Categories=system-base
 
