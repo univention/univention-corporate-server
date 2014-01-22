@@ -46,7 +46,6 @@ import sys
 ucr	= ConfigRegistry()
 
 # global hashes
-include = set()
 shares = {}
 globals = {}
 printers = {}
@@ -343,15 +342,15 @@ class ShareConfiguration( object ):
 		self.delete()
 
 		# write conf file with global options
-		if len( globals ):
+		if len( self.globals ):
 			fd = file( ShareConfiguration.GLOBAL_CONF, 'w' )
 			try:
 				fd.write("[global]\n")
-				fd.write( ''.join( map( lambda item: '%s = %s\n' % item, globals.items() ) ) )
+				fd.write( ''.join( map( lambda item: '%s = %s\n' % item, self.globals.items() ) ) )
 			finally:
 				fd.close()
 
-			include.add( 'include = %s' % ShareConfiguration.GLOBAL_CONF )
+			includes.add( 'include = %s' % ShareConfiguration.GLOBAL_CONF )
 
 		# write share configs files with options and invalid users
 		for share in self._shares.values():

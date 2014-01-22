@@ -1,3 +1,9 @@
+univention-samba (8.0.16-1) unstable; urgency=medium
+
+  * Fix handling of samba/global/options/.*  (Bug #28722)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 22 Jan 2014 19:57:57 +0100
+
 univention-samba (8.0.15-5) unstable; urgency=low
 
   * removed nofile limit stuff from package (Bug #32415) 
