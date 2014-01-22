@@ -129,7 +129,7 @@ define([
 				}
 			}, this);
 			if (setValue) {
-				this._set('value', value);
+				this.set('value', value);
 			}
 		},
 
