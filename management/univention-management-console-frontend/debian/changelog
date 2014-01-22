@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-12) unstable; urgency=low
+
+  * Bug #33383: fix interface of ComplexInput.setInitialValue
+
+ -- Florian Best <best@univention.de>  Wed, 22 Jan 2014 16:05:25 +0100
+
 univention-management-console-frontend (3.0.152-11) unstable; urgency=low
 
   * Bug #33798: Put UCS version on top of traceback mail

@@ -117,19 +117,20 @@ define([
 			array.forEach( this._order, function( iname, i ) {
 				this._widgets[ iname ].set( 'value', value[ i ] );
 			}, this );
-			this._set(value);
+			this._set('value', value);
 		},
 
-		setInitialValue: function(value) {
+		setInitialValue: function(value, setValue) {
+			setValue = undefined === setValue ? true : setValue;
 			array.forEach(this._order, function(iname, i) {
 				var widget = this._widgets[iname];
 				if (widget.setInitialValue) {
-					widget.setInitialValue(value[i]);
-				} else {
-					widget.set('value', value[i]);
+					widget.setInitialValue(value[i], setValue);
 				}
 			}, this);
-			this._set(value);
+			if (setValue) {
+				this._set('value', value);
+			}
 		},
 
 		setValid: function(/*Boolean|Boolean[]*/ areValid, /*String?|String[]?*/ messages) {
