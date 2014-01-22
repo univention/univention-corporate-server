@@ -2,10 +2,13 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-virtual-machine-manager-daemon
-fix: 3.0.17-2.481.201401201652
+fix: 3.0.17-3.482.201401221005
 note:
 version: [0]
 desc: |
-  A VNC connection initiated from the Univention Directory Manager module 
-  can now be used immediately after the start of the virtual machine.
-bug: [33166]
+  This erratum update fixes several issues:
+  * A VNC connection initiated from the Univention Directory Manager module
+    can now be used immediately after the start of the virtual machine.
+  * The automatic check script again restarts UVMMd in case the daemon is
+    no longer responding to the cyclic liveness check.
+bug: [33166,33741]
