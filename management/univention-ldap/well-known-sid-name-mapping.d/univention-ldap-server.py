@@ -30,4 +30,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-invoke-rc.d slapd graceful-restart
+import subprocess
+import univention.debug
+
+relevant_names = ('Administrator', 'Domain Admins', 'Windows Hosts')
+
+def postrun(modified_default_names=None):
+	if not isinstance(modified_default_names, list):
+		return
+
+	slapd_restart = False
+	for name in modified_default_names:
+		if name in relevant_names:
+			slapd_restart = True
+			break
+
+	if slapd_restart:
+		p1 = subprocess.Popen(['invoke-rc.d', 'slapd', 'graceful-restart'],
+				close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		(stdout, stderr) = p1.communicate()
+		if stdout:
+			univention.debug.debug(
+				univention.debug.LISTENER,
+				univention.debug.ERROR,
+				"%s: postrun: %s" % ('well-known-sid-name-mapping.d/univention-ldap-server.py', stdout)
+			)
