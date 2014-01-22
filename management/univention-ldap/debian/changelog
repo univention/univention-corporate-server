@@ -1,3 +1,9 @@
+univention-ldap (10.0.17-23) unstable; urgency=medium
+
+  * Turn well-known-sid-name-mapping.d hook into python code (Bug #33890)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 22 Jan 2014 16:11:39 +0100
+
 univention-ldap (10.0.17-22) unstable; urgency=medium
 
   * remove shebang from python script (Bug #33890)
