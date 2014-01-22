@@ -41,7 +41,7 @@ import listener
 import univention.debug
 import univention.lib.s4
 import univention.config_registry
-import subprocess
+import imp
 
 name = "well-known-sid-name-mapping"
 description = "map user and group names for well known sids"
@@ -52,7 +52,7 @@ modrdn = '1'
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
-slapd_restart = False
+modified_default_names = []
 
 def sidToName(sid):
 	rid = sid.split("-")[-1]
@@ -63,7 +63,6 @@ def sidToName(sid):
 	return None
 
 def checkAndSet(obj, delete=False):
-	global slapd_restart
 
 	ocs = obj.get('objectClass', [])
 	if 'sambaSamAccount' in ocs:
@@ -97,7 +96,7 @@ def checkAndSet(obj, delete=False):
 				listener.setuid(0)
 				try:
 					univention.config_registry.handler_set([ucr_key_value])
-					slapd_restart = True
+					return default_name
 				finally:
 					listener.unsetuid()
 			else:
@@ -115,7 +114,7 @@ def checkAndSet(obj, delete=False):
 					listener.setuid(0)
 					try:
 						univention.config_registry.handler_unset([unset_ucr_key])
-						slapd_restart = True
+						return default_name
 					finally:
 						listener.unsetuid()
 
@@ -145,6 +144,7 @@ def no_relevant_change(new, old):
 			return False
 
 def handler(dn, new, old, command):
+	global modified_default_names
 
 	if ucr.is_false("listener/module/wellknownsidnamemapping", False):
 		univention.debug.debug(
@@ -220,13 +220,17 @@ def handler(dn, new, old, command):
 				univention.debug.INFO,
 				"%s: new %s" % (name, new.get("sambaSID"))
 			)
-			checkAndSet(new)
+			changed_default_name = checkAndSet(new)
+			if changed_default_name:
+				modified_default_names.append(changed_default_name)
 
 		else:	# modify
 			if no_relevant_change(new, old):
 				return
 
-			checkAndSet(new)
+			changed_default_name = checkAndSet(new)
+			if changed_default_name:
+				modified_default_names.append(changed_default_name)
 
 	elif old:	# delete
 		univention.debug.debug(
@@ -234,27 +238,28 @@ def handler(dn, new, old, command):
 			univention.debug.INFO,
 			"%s: del %s" % (name, old.get("sambaSID"))
 		)
-		checkAndSet(old, delete=True)
+		changed_default_name = checkAndSet(old, delete=True)
+		if changed_default_name:
+			modified_default_names.append(changed_default_name)
 
 def postrun():
-	global slapd_restart
-	if not slapd_restart:
+	global modified_default_names
+	if not modified_default_names:
 		return
 
-	run_dir = '/usr/lib/univention-pam/well-known-sid-name-mapping.d'
-	if not os.path.isdir(run_dir):
+	hook_dir = '/usr/lib/univention-pam/well-known-sid-name-mapping.d'
+	if not os.path.isdir(hook_dir):
 		return
 
 	listener.setuid(0)
 	try:
-		p1 = subprocess.Popen(("/bin/run-parts", "--regex", ".*", run_dir), close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-		(stdout, stderr) = p1.communicate()
-		slapd_restart=False
+		for filename in os.listdir(hook_dir):
+			filename_parts = filename.split('.')
+			if filename_parts[1] == 'py' and not filename.startswith('__'):
+				hook_filepath = os.path.join(hook_dir, filename)
+				hook_module = imp.load_source(filename_parts[0], hook_filepath)
+				if hasattr(hook_module, 'postrun'):
+					hook_module.postrun(modified_default_names)
 	finally:
+		modified_default_names = []
 		listener.unsetuid()
-
-	univention.debug.debug(
-		univention.debug.LISTENER,
-		univention.debug.ERROR,
-		"%s: postrun: %s" % (name, stdout)
-	)

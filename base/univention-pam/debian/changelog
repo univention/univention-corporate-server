@@ -1,3 +1,10 @@
+univention-pam (7.0.4-24) unstable; urgency=medium
+
+  * Communicate changes to the well-known-sid-name-mapping.d hooks
+  * turn the hooks into python modules (Bug #33897)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 22 Jan 2014 15:47:25 +0100
+
 univention-pam (7.0.4-23) unstable; urgency=medium
 
   * use security/limits/default/user/ instead of security/limits/user/.*/
