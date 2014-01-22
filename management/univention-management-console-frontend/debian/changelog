@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-11) unstable; urgency=low
+
+  * Bug #33798: Put UCS version on top of traceback mail
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 Jan 2014 10:55:13 +0100
+
 univention-management-console-frontend (3.0.152-10) unstable; urgency=low
 
   * Bug #33703: Fixed MultiSelect widget setting its values too early

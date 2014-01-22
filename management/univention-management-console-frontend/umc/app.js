@@ -663,7 +663,7 @@ define([
 		},
 
 		_saveVersionStatus: function() {
-			tools.status('ucsVersion', lang.replace('{version/version}-{version/patchlevel}', _ucr));
+			tools.status('ucsVersion', lang.replace('{version/version}-{version/patchlevel} errata{version/erratalevel} ({version/releasename})', _ucr));
 		},
 
 		_loadUcrVariables: function() {
@@ -689,6 +689,7 @@ define([
 				'umc/web/piwik',
 				'license/base',
 				'uuid/license',
+				'version/releasename',
 				'version/erratalevel',
 				'version/patchlevel',
 				'version/version'

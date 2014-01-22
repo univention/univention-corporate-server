@@ -689,14 +689,13 @@ define([
 			// See Bug #33798
 			// But add the first line, just in case it is "The following function failed:"
 			var reversedReadableMessage = lang.replace('{0}\n{1}', [readableMessage[0], readableMessage.reverse().join('\n')]);
-			var feedbackBody = lang.replace("{0}\n\n1) {1}\n2) {2}\n3) {3}\n\n----------\n\n{4}\n\n----------\n\n{5} {6}", [
+			var feedbackBody = lang.replace("{0}\n\n1) {1}\n2) {2}\n3) {3}\n\n----------\nUCS Version: {4}\n\n{5}", [
 				_('Please take a second to provide the following information:'),
 				_('steps to reproduce the failure'),
 				_('expected result'),
 				_('actual result'),
-				reversedReadableMessage,
-				'univention-management-console-frontend',
-				tools.status('version')
+				tools.status('ucsVersion'),
+				reversedReadableMessage
 			]);
 
 			var feedbackMailto = lang.replace('mailto:{email}?body={body}&subject={subject}', {
