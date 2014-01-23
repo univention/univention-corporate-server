@@ -10,7 +10,7 @@ desc: |
   * Adding multiple IP addresses to one network interface has been fixed.
   * The summary of the network interface changes is more detailful now.
   * Multiple IP addresses belonging to the same sub-network are now correctly registered in LDAP.
-  * The german translation of "next" has been changed to "Weiter".
+  * The German translation of "next" has been changed to "Weiter".
 bug:
  - 33258
  - 32996
