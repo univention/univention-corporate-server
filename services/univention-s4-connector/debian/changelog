@@ -1,3 +1,14 @@
+univention-s4-connector (8.0.33-23) unstable; urgency=medium
+
+  * Sync WMI filters and links to UCS
+    (only during this joinscript update)
+  * Sync WMI filters and links to Samba4 on UCS@school Slave PDCs
+    (only during this joinscript update)
+  * fix scripts/msGPOWQLFilter.py
+  * add --write2samba4 code to upgrade_msWMI-Som.py (Bug #33936)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Jan 2014 21:10:04 +0100
+
 univention-s4-connector (8.0.33-22) unstable; urgency=medium
 
   * Create CN=WMIPolicy,CN=System independent of joinscript version
