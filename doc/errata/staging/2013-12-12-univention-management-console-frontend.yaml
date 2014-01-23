@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-management-console-frontend
-fix: 3.0.152-11.808.201401221058
+fix: 3.0.152-12.809.201401231012
 note:
 version: [0]
 desc: |
