@@ -570,6 +570,20 @@
   background-image: url(images/menuHighlight.png);
 }
 
+.dj_ie8 .umc .dijitMenuItem {
+	// IE8 does not support transparency
+	background-image: none;
+}
+
+.dj_ie8 .umc .dijitMenu .dijitMenuItemHover td,
+.dj_ie8 .umc .dijitMenu .dijitMenuItemSelected td
+.umc .dijitMenu .dijitMenuItemDisabled.dijitMenuItemSelected td,
+.umc .dijitMenu .dijitMenuItemDisabled.dijitMenuItemHover td {
+	 // FF, IE 8,9,10,11
+	 border-top-color: transparent!important;
+	 border-bottom-color: transparent!important;
+}
+
 .umc .dijitMenu .dijitMenuItem td {
   padding-top: 0.416em;
   padding-bottom: 0.416em;

@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-13) unstable; urgency=low
+
+  * Bug #32655: fix host dropdown design in Internet Explorer and Firefox
+
+ -- Florian Best <best@univention.de>  Thu, 23 Jan 2014 14:34:50 +0100
+
 univention-management-console-frontend (3.0.152-12) unstable; urgency=low
 
   * Bug #33383: fix interface of ComplexInput.setInitialValue
