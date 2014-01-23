@@ -130,10 +130,6 @@ define([
 							// require devicename
 							this.getWidget('name_b').set('required', interfaceType == 'Bridge' || interfaceType == 'Bond');
 
-							// a restriction in UCR enforces that Bridge, VLAN and Bond interfaces can not have multiple IP addresses (Bug #31767)
-							// FIXME: the + button hides on Ethernet page when switch to != Ethernet and switch back
-							this.getWidget('ip4').set('max', (interfaceType !== 'Ethernet') ? 1 : Infinity);
-
 							// adapt visibility of DHCP button
 							this._pages.network._form._buttons.dhcpquery.set('visible', interfaceType === 'Ethernet');
 
