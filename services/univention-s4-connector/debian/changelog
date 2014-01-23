@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-24) unstable; urgency=medium
+
+  * Turn computer/mswmifilter into settings/mswmifilter (Bug #33936)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Jan 2014 21:29:03 +0100
+
 univention-s4-connector (8.0.33-23) unstable; urgency=medium
 
   * Sync WMI filters and links to UCS
