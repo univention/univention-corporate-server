@@ -166,7 +166,7 @@ define([
 			var buttons = this.inherited(arguments);
 			array.forEach(buttons, function(button) {
 				if (button.name == 'finish') {
-					button.label = _('Next ');
+					button.label = _('Next');
 				}
 			});
 			return buttons;

@@ -712,10 +712,6 @@ msgstr "Neues Root-Passwort"
 
 #: umc/js/setup.js:201
 msgid "Next"
-msgstr "Vor"
-
-#: umc/js/setup/InterfaceTypeChooseWizard.js:169
-msgid "Next "
 msgstr "Weiter"
 
 #: umc/js/setup.js:599

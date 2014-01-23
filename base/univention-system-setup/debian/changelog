@@ -1,3 +1,9 @@
+univention-system-setup (7.0.69-5) unstable; urgency=low
+
+  * Bug #33976: german translation for "next" has been changed
+
+ -- Florian Best <best@univention.de>  Thu, 23 Jan 2014 08:03:05 +0100
+
 univention-system-setup (7.0.69-4) unstable; urgency=low
 
   * Bug #33407: fix overwriting of IP addresses when opening an interface
