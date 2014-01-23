@@ -84,14 +84,14 @@ udm container/cn create "$@" --ignore_exists \
 			--position "cn=System,$ldap_base" \
 			--set name=Policies || die
 
-udm container/cn create "$@" --ignore_exists \
-			--position "cn=System,$ldap_base" \
-			--set name=WMIPolicy || die
-
 udm container/ou create "$@" --ignore_exists \
 			--set name="Domain Controllers" \
 			--set description="Default container for domain controllers" || die
 fi
+
+udm container/cn create "$@" --ignore_exists \
+			--position "cn=System,$ldap_base" \
+			--set name=WMIPolicy || die
 
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/msgpo.schema \
@@ -162,7 +162,7 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 	if [ $JS_LAST_EXECUTED_VERSION -le 3 ] && is_ucr_true connector/s4/mapping/wmifilter; then
 		## errata3.2-0 update code
 		if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ] || is_ucr_true 'connector/s4/allow/secondary'; then
-			# Write the MS WMI filter links from Samba 4 to UCS
+			# Write the MS WMI filter links from Samba 4 to UCS, in UCS@school this could be done with hostdn
 			/usr/share/univention-s4-connector/msGPOWQLFilter.py --write2ucs "$@"
 			# Add WMI filter objects to S4 rejected table, this will resync these objects
 			/usr/share/univention-s4-connector/upgrade_msWMI-Som.py

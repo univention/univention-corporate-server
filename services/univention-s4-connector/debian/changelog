@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-22) unstable; urgency=medium
+
+  * Create CN=WMIPolicy,CN=System independent of joinscript version
+  * fix scripts/msGPOWQLFilter.py (Bug #33936)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Jan 2014 19:06:10 +0100
+
 univention-s4-connector (8.0.33-21) unstable; urgency=medium
 
   * Create CN=WMIPolicy,CN=System referenced by UCS@school ACLs
