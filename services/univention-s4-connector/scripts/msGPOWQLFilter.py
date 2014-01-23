@@ -70,7 +70,7 @@ def search_s4():
 		will only be set on groupPolicyContainer objects.
 	'''
 
-	p1 = subprocess.Popen(['ldbsearch -H /var/lib/samba/private/sam.ldb msGPOWQLFilter=* dn msGPOWQLFilter | ldapsearch-wrapper'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+	p1 = subprocess.Popen(['ldbsearch -H /var/lib/samba/private/sam.ldb gPCWQLFilter=* dn gPCWQLFilter | ldapsearch-wrapper'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 	(stdout,stderr) = p1.communicate()
 
 	if p1.returncode != 0:
@@ -84,9 +84,9 @@ def search_s4():
 		line=line.strip()
 		if line.startswith('dn: '):
 			dn=line[4:]
-		if line.startswith('msGPOWQLFilter: '):
-			msGPOWQLFilter=line[len('msGPOWQLFilter: '):]
-			result[dn] = msGPOWQLFilter
+		if line.startswith('gPCWQLFilter: '):
+			gPCWQLFilter=line[len('gPCWQLFilter: '):]
+			result[dn] = gPCWQLFilter
 			dn=None
 
 	return result

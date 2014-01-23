@@ -1,3 +1,10 @@
+univention-s4-connector (7.0.33-3) unstable; urgency=medium
+
+  * Create CN=WMIPolicy,CN=System referenced by UCS@school ACLs
+  * fix scripts/msGPOWQLFilter.py (Bug #33956)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Jan 2014 19:15:44 +0100
+
 univention-s4-connector (7.0.33-2) unstable; urgency=medium
 
   * Move package update operations for mswmi to join script,
