@@ -38,13 +38,13 @@ import univention.admin.handlers
 import univention.admin.localization
 import string
 
-translation=univention.admin.localization.translation('univention.admin.handlers.container.mswmifilter')
+translation=univention.admin.localization.translation('univention.admin.handlers.settings.mswmifilter')
 _=translation.translate
 
-module='container/mswmifilter'
+module='settings/mswmifilter'
 operations=['add','edit','remove','search','move','subtree_move']
 childs=1
-short_description=_('Container: MS WMI Filter')
+short_description=_('Settings: MS WMI Filter')
 long_description=''
 options={
 }

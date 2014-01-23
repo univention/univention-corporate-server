@@ -17,8 +17,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: mswmifilter.py:47
-msgid "Container: MS WMI Filter"
-msgstr "Container: MS WMI Filter"
+msgid "Settings: MS WMI Filter"
+msgstr "Einstellungen: MS WMI Filter"
 
 #: mswmifilter.py:53
 msgid "Name"

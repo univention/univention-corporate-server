@@ -687,7 +687,7 @@ if configRegistry.is_true('connector/s4/mapping/wmifilter', False):
 		sync_mode_ou=configRegistry.get('connector/s4/mapping/syncmode')
 	print '''
 	'msWMIFilter': univention.s4connector.property (
-			ucs_module='container/mswmifilter',
+			ucs_module='settings/mswmifilter',
 
 			sync_mode='%(sync_mode_ou)s',
 
