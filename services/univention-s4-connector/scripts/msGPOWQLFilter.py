@@ -65,8 +65,9 @@ def _connect_ucs(configRegistry, binddn, bindpwd):
 
 
 def search_s4():
-	''' Search all S4 objects with msGPOWQLFilter attribute and return a
-		dictonary with dn as key and msGPOWQLFilter as result. The msGPOWQLFilter
+	''' Search all S4 objects with gPCWQLFilter attribute and return a
+		dictonary with dn as key and gPCWQLFilter as result.
+		The corresponding msGPOWQLFilter
 		will only be set on groupPolicyContainer objects.
 	'''
 
@@ -125,14 +126,14 @@ def write_to_s4(configRegistry, ucs_result):
 
 		if True:
 			mod_str = 'dn: %s\nchangetype: modify\n' % s4_dn
-			mod_str += 'replace: msGPOWQLFilter\nmsGPOWQLFilter: %s\n' % ucs_result[ucs_dn]
+			mod_str += 'replace: gPCWQLFilter\ngPCWQLFilter: %s\n' % ucs_result[ucs_dn]
 			mod_str += '\n'
 			p1 = subprocess.Popen(['ldbmodify', '-H', '/var/lib/samba/private/sam.ldb'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=False)
 			(stdout,stderr) = p1.communicate(mod_str)
 			if p1.returncode != 0:
-				print 'Failed to set msGPOWQLFilter for Samba 4 object (%s)' % (s4_dn)
+				print 'Failed to set gPCWQLFilter for Samba 4 object (%s)' % (s4_dn)
 			else:
-				print 'Set msGPOWQLFilter for Samba 4 object (%s)' % (s4_dn)
+				print 'Set gPCWQLFilter for Samba 4 object (%s)' % (s4_dn)
 
 
 def search_ucs(configRegistry, binddn, bindpwd):
@@ -176,8 +177,8 @@ def write_to_ucs(configRegistry,  s4_result, binddn, bindpwd):
 if __name__ == '__main__':
 
 	parser = OptionParser(usage='msGPOWQLFilter.py (--write2ucs|--write2samba4)')
-	parser.add_option("--write2ucs", dest="write2ucs", action="store_true", help="Write MS WMI filters from Samba 4 to UCS", default=False)
-	parser.add_option("--write2samba4", dest="write2samba4", action="store_true", help="Write MS WMI filters from UCS to Samba 4", default=False)
+	parser.add_option("--write2ucs", dest="write2ucs", action="store_true", help="Write WMI filter links from Samba 4 to UCS", default=False)
+	parser.add_option("--write2samba4", dest="write2samba4", action="store_true", help="Write WMI filter links from UCS to Samba 4", default=False)
 	parser.add_option("--binddn", dest="binddn", action="store", help="Binddn for UCS LDAP connection")
 	parser.add_option("--bindpwd", dest="bindpwd", action="store", help="Password for UCS LDAP connection")
 	(options, args) = parser.parse_args()

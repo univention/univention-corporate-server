@@ -247,13 +247,19 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 		fi
 	fi
 
-	if [ $JS_LAST_EXECUTED_VERSION -le 3 ] && is_ucr_true connector/s4/mapping/wmifilter; then
+	if [ $JS_LAST_EXECUTED_VERSION -eq 3 ] && is_ucr_true connector/s4/mapping/wmifilter; then
 		## errata3.1-1 update code
-		if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ] || is_ucr_true 'connector/s4/allow/secondary'; then
-			# Write the MS WMI filter links from Samba 4 to UCS, in UCS@school this could be done with hostdn
-			/usr/share/univention-s4-connector/msGPOWQLFilter.py --write2ucs "$@"
-			# Add WMI filter objects to S4 rejected table, this will resync these objects
-			/usr/share/univention-s4-connector/upgrade_msWMI-Som.py
+
+		# Add existing WMI filter objects to S4 rejected table, this will resync these objects to UCS
+		/usr/share/univention-s4-connector/upgrade_msWMI-Som.py --write2ucs "$@"
+		# Write MS WMI filter links from Samba 4 to UCS, in UCS@school this could be done with hostdn
+		/usr/share/univention-s4-connector/msGPOWQLFilter.py --write2ucs "$@"
+
+		if is_ucr_true 'connector/s4/allow/secondary'; then # Slave PDC
+			# Touch existing WMI filter objects existing in UCS, this will resync these objects to S4
+			/usr/share/univention-s4-connector/upgrade_msWMI-Som.py --write2samba4 "$@"
+			# Write MS WMI filter links from UCS to Samba 4
+			/usr/share/univention-s4-connector/msGPOWQLFilter.py --write2samba4 "$@"
 		fi
 	fi
 
