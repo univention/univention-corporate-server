@@ -1,3 +1,9 @@
+univention-lib (3.0.26-17) unstable; urgency=medium
+
+  * bash fix (Bug #33582)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Jan 2014 18:24:03 +0100
+
 univention-lib (3.0.26-16) UNRELEASED; urgency=medium
 
   * Merge userNameMapping and groupNameMapping functions into
