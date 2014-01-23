@@ -763,6 +763,45 @@ instanceType: 4
 		gegenseitig identifizieren können.
 	  </para>
 
+	  <para>
+		Vertrauensstellungen müssen generell in zwei Schritten angelegt werden:
+
+		<itemizedlist>
+		  <listitem><simpara>
+			In der "vertrauten" Domäne muss ein Konto für die Vertrauenstellung eingerichtet werden
+			(Domain Trust Account).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			In der "vertrauenden" Domäne muss eine Vertrauensstellung eingerichtet werden, in dem
+			auf einem Domänencontroller (Microsoft Windows oder Samba) der vertrauenden Domäne ein
+			Tool zur Einrichtung einer Vertrauensstellung als Benutzer mit administrativen Rechten
+			aufgerufen wird. Dort wird eine in der Microsoft-Terminologie als "ausgehend" bezeichnete
+			Vertrauensstellung eingerichtet und Benutzername/Passwort für den Trust Account der
+			vertrauten Domäne konfiguriert. Über den Trust Account führt die vertrauende Domäne
+			Namensauflösungen in der vertrauten Domäne durch.
+		  </simpara></listitem>
+		</itemizedlist>
+	  </para>
+
+	  <para>
+		Vertrauensstellungen können unidirektional oder bidirektional eingerichtet werden. Technisch
+		entspricht eine bidirektionale Vertrauensstellung zwei unidirektional konfigurierten
+		Vertrauensstellungen in beide Richtungen.
+	  </para>
+
+	  <para>
+		Die Terminologie von Vertrauensstellungen hängt von der Perspektive der vertrauenden oder
+		der vertrauten Domäne ab: Aus Sicht der vertrauenden Domäne ist die Vertrauensstellung
+		ausgehend und aus Sicht der vertrauten Domäne eingehend.
+	  </para>
+
+	  <para>
+		Weitere Informationen zur Konfiguration von Vertrauensstellungen unter Microsoft Windows
+		findet sich in <xref linkend="windows-trust"/>.
+	  </para>
+
+
 	  <section id="windows:trustdom:windows-trusts-samba">
 		<title>Windows-Domäne vertraut Samba-Domäne</title>
 
@@ -774,7 +813,7 @@ instanceType: 4
 		</para>
 
 		<para>
-		  Auf dem Windows-PDC muss eine Vertrauensstellung angelegt werden.
+		  Auf dem Windows-PDC muss eine ausgehende Vertrauensstellung angelegt werden.
 		</para>
 
 		<para>
@@ -801,7 +840,7 @@ instanceType: 4
 		</para>
 
 		<para>
-		  Auf dem Windows-PDC muss nun eine Vertrauensstellung angelegt werden.
+		  Auf dem Windows-PDC muss nun eine eingehende Vertrauensstellung angelegt werden.
 		</para>
 
 		<para>
@@ -821,7 +860,7 @@ echo "iptables -I INPUT 1 -p udp --sport 137 -j ACCEPT" \
 
 		<programlisting language="sh">
 net rpc trustdom establish &lt;Windowsdomain&gt;
-net setauthuser -UAdministrator
+net setauthuser -UAdministrator (das Administrator-Passwort in Windows wird benötigt)
 echo -e "[global]\nwinbind rpc only = yes" >> /etc/samba/local.conf
 /etc/init.d/winbind restart
 ucr set auth/methods="krb5 ldap unix winbind"

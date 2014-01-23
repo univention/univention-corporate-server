@@ -748,6 +748,44 @@ instanceType: 4
 		able to reach each other over the network and identify each other using broadcasts or WINS.
 	  </para>
 
+
+
+	  <para>
+		Two steps generally need to be performed to establish a trust relation:
+
+		<itemizedlist>
+		  <listitem><simpara>
+			A domain trust account needs to be created in the "trusted" domain.
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			The trust relation needs to be established in the "trusting" domain. This is done by
+			logging in to the "trusting" domain with administrative  privileges and running the tool
+			for domain trust administration provided by the domain controller (Microsoft Windows or
+			Samba) to establish an "outgoing" trust (as it is called in the Microsoft terminology).
+			The credentials of the trust account for the "trusted" domain need to be entered. This
+			trust account is required by the "trusting" domain for name resolution in the "trusted"
+			domain.
+		  </simpara></listitem>
+		</itemizedlist>
+	  </para>
+
+	  <para>
+		Trust relations can be configured unidirectional or bidirectional. Technically a
+		bidirectional trust is simply realised as two unidirectional trusts; one in each direction.
+	  </para>
+
+	  <para>
+		The terminology of unidirectional trusts depends on the perspective of either the "trusting"
+		or the "trusted" domain. From the perspective of the "trusting" domain the trust is called
+		"outgoing".  From the perspective of the "trusted" domain the trust is called "incoming".
+	  </para>
+
+	  <para>
+		Further information on the configuration of trust relationships on Microsoft Windows can be found in
+		<xref linkend="windows-trust"/>.
+	  </para>
+
 	  <section id="windows:trustdom:windows-trusts-samba">
 		<title>Windows domain trusts Samba domain</title>
 		<para>
@@ -762,7 +800,7 @@ instanceType: 4
 		</para>
 		
 		<para>
-		  A trust relationship must be created on the Windows PDC.
+		  An outgoing trust relationship must be created on the Windows PDC.
 		</para>
 
 		<para>
@@ -785,7 +823,7 @@ instanceType: 4
 		</para>
 
 		<para>
-		  A trust relationship must be created on the Windows PDC.
+		  An incoming trust relationship must be created on the Windows PDC.
 		</para>
 
 		<para>
@@ -805,7 +843,7 @@ echo "iptables -I INPUT 1 -p udp --sport 137 -j ACCEPT" \
 
 		<programlisting language="sh">
 net rpc trustdom establish &lt;Windows domain&gt;
-net setauthuser -UAdministrator
+net setauthuser -UAdministrator (enter the Windows Administrator password)
 echo -e "[global]\nwinbind rpc only = yes" >> /etc/samba/local.conf
 /etc/init.d/winbind restart
 ucr set auth/methods="krb5 ldap unix winbind"
