@@ -11,6 +11,7 @@ desc: |
     "Policies" tab of LDAP objects. Fixed that.
   * A user's empty mail server was overwritten with the first non-emtpy one
     even for existing users. Fixed that.
-  * A typo in the german translation has been fixed.
-  * After adding a new standard container the container was not selectable as position for new objects. Fixed that.
+  * A typo in the German translation has been fixed.
+  * After adding a new standard container the container was not selectable as
+    position for new objects. Fixed that.
 bug: [33004, 33329, 33554, 33651]
