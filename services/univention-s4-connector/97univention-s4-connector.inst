@@ -84,6 +84,10 @@ udm container/cn create "$@" --ignore_exists \
 			--position "cn=System,$ldap_base" \
 			--set name=Policies || die
 
+udm container/cn create "$@" --ignore_exists \
+			--position "cn=System,$ldap_base" \
+			--set name=WMIPolicy || die
+
 udm container/ou create "$@" --ignore_exists \
 			--set name="Domain Controllers" \
 			--set description="Default container for domain controllers" || die

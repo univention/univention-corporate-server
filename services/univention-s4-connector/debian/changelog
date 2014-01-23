@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-21) unstable; urgency=medium
+
+  * Create CN=WMIPolicy,CN=System referenced by UCS@school ACLs
+    (Bug #33936).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Jan 2014 17:11:59 +0100
+
 univention-s4-connector (8.0.33-20) unstable; urgency=medium
 
   * Reduce waiting time for ucs_registerLDAPExtension (Bug #33936).
