@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-25) unstable; urgency=low
+
+  * Remove the internal S4 Connector SQLite database while re-joining
+    (Bug #33940)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Jan 2014 09:08:53 +0100
+
 univention-s4-connector (8.0.33-24) unstable; urgency=medium
 
   * Turn container/mswmifilter into settings/mswmifilter (Bug #33936)

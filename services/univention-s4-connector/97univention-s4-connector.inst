@@ -41,6 +41,12 @@ eval "$(univention-config-registry shell)"
 
 NAME="S4 Connector"
 
+if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
+	# Remove existing sqlite DB while re-joining
+	internal_db="/etc/univention/connector/s4internal.sqlite"
+	test -e "$internal_db" && mv "$internal_db" "${internal_db}_$(date +%Y%m%d%H%M%S)"
+fi
+
 univention-config-registry set \
 	connector/s4/ldap/host?"$ldap_master" \
 	connector/s4/ldap/base?"$samba4_ldap_base" \
