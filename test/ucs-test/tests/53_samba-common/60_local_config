@@ -1,0 +1,31 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check local config
+## exposure: safe
+## packages:
+##  - univention-samba-local-config
+## roles: 
+##  - domaincontroller_master
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+##  - memberserver
+## bugs:
+##  - 28722
+
+eval "$(ucr shell)"
+
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/base.sh" || exit 137
+
+value="$(random_string)"
+
+ucr set samba/global/options/"netbios aliases"="$value"
+trap 'ucr unset samba/global/options/"netbios aliases"' INT TERM EXIT
+
+result="$(echo ""  | testparm -vv 2>&1 | sed -ne 's|[ \t]*netbios aliases = ||p')"
+if [ "$result" != "$value" ]; then
+	echo "netbios aliases is set to $result; expected $value"
+	fail_test 1
+fi
+
+exit $RETVAL
+

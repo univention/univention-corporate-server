@@ -1,3 +1,10 @@
+ucs-test (4.0.161-26) unstable; urgency=low
+
+  * 53_samba-common/60_local_config: Added a test case to check
+    samba.local.config.py (Bug #28722)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Jan 2014 08:35:12 +0100
+
 ucs-test (4.0.161-25) unstable; urgency=low
 
   * 00_base/96rename_domain_admins: ignore some
