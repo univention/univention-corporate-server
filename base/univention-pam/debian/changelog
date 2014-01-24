@@ -1,3 +1,9 @@
+univention-pam (7.0.4-25) unstable; urgency=medium
+
+  * Increase open file limit to 32768 (Bug #32415)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 24 Jan 2014 16:23:38 +0100
+
 univention-pam (7.0.4-24) unstable; urgency=medium
 
   * Communicate changes to the well-known-sid-name-mapping.d hooks
