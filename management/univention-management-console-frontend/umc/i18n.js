@@ -165,9 +165,10 @@ define([
 				return msg || _msg; // return by default the localized string
 			};
 
-			// use 'umc.app' as backup path to allow other class to override a
+			// use 'umc.app' and 'umc.branding' as backup path to allow other class to override a
 			// UMC base class without loosing its translations (see Bug #24864)
 			var scopes = params.split(/\s*,\s*/);
+			scopes.push('umc/branding');
 			scopes.push('umc/app');
 
 			// ignore i18n files that could not be loaded previously

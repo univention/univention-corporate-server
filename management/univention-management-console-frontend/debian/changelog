@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-14) unstable; urgency=low
+
+  * Bug #33493: add branding scope to fallback translations
+
+ -- Florian Best <best@univention.de>  Fri, 24 Jan 2014 08:57:27 +0100
+
 univention-management-console-frontend (3.0.152-13) unstable; urgency=low
 
   * Bug #32655: fix host dropdown design in Internet Explorer and Firefox
