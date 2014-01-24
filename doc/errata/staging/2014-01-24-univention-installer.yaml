@@ -1,0 +1,10 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-installer
+fix: 9.0.30-5.1104.201401171439
+note:
+version: [0]
+desc: |
+  Enforce UTF-8 encoding when setting locale
+bug: [33916]
