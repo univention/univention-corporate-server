@@ -8,7 +8,7 @@ version: [0]
 desc: |
   This errata update fixes several issues:
   * Adding multiple IP addresses to one network interface has been fixed.
-  * The summary of the network interface changes is more detailful now.
+  * The summary of the network interface changes is more detailed now.
   * Multiple IP addresses belonging to the same sub-network are now correctly registered in LDAP.
   * The German translation of "Next" has been changed to "Weiter".
 bug:
