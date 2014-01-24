@@ -39,7 +39,7 @@ define([
 	"umc/widgets/TextBox",
 	"umc/widgets/LabelPane",
 	"umc/widgets/Button",
-	"umc/i18n!umc/branding,umc/app"
+	"umc/i18n!"
 ], function(declare, lang, array, has, domClass, regexp, ContainerWidget, TextBox, LabelPane, Button, _) {
 	return declare("umc.widgets.LiveSearchSidebar", [ContainerWidget], {
 		// summary:

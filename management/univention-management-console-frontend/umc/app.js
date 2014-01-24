@@ -75,7 +75,7 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/widgets/Tooltip",
-	"umc/i18n!umc/branding,umc/app",
+	"umc/i18n!",
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, string, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, registry, tools, dialog, store, ProgressInfo, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Text, Button, UMCTooltip, _) {
 	// cache UCR variables

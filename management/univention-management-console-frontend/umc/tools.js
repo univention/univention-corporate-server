@@ -46,7 +46,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
-	"umc/i18n!umc/branding,umc/app"
+	"umc/i18n!"
 ], function(lang, array, _window, xhr, basexhr, Deferred, json, topic, cookie, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, _) {
 
 	// in order to break circular dependencies (umc.tools needs a Widget and

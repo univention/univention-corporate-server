@@ -36,7 +36,7 @@ define([
 	"umc/widgets/LabelPane",
 	"umc/widgets/PasswordBox",
 	"umc/widgets/_FormWidgetMixin",
-	"umc/i18n!umc/branding,umc/app"
+	"umc/i18n!"
 ], function(declare, array, lang, ContainerWidget, LabelPane, PasswordBox, _FormWidgetMixin, _) {
 	return declare("umc.widgets.PasswordInputBox", [ ContainerWidget, _FormWidgetMixin ], {
 		// summary:

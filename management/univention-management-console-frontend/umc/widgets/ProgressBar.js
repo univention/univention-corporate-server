@@ -38,7 +38,7 @@ define([
 	"umc/dialog",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
-	"umc/i18n!umc/branding,umc/app"
+	"umc/i18n!"
 ], function(declare, lang, array, domClass, ProgressBar, tools, dialog, ContainerWidget, Text, _) {
 	return declare("umc.widgets.ProgressBar", ContainerWidget, {
 		// summary:

@@ -35,7 +35,7 @@ define([
 	"dojo/topic",
 	"umc/tools",
 	"umc/widgets/Form",
-	"umc/i18n!umc/branding,umc/app"
+	"umc/i18n!"
 ], function(declare, lang, array, topic, tools, Form, _) {
 	return declare("umc.widgets.SearchForm", Form, {
 		// summary:

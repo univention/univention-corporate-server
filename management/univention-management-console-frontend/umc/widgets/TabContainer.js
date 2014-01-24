@@ -37,7 +37,7 @@ define([
 	"dojo/topic",
 	"dijit/layout/TabContainer",
 	"umc/tools",
-	"umc/i18n!umc/branding,umc/app"
+	"umc/i18n!"
 ], function(declare, lang, array, domClass, on, topic, TabContainer, tools, _) {
 	return declare("umc.widgets.TabContainer", TabContainer, {
 		// summary:

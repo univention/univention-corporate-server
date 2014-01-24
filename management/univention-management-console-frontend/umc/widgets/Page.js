@@ -45,7 +45,7 @@ define([
 	"umc/render",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
-	"umc/i18n!umc/branding,umc/app"
+	"umc/i18n!"
 ], function(declare, lang, array, baseFX, on, mouse, query, style, domClass, topic, BorderContainer, tools, dialog, render, Text, ContainerWidget, _) {
 	return declare("umc.widgets.Page", BorderContainer, {
 		// summary:

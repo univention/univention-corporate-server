@@ -40,7 +40,7 @@ define([
 	"dijit/form/Form",
 	"umc/tools",
 	"umc/render",
-	"umc/i18n!umc/branding,umc/app"
+	"umc/i18n!"
 ], function(declare, lang, array, kernel, Deferred, when, all, style, Form, tools, render, _) {
 
 	// in order to break circular dependencies (umc.dialog needs a Form and

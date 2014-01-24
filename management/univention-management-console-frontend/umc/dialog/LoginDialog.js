@@ -50,7 +50,7 @@ define([
 	"umc/widgets/ComboBox",
 	"umc/widgets/StandbyMixin",
 	"umc/i18n/tools",
-	"umc/i18n!umc/branding,umc/app",
+	"umc/i18n!",
 	"dojo/domReady!"
 ], function(declare, lang, array, win, aspect, has, on, mouse, dom, query, attr, domClass, Deferred, Dialog, DialogUnderlay, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
 	return declare("umc.dialog.LoginDialog", [StandbyMixin], {

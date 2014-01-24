@@ -41,7 +41,7 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
-	"umc/i18n!umc/branding,umc/app"
+	"umc/i18n!"
 ], function(declare, lang, array, event, domClass, when, json, StackContainer, tools, Form, Page, StandbyMixin, _) {
 	return declare("umc.widgets.Wizard", [ StackContainer, StandbyMixin ], {
 		// summary:

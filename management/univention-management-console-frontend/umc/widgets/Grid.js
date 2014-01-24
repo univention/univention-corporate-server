@@ -53,7 +53,7 @@ define([
 	"umc/widgets/Tooltip",
 	"umc/tools",
 	"umc/render",
-	"umc/i18n!umc/branding,umc/app",
+	"umc/i18n!",
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
 ], function(declare, lang, array, win, construct, attr, geometry, style,

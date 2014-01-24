@@ -41,7 +41,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/MultiSelect",
 	"umc/widgets/LabelPane",
-	"umc/i18n!umc/branding,umc/app"
+	"umc/i18n!"
 ], function(declare, lang, array, aspect, when, DataStore, tools, ContainerWidget, _FormWidgetMixin, Button, MultiSelect, LabelPane, _) {
 
 	// lazy defining of the dialog in order to avoid circular dependencies with umc/render

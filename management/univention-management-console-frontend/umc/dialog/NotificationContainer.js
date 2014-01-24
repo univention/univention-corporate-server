@@ -46,7 +46,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/Text",
 	"umc/tools",
-	"umc/i18n!umc/branding,umc/app"
+	"umc/i18n!"
 ], function(declare, lang, query, win, on, topic, fx, domStyle, domConstruct, domGeometry, Memory, _WidgetBase, _TemplatedMixin, sprintf, Button, Text, tools, _) {
 	var _getWrapper = function() {
 		return query('.umcNotificationTopWrapper')[0];

@@ -32,7 +32,7 @@ define([
 	"dojo/_base/declare",
 	"umc/widgets/Uploader",
 	"umc/widgets/Text",
-	"umc/i18n!umc/branding,umc/app"
+	"umc/i18n!"
 ], function(declare, Uploader, Text, _) {
 	return declare("umc.widgets.InfoUploader", Uploader, {
 		'class': 'umcInfoUploader',

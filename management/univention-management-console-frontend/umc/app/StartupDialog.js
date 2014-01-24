@@ -50,7 +50,7 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
-	"umc/i18n!umc/branding,umc/app"
+	"umc/i18n!"
 ], function(declare, lang, kernel, array, query, parser, domAttr, domClass, domGeometry, Deferred, when, topic, registry, Dialog, StackContainer, RadioButton, tools, dialog, Text, ContainerWidget, Button, _) {
 	var _lang = kernel.locale.split('-')[0];
 	var _getDocumentDependency = function(key) {

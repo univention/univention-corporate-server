@@ -44,7 +44,7 @@ define([
 	"umc/widgets/Form",
 	"umc/tools",
 	"umc/i18n/tools",
-	"umc/i18n!umc/branding,umc/app"
+	"umc/i18n!"
 ], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, LoginDialog, NotificationContainer, ConfirmDialog, Text, Form, tools, i18nTools, _) {
 	var dialog = {};
 	lang.mixin(dialog, {

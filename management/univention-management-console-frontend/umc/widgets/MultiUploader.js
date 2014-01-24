@@ -41,7 +41,7 @@ define([
 	"umc/widgets/Uploader",
 	"umc/widgets/MultiSelect",
 	"umc/widgets/ProgressInfo",
-	"umc/i18n!umc/branding,umc/app"
+	"umc/i18n!"
 ], function(declare, lang, array, when, on, domStyle, ContainerWidget, _FormWidgetMixin, Button, Uploader, MultiSelect, ProgressInfo, _) {
 	return declare("umc.widgets.MultiUploader", [ ContainerWidget, _FormWidgetMixin ], {
 		'class': 'umcMultiUploader',

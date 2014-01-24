@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.152-15) unstable; urgency=low
+
+  * Bug #33493: remove language scopes from JS files, they are defined through
+  	umc/i18n.js
+
+ -- Florian Best <best@univention.de>  Fri, 24 Jan 2014 15:39:40 +0100
+
 univention-management-console-frontend (3.0.152-14) unstable; urgency=low
 
   * Bug #33493: add branding scope to fallback translations

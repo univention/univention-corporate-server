@@ -87,7 +87,7 @@ define([
 		//		will try to load the JSON i18n file from
 		//		"domain/i18n/<language>/mymodule.json".
 		//		As parameter for the plugin, several scopes may be specified,
-		//		e.g.  "umc/i18n!umc.branding,umc.app".
+		//		e.g.  "umc/i18n!umc/branding,umc/app".
 		//		The plugin provides a gettext-like method that will translate
 		//		the given message string.  A printf-like syntax for the string
 		//		is possible, simply provide the function with a dict or more
