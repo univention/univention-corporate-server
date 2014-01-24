@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-management-console-frontend
-fix: 3.0.152-12.809.201401231012
+fix: 3.0.152-15.811.201401241543
 note:
 version: [0]
 desc: |
@@ -10,7 +10,7 @@ desc: |
  * The protocol of a printer URI in the printers UMC module was always set to
    "cups-pdf://".  Fixed this by adding setInitialValue method to ComplexInput
    widget.
- * Added branding translation scope to all UMC files
+ * Added branding translation scope to all UMC widgets
  * Reversed the traceback when sending errors via mail because the web or mail
    client could truncate the interesting part.
  * Fixed MultiSelect widget setting its values too early which could break page
