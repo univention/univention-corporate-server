@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-26) unstable; urgency=medium
+
+  * add --write2samba4 code to upgrade_msWMI-Som.py (Bug #33936)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 24 Jan 2014 17:01:10 +0100
+
 univention-s4-connector (8.0.33-25) unstable; urgency=low
 
   * Remove the internal S4 Connector SQLite database while re-joining
