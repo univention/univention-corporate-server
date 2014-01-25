@@ -1,3 +1,10 @@
+ucs-test (4.0.161-27) unstable; urgency=low
+
+  * 68univention-admingrp-user-passwordreset-protected-group: Force LDAP
+    server restart in error case (Bug #33992)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 25 Jan 2014 09:29:14 +0100
+
 ucs-test (4.0.161-26) unstable; urgency=low
 
   * 53_samba-common/60_local_config: Added a test case to check
