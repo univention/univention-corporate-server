@@ -1,3 +1,10 @@
+ucs-test (4.0.161-28) unstable; urgency=low
+
+  * 95rename_administrator: create a temporary domain admin otherwise we
+    are unable to use Administrator since he was renamed (Bug #33897)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 25 Jan 2014 13:07:09 +0100
+
 ucs-test (4.0.161-27) unstable; urgency=low
 
   * 68univention-admingrp-user-passwordreset-protected-group: Force LDAP
