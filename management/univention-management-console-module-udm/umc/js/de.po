@@ -832,7 +832,7 @@ msgstr "Das übergeordnete Objekt, für welches die Suche ausgeführt wird."
 
 #: umc/js/udm.js:555
 msgid "The type of the LDAP object."
-msgstr "Der Type des LDAP-Objekts."
+msgstr "Der Typ des LDAP-Objekts."
 
 #: umc/js/udm.js:1212 umc/js/udm.js:1225
 msgid "Type"

@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define setTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -245,19 +245,7 @@ define([
 					this._form.getWidget( '$location$' ).set( 'visible', false);
 					if (!this._multiEdit) {
 						this._form.ready().then(lang.hitch(this, function() {
-							var vals = {};
-							array.forEach(result.properties, lang.hitch(this, function(iprop) {
-								if (iprop.nonempty_is_default && iprop['default'] === undefined) {
-									var widget = this._form.getWidget(iprop.id);
-									if (widget.getAllItems) {
-										var item = array.filter(widget.getAllItems(), function(item) { return item.id; })[0];
-										if (item !== undefined) {
-											vals[iprop.id] = item.id;
-										}
-									}
-								}
-							}));
-							this._form.setFormValues(vals);
+							this._setNonEmptyValues(result.properties);
 						}));
 					}
 				}));
@@ -295,6 +283,29 @@ define([
 
 				return this._form.ready();
 			}));
+		},
+
+		_setNonEmptyValues: function(properties) {
+			// Some properties have an empty value as first item.
+			// In this case this "empty" item is chosen as default
+			// by the frontend for new objects. Sometimes this is
+			// not wanted: The empty value as option is required
+			// but for new objects the first non-empty value should
+			// be the default value
+			// E.g. users/user mailHomeServer; see Bug #33329
+			var vals = {};
+			array.forEach(properties, lang.hitch(this, function(iprop) {
+				if (iprop.nonempty_is_default && iprop['default'] === undefined) {
+					var widget = this._form.getWidget(iprop.id);
+					if (widget.getAllItems) {
+						var item = array.filter(widget.getAllItems(), function(item) { return item.id; })[0];
+						if (item !== undefined) {
+							vals[iprop.id] = item.id;
+						}
+					}
+				}
+			}));
+			this._form.setFormValues(vals);
 		},
 
 		_getInitialFormValues: function() {
@@ -622,7 +633,7 @@ define([
 					return item.id == '$options$';
 				});
 				return result.length ? result[0] : null;
-			}
+			};
 
 			var option_prop = _getOptionProperty(properties);
 			var option_values = {};
