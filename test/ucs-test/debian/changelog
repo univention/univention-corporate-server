@@ -1,3 +1,10 @@
+ucs-test (4.0.161-30) unstable; urgency=low
+
+  * 00_base/95rename_administrator: Check slapd.conf on DC Master only
+    (Bug #33897)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Jan 2014 16:56:59 +0100
+
 ucs-test (4.0.161-29) unstable; urgency=low
 
   * 68univention-admingrp-user-passwordreset-protected-groups: run the

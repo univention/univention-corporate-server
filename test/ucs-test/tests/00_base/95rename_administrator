@@ -59,6 +59,7 @@ done
 
 for file in /etc/ldap/slapd.conf \
 		/etc/security/access-nagios.conf; do
+	test "$file" = "/etc/ldap/slapd.conf" -a "$server_role" != domaincontroller_master && continue
 	test -e $file || continue
 	echo -n "Checking if new admin username is set to $file: "
 	if grep "$USERNAME" $file; then
