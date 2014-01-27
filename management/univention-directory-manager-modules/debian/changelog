@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.75-14) unstable; urgency=low
+
+  * Bug #33329: Revert whitespace fix
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 27 Jan 2014 12:14:43 +0100
+
 univention-directory-manager-modules (9.0.75-13) unstable; urgency=low
 
   * Bug #33703: Fixed setting and displaying of users' sambaLogonHours

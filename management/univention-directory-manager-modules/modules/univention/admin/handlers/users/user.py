@@ -1047,16 +1047,16 @@ def logonHoursMap(logontimes):
 	# create a hexnumber from each 8-bit-segment
 	ret=""
 	for i in range(0,21):
-		val=0
-		exp=7
-		for j in range((i*8), (i*8)+8):
-			if not (logontimes[j]=="0"):
-				val+=2**exp
-			exp-=1
+	        val=0
+	        exp=7
+	        for j in range((i*8), (i*8)+8):
+	                if not (logontimes[j]=="0"):
+	                        val+=2**exp
+	                exp-=1
 		# we now have: 0<=val<=255
-		hx=hex(val)[2:4]
-		if len(hx)==1: hx="0"+hx
-		ret+=hx
+	        hx=hex(val)[2:4]
+	        if len(hx)==1: hx="0"+hx
+	        ret+=hx
 
 	return ret
 
@@ -1066,10 +1066,10 @@ def logonHoursUnmap(logontimes):
 	times=logontimes[0][:42]
 	while len(times)<42:
 		times=times
-	ret=""
-	for i in range(0,42,2):
-		val=int(times[i:i+2],16)
-		ret+=intToBinary(val)
+        ret=""
+        for i in range(0,42,2):
+                val=int(times[i:i+2],16)
+                ret+=intToBinary(val)
 
 	# reverse order of the bits in each byte. See above for details
 	newtime = ""
