@@ -1,3 +1,10 @@
+ucs-test (4.0.161-29) unstable; urgency=low
+
+  * 68univention-admingrp-user-passwordreset-protected-groups: run the
+    slapd check each time (Bug #33992)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Jan 2014 07:44:24 +0100
+
 ucs-test (4.0.161-28) unstable; urgency=low
 
   * 95rename_administrator: create a temporary domain admin otherwise we
