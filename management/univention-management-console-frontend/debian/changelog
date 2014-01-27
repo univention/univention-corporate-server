@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.153-1) unstable; urgency=low
+
+  * Bug #32655: reverted changes from r47379 for next erratum
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 27 Jan 2014 10:26:58 +0100
+
 univention-management-console-frontend (3.0.152-15) unstable; urgency=low
 
   * Bug #33493: remove language scopes from JS files, they are defined through
