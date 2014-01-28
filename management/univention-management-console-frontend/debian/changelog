@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-17) unstable; urgency=low
+
+  * Bug #33493: ignore empty scopes
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Jan 2014 15:43:51 +0100
+
 univention-management-console-frontend (3.0.152-16) unstable; urgency=low
 
   * Bug #32655: reverted changes from r47379 for next erratum

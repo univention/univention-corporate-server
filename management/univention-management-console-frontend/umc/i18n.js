@@ -173,7 +173,7 @@ define([
 
 			// ignore i18n files that could not be loaded previously
 			scopes = array.filter(scopes, function(iscope) {
-				return !_ignored(language, iscope);
+				return iscope && !_ignored(language, iscope);
 			});
 
 			// try to load the JSON translation file for the current language
