@@ -1,10 +1,12 @@
 product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
-src: linux
-fix: 3.10.11-1.46.201401191746
+src: univention-kernel-image
+fix: 7.0.0-9.48.201401271412
 note: |
- This is the first part of the fix, which provides the new kernel package.
+ This is the second part of the fix, which updates the kernel meta packages to
+ automatically install the new kernel package provided by the previous errata
+ update.
 version: [0]
 desc: |
  The Linux kernel package has been updated to 3.10.26. This provides a wide range of
