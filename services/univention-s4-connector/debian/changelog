@@ -1,3 +1,10 @@
+univention-s4-connector (7.0.33-7) unstable; urgency=medium
+
+  * WMI filter: Fix case of initial installation on first UCS@school DC        
+  * Improved robustness of update installation (Bug #33956)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 28 Jan 2014 12:25:19 +0100
+
 univention-s4-connector (7.0.33-6) unstable; urgency=medium
 
   * add --write2samba4 code to upgrade_msWMI-Som.py (Bug #33956)
