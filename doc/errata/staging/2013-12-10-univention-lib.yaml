@@ -7,15 +7,15 @@ note:
 version: [0]
 desc: |
   This errata update fixes several issues:
-  * adjust the behaviour of ucs_registerLDAPExtension, to let
+  * adjust the behaviour of ucs_registerLDAPExtension to let
     join scripts continue in case an LDAP extension could not
     be registered because a newer one is already active in the
     domain.
-  * Group name mapping has been added to univention-lib. 
+  * Group name mapping has been added to univention-lib.
     The new function "custom_groupname" maps the default group names
     to the actual name.
-  * User name mapping has been added to univention-lib. 
+  * User name mapping has been added to univention-lib.
     The new function "custom_username" maps the default user names
     to the actual name.
-  * A new pyhton lib "s4" has been added for samba4 related stuff.
+  * A new python lib "s4" has been added for samba4 related stuff.
 bug: [33582,33649,33710,33893]
