@@ -1,10 +1,16 @@
-univention-ldap (9.0.29-1) unstable; urgency=medium
+univention-ldap (9.0.27-8) unstable; urgency=medium
+
+  * Fix errata versioning (Bug #33937)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 28 Jan 2014 11:58:10 +0100
+
+univention-ldap (9.0.27-7) unstable; urgency=medium
 
   * Bump version (Bug #33937)
 
  -- Arvid Requate <requate@univention.de>  Mon, 20 Jan 2014 18:18:58 +0100
 
-univention-ldap (9.0.28-1) unstable; urgency=medium
+univention-ldap (9.0.27-6) unstable; urgency=medium
 
   * Add mswmi.schema (Bug #33937)
   * Add msGPOWQLFilter to msgpo.schema
