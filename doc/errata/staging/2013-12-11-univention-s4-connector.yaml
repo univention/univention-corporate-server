@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-s4-connector
-fix: 7.0.33-6.452.201401241705
+fix: 7.0.33-7.454.201401281227
 note:
 version: [1]
 desc: |
