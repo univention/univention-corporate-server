@@ -14,7 +14,7 @@ desc: |
   * univention-pam now checks the mapping of user and group names 
     in the config registry templates.
   * The default limit for "max open files" (nofile) in 
-    /etc/security/limits.conf has been increased to "8192".
+    /etc/security/limits.conf has been increased to "32768".
     This value can be changed by setting the ucr variables
     "security/limits/default/user/soft/nofile" and
     "security/limits/default/user/hard/nofile".
