@@ -99,7 +99,7 @@ udm container/cn create "$@" --ignore_exists \
 			--set name=WMIPolicy || die
 
 udm container/cn create "$@" --ignore_exists \
-			--position "cn==WMIPolicy,cn=System,$ldap_base" \
+			--position "cn=WMIPolicy,cn=System,$ldap_base" \
 			--set name=SOM || die
 fi
 
