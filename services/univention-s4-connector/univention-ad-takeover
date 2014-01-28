@@ -1429,8 +1429,8 @@ def run_phaseI(ucr, lp, opts, args):
 	run_and_output_to_log(["univention-config-registry", "set", "connector/s4/poll/sleep=1", "connector/s4/retryrejected=2"], log.debug)
 	run_and_output_to_log(["/usr/share/univention-s4-connector/msgpo.py", "--write2ucs"], log.debug)
 
-	log.info("Waiting for listener to finish (max. 90 seconds)")
-	if not wait_for_listener_replication(print_progress, 90):
+	log.info("Waiting for listener to finish (max. 180 seconds)")
+	if not wait_for_listener_replication(print_progress, 180):
 		log.warn("Warning: Stopping Listener now anyway.")
 
 	## Restart Univention Directory Listener for S4 Connector
@@ -1439,7 +1439,7 @@ def run_phaseI(ucr, lp, opts, args):
 	## Reset S4 Connector and handler state
 	run_and_output_to_log(["/etc/init.d/univention-directory-listener", "stop"], log.debug)
 
-	for i in xrange(10):
+	for i in xrange(30):
 		time.sleep(1)
 		print_progress()
 	print
