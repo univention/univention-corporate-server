@@ -6,7 +6,7 @@ fix: 9.0.75-14.1167.201401271216
 note:
 version: [0]
 desc: |
-  This errata update fixes several issues:
+  This update fixes several issues:
   * Add support for properties that offer empty values while the frontend
     chooses the first non-empty one if a new object is to be created.
   * The 'inherit ACL' option for samba shares can be set again

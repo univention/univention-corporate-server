@@ -6,6 +6,6 @@ fix: 3.0.3-2.50.201401141016
 note:
 version: [0]
 desc: |
-  This errata update fixes two typos in the German translation
+  This update fixes two typos in the German translation
 bug: [33118, 32971]
 

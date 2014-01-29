@@ -6,13 +6,12 @@ fix: 3.0.152-17.814.201401281546
 note:
 version: [0]
 desc: |
- This errata update fixes several issues:
+ This update fixes several issues:
  * The protocol of a printer URI in the printers UMC module was always set to
-   "cups-pdf://".  Fixed this by adding setInitialValue method to ComplexInput
-   widget.
- * Added branding translation scope to all UMC widgets
- * Reversed the traceback when sending errors via mail because the web or mail
-   client could truncate the interesting part.
+   "cups-pdf://".
+ * Improved branding support in UMC widgets
+ * Reversed the traceback when sending errors via mail since the web or mail
+   client could truncate important information.
  * Fixed MultiSelect widget setting its values too early which could break page
    rendering.
 bug: [33383,33493,33798,33703]

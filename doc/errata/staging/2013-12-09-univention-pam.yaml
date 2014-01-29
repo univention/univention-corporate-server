@@ -6,10 +6,10 @@ fix: 7.0.4-25.244.201401241626
 note:
 version: [0]
 desc: |
-  This errata update fixes several issues:
-  * The new listener module well-known-sid-name-mapping.py implements
-    a mechanism for domain wide customization of account names for
-    well known Windows/Samba SIDs. It sets UCR variables "groups/default/.*"
+  This update fixes several issues:
+  * The new Univention Directory Listener module well-known-sid-name-mapping.py 
+    implements a mechanism for domain wide customisation of account names for
+    well known Windows/Samba SIDs. It sets the UCR variables "groups/default/.*"
     and "users/default/.*" in case accounts with well known sids are renamed.
   * univention-pam now checks the mapping of user and group names 
     in the config registry templates.

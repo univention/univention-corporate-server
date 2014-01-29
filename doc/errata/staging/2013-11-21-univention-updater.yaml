@@ -6,8 +6,8 @@ fix: 9.0.38-9.1244.201401101117
 note:
 version: [0]
 desc: |
-  This errata update fixes several issues:
-  * If a component is blocking a release update and this component is from the
+  This update fixes several issues:
+  * If a component is blocking a release update and this component part of the
     App Center, link to the app instead of showing a cryptic error message
   * Fixed the error handling in case the UMC server is restarted during an
     update
