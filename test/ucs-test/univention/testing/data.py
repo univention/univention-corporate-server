@@ -645,6 +645,8 @@ class TestCase(object):
 			try:
 				print >> result.environment.log, \
 						'*** BEGIN *** %r ***' % (cmd,)
+				print >> result.environment.log, \
+						'*** %r ***' % (self.description,)
 				result.environment.log.flush()
 				if result.environment.interactive:
 					proc = Popen(cmd, executable=self.exe.filename,

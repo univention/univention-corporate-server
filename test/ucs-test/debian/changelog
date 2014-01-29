@@ -1,3 +1,9 @@
+ucs-test (4.0.161-31) unstable; urgency=medium
+
+  * log test section description (Bug #32422)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Jan 2014 15:47:29 +0100
+
 ucs-test (4.0.161-30) unstable; urgency=low
 
   * 00_base/95rename_administrator: Check slapd.conf on DC Master only
