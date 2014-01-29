@@ -14,8 +14,8 @@ desc: |
   * The LDAP ACLs now support the configuration of a
     custom Administrator name via the new UCR variable family
     "users/default/.*". These variables are managed automatically by
-    a listener module (introduced via Bug 33897) and should usually not be
-    adjusted manually.
+    a Univention Directory Listener module (introduced via erratum 30 for UCS 3.2) 
+    and should usually not be adjusted manually.
   * New schema extension for MS WMI filters
   * The local schema inclusion code now detects extensions included by
     template subfiles
