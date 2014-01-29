@@ -1,6 +1,12 @@
-ucs-test (4.0.161-31) unstable; urgency=medium
+ucs-test (4.0.161-32) unstable; urgency=medium
 
   * log test section description (Bug #32422)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Jan 2014 18:16:35 +0100
+
+ucs-test (4.0.161-31) unstable; urgency=medium
+
+  * log test description description (Bug #32422)
 
  -- Arvid Requate <requate@univention.de>  Wed, 29 Jan 2014 15:47:29 +0100
 
