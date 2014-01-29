@@ -6,9 +6,9 @@ fix: 7.0.69-6.567.201401231221
 note:
 version: [0]
 desc: |
-  This errata update fixes several issues:
+  This update fixes several issues:
   * Adding multiple IP addresses to one network interface has been fixed.
-  * The summary of the network interface changes is more detailed now.
+  * The summary of the network interface changes is now more detailed.
   * Multiple IP addresses belonging to the same sub-network are now correctly registered in LDAP.
   * The German translation of "Next" has been changed to "Weiter".
 bug:
