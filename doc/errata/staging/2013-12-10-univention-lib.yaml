@@ -17,5 +17,5 @@ desc: |
   * User name mapping has been added to univention-lib.
     The new function "custom_username" maps the default user names
     to the actual name.
-  * A new python lib "s4" has been added for samba4 related stuff.
+  * A new python lib (s4) has been added for Samba-related operations.
 bug: [33582,33649,33710,33893]
