@@ -1,3 +1,9 @@
+ucs-test (4.0.161-33) unstable; urgency=low
+
+  * 09/47: Only use test component (Bug #33816)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 29 Jan 2014 17:33:00 +0100
+
 ucs-test (4.0.161-32) unstable; urgency=medium
 
   * log test section description (Bug #32422)

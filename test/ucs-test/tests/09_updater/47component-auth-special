@@ -60,7 +60,7 @@ run_test () {
 			checkapt "http://u[^:]\+:p[^@]\+@localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
 		fi
 		# Validate URL by using lwp-request
-		read ncode scode < <(HEAD "$(sed -ne 's/ //g;s/^deb//p' /etc/apt/sources.list.d/20_ucs-online-component.list)" | head -n 1)
+		read ncode scode < <(HEAD -d "$(sed -ne "/$compname/s|^deb ||;T;s| ||g;p;q" /etc/apt/sources.list.d/20_ucs-online-component.list)")
 		test 200 -eq "${ncode}"
 		apt-get -qq update
 		if "${CHECK_INSTALL}"
