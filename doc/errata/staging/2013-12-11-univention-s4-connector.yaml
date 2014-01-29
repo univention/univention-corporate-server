@@ -10,8 +10,10 @@ desc: |
   * The handling of DNS timeouts has been improved in univention-ad-takeover
   * The sync mode is now configurable for every connector property such
     as users, groups, containers etc. through UCR.
-  * fix a problem in the handling of non-english user and group names in
-    univention-ad-takeover.
+  * A problem in the handling of non-english user and group names was fixed
+    in univention-ad-takeover. If the well known users and groups in AD are
+    found to be non-english during takeover, the corresponding objects will be
+    renamed in UCS to match.
   * Added support for synchronization of MS WMI filters (disabled by default).
   * The internal connector status database is now removed while re-joining
     the system.
