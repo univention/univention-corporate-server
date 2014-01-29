@@ -8,5 +8,5 @@ version: [0]
 desc: |
   * Shell quoting has been fixed in the join scripts 
     28univention-nagios-server.inst and 30univention-nagios-client.inst.
-  * Support for customization of standard user and group names has been added.
+  * Support for the customisation of standard user and group names has been added.
 bug: [33593, 33646]
