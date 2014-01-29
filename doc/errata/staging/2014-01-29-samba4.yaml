@@ -1,0 +1,13 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: samba4
+fix: 4.0.3-1.385.201401291147
+note: This update fixes these vulnerabilities.
+version: [1]
+desc: |
+ This errata update fixes an issue of the smbstatus tool
+ installed with Samba 4, where the tool would suffer a
+ segmentation fault due to a value temprarily missing from
+ a session info data structure.
+bug: [33758]
