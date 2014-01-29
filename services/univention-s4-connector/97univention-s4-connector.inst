@@ -93,6 +93,7 @@ udm container/cn create "$@" --ignore_exists \
 udm container/ou create "$@" --ignore_exists \
 			--set name="Domain Controllers" \
 			--set description="Default container for domain controllers" || die
+fi
 
 udm container/cn create "$@" --ignore_exists \
 			--position "cn=System,$ldap_base" \
@@ -101,7 +102,6 @@ udm container/cn create "$@" --ignore_exists \
 udm container/cn create "$@" --ignore_exists \
 			--position "cn=WMIPolicy,cn=System,$ldap_base" \
 			--set name=SOM || die
-fi
 
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/msgpo.schema \

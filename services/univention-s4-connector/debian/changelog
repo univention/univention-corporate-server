@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-30) unstable; urgency=medium
+
+  * WMI filter: Fix case of initial installation on first UCS@school DC
+   (Bug #33936)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Jan 2014 11:30:28 +0100
+
 univention-s4-connector (8.0.33-29) unstable; urgency=medium
 
   * Raise timout limits for initial listener replication and restart
