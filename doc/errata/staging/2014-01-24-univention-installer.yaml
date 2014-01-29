@@ -6,5 +6,5 @@ fix: 9.0.30-5.1104.201401171439
 note:
 version: [0]
 desc: |
-  Enforce UTF-8 encoding when setting locale
+  Enforce UTF-8 encoding when setting the locale in Univention Installer.
 bug: [33916]
