@@ -42,6 +42,7 @@ from univention.uvmm.helpers import TranslatableException, _, N_
 import os
 import signal
 import libvirt
+from threading import Thread
 
 def createDaemon(options):
 	"""http://code.activestate.com/recipes/278731/"""
@@ -176,6 +177,10 @@ def install_signal_handlers(options):
 	signal.signal(signal.SIGTERM, signal_handler_terminate) # terminate
 	signal.signal(signal.SIGSEGV, signal_handler_terminate) # memory corrupt
 
+def runEventLoop():
+	while True:
+		libvirt.virEventRunDefaultImpl()
+
 if __name__ == '__main__':
 	locale.setlocale(locale.LC_ALL, '')
 
@@ -250,9 +255,10 @@ if __name__ == '__main__':
 		logger.setLevel(logging.DEBUG)
 
 	# Create global event loop
-	from univention.uvmm.eventloop import *
-	virEventLoopPureStart()
-	virEventLoopPureRegister()
+	libvirt.virEventRegisterDefaultImpl()
+	loop = Thread(target=runEventLoop, name="libvirtEventLoop")
+	loop.setDaemon(True)
+	loop.start()
 
 	from univention.uvmm.node import node_add, nodes
 	if not options.clean and options.cache != '':

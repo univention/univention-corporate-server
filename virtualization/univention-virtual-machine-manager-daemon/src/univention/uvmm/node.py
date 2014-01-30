@@ -43,7 +43,6 @@ import math
 from helpers import TranslatableException, ms, tuple2version, N_ as _, uri_encode
 from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify
 import univention.admin.uexceptions
-from univention.uvmm.eventloop import *
 import threading
 from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_domain_storage_volumes, StorageError, get_pool_info
 from protocol import Data_Domain, Data_Node, Data_Snapshot, Disk, Interface, Graphic
