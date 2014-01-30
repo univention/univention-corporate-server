@@ -17,8 +17,8 @@
 . "$TESTLIBPATH/maildomain.sh" || exit 137
 . "$TESTLIBPATH/undo.sh" || exit 137
 
-echo "The test case is disabled due to Bug #33904"
-exit 137
+# echo "The test case is disabled due to Bug #33904"
+# exit 137
 
 section "Preparing"
 
