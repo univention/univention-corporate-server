@@ -2,12 +2,13 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: samba4
-fix: 4.0.3-1.385.201401291147
+fix: 4.0.3-1.386.201401301130
 note: This update fixes these vulnerabilities.
 version: [1]
 desc: |
- This errata update fixes an issue of the smbstatus tool
- installed with Samba 4, where the tool would suffer a
- segmentation fault due to a value temprarily missing from
- a session info data structure.
-bug: [33758]
+ This errata update fixes two issues in samba4:
+ * The smbstatus tool of Samba 4 was affected by a segmentation fault
+   due to a value temprarily missing from a session info data structure.
+* Logon failures accompanied by log messages in the samba log files:
+  "auth_generic_prepare failed: NT_STATUS_INVALID_SERVER_STATE".
+bug: [33758, 34015]
