@@ -25,7 +25,7 @@ class Junit(TestFormatInterface):
 	def begin_test(self, case, prefix=''):
 		"""Called before each test."""
 		super(Junit, self).begin_test(case, prefix)
-		self.now = datetime.today()
+		self.now = datetime.today().replace(microsecond=0)
 
 	def end_test(self, result):
 		"""Called after each test."""
@@ -40,6 +40,7 @@ class Junit(TestFormatInterface):
 			errors = 1
 		else:
 			errors = 1
+		classname = encode(result.case.uid.replace("/", "."))
 
 		filename = os.path.join(self.outdir, '%s.xml' % (result.case.uid,))
 		dirname = os.path.dirname(filename)
@@ -53,7 +54,7 @@ class Junit(TestFormatInterface):
 			xml = XMLGenerator(f_report, encoding='utf-8')
 			xml.startDocument()
 			xml.startElement('testsuite', {
-				'name': encode(result.case.description or result.case.uid),
+				'name': classname,
 				'tests': '%d' % (1,),
 				'failures': '%d' % (failures,),
 				'errors': '%d' % (errors,),
@@ -62,8 +63,6 @@ class Junit(TestFormatInterface):
 				'skipped': '%d' % (skipped,),
 				'timestamp': self.now.isoformat(),
 				'hostname': os.uname()[1],
-				'id': result.case.uid,
-				'package': self.section,
 				})
 
 			xml.startElement('properties', {})
@@ -87,13 +86,19 @@ class Junit(TestFormatInterface):
 				'value': '%s' % (result.environment.ucs_version,),
 				})
 			xml.endElement('property')
+			if result.case.description:
+				xml.startElement('property', {
+					'name': 'description',
+					'value': encode(result.case.description or result.case.uid),
+					})
+				xml.endElement('property')
 			xml.endElement('properties')
 
 			xml.startElement('testcase', {
-				'name': encode(result.case.description or result.case.uid),
+				'name': 'test',
 				#'assertions': '%d' % (0,),
 				'time': '%0.3f' % (result.duration / 1000.0,),
-				'classname': result.case.uid,
+				'classname': classname,
 				#'status': '???',
 				})
 
