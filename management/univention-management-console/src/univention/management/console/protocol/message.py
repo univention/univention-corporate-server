@@ -190,10 +190,10 @@ class Message( object ):
 
 		:raises: :class:`.ParseError`, :class:`.UnknownCommandError`, :class:`.InvalidArgumentsError`
 		"""
-		lines = msg.split( '\n', 1 )
+		header, nl, body = msg.partition('\n')
 
 		# is the format of the header line valid?
-		match = Message._header.match( lines[ 0 ] )
+		match = Message._header.match(header)
 		if not match:
 			raise ParseError( UMCP_ERR_UNPARSABLE_HEADER, _( 'Unparsable message header' ) )
 
@@ -224,18 +224,16 @@ class Message( object ):
 				raise InvalidArgumentsError( UMCP_ERR_ARGS_MISSMATCH, _( "The command '%s' do not have any arguments" ) % self.command )
 
 		# invalid/missing message body?
-		current_length = len( lines[ 1 ] )
-		if len( lines ) < 2 or self._length > current_length:
+		current_length = len(body)
+		if (not body and self._length) or self._length > current_length:
 			PARSER.info( 'The message body is not complete: %d of %d bytes' % ( current_length, self._length ) )
 			raise IncompleteMessageError( _( 'The message body is not (yet) complete' ) )
 
 		remains = ''
-		if len( lines[ 1 ] ) > self._length:
-			remains = lines[ 1 ][ self._length : ]
-		if len( lines[ 1 ] ) > self._length:
-			self.body = lines[ 1 ][ : self._length ]
+		if len(body) > self._length:
+			self.body, remains = body[:self._length], body[self._length:]
 		else:
-			self.body = lines[ 1 ]
+			self.body = body
 
 		if self.mimetype == MIMETYPE_JSON:
 			try:

@@ -1,3 +1,10 @@
+univention-management-console (6.0.24-2) unstable; urgency=low
+
+  * Bug #33622: fix crashing of UMC when sending a malformed, empty or chunked UMCP
+  	body
+
+ -- Florian Best <best@univention.de>  Thu, 30 Jan 2014 09:58:09 +0100
+
 univention-management-console (6.0.24-1) unstable; urgency=low
 
   * Bug #33673: let module process stop when initialization fails, don't
