@@ -790,7 +790,9 @@
 		  <title>Scope of the vendor</title>
 			<para>
 				Reuse users, groups, computers already administered in domain.
+				<!--
 				See <xref linkend="udm:ldap:common-attributes"/>.
+				-->
 			</para>
 			<para>
 				An Application may need more attributes than there are present. For
