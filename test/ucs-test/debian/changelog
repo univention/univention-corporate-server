@@ -1,3 +1,10 @@
+ucs-test (4.0.161-36) unstable; urgency=medium
+
+  * Make 05domain-join-ntlm-auth work on memberservers and in Samba4
+    (Bug #32379)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Jan 2014 17:07:43 +0100
+
 ucs-test (4.0.161-35) unstable; urgency=low
 
   * Fix JUnit output format (Bug #34014)

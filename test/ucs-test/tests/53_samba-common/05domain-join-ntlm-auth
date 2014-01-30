@@ -8,7 +8,6 @@
 ##  - univention-samba
 ## roles-not: 
 ## - basesystem
-## - memberserver
 ## tags:
 ##  - basic
 ##  - apptest
@@ -16,29 +15,38 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/group.sh" || exit 137
 
 username="$(user_randomname)"
 password=univention
 
-## delete user
-trap 'user_remove "$username"' INT TERM EXIT
+SAMBA="true"
+MAIL="false"
+KERBEROS="true"
+PERSON="false"
+POSIX="true"
 
-echo "----Create Domain Admin"
-## create samba domain admin
-udm-test users/user create --option posix --option samba \
-	--set "primaryGroup=cn=Domain Admins,cn=groups,$ldap_base" \
-	--set "password=$password" \
-	--set "lastname=$username" \
-	--set "username=$username" \
-	--position "cn=users,$ldap_base" 
-if [ "$?" != 0 ];then
-	fail_fast 1 "could not create domain admin"
+##create user
+trap 'user_remove "$username"' INT TERM EXIT
+echo "----create user"
+if ! user_create "$username"; then
+        fail_fast 1 "Failed to create user"
+fi
+
+group_adduser "$username" "Domain Admins"
+
+winbind_separator=$(wbinfo --separator)
+FQUSERNAME="$windows_domain$winbind_separator$username"
+if [ "$samba_domain_security" = ads ]; then
+	net_mode=ads
+else
+	net_mode=rpc
 fi
 
 ##wait for the user to be created
 echo "----wait for the user to be created"
 i=0
-while ! output="$(net rpc user info $username -U"$username%$password" 2>&1)"
+while ! output="$(net "$net_mode" user info $username -U"$username%$password" 2>&1)"
 do
 	let i="$i"+1
 	sleep 1
@@ -49,6 +57,14 @@ do
 	fi
 done
 
+## domain join
+echo "----join domain"
+net "$net_mode" join "$windows_domain" -U"$username%$password"
+if [ "$?" != 0 ];then
+	# fail_fast 1 "could not join into windows domain"
+	err "could not join into windows domain"
+fi
+
 ## start/restart winbind
 echo "----restart winbind"
 /etc/init.d/winbind restart
@@ -56,21 +72,27 @@ if [ "$?" != 0 ];then
 	fail_fast 1 "could not restart winbind"
 fi
 
+if [ "$server_role" = "memberserver" ]; then
+        NAME="$FQUSERNAME"
+else
+        NAME="$username"
+fi
+
 ## ntml auth
 echo "----ntml auth with a wrong password (should fail)"
-ntlm_auth --domain="$windows_domain" --username="$username" --password="${password}2"
+ntlm_auth --domain="$windows_domain" --username="$NAME" --password="${password}2"
 if [ "$?" = 0 ];then
 	fail_fast 1 "ntlm_auth was sucessful with an wrong password"
 fi
 
 echo "----ntml auth with a wrong username (should fail)"
-ntlm_auth --domain="$windows_domain" --username="${username}2" --password="${password}"
+ntlm_auth --domain="$windows_domain" --username="${NAME}2" --password="${password}"
 if [ "$?" = 0 ];then
 	fail_fast 1 "ntlm_auth was sucessful with an wrong username"
 fi
 
 echo "----ntml auth with correct credentials"
-ntlm_auth --domain="$windows_domain" --username="$username" --password="$password"
+ntlm_auth --domain="$windows_domain" --username="$NAME" --password="$password"
 if [ "$?" != 0 ];then
 	fail_fast 1 "ntlm_auth failed"
 fi
