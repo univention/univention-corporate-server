@@ -127,7 +127,7 @@ create_spn_account() {
 
 	if [ -z "$spn_account_dn" ]; then
 
-		samba-tool user add "$spn_account_name" "$spn_account_name_password" || return $?
+		samba-tool user add -- "$spn_account_name" "$spn_account_name_password" || return $?
 
 		samba-tool user setexpiry --noexpiry "$spn_account_name"
 
