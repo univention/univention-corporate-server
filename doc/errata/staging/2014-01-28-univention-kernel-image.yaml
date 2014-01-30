@@ -41,7 +41,7 @@ desc: |
  * Information leak in wanxl network ioctl (CVE-2014-1445)
 
  This kernel also fixes an ABI breakage: The kernel update to linux-3.10 for
- UCS 3.2 caused the header files to move from /usr/include/adm/ to the
+ UCS 3.2 caused the header files to move from /usr/include/asm/ to the
  different location /ucr/include/gnu-*-linux/asm/, which broke compiling other
  software. This change was reverted.
 cve:
