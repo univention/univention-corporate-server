@@ -115,6 +115,12 @@ def component_registered(component_id, ucr):
 	UniventionUpdater when just using Application.all() '''
 	return '%s/%s' % (COMPONENT_BASE, component_id) in ucr
 
+def component_current(component_id, ucr):
+	''' Checks if a component is enabled (not disabled!).
+	Moved outside of ComponentManager to avoid dependencies for
+	UniventionUpdater'''
+	return ucr.get('%s/%s/version' % (COMPONENT_BASE, component_id)) == 'current'
+
 class Changes(object):
 	def __init__(self, ucr):
 		self.ucr = ucr
@@ -319,6 +325,14 @@ class ComponentManager(object):
 			result['message'] = "Parameter error: %s" % str(e)
 
 		return result
+
+	def currentify(self, component_id, super_ucr):
+		self.put({'name' : component_id, 'version' : 'current'}, super_ucr)
+		return super_ucr.changed()
+
+	def uncurrentify(self, component_id, super_ucr):
+		self.put({'name' : component_id, 'version' : ''}, super_ucr)
+		return super_ucr.changed()
 
 	def _remove(self, component_id, super_ucr):
 		named_component_base = '%s/%s' % (COMPONENT_BASE, component_id)

@@ -104,7 +104,7 @@ class Instance(umcm.Base):
 		result = []
 		self.package_manager.reopen_cache()
 		for application in applications:
-			if application.allowed_on_local_server():
+			if application.should_show_up_in_app_center(self.package_manager):
 				props = application.to_dict(self.package_manager)
 				result.append(props)
 		return result
@@ -222,9 +222,11 @@ class Instance(umcm.Base):
 					# make it multi-tab safe (same session many buttons to be clicked)
 					raise LockError()
 				with self.package_manager.locked(reset_status=True):
+					previously_registered_by_dry_run = False
 					if can_continue and function in ('install', 'update'):
 						remove_component = only_dry_run
-						result.update(application.install_dry_run(self.package_manager, self.component_manager, remove_component=remove_component, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, function=function, force=force))
+						dry_run_result, previously_registered_by_dry_run = application.install_dry_run(self.package_manager, self.component_manager, remove_component=remove_component, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, function=function, force=force)
+						result.update(dry_run_result)
 						result['software_changes_computed'] = True
 						serious_problems = bool(result['broken'] or result['master_unreachable'] or result['serious_problems_with_hosts'])
 						if serious_problems or (not force and (result['unreachable'] or result['install'] or result['remove'] or result['problems_with_hosts'])):
@@ -252,7 +254,7 @@ class Instance(umcm.Base):
 								with module.package_manager.no_umc_restart(exclude_apache=True):
 									if function in ('install', 'update'):
 										# dont have to add component: already added during dry_run
-										return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=send_as, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install)
+										return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=send_as, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, previously_registered_by_dry_run=previously_registered_by_dry_run)
 									else:
 										return application.uninstall(module.package_manager, module.component_manager)
 						def _finished(thread, result):
@@ -304,6 +306,19 @@ class Instance(umcm.Base):
 		ret['user_count'] = None # FIXME: get users and computers from license
 		ret['computer_count'] = None
 		return ret
+
+	@simple_response
+	def enable_disable_app(self, application, enable=True):
+		application = Application.find(application)
+		if not application:
+			return
+		should_update = False
+		if enable:
+			should_update = application.enable_component(self.component_manager)
+		else:
+			should_update = application.disable_component(self.component_manager)
+		if should_update:
+			self.package_manager.update()
 
 	@simple_response
 	def packages_sections(self):

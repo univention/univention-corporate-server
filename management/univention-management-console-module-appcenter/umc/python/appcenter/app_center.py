@@ -71,9 +71,11 @@ import univention.admin.uldap as admin_uldap
 import univention.admin.handlers.appcenter.app as appcenter_udm_module
 import univention.admin.handlers.container.cn as container_udm_module
 import univention.admin.uexceptions as udm_errors
+from univention.updater import UniventionUpdater
+from univention.lib.package_manager import PackageManager
 
 # local application
-from util import urlopen, get_current_ram_available, component_registered, get_master, get_all_backups, set_save_commit_load
+from util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, set_save_commit_load, ComponentManager
 
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons'
@@ -114,6 +116,19 @@ LICENSE = License()
 
 class DoesNotExist(Exception):
 	pass
+
+def get_package_manager_and_component_manager():
+	package_manager = PackageManager(
+		info_handler=MODULE.process,
+		step_handler=None,
+		error_handler=MODULE.warn,
+		lock=False,
+		always_noninteractive=True,
+	)
+	package_manager.set_finished() # currently not working. accepting new tasks
+	uu = UniventionUpdater(False)
+	component_manager = ComponentManager(ucr, uu)
+	return package_manager, component_manager
 
 class ApplicationLDAPObject(object):
 	def __init__(self, ldap_id, lo, co):
@@ -305,7 +320,7 @@ class Application(object):
 						self._options[k] = _escape_value(k, v)
 
 		# parse boolean values
-		for ikey in ('notifyvendor', 'useractivationrequired', 'useshop', 'withoutrepository'):
+		for ikey in ('notifyvendor', 'useractivationrequired', 'useshop', 'withoutrepository', 'endoflife'):
 			if ikey in self._options:
 				self._options[ikey] = config.getboolean('Application', ikey)
 			else:
@@ -685,10 +700,33 @@ class Application(object):
 			return True
 		return component_registered(self.component_id, ucr)
 
+	def is_current(self, ucr):
+		if self.get('withoutrepository'):
+			return True
+		return component_current(self.component_id, ucr)
+
+	def disable_component(self, component_manager):
+		if self.get('withoutrepository'):
+			return
+		with set_save_commit_load(component_manager.ucr) as super_ucr:
+			return component_manager.uncurrentify(self.component_id, super_ucr)
+
+	def enable_component(self, component_manager):
+		if self.get('withoutrepository'):
+			return
+		with set_save_commit_load(component_manager.ucr) as super_ucr:
+			return component_manager.currentify(self.component_id, super_ucr)
+
 	def allowed_on_local_server(self):
 		server_role = ucr.get('server/role')
 		allowed_roles = self.get('serverrole')
 		return not allowed_roles or server_role in allowed_roles
+
+	def should_show_up_in_app_center(self, package_manager):
+		# NOT iff:
+		#  * has wrong server role OR
+		#  * is not installed and has EndOfLife=True
+		return self.allowed_on_local_server() and (not self.get('endoflife') or self.is_installed(package_manager))
 
 	def to_dict(self, package_manager):
 		ucr.load()
@@ -696,6 +734,7 @@ class Application(object):
 		res['component_id'] = self.component_id
 
 		res['is_installed'] = self.is_installed(package_manager)
+		res['is_current'] = self.is_current(ucr)
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
 		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
 		res['host_master'] = ucr.get('ldap/master')
@@ -721,6 +760,10 @@ class Application(object):
 	@HardRequirement('install')
 	def must_not_be_installed(self, package_manager):
 		return not self.is_installed(package_manager)
+
+	@HardRequirement('install')
+	def must_not_be_end_of_life(self):
+		return not self.get('endoflife')
 
 	@HardRequirement('install', 'update')
 	def must_be_joined_if_master_packages(self):
@@ -945,7 +988,7 @@ class Application(object):
 		result = {}
 		# checking localhost is I/O heavy, so use threads
 		#   "global" variables: result
-		def _check_local_host(app, only_master_packages, server_role, master_packages, component_manager, package_manager, remove_component):
+		def _check_local_host(app, only_master_packages, server_role, master_packages, component_manager, package_manager, remove_component, previously_registered_list):
 			MODULE.process('Starting dry_run for %s on %s' % (app.id, 'localhost'))
 			# packages to install
 			to_install = []
@@ -959,6 +1002,7 @@ class Application(object):
 
 			# add the new component
 			previously_registered = app.register(component_manager, package_manager)
+			previously_registered_list.append(previously_registered) # HACK it into a list so that it is accessible after the thread ends
 
 			# get package objects
 			to_install = package_manager.get_packages(to_install)
@@ -978,16 +1022,20 @@ class Application(object):
 				app.unregister_all_and_register(previously_registered, component_manager, package_manager)
 			MODULE.process('Finished dry_run for %s on %s' % (app.id, 'localhost'))
 
-		thread = Thread(target=_check_local_host, args=(self, only_master_packages, server_role, master_packages, component_manager, package_manager, remove_component))
+		previously_registered = False
+		previously_registered_list = [] # HACKY: thread shall "return" previously_registered
+		thread = Thread(target=_check_local_host, args=(self, only_master_packages, server_role, master_packages, component_manager, package_manager, remove_component, previously_registered_list))
 		thread.start()
 		dry_run_threads.append(thread)
 		for thread in dry_run_threads:
 			thread.join()
+		if previously_registered_list:
+			previously_registered = previously_registered_list[0]
 
 		result['unreachable'] = unreachable
 		result['hosts_info'] = hosts_info
 		result.update(remote_info)
-		return result
+		return result, previously_registered
 
 	def get_ldap_object(self, ldap_id=None, or_create=False):
 		if ldap_id is None:
@@ -1064,9 +1112,13 @@ class Application(object):
 						# this app actually was registered!
 						previously_registered = app
 						should_update = True
+				elif app.is_registered(component_manager.ucr):
+					# this app is to_be_registered!
+					# no need to unregister, but should be returned if registered!
+					previously_registered = app
 			if to_be_registered:
 				to_be_registered.set_ucs_overview_ucr_variables(super_ucr)
-				if not to_be_registered.is_registered(component_manager.ucr): # does not hold for withoutrepository
+				if not to_be_registered.is_current(component_manager.ucr): # does not hold for withoutrepository
 					# add the new repository component for the app
 					component_manager.put_app(to_be_registered, super_ucr)
 					should_update = True
@@ -1208,9 +1260,9 @@ class Application(object):
 			finally:
 				package_manager.add_hundred_percent()
 
-	def install(self, package_manager, component_manager, add_component=True, send_as='install', username=None, password=None, only_master_packages=False, dont_remote_install=False):
+	def install(self, package_manager, component_manager, add_component=True, send_as='install', username=None, password=None, only_master_packages=False, dont_remote_install=False, previously_registered_by_dry_run=False):
 		if self.candidate:
-			return self.candidate.install(package_manager, component_manager, add_component, send_as, username, password, only_master_packages, dont_remote_install)
+			return self.candidate.install(package_manager, component_manager, add_component, send_as, username, password, only_master_packages, dont_remote_install, previously_registered_by_dry_run)
 		raised_before_installed = True
 		something_went_wrong_with_ldap = False
 		previously_registered = None
@@ -1259,6 +1311,12 @@ class Application(object):
 					package_manager.progress_state._start_steps = 100 # TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
 
 			previously_registered = self.register(component_manager, package_manager)
+			if previously_registered_by_dry_run is not False:
+				# dry_run may have registered self and it was left there for performance reasons.
+				# so that self.register() returned self, although at the beginning of
+				#   self.install_dry_run(remove_component=False); self.install()
+				# there was something else registered, maybe even None
+				previously_registered = previously_registered_by_dry_run
 
 			# install + (dist_upgrade if update)
 			package_manager.log('\n== INSTALLING %s AT %s ==\n' % (self.name, datetime.now()))
@@ -1267,6 +1325,11 @@ class Application(object):
 
 			# from now on better dont remove component
 			raised_before_installed = False
+
+			if only_master_packages:
+				# do not leave the component registered. might cause troubles
+				# when updating to a new UCS version. See Bug #33947
+				self.unregister_all_and_register(previously_registered, component_manager, package_manager)
 
 			if master_packages and is_master:
 				if username is None or dont_remote_install:

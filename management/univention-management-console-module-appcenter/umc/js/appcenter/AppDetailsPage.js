@@ -163,15 +163,33 @@ define([
 					});
 				}
 			}
+			if (this.app.is_installed && this.app.endoflife) {
+				if (this.app.is_current) {
+					buttons.push({
+						name: 'disable',
+						label: _('Disable'),
+						align: 'right',
+						callback: lang.hitch(this, 'disableApp')
+					});
+				} else {
+					buttons.push({
+						name: 'enable',
+						label: _('Enable'),
+						align: 'right',
+						callback: lang.hitch(this, 'enableApp')
+					});
+				}
+			}
 			if (this.app.is_installed) {
 				buttons.push({
 					name: 'uninstall',
 					label: _('Uninstall'),
 					align: 'right',
+					defaultButton: this.app.endoflife,
 					callback: lang.hitch(this, 'uninstallApp')
 				});
 			}
-			if (!this.app.is_installed) {
+			if (!this.app.is_installed && !this.app.endoflife) {
 				buttons.push({
 					name: 'install',
 					label: _('Install'),
@@ -222,6 +240,7 @@ define([
 			this.addToDetails(_('Candidate version'), 'CandidateVersion');
 			this.addToDetails(_('Screenshot'), 'Screenshot');
 			this.addToDetails(_('Notification'), 'NotifyVendor');
+			this.addToDetails(_('End of life'), 'EndOfLife');
 
 			query('.umcScreenshot', this._detailsTable.domNode).forEach(function(imgNode) {
 				new Lightbox({ href: imgNode.src }, imgNode);
@@ -262,6 +281,19 @@ define([
 					w.close();
 				}
 			);
+		},
+
+		enableApp: function() {
+			this.enableDisableApp(true);
+		},
+
+		disableApp: function() {
+			this.enableDisableApp(false);
+		},
+
+		enableDisableApp: function(enable) {
+			var action = tools.umcpCommand('appcenter/enable_disable_app', {application: this.app.id, enable: enable}).then(lang.hitch(this, 'reloadPage'));
+			this.standbyDuring(action);
 		},
 
 		uninstallApp: function() {
@@ -646,6 +678,12 @@ define([
 				} else {
 					return _('This application will not inform the vendor if you (un)install it.');
 				}
+			}
+		},
+
+		_detailFieldCustomEndOfLife: function() {
+			if (this.app.endoflife) {
+				return _('This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application. Click on "%(button)s" if you want to continue using this application at your own risk.', {app: this.app.name, button: _('Disable')});
 			}
 		},
 

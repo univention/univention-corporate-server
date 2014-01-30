@@ -45,5 +45,30 @@ if dpkg --compare-versions "$2" lt-nl 3.0.48-3; then
 	done
 	univention-config-registry unset "${ucrErrataToRemove[@]}"
 fi
+
+if dpkg --compare-versions "$2" lt-nl 3.0.50-18; then
+	python -c "
+from univention.lib.package_manager import PackageManager
+from univention.updater import UniventionUpdater
+from univention.config_registry import ConfigRegistry
+from univention.management.console.modules.appcenter.util import ComponentManager, install_opener, set_save_commit_load
+from univention.management.console.modules.appcenter.app_center import Application
+
+ucr = ConfigRegistry()
+ucr.load()
+uu = UniventionUpdater(False)
+component_manager = ComponentManager(ucr, uu)
+package_manager = PackageManager(lock=False)
+
+install_opener(ucr)
+
+with set_save_commit_load(component_manager.ucr) as super_ucr:
+  for app in Application.all():
+    for version in app.versions:
+      if version.is_registered(ucr) and not version.is_installed(package_manager, strict=False):
+        version.unregister(component_manager, super_ucr)
+"
+fi
+
 exit 0
 

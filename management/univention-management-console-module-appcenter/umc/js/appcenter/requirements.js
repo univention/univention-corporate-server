@@ -114,6 +114,11 @@ define([
 				return _('%s is already installed.', details.name);
 			}
 		}),
+		must_not_be_end_of_life: new Requirement({
+			reasonDescription: function(details) {
+				return _('%s was discontinued and may not be installed anymore.', details.name);
+			}
+		}),
 		must_be_joined_if_master_packages: new Requirement({
 			reasonDescription: function() {
 				return _('This application requires an extension of the LDAP schema.');

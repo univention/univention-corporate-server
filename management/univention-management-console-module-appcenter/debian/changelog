@@ -1,3 +1,15 @@
+univention-management-console-module-appcenter (3.0.50-18) unstable; urgency=low
+
+  * Bug #33947: Applications extending the LDAP schema added repositories on
+    DC master and DC backup systems to install the corresponding software
+    package. This might cause problems when upgrading UCS as these
+    repositories were never removed automatically. This will be done from now
+    on. "Stale" repositories already registered are also removed.
+  * Bug 33946: Support EndOfLife for an application: Hide it for new users,
+    suggest uninstallation for those who have this application installed.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 30 Jan 2014 16:16:56 +0100
+
 univention-management-console-module-appcenter (3.0.50-17) unstable; urgency=low
 
   * Bug #33958: Add Support URLs for apps
