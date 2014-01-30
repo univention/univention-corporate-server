@@ -1,0 +1,8 @@
+Format: http://www.debian.org/doc/packing-manuals/copyright-format/1.0/
+Upstream-Name: Univention GmbH
+Upstream-Contact: <package@univention.de>
+Source: http://docs.univention.de/
+
+Files: *
+Copyright: 2014 Univention GmbH
+License: AGPL
