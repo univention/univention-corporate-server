@@ -1126,6 +1126,10 @@ def _doit(arglist):
 					if hasattr(object,'open_warning') and object.open_warning:
 						out.append('WARNING: %s'%object.open_warning)
 					for key, value in object.items():
+						if key == 'sambaLogonHours':
+							# returns a list, which breaks things here
+							# better show the bit string. See Bug #33703
+							value = module.mapping.mapValue(key, value)
 						s=module.property_descriptions[key].syntax
 						if module.property_descriptions[key].multivalue:
 							for v in value:

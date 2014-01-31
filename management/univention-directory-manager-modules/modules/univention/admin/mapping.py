@@ -136,6 +136,9 @@ class mapping:
 			return ''
 		else:
 			empty=1
+			if map_name == 'sambaLogonHours' and len(value) > 0:
+				# can be [0], see Bug #33703
+				empty = 0
 			for v in value:
 				if v:
 					empty=0

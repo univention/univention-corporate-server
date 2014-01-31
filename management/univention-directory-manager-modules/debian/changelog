@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.143-33) unstable; urgency=low
+
+  * Bug #33703: Fixed setting and displaying of users' sambaLogonHours
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jan 2014 10:38:33 +0100
+
 univention-directory-manager-modules (8.0.143-32) unstable; urgency=low
 
   * Fixed german translation for unable to move (Bug #33566)
