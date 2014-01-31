@@ -1,6 +1,6 @@
 univention-management-console-frontend (2.0.244-19) unstable; urgency=low
 
-  * Bug #33703: Fixed MultiSelect widget setting its values too early
+  * Bug #34002: Fixed MultiSelect widget setting its values too early
     breaking page rendering
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jan 2014 10:40:41 +0100
