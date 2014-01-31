@@ -98,6 +98,10 @@ define([
 
 			// send an onChange event when the selection has changed
 			this.on('selectionChanged', lang.hitch(this, function() {
+				if (array.some(this.selection.getSelected(), function(v) { return v === null; })) {
+					// not yet startup'ed
+					return;
+				}
 				this._set('value', this.get('value'));
 			}));
 		},
