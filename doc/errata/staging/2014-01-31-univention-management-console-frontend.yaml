@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-management-console-frontend
+fix: 
+note:
+version: [0]
+desc: |
+ This update fixes several issues:
+ * fixed styling errors in the host dropdown menu related to browser differences
+bug: [32655]
