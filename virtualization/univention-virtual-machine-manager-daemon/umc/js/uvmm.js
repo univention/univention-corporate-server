@@ -318,10 +318,12 @@ define([
 		},
 
 		vncLink: function( ids, items ) {
-			array.forEach(ids, function(id) {
+			array.forEach(items, function(item) {
+				var id = item.id;
 				var uuid = id.slice(id.indexOf('#') + 1);
 				var port = window.location.port ? ':' + window.location.port : '';
-				var url = window.location.protocol + '//' + window.location.host + port + '/univention-novnc/vnc_auto.html?port=6080&path=?token=' + uuid;
+				var title = encodeURIComponent(item.label + '@' + item.nodeName);
+				var url = window.location.protocol + '//' + window.location.host + port + '/univention-novnc/vnc_auto.html?port=6080&path=?token=' + uuid + '&title=' + title;
 				window.open(url, '_blank');
 			});
 		},

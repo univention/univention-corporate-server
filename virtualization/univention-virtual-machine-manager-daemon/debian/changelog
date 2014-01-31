@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.17-5) unstable; urgency=low
+
+  * Set title on noVNC to VM name and host (Bug #33164)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 04 Dec 2013 08:44:56 +0100
+
 univention-virtual-machine-manager-daemon (3.0.17-4) unstable; urgency=low
 
   * Update UVMMd to use internal libvirt eventloop. This fixes a problem
