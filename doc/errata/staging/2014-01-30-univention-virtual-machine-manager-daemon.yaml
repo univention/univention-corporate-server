@@ -2,11 +2,14 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-virtual-machine-manager-daemon
-fix: 3.0.17-4.483.201401301119
+fix: 3.0.17-5.484.201401311109
 note:
 version: [0]
 desc: |
- This errata updates univention-virtual-machine-manager-daemon to use the
- internal libvirt eventloop. It fixes a problem with accumulating open
- file handles. This could lead to performance problems in large environments.
-bug: [33458]
+ This erratum update fixes the following issues:
+ * The univention-virtual-machine-manager-daemon now uses the internal libvirt
+   event-loop implementation. This fixes a problem with accumulating open file
+   handles, which lead to performance problems in large environments.
+ * The title of noVNC tabs/windows now includes the name of the virtual machine
+   and the name of the host.
+bug: [33458,33164]
