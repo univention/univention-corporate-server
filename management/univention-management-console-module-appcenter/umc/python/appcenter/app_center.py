@@ -71,11 +71,9 @@ import univention.admin.uldap as admin_uldap
 import univention.admin.handlers.appcenter.app as appcenter_udm_module
 import univention.admin.handlers.container.cn as container_udm_module
 import univention.admin.uexceptions as udm_errors
-from univention.updater import UniventionUpdater
-from univention.lib.package_manager import PackageManager
 
 # local application
-from util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, set_save_commit_load, ComponentManager
+from util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, set_save_commit_load
 
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons'
@@ -116,19 +114,6 @@ LICENSE = License()
 
 class DoesNotExist(Exception):
 	pass
-
-def get_package_manager_and_component_manager():
-	package_manager = PackageManager(
-		info_handler=MODULE.process,
-		step_handler=None,
-		error_handler=MODULE.warn,
-		lock=False,
-		always_noninteractive=True,
-	)
-	package_manager.set_finished() # currently not working. accepting new tasks
-	uu = UniventionUpdater(False)
-	component_manager = ComponentManager(ucr, uu)
-	return package_manager, component_manager
 
 class ApplicationLDAPObject(object):
 	def __init__(self, ldap_id, lo, co):
@@ -264,7 +249,7 @@ class SoftRequirement(InvokationRequirement):
 		self.hard = False
 
 class ApplicationMetaClass(type):
-	def __new__(cls, name, bases, attrs):
+	def __new__(mcs, name, bases, attrs):
 		requirements = {}
 		for key, value in attrs.items():
 			if isinstance(value, InvokationRequirement):
@@ -272,7 +257,7 @@ class ApplicationMetaClass(type):
 				for action in value.actions:
 					requirements.setdefault((action, value.hard), [])
 					requirements[(action, value.hard)].append(value.name)
-		new_cls = super(ApplicationMetaClass, cls).__new__(cls, name, bases, attrs)
+		new_cls = super(ApplicationMetaClass, mcs).__new__(mcs, name, bases, attrs)
 		new_cls._requirements = requirements
 		return new_cls
 
@@ -632,7 +617,6 @@ class Application(object):
 		if cls._all_applications is None:
 			cls._all_applications = []
 			# query all applications from the server
-			ucr.load()
 			if not only_local:
 				cls.sync_with_server()
 			for ini_file in glob(os.path.join(CACHE_DIR, '*.ini')):
@@ -772,7 +756,7 @@ class Application(object):
 
 	@HardRequirement('install', 'update', 'uninstall')
 	def must_not_have_concurrent_operation(self, package_manager):
-		return package_manager.progress_state._finished
+		return package_manager.progress_state._finished # TODO: package_manager.is_finished()
 
 	@HardRequirement('install', 'update')
 	def must_have_correct_server_role(self):
@@ -1274,26 +1258,26 @@ class Application(object):
 				remote_function = 'update'
 			if remote_function.startswith('install'):
 				remote_function = 'install'
- 			ucr.load()
- 			is_master = ucr.get('server/role') == 'domaincontroller_master'
- 			is_backup = ucr.get('server/role') == 'domaincontroller_backup'
+			ucr.load()
+			is_master = ucr.get('server/role') == 'domaincontroller_master'
+			is_backup = ucr.get('server/role') == 'domaincontroller_backup'
 			to_install = []
 			if not only_master_packages:
 				to_install.extend(self.get('defaultpackages'))
- 			master_packages = self.get('defaultpackagesmaster')
- 			if master_packages:
- 				MODULE.info('Trying to install master packages on DC master and DC backup')
- 				if is_master:
- 					to_install.extend(master_packages)
- 				else:
+			master_packages = self.get('defaultpackagesmaster')
+			if master_packages:
+				MODULE.info('Trying to install master packages on DC master and DC backup')
+				if is_master:
+					to_install.extend(master_packages)
+				else:
 					# install remotely when on backup or slave.
 					# remote installation on master is done after real installation
 					if is_backup:
 						# complete installation on backup, too
 						to_install.extend(master_packages)
- 					if username is None or dont_remote_install:
- 						MODULE.warn('Not connecting to DC Master and Backups. Has to be done manually')
- 					else:
+					if username is None or dont_remote_install:
+						MODULE.warn('Not connecting to DC Master and Backups. Has to be done manually')
+					else:
 						self.install_master_packages_on_hosts(package_manager, remote_function, username, password, is_master=False)
 
 			hosts = None
@@ -1350,7 +1334,7 @@ class Application(object):
 			if raised_before_installed:
 				self.unregister_all_and_register(previously_registered, component_manager, package_manager)
 			try:
-				self.tell_ldap(component_manager.ucr, package_manager, log_ldap_error=not something_went_wrong_with_ldap)
+				self.tell_ldap(component_manager.ucr, package_manager, inform_about_error=not something_went_wrong_with_ldap)
 			except (LDAPError, udm_errors.base):
 				pass
 			status = 500
@@ -1365,12 +1349,13 @@ class Application(object):
 		url = '%s/postinst' % (server, )
 		uuid = LICENSE.uuid or '00000000-0000-0000-0000-000000000000'
 		try:
-			values = {'uuid': uuid,
-				  'app': self.id,
-				  'version': self.version,
-				  'action': action,
-				  'status': status,
-				  'role': ucr.get('server/role'),
+			values = {
+				'uuid': uuid,
+				'app': self.id,
+				'version': self.version,
+				'action': action,
+				'status': status,
+				'role': ucr.get('server/role'),
 			}
 			request_data = urllib.urlencode(values)
 			request = urllib2.Request(url, request_data)

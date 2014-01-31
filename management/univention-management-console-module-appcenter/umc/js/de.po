@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-01-30 14:22+0100\n"
+"POT-Creation-Date: 2014-01-31 15:13+0100\n"
 "PO-Revision-Date: 2011-11-02 09:36+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -138,7 +138,7 @@ msgid "Another package operation is in progress."
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt."
 
 #: umc/js/appcenter/AppCenterPage.js:67 umc/js/appcenter/AppDetailsPage.js:63
-#: umc/js/appcenter/AppDetailsDialog.js:54
+#: umc/js/appcenter/AppDetailsDialog.js:56
 msgid "App management"
 msgstr "App-Verwaltung"
 
@@ -150,7 +150,7 @@ msgstr "Änderungen anwenden"
 msgid "Are you sure you want to delete the following components: [{ids}]"
 msgstr "Möchten Sie die folgenden Komponenten wirklich löschen: [{ids}]"
 
-#: umc/js/appcenter/AppDetailsDialog.js:177
+#: umc/js/appcenter/AppDetailsDialog.js:180
 msgid "Attention!"
 msgstr "Achtung!"
 
@@ -170,7 +170,7 @@ msgstr "Zurück zur Übersicht"
 msgid "Basic settings"
 msgstr "Allgemeine Einstellungen"
 
-#: umc/js/appcenter/AppDetailsDialog.js:177
+#: umc/js/appcenter/AppDetailsDialog.js:180
 msgid ""
 "Be sure to execute the following command as root on all of these backup "
 "servers <em>after</em> installing the application."
@@ -180,7 +180,7 @@ msgstr ""
 
 #: umc/js/appcenter/PackagesPage.js:411 umc/js/appcenter/PackagesPage.js:420
 #: umc/js/appcenter/AppDetailsPage.js:338
-#: umc/js/appcenter/AppDetailsDialog.js:66
+#: umc/js/appcenter/AppDetailsDialog.js:68
 #: umc/js/appcenter/SettingsPage.js:321
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -205,11 +205,11 @@ msgstr "Komponenten"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: umc/js/appcenter/AppDetailsDialog.js:144
+#: umc/js/appcenter/AppDetailsDialog.js:146
 msgid "Continuation is not possible"
 msgstr "Fortfahren nicht möglich"
 
-#: umc/js/appcenter/AppDetailsDialog.js:148
+#: umc/js/appcenter/AppDetailsDialog.js:150
 msgid "Continuation is not recommended"
 msgstr "Fortfahren nicht empfohlen"
 
@@ -427,7 +427,7 @@ msgstr "Name der soeben installierten Applikation"
 msgid "No"
 msgstr "Nein"
 
-#: umc/js/appcenter/AppDetailsDialog.js:204
+#: umc/js/appcenter/AppDetailsDialog.js:207
 msgid "No changes"
 msgstr "Keine Änderungen"
 
@@ -560,7 +560,7 @@ msgstr ""
 "wird beim nächsten Öffnen des Moduls wiederholt werden. Es kann zu Problemen "
 "bei der Installation von Applikationen kommen."
 
-#: umc/js/appcenter/AppDetailsDialog.js:158
+#: umc/js/appcenter/AppDetailsDialog.js:159
 #: umc/js/appcenter/SettingsPage.js:56
 msgid "Repository Settings"
 msgstr "Repository-Einstellungen"
@@ -621,7 +621,7 @@ msgstr "Fortschritt anzeigen"
 msgid "Show this message again"
 msgstr "Diese Nachricht später wieder zeigen"
 
-#: umc/js/appcenter/AppDetailsDialog.js:214
+#: umc/js/appcenter/AppDetailsDialog.js:217
 #, python-format
 msgid ""
 "Software changes on %(host)s (installed/upgraded: %(installed)s, removed: "
@@ -673,17 +673,17 @@ msgstr ""
 "In der Beschreibung jeder Applikation befindet sich in diesen Fällen ein "
 "entsprechender Hinweis."
 
-#: umc/js/appcenter/AppDetailsDialog.js:171
+#: umc/js/appcenter/AppDetailsDialog.js:174
 msgid "The following hosts cannot be reached:"
 msgstr "Folgende Hosts konnten nicht erreicht werden:"
 
 #: umc/js/appcenter/PackagesPage.js:392
-#: umc/js/appcenter/AppDetailsDialog.js:200
+#: umc/js/appcenter/AppDetailsDialog.js:203
 msgid "The following packages will be installed or upgraded:"
 msgstr "Folgende Pakete werden installiert bzw. aktualisiert:"
 
 #: umc/js/appcenter/PackagesPage.js:396
-#: umc/js/appcenter/AppDetailsDialog.js:201
+#: umc/js/appcenter/AppDetailsDialog.js:204
 msgid "The following packages will be removed:"
 msgstr "Folgende Pakete werden deinstalliert:"
 
@@ -696,11 +696,11 @@ msgstr ""
 "Der Kauf von Lizenzen, Maintenance oder Support ist nicht Teil von "
 "Univention App Center."
 
-#: umc/js/appcenter/AppDetailsDialog.js:167
+#: umc/js/appcenter/AppDetailsDialog.js:170
 msgid "The server tried to connect to DC Backups."
 msgstr "Der Server hat versucht, sich mit den DC Backups zu verbinden."
 
-#: umc/js/appcenter/AppDetailsDialog.js:169
+#: umc/js/appcenter/AppDetailsDialog.js:172
 msgid "The server tried to connect to DC Master and DC Backups."
 msgstr ""
 "Der Server hat versucht, sich mit dem DC Master und den DC Backups zu "
@@ -713,7 +713,7 @@ msgstr ""
 "Das System muss einer Domäne beigetreten sein, bevor die Applikation "
 "installiert werden kann!"
 
-#: umc/js/appcenter/AppDetailsDialog.js:207
+#: umc/js/appcenter/AppDetailsDialog.js:210
 msgid ""
 "The version of the remote App Center is <strong>incompatible</strong> with "
 "the local one. Please update your hosts."
@@ -721,20 +721,20 @@ msgstr ""
 "Die Version des entfernten App Center ist zu der des lokalen "
 "<strong>inkompatibel</strong>. Bitte aktualisieren Sie Ihre Hosts."
 
-#: umc/js/appcenter/AppDetailsDialog.js:158
+#: umc/js/appcenter/AppDetailsDialog.js:161
 #, python-format
 msgid ""
 "These changes contain <strong>all package upgrades available</strong> and "
 "thus may <strong>include errata updates</strong>. If this is not intended, "
 "the corresponding components have to be temporarily deactivated first using "
-"the tab \"%s\" above."
+"the tab \"%s\" in the App Center."
 msgstr ""
 "Diese Änderungen enthalten <strong>alle verfügbaren Paket-Aktualisierungen</"
 "strong> und können daher auch <strong>Errata-Aktualisierungen mit "
 "einschließen</strong>. Wenn dies nicht gewünscht ist, müssen zuvor die "
-"entsprechenden Komponenten im oberen Tab \"%s\" zeitweise deaktiviert werden."
+"entsprechenden Komponenten im Tab \"%s\" des App Centers zeitweise deaktiviert werden."
 
-#: umc/js/appcenter/AppDetailsDialog.js:177
+#: umc/js/appcenter/AppDetailsDialog.js:180
 #: umc/js/appcenter/requirements.js:124
 msgid "This application requires an extension of the LDAP schema."
 msgstr "Diese Applikation erfordert eine Erweiterung des LDAP Schemas."
@@ -775,7 +775,7 @@ msgstr ""
 "Kenntnis."
 
 #: umc/js/appcenter/PackagesPage.js:400
-#: umc/js/appcenter/AppDetailsDialog.js:202
+#: umc/js/appcenter/AppDetailsDialog.js:205
 msgid ""
 "This operation causes problems in the following packages that cannot be "
 "resolved:"
@@ -855,10 +855,10 @@ msgstr ""
 "anonymisierte Benachrichtigung, die nur bei Univention zur Datenverarbeitung "
 "gespeichert und nicht an Dritte weiter gegeben wird."
 
-#: umc/js/appcenter/AppDetailsDialog.js:189
-#: umc/js/appcenter/AppDetailsDialog.js:209
-#: umc/js/appcenter/AppDetailsDialog.js:210
-#: umc/js/appcenter/AppDetailsDialog.js:211
+#: umc/js/appcenter/AppDetailsDialog.js:192
+#: umc/js/appcenter/AppDetailsDialog.js:212
+#: umc/js/appcenter/AppDetailsDialog.js:213
+#: umc/js/appcenter/AppDetailsDialog.js:214
 #: umc/js/appcenter/SettingsPage.js:252
 msgid "Unknown"
 msgstr "Unbekannt"
@@ -942,7 +942,7 @@ msgstr ""
 msgid "You're editing the details of the component definition."
 msgstr "Sie bearbeiten die Details der Komponenten-Definition."
 
-#: umc/js/appcenter/AppDetailsDialog.js:212
+#: umc/js/appcenter/AppDetailsDialog.js:215
 msgid "incompatible"
 msgstr "inkompatibel"
 

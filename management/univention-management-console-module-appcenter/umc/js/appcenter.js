@@ -48,34 +48,9 @@ define([
 	"umc/modules/appcenter/DetailsPage",
 	"umc/i18n!umc/modules/appcenter" // not needed atm
 ], function(declare, lang, array, aspect, when, Deferred, topic, UMCApplication, store, Module, TabContainer, AppCenterPage, AppDetailsPage, AppDetailsDialog, PackagesPage, SettingsPage, DetailsPage, _) {
-
-	// TODO: ugly workaround for making the app center module unique
-	//   (no two modules open at the same time). See Bug #31662.
-	//   Maybe put generically in umc/app.js and state only unique: true here?
-	aspect.before(UMCApplication, 'openModule', function(module, flavor, props) {
-		var module_id = 'appcenter';
-		if (typeof(module) == 'string') {
-			module = this.getModule(module, flavor);
-		}
-		if (module && module.id != module_id) {
-			// default behaviour for all modules except this one
-			return arguments;
-		}
-		// check whether such a module has already been opened
-		var sameModules = array.filter(UMCApplication._tabContainer.getChildren(), function(i) {
-			return i.moduleID == module_id;
-		});
-		if (!sameModules.length) {
-			// module is not open yet, open it
-			return arguments;
-		} else {
-			UMCApplication.focusTab(sameModules[0]);
-			return [];
-		}
-	});
-
 	return declare("umc.modules.appcenter", [ Module ], {
 
+		unique: true, // only one appcenter may be open at once
 		idProperty: 'package',
 
 		buildRendering: function() {
@@ -233,6 +208,11 @@ define([
 			this._tabContainer.hideChild(this._appDetailsPage);
 			this._tabContainer.hideChild(this._appDetailsDialog);
 
+		},
+
+		selectComponentsPage: function() {
+			this._details.onCloseDetail();
+			this._tabContainer.selectChild(this._components);
 		},
 
 		// FIXME: this is quite cool. should go into TabbedModule

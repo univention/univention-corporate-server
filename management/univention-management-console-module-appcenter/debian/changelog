@@ -1,3 +1,15 @@
+univention-management-console-module-appcenter (3.0.50-19) unstable; urgency=low
+
+  * Bug #34028: When doing an update of an application a hint is shown saying
+    that all packages will be upgraded. If this is not intended one would have
+    to go to the repository settings tab. This tab is not present when
+    updating the application via its dedicated UMC module. Now the text
+    contains a link and it opens the App Center if it was not already open and
+    switches to the repository tab.
+  * Bug #30019: Some code cleanup
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jan 2014 13:55:17 +0100
+
 univention-management-console-module-appcenter (3.0.50-18) unstable; urgency=low
 
   * Bug #33947: Applications extending the LDAP schema added repositories on
