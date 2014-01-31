@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (2.0.36-12) unstable; urgency=low
+
+  * Update UVMMd to use internal libvirt eventloop. This fixes a problem
+    with accumulating open file handles (Bug #34020) 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 31 Jan 2014 11:19:56 +0100
+
 univention-virtual-machine-manager-daemon (2.0.36-11) unstable; urgency=low
 
   * Prevent snapshots of suspended VMs (Bug #23436)
