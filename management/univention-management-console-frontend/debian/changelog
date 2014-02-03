@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-20) unstable; urgency=low
+
+  * Bug #32655: fiy typo
+
+ -- Florian Best <best@univention.de>  Mon, 03 Feb 2014 13:20:00 +0100
+
 univention-management-console-frontend (3.0.152-19) unstable; urgency=low
 
   * Bug #31855: Support UMC modules that may be opened only once at the same
