@@ -553,7 +553,7 @@ define([
 				module = this.getModule(module, flavor);
 			}
 			if (undefined === module) {
-				return;
+				return undefined;
 			}
 
 			// create a new tab
@@ -561,22 +561,36 @@ define([
 				// force any tooltip to hide
 				Tooltip._masterTT && Tooltip._masterTT.fadeOut.play();
 
-				var params = lang.mixin({
-					title: module.name,
-					iconClass: tools.getIconClass(module.icon),
-					closable: tools.status('overview'),  // closing tabs is only enabled if the overview is visible
-					moduleFlavor: module.flavor,
-					moduleID: module.id,
-					description: module.description
-				}, props);
-				var tab = new module.BaseClass(params);
-				this._tabContainer.addChild(tab);
+				var tab = undefined; // will be the module
+				if (module.BaseClass.prototype.unique) {
+					var sameModules = array.filter(this._tabContainer.getChildren(), function(i) {
+						return i.moduleID == module.id;
+					});
+					if (sameModules.length) {
+						tab = sameModules[0];
+					}
+				}
+				if (!tab) {
+					// module is not open yet, open it
+					var params = lang.mixin({
+						title: module.name,
+						iconClass: tools.getIconClass(module.icon),
+						closable: tools.status('overview'),  // closing tabs is only enabled if the overview is visible
+						moduleFlavor: module.flavor,
+						moduleID: module.id,
+						description: module.description
+					}, props);
+					tab = new module.BaseClass(params);
+					this._tabContainer.addChild(tab);
+					tab.startup();
+					tools.checkReloadRequired();
+				}
 				this._tabContainer.selectChild(tab, true);
-				tab.startup();
-				tools.checkReloadRequired();
+				return tab;
 			} catch (err) {
 				console.warn('Error initializing module ' + module.id + ':', err);
 				tools.checkReloadRequired();
+				return undefined;
 			}
 		},
 
