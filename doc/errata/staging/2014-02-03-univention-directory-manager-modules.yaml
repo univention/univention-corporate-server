@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-directory-manager-modules
+fix: 8.0.143-33.1168.201402031349
+note:
+version: [1]
+desc: |
+  Fixed setting and displaying 'sambaLogonHours' using the udm command line
+  interface.
+bug: [34022]
