@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-ldap
-fix: 9.0.27-8.671.201401281201
+fix: 9.0.27-8.672.201402031445
 note:
 version: [1]
 desc: |
