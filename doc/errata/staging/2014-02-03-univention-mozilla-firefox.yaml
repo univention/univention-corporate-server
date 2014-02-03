@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-mozilla-firefox
+fix: 8.0.0-2.95.201402031036
+note:
+version: [0]
+desc: |
+  This update adds a Firefox addon that hides the tab bar. This is 
+  necessary for the appliance setup user experience. It was removed
+  in Firefox 24esr, the addon restores the feature.
+bug: [33640]
