@@ -1,3 +1,11 @@
+univention-mozilla-firefox (8.0.0-2) unstable; urgency=low
+
+  * Add Firefox addon that hides the tab bar. This is necessary for the 
+    appliance setup user experience. It was removed in Firefox 24esr, the
+    addon restores the feature. (Bug #33640)
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 03 Feb 2014 10:30:02 +0100
+
 univention-mozilla-firefox (8.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
