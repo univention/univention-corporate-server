@@ -8,4 +8,5 @@ version: [0]
 desc: |
  This update fixes several issues:
  * fixed styling errors in the host dropdown menu related to browser differences
-bug: [32655]
+ * Support UMC modules that may be opened only once at the same time
+bug: [32655,31855]

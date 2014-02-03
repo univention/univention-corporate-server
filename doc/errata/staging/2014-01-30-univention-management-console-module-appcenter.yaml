@@ -1,0 +1,23 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-management-console-module-appcenter
+fix: 3.0.50-19.231.201402031215
+note:
+version: [0]
+desc: |
+  This errata update fixes several issues:
+  * Support EndOfLife for an application: Hide it for new users, suggest
+    uninstallation for those who have this application installed.
+  * Applications extending the LDAP schema added repositories on DC master and
+    DC backup systems to install the corresponding software package. This might
+    cause problems when upgrading UCS as these repositories were never removed
+    automatically. This will be done from now on. "Stale" repositories already
+    registered are also removed.
+  * When doing an update of an application a hint is shown saying that all
+    packages will be upgraded. If this is not intended one would have to go to
+    the repository settings tab. This tab is not present when updating the
+    application via its dedicated UMC module. Now the text contains a link and
+    it opens the App Center if it was not already open and switches to the
+    repository tab.
+bug: [33946,33947,34028]
