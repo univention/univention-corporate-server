@@ -1,6 +1,7 @@
 univention-updater (9.0.38-10) unstable; urgency=low
 
   * Extend copyright to 2014.
+  * Fix evaluation of univentionUpdateActive by CRON job (Bug #33189)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 04 Feb 2014 17:01:54 +0100
 
