@@ -1,0 +1,13 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-updater
+fix: 9.0.38-10.1245.201402042222
+note:
+version: [0]
+desc: |
+ This erratum update fixes the following issues:
+ * The Cron-job for updading UCS releases did not evaluate check the activation
+   flag of the release policy. This has been fixed.
+ * The Univention updater is now called in non-interactive-mode when invoked from the maintenance Cron job and init script.
+bug: [33189,33194]
