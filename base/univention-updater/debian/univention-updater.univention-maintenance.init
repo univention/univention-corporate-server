@@ -33,6 +33,16 @@
 . /lib/lsb/init-functions
 LOG="/var/log/univention/updater.log"
 
+check_policy () {
+	eval "$(univention_policy_result -D "$ldap_hostdn" -y /etc/machine.secret -s "$ldap_hostdn")"
+	case "$1" in
+	stop) [ "$univentionInstallationShutdown" = 1 ] ;;
+	start) [ "$univentionInstallationStartup" = 1 ] ;;
+	restart) [ "$univentionInstallationShutdown" = 1 -o "$univentionInstallationStartup" = 1 ] ;;
+	*) return 2 ;;
+	esac
+}
+
 case "$1" in
 	start|restart|stop)
 
@@ -69,6 +79,8 @@ case "$1" in
 			exit 1
 		fi
 		log_action_end_msg 0
+
+		check_policy "$1" || exit 0
 
 		colourstart=""
 		colourend=""
@@ -182,27 +194,22 @@ case "$1" in
 			fi
 		fi
 
-		log_action_msg "Starting Univention Updater"
-
-			eval `univention_policy_result -D "$ldap_hostdn" -y /etc/machine.secret -s "$ldap_hostdn"`
-			if [ "$1" = stop -a "$univentionInstallationShutdown" = 1 -o "$univentionInstallationStartup" = 1 ]
-			then
 				if [ "$univentionUpdateActivate" = "TRUE" ]
 				then
 					if [ -n "$univentionUpdateVersion" ]
 					then
-						echo -n "  updater [$univentionUpdateVersion] "
+						log_action_msg "Starting Univention Updater [$univentionUpdateVersion]"
 						/usr/share/univention-updater/univention-updater "$mode" --noninteracive --updateto "$univentionUpdateVersion" >>"$LOG" 2>&1
 					else
-						echo -n "  updater "
+						log_action_msg "Starting Univention Updater"
 						/usr/share/univention-updater/univention-updater "$mode" --noninteracive >>"$LOG" 2>&1
 					fi
+					log_action_cont_msg " Univention Actualise"
+				else
+					log_action_msg "Starting Univention Actualise"
 				fi
 
-				echo -n "  actualise "
 				/usr/share/univention-updater/univention-actualise --dist-upgrade --silent >>"$LOG" 2>&1
-				echo
-			fi
 
 		if [ -f "$LOCKFILE" ]; then
 			rm "$LOCKFILE"
