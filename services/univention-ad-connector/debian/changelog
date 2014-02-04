@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-3) unstable; urgency=medium
+
+  * Bug #33657: wording improved.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Feb 2014 14:29:29 +0100
+
 univention-ad-connector (8.0.17-2) unstable; urgency=medium
 
   * Bug #33657: Point out the difference to Univention Ad Takeover

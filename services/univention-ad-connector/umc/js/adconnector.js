@@ -285,7 +285,7 @@ define([
 			this._page = new Page({
 				helpText: _("This module provides a configuration wizard for the UCS Active Directory Connector to simplify the setup.") + '<br>'
 				+ _("The module configures up a synchronized parallel operation of UCS next to a native Active Directory domain.") + '<br>'
-				+ _("If the replacement of native Active Directory domain controllers is desired instead, Univention AD Takeover should be used instead."),
+				+ _("If the replacement of a native Active Directory domain is desired instead, Univention AD Takeover should be used instead."),
 				headerText: _("Configuration of the UCS Active Directory Connector")
 			});
 			this.addChild(this._page);

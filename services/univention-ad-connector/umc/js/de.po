@@ -269,12 +269,12 @@ msgstr ""
 
 #: umc/js/adconnector.js:289
 msgid ""
-"If the replacement of native Active Directory domain controllers is desired "
-"instead, Univention AD Takeover should be used instead."
+"If the replacement of a native Active Directory domain is desired instead, "
+"Univention AD Takeover should be used instead."
 msgstr ""
-"Wenn statt dessen die Ablösung von nativen Active Directory "
-"Domänenkontrollern gewünscht ist, sollte statt dessen Univention AD Takeover "
-"verwendet werden."
+"Wenn statt dessen die Ablösung einer nativen Active Directory Domäne "
+"gewünscht ist, sollte statt dessen Univention AD Takeover verwendet "
+"werden."
 
 #: umc/js/adconnector.js:341
 msgid "UCS Active Directory Connector Wizard"
