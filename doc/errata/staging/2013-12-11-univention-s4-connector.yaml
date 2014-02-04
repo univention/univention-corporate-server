@@ -6,6 +6,6 @@ fix: 7.0.33-8.456.201401291135
 note:
 version: [1]
 desc: |
-  This errata update fixes two issues:
-  * Added support for synchronization of MS WMI filters (disabled by default).
+  This update adds support for synchronization of MS WMI filters
+  (disabled by default).
 bug: [33956]
