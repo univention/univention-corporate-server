@@ -564,7 +564,7 @@ define([
 				var tab = undefined; // will be the module
 				if (module.BaseClass.prototype.unique) {
 					var sameModules = array.filter(this._tabContainer.getChildren(), function(i) {
-						return i.moduleID == module.id;
+						return i.moduleID == module.id && i.moduleFlavor == module.flavor;
 					});
 					if (sameModules.length) {
 						tab = sameModules[0];

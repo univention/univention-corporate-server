@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-21) unstable; urgency=low
+
+  * Bug #31855: Check flavor when searching for unique modules
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 04 Feb 2014 14:41:23 +0100
+
 univention-management-console-frontend (3.0.152-20) unstable; urgency=low
 
   * Bug #32655: fiy typo
