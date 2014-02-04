@@ -134,6 +134,23 @@ msgstr "Passwort des Synchronisationsbenutzers"
 
 #: umc/js/adconnector.js:63
 msgid ""
+"This wizard configures a synchronized parallel operation of UCS next to a "
+"native Active Directory domain."
+msgstr ""
+"Dieser Assistent konfiguriert einen synchronisierten parallelen Betrieb von "
+"UCS neben einer nativen Active Directory Domäne."
+
+#: umc/js/adconnector.js:64
+msgid ""
+"If on the other hand the replacement of a native Active Directory domain is "
+"desired, Univention AD Takeover should be used instead."
+msgstr ""
+"Wenn andererseits die Ablösung einer nativen Active Directory Domäne "
+"gewünscht ist, sollte statt dessen Univention AD Takeover verwendet "
+"werden."
+
+#: umc/js/adconnector.js:65
+msgid ""
 "Please enter the fully qualified hostname of the Active Directory server."
 msgstr ""
 "Der vollqualifizierte Rechnername des Active Directory Servers wird benötigt."
@@ -258,23 +275,6 @@ msgid ""
 msgstr ""
 "Dieses Modul stellt einen Konfigurationsassistenten zur einfachen "
 "Einrichtung des UCS Active Directory Connector zur Verfügung"
-
-#: umc/js/adconnector.js:288
-msgid ""
-"The module configures up a synchronized parallel operation of UCS next to "
-"a native Active Directory domain."
-msgstr ""
-"Das Modul konfiguriert eine synchronisierte parallele Operation von UCS "
-"neben einer nativen Active Directory Domäne."
-
-#: umc/js/adconnector.js:289
-msgid ""
-"If the replacement of a native Active Directory domain is desired instead, "
-"Univention AD Takeover should be used instead."
-msgstr ""
-"Wenn statt dessen die Ablösung einer nativen Active Directory Domäne "
-"gewünscht ist, sollte statt dessen Univention AD Takeover verwendet "
-"werden."
 
 #: umc/js/adconnector.js:341
 msgid "UCS Active Directory Connector Wizard"

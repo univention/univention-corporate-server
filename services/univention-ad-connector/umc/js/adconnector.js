@@ -59,9 +59,11 @@ define([
 		constructor: function() {
 			this.pages = [{
 				name: 'fqdn',
-				helpText: '<p>' + _('Please enter the fully qualified hostname of the Active Directory server.') + '</p><p>'
-					+ _('The hostname must be resolvable by the UCS server. A DNS entry can be configured in the DNS module, or a static host record can be configured through the Univention Configuration Registry module, e.g.')
-					+ '</p><p>hosts/static/192.168.0.10=w2k8-ad.example.com</p>',
+				helpText: '<p>' + _("This wizard configures a synchronized parallel operation of UCS next to a native Active Directory domain.") + " "
+					+ _('If on the other hand the replacement of a native Active Directory domain is desired, Univention AD Takeover should be used instead.') + '</p><p>'
+					+ _('Please enter the fully qualified hostname of the Active Directory server.') + '</p><p>'
+					+ _('The hostname must be resolvable by the UCS server. A DNS entry can be configured in the DNS module, or a static host record can be configured through the Univention Configuration Registry module, e.g.') + '</p>'
+					+ '<p>hosts/static/192.168.0.10=w2k8-ad.example.com</p>',
 				headerText: _('UCS Active Directory Connector configuration'),
 				widgets: [{
 					name: 'LDAP_Host',
@@ -162,6 +164,7 @@ define([
 				}],
 				layout: ['PollSleep', 'RetryRejected', 'DebugLevel', 'DebugFunction']
 			}];
+
 		},
 
 		next: function(/*String*/ currentID) {
@@ -283,9 +286,7 @@ define([
 			this.inherited(arguments);
 
 			this._page = new Page({
-				helpText: _("This module provides a configuration wizard for the UCS Active Directory Connector to simplify the setup.") + '<br>'
-				+ _("The module configures up a synchronized parallel operation of UCS next to a native Active Directory domain.") + '<br>'
-				+ _("If the replacement of a native Active Directory domain is desired instead, Univention AD Takeover should be used instead."),
+				helpText: _("This module provides a configuration wizard for the UCS Active Directory Connector to simplify the setup."),
 				headerText: _("Configuration of the UCS Active Directory Connector")
 			});
 			this.addChild(this._page);

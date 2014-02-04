@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-4) unstable; urgency=medium
+
+  * Bug #33657: Move the message to the wizzard window.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Feb 2014 17:14:37 +0100
+
 univention-ad-connector (8.0.17-3) unstable; urgency=medium
 
   * Bug #33657: wording improved.
