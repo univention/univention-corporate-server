@@ -259,6 +259,23 @@ msgstr ""
 "Dieses Modul stellt einen Konfigurationsassistenten zur einfachen "
 "Einrichtung des UCS Active Directory Connector zur Verfügung"
 
+#: umc/js/adconnector.js:288
+msgid ""
+"The module configures up a synchronized parallel operation of UCS next to "
+"a native Active Directory domain."
+msgstr ""
+"Das Modul konfiguriert eine synchronisierte parallele Operation von UCS "
+"neben einer nativen Active Directory Domäne."
+
+#: umc/js/adconnector.js:289
+msgid ""
+"If the replacement of native Active Directory domain controllers is desired "
+"instead, Univention AD Takeover should be used instead."
+msgstr ""
+"Wenn statt dessen die Ablösung von nativen Active Directory "
+"Domänenkontrollern gewünscht ist, sollte statt dessen Univention AD Takeover "
+"verwendet werden."
+
 #: umc/js/adconnector.js:341
 msgid "UCS Active Directory Connector Wizard"
 msgstr "UCS Active Directory Connector Assistent"
