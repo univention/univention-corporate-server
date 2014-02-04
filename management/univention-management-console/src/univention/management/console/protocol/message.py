@@ -195,6 +195,8 @@ class Message( object ):
 		# is the format of the header line valid?
 		match = Message._header.match(header)
 		if not match:
+			if not nl:
+				raise IncompleteMessageError(_('The message header is not (yet) complete'))
 			raise ParseError( UMCP_ERR_UNPARSABLE_HEADER, _( 'Unparsable message header' ) )
 
 		groups = match.groupdict()

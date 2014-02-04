@@ -1,3 +1,9 @@
+univention-management-console (6.0.24-3) unstable; urgency=low
+
+  * Bug #33622: also allow message header to be send in chunks
+
+ -- Florian Best <best@univention.de>  Tue, 04 Feb 2014 12:46:54 +0100
+
 univention-management-console (6.0.24-2) unstable; urgency=low
 
   * Bug #33622: fix crashing of UMC when sending a malformed, empty or chunked UMCP
