@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-31) unstable; urgency=medium
+
+  * WMI filter: Bump joinscript-version for upgrades from ucs_3.1-1 to
+    register the LDAP Schema and module extension (Bug #33936)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Feb 2014 11:16:16 +0100
+
 univention-s4-connector (8.0.33-30) unstable; urgency=medium
 
   * WMI filter: Fix case of initial installation on first UCS@school DC
