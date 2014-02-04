@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-ad-connector
-fix: 8.0.17-3.365.2014020414328
+fix: 8.0.17-4.366.201402041717
 note:
 version: [0]
 desc: |
