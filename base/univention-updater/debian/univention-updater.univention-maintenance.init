@@ -192,10 +192,10 @@ case "$1" in
 					if [ -n "$univentionUpdateVersion" ]
 					then
 						echo -n "  updater [$univentionUpdateVersion] "
-						/usr/share/univention-updater/univention-updater "$mode" --updateto "$univentionUpdateVersion" >>"$LOG" 2>&1
+						/usr/share/univention-updater/univention-updater "$mode" --noninteracive --updateto "$univentionUpdateVersion" >>"$LOG" 2>&1
 					else
 						echo -n "  updater "
-						/usr/share/univention-updater/univention-updater "$mode" >>"$LOG" 2>&1
+						/usr/share/univention-updater/univention-updater "$mode" --noninteracive >>"$LOG" 2>&1
 					fi
 				fi
 
