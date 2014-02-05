@@ -1,0 +1,25 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: firefox-en
+fix: 1:24.3.0esr-6.32.201402051213
+version: [0]
+note: This update fixes these vulnerabilities.
+desc: |
+ This update consists of two updates for firefox-en and firefox-de.
+ Several vulnerabilities have been fixed with the update to Firefox ESR 24.3:
+ * Information disclosure in the handling of XBL scopes (CVE-2014-1479)
+ * Stricter enforcing of Javascript access to window objects (CVE-2014-1481)
+ * Memory safety error in handling raster images (CVE-2014-1482)
+ * Use-after-free in image processing (CVE-2014-1486)
+ * Cross-origin information leak in error messages of web workers (CVE-2014-1487)
+ * Incorrect session ticket handling in NSS (CVE-2014-1490)
+ * Stricter handling of Diffie Hellman keys in NSS (CVE-2014-1491)
+cve:
+ - CVE-2014-1479
+ - CVE-2014-1481
+ - CVE-2014-1482
+ - CVE-2014-1486
+ - CVE-2014-1487
+ - CVE-2014-1490
+ - CVE-2014-1491
