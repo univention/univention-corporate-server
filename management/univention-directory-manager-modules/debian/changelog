@@ -1,4 +1,4 @@
-univention-directory-manager-modules (9.0.76-1) unstable; urgency=low
+univention-directory-manager-modules (9.0.75-16) unstable; urgency=low
 
   * Bug #33850: don't overwrite gettext _ instance when merging syntax.d/*
   	into syntax.py
