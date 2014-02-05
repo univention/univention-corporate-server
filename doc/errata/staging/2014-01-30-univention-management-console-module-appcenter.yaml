@@ -20,4 +20,7 @@ desc: |
     application via its dedicated UMC module. Now the text contains a link and
     it opens the App Center if it was not already open and switches to the
     repository tab.
-bug: [33946,33947,34028]
+  * When querying during a release update of UCS, the target version should be
+    used to find all applications. This is done by reading from the
+    updater.status file.
+bug: [33946,33947,34028,33548]
