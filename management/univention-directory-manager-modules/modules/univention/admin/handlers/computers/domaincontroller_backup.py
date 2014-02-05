@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the DC Backup hosts 
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
