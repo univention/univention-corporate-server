@@ -2890,6 +2890,7 @@ class PrinterURI( complex ):
 				parsed.append(p)
 		return parsed
 
+
 class policyName(string):
 	_re = re.compile('^[a-zA-Z0-9]{1}[a-zA-Z0-9 #!$%&/\|\^.~_-]*?[a-zA-Z0-9#!$%&/\|\^.~_-]{1}$')
 
@@ -2897,7 +2898,11 @@ class policyName(string):
 	def parse(self, text):
 		if self._re.match(text):
 			return text
-		raise univention.admin.uexceptions.valueError(_('May only contain letters (except umlauts), digits, space as well as "#", "!", "$", "%", "&" "|", "^", ".", "~", "_", "-". Has to begin with a letter or digit and must not and with space.'))
+		raise univention.admin.uexceptions.valueError(
+			_('May only contain letters (except umlauts), digits, space as well as the ' \
+			'characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit ' \
+			'and must not end with space.')
+		)
 
 
 # DEPRECATED! Use MailHomeServer

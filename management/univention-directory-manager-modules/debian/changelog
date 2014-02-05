@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.75-15) unstable; urgency=low
+
+  * Bug #33850: adapt error message of policy name syntax
+
+ -- Florian Best <best@univention.de>  Wed, 05 Feb 2014 09:54:57 +0100
+
 univention-directory-manager-modules (9.0.75-14) unstable; urgency=low
 
   * Bug #33329: Revert whitespace fix
