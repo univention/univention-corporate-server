@@ -267,6 +267,7 @@ class Application(object):
 	_reg_component_id = re.compile(r'.*/(?P<id>[^/]+)\.ini')
 	_all_applications = None
 	_category_translations = None
+	_ucs_version = None
 
 	def __init__(self, ini_file, localize=True):
 		# load config file
@@ -441,6 +442,34 @@ class Application(object):
 		return True
 
 	@classmethod
+	def get_ucs_version(cls):
+		'''Returns the current UCS version (ucr get version/version).
+		During a release update of UCS, returns the target version instead
+		because the new ini files should now be used in any script'''
+		if cls._ucs_version is None:
+			version = None
+			try:
+				still_running = False
+				next_version = None
+				with open('/var/lib/univention-updater/univention-updater.status', 'r') as status:
+					for line in status:
+						line = line.strip()
+						key, value = line.split('=', 1)
+						if key == 'status':
+							still_running = value == 'RUNNING'
+						elif key == 'next_version':
+							next_version = value.split('-')[0]
+					if still_running and next_version:
+						version = next_version
+			except (IOError, ValueError) as exc:
+				MODULE.warn('Could not parse update.status: %s' % exc)
+			if version is None:
+				version = ucr.get('version/version', '')
+			MODULE.info('UCS Version is %r' % version)
+			cls._ucs_version = version
+		return cls._ucs_version
+
+	@classmethod
 	def get_server(cls, with_scheme=False):
 		server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
 		if with_scheme:
@@ -454,20 +483,15 @@ class Application(object):
 		# univention-repository/3.1/maintained/component/owncloud/all/
 		return '%s/univention-repository/%s/maintained/component/%s' % (
 			self.get_server(with_scheme=True),
-			ucr.get('version/version', ''),
+			self.get_ucs_version(),
 			self.component_id,
 		)
 
 	@classmethod
 	def get_metainf_url(cls):
-		# during a release upgrade, find ini files
-		#   of the new release
-		version = ucr.get('version/version/target')
-		if version is None:
-			version = ucr.get('version/version', '')
 		return '%s/meta-inf/%s' % (
 			cls.get_server(with_scheme=True),
-			version,
+			cls.get_ucs_version(),
 		)
 
 	@classmethod
@@ -613,6 +637,7 @@ class Application(object):
 
 		if force_reread:
 			cls._all_applications = None
+			cls._ucs_version = None
 
 		if cls._all_applications is None:
 			cls._all_applications = []
@@ -1131,7 +1156,7 @@ class Application(object):
 					ldap_object = iapp.get_ldap_object(or_create=True)
 					ldap_object.add_localhost()
 					break
-			udm_objects = appcenter_udm_module.lookup(co, lo, '(&(id=%s*)(server=%s))' % (self.id, localhost))
+			udm_objects = appcenter_udm_module.lookup(co, lo, '(&(id=%s_*)(server=%s))' % (self.id, localhost))
 			for udm_object in udm_objects:
 				udm_object.open()
 				if installed_version != udm_object.info['version']:
