@@ -57,18 +57,22 @@ _=translation.translate
 # load all additional syntax files from */site-packages/univention/admin/syntax.d/*.py
 #
 def import_syntax_files():
-	for dir in sys.path:
-		if os.path.exists( os.path.join( dir, 'univention/admin/syntax.py' ) ):
-			if os.path.isdir( os.path.join( dir, 'univention/admin/syntax.d/' ) ):
-				for f in os.listdir( os.path.join( dir, 'univention/admin/syntax.d/' ) ):
-					if f.endswith('.py'):
-						fn = os.path.join( dir, 'univention/admin/syntax.d/', f )
-						try:
-							fd = open( fn, 'r' )
-							exec fd in univention.admin.syntax.__dict__
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: importing "%s"' % fn)
-						except:
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: loading %s failed' % fn )
+	gettext = _
+	for dir_ in sys.path:
+		syntax_py = os.path.join(dir_, 'univention/admin/syntax.py')
+		syntax_d = os.path.join(dir_, 'univention/admin/syntax.d/')
+
+		if os.path.exists(syntax_py) and os.path.isdir(syntax_d):
+			syntax_files = (os.path.join(syntax_d, f) for f in os.listdir(syntax_d) if f.endswith('.py'))
+
+			for fn in syntax_files:
+				try:
+					fd = open( fn, 'r' )
+					exec fd in univention.admin.syntax.__dict__
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: importing "%s"' % fn)
+				except:
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: loading %s failed' % fn )
+	univention.admin.syntax.__dict__['_'] = gettext
 
 choice_update_functions = []
 def __register_choice_update_function(func):

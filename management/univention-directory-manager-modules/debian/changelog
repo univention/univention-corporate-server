@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.76-1) unstable; urgency=low
+
+  * Bug #33850: don't overwrite gettext _ instance when merging syntax.d/*
+  	into syntax.py
+
+ -- Florian Best <best@univention.de>  Wed, 05 Feb 2014 15:01:41 +0100
+
 univention-directory-manager-modules (9.0.75-15) unstable; urgency=low
 
   * Bug #33850: adapt error message of policy name syntax
