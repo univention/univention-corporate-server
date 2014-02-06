@@ -714,8 +714,10 @@ instanceType: 4
 		</para>
 
 		<para>
-		  Roaming profiles can be deactivated by configuring the &ucsUCR; variables <envar>samba/profilepath</envar> and <envar>samba/profileserver</envar> to
-		  <emphasis>local</emphasis> and restarting the Samba server.
+		  Roaming profiles can be deactivated by configuring the &ucsUCR; variables
+		  <envar>samba/profilepath</envar> and <envar>samba/profileserver</envar> to
+		  <emphasis>local</emphasis> and restarting the Samba server. The UMC setting from the input
+		  field <guimenu>Windows profile directory</guimenu> must also be set empty.
 		</para>
 	  </section>
 	</section>

@@ -729,7 +729,8 @@ instanceType: 4
 		<para>
 		  Durch Konfiguration der &ucsUCR;-Variablen <envar>samba/profilepath</envar> und
 		  <envar>samba/profileserver</envar> auf <emphasis>local</emphasis> und Neustart des
-		  Samba-Servers können servergespeicherten Profile deaktiviert werden.
+		  Samba-Servers können servergespeicherten Profile deaktiviert werden. Die UMC-Einstellung
+		  aus dem Eingabefeld <guimenu>Profilverzeichnis</guimenu> muss dann ebenfalls leer gesetzt sein.
 		</para>
 	  </section>
 	</section>
