@@ -6,9 +6,9 @@ fix: 3.0.17-5.484.201401311109
 note:
 version: [0]
 desc: |
- This erratum update fixes the following issues:
+ This update fixes the following issues:
  * The univention-virtual-machine-manager-daemon now uses the internal libvirt
-   event-loop implementation. This fixes a problem with accumulating open file
+   event loop implementation. This fixes a problem with accumulating open file
    handles, which lead to performance problems in large environments.
  * The title of noVNC tabs/windows now includes the name of the virtual machine
    and the name of the host.

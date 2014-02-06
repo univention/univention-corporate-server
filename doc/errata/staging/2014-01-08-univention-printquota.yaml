@@ -6,6 +6,5 @@ fix: 6.0.2-4.63.201401080935
 note:
 version: [0]
 desc: |
-  This errata update adds execute permissions for the password rotation
-  helper in univention-printquota.
+  This update fixes the password rotation script in univention-printquota.
 bug: [33791]

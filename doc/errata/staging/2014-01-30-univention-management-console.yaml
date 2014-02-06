@@ -6,6 +6,7 @@ fix: 6.0.24-3.776.201402041249
 note:
 version: [0]
 desc: |
- This errata update fixes the robustness of the UMCP message parser.
- The UCS@school computerroom module triggered a crash when responding with an empty message body.
+ This errata update improves the robustness of the UMC message parser:
+ The UCS@school computerroom module triggered a crash when responding 
+ with an empty message body.
 bug: [33622]
