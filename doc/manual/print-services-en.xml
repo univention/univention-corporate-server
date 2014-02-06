@@ -623,9 +623,8 @@
   	<orderedlist>
   	  <listitem><simpara>
 		Firstly, the printer drivers must be downloaded from the manufacturer's website. If you
-		are using an environment in which 64-bit installations are used in addition to 32-bit
-		versions of Windows, you will need both versions of the drivers. The INF files are
-		required.
+		are using an environment in which 64-bit installations of Windows are used, you will need 
+		both versions of the drivers (32 and 64 bit). The INF files are required.
 	  </simpara></listitem>
 
   	  <listitem><simpara>
@@ -645,6 +644,14 @@
 		driver is copied onto the print server. Another file dialogue now opens in which the 32-bit
 		driver (x86) can be uploaded in the same way.
 	  </simpara></listitem>
+
+ 	  <listitem><simpara>
+		After these steps the drivers are stored in the directory
+		<filename>/var/lib/samba/drivers</filename> on the print server.
+ 	  </simpara></listitem>
+
+
+
   	</orderedlist>
   </para>
 

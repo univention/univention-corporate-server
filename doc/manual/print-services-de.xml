@@ -635,9 +635,9 @@
 	<orderedlist>
 	  <listitem><simpara>
 		Zuerst müssen die Druckertreiber von der Webseite des Herstellers heruntergeladen
-		werden. Wird eine Umgebung verwendet, in der neben den 32 Bit-Versionen von Windows auch 64
-		Bit-Installationen verwendet werden, müssen die Treiber unbedingt in beiden Versionen
-		bezogen werden. Benötigt werden die INF-Dateien.
+		werden. Wird eine Umgebung verwendet, in der die 64 Bit-Versionen von Windows
+		eingesetzt werden, müssen die Treiber unbedingt in beiden Versionen bezogen werden (32 und 64 Bit).
+		Benötigt werden die INF-Dateien.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -659,7 +659,7 @@
 	  </simpara></listitem> 
 
  	  <listitem><simpara>
-		Nach diesen Schritten sind die Treiber auf dem Druckserver im Verzeichnis <filename>/var/lib/samba/printers</filename> gespeichert.
+		Nach diesen Schritten sind die Treiber auf dem Druckserver im Verzeichnis <filename>/var/lib/samba/drivers</filename> gespeichert.
  	  </simpara></listitem>
 
 	</orderedlist>
