@@ -1,3 +1,10 @@
+ucs-ec2-tools (0.1.16-1) unstable; urgency=low
+
+  * Increase the timeout to 1200 seconds while waiting for the EC2
+    instance (Bug #33841)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 06 Feb 2014 20:13:02 +0100
+
 ucs-ec2-tools (0.1.15-1) unstable; urgency=medium
 
   * Raise samba/debug/level on s4 backup and s4 slave for Bug #33904
