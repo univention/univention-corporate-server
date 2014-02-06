@@ -6,6 +6,6 @@ fix: 8.0.143-33.1168.201402031349
 note:
 version: [1]
 desc: |
-  Fixed setting and displaying 'sambaLogonHours' using the udm command line
-  interface.
+  Fixed setting and displaying 'sambaLogonHours' using the Univention Directory 
+  Manager command line interface.
 bug: [34022]

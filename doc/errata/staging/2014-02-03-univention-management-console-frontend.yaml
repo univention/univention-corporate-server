@@ -6,6 +6,6 @@ fix: 2.0.244-19.818.201402031407
 note:
 version: [1]
 desc: |
-  Fixed MultiSelect widget setting its values too early which could break page
-  rendering.
+  The MultiSelect widget was setting its values too early which could break page
+  rendering. This issue has been fixed.
 bug: [34022]

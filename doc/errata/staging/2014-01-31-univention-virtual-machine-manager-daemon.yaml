@@ -7,6 +7,6 @@ note:
 version: [1]
 desc: |
   This errata updates univention-virtual-machine-manager-daemon to use the
-  internal libvirt eventloop. It fixes a problem with accumulating open
-  file handles. This could lead to performance problems in large environments.
+  internal libvirt event loop. It fixes a problem with accumulating open
+  file handles which could lead to performance problems in large environments.
 bug: [34020]

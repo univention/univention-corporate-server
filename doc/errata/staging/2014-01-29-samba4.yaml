@@ -8,7 +8,7 @@ version: [1]
 desc: |
  This update fixes two issues in Samba 4:
  * The smbstatus tool of Samba 4 was affected by a segmentation fault
-   due to a value temprarily missing from a session info data structure.
+   due to a value temporarily missing from a session info data structure.
  * Logon failures accompanied by log messages in the samba log files:
    "auth_generic_prepare failed: NT_STATUS_INVALID_SERVER_STATE".
 bug: [33758, 34015]
