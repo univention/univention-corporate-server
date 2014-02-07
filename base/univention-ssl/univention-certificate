@@ -104,7 +104,7 @@ case "$command" in
 		if getent group "DC Backup Hosts" 2>&1 >/dev/null
 		then
 			chgrp -R "DC Backup Hosts" "/etc/univention/ssl/$name"
-			chmod g+rx "/etc/univention/ssl/$name"
+			chmod -R g+rX "/etc/univention/ssl/$name"
 		fi
 		;;
 	"revoke")

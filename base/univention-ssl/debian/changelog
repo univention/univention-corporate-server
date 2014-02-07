@@ -1,3 +1,10 @@
+univention-ssl (8.0.0-4) unstable; urgency=low
+
+  * set correct permissions for "/etc/univention/ssl" on certificate renewal (Bug #31941)
+  * set correct permissions when using "univention-certificate new" (Bug #31941)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 07 Feb 2014 15:50:12 +0100
+
 univention-ssl (8.0.0-3) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30943)

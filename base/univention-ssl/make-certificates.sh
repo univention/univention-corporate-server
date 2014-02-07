@@ -301,7 +301,13 @@ init () {
 	openssl ca -config openssl.cnf -gencrl -out "${CA}/crl/crl.pem" -passin pass:"$PASSWD"
 	openssl crl -in "${CA}/crl/crl.pem" -out "${CA}/crl/${CA}.crl" -inform pem -outform der
 	cp "${CA}/crl/${CA}.crl" /var/www/
-	
+
+	if getent group 'DC Backup Hosts' >/dev/zero
+	then
+		chgrp -R 'DC Backup Hosts' -- "$SSLBASE"
+		chmod -R g+rwX -- "$SSLBASE"
+	fi
+
 	cd "$OPWD"
 }
 
