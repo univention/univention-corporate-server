@@ -1,8 +1,8 @@
 product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
-src: univention-mozilla-firefox
-fix: 8.0.0-2.95.201402031036
+src: univention-system-setup
+fix: 7.0.69-7.568.201402071339
 note:
 version: [0]
 desc: |
