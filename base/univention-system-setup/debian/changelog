@@ -1,3 +1,11 @@
+univention-system-setup (7.0.69-7) unstable; urgency=low
+
+  * Add Firefox addon that hides the tab bar. This is necessary for the
+    appliance setup user experience. It was removed in Firefox 24esr, the
+    addon restores the feature. (Bug #33640) 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 07 Feb 2014 13:37:47 +0100
+
 univention-system-setup (7.0.69-6) unstable; urgency=low
 
   * Bug #33407: revert changes, don't set maximum IP address possibilities in
