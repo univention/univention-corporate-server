@@ -1,3 +1,9 @@
+univention-mozilla-firefox (8.0.0-3) unstable; urgency=low
+
+  * Revert last change (Bug #33640)
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 07 Feb 2014 13:19:11 +0100
+
 univention-mozilla-firefox (8.0.0-2) unstable; urgency=low
 
   * Add Firefox addon that hides the tab bar. This is necessary for the 
