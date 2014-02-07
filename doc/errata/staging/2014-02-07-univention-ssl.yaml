@@ -1,0 +1,14 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-ssl
+fix: 8.0.0-4.138.201402071620
+note:
+version: [0]
+desc: |
+ The permissions for the directory "/etc/univention/ssl" and the files contained in it
+ where mangled on certificate renewal via the UMC "System Setup" module.
+ New certificates created using "univention-certificate new" where created with wrong
+ permissions.
+ This update fixes these issues, making sure that the group "DC Backup Hosts" has access.
+bug: [31941]
