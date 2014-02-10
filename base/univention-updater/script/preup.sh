@@ -77,8 +77,8 @@ readcontinue ()
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: http://docs.univention.de/release-notes-3.2-en.html"
-echo " German version:  http://docs.univention.de/release-notes-3.2-de.html"
+echo " English version: http://docs.univention.de/release-notes-3.2-1-en.html"
+echo " German version:  http://docs.univention.de/release-notes-3.2-1-de.html"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
@@ -118,7 +118,7 @@ updateLogDir="/var/univention-backup/update-to-$UPDATE_NEXT_VERSION"
 if [ ! -d "$updateLogDir" ]; then
 	mkdir -p "$updateLogDir"
 fi
-cp /etc/univention/base*.conf "$updateLogDir/" 
+cp /etc/univention/base*.conf "$updateLogDir/"
 ucr dump > "$updateLogDir/ucr.dump"
 
 # call custom preup script if configured
@@ -147,7 +147,7 @@ is_ucr_true () {
     esac
 }
 
-## check for hold packages 
+## check for hold packages
 hold_packages=$(LC_ALL=C dpkg -l | grep ^h | awk '{print $2}')
 if [ -n "$hold_packages" ]; then
 	echo "WARNING: Some packages are marked as hold -- this may interrupt the update and result in an inconsistent"
@@ -164,38 +164,6 @@ if [ -n "$hold_packages" ]; then
 fi
 
 ##
-
-#################### Bug #33342
-
-trusts_other_domains() {
-	local trusts_other_domains
-	if [ -x /usr/bin/net ] ; then
-		trustdom_list_output=$(net rpc trustdom list -Uwhat%ever 2>/dev/null)
-		trustdom_list_output="${trustdom_list_output%%$'\n\n'Trusting domains list:*}"
-		trustdom_list_output="${trustdom_list_output##Trusted domains list:$'\n\n'}"
-
-		trusts_other_domains=0
-		while read -a line; do
-			netbios_name="${line[0]}"
-			if [ -n "$netbios_name" ] && [ "$netbios_name" != "none" ] ; then
-				echo "Local samba domain trusts domain $netbios_name"
-				trusts_other_domains=1
-			fi
-		done <<<"$trustdom_list_output"
-		if [ "$trusts_other_domains" != 0 ]; then
-			return 0
-		else
-			return 1
-		fi
-	else
-		echo "net command not available, probably not a Samba system."
-		return 2
-	fi
-}
-
-if trusts_other_domains; then
-	ucr set samba/winbind/rpc/only="yes"
-fi
 
 #################### Bug #22093
 
@@ -324,63 +292,14 @@ then
 		echo "       This MUST be fixed before the update can continue."
 		echo
 		echo "       This problem can be corrected by setting the content of the file"
-		echo "       /etc/machine.secret as the password of the computer object using"
+		echo "       /etc/machine.secret to the password of the computer object using"
 		echo "       Univention Management Console."
 		exit 1
 	fi
 fi
 
-# check for deprecated MySQL option skip-bdb in modified configuration files
-MYSQL_CONF="/etc/mysql/my.cnf"
-if test -f "$MYSQL_CONF" && ! conffile_is_unmodified "$MYSQL_CONF" && grep -q '\<skip-bdb\>' "$MYSQL_CONF"
-then
-	echo "ERROR: The MySQL configuration file /etc/mysql/my.cnf has been modified and"
-	echo "       contains the deprecated option 'skip-bdb'. The option MUST be removed"
-	echo "       before the update can continue."
-	exit 1
-fi
-
-# check for possible GRUB2 partitions on non-EFI systems (Bug #32634)
-eval "$(ucr shell update/grub/boot)"
-if ! is_ucr_true grub/efi ; then
-	if [ -z "$update_grub_boot" ] && ! is_ucr_true grub/efi ; then
-		for device in $(egrep '^\s*[0-9]+' /proc/partitions | awk '{print $4}' | egrep -v "^(fd|sr|scd|dm-)" ) ; do
-			# code borrowed from grub-common.postinst:
-			# a) find "GRUB" within boot sector
-			# b) GRUB2 uses assembler codes "63eb" (JMP) as first two bytes
-			if dd if="/dev/$device" bs=512 count=1 2>/dev/null | grep -aq GRUB; then
-				if [ "$(dd if=/dev/$device bs=2 count=1 2>/dev/null | od -Ax -tx2 | head -n1 | cut -d' ' -f2)" = "63eb" ] ; then
-					if [ -z "$update_grub_boot" ] ; then
-						update_grub_boot="/dev/$device"
-					else
-						unset update_grub_boot
-						echo "WARNING: Cannot determine the GRUB boot device clearly."
-						echo "		   After the update has been completed, please install GRUB with"
-						echo "		   the following command on your boot device:"
-						echo
-						echo "		   grub-install <DEVICE>"
-						sleep 5s
-						break
-					fi
-				fi
-			fi
-		done
-		if [ -n "$update_grub_boot" ] ; then
-			ucr set update/grub/boot="$update_grub_boot"
-		fi
-	fi
-	if [ -z "$(ucr get update/grub/boot)" ] ; then
-		echo "WARNING: Cannot determine the GRUB boot device clearly."
-		echo "		   After the update has been completed, please install GRUB with"
-		echo "		   the following command on your boot device:"
-		echo
-		echo "		   grub-install <DEVICE>"
-		sleep 5s
-	fi
-fi
-
 # Pre-upgrade
-preups="grub-common python-univention-directory-manager-uvmm"
+preups=""
 $update_commands_update >&3 2>&3
 for pkg in $preups; do
 	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then

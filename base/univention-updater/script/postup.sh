@@ -115,53 +115,24 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 	fi
 fi
 
-# For UCS 3.2-0 a reinstallation of GRUB2 is required - otherwise the system is unbootable (Bug #32634)
-eval "$(ucr shell update/grub/boot)"
-if [ -n "$update_grub_boot" ] ; then
-	echo "Installing new grub version into device \"$update_grub_boot\" ..." >> "$UPDATER_LOG"
-	grub-install "$update_grub_boot" && \
-       ucr unset update/grub/boot || \
-       echo -e "Warning: Installation of GRUB on device \"$update_grub_boot\" failed!\nPlease run 'grub-install <DEVICE>' manually, to update GRUB on your boot device." | tee -a "$UPDATER_LOG" >&2
-fi
-. /usr/share/univention-lib/ucr.sh
-if is_ucr_true grub/efi ; then
-	echo "Installing new grub version ..." >> "$UPDATER_LOG"
-	grub-install || echo -e "Warning: Installation of GRUB failed!\nPlease run 'grub-install' manually, to update GRUB on your boot device." | tee -a "$UPDATER_LOG" >&2
-fi
-
-# For UCS 3.2 update scenario, should be removed after the UCS 3.2 release
-#  https://forge.univention.org/bugzilla/show_bug.cgi?id=33121
-ucr set connector/s4/mapping/group/grouptype?false >>"$UPDATER_LOG" 2>&1
-
 # For UCS 3.2-0 a reboot is required
 univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
 
 # Move to mirror mode for previous errata component
 ucr set \
-	repository/online/component/3.1-1-errata=false \
-	repository/online/component/3.1-1-errata/localmirror=true >>"$UPDATER_LOG" 2>&1	
+	repository/online/component/3.2-0-errata=false \
+	repository/online/component/3.2-0-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
 
-# Set errata component for UCS 3.2-0
+# Set errata component for UCS 3.2-1
 ucr set \
-	repository/online/component/3.2-0-errata=enabled \
-	repository/online/component/3.2-0-errata/description="Errata updates for UCS 3.2-0" \
-	repository/online/component/3.2-0-errata/version="3.2" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/3.2-1-errata=enabled \
+	repository/online/component/3.2-1-errata/description="Errata updates for UCS 3.2-1" \
+	repository/online/component/3.2-1-errata/version="3.2" >>"$UPDATER_LOG" 2>&1
 
 # Reset errata level
 univention-config-registry set version/erratalevel=0 >>"$UPDATER_LOG" 2>&1
 
 # make sure that UMC server is restarted (Bug #33426)
-echo "
-
-
-****************************************************
-*    THE UPDATE HAS BEEN FINISHED SUCCESSFULLY.    *
-* Please make a page reload of UMC and login again *
-****************************************************
-
-
-" >>"$UPDATER_LOG" 2>&1
-
 echo -n "Restart UMC server components to finish update... " >>"$UPDATER_LOG" 2>&1
 sleep 10s
 /usr/share/univention-updater/disable-apache2-umc --exclude-apache >>"$UPDATER_LOG" 2>&1
