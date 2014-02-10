@@ -4,19 +4,19 @@
 
   <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
   <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
-  <!ENTITY changelog SYSTEM "changelog-3.2.xml">
+  <!ENTITY changelog SYSTEM "changelog-3.2-1.xml">
 
   %entities;
 ]>
-<book lang="en" id="releasenotes-3.2-en">
+<book lang="en" id="releasenotes-3.2-1-en">
     <bookinfo>
-      <title>UCS 3.2 Release Notes</title>
+      <title>UCS 3.2-1 Release Notes</title>
       <subtitle>Release notes for the installation and update of Univention Corporate Server (UCS) 3.2</subtitle>
 
         <revhistory>
             <revision>
-                <revnumber>3.2-0</revnumber>
-                <date>19 Nov 2013</date>
+                <revnumber>3.2-1</revnumber>
+                <date>17 Feb 2014</date>
             </revision>
         </revhistory>
 
@@ -26,7 +26,7 @@
 		  </para>
 
 		  <para>
-			(c) 2002 bis 2013 Univention GmbH
+			(c) 2002 bis 2014 Univention GmbH
 		  </para>
 
 		  <para>
@@ -55,62 +55,10 @@
     <chapter id="relnotes:highlights">
 	  <title>Release highlights</title>
 
-		<para>
-		  With Univention Corporate Server 3.2, the second minor release for Univention Corporate
-		  Server (UCS) is now available. It provides several improvements and bugfixes:
-		</para>
-
-		<itemizedlist>
-		  <listitem><para>
-			The operation of the &ucsUMC; has been optimised and simplified in a number of points,
-			e.g., there are now simplified wizards for creating users and internal system users are
-			no longer shown in the basic setting. In addition, the &ucsUMC; now offers single
-			sign-on; logging in once allows users to access different UMC instances.
-		  </para></listitem>
-
-		  <listitem><para>
-			SAML (Security Assertion Markup Language) is an XML-based standard for exchanging
-			authentication information, which allows single sign-on across domain boundaries.
-			UCS now provides a SAML identity provider: The external service (e.g.,
-			Salesforce) is then registered via a cryptographic certificate and trusted by
-			the identity provider. The user then only needs to authenticate himself in UCS and can
-			use the integrated service without renewed authentication.
-		  </para></listitem>
-
-		  <listitem><para>
-			The Univention App Center has been expanded further and offers more extensive
-			integration possibilities for third-parties (e.g., relations of apps and optional
-			ordering of apps from the App Center). The standard UCS components are now
-			also installed/removed via the App Center.
-		  </para></listitem>
-
-		  <listitem><para>
-			Samba 4 has been updated to Version 4.1. SMB2 is used as the preferred protocol for file
-			services instead of CIFS. The Univention S4 Connector has been considerably speeded up
-			and the synchronization of groups improved.
-		  </para></listitem>
-
-		  <listitem><para>
-			Bridges, bondings and VLANs can now also be configured in the &ucsUMC;.
-		  </para></listitem>
-
-		  <listitem><para>
-			The underlying Debian base has been updated to version 6.0.8; this imparts numerous
-			improvements and bug fixes.
-		  </para></listitem>
-
-		  <listitem><para>
-			The Linux kernel has been updated to 3.10.15.
-		  </para></listitem>
-
-		  <listitem><para>
-			The management of shares has been simplified. NFSv4 is now also supported for NFS shares.
-		  </para></listitem>
-
-		  <listitem><para>
-			Proxy authentication is now also possible via Kerberos.
-		  </para></listitem>
-		</itemizedlist>
+	  <para>
+		With Univention Corporate Server 3.2-1, the first point release for Univention Corporate
+		Server (UCS) is now available. It includes all errata updates issued for UCS 3.2-0.
+	  </para>
 
     </chapter>
 
@@ -160,121 +108,6 @@
 		  which are installed on all system roles.
 		</para>
 
- 	  <section id="relnotes:appupdate">
-		<title>Updating installed applications from the Univention App Center</title>
-		<para>
-		  Applications which were installed from the Univention App Center need to be updated before
-		  the release update. If e.g. the error message <guimenu>Further release updates are
-		  available but cannot be installed because the component 'zarafa_20130228' is not available
-		  for newer release versions</guimenu> is displayed, the installed application (in this example Zarafa) must be
-		  updated in the Univention App Center using <guimenu>Upgrade</guimenu> before the release
-		  update can be initiated.
-		</para>
-	  </section>
-
-	  <section id="relnotes:bdb">
-		<title>Checking the size of the BDB database of systems with Cyrus IMAP server (univention-mail-cyrus)</title>
-		<para>
-		  As of UCS 3.2, the univention-mail-cyrus package includes a new &ucsUCR; template for
-		  the configuration file of the Cyrus BDB database (<filename>/var/lib/cyrus/db/DB_CONFIG</filename>).
-		</para>
-
-		<para>
-		  The default values of the UCR variables for the configuration of the BDB database are:
-
-		  <itemizedlist>
-			<listitem><para>
-			  mail/cyrus/bdb/dbconfig/set_lg_regionmax : "2097152"
-			</para></listitem>
-
-			<listitem><para>
-			  mail/cyrus/bdb/dbconfig/set_cachesize : "0 2097152 1"
-			</para></listitem>
-		  </itemizedlist>
-		</para>
-
-		<para>
-		  Any existing Cyrus BDB configuration will be copied to
-		  <filename>/var/lib/cyrus/db/DB_CONFIG.debian</filename> during the update. If the new
-		  default values do not correspond to the old, existing configuration or if the used options are
-		  not available in the new default values, the corresponding &ucsUCR; variables should be
-		  set prior to the update. E.g.:
-		</para>
-
-<programlisting language="sh">
-ucr set mail/cyrus/bdb/dbconfig/set_cachesize="0 4097152 1"
-ucr set mail/cyrus/bdb/dbconfig/set_lg_regionmax="2097152"
-ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
-</programlisting>
-	  </section>
-
-	  <section id="relnotes:cyruslistener">
-		<title>Updates to the Univention Directory listener module for Cyrus users</title>
-		<para>
-		  The listener module for the administration of mailboxes has been revised. Mailboxes are
-		  now only created if the <emphasis>mailHomeServer</emphasis> attribute is set for the user
-		  (in the UMC under <guimenu>Advanced settings -> Mail home server </guimenu>).
-		</para>
-
-		<para>
-		  If the <envar>mail/cyrus/mailbox/delete</envar> &ucsUCRV; has been activated on the mail
-		  server and the attribute is removed from the user object, the mailbox is deleted.
-		</para>
-	  </section>
-
-
-	  <section id="relnotes:removed">
-	  	<title>Removed/no longer supported components</title>
-	  	<para>
-		  Some components have been removed and are no longer provided with UCS 3.2:
-
-	  	  <itemizedlist>
-	  		<listitem><para>
-			  The UMC module <guimenu>VNC</guimenu> has been removed. Xrdp can be
-			  installed via the Univention App Center as an alternative for graphic remote logins to
-			  UCS servers.
-			</para></listitem>
-
-			<listitem><para>
-			  The <emphasis>univention-local-users</emphasis> package (it was only part of the
-			  unmaintained repository section) has been removed.
-			</para></listitem>
-
-			<listitem><para>
-			  The installer for the Flash plugin has been removed.
-			</para></listitem>
-	  	  </itemizedlist>
-
-	  	</para>
-	  </section>
-
-	  <section id="relnotes:erratas">
-		<title>Upcoming errata updates</title>
-		<para>
-		  The following bugs could not be considered for the final UCS 3.2 release. They will be
-		  fixed in errata updates in a timely manner. If necessary, the update should be postponed
-		  until the updates are available.
-
-		  <itemizedlist>
-		  	<listitem><para>
-			  Trust relationships with Samba 3, in which Samba trusts a Windows domain, do not
-			  function (the name resolution via Winbind fails) (<ulink url="&ucsbug;33303">Bug
-			  33303</ulink>). 
-		  	</para></listitem>
-
-		  	<listitem><para>
-			  Samba 4 (4.1) currently does not start in
-			  a pure IPv6 environment. A virtual IPv4 interface can be configured as a workaround
-			  (<ulink url="&ucsbug;33250">Bug 33250</ulink>).
-			</para></listitem>
-
-		  	<listitem><para>
-			  Printing via native, locally installed Windows 8 printer drivers currently doesn't work 
-			  (<ulink url="&ucsbug;33197">Bug 33197</ulink>).
-		  	</para></listitem>
-		  </itemizedlist>
-		</para>
-	  </section>
 	</chapter>
 
     <chapter>
@@ -292,7 +125,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		</para>
 
 	  <section id="relnotes:grub2">
-		<title>Migration to GRUB 2</title>
+		<title>Migration to GRUB 2 on systems which were installed with UCS releases earlier than 3.0</title>
 		<para>
 		  Starting with UCS 3.0, in a new installation, the Univention Installer writes GRUB 2 in
 		  the boot sector directly.
@@ -322,34 +155,6 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		  The update to PostgreSQL 8.4 is described in the SDB article <ulink
 		  url="http://sdb.univention.de/1249"/>.
 		</para>
-	  </section>
-
-	  <section id="relnotes:horde">
-		<title>Update/installation of the Horde Groupware Webmail Edition</title>
-		<para>
-		  As of UCS 3.2, the Horde Groupware Webmail Edition will no longer be available via the
-		  <emphasis>univention-horde4</emphasis> package and will be provided instead via the
-		  Univention App Center. The update of univention-horde4 to or initial installation of Horde
-		  5.1.0 is performed by installing the <emphasis>Horde Groupware Webmail Edition</emphasis>
-		  app in the Univention App Center.
-		</para>
-	  </section>
-
-	  <section id="relnotes:sambaproto">
-	  	<title>Updating the supported protocols for Samba file services</title>
-	  	<para>
-		  In versions before UCS 3.2, Samba used the CIFS protocol to provide file services. In new
-		  installations as of UCS 3.2, the successor SMB2 is enabled as standard. Using a client
-		  which supports SMB2 (as of Windows Vista, i.e., Windows 7/8 too) improves the performance
-		  and scalability.
-		</para>
-
-	  	<para>
-		  In the case of updates from earlier UCS releases, Samba continues to use CIFS. To enable
-		  the use of SMB2 subsequently, the &ucsUCR; variable <envar>samba/max/protocol</envar> must
-		  be set to <emphasis>SMB2</emphasis> on all Samba servers and the Samba server(s)
-		  restarted.
-	  	</para>
 	  </section>
 
 	  <section id="repo:verify">
@@ -389,35 +194,6 @@ done
 		</para>
 	  </section>
 
-
-	  <section id="relnotes:grouptype">
-		<title>Subsequent setting up of synchronisation of Active Directory group types</title>
-		<para>
-		  In new installations as of UCS 3.2 in which Samba 4 is used, the group memberships are
-		  synchronised between the Samba 4 directory service and the OpenLDAP directory service by
-		  the Univention S4 connector, i.e., each group on the UCS side is associated with a group
-		  in Active Directory.
-		</para>
-
-		<para>
-		  Systems installed with earlier UCS versions than 3.2 can optionally to be changed over
-		  subsequently. Further information can be found at <ulink
-		  url="http://sdb.univention.de/1238"/>.
-		</para>
-	  </section>
-
-
-	  <section id="relnotes:startpage">
-	  	<title>Migration of adjustments on the UCS start page</title>
-	  	<para>
-		  In earlier UCS versions, the UCS start page could be expanded with &ucsUCR; templates in
-		  the <filename>/etc/univention/templates/files/var/www/ucs-overview</filename>
-		  directory. As of UCS 3.2, the start page is expanded with &ucsUCR; variables
-		  (<envar>ucs/web/overview/entries/*</envar>, further information can be found in the UCR
-		  variable descriptions). Any existing expansions must therefore be migrated manually.
-	  	</para>
-	  </section>
-
 	</chapter>
 
 
@@ -451,13 +227,13 @@ done
 	  <section id="relnotes:uefi">
 		<title>UEFI installation DVD</title>
 		<para>
-		  Starting with UCS 3.1, in addition to the standard installation DVD there is also a medium
+		  In addition to the standard installation DVD there is also a medium
 		  with support for the Unified Extensible Firmware Interface standard (UEFI) available for
 		  the amd64 architecture.
 		</para>
 
 		<para>
-		  It can be used instead of the standard DVD on systems which only support a UEFI boot.
+		  It must be used instead of the standard DVD on systems which only support a UEFI boot.
 		</para>
 	  </section>
 
@@ -504,9 +280,7 @@ done
 	  <section id="relnotes:s4limits">
 		<title>Restrictions in Samba 4 operation</title>
 		<para>
-		  The versions of Samba 4 currently published by the Samba project are undergoing more
-		  intensive changes in their further development than Samba 3. For this reason, some
-		  functions are not yet completely available:
+		  Some Active Directory functions are currently not available in Samba 4:
 		</para>
 
 		  <itemizedlist>
@@ -625,7 +399,7 @@ xe vm-param-set uuid=UUIDVM platform:vga=std
     <chapter>
 	  <title>Changelog</title>
 	  <para>
-		Listed are the changes since UCS 3.1-1:
+		Listed are the changes since UCS 3.2-0:
 	  </para>
 
 	  &changelog;
