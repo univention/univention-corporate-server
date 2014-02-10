@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-MAIN := release-notes-3.2-en release-notes-3.2-de
+MAIN := release-notes-3.2-1-en release-notes-3.2-1-de
 STYLESHEET := univention_extdocs
 OPTIONS += --stringparam ulink.show 0
 
