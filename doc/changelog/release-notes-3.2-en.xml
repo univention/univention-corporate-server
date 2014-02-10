@@ -257,12 +257,6 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 
 		  <itemizedlist>
 		  	<listitem><para>
-			  Trust relationships with Samba 3, in which Samba trusts a Windows domain, do not
-			  function (the name resolution via Winbind fails) (<ulink url="&ucsbug;33303">Bug
-			  33303</ulink>). 
-		  	</para></listitem>
-
-		  	<listitem><para>
 			  Samba 4 (4.1) currently does not start in
 			  a pure IPv6 environment. A virtual IPv4 interface can be configured as a workaround
 			  (<ulink url="&ucsbug;33250">Bug 33250</ulink>).
