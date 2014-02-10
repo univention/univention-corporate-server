@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: samba
-fix: 2:4.1.0-1.617.201402031744
+fix: 2:4.1.0-1.622.201402101713
 note: 
 version: [0]
 desc: |
