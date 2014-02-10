@@ -253,29 +253,6 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		</para>
 	  </section>
 
-	  <section id="relnotes:erratas">
-		<title>Ausstehende Errata-Updates</title>
-		<para>
-		  Die folgenden Fehler konnten zum finalen UCS 3.2-Release nicht mehr berücksichtigt werden
-		  und werden zeitnah in einem Errata-Update korrigiert. Ggf. sollte eine Aktualisierung
-		  zurückgestellt werden, bis die Updates verfügbar sind:
-
-		  <itemizedlist>
-			<listitem><para>
-			  Samba 4 (4.1) startet aktuell in einer
-			  reinen IPv6-Umgebung nicht. Als Workaround kann ein virtuelles IPv4-Interface
-			  konfiguriert werden (<ulink url="&ucsbug;33250">Bug 33250</ulink>).
-			</para></listitem>
-
-			<listitem><para>
-			  Das Drucken über native, lokal installierte Windows 8 Druckertreiber funktioniert
-			  aktuell noch nicht (<ulink url="&ucsbug;33197">Bug 33197</ulink>).
-			</para></listitem>
-		  </itemizedlist>
-		</para>
-	  </section>
-
-
 	</chapter>
 
     <chapter>
