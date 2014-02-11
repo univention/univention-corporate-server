@@ -96,17 +96,24 @@
 	<title>OpenLDAP</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  <command>univention-ldapsearch</command> now accepts the command line options
+		  <emphasis>--binddn</emphasis>, <emphasis>--bindpwd</emphasis> and
+		  <emphasis>--bindpwdfile</emphasis> for authentication.
 		</simpara></listitem>
-	  </itemizedlist>
 
+	  </itemizedlist>
 
 	<section>
 	  <title>LDAP ACL changes</title>
 		<itemizedlist>
 		  <listitem><simpara>
+			The LDAP ACLs now support the configuration of default group names via the new UCR
+			variable family <envar>groups/default/.*"</envar> (<ulink url="&ucsbug;33645">Bug
+			33645</ulink>).
 		  </simpara></listitem>
 		</itemizedlist>
 	</section>
+
 
 	<section>
 	  <title>LDAP schema changes</title>
@@ -120,10 +127,18 @@
 	  <title>Listener/Notifier domain replication</title>
 		<itemizedlist>
 		  <listitem><simpara>
+			The LDAP replication handling for modrdn has been improved which avoids the duplication
+			of LDAP objects when moving objects (<ulink url="&ucsbug;33495">Bug 33495</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			The reliability of the Univention Directory Listener replication handling has been
+			improved (<ulink url="&ucsbug;33732">Bug 33732</ulink>).
 		  </simpara></listitem>
 		</itemizedlist>
 	</section>
   </section>
+
 
   <section>
 	<title>Domain joins of UCS systems</title>
@@ -152,15 +167,58 @@
 	<title>Univention Management Console web interface</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  After cancelling the creation of an LDAP object it was sometimes impossible to open
+		  another existing object (<ulink url="&ucsbug;33244">Bug 33244</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  If the initial search attribute for a UMC module is configured and its value was not any
+		  searchable attribute, this caused LDAP errors. Now the module falls back to search for
+		  <guimenu>Default properties</guimenu> (<ulink url="&ucsbug;33556">Bug 33556</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Requests to outdated files (such as images, HTML files, JavaScript source files) are now
+		  redirected in order to avoid problems in the representation (<ulink
+		  url="&ucsbug;29588">Bug 29588</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The rendering of the <guimenu>Activate UCS</guimenu> dialogue in Internet Explorer 9 and
+		  10 has been fixed (<ulink url="&ucsbug;33133">Bug 33133</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The links in the overview page are now generated in the join script. This ensures that
+		  host and domain identifiers match the current settings in case of a rejoin and after
+		  completing the appliance setup (<ulink url="&ucsbug;33447">Bug 33447</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The display of the progress bar has been fixed in some cases (<ulink url="&ucsbug;32649">Bug
+		  32649</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Only the last 1800 lines of very long tracebacks are now sent. Previously the first 1800
+		  lines were shown, which could truncate important information (<ulink
+		  url="&ucsbug;33798">Bug 33798</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The MultiSelect widget has been fixed. Setting its values too early could sometimes
+		  disturb the rendering of the page (<ulink url="&ucsbug;33703">Bug 33703</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
+
 
   <section>
 	<title>Univention Management Console server</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  The error handling of UMC modules has been improved. A feedback is sent to the client when
+		  the initializing of a module failed (<ulink url="&ucsbug;33673">Bug 33673</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -169,9 +227,43 @@
 	<title>Univention App Center</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  If an application needs to be updated for a release update, an improved error message is
+		  now displayed (<ulink url="&ucsbug;33484">Bug 33484</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Fixed sending installation notifications to Univention although the app did not require it
+		  (<ulink url="&ucsbug;33362">Bug 33362</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  When updating from UCS 3.1, apps from UCS 3.1 were re-registered by mistake. This has been
+		  corrected (<ulink url="&ucsbug;33535">Bug 33535</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The join script now fails if one of the apps could not be registered (<ulink
+		  url="&ucsbug;33341">Bug 33341</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  If an application could not be registered an error message is now displayed after the
+		  installation. The registration is re-attempted whenever the Univention App Center is
+		  opened (<ulink url="&ucsbug;33573">Bug 33573</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Applications can now provide information on the organisation providing support for the app
+		  (<ulink url="&ucsbug;33958">Bug 33958</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Renamed <guimenu>Website</guimenu> to <guimenu>More information</guimenu> (<ulink
+		  url="&ucsbug;31344">Bug 31344</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
+
 
   <section>
 	<title>Univention Management Console / Univention Directory Manager modules</title>
@@ -193,6 +285,8 @@
 	<title>Users module</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  A user without a mail home server was sometimes assigned a mail home server when modifying
+		  other attributes (<ulink url="&ucsbug;33329">Bug 33329</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -218,17 +312,19 @@
 	<title>License module</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  Display a correct error message if a user tries to import an invalid license (<ulink
+		  url="&ucsbug;30156">Bug 30156</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
-  <!-- <section> -->
-  <!-- 	<title>Mail module</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+  <section>
+  	<title>Mail module</title>
+  	  <itemizedlist>
+  		<listitem><simpara>
+  		</simpara></listitem>
+  	  </itemizedlist>
+  </section>
 
   <section>
 	<title>System services module</title>
@@ -243,9 +339,13 @@
 	<title>Domain join module</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  The execution of join scripts is now prevented while software is being installed or
+		  uninstalled (<ulink url="&ucsbug;33793">Bug 33793</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
+
+(<ulink url="&ucsbug;">Bug </ulink>).
 
   <section>
 	<title>Online update module</title>
@@ -267,9 +367,12 @@
 	<title>Shares module</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  The <guimenu>inherit ACL</guimenu> option for Samba shares can be enabled again (<ulink
+		  url="&ucsbug;33772">Bug 33772</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
+
 
   <section>
 	<title>DNS module</title>
@@ -284,9 +387,19 @@
 	<title>Policies</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  Certain policies did not display a link to directly edit them when opening the
+		  <guimenu>Policies</guimenu> tab of LDAP objects (<ulink url="&ucsbug;33004">Bug
+		  33004</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Boolean attributes of policies are rendered as check boxes. If these attributes were not
+		  defined, the check box was shown as ticked. This has  been changed to unticked (<ulink
+		  url="&ucsbug;32845">Bug 32845</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
+
 
   <section>
 	<title>DHCP module</title>
@@ -300,6 +413,9 @@
 	<title>Printers module</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  The protocol of a printer URI in the printers UMC module was always set to
+		  <uri>cups-pdf://</uri>. This has been corrected (<ulink url="&ucsbug;33383">Bug
+		  33383</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -308,6 +424,8 @@
 	<title>Univention Configuration Registry module</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  Two typos typos in the German translation have been corrected ((<ulink
+		  url="&ucsbug;33118">Bug 33118</ulink>, <ulink url="&ucsbug;32971">Bug 32971</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -316,6 +434,19 @@
 	<title>LDAP directory browser</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  Deleting a container from the LDAP tree failed when this container was selected (<ulink
+		  url="&ucsbug;33343">Bug 33343</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  A typo in the German translation has been fixed (<ulink url="&ucsbug;33554">Bug
+		  33554</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Moving objects now also supports mixed-case scenarios. This is relevant when moving
+		  organizational units or containers in Samba 4/Active Directory (<ulink
+		  url="&ucsbug;33482">Bug 33482</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -323,10 +454,10 @@
   <section>
 	<title>Other modules</title>
 	  <itemizedlist>
-
 		<listitem><simpara>
+		  After adding a new standard container the container was not immediately selectable as a
+		  position for new objects (<ulink url="&ucsbug;33651">Bug 33651</ulink>).
 		</simpara></listitem>
-
 	  </itemizedlist>
   </section>
 
@@ -334,17 +465,26 @@
 	<title>Univention Directory Manager command line interface and related tools</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  Fixed setting and displaying <emphasis>sambaLogonHours</emphasis> (<ulink
+		  url="&ucsbug;33703">Bug 33703</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
+
   <section>
 	<title>Development of modules for Univention Management Console</title>
 	  <itemizedlist>
-
 		<listitem><simpara>
+		  Add support for properties that offer empty values while the frontend chooses the first
+		  non-empty one if a new object is to be created (<ulink url="&ucsbug;33329">Bug
+		  33329</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  Improved the branding support in &ucsUMC; widgets (<ulink url="&ucsbug;33493">Bug
+		  33493</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 </section>
