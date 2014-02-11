@@ -2,10 +2,10 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-ad-connector
-fix: 8.0.17-5.367.201402111244
+fix: 8.0.17-6.368.201402111327
 note:
 version: [0]
 desc: |
   This errata update fixes the following issue in univention-ad-connector:
   * Added a note about univention-ad-takeover to the UMC module.
-bug: [34019]
+bug: [33657]
