@@ -252,7 +252,7 @@ define([
 
 			tools.umcpCommand('adconnector/load').then(lang.hitch(this, function(response) {
 				this._wizard = new ADConnectorWizard({
-					style: 'width: 500px; height: 405px;',
+					style: 'width: 500px; height: 415px;',
 					variables: response.result,
 					addNotification: lang.hitch(this, 'addNotification')
 				});
