@@ -115,9 +115,6 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 	fi
 fi
 
-# For UCS 3.2-0 a reboot is required
-univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
-
 # Move to mirror mode for previous errata component
 ucr set \
 	repository/online/component/3.2-0-errata=false \

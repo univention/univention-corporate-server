@@ -167,6 +167,12 @@ fi
 
 #################### Bug #22093
 
+list_passive_kernels () {
+	kernel_version="$1"
+	dpkg-query -W -f '${Package}\n' "linux-image-${kernel_version}-ucs*" |
+		fgrep -v "linux-image-$(uname -r)"
+}
+
 get_latest_kernel_pkg () {
 	# returns latest kernel package for given kernel version
 	# currently running kernel is NOT included!
@@ -175,8 +181,8 @@ get_latest_kernel_pkg () {
 
 	latest_dpkg=""
 	latest_kver=""
-	for kver in $(COLUMNS=200 dpkg -l linux-image-${kernel_version}-ucs\* 2>/dev/null | grep linux-image- | awk '{ print $2 }' | sort -n | grep -v "linux-image-$(uname -r)") ; do
-		dpkgver="$(apt-cache show $kver | sed -nre 's/Version: //p')"
+	for kver in $(list_passive_kernels "$kernel_version") ; do
+		dpkgver="$(apt-cache show "$kver" 2>/dev/null | sed -nre 's/Version: //p')"
 		if dpkg --compare-versions "$dpkgver" gt "$latest_dpkg" ; then
 			latest_dpkg="$dpkgver"
 			latest_kver="$kver"
@@ -191,8 +197,9 @@ pruneOldKernel () {
 	# ==> at least one and at most two kernel should remain for given kernel version
 	kernel_version="$1"
 
-	ignore_kver="$(get_latest_kernel_pkg "$kernel_version")"
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes remove --purge $(COLUMNS=200 dpkg -l linux-image-${kernel_version}-ucs\* 2>/dev/null | grep linux-image- | awk '{ print $2 }' | sort -n | egrep -v "linux-image-$(uname -r)|$ignore_kver" | tr "\n" " ") >>/var/log/univention/updater.log 2>&1
+	list_passive_kernels "$kernel_version" |
+		fgrep -v "$(get_latest_kernel_pkg "$kernel_version")" |
+		DEBIAN_FRONTEND=noninteractive xargs -r apt-get -o DPkg::Options::=--force-confold -y --force-yes purge
 }
 
 if [ "$update32_pruneoldkernel" = "yes" ]; then
@@ -200,7 +207,8 @@ if [ "$update32_pruneoldkernel" = "yes" ]; then
 	pruneOldKernel "2.6.18"
 	pruneOldKernel "2.6.26"
 	pruneOldKernel "2.6.32"
-	pruneOldKernel "3.2"
+	pruneOldKernel "3.2.0"
+	pruneOldKernel "3.10.0"
 	echo "done" | tee -a /var/log/univention/updater.log
 fi
 
@@ -243,9 +251,9 @@ mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
 if [ ! "$update32_checkfilesystems" = "no" ]
 then
 
-	check_space "/var/cache/apt/archives" "800000" "0,8 GB"
+	check_space "/var/cache/apt/archives" "200000" "200 MB"
 	check_space "/boot" "50000" "50 MB"
-	check_space "/" "1300000" "1,3 GB"
+	check_space "/" "500000" "500 MB"
 
 else
     echo "WARNING: skipped disk-usage-test as requested"
