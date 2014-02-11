@@ -1,3 +1,9 @@
+univention-updater (9.0.38-12) unstable; urgency=low
+
+  * Only check for release-updates when allowed by policy (Bug #33194)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 11 Feb 2014 15:10:38 +0100
+
 univention-updater (9.0.38-11) unstable; urgency=low
 
   * Fix attribute name (Bug #33189)
