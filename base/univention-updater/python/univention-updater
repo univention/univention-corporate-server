@@ -142,11 +142,17 @@ def usage(fd=sys.stdout):
 	print >>fd, '  univention-updater [--help] '
 	print >>fd, ''
 	print >>fd, 'Options:'
-	print >>fd, '  --updateto  '
-	print >>fd, '  --reboot    '
-	print >>fd, '  --no-clean  '
-	print >>fd, '  --silent    '
-	print >>fd, '  --check     Check if system is up-to-date'
+	print >>fd, '  --updateto <release>  Upper limit for version'
+	print >>fd, '  --reboot <time>       Reboot at given time'
+	print >>fd, '  --no-clean            Skip cleaning downloaded package file'
+	print >>fd, '  --silent              No output to STDOUT'
+	print >>fd, '  --check               Check if system is up-to-date'
+	print >>fd, '  --src                 Deprecated; ignored'
+	print >>fd, '  --iso <file>          Path to ISO image'
+	print >>fd, '  --ignoressh           Skip check for SSH terminal'
+	print >>fd, '  --ignoreterm          Skip check for X11 Terminal'
+	print >>fd, '  --ignore-releasenotes Skip showing release notes'
+	print >>fs, '  --noninteractive      Do not ask interactive questions'
 
 def deactivateSourcesListMethods( methods = [ 'cdrom' ] ):
 	""" Rewrite sources.list deactivating all stanzas using any of the specified methods. """
@@ -341,7 +347,7 @@ def main():
 	ignoreterm = False
 	ignorereleasenotes = False
 
-	longopts=['src=','device=', 'cdrom=', 'iso=', 'updateto=', 'reboot=', 'no-clean', 'check', 'ignoressh', 'ignoreterm', 'ignore-releasenotes', 'silent']
+	longopts=['src=','device=', 'cdrom=', 'iso=', 'updateto=', 'reboot=', 'no-clean', 'check', 'ignoressh', 'ignoreterm', 'ignore-releasenotes', 'silent', 'noninteractive', ]
 	try:
 		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
 	except getopt.error, msg:
@@ -399,6 +405,11 @@ def main():
 			ignoreterm = True
 		elif opt == '--silent':
 			nostdout = True
+		elif opt == '--noninteractive':
+			ignorereleasenotes = True
+			os.environ['UCS_FRONTEND'] = 'noninteractive'
+			with open(os.path.devnull, 'r') as null:
+				os.dup2(null.fileno(), sys.stdin.fileno())
 		else:
 			dprint('Unknown parameter: "%s"'%opt)
 			sys.exit(2)

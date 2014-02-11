@@ -87,8 +87,8 @@ if ldap_hostdn:
 			updateto=line.replace('univentionUpdateVersion=', '').replace('"','')
 		elif line.startswith('univentionInstallationReboot='):
 			reboot=line.replace('univentionInstallationReboot=', '').replace('"','')
-		elif 'univentionUpdateActive' == key:
-			try_release_update = value == "TRUE"
+		elif 'univentionUpdateActivate' == key:
+			try_release_update = value == '"TRUE"'
 
 	if p1.wait() != 0:
 		print 'failed to execute univention_policy_result'
