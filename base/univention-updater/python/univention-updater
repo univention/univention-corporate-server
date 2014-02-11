@@ -147,12 +147,11 @@ def usage(fd=sys.stdout):
 	print >>fd, '  --no-clean            Skip cleaning downloaded package file'
 	print >>fd, '  --silent              No output to STDOUT'
 	print >>fd, '  --check               Check if system is up-to-date'
-	print >>fd, '  --src                 Deprecated; ignored'
 	print >>fd, '  --iso <file>          Path to ISO image'
 	print >>fd, '  --ignoressh           Skip check for SSH terminal'
 	print >>fd, '  --ignoreterm          Skip check for X11 Terminal'
 	print >>fd, '  --ignore-releasenotes Skip showing release notes'
-	print >>fs, '  --noninteractive      Do not ask interactive questions'
+	print >>fd, '  --noninteractive      Do not ask interactive questions'
 
 def deactivateSourcesListMethods( methods = [ 'cdrom' ] ):
 	""" Rewrite sources.list deactivating all stanzas using any of the specified methods. """
