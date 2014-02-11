@@ -1,7 +1,15 @@
+univention-updater (9.0.38-11) unstable; urgency=low
+
+  * Fix attribute name (Bug #33189)
+  * Fix non-interactive invocation (Bug #33194)
+  * Document univention-updater parameters.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 11 Feb 2014 09:01:52 +0100
+
 univention-updater (9.0.38-10) unstable; urgency=low
 
   * Extend copyright to 2014.
-  * Fix evaluation of univentionUpdateActive by CRON job (Bug #33189)
+  * Fix evaluation of univentionUpdateActivate by CRON job (Bug #33189)
   * Force --noninteractive mode for maintenance mode (Bug #33194)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 04 Feb 2014 17:01:54 +0100

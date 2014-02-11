@@ -199,10 +199,10 @@ case "$1" in
 					if [ -n "$univentionUpdateVersion" ]
 					then
 						log_action_msg "Starting Univention Updater [$univentionUpdateVersion]"
-						/usr/share/univention-updater/univention-updater "$mode" --noninteracive --updateto "$univentionUpdateVersion" >>"$LOG" 2>&1
+						/usr/share/univention-updater/univention-updater "$mode" --noninteractive --updateto "$univentionUpdateVersion" >>"$LOG" 2>&1
 					else
 						log_action_msg "Starting Univention Updater"
-						/usr/share/univention-updater/univention-updater "$mode" --noninteracive >>"$LOG" 2>&1
+						/usr/share/univention-updater/univention-updater "$mode" --noninteractive >>"$LOG" 2>&1
 					fi
 					log_action_cont_msg " Univention Actualise"
 				else
