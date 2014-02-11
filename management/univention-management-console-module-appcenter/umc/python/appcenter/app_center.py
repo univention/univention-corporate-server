@@ -451,18 +451,20 @@ class Application(object):
 			try:
 				still_running = False
 				next_version = None
-				with open('/var/lib/univention-updater/univention-updater.status', 'r') as status:
-					for line in status:
-						line = line.strip()
-						key, value = line.split('=', 1)
-						if key == 'status':
-							still_running = value == 'RUNNING'
-						elif key == 'next_version':
-							next_version = value.split('-')[0]
-					if still_running and next_version:
-						version = next_version
+				status_file = '/var/lib/univention-updater/univention-updater.status'
+				if os.path.exists(status_file):
+					with open(status_file, 'r') as status:
+						for line in status:
+							line = line.strip()
+							key, value = line.split('=', 1)
+							if key == 'status':
+								still_running = value == 'RUNNING'
+							elif key == 'next_version':
+								next_version = value.split('-')[0]
+						if still_running and next_version:
+							version = next_version
 			except (IOError, ValueError) as exc:
-				MODULE.warn('Could not parse update.status: %s' % exc)
+				MODULE.warn('Could not parse univention-updater.status: %s' % exc)
 			if version is None:
 				version = ucr.get('version/version', '')
 			MODULE.info('UCS Version is %r' % version)
@@ -883,8 +885,9 @@ class Application(object):
 		return _check(True), _check(False)
 
 	def is_installed(self, package_manager, strict=True):
+		default_packages = self.get('defaultpackages')
 		if strict:
-			return all(package_manager.is_installed(package) for package in self.get('defaultpackages'))
+			return all(package_manager.is_installed(package) for package in default_packages)
 		else:
 			# app.is_installed(package_manager, strict=True) uses
 			# apt_pkg.CURSTATE. Not desired when called during
@@ -892,8 +895,8 @@ class Application(object):
 			# serveral other (app relevant) packages; for example
 			# in postinst or joinscript (on master).
 			# see Bug #33535 and Bug #31261
-			packages = package_manager.get_packages(self.get('defaultpackages'))
-			return bool(packages) and all(package.is_installed for package in packages)
+			packages = package_manager.get_packages(default_packages)
+			return len(packages) == len(default_packages) and all(package.is_installed for package in packages)
 
 	def uninstall(self, package_manager, component_manager):
 		# reload ucr variables

@@ -167,16 +167,9 @@ define([
 				if (this.app.is_current) {
 					buttons.push({
 						name: 'disable',
-						label: _('Disable'),
+						label: _('Continue using'),
 						align: 'right',
 						callback: lang.hitch(this, 'disableApp')
-					});
-				} else {
-					buttons.push({
-						name: 'enable',
-						label: _('Enable'),
-						align: 'right',
-						callback: lang.hitch(this, 'enableApp')
 					});
 				}
 			}
@@ -283,16 +276,8 @@ define([
 			);
 		},
 
-		enableApp: function() {
-			this.enableDisableApp(true);
-		},
-
 		disableApp: function() {
-			this.enableDisableApp(false);
-		},
-
-		enableDisableApp: function(enable) {
-			var action = tools.umcpCommand('appcenter/enable_disable_app', {application: this.app.id, enable: enable}).then(lang.hitch(this, 'reloadPage'));
+			var action = tools.umcpCommand('appcenter/enable_disable_app', {application: this.app.id, enable: false}).then(lang.hitch(this, 'reloadPage'));
 			this.standbyDuring(action);
 		},
 
@@ -683,7 +668,11 @@ define([
 
 		_detailFieldCustomEndOfLife: function() {
 			if (this.app.endoflife) {
-				return _('This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application. Click on "%(button)s" if you want to continue using this application at your own risk.', {app: this.app.name, button: _('Disable')});
+				var warning = _('This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application.', {app: this.app.name});
+				if (this.app.is_current) {
+					warning += ' ' + _('Click on "%(button)s" if you want to continue running this application at your own risk.', {button: _('Continue using')});
+				}
+				return warning;
 			}
 		},
 

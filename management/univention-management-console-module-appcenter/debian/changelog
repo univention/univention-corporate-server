@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.50-21) unstable; urgency=low
+
+  * Bug #33947: Further fixes
+  * Bug #33946: Wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 11 Feb 2014 15:09:15 +0100
+
 univention-management-console-module-appcenter (3.0.50-20) unstable; urgency=low
 
   * Bug #33548: When querying during a release update of UCS, the target
