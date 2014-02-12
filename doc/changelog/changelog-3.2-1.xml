@@ -62,14 +62,19 @@
 
 	  </itemizedlist>
 
-	<!-- <section> -->
-	<!--   <title>Changes to templates and modules</title> -->
-	<!-- 	<itemizedlist> -->
-	<!-- 	  <listitem><simpara> -->
-	<!-- 	  </simpara></listitem> -->
-	<!-- 	</itemizedlist> -->
-	<!-- </section> -->
+	<section>
+	  <title>Changes to templates and modules</title>
+		<itemizedlist>
+		  <listitem><simpara>
+			The default limit for <emphasis>max open files</emphasis> in
+			<filename>/etc/security/limits.conf</filename> has been increased to 32768. This value can be
+			changed by setting the &ucsUCR; variables <envar>security/limits/default/user/soft/nofile</envar>
+			and <envar>security/limits/default/user/hard/nofile</envar> <ulink url="&ucsbug;32415">Bug 32415</ulink>).
+		  </simpara></listitem>
+		</itemizedlist>
+	</section>
   </section>
+
 
   <section>
 	<title>Network interface configuration</title>
@@ -101,6 +106,10 @@
 		  <emphasis>--bindpwdfile</emphasis> for authentication.
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The LDAP indices are now generated for all combinations of LDAP search types configured
+		  via UCR <envar>ldap/index/</envar>" <ulink url="&ucsbug;33430">Bug 33430</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 
 	<section>
@@ -111,14 +120,26 @@
 			variable family <envar>groups/default/.*"</envar> (<ulink url="&ucsbug;33645">Bug
 			33645</ulink>).
 		  </simpara></listitem>
+
+		  <listitem><simpara>
+			The LDAP ACLs now support the configuration of a custom Administrator name via the new
+			UCR variable family <envar>users/default/.*</envar>. These variables are managed
+			automatically by a Univention Directory Listener module and should usually not be
+			adjusted manually <ulink url="&ucsbug;33890">Bug 33890</ulink>).
+		  </simpara></listitem>
 		</itemizedlist>
 	</section>
-
 
 	<section>
 	  <title>LDAP schema changes</title>
 		<itemizedlist>
 		  <listitem><simpara>
+			New schema extension for MS WMI filters <ulink url="&ucsbug;33961">Bug 33961</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			The local schema inclusion code now detects extensions included by template subfiles
+			<ulink url="&ucsbug;33962">Bug 33962</ulink>).
 		  </simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -209,7 +230,14 @@
 		  The MultiSelect widget has been fixed. Setting its values too early could sometimes
 		  disturb the rendering of the page (<ulink url="&ucsbug;33703">Bug 33703</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  Entries and available languages on the UCS overview page aren't cached anymore (<ulink
+		  url="&ucsbug;33130">Bug 33130</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
+
+
   </section>
 
 
@@ -220,6 +248,12 @@
 		  The error handling of UMC modules has been improved. A feedback is sent to the client when
 		  the initializing of a module failed (<ulink url="&ucsbug;33673">Bug 33673</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The robustness of the UMC message parser has been improved: The UCS@school computerroom
+		  module could trigger a crash when responding  with an empty message body (<ulink
+		  url="&ucsbug;33622">Bug 33622</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
@@ -227,13 +261,20 @@
 	<title>Univention App Center</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  If an application needs to be updated for a release update, an improved error message is
-		  now displayed (<ulink url="&ucsbug;33484">Bug 33484</ulink>).
+		  If a component is blocking a release update and this component part of the App Center,
+		  link to the app instead of showing a cryptic error message (<ulink url="&ucsbug;33484">Bug
+		  33484</ulink>, <ulink url="&ucsbug;33721">Bug 33721</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  Fixed sending installation notifications to Univention although the app did not require it
 		  (<ulink url="&ucsbug;33362">Bug 33362</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  <command>univention-add-app</command> now works through proxies (<ulink
+		  url="&ucsbug;33542">Bug 33542</ulink>). Fixed an error in the usage information of the
+		  option <emphasis>--latest</emphasis> (<ulink url="&ucsbug;31410">Bug 31410</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -277,9 +318,61 @@
 	<title>Basic settings / Appliance mode</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  Adding multiple IP addresses to one network interface has been fixed <ulink
+		  url="&ucsbug;33258">Bug 33258</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The summary of the network interface changes is now more detailed <ulink
+		  url="&ucsbug;32996">Bug 32996</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Multiple IP addresses belonging to the same sub-network are now correctly registered in
+		  LDAP <ulink url="&ucsbug;33407">Bug 33407</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The German translation of <guimenu>Next</guimenu> has been changed to
+		  <guimenu>Weiter</guimenu> <ulink url="&ucsbug;33976">Bug 33976</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The <emphasis>urandom</emphasis> init script is deactivated until the appliance mode is
+		  finished. This avoids having the same random seed in templates. Also recreate SSH and SSL
+		  keys during boot if the files are missing. <ulink url="&ucsbug;30034">Bug 30034</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The query whether Firefox should become the default browser is now disabled <ulink
+		  url="&ucsbug;33592">Bug 33592</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  A warning about an FQDN with less then two dots was shown twice <ulink
+		  url="&ucsbug;33437">Bug 33437 </ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Add cleanup -pre and -post hookdirectories <ulink url="&ucsbug;33729">Bug 33729</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Added a notifier and listener restart script to be executed after appliance setup cleanup.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Add appliance hook script which removes a forced setting for the UCRV update/available
+		  <ulink url="&ucsbug;33762">Bug 33762</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Restart Amavis at the end of appliance mode <ulink url="&ucsbug;33765">Bug 33765</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
+
 
   <section>
 	<title>Users module</title>
@@ -345,12 +438,17 @@
 	  </itemizedlist>
   </section>
 
-(<ulink url="&ucsbug;">Bug </ulink>).
-
   <section>
 	<title>Online update module</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  Fixed the error handling in case the UMC server is restarted during an update (<ulink
+		  url="&ucsbug;33443">Bug 33443</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The updater now uses the individual user agent string for more HTTP requests (<ulink
+		  url="&ucsbug;33553">Bug 33553</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -396,6 +494,11 @@
 		  Boolean attributes of policies are rendered as check boxes. If these attributes were not
 		  defined, the check box was shown as ticked. This has  been changed to unticked (<ulink
 		  url="&ucsbug;32845">Bug 32845</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The encoding of UCR policies changed so that values can also contain umlauts <ulink
+		  url="&ucsbug;33704">Bug 33704</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -525,6 +628,24 @@
   <title>Univention Library</title>
 	<itemizedlist>
 	  <listitem><simpara>
+		Adjusted the behaviour of ucs_registerLDAPExtension to let join scripts continue in case an
+		LDAP extension could not be registered because a newer one is already active in the domain
+		<ulink url="&ucsbug;33582">Bug 33582</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Support for group name mapping has been added. The new function custom_groupname maps the
+		default group names to the actual name <ulink url="&ucsbug;33649">Bug 33649</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Support for user name mapping has been added. The new function custom_username maps the
+		default user names to the actual name <ulink url="&ucsbug;33710">Bug 33710</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		A new python library (s4) has been added for Samba-related operations <ulink
+		url="&ucsbug;33893">Bug 33893</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
 </section>
@@ -647,8 +768,10 @@
 	<title>PAM / Local group cache</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  <package>univention-pam</package> now checks the mapping of user and group names in the
+		  UCR templates <ulink url="&ucsbug;33710">Bug 33710</ulink>, <ulink url="&ucsbug;33650">Bug
+		  33650</ulink>).
 		</simpara></listitem>
-
 	  </itemizedlist>
   </section>
 
@@ -878,8 +1001,12 @@
   <title>Other changes</title>
 	<itemizedlist>
 	  <listitem><simpara>
+		The new Univention Directory Listener module
+		<filename>well-known-sid-name-mapping.py</filename> implements a mechanism for domain-wide
+		customisation of account names for well known Windows/Samba SIDs. It sets the UCR variables
+		<envar>groups/default/.*</envar> and <envar>users/default/.*</envar> in case accounts with
+		well known SIDs are renamed <ulink url="&ucsbug;33897">Bug 33897</ulink>).
 	  </simpara></listitem>
-
 	</itemizedlist>
 </section>
 
