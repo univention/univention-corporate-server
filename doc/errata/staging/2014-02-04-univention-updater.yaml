@@ -7,7 +7,8 @@ note:
 version: [0]
 desc: |
  This update fixes the following issues:
- * The Cron-job for updating UCS releases did not evaluate check the activation
-   flag of the release policy. This has been fixed.
- * The Univention updater is now called in non-interactive-mode when invoked from the maintenance Cron job and init script.
+ * The Cron-job for updating UCS releases did not evaluate whether the release policy
+   was activated. This has been fixed.
+ * The Univention updater is now called in non-interactive-mode when invoked from the 
+   maintenance Cron job and init script.
 bug: [33189,33194]

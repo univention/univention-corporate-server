@@ -6,6 +6,6 @@ fix: 8.0.17-6.368.201402111327
 note:
 version: [0]
 desc: |
-  This errata update fixes the following issue in univention-ad-connector:
-  * Added a note about univention-ad-takeover to the UMC module.
+  * Added a note on Univention AD Takeover is now displayed the UMC module for
+    the Univention AD Connector.
 bug: [33657]

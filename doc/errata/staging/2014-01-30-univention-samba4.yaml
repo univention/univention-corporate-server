@@ -6,7 +6,6 @@ fix: 3.0.39-16.571.201401301523
 note:
 version: [0]
 desc: |
-  This update fixes the following issue:
-  * The create_spn_account.sh failed in case the generated random password
-    started with a dash.
+  * The script create_spn_account.sh failed in case the generated random password
+    started with a dash. This has been fixed.
 bug: [32938]

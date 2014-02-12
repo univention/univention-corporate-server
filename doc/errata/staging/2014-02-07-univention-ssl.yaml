@@ -8,7 +8,8 @@ version: [0]
 desc: |
  The permissions for the directory "/etc/univention/ssl" and the files contained in it
  where mangled on certificate renewal via the UMC "System Setup" module.
- New certificates created using "univention-certificate new" where created with wrong
+ New certificates created using "univention-certificate new" were created with incorrect
  permissions.
- This update fixes these issues, making sure that the group "DC Backup Hosts" has access.
+ This update fixes these issues, making sure that the group "DC Backup Hosts" has access
+ to the certificates.
 bug: [31941]

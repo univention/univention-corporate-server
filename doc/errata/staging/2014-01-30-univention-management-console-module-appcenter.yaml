@@ -7,8 +7,9 @@ note:
 version: [0]
 desc: |
   This errata update fixes several issues:
-  * Support EndOfLife for an application: Hide it for new users, suggest
-    uninstallation for those who have this application installed.
+  * Support to declare "end of life" for an application: An applicated marked as 
+    such is hidden for new users. For those who have this application installed
+    uninstallation is suggested.
   * Applications extending the LDAP schema added repositories on DC master and
     DC backup systems to install the corresponding software package. This might
     cause problems when upgrading UCS as these repositories were never removed

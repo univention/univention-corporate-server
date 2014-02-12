@@ -6,5 +6,5 @@ fix: 7.0.69-7.568.201402071339
 note:
 version: [0]
 desc: |
-  This update hides the tab bar of Mozilla Firefox in the appliance setup to enhance user experience.
+  This update hides the tab bar of Mozilla Firefox in appliance mode to enhance the user experience.
 bug: [33640]
