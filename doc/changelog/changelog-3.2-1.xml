@@ -49,10 +49,49 @@
 	<title>Linux kernel and firmware packages</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  The Linux kernel package has been updated to 3.10.26. This provides a wide range of
+		  bugfixes and fixes the following security vulnerabilities:
+		  <itemizedlist>
+			<listitem><simpara>Information leak in cpqarray and cciss drivers (CVE-2013-2147)</simpara></listitem>
+			<listitem><simpara>Use-after-free in TUN network driver (CVE-2013-4343)</simpara></listitem>
+			<listitem><simpara>Off-by-one in ansi cprng (CVE-2013-4345)</simpara></listitem>
+			<listitem><simpara>If SCTP is transferred over Ipv6 in some configurations IPsec doesn't work correctly (CVE-2013-4350)</simpara></listitem>
+			<listitem><simpara>Denial of service in device mapper (CVE-2013-4299)</simpara></listitem>
+			<listitem><simpara>Denial of service in IPv6 (CVE-2013-4387)</simpara></listitem>
+			<listitem><simpara>Denial of service in skb_flow_dissect() (CVE-2013-4348)</simpara></listitem>
+			<listitem><simpara>Information leak in /proc/net/sys (CVE-2013-4270)</simpara></listitem>
+			<listitem><simpara>Incorrect memory mapping in uio (CVE-2013-4511)</simpara></listitem>
+			<listitem><simpara>Array overwrite in UML proc handling (CVE-2013-4512)</simpara></listitem>
+			<listitem><simpara>Privacy leak in ath9k_htc driver (CVE-2013-4579)</simpara></listitem>
+			<listitem><simpara>Memory corruption in UFO support (CVE-2013-4470)</simpara></listitem>
+			<listitem><simpara>Information leak in perf tracing (CVE-2013-2930)</simpara></listitem>
+			<listitem><simpara>Ipv6 DoS (CVE-2013-4563)</simpara></listitem>
+			<listitem><simpara>Denial of service in libertas driver (CVE-2013-6378)</simpara></listitem>
+			<listitem><simpara>Denial of service in aacraid driver (CVE-2013-6380)</simpara></listitem>
+			<listitem><simpara>Memory corruption in XFS (CVE-2013-6382)</simpara></listitem>
+			<listitem><simpara>Missing capability check in aacraid ioctl (CVE-2013-6383)</simpara></listitem>
+			<listitem><simpara>Incorrect checks on dumpability of a process in ptrace() (CVE-2013-2929)</simpara></listitem>
+			<listitem><simpara>Missing input sanitising in kvm_vm_ioctl_create_vcpu() (CVE-2013-4587)</simpara></listitem>
+			<listitem><simpara>Denial of service in KVM (CVE-2013-6367, CVE-2013-6368)</simpara></listitem>
+			<listitem><simpara>NULL pointer dereference in ipv6 (CVE-2013-6431)</simpara></listitem>
+			<listitem><simpara>Buffer overflow in radiotap wireless driver (CVE-2013-7027)</simpara></listitem>
+			<listitem><simpara>Race conditions in IPC handling (CVE-2013-7026)</simpara></listitem>
+			<listitem><simpara>Various memory leaks in socket handling (CVE-2013-7263, CVE-2013-7264, CVE-2013-7265, CVE-2013-7281)</simpara></listitem>
+			<listitem><simpara>Various memory leaks in socket handling (CVE-2013-7266, CVE-2013-7267, CVE-2013-7268, CVE-2013-7269, CVE-2013-7270, CVE-2013-7271)</simpara></listitem>
+			<listitem><simpara>Information leak in farsync network ioctl (CVE-2014-1444)</simpara></listitem>
+			<listitem><simpara>Information leak in wanxl network ioctl (CVE-2014-1445)</simpara></listitem>
+		  </itemizedlist>
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  An ABI breakage has been fixed: The kernel update for UCS 3.2 caused the header files to
+		  move from <filename>/usr/include/asm/</filename> to the different location
+		  (<filename>/ucr/include/gnu-*-linux/asm/</filename>, which broke compiling other
+		  software. This change was reverted <ulink url="&ucsbug;33924">Bug 33924</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
-
 
   <section>
 	<title>Univention Configuration Registry</title>
@@ -235,11 +274,23 @@
 		  Entries and available languages on the UCS overview page aren't cached anymore (<ulink
 		  url="&ucsbug;33130">Bug 33130</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  Fixed rendering errors in the host dropdown menu on various web browsers <ulink
+		  url="&ucsbug;32655">Bug 32655</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Support UMC modules that may be opened only once at the same time <ulink
+		  url="&ucsbug;31855">Bug 31855</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Fix the translation of some error messages if Univention Corporate Client was installed
+		  <ulink url="&ucsbug;33850">Bug 33850</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
-
-
   </section>
-
 
   <section>
 	<title>Univention Management Console server</title>
@@ -302,9 +353,37 @@
 		  Renamed <guimenu>Website</guimenu> to <guimenu>More information</guimenu> (<ulink
 		  url="&ucsbug;31344">Bug 31344</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  Support to declare an "end of life" for an application: An application marked as such is
+		  hidden for users which don't have the application already installed. For those who have
+		  this application installed uninstallation is suggested <ulink url="&ucsbug;33946">Bug
+		  33946</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Applications extending the LDAP schema added repositories on &ucsMaster; and &ucsBackup;
+		  systems to install the corresponding software package. This might  cause problems when
+		  upgrading UCS as these repositories were never removed automatically. This will be done
+		  from now on. "Stale" repositories already registered are also removed <ulink
+		  url="&ucsbug;33947">Bug 33947</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  When performing an update of an application a hint is shown saying that all packages will
+		  be upgraded. If this is not intended one would have to go to the repository settings
+		  tab. This tab is not present when updating the application via its dedicated UMC
+		  module. Now the text contains a link and it opens the App Center if it was not already
+		  open and switches to the repository tab <ulink url="&ucsbug;34028">Bug 34028</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  When querying during a release update of UCS, the target version should be used to find
+		  all applications. This is now done by reading from the <filename>updater.status</filename>
+		  file <ulink url="&ucsbug;33548">Bug 33548</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
-
 
   <section>
 	<title>Univention Management Console / Univention Directory Manager modules</title>
@@ -345,7 +424,8 @@
 
 		<listitem><simpara>
 		  The query whether Firefox should become the default browser is now disabled <ulink
-		  url="&ucsbug;33592">Bug 33592</ulink>).
+		  url="&ucsbug;33592">Bug 33592</ulink>). Also hide the tar bar <ulink
+		  url="&ucsbug;33640">Bug 33640</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -372,7 +452,6 @@
 
 	  </itemizedlist>
   </section>
-
 
   <section>
 	<title>Users module</title>
@@ -498,7 +577,8 @@
 
 		<listitem><simpara>
 		  The encoding of UCR policies changed so that values can also contain umlauts <ulink
-		  url="&ucsbug;33704">Bug 33704</ulink>).
+		  url="&ucsbug;33704">Bug 33704</ulink>). In the &ucsUMC; module display a human-readable error message if policy
+		  names contain invalid characters.
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -752,9 +832,18 @@
 	<title>SSL</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  The permissions of the directory <filename>/etc/univention/ssl</filename> and the files
+		  contained in it where mangled on certificate renewal via the <guimenu>Basic
+		  settings</guimenu> UMC module. New certificates created using
+		  <command>univention-certificate new</command> were created with incorrect
+		  permissions. This update fixes these issues, making sure that the group <emphasis>DC
+		  Backup Hosts</emphasis> has access to the certificates <ulink url="&ucsbug;31941">Bug
+		  31941</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
+
+
 
   <section>
 	<title>NFS</title>
@@ -763,6 +852,22 @@
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
+
+  <section>
+	<title>Update tools</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  The Cron job for updating UCS releases did not evaluate whether the release policy was
+		  activated. This has been fixed <ulink url="&ucsbug;33189">Bug 33189</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  <command>univention-upgrade</command> is now called in non-interactive-mode when invoked
+		  from the maintenance policy <ulink url="&ucsbug;33194">Bug 33194</ulink>).
+		</simpara></listitem>
+	  </itemizedlist>
+  </section>
+
 
   <section>
 	<title>PAM / Local group cache</title>
@@ -914,6 +1019,12 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The script <command>create_spn_account.sh</command> failed in case the generated random
+		  password started with a dash. This has been fixed <ulink url="&ucsbug;32938">Bug
+		  32938</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Multiple Logrotate configurations for Samba log files could lead to warning messages via
 		  Cron. These redundant configurations were removed (<ulink url="&ucsbug;33529">Bug 33529</ulink>).
 		</simpara></listitem>
@@ -980,13 +1091,14 @@
 	<title>Univention Active Directory Connector</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  A note on Univention AD Takeover is now displayed the UMC module for the Univention AD
+		  Connector <ulink url="&ucsbug;33657">Bug 33657</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
   </section>
 
 </section>
-
 
 <section>
   <title>UCS test framework</title>
