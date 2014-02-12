@@ -61,12 +61,6 @@ date >>"$UPDATER_LOG" 2>&1
 
 eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
 
-# Remove VNC module; Bug #30158
-univention-remove -y --purge univention-management-console-module-vnc >>"$UPDATER_LOG" 2>&1
-
-# Remove Flash plugin installer, Bug #31852
-univention-remove -y --purge univention-flashplugin >>"$UPDATER_LOG" 2>&1
-
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
 	install univention-basesystem
 elif [ "$server_role" = "domaincontroller_master" ]; then

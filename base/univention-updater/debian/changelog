@@ -1,8 +1,8 @@
-univention-updater (9.0.38-13) unstable; urgency=low
+univention-updater (9.0.38-14) unstable; urgency=low
 
   * update {post,pre}up.sh for 3.2-1 (Bug #34085)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 11 Feb 2014 16:50:41 +0100
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 12 Feb 2014 16:53:20 +0100
 
 univention-updater (9.0.38-12) unstable; urgency=low
 

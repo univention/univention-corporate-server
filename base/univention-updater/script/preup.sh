@@ -169,7 +169,7 @@ fi
 
 list_passive_kernels () {
 	kernel_version="$1"
-	dpkg-query -W -f '${Package}\n' "linux-image-${kernel_version}-ucs*" |
+	dpkg-query -W -f '${Package}\n' "linux-image-${kernel_version}-ucs*" 2>/dev/null |
 		fgrep -v "linux-image-$(uname -r)"
 }
 
@@ -204,9 +204,7 @@ pruneOldKernel () {
 
 if [ "$update32_pruneoldkernel" = "yes" ]; then
 	echo "Purging old kernel..." | tee -a /var/log/univention/updater.log
-	pruneOldKernel "2.6.18"
-	pruneOldKernel "2.6.26"
-	pruneOldKernel "2.6.32"
+	pruneOldKernel "2.6.*"
 	pruneOldKernel "3.2.0"
 	pruneOldKernel "3.10.0"
 	echo "done" | tee -a /var/log/univention/updater.log
