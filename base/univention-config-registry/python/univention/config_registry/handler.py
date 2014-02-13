@@ -297,6 +297,8 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 		ucr, changed = args
 		print 'Multifile: %s' % self.to_file
 
+		to_file_tmp = '%s__tmp__ucr__commit__%s' % (self.to_file,os.getpid())
+
 		if hasattr(self, 'preinst') and self.preinst:
 			run_module(self.preinst, 'preinst', ucr, changed)
 
@@ -311,7 +313,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 			stat = os.stat(self.dummy_from_file)
 		else:
 			stat = None
-		to_fp = open(self.to_file, 'w')
+		to_fp = open(to_file_tmp, 'w')
 
 		filter_opts = {}
 
@@ -325,6 +327,8 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 
 		self._set_perm(stat)
 		to_fp.close()
+
+		os.rename(to_file_tmp, self.to_file)
 
 		if hasattr(self, 'postinst') and self.postinst:
 			run_module(self.postinst, 'postinst', ucr, changed)
@@ -368,6 +372,8 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 
 		print 'File: %s' % self.to_file
 
+		to_file_tmp = '%s__tmp__ucr__commit__%s' % (self.to_file,os.getpid())
+
 		to_dir = os.path.dirname(self.to_file)
 		if not os.path.isdir(to_dir):
 			os.makedirs(to_dir, 0755)
@@ -378,7 +384,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 			print >> sys.stderr, "The referenced template file does not exist"
 			return None
 		from_fp = open(self.from_file, 'r')
-		to_fp = open(self.to_file, 'w')
+		to_fp = open(to_file_tmp, 'w')
 
 		filter_opts = {}
 
@@ -388,6 +394,8 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 		self._set_perm(stat)
 		from_fp.close()
 		to_fp.close()
+
+		os.rename(to_file_tmp, self.to_file)
 
 		if hasattr(self, 'postinst') and self.postinst:
 			run_module(self.postinst, 'postinst', ucr, changed)

@@ -1,3 +1,11 @@
+univention-config-registry (9.0.5-6) unstable; urgency=low
+
+  * To prevent an incomplete config file the content is written
+    to a temporary file and renamed in an atomic operation
+    (Bug #33842)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Feb 2014 21:47:26 +0100
+
 univention-config-registry (9.0.5-5) unstable; urgency=medium
 
   * move userNameMapping and groupNameMapping to univention-lib (Bug #33889)
