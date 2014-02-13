@@ -120,9 +120,6 @@ ucr set \
 	repository/online/component/3.2-1-errata/description="Errata updates for UCS 3.2-1" \
 	repository/online/component/3.2-1-errata/version="3.2" >>"$UPDATER_LOG" 2>&1
 
-# Reset errata level
-univention-config-registry set version/erratalevel=0 >>"$UPDATER_LOG" 2>&1
-
 # make sure that UMC server is restarted (Bug #33426)
 echo -n "Restart UMC server components to finish update... " >>"$UPDATER_LOG" 2>&1
 sleep 10s
