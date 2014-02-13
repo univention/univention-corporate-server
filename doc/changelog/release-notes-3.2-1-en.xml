@@ -11,7 +11,7 @@
 <book lang="en" id="releasenotes-3.2-1-en">
     <bookinfo>
       <title>UCS 3.2-1 Release Notes</title>
-      <subtitle>Release notes for the installation and update of Univention Corporate Server (UCS) 3.2</subtitle>
+      <subtitle>Release notes for the installation and update of Univention Corporate Server (UCS) 3.2-1</subtitle>
 
         <revhistory>
             <revision>
@@ -57,7 +57,29 @@
 
 	  <para>
 		With Univention Corporate Server 3.2-1, the first point release for Univention Corporate
-		Server (UCS) is now available. It includes all errata updates issued for UCS 3.2-0.
+		Server (UCS) is now available. It includes all errata updates issued for UCS 3.2-0:
+
+		<itemizedlist>
+		  <listitem><para>
+			The Linux kernel package was updated to 3.10.26. Besides many bugfixes this also
+			improves the hardware support.
+		  </para></listitem>			
+
+		  <listitem><para>
+			The Univention App Center was extended: Beside several bugfixes new interfaces are
+			provided which improve the integration of third party applications.
+		  </para></listitem>
+
+		  <listitem><para>
+			Univention AD Takeover - the UCS solution for the automatic migration of an Active
+			Directory domain to UCS - was improved further; it now also support the migration of AD
+			domains operated in languages other than English or German.
+		  </para></listitem>
+
+		  <listitem><para>
+			Multiple usability enhancement in the &ucsUMC;.
+		  </para></listitem>
+		</itemizedlist>
 	  </para>
 
     </chapter>
