@@ -209,19 +209,21 @@ class ConfigHandlerDiverting(ConfigHandler):
 		"""Compare this to other handler."""
 		return cmp(self.to_file, other.to_file)
 
-	def _set_perm(self, stat):
+	def _set_perm(self, stat, to_file = None):
 		"""Set file permissions."""
+		if not to_file:
+			to_file = self.to_file
 		if self.user or self.group or self.mode:
 			if self.mode:
-				os.chmod(self.to_file, self.mode)
+				os.chmod(to_file, self.mode)
 			if self.user and self.group:
-				os.chown(self.to_file, self.user, self.group)
+				os.chown(to_file, self.user, self.group)
 			elif self.user:
-				os.chown(self.to_file, self.user, 0)
+				os.chown(to_file, self.user, 0)
 			elif self.group:
-				os.chown(self.to_file, 0, self.group)
+				os.chown(to_file, 0, self.group)
 		elif stat:
-			os.chmod(self.to_file, stat[0])
+			os.chmod(to_file, stat[0])
 
 	def _call_silent(self, *cmd):
 		"""Call command with stdin, stdout, and stderr redirected from/to
@@ -298,8 +300,6 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 		ucr, changed = args
 		print 'Multifile: %s' % self.to_file
 
-		real_to_file = self.to_file
-		self.to_file = '%s__ucr__commit__%s' % (real_to_file,random.random())
 
 		if hasattr(self, 'preinst') and self.preinst:
 			run_module(self.preinst, 'preinst', ucr, changed)
@@ -313,27 +313,35 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 
 		if os.path.isfile(self.dummy_from_file):
 			stat = os.stat(self.dummy_from_file)
-		elif os.path.isfile(real_to_file):
-			stat = os.stat(real_to_file)
+		elif os.path.isfile(self.to_file):
+			stat = os.stat(self.to_file)
 		else:
 			stat = None
-		to_fp = open(self.to_file, 'w')
 
-		filter_opts = {}
+		tmp_to_file = '%s__ucr__commit__%s' % (self.to_file,random.random())
 
-		for from_file in sorted(self.from_files, key=os.path.basename):
-			try:
-				from_fp = open(from_file, 'r')
-			except EnvironmentError:
-				continue
-			to_fp.write(run_filter(from_fp.read(), ucr,
-				srcfiles=self.from_files, opts=filter_opts))
+		try:
+			to_fp = open(tmp_to_file, 'w')
 
-		self._set_perm(stat)
-		to_fp.close()
+			filter_opts = {}
 
-		os.rename(self.to_file, real_to_file)
-		self.to_file = real_to_file
+			for from_file in sorted(self.from_files, key=os.path.basename):
+				try:
+					from_fp = open(from_file, 'r')
+				except EnvironmentError:
+					continue
+				to_fp.write(run_filter(from_fp.read(), ucr,
+					srcfiles=self.from_files, opts=filter_opts))
+
+			self._set_perm(stat, tmp_to_file)
+			to_fp.close()
+
+			os.rename(tmp_to_file, self.to_file)
+		except:
+			if os.path.exists(tmp_to_file):
+				os.unlink(tmp_to_file)
+			raise
+			
 
 		if hasattr(self, 'postinst') and self.postinst:
 			run_module(self.postinst, 'postinst', ucr, changed)
@@ -377,9 +385,6 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 
 		print 'File: %s' % self.to_file
 
-		real_to_file = self.to_file
-		self.to_file = '%s__ucr__commit__%s' % (real_to_file,random.random())
-
 		to_dir = os.path.dirname(self.to_file)
 		if not os.path.isdir(to_dir):
 			os.makedirs(to_dir, 0755)
@@ -389,20 +394,27 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 		except EnvironmentError:
 			print >> sys.stderr, "The referenced template file does not exist"
 			return None
-		from_fp = open(self.from_file, 'r')
-		to_fp = open(self.to_file, 'w')
 
-		filter_opts = {}
+		tmp_to_file = '%s__ucr__commit__%s' % (self.to_file,random.random())
 
-		to_fp.write(run_filter(from_fp.read(), ucr,
-			srcfiles=[self.from_file], opts=filter_opts))
+		try:
+			from_fp = open(self.from_file, 'r')
+			to_fp = open(tmp_to_file, 'w')
 
-		self._set_perm(stat)
-		from_fp.close()
-		to_fp.close()
+			filter_opts = {}
 
-		os.rename(self.to_file, real_to_file)
-		self.to_file = real_to_file
+			to_fp.write(run_filter(from_fp.read(), ucr,
+				srcfiles=[self.from_file], opts=filter_opts))
+
+			self._set_perm(stat, tmp_to_file)
+			from_fp.close()
+			to_fp.close()
+
+			os.rename(tmp_to_file, self.to_file)
+		except:
+			if os.path.exists(tmp_to_file):
+				os.unlink(tmp_to_file)
+			raise
 
 		if hasattr(self, 'postinst') and self.postinst:
 			run_module(self.postinst, 'postinst', ucr, changed)

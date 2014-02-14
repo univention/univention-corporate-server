@@ -1,3 +1,9 @@
+univention-config-registry (9.0.6-4) unstable; urgency=low
+
+  * Atomic write: Improve code and error handling (Bug #33842)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Feb 2014 13:37:11 +0100
+
 univention-config-registry (9.0.6-3) unstable; urgency=low
 
   * Use a more random name for the temporary file (Bug #33842)
