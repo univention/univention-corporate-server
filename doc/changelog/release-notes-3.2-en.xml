@@ -605,5 +605,5 @@ xe vm-param-set uuid=UUIDVM platform:vga=std
 
 	</chapter>
 
-    <?dbhtml-include href="../stylesheets/piwiki.html"?>
+    <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
