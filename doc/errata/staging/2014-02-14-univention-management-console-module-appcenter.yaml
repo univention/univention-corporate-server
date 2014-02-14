@@ -1,0 +1,14 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-0
+src: univention-management-console-module-appcenter
+fix: 3.0.50-22.234.201402141113
+note:
+version: [0]
+desc: |
+  The join script failed when the App Center server could not be reached while
+  registering all installed apps. This causes problems during the installation
+  of UCS. Now the join script does not fail anymore, it just silently skips
+  this point. The script univention-register-apps has been added that may be
+  re-run if this was only a temporary problem.
+bug: [34128]
