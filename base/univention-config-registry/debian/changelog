@@ -1,3 +1,9 @@
+univention-config-registry (9.0.6-1) unstable; urgency=low
+
+  * Bump version (Bug #33842)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Feb 2014 06:57:46 +0100
+
 univention-config-registry (9.0.5-7) unstable; urgency=low
 
   * Preserve permissions of the traget multifile (Bug #33842)
