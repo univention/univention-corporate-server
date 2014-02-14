@@ -1072,7 +1072,7 @@
 	  <itemizedlist>
 		<listitem><simpara>
 		  A note on Univention AD Takeover is now displayed the UMC module for the Univention AD
-		  Connector <ulink url="&ucsbug;33657">Bug 33657</ulink>).
+		  Connector (<ulink url="&ucsbug;33657">Bug 33657</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -1097,7 +1097,12 @@
 		<filename>well-known-sid-name-mapping.py</filename> implements a mechanism for domain-wide
 		customisation of account names for well known Windows/Samba SIDs. It sets the UCR variables
 		<envar>groups/default/.*</envar> and <envar>users/default/.*</envar> in case accounts with
-		well known SIDs are renamed <ulink url="&ucsbug;33897">Bug 33897</ulink>).
+		well known SIDs are renamed (<ulink url="&ucsbug;33897">Bug 33897</ulink>).
+	  </simpara></listitem>
+	  <listitem><simpara>
+		<package>kdegraphics</package> was updated: A mime type configuration for okular was removed
+		that could cause <command>firefox</command> to hang when accessing the UMC in a local 
+		session (<ulink url="&ucsbug;34125">Bug 34125</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
 </section>
