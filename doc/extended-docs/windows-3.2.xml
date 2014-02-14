@@ -190,5 +190,5 @@ univention-directory-listener-ctrl resync ad-connector
 		<bibliomixed id="technet-rodc"/>
 	</bibliography>
 
-    <?dbhtml-include href="../stylesheets/piwiki.html"?>
+    <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
