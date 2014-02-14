@@ -1,3 +1,9 @@
+firefox-en (1:24.3.0esr-3) unstable; urgency=medium
+
+  * Update to Firefox 24.3 ESR (Bug #34051)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 14 Feb 2014 16:46:56 +0100
+
 firefox-en (1:24.1.1esr-3) unstable; urgency=low
 
   * Update to Firefox 24.1.1esr (Bug #33357)
