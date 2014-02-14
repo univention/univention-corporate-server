@@ -1,0 +1,290 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Check file permissions on generated files
+##  1. explicite $mode has highest priority
+##  2. For single-file-templates: use permission from template file
+##  3. For multi-file-templates:
+##     1. Use permission from optional dummy file
+##     2. Keep existing permission
+##     3. Use umask for new files
+## tags:
+##  - basic
+##  - apptest
+## exposure: careful
+## bugs: [33842]
+umask 0002
+
+ID="ucs-test-33842"
+OWNER="nobody"
+GROUP="nogroup"
+MODE_FORCE=0400
+MODE_TEMPLATE=0660
+MODE_UMASK=$(printf "%04o" $((0666 & ~$(umask))))
+
+main () {
+	declare -i result=0
+
+	trap cleanup EXIT
+	create_templates
+
+	register_ucr
+	verify_all
+
+	re_commit
+	verify_all
+
+	exit $result
+}
+
+create_templates () {
+	mkdir -p "/etc/univention/templates/files/tmp"
+	for template in {f,d}{0,1,2,3,4,5,6,7} s
+	do
+		template="/etc/univention/templates/files/tmp/${ID}-${template}"
+		rm -f "$template"
+		touch "$template"
+		chmod "$MODE_TEMPLATE" "$template"
+	done
+}
+register_ucr () {
+	cat >"/etc/univention/templates/info/$ID.info" <<__UCR__
+Type: file
+File: tmp/$ID-f0
+
+Type: file
+File: tmp/$ID-f1
+User: $OWNER
+
+Type: file
+File: tmp/$ID-f2
+Group: $GROUP
+
+Type: file
+File: tmp/$ID-f3
+User: $OWNER
+Group: $GROUP
+
+Type: file
+File: tmp/$ID-f4
+Mode: $MODE_FORCE
+
+Type: file
+File: tmp/$ID-f5
+User: $OWNER
+Mode: $MODE_FORCE
+
+Type: file
+File: tmp/$ID-f6
+Group: $GROUP
+Mode: $MODE_FORCE
+
+Type: file
+File: tmp/$ID-f7
+User: $OWNER
+Group: $GROUP
+Mode: $MODE_FORCE
+
+Type: multifile
+Multifile: tmp/$ID-m0
+
+Type: multifile
+Multifile: tmp/$ID-m1
+User: $OWNER
+
+Type: multifile
+Multifile: tmp/$ID-m2
+Group: $GROUP
+
+Type: multifile
+Multifile: tmp/$ID-m3
+User: $OWNER
+Group: $GROUP
+
+Type: multifile
+Multifile: tmp/$ID-m4
+Mode: $MODE_FORCE
+
+Type: multifile
+Multifile: tmp/$ID-m5
+User: $OWNER
+Mode: $MODE_FORCE
+
+Type: multifile
+Multifile: tmp/$ID-m6
+Group: $GROUP
+Mode: $MODE_FORCE
+
+Type: multifile
+Multifile: tmp/$ID-m7
+User: $OWNER
+Group: $GROUP
+Mode: $MODE_FORCE
+
+Type: multifile
+Multifile: tmp/$ID-d0
+
+Type: multifile
+Multifile: tmp/$ID-d1
+User: $OWNER
+
+Type: multifile
+Multifile: tmp/$ID-d2
+Group: $GROUP
+
+Type: multifile
+Multifile: tmp/$ID-d3
+User: $OWNER
+Group: $GROUP
+
+Type: multifile
+Multifile: tmp/$ID-d4
+Mode: $MODE_FORCE
+
+Type: multifile
+Multifile: tmp/$ID-d5
+User: $OWNER
+Mode: $MODE_FORCE
+
+Type: multifile
+Multifile: tmp/$ID-d6
+Group: $GROUP
+Mode: $MODE_FORCE
+
+Type: multifile
+Multifile: tmp/$ID-d7
+User: $OWNER
+Group: $GROUP
+Mode: $MODE_FORCE
+
+Type: subfile
+Multifile: tmp/$ID-m0
+Subfile: tmp/$ID-s
+
+Type: subfile
+Multifile: tmp/$ID-m1
+Subfile: tmp/$ID-s
+
+Type: subfile
+Multifile: tmp/$ID-m2
+Subfile: tmp/$ID-s
+
+Type: subfile
+Multifile: tmp/$ID-m3
+Subfile: tmp/$ID-s
+
+Type: subfile
+Multifile: tmp/$ID-m4
+Subfile: tmp/$ID-s
+
+Type: subfile
+Multifile: tmp/$ID-m5
+Subfile: tmp/$ID-s
+
+Type: subfile
+Multifile: tmp/$ID-m6
+Subfile: tmp/$ID-s
+
+Type: subfile
+Multifile: tmp/$ID-m7
+Subfile: tmp/$ID-s
+
+Type: subfile
+Multifile: tmp/$ID-d0
+Subfile: tmp/$ID-s
+
+Type: subfile
+Multifile: tmp/$ID-d1
+Subfile: tmp/$ID-s
+
+Type: subfile
+Multifile: tmp/$ID-d2
+Subfile: tmp/$ID-s
+
+Type: subfile
+Multifile: tmp/$ID-d3
+Subfile: tmp/$ID-s
+
+Type: subfile
+Multifile: tmp/$ID-d4
+Subfile: tmp/$ID-s
+
+Type: subfile
+Multifile: tmp/$ID-d5
+Subfile: tmp/$ID-s
+
+Type: subfile
+Multifile: tmp/$ID-d6
+Subfile: tmp/$ID-s
+
+Type: subfile
+Multifile: tmp/$ID-d7
+Subfile: tmp/$ID-s
+__UCR__
+	univention-config-registry register "$ID"
+}
+
+verify_all () {
+	verify_single_file_template
+	verify_multi_file_template_without_dummy_file
+	verify_multi_file_template_with_dummy_file
+}
+verify_single_file_template () {
+	verify "/tmp/$ID-f0" "$MODE_TEMPLATE"	root	root	# default=template_file
+	verify "/tmp/$ID-f1" "$MODE_UMASK"	"$OWNER"	root	# owner
+	verify "/tmp/$ID-f2" "$MODE_UMASK"	root	"$GROUP"	# group
+	verify "/tmp/$ID-f3" "$MODE_UMASK"	"$OWNER"	"$GROUP"	# owner group
+	verify "/tmp/$ID-f4" "$MODE_FORCE"	root	root	# mode
+	verify "/tmp/$ID-f5" "$MODE_FORCE"	"$OWNER"	root	# mode owner
+	verify "/tmp/$ID-f6" "$MODE_FORCE"	root	"$GROUP"	# mode group
+	verify "/tmp/$ID-f7" "$MODE_FORCE"	"$OWNER"	"$GROUP"	# mode owner group
+}
+verify_multi_file_template_without_dummy_file () {
+	verify "/tmp/$ID-m0" "$MODE_UMASK"	root	root	# default=umask
+	verify "/tmp/$ID-m1" "$MODE_UMASK"	"$OWNER"	root	# owner
+	verify "/tmp/$ID-m2" "$MODE_UMASK"	root	"$GROUP"	# group
+	verify "/tmp/$ID-m3" "$MODE_UMASK"	"$OWNER"	"$GROUP"	# owner group
+	verify "/tmp/$ID-m4" "$MODE_FORCE"	root	root	# mode
+	verify "/tmp/$ID-m5" "$MODE_FORCE"	"$OWNER"	root	# mode owner
+	verify "/tmp/$ID-m6" "$MODE_FORCE"	root	"$GROUP"	# mode group
+	verify "/tmp/$ID-m7" "$MODE_FORCE"	"$OWNER" "$GROUP"	# mode owner group
+}
+verify_multi_file_template_with_dummy_file () {
+	verify "/tmp/$ID-d0" "$MODE_TEMPLATE"	root	root	# default=dummy_file
+	verify "/tmp/$ID-d1" "$MODE_UMASK"	"$OWNER"	root	# owner
+	verify "/tmp/$ID-d2" "$MODE_UMASK"	root	"$GROUP"	# group
+	verify "/tmp/$ID-d3" "$MODE_UMASK"	"$OWNER"	"$GROUP"	# owner group
+	verify "/tmp/$ID-d4" "$MODE_FORCE"	root	root	# mode
+	verify "/tmp/$ID-d5" "$MODE_FORCE"	"$OWNER"	root	# mode owner
+	verify "/tmp/$ID-d6" "$MODE_FORCE"	root	"$GROUP"	# mode group
+	verify "/tmp/$ID-d7" "$MODE_FORCE"	"$OWNER" "$GROUP"	# mode owner group
+}
+verify () { # $1=name $2=mode $3=owner $4=group
+	local filename="$1" mode="$2" owner="$3" group="$4" IFS="	" fail=
+	set -- $(stat -c '%04a	%U	%G' "$filename") # IFS
+	[ $(($mode)) -eq $(($1)) ] || mode+="!=$1" fail=1
+	[ "$owner" = "$2" ] || owner+="!=$2" fail=1
+	[ "$group" = "$3" ] || group+="!=$3" fail=1
+	if [ -n "$fail" ]
+	then
+		echo "FAIL: $filename $mode $owner $group"
+		result+=1
+		return 1
+	else
+		echo "OKAY: $filename $mode $owner $group"
+	fi
+}
+
+re_commit () {
+	MODE_UMASK=0664
+	chmod "$MODE_UMASK" "/tmp/$ID-"[smd][0-7]
+	ucr commit "/tmp/$ID-"[smd][0-7]
+}
+
+cleanup () {
+	find /tmp /etc/univention/templates/info /etc/univention/templates/files/tmp -maxdepth 1 -name "$ID*" -delete
+	rmdir "/etc/univention/templates/files/tmp" || :
+	rm -rf "/etc/univention/templates/info/$ID.info"
+}
+
+main
+# vim:set ft=sh noet:

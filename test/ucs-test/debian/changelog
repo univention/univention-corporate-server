@@ -1,3 +1,9 @@
+ucs-test (4.0.161-38) unstable; urgency=low
+
+  * 03ucr: Add atomic commit tests (Bug #33842)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Feb 2014 17:23:57 +0100
+
 ucs-test (4.0.161-37) unstable; urgency=medium
 
   * Let 50_samba/41password_change run on memberservers (Bug #32382)

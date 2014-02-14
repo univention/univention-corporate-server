@@ -1,0 +1,101 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check atomic file commit
+## tags:
+##  - basic
+##  - apptest
+## exposure: careful
+## bugs: [33842]
+
+ID="ucs-test-33842"
+
+main () {
+	declare -i result=0
+
+	trap cleanup EXIT
+	create_templates
+
+	register_ucr
+	verify || result+=$?
+
+	re_commit
+	verify || result+=$?0
+
+	exit $result
+}
+
+create_templates () {
+	mkdir -p "/etc/univention/templates/files/tmp/${ID}-atomic.d"
+	cat >"/etc/univention/templates/files/tmp/${ID}-atomic.d/${ID}-00header" <<__UCR__
+@!@
+print("\n" * (1 << 20))
+@!@
+__UCR__
+	cat >"/etc/univention/templates/files/tmp/${ID}-atomic.d/${ID}-50trap" <<__UCR__
+@!@
+import os
+import errno
+filename = "/tmp/$ID-atomic"
+try:
+	stat = os.stat(filename)
+	size = stat.st_size
+	if 0 < size < (2 << 20):
+		print "FAILED: 0x%x" % (size,)
+	else:
+		print "OKAY: 0x%x" % (size,)
+except OSError as ex:
+	if errno.ENOENT == ex.errno:
+		print "OKAY: %s" % (filename,)
+	else:
+		print "FAILED: %s" % (ex,)
+@!@
+__UCR__
+	cat >"/etc/univention/templates/files/tmp/${ID}-atomic.d/${ID}-99footer" <<__UCR__
+@!@
+print("\n" * (1 << 20))
+@!@
+__UCR__
+}
+register_ucr () {
+	cat >"/etc/univention/templates/info/$ID.info" <<__UCR__
+Type: multifile
+Multifile: tmp/$ID-atomic
+
+Type: subfile
+Multifile: tmp/$ID-atomic
+Subfile: tmp/$ID-atomic.d/$ID-00header
+
+Type: subfile
+Multifile: tmp/$ID-atomic
+Subfile: tmp/$ID-atomic.d/$ID-50trap
+
+Type: subfile
+Multifile: tmp/$ID-atomic
+Subfile: tmp/$ID-atomic.d/$ID-99footer
+__UCR__
+	univention-config-registry register "$ID"
+}
+
+verify () {
+	if grep OKAY "/tmp/$ID-atomic"
+	then
+		return 0
+	elif grep FAILED "/tmp/$ID-atomic"
+	then
+		return 1
+	else
+		return 2
+	fi
+}
+
+re_commit () {
+	ucr commit "/tmp/$ID-atomic"
+}
+
+cleanup () {
+	find /tmp /etc/univention/templates/info /etc/univention/templates/files/tmp -depth -maxdepth 2 -name "$ID*" -delete
+	rmdir "/etc/univention/templates/files/tmp" || :
+	rm -rf "/etc/univention/templates/info/$ID.info"
+}
+
+main
+# vim:set ft=sh noet:
