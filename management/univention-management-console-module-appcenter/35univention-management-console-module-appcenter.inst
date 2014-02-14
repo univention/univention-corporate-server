@@ -66,26 +66,7 @@ ucs_registerLDAPExtension "$@" \
 	--acl /usr/share/univention-management-console-module-appcenter/66univention-appcenter_app.acl \
 	--udm_module /usr/share/pyshared/univention/admin/handlers/appcenter/app.py || die
 
-python -c "$(cat <<-EOF
-from univention.lib.package_manager import PackageManager
-from univention.updater import UniventionUpdater
-from univention.config_registry import ConfigRegistry
-from univention.management.console.modules.appcenter.util import ComponentManager, install_opener
-from univention.management.console.modules.appcenter.app_center import Application
-
-ucr = ConfigRegistry()
-ucr.load()
-uu = UniventionUpdater(False)
-component_manager = ComponentManager(ucr, uu)
-package_manager = PackageManager(lock=False)
-
-install_opener(ucr)
-
-for app in Application.all_installed(package_manager):
-  app.register(component_manager, package_manager)
-  app.tell_ldap(ucr, package_manager, inform_about_error=False)
-EOF
-)" || die
+/usr/sbin/univention-register-apps
 
 joinscript_save_current_version
 
