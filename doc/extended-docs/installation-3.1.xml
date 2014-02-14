@@ -1260,5 +1260,5 @@ command line can be found at the following URLs.
 		<bibliomixed id="locales"/>
 	</bibliography>
 
-<?dbhtml-include href="../stylesheets/piwiki.html"?>
+<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>

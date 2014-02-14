@@ -469,6 +469,6 @@ udm uvmm/profile list --filter interface=eth0 |
     </chapter>
 
 
-    <?dbhtml-include href="../stylesheets/piwiki.html"?>
+    <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
 <!-- vim:set sw=4 ts=4 et: -->
