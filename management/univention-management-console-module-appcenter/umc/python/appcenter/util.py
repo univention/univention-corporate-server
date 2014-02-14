@@ -265,9 +265,14 @@ class ComponentManager(object):
 			'description' : app.name,
 			'username' : '',
 			'password' : '',
-			'version' : 'current',
 			'localmirror' : 'false',
 		}
+		if not self.is_registered(app_data['name']):
+			# do not overwrite version when registering apps
+			# (like in univention-register-apps which is called
+			# in a join script)
+			# it may have been changed intentionally, see EndOfLife
+			app_data['version'] = 'current'
 		self.put(app_data, super_ucr)
 
 	def remove_app(self, app, super_ucr=None):
