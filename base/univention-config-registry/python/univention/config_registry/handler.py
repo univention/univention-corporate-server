@@ -36,6 +36,7 @@
 
 import sys
 import os
+import random
 import re
 import subprocess
 import cPickle
@@ -298,7 +299,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 		print 'Multifile: %s' % self.to_file
 
 		real_to_file = self.to_file
-		self.to_file = '%s__tmp__ucr__commit__%s' % (real_to_file,os.getpid())
+		self.to_file = '%s__ucr__commit__%s' % (real_to_file,random.random())
 
 		if hasattr(self, 'preinst') and self.preinst:
 			run_module(self.preinst, 'preinst', ucr, changed)
@@ -377,7 +378,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 		print 'File: %s' % self.to_file
 
 		real_to_file = self.to_file
-		self.to_file = '%s__tmp__ucr__commit__%s' % (real_to_file,os.getpid())
+		self.to_file = '%s__ucr__commit__%s' % (real_to_file,random.random())
 
 		to_dir = os.path.dirname(self.to_file)
 		if not os.path.isdir(to_dir):

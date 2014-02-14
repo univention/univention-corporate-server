@@ -1,3 +1,9 @@
+univention-config-registry (9.0.6-3) unstable; urgency=low
+
+  * Use a more random name for the temporary file (Bug #33842)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Feb 2014 08:29:06 +0100
+
 univention-config-registry (9.0.6-2) unstable; urgency=low
 
   * More temporary file and rename handling (Bug #33842)
