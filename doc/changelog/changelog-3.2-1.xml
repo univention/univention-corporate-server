@@ -95,11 +95,13 @@
 
   <section>
 	<title>Univention Configuration Registry</title>
-	  <!-- <itemizedlist> -->
-	  <!-- 	<listitem><simpara> -->
-	  <!-- 	</simpara></listitem> -->
-
-	  <!-- </itemizedlist> -->
+		<itemizedlist>
+		  <listitem><simpara>
+			Univention Configuration Registry now commits the files to a temporary file first and
+			renames the files in a second atomic step. This prevents writing of incomplete files
+			(<ulink url="&ucsbug;32415">Bug 32415</ulink>).
+		  </simpara></listitem>
+		</itemizedlist>
 
 	<section>
 	  <title>Changes to templates and modules</title>
@@ -108,7 +110,7 @@
 			The default limit for <emphasis>max open files</emphasis> in
 			<filename>/etc/security/limits.conf</filename> has been increased to 32768. This value can be
 			changed by setting the &ucsUCR; variables <envar>security/limits/default/user/soft/nofile</envar>
-			and <envar>security/limits/default/user/hard/nofile</envar> <ulink url="&ucsbug;32415">Bug 32415</ulink>).
+			and <envar>security/limits/default/user/hard/nofile</envar> (<ulink url="&ucsbug;32415">Bug 32415</ulink>).
 		  </simpara></listitem>
 		</itemizedlist>
 	</section>
