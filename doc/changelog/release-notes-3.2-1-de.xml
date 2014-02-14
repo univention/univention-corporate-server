@@ -9,449 +9,362 @@
   %entities;
 ]>
 <book lang="de" id="releasenotes-3.2-1-de">
-    <bookinfo>
-      <title>UCS 3.2-1 Release Notes</title>
-      <subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von Univention Corporate Server (UCS) 3.2-1</subtitle>
-        <revhistory>
-            <revision>
-                <revnumber>3.2-1</revnumber>
-                <date>17 Feb 2014</date>
-            </revision>
-        </revhistory>
+	<bookinfo>
+		<title>UCS 3.2-1 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 3.2-1</subtitle>
+		<revhistory>
+			<revision>
+				<revnumber>3.2-1</revnumber>
+				<date>17 Feb 2014</date>
+			</revision>
+		</revhistory>
 
 		<legalnotice>
-		  <para>
-			Alle Rechte vorbehalten. / All rights reserved.
-		  </para>
+			<para>
+				Alle Rechte vorbehalten. / All rights reserved.
+			</para>
 
-		  <para>
-			(c) 2002 bis 2014 Univention GmbH
-		  </para>
+			<para>
+				(c) 2002-2014 Univention GmbH
+			</para>
 
-		  <para>
-			Mary-Somerville-Straße 1, 28359 Bremen, Deutschland/Germany
-		  </para>
+			<para>
+				Mary-Somerville-Straße 1, 28359 Bremen, Deutschland/Germany
+			</para>
 
-		  <para>
-			feedback@univention.de
-		  </para>
+			<para>
+				<ulink url="mailto:feedback@univention.de">feedback@univention.de</ulink>
+			</para>
 
-		  <para>
-			Jede aufgeführte Marke und jedes Warenzeichen steht im Eigentum
-			ihrer jeweiligen eingetragenen Rechtsinhaber. Linux ist ein
-			eingetragenes Warenzeichen von Linus Torvalds.
-		  </para>
+			<para>
+				Jede aufgeführte Marke und jedes Warenzeichen steht im Eigentum ihrer jeweiligen eingetragenen Rechtsinhaber.
+				Linux ist ein eingetragenes Warenzeichen von Linus Torvalds.
+			</para>
 
-		  <para>
-			The mentioned brand names and registered trademarks are owned by
-			the respective legal owners in each case. Linux is a registered
-			trademark of Linus Torvalds.
-		  </para>
+			<para>
+				The mentioned brand names and registered trademarks are owned by the respective legal owners in each case.
+				Linux is a registered trademark of Linus Torvalds.
+			</para>
 		</legalnotice>
+	</bookinfo>
 
-    </bookinfo>
-
-    <chapter id="relnotes:highlights">
-	  <title>Release-Highlights</title>
-
-	  <para>
-		Mit Univention Corporate Server 3.2-1 steht das erste Point-Release für Univention
-		Corporate Server (UCS) zur Verfügung. Es beinhaltet alle für UCS 3.2-0 veröffentlichten
-		Errata-Updates:
-
-		<itemizedlist>
-		  <listitem><para>
-			Das Linux-Kernel-Paket wurde auf Version 3.10.26 aktualisiert. Dies verbessert neben
-			vielen Bugfixes auch den Hardware-Support.
-		  </para></listitem>			
-
-		  <listitem><para>
-			Das Univention App Center wurde erweitert: Neben vielen Detailverbesserungen wurden neue
-			Schnittstellen geschaffen, die die Integration von Applikationen von Drittherstellern
-			verbessern.
-		  </para></listitem>
-
-		  <listitem><para>
-			Univention AD Takeover - die UCS-Lösung zur automatischen Migration einer Active
-			Directory-Domäne zu UCS - wurde weiter verbessert; u.a. wird nun auch die Migration von
-			AD-Domänen unterstützt, die nicht in Englisch oder Deutsch betrieben wurden.
-		  </para></listitem>
-
-		  <listitem><para>
-			Zahlreiche Usability-Verbesserungen in der &ucsUMC;.
-		  </para></listitem>
-
-		</itemizedlist>
-
-	  </para>
-
-    </chapter>
-
-    <chapter id="relnotes:order">
-	  <title>Empfohlene Update-Reihenfolge für Umgebungen mit mehr als einem UCS-Server</title>
-
-	  <para>
-		In Umgebungen mit mehr als einem UCS-System muss die Update-Reihenfolge der UCS-Systeme
-		beachtet werden:
-	  </para>
-
-	  <para>
-		Auf dem &ucsMaster; wird die maßgebliche (authoritative) Version des
-		LDAP-Verzeichnis-dienstes vorgehalten, die an alle übrigen LDAP-Server der UCS-Domäne
-		repliziert wird. Da bei Release-Updates Veränderungen an den LDAP-Schemata auftreten
-		können muss der &ucsMaster; bei einem Release-Update immer als erstes System aktualisiert werden.
-	  </para>
-
-	  <para>
-		Generell ist es empfehlenswert alle UCS-Systeme möglichst in einem Wartungsfenster zu
-		aktualisieren.
-	  </para>
-	</chapter>
-
-    <chapter id="relnotes:prepare">
-	  <title>Vorbereitung des Updates</title>
+	<chapter id="relnotes:highlights">
+		<title>Release-Highlights</title>
 
 		<para>
-		  Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist. Eine
-		  Standard-Installation benötigt min. 6 GB Speicherplatz. Das Update benötigt je nach Umfang
-		  der vorhanden Installation mindestens 1 GB weiteren Speicherplatz zum Herunterladen und
-		  Installieren der Pakete.
-		</para>
+			Mit &ucsUCS; 3.2-1 steht das erste Point-Release für &ucsUCS; (UCS) zur Verfügung.
+			Es beinhaltet alle für UCS 3.2-0 veröffentlichten Errata-Updates:
 
-		<para>
-		  Für das Update sollte eine Anmeldung auf der Console mit dem Benutzer
-		  <emphasis>root</emphasis> durchgeführt und das Update dort gestartet werden. Alternativ
-		  kann das Update über die &ucsUMC; durchgeführt werden.
-		</para>
+			<itemizedlist>
+				<listitem><para>
+						Das Linux-Kernel-Paket wurde auf Version 3.10.26 aktualisiert.
+						Dies verbessert neben vielen Bugfixes auch den Hardware-Support.
+				</para></listitem>
 
-		<para>
-		  Eine Remote-Aktualisierung über SSH wird nicht empfohlen, da dies beispielsweise bei
-		  Unterbrechung der Netzverbindung zum Abbruch des Update-Vorgangs und zu einer
-		  Beeinträchtigung des Systems führen kann. Sollte dennoch eine Aktualisierung über eine
-		  Netzverbindung durchgeführt werden, ist sicherzustellen, dass das Update bei Unterbrechung
-		  der Netzverbindung trotzdem weiterläuft. Hierfür können beispielsweise die Tools
-		  <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen
-		  Systemrollen installiert sind.
+				<listitem><para>
+						Das Univention App Center wurde erweitert:
+						Neben vielen Detailverbesserungen wurden neue Schnittstellen geschaffen, die die Integration von Applikationen von Drittherstellern verbessern.
+				</para></listitem>
+
+				<listitem><para>
+						Univention AD Takeover - die UCS-Lösung zur automatischen Migration einer Active Directory-Domäne zu UCS - wurde weiter verbessert;
+						u.a. wird nun auch die Migration von AD-Domänen unterstützt, die nicht in Englisch oder Deutsch betrieben wurden.
+				</para></listitem>
+
+				<listitem><para>
+						Zahlreiche Usability-Verbesserungen in der &ucsUMC;.
+				</para></listitem>
+			</itemizedlist>
 		</para>
 
 	</chapter>
 
-    <chapter>
-	  <title>Nachbereitung des Updates</title>
+	<chapter id="relnotes:order">
+		<title>Empfohlene Update-Reihenfolge für Umgebungen mit mehr als einem UCS-Server</title>
 
 		<para>
-		  Nach dem Update müssen die neuen oder aktualisierten Join-Skripte ausgeführt werden. Dies
-		  kann auf zwei Wegen erfolgen: Entweder über das UMC-Modul
-		  <guimenu>Domänenbeitritt</guimenu> oder durch Aufruf des Befehls
-		  <command>univention-run-join-scripts</command> als Benutzer <emphasis>root</emphasis>.
+			In Umgebungen mit mehr als einem UCS-System muss die Update-Reihenfolge der UCS-Systeme beachtet werden:
 		</para>
 
 		<para>
-		  Anschließend sollte das UCS-System neu gestartet werden.
-		</para>
-
-	  <section id="relnotes:grub2">
-		<title>Migration auf GRUB 2 auf Systemen, die mit UCS-Versionen vor UCS 3.0 installiert wurden</title>
-		<para>
-		  Bei einer Neuinstallation ab UCS 3.0 wird vom Univention Installer direkt GRUB 2 in den
-		  Bootsektor geschrieben.
+			Auf dem &ucsMaster; wird die maßgebliche (authoritative) Version des LDAP-Verzeichnisdienstes vorgehalten, die an alle übrigen LDAP-Server der UCS-Domäne repliziert wird.
+			Da bei Release-Updates Veränderungen an den LDAP-Schemata auftreten können muss der &ucsMaster; bei einem Release-Update immer als erstes System aktualisiert werden.
 		</para>
 
 		<para>
-		  Bei einem Update bleibt GRUB 1 im Master Boot Record (MBR) installiert. GRUB 2 richtet
-		  einen Eintrag "Chainload into GRUB" ein, der dann das eigentliche GRUB 2 lädt.
+			Generell ist es empfehlenswert alle UCS-Systeme möglichst in einem Wartungsfenster zu aktualisieren.
+		</para>
+	</chapter>
+
+	<chapter id="relnotes:prepare">
+		<title>Vorbereitung des Updates</title>
+
+		<para>
+			Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist.
+			Eine Standard-Installation benötigt min. 6 GB Speicherplatz.
+			Das Update benötigt je nach Umfang der vorhanden Installation mindestens 1 GB weiteren Speicherplatz zum Herunterladen und Installieren der Pakete.
 		</para>
 
 		<para>
-		  Eine Dokumentation, um auch auf aktualisierten Systemen GRUB 2 direkt in den MBR zu
-		  schreiben wird in der Univention Supportdatenbank bereitgestellt
-		  (<ulink url="http://sdb.univention.de/1218"/>).
-		</para>
-	  </section>
-
-	  <section id="relnotes:postgres">
-		<title>Migration von PostgreSQL 8.3 auf PostgreSQL 8.4</title>
-		<para>
-		  Ab UCS 3.0 wird neben PostgreSQL 8.3 auch PostgreSQL 8.4 angeboten. Bei Aktualisierungen
-		  von Systemen mit PostgreSQL 8.3 auf UCS 3.0 wird aber die installierte PostgreSQL Version
-		  beibehalten.
+			Für das Update sollte eine Anmeldung auf der Console mit dem Benutzer <emphasis>root</emphasis> durchgeführt und das Update dort gestartet werden.
+			Alternativ kann das Update über die &ucsUMC; durchgeführt werden.
 		</para>
 
 		<para>
-		  Das Update auf PostgreSQL 8.4 ist im SDB-Artikel <ulink
-		  url="http://sdb.univention.de/1220"/> beschrieben.
-		</para>
-	  </section>
-
-	  <section id="repo:verify">
-		<title>Betrieb eines lokalen Repository-Servers / Preup / Postup-Skripte</title>
-		<para>
-		  Preup- und Postup-Skripte sind Skripte, die vor und nach Release-Updates aufgerufen
-		  werden (z.B. zur Nachbereitung des Updates, etwa die Deinstallation obsoleter Pakete).
-		  Ab UCS 3.2 werden diese Skripte kryptographisch signiert, um eine unerlaubte Modifikation zu verhindern.
-		  Beim Update und Spiegeln des Repositories werden diese Signaturen überprüft.
-		  Sind diese ungültig oder fehlen, so wird die Aktion abgebrochen.
+			Eine Remote-Aktualisierung über SSH wird nicht empfohlen, da dies beispielsweise bei Unterbrechung der Netzverbindung zum Abbruch des Update-Vorgangs und zu einer Beeinträchtigung des Systems führen kann.
+			Sollte dennoch eine Aktualisierung über eine Netzverbindung durchgeführt werden, ist sicherzustellen, dass das Update bei Unterbrechung der Netzverbindung trotzdem weiterläuft.
+			Hierfür können beispielsweise die Tools <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen Systemrollen installiert sind.
 		</para>
 
+	</chapter>
+
+	<chapter id="relnotes:post">
+		<title>Nachbereitung des Updates</title>
+
 		<para>
-		  Wird ein Repository-Server mit UCS 3.1-x betrieben, muß dieser auf UCS 3.2 aktualisiert
-		  werden, bevor weitere Systeme auf UCS 3.2-1 aktualisiert werden können.
+			Nach dem Update müssen die neuen oder aktualisierten Join-Skripte ausgeführt werden.
+			Dies kann auf zwei Wegen erfolgen: Entweder über das UMC-Modul <guimenu>Domänenbeitritt</guimenu> oder durch Aufruf des Befehls <command>univention-run-join-scripts</command> als Benutzer <emphasis>root</emphasis>.
 		</para>
 
 		<para>
-		  Wenn ein Update des Repository-Servers nicht möglich ist, müssen die Signaturdateien manuell heruntergeladen werden:
+			Anschließend sollte das UCS-System neu gestartet werden.
 		</para>
 
-<programlisting language="sh">
+		<section id="repo:verify">
+			<title>Betrieb eines lokalen Repository-Servers / Preup / Postup-Skripte</title>
+			<para>
+				Preup- und Postup-Skripte sind Skripte, die vor und nach Release-Updates aufgerufen werden
+				(z.B. zur Nachbereitung des Updates, etwa die Deinstallation obsoleter Pakete).
+				Ab UCS 3.2 werden diese Skripte kryptographisch signiert, um eine unerlaubte Modifikation zu verhindern.
+				Beim Update und Spiegeln des Repositories werden diese Signaturen überprüft.
+				Sind diese ungültig oder fehlen, so wird die Aktion abgebrochen.
+			</para>
+
+			<para>
+				Wird ein Repository-Server mit UCS 3.1-x betrieben, muß dieser auf UCS 3.2 aktualisiert werden, bevor weitere Systeme auf UCS 3.2-1 aktualisiert werden können.
+			</para>
+
+			<para>
+				Wenn ein Update des Repository-Servers nicht möglich ist, müssen die Signaturdateien manuell heruntergeladen werden:
+			</para>
+
+			<programlisting language="sh">
 LOCAL_DIR="/var/lib//univention-repository/mirror"
 SERVER="http://updates.software-univention.de"
 for release in 3.2-0 3.2-1; do
-  for script in preup postup; do
-    file="3.2/maintained/$release/all/$script.sh.gpg"
-    wget -O "$LOCAL_DIR/$file" "$SERVER/$file"
-  done
+	for script in preup postup; do
+		file="3.2/maintained/$release/all/$script.sh.gpg"
+		wget -O "$LOCAL_DIR/$file" "$SERVER/$file"
+	done
 done
-</programlisting>
+			</programlisting>
 
-		<para>
-		  Alternativ kann die Prüfung der Signaturen auch deaktiviert werden, was ein Sicherheitsrisiko darstellen kann.
-		  Für dem Repository-Server kann dazu die &ucsUCRV; <envar>repository/mirror/verify</envar> auf <emphasis>false</emphasis> gesetzt werden.
-		  Für das Update muß auf allen Systemen die &ucsUCRV; <envar>repository/online/verify</envar> auf <emphasis>false</emphasis> gesetzt werden.
-		</para>
-	  </section>
-
-	  <section id="relnotes:grouptype">
-		<title>Nachträgliche Einrichtung der Synchronisation der Active Directory-Gruppentypen</title>
-		<para>
-		  Bei Neuinstallationen ab UCS 3.2 werden bei Verwendung von Samba 4 die
-		  Gruppenmitgliedschaften zwischen dem Samba 4-Verzeichnisdienst und dem
-		  OpenLDAP-Verzeichnisdienst durch den Univention S4-Connector synchronisiert, d.h. jede
-		  Gruppe auf UCS-Seite ist einer Gruppe im Active Directory assoziiert.
-		</para>
-
-		<para>
-		  Systeme, die mit UCS-Versionen vor 3.2 installiert wurden, können optional nachträglich umgestellt
-		  werden. Weitere Informationen finden sich unter <ulink
-		  url="http://sdb.univention.de/1237"/>.
-		</para>
-	  </section>
-
+			<para>
+				Alternativ kann die Prüfung der Signaturen auch deaktiviert werden, was ein Sicherheitsrisiko darstellen kann.
+				Für dem Repository-Server kann dazu die &ucsUCRV; <envar>repository/mirror/verify</envar> auf <emphasis>false</emphasis> gesetzt werden.
+				Für das Update muß auf allen Systemen die &ucsUCRV; <envar>repository/online/verify</envar> auf <emphasis>false</emphasis> gesetzt werden.
+			</para>
+		</section>
 	</chapter>
 
 
-    <chapter>
-	  <title>Hinweise zum Einsatz einzelner Pakete</title>
+	<chapter id="relnotes:packages">
+		<title>Hinweise zum Einsatz einzelner Pakete</title>
 
-	  <section id="relnotes:usage">
-		<title>Erfassung von Nutzungsstatistiken bei Verwendung der Free-For-Personal-Use-Version</title>
-		<para>
-		  Bei Verwendung der <emphasis>Free for personal use</emphasis>-Version von UCS (die in der
-		  Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken zur
-		  Verwendung der &ucsUMC; erzeugt. Die aufgerufenen Module werden dabei von einer Instanz
-		  des Web-Traffic-Analyse-Tools Piwik protokolliert. Dies ermöglicht es Univention die
-		  Entwicklung der &ucsUMC; besser auf das Kundeninteresse zuzuschneiden und
-		  Usability-Verbesserungen vorzunehmen.
-		</para>
+		<section id="relnotes:usage">
+			<title>Erfassung von Nutzungsstatistiken bei Verwendung der Free-For-Personal-Use-Version</title>
+			<para>
+				Bei Verwendung der <emphasis>Free for personal use</emphasis>-Version von UCS (die in der Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken zur Verwendung der &ucsUMC; erzeugt.
+				Die aufgerufenen Module werden dabei von einer Instanz des Web-Traffic-Analyse-Tools Piwik protokolliert.
+				Dies ermöglicht es Univention die Entwicklung der &ucsUMC; besser auf das Kundeninteresse zuzuschneiden und Usability-Verbesserungen vorzunehmen.
+			</para>
 
-		<para>
-		  Diese Protokollierung erfolgt nur bei Verwendung der Free-for-Personal-Use-Lizenz. Der
-		  Lizenzstatus kann durch einen Klick auf das Zahnrad-Symbol in der rechten, oberen Ecke der
-		  &ucsUMC; und die Auswahl von <guimenu>Lizenzinformationen</guimenu> geprüft werden. Steht hier unter
-		  <guimenu>LDAP-Basis</guimenu> <emphasis>Free for personal use edition</emphasis> wird eine
-		  solche Version verwendet. Bei Einsatz einer regulären UCS-Lizenz erfolgt keine
-		  Nutzungsstatistik.
-		</para>
+			<para>
+				Diese Protokollierung erfolgt nur bei Verwendung der Free-for-Personal-Use-Lizenz.
+				Der Lizenzstatus kann durch einen Klick auf das Zahnrad-Symbol in der rechten, oberen Ecke der &ucsUMC; und die Auswahl von <guimenu>Lizenzinformationen</guimenu> geprüft werden.
+				Steht hier unter <guimenu>LDAP-Basis</guimenu> <emphasis>Free for personal use edition</emphasis> wird eine solche Version verwendet.
+				Bei Einsatz einer regulären UCS-Lizenz wird keine Nutzungsstatistik gesammelt.
+			</para>
 
-		<para>
-		  Die Protokollierung kann unabhängig von der verwendeten Lizenz durch Setzen der
-		  &ucsUCR;-Variable <envar>umc/web/piwik</envar> auf <emphasis>false</emphasis> deaktiviert
-		  werden.
-		</para>
-	  </section>
+			<para>
+				Die Protokollierung kann unabhängig von der verwendeten Lizenz durch Setzen der &ucsUCR;-Variable <envar>umc/web/piwik</envar> auf <emphasis>false</emphasis> deaktiviert werden.
+			</para>
+		</section>
 
-	  <section id="relnotes:uefi">
-		<title>UEFI-Installations-DVD</title>
-		<para>
-		  Für amd64 steht neben der Standard-Installations-DVD auch ein Medium mit
-		  Unterstützung für den Unified Extensible Firmware Interface-Standard (UEFI) bereit.
-		</para>
+		<section id="relnotes:uefi">
+			<title>UEFI-Installations-DVD</title>
+			<para>
+				Für amd64 steht neben der Standard-Installations-DVD auch ein Medium mit Unterstützung für den Unified Extensible Firmware Interface-Standard (<acronym>UEFI</acronym>) bereit.
+			</para>
 
-		<para>
-		  Auf Systemen, die nur einen UEFI-Start unterstützen, muss sie anstelle der Standard-DVD
-		  verwendet werden.
-		</para>
-	  </section>
+			<para>
+				Auf Systemen, die nur einen UEFI-Start unterstützen, muss sie anstelle der Standard-DVD verwendet werden.
+			</para>
+		</section>
 
-	  <section id="relnotes:secbrowsers">
-		<title>Umfang des Sicherheits-Supports von Webkit, Konqueror und QtWebKit</title>
-		<para>
-		  Webkit, Konqueror und QtWebkit werden in UCS im maintained-Zweig des Repositorys
-		  mitgeliefert, aber nicht durch Sicherheits-Updates unterstützt. Webkit wird vor allem für
-		  die Darstellung von HTML-Hilfeseiten u.ä. verwendet. Als Web-Browser sollte Firefox
-		  eingesetzt werden.
-		</para>
-	  </section>
+		<section id="relnotes:secbrowsers">
+			<title>Umfang des Sicherheits-Supports von Webkit, Konqueror und QtWebKit</title>
+			<para>
+				Webkit, Konqueror und QtWebkit werden in UCS im maintained-Zweig des Repositorys mitgeliefert, aber nicht durch Sicherheits-Updates unterstützt.
+				Webkit wird vor allem für die Darstellung von HTML-Hilfeseiten u.ä. verwendet.
+				Als Web-Browser sollte Firefox eingesetzt werden.
+			</para>
+		</section>
 
-	  <section id="relnotes:browsers">
-		<title>Empfohlene Browser für den Zugriff auf die Univention Management Console</title>
+		<section id="relnotes:browsers">
+			<title>Empfohlene Browser für den Zugriff auf die Univention Management Console</title>
 
-		<para>
-		  &ucsUMC; verwendet für die Darstellung der Web-Oberfläche zahlreiche Javascript- und
-		  CSS-Funktionen. Cookies müssen im Browser zugelassen sein. Die folgenden Browser werden
-		  empfohlen:
-		</para>
+			<para>
+				&ucsUMC; verwendet für die Darstellung der Web-Oberfläche zahlreiche Javascript- und CSS-Funktionen.
+				Cookies müssen im Browser zugelassen sein.
+				Die folgenden Browser werden empfohlen:
+			</para>
 
-		  <itemizedlist>
-			<listitem>
-			  <para>Chrome ab Version 14</para>
-			</listitem>
+			<itemizedlist>
+				<listitem>
+					<para>Chrome ab Version 14</para>
+				</listitem>
 
-			<listitem>
-			  <para>Firefox ab Version 10</para>
-			</listitem>
+				<listitem>
+					<para>Firefox ab Version 10</para>
+				</listitem>
 
-			<listitem>
-			  <para>Internet Explorer ab Version 9 </para>
-			</listitem>
+				<listitem>
+					<para>Internet Explorer ab Version 9 </para>
+				</listitem>
 
-			<listitem>
-			  <para>Safari (auf dem iPad 2)</para>
-			</listitem>
-		  </itemizedlist>
+				<listitem>
+					<para>Safari (auf dem iPad 2)</para>
+				</listitem>
+			</itemizedlist>
 
-		<para>
-		  Auf älteren Browsern können Darstellungs- oder Performanceprobleme auftreten.
-		</para>
-	  </section>
+			<para>
+				Auf älteren Browsern können Darstellungs- oder Performanceprobleme auftreten.
+			</para>
+		</section>
 
-	  <section id="relnotes:s4limits">
-		<title>Einschränkungen im Samba 4-Betrieb</title>
-		<para>
-		  In Samba 4 stehen einige Active-Directory-Funktionen noch nicht vollständig zur Verfügung:
-		</para>
+		<section id="relnotes:s4limits">
+			<title>Einschränkungen im Samba 4-Betrieb</title>
+			<para>
+				In Samba 4 stehen einige Active-Directory-Funktionen noch nicht vollständig zur Verfügung:
+			</para>
 
-		  <itemizedlist>
-			<listitem>
-			  <para>
-				Microsoft Windows Domänencontroller dürfen aktuell nicht in eine Samba 4-Domäne
-				gejoint werden.
-			  </para>
-			</listitem>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Microsoft Windows Domänencontroller dürfen aktuell nicht in eine Samba 4-Domäne beitreten.
+					</para>
+				</listitem>
 
-			<listitem>
-			  <para>
-				Eine selektive Replikation ist mit Samba 4 nicht möglich, da diese durch Active
-				Directory prinzipiell nicht unterstützt wird (in UCS@school basiert die selektive
-				Replikation auf der Listener/Notifier-Replikation).
-			  </para>
-			</listitem>
+				<listitem>
+					<para>
+						Eine selektive Replikation ist mit Samba 4 nicht möglich, da diese durch Active Directory prinzipiell nicht unterstützt wird (in UCS@school basiert die selektive Replikation auf der Listener/Notifier-Replikation).
+					</para>
+				</listitem>
 
-			<listitem>
-			  <para>
-				Samba 4 unterstützt aktuell keine Forest-Domänen.
-			  </para>
-			</listitem>
+				<listitem>
+					<para>
+						Samba 4 unterstützt aktuell keine Forest-Domänen.
+					</para>
+				</listitem>
 
-			<listitem>
-			  <para>
-				Samba 4 unterstützt aktuell keine Vertrauensstellungen.
-			  </para>
-			</listitem>
-		  </itemizedlist>
+				<listitem>
+					<para>
+						Samba 4 unterstützt aktuell keine Vertrauensstellungen.
+					</para>
+				</listitem>
+			</itemizedlist>
 
-		<para>
-		  Weitere Hinweise finden sich in Kapitel 8 des UCS-Handbuchs <citation>UCS-Handbuch</citation>.
-		</para>
-	  </section>
+			<para>
+				Weitere Hinweise finden sich in Kapitel 8 des <biblioref linkend="ucs-handbuch"/>.
+			</para>
+		</section>
 
-	  <section id="relnotes:virtualbox">
-		<title>Installation in VirtualBox</title>
-		<para>
-		  Bei der Installation von UCS in der Virtualisierungslösung VirtualBox vor Version 4.2 kann
-		  folgender VirtualBox-Bug auftreten: Wenn von der Installations-DVD gebootet wird, bietet GRUB die
-		  Option <guimenu>Boot from first harddisk partition</guimenu> an. Wählt man diese Option
-		  aus, friert VirtualBox ein.
-		</para>
+		<section id="relnotes:virtualbox">
+			<title>Installation in VirtualBox</title>
+			<para>
+				Bei der Installation von UCS in der Virtualisierungslösung VirtualBox vor Version 4.2 kann folgender VirtualBox-Bug auftreten:
+				Wenn von der Installations-DVD gebootet wird, bietet GRUB die Option <guimenu>Boot from first harddisk partition</guimenu> an.
+				Wählt man diese Option aus, friert VirtualBox ein.
+			</para>
 
-		<para>
-		  Als Workaround muß vor dem Neustart der UCS-VM entweder die Installations-DVD aus den
-		  Laufwerkseinstellungen der VirtualBox-VM entfernt werden oder beim Start der virtuellen
-		  Instanz F12 gedrückt werden und die Festplatte als Bootpartition ausgewählt werden.
-		</para>
-	  </section>
+			<para>
+				Als Workaround muß vor dem Neustart der UCS-VM entweder die Installations-DVD aus den Laufwerkseinstellungen der VirtualBox-VM entfernt werden oder beim Start der virtuellen Instanz <keycap>F12</keycap> gedrückt werden und die Festplatte als Bootpartition ausgewählt werden.
+				UCS startet danach dann problemlos.
+			</para>
+		</section>
 
-	  <section id="relnotes:xenserver">
-		<title>Installation in Citrix XenServer</title>
-		<para>
-		  Bei der Installation von UCS in der Virtualisierungslösung Citrix XenServer 6.0 - 6.2 wird
-		  mit der standardmässig emulierten Cirrus-Grafikkarte das Grub-Menü des Univention
-		  Installers nicht angezeigt. Der Univention Installer kann durch Drücken der ENTER-Taste
-		  direkt gestartet werden; alternativ startet die Installation automatisch nach sechzig
-		  Sekunden. Der dann gestartete Univention Installer wird normal dargestellt.
-		</para>
+		<section id="relnotes:xenserver">
+			<title>Installation in Citrix XenServer</title>
+			<para>
+				Bei der Installation von UCS in der Virtualisierungslösung Citrix XenServer 6.0 - 6.2 wird mit der standardmässig emulierten Cirrus-Grafikkarte das Grub-Menü des Univention Installers nicht angezeigt.
+				Der Univention Installer kann durch Drücken der <keycap function="enter">ENTER</keycap>-Taste direkt gestartet werden;
+				alternativ startet die Installation automatisch nach sechzig Sekunden.
+				Der dann gestartete Univention Installer wird normal dargestellt.
+			</para>
 
-		<para>
-		  Um Grub korrekt darzustellen, kann die von XenServer emulierte Grafikkarte umkonfiguriert
-		  werden. Dazu muss eine Anmeldung als Benutzer <emphasis>root</emphasis> auf dem
-		  XenServer-System folgen. Mit dem Befehl <command>xe vm-list</command> muss zuerst die UUID
-		  der virtuellen Maschine ermittelt werden. Mit dem folgenden Befehl wird dann die emulierte
-		  Grafikkarte auf VGA umkonfiguriert:
+			<para>
+				Um Grub korrekt darzustellen, kann die von XenServer emulierte Grafikkarte umkonfiguriert werden.
+				Dazu muss eine Anmeldung als Benutzer <emphasis>root</emphasis> auf dem XenServer-System folgen.
+				Mit dem Befehl <command>xe vm-list</command> muss zuerst die UUID der virtuellen Maschine ermittelt werden.
+				Mit dem folgenden Befehl wird dann die emulierte Grafikkarte auf VGA umkonfiguriert:
 
-<programlisting language="sh">
-xe vm-param-set uuid=UUIDVM platform:vga=std 
-</programlisting>
-		</para>
-	  </section>
+				<programlisting language="sh">
+xe vm-param-set uuid=UUIDVM platform:vga=std
+				</programlisting>
+			</para>
+		</section>
 
+		<section id="relnotes:s3tos4">
+			<title>Migration einer Samba 3-Umgebung auf Samba 4</title>
+			<para>
+				Es existieren zwei grundlegende Verfahren zur Migration von Samba 3 auf Samba 4:
+			</para>
 
-	  <section id="relnotes:s3tos4">
-		<title>Migration einer Samba 3-Umgebung auf Samba 4</title>
-		<para>
-		  Es existieren zwei grundlegende Verfahren zur Migration von Samba 3 auf Samba 4:
-		</para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Aufbau einer parallelen Samba 4-Domäne.
+						Beide Domänen verwenden unterschiedliche NetBIOS-Namen und SIDs.
+						Die Clients treten dann schrittweise der Samba 4-Domäne bei.
+					</para>
+				</listitem>
 
-		<itemizedlist>
-		<listitem>
-		  <para>
-			Aufbau einer parallelen Samba 4-Domäne. Beide Domänen verwenden unterschiedliche
-			NetBIOS-Namen und SIDs. Die Clients treten dann schrittweise der Samba 4-Domäne bei.
-		  </para>
-		</listitem>
+				<listitem>
+					<para>
+						Migration aller Systeme innerhalb eines Wartungsfensters.
+					</para>
+				</listitem>
+			</itemizedlist>
 
-		<listitem>
-		  <para>
-			Migration aller Systeme innerhalb eines Wartungsfensters.
-		  </para>
-		</listitem>
-		</itemizedlist>
+			<para>
+				Beide Verfahren sind im Univention Wiki ausführlich dokumentiert:
+				<ulink url="http://wiki.univention.de/index.php?title=Migration_from_Samba_3_to_Samba_4"/>.
+			</para>
+		</section>
 
-		<para>
-		  Beide Verfahren sind im Univention Wiki ausführlich dokumentiert: <ulink
-		  url="http://wiki.univention.de/index.php?title=Migration_from_Samba_3_to_Samba_4"/>.
-		</para>
-	  </section>
-
-	  <section id="relnotes:xenhopt">
-		<title>Xen</title>
-		<para>
-		  Wenn der Xen Hypervisor benutzt wird und das Speicherlimit über die &ucsUCR;-Variable
-		  <envar>grub/xenhopt</envar> begrenzt wurde, sollte der Wert aktualisiert und um die
-		  <emphasis>,max:</emphasis>-Angabe erweitert werden. Weitere Details finden sich unter
-		  <ulink url="http://wiki.univention.de/index.php?title=UVMM_Quickstart-3.1#Konfiguration_der_Dom0"/>.
-		</para>
-	  </section>
+		<section id="relnotes:xenhopt">
+			<title>Xen</title>
+			<para>
+				Wenn der Xen Hypervisor benutzt wird und das Speicherlimit über die &ucsUCR;-Variable <envar>grub/xenhopt</envar> begrenzt wurde, sollte der Wert aktualisiert und um die <emphasis>,max:</emphasis>-Angabe erweitert werden.
+				Weitere Details finden sich unter <ulink url="http://wiki.univention.de/index.php?title=UVMM_Quickstart-3.1#Konfiguration_der_Dom0"/>.
+			</para>
+		</section>
 	</chapter>
 
-    <chapter>
-	  <title>Changelog</title>
-	  <para>
-		Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch
-		gepflegt. Aufgeführt sind die Änderung seit UCS 3.2-0:
-	  </para>
+	<chapter id="relnotes:changelog">
+		<title>Changelog</title>
+		<para>
+			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
+			Aufgeführt sind die Änderung seit UCS 3.2-0:
+		</para>
 
-	  &changelog;
-
+		&changelog;
 	</chapter>
 
-    <?dbhtml-include href="../stylesheets/piwik.html"?>
+	<bibliography id="relnotes:bibliography">
+		<bibliomixed id="ucs-handbuch"/>
+	</bibliography>
+
+	<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
