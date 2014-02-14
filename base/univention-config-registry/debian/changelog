@@ -1,3 +1,9 @@
+univention-config-registry (9.0.6-2) unstable; urgency=low
+
+  * More temporary file and rename handling (Bug #33842)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Feb 2014 07:55:28 +0100
+
 univention-config-registry (9.0.6-1) unstable; urgency=low
 
   * Bump version (Bug #33842)

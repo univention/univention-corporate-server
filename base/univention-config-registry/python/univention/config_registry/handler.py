@@ -332,6 +332,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 		to_fp.close()
 
 		os.rename(self.to_file, real_to_file)
+		self.to_file = real_to_file
 
 		if hasattr(self, 'postinst') and self.postinst:
 			run_module(self.postinst, 'postinst', ucr, changed)
@@ -400,6 +401,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 		to_fp.close()
 
 		os.rename(self.to_file, real_to_file)
+		self.to_file = real_to_file
 
 		if hasattr(self, 'postinst') and self.postinst:
 			run_module(self.postinst, 'postinst', ucr, changed)
