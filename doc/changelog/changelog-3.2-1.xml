@@ -313,7 +313,7 @@
 		  registering all installed apps. This causes problems during the installation
 		  of UCS. Now the join script does not fail anymore, it just silently skips
 		  this point. The script univention-register-apps has been added that may be
-		  re-run if this was only a temporary problem (<ulink url="&ucsbug;34128">Bug 34128</ulink>).
+		  re-run if this was only a temporary problem (<ulink url="&ucsbug;34096">Bug 34096</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
