@@ -307,6 +307,14 @@
 		  all applications. This is now done by reading from the <filename>updater.status</filename>
 		  file (<ulink url="&ucsbug;33548">Bug 33548</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The join script failed when the App Center server could not be reached while
+		  registering all installed apps. This causes problems during the installation
+		  of UCS. Now the join script does not fail anymore, it just silently skips
+		  this point. The script univention-register-apps has been added that may be
+		  re-run if this was only a temporary problem (<ulink url="&ucsbug;34128">Bug 34128</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
