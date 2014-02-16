@@ -121,6 +121,17 @@ ucr set \
 	repository/online/component/3.2-1-errata/version="3.2" >>"$UPDATER_LOG" 2>&1
 
 # make sure that UMC server is restarted (Bug #33426)
+echo "
+
+
+****************************************************
+*    THE UPDATE HAS BEEN FINISHED SUCCESSFULLY.    *
+* Please make a page reload of UMC and login again *
+****************************************************
+
+
+" >>"$UPDATER_LOG" 2>&1
+
 echo -n "Restart UMC server components to finish update... " >>"$UPDATER_LOG" 2>&1
 sleep 10s
 /usr/share/univention-updater/disable-apache2-umc --exclude-apache >>"$UPDATER_LOG" 2>&1

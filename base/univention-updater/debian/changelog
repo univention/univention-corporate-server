@@ -1,3 +1,9 @@
+univention-updater (9.0.38-16) unstable; urgency=low
+
+  * postup.sh: re-added the finish message (Bug #34085)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 16 Feb 2014 13:33:58 +0100
+
 univention-updater (9.0.38-15) unstable; urgency=low
 
   * update {post,pre}up.sh for 3.2-1 (Bug #34085)
