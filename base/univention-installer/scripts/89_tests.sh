@@ -114,6 +114,7 @@ while [ \$i -lt 60 ]; do
 	sleep 1
 done
 test "\$i" = 60 && exit 1
+exit 0
 __EOF__
 test_retval $? "warning" "This system has not been joined yet! If no other problem occurred,\nreboot and run script /usr/share/univention-join/check_join_status\nfor further investigation."
 fi
