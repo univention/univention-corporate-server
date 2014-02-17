@@ -14,6 +14,11 @@
 	  <listitem><simpara>
 		Enforce UTF-8 encoding when setting the locale (<ulink url="&ucsbug;33916">Bug 33916</ulink>).
 	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The self-tests at the end of the UCS installation have been updated
+		(<ulink url="&ucsbug;34133">Bug 34133</ulink>).
+	  </simpara></listitem>
 	</itemizedlist>
 </section>
 
