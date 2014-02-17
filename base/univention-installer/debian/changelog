@@ -1,3 +1,10 @@
+univention-installer (9.0.31-1) unstable; urgency=low
+
+  * scripts/89_tests.sh: the listener may restart the OpenLDAP server.
+    Re-try the join check for 60 seconds (Bug #34133)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Feb 2014 07:32:36 +0100
+
 univention-installer (9.0.30-5) unstable; urgency=low
 
   * Enforce UTF-8 encoding when setting locale (Bug #33916)

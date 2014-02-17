@@ -105,7 +105,15 @@ fi
 # test join status
 if [ ! "$auto_join" = "false" -a ! "${system_role}" = "basesystem"  -a ! "$should_be_joined" = "false" -a ! "$should_be_joined" = "no" ] ; then
 chroot $instmnt << __EOF__
-/usr/share/univention-join/check_join_status | grep -c "Joined successful" || exit 1
+i=0
+# The listener may restarts the OpenLDAP server, re-try the join check for 60 seconds
+while [ \$i -lt 60 ]; do
+	echo "Test join status (\$i/60)"
+	/usr/share/univention-join/check_join_status && break
+	i=\$((i+1))
+	sleep 1
+done
+test "\$i" = 60 && exit 1
 __EOF__
 test_retval $? "warning" "This system has not been joined yet! If no other problem occurred,\nreboot and run script /usr/share/univention-join/check_join_status\nfor further investigation."
 fi
