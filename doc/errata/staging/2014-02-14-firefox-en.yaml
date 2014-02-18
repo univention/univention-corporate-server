@@ -15,7 +15,22 @@ desc: |
  * Cross-origin information leak in error messages of web workers (CVE-2014-1487)
  * Incorrect session ticket handling in NSS (CVE-2014-1490)
  * Stricter handling of Diffie Hellman keys in NSS (CVE-2014-1491)
+ * Use-after free in event listeners, input handling and garbage collection 
+   (CVE-2013-5613, CVE-2013-5616, CVE-2013-5618) 
+ * Memory corruption in the browser engine and the Javascript engine 
+   (CVE-2013-5609, CVE-2013-5615, CVE-2013-6671)
+ * Incorrect handling of trust settings in EV certificate validation (CVE-2013-6673)
+ * Information leak in processing of JPEG images (CVE-2013-6629, CVE-2013-6630)
 cve:
+ - CVE-2013-5613
+ - CVE-2013-5616
+ - CVE-2013-5618
+ - CVE-2013-5609
+ - CVE-2013-5615
+ - CVE-2013-6671
+ - CVE-2013-6673
+ - CVE-2013-6629
+ - CVE-2013-6630
  - CVE-2014-1479
  - CVE-2014-1481
  - CVE-2014-1482
