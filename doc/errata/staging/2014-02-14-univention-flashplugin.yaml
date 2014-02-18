@@ -9,6 +9,8 @@ desc: |
   plugin, which can lead to the execution of arbitrary code.
 note: This update downloads the new release 11.2.202.336, which fixes these vulnerabilities.
 cve:
+ - CVE-2013-5331
+ - CVE-2013-5332
  - CVE-2014-0491
  - CVE-2014-0492
  - CVE-2014-0497
