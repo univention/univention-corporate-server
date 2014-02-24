@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: samba
-fix: 2:4.1.0-1.626.201402191110
+fix: 2:4.1.0-1.627.201402191214
 note: 
 version: [0]
 desc: |
@@ -20,4 +20,7 @@ desc: |
  * Domain account lockout support for Samba4 DCs has been implemented.
  * The domain services database module was affected by a segmentation fault
    when handling objects without objectClass.
-bug: [33751, 33972, 32974, 33977]
+ * The subcommand conflicts to handle conflicted objects has been added to
+   samba-tool drs.
+ * samba-tool dbcheck now also lists/handles objects without objectClass.
+bug: [33751, 33972, 32974, 33977, 33616]
