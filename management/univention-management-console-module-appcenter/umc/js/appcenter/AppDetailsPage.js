@@ -137,7 +137,7 @@ define([
 			if (this.app.useshop) {
 				buttons.push({
 					name: 'shop',
-					label: _('Shop'),
+					label: _('Buy'),
 					iconClass: tools.getIconClass('appcenter-shop', 16),
 					align: 'right',
 					callback: lang.hitch(this, 'openShop')
