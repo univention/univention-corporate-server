@@ -619,8 +619,8 @@ msgid "Section"
 msgstr "Kategorie"
 
 #: umc/js/appcenter/AppDetailsPage.js:140
-msgid "Shop"
-msgstr "Shop"
+msgid "Buy"
+msgstr "Kaufen"
 
 #: umc/js/appcenter/PackagesPage.js:78
 msgid "Show details"

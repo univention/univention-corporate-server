@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.51-2) unstable; urgency=low
+
+  * Bug #34183: Renamed the button for buying an app from "Shop" to "Buy"
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 24 Feb 2014 12:53:41 +0100
+
 univention-management-console-module-appcenter (3.0.51-1) unstable; urgency=low
 
   * Bug #34096: The join script failed when the App Center server could not be
