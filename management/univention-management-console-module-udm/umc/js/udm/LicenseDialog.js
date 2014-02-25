@@ -115,7 +115,7 @@ define([
 				return;
 			}
 
-			var isFFPU = this.licenseInfo.baseDN == 'Free for personal use edition';
+			var isFFPU = this.licenseInfo.ffpu;
 			this._widgets.ffpu.set('visible', false);
 
 			var keys, message;
@@ -145,6 +145,8 @@ define([
 
 					keys = {
 						title : _('Current license'),
+						labelLicenseType : _('License type'),
+						licenseType: this.licenseInfo.ffpu ? 'Free for personal use edition' : _('UCS License'),
 						labelBase : _('LDAP base'),
 						base: this.licenseInfo.baseDN,
 						labelUser : _('User accounts'),
@@ -170,6 +172,8 @@ define([
 
 					keys = {
 						title : _('Current license'),
+						labelLicenseType : _('License type'),
+						licenseType: this.licenseInfo.ffpu ? 'Free for personal use edition' : _('UCS License'),
 						labelBase : _('LDAP base'),
 						base: this.licenseInfo.baseDN,
 						labelUser : _('User accounts'),
@@ -191,7 +195,7 @@ define([
 						labelKeyID : _('Key ID'),
 						keyID: this.licenseInfo.keyID,
 						labelEndDate : _('Expiry date'),
-						endDate: this.licenseInfo.endDate,
+						endDate: _(this.licenseInfo.endDate),
 						labelProduct : _('Valid product types'),
 						product: product
 					};

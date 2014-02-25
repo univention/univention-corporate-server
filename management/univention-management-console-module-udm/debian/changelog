@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.97-18) unstable; urgency=low
+
+  * Bug #34117: Also the the LDAP Base DN if the license is "Free for personal
+    use"
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 25 Feb 2014 10:05:19 +0100
+
 univention-management-console-module-udm (4.0.97-17) unstable; urgency=low
 
   * Bug #33329: Refactor setting first nonemtpy value
