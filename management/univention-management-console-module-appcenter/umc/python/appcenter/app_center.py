@@ -294,6 +294,8 @@ class Application(object):
 		# copy values from config file
 		for k, v in config.items('Application'):
 			self._options[k] = _escape_value(k, v)
+		# copy original name before translating
+		self._options['unlocalised_name'] = self.get('name')
 
 		if localize:
 			# overwrite english values with localized translations
@@ -654,9 +656,11 @@ class Application(object):
 			if the_list == '*':
 				return True
 			the_list = map(str.lower, cls._reg_comma.split(the_list))
-			if app.name.lower() in the_list:
+			if app.id.lower() in the_list:
 				return True
-			for category in app.get('categories'):
+			if app.get('unlocalised_name').lower() in the_list:
+				return True
+			for category in app.get('unlocalised_categories'):
 				if category.lower() in the_list:
 					return True
 			return False
