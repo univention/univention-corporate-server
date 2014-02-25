@@ -1,0 +1,24 @@
+product: ucs
+release: "3.2"
+version: [0, 1]
+scope: ucs_3.2-0-errata3.2-1
+src: postgresql-8.4
+fix: 8.4.20-0.19.201402251134
+desc: |
+  Multiple security issues were discovered in the PostgreSQL database server:
+  * Privilege escalation using "GRANT ... WITH ADMIN OPTION" (CVE-2014-0060)
+  * Prevent privilege escalation with to PL validator functions (CVE-2014-0061)
+  * Privilege escalation in DDL (CVE-2014-0062)
+  * Buffer overflow when parsing datetime strings (CVE-2014-0063)
+  * Integer overflows in various input methods (CVE-2014-0064)
+  * Various buffer overflows (CVE-2014-0065)
+  * Denial of service in contrib/chkpass (CVE-2014-0066)
+note: This update fixes these vulnerabilities.
+cve:
+ - CVE-2014-0060
+ - CVE-2014-0061
+ - CVE-2014-0062
+ - CVE-2014-0063
+ - CVE-2014-0064
+ - CVE-2014-0065
+ - CVE-2014-0066
