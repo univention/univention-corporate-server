@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.152-22) unstable; urgency=low
+
+  * Bug #34181: The progress bar does not have a transition anymore if the
+    value is "Infinity".
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 24 Feb 2014 17:30:10 +0100
+
 univention-management-console-frontend (3.0.152-21) unstable; urgency=low
 
   * Bug #31855: Check flavor when searching for unique modules

@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define setTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -69,7 +69,7 @@ define([
 			this._progressBar.watch('value', lang.hitch(this, function(attr, oldValue, newValue) {
 				// looks buggy when setting value to Infinity and then back to 0
 				//   (like going backwards). Used in App Center; Bug #32649
-				var comesFromOrGoesToInfinity = oldValue === Infinity || newValue === Infinity;
+				var comesFromOrGoesToInfinity = oldValue == Infinity || newValue == Infinity;
 				domClass.toggle(this.domNode, 'noTransition', comesFromOrGoesToInfinity);
 			}));
 
