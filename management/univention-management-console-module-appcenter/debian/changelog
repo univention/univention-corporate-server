@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.51-4) unstable; urgency=low
+
+  * Bug #34145: Document whitelisting and blacklisting
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 26 Feb 2014 10:09:35 +0100
+
 univention-management-console-module-appcenter (3.0.51-3) unstable; urgency=low
 
   * Bug #34145: Whitelisting and blacklisting now works with the applications'

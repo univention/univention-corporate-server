@@ -1,0 +1,11 @@
+[repository/app_center/whitelist]
+Description[de]=Diese Variable konfiguriert eine Positivliste für die Apps im Univention App Center. Wenn die ID, der Name oder eine der Kategorien der App in der Liste auftauchen, wird diese auch dann angezeigt, wenn sie eigentlich durch repository/app_center/blacklist herausgefiltert worden wäre. Die einzelnen Elemente der Liste werden durch Komma getrennt.
+Description[en]=This variable configures a whitelist for the apps of the Univention App Center. If the app's ID, its name or any of its categories shows up in this list, the app will be shown even if it would have been filtered by repository/app_center/blacklist. The elements of the list are comma separated.
+Type=str
+Categories=management-umc
+
+[repository/app_center/blacklist]
+Description[de]=Diese Variable konfiguriert eine Negativliste für die Apps im Univention App Center. Wenn die ID, der Name oder eine der Kategorien der App in der Liste auftauchen, wird diese nicht im App Center angezeigt werden, es sei denn, sie findet sich auch in repository/app_center/whitelist. Die einzelnen Elemente der Liste werden durch Komma getrennt.
+Description[en]=This variable configures a blacklist for the apps of the Univention App Center. If the app's ID, its name or any of its categories shows up in this list, the app will not be shown in the App Center, unless the app can be found in repository/app_center/whitelist, too. The elements of the list are comma separated.
+Type=str
+Categories=management-umc

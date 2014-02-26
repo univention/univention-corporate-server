@@ -1019,9 +1019,6 @@ msgstr "aktualisieren"
 #~ "aus, <em>nachdem</em> Sie die Applikation auf diesem System installiert "
 #~ "haben."
 
-#~ msgid "Buy"
-#~ msgstr "Kaufen"
-
 #~ msgid "Categories"
 #~ msgstr "Kategorien"
 
