@@ -128,7 +128,7 @@ class Progress(object):
 
 	def message(self, message):
 		MODULE.process('  %s' % message)
-		self._message = message
+		self._message = str(message)
 
 	def percentage(self, percentage):
 		if percentage < 0:
@@ -137,10 +137,10 @@ class Progress(object):
 
 	def warning(self, error):
 		MODULE.warn(' %s' % error)
-		self._errors.append(error)
+		self._errors.append(str(error))
 
 	def error(self, error):
-		self._errors.append(error)
+		self._errors.append(str(error))
 		self._critical = True
 
 	def finish(self):
@@ -226,13 +226,13 @@ def check_status():
 	'''
 	return 'start'
 
-def count_domain_objects_on_server(ip_address, username, password, progress):
-	'''Connects to the ip_address with username/password credentials
+def count_domain_objects_on_server(hostname_or_ip, username, password, progress):
+	'''Connects to the hostname_or_ip with username/password credentials
 	Expects to find a Windows Domain Controller.
 	Gets str, str, str, Progress
 	Returns {
 		'ad_hostname' : hostname,
-		'ad_ip' : ip_address,
+		'ad_ip' : hostname_or_ip,
 		'ad_os' : version_of_the_ad, # "Windows 2008 R2"
 		'ad_domain' : domain_of_the_ad, # "mydomain.local"
 		'users' : number_of_users_in_domain,
@@ -252,28 +252,15 @@ def count_domain_objects_on_server(ip_address, username, password, progress):
 	except ImportError:	## GPLversion
 		ignored_users_list = []
 
-	progress.headline('Connecting to %s' % ip_address)
-	progress.message('Searching for %s' % ip_address)
-	try:
-		check_ad_server_ip(ip_address, ucr)
-	except TakeoverError as ex:
-		progress.error(ex)
-		return {}
+	progress.headline('Connecting to %s' % hostname_or_ip)
+	progress.message('Searching for %s' % hostname_or_ip)
+	check_remote_host(hostname_or_ip, ucr)
 
 	progress.message('Authenticating')
-	try:
-		ad = AD_Connection(ip_address, username, password)
-	except TakeoverError as ex:
-		progress.error(ex)
-		return {}
-
+	ad = AD_Connection(hostname_or_ip, username, password)
 
 	progress.message('Retrieving information from AD DC')
-	try:
-		domain_info = ad.count_objects(ignored_users_list)
-	except TakeoverError as ex:
-		progress.error(ex)
-		return {}
+	domain_info = ad.count_objects(ignored_users_list)
 
 	return domain_info
 
@@ -371,28 +358,25 @@ def determine_IP_version(address):
 	try:
 		ip_version = ipaddr.IPAddress(address).version
 	except ValueError as ex:
-		raise TakeoverError("Invalid AD server address", ex.args[0])
+		ip_version = None
 
 	return ip_version
 
-def ldap_uri_for_ip(address):
-	ip_version = determine_IP_version(address)
+def ldap_uri_for_host(hostname_or_ip):
+	ip_version = determine_IP_version(hostname_or_ip)
 
-	if ip_version == 4:
-		return "ldap://%s" % address
-	elif ip_ersion == 6:
-		return "ldap://[%s]" % address	## For some reason the ldb-clients do not support this currently.
-		## workaround could be: 1. 'ucr set "hosts/static/%s=tmp_ipv6_ad_server" % ip_addr' and "echo -n '[global]\nname resolve order = hosts' > /etc/samba/local.conf"
-
-def ping_ip(address):
-	ip_version = determine_IP_version(address)
-
-	ad_server_ldap_uri = ldap_uri_for_ip(address)
-
-	if ip_version == 4:
-		cmd = ["fping", address]
+	if ip_version == 6:
+		return "ldap://[%s]" % hostname_or_ip	## For some reason the ldb-clients do not support this currently.
 	else:
-		cmd = ["fping6", address]
+		return "ldap://%s" % hostname_or_ip
+
+def ping(hostname_or_ip):
+	ip_version = determine_IP_version(hostname_or_ip)
+
+	if ip_version == 6:
+		cmd = ["fping6", hostname_or_ip]
+	else:
+		cmd = ["fping", hostname_or_ip]
 
 	try:
 		p1 = subprocess.Popen(cmd, close_fds=True, stdout=DEVNULL, stderr=DEVNULL)
@@ -401,40 +385,33 @@ def ping_ip(address):
 		raise TakeoverError(" ".join(cmd) + " failed", ex.args[1])
 
 	if rc != 0:
-		raise ComputerUnreachable("Ping to %s failed" % address)
+		raise ComputerUnreachable("Network connection to %s failed" % hostname_or_ip)
 
-def dig_localhost_for_ip_address(address):
-	cmd = ["dig", "@localhost", "PTR", mapSubnet(address), "+short"]
+def check_ad_present(hostname_or_ip):
+	ldap_uri = ldap_uri_for_host(hostname_or_ip)
 	try:
-		p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-		(stdout, stderr) = p1.communicate()
-	except OSError as ex:
-		raise TakeoverError(" ".join(cmd) + " failed", ex.args[1])
-	
-	if p1.returncode == 0:
-		return stdout.rstrip()
-	else:
-		raise TakeoverError(" ".join(cmd) + " failed", stderr.rstrip())
+		remote_ldb = ldb.Ldb(url=ldap_uri)
+	except ldb.LdbError as ex:
+		raise ComputerUnreachable("Active Directory services not detected at %s" % hostname_or_ip)
 
-def check_ad_server_ip(address, ucr):
-	ping_ip(address)
+def check_remote_host(hostname_or_ip, ucr):
+	ping(hostname_or_ip)
 
-	local_fqdn = '.'.join((ucr["hostname"], ucr["domainname"]))
-	if dig_localhost_for_ip_address(address) == local_fqdn:
-		raise TakeoverError("IP %s resolves to local hostname." % (address,))
+	## To reduce authentication delays first check if an AD is present at all
+	check_ad_present(hostname_or_ip)
 
-def time_sync(ip_address, tolerance=180, critical_difference=360):
+def time_sync(hostname_or_ip, tolerance=180, critical_difference=360):
 	'''Try to sync the local time with an AD server'''
 
 	stdout = ""
 	env = os.environ.copy()
 	env["LC_ALL"] = "C"
 	try:
-		p1 = subprocess.Popen(["rdate", "-p", "-n", ip_address],
+		p1 = subprocess.Popen(["rdate", "-p", "-n", hostname_or_ip],
 			close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
 		stdout, stderr = p1.communicate()
 	except OSError as ex:
-		log("ERROR: rdate -p -n %s: %s" % (ip_address, ex.args[1]))
+		log("ERROR: rdate -p -n %s: %s" % (hostname_or_ip, ex.args[1]))
 		return False
 
 	if p1.returncode:
@@ -458,8 +435,8 @@ def time_sync(ip_address, tolerance=180, critical_difference=360):
 			log("INFO: Remote clock is behind local clock by more than %s seconds, refusing to turn back time." % (tolerance,))
 			return False
 	else:
-		log("INFO: Syncronizing time to %s" % ip_address)
-		p1 = subprocess.Popen(["rdate", "-s", "-n", ip_address],
+		log("INFO: Syncronizing time to %s" % hostname_or_ip)
+		p1 = subprocess.Popen(["rdate", "-s", "-n", hostname_or_ip],
 			close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		stdout, stderr = p1.communicate()
 		if p1.returncode:
@@ -467,44 +444,49 @@ def time_sync(ip_address, tolerance=180, critical_difference=360):
 			raise timeSyncronizationFailed("rdate -s -p failed (%d)" % (p1.returncode,))
 	return True
 
-def lookup_adds_dc(address=None, realm=None, ucr=None):
+def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
 	'''CLDAP lookup'''
 
 	domain_info = {}
 
-	if not address and not realm:
+	if not hostname_or_ip and not realm:
 		if not ucr:
 			ucr = univention.config_registry.ConfigRegistry()
 			ucr.load()
 
 		realm = ucr.get("kerberos/realm")
 
-	if not address and not realm:
+	if not hostname_or_ip and not realm:
 		return domain_info
 
 	lp = LoadParm()
 	lp.load('/dev/null')
 
-	if address:
+	ip_address = None
+	if hostname_or_ip:
+		try:
+			ipaddr.IPAddress(hostname_or_ip)
+			ip_address = hostname_or_ip
+		except ValueError as ex:
+			pass
+
 		try:
 			net = Net(creds=None, lp=lp)
-			cldap_res = net.finddc(address=address,
+			cldap_res = net.finddc(address=hostname_or_ip,
 				flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
 		except RuntimeError as ex:
-			raise ComputerUnreachable("Connection to AD Server %s failed" % (address,), ex.args[0])
+			raise ComputerUnreachable("Connection to AD Server %s failed" % (hostname_or_ip,), ex.args[0])
+
 	elif realm:
 		try:
 			net = Net(creds=None, lp=lp)
 			cldap_res = net.finddc(domain=realm,
 				flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
-			address = cldap_res.pdc_dns_name
+			hostname_or_ip = cldap_res.pdc_dns_name
 		except RuntimeError as ex:
 			raise TakeoverError("No AD Server found for realm %s." % (realm,))
 
-	try:
-		ipaddr.IPAddress(address)
-		ip_address = address
-	except ValueError as ex:
+	if not ip_address:
 		if cldap_res.pdc_dns_name:
 			try:
 				p1 = subprocess.Popen(['net', 'lookup', cldap_res.pdc_dns_name],
@@ -528,7 +510,7 @@ def lookup_adds_dc(address=None, realm=None, ucr=None):
 	return domain_info
 
 class AD_Connection():
-	def __init__(self, ip_address, username, password, lp=None):
+	def __init__(self, hostname_or_ip, username, password, lp=None):
 		if not lp:
 			lp = LoadParm()
 			lp.load('/dev/null')
@@ -541,14 +523,25 @@ class AD_Connection():
 		creds.set_username(username)
 		creds.set_password(password)
 
-		ldap_uri = ldap_uri_for_ip(ip_address)
+		ldap_uri = ldap_uri_for_host(hostname_or_ip)
 		try:
 			self.samdb = SamDB(ldap_uri, credentials=creds, session_info=system_session(lp), lp=lp)
 		except ldb.LdbError as ex:
 			raise AuthenticationFailed()
 
-		self.domain_dn = self.samdb.get_root_basedn()
+		## Sanity check: are we talking to the AD on the local system?
+		ntds_guid = self.samdb.get_ntds_GUID()
+		local_ntds_guid = None
+		try:
+			local_samdb = SamDB("ldap://127.0.0.1", credentials=creds, session_info=system_session(lp), lp=lp)
+			local_ntds_guid = local_samdb.get_ntds_GUID()
+		except ldb.LdbError as ex:
+			pass
+		if ntds_guid == local_ntds_guid:
+			raise TakeoverError("The selected Active Directory server has the same NTDS GUID as this UCS server.")
 
+
+		self.domain_dn = self.samdb.get_root_basedn()
 		self.domain_sid = None
 		msgs = self.samdb.search(base=self.domain_dn, scope=samba.ldb.SCOPE_BASE,
 								expression="(objectClass=domain)",
@@ -559,7 +552,7 @@ class AD_Connection():
 		if not self.domain_sid:
 			raise TakeoverError("Failed to determine AD domain SID.")
 
-		self.domain_info = lookup_adds_dc(ip_address)
+		self.domain_info = lookup_adds_dc(hostname_or_ip)
 		self.domain_info['ad_os'] = self.operatingSystem(self.domain_info["ad_netbios_name"])
 
 	def operatingSystem(self, netbios_name):
@@ -568,8 +561,10 @@ class AD_Connection():
 						attrs=["operatingSystem", "operatingSystemVersion", "operatingSystemServicePack"])
 		if msg:
 			obj = msg[0]
-			return obj.get("operatingSystem")[0]
-
+			if "operatingSystem" in obj:
+				return obj["operatingSystem"][0]
+			else:
+				return ""
 
 	def count_objects(self, ignored_users_list=None):
 
