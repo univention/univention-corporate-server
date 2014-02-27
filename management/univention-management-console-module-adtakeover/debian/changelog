@@ -1,0 +1,67 @@
+univention-management-console-module-adtakeover (1.0.9-2) unstable; urgency=low
+
+  * Bug #34019: install graphics
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 24 Feb 2014 18:04:13 +0100
+
+univention-management-console-module-adtakeover (1.0.9-1) unstable; urgency=low
+
+  * Bug #34019: adjust graphics and texts
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 24 Feb 2014 17:48:14 +0100
+
+univention-management-console-module-adtakeover (1.0.8-1) unstable; urgency=low
+
+  * Use 'Active Directory Takeover' instead of 'Univention AD Takeover'
+    (Bug #34019)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Feb 2014 06:30:04 +0100
+
+univention-management-console-module-adtakeover (1.0.7-1) unstable; urgency=low
+
+  * Bug #34019: added graphics
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 21 Feb 2014 20:04:01 +0100
+
+univention-management-console-module-adtakeover (1.0.6-1) unstable; urgency=low
+
+  * Bug #34019: No more errors in demo. Updated translations
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 18 Feb 2014 16:04:29 +0100
+
+univention-management-console-module-adtakeover (1.0.5-1) unstable; urgency=low
+
+  * Bug #34019: Improve error handling, delete unused files.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 17 Feb 2014 15:28:39 +0100
+
+univention-management-console-module-adtakeover (1.0.4-1) unstable; urgency=low
+
+  * Bug #34019: Still demo-like but the fake progress comes from the backend
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 14 Feb 2014 23:40:52 +0100
+
+univention-management-console-module-adtakeover (1.0.3-1) unstable; urgency=low
+
+  * Bug #34019: Added functions for lib yet to be filled with life
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 14 Feb 2014 00:45:01 +0100
+
+univention-management-console-module-adtakeover (1.0.2-1) unstable; urgency=low
+
+  * Updated UMC module text (Bug #34019)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Feb 2014 16:31:59 +0100
+
+univention-management-console-module-adtakeover (1.0.1-1) unstable; urgency=low
+
+  * Bug #34019: Mockup as full page Wizard
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 12 Feb 2014 18:41:32 +0100
+
+univention-management-console-module-adtakeover (1.0.0-1) unstable; urgency=low
+
+  * Bug #34019: UMC Module for taking over an Active Directory
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 12 Feb 2014 12:14:13 +0100
+

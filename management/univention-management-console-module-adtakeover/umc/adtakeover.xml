@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="adtakeover" icon="adtakeover" priority="9" version="1.0">
+		<name>Active Directory Takeover</name>
+		<description>Take over an Active Directory Domain</description>
+		<keywords>samba,s4</keywords>
+		<categories>
+			<category name="system"/>
+		</categories>
+		<command name="adtakeover/progress" function="poll" />
+		<command name="adtakeover/check/status" function="check_status" />
+		<command name="adtakeover/connect" function="connect" />
+		<command name="adtakeover/run/copy" function="copy_domain_data" />
+		<command name="adtakeover/sysvol_info" function="sysvol_info" />
+		<command name="adtakeover/check/sysvol" function="check_sysvol" />
+		<command name="adtakeover/run/takeover" function="take_over_domain" />
+	</module>
+</umc>
