@@ -80,9 +80,6 @@ SYSVOL_PATH = os.path.join(SAMBA_DIR, 'sysvol')
 
 logging.basicConfig(filename=LOGFILE_NAME, format='%(asctime)s %(message)s', level=logging.DEBUG)
 log = logging.getLogger()
-_console = logging.StreamHandler(sys.stdout)
-_console.setLevel(logging.INFO)
-log.addHandler(_console)
 
 DEVNULL = open(os.devnull, 'w')
 
@@ -160,41 +157,45 @@ class Progress(object):
 		}
 
 class TakeoverError(Exception):
-	def __init__(self, detail=None, error=None):
-		if error is None:
-			error = self.default_error_message
-		self.error = error
+	'''AD Takeover Error'''
+	def __init__(self, errormessage=None, detail=None):
+		if errormessage:
+			self.errormessage = errormessage
+		else:
+			self.errormessage = self.__doc__
 		self.detail = detail
+		log.error(self)
 
 	def __str__(self):
-		if self.error and self.detail:
-			return '%s (%s)' % (self.error, self.detail)
+		if self.errormessage and self.detail:
+			return '%s (%s)' % (self.errormessage, self.detail)
 		else:
-			return self.error or self.detail or ''
+			return self.errormessage or self.detail or ''
 
 class ComputerUnreachable(TakeoverError):
-	'''Wrong IP, network unreachable, etc'''
-	default_error_message = _('The computer is not reachable')
+	'''The computer is not reachable'''
 
 class AuthenticationFailed(TakeoverError):
-	'''Wrong username/password combination'''
-	default_error_message = _('Authentication failed')
+	'''Authentication failed'''
 
 class DomainManipulationFailed(TakeoverError):
 	'''Something critical went wrong during reading from / writing to the
 	AD/Samba, e.g. initial DC join failed.
 	Needs a good explanation while raising'''
-	pass
 
 class SysvolError(TakeoverError):
 	'''Something is wrong with the SYSVOL, e.g. does not exist,
 	contains empty files, has wrong file permissions, etc.
 	Needs a good explanation while raising'''
-	pass
 
 class ADServerRunning(TakeoverError):
-	'''The AD is still running although it should not'''
-	default_error_message = _('The Active Directory server seems to be running. It must be shut off')
+	'''The Active Directory server seems to be running. It must be shut off.'''
+
+class TimeSyncronizationFailed(TakeoverError):
+	'''Time synchronization failed.'''
+
+class ManualTimeSyncronizationRequired(TimeSyncronizationFailed):
+	'''Time difference critical for Kerberos but syncronization aborted.'''
 
 IP_HOSTNAME = [None, None]
 def get_ip_and_hostname_of_ad():
@@ -225,13 +226,13 @@ def check_status():
 	'''
 	return 'start'
 
-def count_domain_objects_on_server(hostname_or_ip, username, password, progress):
-	'''Connects to the hostname_or_ip with username/password credentials
+def count_domain_objects_on_server(ip_address, username, password, progress):
+	'''Connects to the ip_address with username/password credentials
 	Expects to find a Windows Domain Controller.
 	Gets str, str, str, Progress
 	Returns {
-		'ad_hostname' : hostname, # useful if an IP was given
-		'ad_ip' : hostname, # useful if a hostname was given
+		'ad_hostname' : hostname,
+		'ad_ip' : ip_address,
 		'ad_os' : version_of_the_ad, # "Windows 2008 R2"
 		'ad_domain' : domain_of_the_ad, # "mydomain.local"
 		'users' : number_of_users_in_domain,
@@ -240,32 +241,41 @@ def count_domain_objects_on_server(hostname_or_ip, username, password, progress)
 	}
 	Raises ComputerUnreachable, AuthenticationFailed
 	'''
+
 	try:
-		addr = ipaddr.IPAddress(hostname_or_ip)
-		ad_ip = hostname_or_ip
-		ad_hostname = 'win2008dc'
-	except ValueError:
-		ad_ip = '10.200.8.237'
-		addr = ipaddr.IPAddress(ad_ip)
-		ad_hostname = hostname_or_ip
-	# raise ComputerUnreachable(hostname_or_ip)
-	set_ip_and_hostname_of_ad(ad_ip, ad_hostname)
-	progress.headline('Connecting to %s' % hostname_or_ip)
-	progress.message('Searching for %s' % hostname_or_ip)
-	time.sleep(1)
+		import univention.admin.license
+		global License
+		global _license
+		License = univention.admin.license.License
+		_license = univention.admin.license._license
+		ignored_users_list = _license.sysAccountNames
+	except ImportError:	## GPLversion
+		ignored_users_list = []
+
+	progress.headline('Connecting to %s' % ip_address)
+	progress.message('Searching for %s' % ip_address)
+	try:
+		check_ad_server_ip(ip_address, ucr)
+	except TakeoverError as ex:
+		progress.error(ex)
+		return {}
+
 	progress.message('Authenticating')
-	time.sleep(1)
+	try:
+		ad = AD_Connection(ip_address, username, password)
+	except TakeoverError as ex:
+		progress.error(ex)
+		return {}
+
+
 	progress.message('Retrieving information from AD DC')
-	domain_objects_count = {}
-	domain_objects_count['ad_hostname'] = ad_hostname
-	domain_objects_count['ad_ip'] = str(addr)
-	domain_objects_count['ad_os'] = 'Windows 2008 R2'
-	domain_objects_count['ad_domain'] = ucr.get('domainname')
-	domain_objects_count['users'] = 9
-	domain_objects_count['groups'] = 3
-	domain_objects_count['computers'] = 2
-	time.sleep(1)
-	return domain_objects_count
+	try:
+		domain_info = ad.count_objects(ignored_users_list)
+	except TakeoverError as ex:
+		progress.error(ex)
+		return {}
+
+	return domain_info
 
 def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, progress):
 	'''Connects to the hostname_or_ip with username/password credentials
@@ -344,6 +354,303 @@ def take_over_domain(progress):
 	# restart samba
 	# (un)set some ucr variables
 
+#############################################################################################
+
+import subprocess
+from datetime import datetime, timedelta
+import univention.config_registry
+# from samba.netcmd.common import netcmd_get_domain_infos_via_cldap
+from samba.dcerpc import nbt
+from samba.net import Net
+from samba.param import LoadParm
+from samba.credentials import Credentials, DONT_USE_KERBEROS
+import ldb
+import os
+
+def determine_IP_version(address):
+	try:
+		ip_version = ipaddr.IPAddress(address).version
+	except ValueError as ex:
+		raise TakeoverError("Invalid AD server address", ex.args[0])
+
+	return ip_version
+
+def ldap_uri_for_ip(address):
+	ip_version = determine_IP_version(address)
+
+	if ip_version == 4:
+		return "ldap://%s" % address
+	elif ip_ersion == 6:
+		return "ldap://[%s]" % address	## For some reason the ldb-clients do not support this currently.
+		## workaround could be: 1. 'ucr set "hosts/static/%s=tmp_ipv6_ad_server" % ip_addr' and "echo -n '[global]\nname resolve order = hosts' > /etc/samba/local.conf"
+
+def ping_ip(address):
+	ip_version = determine_IP_version(address)
+
+	ad_server_ldap_uri = ldap_uri_for_ip(address)
+
+	if ip_version == 4:
+		cmd = ["fping", address]
+	else:
+		cmd = ["fping6", address]
+
+	try:
+		p1 = subprocess.Popen(cmd, close_fds=True, stdout=DEVNULL, stderr=DEVNULL)
+		rc = p1.wait()
+	except OSError as ex:
+		raise TakeoverError(" ".join(cmd) + " failed", ex.args[1])
+
+	if rc != 0:
+		raise ComputerUnreachable("Ping to %s failed" % address)
+
+def dig_localhost_for_ip_address(address):
+	cmd = ["dig", "@localhost", "PTR", mapSubnet(address), "+short"]
+	try:
+		p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		(stdout, stderr) = p1.communicate()
+	except OSError as ex:
+		raise TakeoverError(" ".join(cmd) + " failed", ex.args[1])
+	
+	if p1.returncode == 0:
+		return stdout.rstrip()
+	else:
+		raise TakeoverError(" ".join(cmd) + " failed", stderr.rstrip())
+
+def check_ad_server_ip(address, ucr):
+	ping_ip(address)
+
+	local_fqdn = '.'.join((ucr["hostname"], ucr["domainname"]))
+	if dig_localhost_for_ip_address(address) == local_fqdn:
+		raise TakeoverError("IP %s resolves to local hostname." % (address,))
+
+def time_sync(ip_address, tolerance=180, critical_difference=360):
+	'''Try to sync the local time with an AD server'''
+
+	stdout = ""
+	env = os.environ.copy()
+	env["LC_ALL"] = "C"
+	try:
+		p1 = subprocess.Popen(["rdate", "-p", "-n", ip_address],
+			close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
+		stdout, stderr = p1.communicate()
+	except OSError as ex:
+		log("ERROR: rdate -p -n %s: %s" % (ip_address, ex.args[1]))
+		return False
+
+	if p1.returncode:
+		log("ERROR: rdate failed (%d)" % (p1.returncode,))
+		return False
+
+	TIME_FORMAT = "%a %b %d %H:%M:%S %Z %Y"
+	try:
+		remote_datetime = datetime.strptime(stdout.strip(), TIME_FORMAT)
+	except ValueError as ex:
+		raise timeSyncronizationFailed("AD Server did not return proper time string: %s" % (stdout.strip(),))
+
+	local_datetime = datetime.today()
+	delta_t = local_datetime - remote_datetime
+	if abs(delta_t) < timedelta(0, tolerance):
+		log("INFO: Time difference is less than %d seconds, skipping reset of local time" % (tolerance,))
+	elif local_datetime > remote_datetime:
+		if abs(delta_t) >= timedelta(0, critical_difference):
+			raise manualTimeSyncronizationRequired("Remote clock is behind local clock by more than %s seconds, refusing to turn back time." % critical_difference)
+		else:
+			log("INFO: Remote clock is behind local clock by more than %s seconds, refusing to turn back time." % (tolerance,))
+			return False
+	else:
+		log("INFO: Syncronizing time to %s" % ip_address)
+		p1 = subprocess.Popen(["rdate", "-s", "-n", ip_address],
+			close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		stdout, stderr = p1.communicate()
+		if p1.returncode:
+			log("ERROR: rdate -s -p failed (%d)" % (p1.returncode,))
+			raise timeSyncronizationFailed("rdate -s -p failed (%d)" % (p1.returncode,))
+	return True
+
+def lookup_adds_dc(address=None, realm=None, ucr=None):
+	'''CLDAP lookup'''
+
+	domain_info = {}
+
+	if not address and not realm:
+		if not ucr:
+			ucr = univention.config_registry.ConfigRegistry()
+			ucr.load()
+
+		realm = ucr.get("kerberos/realm")
+
+	if not address and not realm:
+		return domain_info
+
+	lp = LoadParm()
+	lp.load('/dev/null')
+
+	if address:
+		try:
+			net = Net(creds=None, lp=lp)
+			cldap_res = net.finddc(address=address,
+				flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
+		except RuntimeError as ex:
+			raise ComputerUnreachable("Connection to AD Server %s failed" % (address,), ex.args[0])
+	elif realm:
+		try:
+			net = Net(creds=None, lp=lp)
+			cldap_res = net.finddc(domain=realm,
+				flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
+			address = cldap_res.pdc_dns_name
+		except RuntimeError as ex:
+			raise TakeoverError("No AD Server found for realm %s." % (realm,))
+
+	try:
+		ipaddr.IPAddress(address)
+		ip_address = address
+	except ValueError as ex:
+		if cldap_res.pdc_dns_name:
+			try:
+				p1 = subprocess.Popen(['net', 'lookup', cldap_res.pdc_dns_name],
+					close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+				stdout, stderr = p1.communicate()
+				ip_address = stdout.strip()
+			except OSError as ex:
+				log.warn("WARNING: net lookup %s failed: %s" % (cldap_res.pdc_dns_name, ex.args[1]))
+
+	domain_info = {
+		"ad_forrest": cldap_res.forest,
+		"ad_domain": cldap_res.dns_domain,
+		"ad_netbios_domain": cldap_res.domain_name,
+		"ad_hostname": cldap_res.pdc_dns_name,
+		"ad_netbios_name": cldap_res.pdc_name,
+		"ad_server_site": cldap_res.server_site,
+		"ad_client_site": cldap_res.client_site,
+		"ad_ip": ip_address,
+		}
+
+	return domain_info
+
+class AD_Connection():
+	def __init__(self, ip_address, username, password, lp=None):
+		if not lp:
+			lp = LoadParm()
+			lp.load('/dev/null')
+
+		creds = Credentials()
+		# creds.guess(lp)
+		creds.set_domain("")
+		creds.set_workstation("")
+		creds.set_kerberos_state(DONT_USE_KERBEROS)
+		creds.set_username(username)
+		creds.set_password(password)
+
+		ldap_uri = ldap_uri_for_ip(ip_address)
+		try:
+			self.samdb = SamDB(ldap_uri, credentials=creds, session_info=system_session(lp), lp=lp)
+		except ldb.LdbError as ex:
+			raise AuthenticationFailed()
+
+		self.domain_dn = self.samdb.get_root_basedn()
+
+		self.domain_sid = None
+		msgs = self.samdb.search(base=self.domain_dn, scope=samba.ldb.SCOPE_BASE,
+								expression="(objectClass=domain)",
+								attrs=["objectSid"])
+		if msgs:
+			obj = msgs[0]
+			self.domain_sid = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
+		if not self.domain_sid:
+			raise TakeoverError("Failed to determine AD domain SID.")
+
+		self.domain_info = lookup_adds_dc(ip_address)
+		self.domain_info['ad_os'] = self.operatingSystem(self.domain_info["ad_netbios_name"])
+
+	def operatingSystem(self, netbios_name):
+		msg = self.samdb.search(base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
+						expression="(sAMAccountName=%s$)" % netbios_name,
+						attrs=["operatingSystem", "operatingSystemVersion", "operatingSystemServicePack"])
+		if msg:
+			obj = msg[0]
+			return obj.get("operatingSystem")[0]
+
+
+	def count_objects(self, ignored_users_list=None):
+
+		if not ignored_users_list:
+			ignored_users_list = []
+
+		ignored_user_objects = 0
+		ad_user_objects = 0
+		ad_group_objects = 0
+		ad_computer_objects = 0
+
+		# page results
+		PAGE_SIZE = 1000
+		controls= [ 'paged_results:1:%s' % PAGE_SIZE ]
+
+		## Count user objects
+		msgs = self.samdb.search(base=self.domain_dn, scope=samba.ldb.SCOPE_SUBTREE,
+								expression="(&(objectCategory=user)(objectClass=user))",
+								attrs=["sAMAccountName", "objectSid"], controls=controls)
+		for obj in msgs:
+			sAMAccountName = obj["sAMAccountName"][0]
+
+			## identify well known names, abstracting from locale
+			sambaSID = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
+			sambaRID = sambaSID[len(self.domain_sid)+1:]
+			for (_rid, _name) in univention.lib.s4.well_known_domain_rids.items():
+				if _rid == sambaRID:
+					log.debug("Found account %s with well known RID %s (%s)" % (sAMAccountName, sambaRID, _name))
+					sAMAccountName = _name
+					break
+
+			for ignored_account in ignored_users_list:
+				if sAMAccountName.lower() == ignored_account.lower():
+					ignored_user_objects = ignored_user_objects + 1
+					break
+			else:
+				ad_user_objects = ad_user_objects + 1
+
+		## Count group objects
+		msgs = self.samdb.search(base=self.domain_dn, scope=samba.ldb.SCOPE_SUBTREE,
+								expression="(objectCategory=group)",
+								attrs=["sAMAccountName", "objectSid"], controls=controls)
+		for obj in msgs:
+			sAMAccountName = obj["sAMAccountName"][0]
+
+			## identify well known names, abstracting from locale
+			sambaSID = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
+			sambaRID = sambaSID[len(self.domain_sid)+1:]
+			for (_rid, _name) in univention.lib.s4.well_known_domain_rids.items():
+				if _rid == sambaRID:
+					log.debug("Found group %s with well known RID %s (%s)" % (sAMAccountName, sambaRID, _name))
+					sAMAccountName = _name
+					break
+
+			ad_group_objects = ad_group_objects + 1
+
+		## Count computer objects
+		msgs = self.samdb.search(base=self.domain_dn, scope=samba.ldb.SCOPE_SUBTREE,
+								expression="(objectCategory=computer)",
+								attrs=["sAMAccountName", "objectSid"], controls=controls)
+		for obj in msgs:
+			sAMAccountName = obj["sAMAccountName"][0]
+
+			## identify well known names, abstracting from locale
+			sambaSID = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
+			sambaRID = sambaSID[len(self.domain_sid)+1:]
+			for (_rid, _name) in univention.lib.s4.well_known_domain_rids.items():
+				if _rid == sambaRID:
+					log.debug("Found computer %s with well known RID %s (%s)" % (sAMAccountName, sambaRID, _name))
+					sAMAccountName = _name
+					break
+
+			else:
+				ad_computer_objects = ad_computer_objects + 1
+
+		self.domain_info['users'] = ad_user_objects
+		self.domain_info['groups'] = ad_group_objects
+		self.domain_info['computers'] = ad_computer_objects
+
+		return self.domain_info
+
 ############################# END LIB. HERE COMES THE OLD CODE: ###########################
 
 def _connect_ucs(ucr, binddn=None, bindpwd=None):
@@ -368,31 +675,6 @@ def _connect_ucs(ucr, binddn=None, bindpwd=None):
 	lo = univention.admin.uldap.access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=0, follow_referral=True)
 
 	return lo
-
-def get_ad_server_ldap_uri(ip_addr):
-	if ip_addr.version == 4:
-		return "ldap://%s" % ip_addr
-	elif ip_addr.version == 6:
-		return "ldap://[%s]" % ip_addr	## For some reason the ldb-clients do not support this currently.
-		## workaround could be: 1. 'ucr set "hosts/static/%s=tmp_ipv6_ad_server" % ip_addr' and "echo -n '[global]\nname resolve order = hosts' > /etc/samba/local.conf"
-
-def get_ip_addr(ip):
-	try:
-		ip_addr = ipaddr.IPAddress(ip)
-		if ip_addr.version == 6:
-			log.error("IPv6 is not yet supported by this script.")
-			raise ValueError(ip)
-	except ValueError:
-		msg=[]
-		msg.append("Error: Parsing AD server address failed")
-		msg.append("       Failed to setup a virtual network interface with the AD IP address.")
-		log.error("\n".join(msg))
-		sys.exit(1)
-	else:
-		return ip_addr
-
-def get_remote_samdb(ad_server_ldap_uri, creds, lp):
-	return SamDB(ad_server_ldap_uri, credentials=creds, session_info=system_session(lp), lp=lp)
 
 def operatingSystem_attribute(ucr, samdb):
 	msg = samdb.search(base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,

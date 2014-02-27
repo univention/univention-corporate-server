@@ -71,6 +71,7 @@ def background(func):
 						'text' : tb_text,
 				}
 				MODULE.process(message)
+				self.progress.error(message)
 			finally:
 				self.finished(request.id, result, status=status, message=message)
 				self.progress.finish()
