@@ -1,3 +1,9 @@
+univention-squid (7.0.3-4) unstable; urgency=low
+
+  * made made squid/redirect a bit more flexible (Bug #32429)
+
+ -- Felix Botner <botner@univention.de>  Fri, 28 Feb 2014 14:19:19 +0100
+
 univention-squid (7.0.3-3) unstable; urgency=low
 
   * do net set "cache_dir null /tmp" if squid/cache is false (Bug #33332)
