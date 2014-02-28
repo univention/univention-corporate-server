@@ -1,3 +1,9 @@
+univention-squid (7.0.3-3) unstable; urgency=low
+
+  * do net set "cache_dir null /tmp" if squid/cache is false (Bug #33332)
+
+ -- Felix Botner <botner@univention.de>  Fri, 28 Feb 2014 14:01:04 +0100
+
 univention-squid (7.0.3-2) unstable; urgency=low
 
   * removed squid/sslports (Bug #32183) 
