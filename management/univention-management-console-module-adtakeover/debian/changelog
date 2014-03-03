@@ -1,3 +1,10 @@
+univention-management-console-module-adtakeover (1.0.10-3) unstable; urgency=medium
+
+  * Add backend functions for adtakeover/run/copy and adtakeover/run/takeover
+    (Bug #34139)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 03 Mar 2014 20:48:06 +0100
+
 univention-management-console-module-adtakeover (1.0.10-2) unstable; urgency=medium
 
   * Improve robustness of adtakeover/connect (e.g. check against local system)
