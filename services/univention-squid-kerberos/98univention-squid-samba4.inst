@@ -99,6 +99,7 @@ if [ "$cn" = "$hostname" ]; then
 		secret: $password
 		msDS-KeyVersionNumber: 1
 		privateKeytab: $keytab_filename
+		saltPrincipal: $service_accountname@$kerberos_realm
 		%EOF
 	fi
 
