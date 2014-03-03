@@ -3,7 +3,7 @@
 # Univention Squid Samba4
 #  join script
 #
-# Copyright 2010-2012 Univention GmbH
+# Copyright 2010-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -67,14 +67,21 @@ keytab_path="$samba_private_dir/$keytab_filename"
 
 password=$(create_machine_password)
 
-## create service_accountname via udm, but servicePrincipalName is missing
-univention-directory-manager users/user create "$@" \
-	--position "cn=users,$ldap_base" \
-	--ignore_exists \
-	--set username="$service_accountname" \
-	--set lastname="Service" \
-	--set password="$password" \
-	--set description="$servicedescription" || die
+## check if user exists
+if udm users/user list "$@" --filter username="$service_accountname" | grep -q "^DN: uid=$service_accountname,"; then 
+	univention-directory-manager users/user modify "$@" \
+		--dn "uid=$service_accountname,cn=users,$ldap_base" \
+		--set password="$password" || die
+else
+	## create service_accountname via udm, but servicePrincipalName is missing
+	univention-directory-manager users/user create "$@" \
+		--position "cn=users,$ldap_base" \
+		--ignore_exists \
+		--set username="$service_accountname" \
+		--set lastname="Service" \
+		--set password="$password" \
+		--set description="$servicedescription" || die
+fi
 
 ## Next for keytab creation check if this host is a Samba4 DC
 cn=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(cn=$hostname))" cn | sed -n 's/^cn: \(.*\)/\1/p')
