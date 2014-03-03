@@ -2,11 +2,13 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-squid-kerberos
-fix: 3.0.2-2.13.201403031452
+fix: 3.0.2-3.14.201403031520
 note:
 version: [1]
 desc: |
   This errata update fixes several issues:
   * The join script now checks if the service principal account
     already exists.
-bug: [33779]
+  * The saltPrincipal has been added to the samba4 keytab entry
+    for the proxy service principal.
+bug: [33779, 32292]
