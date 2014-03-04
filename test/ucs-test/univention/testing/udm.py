@@ -89,6 +89,7 @@ class UCSTestUDM(object):
 
 	PATH_UDM_CLI_SERVER = '/usr/share/univention-directory-manager-tools/univention-cli-server'
 	PATH_UDM_CLI_CLIENT = '/usr/sbin/udm'
+	PATH_UDM_CLI_CLIENT_WRAPPED = '/usr/sbin/udm-test'
 	
 	COMPUTER_MODULES = ('computers/ubuntu',
 						'computers/linux',
@@ -120,7 +121,7 @@ class UCSTestUDM(object):
 		>>> UCSTestUDM._build_udm_cmdline('users/user', 'create', {'username': 'foobar'})
 		['/usr/sbin/udm-test', 'users/user', 'create', '--set', 'username=foobar']
 		"""
-		cmd = [ '/usr/sbin/udm-test', modulename, action ]
+		cmd = [ UCSTestUDM.PATH_UDM_CLI_CLIENT_WRAPPED, modulename, action ]
 		args = copy.deepcopy(kwargs)
 
 		for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate', 'policy-reference', 'policy-dereference'):
