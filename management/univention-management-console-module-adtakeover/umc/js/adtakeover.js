@@ -177,7 +177,7 @@ define([
 			}), function(data) {
 				var error = tools.parseError(data);
 				var statusMessage = tools._statusMessages[error.status];
-				if (!statusMessage || error.status == 400) {
+				if (!statusMessage || error.status == 500) {
 					// maybe a timeout (!statusMessage) in which case everything is fine
 					// or a TakeoverError in which case the progressBar handles it
 					running.resolve(false);

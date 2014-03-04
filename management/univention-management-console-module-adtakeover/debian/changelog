@@ -1,3 +1,12 @@
+univention-management-console-module-adtakeover (1.0.10-4) unstable; urgency=medium
+
+  * Add backend function for check_sysvol (Bug #34139)
+  * Block UMC server restart when adding a new network interface
+  * Fix timeout error pop
+  * Improve the progress bar updates a bit
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Mar 2014 20:36:33 +0100
+
 univention-management-console-module-adtakeover (1.0.10-3) unstable; urgency=medium
 
   * Add backend functions for adtakeover/run/copy and adtakeover/run/takeover

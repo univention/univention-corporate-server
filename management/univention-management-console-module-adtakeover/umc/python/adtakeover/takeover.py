@@ -34,15 +34,15 @@
 import samba.getopt
 import sys
 import os
+import re
 import subprocess
 import shutil
-from univention import config_registry
 import ldb
 import samba
 from samba.samdb import SamDB
 from samba.auth import system_session
 from samba.param import LoadParm
-import socket, time, struct
+import time
 import ldap
 from samba.ndr import ndr_unpack
 from samba.dcerpc import security
@@ -99,6 +99,7 @@ class Progress(object):
 		self._errors = []
 		self._critical = False
 		self._finished = False
+		# self.timer = Timer()
 
 	def reset(self):
 		self._headline = None
@@ -107,6 +108,7 @@ class Progress(object):
 		self._errors = []
 		self._critical = False
 		self._finished = False
+		# self.timer = Timer()
 
 	def set(self, headline=None, message=None, percentage=None):
 		if headline is not None:
@@ -118,17 +120,23 @@ class Progress(object):
 
 	def headline(self, headline):
 		MODULE.process('### %s ###' % headline)
+		# self.timer.timestamp('### %s ###' % headline)
 		self._headline = headline
 		self._message = None
 
 	def message(self, message):
 		MODULE.process('  %s' % message)
+		# self.timer.timestamp('  %s' % message)
 		self._message = str(message)
 
 	def percentage(self, percentage):
 		if percentage < 0:
 			percentage = 'Infinity'
 		self._percentage = percentage
+
+	def percentage_increment_scaled(self, fraction):
+		self.percentage(self._percentage + self._scale*fraction)
+		self._scale = self._scale * (1 - fraction)
 
 	def warning(self, error):
 		MODULE.warn(' %s' % error)
@@ -176,17 +184,20 @@ class AuthenticationFailed(TakeoverError):
 class DomainJoinFailed(TakeoverError):
 	default_error_message = _('Domain join failed.')
 
+class SysvolGPOMissing(TakeoverError):
+	default_error_message = _('At least one GPO is still missing in SYSVOL.')
+
 class SysvolError(TakeoverError):
 	default_error_message = _('Something is wrong with the SYSVOL.')
 
 class ADServerRunning(TakeoverError):
 	default_error_message = _('The Active Directory server seems to be running. It must be shut off.')
 
-class TimeSyncronizationFailed(TakeoverError):
+class TimeSynchronizationFailed(TakeoverError):
 	default_error_message = _('Time synchronization failed.')
 
-class ManualTimeSyncronizationRequired(TimeSyncronizationFailed):
-	default_error_message = _('Time difference critical for Kerberos but syncronization aborted.')
+class ManualTimeSynchronizationRequired(TimeSynchronizationFailed):
+	default_error_message = _('Time difference critical for Kerberos but synchronization aborted.')
 
 class LicenseInsufficient(TakeoverError):
 	default_error_message = _('Insufficient License.')
@@ -228,36 +239,49 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	Gets str, str, str, Progress
 	Raises ComputerUnreachable, AuthenticationFailed, DomainJoinFailed
 	'''
+	state = AD_Takeover_State()
+	state.check_start()
+
 	progress.headline('Connecting to %s' % hostname_or_ip)
-	progress.percentage(0)
+	progress.percentage(0.5)
 	check_remote_host(hostname_or_ip)
 
-	progress.message('Authenticating')
-	progress.percentage(5)
+	progress.headline('Authenticating')
+	progress.percentage(0.7)
 	ad = AD_Connection(hostname_or_ip, username, password)
 
-	progress.message('Synchronizing System Clock')
-	progress.percentage(10)
+	progress.headline('Synchronizing System Clock')
+	progress.percentage(1)
 	takeover = AD_Takeover(ucr, ad)
 	takeover.time_sync()
+	# progress.timer.start("join_to_domain_and_copy_domain_data")
 
 	progress.headline('Joining the domain')
+	progress.percentage(2)
+	progress._scale = 18 - progress._percentage
 	takeover.join_AD(progress)
-	progress.headline('Start Samba')
-	progress.percentage(25)
+	progress.headline('Starting Samba')
+	progress.percentage(18)
 	takeover.post_join_tasks_and_start_samba_without_drsuapi()
 	progress.headline('Rewriting SIDs in the Univention Directroy')
-	progress.percentage(40)
+	progress.percentage(22)
 	takeover.rewrite_sambaSIDs_in_OpenLDAP()
-	progress.headline('Initialize the S4 Connector listener')
-	progress.percentage(50)
+	progress.headline('Initializing the S4 Connector listener')
+	progress.percentage(23)
+	progress._scale = 70 - progress._percentage
 	takeover.resync_s4connector_listener(progress)
-	progress.headline('Start the S4 Connector')
-	progress.percentage(80)
+	progress.headline('Starting the S4 Connector')
+	progress.percentage(70)
+	progress._scale = 98 - progress._percentage
 	takeover.start_s4_connector(progress)
-	progress.headline('Rebuild IDMAP')
-	progress.percentage(90)
+	progress.headline('Rebuilding IDMAP')
+	progress.percentage(98)
 	takeover.rebuild_idmap()
+	progress.percentage(100)
+	state.set_sysvol()
+
+	# progress.timer.timestamp("finished")
+	# progress.timer.log_stats()
 
 	# progress.headline('Copying users')
 	# progress.message('Copying %s' % user)
@@ -277,70 +301,100 @@ def take_over_domain(progress):
 	Gets Progress
 	Raises AuthenticationFailed, DomainJoinFailed, ADServerRunning
 	'''
+	state = AD_Takeover_State()
+	state.check_takeover()
+
+	# progress.timer.start("take_over_domain")
 	takeover_final = AD_Takeover_Finalize(ucr)
 	progress.headline('Search for %s in network' % takeover_final.ad_server_ip)
 	progress.percentage(0)
+	progress._scale = 5
 	takeover_final.ping_AD(progress)
 
 	progress.headline('Taking over Active Directory Domaincontroller roles')
-	progress.message('Removing the previous AD server account')
+	progress.message('Adjusting settings in Samba Directory Service')
 	progress.percentage(5)
 	takeover_final.post_join_fix_samDB()
 	takeover_final.fix_sysvol_acls()
 	progress.message('Removing the previous AD server account')
-	progress.percentage(10)
+	progress.percentage(20)
 	takeover_final.remove_AD_server_account_from_samdb()
 	takeover_final.remove_AD_server_account_from_UDM()
-	progress.message('Taking over DNS, NETBIOS and IP address')
-	progress.percentage(30)
+	progress.message('Taking over DNS address')
+	progress.percentage(22)
 	takeover_final.create_DNS_alias_for_AD_hostname()
+	progress.message('Taking over NETBIOS address')
+	progress.percentage(28)
 	takeover_final.create_NETBIOS_alias_for_AD_hostname()
+	progress.message('Taking over IP address')
+	progress.percentage(35)
 	takeover_final.create_virtual_IP_alias()
+	progress.message('Registering IP in DNS')
+	progress.percentage(42)
 	takeover_final.create_reverse_DNS_records()
 	progress.message('Reconfiguring Nameserver')
-	progress.percentage(40)
+	progress.percentage(52)
 	takeover_final.reconfigure_nameserver_for_samba_backend()
 	progress.message('Claiming FSMO roles')
-	progress.percentage(50)
+	progress.percentage(53)
 	takeover_final.claim_FSMO_roles()
 	progress.message('Finalizing')
-	progress.percentage(60)
+	progress.percentage(69)
 	takeover_final.create_DNS_SPN()
 	progress.percentage(80)
 	takeover_final.configure_SNTP()
 	progress.percentage(90)
 	takeover_final.finalize()
+	progress.percentage(100)
+	# progress.timer.timestamp("finished")
+	# progress.timer.log_stats()
+	state.set_finished()
 
 ############################# (Yet) DUMMY FUNCTIONS IN LIB ################################
 
 def check_status():
 	'''Where are we in the process of AD takeover?
 	Returns one of:
-	'start' -> nothing yet happened
+	'start' -> nothing happened yet
 	'sysvol' -> we copied domain data, sysvol was not yet copied'
 	'takeover' -> sysvol was copied. we can now take over the domain
 	'finished' -> already finished
 	'''
-	return 'start'
+	state = AD_Takeover_State()
+	return state.current()
 
 def check_sysvol(progress):
 	'''Whether the AD sysvol is already copied to the local system
 	Gets Progress
 	Raises SysvolError
 	'''
+	state = AD_Takeover_State()
+	state.check_sysvol()
+
 	progress.headline('Checking group policies')
+	fix_gpo_guids()
 	progress.message('Checking existence')
-	time.sleep(.5)
-	progress.message('Checking integrity')
-	time.sleep(2)
+	check_gpo_presence()
+
+	# progress.message('Checking integrity')
+	# time.sleep(2)
 	# raise SysvolError('The group policy share seems to have the wrong file permissions')
 
-IP_HOSTNAME = [None, None]
-def get_ip_and_hostname_of_ad():
-	return IP_HOSTNAME
+	state.set_takeover()
 
-def set_ip_and_hostname_of_ad(ip, hostname):
-	IP_HOSTNAME[:] = [ip, hostname]
+AD_IP_HOSTNAME = [None, None]
+def get_ip_and_hostname_of_ad():
+	ucr.load()
+	ad_server_ip = ucr.get("univention/ad/takeover/ad/server/ip")
+	if ad_server_ip:
+		if "hosts/static/%s" % ad_server_ip in ucr:
+			ad_server_fqdn, ad_server_name = ucr["hosts/static/%s" % ad_server_ip].split()
+			return [ad_server_ip, ad_server_name]
+	else:
+		return AD_IP_HOSTNAME
+
+#def set_ip_and_hostname_of_ad(ip, hostname):
+#	AD_IP_HOSTNAME[:] = [ip, hostname]
 
 def get_ad_hostname():
 	'''The hostname of the AD to be specified in robocopy'''
@@ -355,6 +409,77 @@ def sysvol_info():
 	}
 
 #############################################################################################
+
+class AD_Takeover_State():
+	def __init__(self):
+		self.statefile = os.path.join(SAMBA_PRIVATE_DIR,".adtakeover")
+		self.stateorder = ("start", "sysvol", "takeover", "finished")
+
+	def _set_persistent_state(self, state):
+		with open(self.statefile, "w") as f:
+			f.write(state)
+
+	def _save_state(self, new_state):
+		try:
+			i = self.stateorder.index(new_state)
+		except ValueError:
+			raise TakeoverError("Internal module error: Refusing to set invalid state %s." % new_state)
+
+		current_state = self.current()
+		if current_state == new_state:
+			return
+
+		if new_state == "start":
+			self.check_start()
+			if current_state == "finished":
+				log.info("Starting another takover.")
+				timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+				statefile_backup = "%s.previous-ad-takeover-%s" % (self.statefile, timestamp)
+				os.rename(self.statefile, statefile_backup)
+				self._set_persistent_state(new_state)
+		elif current_state ==  self.stateorder[i-1]:
+			self._set_persistent_state(new_state)
+		else:
+			raise TakeoverError("Internal module error: Cannot go from state '%s' to state '%s'." % (current_state, new_state))
+
+	def check_start(self):
+		current_state = self.current()
+		if current_state not in ("start", "finished"):
+			raise TakeoverError("Internal module error: Takeover running, aborting attempt to restart.")
+
+	def check_sysvol(self):
+		current_state = self.current()
+		if current_state != "sysvol":
+			raise TakeoverError("Internal module error: Expected to be in state 'sysvol', but found '%s'." % (current_state,))
+
+	def check_takeover(self):
+		current_state = self.current()
+		if current_state != "takeover":
+			raise TakeoverError("Internal module error: Expected to be in state 'takeover', but found '%s'." % (current_state,))
+
+	def set_start(self):
+		self._save_state("start")
+
+	def set_sysvol(self):
+		self._save_state("sysvol")
+
+	def set_takeover(self):
+		self._save_state("takeover")
+
+	def set_finished(self):
+		self._save_state("takeover")
+
+	def current(self):
+		if os.path.exists(self.statefile):
+			with open(self.statefile) as f:
+				state = f.read()
+				if state in ("sysvol", "takeover"):
+					return state
+				else:
+					raise TakeoverError("Invalid state in file %s" % self.statefile)
+		else:
+			return "start"
+
 
 class UCS_License_detection():
 
@@ -628,7 +753,7 @@ class AD_Takeover():
 		try:
 			remote_datetime = datetime.strptime(stdout.strip(), TIME_FORMAT)
 		except ValueError as ex:
-			raise TimeSyncronizationFailed(_("AD Server did not return proper time string: %s.") % (stdout.strip(),))
+			raise TimeSynchronizationFailed(_("AD Server did not return proper time string: %s.") % (stdout.strip(),))
 
 		local_datetime = datetime.today()
 		delta_t = local_datetime - remote_datetime
@@ -636,18 +761,18 @@ class AD_Takeover():
 			log.info("INFO: Time difference is less than %d seconds, skipping reset of local time" % (tolerance,))
 		elif local_datetime > remote_datetime:
 			if abs(delta_t) >= timedelta(0, critical_difference):
-				raise ManualTimeSyncronizationRequired(_("Remote clock is behind local clock by more than %s seconds, refusing to turn back time.") % (critical_difference,))
+				raise ManualTimeSynchronizationRequired(_("Remote clock is behind local clock by more than %s seconds, refusing to turn back time.") % (critical_difference,))
 			else:
 				log.info("INFO: Remote clock is behind local clock by more than %s seconds, refusing to turn back time." % (tolerance,))
 				return False
 		else:
-			log.info("INFO: Syncronizing time to %s" % self.ad_server_ip)
+			log.info("INFO: Synchronizing time to %s" % self.ad_server_ip)
 			p1 = subprocess.Popen(["rdate", "-s", "-n", self.ad_server_ip],
 				close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			stdout, stderr = p1.communicate()
 			if p1.returncode:
 				log.error("ERROR: rdate -s -p failed (%d)" % (p1.returncode,))
-				raise TimeSyncronizationFailed(_("rdate -s -p failed (%d).") % (p1.returncode,))
+				raise TimeSynchronizationFailed(_("rdate -s -p failed (%d).") % (p1.returncode,))
 		return True
 
 
@@ -659,7 +784,7 @@ class AD_Takeover():
 
 		run_and_output_to_log(["/etc/init.d/univention-s4-connector", "stop"], log.debug)
 		run_and_output_to_log(["/etc/init.d/samba4", "stop"], log.debug)
-		progress.percentage(progress._percentage + 0.2)
+		progress.percentage_increment_scaled(1.0/32)
 
 		## Move current Samba directory out of the way
 		timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -687,11 +812,11 @@ class AD_Takeover():
 
 		## Stop the NSCD
 		run_and_output_to_log(["/etc/init.d/nscd", "stop"], log.debug)
-		progress.percentage(progress._percentage + 0.2)
+		progress.percentage_increment_scaled(1.0/32)
 
 		## Restart bind9 to use the OpenLDAP backend, just to be sure
 		run_and_output_to_log(["/etc/init.d/bind9", "restart"], log.debug)
-		progress.percentage(progress._percentage + 0.2)
+		progress.percentage_increment_scaled(1.0/16)
 
 		## Get machine credentials
 		try:
@@ -701,15 +826,36 @@ class AD_Takeover():
 
 		## Join into the domain
 		log.info("Starting Samba domain join.")
-		t = t_0 = time.time()
+		t = time.time()
 		p = subprocess.Popen(["samba-tool", "domain", "join", self.ucr["domainname"], "DC", "-U%s%%%s" % (self.AD.username, self.AD.password), "--realm=%s" % self.ucr["kerberos/realm"], "--machinepass=%s" % machine_secret, "--server=%s" % self.ad_server_fqdn, "--site=%s" % self.AD.domain_info["ad_server_site"]], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		RE_SCHEMA = re.compile("^Schema-DN\[(?P<partition_dn>[^\]]+)\] objects\[([^\]]+)\] linked_values\[([^\]]+)\]$")
+		RE_PARTITION = re.compile("^Partition\[(?P<partition_dn>[^\]]+)\] objects\[([^\]]+)\] linked_values\[([^\]]+)\]$")
+		domain_dn = self.AD.samdb.domain_dn()
+		part_started = ''
 		while p.poll() == None:
 			log_line = p.stdout.readline().rstrip()
 			if log_line:
 				log.debug(log_line)
+				if not part_started:
+					m = RE_SCHEMA.match(log_line)
+					if m:
+						part_started = "Schema partition"
+						progress.message("Copying %s" % part_started)
+						progress.percentage_increment_scaled(1.0/16)
+				else:
+					m = RE_PARTITION.match(log_line)
+					if m:
+						g = m.groups()
+						part = g[0][:-len(domain_dn)-1]
+						if not part:
+							part = domain_dn
+						if part != part_started:
+							progress.message("Copying %s" % part)
+							progress.percentage_increment_scaled(1.0/16)
+							part_started = part
 			t1 = time.time()
 			if	t1 - t >=1:
-				progress.percentage(progress._percentage + 0.5)
+				progress.percentage_increment_scaled(1.0/32)
 				t = t1
 		if p.returncode == 0:
 			log.info("Samba domain join successful.")
@@ -1034,10 +1180,10 @@ class AD_Takeover():
 		## Reset S4 Connector and handler state
 		run_and_output_to_log(["/etc/init.d/univention-directory-listener", "stop"], log.debug)
 
-		time.sleep(30)
 		for i in xrange(30):
 			time.sleep(1)
-			progress.percentage(progress._percentage + 0.33)
+			# progress.percentage_increment_scaled(1.0/100)
+			progress.percentage_increment_scaled(1.0/32)
 
 		if os.path.exists("/var/lib/univention-directory-listener/handlers/s4-connector"):
 			os.unlink("/var/lib/univention-directory-listener/handlers/s4-connector")
@@ -1163,7 +1309,7 @@ class AD_Takeover_Finalize():
 		p1 = subprocess.Popen(cmd, stdout=DEVNULL, stderr=DEVNULL)
 		rc= p1.poll()
 		while rc is None:
-			progress.percentage(progress._percentage + 0.33)
+			progress.percentage_increment_scaled(1.0/16)
 			time.sleep(1)
 			rc= p1.poll()
 
@@ -1322,6 +1468,7 @@ class AD_Takeover_Finalize():
 				guess_network = self.ucr["interfaces/%s/network" % self.primary_interface]
 				guess_netmask = self.ucr["interfaces/%s/netmask" % self.primary_interface]
 				guess_broadcast = self.ucr["interfaces/%s/broadcast" % self.primary_interface]
+				run_and_output_to_log(["/usr/share/univention-updater/disable-apache2-umc"], log.debug)
 				run_and_output_to_log(["univention-config-registry", "set",
 									"interfaces/%s/address=%s" % (new_interface_ucr, self.ad_server_ip),
 									"interfaces/%s/network=%s" % (new_interface_ucr, guess_network),
@@ -1330,6 +1477,7 @@ class AD_Takeover_Finalize():
 				samba_interfaces = self.ucr.get("samba/interfaces")
 				if self.ucr.is_true("samba/interfaces/bindonly") and samba_interfaces:
 					run_and_output_to_log(["univention-config-registry", "set", "samba/interfaces=%s %s" % (samba_interfaces, new_interface)], log.debug)
+				run_and_output_to_log(["/usr/share/univention-updater/enable-apache2-umc", "--no-restart"], log.debug)
 			else:
 				msg=[]
 				msg.append("Warning: Could not determine primary IPv4 network interface.")
@@ -1347,6 +1495,7 @@ class AD_Takeover_Finalize():
 			
 			if new_interface:
 				guess_prefix = self.ucr["interfaces/%s/ipv6/default/prefix" % self.primary_interface]
+				run_and_output_to_log(["/usr/share/univention-updater/disable-apache2-umc"], log.debug)
 				run_and_output_to_log(["univention-config-registry", "set",
 									"interfaces/%s/ipv6/default/address=%s" % (new_interface_ucr, self.ad_server_ip),
 									"interfaces/%s/ipv6/default/prefix=%s" % (new_interface_ucr, guess_broadcast),
@@ -1354,6 +1503,7 @@ class AD_Takeover_Finalize():
 				samba_interfaces = self.ucr.get("samba/interfaces")
 				if self.ucr.is_true("samba/interfaces/bindonly") and samba_interfaces:
 					run_and_output_to_log(["univention-config-registry", "set", "samba/interfaces=%s %s" % (samba_interfaces, new_interface)], log.debug)
+				run_and_output_to_log(["/usr/share/univention-updater/enable-apache2-umc", "--no-restart"], log.debug)
 			else:
 				msg=[]
 				msg.append("Warning: Could not determine primary IPv6 network interface.")
@@ -1502,7 +1652,97 @@ class AD_Takeover_Finalize():
 		run_and_output_to_log(["univention-config-registry", "unset", "univention/ad/takeover/ad/server/ip"], log.debug)
 		run_and_output_to_log(["samba-tool", "dbcheck", "--fix", "--yes"], log.debug)
 
+def fix_gpo_guids():
+	'''fix for AD case issue "6AC1786C-016F-11D2-945F-00C04fB984F9'''
+
+	lp = LoadParm()
+	try:
+		lp.load('/etc/samba/smb.conf')
+	except:
+		lp.load('/dev/null')
+
+	samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(lp), lp=lp)
+	msgs = samdb.search(base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
+						expression="(objectClass=groupPolicyContainer)",
+						attrs=["cn", "gPCFileSysPath"])
+	for obj in msgs:
+		name = obj["cn"][0]
+		if name.upper() == name:
+			continue
+
+		change = ldb.Message()
+		change.dn = ldb.Dn(samdb, dn=str(obj.dn))
+		if "gPCFileSysPath" in obj:
+			new_gPCFileSysPath = obj["gPCFileSysPath"][0].replace(name, name.upper())
+			change["gPCFileSysPath"] = ldb.MessageElement(new_gPCFileSysPath, ldb.FLAG_MOD_REPLACE, "gPCFileSysPath")
+			samdb.modify(change)
+
+		new_dn = str(obj.dn).replace(name, name.upper())
+		samdb.rename(obj.dn, new_dn)
+
+def check_gpo_presence():
+	lp = LoadParm()
+	try:
+		lp.load('/etc/samba/smb.conf')
+	except:
+		lp.load('/dev/null')
+
+	samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(lp), lp=lp)
+	msgs = samdb.search(base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
+						expression="(objectClass=groupPolicyContainer)",
+						attrs=["cn", "gPCFileSysPath"])
+
+	sysvol_dir = "/var/lib/samba/sysvol"
+	default_policies_dir = os.path.join(sysvol_dir, samdb.domain_dns_name(), "Policies")
+	for obj in msgs:
+		name = obj["cn"][0]
+		if "gPCFileSysPath" in obj:
+			try:
+				[server, share, subdir] = parse_unc(obj["gPCFileSysPath"][0])
+				gpo_path = os.path.join(sysvol_dir, subdir.replace('\\', '/'))
+			except ValueError as ex:
+				log.error(ex.args[0])
+				gpo_path = os.path.join(default_policies_dir, name)
+		else:
+			gpo_path = os.path.join(default_policies_dir, name)
+		if not os.path.isdir(gpo_path):
+			log.error("GPO missing in SYSVOL: %s" % name)
+			raise SysvolGPOMissing()
+	return True
+
 ############################# HELPER FUNCTIONS: ###########################
+
+class Timer():
+	def __init__(self):
+		self.timetable = []
+
+	def start(self, label):
+		self.timetable = [(label, time.time()),]
+
+	def timestamp(self, label):
+		self.timetable.append((label, time.time()))
+
+	def log_stats(self):
+		(label0, t0) = self.timetable[0]
+		(label1, t1) = self.timetable[-1]
+		total = t1 - t0
+		ti = t0
+		percent = [(label0, 0)]
+		fraction = [(label0, 0)]
+		log.debug("============ timing progress: ===================")
+		log.debug("%s: %s" % (label0, 0))
+		for (label, t) in self.timetable:
+			delta = t - ti
+			if not delta:
+				continue
+			percent.append((label, 100 * (t - t0) / total))
+			log.debug("%s: %s%%" % percent[-1])
+			fraction.append((label, 100 * delta / total))
+			ti = t
+
+		log.debug("============ timing fractions: ===================")
+		for (label, f) in fraction:
+			log.debug("%s: %s%%" % (label, f))
 
 def determine_IP_version(address):
 	try:
@@ -1647,7 +1887,7 @@ def get_stable_last_id(progress = None, max_time=20):
 		if t - t_0 > max_time:
 			return None
 		if progress and delta_t >= 1:
-			progress.percentage(progress._percentage+0.33)
+			progress.percentage_increment_scaled(1.0/32)
 	return last_id
 
 def wait_for_listener_replication(progress = None, max_time=None):
@@ -1677,7 +1917,7 @@ def wait_for_listener_replication(progress = None, max_time=None):
 		delta_t_last_feedback = t_1 - t_last_feedback
 		if progress and delta_t_last_feedback >= 1:
 			t_last_feedback = t_last_feedback + delta_t_last_feedback
-			progress.percentage(progress._percentage+0.33)
+			progress.percentage_increment_scaled(1.0/32)
 
 	return True
 
@@ -1727,9 +1967,9 @@ def wait_for_s4_connector_replication(ucr, lp, progress = None, max_time=None):
 				conn.close()
 				return False
 		delta_t_last_feedback = t_1 - t_last_feedback
-		if progress and delta_t_last_feedback >= 10:
+		if progress and delta_t_last_feedback >= 1:
 			t_last_feedback = t_last_feedback + delta_t_last_feedback
-			progress.percentage(progress._percentage+0.33)
+			progress.percentage_increment_scaled(1.0/32)
 
 	conn.close()
 	return True
@@ -1952,10 +2192,15 @@ def takeover_DC_Behavior_Version(ucr, remote_samdb, samdb, ad_server_name, siten
 			samdb.modify(delta)
 
 def takeover_hasInstantiatedNCs(ucr, samdb, ad_server_name, sitename):
-	msg = samdb.search(base="CN=NTDS Settings,CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (ad_server_name, sitename, samdb.domain_dn()),
-	                   scope=samba.ldb.SCOPE_BASE,
-	                   attrs=["msDS-hasMasterNCs", "msDS-HasInstantiatedNCs"])
 	partitions=[]
+	try:
+		msg = samdb.search(base="CN=NTDS Settings,CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (ad_server_name, sitename, samdb.domain_dn()),
+						scope=samba.ldb.SCOPE_BASE,
+						attrs=["msDS-hasMasterNCs", "msDS-HasInstantiatedNCs"])
+	except ldb.LdbError as ex:
+		log.debug(ex.args[1])
+		return partitions
+
 	if msg:
 		obj = msg[0]
 		delta = ldb.Message()
@@ -2037,6 +2282,18 @@ def sync_position_s4_to_ucs(ucr, udm_type, ucs_object_dn, s4_object_dn):
 
 	if new_position.lower() != old_position.lower():
 		run_and_output_to_log(["/usr/sbin/univention-directory-manager", udm_type, "move", "--dn", ucs_object_dn, "--position", new_position], log.debug)
+
+def parse_unc(unc):	## fixed function from samba/netcmd/gpo.py
+	'''Parse UNC string into a hostname, a service, and a filepath'''
+	if not (unc.startswith('\\\\') or unc.startswith('//')):
+		raise ValueError("UNC doesn't start with \\\\ or //")
+	tmp = unc[2:].split('/', 2)
+	if len(tmp) == 3:
+		return tmp
+	tmp = unc[2:].split('\\', 2)
+	if len(tmp) == 3:
+		return tmp
+	raise ValueError("Invalid UNC string: %s" % unc)
 
 ############################# END LIB. HERE COMES THE OLD CODE: ###########################
 
