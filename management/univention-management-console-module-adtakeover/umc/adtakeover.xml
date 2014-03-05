@@ -9,6 +9,7 @@
 		</categories>
 		<command name="adtakeover/progress" function="poll" />
 		<command name="adtakeover/check/status" function="check_status" />
+		<command name="adtakeover/status/done" function="set_status_done" />
 		<command name="adtakeover/connect" function="connect" />
 		<command name="adtakeover/run/copy" function="copy_domain_data" />
 		<command name="adtakeover/sysvol_info" function="sysvol_info" />

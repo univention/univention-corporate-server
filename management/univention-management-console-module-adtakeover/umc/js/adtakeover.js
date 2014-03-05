@@ -49,7 +49,7 @@ define([
 	// prepare CSS rules for module
 	var modulePath = require.toUrl('umc/modules/adtakeover');
 	styles.insertCssRule('.umc-adtakeover-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;')
-	array.forEach(['start', 'copy', 'sysvol', 'takeover', 'finished'], function(ipage) {
+	array.forEach(['restart', 'start', 'copy', 'sysvol', 'takeover', 'finished'], function(ipage) {
 		var conf = {
 			name: ipage,
 			path: modulePath
@@ -66,6 +66,15 @@ define([
 
 		constructor: function() {
 			this.pages = [{
+				'class': 'umc-adtakeover-page-restart umc-adtakeover-page',
+				name: 'restart',
+				headerText: _('Previous takeover detected'),
+				widgets: [{
+					type: Text,
+					name: 'text',
+					content: _('<p>A previous Active Directory takeover was detected.</p><p>In order to start another takeover process, click "Next".</p>')
+				}]
+			}, {
 				'class': 'umc-adtakeover-page-start umc-adtakeover-page',
 				name: 'start',
 				headerText: _('Windows domain authentication'),
@@ -249,6 +258,9 @@ define([
 				if (form) {
 					values = form.get('value');
 				}
+				if (pageName == 'restart') {
+					return 'start';
+				}
 				if (pageName == 'start') {
 					command = 'adtakeover/connect';
 				}
@@ -311,7 +323,9 @@ define([
 			});
 			this.addChild(this.wizard);
 			this.wizard.on('Finished', lang.hitch(this, function() {
-				topic.publish('/umc/tabs/close', this);
+				tools.umcpCommand('adtakeover/status/done', {}, false).then(lang.hitch(this, function(data) {
+					topic.publish('/umc/tabs/close', this);
+				}));
 			}));
 			this.wizard.on('Cancel', lang.hitch(this, function() {
 				topic.publish('/umc/tabs/close', this);

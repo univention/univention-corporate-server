@@ -240,7 +240,7 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	Raises ComputerUnreachable, AuthenticationFailed, DomainJoinFailed
 	'''
 	state = AD_Takeover_State()
-	state.check_start()
+	state.set_start()
 
 	progress.headline(_('Connecting to %s') % hostname_or_ip)
 	progress.percentage(0.5)
@@ -380,12 +380,19 @@ def check_sysvol(progress):
 
 	state.set_takeover()
 
+def set_status_done():
+	'''Set status to "done", indicating the module has been run once successfully
+	   and may be started again.
+	'''
+	state = AD_Takeover_State()
+	return state.set_done()
+
 #############################################################################################
 
 class AD_Takeover_State():
 	def __init__(self):
 		self.statefile = os.path.join(SAMBA_PRIVATE_DIR,".adtakeover")
-		self.stateorder = ("start", "sysvol", "takeover", "finished")
+		self.stateorder = ("start", "sysvol", "takeover", "finished", "done")
 
 	def _set_persistent_state(self, state):
 		with open(self.statefile, "w") as f:
@@ -403,7 +410,7 @@ class AD_Takeover_State():
 
 		if new_state == "start":
 			self.check_start()
-			if current_state == "finished":
+			if current_state == "done":
 				log.info("Starting another takover.")
 				timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
 				statefile_backup = "%s.previous-ad-takeover-%s" % (self.statefile, timestamp)
@@ -414,11 +421,6 @@ class AD_Takeover_State():
 		else:
 			raise TakeoverError(_("Internal module error: Cannot go from state '%s' to state '%s'.") % (current_state, new_state))
 
-	def check_start(self):
-		current_state = self.current()
-		if current_state not in ("start", "finished"):
-			raise TakeoverError(_("Internal module error: Takeover running, aborting attempt to restart."))
-
 	def check_sysvol(self):
 		current_state = self.current()
 		if current_state != "sysvol":
@@ -428,6 +430,11 @@ class AD_Takeover_State():
 		current_state = self.current()
 		if current_state != "takeover":
 			raise TakeoverError(_("Internal module error: Expected to be in state 'takeover', but found '%s'.") % (current_state,))
+
+	def check_start(self):
+		current_state = self.current()
+		if current_state not in ("done", "start"):
+			raise TakeoverError(_("Internal module error: Takeover running, aborting attempt to restart."))
 
 	def set_start(self):
 		self._save_state("start")
@@ -441,11 +448,14 @@ class AD_Takeover_State():
 	def set_finished(self):
 		self._save_state("finished")
 
+	def set_done(self):
+		self._save_state("done")
+
 	def current(self):
 		if os.path.exists(self.statefile):
 			with open(self.statefile) as f:
 				state = f.read().strip()
-				if state in ("start", "sysvol", "takeover", "finished"):
+				if state in self.stateorder:
 					return state
 				else:
 					raise TakeoverError(_("Invalid state in file %s") % self.statefile)

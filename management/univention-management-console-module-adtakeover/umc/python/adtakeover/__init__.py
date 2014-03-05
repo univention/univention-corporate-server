@@ -92,6 +92,10 @@ class Instance(umcm.Base):
 	def check_status(self):
 		return takeover.check_status()
 
+	@simple_response
+	def set_status_done(self):
+		takeover.set_status_done()
+
 	@background
 	def connect(self, request):
 		username, password, ip = [request.options[var] for var in ['username', 'password', 'ip']]
