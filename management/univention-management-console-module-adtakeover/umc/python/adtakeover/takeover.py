@@ -221,13 +221,13 @@ def count_domain_objects_on_server(hostname_or_ip, username, password, progress)
 
 	ucs_license = UCS_License_detection(ucr)
 
-	progress.headline('Connecting to %s' % hostname_or_ip)
+	progress.headline(_('Connecting to %s' % hostname_or_ip))
 	check_remote_host(hostname_or_ip)
 
-	progress.message('Authenticating')
+	progress.message(_('Authenticating'))
 	ad = AD_Connection(hostname_or_ip, username, password)
 
-	progress.message('Retrieving information from AD DC')
+	progress.message(_('Retrieving information from AD DC'))
 	domain_info = ad.count_objects(ucs_license.ignored_users_list)
 	ucs_license.check_license(domain_info)
 
@@ -242,39 +242,39 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	state = AD_Takeover_State()
 	state.check_start()
 
-	progress.headline('Connecting to %s' % hostname_or_ip)
+	progress.headline(_('Connecting to %s' % hostname_or_ip))
 	progress.percentage(0.5)
 	check_remote_host(hostname_or_ip)
 
-	progress.headline('Authenticating')
+	progress.headline(_('Authenticating'))
 	progress.percentage(0.7)
 	ad = AD_Connection(hostname_or_ip, username, password)
 
-	progress.headline('Synchronizing System Clock')
+	progress.headline(_('Synchronizing System Clock'))
 	progress.percentage(1)
 	takeover = AD_Takeover(ucr, ad)
 	takeover.time_sync()
 	# progress.timer.start("join_to_domain_and_copy_domain_data")
 
-	progress.headline('Joining the domain')
+	progress.headline(_('Joining the domain'))
 	progress.percentage(2)
 	progress._scale = 18 - progress._percentage
 	takeover.join_AD(progress)
-	progress.headline('Starting Samba')
+	progress.headline(_('Starting Samba'))
 	progress.percentage(18)
 	takeover.post_join_tasks_and_start_samba_without_drsuapi()
-	progress.headline('Rewriting SIDs in the Univention Directroy')
+	progress.headline(_('Rewriting SIDs in the UCS directory service'))
 	progress.percentage(22)
 	takeover.rewrite_sambaSIDs_in_OpenLDAP()
-	progress.headline('Initializing the S4 Connector listener')
+	progress.headline(_('Initializing the S4 Connector listener'))
 	progress.percentage(23)
 	progress._scale = 70 - progress._percentage
 	takeover.resync_s4connector_listener(progress)
-	progress.headline('Starting the S4 Connector')
+	progress.headline(_('Starting the S4 Connector'))
 	progress.percentage(70)
 	progress._scale = 98 - progress._percentage
 	takeover.start_s4_connector(progress)
-	progress.headline('Rebuilding IDMAP')
+	progress.headline(_('Rebuilding IDMAP'))
 	progress.percentage(98)
 	takeover.rebuild_idmap()
 	progress.percentage(100)
@@ -283,14 +283,14 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	# progress.timer.timestamp("finished")
 	# progress.timer.log_stats()
 
-	# progress.headline('Copying users')
-	# progress.message('Copying %s' % user)
+	# progress.headline(_('Copying users')
+	# progress.message(_('Copying %s' % user)
 	# progress.percentage(0 + (30.0 * (i + 1) / len(users)))
-	# progress.message('Copying %s' % group)
+	# progress.message(_('Copying %s' % group)
 	# progress.percentage(30 + (30.0 * (i + 1) / len(groups)))
-	# progress.message('Copying %s' % computer)
+	# progress.message(_('Copying %s' % computer)
 	# progress.percentage(60 + (30.0 * (i + 1) / len(computers)))
-	# progress.headline('Sync with S4-Connector')
+	# progress.headline(_('Sync with S4-Connector')
 	# for i in range(90, 100, 2):
 	# 	progress.percentage(i + 2)
 	# 	time.sleep(.7)
@@ -306,39 +306,39 @@ def take_over_domain(progress):
 
 	# progress.timer.start("take_over_domain")
 	takeover_final = AD_Takeover_Finalize(ucr)
-	progress.headline('Search for %s in network' % takeover_final.ad_server_ip)
+	progress.headline(_('Search for %s in network' % takeover_final.ad_server_ip))
 	progress.percentage(0)
 	progress._scale = 5
 	takeover_final.ping_AD(progress)
 
-	progress.headline('Taking over Active Directory Domaincontroller roles')
-	progress.message('Adjusting settings in Samba Directory Service')
+	progress.headline(_('Taking over Active Directory domaincontroller roles'))
+	progress.message(_('Adjusting settings in Samba directory service'))
 	progress.percentage(5)
 	takeover_final.post_join_fix_samDB()
 	takeover_final.fix_sysvol_acls()
-	progress.message('Removing the previous AD server account')
+	progress.message(_('Removing the previous AD server account'))
 	progress.percentage(20)
 	takeover_final.remove_AD_server_account_from_samdb()
 	takeover_final.remove_AD_server_account_from_UDM()
-	progress.message('Taking over DNS address')
+	progress.message(_('Taking over DNS address'))
 	progress.percentage(22)
 	takeover_final.create_DNS_alias_for_AD_hostname()
-	progress.message('Taking over NETBIOS address')
+	progress.message(_('Taking over NETBIOS address'))
 	progress.percentage(28)
 	takeover_final.create_NETBIOS_alias_for_AD_hostname()
-	progress.message('Taking over IP address')
+	progress.message(_('Taking over IP address'))
 	progress.percentage(35)
 	takeover_final.create_virtual_IP_alias()
-	progress.message('Registering IP in DNS')
+	progress.message(_('Registering IP in DNS'))
 	progress.percentage(42)
 	takeover_final.create_reverse_DNS_records()
-	progress.message('Reconfiguring Nameserver')
+	progress.message(_('Reconfiguring nameserver'))
 	progress.percentage(52)
 	takeover_final.reconfigure_nameserver_for_samba_backend()
-	progress.message('Claiming FSMO roles')
+	progress.message(_('Claiming FSMO roles'))
 	progress.percentage(53)
 	takeover_final.claim_FSMO_roles()
-	progress.message('Finalizing')
+	progress.message(_('Finalizing'))
 	progress.percentage(69)
 	takeover_final.create_DNS_SPN()
 	progress.percentage(80)
@@ -371,14 +371,14 @@ def check_sysvol(progress):
 	state = AD_Takeover_State()
 	state.check_sysvol()
 
-	progress.headline('Checking group policies')
+	progress.headline(_('Checking group policies'))
 	fix_gpo_guids()
-	progress.message('Checking existence')
+	progress.message(_('Checking GPOs in SYSVOL'))
 	check_gpo_presence()
 
-	# progress.message('Checking integrity')
+	# progress.message(_('Checking integrity'))
 	# time.sleep(2)
-	# raise SysvolError('The group policy share seems to have the wrong file permissions')
+	# raise SysvolError(_('The group policy share seems to have the wrong file permissions'))
 
 	state.set_takeover()
 
@@ -423,7 +423,7 @@ class AD_Takeover_State():
 		try:
 			i = self.stateorder.index(new_state)
 		except ValueError:
-			raise TakeoverError("Internal module error: Refusing to set invalid state %s." % new_state)
+			raise TakeoverError(_("Internal module error: Refusing to set invalid state '%s'.") % new_state)
 
 		current_state = self.current()
 		if current_state == new_state:
@@ -440,22 +440,22 @@ class AD_Takeover_State():
 		elif current_state ==  self.stateorder[i-1]:
 			self._set_persistent_state(new_state)
 		else:
-			raise TakeoverError("Internal module error: Cannot go from state '%s' to state '%s'." % (current_state, new_state))
+			raise TakeoverError(_("Internal module error: Cannot go from state '%s' to state '%s'.") % (current_state, new_state))
 
 	def check_start(self):
 		current_state = self.current()
 		if current_state not in ("start", "finished"):
-			raise TakeoverError("Internal module error: Takeover running, aborting attempt to restart.")
+			raise TakeoverError(_("Internal module error: Takeover running, aborting attempt to restart."))
 
 	def check_sysvol(self):
 		current_state = self.current()
 		if current_state != "sysvol":
-			raise TakeoverError("Internal module error: Expected to be in state 'sysvol', but found '%s'." % (current_state,))
+			raise TakeoverError(_("Internal module error: Expected to be in state 'sysvol', but found '%s'.") % (current_state,))
 
 	def check_takeover(self):
 		current_state = self.current()
 		if current_state != "takeover":
-			raise TakeoverError("Internal module error: Expected to be in state 'takeover', but found '%s'." % (current_state,))
+			raise TakeoverError(_("Internal module error: Expected to be in state 'takeover', but found '%s'.") % (current_state,))
 
 	def set_start(self):
 		self._save_state("start")
@@ -472,11 +472,11 @@ class AD_Takeover_State():
 	def current(self):
 		if os.path.exists(self.statefile):
 			with open(self.statefile) as f:
-				state = f.read()
+				state = f.read().strip()
 				if state in ("sysvol", "takeover"):
 					return state
 				else:
-					raise TakeoverError("Invalid state in file %s" % self.statefile)
+					raise TakeoverError(_("Invalid state in file %s") % self.statefile)
 		else:
 			return "start"
 
@@ -1772,7 +1772,7 @@ def ping(hostname_or_ip):
 		p1 = subprocess.Popen(cmd, close_fds=True, stdout=DEVNULL, stderr=DEVNULL)
 		rc = p1.wait()
 	except OSError as ex:
-		raise TakeoverError(" ".join(cmd) + " failed", ex.args[1])
+		raise TakeoverError(" ".join(cmd) + _(" failed"), ex.args[1])
 
 	if rc != 0:
 		raise ComputerUnreachable(_("Network connection to %s failed.") % hostname_or_ip)
@@ -2286,14 +2286,14 @@ def sync_position_s4_to_ucs(ucr, udm_type, ucs_object_dn, s4_object_dn):
 def parse_unc(unc):	## fixed function from samba/netcmd/gpo.py
 	'''Parse UNC string into a hostname, a service, and a filepath'''
 	if not (unc.startswith('\\\\') or unc.startswith('//')):
-		raise ValueError("UNC doesn't start with \\\\ or //")
+		raise ValueError(_("UNC doesn't start with \\\\ or //"))
 	tmp = unc[2:].split('/', 2)
 	if len(tmp) == 3:
 		return tmp
 	tmp = unc[2:].split('\\', 2)
 	if len(tmp) == 3:
 		return tmp
-	raise ValueError("Invalid UNC string: %s" % unc)
+	raise ValueError(_("Invalid UNC string: %s") % unc)
 
 ############################# END LIB. HERE COMES THE OLD CODE: ###########################
 

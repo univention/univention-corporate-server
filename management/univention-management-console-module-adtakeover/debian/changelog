@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (1.0.10-7) unstable; urgency=medium
+
+  * Translation of additional messages (Bug #34139)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 05 Mar 2014 13:52:16 +0100
+
 univention-management-console-module-adtakeover (1.0.10-6) unstable; urgency=medium
 
   * Fixed syntax in german translation file (Bug #34139)
