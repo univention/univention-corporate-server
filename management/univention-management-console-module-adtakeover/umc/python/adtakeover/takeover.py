@@ -221,7 +221,7 @@ def count_domain_objects_on_server(hostname_or_ip, username, password, progress)
 
 	ucs_license = UCS_License_detection(ucr)
 
-	progress.headline(_('Connecting to %s' % hostname_or_ip))
+	progress.headline(_('Connecting to %s') % hostname_or_ip)
 	check_remote_host(hostname_or_ip)
 
 	progress.message(_('Authenticating'))
@@ -242,7 +242,7 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	state = AD_Takeover_State()
 	state.check_start()
 
-	progress.headline(_('Connecting to %s' % hostname_or_ip))
+	progress.headline(_('Connecting to %s') % hostname_or_ip)
 	progress.percentage(0.5)
 	check_remote_host(hostname_or_ip)
 
@@ -284,11 +284,11 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	# progress.timer.log_stats()
 
 	# progress.headline(_('Copying users')
-	# progress.message(_('Copying %s' % user)
+	# progress.message(_('Copying %s') % user)
 	# progress.percentage(0 + (30.0 * (i + 1) / len(users)))
-	# progress.message(_('Copying %s' % group)
+	# progress.message(_('Copying %s') % group)
 	# progress.percentage(30 + (30.0 * (i + 1) / len(groups)))
-	# progress.message(_('Copying %s' % computer)
+	# progress.message(_('Copying %s') % computer)
 	# progress.percentage(60 + (30.0 * (i + 1) / len(computers)))
 	# progress.headline(_('Sync with S4-Connector')
 	# for i in range(90, 100, 2):
@@ -306,7 +306,7 @@ def take_over_domain(progress):
 
 	# progress.timer.start("take_over_domain")
 	takeover_final = AD_Takeover_Finalize(ucr)
-	progress.headline(_('Search for %s in network' % takeover_final.ad_server_ip))
+	progress.headline(_('Search for %s in network') % takeover_final.ad_server_ip)
 	progress.percentage(0)
 	progress._scale = 5
 	takeover_final.ping_AD(progress)

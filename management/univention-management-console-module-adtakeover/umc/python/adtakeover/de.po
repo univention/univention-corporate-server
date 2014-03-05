@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-05 13:37+0100\n"
+"POT-Creation-Date: 2014-03-05 14:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,7 +66,7 @@ msgstr "Die Lizenz reicht nicht aus."
 #: takeover.py:224 takeover.py:245
 #, python-format
 msgid "Connecting to %s"
-msgstr ""
+msgstr "Verbindung zu %s"
 
 #: takeover.py:227 takeover.py:249
 msgid "Authenticating"
@@ -165,7 +165,9 @@ msgstr "Interner Modulfehler: Setzen des ungültigen Status '%s' abgelehnt."
 #: takeover.py:443
 #, python-format
 msgid "Internal module error: Cannot go from state '%s' to state '%s'."
-msgstr "Interner Modulfehler: Übergang von Status '%s' zu Status '%s' ist nicht möglich."
+msgstr ""
+"Interner Modulfehler: Übergang von Status '%s' zu Status '%s' ist nicht "
+"möglich."
 
 #: takeover.py:448
 msgid "Internal module error: Takeover running, aborting attempt to restart."
@@ -257,7 +259,7 @@ msgstr ""
 
 #: takeover.py:1775
 msgid " failed"
-msgstr ""
+msgstr " schlug fehl"
 
 #: takeover.py:1778
 #, python-format
