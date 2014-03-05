@@ -41,7 +41,8 @@ if __name__ == '__main__':
 							   package = package_name,
 							   ucsversionstart = version_start,
 							   ucsversionend = version_end,
-							   active = 'FALSE')
+							   active = 'FALSE',
+							   position = 'cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']))
 
 		wait_for_replication()
 		udm.stop_cli_server()

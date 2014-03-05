@@ -1,3 +1,10 @@
+ucs-test (4.0.161-2) unstable; urgency=low
+
+  * do not create objects directly below ldap base in tests in order to be
+    ucs@school slave compatible (Bug #33825)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 05 Mar 2014 15:45:42 +0100
+
 ucs-test (4.0.162-1) unstable; urgency=low
 
   * Bug #34173: added constant for UDM CLI wrapper

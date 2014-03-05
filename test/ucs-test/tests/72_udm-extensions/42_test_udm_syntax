@@ -40,7 +40,8 @@ if __name__ == '__main__':
 							   package = package_name,
 							   ucsversionstart = version_start,
 							   ucsversionend = version_end,
-							   active = 'FALSE')
+							   active = 'FALSE',
+							   position = 'cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']))
 
 		extattr_dn = udm.create_object('settings/extended_attribute',
 									   position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),

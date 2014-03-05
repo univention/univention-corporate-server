@@ -7,6 +7,7 @@
 ##   - univention-directory-manager-tools
 
 import univention.testing.udm as udm_test
+from univention.config_registry import ConfigRegistry
 from univention.testing.utils import verify_ldap_object
 from univention.testing.strings import random_name, random_version, random_ucs_version
 from univention.testing.udm_extensions import *
@@ -14,6 +15,9 @@ import bz2
 import base64
 
 if __name__ == '__main__':
+	ucr = ConfigRegistry()
+	ucr.load()
+
 	with udm_test.UCSTestUDM() as udm:
 		for extension_type in ('hook', 'syntax', 'module'):
 			print '========================= TESTING EXTENSION %s =============================' % extension_type
@@ -37,7 +41,8 @@ if __name__ == '__main__':
 									   package = package_name,
 									   ucsversionstart = version_start,
 									   ucsversionend = version_end,
-									   active = active)
+									   active = active,
+									   position = 'cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']))
 
 
 				verify_ldap_object(dn, {
