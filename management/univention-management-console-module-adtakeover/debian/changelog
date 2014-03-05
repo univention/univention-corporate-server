@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (1.0.10-10) UNRELEASED; urgency=medium
+
+  * fix finished status (Bug #34139)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 05 Mar 2014 15:57:20 +0100
+
 univention-management-console-module-adtakeover (1.0.10-9) unstable; urgency=medium
 
   * Additional translation fixes (Bug #34139)

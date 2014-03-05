@@ -350,8 +350,6 @@ def take_over_domain(progress):
 	# progress.timer.log_stats()
 	state.set_finished()
 
-############################# (Yet) DUMMY FUNCTIONS IN LIB ################################
-
 def check_status():
 	'''Where are we in the process of AD takeover?
 	Returns one of:
@@ -381,32 +379,6 @@ def check_sysvol(progress):
 	# raise SysvolError(_('The group policy share seems to have the wrong file permissions'))
 
 	state.set_takeover()
-
-AD_IP_HOSTNAME = [None, None]
-def get_ip_and_hostname_of_ad():
-	ucr.load()
-	ad_server_ip = ucr.get("univention/ad/takeover/ad/server/ip")
-	if ad_server_ip:
-		if "hosts/static/%s" % ad_server_ip in ucr:
-			ad_server_fqdn, ad_server_name = ucr["hosts/static/%s" % ad_server_ip].split()
-			return [ad_server_ip, ad_server_name]
-	else:
-		return AD_IP_HOSTNAME
-
-#def set_ip_and_hostname_of_ad(ip, hostname):
-#	AD_IP_HOSTNAME[:] = [ip, hostname]
-
-def get_ad_hostname():
-	'''The hostname of the AD to be specified in robocopy'''
-	return get_ip_and_hostname_of_ad()[1]
-
-def sysvol_info():
-	'''The info needed for the "Copy SYSVOL"-page, i.e.
-	"ad_hostname" and "ucs_hostname"'''
-	return {
-		'ucs_hostname' : ucr.get('hostname'),
-		'ad_hostname' : get_ad_hostname(),
-	}
 
 #############################################################################################
 
@@ -467,19 +439,45 @@ class AD_Takeover_State():
 		self._save_state("takeover")
 
 	def set_finished(self):
-		self._save_state("takeover")
+		self._save_state("finished")
 
 	def current(self):
 		if os.path.exists(self.statefile):
 			with open(self.statefile) as f:
 				state = f.read().strip()
-				if state in ("sysvol", "takeover"):
+				if state in ("start", "sysvol", "takeover", "finished"):
 					return state
 				else:
 					raise TakeoverError(_("Invalid state in file %s") % self.statefile)
 		else:
 			return "start"
 
+
+AD_IP_HOSTNAME = [None, None]
+def get_ip_and_hostname_of_ad():
+	ucr.load()
+	ad_server_ip = ucr.get("univention/ad/takeover/ad/server/ip")
+	if ad_server_ip:
+		if "hosts/static/%s" % ad_server_ip in ucr:
+			ad_server_fqdn, ad_server_name = ucr["hosts/static/%s" % ad_server_ip].split()
+			return [ad_server_ip, ad_server_name]
+	else:
+		return AD_IP_HOSTNAME
+
+#def set_ip_and_hostname_of_ad(ip, hostname):
+#	AD_IP_HOSTNAME[:] = [ip, hostname]
+
+def get_ad_hostname():
+	'''The hostname of the AD to be specified in robocopy'''
+	return get_ip_and_hostname_of_ad()[1]
+
+def sysvol_info():
+	'''The info needed for the "Copy SYSVOL"-page, i.e.
+	"ad_hostname" and "ucs_hostname"'''
+	return {
+		'ucs_hostname' : ucr.get('hostname'),
+		'ad_hostname' : get_ad_hostname(),
+	}
 
 class UCS_License_detection():
 
