@@ -41,7 +41,7 @@ msgstr "Mindestens eine GPO fehlt noch im SYSVOL."
 
 #: takeover.py:191
 msgid "Something is wrong with the SYSVOL."
-msgstr ""
+msgstr "Etwas stimmt nicht mit dem SYSVOL."
 
 #: takeover.py:194
 msgid "The Active Directory server seems to be running. It must be shut off."
@@ -142,6 +142,5 @@ msgid "The automatic search for an Active Directory server for realm %s did not 
 msgstr "Die automatische Suche eines Active Directory Servers für den Kerberos Realm %s lieferte keine Ergebnisse."
 
 #: takeover.py:1857
-msgid "Cannot determine AD site."
 msgid "Faild to detect the Active Directory site of the server."
 msgstr "Die Erkennung des Active Directory Standorts (site) des Servers schlug fehl."
