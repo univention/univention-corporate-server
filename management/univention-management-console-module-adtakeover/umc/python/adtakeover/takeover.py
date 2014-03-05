@@ -548,7 +548,7 @@ class UCS_License_detection():
 							binddn = binddn,
 							bindpw = bindpw)
 		except uexceptions.authFail:
-			raise LicenseInsufficient(_("License check with machine credentials failed."))
+			raise LicenseInsufficient(_("Internal Error: License check failed."))
 
 		try:
 			self._license.init_select(lo, 'admin')
@@ -772,7 +772,7 @@ class AD_Takeover():
 			stdout, stderr = p1.communicate()
 			if p1.returncode:
 				log.error("ERROR: rdate -s -p failed (%d)" % (p1.returncode,))
-				raise TimeSynchronizationFailed(_("rdate -s -p failed (%d).") % (p1.returncode,))
+				raise TimeSynchronizationFailed(_("Internal Error: rdate -s -p failed (%d).") % (p1.returncode,))
 		return True
 
 
@@ -861,7 +861,7 @@ class AD_Takeover():
 			log.info("Samba domain join successful.")
 		else:
 			self.cleanup_failed_join()
-			raise DomainJoinFailed(_("Samba domain join failed. See %s for details.") % LOGFILE_NAME)
+			raise DomainJoinFailed(_("The domain join failed. See %s for details.") % LOGFILE_NAME)
 
 
 	def cleanup_failed_join(self):
@@ -924,7 +924,7 @@ class AD_Takeover():
 			obj = msgs[0]
 			self.ad_domainsid = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
 		if not self.ad_domainsid:
-			raise TakeoverError(_("Error: Could not determine new domain SID."))
+			raise TakeoverError(_("Failed to determine new domain SID."))
 
 		self.old_domainsid = None
 		self.lo = _connect_ucs(self.ucr)
@@ -1266,7 +1266,7 @@ class AD_Takeover_Finalize():
 		self.ad_server_ip = ucr.get("univention/ad/takeover/ad/server/ip")
 		if not self.ad_server_ip:
 			log.error("Error: AD server IP not found in UCR. This indicates that phase I was not completed successfully yet.")
-			raise TakeoverError(_("AD join was not completed successfully yet."))
+			raise TakeoverError(_("The Active Directory domain join was not completed successfully yet."))
 
 		if not "hosts/static/%s" % self.ad_server_ip in self.ucr:
 			msg=[]
@@ -1274,7 +1274,7 @@ class AD_Takeover_Finalize():
 			msg.append("Error: given IP %s was not mapped to a hostname in phase I.")
 			msg.append("       Please complete phase I of the takeover before initiating the FSMO takeover.")
 			log.error("\n".join(msg))
-			raise TakeoverError(_("AD join was not completed successfully yet."))
+			raise TakeoverError(_("The Active Directory domain join was not completed successfully yet."))
 
 		self.ad_server_fqdn, self.ad_server_name = self.ucr["hosts/static/%s" % self.ad_server_ip].split()
 
@@ -1293,7 +1293,7 @@ class AD_Takeover_Finalize():
 			msg.append("       Don't know how to continue, giving up at this point.")
 			msg.append("       Maybe the steps needed for takeover have been finished already?")
 			log.error("\n".join(msg))
-			raise TakeoverError(_("AD Takeover finished already."))
+			raise TakeoverError(_("Active Directory takeover finished already."))
 
 		self.local_fqdn = '.'.join((self.ucr["hostname"], self.ucr["domainname"]))
 
@@ -1821,7 +1821,7 @@ def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
 			cldap_res = net.finddc(address=hostname_or_ip,
 				flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
 		except RuntimeError as ex:
-			raise ComputerUnreachable(_("Connection to AD Server %s failed.") % (hostname_or_ip,), ex.args[0])
+			raise ComputerUnreachable(_("Connection to Active Directory server %s failed.") % (hostname_or_ip,), ex.args[0])
 
 	elif realm:
 		try:
@@ -1830,7 +1830,7 @@ def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
 				flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
 			hostname_or_ip = cldap_res.pdc_dns_name
 		except RuntimeError as ex:
-			raise TakeoverError(_("No AD Server found for realm %s.") % (realm,))
+			raise TakeoverError(_("The automatic search for an Active Directory server for realm %s did not yield any results.") % (realm,))
 
 	if not ip_address:
 		if cldap_res.pdc_dns_name:
@@ -1854,7 +1854,7 @@ def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
 		}
 
 	if not domain_info["ad_server_site"]:
-		raise TakeoverError(_("Cannot determine AD site."))
+		raise TakeoverError(_("Faild to detect the Active Directory site of the server."))
 
 	return domain_info
 

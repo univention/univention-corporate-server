@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
-"Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-02-24 16:54+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-03-05 10:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,11 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/adtakeover/takeover.py:181
-msgid "Authentication failed"
-msgstr "Authentifizierung fehlgeschlagen"
-
-#: umc/python/adtakeover/__init__.py:69
+#: __init__.py:69
 #, python-format
 msgid ""
 "Execution of command '%(command)s' has failed:\n"
@@ -27,12 +23,125 @@ msgstr ""
 "\n"
 "%(text)s"
 
-#: umc/python/adtakeover/takeover.py:197
-msgid "The Active Directory server seems to be running. It must be shut off"
+#: takeover.py:179
+msgid "The computer is not reachable."
+msgstr "Der Rechner ist nicht erreichbar."
+
+#: takeover.py:182
+msgid "Authentication failed."
+msgstr "Authentifizierung fehlgeschlagen."
+
+#: takeover.py:185
+msgid "Domain join failed."
+msgstr "Der Domänenbeitritt schlug fehl."
+
+#: takeover.py:188
+msgid "At least one GPO is still missing in SYSVOL."
+msgstr "Mindestens eine GPO fehlt noch im SYSVOL."
+
+#: takeover.py:191
+msgid "Something is wrong with the SYSVOL."
+msgstr ""
+
+#: takeover.py:194
+msgid "The Active Directory server seems to be running. It must be shut off."
 msgstr ""
 "Es scheint, als ob der Active Directory Server noch liefe. Er muss "
-"ausgeschaltet werden"
+"ausgeschaltet werden."
 
-#: umc/python/adtakeover/takeover.py:177
-msgid "The computer is not reachable"
-msgstr "Der Rechner ist nicht erreichbar"
+#: takeover.py:197
+msgid "Time synchronization failed."
+msgstr "Die Zeitsynchronisierung schlug fehl."
+
+#: takeover.py:200
+msgid "Time difference critical for Kerberos but synchronization aborted."
+msgstr "Die Zeitdifferenz ist zu groß für Kerberos aber die Synchronisierung schlug fehl."
+
+#: takeover.py:203
+msgid "Insufficient License."
+msgstr "Die Lizenz reicht nicht aus."
+
+#: takeover.py:551
+msgid "Internal Error: License check failed."
+msgstr "Interner Fehler ver der Prüfung der Lizenz."
+
+#: takeover.py:613
+msgid ""
+"The selected Active Directory server has the same NTDS GUID as this UCS "
+"server."
+msgstr "Der angegebene Active Directory Server hat die gleiche NTDS GUID "
+"wie dieser UCS Server."
+
+#: takeover.py:625
+msgid "Failed to determine AD domain SID."
+msgstr "Die SID der AD-Domäne konnte nicht festgestellt werden."
+
+#: takeover.py:756
+#, python-format
+msgid "AD Server did not return proper time string: %s."
+msgstr "Der Active Directory Server lieferte eine unerwartete Zeitangabe zurück: %s."
+
+#: takeover.py:764
+#, python-format
+msgid ""
+"Remote clock is behind local clock by more than %s seconds, refusing to turn "
+"back time."
+msgstr "Die Uhr des Active Directory Servers liegt hinter der lokalen Zeit um "
+"mehr als %s Sekunden zurück. Die lokale Zeit kann nicht zurückgestellt werden."
+
+#: takeover.py:775
+#, python-format
+msgid "Internal Error: rdate -s -p failed (%d)."
+msgstr "Internal Error: rdate -s -p schlug fehl (%d)."
+
+#: takeover.py:825
+#, python-format
+msgid "Could not read local machine password: %s"
+msgstr "Interner Fehler beim Lesen des Maschinenpassworts: %s"
+
+#: takeover.py:864
+#, python-format
+msgid "The domain join failed. See %s for details."
+msgstr "Der Domänenbeitritt schlug fehl, die Logdatei %s enthält genauere Details."
+
+#: takeover.py:927
+msgid "Failed to determine new domain SID."
+msgstr "Die neue Domänen-SID konnte nicht festgestellt werden."
+
+#: takeover.py:1269 takeover.py:1277
+msgid "The Active Directory domain join was not completed successfully yet."
+msgstr "Der Beitritt zur Active Directory Domäne wurde noch nicht erfolgreich abgeschlossen."
+
+#: takeover.py:1296
+msgid "Active Directory takeover finished already."
+msgstr "Active Directory Takeover ist schon abgeschlossen."
+
+#: takeover.py:1321
+#, python-format
+msgid "The Server IP %s is still online, please shut down the machine."
+msgstr "Die Server IP %s ist noch online, die Maschine sollte ausgeschaltet werden."
+
+#: takeover.py:1778
+#, python-format
+msgid "Network connection to %s failed."
+msgstr "Netzwerkverbindung zu %s schlug fehl."
+
+#: takeover.py:1785
+#, python-format
+msgid "Active Directory services not detected at %s."
+msgstr "Active Directory Dienste sind nicht erreichbar über %s."
+
+#: takeover.py:1824
+#, python-format
+msgid "Connection to Active Directory server %s failed."
+msgstr "Die Verbindung zum Active Directory Server %s schlug fehl."
+
+#: takeover.py:1833
+#, python-format
+msgid "The automatic search for an Active Directory server for realm %s did not yield any results."
+msgstr "Die automatische Suche eines Active Directory Servers für den Kerberos Realm %s lieferte keine Ergebnisse."
+
+#: takeover.py:1857
+msgid "Cannot determine AD site."
+msgid "Faild to detect the Active Directory site of the server."
+msgstr "Die Erkennung des Active Directory Standorts (site) des Servers schlug fehl."
