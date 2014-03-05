@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-errata3.1-1
+src: gnutls26
+fix: 2.8.6-1.23.201403050739
+desc: |
+ Some invalid SSL certificates were treated as valid by GNU TLS.
+note: This update fixes these vulnerabilities.
+cve:
+ - CVE-2014-0092
