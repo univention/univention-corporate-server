@@ -99,7 +99,6 @@ class Progress(object):
 		self._errors = []
 		self._critical = False
 		self._finished = False
-		# self.timer = Timer()
 
 	def reset(self):
 		self._headline = None
@@ -108,7 +107,6 @@ class Progress(object):
 		self._errors = []
 		self._critical = False
 		self._finished = False
-		# self.timer = Timer()
 
 	def set(self, headline=None, message=None, percentage=None):
 		if headline is not None:
@@ -120,13 +118,11 @@ class Progress(object):
 
 	def headline(self, headline):
 		MODULE.process('### %s ###' % headline)
-		# self.timer.timestamp('### %s ###' % headline)
 		self._headline = headline
 		self._message = None
 
 	def message(self, message):
 		MODULE.process('  %s' % message)
-		# self.timer.timestamp('  %s' % message)
 		self._message = str(message)
 
 	def percentage(self, percentage):
@@ -254,7 +250,6 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	progress.percentage(1)
 	takeover = AD_Takeover(ucr, ad)
 	takeover.time_sync()
-	# progress.timer.start("join_to_domain_and_copy_domain_data")
 
 	progress.headline(_('Joining the domain'))
 	progress.percentage(2)
@@ -280,21 +275,6 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	progress.percentage(100)
 	state.set_sysvol()
 
-	# progress.timer.timestamp("finished")
-	# progress.timer.log_stats()
-
-	# progress.headline(_('Copying users')
-	# progress.message(_('Copying %s') % user)
-	# progress.percentage(0 + (30.0 * (i + 1) / len(users)))
-	# progress.message(_('Copying %s') % group)
-	# progress.percentage(30 + (30.0 * (i + 1) / len(groups)))
-	# progress.message(_('Copying %s') % computer)
-	# progress.percentage(60 + (30.0 * (i + 1) / len(computers)))
-	# progress.headline(_('Sync with S4-Connector')
-	# for i in range(90, 100, 2):
-	# 	progress.percentage(i + 2)
-	# 	time.sleep(.7)
-
 def take_over_domain(progress):
 	'''Actually takes control of the domain, deletes old AD server, takes
 	its IP, etc.
@@ -304,7 +284,6 @@ def take_over_domain(progress):
 	state = AD_Takeover_State()
 	state.check_takeover()
 
-	# progress.timer.start("take_over_domain")
 	takeover_final = AD_Takeover_Finalize(ucr)
 	progress.headline(_('Search for %s in network') % takeover_final.ad_server_ip)
 	progress.percentage(0)
@@ -346,8 +325,6 @@ def take_over_domain(progress):
 	progress.percentage(90)
 	takeover_final.finalize()
 	progress.percentage(100)
-	# progress.timer.timestamp("finished")
-	# progress.timer.log_stats()
 	state.set_finished()
 
 def check_status():
