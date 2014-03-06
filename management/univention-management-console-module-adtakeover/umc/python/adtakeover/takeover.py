@@ -848,7 +848,7 @@ class AD_Takeover():
 					m = RE_SCHEMA.match(log_line)
 					if m:
 						part_started = "Schema partition"
-						progress.message("Copying %s" % part_started)
+						progress.message(_("Copying %s") % part_started)
 						progress.percentage_increment_scaled(1.0/16)
 				else:
 					m = RE_PARTITION.match(log_line)
@@ -858,7 +858,7 @@ class AD_Takeover():
 						if not part:
 							part = domain_dn
 						if part != part_started:
-							progress.message("Copying %s" % part)
+							progress.message(_("Copying %s") % part)
 							progress.percentage_increment_scaled(1.0/16)
 							part_started = part
 			t1 = time.time()

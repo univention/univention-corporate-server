@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (1.0.10-13) unstable; urgency=medium
+
+  * Additional translation fix (Bug #34139)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 06 Mar 2014 10:09:47 +0100
+
 univention-management-console-module-adtakeover (1.0.10-12) unstable; urgency=medium
 
   * Indicate when a AD Takeover has been completed before

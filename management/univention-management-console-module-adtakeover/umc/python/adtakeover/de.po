@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-05 14:24+0100\n"
+"POT-Creation-Date: 2014-03-06 10:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -149,52 +149,52 @@ msgstr "Übernahme der FSMO Rollen"
 msgid "Finalizing"
 msgstr "Abschluss"
 
-#: takeover.py:374
+#: takeover.py:372
 msgid "Checking group policies"
 msgstr "Prüfung der Gruppenrichtlinien"
 
-#: takeover.py:376
+#: takeover.py:374
 msgid "Checking GPOs in SYSVOL"
 msgstr "Prüfung der GPO-Daten im SYSVOL"
 
-#: takeover.py:426
+#: takeover.py:405
 #, python-format
 msgid "Internal module error: Refusing to set invalid state '%s'."
 msgstr "Interner Modulfehler: Setzen des ungültigen Status '%s' abgelehnt."
 
-#: takeover.py:443
+#: takeover.py:422
 #, python-format
 msgid "Internal module error: Cannot go from state '%s' to state '%s'."
 msgstr ""
 "Interner Modulfehler: Übergang von Status '%s' zu Status '%s' ist nicht "
 "möglich."
 
-#: takeover.py:448
-msgid "Internal module error: Takeover running, aborting attempt to restart."
-msgstr "Interner Modulfehler: Takeover läuft, Neustartversuch abgebrochen."
-
-#: takeover.py:453
+#: takeover.py:427
 #, python-format
 msgid ""
 "Internal module error: Expected to be in state 'sysvol', but found '%s'."
 msgstr "Interner Modulfehler: Zustand 'sysvol' erwartet, aber '%s' gefunden."
 
-#: takeover.py:458
+#: takeover.py:432
 #, python-format
 msgid ""
 "Internal module error: Expected to be in state 'takeover', but found '%s'."
 msgstr "Interner Modulfehler: Zustand 'takeover' erwartet, aber '%s' gefunden."
 
-#: takeover.py:479
+#: takeover.py:437
+msgid "Internal module error: Takeover running, aborting attempt to restart."
+msgstr "Interner Modulfehler: Takeover läuft, Neustartversuch abgebrochen."
+
+#: takeover.py:461
 #, python-format
 msgid "Invalid state in file %s"
 msgstr "Ungültige Zustands-Datei %s"
 
-#: takeover.py:551
+#: takeover.py:559
 msgid "Internal Error: License check failed."
 msgstr "Interner Fehler ver der Prüfung der Lizenz."
 
-#: takeover.py:613
+#: takeover.py:621
 msgid ""
 "The selected Active Directory server has the same NTDS GUID as this UCS "
 "server."
@@ -202,17 +202,17 @@ msgstr ""
 "Der angegebene Active Directory Server hat die gleiche NTDS GUID wie dieser "
 "UCS Server."
 
-#: takeover.py:625
+#: takeover.py:633
 msgid "Failed to determine AD domain SID."
 msgstr "Die SID der AD-Domäne konnte nicht festgestellt werden."
 
-#: takeover.py:756
+#: takeover.py:764
 #, python-format
 msgid "AD Server did not return proper time string: %s."
 msgstr ""
 "Der Active Directory Server lieferte eine unerwartete Zeitangabe zurück: %s."
 
-#: takeover.py:764
+#: takeover.py:772
 #, python-format
 msgid ""
 "Remote clock is behind local clock by more than %s seconds, refusing to turn "
@@ -221,62 +221,67 @@ msgstr ""
 "Die Uhr des Active Directory Servers liegt hinter der lokalen Zeit um mehr "
 "als %s Sekunden zurück. Die lokale Zeit kann nicht zurückgestellt werden."
 
-#: takeover.py:775
+#: takeover.py:783
 #, python-format
 msgid "Internal Error: rdate -s -p failed (%d)."
 msgstr "Internal Error: rdate -s -p schlug fehl (%d)."
 
-#: takeover.py:825
+#: takeover.py:833
 #, python-format
 msgid "Could not read local machine password: %s"
 msgstr "Interner Fehler beim Lesen des Maschinenpassworts: %s"
 
-#: takeover.py:864
+#: takeover.py:851 takeover.py:861
+#, python-format
+msgid "Copying %s"
+msgstr "Kopiere %s"
+
+#: takeover.py:872
 #, python-format
 msgid "The domain join failed. See %s for details."
 msgstr ""
 "Der Domänenbeitritt schlug fehl, die Logdatei %s enthält genauere Details."
 
-#: takeover.py:927
+#: takeover.py:935
 msgid "Failed to determine new domain SID."
 msgstr "Die neue Domänen-SID konnte nicht festgestellt werden."
 
-#: takeover.py:1269 takeover.py:1277
+#: takeover.py:1277 takeover.py:1285
 msgid "The Active Directory domain join was not completed successfully yet."
 msgstr ""
 "Der Beitritt zur Active Directory Domäne wurde noch nicht erfolgreich "
 "abgeschlossen."
 
-#: takeover.py:1296
+#: takeover.py:1304
 msgid "Active Directory takeover finished already."
 msgstr "Active Directory Takeover ist schon abgeschlossen."
 
-#: takeover.py:1321
+#: takeover.py:1329
 #, python-format
 msgid "The Server IP %s is still online, please shut down the machine."
 msgstr ""
 "Die Server IP %s ist noch online, die Maschine sollte ausgeschaltet werden."
 
-#: takeover.py:1775
+#: takeover.py:1783
 msgid " failed"
 msgstr " schlug fehl"
 
-#: takeover.py:1778
+#: takeover.py:1786
 #, python-format
 msgid "Network connection to %s failed."
 msgstr "Netzwerkverbindung zu %s schlug fehl."
 
-#: takeover.py:1785
+#: takeover.py:1793
 #, python-format
 msgid "Active Directory services not detected at %s."
 msgstr "Active Directory Dienste sind nicht erreichbar über %s."
 
-#: takeover.py:1824
+#: takeover.py:1832
 #, python-format
 msgid "Connection to Active Directory server %s failed."
 msgstr "Die Verbindung zum Active Directory Server %s schlug fehl."
 
-#: takeover.py:1833
+#: takeover.py:1841
 #, python-format
 msgid ""
 "The automatic search for an Active Directory server for realm %s did not "
@@ -285,16 +290,16 @@ msgstr ""
 "Die automatische Suche eines Active Directory Servers für den Kerberos Realm "
 "%s lieferte keine Ergebnisse."
 
-#: takeover.py:1857
+#: takeover.py:1865
 msgid "Faild to detect the Active Directory site of the server."
 msgstr ""
 "Die Erkennung des Active Directory Standorts (site) des Servers schlug fehl."
 
-#: takeover.py:2289
+#: takeover.py:2297
 msgid "UNC doesn't start with \\\\ or //"
 msgstr "UNC Pfad startet nicht mit \\\\ oder //"
 
-#: takeover.py:2296
+#: takeover.py:2304
 #, python-format
 msgid "Invalid UNC string: %s"
 msgstr "Ungültiger UNC Pfad: %s"
