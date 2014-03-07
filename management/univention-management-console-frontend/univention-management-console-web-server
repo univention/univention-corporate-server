@@ -47,6 +47,7 @@ import uuid
 import datetime
 import hashlib
 import urllib
+from ipaddr import IPAddress
 
 import notifier
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
@@ -77,7 +78,7 @@ def logExceptions(f):
 		except (KeyboardInterrupt, SystemExit):
 			# ignore
 			raise
-		except Exception, ex:
+		except Exception as ex:
 			CORE.error('Traceback in %s(%r, %r):\n%s' % (f.__name__, args, kwargs, traceback.format_exc()))
 			raise
 	new_f.__name__ = f.__name__
@@ -192,6 +193,7 @@ class SessionClient(object):
 			del self._requestid2response_queue[request.id]
 		finally:
 			self._lock.release()
+
 
 class LoginToken( object ):
 	def __init__(self, sessionid, username, timeout=None):
@@ -314,6 +316,7 @@ class UMCP_Dispatcher( object ):
 
 
 class UploadManager( dict ):
+
 	def add( self, request_id, store ):
 		tmpfile = tempfile.NamedTemporaryFile( prefix = request_id, dir = umcp.TEMPUPLOADDIR, delete = False )
 		if hasattr(store, 'file') and store.file is None:
@@ -341,6 +344,7 @@ class UploadManager( dict ):
 
 _upload_manager = UploadManager()
 
+
 class QueueRequest(object):
 	"""Element for the request queue containing the assoziated session
 	ID, the request object, a response queue and the request ip address."""
@@ -350,6 +354,7 @@ class QueueRequest(object):
 		self.response_queue = response_queue
 		self.ip = ip
 		self.cookie = cookie
+
 
 def default_error_page(status, message, traceback, version, result = None):
 	""" The default error page for UMCP responses """
@@ -361,6 +366,7 @@ def default_error_page(status, message, traceback, version, result = None):
 	if result:
 		response['result'] = result
 	return simplejson.dumps(response)
+
 
 class UMC_HTTPError(cherrypy.HTTPError):
 	""" HTTPError which sets a error result """
@@ -377,6 +383,7 @@ class UMC_HTTPError(cherrypy.HTTPError):
 		cherrypy.response.headers['Content-Length'] = len(content)
 
 		cherrypy._cperror._be_ie_unfriendly(self.status)
+
 
 class CPgeneric(object):
 
@@ -396,15 +403,11 @@ class CPgeneric(object):
 
 	def _log(self, loglevel, _msg):
 		remote = cherrypy.request.remote
-		msg = '%s (%s:%s) %s' % (self.name,  self.get_ip_address(), remote.port, _msg)
+		msg = '%s (%s:%s) %s' % (self.name,  get_ip_address(), remote.port, _msg)
 		self._logOptions.get(loglevel, CORE.info)(msg)
 
 	def get_request(self, path, args):
 		return umcp.Request( [ 'generic' ], opts = {} )
-
-	def get_ip_address(self):
-		"""get the IP address of client by last entry in X-FORWARDED-FOR header"""
-		return cherrypy.request.headers.get('X-FORWARDED-FOR', cherrypy.request.remote.ip).rsplit(', ', 1).pop()
 
 	@logExceptions
 	def get_session_id(self):
@@ -486,7 +489,7 @@ class CPgeneric(object):
 		response_queue = Queue.Queue()
 
 		# send request to UMC server
-		request = QueueRequest(sessionid, req, response_queue, self.get_ip_address())
+		request = QueueRequest(sessionid, req, response_queue, get_ip_address())
 		UMCP_Dispatcher._queue_send.put(request)
 
 		self._log('info', 'pushed request(0x%x) to queue(0x%x) - waiting for response (sessionid="%s")' % (id(req), id(response_queue), sessionid))
@@ -517,6 +520,7 @@ class CPgeneric(object):
 		self._log('error', 'response result: %s' % response.result)
 		raise UMC_HTTPError(response.status, response.message, response.result)
 
+
 class CPSingleSignOn(CPgeneric):
 	@cherrypy.expose
 	@logExceptions
@@ -529,7 +533,7 @@ class CPSingleSignOn(CPgeneric):
 		self._log('info', 'found login_token=%r' % (login_token,))
 		if login_token:
 			# update IP address of sesssion ==> address changes during single sign on
-			UMCP_Dispatcher.sessions[login_token.sessionid].ip = self.get_ip_address()
+			UMCP_Dispatcher.sessions[login_token.sessionid].ip = get_ip_address()
 
 			self.set_cookies(sessionid=login_token.sessionid, username=login_token.username)
 
@@ -564,6 +568,26 @@ class CPGet(CPgeneric):
 			raise cherrypy.HTTPError(httplib.NOT_FOUND)
 
 		return umcp.Request( 'GET', arguments = [ path ], options = args.get( 'options', {} ) )
+
+
+class IPAddresses(object):
+	@cherrypy.expose
+	@logExceptions
+	def default(self, *a, **kw):
+		try:
+			addresses = self.addresses
+		except ValueError:
+			# hacking attempt
+			addresses = [cherrypy.request.remote.ip]
+		return simplejson.dumps(addresses)
+
+	@property
+	def addresses(self):
+		addresses = cherrypy.request.headers.get('X-FORWARDED-FOR', cherrypy.request.remote.ip).split(',') + [cherrypy.request.remote.ip]
+		addresses = set(map(IPAddress, map(str.strip, addresses)))
+		addresses.discard(IPAddress('::1'))
+		addresses.discard(IPAddress('127.0.0.1'))
+		return tuple(address.exploded for address in addresses)
 
 
 class CPSet(CPgeneric):
@@ -640,6 +664,7 @@ class CPUpload( CPgeneric ):
 
 		return response
 
+
 class CPCommand(CPgeneric):
 	@logExceptions
 	def get_request(self, path, args):
@@ -659,7 +684,7 @@ class CPAuth(CPgeneric):
 	@logExceptions
 	def default(self, **kw):
 		remote = cherrypy.request.remote
-		CORE.info('CPRoot/auth: got new auth request (%s:%s <=> %s)' % (self.get_ip_address(), remote.port, remote.name))
+		CORE.info('CPRoot/auth: got new auth request (%s:%s <=> %s)' % (get_ip_address(), remote.port, remote.name))
 
 		content_length = cherrypy.request.headers.get("Content-Length")
 		if not content_length and content_length != 0:
@@ -689,7 +714,7 @@ class CPAuth(CPgeneric):
 
 		# send request to UMC server
 		cookie = not bool(json[ 'options' ].get('version',''))
-		request = QueueRequest(None, req, response_queue, self.get_ip_address(), cookie=cookie)
+		request = QueueRequest(None, req, response_queue, get_ip_address(), cookie=cookie)
 		UMCP_Dispatcher._queue_send.put(request)
 
 		CORE.info('CPRoot/auth: pushed request to queue - waiting for response')
@@ -709,6 +734,7 @@ class CPAuth(CPgeneric):
 		CORE.process('CPRoot/auth: username: %s, status code: %s' % (json.get('username'), response.status))
 		raise cherrypy.HTTPError(response.status, response.message)
 
+
 class CPRoot(object):
 	@cherrypy.expose
 	@logExceptions
@@ -717,6 +743,12 @@ class CPRoot(object):
 		http://localhost:<ucr:umc/http/port>/
 		"""
 		raise cherrypy.HTTPError(httplib.NOT_FOUND)
+
+
+def get_ip_address():
+	"""get the IP address of client by last entry (from apache) in X-FORWARDED-FOR header"""
+	return cherrypy.request.headers.get('X-FORWARDED-FOR', cherrypy.request.remote.ip).rsplit(', ', 1).pop()
+
 
 @logExceptions
 def run_cherrypy():
@@ -742,6 +774,7 @@ def run_cherrypy():
 	root.set = CPSet()
 	root.upload = CPUpload()
 	root.sso = CPSingleSignOn()
+	root.get.ipaddress = IPAddresses()
 
 	cherrypy.quickstart(root=root)
 

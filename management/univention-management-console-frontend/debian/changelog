@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.153-1) unstable; urgency=low
+
+  * Bug #34288: Implement method for retrieval of own IP address in
+  	umc-web-server
+
+ -- Florian Best <best@univention.de>  Fri, 07 Mar 2014 14:38:08 +0100
+
 univention-management-console-frontend (3.0.152-22) unstable; urgency=low
 
   * Bug #34181: The progress bar does not have a transition anymore if the
