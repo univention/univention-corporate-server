@@ -1,3 +1,10 @@
+ucslint (3.0.5-2) unstable; urgency=low
+
+  * Bug #34127: Add support for RedMine issues in changelog
+  * Bug #26183: Fix testucslint.sh broken since split into extra package.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 07 Mar 2014 09:53:15 +0100
+
 ucslint (3.0.5-1) unstable; urgency=low
 
   * Bug #26183: moved univention specific tests to extra package

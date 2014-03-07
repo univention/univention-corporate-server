@@ -41,7 +41,10 @@ tmpdiff="$tmpdir/diff"
 
 export PYTHONPATH="$PWD:$PYTHONPATH"
 BINPATH="$PWD/bin/ucslint"
-UCSLINTPATH="$PWD/ucslint"
+UCSLINTPATH=(
+	-p "$PWD/ucslint"
+	-p "$PWD/ucslint-univention"
+	)
 
 for dir in testframework/*
 do
@@ -52,7 +55,7 @@ do
         DIRNAME=$(basename "$dir")
         MODULE="${DIRNAME:0:4}"
 
-        ( cd "$dir" && "$BINPATH" -p "$UCSLINTPATH" -m "$MODULE" >"$tmpresult" 2>/dev/null )
+        ( cd "$dir" && "$BINPATH" "${UCSLINTPATH[@]}" -m "$MODULE" >"$tmpresult" 2>/dev/null )
         ./ucslint-sort-output.py "$tmpresult" >"${dir}.test"
 
         if diff -u "${dir}.correct" "${dir}.test" >"$tmpdiff" 2>&1
