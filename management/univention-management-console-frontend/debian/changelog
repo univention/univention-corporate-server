@@ -1,4 +1,4 @@
-univention-management-console-frontend (3.0.153-1) unstable; urgency=low
+univention-management-console-frontend (3.0.152-23) unstable; urgency=low
 
   * Bug #34288: Implement method for retrieval of own IP address in
   	umc-web-server
