@@ -1,9 +1,11 @@
-#!/bin/bash
+#!/usr/bin/python2.6
 #
 # Univention Configuration Registry
-#  list modified and not updated templates
+"""
+List modified and not updated UCR templates.
+"""
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2011-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,31 +32,122 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-usage ()
-{
-	cat << __EOT__
-Usage: $0
-List modified and not updated UCR templates
+import os
+import sys
+from hashlib import md5
+from optparse import OptionParser
+from textwrap import dedent
+from debian.deb822 import Deb822
 
-__EOT__
-}
+PREFIX = '/etc/univention/templates/files'
+SUFFIX = ('.dpkg-new', '.dpkg-dist')
+K64 = 1 << 16
 
 
-if [ $# -gt 0 ]; then
-	usage
-	exit 0
-fi
+def main():
+	opt = parse_cmdline()
+	modified = set()
+	if opt.dpkg:
+		modified |= check_find(opt.verbose)
+	if opt.md5:
+		modified |= check_md5(opt.verbose)
+	if modified:
+		print >> sys.stderr, dedent("""\
+			WARNING: The following UCR templates are modified locally.
+			Updated versions will be named FILENAME.dpkg-*.
+			The files should be checked for differences.
+			""")
+		print '\n'.join(sorted(modified))
+		return 1
+	return 0
 
-tmpfile=$(mktemp)
 
-find /etc/univention/templates/files/ -name "*.dpkg-new" -o -name "*.dpkg-dist" >$tmpfile 2>/dev/null
+def parse_cmdline():
+	usage = "%prog [options]"
+	description = sys.modules[__name__].__doc__
+	parser = OptionParser(usage=usage, description=description)
+	parser.add_option(
+		'--md5',
+		action='store_false', default=True,
+		help='Disable checking MD5 sums.')
+	parser.add_option(
+		'--dpkg',
+		action='store_false', default=True,
+		help='Disable checking for renamed files.')
+	parser.add_option(
+		'--verbose', '-v',
+		action='store_true',
+		help='Enable verbose output.')
+	opt, _args = parser.parse_args()
+	return opt
 
-count=$(wc -l $tmpfile)
 
-if [ "${count% *}" != 0 ]; then
-	echo "WARNING: The following UCR templates were not updated because they are local modified. An updated version was installed as FILENAME.dpkg-new or FILENAME.dpkg-dist. The difference should be checked."
-	echo "$(sed -e 's|^|  |;s|.dpkg-new$||' $tmpfile )"
-	exit ${count% *}
-fi
+def check_find(verbose=False):
+	modified = set()
+	for dirpath, dirnames, filenames in os.walk(PREFIX):
+		for filename in filenames:
+			for suffix in SUFFIX:
+				if filename.endswith(suffix):
+					filepath = os.path.join(dirpath, filename)
+					if verbose:
+						print >> sys.stderr, filepath
+					basepath = filepath[:-len(suffix)]
+					modified.add(basepath)
+	return modified
 
-exit 0
+
+def check_md5(verbose=False):
+	modified = set()
+	original = set()
+	try:
+		for filepath, expected in iter_templates():
+			if filepath in original or filepath in modified:
+				continue
+
+			current = md5sum(filepath)
+			if verbose:
+				print >> sys.stderr, "%s %s %s" % (filepath, expected, current)
+			if expected == current:
+				original.add(filepath)
+			else:
+				modified.add(filepath)
+		return modified
+	except IOError as ex:
+		print >> sys.stderr, ex
+		sys.exit(2)
+
+
+def iter_templates():
+	with open('/var/lib/dpkg/status', 'r') as dpkg_status:
+		for pkg in Deb822.iter_paragraphs(dpkg_status, ["Conffiles"]):
+			try:
+				conffiles = pkg["Conffiles"]
+			except KeyError:
+				continue
+			for conffile in conffiles.splitlines():
+				fields = [_.strip() for _ in conffile.split(' ') if _]
+				# skip obsolete and new conffiles
+				if not fields or 'newconffile' in fields or 'obsolete' in fields:
+					continue
+				filepath, fmd5 = fields
+				if filepath.startswith(PREFIX):
+					yield filepath, fmd5
+
+
+def md5sum(filepath):
+	digest = md5()
+	try:
+		with open(filepath, 'rb') as stream:
+			while True:
+				buf = stream.read(65536)
+				if not buf:
+					break
+				digest.update(buf)
+	except IOError:
+		return None
+
+	return digest.hexdigest()
+
+
+if __name__ == '__main__':
+	sys.exit(main())
