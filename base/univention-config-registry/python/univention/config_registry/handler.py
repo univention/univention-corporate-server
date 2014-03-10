@@ -213,9 +213,18 @@ class ConfigHandlerDiverting(ConfigHandler):
 		"""Set file permissions."""
 		if not to_file:
 			to_file = self.to_file
+		elif self.to_file != to_file:
+			try:
+				old_stat = os.stat(self.to_file)
+				os.chmod(to_file, old_stat.st_mode)
+				os.chown(to_file, old_stat.st_uid, old_stat.st_gid)
+			except EnvironmentError:
+				pass
+
 		if self.user or self.group or self.mode:
 			if self.mode:
 				os.chmod(to_file, self.mode)
+
 			if self.user and self.group:
 				os.chown(to_file, self.user, self.group)
 			elif self.user:
@@ -223,7 +232,7 @@ class ConfigHandlerDiverting(ConfigHandler):
 			elif self.group:
 				os.chown(to_file, 0, self.group)
 		elif stat:
-			os.chmod(to_file, stat[0])
+			os.chmod(to_file, stat.st_mode)
 
 	def _call_silent(self, *cmd):
 		"""Call command with stdin, stdout, and stderr redirected from/to
@@ -341,7 +350,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 			if os.path.exists(tmp_to_file):
 				os.unlink(tmp_to_file)
 			raise
-			
+
 
 		if hasattr(self, 'postinst') and self.postinst:
 			run_module(self.postinst, 'postinst', ucr, changed)

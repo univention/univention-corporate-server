@@ -1,3 +1,9 @@
+ucs-test (4.0.163-1) unstable; urgency=low
+
+  * 03ucr: Fix atomic commit tests to keep manual changes (Bug #34241)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue,  4 Mar 2014 12:17:22 +0100
+
 ucs-test (4.0.162-2) unstable; urgency=low
 
   * do not create objects directly below ldap base in tests in order to be

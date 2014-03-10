@@ -7,19 +7,24 @@
 ##     1. Use permission from optional dummy file
 ##     2. Keep existing permission
 ##     3. Use umask for new files
+##  4. Explicitly modify file stats and re-check
 ## tags:
 ##  - basic
 ##  - apptest
 ## exposure: careful
-## bugs: [33842]
+## bugs: [33842,34241]
 umask 0002
 
 ID="ucs-test-33842"
-OWNER="nobody"
-GROUP="nogroup"
+OWNER_FORCE="nobody"
+OWNER_TEMPLATE="daemon"
+OWNER="root"
+GROUP_FORCE="nogroup"
+GROUP_TEMPLATE="daemon"
+GROUP="root"
 MODE_FORCE=0400
 MODE_TEMPLATE=0660
-MODE_UMASK=$(printf "%04o" $((0666 & ~$(umask))))
+MODE=$(printf "%04o" $((0666 & ~$(umask))))
 
 main () {
 	declare -i result=0
@@ -44,6 +49,7 @@ create_templates () {
 		rm -f "$template"
 		touch "$template"
 		chmod "$MODE_TEMPLATE" "$template"
+		chown "${OWNER_TEMPLATE}:${GROUP_TEMPLATE}" "$template"
 	done
 }
 register_ucr () {
@@ -53,16 +59,16 @@ File: tmp/$ID-f0
 
 Type: file
 File: tmp/$ID-f1
-User: $OWNER
+User: $OWNER_FORCE
 
 Type: file
 File: tmp/$ID-f2
-Group: $GROUP
+Group: $GROUP_FORCE
 
 Type: file
 File: tmp/$ID-f3
-User: $OWNER
-Group: $GROUP
+User: $OWNER_FORCE
+Group: $GROUP_FORCE
 
 Type: file
 File: tmp/$ID-f4
@@ -70,18 +76,18 @@ Mode: $MODE_FORCE
 
 Type: file
 File: tmp/$ID-f5
-User: $OWNER
+User: $OWNER_FORCE
 Mode: $MODE_FORCE
 
 Type: file
 File: tmp/$ID-f6
-Group: $GROUP
+Group: $GROUP_FORCE
 Mode: $MODE_FORCE
 
 Type: file
 File: tmp/$ID-f7
-User: $OWNER
-Group: $GROUP
+User: $OWNER_FORCE
+Group: $GROUP_FORCE
 Mode: $MODE_FORCE
 
 Type: multifile
@@ -89,16 +95,16 @@ Multifile: tmp/$ID-m0
 
 Type: multifile
 Multifile: tmp/$ID-m1
-User: $OWNER
+User: $OWNER_FORCE
 
 Type: multifile
 Multifile: tmp/$ID-m2
-Group: $GROUP
+Group: $GROUP_FORCE
 
 Type: multifile
 Multifile: tmp/$ID-m3
-User: $OWNER
-Group: $GROUP
+User: $OWNER_FORCE
+Group: $GROUP_FORCE
 
 Type: multifile
 Multifile: tmp/$ID-m4
@@ -106,18 +112,18 @@ Mode: $MODE_FORCE
 
 Type: multifile
 Multifile: tmp/$ID-m5
-User: $OWNER
+User: $OWNER_FORCE
 Mode: $MODE_FORCE
 
 Type: multifile
 Multifile: tmp/$ID-m6
-Group: $GROUP
+Group: $GROUP_FORCE
 Mode: $MODE_FORCE
 
 Type: multifile
 Multifile: tmp/$ID-m7
-User: $OWNER
-Group: $GROUP
+User: $OWNER_FORCE
+Group: $GROUP_FORCE
 Mode: $MODE_FORCE
 
 Type: multifile
@@ -125,16 +131,16 @@ Multifile: tmp/$ID-d0
 
 Type: multifile
 Multifile: tmp/$ID-d1
-User: $OWNER
+User: $OWNER_FORCE
 
 Type: multifile
 Multifile: tmp/$ID-d2
-Group: $GROUP
+Group: $GROUP_FORCE
 
 Type: multifile
 Multifile: tmp/$ID-d3
-User: $OWNER
-Group: $GROUP
+User: $OWNER_FORCE
+Group: $GROUP_FORCE
 
 Type: multifile
 Multifile: tmp/$ID-d4
@@ -142,18 +148,18 @@ Mode: $MODE_FORCE
 
 Type: multifile
 Multifile: tmp/$ID-d5
-User: $OWNER
+User: $OWNER_FORCE
 Mode: $MODE_FORCE
 
 Type: multifile
 Multifile: tmp/$ID-d6
-Group: $GROUP
+Group: $GROUP_FORCE
 Mode: $MODE_FORCE
 
 Type: multifile
 Multifile: tmp/$ID-d7
-User: $OWNER
-Group: $GROUP
+User: $OWNER_FORCE
+Group: $GROUP_FORCE
 Mode: $MODE_FORCE
 
 Type: subfile
@@ -229,34 +235,34 @@ verify_all () {
 	verify_multi_file_template_with_dummy_file
 }
 verify_single_file_template () {
-	verify "/tmp/$ID-f0" "$MODE_TEMPLATE"	root	root	# default=template_file
-	verify "/tmp/$ID-f1" "$MODE_UMASK"	"$OWNER"	root	# owner
-	verify "/tmp/$ID-f2" "$MODE_UMASK"	root	"$GROUP"	# group
-	verify "/tmp/$ID-f3" "$MODE_UMASK"	"$OWNER"	"$GROUP"	# owner group
-	verify "/tmp/$ID-f4" "$MODE_FORCE"	root	root	# mode
-	verify "/tmp/$ID-f5" "$MODE_FORCE"	"$OWNER"	root	# mode owner
-	verify "/tmp/$ID-f6" "$MODE_FORCE"	root	"$GROUP"	# mode group
-	verify "/tmp/$ID-f7" "$MODE_FORCE"	"$OWNER"	"$GROUP"	# mode owner group
+	verify "/tmp/$ID-f0" "$MODE_TEMPLATE"	"$OWNER"	"$GROUP"	# default=template_file
+	verify "/tmp/$ID-f1" "$MODE"	"$OWNER_FORCE"	root	# owner
+	verify "/tmp/$ID-f2" "$MODE"	root	"$GROUP_FORCE"	# group
+	verify "/tmp/$ID-f3" "$MODE"	"$OWNER_FORCE"	"$GROUP_FORCE"	# owner group
+	verify "/tmp/$ID-f4" "$MODE_FORCE"	"$OWNER"	"$GROUP"	# mode
+	verify "/tmp/$ID-f5" "$MODE_FORCE"	"$OWNER_FORCE"	root	# mode owner
+	verify "/tmp/$ID-f6" "$MODE_FORCE"	root	"$GROUP_FORCE"	# mode group
+	verify "/tmp/$ID-f7" "$MODE_FORCE"	"$OWNER_FORCE"	"$GROUP_FORCE"	# mode owner group
 }
 verify_multi_file_template_without_dummy_file () {
-	verify "/tmp/$ID-m0" "$MODE_UMASK"	root	root	# default=umask
-	verify "/tmp/$ID-m1" "$MODE_UMASK"	"$OWNER"	root	# owner
-	verify "/tmp/$ID-m2" "$MODE_UMASK"	root	"$GROUP"	# group
-	verify "/tmp/$ID-m3" "$MODE_UMASK"	"$OWNER"	"$GROUP"	# owner group
-	verify "/tmp/$ID-m4" "$MODE_FORCE"	root	root	# mode
-	verify "/tmp/$ID-m5" "$MODE_FORCE"	"$OWNER"	root	# mode owner
-	verify "/tmp/$ID-m6" "$MODE_FORCE"	root	"$GROUP"	# mode group
-	verify "/tmp/$ID-m7" "$MODE_FORCE"	"$OWNER" "$GROUP"	# mode owner group
+	verify "/tmp/$ID-m0" "$MODE"	"$OWNER"	"$GROUP"	# default=umask
+	verify "/tmp/$ID-m1" "$MODE"	"$OWNER_FORCE"	root	# owner
+	verify "/tmp/$ID-m2" "$MODE"	root	"$GROUP_FORCE"	# group
+	verify "/tmp/$ID-m3" "$MODE"	"$OWNER_FORCE"	"$GROUP_FORCE"	# owner group
+	verify "/tmp/$ID-m4" "$MODE_FORCE"	"$OWNER"	"$GROUP"	# mode
+	verify "/tmp/$ID-m5" "$MODE_FORCE"	"$OWNER_FORCE"	root	# mode owner
+	verify "/tmp/$ID-m6" "$MODE_FORCE"	root	"$GROUP_FORCE"	# mode group
+	verify "/tmp/$ID-m7" "$MODE_FORCE"	"$OWNER_FORCE" "$GROUP_FORCE"	# mode owner group
 }
 verify_multi_file_template_with_dummy_file () {
-	verify "/tmp/$ID-d0" "$MODE_TEMPLATE"	root	root	# default=dummy_file
-	verify "/tmp/$ID-d1" "$MODE_UMASK"	"$OWNER"	root	# owner
-	verify "/tmp/$ID-d2" "$MODE_UMASK"	root	"$GROUP"	# group
-	verify "/tmp/$ID-d3" "$MODE_UMASK"	"$OWNER"	"$GROUP"	# owner group
-	verify "/tmp/$ID-d4" "$MODE_FORCE"	root	root	# mode
-	verify "/tmp/$ID-d5" "$MODE_FORCE"	"$OWNER"	root	# mode owner
-	verify "/tmp/$ID-d6" "$MODE_FORCE"	root	"$GROUP"	# mode group
-	verify "/tmp/$ID-d7" "$MODE_FORCE"	"$OWNER" "$GROUP"	# mode owner group
+	verify "/tmp/$ID-d0" "$MODE_TEMPLATE"	"$OWNER"	"$GROUP"	# default=dummy_file
+	verify "/tmp/$ID-d1" "$MODE"	"$OWNER_FORCE"	root	# owner
+	verify "/tmp/$ID-d2" "$MODE"	root	"$GROUP_FORCE"	# group
+	verify "/tmp/$ID-d3" "$MODE"	"$OWNER_FORCE"	"$GROUP_FORCE"	# owner group
+	verify "/tmp/$ID-d4" "$MODE_FORCE"	"$OWNER"	"$GROUP"	# mode
+	verify "/tmp/$ID-d5" "$MODE_FORCE"	"$OWNER_FORCE"	root	# mode owner
+	verify "/tmp/$ID-d6" "$MODE_FORCE"	root	"$GROUP_FORCE"	# mode group
+	verify "/tmp/$ID-d7" "$MODE_FORCE"	"$OWNER_FORCE" "$GROUP_FORCE"	# mode owner group
 }
 verify () { # $1=name $2=mode $3=owner $4=group
 	local filename="$1" mode="$2" owner="$3" group="$4" IFS="	" fail=
@@ -275,9 +281,12 @@ verify () { # $1=name $2=mode $3=owner $4=group
 }
 
 re_commit () {
-	MODE_UMASK=0664
-	chmod "$MODE_UMASK" "/tmp/$ID-"[smd][0-7]
-	ucr commit "/tmp/$ID-"[smd][0-7]
+	OWNER="bin"
+	GROUP="bin"
+	MODE=0664
+	chmod "$MODE" "/tmp/$ID-"[fmd][0-7]
+	chown "${OWNER}:${GROUP}" "/tmp/$ID-"[fmd][0-7]
+	ucr commit "/tmp/$ID-"[fmd][0-7]
 }
 
 cleanup () {

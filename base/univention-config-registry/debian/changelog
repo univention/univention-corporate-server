@@ -1,3 +1,9 @@
+univention-config-registry (9.0.6-5) unstable; urgency=low
+
+  * Fix atomic write to preserve old file permission (Bug #34241)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 04 Mar 2014 10:52:50 +0100
+
 univention-config-registry (9.0.6-4) unstable; urgency=low
 
   * Atomic write: Improve code and error handling (Bug #33842)
