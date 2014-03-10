@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-1
+src: univention-config-registry
+fix: 9.0.6-5.453.201403101139
+note:
+version: [1]
+desc: |
+  This erratum fixes a regression in Univention Configuration Registry (UCR),
+  were in some cases the file ownership was not preserved correctly when a file
+  is committed.
+bug: [34241]
