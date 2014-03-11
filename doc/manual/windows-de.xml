@@ -895,7 +895,7 @@ ucr set auth/methods="krb5 ldap unix winbind"
 	  Der UCS Active Directory Connector (kurz AD Connector) ermöglicht eine Synchronisation von
 	  Verzeichnisdienstobjekten zwischen einem Windows 2003/2008/2012 Server mit Active Directory
 	  (AD) und dem OpenLDAP-Verzeichnis aus &ucsUCS;. Der Connector kann auch mehrere AD-Domänen mit
-	  einer UCS-Domäne synchronisieren; dies ist in <xref linkend="ext-doc-win"/>) dokumentiert.
+	  einer UCS-Domäne synchronisieren; dies ist in <xref linkend="ext-doc-win"/> dokumentiert.
 	</para>
 
 	<para>

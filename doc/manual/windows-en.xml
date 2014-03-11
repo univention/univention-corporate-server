@@ -872,7 +872,7 @@ net rpc trustdom list
 	  The UCS Active Directory Connector (AD Connector for short) makes it possible to synchronise
 	  directory service objects between a Windows 2003/2008/2012 server under Active Directory (AD)
 	  and a &ucsUCS;. The connector can also synchronise several AD domains with one UCS domain;
-	  this is documented in <xref linkend="ext-doc-win"/>).
+	  this is documented in <xref linkend="ext-doc-win"/>.
 	</para>
 
 	<para>
