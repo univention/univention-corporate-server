@@ -274,3 +274,10 @@ Mode: 0440
 Type: subfile
 Multifile: etc/postfix/ldap.canonicalsender
 Subfile: etc/postfix/ldap.canonicalsender.d/10_base
+
+Type: file
+File: etc/postfix/listfilter.secret
+Variables: mail/postfix/policy/listfilter
+User: listfilter
+Group: root
+Mode: 0440

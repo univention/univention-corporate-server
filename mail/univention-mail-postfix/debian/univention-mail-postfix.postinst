@@ -91,6 +91,7 @@ for file in transport virtual canonical access relocated; do
 done
 
 
+adduser --quiet --system --home /var/lib/listfilter --disabled-password listfilter
 adduser --quiet --system --home /var/lib/systemmail --shell /bin/bash systemmail
 newaliases
 adduser postfix sasl
