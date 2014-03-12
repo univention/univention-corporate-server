@@ -1,3 +1,9 @@
+ucs-test (4.0.164-1) unstable; urgency=low
+
+  * ignore listfilter.secret template in 25check-permissions-etc-secret (Bug #26910) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 12 Mar 2014 09:12:24 +0100
+
 ucs-test (4.0.163-2) unstable; urgency=low
 
   * Fix syntax errors in 72/23,25 (Bug #33825)
