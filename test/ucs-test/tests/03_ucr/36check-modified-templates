@@ -1,0 +1,24 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Checking whether a modified template is found by univention-check-templates
+## tags:
+##  - basic
+## exposure: dangerous
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+tempfile="$(mktemp)"
+
+cp /etc/univention/templates/files/etc/nsswitch.conf /etc/univention/templates/files/etc/nsswitch.conf-ucs-test
+trap "mv /etc/univention/templates/files/etc/nsswitch.conf-ucs-test /etc/univention/templates/files/etc/nsswitch.conf; rm -f $tempfile" EXIT
+
+echo "" >> /etc/univention/templates/files/etc/nsswitch.conf
+
+if /usr/sbin/univention-check-templates >$tempfile 2>&1; then
+	fail_test 110 "Template modification was not found."
+else
+	grep '^/etc/univention/templates/files/etc/nsswitch.conf$' "$tempfile" || fail_test 110 "nsswitch.conf was not found in /usr/sbin/univention-check-templates output"
+fi
+
+exit $RETVAL
+
+# vim:set ft=sh:
