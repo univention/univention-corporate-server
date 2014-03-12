@@ -1,0 +1,14 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-1
+src: univention-mail-postfix
+fix: 8.0.10-3.210.201403111223
+note:
+version: [1]
+desc: |
+  This update fixes the following issues:
+  * The postfix policy service listfilter (to restrict email delivery to
+	groups and lists) is now executed as user listfilter instead of the user
+    cyrus to allow this feature also in environments without the 
+    component univention-mail-cyrus.
+bug: [26910]
