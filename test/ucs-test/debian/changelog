@@ -1,3 +1,9 @@
+ucs-test (4.0.164-3) unstable; urgency=low
+
+  * 20_app/17: Fix NPE (Bug #34328)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 12 Mar 2014 18:35:48 +0100
+
 ucs-test (4.0.164-2) unstable; urgency=low
 
   * 03_ucr/36check-modified-templates: added a small test case to

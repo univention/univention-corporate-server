@@ -14,11 +14,19 @@ from univention.lib.package_manager import PackageManager
 from univention.management.console.modules.appcenter.app_center import Application
 from univention.config_registry import ConfigRegistry
 
+CATEGORIES = set((
+	'Administration',
+	'Business',
+	'Collaboration',
+	'Education',
+	'System services',
+	'UCS components',
+	'Virtualization',
+))
+
 if not os.path.exists('/var/cache/appcenter-installed.txt'):
 	print '/var/cache/appcenter-installed.txt does not exist'
 	sys.exit(137)
-
-fd = open('/var/cache/appcenter-installed.txt')
 
 pm = PackageManager()
 pm.update()
@@ -35,21 +43,23 @@ def check_package(package):
 
 returncode = 100
 
-for appID in fd.readlines():
+fd = open('/var/cache/appcenter-installed.txt')
+for appID in fd:
 	appID = appID.strip()
-
+	if not appID:
+		continue
 	print 'Checking App: %s' % appID
+
 	requested_app = Application.find(appID)
-
-	for category in requested_app.get('unlocalised_categories'):
-		if category not in ['Administration', 'Business', 'Collaboration', 'Education', 'System services', 'UCS components', 'Virtualization']:
-			print ' Test failed: Requested App has unsupported category: %s' % category
-			returncode = 1
-
 	if not requested_app:
 		print ' Test failed: Requested App not found: %s' % appID
 		returncode = 1
 		continue
+
+	unsupported = set(requested_app.get('unlocalised_categories')) - CATEGORIES
+	for category in unsupported:
+		print ' Test failed: Requested App has unsupported category: %s' % category
+		returncode = 1
 
 	for package in requested_app.get('defaultpackages'):
 		if not check_package(package):
@@ -59,5 +69,5 @@ for appID in fd.readlines():
 		for package in requested_app.get('defaultpackagesmaster'):
 			if not check_package(package):
 				returncode = 1
-		
+
 sys.exit(returncode)
