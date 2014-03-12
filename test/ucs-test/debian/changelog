@@ -1,3 +1,10 @@
+ucs-test (4.0.164-2) unstable; urgency=low
+
+  * 03_ucr/36check-modified-templates: added a small test case to
+    identify a modified template (Bug #24010)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 Mar 2014 13:35:42 +0100
+
 ucs-test (4.0.164-1) unstable; urgency=low
 
   * ignore listfilter.secret template in 25check-permissions-etc-secret (Bug #26910) 
