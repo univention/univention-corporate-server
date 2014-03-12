@@ -9,6 +9,5 @@ desc: |
   This update fixes the following issues in the Univention Configuration Registry (UCR) package:
   * In some cases the file ownership was not preserved correctly when a file is committed.
   * The program "univention-check-templates" now also checks UCR template files
-    for modifications by using the MD5 hash sum managed by dpkg. This allows
-    detection of modified templates before an update is performed.
-bug: [34241,23010]
+    for modifications by using the MD5 hash sum managed by dpkg.
+bug: [34241,24010]
