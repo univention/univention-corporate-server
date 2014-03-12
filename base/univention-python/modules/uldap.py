@@ -32,6 +32,7 @@
 
 import ldap
 import types
+import time
 import sys
 import ldap.schema
 import univention.debug
@@ -136,9 +137,10 @@ class access:
 
 		self.port = port
 
+		ucr = ConfigRegistry()
+		ucr.load()
+
 		if not self.port:	## if no explicit port is given
-			ucr = ConfigRegistry()
-			ucr.load()
 			self.port = int(ucr.get('ldap/server/port', 7389))	## take UCR value
 			if use_ldaps and self.port == "7389":				## adjust the standard port for ssl
 					self.port = "7636"
@@ -165,8 +167,28 @@ class access:
 		# referral handling if follow_referral is set to true
 		#  https://forge.univention.org/bugzilla/show_bug.cgi?id=9139
 		self.follow_referral = follow_referral
+	
+		try:
+			self.client_retry_count = int(ucr.get('ldap/client/retry/count', 15))
+		except ValueError:
+			univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "Unable to read ldap/client/retry/count, please reset to an integer value")
+			self.client_retry_count = 1
 
-		self.__open(ca_certfile)
+		# we need at least one retry, see also ReconnectLDAPObject in __open
+		if self.client_retry_count == 0:
+			self.client_retry_count = 1
+
+		i=0
+		while i <= self.client_retry_count:
+			try:
+				self.__open(ca_certfile)
+				break
+			except ldap.SERVER_DOWN:
+				if i >= self.client_retry_count:
+					raise
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "Can't contact LDAP server. Try again (%d/%d)" % (i+1,self.client_retry_count))
+				time.sleep(1)
+			i+=1
 
 	def __encode_pwd(self, pwd):
 		if isinstance( pwd, unicode ):
@@ -188,7 +210,7 @@ class access:
 			self.protocol = 'ldap'
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
-		self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None)
+		self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_retry_count, retry_delay=1)
 
 		if ca_certfile:
 			self.lo.set_option( ldap.OPT_X_TLS_CACERTFILE, ca_certfile )

@@ -1,3 +1,12 @@
+univention-python (7.0.3-2) unstable; urgency=low
+
+  * Added ldap/client/retry/count UCR variable which defines how often
+    uldap tries to reconnect if the ldap server is down. Default is 15.
+    If the server is down the code waits for one second. Secondary the
+    value is used for ReconnectLDAPObject as retry_max. (Bug #34292)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 Mar 2014 19:50:47 +0100
+
 univention-python (7.0.3-1) unstable; urgency=low
 
   * switch to ReconnectLDAPObject (Bug #32617)
