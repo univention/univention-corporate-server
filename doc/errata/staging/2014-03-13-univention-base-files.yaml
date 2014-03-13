@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-1
+src: univention-base-files
+fix: 3.0.4-4.155.201403130716
+note:
+version: [1]
+desc: |
+  The /etc/issue welcome message mentions where to find the management system.
+  After installing this update the message will only be shown on domain controllers
+  and member servers.
+bug: [34330]
