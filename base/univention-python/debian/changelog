@@ -1,3 +1,9 @@
+univention-python (7.0.3-4) unstable; urgency=low
+
+  * Set the default for ldap/client/retry/count to 10 (Bug #34292)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Mar 2014 16:12:00 +0100
+
 univention-python (7.0.3-3) unstable; urgency=low
 
   * Cleanup ldap/client/retry/count handling (Bug #34292)

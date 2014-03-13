@@ -169,10 +169,10 @@ class access:
 		self.follow_referral = follow_referral
 	
 		try:
-			client_retry_count = int(ucr.get('ldap/client/retry/count', 15))
+			client_retry_count = int(ucr.get('ldap/client/retry/count', 10))
 		except ValueError:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "Unable to read ldap/client/retry/count, please reset to an integer value")
-			client_retry_count = 15
+			client_retry_count = 10
 
 		self.client_connection_attempt = client_retry_count+1
 
