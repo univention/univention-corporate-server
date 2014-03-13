@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (3.0.17-6) unstable; urgency=low
+
+  * Use force-stop and force-restart in uvmmd-initscript to support blocked
+    processes (Bug #34321)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 13 Mar 2014 11:07:23 +0100
+
 univention-virtual-machine-manager-daemon (3.0.17-5) unstable; urgency=low
 
   * Set title on noVNC to VM name and host (Bug #33164)

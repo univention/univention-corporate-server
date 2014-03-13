@@ -85,7 +85,7 @@ case "$1" in
 		;;
 	stop)
 		log_daemon_msg "Stopping $DESC" "$NAME"
-		sv down univention-virtual-machine-manager-daemon
+		sv force-stop univention-virtual-machine-manager-daemon
 		log_action_end_msg 0
 		;;
 	restart|force-reload)
@@ -95,7 +95,7 @@ case "$1" in
 			check_autostart "$NAME" "$NAME/autostart"
 		fi
 		log_daemon_msg "Restarting $DESC" "$NAME"
-		sv restart univention-virtual-machine-manager-daemon
+		sv force-restart univention-virtual-machine-manager-daemon
 		log_action_end_msg 0
 		;;
     crestart)
