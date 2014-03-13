@@ -1,0 +1,115 @@
+#!/usr/share/ucs-test/runner python2.6
+## desc: Test reconnect mechanism of uldap
+## tags:
+##  - apptest
+## roles-not:
+##  - basesystem
+## packages:
+##  - python-univention-lib
+## bugs:
+##  - 34292
+## exposure: dangerous
+
+import univention.uldap
+import subprocess
+import ldap
+from time import sleep
+from univention.testing.utils import fail
+import univention.config_registry
+
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+
+def _cleanup(old_retry_count):
+	print 'CLEANUP'
+	_set_retry_count(old_retry_count)
+	_start_slapd()
+
+def _get_connection():
+	return univention.uldap.getMachineConnection()
+
+def _search(lo):
+	lo.searchDn('cn=users')
+
+def _stop_slapd():
+	return subprocess.Popen(['invoke-rc.d', 'slapd', 'stop']).wait()
+
+def _start_slapd():
+	return subprocess.Popen(['invoke-rc.d', 'slapd', 'start']).wait()
+
+def _start_delyed(delay):
+	subprocess.Popen('sleep %s; invoke-rc.d slapd start' % delay, shell=True)
+
+def _wait_for_slapd_to_be_started():
+	# This could be done a litte bit better
+	sleep(5)
+
+def _set_retry_count(count):
+	if count:
+		univention.config_registry.handler_set(['ldap/client/retry/count=%s'%count])
+	else:
+		univention.config_registry.handler_unset(['ldap/client/retry/count'])
+
+def _print_test_header(header):
+	print '\n************************************************************************'
+	print header
+	print '************************************************************************'
+
+old_retry_count = ucr.get('ldap/client/retry/count')
+
+_set_retry_count(10)
+
+try:
+	_print_test_header('Test: connect, search, stop, start, search')
+	lo = _get_connection()
+	_search(lo)
+	_stop_slapd()
+	_start_slapd()
+	_search(lo)
+	_wait_for_slapd_to_be_started()
+
+
+	_print_test_header('Test: stop, connect - start after 9 seconds, search')
+	_stop_slapd()
+	_start_delyed(delay=8)
+	lo = _get_connection()
+	_search(lo)
+	_wait_for_slapd_to_be_started()
+
+
+	_print_test_header('Test: connect, stop,  - start after 9 seconds, search')
+	lo = _get_connection()
+	_stop_slapd()
+	_start_delyed(delay=8)
+	_search(lo)
+	_wait_for_slapd_to_be_started()
+
+
+	_print_test_header('Test: stop, connect - start after 11 seconds (which is too late), search')
+	_stop_slapd()
+	_start_delyed(delay=11)
+	try:
+		lo = _get_connection()
+		_search(lo)
+	except ldap.SERVER_DOWN:
+		pass
+	else:
+		fail('Search was successful')
+	_wait_for_slapd_to_be_started()
+
+
+	_print_test_header('Test: connect, stop - start after 11 seconds (which is too late), search')
+	lo = _get_connection()
+	_stop_slapd()
+	_start_delyed(delay=11)
+	try:
+		_search(lo)
+	except ldap.SERVER_DOWN:
+		pass
+	else:
+		fail('Search was successful')
+	_wait_for_slapd_to_be_started()
+
+finally:
+	_cleanup(old_retry_count)
+
