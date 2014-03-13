@@ -1,3 +1,11 @@
+univention-base-files (3.0.4-4) unstable; urgency=low
+
+  * Show the note in /etc/issue and /etc/welcome.msg where to find the
+    UCS management system only on master, backup, slave and member
+    (Bug #34330)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Mar 2014 07:15:04 +0100
+
 univention-base-files (3.0.4-3) unstable; urgency=medium
 
   * Add ntp/noquery (Bug #33834)
