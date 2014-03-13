@@ -1,3 +1,12 @@
+univention-base-files (3.0.4-5) unstable; urgency=low
+
+  * Added UCR variable descrption for ldap/client/retry/count to
+    univention-base-files, even if it used in python-univention and
+    univention-config. Anything else would result in a dependency chaos
+    (Bug #34292 and Bug #34293)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Mar 2014 10:40:03 +0100
+
 univention-base-files (3.0.4-4) unstable; urgency=low
 
   * Show the note in /etc/issue and /etc/welcome.msg where to find the

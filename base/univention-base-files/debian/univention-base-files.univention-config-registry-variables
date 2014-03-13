@@ -303,6 +303,12 @@ Description[en]=The interval for the regular execution of Univention Directory P
 Type=str
 Categories=service-ldap
 
+[ldap/client/retry/count]
+Description[de]=Diese Variable definiert wie häufig die internen Programme versuchen den LDAP Server zu erreichen, wenn dieser nicht erreichbar ist. Die Programme warten zwischen jedem Versuch eine Sekunde. Ist die Variable nicht gesetzt, wird 15 verwendet.
+Description[en]=This variable defines how often the internal programs are trying to connect the LDAP server if it is not reachable. The programs wait for one second between each attempt. If the variable is not set, 15 is used.
+Type=int
+Categories=service-ldap
+
 [locale]
 Description[de]=Lokalisierungseigenschaften von Software wie verwendete Datumsformate und die gewünschte Übersetzung werden in Locales festgelegt. Über das UMC-Modul Systemeinstellungen können die installierten Locales ausgewählt werden. Diese Variable speichert die installierten Locales.
 Description[en]=Localisation properties such as time/date formats and the preferred translation are specified in locales. The installed locales can be selected using the UMC module 'System settings'. This variable contains the installed locales.
