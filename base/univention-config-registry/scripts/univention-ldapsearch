@@ -74,7 +74,7 @@ do_search ()
 	fi
 }
 
-retry=${ldap_client_retry_count:-15}
+retry=${ldap_client_retry_count:-10}
 attempts=$((retry+1))
 
 for((i=0;i<$attempts;i++)); do
