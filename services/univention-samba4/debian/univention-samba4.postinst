@@ -97,7 +97,8 @@ univention-config-registry set \
 	samba/short_preserve_case?yes \
 	samba/guest_account?nobody \
 	samba/map_to_guest?"Bad User" \
-	samba/max/protocol?SMB2
+	samba/max/protocol?SMB2 \
+	samba/enable-msdfs?yes
 
 ## more samba3 defaults copied from univention-samba
 if [ "$server_role" != "memberserver" ]
@@ -181,6 +182,12 @@ if [ "$1" = "configure" ]; then
 
 	elif [ -n "$2" ]; then
 
+		### The following block of code may be removed after ucs_3.2-1
+		if dpkg --compare-versions "$2" lt-nl "3.0.39-17"; then
+			univention-config-registry set samba/enable-msdfs=yes
+		fi
+
+		### The samba-ad-dc restart should always be done on updates
 		if [ -x /etc/init.d/samba-ad-dc ]; then
 			processes=$(pgrep -cfx '/usr/sbin/samba -D')
 			if [ "$processes" = 0 ]; then

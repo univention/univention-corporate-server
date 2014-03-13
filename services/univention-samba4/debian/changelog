@@ -1,3 +1,10 @@
+univention-samba4 (3.0.39-17) unstable; urgency=medium
+
+  * Activate vfs_dfs_samba4 on sysvol and netlogon (Bug #34326)
+  * Set samba/enable-msdfs?yes by default and =yes for this update
+
+ -- Arvid Requate <requate@univention.de>  Thu, 13 Mar 2014 18:51:43 +0100
+
 univention-samba4 (3.0.39-16) unstable; urgency=medium
 
   * Terminate option parsing in samba-tool user add call (Bug #32938)
