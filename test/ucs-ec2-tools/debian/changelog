@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.17-1) unstable; urgency=low
+
+  * Fix utils.sh (Bug #34336)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 13 Mar 2014 12:03:44 +0100
+
 ucs-ec2-tools (0.1.16-1) unstable; urgency=low
 
   * Increase the timeout to 1200 seconds while waiting for the EC2

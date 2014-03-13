@@ -39,52 +39,62 @@ basic_setup ()
 
 upgrade_to_latest_errata ()
 {
-	univention-upgrade --noninteractive --ignoreterm --ignoressh
-	# Workaround for Bug #31561
-	sleep 10
-	univention-upgrade --noninteractive --ignoreterm --ignoressh
+	# Bug #34336: needs further discussion if release or only errata updates are expected
+	#local current="$(ucr get version/version)-$(ucr get version/patchlevel)"
+	upgrade_to_latest # --updateto "$current"
 }
 
 upgrade_to_latest_test_errata ()
 {
-	/root/activate-3.2-errata-test-scope.sh
-	univention-upgrade --noninteractive --ignoreterm --ignoressh
-	# Workaround for Bug #31561
-	sleep 10
-	univention-upgrade --noninteractive --ignoreterm --ignoressh
+	local current prev=DUMMY
+	while current="$(ucr get version/version)-$(ucr get version/patchlevel)" && [ "$current" != "$prev" ]
+	do
+		/root/activate-3.2-errata-test-scope.sh
+		upgrade_to_latest
+		prev="$current"
+	done
 }
 
-
-upgrade_to_3.2 ()
+upgrade_to_testing ()
 {
 	ucr set repository/online/server=testing.univention.de
-	univention-upgrade --noninteractive --ignoreterm --ignoressh
+	upgrade_to_latest
+}
+
+upgrade_to_latest ()
+{
+	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@"
 	# Workaround for Bug #31561
 	sleep 10
-	univention-upgrade --noninteractive --ignoreterm --ignoressh
+	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@"
 }
 
 run_setup_join ()
 {
+	local srv
 	/usr/lib/univention-system-setup/scripts/setup-join.sh
 	ucr set apache2/startsite='ucs-overview/' # Bug #31682
-	for srv in univention-management-console-server univention-management-console-web-server apache2; do invoke-rc.d $srv restart; done
+	for srv in univention-management-console-server univention-management-console-web-server apache2
+	do invoke-rc.d "$srv" restart; done
 	ucr unset --forced update/available
 }
 
 run_setup_join_on_non_master ()
 {
-	ucr set nameserver1=$(cat /var/cache/univention-system-setup/profile | sed -ne 's|^nameserver=||p')
+	local srv
+	ucr set nameserver1="$(sed -ne 's|^nameserver=||p' /var/cache/univention-system-setup/profile)"
 	echo -n "univention" >/tmp/univention
 	/usr/lib/univention-system-setup/scripts/setup-join.sh --dcaccount Administrator --password_file /tmp/univention
 	ucr set apache2/startsite='ucs-overview/' # Bug #31682
-	for srv in univention-management-console-server univention-management-console-web-server apache2; do invoke-rc.d $srv restart; done
+	for srv in univention-management-console-server univention-management-console-web-server apache2
+	do invoke-rc.d "$srv" restart; done
 	ucr unset --forced update/available
 }
 
 wait_for_reboot ()
 {
-	for((i=0;i<100;i++)); do pidof apache2 && break; sleep 1; done
+	local i
+	for ((i=0;i<100;i++)); do pidof apache2 && break; sleep 1; done
 }
 
 switch_to_test_app_center ()
@@ -94,13 +104,15 @@ switch_to_test_app_center ()
 
 install_apps ()
 {
- 	for app in $@; do echo "$app" >>/var/cache/appcenter-installed.txt; done
-	for app in $@; do univention-add-app -a --latest $app; done
+	local app
+	for app in "$@"; do echo "$app" >>/var/cache/appcenter-installed.txt; done
+	for app in "$@"; do univention-add-app -a --latest "$app"; done
 }
 
 install_apps_master_packages ()
 {
-	for app in $@; do univention-add-app -m --latest $app; done
+	local app
+	for app in "$@"; do univention-add-app -m --latest "$app"; done
 }
 
 install_ucs_test ()
@@ -112,8 +124,9 @@ install_ucs_test ()
 
 install_apps_test_packages ()
 {
+	local app
 	ucr set repository/online/unmaintained=yes
-	for app in $@; do univention-install --yes ucs-test-$app || true; done
+	for app in "$@"; do univention-install --yes "ucs-test-$app" || true; done
 	ucr set repository/online/unmaintained=no
 }
 
