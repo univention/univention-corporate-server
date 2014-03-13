@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.17-2) unstable; urgency=low
+
+  * Add missing APP_ID to install_apps_test_packages (Bug #32799)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 13 Mar 2014 14:10:01 +0100
+
 ucs-ec2-tools (0.1.17-1) unstable; urgency=low
 
   * Fix utils.sh (Bug #34336)
