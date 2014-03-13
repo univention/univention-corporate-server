@@ -31,6 +31,7 @@
 from univention.testing.strings import random_name, random_int
 from univention.config_registry import ConfigRegistry
 import subprocess
+import time
 import ldap
 import ldap.schema
 import univention.uldap
@@ -66,13 +67,29 @@ def call_unjoin_script(unjoin_script_name):
 
 	return subprocess.call([join_script, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], shell=False)
 
+def __fetch_schema_from_uri(ldap_uri):
+	ucr = ConfigRegistry()
+	ucr.load()
+
+	retry = ucr.get('ldap/client/retry/count', 15)
+	attempts = int(retry) + 1
+
+	i=0
+	while i < attempts:
+		try:
+			return ldap.schema.subentry.urlfetch(ldap_uri)
+		except ldap.SERVER_DOWN:
+			if i >= (attempts-1):
+				raise
+			time.sleep(1)
+		i+=1
+
 def fetch_schema_from_ldap_master():
 	ucr = ConfigRegistry()
 	ucr.load()
 
 	ldap_uri = 'ldap://%(ldap/master)s:%(ldap/master/port)s' % ucr
-
-	return ldap.schema.subentry.urlfetch(ldap_uri)
+	return __fetch_schema_from_uri(ldap_uri)
 
 def fetch_schema_from_local_ldap():
 	ucr = ConfigRegistry()
@@ -80,7 +97,7 @@ def fetch_schema_from_local_ldap():
 
 	ldap_uri = 'ldap://%(hostname)s:%(domainname)s' % ucr
 
-	return ldap.schema.subentry.urlfetch(ldap_uri)
+	return __fetch_schema_from_uri(ldap_uri)
 
 def get_ldap_master_connection(user_dn):
 	ucr = ConfigRegistry()
