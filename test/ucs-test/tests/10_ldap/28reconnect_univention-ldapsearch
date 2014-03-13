@@ -1,0 +1,51 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test reconnect mechanism of univention-ldapsearch
+## tags:
+##  - apptest
+## roles-not:
+##  - basesystem
+## packages:
+##  - univention-config
+## bugs:
+##  - 34293
+## exposure: dangerous
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/undo.sh" || exit 137
+. "$TESTLIBPATH/ucr.sh" || exit 137
+
+undo ucr_restore
+
+stop_and_start_slapd_with_delay()
+{
+	delay=$1
+	{ /etc/init.d/slapd stop; sleep $delay; /etc/init.d/slapd start; } &
+}
+
+do_search ()
+{
+	univention-ldapsearch -s base dn -LLL | grep ^dn
+}
+
+wait_for_slapd()
+{
+	# sleep for a short moment otherwise the tests may get confused
+	sleep 3
+}
+
+stop_and_start_slapd_with_delay 5
+do_search || fail_test 1 "First default test with a delay of 5 seconds failed"
+wait_for_slapd
+
+ucr set ldap/client/retry/count=1
+stop_and_start_slapd_with_delay 2
+do_search && fail_test 1 "Search was successful: ldap/client/retry/count=1 and slapd restart delay is 2"
+wait_for_slapd
+
+ucr set ldap/client/retry/count=11
+stop_and_start_slapd_with_delay 9
+do_search || fail_test 1 "Search was not successful: ldap/client/retry/count=11 and slapd restart delay is 9"
+wait_for_slapd
+
+exit $RETVAL

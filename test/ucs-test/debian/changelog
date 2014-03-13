@@ -1,3 +1,10 @@
+ucs-test (4.0.164-5) unstable; urgency=low
+
+  * 10_ldap/28reconnect_univention-ldapsearch: added test case for
+    univention-ldapsearch reconnect mechanism (Bug #34293)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Mar 2014 11:23:38 +0100
+
 ucs-test (4.0.164-4) unstable; urgency=low
 
   * 10_ldap/25_reconnect_uldap: added a test case for reconnection
