@@ -4,6 +4,7 @@
 ##  - apptest
 ## roles-not:
 ##  - basesystem
+##  - memberserver
 ## packages:
 ##  - univention-config
 ## bugs:
