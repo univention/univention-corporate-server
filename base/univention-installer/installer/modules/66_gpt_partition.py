@@ -3285,6 +3285,10 @@ class object(content):
 			return True
 
 		def write_devices(self):
+			# Reset UEFI / biosgrub warning
+			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=34334
+			self.container['warned_missing_efi_or_biosgrub'] = False
+
 			self.draw()
 			self.act = self.active(self, _('Writing partitions'), _('Please wait ...'), name='act', action='create_partitions')
 			self.act.draw()

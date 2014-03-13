@@ -1,3 +1,10 @@
+univention-installer (9.0.32-3) unstable; urgency=low
+
+  * Display the EFI / biosgrub warning again after re-changing the
+    partition table (Bug #34334)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Mar 2014 14:58:24 +0100
+
 univention-installer (9.0.32-2) unstable; urgency=low
 
   * Show a warning if a base system is selected (Bug #34329)
