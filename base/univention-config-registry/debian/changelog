@@ -1,3 +1,10 @@
+univention-config-registry (9.0.6-8) unstable; urgency=low
+
+  * Added a reconnect mechanism to univention-ldapsearch if the LDAP
+    server is not available (Bug #34293)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Mar 2014 11:36:15 +0100
+
 univention-config-registry (9.0.6-7) unstable; urgency=low
 
   * template-check: Work-around missing debian.deb822 (Bug #24010)

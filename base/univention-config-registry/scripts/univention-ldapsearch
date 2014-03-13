@@ -32,6 +32,8 @@
 
 eval "$(/usr/sbin/univention-config-registry shell)"
 
+tempfile="$(mktemp)"
+
 ## check for option -D to avoid "ldapsearch: -D previously specified"
 ## check for option -w to avoid "ldapsearch: -y incompatible with -w"
 args=()
@@ -50,17 +52,37 @@ for arg in "$@"; do
 	fi
 done
 
-if [ -z "$binddn_given" ]; then
-	binddn="$ldap_binddn"
-	if [ -z "$binddn" ]; then
-		binddn="$ldap_hostdn"
-	fi
-	if [ -z "$password_given" ]; then
-		bindpw_file="/etc/machine.secret"
-		exec ldapsearch -ZZ -D "$binddn" -y $bindpw_file "${args[@]}"
+trap "rm -f $tempfile" EXIT
+
+exec 2> >(tee -a $tempfile >&2)
+
+do_search ()
+{
+	if [ -z "$binddn_given" ]; then
+		binddn="$ldap_binddn"
+		if [ -z "$binddn" ]; then
+			binddn="$ldap_hostdn"
+		fi
+		if [ -z "$password_given" ]; then
+			bindpw_file="/etc/machine.secret"
+			ldapsearch -ZZ -D "$binddn" -y $bindpw_file "${args[@]}"
+		else
+			ldapsearch -ZZ -D "$binddn" "${args[@]}"
+		fi
 	else
-		exec ldapsearch -ZZ -D "$binddn" "${args[@]}"
+		ldapsearch -ZZ "${args[@]}"
 	fi
-else
-	exec ldapsearch -ZZ "${args[@]}"
-fi
+}
+
+retry=${ldap_client_retry_count:-15}
+attempts=$((retry+1))
+
+for((i=0;i<$attempts;i++)); do
+	do_search
+	ret=$?
+	grep -q "^ldap_start_tls: Can't contact LDAP server (-1)$" $tempfile || break
+	echo >$tempfile
+	sleep 1
+done
+
+exit $ret
