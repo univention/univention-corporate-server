@@ -169,24 +169,22 @@ class access:
 		self.follow_referral = follow_referral
 	
 		try:
-			self.client_retry_count = int(ucr.get('ldap/client/retry/count', 15))
+			client_retry_count = int(ucr.get('ldap/client/retry/count', 15))
 		except ValueError:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "Unable to read ldap/client/retry/count, please reset to an integer value")
-			self.client_retry_count = 1
+			client_retry_count = 15
 
-		# we need at least one retry, see also ReconnectLDAPObject in __open
-		if self.client_retry_count == 0:
-			self.client_retry_count = 1
+		self.client_connection_attempt = client_retry_count+1
 
 		i=0
-		while i <= self.client_retry_count:
+		while i <= self.client_connection_attempt:
 			try:
 				self.__open(ca_certfile)
 				break
 			except ldap.SERVER_DOWN:
-				if i >= self.client_retry_count:
+				if i >= (self.client_connection_attempt-1):
 					raise
-				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "Can't contact LDAP server. Try again (%d/%d)" % (i+1,self.client_retry_count))
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "Can't contact LDAP server. Try again (%d/%d)" % (i+1,self.client_connection_attempt))
 				time.sleep(1)
 			i+=1
 
@@ -210,7 +208,7 @@ class access:
 			self.protocol = 'ldap'
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
-		self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_retry_count, retry_delay=1)
+		self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1)
 
 		if ca_certfile:
 			self.lo.set_option( ldap.OPT_X_TLS_CACERTFILE, ca_certfile )

@@ -1,3 +1,9 @@
+univention-python (7.0.3-3) unstable; urgency=low
+
+  * Cleanup ldap/client/retry/count handling (Bug #34292)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Mar 2014 12:27:33 +0100
+
 univention-python (7.0.3-2) unstable; urgency=low
 
   * Added ldap/client/retry/count UCR variable which defines how often
