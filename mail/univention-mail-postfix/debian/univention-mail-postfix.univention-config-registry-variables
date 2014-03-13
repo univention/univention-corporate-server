@@ -232,3 +232,10 @@ Description[de]=Ist diese Option aktiviert, wird der smtpd im Debug-Modus gestar
 Description[en]=If this option is enabled, the smtpd is started in debug mode. If the variable is unset, the service is started normally.
 Type=bool
 Categories=service-mail
+
+[mail/postfix/ldaptable/starttls]
+Description[de]=Ist diese Option aktiviert, verwendet Postfix eine verschlüsselte Verbindung für LDAP-Suchen.
+Description[en]=If this option is activated, Postfix uses an encrypted connection for ldap lookups.
+Type=bool
+Categories=service-mail
+
