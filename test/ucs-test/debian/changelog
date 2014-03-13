@@ -1,3 +1,10 @@
+ucs-test (4.0.164-4) unstable; urgency=low
+
+  * 10_ldap/25_reconnect_uldap: added a test case for reconnection
+    mechanism of univention.uldap (Bug #34292)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Mar 2014 09:54:43 +0100
+
 ucs-test (4.0.164-3) unstable; urgency=low
 
   * 20_app/17: Fix NPE (Bug #34328)
