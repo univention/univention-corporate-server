@@ -48,4 +48,12 @@ stop_and_start_slapd_with_delay 9
 do_search || fail_test 1 "Search was not successful: ldap/client/retry/count=11 and slapd restart delay is 9"
 wait_for_slapd
 
+ucr set ldap/client/retry/count=0
+do_search || fail_test 1 "Search was not successful: ldap/client/retry/count=0 and slapd was not restarted"
+
+ucr set ldap/client/retry/count=0
+stop_and_start_slapd_with_delay 2
+do_search && fail_test 1 "Search was successful: ldap/client/retry/count=0 and slapd restart delay is 2"
+wait_for_slapd
+
 exit $RETVAL
