@@ -1,3 +1,9 @@
+univention-installer (9.0.32-2) unstable; urgency=low
+
+  * Show a warning if a base system is selected (Bug #34329)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Mar 2014 14:39:57 +0100
+
 univention-installer (9.0.32-1) unstable; urgency=low
 
   * scripts/89_tests.sh: excplicit call exit 0 at the end of the join

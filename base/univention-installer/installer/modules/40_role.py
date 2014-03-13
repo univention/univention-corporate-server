@@ -46,6 +46,7 @@ class object(content):
 	def __init__(self, *args, **kwargs):
 		content.__init__(self, *args, **kwargs)
 		self.call_master_joinscripts = None
+		self.basesystem_warning_shown = False
 
 	def checkname(self):
 		return ['system_role']
@@ -119,7 +120,7 @@ class object(content):
 			'domaincontroller_backup': _('Servers with the role of domain controller backup (DC backup for short) contain a replicated copy of the entire LDAP directory, which cannot be changed as all write accesses occur exclusively on the DC master. A copy of all SSL certificates including the private key of the root CA is kept on the DC backup. The DC backup is as such a backup copy of the DC master.  If the DC master should collapse completely, running a special command allows the DC backup to take over the role of the DC master permanently in a very short time.'),
 			'domaincontroller_slave': _('Each domain controller slave (DC slave for short) contains a replicated copy of the entire LDAP directory, which cannot be changed as all write accesses occur on the DC master. The copy can either contain the entire directory or be limited to the files required by a location through selective replication. The DC slave only stores a copy of its own and the public SSL certificate of the root CA. A DC slave system cannot be promoted to a DC master.'),
 			'memberserver': _('Member servers are members of a LDAP domain and offer services such as file storage for the domain. Member servers do not contain a copy of the LDAP directory. It only stores a copy of its own and the public SSL certificate of the root CA.'),
-			'basesystem': _('A base system is an independent system. It is not a member of a domain and does not maintain trust relationships with other servers or domains. A base system is thus suitable for services which are operated outside of the trust context of the domain, such as a web server or a firewall. It is possible to configure DNS and DHCP settings for base systems via the Univention management system as long as the base system is entered as an IP managed client in the directory service.'),
+			'basesystem': _('A base system is an independent system. It is not a member of a domain and does not offer any web based management functions. A base system is thus suitable for services which are operated outside of the trust context of the domain, such as a web server or a firewall. It is possible to configure DNS and DHCP settings for base systems via the Univention management system as long as the base system is entered as an IP managed client in the directory service.'),
 			}
 
 		# get current role
@@ -159,6 +160,10 @@ class object(content):
 			return self.elements[self.current].key_event(key)
 
 	def incomplete(self):
+		selected_role = self.get_elem('RADIO').get_focus()[1]
+		if selected_role == 'basesystem' and not self.basesystem_warning_shown:
+			self.basesystem_warning_shown = True
+			return _('A base system does not offer any web based domain management functions and will not be able to be a domain member. A base system should only be used in some rare use cases, for example as firewall system. This warning is shown only once, the installation can be continued as base system.')
 		return 0
 
 	def helptext(self):
