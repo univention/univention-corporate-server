@@ -1,3 +1,9 @@
+univention-installer (9.0.32-5) unstable; urgency=low
+
+  * Fixed another typo in the german translation (Bug #34334)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Mar 2014 09:32:14 +0100
+
 univention-installer (9.0.32-4) unstable; urgency=low
 
   * Fixed typos in base system warning (Bug #34329)
