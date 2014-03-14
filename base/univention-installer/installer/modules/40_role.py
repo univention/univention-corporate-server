@@ -163,7 +163,7 @@ class object(content):
 		selected_role = self.get_elem('RADIO').get_focus()[1]
 		if selected_role == 'basesystem' and not self.basesystem_warning_shown:
 			self.basesystem_warning_shown = True
-			return _('A base system does not offer any web based domain management functions and will not be able to be a domain member. A base system should only be used in some rare use cases, for example as firewall system. This warning is shown only once, the installation can be continued as base system.')
+			return _('A base system does not offer any web-based domain management functions and will not be able to be a domain member. A base system should only be used in some rare use cases, for example as firewall system. This warning is shown only once, the installation can be continued as base system.')
 		return 0
 
 	def helptext(self):
