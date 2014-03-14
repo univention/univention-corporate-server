@@ -1,3 +1,9 @@
+ucs-test (4.0.164-9) unstable; urgency=low
+
+  * Bug #34343: added test case for detecting whether apps can be installed
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 14 Mar 2014 15:27:06 +0100
+
 ucs-test (4.0.164-8) unstable; urgency=low
 
   * 10_ldap/74schema_update: remove some sleeps from the test case. I

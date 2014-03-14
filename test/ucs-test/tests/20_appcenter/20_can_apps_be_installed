@@ -1,0 +1,86 @@
+#!/usr/share/ucs-test/runner python
+## desc: Checks if apps are installable (except for apps conflicting with installed apsps)
+## tags: [basic,apptest]
+## roles-not: [basesystem]
+## exposure: safe
+## packages:
+##   - univention-management-console-module-appcenter
+
+import os.path
+import sys
+
+from univention.lib.package_manager import PackageManager
+from univention.management.console.modules.appcenter.app_center import Application
+from univention.management.console.modules.appcenter.util import ComponentManager
+from univention.config_registry import ConfigRegistry
+from univention.updater import UniventionUpdater
+
+# the next lines are a workaround for the following traceback:
+#   Error in function stop
+#   Traceback (most recent call last):
+#     File "/usr/lib/python2.6/dist-packages/apt/progress/text.py", line 229, in stop
+#       signal.signal(signal.SIGWINCH, self._signal)
+#   ValueError: signal only works in main thread
+def _dummy(*args):
+	pass
+import signal
+signal._signal_old = signal.signal
+signal.signal = _dummy
+
+
+# helper functions
+def _msg_handler(msg_type):
+	def _handler(msg):
+		print '%s: %s' % (msg_type, msg)
+
+def _str_app(app):
+	return '%s [%s]' % (app.name, app.id)
+
+# instantiate needed tools
+pm = PackageManager(
+	info_handler=_msg_handler('INFO'),
+	step_handler=_msg_handler('STEP'),
+	error_handler=_msg_handler('WARN'),
+	lock=False,
+	always_noninteractive=True,
+)
+pm.update()
+ucr = ConfigRegistry()
+ucr.load()
+uu = UniventionUpdater(False)
+cm = ComponentManager(ucr, uu)
+
+# sync app center data
+Application.sync_with_server()
+
+# get conflicted apps
+all_apps = Application.all()
+_installed_apps = [app for app in all_apps if app.is_installed(pm)]
+installed_apps = set([app.id for app in _installed_apps])
+conflicted_apps = set(reduce(lambda x, y: x + y, [app.get('conflictedapps') for app in _installed_apps]))
+
+print 'Installed apps: %s' % [app for app in installed_apps]
+
+failed = []
+for app in all_apps:
+	if app.id in conflicted_apps:
+		print 'Ignoring app %s: conflict with already installed apps' % _str_app(app)
+		continue
+
+	required_apps_installed = all([japp in installed_apps for japp in app.get('requiredapps')])
+	if not required_apps_installed:
+		print 'Ignoring app %s: required apps are not installed -> %s' % (_str_app(app), app.get('requiredapps'))
+		continue
+
+	print 'Checking app: %s' % _str_app(app)
+	result, previously_registered_by_dry_run = app.install_dry_run(pm, cm)
+	if result['broken']:
+		failed.append((app.id, result['broken']))
+
+if failed:
+	print 'Test failed: the following apps cannot be installed due to broken packages:'
+	for entry in failed:
+		print '\t%s: %s' % entry
+	sys.exit(1)
+
+sys.exit(0)
