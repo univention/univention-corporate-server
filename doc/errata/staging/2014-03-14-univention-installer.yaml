@@ -1,0 +1,14 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-1
+src: univention-installer
+fix: 9.0.32-3.1108.201403131458
+note:
+version: [1]
+desc: |
+  This update fixes the following issues:
+  * The UCS installer now shows a warning and explains the consequence if
+    a base system was selected.
+  * The warning about the missing biosgrub partition is now displayed again
+    after re-changing the partition table.
+bug: [34329,34334]
