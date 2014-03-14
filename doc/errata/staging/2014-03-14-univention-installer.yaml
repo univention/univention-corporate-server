@@ -7,8 +7,8 @@ note:
 version: [1]
 desc: |
   This update fixes the following issues:
-  * The UCS installer now shows a warning and explains the consequence if
-    a base system was selected.
+  * The UCS installer now displays a warning and explains the consequences if
+    a base system was selected as the system role.
   * The warning about the missing biosgrub partition is now displayed again
     after re-changing the partition table.
 bug: [34329,34334]
