@@ -75,9 +75,6 @@ package.install()
 
 call_join_script(join_script_name)
 
-# The ldap server needs a few seconds
-sleep(5)
-
 schema = fetch_schema_from_ldap_master()
 attribute_identifier = "( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFreeAttribute%(attribute_id)s" % {'attribute_id': attribute_id}
 
@@ -99,9 +96,6 @@ package2.build()
 package2.install()
 
 call_join_script(join_script_name)
-
-# The ldap server needs a few seconds
-sleep(20)
 
 schema = fetch_schema_from_ldap_master()
 attribute_identifier_update = "( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFreeAttribute%(attribute_id)s" % {'attribute_id': attribute_id_update}

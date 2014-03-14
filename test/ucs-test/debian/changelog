@@ -1,3 +1,10 @@
+ucs-test (4.0.164-8) unstable; urgency=low
+
+  * 10_ldap/74schema_update: remove some sleeps from the test case. I
+    think it should be work without theses sleeps (Bug #34338)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Mar 2014 13:56:05 +0100
+
 ucs-test (4.0.164-7) unstable; urgency=low
 
   * 10_ldap/*reconnect*: don't test on a memberserver (Bug #34292 and
