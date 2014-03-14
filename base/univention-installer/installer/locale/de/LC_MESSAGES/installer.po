@@ -2256,7 +2256,7 @@ msgstr "installierte System ist ggf. nicht bootbar."
 #: installer/modules/66_gpt_partition.py:703
 #: installer/modules/66_gpt_partition.py:716
 msgid "A BIOS boot partition is missing in your selected"
-msgstr "Die gewünschte Parititionierung enthält keine"
+msgstr "Die gewünschte Partitionierung enthält keine"
 
 #: installer/modules/66_gpt_partition.py:704
 msgid "partition setup. Your installation may not be bootable"
