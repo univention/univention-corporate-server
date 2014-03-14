@@ -19,3 +19,7 @@ Variables: uvmm/backup/directory
 Type: file
 File: etc/default/libvirt-guests
 Variables: uvmm/libvirt/action/.*
+
+Type: file
+File: etc/cron.d/univention-virtual-machine-manager-node
+Variables: libvirt/check/interval

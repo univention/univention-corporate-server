@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-node (2.0.5-3) unstable; urgency=low
+
+  * Add libvirt-check.sh to virtualization nodes. It periodically tests if
+    libvirtd responds and restarts libvirtd if necessary. (Bug #33966) 
+  * Change to libvirt-bin initscript: use sv force-stop and sv force-restart 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 14 Mar 2014 14:48:37 +0100
+
 univention-virtual-machine-manager-node (2.0.5-2) unstable; urgency=low
 
   * Bug #33006: fix removal of umc/modules/setup/network/disabled/by for XEN

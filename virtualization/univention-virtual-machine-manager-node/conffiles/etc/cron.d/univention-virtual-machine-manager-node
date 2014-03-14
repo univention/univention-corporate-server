@@ -1,0 +1,9 @@
+@%@UCRWARNING=# @%@
+
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+
+@!@
+if configRegistry.get('libvirt/check/interval', '0') != '0':
+        print "*/%s * * * *   root   /usr/lib/univention-virtual-machine-manager-node/libvirt-check.sh" % configRegistry['libvirt/check/interval']
+@!@
+

@@ -4,3 +4,4 @@ univention-virtual-machine-manager-restore.py usr/sbin/univention-virtual-machin
 57univention-virtual-machine-manager-node-common.uinst usr/lib/univention-uninstall/
 conffiles/etc/runit/univention-libvirt/run etc/runit/univention-libvirt/
 conffiles/etc/modprobe.d/loop.conf etc/modprobe.d/
+libvirt-check.sh usr/lib/univention-virtual-machine-manager-node

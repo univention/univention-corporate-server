@@ -45,3 +45,15 @@ Description[de]=Deaktiviert die Netzwerkkonfiguration über UMC solange noch die
 Description[en]=Deactivates the network configuration through UMC while the deprecated scripts of KVM and Xen are still active. Read <http://docs.univention.de/computers-3.2.html#uvmm> for more information.
 Type=str
 Categories=uvmm
+
+[libvirt/check/interval]
+Description[de]=Diese Variable konfguriert einen Intervall in Minuten, in dem geprüft wird, ob der libvirt-Dienst noch läuft. Setzt man die Variable auf '0' oder ist die Variable nicht gesetzt, erfolgt keine Verfügbarkeitsprüfung.
+Description[en]=This variable configures an interval in minutes for checking whether the libvirt service is running. If the variable is set to '0' or the variable is unset, no availability check is made.
+Type=int
+Categories=uvmm,system-services
+
+[libvirt/check/timeout]
+Description[de]=Ist die Verfügbarkeitsprüfung des libvirt-Dienstes aktiviert (siehe 'libvirt/check/interval'), konfiguriert diese Variable die Zeit in Sekunden, in der der libvirt-Dienst auf eine Anfrage antworten muss.
+Description[en]=If the availability check for libvirt is enabled (see 'libvirt/check/interval'), this variable configures the time in seconds in which the libvirt service must reply to a request.
+Type=int
+Categories=uvmm,system-services

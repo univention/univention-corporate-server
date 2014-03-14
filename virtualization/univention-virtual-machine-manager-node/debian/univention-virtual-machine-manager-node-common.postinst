@@ -40,7 +40,10 @@ configure)
 	univention-config-registry set \
 		security/packetfilter/package/univention-virtual-machine-manager-node-common/tcp/16514/all="ACCEPT" \
 		security/packetfilter/package/univention-virtual-machine-manager-node-common/tcp/16514/all/en="libvirt" \
-		uvmm/backup/directory\?/var/backups/univention-virtual-machine-manager-daemon
+		uvmm/backup/directory\?/var/backups/univention-virtual-machine-manager-daemon \
+		libvirt/check/interval?2 \
+		libvirt/check/timeout?5
+
 	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 	# Create UDM objects

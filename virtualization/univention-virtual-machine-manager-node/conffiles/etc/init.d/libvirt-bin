@@ -75,7 +75,7 @@ case "$1" in
 		;;
 	stop)
 		log_daemon_msg "Stopping $DESC" "$NAME"
-		sv down "$DAEMON"
+		sv force-stop "$DAEMON"
 		log_end_msg 0
 		;;
 	restart|force-reload)
@@ -86,7 +86,7 @@ case "$1" in
 			check_autostart "$DAEMON" libvirt/autostart
 		fi
 		log_daemon_msg "Restarting $DESC" "$NAME"
-		sv restart "$DAEMON"
+		sv force-restart "$DAEMON"
 		log_end_msg 0
 		;;
 	crestart)
