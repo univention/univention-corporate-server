@@ -7,6 +7,6 @@ note:
 version: [1]
 desc: |
   This update fixes the following issues:
-  * Use force-stop and force-restart in uvmmd-initscript to support
-    blocked processes
+  * Use force-stop and force-restart in UVMMd-initscript to handle
+    blocked UVMMd processes
 bug: [34321]
