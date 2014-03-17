@@ -1,0 +1,80 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create users/user
+## tags: [udm,apptest]
+## roles: [domaincontroller_master]
+## exposure: safe
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+##   - univention-samba4
+#
+#  Bug #31324
+
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import subprocess
+import re
+import univention.config_registry
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+from time import sleep
+
+
+
+debug = False
+
+
+def check_user(username):
+	samba_tool_subprocess = subprocess.Popen(["samba-tool", 'user', 'list'],shell=False, stdout=subprocess.PIPE).communicate()
+	subprocess_output = samba_tool_subprocess[0].splitlines()
+	re_username = re.compile(r"%s"%username)
+	user_found = False
+	for line in subprocess_output:
+		if re.match(re_username,line):
+			user_found = True
+	if user_found:
+		print "User synced to Samba"
+	else:
+		raise Exception("Username not found")
+
+
+def modify_username(user_dn,username2,debug=False):
+	newdn = 'uid=%s,%s' % (username2, user_dn.split(",", 1)[1])
+	udm._cleanup['users/user'].append(newdn)
+	udm.modify_object('users/user', dn = user_dn, username = username2)
+	return newdn
+
+
+def wait_for_sync(multiplier=1):
+	synctime = int(ucr.get("connector/s4/poll/sleep",7))
+	synctime = (synctime +3)*multiplier
+	print ("Waiting {0} seconds for sync...".format(synctime))
+	sleep (synctime)
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+
+			username2 = uts.random_name()
+
+			user_dn, username1 = udm.create_user()
+
+			if debug:
+				print ("User : %s"%user_dn)
+				print ("Username : %s"%username1)
+
+			utils.verify_ldap_object(user_dn)
+
+			wait_for_sync(3)
+
+			check_user(username1)
+
+			modified_user_dn=modify_username(user_dn, username2, debug)
+
+			wait_for_sync(3)
+
+			check_user(username2)
+
+			utils.verify_ldap_object(modified_user_dn)

@@ -1,3 +1,13 @@
+ucs-test (4.0.164-11) unstable; urgency=low
+
+  * Bug #31324: added test cases for s4 connector sync of modified users /
+    groups
+  
+  * Bug #31792: added test case to check if packages of installed appcenter
+    apps are available for i386 architecture
+
+ -- Drees Dormann <ddormann@fabler.knut.univention.de>  Mon, 17 Mar 2014 16:22:52 +0100
+
 ucs-test (4.0.164-10) unstable; urgency=low
 
   * 50_samba/41password_change: fixed command calls, it must be 'net rpc

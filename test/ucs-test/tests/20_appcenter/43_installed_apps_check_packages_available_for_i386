@@ -1,0 +1,154 @@
+#!/usr/share/ucs-test/runner python
+## desc: Checks if App packages are available as i386
+## tags: [appcenter]
+## roles-not: []
+## exposure: safe
+## packages:
+##   - univention-directory-manager-tools
+##   - univention-management-console-module-appcenter
+##
+#
+#  Bug #31792
+
+import apt
+import re
+import subprocess
+from subprocess import PIPE
+import univention.management.console.modules.appcenter.app_center as app
+import univention.lib.package_manager as PM
+import gzip
+import tempfile
+import urlparse, urllib
+
+import univention.config_registry
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+
+
+def get_installed_default_packages():
+	c = apt.Cache()
+	c.open()
+	packages = {}
+	pm = PM.PackageManager()
+	apps = app.Application.all()
+	default_packages = []
+	for application in apps:
+		if (application.is_installed(pm)):
+			for item in application.get('defaultpackages'):
+				default_packages.append(item)
+			if application.get('defaultpackagesmaster'):
+				for item in application.get('defaultpackagesmaster'):
+					default_packages.append(item)
+	default_packages=(set(default_packages))
+	for package in default_packages:
+		pack = c[package]
+		arch = pack.installed.architecture
+		if arch == 'amd64' and pack.installed:
+			packages[package] = pack.installed.version,pack.installed.uris[0]
+	return packages
+
+
+def change_architecture_suffix(package_repository):
+	i386_packages_with_repository= {}
+	for item in package_repository.items():
+		i386_packages_with_repository[item[0]] = (item[1][0],item[1][1].replace('amd64','i386'))
+	return i386_packages_with_repository
+
+
+def check_packages_available(amd64_packages_with_repository):
+	i386_packages_with_repository=change_architecture_suffix(amd64_packages_with_repository)
+	not_found = i386_packages_with_repository
+	repository_packages = {}
+	for item in i386_packages_with_repository.items():
+		parse_result = urlparse.urlsplit(item[1][1])
+		repository_url = urlparse.urlunsplit((parse_result.scheme, parse_result.netloc, parse_result.path,'', parse_result.fragment))
+		try:
+			devnull = open('/dev/null', 'w')
+			temp_file=tempfile.NamedTemporaryFile()
+			temp_file_name=temp_file.name
+			getfile = subprocess.Popen(['wget', '-O'+temp_file_name, '{0}Packages.gz'.format(repository_url) ], shell = False, stdout=devnull, stderr=devnull).communicate()[0]
+		except:
+			raise Exception("Error getting Packages list")
+		else:
+			repository_packages.update(filter_packages_and_versions(temp_file))
+	not_found = compare_versions(repository_packages,not_found)
+	if len(not_found) > 0:
+		main_repository_packages = get_main_repository_packages()
+		not_found = compare_versions(main_repository_packages,not_found)
+	show_result(not_found)
+
+
+def compare_versions(repository_packages,not_found):
+	for key in repository_packages.keys():
+		if key in not_found.keys():
+			package_version = not_found[key][0]
+			if package_version in repository_packages[key]:
+				del not_found[key]
+	return not_found
+
+
+def get_main_repository_packages():
+	main_repository_packages = {}
+	repository_server = ucr.get("repository/online/server")
+	app_repository_server = ucr.get("repository/app_center/server")
+	ucs_version = ucr.get("version/version")
+	ucs_patchlevel = ucr.get("version/patchlevel")
+	packages_files = ('http://{0}/{1}/maintained/{1}-{2}/i386/Packages.gz'.format(repository_server,ucs_version,ucs_patchlevel)),('http://{0}/{1}/unmaintained/{1}-{2}/i386/Packages.gz'.format(repository_server,ucs_version,ucs_patchlevel))
+	for package_file in packages_files:
+		try:
+			temp_file=tempfile.NamedTemporaryFile()
+			temp_file_name=temp_file.name
+			devnull = open('/dev/null', 'w')
+			getfile = subprocess.Popen(['wget','-O'+temp_file_name, package_file], shell=False, stdout=devnull, stderr=devnull).communicate()[0]
+		except:
+			raise Exception("Could not get Packages list")
+		else:
+			main_repository_packages.update(filter_packages_and_versions(temp_file))
+	return main_repository_packages
+
+
+def filter_packages_and_versions(temp_file):
+	temp_file_name = temp_file.name
+	file = gzip.open(temp_file_name,'rb')
+	repository_packages = {}
+	re_repository_version=re.compile(r"Version:\s+(?P<version>\S+)")
+	re_package=re.compile(r"Package:\s+(?P<package>\S+)")
+	for line in file.readlines():
+		if line.startswith('Package:'):
+			match = re_package.match(line)
+			package_match = match.group("package")
+		else:
+			matching = re_repository_version.match(line)
+			if matching:
+				if not package_match in repository_packages:
+					repository_packages[package_match] = [matching.group("version")]
+				else:
+					repository_packages[package_match].append(matching.group("version"))
+	file.close()
+	temp_file.close()
+	return repository_packages
+
+
+def show_result(not_found):
+	if len(not_found) > 0:
+		print
+		print ("Error!")
+		for item in not_found.items():
+			print ("Package: " + item[0] + " , version: "+ item[1][0])
+		print ("not found in repositorys")
+		print
+		raise Exception ("Test Failed: Packages not found")
+	else:
+		print
+		print ("All packages found in repository")
+		print
+
+
+if __name__ == "__main__":
+
+	single_architecture_packages = get_installed_default_packages()
+
+	print
+	print ("Packages with amd64 architecture: " + ' ,'.join(single_architecture_packages.keys()))
+
+	check_packages_available(single_architecture_packages)

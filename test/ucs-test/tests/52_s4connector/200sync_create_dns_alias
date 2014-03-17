@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Univention-s4-connector dns forward zone syncronisation
+## desc: Univention-s4-connector dns alais record syncronisation
 ## tags: [basic]
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
