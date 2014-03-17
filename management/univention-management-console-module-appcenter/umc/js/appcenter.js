@@ -147,7 +147,7 @@ define([
 					when(deferred, lang.hitch(this, function() {
 						this.standby(false);
 						this._tabContainer.selectChild(this._packages);
-						this._packages._call_installer('install', pkgs);
+						this._packages._call_installer('install', pkgs, true);
 					}));
 				} catch(error) {
 					console.error("onInstallComponent: " + error.message);

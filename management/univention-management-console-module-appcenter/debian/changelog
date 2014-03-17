@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.51-6) unstable; urgency=low
+
+  * Bug #34278: Do an apt-get update before installing default packages of a
+    component
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 17 Mar 2014 15:29:47 +0100
+
 univention-management-console-module-appcenter (3.0.51-5) unstable; urgency=low
 
   * Bug #33728: Add infrastructure to change App ID and rename tine20org

@@ -361,7 +361,8 @@ define([
 		_breaks_anything: function(values) { return values.breaks !== undefined && values.breaks.length; },
 
 		// prepares all data for the acutal execution of the installer.
-		_call_installer: function(func, ids) {
+		_call_installer: function(func, ids, aptGetUpdate) {
+			aptGetUpdate = aptGetUpdate || false;
 			var verb = '';
 			var verb1 = '';
 			switch(func) {
@@ -383,7 +384,7 @@ define([
 			}
 
 			this.standby(true);
-			tools.umcpCommand('appcenter/packages/invoke/test', {'function': func, 'packages': ids}).then(lang.hitch(this, function(data) {
+			tools.umcpCommand('appcenter/packages/invoke/test', {'function': func, 'packages': ids, 'update' : aptGetUpdate}).then(lang.hitch(this, function(data) {
 				this.standby(false);
 				var result = data.result;
 				var txt = '';

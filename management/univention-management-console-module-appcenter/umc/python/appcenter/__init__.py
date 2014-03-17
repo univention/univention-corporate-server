@@ -365,10 +365,13 @@ class Instance(umcm.Base):
 				'upgrade' : 'install',
 				'uninstall' : 'remove',
 			}, required=True),
-		packages=ListSanitizer(StringSanitizer(minimum=1), required=True)
+		packages=ListSanitizer(StringSanitizer(minimum=1), required=True),
+		update=BooleanSanitizer()
 		)
 	@simple_response
-	def packages_invoke_dry_run(self, packages, function):
+	def packages_invoke_dry_run(self, packages, function, update):
+		if update:
+			self.package_manager.update()
 		packages = self.package_manager.get_packages(packages)
 		kwargs = {'install' : [], 'remove' : [], 'dry_run' : True}
 		if function == 'install':
