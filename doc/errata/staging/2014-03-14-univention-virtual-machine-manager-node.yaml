@@ -2,12 +2,12 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-virtual-machine-manager-node
-fix: 2.0.5-3.74.201403141452
+fix: 2.0.5-4.75.201403171004
 note:
 version: [1]
 desc: |
   This update fixes the following issues:
   * Add libvirt-check.sh to virtualization nodes. It periodically tests if
-  libvirtd responds and restarts libvirtd if necessary. (Bug #33966)
+    libvirtd responds and restarts libvirtd if necessary. (Bug #33966)
   * Change to libvirt-bin initscript: use sv force-stop and sv force-restart
 bug: [33966]
