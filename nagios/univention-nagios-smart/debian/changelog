@@ -1,3 +1,9 @@
+univention-nagios-smart (3.0.2-1) unstable; urgency=low
+
+  * fixed check_smart_suidwrapper.c (Bug #34041)
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Mar 2014 14:19:50 +0100
+
 univention-nagios-smart (3.0.1-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)
