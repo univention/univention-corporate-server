@@ -1,3 +1,10 @@
+ucs-test (4.0.164-10) unstable; urgency=low
+
+  * 50_samba/41password_change: fixed command calls, it must be 'net rpc
+    user' and 'net ads' (Bug #34350)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Mar 2014 10:55:54 +0100
+
 ucs-test (4.0.164-9) unstable; urgency=low
 
   * Bug #34343: added test case for detecting whether apps can be installed
