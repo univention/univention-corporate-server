@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-1
+src: univention-mail-cyrus
+fix: 6.0.6-1.194.201403170855
+note:
+version: [1]
+desc: |
+  * The listener module for shared folders now honours
+    the UCR variable mail/cyrus/mailbox/delete when deleting 
+    imap folders.
+bug: [34165]

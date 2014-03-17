@@ -8,10 +8,10 @@ version: [1]
 desc: |
   This update fixes the following issues:
   * The postfix policy service listfilter (to restrict email delivery to
-	groups and lists) is now executed as user listfilter instead of the user
+    groups and lists) is now executed as user listfilter instead of the user
     cyrus to allow this feature also in environments without the 
     component univention-mail-cyrus.
   * The new UCR variable mail/postfix/ldaptable/starttls has been introduced to
-	define whether postfix should use an encrypted (TLS) connection for ldap
+    define whether postfix should use an encrypted (TLS) connection for ldap
     lookups (default: yes).
 bug: [26910,34198]
