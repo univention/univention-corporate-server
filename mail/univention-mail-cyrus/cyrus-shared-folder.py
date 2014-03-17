@@ -175,15 +175,20 @@ def handler(dn, new, old, command):
 	# Delete existing shared folder
 	if (old and not new) or (not new.has_key('univentionMailHomeServer')) or (not new['univentionMailHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname,domainname)]):
 
-		try:
-			listener.setuid(0)
-			name = '"%s"' % old['cn'][0]
-			p = os.popen( '/usr/sbin/univention-cyrus-delete-folder %s' % name )
-			p.close()
-
-			listener.unsetuid()
-		except:
-			pass
+		if listener.baseConfig.is_true('mail/cyrus/mailbox/delete', False):
+			univention.debug.debug(
+				univention.debug.LISTENER,
+				univention.debug.PROCESS,
+				'cyrus: delete mailbox %s' % old['cn'][0],
+			)
+			try:
+				listener.setuid(0)
+				p = os.popen( '/usr/sbin/univention-cyrus-delete-folder %s' % old['cn'][0] )
+				p.close()
+			except:
+				pass
+			finally:
+				listener.unsetuid()
 
 	# Now comes the long complex part
 	# Different possibilities
