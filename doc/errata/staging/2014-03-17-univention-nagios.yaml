@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-1
+src: univention-nagios
+fix: 7.0.6-2.263.201403171419
+note:
+version: [1]
+desc: |
+  * The UCR templates for the nrpe server config and init file
+    have been modified to use /var/run/nagios/nrpe.pid as PID
+    file for the nrpe daemon.
+bug: [34063]
