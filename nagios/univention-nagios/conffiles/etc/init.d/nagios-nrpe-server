@@ -47,8 +47,6 @@ if [ ! -d "$PIDDIR" ]; then
 	chown nagios "$PIDDIR"
 fi
 
-test -e $PIDDIR/nrpe.pid && rm $PIDDIR/nrpe.pid
-
 set -e
 
 case "$1" in
@@ -58,6 +56,7 @@ case "$1" in
 	    . "/usr/share/univention-config-registry/init-autostart.lib"
 	    check_autostart nagios-client nagios/client/autostart
 	fi
+	test -e $PIDDIR/nrpe.pid && rm $PIDDIR/nrpe.pid
 	log_daemon_msg "Starting $DESC" "$NAME"
 	start_daemon $NICENESS $DAEMON -c $CONFIG -d $DAEMON_OPTS
 	log_end_msg $?

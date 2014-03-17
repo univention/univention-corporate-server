@@ -1,3 +1,9 @@
+univention-nagios (7.0.6-2) unstable; urgency=low
+
+  * fixed init script for nrpe server (Bug #34063) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Mar 2014 14:18:52 +0100
+
 univention-nagios (7.0.6-1) unstable; urgency=low
 
   * use /var/run/nagios/nrpe.pid as PID file for nrpe server (Bug #34063) 
