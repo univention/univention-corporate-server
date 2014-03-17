@@ -8,6 +8,6 @@ version: [1]
 desc: |
   This update fixes the following issues:
   * Add libvirt-check.sh to virtualization nodes. It periodically tests if
-    libvirtd responds and restarts libvirtd if necessary. (Bug #33966)
-  * Change to libvirt-bin initscript: use sv force-stop and sv force-restart
+    libvirtd responds and restarts libvirtd if necessary.
+  * Change libvirt-bin initscript to use sv force-stop and sv force-restart.
 bug: [33966]
