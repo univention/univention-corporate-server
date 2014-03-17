@@ -10,5 +10,5 @@ desc: |
   * The /etc/issue welcome message mentions where to find the management system.
     After installing this update the message will only be shown on domain controllers
     and member servers.
-  * The UCR variable ldap/client/retry/count is set to 10 by default.
+  * The UCR variable ldap/client/retry/count is now set to 10 by default.
 bug: [34330,34292]
