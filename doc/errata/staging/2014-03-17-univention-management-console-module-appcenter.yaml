@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-1
+src: univention-management-console-module-appcenter
+fix: 3.0.51-5.239.201403171157
+note:
+version: [1]
+desc: |
+  This errata update fixes several issues:
+  * Renamed the App ID for "Tine 2.0" from tine20org to tine20 to reflect that
+    this is the commercial version.
+bug: [33728]
