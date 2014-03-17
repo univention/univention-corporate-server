@@ -19,6 +19,7 @@ DAEMON=/usr/sbin/nrpe
 NAME=nagios-nrpe
 DESC=nagios-nrpe
 CONFIG=/etc/nagios/nrpe.cfg
+PIDDIR=/var/run/nagios
 
 test -x $DAEMON || exit 0
 
@@ -39,6 +40,14 @@ if [ -f /etc/default/nagios-nrpe ]; then
 	. /etc/default/nagios-nrpe
 fi
 if [ "$NICENESS" ]; then NICENESS="-n $NICENESS"; fi
+
+#since /var/run can be wiped completly we create our run directory here
+if [ ! -d "$PIDDIR" ]; then
+	mkdir "$PIDDIR"
+	chown nagios "$PIDDIR"
+fi
+
+test -e $PIDDIR/nrpe.pid && rm $PIDDIR/nrpe.pid
 
 set -e
 
