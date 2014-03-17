@@ -341,12 +341,14 @@ class Application(object):
 			if self.get(ikey):
 				self._options[ikey] = urljoin('%s/' % self.get_metainf_url(), self.get(ikey))
 
+		# versions will be set to something meaningful by Application.all()
+		self.versions = [self]
+
 		# save important meta data
-		self.id = self._options['id'] = self._options['id'].lower()
+		self.id = self.ldap_id = self.ldap_container = None
+		self.set_id(self._options['id'])
 		self.name = self._options['name']
 		self.version = self._options['version']
-		self.ldap_container = 'cn=%s,cn=apps,cn=univention,%s' % (self.id, ucr.get('ldap/base'))
-		self.ldap_id = '%s_%s' % (self.id, self.version)
 
 		# get the name of the component
 		m = self._reg_component_id.match(url)
@@ -367,6 +369,18 @@ class Application(object):
 		# candidate is for upgrading an already installed app
 		# is set by all()
 		self.candidate = None
+
+	def set_id(self, app_id, recursive=True):
+		if recursive:
+			for iapp in self.versions:
+				# will call also for self!
+				iapp.set_id(app_id, recursive=False)
+		else:
+			app_id = app_id.lower()
+			self.id = app_id
+			self._options['id'] = app_id
+			self.ldap_id = '%s_%s' % (self.id, self.get('version'))
+			self.ldap_container = 'cn=%s,cn=apps,cn=univention,%s' % (self.id, ucr.get('ldap/base'))
 
 	def get(self, key):
 		'''Helper function to access configuration elements of the application's .ini
@@ -665,13 +679,13 @@ class Application(object):
 					return True
 			return False
 
-		# filter blacklisted apps (by name and by category)
+		# filter blacklisted apps (by id, name, and category)
 		filtered_applications = cls._all_applications
 		blacklist = ucr.get('repository/app_center/blacklist')
 		if blacklist:
 			filtered_applications = [app for app in filtered_applications if not _included(blacklist, app)]
 
-		# filter whitelisted apps (by name and by category)
+		# filter whitelisted apps (by id, name, and category)
 		whitelist = ucr.get('repository/app_center/whitelist')
 		if whitelist:
 			# whitelist is stronger than blacklist: iterate over all_applications

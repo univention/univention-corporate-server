@@ -1,0 +1,94 @@
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
+#
+# Univention App Center
+#  univention-rename-app
+#
+# Copyright 2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+#
+
+import sys
+from optparse import OptionParser
+
+from univention.lib.package_manager import PackageManager
+from univention.updater import UniventionUpdater
+from univention.config_registry import ConfigRegistry
+from univention.management.console.modules.appcenter.util import ComponentManager, install_opener
+from univention.management.console.modules.appcenter.app_center import Application
+
+ucr = ConfigRegistry()
+ucr.load()
+
+def rename(old_id, new_id):
+	install_opener(ucr)
+	app = Application.find(old_id)
+	if not app:
+		app = Application.find(new_id)
+	if not app:
+		sys.stderr.write('Found neither OLD_ID nor NEW_ID.\n')
+		raise ValueError()
+	uu = UniventionUpdater(False)
+	component_manager = ComponentManager(ucr, uu)
+	package_manager = PackageManager(lock=False)
+
+	if not app.is_installed(package_manager, strict=False):
+		sys.stdout.write('%s is not installed. Fine, nothing to do.\n' % app.name)
+		return
+
+	app.set_id(old_id)
+	app.unregister_all_and_register(None, component_manager, package_manager)
+	app.tell_ldap(ucr, package_manager, inform_about_error=False)
+
+	app.set_id(new_id)
+	app.register(component_manager, package_manager)
+	app.tell_ldap(ucr, package_manager, inform_about_error=False)
+
+def main():
+	usage = '%prog OLD_ID NEW_ID'
+	description = '%prog changes the internal ID of an application. This means:' \
+		'(1) unregister OLD_ID, remove from LDAP' \
+		'(2) register NEW_ID, add to LDAP'
+	parser = OptionParser(usage=usage, description=description)
+	args = parser.parse_args()[1]
+	try:
+		old_id, new_id = args
+	except ValueError:
+		parser.print_usage()
+		sys.exit(1)
+	try:
+		rename(old_id, new_id)
+	except Exception:
+		sys.stderr.write('univention-rename-app did not succeed.\n')
+		sys.exit(1)
+	else:
+		sys.stdout.write('Rename done.\n')
+		sys.exit(0)
+
+if __name__ == '__main__':
+	main()
+

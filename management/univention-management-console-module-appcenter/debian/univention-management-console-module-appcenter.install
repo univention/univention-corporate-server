@@ -2,3 +2,4 @@ udm/handlers/appcenter/*.py usr/share/pyshared/univention/admin/handlers/appcent
 ldap/*.schema usr/share/univention-management-console-module-appcenter
 ldap/*.acl usr/share/univention-management-console-module-appcenter
 scripts/univention-register-apps usr/sbin/
+scripts/univention-rename-app usr/sbin/

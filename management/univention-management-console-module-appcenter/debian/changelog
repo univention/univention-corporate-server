@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.51-5) unstable; urgency=low
+
+  * Bug #33728: Add infrastructure to change App ID and rename tine20org
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 17 Mar 2014 11:54:24 +0100
+
 univention-management-console-module-appcenter (3.0.51-4) unstable; urgency=low
 
   * Bug #34145: Document whitelisting and blacklisting
