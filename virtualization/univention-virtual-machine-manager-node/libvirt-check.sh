@@ -32,12 +32,11 @@
 
 logfile="/var/log/univention/virtual-machine-manager-node-errors.log"
 
-if [ -f /proc/xen/privcmd ]; then
+if [ -f /proc/xen/privcmd ] && grep -q control_d /proc/xen/capabilities >/dev/null 2>&1; then
 	uri="xen+unix:///"
 elif [ -c /dev/kvm ]; then
 	uri="qemu:///system"
 else
-	echo "libvirt-check.sh: No hypervisor found, exiting" >>"$logfile"
 	exit 0
 fi
 
@@ -56,7 +55,7 @@ if sv status /etc/runit/univention-libvirt | grep ^run: > /dev/null 2>&1; then
 		wait $pid >/dev/null 2>&1
 
 		echo "libvirt-check.sh: libvirt does not response like expected. Restarting libvirt now." >>"$logfile"
-		invoke-rc.d libvirt-bin restart
+		invoke-rc.d libvirt-bin restart >>"$logfile" 2>&1
 	fi
 fi
 
