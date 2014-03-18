@@ -1,0 +1,14 @@
+product: ucs
+release: "3.1"
+version: [0, 1]
+scope: ucs_3.1-0-errata3.1-1
+src: udisks
+fix: 1.0.1+git20100614-3.7.201403181144
+desc: |
+ Buffer overflow in mount path parsing. A malicious, local user could use this
+ flaw to create a specially-crafted mount point directory structure that
+ could lead to arbitrary code execution with the privileges of the udisks
+ daemon (root). (CVE-2014-0004)
+note: This update fixes this vulnerability.
+cve:
+ - CVE-2014-0004
