@@ -1,8 +1,13 @@
+ucs-test (4.0.164-12) unstable; urgency=low
+
+  * Bug #34343: print more information for broken apps
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 18 Mar 2014 12:33:27 +0100
+
 ucs-test (4.0.164-11) unstable; urgency=low
 
   * Bug #31324: added test cases for s4 connector sync of modified users /
     groups
-  
   * Bug #31792: added test case to check if packages of installed appcenter
     apps are available for i386 architecture
 

@@ -8,6 +8,7 @@
 
 import os.path
 import sys
+import subprocess
 
 from univention.lib.package_manager import PackageManager
 from univention.management.console.modules.appcenter.app_center import Application
@@ -27,7 +28,6 @@ import signal
 signal._signal_old = signal.signal
 signal.signal = _dummy
 
-
 # helper functions
 def _msg_handler(msg_type):
 	def _handler(msg):
@@ -36,6 +36,9 @@ def _msg_handler(msg_type):
 def _str_app(app):
 	return '%s [%s]' % (app.name, app.id)
 
+# initiate UCR and manager instances
+ucr = ConfigRegistry()
+ucr.load()
 # instantiate needed tools
 pm = PackageManager(
 	info_handler=_msg_handler('INFO'),
@@ -45,10 +48,28 @@ pm = PackageManager(
 	always_noninteractive=True,
 )
 pm.update()
-ucr = ConfigRegistry()
-ucr.load()
 uu = UniventionUpdater(False)
 cm = ComponentManager(ucr, uu)
+
+# more helper functions/variables
+is_master = ucr.get('server/role') == 'domaincontroller_master' or ucr.get('server/role') == 'domaincontroller_backup'
+
+def _packages_to_install(app):
+	packages = []
+	packages.extend(app.get('defaultpackages'))
+	if is_master:
+		packages.extend(app.get('defaultpackagesmaster'))
+	return packages
+
+def _apt_get_simulate(app):
+	app.register(cm, pm)
+	packages = _packages_to_install(app)
+	cmd = ['/usr/bin/apt-get', 'install', '-s'] + packages
+	print 'Executing the command: %s' % cmd
+	process = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	out, err = process.communicate()
+	app.unregister(cm)
+	return out + err
 
 # sync app center data
 Application.sync_with_server()
@@ -75,12 +96,14 @@ for app in all_apps:
 	print 'Checking app: %s' % _str_app(app)
 	result, previously_registered_by_dry_run = app.install_dry_run(pm, cm)
 	if result['broken']:
-		failed.append((app.id, result['broken']))
+		failed.append((app, result['broken']))
 
 if failed:
-	print 'Test failed: the following apps cannot be installed due to broken packages:'
-	for entry in failed:
-		print '\t%s: %s' % entry
+	print '\nTEST FAILED: the following apps cannot be installed due to broken packages...'
+	for app, brokenPackages in failed:
+		print '\n[ APP: %s ]' % app.id
+		print 'broken packages: %s' % (app.id, brokenPackages)
+		print 'output of apt-get install -s\n%s' % _apt_get_simulate(app)
 	sys.exit(1)
 
 sys.exit(0)
