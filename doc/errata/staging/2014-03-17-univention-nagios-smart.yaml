@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-nagios-smart
-fix: 3.0.2-1.23.201403171426
+fix: 3.0.2-2.24.201403191217
 note:
 version: [1]
 desc: |
