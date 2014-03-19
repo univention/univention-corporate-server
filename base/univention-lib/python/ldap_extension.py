@@ -2,6 +2,7 @@ from optparse import OptionParser, OptionGroup, Option, OptionValueError
 from copy import copy
 import inspect
 import os
+import shutil
 import re
 import sys
 import univention.debug as ud
@@ -392,7 +393,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 						backup_fd, backup_filename = tempfile.mkstemp()
 						ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old file %s to %s.' % (name, old_filename, backup_filename))
 						try:
-							os.rename(old_filename, backup_filename)
+							shutil.move(old_filename, backup_filename)
 						except IOError:
 							ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old file %s, removing it.' % (name, old_filename))
 							os.unlink(old_filename)	## no choice
@@ -403,7 +404,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 				if not os.path.isdir(self.basedir):
 					if os.path.exists(self.basedir):
 						ud.debug(ud.LISTENER, ud.WARN, '%s: Directory name %s occupied, renaming blocking file.' % (name, self.basedir))
-						os.rename(self.basedir, "%s.bak" % self.basedir)
+						shutil.move(self.basedir, "%s.bak" % self.basedir)
 					ud.debug(ud.LISTENER, ud.INFO, '%s: Create directory %s.' % (name, self.basedir))
 					os.makedirs(self.basedir, 0755)
 
@@ -434,7 +435,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 					if backup_filename:
 						ud.debug(ud.LISTENER, ud.ERROR, '%s: Restoring previous file %s.' % (name, old_filename))
 						try:
-							os.rename(backup_filename, old_filename)
+							shutil.move(backup_filename, old_filename)
 							os.close(backup_fd)
 						except IOError:
 							ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old file %s.' % (name, old_filename))
@@ -462,7 +463,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 					backup_fd, backup_filename = tempfile.mkstemp()
 					ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old file %s to %s.' % (name, old_filename, backup_filename))
 					try:
-						os.rename(old_filename, backup_filename)
+						shutil.move(old_filename, backup_filename)
 					except IOError:
 						ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old file %s, leaving it untouched.' % (name, old_filename))
 						os.close(backup_fd)
@@ -578,7 +579,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 						backup_fd, backup_filename = tempfile.mkstemp()
 						ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old file %s to %s.' % (name, old_filename, backup_filename))
 						try:
-							os.rename(old_filename, backup_filename)
+							shutil.move(old_filename, backup_filename)
 						except IOError:
 							ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old file %s, removing it.' % (name, old_filename))
 							os.unlink(old_filename)
@@ -591,7 +592,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 						backup_backlink_fd, backup_backlink_filename = tempfile.mkstemp()
 						ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old backlink file %s to %s.' % (name, old_backlink_filename, backup_backlink_filename))
 						try:
-							os.rename(old_backlink_filename, backup_backlink_filename)
+							shutil.move(old_backlink_filename, backup_backlink_filename)
 						except IOError:
 							ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old backlink file %s, removing it.' % (name, old_backlink_filename))
 							os.unlink(old_backlink_filename)
@@ -604,7 +605,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 						backup_ucrinfo_fd, backup_ucrinfo_filename = tempfile.mkstemp()
 						ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old UCR info file %s to %s.' % (name, old_ucrinfo_filename, backup_ucrinfo_filename))
 						try:
-							os.rename(old_ucrinfo_filename, backup_ucrinfo_filename)
+							shutil.move(old_ucrinfo_filename, backup_ucrinfo_filename)
 						except IOError:
 							ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old UCR info file %s, removing it.' % (name, old_ucrinfo_filename))
 							os.unlink(old_ucrinfo_filename)
@@ -616,7 +617,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 				if not os.path.isdir(self.ucr_slapd_conf_subfile_dir):
 					if os.path.exists(self.ucr_slapd_conf_subfile_dir):
 						ud.debug(ud.LISTENER, ud.WARN, '%s: Directory name %s occupied, renaming blocking file.' % (name, self.ucr_slapd_conf_subfile_dir))
-						os.rename(self.ucr_slapd_conf_subfile_dir, "%s.bak" % self.ucr_slapd_conf_subfile_dir)
+						shutil.move(self.ucr_slapd_conf_subfile_dir, "%s.bak" % self.ucr_slapd_conf_subfile_dir)
 					ud.debug(ud.LISTENER, ud.INFO, '%s: Create directory %s.' % (name, self.ucr_slapd_conf_subfile_dir))
 					os.makedirs(self.ucr_slapd_conf_subfile_dir, 0755)
 
@@ -670,7 +671,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 					if backup_filename:
 						ud.debug(ud.LISTENER, ud.ERROR, '%s: Restoring previous file %s.' % (name, old_filename))
 						try:
-							os.rename(backup_filename, old_filename)
+							shutil.move(backup_filename, old_filename)
 							os.close(backup_fd)
 						except IOError:
 							ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old file %s.' % (name, old_filename))
@@ -678,7 +679,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 					if backup_backlink_filename:
 						ud.debug(ud.LISTENER, ud.ERROR, '%s: Restoring previous backlink file %s.' % (name, old_backlink_filename))
 						try:
-							os.rename(backup_backlink_filename, old_backlink_filename)
+							shutil.move(backup_backlink_filename, old_backlink_filename)
 							os.close(backup_backlink_fd)
 						except IOError:
 							ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old backlink file %s.' % (name, old_backlink_filename))
@@ -686,7 +687,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 					if backup_ucrinfo_filename:
 						ud.debug(ud.LISTENER, ud.ERROR, '%s: Restoring previous UCR info file %s.' % (name, old_ucrinfo_filename))
 						try:
-							os.rename(backup_ucrinfo_filename, old_ucrinfo_filename)
+							shutil.move(backup_ucrinfo_filename, old_ucrinfo_filename)
 							os.close(backup_ucrinfo_fd)
 						except IOError:
 							ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old UCR info file %s.' % (name, old_ucrinfo_filename))

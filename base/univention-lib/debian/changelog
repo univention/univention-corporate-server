@@ -1,3 +1,10 @@
+univention-lib (3.0.26-18) unstable; urgency=low
+
+  * Use shuitl.move instead of os.rename in ldap_extension.py
+    to support different partitions for src and dest (Bug #34104)
+
+ -- Felix Botner <botner@univention.de>  Wed, 19 Mar 2014 13:14:13 +0100
+
 univention-lib (3.0.26-17) unstable; urgency=medium
 
   * bash fix (Bug #33582)
