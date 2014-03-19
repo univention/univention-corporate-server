@@ -5,7 +5,6 @@
 #include <getopt.h>
 
 #define COMMAND "/usr/lib/nagios/plugins/check_smart.pl"
-#define SIZE 4096
 
 static void usage(void) {
 	fprintf(stderr, "Usage: check_smart_suidwrapper -i INTERFACE -d DEVICE\n");
@@ -14,19 +13,16 @@ static void usage(void) {
 main(int argc, char ** argv, char ** envp) {
 
 	int i = 0;
-	uid_t uid = getuid();
-	char device[SIZE];
-	char interface[SIZE];
+	char *device = NULL;
+	char *interface = NULL;
 
 	while ((i = getopt(argc, argv, "::hd:i:")) != -1) {
 		switch (i) {
 			case 'd':
-				strncpy(device, optarg, sizeof(device));
-				device[sizeof(device) -1] = '\0';
+				device = optarg;
 				break;
 			case 'i':
-				strncpy(interface, optarg, sizeof(interface));
-				device[sizeof(interface) -1] = '\0';
+				interface = optarg;
 				break;
 			case 'h':
 				usage();
@@ -38,7 +34,7 @@ main(int argc, char ** argv, char ** envp) {
 		}
 	}
 
-	if (strlen(device) == 0 || strlen(interface) == 0) {
+	if (device == NULL || interface == NULL) {
 		usage();
 		exit(1);	
 	}
@@ -47,8 +43,8 @@ main(int argc, char ** argv, char ** envp) {
 		perror("setgid");
 	if(setuid(geteuid()))
 		perror("setuid");
+
 	execle(COMMAND, COMMAND, "-d", device, "-i", interface, (char *)0, (char *)0);
-	setuid(uid);
 
 	exit(1);
 }
