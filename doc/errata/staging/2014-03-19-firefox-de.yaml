@@ -1,0 +1,29 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: firefox-de
+fix: 1:24.4.0esr-3.40.201403191156
+version: [1]
+note: This update fixes these vulnerabilities.
+desc: |
+ This update consists of two updates for firefox-en and firefox-de.
+ Several vulnerabilities have been fixed with the update to Firefox ESR 24.4:
+ * Memory corruption in the browser engine (CVE-2014-1493)
+ * Out of bounds read in processing WAV files (CVE-2014-1497)
+ * Information disclosure in SVG filters (CVE-2014-1505)
+ * Out of bounds read in MathML parsing (CVE-2014-1508)
+ * Memory corruption in PDF processing (CVE-2014-1509)
+ * Privilege escalation in WebIDL (CVE-2014-1510, CVE-2014-1511)
+ * Use-after-free in the garbage collector (CVE-2014-1512)
+ * Out of bounds write in Javascript array handling (CVE-2014-1513, CVE-2014-1514)
+cve:
+ - CVE-2014-1493
+ - CVE-2014-1497
+ - CVE-2014-1505
+ - CVE-2014-1508
+ - CVE-2014-1509
+ - CVE-2014-1510
+ - CVE-2014-1511
+ - CVE-2014-1512
+ - CVE-2014-1513
+ - CVE-2014-1514
