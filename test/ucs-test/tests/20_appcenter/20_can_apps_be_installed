@@ -102,7 +102,7 @@ if failed:
 	print '\nTEST FAILED: the following apps cannot be installed due to broken packages...'
 	for app, brokenPackages in failed:
 		print '\n[ APP: %s ]' % app.id
-		print 'broken packages: %s' % (app.id, brokenPackages)
+		print 'broken packages: %s' % brokenPackages
 		print 'output of apt-get install -s\n%s' % _apt_get_simulate(app)
 	sys.exit(1)
 

@@ -1,3 +1,9 @@
+ucs-test (4.0.164-13) unstable; urgency=low
+
+  * Bug #34343: fixed typo
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 19 Mar 2014 10:48:02 +0100
+
 ucs-test (4.0.164-12) unstable; urgency=low
 
   * Bug #34343: print more information for broken apps
