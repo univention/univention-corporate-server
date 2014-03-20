@@ -749,8 +749,8 @@ class ucs:
 				if not self._ignore_object(key,object) or ignore_subtree_match:
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: finished mapping")
 					try:				
-						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn,'utf8'), old))
-							or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn, old))):
+						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn,'utf8'), old, new))
+							or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn, old, new))):
 							self._save_rejected_ucs(filename, dn)
 							return False
 						else:
@@ -1315,7 +1315,7 @@ class ucs:
 			self._debug_traceback(ud.ERROR, "Unknown Exception during sync_to_ucs")
 			return False
 
-	def sync_from_ucs(self, property_type, object, old_dn=None):
+	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object = None, new_ucs_object = None):
 		# dummy
 		return False
 

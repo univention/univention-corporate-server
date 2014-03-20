@@ -3,8 +3,9 @@ univention-s4-connector (8.0.33-32) unstable; urgency=low
   * Remove the internal dn_list which has been used to detect mutli
     object changes. This is required for the switch from object based
     sync to diff based sync (Bug #33621)
+  * Add diff mode for modifications from UCS to S4 (Bug #33621)
 
- -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Mar 2014 12:08:47 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Mar 2014 14:23:23 +0100
 
 univention-s4-connector (8.0.33-31) unstable; urgency=medium
 
