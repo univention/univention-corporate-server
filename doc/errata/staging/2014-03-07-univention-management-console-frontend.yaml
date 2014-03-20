@@ -10,5 +10,5 @@ desc: |
   * Add method in the univention-management-console-web-server to get the
     clients IP address.
   * The UMC-web-server uses apache as a proxy server. The timeout for proxy
-    requests are now configured by the UCR variable umc/http/session/timeout
+    requests is now configured by the UCR variable umc/http/session/timeout
 bug: [34288, 34005]
