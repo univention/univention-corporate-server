@@ -27,7 +27,7 @@
 			They are installed into <filename class="directory">/usr/lib/univention-install/</filename>.
 			The name of each join script is normally derived from the name of the binary package containing it.
 			It is prefixed with a two-digit number, which is used to order the scripts lexicographically.
-			The filename either ends in <literal>.inst</literal> or <literal>.uinst</literal>, which distinguishes between join script and unjoin script (see <xref linkend="join:unjoin"/>).
+			The filename either ends in <filename class="extension">.inst</filename> or <filename class="extension">.uinst</filename>, which distinguishes between join script and unjoin script (see <xref linkend="join:unjoin"/>).
 		</para>
 	</section>
 
@@ -345,7 +345,7 @@
 						<listitem>
 							<para>
 								Removes the given join script from the join script status file <filename>/var/univention-join/status</filename>.
-								The <option>name</option> should be the basename of the joinscript without the prefixed digits and the suffix <literal>.inst</literal>.
+								The <option>name</option> should be the basename of the joinscript without the prefixed digits and the suffix <filename class="extension">.inst</filename>.
 								So if the joinscript <filename>/var/lib/univention-install/50join-template.inst</filename> shall be removed, one has to execute <command>joinscript_remove_script_from_status_file join-template</command>.
 								Primarily used in unjoin scripts.
 							</para>
@@ -518,12 +518,12 @@ VERSION="3"
 								Registers the additional service <option>servicename</option> in the LDAP object representing the local host.
 								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
 							</para>
-							<para>
-								Example usage in join script:
-							</para>
+							<example>
+								<title>Service registration in join script</title>
 							<programlisting language="sh">
 ucs_addServiceToLocalhost "MyService" "$@"
 							</programlisting>
+							</example>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
@@ -537,12 +537,12 @@ ucs_addServiceToLocalhost "MyService" "$@"
 								Removes the service <option>servicename</option> from the LDAP object representing the local host, effectively reverting an <command>ucs_addServiceToLocalhost</command> call.
 								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
 							</para>
-							<para>
-								Example usage in unjoin script:
-							</para>
+							<example>
+								<title>Service unregistration in unjoin script</title>
 							<programlisting language="sh">
 ucs_removeServiceFromLocalhost "MyService" "$@"
 							</programlisting>
+							</example>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
@@ -555,40 +555,49 @@ ucs_removeServiceFromLocalhost "MyService" "$@"
 							<para>
 								Returns <literal>0</literal> if no LDAP host object exists where the service <option>servicename</option> is registered with.
 							</para>
-							<para>
-								Example usage in unjoin script:
-							</para>
+							<example>
+								<title>Check for unused service in unjoin script</title>
 							<programlisting language="sh">
 if ucs_isServiceUnused "MyService" "$@"
 then
 	uninstall_my_service
 fi
 							</programlisting>
+							</example>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
 						<term><cmdsynopsis>
 								<command>ucs_registerLDAPExtension</command>
-								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
-								<arg choice="opt">--schema <replaceable>filename</replaceable></arg>
-								<arg choice="opt">--acl <replaceable>filename</replaceable></arg>
-								<arg choice="opt">--udm_syntax <replaceable>filename</replaceable></arg>
-								<arg choice="opt">--udm_hook <replaceable>filename</replaceable></arg>
-								<arg choice="opt">--udm_module <replaceable>filename</replaceable></arg>
-								<arg choice="opt">--packagename<replaceable>packagename</replaceable></arg>
-								<arg choice="opt">--packageversion<replaceable>packageversion</replaceable></arg>
-								<arg choice="opt">--ucsversionstart<replaceable>ucsversion</replaceable></arg>
-								<arg choice="opt">--ucsversionend<replaceable>ucsversion</replaceable></arg>
-								<arg choice="opt">--messagecatalog <replaceable>filename</replaceable></arg>
-								<arg choice="opt">--umcregistration <replaceable>filename</replaceable></arg>
-								<arg choice="opt">--icon <replaceable>filename</replaceable></arg>
+								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable>
+									<group choice="req">
+										<arg choice="plain">--bindpwd <replaceable>bind-password</replaceable></arg>
+										<arg choice="plain">--bindpwdfile <replaceable>filename</replaceable></arg>
+								</group></arg>
+								<sbr/>
+								<group choice="req" rep="repeat">
+									<arg choice="plain">--schema <replaceable>filename</replaceable></arg>
+									<arg choice="plain">--acl <replaceable>filename</replaceable></arg>
+									<arg choice="plain">--udm_syntax <replaceable>filename</replaceable></arg>
+									<arg choice="plain">--udm_hook <replaceable>filename</replaceable></arg>
+									<arg choice="plain">--udm_module <replaceable>filename</replaceable>
+										<arg choice="opt" rep="repeat">--messagecatalog <replaceable>filename</replaceable></arg>
+										<arg choice="opt">--umcregistration <replaceable>filename</replaceable></arg>
+										<arg choice="opt" rep="repeat">--icon <replaceable>filename</replaceable></arg>
+									</arg>
+								</group>
+								<sbr/>
+								<arg choice="opt">--packagename <replaceable>packagename</replaceable></arg>
+								<arg choice="opt">--packageversion <replaceable>packageversion</replaceable></arg>
+								<arg choice="opt">--ucsversionstart <replaceable>ucsversion</replaceable></arg>
+								<arg choice="opt">--ucsversionend <replaceable>ucsversion</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
 								The easiest way to register <acronym>LDAP</acronym> schema and ACL extensions as well as UDM syntax, UDM hook and UDM extension modules
-								is to call the <literal>ucs_registerLDAPExtension</literal> shell function provided by the Univention shell function library
-								(see <xref linkend="misc:lib"/>). This shell function offers five main options: <literal>--schema</literal>,  <literal>--acl</literal>,
-								<literal>--udm_syntax</literal>, <literal>--udm_hook</literal>, <literal>--udm_module</literal>, which can be combined. Each of these
+								is to call the <command>ucs_registerLDAPExtension</command> shell function provided by the Univention shell function library
+								(see <xref linkend="misc:lib"/>). This shell function offers five main options: <option>--schema</option>,  <option>--acl</option>,
+								<option>--udm_syntax</option>, <option>--udm_hook</option>, <option>--udm_module</option>, which can be combined. Each of these
 								options expects a filename as option argument. During one call of the function, it will always process the given extensions in the order
 								schema, ACL, UDM syntax, UDM hook and finally UDM module.
 							</para>
@@ -606,50 +615,49 @@ fi
 								</para>
 							</note>
 							<para>
-								Before calling the shell function the shell variable <literal>UNIVENTION_APP_IDENTIFIER</literal> should be set
+								Before calling the shell function the shell variable <envar>UNIVENTION_APP_IDENTIFIER</envar> should be set
 								to the versioned app identifier (and exported to the environment of subprocesses).
 								The shell function will then register the specified app identifier with the extension object to indicate that
 								the extension object is required as long as this app is installed anywhere in the UCS domain.
 							</para>
 							<para>
-								The options <literal>--packagename</literal> and <literal>--packageversion</literal> should usually not be used, as these parameters
+								The options <option>--packagename</option> and <option>--packageversion</option> should usually not be used, as these parameters
 								are determined automatically.
-								To prevent accidental downgrades the function <literal>ucs_registerLDAPExtension</literal> (as well as the corresponding UDM module)
+								To prevent accidental downgrades the function <command>ucs_registerLDAPExtension</command> (as well as the corresponding UDM module)
 								only execute modifications of an existing object if the Debian package version is not older than the previous one.
 							</para>
 							<para>
-								<literal>ucs_registerLDAPExtension</literal> supports two additional options to specify a valid range of UCS versions, where an extension should be
-								activated. The options are <literal>--ucsversionstart</literal> and <literal>--ucsversionend</literal>. The version check is only
+								<command>ucs_registerLDAPExtension</command> supports two additional options to specify a valid range of UCS versions, where an extension should be
+								activated. The options are <option>--ucsversionstart</option> and <option>--ucsversionend</option>. The version check is only
 								performed whenever the extension object is modified. By calling this function from a joinscript, it will
 								automatically update the Debian package version number stored in the object, triggering a re-evaluation of the specified UCS version range.
-								The extension is activated up to and excluding the UCS version specified by <literal>--ucsversionend</literal>.
+								The extension is activated up to and excluding the UCS version specified by <option>--ucsversionend</option>.
 								This validity range is not applied to <acronym>LDAP</acronym> schema extensions, since they must not be undefined as long as there are objects
 								in the <acronym>LDAP</acronym> directory which make use of it.
 							</para>
 							<para>
-								The option <literal>--messagecatalog</literal> can be used to supply message translation files in GNU message catalog format.
-								The filenames must correspond to a valid language tag, i.e. must correspond to a subdirectory of <filename>/usr/share/locale</filename>.
-								This option can be given multiple times, but only in combination with the option <literal>--udm_module</literal>.
+								The option <option>--messagecatalog</option> can be used to supply message translation files in GNU message catalog format.
+								The filenames must correspond to a valid language tag, i.e. must correspond to a subdirectory of <filename class="directory">/usr/share/locale/</filename>.
+								This option can be given multiple times, but only in combination with the option <option>--udm_module</option>.
 							</para>
 							<para>
-								The option <literal>--umcregistration</literal> can be used to supply an UMC registration file (in XML format) to make the UDM module
+								The option <option>--umcregistration</option> can be used to supply an UMC registration file (in XML format) to make the UDM module
 								accessible via Univention Management Console (UMC).
-								This option can only be used in combination with the option <literal>--udm_module</literal>.
+								This option can only be used in combination with the option <option>--udm_module</option>.
 							</para>
 							<para>
-								The option <literal>--icon</literal> can be used to supply icon files (png or jpeg, in 16x16 or 50x50, or svgz).
-								This option can be given multiple times, but only in combination with the option <literal>--udm_module</literal>.
+								The option <option>--icon</option> can be used to supply icon files (png or jpeg, in 16x16 or 50x50, or svgz).
+								This option can be given multiple times, but only in combination with the option <option>--udm_module</option>.
 							</para>
-							<para>
-								Example usage in join script:
-							</para>
+							<example>
+								<title>Extension registration in LDAP in join script</title>
 							<programlisting language="sh">
 export UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
 . /usr/share/univention-lib/ldap.sh
 
 ucs_registerLDAPExtension "$@" \
   --schema /path/to/appschemaextension.schema \
-  --acl /path/to/appaclextension.acl
+  --acl /path/to/appaclextension.acl \
   --udm_syntax /path/to/appudmsyntax.py
 
 ucs_registerLDAPExtension "$@" \
@@ -658,31 +666,39 @@ ucs_registerLDAPExtension "$@" \
   --messagecatalog /path/to/eo.mo \
   --umcregistration /path/to/module-object.xml \
   --icon /path/to/moduleicon16x16.png \
-  --icon /path/to/moduleicon50x50.png \
+  --icon /path/to/moduleicon50x50.png
 							</programlisting>
+							</example>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
 						<term><cmdsynopsis>
 								<command>ucs_unregisterLDAPExtension</command>
-								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
-								<arg choice="opt">--schema <replaceable>objectname</replaceable></arg>
-								<arg choice="opt">--acl <replaceable>objectname</replaceable></arg>
-								<arg choice="opt">--udm_syntax <replaceable>objectname</replaceable></arg>
-								<arg choice="opt">--udm_hook <replaceable>objectname</replaceable></arg>
-								<arg choice="opt">--udm_module <replaceable>objectname</replaceable></arg>
+								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable>
+									<group choice="req">
+										<arg choice="plain">--bindpwd <replaceable>bind-password</replaceable></arg>
+										<arg choice="plain">--bindpwdfile <replaceable>filename</replaceable></arg>
+								</group></arg>
+								<sbr/>
+								<group choice="req" rep="repeat">
+									<arg choice="plain">--schema <replaceable>objectname</replaceable></arg>
+									<arg choice="plain">--acl <replaceable>objectname</replaceable></arg>
+									<arg choice="plain">--udm_syntax <replaceable>objectname</replaceable></arg>
+									<arg choice="plain">--udm_hook <replaceable>objectname</replaceable></arg>
+									<arg choice="plain">--udm_module <replaceable>objectname</replaceable></arg>
+								</group>
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
-								There is a corresponding <literal>ucs_unregisterLDAPExtension</literal> function, which can be used to unregister extension objects. This only works if no App is registered any longer for the object. It must not be called unless it has been verified that no object in <acronym>LDAP</acronym>  still requires this schema extension. For this reason it schould generally not be called in unjoin scripts.
+								There is a corresponding <command>ucs_unregisterLDAPExtension</command> function, which can be used to unregister extension objects. This only works if no App is registered any longer for the object. It must not be called unless it has been verified that no object in <acronym>LDAP</acronym>  still requires this schema extension. For this reason it schould generally not be called in unjoin scripts.
 							</para>
-							<para>
-								Example usage in unjoin script:
-							</para>
+							<example>
+								<title>Example unregistration from LDAP in unjoin script</title>
 							<programlisting language="sh">
 . /usr/share/univention-lib/ldap.sh
 ucs_unregisterLDAPExtension "$@" --schema appschemaextension
 							</programlisting>
+							</example>
 						</listitem>
 					</varlistentry>
 				</variablelist>
@@ -723,7 +739,7 @@ ucs_unregisterLDAPExtension "$@" --schema appschemaextension
 			The package <package>univention-fetchmail</package> provides both a join script <filename>/usr/lib/univention-install/91univention-fetchmail.inst</filename> and the corresponding unjoin script as <filename>/usr/lib/univention-uninstall/09univention-fetchmail-uninstall.uinst</filename>.
 		</para>
 		<para>
-			As of UCS 3.1 <literal>.inst</literal> and <literal>.uinst</literal> are not distinguishable in the <emphasis>UMC Join module</emphasis> by the user.
+			As of UCS 3.1 <filename class="extension">.inst</filename> and <filename class="extension">.uinst</filename> are not distinguishable in the <emphasis>UMC Join module</emphasis> by the user.
 			Therefore it is important to use the <literal>-uninstall</literal> suffix to give users a visual hint.
 			Internally join scripts are always executed before unjoin scripts and then ordered lexicographically by their prefix.
 		</para>
