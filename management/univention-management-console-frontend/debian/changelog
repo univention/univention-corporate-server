@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.152-24) unstable; urgency=low
+
+  * Bug #34005: Set Apache's ProxyTimeout to the UCR variable
+    umc/http/session/timeout
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 20 Mar 2014 22:16:20 +0100
+
 univention-management-console-frontend (3.0.152-23) unstable; urgency=low
 
   * Bug #34288: Implement method for retrieval of own IP address in

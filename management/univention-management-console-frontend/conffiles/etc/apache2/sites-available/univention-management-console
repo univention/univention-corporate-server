@@ -8,6 +8,7 @@ interface = configRegistry.get('umc/http/interface', '127.0.0.1')
 
 print 'ProxyPass /umcp/ http://%s:%s/ retry=0' % (interface, port)
 print 'ProxyPassReverse /umcp/ http://%s:%s/' % (interface, port)
+print 'ProxyTimeout %s' % int(configRegistry.get('umc/http/session/timeout', '300'))
 @!@
 
 RedirectMatch ^/umc(/$|$) /univention-management-console/

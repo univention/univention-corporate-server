@@ -2,3 +2,4 @@ Type: file
 File: etc/apache2/sites-available/univention-management-console
 Variables: umc/http/port
 Variables: umc/http/interface
+Variables: umc/http/session/timeout
