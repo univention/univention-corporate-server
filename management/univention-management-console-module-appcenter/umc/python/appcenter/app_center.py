@@ -33,6 +33,7 @@
 
 # standard library
 import shutil
+import platform
 import time
 from distutils.version import LooseVersion
 from gzip import GzipFile
@@ -322,7 +323,7 @@ class Application(object):
 				self._options[ikey] = 0
 
 		# parse list values
-		for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'requiredapps', 'serverrole'):
+		for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'requiredapps', 'serverrole', 'supportedarchitectures'):
 			ival = self.get(ikey)
 			if ival:
 				self._options[ikey] = self._reg_comma.split(ival)
@@ -793,6 +794,33 @@ class Application(object):
 	@HardRequirement('install')
 	def must_not_be_end_of_life(self):
 		return not self.get('endoflife')
+
+	@HardRequirement('install', 'update')
+	def must_have_supported_architecture(self):
+		supported_architectures = self.get('supportedarchitectures')
+		platform_bits = platform.architecture()[0]
+		aliases = {'i386' : '32bit', 'amd64' : '64bit'}
+		if supported_architectures:
+			for architecture in supported_architectures:
+				if aliases[architecture] == platform_bits:
+					break
+			else:
+				# For now only two architectures are supported:
+				#   32bit and 64bit - and this will probably not change
+				#   too soon.
+				# So instead of returning lists and whatnot
+				#   just return a nice message
+				# Needs to be adapted when supporting different archs
+				supported = supported_architectures[0]
+				if supported == 'i386':
+					needs = 32
+					has = 64
+				else:
+					needs = 64
+					has = 32
+				msg = _('The application needs a %(needs)s-bit operating system. This server is running a %(has)s-bit operating system.') % {'needs' : needs, 'has' : has}
+				return {'supported' : supported, 'msg' : msg}
+		return True
 
 	@HardRequirement('install', 'update')
 	def must_be_joined_if_master_packages(self):

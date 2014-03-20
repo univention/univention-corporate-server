@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-11-29 14:18+0100\n"
+"POT-Creation-Date: 2014-03-20 21:41+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/appcenter/__init__.py:270 umc/python/appcenter/__init__.py:404
+#: umc/python/appcenter/__init__.py:272 umc/python/appcenter/__init__.py:422
 msgid "Another package operation is in progress"
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 
@@ -32,12 +32,12 @@ msgstr "Konnte keine Applikation für %s finden"
 msgid "Could not query App Center: %s"
 msgstr "Konnte das App Center nicht erreichen: %s"
 
-#: umc/python/appcenter/app_center.py:1193
+#: umc/python/appcenter/app_center.py:1303
 #, python-format
 msgid "Installing LDAP packages on %s"
 msgstr "Installiere LDAP Pakete auf %s"
 
-#: umc/python/appcenter/app_center.py:1154
+#: umc/python/appcenter/app_center.py:1264
 #, python-format
 msgid "Output from %(host)s: %(info)s"
 msgstr "Ausgabe von %(host)s: %(info)s"
@@ -46,7 +46,7 @@ msgstr "Ausgabe von %(host)s: %(info)s"
 msgid "Package not found in repository"
 msgstr "Paket wurde in keinem Repository gefunden"
 
-#: umc/python/appcenter/app_center.py:1111
+#: umc/python/appcenter/app_center.py:1221
 msgid ""
 "Registration of the application in LDAP failed. It will be retried every "
 "time the App Center module is opened."
@@ -54,11 +54,19 @@ msgstr ""
 "Die Registrierung der Applikation im LDAP ist fehlgeschlagen. Sie wird bei "
 "jedem Öffnen des App Center Moduls wiederholt werden."
 
+#: umc/python/appcenter/app_center.py:821
+#, python-format
+msgid ""
+"The application needs a %(needs)s-bit operating system. This server is "
+"running a %(has)s-bit operating system."
+msgstr ""
+"Die Applikation benötigt ein %(needs)s-Bit-Betriebssystem. Dieser Server läuft mit einem %(has)s-Bit-Betriebssystem."
+
 #: umc/python/appcenter/sanitizers.py:22
 msgid "There already is a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
-#: umc/python/appcenter/__init__.py:598
+#: umc/python/appcenter/__init__.py:616
 msgid ""
 "There is no repository at this server (or at least none for the current UCS "
 "version)"
@@ -66,14 +74,14 @@ msgstr ""
 "Auf dem Server befindet sich kein Repository (oder zumindest keins für die "
 "aktuelle UCS Version)"
 
-#: umc/python/appcenter/__init__.py:448
+#: umc/python/appcenter/__init__.py:466
 msgid "installed"
 msgstr "installiert"
 
-#: umc/python/appcenter/__init__.py:450
+#: umc/python/appcenter/__init__.py:468
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/appcenter/__init__.py:446
+#: umc/python/appcenter/__init__.py:464
 msgid "upgradable"
 msgstr "aktualisierbar"

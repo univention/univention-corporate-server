@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.51-7) unstable; urgency=low
+
+  * Bug #34320: Added sanity check whether server meets app's
+    SupportedArchitectures
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 20 Mar 2014 21:56:31 +0100
+
 univention-management-console-module-appcenter (3.0.51-6) unstable; urgency=low
 
   * Bug #34278: Do an apt-get update before installing default packages of a
