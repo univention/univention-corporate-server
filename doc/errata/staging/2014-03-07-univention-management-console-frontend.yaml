@@ -2,10 +2,13 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-management-console-frontend
-fix: 3.0.152-23.821.201403071447
+fix: 3.0.152-24.822.201403202249
 note:
 version: [1]
 desc: |
-  Add method in the univention-management-console-web-server to
-  get the clients IP address.
-bug: [34288]
+  This errata update fixes several issues:
+  * Add method in the univention-management-console-web-server to get the
+    clients IP address.
+  * The UMC-web-server uses apache as a proxy server. The timeout for proxy
+    requests are now configured by the UCR variable umc/http/session/timeout
+bug: [34288, 34005]
