@@ -36,38 +36,42 @@ def get_installed_default_packages():
 	installed_apps = {}
 	for application in apps:
 		if (application.is_installed(pm)):
-			for item in application.get('defaultpackages'):
-				if not installed_apps.has_key(application.name):
-					installed_apps[application.name] = [(item)]
-				else:
-					installed_apps[application.name].append(item)
-			if application.get('defaultpackagesmaster'):
-				for item in application.get('defaultpackagesmaster'):
+			if (application.get('SupportedArchitectures')) == '':
+				for item in application.get('defaultpackages'):
 					if not installed_apps.has_key(application.name):
 						installed_apps[application.name] = [(item)]
 					else:
 						installed_apps[application.name].append(item)
+				if application.get('defaultpackagesmaster'):
+					for item in application.get('defaultpackagesmaster'):
+						if not installed_apps.has_key(application.name):
+							installed_apps[application.name] = [(item)]
+						else:
+							installed_apps[application.name].append(item)
 	default_packages=(set(default_packages))
 	for application in installed_apps:
 		for package in installed_apps[application]:
 			pack = c[package]
 			arch = pack.installed.architecture
-			if arch == 'amd64' and pack.installed:
+			if (arch == 'amd64' or arch == 'i386') and pack.installed:
 				packages[package] = pack.installed.version, pack.installed.uris[0], application
 	return packages
 
 
 def change_architecture(package_repository):
-	i386_packages_with_repository= {}
+	other_arch_packages_with_repository= {}
 	for item in package_repository.iteritems():
-		i386_packages_with_repository[item[0]] = (item[1][0], item[1][1].replace('amd64','i386'))
-	return i386_packages_with_repository
+		if get_local_architecture() == 'amd64':
+			other_arch_packages_with_repository[item[0]] = (item[1][0], item[1][1].replace('amd64','i386'))
+		else:
+			other_arch_packages_with_repository[item[0]] = (item[1][0], item[1][1].replace('i386','amd64'))
+	return other_arch_packages_with_repository
 
 
-def check_packages_available(amd64_packages_with_repository):
-	i386_packages_with_repository = change_architecture(amd64_packages_with_repository)
+def check_packages_available(local_arch_packages_with_repository):
+	other_arch_packages_with_repository = change_architecture(local_arch_packages_with_repository)
 	repository_packages = {}
-	for item in i386_packages_with_repository.iteritems():
+	for item in other_arch_packages_with_repository.iteritems():
 		repository_index_url = item[1][1].replace((item[1][1].split('/')[-1]),'Packages.gz')
 		try:
 			url = urllib2.urlopen(repository_index_url)
@@ -77,11 +81,11 @@ def check_packages_available(amd64_packages_with_repository):
 			print("Error getting packages list")
 		else:
 			repository_packages.update(filter_packages_and_versions(data))
-	not_found = compare_versions(repository_packages, i386_packages_with_repository)
+	not_found = compare_versions(repository_packages, other_arch_packages_with_repository)
 	if len(not_found) > 0:
 		main_repository_packages = get_main_repository_packages()
-		not_found = compare_versions(main_repository_packages, i386_packages_with_repository)
-	show_result(not_found, amd64_packages_with_repository)
+		not_found = compare_versions(main_repository_packages, other_arch_packages_with_repository)
+	show_result(not_found, local_arch_packages_with_repository)
 
 
 def compare_versions(repository_packages, not_found):
@@ -130,13 +134,14 @@ def filter_packages_and_versions(temp_file):
 	return repository_packages
 
 
-def show_result(not_found, amd64_packages):
+def show_result(not_found, local_arch_packages):
 	if len(not_found) > 0:
+		diff_arch = get_local_architecture(True)
 		print
 		print ("Error!")
-		print ("Following package(s) could not be found for architecture i386 :")
+		print ("Following package(s) could not be found for architecture " + diff_arch + ":")
 		for item in not_found.iteritems():
-			print amd64_packages[item[0]][1]
+			print local_arch_packages[item[0]][1]
 		print
 		sys.exit("Test Failed: Packages not found")
 	else:
@@ -144,16 +149,28 @@ def show_result(not_found, amd64_packages):
 		print ("All packages found in repository")
 		print
 
+def get_local_architecture(reversed=False):
+	if sys.maxsize > 2**32:
+		if reversed:
+			arch = 'i386'
+		else:
+			arch = 'amd64'
+	else:
+		if reversed:
+			arch = 'amd64'
+		else:
+			arch = 'i386'
+	return arch
+
 
 if __name__ == "__main__":
 
 	single_architecture_packages = get_installed_default_packages()
 
+	arch = get_local_architecture()
 	print
-	print ("Packages with amd64-only architecture :")
+	print ("Packages with " + arch + "-only architecture :")
 	for ipackage in single_architecture_packages: 
 		print (ipackage + " from App '" + single_architecture_packages[ipackage][2] + "'")
 
-
 	check_packages_available(single_architecture_packages)
-
