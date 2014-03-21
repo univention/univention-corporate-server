@@ -70,7 +70,7 @@ with set_save_commit_load(component_manager.ucr) as super_ucr:
 "
 fi
 
-if dpkg --compare-versions "$2" lt-nl 3.0.51-3; then
+if dpkg --compare-versions "$2" lt-nl 3.0.51-5; then
 	/usr/sbin/univention-rename-app tine20org tine20
 fi
 

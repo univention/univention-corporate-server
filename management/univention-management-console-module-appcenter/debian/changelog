@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.51-8) unstable; urgency=low
+
+  * Bug #33728: Fix version mentioned in postinst version for renaming
+    tine20org
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 21 Mar 2014 13:23:08 +0100
+
 univention-management-console-module-appcenter (3.0.51-7) unstable; urgency=low
 
   * Bug #34320: Added sanity check whether server meets app's
