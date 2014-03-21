@@ -36,7 +36,8 @@ def get_installed_default_packages():
 	installed_apps = {}
 	for application in apps:
 		if (application.is_installed(pm)):
-			if (application.get('SupportedArchitectures')) == '':
+			supported_architectures = application.get('SupportedArchitectures')
+			if (supported_architectures == '') or (( 'amd64' in supported_architectures) and ('i386' in supported_architectures)) :
 				for item in application.get('defaultpackages'):
 					if not installed_apps.has_key(application.name):
 						installed_apps[application.name] = [(item)]
