@@ -39,16 +39,10 @@ def get_installed_default_packages():
 			supported_architectures = application.get('SupportedArchitectures')
 			if (supported_architectures == '') or (( 'amd64' in supported_architectures) and ('i386' in supported_architectures)) :
 				for item in application.get('defaultpackages'):
-					if not installed_apps.has_key(application.name):
-						installed_apps[application.name] = [(item)]
-					else:
-						installed_apps[application.name].append(item)
+					installed_apps.setdefault(application.name, []).append(item)
 				if application.get('defaultpackagesmaster'):
 					for item in application.get('defaultpackagesmaster'):
-						if not installed_apps.has_key(application.name):
-							installed_apps[application.name] = [(item)]
-						else:
-							installed_apps[application.name].append(item)
+						installed_apps.setdefault(application.name, []).append(item)
 	default_packages=(set(default_packages))
 	for application in installed_apps:
 		for package in installed_apps[application]:
@@ -74,14 +68,10 @@ def check_packages_available(local_arch_packages_with_repository):
 	repository_packages = {}
 	for item in other_arch_packages_with_repository.iteritems():
 		repository_index_url = item[1][1].replace((item[1][1].split('/')[-1]),'Packages.gz')
-		try:
-			url = urllib2.urlopen(repository_index_url)
-			zipdata = StringIO(url.read())
-			data = gzip.GzipFile(fileobj=zipdata)
-		except:
-			print("Error getting packages list")
-		else:
-			repository_packages.update(filter_packages_and_versions(data))
+		url = urllib2.urlopen(repository_index_url)
+		zipdata = StringIO(url.read())
+		data = gzip.GzipFile(fileobj=zipdata)
+		repository_packages.update(filter_packages_and_versions(data))
 	not_found = compare_versions(repository_packages, other_arch_packages_with_repository)
 	if len(not_found) > 0:
 		main_repository_packages = get_main_repository_packages()
@@ -106,14 +96,10 @@ def get_main_repository_packages():
 	ucs_patchlevel = ucr.get("version/patchlevel")
 	packages_files = ('http://{0}/{1}/maintained/{1}-{2}/i386/Packages.gz'.format(repository_server, ucs_version,ucs_patchlevel)), ('http://{0}/{1}/unmaintained/{1}-{2}/i386/Packages.gz'.format(repository_server, ucs_version, ucs_patchlevel))
 	for iurl in packages_files:
-		try:
-			repository_index_url = urllib2.urlopen(iurl)
-			zipdata = StringIO(repository_index_url.read())
-			data = gzip.GzipFile(fileobj=zipdata)
-		except:
-			print("Error getting packages list")
-		else:
-			main_repository_packages.update(filter_packages_and_versions(data))
+		repository_index_url = urllib2.urlopen(iurl)
+		zipdata = StringIO(repository_index_url.read())
+		data = gzip.GzipFile(fileobj=zipdata)
+		main_repository_packages.update(filter_packages_and_versions(data))
 	return main_repository_packages
 
 
