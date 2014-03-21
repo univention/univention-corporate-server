@@ -1,3 +1,10 @@
+ucs-test (4.0.164-14) unstable; urgency=low
+
+  * Bug #31792: adjusted style for test 20/43_installed_apps_*, test now is
+    architecture independent, respect appcenter blacklisting
+
+ -- Drees Dormann <ddormann@univention.de>  Fri, 21 Mar 2014 12:49:00 +0100
+
 ucs-test (4.0.164-13) unstable; urgency=low
 
   * Bug #34343: fixed typo
