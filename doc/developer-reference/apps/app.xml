@@ -617,8 +617,7 @@
 		<para>
 			A unique upload ID will be displayed after the download that has to be
 			forwarded to Univention. Please send the following information via e-mail
-			to <email><ulink
-					url="mailto:appcenter@univention.de">appcenter@univention.de</ulink></email>:
+			to <ulink url="mailto:appcenter@univention.de"><email>appcenter@univention.de</email></ulink>:
 			<itemizedlist>
 				<listitem><simpara>
 					Upload ID for the file archive. Please provide all upload IDs if the
@@ -709,8 +708,7 @@
 			Updates for the application description (.ini file), the product logo,
 			the screenshot, readme files (especially
 			<literal>README_UPDATE</literal>) and the packages are all submitted to
-			<email><ulink
-					url="mailto:appcenter@univention.de">appcenter@univention.de</ulink></email>.
+			<ulink url="mailto:appcenter@univention.de"><email>appcenter@univention.de</email></ulink>.
 			Only those files that changed need to be uploaded again, everything else
 			can be copied by Univention. The ini file needs to change every time,
 			because the <literal>Version</literal> has to be increased. If this is

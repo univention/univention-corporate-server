@@ -203,22 +203,40 @@ if ucr.is_false('repository/online/unmaintained', True):
 			</example>
 			<para>
 				Modifying variables requires a different approach.
-				Two functions <function>handler_set()</function> and <function>handler_unset()</function> can be used to set and unset variables.
+				The function <function>ucr_update()</function> should be used to set and unset variables.
 			</para>
 			<example>
 				<title>Changing &ucsUCRV;s in Python</title>
 				<programlisting><![CDATA[
-from univention.config_registry import handler_set, handler_unset
-handler_set([
-	'foo=bar',
-	'baz=42',
-	])
-handler_unset(['foo', 'bar'])
+from univention.config_registry.handler import ucr_update
+ucr_update(ucr, {
+	'foo': 'bar',
+	'baz': '42',
+	'bar': None,
+	})
 				]]></programlisting>
 			</example>
 			<para>
-				As <function>handler_set()</function> and <function>handler_unset()</function> don't automatically update any instance of <classname>ConfigRegistry</classname>, the <methodname>load()</methodname> method has to be called manually afterwards to reflect the updated values.
+				The function <function>ucr_update()</function> requires an instance of <classname>ConfigRegistry</classname> as its first argument.
+				The method is guaranteed to be atomic and internally uses file locking to prevent race conditions.
 			</para>
+			<para>
+				The second argument must be a Python dictionary mapping <acronym>UCR</acronym> variable names to their new value.
+				The value must be either a string or <constant>None</constant>, which is used to unset the variable.
+			</para>
+			<para>
+				As an alternative the old functions <function>handler_set()</function> and <function>handler_unset()</function> can still be used to set and unset variables.
+				Both functions expect an array of strings with the same syntax as used with the command line tool <command>ucr</command>.
+				As the functions <function>handler_set()</function> and <function>handler_unset()</function> don't automatically update any instance of <classname>ConfigRegistry</classname>, the method <methodname>load()</methodname> has to be called manually afterwards to reflect the updated values.
+			</para>
+			<example>
+				<title>Setting and unsetting &ucsUCRV;s in Python</title>
+				<programlisting><![CDATA[
+from univention.config_registry import handler_set, handler_unset
+handler_set(['foo=bar', 'baz?42'])
+handler_unset(['foo', 'bar'])
+				]]></programlisting>
+			</example>
 		</section>
 	</section>
 
@@ -910,7 +928,8 @@ Depends: ..., ${misc:Depends}, ...
 		<remark>SG: Move this to a sample package</remark>
 		<para>
 			This sections contains several simple examples for the use of &ucsUCR;.
-			The complete source of these examples is available separately. <!-- TODO: svn link? -->
+			The complete source of these examples is available separately.
+			The download location is given in each example below.
 			Since almost all &ucsUCS; packages use <acronym>UCR</acronym>, their source code provides additional examples.
 		</para>
 
