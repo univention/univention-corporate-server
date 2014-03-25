@@ -1,0 +1,16 @@
+Source: univention-radius
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev, ucslint
+
+Package: univention-radius
+Architecture: any
+Depends: univention-config-registry,
+ freeradius,
+ freeradius-ldap,
+ freeradius-utils,
+ univention-ssl,
+ univention-config
+Description: freeradius 802.1X integration package for Univention Corporate Server
+ Sets up a freeradius RADIUS server to support 802.1X authenticators

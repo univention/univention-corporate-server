@@ -1,0 +1,9 @@
+
+postrm/preinst:
+
+postrm und postinst werden ohne #DEBHELPER# verwendet (die Default-Ziele
+für verschobene Konfig-Dateien in /etc/freeradius/modules bereitet hier
+Probleme, da sie von freeradius ebenfalls eingebunden werdem). Bei der
+Bereitstellung von weiteren Templates müssen die Dateien postrm und
+preinst also händisch um die entsprechenden divert Kommandos erweitert
+werden.

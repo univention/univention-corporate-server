@@ -1,0 +1,6 @@
+ldap_base="$(ucr get ldap/base)"
+
+udm settings/extended_attribute delete "$@" --dn "cn=networkAccess,cn=custom attributes,cn=univention,$ldap_base"
+
+. /usr/share/univention-lib/all.sh
+ucs_unregisterLDAPExtension "$@" --schema networkAccess

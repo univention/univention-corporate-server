@@ -1,0 +1,77 @@
+univention-radius (1.0.0-1) unstable; urgency=low
+
+  * allow configuration via LDAP (Bug #29465)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 17 Jul 2013 17:26:26 +0200
+
+ucs-school-radius-802.1x (3.0.1-1) unstable; urgency=low
+
+  * deny WLAN access for disabled/locked accounts (Bug #31587)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 17 Jul 2013 17:26:26 +0200
+
+ucs-school-radius-802.1x (3.0.0-0) unstable; urgency=low
+
+  * bumped version for UCS@school 3.1 R2
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 17 May 2013 15:06:41 +0200
+
+ucs-school-radius-802.1x (2.0.2-1) unstable; urgency=low
+
+  * update LDAP credentials upon server password change (Bug #30783)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 21 Mar 2013 12:28:20 +0100
+
+ucs-school-radius-802.1x (2.0.1-2) unstable; urgency=low
+
+  * remove obsolete conflict (Bug #30478)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 18 Feb 2013 15:07:11 +0100
+
+ucs-school-radius-802.1x (2.0.1-1) unstable; urgency=low
+
+  * update Copyright; Bug #30123
+
+ -- Florian Best <best@univention.de>  Wed, 23 Jan 2013 13:38:08 +0100
+
+ucs-school-radius-802.1x (2.0.0-2) unstable; urgency=low
+
+  * Fix dependencies (Bug #29814)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 24 Dec 2012 09:05:12 +0100
+
+ucs-school-radius-802.1x (2.0.0-1) unstable; urgency=low
+
+  * Version bump (Bug #29814)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 13 Dec 2012 15:53:57 +0100
+
+ucs-school-radius-802.1x (1.0.4-1) unstable; urgency=low
+
+  * add default value for ldap port (Bug #25062)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 30 May 2012 11:32:51 +0200
+
+ucs-school-radius-802.1x (1.0.3-1) unstable; urgency=low
+
+  * support different LDAP port (Bug #24062)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 25 May 2012 14:41:18 +0200
+
+ucs-school-radius-802.1x (1.0.2-1) unstable; urgency=low
+
+  * allow access according to proxy settings (Bug #24062)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 22 Mar 2012 13:21:59 +0100
+
+ucs-school-radius-802.1x (1.0.1-1) unstable; urgency=low
+
+  * support MAC filtering (Bug #24062)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 30 Jan 2012 14:42:06 +0100
+
+ucs-school-radius-802.1x (1.0.0-1) unstable; urgency=low
+
+  * Initial release (Bug #24062)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 26 Jan 2012 11:15:07 +0100

@@ -1,0 +1,91 @@
+#!/bin/bash
+#
+# Univention RADIUS 802.1X
+#  postinst script
+#
+# Copyright (C) 2011-2013 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of the software contained in this package
+# as well as the source package itself are made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this package provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use the software under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+#DEBHELPER#
+
+case "$1" in
+    configure)
+		uinst=/usr/lib/univention-install/20univention-radius.uinst
+		[ -e "$uinst" ] && rm "$uinst"
+
+		. /usr/share/univention-lib/base.sh
+		call_joinscript 80univention-radius.inst
+
+		univention-config-registry set \
+			security/packetfilter/package/univention-radius/udp/1812/all=ACCEPT \
+			security/packetfilter/package/univention-radius/udp/1812/all/en='freeradius (802.1x)' \
+			security/packetfilter/package/univention-radius/udp/1813/all=ACCEPT \
+			security/packetfilter/package/univention-radius/udp/1813/all/en='freeradius (802.1x)' \
+			security/packetfilter/package/univention-radius/udp/1814/all=ACCEPT \
+			security/packetfilter/package/univention-radius/udp/1814/all/en='freeradius (802.1x)' \
+			freeradius/conf/auth-type/mschap?yes \
+			freeradius/conf/auth-type/mschap/ntdomainhack?yes \
+			freeradius/conf/realm?ntdomain \
+			freeradius/conf/users?files \
+			freeradius/conf/log/strippednames?yes \
+			freeradius/conf/log/auth?yes \
+			freeradius/conf/log/auth/badpass?yes \
+			freeradius/conf/log/auth/goodpass?no \
+			freeradius/conf/starttls?yes \
+			freeradius/conf/private/key/file?/etc/freeradius/ssl/private.key \
+			freeradius/conf/certificate/file?/etc/freeradius/ssl/cert.pem \
+			freeradius/conf/ca/file?/etc/univention/ssl/ucsCA/CAcert.pem
+
+		[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+
+		if [ -z "$2" ]
+		then
+			hostname="$(univention-config-registry get hostname)"
+			cp /etc/univention/ssl/$(hostname)/private.key /etc/freeradius/ssl/private.key
+			cp /etc/univention/ssl/$(hostname)/cert.pem /etc/freeradius/ssl/cert.pem
+			chgrp freerad /etc/freeradius/ssl/private.key
+			chgrp freerad /etc/freeradius/ssl/cert.pem
+			chmod 440 /etc/freeradius/ssl/private.key
+			chmod 440 /etc/freeradius/ssl/cert.pem
+			openssl gendh -out /etc/freeradius/ssl/dh 1024
+		fi
+
+		invoke-rc.d freeradius restart
+
+		;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+		;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 0
+		;;
+esac
+
+exit 0

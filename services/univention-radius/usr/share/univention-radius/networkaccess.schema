@@ -1,0 +1,14 @@
+objectIdentifier univentionNetworkAccess 1.3.6.1.4.1.10176.4205
+objectIdentifier univentionNetworkAccessAttributeType univentionNetworkAccess:1
+objectIdentifier univentionNetworkAccessObjectClass   univentionNetworkAccess:2
+
+attributetype ( univentionNetworkAccessAttributeType  NAME 'univentionNetworkAccess'
+	DESC 'Allow 802.1X network access'
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE )
+
+objectclass ( univentionNetworkAccessObjectClass NAME 'univentionNetworkAccess'
+	DESC 'Network access rules'
+	SUP top AUXILIARY
+	MAY ( univentionNetworkAccess )
+	)

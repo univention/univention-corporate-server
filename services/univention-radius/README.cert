@@ -1,0 +1,24 @@
+Certificates:
+
+By default, univention-freeradius copies the ucs host certificate (and
+private key) to /etc/freeradius/ssl/ and configures freeradius to use
+these files for eap-tls.
+
+(a) Configuration
+
+Certificate settings can be configured via these
+univention-config-registry variables:
+
+   * freeradius/conf/private/key/secret/file
+   * freeradius/conf/private/key/file
+   * freeradius/conf/certificate/file
+   * freeradius/conf/ca/file
+
+
+(b) Custom Certificates
+
+To create a certificate infrastructure complete seperated from the ucs
+certificates, you can use the script
+"/usr/lib/univention-freeradius/setupCA.sh". It creates a root CA in
+/etc/freeradius/ssl/ucsCA and a certificate in
+/etc/freeradius/ssl/univention-freeradius (cert.pem and private.key).

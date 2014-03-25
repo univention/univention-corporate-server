@@ -1,0 +1,5 @@
+clients.conf.example etc/freeradius/
+setupCA.sh usr/lib/univention-freeradius/
+usr/
+80univention-radius.inst usr/lib/univention-install/
+20univention-radius.uinst usr/lib/univention-uninstall
