@@ -228,7 +228,7 @@ ucs_registerLDAPExtension "$@" \
 
 	<section id="join:secret">
 		<title>LDAP secrets
-			<indexterm><primary>domain join</primary><secondary>secrets</secondary></indexterm>
+			<indexterm><primary>Domain join</primary><secondary>Secrets</secondary></indexterm>
 		</title>
 		<para>
 			The credentials for different UCS domain accounts are stored in plain-text files on some UCS systems.
@@ -297,8 +297,8 @@ ucs_registerLDAPExtension "$@" \
 
 		<section id="join:secret:change">
 			<title>Password change
-				<indexterm><primary>domain join</primary><secondary>secrets</secondary><tertiary>change</tertiary></indexterm>
-				<indexterm><primary>server password change</primary><see>domain join</see></indexterm>
+				<indexterm><primary>Domain join</primary><secondary>Secrets</secondary><tertiary>Change</tertiary></indexterm>
+				<indexterm><primary>Server password change</primary><see>Domain join</see></indexterm>
 			</title>
 
 			<para>

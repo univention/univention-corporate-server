@@ -5,8 +5,8 @@
 ]>
 <chapter id="chap:join">
 	<title>Domain Join
-		<indexterm><primary>domain join</primary></indexterm>
-		<indexterm><primary>join</primary><see>domain join</see></indexterm>
+		<indexterm><primary>Domain join</primary></indexterm>
+		<indexterm><primary>Join</primary><see>Domain join</see></indexterm>
 	</title>
 	<para>
 		An <acronym>UCS</acronym> system is normally joined into a domain.
@@ -20,7 +20,7 @@
 
 	<section id="chap:scripts">
 		<title>Join scripts
-			<indexterm><primary>domain join</primary><secondary>join script</secondary></indexterm>
+			<indexterm><primary>Domain join</primary><secondary>Join script</secondary></indexterm>
 		</title>
 		<para>
 			Packages requiring write access to the Univention directory service can provide so called <firstterm>join scripts</firstterm>.
@@ -33,7 +33,7 @@
 
 	<section id="join:status">
 		<title>Join status
-			<indexterm><primary>domain join</primary><secondary>status</secondary></indexterm>
+			<indexterm><primary>Domain join</primary><secondary>Join status</secondary></indexterm>
 		</title>
 		<para>
 			For each join script a version number is tracked.
@@ -72,8 +72,8 @@
 
 	<section id="join:run">
 		<title>Running join scripts
-			<indexterm><primary>domain join</primary><secondary>join script</secondary><tertiary>running</tertiary></indexterm>
-			<indexterm><primary>join script</primary><see>domain join</see></indexterm>
+			<indexterm><primary>Domain join</primary><secondary>Join script</secondary><tertiary>Running</tertiary></indexterm>
+			<indexterm><primary>Join script</primary><see>Domain join</see></indexterm>
 		</title>
 		<para>
 			There exist three commands related to running join scripts:
@@ -120,8 +120,8 @@
 
 	<section id="join:write">
 		<title>Writing join scripts
-			<indexterm><primary>domain join</primary><secondary>join script</secondary><tertiary>writing</tertiary></indexterm>
-			<indexterm><primary>join script</primary><see>domain join</see></indexterm>
+			<indexterm><primary>Domain join</primary><secondary>Join script</secondary><tertiary>Writing</tertiary></indexterm>
+			<indexterm><primary>Join script</primary><see>Domain join</see></indexterm>
 		</title>
 
 		<para>
@@ -209,8 +209,8 @@
 
 		<section id="join:exitcode">
 			<title>Join script exit codes
-				<indexterm><primary>join script</primary><secondary>exit codes</secondary></indexterm>
-				<indexterm><primary>join script</primary><secondary>return codes</secondary><see>exit codes</see></indexterm>
+				<indexterm><primary>Join script</primary><secondary>exit codes</secondary></indexterm>
+				<indexterm><primary>Join script</primary><secondary>return codes</secondary><see>exit codes</see></indexterm>
 			</title>
 			<para>
 				Join scripts must return the following exit codes:
@@ -258,8 +258,8 @@
 
 		<section id="join:libraries">
 			<title>Join script libraries
-				<indexterm><primary>join script</primary><secondary>library</secondary></indexterm>
-				<indexterm><primary>join script</primary><secondary>helpers</secondary><see>library</see></indexterm>
+				<indexterm><primary>Join script</primary><secondary>library</secondary></indexterm>
+				<indexterm><primary>Join script</primary><secondary>helpers</secondary><see>library</see></indexterm>
 			</title>
 			<para>
 				There exist two shell libraries, which provide functions which help in writing join scripts:

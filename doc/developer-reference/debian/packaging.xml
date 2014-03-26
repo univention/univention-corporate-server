@@ -15,7 +15,7 @@
 		Customers can package their own internal software or use the package mechanism to distribute configuration files consistently to different machines.
 	</para>
 	<para>
-		Software is packaged as a <emphasis>source package</emphasis><indexterm><primary>package</primary><secondary>source-</secondary></indexterm>, from which one or more <emphasis>binary packages</emphasis><indexterm><primary>package</primary><secondary>binary-</secondary></indexterm> can be created.
+		Software is packaged as a <emphasis>source package</emphasis><indexterm><primary>Package</primary><secondary>source-</secondary></indexterm>, from which one or more <emphasis>binary packages</emphasis><indexterm><primary>Package</primary><secondary>binary-</secondary></indexterm> can be created.
 		This is useful to create different packages from the same source package.
 		For example the <application>Samba</application> source package creates multiple binary packages: one containing the file server, one containing the client commands to access the server, and several other packages containing documentation, libraries, and common files shared between those packages,
 		The directory should be named <filename class="directory"><replaceable>package_name</replaceable>-<replaceable>version</replaceable></filename>.
