@@ -164,7 +164,7 @@ override_dh_auto_test:
 					<term><filename>/usr/share/univention-lib/base.sh</filename></term>
 					<listitem>
 						<para>
-							This file contains some helpers to create log files, handle unjoin scripts (<xref linkend="join:unjoin"/>) or query the network configuration.
+							This file contains some helpers to create log files, handle unjoin scripts (see <xref linkend="join:unjoin"/>) or query the network configuration.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -188,7 +188,7 @@ override_dh_auto_test:
 					<term><filename>/usr/share/univention-lib/umc.sh</filename></term>
 					<listitem>
 						<para>
-							This file contains some helpers to handle UMC (<xref linkend="chap:umc"/>) related tasks.
+							This file contains some helpers to handle UMC (see <xref linkend="chap:umc"/>) related tasks.
 						</para>
 					</listitem>
 				</varlistentry>

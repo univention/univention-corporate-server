@@ -23,7 +23,7 @@
 		</para>
 		<para>
 			On top of the raw <acronym>LDAP</acronym> layer, the Univention Directory Manager offers an object model on a higher level,
-			featuring advanced object semantics (<xref linkend="chap:udm"/>). That is the level that usually appropriate for app developpers, which
+			featuring advanced object semantics (see <xref linkend="chap:udm"/>). That is the level that usually appropriate for app developpers, which
 			should be considered before venturing down to the level of direct <acronym>LDAP</acronym> operations. On the other hand, for the development
 			of new UDM extensions it is important to understand some of the essential concepts of <acronym>LDAP</acronym> as used in UCS.
 		</para>
@@ -51,7 +51,7 @@
 			up to date with that on the &ucsMaster;.
 		</para>
 		<para>
-			The commands to create the <acronym>LDAP</acronym> schema extension objects in UDM may be put into any join script (<xref linkend="chap:join"/>).
+			The commands to create the <acronym>LDAP</acronym> schema extension objects in UDM may be put into any join script (see <xref linkend="chap:join"/>).
 			A <acronym>LDAP</acronym> schema extension object is created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
 			<acronym>LDAP</acronym> schema extension objects can be stored anywhere in the <acronym>LDAP</acronym> directory, but the recommended location would be <literal>cn=ldapschema,cn=univention,</literal> below the <acronym>LDAP</acronym> base.
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
@@ -137,7 +137,7 @@ ucs_registerLDAPExtension "$@" \
 			up to date with those on the &ucsMaster;.
 		</para>
 		<para>
-			The commands to create the <acronym>LDAP</acronym> ACL extension objects in UDM may be put into any join script (<xref linkend="chap:join"/>).
+			The commands to create the <acronym>LDAP</acronym> ACL extension objects in UDM may be put into any join script (see <xref linkend="chap:join"/>).
 			A <acronym>LDAP</acronym> ACL extension object is created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
 			<acronym>LDAP</acronym> ACL extension objects can be stored anywhere in the <acronym>LDAP</acronym> directory, but the recommended location would be <literal>cn=ldapacl,cn=univention,</literal> below the <acronym>LDAP</acronym> base.
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.

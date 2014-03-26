@@ -150,7 +150,7 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 		<para>
 			For packing purpose any additional LDAP schema needs to be registered on the &ucsMaster;, which is replicated from there to all other Domaincontrollers via the Listener/Notifier mechanism (see <xref linkend="chap:listener"/>).
 			This is best done trough a separate schema package, which should be installed on the &ucsMaster; and &ucsBackup;.
-			Since Extended Attributes are declared in <acronym>LDAP</acronym>, the commands to create them can be put into any join script (<xref linkend="chap:join"/>).
+			Since Extended Attributes are declared in <acronym>LDAP</acronym>, the commands to create them can be put into any join script (see <xref linkend="chap:join"/>).
 			To be convenient, the declaration should be also included with the schema package, since installing it there does not require the Administrator to provide additional <acronym>LDAP</acronym> credentials.
 		</para>
 		<para>
@@ -1302,7 +1302,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
 		</para>
 		<para>
-			The commands to create the <acronym>UDM</acronym> hook objects in UDM may be put into any join script (<xref linkend="chap:join"/>).
+			The commands to create the <acronym>UDM</acronym> hook objects in UDM may be put into any join script (see <xref linkend="chap:join"/>).
 			Like every <acronym>UDM</acronym> object a <acronym>UDM</acronym> hook object can be created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
 			<acronym>UDM</acronym> hook objects can be stored anywhere in the <acronym>LDAP</acronym> directory, but the recommended location would be <literal>cn=udm_hook,cn=univention,</literal> below the <acronym>LDAP</acronym> base.
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
@@ -1388,7 +1388,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
 		</para>
 		<para>
-			The commands to create the <acronym>UDM</acronym> module objects in UDM may be put into any join script (<xref linkend="chap:join"/>).
+			The commands to create the <acronym>UDM</acronym> module objects in UDM may be put into any join script (see <xref linkend="chap:join"/>).
 			Like every <acronym>UDM</acronym> object a <acronym>UDM</acronym> module object can be created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
 			<acronym>UDM</acronym> module objects can be stored anywhere in the <acronym>LDAP</acronym> directory, but the recommended location would be <literal>cn=udm_module,cn=univention,</literal> below the <acronym>LDAP</acronym> base.
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
@@ -1495,7 +1495,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
 		</para>
 		<para>
-			The commands to create the <acronym>UDM</acronym> syntax objects in UDM may be put into any join script (<xref linkend="chap:join"/>).
+			The commands to create the <acronym>UDM</acronym> syntax objects in UDM may be put into any join script (see <xref linkend="chap:join"/>).
 			Like every <acronym>UDM</acronym> object a <acronym>UDM</acronym> syntax object can be created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
 			<acronym>UDM</acronym> syntax objects can be stored anywhere in the <acronym>LDAP</acronym> directory, but the recommended location would be <literal>cn=udm_syntax,cn=univention,</literal> below the <acronym>LDAP</acronym> base.
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.

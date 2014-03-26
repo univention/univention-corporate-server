@@ -714,7 +714,7 @@
 			because the <literal>Version</literal> has to be increased. If this is
 			the only change in the ini file, this may be stated in the email instead
 			of shipping the file and we will take care of that during copying. Please
-			use the upload if a higher amount of data has to be transfered (<xref
+			use the upload if a higher amount of data has to be transfered (see <xref
 				linkend="app:upload" />).
 		</para>
 		<para>
