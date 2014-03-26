@@ -368,8 +368,8 @@ dpkg-buildpackage: full upload; Debian-native package (full source is included)
 	</section>
 
 	<section id="pkt:repository"><title>Setup repository
-			<indexterm><primary>Repository</primary><secondary>Create</secondary></indexterm>
-			<indexterm><primary>Packaging</primary><secondary>Repository</secondary><see>Repository</see></indexterm>
+			<indexterm><primary>Repository</primary><see>Packaging</see></indexterm>
+			<indexterm><primary>Packaging</primary><secondary>Package repository</secondary></indexterm>
 		</title>
 		<para>
 			Until now the binary package is only available locally, thus for installation it needs to be copied manually to each host and must be installed manually using <command>dpkg -i</command>.

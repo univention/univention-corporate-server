@@ -20,7 +20,7 @@
 
 	<section id="chap:scripts">
 		<title>Join scripts
-			<indexterm><primary>Domain join</primary><secondary>Join script</secondary></indexterm>
+			<indexterm><primary>Domain join</primary><secondary>Join script</secondary><see>Join script</see></indexterm>
 		</title>
 		<para>
 			Packages requiring write access to the Univention directory service can provide so called <firstterm>join scripts</firstterm>.
@@ -72,8 +72,7 @@
 
 	<section id="join:run">
 		<title>Running join scripts
-			<indexterm><primary>Domain join</primary><secondary>Join script</secondary><tertiary>Running</tertiary></indexterm>
-			<indexterm><primary>Join script</primary><see>Domain join</see></indexterm>
+			<indexterm><primary>Domain join</primary><secondary>Running</secondary></indexterm>
 		</title>
 		<para>
 			There exist three commands related to running join scripts:
@@ -120,8 +119,7 @@
 
 	<section id="join:write">
 		<title>Writing join scripts
-			<indexterm><primary>Domain join</primary><secondary>Join script</secondary><tertiary>Writing</tertiary></indexterm>
-			<indexterm><primary>Join script</primary><see>Domain join</see></indexterm>
+			<indexterm><primary>Join script</primary><secondary>Writing</secondary></indexterm>
 		</title>
 
 		<para>
@@ -209,8 +207,8 @@
 
 		<section id="join:exitcode">
 			<title>Join script exit codes
-				<indexterm><primary>Join script</primary><secondary>exit codes</secondary></indexterm>
-				<indexterm><primary>Join script</primary><secondary>return codes</secondary><see>exit codes</see></indexterm>
+				<indexterm><primary>Join script</primary><secondary>Exit codes</secondary></indexterm>
+				<indexterm><primary>Join script</primary><secondary>Return codes</secondary><see>Exit codes</see></indexterm>
 			</title>
 			<para>
 				Join scripts must return the following exit codes:
@@ -258,8 +256,8 @@
 
 		<section id="join:libraries">
 			<title>Join script libraries
-				<indexterm><primary>Join script</primary><secondary>library</secondary></indexterm>
-				<indexterm><primary>Join script</primary><secondary>helpers</secondary><see>library</see></indexterm>
+				<indexterm><primary>Join script</primary><secondary>Library</secondary></indexterm>
+				<indexterm><primary>Join script</primary><secondary>Helpers</secondary><see>Library</see></indexterm>
 			</title>
 			<para>
 				There exist two shell libraries, which provide functions which help in writing join scripts:

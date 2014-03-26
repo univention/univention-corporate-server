@@ -19,7 +19,7 @@
 
 	<section id="umc:files">
 		<title>UMC files
-			<indexterm><primary>Management Console</primary><secondary>files</secondary></indexterm>
+			<indexterm><primary>Management Console</primary><secondary>Files</secondary></indexterm>
 		</title>
 		<para>
 			Files for building a UMC module.

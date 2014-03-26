@@ -29,7 +29,7 @@
 
 	<section id="misc:ucslint">
 		<title>UCS lint
-			<indexterm><primary>Packaging</primary><secondary>checking for errors</secondary></indexterm>
+			<indexterm><primary>Packaging</primary><secondary>Checking for errors</secondary></indexterm>
 		</title>
 		<para>
 			Use <command>ucslint</command> to find packaging mistakes.
@@ -147,7 +147,7 @@ override_dh_auto_test:
 
 	<section id="misc:lib">
 		<title>Function Libraries
-			<indexterm><primary>Packaging</primary><secondary>library functions</secondary></indexterm>
+			<indexterm><primary>Packaging</primary><secondary>Library functions</secondary></indexterm>
 		</title>
 		<para>
 			The source package <package>univention-lib</package> provides two binary packages <package>shell-univention-lib</package> and <package>python-univention-lib</package>, which contain common library functions usable in shell or Python programs.
