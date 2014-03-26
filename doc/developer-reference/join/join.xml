@@ -573,11 +573,14 @@ fi
 										<arg choice="plain">--bindpwdfile <replaceable>filename</replaceable></arg>
 								</group></arg>
 								<sbr/>
-								<group choice="req" rep="repeat">
-									<arg choice="plain">--schema <replaceable>filename</replaceable></arg>
-									<arg choice="plain">--acl <replaceable>filename</replaceable></arg>
-									<arg choice="plain">--udm_syntax <replaceable>filename</replaceable></arg>
-									<arg choice="plain">--udm_hook <replaceable>filename</replaceable></arg>
+								<group choice="req">
+									<group choice="req" rep="repeat">
+										<arg choice="plain">--schema <replaceable>filename</replaceable></arg>
+										<arg choice="plain">--acl <replaceable>filename</replaceable></arg>
+										<arg choice="plain">--udm_syntax <replaceable>filename</replaceable></arg>
+										<arg choice="plain">--udm_hook <replaceable>filename</replaceable></arg>
+									</group>
+									<sbr/>
 									<arg choice="plain">--udm_module <replaceable>filename</replaceable>
 										<arg choice="opt" rep="repeat">--messagecatalog <replaceable>filename</replaceable></arg>
 										<arg choice="opt">--umcregistration <replaceable>filename</replaceable></arg>
@@ -592,15 +595,84 @@ fi
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
-								The easiest way to register <acronym>LDAP</acronym> schema and ACL extensions as well as UDM syntax, UDM hook and UDM extension modules
-								is to call the <command>ucs_registerLDAPExtension</command> shell function provided by the Univention shell function library
-								(see <xref linkend="misc:lib"/>). This shell function offers five main options: <option>--schema</option>,  <option>--acl</option>,
-								<option>--udm_syntax</option>, <option>--udm_hook</option>, <option>--udm_module</option>, which can be combined. Each of these
-								options expects a filename as option argument. During one call of the function, it will always process the given extensions in the order
-								schema, ACL, UDM syntax, UDM hook and finally UDM module.
+								The shell function <command>ucs_registerLDAPExtension</command> from the Univention shell function library (see <xref linkend="misc:lib"/>) can be used to register several extension in <acronym>LDAP</acronym>.
+								This shell function offers several modes:
+							</para>
+							<variablelist>
+								<varlistentry>
+									<term>
+										<option>--schema</option> <filename><replaceable>filename</replaceable>.schema</filename>
+										<indexterm><primary>LDAP</primary><secondary>Schema extension</secondary></indexterm>
+									</term>
+									<listitem><simpara>Register one or more <acronym>LDAP</acronym> schema extension (see <xref linkend="settings:ldapschema"/>)</simpara></listitem>
+								</varlistentry>
+								<varlistentry>
+									<term>
+										<option>--acl</option> <filename><replaceable>filename</replaceable>.acl</filename>
+										<indexterm><primary>LDAP</primary><secondary>Access control list extension</secondary></indexterm>
+									</term>
+									<listitem><simpara>Register one or more <acronym>LDAP</acronym> access control list (see <xref linkend="settings:ldapacl"/>)</simpara></listitem>
+								</varlistentry>
+								<varlistentry>
+									<term>
+										<option>--udm_syntax</option> <filename><replaceable>filename</replaceable>.py</filename>
+										<indexterm><primary>Directory Manager</primary><secondary>Syntax extension</secondary></indexterm>
+									</term>
+									<listitem><simpara>Register one or more <acronym>UDM</acronym> syntax extension (see <xref linkend="udm:syntax"/>)</simpara></listitem>
+								</varlistentry>
+								<varlistentry>
+									<term>
+										<option>--udm_hook</option> <filename><replaceable>filename</replaceable>.py</filename>
+										<indexterm><primary>Directory Manager</primary><secondary>Hook extension</secondary></indexterm>
+									</term>
+									<listitem><simpara>Register one or more <acronym>UDM</acronym> hook (see <xref linkend="udm:hook"/>)</simpara></listitem>
+								</varlistentry>
+								<varlistentry>
+									<term>
+										<option>--udm_module</option> <filename><replaceable>filename</replaceable>.py</filename>
+										<indexterm><primary>Directory Manager</primary><secondary>Module extension</secondary></indexterm>
+									</term>
+									<listitem><simpara>Register a single <acronym>UDM</acronym> module (see <xref linkend="udm:modules"/>)</simpara></listitem>
+								</varlistentry>
+							</variablelist>
+							<para>
+								The modes can be combined.
+								If more than one mode is used in one call of the function, the modes are always processed in the order as listed abobe.
+								Each of these options expects a filename as an required argument.
 							</para>
 							<para>
-								Called from a joinscript, it automatically determines some required parameters, like the app identifier plus Debian package name and version,
+								The following options can be given multiple times, but only after the option <option>--udm_module</option>:
+							</para>
+							<variablelist>
+								<varlistentry>
+									<term><option>--messagecatalog</option> <filename><replaceable>prefix</replaceable>/<replaceable>language</replaceable>.mo</filename></term>
+									<listitem>
+										<para>
+											The option can be used to supply message translation files in GNU message catalog format.
+											The language must be a valid language tag, i.e. must correspond to a subdirectory of <filename class="directory">/usr/share/locale/</filename>.
+										</para>
+									</listitem>
+								</varlistentry>
+								<varlistentry>
+									<term><option>--umcregistration</option> <filename><replaceable>filename</replaceable>.xml</filename></term>
+									<listitem>
+										<para>
+											The option can be used to supply an UMC registration file (see <xref linkend="umc:xml"/>) to make the UDM module accessible via Univention Management Console (UMC).
+										</para>
+									</listitem>
+								</varlistentry>
+								<varlistentry>
+									<term><option>--icon</option> <filename><replaceable>filename</replaceable></filename></term>
+									<listitem>
+										<para>
+											The option can be used to supply icon files (png or jpeg, in 16x16 or 50x50, or svgz).
+										</para>
+									</listitem>
+								</varlistentry>
+							</variablelist>
+
+							<para>
+								Called from a joinscript, the function automatically determines some required parameters, like the app identifier plus Debian package name and version,
 								required for the creation of the corresponding object. After creation of the object the function waits
 								up to 3 minutes for the &ucsMaster; to signal availability of the new extension and reports success or failure.
 								For UDM extensions it additionally checks that the corresponding file has been made available in the local filesystem.
@@ -633,20 +705,7 @@ fi
 								This validity range is not applied to <acronym>LDAP</acronym> schema extensions, since they must not be undefined as long as there are objects
 								in the <acronym>LDAP</acronym> directory which make use of it.
 							</para>
-							<para>
-								The option <option>--messagecatalog</option> can be used to supply message translation files in GNU message catalog format.
-								The filenames must correspond to a valid language tag, i.e. must correspond to a subdirectory of <filename class="directory">/usr/share/locale/</filename>.
-								This option can be given multiple times, but only in combination with the option <option>--udm_module</option>.
-							</para>
-							<para>
-								The option <option>--umcregistration</option> can be used to supply an UMC registration file (in XML format) to make the UDM module
-								accessible via Univention Management Console (UMC).
-								This option can only be used in combination with the option <option>--udm_module</option>.
-							</para>
-							<para>
-								The option <option>--icon</option> can be used to supply icon files (png or jpeg, in 16x16 or 50x50, or svgz).
-								This option can be given multiple times, but only in combination with the option <option>--udm_module</option>.
-							</para>
+
 							<example>
 								<title>Extension registration in join script</title>
 							<programlisting language="sh">
