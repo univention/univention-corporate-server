@@ -114,9 +114,8 @@
 		<para>
 			Since many of these parameters are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
 		</para>
-		<para>
-			Example usage in join script:
-		</para>
+		<example>
+			<title>Schema registration in join script</title>
 		<programlisting language="sh"><![CDATA[
 export UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
 . /usr/share/univention-lib/ldap.sh
@@ -124,6 +123,7 @@ export UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
 ucs_registerLDAPExtension "$@" \
   --schema /path/to/appschemaextension.schema
 		]]></programlisting>
+		</example>
 	</section>
 
 	<section id="settings:ldapacl">
@@ -214,9 +214,8 @@ ucs_registerLDAPExtension "$@" \
 		<para>
 			Since many of these parameters are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
 		</para>
-		<para>
-			Example usage in join script:
-		</para>
+		<example>
+			<title>LDAP ACL registration in join script</title>
 		<programlisting language="sh"><![CDATA[
 export UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
 . /usr/share/univention-lib/ldap.sh
@@ -224,6 +223,7 @@ export UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
 ucs_registerLDAPExtension "$@" \
   --acl /path/to/appaclextension.acl
 		]]></programlisting>
+		</example>
 	</section>
 
 	<section id="join:secret">

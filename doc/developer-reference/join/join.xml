@@ -650,7 +650,7 @@ fi
 								This option can be given multiple times, but only in combination with the option <option>--udm_module</option>.
 							</para>
 							<example>
-								<title>Extension registration in LDAP in join script</title>
+								<title>Extension registration in join script</title>
 							<programlisting language="sh">
 export UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
 . /usr/share/univention-lib/ldap.sh
@@ -693,7 +693,7 @@ ucs_registerLDAPExtension "$@" \
 								There is a corresponding <command>ucs_unregisterLDAPExtension</command> function, which can be used to unregister extension objects. This only works if no App is registered any longer for the object. It must not be called unless it has been verified that no object in <acronym>LDAP</acronym>  still requires this schema extension. For this reason it schould generally not be called in unjoin scripts.
 							</para>
 							<example>
-								<title>Example unregistration from LDAP in unjoin script</title>
+								<title>Schema unregistration in unjoin script</title>
 							<programlisting language="sh">
 . /usr/share/univention-lib/ldap.sh
 ucs_unregisterLDAPExtension "$@" --schema appschemaextension
