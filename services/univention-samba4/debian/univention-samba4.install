@@ -12,3 +12,4 @@ samba3upgrade/smb.conf.d/* usr/share/univention-samba4/samba3upgrade/smb.conf.d
 de.mo usr/share/locale/de/LC_MESSAGES/univention-samba4.mo
 debian/tmp/lib/security/*.so lib/security/
 server_password_change.d/univention-samba4 usr/lib/univention-server/server_password_change.d/
+sbin/univention-samba4-backup usr/sbin

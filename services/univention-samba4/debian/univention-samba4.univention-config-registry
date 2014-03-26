@@ -91,3 +91,7 @@ Variables: hostname
 
 Type: file
 File: etc/pam.d/samba
+
+Type: file
+File: etc/cron.d/univention-samba4-backup
+Variables: samba4/backup/cron

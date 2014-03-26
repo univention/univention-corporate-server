@@ -122,7 +122,8 @@ univention-config-registry set \
 	samba4/service/smb?'s3fs' \
 	samba4/service/nmb?'nmbd' \
 	samba4/ntacl/backend?'native' \
-	samba4/sysvol/sync/setfacl/AU?'false'
+	samba4/sysvol/sync/setfacl/AU?'false' \
+	samba4/backup/cron?'0 3 * * *'
 
 # configure firewall
 # http://technet.microsoft.com/en-us/library/dd772723%28WS.10%29.aspx

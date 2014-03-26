@@ -439,3 +439,9 @@ Description[de]=Ist diese Variable auf 'nmbd' gesetzt, werden NetBIOS-Dienste be
 Description[en]=If this variable is set to 'nmbd', NetBIOS services are provided (i.a. Windows clients can browse the network environment). If the variable is unset, NetBIOS is not used.
 Type=str
 Categories=service-samba
+
+[samba4/backup/cron]
+Description[de]=Diese Variable konfiguriert den Zeitpunkt/Intervall, zu dem eine Sicherung des Samba Provision Verzeichnis durchgeführt wird. Das Format ist unter 'man 5 crontab' dokumentiert. Ist die Variable nicht gesetzt, erfolgt keine Sicherung.
+Description[en]=This variable configures the time/interval when to start the backup of the samba provision directory. The format is documented under 'man 5 crontab'. If the variable is unset, no backup is performed.
+Type=str
+Categories=service-samba
