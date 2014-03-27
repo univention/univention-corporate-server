@@ -1,0 +1,12 @@
+product: ucs
+release: "3.1"
+version: [0, 1]
+scope: ucs_3.1-0-errata3.1-1
+src: xorg-server
+fix: 2:1.7.7-18.101.201403261847
+desc: |
+ An integer underflow in the Xorg X server could lead to denial of service
+ or the execution of arbitrary code (CVE-2013-6424)
+note: This update fixes this vulnerability.
+cve:
+ - CVE-2013-6424
