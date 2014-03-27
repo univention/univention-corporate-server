@@ -1072,7 +1072,7 @@ class DelegateTelephonedNumber(UDM_Attribute):
 									</simpara>
 								</listitem>
 							</varlistentry>
-							<varlistentry><term>single</term>
+							<varlistentry><term>simple</term>
 								<listitem>
 									<simpara>
 										By default a widget for selecting multiple entries is used.
@@ -1105,7 +1105,7 @@ class MyServers(UDM_Objects):
 		'computers/domaenencontroller_slave',
 		'computers/memberserver',
 		)
-	labell = '%(fqdn)s'
+	label = '%(fqdn)s'
 	udm_filter = 'service=MyService'
 						]]></programlisting>
 					</listitem>
