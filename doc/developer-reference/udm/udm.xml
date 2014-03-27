@@ -430,6 +430,110 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 			</para>
 		</example>
 
+		<section id="udm:ea:select">
+			<title>Selection lists
+				<indexterm><primary>Extended Attributes</primary><secondary>Selection list</secondary></indexterm>
+			</title>
+			<para>
+				Sometimes an Extended Attribute should show a list of options to choose from.
+				This list can either be static or dynamic.
+				After defining such a new syntax it can be used by referencing its name in the <literal>syntax</literal> property of an Extended Attribute.
+			</para>
+			<section id="udm:ea:select:static">
+				<title>Static selections</title>
+				<para>
+					The static list of available selections is defined once and can not be modified interactively through <acronym>UMC</acronym>.
+					Such a list is best implemented though a custom syntax class.
+					As the implementation must be available on all system roles, the new syntax ist best registered in <acronym>LDAP</acronym>.
+					This can be done by using <command>ucs_registerLDAPSchema</command> which is described in <xref linkend="settings:udm_syntax"/>.
+				</para>
+				<para>
+					The following example is shipped as the file <filename>/usr/share/pyshared/univention/admin/syntax.d/example.py</filename> by default:
+				</para>
+				<programlisting language="python"><![CDATA[
+class StaticSelection(select):
+	choices = [
+		('value1', 'Description for selection 1'),
+		('value2', 'Description for selection 2'),
+		('value3', 'Description for selection 3'),
+	]
+				]]></programlisting>
+				<para>
+					As an alternative the file can be put into the directory <filename class="directory">/usr/share/pyshared/univention/admin/syntax.d/</filename> and linked into the directory <filename class="directory">/usr/lib/pymodules/python2.6/univention/admin/syntax.d/</filename>.
+					When included into a Debian package, the linking is normally done by <command>dh_python</command>.
+				</para>
+			</section>
+			<section id="udm:ea:select:dynamic">
+				<title>Dynamic selections</title>
+				<para>
+					A dynamic list is implemented as a <acronym>LDAP</acronym> search, which is described in <xref linkend="udm:syntax:ldap"/>.
+					For performance reason it's recommended to implement a class derived from <classname>UDM_Attribute</classname> or <classname>UDM_Objects</classname> instead of using <classname>LDAP_Search</classname>.
+					The file <filename>/usr/share/pyshared/univention/admin/syntax.py</filename> contains several examples.
+				</para>
+				<example>
+					<title>Dynamic selection list for Extended Attributes</title>
+					<para>
+						The idea is to create a container with sub-entries for each selection.
+						This following listing declares a new syntax class for selection a profession level.
+					</para>
+					<programlisting language="python"><![CDATA[
+class DynamicSelection(UDM_Objects):
+	udm_modules = ('container/cn',)
+	udm_filter = '(&(objectClass=organizationalRole)(ou:dn:=DynamicSelection))'
+	simple = True  # only one value is selected
+	empty_value = True  # allow selecting nothing
+	key = '%(name)s  # this is stored
+	label = '%(description)s'  # this is displayed
+	regex = None  # no validation in frontend
+	error_message = 'Invalid value'
+					]]></programlisting>
+					<para>
+						The Python code should be put into a file names <filename>DynamicSelection.py</filename>
+						The following code registers this new syntax in <acronym>LDAP</acronym> and adds some values.
+						It also creates an Extended Attribute for user objects using this syntax.
+					</para>
+					<programlisting language="sh"><![CDATA[
+syntax='DynamicSelection'
+base="cn=univention,$(ucr get ldap/base)"
+
+udm container/ou create --position "$base" \
+	--set name="$syntax" --set description='UCS profession level'
+dn="ou=$syntax,$base"
+
+udm container/cn create --position "$dn" \
+	--set name="value1" --set description='UCS Guru (> 5)'
+udm container/cn create --position "$dn" \
+	--set name="value2" --set description='UCS Regular (1..5)'
+udm container/cn create --position "$dn" \
+	--set name="value3" --set description='UCS Beginner (< 1)'
+
+udm container/cn create --ignore_exists --position "$base" \
+	--set name='udm_syntax'
+dn="cn=udm_syntax,$base"
+udm settings/udm_syntax create --position "$dn" \
+	--set name="$syntax" --set filename="DynamicSelection.py" \
+	--set data="$(bzip2 <DynamicSelection.py | base64)" \
+	--set package="$syntax" --set packageversion="1"
+
+udm settings/extended_attribute create --position "cn=custom attributes,$base" \
+	--set name='Profession' \
+	--set module='users/user' \
+	--set tabName='General' \
+	--set translationTabName='"de_DE" "Allgemein"' \
+	--set groupName='Personal information' \
+	--set translationGroupName='"de_DE" "Persönliche Informationen"' \
+	--set shortDescription='UCS profession level' \
+	--set translationShortDescription='"de_DE" "UCS Erfahrung"' \
+	--set longDescription='Select a level of UCS experience' \
+	--set translationLongDescription='"de_DE" "Wählen Sie den Level der Erfahrung mit UCS"' \
+	--set objectClass='univentionFreeAttributes' \
+	--set ldapMapping='univentionFreeAttribute1' \
+	--set syntax="$syntax" --set mayChange=1 --set valueRequired=0
+					]]></programlisting>
+				</example>
+			</section>
+		</section>
+
 		<section id="udm:ea:issues">
 			<title>Known issues</title>
 			<itemizedlist>
