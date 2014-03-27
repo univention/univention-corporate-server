@@ -1,3 +1,11 @@
+univention-directory-manager-modules (9.0.75-17) unstable; urgency=low
+
+  * Add support for ldap attribute univentionObjectFlag:functional. Ldap
+    objects with this flag are ignored by the users/user udm module
+    and do not count towards the user license count (Bug #34395)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 25 Mar 2014 16:53:24 +0100
+
 univention-directory-manager-modules (9.0.75-16) unstable; urgency=low
 
   * Bug #33850: don't overwrite gettext _ instance when merging syntax.d/*

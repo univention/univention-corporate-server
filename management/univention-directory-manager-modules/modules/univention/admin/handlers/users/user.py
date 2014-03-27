@@ -2697,6 +2697,7 @@ def lookup_filter(filter_s=None, lo=None):
 			]),
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uidNumber', '0')]),
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectFlag', 'functional')]),
 		])
 	# ATTENTION: has its own rewrite function.
 	lookup_filter_obj.append_unmapped_filter_string(filter_s, rewrite, mapping)
@@ -2726,4 +2727,5 @@ def identify(dn, attr, canonical=0):
 			and not '0' in attr.get('uidNumber', [])
 			and not '$' in attr.get('uid',[])
 		        and not 'univentionHost' in attr.get('objectClass', [])
+			and not 'functional' in attr.get('univentionObjectFlag',[])
 			)
