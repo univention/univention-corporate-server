@@ -1,0 +1,53 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create users/user and test "functional" object flag
+## tags: [udm,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import subprocess
+
+if __name__ == '__main__':
+	license_before  = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
+	with udm_test.UCSTestUDM() as udm:
+		# create user and check its existance
+		user_dn = udm.create_user()[0]
+		utils.verify_ldap_object(user_dn)
+		stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]
+		if not user_dn in stdout:
+			utils.fail('Cannot find user DN %s in output of "udm users/user list":\n%s' % (user_dn, stdout))
+
+		# perform a license check
+		license_after  = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
+		if license_before == license_after:
+			utils.fail('License check failed to detect normal user')
+
+		# add 'functional' flag to user
+		lo = utils.get_ldap_connection()
+		lo.modify(user_dn, (('univentionObjectFlag', '', 'functional'),))
+		utils.wait_for_replication()
+		stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]
+		if user_dn in stdout:
+			utils.fail('"udm users/user list" still finds user object with functional flag')
+
+		# perform a license check
+		license_after  = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
+		if license_before != license_after:
+			utils.fail('License check detected to "functional" user')
+
+		# remove 'functional' flag to user
+		lo.modify(user_dn, (('univentionObjectFlag', 'functional', ''),))
+		utils.wait_for_replication()
+		stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]
+		if not user_dn in stdout:
+			utils.fail('Cannot find user DN %s in output of "udm users/user list" after removing flag:\n%s' % (user_dn, stdout))
+
+		# perform a license check
+		license_after  = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
+		if license_before == license_after:
+			utils.fail('License check failed to detect normal user')
