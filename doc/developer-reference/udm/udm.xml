@@ -995,6 +995,13 @@ udm settings/extended_attribute modify \
 									</simpara>
 								</listitem>
 							</varlistentry>
+							<varlistentry><term>static_values</term>
+								<listitem>
+									<simpara>
+										A list of two-tuples <literal>(value, display-string)</literal>, which are added as additional selection options.
+									</simpara>
+								</listitem>
+							</varlistentry>
 							<varlistentry><term>empty_value</term>
 								<listitem>
 									<simpara>
@@ -1078,6 +1085,16 @@ class DelegateTelephonedNumber(UDM_Attribute):
 										By default a widget for selecting multiple entries is used.
 										Setting this variable to <literal>True</literal> changes the widget to a combo-box widget, which only allows to select a single value.
 										This should be in-sync with the <literal>multivalue</literal> property of <acronym>UDM</acronym> properties.
+									</simpara>
+								</listitem>
+							</varlistentry>
+							<varlistentry><term>use_objects</term>
+								<listitem>
+									<simpara>
+										By default <acronym>UDM</acronym> opens each <acronym>LDAP</acronym> object through an <acronym>UDM</acronym> module implemented in Python.
+										This can be a performance problem if many entries are returned.
+										Setting this to <literal>False</literal> disabled the Python code and directly used the attributes returned by the <acronym>LDAP</acronym> search.
+										Several properties then can no longer be used as key or label, as those are not explicitly stored in <acronym>LDAP</acronym> but are only calculated by the <acronym>UDM</acronym> module.
 									</simpara>
 								</listitem>
 							</varlistentry>
