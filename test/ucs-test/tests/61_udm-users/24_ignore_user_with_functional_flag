@@ -1,5 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create users/user and test "functional" object flag
+## bugs: [34395]
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
