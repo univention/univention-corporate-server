@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.18-1) unstable; urgency=medium
+
+  * Raise samba/debug/level also on s4 master for Bug #33904
+
+ -- Arvid Requate <requate@univention.de>  Fri, 28 Mar 2014 17:48:11 +0100
+
 ucs-ec2-tools (0.1.17-2) unstable; urgency=low
 
   * Add missing APP_ID to install_apps_test_packages (Bug #32799)
