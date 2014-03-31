@@ -15,4 +15,7 @@ desc: |
    samba-tool drs.
  * samba-tool dbcheck now also lists/handles objects without objectClass.
  * Randomize DCs in DFS referral replies, e.g. for the sysvol share
-bug: [33972, 32974, 33977, 33616, 34370]
+ * Fix for CVE-2013-4496
+bug: [33972, 32974, 33977, 33616, 34305, 34370]
+cve:
+ - CVE-2013-4496
