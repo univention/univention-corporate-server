@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-1
+src: univention-virtual-machine-manager-daemon
+fix: 3.0.17-7.490.201403311208
+note:
+version: [1]
+desc: |
+  This update fixes the following issue:
+  * The documentation for configuring networks has been moved from the extended
+    documentation into the main manual. The links were updated accordingly.
+bug: [34425]
