@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.17-7) unstable; urgency=low
+
+  * Update URL to network bridge configuration (Bug #34425)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 31 Mar 2014 11:55:40 +0200
+
 univention-virtual-machine-manager-daemon (3.0.17-6) unstable; urgency=low
 
   * Use force-stop and force-restart in uvmmd-initscript to support blocked
