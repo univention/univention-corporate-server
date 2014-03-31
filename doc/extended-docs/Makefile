@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-MAIN := installation-3.2 performance-guide-3.2 networks-3.2 printers-3.2 computers-3.2
+MAIN := installation-3.2 performance-guide-3.2 networks-3.2 printers-3.2
 MAIN += domain-3.2 windows-3.2 uvmm-3.2
 STYLESHEET := univention_extdocs
 

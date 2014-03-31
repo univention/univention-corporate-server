@@ -794,6 +794,32 @@
 				</simpara></listitem>
 			  </itemizedlist>
 
+				<section id="computers:networkcomplex:uvmm">
+					<title>Prerequisite when using &ucsUVMM;</title>
+					<para>
+						If Xen or <acronym>KVM</acronym> is installed, the network configurations settings are disabled, since two init scripts are enabled by default:
+						They rename the physical interface <filename class="device">eth0</filename> to <filename class="device">peth0</filename> and replace it by a bridge called <filename class="device">eth0</filename> into which the renamed physical interface is connected.
+						Additional network cards are not adapted accordingly.
+					</para>
+					<para>
+						These script prevent using the more advanced network settings.
+						They must be disabled, which is done by setting the following <acronym>UCR</acronym> variables:
+					</para>
+					<programlisting language="sh">
+# for KVM:
+ucr set uvmm/kvm/bridge/autostart=no
+# for Xen:
+ucr set xen/bridge/interface=none
+# After that re-enable the UMC basic setup:
+ucr unset umc/modules/setup/network/disabled/by
+					</programlisting>
+					<para>
+						After that the server must be rebooted.
+						Existing virtual machines must be re-configured for the new interfaces names, which is described in <xref linkend="uvmm:networkinterfaces"/>.
+						Updating <acronym>UVMM</acronym> profiles for new virtual machines is recommended and described in <xref linkend="uvmm::profile::network"/>.
+					</para>
+				</section>
+
 			  <section id="computers:networkcomplex:bridge">
 				<title>Bridging
 					<indexterm><primary>Network</primary><secondary>Bridge</secondary></indexterm>

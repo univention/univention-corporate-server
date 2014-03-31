@@ -143,7 +143,7 @@
 				<simpara>
 			  The default setting since UCS-3.1 is <emphasis>none</emphasis>: in this setting, KVM
 			  accesses the hard drive directly and bypasses the page cache on the virtualization
-			  server. Read accesses are answered directly by the hard drive every time and write
+			  server.<!--footnote><para>This strategy does not work on file systems using <literal>tmpfs</literal> or with some <acronym>NFS</acronym> servers.</para></footnote--> Read accesses are answered directly by the hard drive every time and write
 			  accesses are passed directly on to the hard drive.
 				</simpara>
 			</listitem>
@@ -232,12 +232,12 @@
 		<para>
 		  Each virtualization server provides a storage pool with the name
 		  <emphasis>default</emphasis> in the standard configuration. It can be found on the
-		  virtualization servers in the <filename>/var/lib/libvirt/images/</filename> directory.
+		  virtualization servers in the <filename class="directory">/var/lib/libvirt/images/</filename> directory.
 		</para>
 
 		<para>
 		  To allow simple access to the storage pool, you can set up a share for the
-		  <filename>/var/lib/libvirt/images/</filename> directory. To do so, you need to create a
+		  <filename class="directory">/var/lib/libvirt/images/</filename> directory. To do so, you need to create a
 		  share with the following options in the UMC module <guimenu>Shares</guimenu>. The share
 		  can then be accessed easily from Windows clients via a CIFS network share (or via an NFS
 		  mount).
@@ -342,7 +342,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 				<simpara>
 				An ISO image can be assigned from a storage pool. If no additional storage pool has
 				been created, the files from the pool <emphasis>default</emphasis> are read from the
-				directory <filename>/var/lib/libvirt/images/</filename>.
+				directory <filename class="directory">/var/lib/libvirt/images/</filename>.
 				</simpara>
 			</listitem>
 			<listitem>
@@ -356,7 +356,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 		</para>
 		<para>
 			If drives are defined for a new virtual machine, it must be ensured that it is possible to boot from the CD-ROM drive.
-			The UVMM profile specifies the boot order for the fully-virtualized instances in advance.
+			The UVMM profile (see <xref linkend="uvmm::profile"/>) specifies the boot order for the fully-virtualized instances in advance.
 			For the paravirtualized instances, it is defined by the order on the definition of the drives and can be adapted subsequently in the settings section.
 		</para>
 	</section>
@@ -379,7 +379,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			</listitem>
 			<listitem>
 				<simpara>
-				<emphasis>Network Address Translation(NAT)</emphasis> network cards are defined in a private network on the virtualization server.
+				<emphasis>Network Address Translation (NAT)</emphasis> network cards are defined in a private network on the virtualization server.
 				To do so, the virtual machine(s) must be assigned an IP address from the 192.168.122.0/24 network.
 				This virtual instance is granted the access to the external network via NAT, so that the access is performed via the virtualization server's IP address.
 				The virtual machine can thus not be reached from other computers, but can create all outgoing connections itself.
@@ -392,11 +392,8 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 		</figure>
 		<para>
 			The UVMM servers are already preconfigured for bridging and NAT.
-			However, there are restrictions for bridged network cards.
-			On the UVMM servers, the physical network card to which the standard route is set, is converted to a bridge in the default setting.
-			If additional network cards are integrated in the server, these are not adapted accordingly.
-			If several bridge network cards are required in a virtual instance, an additional network card must be configured as a bridge on the server in advance.
-			If a bridge is used, the <guimenu>Source</guimenu> of the network interface used can be selected.
+			However, there are restrictions for bridged network cards which are described in <xref linkend="computers:networkcomplex:uvmm"/>.
+			For each virtual machine the desired network can be selected through the <guimenu>Source</guimenu> setting.
 		</para>
 		<para>
 			NAT network cards are only restricted by the IP addresses available in the 192.168.122.0/24 network.
@@ -736,12 +733,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			</para>
 			<para>
 				The input mask <guimenu>Physical server</guimenu> can be used to select on which virtualization server the virtual machine should be created.
-				The selection of the <guimenu>Profile</guimenu> specifies some of the basic settings for the virtual instance (e.g., a name prefix, no. of CPUs, RAM and whether the direct access per VNC should be activated).
-			</para>
-			<para>
-				The existing UVMM profiles are stored in the LDAP directory and can also be edited there.
-				The profiles can be found in the <guimenu>LDAP directory</guimenu> section of the &ucsUMC; in the container <emphasis>cn=Profiles,cn=Virtual Machine Manager</emphasis>.
-				Additional profiles can also be added there.
+				The selection of the <guimenu>Profile</guimenu> specifies some of the basic settings for the virtual instance (see <xref linkend="uvmm::profile"/>).
 			</para>
 			<para>
 				The virtual machine is now given a <guimenu>Name</guimenu> and an optional <guimenu>Description</guimenu> and assigned <guimenu>Memory</guimenu> and <guimenu>CPUs</guimenu>.
@@ -955,6 +947,42 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 					</tbody>
 				</tgroup>
 			</table>
+		</section>
+	</section>
+
+	<section id="uvmm::profile">
+		<title>Profiles</title>
+		<para>
+			Profiles are used in <acronym>UVMM</acronym> to store initial settings when creating new virtual machines.
+			Amongst others this includes the following settings:
+		</para>
+		<itemizedlist>
+			<listitem><simpara>name prefix for new virtual machines</simpara></listitem>
+			<listitem><simpara>number of virtual <acronym>CPU</acronym>s</simpara></listitem>
+			<listitem><simpara>default RAM size</simpara></listitem>
+			<listitem><simpara>default size for new disk images</simpara></listitem>
+			<listitem><simpara>default boot order for fully-virtualized virtual machines</simpara></listitem>
+			<listitem><simpara>use of para-virtual device drivers</simpara></listitem>
+			<listitem><simpara>default settings for direct access per <acronym>VNC</acronym></simpara></listitem>
+			<listitem><simpara>network bridge name</simpara></listitem>
+		</itemizedlist>
+		<para>
+			The existing UVMM profiles are stored in the <acronym>LDAP</acronym> directory and can also be edited there.
+			The profiles can be found in the <guimenu>LDAP directory</guimenu> section of the &ucsUMC; in the container <emphasis>cn=Profiles,cn=Virtual Machine Manager</emphasis>.
+			Additional profiles can also be added there.
+		</para>
+		<section id="uvmm::profile::network">
+			<title>Changing default network</title>
+			<para>
+				The name of the bridge used as the default network interface is stored in <acronym>UVMM</acronym> profiles.
+				If the default interface <filename class="device">eth0</filename> is changed, they name should be updated.
+				The following command updates all profiles currently using interface <filename class="device">eth0</filename> to use the bridge <filename class="device">br0</filename>:
+			</para>
+			<programlisting language="sh">
+udm uvmm/profile list --filter interface=eth0 |
+	sed -ne 's/^DN: //p' |
+	xargs -r -d '\n' -n 1 udm uvmm/profile modify --set interface=br0 --dn
+			</programlisting>
 		</section>
 	</section>
 </chapter>

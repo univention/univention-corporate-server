@@ -144,7 +144,7 @@
 				<simpara>
 			  Die Grundeinstellung seit UCS-3.1 ist <emphasis>none</emphasis>: Dabei greift KVM
 			  direkt auf die Festplatte zu und umgeht den Page Cache auf dem
-			  Virtualisierungsserver. Lesezugriffe werden jedesmal direkt von der Festplatte
+			  Virtualisierungsserver.<!--footnote><para>Diese Strategie funktioniert nicht mit Dateisystemen von Typ <literal>tmpfs</literal> und bei einigen <acronym>NFS</acronym>-Servern.</para></footnote--> Lesezugriffe werden jedesmal direkt von der Festplatte
 			  beantwortet und Schreibzugriffe direkt an die Festplatte durchgereicht.
 				</simpara>
 			</listitem>
@@ -237,12 +237,12 @@
 		<para>
 		  Jeder Virtualisierungsserver stellt in der Voreinstellung einen Speicherbereich mit dem Namen
 		  <emphasis>default</emphasis> zur Verfügung. Dieser liegt auf den Virtualisierungsservern
-		  unterhalb des Verzeichnisses <filename>/var/lib/libvirt/images/</filename>.
+		  unterhalb des Verzeichnisses <filename class="directory">/var/lib/libvirt/images/</filename>.
 		</para>
 
 		<para>
 		  Um einen einfachen Zugriff auf den Speicherbereich zu ermöglichen, kann eine Freigabe für
-		  das Verzeichnis <filename>/var/lib/libvirt/images/</filename> eingerichtet werden. Dazu
+		  das Verzeichnis <filename class="directory">/var/lib/libvirt/images/</filename> eingerichtet werden. Dazu
 		  muss im UMC-Modul <guimenu>Freigaben</guimenu> eine Freigabe mit den folgenden Optionen
 		  angelegt werden. Auf die Freigabe kann dann anschließend einfach von Windows-Clients über eine
 		  CIFS-Netzwerkfreigabe (oder auch über einen NFS-Mount) zugegriffen werden.
@@ -351,7 +351,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 				Aus einem Speicherbereich kann ein ISO-Image zugewiesen werden. Wurde kein
 				zusätzlicher Speicherbereich angelegt, werden die ISO-Dateien im Speicherbereich
 				<emphasis>default</emphasis> aus dem Verzeichnis
-				<filename>/var/lib/libvirt/images/</filename> ausgelesen.
+				<filename class="directory">/var/lib/libvirt/images/</filename> ausgelesen.
 				</simpara>
 			</listitem>
 			<listitem>
@@ -365,13 +365,13 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 		</para>
 		<para>
 			Werden Laufwerke für eine neu zu installierende Maschine definiert, muss sichergestellt werden, dass von dem CD-ROM-Laufwerk gebootet wird.
-			Das UVMM-Profil gibt die Bootreihenfolge für vollvirtualisierte Maschinen bereits vor.
+			Das UVMM-Profil (siehe <xref linkend="uvmm::profile"/>) gibt die Bootreihenfolge für vollvirtualisierte Maschinen bereits vor.
 			Bei paravirtualisierten Maschinen wird es durch die Reihenfolge bei der Definition der Laufwerke festgelegt und kann auch nachträglich in den Einstellungen angepasst werden.
 		</para>
 	</section>
 
 
-	<section id="uvmm::networkinterfaces">
+	<section id="uvmm:networkinterfaces">
 		<title>Netzwerk-Karten virtueller Maschinen</title>
 		<para>
 			Beim Anlegen einer virtuellen Maschine wird dieser automatisch eine Netzwerkkarte mit zufällig erstellter MAC-Adresse zugewiesen.
@@ -402,11 +402,8 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 		</figure>
 		<para>
 			Die UVMM-Server sind für NAT und Bridging vorkonfiguriert.
-			Allerdings gibt es Einschränkungen für Netzwerkkarten vom Typ Bridge.
-			Auf den UVMM-Servern wird in der Vorgabe die physikalische Netzwerkkarte, auf die die Standardroute gesetzt ist, zu einer Bridge umfunktioniert.
-			Sind in dem Server weitere Netzwerkkarten eingebaut, so werden diese nicht automatisch angepasst.
-			Werden in einer virtuellen Maschine mehrere Netzwerkkarten vom Typ Bridge benötigt, so müssen zuvor ggf. weitere Netzwerkkarte auf dem Server als Bridge konfiguriert werden.
-			Wenn eine Bridge verwendet wird, kann über die Option <guimenu>Quelle</guimenu> das verwendete Netzwerkinterface ausgewählt werden.
+			Allerdings gibt es Einschränkungen für Netzwerkkarten vom Typ Bridge, welche in <xref linkend="computers:networkcomplex:uvmm"/> beschrieben sind.
+			Für jede virtuelle Maschine kann das zu verwendende Netzwerk über die Option <guimenu>Quelle</guimenu> ausgewählt werden.
 		</para>
 		<para>
 			Netzwerkkarten vom Typ NAT sind nur durch die im Netz 192.168.122.0/24 verfügbaren IP-Adressen begrenzt.
@@ -748,12 +745,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			</para>
 			<para>
 				In der Eingabemaske <guimenu>Physikalischer Server</guimenu> kann ausgewählt werden, auf welchem Virtualisierungs-Server die virtuelle Maschine angelegt werden soll.
-				Mit der Auswahl des <guimenu>Profil</guimenu>s werden einige grundlegende Einstellungen für die virtuelle Maschine vorgegeben werden (z.B. einen Namenspräfix, Anzahl der CPUs, Arbeitspeicher und ob ein VNC-Zugriff aktiviert werden soll).
-			</para>
-			<para>
-				Die UVMM-Profile werden aus dem LDAP-Verzeichnis gelesen und können dort auch angepasst werden.
-				Zu finden sind die Profile im Modul <guimenu>LDAP-Verzeichnis</guimenu> der &ucsUMC; im Container <emphasis>cn=Profiles,cn=Virtual Machine Manager</emphasis>.
-				Dort können auch weitere Profile hinzugefügt werden.
+				Mit der Auswahl des <guimenu>Profil</guimenu>s werden einige grundlegende Einstellungen für die virtuelle Maschine vorgegeben werden (siehe <xref linkend="uvmm::profile"/>).
 			</para>
 			<para>
 				Die virtuelle Maschine wird nun mit einem <guimenu>Namen</guimenu> und einer optionalen <guimenu>Beschreibung</guimenu> versehen.
@@ -826,7 +818,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 
 			<para>
 			  Der Reiter <guimenu>Geräte</guimenu> erlaubt die Konfiguration der Laufwerke und Netzwerkschnittstellen.
-			Eine Einführung zu den unterstützen Geräten, Speicherformaten und Speicherbereichen findet sich <xref linkend="uvmm::imagefiles"/>, zu den unterstützen Netzwerkkarten-Einstellungen in <xref linkend="uvmm::networkinterfaces"/>.
+			Eine Einführung zu den unterstützen Geräten, Speicherformaten und Speicherbereichen findet sich <xref linkend="uvmm::imagefiles"/>, zu den unterstützen Netzwerkkarten-Einstellungen in <xref linkend="uvmm:networkinterfaces"/>.
 			</para>
 			<para>
 				Unter <guimenu>Laufwerke</guimenu> sind alle existierenden Laufwerke aufgeführt, die dabei verwendeten Image-Dateien, deren Größe und die zugeordneten Speicherbereiche.
@@ -959,6 +951,42 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 					</tbody>
 				</tgroup>
 			</table>
+		</section>
+	</section>
+
+	<section id="uvmm::profile">
+		<title>Profile</title>
+		<para>
+			Profile werden in <acronym>UVMM</acronym> benutzt, um die anfänglichen Einstellungen für neue virtuelle Maschinen festzulegen.
+			Unter anderem beinhalten diese folgende Einstellungen:
+		</para>
+		<itemizedlist>
+			<listitem><simpara>Prefix für den Namen neuer virtueller Maschinen</simpara></listitem>
+			<listitem><simpara>Anzahl der virtuellen <acronym>CPU</acronym>s</simpara></listitem>
+			<listitem><simpara>Standard-RAM-Größe</simpara></listitem>
+			<listitem><simpara>Standardgröße für neue Festplattemabbilder</simpara></listitem>
+			<listitem><simpara>Standard-Boot-Reihenfolge für vollvirtualisierte virtuelle Maschinen</simpara></listitem>
+			<listitem><simpara>Benutzung der paravirtualisierten Gerätetreiber</simpara></listitem>
+			<listitem><simpara>Standardeinstellung für den Direktzugriff per <acronym>VNC</acronym></simpara></listitem>
+			<listitem><simpara>Name der Netzwerk-Bridge-Schnittstelle</simpara></listitem>
+		</itemizedlist>
+		<para>
+			Die UVMM-Profile werden aus dem <acronym>LDAP</acronym>-Verzeichnis gelesen und können dort auch angepasst werden.
+			Zu finden sind die Profile im Modul <guimenu>LDAP-Verzeichnis</guimenu> der &ucsUMC; im Container <emphasis>cn=Profiles,cn=Virtual Machine Manager</emphasis>.
+			Dort können auch weitere Profile hinzugefügt werden.
+		</para>
+		<section id="uvmm::profile::network">
+			<title>Ändern des Standardnetzwerkes</title>
+			<para>
+				Der Name der Bridge für das Standardnetzwerk ist in den <acronym>UVMM</acronym>-Profilen gespeichert.
+				Wenn das Standardnetzwerk <filename class="device">eth0</filename> geändert wird, müssen diese angepasst werden.
+				Der folgende Befehl aktualisiert alle Profile auf die Bridge <filename class="device">br0</filename>, die momentan <filename class="device">eth0</filename> als Netzwerkschnittstelle benutzen:
+			</para>
+			<programlisting language="sh">
+udm uvmm/profile list --filter interface=eth0 |
+	sed -ne 's/^DN: //p' |
+	xargs -r -d '\n' -n 1 udm uvmm/profile modify --set interface=br0 --dn
+			</programlisting>
 		</section>
 	</section>
 </chapter>

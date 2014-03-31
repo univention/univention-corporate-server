@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (2.0.5-5) unstable; urgency=low
+
+  * Update URL to network bridge configuration (Bug #33444)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 31 Mar 2014 10:53:05 +0200
+
 univention-virtual-machine-manager-node (2.0.5-4) unstable; urgency=low
 
   * Add libvirt-check.sh to virtualization nodes. It periodically tests if
