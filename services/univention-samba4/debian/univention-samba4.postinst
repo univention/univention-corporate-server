@@ -97,7 +97,8 @@ univention-config-registry set \
 	samba/short_preserve_case?yes \
 	samba/guest_account?nobody \
 	samba/map_to_guest?"Bad User" \
-	samba/max/protocol?SMB2
+	samba/max/protocol?SMB2 \
+	samba/enable-msdfs?yes
 
 ## more samba3 defaults copied from univention-samba
 if [ "$server_role" != "memberserver" ]

@@ -1,3 +1,9 @@
+univention-samba4 (3.0.39-17) unstable; urgency=medium
+
+  * Set samba/enable-msdfs?yes to support dfs_samba4 (Bug #34326)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 31 Mar 2014 19:18:37 +0200
+
 univention-samba4 (3.0.39-16) unstable; urgency=medium
 
   * Terminate option parsing in samba-tool user add call (Bug #32938)
