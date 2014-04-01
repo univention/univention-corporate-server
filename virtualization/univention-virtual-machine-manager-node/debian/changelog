@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-node (2.0.5-6) unstable; urgency=low
+
+  * Added libvirtd logging functionality with new UCR variables:
+    libvirt/log/level, libvirt/log/filters, libvirt/log/outputs (Bug #34170)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 01 Apr 2014 11:06:48 +0200
+
 univention-virtual-machine-manager-node (2.0.5-5) unstable; urgency=low
 
   * Update URL to network bridge configuration (Bug #33444)
