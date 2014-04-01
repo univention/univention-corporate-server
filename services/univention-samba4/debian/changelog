@@ -1,3 +1,9 @@
+univention-samba4 (3.0.39-19) unstable; urgency=low
+
+  * Added univention-samba4-backup (Bug #34113) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 01 Apr 2014 13:56:50 +0200
+
 univention-samba4 (3.0.39-18) unstable; urgency=low
 
   * Added univention-samba4-backup (Bug #34113) 

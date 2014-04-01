@@ -5,3 +5,4 @@ usr/share/univention-samba4/samba3upgrade/smb.conf.d
 usr/lib/univention-install
 usr/sbin
 var/cache/univention-directory-listener
+var/univention-backup/samba
