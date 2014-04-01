@@ -52,7 +52,7 @@ filter = '(|(objectClass=univentionUDMModule)(objectClass=univentionUDMHook)(obj
 attributes = []
 
 PYSHARED_DIR = '/usr/share/pyshared/'
-PYMODULES_DIR = '/usr/lib/pymodules/'
+PYSUPPORT_DIR = '/usr/share/python-support'
 LOCALE_BASEDIR = "/usr/share/locale"	## mo files go to /usr/share/locale/<language-tag>/LC_MESSAGES/
 MODULE_DEFINTION_BASEDIR = "/usr/share/univention-management-console/modules"	## UMC registration xml files go here
 
@@ -135,7 +135,7 @@ def handler(dn, new, old):
 		new_relative_filename = new.get('%sFilename' % objectclass)[0]
 		listener.setuid(0)
 		try:
-			if not install_python_file(target_subdir, new_relative_filename, new_object_data):
+			if not install_python_file(objectclass, target_subdir, new_relative_filename, new_object_data):
 				return
 			if objectclass == 'univentionUDMModule':
 				install_messagecatalog(dn, new)
@@ -150,7 +150,7 @@ def handler(dn, new, old):
 		old_relative_filename = old.get('%sFilename' % objectclass)[0]
 		listener.setuid(0)
 		try:
-			remove_python_file(target_subdir, old_relative_filename)
+			remove_python_file(objectclass, target_subdir, old_relative_filename)
 			if objectclass == 'univentionUDMModule':
 				remove_umcicons(dn, old)
 				remove_umcregistration(dn, old)
@@ -192,24 +192,25 @@ def handler(dn, new, old):
 
 ##### helper functions #####
 ## pretty much all of the functions below mimic update-python-modules, additionally creating the __init__.py module file if nexessary
-def install_python_file(target_subdir, relative_filename, data):
+def install_python_file(objectclass, target_subdir, relative_filename, data):
 	"""Install and link a python module file"""
 
-	if install_pyshared_file(target_subdir, relative_filename, data) and create_pymodules_links(target_subdir, relative_filename):
+	init_file_list = []
+	if install_pyshared_file(target_subdir, relative_filename, data, init_file_list) and create_pymodules_links(objectclass, target_subdir, relative_filename, init_file_list):
 		return True
 	else:
 		return False
 
 
-def remove_python_file(target_subdir, target_filename):
+def remove_python_file(objectclass, target_subdir, target_filename):
 	"""Remove pymodules symlinks and compiled files as well as the python module file"""
 
-	if remove_pymodules_links(target_subdir, target_filename) and remove_pyshared_file(target_subdir, target_filename):
+	if remove_pymodules_links(objectclass, target_subdir, target_filename) and remove_pyshared_file(target_subdir, target_filename):
 		return True
 	else:
 		return False
 
-def install_pyshared_file(target_subdir, target_filename, data):
+def install_pyshared_file(target_subdir, target_filename, data, init_file_list):
 	"""Install a python module file"""
 	## input validation
 	relative_filename = os.path.join(target_subdir, target_filename)
@@ -223,7 +224,9 @@ def install_pyshared_file(target_subdir, target_filename, data):
 
 	## trivial checks passed, go for it
 	try:
-		create_python_moduledir(PYSHARED_DIR, target_subdir, os.path.dirname(target_filename))
+		_init_file_list = create_python_moduledir(PYSHARED_DIR, target_subdir, os.path.dirname(target_filename))
+		if _init_file_list:
+			init_file_list.extend(_init_file_list)
 	except moduleCreationFailed as e:
 		ud.debug(ud.LISTENER, ud.ERROR, '%s: %s' % (name, e))
 		return False
@@ -296,52 +299,49 @@ def remove_pyshared_file(target_subdir, target_filename):
 		return False
 
 
-def create_pymodules_links(target_subdir, target_filename):
+def create_pymodules_links(objectclass, target_subdir, target_filename, init_file_list):
 	"""Install the links for a public python module file"""
-	links_created = 0
-	is_default_link_present = False
 
 	p = subprocess.Popen(['/usr/bin/pyversions', '-d'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	(stdout, stderr) = p.communicate()
 	default_python_version = stdout.strip()
-
-	p = subprocess.Popen(['/usr/bin/pyversions', '-i'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	(stdout, stderr) = p.communicate()
-	pyversions_list = stdout.strip().split(' ')
+	if default_python_version.startswith("python"):
+		default_python_version = default_python_version[6:]
 
 	relative_filename = os.path.join(target_subdir, target_filename)
-	for pyversion in pyversions_list:
-		pymodules_version_path = os.path.join(PYMODULES_DIR, pyversion)
-		if os.path.isdir(pymodules_version_path):
-			try:
-				create_python_moduledir(pymodules_version_path, target_subdir, os.path.dirname(target_filename))
-			except moduleCreationFailed as e:
-				ud.debug(ud.LISTENER, ud.ERROR, '%s: %s' % (name, e))
 
-			linkname = os.path.join(pymodules_version_path, relative_filename)
-			filename = os.path.join(PYSHARED_DIR, relative_filename)
-			if os.path.lexists(linkname):
-				if os.path.exists(linkname) and os.path.realpath(linkname) == filename:
-					if pyversion == default_python_version:
-						is_default_link_present = True
-				else:
-					os.unlink(linkname)
+	pyshared_content = "pyversions=%s\n\n" % default_python_version
+	pyshared_content += "%s\n" % (os.path.join(PYSHARED_DIR, relative_filename),)
+	for filename in init_file_list:
+		pyshared_content += "%s\n" % (filename,)
 
-			if not os.path.lexists(linkname):
-				try:
-					os.symlink(filename, linkname)
-					links_created += 1
-					if pyversion == default_python_version:
-						is_default_link_present = True
-				except OSError, e:
-					ud.debug(ud.LISTENER, ud.ERROR, '%s: Symlink creation of %s failed: %s.' % (name, linkname, e))
-	if links_created:
+	target_filename_parts = os.path.splitext(target_filename)
+	if len(target_filename_parts) > 1 and target_filename_parts[-1] == ".py":
+		pysupport_filename = ".".join(target_filename_parts[:-1])
+	else:
+		pysupport_filename = target_filename
+
+	pysupport_filename = '%s_%s.public' % (objectclass, pysupport_filename.replace('/', '_'))
+	pysupport_filename = os.path.join(PYSUPPORT_DIR, pysupport_filename)
+
+	with open(pysupport_filename, 'w') as f:
+		f.write(pyshared_content)
+
+	try:
+		p = subprocess.Popen(['/usr/sbin/update-python-modules', '-p', pysupport_filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		(stdout, stderr) = p.communicate()
+	except OSError, e:
+		ud.debug(ud.LISTENER, ud.ERROR, '%s: update-python-modules -p %s failed: %s.' % (name, pysupport_filename, e))
+
+	if p.returncode == 0:
 		ud.debug(ud.LISTENER, ud.INFO, '%s: symlinks to %s created.' % (name, relative_filename))
+		return True
 
-	return is_default_link_present
+	ud.debug(ud.LISTENER, ud.ERROR, '%s: update-python-modules -p %s failed: %s.' % (name, pysupport_filename, stderr))
+	return False
 
 
-def remove_pymodules_links(target_subdir, target_filename):
+def remove_pymodules_links(objectclass, target_subdir, target_filename):
 	"""Remove pymodules parts: pyc, pyo, and file itself. Clean up directories in target_filename if empty."""
 	## input validation
 	relative_filename = os.path.join(target_subdir, target_filename)
@@ -354,52 +354,34 @@ def remove_pymodules_links(target_subdir, target_filename):
 		return False
 
 	## trivial checks passed, go for it
-	links_removed = 0
-	is_default_link_removed = False
+	target_filename_parts = os.path.splitext(target_filename)
+	if len(target_filename_parts) > 1 and target_filename_parts[-1] == ".py":
+		pysupport_filename = ".".join(target_filename_parts[:-1])
+	else:
+		pysupport_filename = target_filename
 
-	p = subprocess.Popen(['/usr/bin/pyversions', '-d'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	(stdout, stderr) = p.communicate()
-	default_python_version = stdout.strip()
+	pysupport_filename = '%s_%s.public' % (objectclass, pysupport_filename.replace('/', '_'))
+	pysupport_filename = os.path.join(PYSUPPORT_DIR, pysupport_filename)
 
-	p = subprocess.Popen(['/usr/bin/pyversions', '-i'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	(stdout, stderr) = p.communicate()
-	pyversions_list = stdout.strip().split(' ')
+	if os.path.isfile(pysupport_filename):
+		try:
+			os.unlink(pysupport_filename)
+			ud.debug(ud.LISTENER, ud.INFO, '%s: %s removed.' % (name, pysupport_filename))
+		except OSError, e:
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Removal of %s failed: %s.' % (name, pysupport_filename, e))
 
-	for pyversion in pyversions_list:
-		pymodules_version_path = os.path.join(PYMODULES_DIR, pyversion)
-		if os.path.isdir(pymodules_version_path):
+	try:
+		p = subprocess.Popen(['/usr/sbin/update-python-modules', '-p'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		(stdout, stderr) = p.communicate()
+	except OSError, e:
+		ud.debug(ud.LISTENER, ud.ERROR, '%s: update-python-modules -p failed: %s.' % (name, e))
 
-			linkname = os.path.join(pymodules_version_path, relative_filename)
-			## remove pyc and pyo
-			basename, ext = os.path.splitext(linkname)
-			if ext == '.py':
-				for ext in ('.pyc', '.pyo'):
-					derived_filename = basename + ext
-					if os.path.exists(derived_filename):
-						os.unlink(derived_filename)
-
-			## remove the link itself
-			if os.path.exists(linkname):
-				try:
-					os.unlink(linkname)
-					links_removed += 1
-				except OSError, e:
-					ud.debug(ud.LISTENER, ud.ERROR, '%s: Removal of symlink %s failed: %s.' % (name, linkname, e))
-					return False
-
-			if not os.path.lexists(linkname) and pyversion == default_python_version:
-				is_default_link_removed = True
-
-			## check if the directories can be cleaned up
-			try:
-				cleanup_python_moduledir(pymodules_version_path, target_subdir, os.path.dirname(target_filename))
-			except moduleRemovalFailed as e:
-				ud.debug(ud.LISTENER, ud.ERROR, '%s: %s' % (name, e))
-
-	if links_removed:
+	if p.returncode == 0:
 		ud.debug(ud.LISTENER, ud.INFO, '%s: symlinks to %s removed.' % (name, relative_filename))
+		return True
 
-	return is_default_link_removed
+	ud.debug(ud.LISTENER, ud.ERROR, '%s: update-python-modules -p failed: %s.' % (name, stderr))
+	return False
 
 
 def create_python_moduledir(python_basedir, target_subdir, module_directory):
@@ -416,9 +398,12 @@ def create_python_moduledir(python_basedir, target_subdir, module_directory):
 		raise moduleCreationFailed, 'Target directory %s not below %s' % (module_directory, target_dir)
 
 	## trivial checks passed, go for it
+	init_file_list = []
 	parent_dir = os.path.dirname(module_directory)
 	if parent_dir and not os.path.exists(os.path.join(python_basedir, target_subdir, parent_dir)):
-		create_python_moduledir(python_basedir, target_subdir, parent_dir)
+		_init_file_list = create_python_moduledir(python_basedir, target_subdir, parent_dir)
+		if _init_file_list:
+			init_file_list.extend(_init_file_list)
 
 	if not os.path.isdir(target_path):
 		try:
@@ -426,23 +411,12 @@ def create_python_moduledir(python_basedir, target_subdir, module_directory):
 		except OSError as e:
 			raise moduleCreationFailed, 'Directory creation of %s failed: %s.' % (target_path, e)
 
-	if python_basedir == PYSHARED_DIR:
-		python_init_filename = os.path.join(target_path,'__init__.py')
-		if not os.path.exists(python_init_filename):
-			open(python_init_filename, 'a').close()
-	else:
-		linkname = os.path.join(target_path, '__init__.py')
-		filename = os.path.join(PYSHARED_DIR, target_subdir, module_directory, '__init__.py')
-		if os.path.lexists(linkname):
-			if os.path.exists(linkname) and os.path.realpath(linkname) == filename:
-				return
-			else:
-				os.unlink(linkname)
+	python_init_filename = os.path.join(target_path,'__init__.py')
+	if not os.path.exists(python_init_filename):
+		open(python_init_filename, 'a').close()
+	init_file_list.extend(python_init_filename)
 
-		try:
-			os.symlink(filename, linkname)
-		except OSError, e:
-			raise moduleCreationFailed, 'Symlink creation of %s failed: %s.' % (linkname, e)
+	return init_file_list
 
 
 def cleanup_python_moduledir(python_basedir, target_subdir, module_directory):
@@ -468,7 +442,7 @@ def cleanup_python_moduledir(python_basedir, target_subdir, module_directory):
 
 	python_init_filename = os.path.join(target_path, '__init__.py')
 	if os.path.exists(python_init_filename):
-		if  os.path.getsize(python_init_filename) != 0:
+		if os.path.getsize(python_init_filename) != 0:
 			return
 
 		if python_basedir == PYSHARED_DIR:
