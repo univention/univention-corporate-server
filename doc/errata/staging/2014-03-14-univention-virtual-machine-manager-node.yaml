@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-virtual-machine-manager-node
-fix: 2.0.5-5.76.201403311132
+fix: 2.0.5-6.77.201404011119
 note:
 version: [1]
 desc: |
@@ -12,4 +12,6 @@ desc: |
   * Change libvirt-bin initscript to use sv force-stop and sv force-restart.
   * The documentation for configuring bridges has been moved from the extended
     documentation into the main manual. The links were updated accordingly.
-bug: [33966,33444]
+  * Added libvirtd logging functionality with new UCR variables:
+    libvirt/log/level, libvirt/log/filters, libvirt/log/outputs
+bug: [33966,33444, 34170]
