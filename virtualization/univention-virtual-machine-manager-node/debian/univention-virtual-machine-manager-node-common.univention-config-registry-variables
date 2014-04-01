@@ -47,7 +47,7 @@ Type=str
 Categories=uvmm
 
 [libvirt/check/interval]
-Description[de]=Diese Variable konfguriert einen Intervall in Minuten, in dem geprüft wird, ob der libvirt-Dienst noch läuft. Setzt man die Variable auf '0' oder ist die Variable nicht gesetzt, erfolgt keine Verfügbarkeitsprüfung.
+Description[de]=Diese Variable konfiguriert einen Intervall in Minuten, in dem geprüft wird, ob der libvirt-Dienst noch läuft. Setzt man die Variable auf '0' oder ist die Variable nicht gesetzt, erfolgt keine Verfügbarkeitsprüfung.
 Description[en]=This variable configures an interval in minutes for checking whether the libvirt service is running. If the variable is set to '0' or the variable is unset, no availability check is made.
 Type=int
 Categories=uvmm,system-services
@@ -59,19 +59,19 @@ Type=int
 Categories=uvmm,system-services
 
 [libvirt/log/level]
-Description[de]=Konfiguration des allgemeinen libvirtd Log levels. Mögliche Werte sind 1-4, wobei 3 der Standardwert ist (DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4). Jede Zeile enthält dabei Informationen über die Priorität, die Kategorie, den Funktionsnamen und die Zeilennummer um die Herkunft der Nachricht bestimmen zu können. Zusätzlich wird ein Zeitstempel am Anfang der Zeile protokolliert.
-Description[en]=Configuration of the general libvirtd log level. Possible values are range from 1-4 with 3 being the default (DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4). Each message includes a priority level, a category, function name and line number, indicating where it originated from, and finally a formatted message. In addition the library adds a timestamp at the beginning of the message.
-Type=str
+Description[de]=Konfiguration des allgemeinen libvirtd Loglevels. Mögliche Werte sind 1-4, wobei 3 der Standardwert ist (DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4). Jede Nachricht enthält dabei Informationen über die Priorität, die Kategorie, den Funktionsnamen, die Zeilennummer und einen formatierten Nachrichtentext.
+Description[en]=Configuration of the general libvirtd log level. Possible values range from 1-4 with 3 being the default (DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4). Each message includes a priority level, a category, function name, line number and a formatted message text.
+Type=int
 Categories=uvmm,system-services
 
 [libvirt/log/filters]
-Description[de]=Konfiguration einer Menge von Kategorien und Prioritäten um Log-Nachrichten zu akzeptieren oder verwerfen. Dies erlaubt das verfeinern des allgemeinen Log levels der durch die UCRV libvirt/log/level gesetzt ist. Wenn die Kategorie einer Nachricht dem Filter entspricht, wird ihre Priorität mit der des Filters verglichen. Wenn sie niedriger ist, wird die Nachricht verworfen, andernfalls wird sie ausgegeben. Wenn kein Filter zutrifft, wird der allgemeine Log level, der durch UCRV libvirt/log/level bestimmt wird, auf die Nachricht angewandt. Dies erlaubt zum Beispiel, alle Debug Nachrichten für die remote und Qemu Bereiche zu erfassen, und den allgemeinen Log level auf alle anderen Nachrichten anzuwenden. Beispiel: "1:remote 1:qemu"
-Description[en]=Configuration of a set of patterns and priorities to accept or reject a log message. This allows refining of the general log level set by UCRV libvirt/log/level. If the message category matches a filter, the message priority is compared to the filter priority, if lower the message is discarded, if higher the message is output. If no filter matches, then the general priority level from UCRV libvirt/log/level is applied to all remaining messages. This allows, for example, capturing all debug messages for the remote and Qemu driver, and apply the default log level to all other log messages. Example: "1:remote 1:qemu" 
+Description[de]=Konfiguration einer Menge von Kategorien und Prioritäten, um Log-Nachrichten zu akzeptieren oder verwerfen. Dies erlaubt das Verfeinern des allgemeinen Loglevels der durch die UCRV libvirt/log/level gesetzt ist. Wenn die Kategorie einer Nachricht dem Filter entspricht, wird ihre Priorität mit der des Filters verglichen. Wenn sie niedriger ist, wird die Nachricht verworfen, andernfalls wird sie ausgegeben. Wenn kein Filter zutrifft, wird der allgemeine Loglevel, der durch UCRV libvirt/log/level bestimmt wird, auf die Nachricht angewandt. Dies erlaubt zum Beispiel, alle Debug Nachrichten für die remote und QEMU Bereiche zu erfassen, und den allgemeinen Loglevel auf alle anderen Nachrichten anzuwenden. Beispiel: "1:remote 1:qemu"
+Description[en]=Configuration of a set of patterns and priorities to accept or reject a log message. This allows refining of the general log level set by UCRV libvirt/log/level. If the message category matches a filter, the message priority is compared to the filter priority, if lower the message is discarded, if higher the message is output. If no filter matches, then the general priority level from UCRV libvirt/log/level is applied to the messages. This allows, for example, capturing all debug messages for the remote and QEMU driver, and apply the default log level to all other log messages. Example: "1:remote 1:qemu" 
 Type=str
 Categories=uvmm,system-services
 
 [libvirt/log/outputs]
 Description[de]=Konfiguration der Log Ausgabe, standardmäßig werden alle Nachrichten nach '/var/log/libvirt/libvirtd.log' geloggt. Sobald eine Nachricht die Log Filter passiert hat, können verschiedene Ausgabeziele definiert werden. Nachrichten können basierend auf ihrer Priorität unterschiedliche Ausgabeziele zugewiesen werden. Beispielweise kann man alle Ausgaben in eine Datei lenken und nur Fehlermeldungen über syslog verarbeiten lassen. Standardwert: "1:file:/var/log/libvirt/libvirtd.log"
-Description[en]=Configuration of log outputs, by default all messages are logged to '/var/log/libvirt/libvirtd.log'. Once a message has gone through filtering a set of output defines where to send the message. They can also filter based on the priority, for example it may be useful to output all messages to a debugging file but only allow errors to be logged through syslog. Default: "1:file:/var/log/libvirt/libvirtd.log"
+Description[en]=Configuration of log outputs, by default all messages are logged to '/var/log/libvirt/libvirtd.log'. Once a message has passed through filtering the message can be sent to a set of outputs. Messages can also be filtered based on priority, for example it may be useful to output all messages to a debugging file and to log all errors through syslog. Default: "1:file:/var/log/libvirt/libvirtd.log"
 Type=str
 Categories=uvmm,system-services
