@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-virtual-machine-manager-node
-fix: 2.0.5-6.77.201404011119
+fix: 2.0.5-7.78.201404011429
 note:
 version: [1]
 desc: |
