@@ -29,3 +29,5 @@ with udm_test.UCSTestUDM() as udm:
 	dnstests.test_dns_aaaa_record(random_zone,ip)
 
 	dnstests.check_ldap_object(forward_zone, 'AAAA Record', 'aAAARecord' ,ip)
+
+	dnstests.wait_for_sync()

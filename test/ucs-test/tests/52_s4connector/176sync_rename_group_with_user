@@ -1,0 +1,64 @@
+#!/usr/share/ucs-test/runner python
+## desc: "Rename a group with users in it and test sync"
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+##   - univention-samba4
+#
+#  Bug #31324
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import subprocess
+import re
+import univention.config_registry
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+from time import sleep
+import sys
+import dnstests
+
+
+def modify_groupname(group_dn, groupname2):
+	udm.modify_object('groups/group', dn = group_dn, name = groupname2)
+
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+
+			groupname2 = uts.random_name()
+
+			group_dn, groupname1 = udm.create_group()
+
+			users = [udm.create_user(), udm.create_user()]
+
+			udm.modify_object('groups/group', dn = group_dn, append = {'users': [user[0] for user in users]})
+
+			utils.verify_ldap_object(group_dn, {
+			'uniqueMember': [user[0] for user in users],
+			'memberUid': [user[1] for user in users]
+			})
+
+			dnstests.wait_for_sync(3)
+
+			dnstests.check_group(groupname1)
+
+			modify_groupname(group_dn, groupname2)
+
+			modified_group_dn = dnstests.correct_cleanup(group_dn, groupname2, udm, True)
+
+			dnstests.wait_for_sync(3)
+
+			dnstests.check_group(groupname2)
+
+
+			utils.verify_ldap_object(modified_group_dn, {
+			'uniqueMember': [user[0] for user in users],
+			'memberUid': [user[1] for user in users]
+			})
+
+			dnstests.wait_for_sync();

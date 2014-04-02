@@ -26,13 +26,14 @@ with udm_test.UCSTestUDM() as udm:
 	forward_zone = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = host)
 	dns_alias = udm.create_object('dns/alias', superordinate = forward_zone, name = random_name1, cname = random_name2)
 
-	dnstests.check_ldap_object(dns_alias, 'alias', 'cNAMERecord' ,random_name2)
+	dnstests.check_ldap_object(dns_alias, 'alias', 'cNAMERecord', random_name2)
 
 	dnstests.wait_for_sync(4)
 
 	test_string = random_name1 + '.' +random_zone
 
-	dnstests.test_dns_alias(test_string,random_name2)
+	dnstests.test_dns_alias(test_string, random_name2)
 
-	dnstests.check_ldap_object(dns_alias, 'alias', 'cNAMERecord' ,random_name2 + '.')
+	dnstests.check_ldap_object(dns_alias, 'alias', 'cNAMERecord', random_name2 + '.')
 
+	dnstests.wait_for_sync()

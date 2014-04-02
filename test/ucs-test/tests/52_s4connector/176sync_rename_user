@@ -1,0 +1,55 @@
+#!/usr/share/ucs-test/runner python
+## desc: "Rename a user and test sync"
+## tags: [udm]
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+##   - univention-samba4
+#
+#  Bug #31324
+
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import subprocess
+import re
+import univention.config_registry
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+from time import sleep
+import dnstests
+
+
+
+def modify_username(user_dn, username2):
+	newdn = 'uid=%s,%s' % (username2, user_dn.split(",", 1)[1])
+	udm._cleanup['users/user'].append(newdn)
+	udm.modify_object('users/user', dn = user_dn, username = username2)
+	return newdn
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+
+			username2 = uts.random_name()
+
+			user_dn, username1 = udm.create_user()
+
+			utils.verify_ldap_object(user_dn)
+
+			dnstests.wait_for_sync(3)
+
+			dnstests.check_user(username1)
+
+			modified_user_dn=modify_username(user_dn, username2)
+
+			dnstests.wait_for_sync(3)
+
+			dnstests.check_user(username2)
+
+			utils.verify_ldap_object(modified_user_dn)
+
+			dnstests.wait_for_sync()

@@ -27,13 +27,15 @@ if __name__ == '__main__':
 
 		srv_record = udm.create_object('dns/srv_record', superordinate = forward_zone, name = random_name, location = location)
 
-		dnstests.check_ldap_object(srv_record,'Service Record','sRVRecord',location)
+		dnstests.check_ldap_object(srv_record, 'Service Record', 'sRVRecord', location)
 
 		dnstests.wait_for_sync(4)
 
 		temp = random_name.split(' ')
-		test_string = '_{0}._{1}.{2}.{3}'.format(temp[0],temp[1],temp[2],random_zone)
+		test_string = '_{0}._{1}.{2}.{3}'.format(temp[0], temp[1], temp[2], random_zone)
 
-		dnstests.test_dns_service_record(test_string,location)
+		dnstests.test_dns_service_record(test_string, location)
 
-		dnstests.check_ldap_object(srv_record,'Modified Service Record','sRVRecord',location + '.')
+		dnstests.check_ldap_object(srv_record, 'Modified Service Record', 'sRVRecord', location + '.')
+
+		dnstests.wait_for_sync()

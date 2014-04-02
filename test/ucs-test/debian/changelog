@@ -1,3 +1,13 @@
+ucs-test (4.0.164-20) unstable; urgency=low
+
+  * Renamed tests:
+    52/400sync_rename_* > 176sync_rename_* (Bug #29211)
+    52/200sync_create_dns_* > 175sync_create_dns_* (Bug #31324)
+  * Replaced 'raise Exception' with 'sys.exit' in all above tests
+  * Fixed bug in 52/175sync_create_dns_serial (Bug #29211)
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 02 Apr 2014 17:08:35 +0200
+
 ucs-test (4.0.164-19) unstable; urgency=low
 
   * 52_s4connector/120sync_create_and_modify_ucs_user: test more
