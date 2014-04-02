@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create users/user
-## tags: [udm,apptest]
+## tags: [basic,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: safe
 ## packages:

@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner bash 
 ## desc: "Create and modify UCS-User and verify attributes in sync-mode"
 ## exposure: dangerous
+## tags:
+##  - basic
 ## packages:
 ## - univention-s4-connector
 
@@ -46,6 +48,18 @@ UDM_users_user_postcode="$(random_chars)"
 UDM_users_user_profilepath="$(random_chars)"
 UDM_users_user_scriptpath="$(random_chars)"
 
+UDM_users_user_sambauserworkstations="$(random_chars)"
+UDM_users_user_homedrive="$(random_chars)"
+UDM_users_user_sambahome="$(random_chars)"
+UDM_users_user_phone1="$(random_chars 8 $_ciphers)"
+UDM_users_user_phone2="$(random_chars 9 $_ciphers)"
+UDM_users_user_phone3="$(random_chars 3 $_ciphers)"
+UDM_users_user_hometelephonenumber="$(random_chars 5 $_chipers)"
+UDM_users_user_mobiletelephonenumber="$(random_chars 25 $_chipers)"
+UDM_users_user_pager1="$(random_chars 5 $_ciphers)"
+UDM_users_user_pager2="$(random_chars 7 $_ciphers)"
+UDM_users_user_pager3="$(random_chars 4 $_ciphers)"
+
 udm_modify "users/user" "" "" "" "" \
 		   --set firstname="$UDM_users_user_firstname" \
 		   --set lastname="$UDM_users_user_lastname" \
@@ -54,14 +68,21 @@ udm_modify "users/user" "" "" "" "" \
 		   --set city="$UDM_users_user_city" \
 		   --set postcode="$UDM_users_user_postcode" \
 		   --set profilepath="$UDM_users_user_profilepath" \
-		   --set scriptpath="$UDM_users_user_scriptpath" || fail_test 110
+		   --set scriptpath="$UDM_users_user_scriptpath" \
+		   --set sambaUserWorkstations="$UDM_users_user_sambauserworkstations" \
+		   --set homedrive="$UDM_users_user_homedrive" \
+		   --set sambahome="$UDM_users_user_sambahome" \
+		   --set homeTelephoneNumber="$UDM_users_user_hometelephonenumber" \
+		   --set mobileTelephoneNumber="$UDM_users_user_mobiletelephonenumber" \
+		   --append phone="$UDM_users_user_phone1" \
+		   --append phone="$UDM_users_user_phone2" \
+		   --append phone="$UDM_users_user_phone3" \
+		   --append pagerTelephoneNumber="$UDM_users_user_pager1" \
+		   --append pagerTelephoneNumber="$UDM_users_user_pager2" \
+		   --append pagerTelephoneNumber="$UDM_users_user_pager3" || fail_test 110 
 ad_wait_for_synchronization; fail_bool 0 110
 
-if [ "$connector_s4_windows_version" != "win2000" \
-	-o "$connector_s4_mapping_user_win2000_description" != "false" ]
-then
-	ad_verify_attribute "$AD_DN" "description" "$UDM_users_user_description"; fail_bool 0 121 "See #18501"
-fi
+ad_verify_attribute "$AD_DN" "description" "$UDM_users_user_description"; fail_bool 0 121 "See #18501"
 ad_verify_attribute	"$AD_DN" "sAMAccountName" "$UDM_users_user_username"; fail_bool 0 121 "See #18501"
 ad_verify_attribute "$AD_DN" "givenName" "$UDM_users_user_firstname"; fail_bool 0 121 "See #18501"
 ad_verify_attribute "$AD_DN" "sn" "$UDM_users_user_lastname"; fail_bool 0 121 "See #18501"
@@ -70,6 +91,19 @@ ad_verify_attribute "$AD_DN" "l" "$UDM_users_user_city"; fail_bool 0 121 "See #1
 ad_verify_attribute "$AD_DN" "postalCode" "$UDM_users_user_postcode"; fail_bool 0 121 "See #18501"
 ad_verify_attribute "$AD_DN" "profilePath" "$UDM_users_user_profilepath"; fail_bool 0 121 "See #18501"
 ad_verify_attribute "$AD_DN" "scriptPath" "$UDM_users_user_scriptpath"; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "userWorkstations" "$UDM_users_user_sambauserworkstations"; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "homeDrive" "$UDM_users_user_homedrive"; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "homeDirectory" "$UDM_users_user_sambahome"; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "telephoneNumber" "$UDM_users_user_phone1"; fail_bool 0 121 "See #18501"
+ad_verify_multi_value_attribute_contains "$AD_DN" "otherTelephone" "$UDM_users_user_phone2"; fail_bool 0 121 "See #18501"
+ad_verify_multi_value_attribute_contains "$AD_DN" "otherTelephone" "$UDM_users_user_phone3"; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "homePhone" "$UDM_users_user_hometelephonenumber"; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "otherHomePhone" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "mobile" "$UDM_users_user_mobiletelephonenumber"; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "otherMobile" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "pager" "$UDM_users_user_pager1"; fail_bool 0 121 "See #18501"
+ad_verify_multi_value_attribute_contains "$AD_DN" "otherPager" "$UDM_users_user_pager2"; fail_bool 0 121 "See #18501"
+ad_verify_multi_value_attribute_contains "$AD_DN" "otherPager" "$UDM_users_user_pager3"; fail_bool 0 121 "See #18501"
 
 udm_verify_udm_attribute "username" "$UDM_users_user_username" "users/user"; fail_bool 0 110
 udm_verify_udm_attribute "firstname" "$UDM_users_user_firstname" "users/user"; fail_bool 0 110
@@ -79,6 +113,68 @@ udm_verify_udm_attribute "city" "$UDM_users_user_city" "users/user"; fail_bool 0
 udm_verify_udm_attribute "postcode" "$UDM_users_user_postcode" "users/user"; fail_bool 0 110
 udm_verify_udm_attribute "profilepath" "$UDM_users_user_profilepath" "users/user"; fail_bool 0 110
 udm_verify_udm_attribute "scriptpath" "$UDM_users_user_scriptpath" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "sambaUserWorkstations" "$UDM_users_user_sambauserworkstations" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "homedrive" "$UDM_users_user_homedrive" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "sambahome" "$UDM_users_user_sambahome" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "phone" "$UDM_users_user_phone1" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "phone" "$UDM_users_user_phone2" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "phone" "$UDM_users_user_phone3" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "homeTelephoneNumber" "$UDM_users_user_hometelephonenumber" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "mobileTelephoneNumber" "$UDM_users_user_mobiletelephonenumber" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "pagerTelephoneNumber" "$UDM_users_user_pager1" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "pagerTelephoneNumber" "$UDM_users_user_pager2" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "pagerTelephoneNumber" "$UDM_users_user_pager3" "users/user"; fail_bool 0 110
+
+udm_modify "users/user" "" "" "" "" \
+		   --set firstname="" \
+		   --set description="" \
+		   --set street="" \
+		   --set city="" \
+		   --set postcode="" \
+		   --set profilepath="" \
+		   --set scriptpath="" \
+		   --set sambaUserWorkstations="" \
+		   --set homedrive="" \
+		   --set sambahome="" \
+		   --set phone="" \
+		   --set homeTelephoneNumber="" \
+		   --set mobileTelephoneNumber="" \
+		   --set pagerTelephoneNumber="" \
+|| fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_verify_attribute "$AD_DN" "description" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "givenName" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "streetAddress" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "l" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "postalCode" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "profilePath" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "scriptPath" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "userWorkstations" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "homeDrive" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "homeDirectory" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "telephoneNumber" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "otherTelephone" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "homePhone" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "otherHomePhone" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "mobile" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "otherMobile" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "pager" ""; fail_bool 0 121 "See #18501"
+ad_verify_attribute "$AD_DN" "otherPager" ""; fail_bool 0 121 "See #18501"
+
+udm_verify_udm_attribute "firstname" None "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "street" None "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "city" None "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "postcode" None "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "profilepath" None "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "scriptpath" None "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "sambaUserWorkstations" "" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "homedrive" None "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "sambahome" None "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "phone" "" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "homeTelephoneNumber" "" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "mobileTelephoneNumber" "" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "pagerTelephoneNumber" "" "users/user"; fail_bool 0 110
 
 udm_remove "users/user" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110

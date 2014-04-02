@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner bash 
 ## desc: "Create and modify AD-User and verify attributes in sync-mode"
 ## exposure: dangerous
+## tags:
+##  - basic
 ## packages:
 ## - univention-s4-connector
 

@@ -1,3 +1,11 @@
+ucs-test (4.0.164-19) unstable; urgency=low
+
+  * 52_s4connector/120sync_create_and_modify_ucs_user: test more
+    attributes (Bug #33621)
+  * 52_s4connector/*: some tag cleanups
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Apr 2014 16:54:38 +0200
+
 ucs-test (4.0.164-18) unstable; urgency=medium
 
   * Add 72_udm-extensions/43_test_update-python-modules (Bug #34421)

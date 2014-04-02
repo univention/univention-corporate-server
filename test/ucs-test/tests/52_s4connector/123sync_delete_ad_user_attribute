@@ -1,5 +1,7 @@
 #!/usr/share/ucs-test/runner bash 
 ## desc: "Delete an attribute of an AD-User in sync-mode"
+## tags:
+##  - basic
 ## exposure: dangerous
 ## packages:
 ## - univention-s4-connector
