@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-directory-manager-modules
-fix: 9.0.75-18.1176.201404012037
+fix: 9.0.75-19.1177.201404021334
 note:
 version: [0,1]
 desc: |
