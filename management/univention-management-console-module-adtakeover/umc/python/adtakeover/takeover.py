@@ -54,6 +54,7 @@ import univention.admin.modules as udm_modules
 import univention.admin.filter as udm_filter
 import univention.admin.objects
 import univention.admin.config
+from univention.admincli import license_check
 import ipaddr
 import logging
 import traceback
@@ -539,8 +540,8 @@ class UCS_License_detection():
 			self._license.init_select(lo, 'admin')
 			check_array = self.determine_license(lo, None)
 		except uexceptions.base:
-			dns = find_licenses(lo, baseDN, 'admin')
-			dn, expired = choose_license(lo, dns)
+			dns = license_check.find_licenses(lo, self.ucr['ldap/base'], 'admin')
+			dn, expired = license_check.choose_license(lo, dns)
 			check_array = self.determine_license(lo, dn)
 
 		## some name translation
