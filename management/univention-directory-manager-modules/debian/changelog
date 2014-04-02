@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.75-19) unstable; urgency=medium
+
+  * fix list append (Bug #34421)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 02 Apr 2014 13:34:32 +0200
+
 univention-directory-manager-modules (9.0.75-18) unstable; urgency=medium
 
   * use update-python-modules to maintain the pymodules links (Bug #34421)

@@ -414,7 +414,7 @@ def create_python_moduledir(python_basedir, target_subdir, module_directory):
 	python_init_filename = os.path.join(target_path,'__init__.py')
 	if not os.path.exists(python_init_filename):
 		open(python_init_filename, 'a').close()
-	init_file_list.extend(python_init_filename)
+	init_file_list.append(python_init_filename)
 
 	return init_file_list
 
