@@ -58,31 +58,44 @@ def ucr_overwrite_properties( module, lo ):
 		if not var.startswith( ucr_prefix ):
 			continue
 		try:
-			prop, attr = var[ len( ucr_prefix ) : ].split( '/', 1 )
+			prop_name, attr = var[ len( ucr_prefix ) : ].split( '/', 1 )
 			# ingore internal attributes
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: found variable: %s' % var )
 			if attr.startswith( '__' ):
 				continue
-			if prop in module.property_descriptions:
+			if attr == 'default':
+				# a property object is instantiated with default=...
+				#   but internally uses "base_default" as member variable
+				#   "default" is an instance_method...
+				attr = 'base_default'
+			if prop_name in module.property_descriptions:
+				prop = module.property_descriptions[ prop_name ]
+				new_prop_val = configRegistry[ var ]
+				old_prop_val = getattr( prop, attr )
+				if old_prop_val is None:
+					# if the attribute was None the type cast
+					#   will fail. best bet is str as type
+					old_prop_val = ''
+				prop_val_type = type( old_prop_val )
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: found property' )
-				if hasattr( module.property_descriptions[ prop ], attr ):
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: set property attribute %s to %s' % ( attr, configRegistry[ var ] ) )
+				if hasattr( prop, attr ):
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: set property attribute %s to %s' % ( attr, new_prop_val ) )
 					if attr in ( 'syntax', ):
-						if hasattr(univention.admin.syntax, configRegistry[ var ]):
-							syntax = getattr( univention.admin.syntax, configRegistry[ var ] )
-							setattr( module.property_descriptions[ prop ], attr, syntax() )
+						if hasattr(univention.admin.syntax, new_prop_val):
+							syntax = getattr( univention.admin.syntax, new_prop_val )
+							setattr( prop, attr, syntax() )
 						else:
-							if lo.search( filter = univention.admin.syntax.LDAP_Search.FILTER_PATTERN % configRegistry[ var ] ):
-								syntax = univention.admin.syntax.LDAP_Search( configRegistry[ var ] )
+							if lo.search( filter = univention.admin.syntax.LDAP_Search.FILTER_PATTERN % new_prop_val ):
+								syntax = univention.admin.syntax.LDAP_Search( new_prop_val )
 								syntax._load( lo )
-								setattr( module.property_descriptions[ prop ], attr, syntax )
+								setattr( prop, attr, syntax )
 							else:
 								syntax = univention.admin.syntax.string()
-								setattr( module.property_descriptions[ prop ], attr, syntax() )
+								setattr( prop, attr, syntax() )
 					else:
-						setattr( module.property_descriptions[ prop ], attr, type( getattr( module.property_descriptions[ prop ], attr ) ) ( configRegistry[ var ] ) )
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: get property attribute: %s' % getattr( module.property_descriptions[ prop ], attr ) )
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: get property attribute (type): %s' % type( getattr( module.property_descriptions[ prop ], attr ) ) )
+						setattr( prop, attr, prop_val_type( new_prop_val ) )
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: get property attribute: %s' % old_prop_val )
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: get property attribute (type): %s' % prop_val_type )
 		except Exception, e:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ucr_overwrite_properties: failed to set property attribute: %s' % str( e ) )
 			continue

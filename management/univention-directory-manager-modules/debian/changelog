@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.75-20) unstable; urgency=low
+
+  * Bug #23765: The "default" attribute of an UDM object's property is now
+    configurable via UCR.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 03 Apr 2014 23:57:38 +0200
+
 univention-directory-manager-modules (9.0.75-19) unstable; urgency=medium
 
   * fix list append (Bug #34421)
