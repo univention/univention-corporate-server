@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.97-20) unstable; urgency=low
+
+  * Bug #23765: Revert. Mixed up bug numbers
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 04 Apr 2014 00:02:10 +0200
+
 univention-management-console-module-udm (4.0.97-19) unstable; urgency=low
 
   * Bug #34367: Fixed an infinite loading animation in the "change password"

@@ -473,7 +473,6 @@ class Instance( Base, ProgressMixin ):
 		"""
 
 		def _thread( request ):
-			ucr.load()
 			module = self._get_module_by_request( request )
 
 			superordinate = request.options.get( 'superordinate' )
@@ -509,7 +508,7 @@ class Instance( Base, ProgressMixin ):
 					'$childs$' : module.childs,
 					'objectType' : module.name,
 					'labelObjectType' : module.subtitle,
-					'name' : module.obj_description( obj ) or udm_objects.description( obj ),
+					'name' : udm_objects.description( obj ),
 					'path' : ldap_dn2path( obj.dn, include_rdn = False )
 					}
 				if request.options[ 'objectProperty' ] not in ( 'name', 'None' ):
