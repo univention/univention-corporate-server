@@ -1397,6 +1397,7 @@ define([
 							this._form.clearFormValues();
 							this._form.load(this.ldapName);
 							dialog.alert(_('The changes have been successfully applied.'));
+							saveDeferred.resolve();
 						} else if (success) {
 							// everything ok, close page
 							this.onCloseTab();

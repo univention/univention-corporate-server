@@ -105,7 +105,7 @@ def LDAP_Connection( func ):
 
 	example:
 	  @LDAP_Connection
-	  def do_ldap_stuff(, arg1, arg2, ldap_connection = None, ldap_positio = None ):
+	  def do_ldap_stuff( arg1, arg2, ldap_connection = None, ldap_positio = None ):
 		  ...
 		  ldap_connection.searchDn( ..., position = ldap_position )
 		  ...
@@ -542,6 +542,13 @@ class UDM_Module( object ):
 			if prop.include_in_default_search:
 				ret.append( key )
 		return ret
+
+	def obj_description( self, obj ):
+		description_property_name = ucr.get('directory/manager/web/modules/%s/display' % self.name)
+		if description_property_name:
+			description_property = self.module.property_descriptions.get(description_property_name)
+			if description_property:
+				return description_property.syntax.tostring(obj[description_property_name])
 
 	def is_policy_module( self ):
 		return self.name.startswith('policies/') and self.name != 'policies/policy'

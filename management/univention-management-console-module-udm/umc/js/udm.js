@@ -1095,7 +1095,7 @@ define([
 				var moveOperation = this.umcpProgressCommand(this._progressBar, 'udm/move', params).then(
 					lang.hitch(this, function(result) {
 
-						// check whether everything went allright
+						// check whether everything went alright
 						var allSuccess = true;
 						var msg = '<p>' + _('Failed to move the following objects:') + '</p><ul>';
 						array.forEach(result, function(iresult) {

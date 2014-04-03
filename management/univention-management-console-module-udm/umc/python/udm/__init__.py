@@ -253,7 +253,7 @@ class Instance( Base, ProgressMixin ):
 			lic_file.close()
 			filename = lic_file.name
 
-		def _error(msg = None):
+		def _error(msg=None):
 			self.finished(request.id, [{
 				'success' : False, 'message' : msg
 			}])
@@ -473,6 +473,7 @@ class Instance( Base, ProgressMixin ):
 		"""
 
 		def _thread( request ):
+			ucr.load()
 			module = self._get_module_by_request( request )
 
 			superordinate = request.options.get( 'superordinate' )
@@ -508,7 +509,7 @@ class Instance( Base, ProgressMixin ):
 					'$childs$' : module.childs,
 					'objectType' : module.name,
 					'labelObjectType' : module.subtitle,
-					'name' : udm_objects.description( obj ),
+					'name' : module.obj_description( obj ) or udm_objects.description( obj ),
 					'path' : ldap_dn2path( obj.dn, include_rdn = False )
 					}
 				if request.options[ 'objectProperty' ] not in ( 'name', 'None' ):

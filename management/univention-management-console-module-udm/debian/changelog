@@ -1,3 +1,12 @@
+univention-management-console-module-udm (4.0.97-19) unstable; urgency=low
+
+  * Bug #34367: Fixed an infinite loading animation in the "change password"
+    module.
+  * Bug #23765: The attribute used as the "display attribute" in the grid is
+    now configurable via UCR.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 03 Apr 2014 23:03:05 +0200
+
 univention-management-console-module-udm (4.0.97-18) unstable; urgency=low
 
   * Bug #34117: Also the the LDAP Base DN if the license is "Free for personal
