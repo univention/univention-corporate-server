@@ -111,6 +111,13 @@ class Instance(umcm.Base):
 
 	@simple_response
 	def sync_ldap(self, application=None):
+		# TODO: Remove in (UCS 3.2) + 1
+		self.ucr.load()
+		for old, new in [('tine20org', 'tine20'),]:
+			if util.component_registered(old, self.ucr):
+				util.rename_app(old, new, self.component_manager, self.package_manager)
+		self.ucr.load()
+
 		if application is not None:
 			applications = [Application.find(application)]
 		else:

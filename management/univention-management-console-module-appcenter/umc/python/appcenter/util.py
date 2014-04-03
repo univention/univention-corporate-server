@@ -48,6 +48,27 @@ from univention.admin.handlers.computers import domaincontroller_backup
 # local application
 from constants import COMPONENT_BASE, COMP_PARAMS, STATUS_ICONS, DEFAULT_ICON, PUT_SUCCESS, PUT_PROCESSING_ERROR
 
+def rename_app(old_id, new_id, component_manager, package_manager):
+	from univention.management.console.modules.appcenter.app_center import Application
+	app = Application.find(old_id)
+	if not app:
+		app = Application.find(new_id)
+	if not app:
+		MODULE.error('Found neither OLD_ID nor NEW_ID.\n')
+		raise ValueError([old_id, new_id])
+
+	if not app.is_installed(package_manager, strict=False):
+		MODULE.process('%s is not installed. Fine, nothing to do.\n' % app.name)
+		return
+
+	app.set_id(old_id)
+	app.unregister_all_and_register(None, component_manager, package_manager)
+	app.tell_ldap(component_manager.ucr, package_manager, inform_about_error=False)
+
+	app.set_id(new_id)
+	app.register(component_manager, package_manager)
+	app.tell_ldap(component_manager.ucr, package_manager, inform_about_error=False)
+
 def get_hosts(module, lo, ucr=None):
  	hosts = module.lookup(None, lo, None)
 	hostnames = []

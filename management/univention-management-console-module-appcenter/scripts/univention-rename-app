@@ -38,35 +38,10 @@ from optparse import OptionParser
 from univention.lib.package_manager import PackageManager
 from univention.updater import UniventionUpdater
 from univention.config_registry import ConfigRegistry
-from univention.management.console.modules.appcenter.util import ComponentManager, install_opener
-from univention.management.console.modules.appcenter.app_center import Application
+from univention.management.console.modules.appcenter.util import ComponentManager, install_opener, rename_app
 
 ucr = ConfigRegistry()
 ucr.load()
-
-def rename(old_id, new_id):
-	install_opener(ucr)
-	app = Application.find(old_id)
-	if not app:
-		app = Application.find(new_id)
-	if not app:
-		sys.stderr.write('Found neither OLD_ID nor NEW_ID.\n')
-		raise ValueError()
-	uu = UniventionUpdater(False)
-	component_manager = ComponentManager(ucr, uu)
-	package_manager = PackageManager(lock=False)
-
-	if not app.is_installed(package_manager, strict=False):
-		sys.stdout.write('%s is not installed. Fine, nothing to do.\n' % app.name)
-		return
-
-	app.set_id(old_id)
-	app.unregister_all_and_register(None, component_manager, package_manager)
-	app.tell_ldap(ucr, package_manager, inform_about_error=False)
-
-	app.set_id(new_id)
-	app.register(component_manager, package_manager)
-	app.tell_ldap(ucr, package_manager, inform_about_error=False)
 
 def main():
 	usage = '%prog OLD_ID NEW_ID'
@@ -81,9 +56,13 @@ def main():
 		parser.print_usage()
 		sys.exit(1)
 	try:
-		rename(old_id, new_id)
+		install_opener(ucr)
+		uu = UniventionUpdater(False)
+		component_manager = ComponentManager(ucr, uu)
+		package_manager = PackageManager(lock=False)
+		rename_app(old_id, new_id, component_manager, package_manager)
 	except Exception:
-		sys.stderr.write('univention-rename-app did not succeed.\n')
+		sys.stderr.write('ERROR: univention-rename-app "%s" "%s" did not succeed. Maybe a network error? In this case, just repeat the command.\n' % (old_id, new_id))
 		sys.exit(1)
 	else:
 		sys.stdout.write('Rename done.\n')

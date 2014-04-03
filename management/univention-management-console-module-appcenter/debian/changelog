@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.51-9) unstable; urgency=low
+
+  * Bug #33728: Repeat renaming until it succeeds, not just in postinst, but
+    every time the module is opened.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 03 Apr 2014 15:11:20 +0200
+
 univention-management-console-module-appcenter (3.0.51-8) unstable; urgency=low
 
   * Bug #33728: Fix version mentioned in postinst version for renaming
