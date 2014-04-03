@@ -2,12 +2,15 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-directory-manager-modules
-fix: 9.0.75-19.1177.201404021334
+fix: 9.0.75-20.1178.201404032359
 note:
 version: [0,1]
 desc: |
   * The users/user udm module and the license check have been extended
-    to ignore certain LDAP objects with the attribute 
+    to ignore certain LDAP objects with the attribute
     univentionObjectFlag:functional
   * Python UDM extensions are now installed with update-python-support
-bug: [34395, 34421]
+  * The "default" attribute of an UDM object's property is now configurable via
+    UCR (e.g. by setting
+    directory/manager/web/modules/users/user/properties/mailHomeServer/default).
+bug: [34395, 34421, 23765]

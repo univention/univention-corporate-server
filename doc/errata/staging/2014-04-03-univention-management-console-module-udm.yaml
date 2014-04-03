@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-1
+src: univention-management-console-module-udm
+fix: 4.0.97-20.444.201404040008
+note:
+version: [1]
+desc: |
+  This errata update fixes several issues:
+  * The "Change password" module showed an endless loading animation after
+    successfully applying changes. Now the form is properly reloading.
+bug: [34367]
