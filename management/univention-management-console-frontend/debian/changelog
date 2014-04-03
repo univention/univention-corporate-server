@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-25) unstable; urgency=low
+
+  * Bug #33990: update to Dojo 1.9.3; fix detection of IE11
+
+ -- Florian Best <best@univention.de>  Thu, 03 Apr 2014 13:14:40 +0200
+
 univention-management-console-frontend (3.0.152-24) unstable; urgency=low
 
   * Bug #34005: Set Apache's ProxyTimeout to the UCR variable

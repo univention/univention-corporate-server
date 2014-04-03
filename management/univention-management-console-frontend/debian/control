@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
  ucslint-univention,
- univention-dojo-dev,
+ univention-dojo-dev (>=7.0.6-2~),
  univention-config-dev,
  univention-management-console-dev,
  imagemagick,
