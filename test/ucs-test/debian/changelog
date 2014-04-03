@@ -1,3 +1,10 @@
+ucs-test (4.0.164-21) unstable; urgency=low
+
+  * 10_ldap/49replication_modrdn_with_previous_modification: modify and
+    move an object while listener is stopped (Bug #34355)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Apr 2014 11:09:53 +0200
+
 ucs-test (4.0.164-20) unstable; urgency=low
 
   * Renamed tests:

@@ -155,6 +155,8 @@ def stop_listener():
 def start_listener():
 	subprocess.call((LISTENER_INIT_SCRIPT, 'start'))
 
+def restart_listener():
+	subprocess.call((LISTENER_INIT_SCRIPT, 'restart'))
 
 def wait_for_replication():
 	sys.stdout.flush()
