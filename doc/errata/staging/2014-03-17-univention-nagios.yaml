@@ -6,7 +6,7 @@ fix: 7.0.6-2.263.201403171419
 note:
 version: [1]
 desc: |
-  * The UCR templates for the nrpe server config and init file
-    have been modified to use /var/run/nagios/nrpe.pid as PID
-    file for the nrpe daemon.
+  * The UCR templates for the configuration and init files of the Nagios
+	Remote Plugin Executor (NRPE) have been modified to use the PID file
+    /var/run/nagios/nrpe.pid.
 bug: [34063]
