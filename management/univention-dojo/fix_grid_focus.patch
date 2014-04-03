@@ -18,10 +18,3 @@
  	},
  	//---------------Content Area------------------------------------------
  	findAndFocusGridCell: function(){
-@@ -784,4 +784,4 @@
- 		return true;
- 	}
- });
--});
-\ Kein Zeilenumbruch am Dateiende.
-+});

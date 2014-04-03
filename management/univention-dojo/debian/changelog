@@ -1,3 +1,9 @@
+univention-dojo (7.0.6-2) unstable; urgency=low
+
+  * Bug #33990: update to Dojo 1.9.3
+
+ -- Florian Best <best@univention.de>  Thu, 03 Apr 2014 11:09:56 +0200
+
 univention-dojo (7.0.6-1) unstable; urgency=low
 
   * Bug #32972: imported new version of put-selector
