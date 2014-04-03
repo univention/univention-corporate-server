@@ -212,6 +212,7 @@ def count_domain_objects_on_server(hostname_or_ip, username, password, progress)
 		'users' : number_of_users_in_domain,
 		'groups' : number_of_groups_in_domain,
 		'computers' : number_of_computers_in_domain,
+		'license_error' : error_message_from_validating_license,
 	}
 	Raises ComputerUnreachable, AuthenticationFailed
 	'''
@@ -226,7 +227,12 @@ def count_domain_objects_on_server(hostname_or_ip, username, password, progress)
 
 	progress.message(_('Retrieving information from AD DC'))
 	domain_info = ad.count_objects(ucs_license.ignored_users_list)
-	ucs_license.check_license(domain_info)
+	try:
+		ucs_license.check_license(domain_info)
+	except LicenseInsufficient as e:
+		domain_info['license_error'] = str(e) + ' ' + _('You may proceed with the takeover, but the domain management may be limited afterwards until a new license is installed.')
+	else:
+		domain_info['license_error'] = ''
 
 	return domain_info
 
@@ -545,22 +551,28 @@ class UCS_License_detection():
 			check_array = self.determine_license(lo, dn)
 
 		## some name translation
-		object_displayname_for_licensetype= {'Accounts': 'user', 'Users': 'user'}
+		object_displayname_for_licensetype= {'Accounts': _('users'), 'Users': _('users')}
 		ad_object_count_for_licensetype = {'Accounts': domain_info["users"], 'Users': domain_info["users"]}
 
 		license_sufficient = True
-		for object_type, num, max in check_array:
+		error_msg = None
+		for object_type, num, max_objs in check_array:
 			object_displayname = object_displayname_for_licensetype.get(object_type, object_type)
 			log.info("Found %s %s objects on the remote server." % (ad_object_count_for_licensetype[object_type], object_displayname))
-			sum = num + ad_object_count_for_licensetype[object_type]
-			domain_info["licensed_%s" % (object_displayname,)] = max
-			domain_info["estimated_%s" % (object_displayname,)] = sum
-			if self._license.compare(sum, max) > 0:
+			sum_objs = num + ad_object_count_for_licensetype[object_type]
+			domain_info["licensed_%s" % (object_displayname,)] = max_objs
+			domain_info["estimated_%s" % (object_displayname,)] = sum_objs
+			if self._license.compare(sum_objs, max_objs) > 0:
 				license_sufficient = False
-				log.warn("Number of %s objects after takeover would be %s. This would exceed the number of licensed objects (%s)." % (object_displayname, sum, max))
+				error_msg = _("Number of %(object_name)s after takeover would be %(sum)s. This would exceed the number of licensed objects (%(max)s).") % {
+							'object_name' : object_displayname,
+							'sum' : sum_objs,
+							'max' : max_objs,
+						}
+				log.warn(error_msg)
 
 		if not license_sufficient:
-			raise LicenseInsufficient()
+			raise LicenseInsufficient(error_msg)
 
 
 class AD_Connection():

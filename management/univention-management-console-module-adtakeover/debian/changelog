@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (1.0.10-16) unstable; urgency=low
+
+  * Bug #34019: Better handling of license validation errors
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 03 Apr 2014 12:35:38 +0200
+
 univention-management-console-module-adtakeover (1.0.10-15) unstable; urgency=medium
 
   * import license_check to fix unused undefined function calls (Bug #34139)

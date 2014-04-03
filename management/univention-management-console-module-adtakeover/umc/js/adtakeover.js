@@ -108,7 +108,8 @@ define([
 					type: Text,
 					name: 'text',
 					content: 'TBA',
-					textTemplate: _('<p>A <i>{ad_os}</i> Active Directory domain with the domainname <i>{ad_domain}</i> has been found. The server <i>{ad_hostname} ({ad_ip})</i> will be used as Active Directory Domain Controller for the takeover.</p><p>The following accounts have been found in the Active Directory domain:<ul><li>{users} users</li><li>{groups} groups</li><li>{computers} computers</li></ul>Click "Next" to start with the migration.</p>')
+					textTemplate: _('<p>A <i>{ad_os}</i> Active Directory domain with the domainname <i>{ad_domain}</i> has been found. The server <i>{ad_hostname} ({ad_ip})</i> will be used as Active Directory Domain Controller for the takeover.</p><p>The following accounts have been found in the Active Directory domain:<ul><li>{users} users</li><li>{groups} groups</li><li>{computers} computers</li></ul>Click "Next" to start with the migration.</p>') +
+						'<p><strong>{license_error}</strong></p>'
 				}]
 			}, {
 				'class': 'umc-adtakeover-page-sysvol umc-adtakeover-page',
