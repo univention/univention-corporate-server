@@ -41,8 +41,8 @@ Type=int
 Categories=uvmm
 
 [umc/modules/setup/network]
-Description[de]=Deaktiviert die Netzwerkkonfiguration über UMC solange noch die veralteten Skripte von KVM und Xen aktiviert sind. Lesen Sie <http://docs.univention.de/handbuch-3.2.html#computers:networkcomplex:uvmm> für weitere Informationen.
-Description[en]=Deactivates the network configuration through UMC while the deprecated scripts of KVM and Xen are still active. Read <http://docs.univention.de/manual-3.2.html#computers:networkcomplex:uvmm> for more information.
+Description[de]=Deaktiviert die Netzwerkkonfiguration über UMC solange noch die veralteten Skripte von KVM und Xen aktiviert sind. Lesen Sie <http://docs.univention.de/computers-3.2.html#uvmm> für weitere Informationen.
+Description[en]=Deactivates the network configuration through UMC while the deprecated scripts of KVM and Xen are still active. Read <http://docs.univention.de/computers-3.2.html#uvmm> for more information.
 Type=str
 Categories=uvmm
 

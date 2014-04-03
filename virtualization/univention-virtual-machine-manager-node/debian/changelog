@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (2.0.5-8) unstable; urgency=low
+
+  * Revert URL update until new manual is published (Bug #33444)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 03 Apr 2014 08:37:07 +0200
+
 univention-virtual-machine-manager-node (2.0.5-7) unstable; urgency=low
 
   * Added libvirtd logging functionality with new UCR variables:
