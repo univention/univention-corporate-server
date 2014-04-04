@@ -543,13 +543,6 @@ class UDM_Module( object ):
 				ret.append( key )
 		return ret
 
-	def obj_description( self, obj ):
-		description_property_name = ucr.get('directory/manager/web/modules/%s/display' % self.name)
-		if description_property_name:
-			description_property = self.module.property_descriptions.get(description_property_name)
-			if description_property:
-				return description_property.syntax.tostring(obj[description_property_name])
-
 	def is_policy_module( self ):
 		return self.name.startswith('policies/') and self.name != 'policies/policy'
 

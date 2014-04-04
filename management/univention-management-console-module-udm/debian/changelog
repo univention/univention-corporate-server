@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.97-21) unstable; urgency=low
+
+  * Bug #34038: Changed wording for LDAP object type widget
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 04 Apr 2014 11:20:29 +0200
+
 univention-management-console-module-udm (4.0.97-20) unstable; urgency=low
 
   * Bug #23765: Revert. Mixed up bug numbers

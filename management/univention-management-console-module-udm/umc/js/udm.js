@@ -556,7 +556,7 @@ define([
 				type: ComboBox,
 				name: 'objectType',
 				description: _( 'The type of the LDAP object.' ),
-				label: _('%s type', tools.capitalize(this.objectNameSingular)),
+				label: _('Type'),
 				//value: objTypes.length ? this.moduleFlavor : undefined,
 				staticValues: objTypes,
 				dynamicValues: lang.hitch(this, function(options) {

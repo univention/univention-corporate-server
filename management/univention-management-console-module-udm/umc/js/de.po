@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-02-24 20:41+0100\n"
+"POT-Creation-Date: 2014-04-04 10:38+0200\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/udm/DetailPage.js:1455
+#: umc/js/udm/DetailPage.js:1456
 #, python-format
 msgid "%(attribute)s: %(message)s\n"
 msgstr "%(attribute)s: %(message)s\n"
@@ -41,12 +41,6 @@ msgstr "%s angelegt"
 #, python-format
 msgid "%s template"
 msgstr "%s-Vorlage"
-
-#: umc/js/udm.js:559 umc/js/udm/NewObjectDialog.js:170
-#: umc/js/udm/NewObjectDialog.js:188 umc/js/udm/NewObjectDialog.js:224
-#, python-format
-msgid "%s type"
-msgstr "%styp"
 
 #: umc/js/udm/DetailPage.js:697
 msgid "(multi-edit)"
@@ -134,7 +128,7 @@ msgstr "Konto deaktiviert"
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: umc/js/udm.js:368 umc/js/udm/NewObjectDialog.js:93
+#: umc/js/udm/NewObjectDialog.js:93 umc/js/udm.js:368
 #, python-format
 msgid "Add a new %s"
 msgstr "%s neu hinzufügen"
@@ -188,8 +182,8 @@ msgstr "Zurück zur Suche"
 msgid "Boot"
 msgstr "Boot"
 
-#: umc/js/udm.js:1063 umc/js/udm.js:1354 umc/js/udm/DetailPage.js:912
-#: umc/js/udm/CreateReportDialog.js:113 umc/js/udm/LicenseImportDialog.js:135
+#: umc/js/udm/LicenseImportDialog.js:135 umc/js/udm/CreateReportDialog.js:113
+#: umc/js/udm/DetailPage.js:912 umc/js/udm.js:1063 umc/js/udm.js:1354
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -209,8 +203,8 @@ msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 msgid "Clients"
 msgstr "Clients"
 
-#: umc/js/udm/LicenseDialog.js:71 umc/js/udm/CreateReportDialog.js:161
-#: umc/js/udm/LicenseImportDialog.js:64
+#: umc/js/udm/LicenseImportDialog.js:64 umc/js/udm/CreateReportDialog.js:161
+#: umc/js/udm/LicenseDialog.js:71
 msgid "Close"
 msgstr "Schließen"
 
@@ -300,7 +294,7 @@ msgstr "DVS Benutzer"
 msgid "Data type"
 msgstr "Datentyp"
 
-#: umc/js/udm.js:546 umc/js/udm/MultiObjectSelect.js:108
+#: umc/js/udm/MultiObjectSelect.js:108 umc/js/udm.js:546
 msgid "Default properties"
 msgstr "Standardeigenschaften"
 
@@ -342,7 +336,7 @@ msgstr "%s bearbeiten"
 msgid "Employee"
 msgstr "Mitarbeiter"
 
-#: umc/js/udm/DetailPage.js:1457
+#: umc/js/udm/DetailPage.js:1458
 msgid "Error"
 msgstr "Fehler"
 
@@ -649,8 +643,8 @@ msgstr "Durch Richtlinien ererbte Eigenschaften"
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: umc/js/udm.js:603 umc/js/udm.js:623 umc/js/udm/MultiObjectSelect.js:116
-#: umc/js/udm/MultiObjectSelect.js:131
+#: umc/js/udm/MultiObjectSelect.js:116 umc/js/udm/MultiObjectSelect.js:131
+#: umc/js/udm.js:603 umc/js/udm.js:623
 msgid "Property value"
 msgstr "Eigenschaftswert"
 
@@ -736,7 +730,7 @@ msgstr "Vereinfachte Optionen"
 msgid "Start of authority"
 msgstr "Start of Authority Eintrag"
 
-#: umc/js/udm.js:522 umc/js/udm/NewObjectDialog.js:160
+#: umc/js/udm/NewObjectDialog.js:160 umc/js/udm.js:522
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
@@ -775,10 +769,6 @@ msgid "The corresponding superordinate for the LDAP object."
 msgstr "Das dem neuen LDAP-Objekt zugewiesene übergeordnete Objekt."
 
 #: umc/js/udm/NewObjectDialog.js:172 umc/js/udm/NewObjectDialog.js:189
-#, python-format
-msgid "The exact %s type."
-msgstr "Der genaue %styp"
-
 #: umc/js/udm/NewObjectDialog.js:225
 msgid "The exact object type of the new LDAP object."
 msgstr "Der genaue Objekttyp des neuen LDAP-Objekts."
@@ -791,7 +781,7 @@ msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gespeichert werden:"
 msgid "The following object(s) could not be deleted:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gelöscht werden:"
 
-#: umc/js/udm/DetailPage.js:1428
+#: umc/js/udm/DetailPage.js:1429
 msgid "The following properties could not be validated:"
 msgstr "Die folgenden Eigenschaften konnten nicht validiert werden:"
 
@@ -814,7 +804,7 @@ msgstr ""
 msgid "The license has been imported successfully."
 msgstr "Die Lizenz wurde erfolgreich importiert."
 
-#: umc/js/udm.js:579 umc/js/udm/MultiObjectSelect.js:106
+#: umc/js/udm/MultiObjectSelect.js:106 umc/js/udm.js:579
 msgid "The object property on which the query is filtered."
 msgstr "Die Objekteigenschaft, nach der gesucht wird."
 
@@ -838,7 +828,9 @@ msgstr "Das übergeordnete Objekt, für welches die Suche ausgeführt wird."
 msgid "The type of the LDAP object."
 msgstr "Der Typ des LDAP-Objekts."
 
-#: umc/js/udm.js:1222 umc/js/udm.js:1235
+#: umc/js/udm/NewObjectDialog.js:170 umc/js/udm/NewObjectDialog.js:188
+#: umc/js/udm/NewObjectDialog.js:224 umc/js/udm.js:559 umc/js/udm.js:1222
+#: umc/js/udm.js:1235
 msgid "Type"
 msgstr "Typ"
 
@@ -1003,6 +995,12 @@ msgstr "Benutzer"
 #: umc/js/udm.js:183
 msgid "users"
 msgstr "Benutzer"
+
+#~ msgid "%s type"
+#~ msgstr "%styp"
+
+#~ msgid "The exact %s type."
+#~ msgstr "Der genaue %styp"
 
 #~ msgid "The import of the license has failed: "
 #~ msgstr "Der Import der Lizenz ist fehlgeschlagen: "

@@ -167,9 +167,9 @@ define([
 					}, {
 						type: 'ComboBox',
 						name: 'objectType',
-						label: _('%s type', tools.capitalize(this.objectNameSingular)),
+						label: _('Type'),
 						value: this.defaultObjectType,
-						description: _('The exact %s type.', this.objectNameSingular),
+						description: _('The exact object type of the new LDAP object.'),
 						umcpCommand: this.umcpCommand,
 						dynamicValues: lang.hitch(this, function(options) {
 							return this.moduleCache.getChildModules(options.superordinate, null, true);
@@ -185,8 +185,8 @@ define([
 							type: 'ComboBox',
 							name: 'objectType',
 							value: this.defaultObjectType,
-							label: _('%s type', tools.capitalize(this.objectNameSingular)),
-							description: _('The exact %s type.', this.objectNameSingular),
+							label: _('Type'),
+							description: _('The exact object type of the new LDAP object.'),
 							visible: types.length > 1,
 							staticValues: types
 						});
@@ -221,7 +221,7 @@ define([
 				}, {
 					type: 'ComboBox',
 					name: 'objectType',
-					label: _('%s type', tools.capitalize(this.objectNameSingular)),
+					label: _('Type'),
 					description: _('The exact object type of the new LDAP object.'),
 					visible: types.length > 1,
 					staticValues: types
