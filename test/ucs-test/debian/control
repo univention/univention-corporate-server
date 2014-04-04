@@ -412,6 +412,15 @@ Provides: ucs-test-module
 Description: Test scripts to test the app center
  This package includes test-cases for the app center.
 
+Package: ucs-test-umc-system
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts to test the UMC system modules
+ This package includes test-cases for the UMC system modules.
+
 Package: ucs-test-modules-all
 Architecture: all
 Depends:
@@ -446,6 +455,7 @@ Depends:
  ucs-test-ucr,
  ucs-test-adconnector,
  ucs-test-appcenter,
+ ucs-test-umc-system,
 # ucs-test-ucsschool,
 # ucs-test-login
 Description: UCS test environment meta package
