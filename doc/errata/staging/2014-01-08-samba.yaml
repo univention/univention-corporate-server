@@ -11,8 +11,7 @@ desc: |
  * Domain account lockout support for Samba4 DCs has been implemented.
  * The domain services database module was affected by a segmentation fault
    when handling objects without objectClass.
- * The subcommand conflicts to handle conflicted objects has been added to
-   samba-tool drs.
+ * samba-tool dbcheck now also lists/handles name conflict objects
  * samba-tool dbcheck now also lists/handles objects without objectClass.
  * Randomize DCs in DFS referral replies, e.g. for the sysvol share
  * Fix for CVE-2013-4496
