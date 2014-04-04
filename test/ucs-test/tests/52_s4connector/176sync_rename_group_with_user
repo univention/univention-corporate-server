@@ -22,43 +22,31 @@ import sys
 import dnstests
 
 
-def modify_groupname(group_dn, groupname2):
-	udm.modify_object('groups/group', dn = group_dn, name = groupname2)
-
-
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 
-			groupname2 = uts.random_name()
+			new_group_name = uts.random_name()
 
 			group_dn, groupname1 = udm.create_group()
 
-			users = [udm.create_user(), udm.create_user()]
+			users = [udm.create_user()[0], udm.create_user()[0]]
 
-			udm.modify_object('groups/group', dn = group_dn, append = {'users': [user[0] for user in users]})
-
-			utils.verify_ldap_object(group_dn, {
-			'uniqueMember': [user[0] for user in users],
-			'memberUid': [user[1] for user in users]
-			})
+			udm.modify_object('groups/group', dn = group_dn, append = {'users': [user for user in users]})
+			dnstests.verify_users(group_dn, users)
 
 			dnstests.wait_for_sync(3)
 
-			dnstests.check_group(groupname1)
+			dnstests.check_group(group_dn)
 
-			modify_groupname(group_dn, groupname2)
+			udm.modify_object('groups/group', dn = group_dn, name = new_group_name)
 
-			modified_group_dn = dnstests.correct_cleanup(group_dn, groupname2, udm, True)
+			modified_group_dn = dnstests.correct_cleanup(group_dn, new_group_name, udm, True)
 
 			dnstests.wait_for_sync(3)
 
-			dnstests.check_group(groupname2)
+			dnstests.check_group(modified_group_dn, group_dn)
 
-
-			utils.verify_ldap_object(modified_group_dn, {
-			'uniqueMember': [user[0] for user in users],
-			'memberUid': [user[1] for user in users]
-			})
+			dnstests.verify_users(modified_group_dn, users)
 
 			dnstests.wait_for_sync();

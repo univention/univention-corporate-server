@@ -22,14 +22,10 @@ import dnstests
 
 
 
-def modify_groupname(group_dn, groupname2):
-	udm.modify_object('groups/group', dn = group_dn, name = groupname2)
-
-
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 
-			groupname2 = uts.random_name()
+			new_group_name = uts.random_name()
 
 			group_dn, groupname1 = udm.create_group()
 
@@ -37,15 +33,17 @@ if __name__ == '__main__':
 
 			dnstests.wait_for_sync(3)
 
-			dnstests.check_group(groupname1)
+			dnstests.check_group(group_dn)
 
-			modify_groupname(group_dn, groupname2)
+			udm.modify_object('groups/group', dn = group_dn, name = new_group_name)
 
-			modified_group_dn = dnstests.correct_cleanup(group_dn, groupname2, udm, True)
+			modified_group_dn = dnstests.correct_cleanup(group_dn, new_group_name, udm, True)
+
+			print modified_group_dn
 
 			dnstests.wait_for_sync(3)
 
-			dnstests.check_group(groupname2)
+			dnstests.check_group(modified_group_dn, group_dn)
 
 			utils.verify_ldap_object(modified_group_dn)
 

@@ -1,6 +1,5 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Univention-s4-connector dns a record syncronisation
-## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
 ##   - univention-config

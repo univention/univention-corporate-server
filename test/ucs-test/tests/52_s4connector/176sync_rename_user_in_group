@@ -1,6 +1,5 @@
 #!/usr/share/ucs-test/runner python
 ## desc: "Rename users wich are in a group and test sync"
-## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
 ##   - univention-config
@@ -19,48 +18,44 @@ ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 from time import sleep
 import dnstests
+import itertools
 
-
-
-def modify_username(users, users2):
-	modified_users = []
-	for i in range(len(users)) :
-		newdn = 'uid=%s,%s' % (users2[i-1], users[i-1][0].split(",", 1)[1])
-		modified_users.append((newdn,users2[i-1]))
-		udm._cleanup['users/user'].append(newdn)
-		udm.modify_object('users/user', dn = users[i-1][0], username = users2[i-1])
-	return modified_users
-
-
-def verify_users(group_dn,users):
-	print (" Checking Ldap Objects")
-	utils.verify_ldap_object(group_dn, {
-	'uniqueMember': [user[0] for user in users],
-	'memberUid': [user[1] for user in users]
-	})
 
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 
-			users2 = [uts.random_name(),uts.random_name()]
+			new_users = [uts.random_name(),uts.random_name()]
 
 			group_dn, groupname1 = udm.create_group()
 
-			users = [udm.create_user(), udm.create_user()]
+			users = [udm.create_user()[0], udm.create_user()[0]]
 
-			udm.modify_object('groups/group', dn = group_dn, append = {'users': [user[0] for user in users]})
+			dnstests.wait_for_sync()
 
-			dnstests.wait_for_sync(3)
+			user_surnames = [(dnstests.get_user_surname(user)) for user in users]
 
-			verify_users(group_dn,users)
-
-			dnstests.check_group(groupname1)
-
-			modified_users=modify_username(users,users2)
+			udm.modify_object('groups/group', dn = group_dn, append = {'users': [user for user in users]})
 
 			dnstests.wait_for_sync(3)
 
-			dnstests.check_group(groupname1)
+			dnstests.verify_users(group_dn,users)
 
-			verify_users(group_dn,modified_users)
+			[(dnstests.check_user(user)) for user in users]
+
+			dnstests.check_group(group_dn)
+
+			modified_users = []
+			for user, new_user in itertools.izip(users, new_users):
+				modified_users.append(dnstests.modify_username(user, new_user, udm))
+
+			dnstests.wait_for_sync(3)
+
+			dnstests.check_group(group_dn)
+
+			dnstests.verify_users(group_dn,modified_users)
+
+			for modified_user, user_surname, user in itertools.izip(modified_users, user_surnames, users):
+				dnstests.check_user(modified_user, user_surname, user)
+
+			dnstests.wait_for_sync()

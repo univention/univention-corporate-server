@@ -1,6 +1,5 @@
 #!/usr/share/ucs-test/runner python
 ## desc: "Rename a user and test sync"
-## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
@@ -24,31 +23,26 @@ import dnstests
 
 
 
-def modify_username(user_dn, username2):
-	newdn = 'uid=%s,%s' % (username2, user_dn.split(",", 1)[1])
-	udm._cleanup['users/user'].append(newdn)
-	udm.modify_object('users/user', dn = user_dn, username = username2)
-	return newdn
-
-
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 
-			username2 = uts.random_name()
+			new_user_name = uts.random_name()
 
-			user_dn, username1 = udm.create_user()
+			user_dn, user_name = udm.create_user()
 
 			utils.verify_ldap_object(user_dn)
 
 			dnstests.wait_for_sync(3)
 
-			dnstests.check_user(username1)
+			dnstests.check_user(user_dn)
 
-			modified_user_dn=modify_username(user_dn, username2)
+			user_surname = dnstests.get_user_surname(user_dn)
+
+			modified_user_dn = dnstests.modify_username(user_dn, new_user_name, udm)
 
 			dnstests.wait_for_sync(3)
 
-			dnstests.check_user(username2)
+			dnstests.check_user(modified_user_dn, user_surname, user_dn)
 
 			utils.verify_ldap_object(modified_user_dn)
 

@@ -1,3 +1,15 @@
+ucs-test (4.0.164-23) unstable; urgency=low
+
+  *removed system role in 52/175* tests
+  *added if __name__ == '__main__' where missing
+  *optimized functions in dnstests.py
+  *added 52/175sync_create_dns_pointer_record
+  *modified 52/176sync_rename* , tests are now also checking is surname is
+   correct
+  *corrected typo in dnstests.py
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 04 Apr 2014 14:40:37 +0200
+
 ucs-test (4.0.164-22) unstable; urgency=medium
 
   * Add 41samba-tool_user_password_change (Bug #34447)
