@@ -1,3 +1,11 @@
+univention-directory-manager-modules (9.0.75-23) unstable; urgency=low
+
+  * fixed tracebacks which could occur when adding/removing forward,
+    reverse or dhcp zones without ip address
+  (Bug #33843)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 07 Apr 2014 14:58:57 +0200
+
 univention-directory-manager-modules (9.0.75-22) unstable; urgency=low
 
   * Bug #34201: Removed dependeny on univention-ldap-server

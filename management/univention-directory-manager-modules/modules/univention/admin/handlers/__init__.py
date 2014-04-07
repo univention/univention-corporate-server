@@ -1904,7 +1904,8 @@ class simpleComputer( simpleLdap ):
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: removed: %s' % entry )
 			dn, ip, mac = self.__split_dhcp_line( entry )
 			if not ip and not mac and not self.__multiip:
-				self.__remove_from_dhcp_object( dn,  mac = self[ 'mac' ][ 0 ] )
+				if self['mac']:
+					self.__remove_from_dhcp_object( dn,  mac = self[ 'mac' ][ 0 ] )
 			else:
 				self.__remove_from_dhcp_object( dn, ip = ip, mac = mac )
 
@@ -1912,15 +1913,17 @@ class simpleComputer( simpleLdap ):
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: added: %s' % entry )
 			dn, ip, mac = self.__split_dhcp_line( entry )
 			if not ip and not mac and not self.__multiip:
-				self.__modify_dhcp_object( dn, self[ 'name' ], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] )
+				if self['ip'] and self['mac']:
+					self.__modify_dhcp_object( dn, self[ 'name' ], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] )
 			else:
 				self.__modify_dhcp_object( dn, self[ 'name' ], ip, mac )
 
 		for entry in self.__changes[ 'dnsEntryZoneForward' ][ 'remove' ]:
 			dn, ip = self.__split_dns_line( entry )
 			if not ip and not self.__multiip:
-				self.__remove_dns_forward_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
-				self.__remove_related_ptrrecords(dn, self['ip'][0])
+				if self['ip']:
+					self.__remove_dns_forward_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
+					self.__remove_related_ptrrecords(dn, self['ip'][0])
 			else:
 				self.__remove_dns_forward_object( self[ 'name' ], dn, ip )
 				self.__remove_related_ptrrecords(dn, ip)
@@ -1930,9 +1933,10 @@ class simpleComputer( simpleLdap ):
 			dn, ip = self.__split_dns_line( entry )
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dn="%s" and ip="%s"' % ( dn, ip ) )
 			if not ip and not self.__multiip:
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'no multiip environment')
-				self.__add_dns_forward_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
-				self.__add_related_ptrrecords(dn, self['ip'][0])
+				if self['ip']:
+					univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'no multiip environment')
+					self.__add_dns_forward_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
+					self.__add_related_ptrrecords(dn, self['ip'][0])
 			else:
 				self.__add_dns_forward_object( self[ 'name' ], dn, ip )
 				self.__add_related_ptrrecords(dn, ip)
@@ -1940,14 +1944,16 @@ class simpleComputer( simpleLdap ):
 		for entry in self.__changes[ 'dnsEntryZoneReverse' ][ 'remove' ]:
 			dn, ip = self.__split_dns_line( entry )
 			if not ip and not self.__multiip:
-				self.__remove_dns_reverse_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
+				if self['ip']:
+					self.__remove_dns_reverse_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
 			else:
 				self.__remove_dns_reverse_object( self[ 'name' ], dn, ip )
 
 		for entry in self.__changes[ 'dnsEntryZoneReverse' ][ 'add' ]:
 			dn, ip = self.__split_dns_line( entry )
 			if not ip and not self.__multiip:
-				self.__add_dns_reverse_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
+				if self['ip']:
+					self.__add_dns_reverse_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
 			else:
 				self.__add_dns_reverse_object( self[ 'name' ], dn, ip )
 
@@ -2260,7 +2266,8 @@ class simpleComputer( simpleLdap ):
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: removed: %s' % entry )
 			dn, ip, mac = self.__split_dhcp_line( entry )
 			if not ip and not mac and not self.__multiip:
-				self.__remove_from_dhcp_object( dn,  mac = self[ 'mac' ][ 0 ] )
+				if self['mac']:
+					self.__remove_from_dhcp_object( dn,  mac = self[ 'mac' ][ 0 ] )
 			else:
 				self.__remove_from_dhcp_object( dn, ip = ip, mac = mac )
 
@@ -2268,7 +2275,7 @@ class simpleComputer( simpleLdap ):
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: added: %s' % entry )
 			dn, ip, mac = self.__split_dhcp_line( entry )
 			if not ip and not mac and not self.__multiip:
-				if len( self[ 'ip' ] ) > 0 and len( self[ 'mac' ] ) > 0:
+				if self['ip'] and self['mac']:
 					self.__modify_dhcp_object( dn, self[ 'name' ], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] )
 			else:
 				self.__modify_dhcp_object( dn, self[ 'name' ], ip, mac )
@@ -2277,7 +2284,8 @@ class simpleComputer( simpleLdap ):
 		for entry in self.__changes[ 'dnsEntryZoneForward' ][ 'remove' ]:
 			dn, ip = self.__split_dns_line( entry )
 			if not ip and not self.__multiip:
-				self.__remove_dns_forward_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
+				if self['ip']:
+					self.__remove_dns_forward_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
 			else:
 				self.__remove_dns_forward_object( self[ 'name' ], dn, ip )
 
@@ -2286,22 +2294,25 @@ class simpleComputer( simpleLdap ):
 			dn, ip = self.__split_dns_line( entry )
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dn="%s" and ip="%s"' % ( dn, ip ) )
 			if not ip and not self.__multiip:
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'no multiip environment')
-				self.__add_dns_forward_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
+				if self['ip']:
+					univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'no multiip environment')
+					self.__add_dns_forward_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
 			else:
 				self.__add_dns_forward_object( self[ 'name' ], dn, ip )
 
 		for entry in self.__changes[ 'dnsEntryZoneReverse' ][ 'remove' ]:
 			dn, ip = self.__split_dns_line( entry )
 			if not ip and not self.__multiip:
-				self.__remove_dns_reverse_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
+				if self['ip']:
+					self.__remove_dns_reverse_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
 			else:
 				self.__remove_dns_reverse_object( self[ 'name' ], dn, ip )
 
 		for entry in self.__changes[ 'dnsEntryZoneReverse' ][ 'add' ]:
 			dn, ip = self.__split_dns_line( entry )
 			if not ip and not self.__multiip:
-				self.__add_dns_reverse_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
+				if self['ip']:
+					self.__add_dns_reverse_object( self[ 'name' ], dn, self[ 'ip' ][ 0 ] )
 			else:
 				self.__add_dns_reverse_object( self[ 'name' ], dn, ip )
 
@@ -2309,12 +2320,12 @@ class simpleComputer( simpleLdap ):
 			if self.has_key('dhcpEntryZone') and len(self['dhcpEntryZone']) > 0:
 				dn, ip, mac =  self[ 'dhcpEntryZone' ][ 0 ]
 				for entry in self.__changes[ 'mac' ][ 'add' ]:
-					if len( self[ 'ip' ] ) > 0:
+					if self['ip']:
 						self.__modify_dhcp_object( dn , self[ 'name' ], mac = entry, ip = self[ 'ip' ][ 0 ] )
 					else:
 						self.__modify_dhcp_object( dn , self[ 'name' ], mac = entry )
 				for entry in self.__changes[ 'ip' ][ 'add' ]:
-					if len( self[ 'mac' ] ) > 0:
+					if self['macm']:
 						self.__modify_dhcp_object( dn, self[ 'name' ], mac = self[ 'mac' ][ 0 ], ip = entry )
 
 		for entry in self.__changes[ 'dnsEntryZoneAlias' ][ 'remove' ]:
