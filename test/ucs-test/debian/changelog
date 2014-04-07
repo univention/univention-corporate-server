@@ -1,3 +1,9 @@
+ucs-test (4.0.164-26) unstable; urgency=low
+
+  * changed structural elements of test 20/43 for better overview (Bug #31792)
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 07 Apr 2014 16:18:41 +0200
+
 ucs-test (4.0.164-25) unstable; urgency=medium
 
   * Fix 41samba-tool_user_password_change (Bug #34447)

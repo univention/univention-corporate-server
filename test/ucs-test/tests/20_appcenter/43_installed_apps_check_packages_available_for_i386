@@ -1,7 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Checks if App packages are available as i386
 ## tags: [appcenter]
-## roles-not: []
 ## exposure: safe
 ## packages:
 ##   - univention-directory-manager-tools
@@ -12,8 +11,6 @@
 
 import apt
 import re
-import subprocess
-from subprocess import PIPE
 import univention.management.console.modules.appcenter.app_center as app
 import univention.lib.package_manager as PM
 import sys
@@ -38,11 +35,11 @@ def get_installed_default_packages():
 		if (application.is_installed(pm)):
 			supported_architectures = application.get('SupportedArchitectures')
 			if (supported_architectures == '') or (( 'amd64' in supported_architectures) and ('i386' in supported_architectures)) :
-				for item in application.get('defaultpackages'):
-					installed_apps.setdefault(application.name, []).append(item)
+				for idefault_package in application.get('defaultpackages'):
+					installed_apps.setdefault(application.name, []).append(idefault_package)
 				if application.get('defaultpackagesmaster'):
-					for item in application.get('defaultpackagesmaster'):
-						installed_apps.setdefault(application.name, []).append(item)
+					for idefault_pacakge_master in application.get('defaultpackagesmaster'):
+						installed_apps.setdefault(application.name, []).append(idefault_package_master)
 	default_packages=(set(default_packages))
 	for application in installed_apps:
 		for package in installed_apps[application]:
@@ -55,37 +52,42 @@ def get_installed_default_packages():
 
 def change_architecture(package_repository):
 	other_arch_packages_with_repository= {}
-	for item in package_repository.iteritems():
+	for ipackage_name, ipackage_data in package_repository.iteritems():
+		ipackage_version = ipackage_data[0]
+		iuri = ipackage_data[1]
 		if get_local_architecture() == 'amd64':
-			other_arch_packages_with_repository[item[0]] = (item[1][0], item[1][1].replace('amd64','i386'))
+			other_arch_packages_with_repository[ipackage_name] = (ipackage_version, iuri.replace('amd64','i386'))
+
 		else:
-			other_arch_packages_with_repository[item[0]] = (item[1][0], item[1][1].replace('i386','amd64'))
+			other_arch_packages_with_repository[ipackage_name] = (ipackage_version, iuri.replace('i386','amd64'))
+
 	return other_arch_packages_with_repository
 
 
 def check_packages_available(local_arch_packages_with_repository):
 	other_arch_packages_with_repository = change_architecture(local_arch_packages_with_repository)
 	repository_packages = {}
-	for item in other_arch_packages_with_repository.iteritems():
-		repository_index_url = item[1][1].replace((item[1][1].split('/')[-1]),'Packages.gz')
+	for ipackage in other_arch_packages_with_repository.iteritems():
+		repository_index_url = ipackage[1][1].replace((ipackage[1][1].split('/')[-1]),'Packages.gz')
 		url = urllib2.urlopen(repository_index_url)
 		zipdata = StringIO(url.read())
 		data = gzip.GzipFile(fileobj=zipdata)
 		repository_packages.update(filter_packages_and_versions(data))
-	not_found = compare_versions(repository_packages, other_arch_packages_with_repository)
-	if len(not_found) > 0:
+	not_found_packages = compare_versions(repository_packages, other_arch_packages_with_repository)
+	if len(not_found_packages) > 0:
 		main_repository_packages = get_main_repository_packages()
-		not_found = compare_versions(main_repository_packages, other_arch_packages_with_repository)
-	show_result(not_found, local_arch_packages_with_repository)
+		not_found_packages = compare_versions(main_repository_packages, other_arch_packages_with_repository)
+	show_result(not_found_packages, local_arch_packages_with_repository)
 
 
-def compare_versions(repository_packages, not_found):
-	for key in repository_packages: 
-		if key in not_found:
-			package_version = not_found[key][0]
+def compare_versions(repository_packages, not_found_packages):
+	not_found_packages_temp_dict = not_found_packages.copy()
+	for key in repository_packages:
+		if key in not_found_packages_temp_dict:
+			package_version = not_found_packages_temp_dict[key][0]
 			if package_version in repository_packages[key]:
-				del not_found[key]
-	return not_found
+				del not_found_packages_temp_dict[key]
+	return not_found_packages_temp_dict
 
 
 def get_main_repository_packages():
@@ -121,14 +123,14 @@ def filter_packages_and_versions(temp_file):
 	return repository_packages
 
 
-def show_result(not_found, local_arch_packages):
-	if len(not_found) > 0:
+def show_result(not_found_packages, local_arch_packages):
+	if len(not_found_packages) > 0:
 		diff_arch = get_local_architecture(True)
 		print
 		print ("Error!")
 		print ("Following package(s) could not be found for architecture " + diff_arch + ":")
-		for item in not_found.iteritems():
-			print local_arch_packages[item[0]][1]
+		for ipackage in not_found_packages.iteritems():
+			print local_arch_packages[ipackage[0]][1]
 		print
 		sys.exit("Test Failed: Packages not found")
 	else:
@@ -157,7 +159,7 @@ if __name__ == "__main__":
 	arch = get_local_architecture()
 	print
 	print ("Packages with " + arch + "-only architecture :")
-	for ipackage in single_architecture_packages: 
+	for ipackage in single_architecture_packages:
 		print (ipackage + " from App '" + single_architecture_packages[ipackage][2] + "'")
 
 	check_packages_available(single_architecture_packages)
