@@ -1,3 +1,11 @@
+ucs-test (4.0.164-25) unstable; urgency=medium
+
+  * Fix 41samba-tool_user_password_change (Bug #34447)
+  * Don't modifiy samba password policy settings in 41samba-tool_user_*
+  * force_drs_replication: NOP if destination == source
+
+ -- Arvid Requate <requate@univention.de>  Mon, 07 Apr 2014 15:00:57 +0200
+
 ucs-test (4.0.164-24) unstable; urgency=low
 
   * Add _60_umc-system/10_umc-service-list (Bug #34445)

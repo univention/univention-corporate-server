@@ -100,6 +100,9 @@ force_drs_replication () {
 	fi
 	destination_dc="${2:-$(ucr get hostname)}"
 	partition_dn="${3:-$(ucr get samba4/ldap/base)}"
+	if [ "$destination_dc" == "$source_dc" ]; then
+		return
+	fi
 
 	hostname=$(ucr get hostname)
 	if [ "$direction" = "in" ]; then
