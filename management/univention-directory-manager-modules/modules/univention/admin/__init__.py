@@ -70,15 +70,15 @@ def ucr_overwrite_properties( module, lo ):
 				attr = 'base_default'
 			if prop_name in module.property_descriptions:
 				prop = module.property_descriptions[ prop_name ]
-				new_prop_val = configRegistry[ var ]
-				old_prop_val = getattr( prop, attr )
-				if old_prop_val is None:
-					# if the attribute was None the type cast
-					#   will fail. best bet is str as type
-					old_prop_val = ''
-				prop_val_type = type( old_prop_val )
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: found property' )
 				if hasattr( prop, attr ):
+					new_prop_val = configRegistry[ var ]
+					old_prop_val = getattr( prop, attr )
+					if old_prop_val is None:
+						# if the attribute was None the type cast
+						#   will fail. best bet is str as type
+						old_prop_val = ''
+					prop_val_type = type( old_prop_val )
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: set property attribute %s to %s' % ( attr, new_prop_val ) )
 					if attr in ( 'syntax', ):
 						if hasattr(univention.admin.syntax, new_prop_val):

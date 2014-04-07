@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.75-21) unstable; urgency=low
+
+  * Bug #23765: Fixed missing attribute check in patch
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 07 Apr 2014 11:06:45 +0200
+
 univention-directory-manager-modules (9.0.75-20) unstable; urgency=low
 
   * Bug #23765: The "default" attribute of an UDM object's property is now
