@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.75-22) unstable; urgency=low
+
+  * Bug #34201: Removed dependeny on univention-ldap-server
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 07 Apr 2014 14:14:40 +0200
+
 univention-directory-manager-modules (9.0.75-21) unstable; urgency=low
 
   * Bug #23765: Fixed missing attribute check in patch
