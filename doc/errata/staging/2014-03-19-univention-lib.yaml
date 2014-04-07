@@ -7,6 +7,6 @@ note:
 version: [1]
 desc: |
   * Move files in ldap_extension.py with shuitl.move instead
-    os.rename to support different partitions for soure and
+    os.rename to support different partitions for source and
     destination file.
 bug: [34104]
