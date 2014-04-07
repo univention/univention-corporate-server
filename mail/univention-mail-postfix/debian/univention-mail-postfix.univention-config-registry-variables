@@ -239,3 +239,8 @@ Description[en]=If this option is activated, Postfix uses an encrypted connectio
 Type=bool
 Categories=service-mail
 
+[mail/postfix/ldaptable/tlsrequirecert]
+Description[de]=Ist diese Option aktiviert, wird beim Aufbau einer SSL/TLS Verbindung die Gültigkeit des X509 Zertifikat des Server geprüft.
+Description[en]=Whether or not to request the server's X509 certificate and check its validity when establishing SSL/TLS connections.
+Type=bool
+Categories=service-mail

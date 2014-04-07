@@ -1,3 +1,9 @@
+univention-mail-postfix (8.0.11-2) unstable; urgency=low
+
+  * added mail/postfix/ldaptable/tlsrequirecert (Bug #34198) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 Apr 2014 10:15:05 +0200
+
 univention-mail-postfix (8.0.11-1) unstable; urgency=low
 
   * added mail/postfix/ldaptable/starttls to configure

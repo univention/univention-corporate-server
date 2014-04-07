@@ -71,7 +71,8 @@ univention-config-registry set \
 	mail/alias/postmaster?root \
 	mail/messagesizelimit?10240000 \
 	mail/postfix/tls/client/level?may \
-	mail/postfix/ldaptable/starttls?yes
+	mail/postfix/ldaptable/starttls?yes \
+	mail/postfix/ldaptable/tlsrequirecert?yes
 
 eval "$(univention-config-registry shell)"
 

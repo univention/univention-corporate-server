@@ -20,4 +20,6 @@ else:
 	print 'bind_pw = MACHINE.SECRET_IS_MISSING'
 if configRegistry.is_true('mail/postfix/ldaptable/starttls', False):
 	print 'start_tls = yes'
+if configRegistry.is_true('mail/postfix/ldaptable/tlsrequirecert', False):
+	print 'tls_require_cert = yes'
 @!@
