@@ -69,6 +69,8 @@ from samba.net import Net
 from samba.credentials import Credentials, DONT_USE_KERBEROS
 from univention.management.console.log import MODULE
 import univention.management.console as umc
+import ConfigParser
+
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
@@ -183,6 +185,12 @@ class DomainJoinFailed(TakeoverError):
 
 class SysvolGPOMissing(TakeoverError):
 	default_error_message = _('At least one GPO is still missing in SYSVOL.')
+
+class SysvolGPOVersionTooLow(TakeoverError):
+	default_error_message = _('At least one GPO in SYSVOL is not up to date yet.')
+
+class SysvolGPOVersionMismatch(TakeoverError):
+	default_error_message = _('At least one GPO in SYSVOL is newer than the container version.')
 
 class SysvolError(TakeoverError):
 	default_error_message = _('Something is wrong with the SYSVOL.')
@@ -357,10 +365,6 @@ def check_sysvol(progress):
 	fix_gpo_guids()
 	progress.message(_('Checking GPOs in SYSVOL'))
 	check_gpo_presence()
-
-	# progress.message(_('Checking integrity'))
-	# time.sleep(2)
-	# raise SysvolError(_('The group policy share seems to have the wrong file permissions'))
 
 	state.set_takeover()
 
@@ -612,6 +616,9 @@ class AD_Connection():
 
 
 		self.domain_dn = self.samdb.get_root_basedn()
+		if self.domain_dn.get_linearized().lower() != ucr["ldap/base"].lower():
+			raise TakeoverError(_("The LDAP base of this UCS domain differs from the LDAP base of the selected Active Directory domain."))
+
 		self.domain_sid = None
 		msgs = self.samdb.search(base=self.domain_dn, scope=samba.ldb.SCOPE_BASE,
 								expression="(objectClass=domain)",
@@ -1688,7 +1695,7 @@ def check_gpo_presence():
 	samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(lp), lp=lp)
 	msgs = samdb.search(base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
 						expression="(objectClass=groupPolicyContainer)",
-						attrs=["cn", "gPCFileSysPath"])
+						attrs=["cn", "gPCFileSysPath", "versionNumber"])
 
 	sysvol_dir = "/var/lib/samba/sysvol"
 	default_policies_dir = os.path.join(sysvol_dir, samdb.domain_dns_name(), "Policies")
@@ -1706,6 +1713,24 @@ def check_gpo_presence():
 		if not os.path.isdir(gpo_path):
 			log.error("GPO missing in SYSVOL: %s" % name)
 			raise SysvolGPOMissing()
+
+		config = ConfigParser.ConfigParser()
+		try:
+			with open(os.path.join(gpo_path,'GPT.INI')) as f:
+				try:
+					config.readfp(f)
+					version = config.get('General', 'version')
+					if version < obj["versionNumber"][0]:
+						log.error("File version %s of GPO %s is lower than GPO container versionNumber (%s)" % (version, name, obj["versionNumber"][0]))
+						raise SysvolGPOVersionTooLow("At least one GPO in SYSVOL is not up to date yet.")
+					if version != obj["versionNumber"][0]:
+						log.error("File version %s of GPO %s differs from GPO container versionNumber (%s)" % (version, name, obj["versionNumber"][0]))
+						## TODO: Imrpove error reporting
+				except ConfigParser.Error as ex:
+					log.error(ex.args[0])
+		except IOError as ex:
+			log.error(ex.args[0])
+
 	return True
 
 ############################# HELPER FUNCTIONS: ###########################
