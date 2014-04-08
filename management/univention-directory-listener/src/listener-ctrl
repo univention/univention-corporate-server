@@ -56,9 +56,9 @@ case "$1" in
 				fi
 			fi
 			sleep 1
-			echo waiting for shutdown
+			echo "waiting for listener modules to finish"
 		done
-		echo shutdown done
+		echo "listener shutdown done"
 		for i in "$@"
 		do
 			rm "/var/lib/univention-directory-listener/handlers/$i" 2>/dev/null || echo "W: handler \"$i\" is unknown"
