@@ -2325,7 +2325,7 @@ class simpleComputer( simpleLdap ):
 					else:
 						self.__modify_dhcp_object( dn , self[ 'name' ], mac = entry )
 				for entry in self.__changes[ 'ip' ][ 'add' ]:
-					if self['macm']:
+					if self['mac']:
 						self.__modify_dhcp_object( dn, self[ 'name' ], mac = self[ 'mac' ][ 0 ], ip = entry )
 
 		for entry in self.__changes[ 'dnsEntryZoneAlias' ][ 'remove' ]:
