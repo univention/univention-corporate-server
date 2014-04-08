@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-directory-manager-modules
-fix: 9.0.75-25.1186.201404081336
+fix: 9.0.75-26.1187.201404081508
 note:
 version: [1]
 desc: |
@@ -15,7 +15,7 @@ desc: |
     directory/manager/web/modules/users/user/properties/mailHomeServer/default).
   * A problem which occured when trying to assign DNS or DHCP zones to
     computer objects without IP address have been fixed
-  * The dependecy list of the package has been updated. Prior to this change,
+  * The dependency list of the package has been updated. Prior to this change,
     slapd was left installed on a memberserver when using the appliance mode
     which could lead to problems when this system was querying LDAP.
 bug: [34395, 34421, 23765, 33843, 34201]
