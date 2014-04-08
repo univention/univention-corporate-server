@@ -15,4 +15,7 @@ desc: |
     directory/manager/web/modules/users/user/properties/mailHomeServer/default).
   * A problem which occured when trying to assign DNS or DHCP zones to
     computer objects without IP address have been fixed
-bug: [34395, 34421, 23765, 33843]
+  * The dependecy list of the package has been updated. Prior to this change,
+    slapd was left installed on a memberserver when using the appliance mode
+    which could lead to problems when this system was querying LDAP.
+bug: [34395, 34421, 23765, 33843, 34201]
