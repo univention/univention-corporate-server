@@ -2,10 +2,10 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: ucs-test
-fix: 4.0.164-28.704.201404081251
+fix: 4.0.164-29.705.201404081318
 note:
 version: [1]
 desc: |
   * A few UDM tests had a problem when the UDM-CLI server terminated while
-    they were trying to stop it.
+    they were trying to stop it
 bug: [34348]
