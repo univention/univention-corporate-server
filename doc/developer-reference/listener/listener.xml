@@ -538,9 +538,6 @@ univention-directory-listener-verify \
 
 		<section id="listener:details:internal">
 			<title>Internal working</title>
-			<remark>
-				PMH: <ulink url="https://hutten.knut.univention.de/mediawiki/index.php/Arvid_memo/Listener"/>
-			</remark>
 			<para>
 				The Listener/Notifier mechanism is used to trigger arbitrary actions when changes occur in the <abbrev>LDAP</abbrev> directory service.
 				In addition to the <abbrev>LDAP</abbrev> server <command>slapd</command> it consists of two other services:
@@ -550,6 +547,28 @@ univention-directory-listener-verify \
 			<figure id="listener:schema"><title>Listener/Notifier mechanism</title>
 				<graphic scalefit="1" width="80%" fileref="illustrations/ListenerNotifier.png"/>
 			</figure>
+			<para>
+				On startup the listener connects to the notifier and opens a persistent <abbrev>TCP</abbrev> connection.
+				The host can be configured through several &ucsUCRV;s:
+			</para>
+			<itemizedlist>
+				<listitem>
+					<simpara>
+						If <envar>notifier/server</envar> is explicitly set, only that named host is used.
+						In addition the &ucsUCRV; <envar>notifier/server/port</envar> can be used to explicitly configure a different <abbrev>TCP</abbrev> port other then 6669.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+						Otherwise on the &ucsMaster; and on all &ucsBackup;s, only the host named in <envar>ldap/master</envar> is used.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+						Otherwise on all other system roles a host is chosen randomly from the combined list of names in <envar>ldap/master</envar> and <envar>ldap/backup</envar><footnote><simpara>This list of &ucsBackup;s stored in the &ucsUCRV; <envar>ldap/backup</envar> is automatically updated by the listener module <filename>ldap_server.py</filename>.</simpara></footnote>
+					</simpara>
+				</listitem>
+			</itemizedlist>
 			<para>
 				The following steps occur on changes:
 			</para>
@@ -575,7 +594,7 @@ univention-directory-listener-verify \
 				</step>
 				<step>
 					<para>
-						All Listeners, which connected to <abbrev>TCP</abbrev> port 6669, get notified of the new transaction.
+						All listeners get notified of the new transaction.
 					</para>
 				</step>
 				<step>
@@ -586,7 +605,7 @@ univention-directory-listener-verify \
 				</step>
 				<step>
 					<para>
-						Each listener opens a connection to the LDAP server running on the UCS system which was used to query the Notifier (configured through &ucsUCRV; <envar>ldap/master</envar> and <envar>ldap/server/addition</envar>).
+						Each listener opens a connection to the LDAP server running on the UCS system which was used to query the Notifier.
 						It retrieves the latest state of the object identified through the <abbrev>DN</abbrev>.
 						If access is blocked, for example, by <firstterm>selective replication</firstterm>, the change is handled as a delete operation instead.
 					</para>
