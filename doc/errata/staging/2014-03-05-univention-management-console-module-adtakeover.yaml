@@ -4,7 +4,7 @@ scope: ucs_3.2-0-errata3.2-1
 src: univention-management-console-module-adtakeover
 fix: 1.0.10-16.20.201404031237
 note:
-version: [1]
+version: [0, 1]
 desc: |
   This update adds an UMC module for the Active Directory takeover.
 bug: [34019, 34139]
