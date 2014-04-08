@@ -1,10 +1,18 @@
+ucs-test (4.0.164-31) unstable; urgency=low
+
+  * 52_s4connector/124sync_modify_con_other_attributes: added a test
+    case for special handling for con_other_attributes. A mutlivalue in
+    UCS which is mapped to two attributes in AD (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Apr 2014 15:39:58 +0200
+
 ucs-test (4.0.164-30) unstable; urgency=low
 
   * Update 60_umc-system/10_umc-service-list (Bug #34445)
 
  -- Dmitry Galkin <dgalkin@univention.de>  Tue, 08 Apr 2014 15:00:03 +0200
 
-ucs-test (4.0.164-27.1) unstable; urgency=low
+ucs-test (4.0.164-29.1) unstable; urgency=low
 
   * 00_base/96rename_domain_admins: ignore slapd.conf check on
     memberserver (Bug #34201)

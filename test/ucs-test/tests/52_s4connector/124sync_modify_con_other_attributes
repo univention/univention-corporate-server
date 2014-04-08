@@ -1,0 +1,147 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Modify and check con_other_attribute values"
+## exposure: dangerous
+## tags:
+##  - basic
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+check_phone_numbers ()
+{
+	local phone1="$1"
+	local phone2="$2"
+	local phone3="$3"
+
+	if [ -n "$phone1" ]; then
+		ad_verify_attribute "$AD_DN" "telephoneNumber" "$phone1"; fail_bool 0 121 "See #18501"
+	fi
+
+	if [ -n "$phone2" -a -n "$phone3" ]; then
+		ad_verify_multi_value_attribute_contains "$AD_DN" "otherTelephone" "$phone2"; fail_bool 0 121 "See #18501"
+		ad_verify_multi_value_attribute_contains "$AD_DN" "otherTelephone" "$phone3"; fail_bool 0 121 "See #18501"
+	elif [ -n "$phone2" ]; then
+		ad_verify_multi_value_attribute_contains "$AD_DN" "otherTelephone" "$phone2"; fail_bool 0 121 "See #18501"
+	elif [ -n "$phone3" ]; then
+		ad_verify_multi_value_attribute_contains "$AD_DN" "otherTelephone" "$phone3"; fail_bool 0 121 "See #18501"
+	else
+		ad_verify_attribute "$AD_DN" "otherTelephone" ""; fail_bool 0 121 "See #18501"
+	fi
+
+	if [ -n "$phone1" ]; then
+		udm_verify_multi_value_udm_attribute_contains "phone" "$phone1" "users/user"; fail_bool 0 110
+	fi
+	if [ -n "$phone2" ]; then
+		udm_verify_multi_value_udm_attribute_contains "phone" "$phone2" "users/user"; fail_bool 0 110
+	fi
+	if [ -n "$phone3" ]; then
+		udm_verify_multi_value_udm_attribute_contains "phone" "$phone3" "users/user"; fail_bool 0 110
+	fi
+	if [ -z "$phone1" -a -z "$phone2" -a -z "$phone3" ]; then
+		udm_verify_multi_value_udm_attribute_contains "phone" "" "users/user"; fail_bool 0 110
+	fi
+}
+
+set_and_check_phone_numbers_in_ucs ()
+{
+	local phone1="$1"
+	local phone2="$2"
+	local phone3="$3"
+	
+	if [ -n "$phone1" ]; then
+		echo udm-test "users/user" modify --dn "$UDM_DN" --set phone="$phone1"
+		udm-test "users/user" modify --dn "$UDM_DN" --set phone="$phone1"
+	elif [ -n "$phone2" ]; then
+		echo udm-test "users/user" modify --dn "$UDM_DN" --set phone="$phone2"
+		udm-test "users/user" modify --dn "$UDM_DN" --set phone="$phone2"
+	elif [ -n "$phone3" ]; then
+		echo udm-test "users/user" modify --dn "$UDM_DN" --set phone="$phone3"
+		udm-test "users/user" modify --dn "$UDM_DN" --set phone="$phone3"
+	fi
+
+	if [ -n "$phone1" -a -n "$phone2" ]; then
+		echo udm-test "users/user" modify --dn "$UDM_DN" --append phone="$phone2"
+		udm-test "users/user" modify --dn "$UDM_DN" --append phone="$phone2"
+	fi
+	if [ -n "$phone3" ]; then
+		echo udm-test "users/user" modify --dn "$UDM_DN" --append phone="$phone3"
+		udm-test "users/user" modify --dn "$UDM_DN" --append phone="$phone3"
+	fi
+
+	ad_wait_for_synchronization; fail_bool 0 110
+
+	check_phone_numbers "$@"
+}
+
+set_and_check_phone_numbers_in_ad ()
+{
+	local phone1="$1"
+	local phone2="$2"
+	local phone3="$3"
+
+	ad_set_attribute $AD_DN telephoneNumber "$phone1" 
+	ad_set_attribute $AD_DN otherTelephone "$phone2" 
+	ad_append_to_attribute $AD_DN otherTelephone "$phone3" 
+
+	ad_wait_for_synchronization; fail_bool 0 110
+
+	check_phone_numbers "$@"
+}
+
+get_random_phone_number ()
+{
+	random_chars 8 $_ciphers
+}
+
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_lastname="$(random_chars)"
+UDM_users_user_password="U$(random_chars)123"
+UDM_users_user_firstname="$(random_chars)"
+AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
+UDM_DN="uid=$UDM_users_user_username,cn=users,$ldap_base"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "sync"
+
+udm_create "users/user" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+
+set_and_check_phone_numbers_in_ucs $(get_random_phone_number) "" ""
+p1=$(get_random_phone_number)
+set_and_check_phone_numbers_in_ucs "$p1" "" ""
+set_and_check_phone_numbers_in_ucs "$p1" "$(get_random_phone_number)" ""
+set_and_check_phone_numbers_in_ucs "$p1" "$(get_random_phone_number)" ""
+p1="$(get_random_phone_number)";
+p2="$(get_random_phone_number)"
+p3="$(get_random_phone_number)"
+set_and_check_phone_numbers_in_ucs "$p1" "$p2" "$p3"
+p3="$(get_random_phone_number)"
+set_and_check_phone_numbers_in_ad "$p1" "$p2" "$p3"
+set_and_check_phone_numbers_in_ad "$(get_random_phone_number)" "$(get_random_phone_number)" "$(get_random_phone_number)"
+set_and_check_phone_numbers_in_ucs "$(get_random_phone_number)" "$(get_random_phone_number)" "$(get_random_phone_number)"
+p2=$(get_random_phone_number)
+set_and_check_phone_numbers_in_ucs "$p1" "$p2" "$(get_random_phone_number)"
+set_and_check_phone_numbers_in_ucs "$p1" "$p2" "$(get_random_phone_number)"
+set_and_check_phone_numbers_in_ucs "$p1" "" "$(get_random_phone_number)"
+set_and_check_phone_numbers_in_ucs "$(get_random_phone_number)" "$(get_random_phone_number)" "$(get_random_phone_number)"
+
+udm_remove "users/user" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user"; fail_bool 1 110
+ad_exists "$AD_DN"; fail_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
