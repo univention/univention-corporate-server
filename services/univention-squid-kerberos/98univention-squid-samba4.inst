@@ -68,9 +68,10 @@ keytab_path="$samba_private_dir/$keytab_filename"
 password=$(create_machine_password)
 
 ## check if user exists
-if udm users/user list "$@" --filter username="$service_accountname" | grep -q "^DN: uid=$service_accountname,"; then 
+SPN_DN="$(udm users/user list "$@" --filter username="$service_accountname" | sed -n 's/^DN: //p')"
+if [ -n "$SPN_DN" ]; then
 	univention-directory-manager users/user modify "$@" \
-		--dn "uid=$service_accountname,cn=users,$ldap_base" \
+		--dn "$SPN_DN" \
 		--set password="$password" || die
 else
 	## create service_accountname via udm, but servicePrincipalName is missing
