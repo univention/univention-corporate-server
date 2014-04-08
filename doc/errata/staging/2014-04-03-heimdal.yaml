@@ -6,7 +6,7 @@ fix: 1.6~git20120403+dfsg1-2.229.201404031929
 note: 
 version: [1]
 desc: |
- This errata fixes two issues in Heimdal Kerberos:
+ This update fixes two issues in Heimdal Kerberos:
  * Support domain account lockout on Samba/AD domain controllers
  * Joining Windows clients without pre-synchronized clocks
 bug: [34443, 34439]
