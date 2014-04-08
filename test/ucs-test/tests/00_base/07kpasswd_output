@@ -17,7 +17,7 @@
 ## packages:
 ##  - python-pexpect
 ##  - univention-heimdal-kdc
-## exposure: dangerous
+## exposure: safe
 
 import pexpect
 import tempfile
