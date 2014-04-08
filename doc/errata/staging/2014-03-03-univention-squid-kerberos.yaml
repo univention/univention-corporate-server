@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-squid-kerberos
-fix: 3.0.2-4.15.201404081205
+fix: 3.0.2-6.16.201404081604
 note:
 version: [1]
 desc: |
