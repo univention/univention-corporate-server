@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.75-26) unstable; urgency=medium
+
+  * resync the udm_extension listener during this update to make it
+    generate the registration files for update-python-modules (Bug #34421).
+
+ -- Arvid Requate <requate@univention.de>  Tue, 08 Apr 2014 15:07:43 +0200
+
 univention-directory-manager-modules (9.0.75-25) unstable; urgency=low
 
   * fixed typo (Bug #33843)
