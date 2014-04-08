@@ -394,10 +394,14 @@ class UCSTestUDM(object):
 		""" restart UDM CLI server """
 		print 'trying to restart UDM CLI server'
 		for signal in (15, 9):
-			for proc in psutil.process_iter():
-				if len(proc.cmdline) >= 2 and proc.cmdline[0].startswith('/usr/bin/python') and proc.cmdline[1] == self.PATH_UDM_CLI_SERVER:
-					print 'sending signal %s to process %s (%r)' % (signal, proc.pid, proc.cmdline,)
-					os.kill(proc.pid, signal)
+			try:
+				for proc in psutil.process_iter():
+					if len(proc.cmdline) >= 2 and proc.cmdline[0].startswith('/usr/bin/python') and proc.cmdline[1] == self.PATH_UDM_CLI_SERVER:
+						print 'sending signal %s to process %s (%r)' % (signal, proc.pid, proc.cmdline,)
+						os.kill(proc.pid, signal)
+			except psutil.error.NoSuchProcess:
+				# process not running anymore
+				pass
 
 	def __enter__(self):
 		return self
