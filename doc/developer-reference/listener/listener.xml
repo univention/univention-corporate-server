@@ -108,7 +108,7 @@ modrdn = "1"
 				<term><varname>attributes</varname> (optional)</term>
 				<listitem>
 					<para>
-						A Python list of LDAP-attribute names which further narrows down the condition under which the listener module gets called.
+						A Python list of LDAP attribute names which further narrows down the condition under which the listener module gets called.
 						By default the module is called on all attribute changes of objects matching the filter.
 						If the list is specified, the module is only invoked when at least one of the listed attributes is changed.
 					</para>
@@ -148,7 +148,7 @@ def setdata(key, value): pass
 					<para>
 						Depending on the type of modification, <varname>old</varname> and <varname>new</varname> may each independently either be <literal>None</literal> or reference a Python dictionary of lists.
 						Each list represents one of the multi-valued attributes of the object.
-						The &ucsUDL; uses a local cache to store the values of each object as it was seen most recently.
+						The &ucsUDL; uses a local cache to store the values of each object as it has seen most recently.
 						This cache is used to supply the values for <varname>old</varname>, while the values in <varname>new</varname> are those retrieved from that LDAP directory service which is running on the same server as the &ucsUDN; (&ucsMaster; or &ucsBackup; servers in the domain).
 					</para>
 					<para>
@@ -188,8 +188,8 @@ def setdata(key, value): pass
 							<term><literal>r</literal> (rename: modification of distinguished name via <literal>modrdn</literal>)</term>
 							<listitem>
 								<para>
-									Signals a change in the distinguished name, which might be caused by renaming a object or moving the object from one container into another.
-									The module is called with this command instead of the <emphasis>delete</emphasis> command, so that modules can recognize this special case and skip the deletion of the object.
+									Signals a change in the distinguished name, which may be caused by renaming a object or moving the object from one container into another.
+									The module is called with this command instead of the <emphasis>delete</emphasis> command, so that modules can recognize this special case and avoid deletion of local data associated with the object.
 									The module will be called again with the <emphasis>add</emphasis> command just after the <emphasis>modrdn</emphasis> command, where it should process the rename or move operation.
 									Each module is responsible for keeping track of the rename-case by internally storing the previous distinguished name during the <emphasis>modrdn</emphasis> phase of this two phased operation.
 								</para>
@@ -278,6 +278,12 @@ def setdata(key, value): pass
 							<listitem><simpara>The base distinguished name the &ucsUDL; is using.</simpara></listitem>
 						</varlistentry>
 					</variablelist>
+					<note>
+						<para>
+							It's strongly recommended to avoid initiating LDAP modifications from a listener module.
+							This potentially creates a complex modification dynamic, considering that a module may run on several systems in parallel at their own timing.
+						</para>
+					</note>
 				</listitem>
 			</varlistentry>
 		</variablelist>
@@ -581,7 +587,7 @@ univention-directory-listener-verify \
 				<step>
 					<para>
 						Each listener opens a connection to the LDAP server running on the UCS system which was used to query the Notifier (configured through &ucsUCRV; <envar>ldap/master</envar> and <envar>ldap/server/addition</envar>).
-						It retrieve the latest state of the object identified through the <abbrev>DN</abbrev>.
+						It retrieves the latest state of the object identified through the <abbrev>DN</abbrev>.
 						If access is blocked, for example, by <firstterm>selective replication</firstterm>, the change is handled as a delete operation instead.
 					</para>
 				</step>
