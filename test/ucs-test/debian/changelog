@@ -1,3 +1,9 @@
+ucs-test (4.0.164-30) unstable; urgency=low
+
+  * Update 60_umc-system/10_umc-service-list (Bug #34445)
+
+ -- Dmitry Galkin <dgalkin@univention.de>  Tue, 08 Apr 2014 15:00:03 +0200
+
 ucs-test (4.0.164-27.1) unstable; urgency=low
 
   * 00_base/96rename_domain_admins: ignore slapd.conf check on

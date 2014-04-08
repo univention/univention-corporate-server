@@ -7,70 +7,99 @@
 import sys
 
 from univention.config_registry import ConfigRegistry
+from univention.testing.codes import TestCodes
 import univention.testing.utils as utils
 from univention.lib.umc_connection import UMCConnection
 
 
-def main():
-    # getting credentials from the registry
-    try:
-        UCR = ConfigRegistry()
-        UCR.load()
-        username = UCR['tests/domainadmin/account']
-        password = UCR['tests/domainadmin/pwd']
-        hostname = UCR['hostname']
+class TestUMCServiceList(object):
 
-        # extracting the 'uid' value of the username string
-        username = username.split(',')[0][len('uid='):]
-    except Exception as exc:
-        utils.fail("Failed to retrive credentials and/or a hostname "
-                   "for a test via UCR: %s" % str(exc))
-    if hostname is None:
-        utils.fail("The 'hostname' cannot be None")
+    def __init__(self):
+        """Test Class constructor"""
+        self.username = None
+        self.password = None
+        self.hostname = None
+        self.Connection = None
 
-    # creating a connection and authenticating
-    try:
-        Connection = UMCConnection(hostname)
-        Connection.auth(username, password)
-    except Exception as exc:
-        utils.fail("Failed to authenticate, hostname '%s' : %s" %
-                   (hostname, str(exc)))
+    def get_ucr_credentials(self):
+        """Get credentials from the registry"""
+        try:
+            UCR = ConfigRegistry()
+            UCR.load()
+            self.username = UCR['tests/domainadmin/account']
+            self.password = UCR['tests/domainadmin/pwd']
+            self.hostname = UCR['hostname']
 
-    # making a services/query request
-    try:
-        request_result = Connection.request('services/query')
-        if not request_result:
-            utils.fail("Request 'services/query' failed, hostname %s" %
-                       hostname)
-    except Exception as exc:
-        utils.fail("Exception while making services/query request: %s" %
-                   str(exc))
+            # extracting the 'uid' value of the username string
+            self.username = self.username.split(',')[0][len('uid='):]
+        except Exception as exc:
+            print "Failed to get the UCR username and/or a password for test"
+            self.return_code_result_skip()
+        if self.hostname is None:
+            print "The hostname in the UCR should not be 'None'"
+            self.return_code_result_skip()
 
-    # checking the response structure for obligatory keys
-    for result in request_result:
-        if not 'service' in result:
-            utils.fail("The 'service' field was not found in the "
-                       "UMC response")
-        if not 'isRunning' in result:
-            utils.fail("The 'isRunning' field was not found in the "
-                       "UMC response")
-        if not 'description' in result:
-            utils.fail("The 'description' field was not found in the "
-                       "UMC response")
-        if not 'autostart' in result:
-            utils.fail("The 'autostart' field was not found in the "
-                       "UMC response")
+    def create_connection_authenticate(self):
+        """Create UMC connection and authenticate"""
+        try:
+            self.Connection = UMCConnection(self.hostname)
+            self.Connection.auth(self.username, self.password)
+        except Exception as exc:
+            utils.fail("Failed to authenticate, hostname '%s' : %s" %
+                       (self.hostname, exc))
 
-    # check if 'Univention Directory Listener' was listed in the response
-    is_in_results = False
-    for result in request_result:
-        if result['service'] == 'univention-directory-listener':
-            is_in_results = True
-            break
-    if not is_in_results:
-        utils.fail("The 'Univention Directory Listener' service was not found "
-                   "in the UMC response")
+    def make_service_query_request(self):
+        """Make a service/query request and return result"""
+        try:
+            request_result = self.Connection.request('services/query')
+            if not request_result:
+                utils.fail("Request 'services/query' failed, hostname %s" %
+                           self.hostname)
+        except Exception as exc:
+            utils.fail("Exception while making services/query request: %s" %
+                       exc)
+        return request_result
+
+    def check_response_structure(self, request_result):
+        """Check the response general structure for obligatory keys"""
+        for result in request_result:
+            if not 'service' in result:
+                utils.fail("The 'service' field was not found in the "
+                           "UMC response: %s" % result)
+            if not 'isRunning' in result:
+                utils.fail("The 'isRunning' field was not found in the "
+                           "UMC response: %s" % result)
+            if not 'description' in result:
+                utils.fail("The 'description' field was not found in the "
+                           "UMC response: %s" % result)
+            if not 'autostart' in result:
+                utils.fail("The 'autostart' field was not found in the "
+                           "UMC response: %s" % result)
+
+    def check_directory_listener(self, request_result):
+        """
+        Check if the 'Univention Directory Listener' was listed in the response
+        """
+        for result in request_result:
+            if result['service'] == 'univention-directory-listener':
+                break
+        else:
+            utils.fail("The 'Univention Directory Listener' service was not "
+                       "found in the UMC response: %s" % request_result)
+
+    def return_code_result_skip(self):
+        """Method to stop the test with the code 77, RESULT_SKIP """
+        sys.exit(TestCodes.RESULT_SKIP)
+
+    def main(self):
+        """Method to start the test of UMC services listing"""
+        self.get_ucr_credentials()
+        self.create_connection_authenticate()
+        request_result = self.make_service_query_request()
+        self.check_response_structure(request_result)
+        self.check_directory_listener(request_result)
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    TestUMC = TestUMCServiceList()
+    sys.exit(TestUMC.main())
