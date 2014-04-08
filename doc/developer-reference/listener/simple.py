@@ -6,19 +6,19 @@ def handler(dn, new, old):
 	elif not new and old:
 		handler_remove(dn, old)
 	else:
-		pass  # error
+		pass  # ignore
 
 
 def handler_add(dn, new):
 	"""Handle addition of object."""
-	pass
+	pass  # replace this
 
 
 def handler_modify(dn, old, new):
 	"""Handle modification of object."""
-	pass
+	pass  # replace this
 
 
 def handler_remove(dn, old):
 	"""Handle removal of object."""
-	pass
+	pass  # replace this

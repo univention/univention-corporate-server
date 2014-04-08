@@ -30,7 +30,7 @@ filter = """\
 )""".translate(None, "\t\n\r")
 attributes = ["uid", "uidNumber", "cn"]
 
-USER_LIST = "/tmp/UserList.txt"
+USER_LIST = "/root/UserList.txt"
 
 
 def handler(dn, new, old):

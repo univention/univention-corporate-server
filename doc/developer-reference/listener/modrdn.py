@@ -24,17 +24,15 @@ def handler(dn, new, old, command):
 			handler_schema()
 		else:
 			handler_add(dn, new)
-	elif "z" == command:
-		pass  # ignore
 	else:
-		pass  # error
+		pass  # ignore, reserved for future use
 
 
 def handler_move(old_dn, old, new_dn, dn):
 	"""Handle rename or move of object."""
-	pass
+	pass  # replace this
 
 
 def handlee_schema():
 	"""Handle change in LDAP schema."""
-	pass
+	pass  # replace this
