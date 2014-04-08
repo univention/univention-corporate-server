@@ -49,7 +49,12 @@ fi
 ## Ok, we are in a Samba 4 domain, go on to create the service principal
 servicename='http-proxy'
 servicedescription="$servicedescription Service Account for $hostname"
-spn_instance='HTTP'
+samba_private_dir="/var/lib/samba/private"
+service_accountname="$servicename-$hostname"
+keytab_filename="$service_accountname.keytab"
+keytab_path="$samba_private_dir/$keytab_filename"
+password=$(create_machine_password)
+spn="HTTP/$(hostname -f)"
 
 extract_binddn_and_bindpwd_from_args() {
 	## parse binddn and bindpwd from command line arguments into shell variables
@@ -59,84 +64,24 @@ extract_binddn_and_bindpwd_from_args() {
 	fi
 }
 
-samba_private_dir="/var/lib/samba/private"
-
-service_accountname="$servicename-$hostname"
-keytab_filename="$service_accountname.keytab"
-keytab_path="$samba_private_dir/$keytab_filename"
-
-password=$(create_machine_password)
-
-## check if user exists
-SPN_DN="$(udm users/user list "$@" --filter username="$service_accountname" | sed -n 's/^DN: //p')"
-if [ -n "$SPN_DN" ]; then
-	univention-directory-manager users/user modify "$@" \
-		--dn "$SPN_DN" \
-		--set password="$password" || die
-else
-	## create service_accountname via udm, but servicePrincipalName is missing
-	univention-directory-manager users/user create "$@" \
-		--position "cn=users,$ldap_base" \
-		--ignore_exists \
-		--set username="$service_accountname" \
-		--set lastname="Service" \
-		--set password="$password" \
-		--set description="$servicedescription" || die
-fi
-
 ## Next for keytab creation check if this host is a Samba4 DC
 cn=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(cn=$hostname))" cn | sed -n 's/^cn: \(.*\)/\1/p')
 
-if [ "$cn" = "$hostname" ]; then
+if [ "$cn" = "$hostname" -a "$samba4_role" != "RODC" ]; then
 
-	if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
-		## trigger Samba4 to create service keytab
-		ldbadd -H "$samba_private_dir/secrets.ldb" <<-%EOF
-		dn: samAccountName=$service_accountname,CN=Principals
-		objectClass: kerberosSecret
-		sAMAccountName: $service_accountname
-		servicePrincipalName: $spn_instance/$(hostname -f)
-		realm: $kerberos_realm
-		secret: $password
-		msDS-KeyVersionNumber: 1
-		privateKeytab: $keytab_filename
-		saltPrincipal: $service_accountname@$kerberos_realm
-		%EOF
+	if [ -x /usr/share/univention-samba4/scripts/create_spn_account.sh ]; then
+		/usr/share/univention-samba4/scripts/create_spn_account.sh \
+			--samaccountname "$service_accountname" \
+			--serviceprincipalname "$spn" \
+			--privatekeytab "$keytab_filename"
 	fi
 
 	if ! [ -f "$keytab_path" ]; then
 		echo "WARNING: samba4 did not create a keytab for samAccountName=$service_accountname"
-		echo "WARNING: creating keytab manually"
-		/usr/lib/univention-heimdal/univention-create-keytab --keytab="$keytab_path" \
-			--principal="host/$service_accountname.$domainname" \
-			--alias="$spn_instance/$hostname.$domainname" \
-			--alias="$service_accountname" \
-			--kvno=1 --password="$password"
-	fi
-
-	chown proxy "$keytab_path"
-
-	## wait for S4 Connector and possibly DRS until the service_accountname is available
-	count=0
-	while [ -z "$service_account_dn" ] && [ $count -le 300 ]; do
-		sleep 1
-		service_account_dn=$(ldbsearch -H $samba_private_dir/sam.ldb samAccountName="$service_accountname" dn | sed -n 's/^dn: \(.*\)/\1/p')
-		count=$((count+1))
-	done
-
-	if [ -z "$service_account_dn" ]; then
-		echo "ERROR: samAccountName not found for service account $service_accountname"
-		echo "ERROR: cannot add attribute \"servicePrincipalName: $spn_instance/$(hostname -f)\""
 		exit 1
 	fi
 
-	ldbmodify -H "$samba_private_dir/sam.ldb" <<-%EOF
-	dn: $service_account_dn
-	changetype: modify
-	add: servicePrincipalName
-	servicePrincipalName: $spn_instance/$(hostname -f)
-	-
-	%EOF
+	chown proxy "$keytab_path"
 
 else
 	### in this case we are not a Samba4-DC, i.e. we are a samba3 UCS memberserver in a Samba 4 domain
@@ -144,6 +89,23 @@ else
 	## using ldap-tools here
 	## ldbmodify might be an option, depends on package ldb-tools
 	## samba-tool might be another option, but it needs samba4-common-bin and python-samba4
+
+	## check if user exists
+	SPN_DN="$(udm users/user list "$@" --filter username="$service_accountname" | sed -n 's/^DN: //p')"
+	if [ -n "$SPN_DN" ]; then
+		univention-directory-manager users/user modify "$@" \
+			--dn "$SPN_DN" \
+			--set password="$password" || die
+	else
+		## create service_accountname via udm, but servicePrincipalName is missing
+		univention-directory-manager users/user create "$@" \
+			--position "cn=users,$ldap_base" \
+			--ignore_exists \
+			--set username="$service_accountname" \
+			--set lastname="Service" \
+			--set password="$password" \
+			--set description="$servicedescription" || die
+	fi
 
 	extract_binddn_and_bindpwd_from_args "$@"
 	samba4_bind_dn="CN=$dcaccount,CN=Users,$ldap_base"
@@ -194,27 +156,39 @@ else
 
 	if [ -z "$service_account_dn" ]; then
 		echo "ERROR: $service_accountname not found in samba4 directory on host $s4dc.$domainname"
-		echo "ERROR: cannot add attribute \"servicePrincipalName: $spn_instance/$(hostname -f)\""
+		echo "ERROR: cannot add attribute \"servicePrincipalName: $spn\""
 		exit 1
 	fi
 
-	ldapmodify -x -H "ldaps://$s4dc_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" <<-%EOF
-	dn: $service_account_dn
-	changetype: modify
-	add: servicePrincipalName
-	servicePrincipalName: $spn_instance/$(hostname -f)
-	%EOF
+	spn_exists="$(ldapsearch -x -H "ldaps://$s4dc_fqdn" \
+		-D" $samba4_bind_dn" -w "$bindpwd" -b "$service_account_dn" -s base \
+		servicePrincipalName="$spn" dn | sed -n 's/^dn: //p')"
+	if [ -z "$spn_exists" ]; then
+		ldapmodify -x -H "ldaps://$s4dc_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" <<-%EOF
+		dn: $service_account_dn
+		changetype: modify
+		add: servicePrincipalName
+		servicePrincipalName: $spn
+		%EOF
+	fi
 
 	## OK, everything fine up to this point so now create service keytab manually
 	if ! [ -d "$samba_private_dir" ]; then
 		mkdir -p "$samba_private_dir"
 	fi
 
+	key_version="$(ldapsearch -x -H "ldaps://$s4dc_fqdn" \
+		-D "$samba4_bind_dn" -w "$bindpwd" -b "$service_account_dn" -s base \
+		msDS-KeyVersionNumber | sed -n 's/^msDS-KeyVersionNumber: //p')"
+	if [ -z "$key_version" ]; then
+		key_version=1
+	fi
 	/usr/lib/univention-heimdal/univention-create-keytab --keytab="$keytab_path" \
 		--principal="host/$service_accountname.$domainname" \
-		--alias="$spn_instance/$hostname.$domainname" \
+		--alias="$spn" \
 		--alias="$service_accountname" \
-		--kvno=1 --password="$password"
+		--kvno=$key_version \
+		--password="$password"
 
 	chown proxy "$keytab_path"
 
