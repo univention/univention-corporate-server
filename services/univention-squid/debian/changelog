@@ -1,3 +1,9 @@
+univention-squid (7.0.3-5) unstable; urgency=low
+
+  * made made squid/redirect a bit more flexible (Bug #32429) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Apr 2014 12:07:40 +0200
+
 univention-squid (7.0.3-4) unstable; urgency=low
 
   * made made squid/redirect a bit more flexible (Bug #32429)

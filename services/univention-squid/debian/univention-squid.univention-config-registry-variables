@@ -143,7 +143,7 @@ Type=str
 Categories=service-webproxy
 
 [squid/redirect]
-Description[de]=Wird diese Variable auf 'squidguard' gesetzt wird der URL-Filter SquidGuard integriert. Diese Einstellung ist nur für UCS@school relevant.
-Description[en]=If this variable is set to 'squidguard' the URL filter SquidGuard is integrated. The setting is only relevant for UCS@school.
+Description[de]=Diese Variable konfiguriert die squid Option 'url_rewrite_program'. Wird sie auf den speziellen Wert 'squidguard' gesetzt, so wird der URL-Filter SquidGuard integriert. Diese Einstellung ist für UCS@school relevant. Das konfigurierte Programm muss separat installiert sein.
+Description[en]=This variable configures the squid option 'url_rewrite_program'. If it is set to the special value 'squidguard', the URL filter SquidGuard will be integrated. The setting is relevant for UCS@school. The configured programm needs to be installed separately.
 Type=str
 Categories=service-webproxy
