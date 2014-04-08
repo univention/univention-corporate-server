@@ -565,7 +565,7 @@ univention-directory-listener-verify \
 				</listitem>
 				<listitem>
 					<simpara>
-						Otherwise on all other system roles a host is chosen randomly from the combined list of names in <envar>ldap/master</envar> and <envar>ldap/backup</envar><footnote><simpara>This list of &ucsBackup;s stored in the &ucsUCRV; <envar>ldap/backup</envar> is automatically updated by the listener module <filename>ldap_server.py</filename>.</simpara></footnote>
+						Otherwise on all other system roles a host is chosen randomly from the combined list of names in <envar>ldap/master</envar> and <envar>ldap/backup</envar><footnote><simpara>This list of &ucsBackup;s stored in the &ucsUCRV; <envar>ldap/backup</envar> is automatically updated by the listener module <filename>ldap_server.py</filename>.</simpara></footnote>.
 					</simpara>
 				</listitem>
 			</itemizedlist>
