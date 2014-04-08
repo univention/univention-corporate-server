@@ -401,6 +401,7 @@ class UCSTestUDM(object):
 						os.kill(proc.pid, signal)
 			except psutil.error.NoSuchProcess:
 				# process not running anymore
+				print 'process already terminated'
 				pass
 
 	def __enter__(self):
