@@ -4,8 +4,9 @@ univention-s4-connector (8.0.33-32) unstable; urgency=low
     object changes. This is required for the switch from object based
     sync to diff based sync (Bug #33621)
   * Add diff mode for modifications from UCS to S4 (Bug #33621)
+  * Add diff mode for modifications from S4 to UCS (Bug #33621)
 
- -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Mar 2014 14:23:23 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Apr 2014 10:59:02 +0200
 
 univention-s4-connector (8.0.33-31) unstable; urgency=medium
 

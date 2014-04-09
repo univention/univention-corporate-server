@@ -44,6 +44,7 @@ import base64
 from signal import *
 term_signal_caught = False
 
+from univention.s4connector.s4cache import S4Cache
 import sqlite3 as lite
 
 univention.admin.modules.update()
@@ -298,7 +299,7 @@ class configsaver:
 		return self.config.has_key(section) and self.config[section].has_key(option)
 
 class attribute:
-	def __init__ ( self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, compare_function=None, mapping=(), reverse_attribute_check=False, sync_mode='sync' ):
+	def __init__ ( self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function=None, mapping=(), reverse_attribute_check=False, sync_mode='sync' ):
 		self.ucs_attribute=ucs_attribute
 		self.ldap_attribute=ldap_attribute
 		self.con_attribute=con_attribute
@@ -315,6 +316,7 @@ class attribute:
 		# Seee https://forge.univention.org/bugzilla/show_bug.cgi?id=25823
 		self.reverse_attribute_check=reverse_attribute_check
 		self.sync_mode = sync_mode
+		self.single_value=single_value
 
 class property:
 	def __init__(	self, ucs_default_dn='', con_default_dn='', ucs_module='', ucs_module_others=[], sync_mode='', scope='', con_search_filter='', ignore_filter=None, match_filter=None, ignore_subtree=[],
@@ -390,6 +392,9 @@ class ucs:
 
 		configdbfile='/etc/univention/%s/s4internal.sqlite' % self.CONFIGBASENAME
 		self.config = configdb(configdbfile)
+
+		s4cachedbfile='/etc/univention/%s/s4cache.sqlite' % self.CONFIGBASENAME
+		self.s4cache = S4Cache(s4cachedbfile)
 
 		configfile='/etc/univention/%s/s4internal.cfg' % self.CONFIGBASENAME
 		if os.path.exists(configfile):
@@ -977,6 +982,7 @@ class ucs:
 		_d=ud.function('ldap.__set_value')
 		if not modtype == 'add':
 			ucs_object.open()
+		ud.debug(ud.LDAP, ud.INFO, '__set_values: object: %s' % object)
 		def set_values(attributes):
 			if object['attributes'].has_key(attributes.ldap_attribute):
 				ucs_key = attributes.ucs_attribute
@@ -1032,7 +1038,10 @@ class ucs:
 						else:
 							equal = compare[0] == compare[1]
 						if not equal:
-							ucs_object[ucs_key] = value
+							if isinstance(value, list):
+								ucs_object[ucs_key] = list(set(value))
+							else:
+								ucs_object[ucs_key] = value
 							ud.debug(ud.LDAP, ud.INFO,
 											   "set key in ucs-object: %s" % ucs_key)
 				else:
@@ -1067,10 +1076,17 @@ class ucs:
 						else:
 							ud.debug(ud.LDAP, ud.WARN, '__set_values: The attributes for %s have not been removed as it represents a mandatory attribute' % ucs_key)
 
-
 		for attr_key in self.property[property_type].attributes.keys():
 			if self.property[property_type].attributes[attr_key].sync_mode in ['read', 'sync']:
-				set_values(self.property[property_type].attributes[attr_key])
+
+				con_attribute = self.property[property_type].attributes[attr_key].con_attribute
+				con_other_attribute = self.property[property_type].attributes[attr_key].con_other_attribute
+
+				if not object.get('changed_attributes') or con_attribute in object.get('changed_attributes') or (con_other_attribute and con_other_attribute in object.get('changed_attributes')):
+					ud.debug(ud.LDAP, ud.INFO, '__set_values: Set: %s' % con_attribute)
+					set_values(self.property[property_type].attributes[attr_key])
+				else:
+					ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip: %s' % con_attribute)
 
 		# post-values
 		if not self.property[property_type].post_attributes:
@@ -1082,13 +1098,21 @@ class ucs:
 					set_values(self.property[property_type].post_attributes[attr_key].mapping[1](self, property_type, object))
 			else:
 				if self.property[property_type].post_attributes[attr_key].sync_mode in ['read', 'sync']:
-					if self.property[property_type].post_attributes[attr_key].reverse_attribute_check:
-						if object['attributes'].get(self.property[property_type].post_attributes[attr_key].ldap_attribute):
-							set_values(self.property[property_type].post_attributes[attr_key])
+
+					con_attribute = self.property[property_type].post_attributes[attr_key].con_attribute
+					con_other_attribute = self.property[property_type].post_attributes[attr_key].con_other_attribute
+
+					if not object.get('changed_attributes') or con_attribute in object.get('changed_attributes') or (con_other_attribute and con_other_attribute in object.get('changed_attributes')):
+						ud.debug(ud.LDAP, ud.INFO, '__set_values: Set: %s' % con_attribute)
+						if self.property[property_type].post_attributes[attr_key].reverse_attribute_check:
+							if object['attributes'].get(self.property[property_type].post_attributes[attr_key].ldap_attribute):
+								set_values(self.property[property_type].post_attributes[attr_key])
+							else:
+								ucs_object[self.property[property_type].post_attributes[attr_key].ucs_attribute] = ''
 						else:
-							ucs_object[self.property[property_type].post_attributes[attr_key].ucs_attribute] = ''
+							set_values(self.property[property_type].post_attributes[attr_key])
 					else:
-						set_values(self.property[property_type].post_attributes[attr_key])
+						ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip: %s' % con_attribute)
 
 	def __modify_custom_attributes(self, property_type, object, ucs_object, module, position, modtype = "modify"):
 		if object.has_key('custom_attributes'):
@@ -1210,7 +1234,7 @@ class ucs:
 			else:
 				raise
 
-	def sync_to_ucs(self, property_type, object, premapped_s4_dn):
+	def sync_to_ucs(self, property_type, object, premapped_s4_dn, original_object):
 		_d=ud.function('ldap.sync_to_ucs')
 		# this function gets an object from the s4 class, which should be converted into a ucs modul
 
@@ -1254,6 +1278,23 @@ class ucs:
 				pass
 
 		try:
+			guid = original_object.get('attributes').get('objectGUID')[0]
+
+			object['changed_attributes'] = []
+			if object['modtype'] == 'modify' and original_object:
+				old_s4_object = self.s4cache.get_entry(guid)
+				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: old_s4_object: %s" % old_s4_object)
+				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: new_s4_object: %s" % original_object['attributes'])
+				if old_s4_object:
+					for attr in original_object['attributes']:
+						if old_s4_object.get(attr) != original_object['attributes'].get(attr):
+							object['changed_attributes'].append(attr)
+					for attr in old_s4_object:
+						if old_s4_object.get(attr) != original_object['attributes'].get(attr):
+							if not attr in object['changed_attributes']:
+								object['changed_attributes'].append(attr)
+			ud.debug(ud.LDAP, ud.INFO, "The following attributes have been changed: %s" % object['changed_attributes'])
+						
 			result = False
 			if hasattr(self.property[property_type],"ucs_sync_function"):
 				result = self.property[property_type].ucs_sync_function(self, property_type, object)
@@ -1261,6 +1302,7 @@ class ucs:
 				if object['modtype'] == 'add':
 					result = self.add_in_ucs(property_type, object, module, position)
 					self._check_dn_mapping(object['dn'], premapped_s4_dn)
+					self.s4cache.add_entry(guid, original_object.get('attributes'))
 				if object['modtype'] == 'delete':
 					if not old_object:
 						ud.debug(ud.LDAP, ud.WARN,
@@ -1269,14 +1311,17 @@ class ucs:
 					else:
 						result = self.delete_in_ucs(property_type, object, module, position)
 					self._remove_dn_mapping(object['dn'], premapped_s4_dn)
+					self.s4cache.remove_entry(guid)
 				if object['modtype'] == 'move':
 					result = self.move_in_ucs(property_type, object, module, position)
 					self._remove_dn_mapping(object['olddn'],  '') # we don't know the old s4-dn here anymore, will be checked by remove_dn_mapping
 					self._check_dn_mapping(object['dn'], premapped_s4_dn)
+					# Check S4cache
 
 				if object['modtype'] == 'modify':
 					result = self.modify_in_ucs(property_type, object, module, position)
 					self._check_dn_mapping(object['dn'], premapped_s4_dn)
+					self.s4cache.add_entry(guid, original_object.get('attributes'))
 					
 			if not result:
 				ud.debug(ud.LDAP, ud.WARN,
