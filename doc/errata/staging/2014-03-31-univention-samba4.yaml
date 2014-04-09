@@ -7,7 +7,7 @@ note:
 version: [1]
 desc: |
   This update fixes the following issues:
-  * This errata enables MSDFS support on Samba4 DCs by default.
+  * This errata enables MS DFS support on Samba AD DCs by default.
     With this new setting Windows clients ask for DFS redirects
     for the sysvol share, which may improve efficient network
     usage in branch site configurations.

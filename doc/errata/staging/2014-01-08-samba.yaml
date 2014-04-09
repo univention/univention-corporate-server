@@ -6,14 +6,14 @@ fix: 2:4.1.0-1.641.201404031605
 note: 
 version: [1]
 desc: |
- This errata fixes the following issues in the samba package:
+ This updates fixes the following issues in the samba package:
  * Versions in the package dependencies have been updated.
- * Domain account lockout support for Samba4 DCs has been implemented.
+ * Domain account lockout support for Samba AD DCs has been implemented.
  * The domain services database module was affected by a segmentation fault
-   when handling objects without objectClass.
- * samba-tool dbcheck now also lists/handles name conflict objects
- * samba-tool dbcheck now also lists/handles objects without objectClass.
- * Randomize DCs in DFS referral replies, e.g. for the sysvol share
+   when handling objects without object class.
+ * "samba-tool dbcheck" now also lists/handles name conflict objects and
+   objects without object class.
+ * Randomise DCs in DFS referral replies, e.g. for the sysvol share
  * Fix for CVE-2013-4496
 bug: [33972, 32974, 33977, 33616, 34305, 34370]
 cve:

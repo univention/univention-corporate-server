@@ -13,5 +13,5 @@ desc: |
     packages which can be installed via the grid. Before this is done, the App
     Center now updates the package list.
   * Applications may now specify supported architectures. If an application
-    only supports 64bit, a 32bit operating system will refuse to install it.
+    only supports 64 bit, a 32 bit operating system will refuse to install it.
 bug: [33728, 34278, 34320]

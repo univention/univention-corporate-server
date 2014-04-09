@@ -8,5 +8,5 @@ version: [1]
 desc: |
   * The listener module for shared folders now honours
     the UCR variable mail/cyrus/mailbox/delete when deleting 
-    imap folders.
+    IMAP folders.
 bug: [34165]
