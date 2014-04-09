@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/share/ucs-test/runner bash
 ## desc: Test account locking via shadow/ldap, smb, krb
 ## roles: [domaincontroller_master]
 ## tags: [basic, univention]
