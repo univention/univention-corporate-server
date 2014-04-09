@@ -1,0 +1,61 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "As a final test check for Samba4 objects without objectclass"
+## exposure: dangerous
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+## tags: [basic]
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/shares.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/samba.sh" || exit 137
+
+ldif=$(univention-s4search --cross-ncs '(!(objectclass=*))')
+dnlist=$(echo "$ldif" | sed -n 's/^dn: //p')
+if [ -n "$dnlist" ]; then
+	fail_test 1 "Samba4 objects without objectclass found! Objects:"
+	echo "$ldif"
+
+	mv /sbin/halt /sbin/halt.DISABLED
+
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		exit $RETVAL
+	fi
+
+	filename=$(mktemp)
+	echo -n "$tests_domainadmin_pwd" > "$filename"
+
+	## Close your eyes
+	ldapmodify -x -h "$ldap_master" -p "$ldap_master_port" -D "$tests_domainadmin_account" -y "$filename" <<-%EOF
+	dn: $tests_domainadmin_account
+	changetype: modify
+	replace: uidNumber
+	uidNumber: 0
+	%EOF
+
+	ADMINISTRATOR_NAME=$(univention-ldapsearch -b "$tests_domainadmin_account" uid | sed -ne 's/^uid: //p')
+	i=0
+	max_i=650
+	delta_t=1
+	echo "Waiting for ncsd passwd ttl end ($max_i seconds max)"
+	while [ "$(univention-ssh "$filename" "$ADMINISTRATOR_NAME@$ldap_master" "getent passwd $ADMINISTRATOR_NAME" | cut -d: -f 3)" != 0 ]; do
+		if [ "$i" -gt "$max_i" ]; then
+			echo -e "\nDEBUG: nscd doesn't seem to timeout."
+			break
+		fi
+		sleep "$delta_t"
+		i=$(($i + 1))
+		echo -n .
+	done
+	if [ "$i" -le "$max_i" ]; then
+		echo -e "\nOk, trying to disable /sbin/halt on $ldap_master"
+	fi
+
+	univention-ssh "$filename" "$ADMINISTRATOR_NAME@$ldap_master" "mv /sbin/halt /sbin/halt.DISABLED"
+	rm "$filename"
+fi
+
+exit $RETVAL
