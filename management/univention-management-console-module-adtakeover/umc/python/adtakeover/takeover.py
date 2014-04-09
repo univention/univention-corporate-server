@@ -885,11 +885,10 @@ class AD_Takeover():
 		run_and_output_to_log(["univention-config-registry", "unset", "hosts/static/%s" % (self.ad_server_ip,)], log.debug)
 
 		## Restore backup Samba directory
-		backup_samba_dir = "%s.before-ad-takeover" % SAMBA_PRIVATE_DIR
-		if os.path.exists(backup_samba_dir):
+		if os.path.exists(self.backup_samba_dir):
 			shutil.rmtree(SAMBA_PRIVATE_DIR)
-			os.rename(backup_samba_dir, SAMBA_PRIVATE_DIR)
-			# shutil.copytree(backup_samba_dir, SAMBA_PRIVATE_DIR, symlinks=True)
+			os.rename(self.backup_samba_dir, SAMBA_PRIVATE_DIR)
+			# shutil.copytree(self.backup_samba_dir, SAMBA_PRIVATE_DIR, symlinks=True)
 
 		## Start Samba again
 		run_and_output_to_log(["/etc/init.d/samba4", "start"], log.debug)
@@ -1694,7 +1693,7 @@ class AD_Takeover_Finalize():
 		if returncode != 0:
 			log.error("univention-run-join-scripts failed, please run univention-run-join-scripts manually after the script finished")
 
-		run_and_output_to_log(["univention-config-registry", "set", "univention/ad/takeover/completed", "yes"], log.debug)
+		run_and_output_to_log(["univention-config-registry", "set", "univention/ad/takeover/completed=yes"], log.debug)
 		run_and_output_to_log(["univention-config-registry", "unset", "univention/ad/takeover/ad/server/ip"], log.debug)
 		run_and_output_to_log(["samba-tool", "dbcheck", "--fix", "--yes"], log.debug)
 
