@@ -265,10 +265,11 @@ msgstr ""
 #, python-format
 msgid ""
 "Remote clock is behind local clock by more than %s seconds, refusing to turn "
-"back time."
+"back time. Please advance the clock of the Active Directory DC."
 msgstr ""
 "Die Uhr des Active Directory Servers liegt hinter der lokalen Zeit um mehr "
-"als %s Sekunden zurück. Die lokale Zeit kann nicht zurückgestellt werden."
+"als %s Sekunden zurück. Die lokale Zeit kann nicht zurückgestellt werden. "
+"Bitte stellen Sie die Zeit am Active Directory DC vor."
 
 #: takeover.py:790
 #, python-format

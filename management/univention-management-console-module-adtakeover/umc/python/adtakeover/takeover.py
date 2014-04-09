@@ -776,9 +776,9 @@ class AD_Takeover():
 			log.info("INFO: Time difference is less than %d seconds, skipping reset of local time" % (tolerance,))
 		elif local_datetime > remote_datetime:
 			if abs(delta_t) >= timedelta(0, critical_difference):
-				raise ManualTimeSynchronizationRequired(_("Remote clock is behind local clock by more than %s seconds, refusing to turn back time.") % (critical_difference,))
+				raise ManualTimeSynchronizationRequired(_("Remote clock is behind local clock by more than %s seconds, refusing to turn back time. Please advance the clock of the Active Directory DC.") % (critical_difference,))
 			else:
-				log.info("INFO: Remote clock is behind local clock by more than %s seconds, refusing to turn back time." % (tolerance,))
+				log.info("INFO: Remote clock is behind local clock by more than %s seconds, refusing to turn back time. Please advance the clock of the Active Directory DC." % (tolerance,))
 				return False
 		else:
 			log.info("INFO: Synchronizing time to %s" % self.ad_server_ip)
