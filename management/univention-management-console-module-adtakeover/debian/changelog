@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (1.0.10-21) unstable; urgency=medium
+
+  * fix parsing of msds-Behavior-Version (Bug #34139)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 09 Apr 2014 15:11:04 +0200
+
 univention-management-console-module-adtakeover (1.0.10-20) unstable; urgency=medium
 
   * Add msDS-Behavior-Version check for Windows Server 2012

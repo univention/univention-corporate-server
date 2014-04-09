@@ -628,8 +628,14 @@ class AD_Connection():
 			obj = msgs[0]
 			self.domain_sid = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
 			if "msDS-Behavior-Version" in obj:
-				if obj["msDS-Behavior-Version"][0] > 4:
-					raise TakeoverError(_("The Active Directory domain has a function level of Windows Server 2012 or newer, Samba currently only supports up to Windows 2008R2."))
+				try:
+					msds_behavior_version = int(obj["msDS-Behavior-Version"][0])
+				except ValueError, ex:
+					log.error("Cannot parse msDS-Behavior-Version: %s" % (obj["msDS-Behavior-Version"][0],)) 
+				if msds_behavior_version > 4:
+					raise TakeoverError(_("The Active Directory domain has a function level of Windows Server 2012 or newer, Samba currently only supports up to Windows 2008R2: %s") % (msds_behavior_version))
+			else:
+				log.error("msDS-Behavior-Version missing in AD.")
 		if not self.domain_sid:
 			raise TakeoverError(_("Failed to determine AD domain SID."))
 
