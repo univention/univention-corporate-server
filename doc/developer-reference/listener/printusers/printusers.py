@@ -6,9 +6,10 @@ import listener
 import os
 import errno
 import univention.debug as ud
+from collections import namedtuple
 
-name = "printusers"
-description = "print all names/users/uidNumbers into a file"
+name = 'printusers'
+description = 'print all names/users/uidNumbers into a file'
 filter = """\
 (&
 	(|
@@ -18,19 +19,17 @@ filter = """\
 		)
 		(objectClass=univentionMail)
 		(objectClass=sambaSamAccount)
-		(&
-			(objectClass=person)
-			(objectClass=organizationalPerson)
-			(objectClass=inetOrgPerson)
-		)
+		(objectClass=simpleSecurityObject)
+		(objectClass=inetOrgPerson)
 	)
 	(!(objectClass=univentionHost))
 	(!(uidNumber=0))
 	(!(uid=*$))
-)""".translate(None, "\t\n\r")
-attributes = ["uid", "uidNumber", "cn"]
+)""".translate(None, '\t\n\r')
+attributes = ['uid', 'uidNumber', 'cn']
+_Rec = namedtuple('Rec', ' '.join(attributes))
 
-USER_LIST = "/root/UserList.txt"
+USER_LIST = '/root/UserList.txt'
 
 
 def handler(dn, new, old):
@@ -51,36 +50,36 @@ def _handle_change(dn, new, old):
 	"""
 	Called when an object is modified.
 	"""
-	o_suid, o_nuid, o_name = _rec(old)
-	n_suid, n_nuid, n_name = _rec(new)
-	ud.debug(ud.LISTENER, ud.INFO, "Edited user '%s'" % (o_suid,))
-	_writeit(o_name, o_suid, o_nuid, "edited. Is now:")
-	_writeit(n_name, n_suid, n_nuid, None)
+	o_rec = _rec(old)
+	n_rec = _rec(new)
+	ud.debug(ud.LISTENER, ud.INFO, 'Edited user "%s"' % (o_rec.uid,))
+	_writeit(o_rec, u'edited. Is now:')
+	_writeit(n_rec, None)
 
 
 def _handle_add(dn, new):
 	"""
 	Called when an object is newly created.
 	"""
-	n_suid, n_nuid, n_name = _rec(new)
-	ud.debug(ud.LISTENER, ud.INFO, 'Added user "%s"' % (n_suid,))
-	_writeit(n_name, n_suid, n_nuid, 'added')
+	n_rec = _rec(new)
+	ud.debug(ud.LISTENER, ud.INFO, 'Added user "%s"' % (n_rec.uid,))
+	_writeit(n_rec, u'added')
 
 
 def _handle_remove(dn, old):
 	"""
 	Called when an previously existing object is removed.
 	"""
-	o_suid, o_nuid, o_name = _rec(old)
-	ud.debug(ud.LISTENER, ud.INFO, 'Removed user "%s"' % (o_suid,))
-	_writeit(o_name, o_suid, o_nuid, 'removed')
+	o_rec = _rec(old)
+	ud.debug(ud.LISTENER, ud.INFO, 'Removed user "%s"' % (o_rec.uid,))
+	_writeit(o_rec, u'removed')
 
 
 def _rec(data):
 	"""
 	Retrieve symbolic, numeric ID and name from user data.
 	"""
-	return (data[_][0] for _ in attributes)
+	return _Rec(*(data.get(attr, (None,))[0] for attr in attributes))
 
 
 class AsRoot(object):
@@ -94,24 +93,23 @@ class AsRoot(object):
 		listener.unsetuid()
 
 
-def _writeit(cn, suid, nuid, comment):
+def _writeit(rec, comment):
 	"""
 	Append CommonName, symbolic and numeric User-IDentifier, and comment to file.
 	"""
-	if suid in ("root", "span"):
-		nuid = "****"
-	indent = "\t" if comment is None else ''
+	nuid = u'*****' if rec.uid in ('root', 'spam') else rec.uidNumber
+	indent = '\t' if comment is None else ''
 	try:
 		with open(USER_LIST, 'a') as out:
-			print >> out, "%sName: '%s'" % (indent, cn.decode("utf-8"))
-			print >> out, "%sUser: '%s'" % (indent, suid)
-			print >> out, "%sUID: '%s'" % (indent, nuid)
+			print >> out, u'%sName: "%s"' % (indent, rec.cn)
+			print >> out, u'%sUser: "%s"' % (indent, rec.uid)
+			print >> out, u'%sUID: "%s"' % (indent, nuid)
 			if comment:
-				print >> out, "%s%s" % (indent, comment,)
+				print >> out, u'%s%s' % (indent, comment,)
 	except IOError as ex:
 		ud.debug(
 			ud.LISTENER, ud.ERROR,
-			"Failed to write '%s': %s" % (USER_LIST, ex))
+			'Failed to write "%s": %s' % (USER_LIST, ex))
 
 
 def initialize():
@@ -124,13 +122,13 @@ def initialize():
 			os.remove(USER_LIST)
 		ud.debug(
 			ud.LISTENER, ud.INFO,
-			"Successfully deleted '%s'" % (USER_LIST,))
+			'Successfully deleted "%s"' % (USER_LIST,))
 	except OSError as ex:
 		if errno.ENOENT == ex.errno:
 			ud.debug(
 				ud.LISTENER, ud.INFO,
-				"File '%s' does not exist, will be created" % (USER_LIST,))
+				'File "%s" does not exist, will be created' % (USER_LIST,))
 		else:
 			ud.debug(
 				ud.LISTENER, ud.WARN,
-				"Failed to delete file '%s': %s" % (USER_LIST, ex))
+				'Failed to delete file "%s": %s' % (USER_LIST, ex))
