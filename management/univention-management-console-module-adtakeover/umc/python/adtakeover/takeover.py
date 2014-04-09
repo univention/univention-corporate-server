@@ -1726,10 +1726,10 @@ def check_gpo_presence():
 					try:
 						config.readfp(f)
 						fileversion = config.get('General', 'version')
-						if fileversion < gpcversion
+						if fileversion < gpcversion:
 							log.error("File version %s of GPO %s is lower than GPO container versionNumber (%s)" % (fileversion, name, gpcversion))
 							raise SysvolGPOVersionTooLow("At least one GPO in SYSVOL is not up to date yet.")
-						if fileversion != gpcversion
+						if fileversion != gpcversion:
 							log.error("File version %s of GPO %s differs from GPO container versionNumber (%s)" % (fileversion, name, gpcversion))
 							## TODO: Imrpove error reporting
 					except ConfigParser.Error as ex:
