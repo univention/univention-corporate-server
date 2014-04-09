@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (1.0.10-22) unstable; urgency=medium
+
+  * fix translation file (Bug #34139)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 09 Apr 2014 15:21:34 +0200
+
 univention-management-console-module-adtakeover (1.0.10-21) unstable; urgency=medium
 
   * fix parsing of msds-Behavior-Version (Bug #34139)

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 13:15+0200\n"
+"POT-Creation-Date: 2014-04-09 15:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,8 +44,11 @@ msgid "At least one GPO in SYSVOL is not up to date yet."
 msgstr "Mindestens eine GPO im SYSVOL ist noch nicht aktuell."
 
 #: takeover.py:193
-msgid "At least one GPO in SYSVOL is newer than the Group Policy Container version."
-msgstr "Mindestens eine GPO im SYSVOL ist neuer als die Group Policy Container Version."
+msgid ""
+"At least one GPO in SYSVOL is newer than the Group Policy Container version."
+msgstr ""
+"Mindestens eine GPO im SYSVOL ist neuer als die Group Policy Container "
+"Version."
 
 #: takeover.py:196
 msgid "Something is wrong with the SYSVOL."
@@ -235,27 +238,30 @@ msgstr ""
 msgid ""
 "The LDAP base of this UCS domain differs from the LDAP base of the selected "
 "Active Directory domain."
-msgstr "Die LDAP-Basis dieser UCS Domäne unterscheidet sich von der LDAP-Basis "
-"der ausgewählten Active Directory Domäne."
+msgstr ""
+"Die LDAP-Basis dieser UCS Domäne unterscheidet sich von der LDAP-Basis der "
+"ausgewählten Active Directory Domäne."
 
-#: takeover.py:632
+#: takeover.py:636
+#, python-format
 msgid ""
 "The Active Directory domain has a function level of Windows Server 2012 or "
-"newer, Samba currently only supports up to Windows 2008R2."
-msgstr "Die Active Directory Domäne hat einen Funktionslevel von Windows Server "
-"2012 oder neuer, Samba unterstützt momentan nur bis Windows 2008R2."
+"newer, Samba currently only supports up to Windows 2008R2: %s"
+msgstr ""
+"Die Active Directory Domäne hat einen Funktionslevel von Windows Server 2012 "
+"oder neuer, Samba unterstützt momentan nur bis Windows 2008R2: %s"
 
-#: takeover.py:634
+#: takeover.py:640
 msgid "Failed to determine AD domain SID."
 msgstr "Die SID der AD-Domäne konnte nicht festgestellt werden."
 
-#: takeover.py:765
+#: takeover.py:771
 #, python-format
 msgid "AD Server did not return proper time string: %s."
 msgstr ""
 "Der Active Directory Server lieferte eine unerwartete Zeitangabe zurück: %s."
 
-#: takeover.py:773
+#: takeover.py:779
 #, python-format
 msgid ""
 "Remote clock is behind local clock by more than %s seconds, refusing to turn "
@@ -264,67 +270,67 @@ msgstr ""
 "Die Uhr des Active Directory Servers liegt hinter der lokalen Zeit um mehr "
 "als %s Sekunden zurück. Die lokale Zeit kann nicht zurückgestellt werden."
 
-#: takeover.py:784
+#: takeover.py:790
 #, python-format
 msgid "Internal Error: rdate -s -p failed (%d)."
 msgstr "Internal Error: rdate -s -p schlug fehl (%d)."
 
-#: takeover.py:834
+#: takeover.py:840
 #, python-format
 msgid "Could not read local machine password: %s"
 msgstr "Interner Fehler beim Lesen des Maschinenpassworts: %s"
 
-#: takeover.py:852 takeover.py:862
+#: takeover.py:858 takeover.py:868
 #, python-format
 msgid "Copying %s"
 msgstr "Kopiere %s"
 
-#: takeover.py:873
+#: takeover.py:879
 #, python-format
 msgid "The domain join failed. See %s for details."
 msgstr ""
 "Der Domänenbeitritt schlug fehl, die Logdatei %s enthält genauere Details."
 
-#: takeover.py:936
+#: takeover.py:942
 msgid "Failed to determine new domain SID."
 msgstr "Die neue Domänen-SID konnte nicht festgestellt werden."
 
-#: takeover.py:1309 takeover.py:1317
+#: takeover.py:1315 takeover.py:1323
 msgid "The Active Directory domain join was not completed successfully yet."
 msgstr ""
 "Der Beitritt zur Active Directory Domäne wurde noch nicht erfolgreich "
 "abgeschlossen."
 
-#: takeover.py:1336
+#: takeover.py:1342
 msgid "Active Directory takeover finished already."
 msgstr "Active Directory Takeover ist schon abgeschlossen."
 
-#: takeover.py:1361
+#: takeover.py:1367
 #, python-format
 msgid "The Server IP %s is still online, please shut down the machine."
 msgstr ""
 "Die Server IP %s ist noch online, die Maschine sollte ausgeschaltet werden."
 
-#: takeover.py:1807
+#: takeover.py:1813
 msgid " failed"
 msgstr " schlug fehl"
 
-#: takeover.py:1810
+#: takeover.py:1816
 #, python-format
 msgid "Network connection to %s failed."
 msgstr "Netzwerkverbindung zu %s schlug fehl."
 
-#: takeover.py:1817
+#: takeover.py:1823
 #, python-format
 msgid "Active Directory services not detected at %s."
 msgstr "Active Directory Dienste sind nicht erreichbar über %s."
 
-#: takeover.py:1856
+#: takeover.py:1862
 #, python-format
 msgid "Connection to Active Directory server %s failed."
 msgstr "Die Verbindung zum Active Directory Server %s schlug fehl."
 
-#: takeover.py:1865
+#: takeover.py:1871
 #, python-format
 msgid ""
 "The automatic search for an Active Directory server for realm %s did not "
@@ -333,16 +339,16 @@ msgstr ""
 "Die automatische Suche eines Active Directory Servers für den Kerberos Realm "
 "%s lieferte keine Ergebnisse."
 
-#: takeover.py:1889
+#: takeover.py:1895
 msgid "Faild to detect the Active Directory site of the server."
 msgstr ""
 "Die Erkennung des Active Directory Standorts (site) des Servers schlug fehl."
 
-#: takeover.py:2321
+#: takeover.py:2327
 msgid "UNC doesn't start with \\\\ or //"
 msgstr "UNC Pfad startet nicht mit \\\\ oder //"
 
-#: takeover.py:2328
+#: takeover.py:2334
 #, python-format
 msgid "Invalid UNC string: %s"
 msgstr "Ungültiger UNC Pfad: %s"
