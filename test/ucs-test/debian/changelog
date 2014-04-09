@@ -1,3 +1,9 @@
+ucs-test (4.0.164-32) unstable; urgency=low
+
+  * 00_base/96rename_domain_admins: fixed typo (Bug #34201)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Apr 2014 06:17:00 +0200
+
 ucs-test (4.0.164-31) unstable; urgency=low
 
   * 52_s4connector/124sync_modify_con_other_attributes: added a test

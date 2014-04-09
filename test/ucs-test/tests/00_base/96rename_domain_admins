@@ -14,7 +14,7 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 . "$TESTLIBPATH/group.sh" || exit 137
 
-eval "$(ucr shell")"
+eval "$(ucr shell)"
 
 GROUPNAME=$(group_randomnameme)
 
