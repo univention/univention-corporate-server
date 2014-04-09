@@ -190,7 +190,7 @@ class SysvolGPOVersionTooLow(TakeoverError):
 	default_error_message = _('At least one GPO in SYSVOL is not up to date yet.')
 
 class SysvolGPOVersionMismatch(TakeoverError):
-	default_error_message = _('At least one GPO in SYSVOL is newer than the container version.')
+	default_error_message = _('At least one GPO in SYSVOL is newer than the Group Policy Container version.')
 
 class SysvolError(TakeoverError):
 	default_error_message = _('Something is wrong with the SYSVOL.')
@@ -623,10 +623,13 @@ class AD_Connection():
 		self.domain_sid = None
 		msgs = self.samdb.search(base=self.domain_dn, scope=samba.ldb.SCOPE_BASE,
 								expression="(objectClass=domain)",
-								attrs=["objectSid"])
+								attrs=["objectSid", "msDS-Behavior-Version"])
 		if msgs:
 			obj = msgs[0]
 			self.domain_sid = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
+			if "msDS-Behavior-Version" in obj:
+				if obj["msDS-Behavior-Version"][0] > 4:
+					raise TakeoverError(_("The Active Directory domain has a function level of Windows Server 2012 or newer, Samba currently only supports up to Windows 2008R2."))
 		if not self.domain_sid:
 			raise TakeoverError(_("Failed to determine AD domain SID."))
 
