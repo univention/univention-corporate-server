@@ -276,6 +276,9 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	progress.headline(_('Rewriting SIDs in the UCS directory service'))
 	progress.percentage(22)
 	takeover.rewrite_sambaSIDs_in_OpenLDAP()
+	progress.headline(_('Checking group policies'))
+	takeover.fix_gpo_container_names()
+	takeover.remove_conflicting_msgpo_objects_from_LDAP()
 	progress.headline(_('Initializing the S4 Connector listener'))
 	progress.percentage(23)
 	progress._scale = 70 - progress._percentage
@@ -361,8 +364,6 @@ def check_sysvol(progress):
 	state = AD_Takeover_State()
 	state.check_sysvol()
 
-	progress.headline(_('Checking group policies'))
-	fix_gpo_guids()
 	progress.message(_('Checking GPOs in SYSVOL'))
 	check_gpo_presence()
 
@@ -982,6 +983,37 @@ class AD_Takeover():
 		check_samba4_started()
 
 
+	def fix_gpo_container_names(self):
+		'''fix for AD case issue "6AC1786C-016F-11D2-945F-00C04fB984F9'''
+
+		msgs = self.samdb.search(base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
+							expression="(objectClass=groupPolicyContainer)",
+							attrs=["cn", "gPCFileSysPath"])
+		for obj in msgs:
+			name = obj["cn"][0]
+			if name.upper() == name:
+				continue
+
+			change = ldb.Message()
+			change.dn = ldb.Dn(self.samdb, dn=str(obj.dn))
+			if "gPCFileSysPath" in obj:
+				new_gPCFileSysPath = obj["gPCFileSysPath"][0].replace(name, name.upper())
+				change["gPCFileSysPath"] = ldb.MessageElement(new_gPCFileSysPath, ldb.FLAG_MOD_REPLACE, "gPCFileSysPath")
+				self.samdb.modify(change)
+
+			new_dn = str(obj.dn).replace(name, name.upper())
+			self.samdb.rename(obj.dn, new_dn)
+
+	def remove_conflicting_msgpo_objects_from_LDAP(self):
+		'''The S4 Connector prefers OpenLDAP objects, so we must remove conflicting ones'''
+
+		msgs = self.samdb.search(base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
+							expression="(objectClass=groupPolicyContainer)",
+							attrs=["cn"])
+		for obj in msgs:
+			name = obj["cn"][0]
+			run_and_output_to_log(["/usr/sbin/univention-directory-manager", "container/msgpo", "delete", "--filter", "name=%s" % name], log.debug)
+
 	def rewrite_sambaSIDs_in_OpenLDAP(self):
 		### Phase I.b: Pre-Map SIDs (locale adjustment etc.)
 
@@ -1422,7 +1454,7 @@ class AD_Takeover_Finalize():
 			## Cannot use tree_delete on isCriticalSystemObject, perform recursive delete like ldbdel code does it:
 			msgs = self.samdb.search(base=obj.dn, scope=samba.ldb.SCOPE_SUBTREE,
 								attrs=["dn"])
-			obj_dn_list = [obj.dn for obj in msgs]
+			obj_dn_list = [o.dn for o in msgs]
 			obj_dn_list.sort(key=len)
 			obj_dn_list.reverse()
 			for obj_dn in obj_dn_list:
@@ -1657,34 +1689,6 @@ class AD_Takeover_Finalize():
 		run_and_output_to_log(["univention-config-registry", "unset", "univention/ad/takeover/ad/server/ip"], log.debug)
 		run_and_output_to_log(["samba-tool", "dbcheck", "--fix", "--yes"], log.debug)
 
-def fix_gpo_guids():
-	'''fix for AD case issue "6AC1786C-016F-11D2-945F-00C04fB984F9'''
-
-	lp = LoadParm()
-	try:
-		lp.load('/etc/samba/smb.conf')
-	except:
-		lp.load('/dev/null')
-
-	samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(lp), lp=lp)
-	msgs = samdb.search(base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
-						expression="(objectClass=groupPolicyContainer)",
-						attrs=["cn", "gPCFileSysPath"])
-	for obj in msgs:
-		name = obj["cn"][0]
-		if name.upper() == name:
-			continue
-
-		change = ldb.Message()
-		change.dn = ldb.Dn(samdb, dn=str(obj.dn))
-		if "gPCFileSysPath" in obj:
-			new_gPCFileSysPath = obj["gPCFileSysPath"][0].replace(name, name.upper())
-			change["gPCFileSysPath"] = ldb.MessageElement(new_gPCFileSysPath, ldb.FLAG_MOD_REPLACE, "gPCFileSysPath")
-			samdb.modify(change)
-
-		new_dn = str(obj.dn).replace(name, name.upper())
-		samdb.rename(obj.dn, new_dn)
-
 def check_gpo_presence():
 	lp = LoadParm()
 	try:
@@ -1714,22 +1718,24 @@ def check_gpo_presence():
 			log.error("GPO missing in SYSVOL: %s" % name)
 			raise SysvolGPOMissing()
 
-		config = ConfigParser.ConfigParser()
-		try:
-			with open(os.path.join(gpo_path,'GPT.INI')) as f:
-				try:
-					config.readfp(f)
-					version = config.get('General', 'version')
-					if version < obj["versionNumber"][0]:
-						log.error("File version %s of GPO %s is lower than GPO container versionNumber (%s)" % (version, name, obj["versionNumber"][0]))
-						raise SysvolGPOVersionTooLow("At least one GPO in SYSVOL is not up to date yet.")
-					if version != obj["versionNumber"][0]:
-						log.error("File version %s of GPO %s differs from GPO container versionNumber (%s)" % (version, name, obj["versionNumber"][0]))
-						## TODO: Imrpove error reporting
-				except ConfigParser.Error as ex:
-					log.error(ex.args[0])
-		except IOError as ex:
-			log.error(ex.args[0])
+		if "versionNumber" in obj:
+			gpcversion = obj["versionNumber"][0]
+			config = ConfigParser.ConfigParser()
+			try:
+				with open(os.path.join(gpo_path,'GPT.INI')) as f:
+					try:
+						config.readfp(f)
+						fileversion = config.get('General', 'version')
+						if fileversion < gpcversion
+							log.error("File version %s of GPO %s is lower than GPO container versionNumber (%s)" % (fileversion, name, gpcversion))
+							raise SysvolGPOVersionTooLow("At least one GPO in SYSVOL is not up to date yet.")
+						if fileversion != gpcversion
+							log.error("File version %s of GPO %s differs from GPO container versionNumber (%s)" % (fileversion, name, gpcversion))
+							## TODO: Imrpove error reporting
+					except ConfigParser.Error as ex:
+						log.error(ex.args[0])
+			except IOError as ex:
+				log.error(ex.args[0])
 
 	return True
 
