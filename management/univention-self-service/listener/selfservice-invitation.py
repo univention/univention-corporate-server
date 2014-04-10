@@ -35,6 +35,7 @@
 from __future__ import absolute_import, annotations
 
 import os
+from typing import Dict, List
 
 import listener
 import univention.debug as ud
@@ -47,7 +48,7 @@ modrdn = '1'
 cache_dir = '/var/cache/univention-directory-listener/selfservice-invitation'
 
 
-def handler(dn: str, new: dict, old: dict, command: str) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
 	if not listener.configRegistry.is_true('umc/self-service/invitation/enabled', True):
 		return
 

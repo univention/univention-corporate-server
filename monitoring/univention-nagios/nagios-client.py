@@ -38,6 +38,7 @@ from __future__ import absolute_import, annotations
 import os
 import re
 import stat
+from typing import Dict, List
 
 import univention.debug as ud
 from listener import SetUID, configRegistry, run
@@ -75,7 +76,7 @@ def readPluginConfig() -> None:
 						ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: read configline for plugin %r ==> %r' % (mcmdname.group(1), mcmdline.group(1)))
 
 
-def replaceArguments(cmdline: str, args: list) -> str:
+def replaceArguments(cmdline: bytes, args: List[bytes]) -> bytes:
 	for i in range(9):
 		if i < len(args):
 			cmdline = re.sub(r'\$ARG%d\$' % (i + 1), args[i], cmdline)
@@ -84,7 +85,7 @@ def replaceArguments(cmdline: str, args: list) -> str:
 	return cmdline
 
 
-def writeConfig(fqdn: str, new: dict) -> None:
+def writeConfig(fqdn: bytes, new: Dict[str, List[bytes]]) -> None:
 	readPluginConfig()
 
 	name = new['cn'][0].decode('UTF-8')
@@ -120,7 +121,7 @@ def removeConfig(name: str) -> None:
 			os.unlink(filename)
 
 
-def handler(dn: str, new: dict, old: dict) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	# ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: IN dn=%r' % (dn,))
 	# ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: IN old=%r' % (old,))
 	# ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: IN new=%r' % (new,))

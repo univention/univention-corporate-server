@@ -36,6 +36,7 @@
 from __future__ import absolute_import, annotations
 
 import subprocess
+from typing import Dict, List
 
 import listener
 from univention.config_registry import ConfigRegistry, handler_set
@@ -47,7 +48,7 @@ attributes = ['univentionService']
 service_name = b"Admin Diary Backend"
 
 
-def handler(dn: str, new: dict, old: dict) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	listener.setuid(0)
 	try:
 		change = False

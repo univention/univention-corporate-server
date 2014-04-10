@@ -37,6 +37,7 @@ from __future__ import absolute_import, annotations
 
 import os
 from textwrap import dedent
+from typing import Dict, List, Optional
 
 from six.moves.urllib_parse import urljoin
 
@@ -68,7 +69,7 @@ def ip_to_hex(ip: str) -> str:
 	return ''.join('%02X' % int(_) for _ in o)
 
 
-def handler(dn: str, new: dict, old: dict) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	listener.configRegistry.load()
 	pxeconfig = gen_pxe(new)
 	remove_pxe(old)
@@ -76,7 +77,7 @@ def handler(dn: str, new: dict, old: dict) -> None:
 		create_pxe(new, pxeconfig)
 
 
-def gen_pxe(new: dict) -> str:
+def gen_pxe(new: Dict[str, List[bytes]]) -> Optional[str]:
 	args = [listener.configRegistry.get('pxe/installer/append')]
 	if args[0] is None:
 		profile = new.get('univentionServerInstallationProfile', EMPTY)[0].decode('UTF-8')
@@ -134,7 +135,7 @@ def gen_pxe(new: dict) -> str:
 	}
 
 
-def remove_pxe(old: dict) -> None:
+def remove_pxe(old: Dict[str, List[bytes]]) -> None:
 	try:
 		basename = ip_to_hex(old['aRecord'][0].decode('ASCII'))
 	except LookupError:
@@ -152,7 +153,7 @@ def remove_pxe(old: dict) -> None:
 			listener.unsetuid()
 
 
-def create_pxe(new: dict, pxeconfig: str) -> None:
+def create_pxe(new: Dict[str, List[bytes]], pxeconfig: str) -> None:
 	try:
 		basename = ip_to_hex(new['aRecord'][0].decode('ASCII'))
 	except LookupError:

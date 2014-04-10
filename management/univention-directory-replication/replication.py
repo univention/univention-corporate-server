@@ -51,7 +51,7 @@ import subprocess
 import sys
 import time
 from errno import ENOENT
-from typing import Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import ldap
 import ldap.schema
@@ -452,11 +452,11 @@ BUILTIN_OIDS = [
 
 class LDIFObject(object):
 
-	def __init__(self, filename):
+	def __init__(self, filename: str) -> None:
 		self.fp = open(filename, 'ab')
 		os.chmod(filename, 0o600)
 
-	def __print_attribute(self, attribute, value):
+	def __print_attribute(self, attribute: str, value: Any) -> None:
 		pos = len(attribute) + 2  # +colon+space
 		encode = b'\n' in value
 		try:
@@ -485,20 +485,20 @@ class LDIFObject(object):
 			value = value[60 - pos:]
 			pos = 1
 
-	def __new_entry(self, dn):
+	def __new_entry(self, dn: str) -> None:
 		self.__print_attribute('dn', dn.encode('UTF-8'))
 
-	def __end_entry(self):
+	def __end_entry(self) -> None:
 		self.fp.write(b'\n')
 		self.fp.flush()
 
-	def __new_section(self):
+	def __new_section(self) -> None:
 		pass
 
-	def __end_section(self):
+	def __end_section(self) -> None:
 		self.fp.write(b'-\n')
 
-	def add_s(self, dn, al):
+	def add_s(self, dn: str, al: List[Tuple[str, Any]]) -> None:
 		self.__new_entry(dn)
 		self.__print_attribute('changetype', b'add')
 		for attr, vals in al:
@@ -506,7 +506,7 @@ class LDIFObject(object):
 				self.__print_attribute(attr, val)
 		self.__end_entry()
 
-	def modify_s(self, dn, ml):
+	def modify_s(self, dn: str, ml: List[Tuple[int, str, Any]]) -> None:
 		self.__new_entry(dn)
 		self.__print_attribute('changetype', b'modify')
 		for ldap_op, attr, vals in ml:
@@ -523,12 +523,12 @@ class LDIFObject(object):
 			self.__end_section()
 		self.__end_entry()
 
-	def delete_s(self, dn):
+	def delete_s(self, dn: str) -> None:
 		self.__new_entry(dn)
 		self.__print_attribute('changetype', b'delete')
 		self.__end_entry()
 
-	def rename_s(self, dn, newrdn, newsuperior=None, delold=1, serverctrls=None, clientctrls=None):
+	def rename_s(self, dn: str, newrdn: str, newsuperior: Optional[str] = None, delold: int = 1, serverctrls=None, clientctrls=None) -> None:
 		self.__new_entry(dn)
 		self.__print_attribute('changetype', b'modrdn')
 		self.__print_attribute('newrdn', newrdn.encode('UTF-8'))
@@ -538,11 +538,11 @@ class LDIFObject(object):
 		self.__end_entry()
 
 
-reconnect = False
-connection = None
+reconnect: bool = False
+connection: Optional[ldap.ldapobject] = None
 
 
-def connect(ldif=False):
+def connect(ldif: bool = False) -> ldap.ldapobject:
 	global connection
 	global reconnect
 
@@ -570,12 +570,12 @@ def connect(ldif=False):
 	return connection
 
 
-def addlist(new):
+def addlist(new: Dict[str, List[bytes]]) -> List[Tuple[str, List[bytes]]]:
 	return [kv for kv in new.items() if kv[0].lower() not in EXCLUDE_ATTRIBUTES]
 
 
-def modlist(old, new):
-	ml = []
+def modlist(old: Dict[str, List[bytes]], new: Dict[str, List[bytes]]) -> List[Tuple[int, str, List[bytes]]]:
+	ml: List[Tuple[int, str, List[bytes]]] = []
 	for key, values in new.items():
 		if key.lower() in EXCLUDE_ATTRIBUTES:
 			continue
@@ -610,7 +610,7 @@ def modlist(old, new):
 	return ml
 
 
-def subschema_oids_with_sup(subschema, ldap_type, oid, result):
+def subschema_oids_with_sup(subschema: ldap.schema.subentry.SubSchema, ldap_type: ldap.schema.SchemaElement, oid: str, result: List[str]) -> None:
 	if oid in BUILTIN_OIDS or oid in result:
 		return
 
@@ -621,15 +621,15 @@ def subschema_oids_with_sup(subschema, ldap_type, oid, result):
 	result.append(oid)
 
 
-def subschema_sort(subschema, ldap_type):
-	result = []
+def subschema_sort(subschema: ldap.schema.subentry.SubSchema, ldap_type: ldap.schema.SchemaElement) -> List[str]:
+	result: List[str] = []
 	for oid in subschema.listall(ldap_type):
 		subschema_oids_with_sup(subschema, ldap_type, oid, result)
 	return result
 
 
-def update_schema(attr):
-	def _insert_linebereak(obj):
+def update_schema(attr: Dict[str, List[bytes]]) -> None:
+	def _insert_linebereak(obj: str) -> str:
 		# Bug 46743: Ensure lines are not longer than 2000 characters or slapd fails to start
 		max_length = 2000
 		obj_lines = []
@@ -674,7 +674,7 @@ def update_schema(attr):
 	init_slapd('restart')
 
 
-def getOldValues(ldapconn, dn):
+def getOldValues(ldapconn: ldap.ldapobject, dn: str) -> Dict[str, List[bytes]]:
 	"""
 	get "old" from local ldap server
 	"ldapconn": connection to local ldap server
@@ -700,7 +700,7 @@ def getOldValues(ldapconn, dn):
 	return old
 
 
-def _delete_dn_recursive(lo, dn):
+def _delete_dn_recursive(lo: ldap.ldapobject, dn: str) -> None:
 	try:
 		lo.delete_s(dn)
 	except ldap.NOT_ALLOWED_ON_NONLEAF:
@@ -713,7 +713,7 @@ def _delete_dn_recursive(lo, dn):
 		pass
 
 
-def _backup_dn_recursive(lo, dn):
+def _backup_dn_recursive(lo: ldap.ldapobject, dn: str) -> None:
 	if isinstance(lo, LDIFObject):
 		return
 
@@ -735,7 +735,7 @@ def _remove_file(pathname: str) -> None:
 			ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove %s: %s' % (pathname, ex))
 
 
-def _add_object_from_new(lo, dn, new):
+def _add_object_from_new(lo: ldap.ldapobject, dn: str, new: Dict[str, List[bytes]]) -> None:
 	al = addlist(new)
 	try:
 		lo.add_s(dn, al)
@@ -743,7 +743,7 @@ def _add_object_from_new(lo, dn, new):
 		log_ldap(ud.ERROR, 'object class violation while adding', ex, dn=dn)
 
 
-def _modify_object_from_old_and_new(lo, dn, old, new):
+def _modify_object_from_old_and_new(lo: ldap.ldapobject, dn: str, old: Dict[str, List[bytes]], new: Dict[str, List[bytes]]) -> None:
 	ml = modlist(old, new)
 	if ml:
 		ud.debug(ud.LISTENER, ud.ALL, 'replication: modify: %s' % dn)
@@ -795,7 +795,7 @@ def check_file_system_space() -> None:
 	listener.run('/usr/bin/systemctl', ['systemctl', 'stop', 'univention-directory-listener'], uid=0, wait=True)
 
 
-def handler(dn: str, new: dict, listener_old: dict, operation: str) -> int:
+def handler(dn: str, new: Dict[str, List[bytes]], listener_old: Dict[str, List[bytes]], operation: str) -> Any:
 	global reconnect
 	if not slave:
 		return 1
@@ -1024,7 +1024,7 @@ def log_ldap(severity: int, msg: str, ex: ldap.LDAPError, dn: str = None) -> Non
 		pass
 
 
-def clean() -> None:
+def clean() -> Any:
 	global slave
 	if not slave:
 		return 1
@@ -1051,7 +1051,7 @@ def clean() -> None:
 	listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry', 'commit', '/var/lib/univention-ldap/ldap/DB_CONFIG'], uid=0)
 
 
-def initialize() -> None:
+def initialize() -> Any:
 	ud.debug(ud.LISTENER, ud.INFO, 'replication: initialize')
 	if not slave:
 		ud.debug(ud.LISTENER, ud.INFO, 'replication: not a Replica Node')

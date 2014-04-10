@@ -38,6 +38,7 @@ from __future__ import absolute_import, annotations
 
 import os
 import re
+from typing import Dict, List
 
 from six.moves import cPickle as pickle
 
@@ -62,7 +63,7 @@ __comment_pattern = re.compile('^"*/.*#[ \t]*LDAP:[ \t]*(.*)')
 tmpFile = '/var/cache/univention-directory-listener/nfs-shares.oldObject'
 
 
-def handler(dn: str, new: dict, old: dict, command: str) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
 	# create tmp dir
 	tmpDir = os.path.dirname(tmpFile)
 	listener.setuid(0)
@@ -147,7 +148,7 @@ def _read(keep=lambda match: True):
 		return [line.strip() for line in fp if keep(__comment_pattern.match(line))]
 
 
-def _write(lines: list) -> None:
+def _write(lines: List[str]) -> None:
 	listener.setuid(0)
 	try:
 		ud.debug(ud.LISTENER, ud.PROCESS, 'Writing /etc/exports with %d lines' % (len(lines),))

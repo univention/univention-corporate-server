@@ -37,6 +37,7 @@ from __future__ import absolute_import, annotations
 
 import os.path
 import subprocess
+from typing import Dict, List
 
 import listener
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
@@ -47,7 +48,7 @@ filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMembe
 attributes = ['univentionService']
 
 
-def handler(dn: str, new: dict, old: dict) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	ucr = ConfigRegistry()
 	ucr.load()
 	listener.setuid(0)

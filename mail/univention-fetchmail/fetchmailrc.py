@@ -55,7 +55,7 @@ FETCHMAIL_OLD_PICKLE = "/var/spool/univention-fetchmail/fetchmail_old_dn"
 REpassword = re.compile("^poll .*? there with password '(.*?)' is '[^']+' here")
 
 
-def load_rc(ofile) -> Optional[int]:
+def load_rc(ofile: str) -> Optional[List[str]]:
 	"""open an textfile with setuid(0) for root-action"""
 	rc = None
 	listener.setuid(0)
@@ -92,7 +92,7 @@ def get_pw_from_rc(lines: Iterable[str], uid: int) -> Optional[str]:
 	return None
 
 
-def objdelete(dlist: Iterable[str], old: Dict[str, List[bytes]]) -> List[str]:
+def objdelete(dlist: Iterable[str], old: Dict[str, List[bytes]]) -> Optional[List[str]]:
 	"""delete an object in filerepresenting-list if old settings are found"""
 	if old.get('uid'):
 		return [line for line in dlist if not re.search("#UID='%s'[ \t]*$" % re.escape(old['uid'][0].decode('UTF-8')), line)]
@@ -122,7 +122,7 @@ def objappend(flist: List[str], new: Dict[str, List[bytes]], password: Optional[
 		ud.debug(ud.LISTENER, ud.INFO, 'Adding user to "fetchmailrc" failed')
 
 
-def details_complete(obj: Optional[Dict[str, List[bytes]]], incl_password: bool = False) -> bool:
+def details_complete(obj: Dict[str, List[bytes]], incl_password: bool = False) -> bool:
 	if not obj:
 		return False
 	attrlist = ['mailPrimaryAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailAddress']
@@ -131,7 +131,7 @@ def details_complete(obj: Optional[Dict[str, List[bytes]]], incl_password: bool 
 	return all(obj.get(attr, [b''])[0] for attr in attrlist)
 
 
-def only_password_reset(old: Optional[Dict[str, List[bytes]]], new: Optional[Dict[str, List[bytes]]]) -> bool:
+def only_password_reset(old: Dict[str, List[bytes]], new: Dict[str, List[bytes]]) -> bool:
 	# if one or both objects are missing ==> false
 	if (old and not new) or (not old and new) or (not old and not new):
 		return False
@@ -149,7 +149,7 @@ def only_password_reset(old: Optional[Dict[str, List[bytes]]], new: Optional[Dic
 	return True
 
 
-def handler(dn: str, new: Optional[Dict[str, List[bytes]]], old: Optional[Dict[str, List[bytes]]], command: str) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
 	if os.path.exists(FETCHMAIL_OLD_PICKLE):
 		with open(FETCHMAIL_OLD_PICKLE, 'r') as fd:
 			p = pickle.Unpickler(fd)

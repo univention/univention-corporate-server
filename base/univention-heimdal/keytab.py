@@ -39,6 +39,7 @@ from __future__ import absolute_import, annotations
 import os
 import time
 from subprocess import call
+from typing import Any, Dict, List
 
 import ldap.dn
 
@@ -88,7 +89,7 @@ def clean() -> None:
 		listener.unsetuid()
 
 
-def handler(dn: str, new: dict, old: dict) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> Any:
 	# don't do anything here if this system is joined as a Samba/AD DC
 	if samba4_role.upper() in ('DC', 'RODC'):
 		return

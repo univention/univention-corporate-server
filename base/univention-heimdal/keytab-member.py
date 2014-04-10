@@ -39,6 +39,7 @@ from __future__ import absolute_import, annotations
 import os
 import pwd
 from subprocess import call
+from typing import Dict, List
 
 import listener
 import univention.debug as ud
@@ -58,7 +59,7 @@ filter = (
 )
 
 
-def handler(dn: str, new: dict, old: dict) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	if not new.get('krb5Key'):
 		return
 

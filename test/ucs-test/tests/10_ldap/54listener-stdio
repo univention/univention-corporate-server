@@ -20,6 +20,7 @@ ucstest="ucstest_$(random_chars)"
 listener="/usr/lib/univention-directory-listener/system/$ucstest.py"
 cat >"$listener" <<__HERE__
 import sys
+from typing import Dict, List
 
 import listener
 
@@ -27,7 +28,7 @@ description = 'Test Python 3 StdIO flush'
 name = 'ucstest'
 filter = '(cn=$ucstest)'
 
-def handler(dn, new, old):
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	sys.stdout.write("STDOUT$ucstest\n")
 	sys.stderr.write("STDERR$ucstest\n")
 __HERE__

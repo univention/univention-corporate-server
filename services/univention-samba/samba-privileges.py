@@ -35,6 +35,8 @@
 
 from __future__ import absolute_import, annotations
 
+from typing import Dict, Iterable, List
+
 import tdb
 
 import univention.debug as ud
@@ -62,7 +64,7 @@ filter = '(&(objectClass=univentionSambaPrivileges)(sambaSID=*))'
 atributes = ['univentionSambaPrivilegeList', 'sambaSID']
 
 
-def handler(dn: str, new: dict, old: dict) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 
 	where = ud.LISTENER
 	level = ud.INFO
@@ -102,7 +104,7 @@ def handler(dn: str, new: dict, old: dict) -> None:
 			addPrivileges(sid, newPrivs)
 
 
-def addPrivileges(sambaSID: bytes, privileges: list) -> None:
+def addPrivileges(sambaSID: bytes, privileges: Iterable[bytes]) -> None:
 	with SetUID(0):
 		tdbKey = b'PRIV_%s\x00' % (sambaSID,)
 		tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)
@@ -124,7 +126,7 @@ def addPrivileges(sambaSID: bytes, privileges: list) -> None:
 		tdbFile.close()
 
 
-def removePrivileges(sambaSID: bytes, privileges: list) -> None:
+def removePrivileges(sambaSID: bytes, privileges: Iterable[bytes]) -> None:
 	with SetUID(0):
 		tdbKey = b'PRIV_%s\x00' % (sambaSID,)
 		tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)

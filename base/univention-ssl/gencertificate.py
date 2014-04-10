@@ -41,7 +41,7 @@ import os
 import subprocess
 from errno import ENOENT
 from shutil import rmtree
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import univention.debug as ud
 from listener import configRegistry, setuid, unsetuid
@@ -57,7 +57,7 @@ SSLDIR = '/etc/univention/ssl'
 _delay = None
 
 
-def domain(info: Dict[str, List[str]]) -> str:
+def domain(info: Dict[str, List[bytes]]) -> str:
 	"""
 	Return domain name of machine account.
 
@@ -69,7 +69,7 @@ def domain(info: Dict[str, List[str]]) -> str:
 		return configRegistry['domainname']
 
 
-def wildcard_certificate(info: Dict[str, List[str]]) -> bool:
+def wildcard_certificate(info: Dict[str, List[bytes]]) -> bool:
 	"""
 	Check if a wildcard certificate should be created for the host.
 
@@ -79,7 +79,7 @@ def wildcard_certificate(info: Dict[str, List[str]]) -> bool:
 	return b'Wildcard Certificate' in info.get('univentionService', [])
 
 
-def handler(dn: str, new: Optional[Dict[str, List[str]]], old: Optional[Dict[str, List[str]]], command: str = '') -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str = '') -> None:
 	"""
 	Handle changes to 'dn'.
 
@@ -145,7 +145,7 @@ def handler(dn: str, new: Optional[Dict[str, List[str]]], old: Optional[Dict[str
 		unsetuid()
 
 
-def fix_permissions(certpath: str, dn: str, new: Dict[str, List[str]]) -> None:
+def fix_permissions(certpath: str, dn: str, new: Dict[str, List[bytes]]) -> None:
 	"""
 	Set file permission on directory and files within.
 

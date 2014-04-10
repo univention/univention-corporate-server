@@ -35,6 +35,8 @@
 
 from __future__ import absolute_import, annotations
 
+from typing import Dict, List
+
 import listener
 import univention.config_registry
 import univention.debug as ud
@@ -49,7 +51,7 @@ sharename = "pdfPrinterShare"
 # the pdf pseudo printer is changed
 
 
-def handler(dn: str, new: dict, old: dict) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	if new.get('cn', [b''])[0].decode('UTF-8') == sharename:
 		if new.get('univentionSharePath') and new.get('univentionShareHost'):
 			path = new['univentionSharePath'][0].decode('UTF-8')

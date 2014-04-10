@@ -47,6 +47,7 @@ import os
 import signal
 import subprocess
 import time
+from typing import Dict, List
 
 from six.moves.urllib_parse import quote
 
@@ -143,7 +144,7 @@ def _quote_config_parameter(arg: str) -> str:
 	return arg.replace('\\', '\\\\').replace('"', '\\"')
 
 
-def handler(dn: str, new: dict, old: dict) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	"""Handle LDAP changes."""
 	base = listener.configRegistry.get('dns/ldap/base')
 	if base and not dn.endswith(base):
@@ -173,7 +174,7 @@ def handler(dn: str, new: dict, old: dict) -> None:
 		listener.unsetuid()
 
 
-def _ldap_auth_string(ucr: dict) -> str:
+def _ldap_auth_string(ucr: Dict[str, str]) -> str:
 	"""Build extended LDAP query URI part containing bind credentials."""
 	account = ucr.get('bind/binddn', ucr.get('ldap/hostdn'))
 
@@ -182,7 +183,7 @@ def _ldap_auth_string(ucr: dict) -> str:
 		return '????!bindname=%s,!x-bindpw=%s,x-tls' % (quote(account), quote(fd.readline().rstrip()))
 
 
-def _new_zone(ucr: dict, zonename: str, dn: str) -> None:
+def _new_zone(ucr: Dict[str, str], zonename: str, dn: str) -> None:
 	"""Handle addition of zone."""
 	ud.debug(ud.LISTENER, ud.INFO, 'DNS: Creating zone %s' % (zonename,))
 	if not os.path.exists(NAMED_CONF_DIR):
@@ -264,7 +265,7 @@ def clean() -> None:
 		listener.unsetuid()
 
 
-def _reload(zones: list, restart: bool = False, dns_backend: str = 'ldap') -> dict:
+def _reload(zones: List[str], restart: bool = False, dns_backend: str = 'ldap') -> Dict[int, List[str]]:
 	"""Force reload of zones; might restart daemon; returns pids."""
 	pids = {}
 	# Try to only reload the zones if rndc is available
@@ -295,7 +296,7 @@ def _reload(zones: list, restart: bool = False, dns_backend: str = 'ldap') -> di
 	return pids
 
 
-def _wait_children(pids: dict, timeout: float = 15) -> None:
+def _wait_children(pids: Dict[int, List[str]], timeout: float = 15) -> None:
 	"""Wait for child termination."""
 	# Wait max 15 seconds for forked children
 	timeout += time.time()
@@ -329,7 +330,7 @@ def _wait_children(pids: dict, timeout: float = 15) -> None:
 		time.sleep(1)
 
 
-def _kill_children(pids: dict, timeout: float = 5) -> None:
+def _kill_children(pids: Dict[int, List[str]], timeout: float = 5) -> None:
 	"""Kill children."""
 	for pid in pids:
 		try:

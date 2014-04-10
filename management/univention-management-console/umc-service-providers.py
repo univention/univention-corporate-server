@@ -37,6 +37,7 @@ from __future__ import absolute_import, annotations
 
 import os
 import subprocess
+from typing import Dict, List
 
 import listener
 import univention.debug as ud
@@ -50,7 +51,7 @@ attributes = ['univentionService', 'cn', 'associatedDomain']
 __changed_trusted_sp = False
 
 
-def handler(dn: str, new: dict, old: dict) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	global __changed_trusted_sp
 	listener.setuid(0)
 	try:

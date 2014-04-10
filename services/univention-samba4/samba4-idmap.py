@@ -38,6 +38,7 @@ from __future__ import absolute_import, annotations
 
 import os
 import time
+from typing import IO, Dict, List, Optional
 
 import ldb
 from samba.auth import system_session
@@ -125,7 +126,7 @@ def open_idmap() -> IDmapDB:
 open_idmap.instance = None
 
 
-def rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, xidNumber, type_string, idmap=None):
+def rename_or_modify_idmap_entry(old_sambaSID: str, new_sambaSID: str, xidNumber: str, type_string: str, idmap: Optional[IDmapDB] = None) -> None:
 	if not idmap:
 		# need to open idmap here in case it has been removed since the module  was loaded
 		idmap = open_idmap()
@@ -163,7 +164,7 @@ def rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, xidNumber, type_str
 		modify_idmap_entry(new_sambaSID, xidNumber, type_string, idmap)
 
 
-def modify_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
+def modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: Optional[IDmapDB] = None) -> None:
 	if not idmap:
 		# need to open idmap here in case it has been removed since the module  was loaded
 		idmap = open_idmap()
@@ -193,7 +194,7 @@ def modify_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 		ud.debug(ud.LISTENER, ud.ERROR, estr)
 
 
-def add_or_modify_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
+def add_or_modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: Optional[IDmapDB] = None) -> None:
 	if not idmap:
 		# need to open idmap here in case it has been removed since the module  was loaded
 		idmap = open_idmap()
@@ -221,7 +222,7 @@ def add_or_modify_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 		modify_idmap_entry(sambaSID, xidNumber, type_string, idmap)
 
 
-def remove_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
+def remove_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: Optional[IDmapDB] = None) -> None:
 	if not idmap:
 		# need to open idmap here in case it has been removed since the module  was loaded
 		idmap = open_idmap()
@@ -260,7 +261,7 @@ def initialize() -> None:
 		listener.unsetuid()
 
 
-def handler(dn: str, new: dict, old: dict, operation: str) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], operation: str) -> None:
 
 	idmap = open_idmap()
 	if new:
@@ -358,10 +359,10 @@ if __name__ == '__main__':
 
 	class ListenerHandler(LDIFParser):
 
-		def __init__(self, input):
+		def __init__(self, input: IO[bytes]) -> None:
 			LDIFParser.__init__(self, input)
 
-		def handle(self, dn, entry):
+		def handle(self, dn: str, entry: Dict[str, List[bytes]]) -> None:
 			handler(dn, entry, {}, 'a')
 
 	parser = ListenerHandler(io.BytesIO(stdout))

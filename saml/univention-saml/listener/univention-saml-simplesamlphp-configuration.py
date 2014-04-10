@@ -41,7 +41,7 @@ import os.path
 import xml.etree.ElementTree
 from subprocess import PIPE, Popen
 from tempfile import NamedTemporaryFile
-from typing import Text
+from typing import Dict, List, Text, Tuple, Union
 
 import listener
 import univention.debug as ud
@@ -71,7 +71,7 @@ sp_config_dir = '/etc/simplesamlphp/metadata.d'
 include_file = '/etc/simplesamlphp/metadata/metadata_include.php'
 
 
-def _decode(x: Text) -> str:
+def _decode(x: Union[bytes, Text]) -> str:
 	return x.decode('ASCII') if isinstance(x, bytes) else x
 
 
@@ -83,14 +83,14 @@ def php_string(string: str) -> str:
 	return "'%s'" % (escape_php_string(_decode(string)),)
 
 
-def php_array(list_: list) -> str:
+def php_array(list_: List[str]) -> str:
 	if not list_:
 		return 'array()'
 	return "array('%s')" % "', '".join(escape_php_string(_decode(x).strip()) for x in list_)
 
 
-def ldap_attribute_join(old: dict) -> list:
-	result_keys = {}
+def ldap_attribute_join(old: List[Union[str, List[str]]]) -> List[Tuple[str, str]]:
+	result_keys: Dict[str, str] = {}
 	for attr in old:
 		if attr[0] not in result_keys.keys() and len(attr) > 1:
 			result_keys[attr[0]] = "%s" % (attr[1],)
@@ -114,7 +114,7 @@ def php_bool(bool_: str) -> str:
 	return 'true' if mapped else 'false'
 
 
-def handler(dn: str, new: dict, old: dict) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	listener.setuid(0)
 	try:
 		if old:
@@ -142,7 +142,7 @@ def handler(dn: str, new: dict, old: dict) -> None:
 		listener.unsetuid()
 
 
-def write_configuration_file(dn: str, new: dict, filename: str) -> bool:
+def write_configuration_file(dn: str, new: Dict[str, List[bytes]], filename: str) -> bool:
 	if new.get('serviceProviderMetadata') and new['serviceProviderMetadata'][0]:
 		metadata = new['serviceProviderMetadata'][0]
 		try:
@@ -195,7 +195,7 @@ def write_configuration_file(dn: str, new: dict, filename: str) -> bool:
 			fd.write("	'simplesaml.nameidattribute' => %s,\n" % php_string(new.get('simplesamlNameIDAttribute')[0]))
 		if new.get('simplesamlAttributes'):
 			fd.write("	'simplesaml.attributes' => %s,\n" % php_bool(new.get('simplesamlAttributes')[0]))
-		simplesamlLDAPattributes = []
+		simplesamlLDAPattributes: List[Union[str, List[str]]] = []
 		if new.get('simplesamlAttributes') and new.get('simplesamlAttributes')[0] == b"TRUE":
 			simplesamlLDAPattributes = list(dict.fromkeys(entry.decode('ASCII').split('=', 1)[0].strip() for entry in new.get('simplesamlLDAPattributes', [])))
 			if new.get('simplesamlNameIDAttribute') and new.get('simplesamlNameIDAttribute')[0].decode('ASCII') not in simplesamlLDAPattributes:

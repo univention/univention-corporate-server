@@ -37,6 +37,7 @@
 from __future__ import absolute_import, annotations
 
 import os
+from typing import Dict, List
 
 from six.moves import cPickle as pickle
 
@@ -96,7 +97,7 @@ class DovecotUserListener(DovecotListener):
 			listener.unsetuid()
 
 
-def load_old(old: dict) -> dict:
+def load_old(old: Dict[str, List[bytes]]) -> Dict[str, List[bytes]]:
 	if os.path.exists(DOVECOT_OLD_PICKLE):
 		with open(DOVECOT_OLD_PICKLE, "rb") as fd:
 			p = pickle.Unpickler(fd)
@@ -107,7 +108,7 @@ def load_old(old: dict) -> dict:
 		return old
 
 
-def save_old(old: dict) -> None:
+def save_old(old: Dict[str, List[bytes]]) -> None:
 	with open(DOVECOT_OLD_PICKLE, "wb+") as fd:
 		os.chmod(DOVECOT_OLD_PICKLE, 0o600)
 		p = pickle.Pickler(fd)
@@ -115,7 +116,7 @@ def save_old(old: dict) -> None:
 		p.clear_memo()
 
 
-def handler(dn: str, new: dict, old: dict, command: str) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
 	if command == 'r':
 		save_old(old)
 		# flush auth cache in case of modrdn: the cached PAM entry would

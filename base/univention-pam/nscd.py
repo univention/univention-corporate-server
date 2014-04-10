@@ -36,6 +36,8 @@
 
 from __future__ import absolute_import, annotations
 
+from typing import Dict, List
+
 import listener
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry
@@ -46,7 +48,7 @@ filter = '(objectClass=univentionGroup)'
 attributes = ['uniqueMember', 'cn']
 
 
-def handler(dn: str, new: dict, old: dict) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	pass
 
 

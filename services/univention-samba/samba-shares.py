@@ -38,6 +38,7 @@ from __future__ import absolute_import, annotations, print_function
 import os
 import re
 import subprocess
+from typing import Dict, List
 
 from six.moves import cPickle as pickle
 from six.moves.urllib_parse import quote
@@ -70,7 +71,7 @@ def _validate_smb_share_name(name: str) -> bool:
 	return True
 
 
-def handler(dn: str, new: dict, old: dict, command: str) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
 	configRegistry.load()
 	interfaces = Interfaces(configRegistry)
 
@@ -131,7 +132,7 @@ def handler(dn: str, new: dict, old: dict, command: str) -> None:
 			if os.path.exists(filename):
 				os.unlink(filename)
 
-	def _quote(arg):
+	def _quote(arg: str) -> str:
 		if ' ' in arg or '"' in arg or '\\' in arg:
 			arg = '"%s"' % (arg.replace('\\', '\\\\').replace('"', '\\"'),)
 		return arg.replace('\n', '')

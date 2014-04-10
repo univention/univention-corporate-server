@@ -75,6 +75,8 @@ setup_listener () {
 	cat >>"$LMODUL/printusers.py" <<__PY__
 from __future__ import absolute_import
 
+from typing import Dict, List
+
 import listener
 
 name = 'printusers'
@@ -83,7 +85,7 @@ filter = """(objectClass=*)""".translate(None, '\t\n\r')
 modrdn = "1"
 USER_LIST = '$LOG'
 
-def handler(dn, new, old, command):
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
 	old = old.get('entryUUID', (b'-',))[0]
 	new = new.get('entryUUID', (b'-',))[0]
 	with listener.SetUID():
