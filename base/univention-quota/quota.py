@@ -143,7 +143,7 @@ def _is_container_change_relevant(new: Dict[str, List[bytes]], old: Dict[str, Li
 		if not ldap_object:
 			result = True
 			break
-		if _is_quota_policy(ldap_object, None):
+		if _is_quota_policy(ldap_object, {}):
 			result = True
 			break
 	lo.lo.unbind()
@@ -203,7 +203,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 			if references:
 				for ndn, attrs in references:
 					ud.debug(ud.LISTENER, ud.INFO, '%r: recursion: %r' % (dn, ndn))
-					handler(ndn, attrs, None)
+					handler(ndn, attrs, {})
 			ud.debug(ud.LISTENER, ud.INFO, '%r: is quota policy (done)' % dn)
 
 		elif _is_container(new, old):

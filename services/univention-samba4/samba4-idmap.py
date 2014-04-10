@@ -269,11 +269,11 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], o
 			if b'sambaSamAccount' in new['objectClass']:
 				xid_attr = 'uidNumber'
 				xid_type = 'ID_TYPE_UID'
-				samaccountname = new.get('uid', [None])[0]
+				samaccountname = new.get('uid', [b''])[0]
 			elif b'sambaGroupMapping' in new['objectClass']:
 				xid_attr = 'gidNumber'
 				xid_type = 'ID_TYPE_GID'
-				samaccountname = new.get('cn', [None])[0]
+				samaccountname = new.get('cn', [b''])[0]
 
 			new_xid = new.get(xid_attr, [b''])[0]
 			if new_xid:
@@ -306,11 +306,11 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], o
 			if b'sambaSamAccount' in old['objectClass']:
 				xid_attr = 'uidNumber'
 				xid_type = 'ID_TYPE_UID'
-				samaccountname = old.get('uid', [None])[0]
+				samaccountname = old.get('uid', [b''])[0]
 			elif b'sambaGroupMapping' in old['objectClass']:
 				xid_attr = 'gidNumber'
 				xid_type = 'ID_TYPE_GID'
-				samaccountname = old.get('cn', [None])[0]
+				samaccountname = old.get('cn', [b''])[0]
 
 			old_xid = old.get(xid_attr, [b''])[0]
 			if old_xid:

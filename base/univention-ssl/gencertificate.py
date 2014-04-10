@@ -101,8 +101,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
 				(old_dn, old) = (None, None)
 		_delay = None
 
-		old_cn = old['cn'][0].decode('UTF-8') if old else None
-		new_cn = new['cn'][0].decode('UTF-8') if new else None
+		old_cn = old['cn'][0].decode('UTF-8') if old else ""
+		new_cn = new['cn'][0].decode('UTF-8') if new else ""
 		if new and not old:
 			# changeType: add
 			create_certificate(new_cn, domain(new))

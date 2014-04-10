@@ -121,12 +121,12 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s requires at least UCS version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionStart))
 			# Trigger remove on this system
 			old = old or new
-			new = None
+			new = {}
 		elif univentionUCSVersionEnd and UCS_Version(current_UCS_version) > UCS_Version(univentionUCSVersionEnd):
 			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to and including UCR version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionEnd))
 			# Trigger remove on this system
 			old = old or new
-			new = None
+			new = {}
 
 	old_relative_filename = None
 	if old:
@@ -137,7 +137,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 		if not new_version:
 			return
 
-		new_pkgname = new.get('univentionOwnedByPackage', [None])[0]
+		new_pkgname = new.get('univentionOwnedByPackage', [b''])[0]
 		if not new_pkgname:
 			return
 
@@ -150,7 +150,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 				ud.debug(ud.LISTENER, ud.INFO, '%s: %s: App identifier changed.' % (name, new['cn'][0].decode('UTF-8')))
 				return
 
-			if new_pkgname == old.get('univentionOwnedByPackage', [None])[0]:
+			if new_pkgname == old.get('univentionOwnedByPackage', [b''])[0]:
 				old_version = old.get('univentionOwnedByPackageVersion', [b'0'])[0].decode('UTF-8')
 				rc = apt.apt_pkg.version_compare(new_version, old_version)
 				if not rc > -1:

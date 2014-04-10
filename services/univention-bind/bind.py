@@ -176,7 +176,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
 def _ldap_auth_string(ucr: Dict[str, str]) -> str:
 	"""Build extended LDAP query URI part containing bind credentials."""
-	account = ucr.get('bind/binddn', ucr.get('ldap/hostdn'))
+	account = ucr.get('bind/binddn', ucr['ldap/hostdn'])
 
 	pwdfile = ucr.get('bind/bindpw', '/etc/machine.secret')
 	with open(pwdfile) as fd:

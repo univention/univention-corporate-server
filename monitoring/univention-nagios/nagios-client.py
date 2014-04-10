@@ -143,8 +143,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 		ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: host removed from service %s' % (old['cn'][0],))
 		removeConfig(old['cn'][0].decode('UTF-8'))
 	elif old and \
-		old.get('univentionNagiosUseNRPE', [None])[0] == b'1' and \
-		new.get('univentionNagiosUseNRPE', [None])[0] != b'1':
+		old.get('univentionNagiosUseNRPE', [b''])[0] == b'1' and \
+		new.get('univentionNagiosUseNRPE', [b''])[0] != b'1':
 		# object changed and
 		# local fqdn is in new object  (otherwise previous if-statement matches)
 		# NRPE was enabled in old object
