@@ -9,4 +9,5 @@ desc: |
   This update fixes the following issues:
   * The S4 connector python modules are only built for Python 2.6
   * The pcpatch user is no longer ignored by default
-bug: [31320,34394]
+  * The start of multiple S4 connector instances is now prevented
+bug: [31320,34394,34410]
