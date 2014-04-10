@@ -31,7 +31,7 @@ class SyncedAppcenter(Appcenter):
 		])
 		call('univention-app update', shell=True)
 		handler_set([
-			'repository/app_center/server=http://%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+			'repository/app_center/server=http://%(hostname)s.%(domainname)s' % self.ucr
 		])
 
 	def download(self, f):
@@ -84,7 +84,7 @@ class SyncedAppcenter(Appcenter):
 		ucr.load()
 		f = '/var/www/meta-inf/%s' % self.vv
 		# this just so that all.tar gets newly synced
-		call('rm /var/cache/univention-appcenter/%(fqdn)s/%(vv)s/.etags' % {'vv': self.vv, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
+		call('rm /var/cache/univention-appcenter/%(fqdn)s/%(vv)s/.etags' % {'vv': self.vv, 'fqdn': '%(hostname)s.%(domainname)s' % self.ucr}, shell=True)
 		call('echo "foo" > nasty ; tar --append -f %(f)s/all.tar nasty' % {'f': f}, shell=True)
 		call('zsyncmake -z -u %(server)s/meta-inf/%(vv)s/all.tar.gz %(f)s/all.tar -o %(f)s/all.tar.zsync' % {'server': ucr.get('repository/app_center/server'), 'vv': self.vv, 'f': f}, shell=True)
 		res = call('univention-app update', shell=True)

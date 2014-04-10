@@ -445,7 +445,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 	"""
 
 	assert token or messageid, "imap_search_mail: token or messageid have not been specified"
-	server = server or '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+	server = server or '%(hostname)s.%(domainname)s' % ucr
 	assert imap_user, "imap_search_mail: imap_user has not been specified"
 	imap_password = imap_password or "univention"
 	imap_folder = imap_folder or ""

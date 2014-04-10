@@ -78,7 +78,7 @@ def get_engine():
 	if not dbhost:
 		admin_diary_backend = ucr.get('admin/diary/backend') or 'localhost'
 		dbhost = admin_diary_backend.split()[0]
-	if dbhost == ucr.get('hostname') or dbhost == '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')):
+	if dbhost == ucr.get('hostname') or dbhost == '%(hostname)s.%(domainname)s' % ucr:
 		dbhost = 'localhost'
 	db_url = '%s://admindiary:%s@%s/admindiary' % (dbms, password, dbhost)
 	if dbms == 'mysql':

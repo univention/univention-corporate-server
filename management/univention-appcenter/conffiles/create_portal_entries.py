@@ -89,7 +89,7 @@ def _handler(ucr, changes):
 		return
 	lo, pos = get_machine_connection()
 	pos.setDn('cn=entry,cn=portals,cn=univention,%s' % ucr.get('ldap/base'))
-	hostname = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+	hostname = '%(hostname)s.%(domainname)s' % ucr
 
 	# iterate over all ipv4 and ipv6 addresses and append them to the link
 	local_hosts = [hostname]

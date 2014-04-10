@@ -51,7 +51,7 @@ class TestSecurityHeaders:
 
 	@pytest.mark.xfail(reason='Bug #52940')
 	def test_ip_bound_to_session(self, Client, ucr, restart_umc_server):
-		client = Client('%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
+		client = Client('%(hostname)s.%(domainname)s' % ucr)
 		client.ConnectionType = HTTPConnection  # workaround TLS hostname mismatch
 
 		account = utils.UCSTestDomainAdminCredentials()

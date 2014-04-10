@@ -521,7 +521,7 @@ echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
 		return self.verify_basic_modproxy_settings(http=http, https=https, verify=False)
 
 	def verify_basic_modproxy_settings(self, http=True, https=True, verify='/etc/univention/ssl/ucsCA/CAcert.pem'):
-		fqdn = '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+		fqdn = '%(hostname)s.%(domainname)s' % self.ucr
 		test_string = 'TEST-%s\n' % self.app_name
 		protocols = {'http': http, 'https': https}
 		for protocol, should_succeed in protocols.items():
@@ -636,7 +636,7 @@ Virtualization=Virtualisierung''')
 		handler_set([
 			'update/secure_apt=no',
 			'appcenter/index/verify=false',
-			'repository/app_center/server=http://%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+			'repository/app_center/server=http://%(hostname)s.%(domainname)s' % self.ucr
 		])
 
 	def update(self):
@@ -648,12 +648,12 @@ Virtualization=Virtualisierung''')
 			subprocess.check_call(
 				'./create_appcenter_json.py -u %(version)s -d /var/www -o /var/www/meta-inf/%(version)s/index.json.gz -s http://%(fqdn)s -t /var/www/meta-inf/%(version)s/all.tar' % {
 					'version': vv,
-					'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+					'fqdn': '%(hostname)s.%(domainname)s' % self.ucr
 				}, shell=True)
 			subprocess.check_call(
 				'zsyncmake -u http://%(fqdn)s/meta-inf/%(version)s/all.tar.gz -z -o /var/www/meta-inf/%(version)s/all.tar.zsync /var/www/meta-inf/%(version)s/all.tar' % {
 					'version': vv,
-					'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+					'fqdn': '%(hostname)s.%(domainname)s' % self.ucr
 				}, shell=True)
 		subprocess.check_call('univention-app update', shell=True)
 

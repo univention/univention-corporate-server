@@ -11,7 +11,7 @@ admin_groups = [group.strip() for group in admin_groups]
 config = {
 	"port": configRegistry.get("portal/port"),
 	"admin_groups": admin_groups,
-	"fqdn": "%s.%s" % (configRegistry.get("hostname"), configRegistry.get("domainname")),
+	"fqdn": "%(hostname)s.%(domainname)s" % configRegistry,
 	"hostdn": configRegistry.get("ldap/hostdn"),
 	"ldap_base": configRegistry.get("ldap/base"),
 	"ldap_uri": "ldap://%s:%s" % (configRegistry.get("ldap/server/name"), configRegistry.get("ldap/server/port")),

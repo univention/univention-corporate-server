@@ -26,7 +26,7 @@ def main():
 		password = uts.random_string()
 		udm = udm_test.UCSTestUDM()
 		mailPrimaryAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
-		mailHomeServer = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+		mailHomeServer = '%(hostname)s.%(domainname)s' % ucr
 
 		udm.create_user(
 			password=password,

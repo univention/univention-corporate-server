@@ -38,7 +38,7 @@ def main():  # type: () -> None
 				logfiles = ['/var/log/dovecot.log', '/var/log/univention/listener.log']
 				with utils.FollowLogfile(logfiles=logfiles):
 					with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'], exit_cmd=['doveadm', 'log', 'reopen']):
-						fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+						fqdn = '%(hostname)s.%(domainname)s' % ucr
 						user_address = random_email()
 						user_password = 'univention'
 						user_dn, user_name = udm.create_user(

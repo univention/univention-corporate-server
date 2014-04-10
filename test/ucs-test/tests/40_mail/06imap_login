@@ -35,12 +35,12 @@ def main():
 						)
 						try:
 							print('* Test imap login with the correct password:')
-							imap = MailClient_SSL('%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
+							imap = MailClient_SSL('%(hostname)s.%(domainname)s' % ucr)
 							if imap.login_ok(mailAddress, password):
 								utils.fail('IMAP login failed with the correct password')
 
 							print('* Test imap login with the wrong password:')
-							imap = MailClient_SSL('%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
+							imap = MailClient_SSL('%(hostname)s.%(domainname)s' % ucr)
 							if imap.login_ok(mailAddress, uts.random_name(), expected_to_succeed=False):
 								utils.fail('IMAP login succeeded with the wrong password')
 						finally:

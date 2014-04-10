@@ -152,7 +152,7 @@ def _is_container_change_relevant(new: Dict[str, List[bytes]], old: Dict[str, Li
 
 
 def _get_fqdn() -> str:
-	return '%s.%s' % (listener.configRegistry['hostname'], listener.configRegistry['domainname'])
+	return '%(hostname)s.%(domainname)s' % listener.configRegistry
 
 
 def _is_share_used_on_this_server(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> bool:

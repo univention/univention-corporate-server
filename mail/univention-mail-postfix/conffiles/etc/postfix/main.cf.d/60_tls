@@ -4,7 +4,7 @@ smtpd_tls_auth_only = yes
 smtpd_starttls_timeout = 300s
 smtpd_timeout = 300s
 @!@
-fqdn = '%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname'))
+fqdn = '%(hostname)s.%(domainname)s' % configRegistry
 print('smtpd_tls_mandatory_protocols = %s' % configRegistry.get('mail/postfix/smtpd/tls/mandatory_protocols', '!SSLv2'))
 print('smtpd_tls_protocols = %s' % configRegistry.get('mail/postfix/smtpd/tls/protocols', ''))
 print('smtpd_tls_exclude_ciphers = %s' % configRegistry.get('mail/postfix/smtpd/tls/exclude_ciphers', 'RC4, aNULL'))

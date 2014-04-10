@@ -37,7 +37,7 @@ def main():
 					'mail/dovecot/logging/auth_debug=yes', 'mail/dovecot/logging/auth_debug_passwords=yes',
 					'mail/dovecot/logging/auth_verbose=yes', 'mail/dovecot/logging/auth_verbose_passwords=yes',
 					'mail/dovecot/logging/mail_debug=yes'])
-				fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+				fqdn = '%(hostname)s.%(domainname)s' % ucr
 				user_addr = random_email()
 				logfiles = ['/var/log/dovecot.log', '/var/log/univention/listener.log']
 				with utils.FollowLogfile(logfiles=logfiles):

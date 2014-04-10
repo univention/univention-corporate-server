@@ -16,8 +16,8 @@ $idp_config = array(
 
 	/* X.509 key and certificate. Relative to the cert directory. */
 @!@
-print("	'privatekey'	=> '%s'," % configRegistry.get('saml/idp/certificate/privatekey', configRegistry.get('apache2/ssl/key', '/etc/univention/ssl/%s.%s/private.key' % (configRegistry.get('hostname'), configRegistry.get('domainname')) )))
-print("	'certificate'	=> '%s'," % configRegistry.get('saml/idp/certificate/certificate', configRegistry.get('apache2/ssl/certificate', '/etc/univention/ssl/%s.%s/cert.pem' % (configRegistry.get('hostname'), configRegistry.get('domainname')) )))
+print("	'privatekey'	=> '%s'," % configRegistry.get('saml/idp/certificate/privatekey', configRegistry.get('apache2/ssl/key', '/etc/univention/ssl/%(hostname)s.%(domainname)s/private.key' % configRegistry)))
+print("	'certificate'	=> '%s'," % configRegistry.get('saml/idp/certificate/certificate', configRegistry.get('apache2/ssl/certificate', '/etc/univention/ssl/%(hostname)s.%(domainname)s/cert.pem' % configRegistry)))
 @!@
 	/*
 	 * Authentication source to use. Must be one that is configured in

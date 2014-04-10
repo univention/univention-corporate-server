@@ -206,7 +206,7 @@ class DovecotListener(object):
 		try:
 			master_name, master_pw = self.get_masteruser_credentials()
 			ca_file = self.listener.configRegistry.get("mail/dovecot/sieve/client/cafile", "/etc/univention/ssl/ucsCA/CAcert.pem")
-			fqdn = "%s.%s" % (self.listener.configRegistry['hostname'], self.listener.configRegistry['domainname'])
+			fqdn = "%(hostname)s.%(domainname)s" % self.listener.configRegistry
 			fqdn = self.listener.configRegistry.get("mail/dovecot/sieve/client/server", fqdn)
 			_cmd = [
 				"sieve-connect", "--user", "%s*%s" % (email, master_name),

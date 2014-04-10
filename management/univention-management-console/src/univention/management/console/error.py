@@ -118,7 +118,7 @@ class LDAP_ServerDown(UMC_Error):
 		ucr.load()
 		self._is_master = ucr.get('server/role') == 'domaincontroller_master'
 		self._updates_available = ucr.is_true('update/available')
-		self._fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+		self._fqdn = '%(hostname)s.%(domainname)s' % ucr
 		message = '\n'.join(self._error_msg())
 		super(LDAP_ServerDown, self).__init__(message, status=503, reason='LDAP Service Unavailable')
 

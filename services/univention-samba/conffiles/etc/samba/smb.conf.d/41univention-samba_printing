@@ -1,6 +1,6 @@
 
 @!@
-if configRegistry.get('cups/server') in ['127.0.0.1', 'localhost', '%s' % configRegistry['hostname'], '%s.%s' % (configRegistry['hostname'], configRegistry['domainname'])]:
+if configRegistry.get('cups/server') in ['127.0.0.1', 'localhost', configRegistry['hostname'], '%(hostname)s.%(domainname)s' % configRegistry]:
 	print('\t; printing')
 	print('\tload printers = yes')
 	print('\tprinting = cups')

@@ -26,7 +26,7 @@ daemon_directory = /usr/lib/postfix/sbin
 myhostname = @%@hostname@%@.@%@domainname@%@
 # mydomain is unset - The default is to use $myhostname minus the first component.
 @!@
-fqdn = '%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname'))
+fqdn = '%(hostname)s.%(domainname)s' % configRegistry
 if configRegistry.get('mail/postfix/myorigin'):
 	print('myorigin = %s' % configRegistry['mail/postfix/myorigin'])
 else:

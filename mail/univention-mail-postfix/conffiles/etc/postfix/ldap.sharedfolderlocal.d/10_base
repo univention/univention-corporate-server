@@ -6,7 +6,7 @@
 
 search_base = @%@ldap/base@%@
 @!@
-print("query_filter = (&(objectClass=univentionMailSharedFolder)(mailPrimaryAddress=%%s)(univentionMailHomeServer=%s.%s))" %(configRegistry.get("hostname"), configRegistry.get("domainname")))
+print("query_filter = (&(objectClass=univentionMailSharedFolder)(mailPrimaryAddress=%%s)(univentionMailHomeServer=%(hostname)s.%(domainname)s))" % configRegistry)
 print("result_attribute = mailPrimaryAddress")
 @!@
 result_format = %s

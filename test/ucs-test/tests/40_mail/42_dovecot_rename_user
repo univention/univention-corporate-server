@@ -26,7 +26,7 @@ def main():
 	with udm_test.UCSTestUDM() as udm:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
 			userbase = []
-			fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+			fqdn = '%(hostname)s.%(domainname)s' % ucr
 			#
 			# create some test users
 			#

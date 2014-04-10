@@ -50,10 +50,7 @@ if ucr.get('umc/saml/sp-server'):
 	addresses = [fqdn]
 else:
 	i = Interfaces()
-	try:
-		fqdn = '%s.%s' % (ucr['hostname'], ucr['domainname'])
-	except KeyError:
-		fqdn = ''
+	fqdn = '%(hostname)s.%(domainname)s' % ucr
 	addresses = [fqdn]
 	addresses.extend([y['address'] for x, y in i.all_interfaces if y and y.get('address')])
 

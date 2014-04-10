@@ -49,8 +49,8 @@ exit 0
 		check_files.append('etc/univention/ssl/docker-host-certificate/cert.perm')
 		check_files.append('etc/univention/ssl/docker-host-certificate/private.key')
 		check_files.append('usr/local/share/ca-certificates/ucs.crt')
-		check_files.append('etc/univention/ssl/%s.%s/cert.perm' % (app.ucr.get('hostname'), app.ucr.get('domainname')))
-		check_files.append('etc/univention/ssl/%s.%s/private.key' % (app.ucr.get('hostname'), app.ucr.get('domainname')))
+		check_files.append('etc/univention/ssl/%(hostname)s.%(domainname)s/cert.perm' % app.ucr)
+		check_files.append('etc/univention/ssl/%(hostname)s.%(domainname)s/private.key' % app.ucr)
 
 		app.cert_files = check_files
 

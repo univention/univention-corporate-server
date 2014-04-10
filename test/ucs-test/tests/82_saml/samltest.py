@@ -96,7 +96,7 @@ class SPCertificate:
 	def get_server_cert_folder():
 		ucr = configRegistry.ConfigRegistry()
 		ucr.load()
-		hostname = '%s.%s' % (ucr['hostname'], ucr['domainname'])
+		hostname = '%(hostname)s.%(domainname)s' % ucr
 		return os.path.join('/etc/univention/ssl', hostname)
 
 	def __init__(self, certificate, update_metadata=True):
@@ -124,7 +124,7 @@ class SamlTest:
 		self.ucr = configRegistry.ConfigRegistry()
 		self.ucr.load()
 		self.use_kerberos = use_kerberos
-		self.target_sp_hostname = '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+		self.target_sp_hostname = '%(hostname)s.%(domainname)s' % self.ucr
 		self.username = username
 		self.password = password
 		self.session = requests.Session()

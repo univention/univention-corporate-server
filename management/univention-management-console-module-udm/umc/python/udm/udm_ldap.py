@@ -111,7 +111,7 @@ class UMCError(UMC_Error):
 		ucr.load()
 		self._is_master = ucr.get('server/role') == 'domaincontroller_master'
 		self._updates_available = ucr.is_true('update/available')
-		self._fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+		self._fqdn = '%(hostname)s.%(domainname)s' % ucr
 		super(UMCError, self).__init__('\n'.join(self._error_msg()), **kwargs)
 
 	def _error_msg(self):

@@ -17,7 +17,7 @@ class QuotaCheck:
 		ucr = ucr_test.UCSTestConfigRegistry()
 		ucr.load()
 		self.ldap_base = ucr.get('ldap/base')
-		self.my_fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+		self.my_fqdn = '%(hostname)s.%(domainname)s' % ucr
 		account = utils.UCSTestDomainAdminCredentials()
 		self.umc_client = Client(self.my_fqdn, username=account.username, password=account.bindpw)
 		self.share_name = uts.random_name()

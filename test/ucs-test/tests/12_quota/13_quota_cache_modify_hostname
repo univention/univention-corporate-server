@@ -29,7 +29,7 @@ if __name__ == '__main__':
 	ucr = ucr_test.UCSTestConfigRegistry()
 	ucr.load()
 
-	my_fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+	my_fqdn = '%(hostname)s.%(domainname)s' % ucr
 
 	with udm_test.UCSTestUDM() as udm:
 		share1 = create_share(my_fqdn)

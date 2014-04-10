@@ -73,8 +73,8 @@ MEMCACHED_SOCKET = "/var/lib/univention-self-service-passwordreset-umc/memcached
 MEMCACHED_MAX_KEY = 250
 
 SELFSERVICE_MASTER = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
-IS_SELFSERVICE_MASTER = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')) == SELFSERVICE_MASTER
-UDM_REST_SERVER = ucr.get('self-service/udm-rest-server', '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
+IS_SELFSERVICE_MASTER = '%(hostname)s.%(domainname)s' % ucr == SELFSERVICE_MASTER
+UDM_REST_SERVER = ucr.get('self-service/udm-rest-server', '%(hostname)s.%(domainname)s' % ucr)
 DISALLOW_AUTHENTICATION = not ucr.is_true('umc/self-service/allow-authenticated-use')
 
 DEREGISTRATION_TIMESTAMP_FORMATTING = '%Y%m%d%H%M%SZ'

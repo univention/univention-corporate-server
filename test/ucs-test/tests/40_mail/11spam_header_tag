@@ -21,7 +21,7 @@ def main():
 			with ucr_test.UCSTestConfigRegistry() as ucr:
 				password = uts.random_string()
 				mailPrimaryAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
-				mailHomeServer = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+				mailHomeServer = '%(hostname)s.%(domainname)s' % ucr
 				spam_folder = essential.mail.get_spam_folder_name()
 
 				userdn, username = udm.create_user(

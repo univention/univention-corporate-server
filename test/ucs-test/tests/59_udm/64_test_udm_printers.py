@@ -368,7 +368,7 @@ def test_force_printername(ucr, udm, ucr_value):
 	printer_properties = {
 		'model': 'foomatic-ppds/Apple/Apple-12_640ps-Postscript.ppd.gz',
 		'uri': 'parallel /dev/lp0',
-		'spoolHost': '%s.%s' % (ucr['hostname'], ucr['domainname']),
+		'spoolHost': '%(hostname)s.%(domainname)s' % ucr,
 		'name': printer_name
 	}
 
@@ -460,7 +460,7 @@ def test_modify_printer_and_check_cupsd(ucr, udm):
 	printer_properties = {
 		'model': 'foomatic-rip/Alps-MD-5000-md5k.ppd',
 		'uri': 'file:/ tmp/%s' % name,
-		'spoolHost': '%s.%s' % (ucr['hostname'], ucr['domainname']),
+		'spoolHost': '%(hostname)s.%(domainname)s' % ucr,
 		'name': name,
 	}
 	printer = udm.create_object('shares/printer', position='cn=printers,%s' % ucr['ldap/base'], **printer_properties)

@@ -33,8 +33,8 @@ print("	'logging.level'		=> SimpleSAML\Logger::%s," % configRegistry.get('saml/i
 print("	'language.default'	=> '%s'," % configRegistry.get('locale/default', 'en')[:2])
 print("	'theme.use'		=> '%s'," % configRegistry.get('saml/idp/lookandfeel/theme', 'default'))
 print("	'technicalcontact_name'		=> '%s'," % configRegistry.get('saml/idp/technicalcontactname', 'Administrator'))
-print("	'technicalcontact_email'	=> '%s'," % configRegistry.get('saml/idp/technicalcontactemail', 'root@%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname'))))
-print("	'hostfqdn'	=> '%s.%s'," % (configRegistry.get('hostname', ''),configRegistry.get('domainname', '')))
+print("	'technicalcontact_email'	=> '%s'," % configRegistry.get('saml/idp/technicalcontactemail', 'root@%(hostname)s.%(domainname)s' % configRegistry))
+print("	'hostfqdn'	=> '%(hostname)s.%(domainname)s'," % configRegistry)
 print("	'domainname'	=> '%s'," % configRegistry.get('domainname', ''))
 @!@
 	/**
@@ -685,7 +685,7 @@ print("\t'store.type' => '%s'," % (configRegistry.get('saml/idp/session-type', '
 			array('hostname' => 'unix:///var/run/univention-saml/memcached.socket'),
 		),
 @!@
-fqdn = '%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname'))
+fqdn = '%(hostname)s.%(domainname)s' % configRegistry
 for key, server in configRegistry.items():
 	if not key.startswith('ucs/server/saml-idp-server/') or server == fqdn:
 		continue

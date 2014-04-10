@@ -43,7 +43,7 @@ def main():
 
 	with utils.AutomaticListenerRestart(), udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr, utils.FollowLogfile(logfiles=logfiles):
 		syslog.openlog(facility=syslog.LOG_MAIL)  # get markers in mail.log in case of error
-		fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+		fqdn = '%(hostname)s.%(domainname)s' % ucr
 		user_addr = random_email()
 		user_dn, user_name = udm.create_user(
 			set={
