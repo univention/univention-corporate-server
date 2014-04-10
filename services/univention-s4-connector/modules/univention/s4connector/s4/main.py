@@ -35,6 +35,7 @@
 import sys, string, os, time, signal, shutil
 from optparse import OptionParser
 
+import fcntl
 import ldap, traceback
 import univention
 import univention.s4connector
@@ -257,7 +258,18 @@ def connect():
 		f.close()
 	s4.close_debug()
 
+def lock(filename):
+	lock_file = open(filename, "a+")
+	fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+	return lock_file
+
 def main():
+
+	try:
+		lock_file = lock('/var/lock/univention-s4-%s' % CONFIGBASENAME)
+	except IOError:
+		print >>sys.stderr, 'Error: Another S4 connector process is already running.'
+		sys.exit(1)
 
 	daemon()
 
@@ -265,6 +277,7 @@ def main():
 		try:
 			connect()
 		except SystemExit:
+			lock_file.close()
 			raise
 		except:
 			f=open(STATUSLOGFILE, 'w+')
@@ -285,6 +298,7 @@ def main():
 
 			f.close()
 
+	lock_file.close()
 
 if __name__ == "__main__":
 	main()

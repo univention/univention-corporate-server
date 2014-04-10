@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-33) unstable; urgency=low
+
+  * Prevent multiple S4 connector instances (Bug #34410)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Apr 2014 10:01:46 +0200
+
 univention-s4-connector (8.0.33-32) unstable; urgency=low
 
   * Remove the internal dn_list which has been used to detect mutli
