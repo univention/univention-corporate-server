@@ -1,8 +1,9 @@
 univention-s4-connector (8.0.33-33) unstable; urgency=low
 
   * Prevent multiple S4 connector instances (Bug #34410)
+  * The pcpatch user is no longer be ignored by default (Bug #34394)
 
- -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Apr 2014 10:01:46 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Apr 2014 10:06:24 +0200
 
 univention-s4-connector (8.0.33-32) unstable; urgency=low
 
