@@ -11,7 +11,6 @@ import univention.debug
 name = 'gencertificate'
 description = 'Generate new Certificates'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionClient)(objectClass=univentionMobileClient)(objectClass=univentionMemberServer))'
-attributes = []
 
 
 uidNumber = 0

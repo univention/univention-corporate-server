@@ -41,7 +41,6 @@ import univention.config_registry
 name = 'selfservice'
 description = 'Set umc/self-service/passwordreset/email/webserver_address.'
 filter = '(univentionService=univention-self-service)'
-attributes = []
 
 UCRV = 'umc/self-service/passwordreset/email/webserver_address'
 

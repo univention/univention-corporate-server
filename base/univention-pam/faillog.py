@@ -43,7 +43,6 @@ from univention.admin.handlers.users.user import unmapLocked
 name = 'faillog'
 description = 'The listener module resets the faillog count'
 filter = '(objectClass=shadowAccount)'
-attributes = []
 
 
 def __login_is_locked(attrs):

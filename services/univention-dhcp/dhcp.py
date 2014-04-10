@@ -57,7 +57,6 @@ filter = (
 	'(objectClass=domain)'
 	')'
 )
-attributes = []
 
 
 def handler(dn, new, old):

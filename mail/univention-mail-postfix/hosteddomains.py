@@ -45,7 +45,6 @@ import univention.debug
 name = 'hosteddomains'
 description = 'update mail/hosteddomains'
 filter = '(objectClass=univentionMailDomainname)'
-attributes = []
 
 
 def handler(dn, new, old):

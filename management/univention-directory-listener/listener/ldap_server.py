@@ -45,7 +45,6 @@ import univention.debug as ud
 name = 'ldap_server'
 description = 'Update upstream LDAP server list'
 filter = '(&(objectClass=univentionDomainController)(|(univentionServerRole=master)(univentionServerRole=backup)))'
-attributes = []  # type: List[str]
 
 
 def handler(dn, new, old):

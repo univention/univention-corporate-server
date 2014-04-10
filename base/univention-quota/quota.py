@@ -55,7 +55,6 @@ import univention.uldap
 name = 'quota'
 description = 'Dump quota settings into a cache directory'
 filter = '(|(objectClass=univentionPolicyShareUserQuota)(objectClass=organizationalRole)(objectClass=organizationalUnit)(objectClass=univentionBase)(objectClass=univentionShare))'
-attributes = []  # type: List[str]
 
 '''
 The listener module has to re-create the cache for one share if the share

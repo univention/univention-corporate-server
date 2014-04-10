@@ -48,7 +48,6 @@ except ImportError:
 name = 'fetchmailrc'
 description = 'write user-configuration to fetchmailrc'
 filter = '(objectClass=univentionFetchmail)'
-attributes = []  # type: List[str]
 
 modrdn = "1"
 

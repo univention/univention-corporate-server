@@ -54,7 +54,6 @@ except ImportError:
 name = 's4-connector'
 description = 'S4 Connector replication'
 filter = '(objectClass=*)'
-attributes = []  # type: List[str]
 
 # use the modrdn listener extension
 modrdn = "1"

@@ -45,7 +45,6 @@ import univention.lib.ldap_extension as ldap_extension
 name = 'ldap_extension'
 description = 'Configure LDAP schema and ACL extensions'
 filter = '(|(objectClass=univentionLDAPExtensionSchema)(objectClass=univentionLDAPExtensionACL))'
-attributes = []
 
 schema_handler = ldap_extension.UniventionLDAPSchema(listener.configRegistry)
 acl_handler = ldap_extension.UniventionLDAPACL(listener.configRegistry)

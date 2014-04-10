@@ -53,7 +53,6 @@ except ImportError:
 name = 'gencertificate'
 description = 'Generate new Certificates'
 filter = '(|%s)' % ''.join('(objectClass=%s)' % oc for oc in set(configRegistry['ssl/host/objectclass'].split(',')))
-attributes = []  # type: List[str]
 modrdn = "1"
 
 

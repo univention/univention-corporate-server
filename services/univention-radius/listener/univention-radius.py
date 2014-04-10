@@ -54,7 +54,6 @@ class AppListener(ListenerModuleHandler):
 		name = 'univention-radius'
 		description = 'Listener module for univention-radius'
 		ldap_filter = '(objectClass=univentionHost)'
-		attributes = []  # type: List[str]
 
 	def create(self, dn, new):
 		# type: (str, Dict[str, List[bytes]]) -> None

@@ -52,7 +52,6 @@ from univention.lib.umc_module import UMC_ICON_BASEDIR, default_filename_suffix_
 name = 'udm_extension'
 description = 'Handle UDM module, hook and syntax extensions'
 filter = '(|(objectClass=univentionUDMModule)(objectClass=univentionUDMHook)(objectClass=univentionUDMSyntax))'
-attributes = []
 
 PYTHON_DIR = '/usr/lib/python2.7/dist-packages/'
 PYTHON3_DIR = '/usr/lib/python3/dist-packages/'

@@ -55,7 +55,6 @@ ucr_handlers.load()
 name = 'samba-shares'
 description = 'Create configuration for Samba shares'
 filter = '(&(objectClass=univentionShare)(objectClass=univentionShareSamba))'  # filter fqdn/ip in handler
-attributes = []
 modrdn = '1'
 
 tmpFile = '/var/cache/univention-directory-listener/samba-shares.oldObject'

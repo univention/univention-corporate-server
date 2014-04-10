@@ -256,7 +256,6 @@ else:
 	name = "filter"
 	description = "Test filter mechanism for Listener cache"
 	filter = "(objectClass=organizationalUnit)"
-	attributes = []
 	modrdn = "1"
 
 # vim:set ft=python:

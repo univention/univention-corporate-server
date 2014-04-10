@@ -56,7 +56,6 @@ import univention.debug as ud  # pylint: disable-msg=E0611
 name = 'bind'
 description = 'Update BIND zones'
 filter = '(&(objectClass=dNSZone)(relativeDomainName=@)(zoneName=*))'
-attributes = []
 
 NAMED_CONF_FILE = "/etc/bind/univention.conf"
 NAMED_CONF_DIR = "/etc/bind/univention.conf.d"
