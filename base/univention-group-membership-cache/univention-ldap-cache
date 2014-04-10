@@ -88,8 +88,7 @@ def _get_queries(caches, cache_names=None):
         if cache_names is not None and name not in cache_names:
             continue
         for shard in cache.shards:
-            queries.setdefault(shard.ldap_filter, ([], set()))
-            shards, attrs = queries[shard.ldap_filter]
+            shards, attrs = queries.setdefault(shard.ldap_filter, ([], set()))
             shards.append(shard)
             attrs.add(shard.key)
             attrs.add(shard.value)

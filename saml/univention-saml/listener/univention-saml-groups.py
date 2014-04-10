@@ -78,15 +78,14 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 					sp_to_rm.append(sp)
 
 		for sp in sp_to_add:
-			sp = sp.decode('UTF-8')
-			data.setdefault(sp, [])
-			if dn not in data[sp]:
-				data[sp].append(dn)
+			group = data.setdefault(sp.decode('UTF-8'), [])
+			if dn not in group:
+				group.append(dn)
+
 		for sp in sp_to_rm:
-			sp = sp.decode('UTF-8')
-			data.setdefault(sp, [])
-			if dn in data[sp]:
-				data[sp].remove(dn)
+			group = data.setdefault(sp.decode('UTF-8'), [])
+			if dn in group:
+				group.remove(dn)
 
 		with open(tmp_path, 'w+') as outfile:
 			json.dump(data, outfile)
