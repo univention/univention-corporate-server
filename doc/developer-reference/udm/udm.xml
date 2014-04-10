@@ -445,23 +445,23 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 					The static list of available selections is defined once and can not be modified interactively through <acronym>UMC</acronym>.
 					Such a list is best implemented though a custom syntax class.
 					As the implementation must be available on all system roles, the new syntax is best registered in <acronym>LDAP</acronym>.
-					This can be done by using <command>ucs_registerLDAPSchema</command> which is described in <xref linkend="settings:udm_syntax"/>.
+					This can be done by using <command>ucs_registerLDAPSchema</command> which is described in <xref linkend="join:libraries:shell"/>.
 				</para>
 				<para>
-					The following example is shipped as the file <filename>/usr/share/pyshared/univention/admin/syntax.d/example.py</filename> by default:
+					As an alternative the file can be put into the directory <filename class="directory">/usr/share/pyshared/univention/admin/syntax.d/</filename> and linked into the directory <filename class="directory">/usr/lib/pymodules/python2.6/univention/admin/syntax.d/</filename>.
+					When included into a Debian package, the linking is normally done by <command>dh_python</command>.
+				</para>
+				<para>
+					The following example is comparable to the default example in file <filename>/usr/share/pyshared/univention/admin/syntax.d/example.py</filename>:
 				</para>
 				<programlisting language="python"><![CDATA[
-class ExampleSyntax(select):
+class StaticSelection(select):
 	choices = [
 		('value1', 'Description for selection 1'),
 		('value2', 'Description for selection 2'),
 		('value3', 'Description for selection 3'),
 	]
 				]]></programlisting>
-				<para>
-					As an alternative the file can be put into the directory <filename class="directory">/usr/share/pyshared/univention/admin/syntax.d/</filename> and linked into the directory <filename class="directory">/usr/lib/pymodules/python2.6/univention/admin/syntax.d/</filename>.
-					When included into a Debian package, the linking is normally done by <command>dh_python</command>.
-				</para>
 			</section>
 			<section id="udm:ea:select:dynamic">
 				<title>Dynamic selections</title>
@@ -1199,6 +1199,7 @@ class DelegateTelephonedNumber(UDM_Attribute):
 										This can be a performance problem if many entries are returned.
 										Setting this to <literal>False</literal> disables the Python code and directly uses the attributes returned by the <acronym>LDAP</acronym> search.
 										Several properties can then no longer be used as key or label, as those are not explicitly stored in <acronym>LDAP</acronym> but are only calculated by the <acronym>UDM</acronym> module.
+										For example, to get the fully qualified domain name of a host <literal>%(name)s.%(domain)s</literal> must be used instead of the calculated property <literal>%(fqdn)s</literal>.
 									</simpara>
 								</listitem>
 							</varlistentry>
@@ -1235,7 +1236,7 @@ class MyServers(UDM_Objects):
 					<listitem>
 						<para>
 							This is the old implementation, which should only be used, if <classname>UDM_Attribute</classname> and <classname>UDM_Objects</classname> are not sufficient.
-							It has the drawback that &ucsUMC; can not do as much caching, which can lead to severe performance problems.
+							In addition to ease of use it has the drawback that &ucsUMC; can not do as much caching, which can lead to severe performance problems.
 						</para>
 						<para>
 							<acronym>LDAP</acronym> search syntaxes can be declared in two equivalent ways:
@@ -1327,7 +1328,7 @@ class MyServers(LDAP_Search):
 				),
 			value='computers/memberserver: dn'
 		)
-		self.name = 'LDAP_Search' # required workaround
+		self.name = 'LDAP_Search'  # required workaround
 						]]></programlisting>
 						<para>
 							The <acronym>UDM</acronym> API uses the following properties:
