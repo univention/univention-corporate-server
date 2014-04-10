@@ -28,7 +28,7 @@
 
 from __future__ import absolute_import
 
-from typing import Mapping, Optional, Sequence
+from typing import Dict, Optional, List
 
 from univention.listener import ListenerModuleHandler
 
@@ -41,14 +41,14 @@ class ListenerModuleTemplate(ListenerModuleHandler):
 		ldap_filter = '(&(objectClass=inetOrgPerson)(uid=example))'
 		attributes = ['sn', 'givenName']
 
-	def create(self, dn: str, new: Mapping[str, Sequence[bytes]]) -> None:
+	def create(self, dn: str, new: Dict[str, List[bytes]]) -> None:
 		self.logger.debug('dn: %r', dn)
 
 	def modify(
 		self,
 		dn: str,
-		old: Mapping[str, Sequence[bytes]],
-		new: Mapping[str, Sequence[bytes]],
+		old: Dict[str, List[bytes]],
+		new: Dict[str, List[bytes]],
 		old_dn: Optional[str],
 	) -> None:
 		self.logger.debug('dn: %r', dn)
@@ -56,5 +56,5 @@ class ListenerModuleTemplate(ListenerModuleHandler):
 			self.logger.debug('it is (also) a move! old_dn: %r', old_dn)
 		self.logger.debug('changed attributes: %r', self.diff(old, new))
 
-	def remove(self, dn: str, old: Mapping[str, Sequence[bytes]]) -> None:
+	def remove(self, dn: str, old: Dict[str, List[bytes]]) -> None:
 		self.logger.debug('dn: %r', dn)

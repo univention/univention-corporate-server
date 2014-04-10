@@ -5,7 +5,12 @@ modrdn = "1"
 _delay = None
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
+def handler(
+	dn: str,
+	new: Dict[str, List[bytes]],
+	old: Dict[str, List[bytes]],
+	command: str = "",
+) -> None:
 	global _delay
 	if _delay:
 		old_dn, old = _delay
@@ -30,26 +35,38 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
 		pass  # ignore, reserved for future use
 
 
-def handler_add(dn: str, new: Dict[str, List[bytes]]):
+def handler_add(dn: str, new: Dict[str, List[bytes]]) -> None:
 	"""Handle creation of object."""
 	pass  # replace this
 
 
-def handler_modify(dn: str, old: Dict[str, List[bytes]], new: Dict[str, List[bytes]]):
+def handler_modify(
+	dn: str,
+	old: Dict[str, List[bytes]],
+	new: Dict[str, List[bytes]],
+) -> None:
 	"""Handle modification of object."""
 	pass  # replace this
 
 
-def handler_remove(dn: str, old: Dict[str, List[bytes]]):
+def handler_remove(dn: str, old: Dict[str, List[bytes]]) -> None:
 	"""Handle removal of object."""
 	pass  # replace this
 
 
-def handler_move(old_dn: str, old: Dict[str, List[bytes]], new_dn: str, new: Dict[str, List[bytes]]):
+def handler_move(
+	old_dn: str,
+	old: Dict[str, List[bytes]],
+	new_dn: str,
+	new: Dict[str, List[bytes]],
+) -> None:
 	"""Handle rename or move of object."""
 	pass  # replace this
 
 
-def handler_schema(old: Dict[str, List[bytes]], new: Dict[str, List[bytes]]):
+def handler_schema(
+	old: Dict[str, List[bytes]],
+	new: Dict[str, List[bytes]],
+) -> None:
 	"""Handle change in LDAP schema."""
 	pass  # replace this
