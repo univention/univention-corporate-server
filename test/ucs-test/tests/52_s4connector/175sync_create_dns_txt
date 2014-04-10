@@ -6,8 +6,8 @@
 ##   - univention-directory-manager-tools
 ##   - univention-s4-connector
 ##   - dnsutils
-## bugs:
-##   - 29211
+## versions:
+##  3.2-0: skip
 
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils

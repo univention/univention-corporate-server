@@ -7,7 +7,6 @@
 ##   - univention-s4-connector
 ##   - dnsutils
 ## bugs:
-##   - 29211
 ##   - 32156
 
 import univention.testing.udm as udm_test
