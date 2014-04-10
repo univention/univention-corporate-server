@@ -2393,8 +2393,11 @@ class s4(univention.s4connector.ucs):
 									old_values = set(old_ucs_object.get(attr, []))
 									new_values = set(new_ucs_object.get(attr, []))
 
+									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: old_values: %s" % old_values)
+									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: new_values: %s" % new_values)
+
 									if attribute_type[attribute].compare_function:
-										if not attribute_type[attribute].compare_function(old_values, new_values):
+										if not attribute_type[attribute].compare_function(list(old_values), list(new_values)):
 											modify = True
 									elif not univention.s4connector.compare_lowercase(list(old_values), list(new_values)): # FIXME: use defined compare-function from mapping.py
 										modify=True
