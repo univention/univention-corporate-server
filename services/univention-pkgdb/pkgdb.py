@@ -83,11 +83,6 @@ def del_system(sysname):
 	return retcode
 
 
-def initialize():
-	# TODO: call add_system for every system in the directory already
-	pass
-
-
 def handler(dn, new, old):
 	# type: (str, dict, dict) -> None
 	ud.debug(ud.LISTENER, ud.INFO, "pkgdb handler dn=%s" % (dn))
