@@ -444,14 +444,14 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 				<para>
 					The static list of available selections is defined once and can not be modified interactively through <acronym>UMC</acronym>.
 					Such a list is best implemented though a custom syntax class.
-					As the implementation must be available on all system roles, the new syntax ist best registered in <acronym>LDAP</acronym>.
+					As the implementation must be available on all system roles, the new syntax is best registered in <acronym>LDAP</acronym>.
 					This can be done by using <command>ucs_registerLDAPSchema</command> which is described in <xref linkend="settings:udm_syntax"/>.
 				</para>
 				<para>
 					The following example is shipped as the file <filename>/usr/share/pyshared/univention/admin/syntax.d/example.py</filename> by default:
 				</para>
 				<programlisting language="python"><![CDATA[
-class StaticSelection(select):
+class ExampleSyntax(select):
 	choices = [
 		('value1', 'Description for selection 1'),
 		('value2', 'Description for selection 2'),
@@ -467,14 +467,14 @@ class StaticSelection(select):
 				<title>Dynamic selections</title>
 				<para>
 					A dynamic list is implemented as a <acronym>LDAP</acronym> search, which is described in <xref linkend="udm:syntax:ldap"/>.
-					For performance reason it's recommended to implement a class derived from <classname>UDM_Attribute</classname> or <classname>UDM_Objects</classname> instead of using <classname>LDAP_Search</classname>.
+					For performance reason it is recommended to implement a class derived from <classname>UDM_Attribute</classname> or <classname>UDM_Objects</classname> instead of using <classname>LDAP_Search</classname>.
 					The file <filename>/usr/share/pyshared/univention/admin/syntax.py</filename> contains several examples.
 				</para>
 				<example>
 					<title>Dynamic selection list for Extended Attributes</title>
 					<para>
 						The idea is to create a container with sub-entries for each selection.
-						This following listing declares a new syntax class for selection a profession level.
+						This following listing declares a new syntax class for selecting a profession level.
 					</para>
 					<programlisting language="python"><![CDATA[
 class DynamicSelection(UDM_Objects):
@@ -482,13 +482,13 @@ class DynamicSelection(UDM_Objects):
 	udm_filter = '(&(objectClass=organizationalRole)(ou:dn:=DynamicSelection))'
 	simple = True  # only one value is selected
 	empty_value = True  # allow selecting nothing
-	key = '%(name)s  # this is stored
+	key = '%(name)s'  # this is stored
 	label = '%(description)s'  # this is displayed
 	regex = None  # no validation in frontend
 	error_message = 'Invalid value'
 					]]></programlisting>
 					<para>
-						The Python code should be put into a file names <filename>DynamicSelection.py</filename>
+						The Python code should be put into a file named <filename>DynamicSelection.py</filename>.
 						The following code registers this new syntax in <acronym>LDAP</acronym> and adds some values.
 						It also creates an Extended Attribute for user objects using this syntax.
 					</para>
@@ -1132,7 +1132,7 @@ udm settings/extended_attribute modify \
 							</varlistentry>
 						</variablelist>
 						<para>
-							The following example syntax would provide a list of all users with there telephone numbers:
+							The following example syntax would provide a list of all users with their telephone numbers:
 						</para>
 						<programlisting language="python"><![CDATA[
 class DelegateTelephonedNumber(UDM_Attribute):
@@ -1195,10 +1195,10 @@ class DelegateTelephonedNumber(UDM_Attribute):
 							<varlistentry><term>use_objects</term>
 								<listitem>
 									<simpara>
-										By default <acronym>UDM</acronym> opens each <acronym>LDAP</acronym> object through an <acronym>UDM</acronym> module implemented in Python.
+										By default <acronym>UDM</acronym> opens each <acronym>LDAP</acronym> object through a <acronym>UDM</acronym> module implemented in Python.
 										This can be a performance problem if many entries are returned.
-										Setting this to <literal>False</literal> disabled the Python code and directly used the attributes returned by the <acronym>LDAP</acronym> search.
-										Several properties then can no longer be used as key or label, as those are not explicitly stored in <acronym>LDAP</acronym> but are only calculated by the <acronym>UDM</acronym> module.
+										Setting this to <literal>False</literal> disables the Python code and directly uses the attributes returned by the <acronym>LDAP</acronym> search.
+										Several properties can then no longer be used as key or label, as those are not explicitly stored in <acronym>LDAP</acronym> but are only calculated by the <acronym>UDM</acronym> module.
 									</simpara>
 								</listitem>
 							</varlistentry>
