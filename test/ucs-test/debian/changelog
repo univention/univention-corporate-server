@@ -1,3 +1,9 @@
+ucs-test (4.0.164-35) unstable; urgency=medium
+
+  * Check on remote master as well (Bug #34518)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Apr 2014 12:51:04 +0200
+
 ucs-test (4.0.164-34) unstable; urgency=medium
 
   * Add a test checking for objects without samba4 objectclass

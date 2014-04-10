@@ -15,8 +15,24 @@
 
 ldif=$(univention-s4search --cross-ncs '(!(objectclass=*))')
 dnlist=$(echo "$ldif" | sed -n 's/^dn: //p')
+server="$hostname"
+
+if [ -z "$dnlist" ]; then
+	if [ "$server_role" != "domaincontroller_master" ]; then
+		server="$ldap_master"
+
+		filename=$(mktemp)
+		echo -n "$tests_domainadmin_pwd" > "$filename"
+		ADMINISTRATOR_NAME=$(univention-ldapsearch -b "$tests_domainadmin_account" uid | sed -ne 's/^uid: //p')
+		ldif=$(univention-ssh "$filename" "$ADMINISTRATOR_NAME@$ldap_master" 'univention-s4search --cross-ncs \"(!(objectclass=*))\"')
+		rm "$filename"
+
+		dnlist=$(echo "$ldif" | sed -n 's/^dn: //p')
+	fi
+fi
+
 if [ -n "$dnlist" ]; then
-	fail_test 1 "Samba4 objects without objectclass found! Objects:"
+	fail_test 1 "Samba4 objects without objectclass found on $server! Objects:"
 	echo "$ldif"
 
 	mv /sbin/halt /sbin/halt.DISABLED
