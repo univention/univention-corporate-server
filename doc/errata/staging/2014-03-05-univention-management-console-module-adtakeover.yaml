@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-management-console-module-adtakeover
-fix: 1.0.10-16.20.201404031237
+fix: 1.0.10-25.29.201404101135
 note:
 version: [0, 1]
 desc: |
