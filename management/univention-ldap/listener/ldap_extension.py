@@ -92,8 +92,8 @@ def postrun() -> None:
 					handler_object._do_reload = False
 				p = subprocess.Popen(
 					[initscript, 'graceful-restart'], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-				stdout, stderr = p.communicate()
-				stdout, stderr = stdout.decode('UTF-8', 'replace'), stderr.decode('UTF-8', 'replace')
+				out, err = p.communicate()
+				stdout, stderr = out.decode('UTF-8', 'replace'), err.decode('UTF-8', 'replace')
 				if p.returncode != 0:
 					ud.debug(ud.LISTENER, ud.ERROR, '{}: LDAP server restart returned {} {} ({}).'.format(name, stderr, stdout, p.returncode))
 					for handler_object in (schema_handler, acl_handler,):

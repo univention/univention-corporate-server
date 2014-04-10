@@ -257,8 +257,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
 				stderr=subprocess.PIPE,
 				close_fds=True,
 			)
-			stdout, _ = proc.communicate()
-			stdout = stdout.decode('UTF-8')
+			out, _ = proc.communicate()
+			stdout = out.decode('UTF-8')
 			prev_aces = set()
 			new_aces = set()
 			if 'univentionShareSambaBaseDirAppendACL' in old:
@@ -302,8 +302,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
 						stderr=subprocess.PIPE,
 						close_fds=True
 					)
-					_, stderr = proc.communicate()
-					stderr = stderr.decode('UTF-8')
+					_, err = proc.communicate()
+					stderr = err.decode('UTF-8')
 					if stderr:
 						ud.debug(ud.LISTENER, ud.ERROR, "could not set nt acl for dir %s (%s)" % (share_path, stderr))
 

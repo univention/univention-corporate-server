@@ -126,8 +126,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 	# ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: IN old=%r' % (old,))
 	# ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: IN new=%r' % (new,))
 
-	fqdn = '%(hostname)s.%(domainname)s' % configRegistry
-	fqdn = fqdn.encode('UTF-8')
+	fqdn = ('%(hostname)s.%(domainname)s' % configRegistry).encode('UTF-8')
 
 	if old and not new:
 		ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: service %r deleted' % (old['cn'][0],))
