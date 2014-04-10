@@ -7,6 +7,7 @@ from __future__ import print_function
 import errno
 import os
 from collections import namedtuple
+from typing import Dict, List
 
 import univention.debug as ud
 from listener import SetUID
@@ -35,8 +36,7 @@ _Rec = namedtuple('_Rec', 'uid uidNumber cn')
 USER_LIST = '/root/UserList.txt'
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	"""
 	Write all changes into a text file.
 	This function is called on each change.
@@ -49,8 +49,7 @@ def handler(dn, new, old):
 		_handle_remove(dn, old)
 
 
-def _handle_change(dn, new, old):
-	# type: (str, dict, dict) -> None
+def _handle_change(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	"""
 	Called when an object is modified.
 	"""
@@ -61,8 +60,7 @@ def _handle_change(dn, new, old):
 	_writeit(n_rec, u'')
 
 
-def _handle_add(dn, new):
-	# type: (str, dict) -> None
+def _handle_add(dn: str, new: Dict[str, List[bytes]]) -> None:
 	"""
 	Called when an object is newly created.
 	"""
@@ -71,8 +69,7 @@ def _handle_add(dn, new):
 	_writeit(n_rec, u'added')
 
 
-def _handle_remove(dn, old):
-	# type: (str, dict) -> None
+def _handle_remove(dn: str, old: Dict[str, List[bytes]]) -> None:
 	"""
 	Called when an previously existing object is removed.
 	"""

@@ -129,7 +129,7 @@
 						The &ucsUCRV; <envar>listener/cache/filter</envar> can be used to prevent certain objects from being stored in the cache.
 						But then the Listener no longer knows which module must be called when such an object is deleted.
 						Setting this variable to <literal>True</literal> will make the Listener call the function <function>handler()</function> of this module whenever any object is deleted.
-						The function then must use other means to determine itself if the deleted object is of the appropriate type as <varname>old</varname> will be <literal>None</literal>.
+						The function then must use other means to determine itself if the deleted object is of the appropriate type as <varname>old</varname> will be empty <type>dict</type>.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -327,19 +327,19 @@
 		</para>
 		<variablelist>
 			<varlistentry>
-				<term id="udl:mod:create"><function>create(dn: str, new: Mapping[str, Sequence[bytes])</function> -> <type>None</type></term>
+				<term id="udl:mod:create"><function>create(dn: str, new: Dict[str, List[bytes])</function> -> <type>None</type></term>
 				<listitem>
 					<simpara>Called when a new object was created.</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term id="udl:mod:modify"><function>modify(dn: str, new: Mapping[str, Sequence[bytes], old: Mapping[str, Sequence[bytes], old_dn: Optional[str])</function> -> <type>None</type></term>
+				<term id="udl:mod:modify"><function>modify(dn: str, new: Dict[str, List[bytes], old: Dict[str, List[bytes], old_dn: Optional[str])</function> -> <type>None</type></term>
 				<listitem>
 					<simpara>Called when a new object was modified or moved. In case of a move <varname>old_dn</varname> is set. During a move attributes may be modified, too.</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term id="udl:mod:remove"><function>remove(dn: str, old: Mapping[str, Sequence[bytes])</function> -> <type>None</type></term>
+				<term id="udl:mod:remove"><function>remove(dn: str, old: Dict[str, List[bytes])</function> -> <type>None</type></term>
 				<listitem>
 					<simpara>Called when a new object was deleted.</simpara>
 				</listitem>
@@ -383,13 +383,13 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term><function>diff(old: Mapping[str, Sequence[bytes]], new: Mapping[str, Sequence[bytes]], keys: Optional[Iterable[str]], ignore_metadata: bool)</function> -> <type>Dict[str, Tuple[Optional[Sequence[bytes]], Optional[Sequence[bytes]]]]</type></term>
+				<term><function>diff(old: Dict[str, List[bytes]], new: Dict[str, List[bytes]], keys: Optional[Iterable[str]], ignore_metadata: bool)</function> -> <type>Dict[str, Tuple[Optional[List[bytes]], Optional[List[bytes]]]]</type></term>
 				<listitem>
 					<simpara>Calculate difference between old and new LDAP attributes. By default all attributes are compared, but this can be limited by naming them via <varname>keys</varname>. By default <phrase>operational attributes</phrase> are excluded unless <varname>ignore_metadata</varname> is enabled.</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term><function>error_handler(dn: str, old: Mapping[str, Sequence[bytes]], new: Mapping[str, Sequence[bytes]], command: str, exc_type: Optional[Type[BaseExcepion]], exc_value: Optional[BaseExcepion], exc_traceback: Optional[types.TracebackType])</function> -> <type>None</type></term>
+				<term><function>error_handler(dn: str, old: Dict[str, List[bytes]], new: Dict[str, List[bytes]], command: str, exc_type: Optional[Type[BaseExcepion]], exc_value: Optional[BaseExcepion], exc_traceback: Optional[types.TracebackType])</function> -> <type>None</type></term>
 				<listitem>
 					<simpara>
 						This method will be called for unhandled exceptions in <methodname>create</methodname>/<methodname>modify</methodname>/<methodname>remove</methodname>.
@@ -468,8 +468,8 @@ def initialize() -> None:
   pass
 def handler(
   dn: str,
-  new: Optional[Mapping[str, Sequence[bytes]]],
-  old: Optional[Mapping[str, Sequence[bytes]]],
+  new: Dict[str, List[bytes]],
+  old: Dict[str, List[bytes]],
   command: str = '',
 ) -> None:
   pass
@@ -484,7 +484,7 @@ def setdata(key: str, value: str) -> None:
 		]]></programlisting>
 		<variablelist>
 			<varlistentry>
-				<term id="udl:mod:handler"><function>handler(dn: str, new: Optional[Mapping[str, Sequence[bytes]]], old: Optional[Mapping[str, Sequence[bytes]]], command: str = '')</function> -> <type>None</type> (required)</term>
+				<term id="udl:mod:handler"><function>handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str = '')</function> -> <type>None</type> (required)</term>
 				<listitem>
 					<para>
 						This function is called for each change matching the <varname>filter</varname> and <varname>attributes</varname> as declared in the header of the module.
@@ -498,8 +498,8 @@ def setdata(key: str, value: str) -> None:
 					</para>
 					<para>
 						If and only if the global <varname>modrdn</varname> setting is enabled, <varname>command</varname> is passed as a fourth argument.
-						It contains a single letter, which indicates the type of modification.
-						This can be used to distinguish an <firstterm>modrdn</firstterm> operation from a delete operation followed by a create operation.
+						It contains a single letter, which indicates the original type of modification.
+						This can be used to further distinguish an <firstterm>modrdn</firstterm> operation from a delete operation followed by a create operation.
 					</para>
 					<variablelist>
 						<varlistentry>
@@ -507,7 +507,8 @@ def setdata(key: str, value: str) -> None:
 							<listitem>
 								<para>
 									Signals a modify operation, where an existing object is changed.
-									<varname>old</varname> contains a copy of the previously cached values and <varname>new</varname> contains the new values as retrieved from the LDAP directory service.
+									<varname>old</varname> contains a copy of the previously values from the listener cache.
+									<varname>new</varname> contains the current values as retrieved from the leading LDAP directory service.
 								</para>
 							</listitem>
 						</varlistentry>
@@ -516,7 +517,7 @@ def setdata(key: str, value: str) -> None:
 							<listitem>
 								<para>
 									Signals the addition of a new object.
-									<varname>old</varname> is <literal>None</literal> and <varname>new</varname> contains the values of the added object.
+									<varname>old</varname> is <literal>None</literal> and <varname>new</varname> contains the latest values of the added object.
 								</para>
 							</listitem>
 						</varlistentry>
@@ -533,7 +534,7 @@ def setdata(key: str, value: str) -> None:
 							<term><literal>r</literal> (rename: modification of distinguished name via <literal>modrdn</literal>)</term>
 							<listitem>
 								<para>
-									Signals a change in the distinguished name, which may be caused by renaming a object or moving the object from one container into another.
+									Signals a change in the distinguished name, which may be caused by renaming the object or moving the object from one container into another.
 									The module is called with this command instead of the <emphasis>delete</emphasis> command, so that modules can recognize this special case and avoid deletion of local data associated with the object.
 									The module will be called again with the <emphasis>add</emphasis> command just after the <emphasis>modrdn</emphasis> command, where it should process the rename or move operation.
 									Each module is responsible for keeping track of the rename-case by internally storing the previous distinguished name during the <emphasis>modrdn</emphasis> phase of this two phased operation.
@@ -549,12 +550,24 @@ def setdata(key: str, value: str) -> None:
 										<simpara>If <varname>dn</varname> is <literal>cn=Subschema</literal>, it signals that a schema change occurred.</simpara>
 									</listitem>
 									<listitem>
-										<simpara>All other cases signal the initialization of a new object, which should be handled just like a normal <function>add</function> operation.</simpara>
+										<simpara>
+											All other cases signal the creation of a new intermediate object, which should be handled just like a normal <function>add</function> operation.
+											This happens when an object is moved into a new container, which does not yet exists in the local LDAP service.
+										</simpara>
 									</listitem>
 								</itemizedlist>
 							</listitem>
 						</varlistentry>
 					</variablelist>
+					<important>
+						<para>
+							The listener only retrieves the latest state and passes it to this function.
+							Due to stopped processes or due to network issues this can lead to multiple changes being aggregated into the first change.
+							This may cause <varname>command</varname> to no longer match the values supplied through <varname>new</varname>.
+							For example, if the object has been deleted in the meantime, the function is called once with <varname>new=None</varname> and <varname>command='m'</varname>.
+							This can also lead to the function being called multiple times with <varname>old</varname> being equal to <varname>new</varname>.
+						</para>
+					</important>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
@@ -1079,9 +1092,9 @@ univention-directory-listener-verify \
 				While in UCS 4 <function>handler()</function> typically looked like:
 				<programlisting language="python"><![CDATA[
 def handler(
-    dn,   # type: str,
-    new,  # type: Optional[Mapping[str, Sequence[str]]]
-    old,  # type: Optional[Mapping[str, Sequence[str]]]
+    dn:  # type: str,
+    new,  # type: Dict[str, List[str]]
+    old,  # type: Dict[str, List[str]]
 ):  # type: (...) -> None
     if new and 'myObjectClass' in new.get('objectClass', []):
         value = new['myAttribute'][0]
@@ -1093,8 +1106,8 @@ def handler(
 			<programlisting language="python"><![CDATA[
 def handler(
     dn: str,
-    new: Optional[Mapping[str, Sequence[bytes]]],
-    old: Optional[Mapping[str, Sequence[bytes]]],
+    new: Dict[str, List[bytes]],
+    old: Dict[str, List[bytes]],
 ) -> None:
     if new and b'myObjectClass' in new.get('objectClass', []):
         value = new['myAttribute'][0].decode('UTF-8')
