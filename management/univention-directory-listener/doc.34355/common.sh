@@ -75,24 +75,20 @@ setup_listener () {
 	cat >>"$LMODUL/printusers.py" <<__PY__
 from __future__ import absolute_import
 import listener
+
 name = 'printusers'
 description = 'print all changes into a file'
 filter = """(objectClass=*)""".translate(None, '\t\n\r')
-attributes = []
 modrdn = "1"
 USER_LIST = '$LOG'
+
 def handler(dn, new, old, command):
-	old = old.get('entryUUID', ('-',))[0] if old else '-'
-	new = new.get('entryUUID', ('-',))[0] if new else '-'
-	with AsRoot():
-		with open(USER_LIST, 'a') as out:
-			print >> out, "dn=%r old=%s new=%s command=%s" % (
-				dn, old, new, command,)
-class AsRoot(object):
-	def __enter__(self):
-		listener.setuid(0)
-	def __exit__(self, exc_type, exc_value, traceback):
-		listener.unsetuid()
+	old = old.get('entryUUID', (b'-',))[0]
+	new = new.get('entryUUID', (b'-',))[0]
+	with listener.SetUID():
+		with open(USER_LIST, 'ab') as out:
+			out.write(b"dn=%r old=%s new=%s command=%s\n" % (
+				dn.encode("utf-8"), old, new, command.encode("utf-8")))
 __PY__
 	ucr set options='-o'
 	listener restart
