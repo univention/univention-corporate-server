@@ -1,3 +1,10 @@
+ucs-test (4.0.164-36) unstable; urgency=low
+
+  *Added missing line in "Packages:" "- univention-s4-connector" for all
+   52/176* tests (Bug #31324)
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 10 Apr 2014 12:54:42 +0200
+
 ucs-test (4.0.164-35) unstable; urgency=medium
 
   * Check on remote master as well (Bug #34518)

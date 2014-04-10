@@ -6,6 +6,7 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 ##   - univention-samba4
+##   - univention-s4-connector
 #
 #  Bug #31324
 
