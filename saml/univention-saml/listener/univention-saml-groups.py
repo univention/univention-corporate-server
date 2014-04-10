@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import grp
 import json
@@ -53,8 +53,7 @@ uid = pwd.getpwnam("samlcgi").pw_uid
 gid = grp.getgrnam("samlcgi").gr_gid
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 	listener.setuid(0)
 
 	try:

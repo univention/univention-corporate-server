@@ -32,7 +32,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import os
 
@@ -47,8 +47,7 @@ modrdn = '1'
 cache_dir = '/var/cache/univention-directory-listener/selfservice-invitation'
 
 
-def handler(dn, new, old, command):
-	# type: (str, dict, dict, str) -> None
+def handler(dn: str, new: dict, old: dict, command: str) -> None:
 	if not listener.configRegistry.is_true('umc/self-service/invitation/enabled', True):
 		return
 

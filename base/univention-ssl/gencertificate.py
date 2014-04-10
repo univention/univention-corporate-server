@@ -34,21 +34,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import grp
 import os
 import subprocess
 from errno import ENOENT
 from shutil import rmtree
+from typing import Dict, List, Optional
 
 import univention.debug as ud
 from listener import configRegistry, setuid, unsetuid
-
-try:
-	from typing import Dict, List, Optional  # noqa: F401
-except ImportError:
-	pass
 
 name = 'gencertificate'
 description = 'Generate new Certificates'
@@ -61,8 +57,7 @@ SSLDIR = '/etc/univention/ssl'
 _delay = None
 
 
-def domain(info):
-	# type: (Dict[str, List[str]]) -> str
+def domain(info: Dict[str, List[str]]) -> str:
 	"""
 	Return domain name of machine account.
 
@@ -74,8 +69,7 @@ def domain(info):
 		return configRegistry['domainname']
 
 
-def wildcard_certificate(info):
-	# type: (Dict[str, List[str]]) -> bool
+def wildcard_certificate(info: Dict[str, List[str]]) -> bool:
 	"""
 	Check if a wildcard certificate should be created for the host.
 
@@ -85,8 +79,7 @@ def wildcard_certificate(info):
 	return b'Wildcard Certificate' in info.get('univentionService', [])
 
 
-def handler(dn, new, old, command=''):
-	# type: (str, Optional[Dict[str, List[str]]], Optional[Dict[str, List[str]]], str) -> None
+def handler(dn: str, new: Optional[Dict[str, List[str]]], old: Optional[Dict[str, List[str]]], command: str = '') -> None:
 	"""
 	Handle changes to 'dn'.
 
@@ -152,8 +145,7 @@ def handler(dn, new, old, command=''):
 		unsetuid()
 
 
-def fix_permissions(certpath, dn, new):
-	# type: (str, str, Dict[str, List[str]]) -> None
+def fix_permissions(certpath: str, dn: str, new: Dict[str, List[str]]) -> None:
 	"""
 	Set file permission on directory and files within.
 
@@ -187,8 +179,7 @@ def fix_permissions(certpath, dn, new):
 			os.chmod(filename, 0o640)
 
 
-def create_certificate(hostname, domainname):
-	# type: (str, str) -> None
+def create_certificate(hostname: str, domainname: str) -> None:
 	"""
 	Create SSL host certificate.
 
@@ -222,8 +213,7 @@ def create_certificate(hostname, domainname):
 		ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to create %s: %s' % (link_path, ex))
 
 
-def remove_certificate(hostname, domainname):
-	# type: (str, str) -> None
+def remove_certificate(hostname: str, domainname: str) -> None:
 	"""
 	Remove SSL host certificate.
 

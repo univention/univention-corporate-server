@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import, annotations, print_function
 
 import os
 import re
@@ -61,8 +61,7 @@ tmpFile = '/var/cache/univention-directory-listener/samba-shares.oldObject'
 RE_ACE = re.compile(r'\(.+?\)')
 
 
-def _validate_smb_share_name(name):
-	# type: (str) -> bool
+def _validate_smb_share_name(name: str) -> bool:
 	if not name or len(name) > 80:
 		return False
 	illegal_chars = set('\\/[]:|<>+=;,*?"' + ''.join(map(chr, range(0x1F + 1))))
@@ -71,8 +70,7 @@ def _validate_smb_share_name(name):
 	return True
 
 
-def handler(dn, new, old, command):
-	# type: (str, dict, dict, str) -> None
+def handler(dn: str, new: dict, old: dict, command: str) -> None:
 	configRegistry.load()
 	interfaces = Interfaces(configRegistry)
 
@@ -138,8 +136,7 @@ def handler(dn, new, old, command):
 			arg = '"%s"' % (arg.replace('\\', '\\\\').replace('"', '\\"'),)
 		return arg.replace('\n', '')
 
-	def _sanitize(arg):
-		# type: (str) -> str
+	def _sanitize(arg: str) -> str:
 		return arg.replace('\n', '').replace('\x00', '')
 
 	if new:
@@ -309,22 +306,19 @@ def handler(dn, new, old, command):
 
 
 @SetUID(0)
-def initialize():
-	# type: () -> None
+def initialize() -> None:
 	if not os.path.exists('/etc/samba/shares.conf.d'):
 		os.mkdir('/etc/samba/shares.conf.d')
 
 
 @SetUID(0)
-def prerun():
-	# type: () -> None
+def prerun() -> None:
 	if not os.path.exists('/etc/samba/shares.conf.d'):
 		os.mkdir('/etc/samba/shares.conf.d')
 
 
 @SetUID(0)
-def clean():
-	# type: () -> None
+def clean() -> None:
 	if os.path.exists('/etc/samba/shares.conf.d'):
 		for f in os.listdir('/etc/samba/shares.conf.d'):
 			os.unlink(os.path.join('/etc/samba/shares.conf.d', f))
@@ -334,6 +328,5 @@ def clean():
 		os.rmdir('/etc/samba/shares.conf.d')
 
 
-def postrun():
-	# type: () -> None
+def postrun() -> None:
 	run('/etc/init.d/samba', ['samba', 'reload'], uid=0, wait=True)

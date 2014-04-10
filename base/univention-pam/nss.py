@@ -34,7 +34,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import listener
 import univention.config_registry
@@ -45,13 +45,11 @@ filter = '(objectClass=univentionGroup)'
 attributes = ['uniqueMember', 'cn']
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 	pass
 
 
-def postrun():
-	# type: () -> None
+def postrun() -> None:
 	ucr = univention.config_registry.ConfigRegistry()  # TODO: why not listener.configRegistry?
 	ucr.load()
 

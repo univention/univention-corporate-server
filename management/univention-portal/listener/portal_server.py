@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import subprocess
 
@@ -43,8 +43,7 @@ description = 'Tell portal server to refresh when something important changed'
 filter = '(|(univentionObjectType=portals/portal)(univentionObjectType=portals/category)(univentionObjectType=portals/entry)(univentionObjectType=portals/folder))'
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 	listener.setuid(0)
 	try:
 		if not new:

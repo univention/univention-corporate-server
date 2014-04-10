@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import os
 import subprocess
@@ -50,8 +50,7 @@ ADD_DIR = '/var/lib/univention-pkgdb/add'
 DELETE_DIR = '/var/lib/univention-pkgdb/delete'
 
 
-def exec_pkgdb(args):
-	# type: (list) -> int
+def exec_pkgdb(args: list) -> int:
 	ud.debug(ud.LISTENER, ud.INFO, "exec_pkgdb args=%s" % args)
 
 	with SetUID(0):
@@ -63,8 +62,7 @@ def exec_pkgdb(args):
 	return retcode
 
 
-def add_system(sysname):
-	# type: (str) -> int
+def add_system(sysname: str) -> int:
 	retcode = exec_pkgdb(['--add-system', sysname])
 	if retcode != 0:
 		ud.debug(ud.LISTENER, ud.ERROR, "error while adding system=%s to pkgdb" % sysname)
@@ -73,8 +71,7 @@ def add_system(sysname):
 	return retcode
 
 
-def del_system(sysname):
-	# type: (str) -> int
+def del_system(sysname: str) -> int:
 	retcode = exec_pkgdb(['--del-system', sysname])
 	if retcode != 0:
 		ud.debug(ud.LISTENER, ud.ERROR, "error while deleting system=%s to pkgdb" % sysname)
@@ -83,8 +80,7 @@ def del_system(sysname):
 	return retcode
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 	ud.debug(ud.LISTENER, ud.INFO, "pkgdb handler dn=%s" % (dn))
 
 	with SetUID(0):

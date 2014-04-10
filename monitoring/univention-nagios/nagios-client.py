@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import os
 import re
@@ -54,8 +54,7 @@ __pluginconfdirstat = 0
 __pluginconfig = {}
 
 
-def readPluginConfig():
-	# type: () -> None
+def readPluginConfig() -> None:
 	global __pluginconfdirstat
 
 	if __pluginconfdirstat != os.stat(__pluginconfdir)[8]:
@@ -76,8 +75,7 @@ def readPluginConfig():
 						ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: read configline for plugin %r ==> %r' % (mcmdname.group(1), mcmdline.group(1)))
 
 
-def replaceArguments(cmdline, args):
-	# type: (str, list) -> str
+def replaceArguments(cmdline: str, args: list) -> str:
 	for i in range(9):
 		if i < len(args):
 			cmdline = re.sub(r'\$ARG%d\$' % (i + 1), args[i], cmdline)
@@ -86,8 +84,7 @@ def replaceArguments(cmdline, args):
 	return cmdline
 
 
-def writeConfig(fqdn, new):
-	# type: (str, dict) -> None
+def writeConfig(fqdn: str, new: dict) -> None:
 	readPluginConfig()
 
 	name = new['cn'][0].decode('UTF-8')
@@ -116,16 +113,14 @@ def writeConfig(fqdn, new):
 	ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: service %s written' % name)
 
 
-def removeConfig(name):
-	# type: (str) -> None
+def removeConfig(name: str) -> None:
 	filename = os.path.join(__confdir, "%s.cfg" % name)
 	with SetUID(0):
 		if os.path.exists(filename):
 			os.unlink(filename)
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 	# ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: IN dn=%r' % (dn,))
 	# ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: IN old=%r' % (old,))
 	# ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: IN new=%r' % (new,))
@@ -167,16 +162,14 @@ def handler(dn, new, old):
 
 
 @SetUID(0)
-def initialize():
-	# type: () -> None
+def initialize() -> None:
 	dirname = '/etc/nagios/nrpe.univention.d'
 
 	if not os.path.exists(dirname):
 		os.mkdir(dirname)
 
 
-def deleteTree(dirname):
-	# type: (str) -> None
+def deleteTree(dirname: str) -> None:
 	if os.path.exists(dirname):
 		for f in os.listdir(dirname):
 			fn = os.path.join(dirname, f)
@@ -189,15 +182,13 @@ def deleteTree(dirname):
 
 
 @SetUID(0)
-def clean():
-	# type: () -> None
+def clean() -> None:
 	dirname = '/etc/nagios/nrpe.univention.d'
 	if os.path.exists(dirname):
 		deleteTree(dirname)
 
 
-def postrun():
-	# type: () -> None
+def postrun() -> None:
 	global __initscript
 	initscript = __initscript
 	if configRegistry.is_true("nagios/client/autostart"):

@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import glob
 import os
@@ -71,30 +71,25 @@ sp_config_dir = '/etc/simplesamlphp/metadata.d'
 include_file = '/etc/simplesamlphp/metadata/metadata_include.php'
 
 
-def _decode(x):
-	# type: (Text) -> str
+def _decode(x: Text) -> str:
 	return x.decode('ASCII') if isinstance(x, bytes) else x
 
 
-def escape_php_string(string):
-	# type: (str) -> str
+def escape_php_string(string: str) -> str:
 	return string.replace('\x00', '').replace("\\", "\\\\").replace("'", r"\'")
 
 
-def php_string(string):
-	# type: (str) -> str
+def php_string(string: str) -> str:
 	return "'%s'" % (escape_php_string(_decode(string)),)
 
 
-def php_array(list_):
-	# type: (list) -> str
+def php_array(list_: list) -> str:
 	if not list_:
 		return 'array()'
 	return "array('%s')" % "', '".join(escape_php_string(_decode(x).strip()) for x in list_)
 
 
-def ldap_attribute_join(old):
-	# type: (dict) -> list
+def ldap_attribute_join(old: dict) -> list:
 	result_keys = {}
 	for attr in old:
 		if attr[0] not in result_keys.keys() and len(attr) > 1:
@@ -103,11 +98,10 @@ def ldap_attribute_join(old):
 			result_keys[attr[0]] += ", %s" % (attr[1],)
 		elif len(attr) == 1:
 			result_keys[attr[0]] = ''
-	return [[key, value] for key, value in result_keys.items()]
+	return [(key, value) for key, value in result_keys.items()]
 
 
-def php_bool(bool_):
-	# type: (str) -> str
+def php_bool(bool_: str) -> str:
 	bool_ = _decode(bool_)
 	mapped = {
 		'true': True,
@@ -120,8 +114,7 @@ def php_bool(bool_):
 	return 'true' if mapped else 'false'
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 	listener.setuid(0)
 	try:
 		if old:
@@ -149,8 +142,7 @@ def handler(dn, new, old):
 		listener.unsetuid()
 
 
-def write_configuration_file(dn, new, filename):
-	# type: (str, dict, str) -> bool
+def write_configuration_file(dn: str, new: dict, filename: str) -> bool:
 	if new.get('serviceProviderMetadata') and new['serviceProviderMetadata'][0]:
 		metadata = new['serviceProviderMetadata'][0]
 		try:
@@ -232,8 +224,7 @@ def write_configuration_file(dn, new, filename):
 			fd.write("		),\n")
 			if simplesamlLDAPattributes:
 				fd.write("		50 => array(\n			'class' => 'core:AttributeMap',\n")
-				simplesamlLDAPattributes = ldap_attribute_join(simplesamlLDAPattributes)
-				for attr in simplesamlLDAPattributes:
+				for attr in ldap_attribute_join(simplesamlLDAPattributes):
 					if ',' in attr[1]:
 						fd.write("			%s => %s,\n" % (php_string(attr[0]), php_array(attr[1].split(','))))
 					else:

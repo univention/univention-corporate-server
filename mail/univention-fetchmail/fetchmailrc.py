@@ -28,10 +28,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 #
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import os
 import re
+from typing import Dict, Iterable, List, Optional
 
 from six.moves import cPickle as pickle
 
@@ -39,11 +40,6 @@ import listener
 import univention.config_registry
 import univention.debug as ud
 import univention.uldap
-
-try:
-	from typing import Dict, Iterable, List, Optional  # noqa: F401
-except ImportError:
-	pass
 
 name = 'fetchmailrc'
 description = 'write user-configuration to fetchmailrc'
@@ -59,8 +55,7 @@ FETCHMAIL_OLD_PICKLE = "/var/spool/univention-fetchmail/fetchmail_old_dn"
 REpassword = re.compile("^poll .*? there with password '(.*?)' is '[^']+' here")
 
 
-def load_rc(ofile):
-	# type: () -> Optional[int]
+def load_rc(ofile) -> Optional[int]:
 	"""open an textfile with setuid(0) for root-action"""
 	rc = None
 	listener.setuid(0)
@@ -73,8 +68,7 @@ def load_rc(ofile):
 	return rc
 
 
-def write_rc(flist, wfile):
-	# type: (Iterable[str], str) -> None
+def write_rc(flist: Iterable[str], wfile: str) -> None:
 	"""write to an textfile with setuid(0) for root-action"""
 	listener.setuid(0)
 	try:
@@ -85,8 +79,7 @@ def write_rc(flist, wfile):
 	listener.unsetuid()
 
 
-def get_pw_from_rc(lines, uid):
-	# type: (Iterable[str], int) -> Optional[str]
+def get_pw_from_rc(lines: Iterable[str], uid: int) -> Optional[str]:
 	"""get current password of a user from fetchmailrc"""
 	if not uid:
 		return None
@@ -99,8 +92,7 @@ def get_pw_from_rc(lines, uid):
 	return None
 
 
-def objdelete(dlist, old):
-	# type: (Iterable[str], Dict[str, List[bytes]]) -> List[str]
+def objdelete(dlist: Iterable[str], old: Dict[str, List[bytes]]) -> List[str]:
 	"""delete an object in filerepresenting-list if old settings are found"""
 	if old.get('uid'):
 		return [line for line in dlist if not re.search("#UID='%s'[ \t]*$" % re.escape(old['uid'][0].decode('UTF-8')), line)]
@@ -108,8 +100,7 @@ def objdelete(dlist, old):
 		ud.debug(ud.LISTENER, ud.INFO, 'Removal of user in fetchmailrc failed: %r' % old.get('uid'))
 
 
-def objappend(flist, new, password=None):
-	# type: (List[str], Dict[str, List[bytes]], Optional[str]) -> None
+def objappend(flist: List[str], new: Dict[str, List[bytes]], password: Optional[str] = None) -> None:
 	"""add new entry"""
 	passwd = password or ''
 	if details_complete(new):
@@ -131,8 +122,7 @@ def objappend(flist, new, password=None):
 		ud.debug(ud.LISTENER, ud.INFO, 'Adding user to "fetchmailrc" failed')
 
 
-def details_complete(obj, incl_password=False):
-	# type: (Optional[Dict[str, List[bytes]]], bool) -> bool
+def details_complete(obj: Optional[Dict[str, List[bytes]]], incl_password: bool = False) -> bool:
 	if not obj:
 		return False
 	attrlist = ['mailPrimaryAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailAddress']
@@ -141,8 +131,7 @@ def details_complete(obj, incl_password=False):
 	return all(obj.get(attr, [b''])[0] for attr in attrlist)
 
 
-def only_password_reset(old, new):
-	# type: (Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]]) -> bool
+def only_password_reset(old: Optional[Dict[str, List[bytes]]], new: Optional[Dict[str, List[bytes]]]) -> bool:
 	# if one or both objects are missing ==> false
 	if (old and not new) or (not old and new) or (not old and not new):
 		return False
@@ -160,8 +149,7 @@ def only_password_reset(old, new):
 	return True
 
 
-def handler(dn, new, old, command):
-	# type: (str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], str) -> None
+def handler(dn: str, new: Optional[Dict[str, List[bytes]]], old: Optional[Dict[str, List[bytes]]], command: str) -> None:
 	if os.path.exists(FETCHMAIL_OLD_PICKLE):
 		with open(FETCHMAIL_OLD_PICKLE, 'r') as fd:
 			p = pickle.Unpickler(fd)
@@ -229,8 +217,7 @@ def handler(dn, new, old, command):
 				listener.unsetuid()
 
 
-def postrun():
-	# type: () -> None
+def postrun() -> None:
 	global __initscript
 	initscript = __initscript
 	ud.debug(ud.LISTENER, ud.INFO, 'Restarting fetchmail-daemon')

@@ -39,7 +39,7 @@ configuration directory (should-state) and reload/restart as appropriate.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import errno
 import grp
@@ -77,14 +77,12 @@ class BaseDirRestriction(InvalidZone):
 	pass
 
 
-def prerun():
-	# type: () -> None
+def prerun() -> None:
 	"""Called before busy period."""
 	listener.configRegistry.load()
 
 
-def chgrp_bind(filename):
-	# type: (str) -> None
+def chgrp_bind(filename: str) -> None:
 	try:
 		bind_gid = grp.getgrnam("bind").gr_gid
 	except KeyError:
@@ -94,16 +92,14 @@ def chgrp_bind(filename):
 	os.chown(filename, 0, bind_gid)
 
 
-def safe_path_join(basedir, filename):
-	# type: (str, str) -> str
+def safe_path_join(basedir: str, filename: str) -> str:
 	path = os.path.join(basedir, filename)
 	if not os.path.abspath(path).startswith(basedir):
 		raise BaseDirRestriction('basedir manipulation: %s' % (filename,))
 	return path
 
 
-def validate_zonename(zonename):
-	# type: (str) -> str
+def validate_zonename(zonename: str) -> str:
 	"""
 	>>> validate_zonename('foo')
 	'foo'
@@ -143,13 +139,11 @@ def validate_zonename(zonename):
 	return zonename
 
 
-def _quote_config_parameter(arg):
-	# type: (str) -> str
+def _quote_config_parameter(arg: str) -> str:
 	return arg.replace('\\', '\\\\').replace('"', '\\"')
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 	"""Handle LDAP changes."""
 	base = listener.configRegistry.get('dns/ldap/base')
 	if base and not dn.endswith(base):
@@ -179,8 +173,7 @@ def handler(dn, new, old):
 		listener.unsetuid()
 
 
-def _ldap_auth_string(ucr):
-	# type: (dict) -> str
+def _ldap_auth_string(ucr: dict) -> str:
 	"""Build extended LDAP query URI part containing bind credentials."""
 	account = ucr.get('bind/binddn', ucr.get('ldap/hostdn'))
 
@@ -189,8 +182,7 @@ def _ldap_auth_string(ucr):
 		return '????!bindname=%s,!x-bindpw=%s,x-tls' % (quote(account), quote(fd.readline().rstrip()))
 
 
-def _new_zone(ucr, zonename, dn):
-	# type: (dict, str, str) -> None
+def _new_zone(ucr: dict, zonename: str, dn: str) -> None:
 	"""Handle addition of zone."""
 	ud.debug(ud.LISTENER, ud.INFO, 'DNS: Creating zone %s' % (zonename,))
 	if not os.path.exists(NAMED_CONF_DIR):
@@ -237,8 +229,7 @@ def _new_zone(ucr, zonename, dn):
 	__zone_created_or_removed = True
 
 
-def _remove_zone(zonename):
-	# type: (str) -> None
+def _remove_zone(zonename: str) -> None:
 	"""Handle removal of zone."""
 	ud.debug(ud.LISTENER, ud.INFO, 'DNS: Removing zone %s' % (zonename,))
 	zonename = validate_zonename(zonename)
@@ -257,8 +248,7 @@ def _remove_zone(zonename):
 	__zone_created_or_removed = True
 
 
-def clean():
-	# type: () -> None
+def clean() -> None:
 	"""Reset listener state."""
 	listener.setuid(0)
 	try:
@@ -274,8 +264,7 @@ def clean():
 		listener.unsetuid()
 
 
-def _reload(zones, restart=False, dns_backend='ldap'):
-	# type: (list, bool, str) -> dict
+def _reload(zones: list, restart: bool = False, dns_backend: str = 'ldap') -> dict:
 	"""Force reload of zones; might restart daemon; returns pids."""
 	pids = {}
 	# Try to only reload the zones if rndc is available
@@ -306,8 +295,7 @@ def _reload(zones, restart=False, dns_backend='ldap'):
 	return pids
 
 
-def _wait_children(pids, timeout=15):
-	# type: (dict, float) -> None
+def _wait_children(pids: dict, timeout: float = 15) -> None:
 	"""Wait for child termination."""
 	# Wait max 15 seconds for forked children
 	timeout += time.time()
@@ -341,8 +329,7 @@ def _wait_children(pids, timeout=15):
 		time.sleep(1)
 
 
-def _kill_children(pids, timeout=5):
-	# type: (dict, float) -> None
+def _kill_children(pids: dict, timeout: float = 5) -> None:
 	"""Kill children."""
 	for pid in pids:
 		try:
@@ -360,8 +347,7 @@ def _kill_children(pids, timeout=5):
 	_wait_children(pids, timeout)
 
 
-def postrun():
-	# type: () -> None
+def postrun() -> None:
 	"""Run pending updates."""
 	global __zone_created_or_removed
 

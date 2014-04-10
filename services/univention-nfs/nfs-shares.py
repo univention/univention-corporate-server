@@ -34,7 +34,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import os
 import re
@@ -62,8 +62,7 @@ __comment_pattern = re.compile('^"*/.*#[ \t]*LDAP:[ \t]*(.*)')
 tmpFile = '/var/cache/univention-directory-listener/nfs-shares.oldObject'
 
 
-def handler(dn, new, old, command):
-	# type: (str, dict, dict, str) -> None
+def handler(dn: str, new: dict, old: dict, command: str) -> None:
 	# create tmp dir
 	tmpDir = os.path.dirname(tmpFile)
 	listener.setuid(0)
@@ -137,8 +136,7 @@ def handler(dn, new, old, command):
 		_write(lines)
 
 
-def clean():
-	# type: () -> None
+def clean() -> None:
 	# clear exports file
 	lines = _read(lambda match: not match)
 	_write(lines)
@@ -149,8 +147,7 @@ def _read(keep=lambda match: True):
 		return [line.strip() for line in fp if keep(__comment_pattern.match(line))]
 
 
-def _write(lines):
-	# type: (list) -> None
+def _write(lines: list) -> None:
 	listener.setuid(0)
 	try:
 		ud.debug(ud.LISTENER, ud.PROCESS, 'Writing /etc/exports with %d lines' % (len(lines),))
@@ -160,8 +157,7 @@ def _write(lines):
 		listener.unsetuid()
 
 
-def _exports_escape(text):
-	# type: (str) -> str
+def _exports_escape(text: str) -> str:
 	r"""
 	Escape path for /etc/exports.
 
@@ -178,11 +174,9 @@ def _exports_escape(text):
 	return '"%s"' % (''.join(r'\%03o' % (ord(c),) if c < ' ' or c == '"' else c for c in text),)
 
 
-def _quote(text):
-	# type: (str) -> str
+def _quote(text: str) -> str:
 	return _exports_escape(text)[1:-1]
 
 
-def postrun():
-	# type: () -> None
+def postrun() -> None:
 	listener.run('/bin/systemctl', ['systemctl', 'reload-or-restart', 'nfs-kernel-server.service'], uid=0)

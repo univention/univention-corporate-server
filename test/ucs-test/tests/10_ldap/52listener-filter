@@ -6,6 +6,8 @@
 ##  - univention-directory-listener (>= 9.0.2-6)
 ## exposure: dangerous
 
+from __future__ import absolute_import, annotations
+
 from os import chown, mkdir
 from os.path import join
 from pwd import getpwnam
@@ -15,6 +17,8 @@ from subprocess import Popen
 from sys import exit
 from tempfile import mkdtemp
 from time import sleep
+from types import TracebackType
+from typing import Dict, List, Optional, Type
 
 from univention.config_registry.frontend import handler_set
 from univention.testing.ucr import UCSTestConfigRegistry
@@ -29,7 +33,7 @@ USERID = 'listener'
 
 class Environment:
 
-	def __init__(self):
+	def __init__(self) -> None:
 		self.tmpdir = None
 		self.mdir = None
 		self.cdir = None
@@ -37,7 +41,7 @@ class Environment:
 		ent = getpwnam(USERID)
 		self.uid = ent.pw_uid
 
-	def __enter__(self):
+	def __enter__(self) -> Environment:
 		self.tmpdir = mkdtemp(prefix='ucs-test', dir=TMPDIR)
 		print('I: tmpdir=%r' % (self.tmpdir,))
 		chown(self.tmpdir, self.uid, -1)
@@ -48,13 +52,13 @@ class Environment:
 		self.copy_handler()
 		return self
 
-	def mkdir(self, name):
+	def mkdir(self, name: str) -> str:
 		path = join(self.tmpdir, name)
 		mkdir(path)
 		chown(path, self.uid, -1)
 		return path
 
-	def copy_handler(self):
+	def copy_handler(self) -> None:
 		with open(argv[0]) as source:
 			with open(join(self.mdir, 'filter.py'), 'w') as target:
 				for line in source:
@@ -62,14 +66,14 @@ class Environment:
 						line = 'TMPDIR = %r\n' % (self.tmpdir,)
 					target.write(line)
 
-	def __exit__(self, exc_type, exc_value, traceback):
+	def __exit__(self, exc_type: Optional[Type[BaseException]], exc_value: Optional[BaseException], traceback: Optional[TracebackType]) -> None:
 		rmtree(self.tmpdir, ignore_errors=True)
 		self.tmpdir = None
 
 
 class Listener:
 
-	def __init__(self, ucr, env):
+	def __init__(self, ucr: Dict[str, str], env: Environment) -> None:
 		self.ucr = ucr
 		self.env = env
 		self.proc = None
@@ -84,12 +88,12 @@ class Listener:
 			'-y', '/etc/machine.secret',
 		]
 
-	def __enter__(self):
+	def __enter__(self) -> Listener:
 		self.init_listener()
 		self.run_listener()
 		return self
 
-	def init_listener(self):
+	def init_listener(self) -> None:
 		cmd = self.cmd + [
 			'-d', '2',
 			'-i',
@@ -101,7 +105,7 @@ class Listener:
 		if ret:
 			exit(ret)
 
-	def run_listener(self):
+	def run_listener(self) -> Listener:
 		cmd = self.cmd + [
 			'-d', '4',
 			'-F',
@@ -110,7 +114,7 @@ class Listener:
 		print('I: %d = %r' % (self.proc.pid, cmd,))
 		return self
 
-	def __exit__(self, exc_type, exc_value, traceback):
+	def __exit__(self, exc_type: Optional[Type[Exception]], exc_value: Optional[BaseException], traceback: Optional[TracebackType]) -> None:
 		if not exc_type:
 			self.wait_transactions()
 		self.kill_listener()
@@ -119,7 +123,7 @@ class Listener:
 		print('I: ret=%d' % (ret,))
 		self.proc = None
 
-	def wait_transactions(self):
+	def wait_transactions(self) -> None:
 		prev_master = 0
 		i = 0
 		while i < 10:
@@ -132,7 +136,7 @@ class Listener:
 			prev_master = master
 			sleep(1)
 
-	def get_master_transaction(self):
+	def get_master_transaction(self) -> Optional[int]:
 		hostname = self.ucr['ldap/master']
 		try:
 			sock = create_connection((hostname, 6669), 60.0)
@@ -151,13 +155,13 @@ class Listener:
 		lines = result.splitlines()
 		return int(lines[1])
 
-	def get_local_transaction(self):
+	def get_local_transaction(self) -> int:
 		filename = join(self.env.cdir, 'notifier_id')
 		with open(filename) as nid_file:
 			nid = nid_file.read()
 		return int(nid)
 
-	def kill_listener(self):
+	def kill_listener(self) -> None:
 		if not self.proc:
 			return
 
@@ -172,7 +176,7 @@ class Listener:
 			self.proc.kill()
 
 
-def main():
+def main() -> None:
 	error = False
 	with Environment() as env:
 		with UCSTestConfigRegistry() as ucr:
@@ -194,7 +198,7 @@ def main():
 	exit(1 if error else 0)
 
 
-def unexpected_transactions(env, ucr):
+def unexpected_transactions(env: Environment, ucr: Dict[str, str]) -> bool:
 	found_add = False
 	found_modify = False
 	found_other = False
@@ -217,7 +221,7 @@ def unexpected_transactions(env, ucr):
 	return found_other or not found_add or not found_modify
 
 
-def is_not_in_cache(env, ucr):
+def is_not_in_cache(env: Environment, ucr: Dict[str, str]) -> bool:
 	error = False
 
 	dn = 'dn: ou=%s,%s' % (UNIQUE, ucr['ldap/base'])
@@ -244,7 +248,7 @@ def is_not_in_cache(env, ucr):
 	return error
 
 
-def handler(dn, new, old, cmd=''):
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], cmd: str = '') -> None:
 	with open(join(TMPDIR, UNIQUE), 'a') as log:
 		print(repr((dn, bool(new), bool(old), cmd)), file=log)
 

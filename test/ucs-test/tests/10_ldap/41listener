@@ -25,13 +25,15 @@ undo rm -f "$tempFile"
 ucstest="ucstest_$(random_chars)"
 listener="/usr/lib/univention-directory-listener/system/$ucstest.py"
 cat >"$listener" <<__HERE__
+from typing import Dict, List
+
 import listener
 
 description = 'set up a new handler (with an new uid entry in tmp-file) for listener'
 name = 'ucstest'
 filter = '(objectClass=posixAccount)'
 
-def handler(dn, new, old):
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	if new:
 		listener.setuid(0)
 		with open("$tempFile", 'a+') as fd:

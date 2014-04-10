@@ -34,7 +34,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import os
 import time
@@ -75,8 +75,7 @@ filter = (
 K5TAB = '/etc/krb5.keytab'
 
 
-def clean():
-	# type: () -> None
+def clean() -> None:
 	# don't do anything here if this system is joined as a Samba/AD DC
 	if samba4_role.upper() in ('DC', 'RODC'):
 		return
@@ -89,8 +88,7 @@ def clean():
 		listener.unsetuid()
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 	# don't do anything here if this system is joined as a Samba/AD DC
 	if samba4_role.upper() in ('DC', 'RODC'):
 		return

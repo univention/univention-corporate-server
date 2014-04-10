@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import listener
 import univention.config_registry
@@ -49,8 +49,7 @@ sharename = "pdfPrinterShare"
 # the pdf pseudo printer is changed
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 	if new.get('cn', [b''])[0].decode('UTF-8') == sharename:
 		if new.get('univentionSharePath') and new.get('univentionShareHost'):
 			path = new['univentionSharePath'][0].decode('UTF-8')

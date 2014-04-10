@@ -34,7 +34,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import listener
 import univention.debug as ud
@@ -45,13 +45,11 @@ description = 'The listener module resets the faillog count'
 filter = '(objectClass=shadowAccount)'
 
 
-def __login_is_locked(attrs):
-	# type: (dict) -> bool
+def __login_is_locked(attrs: dict) -> bool:
 	return unmapLocked(attrs) == '1'
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 	if new and old:
 		if __login_is_locked(old) and not __login_is_locked(new):
 			# reset local bad password count

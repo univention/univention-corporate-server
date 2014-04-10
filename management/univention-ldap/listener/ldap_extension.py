@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import os
 import subprocess
@@ -50,8 +50,7 @@ schema_handler = ldap_extension.UniventionLDAPSchema(listener.configRegistry)
 acl_handler = ldap_extension.UniventionLDAPACL(listener.configRegistry)
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 	"""Handle LDAP schema extensions on Primary and Backup"""
 	global schema_handler, acl_handler
 
@@ -68,8 +67,7 @@ def handler(dn, new, old):
 		ud.debug(ud.LISTENER, ud.ERROR, '%s: Undetermined error: unknown objectclass: %s.' % (name, ocs))
 
 
-def postrun():
-	# type: () -> None
+def postrun() -> None:
 	"""Restart LDAP server Primary and mark new extension objects active"""
 	global schema_handler, acl_handler
 

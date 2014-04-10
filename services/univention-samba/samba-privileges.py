@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import tdb
 
@@ -62,8 +62,7 @@ filter = '(&(objectClass=univentionSambaPrivileges)(sambaSID=*))'
 atributes = ['univentionSambaPrivilegeList', 'sambaSID']
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 
 	where = ud.LISTENER
 	level = ud.INFO
@@ -103,8 +102,7 @@ def handler(dn, new, old):
 			addPrivileges(sid, newPrivs)
 
 
-def addPrivileges(sambaSID, privileges):
-	# type: (bytes, list) -> None
+def addPrivileges(sambaSID: bytes, privileges: list) -> None:
 	with SetUID(0):
 		tdbKey = b'PRIV_%s\x00' % (sambaSID,)
 		tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)
@@ -126,8 +124,7 @@ def addPrivileges(sambaSID, privileges):
 		tdbFile.close()
 
 
-def removePrivileges(sambaSID, privileges):
-	# type: (bytes, list) -> None
+def removePrivileges(sambaSID: bytes, privileges: list) -> None:
 	with SetUID(0):
 		tdbKey = b'PRIV_%s\x00' % (sambaSID,)
 		tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)

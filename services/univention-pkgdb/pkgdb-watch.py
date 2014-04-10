@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import univention.config_registry as ucr
 import univention.debug as ud
@@ -48,8 +48,7 @@ attributes = ['univentionService']
 ldap_info = {}
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 	if new and b'Software Monitor' in new.get('univentionService', ()):
 		with SetUID(0):
 			ucr.handler_set(('pkgdb/scan=yes', ))
@@ -61,8 +60,7 @@ def handler(dn, new, old):
 				ucr.handler_set(('pkgdb/scan=no', ))
 
 
-def ldap_reconnect():
-	# type: () -> None
+def ldap_reconnect() -> None:
 	ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: ldap reconnect triggered')
 	if 'ldapserver' in ldap_info and 'basedn' in ldap_info and 'binddn' in ldap_info and 'bindpw' in ldap_info:
 		try:
@@ -75,8 +73,7 @@ def ldap_reconnect():
 				ud.debug(ud.LISTENER, ud.ERROR, 'pkgdb-watch: ldap reconnect failed')
 
 
-def setdata(key, value):
-	# type: (str, str) -> None
+def setdata(key: str, value: str) -> None:
 	if key == 'bindpw':
 		ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: listener passed key="%s" value="<HIDDEN>"' % key)
 	else:

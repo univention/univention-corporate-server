@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import os
 import subprocess
@@ -50,8 +50,7 @@ attributes = ['univentionService', 'cn', 'associatedDomain']
 __changed_trusted_sp = False
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 	global __changed_trusted_sp
 	listener.setuid(0)
 	try:
@@ -73,8 +72,7 @@ def handler(dn, new, old):
 		listener.unsetuid()
 
 
-def postrun():
-	# type: () -> None
+def postrun() -> None:
 	global __changed_trusted_sp
 
 	if __changed_trusted_sp:

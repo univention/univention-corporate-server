@@ -34,7 +34,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import os
 import os.path
@@ -137,8 +137,7 @@ def checkAndSet(new, old):
 			listener.unsetuid()
 
 
-def no_relevant_change(new, old):
-	# type: (dict, dict) -> bool
+def no_relevant_change(new: dict, old: dict) -> bool:
 	assert new
 	assert old
 
@@ -159,8 +158,7 @@ def no_relevant_change(new, old):
 	return (set(old_name) == set(new_name)) and (set(old_sid) == set(new_sid))
 
 
-def handler(dn, new, old, command):
-	# type: (str, dict, dict, str) -> None
+def handler(dn: str, new: dict, old: dict, command: str) -> None:
 	global modified_default_names
 
 	if ucr.is_false("listener/module/wellknownsidnamemapping", False):
@@ -232,8 +230,7 @@ def handler(dn, new, old, command):
 			modified_default_names.append(changed_default_name)
 
 
-def postrun():
-	# type: () -> None
+def postrun() -> None:
 	global modified_default_names
 	if not modified_default_names:
 		return

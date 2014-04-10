@@ -2,7 +2,7 @@
 Example for a listener module, which logs changes to users.
 """
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import errno
 import os
@@ -78,16 +78,14 @@ def _handle_remove(dn: str, old: Dict[str, List[bytes]]) -> None:
 	_writeit(o_rec, u'removed')
 
 
-def _rec(data):
-	# type (Dict[str, List[str]]) -> _Rec
+def _rec(data: Dict[str, List[bytes]]) -> _Rec:
 	"""
 	Retrieve symbolic, numeric ID and name from user data.
 	"""
 	return _Rec(*(data.get(attr, (None,))[0] for attr in attributes))
 
 
-def _writeit(rec, comment):
-	# type: (_Rec, str) -> None
+def _writeit(rec: _Rec, comment: str) -> None:
 	"""
 	Append CommonName, symbolic and numeric User-IDentifier, and comment to file.
 	"""
@@ -107,8 +105,7 @@ def _writeit(rec, comment):
 			'Failed to write "%s": %s' % (USER_LIST, ex))
 
 
-def initialize():
-	# type: () -> None
+def initialize() -> None:
 	"""
 	Remove the log file.
 	This function is called when the module is forcefully reset.

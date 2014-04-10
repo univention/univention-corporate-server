@@ -34,7 +34,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import os
 import time
@@ -101,8 +101,7 @@ __SPECIAL_ACCOUNT_SIDS = {
 __SPECIAL_SIDS = set(__SPECIAL_ACCOUNT_SIDS.values())
 
 
-def open_idmap():
-	# type: () -> IDmapDB
+def open_idmap() -> IDmapDB:
 	global lp
 
 	if open_idmap.instance:
@@ -142,7 +141,7 @@ def rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, xidNumber, type_str
 			if record["type"][0].decode('ASCII') != type_string:
 				ud.debug(ud.LISTENER, ud.ERROR, "%s: %s entry type %s does not match object type %s" % (name, old_sambaSID, record["type"][0], type_string))
 				ud.debug(ud.LISTENER, ud.ERROR, "%s: skipping rename of %s to %s" % (name, old_sambaSID, new_sambaSID))
-				return False
+				return
 
 			ud.debug(ud.LISTENER, ud.PROCESS, "%s: renaming entry for %s to %s" % (name, old_sambaSID, new_sambaSID))
 
@@ -248,8 +247,7 @@ def remove_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 		ud.debug(ud.LISTENER, ud.ERROR, estr)
 
 
-def initialize():
-	# type: () -> None
+def initialize() -> None:
 	idmap_ldb = '/var/lib/samba/private/idmap.ldb'
 	listener.setuid(0)
 	try:
@@ -262,8 +260,7 @@ def initialize():
 		listener.unsetuid()
 
 
-def handler(dn, new, old, operation):
-	# type: (str, dict, dict, str) -> None
+def handler(dn: str, new: dict, old: dict, operation: str) -> None:
 
 	idmap = open_idmap()
 	if new:

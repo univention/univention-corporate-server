@@ -116,7 +116,7 @@
 #
 #
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import listener
 from univention.mail.dovecot_shared_folder import DovecotSharedFolderListener
@@ -129,8 +129,7 @@ description = 'Create shared folders for Dovecot'
 filter = '(objectClass=univentionMailSharedFolder)'
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 
 	# ignore object, if this local system is not affected
 

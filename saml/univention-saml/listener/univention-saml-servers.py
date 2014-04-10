@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import os.path
 import subprocess
@@ -47,8 +47,7 @@ filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMembe
 attributes = ['univentionService']
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 	ucr = ConfigRegistry()
 	ucr.load()
 	listener.setuid(0)

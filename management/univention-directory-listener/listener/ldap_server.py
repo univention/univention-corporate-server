@@ -34,9 +34,9 @@
 
 """listener script for setting ldap server."""
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
-from typing import Dict, List, Optional  # noqa: F401
+from typing import Dict, List
 
 import listener
 import univention.config_registry
@@ -47,8 +47,7 @@ description = 'Update upstream LDAP server list'
 filter = '(&(objectClass=univentionDomainController)(|(univentionServerRole=master)(univentionServerRole=backup)))'
 
 
-def handler(dn, new, old):
-	# type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]]) -> None
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	"""Handle change in LDAP."""
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
@@ -74,8 +73,7 @@ def handler(dn, new, old):
 		listener.unsetuid()
 
 
-def add_ldap_server(ucr, name, domain, role):
-	# type: (Dict[str, str], str, str, str) -> None
+def add_ldap_server(ucr: Dict[str, str], name: str, domain: str, role: str) -> None:
 	"""Add LDAP server."""
 	ud.debug(ud.LISTENER, ud.INFO, 'LDAP_SERVER: Add ldap_server %s' % name)
 
@@ -101,8 +99,7 @@ def add_ldap_server(ucr, name, domain, role):
 			univention.config_registry.handler_set(['ldap/backup=%s' % (' '.join(backup_list),)])
 
 
-def remove_ldap_server(ucr, name, domain, role):
-	# type: (Dict[str, str], str, str, str) -> None
+def remove_ldap_server(ucr: Dict[str, str], name: str, domain: str, role: str) -> None:
 	"""Remove LDAP server."""
 	ud.debug(ud.LISTENER, ud.INFO, 'LDAP_SERVER: Remove ldap_server %s' % name)
 

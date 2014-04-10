@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import os
 from textwrap import dedent
@@ -61,16 +61,14 @@ URLBASE = listener.configRegistry.get(
 	'http://%s/univention-client-boot/preseed/' % (FQDN,))
 
 
-def ip_to_hex(ip):
-	# type: (str) -> str
+def ip_to_hex(ip: str) -> str:
 	o = ip.split('.')
 	if len(o) != 4:
 		return ''
 	return ''.join('%02X' % int(_) for _ in o)
 
 
-def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+def handler(dn: str, new: dict, old: dict) -> None:
 	listener.configRegistry.load()
 	pxeconfig = gen_pxe(new)
 	remove_pxe(old)
@@ -78,8 +76,7 @@ def handler(dn, new, old):
 		create_pxe(new, pxeconfig)
 
 
-def gen_pxe(new):
-	# type: (dict) -> str
+def gen_pxe(new: dict) -> str:
 	args = [listener.configRegistry.get('pxe/installer/append')]
 	if args[0] is None:
 		profile = new.get('univentionServerInstallationProfile', EMPTY)[0].decode('UTF-8')
@@ -137,8 +134,7 @@ def gen_pxe(new):
 	}
 
 
-def remove_pxe(old):
-	# type: (dict) -> None
+def remove_pxe(old: dict) -> None:
 	try:
 		basename = ip_to_hex(old['aRecord'][0].decode('ASCII'))
 	except LookupError:
@@ -156,8 +152,7 @@ def remove_pxe(old):
 			listener.unsetuid()
 
 
-def create_pxe(new, pxeconfig):
-	# type: (dict, str) -> None
+def create_pxe(new: dict, pxeconfig: str) -> None:
 	try:
 		basename = ip_to_hex(new['aRecord'][0].decode('ASCII'))
 	except LookupError:
