@@ -2,7 +2,7 @@ ucs-test (4.0.164-37) unstable; urgency=low
 
   * 52_s4connector/02*_concurrent_deletion_in_*: added test cases to
     check if deleted user get synced back as normal users due
-    synchronization (Bug #33448)
+    synchronization (Bug #33621)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Apr 2014 07:40:59 +0200
 
