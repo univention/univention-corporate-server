@@ -1,0 +1,61 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: Create, modify and delete users in AD and test if they get synced back
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## bugs:
+##  - 33448
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+for((i=0;i<10;i++)); do
+
+	echo "********************************************"
+	echo "* Round $((i+1)) of 10"
+	echo "********************************************"
+
+	username1="$(random_chars)"
+	username2="$(random_chars)"
+	username3="$(random_chars)"
+	groupname="$(random_chars)"
+
+	ad_createuser "$username1" || fail_test 110
+	ad_createuser "$username2" || fail_test 110
+	ad_createuser "$username3" || fail_test 110
+	ad_group_create "$groupname" || fail_test 110
+
+	ad_append_to_attribute "CN=$groupname,CN=groups,$(ad_get_base)" "member" "CN=$username1,cn=users,$(ad_get_base)" || fail_test 110
+	ad_append_to_attribute "CN=$groupname,CN=groups,$(ad_get_base)" "member" "CN=$username2,cn=users,$(ad_get_base)" || fail_test 110
+
+	sleep $i
+
+	ad_remove_from_attribute "CN=$groupname,CN=groups,$(ad_get_base)" "member" "CN=$username2,cn=users,$(ad_get_base)" || fail_test 110
+	ad_append_to_attribute "CN=$groupname,CN=groups,$(ad_get_base)" "member" "CN=$username3,cn=users,$(ad_get_base)" || fail_test 110
+
+	sleep $i
+
+	ad_delete "CN=$groupname,CN=groups,$(ad_get_base)"
+	ad_delete "CN=$username1,cn=users,$(ad_get_base)"
+	ad_delete "CN=$username2,cn=users,$(ad_get_base)"
+	ad_delete "CN=$username3,cn=users,$(ad_get_base)"
+
+	ad_wait_for_synchronization; fail_bool 0 110
+
+	ad_exists "CN=$groupname,CN=groups,$(ad_get_base)" && fail_test 110
+	ad_exists "CN=$username1,cn=users,$(ad_get_base)" && fail_test 110
+	ad_exists "CN=$username2,cn=users,$(ad_get_base)" && fail_test 110
+	ad_exists "CN=$username3,cn=users,$(ad_get_base)" && fail_test 110
+
+	if [ "$RETVAL" != 100 ]; then
+		break
+	fi
+done
+
+exit $RETVAL
+

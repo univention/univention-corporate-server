@@ -1,0 +1,80 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: Create, modify and delete users in UCS and test if they get synced back
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## bugs:
+##  - 33448
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/group.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+create_user()
+{
+	UDM_users_user_username="$1"
+	UDM_users_user_lastname="$2"
+	UDM_users_user_password="univention"
+	udm_create "users/user"; fail_bool 0 110
+}
+
+for((i=0;i<10;i++)); do
+
+	echo "********************************************"
+	echo "* Round $((i+1)) of 10"
+	echo "********************************************"
+
+	username1="$(random_chars)"
+	lastname1="$(random_chars)"
+	create_user "$username1" "$lastname1"
+
+	username2="$(random_chars)"
+	lastname2="$(random_chars)"
+	create_user "$username2" "$lastname2"
+
+	username3="$(random_chars)"
+	lastname3="$(random_chars)"
+	create_user "$username3" "$lastname3"
+
+	UDM_groups_group_name="$(random_chars)"
+	udm_create "groups/group" || fail_test 110
+
+	udm_modify "groups/group" "" "" "" "" \
+			--append users="uid=$username1,cn=users,$ldap_base" \
+			--append users="uid=$username2,cn=users,$ldap_base"
+
+	sleep $i
+
+	group_removeuser "$username2" "$UDM_groups_group_name"
+	group_adduser "$username3" "$UDM_groups_group_name"
+
+
+	sleep $i
+
+	group_remove "$UDM_groups_group_name"
+	user_remove "$username1"
+	user_remove "$username2"
+	user_remove "$username3"
+
+	ad_wait_for_synchronization; fail_bool 0 110
+		
+	udm_exists "groups/group" && fail_test 110
+	UDM_users_user_username="$username1"
+	udm_exists "users/user" && fail_test 110
+	UDM_users_user_username="$username2"
+	udm_exists "users/user" && fail_test 110
+	UDM_users_user_username="$username3"
+	udm_exists "users/user" && fail_test 110
+
+	if [ "$RETVAL" != 100 ]; then
+		break
+	fi
+done
+
+exit $RETVAL
