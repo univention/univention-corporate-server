@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-1
+src: univention-ldap
+fix: 10.0.17-24.674.201404110855
+note:
+version: [1]
+desc: |
+  This update fixes the following issue:
+  * LDAP schema extensions are now included sorted by their file name to
+    guarantee stable ordering.
+bug: [34406]
