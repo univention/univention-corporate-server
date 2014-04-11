@@ -1,3 +1,10 @@
+univention-novnc (0.4+0+20131014+git142aa45-4) unstable; urgency=low
+
+  * Add HTML Metatags to forbid caching of vnc_auto.html. This avoids certificate
+    problems with https connections while using Internet Explorer (Bug #33968) 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 11 Apr 2014 16:20:29 +0200
+
 univention-novnc (0.4+0+20131014+git142aa45-3) ucs-3.2; urgency=low
 
   * Add work-around for Firefox security excetion (Bug #33587)
