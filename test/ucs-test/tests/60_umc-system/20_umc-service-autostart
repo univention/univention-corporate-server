@@ -1,0 +1,141 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test the UMC service module autostart behaviour
+## bugs: [34506]
+## tags: [apptest]
+## exposure: careful
+
+import sys
+sys.path.insert(0, '.')
+from TestUMCSystemModule import TestUMCSystem
+
+from univention.config_registry import ConfigRegistry
+import univention.testing.utils as utils
+
+
+class TestUMCServiceAutostart(TestUMCSystem):
+
+    def __init__(self):
+        """Test Class constructor"""
+        self.username = None
+        self.password = None
+        self.hostname = None
+        self.Connection = None
+
+        self.UCR = ConfigRegistry()
+        self.initial_service_config = None
+
+    def restore_initial_configuration(self):
+        """Restores the configuration as saved in the global var"""
+        if self.initial_service_config == 'yes':
+            self.set_service_configuration(['nscd'], 'start_auto')
+        elif self.initial_service_config == 'no':
+            self.set_service_configuration(['nscd'], 'start_never')
+        elif self.initial_service_config == 'manually':
+            self.set_service_configuration(['nscd'], 'start_manual')
+        else:
+            utils.fail("Failed to restore 'nscd' initial autostart "
+                       "configuration, no request for setting '%s'"
+                       % self.initial_service_config)
+
+    def get_service_current_configuration(self, service_name_value):
+        """
+        Get the current UCR configuration for provided 'service_name_value' var
+        Reloads the UCR before proceeding.
+        """
+        self.reload_ucr()
+        ucr_value = self.UCR.get(service_name_value)
+        if not ucr_value:
+            utils.fail("Requested service UCR var '%s' was 'None'" %
+                       service_name_value)
+        return ucr_value
+
+    def set_service_configuration(self, service_names, setting):
+        """Set the 'setting' for list of 'service_names' via UMC request"""
+        try:
+            request_result = self.Connection.request('services/' + setting,
+                                                     service_names)
+            if not request_result:
+                utils.fail("Request 'services/%s' failed, no response "
+                           "from hostname '%s'" % (setting, self.hostname))
+            if not request_result['success']:
+                utils.fail("Request 'services/%s' failed, no success in "
+                           "response. Hostname '%s', response '%s'" %
+                           (setting, self.hostname, request_result))
+        except Exception as exc:
+            utils.fail("Exception while making services/%s request: %s" %
+                       (setting, exc))
+
+    def check_nscd_autostart_possibilities(self):
+        """Check all the possible variations of nscd autostart settings"""
+        # saving initial service configuration
+        self.initial_service_config = self.get_service_current_configuration(
+                                          'nscd/autostart')
+
+        # make sure that nscd autostart == 'yes' at first
+        if self.get_service_current_configuration('nscd/autostart') != 'yes':
+            self.set_service_configuration(['nscd'], 'start_auto')
+            if self.get_service_current_configuration('nscd/autostart') != 'yes':
+                utils.fail("Failed to set initial 'nscd/autostart' setting to "
+                           "'yes'")
+
+        # case 1: autostart == 'yes', changing to 'no'
+        if self.get_service_current_configuration('nscd/autostart') == 'yes':
+            self.set_service_configuration(['nscd'], 'start_never')
+            if self.get_service_current_configuration('nscd/autostart') != 'no':
+                utils.fail("The 'nscd/autostart' was not changed from "
+                           "'yes' to 'no' in UCR")
+
+        # case 2: autostart == 'no', changing to 'manually'
+        if self.get_service_current_configuration('nscd/autostart') == 'no':
+            self.set_service_configuration(['nscd'], 'start_manual')
+            if self.get_service_current_configuration('nscd/autostart') != 'manually':
+                utils.fail("The 'nscd/autostart' was not changed from "
+                           "'no' to 'manually' in UCR")
+
+        # case 3: autostart == 'manually', changing to 'no'
+        if self.get_service_current_configuration('nscd/autostart') == 'manually':
+            self.set_service_configuration(['nscd'], 'start_never')
+            if self.get_service_current_configuration('nscd/autostart') != 'no':
+                utils.fail("The 'nscd/autostart' was not changed from "
+                           "'manually' to 'no' in UCR")
+
+        # case 4: autostart == 'no', changing to 'yes'
+        if self.get_service_current_configuration('nscd/autostart') == 'no':
+            self.set_service_configuration(['nscd'], 'start_auto')
+            if self.get_service_current_configuration('nscd/autostart') != 'yes':
+                utils.fail("The 'nscd/autostart' was not changed from "
+                           "'no' to 'yes' in UCR")
+
+        # case 5: autostart == 'yes', changing to 'manually'
+        if self.get_service_current_configuration('nscd/autostart') == 'yes':
+            self.set_service_configuration(['nscd'], 'start_manual')
+            if self.get_service_current_configuration('nscd/autostart') != 'manually':
+                utils.fail("The 'nscd/autostart' was not changed from "
+                           "'yes' to 'manually' in UCR")
+
+        # case 6: autostart == 'manually', changing to 'yes'
+        if self.get_service_current_configuration('nscd/autostart') == 'manually':
+            self.set_service_configuration(['nscd'], 'start_auto')
+            if self.get_service_current_configuration('nscd/autostart') != 'yes':
+                utils.fail("The 'nscd/autostart' was not changed from "
+                           "'manually' to 'yes' in UCR")
+
+    def main(self):
+        """
+        Method to test the UMC 'Name Service Caching Daemon' service
+        autostart behaviour
+        """
+        self.get_ucr_credentials()
+        self.create_connection_authenticate()
+
+        self.check_service_presence(self.make_service_query_request(), 'nscd')
+
+        try:
+            self.check_nscd_autostart_possibilities()
+        finally:
+            self.restore_initial_configuration()
+
+
+if __name__ == '__main__':
+    TestUMC = TestUMCServiceAutostart()
+    sys.exit(TestUMC.main())
