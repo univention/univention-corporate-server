@@ -1,5 +1,6 @@
 univention-pam (7.0.4-26) unstable; urgency=low
 
+  * Limit LDAP and Kerberos password change to non-local accounts (Bug #34315)
   * Update copyright to 2014.
   * Fix deprecation warning.
   * Add unit test for pam/common.

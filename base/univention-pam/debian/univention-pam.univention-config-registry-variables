@@ -160,6 +160,12 @@ Description[en]=Specifies the maximum memory available for pam_access when check
 Type=int
 Categories=system-base
 
+[pam/krb5/minimum_uid]
+Description[de]=Diese Option führt dazu, dass einige PAM Module Benutzer ignoriert, deren numerische Benutzer-ID unter diesem spezifizierten Wert ist. Dies kann dazu benutzt werden, dass Passwortänderungen für lokale System-Benutzer nicht mittels Kerberos durchgeführt werden. Der Standardwert ist 1000.
+Description[en]=This option causes some PAM modules to ignore the user if the users numerical id is lower than the specified value. This can be used to bypass password changes using the Kerberos module for local system accounts. The default value is 1000.
+Type=int
+Categories=system-base
+
 [security/limits/user/.*/hard/.*]
 Description[de]=Erlaubt die Konfiguration von Systemlimits für Benutzer (z.B. die maximale Anzahl offener Dateien). Der erste Platzhalter ist ein Benutzername, der zweite der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Hard-Limit definiert die Obergrenze, die ein Benutzer maximal einem Prozess zuweisen kann.
 Description[en]=Allow the configuration of system limits for users (e.g. the maximum number of open files). The first placeholder is a user name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The hard limit defines the upper limit a user can assign to a process.

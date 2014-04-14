@@ -2,11 +2,12 @@
 
 session    required   pam_unix.so
 @!@
+minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 methods=filter(lambda(x): x in ['krb5', 'ldap', 'winbind'], baseConfig['auth/methods'].split(' '))
 if 'winbind' in methods:
 	print 'session    optional   pam_winbind.so'
 if 'krb5' in methods:
-	print 'session    optional   pam_krb5.so'
+	print 'session    optional   pam_krb5.so minimum_uid=%d' % (minimum_uid,)
 @!@
 session    required   pam_limits.so
 @!@

@@ -13,8 +13,9 @@ account [success=done new_authtok_reqd=done acct_expired=bad default=ignore]    
 # - is successful, cache the password
 # - isn't aware of the user, proceed with the next service
 @!@
+minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 pam_krb5='''
-account  <action>                         pam_krb5.so'''
+account  <action>                         pam_krb5.so minimum_uid=%d''' % (minimum_uid,)
 pam_ldap='''
 account  <action>                         pam_ldap.so'''
 pam_winbind='''
