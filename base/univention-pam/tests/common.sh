@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e -u
 setup_var () {
+	PATH="$PATH:/usr/sbin"
 	SELF="$(readlink -f "${0%/*}")"
 	PAMD="$(readlink -f "${0%/*}/../conffiles/etc/pam.d")"
 }
