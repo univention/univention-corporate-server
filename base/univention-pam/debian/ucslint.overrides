@@ -20,3 +20,13 @@
 0004-12: conffiles/etc/pam.d/chfn
 0004-12: conffiles/etc/pam.d/chsh
 0004-12: conffiles/etc/pam.d/kde
+# Copyright for unit tests
+0010-2: tests/test_common_unix
+0010-2: tests/test_common_ldap
+0010-2: tests/test_common_winbind
+0010-2: tests/test_common_all
+0010-2: tests/test_common_none
+0010-2: tests/test_common_default
+0010-2: tests/common.sh
+0010-2: tests/test_common_krb5
+0010-2: tests/test_common_cache

@@ -1,0 +1,19 @@
+#!/bin/bash
+main () {
+	setup_var
+	setup_ucr unix
+	gen_common
+
+	check account '[success=done new_authtok_reqd=done acct_expired=bad default=ignore]' pam_unix.so
+
+	check auth 'requisite' pam_nologin.so
+	check auth 'required' pam_unix.so
+	check auth 'required' pam_env.so
+
+	check session 'required' pam_unix.so
+	check session 'required' pam_limits.so
+
+	check password 'requisite' pam_cracklib.so
+	check password 'required' pam_unix.so 'nullok obscure md5 min=4 max=32 use_first_pass use_authtok'
+}
+. "${0%/*}/common.sh" || exit 1

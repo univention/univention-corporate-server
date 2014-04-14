@@ -1,0 +1,32 @@
+#!/bin/bash
+main () {
+	setup_var
+	setup_ucr ldap krb5 unix cache winbind
+	gen_common
+
+	check account '[success=done new_authtok_reqd=done acct_expired=bad default=ignore]' pam_unix.so
+	check account 'sufficient' pam_krb5.so
+	check account 'sufficient' pam_ldap.so
+	check account 'sufficient' pam_winbind.so
+	check account 'required' pam_passwdcache.so
+
+	check auth 'requisite' pam_nologin.so
+	check auth 'sufficient' pam_unix.so
+	check auth '[success=2 new_authtok_reqd=ok user_unknown=ignore service_err=3 authinfo_unavail=3 default=ignore]' pam_krb5.so 'use_first_pass'
+	check auth '[success=1 new_authtok_reqd=ok user_unknown=ignore service_err=2 authinfo_unavail=2 default=ignore]' pam_ldap.so 'use_first_pass'
+	check auth '[success=ok new_authtok_reqd=ok user_unknown=die service_err=1 authinfo_unavail=1 default=die]' pam_winbind.so use_first_pass
+	check auth '[success=done new_authtok_reqd=ok ignore=ignore default=bad]' pam_passwdcache.so 'try_first_pass insert max_user=3'
+	check auth 'required' pam_passwdcache.so 'try_first_pass'
+	check auth 'required' pam_env.so
+
+	check session 'required' pam_unix.so
+	check session 'optional' pam_winbind.so
+	check session 'optional' pam_krb5.so
+	check session 'required' pam_limits.so
+
+	check password 'requisite' pam_cracklib.so
+	check password 'sufficient' pam_unix.so 'nullok obscure md5 min=4 max=32 use_first_pass use_authtok'
+	check password 'sufficient' pam_krb5.so 'use_first_pass use_authtok'
+	check password 'required' pam_winbind.so 'use_first_pass use_authok'
+}
+. "${0%/*}/common.sh" || exit 1

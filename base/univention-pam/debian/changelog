@@ -2,6 +2,7 @@ univention-pam (7.0.4-26) unstable; urgency=low
 
   * Update copyright to 2014.
   * Fix deprecation warning.
+  * Add unit test for pam/common.
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 14 Apr 2014 08:57:29 +0200
 
