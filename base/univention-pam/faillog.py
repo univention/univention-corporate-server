@@ -4,7 +4,7 @@
 # Univention PAM
 #  Listener module for faillog
 #
-# Copyright 2001-2013 Univention GmbH
+# Copyright 2001-2014 Univention GmbH
 #
 # http://www.univention.de/
 #

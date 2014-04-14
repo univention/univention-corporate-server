@@ -1,3 +1,9 @@
+univention-pam (7.0.4-26) unstable; urgency=low
+
+  * Update copyright to 2014.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 14 Apr 2014 08:57:29 +0200
+
 univention-pam (7.0.4-25) unstable; urgency=medium
 
   * Increase open file limit to 32768 (Bug #32415)

@@ -4,7 +4,7 @@
 # Univention PAM
 #   Dump all ldap groups with members to a single file
 #
-# Copyright 2011-2013 Univention GmbH
+# Copyright 2011-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
