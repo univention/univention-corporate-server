@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+version: [0, 1]
+scope: ucs_3.2-0-errata3.2-1
+src: libyaml
+fix: 0.1.3-1.11.201404141217
+desc: |
+ A buffer overflow in libyaml was found which allowed the execution of arbitrary code 
+ if a malformed YAML file is processed.
+note: This update fixes this vulnerability.
+cve:
+ - CVE-2014-2525
