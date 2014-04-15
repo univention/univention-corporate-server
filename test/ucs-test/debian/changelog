@@ -1,3 +1,10 @@
+ucs-test (4.0.164-39) unstable; urgency=low
+
+  * 60_umc-system/21_umc-service-proc-handling: test to
+    start/stop/restart services (Bug #34505)
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 15 Apr 2014 17:36:40 +0200
+
 ucs-test (4.0.164-38) unstable; urgency=low
 
   * 60_umc-system/20_umc-service-autostart: test for umc-service

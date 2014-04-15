@@ -1,0 +1,234 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test the UMC service module process handling
+## bugs: [34505]
+## tags: [apptest]
+## exposure: dangerous
+## packages: [procps]
+
+import sys
+sys.path.insert(0, '.')
+from TestUMCSystemModule import TestUMCSystem
+
+import subprocess
+
+from univention.config_registry import ConfigRegistry
+import univention.testing.utils as utils
+
+
+class TestUMCServiceProcessHandling(TestUMCSystem):
+
+    def __init__(self):
+        """Test Class constructor"""
+        super(TestUMCServiceProcessHandling, self).__init__()
+        self.initial_service_state_running = None
+
+    def restore_initial_state(self, service_name):
+        """
+        Restores the initial 'service_name' state as saved in the global var
+        'initial_service_state_running' using 'do_service_action' method.
+        """
+        if self.initial_service_state_running:
+            self.do_service_action([service_name], 'start')
+            if self.query_service_is_running(service_name) is False:
+                utils.fail("Failed to restore '%s' to initial running state"
+                           % service_name)
+            if self.get_service_current_pid(service_name) == '':
+                utils.fail("Failed to restore '%s' to initial running state,"
+                           " the process id is empty." % service_name)
+        elif self.initial_service_state_running is False:
+            self.do_service_action([service_name], 'stop')
+            if self.query_service_is_running(service_name) is True:
+                utils.fail("Failed to restore %s' to initial stopped state"
+                           % service_name)
+            if self.get_service_current_pid(service_name) != '':
+                utils.fail("Failed to restore '%s' to initial stopped state,"
+                           " the process id is not empty." % service_name)
+
+    def query_service_is_running(self, service_name):
+        """
+        Get the current state for provided 'service_name' by making
+        'services/query' UMC request and returning 'isRunning' field value
+        """
+        request_result = self.make_service_query_request()
+        try:
+            for result in request_result:
+                if result['service'] == service_name:
+                    service_state = result['isRunning']
+                    break
+        except KeyError as exc:
+            utils.fail("Couldn't find the 'isRunning' field for: '%s' "
+                       "service: %s" % (service_name, exc))
+        return service_state
+
+    def get_service_current_pid(self, service_name):
+        """
+        Get the process id for the provided 'service_name' by using pgrep.
+        Returns pid as a string.
+        """
+        proc = subprocess.Popen(("pgrep", service_name),
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+        try:
+            stdout, stderr = proc.communicate()
+            if stderr == '':
+                return stdout.split('\n')[0]  # removing the '\n' if any
+            else:
+                utils.fail("Error occured while pgrep'ing the '%s' service:"
+                           " '%s'" % (service_name, stderr))
+        except OSError as exc:
+            utils.fail("Error occured while getting output from process "
+                       " pgrep'ing '%s': '%s' " % (service_name, exc))
+
+    def do_service_action(self, service_names, action):
+        """
+        Applies an 'action' for provided 'service_names' list via UMC request.
+        Possible options for actions are: start/stop/restart.
+        """
+        try:
+            request_result = self.Connection.request('services/' + action,
+                                                     service_names)
+            if not request_result:
+                utils.fail("Request 'services/%s' failed, no response "
+                           "from hostname '%s'" % (setting, self.hostname))
+            if not request_result['success']:
+                utils.fail("Request 'services/%s' failed, no success in "
+                           "response. Hostname '%s', response '%s'" %
+                           (setting, self.hostname, request_result))
+        except Exception as exc:
+            utils.fail("Exception while making services/%s request: %s" %
+                       (setting, exc))
+
+    def save_check_initial_service_state(self, service_name):
+        """
+        Saves the initial state of the process (Running == True ;
+        Stopped == False).
+        Makes a check if pid is not empty when process is running
+        and v.v. - that pid is empty when 'service_name' is stopped.
+        """
+        self.initial_service_state_running = self.query_service_is_running(
+                                                 service_name)
+
+        if self.initial_service_state_running:
+            if self.get_service_current_pid(service_name) == '':
+                utils.fail("The '%s' was initially shown as running, but "
+                           "process id is empty." % service_name)
+        else:
+            if self.get_service_current_pid(service_name) != '':
+                utils.fail("The '%s' was initially shown as stopped, "
+                           "but process id is not empty." % service_name)
+
+    def check_service_process_states(self, service_name):
+        """
+        Check all the possible variations of 'service_name' process state.
+        Saves initial state before proceeding.
+        """
+        self.save_check_initial_service_state(service_name)
+
+        # make sure the 'service_name' is not running initially
+        self.do_service_action([service_name], 'stop')
+        if self.query_service_is_running(service_name) is True:
+            utils.fail("Could not make '%s' service stop, UMC services/query"
+                       "request shows it as running" % service_name)
+        if self.get_service_current_pid(service_name) != '':
+            utils.fail("The '%s' service pid is not empty after stopping"
+                       % service_name)
+
+        # case 1: service is not running, starting
+        if self.query_service_is_running(service_name) is False:
+            self.do_service_action([service_name], 'start')
+            if self.query_service_is_running(service_name) is False:
+                utils.fail("Could not make '%s' service start, UMC "
+                           "services/query request shows it as not running"
+                           % service_name)
+
+            last_service_pid = self.get_service_current_pid(service_name)
+            if last_service_pid == '':
+                utils.fail("The '%s' service pid is empty after starting"
+                           % service_name)
+
+        # case 2: service is running, restarting
+        if self.query_service_is_running(service_name) is True:
+            self.do_service_action([service_name], 'restart')
+            if self.query_service_is_running(service_name) is False:
+                utils.fail("Could not make '%s' service restart, UMC "
+                           "services/query request shows it as not running"
+                           % service_name)
+
+            current_service_pid = self.get_service_current_pid(service_name)
+            if current_service_pid == '':
+                utils.fail("The '%s' service pid is empty after restarting"
+                           % service_name)
+            if current_service_pid == last_service_pid:
+                utils.fail("The '%s' service process id did not change "
+                           "after restarting" % service_name)
+
+        # case 3: service is running after restart, stopping
+        if self.query_service_is_running(service_name) is True:
+            self.do_service_action([service_name], 'stop')
+            if self.query_service_is_running(service_name) is True:
+                utils.fail("Could not make '%s' service stop, UMC "
+                           "services/query request shows it as running"
+                           % service_name)
+            if self.get_service_current_pid(service_name) != '':
+                utils.fail("The '%s' service pid is not empty after stopping"
+                           % service_name)
+
+        # case 4: service is not running, using restart to start
+        if self.query_service_is_running(service_name) is False:
+            self.do_service_action([service_name], 'restart')
+            if self.query_service_is_running(service_name) is False:
+                utils.fail("Could not make '%s' service start (via restart), "
+                           "UMC services/query request shows it as not running"
+                           % service_name)
+
+            last_service_pid = self.get_service_current_pid(service_name)
+            if last_service_pid == '':
+                utils.fail("The '%s' service pid is empty after starting "
+                           "(via restart)" % service_name)
+
+        # case 5: service is running after restart, using start
+        if self.query_service_is_running(service_name) is True:
+            self.do_service_action([service_name], 'start')
+            if self.query_service_is_running(service_name) is False:
+                utils.fail("Could not make '%s' service start, "
+                           "UMC services/query request shows it as not running"
+                           % service_name)
+            current_service_pid = self.get_service_current_pid(service_name)
+            if current_service_pid == '':
+                utils.fail("The '%s' service pid is empty after starting"
+                           % service_name)
+            if current_service_pid != last_service_pid:
+                utils.fail("The '%s' service process id changed while"
+                           " process should not have been restarted"
+                           % service_name)
+
+        # case 6: service is running, stopping
+        if self.query_service_is_running(service_name) is True:
+            self.do_service_action([service_name], 'stop')
+            if self.query_service_is_running(service_name) is True:
+                utils.fail("Could not make '%s' service stop, UMC "
+                           "services/query request shows it as running"
+                           % service_name)
+            if self.get_service_current_pid(service_name) != '':
+                utils.fail("The '%s' service pid is not empty after stopping"
+                           % service_name)
+
+    def main(self, service_name):
+        """
+        Method to test the UMC 'service_name' service process
+        start/stop/restart behaviour.
+        """
+        self.get_ucr_credentials()
+        self.create_connection_authenticate()
+
+        self.check_service_presence(self.make_service_query_request(),
+                                    service_name)
+        try:
+            self.check_service_process_states(service_name)
+        finally:
+            self.restore_initial_state(service_name)
+
+
+if __name__ == '__main__':
+    TestUMC = TestUMCServiceProcessHandling()
+    sys.exit(TestUMC.main('nscd'))  # tesing 'Name Service Caching Daemon'
