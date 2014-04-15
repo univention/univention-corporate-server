@@ -3,7 +3,7 @@ release: "3.2"
 version: [0, 1]
 scope: ucs_3.2-0-errata3.2-1
 src: openssh
-fix: ucs_3.2-0-errata3.2-1
+fix: 1:5.5p1-6.46.201404071521
 desc: |
  Two vulnerabilities were found in OpenSSH:
  * The AcceptEnv option was misparsed if it contained a wildcard (CVE-2014-2532)
