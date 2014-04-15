@@ -34,9 +34,7 @@ class TestUMCServiceAutostart(TestUMCSystem):
         Reloads the UCR before proceeding.
         """
         self.reload_ucr()
-        ucr_value = None
-        ucr_value = self.UCR.get(service_name_value)
-        return ucr_value
+        return self.UCR.get(service_name_value)
 
     def set_service_configuration(self, service_names, setting):
         """Set the 'setting' for list of 'service_names' via UMC request"""
@@ -113,15 +111,14 @@ class TestUMCServiceAutostart(TestUMCSystem):
                 utils.fail("The '%s' was not changed from "
                            "'manually' to 'yes' in UCR" % autostart_var)
 
-    def main(self):
+    def main(self, service_name):
         """
-        Method to test the UMC 'Name Service Caching Daemon' service
+        Method to test the UMC 'service_name' service
         autostart behaviour
         """
         self.get_ucr_credentials()
         self.create_connection_authenticate()
 
-        service_name = 'nscd'
         self.check_service_presence(self.make_service_query_request(),
                                     service_name)
         try:
@@ -132,4 +129,4 @@ class TestUMCServiceAutostart(TestUMCSystem):
 
 if __name__ == '__main__':
     TestUMC = TestUMCServiceAutostart()
-    sys.exit(TestUMC.main())
+    sys.exit(TestUMC.main('nscd'))  # tesing 'Name Service Caching Daemon'
