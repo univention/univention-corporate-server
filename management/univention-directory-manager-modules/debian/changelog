@@ -1,7 +1,18 @@
-univention-directory-manager-modules (9.0.75-19) unstable; urgency=medium
+univention-directory-manager-modules (9.0.75-27) unstable; urgency=medium
+
+  * version bump for backport of patch for Bug 34421 (Bug #34559)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 15 Apr 2014 20:48:26 +0200
+
+univention-directory-manager-modules (9.0.75-26) unstable; urgency=medium
 
   * resync the udm_extension listener during this update to make it
     generate the registration files for update-python-modules (Bug #34421).
+
+ -- Arvid Requate <requate@univention.de>  Tue, 08 Apr 2014 15:07:43 +0200
+
+univention-directory-manager-modules (9.0.75-19) unstable; urgency=medium
+
   * fix list append (Bug #34421)
 
  -- Arvid Requate <requate@univention.de>  Tue, 15 Apr 2014 20:42:49 +0200
