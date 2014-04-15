@@ -3,13 +3,19 @@ release: "3.1"
 version: [0, 1]
 scope: ucs_3.1-0-errata3.1-1
 src: curl
-fix: 7.21.0-5.38.201403271224
+fix: 7.21.0-6.44.201404141858
 desc: |
  If CURLOPT_SSLVERIFYHOST is disabled, CURLOPT_SSL_VERIFYPEER was disabled
  as well (CVE-2013-4545)
  libcurl can in some circumstances re-use the wrong connection when asked
  to do an NTLM-authenticated HTTP or HTTPS request (CVE-2014-0015)
+ libcurl can in some circumstances re-use the wrong connection when asked to
+ do transfers using other protocols than HTTP and FTP. (CVE-2014-0138)
+ libcurl incorrectly validates wildcard SSL certificates containing literal
+ IP addresses. (CVE-2014-0139)
 note: This update fixes these vulnerabilities.
 cve:
  - CVE-2013-4545
  - CVE-2014-0015
+ - CVE-2014-0138
+ - CVE-2014-0139
