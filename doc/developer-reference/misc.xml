@@ -390,7 +390,7 @@ override_dh_auto_test:
 					<term><replaceable>policy</replaceable></term>
 					<listitem>
 						<para>
-							If a rule is registered as <literal>DENY</literal>, then packets to this port will be silently discarded;
+							If a rule is registered as <literal>DROP</literal>, then packets to this port will be silently discarded;
 							<literal>REJECT</literal> can be used to send back an <acronym>ICMP</acronym> message <literal>port unreachable</literal> instead.
 							Using <literal>ACCEPT</literal> explicitly allows such packets.
 							(IPtables rules are executed until one rule applies;
@@ -409,7 +409,7 @@ override_dh_auto_test:
 			<example>
 				<title>Local firewall rule</title>
 				<programlisting><![CDATA[
-security/packetfilter/tcp/2000/all=DENY
+security/packetfilter/tcp/2000/all=DROP
 security/packetfilter/tcp/2000/all/en=Drop all packets to TCP port 2000
 security/packetfilter/udp/500:600/all=ACCEPT
 security/packetfilter/udp/500:600/all/en=Accept UDP port 500 to 600
