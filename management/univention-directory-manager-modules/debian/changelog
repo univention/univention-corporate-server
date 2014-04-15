@@ -1,3 +1,17 @@
+univention-directory-manager-modules (9.0.75-19) unstable; urgency=medium
+
+  * resync the udm_extension listener during this update to make it
+    generate the registration files for update-python-modules (Bug #34421).
+  * fix list append (Bug #34421)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 15 Apr 2014 20:42:49 +0200
+
+univention-directory-manager-modules (9.0.75-18) unstable; urgency=medium
+
+  * use update-python-modules to maintain the pymodules links (Bug #34421)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 01 Apr 2014 20:37:16 +0200
+
 univention-directory-manager-modules (9.0.75-17) unstable; urgency=low
 
   * Add support for ldap attribute univentionObjectFlag:functional. Ldap

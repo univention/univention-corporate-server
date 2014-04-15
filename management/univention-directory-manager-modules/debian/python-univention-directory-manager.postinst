@@ -49,6 +49,15 @@ if [ "$1" = "configure" ]; then
 	univention-config-registry set password/samba/lmhash?false \
 							directory/manager/user_group/uniqueness=true
 
+	if [ -n "$2" ]; then
+		# Code block specifically for updates
+
+		## The following block can be removed after UCS 3.2-2
+		if dpkg --compare-versions "$2" lt-nl 9.0.75-26; then
+			univention-directory-listener-ctrl resync udm_extension
+		fi
+	fi
+
 	## load the listener module
 	/etc/init.d/univention-directory-listener crestart
 fi
