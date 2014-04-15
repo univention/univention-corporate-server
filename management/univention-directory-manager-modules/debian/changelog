@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.75-27) unstable; urgency=low
+
+  * Don't use cn=univention for the temporary move because cn=univention
+    is ignored by the S4 connector (Bug #34266)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Apr 2014 15:16:28 +0200
+
 univention-directory-manager-modules (9.0.75-26) unstable; urgency=medium
 
   * resync the udm_extension listener during this update to make it

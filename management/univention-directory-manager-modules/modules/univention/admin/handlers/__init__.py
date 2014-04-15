@@ -348,14 +348,14 @@ class base(object):
 		name = 'temporary_move_container_%s' % time.time()
 
 		module = univention.admin.modules.get('container/ou')
-		position = univention.admin.uldap.position('cn=univention,%s' % self.lo.base)
+		position = univention.admin.uldap.position('%s' % self.lo.base)
 
 		temporary_object = module.object(None, self.lo, position)
 		temporary_object.open()
 		temporary_object['name'] = name
 		temporary_object.create()
 
-		return 'ou=%s,cn=univention' % name
+		return 'ou=%s' % name
 
 	def _delete_temporary_ou_if_empty(self, temporary_ou):
 
