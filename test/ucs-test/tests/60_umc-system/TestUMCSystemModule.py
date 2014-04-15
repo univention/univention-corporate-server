@@ -73,7 +73,7 @@ class TestUMCSystem(object):
         else:
             print("The '%s' service is missing in the UMC response: "
                   "%s" % (service_name, request_result))
-            sys.exit(137)
+            sys.exit(TestCodes.REASON_INSTALL)
 
     def return_code_result_skip(self):
         """Method to stop the test with the code 77, RESULT_SKIP """
