@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.75-29) unstable; urgency=low
+
+  * Bump version for Bug 34421 (Bug #34559)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Apr 2014 21:16:15 +0200
+
 univention-directory-manager-modules (9.0.75-28) unstable; urgency=medium
 
   * version bump for backport of patch for Bug 34421 (Bug #34559)
