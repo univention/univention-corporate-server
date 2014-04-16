@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.75-30) unstable; urgency=low
+
+  * Undo commit (Bug #33843)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Apr 2014 14:40:33 +0200
+
 univention-directory-manager-modules (9.0.75-29) unstable; urgency=low
 
   * Bump version for Bug 34421 (Bug #34559)
