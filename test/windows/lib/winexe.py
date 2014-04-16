@@ -72,6 +72,7 @@ class WinExe:
 		for i in range(timeout):
 			try:
 				s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+				s.settimeout(1)
 				s.connect((self.opts.client, self.opts.port))
 				return True
 			except socket.error, e:

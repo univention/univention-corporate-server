@@ -14,8 +14,8 @@ winexe.winexec("domain-join", winexe.opts.domain, winexe.opts.domain_admin, wine
 winexe.winexec("firewall-turn-off")
 winexe.winexec("reboot")
 
-time.sleep(10)
-winexe.wait_for_client(timeout=30)
+time.sleep(30)
+winexe.wait_for_client(timeout=60)
 
 winexe.winexec("check-domain", winexe.opts.domain)
 
