@@ -466,7 +466,7 @@ class StaticSelection(select):
 			<section id="udm:ea:select:dynamic">
 				<title>Dynamic selections</title>
 				<para>
-					A dynamic list is implemented as a <acronym>LDAP</acronym> search, which is described in <xref linkend="udm:syntax:ldap"/>.
+					A dynamic list is implemented as an <acronym>LDAP</acronym> search, which is described in <xref linkend="udm:syntax:ldap"/>.
 					For performance reason it is recommended to implement a class derived from <classname>UDM_Attribute</classname> or <classname>UDM_Objects</classname> instead of using <classname>LDAP_Search</classname>.
 					The file <filename>/usr/share/pyshared/univention/admin/syntax.py</filename> contains several examples.
 				</para>
@@ -1222,9 +1222,9 @@ class DelegateTelephonedNumber(UDM_Attribute):
 						<programlisting language="python"><![CDATA[
 class MyServers(UDM_Objects):
 	udm_modules = (
-		'computers/domaenencontroller_master',
-		'computers/domaenencontroller_backup',
-		'computers/domaenencontroller_slave',
+		'computers/domaincontroller_master',
+		'computers/domaincontroller_backup',
+		'computers/domaincontroller_slave',
 		'computers/memberserver',
 		)
 	label = '%(fqdn)s'
