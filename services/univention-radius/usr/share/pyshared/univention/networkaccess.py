@@ -86,19 +86,19 @@ def concat(list_of_lists):
 @curried
 def checkAccessAttribute(dn, attributes):
 	access = attributes.get('univentionNetworkAccess')
-	if access == ['TRUE']:
+	if access == ['1']:
 		return dn, True
-	if access == ['FALSE']:
+	if access == ['0']:
 		return dn, False
-	return dn, None
+	return dn, False
 
 def reducePolicies(policies):
-	'''evaluate list of same-level policy values ("and" == deny trumps allow)'''
-	return reduce(operator.and_, policies)
+	'''evaluate list of same-level policy values ("or" == allow trumps deny)'''
+	return reduce(operator.or_, policies)
 
 def filterPolicyGroups(groupPolicies):
-	policies = [policy for (groupDn, policy) in groupPolicies if policy is not None]
-	groupsWithout = [groupDn for (groupDn, policy) in groupPolicies if policy is None]
+	policies = [policy for (groupDn, policy) in groupPolicies]
+	groupsWithout = [groupDn for (groupDn, policy) in groupPolicies]
 	return policies, groupsWithout
 
 def findUser(ldapConnection, uid):
@@ -116,10 +116,13 @@ def evaluateLdapPolicies(ldapConnection, searchResult):
 		return findDnGroups(ldapConnection, dn)
 	policies, groupsWithoutPolicy = filterPolicyGroups(map(checkAccessAttribute, searchResult))
 	if policies:
-		return reducePolicies(policies)
+		policy = reducePolicies(policies)
+	else:
+		policy = False
 	if groupsWithoutPolicy:
-		return evaluateLdapPolicies(ldapConnection, concat(map(_findDnGroups, groupsWithoutPolicy)))
-	return False
+		return policy or evaluateLdapPolicies(ldapConnection, concat(map(_findDnGroups, groupsWithoutPolicy)))
+	else:
+		return policy
 
 def traceLdapPolicies(ldapConnection, searchResult, level=''):
 	def _findDnGroups(dn):
@@ -136,7 +139,7 @@ def traceLdapPolicies(ldapConnection, searchResult, level=''):
 	if message:
 		message += '\n'
 	policies, groupsWithoutPolicy = filterPolicyGroups(policyGroups)
-	if not policies and groupsWithoutPolicy:
+	if groupsWithoutPolicy:
 		# build message tree-like
 		for group in groupsWithoutPolicy:
 			message += level + '%r\n' % (group, )
@@ -147,7 +150,7 @@ def traceLdapPolicies(ldapConnection, searchResult, level=''):
 		if result is not None:
 			policies.append(result)
 	if not policies:
-		return None, message
+		return False, message
 	if reducePolicies(policies):
 		return True, message
 	else:

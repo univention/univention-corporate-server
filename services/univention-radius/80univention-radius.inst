@@ -36,6 +36,8 @@ joinscript_init
 
 . /usr/share/univention-lib/all.sh
 
+ucs_addServiceToLocalhost 'RADIUS' "$@"
+
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-radius/networkaccess.schema || exit "$?"
 
@@ -43,12 +45,12 @@ ldap_base="$(ucr get ldap/base)"
 
 udm settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=custom attributes,cn=univention,$ldap_base" \
-	--set name='networkAccess' \
+	--set name='networkAccessComputers' \
 	--set CLIName='networkAccess' \
 	--set shortDescription='Allow network access' \
 	--set translationShortDescription='"de_DE" "Netzwerkzugriff erlaubt"' \
-	--set longDescription='Allow access via RADIUS (802.1x) for this user/group. If unset it is inherited from groups. On conflict access is disallowed.' \
-	--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (802.1x) für diesen Benutzer/Gruppe erlaubt werden. Wenn nicht gesetzt wird es von den Gruppen geerbt. Bei Konflikt wird der Zugang verwehrt."' \
+	--set longDescription='Allow access via RADIUS (802.1x) for this computer.' \
+	--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (802.1x) für diesen Computer erlaubt werden."' \
 	--set tabAdvanced=0 \
 	--set tabName='RADIUS' \
 	--set tabPosition=1 \
@@ -62,9 +64,51 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 	--set module=computers/ubuntu \
 	--set module=computers/windows \
 	--set module=computers/windows_domaincontroller \
+	--set syntax=boolean \
+	--set multivalue=0 \
+	--set valueRequired=0 \
+	--set mayChange=1 \
+	--set doNotSearch=1 \
+	--set notEditable=0 \
+	--set objectClass=univentionNetworkAccess \
+	--set ldapMapping=univentionNetworkAccess \
+	--set deleteObjectClass=1 || exit "$?"
+
+udm settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name='networkAccessGroups' \
+	--set CLIName='networkAccess' \
+	--set shortDescription='Allow network access' \
+	--set translationShortDescription='"de_DE" "Netzwerkzugriff erlaubt"' \
+	--set longDescription='Allow access via RADIUS (802.1x) for members of this group.' \
+	--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (802.1x) für Mitglieder dieser Gruppe erlaubt werden."' \
+	--set tabAdvanced=0 \
+	--set tabName='RADIUS' \
+	--set tabPosition=1 \
 	--set module=groups/group \
+	--set syntax=boolean \
+	--set multivalue=0 \
+	--set valueRequired=0 \
+	--set mayChange=1 \
+	--set doNotSearch=1 \
+	--set notEditable=0 \
+	--set objectClass=univentionNetworkAccess \
+	--set ldapMapping=univentionNetworkAccess \
+	--set deleteObjectClass=1 || exit "$?"
+
+udm settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name='networkAccessUsers' \
+	--set CLIName='networkAccess' \
+	--set shortDescription='Allow network access' \
+	--set translationShortDescription='"de_DE" "Netzwerkzugriff erlaubt"' \
+	--set longDescription='Allow access via RADIUS (802.1x) for this user.' \
+	--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (802.1x) für diesen Benutzer erlaubt werden."' \
+	--set tabAdvanced=0 \
+	--set tabName='RADIUS' \
+	--set tabPosition=1 \
 	--set module=users/user \
-	--set syntax=TrueFalseUpper \
+	--set syntax=boolean \
 	--set multivalue=0 \
 	--set valueRequired=0 \
 	--set mayChange=1 \
