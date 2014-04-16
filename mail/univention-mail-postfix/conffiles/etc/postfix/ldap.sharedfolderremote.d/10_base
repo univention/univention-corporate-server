@@ -24,4 +24,7 @@ if configRegistry.is_true('mail/postfix/ldaptable/starttls', False):
 	print 'start_tls = yes'
 if configRegistry.is_true('mail/postfix/ldaptable/tlsrequirecert', False):
 	print 'tls_require_cert = yes'
+if configRegistry.get('mail/postfix/ldaptable/tlscacertfile'):
+	print 'tls_ca_cert_file = %s' % configRegistry['mail/postfix/ldaptable/tlscacertfile']
+print 'debuglevel = %s' % configRegistry.get('mail/postfix/ldaptable/debuglevel', '0')
 @!@

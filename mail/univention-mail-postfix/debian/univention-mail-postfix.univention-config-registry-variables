@@ -244,3 +244,15 @@ Description[de]=Ist diese Option aktiviert, wird beim Aufbau einer SSL/TLS Verbi
 Description[en]=Whether or not to request the server's X509 certificate and check its validity when establishing SSL/TLS connections.
 Type=bool
 Categories=service-mail
+
+[mail/postfix/ldaptable/tlscacertfile]
+Description[de]=Datei mit den X509 CA-Zertifikaten in PEM Format für Validierung der SSL/TLS Verbindungen.
+Description[en]=File containing the X509 CA certificates in PEM format which are to be recognized by the client in SSL/TLS connections.
+Type=str
+Categories=service-mail
+
+[mail/postfix/ldaptable/debuglevel]
+Description[de]=Debug-Level für OpenLDAP Operationen.
+Description[en]=What level to set for debugging in the OpenLDAP libraries.
+Type=int
+Categories=service-mail

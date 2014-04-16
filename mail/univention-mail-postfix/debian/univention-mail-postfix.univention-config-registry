@@ -141,8 +141,7 @@ Variables: mail/postfix/virtual/.*
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/starttls
-Variables: mail/postfix/ldaptable/tlsrequirecert
+Variables: mail/postfix/ldaptable/.*
 User: postfix
 Group: root
 Mode: 0440
@@ -157,8 +156,7 @@ Variables: mail/postfix/virtual/.*
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/starttls
-Variables: mail/postfix/ldaptable/tlsrequirecert
+Variables: mail/postfix/ldaptable/.*
 User: postfix
 Group: root
 Mode: 0440
@@ -173,8 +171,7 @@ Variables: mail/postfix/virtual/.*
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/starttls
-Variables: mail/postfix/ldaptable/tlsrequirecert
+Variables: mail/postfix/ldaptable/.*
 User: postfix
 Group: root
 Mode: 0440
@@ -189,8 +186,7 @@ Variables: mail/postfix/virtual/.*
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/starttls
-Variables: mail/postfix/ldaptable/tlsrequirecert
+Variables: mail/postfix/ldaptable/.*
 User: postfix
 Group: root
 Mode: 0440
@@ -205,8 +201,7 @@ Variables: mail/postfix/virtual/.*
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/starttls
-Variables: mail/postfix/ldaptable/tlsrequirecert
+Variables: mail/postfix/ldaptable/.*
 User: postfix
 Group: root
 Mode: 0440
@@ -221,8 +216,7 @@ Variables: mail/postfix/virtual/.*
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/starttls
-Variables: mail/postfix/ldaptable/tlsrequirecert
+Variables: mail/postfix/ldaptable/.*
 User: postfix
 Group: root
 Mode: 0440
@@ -237,8 +231,7 @@ Variables: mail/postfix/virtual/.*
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/starttls
-Variables: mail/postfix/ldaptable/tlsrequirecert
+Variables: mail/postfix/ldaptable/.*
 User: postfix
 Group: root
 Mode: 0440
@@ -253,8 +246,7 @@ Variables: mail/postfix/virtual/.*
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/starttls
-Variables: mail/postfix/ldaptable/tlsrequirecert
+Variables: mail/postfix/ldaptable/.*
 User: postfix
 Group: root
 Mode: 0440
@@ -269,8 +261,7 @@ Variables: mail/postfix/virtual/.*
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/starttls
-Variables: mail/postfix/ldaptable/tlsrequirecert
+Variables: mail/postfix/ldaptable/.*
 User: postfix
 Group: root
 Mode: 0440
@@ -285,8 +276,7 @@ Variables: mail/postfix/virtual/.*
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/starttls
-Variables: mail/postfix/ldaptable/tlsrequirecert
+Variables: mail/postfix/ldaptable/.*
 User: postfix
 Group: root
 Mode: 0440

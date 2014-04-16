@@ -1,3 +1,10 @@
+univention-mail-postfix (8.0.11-3) unstable; urgency=low
+
+  * added mail/postfix/ldaptable/debuglevel and
+    mail/postfix/ldaptable/tlscacertfile (Bug #34198) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 Apr 2014 11:45:12 +0200
+
 univention-mail-postfix (8.0.11-2) unstable; urgency=low
 
   * added mail/postfix/ldaptable/tlsrequirecert (Bug #34198) 
