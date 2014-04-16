@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-mail-postfix
-fix: 8.0.11-1.211.201403131645
+fix: 8.0.11-3.213.201404161145
 note:
 version: [1]
 desc: |
@@ -11,7 +11,10 @@ desc: |
     groups and lists) is now executed as user listfilter instead of the user
     cyrus to allow this feature also in environments without the 
     component univention-mail-cyrus.
-  * The new UCR variable mail/postfix/ldaptable/starttls has been introduced to
-    define whether postfix should use an encrypted (TLS) connection for ldap
-    lookups (default: yes).
+  * The new UCR variables 
+     - mail/postfix/ldaptable/starttls (yes)
+     - mail/postfix/ldaptable/tlsrequirecert (yes)
+     - mail/postfix/ldaptable/tlscacertfile (/etc/univention/ssl/ucsCA/CAcert.pem)
+    have been introduced to define whether and how the postfix should use
+    TLS for ldap lookups.
 bug: [26910,34198]
