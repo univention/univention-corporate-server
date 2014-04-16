@@ -16,7 +16,7 @@ desc: |
   * The dependency list of the package has been updated. Prior to this change,
     slapd was left installed on a memberserver when using the appliance mode
     which could lead to problems when this system was querying LDAP.
-  * UDM no longer moves temporary objects to cn=univention, because
-    cn=univention is ignored by the S4 connector and the S4 connector does not
-    recognize the move.
+  * UDM no longer creates temporary objects in cn=univention when moving
+    containers, because cn=univention is ignored by the S4 connector and the S4
+    connector does not recognize the move.
 bug: [34395, 34421, 23765, 34201, 34266]
