@@ -12,9 +12,9 @@ winexe.check_options()
 winexe.winexec("set-dns-server", winexe.opts.dns_server, domain=False)
 winexe.winexec("domain-join", winexe.opts.domain, winexe.opts.domain_admin, winexe.opts.domain_password, domain=False)
 winexe.winexec("firewall-turn-off")
-winexe.winexec("reboot")
 
-time.sleep(30)
+winexe.winexec("reboot")
+winexe.wait_until_client_is_gone(timeout=60)
 winexe.wait_for_client(timeout=60)
 
 winexe.winexec("check-domain", winexe.opts.domain)

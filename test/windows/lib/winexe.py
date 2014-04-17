@@ -220,6 +220,15 @@ class WinExe:
 
 		self.error_and_exit("wait_for_client failed (winexe to %s failed)" % self.opts.client)
 
+	def wait_until_client_is_gone(self, timeout=1):
+
+		for i in range(timeout):
+			if not self.client_reachable(timeout=1):
+				return 0
+			time.sleep(1)
+
+		self.error_and_exit("wait_until_client_is_gone failed, client %s still reachable after %s attempts" % (self.opts.client, timeout))
+
 	def check_user_login(self, runas_user, runas_password):
 		ret, stdout, stderr = self.winexec(
 			"klist",
