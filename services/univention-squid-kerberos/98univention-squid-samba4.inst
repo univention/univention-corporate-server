@@ -57,18 +57,18 @@ extract_binddn_and_bindpwd_from_args() {
 }
 
 samba_private_dir="/var/lib/samba/private"
-servicedescription="$servicedescription Service Account for $hostname"
-service_accountname="http-proxy-$hostname"
+servicename="http-proxy"
+servicedescription="$servicename Service Account for $hostname"
+service_accountname="$servicename-$hostname"
 keytab_filename="$service_accountname.keytab"
 keytab_path="$samba_private_dir/$keytab_filename"
 password=$(create_machine_password)
 spn="HTTP/$(hostname -f)"
 
-
 ## check if user exists
 SPN_DN="$(udm users/user list "$@" --filter username="$service_accountname" | sed -n 's/^DN: //p')"
 if [ -n "$SPN_DN" ]; then
-	## delete service account
+	## modify service account
 	univention-directory-manager users/user modify "$@" \
 		--set password="$password" \
 		--dn "$SPN_DN" || die
