@@ -3,7 +3,6 @@
 ## bugs: [34505]
 ## tags: [apptest]
 ## exposure: dangerous
-## packages: [procps]
 
 import sys
 sys.path.insert(0, '.')
@@ -28,6 +27,8 @@ class TestUMCServiceProcessHandling(TestUMCSystem):
         'initial_service_state_running' using 'do_service_action' method.
         """
         if self.initial_service_state_running:
+            print("Trying to restore the '%s' service to initially "
+                  "running state" % service_name)
             self.do_service_action([service_name], 'start')
             if self.query_service_is_running(service_name) is False:
                 utils.fail("Failed to restore '%s' to initial running state"
@@ -36,6 +37,8 @@ class TestUMCServiceProcessHandling(TestUMCSystem):
                 utils.fail("Failed to restore '%s' to initial running state,"
                            " the process id is empty." % service_name)
         elif self.initial_service_state_running is False:
+            print("Trying to restore the '%s' to initially stopped state"
+                  % service_name)
             self.do_service_action([service_name], 'stop')
             if self.query_service_is_running(service_name) is True:
                 utils.fail("Failed to restore %s' to initial stopped state"
@@ -89,14 +92,14 @@ class TestUMCServiceProcessHandling(TestUMCSystem):
                                                      service_names)
             if not request_result:
                 utils.fail("Request 'services/%s' failed, no response "
-                           "from hostname '%s'" % (setting, self.hostname))
+                           "from hostname '%s'" % (action, self.hostname))
             if not request_result['success']:
                 utils.fail("Request 'services/%s' failed, no success in "
                            "response. Hostname '%s', response '%s'" %
-                           (setting, self.hostname, request_result))
+                           (action, self.hostname, request_result))
         except Exception as exc:
             utils.fail("Exception while making services/%s request: %s" %
-                       (setting, exc))
+                       (action, exc))
 
     def save_check_initial_service_state(self, service_name):
         """
@@ -125,6 +128,8 @@ class TestUMCServiceProcessHandling(TestUMCSystem):
         self.save_check_initial_service_state(service_name)
 
         # make sure the 'service_name' is not running initially
+        print("Stopping the '%s' service first to cover all the test cases"
+               % service_name)
         self.do_service_action([service_name], 'stop')
         if self.query_service_is_running(service_name) is True:
             utils.fail("Could not make '%s' service stop, UMC services/query"
@@ -135,6 +140,8 @@ class TestUMCServiceProcessHandling(TestUMCSystem):
 
         # case 1: service is not running, starting
         if self.query_service_is_running(service_name) is False:
+            print("Test case 1: trying to start the not running '%s'"
+                  " service" % service_name)
             self.do_service_action([service_name], 'start')
             if self.query_service_is_running(service_name) is False:
                 utils.fail("Could not make '%s' service start, UMC "
@@ -148,6 +155,8 @@ class TestUMCServiceProcessHandling(TestUMCSystem):
 
         # case 2: service is running, restarting
         if self.query_service_is_running(service_name) is True:
+            print("Test case 2: trying to restart already running '%s'"
+                  " service" % service_name)
             self.do_service_action([service_name], 'restart')
             if self.query_service_is_running(service_name) is False:
                 utils.fail("Could not make '%s' service restart, UMC "
@@ -164,6 +173,8 @@ class TestUMCServiceProcessHandling(TestUMCSystem):
 
         # case 3: service is running after restart, stopping
         if self.query_service_is_running(service_name) is True:
+            print("Test case 3: trying to stop the running '%s'"
+                  " service" % service_name)
             self.do_service_action([service_name], 'stop')
             if self.query_service_is_running(service_name) is True:
                 utils.fail("Could not make '%s' service stop, UMC "
@@ -175,6 +186,8 @@ class TestUMCServiceProcessHandling(TestUMCSystem):
 
         # case 4: service is not running, using restart to start
         if self.query_service_is_running(service_name) is False:
+            print("Test case 4: trying to restart the not running '%s'"
+                  " service" % service_name)
             self.do_service_action([service_name], 'restart')
             if self.query_service_is_running(service_name) is False:
                 utils.fail("Could not make '%s' service start (via restart), "
@@ -188,6 +201,8 @@ class TestUMCServiceProcessHandling(TestUMCSystem):
 
         # case 5: service is running after restart, using start
         if self.query_service_is_running(service_name) is True:
+            print("Test case 5: trying to start already running '%s'"
+                  " service" % service_name)
             self.do_service_action([service_name], 'start')
             if self.query_service_is_running(service_name) is False:
                 utils.fail("Could not make '%s' service start, "
@@ -204,6 +219,8 @@ class TestUMCServiceProcessHandling(TestUMCSystem):
 
         # case 6: service is running, stopping
         if self.query_service_is_running(service_name) is True:
+            print("Test case 6: trying to stop the running '%s'"
+                  " service" % service_name)
             self.do_service_action([service_name], 'stop')
             if self.query_service_is_running(service_name) is True:
                 utils.fail("Could not make '%s' service stop, UMC "
