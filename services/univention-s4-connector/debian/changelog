@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-34) unstable; urgency=low
+
+  * Save the entryUUID of deleted objects in OpenLDAP to a local cache.
+    This will prevent a recreation of deleted objects (Bug #32263)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Apr 2014 20:32:43 +0200
+
 univention-s4-connector (8.0.33-33) unstable; urgency=low
 
   * Prevent multiple S4 connector instances (Bug #34410)

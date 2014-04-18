@@ -414,7 +414,7 @@ class ucs:
 		
 		self.open_ucs()
 
-		for section in ['DN Mapping UCS','DN Mapping CON','UCS rejected']:
+		for section in ['DN Mapping UCS','DN Mapping CON','UCS rejected', 'UCS deleted']:
 			if not self.config.has_section(section):
 				self.config.add_section(section)				
 
@@ -691,6 +691,11 @@ class ucs:
 				if key:
 					break
 				
+			entryUUID = new.get('entryUUID')[0]
+			if entryUUID:
+				if self.was_entryUUID_deleted(entryUUID):
+					ud.debug(ud.LDAP, ud.PROCESS, "__sync_file_from_ucs: Object with entryUUID %s was already deleted. Don't recreate." % entryUUID)
+					return True
 			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: old: %s" % old)
 			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new: %s" % new)
 			if old and new:
@@ -1187,6 +1192,33 @@ class ucs:
 		ucs_object.move(object['dn'])
 		return True
 
+	def _get_entryUUID(self, dn):
+		try:
+			result = self.search_ucs(base=dn, scope='base', attr=['entryUUID'], unique=True)
+			if result:
+				return result[0][1].get('entryUUID')[0]
+			else:
+				return None
+		except univention.admin.uexceptions.noObject:
+			return None
+
+	def update_deleted_cache_after_removal_in_ucs(self, entryUUID, objectGUID):
+		if not entryUUID:
+			return
+		# use a dummy value
+		if not objectGUID:
+			objectGUID='objectGUID'
+		ud.debug(ud.LDAP, ud.INFO, "update_deleted_cache_after_removal_in_ucs: Save entryUUID %s as deleted to UCS deleted cache. ObjectGUUID: %s" % (entryUUID, objectGUID))
+		self._set_config_option('UCS deleted', entryUUID, base64.encodestring(objectGUID))
+
+	def was_entryUUID_deleted(self, entryUUID):
+		objectGUID = self.config.get('UCS deleted', entryUUID)
+		if objectGUID:
+			return True
+		else:
+			return False
+			
+			
 	def delete_in_ucs(self, property_type, object, module, position):
 		_d=ud.function('ldap.delete_in_ucs')		
 
@@ -1194,12 +1226,16 @@ class ucs:
 			ud.debug(ud.LDAP, ud.PROCESS, "Delete of %s was disabled in mapping" % object['dn'])
 			return True
 
+		objectGUID = object['attributes'].get('objectGUID')[0]
+		entryUUID = self._get_entryUUID(object['dn'])
+
 		module = self.modules[property_type]
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
 
 		try:
 			ucs_object.open()
 			ucs_object.remove()
+			self. update_deleted_cache_after_removal_in_ucs(entryUUID, objectGUID)
 			return True
 		except Exception, e:
 			ud.debug(ud.LDAP, ud.INFO,"delete object exception: %s"%e)
