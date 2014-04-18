@@ -1,3 +1,11 @@
+univention-s4-connector (8.0.33-35) unstable; urgency=low
+
+  * Check if the diff in UCS results to a change in S4, otherwise it is
+    possible that a container should be renamed to the same name in S4
+    which will be result in an LDB error (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Apr 2014 21:11:01 +0200
+
 univention-s4-connector (8.0.33-34) unstable; urgency=low
 
   * Save the entryUUID of deleted objects in OpenLDAP to a local cache.

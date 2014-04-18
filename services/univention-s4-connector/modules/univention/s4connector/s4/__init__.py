@@ -2450,7 +2450,14 @@ class s4(univention.s4connector.ucs):
 											ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 values: %s" % current_s4_values)
 
 											if (to_add or to_remove) and attribute_type[attribute].single_value:
-												modlist.append((ldap.MOD_REPLACE, s4_attribute, value))
+												modify=False
+												if attribute_type[attribute].compare_function:
+													if not attribute_type[attribute].compare_function(list(current_s4_values), list(value)):
+														modify = True
+												elif not univention.s4connector.compare_lowercase(list(current_s4_values), list(value)):
+													modify=True
+												if modify:
+													modlist.append((ldap.MOD_REPLACE, s4_attribute, value))
 											else:
 												if to_remove:
 													r = current_s4_values & to_remove
