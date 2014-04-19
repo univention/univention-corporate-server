@@ -2451,9 +2451,11 @@ class s4(univention.s4connector.ucs):
 
 											if (to_add or to_remove) and attribute_type[attribute].single_value:
 												modify=False
-												if attribute_type[attribute].compare_function:
+												if not current_s4_values or not value:
+													modify=True
+												elif attribute_type[attribute].compare_function:
 													if not attribute_type[attribute].compare_function(list(current_s4_values), list(value)):
-														modify = True
+														modify=True
 												elif not univention.s4connector.compare_lowercase(list(current_s4_values), list(value)):
 													modify=True
 												if modify:

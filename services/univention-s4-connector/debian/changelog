@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-36) unstable; urgency=low
+
+  * The last change didn't check if an attribute was deleted. This has
+    been fixed (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 19 Apr 2014 08:16:05 +0200
+
 univention-s4-connector (8.0.33-35) unstable; urgency=low
 
   * Check if the diff in UCS results to a change in S4, otherwise it is
