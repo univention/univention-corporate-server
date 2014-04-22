@@ -14,4 +14,5 @@ desc: |
     fulfill the password complexity settings
   * The entryUUID of deleted objects in OpenLDAP is now saved to a
     local cache. This will prevent a recreation of deleted objects.
-bug: [31320,34394,34410,34478,32263]
+  * The synchronization has been changed to a diff based algorithm.
+bug: [31320,34394,34410,34478,32263,33621]
