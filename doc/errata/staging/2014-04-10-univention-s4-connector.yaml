@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-s4-connector
-fix: 8.0.33-33.460.201404101011
+fix: 8.0.33-37.464.201404220746
 note: 
 version: [1]
 desc: |
@@ -10,4 +10,6 @@ desc: |
   * The S4 connector python modules are only built for Python 2.6
   * The pcpatch user is no longer ignored by default
   * The start of multiple S4 connector instances is now prevented
-bug: [31320,34394,34410]
+  * While creating a user in UCS a stronger password is used which
+    fulfill the password complexity settings
+bug: [31320,34394,34410,34478]
