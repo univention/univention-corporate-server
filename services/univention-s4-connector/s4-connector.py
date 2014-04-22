@@ -111,7 +111,7 @@ def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
 
 def _is_module_disabled():
 	disabled=False
-	if listener.ucr.is_true('connector/s4/listener/disabled', False):
+	if listener.baseConfig.is_true('connector/s4/listener/disabled', False):
 		return True
 	else:
 		return False
