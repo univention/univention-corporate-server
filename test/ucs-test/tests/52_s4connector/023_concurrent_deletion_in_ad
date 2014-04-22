@@ -4,7 +4,7 @@
 ## packages:
 ## - univention-s4-connector
 ## bugs:
-##  - 33621
+##  - 32263
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/udm.sh" || exit 137

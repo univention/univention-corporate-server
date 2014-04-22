@@ -1,0 +1,50 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: Activate pwQualityCheck in UCS and check the user creation
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## bugs:
+##  - 34478
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+eval "$(ucr shell)"
+
+policy_dn="cn=default-settings,cn=pwhistory,cn=users,cn=policies,$ldap_base"
+
+# Activate pwQualityCheck
+old_value="$(udm-test policies/pwhistory list --filter cn=default-settings | sed -ne 's|.*pwQualityCheck: ||p')"
+udm-test policies/pwhistory modify --dn "$policy_dn" --set pwQualityCheck=TRUE
+
+trap 'test "$old_value" = None && \
+	udm-test policies/pwhistory modify --dn "$policy_dn" --set pwQualityCheck="" || \
+	udm-test policies/pwhistory modify --dn "$policy_dn" --set pwQualityCheck="$old_value"' INT TERM EXIT
+
+# Create users
+username="$(random_chars)"
+
+for((i=0;i<5;i++)); do
+	samba-tool user add "$username$i" Univention.99 || fail_bool 0 110
+done
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+# Check password
+for((i=0;i<5;i++)); do
+	ldapsearch -x -D "uid=$username$i,cn=users,$ldap_base" -s base -w Univention.99 || fail_bool 0 110
+done
+
+# Delete users
+for((i=0;i<5;i++)); do
+	samba-tool user delete "$username$i"
+done
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+exit $RETVAL
