@@ -109,10 +109,22 @@ def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
 		if tmp_array_len != 4:
 			ud.debug(ud.LDAP, ud.ERROR, 'pickle in %s (len=%s) seems to be broken' % (filename, tmp_array_len))
 
+def _is_module_disabled():
+	disabled=False
+	if listener.ucr.is_true('connector/s4/listener/disabled', False):
+		return True
+	else:
+		return False
+	
+
 def handler(dn, new, old, command):
 
 	global group_objects
 	global s4_init_mode
+
+	if _is_module_disabled():
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "s4-connector: UMC module is disabled by UCR variable connector/s4/listener/disabled")
+		return
 
 	listener.setuid(0)
 	try:

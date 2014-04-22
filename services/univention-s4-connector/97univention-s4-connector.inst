@@ -144,6 +144,11 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 
 	univention-config-registry set connector/s4/autostart=yes
 
+	if is_ucr_true connector/s4/listener/disabled; then
+		univention-config-registry unset connector/s4/listener/disabled
+		univention-directory-listener-ctrl resync s4-connector
+	fi
+
 	old_sleep="$connector_s4_poll_sleep"
 	old_retry="$connector_s4_retryrejected"
 
@@ -234,7 +239,9 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 else
 	## Don't autostart S4 Connector
 	/etc/init.d/univention-s4-connector stop
-	univention-config-registry set connector/s4/autostart?no
+	univention-config-registry set	connector/s4/autostart?no \
+						connector/s4/listener/disabled=true
+	/etc/init.d/univention-directory-listener crestart
 fi
 
 joinscript_save_current_version

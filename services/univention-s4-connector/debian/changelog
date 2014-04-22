@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-38) unstable; urgency=low
+
+  * Added UCR variable connector/s4/listener/disabled to disable the s4
+    connector listener module on this host (Bug #33858)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Apr 2014 15:12:37 +0200
+
 univention-s4-connector (8.0.33-37) unstable; urgency=low
 
   * Skip the password synchronization if no password attribute has been

@@ -4,6 +4,12 @@ Description[en]=Directory in which the objects transferred from UCS to Samba 4 a
 Type=str
 Categories=service-s4con
 
+[connector/s4/listener/disabled]
+Description[de]=Definiert, ob das Listener Modul des S4 Connectors die Änderungen aus dem OpenLDAP speichern soll. Diese Variable wird intern von verschiedenen UCS-Tools verwendet und sollte nicht manuell angepasst werden.
+Description[en]=Defines whether the listener module of the S4 connector saves the OpenLDAP changes. This variable is used internally by UCS tools and should not be adapted manually.
+Type=bool
+Categories=service-s4con
+
 [connector/s4/poll/sleep]
 Description[de]=Die Zeit in Sekunden, die nach einem Lauf ohne Änderungen gewartet wird, bis eine erneute Anfrage gestellt wird. Dabei wird auf UCS-Seite im Laufzeitverzeichnis des Univention Directory Listener-Modul gesucht (siehe 'connector/s4/listener/dir') und auf Samba 4-Seite eine LDAP-Anfrage gestellt.
 Description[en]=The time in seconds which is waited after a run without changes until the next request is made. On the UCS side new files are searched in the runtime directory of the Univention Directory listener module (see 'connector/s4/listener/dir'); a LDAP request is made on the Samba 4 side.
