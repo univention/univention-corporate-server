@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-37) unstable; urgency=low
+
+  * Skip the password synchronization if no password attribute has been
+    changed (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Apr 2014 07:39:22 +0200
+
 univention-s4-connector (8.0.33-36) unstable; urgency=low
 
   * The last change didn't check if an attribute was deleted. This has

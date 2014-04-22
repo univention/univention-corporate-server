@@ -457,6 +457,20 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	_d=ud.function('ldap.s4.password_sync_ucs_to_s4')
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4 called")
 	
+	modify=False
+	old_ucs_object = object.get('old_ucs_object', {})
+	new_ucs_object = object.get('new_ucs_object', {})
+	if old_ucs_object or new_ucs_object:
+		for attr in ['sambaLMPassword', 'sambaNTPassword','sambaPwdLastSet','sambaPwdMustChange', 'krb5PrincipalName', 'krb5Key', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService']:
+			old_values = set(old_ucs_object.get(attr, []))
+			new_values = set(new_ucs_object.get(attr, []))
+			if old_values != new_values:
+				modify=True
+				break
+	if not modify:
+		ud.debug(ud.LDAP, ud.INFO, 'password_sync_ucs_to_s4: the password for %s has not been changed. Skipping password sync.' % (object['dn']))
+		return
+
 	compatible_modstring = univention.s4connector.s4.compatible_modstring
 	try:
 		ud.debug(ud.LDAP, ud.INFO, "Object DN=%s" % object['dn'])
@@ -626,6 +640,11 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=True):
 	_d=ud.function('ldap.s4.password_sync_s4_to_ucs')
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs called")
+
+	if ucs_object['modtype'] == 'modify':
+		if not 'pwdLastSet' in ucs_object.get('changed_attributes', []):
+			ud.debug(ud.LDAP, ud.INFO, 'password_sync_s4_to_ucs: the password for %s has not been changed. Skipping password sync.' % (ucs_object['dn']))
+			return
 
 	object=s4connector._object_mapping(key, ucs_object, 'ucs')
 	res=s4connector.lo_s4.lo.search_s(univention.s4connector.s4.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)',['objectSid','pwdLastSet'])

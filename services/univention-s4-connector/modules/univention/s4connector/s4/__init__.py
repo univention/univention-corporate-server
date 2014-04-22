@@ -2362,6 +2362,8 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: modify object: %s"%object['dn'])
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: old_object: %s" % old_ucs_object)
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: new_object: %s" % new_ucs_object)
+			object['old_ucs_object'] = old_ucs_object
+			object['new_ucs_object'] = new_ucs_object
 			attribute_list = set(old_ucs_object.keys()).union(set(new_ucs_object.keys()))
 			if hasattr(self.property[property_type],"con_sync_function"):
 				self.property[property_type].con_sync_function(self, property_type, object)
