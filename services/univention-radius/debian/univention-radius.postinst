@@ -62,21 +62,6 @@ case "$1" in
 			freeradius/conf/ca/file?/etc/univention/ssl/ucsCA/CAcert.pem
 
 		[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
-
-		if [ -z "$2" ]
-		then
-			hostname="$(univention-config-registry get hostname)"
-			cp /etc/univention/ssl/$(hostname)/private.key /etc/freeradius/ssl/private.key
-			cp /etc/univention/ssl/$(hostname)/cert.pem /etc/freeradius/ssl/cert.pem
-			chgrp freerad /etc/freeradius/ssl/private.key
-			chgrp freerad /etc/freeradius/ssl/cert.pem
-			chmod 440 /etc/freeradius/ssl/private.key
-			chmod 440 /etc/freeradius/ssl/cert.pem
-			openssl gendh -out /etc/freeradius/ssl/dh 1024
-		fi
-
-		invoke-rc.d freeradius restart
-
 		;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

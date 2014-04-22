@@ -76,6 +76,38 @@ def checkProxyFilterPolicy(username):
 		return False
 	return True
 
+def traceProxyFilterPolicy(username):
+	message = ''
+	groups = userToGroup.get(username)
+	if groups is None:
+		return False, 'User %r not found\nThus access is DENIED by default.\n' % (username, )
+	groupInfos = [groupInfo[group] for group in groups if group in groupInfo]
+	if groupInfos:
+		(maxPriority, _, ) = max(groupInfos)
+	else:
+		maxPriority = None
+	for group in groups:
+		if group in groupInfo:
+			(priority, wlanEnabled, ) = groupInfo[group]
+			if priority == maxPriority:
+				if wlanEnabled:
+					message += '-> Group %r: ALLOW (priority %r)\n' % (group, priority, )
+				else:
+					message += '-> Group %r: DENY (priority %r)\n' % (group, priority, )
+			else:
+				if wlanEnabled:
+					message += '-> Group %r: allow (ignored) (priority %r)\n' % (group, priority, )
+				else:
+					message += '-> Group %r: deny (ignored) (priority %r)\n' % (group, priority, )
+		else:
+			message += '-> Group %r: not specified\n' % (group, )
+	if not True in [wlanEnabled for (priority, wlanEnabled, ) in groupInfos if priority == maxPriority]:
+		message += 'Thus access is DENIED.\n'
+		return False, message
+	else:
+		message += 'Thus access is ALLOWED.\n'
+		return True, message
+
 def curried(function):
 	return lambda args: function(*args)
 
@@ -171,18 +203,23 @@ def checkStationWhitelist(ldapConnection, stationId):
 	return evaluateLdapPolicies(ldapConnection, result)
 
 def traceNetworkAccess(ldapConnection, username):
+	if userToGroup or groupInfo: # proxy UCRV set, UCS@school mode
+		resultProxy, message = traceProxyFilterPolicy(username)
+	else:
+		resultProxy, message = False, ''
 	result = findUser(ldapConnection, username)
 	if result:
-		result, message = traceLdapPolicies(ldapConnection, result)
+		resultLdap, messageLdap = traceLdapPolicies(ldapConnection, result)
 	else:
-		result, message = False, 'User %r does not exist\n' % (username, )
-	if result is None:
+		resultLdap, messageLdap = False, 'User %r does not exist\n' % (username, )
+	message += messageLdap
+	if resultLdap is None:
 		message += 'Thus access is DENIED by default.\n'
-	elif result:
+	elif resultLdap:
 		message += 'Thus access is ALLOWED.\n'
 	else:
 		message += 'Thus access is DENIED.\n'
-	return bool(result), message
+	return bool(resultProxy or resultLdap), message
 
 def traceStationWhitelist(ldapConnection, stationId):
 	result = findStation(ldapConnection, stationId)
@@ -208,13 +245,13 @@ DISALLOWED_SAMBA_ACCOUNT_FLAGS = frozenset((SAMBA_ACCOUNT_FLAG_DISABLED, SAMBA_A
 def getNTPasswordHash(ldapConnection, username, stationId):
 	'stationId may be None if it was not supplied to the program'
 	if userToGroup or groupInfo: # proxy UCRV set, UCS@school mode
-		if not checkProxyFilterPolicy(username):
+		if not (checkProxyFilterPolicy(username) or checkNetworkAccess(ldapConnection, username)):
 			return None
 	else: # UCS mode
 		if not checkNetworkAccess(ldapConnection, username):
 			return None
-		if not checkStationWhitelist(ldapConnection, stationId):
-			return None
+	if not checkStationWhitelist(ldapConnection, stationId):
+		return None
 	# user is authorized to use the W-LAN, retrieve NT-password-hash from LDAP and return it
 	result = ldapConnection.search(filter=str(univention.admin.filter.expression('uid', username)), attr=['sambaNTPassword', 'sambaAcctFlags'])
 	if not result:

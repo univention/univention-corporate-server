@@ -38,6 +38,16 @@ joinscript_init
 
 ucs_addServiceToLocalhost 'RADIUS' "$@"
 
+hostname="$(univention-config-registry get hostname)"
+cp /etc/univention/ssl/$(hostname)/private.key /etc/freeradius/ssl/private.key
+cp /etc/univention/ssl/$(hostname)/cert.pem /etc/freeradius/ssl/cert.pem
+chgrp freerad /etc/freeradius/ssl/private.key
+chgrp freerad /etc/freeradius/ssl/cert.pem
+chmod 440 /etc/freeradius/ssl/private.key
+chmod 440 /etc/freeradius/ssl/cert.pem
+openssl gendh -out /etc/freeradius/ssl/dh 1024
+invoke-rc.d freeradius restart
+
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-radius/networkaccess.schema || exit "$?"
 

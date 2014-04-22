@@ -1,0 +1,5 @@
+[freeradius]
+description[de]=RADIUS Server "freeradius"
+description[en]=RADIUS server "freeradius"
+start_type=freeradius/autostart
+programs=/usr/sbin/freeradius
