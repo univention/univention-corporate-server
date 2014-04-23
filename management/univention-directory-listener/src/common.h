@@ -39,4 +39,7 @@ void drop_privileges(void);
 #include <dmalloc.h>
 #endif /* DMALLOC */
 
+# define STREQ(a,b) (strcmp(a,b) == 0)
+# define STRNEQ(a,b) (strcmp(a,b) != 0)
+
 #endif /* _COMMON_H_ */

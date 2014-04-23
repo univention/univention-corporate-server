@@ -217,7 +217,7 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 					attribute != NULL && *attribute != NULL;
 					attribute++) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "current attribute is \"%s\"", (*attribute)->name);
-				if (strcmp((*attribute)->name, (char*)key_data) == 0) {
+				if (STREQ((*attribute)->name, (char*)key_data)) {
 					c_attr = *attribute;
 					break;
 				}

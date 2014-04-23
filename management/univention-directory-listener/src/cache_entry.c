@@ -41,6 +41,7 @@
 
 #include "cache_entry.h"
 #include "base64.h"
+#include "common.h"
 
 int cache_free_entry(char **dn, CacheEntry *entry)
 {
@@ -113,7 +114,7 @@ int cache_entry_module_add(CacheEntry *entry, char *module)
 	char **cur;
 
 	for (cur=entry->modules; cur != NULL && *cur != NULL; cur++) {
-		if (strcmp(*cur, module) == 0)
+		if (STREQ(*cur, module))
 			return 0;
 	}
 
@@ -130,7 +131,7 @@ int cache_entry_module_remove(CacheEntry *entry, char *module)
 	char **cur;
 
 	for (cur=entry->modules; cur != NULL && *cur != NULL; cur++) {
-		if (strcmp(*cur, module) == 0)
+		if (STREQ(*cur, module))
 			break;
 	}
 
@@ -155,7 +156,7 @@ int cache_entry_module_present(CacheEntry *entry, char *module)
 	if (entry == NULL)
 		return 0;
 	for (cur=entry->modules; cur != NULL && *cur != NULL; cur++) {
-		if (strcmp(*cur, module) == 0)
+		if (STREQ(*cur, module))
 			return 1;
 	}
 	return 0;
@@ -204,22 +205,22 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 		cache_entry->attributes[cache_entry->attribute_count+1]=NULL;
 
 		memberUidMode = false;
-		if ( !strncmp(cache_entry->attributes[cache_entry->attribute_count]->name, "memberUid", strlen("memberUid")) ) {
+		if (STREQ(cache_entry->attributes[cache_entry->attribute_count]->name, "memberUid")) {
 			char *ucrval;
 			ucrval = univention_config_get_string("listener/memberuid/skip");
 
 			if (ucrval) {
-				memberUidMode = !strcmp(ucrval, "yes") || !strcmp(ucrval, "true");
+				memberUidMode = STREQ(ucrval, "yes") || STREQ(ucrval, "true");
 				free(ucrval);
 			}
 		}
 		uniqueMemberMode = false;
-		if ( !strncmp(cache_entry->attributes[cache_entry->attribute_count]->name, "uniqueMember", strlen("uniqueMember")) ) {
+		if (STREQ(cache_entry->attributes[cache_entry->attribute_count]->name, "uniqueMember")) {
 			char *ucrval;
 			ucrval = univention_config_get_string("listener/uniquemember/skip");
 
 			if (ucrval) {
-				uniqueMemberMode = !strcmp(ucrval, "yes") || !strcmp(ucrval, "true");
+				uniqueMemberMode = STREQ(ucrval, "yes") || STREQ(ucrval, "true");
 				free(ucrval);
 			}
 		}
@@ -325,7 +326,7 @@ char** cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old)
 
 	for (cur1 = new->attributes; cur1 != NULL && *cur1 != NULL; cur1++) {
 		for (cur2 = old->attributes; cur2 != NULL && *cur2 != NULL; cur2++)
-			if (strcmp((*cur1)->name, (*cur2)->name) == 0)
+			if (STREQ((*cur1)->name, (*cur2)->name))
 				break;
 		if (cur2 != NULL && *cur2 != NULL && (*cur1)->value_count == (*cur2)->value_count) {
 			int i;
@@ -344,7 +345,7 @@ char** cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old)
 
 	for (cur2 = old->attributes; cur2 != NULL && *cur2 != NULL; cur2++) {
 		for (cur1 = new->attributes; cur1 != NULL && *cur1 != NULL; cur1++)
-			if (strcmp((*cur1)->name, (*cur2)->name) == 0)
+			if (STREQ((*cur1)->name, (*cur2)->name))
 				break;
 		if (cur1 != NULL && *cur1 != NULL)
 			continue;
@@ -436,7 +437,7 @@ void compare_cache_entries(CacheEntry *lentry, CacheEntry *rentry)
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ALERT:     %s differs\n", *cur);
 
 		for (i=0; lentry->attributes != NULL && lentry->attributes[i] != NULL; i++) {
-			if (strcmp(lentry->attributes[i]->name, *cur) == 0)
+			if (STREQ(lentry->attributes[i]->name, *cur))
 				break;
 		}
 		if (lentry->attributes == NULL || lentry->attributes[i] == NULL) {
@@ -453,7 +454,7 @@ void compare_cache_entries(CacheEntry *lentry, CacheEntry *rentry)
 		}
 
 		for (i=0; rentry->attributes != NULL && rentry->attributes[i] != NULL; i++) {
-			if (strcmp(rentry->attributes[i]->name, *cur) == 0)
+			if (STREQ(rentry->attributes[i]->name, *cur))
 				break;
 		}
 		if (rentry->attributes == NULL || rentry->attributes[i] == NULL) {
@@ -475,7 +476,7 @@ void compare_cache_entries(CacheEntry *lentry, CacheEntry *rentry)
 
 	for (cur1=lentry->modules; cur1 != NULL && *cur1 != NULL; cur1++) {
 		for (cur2=rentry->modules; cur2 != NULL && *cur2 != NULL; cur2++)
-			if (strcmp(*cur1, *cur2) == 0)
+			if (STREQ(*cur1, *cur2))
 				break;
 		if (cur2 != NULL && *cur2 != NULL)
 			continue;
@@ -483,7 +484,7 @@ void compare_cache_entries(CacheEntry *lentry, CacheEntry *rentry)
 	}
 	for (cur2=rentry->modules; cur2 != NULL && *cur2 != NULL; cur2++) {
 		for (cur1=lentry->modules; cur1 != NULL && *cur1 != NULL; cur1++)
-			if (strcmp(*cur1, *cur2) == 0)
+			if (STREQ(*cur1, *cur2))
 				break;
 		if (cur1 != NULL && *cur1 != NULL)
 			continue;

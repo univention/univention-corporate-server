@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
 			cache_dir=strdup(optarg);
 			break;
 		case 'O':
-			if (strcmp(optarg, "-") != 0)
+			if (STRNEQ(optarg, "-"))
 				output_file=strdup(optarg);
 			break;
 		case 'r':

@@ -351,9 +351,9 @@ int notifier_client_new(NotifierClient *client,
 	/* limit address resolution to IPv4 XOR IPv6 */
 	ucrvalue = univention_config_get_string("listener/network/protocol");
 	if (ucrvalue) {
-	    if (!strcmp(ucrvalue, "ipv4")) {
+	    if (STREQ(ucrvalue, "ipv4")) {
 		    hints.ai_family = AF_INET;
-		} else if (!strcmp(ucrvalue, "ipv6")) {
+		} else if (STREQ(ucrvalue, "ipv6")) {
 		    hints.ai_family = AF_INET6;
 		}
 		free(ucrvalue);
@@ -447,7 +447,7 @@ int notifier_client_new(NotifierClient *client,
 		while (*val == ' ')
 			++val;
 
-		if (strcmp(tok, "Version") == 0) {
+		if (STREQ(tok, "Version")) {
 			client->protocol = atoi(val);
 		}
 	}

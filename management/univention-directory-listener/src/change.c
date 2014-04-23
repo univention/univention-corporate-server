@@ -326,7 +326,7 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 
 	server_role = univention_config_get_string("server/role");
 
-	if ( !strcmp(server_role, "domaincontroller_master") ) {
+	if (STREQ(server_role, "domaincontroller_master")) {
 		free(server_role);
 		return LDAP_SUCCESS;
 	}
@@ -382,7 +382,7 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 	int flags = 0;
 	LDAPDN ldap_dn = NULL;
 
-	if (!strcmp(dn, lp_local->base)) {
+	if (STREQ(dn, lp_local->base)) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Ignore parent_dn check because dn is ldap base.");
 		return LDAP_SUCCESS;
 	}
@@ -397,7 +397,7 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 	if ( rv != LDAP_SUCCESS )
 		return rv;
 
-	if (!strcmp(parent_dn, lp_local->base)) {
+	if (STREQ(parent_dn, lp_local->base)) {
 		// univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "parent of DN: %s is base", dn);
 		ldap_memfree( parent_dn );
 		return LDAP_SUCCESS;

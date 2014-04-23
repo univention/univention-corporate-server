@@ -81,13 +81,13 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	if (strcmp(argv[optind+1], "get_id") == 0) {
+	if (STREQ(argv[optind+1], "get_id")) {
 		notifier_get_id_s(NULL, &id);
 		printf("%ld\n", id);
-	} else if (strcmp(argv[optind+1], "get_schema_id") == 0) {
+	} else if (STREQ(argv[optind+1], "get_schema_id")) {
 		notifier_get_schema_id_s(NULL, &id);
 		printf("%ld\n", id);
-	} else if (strcmp(argv[optind+1], "get_dn") == 0) {
+	} else if (STREQ(argv[optind+1], "get_dn")) {
 		int msgid;
 		long getid;
 
