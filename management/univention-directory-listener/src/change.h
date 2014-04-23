@@ -37,7 +37,20 @@
 #include <univention/ldap.h>
 
 #include "network.h"
+#include "cache_entry.h"
 
+struct transaction_op {
+	NotifierEntry notify;
+	CacheEntry cache;
+	char *ldap_dn;
+	char *uuid;
+};
+struct transaction {
+	univention_ldap_parameters_t *lp;
+	univention_ldap_parameters_t *lp_local;
+	LDAPMessage *ldap;
+	struct transaction_op cur, prev;
+};
 
 int	change_new_modules	(univention_ldap_parameters_t	*lp);
 int 	change_update_schema	(univention_ldap_parameters_t	*lp);
@@ -48,10 +61,7 @@ int	change_update_entry	(univention_ldap_parameters_t	*lp,
 int 	change_delete_dn	(NotifierID			 id,
 				 char				*dn,
 				 char 				command);
-int 	change_update_dn	(univention_ldap_parameters_t	*lp,
-				 NotifierID			 id,
-				 char				*dn,
-				 char				command,
-				 univention_ldap_parameters_t   *lp_local);
+extern int	change_update_dn(struct transaction *);
+extern void	change_free_transaction_op(struct transaction_op *);
 
 #endif /* _CHANGE_H_ */

@@ -38,6 +38,7 @@
  */
 
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <db.h>
 
@@ -467,37 +468,139 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 		return rv;	/* LDAP_SUCCESS or other than LDAP_NO_SUCH_OBJECT */
 }
 
-static int cache_lookup_uuid(char *dn, char **uuid) {
-	CacheEntry entry;
-	int rv;
-	int i;
+static bool same_rdn(LDAPRDN left, LDAPRDN right) {
+	int i, j;
 
-	rv = cache_get_entry_lower_upper(dn, &entry);
-	if (rv == 0) {
-		for (i = 0; i < entry.attribute_count; i++) {
-			if (STRNEQ("entryUUID", entry.attributes[i]->name))
-				continue;
-			if (entry.attributes[i]->value_count != 1)
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-						"wrong entryUUID count: %d", entry.attributes[i]->value_count);
-			else if (entry.attributes[i]->length[0] < 36 || entry.attributes[i]->length[0] > 37)
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-						"wrong entryUUID length: %d", entry.attributes[i]->length[0]);
-			else
-				*uuid = strdup(entry.attributes[i]->values[0]);
-			break;
+	for (i = 0; left[i]; i++) {
+		for (j = 0; right[j]; j++) {
+			if (left[i]->la_attr.bv_len != right[j]->la_attr.bv_len)
+				continue; // inner
+			if (left[i]->la_value.bv_len != right[j]->la_value.bv_len)
+				continue; // inner
+			if (memcmp(left[i]->la_attr.bv_val, right[j]->la_attr.bv_val, left[i]->la_attr.bv_len) == 0 &&
+			    memcmp(left[i]->la_value.bv_val, right[j]->la_value.bv_val, left[i]->la_value.bv_len) == 0)
+				break; // to outer
 		}
+		if (!right[j])
+			return false;
 	}
-	cache_free_entry(NULL, &entry);
 
+	for (j = 0; right[j]; j++)
+		;
+	return i == j;
+}
+
+static int process_move(struct transaction *trans) {
+	LDAPDN old_dn = NULL, new_dn = NULL;
+	CacheEntry dummy = {};
+	int rv;
+
+	// 1. remove old cache entry
+	/* run handlers_delete and remove the entry from cache: Bug #26069, Bug #20605, Bug #34355 */
+	rv = cache_delete_entry_lower_upper(trans->prev.notify.id, trans->prev.notify.dn);
+
+	// 2. on rename update cache entry to reflect new RDN
+	rv = ldap_str2dn(trans->prev.notify.dn, &old_dn, 0);
+	if (rv != LDAP_SUCCESS || !old_dn)
+		goto out;
+	rv = ldap_str2dn(trans->cur.notify.dn, &new_dn, 0);
+	if (rv != LDAP_SUCCESS || !new_dn)
+		goto out;
+	if (!same_rdn(old_dn[0], new_dn[0]))
+		cache_entry_update_rdn(&trans->cur.cache, new_dn[0]);
+
+	// 3. Update entryDN
+	cache_entry_set1(&trans->cur.cache, "entryDN", trans->cur.notify.dn);
+
+	// 4. Call handlers for move
+	signals_block();
+	rv = handlers_delete(trans->prev.notify.dn, &trans->prev.cache, 'r');
+	rv = handlers_update(trans->cur.notify.dn, &trans->cur.cache, &dummy, 'a', NULL);
+	signals_unblock();
+
+	// 5. Store cache entry at new location
+	if ((rv = cache_update_entry_lower(trans->cur.notify.id, trans->cur.notify.dn, &trans->cur.cache)) != 0) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
+	}
+
+	// 6. Check for final destination
+	if (STREQ(trans->cur.notify.dn, trans->cur.ldap_dn)) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
+				"Object finally moved to '%s'",
+				trans->cur.ldap_dn);
+		rv = change_update_entry(trans->lp, trans->cur.notify.id, trans->ldap, 'm');
+	}
+
+out:
+	ldap_dnfree(old_dn);
+	ldap_dnfree(new_dn);
+	return rv;
+}
+
+static int change_update_cache(struct transaction *trans) {
+	int rv;
+
+	/* entry exists, so make sure the schema is up-to-date and
+	* then update it */
+	if ((rv = change_update_schema(trans->lp)) != LDAP_SUCCESS)
+		goto out;
+
+	trans->cur.ldap_dn = ldap_get_dn(trans->lp->ld, trans->ldap);
+	if (!trans->cur.ldap_dn) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get current DN %s",
+				trans->cur.notify.dn);
+		goto out;
+	}
+
+	// TODO: 2014-04-23 PMH: delay this to only when needed?
+	if (trans->lp_local->host != NULL)     // we are a replicating system
+		rv = check_parent_dn(trans->lp, trans->cur.notify.id, trans->cur.ldap_dn, trans->lp_local);
+
+	switch (trans->cur.notify.command) {
+	case 'm': // modify
+		if (STRNEQ(trans->cur.notify.dn, trans->cur.ldap_dn))
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
+					"Delaying update for '%s' until moved to '%s'",
+					trans->cur.notify.dn, trans->cur.ldap_dn);
+		else
+			rv = change_update_entry(trans->lp, trans->cur.notify.id, trans->ldap, trans->cur.notify.command);
+		break;
+	case 'a': // add | move_to
+		if (trans->prev.notify.command == 'r') { // move_to
+			rv = process_move(trans);
+		} else { // add
+			if (STRNEQ(trans->cur.notify.dn, trans->cur.ldap_dn))
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
+						"Schizophrenia: a NEW object '%s' is added, which ALREADY is in our cache for '%s'?",
+						trans->cur.ldap_dn, trans->cur.notify.dn);
+			rv = change_update_entry(trans->lp, trans->cur.notify.id, trans->ldap, trans->cur.notify.command);
+		}
+		break;
+	case 'd': // delete
+		if (STRNEQ(trans->cur.notify.dn, trans->cur.ldap_dn))
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
+					"Resurrection: DELETED object '%s' will re-appear at '%s'?",
+					trans->cur.notify.dn, trans->cur.ldap_dn);
+		rv = change_delete_dn(trans->cur.notify.id, trans->cur.notify.dn, trans->cur.notify.command);
+		break;
+	case 'r': // move_from
+		// delay this 'r' until the following 'a' to decide if this is really a move or a delete.
+		trans->prev = trans->cur;
+		rv = 0;
+		break;
+	default:
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Unknown command: %c",
+				trans->cur.notify.command);
+	}
+
+out:
 	return rv;
 }
 
 /* Update DN from LDAP; this is a higher level interface for
    change_update_entry  */
-int change_update_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, char command, univention_ldap_parameters_t *lp_local)
-{
-	LDAPMessage *res, *cur;
+int change_update_dn(struct transaction *trans) {
+	LDAPMessage *res;
 	char *base;
 	int scope;
 	char filter[64]; /* "(entryUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX)" */
@@ -511,55 +614,82 @@ int change_update_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, 
 	};
 	int sizelimit = 0;
 	int rv;
-	char *uuid = NULL;
+	const char *uuid = NULL;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "updating %s", dn);
-	if ( command == 'r' ) {
-		/* if the entry has been renamed, run handlers_delete and remove the entry from cache, Bug #26069, updated for Bug #20605*/
-		return change_delete_dn(id, dn, command);
-	}
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "updating '%s' command %c", trans->cur.notify.dn, trans->cur.notify.command);
 
-	rv = cache_lookup_uuid(dn, &uuid);
+	rv = cache_get_entry_lower_upper(trans->cur.notify.dn, &trans->cur.cache);
 	if (rv != 0 && rv != DB_NOTFOUND) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while reading from database");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error reading database for %s", trans->cur.notify.dn);
 		return LDAP_OTHER;
+	}
+	switch (trans->prev.notify.command) {
+	case '\0': // no previous pending command
+		if (rv == 0)
+			uuid = cache_entry_get1(&trans->cur.cache, "entryUUID");
+		break;
+	case 'r': // move_from ... move_to
+		if (rv == 0) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "move_to collision at '%s'", trans->cur.notify.dn);
+			cache_free_entry(NULL, &trans->cur.cache);
+		}
+		if (trans->cur.notify.command == 'a' && trans->prev.notify.id + 1 == trans->cur.notify.id) {
+			rv = copy_cache_entry(&trans->prev.cache, &trans->cur.cache);
+			if (rv)
+				goto out;
+			uuid = trans->prev.uuid;
+			break;
+		}
+	default:
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
+				"non consecutive move: %ld:%c:%s << %ld:%c:%s",
+				trans->prev.notify.id, trans->prev.notify.command, trans->prev.notify.dn,
+				trans->cur.notify.id, trans->cur.notify.command, trans->cur.notify.dn);
+		rv = 1;
+		goto out;
 	}
 
 	if (uuid) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "updating UUID %s", uuid);
-		base = lp->base;
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "updating by UUID %s", uuid);
+		base = trans->lp->base;
 		scope = LDAP_SCOPE_SUBTREE;
 		snprintf(filter, sizeof(filter), "(entryUUID=%s)", uuid);
-		free(uuid);
+		trans->cur.uuid = strdup(uuid);
 	} else {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "no entryUUID %s", dn);
-		base = dn;
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "updating by DN %s", trans->cur.notify.dn);
+		base = trans->cur.notify.dn;
 		scope = LDAP_SCOPE_BASE;
 		snprintf(filter, sizeof(filter), "(objectClass=*)");
 	}
 
-	rv = ldap_search_ext_s(lp->ld, base, scope, filter, attrs, attrsonly, serverctrls, clientctrls, &timeout, sizelimit, &res);
+	rv = ldap_search_ext_s(trans->lp->ld, base, scope, filter, attrs, attrsonly, serverctrls, clientctrls, &timeout, sizelimit, &res);
 	if (rv == LDAP_NO_SUCH_OBJECT) {
-		rv = change_delete_dn(id, dn, command);
+		// FIXME: trans->cur.notify.command = 'd' // to overwrite 'r' without 'a'
+		rv = change_delete_dn(trans->cur.notify.id, trans->cur.notify.dn, trans->cur.notify.command);
 	} else if (rv == LDAP_SUCCESS) {
-		if ((cur=ldap_first_entry(lp->ld, res)) == NULL) {
+		if ((trans->ldap = ldap_first_entry(trans->lp->ld, res)) == NULL) {
 			/* entry exists (since we didn't get NO_SUCH_OBJECT),
 			* but was probably excluded through ACLs which makes it
 			* non-existent for us */
-			rv = change_delete_dn(id, dn, command);
+			// FIXME: trans->cur.notify.command = 'd' // to overwrite 'r' without 'a'
+			rv = change_delete_dn(trans->cur.notify.id, trans->cur.notify.dn, trans->cur.notify.command);
 		} else {
-			/* entry exists, so make sure the schema is up-to-date and
-			* then update it */
-			if ((rv = change_update_schema(lp)) == LDAP_SUCCESS) {
-				if (lp_local->host != NULL)     // we are a replicating system
-					rv = check_parent_dn(lp, id, dn, lp_local);
-				rv = change_update_entry(lp, id, cur, command);
-			}
+			rv = change_update_cache(trans);
 		}
+		trans->ldap = NULL;
 	} else {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error searching dn %s: %d", dn, rv);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error searching DN %s: %d", trans->cur.notify.dn, rv);
 	}
 	ldap_msgfree(res);
 
+out:
 	return rv;
+}
+
+void change_free_transaction_op(struct transaction_op *op) {
+	ldap_memfree(op->ldap_dn);
+	free(op->uuid);
+	notifier_entry_free(&op->notify);
+	cache_free_entry(NULL, &op->cache);
+	memset(op, 0, sizeof(struct transaction_op));
 }

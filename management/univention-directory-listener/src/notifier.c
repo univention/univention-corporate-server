@@ -90,7 +90,12 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 		int write_transaction_file,
 		univention_ldap_parameters_t *lp_local)
 {
+	int rv = 0;
 	NotifierID	id;
+	struct transaction trans = {
+		.lp = lp,
+		.lp_local = lp_local,
+	};
 
 #ifndef WITH_DB42
 	/* we should only get here, if the cache has previously been
@@ -104,10 +109,8 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 #endif
 
 	for (;;) {
-		NotifierEntry	entry;
 		int		msgid;
 		time_t		timeout = DELAY_LDAP_CLOSE;
-		int		rv;
 
 		if ((msgid = notifier_get_dn(NULL, id+1)) < 1)
 			break;
@@ -125,13 +128,13 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 					}
 					notifier_resend_get_dn(NULL, msgid, id+1);
 				} else {
-					if (lp->ld != NULL) {
-						ldap_unbind_ext(lp->ld, NULL, NULL);
-						lp->ld = NULL;
+					if (trans.lp->ld != NULL) {
+						ldap_unbind_ext(trans.lp->ld, NULL, NULL);
+						trans.lp->ld = NULL;
 					}
-					if (lp_local->ld != NULL) {
-						ldap_unbind_ext(lp_local->ld, NULL, NULL);
-						lp_local->ld = NULL;
+					if (trans.lp_local->ld != NULL) {
+						ldap_unbind_ext(trans.lp_local->ld, NULL, NULL);
+						trans.lp_local->ld = NULL;
 					}
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "running postrun handlers");
 					handlers_postrun_all();
@@ -146,57 +149,61 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 			}
 		}
 
-		if (notifier_get_dn_result(NULL, msgid, &entry) != 0) {
+		memset(&trans.cur, 0, sizeof(trans.cur));
+		if (notifier_get_dn_result(NULL, msgid, &trans.cur.notify) != 0) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get dn result");
 			return 1;
 		}
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "notifier returned = id: %ld\tdn: %s\tcmd: %c", entry.id, entry.dn, entry.command);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "notifier returned = id: %ld\tdn: %s\tcmd: %c", trans.cur.notify.id, trans.cur.notify.dn, trans.cur.notify.command);
 
-		if (entry.id != id+1) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "notifier returned transaction id %ld (%ld expected)", entry.id, id+1);
-			notifier_entry_free(&entry);
-			return 1;
+		if (trans.cur.notify.id != id+1) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "notifier returned transaction id %ld (%ld expected)", trans.cur.notify.id, id+1);
+			rv = 1;
+			goto out;
 		}
+		id = trans.cur.notify.id;
 
 		/* ensure that LDAP connection is open */
-		if (lp->ld == NULL) {
-			if ((rv = connect_to_ldap(lp, kp)) != 0) {
+		if (trans.lp->ld == NULL) {
+			if ((rv = connect_to_ldap(trans.lp, kp)) != 0) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to connect to LDAP");
-				notifier_entry_free(&entry);
-				return rv;
+				goto out;
 			}
 		}
 
 		/* Try to do the change. If the LDAP server is down, try
 		   to reconnect */
-		while ((rv = change_update_dn(lp, entry.id, entry.dn, entry.command, lp_local)) != LDAP_SUCCESS) {
+		while ((rv = change_update_dn(&trans)) != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "change_update_dn: %s", ldap_err2string(rv));
-			if (rv == LDAP_SERVER_DOWN) {
-				int rv2;
-				if ((rv2 = connect_to_ldap(lp, kp)) != 0) {
-					notifier_entry_free(&entry);
-					return rv2;
-				}
-			} else {
-				notifier_entry_free(&entry);
-				return rv;
-			}
+			if (rv == LDAP_SERVER_DOWN)
+				if ((rv = connect_to_ldap(trans.lp, kp)) == 0)
+					continue;
+			goto out;
 		}
 
 		/* rv had better be LDAP_SUCCESS if we get here */
 		assert(rv == LDAP_SUCCESS);
 
-		if (write_transaction_file && notifier_write_transaction_file(entry) != 0) {
-			notifier_entry_free(&entry);
-			break;
+		/* Delay current command is stash for later, otherwise process pending command now */
+		if (trans.prev.notify.command) {
+			if (trans.prev.notify.command == trans.cur.notify.command)
+				continue;
+			if (write_transaction_file && (rv = notifier_write_transaction_file(trans.prev.notify)) != 0)
+				goto out;
+			change_free_transaction_op(&trans.prev);
 		}
 
-		id = entry.id;
+		if (write_transaction_file && (rv = notifier_write_transaction_file(trans.cur.notify)) != 0)
+			goto out;
+
 #ifndef WITH_DB42
 		cache_set_int("notifier_id", id);
 #endif
-		notifier_entry_free(&entry);
+		change_free_transaction_op(&trans.cur);
 	}
 
-	return 0;
+out:
+	change_free_transaction_op(&trans.cur);
+	change_free_transaction_op(&trans.prev);
+	return rv;
 }
