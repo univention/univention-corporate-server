@@ -1,0 +1,20 @@
+#!/bin/bash
+## desc: Rename unfiltered object with change in RDN MAY
+## bugs: [33594]
+main () {
+	$BUG33594 && exit 0
+	ldapmodify <<__LDIF__
+dn: cn=test,cn=visible,$BASE
+changetype: add
+objectClass: person
+cn: test
+sn: test
+__LDIF__
+
+	ldapmodrdn "cn=test,cn=visible,$BASE" "description=test" # no "-r"
+	check "cn=test,cn=visible" "" - r
+	check "description=test,cn=visible" - "" a
+
+	udm settings/packages remove --dn "description=test,cn=visible,$BASE"
+}
+. "${0%/*}/common.sh"

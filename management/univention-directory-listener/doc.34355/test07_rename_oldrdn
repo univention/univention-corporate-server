@@ -1,0 +1,14 @@
+#!/bin/bash
+## desc: Rename unfiltered object keeping old RDN
+## bugs: [33594]
+main () {
+	udm settings/packages create --position "cn=visible,$BASE" --set name=test
+	wait_listener
+
+	ldapmodrdn "cn=test,cn=visible,$BASE" "cn=test2" # no "-r"
+	check "cn=test,cn=visible" "" - r
+	check "cn=test2,cn=visible" - "" a
+
+	udm settings/packages remove --dn "cn=test2,cn=visible,$BASE"
+}
+. "${0%/*}/common.sh"

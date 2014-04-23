@@ -1,0 +1,13 @@
+#!/bin/bash
+## desc: Rename unfiltered object
+main () {
+	udm settings/packages create --position "cn=visible,$BASE" --set name=test
+	wait_listener
+
+	udm settings/packages modify --dn "cn=test,cn=visible,$BASE" --set name=test2
+	check "cn=test,cn=visible" "" - r
+	check "cn=test2,cn=visible" - "" a
+
+	udm settings/packages remove --dn "cn=test2,cn=visible,$BASE"
+}
+. "${0%/*}/common.sh"

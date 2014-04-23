@@ -1,0 +1,14 @@
+#!/bin/bash
+## desc: Create and move unfiltered object
+## bugs: [34355]
+main () {
+	listener stop
+	udm settings/packages create --position "cn=visible,$BASE" --set name=test
+	udm settings/packages move --dn "cn=test,cn=visible,$BASE" --position "$BASE"
+	listener start
+	! check "cn=test,cn=visible"
+	check "cn=test" - "" a
+
+	udm settings/packages remove --dn "cn=test,$BASE"
+}
+. "${0%/*}/common.sh"

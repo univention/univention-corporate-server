@@ -1,0 +1,23 @@
+#!/bin/bash
+## desc: Create, modify twice, move (and delete) unfiltered object
+## bugs: [34355]
+main () {
+	udm settings/packages create --position "cn=visible,$BASE" --set name=test
+
+	listener stop
+	udm settings/packages modify --dn "cn=test,cn=visible,$BASE" --set packageList="test$RANDOM"
+	udm settings/packages modify --dn "cn=test,cn=visible,$BASE" --append packageList="test2$RANDOM"
+	udm settings/packages move --dn "cn=test,cn=visible,$BASE" --position "$BASE"
+	listener start
+	if $BUG34355
+	then
+		check "cn=test,cn=visible" "" - m
+	else
+		check "cn=test,cn=visible" "" - r
+		check "cn=test" - "" a
+		check "cn=test" "" "" m
+	fi
+
+	udm settings/packages remove --dn "cn=test,$BASE"
+}
+. "${0%/*}/common.sh"

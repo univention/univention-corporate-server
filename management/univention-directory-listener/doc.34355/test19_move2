@@ -1,0 +1,30 @@
+#!/bin/bash
+## desc: modify unfiltered object trice and move twice
+## bugs: [34355]
+main () {
+	udm settings/packages create --position "cn=visible,$BASE" --set name=test
+
+	listener stop
+	udm settings/packages modify --dn "cn=test,cn=visible,$BASE" --append packageList="test1$RANDOM"
+	udm settings/packages move --dn "cn=test,cn=visible,$BASE" --position "$BASE"
+	udm settings/packages modify --dn "cn=test,$BASE" --append packageList="test2$RANDOM"
+	udm settings/packages move --dn "cn=test,$BASE" --position "cn=visible,$BASE"
+	udm settings/packages modify --dn "cn=test,cn=visible,$BASE" --append packageList="test3$RANDOM"
+	listener start
+	if $BUG34355
+	then
+		check "cn=test,cn=visible" "" "" m
+		check 'cn=test,cn=visible' "" - r
+		check 'cn=test,cn=visible' - "" a
+	else
+		check 'cn=test,cn=visible' "" - r
+		check 'cn=test' - "" a
+		check 'cn=test' "" - r
+		check 'cn=test,cn=visible' - "" a
+		check 'cn=test,cn=visible' "" "" m
+	fi
+	! check "cn=test" "" "" m
+
+	udm settings/packages remove --dn "cn=test,cn=visible,$BASE"
+}
+. "${0%/*}/common.sh"

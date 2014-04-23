@@ -1,0 +1,11 @@
+#!/bin/bash
+## desc: Create and delete filtered object
+main () {
+	udm settings/packages create --position "cn=restricted,$BASE" --set name=test
+	wait_listener
+	[ -f "$LOG" -a ! -s "$LOG" ]
+	udm settings/packages remove --dn "cn=test,cn=restricted,$BASE"
+	wait_listener
+	[ -f "$LOG" -a ! -s "$LOG" ]
+}
+. "${0%/*}/common.sh"

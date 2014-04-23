@@ -29,11 +29,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 #
-tests: test__filter__cache_entry_ldap_filter_match
+TESTS += test__filter__cache_entry_ldap_filter_match
+TESTS += test__change__same_rdn
+
+.PHONY: tests
+tests: $(TESTS)
 	set -e ; for t in $^; do ./$$t ; done
 
 test__filter__cache_entry_ldap_filter_match: test__filter__cache_entry_ldap_filter_match.o ../src/filter.o
+test__change__same_rdn: test__change__same_rdn.o -lldap
 
 include ../src/Makefile
 
 CFLAGS := -g -Wall -Werror -D_FILE_OFFSET_BITS=64 $(DB_CFLAGS) -I../src
+
+.PHONY: clean
+clean:
+	$(RM) *.o
+	$(RM) $(TESTS)

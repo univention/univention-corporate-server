@@ -1,0 +1,11 @@
+#!/bin/bash
+## desc: Modify unfiltered object
+main () {
+	udm settings/packages create --position "cn=visible,$BASE" --set name=test
+
+	udm settings/packages modify --dn "cn=test,cn=visible,$BASE" --set packageList="test$RANDOM"
+	check "cn=test,cn=visible" "" "" m
+
+	udm settings/packages remove --dn "cn=test,cn=visible,$BASE"
+}
+. "${0%/*}/common.sh"

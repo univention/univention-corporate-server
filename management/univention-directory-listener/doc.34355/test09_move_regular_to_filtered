@@ -1,0 +1,35 @@
+#!/bin/bash
+## desc: Create unfiltered object and move to filtered (and delete)
+## bugs: [32685]
+main () {
+	$BUG32685 && exit 0
+	udm settings/packages create --position "cn=visible,$BASE" --set name=test
+	wait_listener
+
+	udm settings/packages move --dn "cn=test,cn=visible,$BASE" --position "cn=restricted,$BASE"
+	check "cn=test,cn=visible" "" - r
+	! check "cn=test,cn=restricted" - "" a
+
+	udm settings/packages remove --dn "cn=test,cn=restricted,$BASE"
+}
+. "${0%/*}/common.sh"
+# BUG32685: Listener will switch to failed LDIF mode if called twice
+# * Failed LDIF:
+# dn: cn=test,cn=visible,dc=phahn,dc=dev
+# changetype: delete
+# 
+# dn: cn=test,cn=visible,dc=phahn,dc=dev
+# changetype: modify
+# replace: entryCSN
+# entryCSN: 20140416085238.202110Z#000000#000#000000
+# -
+# replace: entryUUID
+# entryUUID: 34ba2790-5990-1033-8bd2-6d1c11cdc722
+# -
+# replace: modifyTimestamp
+# modifyTimestamp: 20140416085238Z
+# -
+# replace: createTimestamp
+# createTimestamp: 20140416085238Z
+# -
+# 

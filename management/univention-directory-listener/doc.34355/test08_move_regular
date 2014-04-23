@@ -1,0 +1,13 @@
+#!/bin/bash
+## desc: Move unfiltered object
+main () {
+	udm settings/packages create --position "cn=visible,$BASE" --set name=test
+	wait_listener
+
+	udm settings/packages move --dn "cn=test,cn=visible,$BASE" --position "$BASE"
+	check "cn=test,cn=visible" "" - r
+	check "cn=test" - "" a
+
+	udm settings/packages remove --dn "cn=test,$BASE"
+}
+. "${0%/*}/common.sh"

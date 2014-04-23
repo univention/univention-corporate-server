@@ -1,6 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdbool.h>
+#include "test.h"
 #include "filter.h"
 
 static struct filter filter_base = {
@@ -37,119 +35,86 @@ static CacheEntry entry = {
 	.module_count = 0,
 };
 
-static bool test_match_exact_base(void) {
+#define TEST(n) \
+	_TEST(n); static bool test_##n(void)
+TEST(match_exact_base) {
 	char dn[] = "dc=bar,dc=baz";
 	int r = cache_entry_ldap_filter_match(filters_base, dn, &entry);
 	return r == 1;
 }
-static bool test_match_exact_one(void) {
+TEST(match_exact_one) {
 	char dn[] = "dc=bar,dc=baz";
 	int r = cache_entry_ldap_filter_match(filters_one, dn, &entry);
 	return r == 0;
 }
-static bool test_match_exact_sub(void) {
+TEST(match_exact_sub) {
 	char dn[] = "dc=bar,dc=baz";
 	int r = cache_entry_ldap_filter_match(filters_sub, dn, &entry);
 	return r == 1;
 }
 
-static bool test_match_one_base(void) {
+TEST(match_one_base) {
 	char dn[] = "dc=foo,dc=bar,dc=baz";
 	int r = cache_entry_ldap_filter_match(filters_base, dn, &entry);
 	return r == 0;
 }
-static bool test_match_one_one(void) {
+TEST(match_one_one) {
 	char dn[] = "dc=foo,dc=bar,dc=baz";
 	int r = cache_entry_ldap_filter_match(filters_one, dn, &entry);
 	return r == 1;
 }
-static bool test_match_one_sub(void) {
+TEST(match_one_sub) {
 	char dn[] = "dc=foo,dc=bar,dc=baz";
 	int r = cache_entry_ldap_filter_match(filters_sub, dn, &entry);
 	return r == 1;
 }
 
-static bool test_match_other_base(void) {
+TEST(match_other_base) {
 	char dn[] = "dc=foo";
 	int r = cache_entry_ldap_filter_match(filters_base, dn, &entry);
 	return r == 0;
 }
-static bool test_match_other_one(void) {
+TEST(match_other_one) {
 	char dn[] = "dc=foo";
 	int r = cache_entry_ldap_filter_match(filters_one, dn, &entry);
 	return r == 0;
 }
-static bool test_match_other_sub(void) {
+TEST(match_other_sub) {
 	char dn[] = "dc=foo";
 	int r = cache_entry_ldap_filter_match(filters_sub, dn, &entry);
 	return r == 0;
 }
 
-static bool test_match_sub_base(void) {
+TEST(match_sub_base) {
 	char dn[] = "dc=bam,dc=foo,dc=bar,dc=baz";
 	int r = cache_entry_ldap_filter_match(filters_base, dn, &entry);
 	return r == 0;
 }
-static bool test_match_sub_one(void) {
+TEST(match_sub_one) {
 	char dn[] = "dc=bam,dc=foo,dc=bar,dc=baz";
 	int r = cache_entry_ldap_filter_match(filters_one, dn, &entry);
 	return r == 0;
 }
-static bool test_match_sub_sub(void) {
+TEST(match_sub_sub) {
 	char dn[] = "dc=bam,dc=foo,dc=bar,dc=baz";
 	int r = cache_entry_ldap_filter_match(filters_sub, dn, &entry);
 	return r == 1;
 }
 
-static bool test_match_case_sub(void) {
+TEST(match_case_sub) {
 	char dn[] = "dc=foo,dc=bar,dc=BAZ";
 	int r = cache_entry_ldap_filter_match(filters_sub, dn, &entry);
 	return r == 0;
 }
 
-static bool test_match_short_sub(void) {
+TEST(match_short_sub) {
 	char dn[] = "dc=baz";
 	int r = cache_entry_ldap_filter_match(filters_sub, dn, &entry);
 	return r == 0;
 }
 
-static bool test_match_infix_sub(void) {
+TEST(match_infix_sub) {
 	char dn[] = "dc=foo,dc=bar,dc=baz,dc=bam";
 	int r = cache_entry_ldap_filter_match(filters_sub, dn, &entry);
 	return r == 0;
-}
-
-#define TEST(n) { .name = "test_" # n, .func = test_##n }
-struct tests {
-	const char *name;
-	bool (*func)(void);
-} tests[] = {
-	TEST(match_exact_base),
-	TEST(match_exact_one),
-	TEST(match_exact_sub),
-	TEST(match_one_base),
-	TEST(match_one_one),
-	TEST(match_one_sub),
-	TEST(match_other_base),
-	TEST(match_other_one),
-	TEST(match_other_sub),
-	TEST(match_sub_base),
-	TEST(match_sub_one),
-	TEST(match_sub_sub),
-	TEST(match_case_sub),
-	TEST(match_short_sub),
-	TEST(match_infix_sub),
-};
-#define ARRAY_SIZE(x) (sizeof(x) / sizeof(*(x)))
-
-int main(int argc, char *argv[]) {
-	int i, failed = 0;
-	for (i = 0; i < ARRAY_SIZE(tests); i++)
-		if (tests[i].func()) {
-			fprintf(stdout, "+%s\n", tests[i].name);
-		} else {
-			fprintf(stdout, "-%s\n", tests[i].name);
-			failed++;
-		}
-	return failed;
 }

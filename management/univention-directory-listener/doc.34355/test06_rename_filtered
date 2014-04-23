@@ -1,0 +1,12 @@
+#!/bin/bash
+## desc: Rename filtered object
+main () {
+	udm settings/packages create --position "cn=restricted,$BASE" --set name=test
+
+	udm settings/packages modify --dn "cn=test,cn=restricted,$BASE" --set name=test2
+	wait_listener
+	[ -f "$LOG" -a ! -s "$LOG" ]
+
+	udm settings/packages remove --dn "cn=test2,cn=restricted,$BASE"
+}
+. "${0%/*}/common.sh"

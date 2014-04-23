@@ -1,0 +1,9 @@
+#!/bin/bash
+## desc: Create and delete unfiltered object
+main () {
+	udm settings/packages create --position "cn=visible,$BASE" --set name=test
+	check "cn=test,cn=visible" - "" a
+	udm settings/packages remove --dn "cn=test,cn=visible,$BASE"
+	check "cn=test,cn=visible" "" - d
+}
+. "${0%/*}/common.sh"

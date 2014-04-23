@@ -1,0 +1,19 @@
+#!/bin/bash
+## desc: Create, modify, move and back unfiltered objects
+## bugs: [34355]
+main () {
+	udm settings/packages create --position "cn=visible,$BASE" --set name=test1
+	a="$(uuid "cn=test1,cn=visible,$BASE")"
+
+	listener stop
+	udm settings/packages modify --dn "cn=test1,cn=visible,$BASE" --append packageList="test$RANDOM"
+	udm settings/packages modify --dn "cn=test1,cn=visible,$BASE" --set name=test2
+	udm settings/packages modify --dn "cn=test2,cn=visible,$BASE" --set name=test1
+	listener start
+	check "cn=test1,cn=visible" "$a" "$a" m
+	check "cn=test1,cn=visible" "$a" - r
+	check "cn=test1,cn=visible" - "$a" a
+
+	udm settings/packages remove --dn "cn=test1,cn=visible,$BASE"
+}
+. "${0%/*}/common.sh"

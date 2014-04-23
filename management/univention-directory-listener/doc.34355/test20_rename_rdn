@@ -1,0 +1,29 @@
+#!/bin/bash
+## desc: Rename unfiltered object with change in DN MUST
+## bugs: [33594]
+main () {
+	$BUG33594 && exit 0
+	ldapmodify <<__LDIF__
+dn: cn=test,cn=visible,$BASE
+changetype: add
+objectClass: person
+cn: test
+sn: test
+__LDIF__
+	wait_listener
+
+	ldapmodrdn "cn=test,cn=visible,$BASE" "sn=test" # no "-r"
+	check "cn=test,cn=visible" "" - r
+	check "sn=test,cn=visible" - "" a
+	if ! $BUG34355
+	then
+		check "sn=test,cn=visible" "" "" m
+	fi
+
+	! udm settings/packages remove --dn "cn=test,cn=visible,$BASE"
+	udm settings/packages remove --dn "sn=test,cn=visible,$BASE"
+}
+. "${0%/*}/common.sh"
+# PROCESS: replication: rename from cn=test,cn=visible,dc=phahn,dc=dev to sn=test,cn=visible,dc=phahn,dc=dev
+# ERROR  : dn=sn=test,cn=visible,dc=phahn,dc=dev: Object class violation
+# ERROR  :        additional info: object class 'person' requires attribute 'c

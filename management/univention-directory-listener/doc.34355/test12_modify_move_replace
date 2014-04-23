@@ -1,0 +1,44 @@
+#!/bin/bash
+## desc: Create, modify, move, create replacement (and delete) unfiltered object
+## bugs: [34355]
+main () {
+	udm settings/packages create --position "cn=visible,$BASE" --set name=test
+	a="$(uuid "cn=test,cn=visible,$BASE")"
+
+	listener stop
+	udm settings/packages modify --dn "cn=test,cn=visible,$BASE" --set packageList="test$RANDOM"
+	udm settings/packages move --dn "cn=test,cn=visible,$BASE" --position "$BASE"
+	[ "$a" = "$(uuid "cn=test,$BASE")" ]
+	udm settings/packages create --position "cn=visible,$BASE" --set name=test
+	b="$(uuid "cn=test,cn=visible,$BASE")"
+	listener start
+	if $BUG34355
+	then
+		check "cn=test,cn=visible" "$a" "$b" m
+		check "cn=test,cn=visible" "$b" - r
+		check "cn=test" - "$a" a
+	else
+		# New 1: Move then modify
+		# dn='cn=test,cn=visible,dc=phahn,dc=dev' old=True new=False command=r
+		# dn='cn=test,dc=phahn,dc=dev' old=False new=True command=a
+		# dn='cn=test,dc=phahn,dc=dev' old=True new=True command=m
+
+		# New 2: Modify then move
+		# dn='cn=test,cn=visible,dc=phahn,dc=dev' old=True new=True command=m
+		# dn='cn=test,cn=visible,dc=phahn,dc=dev' old=True new=False command=r
+		# dn='cn=test,dc=phahn,dc=dev' old=False new=True command=a
+
+		# New 3: Move with modify
+		# dn='cn=test,cn=visible,dc=phahn,dc=dev' old=True new=False command=r
+		# dn='cn=test,dc=phahn,dc=dev' old=False new=True command=a
+
+		check "cn=test,cn=visible" "$a" - r
+		check "cn=test" - "$a" a
+		check "cn=test" "$a" "$a" m
+	fi
+	check "cn=test,cn=visible" - "$b" a
+
+	udm settings/packages remove --dn "cn=test,$BASE"
+	udm settings/packages remove --dn "cn=test,cn=visible,$BASE"
+}
+. "${0%/*}/common.sh"
