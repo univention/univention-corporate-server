@@ -52,7 +52,7 @@ struct _CacheEntry {
 
 int	cache_free_entry		(char		**dn,
 					 CacheEntry	 *entry);
-int	cache_dump_entry		(char		 *dn,
+void	cache_dump_entry		(char		 *dn,
 					 CacheEntry	 *entry,
 					 FILE		 *fp);
 int	cache_new_entry_from_ldap	(char		**dn,

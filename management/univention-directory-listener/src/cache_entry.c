@@ -91,20 +91,18 @@ int cache_free_entry(char **dn, CacheEntry *entry)
 	return 0;
 }
 
-int cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp)
+void cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp)
 {
-	CacheEntryAttribute **attribute;
 	char **module;
-	char **value;
 
 	fprintf(fp, "dn: %s\n", dn);
 	int i, j;
 	for(i=0; i<entry->attribute_count; i++) {
-		attribute = &entry->attributes[i];
+		CacheEntryAttribute *attribute = entry->attributes[i];
 		for (j=0; j<entry->attributes[i]->value_count; j++) {
-			value = &entry->attributes[i]->values[j];
+			char *value = entry->attributes[i]->values[j];
 			char *c;
-			for (c=*value; *c != '\0'; c++) {
+			for (c=value; *c != '\0'; c++) {
 				if (!isgraph(*c))
 					break;
 			}
@@ -112,19 +110,17 @@ int cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp)
 				char *base64_value;
 				size_t srclen = entry->attributes[i]->length[j]-1;
 				base64_value = malloc(BASE64_ENCODE_LEN(srclen)+1);
-				base64_encode((u_char *)*value, srclen, base64_value, BASE64_ENCODE_LEN(srclen)+1);
-				fprintf(fp, "%s:: %s\n", (*attribute)->name, base64_value);
+				base64_encode((u_char *)value, srclen, base64_value, BASE64_ENCODE_LEN(srclen)+1);
+				fprintf(fp, "%s:: %s\n", attribute->name, base64_value);
 				free(base64_value);
 			} else {
-				fprintf(fp, "%s: %s\n", (*attribute)->name, *value);
+				fprintf(fp, "%s: %s\n", attribute->name, value);
 			}
 		}
 	}
 	for (module=entry->modules; module != NULL && *module != NULL; module++) {
 		fprintf(fp, "listenerModule: %s\n", *module);
 	}
-
-	return 0;
 }
 
 int cache_entry_module_add(CacheEntry *entry, char *module)
