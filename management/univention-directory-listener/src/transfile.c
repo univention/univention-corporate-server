@@ -130,6 +130,8 @@ int notifier_write_transaction_file(NotifierEntry entry)
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "write to transaction file dn=[%s], command=[%c]", entry.dn, entry.command);
 		fprintf(file, "%ld %s %c\n", entry.id, entry.dn, entry.command);
 		res = fclose_lock(&file, &l_file);
+		if (res != 0)
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to write to transaction file %s: %d", transaction_file, res);
 	} else {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not write to transaction file %s. Check for %s\n", transaction_file, failed_ldif_file);
 	}

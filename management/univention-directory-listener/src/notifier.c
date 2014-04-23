@@ -187,7 +187,6 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 		assert(rv == LDAP_SUCCESS);
 
 		if (write_transaction_file && notifier_write_transaction_file(entry) != 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to write to transaction file");
 			notifier_entry_free(&entry);
 			break;
 		}
