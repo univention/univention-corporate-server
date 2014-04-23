@@ -42,7 +42,7 @@ typedef unsigned long NotifierID;
 struct _NotifierEntry {
 	NotifierID	 id;
 	char		*dn;
-	char		 command; /* 'd'elete, 'm'odify, 'a'dd */
+	char		 command; /* 'd'elete, 'm'odify, 'a'dd, mod'r'dn */
 } typedef NotifierEntry;
 
 struct _NotifierMessage {
