@@ -30,10 +30,13 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+#define _GNU_SOURCE /* asprintf */
+
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
+#include <assert.h>
 #include <ldap.h>
 
 #include <univention/debug.h>
@@ -489,5 +492,89 @@ void compare_cache_entries(CacheEntry *lentry, CacheEntry *rentry)
 		if (cur1 != NULL && *cur1 != NULL)
 			continue;
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ALERT:     module %s on rentry missing on lentry\n", *cur2);
+	}
+}
+
+const char *cache_entry_get1(CacheEntry *entry, const char *key) {
+	int i;
+
+	for (i = 0; i < entry->attribute_count; i++) {
+		CacheEntryAttribute *attr = entry->attributes[i];
+
+		if (STRNEQ(attr->name, key))
+			continue;
+		assert(attr->value_count == 1);
+		return attr->values[0];
+	}
+	assert(i < entry->attribute_count);
+	return NULL;
+}
+
+void cache_entry_set1(CacheEntry *entry, const char *key, const char *value) {
+	int i;
+
+	for (i = 0; i < entry->attribute_count; i++) {
+		CacheEntryAttribute *attr = entry->attributes[i];
+
+		if (STRNEQ(attr->name, key))
+			continue;
+		assert(attr->value_count == 1);
+		free (attr->values[0]);
+		attr->values[0] = strdup(value);
+		assert(attr->values[0]);
+		attr->length[0] = strlen(value) + 1;
+		break;
+	}
+	assert(i < entry->attribute_count);
+}
+
+static inline bool BERSTREQ(const struct berval *ber, const char *str) {
+	return strncmp(str, ber->bv_val, ber->bv_len) == 0 && str[ber->bv_len] == '\0';
+}
+
+static inline int BER2STR(const struct berval *ber, char **strp) {
+	return asprintf(strp, "%*s", (int)ber->bv_len, ber->bv_val);
+}
+
+void cache_entry_update_rdn(CacheEntry *entry, LDAPRDN new_dn) {
+	int rdn, att, val;
+
+	for (rdn = 0; new_dn[rdn]; rdn++) {
+		CacheEntryAttribute *attr;
+
+		for (att = 0; att < entry->attribute_count; att++) {
+			attr = entry->attributes[att];
+			if (BERSTREQ(&new_dn[rdn]->la_attr, attr->name))
+				break;
+		}
+		if (att >= entry->attribute_count) {
+			attr = malloc(sizeof(CacheEntryAttribute));
+			assert(attr);
+			BER2STR(&new_dn[rdn]->la_attr, &attr->name);
+			attr->values = calloc(2, sizeof(char *));
+			attr->length = calloc(2, sizeof(int));
+			attr->value_count = 0;
+
+			entry->attributes = realloc(entry->attributes, (entry->attribute_count + 2) * sizeof(CacheEntryAttribute *));
+			entry->attributes[entry->attribute_count++] = attr;
+			entry->attributes[entry->attribute_count] = NULL;
+		} else {
+			for (val = 0; val < attr->value_count; val++) {
+				char *cache_value = attr->values[val];
+				if (BERSTREQ(&new_dn[rdn]->la_value, cache_value))
+					break;
+			}
+			if (val >= attr->value_count) {
+				attr->values = realloc(attr->values, (attr->value_count + 2) * sizeof(char *));
+				attr->length = realloc(attr->length, (attr->value_count + 2) * sizeof(int));
+			} else {
+				continue;
+			}
+		}
+
+		attr->length[attr->value_count] = BER2STR(&new_dn[rdn]->la_value, &attr->values[attr->value_count]);
+		attr->value_count++;
+		attr->length[attr->value_count] = 0;
+		attr->values[attr->value_count] = NULL;
 	}
 }

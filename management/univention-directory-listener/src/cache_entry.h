@@ -74,4 +74,9 @@ int	copy_cache_entry		(CacheEntry *cache_entry,
 void	compare_cache_entries		(CacheEntry *lentry,
 					 CacheEntry *rentry);
 
+extern const char *cache_entry_get1(CacheEntry *entry, const char *key);
+extern void cache_entry_set1(CacheEntry *entry, const char *key, const char *value);
+
+extern void cache_entry_update_rdn(CacheEntry *entry, LDAPRDN new_dn);
+
 #endif /* _CACHE_ENTRY_H_ */
