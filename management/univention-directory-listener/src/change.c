@@ -467,46 +467,99 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 		return rv;	/* LDAP_SUCCESS or other than LDAP_NO_SUCH_OBJECT */
 }
 
+static int cache_lookup_uuid(char *dn, char **uuid) {
+	CacheEntry entry;
+	int rv;
+	int i;
+
+	rv = cache_get_entry_lower_upper(dn, &entry);
+	if (rv == 0) {
+		for (i = 0; i < entry.attribute_count; i++) {
+			if (STRNEQ("entryUUID", entry.attributes[i]->name))
+				continue;
+			if (entry.attributes[i]->value_count != 1)
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
+						"wrong entryUUID count: %d", entry.attributes[i]->value_count);
+			else if (entry.attributes[i]->length[0] < 36 || entry.attributes[i]->length[0] > 37)
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
+						"wrong entryUUID length: %d", entry.attributes[i]->length[0]);
+			else
+				*uuid = strdup(entry.attributes[i]->values[0]);
+			break;
+		}
+	}
+	cache_free_entry(NULL, &entry);
+
+	return rv;
+}
+
 /* Update DN from LDAP; this is a higher level interface for
    change_update_entry  */
 int change_update_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, char command, univention_ldap_parameters_t *lp_local)
 {
-	LDAPMessage	*res,
-			*cur;
-	char		*attrs[]={"*", "+", NULL};
-	int		 rv;
-	struct timeval timeout;
+	LDAPMessage *res, *cur;
+	char *base;
+	int scope;
+	char filter[64]; /* "(entryUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX)" */
+	char *attrs[] = {"*", "+", NULL};
+	int attrsonly = 0;
+	LDAPControl **serverctrls = NULL;
+	LDAPControl **clientctrls = NULL;
+	struct timeval timeout = {
+		.tv_sec = 5*60,
+		.tv_usec = 0,
+	};
+	int sizelimit = 0;
+	int rv;
+	char *uuid = NULL;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "updating %s", dn);
-
-	/* max wait for 5 minutes */
-	timeout.tv_sec = 300;
-	timeout.tv_usec = 0;
-
 	if ( command == 'r' ) {
 		/* if the entry has been renamed, run handlers_delete and remove the entry from cache, Bug #26069, updated for Bug #20605*/
-		rv = change_delete_dn(id, dn, command);
+		return change_delete_dn(id, dn, command);
+	}
+
+	rv = cache_lookup_uuid(dn, &uuid);
+	if (rv != 0 && rv != DB_NOTFOUND) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while reading from database");
+		return LDAP_OTHER;
+	}
+
+	if (uuid) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "updating UUID %s", uuid);
+		base = lp->base;
+		scope = LDAP_SCOPE_SUBTREE;
+		snprintf(filter, sizeof(filter), "(entryUUID=%s)", uuid);
+		free(uuid);
 	} else {
-		if ((rv=ldap_search_ext_s(lp->ld, dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res)) == LDAP_NO_SUCH_OBJECT) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "no entryUUID %s", dn);
+		base = dn;
+		scope = LDAP_SCOPE_BASE;
+		snprintf(filter, sizeof(filter), "(objectClass=*)");
+	}
+
+	rv = ldap_search_ext_s(lp->ld, base, scope, filter, attrs, attrsonly, serverctrls, clientctrls, &timeout, sizelimit, &res);
+	if (rv == LDAP_NO_SUCH_OBJECT) {
+		rv = change_delete_dn(id, dn, command);
+	} else if (rv == LDAP_SUCCESS) {
+		if ((cur=ldap_first_entry(lp->ld, res)) == NULL) {
+			/* entry exists (since we didn't get NO_SUCH_OBJECT),
+			* but was probably excluded through ACLs which makes it
+			* non-existent for us */
 			rv = change_delete_dn(id, dn, command);
-		} else if (rv == LDAP_SUCCESS) {
-			if ((cur=ldap_first_entry(lp->ld, res)) == NULL) {
-				/* entry exists (since we didn't get NO_SUCH_OBJECT),
-				* but was probably excluded thru ACLs which makes it
-				* non-existent for us */
-				rv = change_delete_dn(id, dn, command);
-			} else {
-				/* entry exists, so make sure the schema is up-to-date and
-				* then update it */
-				if ((rv = change_update_schema(lp)) == LDAP_SUCCESS) {
-					if (lp_local->host != NULL)     // we are a replicating system
-						rv = check_parent_dn(lp, id, dn, lp_local);
-					rv = change_update_entry(lp, id, cur, command);
-				}
+		} else {
+			/* entry exists, so make sure the schema is up-to-date and
+			* then update it */
+			if ((rv = change_update_schema(lp)) == LDAP_SUCCESS) {
+				if (lp_local->host != NULL)     // we are a replicating system
+					rv = check_parent_dn(lp, id, dn, lp_local);
+				rv = change_update_entry(lp, id, cur, command);
 			}
 		}
-		ldap_msgfree(res);
+	} else {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error searching dn %s: %d", dn, rv);
 	}
+	ldap_msgfree(res);
 
 	return rv;
 }

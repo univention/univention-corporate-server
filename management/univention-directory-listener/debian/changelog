@@ -2,6 +2,7 @@ univention-directory-listener (8.0.0-7) unstable; urgency=low
 
   * Update copyright (Bug #34355)
   * Drop NotifierId from cache_get() (Bug #34355)
+  * Use entryUUID to handle move after modify (Bug #34355)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 03 Apr 2014 16:26:42 +0200
 
