@@ -51,42 +51,27 @@ int cache_free_entry(char **dn, CacheEntry *entry)
 		*dn = NULL;
 	}
 
-	for(i=0; i<entry->attribute_count; i++) {
-		if(entry->attributes[i]->name) {
+	if (entry->attributes) {
+		for (i=0; i<entry->attribute_count; i++) {
 			free(entry->attributes[i]->name);
-		}
-		for(j=0; j<entry->attributes[i]->value_count; j++) {
-			if(entry->attributes[i]->values[j]) {
+			for (j=0; j<entry->attributes[i]->value_count; j++)
 				free(entry->attributes[i]->values[j]);
-			}
-		}
-		if(entry->attributes[i]->values) {
 			free(entry->attributes[i]->values);
-		}
-		if(entry->attributes[i]->length) {
 			free(entry->attributes[i]->length);
-		}
-		if(entry->attributes[i]) {
 			free(entry->attributes[i]);
 		}
-	}
-
-	if (entry->attributes) {
 		free(entry->attributes);
+		entry->attributes = NULL;
+		entry->attribute_count = 0;
 	}
 
-	for(i=0; i<entry->module_count; i++) {
-		if (entry->modules[i]) {
+	if (entry->modules) {
+		for (i=0; i<entry->module_count; i++)
 			free(entry->modules[i]);
-		}
-	}
-
-	if(entry->modules) {
 		free(entry->modules);
+		entry->modules = NULL;
+		entry->module_count = 0;
 	}
-
-	entry->modules = NULL;
-	entry->module_count = 0;
 
 	return 0;
 }
