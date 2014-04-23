@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-40) unstable; urgency=low
+
+  * Sync the password if the user was created in UCS (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Apr 2014 15:02:51 +0200
+
 univention-s4-connector (8.0.33-39) unstable; urgency=low
 
   * Use listener.baseConfig instead of listener.ucr (Bug #33858)

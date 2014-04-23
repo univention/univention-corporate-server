@@ -467,6 +467,10 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 			if old_values != new_values:
 				modify=True
 				break
+	else:
+		# add mode
+		modify=True
+
 	if not modify:
 		ud.debug(ud.LDAP, ud.INFO, 'password_sync_ucs_to_s4: the password for %s has not been changed. Skipping password sync.' % (object['dn']))
 		return
