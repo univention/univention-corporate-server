@@ -507,7 +507,7 @@ int cache_update_or_deleteifunused_entry(NotifierID id, char *dn, CacheEntry *en
 		return cache_update_entry(id, dn, entry);
 }
 
-int cache_get_entry(NotifierID id, char *dn, CacheEntry *entry)
+int cache_get_entry(char *dn, CacheEntry *entry)
 {
 	DBT key, data;
 	int rv = 0;
@@ -549,7 +549,7 @@ int cache_get_entry(NotifierID id, char *dn, CacheEntry *entry)
 	return rv;
 }
 
-int cache_get_entry_lower_upper(NotifierID id, char *dn, CacheEntry *entry)
+int cache_get_entry_lower_upper(char *dn, CacheEntry *entry)
 {
 	char *lower_dn;
 	bool mixedcase = false;
@@ -561,10 +561,10 @@ int cache_get_entry_lower_upper(NotifierID id, char *dn, CacheEntry *entry)
 		mixedcase = true;
 	}
 
-	rv=cache_get_entry(id, lower_dn, entry);
+	rv = cache_get_entry(lower_dn, entry);
 	if (rv == DB_NOTFOUND && mixedcase ) {
 		// try again with original dn
-		rv=cache_get_entry(id, dn, entry);
+		rv = cache_get_entry(dn, entry);
 	}
 
 	free(lower_dn);

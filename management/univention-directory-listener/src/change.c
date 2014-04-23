@@ -110,7 +110,7 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 			"initialize schema for module %s", handler->name);
 	/* initialize schema; if it's not in cache yet (it really should be), it'll
 	   be initialized on the regular schema check after ldapsearches */
-	if ((rv=cache_get_entry_lower_upper(0, "cn=Subschema", &cache_entry)) != 0 &&
+	if ((rv = cache_get_entry_lower_upper("cn=Subschema", &cache_entry)) != 0 &&
 			rv != DB_NOTFOUND) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
 				"error while reading from database");
@@ -165,7 +165,7 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 		for (i=0; i<dn_count; i++) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "DN: %s", dns[i].dn);
 
-			if ((rv=cache_get_entry_lower_upper(0, dns[i].dn, &cache_entry)) == DB_NOTFOUND) { /* XXX */
+			if ((rv = cache_get_entry_lower_upper(dns[i].dn, &cache_entry)) == DB_NOTFOUND) { /* XXX */
 				LDAPMessage *res2, *first;
 				if ((rv = ldap_search_ext_s(lp->ld, dns[i].dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, NULL /*timeout*/, 0 /*sizelimit*/, &res2)) == LDAP_SUCCESS) {
 					first = ldap_first_entry(lp->ld, res2);
@@ -248,7 +248,7 @@ int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMes
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while converting LDAP entry to cache entry");
 		goto result;
 	}
-	if ((rv=cache_get_entry_lower_upper(id-1, dn, &old_cache_entry)) != 0 && rv != DB_NOTFOUND) {
+	if ((rv = cache_get_entry_lower_upper(dn, &old_cache_entry)) != 0 && rv != DB_NOTFOUND) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while reading from database");
 		rv = LDAP_OTHER;
 	} else {
@@ -278,7 +278,7 @@ int change_delete_dn(NotifierID id, char *dn, char command)
 	CacheEntry entry;
 	int rv;
 
-	if ((rv=cache_get_entry_lower_upper(id-1, dn, &entry)) == DB_NOTFOUND) {
+	if ((rv = cache_get_entry_lower_upper(dn, &entry)) == DB_NOTFOUND) {
 		signals_block();
 		/* run handlers anyway */
 		if (handlers_delete(dn, &entry, command) == 0) {

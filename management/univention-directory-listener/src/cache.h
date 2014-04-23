@@ -67,10 +67,10 @@ int	cache_delete_entry_lower_upper			(NotifierID		  id,
 int	cache_update_or_deleteifunused_entry	(NotifierID		  id,
 						 char			 *dn,
 						 CacheEntry		 *entry);
-int	cache_get_entry				(NotifierID		  id,
+int	cache_get_entry(
 						 char			 *dn,
 						 CacheEntry		 *entry);
-int	cache_get_entry_lower_upper				(NotifierID		  id,
+int	cache_get_entry_lower_upper(
 						 char			 *dn,
 						 CacheEntry		 *entry);
 int	cache_first_entry			(DBC			**cur,

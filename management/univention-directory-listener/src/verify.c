@@ -254,7 +254,7 @@ int main(int argc, char* argv[])
 			char *dn = ldap_get_dn(ld, cur);
 			if (has_dn(dn)) continue;
 
-			if ((rv=cache_get_entry(0, dn, &entry)) == DB_NOTFOUND) {
+			if ((rv = cache_get_entry(dn, &entry)) == DB_NOTFOUND) {
 				printf("E: %s only in LDAP\n", dn);
 			} else if (rv != 0) {
 				printf("E: error reading %s from cache", dn);
