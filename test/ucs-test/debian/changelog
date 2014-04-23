@@ -1,3 +1,9 @@
+ucs-test (4.0.164-40) unstable; urgency=low
+
+  * Bug #34288: check UMCP request /umcp/get/ipaddress
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 23 Apr 2014 14:47:51 +0200
+
 ucs-test (4.0.164-39.1) unstable; urgency=low
 
   * 52_s4connector/030_sync_with_activated_pwqualitycheck: activate
