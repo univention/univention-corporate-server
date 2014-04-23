@@ -1,0 +1,134 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test the UMC backend process killing
+## bugs: [34593]
+## tags: [apptest]
+## exposure: dangerous
+
+import sys
+sys.path.insert(0, '.')
+from TestUMCSystemModule import TestUMCSystem
+
+from psutil import Process
+from os import wait4, WNOHANG
+from subprocess import Popen
+
+from univention.config_registry import ConfigRegistry
+import univention.testing.utils as utils
+
+
+class TestUMCProcessKilling(TestUMCSystem):
+
+    def __init__(self):
+        """Test Class constructor"""
+        super(TestUMCProcessKilling, self).__init__()
+        self.Proc = None
+
+    def make_kill_request(self, signal, pids):
+        """
+        Applies the kill action with a signal 'signal' to the list of 'pids'
+        provided by making a UMC request 'top/kill' with respective options.
+        """
+        try:
+            request_result = self.Connection.request('top/kill',
+                                                     {'signal': signal,
+                                                      'pid': pids})
+            if not request_result:
+                utils.fail("Request 'top/kill' with signal '%s' for "
+                           "pids '%s' failed, no 'True' in response. "
+                           "Hostname: '%s'."
+                           % (signal, pids, self.hostname))
+        except Exception as exc:
+            utils.fail("Exception while making 'top/kill' request: '%s'"
+                       % exc)
+
+    def query_process_exists(self, pid):
+        """
+        Checks if 'python' process with provided 'pid' exists
+        by making the UMC request 'top/query'.
+        Returns True when exists.
+        """
+        request_result = self.make_top_query_request()
+        for result in request_result:
+            try:
+                if result['pid'] == pid:
+                    if 'python' in result['command']:
+                        return True
+            except KeyError as exc:
+                utils.fail("Failed to find 'pid' or 'command' keys in"
+                           "the 'top/query' request respone from UMC: %s"
+                           % result)
+
+    def force_process_kill(self):
+        """
+        Kills process with SIGKILL signal if not yet terminated.
+        """
+        if self.Proc.is_running():
+            print("Created process with pid '%s' was not terminated, "
+                  "forcing kill" % self.Proc.pid)
+            self.Proc.kill()
+            exit_status = wait4(self.Proc.pid, WNOHANG)[1]
+            if exit_status != 9:
+                print("The exit status while force kill is '%s' "
+                      "instead of 'SIGKILL' code 9." % exit_status)
+
+    def create_process(self):
+        """
+        Initiates a simple test process that should be killed after.
+        Creates a psutil Process class to check running state
+        before terminating. Also returns process id (pid).
+        """
+        proc = Popen(['python',
+                      '-c',
+                      'from time import sleep \nsleep(30)'])
+        pid = proc.pid
+        self.Proc = Process(pid)
+        return pid
+
+    def main(self):
+        """
+        Method to start the test of the UMC backend
+        process killing functionality.
+        """
+        self.get_ucr_credentials()
+        self.create_connection_authenticate()
+
+        # case 1: killing process using signal 'SIGTERM'
+        try:
+            print "Testing UMC process killing with 'SIGTERM' signal"
+            pid = self.create_process()
+            if self.query_process_exists(pid):
+                self.make_kill_request('SIGTERM', [pid])
+                exit_status = wait4(pid, WNOHANG)[1]
+                if exit_status != 15:
+                    utils.fail("Process exit status is '%s' instead of "
+                               "'SIGTERM' code 15." % exit_status)
+                if self.query_process_exists(pid):
+                    utils.fail("Process did not terminate after request "
+                               "with 'SIGTERM' signal")
+            else:
+                utils.fail("The process is not running right after creation")
+        finally:
+            self.force_process_kill()
+
+        # case 2: killing process using signal 'SIGKILL'
+        try:
+            print "Testing UMC process killing with 'SIGKILL' signal"
+            pid = self.create_process()
+            if self.query_process_exists(pid):
+                self.make_kill_request('SIGKILL', [pid])
+                exit_status = wait4(pid, WNOHANG)[1]
+                if exit_status != 9:
+                    utils.fail("Process exit status is '%s' instead of "
+                               "'SIGKILL' code 9." % exit_status)
+                if self.query_process_exists(pid):
+                    utils.fail("Process did not terminate after request "
+                               "with 'SIGKILL' signal")
+            else:
+                utils.fail("The process is not running right after creation")
+        finally:
+            self.force_process_kill()
+
+
+if __name__ == '__main__':
+    TestUMC = TestUMCProcessKilling()
+    sys.exit(TestUMC.main())

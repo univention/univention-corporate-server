@@ -50,6 +50,18 @@ class TestUMCSystem(object):
             utils.fail("Failed to authenticate, hostname '%s' : %s" %
                        (self.hostname, exc))
 
+    def make_top_query_request(self):
+        """Make a top/query request and return result"""
+        try:
+            request_result = self.Connection.request('top/query')
+            if not request_result:
+                utils.fail("Request 'top/query' failed, hostname %s" %
+                           self.hostname)
+        except Exception as exc:
+            utils.fail("Exception while making 'top/query' request: %s" %
+                       exc)
+        return request_result
+
     def make_service_query_request(self):
         """Make a service/query request and return result"""
         try:
@@ -58,7 +70,7 @@ class TestUMCSystem(object):
                 utils.fail("Request 'services/query' failed, hostname %s" %
                            self.hostname)
         except Exception as exc:
-            utils.fail("Exception while making services/query request: %s" %
+            utils.fail("Exception while making 'services/query' request: %s" %
                        exc)
         return request_result
 
