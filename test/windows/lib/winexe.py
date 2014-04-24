@@ -22,7 +22,7 @@ class WinExe:
 		group.add_option("--domain-password", dest="domain_password", help="the domain administrator password")
 		group.add_option("--local-admin", dest="local_admin", help="the local administrator account")
 		group.add_option("--local-password", dest="local_password", help="the local administrator password")
-		group.add_option("--port", dest="port", type="int", default=139, help="winexe port (139)")
+		group.add_option("--port", dest="port", type="int", default=445, help="winexe port (445)")
 		group.add_option("--client", dest="client", help="the windows client")
 		
 		self.parser.add_option_group(group)
@@ -67,6 +67,7 @@ class WinExe:
 
 		return
 
+	# TODO better check if IPC$ is reachable for client
 	def client_reachable(self, timeout=1):
 
 		for i in range(timeout):
