@@ -1,3 +1,9 @@
+univention-lib (3.0.26-19) unstable; urgency=medium
+
+  * change UCR calls to use absolute path (Bug #29241)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 25 Apr 2014 17:43:59 +0200
+
 univention-lib (3.0.26-18) unstable; urgency=low
 
   * Use shuitl.move instead of os.rename in ldap_extension.py

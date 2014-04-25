@@ -64,7 +64,7 @@ call_joinscript () {
 		local namejoinscript
 		namejoinscript="$1"
 		shift
-		local role="$(ucr get server/role)"
+		local role="$(/usr/sbin/univention-config-registry get server/role)"
 		if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ] ; then
 			echo "Calling joinscript $namejoinscript ..."
 			"$joinscript" "$@"
@@ -124,7 +124,7 @@ call_unjoinscript () {
 
 	if [ -x "$joinscript" ] ; then
 		shift
-		local role="$(ucr get server/role)"
+		local role="$(/usr/sbin/univention-config-registry get server/role)"
 		if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ] ; then
 			"$joinscript" "$@" && delete_unjoinscript "${joinscript_name}"
 		fi
@@ -142,7 +142,7 @@ call_joinscript_on_dcmaster () {
 	joinscript="/usr/lib/univention-install/$1"
 	if [ -x "$joinscript" ] ; then
 		shift
-		if [ "$(ucr get server/role)" = "domaincontroller_master" ] ; then
+		if [ "$(/usr/sbin/univention-config-registry get server/role)" = "domaincontroller_master" ] ; then
 			"$joinscript" "$@"
 		fi
 	fi
@@ -169,7 +169,7 @@ stop_udm_cli_server () {
 # fi
 #
 is_domain_controller () {
-	case "$(ucr get server/role)" in
+	case "$(/usr/sbin/univention-config-registry get server/role)" in
 	domaincontroller_master) return 0 ;;
 	domaincontroller_backup) return 0 ;;
 	domaincontroller_slave) return 0 ;;
@@ -230,8 +230,8 @@ check_package_status ()
 # create passwort
 #
 create_machine_password () {
-	local length="$(ucr get machine/password/length)"
-	local compl="$(ucr get machine/password/complexity)"
+	local length="$(/usr/sbin/univention-config-registry get machine/password/length)"
+	local compl="$(/usr/sbin/univention-config-registry get machine/password/complexity)"
 	
 	if [ -z "$length" ]; then
 		length=20
@@ -266,7 +266,7 @@ custom_username() {
 	ucr_varname="$(echo "$name" | tr [A-Z] [a-z] | sed 's| ||g')"
 	ucr_varname="users/default/$ucr_varname"
 
-	result="$(ucr get "$ucr_varname")"
+	result="$(/usr/sbin/univention-config-registry get "$ucr_varname")"
 	if [ -n "$result" ]; then
 		echo -n "$result"
 	else
@@ -285,7 +285,7 @@ custom_groupname() {
 	ucr_varname="$(echo "$name" | tr [A-Z] [a-z] | sed 's| ||g')"
 	ucr_varname="groups/default/$ucr_varname"
 
-	result="$(ucr get "$ucr_varname")"
+	result="$(/usr/sbin/univention-config-registry get "$ucr_varname")"
 	if [ -n "$result" ]; then
 		echo -n "$result"
 	else

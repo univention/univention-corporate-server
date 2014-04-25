@@ -142,7 +142,7 @@ ucs_addServiceToLocalhost () { # <servicename> [<udm-credentials>]
 		echo "ucs_addServiceToLocalhost: wrong argument number" >&2
 		return 2
 	fi
-	eval "$(ucr shell server/role ldap/hostdn)"
+	eval "$(/usr/sbin/univention-config-registry shell server/role ldap/hostdn)"
 	ucs_addServiceToHost "$servicename" "$server_role" "$ldap_hostdn" "$@"
 }
 
@@ -157,7 +157,7 @@ ucs_addServiceToHost () { # <servicename> <udm-module-name> <dn> [options]
 	local servicename="$1"
 	local modulename="$2"
 	local hostdn="$3"
-	local ldap_base="$(ucr get ldap/base)"
+	local ldap_base="$(/usr/sbin/univention-config-registry get ldap/base)"
 	if ! shift 3
 	then
 		echo "ucs_addServiceToHost: wrong argument number" >&2
@@ -187,7 +187,7 @@ ucs_removeServiceFromLocalhost () { # <servicename> [<udm-credentials>]
 		echo "ucs_removeServiceFromLocalhost: wrong argument number" >&2
 		return 2
 	fi
-	eval "$(ucr shell server/role ldap/hostdn)"
+	eval "$(/usr/sbin/univention-config-registry shell server/role ldap/hostdn)"
 	ucs_removeServiceFromHost "$servicename" "$server_role" "$ldap_hostdn" "$@"
 }
 
@@ -202,7 +202,7 @@ ucs_removeServiceFromHost () { # <servicename> <udm-module-name> <dn> [options]
 	local servicename="$1"
 	local modulename="$2"
 	local hostdn="$3"
-	local ldap_base="$(ucr get ldap/base)"
+	local ldap_base="$(/usr/sbin/univention-config-registry get ldap/base)"
 	if ! shift 3
 	then
 		echo "ucs_removeServiceFromHost: wrong argument number" >&2
@@ -256,8 +256,8 @@ ucs_parseCredentials () {
 #
 ucs_isServiceUnused () { # <servicename>
 	local servicename="$1"
-	local master="$(ucr get ldap/master)"
-	local port="$(ucr get ldap/master/port)"
+	local master="$(/usr/sbin/univention-config-registry get ldap/master)"
+	local port="$(/usr/sbin/univention-config-registry get ldap/master/port)"
 
 	if ! shift 1
 	then
@@ -328,7 +328,7 @@ ucs_registerLDAPExtension () {
 	if [ -n "$package_name" ]; then
 		package_version=$(dpkg-query -f '${Version}' -W "$package_name")
 	else
-		eval "$(ucr shell '^tests/ucs_registerLDAP/.*')"
+		eval "$(/usr/sbin/univention-config-registry shell '^tests/ucs_registerLDAP/.*')"
 		if [ -n "$tests_ucs_registerLDAP_packagename" ] && [ -n "$tests_ucs_registerLDAP_packageversion" ]; then
 			package_name="$tests_ucs_registerLDAP_packagename"
 			package_version="$tests_ucs_registerLDAP_packageversion"
@@ -385,7 +385,7 @@ ucs_registerLDAPSchema () {
 
 	cp "$schemaFile" /var/lib/univention-ldap/local-schema/
 
-	ucr commit /etc/ldap/slapd.conf
+	/usr/sbin/univention-config-registry commit /etc/ldap/slapd.conf
 
 	test -x /etc/init.d/slapd && /etc/init.d/slapd crestart
 }

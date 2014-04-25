@@ -32,7 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 
-eval "$(ucr shell ldap/base)"
+eval "$(/usr/sbin/univention-config-registry shell ldap/base)"
 
 BIND_ARGS="$@"
 
@@ -56,7 +56,7 @@ umc_frontend_new_hash () {
 
 umc_init () {
 
-	eval "$(ucr shell groups/default/domainadmins groups/default/domainusers)"
+	eval "$(/usr/sbin/univention-config-registry shell groups/default/domainadmins groups/default/domainusers)"
 
 	# containers
 	udm container/cn create $BIND_ARGS --ignore_exists --position cn=univention,$ldap_base --set name=UMC || exit $?
