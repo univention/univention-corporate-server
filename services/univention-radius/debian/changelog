@@ -1,8 +1,8 @@
-univention-radius (1.0.0-4) unstable; urgency=low
+univention-radius (1.0.0-5) unstable; urgency=low
 
   * allow configuration via LDAP (Bug #29465)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Apr 2014 18:16:07 +0200
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 25 Apr 2014 12:48:15 +0200
 
 ucs-school-radius-802.1x (3.0.1-1) unstable; urgency=low
 

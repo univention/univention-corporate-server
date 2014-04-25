@@ -57,6 +57,8 @@ def main():
 		stationId = stationId[0:2] + stationId[3:5] + stationId[6:8] + stationId[9:11] + stationId[12:14] + stationId[15:17]
 		stationId = stationId.decode('hex')
 		result, message = traceStationWhitelist(ldapConnection, stationId)
+		if options.Username:
+			sys.stdout.write('\n')
 		sys.stdout.write(message)
 		if not result:
 			exitCode = 1

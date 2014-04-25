@@ -80,7 +80,7 @@ def traceProxyFilterPolicy(username):
 	message = ''
 	groups = userToGroup.get(username)
 	if groups is None:
-		return False, 'User %r not found\nThus access is DENIED by default.\n' % (username, )
+		return False, 'User %r not found\n\n' % (username, )
 	groupInfos = [groupInfo[group] for group in groups if group in groupInfo]
 	if groupInfos:
 		(maxPriority, _, ) = max(groupInfos)
@@ -102,11 +102,9 @@ def traceProxyFilterPolicy(username):
 		else:
 			message += '-> Group %r: not specified\n' % (group, )
 	if not True in [wlanEnabled for (priority, wlanEnabled, ) in groupInfos if priority == maxPriority]:
-		message += 'Thus access is DENIED.\n'
-		return False, message
+		return False, message + '\n'
 	else:
-		message += 'Thus access is ALLOWED.\n'
-		return True, message
+		return True, message + '\n'
 
 def curried(function):
 	return lambda args: function(*args)
@@ -212,13 +210,11 @@ def traceNetworkAccess(ldapConnection, username):
 		resultLdap, messageLdap = traceLdapPolicies(ldapConnection, result)
 	else:
 		resultLdap, messageLdap = False, 'User %r does not exist\n' % (username, )
-	message += messageLdap
-	if resultLdap is None:
-		message += 'Thus access is DENIED by default.\n'
-	elif resultLdap:
-		message += 'Thus access is ALLOWED.\n'
+	message += messageLdap + '\n'
+	if bool(resultProxy or resultLdap):
+		message += 'Thus access for user is ALLOWED.\n'
 	else:
-		message += 'Thus access is DENIED.\n'
+		message += 'Thus access for user is DENIED.\n'
 	return bool(resultProxy or resultLdap), message
 
 def traceStationWhitelist(ldapConnection, stationId):
@@ -231,11 +227,11 @@ def traceStationWhitelist(ldapConnection, stationId):
 		message += 'MAC filtering is disabled by radius/mac/whitelisting.\n'
 		result = True
 	if result is None:
-		message += 'Thus access is DENIED by default.\n'
+		message += '\nThus access for station is DENIED by default.\n'
 	elif result:
-		message += 'Thus access is ALLOWED.\n'
+		message += '\nThus access for station is ALLOWED.\n'
 	else:
-		message += 'Thus access is DENIED.\n'
+		message += '\nThus access for station is DENIED.\n'
 	return bool(result), message
 
 SAMBA_ACCOUNT_FLAG_DISABLED = 'D'
