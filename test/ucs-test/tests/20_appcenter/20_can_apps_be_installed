@@ -17,6 +17,9 @@ from univention.management.console.modules.appcenter.util import ComponentManage
 from univention.config_registry import ConfigRegistry
 from univention.updater import UniventionUpdater
 
+# monkey patch Application to avoid the error 'must_not_have_concurrent_operation'
+Application.must_not_have_concurrent_operation = lambda x: True
+
 # the next lines are a workaround for the following traceback:
 #   Error in function stop
 #   Traceback (most recent call last):
@@ -81,29 +84,14 @@ Application.sync_with_server()
 all_apps = Application.all()
 _installed_apps = [app for app in all_apps if app.is_installed(pm)]
 installed_apps = set([app.id for app in _installed_apps])
-conflicted_apps = set(reduce(lambda x, y: x + y, [app.get('conflictedapps') for app in _installed_apps]))
 
 print 'Installed apps: %s' % [app for app in installed_apps]
 
 failed = []
 for app in all_apps:
-	conflicts_with_installed_packages = [
-		ipackage
-		for ipackage in app.get('conflictedsystempackages')
-		if ipackage in aptCache and aptCache[ipackage].installed
-	]
-	if conflicts_with_installed_packages:
-		print 'Ignoring app %s: conflict with installed system packages: %s' % (_str_app(app), conflicts_with_installed_packages)
-		continue
-
-	conflicts_with_installed_apps = app.id in conflicted_apps
-	if conflicts_with_installed_apps:
-		print 'Ignoring app %s: conflict with already installed apps' % _str_app(app)
-		continue
-
-	required_apps_installed = all([japp in installed_apps for japp in app.get('requiredapps')])
-	if not required_apps_installed:
-		print 'Ignoring app %s: required apps are not installed -> %s' % (_str_app(app), app.get('requiredapps'))
+	forbidden, warning = app.check_invokation('install', pm)
+	if forbidden:
+		print 'Ignoring app %s: requirements not met -> %s' % (_str_app(app), forbidden)
 		continue
 
 	print 'Checking app: %s' % _str_app(app)
@@ -120,3 +108,4 @@ if failed:
 	sys.exit(1)
 
 sys.exit(0)
+
