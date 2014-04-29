@@ -22,10 +22,10 @@ if __name__ == '__main__':
 
 		dnstests.check_ldap_object(reverse_zone, 'Reverse Zone', '', '')
 
-		dnstests.wait_for_sync(4)
+		dnstests.wait_for_sync()
 
 		dnstests.test_dns_reverse_zone(revzone, host)
 
 		dnstests.check_ldap_object(reverse_zone, 'Reverse Zone', '', '')
 
-		dnstests.wait_for_sync()
+	dnstests.wait_for_sync()

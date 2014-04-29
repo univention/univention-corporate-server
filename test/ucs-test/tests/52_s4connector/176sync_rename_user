@@ -27,24 +27,24 @@ import dnstests
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 
-			new_user_name = uts.random_name()
+		new_user_name = uts.random_name()
 
-			user_dn, user_name = udm.create_user()
+		user_dn, user_name = udm.create_user()
 
-			utils.verify_ldap_object(user_dn)
+		utils.verify_ldap_object(user_dn)
 
-			dnstests.wait_for_sync(3)
+		dnstests.wait_for_sync()
 
-			dnstests.check_user(user_dn)
+		dnstests.check_user(user_dn)
 
-			user_surname = dnstests.get_user_surname(user_dn)
+		user_surname = dnstests.get_user_surname(user_dn)
 
-			modified_user_dn = dnstests.modify_username(user_dn, new_user_name, udm)
+		modified_user_dn = dnstests.modify_username(user_dn, new_user_name, udm)
 
-			dnstests.wait_for_sync(3)
+		dnstests.wait_for_sync()
 
-			dnstests.check_user(modified_user_dn, user_surname, user_dn)
+		dnstests.check_user(modified_user_dn, user_surname, user_dn)
 
-			utils.verify_ldap_object(modified_user_dn)
+		utils.verify_ldap_object(modified_user_dn)
 
-			dnstests.wait_for_sync()
+	dnstests.wait_for_sync()

@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
 		dnstests.check_ldap_object(dns_alias, 'alias', 'cNAMERecord', random_name2)
 
-		dnstests.wait_for_sync(4)
+		dnstests.wait_for_sync(30)
 
 		test_string = random_name1 + '.' +random_zone
 
@@ -34,4 +34,4 @@ if __name__ == '__main__':
 
 		dnstests.check_ldap_object(dns_alias, 'alias', 'cNAMERecord', random_name2 + '.')
 
-		dnstests.wait_for_sync()
+	dnstests.wait_for_sync()

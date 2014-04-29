@@ -17,14 +17,14 @@ if __name__ == '__main__':
 		host = dnstests.get_hostname()
 		ip = dnstests.make_random_ipv6()
 
-		forward_zone = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = host , a = ip)
+		forward_zone = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = host, a = ip)
 
-		dnstests.check_ldap_object(forward_zone, 'AAAA Record', 'aAAARecord' ,ip)
-
-		dnstests.wait_for_sync(4)
-
-		dnstests.test_dns_aaaa_record(random_zone,ip)
-
-		dnstests.check_ldap_object(forward_zone, 'AAAA Record', 'aAAARecord' ,ip)
+		dnstests.check_ldap_object(forward_zone, 'AAAA Record', 'aAAARecord', ip)
 
 		dnstests.wait_for_sync()
+
+		dnstests.test_dns_aaaa_record(random_zone, ip)
+
+		dnstests.check_ldap_object(forward_zone, 'AAAA Record', 'aAAARecord', ip)
+
+	dnstests.wait_for_sync()

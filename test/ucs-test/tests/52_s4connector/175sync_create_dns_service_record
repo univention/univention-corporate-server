@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
 		dnstests.check_ldap_object(srv_record, 'Service Record', 'sRVRecord', location)
 
-		dnstests.wait_for_sync(4)
+		dnstests.wait_for_sync(30)
 
 		temp = random_name.split(' ')
 		test_string = '_{0}._{1}.{2}.{3}'.format(temp[0], temp[1], temp[2], random_zone)
@@ -35,4 +35,4 @@ if __name__ == '__main__':
 
 		dnstests.check_ldap_object(srv_record, 'Modified Service Record', 'sRVRecord', location + '.')
 
-		dnstests.wait_for_sync()
+	dnstests.wait_for_sync()

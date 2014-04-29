@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Univention-s4-connector dns txt record syncronisation
-## exposure: safe
+## exposure: dangerous
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
@@ -28,10 +28,10 @@ if __name__ == '__main__':
 
 		dnstests.check_ldap_object(forward_zone, 'txt record', 'tXTRecord', txt)
 
-		dnstests.wait_for_sync(4)
+		dnstests.wait_for_sync()
 
 		dnstests.test_dns_txt(random_zone, txt)
 
 		dnstests.check_ldap_object(forward_zone, 'txt record', 'tXTRecord', txt)
 
-		dnstests.wait_for_sync()
+	dnstests.wait_for_sync()

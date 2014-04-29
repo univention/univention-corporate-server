@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
 		dnstests.check_ldap_object(ptr, 'Pointer Record', 'pTRRecord', ptr_record)
 
-		dnstests.wait_for_sync(4)
+		dnstests.wait_for_sync(30)
 
 		dnstests.test_dns_pointer_record(reverse_ip, random_address, ptr_record)
 
@@ -40,4 +40,4 @@ if __name__ == '__main__':
 
 		dnstests.check_ldap_object(ptr, 'Pointer Record', 'pTRRecord', ptr_record + '.')
 
-		dnstests.wait_for_sync()
+	dnstests.wait_for_sync()

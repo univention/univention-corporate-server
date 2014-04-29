@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
 		dnstests.check_ldap_object(forward_zone, 'forward zone')
 
-		dnstests.wait_for_sync(2)
+		dnstests.wait_for_sync()
 
 		serial = get_serial_number(random_zone, host)
 
@@ -54,4 +54,4 @@ if __name__ == '__main__':
 
 		dnstests.check_ldap_object(forward_zone, 'forward zone')
 
-		dnstests.wait_for_sync()
+	dnstests.wait_for_sync()

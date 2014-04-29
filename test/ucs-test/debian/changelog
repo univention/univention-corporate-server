@@ -1,3 +1,19 @@
+ucs-test (4.0.164-43) unstable; urgency=low
+
+  * Bug #29211: 
+    52_s4connector/dnstests.py:
+     adapted wait_for_sync() to match
+     s4connector.sh/ad_wait_for_syncronisation()
+
+     Fixed small Bug in test_dns_aaaa_record() with not displayed leading zeros
+     of ipv6 address in dig output
+
+    52_s4connector/175*: adapted to use reworked wait_for_sync()
+
+    52_s4connector/176*: adapted to use reworked wait_for_sync()
+
+ -- Drees Dormann <dormann@univention.de>  Tue, 29 Apr 2014 15:46:23 +0200
+
 ucs-test (4.0.164-42) unstable; urgency=low
 
   * Bug #34343: use app methods to check whether requirements for

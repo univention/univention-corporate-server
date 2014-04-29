@@ -26,26 +26,26 @@ import dnstests
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 
-			new_group_name = uts.random_name()
+		new_group_name = uts.random_name()
 
-			group_dn, groupname1 = udm.create_group()
+		group_dn, groupname1 = udm.create_group()
 
-			utils.verify_ldap_object(group_dn)
+		utils.verify_ldap_object(group_dn)
 
-			dnstests.wait_for_sync(3)
+		dnstests.wait_for_sync()
 
-			dnstests.check_group(group_dn)
+		dnstests.check_group(group_dn)
 
-			udm.modify_object('groups/group', dn = group_dn, name = new_group_name)
+		udm.modify_object('groups/group', dn = group_dn, name = new_group_name)
 
-			modified_group_dn = dnstests.correct_cleanup(group_dn, new_group_name, udm, True)
+		modified_group_dn = dnstests.correct_cleanup(group_dn, new_group_name, udm, True)
 
-			print modified_group_dn
+		print modified_group_dn
 
-			dnstests.wait_for_sync(3)
+		dnstests.wait_for_sync()
 
-			dnstests.check_group(modified_group_dn, group_dn)
+		dnstests.check_group(modified_group_dn, group_dn)
 
-			utils.verify_ldap_object(modified_group_dn)
+		utils.verify_ldap_object(modified_group_dn)
 
-			dnstests.wait_for_sync()
+	dnstests.wait_for_sync()

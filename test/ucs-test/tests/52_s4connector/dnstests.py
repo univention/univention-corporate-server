@@ -11,9 +11,11 @@ import os
 import sys
 import s4connector
 
-def wait_for_sync(multiplier = 1):
+def wait_for_sync(min_wait_time=0):
 	synctime = int(ucr.get("connector/s4/poll/sleep",7))
-	synctime = (synctime + 3) * multiplier
+	synctime = ((synctime + 3)*2)
+	if min_wait_time > synctime:
+		synctime = min_wait_time
 	print ("Waiting {0} seconds for sync...".format(synctime))
 	sleep (synctime)
 
@@ -60,6 +62,16 @@ def test_dns_a_record(zone_name, test_object):
 	match(re_test_object, zone_name, 'A')
 
 def test_dns_aaaa_record(zone_name, test_object):
+	#leading zeros will not be displayed in dig output so test_object has to be
+	#manipulated accordingly or test will fail even with correct sync
+	test_object_parts=test_object.split(':')
+	new_test_object_parts=[]
+	for part in test_object_parts:
+		while part[0] == '0':
+			part = part[1:]
+		new_test_object_parts.append(part)
+	test_object=(':').join(new_test_object_parts)
+	print test_object
 	re_test_object=re.compile(r'{0}\.*\s+\d+\s+IN\s+AAAA\s+\"*{1}\"*'.format(zone_name, test_object))
 	match(re_test_object, zone_name ,'AAAA')
 

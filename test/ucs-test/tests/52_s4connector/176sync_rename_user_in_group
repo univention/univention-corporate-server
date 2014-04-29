@@ -26,37 +26,37 @@ import itertools
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 
-			new_users = [uts.random_name(),uts.random_name()]
+		new_users = [uts.random_name(),uts.random_name()]
 
-			group_dn, groupname1 = udm.create_group()
+		group_dn, groupname1 = udm.create_group()
 
-			users = [udm.create_user()[0], udm.create_user()[0]]
+		users = [udm.create_user()[0], udm.create_user()[0]]
 
-			dnstests.wait_for_sync()
+		dnstests.wait_for_sync()
 
-			user_surnames = [(dnstests.get_user_surname(user)) for user in users]
+		user_surnames = [(dnstests.get_user_surname(user)) for user in users]
 
-			udm.modify_object('groups/group', dn = group_dn, append = {'users': [user for user in users]})
+		udm.modify_object('groups/group', dn = group_dn, append = {'users': [user for user in users]})
 
-			dnstests.wait_for_sync(3)
+		dnstests.wait_for_sync()
 
-			dnstests.verify_users(group_dn,users)
+		dnstests.verify_users(group_dn,users)
 
-			[(dnstests.check_user(user)) for user in users]
+		[(dnstests.check_user(user)) for user in users]
 
-			dnstests.check_group(group_dn)
+		dnstests.check_group(group_dn)
 
-			modified_users = []
-			for user, new_user in itertools.izip(users, new_users):
-				modified_users.append(dnstests.modify_username(user, new_user, udm))
+		modified_users = []
+		for user, new_user in itertools.izip(users, new_users):
+			modified_users.append(dnstests.modify_username(user, new_user, udm))
 
-			dnstests.wait_for_sync(3)
+		dnstests.wait_for_sync()
 
-			dnstests.check_group(group_dn)
+		dnstests.check_group(group_dn)
 
-			dnstests.verify_users(group_dn,modified_users)
+		dnstests.verify_users(group_dn,modified_users)
 
-			for modified_user, user_surname, user in itertools.izip(modified_users, user_surnames, users):
-				dnstests.check_user(modified_user, user_surname, user)
+		for modified_user, user_surname, user in itertools.izip(modified_users, user_surnames, users):
+			dnstests.check_user(modified_user, user_surname, user)
 
-			dnstests.wait_for_sync()
+	dnstests.wait_for_sync()
