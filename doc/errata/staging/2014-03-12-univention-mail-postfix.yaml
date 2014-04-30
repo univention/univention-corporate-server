@@ -7,8 +7,8 @@ note:
 version: [1]
 desc: |
   This update fixes the following issues:
-  * The postfix policy service listfilter (to restrict email delivery to
-    groups and lists) is now executed as user listfilter instead of the user
+  * The Postfix policy service listfilter (to restrict e-mail delivery to
+    groups and lists) is now executed as the user listfilter instead of the user
     cyrus to allow this feature also in environments without the 
     component univention-mail-cyrus.
   * The new UCR variables 
@@ -16,5 +16,5 @@ desc: |
      - mail/postfix/ldaptable/tlsrequirecert (yes)
      - mail/postfix/ldaptable/tlscacertfile (/etc/univention/ssl/ucsCA/CAcert.pem)
     have been introduced to define whether and how the postfix should use
-    TLS for ldap lookups.
+    TLS for LDAP lookups.
 bug: [26910,34198]

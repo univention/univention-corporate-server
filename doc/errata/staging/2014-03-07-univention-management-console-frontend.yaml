@@ -6,10 +6,9 @@ fix: 3.0.152-25.823.201404031315
 note:
 version: [1]
 desc: |
-  This errata update fixes several issues:
-  * Add method in the univention-management-console-web-server to get the
-    client's IP address.
-  * The UMC-web-server uses apache as a proxy server. The timeout for proxy
+  This update fixes the following issues:
+  * Add a method to the UMC web server to retrieve the client's IP address.
+  * The UMC web server uses Apache as a proxy server. The timeout for proxy
     requests is now configured by the UCR variable umc/http/session/timeout
   * The detection of Internet Explorer 11 has been fixed.
 bug: [34288, 34005, 33990]
