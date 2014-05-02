@@ -108,9 +108,11 @@ on_exit () {
 	local rv=$?
 	echo "***************************** EXIT $rv ********************************" >&2
 	[ 0 -ne $rv -a -t 0 ] && read -p "Hit key to continue with cleanup"
-	ldapsearch '(&(objectClass=univentionPackageList)(cn=test*))' dn |
+	ldapsearch -b "$BASE" -s one '(&(objectClass=univentionPackageList)(cn=test*))' dn |
 		sed -ne 's/^dn: //p' |
 		ldapdelete
+	ldapdelete -r "cn=restricted,$BASE"
+	ldapdelete -r "cn=visible,$BASE"
 	rm -rf "$tmp"
 	[ -s "$LDIF" ] && rv=1
 	exit "$rv"

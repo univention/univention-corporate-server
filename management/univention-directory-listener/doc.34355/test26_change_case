@@ -1,0 +1,37 @@
+#!/bin/bash
+## desc: Create, modify, change-case unfiltered object
+## bugs: [33594]
+main () {
+	ldapmodify <<__LDIF__
+dn: memberUid=test,cn=visible,$BASE
+changetype: add
+objectClass: posixGroup
+cn: test
+gidNumber: 42
+memberUid: test
+__LDIF__
+	a="$(uuid "memberUid=test,cn=visible,$BASE")"
+
+	listener stop
+	ldapmodify <<__LDIF__
+dn: memberUid=test,cn=visible,$BASE
+changetype: modify
+add: description
+description: test
+__LDIF__
+	ldapmodrdn "memberUid=test,cn=visible,$BASE" "memberUid=Test" # no "-r"
+	listener start
+	if $BUG34355
+	then
+		check "memberUid=test,cn=visible" "$a" - m
+		check "memberUid=Test,cn=visible" - "$a" a
+	else
+		check "memberUid=test,cn=visible" "$a" - r
+		check "memberUid=Test,cn=visible" - "$a" a
+		check "memberUid=Test,cn=visible" "$a" "$a" m
+	fi
+
+	! ldapdelete "memberUid=test,cn=visible,$BASE"
+	ldapdelete "memberUid=Test,cn=visible,$BASE"
+}
+. "${0%/*}/common.sh"

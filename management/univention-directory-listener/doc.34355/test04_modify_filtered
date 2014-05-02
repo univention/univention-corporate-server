@@ -5,7 +5,7 @@ main () {
 
 	udm settings/packages modify --dn "cn=test,cn=restricted,$BASE" --set packageList="test$RANDOM"
 	wait_listener
-	[ -f "$LOG" -a ! -s "$LOG" ]
+	! fgrep "cn=restricted,$BASE " "$LOG"
 
 	udm settings/packages remove --dn "cn=test,cn=restricted,$BASE"
 }

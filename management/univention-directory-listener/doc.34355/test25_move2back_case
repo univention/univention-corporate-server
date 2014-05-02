@@ -1,0 +1,28 @@
+#!/bin/bash
+## desc: Create, modify, rename twice change-case unfiltered object
+## bugs: [34355]
+main () {
+	udm settings/packages create --position "cn=visible,$BASE" --set name=test1
+	a="$(uuid "cn=test1,cn=visible,$BASE")"
+
+	listener stop
+	udm settings/packages modify --dn "cn=test1,cn=visible,$BASE" --append packageList="test$RANDOM"
+	udm settings/packages modify --dn "cn=test1,cn=visible,$BASE" --set name=test2
+	udm settings/packages modify --dn "cn=test2,cn=visible,$BASE" --set name=Test1
+	listener start
+	if $BUG34355
+	then
+		check "cn=Test1,cn=visible" "$a" "$a" m
+		check "cn=test1,cn=visible" "$a" - r
+		check "cn=Test1,cn=visible" - "$a" a
+	else
+		check "cn=test1,cn=visible" "$a" - r
+		check "cn=test2,cn=visible" - "$a" a
+		check "cn=test2,cn=visible" "$a" - r
+		check "cn=Test1,cn=visible" - "$a" a
+		check "cn=Test1,cn=visible" "$a" "$a" m
+	fi
+
+	udm settings/packages remove --dn "cn=Test1,cn=visible,$BASE"
+}
+. "${0%/*}/common.sh"

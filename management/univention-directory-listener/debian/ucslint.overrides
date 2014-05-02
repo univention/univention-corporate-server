@@ -23,3 +23,5 @@
 0010-2: doc.34355/test22_modify_move2chain
 0010-2: doc.34355/test23_rename_rdn
 0010-2: doc.34355/test24_swap
+0010-2: doc.34355/test25_move2back_case
+0010-2: doc.34355/test26_change_case
