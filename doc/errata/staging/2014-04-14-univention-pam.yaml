@@ -2,11 +2,14 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-pam
-fix: 7.0.4-27.246.201404141820
+fix: 7.0.4-28.247.201405030135
 note:
 version: [1]
 desc: |
+  This update fixes the following issues:
   * Kerberos authentication is now limited to non-local accounts with
     UID >= 1000. The limit can be configured through the new Univention
     Configuration Registry variable 'pam/krb5/minimum_uid'.
-bug: [34315]
+  * The mapping of user and group names in the config registry templates was
+    not updated in all cases. This has been fixed.
+bug: [34315, 34742]
