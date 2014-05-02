@@ -184,9 +184,9 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 		/* rv had better be LDAP_SUCCESS if we get here */
 		assert(rv == LDAP_SUCCESS);
 
-		/* Delay current command is stash for later, otherwise process pending command now */
+		/* Delay current command is stashed for later, otherwise process pending command now */
 		if (trans.prev.notify.command) {
-			if (trans.prev.notify.command == trans.cur.notify.command)
+			if (!trans.cur.notify.command)
 				continue;
 			if (write_transaction_file && (rv = notifier_write_transaction_file(trans.prev.notify)) != 0)
 				goto out;

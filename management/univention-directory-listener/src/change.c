@@ -468,6 +468,20 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 		return rv;	/* LDAP_SUCCESS or other than LDAP_NO_SUCH_OBJECT */
 }
 
+static void _free_transaction_op(struct transaction_op *op) {
+	ldap_memfree(op->ldap_dn);
+	op->ldap_dn = NULL;
+	free(op->uuid);
+	op->uuid = NULL;
+	cache_free_entry(NULL, &op->cache);
+}
+
+void change_free_transaction_op(struct transaction_op *op) {
+	_free_transaction_op(op);
+	notifier_entry_free(&op->notify);
+	memset(op, 0, sizeof(struct transaction_op));
+}
+
 static bool same_rdn(LDAPRDN left, LDAPRDN right) {
 	int i, j;
 
@@ -586,6 +600,7 @@ static int change_update_cache(struct transaction *trans) {
 	case 'r': // move_from
 		// delay this 'r' until the following 'a' to decide if this is really a move or a delete.
 		trans->prev = trans->cur;
+		memset(&trans->cur, 0, sizeof(struct transaction_op));
 		rv = 0;
 		break;
 	default:
@@ -594,6 +609,8 @@ static int change_update_cache(struct transaction *trans) {
 	}
 
 out:
+	ldap_memfree(trans->cur.ldap_dn);
+	trans->cur.ldap_dn = NULL;
 	return rv;
 }
 
@@ -679,17 +696,10 @@ int change_update_dn(struct transaction *trans) {
 		trans->ldap = NULL;
 	} else {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error searching DN %s: %d", trans->cur.notify.dn, rv);
+		_free_transaction_op(&trans->cur);
 	}
 	ldap_msgfree(res);
 
 out:
 	return rv;
-}
-
-void change_free_transaction_op(struct transaction_op *op) {
-	ldap_memfree(op->ldap_dn);
-	free(op->uuid);
-	notifier_entry_free(&op->notify);
-	cache_free_entry(NULL, &op->cache);
-	memset(op, 0, sizeof(struct transaction_op));
 }

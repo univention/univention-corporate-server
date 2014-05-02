@@ -1,3 +1,9 @@
+univention-directory-listener (8.0.0-8) unstable; urgency=low
+
+  * Fix memory leak (Bug #34355)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 02 May 2014 23:18:26 +0200
+
 univention-directory-listener (8.0.0-7) unstable; urgency=low
 
   * Update copyright (Bug #34355)
