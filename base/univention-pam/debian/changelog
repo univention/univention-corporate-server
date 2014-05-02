@@ -1,3 +1,9 @@
+univention-pam (7.0.4-28) unstable; urgency=low
+
+  * Trigger well-known-sid-name-mapping on UID changes(Bug #34742)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 02 May 2014 16:55:15 +0200
+
 univention-pam (7.0.4-27) unstable; urgency=low
 
   * Fix $PATH fro ucr (Bug #34315)

@@ -34,7 +34,6 @@
 __package__=''  # workaround for PEP 366
 
 import os
-import re
 import cPickle
 
 import listener
@@ -46,7 +45,7 @@ import imp
 name = "well-known-sid-name-mapping"
 description = "map user and group names for well known sids"
 filter = "(|(objectClass=sambaSamAccount)(objectClass=sambaGroupMapping))"
-attributes = ["cn", "sambaSid"]
+attributes = ["uid", "cn", "sambaSID"]
 FN_CACHE = '/var/cache/univention-directory-listener/well-known-sid-name-mapping_modrdn.pickle'
 modrdn = '1'
 
@@ -130,18 +129,16 @@ def no_relevant_change(new, old):
 		else:
 			name_attr = 'cn'
 		
-		old_name = old.get(name_attr, [None])[0]
-		new_name = new.get(name_attr, [None])[0]
+		old_name = old.get(name_attr, [])
+		new_name = new.get(name_attr, [])
 
-		if old_name == new_name:
-			return True
-		else:
-			univention.debug.debug(
-				univention.debug.LISTENER,
-				univention.debug.INFO,
-				"%s: mod %s %s %s" % (name, new.get("sambaSID"), new_name, old_name)
-			)
-			return False
+		univention.debug.debug(
+			univention.debug.LISTENER,
+			univention.debug.INFO,
+			"%s: mod sid=%s new=%r old=%r" % (name, new.get("sambaSID"), new_name, old_name)
+		)
+
+		return set(old_name) == set(new_name)
 
 def handler(dn, new, old, command):
 	global modified_default_names
