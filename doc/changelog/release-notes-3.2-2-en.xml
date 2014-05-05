@@ -4,17 +4,17 @@
 
   <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
   <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
-  <!ENTITY changelog SYSTEM "changelog-3.2-1.xml">
+  <!ENTITY changelog SYSTEM "changelog-3.2-2.xml">
 
   %entities;
 ]>
-<book lang="en" id="releasenotes-3.2-1-en">
+<book lang="en" id="releasenotes-3.2-2-en">
 	<bookinfo>
-		<title>UCS 3.2-1 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 3.2-1</subtitle>
+		<title>UCS 3.2-2 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 3.2-2</subtitle>
 		<revhistory>
 			<revision>
-				<revnumber>3.2-1</revnumber>
+				<revnumber>3.2-2</revnumber>
 				<date>17 Feb 2014</date>
 			</revision>
 		</revhistory>
