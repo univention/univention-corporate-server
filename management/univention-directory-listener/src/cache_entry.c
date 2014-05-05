@@ -533,48 +533,98 @@ static inline bool BERSTREQ(const struct berval *ber, const char *str) {
 }
 
 static inline int BER2STR(const struct berval *ber, char **strp) {
-	return asprintf(strp, "%*s", (int)ber->bv_len, ber->bv_val);
+	return asprintf(strp, "%.*s", (int)ber->bv_len, ber->bv_val);
 }
 
-void cache_entry_update_rdn(CacheEntry *entry, LDAPRDN new_dn) {
-	int rdn, att, val;
-
-	for (rdn = 0; new_dn[rdn]; rdn++) {
-		CacheEntryAttribute *attr;
-
-		for (att = 0; att < entry->attribute_count; att++) {
-			attr = entry->attributes[att];
-			if (BERSTREQ(&new_dn[rdn]->la_attr, attr->name))
-				break;
-		}
-		if (att >= entry->attribute_count) {
-			attr = malloc(sizeof(CacheEntryAttribute));
-			assert(attr);
-			BER2STR(&new_dn[rdn]->la_attr, &attr->name);
-			attr->values = calloc(2, sizeof(char *));
-			attr->length = calloc(2, sizeof(int));
-			attr->value_count = 0;
-
-			entry->attributes = realloc(entry->attributes, (entry->attribute_count + 2) * sizeof(CacheEntryAttribute *));
-			entry->attributes[entry->attribute_count++] = attr;
-			entry->attributes[entry->attribute_count] = NULL;
-		} else {
-			for (val = 0; val < attr->value_count; val++) {
-				char *cache_value = attr->values[val];
-				if (BERSTREQ(&new_dn[rdn]->la_value, cache_value))
-					break;
-			}
-			if (val >= attr->value_count) {
-				attr->values = realloc(attr->values, (attr->value_count + 2) * sizeof(char *));
-				attr->length = realloc(attr->length, (attr->value_count + 2) * sizeof(int));
-			} else {
-				continue;
-			}
-		}
-
-		attr->length[attr->value_count] = BER2STR(&new_dn[rdn]->la_value, &attr->values[attr->value_count]);
-		attr->value_count++;
-		attr->length[attr->value_count] = 0;
-		attr->values[attr->value_count] = NULL;
+static CacheEntryAttribute *_cache_entry_find_attribute(CacheEntry *entry, LDAPAVA *ava) {
+	int att;
+	for (att = 0; att < entry->attribute_count; att++) {
+		CacheEntryAttribute *attr = entry->attributes[att];
+		if (BERSTREQ(&ava->la_attr, attr->name))
+			return attr;
 	}
+	return NULL;
+}
+static void _cache_entry_add_new_attribute(CacheEntry *entry, LDAPAVA *ava) {
+	CacheEntryAttribute *attr = malloc(sizeof(CacheEntryAttribute));
+	assert(attr);
+	BER2STR(&ava->la_attr, &attr->name);
+	attr->values = calloc(2, sizeof(char *));
+	attr->length = calloc(2, sizeof(int));
+	attr->value_count = 0;
+
+	entry->attributes = realloc(entry->attributes, (entry->attribute_count + 2) * sizeof(CacheEntryAttribute *));
+	entry->attributes[entry->attribute_count++] = attr;
+	entry->attributes[entry->attribute_count] = NULL;
+}
+static bool _cache_entry_check_value_exists(CacheEntryAttribute *attr, LDAPAVA *ava) {
+	int vi;
+	for (vi = 0; vi < attr->value_count; vi++) {
+		char *cache_value = attr->values[vi];
+		if (BERSTREQ(&ava->la_value, cache_value))
+			return true;
+	}
+	return false;
+}
+static bool _cache_entry_find_value(CacheEntryAttribute *attr, int vi, struct berval **ldap_vals) {
+	struct berval **bv;
+	size_t len = attr->length[vi];
+
+	for (bv = ldap_vals; *bv; bv++) {
+		if ((*bv)->bv_len == len && memcmp((*bv)->bv_val, attr->values[vi], len) == 0)
+			return true;
+	}
+	return false;
+}
+static void _cache_entry_cleanup_old_values(CacheEntryAttribute *attr, struct transaction *trans) {
+	struct berval **ldap_vals = ldap_get_values_len(trans->lp->ld, trans->ldap, attr->name);
+	if (!ldap_vals)
+		return;
+
+	int vi = 0;
+	while (vi < attr->value_count) {
+		if (_cache_entry_find_value(attr, vi, ldap_vals)) {
+			vi++;
+		} else {
+			attr->length[vi] = attr->length[attr->value_count];
+			attr->length[attr->value_count] = 0;
+
+			free(attr->values[vi]);
+			attr->values[vi] = attr->values[attr->value_count];
+			attr->values[attr->value_count] = NULL;
+
+			attr->value_count--;
+		}
+	}
+
+	ldap_value_free_len(ldap_vals);
+}
+static void _cache_entry_append_new_value(CacheEntryAttribute *attr, LDAPAVA *ava) {
+	attr->values = realloc(attr->values, (attr->value_count + 2) * sizeof(char *));
+	assert(attr->values);
+	attr->length = realloc(attr->length, (attr->value_count + 2) * sizeof(int));
+	assert(attr->length);
+
+	attr->length[attr->value_count] = BER2STR(&ava->la_value, &attr->values[attr->value_count]) + 1;
+	attr->value_count++;
+	attr->length[attr->value_count] = 0;
+	attr->values[attr->value_count] = NULL;
+}
+static void _cache_entry_update_rdn1(struct transaction *trans, LDAPAVA *ava) {
+	CacheEntry *entry = &trans->cur.cache;
+
+	CacheEntryAttribute *attr = _cache_entry_find_attribute(entry, ava);
+	if (attr == NULL)
+		_cache_entry_add_new_attribute(entry, ava);
+	else
+		if (!_cache_entry_check_value_exists(attr, ava)) {
+			_cache_entry_cleanup_old_values(attr, trans);
+			_cache_entry_append_new_value(attr, ava);
+		}
+}
+void cache_entry_update_rdn(struct transaction *trans, LDAPRDN new_dn) {
+	int rdn;
+
+	for (rdn = 0; new_dn[rdn]; rdn++)
+		_cache_entry_update_rdn1(trans, new_dn[rdn]);
 }

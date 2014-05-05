@@ -521,7 +521,7 @@ static int process_move(struct transaction *trans) {
 	if (rv != LDAP_SUCCESS || !new_dn)
 		goto out;
 	if (!same_rdn(old_dn[0], new_dn[0]))
-		cache_entry_update_rdn(&trans->cur.cache, new_dn[0]);
+		cache_entry_update_rdn(trans, new_dn[0]);
 
 	// 3. Update entryDN
 	cache_entry_set1(&trans->cur.cache, "entryDN", trans->cur.notify.dn);
