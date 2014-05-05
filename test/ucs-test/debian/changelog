@@ -1,3 +1,10 @@
+ucs-test (4.0.164-44) unstable; urgency=low
+
+  * 60_umc-system/30_umc-service-user-modules: test UMC
+    module related commands (Bug #34621)
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 05 May 2014 17:29:41 +0200
+
 ucs-test (4.0.164-43) unstable; urgency=low
 
   * Bug #29211: 
