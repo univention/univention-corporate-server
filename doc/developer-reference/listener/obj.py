@@ -83,31 +83,30 @@ class ReferentialIntegrityCheck(LocalLdap, LocalFile):
 
 	def __init__(self):
 		super(ReferentialIntegrityCheck, self).__init__()
-		self._old = None
+		self._delay = None
 
 	def handler(self, dn, new, old, command=''):
-		if "a" == command:
-			if self._old:
-				old_dn, old = self._old
-				self._old = None
+		if self._delay:
+			old_dn, old = self._delay
+			self._delay = None
+			if "a" == command and old['entryUUID'] == new['entryUUID']:
 				self.handler_move(old_dn, old, dn, new)
-			else:
-				self.handler_add(dn, new)
-		elif "m" == command:
+				return
+			self.handler_remove(old_dn, old)
+
+		if "n" == command and "cn=Subschema" == dn:
+			self.handler_schema()
+		elif new and not old:
+			self.handler_add(dn, new)
+		elif new and old:
 			self.handler_modify(dn, old, new)
-		elif "d" == command:
-			self.handler_remove(dn, old)
-		elif "r" == command:
-			self._old = (dn, old)
-		elif "n" == command:
-			if "cn=Subschema" == dn:
-				self.handler_schema()
+		elif not new and old:
+			if "r" == command:
+				self._delay = (dn, old)
 			else:
-				self.handler_add(dn, new)
-		elif "z" == command:
-			pass  # ignore
+				self.handler_remove(dn, old)
 		else:
-			pass  # error
+			pass  # ignore, reserved for future use
 
 	def handler_add(self, dn, new):
 		if not self._validate(new):
