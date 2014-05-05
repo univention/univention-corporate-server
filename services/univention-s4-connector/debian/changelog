@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-41) unstable; urgency=low
+
+  * It is not sufficient to run base64.decodestring to detect a base64
+    string. Update _is_base64() (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 05 May 2014 08:31:53 +0200
+
 univention-s4-connector (8.0.33-40) unstable; urgency=low
 
   * Sync the password if the user was created in UCS (Bug #33621)

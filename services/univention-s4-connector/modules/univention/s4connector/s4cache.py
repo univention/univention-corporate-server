@@ -43,6 +43,12 @@ def func_name():
 
 def _is_base64(val):
 	try:
+		# It is not sufficient to run base64.decodestring to detect a base64 string.
+		# When the ascii decode is not possible, it is not a base4 string.
+		val.decode('ascii')
+	except UnicodeDecodeError:
+		return False
+	try:
 		# The string must be casted as str otherwise we saw something like this:
 		#	11.02.2014 03:53:44,141 LDAP        (INFO): _is_base64 returns True for: Í8^Ml%'<U+0097>A²ôâ/! ^RÃ
 		#	11.02.2014 03:53:44,142 LDAP        (WARNING): S4Cache: sqlite: near "<U+0097>A²ôâ": syntax error. SQL command was: [u"SELECT id FROM GUIDS WHERE guid='\xcd8\rl%'\x97A\xb2\xf4\xe2/! \x12\xc3';"
