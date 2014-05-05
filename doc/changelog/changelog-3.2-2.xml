@@ -4,6 +4,14 @@
 	  <listitem><simpara>
 		All security updates issued for UCS 3.2-1 are included.
 	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The Debian point update 6.0.9 has been integrated. It provides many bugfixes and also addresses some
+		security issues (<ulink url="&ucsbug;33272">Bug 33272</ulink>, <ulink url="&ucsbug;33283">Bug 33283</ulink>, 
+		<ulink url="&ucsbug;33287">Bug 33287</ulink>, <ulink url="&ucsbug;33500">Bug 33500</ulink>, 
+		<ulink url="&ucsbug;33776">Bug 33776</ulink>, <ulink url="&ucsbug;33868">Bug 33868</ulink>,
+		<ulink url="&ucsbug;34136">Bug 34136</ulink>).
+	  </simpara></listitem>
 	</itemizedlist>
 </section>
 
