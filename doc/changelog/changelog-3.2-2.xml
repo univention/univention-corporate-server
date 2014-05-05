@@ -20,9 +20,19 @@
   <title>Univention Installer</title>
 	<itemizedlist>
 	  <listitem><simpara>
+		If a base system was selected as the system role, a warning is now displayed explaining the
+		consequences (<ulink url="&ucsbug;34329">Bug 34329</ulink>).
 	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The warning about the missing BIOS Grub partition is now displayed again after modifying the
+		partition table (<ulink url="&ucsbug;34334">Bug 34334</ulink>).
+	  </simpara></listitem>
+
 	</itemizedlist>
 </section>
+
+
 
 
 <section id="changelog:basic">
@@ -39,10 +49,19 @@
   <section id="changelog:basis:ucr">
 	<title>Univention Configuration Registry</title>
 
-		<itemizedlist>
-		  <listitem><simpara>
-		  </simpara></listitem>
-		</itemizedlist>
+	<itemizedlist>
+	  <listitem><simpara>
+		In some cases the file ownership was not preserved correctly when a file is committed
+		(<ulink url="&ucsbug;34241">Bug 34241</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The program <command>univention-check-templates</command> now also checks UCR template files
+		for modifications by using the MD5 hash sum managed by dpkg (<ulink url="&ucsbug;24010">Bug
+		24010</ulink>).
+	  </simpara></listitem>
+
+	</itemizedlist>
 
 	<section id="changelog:basis:ucr:template">
 	  <title>Changes to templates and modules</title>
@@ -62,6 +81,11 @@
 	<title>OpenLDAP</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  If the LDAP server is not available the tool <command>univention-ldapsearch</command> now
+		  tries to reconnect to the LDAP server. The count can be configured via the &ucsUCRV;
+		  <envar>ldap/client/retry/count</envar>, which is set to 10 by default  
+		  (<ulink url="&ucsbug;34292">Bug 34292</ulink>, <ulink url="&ucsbug;34293">Bug
+		  34293</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
 
@@ -100,7 +124,15 @@
 	<title>Univention Management Console web interface</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  Display glitches with some progress bars have been fixed (<ulink url="&ucsbug;34181">Bug
+		  34181</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The detection of Internet Explorer 11 has been fixed (<ulink url="&ucsbug;33990">Bug
+		  33990</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -108,15 +140,50 @@
 	<title>Univention Management Console server</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  Added a method to the &ucsUMC; web server to retrieve the client's IP address (<ulink url="&ucsbug;34288">Bug
+		  34288</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The UMC web server uses Apache as a proxy server. The timeout for proxy requests can now
+		  be configured with the &ucsUCRV; <envar>umc/http/session/timeout</envar> (<ulink
+		  url="&ucsbug;34005">Bug 34005</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
   <section id="changelog:umc:appcenter">
 	<title>Univention App Center</title>
 	  <itemizedlist>
+
 		<listitem><simpara>
+		  Renamed the button for buying an app from <guimenu>Shop</guimenu> to
+		  <guimenu>Buy</guimenu> (<ulink url="&ucsbug;34183">Bug 34183</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  Whitelisting and blacklisting of apps is now done based on the applications' ID (<ulink
+		  url="&ucsbug;34145">Bug 34145</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Renamed the App ID for Tine 2.0 from tine20org to tine20 to reflect that this is the
+		  commercial version (<ulink url="&ucsbug;33728">Bug 33728</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Components in the App Center's tab <guimenu>Repository Settings</guimenu> may have default
+		  packages which can be installed. Before this is done, the App Center now updates the
+		  package list (<ulink url="&ucsbug;34278">Bug 34278</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Applications may now specify supported architectures. If an application only supports 64
+		  bit, a 32 bit operating system will refuse to install it (<ulink url="&ucsbug;34320">Bug
+		  34320</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -132,6 +199,8 @@
 	<title>Users module</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  LDAP objects with the attribute univentionObjectFlag:functional are now ignored (<ulink
+		  url="&ucsbug;34395">Bug 34395</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -140,7 +209,15 @@
 	<title>License module</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  In the license dialog, the LDAP base DN is also shown when using the free-for-personal-use
+		  license (<ulink url="&ucsbug;34117">Bug 34117</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  LDAP objects with the attribute univentionObjectFlag:functional are now ignored (<ulink
+		  url="&ucsbug;34395">Bug 34395</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -204,7 +281,16 @@
 	<title>Other modules</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  The <guimenu>Change password</guimenu> module showed an endless loading animation after
+		  successfully applying changes. Now the form is reloading properly (<ulink
+		  url="&ucsbug;34367">Bug 34367</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The labels for widgets regarding the type of LDAP objects have been changed as the old
+		  ones could not reflect the grammatical case (<ulink url="&ucsbug;34038">Bug 34038</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -212,7 +298,11 @@
 	<title>&ucsUDM; command line interface and related tools</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  UDM no longer creates temporary objects in cn=univention when moving containers, because
+		  cn=univention is ignored by the S4 connector and the S4 connector does not recognize the
+		  move (<ulink url="&ucsbug;34266">Bug 34266</ulink>).
 		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -220,7 +310,17 @@
 	<title>Development of modules for &ucsUMC;</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  Python UDM extensions are now installed with update-python-support (<ulink
+		  url="&ucsbug;34421">Bug 34421</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The <emphasis>default</emphasis> attribute of a UDM property is now configurable via
+		  &ucsUCR; (e.g. by setting
+		  <envar>directory/manager/web/modules/users/user/properties/mailHomeServer/default</envar>)
+		  (<ulink url="&ucsbug;23765">Bug 23765</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 </section>
@@ -243,6 +343,9 @@
   <title>Univention Library</title>
 	<itemizedlist>
 	  <listitem><simpara>
+		<filename>ldap_extension.py</filename> now moves files using the Python function shutil.move
+		instead of os.rename. This allows moving files across partitions (<ulink
+		url="&ucsbug;34104">Bug 34104</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
 </section>
@@ -250,6 +353,32 @@
 
 <section id="changelog:service">
   <title>System services</title>
+
+  <section id="changelog:service:mail">
+	<title>Mail services</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  The Postfix policy service listfilter (which is used to restrict e-mail delivery to groups
+		  and lists) is now executed as the user <emphasis>listfilter</emphasis> instead of the user
+		  <emphasis>cyrus</emphasis>. This allows the deployment of this feature in environments without the 
+		  component <package>univention-mail-cyrus</package> (<ulink url="&ucsbug;">Bug 26910</ulink>).
+		</simpara></listitem>
+		
+		<listitem><simpara>
+		  The new &ucsUCR; variables <envar>mail/postfix/ldaptable/starttls</envar>,
+		  <envar>mail/postfix/ldaptable/tlsrequirecert</envar> and <envar>mail/postfix/ldaptable/tlscacertfile</envar>
+		  have been introduced to define whether and how Postfix should use TLS for LDAP lookups.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The listener module handling shared IMAP folders configured in the &ucsUMC; now honours
+		  the &ucsUCRV; <envar>mail/cyrus/mailbox/delete</envar> when deleting  IMAP folders (<ulink
+		  url="&ucsbug;34165">Bug 34165</ulink>).
+		</simpara></listitem>
+
+	  </itemizedlist>
+  </section>
+
 
   <section id="changelog:service:virus">
 	<title>Spam/virus detection and countermeasures</title>
@@ -271,6 +400,14 @@
 	<title>Nagios</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  The &ucsUCR; templates for the configuration and init files of the Nagios Remote Plugin
+		  Executor (NRPE) have been configured to use the PID file
+		  <filename>/var/run/nagios/nrpe.pid</filename> (<ulink url="&ucsbug;34063">Bug 34063</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  A buffer overflow in the setuid wrapper has been fixed (<ulink url="&ucsbug;34041">Bug
+		  34041</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -282,6 +419,34 @@
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
+
+  <section id="changelog:service:proxy">
+	<title>Proxy services</title>
+	  <itemizedlist>
+		<listitem><simpara>
+		  <emphasis>cache_dir null /tmp</emphasis> is no longer set if caching is disabled. This
+		  fixes the operation of Squid without caching (<ulink url="&ucsbug;33332">Bug 33332</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCRV; <envar>squid/redirect</envar> can now be used to configure the
+		  <emphasis>url_rewrite_program</emphasis> configuration directive of Squid. If the variable
+		  is set to <emphasis>squidguard</emphasis>, then <emphasis>/usr/bin/squidGuard -c
+		  /etc/squid/squidGuard.conf</emphasis> (<ulink url="&ucsbug;32429">Bug 32429</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The join script of <package>univention-squid-kerberos</package> now checks if the service
+		  principal account already exists (<ulink url="&ucsbug;33779">Bug 33779</ulink>, <ulink url="&ucsbug;34575">Bug 34575</ulink>). In
+		  addition the saltPrincipal has been added to the Samba 4 keytab entry for the proxy
+		  service principal (<ulink url="&ucsbug;32292">Bug 32292</ulink>).
+		</simpara></listitem>
+
+	  </itemizedlist>
+  </section>
+
+
+(<ulink url="&ucsbug;">Bug </ulink>).
 
   <section id="changelog:service:pam">
 	<title>PAM / Local group cache</title>
@@ -308,7 +473,34 @@
 	<title>Univention Virtual Machine Manager</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  The HTML5 VNC plugin now prevents browsers from caching
+		  <filename>vnc_auto.html</filename>. This avoids certificate problems with HTTPS
+		  connections using Internet Explorer (<ulink url="&ucsbug;33968">Bug 33968</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The init script now uses <emphasis>force-stop</emphasis> and
+		  <emphasis>force-restart</emphasis> to handle blocked UVMMd processes (<ulink
+		  url="&ucsbug;34321">Bug 34321</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  A broken link to an Support Database article has been replaced by a link to the manual
+		  (<ulink url="&ucsbug;34425">Bug 34425</ulink>).
+		</simpara> </listitem>
+
+		<listitem><simpara>
+		  <command>libvirt-check.sh</command> has been added to virtualization nodes. It
+		  periodically tests if libvirtd responds and restarts libvirtd if necessary (<ulink
+		  url="&ucsbug;33966">Bug 33966</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The logging of libvirtd can now be controlled using the &ucsUCR; variables
+		  <envar>libvirt/log/level</envar>, <envar>libvirt/log/filters</envar> and
+		  <envar>libvirt/log/outputs</envar> (<ulink url="&ucsbug;34170">Bug 34170</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -337,7 +529,28 @@
 	<title>Samba AD domain support</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  Domain account lockout for Windows clients joined into a Samba AD domain are now possible
+		  (<ulink url="&ucsbug;34443">Bug 34443</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  Support for correcting skewed clocks during domain was added. This allows joining Windows
+		  clients without requiring a time synchronisation first (<ulink url="&ucsbug;34439">Bug 34439</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  MS DFS support is now enbled on Samba AD domain controllers by default. With this new
+		  setting Windows clients ask for DFS redirects for the SYSVOL share, which may improve
+		  efficient network usage in branch site configurations (<ulink url="&ucsbug;34326">Bug
+		  34326</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  <command>univention-samba4-backup</command> has been added to backup the samba provision
+		  directory. This tool is periodically executed by cron (configurable via the &ucsUCRV;
+		  <envar>samba4/backup/cron</envar>) (<ulink url="&ucsbug;34113">Bug 34113</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -345,6 +558,8 @@
 	<title>Univention AD Takeover</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  The AD takeover can now be performed through a &ucsUMC; module (<ulink
+		  url="&ucsbug;34019">Bug 34019</ulink>, <ulink url="&ucsbug;34139">Bug 34139</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -371,7 +586,22 @@
   <title>Other changes</title>
 	<itemizedlist>
 	  <listitem><simpara>
+		The package <package>univention-radius</package> has been added (<ulink url="&ucsbug;29465">Bug 29465</ulink>).
 	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The <filename>/etc/issue</filename> welcome message mentions where to find the management
+		system. After installing this update the message will only be shown on domain controllers
+		and member servers (<ulink url="&ucsbug;34330">Bug 34339</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The dependency list of the package <package>univention-directory-manager-modules</package>
+		has been updated. Prior to this change, slapd was left installed on a memberserver when
+		using the appliance mode which could lead to problems when this system was querying LDAP
+		(<ulink url="&ucsbug;34201">Bug 34201</ulink>).
+	  </simpara></listitem>
+
 	</itemizedlist>
 </section>
 
