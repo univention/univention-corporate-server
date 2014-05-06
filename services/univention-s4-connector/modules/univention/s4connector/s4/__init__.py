@@ -1779,7 +1779,7 @@ class s4(univention.s4connector.ucs):
 						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: Object dn %s should be ignored, ignore membership" % member_dn)
 						continue 
 
-					ucs_dn = self._object_mapping(key, {'dn':member_dn,'attributes':member_object})['dn']
+					ucs_dn = self._object_mapping(mo_key, {'dn':member_dn,'attributes':member_object})['dn']
 					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: mapped s4 member to ucs DN %s" % ucs_dn)
 
 					dn_mapping_ucs_member_to_s4[ucs_dn.lower()] = member_dn

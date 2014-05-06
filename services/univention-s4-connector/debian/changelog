@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-43) unstable; urgency=low
+
+  * group_members_sync_to_ucs: use the correct key for the object
+    mapping (Bug #34197)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 May 2014 14:21:03 +0200
+
 univention-s4-connector (8.0.33-42) unstable; urgency=low
 
   * Set the list of changed attributes even if the object was created
