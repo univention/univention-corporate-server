@@ -1,3 +1,10 @@
+ucs-test (4.0.164-45) unstable; urgency=low
+
+  * 002_multiple_s4_connector_instances: Try to start multiple s4-
+    connector instances (Bug #34410)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 May 2014 20:19:22 +0200
+
 ucs-test (4.0.164-44) unstable; urgency=low
 
   * 60_umc-system/30_umc-service-user-modules: test UMC
