@@ -57,22 +57,31 @@
 
 			<itemizedlist>
 				<listitem><para>
-						Das Linux-Kernel-Paket wurde auf Version 3.10.26 aktualisiert.
-						Dies verbessert neben vielen Bugfixes auch den Hardware-Support.
+				  Der Domänenbeitritt von Windows-Clients mit fehlerhafter Systemzeit wurde
+				  vereinfacht; ein vorheriges Synchronisieren der Systemzeit ist nun nich mehr
+				  nötig. Außerdem werden Passwortsperren nach erfolglosen Anmeldungen nun auch
+				  in Samba-AD-Domänen unterstützt.
 				</para></listitem>
 
 				<listitem><para>
-						Das Univention App Center wurde erweitert:
-						Neben vielen Detailverbesserungen wurden neue Schnittstellen geschaffen, die die Integration von Applikationen von Drittherstellern verbessern.
+				  Univention AD Takeover - die UCS-Lösung zur automatischen Migration einer Active
+				  Directory-Domäne zu UCS - kann nun auch über ein Univention Management
+				  Console-Modul durchgeführt werden.
 				</para></listitem>
 
 				<listitem><para>
-						Univention AD Takeover - die UCS-Lösung zur automatischen Migration einer Active Directory-Domäne zu UCS - wurde weiter verbessert;
-						u.a. wird nun auch die Migration von AD-Domänen unterstützt, die nicht in Englisch oder Deutsch betrieben wurden.
+				  Das Univention App Center wurde weiter ausgebaut, z.B. werden können nun auch
+				  Applikationen bereitgestellt werden, die nicht für alle Prozessor-Architekturen
+				  verfügbar sind.
 				</para></listitem>
 
 				<listitem><para>
-						Zahlreiche Usability-Verbesserungen in der &ucsUMC;.
+				  Die Konfigurations des Zugriff auf WLAN-Netze über das RADIUS-Protokoll kann über
+				  die neue Radius-App nun in der Univention Management Console konfiguriert werden.
+				</para></listitem>
+
+				<listitem><para>
+				  Das Debian-Point Update 6.0.9 wurde integriert. Es bring zahlreiche Bugfixes mit sich.
 				</para></listitem>
 			</itemizedlist>
 		</para>
@@ -356,7 +365,7 @@ xe vm-param-set uuid=UUIDVM platform:vga=std
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderung seit UCS 3.2-0:
+			Aufgeführt sind die Änderung seit UCS 3.2-1:
 		</para>
 
 		&changelog;

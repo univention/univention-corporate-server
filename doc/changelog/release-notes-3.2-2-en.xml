@@ -55,26 +55,36 @@
 			With &ucsUCS; 3.2-1, the first point release for &ucsUCS; (UCS) is now available.
 			It includes all errata updates issued for UCS 3.2-0:
 
-			<itemizedlist>
-				<listitem><para>
-						The Linux kernel package was updated to 3.10.26.
-						Besides many bugfixes this also improves the hardware support.
-				</para></listitem>
+			<!-- <itemizedlist> -->
+				<!-- <listitem><para> -->
+				<!--   Der Domänenbeitritt von Windows-Clients mit fehlerhafter Systemzeit wurde -->
+				<!--   vereinfacht; ein vorheriges Synchronisieren der Systemzeit ist nun nich mehr -->
+				<!--   nötig. Außerdem werden Passwortsperren nach erfolglosen Anmeldungen nun auch -->
+				<!--   in Samba-AD-Domänen unterstützt. -->
+				<!-- </para></listitem> -->
 
-				<listitem><para>
-						The Univention App Center was extended:
-						Beside several bugfixes new interfaces are provided which improve the integration of third party applications.
-				</para></listitem>
+				<!-- <listitem><para> -->
+				<!--   Univention AD Takeover - die UCS-Lösung zur automatischen Migration einer Active -->
+				<!--   Directory-Domäne zu UCS - kann nun auch über ein Univention Management -->
+				<!--   Console-Modul durchgeführt werden. -->
+				<!-- </para></listitem> -->
 
-				<listitem><para>
-						Univention AD Takeover - the UCS solution for the automatic migration of an Active Directory domain to UCS - was improved further;
-						it now also support the migration of AD domains operated in languages other than English or German.
-				</para></listitem>
+				<!-- <listitem><para> -->
+				<!--   Das Univention App Center wurde weiter ausgebaut, z.B. werden können nun auch -->
+				<!--   Applikationen bereitgestellt werden, die nicht für alle Prozessor-Architekturen -->
+				<!--   verfügbar sind. -->
+				<!-- </para></listitem> -->
 
-				<listitem><para>
-						Multiple usability enhancement in the &ucsUMC;.
-				</para></listitem>
-			</itemizedlist>
+				<!-- <listitem><para> -->
+				<!--   Die Konfigurations des Zugriff auf WLAN-Netze über das RADIUS-Protokoll kann über -->
+				<!--   die neue Radius-App nun in der Univention Management Console konfiguriert werden. -->
+				<!-- </para></listitem> -->
+
+				<!-- <listitem><para> -->
+				<!--   Das Debian-Point Update 6.0.9 wurde integriert. Es bring zahlreiche Bugfixes mit sich. -->
+				<!-- </para></listitem> -->
+
+			<!-- </itemizedlist> -->
 		</para>
 
 	</chapter>
@@ -355,7 +365,7 @@ xe vm-param-set uuid=UUIDVM platform:vga=std
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS 3.2-0:
+			Listed are the changes since UCS 3.2-1:
 		</para>
 
 		&changelog;
