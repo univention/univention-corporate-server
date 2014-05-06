@@ -1,10 +1,9 @@
 @!@
-minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 pam_krb5='''
 auth     [success=<succ> new_authtok_reqd=ok \
          user_unknown=<unknown> \
          service_err=<unavail> authinfo_unavail=<unavail> \
-         default=<unknown>]                         pam_krb5.so use_first_pass minimum_uid=%d''' % (minimum_uid,)
+         default=<unknown>]                         pam_krb5.so use_first_pass'''
 pam_ldap='''
 auth     [success=<succ> new_authtok_reqd=ok \
          user_unknown=<unknown> \

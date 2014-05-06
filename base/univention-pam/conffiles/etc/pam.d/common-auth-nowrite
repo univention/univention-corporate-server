@@ -23,9 +23,8 @@ auth     sufficient                         pam_unix.so
 # - is successful, cache the password
 # - isn't aware of the user, proceed with the next service
 @!@
-minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 pam_krb5='''
-auth	sufficient			pam_krb5.so use_first_pass minimum_uid=%d''' % (minimum_uid,)
+auth	sufficient			pam_krb5.so use_first_pass'''
 pam_ldap='''
 auth 	sufficient 			pam_ldap.so use_first_pass'''
 pam_winbind=''' 

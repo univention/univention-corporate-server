@@ -4,7 +4,7 @@
 # Univention custom user and group name mapping
 #  listener module: mapping custom user and group names for well known sids
 #
-# Copyright 2014-2014 Univention GmbH
+# Copyright 2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,6 +34,7 @@
 __package__=''  # workaround for PEP 366
 
 import os
+import re
 import cPickle
 
 import listener
@@ -45,7 +46,7 @@ import imp
 name = "well-known-sid-name-mapping"
 description = "map user and group names for well known sids"
 filter = "(|(objectClass=sambaSamAccount)(objectClass=sambaGroupMapping))"
-attributes = ["uid", "cn", "sambaSID"]
+attributes = ["cn", "sambaSid"]
 FN_CACHE = '/var/cache/univention-directory-listener/well-known-sid-name-mapping_modrdn.pickle'
 modrdn = '1'
 
@@ -129,16 +130,18 @@ def no_relevant_change(new, old):
 		else:
 			name_attr = 'cn'
 		
-		old_name = old.get(name_attr, [])
-		new_name = new.get(name_attr, [])
+		old_name = old.get(name_attr, [None])[0]
+		new_name = new.get(name_attr, [None])[0]
 
-		univention.debug.debug(
-			univention.debug.LISTENER,
-			univention.debug.INFO,
-			"%s: mod sid=%s new=%r old=%r" % (name, new.get("sambaSID"), new_name, old_name)
-		)
-
-		return set(old_name) == set(new_name)
+		if old_name == new_name:
+			return True
+		else:
+			univention.debug.debug(
+				univention.debug.LISTENER,
+				univention.debug.INFO,
+				"%s: mod %s %s %s" % (name, new.get("sambaSID"), new_name, old_name)
+			)
+			return False
 
 def handler(dn, new, old, command):
 	global modified_default_names
