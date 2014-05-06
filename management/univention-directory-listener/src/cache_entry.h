@@ -35,6 +35,10 @@
 
 #include <stdio.h>
 #include <ldap.h>
+#include <univention/ldap.h>
+
+#include "network.h"
+#include "cache_entry.h"
 
 struct _CacheEntryAttribute {
 	char			 *name;
@@ -49,6 +53,19 @@ struct _CacheEntry {
 	char			**modules;
 	int			  module_count;
 } typedef CacheEntry;
+
+struct transaction_op {
+	NotifierEntry notify;
+	CacheEntry cache;
+	char *ldap_dn;
+	char *uuid;
+};
+struct transaction {
+	univention_ldap_parameters_t *lp;
+	univention_ldap_parameters_t *lp_local;
+	LDAPMessage *ldap;
+	struct transaction_op cur, prev;
+};
 
 int	cache_free_entry		(char		**dn,
 					 CacheEntry	 *entry);
@@ -77,6 +94,6 @@ void	compare_cache_entries		(CacheEntry *lentry,
 extern const char *cache_entry_get1(CacheEntry *entry, const char *key);
 extern void cache_entry_set1(CacheEntry *entry, const char *key, const char *value);
 
-extern void cache_entry_update_rdn(CacheEntry *entry, LDAPRDN new_dn);
+extern void cache_entry_update_rdn(struct transaction *trans, LDAPRDN new_dn);
 
 #endif /* _CACHE_ENTRY_H_ */

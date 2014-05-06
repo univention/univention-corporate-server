@@ -62,13 +62,13 @@ static int cache_entry_match_attribute_value(char *attribute, char *value, Cache
 				  ends = 0;
 
 	for (a=entry->attributes; a != NULL && *a != NULL; a++) {
-		if (STREQ((*a)->name, attribute))
+		if (strcmp((*a)->name, attribute) == 0)
 			break;
 	}
 	if (a == NULL || *a == NULL)
 		return 0;
 
-	if (STREQ(value, "*"))
+	if (strcmp(value, "*") == 0)
 		return 1;
 
 	len = strlen(value);
@@ -79,11 +79,11 @@ static int cache_entry_match_attribute_value(char *attribute, char *value, Cache
 
 	for (v=(*a)->values; v != NULL && *v != NULL; v++) {
 		char *match;
-		if (STREQ(*v, value)) {
+		if (strcmp(*v, value) == 0) {
 			rv = 1;
 			break;
 		} else if (substr != NULL && (match = strstr(*v, substr)) != NULL) {
-			rv = (begins || match == *v) && (ends || STREQ(match, substr));
+			rv = (begins || match == *v) && (ends || strcmp(match, substr) == 0);
 			if (rv) break;
 		}
 	}
@@ -201,7 +201,7 @@ int cache_entry_ldap_filter_match(struct filter **filter, char *dn, CacheEntry *
 			if (b_len > dn_len)
 				continue;
 			/* No match if testes dn does not end on required base */
-			if (STRNEQ(dn + dn_len - b_len, (*f)->base))
+			if (strcmp(dn + dn_len - b_len, (*f)->base))
 				continue;
 
 			switch ((*f)->scope) {

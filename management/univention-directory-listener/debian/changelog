@@ -1,3 +1,15 @@
+univention-directory-listener (8.0.0-10) unstable; urgency=low
+
+  * Fix handling of binary attributes (Bug #34355)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 May 2014 09:23:21 +0200
+
+univention-directory-listener (8.0.0-9) unstable; urgency=low
+
+  * Remove old values on RDN change (Bug #34355)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 05 May 2014 15:00:57 +0200
+
 univention-directory-listener (8.0.0-8) unstable; urgency=low
 
   * Fix memory leak (Bug #34355)

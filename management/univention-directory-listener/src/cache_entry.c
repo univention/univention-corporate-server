@@ -117,7 +117,7 @@ int cache_entry_module_add(CacheEntry *entry, char *module)
 	char **cur;
 
 	for (cur=entry->modules; cur != NULL && *cur != NULL; cur++) {
-		if (STREQ(*cur, module))
+		if (strcmp(*cur, module) == 0)
 			return 0;
 	}
 
@@ -134,7 +134,7 @@ int cache_entry_module_remove(CacheEntry *entry, char *module)
 	char **cur;
 
 	for (cur=entry->modules; cur != NULL && *cur != NULL; cur++) {
-		if (STREQ(*cur, module))
+		if (strcmp(*cur, module) == 0)
 			break;
 	}
 
@@ -159,7 +159,7 @@ int cache_entry_module_present(CacheEntry *entry, char *module)
 	if (entry == NULL)
 		return 0;
 	for (cur=entry->modules; cur != NULL && *cur != NULL; cur++) {
-		if (STREQ(*cur, module))
+		if (strcmp(*cur, module) == 0)
 			return 1;
 	}
 	return 0;
@@ -208,22 +208,22 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 		cache_entry->attributes[cache_entry->attribute_count+1]=NULL;
 
 		memberUidMode = false;
-		if (STREQ(cache_entry->attributes[cache_entry->attribute_count]->name, "memberUid")) {
+		if ( !strncmp(cache_entry->attributes[cache_entry->attribute_count]->name, "memberUid", strlen("memberUid")) ) {
 			char *ucrval;
 			ucrval = univention_config_get_string("listener/memberuid/skip");
 
 			if (ucrval) {
-				memberUidMode = STREQ(ucrval, "yes") || STREQ(ucrval, "true");
+				memberUidMode = !strcmp(ucrval, "yes") || !strcmp(ucrval, "true");
 				free(ucrval);
 			}
 		}
 		uniqueMemberMode = false;
-		if (STREQ(cache_entry->attributes[cache_entry->attribute_count]->name, "uniqueMember")) {
+		if ( !strncmp(cache_entry->attributes[cache_entry->attribute_count]->name, "uniqueMember", strlen("uniqueMember")) ) {
 			char *ucrval;
 			ucrval = univention_config_get_string("listener/uniquemember/skip");
 
 			if (ucrval) {
-				uniqueMemberMode = STREQ(ucrval, "yes") || STREQ(ucrval, "true");
+				uniqueMemberMode = !strcmp(ucrval, "yes") || !strcmp(ucrval, "true");
 				free(ucrval);
 			}
 		}
@@ -329,7 +329,7 @@ char** cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old)
 
 	for (cur1 = new->attributes; cur1 != NULL && *cur1 != NULL; cur1++) {
 		for (cur2 = old->attributes; cur2 != NULL && *cur2 != NULL; cur2++)
-			if (STREQ((*cur1)->name, (*cur2)->name))
+			if (strcmp((*cur1)->name, (*cur2)->name) == 0)
 				break;
 		if (cur2 != NULL && *cur2 != NULL && (*cur1)->value_count == (*cur2)->value_count) {
 			int i;
@@ -348,7 +348,7 @@ char** cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old)
 
 	for (cur2 = old->attributes; cur2 != NULL && *cur2 != NULL; cur2++) {
 		for (cur1 = new->attributes; cur1 != NULL && *cur1 != NULL; cur1++)
-			if (STREQ((*cur1)->name, (*cur2)->name))
+			if (strcmp((*cur1)->name, (*cur2)->name) == 0)
 				break;
 		if (cur1 != NULL && *cur1 != NULL)
 			continue;
@@ -440,7 +440,7 @@ void compare_cache_entries(CacheEntry *lentry, CacheEntry *rentry)
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ALERT:     %s differs\n", *cur);
 
 		for (i=0; lentry->attributes != NULL && lentry->attributes[i] != NULL; i++) {
-			if (STREQ(lentry->attributes[i]->name, *cur))
+			if (strcmp(lentry->attributes[i]->name, *cur) == 0)
 				break;
 		}
 		if (lentry->attributes == NULL || lentry->attributes[i] == NULL) {
@@ -457,7 +457,7 @@ void compare_cache_entries(CacheEntry *lentry, CacheEntry *rentry)
 		}
 
 		for (i=0; rentry->attributes != NULL && rentry->attributes[i] != NULL; i++) {
-			if (STREQ(rentry->attributes[i]->name, *cur))
+			if (strcmp(rentry->attributes[i]->name, *cur) == 0)
 				break;
 		}
 		if (rentry->attributes == NULL || rentry->attributes[i] == NULL) {
@@ -479,7 +479,7 @@ void compare_cache_entries(CacheEntry *lentry, CacheEntry *rentry)
 
 	for (cur1=lentry->modules; cur1 != NULL && *cur1 != NULL; cur1++) {
 		for (cur2=rentry->modules; cur2 != NULL && *cur2 != NULL; cur2++)
-			if (STREQ(*cur1, *cur2))
+			if (strcmp(*cur1, *cur2) == 0)
 				break;
 		if (cur2 != NULL && *cur2 != NULL)
 			continue;
@@ -487,7 +487,7 @@ void compare_cache_entries(CacheEntry *lentry, CacheEntry *rentry)
 	}
 	for (cur2=rentry->modules; cur2 != NULL && *cur2 != NULL; cur2++) {
 		for (cur1=lentry->modules; cur1 != NULL && *cur1 != NULL; cur1++)
-			if (STREQ(*cur1, *cur2))
+			if (strcmp(*cur1, *cur2) == 0)
 				break;
 		if (cur1 != NULL && *cur1 != NULL)
 			continue;
@@ -506,7 +506,6 @@ const char *cache_entry_get1(CacheEntry *entry, const char *key) {
 		assert(attr->value_count == 1);
 		return attr->values[0];
 	}
-	assert(i < entry->attribute_count);
 	return NULL;
 }
 
@@ -528,53 +527,142 @@ void cache_entry_set1(CacheEntry *entry, const char *key, const char *value) {
 	assert(i < entry->attribute_count);
 }
 
-static inline bool BERSTREQ(const struct berval *ber, const char *str) {
-	return strncmp(str, ber->bv_val, ber->bv_len) == 0 && str[ber->bv_len] == '\0';
+static inline bool BERSTREQ(const struct berval *ber, const char *str, size_t len) {
+	return ber->bv_len == len && memcmp(ber->bv_val, str, len) == 0;
 }
 
 static inline int BER2STR(const struct berval *ber, char **strp) {
-	return asprintf(strp, "%*s", (int)ber->bv_len, ber->bv_val);
+	*strp = malloc(ber->bv_len + 1);
+	if (!*strp)
+		return -1;
+	memcpy(*strp, ber->bv_val, ber->bv_len);
+	(*strp)[ber->bv_len] = '\0';
+	return ber->bv_len;
 }
 
-void cache_entry_update_rdn(CacheEntry *entry, LDAPRDN new_dn) {
-	int rdn, att, val;
-
-	for (rdn = 0; new_dn[rdn]; rdn++) {
-		CacheEntryAttribute *attr;
-
-		for (att = 0; att < entry->attribute_count; att++) {
-			attr = entry->attributes[att];
-			if (BERSTREQ(&new_dn[rdn]->la_attr, attr->name))
-				break;
-		}
-		if (att >= entry->attribute_count) {
-			attr = malloc(sizeof(CacheEntryAttribute));
-			assert(attr);
-			BER2STR(&new_dn[rdn]->la_attr, &attr->name);
-			attr->values = calloc(2, sizeof(char *));
-			attr->length = calloc(2, sizeof(int));
-			attr->value_count = 0;
-
-			entry->attributes = realloc(entry->attributes, (entry->attribute_count + 2) * sizeof(CacheEntryAttribute *));
-			entry->attributes[entry->attribute_count++] = attr;
-			entry->attributes[entry->attribute_count] = NULL;
-		} else {
-			for (val = 0; val < attr->value_count; val++) {
-				char *cache_value = attr->values[val];
-				if (BERSTREQ(&new_dn[rdn]->la_value, cache_value))
-					break;
-			}
-			if (val >= attr->value_count) {
-				attr->values = realloc(attr->values, (attr->value_count + 2) * sizeof(char *));
-				attr->length = realloc(attr->length, (attr->value_count + 2) * sizeof(int));
-			} else {
-				continue;
-			}
-		}
-
-		attr->length[attr->value_count] = BER2STR(&new_dn[rdn]->la_value, &attr->values[attr->value_count]);
-		attr->value_count++;
-		attr->length[attr->value_count] = 0;
-		attr->values[attr->value_count] = NULL;
+static CacheEntryAttribute *_cache_entry_find_attribute(CacheEntry *entry, LDAPAVA *ava) {
+	int att;
+	for (att = 0; att < entry->attribute_count; att++) {
+		CacheEntryAttribute *attr = entry->attributes[att];
+		if (BERSTREQ(&ava->la_attr, attr->name, strlen(attr->name)))
+			return attr;
 	}
+	return NULL;
+}
+static void _cache_entry_add_new_attribute(CacheEntry *entry, LDAPAVA *ava) {
+	CacheEntryAttribute *attr = malloc(sizeof(CacheEntryAttribute));
+	if (!attr) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d malloc() failed", __FILE__, __LINE__);
+		return;
+	}
+	BER2STR(&ava->la_attr, &attr->name);
+	if (!&attr->name) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d BER2STR() failed", __FILE__, __LINE__);
+		return;
+	}
+	attr->values = calloc(2, sizeof(char *));
+	if (!attr->values) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d calloc() failed", __FILE__, __LINE__);
+		return;
+	}
+	attr->length = calloc(2, sizeof(int));
+	if (!attr->length) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d calloc() failed", __FILE__, __LINE__);
+		return;
+	}
+	attr->value_count = 0;
+
+	void *tmp = realloc(entry->attributes, (entry->attribute_count + 2) * sizeof(CacheEntryAttribute *));
+	if (!tmp) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d realloc() failed", __FILE__, __LINE__);
+		return;
+	}
+	entry->attributes = tmp;
+	entry->attributes[entry->attribute_count++] = attr;
+	entry->attributes[entry->attribute_count] = NULL;
+}
+static bool _cache_entry_check_value_exists(CacheEntryAttribute *attr, LDAPAVA *ava) {
+	int vi;
+	for (vi = 0; vi < attr->value_count; vi++) {
+		if (BERSTREQ(&ava->la_value, attr->values[vi], attr->length[vi] - 1))
+			return true;
+	}
+	return false;
+}
+static bool _cache_entry_find_value(CacheEntryAttribute *attr, int vi, struct berval **ldap_vals) {
+	struct berval **bv;
+
+	for (bv = ldap_vals; *bv; bv++) {
+		if (BERSTREQ(*bv, attr->values[vi], attr->length[vi] - 1))
+			return true;
+	}
+	return false;
+}
+static void _cache_entry_cleanup_old_values(CacheEntryAttribute *attr, struct transaction *trans) {
+	struct berval **ldap_vals = ldap_get_values_len(trans->lp->ld, trans->ldap, attr->name);
+	if (!ldap_vals) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d ldap_get_values_len() failed", __FILE__, __LINE__);
+		return;
+	}
+
+	int vi = 0;
+	while (vi < attr->value_count) {
+		if (_cache_entry_find_value(attr, vi, ldap_vals)) {
+			vi++;
+		} else {
+			attr->length[vi] = attr->length[attr->value_count];
+			attr->length[attr->value_count] = 0;
+
+			free(attr->values[vi]);
+			attr->values[vi] = attr->values[attr->value_count];
+			attr->values[attr->value_count] = NULL;
+
+			attr->value_count--;
+		}
+	}
+
+	ldap_value_free_len(ldap_vals);
+}
+static void _cache_entry_append_new_value(CacheEntryAttribute *attr, LDAPAVA *ava) {
+	void *tmp;
+	tmp = realloc(attr->values, (attr->value_count + 2) * sizeof(char *));
+	if (!tmp) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d realloc() failed", __FILE__, __LINE__);
+		return;
+	}
+	attr->values = tmp;
+
+	tmp = realloc(attr->length, (attr->value_count + 2) * sizeof(int));
+	if (!tmp) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d realloc() failed", __FILE__, __LINE__);
+		return;
+	}
+	attr->length = tmp;
+
+	attr->length[attr->value_count] = BER2STR(&ava->la_value, &attr->values[attr->value_count]) + 1;
+	if (!attr->values[attr->value_count]) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d BER2STR() failed", __FILE__, __LINE__);
+		return;
+	}
+	attr->value_count++;
+	attr->length[attr->value_count] = 0;
+	attr->values[attr->value_count] = NULL;
+}
+static void _cache_entry_update_rdn1(struct transaction *trans, LDAPAVA *ava) {
+	CacheEntry *entry = &trans->cur.cache;
+
+	CacheEntryAttribute *attr = _cache_entry_find_attribute(entry, ava);
+	if (attr == NULL)
+		_cache_entry_add_new_attribute(entry, ava);
+	else
+		if (!_cache_entry_check_value_exists(attr, ava)) {
+			_cache_entry_cleanup_old_values(attr, trans);
+			_cache_entry_append_new_value(attr, ava);
+		}
+}
+void cache_entry_update_rdn(struct transaction *trans, LDAPRDN new_dn) {
+	int rdn;
+
+	for (rdn = 0; new_dn[rdn]; rdn++)
+		_cache_entry_update_rdn1(trans, new_dn[rdn]);
 }

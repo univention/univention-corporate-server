@@ -67,7 +67,7 @@ static void add_dn(char *dn) {
 static int has_dn(char *dn) {
 	struct dn *cur;
 	for (cur = dns; cur != NULL; cur=cur->next) {
-		if (STREQ(dn, cur->dn)) {
+		if (strcmp(dn, cur->dn) == 0) {
 			return 1;
 		}
 	}
@@ -93,7 +93,7 @@ static void compare_entries(char *dn, CacheEntry *entry, LDAP *ld, LDAPMessage *
 		printf("E:     %s differs\n", *cur);
 
 		for (i=0; entry->attributes != NULL && entry->attributes[i] != NULL; i++) {
-			if (STREQ(entry->attributes[i]->name, *cur))
+			if (strcmp(entry->attributes[i]->name, *cur) == 0)
 				break;
 		}
 		if (entry->attributes == NULL || entry->attributes[i] == NULL) {
