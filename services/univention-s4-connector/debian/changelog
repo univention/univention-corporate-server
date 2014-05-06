@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-44) unstable; urgency=low
+
+  * Revert changes for Bug #33621 and Bug #32263. These bugs have been
+    moved to UCS 3.2-2-errata
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 May 2014 14:48:01 +0200
+
 univention-s4-connector (8.0.33-43) unstable; urgency=low
 
   * group_members_sync_to_ucs: use the correct key for the object
