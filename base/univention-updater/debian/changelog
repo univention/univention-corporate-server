@@ -1,3 +1,9 @@
+univention-updater (9.0.39-1) unstable; urgency=low
+
+  * Adjust pre- and postup.sh for UCS 3.2-2 (Bug #33809)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 May 2014 21:10:36 +0200
+
 univention-updater (9.0.38-16) unstable; urgency=low
 
   * postup.sh: re-added the finish message (Bug #34085)
