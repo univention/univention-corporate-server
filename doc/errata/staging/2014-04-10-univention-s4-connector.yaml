@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-s4-connector
-fix: 8.0.33-42.469.201405060826
+fix: 8.0.33-44.470.201405061448
 note: 
 version: [1]
 desc: |
@@ -12,13 +12,10 @@ desc: |
   * The start of multiple S4 connector instances is now prevented
   * While creating a user in UCS a stronger password is used which
     fulfill the password complexity settings
-  * The entryUUID of deleted objects in OpenLDAP is now saved to a
-    local cache. This will prevent a recreation of deleted objects.
-  * The synchronization has been changed to a diff based algorithm.
   * The UCR variable connector/s4/listener/disabled has been added.
     If it is set to true the listener does not write any changes.
     This is helpful on a domain controller backup. The variable is
 	not set by default during this upgrade.
   * During the group membership synchronization from Samba 4 to
     OpenLDAP an object mapping problem has been fixed.
-bug: [31320,34394,34410,34478,32263,33621,33858,34197]
+bug: [31320,34394,34410,34478,33858,34197]
