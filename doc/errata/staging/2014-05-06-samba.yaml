@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-1
+src: samba
+fix: 2:4.1.0-1.643.201405051700
+note: 
+version: [1]
+desc: |
+ Several possible deadlock situations have been fixed.
+bug: [34545]
+
