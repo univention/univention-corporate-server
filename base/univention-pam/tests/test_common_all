@@ -25,8 +25,10 @@ main () {
 	check session 'required' pam_limits.so
 
 	check password 'requisite' pam_cracklib.so
-	check password 'sufficient' pam_unix.so 'nullok obscure md5 min=4 max=32 use_first_pass use_authtok'
-	check password 'sufficient' pam_krb5.so 'use_first_pass use_authtok'
-	check password 'required' pam_winbind.so 'use_first_pass use_authok'
+	check password '[success=3 default=ignore]' pam_unix.so 'nullok obscure md5 min=4 max=32 try_first_pass use_authtok'
+	check password '[success=2 default=ignore]' pam_krb5.so 'try_first_pass use_authtok'
+	check password '[success=1 default=ignore]' pam_winbind.so 'try_first_pass use_authtok'
+	check password 'requisite' pam_deny.so
+	check password 'required' pam_permit.so
 }
 . "${0%/*}/common.sh" || exit 1
