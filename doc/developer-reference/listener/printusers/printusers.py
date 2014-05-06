@@ -37,13 +37,12 @@ def handler(dn, new, old):
 	Write all changes into a text file.
 	This function is called on each change.
 	"""
-	with AsRoot():
-		if new and old:
-			_handle_change(dn, new, old)
-		elif new and not old:
-			_handle_add(dn, new)
-		elif old and not new:
-			_handle_remove(dn, old)
+	if new and old:
+		_handle_change(dn, new, old)
+	elif new and not old:
+		_handle_add(dn, new)
+	elif old and not new:
+		_handle_remove(dn, old)
 
 
 def _handle_change(dn, new, old):
@@ -100,12 +99,13 @@ def _writeit(rec, comment):
 	nuid = u'*****' if rec.uid in ('root', 'spam') else rec.uidNumber
 	indent = '\t' if comment is None else ''
 	try:
-		with open(USER_LIST, 'a') as out:
-			print >> out, u'%sName: "%s"' % (indent, rec.cn)
-			print >> out, u'%sUser: "%s"' % (indent, rec.uid)
-			print >> out, u'%sUID: "%s"' % (indent, nuid)
-			if comment:
-				print >> out, u'%s%s' % (indent, comment,)
+		with AsRoot():
+			with open(USER_LIST, 'a') as out:
+				print >> out, u'%sName: "%s"' % (indent, rec.cn)
+				print >> out, u'%sUser: "%s"' % (indent, rec.uid)
+				print >> out, u'%sUID: "%s"' % (indent, nuid)
+				if comment:
+					print >> out, u'%s%s' % (indent, comment,)
 	except IOError as ex:
 		ud.debug(
 			ud.LISTENER, ud.ERROR,

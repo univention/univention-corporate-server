@@ -1,29 +1,29 @@
 modrdn = "1"
 
-_old = None
+_delay = None
 
 
 def handler(dn, new, old, command):
-	if "a" == command:
-		if _old:
-			global _old
-			old_dn, old = _old
-			_old = None
+	global _delay
+	if _delay:
+		old_dn, old = _delay
+		_delay = None
+		if "a" == command and old['entryUUID'] == new['entryUUID']:
 			handler_move(old_dn, old, dn, new)
-		else:
-			handler_add(dn, new)
-	elif "m" == command:
+			return
+		handler_remove(old_dn, old)
+
+	if "n" == command and "cn=Subschema" == dn:
+		handler_schema(old, new)
+	elif new and not old:
+		handler_add(dn, new)
+	elif new and old:
 		handler_modify(dn, old, new)
-	elif "d" == command:
-		handler_remove(dn, old)
-	elif "r" == command:
-		global _old
-		_old = (dn, old)
-	elif "n" == command:
-		if "cn=Subschema" == dn:
-			handler_schema()
+	elif not new and old:
+		if "r" == command:
+			_delay = (dn, old)
 		else:
-			handler_add(dn, new)
+			handler_remove(dn, old)
 	else:
 		pass  # ignore, reserved for future use
 
@@ -33,6 +33,6 @@ def handler_move(old_dn, old, new_dn, dn):
 	pass  # replace this
 
 
-def handlee_schema():
+def handlee_schema(old, new):
 	"""Handle change in LDAP schema."""
 	pass  # replace this
