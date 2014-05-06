@@ -61,7 +61,7 @@ sys.path=['/etc/univention/%s/s4/' % CONFIGBASENAME]+sys.path
 import mapping
 
 
-def daemon():
+def daemon(lock_file):
 	try:
 		pid = os.fork()
 	except OSError, e:
@@ -91,6 +91,8 @@ def daemon():
 		maxfd = 256       # default maximum
 
 	for fd in range(0, maxfd):
+		if fd == lock_file.fileno():
+			continue
 		try:
 			os.close(fd)
 		except OSError:   # ERROR (ignore)
@@ -271,7 +273,7 @@ def main():
 		print >>sys.stderr, 'Error: Another S4 connector process is already running.'
 		sys.exit(1)
 
-	daemon()
+	daemon(lock_file)
 
 	while True:
 		try:

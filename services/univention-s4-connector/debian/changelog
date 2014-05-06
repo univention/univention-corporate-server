@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-46) unstable; urgency=low
+
+  * Don't close the lock_file fd (Bug #34410)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 May 2014 20:01:16 +0200
+
 univention-s4-connector (8.0.33-45) unstable; urgency=low
 
   * Remove single_value from mapping file (Bug #33621)
