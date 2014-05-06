@@ -1,0 +1,14 @@
+#!/bin/bash
+## desc: Rename non-ASCII object
+main () {
+	new_name="Unmöglich"
+	udm settings/packages create --position "cn=visible,$BASE" --set name=test
+	wait_listener
+
+	udm settings/packages modify --dn "cn=test,cn=visible,$BASE" --set name="$new_name"
+	check "cn=test,cn=visible" "" - r
+	check "cn=$new_name,cn=visible" - "" a
+
+	udm settings/packages remove --dn "cn=$new_name,cn=visible,$BASE"
+}
+. "${0%/*}/common.sh"
