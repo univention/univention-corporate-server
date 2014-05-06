@@ -1,3 +1,30 @@
+univention-s4-connector (8.0.33-45) unstable; urgency=low
+
+  * Remove single_value from mapping file (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 May 2014 15:09:04 +0200
+
+univention-s4-connector (8.0.33-44) unstable; urgency=low
+
+  * Revert changes for Bug #33621 and Bug #32263. These bugs have been
+    moved to UCS 3.2-2-errata
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 May 2014 14:48:01 +0200
+
+univention-s4-connector (8.0.33-43) unstable; urgency=low
+
+  * group_members_sync_to_ucs: use the correct key for the object
+    mapping (Bug #34197)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 May 2014 14:21:03 +0200
+
+univention-s4-connector (8.0.33-42) unstable; urgency=low
+
+  * Set the list of changed attributes even if the object was created
+    (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 May 2014 08:24:19 +0200
+
 univention-s4-connector (8.0.33-41) unstable; urgency=low
 
   * It is not sufficient to run base64.decodestring to detect a base64

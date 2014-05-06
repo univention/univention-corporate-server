@@ -119,25 +119,21 @@ if ignore_filter:
 							con_attribute='sAMAccountName',
 							required=1,
 							compare_function=univention.s4connector.compare_lowercase,
-							single_value=True,
 						),
 					'givenName' : univention.s4connector.attribute (
 							ucs_attribute='firstname',
 							ldap_attribute='givenName',
 							con_attribute='givenName',
-							single_value=True,
 						),
 					'displayName': univention.s4connector.attribute (
 							ucs_attribute='displayName',
 							ldap_attribute='displayName',
 							con_attribute='displayName',
-							single_value=True,
 						),
 					'sn': univention.s4connector.attribute (
 							ucs_attribute='lastname',
 							ldap_attribute='sn',
 							con_attribute='sn',
-							single_value=True,
 						),
 					@!@
 import univention.s4connector.s4.sid_mapping
@@ -197,38 +193,32 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ucs_attribute='organisation',
 							ldap_attribute='o',
 							con_attribute='company',
-							single_value=True,
 						),
 					'description': univention.s4connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
 							con_attribute='description',
-							single_value=True,
 						),
 					'mailPrimaryAddress': univention.s4connector.attribute (
 							ucs_attribute='mailPrimaryAddress',
 							ldap_attribute='mailPrimaryAddress',
 							con_attribute='mail',
 							reverse_attribute_check = True,
-							single_value=True,
 						),
 					'street': univention.s4connector.attribute (
 							ucs_attribute='street',
 							ldap_attribute='street',
 							con_attribute='streetAddress',
-							single_value=True,
 						),
 					'city': univention.s4connector.attribute (
 							ucs_attribute='city',
 							ldap_attribute='l',
 							con_attribute='l',
-							single_value=True,
 						),
 					'postcode': univention.s4connector.attribute (
 							ucs_attribute='postcode',
 							ldap_attribute='postalCode',
 							con_attribute='postalCode',
-							single_value=True,
 						),
 					'sambaWorkstations': univention.s4connector.attribute (
 							ucs_attribute='sambaUserWorkstations',
@@ -244,26 +234,22 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ucs_attribute='profilepath',
 							ldap_attribute='sambaProfilePath',
 							con_attribute='profilePath',
-							single_value=True,
 						),
 					'scriptpath': univention.s4connector.attribute (
 							ucs_attribute='scriptpath',
 							ldap_attribute='sambaLogonScript',
 							con_attribute='scriptPath',
-							single_value=True,
 						),
 					'homeDrive': univention.s4connector.attribute (
 							ucs_attribute='homedrive',
 							ldap_attribute='sambaHomeDrive',
 							con_attribute='homeDrive',
-							single_value=True,
 						),
 					'homeDirectory': univention.s4connector.attribute (
 							ucs_attribute='sambahome',
 							ldap_attribute='sambaHomePath',
 							con_attribute='homeDirectory',
 							reverse_attribute_check = True,
-							single_value=True,
 						),
 					'telephoneNumber': univention.s4connector.attribute (
 							ucs_attribute='phone',
@@ -357,13 +343,11 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							con_attribute='sAMAccountName',
 							required=1,
 							compare_function=univention.s4connector.compare_lowercase,
-							single_value=True,
 						),
 					'description': univention.s4connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
 							con_attribute='description',
-							single_value=True,
 						),
 @!@
 if configRegistry.is_true('connector/s4/mapping/group/grouptype', True):
@@ -371,7 +355,6 @@ if configRegistry.is_true('connector/s4/mapping/group/grouptype', True):
 	print "							ucs_attribute='adGroupType',"
 	print "							ldap_attribute='univentionGroupType',"
 	print "							con_attribute='groupType',"
-	print "							single_value=True,"
 	print "					),"
 @!@
 					'mailAddress': univention.s4connector.attribute (
@@ -379,7 +362,6 @@ if configRegistry.is_true('connector/s4/mapping/group/grouptype', True):
 							ldap_attribute='mailPrimaryAddress',
 							con_attribute='mail',
 							reverse_attribute_check = True,
-							single_value=True,
 					),
 					@!@
 import univention.s4connector.s4.sid_mapping
@@ -471,31 +453,26 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							con_attribute='cn',
 							required=1,
 							compare_function=univention.s4connector.compare_lowercase,
-							single_value=True,
 						),
 					'samAccountName': univention.s4connector.attribute (
 							ldap_attribute='uid',
 							con_attribute='sAMAccountName',
 							compare_function=univention.s4connector.compare_lowercase,
-							single_value=True,
 						),
 					'description': univention.s4connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
-							con_attribute='description',
-							single_value=True,
+							con_attribute='description'
 						),
 					'operatingSystem': univention.s4connector.attribute (
 							ucs_attribute='operatingSystem',
 							ldap_attribute='univentionOperatingSystem',
-							con_attribute='operatingSystem',
-							single_value=True,
+							con_attribute='operatingSystem'
 						),
 					'operatingSystemVersion': univention.s4connector.attribute (
 							ucs_attribute='operatingSystemVersion',
 							ldap_attribute='univentionOperatingSystemVersion',
-							con_attribute='operatingSystemVersion',
-							single_value=True,
+							con_attribute='operatingSystemVersion'
 						),
 					@!@
 import univention.s4connector.s4.sid_mapping
@@ -565,31 +542,26 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							con_attribute='cn',
 							required=1,
 							compare_function=univention.s4connector.compare_lowercase,
-							single_value=True,
 						),
 					'samAccountName': univention.s4connector.attribute (
 							ldap_attribute='uid',
 							con_attribute='sAMAccountName',
 							compare_function=univention.s4connector.compare_lowercase,
-							single_value=True,
 						),
 					'description': univention.s4connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
-							con_attribute='description',
-							single_value=True,
+							con_attribute='description'
 						),
 					'operatingSystem': univention.s4connector.attribute (
 							ucs_attribute='operatingSystem',
 							ldap_attribute='univentionOperatingSystem',
-							con_attribute='operatingSystem',
-							single_value=True,
+							con_attribute='operatingSystem'
 						),
 					'operatingSystemVersion': univention.s4connector.attribute (
 							ucs_attribute='operatingSystemVersion',
 							ldap_attribute='univentionOperatingSystemVersion',
-							con_attribute='operatingSystemVersion',
-							single_value=True,
+							con_attribute='operatingSystemVersion'
 						),
 					@!@
 import univention.s4connector.s4.sid_mapping
@@ -666,19 +638,16 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 							con_attribute='cn',
 							required=1,
 							compare_function=univention.s4connector.compare_lowercase,
-							single_value=True,
 						),
 					'description': univention.s4connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
-							con_attribute='description',
-							single_value=True,
+							con_attribute='description'
 						),
 					'displayName': univention.s4connector.attribute (
 							ucs_attribute='displayName',
 							ldap_attribute='displayName',
-							con_attribute='displayName',
-							single_value=True,
+							con_attribute='displayName'
 						),
 					'msGPOFlags': univention.s4connector.attribute (
 							ucs_attribute='msGPOFlags',
@@ -756,26 +725,22 @@ if configRegistry.is_true('connector/s4/mapping/wmifilter', False):
 							ldap_attribute='msWMIID',
 							con_attribute='msWMI-ID',
 							required=1,
-							single_value=True,
 						),
 					'name': univention.s4connector.attribute (
 							ucs_attribute='name',
 							ldap_attribute='msWMIName',
 							con_attribute='msWMI-Name',
 							required=1,
-							single_value=True,
 						),
 					'description': univention.s4connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
-							con_attribute='description',
-							single_value=True,
+							con_attribute='description'
 						),
 					'displayName': univention.s4connector.attribute (
 							ucs_attribute='displayName',
 							ldap_attribute='displayName',
-							con_attribute='displayName',
-							single_value=True,
+							con_attribute='displayName'
 						),
 					'author': univention.s4connector.attribute (
 							ucs_attribute='author',
@@ -876,13 +841,11 @@ if ignore_filter:
 							con_attribute='cn',
 							required=1,
 							compare_function=univention.s4connector.compare_lowercase,
-							single_value=True,
 						),
 					'description': univention.s4connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
-							con_attribute='description',
-							single_value=True,
+							con_attribute='description'
 						),
 @!@
 if configRegistry.is_true('connector/s4/mapping/gpo', True):
@@ -890,8 +853,7 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 					'gPLink': univention.s4connector.attribute (
 							ucs_attribute='gPLink',
 							ldap_attribute='msGPOLink',
-							con_attribute='gPLink',
-							single_value=True,
+							con_attribute='gPLink'
 						),
 	'''
 @!@
@@ -933,13 +895,11 @@ if ignore_filter:
 							con_attribute='ou',
 							required=1,
 							compare_function=univention.s4connector.compare_lowercase,
-							single_value=True,
 						),
 					'description': univention.s4connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
-							con_attribute='description',
-							single_value=True,
+							con_attribute='description'
 						),
 @!@
 if configRegistry.is_true('connector/s4/mapping/gpo', True):
@@ -947,8 +907,7 @@ if configRegistry.is_true('connector/s4/mapping/gpo', True):
 					'gPLink': univention.s4connector.attribute (
 							ucs_attribute='gPLink',
 							ldap_attribute='msGPOLink',
-							con_attribute='gPLink',
-							single_value=True,
+							con_attribute='gPLink'
 						),
 	'''
 @!@
