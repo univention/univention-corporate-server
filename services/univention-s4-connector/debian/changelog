@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-42) unstable; urgency=low
+
+  * Set the list of changed attributes even if the object was created
+    (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 May 2014 08:24:19 +0200
+
 univention-s4-connector (8.0.33-41) unstable; urgency=low
 
   * It is not sufficient to run base64.decodestring to detect a base64

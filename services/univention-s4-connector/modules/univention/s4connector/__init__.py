@@ -1344,6 +1344,8 @@ class ucs:
 						if old_s4_object.get(attr) != original_object['attributes'].get(attr):
 							if not attr in object['changed_attributes']:
 								object['changed_attributes'].append(attr)
+				else:
+					object['changed_attributes'] = original_object['attributes'].keys()
 			ud.debug(ud.LDAP, ud.INFO, "The following attributes have been changed: %s" % object['changed_attributes'])
 						
 			result = False
