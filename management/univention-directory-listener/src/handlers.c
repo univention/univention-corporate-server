@@ -87,7 +87,7 @@ static PyObject* module_import(char *filename)
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "Load file %s", filename);
 
 	namep = strrchr(filename, '.');
-	if ((namep != NULL) && STREQ(namep, ".pyo")) {
+	if ((namep != NULL) && (strcmp(namep, ".pyo") == 0)) {
 		long magic;
 
 		magic = PyMarshal_ReadLongFromFile(fp);
@@ -532,7 +532,7 @@ int handlers_load_path(char *path)
 		   there */
 		dir = opendir(path);
 		while ((de = readdir(dir))) {
-			if (STREQ(de->d_name, "replication.py")) {
+			if (strcmp(de->d_name, "replication.py") == 0) {
 				char *filename;
 				asprintf(&filename, "%s/%s", path, de->d_name);
 				rv = handler_import(filename);
@@ -544,10 +544,10 @@ int handlers_load_path(char *path)
 		dir = opendir(path);
 		while ((de = readdir(dir))) {
 			/* Don't load replication.py twice, of course */
-			if (STRNEQ(de->d_name, "replication.py")) {
+			if (strcmp(de->d_name, "replication.py") != 0) {
 				char *s = strrchr(de->d_name, '.');
 				/* Only load *.py files */
-				if ((s != NULL) && STREQ(s, ".py")) {
+				if ((s != NULL) && (strcmp(s, ".py") == 0)) {
 				 	char *filename;
 				 	asprintf(&filename, "%s/%s", path, de->d_name);
 				 	rv = handler_import(filename);
@@ -750,7 +750,7 @@ int attribute_has_changed(char** changes, char* attribute)
 
 	for (cur = changes; cur != NULL && *cur != NULL; cur++) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "%s ? %s", *cur, attribute);
-		if (STREQ(*cur, attribute))
+		if (strcmp(*cur, attribute) == 0)
 			return 1;
 	}
 
@@ -771,7 +771,7 @@ static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEnt
 	   the replication handler should be checked for the changed object in any case,
 	   especially if we have an incomplete cache
 	*/
-	if (STRNEQ(handler->name, "replication") && cache_entry_module_present(old, handler->name)) {
+	if ( (strcmp(handler->name, "replication")) && cache_entry_module_present(old, handler->name)) {
 		char **cur;
 		bool uptodate = false;
 
@@ -834,12 +834,12 @@ int handlers_update(char *dn, CacheEntry *new, CacheEntry *old, char command, Ca
 	changes = cache_entry_changed_attributes(new, old);
 
 	for (handler=handlers; handler != NULL; handler=handler->next) {
-		if (STREQ(handler->name, "replication")) {
+		if (!strcmp(handler->name, "replication")) {
 			handler__update(handler, dn, new, old, command, changes, scratch);
 		}
 	}
 	for (handler=handlers; handler != NULL; handler=handler->next) {
-		if (STRNEQ(handler->name, "replication")) {
+		if (strcmp(handler->name, "replication")) {
 			handler__update(handler, dn, new, old, command, changes, scratch);
 		}
 	}
@@ -877,7 +877,7 @@ int handlers_delete(char *dn, CacheEntry *old, char command)
 
 	for (handler=handlers; handler != NULL; handler=handler->next) {
 		/* run the replication handler in any case, see Bug #29475 */
-		if (!cache_entry_module_present(old, handler->name) && STRNEQ(handler->name, "replication")) {
+		if (!cache_entry_module_present(old, handler->name) && strcmp(handler->name, "replication")) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (skipped)", handler->name);
 			continue;
 		}
@@ -938,7 +938,7 @@ int handlers_set_data_all(char *key, char *value)
 	PyObject *argtuple;
 	int rv = 1;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "setting data for all handlers: key=%s  value=%s", key, STRNEQ("bindpw", key) ? value : "<HIDDEN>");
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "setting data for all handlers: key=%s  value=%s", key, strcmp("bindpw", key) ? value : "<HIDDEN>");
 
 	/* make argument list */
 	if ((argtuple = PyTuple_New(2)) == NULL)

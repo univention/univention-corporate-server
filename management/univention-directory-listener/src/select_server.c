@@ -38,7 +38,6 @@
 #include <univention/debug.h>
 #include <univention/ldap.h>
 #include <univention/config.h>
-#include "common.h"
 
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof(*(x)))
 static char *current_server_list;
@@ -94,8 +93,8 @@ void select_server(univention_ldap_parameters_t *lp)
 	ldap_master_port = univention_config_get_int("ldap/master/port");
 
 	/* if this is a master or backup return ldap/master */
-	if (STREQ(server_role, "domaincontroller_master") ||
-		STREQ(server_role, "domaincontroller_backup")) {
+	if (!strcmp(server_role, "domaincontroller_master") ||
+		!strcmp(server_role, "domaincontroller_backup")) {
 		lp->host = strdup(ldap_master);
 		if (ldap_master_port > 0)
 			lp->port = ldap_master_port;
@@ -104,7 +103,7 @@ void select_server(univention_ldap_parameters_t *lp)
 		char *ldap_backups = univention_config_get_string("ldap/backup");
 
 		/* list of backups and master still up-to-date? */
-		if (current_server_list && STRNEQ(ldap_backups, current_server_list)) {
+		if (current_server_list && (strcmp(ldap_backups, current_server_list) != 0)) {
 			free(current_server_list);
 			current_server_list = NULL;
 		}
@@ -154,7 +153,7 @@ void select_server(univention_ldap_parameters_t *lp)
 
 			// server_list[randval].conn_attemp++;
 			lp->host = strdup(server_list[randval].server_name);
-			if (STREQ(lp->host, ldap_master)) {
+			if (!strcmp(lp->host, ldap_master)) {
 				if (ldap_master_port > 0)
 					lp->port = ldap_master_port;
 			} else {

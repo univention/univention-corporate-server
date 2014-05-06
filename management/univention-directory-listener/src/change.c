@@ -327,7 +327,7 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 
 	server_role = univention_config_get_string("server/role");
 
-	if (STREQ(server_role, "domaincontroller_master")) {
+	if ( !strcmp(server_role, "domaincontroller_master") ) {
 		free(server_role);
 		return LDAP_SUCCESS;
 	}
@@ -352,10 +352,11 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 	}
 
 #ifdef WITH_DB42
-	if (new_id > master_entry.schema_id) {
+	if (new_id > master_entry.schema_id)
 #else
-	if (new_id > id) {
+	if (new_id > id)
 #endif
+	{
 		if ((rv=ldap_search_ext_s(lp->ld, "cn=Subschema", LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res)) == LDAP_SUCCESS) {
 			if ((cur=ldap_first_entry(lp->ld, res)) == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "got no entry for schema");
@@ -383,7 +384,7 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 	int flags = 0;
 	LDAPDN ldap_dn = NULL;
 
-	if (STREQ(dn, lp_local->base)) {
+	if (!strcmp(dn, lp_local->base)) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Ignore parent_dn check because dn is ldap base.");
 		return LDAP_SUCCESS;
 	}
@@ -398,7 +399,7 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 	if ( rv != LDAP_SUCCESS )
 		return rv;
 
-	if (STREQ(parent_dn, lp_local->base)) {
+	if (!strcmp(parent_dn, lp_local->base)) {
 		// univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "parent of DN: %s is base", dn);
 		ldap_memfree( parent_dn );
 		return LDAP_SUCCESS;

@@ -336,7 +336,7 @@ DB_TXN* cache_new_transaction(NotifierID id, char *dn)
 			return NULL;
 		}
 
-		if (STREQ(dn, "cn=Subschema"))
+		if (strcmp(dn, "cn=Subschema") == 0)
 			old_id = &master_entry.schema_id;
 		else
 			old_id = &master_entry.id;
@@ -485,7 +485,7 @@ int cache_delete_entry_lower_upper(NotifierID id, char *dn)
 	// convert to a lowercase dn
 	lower_dn = _convert_to_lower(dn);
 	rv=cache_delete_entry(id, lower_dn);
-	if (STRNEQ(dn, lower_dn)) {
+	if (strcmp(dn, lower_dn) != 0) {
 		mixedcase = true;
 		// try again with original dn
 		rv2=cache_delete_entry(id, dn);
@@ -557,7 +557,7 @@ int cache_get_entry_lower_upper(char *dn, CacheEntry *entry)
 
 	// convert to a lowercase dn
 	lower_dn = _convert_to_lower(dn);
-	if (STRNEQ(dn, lower_dn)) {
+	if (strcmp(dn, lower_dn) != 0) {
 		mixedcase = true;
 	}
 
@@ -625,7 +625,7 @@ int cache_next_entry(DBC **cur, char **dn, CacheEntry *entry)
 	}
 
 	/* skip master entry */
-	if (STREQ(key.data, "__master__")) {
+	if (strcmp(key.data, "__master__") == 0) {
 		free(key.data);
 		free(data.data);
 		return cache_next_entry(cur, dn, entry);
