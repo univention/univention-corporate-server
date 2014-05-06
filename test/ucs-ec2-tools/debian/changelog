@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.19-1) unstable; urgency=low
+
+  * Bug #26137: added utils-local.sh
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 06 May 2014 09:52:18 +0200
+
 ucs-ec2-tools (0.1.18-1) unstable; urgency=medium
 
   * Raise samba/debug/level also on s4 master for Bug #33904
