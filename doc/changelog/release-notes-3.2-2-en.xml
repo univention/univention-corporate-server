@@ -52,39 +52,39 @@
 		<title>Release highlights</title>
 
 		<para>
-			With &ucsUCS; 3.2-1, the first point release for &ucsUCS; (UCS) is now available.
-			It includes all errata updates issued for UCS 3.2-0:
+		  With &ucsUCS; 3.2-1, the first point release for &ucsUCS; (UCS) is now available. It
+		  includes all errata updates issued for UCS 3.2-0.
 
-			<!-- <itemizedlist> -->
-				<!-- <listitem><para> -->
-				<!--   Der Domänenbeitritt von Windows-Clients mit fehlerhafter Systemzeit wurde -->
-				<!--   vereinfacht; ein vorheriges Synchronisieren der Systemzeit ist nun nich mehr -->
-				<!--   nötig. Außerdem werden Passwortsperren nach erfolglosen Anmeldungen nun auch -->
-				<!--   in Samba-AD-Domänen unterstützt. -->
-				<!-- </para></listitem> -->
+		  <itemizedlist>
+			<listitem><para>
+			  Domain joining of Windows clients with incorrect system times has been simplified; it
+			  is now no longer necessary to synchronise the system time in advance. In addition,
+			  password lockouts following unsuccessful login attempts are now also supported in
+			  Samba AD domains.
+			</para></listitem>
 
-				<!-- <listitem><para> -->
-				<!--   Univention AD Takeover - die UCS-Lösung zur automatischen Migration einer Active -->
-				<!--   Directory-Domäne zu UCS - kann nun auch über ein Univention Management -->
-				<!--   Console-Modul durchgeführt werden. -->
-				<!-- </para></listitem> -->
+			<listitem><para>
+			  Univention AD Takeover - the UCS solution for the automatic migration of an Active
+			  Directory domain to UCS - can now also be performed via a Univention Management
+			  Console module.
+			</para></listitem>
 
-				<!-- <listitem><para> -->
-				<!--   Das Univention App Center wurde weiter ausgebaut, z.B. werden können nun auch -->
-				<!--   Applikationen bereitgestellt werden, die nicht für alle Prozessor-Architekturen -->
-				<!--   verfügbar sind. -->
-				<!-- </para></listitem> -->
+			<listitem><para>
+			  The Univention App Center has been expanded further, for example: it is now also
+			  possible to provide applications which are not available for all processor
+			  architectures.
+			</para></listitem>
 
-				<!-- <listitem><para> -->
-				<!--   Die Konfigurations des Zugriff auf WLAN-Netze über das RADIUS-Protokoll kann über -->
-				<!--   die neue Radius-App nun in der Univention Management Console konfiguriert werden. -->
-				<!-- </para></listitem> -->
+			<listitem><para>
+			  The configuration of the access to WLAN networks via the RADIUS protocol can now be
+			  configured in the Univention Management Console thanks to the new Radius app.
+			</para></listitem>
 
-				<!-- <listitem><para> -->
-				<!--   Das Debian-Point Update 6.0.9 wurde integriert. Es bring zahlreiche Bugfixes mit sich. -->
-				<!-- </para></listitem> -->
-
-			<!-- </itemizedlist> -->
+			<listitem><para>
+			  The Debian point update 6.0.9 has been integrated. It includes a wide range of bug
+			  fixes.
+			</para></listitem>
+		  </itemizedlist>
 		</para>
 
 	</chapter>
