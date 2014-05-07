@@ -4,7 +4,7 @@ scope: ucs_3.2-0-errata3.2-1
 src: univention-directory-manager-modules
 fix: 9.0.75-31.1194.201404301217
 note:
-version: 1
+version: [1]
 desc: |
   This update fixes a traceback which could occur when creating computer objects
   with a given DHCP or DNS zone, but without IP address.
