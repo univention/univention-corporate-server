@@ -15,7 +15,7 @@
 		<revhistory>
 			<revision>
 				<revnumber>3.2-2</revnumber>
-				<date>17 Feb 2014</date>
+				<date>7 May 2014</date>
 			</revision>
 		</revhistory>
 
@@ -52,7 +52,7 @@
 		<title>Release highlights</title>
 
 		<para>
-		  With &ucsUCS; 3.2-1, the first point release for &ucsUCS; (UCS) is now available. It
+		  With &ucsUCS; 3.2-2, the second point release for &ucsUCS; (UCS) is now available. It
 		  includes all errata updates issued for UCS 3.2-0.
 
 		  <itemizedlist>
@@ -161,7 +161,7 @@
 			<programlisting language="sh">
 LOCAL_DIR="/var/lib//univention-repository/mirror"
 SERVER="http://updates.software-univention.de"
-for release in 3.2-0 3.2-1; do
+for release in 3.2-0 3.2-1 3.2-2; do
 	for script in preup postup; do
 		file="3.2/maintained/$release/all/$script.sh.gpg"
 		wget -O "$LOCAL_DIR/$file" "$SERVER/$file"
