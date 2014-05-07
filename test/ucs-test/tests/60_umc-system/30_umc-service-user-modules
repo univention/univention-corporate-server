@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner python
+# -- coding: utf-8 --
 ## desc: Test the UMC modules access for restricted users
 ## bugs: [34621]
 ## tags: [apptest]
@@ -316,7 +317,8 @@ class TestUMCUserModules(TestUMCSystem):
                            % (test_username, test_groupname, test_policyname))
 
             user_module = user_modules[0].get('name')
-            if user_module != 'Change Password':
+            if not (('Passwort ändern' in user_module)
+                    or ('Change Password' in user_module)):
                 utils.fail("The newly created test user '%s' in the test "
                            "group '%s' has access to the '%s' "
                            "module, while should have access to the "
@@ -326,7 +328,7 @@ class TestUMCUserModules(TestUMCSystem):
                               test_policyname))
         finally:
             # Cleaning up created test objects:
-            sleep(10)  # Workaround to avoid user back replication from s4
+            sleep(15)  # Workaround to avoid user back replication from s4
             print "Removing created test objects"
             if self.check_obj_exists(test_username, "users/user"):
                 self.delete_obj(test_username, "users", "users/user")
