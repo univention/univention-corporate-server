@@ -7,8 +7,8 @@ note:
 version: 1
 desc: |
   This update fixes the following issues in the Univention Directory Listener
-  * adjusted shutdown message
-  * tracking of moved objects by their unique entryUUID. This fixes an issue,
+  * The shutdown message has been adjusted
+  * Moved objects are now tracked by their unique entryUUID. This fixes an issue,
     when objects in LDAP are modified and moved in short order, or while the
     listener is not running.
 bug: [32605, 34355]
