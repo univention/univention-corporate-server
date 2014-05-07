@@ -6,6 +6,6 @@ fix: 2:4.1.0-1.643.201405051700
 note: 
 version: [1]
 desc: |
- Several possible deadlock situations have been fixed.
+ Several possible deadlock situations in the DRS replication have been fixed.
 bug: [34545]
 
