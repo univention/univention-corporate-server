@@ -15,7 +15,7 @@ desc: |
   * The UCR variable connector/s4/listener/disabled has been added.
     If it is set to true the listener does not write any changes.
     This is helpful on a domain controller backup. The variable is
-	not set by default during this upgrade.
+    not set by default during this upgrade.
   * During the group membership synchronization from Samba 4 to
     OpenLDAP an object mapping problem has been fixed.
 bug: [31320,34394,34410,34478,33858,34197]
