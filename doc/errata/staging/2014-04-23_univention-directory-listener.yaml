@@ -4,7 +4,7 @@ scope: ucs_3.2-0-errata3.2-1
 src: univention-directory-listener
 fix: 8.0.0-10.221.201405061116
 note:
-version: 1
+version: [1]
 desc: |
   This update fixes the following issues in the Univention Directory Listener
   * The shutdown message has been adjusted
