@@ -19,6 +19,7 @@ winexe.wait_for_client(timeout=60)
 
 winexe.winexec("check-domain", winexe.opts.domain)
 winexe.winexec("activate-ts-service")
+winexe.check_user_login(winexe.opts.domain_admin, winexe.opts.domain_password)
 
 sys.exit(0)
 
