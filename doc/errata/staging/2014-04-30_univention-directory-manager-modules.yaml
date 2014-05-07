@@ -9,6 +9,6 @@ desc: |
   This update fixes a traceback which could occur when creating computer objects
   with a given DHCP or DNS zone, but without IP address.
 
-  The traceback could aswell occur when removing DHCP/DNS zones along with all
+  The traceback could as well occur when removing DHCP/DNS zones along with all
   IP addresses.
 bug: [33843]
