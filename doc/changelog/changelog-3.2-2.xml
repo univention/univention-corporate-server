@@ -7,8 +7,8 @@
 
 	  <listitem><simpara>
 		The Debian point update 6.0.9 has been integrated. It provides many bugfixes and also addresses some
-		security issues (<ulink url="&ucsbug;33272">Bug 33272</ulink>, <ulink url="&ucsbug;33283">Bug 33283</ulink>, 
-		<ulink url="&ucsbug;33287">Bug 33287</ulink>, <ulink url="&ucsbug;33500">Bug 33500</ulink>, 
+		security issues (<ulink url="&ucsbug;33272">Bug 33272</ulink>, <ulink url="&ucsbug;33283">Bug 33283</ulink>,
+		<ulink url="&ucsbug;33287">Bug 33287</ulink>, <ulink url="&ucsbug;33500">Bug 33500</ulink>,
 		<ulink url="&ucsbug;33776">Bug 33776</ulink>, <ulink url="&ucsbug;33868">Bug 33868</ulink>,
 		<ulink url="&ucsbug;34136">Bug 34136</ulink>).
 	  </simpara></listitem>
@@ -57,8 +57,8 @@
 
 	  <listitem><simpara>
 		The program <command>univention-check-templates</command> now also checks UCR template files
-		for modifications by using the MD5 hash sum managed by dpkg (<ulink url="&ucsbug;24010">Bug
-		24010</ulink>).
+		for modifications by using the MD5 hash sum managed by dpkg
+		(<ulink url="&ucsbug;24010">Bug 24010</ulink>).
 	  </simpara></listitem>
 
 	</itemizedlist>
@@ -83,9 +83,8 @@
 		<listitem><simpara>
 		  If the LDAP server is not available the tool <command>univention-ldapsearch</command> now
 		  tries to reconnect to the LDAP server. The count can be configured via the &ucsUCRV;
-		  <envar>ldap/client/retry/count</envar>, which is set to 10 by default  
-		  (<ulink url="&ucsbug;34292">Bug 34292</ulink>, <ulink url="&ucsbug;34293">Bug
-		  34293</ulink>).
+		  <envar>ldap/client/retry/count</envar>, which is set to 10 by default
+		  (<ulink url="&ucsbug;34292">Bug 34292</ulink>, <ulink url="&ucsbug;34293">Bug 34293</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
 
@@ -360,20 +359,20 @@
 		<listitem><simpara>
 		  The Postfix policy service listfilter (which is used to restrict e-mail delivery to groups
 		  and lists) is now executed as the user <emphasis>listfilter</emphasis> instead of the user
-		  <emphasis>cyrus</emphasis>. This allows the deployment of this feature in environments without the 
-		  component <package>univention-mail-cyrus</package> (<ulink url="&ucsbug;">Bug 26910</ulink>).
+		  <emphasis>cyrus</emphasis>. This allows the deployment of this feature in environments without the
+		  component <package>univention-mail-cyrus</package> (<ulink url="&ucsbug;26910">Bug 26910</ulink>).
 		</simpara></listitem>
-		
+
 		<listitem><simpara>
 		  The new &ucsUCR; variables <envar>mail/postfix/ldaptable/starttls</envar>,
 		  <envar>mail/postfix/ldaptable/tlsrequirecert</envar> and <envar>mail/postfix/ldaptable/tlscacertfile</envar>
-		  have been introduced to define whether and how Postfix should use TLS for LDAP lookups.
+		  have been introduced to define whether and how Postfix should use <acronym>TLS</acronym> for <acronym>LDAP</acronym> lookups.
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  The listener module handling shared IMAP folders configured in the &ucsUMC; now honours
-		  the &ucsUCRV; <envar>mail/cyrus/mailbox/delete</envar> when deleting  IMAP folders (<ulink
-		  url="&ucsbug;34165">Bug 34165</ulink>).
+		  the &ucsUCRV; <envar>mail/cyrus/mailbox/delete</envar> when deleting IMAP folders
+		  (<ulink url="&ucsbug;34165">Bug 34165</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -401,13 +400,12 @@
 	  <itemizedlist>
 		<listitem><simpara>
 		  The &ucsUCR; templates for the configuration and init files of the Nagios Remote Plugin
-		  Executor (NRPE) have been configured to use the PID file
+		  Executor (<acronym>NRPE</acronym>) have been configured to use the PID file
 		  <filename>/var/run/nagios/nrpe.pid</filename> (<ulink url="&ucsbug;34063">Bug 34063</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A buffer overflow in the setuid wrapper has been fixed (<ulink url="&ucsbug;34041">Bug
-		  34041</ulink>).
+		  A buffer overflow in the setuid wrapper has been fixed (<ulink url="&ucsbug;34041">Bug 34041</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -432,7 +430,8 @@
 		  The &ucsUCRV; <envar>squid/redirect</envar> can now be used to configure the
 		  <emphasis>url_rewrite_program</emphasis> configuration directive of Squid. If the variable
 		  is set to <emphasis>squidguard</emphasis>, then <emphasis>/usr/bin/squidGuard -c
-		  /etc/squid/squidGuard.conf</emphasis> (<ulink url="&ucsbug;32429">Bug 32429</ulink>).
+			/etc/squid/squidGuard.conf</emphasis> is used for <emphasis>url_rewrite_program</emphasis>
+		  (<ulink url="&ucsbug;32429">Bug 32429</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -444,9 +443,6 @@
 
 	  </itemizedlist>
   </section>
-
-
-(<ulink url="&ucsbug;">Bug </ulink>).
 
   <section id="changelog:service:pam">
 	<title>PAM / Local group cache</title>
@@ -539,7 +535,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  MS DFS support is now enbled on Samba AD domain controllers by default. With this new
+		  MS DFS support is now enabled on Samba AD domain controllers by default. With this new
 		  setting Windows clients ask for DFS redirects for the SYSVOL share, which may improve
 		  efficient network usage in branch site configurations (<ulink url="&ucsbug;34326">Bug
 		  34326</ulink>).
@@ -558,8 +554,8 @@
 	<title>Univention AD Takeover</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The AD takeover can now be performed through a &ucsUMC; module (<ulink
-		  url="&ucsbug;34019">Bug 34019</ulink>, <ulink url="&ucsbug;34139">Bug 34139</ulink>).
+			The AD takeover can now be performed through a &ucsUMC; module
+			(<ulink url="&ucsbug;34019">Bug 34019</ulink>, <ulink url="&ucsbug;34139">Bug 34139</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -592,7 +588,7 @@
 	  <listitem><simpara>
 		The <filename>/etc/issue</filename> welcome message mentions where to find the management
 		system. After installing this update the message will only be shown on domain controllers
-		and member servers (<ulink url="&ucsbug;34330">Bug 34339</ulink>).
+		and member servers (<ulink url="&ucsbug;34330">Bug 34330</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
