@@ -7,10 +7,10 @@ note:
 version: [1]
 desc: |
   This update fixes the following issues:
-  * The S4 connector python modules are only built for Python 2.6
+  * The S4 connector Python modules are now only built for Python 2.6
   * The pcpatch user is no longer ignored by default
   * The start of multiple S4 connector instances is now prevented
-  * While creating a user in UCS a stronger password is used which
+  * When creating a user in UCS a stronger password is used which
     fulfill the password complexity settings
   * The UCR variable connector/s4/listener/disabled has been added.
     If it is set to true the listener does not write any changes.
