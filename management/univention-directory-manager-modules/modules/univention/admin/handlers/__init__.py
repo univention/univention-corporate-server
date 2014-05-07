@@ -1931,7 +1931,7 @@ class simpleComputer( simpleLdap ):
 				if self['ip']:
 					ip = self['ip'][0]
 				self.__remove_dns_forward_object( self[ 'name' ], dn, ip )
-				self.__remove_related_ptrrecords(dn, self['ip'][0])
+				self.__remove_related_ptrrecords(dn, ip)
 			else:
 				self.__remove_dns_forward_object( self[ 'name' ], dn, ip )
 				self.__remove_related_ptrrecords(dn, ip)
@@ -1946,7 +1946,7 @@ class simpleComputer( simpleLdap ):
 				if self['ip']:
 					ip = self['ip'][0]
 				self.__add_dns_forward_object( self[ 'name' ], dn, ip )
-				self.__add_related_ptrrecords(dn, self['ip'][0])
+				self.__add_related_ptrrecords(dn, ip)
 			else:
 				self.__add_dns_forward_object( self[ 'name' ], dn, ip )
 				self.__add_related_ptrrecords(dn, ip)
