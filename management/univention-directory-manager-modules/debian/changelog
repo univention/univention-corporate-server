@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.75-32) unstable; urgency=low
+
+  * minor addition to last change
+  (Bug #33843)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 07 May 2014 15:54:31 +0200
+
 univention-directory-manager-modules (9.0.75-31) unstable; urgency=low
 
   * fixed tracebacks which could occur when adding/removing forward,
