@@ -6,5 +6,5 @@ fix: 2.1.10+dfsg-2.79.201404221745
 note:
 version: [0, 1]
 desc: |
-  This update causes freeradius init script to honour the freeradius/autostart setting.
+  The service start of Freeradius can now be managed through the freeradius/autostart UCR setting.
 bug: [29465]
