@@ -1,3 +1,9 @@
+univention-ldap (10.0.17-27) unstable; urgency=medium
+
+  * Fix bashism (Bug #34440)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 May 2014 19:41:48 +0200
+
 univention-ldap (10.0.17-26) unstable; urgency=medium
 
   * Adjust slapd init file (Bug #34440)
