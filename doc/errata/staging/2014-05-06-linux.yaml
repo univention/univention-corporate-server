@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+version: [1]
+scope: ucs_3.2-0-errata3.2-1
+src: linux
+fix: 3.10.11-1.58.201405060908
+desc: |
+ This update fixes a race condition in the tty driver of the Linux kernel, which
+ could result in denial of service or privilege escalation.
+note: This is the first part of the fix, which provides the new kernel package.
+cve:
+ - CVE-2014-0196
