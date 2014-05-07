@@ -1,3 +1,16 @@
+univention-ldap (10.0.17-26) unstable; urgency=medium
+
+  * Adjust slapd init file (Bug #34440)
+  * Don't pass --pidfile for --start --test action, fails if file is invalid
+  * Don't pass --pidfile for --start action, is ignored anyway
+  * Don't pass --pidfile & --exec for stop action as --exec gets ingored then
+  * Run stop --pidfile first and retry with stop --exec if slapd still runs
+  * Don't sleep and hope, rather send a final KILL signal if slapd still runs
+  * Output the retry/refused messages of start-stop-daemon --stop -v
+  * log debug output to syslog in case db_stat fails
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 May 2014 19:31:47 +0200
+
 univention-ldap (10.0.17-25) unstable; urgency=medium
 
   * activate gentlehup in slapd.conf (Bug #34440)
