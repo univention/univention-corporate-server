@@ -22,6 +22,16 @@ SLAPDCONF=/etc/ldap/slapd.conf
 
 . /lib/lsb/init-functions
 
+exit_if_start_is_running ()
+{
+	local pid
+	pid=$(pgrep -cf "^/bin/sh /etc/init.d/slapd start$")
+	if [ -n "$pid" ] && [ "$pid" -gt 1 ]; then
+		log_action_msg "ERROR: Another /etc/init.d/slapd start is already running."
+		exit 1
+	fi
+}
+
 bdbrecover ()
 {
 	local back_bdb_version
@@ -47,14 +57,18 @@ bdbrecover ()
 			bdb_version=$(echo "$dbstat_output" | sed -rn 's/^([^\s]+)\s+Environment version$/\1/p')
 			if [ -n "$bdb_version" ]; then
 				# check for stale locks or stale futexes
-				stale_locks=$("${DBSTAT}" -h /var/lib/univention-ldap/ldap -Nc | sed -rn 's/([0-9]*)\t*Number of current locks/\1/p')
+				stale_locks=$("${DBSTAT}" -h /var/lib/univention-ldap/ldap -Nc 2>&1 | sed -rn 's/([0-9]*)\t*Number of current locks/\1/p')
 				if [ "$stale_locks" != 0 ]; then
+					exit_if_start_is_running
 					log_action_msg "WARNING"
 					log_action_msg "WARNING: There are $stale_locks stale locks in LDAP backend Berkeley DB (version $bdb_version)"
 					log_action_msg "WARNING: If slapd does not respond, manual LDAP dump/restore may be necessary"
 					log_action_begin_msg "Continuing BDB database check: "
 				fi
 				"${DBRECOVER}" -h /var/lib/univention-ldap/ldap -e
+				if [ "$?" != 0 ]; then
+					exit_if_start_is_running
+				fi
 				log_action_end_msg 0
 			else
 				log_action_msg "/var/lib/univention-ldap/ldap BDB Version does not seem to match the one back-bdb uses"
@@ -66,6 +80,7 @@ bdbrecover ()
 			fi
 		else
 			log_action_msg "Could not determine BDB version of /var/lib/univention-ldap/ldap"
+			exit_if_start_is_running
 			log_action_msg "Skipping ${DBRECOVER} to avoid damage"
 
 			logger_tag="slapd db${back_bdb_version}_stat"
@@ -201,7 +216,7 @@ if configRegistry.get('ldap/maxopenfiles'):
 @!@
 if baseConfig['ldap/server/type']=="master":
 	print '\tlog_action_begin_msg "Checking Schema ID: "'
-	print '\tcheck_subschema >/dev/null 2>&1'
+	print '\tcheck_subschema 2>&1'
 	print '\tlog_action_end_msg 0'
 @!@
 
