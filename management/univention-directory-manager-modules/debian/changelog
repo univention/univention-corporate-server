@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.76-1) unstable; urgency=low
+
+  * Try to re-create the cli-server socket if the first creation failed
+    (Bug #34784)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 May 2014 22:07:22 +0200
+
 univention-directory-manager-modules (9.0.75-32) unstable; urgency=low
 
   * minor addition to last change

@@ -96,9 +96,9 @@ def fork_server(sock, socket_path):
 			time.sleep(0.1)
 			if time.time() > stime:
 				print >> sys.stderr, \
-						'E: Can`t connect daemon after %s seconds.' % \
+						'W: Can`t connect daemon after %s seconds.' % \
 						connection_timeout
-				sys.exit(1)
+				raise
 
 
 def get_password():
@@ -148,9 +148,7 @@ def process_output(output, cmdfile):
 			print line
 	return result
 
-
-def main():
-	"""Forward request to udm-cli-server."""
+def _create_socket():
 	socket_path = '/tmp/admincli_%d/sock' % os.getuid()
 	sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 	try:
@@ -158,6 +156,24 @@ def main():
 		sock.connect(socket_path)
 	except socket.error:
 		fork_server(sock, socket_path)
+	return sock
+
+def _re_create_socket():
+	try:
+		sock = _create_socket()
+	except socket.error:
+		print >> sys.stderr, 'E: Can`t connect daemon. Giving up.'
+		sys.exit(1)
+	return sock
+
+def main():
+	"""Forward request to udm-cli-server."""
+
+	try:
+		sock = _create_socket()
+	except socket.error:
+		# try once again
+		sock = _re_create_socket()
 
 	cmdfile = os.path.basename(sys.argv[0])
 	if cmdfile == 'univention-passwd':
