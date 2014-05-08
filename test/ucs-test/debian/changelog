@@ -1,3 +1,11 @@
+ucs-test (4.0.164-46) unstable; urgency=low
+
+  * verify_ldap_object(): limit search to scope base, otherwise it is
+    possible that a subobject is returned. This happens especially after
+    moving old objects to a new 'base' (Bug #34767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 May 2014 07:37:55 +0200
+
 ucs-test (4.0.164-45) unstable; urgency=low
 
   * 002_multiple_s4_connector_instances: Try to start multiple s4-
