@@ -57,12 +57,26 @@ parser.add_option('-S', '--single-server', dest='setup',
 parser.add_option('-M', '--multi-server', dest='setup',
 	action='store_const', const='multiserver',
 	help='install a multi server setup')
+parser.add_option('-E', '--educational-server-name', dest='name_edu_server',
+	help='name of the educational server', metavar='NAME_EDU_SLAVE')
+parser.add_option('-e', '--educational-server', dest='server_type',
+	action='store_const', const='educational',
+	help='install a dc slave in educational network (DEFAULT)')
+parser.add_option('-a', '--administrative-server', dest='server_type',
+	action='store_const', const='administrative',
+	help='install a dc slave in administrative network')
 parser.add_option('-m', '--master-host', dest='master', default=ucr['ldap/master'],
 	help='on a slave the master host needs to be specified', metavar='HOST')
 parser.add_option('-s', '--samba-version', dest='samba', default='4',
 	help='the version of samba, either 3 or 4', metavar='HOST')
 
 (options, args) = parser.parse_args()
+
+if ucr['server/role'] == 'domaincontroller_slave' and not options.server_type:
+	parser.error('Please specify the slave type (--educational-server or --administrative-server)!')
+
+if ucr['server/role'] == 'domaincontroller_slave' and options.server_type and not options.name_edu_server:
+	parser.error('Please specify the name of the educational slave when installing an administrative slave (-E)!')
 
 if not options.setup:
 	parser.error('Please specify a setup type: multi server (-M) or single server (-S)!')
@@ -86,11 +100,13 @@ connection.auth(options.username, options.password)
 
 params = {
 	'setup': options.setup,
+	'server_type': options.server_type,
 	'username': options.username,
 	'password': options.password,
 	'master': options.master,
 	'samba': options.samba,
 	'schoolOU': options.ou,
+	'name_edu_server': options.name_edu_server,
 }
 
 result = connection.request('schoolinstaller/install', params)
