@@ -1,3 +1,9 @@
+univention-ldap (10.0.17-30) unstable; urgency=medium
+
+  * Remove gentlehup option from slapd.conf again (Bug #34440)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 May 2014 14:35:51 +0200
+
 univention-ldap (10.0.17-29) unstable; urgency=medium
 
   * Improve pgrep pattern (Bug #34440)

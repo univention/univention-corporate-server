@@ -3,7 +3,6 @@ pidfile			/var/run/slapd/slapd.pid
 argsfile		/var/run/slapd/slapd.args
 loglevel		@%@ldap/debug/level@%@
 allow			bind_v2 update_anon
-gentlehup		on
 
 TLSCertificateFile	/etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/cert.pem
 TLSCertificateKeyFile	/etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/private.key
