@@ -1,3 +1,10 @@
+univention-ldap (10.0.17-32) unstable; urgency=medium
+
+  * Make ldap_extension listener log slapd restarts at PROCESS level
+    (Bug #34440)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 May 2014 16:47:05 +0200
+
 univention-ldap (10.0.17-31) unstable; urgency=medium
 
   * Make ldap_extension listener log slapd restarts at WARN level (Bug #34440)

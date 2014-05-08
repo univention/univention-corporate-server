@@ -79,7 +79,7 @@ def postrun():
 		listener.setuid(0)
 		try:
 			if schema_handler._do_reload or acl_handler._do_reload:
-				ud.debug(ud.LISTENER, ud.WARN, '%s: Reloading LDAP server.' % (name,) )
+				ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading LDAP server.' % (name,) )
 				p = subprocess.Popen([initscript, 'graceful-restart'], close_fds=True)
 				p.wait()
 				for handler_object in (schema_handler, acl_handler,):
