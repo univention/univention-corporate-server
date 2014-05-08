@@ -224,7 +224,7 @@ if baseConfig['ldap/server/type']=="master":
 	start-stop-daemon --stop --quiet --oknodo --retry 10 \
 		--pidfile "$pidfile" -v | grep -E '(retry|refused)'
 	## check process (instead of [ $? -eq 2 ])
-	pid=$(pgrep -f $DAEMON)
+	pid=$(pgrep -f "^$DAEMON")
 	if [ -n "$pid" ]; then
 		## try via executable name
 		log_action_msg "WARNING: Slapd still running ($pid), terminating via executable name"
@@ -261,7 +261,7 @@ if baseConfig['ldap/server/type']=="master":
 	start-stop-daemon --stop --quiet --oknodo --retry "$signal_plan" \
 		--pidfile "$pidfile" -v | grep -E '(retry|refused)'
 	## check process (instead of [ $? -eq 2 ])
-	pid=$(pgrep -f $DAEMON)
+	pid=$(pgrep -f "^$DAEMON")
 	if [ -n "$pid" ]; then
 		## try via executable name
 		log_action_msg "WARNING: Slapd still running ($pid), sending HUP via executable name"
