@@ -27,7 +27,7 @@ exit_if_start_is_running ()
 	local pid
 	pid=$(pgrep -cf "^/bin/sh /etc/init.d/slapd start$")
 	if [ -n "$pid" ] && [ "$pid" -gt 1 ]; then
-		log_action_msg "ERROR: Another /etc/init.d/slapd start is already running."
+		log_action_msg "WARNING: Another /etc/init.d/slapd start is already in progress."
 		exit 1
 	fi
 }
@@ -65,9 +65,12 @@ bdbrecover ()
 					log_action_msg "WARNING: If slapd does not respond, manual LDAP dump/restore may be necessary"
 					log_action_begin_msg "Continuing BDB database check: "
 				fi
-				"${DBRECOVER}" -h /var/lib/univention-ldap/ldap -e
+				logger_tag="slapd db${back_bdb_version}_recover"
+				dbrecover_output=$("${DBRECOVER}" -h /var/lib/univention-ldap/ldap -e 2>&1)
 				if [ "$?" != 0 ]; then
 					exit_if_start_is_running
+				else
+					echo "$dbrecover_output" | while read line; do logger -t "$logger_tag" "$line"; done
 				fi
 				log_action_end_msg 0
 			else
@@ -183,6 +186,7 @@ case "$1" in
 		log_action_msg "LDAP server already running"
 		exit 2
 	fi
+	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
 @!@
 if baseConfig['ldap/database/type'] == 'bdb':
 	print '\t# check backend database'
@@ -207,6 +211,7 @@ if configRegistry.get('ldap/maxopenfiles'):
 	rvalue=$?
 	log_action_end_msg $rvalue
 	if [ $rvalue != 0 ]; then
+		exit_if_start_is_running
 		[ -e /usr/sbin/slapschema ] && log_action_msg $(/usr/sbin/slapschema 2>&1)
 		exit $rvalue
 	fi
@@ -234,27 +239,33 @@ if baseConfig['ldap/server/type']=="master":
 	
 	;;
   stop)
+	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
 	log_action_begin_msg "Stopping ldap server(s): slapd "
 	## first try with pidfile
 	start-stop-daemon --stop --quiet --oknodo --retry 10 \
-		--pidfile "$pidfile" -v | grep -E '(retry|refused)'
+		--pidfile "$pidfile" -v | sed -rn 's/.*, (retry #|refused to die)/\1/p' \
+		| while read line; do log_action_cont_msg "$line"; done
 	## check process (instead of [ $? -eq 2 ])
 	pid=$(pgrep -f "^$DAEMON")
 	if [ -n "$pid" ]; then
+		log_action_end_msg 1
 		## try via executable name
-		log_action_msg "WARNING: Slapd still running ($pid), terminating via executable name"
+		log_action_begin_msg "Slapd still running ($pid), terminating via executable name"
 		start-stop-daemon --stop --quiet --oknodo --retry 10 \
-			--exec $DAEMON -v | grep -E '(retry|refused)'
+			--exec $DAEMON -v | sed -rn 's/.*, (retry #|refused to die)/\1/p' \
+			| while read line; do log_action_cont_msg "$line"; done
 		rm -f "$pidfile"
 	fi
 	log_action_end_msg 0
 	;;
   restart|force-reload)
+	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
 	log_action_msg "Restarting ldap server(s)"
 	$0 stop
 	$0 start
 	;;
   force-stop)
+	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
 	log_action_begin_msg "Stopping ldap servers (forced) "
 	start-stop-daemon --stop --quiet --oknodo --retry forever/KILL \
 		--exec $DAEMON
@@ -262,6 +273,7 @@ if baseConfig['ldap/server/type']=="master":
 	log_action_end_msg 0
 	;;
   crestart)
+	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
 	if pidof slapd > /dev/null 2>&1
 		then
 		$0 restart
@@ -270,23 +282,28 @@ if baseConfig['ldap/server/type']=="master":
 	fi
 	;;
   graceful-stop)
+	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
 	log_action_begin_msg "Sending HUP to ldap server(s): slapd "
 	signal_plan="HUP/120/TERM/30/KILL/2"
 	## first try with pidfile
 	start-stop-daemon --stop --quiet --oknodo --retry "$signal_plan" \
-		--pidfile "$pidfile" -v | grep -E '(retry|refused)'
+		--pidfile "$pidfile" -v | sed -rn 's/.*, (retry #|refused to die)/\1/p' \
+		| while read line; do log_action_cont_msg "$line"; done
 	## check process (instead of [ $? -eq 2 ])
 	pid=$(pgrep -f "^$DAEMON")
 	if [ -n "$pid" ]; then
+		log_action_end_msg 1
 		## try via executable name
-		log_action_msg "WARNING: Slapd still running ($pid), sending HUP via executable name"
+		log_action_begin_msg "Slapd still running ($pid), sending HUP via executable name"
 		start-stop-daemon --stop --quiet --oknodo --retry "$signal_plan" \
-			--exec $DAEMON -v | grep -E '(retry|refused)'
+			--exec $DAEMON -v | sed -rn 's/.*, (retry #|refused to die)/\1/p' \
+			| while read line; do log_action_cont_msg "$line"; done
 		rm -f "$pidfile"
 	fi
 	log_action_end_msg 0
 	;;
   graceful-restart)
+	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
 	log_action_msg "Initiating graceful reload of ldap server(s)"
 	$0 graceful-stop
 	$0 start
