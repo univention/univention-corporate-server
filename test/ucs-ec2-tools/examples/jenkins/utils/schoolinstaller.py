@@ -75,7 +75,7 @@ parser.add_option('-s', '--samba-version', dest='samba', default='4',
 if ucr['server/role'] == 'domaincontroller_slave' and not options.server_type:
 	parser.error('Please specify the slave type (--educational-server or --administrative-server)!')
 
-if ucr['server/role'] == 'domaincontroller_slave' and options.server_type and not options.name_edu_server:
+if ucr['server/role'] == 'domaincontroller_slave' and options.server_type == 'administrative' and not options.name_edu_server:
 	parser.error('Please specify the name of the educational slave when installing an administrative slave (-E)!')
 
 if not options.setup:
@@ -100,14 +100,17 @@ connection.auth(options.username, options.password)
 
 params = {
 	'setup': options.setup,
-	'server_type': options.server_type,
 	'username': options.username,
 	'password': options.password,
 	'master': options.master,
 	'samba': options.samba,
 	'schoolOU': options.ou,
-	'name_edu_server': options.name_edu_server,
 }
+
+if options.server_type:
+	params['server_type'] = options.server_type
+if options.name_edu_server:
+	params['name_edu_server'] = options.name_edu_server,
 
 result = connection.request('schoolinstaller/install', params)
 if not result['success']:
