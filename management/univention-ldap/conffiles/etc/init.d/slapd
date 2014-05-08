@@ -54,7 +54,7 @@ bdbrecover ()
 					log_action_msg "WARNING: If slapd does not respond, manual LDAP dump/restore may be necessary"
 					log_action_begin_msg "Continuing BDB database check: "
 				fi
-				"${DBRECOVER}" -h /var/lib/univention-ldap/ldap
+				"${DBRECOVER}" -h /var/lib/univention-ldap/ldap -e
 				log_action_end_msg 0
 			else
 				log_action_msg "/var/lib/univention-ldap/ldap BDB Version does not seem to match the one back-bdb uses"
@@ -224,19 +224,13 @@ if baseConfig['ldap/server/type']=="master":
 	start-stop-daemon --stop --quiet --oknodo --retry 10 \
 		--pidfile "$pidfile" -v | grep -E '(retry|refused)'
 	## check process (instead of [ $? -eq 2 ])
-	pid=$(pgrep -x slapd)
+	pid=$(pgrep -f $DAEMON)
 	if [ -n "$pid" ]; then
 		## try via executable name
 		log_action_msg "WARNING: Slapd still running ($pid), terminating via executable name"
 		start-stop-daemon --stop --quiet --oknodo --retry 10 \
 			--exec $DAEMON -v | grep -E '(retry|refused)'
-		## check again
-		pid=$(pgrep -x slapd)
-		if [ -n "$pid" ]; then
-			## start-stop-daemon -retry should have send a KILL, this is just a safety belt.
-			log_action_msg "WARNING: Slapd still running ($pid), sending KILL"
-			killall -9 slapd > /dev/null 2>&1
-		fi
+		rm -f "$pidfile"
 	fi
 	log_action_end_msg 0
 	;;
@@ -247,13 +241,9 @@ if baseConfig['ldap/server/type']=="master":
 	;;
   force-stop)
 	log_action_begin_msg "Stopping ldap servers (forced) "
-	killall slapd > /dev/null 2>&1
-	## check
-	pid=$(pgrep -x slapd)
-	if [ -n "$pid" ]; then
-		log_action_msg "WARNING: Slapd still running ($pid), sending KILL"
-		killall -9 slapd > /dev/null 2>&1
-	fi
+	start-stop-daemon --stop --quiet --oknodo --retry forever/KILL \
+		--exec $DAEMON
+	rm -f "$pidfile"
 	log_action_end_msg 0
 	;;
   crestart)
@@ -268,22 +258,16 @@ if baseConfig['ldap/server/type']=="master":
 	log_action_begin_msg "Sending HUP to ldap server(s): slapd "
 	signal_plan="HUP/120/TERM/30/KILL/2"
 	## first try with pidfile
-	start-stop-daemon --stop --quiet --oknodo --retry="$signal_plan" \
+	start-stop-daemon --stop --quiet --oknodo --retry "$signal_plan" \
 		--pidfile "$pidfile" -v | grep -E '(retry|refused)'
 	## check process (instead of [ $? -eq 2 ])
-	pid=$(pgrep -x slapd)
+	pid=$(pgrep -f $DAEMON)
 	if [ -n "$pid" ]; then
 		## try via executable name
 		log_action_msg "WARNING: Slapd still running ($pid), sending HUP via executable name"
-		start-stop-daemon --stop --quiet --oknodo --retry="$signal_plan" \
+		start-stop-daemon --stop --quiet --oknodo --retry "$signal_plan" \
 			--exec $DAEMON -v | grep -E '(retry|refused)'
-		## check again
-		pid=$(pgrep -x slapd)
-		if [ -n "$pid" ]; then
-			## start-stop-daemon -retry should have send a KILL, this is just a safety belt.
-			log_action_msg "WARNING: Slapd still running ($pid), sending KILL"
-			killall -9 slapd > /dev/null 2>&1
-		fi
+		rm -f "$pidfile"
 	fi
 	log_action_end_msg 0
 	;;

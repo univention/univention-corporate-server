@@ -1,3 +1,12 @@
+univention-ldap (10.0.17-28) unstable; urgency=medium
+
+  * Adjust slapd init file (Bug #34440):
+  * Don't use killall to avoid killing the init script itself
+  * Don't pgrep by name to avoid detecting the init script itself
+  * Fix db4.8_recover removing the bdb environment files (see man for "-e")
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 May 2014 10:11:53 +0200
+
 univention-ldap (10.0.17-27) unstable; urgency=medium
 
   * Fix bashism (Bug #34440)
