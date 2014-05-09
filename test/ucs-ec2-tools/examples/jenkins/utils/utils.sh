@@ -66,7 +66,7 @@ upgrade_to_latest ()
 	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@"
 	# Workaround for Bug #31561
 	sleep 10
-	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@"
+	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@" || (ps faxwww ; ucr search update/check)
 }
 
 run_setup_join ()
