@@ -33,6 +33,7 @@ Variables: squid/ntlmauth/tool
 Variables: squid/krb5auth/tool
 Variables: squid/append_domain
 Variables: squid/auth/allowed_groups
+Variables: squid/forwardedfor
 
 Type: file
 File: etc/squid3/allowed_ldap_groups.conf

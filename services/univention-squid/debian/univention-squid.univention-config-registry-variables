@@ -147,3 +147,9 @@ Description[de]=Diese Variable konfiguriert die squid Option 'url_rewrite_progra
 Description[en]=This variable configures the squid option 'url_rewrite_program'. If it is set to the special value 'squidguard', the URL filter SquidGuard will be integrated. The setting is relevant for UCS@school. The configured programm needs to be installed separately.
 Type=str
 Categories=service-webproxy
+
+[squid/forwardedfor]
+Description[de]=Diese Option erlaubt die Konfiguration ob bzw. wie die Client IP im HTTP-Header X-Forwarded-For behandelt wird.
+Description[en]=This options allows to finetune how/if the requesting client IP should be forwarded in the HTTP-Header X-Forwarded-For.
+Type=str
+Categories=service-webproxy

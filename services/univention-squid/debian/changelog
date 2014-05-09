@@ -1,3 +1,9 @@
+univention-squid (7.0.4-1) unstable; urgency=low
+
+  * added UCRV squid/forwardedfor (Bug #34025)
+
+ -- Felix Botner <botner@univention.de>  Fri, 09 May 2014 09:33:33 +0200
+
 univention-squid (7.0.3-5) unstable; urgency=low
 
   * made made squid/redirect a bit more flexible (Bug #32429) 

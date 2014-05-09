@@ -81,6 +81,7 @@ fi
 ucr set squid/transparentproxy?false \
 	squid/cache?yes \
 	squid/debug/level?ALL,1 \
+	squid/forwardedfor?off
 
 # Commit regarding template error: Bug 30969
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.9; then
