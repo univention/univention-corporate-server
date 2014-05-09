@@ -666,6 +666,12 @@
 		(<ulink url="&ucsbug;34201">Bug 34201</ulink>).
 	  </simpara></listitem>
 
+	  <listitem><simpara>
+		The UDM CLI program <command>univention-directory-manager</command> now tries to start
+		the internal UDM CLI server again if the first start was aborted
+		(<ulink url="&ucsbug;34784">Bug 34784</ulink>).
+	  </simpara></listitem>
+
 	</itemizedlist>
 </section>
 
