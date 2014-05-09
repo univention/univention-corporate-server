@@ -63,10 +63,10 @@ upgrade_to_testing ()
 
 upgrade_to_latest ()
 {
-	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@"
+	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@" || (echo "ERROR: univention-upgrade failed in attempt 1 with exitcode $?"; ps faxwww ; ucr search update/check) && exit 111
 	# Workaround for Bug #31561
 	sleep 10
-	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@" || (ps faxwww ; ucr search update/check)
+	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@" || (echo "ERROR: univention-upgrade failed in attempt 2 with exitcode $?"; ps faxwww ; ucr search update/check) && exit 112
 }
 
 run_setup_join ()
