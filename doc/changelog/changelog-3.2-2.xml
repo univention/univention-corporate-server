@@ -370,14 +370,19 @@
 	<itemizedlist>
 	  <listitem><simpara>
 		<filename>ldap_extension.py</filename> now moves files using the Python function shutil.move
-		instead of os.rename. This allows moving files across partitions (<ulink
-		url="&ucsbug;34104">Bug 34104</ulink>).
+		instead of os.rename. This allows moving files across partitions (<ulink url="&ucsbug;34104">Bug 34104</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		<filename>ldap_extension.py</filename> did handle the activation of a
+		new LDAP extension correctly and restarted the LDAP server to often,
+		which caused other bugs (<ulink url="&ucsbug;34800">Bug 34800</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 		This update fixes shell-univention-lib to call &ucsUCR; with an absolute path to work
 		regardless of the current PATH setting, especially for cases where
-		<filename>/usr/sbin</filename> is not in PATH.(<ulink url="&ucsbug;29241">Bug 29241</ulink>).
+		<filename>/usr/sbin</filename> is not in PATH (<ulink url="&ucsbug;29241">Bug 29241</ulink>).
 	  </simpara></listitem>
 
 	</itemizedlist>
