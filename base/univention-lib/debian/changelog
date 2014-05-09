@@ -1,3 +1,9 @@
+univention-lib (3.0.26-20) unstable; urgency=low
+
+  * Fix slapd restart on LDAP schema activation (Bug #34800)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 May 2014 17:36:45 +0200
+
 univention-lib (3.0.26-19) unstable; urgency=medium
 
   * change UCR calls to use absolute path (Bug #29241)

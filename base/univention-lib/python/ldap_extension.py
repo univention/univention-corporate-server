@@ -362,7 +362,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 
 			if old:	## check for trivial changes
 				diff_keys = [ key for key in new.keys() if new.get(key) != old.get(key) and key not in ('entryCSN', 'modifyTimestamp', 'modifiersName')]
-				if diff_keys == ['univentionLDAPSchemaActive'] and new.get('univentionLDAPSchemaActive') == 'TRUE':
+				if diff_keys == ['univentionLDAPSchemaActive'] and new.get('univentionLDAPSchemaActive') == ['TRUE']:
 					ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: activation status changed.' % (name, new['cn'][0]))
 					return
 				elif diff_keys == ['univentionAppIdentifier']:
@@ -376,7 +376,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 					if not rc > -1:
 						ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
 						return
-			
+
 			try:
 				new_object_data = bz2.decompress(new.get('univentionLDAPSchemaData')[0])
 			except TypeError:
@@ -559,7 +559,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 					if not rc > -1:
 						ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
 						return
-			
+
 			try:
 				new_object_data = bz2.decompress(new.get('univentionLDAPACLData')[0])
 			except TypeError:
@@ -825,7 +825,7 @@ def option_validate_gnu_message_catalogfile(option, opt, value):
 		raise OptionValueError("%s: file basename is not a registered language: %s" % (opt, value))
 	if not MIME_DESCRIPTION.file(value).startswith('GNU message catalog'):
 		raise OptionValueError("%s: file is not a GNU message catalog: %s" % (opt, value))
-	
+
 	return value
 
 class UCSOption (Option):
@@ -911,7 +911,7 @@ def ucs_registerLDAPExtension():
 
 
 	# parser.add_option("-v", "--verbose", action="count")
-	
+
 	udm_passthrough_options = []
 	auth_options = OptionGroup(parser, "Authentication Options",
 			"These options are usually passed e.g. from a calling joinscript")
@@ -1024,7 +1024,7 @@ def ucs_unregisterLDAPExtension():
 			help="UDM hook", metavar="<hook name>")
 
 	# parser.add_option("-v", "--verbose", action="count")
-	
+
 	udm_passthrough_options = []
 	auth_options = OptionGroup(parser, "Authentication Options",
 			"These options are usually passed e.g. from a calling joinscript")
