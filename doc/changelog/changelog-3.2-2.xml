@@ -475,6 +475,12 @@
 		  service principal (<ulink url="&ucsbug;32292">Bug 32292</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The &ucsUCR; variable <envar>squid/forwardedfor</envar> has been added to configure Squid's
+		  <emphasis>forwarded_for</emphasis> configuration directive
+		  (<ulink url="&ucsbug;34025">Bug 34025</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
