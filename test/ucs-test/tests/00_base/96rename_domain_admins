@@ -26,7 +26,9 @@ GROUPNAME=$(group_randomnameme)
 
 udm-test groups/group modify --dn "cn=Domain Admins,cn=groups,$ldap_base" --set name="$GROUPNAME"
 
-trap "udm-test groups/group modify --dn \"cn=$GROUPNAME,cn=groups,$ldap_base\" --set name=\"Domain Admins\"; wait_for_replication_and_postrun" EXIT
+# wait a little bit longer since we have to wait for the slapd restart
+trap "udm-test groups/group modify --dn \"cn=$GROUPNAME,cn=groups,$ldap_base\" --set name=\"Domain Admins\"; \
+	wait_for_replication_and_postrun; wait_for_replication_and_postrun" EXIT
 
 
 wait_for_replication_and_postrun

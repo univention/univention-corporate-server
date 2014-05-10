@@ -1,3 +1,10 @@
+ucs-test (4.0.166-1) unstable; urgency=low
+
+  * 00_base/9*rename_*: wait a little bit longer since the slapd has to
+    be restarted (Bug #34803)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 10 May 2014 19:54:51 +0200
+
 ucs-test (4.0.165-1) unstable; urgency=low
 
   * Disabled 96rename_domain_* tests (Bug #34802)

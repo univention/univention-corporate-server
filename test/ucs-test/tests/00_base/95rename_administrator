@@ -26,10 +26,11 @@ udm-test users/user create --position "cn=users,$ldap_base" \
 
 udm-test users/user modify --dn "uid=Administrator,cn=users,$ldap_base" --set username="$USERNAME"
 
+# wait a little bit longer since we have to wait for the slapd restart
 trap "udm users/user modify --dn \"uid=$USERNAME,cn=users,$ldap_base\" --set username=\"Administrator\" \
 	--binddn \"uid=$ADMIN,cn=users,$ldap_base\" --bindpwd univention; \
 	udm-test users/user remove --dn "uid=$ADMIN,cn=users,$ldap_base"; \
-	wait_for_replication_and_postrun" EXIT
+	wait_for_replication_and_postrun; wait_for_replication_and_postrun" EXIT
 
 wait_for_replication_and_postrun
 
