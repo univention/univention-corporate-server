@@ -1,3 +1,9 @@
+ucs-test (4.0.165-1) unstable; urgency=low
+
+  * Disabled 96rename_domain_* tests (Bug #34802)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 10 May 2014 14:53:53 +0200
+
 ucs-test (4.0.164-47) unstable; urgency=low
 
   * Bug #34624:
