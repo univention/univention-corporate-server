@@ -58,7 +58,6 @@ from PIL import Image
 from httplib import HTTPException
 from socket import error as SocketError
 from ldap import LDAPError
-from httplib import HTTPSConnection
 
 # related third party
 from simplejson import loads
@@ -589,40 +588,34 @@ class Application(object):
 				MODULE.info('Deleting obsolete %s' % cached_filename)
 				something_changed = True
 				os.unlink(cached_filename)
-		proxy = ucr.get('proxy/http')
-		if proxy:
-			connection = HTTPSConnection(urlsplit(proxy).netloc)
-			connection._set_tunnel(cls.get_server())
-		else:
-			connection = HTTPSConnection(cls.get_server())
-		connection.connect()
-		try:
-			for filename_url, filename in files_to_download:
-				# dont forget to quote: 'foo & bar.ini' -> 'foo%20&%20bar.ini'
-				# but dont quote https:// -> https%3A//
-				parts = urlsplit(filename_url)
-				url = urllib2.quote(parts.path)
-				filename_url = urlunsplit(parts)
+		def _download(url, dest):
+			MODULE.info('Downloading %s to %s' % (url, dest))
+			try:
+				urlcontent = urlopen(url)
+			except Exception as e:
+				MODULE.error('Error downloading %s: %s' % (url, e))
+			else:
+				with open(dest, 'wb') as f:
+					f.write(urlcontent.read())
+		threads = []
+		for filename_url, filename in files_to_download:
+			# dont forget to quote: 'foo & bar.ini' -> 'foo%20&%20bar.ini'
+			# but dont quote https:// -> https%3A//
+			parts = list(urlsplit(filename_url))
+			parts[2] = urllib2.quote(parts[2]) # 0 -> scheme, 1 -> netloc, 2 -> path
+			filename_url = urlunsplit(parts)
 
-				cached_filename = os.path.join(CACHE_DIR, filename)
+			cached_filename = os.path.join(CACHE_DIR, filename)
 
-				MODULE.info('Downloading %s to %s' % (url, cached_filename))
-				try:
-					connection.request('GET', url, headers={'Connection:' : 'keep-alive'})
-					response = connection.getresponse()
-					content = response.read()
-				except Exception as e:
-					MODULE.error('Error downloading %s: %s' % (url, e))
-				else:
-					with open(cached_filename, 'wb') as f:
-						f.write(content)
-		finally:
-			connection.close()
+			thread = Thread(target=_download, args=(filename_url, cached_filename))
+			thread.start()
+			threads.append(thread)
+		for thread in threads:
+			thread.join()
 		if something_changed:
 			# some variables could change apps.xml
 			# e.g. Name, Description
 			cls.update_conffiles()
-			MODULE.process('Processing PNG files')
 
 			# TODO: would be nice if vendors provided ${app}16.png
 			# special handling for icons
@@ -632,9 +625,7 @@ class Application(object):
 			# change the mode to that every other image is installed with
 			# (normally -rw-r--r--)
 			template_png = glob(os.path.join(FRONTEND_ICONS_DIR, '**', '*.png'))[0]
-			MODULE.info('Template is %s' % template_png)
 			for png in glob(os.path.join(CACHE_DIR, '*.png')):
-				MODULE.info('Processing %s' % png)
 				app_id, ext = os.path.splitext(os.path.basename(png))
 				# 50x50
 				png_50 = os.path.join(FRONTEND_ICONS_DIR, '50x50', 'apps-%s.png' % app_id)
