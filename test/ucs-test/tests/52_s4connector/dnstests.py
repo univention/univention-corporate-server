@@ -2,22 +2,14 @@ import univention.testing.strings as uts
 import univention.testing.utils as utils
 import subprocess
 import re
-from time import sleep
 import random
 import univention.config_registry
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 import os
 import sys
-import s4connector
 
-def wait_for_sync(min_wait_time=0):
-	synctime = int(ucr.get("connector/s4/poll/sleep",7))
-	synctime = ((synctime + 3)*2)
-	if min_wait_time > synctime:
-		synctime = min_wait_time
-	print ("Waiting {0} seconds for sync...".format(synctime))
-	sleep (synctime)
+
 
 def check_ldap_object(item, item_name, item_attribute = None, name_string = None):
 	print (" Testing Ldap object : {0}			".format(item_name)),
@@ -30,7 +22,6 @@ def check_ldap_object(item, item_name, item_attribute = None, name_string = None
 		print (' Failed')
 		sys.exit('Verification of Ldap object failed ')
 	else:
-		
 		print(' Success ')
 
 
@@ -159,67 +150,3 @@ def random_hex():
 	result = ''.join([random.choice('0123456789abcdef') for i in range(4)])
 	return result
 
-def check_group(group_dn, old_group_dn = None):
-	s4 = s4connector.S4Connection()
-	group_found = s4.exists(group_dn)
-	if not old_group_dn:
-		if group_found:
-			print ("Group synced to Samba")
-		else:
-			sys.exit("Groupname not synced")
-	else:
-		old_group_gone = not s4.exists(old_group_dn)
-		if group_found and old_group_gone:
-			print ("Group synced to Samba")
-		else:
-			sys.exit("Groupname not synced")
-
-
-def check_user(user_dn, surname = None, old_user_dn = None):
-	s4 = s4connector.S4Connection()
-	user_dn_modified = modify_user_dn(user_dn)
-	user_found = s4.exists(user_dn_modified)
-	if not surname:
-		if user_found:
-			print ("User synced to Samba")
-		else:
-			sys.exit("Username not synced")
-	elif surname:
-		user_dn_modified_surname = get_user_surname(user_dn)
-		old_user_dn_modified = modify_user_dn(old_user_dn)
-		old_user_gone = not s4.exists(old_user_dn_modified)
-		if old_user_gone and user_found and user_dn_modified_surname == surname:
-			print ("User synced to Samba")
-		else:
-			sys.exit("Username not synced")
-
-def get_user_surname(user_dn):
-	s4 = s4connector.S4Connection()
-	user_dn_modified = modify_user_dn(user_dn)
-	surname = s4.get_attribute(user_dn_modified,'sn')
-	return surname
-
-def modify_user_dn(user_dn):
-	user_dn_modified = 'cn' + user_dn[3:]
-	return user_dn_modified
-
-
-def correct_cleanup(group_dn, groupname2, udm_test_instance, return_new_dn = False):
-	tmp = group_dn.split(',')
-	modified_group_dn = 'cn={0},{1},{2},{3}'.format(groupname2, tmp[1], tmp[2], tmp[3])
-	udm_test_instance._cleanup['groups/group'].append(modified_group_dn)
-	if return_new_dn:
-		return modified_group_dn
-
-def verify_users(group_dn,users):
-	print (" Checking Ldap Objects")
-	utils.verify_ldap_object(group_dn, {
-	'uniqueMember': [user for user in users],
-	'memberUid': [(user.split('=')[1]).split(',')[0] for user in users]
-	})
-
-def modify_username(user_dn, new_user_name, udm_instance):
-	newdn = 'uid=%s,%s' % (new_user_name, user_dn.split(",", 1)[1])
-	udm_instance._cleanup['users/user'].append(newdn)
-	udm_instance.modify_object('users/user', dn = user_dn, username = new_user_name)
-	return newdn

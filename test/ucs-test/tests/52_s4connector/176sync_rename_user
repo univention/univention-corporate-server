@@ -1,6 +1,5 @@
 #!/usr/share/ucs-test/runner python
 ## desc: "Rename a user and test sync"
-## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
 ##   - univention-config
@@ -14,37 +13,22 @@
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import subprocess
-import re
-import univention.config_registry
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
 from time import sleep
-import dnstests
+import s4connector
 
 
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-
+		s4connector.exit_if_connector_not_running()
 		new_user_name = uts.random_name()
-
 		user_dn, user_name = udm.create_user()
-
 		utils.verify_ldap_object(user_dn)
-
-		dnstests.wait_for_sync()
-
-		dnstests.check_user(user_dn)
-
-		user_surname = dnstests.get_user_surname(user_dn)
-
-		modified_user_dn = dnstests.modify_username(user_dn, new_user_name, udm)
-
-		dnstests.wait_for_sync()
-
-		dnstests.check_user(modified_user_dn, user_surname, user_dn)
-
+		s4connector.wait_for_sync()
+		s4connector.check_user(user_dn)
+		user_surname = s4connector.get_user_surname(user_dn)
+		modified_user_dn = s4connector.modify_username(user_dn, new_user_name, udm)
+		s4connector.wait_for_sync()
+		s4connector.check_user(modified_user_dn, user_surname, user_dn)
 		utils.verify_ldap_object(modified_user_dn)
-
-	dnstests.wait_for_sync()
+	s4connector.wait_for_sync()

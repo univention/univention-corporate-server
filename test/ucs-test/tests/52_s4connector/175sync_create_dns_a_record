@@ -9,22 +9,18 @@
 
 import univention.testing.udm as udm_test
 import dnstests
+import s4connector
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 
+		s4connector.exit_if_connector_not_running()
 		ip = dnstests.make_random_ip()
 		random_zone = dnstests.random_zone()
 		host = dnstests.get_hostname()
-
 		forward_zone = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = host, a = ip)
-
 		dnstests.check_ldap_object(forward_zone, 'A Record', 'aRecord' , ip)
-
-		dnstests.wait_for_sync()
-
+		s4connector.wait_for_sync()
 		dnstests.test_dns_a_record(random_zone, ip)
-
 		dnstests.check_ldap_object(forward_zone, 'A Record', 'aRecord', ip)
-
-	dnstests.wait_for_sync()
+	s4connector.wait_for_sync()

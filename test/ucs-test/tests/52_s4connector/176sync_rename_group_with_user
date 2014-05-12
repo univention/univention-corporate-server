@@ -1,6 +1,5 @@
 #!/usr/share/ucs-test/runner python
 ## desc: "Rename a group with users in it and test sync"
-## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
 ##   - univention-config
@@ -13,41 +12,22 @@
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import subprocess
-import re
-import univention.config_registry
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
-from time import sleep
-import sys
-import dnstests
+import s4connector
 
 
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-
 		new_group_name = uts.random_name()
-
 		group_dn, groupname1 = udm.create_group()
-
 		users = [udm.create_user()[0], udm.create_user()[0]]
-
 		udm.modify_object('groups/group', dn = group_dn, append = {'users': [user for user in users]})
-		dnstests.verify_users(group_dn, users)
-
-		dnstests.wait_for_sync()
-
-		dnstests.check_group(group_dn)
-
+		s4connector.verify_users(group_dn, users)
+		s4connector.wait_for_sync()
+		s4connector.check_group(group_dn)
 		udm.modify_object('groups/group', dn = group_dn, name = new_group_name)
-
-		modified_group_dn = dnstests.correct_cleanup(group_dn, new_group_name, udm, True)
-
-		dnstests.wait_for_sync()
-
-		dnstests.check_group(modified_group_dn, group_dn)
-
-		dnstests.verify_users(modified_group_dn, users)
-
-	dnstests.wait_for_sync();
+		modified_group_dn = s4connector.correct_cleanup(group_dn, new_group_name, udm, True)
+		s4connector.wait_for_sync()
+		s4connector.check_group(modified_group_dn, group_dn)
+		s4connector.verify_users(modified_group_dn, users)
+	s4connector.wait_for_sync();

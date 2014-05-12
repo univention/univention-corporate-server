@@ -12,51 +12,30 @@
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import subprocess
-import re
-import univention.config_registry
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
-from time import sleep
-import dnstests
+import s4connector
 import itertools
 
 
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-
+		s4connector.exit_if_connector_not_running()
 		new_users = [uts.random_name(),uts.random_name()]
-
 		group_dn, groupname1 = udm.create_group()
-
 		users = [udm.create_user()[0], udm.create_user()[0]]
-
-		dnstests.wait_for_sync()
-
-		user_surnames = [(dnstests.get_user_surname(user)) for user in users]
-
+		s4connector.wait_for_sync()
+		user_surnames = [(s4connector.get_user_surname(user)) for user in users]
 		udm.modify_object('groups/group', dn = group_dn, append = {'users': [user for user in users]})
-
-		dnstests.wait_for_sync()
-
-		dnstests.verify_users(group_dn,users)
-
-		[(dnstests.check_user(user)) for user in users]
-
-		dnstests.check_group(group_dn)
-
+		s4connector.wait_for_sync()
+		s4connector.verify_users(group_dn,users)
+		[(s4connector.check_user(user)) for user in users]
+		s4connector.check_group(group_dn)
 		modified_users = []
 		for user, new_user in itertools.izip(users, new_users):
-			modified_users.append(dnstests.modify_username(user, new_user, udm))
-
-		dnstests.wait_for_sync()
-
-		dnstests.check_group(group_dn)
-
-		dnstests.verify_users(group_dn,modified_users)
-
+			modified_users.append(s4connector.modify_username(user, new_user, udm))
+		s4connector.wait_for_sync()
+		s4connector.check_group(group_dn)
+		s4connector.verify_users(group_dn,modified_users)
 		for modified_user, user_surname, user in itertools.izip(modified_users, user_surnames, users):
-			dnstests.check_user(modified_user, user_surname, user)
-
-	dnstests.wait_for_sync()
+			s4connector.check_user(modified_user, user_surname, user)
+	s4connector.wait_for_sync()

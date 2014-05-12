@@ -13,25 +13,18 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import univention.testing.strings as uts
 import dnstests
+import s4connector
 
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-
+		s4connector.exit_if_connector_not_running()
 		random_zone = dnstests.random_zone()
-
 		host = dnstests.get_hostname()
-
 		txt = uts.random_string()
-
 		forward_zone = udm.create_object('dns/forward_zone', zone = random_zone, txt = txt, nameserver = host)
-
 		dnstests.check_ldap_object(forward_zone, 'txt record', 'tXTRecord', txt)
-
-		dnstests.wait_for_sync()
-
+		s4connector.wait_for_sync()
 		dnstests.test_dns_txt(random_zone, txt)
-
 		dnstests.check_ldap_object(forward_zone, 'txt record', 'tXTRecord', txt)
-
-	dnstests.wait_for_sync()
+	s4connector.wait_for_sync()

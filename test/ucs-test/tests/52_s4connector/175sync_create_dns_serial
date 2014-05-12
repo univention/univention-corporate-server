@@ -19,6 +19,7 @@ ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 import dnstests
 import getpass
+import s4connector
 
 
 def get_serial_number(random_zone, host):
@@ -36,22 +37,14 @@ def get_serial_number(random_zone, host):
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-
+		s4connector.exit_if_connector_not_running()
 		random_zone = dnstests.random_zone()
 		host = dnstests.get_hostname()
-
 		forward_zone = udm.create_object('dns/forward_zone', zone = random_zone, nameserver = host)
-
 		dnstests.check_ldap_object(forward_zone, 'forward zone')
-
-		dnstests.wait_for_sync()
-
+		s4connector.wait_for_sync()
 		serial = get_serial_number(random_zone, host)
-
 		print ("Forward zone serial : " + serial)
-
 		dnstests.test_dns_serial(random_zone, serial)
-
 		dnstests.check_ldap_object(forward_zone, 'forward zone')
-
-	dnstests.wait_for_sync()
+	s4connector.wait_for_sync()

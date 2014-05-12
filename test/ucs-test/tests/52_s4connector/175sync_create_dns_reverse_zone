@@ -10,22 +10,16 @@
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import dnstests
-
+import s4connector
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-
+		s4connector.exit_if_connector_not_running()
 		revzone = dnstests.random_reverse_zone()
 		host = dnstests.get_hostname()
-
 		reverse_zone = udm.create_object('dns/reverse_zone', subnet = revzone, nameserver = host)
-
 		dnstests.check_ldap_object(reverse_zone, 'Reverse Zone', '', '')
-
-		dnstests.wait_for_sync()
-
+		s4connector.wait_for_sync()
 		dnstests.test_dns_reverse_zone(revzone, host)
-
 		dnstests.check_ldap_object(reverse_zone, 'Reverse Zone', '', '')
-
-	dnstests.wait_for_sync()
+	s4connector.wait_for_sync()
