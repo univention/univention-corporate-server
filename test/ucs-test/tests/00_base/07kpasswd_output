@@ -64,7 +64,7 @@ def remove_user(username):
 
 def create_ssh_session(username, password):
 	known_hosts_file = tempfile.NamedTemporaryFile()
-	shell = pexpect.spawn('ssh', ['-o', 'UserKnownHostsFile="%s"' % known_hosts_file.name, '%s@localhost' % username,], timeout=10) # logfile=sys.stdout
+	shell = pexpect.spawn('ssh', ['-o', 'UserKnownHostsFile="%s"' % known_hosts_file.name, '%s@localhost' % username,], timeout=10,) # logfile=sys.stdout)
 	status = shell.expect([pexpect.TIMEOUT, '[Pp]assword: ', 'Are you sure you want to continue connecting',])
 	del known_hosts_file
 	if status == 2: # accept public key
@@ -108,7 +108,7 @@ if __name__ == "__main__":
 	shell.sendline(newpassword)
 	status = shell.expect([pexpect.TIMEOUT, 'New password:',])
 	shell.sendline(newpassword)
-	status = shell.expect(['(?i)success', '(?i)error', pexpect.TIMEOUT,])
+	status = shell.expect(['(?i)[Ss]uccess', '(?i)[Ee]rror', pexpect.TIMEOUT,])
 	kpasswd_reported_success = status == 0
 
 	try:
@@ -131,9 +131,9 @@ if __name__ == "__main__":
 	password_changed = accepted_new_pwd
 
 	if kpasswd_reported_success:
-		print '"kpasswd" reported success',
+		print 'TEST FAILED: "kpasswd" reported acceptance of too short password',
 	else:
-		print '"kpasswd" reported failure',
+		print 'TEST SUCCEEDED: "kpasswd" reported refusal of too short password',
 	if kpasswd_reported_success == password_changed:
 		print 'and',
 	else:

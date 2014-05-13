@@ -1,3 +1,10 @@
+ucs-test (4.0.166-4) unstable; urgency=low
+
+  * Changed test 00/07kpasswd_output so output of test is easier to understand
+    (Bug #30750)
+
+ -- Drees Dormann <dormann@univention.de>  Tue, 13 May 2014 12:20:40 +0200
+
 ucs-test (4.0.166-3) unstable; urgency=low
 
   * Ignore .inst and .uinst files (Bug #34818)
