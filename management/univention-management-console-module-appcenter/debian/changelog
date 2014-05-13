@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.51-11) unstable; urgency=low
+
+  * Bug #32935: Add timeout to connection
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 May 2014 13:56:34 +0200
+
 univention-management-console-module-appcenter (3.0.51-10) unstable; urgency=low
 
   * Bug #32935: Use a single connection to download app center files, not one

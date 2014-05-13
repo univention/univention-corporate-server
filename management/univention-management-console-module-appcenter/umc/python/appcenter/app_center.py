@@ -58,7 +58,7 @@ from PIL import Image
 from httplib import HTTPException
 from socket import error as SocketError
 from ldap import LDAPError
-from httplib import HTTPSConnection
+from httplib import HTTPConnection, HTTPSConnection
 
 # related third party
 from simplejson import loads
@@ -589,12 +589,15 @@ class Application(object):
 				MODULE.info('Deleting obsolete %s' % cached_filename)
 				something_changed = True
 				os.unlink(cached_filename)
+		connection_klass = HTTPSConnection
+		if cls.get_server(with_scheme=True).startswith('http://'):
+			connection_klass = HTTPConnection
 		proxy = ucr.get('proxy/http')
 		if proxy:
-			connection = HTTPSConnection(urlsplit(proxy).netloc)
+			connection = connection_klass(urlsplit(proxy).netloc, timeout=60)
 			connection._set_tunnel(cls.get_server())
 		else:
-			connection = HTTPSConnection(cls.get_server())
+			connection = connection_klass(cls.get_server(), timeout=60)
 		connection.connect()
 		try:
 			for filename_url, filename in files_to_download:
