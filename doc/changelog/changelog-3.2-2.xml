@@ -562,12 +562,33 @@
 	  <itemizedlist>
 		<listitem><simpara>
 		  Domain account lockout for Windows clients joined into a Samba AD domain are now possible
-		  (<ulink url="&ucsbug;34443">Bug 34443</ulink>).
+		  (<ulink url="&ucsbug;34443">Bug 34443</ulink>, <ulink url="&ucsbug;34305">Bug
+		  34305</ulink>, <ulink url="&ucsbug;32974">Bug 32974</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  Support for correcting skewed clocks during domain was added. This allows joining Windows
 		  clients without requiring a time synchronisation first (<ulink url="&ucsbug;34439">Bug 34439</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  <command>samba-tool dbcheck</command> now also lists/handles name conflict objects and
+		  objects without object class (<ulink url="&ucsbug;33616">Bug 33616</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The domain services database module was affected by a segmentation fault when handling
+		  objects without object class (<ulink url="&ucsbug;33977">Bug 33977</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Versions in the package dependencies have been updated (<ulink url="&ucsbug;33972">Bug
+		  33972</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Randomise domain controllers in DFS referral replies, e.g. for the the sysvol share
+		  (<ulink url="&ucsbug;34370">Bug 34370</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
