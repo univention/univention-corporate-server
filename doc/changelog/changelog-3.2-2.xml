@@ -192,6 +192,14 @@
 		  bit, a 32 bit operating system will refuse to install it (<ulink url="&ucsbug;34320">Bug 34320</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+			The App Center module downloads all ini files from the App Center server
+			and caches them locally. This was done in one thread per file, leading to
+			heavy load on both the server and the client. With this update, the
+			module reuses one connection and does not need threads anymore (<ulink
+				url="&ucsbug;32935">Bug 32935</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
