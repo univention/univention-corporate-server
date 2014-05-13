@@ -138,13 +138,11 @@
 	<title>Univention Management Console web interface</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  Display glitches with some progress bars have been fixed (<ulink url="&ucsbug;34181">Bug
-		  34181</ulink>).
+		  Display glitches with some progress bars have been fixed (<ulink url="&ucsbug;34181">Bug 34181</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The detection of Internet Explorer 11 has been fixed (<ulink url="&ucsbug;33990">Bug
-		  33990</ulink>).
+		  The detection of Internet Explorer 11 has been fixed (<ulink url="&ucsbug;33990">Bug 33990</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -154,14 +152,12 @@
 	<title>Univention Management Console server</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  Added a method to the &ucsUMC; web server to retrieve the client's IP address (<ulink url="&ucsbug;34288">Bug
-		  34288</ulink>).
+		  Added a method to the &ucsUMC; web server to retrieve the client's IP address (<ulink url="&ucsbug;34288">Bug 34288</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  The UMC web server uses Apache as a proxy server. The timeout for proxy requests can now
-		  be configured with the &ucsUCRV; <envar>umc/http/session/timeout</envar> (<ulink
-		  url="&ucsbug;34005">Bug 34005</ulink>).
+		  be configured with the &ucsUCRV; <envar>umc/http/session/timeout</envar> (<ulink url="&ucsbug;34005">Bug 34005</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -177,8 +173,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Whitelisting and blacklisting of apps is now done based on the applications' ID (<ulink
-		  url="&ucsbug;34145">Bug 34145</ulink>).
+		  Whitelisting and blacklisting of apps is now done based on the applications' ID (<ulink url="&ucsbug;34145">Bug 34145</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -194,8 +189,7 @@
 
 		<listitem><simpara>
 		  Applications may now specify supported architectures. If an application only supports 64
-		  bit, a 32 bit operating system will refuse to install it (<ulink url="&ucsbug;34320">Bug
-		  34320</ulink>).
+		  bit, a 32 bit operating system will refuse to install it (<ulink url="&ucsbug;34320">Bug 34320</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -213,8 +207,7 @@
 	<title>Users module</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  LDAP objects with the attribute univentionObjectFlag:functional are now ignored (<ulink
-		  url="&ucsbug;34395">Bug 34395</ulink>).
+		  LDAP objects with the attribute univentionObjectFlag:functional are now ignored (<ulink url="&ucsbug;34395">Bug 34395</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -225,8 +218,7 @@
 		<listitem><simpara>
 		  A traceback has been fixed which could occur when creating computer objects  with a given
 		  DHCP or DNS zone, but without an IP address. The traceback could also occur when removing
-		  DHCP/DNS zones along with all IP addresses. (<ulink url="&ucsbug;33843">Bug
-		  33843</ulink>).
+		  DHCP/DNS zones along with all IP addresses. (<ulink url="&ucsbug;33843">Bug 33843</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -240,8 +232,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  LDAP objects with the attribute univentionObjectFlag:functional are now ignored (<ulink
-		  url="&ucsbug;34395">Bug 34395</ulink>).
+		  LDAP objects with the attribute univentionObjectFlag:functional are now ignored (<ulink url="&ucsbug;34395">Bug 34395</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -405,7 +396,7 @@
 		<listitem><simpara>
 		  The new &ucsUCR; variables <envar>mail/postfix/ldaptable/starttls</envar>,
 		  <envar>mail/postfix/ldaptable/tlsrequirecert</envar> and <envar>mail/postfix/ldaptable/tlscacertfile</envar>
-		  have been introduced to define whether and how Postfix should use <acronym>TLS</acronym> for <acronym>LDAP</acronym> lookups.
+		  have been introduced to define whether and how Postfix should use <acronym>TLS</acronym> for <acronym>LDAP</acronym> lookups (<ulink url="&ucsbug;34198">Bug 34198</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -580,15 +571,13 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Several possible deadlock situations in the DRS replication have been fixed (<ulink
-		  url="&ucsbug;34545">Bug 34545</ulink>).
+		  Several possible deadlock situations in the DRS replication have been fixed (<ulink url="&ucsbug;34545">Bug 34545</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  MS DFS support is now enabled on Samba AD domain controllers by default. With this new
 		  setting Windows clients ask for DFS redirects for the SYSVOL share, which may improve
-		  efficient network usage in branch site configurations (<ulink url="&ucsbug;34326">Bug
-		  34326</ulink>).
+		  efficient network usage in branch site configurations (<ulink url="&ucsbug;34326">Bug 34326</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
