@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.51-12) unstable; urgency=low
+
+  * Bug #32935: Add timeout to urlopen
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 May 2014 14:04:13 +0200
+
 univention-management-console-module-appcenter (3.0.51-11) unstable; urgency=low
 
   * Bug #32935: Add timeout to connection
