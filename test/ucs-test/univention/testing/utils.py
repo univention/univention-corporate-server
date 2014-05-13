@@ -46,11 +46,10 @@ __all__ = ['TEST_BASE', 'LOG_BASE', 'setup_environment', 'setup_debug',
 TEST_BASE = '/usr/share/ucs-test'
 RE_SECTION = re.compile(r'^[0-9]{2}_(.+)$')
 RE_PREFIX = re.compile(r'^[0-9]{2}(.+)')
-RE_SUFFIX = re.compile(r'(?:~|\.(?:lib|sh|py[co]|bak|mo|po|png|jpg|xml|csv))$')  # ends with ~, .lib, .sh, .pyo, .pyc, .bak, .mo, .po, .png, .jpg, .xml, .csv
+RE_SUFFIX = re.compile(r'(?:~|\.(?:lib|sh|py[co]|bak|mo|po|png|jpg|xml|csv|inst|uinst))$')
 LOG_BASE = '/var/log/univention/test_%d.log'
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 LISTENER_INIT_SCRIPT = '/etc/init.d/univention-directory-listener'
-
 
 
 class LDAPError(Exception):
@@ -90,7 +89,7 @@ def get_ldap_connection(pwdfile = False, start_tls = 2, decode_ignorelist = []):
 			bindpw = f.read().strip('\n')
 	else:
 		bindpw = ucr['tests/domainadmin/pwd']
-	
+
 	for ldapServer in ldapServers:
 		try:
 			return uldap.access(host=ldapServer, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
@@ -106,7 +105,7 @@ def verify_ldap_object(baseDn, expected_attr = {}, strict = True, should_exist =
 		if should_exist:
 			raise LDAPObjectNotFound('DN: %s' % baseDn)
 		return
-	
+
 	if not should_exist:
 		raise LDAPUnexpectedObjectFound('DN: %s' % baseDn)
 
