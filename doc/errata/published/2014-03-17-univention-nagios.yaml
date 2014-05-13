@@ -7,6 +7,6 @@ note:
 version: [1]
 desc: |
   * The UCR templates for the configuration and init files of the Nagios
-	Remote Plugin Executor (NRPE) have been modified to use the PID file
+    Remote Plugin Executor (NRPE) have been modified to use the PID file
     /var/run/nagios/nrpe.pid.
 bug: [34063]
