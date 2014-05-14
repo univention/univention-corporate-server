@@ -182,7 +182,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Components in the App Centers tab <guimenu>Repository Settings</guimenu> may have default
+		  Components in the App Center's tab <guimenu>Repository Settings</guimenu> may have default
 		  packages which can be installed. Before this is done, the App Center now updates the
 		  package list (<ulink url="&ucsbug;34278">Bug 34278</ulink>).
 		</simpara></listitem>
