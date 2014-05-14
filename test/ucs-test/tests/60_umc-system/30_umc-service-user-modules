@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python
-# -- coding: utf-8 --
 ## desc: Test the UMC modules access for restricted users
 ## bugs: [34621]
 ## tags: [apptest]
@@ -10,9 +9,9 @@ sys.path.insert(0, '.')
 from TestUMCSystemModule import TestUMCSystem
 
 import simplejson as json
-from time import sleep
 
 import univention.testing.utils as utils
+import univention.testing.udm as udm_test
 from univention.testing.strings import random_username
 from univention.lib.umc_connection import UMCConnection
 
@@ -22,153 +21,20 @@ class TestUMCUserModules(TestUMCSystem):
     def __init__(self):
         """Test Class constructor"""
         super(TestUMCUserModules, self).__init__()
-        self.ldap_base = None
+        self.UserUMCConnection = None
 
-    def create_policy(self, policyname, operation_set):
+    def create_user_umc_connection(self, username, password):
         """
-        Creates a test policy with name 'policyname' and
-        'operation_set' in it
+        Creates a UMC connection with provided credentials to 'self.hostname'.
         """
-        options = [{ "object" : { "name" : policyname,
-                                  "allow" : operation_set,
-                                  "$policies$" : {}},
-                     "options" : {"objectType":"policies/umc"}}]
-
-        print("Creating a test policy '%s' with '%s' operation set"
-              % (policyname, operation_set))
-        try:
-            request_result = self.Connection.request('udm/add',
-                                                     options,
-                                                     'policies/policy')
-            if not request_result:
-                utils.fail("Request 'udm/add' to add policy with options "
-                           "'%s' failed, hostname %s"
-                           % (options, self.hostname))
-            if not request_result[0].get('success'):
-                utils.fail("Request 'udm/add' to add policy with options "
-                           "'%s' failed, no success = True in response, "
-                           "hostname %s" % (options, self.hostname))
-        except Exception as exc:
-            utils.fail("Exception while making 'udm/add' request: %s" %
-                       exc)
-
-    def create_group(self, groupname, policynames={}):
-        """
-        Creates a group with a provided 'groupname' and provided
-        'policynames' if any for the test by making a UMC-request 'udm/add'.
-        """
-        options = [{"object" : {"UVMMGroup" : False,
-                                "sambaGroupType" : "2",
-                                "name" : groupname,
-                                "adGroupType" : "-2147483646",
-                                "$options$" : {"samba" : True,
-                                               "posix" : True },
-                                "$policies$" : policynames },
-                                "options" : {"container" : "cn=groups,"
-                                                           + self.ldap_base,
-                                             "objectType" : "groups/group" }}]
-
-        print("Creating a test group with a name '%s' and policies '%s'"
-              % (groupname, policynames))
-        try:
-            request_result = self.Connection.request('udm/add',
-                                                     options,
-                                                     'groups/group')
-            if not request_result:
-                utils.fail("Request 'udm/add' group with options '%s' failed, "
-                           "hostname '%s'" % (options, self.hostname))
-            if not request_result[0].get('success'):
-                utils.fail("Request 'udm/add' group with options '%s' failed, "
-                           "no success = True in response, hostname '%s'"
-                           % (options, self.hostname))
-        except Exception as exc:
-            utils.fail("Exception while making 'udm/add' group request: %s" %
-                       exc)
-
-    def create_user(self, username, password, groupname):
-        """
-        Creates a test user by making UMC-request 'udm/add'
-        with provided 'username', 'password' and in the 'groupname'
-        """
-        options = [{"object": {"disabled" : "none",
-                               "CtxRASDialin" : "E",
-                               "lastname" : username,
-                               "password" : password,
-                               "CtxShadow" : "00000000",
-                               "overridePWHistory" : False,
-                               "pwdChangeNextLogin" : False,
-                               "primaryGroup" : "cn=" + groupname +
-                                                ",cn=groups," + self.ldap_base,
-                               "CtxStartprogramClient" : False,
-                               "username" : username,
-                               "shell" : "/bin/bash",
-                               "CtxBrokenSession" : "0000",
-                               "locked" : "none",
-                               "CtxReconnectSession" : "0000",
-                               "CtxCfgClientPrinters" : False,
-                               "homeSharePath" : username,
-                               "unixhome" : "/home/" + username,
-                               "overridePWLength" : False,
-                               "CtxCfgDefaultClientPrinters" : False,
-                               "displayName" : username,
-                               "CtxCfgClientDrivers" : False,
-                               "CtxCfgTSLogon" : False,
-                               "$options$" : {"samba" : True,
-                                              "kerberos" : True,
-                                              "person" : True,
-                                              "posix" : True,
-                                              "mail" : True,
-                                              "pki" : False,
-                                              "ldap_pwd" : False}},
-                               "options" : {"container" : "cn=users,"
-                                                          + self.ldap_base,
-                                            "objectType" : "users/user"}}]
-
-        print("Creating a test user with username '%s' in the group '%s'"
-              % (username, groupname))
-        try:
-            request_result = self.Connection.request('udm/add',
-                                                     options,
-                                                     'users/user')
-            if not request_result:
-                utils.fail("Request 'udm/add' user with options '%s' failed, "
-                           "hostname '%s'" % (options, self.hostname))
-            if not request_result[0].get('success'):
-                utils.fail("Request 'udm/add' user with options '%s' failed, "
-                           "no success = True in response, hostname '%s'"
-                           % (options, self.hostname))
-        except Exception as exc:
-            utils.fail("Exception while making 'udm/add' user request: %s" %
-                       exc)
-
-    def check_obj_exists(self, name, obj_type):
-        """
-        Checks if user, group or policy object with provided 'name' exists,
-        returns True when exists. Object type selected by 'obj_type' argument.
-        """
-        options = { "container" : "all",
-                    "objectType" : obj_type,
-                    "objectProperty" : "None",
-                    "objectPropertyValue" : "",
-                    "hidden" : False }
-        try:
-            request_result = self.Connection.request('udm/query',
-                                                     options,
-                                                     obj_type)
-            if not request_result:
-                utils.fail("Request 'udm/query' with options '%s' "
-                           "failed, hostname '%s'" % (options, self.hostname))
-            for result in request_result:
-                if result.get('name') == name:
-                    return True
-        except Exception as exc:
-            utils.fail("Exception while making 'udm/query' request: %s" %
-                       exc)
+        self.UserUMCConnection = UMCConnection(self.hostname,
+                                               username,
+                                               password)
 
     def list_umc_modules(self):
         """
         Makes a UMC-request 'get/modules/list' to get the list of
-        modules via the 'UserUMCConnection' with test user credentials.
+        available modules via the 'UserUMCConnection'.
         """
         try:
             # defining request explicitly, since there is no 'result' in answer
@@ -187,155 +53,91 @@ class TestUMCUserModules(TestUMCSystem):
             request_result = json.loads(request_result)
             if request_result.get('status') != 200:
                 utils.fail("Request '/umcp/get/modules/list' did not return "
-                           "status 200, hostname: '%s'" % self.hostname)
+                           "status 200, hostname: '%s', response: '%s'"
+                           % (self.hostname, request_result))
             return request_result.get('modules')
         except Exception as exc:
             utils.fail("Exception while making 'get/modules/list' request: %s"
                        % exc)
 
-    def add_group_policy(self, groupname, policyname):
-        """
-        Adds the provided 'policyname' to the provided 'groupname'
-        by making a UMC 'udm/put' request with respective options.
-        """
-        options = [{ "object" : { "$policies$" :
-                                { "policies/umc" : "cn=" + policyname
-                                                   + ",cn=UMC,cn=policies,"
-                                                   + self.ldap_base},
-                                  "$dn$" : "cn=" + groupname + ",cn=groups,"
-                                           + self.ldap_base},
-                                  "options" : {}}]
-
-        print("Adding '%s' test policy to the test group '%s'"
-              % (policyname, groupname))
-        try:
-            request_result = self.Connection.request('udm/put',
-                                                     options,
-                                                     'groups/group')
-            if not request_result:
-                utils.fail("Request 'udm/put' to add policy to a group "
-                           "with options '%s' failed, hostname %s"
-                           % (options, self.hostname))
-            if not request_result[0].get('success'):
-                utils.fail("Request 'udm/put' to add policy to a group "
-                           "with options '%s' failed, no success = True in "
-                           "response, hostname %s" % (options, self.hostname))
-        except Exception as exc:
-            utils.fail("Exception while making 'udm/add' request: %s" %
-                       exc)
-
-    def delete_obj(self, name, obj_type, flavor):
-        """
-        Deletes object with 'name' by making a UMC-request 'udm/remove'
-        with relevant options and flavor depending on 'obj_type'
-        """
-        print "Deleting test object '%s' with a name: '%s'" % (obj_type, name)
-
-        if obj_type == 'users':
-            obj_identifier = "uid=" + name + ",cn=" + obj_type + ","
-        elif obj_type == 'groups':
-            obj_identifier = "cn=" + name + ",cn=" + obj_type + ","
-        elif obj_type == 'policies':
-            obj_identifier = "cn=" + name + ",cn=UMC,cn=" + obj_type + ","
-        else:
-            utils.fail("The object identifier format is unknown for the "
-                       "provided object type '%s'" % obj_type)
-
-        obj_identifier = obj_identifier + self.ldap_base
-        options = [{ "object" : obj_identifier,
-                     "options" : { "cleanup" : True,
-                                   "recursive" : True }}]
-        try:
-            request_result = self.Connection.request('udm/remove',
-                                                     options,
-                                                     flavor)
-            if not request_result:
-                utils.fail("Request 'udm/remove' to delete object with options"
-                           " '%s' failed, hostname %s"
-                           % (options, self.hostname))
-            if not request_result[0].get('success'):
-                utils.fail("Request 'udm/remove' to delete object with options"
-                           " '%s' failed, no success = True in response, "
-                           "hostname %s" % (options, self.hostname))
-        except Exception as exc:
-            utils.fail("Exception while making 'udm/remove' request: %s" %
-                       exc)
-
     def main(self):
         """
         Method to test the UMC modules access restrictions for regular users
         """
-        self.get_ucr_credentials()
-        self.create_connection_authenticate()  # 'Administrator' connection
-        self.ldap_base = self.UCR.get('ldap/base')
+        self.reload_ucr()
+        self.hostname = self.UCR.get('hostname')
+        ldap_base = self.UCR.get('ldap/base')
 
         test_username = 'umc_test_user_' + random_username(6)
         test_password = 'univention'
         test_groupname = 'umc_test_group_' + random_username(6)
         test_policyname = 'umc_test_policy_' + random_username(6)
-        test_operation_set = ["cn=udm-self,cn=operations,cn=UMC,cn=univention,"
-                              + self.ldap_base]
-        try:
-            self.create_policy(test_policyname, test_operation_set)
-            self.create_group(test_groupname)
-            self.create_user(test_username, test_password, test_groupname)
+        test_operation_set = ["cn=ucr-all,cn=operations,cn=UMC,cn=univention,"
+                              + ldap_base]
 
-            if not self.check_obj_exists(test_username, "users/user"):
-                utils.fail("Cannot query the test user '%s' that "
-                           "was just created" % test_username)
+        with udm_test.UCSTestUDM() as UDM:
+            print "Creating a test group and a user in it for the test"
+            test_group_dn = UDM.create_group(name=test_groupname)[0]
+            utils.verify_ldap_object(test_group_dn)
 
-            # case 1: no group policy and thus no modules
+            test_user_dn = UDM.create_user(password=test_password,
+                                           username=test_username,
+                                           primaryGroup=test_group_dn)[0]
+            utils.verify_ldap_object(test_user_dn)
+
+            # case 1: there is no group policy and thus no modules
             # should be available to the user:
-            self.UserUMCConnection = UMCConnection(self.hostname,
-                                                   test_username,
-                                                   test_password)
-            print("Checking if user '%s' has access to any modules"
+            print("Checking if user '%s' has no access to umc modules"
                   % test_username)
+            self.create_user_umc_connection(test_username, test_password)
             user_modules = self.list_umc_modules()
             if len(user_modules) != 0:
                 utils.fail("The newly created test user '%s' in test "
-                           "group '%s' has access to following modules '%s'"
-                           ",when should not have"
+                           "group '%s' has access to the following modules "
+                           "'%s', when should not have access to any"
                            % (test_username, test_groupname, user_modules))
 
-            # case 2: add policy to the group and check
-            # available modules for the user:
-            self.UserUMCConnection = UMCConnection(self.hostname,
-                                                   test_username,
-                                                   test_password)
-            self.add_group_policy(test_groupname, test_policyname)
-            print("Checking if user '%s' has access to only one module"
-                  % test_username)
+            # case 2: create custom policy and add it to the test group,
+            # check available modules for the user:
+            print("Checking if user '%s' has access to only one module "
+                  "with custom test policy '%s' applied to group '%s'"
+                  % (test_username, test_policyname, test_groupname))
+            test_policy_dn = UDM.create_object('policies/umc',
+                                               name=test_policyname,
+                                               allow=test_operation_set)
+            utils.verify_ldap_object(test_policy_dn)
+
+            # **kwargs are as dict to pass a 'policy-reference'
+            UDM.modify_object('groups/group',
+                              **{'dn': test_group_dn,
+                                 'policy-reference': test_policy_dn})
+
+            # recreating connection to obtain an updated module list:
+            self.create_user_umc_connection(test_username, test_password)
             user_modules = self.list_umc_modules()
             if len(user_modules) != 1:
                 utils.fail("The newly created test user '%s' in the test "
                            "group '%s' has either no access to "
                            "any modules or has access to "
                            "more than one module, while should have "
-                           "only to 'udm-self' module according to "
-                           "test policy '%s' of the test group"
-                           % (test_username, test_groupname, test_policyname))
+                           "only to the 'ucr-all' module, according to "
+                           "test policy '%s' of the test group. "
+                           "User accessible modules are: '%s'"
+                           % (test_username, test_groupname, test_policyname,
+                              user_modules))
 
-            user_module = user_modules[0].get('name')
-            if not (('Passwort ändern' in user_module)
-                    or ('Change Password' in user_module)):
+            user_module = user_modules[0].get('id')
+            if not user_module:
+                utils.fail("The 'id' field is empty or not found in the "
+                           "list of umc user modules '%s'" % user_modules)
+            if not ('ucr' in user_module):
                 utils.fail("The newly created test user '%s' in the test "
                            "group '%s' has access to the '%s' "
                            "module, while should have access to the "
-                           "'udm-self' module according to the "
+                           "'ucr-all' module according to the "
                            "test policy '%s' of the test group"
                            % (test_username, test_groupname, user_module,
                               test_policyname))
-        finally:
-            # Cleaning up created test objects:
-            sleep(15)  # Workaround to avoid user back replication from s4
-            print "Removing created test objects"
-            if self.check_obj_exists(test_username, "users/user"):
-                self.delete_obj(test_username, "users", "users/user")
-            if self.check_obj_exists(test_groupname, "groups/group"):
-                self.delete_obj(test_groupname, "groups", "groups/group")
-            if self.check_obj_exists(test_policyname, "policies/policy"):
-                self.delete_obj(test_policyname, "policies", "policies/policy")
 
 
 if __name__ == '__main__':
