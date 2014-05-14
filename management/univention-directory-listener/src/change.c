@@ -573,7 +573,7 @@ static int change_update_cache(struct transaction *trans) {
 
 	switch (trans->cur.notify.command) {
 	case 'm': // modify
-		if (STRNEQ(trans->cur.notify.dn, trans->cur.ldap_dn))
+		if (strcasecmp(trans->cur.notify.dn, trans->cur.ldap_dn))
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
 					"Delaying update for '%s' until moved to '%s'",
 					trans->cur.notify.dn, trans->cur.ldap_dn);
@@ -584,7 +584,7 @@ static int change_update_cache(struct transaction *trans) {
 		if (trans->prev.notify.command == 'r') { // move_to
 			rv = process_move(trans);
 		} else { // add
-			if (STRNEQ(trans->cur.notify.dn, trans->cur.ldap_dn))
+			if (strcasecmp(trans->cur.notify.dn, trans->cur.ldap_dn))
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
 						"Schizophrenia: a NEW object '%s' is added, which ALREADY is in our cache for '%s'?",
 						trans->cur.ldap_dn, trans->cur.notify.dn);
@@ -592,7 +592,7 @@ static int change_update_cache(struct transaction *trans) {
 		}
 		break;
 	case 'd': // delete
-		if (STRNEQ(trans->cur.notify.dn, trans->cur.ldap_dn))
+		if (strcasecmp(trans->cur.notify.dn, trans->cur.ldap_dn))
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
 					"Resurrection: DELETED object '%s' will re-appear at '%s'?",
 					trans->cur.notify.dn, trans->cur.ldap_dn);
