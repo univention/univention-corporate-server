@@ -117,7 +117,7 @@ ucr set \
 # Set errata component for UCS 3.2-2
 ucr set \
 	repository/online/component/3.2-2-errata=enabled \
-	repository/online/component/3.2-2-errata/description="Errata updates for UCS 3.2-1" \
+	repository/online/component/3.2-2-errata/description="Errata updates for UCS 3.2-2" \
 	repository/online/component/3.2-2-errata/version="3.2" >>"$UPDATER_LOG" 2>&1
 
 # make sure that UMC server is restarted (Bug #33426)
