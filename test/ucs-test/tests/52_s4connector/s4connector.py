@@ -118,50 +118,36 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 
 
 
-def check_group(group_dn, old_group_dn = None):
+def check_object(object_dn, sid = None, old_object_dn = None):
 	S4 = S4Connection()
-	group_found = S4.exists(group_dn)
-	if not old_group_dn:
-		if group_found:
-			print ("Group synced to Samba")
+	object_dn_modified = _replace_uid_with_cn(object_dn)
+	object_found = S4.exists(object_dn_modified)
+	if not sid:
+		if object_found:
+			print ("Object synced to Samba")
 		else:
-			sys.exit("Groupname not synced")
+			sys.exit("Object not synced")
+	elif sid:
+		object_dn_modified_sid = get_object_sid(object_dn)
+		old_object_dn_modified = _replace_uid_with_cn(old_object_dn)
+		old_object_gone = not S4.exists(old_object_dn_modified)
+		if old_object_gone and object_found and object_dn_modified_sid == sid:
+			print ("Object synced to Samba")
+		else:
+			sys.exit("Object not synced")
+
+def get_object_sid(dn):
+	S4 = S4Connection()
+	dn_modified = _replace_uid_with_cn(dn)
+	sid = S4.get_attribute(dn_modified,'objectSid')
+	return sid
+
+def _replace_uid_with_cn(dn):
+	if dn.startswith('uid') or dn.startswith('UID'):
+		dn_modified = 'cn' + dn[3:]
 	else:
-		old_group_gone = not S4.exists(old_group_dn)
-		if group_found and old_group_gone:
-			print ("Group synced to Samba")
-		else:
-			sys.exit("Groupname not synced")
-
-
-def check_user(user_dn, surname = None, old_user_dn = None):
-	S4 = S4Connection()
-	user_dn_modified = modify_user_dn(user_dn)
-	user_found = S4.exists(user_dn_modified)
-	if not surname:
-		if user_found:
-			print ("User synced to Samba")
-		else:
-			sys.exit("Username not synced")
-	elif surname:
-		user_dn_modified_surname = get_user_surname(user_dn)
-		old_user_dn_modified = modify_user_dn(old_user_dn)
-		old_user_gone = not S4.exists(old_user_dn_modified)
-		if old_user_gone and user_found and user_dn_modified_surname == surname:
-			print ("User synced to Samba")
-		else:
-			sys.exit("Username not synced")
-
-def get_user_surname(user_dn):
-	S4 = S4Connection()
-	user_dn_modified = modify_user_dn(user_dn)
-	surname = S4.get_attribute(user_dn_modified,'sn')
-	return surname
-
-def modify_user_dn(user_dn):
-	user_dn_modified = 'cn' + user_dn[3:]
-	return user_dn_modified
-
+		dn_modified = dn
+	return dn_modified
 
 def correct_cleanup(group_dn, groupname2, udm_test_instance, return_new_dn = False):
 	tmp = group_dn.split(',')

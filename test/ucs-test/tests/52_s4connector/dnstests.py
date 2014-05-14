@@ -20,7 +20,8 @@ def check_ldap_object(item, item_name, item_attribute = None, name_string = None
 			utils.verify_ldap_object(item)
 	except:
 		print (' Failed')
-		sys.exit('Verification of Ldap object failed ')
+		print ('Verification of Ldap object failed ')
+		sys.exit(1)
 	else:
 		print(' Success ')
 
@@ -97,7 +98,9 @@ def match(re_test_object, zone_name, typ, param=None):
 		print
 		print("  DNS synced ")
 	else:
-		sys.exit(" DNS not synced ")
+		print
+		print(" DNS not synced ")
+		sys.exit(1)
 
 
 def get_hostname():

@@ -13,7 +13,6 @@
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-from time import sleep
 import s4connector
 
 
@@ -21,14 +20,23 @@ import s4connector
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		s4connector.exit_if_connector_not_running()
+
+		#create random users
 		new_user_name = uts.random_name()
-		user_dn, user_name = udm.create_user()
+		user_dn = udm.create_user()[0]
+
+		#verify ldap object and sync
 		utils.verify_ldap_object(user_dn)
 		s4connector.wait_for_sync()
-		s4connector.check_user(user_dn)
-		user_surname = s4connector.get_user_surname(user_dn)
+		s4connector.check_object(user_dn)
+		user_sid = s4connector.get_object_sid(user_dn)
+
+		#modify user
 		modified_user_dn = s4connector.modify_username(user_dn, new_user_name, udm)
 		s4connector.wait_for_sync()
-		s4connector.check_user(modified_user_dn, user_surname, user_dn)
+
+		#test ldap object and sync
+		s4connector.check_object(modified_user_dn, user_sid, user_dn)
 		utils.verify_ldap_object(modified_user_dn)
+
 	s4connector.wait_for_sync()
