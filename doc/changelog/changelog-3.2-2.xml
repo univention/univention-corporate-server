@@ -25,7 +25,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The warning about the missing BIOS Grub partition is now displayed again after modifying the
+		The warning about the missing BIOS boot partition is now displayed again after modifying the
 		partition table (<ulink url="&ucsbug;34334">Bug 34334</ulink>).
 	  </simpara></listitem>
 
@@ -57,7 +57,7 @@
 
 	  <listitem><simpara>
 		The program <command>univention-check-templates</command> now also checks UCR template files
-		for modifications by using the MD5 hash sum managed by dpkg
+		for modifications by using the MD5 hash sum managed by <command>dpkg</command>
 		(<ulink url="&ucsbug;24010">Bug 24010</ulink>).
 	  </simpara></listitem>
 
@@ -120,7 +120,7 @@
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			Moved objects are now tracked by their unique entryUUID. This fixes an issue, when
+			Moved objects are now tracked by their unique <literal>entryUUID</literal>. This fixes an issue, when
 			objects in LDAP are modified and moved in short order, or while the listener is not running.
 		   (<ulink url="&ucsbug;34355">Bug 34355</ulink>).
 		  </simpara></listitem>
@@ -182,7 +182,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Components in the App Center's tab <guimenu>Repository Settings</guimenu> may have default
+		  Components in the App Centers tab <guimenu>Repository Settings</guimenu> may have default
 		  packages which can be installed. Before this is done, the App Center now updates the
 		  package list (<ulink url="&ucsbug;34278">Bug 34278</ulink>).
 		</simpara></listitem>
@@ -215,7 +215,7 @@
 	<title>Users module</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  LDAP objects with the attribute univentionObjectFlag:functional are now ignored (<ulink url="&ucsbug;34395">Bug 34395</ulink>).
+			LDAP objects with the attribute <literal>univentionObjectFlag:functional</literal> are now ignored (<ulink url="&ucsbug;34395">Bug 34395</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -323,8 +323,8 @@
 	<title>&ucsUDM; command line interface and related tools</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  UDM no longer creates temporary objects in cn=univention when moving containers, because
-		  cn=univention is ignored by the S4 connector and the S4 connector does not recognize the
+		  UDM no longer creates temporary objects in <literal>cn=univention</literal> when moving containers, because
+		  <literal>cn=univention</literal> is ignored by the S4 connector and the S4 connector does not recognize the
 		  move (<ulink url="&ucsbug;34266">Bug 34266</ulink>).
 		</simpara></listitem>
 
@@ -335,13 +335,12 @@
 	<title>Development of modules for &ucsUMC;</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  Python UDM extensions are now installed with update-python-support (<ulink
-		  url="&ucsbug;34421">Bug 34421</ulink>).
+			Python UDM extensions are now installed with <command>update-python-support</command>
+			(<ulink url="&ucsbug;34421">Bug 34421</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The <emphasis>default</emphasis> attribute of a UDM property is now configurable via
-		  &ucsUCR; (e.g. by setting
+		  The default value of a UDM property is now configurable via &ucsUCR; (e.g. by setting
 		  <envar>directory/manager/web/modules/users/user/properties/mailHomeServer/default</envar>)
 		  (<ulink url="&ucsbug;23765">Bug 23765</ulink>).
 		</simpara></listitem>
@@ -368,20 +367,20 @@
   <title>Univention Library</title>
 	<itemizedlist>
 	  <listitem><simpara>
-		<filename>ldap_extension.py</filename> now moves files using the Python function shutil.move
-		instead of os.rename. This allows moving files across partitions (<ulink url="&ucsbug;34104">Bug 34104</ulink>).
+		  <filename>ldap_extension.py</filename> now moves files using the Python function <function>shutil.move</function>
+		  instead of <function>os.rename</function>. This allows moving files across partitions (<ulink url="&ucsbug;34104">Bug 34104</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		<filename>ldap_extension.py</filename> did handle the activation of a
-		new LDAP extension correctly and restarted the LDAP server to often,
-		which caused other bugs (<ulink url="&ucsbug;34800">Bug 34800</ulink>).
+		<filename>ldap_extension.py</filename> did not handle the activation of a
+		new LDAP extension correctly and restarted the LDAP server too often
+		(<ulink url="&ucsbug;34800">Bug 34800</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		This update fixes shell-univention-lib to call &ucsUCR; with an absolute path to work
-		regardless of the current PATH setting, especially for cases where
-		<filename>/usr/sbin</filename> is not in PATH (<ulink url="&ucsbug;29241">Bug 29241</ulink>).
+		This update fixes <package>shell-univention-lib</package> to call &ucsUCR; with an absolute path to work
+		regardless of the current <envar>PATH</envar> setting, especially for cases where
+		<filename class="directory">/usr/sbin/</filename> is not in <envar>PATH</envar> (<ulink url="&ucsbug;29241">Bug 29241</ulink>).
 	  </simpara></listitem>
 
 	</itemizedlist>
@@ -402,7 +401,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The new &ucsUCR; variables <envar>mail/postfix/ldaptable/starttls</envar>,
+		  The new &ucsUCRV;s <envar>mail/postfix/ldaptable/starttls</envar>,
 		  <envar>mail/postfix/ldaptable/tlsrequirecert</envar> and <envar>mail/postfix/ldaptable/tlscacertfile</envar>
 		  have been introduced to define whether and how Postfix should use <acronym>TLS</acronym> for <acronym>LDAP</acronym> lookups (<ulink url="&ucsbug;34198">Bug 34198</ulink>).
 		</simpara></listitem>
@@ -480,7 +479,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable <envar>squid/forwardedfor</envar> has been added to configure Squid's
+		  The &ucsUCRV; <envar>squid/forwardedfor</envar> has been added to configure Squid's
 		  <emphasis>forwarded_for</emphasis> configuration directive
 		  (<ulink url="&ucsbug;34025">Bug 34025</ulink>).
 		</simpara></listitem>
@@ -536,7 +535,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The logging of libvirtd can now be controlled using the &ucsUCR; variables
+		  The logging of libvirtd can now be controlled using the &ucsUCRV;s
 		  <envar>libvirt/log/level</envar>, <envar>libvirt/log/filters</envar> and
 		  <envar>libvirt/log/outputs</envar> (<ulink url="&ucsbug;34170">Bug 34170</ulink>).
 		</simpara></listitem>
@@ -595,7 +594,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Randomise domain controllers in DFS referral replies, e.g. for the the sysvol share
+		  Randomise domain controllers in DFS referral replies, e.g. for the SYSVOL share
 		  (<ulink url="&ucsbug;34370">Bug 34370</ulink>).
 		</simpara></listitem>
 
@@ -637,7 +636,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The pcpatch user is no longer ignored by default (<ulink url="&ucsbug;34394">Bug 34394</ulink>).
+			The user <literal>pcpatch</literal> is no longer ignored by default (<ulink url="&ucsbug;34394">Bug 34394</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -646,7 +645,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  When creating a user in UCS a stronger password is used which fulfill the password
+		  When creating a user in UCS a stronger password is used which fulfills the password
 		  complexity settings (<ulink url="&ucsbug;34478">Bug 34478</ulink>).
 		</simpara></listitem>
 
@@ -690,7 +689,7 @@
 
 	  <listitem><simpara>
 		The dependency list of the package <package>univention-directory-manager-modules</package>
-		has been updated. Prior to this change, slapd was left installed on a memberserver when
+		has been updated. Prior to this change, <package>slapd</package> was left installed on a &ucsMember; when
 		using the appliance mode which could lead to problems when this system was querying LDAP
 		(<ulink url="&ucsbug;34201">Bug 34201</ulink>).
 	  </simpara></listitem>
