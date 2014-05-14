@@ -362,6 +362,9 @@ class base(object):
 		if not temporary_ou:
 			return
 
+		# Temporary disable ou deletion # Bug #34833
+		return
+
 		dn = '%s,%s' %(temporary_ou,self.lo.base)
 
 		module = univention.admin.modules.get('container/ou')

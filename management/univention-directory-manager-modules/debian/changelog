@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.75-33) unstable; urgency=medium
+
+  * Don't delete the temporary ou (Bug #34833)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 May 2014 15:06:48 +0200
+
 univention-directory-manager-modules (9.0.75-32) unstable; urgency=low
 
   * minor addition to last change
