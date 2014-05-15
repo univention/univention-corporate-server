@@ -1,3 +1,9 @@
+univention-ldap (10.0.17-25~1) unstable; urgency=low
+
+  * Add entryUUID to LDAP index (Bug #34813)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 May 2014 14:36:43 +0200
+
 univention-ldap (10.0.17-24) unstable; urgency=low
 
   * Sort schema files by name (Bug #34406)
