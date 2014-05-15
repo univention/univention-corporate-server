@@ -110,7 +110,7 @@ params = {
 if options.server_type:
 	params['server_type'] = options.server_type
 if options.name_edu_server:
-	params['nameEduServer'] = options.name_edu_server,
+	params['nameEduServer'] = options.name_edu_server
 
 result = connection.request('schoolinstaller/install', params)
 if not result['success']:
