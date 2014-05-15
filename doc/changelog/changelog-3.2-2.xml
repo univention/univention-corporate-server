@@ -92,6 +92,10 @@
 		  ordering (<ulink url="&ucsbug;34406">Bug 34406</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The OpenLDAP init script has been revised (<ulink url="&ucsbug;34440">Bug 34440</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
 
 	<!-- <section id="changelog:domain:openldap:acl"> -->
