@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-47) unstable; urgency=low
+
+  * Re-added diff mode changes (Bug #33621 and Bug #32263)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 15 May 2014 14:36:39 +0200
+
 univention-s4-connector (8.0.33-46) unstable; urgency=low
 
   * Don't close the lock_file fd (Bug #34410)
