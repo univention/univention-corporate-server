@@ -1,0 +1,13 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: univention-s4-connector
+fix: 8.0.33-47.473.201405151521
+note: 
+version: [2]
+desc: |
+  This update fixes the following issues:
+  * The entryUUID of deleted objects in OpenLDAP is now saved to a
+    local cache. This will prevent a recreation of deleted objects.
+  * The synchronization has been changed to a diff based algorithm.
+bug: [32263,33621]
