@@ -1,3 +1,12 @@
+ucs-test (4.0.166-6) unstable; urgency=low
+
+  * /60_umc-system/23_umc-service-create-user:
+    test user creation, modification and deletion via UMC (Bug #34791)
+  * /60_umc-system/TestUMCSystemModule.py: 
+    new helper methods to ease the deletion and checking of objects.
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 16 May 2014 10:50:02 +0200
+
 ucs-test (4.0.166-5) unstable; urgency=low
 
   * Restructured 52/176* tests

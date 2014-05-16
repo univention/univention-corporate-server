@@ -87,6 +87,68 @@ class TestUMCSystem(object):
                   "%s" % (service_name, request_result))
             sys.exit(TestCodes.REASON_INSTALL)
 
+    def check_obj_exists(self, name, obj_type):
+        """
+        Checks if user, group or policy object with provided 'name' exists
+        via UMC 'udm/query' request, returns True when exists.
+        Object type selected by 'obj_type' argument.
+        """
+        options = {"container": "all",
+                   "objectType": obj_type,
+                   "objectProperty": "None",
+                   "objectPropertyValue": "",
+                   "hidden": False}
+        try:
+            request_result = self.Connection.request('udm/query', options,
+                                                     obj_type)
+            if not request_result:
+                utils.fail("Request 'udm/query' with options '%s' "
+                           "failed, hostname '%s'" % (options, self.hostname))
+            for result in request_result:
+                if result.get('name') == name:
+                    return True
+        except Exception as exc:
+            utils.fail("Exception while making 'udm/query' request: %s" %
+                       exc)
+
+    def delete_obj(self, name, obj_type, flavor):
+        """
+        Deletes object with a 'name' by making UMC-request 'udm/remove'
+        with relevant options and flavor depending on 'obj_type'
+        Supported types are: users, groups and policies.
+        """
+        print "Deleting test object '%s' with a name: '%s'" % (obj_type, name)
+
+        if obj_type == 'users':
+            obj_identifier = "uid=" + name + ",cn=" + obj_type + ","
+        elif obj_type == 'groups':
+            obj_identifier = "cn=" + name + ",cn=" + obj_type + ","
+        elif obj_type == 'policies':
+            obj_identifier = "cn=" + name + ",cn=UMC,cn=" + obj_type + ","
+        else:
+            utils.fail("The object identifier format is unknown for the "
+                       "provided object type '%s'" % obj_type)
+
+        obj_identifier = obj_identifier + self.ldap_base
+        options = [{"object": obj_identifier,
+                    "options": {"cleanup": True,
+                                "recursive": True}}]
+        try:
+            request_result = self.Connection.request('udm/remove',
+                                                     options,
+                                                     flavor)
+            if not request_result:
+                utils.fail("Request 'udm/remove' to delete object with options"
+                           " '%s' failed, hostname %s"
+                           % (options, self.hostname))
+            if not request_result[0].get('success'):
+                utils.fail("Request 'udm/remove' to delete object with options"
+                           " '%s' failed, no success = True in response, "
+                           "hostname %s" % (options, self.hostname))
+        except Exception as exc:
+            utils.fail("Exception while making 'udm/remove' request: %s" %
+                       exc)
+
     def return_code_result_skip(self):
         """Method to stop the test with the code 77, RESULT_SKIP """
         sys.exit(TestCodes.RESULT_SKIP)

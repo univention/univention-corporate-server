@@ -1,0 +1,197 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test the UMC user creation, modification and deletion
+## bugs: [34791]
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+## tags: [apptest]
+## exposure: dangerous
+
+import sys
+sys.path.insert(0, '.')
+from TestUMCSystemModule import TestUMCSystem
+
+import univention.testing.utils as utils
+from univention.testing.strings import random_username
+
+
+class TestUMCUserCreation(TestUMCSystem):
+
+    def __init__(self):
+        """Test Class constructor"""
+        super(TestUMCUserCreation, self).__init__()
+        self.ldap_base = None
+
+    def get_user_by_uid(self, uid):
+        """
+        Returns the 'uid' user data obtained by 'udm/get' UMC request.
+        """
+        options = ["uid=" + uid + ",cn=users," + self.ldap_base]
+        try:
+            request_result = self.Connection.request('udm/get', options,
+                                                     'users/user')
+            if not request_result:
+                utils.fail("Request 'udm/get' with options '%s' failed, "
+                           "hostname '%s'" % (options, self.hostname))
+            return request_result
+        except Exception as exc:
+            utils.fail("Exception while making 'udm/get' request: %s" %
+                       exc)
+
+    def modify_user_groups(self, username, groupnames):
+        """
+        Modifies a user group with provided 'username' and a list of
+        'groupnames' via UMC 'udm/put' request.
+        """
+        options = [{"object": {"groups": groupnames,
+                               "CtxBrokenSession": "0000",
+                               "CtxReconnectSession": "0000",
+                               "$dn$": "uid=" + username +
+                                       ",cn=users," + self.ldap_base},
+                               "options": {}}]
+        try:
+            request_result = self.Connection.request('udm/put', options,
+                                                     'users/user')
+            if not request_result:
+                utils.fail("Request 'udm/put' to change user '%s' groups "
+                           "with options '%s' failed, hostname %s"
+                           % (username, options, self.hostname))
+            if not request_result[0].get('success'):
+                utils.fail("Request 'udm/put' to change user '%s' groups "
+                           "with options '%s' failed, no success = True in "
+                           "response, hostname %s"
+                           % (username, options, self.hostname))
+        except Exception as exc:
+            utils.fail("Exception while making 'udm/put' request: %s" %
+                       exc)
+
+    def create_user(self, username, password, groupname,
+                    group_container="groups"):
+        """
+        Creates a test user by making a UMC-request 'udm/add'
+        with provided 'username', 'password' and the 'groupname'
+        as a primary group.
+        """
+        options = [{"object": {"disabled": "none",
+                               "CtxRASDialin": "E",
+                               "lastname": username,
+                               "password": password,
+                               "CtxShadow": "00000000",
+                               "overridePWHistory": False,
+                               "pwdChangeNextLogin": False,
+                               "primaryGroup": "cn=" + groupname +
+                                               ",cn=" + group_container +
+                                               "," + self.ldap_base,
+                               "CtxStartprogramClient": False,
+                               "username": username,
+                               "shell": "/bin/bash",
+                               "CtxBrokenSession": "0000",
+                               "locked": "none",
+                               "CtxReconnectSession": "0000",
+                               "CtxCfgClientPrinters": False,
+                               "homeSharePath": username,
+                               "unixhome": "/home/" + username,
+                               "overridePWLength": False,
+                               "CtxCfgDefaultClientPrinters": False,
+                               "displayName": username,
+                               "CtxCfgClientDrivers": False,
+                               "CtxCfgTSLogon": False,
+                               "$options$": {"samba": True,
+                                             "kerberos": True,
+                                             "person": True,
+                                             "posix": True,
+                                             "mail": True,
+                                             "pki": False,
+                                             "ldap_pwd": False}},
+                               "options": {"container": "cn=users,"
+                                                        + self.ldap_base,
+                                           "objectType": "users/user"}}]
+        try:
+            request_result = self.Connection.request('udm/add', options,
+                                                     'users/user')
+            if not request_result:
+                utils.fail("Request 'udm/add' user with options '%s' failed, "
+                           "hostname '%s'" % (options, self.hostname))
+            if not request_result[0].get('success'):
+                utils.fail("Request 'udm/add' user with options '%s' failed, "
+                           "no success = True in response, hostname '%s'"
+                           % (options, self.hostname))
+        except Exception as exc:
+            utils.fail("Exception while making 'udm/add' user request: %s" %
+                       exc)
+
+    def main(self):
+        """
+        Method to test UMC users creation, modification and deletion
+        """
+        self.get_ucr_credentials()
+        self.create_connection_authenticate()
+        self.ldap_base = self.UCR.get('ldap/base')
+
+        test_username = 'umc_test_user_' + random_username(6)
+        test_username_admin = test_username + '_admin'
+        test_password = 'univention'
+
+        try:
+            print("Creating a simple domain user with username '%s'"
+                  % test_username)
+            self.create_user(test_username, test_password, "Domain Users")
+            if not self.check_obj_exists(test_username, "users/user"):
+                utils.fail("Cannot query a simple test user '%s' that "
+                           "was just created" % test_username)
+
+            print("Creating an advanced user (Administrator) with username "
+                  "'%s'" % test_username_admin)
+            self.create_user(test_username_admin, test_password,
+                             "Administrators", "Builtin")
+            if not self.check_obj_exists(test_username_admin, "users/user"):
+                utils.fail("Cannot query an advanced test user '%s' that "
+                           "was just created" % test_username_admin)
+
+            print "Modifing simple user '%s' groups" % test_username
+            test_groupnames = ["cn=Domain Users,cn=groups,"
+                               + self.ldap_base,
+                               "cn=Printer-Admins,cn=groups,"
+                               + self.ldap_base]
+            self.modify_user_groups(test_username, test_groupnames)
+
+            print "Checking simple user '%s' groups" % test_username
+            user_groups = self.get_user_by_uid(test_username)[0].get('groups')
+            if not user_groups:
+                utils.fail("No groups or empty groups in response for user "
+                           "'%s'" % test_username)
+            if list(set(user_groups) - set(test_groupnames)):
+                utils.fail("The '%s' user is in the wrong group(s) '%s', "
+                           "while should be only in '%s'"
+                           % (test_username, user_groups, test_groupnames))
+
+            print "Modifing advanced user '%s' groups" % test_username_admin
+            test_groupnames = ["cn=Administrators,cn=Builtin,"
+                               + self.ldap_base,
+                               "cn=Printer-Admins,cn=groups,"
+                               + self.ldap_base]
+            self.modify_user_groups(test_username_admin, test_groupnames)
+
+            print "Checking advanced user '%s' groups" % test_username_admin
+            user_groups = self.get_user_by_uid(test_username_admin)[0].get(
+                                                                      'groups')
+            if not user_groups:
+                utils.fail("No groups or empty groups in response for user "
+                           "'%s'" % test_username_admin)
+            if list(set(user_groups) - set(test_groupnames)):
+                utils.fail("The '%s' user is in the wrong group(s) '%s', "
+                           "while should be only in '%s'"
+                           % (test_username_admin,
+                              user_groups,
+                              test_groupnames))
+        finally:
+            print "Removing created test users if any"
+            if self.check_obj_exists(test_username, "users/user"):
+                self.delete_obj(test_username, "users", "users/user")
+            if self.check_obj_exists(test_username_admin, "users/user"):
+                self.delete_obj(test_username_admin, "users", "users/user")
+
+
+if __name__ == '__main__':
+    TestUMC = TestUMCUserCreation()
+    sys.exit(TestUMC.main())
