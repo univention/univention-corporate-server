@@ -11,19 +11,15 @@ import sys
 sys.path.insert(0, '.')
 from TestUMCSystemModule import TestUMCSystem
 
-import simplejson as json
-from time import sleep
-
 import univention.testing.utils as utils
 from univention.testing.strings import random_username
-from univention.lib.umc_connection import UMCConnection
 
 
-class TestUMCUserModules(TestUMCSystem):
+class TestUMCGroupsCreation(TestUMCSystem):
 
     def __init__(self):
         """Test Class constructor"""
-        super(TestUMCUserModules, self).__init__()
+        super(TestUMCGroupsCreation, self).__init__()
         self.ldap_base = None
 
     def create_group(self, groupname, policynames={}):
@@ -151,5 +147,5 @@ class TestUMCUserModules(TestUMCSystem):
 
 
 if __name__ == '__main__':
-    TestUMC = TestUMCUserModules()
+    TestUMC = TestUMCGroupsCreation()
     sys.exit(TestUMC.main())
