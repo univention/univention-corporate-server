@@ -1,0 +1,10 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-1
+src: nfs-utils
+fix: 1:1.2.2-4.37.201405161429
+note:
+version: [1,2]
+desc: |
+  This update fixes a bug in the NFS utils package for users with many groups.
+bug: [34597]
