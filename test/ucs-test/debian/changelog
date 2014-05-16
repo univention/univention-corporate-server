@@ -1,3 +1,10 @@
+ucs-test (4.0.166-7) unstable; urgency=low
+
+  * /60_umc-system/24_umc-service-create-group:
+    test group creation, modification and deletion via UMC (Bug #34792)
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 16 May 2014 14:46:38 +0200
+
 ucs-test (4.0.166-6) unstable; urgency=low
 
   * /60_umc-system/23_umc-service-create-user:
