@@ -4,7 +4,6 @@
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
-## tags: [apptest]
 ## exposure: dangerous
 
 import sys

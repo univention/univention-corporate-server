@@ -1,7 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the UMC service module autostart behaviour
 ## bugs: [34506]
-## tags: [apptest]
 ## exposure: dangerous
 
 import sys

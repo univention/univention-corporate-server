@@ -1,7 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the output of the UMC service module
 ## bugs: [34445]
-## tags: [apptest]
 ## exposure: safe
 
 import sys

@@ -5,7 +5,6 @@
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave
 ##  - memberserver
-## tags: [apptest]
 ## exposure: dangerous
 
 import os

@@ -1,7 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the UMC modules access for restricted users
 ## bugs: [34621]
-## tags: [apptest]
 ## exposure: dangerous
 
 import sys

@@ -1,7 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the UMC backend process killing
 ## bugs: [34593]
-## tags: [apptest]
 ## exposure: dangerous
 
 import sys

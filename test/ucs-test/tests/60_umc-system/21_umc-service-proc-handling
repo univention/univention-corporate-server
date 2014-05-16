@@ -1,7 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the UMC service module process handling
 ## bugs: [34505]
-## tags: [apptest]
 ## exposure: dangerous
 
 import sys
