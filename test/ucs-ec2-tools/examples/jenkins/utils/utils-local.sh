@@ -30,12 +30,18 @@
 ucsschool-fetch-results () {
 	# ucsschool-fetch-results <IP-ADDRESS>
 	local ADDR="$1"
-	scp -i ~/ec2/keys/tech.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:ucs-test.log .
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:test-reports .
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/univention/management* .
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/univention/{join,setup,listener}.log" .
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/univention/connector* .
-	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/samba/* .
+	local TARGETDIR="$2"
+	if [ -n "$TARGETDIR" ] ; then
+		[ ! -d "$TARGETDIR" ] && mkdir -p "$TARGETDIR"
+	else
+		TARGETDIR="."
+	fi
+	scp -i ~/ec2/keys/tech.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:ucs-test.log "$TARGETDIR"
+	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:test-reports "$TARGETDIR"
+	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/univention/management* "$TARGETDIR"
+	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:"/var/log/univention/{join,setup,listener}.log" "$TARGETDIR"
+	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/univention/connector* "$TARGETDIR"
+	scp -i ~/ec2/keys/tech.pem -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR}:/var/log/samba/* "$TARGETDIR"
 }
 
 
