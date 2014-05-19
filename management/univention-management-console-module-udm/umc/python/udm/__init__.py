@@ -64,6 +64,7 @@ from univention.management.console.protocol.definitions import MODULE_ERR_COMMAN
 
 from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, set_credentials, container_modules, info_syntax_choices, search_syntax_choices_by_key
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
+from univention.admin.uldap import explodeDn
 
 _ = Translation( 'univention-management-console-module-udm' ).translate
 
@@ -347,7 +348,8 @@ class Instance( Base, ProgressMixin ):
 										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
-	def put( self, request ):
+	@LDAP_Connection
+	def put( self, request, ldap_connection = None, ldap_position = None ):
 		"""Modifies the given list of LDAP objects.
 
 		requests.options = [ { 'options' : {}, 'object' : {} }, ... ]
@@ -369,15 +371,21 @@ class Instance( Base, ProgressMixin ):
 				ldap_dn = properties[ '$dn$' ]
 				module = get_module( request.flavor, ldap_dn )
 				if module is None:
-					raise UMC_OptionTypeError( _( 'Could not find a matching UDM module for the LDAP object %s' ) % ldap_dn )
-				MODULE.info( 'Modifying LDAP object %s' % ldap_dn )
-				if '$labelObjectType$' in properties:
-					del properties[ '$labelObjectType$' ]
-				try:
-					module.modify( properties )
-					result.append( { '$dn$' : ldap_dn, 'success' : True } )
-				except UDM_Error, e:
-					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( e ) } )
+					dn_part = explodeDn( ldap_dn )[ 0 ]
+					control_dn_list = ldap_connection.searchDn(dn_part)
+					if ldap_dn in control_dn_list:
+						result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( _('LDAP object exists, but cannot be opened: %s' ) % ldap_dn ) })
+					else:
+						result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( _('Could not find LDAP object: %s' ) % ldap_dn ) })
+				else:
+					MODULE.info( 'Modifying LDAP object %s' % ldap_dn )
+					if '$labelObjectType$' in properties:
+						del properties[ '$labelObjectType$' ]
+					try:
+						module.modify( properties )
+						result.append( { '$dn$' : ldap_dn, 'success' : True } )
+					except UDM_Error, e:
+						result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( e ) } )
 
 			return result
 

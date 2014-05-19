@@ -1,3 +1,11 @@
+univention-management-console-module-udm (4.0.97-22) unstable; urgency=low
+
+  * Added check for existence of dn in __init__.py/put(), also added error msg
+  	if dn is missing
+    (Bug #34246)
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 19 May 2014 13:33:25 +0200
+
 univention-management-console-module-udm (4.0.97-21) unstable; urgency=low
 
   * Bug #34038: Changed wording for LDAP object type widget
