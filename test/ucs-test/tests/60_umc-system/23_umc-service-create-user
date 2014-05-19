@@ -142,7 +142,7 @@ class TestUMCUserCreation(TestUMCSystem):
             print("Creating an advanced user (Administrator) with username "
                   "'%s'" % test_username_admin)
             self.create_user(test_username_admin, test_password,
-                             "Administrators", "Builtin")
+                             "Domain Admins")
             if not self.check_obj_exists(test_username_admin, "users/user"):
                 utils.fail("Cannot query an advanced test user '%s' that "
                            "was just created" % test_username_admin)
@@ -165,7 +165,7 @@ class TestUMCUserCreation(TestUMCSystem):
                            % (test_username, user_groups, test_groupnames))
 
             print "Modifing advanced user '%s' groups" % test_username_admin
-            test_groupnames = ["cn=Administrators,cn=Builtin,"
+            test_groupnames = ["cn=Domain Admins,cn=groups,"
                                + self.ldap_base,
                                "cn=Printer-Admins,cn=groups,"
                                + self.ldap_base]
