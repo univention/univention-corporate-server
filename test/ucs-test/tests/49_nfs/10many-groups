@@ -1,0 +1,108 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check user with many groups using /bin/ps and NFS
+## exposure: dangerous
+## bug: [34596,34597]
+set -e -u
+
+# add enough groups to overflow the buffer ~770 + G * strlen(" 50xx") >> 1024
+# used by ps to read /proc/*/status.
+GCOUNT=200
+USER="testuser$$"
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+main () {
+	check_not_exists
+	prepare_container
+	trap on_exit EXIT
+	create_groups_and_user
+	wait_setup_complete
+	test_ps
+	if check_nfs
+	then
+		test_nfs
+	fi
+	return $RETVAL
+}
+
+check_not_exists () {
+	getent passwd "$USER" && fail_fast 1 "User '$USER' already exists"
+	home="/home/$USER"
+	[ -d "$home" ] && fail_fast 1 "Directory '$home' already exists"
+	return 0
+}
+
+prepare_container () {
+	udm-test container/cn create --set name="test$$" ||
+		fail_fast 1 "Container already exists"
+	base="cn=test$$,$(ucr get ldap/base)"
+}
+
+on_exit () {
+	[ -t 0 ] && read -p "Hit key to continue with cleanup"
+	mountpoint -q "${home}/in" && umount -f "${home}/in"
+	exportfs -u -v localhost:"${home}/out" && :
+	udm container/cn remove --recursive --dn "$base" && :
+	rm -rf "$home" && :
+}
+
+create_groups_and_user () {
+	declare -a group_dns=()
+	for ((g=0; g<$GCOUNT; g++))
+	do
+		gname="testgroup${g}"
+		udm-test groups/group create --position "$base" --set name="$gname" ||
+			fail_fast 1 "Group already exists"
+		group_dns+=(--set groups="cn=$gname,$base")
+	done
+
+	udm-test users/user create \
+		--position "$base" \
+		--set username="$USER" \
+		--set lastname="$USER" \
+		--set password="univention" \
+		--set unixhome="$home" \
+		"${group_dns[@]}" ||
+		fail_fast 1 "User already exists"
+}
+
+wait_setup_complete () {
+	wait_for_replication_and_postrun
+	info "wait for '/usr/lib/univention-directory-listener/system/nss.py' to call 'ldap-group-to-file'"
+	for ((t=60;t>=0;t--))
+	do
+		g="$(id -G "$USER" | wc -w)"
+		printf '[%02d] %d < %d\n' "$t" "$g" "$GCOUNT"
+		[ "$g" -ge "$GCOUNT" ] && return
+		sleep 1
+	done
+	fail_test 1 "user '$USER' is missing its groups"
+}
+
+test_ps () {
+	section "testing procps..."
+	su -c 'cat /proc/self/status;timeout 5s /bin/ps aux' - "$USER" ||
+		fail_test $? "/bin/ps exited with rv=$? (124=TIMEOUT 128+15=SIGSEGV)"
+}
+
+check_nfs () {
+	set -e
+	checkpkg nfs-common
+	checkpkg nfs-kernel-server
+	# restart mountd since the error message is only printed once
+	/etc/init.d/nfs-kernel-server restart
+	/etc/init.d/nfs-kernel-server status
+}
+
+test_nfs () {
+	section "Testing NFS..."
+	pid=$(pidof rpc.mountd)
+	install -d -o "$USER" -g "$gname" "${home}/out" "${home}/in"
+	exportfs -i -v -o sync,ro,root_squash,wdelay localhost:"${home}/out"
+	mount -t nfs localhost:"${home}/out" "${home}/in"
+	timeout 5s su -c "cd '${home}/in'&&ls -al" &&
+		! grep "mountd\[${pid}\]: qword_eol: fflush failed: errno 22" /var/log/daemon.log ||
+		fail_test $? "cd NFS exited with rv=$? (124=TIMEOUT 128+15=SIGSEGV)"
+}
+
+main "$@"

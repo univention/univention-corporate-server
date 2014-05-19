@@ -1,3 +1,9 @@
+ucs-test (4.0.166-9) unstable; urgency=low
+
+  * 49nfs/10many-groups: check user with many groups (Bug #34596, Bug #34597)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 19 May 2014 14:43:13 +0200
+
 ucs-test (4.0.166-8) unstable; urgency=low
 
   * 52_s4connector/s4connector.py: import sys (Bug #31324)
