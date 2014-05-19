@@ -144,7 +144,7 @@ class VM:
 		self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 		start = now = time.time()
 		# TODO: make the timeout configurable
-		timeout = 1200
+		timeout = 3600
 		while now - start < timeout:
 			try:
 				self._connect_vm()
