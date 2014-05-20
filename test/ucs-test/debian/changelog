@@ -1,3 +1,12 @@
+ucs-test (4.0.166-11) unstable; urgency=low
+
+  * /60_umc-system/50_umc-service-quotas-management:
+    test quota management via UMC (Bug #34625)
+  * /60_umc-system/TestUMCSystemModule.py:
+    refactored query request methods
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 20 May 2014 17:00:46 +0200
+
 ucs-test (4.0.166-10) unstable; urgency=low
 
   * 49nfs/10many-groups: fix user with many groups (Bug #34596, Bug #34597)

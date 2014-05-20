@@ -50,29 +50,29 @@ class TestUMCSystem(object):
             utils.fail("Failed to authenticate, hostname '%s' : %s" %
                        (self.hostname, exc))
 
-    def make_top_query_request(self):
-        """Make a top/query request and return result"""
+    def make_query_request(self, prefix, options=None):
+        """
+        Makes a '/query' UMC request with a provided 'prefix' argument,
+        returns request result.
+        """
         try:
-            request_result = self.Connection.request('top/query')
+            request_result = self.Connection.request(prefix + '/query',
+                                                     options)
             if not request_result:
-                utils.fail("Request 'top/query' failed, hostname %s" %
-                           self.hostname)
+                utils.fail("Request '%s/query' failed, no result, hostname %s"
+                           % (prefix, self.hostname))
+            return request_result
         except Exception as exc:
-            utils.fail("Exception while making 'top/query' request: %s" %
-                       exc)
-        return request_result
+            utils.fail("Exception while making '%s/query' request: %s"
+                       % (prefix, exc))
+
+    def make_top_query_request(self):
+        """Makes a 'top/query' UMC request and returns result"""
+        return self.make_query_request('top')
 
     def make_service_query_request(self):
-        """Make a service/query request and return result"""
-        try:
-            request_result = self.Connection.request('services/query')
-            if not request_result:
-                utils.fail("Request 'services/query' failed, hostname %s" %
-                           self.hostname)
-        except Exception as exc:
-            utils.fail("Exception while making 'services/query' request: %s" %
-                       exc)
-        return request_result
+        """Makes a 'services/query' UMC request and returns result"""
+        return self.make_query_request('services')
 
     def check_service_presence(self, request_result, service_name):
         """
