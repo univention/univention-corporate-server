@@ -100,7 +100,7 @@ test_nfs () {
 	install -d -o "$USER" -g "$gname" "${home}/out" "${home}/in"
 	exportfs -i -v -o sync,ro,root_squash,wdelay localhost:"${home}/out"
 	mount -t nfs localhost:"${home}/out" "${home}/in"
-	timeout 5s su -c "cd '${home}/in'&&ls -al" &&
+	timeout 5s su -c "cd '${home}/in'&&ls -al" - "$USER" &&
 		! grep "mountd\[${pid}\]: qword_eol: fflush failed: errno 22" /var/log/daemon.log ||
 		fail_test $? "cd NFS exited with rv=$? (124=TIMEOUT 128+15=SIGSEGV)"
 }
