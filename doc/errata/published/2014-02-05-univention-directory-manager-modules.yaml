@@ -3,10 +3,11 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-directory-manager-modules
 fix: 9.0.75-16.1170.201402051504
-note:
 version: [0]
 desc: |
   This update fixes several issues:
-  * Display a human-readable error message if policy names contain invalid characters.
-  * Fix the translation of some error messages if Univention Corporate Client was installed.
+  * Display a human-readable error message if policy names contain invalid
+    characters.
+  * Fix the translation of some error messages if Univention Corporate Client was
+    installed.
 bug: [33850]

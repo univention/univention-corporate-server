@@ -3,12 +3,13 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: hplip
 fix: 3.10.6-2.21.201401171710
-note:
 version: [0]
 desc: |
- Multiple security issues have been discovered in the HP Linux Printing and Imaging System (HPLIP)
+ Multiple security issues have been discovered in the HP Linux Printing and
+ Imaging System (HPLIP)
  * hplip handles temporary files insecurely in several code paths (CVE-2013-0200)
- * Insecure use of DBUS interface allows the bypass of Policykit restrictions (CVE-2013-4325)
+ * Insecure use of DBUS interface allows the bypass of Policykit restrictions
+   (CVE-2013-4325)
  * Insecure temporary file handling in pkit.py (CVE-2013-6402)
 cve:
  - CVE-2013-0200

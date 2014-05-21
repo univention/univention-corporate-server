@@ -3,7 +3,6 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-directory-listener
 fix: 8.0.0-5.210.201312191304
-note:
 version: [0]
 desc: |
   This update improves the reliability of the Univention Directory Listener

@@ -3,11 +3,10 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-directory-manager-modules
 fix: 9.0.75-28.1190.201404152050
-note:
 version: [0]
 desc: |
-  * The users/user udm module and the license check have been extended
+  * The users/user UDM module and the license check have been extended
     to ignore certain LDAP objects with the attribute
-    univentionObjectFlag:functional
-  * Python UDM extensions are now installed with update-python-support
+    univentionObjectFlag:functional.
+  * Python UDM extensions are now installed with update-python-support.
 bug: [34513,34559]

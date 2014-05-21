@@ -3,7 +3,6 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-samba4
 fix: 3.0.39-16.571.201401301523
-note:
 version: [0]
 desc: |
   * The script create_spn_account.sh failed in case the generated random password

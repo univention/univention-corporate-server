@@ -3,7 +3,6 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: xen-4.1
 fix: 4.1.3-14.39.201401192234
-note:
 version: [0]
 desc: |
  The update fixes the following security vulnerabilities:
@@ -11,9 +10,11 @@ desc: |
  * Lock order reversal between page_alloc_lock and mm_rwlock (CVE-2013-4553)
  * Information leaks through I/O instruction emulation (CVE-2013-4355)
  * Information leak through fbld instruction emulation (CVE-2013-4361)
- * Lock order reversal between page allocation and grant table locks (CVE-2013-4494)
+ * Lock order reversal between page allocation and grant table locks
+   (CVE-2013-4494)
 
- It also fixes a race condition, where the first domain sometimes failed to start.
+ It also fixes a race condition, where the first domain sometimes failed to
+ start.
 cve:
  - CVE-2013-1442
  - CVE-2013-4553

@@ -3,11 +3,10 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-management-console-module-appcenter
 fix: 3.0.50-21.233.201402111512
-note:
 version: [0]
 desc: |
   This errata update fixes several issues:
-  * Support to declare "end of life" for an application: An applicated marked as 
+  * Support to declare "end of life" for an application: An application marked as
     such is hidden for new users. For those who have this application installed
     uninstallation is suggested.
   * Applications extending the LDAP schema added repositories on DC master and

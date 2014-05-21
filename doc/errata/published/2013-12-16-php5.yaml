@@ -4,11 +4,11 @@ scope: ucs_3.2-0-errata3.2-0
 src: php5
 fix: 5.3.3-7.190.201312160852
 version: [0]
-note: This update fixes these vulnerabilities.
 desc: |
  Two security issues have been discovered in the PHP scripting language:
  * Denial of service when processing DateInterval objects (CVE-2013-6712)
  * Memory corruption when parsing X509 certificates
+note: This update fixes these vulnerabilities.
 cve:
  - CVE-2013-6712
  - CVE-2013-6420

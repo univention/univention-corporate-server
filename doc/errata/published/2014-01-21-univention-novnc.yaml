@@ -3,10 +3,9 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-novnc
 fix: 0.4+0+20131014+git142aa45-3.4.201401212016
-note:
 version: [0]
 desc: |
   The noVNC service (used to provide browser-based VNC access to virtual
-  machines in UVMM) is now served on TCP port 6080. This fixes HTTPS connection 
+  machines in UVMM) is now served on TCP port 6080. This fixes HTTPS connection
   problems with newer Firefox browsers.
 bug: [33587]

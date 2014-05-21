@@ -3,7 +3,6 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-samba4
 fix: 3.0.39-15.570.201401131822
-note:
 version: [0]
 desc: |
   Joining an additional Samba domain controller could overwrite changes made to

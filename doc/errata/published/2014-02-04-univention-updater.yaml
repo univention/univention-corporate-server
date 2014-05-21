@@ -3,12 +3,11 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-updater
 fix: 9.0.38-12.1248.201402111523
-note:
 version: [0]
 desc: |
  This update fixes the following issues:
- * The Cron-job for updating UCS releases did not evaluate whether the release policy
-   was activated. This has been fixed.
- * The Univention updater is now called in non-interactive-mode when invoked from the 
-   maintenance Cron job and init script.
+ * The Cron-job for updating UCS releases did not evaluate whether the release
+   policy was activated. This has been fixed.
+ * The Univention updater is now called in non-interactive-mode when invoked
+   from the maintenance Cron job and init script.
 bug: [33189,33194]

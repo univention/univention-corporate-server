@@ -3,10 +3,9 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: libxfont
 fix: 1:1.4.1-4.33.201401171710
-note:
 version: [0]
 desc: |
- A buffer overflow has been discovered in the X11 font rasterisation library 
+ A buffer overflow has been discovered in the X11 font rasterisation library
  (libxfont), which could result in privilege escalation.
 cve:
  - CVE-2013-6462

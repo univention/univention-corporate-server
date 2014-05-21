@@ -3,16 +3,15 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-management-console-module-appcenter
 fix: 3.0.50-16.229.201312021426
-note:
 version: [0]
 desc: |
   This errata update fixes several issues:
-  * Added a function to query applications based on their component_id
+  * Added a function to query applications based on their component_id.
   * Fixed sending notifications to Univention although the app did not require
-    it
+    it.
   * When updating from UCS 3.1, apps from UCS 3.1 were registered by mistake.
-    Fixed that
-  * The joinscript now fails when registering the apps did not succeed
+    Fixed that.
+  * The joinscript now fails when registering the apps did not succeed.
   * Show an error message when application registration fails after
-    installation. Register applications upon each opening of the module
+    installation. Register applications upon each opening of the module.
 bug: [33484, 33362, 33535, 33341, 33573]

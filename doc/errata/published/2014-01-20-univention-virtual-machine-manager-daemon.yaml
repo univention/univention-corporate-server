@@ -3,7 +3,6 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-virtual-machine-manager-daemon
 fix: 3.0.17-3.482.201401221005
-note:
 version: [0]
 desc: |
   This erratum update fixes several issues:
