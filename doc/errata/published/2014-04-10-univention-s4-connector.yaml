@@ -3,15 +3,14 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-s4-connector
 fix:  8.0.33-46.472.201405062002
-note: 
 version: [1]
 desc: |
   This update fixes the following issues:
-  * The S4 connector Python modules are now only built for Python 2.6
-  * The pcpatch user is no longer ignored by default
-  * The start of multiple S4 connector instances is now prevented
+  * The S4 connector Python modules are now only built for Python 2.6.
+  * The pcpatch user is no longer ignored by default.
+  * The start of multiple S4 connector instances is now prevented.
   * When creating a user in UCS a stronger password is used which
-    fulfill the password complexity settings
+    fulfill the password complexity settings.
   * The UCR variable connector/s4/listener/disabled has been added.
     If it is set to true the listener does not write any changes.
     This is helpful on a domain controller backup. The variable is

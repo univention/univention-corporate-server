@@ -3,15 +3,14 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-mail-postfix
 fix: 8.0.11-3.213.201404161145
-note:
 version: [1]
 desc: |
   This update fixes the following issues:
   * The Postfix policy service listfilter (to restrict e-mail delivery to
     groups and lists) is now executed as the user listfilter instead of the user
-    cyrus to allow this feature also in environments without the 
-    component univention-mail-cyrus.
-  * The new UCR variables 
+    cyrus to allow this feature also in environments without the component
+    univention-mail-cyrus.
+  * The new UCR variables
      - mail/postfix/ldaptable/starttls (yes)
      - mail/postfix/ldaptable/tlsrequirecert (yes)
      - mail/postfix/ldaptable/tlscacertfile (/etc/univention/ssl/ucsCA/CAcert.pem)

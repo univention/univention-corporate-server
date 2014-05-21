@@ -3,7 +3,6 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-radius
 fix: 1.0.0-5.5.201404251249
-note:
 version: [0, 1]
 desc: |
   This update adds the package univention-radius to UCS.

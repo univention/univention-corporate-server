@@ -3,7 +3,6 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: samba
 fix: 2:4.1.0-1.641.201404031605
-note: 
 version: [1]
 desc: |
  This updates fixes the following issues in the samba package:

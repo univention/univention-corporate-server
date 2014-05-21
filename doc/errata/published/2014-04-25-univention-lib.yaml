@@ -3,7 +3,6 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-lib
 fix: 3.0.26-19.222.201404251746
-note:
 version: [1]
 desc: |
  This update fixes shell-univention-lib to call UCR with an absolute

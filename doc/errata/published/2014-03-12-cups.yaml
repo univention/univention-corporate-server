@@ -5,7 +5,7 @@ scope: ucs_3.2-0-errata3.2-1
 src: cups
 fix: 1.4.4-7.71.201403120911
 desc: |
- Various buffer overflows and integer overflows in the pdftoopvp 
+ Various buffer overflows and integer overflows in the pdftoopvp
  printer filter in CUPS allow the execution of arbitrary code.
 note: This update fixes these vulnerabilities.
 cve:

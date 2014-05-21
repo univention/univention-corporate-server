@@ -3,7 +3,6 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-novnc
 fix: 0.4+0+20131014+git142aa45-4.5.201404111632
-note:
 version: [1]
 desc: |
   * Add HTML meta tags to forbid caching of vnc_auto.html. This

@@ -4,7 +4,6 @@ scope: ucs_3.2-0-errata3.2-1
 src: firefox-en
 fix: 1:24.4.0esr-6.34.201403191202
 version: [0, 1]
-note: This update fixes these vulnerabilities.
 desc: |
  This update consists of two updates for firefox-en and firefox-de.
  Several vulnerabilities have been fixed with the update to Firefox ESR 24.4:
@@ -15,7 +14,9 @@ desc: |
  * Memory corruption in PDF processing (CVE-2014-1509)
  * Privilege escalation in WebIDL (CVE-2014-1510, CVE-2014-1511)
  * Use-after-free in the garbage collector (CVE-2014-1512)
- * Out of bounds write in Javascript array handling (CVE-2014-1513, CVE-2014-1514)
+ * Out of bounds write in Javascript array handling (CVE-2014-1513,
+   CVE-2014-1514)
+note: This update fixes these vulnerabilities.
 cve:
  - CVE-2014-1493
  - CVE-2014-1497

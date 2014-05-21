@@ -6,10 +6,11 @@ src: openssh
 fix: 1:5.5p1-6.46.201404071521
 desc: |
  Two vulnerabilities were found in OpenSSH:
- * The AcceptEnv option was misparsed if it contained a wildcard (CVE-2014-2532)
- * OpenSSH offers a feature to retrieve SSH hostkeys from DNS called SSHFP (not enabled in 
-   UCS by default). If the clients rejected the host certificate of a SSHFP-enabled server,
-   then no SSHFP record was fetched from DNS (CVE-2014-2653)
+ * The AcceptEnv option was misparsed if it contained a wildcard (CVE-2014-2532).
+ * OpenSSH offers a feature to retrieve SSH hostkeys from DNS called SSHFP (not
+   enabled in UCS by default). If the clients rejected the host certificate of a
+   SSHFP-enabled server, then no SSHFP record was fetched from DNS
+   (CVE-2014-2653).
 note: This update fixes these vulnerabilities.
 cve:
  - CVE-2014-2532

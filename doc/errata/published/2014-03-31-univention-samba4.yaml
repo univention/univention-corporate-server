@@ -3,7 +3,6 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-samba4
 fix: 3.0.39-19.574.201404011357
-note: 
 version: [1]
 desc: |
   This update fixes the following issues:
@@ -13,5 +12,5 @@ desc: |
     usage in branch site configurations.
   * univention-samba4-backup has been added to backup the samba
     provision directory. This tool is periodically executed by
-    cron (configurable via the UCR variable samba4/backup/cron)
+    cron (configurable via the UCR variable samba4/backup/cron).
 bug: [34326,34113]

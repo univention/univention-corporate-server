@@ -3,7 +3,6 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-installer
 fix: 9.0.32-5.1110.201403140933
-note:
 version: [1]
 desc: |
   This update fixes the following issues:

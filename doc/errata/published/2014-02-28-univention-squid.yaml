@@ -3,14 +3,13 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-squid
 fix: 7.0.3-5.216.201404081211
-note:
 version: [1]
 desc: |
   This update fixes several issues:
   * "cache_dir null /tmp" is no longer set if caching is disabled.
   * The value of squid/redirect is now used as option for the
-    "url_rewrite_program" directive.  
+    "url_rewrite_program" directive.
     Special case: If squid/redirect = squidguard then
     "/usr/bin/squidGuard -c /etc/squid/squidGuard.conf" is used
-    for "url_rewrite_program".  
+    for "url_rewrite_program".
 bug: [33332,32429]
