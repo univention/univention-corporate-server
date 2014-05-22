@@ -417,7 +417,7 @@ int notifier_client_new(NotifierClient *client,
 	freeaddrinfo(result_addrinfo);
 
 	if (client->fd == -1) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to connect to notifier");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to connect to any notifier");
 		free(client->server);
 		client->server = NULL;
 		return 2;

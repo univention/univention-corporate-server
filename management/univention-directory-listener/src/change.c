@@ -574,7 +574,7 @@ static int change_update_cache(struct transaction *trans) {
 	switch (trans->cur.notify.command) {
 	case 'm': // modify
 		if (STRNEQ(trans->cur.notify.dn, trans->cur.ldap_dn))
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS,
 					"Delaying update for '%s' until moved to '%s'",
 					trans->cur.notify.dn, trans->cur.ldap_dn);
 		else
