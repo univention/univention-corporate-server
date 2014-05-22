@@ -1,0 +1,10 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: univention-directory-listener
+fix: 8.0.1-2.224.201405221446
+version: [1,2]
+desc: |
+  The Univention Directory Listener has been changes to ignore the case of the
+  distinguished names (DN) as it sometime differs between different clients.
+bug: [34835]
