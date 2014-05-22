@@ -4,6 +4,7 @@ BUG32685=true # move to selective
 BUG33594=true # modrdn delold=1
 BUG34355=false # modify+modrdn
 BUG34749=true # ldap escape
+BUG34835=false # notifier DN case
 
 LOG="/root/UserList.txt"
 LDIF="/var/lib/univention-directory-replication/failed.ldif"

@@ -1,0 +1,17 @@
+#!/bin/bash
+## desc: Create and delete
+## bugs: [34835]
+main () {
+	udm settings/packages create --position "cn=VISIBLE,$BASE" --set name=test
+	id=$(/usr/share/univention-directory-listener/get_notifier_id.py)
+	if $BUG34835
+	then
+		grep "id: $id\s\+dn: cn=test,cn=VISIBLE,$BASE\s\+cmd: a" /var/log/univention/listener.log
+	else
+		grep "id: $id\s\+dn: cn=test,cn=visible,$BASE\s\+cmd: a" /var/log/univention/listener.log
+	fi
+	udm settings/packages remove --dn "cn=test,cn=VISIBLE,$BASE"
+	id=$(/usr/share/univention-directory-listener/get_notifier_id.py)
+	grep "id: $id\s\+dn: cn=test,cn=visible,$BASE\s\+cmd: d" /var/log/univention/listener.log
+}
+. "${0%/*}/common.sh"

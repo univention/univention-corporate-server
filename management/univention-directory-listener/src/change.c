@@ -483,6 +483,16 @@ void change_free_transaction_op(struct transaction_op *op) {
 	memset(op, 0, sizeof(struct transaction_op));
 }
 
+static bool same_dn(char *left, char *right) {
+	/* BUG: A DN is a sequence of RDNs. An RDN is a sequence of Attribute-value
+	   pairs. Each attribute has its own schema definition with its own
+	   governing rules. Some attributes are case-sensitive, some are not. As
+	   such, a complete DN may have components that are case-sensitive as well
+	   as case-insensitive. */
+	// 2014-05-22 PMH: This should be unnecessary with r13111 to OpenLDAP/translog.
+	return 0 == strcasecmp(left, right);
+}
+
 static bool same_rdn(LDAPRDN left, LDAPRDN right) {
 	int i, j;
 
@@ -573,7 +583,7 @@ static int change_update_cache(struct transaction *trans) {
 
 	switch (trans->cur.notify.command) {
 	case 'm': // modify
-		if (STRNEQ(trans->cur.notify.dn, trans->cur.ldap_dn))
+		if (same_dn(trans->cur.notify.dn, trans->cur.ldap_dn))
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS,
 					"Delaying update for '%s' until moved to '%s'",
 					trans->cur.notify.dn, trans->cur.ldap_dn);
@@ -584,7 +594,7 @@ static int change_update_cache(struct transaction *trans) {
 		if (trans->prev.notify.command == 'r') { // move_to
 			rv = process_move(trans);
 		} else { // add
-			if (STRNEQ(trans->cur.notify.dn, trans->cur.ldap_dn))
+			if (same_dn(trans->cur.notify.dn, trans->cur.ldap_dn))
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
 						"Schizophrenia: a NEW object '%s' is added, which ALREADY is in our cache for '%s'?",
 						trans->cur.ldap_dn, trans->cur.notify.dn);
@@ -592,7 +602,7 @@ static int change_update_cache(struct transaction *trans) {
 		}
 		break;
 	case 'd': // delete
-		if (STRNEQ(trans->cur.notify.dn, trans->cur.ldap_dn))
+		if (same_dn(trans->cur.notify.dn, trans->cur.ldap_dn))
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
 					"Resurrection: DELETED object '%s' will re-appear at '%s'?",
 					trans->cur.notify.dn, trans->cur.ldap_dn);

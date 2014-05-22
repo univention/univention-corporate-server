@@ -1,3 +1,9 @@
+univention-directory-listener (8.0.0-11) unstable; urgency=low
+
+  * Ignore case in DN (Bug #34835)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 May 2014 14:14:46 +0200
+
 univention-directory-listener (8.0.0-10) unstable; urgency=low
 
   * Fix handling of binary attributes (Bug #34355)
