@@ -1,4 +1,4 @@
-univention-directory-listener (8.0.1-1) unstable; urgency=low
+univention-directory-listener (8.0.1-2) unstable; urgency=low
 
   * Ignore case in DN (Bug #34835)
 
