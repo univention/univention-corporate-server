@@ -1,3 +1,10 @@
+ucs-test (4.0.166-12) unstable; urgency=low
+
+  * rewrote /00_base/90change_user_pwd_via_udm test to use UMC commands
+    (Bug #13356)
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 22 May 2014 12:16:51 +0200
+
 ucs-test (4.0.166-11) unstable; urgency=low
 
   * /60_umc-system/50_umc-service-quotas-management:
