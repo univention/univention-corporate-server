@@ -2,16 +2,25 @@
 ## desc: Create and delete
 ## bugs: [34835]
 main () {
-	udm settings/packages create --position "cn=VISIBLE,$BASE" --set name=test
-	id=$(/usr/share/univention-directory-listener/get_notifier_id.py)
-	if $BUG34835
-	then
-		grep "id: $id\s\+dn: cn=test,cn=VISIBLE,$BASE\s\+cmd: a" /var/log/univention/listener.log
-	else
-		grep "id: $id\s\+dn: cn=test,cn=visible,$BASE\s\+cmd: a" /var/log/univention/listener.log
-	fi
-	udm settings/packages remove --dn "cn=test,cn=VISIBLE,$BASE"
-	id=$(/usr/share/univention-directory-listener/get_notifier_id.py)
-	grep "id: $id\s\+dn: cn=test,cn=visible,$BASE\s\+cmd: d" /var/log/univention/listener.log
+	tail_log /var/lib/univention-ldap/notify/transaction /var/lib/univention-ldap/listener/listener
+	udm settings/packages create --position "cn=VISIBLE,$BASE" --set name=test 4<&-
+	check_tx "cn=test,cn=VISIBLE" a
+	udm settings/packages remove --dn "cn=test,cn=VISIBLE,$BASE" 4<&-
+	check_tx "cn=test,cn=visible" d
+	exec 4<&-
+}
+tail_log () {
+	local filename
+	for filename in "$@"
+	do
+		[ -s "$filename" ] || continue
+		exec 4<"$filename"
+		cat <&4 >/dev/null
+	done
+}
+check_tx () {
+	local dn="${1},${BASE}" cmd="${2-[amdrn]}"
+	wait_listener
+	grep -x "[0-9]\+ ${dn} ${cmd}" <&4
 }
 . "${0%/*}/common.sh"

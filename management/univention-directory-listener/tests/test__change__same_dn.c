@@ -30,6 +30,9 @@ TEST(subset_rdn,
 TEST(swapped_rdn,
 	"cn=foo+cn=bar,dc=univention,dc=de",
 	"cn=bar+cn=foo,dc=univention,dc=de", BUG true);
+TEST(canonical,
+	"cn=foo,dc=univention,dc=de",
+	"commonName=foo,dc=univention,dc=de", BUG true);
 
 // <http://www.ietf.org/rfc/rfc2253.txt>
 

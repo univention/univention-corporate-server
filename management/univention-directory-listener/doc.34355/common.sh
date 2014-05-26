@@ -4,7 +4,6 @@ BUG32685=true # move to selective
 BUG33594=true # modrdn delold=1
 BUG34355=false # modify+modrdn
 BUG34749=true # ldap escape
-BUG34835=false # notifier DN case
 
 LOG="/root/UserList.txt"
 LDIF="/var/lib/univention-directory-replication/failed.ldif"
@@ -179,7 +178,7 @@ log_listener () {
 check () {
 	local dn="$(_py_repr "${1},${BASE}")" old="${2:-.*}" new="${3:-.*}" cmd="${4-[amdrn]}"
 	wait_listener
-	grep "^dn=${dn} old=${old} new=${new} command=${cmd}\$" "$LOG"
+	grep -x "dn=${dn} old=${old} new=${new} command=${cmd}" "$LOG"
 }
 _py_repr () {
 	python -c 'import sys,re;print re.sub(r"[][^\\.*$]", lambda m:"\\"+m.group(0), repr(sys.argv[1]))' "$1"
