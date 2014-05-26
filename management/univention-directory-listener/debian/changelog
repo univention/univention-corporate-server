@@ -1,3 +1,9 @@
+univention-directory-listener (8.0.1-5) unstable; urgency=low
+
+  * Change collision message to level INFO (Bug #34835)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 26 May 2014 15:38:51 +0200
+
 univention-directory-listener (8.0.1-4) unstable; urgency=low
 
   * Fix force delold on MOD-RDN (Bug #34802)

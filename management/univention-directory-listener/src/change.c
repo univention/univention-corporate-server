@@ -659,7 +659,7 @@ int change_update_dn(struct transaction *trans) {
 		break;
 	case 'r': // move_from ... move_to
 		if (rv == 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "move_to collision at '%s'", trans->cur.notify.dn);
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "move_to collision at '%s'", trans->cur.notify.dn);
 			cache_free_entry(NULL, &trans->cur.cache);
 		}
 		if (trans->cur.notify.command == 'a' && trans->prev.notify.id + 1 == trans->cur.notify.id) {
