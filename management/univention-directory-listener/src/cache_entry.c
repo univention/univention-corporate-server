@@ -581,50 +581,11 @@ static void _cache_entry_add_new_attribute(CacheEntry *entry, LDAPAVA *ava) {
 	entry->attributes[entry->attribute_count++] = attr;
 	entry->attributes[entry->attribute_count] = NULL;
 }
-static bool _cache_entry_check_value_exists(CacheEntryAttribute *attr, LDAPAVA *ava) {
-	int vi;
-	for (vi = 0; vi < attr->value_count; vi++) {
-		if (BERSTREQ(&ava->la_value, attr->values[vi], attr->length[vi] - 1))
-			return true;
-	}
-	return false;
-}
-static bool _cache_entry_find_value(CacheEntryAttribute *attr, int vi, struct berval **ldap_vals) {
-	struct berval **bv;
-
-	for (bv = ldap_vals; *bv; bv++) {
-		if (BERSTREQ(*bv, attr->values[vi], attr->length[vi] - 1))
-			return true;
-	}
-	return false;
-}
-static void _cache_entry_cleanup_old_values(CacheEntryAttribute *attr, struct transaction *trans) {
-	struct berval **ldap_vals = ldap_get_values_len(trans->lp->ld, trans->ldap, attr->name);
-	if (!ldap_vals) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d ldap_get_values_len() failed", __FILE__, __LINE__);
-		return;
-	}
-
-	int vi = 0;
-	while (vi < attr->value_count) {
-		if (_cache_entry_find_value(attr, vi, ldap_vals)) {
-			vi++;
-		} else {
-			attr->length[vi] = attr->length[attr->value_count];
-			attr->length[attr->value_count] = 0;
-
-			free(attr->values[vi]);
-			attr->values[vi] = attr->values[attr->value_count];
-			attr->values[attr->value_count] = NULL;
-
-			attr->value_count--;
-		}
-	}
-
-	ldap_value_free_len(ldap_vals);
-}
-static void _cache_entry_append_new_value(CacheEntryAttribute *attr, LDAPAVA *ava) {
+static void _cache_entry_force_value(CacheEntryAttribute *attr, LDAPAVA *ava) {
 	void *tmp;
+
+	attr->value_count = 0;
+
 	tmp = realloc(attr->values, (attr->value_count + 2) * sizeof(char *));
 	if (!tmp) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d realloc() failed", __FILE__, __LINE__);
@@ -655,10 +616,7 @@ static void _cache_entry_update_rdn1(struct transaction *trans, LDAPAVA *ava) {
 	if (attr == NULL)
 		_cache_entry_add_new_attribute(entry, ava);
 	else
-		if (!_cache_entry_check_value_exists(attr, ava)) {
-			_cache_entry_cleanup_old_values(attr, trans);
-			_cache_entry_append_new_value(attr, ava);
-		}
+		_cache_entry_force_value(attr, ava);
 }
 void cache_entry_update_rdn(struct transaction *trans, LDAPRDN new_dn) {
 	int rdn;
