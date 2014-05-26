@@ -2,11 +2,15 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: samba
-fix: 2:4.1.0-1.645.201405161008
+fix: 2:4.1.0-1.650.201405261236
 version: [1,2]
 desc: |
   This update fixes the following issues:
+  * Add a new parameter "acl xattr update mtime" for use in smb.conf share
+    sections. This will be used for the sysvol share to make rsync recognize
+    permission changes on directories.
   * An error in the internal conversation of the attribute 'userParameters'
     has been fixed. This error could lead to a blocked samba process.
+  * DNS updates of records with existing IPv6 addresses have been fixed.
   * Issues with the NetApp join have been fixed.
-bug: [34777,34886]
+bug: [34431,34777,34868,34886]
