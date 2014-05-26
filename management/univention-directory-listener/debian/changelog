@@ -1,6 +1,7 @@
 univention-directory-listener (8.0.1-4) unstable; urgency=low
 
   * Fix force delold on MOD-RDN (Bug #34802)
+  * Ignore case when comparing DNs for moves (Bug #34835)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 23 May 2014 14:34:11 +0200
 
