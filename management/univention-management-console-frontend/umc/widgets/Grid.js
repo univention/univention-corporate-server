@@ -96,6 +96,9 @@ define([
 		//		'isContextAction': specifies that the action requires a selection
 		//		'isStandardAction': specifies whether the action is displayed as own button or in the "more" menu
 		//		'isMultiAction': specifies whether this action can be executed for multiple items
+		//		'enablingMode': for multi actions; 'all' (default value) will require all selected items
+		//		                to be executable, 'some' only requires at least one item in the selection
+		//		                to be executable
 		//		TODO: explain also the 'adjust' value for columns
 		//		TODO: iconClass, label -> may be of type string or function
 		//		      they are called either per item (with a dict as parameter) or
@@ -455,7 +458,17 @@ define([
 					return {
 						onClick: lang.hitch(this, function() {
 							this._publishAction(prefix + iaction.name);
-							iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
+							var ids = this.getSelectedIDs();
+							var items = this.getSelectedItems();
+							if (iaction.enablingMode == 'some') {
+								items = array.filter(items, function(iitem) {
+									return typeof iaction.canExecute == "function" ? iaction.canExecute(iitem) : true;
+								});
+								ids = array.map(items, function(iitem) {
+									return this._dataStore.getValue(iitem, this.moduleStore.idProperty);
+								}, this);
+							}
+							iaction.callback(ids, items);
 						})
 					};
 				});
@@ -590,7 +603,11 @@ define([
 						enabled = item._action.isMultiAction;
 					}
 					// disable multiaction if one of the selected items can not be executed
-					enabled = enabled && array.every(this.getSelectedItems(), function(iitem) { return item._action.canExecute ? item._action.canExecute(iitem) : true; });
+					var enablingFunction = array.every;
+					if (item._action.enablingMode == 'some') {
+						enablingFunction = array.some;
+					}
+					enabled = enabled && enablingFunction(this.getSelectedItems(), function(iitem) { return item._action.canExecute ? item._action.canExecute(iitem) : true; });
 					item.set('disabled', !enabled);
 				}
 			}, this);

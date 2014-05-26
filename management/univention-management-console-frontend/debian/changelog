@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.152-26) unstable; urgency=low
+
+  * Bug #34965: allow execution of a multi action even though selected items
+    cannot be executed
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 26 May 2014 13:00:09 +0200
+
 univention-management-console-frontend (3.0.152-25) unstable; urgency=low
 
   * Bug #33990: update to Dojo 1.9.3; fix detection of IE11
