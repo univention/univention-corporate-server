@@ -5,6 +5,8 @@ src: samba
 fix: 2:4.1.0-1.645.201405161008
 version: [1,2]
 desc: |
-  An error in the internal conversation of the attribute 'userParameters'
-  has been fixed. This error could lead to a blocked samba process.
-bug: [34777]
+  This update fixes the following issues:
+  * An error in the internal conversation of the attribute 'userParameters'
+    has been fixed. This error could lead to a blocked samba process.
+  * Issues with the NetApp join have been fixed.
+bug: [34777,34886]
