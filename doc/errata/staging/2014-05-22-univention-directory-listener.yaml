@@ -2,9 +2,14 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-directory-listener
-fix: 8.0.1-2.224.201405221446
+fix: 8.0.1-5.229.201405261549
 version: [1,2]
 desc: |
-  The Univention Directory Listener has been changes to ignore the case of the
-  distinguished names (DN) as it sometime differs between different clients.
-bug: [34835]
+  This update fixes the following issues:
+  * The case of distinguished names (DN) sometime differs between different
+    clients and is now ignored.
+  * A rename of an LDAP object can lead to a single-values attribute becoming
+    multi-valued, which breaks multiple modules, especially the synchronization
+    to Samba. The listener now implements delold=1 and removes all old RDNs to
+    just keep the new RDN.
+bug: [34835, 34802]
