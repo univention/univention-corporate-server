@@ -1,0 +1,63 @@
+#!/usr/share/ucs-test/runner bash
+## desc: LDAP-replication to backup and slave with an object with upper case
+## tags:
+##  - replication
+## roles:
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+## packages:
+##  - univention-config
+##  - univention-directory-manager-tools
+##  - ldap-utils
+## bugs: [34835]
+## exposure: dangerous
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+RETVAL=0
+
+eval "$(ucr shell)"
+
+group="$(random_chars 20 "${_upperletters}")"
+description1="$(random_chars 20 "${_upperletters}")"
+description2="$(random_chars 20 "${_upperletters}")"
+
+position="cn=groups,$ldap_base"
+
+udm-test groups/group create --set name="$group" --position="$position"
+wait_for_replication
+
+
+set_description ()
+{
+	dn="$1"
+	description="$2"
+	udm-test groups/group modify --dn "$dn" --set description="$description"
+	wait_for_replication
+}
+
+verify_description ()
+{
+	dn="$1"
+	expected_description="$2"
+	description="$(univention-ldapsearch -b $dn description | sed -ne 's|description: ||p')"
+	if [ "$description" != "$expected_description" ]; then
+		univention-ldapsearch "cn=$group"
+		fail_test 1 "The attribute description has not been replicated"
+	fi
+}
+
+group_name_lowercase="$(echo $group | tr [:upper:] [:lower:])"
+group_dn="cn=$group_name_lowercase,$position"
+
+set_description "$group_dn" "$description1"
+verify_description "$group_dn" "$description1"
+
+set_description "$group_dn" "$description2"
+verify_description "$group_dn" "$description2"
+
+udm-test groups/group remove --dn "$group_dn"
+wait_for_replication
+
+exit $RETVAL
