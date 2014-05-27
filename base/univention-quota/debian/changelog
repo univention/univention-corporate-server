@@ -1,3 +1,9 @@
+univention-quota (8.0.6-2) unstable; urgency=low
+
+  * Bug #31277: enable possibility to configure the root (/) partition
+
+ -- Florian Best <best@univention.de>  Tue, 27 May 2014 15:46:02 +0200
+
 univention-quota (8.0.6-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)

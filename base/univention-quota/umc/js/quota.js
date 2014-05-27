@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -79,13 +79,13 @@ define([
 				name: 'activate',
 				label: _('Activate'),
 				isStandardAction: true,
-				canExecute: function(item) { return item.mountPoint != '/' && !item.inUse; },
+				canExecute: function(item) { return !item.inUse; },
 				callback: lang.hitch(this, 'activateQuota')
 			}, {
 				name: 'deactivate',
 				label: _('Deactivate'),
 				isStandardAction: true,
-				canExecute: function(item) { return item.mountPoint != '/' && item.inUse; },
+				canExecute: function(item) { return item.inUse; },
 				callback: lang.hitch(this, 'activateQuota')
 			}, {
 				name: 'edit',
@@ -93,13 +93,7 @@ define([
 				iconClass: 'umcIconEdit',
 				isStandardAction: true,
 				isMultiAction: false,
-				canExecute: function(item) {
-					if (item.inUse === true && item.mountPoint != '/') {
-						return true;
-					} else {
-						return false;
-					}
-				},
+				canExecute: function(item) { return item.inUse; },
 				callback: lang.hitch(this, function(partitionDevice) {
 					this.createPageContainer(partitionDevice[0]);
 				})
