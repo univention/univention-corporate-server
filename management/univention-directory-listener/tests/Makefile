@@ -29,19 +29,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 #
-TESTS += test__filter__cache_entry_ldap_filter_match
-TESTS += test__change__same_rdn
+SOURCES := $(wildcard test__*.c)
+TESTS := $(patsubst  %.c,%,$(SOURCES))
 
 .PHONY: tests
 tests: $(TESTS)
-	set -e ; for t in $^; do ./$$t ; done
+	run-parts --verbose --regex='test__[^.]*$$' .
 
-test__filter__cache_entry_ldap_filter_match: test__filter__cache_entry_ldap_filter_match.o ../src/filter.o
-test__change__same_rdn: test__change__same_rdn.o -lldap
+test__filter__cache_entry_ldap_filter_match: ../src/filter.o
 
 include ../src/Makefile
 
 CFLAGS := -g -Wall -Werror -D_FILE_OFFSET_BITS=64 $(DB_CFLAGS) -I../src
+LDFLAGS := -Wl,--unresolved-symbols=ignore-all -Wl,--as-needed
+LDLIBS := -lldap
 
 .PHONY: clean
 clean:

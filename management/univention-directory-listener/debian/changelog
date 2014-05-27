@@ -1,3 +1,9 @@
+univention-directory-listener (8.0.0-12) unstable; urgency=low
+
+  * Merge 8.0.1-12..15 from UCS-3.2-2 (Bug #34835, Bug #34802)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 26 May 2014 15:38:51 +0200
+
 univention-directory-listener (8.0.0-11) unstable; urgency=low
 
   * Ignore case while comparing DNs. Otherwise a modification is

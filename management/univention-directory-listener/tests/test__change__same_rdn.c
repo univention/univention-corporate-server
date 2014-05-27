@@ -1,30 +1,7 @@
 #include "test.h"
 #include <ldap.h>
-//#include "change.h"
 
-static bool
-same_rdn(LDAPRDN left, LDAPRDN right)
-{
-	int i, j;
-
-	for (i = 0; left[i]; i++) {
-		for (j = 0; right[j]; j++) {
-			if (left[i]->la_attr.bv_len != right[j]->la_attr.bv_len)
-				continue; // inner
-			if (left[i]->la_value.bv_len != right[j]->la_value.bv_len)
-				continue; // inner
-			if (memcmp(left[i]->la_attr.bv_val, right[j]->la_attr.bv_val, left[i]->la_attr.bv_len) == 0 &&
-			    memcmp(left[i]->la_value.bv_val, right[j]->la_value.bv_val, left[i]->la_value.bv_len) == 0)
-				break; // to outer
-		}
-		if (!right[j])
-			return false;
-	}
-
-	for (j = 0; right[j]; j++)
-		;
-	return i == j;
-}
+#include "../src/change.c"
 
 static inline bool _test(const char *left, const char *right, bool expected) {
 	bool rv;

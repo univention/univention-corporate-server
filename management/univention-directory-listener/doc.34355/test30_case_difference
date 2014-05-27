@@ -1,0 +1,26 @@
+#!/bin/bash
+## desc: Create and delete
+## bugs: [34835]
+main () {
+	tail_log /var/lib/univention-ldap/notify/transaction /var/lib/univention-ldap/listener/listener
+	udm settings/packages create --position "cn=VISIBLE,$BASE" --set name=test 4<&-
+	check_tx "cn=test,cn=VISIBLE" a
+	udm settings/packages remove --dn "cn=test,cn=VISIBLE,$BASE" 4<&-
+	check_tx "cn=test,cn=visible" d
+	exec 4<&-
+}
+tail_log () {
+	local filename
+	for filename in "$@"
+	do
+		[ -s "$filename" ] || continue
+		exec 4<"$filename"
+		cat <&4 >/dev/null
+	done
+}
+check_tx () {
+	local dn="${1},${BASE}" cmd="${2-[amdrn]}"
+	wait_listener
+	grep -x "[0-9]\+ ${dn} ${cmd}" <&4
+}
+. "${0%/*}/common.sh"

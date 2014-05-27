@@ -312,8 +312,10 @@ static int do_connection(univention_ldap_parameters_t *lp)
 		.tv_usec = 0,
 	};
 
-	if (univention_ldap_open(lp) != LDAP_SUCCESS)
+	if (univention_ldap_open(lp) != LDAP_SUCCESS) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to LDAP server %s:%d", lp->host, lp->port);
 		goto fail;
+	}
 	if (notifier_client_new(NULL, lp->host, 1) != 0)
 		goto fail;
 
@@ -524,15 +526,14 @@ int main(int argc, char* argv[])
 #endif
 
 	while (do_connection(lp) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to ldap server %s:%d", lp->host, lp->port);
 		if (suspend_connect()) {
 			if (initialize_only) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-					"can not connect to any ldap server, exit");
+					"can not connect any server, exit");
 				exit(1);
 			}
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
-				"can not connect to any ldap server, retrying in 30 seconds");
+				"can not connect any server, retrying in 30 seconds");
 			sleep(30);
 		}
 

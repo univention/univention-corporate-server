@@ -483,6 +483,16 @@ void change_free_transaction_op(struct transaction_op *op) {
 	memset(op, 0, sizeof(struct transaction_op));
 }
 
+static bool same_dn(char *left, char *right) {
+	/* BUG: A DN is a sequence of RDNs. An RDN is a sequence of Attribute-value
+	   pairs. Each attribute has its own schema definition with its own
+	   governing rules. Some attributes are case-sensitive, some are not. As
+	   such, a complete DN may have components that are case-sensitive as well
+	   as case-insensitive. */
+	// 2014-05-22 PMH: This should be unnecessary with r13111 to OpenLDAP/translog.
+	return 0 == strcasecmp(left, right);
+}
+
 static bool same_rdn(LDAPRDN left, LDAPRDN right) {
 	int i, j;
 
@@ -509,6 +519,8 @@ static int process_move(struct transaction *trans) {
 	LDAPDN old_dn = NULL, new_dn = NULL;
 	CacheEntry dummy = {};
 	int rv;
+	bool final = same_dn(trans->cur.notify.dn, trans->cur.ldap_dn);
+	char *current_dn = final ? trans->cur.ldap_dn : trans->cur.notify.dn;
 
 	// 1. remove old cache entry
 	/* run handlers_delete and remove the entry from cache: Bug #26069, Bug #20605, Bug #34355 */
@@ -518,31 +530,30 @@ static int process_move(struct transaction *trans) {
 	rv = ldap_str2dn(trans->prev.notify.dn, &old_dn, 0);
 	if (rv != LDAP_SUCCESS || !old_dn)
 		goto out;
-	rv = ldap_str2dn(trans->cur.notify.dn, &new_dn, 0);
+	rv = ldap_str2dn(current_dn, &new_dn, 0);
 	if (rv != LDAP_SUCCESS || !new_dn)
 		goto out;
 	if (!same_rdn(old_dn[0], new_dn[0]))
 		cache_entry_update_rdn(trans, new_dn[0]);
 
 	// 3. Update entryDN
-	cache_entry_set1(&trans->cur.cache, "entryDN", trans->cur.notify.dn);
+	cache_entry_set1(&trans->cur.cache, "entryDN", current_dn);
 
 	// 4. Call handlers for move
 	signals_block();
 	rv = handlers_delete(trans->prev.notify.dn, &trans->prev.cache, 'r');
-	rv = handlers_update(trans->cur.notify.dn, &trans->cur.cache, &dummy, 'a', NULL);
+	rv = handlers_update(current_dn, &trans->cur.cache, &dummy, 'a', NULL);
 	signals_unblock();
 
 	// 5. Store cache entry at new location
-	if ((rv = cache_update_entry_lower(trans->cur.notify.id, trans->cur.notify.dn, &trans->cur.cache)) != 0) {
+	if ((rv = cache_update_entry_lower(trans->cur.notify.id, current_dn, &trans->cur.cache)) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
 	}
 
 	// 6. Check for final destination
-	if (STREQ(trans->cur.notify.dn, trans->cur.ldap_dn)) {
+	if (final) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
-				"Object finally moved to '%s'",
-				trans->cur.ldap_dn);
+				"Object finally moved to '%s'", current_dn);
 		rv = change_update_entry(trans->lp, trans->cur.notify.id, trans->ldap, 'm');
 	}
 
@@ -573,8 +584,8 @@ static int change_update_cache(struct transaction *trans) {
 
 	switch (trans->cur.notify.command) {
 	case 'm': // modify
-		if (strcasecmp(trans->cur.notify.dn, trans->cur.ldap_dn))
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL,
+		if (!same_dn(trans->cur.notify.dn, trans->cur.ldap_dn))
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS,
 					"Delaying update for '%s' until moved to '%s'",
 					trans->cur.notify.dn, trans->cur.ldap_dn);
 		else
@@ -584,7 +595,7 @@ static int change_update_cache(struct transaction *trans) {
 		if (trans->prev.notify.command == 'r') { // move_to
 			rv = process_move(trans);
 		} else { // add
-			if (strcasecmp(trans->cur.notify.dn, trans->cur.ldap_dn))
+			if (!same_dn(trans->cur.notify.dn, trans->cur.ldap_dn))
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
 						"Schizophrenia: a NEW object '%s' is added, which ALREADY is in our cache for '%s'?",
 						trans->cur.ldap_dn, trans->cur.notify.dn);
@@ -592,7 +603,7 @@ static int change_update_cache(struct transaction *trans) {
 		}
 		break;
 	case 'd': // delete
-		if (strcasecmp(trans->cur.notify.dn, trans->cur.ldap_dn))
+		if (!same_dn(trans->cur.notify.dn, trans->cur.ldap_dn))
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
 					"Resurrection: DELETED object '%s' will re-appear at '%s'?",
 					trans->cur.notify.dn, trans->cur.ldap_dn);
@@ -648,7 +659,7 @@ int change_update_dn(struct transaction *trans) {
 		break;
 	case 'r': // move_from ... move_to
 		if (rv == 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "move_to collision at '%s'", trans->cur.notify.dn);
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "move_to collision at '%s'", trans->cur.notify.dn);
 			cache_free_entry(NULL, &trans->cur.cache);
 		}
 		if (trans->cur.notify.command == 'a' && trans->prev.notify.id + 1 == trans->cur.notify.id) {
