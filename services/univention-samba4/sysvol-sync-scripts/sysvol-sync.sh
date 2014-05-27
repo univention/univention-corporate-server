@@ -61,7 +61,7 @@ fi
 if [ "$1" = '--overwrite-local' ]; then
 	rsync_options=("-aAX")
 else
-	rsync_options=("-auAX")
+	rsync_options=("-auAX" "--dirs-update")
 fi
 
 ## merge updates pushed to us by other s4DCs

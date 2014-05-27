@@ -41,6 +41,7 @@ Package: univention-samba4-sysvol-sync
 Architecture: all
 Depends: ${misc:Depends},
  univention-config-registry,
+ rsync (>=3.0.7-2)
 Breaks: univention-samba4 ( << 1.0.139-2)
 Description: UCS - Samba4 sysvol synchronization
  This package contains the scripts and configuration
