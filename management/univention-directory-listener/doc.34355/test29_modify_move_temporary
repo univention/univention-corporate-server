@@ -1,0 +1,34 @@
+#!/bin/bash
+## desc: Create, move and back via temporary folder
+## bugs: [34833]
+main () {
+	udm settings/packages create --position "cn=visible,$BASE" --set name=test
+	a="$(uuid "cn=test,cn=visible,$BASE")"
+
+	listener stop
+	udm container/cn create --position "cn=visible,$BASE" --set name=temporary
+	t="cn=temporary,cn=visible,$BASE"
+	udm settings/packages move --dn "cn=test,cn=visible,$BASE" --position "$t"
+	udm settings/packages move --dn "cn=test,$t" --position "cn=visible,$BASE"
+	udm container/cn remove --dn "$t"
+	listener start
+	check "cn=test,cn=visible" "$a" - r
+	if $BUG34833
+	then
+		! check "cn=temporary,cn=visible"
+	else
+		check "cn=temporary,cn=visible" - "" n
+	fi
+	check "cn=test,cn=temporary,cn=visible" - "$a" a
+	check "cn=test,cn=temporary,cn=visible" "$a" - r
+	check "cn=test,cn=visible" - "$a" a
+	if $BUG34833
+	then
+		! check "cn=temporary,cn=visible"
+	else
+		check "cn=temporary,cn=visible" "" - d
+	fi
+
+	udm settings/packages remove --dn "cn=test,cn=visible,$BASE"
+}
+. "${0%/*}/common.sh"

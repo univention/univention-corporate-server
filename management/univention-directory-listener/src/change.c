@@ -387,12 +387,72 @@ static bool is_move(struct transaction *trans) {
 }
 
 
+static int fake_container(struct transaction *trans, const char *dn) {
+	int rv;
+	int rdn;
+	int flags = 0;
+	CacheEntry cache_entry = {};
+	CacheEntry dummy = {};
+	LDAPDN ldap_dn = NULL;
+	char *name = NULL;
+
+	// 1. Set basic values
+	cache_entry_add1(&cache_entry, "entryDN", dn);
+	cache_entry_add1(&cache_entry, "description", "Univention Directory Listener intermediate fake object");
+	cache_entry_add1(&cache_entry, "entryUUID", "00000000-0000-0000-0000-000000000000");
+
+	rv = ldap_str2dn(dn, &ldap_dn, flags);
+	if (rv != LDAP_SUCCESS || !ldap_dn)
+		goto out;
+
+	// 2. Set objectClass
+	for (rdn = 0; ldap_dn[0][rdn]; rdn++) {
+		if (BER2STR(&ldap_dn[0][rdn]->la_attr, &name) <= 0 || !name) {
+			rv = LDAP_OTHER;
+			goto out;
+		}
+
+		if (!strcasecmp(name, "cn")) {
+			cache_entry_add1(&cache_entry, "objectClass", "organizationalRole");
+		} else if (!strcasecmp(name, "ou")) {
+			cache_entry_add1(&cache_entry, "objectClass", "organizationalUnit");
+		} else if (!strcasecmp(name, "dc")) {
+			cache_entry_add1(&cache_entry, "objectClass", "domain");
+		} else {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "unknown container: %s", name);
+			goto out;
+		}
+		free(name);
+
+		// 3. Set RDN values
+		cache_entry_update_rdn1(&cache_entry, ldap_dn[0][rdn]);
+	}
+
+	// 4. Call handlers for add
+	signals_block();
+	rv = handlers_update(dn, &cache_entry, &dummy, 'n', NULL);
+	signals_unblock();
+
+	// 5. Store cache entry at intermediate location
+	if ((rv = cache_update_entry_lower(trans->cur.notify.id, dn, &cache_entry)) != 0)
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
+
+ out:
+	free(name);
+	ldap_dnfree(ldap_dn);
+	return rv;
+}
+
+
 static
 int check_parent_dn(struct transaction *trans, const char *dn)
 {
 	int rv = 0;
 	int flags = 0;
 	LDAPDN ldap_dn = NULL;
+
+	if (trans->lp_local->host == NULL)     // not a replicating system
+		return LDAP_SUCCESS;
 
 	if (same_dn(dn, trans->lp_local->base)) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Ignore parent_dn check because dn is ldap base.");
@@ -450,6 +510,8 @@ int check_parent_dn(struct transaction *trans, const char *dn)
 			rv = ldap_search_ext_s(trans->lp->ld, parent_dn, LDAP_SCOPE_BASE, filter, attrs, attrsonly, serverctrls, clientctrls, &timeout, sizelimit, &res);
 			if (rv == LDAP_NO_SUCH_OBJECT) {
 				 univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not find parent container of dn: %s from %s (%s)", dn, trans->lp->host, ldap_err2string(rv));
+				 if (is_move(trans))
+					 rv = fake_container(trans, parent_dn);
 			} else { /* parent_dn found in remote LDAP */
 				cur = ldap_first_entry(trans->lp->ld, res);
 				if (cur == NULL) {
@@ -457,7 +519,10 @@ int check_parent_dn(struct transaction *trans, const char *dn)
 					 * but was probably excluded through ACLs which makes it
 					 * non-existent for us */
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get parent object of dn: %s from %s (%s)", dn, trans->lp->host, ldap_err2string(rv));
-					rv = LDAP_INSUFFICIENT_ACCESS;
+					 if (is_move(trans))
+						 rv = fake_container(trans, parent_dn);
+					 else
+						rv = LDAP_INSUFFICIENT_ACCESS;
 				} else { /* found data for parent_dn in remote LDAP */
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS, "change_update_entry for parent_dn: %s", parent_dn);
 					rv = change_update_entry(trans->lp, trans->cur.notify.id, cur, 'n');	/* add parent_dn object */
@@ -533,7 +598,10 @@ static int process_move(struct transaction *trans) {
 	cache_entry_set1(&trans->cur.cache, "entryDN", current_dn);
 
 	// 4. Call handlers for move
+	rv = check_parent_dn(trans, current_dn);
 	signals_block();
+	if (same_dn(trans->prev.notify.dn, current_dn))
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS, "move_same_dn(%s)", current_dn);
 	rv = handlers_delete(trans->prev.notify.dn, &trans->prev.cache, 'r');
 	rv = handlers_update(current_dn, &trans->cur.cache, &dummy, 'a', NULL);
 	signals_unblock();
@@ -571,18 +639,16 @@ static int change_update_cache(struct transaction *trans) {
 		goto out;
 	}
 
-	// TODO: 2014-04-23 PMH: delay this to only when needed?
-	if (trans->lp_local->host != NULL)     // we are a replicating system
-		rv = check_parent_dn(trans, trans->cur.ldap_dn);
-
 	switch (trans->cur.notify.command) {
 	case 'm': // modify
-		if (!same_dn(trans->cur.notify.dn, trans->cur.ldap_dn))
+		if (!same_dn(trans->cur.notify.dn, trans->cur.ldap_dn)) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS,
 					"Delaying update for '%s' until moved to '%s'",
 					trans->cur.notify.dn, trans->cur.ldap_dn);
-		else
+		} else {
+			rv = check_parent_dn(trans, trans->cur.ldap_dn);
 			rv = change_update_entry(trans->lp, trans->cur.notify.id, trans->ldap, trans->cur.notify.command);
+		}
 		break;
 	case 'a': // add | move_to
 		if (is_move(trans)) { // move_to
@@ -592,6 +658,7 @@ static int change_update_cache(struct transaction *trans) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
 						"Schizophrenia: a NEW object '%s' is added, which ALREADY is in our cache for '%s'?",
 						trans->cur.ldap_dn, trans->cur.notify.dn);
+			rv = check_parent_dn(trans, trans->cur.ldap_dn);
 			rv = change_update_entry(trans->lp, trans->cur.notify.id, trans->ldap, trans->cur.notify.command);
 		}
 		break;

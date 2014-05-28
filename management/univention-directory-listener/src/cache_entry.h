@@ -93,6 +93,7 @@ void	compare_cache_entries		(CacheEntry *lentry,
 
 extern const char *cache_entry_get1(CacheEntry *entry, const char *key);
 extern void cache_entry_set1(CacheEntry *entry, const char *key, const char *value);
+extern CacheEntryAttribute *cache_entry_add1(CacheEntry *entry, const char *key, const char *value);
 
 extern CacheEntryAttribute *cache_entry_update_rdn1(CacheEntry *entry, LDAPAVA *ava);
 extern void cache_entry_update_rdn(struct transaction *trans, LDAPRDN new_dn);

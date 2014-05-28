@@ -1,3 +1,9 @@
+univention-directory-listener (8.0.2-1) unstable; urgency=low
+
+  * Handle move to intermediate containers (Bug #34833)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 27 May 2014 16:56:50 +0200
+
 univention-directory-listener (8.0.1-5) unstable; urgency=low
 
   * Change collision message to level INFO (Bug #34835)

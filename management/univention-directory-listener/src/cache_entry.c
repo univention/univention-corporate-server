@@ -618,3 +618,17 @@ void cache_entry_update_rdn(struct transaction *trans, LDAPRDN new_dn) {
 	for (rdn = 0; new_dn[rdn]; rdn++)
 		cache_entry_update_rdn1(entry, new_dn[rdn]);
 }
+
+CacheEntryAttribute *cache_entry_add1(CacheEntry *entry, const char *key, const char *value) {
+	LDAPAVA ava = {
+		.la_attr = {
+			.bv_val = (char *)key,
+			.bv_len = strlen(key),
+		},
+		.la_value = {
+			.bv_val = (char *)value,
+			.bv_len = strlen(value),
+		},
+	};
+	return _cache_entry_add_new_attribute(entry, &ava);
+}

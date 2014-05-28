@@ -1,9 +1,16 @@
 #!/bin/bash
+# 1. Setup ACLs once:
+#    ssh root@master ". common.sh && setup_slapd"
+# 2. Register Listener once:
+#    ssh root@test ". common.sh && setup_listener"
+# 3. Run tests as often as needed:
+#    run-parts --verbose --regex '^test' doc.34355
 
 BUG32685=true # move to selective
 BUG33594=true # modrdn delold=1
 BUG34355=false # modify+modrdn
 BUG34749=true # ldap escape
+BUG34833=false # move via temporary
 
 LOG="/root/UserList.txt"
 LDIF="/var/lib/univention-directory-replication/failed.ldif"
