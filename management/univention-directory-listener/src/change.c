@@ -416,12 +416,17 @@ int check_parent_dn(struct transaction *trans, char *dn)
 
 	LDAPMessage	*res,
 			*cur;
+	char filter[] = "(objectClass=*)";
 	char *attrs_local[] = {"dn", NULL};
 	char *attrs[] = {"*", "+", NULL};
-	struct timeval timeout;
-	/* max wait for 60 seconds */
-	timeout.tv_sec = 60;
-	timeout.tv_usec = 0;
+	int attrsonly = 0;
+	LDAPControl **serverctrls = NULL;
+	LDAPControl **clientctrls = NULL;
+	struct timeval timeout = {
+		.tv_sec = 60,
+		.tv_usec = 0,
+	};
+	int sizelimit = 0;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "checking parent_dn of %s in local LDAP", dn);
 
@@ -436,13 +441,13 @@ int check_parent_dn(struct transaction *trans, char *dn)
 	}
 
 	/* search for parent_dn in local LDAP */
-	rv = ldap_search_ext_s(trans->lp_local->ld, parent_dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs_local, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res);
+	rv = ldap_search_ext_s(trans->lp_local->ld, parent_dn, LDAP_SCOPE_BASE, filter, attrs_local, attrsonly, serverctrls, clientctrls, &timeout, sizelimit, &res);
 	ldap_msgfree(res);
 	if (rv == LDAP_NO_SUCH_OBJECT) {		/* parent_dn not present in local LDAP */
 		rv = check_parent_dn(trans, parent_dn);	/* check if parent of parent_dn is here */
 		if (rv == LDAP_SUCCESS) {			/* parent of parent_dn found in local LDAP */
 			/* lookup parent_dn object in remote LDAP */
-			rv = ldap_search_ext_s(trans->lp->ld, parent_dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res);
+			rv = ldap_search_ext_s(trans->lp->ld, parent_dn, LDAP_SCOPE_BASE, filter, attrs, attrsonly, serverctrls, clientctrls, &timeout, sizelimit, &res);
 			if (rv == LDAP_NO_SUCH_OBJECT) {
 				 univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not find parent container of dn: %s from %s (%s)", dn, trans->lp->host, ldap_err2string(rv));
 			} else { /* parent_dn found in remote LDAP */
