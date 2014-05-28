@@ -1,0 +1,9 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: samba4
+fix: 4.0.3-1.392.201405272019
+version: [1]
+desc: |
+  Issues with the NetApp join have been fixed.
+bug: [35002]
