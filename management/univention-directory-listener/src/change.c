@@ -387,13 +387,14 @@ static bool is_move(struct transaction *trans) {
 }
 
 
-int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, univention_ldap_parameters_t *lp_local)
+static
+int check_parent_dn(struct transaction *trans, char *dn)
 {
 	int rv = 0;
 	int flags = 0;
 	LDAPDN ldap_dn = NULL;
 
-	if (same_dn(dn, lp_local->base)) {
+	if (same_dn(dn, trans->lp_local->base)) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Ignore parent_dn check because dn is ldap base.");
 		return LDAP_SUCCESS;
 	}
@@ -408,7 +409,7 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 	if (rv != LDAP_SUCCESS)
 		return rv;
 
-	if (same_dn(parent_dn, lp_local->base)) {
+	if (same_dn(parent_dn, trans->lp_local->base)) {
 		// univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "parent of DN: %s is base", dn);
 		goto out;
 	}
@@ -425,9 +426,9 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "checking parent_dn of %s in local LDAP", dn);
 
 	/* try to open a connection to the local LDAP for the parent DN check */
-	if (lp_local->ld == NULL) {
+	if (trans->lp_local->ld == NULL) {
 		/* XXX: Fix when using krb5 */
-		rv = univention_ldap_open(lp_local);
+		rv = univention_ldap_open(trans->lp_local);
 		if (rv != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "check_parent_dn: bind to local LDAP failed");
 			goto out;
@@ -435,26 +436,26 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 	}
 
 	/* search for parent_dn in local LDAP */
-	rv = ldap_search_ext_s(lp_local->ld, parent_dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs_local, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res);
+	rv = ldap_search_ext_s(trans->lp_local->ld, parent_dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs_local, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res);
 	ldap_msgfree(res);
 	if (rv == LDAP_NO_SUCH_OBJECT) {		/* parent_dn not present in local LDAP */
-		rv = check_parent_dn(lp, id, parent_dn, lp_local);	/* check if parent of parent_dn is here */
+		rv = check_parent_dn(trans, parent_dn);	/* check if parent of parent_dn is here */
 		if (rv == LDAP_SUCCESS) {			/* parent of parent_dn found in local LDAP */
 			/* lookup parent_dn object in remote LDAP */
-			rv = ldap_search_ext_s(lp->ld, parent_dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res);
+			rv = ldap_search_ext_s(trans->lp->ld, parent_dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res);
 			if (rv == LDAP_NO_SUCH_OBJECT) {
-				 univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not find parent container of dn: %s from %s (%s)", dn, lp->host, ldap_err2string(rv));
+				 univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not find parent container of dn: %s from %s (%s)", dn, trans->lp->host, ldap_err2string(rv));
 			} else { /* parent_dn found in remote LDAP */
-				cur = ldap_first_entry(lp->ld, res);
+				cur = ldap_first_entry(trans->lp->ld, res);
 				if (cur == NULL) {
 					/* entry exists (since we didn't get NO_SUCH_OBJECT),
 					 * but was probably excluded through ACLs which makes it
 					 * non-existent for us */
-					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get parent object of dn: %s from %s (%s)", dn, lp->host, ldap_err2string(rv));
+					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get parent object of dn: %s from %s (%s)", dn, trans->lp->host, ldap_err2string(rv));
 					rv = LDAP_INSUFFICIENT_ACCESS;
 				} else { /* found data for parent_dn in remote LDAP */
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS, "change_update_entry for parent_dn: %s", parent_dn);
-					rv = change_update_entry(lp, id, cur, 'n');	/* add parent_dn object */
+					rv = change_update_entry(trans->lp, trans->cur.notify.id, cur, 'n');	/* add parent_dn object */
 				}
 			}
 			ldap_msgfree(res);
@@ -567,7 +568,7 @@ static int change_update_cache(struct transaction *trans) {
 
 	// TODO: 2014-04-23 PMH: delay this to only when needed?
 	if (trans->lp_local->host != NULL)     // we are a replicating system
-		rv = check_parent_dn(trans->lp, trans->cur.notify.id, trans->cur.ldap_dn, trans->lp_local);
+		rv = check_parent_dn(trans, trans->cur.ldap_dn);
 
 	switch (trans->cur.notify.command) {
 	case 'm': // modify
