@@ -554,39 +554,7 @@ static CacheEntryAttribute *_cache_entry_find_attribute(CacheEntry *entry, LDAPA
 	}
 	return NULL;
 }
-static void _cache_entry_add_new_attribute(CacheEntry *entry, LDAPAVA *ava) {
-	CacheEntryAttribute *attr = malloc(sizeof(CacheEntryAttribute));
-	if (!attr) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d malloc() failed", __FILE__, __LINE__);
-		return;
-	}
-	BER2STR(&ava->la_attr, &attr->name);
-	if (!&attr->name) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d BER2STR() failed", __FILE__, __LINE__);
-		return;
-	}
-	attr->values = calloc(2, sizeof(char *));
-	if (!attr->values) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d calloc() failed", __FILE__, __LINE__);
-		return;
-	}
-	attr->length = calloc(2, sizeof(int));
-	if (!attr->length) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d calloc() failed", __FILE__, __LINE__);
-		return;
-	}
-	attr->value_count = 0;
-
-	void *tmp = realloc(entry->attributes, (entry->attribute_count + 2) * sizeof(CacheEntryAttribute *));
-	if (!tmp) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d realloc() failed", __FILE__, __LINE__);
-		return;
-	}
-	entry->attributes = tmp;
-	entry->attributes[entry->attribute_count++] = attr;
-	entry->attributes[entry->attribute_count] = NULL;
-}
-static void _cache_entry_force_value(CacheEntryAttribute *attr, LDAPAVA *ava) {
+static CacheEntryAttribute *_cache_entry_force_value(CacheEntryAttribute *attr, LDAPAVA *ava) {
 	void *tmp;
 
 	attr->value_count = 0;
@@ -594,38 +562,71 @@ static void _cache_entry_force_value(CacheEntryAttribute *attr, LDAPAVA *ava) {
 	tmp = realloc(attr->values, (attr->value_count + 2) * sizeof(char *));
 	if (!tmp) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d realloc() failed", __FILE__, __LINE__);
-		return;
+		return NULL;
 	}
 	attr->values = tmp;
 
 	tmp = realloc(attr->length, (attr->value_count + 2) * sizeof(int));
 	if (!tmp) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d realloc() failed", __FILE__, __LINE__);
-		return;
+		return NULL;
 	}
 	attr->length = tmp;
 
 	attr->length[attr->value_count] = BER2STR(&ava->la_value, &attr->values[attr->value_count]) + 1;
 	if (!attr->values[attr->value_count]) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d BER2STR() failed", __FILE__, __LINE__);
-		return;
+		return NULL;
 	}
 	attr->value_count++;
 	attr->length[attr->value_count] = 0;
 	attr->values[attr->value_count] = NULL;
+	return attr;
 }
-static void _cache_entry_update_rdn1(struct transaction *trans, LDAPAVA *ava) {
-	CacheEntry *entry = &trans->cur.cache;
+static CacheEntryAttribute *_cache_entry_add_new_attribute(CacheEntry *entry, LDAPAVA *ava) {
+	CacheEntryAttribute *attr = malloc(sizeof(CacheEntryAttribute));
+	if (!attr) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d malloc() failed", __FILE__, __LINE__);
+		return NULL;
+	}
+	memset(attr, 0, sizeof(CacheEntryAttribute));
 
+	void *tmp = realloc(entry->attributes, (entry->attribute_count + 2) * sizeof(CacheEntryAttribute *));
+	if (!tmp) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d realloc() failed", __FILE__, __LINE__);
+		goto error;
+	}
+	entry->attributes = tmp;
+
+	BER2STR(&ava->la_attr, &attr->name);
+	if (!&attr->name) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d BER2STR() failed", __FILE__, __LINE__);
+		goto error;
+	}
+	if (!_cache_entry_force_value(attr, ava))
+		goto error;
+
+	entry->attributes[entry->attribute_count++] = attr;
+	entry->attributes[entry->attribute_count] = NULL;
+
+	return attr;
+ error:
+	cache_free_attribute(attr);
+	return NULL;
+}
+CacheEntryAttribute *cache_entry_update_rdn1(CacheEntry *entry, LDAPAVA *ava) {
 	CacheEntryAttribute *attr = _cache_entry_find_attribute(entry, ava);
 	if (attr == NULL)
-		_cache_entry_add_new_attribute(entry, ava);
+		attr = _cache_entry_add_new_attribute(entry, ava);
 	else
-		_cache_entry_force_value(attr, ava);
+		attr = _cache_entry_force_value(attr, ava);
+
+	return attr;
 }
 void cache_entry_update_rdn(struct transaction *trans, LDAPRDN new_dn) {
 	int rdn;
+	CacheEntry *entry = &trans->cur.cache;
 
 	for (rdn = 0; new_dn[rdn]; rdn++)
-		_cache_entry_update_rdn1(trans, new_dn[rdn]);
+		cache_entry_update_rdn1(entry, new_dn[rdn]);
 }
