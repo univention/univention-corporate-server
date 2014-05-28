@@ -399,18 +399,18 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 	}
 
 	rv = ldap_str2dn(dn, &ldap_dn, flags);
-	if ( rv != LDAP_SUCCESS || ! ldap_dn )
+	if (rv != LDAP_SUCCESS || !ldap_dn)
 		return rv;
 
 	char *parent_dn = NULL;
 	rv = ldap_dn2str(&ldap_dn[1], &parent_dn, LDAP_DN_FORMAT_LDAPV3); // skip left most rdn
-	ldap_dnfree( ldap_dn );
-	if ( rv != LDAP_SUCCESS )
+	ldap_dnfree(ldap_dn);
+	if (rv != LDAP_SUCCESS)
 		return rv;
 
 	if (same_dn(parent_dn, lp_local->base)) {
 		// univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "parent of DN: %s is base", dn);
-		ldap_memfree( parent_dn );
+		ldap_memfree(parent_dn);
 		return LDAP_SUCCESS;
 	}
 
@@ -423,59 +423,58 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 	timeout.tv_sec = 60;
 	timeout.tv_usec = 0;
 
-		/* TODO: fix indentation */
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "checking parent_dn of %s in local LDAP", dn);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "checking parent_dn of %s in local LDAP", dn);
 
-		/* try to open a connection to the local LDAP for the parent DN check */
-		if (lp_local->ld == NULL) {
-			/* XXX: Fix when using krb5 */
-			rv = univention_ldap_open(lp_local);
-			if ( rv != LDAP_SUCCESS) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "check_parent_dn: bind to local LDAP failed");
-				ldap_memfree( parent_dn );
-				return rv;
-			}
+	/* try to open a connection to the local LDAP for the parent DN check */
+	if (lp_local->ld == NULL) {
+		/* XXX: Fix when using krb5 */
+		rv = univention_ldap_open(lp_local);
+		if (rv != LDAP_SUCCESS) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "check_parent_dn: bind to local LDAP failed");
+			ldap_memfree( parent_dn);
+			return rv;
 		}
+	}
 
-		/* search for parent_dn in local LDAP */
-		rv = ldap_search_ext_s(lp_local->ld, parent_dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs_local, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res);
-		ldap_msgfree( res );
-		if ( rv == LDAP_NO_SUCH_OBJECT ) {		/* parent_dn not present in local LDAP */
-			rv = check_parent_dn(lp, id, parent_dn, lp_local);	/* check if parent of parent_dn is here */
-			if (rv == LDAP_SUCCESS) {			/* parent of parent_dn found in local LDAP */
-				/* lookup parent_dn object in remote LDAP */
-				rv = ldap_search_ext_s(lp->ld, parent_dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res);
-				if ( rv == LDAP_NO_SUCH_OBJECT ) {
-					 univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not find parent container of dn: %s from %s (%s)", dn, lp->host, ldap_err2string(rv));
-					ldap_memfree( parent_dn );
-					ldap_msgfree( res );
+	/* search for parent_dn in local LDAP */
+	rv = ldap_search_ext_s(lp_local->ld, parent_dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs_local, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res);
+	ldap_msgfree(res);
+	if (rv == LDAP_NO_SUCH_OBJECT) {		/* parent_dn not present in local LDAP */
+		rv = check_parent_dn(lp, id, parent_dn, lp_local);	/* check if parent of parent_dn is here */
+		if (rv == LDAP_SUCCESS) {			/* parent of parent_dn found in local LDAP */
+			/* lookup parent_dn object in remote LDAP */
+			rv = ldap_search_ext_s(lp->ld, parent_dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res);
+			if (rv == LDAP_NO_SUCH_OBJECT) {
+				 univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not find parent container of dn: %s from %s (%s)", dn, lp->host, ldap_err2string(rv));
+				ldap_memfree(parent_dn);
+				ldap_msgfree(res);
+				return rv;
+			} else { /* parent_dn found in remote LDAP */
+				cur = ldap_first_entry(lp->ld, res);
+				if (cur == NULL) {
+					/* entry exists (since we didn't get NO_SUCH_OBJECT),
+					 * but was probably excluded through ACLs which makes it
+					 * non-existent for us */
+					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get parent object of dn: %s from %s (%s)", dn, lp->host, ldap_err2string(rv));
+					ldap_memfree(parent_dn);
+					ldap_msgfree(res);
+					return LDAP_INSUFFICIENT_ACCESS;
+				} else { /* found data for parent_dn in remote LDAP */
+					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS, "change_update_entry for parent_dn: %s", parent_dn);
+					rv = change_update_entry(lp, id, cur, 'n');	/* add parent_dn object */
+					ldap_memfree(parent_dn);
+					ldap_msgfree(res);	// cur points into res
 					return rv;
-				} else { /* parent_dn found in remote LDAP */
-					cur=ldap_first_entry(lp->ld, res);
-					if (cur == NULL) {
-						/* entry exists (since we didn't get NO_SUCH_OBJECT),
-						 * but was probably excluded through ACLs which makes it
-						 * non-existent for us */
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get parent object of dn: %s from %s (%s)", dn, lp->host, ldap_err2string(rv));
-						ldap_memfree( parent_dn );
-						ldap_msgfree( res );
-						return LDAP_INSUFFICIENT_ACCESS;
-					} else { /* found data for parent_dn in remote LDAP */
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS, "change_update_entry for parent_dn: %s", parent_dn);
-						rv = change_update_entry(lp, id, cur, 'n');	/* add parent_dn object */
-						ldap_memfree( parent_dn );
-						ldap_msgfree( res );	// cur points into res
-						return rv;
-					}
-					return LDAP_OTHER; /* safetybelt, should not get here */
 				}
 				return LDAP_OTHER; /* safetybelt, should not get here */
 			}
-			ldap_memfree( parent_dn );
-			return rv; /* check_parent_dn(parent_dn) failed, something is wrong with parent_dn */
+			return LDAP_OTHER; /* safetybelt, should not get here */
 		}
-		ldap_memfree( parent_dn );
-		return rv;	/* LDAP_SUCCESS or other than LDAP_NO_SUCH_OBJECT */
+		ldap_memfree(parent_dn);
+		return rv; /* check_parent_dn(parent_dn) failed, something is wrong with parent_dn */
+	}
+	ldap_memfree(parent_dn);
+	return rv;	/* LDAP_SUCCESS or other than LDAP_NO_SUCH_OBJECT */
 }
 
 static void _free_transaction_op(struct transaction_op *op) {
