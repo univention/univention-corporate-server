@@ -380,6 +380,13 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 }
 
 
+static bool is_move(struct transaction *trans) {
+	return trans->cur.notify.command == 'a' &&
+		trans->prev.notify.command == 'r' &&
+		trans->prev.notify.id + 1 == trans->cur.notify.id;
+}
+
+
 int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, univention_ldap_parameters_t *lp_local)
 {
 	int rv = 0;
@@ -585,7 +592,7 @@ static int change_update_cache(struct transaction *trans) {
 			rv = change_update_entry(trans->lp, trans->cur.notify.id, trans->ldap, trans->cur.notify.command);
 		break;
 	case 'a': // add | move_to
-		if (trans->prev.notify.command == 'r') { // move_to
+		if (is_move(trans)) { // move_to
 			rv = process_move(trans);
 		} else { // add
 			if (!same_dn(trans->cur.notify.dn, trans->cur.ldap_dn))
@@ -655,7 +662,7 @@ int change_update_dn(struct transaction *trans) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "move_to collision at '%s'", trans->cur.notify.dn);
 			cache_free_entry(NULL, &trans->cur.cache);
 		}
-		if (trans->cur.notify.command == 'a' && trans->prev.notify.id + 1 == trans->cur.notify.id) {
+		if (is_move(trans)) {
 			rv = copy_cache_entry(&trans->prev.cache, &trans->cur.cache);
 			if (rv)
 				goto out;
