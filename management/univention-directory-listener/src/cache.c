@@ -195,7 +195,7 @@ int cache_init(void)
 	return 0;
 }
 
-int cache_set_schema_id(const char *key, const NotifierID value)
+int cache_set_schema_id(char *key, const NotifierID value)
 {
 	FILE *fp;
 	char file[PATH_MAX];
@@ -210,7 +210,7 @@ int cache_set_schema_id(const char *key, const NotifierID value)
 	return fclose(fp);
 }
 
-int cache_get_schema_id(const char *key, NotifierID *value, const long def)
+int cache_get_schema_id(char *key, NotifierID *value, const long def)
 {
 	FILE *fp;
 	char file[PATH_MAX];
@@ -224,7 +224,7 @@ int cache_get_schema_id(const char *key, NotifierID *value, const long def)
 	return fclose(fp);
 }
 
-int cache_set_int(const char *key, const NotifierID value)
+int cache_set_int(char *key, const NotifierID value)
 {
 	FILE *fp;
 	char file[PATH_MAX];
@@ -236,7 +236,7 @@ int cache_set_int(const char *key, const NotifierID value)
 	return fclose(fp);
 }
 
-int cache_get_int(const char *key, NotifierID *value, const long def)
+int cache_get_int(char *key, NotifierID *value, const long def)
 {
 	FILE *fp;
 	char file[PATH_MAX];

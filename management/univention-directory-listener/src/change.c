@@ -387,7 +387,7 @@ static bool is_move(struct transaction *trans) {
 }
 
 
-static int fake_container(struct transaction *trans, const char *dn) {
+static int fake_container(struct transaction *trans, char *dn) {
 	int rv;
 	int rdn;
 	int flags = 0;
@@ -445,7 +445,7 @@ static int fake_container(struct transaction *trans, const char *dn) {
 
 
 static
-int check_parent_dn(struct transaction *trans, const char *dn)
+int check_parent_dn(struct transaction *trans, char *dn)
 {
 	int rv = 0;
 	int flags = 0;
