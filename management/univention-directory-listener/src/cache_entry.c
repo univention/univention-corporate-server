@@ -46,9 +46,20 @@
 #include "base64.h"
 #include "common.h"
 
+static void cache_free_attribute(CacheEntryAttribute *attr) {
+	int j;
+
+	free(attr->name);
+	for (j = 0; j < attr->value_count; j++)
+		free(attr->values[j]);
+	free(attr->values);
+	free(attr->length);
+	free(attr);
+}
+
 int cache_free_entry(char **dn, CacheEntry *entry)
 {
-	int i, j;
+	int i;
 
 	if (dn != NULL) {
 		free(*dn);
@@ -56,14 +67,8 @@ int cache_free_entry(char **dn, CacheEntry *entry)
 	}
 
 	if (entry->attributes) {
-		for (i=0; i<entry->attribute_count; i++) {
-			free(entry->attributes[i]->name);
-			for (j=0; j<entry->attributes[i]->value_count; j++)
-				free(entry->attributes[i]->values[j]);
-			free(entry->attributes[i]->values);
-			free(entry->attributes[i]->length);
-			free(entry->attributes[i]);
-		}
+		for (i=0; i<entry->attribute_count; i++)
+			cache_free_attribute(entry->attributes[i]);
 		free(entry->attributes);
 		entry->attributes = NULL;
 		entry->attribute_count = 0;
