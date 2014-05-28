@@ -54,8 +54,8 @@
 #include "filter.h"
 #include "handlers.h"
 
-static PyObject* handlers_argtuple(char *dn, CacheEntry *new, CacheEntry *old);
-static PyObject* handlers_argtuple_command(char *dn, CacheEntry *new, CacheEntry *old, char *command);
+static PyObject* handlers_argtuple(const char *dn, CacheEntry *new, CacheEntry *old);
+static PyObject* handlers_argtuple_command(const char *dn, CacheEntry *new, CacheEntry *old, char *command);
 
 extern int INIT_ONLY;
 extern char **module_dirs;
@@ -372,7 +372,7 @@ int handlers_postrun_all(void)
 
 
 /* execute handler with arguments */
-static int handler_exec(Handler *handler, char *dn, CacheEntry *new, CacheEntry *old, char command)
+static int handler_exec(Handler *handler, const char *dn, CacheEntry *new, CacheEntry *old, char command)
 {
 	PyObject *argtuple, *result;
 	int rv = 0;
@@ -697,7 +697,7 @@ static PyObject* handlers_entrydict(CacheEntry *entry)
 
 
 /* build Python argument tuple for handler */
-static PyObject* handlers_argtuple(char *dn, CacheEntry *new, CacheEntry *old)
+static PyObject* handlers_argtuple(const char *dn, CacheEntry *new, CacheEntry *old)
 {
 	PyObject *argtuple;
 	PyObject *newdict;
@@ -720,7 +720,7 @@ static PyObject* handlers_argtuple(char *dn, CacheEntry *new, CacheEntry *old)
 
 
 /* build Python argument tuple for handler with mod_rdn enabled. */
-static PyObject* handlers_argtuple_command(char *dn, CacheEntry *new, CacheEntry *old, char *command)
+static PyObject* handlers_argtuple_command(const char *dn, CacheEntry *new, CacheEntry *old, char *command)
 {
 	PyObject *argtuple;
 	PyObject *newdict;
@@ -759,7 +759,7 @@ int attribute_has_changed(char** changes, char* attribute)
 
 
 /* a little more low-level interface than handler_update */
-static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEntry *old, char command, char **changes, CacheEntry *scratch)
+static int handler__update(Handler *handler, const char *dn, CacheEntry *new, CacheEntry *old, char command, char **changes, CacheEntry *scratch)
 {
 	int matched;
 	int rv = 0;
@@ -823,7 +823,7 @@ static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEnt
 
 
 /* run all handlers if object has changed */
-int handlers_update(char *dn, CacheEntry *new, CacheEntry *old, char command, CacheEntry *scratch)
+int handlers_update(const char *dn, CacheEntry *new, CacheEntry *old, char command, CacheEntry *scratch)
 {
 	Handler *handler;
 	char** changes;
@@ -850,7 +850,7 @@ int handlers_update(char *dn, CacheEntry *new, CacheEntry *old, char command, Ca
 
 
 /* run given handler if object has changed */
-int handler_update(char *dn, CacheEntry *new, CacheEntry *old, Handler *handler, char command, CacheEntry *scratch)
+int handler_update(const char *dn, CacheEntry *new, CacheEntry *old, Handler *handler, char command, CacheEntry *scratch)
 {
 	char** changes;
 	int rv = 0;
@@ -868,7 +868,7 @@ int handler_update(char *dn, CacheEntry *new, CacheEntry *old, Handler *handler,
 
 
 /* run handlers if object has been deleted */
-int handlers_delete(char *dn, CacheEntry *old, char command)
+int handlers_delete(const char *dn, CacheEntry *old, char command)
 {
 	Handler *handler;
 	int rv=0;

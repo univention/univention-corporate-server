@@ -388,7 +388,7 @@ static bool is_move(struct transaction *trans) {
 
 
 static
-int check_parent_dn(struct transaction *trans, char *dn)
+int check_parent_dn(struct transaction *trans, const char *dn)
 {
 	int rv = 0;
 	int flags = 0;

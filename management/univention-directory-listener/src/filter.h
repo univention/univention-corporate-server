@@ -37,7 +37,7 @@
 #include "handlers.h"
 
 int	cache_entry_ldap_filter_match	(struct filter	**filter,
-					 char		 *dn,
+					 const char		 *dn,
 					 CacheEntry	 *entry);
 
 #endif /* _FILTER_H_ */

@@ -55,23 +55,23 @@ int	cache_update_master_entry		(CacheMasterEntry	 *master_entry,
 						 DB_TXN			 *dptxnp);
 #endif
 int	cache_update_entry			(NotifierID		  id,
-						 char			 *dn,
+						 const char			 *dn,
 						 CacheEntry		 *entry);
 inline int	cache_update_entry_lower			(NotifierID		  id,
-						 char			 *dn,
+						 const char			 *dn,
 						 CacheEntry		 *entry);
 int	cache_delete_entry			(NotifierID		  id,
-						 char			 *dn);
+						 const char			 *dn);
 int	cache_delete_entry_lower_upper			(NotifierID		  id,
-						 char			 *dn);
+						 const char			 *dn);
 int	cache_update_or_deleteifunused_entry	(NotifierID		  id,
-						 char			 *dn,
+						 const char			 *dn,
 						 CacheEntry		 *entry);
 int	cache_get_entry(
-						 char			 *dn,
+						 const char			 *dn,
 						 CacheEntry		 *entry);
 int	cache_get_entry_lower_upper(
-						 char			 *dn,
+						 const char			 *dn,
 						 CacheEntry		 *entry);
 int	cache_first_entry			(DBC			**cur,
 						 char			**dn,

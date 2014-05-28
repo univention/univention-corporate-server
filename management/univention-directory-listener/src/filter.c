@@ -188,7 +188,7 @@ static int __cache_entry_ldap_filter_match(char *filter, int first, int last, Ca
  * @param entry Cached LDAP entry to match.
  * @return 1 on match, 0 otherwise.
  */
-int cache_entry_ldap_filter_match(struct filter **filter, char *dn, CacheEntry *entry)
+int cache_entry_ldap_filter_match(struct filter **filter, const char *dn, CacheEntry *entry)
 {
 	struct filter **f;
 	size_t dn_len = strlen(dn);

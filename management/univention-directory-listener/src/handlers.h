@@ -84,18 +84,18 @@ int	handlers_free_all		(void);
 int	handlers_load_path		(char		*filename);
 int	handlers_reload_all_paths	(void);
 int	handlers_dump			(void);
-int	handlers_update			(char		*dn,
+int	handlers_update			(const char		*dn,
 					 CacheEntry	*new,
 					 CacheEntry	*old,
 					 char		command,
 					 CacheEntry *scratch);
-int	handler_update			(char		*dn,
+int	handler_update			(const char		*dn,
 					 CacheEntry	*new,
 					 CacheEntry	*old,
 					 Handler	*handler,
 					 char		command,
 					 CacheEntry *scratch);
-int	handlers_delete			(char		*dn,
+int	handlers_delete			(const char		*dn,
 					 CacheEntry	*old,
 					 char command);
 int	handler_clean			(Handler	*handler);
