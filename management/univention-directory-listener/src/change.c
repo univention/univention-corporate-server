@@ -51,6 +51,7 @@
 #include "handlers.h"
 #include "signals.h"
 #include "network.h"
+#include "utils.h"
 
 extern Handler *handlers;
 
@@ -378,13 +379,14 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 	return rv;
 }
 
+
 int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, univention_ldap_parameters_t *lp_local)
 {
 	int rv = 0;
 	int flags = 0;
 	LDAPDN ldap_dn = NULL;
 
-	if (!strcmp(dn, lp_local->base)) {
+	if (same_dn(dn, lp_local->base)) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Ignore parent_dn check because dn is ldap base.");
 		return LDAP_SUCCESS;
 	}
@@ -399,7 +401,7 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 	if ( rv != LDAP_SUCCESS )
 		return rv;
 
-	if (!strcmp(parent_dn, lp_local->base)) {
+	if (same_dn(parent_dn, lp_local->base)) {
 		// univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "parent of DN: %s is base", dn);
 		ldap_memfree( parent_dn );
 		return LDAP_SUCCESS;
@@ -483,15 +485,6 @@ void change_free_transaction_op(struct transaction_op *op) {
 	memset(op, 0, sizeof(struct transaction_op));
 }
 
-static bool same_dn(char *left, char *right) {
-	/* BUG: A DN is a sequence of RDNs. An RDN is a sequence of Attribute-value
-	   pairs. Each attribute has its own schema definition with its own
-	   governing rules. Some attributes are case-sensitive, some are not. As
-	   such, a complete DN may have components that are case-sensitive as well
-	   as case-insensitive. */
-	// 2014-05-22 PMH: This should be unnecessary with r13111 to OpenLDAP/translog.
-	return 0 == strcasecmp(left, right);
-}
 
 static bool same_rdn(LDAPRDN left, LDAPRDN right) {
 	int i, j;

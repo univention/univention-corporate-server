@@ -45,6 +45,7 @@
 #include "cache_entry.h"
 #include "base64.h"
 #include "common.h"
+#include "utils.h"
 
 static void cache_free_attribute(CacheEntryAttribute *attr) {
 	int j;
@@ -530,19 +531,6 @@ void cache_entry_set1(CacheEntry *entry, const char *key, const char *value) {
 		break;
 	}
 	assert(i < entry->attribute_count);
-}
-
-static inline bool BERSTREQ(const struct berval *ber, const char *str, size_t len) {
-	return ber->bv_len == len && memcmp(ber->bv_val, str, len) == 0;
-}
-
-static inline int BER2STR(const struct berval *ber, char **strp) {
-	*strp = malloc(ber->bv_len + 1);
-	if (!*strp)
-		return -1;
-	memcpy(*strp, ber->bv_val, ber->bv_len);
-	(*strp)[ber->bv_len] = '\0';
-	return ber->bv_len;
 }
 
 static CacheEntryAttribute *_cache_entry_find_attribute(CacheEntry *entry, LDAPAVA *ava) {

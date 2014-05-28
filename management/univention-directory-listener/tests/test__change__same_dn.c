@@ -1,7 +1,7 @@
 #include "test.h"
 #include <ldap.h>
 
-#include "../src/change.c"
+#include "../src/utils.h"
 
 #define TEST(n, a, b, e)                                      \
 	static bool test_##n(void) { return same_dn(a, b) == e; } \
