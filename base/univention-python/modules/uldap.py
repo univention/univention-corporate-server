@@ -167,7 +167,7 @@ class access:
 		# referral handling if follow_referral is set to true
 		#  https://forge.univention.org/bugzilla/show_bug.cgi?id=9139
 		self.follow_referral = follow_referral
-	
+
 		try:
 			client_retry_count = int(ucr.get('ldap/client/retry/count', 10))
 		except ValueError:
@@ -490,7 +490,7 @@ class access:
 		ml=self.__encode_entry(ml)
 		if rename:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'rename %s' % rename)
-			self.lo.rename_s(dn, rename, None, delold=0)
+			self.lo.rename_s(dn, rename, None, delold=1)
 			dn=rename+dn[dn.find(','):]
 		if ml:
 			try:
@@ -622,7 +622,7 @@ class access:
 
 		else:
 			raise ldap.CONNECT_ERROR, 'Bad referral "%s"' % str(e)
-  
+
 
 	def needed_objectclasses(self, entry):
 
