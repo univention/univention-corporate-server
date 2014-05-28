@@ -111,7 +111,7 @@ static int parse_entry(const char *line, NotifierEntry *entry)
 /* Send buffer in blocking mode. */
 static int send_block(NotifierClient *client, const char *buf, size_t len)
 {
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, ">>>\n%s\n", buf);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, ">>>\n%s", buf);
 	return write(client->fd, buf, len);
 }
 
@@ -140,7 +140,7 @@ static int recv_block(NotifierClient *client, char **back, time_t timeout)
 	while(result == NULL || (pos = strstr(result, "\n\n")) == NULL) {
 		ssize_t r;
 
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "RESULT: [%s]\n", result);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "RESULT: [%s]", result);
 		if ((rv = notifier_wait(client, timeout)) == 0) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "timeout when receiving data");
 			return 0;
@@ -173,7 +173,7 @@ static int recv_block(NotifierClient *client, char **back, time_t timeout)
 		client->buf = NULL;
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "<<<\n%s\n", *back);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "<<<\n%s", *back);
 	return strlen(*back);
 }
 
@@ -187,7 +187,7 @@ static int notifier_send_command(NotifierClient *client, const char *msg)
 
 	assert(client->fd > -1);
 	msgid = ++client->last_msgid;
-	len = snprintf(buf, BUFSIZ, "MSGID: %d\n%s\n", msgid, msg);
+	len = snprintf(buf, BUFSIZ, "MSGID: %d\n%s", msgid, msg);
 	assert(len < BUFSIZ-1);
 	send_block(client, buf, len);
 	return msgid;
@@ -206,7 +206,7 @@ int notifier_recv_result(NotifierClient *client, time_t timeout)
 	assert(client->fd > -1);
 
 	if ((rv = notifier_wait(client, timeout)) == 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "no data is available (i.e. timeout elasped)");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "no data is available (i.e. timeout elapsed)");
 		return 0;
 	} else if (rv < 0)
 		return 0;
@@ -308,7 +308,7 @@ NotifierMessage* notifier_get_msg(NotifierClient *client, int msgid)
 }
 
 
-/* Try to connecto to notifier running on @server.
+/* Try to connect to notifier running on @server.
  *
  * @param client client data structure pointer.
  * @param server DNS name of notifier host.

@@ -454,7 +454,7 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 					cur=ldap_first_entry(lp->ld, res);
 					if (cur == NULL) {
 						/* entry exists (since we didn't get NO_SUCH_OBJECT),
-						 * but was probably excluded thru ACLs which makes it
+						 * but was probably excluded through ACLs which makes it
 						 * non-existent for us */
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get parent object of dn: %s from %s (%s)", dn, lp->host, ldap_err2string(rv));
 						ldap_memfree( parent_dn );
