@@ -3,7 +3,7 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-samba4
 fix: 3.0.39-20.575.201405271546
-version: [2]
+version: [1,2]
 desc: |
     This updates fixes an issue in the replication of the sysvol share data:
     * Modifications of access rights of GPOs could get reset by the sysvol
