@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: univention-directory-listener
+fix: 8.0.2-2.231.201405281318
+version: [1,2]
+desc: |
+  This update fixes the following issue:
+  * when an object is renamed or moved via a container, which is later deleted,
+    the listener fails to follow the rename. This has been fixed by creating a
+    fake temporary container.
+bug: [34833]
