@@ -1,3 +1,9 @@
+ucs-test (4.0.166-16) unstable; urgency=medium
+
+  * Bug #33751: Add 51_samba4/52replication_sysvol_acls
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 May 2014 16:02:31 +0200
+
 ucs-test (4.0.166-15) unstable; urgency=low
 
   * 10_ldap/42replication_uppercase: Test case for Bug #34835

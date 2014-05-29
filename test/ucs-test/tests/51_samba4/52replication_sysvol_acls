@@ -1,0 +1,159 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Testing directory ACL preservation for sysvol replication"
+## exposure: safe
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_backup
+## - domaincontroller_slave
+## tags:
+##  - basic
+##  - apptest
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. /usr/share/univention-lib/ldap.sh || exit 137
+
+check_domainadmin_credentials || fail_fast 77 "UCR variables for admin credentials are not set"
+admin_account="$(ucs_convertDN2UID "$tests_domainadmin_account")"
+
+gpo_name=$(random_string)
+
+### Temporarily disable rsync login for the samba4/sysvol/sync/host
+### And temporarily disable regular sysvol sync on this host
+deny_ssh_access_for_computers() {
+	ucr set 'auth/sshd/group/DC Backup Hosts'=no \
+		'auth/sshd/group/DC Slave Hosts'=no \
+		'auth/sshd/group/Computers'=no
+}
+allow_ssh_access_for_computers() {
+	ucr set 'auth/sshd/group/DC Backup Hosts'=yes \
+		'auth/sshd/group/DC Slave Hosts'=yes \
+		'auth/sshd/group/Computers'=yes
+}
+disable_sysvol_sync() {
+	ucr set samba4/sysvol/sync/cron="# */5 * * * *"
+	deny_ssh_access_for_computers
+}
+enable_sysvol_sync() {
+	ucr set samba4/sysvol/sync/cron="*/5 * * * *"
+	allow_ssh_access_for_computers
+}
+
+### Cleanup function
+cleanup() {
+	[ -n "$gpo_cn" ] || exit 0
+	samba-tool gpo del "$gpo_name" -U "$admin_account%$tests_domainadmin_pwd"
+	[ -n "$gpo_path" ] && rm -rf "$gpo_path"
+
+	univention-install cifs-utils >/dev/null
+	tmp_dir=$(mktemp -d)
+	mount -t cifs -o user="$admin_account" -o password="$tests_domainadmin_pwd" \
+		"//$samba4_sysvol_sync_host/sysvol" "$tmp_dir"
+	rm -rf "$tmp_dir/$domainname/Policies/$gpo_cn"
+	umount "$tmp_dir"
+	rmdir "$tmp_dir"
+}
+
+exit_handler() {
+	enable_sysvol_sync
+	cleanup
+}
+
+trap exit_handler EXIT
+disable_sysvol_sync
+
+### create a new GPO remotely on the samba4/sysvol/sync/host:
+test_output=$(samba-tool gpo create "$gpo_name" \
+	-U "$admin_account%$tests_domainadmin_pwd" \
+	-H "ldap://$samba4_sysvol_sync_host") \
+	|| fail_fast 110 "samba-tool gpo create exited with status $?"
+gpo_cn=$(sed -n "s/GPO '$gpo_name' created as \(.*\)$/\1/p" <<<"$test_output")
+
+if [ -z "$gpo_cn" ]; then
+	fail_fast 110 "GPO creation failed"
+fi
+echo "Test GPO created: $gpo_cn"
+
+
+### Replicate the new GPO to the local system
+/usr/share/univention-samba4/scripts/sysvol-sync.sh
+
+### for additional fun add a test file to the GPO dir on the samba4/sysvol/sync/host:
+smbclient "//$samba4_sysvol_sync_host/sysvol" \
+	-U "$admin_account%$tests_domainadmin_pwd" \
+	-c "put /etc/hosts $domainname/Policies/$gpo_cn/testfile1" \
+ 	|| fail_fast 110 "smbclient //$samba4_sysvol_sync_host/sysvol exited with status $?"
+
+
+### Now modify the ACLs on the local GPO copy
+gpo_path="/var/lib/samba/sysvol/$domainname/Policies/$gpo_cn"
+start_gpo_facl=$(getfacl "$gpo_path")
+start_gpo_fattr=$(getfattr -d -m - "$gpo_path")
+start_gpo_ntacl=$(samba-tool ntacl get --as-sddl "$gpo_path")
+
+
+test_account=join-backup
+test_account_sid=$(univention-s4search samaccountname="$test_account" objectSid | ldapsearch-wrapper | sed -n 's/^objectSid: //p')
+
+### Update the NTACLs on the local SYSVOL share via SMB
+test_ntace="(A;OICI;0x001200a9;;;$test_account_sid)"
+tmp_gpo_ntacl="${start_gpo_ntacl}$test_ntace"
+smbcacls //localhost/sysvol "$domainname/Policies/$gpo_cn"  -U "$admin_account%$tests_domainadmin_pwd" -S "$tmp_gpo_ntacl" --sddl
+
+custom_gpo_modification_time=$(stat --printf '%y' "$gpo_path")
+custom_gpo_metadata_change_time=$(stat --printf '%z' "$gpo_path")
+custom_gpo_ntacl=$(samba-tool ntacl get --as-sddl "$gpo_path")	## get in canonical order
+custom_gpo_facl=$(getfacl "$gpo_path")
+custom_gpo_fattr=$(getfattr -d -m - "$gpo_path")
+echo "Start with GPO NTACL: $start_gpo_ntacl"
+echo "Customized GPO NTACL: $custom_gpo_ntacl"
+
+if ! grep -q "$test_ntace" <<<"$custom_gpo_ntacl"; then
+	fail_fast 110 "NTACL set via SMB failed"
+fi
+
+### Updating the DS ACLs  is a bit useless here, but this is how we could do it:
+# test_output=$(univention-s4search "(&(objectClass=groupPolicyContainer)(cn=$gpo_cn))" nTSecurityDescriptor | ldapsearch-wrapper)
+# gpo_dn=$(sed -n "s/^dn: //p" <<"$test_output")
+# gpo_sd=$(sed -n "s/^nTSecurityDescriptor: //p" <<"$test_output")
+# new_gpo_sd="${gpo_sd}(A;CI;RPLCRC;;;$test_account_sid)(OA;CI;CR;edacfd8f-ffb3-11d1-b41d-00a0c968f939;;$test_account_sid)"
+# ldbmodify -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(cn=$gpo_cn))" <<%EOF
+# dn: $gpo_dn
+# changetype: modify
+# nTSecurityDescriptor: $new_gpo_sd
+# %EOF
+
+### Now replicate the GPO again to the local system
+/usr/share/univention-samba4/scripts/sysvol-sync.sh
+
+## verify that the testfile1 has been copied to the local system:
+if ! [ -f "$gpo_path/testfile1" ]; then
+	fail_fast 110 "The GPO has not been copied to the local server"
+fi
+
+replicated_gpo_modification_time=$(stat --printf '%y' "$gpo_path")
+replicated_gpo_metadata_change_time=$(stat --printf '%z' "$gpo_path")
+replicated_gpo_ntacl=$(samba-tool ntacl get --as-sddl "$gpo_path")
+replicated_gpo_facl=$(getfacl "$gpo_path")
+replicated_gpo_fattr=$(getfattr -d -m - "$gpo_path")
+echo "Customized GPO modification time: $custom_gpo_modification_time"
+echo "Replicated GPO modification time: $replicated_gpo_modification_time"
+echo "Customized GPO metadata time: $custom_gpo_metadata_change_time"
+echo "Replicated GPO metadata time: $replicated_gpo_metadata_change_time"
+echo "Customized GPO NTACL: $custom_gpo_ntacl"
+echo "Replicated GPO NTACL: $replicated_gpo_ntacl"
+
+if ! grep -q "$test_ntace" <<<"$replicated_gpo_ntacl"; then
+	trap enable_sysvol_sync EXIT	## don't cleanup
+	fail_fast 110 "The GPO NTACL has been modified"
+fi
+if ! [ "$replicated_gpo_facl" = "$custom_gpo_facl" ]; then
+	trap enable_sysvol_sync EXIT	## don't cleanup
+	fail_fast 110 "The GPO fACL has been modified"
+fi
+if ! [ "$replicated_gpo_fattr" = "$custom_gpo_fattr" ]; then
+	trap enable_sysvol_sync EXIT	## don't cleanup
+	fail_fast 110 "The GPO fattrs have been modified"
+fi
+
