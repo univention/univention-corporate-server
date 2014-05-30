@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.51-15) unstable; urgency=low
+
+  * Bug #34243: Reload UMC modules after installing/uninstalling/etc. an app
+
+ -- Florian Best <best@univention.de>  Fri, 30 May 2014 13:52:48 +0200
+
 univention-management-console-module-appcenter (3.0.51-14) unstable; urgency=low
 
   * Added a timeout to univention-register-apps (Bug #34834)
