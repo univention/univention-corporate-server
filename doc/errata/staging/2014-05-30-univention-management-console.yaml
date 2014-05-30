@@ -1,0 +1,10 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: univention-management-console
+fix: 6.0.24-4.777.201405301355
+version: [2]
+desc: |
+  This update fixes the following issues:
+  * The internal cache of UMC modules in the UMC Server is now invalidated before they are requested.
+bug: [34243]
