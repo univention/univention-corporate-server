@@ -1,3 +1,9 @@
+ucs-test (4.0.166-20) unstable; urgency=low
+
+  * More DRS replication timeout related updates (Bug #35012)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 May 2014 09:45:23 +0200
+
 ucs-test (4.0.166-19) unstable; urgency=low
 
   * 51_samba4/44kerberos_access_sysvol: include samba.sh (Bug #32315)

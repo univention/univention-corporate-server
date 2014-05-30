@@ -104,8 +104,7 @@ for FS in xfs ext2 ext3 ext4; do
 		chown $user "$mountpoint/file$i"
 		sync
 
-		res_smbcquota=$(smbcquotas -u $user -U ${account}%${tests_domainadmin_pwd} //$hostname/$share | awk '{print $3 $4 $5}')
-		if [ -z "$res_smbcquota" ]; then
+		if ! res_smbcquota=$(smbcquotas -u $user -U ${account}%${tests_domainadmin_pwd} //$hostname/$share | awk '{print $3 $4 $5}'); then
 			echo "Warning: The login failed for some reason. Wait 10 seconds and try again."
 			sleep 10
 			res_smbcquota=$(smbcquotas -u $user -U ${account}%${tests_domainadmin_pwd} //$hostname/$share | awk '{print $3 $4 $5}')

@@ -1,3 +1,5 @@
+DRS_REPLICATION_TIMEOUT=360
+
 wait_for_LDAP_replication_of_domain_sambaSid () {
 	local username t0 t sambaSID
 	username="${1:?username}"
@@ -23,7 +25,7 @@ wait_for_LDAP_replication_of_domain_sambaSid () {
 			echo -n "Waiting for DRS replication of domain sambaSID for user $username."
 		fi
 		while [ -z "$sambaSID" ]; do
-			if [ "$(($t-$t0))" -gt 360 ]; then
+			if [ "$(($t-$t0))" -gt $DRS_REPLICATION_TIMEOUT ]; then
 				fail_fast 1 "TIMEOUT: No domain sambaSID replicated to local Samba4 directory after $(($t-$t0)) seconds"
 			fi
 			sleep 1
@@ -62,7 +64,7 @@ wait_for_drs_replication () {
 	if [ -z "$value" ]; then
 		echo -n "Waiting for DRS replication, filter: $ldap_filter"
 		while [ -z "$value" ]; do
-			if [ "$(($t-$t0))" -gt 360 ]; then
+			if [ "$(($t-$t0))" -gt $DRS_REPLICATION_TIMEOUT ]; then
 				fail_fast 1 "TIMEOUT: Replication timout to local sam.ldb after $(($t-$t0)) seconds"
 			fi
 			sleep 1
