@@ -222,9 +222,12 @@ class Processor( signals.Provider ):
 
 		# read the ACLs
 		self.acls = LDAP_ACLs( self.lo, self.__username, ucr[ 'ldap/base' ] )
-		self.__command_list = moduleManager.permitted_commands( ucr[ 'hostname' ], self.acls )
+		self._reload_permitted_commands()
 
 		self.signal_new( 'response' )
+
+	def _reload_permitted_commands(self):
+		self.__command_list = moduleManager.permitted_commands(ucr['hostname'], self.acls)
 
 	def _init_ldap_connection(self):
 		try:
@@ -379,6 +382,8 @@ class Processor( signals.Provider ):
 		res.status = SUCCESS
 
 		if 'modules/list' in msg.arguments:
+			moduleManager.load()
+			self._reload_permitted_commands()
 			modules = []
 			for id, module in self.__command_list.items():
 				# check for translation

@@ -1,3 +1,9 @@
+univention-management-console (6.0.24-4) unstable; urgency=low
+
+  * Bug #34243: reload modules on modules/list command
+
+ -- Florian Best <best@univention.de>  Fri, 30 May 2014 13:39:20 +0200
+
 univention-management-console (6.0.24-3) unstable; urgency=low
 
   * Bug #33622: also allow message header to be send in chunks
