@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: "Checks permissions for /var/lib/samba/ntp_signd"
-## exposure: dangerous
+## exposure: safe
 ## bugs:
 ## - 31109
 ## packages:
