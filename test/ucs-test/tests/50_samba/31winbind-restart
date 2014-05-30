@@ -3,6 +3,7 @@
 ## exposure: dangerous
 ## packages:
 ##  - winbind
+##  - univention-samba
 
 . "$TESTLIBPATH/base.sh" || exit 137
 

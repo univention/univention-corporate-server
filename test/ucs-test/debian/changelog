@@ -1,3 +1,12 @@
+ucs-test (4.0.166-17) unstable; urgency=low
+
+  * lib/samba.sh: increase the drs timeout from 60 to 360 seconds. In my
+    environments it took often more than 60 seconds (Bug #35012)
+  * Move 50samba/30winbind to 53_samba-common (Bug #28347)
+  * 50_samba/31winbind-restart: limit to S3 environments (Bug #32316)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 May 2014 08:11:56 +0200
+
 ucs-test (4.0.166-16) unstable; urgency=medium
 
   * Bug #33751: Add 51_samba4/52replication_sysvol_acls

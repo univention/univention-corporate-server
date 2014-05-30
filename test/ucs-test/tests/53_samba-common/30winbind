@@ -46,7 +46,7 @@ fi
 
 echo "##  wbinfo --ping-dc"
 if ! wbinfo --ping-dc; then
-	err "No connection to NETLOGON, continuing anyway, see Bug #31772"
+	echo "No connection to NETLOGON, continuing anyway, see Bug #31772"
 fi
 
 echo "##  wbinfo -D"

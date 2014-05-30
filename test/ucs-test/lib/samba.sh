@@ -23,7 +23,7 @@ wait_for_LDAP_replication_of_domain_sambaSid () {
 			echo -n "Waiting for DRS replication of domain sambaSID for user $username."
 		fi
 		while [ -z "$sambaSID" ]; do
-			if [ "$(($t-$t0))" -gt 60 ]; then
+			if [ "$(($t-$t0))" -gt 360 ]; then
 				fail_fast 1 "TIMEOUT: No domain sambaSID replicated to local Samba4 directory after $(($t-$t0)) seconds"
 			fi
 			sleep 1
