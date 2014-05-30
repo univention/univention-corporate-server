@@ -644,7 +644,7 @@ define([
 			var modulesDeferred = this._loadModules(progressDialog);
 
 			// wait for modules, the UCR variables, and user preferences to load
-			all([modulesDeferred, ucrDeferred, userPreferencesDefered]).then(lang.hitch(this, function() {
+			var load = all([modulesDeferred, ucrDeferred, userPreferencesDefered]).then(lang.hitch(this, function() {
 				// loading is done
 				this._moduleStore.setFavoritesString(_userPreferences.favorites || _ucr['umc/web/favorites/default']);
 				when(progressDialog.close(), lang.hitch(this, function() {
@@ -661,6 +661,19 @@ define([
 			// perform actions that depend on the UCR variables
 			ucrDeferred.then(function(res) {
 			});
+
+			return load;
+		},
+
+		reloadModules: function() {
+			this._loaded = false;
+			this.load().then(lang.hitch(this, function() {
+				tools.status('overview', true);
+				this._tabContainer.removeChild(this._overviewPage);
+				this._setupOverviewPage();
+				this._tabContainer.removeChild(this._overviewPage);
+				this._tabContainer.addChild(this._overviewPage, 0); // place as first tab
+			}));
 		},
 
 		_loadPiwik: function() {
