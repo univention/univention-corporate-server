@@ -120,8 +120,8 @@ class TestUMCExtendedAttributes(TestUMCSystem):
 
     def check_attributes_query_structure(self):
         """
-        Checks if every attribute in the given 'attributes_query' has
-        all the default fields
+        Makes a query for attributes request and checks it
+        for the default fields
         """
         for attribute in self.query_extended_attributes():
             if not '$dn$' in attribute:
