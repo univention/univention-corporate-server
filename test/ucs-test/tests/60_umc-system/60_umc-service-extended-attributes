@@ -350,7 +350,7 @@ class TestUMCExtendedAttributes(TestUMCSystem):
                 test_user_dn = UDM.create_user(password='univention',
                                                username=test_username)[0]
                 utils.verify_ldap_object(test_user_dn)
-                
+
                 self.modify_check_user_attribute(test_user_dn,
                                                  test_attribute_name + '_cust',
                                                  'value2',
