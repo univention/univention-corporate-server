@@ -17,6 +17,7 @@ class TestUMCSystem(object):
         self.password = None
         self.hostname = None
         self.Connection = None
+        self.ldap_base = ''
 
         self.UCR = ConfigRegistry()
 
@@ -50,14 +51,14 @@ class TestUMCSystem(object):
             utils.fail("Failed to authenticate, hostname '%s' : %s" %
                        (self.hostname, exc))
 
-    def make_query_request(self, prefix, options=None):
+    def make_query_request(self, prefix, options=None, flavor=None):
         """
         Makes a '/query' UMC request with a provided 'prefix' argument,
-        returns request result.
+        optional 'flavor' and 'options', returns request result.
         """
         try:
             request_result = self.Connection.request(prefix + '/query',
-                                                     options)
+                                                     options, flavor)
             if not request_result:
                 utils.fail("Request '%s/query' failed, no result, hostname %s"
                            % (prefix, self.hostname))
@@ -87,6 +88,24 @@ class TestUMCSystem(object):
                   "%s" % (service_name, request_result))
             sys.exit(TestCodes.REASON_INSTALL)
 
+    def make_udm_request(self, postfix, options=None, flavor=None):
+        """
+        Makes 'umcp/command/udm/' + 'postfix' request with a given
+        'options' and a 'flavor' if any
+        """
+        try:
+            request_result = self.Connection.request('udm/' + postfix,
+                                                     options, flavor)
+            if not request_result:
+                utils.fail("Request 'umcp/command/udm/%s' with "
+                           "options='%s' and flavor='%s' failed, "
+                           "no response or response is empty"
+                           % (postfix, options, flavor))
+            return request_result
+        except Exception as exc:
+            utils.fail("Exception while making 'udm/%s' request with "
+                       "options '%s': %s" % (postfix, options, exc))
+
     def check_obj_exists(self, name, obj_type):
         """
         Checks if user, group or policy object with provided 'name' exists
@@ -99,23 +118,55 @@ class TestUMCSystem(object):
                    "objectPropertyValue": "",
                    "hidden": False}
         try:
-            request_result = self.Connection.request('udm/query', options,
-                                                     obj_type)
-            if not request_result:
-                utils.fail("Request 'udm/query' with options '%s' "
-                           "failed, hostname '%s'" % (options, self.hostname))
-            for result in request_result:
-                if result.get('name') == name:
+            for result in self.make_query_request('udm', options, obj_type):
+                if result['name'] in name:
                     return True
+        except KeyError as exc:
+            utils.fail("KeyError exception while parsing 'udm/query' "
+                       "request: %s" % exc)
+
+    def get_object(self, options, flavor):
+        """
+        Returns the request result of the 'udm/get' UMC connection,
+        made with provided 'options' and 'flavor'
+        """
+        try:
+            request_result = self.Connection.request('udm/get', options,
+                                                     flavor)
+            if request_result is None:
+                utils.fail("Request 'udm/get' with options '%s' failed, "
+                           "hostname '%s'" % (options, self.hostname))
+            return request_result
         except Exception as exc:
-            utils.fail("Exception while making 'udm/query' request: %s" %
+            utils.fail("Exception while making 'udm/get' request: %s" %
                        exc)
+
+    def modify_object(self, options, flavor):
+        """
+        Modifies the 'flavor' object as given in 'options' by making a
+        UMC request 'udm/put', checks for 'success' in the response
+        """
+        try:
+            request_result = self.Connection.request('udm/put', options,
+                                                     flavor)
+            if not request_result:
+                utils.fail("Request 'udm/put' to modify an object "
+                           "with options '%s' failed, hostname %s"
+                           % (options, self.hostname))
+            if not request_result[0].get('success'):
+                utils.fail("Request 'udm/put' to modify an object "
+                           "with options '%s' failed, no success = True in "
+                           "response, hostname %s, response '%s'"
+                           % (options, self.hostname, request_result))
+        except Exception as exc:
+            utils.fail("Exception while making 'udm/put' request with options "
+                       "'%s': %s" % (options, exc))
 
     def delete_obj(self, name, obj_type, flavor):
         """
         Deletes object with a 'name' by making UMC-request 'udm/remove'
         with relevant options and flavor depending on 'obj_type'
-        Supported types are: users, groups and policies.
+        Supported types are: users, groups, policies and extended attributes.
         """
         print "Deleting test object '%s' with a name: '%s'" % (obj_type, name)
 
@@ -125,6 +176,8 @@ class TestUMCSystem(object):
             obj_identifier = "cn=" + name + ",cn=" + obj_type + ","
         elif obj_type == 'policies':
             obj_identifier = "cn=" + name + ",cn=UMC,cn=" + obj_type + ","
+        elif obj_type == 'custom attributes':
+            obj_identifier = "cn=" + name + ",cn=" + obj_type + ",cn=univention,"
         else:
             utils.fail("The object identifier format is unknown for the "
                        "provided object type '%s'" % obj_type)
@@ -144,7 +197,8 @@ class TestUMCSystem(object):
             if not request_result[0].get('success'):
                 utils.fail("Request 'udm/remove' to delete object with options"
                            " '%s' failed, no success = True in response, "
-                           "hostname %s" % (options, self.hostname))
+                           "hostname '%s', response '%s'"
+                           % (options, self.hostname, request_result))
         except Exception as exc:
             utils.fail("Exception while making 'udm/remove' request: %s" %
                        exc)

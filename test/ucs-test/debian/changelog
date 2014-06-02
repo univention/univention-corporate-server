@@ -1,3 +1,12 @@
+ucs-test (4.0.166-21) unstable; urgency=low
+
+  * 60_umc-system/60_umc-service-extended-attributes:
+    Test the UMC extended attributes (Bug #34623)
+  * 60_umc-system/TestUMCSystemModule.py:
+    UMC test class extension and refactoring.
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 02 Jun 2014 10:56:09 +0200
+
 ucs-test (4.0.166-20) unstable; urgency=low
 
   * More DRS replication timeout related updates (Bug #35012)
