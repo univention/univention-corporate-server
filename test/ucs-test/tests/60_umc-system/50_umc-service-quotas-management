@@ -20,12 +20,13 @@ class TestUMCQuotasManagement(TestUMCSystem):
         """Test Class constructor"""
         super(TestUMCQuotasManagement, self).__init__()
         self.quota_was_in_use = None
+        self.test_mount_point = '/'
         self.partition_dev = ''
 
     def query_user_quotas(self, options='{}'):
         """
         Makes a 'quota/users/query' UMC request with provided options
-        and returns response 'result' with any status code
+        if any and returns response 'result' with any status code
         """
         try:
             # defining request explicitly, since the status
@@ -70,36 +71,43 @@ class TestUMCQuotasManagement(TestUMCSystem):
                 utils.fail("The field 'inUse' was not found in "
                            "quotas query '%s'" % quota)
 
-    def choose_partition_device(self, quotas_query, mount_point='/boot'):
+    def choose_partition_device(self, quotas_query):
         """
-        Looks through the provided 'quotas_query' for a 'mount_point',
-        returns respective partition device to use for the test.
-        Also saves initial quota state 'inUse' into global var.
-        Returns code 77 (RESULT_SKIP) in case '/boot' was not found.
+        Looks through the provided 'quotas_query' for a
+        'self.test_mount_point', saves respective partition device
+        to use for the test. Also saves initial quota state 'inUse'
+        into the global var. Returns code 77 (RESULT_SKIP) in case
+        'self.test_mount_point' was not found.
         """
         for quota in quotas_query:
-            if quota['mountPoint'] == mount_point:
+            if quota['mountPoint'] == self.test_mount_point:
                 self.quota_was_in_use = quota['inUse']
-                return quota['partitionDevice']
+                self.partition_dev = quota['partitionDevice']
+                return
         print "Failed to select a partition for the test, skipping"
         return self.return_code_result_skip()
 
-    def is_dev_quota_active(self, quotas_query):
+    def is_dev_quota_active(self):
         """
         Returns the 'inUse' field value of the quota with a
-        mount point '/boot' and 'self.partition_dev' from
-        the provided 'quotas_query'
+        mount point 'self.test_mount_point' and 'self.partition_dev'.
+        Makes a query for 'quota/partitions' request.
         """
-        for quota in quotas_query:
+        for quota in self.make_query_request('quota/partitions'):
             if ((quota['partitionDevice'] == self.partition_dev) and
-                (quota['mountPoint'] == '/boot')):
+                (quota['mountPoint'] == self.test_mount_point)):
                 return quota['inUse']
 
-    def is_user_quota_active(self, user_quotas, username):
+    def is_user_quota_active(self, username):
         """
-        Returns True when quota is found among the given 'user_quotas'
-        for a user with provided 'username'
+        Makes a query request for user quotas and returns True when
+        quota is found for a user with provided 'username'.
         """
+        options = {"filter": "*",
+                   "partitionDevice": self.partition_dev}
+        options = json.dumps({"options": options})
+
+        user_quotas = self.query_user_quotas(options)
         if user_quotas:
             try:
                 for quota in user_quotas:
@@ -180,38 +188,32 @@ class TestUMCQuotasManagement(TestUMCSystem):
 
         with udm_test.UCSTestUDM() as UDM:
             print("Creating a test user for testing user-specific "
-                  "quotas set up")
+                  "quotas setup through UMC")
             test_user_dn = UDM.create_user(password='univention',
                                            username=test_username)[0]
             utils.verify_ldap_object(test_user_dn)
-
             try:
-                print "Making 'quota/partitions' query request"
+                print("Making 'quota/partitions' query request and "
+                      "checking response structure")
                 quotas_query = self.make_query_request('quota/partitions')
-                print "Checking quotas query response structure"
                 self.check_quotas_query(quotas_query)
 
                 print("Choosing partition device for the test "
-                      "(with '/boot' mount point)")
-                self.partition_dev = self.choose_partition_device(quotas_query)
-                query_options = {"filter": "*",
-                                 "partitionDevice": self.partition_dev}
-                query_options = json.dumps({"options": query_options})
+                      "(with '%s' mount point)" % self.test_mount_point)
+                self.choose_partition_device(quotas_query)
 
-                print("Deactivating quotas for partition '%s'"
+                print("Deactivating quotas for partition device '%s'"
                       % self.partition_dev)
                 self.activate_deactivate_quota('deactivate')
-                if self.is_dev_quota_active(
-                    self.make_query_request('quota/partitions')):
+                if self.is_dev_quota_active():
                     utils.fail("The quota on a device '%s' was reported as "
                                "'inUse' after the deactivation"
                                % self.partition_dev)
 
-                print("Activating quotas for '%s' partition"
+                print("Activating quotas for '%s' partition device"
                       % self.partition_dev)
                 self.activate_deactivate_quota('activate')
-                if not self.is_dev_quota_active(
-                    self.make_query_request('quota/partitions')):
+                if not self.is_dev_quota_active():
                     utils.fail("The quota on a device '%s' was reported as "
                                "not 'inUse' after being activated"
                                % self.partition_dev)
@@ -219,8 +221,7 @@ class TestUMCQuotasManagement(TestUMCSystem):
                 print("Setting '%s' user quota for '%s' partition"
                       % (test_username, self.partition_dev))
                 self.set_remove_user_quota('set', test_username)
-                if not self.is_user_quota_active(
-                    self.query_user_quotas(query_options), test_username):
+                if not self.is_user_quota_active(test_username):
                     utils.fail("The user '%s' quota for '%s' reported as "
                                "inactive after it was set"
                                % (test_username, self.partition_dev))
@@ -228,31 +229,30 @@ class TestUMCQuotasManagement(TestUMCSystem):
                 print("Removing '%s' user quota for '%s' partition"
                       % (test_username, self.partition_dev))
                 self.set_remove_user_quota('remove', test_username)
-                if self.is_user_quota_active(
-                    self.query_user_quotas(query_options), test_username):
+                if self.is_user_quota_active(test_username):
                     utils.fail("The user '%s' quota for '%s' reported as "
                                "active after the quota was removed"
                                % (test_username, self.partition_dev))
 
-                print("Deactivating quotas for '%s' partition"
+                print("Deactivating quotas for '%s' partition device"
                       % self.partition_dev)
                 self.activate_deactivate_quota('deactivate')
-                if self.is_dev_quota_active(
-                    self.make_query_request('quota/partitions')):
+                if self.is_dev_quota_active():
                     utils.fail("The quota on a device '%s' was reported as "
                                "'inUse' after being deactivated"
                                % self.partition_dev)
             finally:
-                print("Cleaning up created quotas and test user (if any), "
-                      "restoring initial partition quota "
+                print("Cleaning up created quotas and the test user "
+                      "(if any), restoring initial partition quota "
                       "setting to 'inUse=%s'" % self.quota_was_in_use)
                 if self.partition_dev:
-                    # Make sure that quota is active to get the test user quota
+                    # Make sure that quota is active to get the test user
+                    # quota settings:
                     self.activate_deactivate_quota('activate')
-                    if self.is_user_quota_active(
-                        self.query_user_quotas(query_options), test_username):
+                    # The test user quota is always removed to avoid
+                    # 'hanging' of quotas (Bug #34879)
+                    if self.is_user_quota_active(test_username):
                         self.set_remove_user_quota('remove', test_username)
-
                     if self.quota_was_in_use is False:
                         self.activate_deactivate_quota('deactivate')
 
