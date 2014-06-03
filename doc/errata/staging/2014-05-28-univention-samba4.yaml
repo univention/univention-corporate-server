@@ -2,10 +2,12 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-samba4
-fix: 3.0.39-20.575.201405271546
+fix: 3.0.39-22.576.201406031807
 version: [1,2]
 desc: |
-    This updates fixes an issue in the replication of the sysvol share data:
+    This updates fixes the following issues in univention-samba4:
+    * Clean up /var/lib/samba/private before new provision (relevant for UCS@school Slave PDCs)
+    * Preserve /var/lib/samba/*, only clear private subdir before re-join
     * Modifications of access rights of GPOs could get reset by the sysvol
       replication. This affected directories in the sysvol share.
-bug: [33751]
+bug: [32246,33751,35000]
