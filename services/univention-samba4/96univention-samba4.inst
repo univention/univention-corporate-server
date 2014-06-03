@@ -247,6 +247,7 @@ set_samba4_ldap_base() {
 }
 
 run_samba_provision() {
+	cleanup_var_lib_samba
 	## Provision Samba4
 	/usr/share/univention-samba4/scripts/setup-s4.sh "$@" "${SITE_OPTION[@]}"
 	rc="$?"
