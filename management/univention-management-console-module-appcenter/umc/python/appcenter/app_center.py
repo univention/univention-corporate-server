@@ -37,6 +37,7 @@ import platform
 import time
 from distutils.version import LooseVersion
 from gzip import GzipFile
+from tarfile import TarFile
 import base64
 from StringIO import StringIO
 import ConfigParser
@@ -566,7 +567,7 @@ class Application(object):
 		files_in_json_file = []
 		for appname, appinfo in json_apps.iteritems():
 			for appfile, appfileinfo in appinfo.iteritems():
-				filename = '%s.%s' % (appname, appfile)
+				filename = os.path.basename('%s.%s' % (appname, appfile))
 				remote_md5sum = appfileinfo['md5']
 				remote_url = appfileinfo['url']
 				# compare with local cache
@@ -588,30 +589,44 @@ class Application(object):
 				MODULE.info('Deleting obsolete %s' % cached_filename)
 				something_changed = True
 				os.unlink(cached_filename)
-		def _download(url, dest):
-			MODULE.info('Downloading %s to %s' % (url, dest))
+		num_files_to_be_downloaded = len(files_to_download)
+		MODULE.process('%d file(s) need to be downloaded' % num_files_to_be_downloaded)
+		if num_files_to_be_downloaded > 5:
+			# a lot of files to download? Do not download them
+			#   one at a time. Download the full archive!
+			archive_url = urljoin('%s/' % cls.get_metainf_url(), 'all.tar.gz')
 			try:
-				urlcontent = urlopen(url)
-			except Exception as e:
-				MODULE.error('Error downloading %s: %s' % (url, e))
+				compressed = StringIO(urlopen(archive_url).read())
+				content = StringIO(GzipFile(mode='rb', fileobj=compressed).read())
+				archive = TarFile(fileobj=content)
+			except:
+				MODULE.error('Could not read "%s"' % archive_url)
+				raise
 			else:
-				with open(dest, 'wb') as f:
-					f.write(urlcontent.read())
-		threads = []
-		for filename_url, filename in files_to_download:
-			# dont forget to quote: 'foo & bar.ini' -> 'foo%20&%20bar.ini'
-			# but dont quote https:// -> https%3A//
-			parts = list(urlsplit(filename_url))
-			parts[2] = urllib2.quote(parts[2]) # 0 -> scheme, 1 -> netloc, 2 -> path
-			filename_url = urlunsplit(parts)
+				for filename_url, filename in files_to_download:
+					MODULE.info('Extracting %s' % filename)
+					try:
+						archive.extract(filename, path=CACHE_DIR)
+					except KeyError:
+						MODULE.warn('%s not found in archive!' % filename)
+		else:
+			for filename_url, filename in files_to_download:
+				# dont forget to quote: 'foo & bar.ini' -> 'foo%20&%20bar.ini'
+				# but dont quote https:// -> https%3A//
+				parts = list(urlsplit(filename_url))
+				parts[2] = urllib2.quote(parts[2]) # 0 -> scheme, 1 -> netloc, 2 -> path
+				filename_url = urlunsplit(parts)
 
-			cached_filename = os.path.join(CACHE_DIR, filename)
+				cached_filename = os.path.join(CACHE_DIR, filename)
 
-			thread = Thread(target=_download, args=(filename_url, cached_filename))
-			thread.start()
-			threads.append(thread)
-		for thread in threads:
-			thread.join()
+				MODULE.info('Downloading %s to %s' % (filename_url, cached_filename))
+				try:
+					urlcontent = urlopen(filename_url)
+				except Exception as e:
+					MODULE.error('Error downloading %s: %s' % (filename_url, e))
+				else:
+					with open(cached_filename, 'wb') as f:
+						f.write(urlcontent.read())
 		if something_changed:
 			# some variables could change apps.xml
 			# e.g. Name, Description
@@ -777,6 +792,7 @@ class Application(object):
 			res['candidate_component_id'] = self.candidate.component_id
 			res['candidate_readmeupdate'] = self.candidate.get('readmeupdate')
 			res['candidate_readmepostupdate'] = self.candidate.get('readmepostupdate')
+		res['fully_loaded'] = True
 		return res
 
 	def __repr__(self):

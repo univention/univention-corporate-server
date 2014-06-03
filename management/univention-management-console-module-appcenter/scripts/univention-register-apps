@@ -32,7 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-import signal
 import sys
 from optparse import OptionParser
 
@@ -45,11 +44,6 @@ from univention.management.console.modules.appcenter.app_center import Applicati
 ucr = ConfigRegistry()
 ucr.load()
 
-GLOBAL_TIMEOUT = 120
-
-class RegisterAppsTimeout(Exception):
-    pass
-
 def register_all_installed():
 	uu = UniventionUpdater(False)
 	component_manager = ComponentManager(ucr, uu)
@@ -60,10 +54,6 @@ def register_all_installed():
 		app.register(component_manager, package_manager)
 		app.tell_ldap(ucr, package_manager, inform_about_error=False)
 
-def sigalarm_handler(signum, frame):
-	sys.stderr.write('Timeout.\n')
-	raise RegisterAppsTimeout
-
 if __name__ == '__main__':
 	args = ucr.get('hostname'), ucr.get('domainname'), Application.get_server(with_scheme=True)
 	usage = '%prog'
@@ -71,9 +61,6 @@ if __name__ == '__main__':
 	parser = OptionParser(usage=usage, description=description)
 	parser.parse_args()
 
-	# register sigalarm
-	signal.signal(signal.SIGALRM, sigalarm_handler)
-	signal.alarm(GLOBAL_TIMEOUT)
 	try:
 		register_all_installed()
 	except Exception as exc:

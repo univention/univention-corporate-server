@@ -114,7 +114,7 @@ def install_opener(ucr):
 def urlopen(request):
 	# use this in __init__ and app_center
 	# to have the proxy handler installed globally
-	return urllib2.urlopen(request)
+	return urllib2.urlopen(request, timeout=60)
 
 def get_current_ram_available():
 	''' Returns RAM currently available in MB, excluding Swap '''

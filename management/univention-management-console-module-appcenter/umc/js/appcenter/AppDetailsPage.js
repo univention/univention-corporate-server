@@ -34,6 +34,7 @@ define([
 	"dojo/_base/kernel",
 	"dojo/_base/array",
 	"dojo/promise/all",
+	"dojo/when",
 	"dojo/query",
 	"dojo/io-query",
 	"dojo/topic",
@@ -55,7 +56,7 @@ define([
 	"umc/widgets/Page",
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, all, query, ioQuery, topic, Deferred, timing, domConstruct, domStyle, Lightbox, put, UMCApplication, tools, libServer, dialog, TitlePane, Text, TextBox, ContainerWidget, ProgressBar, Page, AppCenterGallery, _) {
+], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, timing, domConstruct, domStyle, Lightbox, put, UMCApplication, tools, libServer, dialog, TitlePane, Text, TextBox, ContainerWidget, ProgressBar, Page, AppCenterGallery, _) {
 	return declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
 		appLoadingDeferred: null,
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
@@ -84,16 +85,24 @@ define([
 			if (this.appLoadingDeferred.isFulfilled()) {
 				this.appLoadingDeferred = new Deferred();
 			}
-			tools.umcpCommand(this.getAppCommand, {'application': app.id}).then(lang.hitch(this, function(data) {
-				var appFromServer = data.result;
-				if (appFromServer === null) {
+			var appLoaded = app;
+			if (!app.fully_loaded) {
+				// app is just {id: '...'}!
+				// we need to ask the server,
+				// it is not yet known!
+				appLoaded = tools.umcpCommand(this.getAppCommand, {'application': app.id}).then(function(data) {
+					return data.result;
+				});
+			}
+			when(appLoaded).then(lang.hitch(this, function(loadedApp) {
+				if (loadedApp === null) {
 					this.onBack();
 					this.appLoadingDeferred.reject();
 					return;
 				}
-				this._set('app', appFromServer);
-				this.detailsDialog.set('app', appFromServer);
-				this.set('headerText', appFromServer.name);
+				this._set('app', loadedApp);
+				this.detailsDialog.set('app', loadedApp);
+				this.set('headerText', loadedApp.name);
 				this.buildInnerPage();
 				this.appLoadingDeferred.resolve();
 			}));

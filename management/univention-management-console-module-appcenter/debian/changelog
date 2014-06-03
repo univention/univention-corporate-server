@@ -1,3 +1,13 @@
+univention-management-console-module-appcenter (3.0.51-16) unstable; urgency=low
+
+  * Bug #32935: Do not download all missing files from the App Center server
+    in parallel. If many files are missing, download the complete archive at
+    once instead.
+  * Bug #31915: Do not load the application again when clicking on it in the
+    App Center module. Open it immediately.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 03 Jun 2014 16:05:28 +0200
+
 univention-management-console-module-appcenter (3.0.51-15) unstable; urgency=low
 
   * Bug #34243: Reload UMC modules after installing/uninstalling/etc. an app
