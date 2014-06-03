@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.51-17) unstable; urgency=low
+
+  * Bug #34867: Remove radius component. It was added by mistake as
+    univention-radius is part of the main repository.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 03 Jun 2014 17:35:43 +0200
+
 univention-management-console-module-appcenter (3.0.51-16) unstable; urgency=low
 
   * Bug #32935: Do not download all missing files from the App Center server

@@ -74,5 +74,25 @@ if dpkg --compare-versions "$2" lt-nl 3.0.51-5; then
 	/usr/sbin/univention-rename-app tine20org tine20
 fi
 
+if dpkg --compare-versions "$2" lt-nl 3.0.51-17; then
+	python -c "
+from univention.updater import UniventionUpdater
+from univention.config_registry import ConfigRegistry
+from univention.management.console.modules.appcenter.util import ComponentManager, install_opener
+from univention.management.console.modules.appcenter.app_center import Application
+
+ucr = ConfigRegistry()
+ucr.load()
+uu = UniventionUpdater(False)
+component_manager = ComponentManager(ucr, uu)
+
+install_opener(ucr)
+
+app = Application.find('radius')
+if app:
+  component_manager.remove_app(app)
+"
+fi
+
 exit 0
 
