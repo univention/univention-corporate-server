@@ -1,3 +1,10 @@
+univention-samba4 (3.0.39-21) unstable; urgency=medium
+
+  * Preserve /var/lib/samba/*, only clear private subdir before join
+    (Bug #35000)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 03 Jun 2014 18:03:28 +0200
+
 univention-samba4 (3.0.39-20) unstable; urgency=medium
 
   * Use the new rsync --dirs-update option in sysvol-sync.sh (Bug #33751)

@@ -494,9 +494,12 @@ var_lib_samba_is_s4 ()
 
 cleanup_var_lib_samba ()
 {
+	local backup_folder
+	backup_folder="/var/lib/samba_backup_$(date +%Y%m%d%H%M%S)"
 	if var_lib_samba_is_s4; then
-		mv /var/lib/samba "/var/lib/samba_backup_$(date +%Y%m%d%H%M%S)"
-		mkdir -p /var/lib/samba/private
+		mv /var/lib/samba "$backup_folder"
+		## and copy everything back except private/*
+		rsync -a --exclude /private/* "$backup_folder/" /var/lib/samba
 	fi
 }
 
