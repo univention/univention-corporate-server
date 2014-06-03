@@ -2,9 +2,20 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-management-console-module-appcenter
-fix: 3.0.51-15.249.201405301403
+fix: 3.0.51-17.251.201406031738
 version: [2]
 desc: |
   This update fixes the following issues:
   * After a app (un)-installation the overview of UMC modules is reloaded immediately.
-bug: [34243]
+  * Improved performance: Applications are opened immediately when clicking on
+    them from the App Gallery.
+  * Improved performance: When new apps are added or existing apps' meta
+    information changes, new files need to be downloaded from the server. If
+    many files have changed, instead of downloading them all one after another,
+    a compiled archive is downloaded and the files are extracted. This also
+    fixes issues with many concurrent connections opened on the App Center
+    server.
+  * A dedicated component for the Radius application is removed (if Radius is
+    installed). It was added by mistake as univention-radius is part of the
+    main repository.
+bug: [34243, 31915, 32935, 34867]
