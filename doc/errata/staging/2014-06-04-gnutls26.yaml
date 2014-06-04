@@ -8,5 +8,6 @@ desc: |
  Joonas Kuorilehto discovered that GNU TLS performed insufficient
  validation of session IDs during TLS/SSL handshakes. A malicious
  server could use this to execute arbitrary code or perform denial
+ of service.
 cve:
  - CVE-2014-3466
