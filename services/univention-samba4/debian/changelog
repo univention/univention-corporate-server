@@ -1,3 +1,10 @@
+univention-samba4 (3.0.39-23) unstable; urgency=medium
+
+  * Save and restore rIDNextRID during re-join and re-provision if possible
+    (Bug #34754)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 04 Jun 2014 16:10:18 +0200
+
 univention-samba4 (3.0.39-22) unstable; urgency=medium
 
   * Also clean up /var/lib/samba/private before new provision
