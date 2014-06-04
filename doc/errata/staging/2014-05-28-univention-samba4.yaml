@@ -10,4 +10,4 @@ desc: |
     * Preserve /var/lib/samba/*, only clear private subdir before re-join
     * Modifications of access rights of GPOs could get reset by the sysvol
       replication. This affected directories in the sysvol share.
-bug: [32246,33751,35000]
+bug: [32246,35000,33751]
