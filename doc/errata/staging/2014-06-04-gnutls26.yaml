@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+version: [0, 1]
+scope: ucs_3.2-0-errata3.2-2
+src: gnutls26
+fix: 2.8.6-1.26.201406040738
+desc: |
+ Joonas Kuorilehto discovered that GNU TLS performed insufficient
+ validation of session IDs during TLS/SSL handshakes. A malicious
+ server could use this to execute arbitrary code or perform denial
+cve:
+ - CVE-2014-3466
