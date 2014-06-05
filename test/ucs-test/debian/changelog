@@ -1,3 +1,9 @@
+ucs-test (4.0.166-23) unstable; urgency=low
+
+  * 00_base/07kpasswd_output: set exposure back to dangerous(Bug #30750)
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 05 Jun 2014 16:16:04 +0200
+
 ucs-test (4.0.166-22) unstable; urgency=low
 
   * 51_samba4/41samba-tool_user_password_change: use the previous
