@@ -653,7 +653,7 @@ ucs_registerLDAPExtension "$@" \
   --udm_syntax /path/to/appudmsyntax.py
 
 ucs_registerLDAPExtension "$@" \
-  --umc_module /path/to/appudmmodule.py \
+  --udm_module /path/to/appudmmodule.py \
   --messagecatalog /path/to/de.mo \
   --messagecatalog /path/to/eo.mo \
   --umcregistration /path/to/module-object.xml \
