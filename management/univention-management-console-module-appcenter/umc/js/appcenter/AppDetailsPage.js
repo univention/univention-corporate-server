@@ -109,7 +109,8 @@ define([
 		},
 
 		reloadPage: function() {
-			this.set('app', this.get('app'));
+			// reset same app, but only pass the id => loads new from server
+			this.set('app', {id: this.app.id});
 			return this.appLoadingDeferred;
 		},
 
