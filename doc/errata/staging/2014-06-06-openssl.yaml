@@ -1,0 +1,27 @@
+product: ucs
+release: "3.2"
+version: [1, 2]
+scope: ucs_3.2-0-errata3.2-2
+src: openssl
+fix: 0.9.8o-4.76.201406060850
+desc: |
+ This update fixes multiple security issues in OpenSSL:
+ * ECSDA nonces can be retrieved through side channel attacks on cache 
+   timings
+ * A buffer overflow in processing DTLS fragments could lead to the 
+   execution of arbitrary code or denial of service ()
+ * The processing of DTLS hello packets is susceptible to denial of 
+   service
+ * Carefully crafted handshakes can force the use of weak keys, 
+   resulting in potential man-in-the-middle attacks. This requires a 
+   vulnerable TLS client and TLS server. The OpenSSL release used in
+   UCS 3.2 is not only affected when acting as a TLS client.
+ * The implementation of anonymous ECDH ciphersuites is suspectible 
+   to denial of service
+note:
+cve:
+ - CVE-2014-0076
+ - CVE-2014-0195
+ - CVE-2014-0221
+ - CVE-2014-0224
+ - CVE-2014-3470
