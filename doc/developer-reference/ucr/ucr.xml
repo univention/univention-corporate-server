@@ -208,7 +208,7 @@ if ucr.is_false('repository/online/unmaintained', True):
 			<example>
 				<title>Changing &ucsUCRV;s in Python</title>
 				<programlisting><![CDATA[
-from univention.config_registry.handler import ucr_update
+from univention.config_registry.frontend import ucr_update
 ucr_update(ucr, {
 	'foo': 'bar',
 	'baz': '42',
