@@ -36,7 +36,7 @@ class TestUMCServiceProcessHandling(TestUMCSystem):
             if not self.get_service_current_pid():
                 utils.fail("Failed to restore '%s' to initial running state,"
                            " the process id is empty." % self.service_name)
-        elif not self.initial_service_state_running:
+        elif self.initial_service_state_running is False:
             print("Trying to restore the '%s' to initially stopped state"
                   % self.service_name)
             self.do_service_action([self.service_name], 'stop')
