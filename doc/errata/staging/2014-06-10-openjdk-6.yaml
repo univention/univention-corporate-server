@@ -1,0 +1,46 @@
+product: ucs
+release: "3.2"
+version: [1, 2]
+scope: ucs_3.2-0-errata3.2-2
+src: openjdk-6
+fix: 
+desc: |
+ Multiple vulnerabilities have been discovered in the implementation
+ of the Java platform. In Univention Corporate Server OpenJDK is
+ used instead of Oracle Java. This erratum updates OpenJDK to the
+ released based on the Oracle update 6u71.
+note:
+cve:
+ - CVE-2013-5878
+ - CVE-2013-5884
+ - CVE-2013-5896 
+ - CVE-2013-5907 
+ - CVE-2013-5910 
+ - CVE-2014-0368 
+ - CVE-2014-0373 
+ - CVE-2014-0376 
+ - CVE-2014-0411 
+ - CVE-2014-0416 
+ - CVE-2014-0422 
+ - CVE-2014-0423 
+ - CVE-2014-0428 
+ - CVE-2014-0429 
+ - CVE-2014-0446 
+ - CVE-2014-0451 
+ - CVE-2014-0452 
+ - CVE-2014-0453 
+ - CVE-2014-0456 
+ - CVE-2014-0457 
+ - CVE-2014-0458 
+ - CVE-2014-0460 
+ - CVE-2014-0461 
+ - CVE-2014-1876 
+ - CVE-2014-2397 
+ - CVE-2014-2398 
+ - CVE-2014-2403 
+ - CVE-2014-2412 
+ - CVE-2014-2414 
+ - CVE-2014-2421 
+ - CVE-2014-2423 
+ - CVE-2014-2427
+
