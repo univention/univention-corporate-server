@@ -1,3 +1,13 @@
+univention-nagios (7.0.6-3) unstable; urgency=low
+
+  * Bug #34570: Change UNIVENTION_NTP nagios check to compare ntp server
+    time by using the check_time nagios plugin.
+    The previous check also asked for ntp server configuration options,
+    which are not relevant for this check and, since UCS 3.2 errata 20,
+    are not allowed to be queried from external sources.
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 10 Jun 2014 12:45:15 +0200
+
 univention-nagios (7.0.6-2) unstable; urgency=low
 
   * fixed init script for nrpe server (Bug #34063) 

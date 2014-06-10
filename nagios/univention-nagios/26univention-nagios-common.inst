@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=3
+VERSION=4
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -97,7 +97,7 @@ univention-directory-manager nagios/service create "$@" --ignore_exists --positi
 
 univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_LDAP_AUTH" --set description="Default Service: check if service ldap is ok using authenticated bind" --set checkCommand="check_univention_ldap"  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" || die
 
-univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_NTP" --set description="Default Service: check if service ntp is ok" --set checkCommand="check_ntp" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" || die
+univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_NTP" --set description="Default Service: check if service ntp is ok" --set checkCommand="check_univention_ntp" --set checkArgs='10!60' --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" || die
 
 univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_SMTP2" --set description="Default Service: check if service smtp is ok" --set checkCommand="check_univention_smtp"  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" || die
 
@@ -118,6 +118,12 @@ univention-directory-manager nagios/service create "$@" --ignore_exists --positi
 univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_NMBD" --set description="Default Service: check if nmbd is functional" --set checkCommand="check_univention_nmbd" --set checkArgs="" --set useNRPE="1" --set normalCheckInterval="15" --set retryCheckInterval="2" --set maxCheckAttempts="2" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" || die
 
 univention-directory-manager nagios/service create "$@" --ignore_exists --position="$NAGIOSCONTAINER" --set name="UNIVENTION_JOINSTATUS" --set description="Default Service: check if system has been joined successfully" --set checkCommand="check_univention_joinstatus" --set checkArgs="" --set useNRPE="1" --set normalCheckInterval="180" --set retryCheckInterval="30" --set maxCheckAttempts="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7" || die
+
+if joinscript_check_version_in_range_executed 1 3; then
+	if ! joinscript_check_version_in_range_executed 4 99; then
+		univention-directory-manager nagios/service modify "$@" --dn "cn=UNIVENTION_NTP,$NAGIOSCONTAINER" --set checkCommand="check_univention_ntp" --set checkArgs='10!60' || die
+	fi
+fi
 
 joinscript_save_current_version
 
