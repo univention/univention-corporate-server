@@ -1738,7 +1738,7 @@ univention-ad-takeover IP-of-the-AD-server
 	  to the screen at the end of phase I:
 
 	  <programlisting language="sh">
-robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\\sysvol
+robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\sysvol
 	  </programlisting>
 
 	  It may be necessary to install the required robocopy tool, which is part of the Windows Server

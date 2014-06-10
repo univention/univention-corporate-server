@@ -1757,7 +1757,7 @@ univention-ad-takeover IP-des-AD-Servers
 	  Das aufzurufende Kommando wird am Ende der Phase 1 angezeigt:
 
 	  <programlisting language="sh">
-robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\\sysvol
+robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\sysvol
 	  </programlisting>
 	  
 	  Wenn <command>robocopy</command> nicht vorhanden ist, kann es mit den Windows Server 2003
