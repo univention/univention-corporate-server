@@ -66,7 +66,8 @@ properties = {
 	'CLIName': random_name(),
 	'module': 'container/cn',
 	'objectClass': 'univentionTestAttributes%(attribute_id)s' % {'attribute_id': attribute_id},
-	'ldapMapping': 'univentionTestAttribute%(attribute_id)s' % {'attribute_id': attribute_id}
+	'ldapMapping': 'univentionTestAttribute%(attribute_id)s' % {'attribute_id': attribute_id,
+	'position': 'cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base')}
 }
 
 extended_attribute = udm.create_object('settings/extended_attribute', **properties)
@@ -86,7 +87,8 @@ sleep(5)
 
 properties = {
 	'name': random_name(),
-	'univentionTestAttribute%(attribute_id)s' % {'attribute_id': attribute_id}: random_name()
+	'univentionTestAttribute%(attribute_id)s' % {'attribute_id': attribute_id}: random_name(),
+	'position': 'cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base')
 }
 container = udm.create_object('container/cn', **properties)
 
