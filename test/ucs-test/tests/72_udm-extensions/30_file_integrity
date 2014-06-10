@@ -10,6 +10,7 @@ import univention.testing.udm as udm_test
 from univention.testing.utils import wait_for_replication, fail
 from univention.testing.strings import random_name, random_version
 from univention.testing.udm_extensions import *
+from univention.config_registry import ConfigRegistry
 import os
 import bz2
 import base64
@@ -20,6 +21,9 @@ import grp
 if __name__ == '__main__':
 	# wait for replicate before test starts
 	wait_for_replication()
+	
+	ucr = ConfigRegistry()
+	ucr.load()
 
 	for extension_type in ('hook', 'syntax', 'module'):
 		print '========================= TESTING EXTENSION %s =============================' % extension_type
@@ -39,7 +43,8 @@ if __name__ == '__main__':
 								   packageversion = package_version,
 								   appidentifier = app_id,
 								   package = package_name,
-								   active = 'FALSE')
+								   active = 'FALSE',
+								   position = 'cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'))
 
 			# wait for replication before local filesystem is checked
 			wait_for_replication()

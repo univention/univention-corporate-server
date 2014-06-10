@@ -24,7 +24,7 @@ set -o pipefail
 set -o nounset #If expansion is attempted on an unset variable or parameter --> prints error
 
 container_name="$(random_chars 20 "${_lowerletters}${_upperletters}${_ciphers}")"
-container_position="cn=univention,$ldap_base"
+container_position="cn=custom attributes,cn=univention,$ldap_base"
 
 create_container_with_description () {
 	local description=$1

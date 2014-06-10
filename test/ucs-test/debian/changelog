@@ -1,3 +1,11 @@
+ucs-test (4.0.166-24) unstable; urgency=low
+
+  * in certain tests, do not create objects below
+    cn=univention,$ldap_base for ucs@school slave compatibility
+  (Bug #33825)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 10 Jun 2014 17:20:14 +0200
+
 ucs-test (4.0.166-23) unstable; urgency=low
 
   * 00_base/07kpasswd_output: set exposure back to dangerous(Bug #30750)

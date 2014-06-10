@@ -58,6 +58,7 @@ if __name__ == '__main__':
 				if not dn:
 					dn = udm.create_object('settings/udm_%s' % extension_type,
 										   name = extension_name,
+										   position = 'cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
 										   **properties)
 				else:
 					udm.modify_object('settings/udm_%s' % extension_type,
