@@ -35,7 +35,7 @@ import notifier
 
 import univention.management.console as umc
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import *
+from univention.management.console.protocol.definitions import MODULE_ERR, SUCCESS
 
 import df
 import mtab

@@ -37,11 +37,11 @@ import math
 
 import notifier.popen
 import univention.management.console as umc
-from univention.management.console.log import MODULE
 
 from univention.lib import fstab
 
 _ = umc.Translation('univention-management-console-modules-quota').translate
+
 
 class UserQuota(dict):
 	def __init__(self, partition, user, bused, bsoft,
@@ -71,7 +71,8 @@ class UserQuota(dict):
 		elif ':' in value:
 			self[time] = value
 
-def repquota(partition, callback, user = None):
+
+def repquota(partition, callback, user=None):
 	args = ''
 
 	# find filesystem type
@@ -89,6 +90,7 @@ def repquota(partition, callback, user = None):
 	proc = notifier.popen.Shell(cmd, stdout = True)
 	proc.signal_connect('finished', callback)
 	proc.start()
+
 
 def repquota_parse(partition, output):
 	result = []
@@ -109,11 +111,16 @@ def repquota_parse(partition, output):
 		result.append(quota)
 	return result
 
+
 def setquota(partition, user, bsoft, bhard, fsoft, fhard):
 	cmd = ('/usr/sbin/setquota', '-u', user, str(bsoft), str(bhard),
 	       str(fsoft), str(fhard), partition)
-	result = subprocess.call(cmd)
-	return result
+	return subprocess.call(cmd)
+
+
+class QuotaActivationError(Exception):
+	pass
+
 
 def activate_quota(partition, activate, callback):
 	if not isinstance(partition, list):
@@ -124,75 +131,80 @@ def activate_quota(partition, activate, callback):
 	thread = notifier.threads.Simple('quota', func, callback)
 	thread.run()
 
+
 def _do_activate_quota(partitions, activate):
 	fs = fstab.File()
 	failed = []
 	for device in partitions:
-		part = fs.find(spec = device)
+		part = fs.find(spec=device)
 		if not part:
-			failed.append({'partitionDevice': partition.spec,
-			               'success': False,
-			               'message': _('Device could not be found')})
+			failed.append({'partitionDevice': device, 'success': False, 'message': _('Device could not be found')})
 			continue
+
+		quota_enabled = 'usrquota' in part.options
+		if not (activate ^ quota_enabled):
+			failed.append({'partitionDevice': part.spec, 'success': True, 'message': _('Quota already en/disabled')})
+			continue
+
 		if activate:
-			if not 'usrquota' in part.options:
-				part.options.append('usrquota')
-				fs.save()
-			else:
-				# operation successful: nothing to be done
-				continue
-			if part.type == 'xfs':
-				failed.append(_activate_quota_xfs(part))
-			elif part.type in ('ext2', 'ext3', 'ext4'):
-				failed.append(_activate_quota_ext(part, True))
+			part.options.append('usrquota')
 		else:
-			if not 'usrquota' in part.options:
-				continue
-			else:
-				part.options.remove('usrquota')
-				fs.save()
-			if part.type == 'xfs':
-				failed.append(_activate_quota_xfs(part))
-			elif part.type in ('ext2', 'ext3', 'ext4'):
-				failed.append(_activate_quota_ext(part, True))
+			part.options.remove('usrquota')
+
+		fs.save()
+
+		if part.type == 'xfs':
+			activation_function = _activate_quota_xfs
+		elif part.type in ('ext2', 'ext3', 'ext4'):
+			activation_function = _activate_quota_ext
+		else:
+			failed.append({'partitionDevice': part.spec, 'success': True, 'message': _('Unknown filesystem')})
+			continue
+
+		try:
+			activation_function(part)
+		except QuotaActivationError as exc:
+			failed.append({'partitionDevice': part.spec, 'success': False, 'message': str(exc)})
+		else:
+			failed.append({'partitionDevice': part.spec, 'success': True, 'message': _('Operation was successful')})
 
 	return failed
 
+
 def _activate_quota_xfs(partition):
-	if subprocess.call(('/bin/umount', partition.spec)):
-		return {'partitionDevice': partition.spec, 'success': False,
-		        'message':  _('Unmounting the partition has failed')}
-	if subprocess.call(('/bin/mount', partition.spec)):
-		return {'partitionDevice': partition.spec, 'success': False,
-		        'message': _('Mounting the partition has failed')}
+	if partition.mount_point != '/':
+		if subprocess.call(('/bin/umount', partition.spec)):
+			raise QuotaActivationError(_('Unmounting the partition has failed'))
+
+		if subprocess.call(('/bin/mount', partition.spec)):
+			raise QuotaActivationError(_('Mounting the partition has failed'))
+
 	if subprocess.call(('/usr/sbin/invoke-rc.d', 'quota', 'restart')):
-		return {'partitionDevice': partition.spec, 'success': False,
-		        'message':  _('Restarting the quota services has failed')}
+		raise QuotaActivationError(_('Restarting the quota services has failed'))
 
-	return {'partitionDevice': partition.spec, 'success': True,
-	        'message': _('Operation was successful')}
 
-def _activate_quota_ext(partition, create):
+def _activate_quota_ext(partition):
 	if subprocess.call(('/bin/mount', '-o', 'remount', partition.spec)):
-		return {'partitionDevice': partition.spec, 'success': False,
-	        'message':  _('Remounting the partition has failed')}
-	if create:
-		result = subprocess.call(('/sbin/quotacheck', '-u', partition.mount_point))
-		if result not in [0, 6]:
-			return {'partitionDevice': partition.spec, 'success': False,
-	        'message':  _('Generating the quota information file failed')}
-	if subprocess.call(('/usr/sbin/invoke-rc.d', 'quota', 'restart')):
-		return {'partitionDevice': partition.spec, 'success': False,
-	        'message': _('Restarting the quota services has failed')}
+		raise QuotaActivationError(_('Remounting the partition has failed'))
 
-	return {'partitionDevice': partition.spec, 'success': True,
-	        'message': _('Operation was successful')}
+	args = ['/sbin/quotacheck']
+	if partition.mount_point == '/':
+		args.append('-m')
+	args.extend(['-u', partition.mount_point])
+
+	result = subprocess.call(args)
+	if result not in (0, 6):
+		raise QuotaActivationError(_('Generating the quota information file failed'))
+
+	if subprocess.call(('/usr/sbin/invoke-rc.d', 'quota', 'restart')):
+		raise QuotaActivationError(_('Restarting the quota services has failed'))
+
 
 _units = ('B', 'KB', 'MB', 'GB', 'TB')
 _size_regex = re.compile('(?P<size>[0-9.]+)(?P<unit>(B|KB|MB|GB|TB))?')
 
+
 def block2byte(size, convertTo, block_size = 1024):
-	global _units
 	size = long(size) * float(block_size)
 	unit = 0
 	if convertTo in _units:
@@ -201,8 +213,8 @@ def block2byte(size, convertTo, block_size = 1024):
 			unit += 1
 	return size
 
+
 def byte2block(size, unit = 'MB', block_size = 1024):
-	global _units
 	factor = 0
 	if unit in _units:
 		while _units[factor] != unit:

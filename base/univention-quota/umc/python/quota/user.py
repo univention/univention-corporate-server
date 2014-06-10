@@ -39,7 +39,7 @@ import univention.management.console as umc
 from univention.lib import fstab
 from univention.management.console.log import MODULE
 from univention.management.console.modules import UMC_CommandError, UMC_OptionMissing
-from univention.management.console.protocol.definitions import *
+from univention.management.console.protocol.definitions import MODULE_ERR, SUCCESS
 
 import mtab
 import tools
