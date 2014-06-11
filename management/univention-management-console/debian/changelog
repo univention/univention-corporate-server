@@ -1,3 +1,11 @@
+univention-management-console (6.0.24-5) unstable; urgency=low
+
+  * Bug #34243: fix a UMC server crash which happens when opening a module
+  	which XML module definition was removed and e.g. a umc-server reload
+  	was triggered.
+
+ -- Florian Best <best@univention.de>  Wed, 11 Jun 2014 13:59:55 +0200
+
 univention-management-console (6.0.24-4) unstable; urgency=low
 
   * Bug #34243: reload modules on modules/list command

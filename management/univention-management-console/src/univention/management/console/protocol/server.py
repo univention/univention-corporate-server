@@ -321,7 +321,7 @@ class MagicBucket( object ):
 		try:
 			statistics.requests.inactive()
 			data = str( msg )
-			# there is not data from another request in the send queue
+			# there is no data from another request in the send queue
 			if not state.resend_queue:
 				ret = state.socket.send( data )
 			else:

@@ -200,6 +200,8 @@ class Processor( signals.Provider ):
 		self.__password = password
 		self.__user_dn = None
 		self.__udm_users_module_initialised = False
+		self.__command_list = None
+		self.acls = None
 		signals.Provider.__init__( self )
 		self.core_i18n = Translation( 'univention-management-console' )
 		self.i18n = I18N_Manager()
@@ -221,12 +223,12 @@ class Processor( signals.Provider ):
 				CORE.info( 'The LDAP DN for user %s could not be found' % self.__username )
 
 		# read the ACLs
-		self.acls = LDAP_ACLs( self.lo, self.__username, ucr[ 'ldap/base' ] )
-		self._reload_permitted_commands()
+		self._reload_acls_and_permitted_commands()
 
 		self.signal_new( 'response' )
 
-	def _reload_permitted_commands(self):
+	def _reload_acls_and_permitted_commands(self):
+		self.acls = LDAP_ACLs(self.lo, self.__username, ucr['ldap/base'])
 		self.__command_list = moduleManager.permitted_commands(ucr['hostname'], self.acls)
 
 	def _init_ldap_connection(self):
@@ -383,7 +385,7 @@ class Processor( signals.Provider ):
 
 		if 'modules/list' in msg.arguments:
 			moduleManager.load()
-			self._reload_permitted_commands()
+			self._reload_acls_and_permitted_commands()
 			modules = []
 			for id, module in self.__command_list.items():
 				# check for translation
@@ -531,22 +533,6 @@ class Processor( signals.Provider ):
 
 		self.signal_emit( 'response', res )
 
-	def __is_command_known( self, msg ):
-		# only one command?
-		command = None
-		if len( msg.arguments ) > 0:
-			command = msg.arguments[ 0 ]
-
-		module_name = moduleManager.module_providing( self.__command_list, command )
-		if not module_name:
-			res = Response( msg )
-			res.status = BAD_REQUEST_FORBIDDEN
-			res.message = status_description( res.status )
-			self.signal_emit( 'response', res )
-			return None
-
-		return module_name
-
 	def _inactivitiy_tick( self, module ):
 		if module._inactivity_counter > 0:
 			module._inactivity_counter -= 1000
@@ -650,8 +636,32 @@ class Processor( signals.Provider ):
 
 		:param Request msg: UMCP request
 		"""
-		module_name = self.__is_command_known( msg )
-		if module_name and msg.arguments:
+
+		# only one command?
+		command = None
+		if len(msg.arguments) > 0:
+			command = msg.arguments[0]
+
+		module_name = moduleManager.module_providing(self.__command_list, command)
+
+		try:
+			# check if the module exists in the module manager
+			moduleManager[module_name]
+		except KeyError:
+			# the module has been removed from moduleManager (probably through a reload)
+			CORE.warn('Module %r does not exists anymore' % (module_name,))
+			moduleManager.load()
+			self._reload_acls_and_permitted_commands()
+			module_name = None
+
+		if not module_name:
+			res = Response( msg )
+			res.status = BAD_REQUEST_FORBIDDEN
+			res.message = status_description( res.status )
+			self.signal_emit( 'response', res )
+			return
+
+		if msg.arguments:
 			if msg.mimetype == MIMETYPE_JSON:
 				is_allowed = self.acls.is_command_allowed( msg.arguments[ 0 ], options = msg.options, flavor = msg.flavor )
 			else:
@@ -662,7 +672,7 @@ class Processor( signals.Provider ):
 				response.message = status_description( response.status )
 				self.signal_emit( 'response', response )
 				return
-			if not module_name in self.__processes:
+			if module_name not in self.__processes:
 				CORE.info( 'Starting new module process and passing new request to module %s: %s' % (module_name, str(msg._id)) )
 				mod_proc = ModuleProcess( module_name, debug = MODULE_DEBUG_LEVEL, locale = self.i18n.locale )
 				mod_proc.signal_connect( 'result', self._mod_result )
