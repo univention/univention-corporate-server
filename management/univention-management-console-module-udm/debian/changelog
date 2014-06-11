@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.97-23) unstable; urgency=low
+
+  * Bug #34200: Make display property for UDM grids configurable
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 11 Jun 2014 15:49:40 +0200
+
 univention-management-console-module-udm (4.0.97-22) unstable; urgency=low
 
   * Added check for existence of dn in __init__.py/put(), also added error msg
