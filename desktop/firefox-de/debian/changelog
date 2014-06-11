@@ -1,3 +1,10 @@
+firefox-en (1:24.6.0esr-1) unstable; urgency=low
+
+  * Update to Firefox 24.6 ESR (Bug #34703)
+  * Remove dependency on icedtea-plugin, scheduled for removal
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 11 Jun 2014 12:25:15 +0200
+
 firefox-de (1:24.4.0esr-6) unstable; urgency=low
 
   * Update to Firefox 24.4 ESR (Bug #34366)
