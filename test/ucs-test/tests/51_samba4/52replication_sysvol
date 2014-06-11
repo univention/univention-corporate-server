@@ -106,6 +106,12 @@ do
 	sleep "$sleep_time"
 done
 
+echo "## check GPO permissions"
+mode=$(stat -c "%a" "$gpo_path")
+if [ "$mode" != 770 ]; then
+	fail_fast 1 "GPO has wrong permission mode: $mode, expected 770"
+fi
+
 echo "## check whether the GPO is listed in samba-tool"
 i=0
 while ! ( output=$(samba-tool gpo show "$gpo_cn" 2>&1) && grep -Eq "^GPO\s+:\s$gpo_cn" <<<"$output" )

@@ -1,3 +1,10 @@
+ucs-test (4.0.166-29) unstable; urgency=low
+
+  * 51_samba4/52replication_sysvol: check permission of synced GPO
+    (Bug #35105)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Jun 2014 20:19:26 +0200
+
 ucs-test (4.0.166-28) unstable; urgency=low
 
   * version bump (Bug #31792)
