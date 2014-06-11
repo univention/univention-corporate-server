@@ -71,6 +71,41 @@ class LDAPObjectUnexpectedValue(LDAPError):
 	pass
 
 
+class UCSTestDomainAdminCredentials(object):
+	"""
+	This class fetches the username, the LDAP bind DN and the password
+	for a domain admin user account from UCR. The account may be used for testing.
+
+	>>> account = UCSTestDomainAdminCredentials()
+	>>> account.username
+	'Administrator'
+	>>> account.binddn
+	'uid=Administrator,cn=users,dc=example,dc=com'
+	>>> account.bindpw
+	'univention'
+	"""
+	def __init__(self, ucr=None):
+		if not ucr:
+			ucr = univention.config_registry.ConfigRegistry()
+			ucr.load()
+		self.binddn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%s' % ucr.get('ldap/base'))
+		pwdfile = ucr.get('tests/domainadmin/pwdfile')
+		if pwdfile:
+			with open(pwdfile, 'r') as f:
+				self.bindpw = f.read().strip('\n\r')
+		else:
+			self.bindpw = ucr.get('tests/domainadmin/pwd', 'univention')
+		if self.binddn:
+			self.username = uldap.explodeDn(self.binddn, 1)[0]
+		else:
+			self.username = None
+
+def get_domainadmin_test_credentials():
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+	return (username, binddn, bindpw)
+
+
 def get_ldap_connection(pwdfile = False, start_tls = 2, decode_ignorelist = []):
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
