@@ -641,7 +641,7 @@ define([
 			// load data dynamically
 			var ucrDeferred = this._loadUcrVariables();
 			var userPreferencesDefered = this._loadUserPreferences();
-			var modulesDeferred = this._loadModules(progressDialog);
+			var modulesDeferred = this._loadModules(progressDialog).then(lang.hitch(this, '_initModuleStore'));
 
 			// wait for modules, the UCR variables, and user preferences to load
 			var load = all([modulesDeferred, ucrDeferred, userPreferencesDefered]).then(lang.hitch(this, function() {
@@ -666,14 +666,17 @@ define([
 		},
 
 		reloadModules: function() {
-			this._loaded = false;
-			this.load().then(lang.hitch(this, function() {
-				tools.status('overview', true);
-				this._tabContainer.removeChild(this._overviewPage);
-				this._setupOverviewPage();
-				this._tabContainer.removeChild(this._overviewPage);
-				this._tabContainer.addChild(this._overviewPage, 0); // place as first tab
+			var progressDialog = new _ProgressDialog({});
+			progressDialog.show();
+
+			var userPreferencesDefered = this._loadUserPreferences();
+			var modulesDeferred = this._loadModules(progressDialog).then(lang.hitch(this, '_reloadModuleStore'));
+			var reload = all([modulesDeferred, userPreferencesDefered]);
+			reload.then(lang.hitch(this, function() {
+				this._moduleStore.setFavoritesString(_userPreferences.favorites || _ucr['umc/web/favorites/default']);
+				this._setupOverviewSearchSidebarCategories();
 			}));
+			reload.always(lang.hitch(progressDialog, 'close'));
 		},
 
 		_loadPiwik: function() {
@@ -850,20 +853,31 @@ define([
 				}
 
 				return modulesLoadedDeferred;
-			})).then(lang.hitch(this, function(args) {
-				var modules = args[0];
-				var categories = args[1];
-				this._moduleStore = this._createModuleStore(modules, categories);
-
-				// make sure that we do not overwrite an explicitely stated value of 'overview'
-				var launchableModules = this._getLaunchableModules();
-				if (getQuery('overview') === undefined) {
-					// disable overview if only one or no module exists
-					tools.status('overview', launchableModules.length > 1 && tools.status('overview'));
-				} else if (launchableModules.length === 0) {
-					tools.status('overview', false);
-				}
 			}));
+		},
+		
+		_initModuleStore: function(args) {
+			var modules = args[0];
+			var categories = args[1];
+			this._moduleStore = this._createModuleStore(modules, categories);
+
+			// make sure that we do not overwrite an explicitely stated value of 'overview'
+			var launchableModules = this._getLaunchableModules();
+			if (getQuery('overview') === undefined) {
+				// disable overview if only one or no module exists
+				tools.status('overview', launchableModules.length > 1 && tools.status('overview'));
+			} else if (launchableModules.length === 0) {
+				tools.status('overview', false);
+			}
+		},
+
+		_reloadModuleStore: function(args) {
+			var modules = args[0];
+			var categories = args[1];
+			this._moduleStore.query().forEach(lang.hitch(this, function(item) {
+				this._moduleStore.remove(item.$id$);
+			}));
+			this._moduleStore.constructor(modules, categories);
 		},
 
 		_tryLoadingModule: function(_module, i) {
@@ -1150,6 +1164,11 @@ define([
 			});
 			this._overviewPage.addChild(this._searchSidebar);
 
+			this._setupOverviewSearchSidebarCategories();
+			this._overviewPage.on('show', lang.hitch(this, '_focusSearchField'));
+		},
+
+		_setupOverviewSearchSidebarCategories: function() {
 			// set the categories
 			var categories = lang.clone(this.getCategories());
 			categories.unshift({
@@ -1158,8 +1177,6 @@ define([
 			});
 			this._searchSidebar.set('categories', categories);
 			this._searchSidebar.set('allCategory', categories[0]);
-
-			this._overviewPage.on('show', lang.hitch(this, '_focusSearchField'));
 		},
 
 		_focusSearchField: function() {
