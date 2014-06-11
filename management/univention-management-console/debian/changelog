@@ -3,6 +3,8 @@ univention-management-console (6.0.24-5) unstable; urgency=low
   * Bug #34243: fix a UMC server crash which happens when opening a module
   	which XML module definition was removed and e.g. a umc-server reload
   	was triggered.
+  * don't trigger umc_frontend_new_hash and umc-server reload when (un)installing
+  	a new UMC module
 
  -- Florian Best <best@univention.de>  Wed, 11 Jun 2014 13:59:55 +0200
 

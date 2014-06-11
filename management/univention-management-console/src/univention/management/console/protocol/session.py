@@ -385,6 +385,7 @@ class Processor( signals.Provider ):
 
 		if 'modules/list' in msg.arguments:
 			moduleManager.load()
+			categoryManager.load()
 			self._reload_acls_and_permitted_commands()
 			modules = []
 			for id, module in self.__command_list.items():
