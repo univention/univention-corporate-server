@@ -2,10 +2,12 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-directory-manager-modules
-fix: 9.0.76-2.1198.201406111347
+fix: 9.0.76-3.1199.201406111603
 version: [2]
 desc: |
- This update fixes an issue which caused a traceback if one
- removed all Nagios services or superior hosts from computer
- objects.
-bug: [33120, 34037]
+ This update fixes several issues:
+ * Removing all Nagios services or superior hosts from a computer
+   object no longer yields an error.
+ * Documentation for a UCR variable added that makes the name of an object in
+   the frontend grid configurable.
+bug: [33120, 34037, 34200]
