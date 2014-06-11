@@ -200,7 +200,7 @@ class Support( object ):
 	def nagiosSaveParentHostList(self, ml):
 		if self.hasChanged('nagiosParents'):
 			parentlist = []
-			for parentdn in self.info['nagiosParents']:
+			for parentdn in self.info.get('nagiosParents', []):
 				domain = self.lo.getAttr(parentdn, 'associatedDomain')
 				cn = self.lo.getAttr(parentdn, 'cn')
 				if not domain:
@@ -287,8 +287,8 @@ class Support( object ):
 
 		# remove host from services
 		if self.old_nagios_option:
-			for servicedn in self.oldinfo['nagiosServices']:
-				if servicedn not in self.info['nagiosServices']:
+			for servicedn in self.oldinfo.get('nagiosServices', []):
+				if servicedn not in self.info.get('nagiosServices', []):
 					oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname')
 					newmembers = filter(lambda x: x.lower() != fqdn.lower(), oldmembers)
 					self.lo.modify(servicedn, [ ('univentionNagiosHostname', oldmembers, newmembers) ])
