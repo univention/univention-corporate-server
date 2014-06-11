@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: univention-directory-manager-modules
+fix: 9.0.76-2.1198.201406111347
+version: [2]
+desc: |
+ This update fixes an issue which caused a traceback if one
+ removed all Nagios services or superior hosts from computer
+ objects.
+bug: [33120, 34037]
