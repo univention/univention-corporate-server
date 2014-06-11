@@ -64,6 +64,12 @@ Description[en]=This variable allows to configure for every module which attribu
 Type=str
 Categories=management-umc
 
+[directory/manager/web/modules/.*/.*/display]
+Description[de]=Diese Variable konfiguriert den Namen eines Objektes, der im Grid des Webfrontends angezeigt wird. Erlaubte Werte sind Eigenschaften der Objekte, z.B. displayName für Benutzer.
+Description[en]=This variable configures the name of an object displayed in the grid of the web frontend. Allowed values are properties of the object, e.g. displayName for users.
+Type=str
+Categories=management-umc
+
 [directory/manager/web/modules/users/user/add/default]
 Description[de]=Diese Variable konfiguriert die DN der Benutzervorlage, die beim Anlegen eines Benutzers vorausgewählt wird.
 Description[en]=This variable configures the DN of a user template which is preselected when creating a user.

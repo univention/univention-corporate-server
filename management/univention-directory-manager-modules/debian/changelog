@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.76-3) unstable; urgency=low
+
+  * Bug #34200: Add documentation for new UCR variables to configure name in
+    the frontend
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 11 Jun 2014 16:00:57 +0200
+
 univention-directory-manager-modules (9.0.76-2) unstable; urgency=low
 
   * fixed traceback which could occur when removing all nagios services/parents
