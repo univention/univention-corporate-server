@@ -33,12 +33,12 @@ def get_installed_default_packages():
 	installed_apps = {}
 	for application in apps:
 		if (application.is_installed(pm)):
-			supported_architectures = application.get('SupportedArchitectures')
+			supported_architectures = application.get('Architecture')
 			if (supported_architectures == '') or (( 'amd64' in supported_architectures) and ('i386' in supported_architectures)) :
 				for idefault_package in application.get('defaultpackages'):
 					installed_apps.setdefault(application.name, []).append(idefault_package)
 				if application.get('defaultpackagesmaster'):
-					for idefault_pacakge_master in application.get('defaultpackagesmaster'):
+					for idefault_package_master in application.get('defaultpackagesmaster'):
 						installed_apps.setdefault(application.name, []).append(idefault_package_master)
 	default_packages=(set(default_packages))
 	for application in installed_apps:
@@ -57,7 +57,6 @@ def change_architecture(package_repository):
 		iuri = ipackage_data[1]
 		if get_local_architecture() == 'amd64':
 			other_arch_packages_with_repository[ipackage_name] = (ipackage_version, iuri.replace('amd64','i386'))
-
 		else:
 			other_arch_packages_with_repository[ipackage_name] = (ipackage_version, iuri.replace('i386','amd64'))
 
@@ -93,7 +92,6 @@ def compare_versions(repository_packages, not_found_packages):
 def get_main_repository_packages():
 	main_repository_packages = {}
 	repository_server = ucr.get("repository/online/server")
-	app_repository_server = ucr.get("repository/app_center/server")
 	ucs_version = ucr.get("version/version")
 	ucs_patchlevel = ucr.get("version/patchlevel")
 	packages_files = ('http://{0}/{1}/maintained/{1}-{2}/i386/Packages.gz'.format(repository_server, ucs_version,ucs_patchlevel)), ('http://{0}/{1}/unmaintained/{1}-{2}/i386/Packages.gz'.format(repository_server, ucs_version, ucs_patchlevel))
@@ -129,8 +127,9 @@ def show_result(not_found_packages, local_arch_packages):
 		print
 		print ("Error!")
 		print ("Following package(s) could not be found for architecture " + diff_arch + ":")
-		for ipackage in not_found_packages.iteritems():
-			print local_arch_packages[ipackage[0]][1]
+		#for ipackage in not_found_packages.iteritems():
+		for ipackage in not_found_packages:
+			print local_arch_packages[ipackage][1]
 		print
 		sys.exit("Test Failed: Packages not found")
 	else:
