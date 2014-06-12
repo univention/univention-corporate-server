@@ -1,4 +1,4 @@
-univention-management-console-frontend (3.0.152-28) unstable; urgency=low
+univention-management-console-frontend (3.0.152-29) unstable; urgency=low
 
   * Bug #34243: don't render the overview page again in app.reloadModules()
 

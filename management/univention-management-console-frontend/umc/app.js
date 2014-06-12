@@ -677,6 +677,7 @@ define([
 				this._setupOverviewSearchSidebarCategories();
 			}));
 			reload.always(lang.hitch(progressDialog, 'close'));
+			return reload;
 		},
 
 		_loadPiwik: function() {
