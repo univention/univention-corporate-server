@@ -536,12 +536,9 @@ define([
 		},
 
 		restartOrReload: function() {
-			// update the modules on the UMC overview tab
-			UMCApplication.reloadModules();
-
 			// update the list of apps
 			this.updateApplications().then(lang.hitch(this, 'reloadPage'));
-			libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.')).then(
+			this.standbyDuring(libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.'))).then(
 				lang.hitch(this, function() {
 					this._keepAliveAfterAppOperation.stop();
 				}),

@@ -466,11 +466,13 @@ define([
 
 		_restartOrReload: function() {
 			// TODO: only if necessary! only minority will require a restart!
+			this.standby(true);
 			libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.')).then(
-			function() {
+			lang.hitch(this, function() {
 				// if user confirms, he is redirected to the login page
-				// no need to do anythin fancy here :)
-			},
+				// no need to do anything fancy here :)
+				this.standby(false);
+			}),
 			lang.hitch(this, function() {
 				// user canceled -> switch back to initial view
 				this.standby(false);

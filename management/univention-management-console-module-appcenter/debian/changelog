@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.51-19) unstable; urgency=low
+
+  * Bug #34243: move reload of UMC modules into lib/server
+
+ -- Florian Best <best@univention.de>  Thu, 12 Jun 2014 10:09:54 +0200
+
 univention-management-console-module-appcenter (3.0.51-18) unstable; urgency=low
 
   * Bug #31915: Reload app after install/upgrade/uninstall
