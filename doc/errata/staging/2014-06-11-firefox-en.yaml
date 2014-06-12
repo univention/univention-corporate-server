@@ -1,0 +1,37 @@
+product: ucs
+release: "3.2"
+version: [1, 2]
+scope: ucs_3.2-0-errata3.2-2
+src: firefox-en
+fix: 1:24.6.0esr-1.36.201406111242
+desc: |
+ Several vulnerabilities have been fixed with the update to Firefox ESR 24.6:
+ * Memory corruption in the rendering engine allows the execution of 
+   arbitrary code
+ * Out of bounds read when processing malformed JPEG images
+ * Buffer overflow in XML bindings
+ * Privilege escalation in the web notification API
+ * Cross-site scripting in the browser history
+ * Use-after-free in image resizing
+ * Use-after-free in DNS resolution
+ * Memory corruption in the browser engine
+ * Use-after-free in the browser engine
+ * Use-after-free in the SMIL animation controllers
+ * Buffer overflows in the nspr library
+note: This update consists of two updates for firefox-en and firefox-de.
+cve:
+ - CVE-2014-1518
+ - CVE-2014-1523
+ - CVE-2014-1524
+ - CVE-2014-1529
+ - CVE-2014-1530
+ - CVE-2014-1531
+ - CVE-2014-1532
+ - CVE-2014-1533
+ - CVE-2014-1538
+ - CVE-2014-1541
+ - CVE-2014-1545
+
+
+
+
