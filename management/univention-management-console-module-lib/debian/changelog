@@ -1,3 +1,10 @@
+univention-management-console-module-lib (3.0.7-2) unstable; urgency=low
+
+  * Bug #34243: reload UMC modules when user cancels the UMC restart
+  	notification
+
+ -- Florian Best <best@univention.de>  Thu, 12 Jun 2014 11:06:21 +0200
+
 univention-management-console-module-lib (3.0.7-1) unstable; urgency=low
 
   * Bug #24422: 

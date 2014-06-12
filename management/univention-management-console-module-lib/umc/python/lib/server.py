@@ -80,7 +80,7 @@ class Server(object):
 
 	def restart_isNeeded(self, request):
 		"""TODO: It would be helpful to monitor the init.d scripts in order to
-		         determine which service exactly shoulde be reloaded/restartet.
+		         determine which service exactly should be reloaded/restartet.
 		"""
 		self.finished(request.id, True)
 

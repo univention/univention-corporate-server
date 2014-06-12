@@ -35,13 +35,14 @@ define([
 	"dojo/topic",
 	"dojo/_base/xhr",
 	"umc/tools",
+	"umc/app",
 	"umc/dialog",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"dijit/Dialog",
 	"dijit/ProgressBar",
 	"umc/i18n!umc/modules/lib"
-], function(declare, lang, Deferred, topic, basexhr, tools, dialog, Text, ContainerWidget, DijitDialog, DijitProgressBar, _) {
+], function(declare, lang, Deferred, topic, basexhr, tools, app, dialog, Text, ContainerWidget, DijitDialog, DijitProgressBar, _) {
 
 	var _ProgressDialog = declare([DijitDialog], {
 		_progressBar: null,
@@ -113,8 +114,11 @@ define([
 				if (response == 'restart') {
 					return this.restart();
 				}
-				// throw error to break the deferred chain
-				throw new Error('restart canceled');
+				// reload modules
+				return app.reloadModules().always(function() {
+					// throw error to break the deferred chain
+					throw new Error('restart canceled');
+				});
 			})).then(function() {
 				window.location.reload();
 			});
