@@ -2,10 +2,11 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-management-console
-fix: 6.0.24-6.779.201406131249
+fix: 6.0.25-1.780.201406131454
 version: [2]
 desc: |
   This update fixes the following issues:
   * The internal cache of UMC modules in the UMC Server is now invalidated before they are requested.
   * Changes of system clock (e.g. due to NTP updates) will not make UMC processes die by timeout anymore.
-bug: [34243, 34105]
+  * The UMC server won't die if it gets a special kind of operationsets
+bug: [34243, 34105, 25196]
