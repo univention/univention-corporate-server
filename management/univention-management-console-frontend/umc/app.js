@@ -673,8 +673,8 @@ define([
 			var modulesDeferred = this._loadModules(progressDialog).then(lang.hitch(this, '_reloadModuleStore'));
 			var reload = all([modulesDeferred, userPreferencesDefered]);
 			reload.then(lang.hitch(this, function() {
-				this._moduleStore.setFavoritesString(_userPreferences.favorites || _ucr['umc/web/favorites/default']);
 				this._setupOverviewSearchSidebarCategories();
+				this._moduleStore.setFavoritesString(_userPreferences.favorites || _ucr['umc/web/favorites/default']);
 			}));
 			reload.always(lang.hitch(progressDialog, 'close'));
 			return reload;
@@ -875,10 +875,13 @@ define([
 		_reloadModuleStore: function(args) {
 			var modules = args[0];
 			var categories = args[1];
-			this._moduleStore.query().forEach(lang.hitch(this, function(item) {
-				this._moduleStore.remove(item.$id$);
+			when(this._moduleStore.query(), lang.hitch(this, function(items) {
+				array.forEach(items, function(item) {
+					this._moduleStore.remove(item.$id$);
+				}, this);
+				this._moduleStore.constructor(modules, categories);
+				this._grid.set('categories', this.getCategories());
 			}));
-			this._moduleStore.constructor(modules, categories);
 		},
 
 		_tryLoadingModule: function(_module, i) {

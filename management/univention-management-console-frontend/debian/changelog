@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-30) unstable; urgency=low
+
+  * Bug #34243: fix error when reloading modules if new categories exists
+
+ -- Florian Best <best@univention.de>  Fri, 13 Jun 2014 09:30:41 +0200
+
 univention-management-console-frontend (3.0.152-29) unstable; urgency=low
 
   * Bug #34243: don't render the overview page again in app.reloadModules()
