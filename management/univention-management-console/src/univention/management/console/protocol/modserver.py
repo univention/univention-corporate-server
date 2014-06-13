@@ -53,6 +53,7 @@ import sys
 import traceback
 import socket
 import locale
+import time
 import notifier
 import notifier.threads as threads
 
@@ -73,7 +74,7 @@ class ModuleServer( Server ):
 		self.__buffer = ''
 		self.__acls = None
 		self.__timeout = timeout * 1000
-		self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
+		self._start_timer()
 		self.__active_requests = 0
 		self.__check_acls = check_acls
 		self.__queue = ''
@@ -105,10 +106,26 @@ class ModuleServer( Server ):
 			self.__active_requests -= 1
 		self.response( msg )
 		if not self.__active_requests and self.__timer is None:
-			self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
+			self._start_timer()
+
+	def _start_timer(self):
+		self.__time = int(time.time() * 1000)
+		self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 
 	def _timed_out( self ):
-		MODULE.info( "Commiting suicide" )
+		now = int(time.time() * 1000)
+		MODULE.info('Timed out')
+
+		# time delta bigger than one and a half timeout interval?
+		if now - self.__time  > self.__timeout * 1.5:
+			MODULE.warn('Implausible time delta, starting new timer')
+			self._start_timer()
+			return
+
+		self._die()
+
+	def _die( self ):
+		MODULE.info( 'Committing suicide' )
 		if self.__handler:
 			self.__handler.destroy()
 		self.exit()
@@ -161,7 +178,7 @@ class ModuleServer( Server ):
 		The following commands are handled directly and are not passed
 		to the custom module code:
 
-		* SET (acls|username|credentials)
+		e SET (acls|username|credentials)
 		* EXIT
 		"""
 		PROTOCOL.info( 'Received UMCP %s REQUEST %s' % ( msg.command, msg.id ) )
@@ -173,7 +190,7 @@ class ModuleServer( Server ):
 			resp.body = { 'status': 'module %s will shutdown in %dms' % (str(msg.arguments[0]), shutdown_timeout) }
 			resp.status = SUCCESS
 			self.response( resp )
-			self.__timer = notifier.timer_add( shutdown_timeout, self._timed_out )
+			self.__timer = notifier.timer_add( shutdown_timeout, self._die )
 			return
 
 		if not self.__handler:
@@ -181,7 +198,7 @@ class ModuleServer( Server ):
 			resp.status = MODULE_ERR_INIT_FAILED
 			resp.message = self.__init_error_message
 			self.response(resp)
-			self.__timer = notifier.timer_add(2000, self._timed_out)
+			self.__timer = notifier.timer_add(2000, self._die)
 			return
 
 		if msg.command == 'SET':
@@ -241,7 +258,7 @@ class ModuleServer( Server ):
 			self.response( resp )
 
 			if not self.__active_requests and self.__timer is None:
-				self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
+				self._start_timer()
 			return
 
 		if msg.arguments:
@@ -251,7 +268,7 @@ class ModuleServer( Server ):
 				self.__active_requests += 1
 				self.__handler.execute( cmd_obj.method, msg )
 				if not self.__active_requests and self.__timer is None:
-					self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
+					self._start_timer()
 				return
 			else:
 				resp = Response( msg )
@@ -261,7 +278,7 @@ class ModuleServer( Server ):
 				self.response( resp )
 
 		if not self.__active_requests and self.__timer is None:
-			self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
+			self._start_timer()
 
 	def command_get( self, command_name ):
 		"""Returns the command object that matches the given command name"""

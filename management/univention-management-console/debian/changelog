@@ -1,3 +1,12 @@
+univention-management-console (6.0.24-6) unstable; urgency=low
+
+  * don't let UMC module processes die by timeout if the time delta seems to be
+    unnatural (e.g. due to huge jumps in wall-clock time through NTP updates)
+    (Bug #34105)
+  * fixed minor typo in log output
+
+ -- Lukas Walter <walter@univention.de>  Fri, 13 Jun 2014 12:09:24 +0200
+
 univention-management-console (6.0.24-5) unstable; urgency=low
 
   * Bug #34243: fix a UMC server crash which happens when opening a module

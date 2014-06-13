@@ -7,4 +7,5 @@ version: [2]
 desc: |
   This update fixes the following issues:
   * The internal cache of UMC modules in the UMC Server is now invalidated before they are requested.
-bug: [34243]
+  * Changes of system clock (e.g. due to NTP updates) will not make UMC processes die by timeout anymore.
+bug: [34243, 34105]

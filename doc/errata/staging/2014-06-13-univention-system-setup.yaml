@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: univention-system-setup
+fix: 
+version: [2]
+desc: |
+  This update fixes the following issues:
+  * The univention-system-setup module process will no read the setup script
+    output from pipe anymore. Instead, the output is directly written to the log.
+bug: [34105]

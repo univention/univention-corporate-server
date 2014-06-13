@@ -348,11 +348,25 @@ def sorted_files_in_subdirs( directory ):
 			for filename in sorted(os.listdir(path)):
 				yield os.path.join(path, filename)
 
+
+
+
+
 def run_scripts( progressParser, restartServer = False ):
 	# write header before executing scripts
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP SCRIPTS (%s) ===\n\n' % timestamp())
 	f.flush()
+
+	# read-only handle to LOG_FILE for observing file end
+	fr = open(LOG_FILE)
+
+	# start observing at the end of the file
+	fr.seek(0, os.SEEK_END)
+	lastPos = fr.tell()
+
+	# next full line to pass to the progressParser
+	fullLine = ''
 
 	# make sure that UMC servers and apache will not be restartet
 	subprocess.call( CMD_DISABLE_EXEC, stdout = f, stderr = f )
@@ -360,15 +374,24 @@ def run_scripts( progressParser, restartServer = False ):
 	for scriptpath in sorted_files_in_subdirs( PATH_SETUP_SCRIPTS ):
 			# launch script
 			MODULE.info('Running script %s\n' % scriptpath)
-			p = subprocess.Popen( scriptpath, stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
-			while True:
-				line = p.stdout.readline()
-				if not line:
-					break
-				progressParser.parse( line )
-				f.write( line )
-			p.wait()
+			p = subprocess.Popen( scriptpath, stdout = f, stderr = subprocess.STDOUT )
 
+			while p.poll() is None:
+				fr.seek(0, os.SEEK_END) # update file handle
+				fr.seek(lastPos, os.SEEK_SET) # continue reading at last position
+
+				currentLine = fr.readline() # try to read until next line break
+				if not currentLine:
+					continue
+
+				fullLine += currentLine
+				lastPos += len(currentLine)
+				if currentLine[-1] == '\n':
+					progressParser.parse(fullLine)
+					fullLine = ''
+
+	fr.close()
+	
 	# enable execution of servers again
 	subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f)
 

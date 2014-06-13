@@ -1,3 +1,11 @@
+univention-system-setup (7.0.69-8) unstable; urgency=low
+
+  * instead of reading setup script output from pipe, directly write it to the
+    setup log to prevent running setup scripts from receiving SIGPIPE when
+    the module process terminates unexpectedly (Bug #34105)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 13 Jun 2014 12:10:45 +0200
+
 univention-system-setup (7.0.69-7) unstable; urgency=low
 
   * Add Firefox addon that hides the tab bar. This is necessary for the
