@@ -152,23 +152,18 @@ class ACLs( object ):
 
 		return hosts
 
-	def __parse_command( self, command ):
-		if command.find( ':' ) != -1:
-			data = command.split( ':' )[ 1 ]
-			command = command.split( ':' )[ 0 ]
-		else:
-			data = [ ]
-
+	def __parse_command(self, command):
+		data, sep, command = command.partition(':')
 		options = {}
 		if data:
-			elements = data.split( ',' )
+	                elements = data.split(',')
 			for elem in elements:
-				if elem.find( '=' ) != -1:
-					key, value = elem.split( '=' )
-					options[ key.strip() ] = value.strip()
-				elif elem[ 0 ] == '!': # key without value allowed if starting with ! -> key may not exist
-					options[ elem.strip() ] = None
-		return ( command, options )
+				if '=' in elem:
+					key, value = elem.split('=', 1)
+					options[key.strip()] = value.strip()
+				elif elem.startswith('!'): # key without value allowed if starting with ! -> key may not exist
+					options[elem.strip()] = None
+		return command, options
 
 	def _append( self, fromUser, ldap_object ):
 		for host in self._expand_hostlist( ldap_object.get( 'umcOperationSetHost', [ '*' ] ) ):
@@ -200,7 +195,7 @@ class ACLs( object ):
 		match = ACLs.MATCH_FULL
 		for key, value in opt_pattern.items():
 			# a key starting with ! means it may not be available
-			if key[ 0 ] == '!' and key in opts:
+			if key.startswith('!') and key in opts:
 				return ACLs.MATCH_NONE
 			# else if key not not in opts no rule available -> OK
 			if not key in opts:
@@ -244,7 +239,7 @@ class ACLs( object ):
 		if flavor1 == flavor2 or flavor1 is None or flavor1 == '*':
 			return ACLs.MATCH_FULL
 
-		if flavor1[ -1 ] == '*' and flavor2.startswith( flavor1[ : -1 ] ):
+		if flavor1.endswith('*') and flavor2 and flavor2.startswith(flavor1[:-1]):
 			return ACLs.MATCH_PART
 
 		return ACLs.MATCH_NONE

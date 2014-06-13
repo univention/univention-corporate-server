@@ -1,3 +1,9 @@
+univention-management-console (6.0.25-1) unstable; urgency=low
+
+  * Bug #25196: UMC-Server won't die cause of operationsets
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 13 Jun 2014 14:49:53 +0200
+
 univention-management-console (6.0.24-6) unstable; urgency=low
 
   * don't let UMC module processes die by timeout if the time delta seems to be
