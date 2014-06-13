@@ -8,8 +8,9 @@ sys.path.insert(0, '.')
 from TestUMCSystemModule import TestUMCSystem
 
 from psutil import Process
-from os import wait4, WNOHANG
-from subprocess import Popen
+from os import wait4, WNOHANG, WTERMSIG, fork
+import signal
+from time import sleep
 
 from univention.config_registry import ConfigRegistry
 import univention.testing.utils as utils
@@ -42,7 +43,7 @@ class TestUMCProcessKilling(TestUMCSystem):
 
     def query_process_exists(self, pid):
         """
-        Checks if 'python' process with provided 'pid' exists
+        Checks if process with a provided 'pid' exists
         by making the UMC request 'top/query'.
         Returns True when exists.
         """
@@ -50,12 +51,13 @@ class TestUMCProcessKilling(TestUMCSystem):
         for result in request_result:
             try:
                 if result['pid'] == pid:
-                    if 'python' in result['command']:
+                    if sys.executable in result['command']:
                         return True
             except KeyError as exc:
-                utils.fail("Failed to find 'pid' or 'command' keys in"
-                           "the 'top/query' request respone from UMC: %s"
-                           % result)
+                utils.fail("Failed to find key '%s' in"
+                           "the 'top/query' request respone from UMC: %r"
+                           % (exc, result))
+        return False
 
     def force_process_kill(self):
         """
@@ -65,23 +67,46 @@ class TestUMCProcessKilling(TestUMCSystem):
             print("Created process with pid '%s' was not terminated, "
                   "forcing kill" % self.Proc.pid)
             self.Proc.kill()
-            exit_status = wait4(self.Proc.pid, WNOHANG)[1]
-            if exit_status != 9:
-                print("The exit status while force kill is '%s' "
-                      "instead of 'SIGKILL' code 9." % exit_status)
+            _pid, exit_status, _res_usage = wait4(self.Proc.pid, WNOHANG)
+            if WTERMSIG(exit_status) != signal.SIGKILL:
+                print("The exit status while force kill is 0x%x "
+                      "instead of 'SIGKILL'(%d)."
+                      % (exit_status, signal.SIGKILL))
 
-    def create_process(self):
+    def create_process(self, ignore_sigterm=False):
         """
-        Initiates a simple test process that should be killed after.
+        Initiates a simple test process that should be killed after by forking.
         Creates a psutil Process class to check running state
         before terminating. Also returns process id (pid).
         """
-        proc = Popen(['python',
-                      '-c',
-                      'from time import sleep \nsleep(30)'])
-        pid = proc.pid
-        self.Proc = Process(pid)
-        return pid
+        pid = fork()
+        if pid:  # parent
+            self.Proc = Process(pid)
+            return pid
+        else:  # child under test
+            if ignore_sigterm:
+                signal.signal(signal.SIGTERM, signal.SIG_IGN)
+            sleep(30)
+            sys.exit(0)
+
+    def test(self, signame, ignore_signal=False):
+        print "Testing UMC process killing with signal '%s'" % signame
+        signum = getattr(signal, signame)
+        try:
+            pid = self.create_process(ignore_signal)
+            if self.query_process_exists(pid):
+                self.make_kill_request(signame, [pid])
+                _pid, exit_status, _res_usage = wait4(pid, WNOHANG)
+                if ignore_signal != (WTERMSIG(exit_status) != signum):
+                    utils.fail("Process exit status is 0x%x instead of "
+                               "%s(%d)." % (exit_status, signame, signum))
+                if ignore_signal != self.query_process_exists(pid):
+                    utils.fail("Process did not terminate after request "
+                               "with signal %s" % signame)
+            else:
+                utils.fail("The process is not running right after creation")
+        finally:
+            self.force_process_kill()
 
     def main(self):
         """
@@ -92,40 +117,13 @@ class TestUMCProcessKilling(TestUMCSystem):
         self.create_connection_authenticate()
 
         # case 1: killing process using signal 'SIGTERM'
-        try:
-            print "Testing UMC process killing with 'SIGTERM' signal"
-            pid = self.create_process()
-            if self.query_process_exists(pid):
-                self.make_kill_request('SIGTERM', [pid])
-                exit_status = wait4(pid, WNOHANG)[1]
-                if exit_status != 15:
-                    utils.fail("Process exit status is '%s' instead of "
-                               "'SIGTERM' code 15." % exit_status)
-                if self.query_process_exists(pid):
-                    utils.fail("Process did not terminate after request "
-                               "with 'SIGTERM' signal")
-            else:
-                utils.fail("The process is not running right after creation")
-        finally:
-            self.force_process_kill()
+        self.test('SIGTERM')
 
         # case 2: killing process using signal 'SIGKILL'
-        try:
-            print "Testing UMC process killing with 'SIGKILL' signal"
-            pid = self.create_process()
-            if self.query_process_exists(pid):
-                self.make_kill_request('SIGKILL', [pid])
-                exit_status = wait4(pid, WNOHANG)[1]
-                if exit_status != 9:
-                    utils.fail("Process exit status is '%s' instead of "
-                               "'SIGKILL' code 9." % exit_status)
-                if self.query_process_exists(pid):
-                    utils.fail("Process did not terminate after request "
-                               "with 'SIGKILL' signal")
-            else:
-                utils.fail("The process is not running right after creation")
-        finally:
-            self.force_process_kill()
+        self.test('SIGKILL')
+
+        # case 3: killing unwilling process using signal 'SIGTERM'
+        self.test('SIGTERM', ignore_signal=True)
 
 
 if __name__ == '__main__':
