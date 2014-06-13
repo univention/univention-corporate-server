@@ -907,11 +907,11 @@ layout = [
 			] ),
 		Group( _( 'Personal information' ), layout = [
 			'displayName',
-			'organisation',
 			'birthday',
 			'jpegPhoto',
 			] ),
 		Group( _( 'Organisation' ), layout = [
+			'organisation',
 			[ 'employeeNumber', 'employeeType' ],
 			'secretary',
 			] ),

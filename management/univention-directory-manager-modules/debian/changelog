@@ -1,3 +1,11 @@
+univention-directory-manager-modules (9.0.77-1) unstable; urgency=low
+
+  * Moved input field 'Organisation' from 'Personal Information' to
+    'Organisation'
+    (Bug #28630)
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 13 Jun 2014 14:02:09 +0200
+
 univention-directory-manager-modules (9.0.76-3) unstable; urgency=low
 
   * Bug #34200: Add documentation for new UCR variables to configure name in
