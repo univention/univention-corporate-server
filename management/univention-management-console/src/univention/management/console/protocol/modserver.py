@@ -178,7 +178,7 @@ class ModuleServer( Server ):
 		The following commands are handled directly and are not passed
 		to the custom module code:
 
-		e SET (acls|username|credentials)
+		* SET (acls|username|credentials)
 		* EXIT
 		"""
 		PROTOCOL.info( 'Received UMCP %s REQUEST %s' % ( msg.command, msg.id ) )

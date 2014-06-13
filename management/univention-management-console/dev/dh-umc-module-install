@@ -158,13 +158,18 @@ def do_package( package, core ):
 				for icon in files:
 					dh_ucs.doIt( 'install', '-t', dest, '-m', '644', os.path.join( dirname, icon ) )
 
-		if join_exists:
-			with open(os.path.join('debian', package + '.postinst.debhelper'), 'a') as f_postinst:
-				f_postinst.write( '''
+		with open(os.path.join('debian', '%s.postinst.debhelper' % (package,)), 'a') as f_postinst:
+			if join_exists:
+				f_postinst.write('''
 # run join script on DC master and DC backup
 . /usr/share/univention-lib/base.sh
 call_joinscript %s || true
-''' % join_script )
+''' % join_script)
+			f_postinst.write('''
+# generate a new hash for the UMC frontend in order to avoid caching problems
+. /usr/share/univention-lib/umc.sh
+umc_frontend_new_hash
+''')
 
 if __name__ == '__main__':
 	# parse all options
