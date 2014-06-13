@@ -155,7 +155,7 @@ class ACLs( object ):
 	def __parse_command(self, command):
 		data = ''
 		if ':' in command:
-			data, command = command.split(':', 1)
+			command, data = command.split(':', 1)
 		options = {}
 		if data:
 			elements = data.split(',')
