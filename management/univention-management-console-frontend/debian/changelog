@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-32) unstable; urgency=low
+
+  * Bug #34243: fix error when reloading modules if new categories exists
+
+ -- Florian Best <best@univention.de>  Fri, 13 Jun 2014 15:00:26 +0200
+
 univention-management-console-frontend (3.0.152-31) unstable; urgency=low
 
   * Bug #34317: set default link to UMC on UCS overview page

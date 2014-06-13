@@ -875,12 +875,20 @@ define([
 		_reloadModuleStore: function(args) {
 			var modules = args[0];
 			var categories = args[1];
+
+			categories.unshift({
+				label: _('Favorites'),
+				id: '_favorites_',
+				priority: Number.POSITIVE_INFINITY
+			});
+
 			when(this._moduleStore.query(), lang.hitch(this, function(items) {
 				array.forEach(items, function(item) {
 					this._moduleStore.remove(item.$id$);
 				}, this);
+
+				this._grid.set('categories', categories);
 				this._moduleStore.constructor(modules, categories);
-				this._grid.set('categories', this.getCategories());
 			}));
 		},
 
