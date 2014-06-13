@@ -2,11 +2,13 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-management-console-frontend
-fix: 3.0.152-30.829.201406130932
+fix: 3.0.152-31.830.201406131153
 version: [2]
 desc: |
   This update fixes the following issues:
   * The UMC grid can now allow the execution of an action even though some of
     the selected items are not executable w.r.t. to the action.
   * A function has been added to reload the modules of the overview tab on the fly.
-bug: [34965, 34243]
+  * A default link to UMC has been added on the UCS overview page for unjoined
+    systems
+bug: [34965, 34243, 34317]
