@@ -1,5 +1,7 @@
 import sys
 
+import simplejson as json
+
 from univention.config_registry import ConfigRegistry
 from univention.testing.codes import TestCodes
 import univention.testing.utils as utils
@@ -51,6 +53,33 @@ class TestUMCSystem(object):
             utils.fail("Failed to authenticate, hostname '%s' : %s" %
                        (self.hostname, exc))
 
+    def make_custom_request(self, request_url, options):
+        """
+        Makes a custom UMC 'POST' request with a given
+        'request_url' and given 'options' to avoid exceptions
+        (for anything other than response with status 200)
+        raised in the UMCConnection module. Returns formatted
+        response.
+        """
+        options = {"options": options}
+        options = json.dumps(options)
+        try:
+            umc_connection = self.Connection.get_connection()
+            umc_connection.request('POST',
+                                   request_url,
+                                   options,
+                                   self.Connection._headers)
+            request_result = umc_connection.getresponse()
+            request_result = request_result.read()
+            if not request_result:
+                utils.fail("Request '%s' with options '%s' failed, "
+                           "hostname '%s'"
+                           % (request_url, options, self.hostname))
+            return json.loads(request_result)
+        except Exception as exc:
+            utils.fail("Exception while making '%s' request: %s"
+                       % (request_url, exc))
+
     def make_query_request(self, prefix, options=None, flavor=None):
         """
         Makes a '/query' UMC request with a provided 'prefix' argument,
@@ -88,23 +117,23 @@ class TestUMCSystem(object):
                   "%s" % (service_name, request_result))
             sys.exit(TestCodes.REASON_INSTALL)
 
-    def make_udm_request(self, postfix, options=None, flavor=None):
+    def make_udm_request(self, suffix, options=None, flavor=None):
         """
-        Makes 'umcp/command/udm/' + 'postfix' request with a given
+        Makes 'umcp/command/udm/' + 'suffix' request with a given
         'options' and a 'flavor' if any
         """
         try:
-            request_result = self.Connection.request('udm/' + postfix,
+            request_result = self.Connection.request('udm/' + suffix,
                                                      options, flavor)
             if not request_result:
                 utils.fail("Request 'umcp/command/udm/%s' with "
                            "options='%s' and flavor='%s' failed, "
                            "no response or response is empty"
-                           % (postfix, options, flavor))
+                           % (suffix, options, flavor))
             return request_result
         except Exception as exc:
             utils.fail("Exception while making 'udm/%s' request with "
-                       "options '%s': %s" % (postfix, options, exc))
+                       "options '%s': %s" % (suffix, options, exc))
 
     def check_obj_exists(self, name, obj_type):
         """
@@ -116,14 +145,14 @@ class TestUMCSystem(object):
                    "objectType": obj_type,
                    "objectProperty": "None",
                    "objectPropertyValue": "",
-                   "hidden": False}
+                   "hidden": True}
         try:
             for result in self.make_query_request('udm', options, obj_type):
-                if result['name'] in name:
+                if result['name'] == name:
                     return True
         except KeyError as exc:
             utils.fail("KeyError exception while parsing 'udm/query' "
-                       "request: %s" % exc)
+                       "request result: %s" % exc)
 
     def get_object(self, options, flavor):
         """
@@ -166,18 +195,19 @@ class TestUMCSystem(object):
         """
         Deletes object with a 'name' by making UMC-request 'udm/remove'
         with relevant options and flavor depending on 'obj_type'
-        Supported types are: users, groups, policies and extended attributes.
+        Supported types are: users, groups, policies, extended attributes,
+        networks and computers.
         """
         print "Deleting test object '%s' with a name: '%s'" % (obj_type, name)
 
         if obj_type == 'users':
             obj_identifier = "uid=" + name + ",cn=" + obj_type + ","
-        elif obj_type == 'groups':
-            obj_identifier = "cn=" + name + ",cn=" + obj_type + ","
         elif obj_type == 'policies':
             obj_identifier = "cn=" + name + ",cn=UMC,cn=" + obj_type + ","
         elif obj_type == 'custom attributes':
             obj_identifier = "cn=" + name + ",cn=" + obj_type + ",cn=univention,"
+        elif obj_type in ('groups', 'networks', 'computers'):
+            obj_identifier = "cn=" + name + ",cn=" + obj_type + ","
         else:
             utils.fail("The object identifier format is unknown for the "
                        "provided object type '%s'" % obj_type)
