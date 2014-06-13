@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-directory-manager-modules
-fix: 9.0.76-3.1199.201406111603
+fix: 9.0.77-1.1200.201406131407
 version: [2]
 desc: |
  This update fixes several issues:
@@ -10,4 +10,6 @@ desc: |
    object no longer yields an error.
  * Documentation for a UCR variable added that makes the name of an object in
    the frontend grid configurable.
-bug: [33120, 34037, 34200]
+ * Removed the input field Organisation from the group Personal information 
+   and added it to the group Organisation
+bug: [33120, 34037, 34200, 28630]
