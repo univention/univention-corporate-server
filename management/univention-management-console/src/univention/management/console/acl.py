@@ -153,10 +153,12 @@ class ACLs( object ):
 		return hosts
 
 	def __parse_command(self, command):
-		data, sep, command = command.partition(':')
+		data = ''
+		if ':' in command:
+			data, command = command.split(':', 1)
 		options = {}
 		if data:
-	                elements = data.split(',')
+			elements = data.split(',')
 			for elem in elements:
 				if '=' in elem:
 					key, value = elem.split('=', 1)
@@ -206,7 +208,7 @@ class ACLs( object ):
 			else:
 				options = opts[ key ]
 			for option in options:
-				if not value[ -1 ] == '*':
+				if not value.endswith('*'):
 					if value != option:
 						return ACLs.MATCH_NONE
 				elif not option.startswith( value[ : -1 ] ):
@@ -225,7 +227,7 @@ class ACLs( object ):
 		if cmd1 == cmd2:
 			return ACLs.MATCH_FULL
 
-		if cmd1[ -1 ] == '*' and cmd2.startswith( cmd1[ : -1 ] ):
+		if cmd1 and cmd1.endswith('*') and cmd2.startswith(cmd1[:-1]):
 			return ACLs.MATCH_PART
 
 		return ACLs.MATCH_NONE
