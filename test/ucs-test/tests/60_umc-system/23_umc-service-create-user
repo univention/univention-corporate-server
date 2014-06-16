@@ -159,7 +159,7 @@ class TestUMCUserCreation(TestUMCSystem):
             if not user_groups:
                 utils.fail("No groups or empty groups in response for user "
                            "'%s'" % test_username)
-            if list(set(user_groups) - set(test_groupnames)):
+            if set(user_groups) != set(test_groupnames):
                 utils.fail("The '%s' user is in the wrong group(s) '%s', "
                            "while should be only in '%s'"
                            % (test_username, user_groups, test_groupnames))
@@ -177,7 +177,7 @@ class TestUMCUserCreation(TestUMCSystem):
             if not user_groups:
                 utils.fail("No groups or empty groups in response for user "
                            "'%s'" % test_username_admin)
-            if list(set(user_groups) - set(test_groupnames)):
+            if set(user_groups) != set(test_groupnames):
                 utils.fail("The '%s' user is in the wrong group(s) '%s', "
                            "while should be only in '%s'"
                            % (test_username_admin,
