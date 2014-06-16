@@ -100,11 +100,6 @@ class UCSTestDomainAdminCredentials(object):
 		else:
 			self.username = None
 
-def get_domainadmin_test_credentials():
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
-	return (username, binddn, bindpw)
-
 
 def get_ldap_connection(pwdfile = False, start_tls = 2, decode_ignorelist = []):
 	ucr = univention.config_registry.ConfigRegistry()

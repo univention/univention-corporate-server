@@ -1,3 +1,9 @@
+ucs-test (4.0.166-32) unstable; urgency=low
+
+  * Bug #35098: removed dead code
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 16 Jun 2014 16:35:26 +0200
+
 ucs-test (4.0.166-31) unstable; urgency=low
 
   *  60_umc-system/70_umc-service-network-functionality: a test
