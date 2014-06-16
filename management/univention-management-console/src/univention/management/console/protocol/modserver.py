@@ -53,7 +53,6 @@ import sys
 import traceback
 import socket
 import locale
-import time
 import notifier
 import notifier.threads as threads
 
@@ -73,9 +72,10 @@ class ModuleServer( Server ):
 		self.__client = None
 		self.__buffer = ''
 		self.__acls = None
-		self.__timeout = timeout * 1000
-		self._start_timer()
+		self.__timeout = timeout
+		self.__time_remaining = timeout
 		self.__active_requests = 0
+		self._timer()
 		self.__check_acls = check_acls
 		self.__queue = ''
 		self.__username = None
@@ -105,26 +105,24 @@ class ModuleServer( Server ):
 		if final:
 			self.__active_requests -= 1
 		self.response( msg )
-		if not self.__active_requests and self.__timer is None:
-			self._start_timer()
 
-	def _start_timer(self):
-		self.__time = int(time.time() * 1000)
-		self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
+	def _timer( self ):
+		"""In order to avoid problems when the system time is changed (e.g.,
+		via rdate), we register a timer event that counts down the session
+		timeout second-wise."""
+		# count down the remaining time
+		if not self.__active_requests:
+			self.__time_remaining -= 1
+
+		if self.__time_remaining <= 0:
+			# module has timed out
+			self._timed_out()
+		else:
+			# count down the timer second-wise (in order to avoid problems when
+			# changing the system time, e.g. via rdate)
+			notifier.timer_add( 1000 , self._timer )
 
 	def _timed_out( self ):
-		now = int(time.time() * 1000)
-		MODULE.info('Timed out')
-
-		# time delta bigger than one and a half timeout interval?
-		if now - self.__time  > self.__timeout * 1.5:
-			MODULE.warn('Implausible time delta, starting new timer')
-			self._start_timer()
-			return
-
-		self._die()
-
-	def _die( self ):
 		MODULE.info( 'Committing suicide' )
 		if self.__handler:
 			self.__handler.destroy()
@@ -137,10 +135,6 @@ class ModuleServer( Server ):
 		notifier.socket_add( self.__comm, self._recv )
 
 	def _recv( self, socket ):
-		if self.__timer is not None:
-			notifier.timer_remove( self.__timer )
-			self.__timer = None
-
 		data = socket.recv( RECV_BUFFER_SIZE )
 
 		# connection closed?
@@ -181,6 +175,7 @@ class ModuleServer( Server ):
 		* SET (acls|username|credentials)
 		* EXIT
 		"""
+		self.__time_remaining = self.__timeout
 		PROTOCOL.info( 'Received UMCP %s REQUEST %s' % ( msg.command, msg.id ) )
 		if msg.command == 'EXIT':
 			shutdown_timeout = 100
@@ -190,7 +185,7 @@ class ModuleServer( Server ):
 			resp.body = { 'status': 'module %s will shutdown in %dms' % (str(msg.arguments[0]), shutdown_timeout) }
 			resp.status = SUCCESS
 			self.response( resp )
-			self.__timer = notifier.timer_add( shutdown_timeout, self._die )
+			notifier.timer_add( shutdown_timeout, self._timed_out )
 			return
 
 		if not self.__handler:
@@ -198,7 +193,7 @@ class ModuleServer( Server ):
 			resp.status = MODULE_ERR_INIT_FAILED
 			resp.message = self.__init_error_message
 			self.response(resp)
-			self.__timer = notifier.timer_add(2000, self._die)
+			notifier.timer_add(2000, self._timed_out)
 			return
 
 		if msg.command == 'SET':
@@ -256,9 +251,6 @@ class ModuleServer( Server ):
 					resp.message = error
 
 			self.response( resp )
-
-			if not self.__active_requests and self.__timer is None:
-				self._start_timer()
 			return
 
 		if msg.arguments:
@@ -267,8 +259,6 @@ class ModuleServer( Server ):
 			if cmd_obj and ( not self.__check_acls or self.__acls.is_command_allowed( cmd, options = msg.options, flavor = msg.flavor ) ):
 				self.__active_requests += 1
 				self.__handler.execute( cmd_obj.method, msg )
-				if not self.__active_requests and self.__timer is None:
-					self._start_timer()
 				return
 			else:
 				resp = Response( msg )
@@ -276,9 +266,6 @@ class ModuleServer( Server ):
 				resp.status = BAD_REQUEST_NOT_FOUND
 				resp.message = status_description( resp.status )
 				self.response( resp )
-
-		if not self.__active_requests and self.__timer is None:
-			self._start_timer()
 
 	def command_get( self, command_name ):
 		"""Returns the command object that matches the given command name"""

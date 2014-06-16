@@ -1,3 +1,11 @@
+univention-management-console (6.0.25-5) unstable; urgency=low
+
+  * use a 1sec timer function reducing the remaining time until timeout by 1 in
+    each iteration if there are no active requests to be time leap independent
+    (Bug #34105)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 16 Jun 2014 16:00:21 +0200
+
 univention-management-console (6.0.25-4) unstable; urgency=low
 
   * Bug #25196: fix typos

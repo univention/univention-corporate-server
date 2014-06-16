@@ -809,29 +809,27 @@ define([
 					if (!this.wizard_mode || role == 'basesystem') {
 						command = this.umcpCommand('setup/save', {
 							values: values
-						});
+						}, false);
 					} else {
 						command = this.umcpCommand('setup/join', {
 							values: values,
 							username: username,
 							password: password
-						});
+						}, false);
 					}
-					command.then(lang.hitch(this, function() {
-						// poll whether script has finished
-						this._progressBar.auto(
-							'setup/finished',
-							{},
-							lang.hitch(deferred, 'resolve'),
-							lang.replace( _( 'The connection to the server could not be established after {time} seconds. This problem can occur due to a change of the IP address. In this case, please login to Univention Management Console again at the {linkStart}new address{linkEnd}.' ), {
-								time: '{time}',
-								linkStart : umc_url ? '<a href="' + umc_url + '">' : '',
-								linkEnd : umc_url ? '</a>' : ''
-							} ),
-							_('Configuration finished'),
-							true
-						);
-					}));
+					// poll whether script has finished
+					this._progressBar.auto(
+						'setup/finished',
+						{},
+						lang.hitch(deferred, 'resolve'),
+						lang.replace( _( 'The connection to the server could not be established after {time} seconds. This problem can occur due to a change of the IP address. In this case, please login to Univention Management Console again at the {linkStart}new address{linkEnd}.' ), {
+							time: '{time}',
+							linkStart : umc_url ? '<a href="' + umc_url + '">' : '',
+							linkEnd : umc_url ? '</a>' : ''
+						} ),
+						_('Configuration finished'),
+						true
+					);
 
 					return deferred;
 				});

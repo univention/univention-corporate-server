@@ -1,3 +1,10 @@
+univention-system-setup (7.0.69-9) unstable; urgency=low
+
+  * do not announce successfull request processing before the request was
+    actually processed (Bug #34105)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 16 Jun 2014 16:02:28 +0200
+
 univention-system-setup (7.0.69-8) unstable; urgency=low
 
   * instead of reading setup script output from pipe, directly write it to the

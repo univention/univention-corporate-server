@@ -173,15 +173,18 @@ class Instance(umcm.Base):
 				obj._finishedLock.release()
 
 		def _finished( thread, result ):
+			success = True
 			if isinstance( result, BaseException ):
+				success = False
 				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
 				MODULE.warn( 'Exception during saving the settings: %s\n%s' % (result, msg) )
+
+			self.finished(request.id, success)
 
 		thread = notifier.threads.Simple( 'save',
 			notifier.Callback( _thread, request, self ), _finished )
 		thread.run()
 
-		self.finished(request.id, True)
 
 	def join(self, request):
 		'''Join and reconfigure the system according to the values specified in the dict given as
@@ -233,15 +236,17 @@ class Instance(umcm.Base):
 				obj._finishedLock.release()
 
 		def _finished( thread, result ):
+			success = True
 			if isinstance( result, BaseException ):
+				success = False
 				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
 				MODULE.warn( 'Exception during saving the settings: %s\n%s' % (result, msg) )
+			self.finished(request.id, sucess)
 
 		thread = notifier.threads.Simple( 'save',
 			notifier.Callback(_thread, request, self, request.options.get('username'), request.options.get('password')), _finished)
 		thread.run()
 
-		self.finished(request.id, True)
 
 	def check_finished(self, request):
 		'''Check whether the join/setup scripts are finished. This method implements a long
