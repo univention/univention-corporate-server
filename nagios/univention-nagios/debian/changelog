@@ -1,3 +1,9 @@
+univention-nagios (7.0.6-4) unstable; urgency=low
+
+  * Fix UNIVENTION_NTP nagios check to use check_ntp_time (Bug #34570)
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 16 Jun 2014 09:56:05 +0200
+
 univention-nagios (7.0.6-3) unstable; urgency=low
 
   * Bug #34570: Change UNIVENTION_NTP nagios check to compare ntp server
