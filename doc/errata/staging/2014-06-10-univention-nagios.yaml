@@ -2,11 +2,11 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-nagios
-fix: 7.0.6-3.264.201406101246
+fix: 7.0.6-4.265.201406160957
 version: [2]
 desc: |
  Change UNIVENTION_NTP nagios check to compare ntp server time by
- using the check_time nagios plugin. The previous check also asked
+ using the check_ntp_time nagios plugin. The previous check also asked
  for ntp server configuration options, which are not relevant for
  this check and, since UCS 3.2 errata 20, are not allowed to be queried
  from external sources.
