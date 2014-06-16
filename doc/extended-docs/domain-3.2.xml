@@ -13,8 +13,8 @@
 
         <revhistory>
             <revision>
-                <revnumber>3.2-0</revnumber>
-                <date>19 Nov 2013</date>
+                <revnumber>3.2-2</revnumber>
+                <date>16 Jun 2014</date>
             </revision>
         </revhistory>
     </bookinfo>
@@ -30,8 +30,7 @@
 		</para>
 
         <para>
-		  This configuration has been tested with Ubuntu 12.04 LTS and 12.10 as well as Kubuntu
-		  12.04 LTS and 12.10.
+		  This configuration has been tested with Ubuntu 14.04 LTS as well as Kubuntu 14.04 LTS.
 		</para>
 
         <section>
@@ -52,6 +51,7 @@ mkdir /etc/univention
 ssh root@${MASTER_IP} ucr shell |
     grep -v ^hostname= >/etc/univention/ucr_master
 echo "master_ip=${MASTER_IP}" >>/etc/univention/ucr_master
+chmod 660 /etc/univention/ucr_master
 . /etc/univention/ucr_master
 
 echo "${MASTER_IP} ${ldap_master}" >>/etc/hosts
@@ -78,7 +78,7 @@ wget -O /etc/univention/ssl/ucsCA/CAcert.pem \
     http://${ldap_master}/ucs-root-ca.crt
 
 # Create an account and save the password
-password="$(tr -dc A-Za-z0-9_ </dev/urandom | head -c8)"
+password="$(tr -dc A-Za-z0-9_ </dev/urandom | head -c20)"
 if [ "$version_version" = 3.0 ] && [ "$version_patchlevel" -lt 2 ]
 then
     ssh root@${ldap_master} udm computers/managedclient create \
@@ -195,8 +195,8 @@ pam_session=
 __EOF__
 auth-client-config -n -a -p sss
 
-# Start sssd
-service sssd start
+# Restart sssd
+restart sssd
 
 # Exit sudo bash
 exit
@@ -263,17 +263,19 @@ exit
 # Become root
 sudo bash
 
-# Add a field for a user name
-echo "greeter-show-manual-login=true" >>/etc/lightdm/lightdm.conf
-
-# Optional: Disable the user selection at the login screen
-echo "greeter-hide-users=true" >>/etc/lightdm/lightdm.conf
+# Add a field for a user name, disable user selection at the login screen
+mkdir /etc/lightdm/lightdm.conf.d
+cat >>/etc/lightdm/lightdm.conf.d/99-show-manual-userlogin.conf <<__EOF__
+[SeatDefaults]
+greeter-show-manual-login=true
+greeter-hide-users=true
+__EOF__
 
 exit
 ]]></programlisting>
 
             <para>
-			  Kubuntu 12.10 uses AccountService, a D-Bus interface for use account management, which
+			  Kubuntu 14.04 uses AccountService, a D-Bus interface for use account management, which
 			  ignores the <filename>/etc/lightdm.conf</filename> file.  Since there is no config
 			  file for AccountService the login theme needs to be changed to
 			  <emphasis>classic</emphasis> under <guimenu>System Settings -> Login Screen (LightDM)</guimenu>.
@@ -319,11 +321,11 @@ $kerberos_realm = {
 __EOF__
 
 # Stop and disable the avahi daemon
-service avahi-daemon stop
+stop avahi-daemon
 sed -i 's|start on (|start on (never and |' /etc/init/avahi-daemon.conf
 
 # Synchronize the time with the UCS system
-ntpdate $ldap_master
+ntpdate -bu $ldap_master
 
 # Test Kerberos
 kinit Administrator
