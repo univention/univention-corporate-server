@@ -1,3 +1,9 @@
+ucslint (4.0.0-1) unstable; urgency=low
+
+  * Bug #35135: bumped version for UCS 4
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 17 Jun 2014 14:34:18 +0200
+
 ucslint (3.0.5-2) unstable; urgency=low
 
   * Bug #34127: Add support for RedMine issues in changelog
