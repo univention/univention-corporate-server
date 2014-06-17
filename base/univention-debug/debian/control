@@ -8,7 +8,8 @@ Build-Depends: debhelper (>= 7.0.50~),
  automake,
  libtool,
  python-all-dev,
- python-support
+ python-support,
+ ucslint-univention
 
 Package: libunivention-debug1
 Architecture: any
