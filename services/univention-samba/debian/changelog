@@ -1,4 +1,4 @@
-univention-samba (8.0.17-1) unstable; urgency=low
+univention-samba (8.0.18-1) unstable; urgency=low
 
   * Added samba/acl/allow/execute/always (Bug #33785) 
 
