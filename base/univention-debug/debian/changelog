@@ -1,3 +1,11 @@
+univention-debug (7.0.1-2) unstable; urgency=low
+
+  * Added some more ucslint overrides (Bug #35138):
+      W:0006-5: debian/python-univention-debug.preinst: script contains "set -e"
+      E:0010-2: tests/test_debug: file contains no copyright text block
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Jun 2014 17:14:01 +0200
+
 univention-debug (7.0.1-1) unstable; urgency=low
 
   * Activate ucslint (Bug #35138)
