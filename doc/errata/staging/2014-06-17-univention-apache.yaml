@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: univention-apache
+fix: 6.0.16-6.195.201406171832
+version: [2]
+desc: |
+    This updates fixes the following issues:
+    * The URL of the Univention App Center has changed. Therefore, the corresponding
+      links in the UCS overview page have been adapted.
+bug: [34864]
