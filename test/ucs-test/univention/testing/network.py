@@ -101,7 +101,10 @@ class NetworkRedirector(object):
 
 	CMD_LIST_REDIRECTION = [
 		# redirect localhost-->%(remote_addr)s:%(remote_port)s ==> localhost:%(local_port)s
+		# FIXME: only one of the following two lines will work but it's not deterministic which one (any hints?)
+		#         Currently it doesn't hurt if both are added, since they have the same purpose.
 		[BIN_IPTABLES, '-t', 'nat', '%(action)s', 'OUTPUT', '-p', 'tcp', '-d', '%(remote_addr)s', '--dport', '%(remote_port)s', '-j', 'REDIRECT', '--to', '%(local_port)s'],
+		[BIN_IPTABLES, '-t', 'nat', '%(action)s', 'OUTPUT', '-p', 'tcp', '-d', '%(remote_addr)s', '--dport', '%(remote_port)s', '-j', 'DNAT', '--to', '127.0.0.1:%(local_port)s'],
 		]
 
 	def __init__(self):
