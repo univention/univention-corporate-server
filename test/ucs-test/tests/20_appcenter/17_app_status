@@ -14,6 +14,9 @@ from univention.lib.package_manager import PackageManager
 from univention.management.console.modules.appcenter.app_center import Application
 from univention.config_registry import ConfigRegistry
 
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
 CATEGORIES = set((
 	'Administration',
 	'Business',
@@ -41,6 +44,10 @@ def check_package(package):
 		return False
 	return True
 
+def app_dn(app):
+	ldap_base = ucr.get('ldap/base')
+	return 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app.id, app.version, app.id, ldap_base)
+
 returncode = 100
 
 fd = open('/var/cache/appcenter-installed.txt')
@@ -50,24 +57,41 @@ for appID in fd:
 		continue
 	print 'Checking App: %s' % appID
 
-	requested_app = Application.find(appID)
-	if not requested_app:
+	app = Application.find(appID)
+	if not app:
 		print ' Test failed: Requested App not found: %s' % appID
 		returncode = 1
 		continue
 
-	unsupported = set(requested_app.get('unlocalised_categories')) - CATEGORIES
+	unsupported = set(app.get('unlocalised_categories')) - CATEGORIES
 	for category in unsupported:
 		print ' Test failed: Requested App has unsupported category: %s' % category
 		returncode = 1
 
-	for package in requested_app.get('defaultpackages'):
+	for package in app.get('defaultpackages'):
 		if not check_package(package):
 			returncode = 1
 
 	if ucr.get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']:
-		for package in requested_app.get('defaultpackagesmaster'):
+		for package in app.get('defaultpackagesmaster'):
 			if not check_package(package):
 				returncode = 1
+
+	with udm_test.UCSTestUDM() as udm:
+		utils.verify_ldap_object(app_dn(app), {
+							'univentionAppName': ['[en] %s' % app.get('unlocalised_name')],
+							'univentionAppID': [app.ldap_id],
+							'univentionAppVersion': [app.version],
+							'univentionAppInstalledOnServer' : ['%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))],
+						})
+		for version in app.versions:
+			if version.version == app.version:
+				continue
+			utils.verify_ldap_object(app_dn(version), should_exist=False)
+
+	if app.get('ucsoverviewcategory') and app.get('webinterface'):
+		if ucr.get('ucs/web/overview/entries/%s/%s/link' % (app.get('ucsoverviewcategory'), app.id)) != app.get('webinterface'):
+			print ' %r apparently did not register its webinterface! Alarm!!' % app
+			returncode = 1
 
 sys.exit(returncode)
