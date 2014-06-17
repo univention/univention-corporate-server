@@ -3,7 +3,7 @@
 # Univention Python
 #  miscellaneous utilities
 #
-# Copyright 2002-2013 Univention GmbH
+# Copyright 2002-2014 Univention GmbH
 #
 # http://www.univention.de/
 #

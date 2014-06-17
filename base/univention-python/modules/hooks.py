@@ -2,7 +2,7 @@
 #
 # Univention HookManager
 #
-# Copyright 2010-2013 Univention GmbH
+# Copyright 2010-2014 Univention GmbH
 #
 # http://www.univention.de/
 #

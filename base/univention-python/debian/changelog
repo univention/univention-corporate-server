@@ -1,3 +1,9 @@
+univention-python (8.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Jun 2014 16:47:11 +0200
+
 univention-python (7.0.4-1) unstable; urgency=low
 
   * Delete old RDN on rename (Bug #34971)
