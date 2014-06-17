@@ -2,14 +2,19 @@ Source: ucslint
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
+Build-Depends:
+ debhelper (>> 7),
  python-support,
  python-all
 Standards-Version: 3.6.1
 
 Package: ucslint
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}, devscripts, python-libtre
+Depends:
+ ${python:Depends},
+ ${misc:Depends},
+ devscripts,
+ python-libtre
 Conflicts: ucs-tools (<< 1.2.5)
 Description: Check packaging for UCS
  This package contains the Univention tool ucslint that
@@ -23,10 +28,13 @@ Description: Check packaging for UCS
 
 Package: ucslint-univention
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}, ucslint
+Depends:
+ ${python:Depends},
+ ${misc:Depends},
+ ucslint
 Conflicts: ucs-tools (<< 1.2.5)
 Description: Univention-specific ucslint tests
- This package contains Univention specific tests for ucslint 
+ This package contains Univention specific tests for ucslint
  (e.g. copyright checks or maintainer information checks).
  This package is not required by ucslint. It is an addon
  for Univention internal development.

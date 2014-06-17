@@ -48,7 +48,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				 '0011-5': [ uub.RESULT_ERROR, 'wrong maintainer - should be "Univention GmbH <packages@univention.de>"' ],
 				 '0011-6': [ uub.RESULT_ERROR, 'XS-Python-Version without python-central in build-dependencies' ],
 				 '0011-7': [ uub.RESULT_ERROR, 'XS-Python-Version without XB-Python-Version in binary package entries' ],
-				 '0011-8': [ uub.RESULT_WARN, 'XS-Python-Version should be "2.4"' ],
+				 '0011-8': [ uub.RESULT_WARN, 'XS-Python-Version should be "2.7"' ],
 				 '0011-9': [ uub.RESULT_ERROR, 'cannot determine source package name' ],
 				 '0011-10': [uub.RESULT_ERROR, 'parsing error in debian/control' ],
 				 '0011-11': [uub.RESULT_WARN,  'debian/control: XS-Python-Version is not required any longer' ],
