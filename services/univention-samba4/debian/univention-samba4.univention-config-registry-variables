@@ -445,3 +445,10 @@ Description[de]=Diese Variable konfiguriert den Zeitpunkt/Intervall, zu dem eine
 Description[en]=This variable configures the time/interval when to start the backup of the samba provision directory. The format is documented under 'man 5 crontab'. If the variable is unset, no backup is performed.
 Type=str
 Categories=service-samba
+
+[samba/acl/allow/execute/always]
+Description[de]=Ist diese Variable aktiviert oder nicht gesetzt, prüft Samba die Ausführungs-Rechte einer Datei nicht bei "open for execution" Request von Windows Clients.
+Description[en]=If this parameter is activated or unset, Samba does not check execute permissions of files for "open for execution" protocol request from a Windows clients.
+Type=bool
+Categories=service-samba
+

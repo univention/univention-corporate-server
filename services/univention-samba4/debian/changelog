@@ -1,3 +1,9 @@
+univention-samba4 (3.0.39-24) unstable; urgency=low
+
+  * Added samba/acl/allow/execute/always (Bug #33785) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Jun 2014 12:45:54 +0200
+
 univention-samba4 (3.0.39-23) unstable; urgency=medium
 
   * Save and restore rIDNextRID during re-join and re-provision if possible
