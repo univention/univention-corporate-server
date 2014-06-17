@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+
+  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
+  <!ENTITY changelog SYSTEM "changelog-4.0-0.xml">
+
+  %entities;
+]>
+<book lang="en" id="releasenotes-4.0-0-en">
+	<bookinfo>
+		<title>UCS 4.0-0 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.0-0</subtitle>
+		<revhistory>
+			<revision>
+				<revnumber>4.0-0</revnumber>
+				<date> November 2014</date>
+			</revision>
+		</revhistory>
+
+		<legalnotice>
+			<para>
+				Alle Rechte vorbehalten. / All rights reserved.
+			</para>
+
+			<para>
+				(c) 2002-2014 Univention GmbH
+			</para>
+
+			<para>
+				Mary-Somerville-Straße 1, 28359 Bremen, Deutschland/Germany
+			</para>
+
+			<para>
+				<ulink url="mailto:feedback@univention.de">feedback@univention.de</ulink>
+			</para>
+
+			<para>
+				Jede aufgeführte Marke und jedes Warenzeichen steht im Eigentum ihrer jeweiligen eingetragenen Rechtsinhaber.
+				Linux ist ein eingetragenes Warenzeichen von Linus Torvalds.
+			</para>
+
+			<para>
+				The mentioned brand names and registered trademarks are owned by the respective legal owners in each case.
+				Linux is a registered trademark of Linus Torvalds.
+			</para>
+		</legalnotice>
+	</bookinfo>
+
+	<chapter id="relnotes:highlights">
+		<title>Release highlights</title>
+
+		<para>
+		  With &ucsUCS; 4.0
+		</para>
+
+	</chapter>
+
+	<chapter id="relnotes:order">
+		<title>Recommended update order for environments with more than one UCS server</title>
+
+	</chapter>
+
+	<chapter id="relnotes:prepare">
+		<title>Preparation of update</title>
+
+	</chapter>
+
+	<chapter id="relnotes:post">
+		<title>Postprocessing of the update</title>
+	</chapter>
+
+
+	<chapter id="relnotes:packages">
+		<title>Further notes on selected packages</title>
+
+	</chapter>
+
+	<chapter id="relnotes:changelog">
+		<title>Changelog</title>
+		<para>
+			Listed are the changes since UCS 3.2-4:
+		</para>
+
+		&changelog;
+	</chapter>
+
+	<bibliography id="relnotes:bibliography">
+		<bibliomixed id="ucs-handbuch"/>
+	</bibliography>
+
+	<?dbhtml-include href="../stylesheets/piwik.html"?>
+</book>
