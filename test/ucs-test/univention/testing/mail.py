@@ -101,6 +101,7 @@ class MailSink(object):
 		sink.filename = self.filename
 		while self.do_run:
 			asyncore.loop(count=1, timeout=1)
+		sink.close()
 		print '*** SMTPSink at %s:%s stopped' % (self.address, self.port)
 
 if __name__ == '__main__':
@@ -114,4 +115,4 @@ if __name__ == '__main__':
 	print 'Stopping sink'
 	ms.stop()
 	print 'Waiting'
-	time.sleep(5)
+	time.sleep(10)

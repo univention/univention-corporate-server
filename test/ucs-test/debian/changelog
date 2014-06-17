@@ -1,3 +1,9 @@
+ucs-test (4.0.166-34) unstable; urgency=low
+
+  * Bug #35102: stop mailsink after usage
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 17 Jun 2014 12:04:02 +0200
+
 ucs-test (4.0.166-33) unstable; urgency=low
 
   * Bug #35134: fixup for network.py: make redirection to be more reliable
