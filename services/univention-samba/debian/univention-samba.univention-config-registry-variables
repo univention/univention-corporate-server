@@ -427,5 +427,5 @@ Categories=service-samba
 [samba/acl/allow/execute/always]
 Description[de]=Ist diese Variable aktiviert oder nicht gesetzt, prüft Samba die Ausführungs-Rechte einer Datei nicht bei "open for execution" Request von Windows Clients.
 Description[en]=If this parameter is activated or unset, Samba does not check execute permissions of files for "open for execution" protocol request from a Windows clients.
-Type=str
+Type=bool
 Categories=service-samba
