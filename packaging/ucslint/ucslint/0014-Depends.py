@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # vim:set fileencoding=utf-8 sw=4 ts=4 et:
 #
-# Copyright (C) 2008-2013 Univention GmbH
+# Copyright (C) 2008-2014 Univention GmbH
 #
 # http://www.univention.de/
 #

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Find unquoted usage of eval "$(ucr shell)"."""
 #
-# Copyright (C) 2008-2013 Univention GmbH
+# Copyright (C) 2008-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
