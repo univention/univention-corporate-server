@@ -11,4 +11,4 @@ desc: |
       on the file. In Samba 4.0, this has been fixed. To re-establishing the
       old behaviour the new UCR variable samba/acl/allow/execute/always has
       been added (default True).
-bug: [33785]
+bug: [35137]
