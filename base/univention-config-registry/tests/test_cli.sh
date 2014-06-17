@@ -1,6 +1,6 @@
 #!/bin/sh
 # Run (uninstalled) univention.config_registry to make sure all commands work
-PY="python2.6" UCR="${0%/*}/../python/univention/config_registry.py"
+PY="python2.7" UCR="${0%/*}/../python/univention/config_registry.py"
 exec >/dev/null
 set -e -x
 "$PY" "$UCR" -\?

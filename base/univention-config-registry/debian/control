@@ -13,7 +13,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  python-ipaddr,
  python-all
 Standards-Version: 3.5.2
-XS-Python-Version: 2.6
+XS-Python-Version: 2.6, 2.7
 
 Package: univention-config-registry
 Architecture: all
