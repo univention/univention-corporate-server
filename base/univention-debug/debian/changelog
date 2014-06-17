@@ -1,3 +1,9 @@
+univention-debug (7.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Jun 2014 13:40:44 +0200
+
 univention-debug (6.0.0-1) unstable; urgency=low
 
   * do not log ERROR to syslog (Bug #25469) 
