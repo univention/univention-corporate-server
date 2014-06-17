@@ -66,14 +66,6 @@ Warnung: Diese Datei wurde automatisch generiert und kann durch
 
 '''
 
-# Bug #23202: For UCS-2.x use /usr/bin/python2.4, but after upgrade to UCS-3.x
-# use /usr/bin/python2.6
-if sys.version_info[0:2] < (2, 6):
-	__PYTHON_EXECUTABLE = '/usr/bin/python2.6'
-else:
-	__PYTHON_EXECUTABLE = sys.executable
-
-
 def run_filter(template, directory, srcfiles=set(), opts=dict()):
 	"""Process a template file: substitute variables."""
 	while True:
@@ -109,7 +101,7 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 			start = i.next()
 			end = i.next()
 
-			proc = subprocess.Popen((__PYTHON_EXECUTABLE,),
+			proc = subprocess.Popen((sys.executable,),
 					stdin=subprocess.PIPE, stdout=subprocess.PIPE,
 					close_fds=True)
 			value = proc.communicate('''\
