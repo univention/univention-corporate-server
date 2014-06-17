@@ -34,7 +34,7 @@
 import pgdb
 
 from univention.management.console import Translation
-from univention.management.console.modules import Base
+from univention.management.console.modules import Base, UMC_ModuleInitError
 import univention.config_registry
 import univention.pkgdb as updb
 
@@ -207,7 +207,12 @@ class Instance(Base):
 		self.ucr.load()
 
 		# Create a connection to the pkgdb
-		self.connection = updb.open_database_connection(self.ucr, pkgdbu=True)
+		try:
+			self.connection = updb.open_database_connection(self.ucr, pkgdbu=True)
+		except pgdb.InternalError:
+			raise UMC_ModuleInitError(_('Could not establish connection to the database server'))
+			
+			
 		self.cursor = self.connection.cursor()
 
 		self._update_system_roles_and_versions()

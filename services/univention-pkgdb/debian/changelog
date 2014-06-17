@@ -1,3 +1,12 @@
+univention-pkgdb (7.0.11-2) unstable; urgency=low
+
+  * when UMC module initializiation fails because no connection to the
+    postgreSQL server could be established, provide a user friendly error
+    message instead of a traceback by raising an UMC_ModuleInitError
+    (Bug #33673)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 17 Jun 2014 17:24:19 +0200i
+
 univention-pkgdb (7.0.11-1) unstable; urgency=low
 
   * Added credentials to ucs_isServiceUnused in unjoin script (Bug #32578)
