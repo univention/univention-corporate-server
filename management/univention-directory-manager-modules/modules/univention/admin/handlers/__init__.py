@@ -1966,7 +1966,7 @@ class simpleComputer( simpleLdap ):
 			if not ip and not self.__multiip:
 				ip = ''
 				if self['ip']:
-					ip = self['ip']['0']
+					ip = self['ip'][0]
 				self.__add_dns_reverse_object( self[ 'name' ], dn, ip )
 			else:
 				self.__add_dns_reverse_object( self[ 'name' ], dn, ip )
