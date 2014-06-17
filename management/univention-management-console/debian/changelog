@@ -1,3 +1,12 @@
+univention-management-console (6.0.26-6) unstable; urgency=low
+
+  * added possibility for UMC modules to return a user friendly error message
+  	when initialization fails by raising instances of UMC_ModuleInitError
+    and passing a string as proper description
+    (Bug #33673)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 17 Jun 2014 17:02:04 +0200
+
 univention-management-console (6.0.25-5) unstable; urgency=low
 
   * use a 1sec timer function reducing the remaining time until timeout by 1 in

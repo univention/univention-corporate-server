@@ -43,6 +43,7 @@ from .definitions import (BAD_REQUEST_NOT_FOUND, BAD_REQUEST_INVALID_OPTS,
 
 from ..acl import ACLs
 from ..module import Module
+from ..modules import UMC_ModuleInitError
 from ..log import MODULE, PROTOCOL
 
 from univention.lib.i18n import Locale, NullTranslation
@@ -240,15 +241,19 @@ class ModuleServer( Server ):
 					self.__handler.init()
 				except BaseException as e:
 					self.__handler = None
-					error = _('The init function of the module has failed: %s: %s\n%s') % (
-						e.__class__.__name__,
-						e,
-						traceback.format_exc()
-					)
-					self.__init_error_message = error
-					MODULE.error(error)
+					msg = str(e)
+					trace = traceback.format_exc()
+
+					MODULE.error('The init function of the module failed\n%s' % trace)
 					resp.status = MODULE_ERR_INIT_FAILED
-					resp.message = error
+					
+					if msg:
+						msg = 'The initialization of the module failed: %s' % msg
+					if not isinstance(e, UMC_ModuleInitError) or not msg:
+						msg = trace
+
+					self.__init_error_message = msg
+					resp.message = msg
 
 			self.response( resp )
 			return
