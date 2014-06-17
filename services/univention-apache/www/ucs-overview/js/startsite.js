@@ -85,7 +85,7 @@ define([
 			'http://forum.univention.de/': _('http://forum.univention.de/'),
 			'http://sdb.univention.de/': _('http://sdb.univention.de/'),
 			'http://docs.univention.de/en.html': _('http://docs.univention.de/en.html'),
-			'http://www.univention.de/en/products/ucs/app-catalogue/': _('http://www.univention.de/en/products/ucs/app-catalogue/'),
+			'http://www.univention.com/products/ucs/univention-app-center/': _('http://www.univention.com/products/ucs/univention-app-center/'),
 			'http://www.univention.de/en/products/': _('http://www.univention.de/en/products/'),
 			'http://www.univention.de/en/': _('http://www.univention.de/en/')
 		},

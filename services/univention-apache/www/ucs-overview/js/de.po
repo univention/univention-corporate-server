@@ -94,5 +94,5 @@ msgid "http://www.univention.de/en/products/"
 msgstr "http://www.univention.de/produkte/"
 
 #: www/ucs-overview/js/startsite.js:88
-msgid "http://www.univention.de/en/products/ucs/app-catalogue/"
-msgstr "http://www.univention.de/produkte/ucs/app-katalog/"
+msgid "http://www.univention.com/products/ucs/univention-app-center/"
+msgstr "http://www.univention.de/produkte/ucs/univention-app-center/"
