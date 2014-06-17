@@ -423,3 +423,9 @@ Description[de]=Ist diese Variable auf 'yes' gesetzt oder nicht gesetzt, wird ve
 Description[en]=If this variable is set to 'yes' or unset, Samba attempts to read DOS attributes from a filesystem extended attribute, before mapping DOS attributes to UNIX permission bits.
 Type=str
 Categories=service-samba
+
+[samba/acl/allow/execute/always]
+Description[de]=Ist diese Variable auf 'True' oder nicht gesetzt, prüft Samba die Ausführungs-Rechte einer Datei nicht bei "open for execution" Request von Windows Clients.
+Description[en]=If this parameter is set to 'True', Samba does not check execute permissions of files for "open for execution" protocol request from a Windows clients.
+Type=str
+Categories=service-samba

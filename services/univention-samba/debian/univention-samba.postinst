@@ -151,7 +151,8 @@ univention-config-registry set samba/script/adduser?true \
 				samba/netlogon/sync?sync \
 				samba/domain/logons?auto \
 				samba/password/checkscript?"/usr/share/univention-samba/password_check %u" \
-				samba/max/protocol?SMB2
+				samba/max/protocol?SMB2 \
+				samba/acl/allow/execute/always?"True"
 
 if [ "$1" = "configure" ]; then
 	uinst=/usr/lib/univention-install/74univention-samba.uinst
