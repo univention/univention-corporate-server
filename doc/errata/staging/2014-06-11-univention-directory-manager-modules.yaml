@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-directory-manager-modules
-fix: 9.0.77-1.1200.201406131407
+fix: 9.0.77-2.1201.201406171805
 version: [2]
 desc: |
  This update fixes several issues:
@@ -12,4 +12,4 @@ desc: |
    the frontend grid configurable.
  * Removed the input field Organisation from the group Personal information 
    and added it to the group Organisation
-bug: [33120, 34037, 34200, 28630]
+bug: [33120, 34037, 34200, 34250, 28630]
