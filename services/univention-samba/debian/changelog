@@ -1,3 +1,9 @@
+univention-samba (8.0.18-2) unstable; urgency=low
+
+  * Added samba/acl/allow/execute/always (Bug #33785) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Jun 2014 12:44:34 +0200
+
 univention-samba (8.0.18-1) unstable; urgency=low
 
   * Added samba/acl/allow/execute/always (Bug #33785) 
