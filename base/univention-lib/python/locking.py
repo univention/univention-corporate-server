@@ -1,8 +1,8 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 #
 # Univention Common Python Library
 #
-# Copyright 2011-2013 Univention GmbH
+# Copyright 2011-2014 Univention GmbH
 #
 # http://www.univention.de/
 #

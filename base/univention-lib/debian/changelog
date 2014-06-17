@@ -1,3 +1,9 @@
+univention-lib (4.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Jun 2014 16:32:35 +0200
+
 univention-lib (3.0.26-20) unstable; urgency=low
 
   * Fix slapd restart on LDAP schema activation (Bug #34800)
