@@ -35,20 +35,6 @@ except ImportError:
 import re
 import os
 
-# Prüfen, ob ein Join-Skript im Paket vorhanden ist
-# - Prüfen, ob das Join-Skript in rules installiert wird
-# - Prüfen, ob das Join-Skript in postinst aufgerufen wird
-# - Prüfen, ob das Join-Skript "VERSION=" enthält
-# - Prüfen, ob das Join-Skript " v${VERSION} " enthält
-#
-# FIXME: Prüfen, ob das Join-Skript den richtigen Dateinamen per grep in .index.txt sucht und mit echo einträgt
-# FIXME: Prüfen, ob das Join-Skript im postinst richtig aufgerufen wird:
-#           if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-#               /usr/lib/univention-install/38univention-management-console-distribution.inst || true
-#           fi
-#           ==> mit "|| true" und Abfrage auf DC Master oder DC Backup
-
-
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	def __init__(self):
 		super(UniventionPackageCheck, self).__init__()
