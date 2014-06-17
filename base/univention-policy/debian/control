@@ -13,7 +13,7 @@ Build-Depends: debhelper,
  libunivention-config-dev,
  python-all,
  python-support (>= 0.90),
-# ucslint-univention
+ ucslint-univention
 
 Package: libunivention-policy0
 Architecture: any
