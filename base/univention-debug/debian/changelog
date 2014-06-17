@@ -1,6 +1,6 @@
 univention-debug (7.0.0-2) unstable; urgency=low
 
-  * Sitch to python2.7 (Bug #35138)
+  * Switch to python2.7 (Bug #35138)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Jun 2014 13:45:08 +0200
 
