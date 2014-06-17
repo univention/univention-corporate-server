@@ -154,12 +154,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 continue
             need = self._scan_script(fn)
             if 'ucr' in need and not all & UniventionPackageCheck.DEPS['ucr'][1]:
-                self.addmsg('0014-5', 'Missing Depends: univention-config | ${misc:Depends}', filename=fn)
+                self.addmsg('0014-5', 'Missing Depends: univention-config, ${misc:Depends}', filename=fn)
         p = os.path.join(self.path, '[0-9][0-9]%s.inst' % (pkg,))
         for fn in glob(p):
             need = self._scan_script(fn)
             if 'ucr' in need and not all & UniventionPackageCheck.DEPS['ucr'][1]:
-                self.addmsg('0014-4', 'Missing Depends: univention-config | ${misc:Depends}', filename=fn)
+                self.addmsg('0014-4', 'Missing Depends: univention-config, ${misc:Depends}', filename=fn)
         # FIXME: scan all other files for ucr as well?
 
         # Assert packages using "init-autostart.lib" depends on "univention-base-files"
