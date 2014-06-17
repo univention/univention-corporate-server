@@ -46,5 +46,5 @@ override_dh_auto_configure:
 	automake --add-missing
 	dh_auto_configure
 
-#override_dh_auto_test:
-#	ucslint # Bug (22498)
+override_dh_auto_test:
+	ucslint
