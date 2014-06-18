@@ -1,4 +1,4 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 import univention.config_registry
 from univention.config_registry import ConfigRegistry
 

@@ -1,9 +1,9 @@
 E:0014-2: debian/rules: Missing Build-Depends: univention-config-dev
 E:0014-3: debian/rules: Missing Build-Depends: univention-management-console-dev
 E:0014-4: debian/preinst-fail.preinst: Missing Pre-Depends: univention-config
-E:0014-5: debian/dep-fail.postinst: Missing Depends: univention-config | ${misc:Depends}
-E:0014-5: debian/dep-fail.postrm: Missing Depends: univention-config | ${misc:Depends}
-E:0014-5: debian/dep-fail.prerm: Missing Depends: univention-config | ${misc:Depends}
+E:0014-5: debian/dep-fail.postinst: Missing Depends: univention-config, ${misc:Depends}
+E:0014-5: debian/dep-fail.postrm: Missing Depends: univention-config, ${misc:Depends}
+E:0014-5: debian/dep-fail.prerm: Missing Depends: univention-config, ${misc:Depends}
 W:0014-6: conffiles/etc/init.d/dep-fail: Missing Depends: univention-base-files
 W:0014-6: conffiles/etc/init.d/preinst-fail: Missing Depends: univention-base-files
 W:0014-6: debian/dep-fail.init: Missing Depends: univention-base-files
