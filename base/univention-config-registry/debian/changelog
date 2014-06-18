@@ -1,3 +1,9 @@
+univention-config-registry (10.0.1-2) unstable; urgency=low
+
+  * Swtich to debian compat level 9 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Jun 2014 11:51:22 +0200
+
 univention-config-registry (10.0.1-1) unstable; urgency=low
 
   * Removed UCS 2.4 <-> UCS 3.0 hack for python upgrade (Bug #35138)

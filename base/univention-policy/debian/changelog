@@ -1,3 +1,9 @@
+univention-policy (6.0.2-3) unstable; urgency=low
+
+  * Swtich to debian compat level 9 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Jun 2014 11:51:35 +0200
+
 univention-policy (6.0.2-2) unstable; urgency=low
 
   * Added debian/ucslint.overrides (Bug #35138)

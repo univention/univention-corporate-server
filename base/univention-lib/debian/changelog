@@ -1,3 +1,9 @@
+univention-lib (4.0.0-2) unstable; urgency=low
+
+  * Swtich to debian compat level 9 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Jun 2014 11:51:32 +0200
+
 univention-lib (4.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35138)
@@ -29,7 +35,7 @@ univention-lib (3.0.26-17) unstable; urgency=medium
 
  -- Arvid Requate <requate@univention.de>  Thu, 23 Jan 2014 18:24:03 +0100
 
-univention-lib (3.0.26-16) UNRELEASED; urgency=medium
+univention-lib (3.0.26-16) unstable; urgency=medium
 
   * Merge userNameMapping and groupNameMapping functions into
     custom_username and custom_groupname (Bug #33893)
