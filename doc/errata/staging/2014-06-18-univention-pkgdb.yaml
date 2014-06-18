@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: univention-pkgdb
+fix: 7.0.11-3.178.201406181743
+version: [2]
+desc: |
+  When the initilization of the univention-pkgdb UMC module fails because the
+  PostgreSQL is not running, a user friendly error message will be shown 
+  instead of debug information in a feedback dialog.
+bug: [34723]
