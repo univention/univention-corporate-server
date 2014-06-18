@@ -45,7 +45,7 @@ override_dh_auto_configure:
 	aclocal
 	autoconf
 	automake --add-missing
-	./configure --prefix=/usr
+	dh_auto_configure
 	dh_auto_configure --buildsystem=python_distutils
 
 override_dh_auto_build:

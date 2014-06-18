@@ -1,1 +1,1 @@
-usr/lib/libunivention*.so.*
+usr/lib/*/libunivention*.so.*

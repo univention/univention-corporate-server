@@ -1,3 +1,9 @@
+univention-debug (7.0.1-5) unstable; urgency=low
+
+  * Added multiarch support (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Jun 2014 17:41:43 +0200
+
 univention-debug (7.0.1-4) unstable; urgency=low
 
   * Call explicit python_support (Bug #35138)

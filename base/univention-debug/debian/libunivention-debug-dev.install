@@ -1,3 +1,3 @@
 usr/include/univention/debug.h
-usr/lib/libunivention*.so
-usr/lib/libunivention*.a
+usr/lib/*/libunivention*.so
+usr/lib/*/libunivention*.a

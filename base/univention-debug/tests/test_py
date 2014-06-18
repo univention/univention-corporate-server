@@ -3,6 +3,6 @@ set -e
 tmp=$(mktemp)
 trap "rm -f '$tmp'" EXIT
 LD_LIBRARY_PATH="$top_builddir/lib/.libs/" \
-PYTHONPATH="$top_builddir/build/lib.linux-$host_cpu-$PYTHON_VERSION/univention" \
+PYTHONPATH="$top_builddir/build/lib.linux-$(arch)-$PYTHON_VERSION/univention" \
 "$PYTHON" "$srcdir/test_debug.py" >"$tmp"
 sed -e 's/^[0-3][0-9]\.[01][0-9]\.[0-9][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]\.[0-9][0-9][0-9]/00.00.00 00:00:00\.000/' <"$tmp" | diff "$srcdir/test.out" -

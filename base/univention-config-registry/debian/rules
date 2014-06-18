@@ -44,7 +44,7 @@ override_dh_auto_configure:
 	aclocal
 	autoconf
 	automake --add-missing
-	./configure --prefix=/usr
+	dh_auto_configure
 
 override_dh_auto_test:
 	ucslint
