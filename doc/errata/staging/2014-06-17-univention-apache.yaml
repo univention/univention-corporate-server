@@ -6,7 +6,7 @@ fix: 6.0.16-7.196.201406181556
 version: [2]
 desc: |
     This updates fixes the following issues:
-    * The URL of the Univention App Center has changed. Therefore, the corresponding
+    * The URL of the Univention App Center landing page has changed. Therefore, the corresponding
       links in the UCS overview page have been adapted.
     * Links to local web interfaces of installed Apps got placed on top of the
       UCS overview page if no priority was specified in UCR. They will now be positioned
