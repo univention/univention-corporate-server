@@ -1,3 +1,9 @@
+univention-policy (6.0.2-1) unstable; urgency=low
+
+  * Add univentiondebug and ldap lib to linker call (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Jun 2014 06:23:15 +0200
+
 univention-policy (6.0.1-1) unstable; urgency=low
 
   * Activate ucslint (Bug #35138)
