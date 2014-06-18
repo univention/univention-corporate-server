@@ -1,3 +1,9 @@
+univention-updater (9.0.41-1) unstable; urgency=low
+
+  * Unset uuid/license if univentionLicenseKeyID is missing in license (Bug #34809)
+
+ -- Felix Botner <botner@univention.de>  Wed, 18 Jun 2014 10:14:40 +0200
+
 univention-updater (9.0.40-1) unstable; urgency=low
 
   * Adjust pre- and postup.sh for UCS 3.2-2 (Bug #33809)
