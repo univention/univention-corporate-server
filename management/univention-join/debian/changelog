@@ -1,4 +1,4 @@
-univention-join (6.0.18-1) unstable; urgency=low
+univention-join (6.0.18-2) unstable; urgency=low
 
   * Merged patches from ucs-in-ad-domain (Bug #35094)
     [ Stefan Gohmann ]
