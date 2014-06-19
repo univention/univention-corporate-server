@@ -37,9 +37,6 @@ def _msg_handler(msg_type):
 	def _handler(msg):
 		print '%s: %s' % (msg_type, msg)
 
-def _str_app(app):
-	return '%s [%s]' % (app.name, app.id)
-
 # initiate UCR and manager instances
 ucr = ConfigRegistry()
 ucr.load()
@@ -54,8 +51,6 @@ pm = PackageManager(
 pm.update()
 uu = UniventionUpdater(False)
 cm = ComponentManager(ucr, uu)
-aptCache = apt.Cache()
-aptCache.open()
 
 # more helper functions/variables
 is_master = ucr.get('server/role') == 'domaincontroller_master' or ucr.get('server/role') == 'domaincontroller_backup'
@@ -72,15 +67,12 @@ def _apt_get_simulate(app):
 	packages = _packages_to_install(app)
 	cmd = ['/usr/bin/apt-get', 'install', '-s'] + packages
 	print 'Executing the command: %s' % cmd
-	process = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	process = subprocess.Popen(cmd, stderr=subprocess.STDOUT)
 	out, err = process.communicate()
 	app.unregister(cm)
-	return out + err
+	return out
 
-# sync app center data
-Application.sync_with_server()
-
-# get conflicted apps
+# print overview of installed apps
 all_apps = Application.all()
 _installed_apps = [app for app in all_apps if app.is_installed(pm)]
 installed_apps = set([app.id for app in _installed_apps])
@@ -91,10 +83,10 @@ failed = []
 for app in all_apps:
 	forbidden, warning = app.check_invokation('install', pm)
 	if forbidden:
-		print 'Ignoring app %s: requirements not met -> %s' % (_str_app(app), forbidden)
+		print 'Ignoring app %r: requirements not met -> %s' % (app, forbidden)
 		continue
 
-	print 'Checking app: %s' % _str_app(app)
+	print 'Checking app: %r' % app
 	result, previously_registered_by_dry_run = app.install_dry_run(pm, cm)
 	if result['broken']:
 		failed.append((app, result['broken']))
