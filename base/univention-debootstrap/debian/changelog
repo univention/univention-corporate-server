@@ -1,3 +1,9 @@
+univention-debootstrap (5.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Jun 2014 06:23:57 +0200
+
 univention-debootstrap (4.0.3-5) unstable; urgency=low
 
   * fixed missing /usr/share/debootstrap/functions-ucs3 (Bug #26179)
