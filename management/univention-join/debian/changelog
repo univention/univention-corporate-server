@@ -1,3 +1,17 @@
+univention-join (6.0.18-1) unstable; urgency=low
+
+  * Merged patches from ucs-in-ad-domain (Bug #35094)
+    [ Stefan Gohmann ]
+      * Set the adnotifcation variables in univention-join (Bug #34093)
+    [ Arvid Requate ]
+      * Set ad/member=true instead of samba/role=memberserver (Bug #34091)
+      * univention-run-join-scripts must require and pass join credentials
+        on DC master as well in case samba/role is "memberserver" (Bug #34091)
+      * Set samba/role=memberserver if univentionService is "AD Member"
+        (Bug #34091)
+
+ -- Felix Botner <botner@univention.de>  Thu, 19 Jun 2014 17:27:18 +0200
+
 univention-join (6.0.16-3) unstable; urgency=low
 
   * Bug #33793: Reverted change, univention-run-join-scripts works while dpkg

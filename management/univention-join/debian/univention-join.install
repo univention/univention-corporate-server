@@ -4,3 +4,4 @@ univention-run-join-scripts usr/share/univention-join/
 joinscripthelper.lib usr/share/univention-join/
 check_join_status.sh usr/share/univention-join/
 20univention-join.inst usr/lib/univention-install/
+04univention-samba-role.inst usr/lib/univention-install/
