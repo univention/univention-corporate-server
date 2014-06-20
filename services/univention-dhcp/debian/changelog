@@ -1,3 +1,9 @@
+univention-dhcp (9.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 20 Jun 2014 16:28:22 +0200
+
 univention-dhcp (8.0.0-3) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)
