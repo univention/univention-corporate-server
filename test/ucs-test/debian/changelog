@@ -1,3 +1,9 @@
+ucs-test (4.0.166-38) unstable; urgency=low
+
+  * Bug #34343: cleanup fixes again
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 20 Jun 2014 10:53:00 +0200
+
 ucs-test (4.0.166-37) unstable; urgency=low
 
   * Bug #34343: cleanup fixes

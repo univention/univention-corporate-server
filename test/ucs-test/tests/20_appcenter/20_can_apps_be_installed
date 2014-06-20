@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Checks if apps are installable (except for apps/packages conflicting with installed apsps)
+## desc: Checks if apps are installable (except for apps/packages conflicting with installed apps)
 ## tags: [basic,apptest]
 ## roles-not: [basesystem]
 ## exposure: safe
@@ -67,8 +67,7 @@ def _apt_get_simulate(app):
 	packages = _packages_to_install(app)
 	cmd = ['/usr/bin/apt-get', 'install', '-s'] + packages
 	print 'Executing the command: %s' % cmd
-	process = subprocess.Popen(cmd, stderr=subprocess.STDOUT)
-	out, err = process.communicate()
+	subprocess.call(cmd, stderr=subprocess.STDOUT)
 	app.unregister(cm)
 	return out
 
