@@ -1,4 +1,4 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 # pylint: disable-msg=C0103,W0622,W0312
 """
@@ -9,7 +9,7 @@ the proxy.
 During the quiet period check the cache directory (is-state) against the
 configuration directory (should-state) and reload/restart as appropriate.
 """
-# Copyright 2001-2013 Univention GmbH
+# Copyright 2001-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
