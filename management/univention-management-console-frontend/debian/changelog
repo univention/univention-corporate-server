@@ -1,3 +1,11 @@
+univention-management-console-frontend (3.0.152-33) unstable; urgency=low
+
+  * when newly installed on systems which are neither master nor backup
+    use a description for the UMC in the UCS overview page which does
+    no relate to the domain (Bug #33615)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 20 Jun 2014 13:50:03 +0200
+
 univention-management-console-frontend (3.0.152-32) unstable; urgency=low
 
   * Bug #34243: fix error when reloading modules if new categories exists

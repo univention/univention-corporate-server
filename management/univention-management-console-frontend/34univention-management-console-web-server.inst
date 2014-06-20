@@ -40,12 +40,22 @@ joinscript_init
 eval "$(ucr shell)"
 
 ucr set	ucs/web/overview/entries/admin/umc/icon="/univention-management-console/js/dijit/themes/umc/icons/50x50/univention-management-console.png" \
-	ucs/web/overview/entries/admin/umc/label="System and domain settings" \
+	ucs/web/overview/entries/admin/umc/link="/univention-management-console" \
+	ucs/web/overview/entries/admin/umc/priority="10" \
+
+if [ $server_role = "domaincontroller_master" ] || [ $server_role = "domaincontroller_backup" ]; then
+	ucr set ucs/web/overview/entries/admin/umc/label="System and domain settings" \
 	ucs/web/overview/entries/admin/umc/label/de="System- und Domäneneinstellungen" \
 	ucs/web/overview/entries/admin/umc/description="Univention Management Console for administrating the UCS domain $domainname and the system $hostname" \
-	ucs/web/overview/entries/admin/umc/description/de="Univention Management Console für die Verwaltung der UCS-Domäne $domainname und des Systems $hostname" \
-	ucs/web/overview/entries/admin/umc/link="/univention-management-console" \
-	ucs/web/overview/entries/admin/umc/priority="10" 
+	ucs/web/overview/entries/admin/umc/description/de="Univention Management Console für die Verwaltung der UCS-Domäne $domainname und des Systems $hostname"
+
+else
+	ucr set ucs/web/overview/entries/admin/umc/label="System settings" \
+	ucs/web/overview/entries/admin/umc/label/de="Systemeinstellungen" \
+	ucs/web/overview/entries/admin/umc/description="Univention Management Console for administrating the UCS system $hostname" \
+	ucs/web/overview/entries/admin/umc/description/de="Univention Management Console für die Verwaltung des UCS-Systems $hostname"
+
+fi
 
 /etc/init.d/univention-management-console-web-server restart
 
