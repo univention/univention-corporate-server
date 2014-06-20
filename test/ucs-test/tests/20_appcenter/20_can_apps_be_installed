@@ -6,10 +6,8 @@
 ## packages:
 ##   - univention-management-console-module-appcenter
 
-import os.path
 import sys
 import subprocess
-import apt
 
 from univention.lib.package_manager import PackageManager
 from univention.management.console.modules.appcenter.app_center import Application
@@ -69,7 +67,6 @@ def _apt_get_simulate(app):
 	print 'Executing the command: %s' % cmd
 	subprocess.call(cmd, stderr=subprocess.STDOUT)
 	app.unregister(cm)
-	return out
 
 # print overview of installed apps
 all_apps = Application.all()

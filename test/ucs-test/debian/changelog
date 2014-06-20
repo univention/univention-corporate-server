@@ -1,3 +1,9 @@
+ucs-test (4.0.166-39) unstable; urgency=low
+
+  * Bug #34343: fixed reference to not existing variable
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 20 Jun 2014 14:07:36 +0200
+
 ucs-test (4.0.166-38) unstable; urgency=low
 
   * Bug #34343: cleanup fixes again
