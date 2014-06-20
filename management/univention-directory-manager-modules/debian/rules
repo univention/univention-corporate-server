@@ -64,4 +64,4 @@ override_dh_install:
 	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/python-univention-directory-manager-cli/usr/share/pyshared/univention/admincli/admin.py
 
 %:
-	dh $@
+	dh $@ --with 'python_support'
