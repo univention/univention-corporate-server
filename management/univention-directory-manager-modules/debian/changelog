@@ -1,4 +1,10 @@
-univention-directory-manager-modules (9.0.77-1) unstable; urgency=low
+univention-directory-manager-modules (9.0.76-5) unstable; urgency=low
+
+  * fixed typo (Bug #34250)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 17 Jun 2014 14:03:12 +0200
+
+univention-directory-manager-modules (9.0.76-4) unstable; urgency=low
 
   * Moved input field 'Organisation' from 'Personal Information' to
     'Organisation'
