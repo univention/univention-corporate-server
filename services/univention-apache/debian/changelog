@@ -1,3 +1,17 @@
+univention-apache (6.0.16-7) unstable; urgency=low
+
+  * place ucs overview entries without priorty at the end
+  (Bug #33750)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 18 Jun 2014 15:52:12 +0100
+
+univention-apache (6.0.16-6) unstable; urgency=low
+
+  * actualised links to the Univention App Center in the overview page
+  (Bug #34864)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 17 Jun 2014 18:29:32 +0100
+
 univention-apache (6.0.16-5) unstable; urgency=low
 
   * This update corrects the generation of ucs-overview links. The links
