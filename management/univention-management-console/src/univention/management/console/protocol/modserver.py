@@ -43,7 +43,6 @@ from .definitions import (BAD_REQUEST_NOT_FOUND, BAD_REQUEST_INVALID_OPTS,
 
 from ..acl import ACLs
 from ..module import Module
-from ..modules import UMC_ModuleInitError
 from ..log import MODULE, PROTOCOL
 
 from univention.lib.i18n import Locale, NullTranslation
@@ -249,6 +248,8 @@ class ModuleServer( Server ):
 					
 					if msg:
 						msg = 'The initialization of the module failed: %s' % msg
+
+					from ..modules import UMC_ModuleInitError
 					if not isinstance(e, UMC_ModuleInitError) or not msg:
 						msg = trace
 

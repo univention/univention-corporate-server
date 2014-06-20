@@ -1,3 +1,9 @@
+univention-management-console (6.0.24-13) unstable; urgency=low
+
+  * fixed circular import (Bug #34723)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 19 Jun 2014 13:09:02 +0200
+
 univention-management-console (6.0.24-12) unstable; urgency=low
 
   * version bump, corrected bug number in changelog (Bug #34723)
