@@ -1,3 +1,9 @@
+univention-join (6.0.18-3) unstable; urgency=low
+
+  * added execution rights to 04univention-samba-role.inst (Bug #35094) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 20 Jun 2014 13:26:52 +0200
+
 univention-join (6.0.18-2) unstable; urgency=low
 
   * Merged patches from ucs-in-ad-domain (Bug #35094)
