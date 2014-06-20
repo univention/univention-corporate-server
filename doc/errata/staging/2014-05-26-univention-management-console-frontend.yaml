@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-management-console-frontend
-fix: 3.0.152-32.831.201406131506
+fix: 3.0.152-33.832.201406201356
 version: [2]
 desc: |
   This update fixes the following issues:
@@ -11,4 +11,8 @@ desc: |
   * A function has been added to reload the modules of the overview tab on the fly.
   * A default link to UMC has been added on the UCS overview page for unjoined
     systems
-bug: [34965, 34243, 34317]
+  * When installing a new system which is neither a domaincontroller master nor a
+    domaincontroller backup, the UMC entry in the UCS overview page will no longer
+    consider the UMC a domain administration tool, as the domain wide modules are only
+    available on master and backup systems.
+bug: [34965, 34243, 34317, 33615]
