@@ -92,7 +92,8 @@ if failed:
 	for app, brokenPackages in failed:
 		print '\n[ APP: %s ]' % app.id
 		print 'broken packages: %s' % brokenPackages
-		print 'output of apt-get install -s\n%s' % _apt_get_simulate(app)
+		print 'output of apt-get install -s'
+		_apt_get_simulate(app)
 	sys.exit(1)
 
 sys.exit(0)
