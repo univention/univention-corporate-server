@@ -1,3 +1,9 @@
+univention-directory-replication (7.0.1-6) unstable; urgency=low
+
+  * rerun listener handler with listener_old (Bug #34759)
+
+ -- Felix Botner <botner@univention.de>  Mon, 23 Jun 2014 13:39:44 +0200
+
 univention-directory-replication (7.0.1-5) unstable; urgency=low
 
   * The entryUUID between master and slave could be different. The
