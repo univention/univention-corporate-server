@@ -1,3 +1,9 @@
+univention-nfs (7.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 23 Jun 2014 11:17:26 +0200
+
 univention-nfs (6.0.3-1) unstable; urgency=low
 
   * Added idmapd configuration option nfs/common/idmapd (default=yes)
