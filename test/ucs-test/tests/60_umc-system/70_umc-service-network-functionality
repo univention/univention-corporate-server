@@ -76,6 +76,17 @@ class TestUMCNetworkFunctionality(TestUMCSystem):
                        % (self.test_network_name, options, request_result))
         self.test_network_dn = request_result[0].get('$dn$')
 
+    def query_dhcp_services(self):
+        """
+        Makes a 'udm/query' request to get the DHCP services available
+        """
+        options = {"superordinate": "None",
+                   "objectType": "dhcp/dhcp",
+                   "objectProperty": "None",
+                   "objectPropertyValue": "",
+                   "hidden": True}
+        return self.make_query_request("udm", options, "dhcp/dhcp")
+
     def get_network_config(self, increase_counter=True):
         """
         Makes a 'udm/network' request to get the network configuration
@@ -223,13 +234,19 @@ class TestUMCNetworkFunctionality(TestUMCSystem):
                        "forward zones for '%s' computer" % (domain_name,
                        self.test_computer_name))
 
-        print("\nChecking if DHCP service '%s' is reported "
-              "in choices for '%s' computer"
-              % (domain_name, self.test_computer_name))
-        if not self.check_dns_dhcp_in_choices("dhcpService", domain_name):
-            utils.fail("The '%s' was not reported as an option for DHCP "
-                       "service for '%s' computer" % (domain_name,
-                       self.test_computer_name))
+        print("\nChecking if a DHCP service is reported "
+              "in choices for '%s' computer" % self.test_computer_name)
+        dhcp_services = self.query_dhcp_services()
+        if dhcp_services:
+            dhcp_service_name = dhcp_services[0].get('name')
+            if not self.check_dns_dhcp_in_choices("dhcpService",
+                                                  dhcp_service_name):
+                utils.fail("The '%s' was not reported as an option for DHCP "
+                           "service for '%s' computer" % (dhcp_service_name,
+                           self.test_computer_name))
+        else:
+            print("\nCheck skipped, since no DHCP services in the "
+                  "domain were found...")
 
     def run_address_reservation_checks(self):
         """

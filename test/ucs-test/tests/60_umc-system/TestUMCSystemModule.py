@@ -85,10 +85,11 @@ class TestUMCSystem(object):
         Makes a '/query' UMC request with a provided 'prefix' argument,
         optional 'flavor' and 'options', returns request result.
         """
+        request_result = None
         try:
             request_result = self.Connection.request(prefix + '/query',
                                                      options, flavor)
-            if not request_result:
+            if request_result is None:
                 utils.fail("Request '%s/query' failed, no result, hostname %s"
                            % (prefix, self.hostname))
             return request_result
