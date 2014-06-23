@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-34) unstable; urgency=low
+
+  * Bug #34317: Adapted the default link on UCS overview page.
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 23 Jun 2014 09:44:53 +0200
+
 univention-management-console-frontend (3.0.152-33) unstable; urgency=low
 
   * when newly installed on systems which are neither master nor backup

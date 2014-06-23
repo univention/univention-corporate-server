@@ -52,11 +52,10 @@ univention-config-registry set "umc/web/feedback/mail?feedback@univention.de" \
 ucr set ucs/web/overview/entries/admin/umc/icon?"/univention-management-console/js/dijit/themes/umc/icons/50x50/univention-management-console.png" \
     ucs/web/overview/entries/admin/umc/label?"System and domain settings" \
     ucs/web/overview/entries/admin/umc/label/de?"System- und Domäneneinstellungen" \
-    ucs/web/overview/entries/admin/umc/description?"Please login as root to join the domain " \
-    ucs/web/overview/entries/admin/umc/description/de?"Bitte loggen Sie sich als Nutzer root ein, um der Domaine beizutreten." \
-    ucs/web/overview/entries/admin/umc/link?"/univention-management-console" \
+    ucs/web/overview/entries/admin/umc/description?"Please login as <i>root</i> to join the domain" \
+    ucs/web/overview/entries/admin/umc/description/de?"Bitte loggen Sie sich als Benutzer <i>root</i> ein, um der Domaine beizutreten" \
+    ucs/web/overview/entries/admin/umc/link?"/univention-management-console?username=root" \
     ucs/web/overview/entries/admin/umc/priority?"10"
-/etc/init.d/univention-management-console-web-server restart
 
 
 dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/usr/share/univention-management-console-frontend/languages.json 3.0.129-1~ -- "$@"
