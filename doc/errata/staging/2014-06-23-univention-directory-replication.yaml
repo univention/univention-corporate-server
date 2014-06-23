@@ -1,0 +1,10 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: univention-directory-replication
+fix: 7.0.1-6.75.201406231342
+version: [2]
+desc: |
+  In case of an error the replication listener handler is now 
+  restarted with the old object from the directory listener.
+bug: [34759]
