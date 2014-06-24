@@ -288,32 +288,49 @@ samba_domain_join() {
 		samba_join_options+=( "${SITE_OPTION[@]}" )
 	fi
 
-	if [ -n "$samba4_dc" ]; then
-		samba-tool domain join "$domainname" "$samba4_role" --server "$samba4_dc" \
-							"${samba_join_options[@]}" && success=true \
-							&& univention-config-registry set windows/wins-server?"$samba4_dc"
+	univention-config-registry set windows/wins-support?no
 
+	if [ -n "$samba4_dc" ]; then
+		samba-tool domain join "$domainname" "$samba4_role" --server "$samba4_dc" "${samba_join_options[@]}"
+		if [ $? -eq 0 ]; then
+			univention-config-registry set windows/wins-server?"$samba4_dc"
+			success=true
+		else
+			echo "Failed to join the server $samba4_dc."
+			exit 1
+		fi
 	else
-		samba-tool domain join "$domainname" "$samba4_role" \
-							"${samba_join_options[@]}" && success=true
+		if samba-tool domain info "$domainname"; then
+			samba-tool domain join "$domainname" "$samba4_role" "${samba_join_options[@]}"
+			if [ $? -eq 0 ]; then
+				success=true
+			else
+				echo "Failed to join the domain $domainname."
+				exit 1
+			fi
+		fi
+
 		if [ -z "$success" ]; then
 			# try again with --server
 			cn=($(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret \
 						"(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn \
 										| ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p' ))
-			
 			for name in "${cn[@]}"; do
-				samba-tool domain join "$domainname" "$samba4_role" --server "$name.$domainname" \
-								"${samba_join_options[@]}" && success=true
-				if [ -n "$success" ]; then
-					univention-config-registry set windows/wins-server?"$name.$domainname"
-					break
+				if samba-tool domain info "$name.$domainname"; then
+					samba-tool domain join "$domainname" "$samba4_role" --server "$name.$domainname" "${samba_join_options[@]}"
+					if [ $? -eq 0 ]; then
+						success=true
+						univention-config-registry set windows/wins-server?"$name.$domainname"
+						break
+					else
+						echo "Failed to join the server $name.$domainname."
+						exit 1
+					fi
 				fi
 			done
 		fi
 	fi
 
-	univention-config-registry set windows/wins-support?no
 
 	if [ -z "$success" ]; then
 		echo "Failed to join the domain."
@@ -853,9 +870,9 @@ if [ "$samba4_role" = 'DC' ]; then
 					## backup old keytab if samba4 generated it
 					backup_samba4_keytab
 					samba_join_options=( --keep-existing )
-					cleanup_var_lib_samba
 				fi
 
+				cleanup_var_lib_samba
 				samba_domain_join "${samba_join_options[@]}"
 
 				## if the key version number increased, merge the old keys into the new keytab

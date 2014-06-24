@@ -1,3 +1,10 @@
+univention-samba4 (3.0.39-25) unstable; urgency=low
+
+  * always clean up the samba dir before join
+  * fail if samba join fails (Bug #34422)
+
+ -- Felix Botner <botner@univention.de>  Tue, 24 Jun 2014 09:04:10 +0200
+
 univention-samba4 (3.0.39-24) unstable; urgency=low
 
   * Added samba/acl/allow/execute/always (Bug #33785) 
