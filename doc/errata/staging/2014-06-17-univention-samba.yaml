@@ -3,7 +3,7 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-samba
 fix: 8.0.18-3.468.201406171247
-version: [1,2]
+version: [2]
 desc: |
     This updates fixes the following issues in univention-samba:
     * In Samba 3.6 and older the execution right in the ACL was not checked,

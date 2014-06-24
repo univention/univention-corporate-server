@@ -2,8 +2,8 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-samba4
-fix: 3.0.39-24.578.201406171255
-version: [1,2]
+fix: 3.0.39-25.579.201406240909
+version: [2]
 desc: |
     This updates fixes the following issues in univention-samba4:
     * In Samba 3.6 and older the execution right in the ACL was not checked,
@@ -11,4 +11,7 @@ desc: |
       on the file. In Samba 4.0, this has been fixed. To re-establishing the
       old behaviour the new UCR variable samba/acl/allow/execute/always has
       been added (default True).
-bug: [35137]
+    * The univention-samba4 join script now always cleans up the samba
+      private directory before the join and if the samba4 join fails, the
+      join is aborted .
+bug: [35137, 34422]
