@@ -66,6 +66,7 @@ from simplejson import loads
 # univention
 from univention.management.console.log import MODULE
 from univention.config_registry import ConfigRegistry, handler_commit
+from univention.config_registry.frontend import ucr_update
 import univention.uldap as uldap
 import univention.management.console as umc
 from univention.lib.umc_connection import UMCConnection
@@ -350,6 +351,7 @@ class Application(object):
 		self.id = self.ldap_id = self.ldap_container = None
 		self.set_id(self._options['id'])
 		self.name = self._options['name']
+		self.code = self._options.get('code')
 		self.version = self._options['version']
 
 		# get the name of the component
@@ -957,8 +959,15 @@ class Application(object):
 			# serveral other (app relevant) packages; for example
 			# in postinst or joinscript (on master).
 			# see Bug #33535 and Bug #31261
-			packages = package_manager.get_packages(default_packages)
-			return len(packages) == len(default_packages) and all(package.is_installed for package in packages)
+			for package_name in default_packages:
+				try:
+					package = package_manager.get_package(package_name, raise_key_error=True)
+				except KeyError:
+					return False
+				else:
+					if not package.is_installed:
+						return False
+			return True
 
 	def uninstall(self, package_manager, component_manager):
 		# reload ucr variables
@@ -987,7 +996,7 @@ class Application(object):
 			status = 200
 		except:
 			status = 500
-		self._send_information('uninstall', status)
+		self._finished('uninstall', status, component_manager.ucr, package_manager)
 		return status == 200
 
 	def install_dry_run(self, package_manager, component_manager, remove_component=True, username=None, password=None, only_master_packages=False, dont_remote_install=False, function='install', force=False):
@@ -1428,8 +1437,12 @@ class Application(object):
 			except (LDAPError, udm_errors.base):
 				pass
 			status = 500
-		self._send_information(send_as, status)
+		self._finished(send_as, status, component_manager.ucr, package_manager)
 		return status == 200
+
+	def _finished(self, action, status, ucr, package_manager):
+		self._set_ucr_codes_variable(ucr, package_manager)
+		self._send_information(action, status)
 
 	def _send_information(self, action, status):
 		if not self.get('notifyvendor'):
@@ -1452,6 +1465,15 @@ class Application(object):
 			urlopen(request)
 		except:
 			MODULE.warn(traceback.format_exc())
+
+	@classmethod
+	def _set_ucr_codes_variable(cls, ucr, package_manager):
+		installed_codes = []
+		for app in cls.all_installed(package_manager):
+			if app.code:
+				installed_codes.append(app.code)
+		codes_variable = '-'.join(sorted(installed_codes))
+		ucr_update(ucr, {'repository/app_center/installed' : codes_variable})
 
 	@classmethod
 	def update_conffiles(cls):

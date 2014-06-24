@@ -94,5 +94,22 @@ if app:
 "
 fi
 
+if dpkg --compare-versions "$2" lt-nl 3.0.51-20; then
+	python -c "
+from univention.lib.package_manager import PackageManager
+from univention.config_registry import ConfigRegistry
+from univention.management.console.modules.appcenter.util import install_opener
+from univention.management.console.modules.appcenter.app_center import Application
+
+ucr = ConfigRegistry()
+ucr.load()
+package_manager = PackageManager(lock=False)
+
+install_opener(ucr)
+
+Application._set_ucr_codes_variable(ucr, package_manager)
+"
+fi
+
 exit 0
 
