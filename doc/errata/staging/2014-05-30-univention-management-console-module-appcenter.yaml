@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-management-console-module-appcenter
-fix: 3.0.51-19.253.201406121123
+fix: 3.0.51-20.254.201406241643
 version: [2]
 desc: |
   This update fixes the following issues:
@@ -18,4 +18,8 @@ desc: |
   * A dedicated component for the Radius application is removed (if Radius is
     installed). It was added by mistake as univention-radius is part of the
     main repository.
-bug: [34243, 31915, 32935, 34867]
+  * The UCR variable repository/app_center/installed is set and kept
+    up-to-date. It reflects the state of the installation status of all apps.
+  * The details of an application do not show the note whether this application
+    sends information to the vendor or not if it is a UCS component.
+bug: [34243, 31915, 32935, 34867, 35177, 35176]
