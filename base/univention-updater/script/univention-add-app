@@ -34,6 +34,7 @@
 
 import sys
 from optparse import OptionParser
+import subprocess
 
 from univention.lib.package_manager import PackageManager
 from univention.config_registry import ConfigRegistry
@@ -100,7 +101,8 @@ if __name__ == '__main__':
 		sys.stderr.write('App "%s" may not be installed\n' % requested_app.name)
 		sys.exit(1)
 	success = True
-	requested_app.register(component_manager, package_manager)
+
+	manually = False
 	if options.install_all or options.install_master:
 		only_master_packages = not options.install_all
 		requested_app.versions = Application.find(requested_app.id).versions
@@ -110,10 +112,21 @@ if __name__ == '__main__':
 		success = requested_app.install(package_manager, component_manager, add_component=False, send_as=function, only_master_packages=only_master_packages) and success
 	else:
 		requested_app._send_information(function, 200)
+		manually = True
 
 	# for compatibility with 3.1-0. should be removed with 3.2-0
 	if packages:
+		# some legacy call to install the default packages on the command line
+		legacy_call = all(package in packages for package in requested_app.get('defaultpackages'))
+		previously_registered = requested_app.register(component_manager, package_manager)
 		success = package_manager.install(*packages) and success
+		if not success or not legacy_call:
+			requested_app.unregister_all_and_register(previously_registered)
+		subprocess.call(['/usr/sbin/univention-register-apps'])
+	elif manually:
+		component_manager.put_app(requested_app)
+		package_manager.update()
+		sys.stderr.write('WARNING: Using neither --all nor --master is deprecated. Applications may not be registerd properly\n')
 
 	if success:
 		sys.exit(0)
