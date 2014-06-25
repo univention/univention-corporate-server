@@ -17,16 +17,6 @@ from univention.config_registry import ConfigRegistry
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
-CATEGORIES = set((
-	'Administration',
-	'Business',
-	'Collaboration',
-	'Education',
-	'System services',
-	'UCS components',
-	'Virtualization',
-))
-
 if not os.path.exists('/var/cache/appcenter-installed.txt'):
 	print '/var/cache/appcenter-installed.txt does not exist'
 	sys.exit(137)
@@ -62,11 +52,6 @@ for appID in fd:
 		print ' Test failed: Requested App not found: %s' % appID
 		returncode = 1
 		continue
-
-	unsupported = set(app.get('unlocalised_categories')) - CATEGORIES
-	for category in unsupported:
-		print ' Test failed: Requested App has unsupported category: %s' % category
-		returncode = 1
 
 	for package in app.get('defaultpackages'):
 		if not check_package(package):
