@@ -1,3 +1,10 @@
+univention-directory-manager-modules (10.0.0-2) unstable; urgency=low
+
+  * Merged UCS 3.2-2 errata (Bug #33174): Added new option to share-userquota
+    policy: Reapply quota on every login
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 26 Jun 2014 12:47:43 +0200
+
 univention-directory-manager-modules (10.0.0-1) unstable; urgency=low
 
   * update to UCS 4.0 (Bug #35146)

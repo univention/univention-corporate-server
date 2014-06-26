@@ -47,7 +47,8 @@ class shareUserQuotaFixedAttributes(univention.admin.syntax.select):
 		('univentionQuotaSoftLimitSpace',_('Soft limit')),
 		('univentionQuotaHardLimitSpace',_('Hard limit')),
 		('univentionQuotaSoftLimitInodes',_('Soft limit (Files)')),
-		('univentionQuotaHardLimitInodes',_('Hard limit (Files)'))
+		('univentionQuotaHardLimitInodes',_('Hard limit (Files)')),
+		('univentionQuotaReapplyEveryLogin',_('Reapply settings on every login'))
 		]
 
 module='policies/share_userquota'
@@ -77,7 +78,7 @@ property_descriptions={
 		),
 	'softLimitSpace': univention.admin.property(
 			short_description=_('Soft limit'),
-			long_description=_('Soft limit. If exceeded users can be warned. Values may be entered with one of the following units as postfix: B, kB, MB, GB'),
+			long_description=_('Soft limit. If exceeded users can be warned. Values may be entered with one of the following units as postfix: B (default), kB, MB, GB'),
 			syntax=univention.admin.syntax.filesize,
 			multivalue=0,
 			options=[],
@@ -87,7 +88,7 @@ property_descriptions={
 		),
 	'hardLimitSpace': univention.admin.property(
 			short_description=_('Hard limit'),
-			long_description=_('Hard limit. Can not be exceeded. Values may be entered with one of the following units as postfix: B, kB, MB, GB'),
+			long_description=_('Hard limit. Can not be exceeded. Values may be entered with one of the following units as postfix: B (default), kB, MB, GB'),
 			syntax=univention.admin.syntax.filesize,
 			multivalue=0,
 			options=[],
@@ -114,6 +115,17 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0
+		),
+	'reapplyeverylogin': univention.admin.property(
+			short_description=_('Reapply settings on every login'),
+			long_description=_('Reapply the mountpoint specific user quota policies on each user login. If not set, the initially configured quota settings will not be overwritten.'),
+			syntax=univention.admin.syntax.TrueFalseUp,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+			default="FALSE"
 		),
 	'requiredObjectClasses': univention.admin.property(
 			short_description=_('Required object classes'),
@@ -162,7 +174,8 @@ layout = [
 		Group( _( 'General' ), layout = [
 			'name',
 			[ 'softLimitSpace', 'hardLimitSpace' ],
-			[ 'softLimitInodes', 'hardLimitInodes' ]
+			[ 'softLimitInodes', 'hardLimitInodes' ],
+			[ 'reapplyeverylogin' ]
 		] ),
 	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
@@ -177,6 +190,7 @@ mapping.register('hardLimitSpace', 'univentionQuotaHardLimitSpace', None, univen
 mapping.register('softLimitSpace', 'univentionQuotaSoftLimitSpace', None, univention.admin.mapping.ListToString)
 mapping.register('hardLimitInodes', 'univentionQuotaHardLimitInodes', None, univention.admin.mapping.ListToString)
 mapping.register('softLimitInodes', 'univentionQuotaSoftLimitInodes', None, univention.admin.mapping.ListToString)
+mapping.register('reapplyeverylogin', 'univentionQuotaReapplyEveryLogin', None, univention.admin.mapping.ListToString)
 mapping.register('requiredObjectClasses', 'requiredObjectClasses')
 mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
 mapping.register('fixedAttributes', 'fixedAttributes')
