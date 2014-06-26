@@ -2,10 +2,11 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-ldap
-fix: 10.0.17-35.691.201406171728
+fix: 10.0.17-36.693.201406261204
 version: [2]
 desc: |
   * A regression in the ldap ACL's has been fixed. The ACL's for
     the dc and memberserver container now again allow subfolders
     (in cn=dc resp. cn=memberserver).
-bug: [34554]
+  * New share-userquota binary attribute: Reapply quota on every login
+bug: [34554, 33174]
