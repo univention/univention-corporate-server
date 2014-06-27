@@ -616,7 +616,7 @@
   <para>
 	Bei der Installation eines &ucsMaster; wird nur ein <guimenu>externer DNS-Server</guimenu>
 	abgefragt, da im Rahmen der Installation immer ein Domänen-DNS-Server eingerichtet wird. Dieser
-	kann dann von den anderen Systemen der Domäne verwendet wird. Über die Schaltfläche
+	kann dann von den anderen Systemen der Domäne verwendet werden. Über die Schaltfläche
 	<mousebutton>Mehr</mousebutton> können weitere Nameserver aufgenommen werden.
   </para>
 
