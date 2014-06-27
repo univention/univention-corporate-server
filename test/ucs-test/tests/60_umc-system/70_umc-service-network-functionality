@@ -27,30 +27,6 @@ class TestUMCNetworkFunctionality(TestUMCSystem):
         self.test_ip_range = []
         self.test_computer_name = ''
 
-    def create_computer(self, computer_name, ip_address,
-                        dns_forward, dns_reverse):
-        """
-        Makes a 'udm/add' request to create a computer with a given params
-        """
-        options = [{"object": {"ip": ip_address,
-                               "network": self.test_network_dn,
-                               "unixhome": "/dev/null",
-                               "ntCompatibility": False,
-                               "shell": "/bin/false",
-                               "primaryGroup": "cn=Windows Hosts,cn=groups," +
-                                               self.ldap_base,
-                               "dnsEntryZoneForward": dns_forward,
-                               "name": computer_name,
-                               "dnsEntryZoneReverse": dns_reverse,
-                    "$options$": {"samba": True,
-                                  "kerberos": True,
-                                  "posix": True,
-                                  "nagios": False},
-                                  "$policies$": {}},
-                    "options": {"container": "cn=computers," + self.ldap_base,
-                                "objectType": "computers/windows"}}]
-        return self.make_udm_request("add", options, "computers/computer")
-
     def create_network(self, netmask="24", dns_forward="", dns_reverse="",
                        dhcp_entry=""):
         """

@@ -1,6 +1,8 @@
 import sys
 
 import simplejson as json
+from time import sleep
+from httplib import HTTPException
 
 from univention.config_registry import ConfigRegistry
 from univention.testing.codes import TestCodes
@@ -20,6 +22,7 @@ class TestUMCSystem(object):
         self.hostname = None
         self.Connection = None
         self.ldap_base = ''
+        self.test_network_dn = ''
 
         self.UCR = ConfigRegistry()
 
@@ -48,6 +51,12 @@ class TestUMCSystem(object):
         """Create UMC connection and authenticate"""
         try:
             self.Connection = UMCConnection(self.hostname)
+            self.Connection.auth(self.username, self.password)
+        except HTTPException as exc:
+            print("An HTTPException while trying to authenticate to UMC: %r"
+                  % exc)
+            print "Waiting 5 seconds and making another attempt"
+            sleep(5)
             self.Connection.auth(self.username, self.password)
         except Exception as exc:
             utils.fail("Failed to authenticate, hostname '%s' : %s" %
@@ -135,6 +144,31 @@ class TestUMCSystem(object):
         except Exception as exc:
             utils.fail("Exception while making 'udm/%s' request with "
                        "options '%s': %s" % (suffix, options, exc))
+
+    def create_computer(self, computer_name, ip_address,
+                        dns_forward, dns_reverse):
+        """
+        Creates a computer with given arguments and self.ldap_base,
+        self.test_network_dn via 'udm/add' UMC request
+        """
+        options = [{"object": {"ip": ip_address,
+                               "network": self.test_network_dn,
+                               "unixhome": "/dev/null",
+                               "ntCompatibility": False,
+                               "shell": "/bin/false",
+                               "primaryGroup": "cn=Windows Hosts,cn=groups," +
+                                               self.ldap_base,
+                               "dnsEntryZoneForward": dns_forward,
+                               "name": computer_name,
+                               "dnsEntryZoneReverse": dns_reverse,
+                    "$options$": {"samba": True,
+                                  "kerberos": True,
+                                  "posix": True,
+                                  "nagios": False},
+                                  "$policies$": {}},
+                    "options": {"container": "cn=computers," + self.ldap_base,
+                                "objectType": "computers/windows"}}]
+        return self.make_udm_request("add", options, "computers/computer")
 
     def check_obj_exists(self, name, obj_type):
         """
