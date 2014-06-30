@@ -3,7 +3,7 @@
 # Univention Grub
 #  postinst script
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -56,14 +56,6 @@ univention-config-registry set grub/timeout?5 \
 # /boot/grub/unicode.pf2 is better
 if [ ! -f /boot/grub/unicode.pf2 -a -f /usr/share/grub/unicode.pf2 ]; then
 	cp /usr/share/grub/unicode.pf2 /boot/grub/unicode.pf2
-fi
-
-# switch color depth from 788 (800x600x16) to 789 (800x600x24) during update from UCS 3.1-1 to 3.2-0 (Bug #32634)
-# this block may be removed after UCS 3.2-0
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 7.0.1-1; then
-	if [ "$grub_vga" = "788" -a ! "$update32_grub_changecolordepth" = "no" ] ; then
-		ucr set grub/vga=789
-	fi
 fi
 
 # Bug #33123:
