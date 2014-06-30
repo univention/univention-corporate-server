@@ -1,0 +1,13 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: univention-archive-key
+fix: 4.0.0-4.13.201406301202
+note:
+version: [2]
+desc: |
+  This update provides the new signing archive key for UCS 4.0.
+  This version is not released yet, but we already distribute the
+  key in advance to ensure the availability of the archive signing
+  key when updating from UCS 3.2-3 to UCS 4.0 at a later point.
+bug: [35213]
