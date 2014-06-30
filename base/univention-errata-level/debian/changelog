@@ -1,3 +1,9 @@
+univention-errata-level (3.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Jun 2014 08:10:51 +0200
+
 univention-errata-level (2.0.0-1) unstable; urgency=low
 
   * Bump version for UCS-3.2 (Bug #32236)
