@@ -1,3 +1,9 @@
+univention-network-manager (6.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Jun 2014 08:41:41 +0200
+
 univention-network-manager (5.0.0-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30943)
