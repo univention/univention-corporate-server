@@ -10,7 +10,7 @@ Package: univention-ssh
 Architecture: all
 Conflicts: univention-join (<< 0.2)
 Depends: ${misc:Depends},
- python,
+ python2.7,
  univention-config,
  rsync,
  openssh-client
