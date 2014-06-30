@@ -1,3 +1,9 @@
+univention-runit (6.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Jun 2014 09:09:04 +0200
+
 univention-runit (5.0.0-2) unstable; urgency=low
 
   * corrected usage message of init script, which erroneously printed
