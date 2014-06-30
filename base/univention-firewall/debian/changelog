@@ -1,3 +1,9 @@
+univention-firewall (7.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Jun 2014 08:15:35 +0200
+
 univention-firewall (6.0.1-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30943)	
@@ -16,7 +22,7 @@ univention-firewall (6.0.0-1) unstable; urgency=low
   * Update/review UCR variable descriptions (Bug #30943)	
   * Remove old transition code in postinst
   * Mark security/packetfilter/package/.* are ReadOnly	
-	
+
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 03 Sep 2013 14:35:57 +0200
 
 univention-firewall (5.0.5-2) unstable; urgency=low
