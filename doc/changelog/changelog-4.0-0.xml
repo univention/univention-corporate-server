@@ -390,6 +390,9 @@
 	  <listitem><simpara>
 		<package>ucslint</package> has been ported to UCS 4. Main changes is the switch from python 2.6 to python 2.7 (<ulink url="&ucsbug;35135">Bug 35135</ulink>).
 	  </simpara></listitem>
+	  <listitem><simpara>
+		The package <package>univention-showload</package> is no longer needed and maintained by Univention. The package can be manually removed (<ulink url="&ucsbug;35138">Bug 35138</ulink>).
+	  </simpara></listitem>
 	</itemizedlist>
 </section>
 
