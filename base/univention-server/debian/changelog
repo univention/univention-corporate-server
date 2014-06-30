@@ -1,3 +1,10 @@
+univention-server (10.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138)
+  * Removed mobile and managed client packages
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Jun 2014 09:11:21 +0200
+
 univention-server (9.0.0-4) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
