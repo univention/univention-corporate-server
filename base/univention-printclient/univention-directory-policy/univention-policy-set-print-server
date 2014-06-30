@@ -1,9 +1,9 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 #
 # Univention Print Client
 #  helper script: set printer server according to policy
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
