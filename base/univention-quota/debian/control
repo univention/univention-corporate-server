@@ -7,8 +7,9 @@ Build-Depends: debhelper (>> 3.0.0),
  univention-config-dev,
  univention-management-console-dev,
  python-all,
+ python-all-dev,
  python-support (>= 0.90)
-XS-Python-Version: 2.6
+XS-Python-Version: 2.6,2.7
 
 Package: univention-quota
 Architecture: all

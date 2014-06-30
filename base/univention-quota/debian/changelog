@@ -1,3 +1,9 @@
+univention-quota (9.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Jun 2014 09:06:39 +0200
+
 univention-quota (8.0.6-3) unstable; urgency=low
 
   * Bug #31277: enable possibility to configure the root (/) partition
