@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+
+  <!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+
+  %entities;
+]>
+<book lang="de" id="installation-3.2">
+<bookinfo>
+  <title>Univention Corporate Server</title>
+  <subtitle>Quickstart Guide für Univention Corporate Server</subtitle>
+  <revhistory>
+     <revision>
+        <revnumber>3.2-2</revnumber>
+        <date>24 Jun 2014</date>
+     </revision>
+  </revhistory>
+</bookinfo>
+
+<chapter id="quickstart:intro">
+  <title>Einleitung</title>
+
+  <para>
+	Univention Corporate Server (UCS) ist ein auf Debian GNU/Linux basierendes Serverbetriebssystem
+	mit integriertem Managementsystem für die zentrale Verwaltung von Servern, Diensten, Clients,
+	Desktops und Benutzern. Dieser Quickstart-Guide stellt eine Kurzanleitung zur Inbetriebnahme und
+	für erste Schritte mit UCS dar. Ausführliche Beschreibungen sind im UCS-Handbuch zu finden.
+  </para>
+
+  <para>
+	Die UCS-Installations-DVD steht unter TODOREF zum Download bereit. Installations-DVDs sind für
+	die Rechnerarchitekturen amd64 (64 Bit) und i386 (32 Bit) verfügbar. Nahezu alle
+	Serversysteme, die in den letzten Jahren verkauft wurden sind 64 Bit-Systeme. Die Verwendung
+	der 64 Bit-Version wird empfohlen.
+  </para>
+
+  <para>
+	Für amd64 steht neben der Standard-Installations-DVD auch ein Medium mit Unterstützung für den
+	Unified Extensible Firmware Interface-Standard (UEFI) bereit. Auf Systemen, die nur einen
+	UEFI-Start unterstützen, muss sie anstelle der Standard-DVD verwendet werden.
+  </para>
+
+  <para>
+	Je nach geplantem Einsatzzweck und der Benutzeranzahl variieren die Systemanforderungen sehr
+	stark. Mindestanforderungen für die Installation sind 512 MB Arbeitsspeicher und 8 GB
+	Festplattenspeicher.
+  </para>
+</chapter>
+
+<chapter id="quickstart:installation">
+  <title>Installation</title>
+
+  <para>
+	Die Installation erfolgt per menügeführtem Text-Installer und kann sowohl interaktiv, als auch
+	vollständig profilbasiert durchgeführt werden. Die Systemsprache, die Tastaturbelegung und die
+	Zeitzone können je nach lokalen Anforderungen gewählt werden.
+  </para>
+
+  <figure id="quick-systemrole">
+	<title>Auswahl der Systemrolle</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/systemrole-de.png"/>
+  </figure>
+  
+  <para>
+	Als Systemrolle sollte <guimenu>Domain Controller Master</guimenu> ausgewählt werden.
+	Das erste System einer UCS-Umgebung ist immer der Domänencontroller Master. Alle Änderungen an
+	den Daten einer UCS-Domäne (z.B. Benutzer, Gruppen, Rechnerkonten etc) werden auf dem DC
+	Master vorgenommen. Alle anderen System treten dann bei ihrer Installation der UCS-Domäne bei.
+	Eine Übersicht über die verschiedenen weiteren Systemrollen findet sich im UCS-Handbuch.
+  </para>
+
+  <figure id="quick-fqdn">
+	<title>Konfiguration der Basiseinstellungen</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/domainname-de.png"/>
+  </figure>
+  
+  <para>
+	Im nächsten Dialog wird unter <guimenu>Vollständiger Rechnername</guimenu> der
+	vollqualifizierte Rechnername eingetragen, unter dem der Rechner im Netzwerk erreichbar sein
+	soll. Wenn also beispielsweise das Rechnersystem <emphasis>mailserver</emphasis> in der
+	DNS-Domäne <emphasis>firma.de</emphasis> in Betrieb genommen werden soll, ist als
+	vollständiger Rechnername <emphasis>mailserver.firma.de</emphasis> einzutragen. Die <guimenu>LDAP-Basis</guimenu>
+	und die <guimenu>Windows-Domäne</guimenu> werden auf Basis des vollständigen Rechnernamens
+	vorgeschlagen und müssen nur in Ausnahmefällen angepasst werden.
+	Der Root-Passwort muss min. acht Zeichen umfassen und wird bei der Installation des ersten
+	UCS-Servers (&ucsMaster;) auch als Passwort für den <emphasis>Administrator</emphasis>-Benutzer gesetzt.
+  </para>
+  
+  <figure id="quick-part">
+	<title>Automatische Partitionierung</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/autopart-de.png"/>
+  </figure>
+
+  <para>
+	Während der Installation kann eine Autopartitionierung verwendet werden, die standardmäßig die
+	erste Festplatte im System als LVM erzeugt. Es wird empfohlen diese Option zu verwenden.
+  </para>
+
+  <figure id="quick-network">
+	<title>Netzwerk-Konfiguration</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/network-de.png"/>
+  </figure>
+
+  <para>
+	Während der Installation sollte eine korrekte Netzwerkkonfiguration eingestellt werden. Wenn
+	beispielsweise ein Gateway und ein Nameserver angegeben wird, der Nameserver aber nicht
+	erreichbar ist, so kann es zu unnötigen Timeouts kommen. In solchen Fällen ist es sinnvoller,
+	kein Gateway anzugeben.
+  </para>
+
+  <para>
+	Die installierten Software-Komponenten können später jederzeit angepasst und aus dem
+	Univention App Center nachinstalliert werden.
+  </para>
+
+  <figure id="quick-installation">
+	<title>Installation</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/installation-de.png"/>
+  </figure>
+
+  <para>
+	Nach Bestätigung der Installationseinstellungen startet die Installation. Nach Abschluß der
+	Installation muss das System neu gestartet werden. Anschließend erfolgt die weitere
+	Konfiguration über die &ucsUMC;. Dies wird im folgenden Kapitel beschrieben.
+  </para>
+</chapter>
+
+<chapter id="quickstart:administration">
+  <title>Univention Management Console</title>
+
+  <para>
+	Die Konfiguration des installierten UCS-Systems erfolgt über einen Web-Browser
+	(https://server_ip oder http://server_ip). Die Anmeldung an der &ucsUMC; erfolgt als
+	<emphasis>Administrator</emphasis> mit dem während der Installation vergebenen Passwort für
+	den Benutzer <emphasis>root</emphasis>.
+  </para>
+
+  <figure id="quick-umclogin">
+	<title>Anmeldung an der UMC</title>
+	<graphic scalefit="1" width="40%" fileref="illustrations/umc-login-de.png"/>
+  </figure>
+  
+  <para>
+	Benutzer, Gruppen, Rechner etc. können nur auf dem &ucsMaster; (dem ersten System der
+	UCS-Domäne) verwaltet werden. Die Daten werden automatisch an die anderen Server der
+	UCS-Domäne verteilt.
+  </para>
+
+  <para>
+	Administrative Schritte wie Updates, Software-Installationen oder Konfigurationsanpassungen
+	erfolgen ebenfalls über die &ucsUMC; (siehe <xref linkend="quickstart:updatesinstall"/>).
+  </para>
+</chapter>
+
+<chapter id="quickstart:updatesinstall">
+  <title>UCS-Updates / Installation weiterer Software</title>
+
+  <para>
+	Release oder Errata-Updates (Sicherheits-Updates und kritische Bugfixes) können über das
+	&ucsUMC;-Modul <guimenu>Online Updates</guimenu> installiert werden.
+  </para>
+
+  <para>
+	Weitere Software-Pakete können über das &ucsUMC;-Modul <guimenu>Univention App
+	Center</guimenu> installiert werden:
+
+	<itemizedlist>
+	  <listitem><simpara>
+		Weitere UCS-Software kann über die Kategorie <guimenu>UCS-Komponenten</guimenu>
+		nachträglich installiert und entfernt werden. 
+	  </simpara></listitem>
+	  
+	  <listitem><simpara>
+		Lösungen von Drittanbietern (z.B. verschiedene Groupwarelösungen) und UCS-kompatibe
+		Zusatzprodukte (z.B. UCS@school für den Schuleinsatz) können ebenfalls über das App Center
+		installiert werden. 
+	  </simpara></listitem>
+	</itemizedlist>
+  </para>
+</chapter>
+
+<chapter id="quickstart:ucr">
+  <title>Konfigurationsmanagement mit Univention Configuration Registry</title>
+  
+  <para>
+	Univention Configuration Registry ist das zentrale Werkzeug zur Verwaltung der lokalen
+	Systemkonfiguration eines UCS-Systems. Einstellungen werden in einem einheitlichen Format
+	festgelegt, den sogenannten Univention Configuration Registry-Variablen. Anhand dieser
+	Variablen werden die effektiv von den Diensten/Programmen verwendeten Konfigurationsdateien
+	generiert. Ein direktes Editieren der Konfigurationsdateien ist nur in Ausnahmefällen nötig.
+  </para>
+
+  <para>
+	Die Verwaltung der &ucsUCR;-Variablen erfolgt über das &ucsUMC;-Modul <guimenu>Univention
+	Configuration Registry</guimenu>. Konfigurationsdateien werden bei Veränderung der für sie
+	registrierten UCR-Variablen automatisch aktualisiert.
+  </para>
+</chapter>
+
+<chapter id="quickstart:clients">
+  <title>Clients</title>
+
+  <para>
+	Eine UCS-Domäne kann neben den UCS-Servern auf verschiedene Clients integrieren. Die folgenden
+	Clients werden unterstützt:
+
+	<itemizedlist>
+	  <listitem><simpara>
+		Windows-Clients können einer AD-kompatible Windows-Domäne beitreten, die durch die
+		Komponente Samba bereitgestellt wird. Weitere Informationen zur Einrichtung von Samba und
+		dem Domänenbeitritt von Windows-Clients findet sich in TODOREF.
+	  </simpara></listitem>
+	  
+	  <listitem><simpara>
+		Mac OS X-Systeme werden ebenfalls über eine AD-kompatible Windows-Domäne auf Basis von
+		Samba integriert. Weitere Informationen zur Einrichtung von Samba und dem Domänenbeitritt
+		von Windows-Clients findet sich in TODOREF.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Für den Einsatz von zentral administrierten Linux-basierten Desktops kann Univention
+		Corporate Client aus dem Univention App Center installiert werden. Weitere Informationen
+		finden sich in TODOREF.
+	  </simpara></listitem>
+	</itemizedlist>
+	
+  </para>
+</chapter>
+
+<chapter id="quickstart:furtherinfo">
+  <title>Weitere Informationen</title>
+
+  <para>
+	Erste Quelle für Hilfe zu UCS ist das UCS-Handbuch. Hilfe zu UCS gibt es im Univention Forum,
+	nützliche Hinweise sind in der Support und Knowledge Base (SDB) von Univention zu
+	finden.
+  </para>
+
+  <para>
+	Eine Übersicht der für UCS zertifizierten und erfolgreich getesteten Hardware ist auf den
+	Univention-Webseiten im Bereich kompatible Hardware zu finden. Die Liste hat keinen Anspruch
+	auf Vollständigkeit. Dies bedeutet, dass auch nicht genannte Systeme unterstützt werden.
+  </para>
+</chapter>
+
+	<bibliography>
+		<bibliomixed id="ucs-handbuch"/>
+	</bibliography>
+
+<?dbhtml-include href="../stylesheets/piwik.html"?>
+</book>

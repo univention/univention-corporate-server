@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+
+  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+
+  %entities;
+]>
+<book lang="en" id="installation-3.2">
+<bookinfo>
+  <title>Univention Corporate Server</title>
+  <subtitle>Quick start guide for Univention Corporate Server</subtitle>
+  <revhistory>
+     <revision>
+        <revnumber>3.2-2</revnumber>
+        <date>24 Jun 2014</date>
+     </revision>
+  </revhistory>
+</bookinfo>
+
+<chapter id="quickstart:intro">
+  <title>Introduction</title> 
+
+  <para>
+	Univention Corporate Server (UCS) is a Debian GNU/Linux-based server operating system with
+	integrated management system for the central administration of servers, services, clients,
+	desktops and users. This quickstart guide offers a short introduction on how to get startet with
+	UCS. Detailed descriptions can be found in the UCS manual.
+  </para>
+
+  <para>
+	The installation DVD can be downloaded from the Univention website. The current version is UCS 3.2-2.
+	Installation DVDs are available for the amd64 (64-bit) and i386 (32-bit) CPU
+	architectures. Almost all server hardware purchased in recent years should be 64 bit
+	capable. The installation of the 64 bit version is recommended.
+  </para>
+
+  <para>
+	An ISO DVD image for amd64 with support for the Unified Extensible Firmware Interface-Standard
+	(UEFI) is available besides the default installation DVD. On systems that support only a UEFI
+	start, it must be used instead of the default DVD.
+  </para>
+
+  <para>
+	The system requirements vary considerably depending on the intended purpose and the number of
+	users. The minimum requirements for the installation are 512 MB memory and 8 GB hard drive
+	space.
+  </para>
+</chapter>
+
+<chapter id="quickstart:installation">
+  <title>Installation</title>
+
+  <para>
+	The installation is performed via a menu-driven text installer and can be used both
+	interactively and completely profile-based. The system language, keyboard layout and time zone
+	can be selected in accordance with local requirements.
+  </para>
+
+  <figure id="quick-systemrole">
+	<title>Selecting the system role</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/systemrole-en.png"/>
+  </figure>
+  
+  <para>
+	<guimenu>Domain Controller Master</guimenu> should be selected as the system role. It is always
+	the first system of a UCS domain. All changes to the domain data (e.g. users, groups, computer
+	accounts etc.) are always made on the &ucsMaster;. All other system join the UCS domain during
+	the installation. An overview of the additional system roles can be found in the UCS manual.
+  </para>
+
+  <figure id="quick-fqdn">
+	<title>Configuration of the basic settings</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/domainname-en.png"/>
+  </figure>
+
+  <para>
+	The fully qualified domain name (FQDN) of the &ucsUCS; system under which the
+	computer should be accessible in the network should be entered
+	under <guimenu>Fully qualified domain name</guimenu> (e.g., mail.example.com).
+	The <guimenu>LDAP base</guimenu> and the <guimenu>Windows domain</guimenu> are suggested based
+	on the complete computer name and only need to be adjusted in exceptional cases.
+	The root password must be at least eight characters long and is also set as the password for the
+	<emphasis>administrator</emphasis> user during the installation of the first UCS server
+	(&ucsMaster;).
+  </para>
+
+  <figure id="quick-part">
+	<title>Automatic partitioning</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/autopart-de.png"/>
+  </figure>
+
+  <para>
+	Autopartitioning can be used during the installation that creates a LVM partion on the first
+	hard drive by default. The use of this option is recommended.
+  </para>
+
+  <figure id="quick-network">
+	<title>Network configuration</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/network-de.png"/>
+  </figure>
+
+  <para>
+	A valid network configuration should be set during the installation. If, for example, a
+	gateway and a name server are specified, but the name server cannot be reached, this may
+	result in unnecessary timeouts. In these cases, it makes more sense not to specify a gateway.
+  </para>
+
+  <para>
+	The installed software components can be adapted later at any time and subsequently installed
+	from the Univention App Center.
+  </para>
+
+  <figure id="quick-installation">
+	<title>Installation</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/installation-en.png"/>
+  </figure>
+
+  <para>
+	Administrative steps such as updates, software installations and configuration adjustments are
+	also performed via the &ucsUMC; (see <xref linkend="quickstart:updatesinstall"/>).
+  </para>
+
+</chapter>
+
+<chapter id="quickstart:administration">
+  <title>Administration (Univention Management Console)</title>
+
+	<para>
+	  The installed UCS system is configured via a web browser (https://server_ip or
+	  http://server_ip). The log in to the &ucsUMC; is performed as the
+	  <emphasis>Administrator</emphasis> with the password specified for the
+	  <emphasis>root</emphasis> user during the installation.
+	</para>
+
+	<figure id="quick-umclogin">
+	  <title>Anmeldung an der UMC</title>
+	  <graphic scalefit="1" width="40%" fileref="illustrations/umc-login-de.png"/>
+	</figure>
+
+	<para>
+	  Users, groups, computers, etc., can only be managed on the &ucsMaster; (the first system of
+	  the UCS domain). The data are automatically distributed to the other servers in the UCS
+	  domain.
+	</para>
+
+	<para>
+	  Administrative steps such as updates, software installations and configuration adjustments are
+	  also performed via the &ucsUMC;. This is explained in the following sections.
+	</para>
+</chapter>
+
+<chapter id="quickstart:updatesinstall">
+  <title>UCS updates / Installing additional software</title>
+
+  <para>
+	Release or errata updates (security updates and critical bugfixes) can be installed in the UMC
+	module <guimenu>Online updates</guimenu>.
+  </para>
+
+  <para>
+	Additional software can be installed using the Univention App Center in the Univention
+	Management Console:
+
+	<itemizedlist>
+	  <listitem><simpara>
+		Additional UCS software can be installed/removed using the category <guimenu>UCS
+		components</guimenu>.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Third-party software (e.g. various groupware solutions) and UCS-compatible addon products
+		(e.g. UCS@school for school deployment can also be installed through the App Center. 
+	  </simpara></listitem>
+	</itemizedlist>
+  </para>
+</chapter>
+
+<chapter id="quickstart:ucr">
+  <title>Configuration management using Univention Configuration Registry</title>
+
+  <para>
+	Univention Configuration Registry is the central tool for managing the local system
+	configuration of a UCS system. Settings are specified in a consistent format, the so-called
+	Univention Configuration Registry variables. These variables are used to generate the
+	configuration files used effectively by the services/programs. Direct editing of the
+	configuration files is only needed in exceptional cases.
+  </para>
+  
+  <para>
+	&ucsUCR; variables are managed via the &ucsUMC; module <guimenu>Univention Configuration
+	Registry</guimenu>. Configuration files are automatically updated when the UCR variables
+	registered on them are changed.
+  </para>
+</chapter>
+
+<chapter id="quickstart:clients">
+  <title>Clients</title>
+
+	<para>
+	  In addition to the UCS servers, a UCS domain can also integrate different clients. The
+	  following clients are supported:
+
+	  <itemizedlist>
+		<listitem><simpara>
+		  Windows clients can join an AD-compatible Windows domain provided by the Samba
+		  component. Further information on setting up Samba and the domain join of Windows clients
+		  can be found in TODOREF.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Mac OS X systems are also integrated via a Samba-based, AD-compatible Windows
+		  domain. Further information on setting up Samba and the domain join of Windows clients can
+		  be found in TODOREF.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Univention Corporate Client can be installed from the Univention App Center for the deployment of
+		  centrally administrated Linux-based desktop. Further information can be found in TODOREF.
+		</simpara></listitem>
+	  </itemizedlist>
+	</para>
+</chapter>
+
+<chapter id="quickstart:furtherinfo">
+  <title>Further information</title>
+
+  <para>
+	The first source of help for UCS is the UCS manual. Help on UCS is offered in the Univention
+	forum and useful information can be found in the Univention support and knowledge base
+	(SDB).
+  </para>
+
+  <para>
+	An overview of the hardware certified for and successfully tested with UCS can be found on the
+	Univention website. The list does not claim to be exhaustive, which means that other systems
+	which do not appear on the list are also supported.
+  </para>
+</chapter>
+
+	<bibliography>
+		<bibliomixed id="ucs-handbuch"/>
+	</bibliography>
+
+<?dbhtml-include href="../stylesheets/piwik.html"?>
+</book>
