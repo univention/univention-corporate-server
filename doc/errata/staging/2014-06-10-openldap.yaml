@@ -1,0 +1,10 @@
+product: ucs
+release: "3.2"
+version: [2]
+scope: ucs_3.2-0-errata3.2-2
+src: openldap
+fix: 2.4.35-1.161.201406101711
+desc: |
+ The OpenLDAP schema for NIS (nis.schema) has been altered:
+ The schema definition of the attribute "shadowExpire" contains now
+ a ORDERING statement.
