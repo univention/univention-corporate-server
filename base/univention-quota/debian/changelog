@@ -1,3 +1,13 @@
+univention-quota (8.0.6-4) unstable; urgency=low
+
+  * Update for univention-user-quota. Evaluate the share policy flag 
+    "reapplyeverylogin" and (re-)apply quota settings on every user login
+    if set (Bug #33174)
+  * Correct behaviour while searching for the most restrictive user quota
+    settings on a mountpoint
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 30 Jun 2014 10:22:05 +0200
+
 univention-quota (8.0.6-3) unstable; urgency=low
 
   * Bug #31277: enable possibility to configure the root (/) partition

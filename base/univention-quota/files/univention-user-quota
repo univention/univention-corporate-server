@@ -33,14 +33,25 @@
 
 import sys
 import os
-import re
 import subprocess
 import pwd
-import copy
 import time
 import univention.config_registry
 import univention.uldap
 import univention.lib.policy_result
+
+
+def get_mountpoint_from_share_path(sharepath):
+	sharepath = os.path.abspath(sharepath)
+	while not os.path.ismount(sharepath):
+		sharepath = os.path.dirname(sharepath)
+	return sharepath
+
+
+def test_for_true(value):
+	# Using Syntax definition TrueFalseUp: Possible values are 'TRUE' and 'FALSE'
+	return value == 'TRUE'
+
 
 def get_blocks(size):
 	size = size.upper()
@@ -56,47 +67,75 @@ def get_blocks(size):
 	if int(size[-1]) in range(0, 10):
 		return int(size) / 1024
 
+
 def get_shares():
 	lo = univention.uldap.getMachineConnection(ldap_master=False)
 	shares = {}
-	for dn, attrs in lo.search( filter='(&(objectClass=univentionShare)(univentionShareHost=%s.%s))' % (ucr.get('hostname', ''), ucr.get('domainname', '')), attr=['univentionSharePath'] ):
+	for dn, attrs in lo.search(filter='(&(objectClass=univentionShare)(univentionShareHost=%s.%s))' % (ucr.get('hostname', ''), ucr.get('domainname', '')), attr=['univentionSharePath']):
 		policy_result = univention.lib.policy_result.policy_result(dn)[0]
-		shares[ attrs['univentionSharePath'][0] ] = {
-				'inodeSoftLimit': int( policy_result.get('univentionQuotaSoftLimitInodes', ['0'])[0] ),
-				'inodeHardLimit': int( policy_result.get('univentionQuotaHardLimitInodes', ['0'])[0] ),
-				'spaceSoftLimit': get_blocks( policy_result.get('univentionQuotaSoftLimitSpace', ['0'])[0] ),
-				'spaceHardLimit': get_blocks( policy_result.get('univentionQuotaHardLimitSpace', ['0'])[0] )
+		shares[attrs['univentionSharePath'][0]] = {
+				'inodeSoftLimit': int(policy_result.get('univentionQuotaSoftLimitInodes', ['0'])[0]),
+				'inodeHardLimit': int(policy_result.get('univentionQuotaHardLimitInodes', ['0'])[0]),
+				'spaceSoftLimit': get_blocks(policy_result.get('univentionQuotaSoftLimitSpace', ['0'])[0]),
+				'spaceHardLimit': get_blocks(policy_result.get('univentionQuotaHardLimitSpace', ['0'])[0]),
+				'reapplyQuota': test_for_true(policy_result.get('univentionQuotaReapplyEveryLogin', ['FALSE'])[0]),
+				'mountpoint': get_mountpoint_from_share_path(attrs['univentionSharePath'][0])
 			}
+
 	return shares
 
-def get_quota_mountpoints(user):
-	mountpoints = {}
-	quota = subprocess.Popen(['quota', '-v', '-w', '-u', user], stdout=subprocess.PIPE)
-	quota.wait()
-	quota = quota.stdout.readlines()
-	whitespace =  re.compile('\s+')
-	with open('/etc/mtab') as mtab:
-		for line in mtab:
-			if 'usrquota' in line:
-				try:
-					filesystem = whitespace.split(line)[0]
-					quota_re = re.compile(r'^\s*%s\s+[0-9]+\s+0\s+0\s+[0-9]+\s+0\s+0\s*$' % filesystem)
-					for quota_line in quota:
-						if re.match(quota_re, quota_line):
-							mountpoints[whitespace.split(line)[1]] = {
-								'inodeSoftLimit': 0,
-								'inodeHardLimit': 0,
-								'spaceSoftLimit': 0,
-								'spaceHardLimit': 0,
-							}
-							break
-					else:
-						log.write('quota for fs %s already set\n' % filesystem)
-				except IndexError:
-					pass
-	return mountpoints
 
+def get_mountpoints_with_quota(user, shares):
+	_mountpoints = {}
+	p = subprocess.Popen(['quota', '-vwpu', user], stdout=subprocess.PIPE)
+	# quota_stdout has the parseable quota output
+	# format:
+	# Dateisystemquotas fuer user univention2 (uid 2006):
+	# Dateisystem Bloecke   Quota   LimitGnadenfrist Dateien   Quota   LimitGnadenfrist
+	# /dev/mapper/vg_ucs-rootfs      24  307200  409600       0       8       0       0       0
+	# /dev/vda2       0       0       0       0       0       0       0       0
+	quota_stdout, stderr_empty = p.communicate()
+	quota_stdout = quota_stdout.splitlines()
 
+	with open('/etc/mtab', 'r') as etc_mtab:
+		mtab = etc_mtab.readlines()
+
+	# Create dict of all mountpoints who have usrquota activated.
+	# Set updatequota flag to True if setquota has to be called.
+	for share, attrs in shares.iteritems():
+		if not attrs['mountpoint'] in _mountpoints:
+			# first time we see this MP while filling the dict
+			# check what the current userquota is (0 0 0 0 is unlimited/undefined)
+			for line in mtab:
+				current_mountpoint = line.split()[1]  # shares are defined on mountpoints
+				current_device = line.split()[0]  # quotas are defined on devices
+				if current_mountpoint == attrs['mountpoint'] and 'usrquota' in line:
+					for quotaline in quota_stdout:
+						quota_values = quotaline.split()
+						if quota_values[0] == current_device:
+							initialValue = False
+							# If quota is unset, set flag that the quota should be set.
+							if quota_values[2] == '0' and quota_values[3] == '0' and quota_values[6] == '0' and quota_values[7] == '0':
+								initialValue = True
+							# Now the current quota values are known
+							_mountpoints[current_mountpoint] = {
+									'spaceSoftLimit': quota_values[2],
+									'spaceHardLimit': quota_values[3],
+									'inodeSoftLimit': quota_values[6],
+									'inodeHardLimit': quota_values[7],
+									'updatequota': initialValue
+											}
+
+		# If the policy flag for updating the quota is set, set flag that the quota should be set.
+		if attrs['reapplyQuota']:
+			_mountpoints[attrs['mountpoint']]['updatequota'] = True
+
+		# Compare the share policy against the current mp quota. Always set share quota if current mp value = 0
+		for policy_value in ['inodeSoftLimit', 'inodeHardLimit', 'spaceSoftLimit', 'spaceHardLimit']:
+			if _mountpoints[attrs['mountpoint']][policy_value] == '0' or int(attrs[policy_value]) < int(_mountpoints[attrs['mountpoint']][policy_value]):
+				_mountpoints[attrs['mountpoint']][policy_value] = str(attrs[policy_value])
+
+	return _mountpoints
 
 
 if __name__ == '__main__':
@@ -121,40 +160,24 @@ if __name__ == '__main__':
 	log.write('-------------------------------------------------------- start\n')
 	log.write('%s\n' % time.strftime(TIMEFORMAT))
 	if uid < 1000:
-		log.write('won\'t set quota for system-users (%s has UID %i)\n' % (user, uid))
+		log.write('Won\'t set quota for system-users (%s has UID %i)\n' % (user, uid))
 		sys.exit(1)
-	log.write('set default quota for %s\n' % user)
-	log.write( 'host is %s.%s\n' % (ucr.get('hostname', ''), ucr.get('domainname', '')) )
+	log.write('Set quota for user %s\n' % user)
 
-	mountpoints = get_quota_mountpoints(user)
 	shares = get_shares()
-	if not mountpoints:
-		log.write('all quotas are already set\n')
-	elif not shares:
-		log.write('no shares found\n')
+	mountpoints = get_mountpoints_with_quota(user, shares)
+	if not shares:
+		log.write('No shares found on this host\n')
+	elif not mountpoints:
+		log.write('No mountpoints available on this host to configure any quota\n')
 	else:
-		log.write( 'found %i shares and %i mountpoints\n' % (len(shares), len(mountpoints)) )
-		for mountpoint_path, mountpoint in mountpoints.items():
-			# find corresponding share for that mount point
-			corresponding_share = ''
-			for share_path in shares:
-				if share_path.startswith(mountpoint_path) and len(share_path.split('/')) > len(corresponding_share.split('/')):
-					corresponding_share = share_path
-
-			if corresponding_share:
-				log.write('use %s for mointpoint %s\n' % (corresponding_share, mountpoint_path))
-				mp = copy.deepcopy(mountpoint)
-
-				# only use shares settings for mountpoint if they're more restrictive than the mountpoint ones
-				for limit in mp:
-					if mp[limit] == 0 or shares[corresponding_share][limit] < mp[limit]:
-						mp[limit] = shares[corresponding_share][limit]
-
-				if mp['spaceSoftLimit'] != 0 or mp['spaceHardLimit'] != 0 or mp['inodeSoftLimit'] != 0 or mp['inodeHardLimit'] != 0:
-					log.write('/usr/sbin/setquota -u %s %i %i %i %i %s\n' % (user, mp['spaceSoftLimit'], mp['spaceHardLimit'], mp['inodeSoftLimit'], mp['inodeHardLimit'], mountpoint_path))
-					set_quota = subprocess.Popen(['/usr/sbin/setquota', '-u', user, str(mp['spaceSoftLimit']), str(mp['spaceHardLimit']), str(mp['inodeSoftLimit']), str(mp['inodeHardLimit']), mountpoint_path])
-					set_quota.wait()
-				else:
-					log.write('no quota for %s\n' % mountpoint_path)
+		log.write('Found %i shares and %i mountpoints\n' % (len(shares), len(mountpoints)))
+		for mountpoint_path, attrs in mountpoints.iteritems():
+			if attrs['updatequota']:
+				log.write('Set quota on mountpoint "%s": /usr/sbin/setquota -u %s %s %s %s %s %s\n' % (mountpoint_path, user, attrs['spaceSoftLimit'], attrs['spaceHardLimit'], attrs['inodeSoftLimit'], attrs['inodeHardLimit'], mountpoint_path))
+				set_quota = subprocess.Popen(['/usr/sbin/setquota', '-u', user, str(attrs['spaceSoftLimit']), str(attrs['spaceHardLimit']), str(attrs['inodeSoftLimit']), str(attrs['inodeHardLimit']), mountpoint_path])
+				set_quota.wait()
+			else:
+				log.write('Do not set/update quota for mountpoint "%s"\n' % mountpoint_path)
 
 	log.write('-------------------------------------------------------- exit\n')
