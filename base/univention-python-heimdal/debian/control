@@ -3,12 +3,13 @@ Section: python
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
- python2.6-dev,
+ python-all-dev,
  python-support (>> 1.0.10),
  heimdal-dev,
  sharutils,
  ucslint-univention
 Standards-Version: 3.8.2
+XS-Python-Version: 2.6,2.7
 
 Package: python-univention-heimdal
 Architecture: any

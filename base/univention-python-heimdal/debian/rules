@@ -3,7 +3,7 @@
 # Python Heimdal
 #  rules file for the python-heimdal debian package
 #
-# Copyright 2003-2012 Univention GmbH
+# Copyright 2003-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -46,5 +46,5 @@ override_dh_auto_test:
 	ucslint
 
 %:
-	dh $@
+	dh $@ --with 'python_support'
 
