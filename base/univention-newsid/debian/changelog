@@ -1,3 +1,9 @@
+univention-newsid (6.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Jun 2014 08:44:16 +0200
+
 univention-newsid (5.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.1
