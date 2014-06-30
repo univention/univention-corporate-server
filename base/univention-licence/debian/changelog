@@ -1,3 +1,9 @@
+univention-licence (6.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Jun 2014 08:32:45 +0200
+
 univention-licence (5.0.5-1) unstable; urgency=low
 
   * The license import and check is now case insensitive (Bug #29883)

@@ -3,7 +3,7 @@
 # Univention License
 #  rules file for the debian package
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 %:
-	dh $@
+	dh $@ --with 'python_support'
 
 override_dh_auto_clean:
 	./dh_doxygen clean
@@ -46,7 +46,7 @@ override_dh_auto_configure:
 	aclocal
 	autoconf
 	automake --add-missing
-	./configure --prefix=/usr
+	dh_auto_configure
 	dh_auto_configure --buildsystem=python_distutils
 
 override_dh_auto_build:
