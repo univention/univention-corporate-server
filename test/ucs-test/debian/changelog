@@ -1,3 +1,9 @@
+ucs-test (4.0.166-42) unstable; urgency=low
+
+  * 00_base/96rename_domain_*: removed workaround for Bug #34802
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Jun 2014 07:36:26 +0200
+
 ucs-test (4.0.166-41) unstable; urgency=low
 
   * Bug #35177: Added tests for app codes
