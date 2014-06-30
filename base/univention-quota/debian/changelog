@@ -1,3 +1,9 @@
+univention-quota (9.0.0-2) unstable; urgency=low
+
+  * Merge from UCS 3.2-2 errata (Bug #33174) 
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 30 Jun 2014 10:43:22 +0200
+
 univention-quota (9.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35138)
