@@ -2,8 +2,14 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-quota
-fix: 8.0.6-3.122.201406101149
+fix: 8.0.6-4.124.201406301032
 version: [2]
 desc: |
- The quota for the root (/) partition can now be configured via the filesystem quota UMC module.
-bug: [31277]
+ * The quota for the root (/) partition can now be configured via the 
+   filesystem quota UMC module.
+ * Update for univention-user-quota. Evaluate the share policy flag
+   "reapplyeverylogin" and (re-)apply quota settings on every user login
+   if set.
+ * Correct behaviour while searching for the most restrictive user quota
+   settings on a mountpoint
+bug: [31277,33174]
