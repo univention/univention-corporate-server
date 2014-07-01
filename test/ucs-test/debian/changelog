@@ -1,3 +1,9 @@
+ucs-test (4.0.166-45) unstable; urgency=low
+
+  * Bug #35177: Made tests for app codes executable
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 01 Jul 2014 10:03:58 +0200
+
 ucs-test (4.0.166-44) unstable; urgency=low
 
   * 53_samba-common/05domain-join-ntlm-auth: removed net ads/rpc join
