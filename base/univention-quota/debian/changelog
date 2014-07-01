@@ -1,3 +1,11 @@
+univention-quota (8.0.6-5) unstable; urgency=low
+
+  * Bug #31277: enable possibility to configure the root (/) partition also
+  	for XFS partitions: this appends the rootflags="usrquota" option to the kernel line
+  	and suggests a system reboot.
+
+ -- Florian Best <best@univention.de>  Tue, 01 Jul 2014 11:46:50 +0200
+
 univention-quota (8.0.6-4) unstable; urgency=low
 
   * Update for univention-user-quota. Evaluate the share policy flag 

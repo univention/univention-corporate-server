@@ -37,6 +37,9 @@ import math
 
 import notifier.popen
 import univention.management.console as umc
+from univention.management.console.log import MODULE
+from univention.management.console.config import ucr
+from univention.config_registry import handler_set
 
 from univention.lib import fstab
 
@@ -134,44 +137,52 @@ def activate_quota(partition, activate, callback):
 
 def _do_activate_quota(partitions, activate):
 	fs = fstab.File()
-	failed = []
+	result = []
 	for device in partitions:
 		part = fs.find(spec=device)
 		if not part:
-			failed.append({'partitionDevice': device, 'success': False, 'message': _('Device could not be found')})
+			result.append({'partitionDevice': device, 'success': False, 'message': _('Device could not be found')})
 			continue
 
-		quota_enabled = 'usrquota' in part.options
-		if not (activate ^ quota_enabled):
-			failed.append({'partitionDevice': part.spec, 'success': True, 'message': _('Quota already en/disabled')})
-			continue
-
-		if activate:
-			part.options.append('usrquota')
-		else:
-			part.options.remove('usrquota')
-
-		fs.save()
-
-		if part.type == 'xfs':
-			activation_function = _activate_quota_xfs
-		elif part.type in ('ext2', 'ext3', 'ext4'):
-			activation_function = _activate_quota_ext
-		else:
-			failed.append({'partitionDevice': part.spec, 'success': True, 'message': _('Unknown filesystem')})
-			continue
-
-		try:
-			activation_function(part)
-		except QuotaActivationError as exc:
-			failed.append({'partitionDevice': part.spec, 'success': False, 'message': str(exc)})
-		else:
-			failed.append({'partitionDevice': part.spec, 'success': True, 'message': _('Operation was successful')})
-
-	return failed
+		status = _do_activate_quota_partition(fs, part, activate)
+		if part.mount_point == '/' and part.type == 'xfs':
+			try:
+				enable_quota_in_kernel(activate)
+			except QuotaActivationError as exc:
+				result.append({'partitionDevice': part.spec, 'success': False, 'message': str(exc)})
+				continue
+		result.append(status)
+	return result
 
 
-def _activate_quota_xfs(partition):
+def _do_activate_quota_partition(fs, part, activate):
+	quota_enabled = 'usrquota' in part.options
+	if not (activate ^ quota_enabled):
+		return {'partitionDevice': part.spec, 'success': True, 'message': _('Quota already en/disabled')}
+
+	if activate:
+		part.options.append('usrquota')
+	else:
+		part.options.remove('usrquota')
+
+	fs.save()
+
+	if part.type == 'xfs':
+		activation_function = _activate_quota_xfs
+	elif part.type in ('ext2', 'ext3', 'ext4'):
+		activation_function = _activate_quota_ext
+	else:
+		return {'partitionDevice': part.spec, 'success': True, 'message': _('Unknown filesystem')}
+
+	try:
+		activation_function(part, activate)
+	except QuotaActivationError as exc:
+		return {'partitionDevice': part.spec, 'success': False, 'message': str(exc)}
+
+	return {'partitionDevice': part.spec, 'success': True, 'message': _('Operation was successful')}
+
+
+def _activate_quota_xfs(partition, activate=True):
 	if partition.mount_point != '/':
 		if subprocess.call(('/bin/umount', partition.spec)):
 			raise QuotaActivationError(_('Unmounting the partition has failed'))
@@ -183,7 +194,32 @@ def _activate_quota_xfs(partition):
 		raise QuotaActivationError(_('Restarting the quota services has failed'))
 
 
-def _activate_quota_ext(partition):
+def enable_quota_in_kernel(activate):
+	ucr.load()
+	grub_append = ucr.get('grub/append', '')
+	flags = []
+	option = 'usrquota'
+	match = re.match(r'rootflags=([^\s]*)', grub_append)
+	if match:
+		flags = match.group(1).split(',')
+	if activate and option not in flags:
+		flags.append(option)
+	elif not activate and option in flags:
+		flags.remove(option)
+
+	flags = ','.join(flags)
+	if flags:
+		flags = 'rootflags=%s' % (flags,)
+
+	new_grub_append = re.sub(r'rootflags=[^\s]*', flags, grub_append)
+	MODULE.info('Replacing grub/append from %s to %s' %(grub_append, new_grub_append))
+	if new_grub_append != grub_append:
+		handler_set(['grub/append=%s' % (new_grub_append,)])
+		status = _('enable') if activate else _('disable')
+		raise QuotaActivationError(_('To %s quota support for the root filesystem the system have to be rebooted.') % (status,))
+
+
+def _activate_quota_ext(partition, activate=True):
 	if subprocess.call(('/bin/mount', '-o', 'remount', partition.spec)):
 		raise QuotaActivationError(_('Remounting the partition has failed'))
 
