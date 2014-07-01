@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-directory-manager-modules
-fix: 9.0.76-6.1204.201406261244
+fix: 9.0.76-7.1206.201407011559
 version: [2]
 desc: |
  This update fixes several issues:
@@ -16,4 +16,6 @@ desc: |
  * Removed the input field Organisation from the group Personal information 
    and added it to the group Organisation.
  * Added new option to share-userquota policy: Reapply quota on every login
-bug: [33120, 34037, 34200, 34250, 28630, 33174]
+ * The listener module for UDM extensions is now capable of processing
+   extensions with given SVGZ image as UMC icon.
+bug: [33120, 34037, 34200, 34250, 28630, 33174, 35062]
