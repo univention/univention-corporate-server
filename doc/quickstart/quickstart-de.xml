@@ -3,10 +3,11 @@
           "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 
   <!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-de.xml">
 
   %entities;
 ]>
-<book lang="de" id="installation-3.2">
+<book lang="de" id="quickstart-de-3.2">
 <bookinfo>
   <title>Univention Corporate Server</title>
   <subtitle>Quickstart Guide für Univention Corporate Server</subtitle>
@@ -22,23 +23,24 @@
   <title>Einleitung</title>
 
   <para>
-	Univention Corporate Server (UCS) ist ein auf Debian GNU/Linux basierendes Serverbetriebssystem
+	Univention Corporate Server (UCS) ist ein auf Debian basierendes Serverbetriebssystem
 	mit integriertem Managementsystem für die zentrale Verwaltung von Servern, Diensten, Clients,
 	Desktops und Benutzern. Dieser Quickstart-Guide stellt eine Kurzanleitung zur Inbetriebnahme und
-	für erste Schritte mit UCS dar. Ausführliche Beschreibungen sind im UCS-Handbuch zu finden.
+	für erste Schritte mit UCS dar. Ausführlichere Beschreibungen sind im UCS-Handbuch <biblioref
+	linkend="ucs-handbuch"/> zu finden.
   </para>
 
   <para>
-	Die UCS-Installations-DVD steht unter TODOREF zum Download bereit. Installations-DVDs sind für
-	die Rechnerarchitekturen amd64 (64 Bit) und i386 (32 Bit) verfügbar. Nahezu alle
-	Serversysteme, die in den letzten Jahren verkauft wurden sind 64 Bit-Systeme. Die Verwendung
+	Die UCS-Installations-DVD steht unter <ulink url="http://www.univention.de/download-und-support/ucs-download/"/>
+	Installations-DVDs sind für die Rechnerarchitekturen amd64 (64 Bit) und i386 (32 Bit) verfügbar. Nahezu alle
+	Serversysteme, die in den letzten Jahren verkauft wurden, sind 64 Bit-Systeme. Die Verwendung
 	der 64 Bit-Version wird empfohlen.
   </para>
 
   <para>
 	Für amd64 steht neben der Standard-Installations-DVD auch ein Medium mit Unterstützung für den
 	Unified Extensible Firmware Interface-Standard (UEFI) bereit. Auf Systemen, die nur einen
-	UEFI-Start unterstützen, muss sie anstelle der Standard-DVD verwendet werden.
+	UEFI-Start unterstützen, muss es anstelle der Standard-DVD verwendet werden.
   </para>
 
   <para>
@@ -67,7 +69,7 @@
 	Das erste System einer UCS-Umgebung ist immer der Domänencontroller Master. Alle Änderungen an
 	den Daten einer UCS-Domäne (z.B. Benutzer, Gruppen, Rechnerkonten etc) werden auf dem DC
 	Master vorgenommen. Alle anderen System treten dann bei ihrer Installation der UCS-Domäne bei.
-	Eine Übersicht über die verschiedenen weiteren Systemrollen findet sich im UCS-Handbuch.
+	Eine Übersicht über die verschiedenen weiteren Systemrollen findet sich in <biblioref linkend="ucs-systemrole"/>.
   </para>
 
   <figure id="quick-fqdn">
@@ -120,9 +122,9 @@
   </figure>
 
   <para>
-	Nach Bestätigung der Installationseinstellungen startet die Installation. Nach Abschluß der
+	Nach Bestätigung der Einstellungen startet die Installation. Nach Abschluß der
 	Installation muss das System neu gestartet werden. Anschließend erfolgt die weitere
-	Konfiguration über die &ucsUMC;. Dies wird im folgenden Kapitel beschrieben.
+	Konfiguration über die &ucsUMC; (UMC). Sie wird im folgenden Kapitel beschrieben.
   </para>
 </chapter>
 
@@ -130,8 +132,8 @@
   <title>Univention Management Console</title>
 
   <para>
-	Die Konfiguration des installierten UCS-Systems erfolgt über einen Web-Browser
-	(https://server_ip oder http://server_ip). Die Anmeldung an der &ucsUMC; erfolgt als
+	Die Konfiguration des installierten UCS-Systems erfolgt über die web-basierte &ucsUMC;
+	(erreichbar unter https://server_ip oder http://server_ip). Die Anmeldung an der &ucsUMC; erfolgt als
 	<emphasis>Administrator</emphasis> mit dem während der Installation vergebenen Passwort für
 	den Benutzer <emphasis>root</emphasis>.
   </para>
@@ -148,8 +150,9 @@
   </para>
 
   <para>
-	Administrative Schritte wie Updates, Software-Installationen oder Konfigurationsanpassungen
-	erfolgen ebenfalls über die &ucsUMC; (siehe <xref linkend="quickstart:updatesinstall"/>).
+	Die Administration einzelner Server (z.B. wie Updates, Software-Installationen oder
+	Konfigurationsanpassungen) erfolgen ebenfalls über die &ucsUMC; (siehe <xref
+	linkend="quickstart:updatesinstall"/>) (oder durch entsprechende Kommandozeilen-Tools).
   </para>
 </chapter>
 
@@ -157,7 +160,7 @@
   <title>UCS-Updates / Installation weiterer Software</title>
 
   <para>
-	Release oder Errata-Updates (Sicherheits-Updates und kritische Bugfixes) können über das
+	UCS-Release- oder Errata-Updates (Sicherheits-Updates und kritische Bugfixes) können über das
 	&ucsUMC;-Modul <guimenu>Online Updates</guimenu> installiert werden.
   </para>
 
@@ -177,6 +180,12 @@
 		installiert werden. 
 	  </simpara></listitem>
 	</itemizedlist>
+
+	<figure id="quick-appcenter">
+	  <title>Nachträgliche Installation von UCS-Komponenten</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/appcenter-de.png"/>
+	</figure>
+
   </para>
 </chapter>
 
@@ -196,6 +205,12 @@
 	Configuration Registry</guimenu>. Konfigurationsdateien werden bei Veränderung der für sie
 	registrierten UCR-Variablen automatisch aktualisiert.
   </para>
+
+  <figure id="quick-ucr">
+	<title>Verwaltung von &ucsUCR;-Variablen</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/ucr-de.png"/>
+  </figure>
+
 </chapter>
 
 <chapter id="quickstart:clients">
@@ -209,19 +224,20 @@
 	  <listitem><simpara>
 		Windows-Clients können einer AD-kompatible Windows-Domäne beitreten, die durch die
 		Komponente Samba bereitgestellt wird. Weitere Informationen zur Einrichtung von Samba und
-		dem Domänenbeitritt von Windows-Clients findet sich in TODOREF.
+		dem Domänenbeitritt von Windows-Clients findet sich im UCS-Handbuch <biblioref linkend="ucs-winjoin"/>.
+
 	  </simpara></listitem>
 	  
 	  <listitem><simpara>
 		Mac OS X-Systeme werden ebenfalls über eine AD-kompatible Windows-Domäne auf Basis von
 		Samba integriert. Weitere Informationen zur Einrichtung von Samba und dem Domänenbeitritt
-		von Windows-Clients findet sich in TODOREF.
+		von Windows-Clients findet sich im UCS-Handbuch <biblioref linkend="ucs-macjoin"/>.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 		Für den Einsatz von zentral administrierten Linux-basierten Desktops kann Univention
 		Corporate Client aus dem Univention App Center installiert werden. Weitere Informationen
-		finden sich in TODOREF.
+		finden sich im UCC-Handbuch <biblioref linkend="ucc-handbuch"/>.
 	  </simpara></listitem>
 	</itemizedlist>
 	
@@ -232,21 +248,45 @@
   <title>Weitere Informationen</title>
 
   <para>
-	Erste Quelle für Hilfe zu UCS ist das UCS-Handbuch. Hilfe zu UCS gibt es im Univention Forum,
-	nützliche Hinweise sind in der Support und Knowledge Base (SDB) von Univention zu
-	finden.
+	&ucsUCS; ist umfangreich dokumentiert:
+
+	<itemizedlist>
+	  <listitem><simpara>
+		Primäre Dokumentationsquelle zu UCS ist das Handbuch <biblioref linkend="ucs-handbuch"/>.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Weiterführende Dokumentation für besondere Szenarien ist in der erweiterten Dokumentation zu
+		finden. Die verschiedenen Dokumente sind unter <ulink url="http://docs.univention.de/"/>
+		verlinkt.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Im Univention Wiki (<ulink url="http://wiki.univention.de/"/>) finden sich u.a. verschiedene
+		HOWTOs und Praxis-Tips.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Antworten auf häufig gestellte Fragen gibt es in der Support und Knowledge Base (SDB) zu
+		finden (<ulink url="sdb.univention.de/"/>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Fragen zu UCS können auch im Univention Forum <ulink url="http://forum.univention.de/"/>
+		gestellt werden.
+	  </simpara></listitem>
+	</itemizedlist>
   </para>
 
-  <para>
-	Eine Übersicht der für UCS zertifizierten und erfolgreich getesteten Hardware ist auf den
-	Univention-Webseiten im Bereich kompatible Hardware zu finden. Die Liste hat keinen Anspruch
-	auf Vollständigkeit. Dies bedeutet, dass auch nicht genannte Systeme unterstützt werden.
-  </para>
 </chapter>
 
-	<bibliography>
-		<bibliomixed id="ucs-handbuch"/>
-	</bibliography>
+<bibliography id="relnotes:bibliography">
+  <bibliomixed id="ucs-handbuch"/>
+  <bibliomixed id="ucs-systemrole"/>
+  <bibliomixed id="ucs-winjoin"/>
+  <bibliomixed id="ucs-macjoin"/>
+  <bibliomixed id="ucc-handbuch"/>
+</bibliography>
 
 <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>

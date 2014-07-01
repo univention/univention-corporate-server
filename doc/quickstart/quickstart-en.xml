@@ -3,10 +3,11 @@
           "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 
   <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
 
   %entities;
 ]>
-<book lang="en" id="installation-3.2">
+<book lang="en" id="quickstart-en-3.2">
 <bookinfo>
   <title>Univention Corporate Server</title>
   <subtitle>Quick start guide for Univention Corporate Server</subtitle>
@@ -22,14 +23,14 @@
   <title>Introduction</title> 
 
   <para>
-	Univention Corporate Server (UCS) is a Debian GNU/Linux-based server operating system with
+	Univention Corporate Server (UCS) is a Debian server operating system with
 	integrated management system for the central administration of servers, services, clients,
 	desktops and users. This quickstart guide offers a short introduction on how to get startet with
-	UCS. Detailed descriptions can be found in the UCS manual.
+	UCS. Detailed descriptions can be found in the UCS manual <biblioref linkend="ucs-handbuch"/>.
   </para>
 
   <para>
-	The installation DVD can be downloaded from the Univention website. The current version is UCS 3.2-2.
+	The installation DVD can be downloaded from the Univention website at <ulink url="http://www.univention.com/download-and-support/ucs-download/"/>.
 	Installation DVDs are available for the amd64 (64-bit) and i386 (32-bit) CPU
 	architectures. Almost all server hardware purchased in recent years should be 64 bit
 	capable. The installation of the 64 bit version is recommended.
@@ -117,8 +118,9 @@
   </figure>
 
   <para>
-	Administrative steps such as updates, software installations and configuration adjustments are
-	also performed via the &ucsUMC; (see <xref linkend="quickstart:updatesinstall"/>).
+	After confirming the configuration settings the installation is initiated. Once completed, the
+	system must be restarted. The further configuration is made using the &ucsUMC; (UMC) and
+	described in the next chapter.
   </para>
 
 </chapter>
@@ -127,7 +129,7 @@
   <title>Administration (Univention Management Console)</title>
 
 	<para>
-	  The installed UCS system is configured via a web browser (https://server_ip or
+	  The installed UCS system is configured via the web-based &ucsUMC; (reachable at https://server_ip or
 	  http://server_ip). The log in to the &ucsUMC; is performed as the
 	  <emphasis>Administrator</emphasis> with the password specified for the
 	  <emphasis>root</emphasis> user during the installation.
@@ -145,8 +147,8 @@
 	</para>
 
 	<para>
-	  Administrative steps such as updates, software installations and configuration adjustments are
-	  also performed via the &ucsUMC;. This is explained in the following sections.
+	  The administration of individual systems (such as updates, software installations and configuration adjustments) are
+	  also performed via the &ucsUMC; (or alternatively through command line tools).
 	</para>
 </chapter>
 
@@ -173,6 +175,12 @@
 		(e.g. UCS@school for school deployment can also be installed through the App Center. 
 	  </simpara></listitem>
 	</itemizedlist>
+
+	<figure id="quick-appcenter">
+	  <title>Subsequent installation of UCS components</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/appcenter-en.png"/>
+	</figure>
+
   </para>
 </chapter>
 
@@ -192,6 +200,12 @@
 	Registry</guimenu>. Configuration files are automatically updated when the UCR variables
 	registered on them are changed.
   </para>
+
+  <figure id="quick-ucr">
+	<title>Managing &ucsUCR; variables</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/ucr-en.png"/>
+  </figure>
+
 </chapter>
 
 <chapter id="quickstart:clients">
@@ -205,18 +219,19 @@
 		<listitem><simpara>
 		  Windows clients can join an AD-compatible Windows domain provided by the Samba
 		  component. Further information on setting up Samba and the domain join of Windows clients
-		  can be found in TODOREF.
+		  can be found in the UCS manual <biblioref linkend="ucs-winjoin"/>.
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  Mac OS X systems are also integrated via a Samba-based, AD-compatible Windows
 		  domain. Further information on setting up Samba and the domain join of Windows clients can
-		  be found in TODOREF.
+		  be found in the UCS manual <biblioref linkend="ucs-winjoin"/>.
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  Univention Corporate Client can be installed from the Univention App Center for the deployment of
-		  centrally administrated Linux-based desktop. Further information can be found in TODOREF.
+		  centrally administrated Linux-based desktop. Further information can be found in the UCC
+		  manual <biblioref linkend="ucc-handbuch"/>.
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
@@ -226,21 +241,49 @@
   <title>Further information</title>
 
   <para>
-	The first source of help for UCS is the UCS manual. Help on UCS is offered in the Univention
-	forum and useful information can be found in the Univention support and knowledge base
-	(SDB).
+	Help on UCS is offered in the Univention forum <ulink url="http://forum.univention.de/"/>.
+	Useful information can be found in the Univention support and knowledge base (SDB).
   </para>
 
   <para>
-	An overview of the hardware certified for and successfully tested with UCS can be found on the
-	Univention website. The list does not claim to be exhaustive, which means that other systems
-	which do not appear on the list are also supported.
+	&ucsUCS; provides comprehensive documentation:
+
+	<itemizedlist>
+	  <listitem><simpara>
+		The primary source of information on UCS is the UCS manual <biblioref linkend="ucs-handbuch"/>.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Further documentation for advanced scenarios can be found in the extended documentation. The
+		various documents are linked at <ulink url="http://docs.univention.de/"/>.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		TheUnivention Wiki (<ulink url="http://wiki.univention.de/"/>) contains several HOWTOs and
+		hands-on tips.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Answers to frequently asked questions can be found in the support and knowledge database (SDB)
+		(<ulink url="sdb.univention.de/"/>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Questions on UCS can be asked in the Univention Forum <ulink url="http://forum.univention.de/"/>.
+	  </simpara></listitem>
+	</itemizedlist>
   </para>
+
+
 </chapter>
 
-	<bibliography>
-		<bibliomixed id="ucs-handbuch"/>
-	</bibliography>
+<bibliography>
+  <bibliomixed id="ucs-handbuch"/>
+  <bibliomixed id="ucs-systemrole"/>
+  <bibliomixed id="ucs-winjoin"/>
+  <bibliomixed id="ucs-macjoin"/>
+  <bibliomixed id="ucc-handbuch"/>
+</bibliography>
 
 <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
