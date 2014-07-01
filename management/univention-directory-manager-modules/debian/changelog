@@ -1,3 +1,10 @@
+univention-directory-manager-modules (10.0.1-1) unstable; urgency=low
+
+  * added support for svgz files to udm_extension listener module
+  (Bug #35062)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 01 Jul 2014 14:42:06 +0200
+
 univention-directory-manager-modules (10.0.0-2) unstable; urgency=low
 
   * Merged UCS 3.2-2 errata (Bug #33174): Added new option to share-userquota
