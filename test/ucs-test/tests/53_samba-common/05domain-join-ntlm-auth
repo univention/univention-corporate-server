@@ -43,6 +43,8 @@ else
 	net_mode=rpc
 fi
 
+wait_for_replication
+
 ##wait for the user to be created
 echo "----wait for the user to be created"
 i=0
@@ -56,14 +58,6 @@ do
 		break
 	fi
 done
-
-## domain join
-echo "----join domain"
-net "$net_mode" join "$windows_domain" -U"$username%$password"
-if [ "$?" != 0 ];then
-	# fail_fast 1 "could not join into windows domain"
-	err "could not join into windows domain"
-fi
 
 ## start/restart winbind
 echo "----restart winbind"

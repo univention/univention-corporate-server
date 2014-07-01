@@ -1,3 +1,10 @@
+ucs-test (4.0.166-44) unstable; urgency=low
+
+  * 53_samba-common/05domain-join-ntlm-auth: removed net ads/rpc join
+    (Bug #35224)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 01 Jul 2014 08:13:35 +0200
+
 ucs-test (4.0.166-43) unstable; urgency=low
 
   * 51_samba4/41samba-tool_user_password_change: currently we have to
