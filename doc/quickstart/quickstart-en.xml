@@ -23,9 +23,9 @@
   <title>Introduction</title> 
 
   <para>
-	Univention Corporate Server (UCS) is a Debian server operating system with
+	Univention Corporate Server (UCS) is a server operating system based on Debian with
 	integrated management system for the central administration of servers, services, clients,
-	desktops and users. This quickstart guide offers a short introduction on how to get startet with
+	desktops and users. This quickstart guide offers a short introduction on how to get started with
 	UCS. Detailed descriptions can be found in the UCS manual <biblioref linkend="ucs-handbuch"/>.
   </para>
 
@@ -67,7 +67,8 @@
 	<guimenu>Domain Controller Master</guimenu> should be selected as the system role. It is always
 	the first system of a UCS domain. All changes to the domain data (e.g. users, groups, computer
 	accounts etc.) are always made on the &ucsMaster;. All other system join the UCS domain during
-	the installation. An overview of the additional system roles can be found in the UCS manual.
+	the installation. An overview of the additional system roles can be found in the UCS manual
+	<biblioref linkend="ucs-systemrole"/>.
   </para>
 
   <figure id="quick-fqdn">
@@ -76,13 +77,13 @@
   </figure>
 
   <para>
-	The fully qualified domain name (FQDN) of the &ucsUCS; system under which the
+	The fully qualified domain name of the &ucsUCS; system under which the
 	computer should be accessible in the network should be entered
 	under <guimenu>Fully qualified domain name</guimenu> (e.g., mail.example.com).
 	The <guimenu>LDAP base</guimenu> and the <guimenu>Windows domain</guimenu> are suggested based
 	on the complete computer name and only need to be adjusted in exceptional cases.
 	The root password must be at least eight characters long and is also set as the password for the
-	<emphasis>administrator</emphasis> user during the installation of the first UCS server
+	<emphasis>Administrator</emphasis> user during the installation of the first UCS server
 	(&ucsMaster;).
   </para>
 
@@ -92,7 +93,7 @@
   </figure>
 
   <para>
-	Autopartitioning can be used during the installation that creates a LVM partion on the first
+	An autopartitioning feature can be used during the installation which creates an LVM partion on the first
 	hard drive by default. The use of this option is recommended.
   </para>
 
@@ -119,8 +120,7 @@
 
   <para>
 	After confirming the configuration settings the installation is initiated. Once completed, the
-	system must be restarted. The further configuration is made using the &ucsUMC; (UMC) and
-	described in the next chapter.
+	system must be restarted. The further configuration is made using the &ucsUMC; (UMC).
   </para>
 
 </chapter>
@@ -137,7 +137,7 @@
 
 	<figure id="quick-umclogin">
 	  <title>Anmeldung an der UMC</title>
-	  <graphic scalefit="1" width="40%" fileref="illustrations/umc-login-de.png"/>
+	  <graphic scalefit="1" width="40%" fileref="illustrations/umc-login-en.png"/>
 	</figure>
 
 	<para>
@@ -225,7 +225,7 @@
 		<listitem><simpara>
 		  Mac OS X systems are also integrated via a Samba-based, AD-compatible Windows
 		  domain. Further information on setting up Samba and the domain join of Windows clients can
-		  be found in the UCS manual <biblioref linkend="ucs-winjoin"/>.
+		  be found in the UCS manual <biblioref linkend="ucs-macjoin"/>.
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -239,11 +239,6 @@
 
 <chapter id="quickstart:furtherinfo">
   <title>Further information</title>
-
-  <para>
-	Help on UCS is offered in the Univention forum <ulink url="http://forum.univention.de/"/>.
-	Useful information can be found in the Univention support and knowledge base (SDB).
-  </para>
 
   <para>
 	&ucsUCS; provides comprehensive documentation:
