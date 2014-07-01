@@ -1,3 +1,9 @@
+univention-lib (3.0.26-21) unstable; urgency=low
+
+  * corrected svgz treatment in umc_module.py (Bug #35062)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 01 Jul 2014 14:45:16 +0200
+
 univention-lib (3.0.26-20) unstable; urgency=low
 
   * Fix slapd restart on LDAP schema activation (Bug #34800)
@@ -23,7 +29,7 @@ univention-lib (3.0.26-17) unstable; urgency=medium
 
  -- Arvid Requate <requate@univention.de>  Thu, 23 Jan 2014 18:24:03 +0100
 
-univention-lib (3.0.26-16) UNRELEASED; urgency=medium
+univention-lib (3.0.26-16) unstable; urgency=medium
 
   * Merge userNameMapping and groupNameMapping functions into
     custom_username and custom_groupname (Bug #33893)

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.76-7) unstable; urgency=low
+
+  * added support for svgz files to udm_extension listener module
+  (Bug #35062)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 01 Jul 2014 14:42:06 +0200
+
 univention-directory-manager-modules (9.0.76-6) unstable; urgency=low
 
   * Added new option to share-userquota policy: Reapply quota on every 
