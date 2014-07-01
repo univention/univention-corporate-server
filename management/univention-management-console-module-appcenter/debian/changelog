@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.51-22) unstable; urgency=low
+
+  * Bug #32935: Fix archive unpacking, add log messages, add fallback if
+    all.tar.gz does not exist
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 01 Jul 2014 10:21:06 +0200
+
 univention-management-console-module-appcenter (3.0.51-21) unstable; urgency=low
 
   * Bug #35177: Setting UCR variable in join script, not postinst

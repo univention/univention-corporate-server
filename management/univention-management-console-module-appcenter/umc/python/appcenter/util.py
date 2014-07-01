@@ -32,8 +32,10 @@
 # <http://www.gnu.org/licenses/>.
 
 # standard library
+import os.path
 from contextlib import contextmanager
 import urllib2
+from hashlib import md5
 
 # related third party
 #import psutil # our psutil is outdated. reenable when methods are supported
@@ -99,6 +101,13 @@ def get_master(lo):
 def get_all_backups(lo, ucr=None):
 	MODULE.process('Searching DC Backup')
 	return get_hosts(domaincontroller_backup, lo, ucr)
+
+def get_md5(filename):
+	m = md5()
+	if os.path.exists(filename):
+		with open(filename, 'r') as f:
+			m.update(f.read())
+			return m.hexdigest()
 
 # TODO: this should probably go into univention-lib
 # and hide urllib/urllib2 completely
