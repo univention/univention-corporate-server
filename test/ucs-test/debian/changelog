@@ -1,3 +1,10 @@
+ucs-test (4.0.166-43) unstable; urgency=low
+
+  * 51_samba4/41samba-tool_user_password_change: currently we have to
+    wait for the connector replication (Bug #35012)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 01 Jul 2014 07:54:41 +0200
+
 ucs-test (4.0.166-42) unstable; urgency=low
 
   * 00_base/96rename_domain_*: removed workaround for Bug #34802
