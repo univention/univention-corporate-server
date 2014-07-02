@@ -7,7 +7,7 @@ version: [2]
 desc: |
   This update fixes the following issues:
   * Improved performance: Applications are opened immediately when clicking on
-    them from the App Gallery.
+    them from the app gallery.
   * Improved performance: When new apps are added or existing apps' meta
     information changes, new files need to be downloaded from the server. If
     many files have changed, instead of downloading them all one after another,
@@ -15,9 +15,9 @@ desc: |
     fixes issues with many concurrent connections opened on the App Center
     server.
   * A dedicated component for the Radius application is removed (if Radius is
-    installed). It was added by mistake as univention-radius is part of the
+    installed). It was added by mistake as 'univention-radius' is part of the
     main repository.
-  * The UCR variable repository/app_center/installed is set and kept
+  * The UCR variable repository/app_center/installed is now set and kept
     up-to-date. It reflects the state of the installation status of all apps.
   * The details of an application do not show the note whether this application
     sends information to the vendor or not if it is a UCS component.

@@ -9,6 +9,6 @@ desc: |
   * Kerberos authentication is now limited to non-local accounts with
     UID >= 1000. The limit can be configured through the new Univention
     Configuration Registry variable 'pam/krb5/minimum_uid'.
-  * The mapping of user and group names in the config registry templates was
+  * The mapping of user and group names in the UCR templates was
     not updated in all cases. This has been fixed.
 bug: [34315, 34742]
