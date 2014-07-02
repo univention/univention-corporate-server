@@ -1,5 +1,11 @@
 univention-quota (9.0.0-2) unstable; urgency=low
 
+  * Merge from UCS 3.2-2 errata (Bug #31277) (svn r51384 r51387 r51437)
+
+ -- Florian Best <best@univention.de>  Wed, 02 Jul 2014 14:56:26 +0200
+
+univention-quota (9.0.0-2) unstable; urgency=low
+
   * Merge from UCS 3.2-2 errata (Bug #33174) 
 
  -- Erik Damrose <damrose@univention.de>  Mon, 30 Jun 2014 10:43:22 +0200
