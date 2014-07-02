@@ -1,3 +1,9 @@
+univention-ldap (10.0.17-38) unstable; urgency=low
+
+  * Depend on the current slapd version (Bug #35093)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Jul 2014 08:54:05 +0200
+
 univention-ldap (10.0.17-37) unstable; urgency=low
 
   * UCS in AD domain update (Bug #35093)
