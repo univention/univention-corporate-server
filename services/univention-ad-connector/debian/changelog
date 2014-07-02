@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-8) unstable; urgency=medium
+
+  * Added missing graphics (Bug #35090)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Jul 2014 07:57:20 +0200
+
 univention-ad-connector (8.0.17-7) unstable; urgency=low
 
   * Don't synchronize windows computers while updating (Bug #35091)
