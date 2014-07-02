@@ -43,7 +43,7 @@ from univention.config_registry import handler_set
 
 from univention.lib import fstab
 
-_ = umc.Translation('univention-management-console-modules-quota').translate
+_ = umc.Translation('univention-management-console-module-quota').translate
 
 
 class UserQuota(dict):
