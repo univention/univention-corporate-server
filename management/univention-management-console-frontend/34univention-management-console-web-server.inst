@@ -43,7 +43,7 @@ ucr set	ucs/web/overview/entries/admin/umc/icon="/univention-management-console/
 	ucs/web/overview/entries/admin/umc/link="/univention-management-console" \
 	ucs/web/overview/entries/admin/umc/priority="10" \
 
-if [ $server_role = "domaincontroller_master" ] || [ $server_role = "domaincontroller_backup" ]; then
+if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 	ucr set ucs/web/overview/entries/admin/umc/label="System and domain settings" \
 	ucs/web/overview/entries/admin/umc/label/de="System- und Domäneneinstellungen" \
 	ucs/web/overview/entries/admin/umc/description="Univention Management Console for administrating the UCS domain $domainname and the system $hostname" \

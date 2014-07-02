@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-35) unstable; urgency=low
+
+  * fixed quoting in web server join script (Bug #33615)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 02 Jul 2014 17:31:09 +0200
+
 univention-management-console-frontend (3.0.152-34) unstable; urgency=low
 
   * Bug #34317: Adapted the default link on UCS overview page.
