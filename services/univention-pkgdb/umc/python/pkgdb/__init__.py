@@ -34,7 +34,7 @@
 import pgdb
 
 from univention.management.console import Translation
-from univention.management.console.modules import Base, UMC_ModuleInitError
+from univention.management.console.modules import Base, UMC_CommandError
 import univention.config_registry
 import univention.pkgdb as updb
 
@@ -201,21 +201,45 @@ LABELS = {
 
 PAGES = ('systems', 'packages')
 
+SERVER_NOT_RUNNING_MSG = _('Maybe the PostgreSQL server is not running.\nIt can be started in the UMC module "System services".')
+
 class Instance(Base):
 	def init(self):
 		self.ucr = univention.config_registry.ConfigRegistry()
 		self.ucr.load()
 
-		# Create a connection to the pkgdb
-		try:
-			self.connection = updb.open_database_connection(self.ucr, pkgdbu=True)
-		except pgdb.InternalError:
-			raise UMC_ModuleInitError(_('Could not establish connection to the database server'))
-			
-			
-		self.cursor = self.connection.cursor()
+		self.connect()		
 
 		self._update_system_roles_and_versions()
+
+	def connection(func):
+		def _connect(self, *args, **kwargs):
+			if self.dbConnection is None:
+				self.connect()
+			else:
+				self.test_connection()
+			func(self, *args, **kwargs)
+
+		return _connect
+
+	def connect(self):
+		# Create a connection to the pkgdb
+		try:
+			self.dbConnection = updb.open_database_connection(self.ucr, pkgdbu=True)
+		except pgdb.InternalError as ex:
+			MODULE.error('Could not establish connection to the PostgreSQL server: %s' % ex)
+			raise UMC_CommandError(_('Could not establish connection to the database.\n\n%s') % SERVER_NOT_RUNNING_MSG)
+		else:
+			self.cursor = self.dbConnection.cursor()
+
+	def test_connection(self):
+		# test if connection is still active
+		try:
+			self.cursor.execute('SELECT TRUE')
+		except pgdb.OperationalError as ex:
+			MODULE.error('Connection to the PostgreSQL server lost: %s' % ex)
+			self.dbConnection = None
+			raise UMC_CommandError(_('Connection to the dabase lost.\n\n%s') % SERVER_NOT_RUNNING_MSG)
 
 	@simple_response
 	def reinit(self):
@@ -231,9 +255,11 @@ class Instance(Base):
 		PROPOSALS['sysversion_lower'] = PROPOSALS['sysversion']
 		PROPOSALS['sysversion_greater'] = PROPOSALS['sysversion']
 
+	@connection
 	def _get_system_roles(self):
 		return [role[0] for role in updb.sql_getall_systemroles(self.cursor)]
-
+			
+	@connection
 	def _get_system_versions(self):
 		return [version[0] for version in updb.sql_getall_systemversions(self.cursor)]
 
@@ -241,6 +267,7 @@ class Instance(Base):
 		page=ChoicesSanitizer(choices=PAGES, required=True),
 		key=ChoicesSanitizer(choices=CRITERIA_OPERATOR.keys())
 	)
+	@connection
 	@simple_response
 	def query(self, page, key, pattern=''):
 		""" Query to fill the grid. The structure of the corresponding grid
@@ -261,6 +288,7 @@ class Instance(Base):
 		return [_convert_to_grid(record, names) for record in result]
 
 	@sanitize(page=ChoicesSanitizer(choices=PAGES, required=True))
+	@connection
 	@simple_response
 	@log
 	def keys(self, page):
@@ -268,6 +296,7 @@ class Instance(Base):
 		return _combobox_data(CRITERIA[page])
 
 	@sanitize(page=ChoicesSanitizer(choices=PAGES, required=True))
+	@connection
 	@simple_response
 	@log
 	def proposals(self, page, key=''):
@@ -281,10 +310,11 @@ class Instance(Base):
 		if key in PROPOSALS:
 			return _combobox_data(PROPOSALS[key])
 
-		# fallback for everything not explicit listed here.
+		# fallback for everything not explicitly listed here.
 		return ''
 
 	@sanitize(page=ChoicesSanitizer(choices=PAGES, required=True))
+	@connection
 	@simple_response
 	@log
 	def columns(self, page, key=''):
