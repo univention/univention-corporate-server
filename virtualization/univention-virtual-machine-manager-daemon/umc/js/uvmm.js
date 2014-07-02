@@ -35,6 +35,7 @@ define([
 	"dojo/string",
 	"dojo/query",
 	"dojo/Deferred",
+	"dojo/on",
 	"dojox/html/entities",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -63,7 +64,7 @@ define([
 	"umc/modules/uvmm/DomainWizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, string, query, Deferred, entities, Menu, MenuItem, ContentPane, ProgressBar, Dialog, _TextBoxMixin,
+], function(declare, lang, array, string, query, Deferred, on, entities, Menu, MenuItem, ContentPane, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, ExpandingTitlePane, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
 	CheckBox, ComboBox, TextBox, Button, TreeModel, DomainPage, DomainWizard, types, _) {
 
@@ -285,22 +286,29 @@ define([
 
 			// register events
 			this._domainPage.on('UpdateProgress', lang.hitch(this, 'updateProgress'));
-			this._searchPage.on('Show', lang.hitch(this, '_selectInputText'));
 		},
 
 		postCreate: function() {
 			this.inherited(arguments);
 
-			this.own(this._tree.watch('path', lang.hitch(this, function() {
-				var searchType = this._searchForm.getWidget('type').get('value');
-				if (searchType == 'domain') {
-					this._finishedDeferred.then(lang.hitch(this, function(ucr) {
-						if (tools.isTrue(ucr['uvmm/umc/autosearch'])) {
-							this.filter();
-						}
-					}));
-				}
-			})));
+			on.once(this._tree, 'load', lang.hitch(this, function() {
+				this.own(this._tree.watch('path', lang.hitch(this, function() {
+					var searchType = this._searchForm.getWidget('type').get('value');
+					if (searchType == 'domain') {
+						this.filter();
+					}
+				})));
+				this._searchPage.on('show', lang.hitch(this, function() {
+					this._selectInputText();
+					this.filter();
+				}));
+				this._selectInputText();
+				this._finishedDeferred.then(lang.hitch(this, function(ucr) {
+					if (tools.isTrue(ucr['uvmm/umc/autosearch'])) {
+						this.filter();
+					}
+				}));
+			}));
 		},
 
 		_selectInputText: function() {
