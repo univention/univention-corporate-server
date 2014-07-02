@@ -153,8 +153,6 @@ class UMC_OptionMissing( UMC_Error ):
 class UMC_CommandError( UMC_Error ):
 	pass
 
-class UMC_ModuleInitError( UMC_Error ):
-	pass
 
 class Base( signals.Provider, Translation ):
 	'''The base class for UMC modules of version 2 or higher'''

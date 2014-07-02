@@ -1,3 +1,9 @@
+univention-pkgdb (7.0.11-4) unstable; urgency=low
+
+  * on module init error, raise UMC_Error (Bug #34723)
+    
+ -- Lukas Walter <walter@univention.de>  Wed, 02 Jul 2014 11:20:15 +0200
+
 univention-pkgdb (7.0.11-3) unstable; urgency=low
 
   * version bump, corrected bug number in changelog (Bug #34723)

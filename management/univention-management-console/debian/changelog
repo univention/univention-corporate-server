@@ -1,3 +1,9 @@
+univention-management-console (6.0.24-14) unstable; urgency=low
+
+  * use UMC_Error instead of UMC_ModuleInitError (Bug #34723)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 02 Jul 2014 11:19:04 +0200
+
 univention-management-console (6.0.24-13) unstable; urgency=low
 
   * fixed circular import (Bug #34723)

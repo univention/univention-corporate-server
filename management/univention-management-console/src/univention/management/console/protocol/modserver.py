@@ -249,8 +249,8 @@ class ModuleServer( Server ):
 					if msg:
 						msg = 'The initialization of the module failed: %s' % msg
 
-					from ..modules import UMC_ModuleInitError
-					if not isinstance(e, UMC_ModuleInitError) or not msg:
+					from ..modules import UMC_Error
+					if not isinstance(e, UMC_Error) or not msg:
 						msg = trace
 
 					self.__init_error_message = msg
