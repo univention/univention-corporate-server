@@ -5,9 +5,9 @@ src: univention-nagios
 fix: 7.0.6-4.265.201406160957
 version: [2]
 desc: |
- Change UNIVENTION_NTP nagios check to compare ntp server time by
- using the check_ntp_time nagios plugin. The previous check also asked
- for ntp server configuration options, which are not relevant for
+ Change UNIVENTION_NTP Nagios check to compare NTP server time by
+ using the 'check_ntp_time plugin'. The previous check also queried
+ NTP server configuration options, which are not relevant for
  this check and, since UCS 3.2 errata 20, are not allowed to be queried
  from external sources.
 bug: [34570]
