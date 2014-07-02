@@ -31,7 +31,10 @@ desc: |
  * Integer overflow when processing lz4 compressed kernel images
  * Various information disclosure, use-after-frees and integer 
    overflows in ALSA user controls
+ In addition a patch was integrated which fixes a kernel oops in the Xen netback
+ driver.
 note: This is the first part of the fix, which provides the new kernel package.
+bug: [34571, 35178]
 cve:
  - CVE-2012-2372
  - CVE-2013-7339
