@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-quota\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-07-01 11:46+0200\n"
+"POT-Creation-Date: 2014-07-01 14:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,7 +38,7 @@ msgstr ""
 "Konnte Quota-Einstellungen für den Benutzer %s auf der Partition %s nicht "
 "modifizieren"
 
-#: umc/python/quota/tools.py:233
+#: umc/python/quota/tools.py:239
 msgid "Generating the quota information file failed"
 msgstr "Erstellung der Quota-Informationsdatei ist fehlgeschlagen"
 
@@ -71,11 +71,11 @@ msgstr "Quota-Unterstützung erfolgreich aktiviert"
 msgid "Quota support successfully deactivated"
 msgstr "Quota-Unterstützung erfolgreich deaktiviert"
 
-#: umc/python/quota/tools.py:224
+#: umc/python/quota/tools.py:230
 msgid "Remounting the partition has failed"
 msgstr "Erneutes Einhängen der Partition ist fehlgeschlagen"
 
-#: umc/python/quota/tools.py:194 umc/python/quota/tools.py:236
+#: umc/python/quota/tools.py:194 umc/python/quota/tools.py:242
 msgid "Restarting the quota services has failed"
 msgstr "Neustart des Quota-Dienstes ist fehlgeschlagen"
 
@@ -101,10 +101,10 @@ msgstr "Die folgende Partition ist ohne Quota-Unterstützung eingebunden: %s"
 msgid "This partition is currently not mounted"
 msgstr "Die Partition ist derzeit nicht eingebunden"
 
-#: umc/python/quota/tools.py:219
+#: umc/python/quota/tools.py:225
 #, python-format
 msgid ""
-"To %s quota support for the root filesystem the system have to be rebooted."
+"To %s quota support for the root filesystem the system has to be rebooted."
 msgstr ""
 "Um quota-Unterstützung für das root-Dateisystem zu %s muss das System "
 "neugestartet werden."
@@ -117,10 +117,10 @@ msgstr "Unbekanntes Dateisystem"
 msgid "Unmounting the partition has failed"
 msgstr "Aushängen der Partition ist fehlgeschlagen"
 
-#: umc/python/quota/tools.py:218
+#: umc/python/quota/tools.py:224
 msgid "disable"
 msgstr "deaktivieren"
 
-#: umc/python/quota/tools.py:218
+#: umc/python/quota/tools.py:224
 msgid "enable"
 msgstr "aktivieren"
