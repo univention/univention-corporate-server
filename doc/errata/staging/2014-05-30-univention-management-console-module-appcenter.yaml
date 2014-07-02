@@ -6,8 +6,6 @@ fix: 3.0.51-22.256.201407011022
 version: [2]
 desc: |
   This update fixes the following issues:
-  * After an app (un)-installation the overview of UMC modules is reloaded
-    immediately.
   * Improved performance: Applications are opened immediately when clicking on
     them from the App Gallery.
   * Improved performance: When new apps are added or existing apps' meta
@@ -23,4 +21,4 @@ desc: |
     up-to-date. It reflects the state of the installation status of all apps.
   * The details of an application do not show the note whether this application
     sends information to the vendor or not if it is a UCS component.
-bug: [34243, 31915, 32935, 34867, 35177, 35176]
+bug: [31915, 32935, 34867, 35177, 35176]
