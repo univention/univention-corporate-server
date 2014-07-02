@@ -1,5 +1,6 @@
 univention-ad-connector usr/sbin/
 univention-adsearch usr/sbin/
+univention-ad-member usr/sbin/
 univention-connector-list-rejected usr/sbin/
 scripts/prepare-new-instance usr/share/univention-ad-connector/scripts
 
@@ -16,3 +17,5 @@ windows/ucs-ad-connector/msi-package/vcredist_x86.exe usr/share/univention-ad-co
 
 # AD Connector Listener Module
 ad-connector.py usr/lib/univention-directory-listener/system
+
+modules/univention/admember/*.py usr/share/pyshared/univention/admember/

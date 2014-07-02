@@ -1,0 +1,81 @@
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
+#
+# Univention AD Member
+#  Configure UCS as Active Directory member
+#
+# Copyright 2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+from optparse import OptionParser, OptionValueError
+import getpass
+import univention.admember
+import sys
+
+if __name__ == "__main__":
+
+	parser = OptionParser("%prog [options]")
+	parser.add_option("-u", "--username", action="store")
+	parser.add_option("-p", "--password", action="store")
+	parser.add_option("-a", "--ad_server", action="store")
+	parser.add_option("-l", "--lookup_ad_server", action="store_true")
+
+	opts, args = parser.parse_args()
+
+	print '''
+This tool configures this system as member of an existing Active Directory domain.
+'''
+
+	if not opts.username:
+		opts.username = raw_input('Insert the Active Directory username [Administrator]: ')
+		if not opts.username:
+			opts.username = 'Administrator'
+
+	if not opts.password:
+		opts.password = getpass.getpass('Insert the Active Directory password: ')
+
+	if opts.lookup_ad_server:
+		ad_domain_info = univention.admember.lookup_adds_dc()
+		if ad_domain_info and ad_domain_info["DC IP"]:
+			opts.ad_server = raw_input('Please insert the address of an Active Directory domain controller [%s]: ' % ad_domain_info["DC IP"])
+			if not opts.ad_server:
+				opts.ad_server = ad_domain_info["DC IP"]
+
+	if not opts.ad_server:
+		opts.ad_server = raw_input('Please insert the address of an Active Directory domain controller: ')
+		if not opts.ad_server:
+			print "Address of Active Directory domain controller missing"
+			sys.exit(1)
+
+	try:
+		univention.admember.configure_ad_member(opts.ad_server, opts.username, opts.password)
+	except univention.admember.timeSyncronizationFailed as ex:
+		print "%s" % (ex.args[0],)
+		print "Please syncronize the time of the Active Directory server to the UCS Server and try again."
+	except univention.admember.failedADConnect as ex:
+		print "%s" % (ex.args[0][0],)
+

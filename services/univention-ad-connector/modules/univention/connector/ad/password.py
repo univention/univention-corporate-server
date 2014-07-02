@@ -135,6 +135,10 @@ def password_sync_ucs(connector, key, object):
 	_d=ud.function('ldap.ad.password_sync_ucs')
 	# externes Programm zum Überptragen des Hash aufrufen
 	# per ldapmodify pwdlastset auf -1 setzen
+
+	# Don't overwrite the password in UCS in AD member role
+	if connector.baseConfig.is_true('ad/member'):
+		return
 	
 	compatible_modstring = univention.connector.ad.compatible_modstring
 	try:
@@ -241,6 +245,21 @@ def password_sync_ucs(connector, key, object):
 		#	connector.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'pwdlastset', "-1")])
 		#else:
 		#	ud.debug(ud.LDAP, ud.ERROR, "password_sync_ucs: Failed to sync Password from AD ")
+
+def password_sync_kinit(connector, key, ucs_object):
+	_d=ud.function('ldap.ad.password_sync_kinit')
+
+	object=connector._object_mapping(key, ucs_object, 'ucs')
+
+	ucs_result=connector.lo.search(base=ucs_object['dn'], attr=['userPassword'])
+	
+	userPassword = None
+	if ucs_result[0][1].has_key('userPassword'):
+		userPassword = ucs_result[0][1]['userPassword'][0]
+	ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: userPassword: %s" % userPassword)
+	if userPassword == '{KINIT}':
+		return
+	connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'userPassword', '{KINIT}')])
 
 def password_sync(connector, key, ucs_object):
 	_d=ud.function('ldap.ad.password_sync')

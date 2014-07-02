@@ -1,3 +1,42 @@
+univention-ad-connector (8.0.17-5) unstable; urgency=low
+
+  * Merge from ucs-in-ad-domain preview (Bug #35091)
+
+    [ Stefan Gohmann ]
+     * Install missing graphics (Bug #34091)
+     * Use username if lastname is empty (Bug #34091)
+     * Remove v2 from module name
+     * Depend on new or old UMC module
+     * Added univention-ad-member to configure the UCS in AD mode
+       (Bug #34091)
+     * Use KINIT instead of K5KEY (Bug #34091)
+     * Use ad/member instead of samba/role (Bug #34091)
+     * Allow synchronisation of Windows clients (Bug #34091)
+     * Always set userPassword to {K5KEY} (Bug #34091)
+     * Set univentionObjectFlag to synced (Bug #34091)
+
+    [ Alexander Kläser ]
+     * Bug #34091: update .svg icon files
+     * Bug #34091: add translations
+     * Bug #34091: added dummy wizard for new AD connector
+
+    [ Arvid Requate ]
+     * admember.lookup_adds_dc() requires python-ldb (Bug #34091)
+     * Improve error handling for the time syncronization (Bug #34091)
+     * Separate --lookup option for univention-ad-member
+     * admember.lookup_adds_dc() requires samba-common-bin (Bug #34091)
+     * admember.lookup_adds_dc() requires python-samba (Bug #34091)
+     * Return DC IP in admember.lookup_adds_dc() (Bug #34091)
+     * Use admember.lookup_adds_dc() in univention-ad-member
+     * Refuse to revert system time by more than three minutes
+     * Initial version of new module admember,
+       providing function configure_ad_member (Bug #34091)
+
+    [ Dirk Wiesenthal ]
+     * Bug #34091: Change display property of users to displayName
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Jul 2014 07:08:20 +0200
+
 univention-ad-connector (8.0.17-4) unstable; urgency=medium
 
   * Bug #33657: Move the message to the wizzard window.

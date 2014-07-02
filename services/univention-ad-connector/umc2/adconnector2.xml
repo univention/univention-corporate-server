@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="adconnector2" icon="adconnector2" version="1.0">
+	<name>Active Directory Connector</name>
+	<description>Configuration of the UCS Active Directory Connector of the local system</description>
+	<keywords>AD,Active Directory,Windows,Connector,integration,synchronization,synchronisation</keywords>
+	<categories>
+	  <category name="system"/>
+	</categories>
+
+	<command name="adconnector2/configuration" function="configuration"/>
+	<command name="adconnector2/send" function="send"/>
+  </module>
+</umc>

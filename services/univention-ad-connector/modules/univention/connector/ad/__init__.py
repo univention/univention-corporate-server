@@ -54,6 +54,20 @@ def activate_user (connector, key, object):
                 return True
         return False
 
+def set_univentionObjectFlag_to_synced(connector, key, ucs_object):
+	_d=ud.function('set_univentionObjectFlag_to_synced')
+	ud.debug(ud.LDAP, ud.PROCESS, "set_univentionObjectFlag_to_synced")
+
+	object=connector._object_mapping(key, ucs_object, 'ucs')
+
+	ucs_result=connector.lo.search(base=ucs_object['dn'], attr=['univentionObjectFlag'])
+	
+	flags = ucs_result[0][1].get('univentionObjectFlag', [])
+	if not 'synced' in flags:
+		flags.append('synced')
+		connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'univentionObjectFlag', flags)])
+
+
 def group_members_sync_from_ucs(connector, key, object):
 	return connector.group_members_sync_from_ucs(key, object)
 	
@@ -149,7 +163,7 @@ def ad2samba_time(l):
 	return long(((l-d))/10000000)
 
 # mapping funtions
-def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobject, propertyname, propertyattrib, ocucs, ucsattrib, ocad):
+def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobject, propertyname, propertyattrib, ocucs, ucsattrib, ocad, dn_attr = None):
 	'''
 	map dn of given object (which must have an samaccountname in AD)
 	ocucs and ocad are objectclasses in UCS and AD
@@ -157,10 +171,14 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 	object = copy.deepcopy(given_object)
 
 	samaccountname = ''
+	dn_attr_val = ''
 	
 	if object['dn'] != None:
 		if object['attributes'].has_key('sAMAccountName'):
 			samaccountname=object['attributes']['sAMAccountName'][0]
+		if dn_attr:
+			if object['attributes'].has_key(dn_attr):
+				dn_attr_val=object['attributes'][dn_attr][0]
 		
 	def dn_premapped(object, dn_key, dn_mapping_stored):
 		if (not dn_key in dn_mapping_stored) or (not object[dn_key]):
@@ -229,6 +247,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 				else:
 					newdn = 'cn' + dn[pos:] #new object, don't need to change
 
+				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %s" % newdn)
 			else:
 				# get the object to read the sAMAccountName in AD and use it as name
 				# we have no fallback here, the given dn must be found in AD or we've got an error
@@ -274,7 +293,10 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 					newdn = ucsdn
 					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn is ucsdn")
 				else:
-					newdn = ucsattrib + '=' + samaccountname + dn[pos2:] # guess the old dn
+					if dn_attr:
+						newdn = dn_attr + '=' + dn_attr_val + dn[pos2:] # guess the old dn
+					else:
+						newdn = ucsattrib + '=' + samaccountname + dn[pos2:] # guess the old dn
 			try:
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn for key %s:" % dn_key)
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: olddn: %s" % dn)
@@ -302,6 +324,14 @@ def group_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
 	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
 	'''
 	return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'group', u'cn', u'posixGroup', 'cn', u'group')
+
+def windowscomputer_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
+	'''
+	map dn of given windows computer using the samaccountname/uid
+	connector is an instance of univention.connector.ad, given_object an object-dict,
+	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
+	'''
+	return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'windowscomputer', u'samAccountName', u'posixAccount', 'uid', u'computer', 'cn')
 
 def old_user_dn_mapping(connector, given_object):
 	object = copy.deepcopy(given_object)
@@ -2079,6 +2109,10 @@ class ad(univention.connector.ucs):
 			# objectClass
 			if self.property[property_type].con_create_objectclass:
 				addlist.append(('objectClass', self.property[property_type].con_create_objectclass))
+
+			# fixed Attributes
+			if self.property[property_type].con_create_attributes:
+				addlist +=  self.property[property_type].con_create_attributes
 
 			if hasattr(self.property[property_type], 'attributes') and self.property[property_type].attributes != None:
 				for attr,value in object['attributes'].items():
