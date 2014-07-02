@@ -1,6 +1,6 @@
 univention-pkgdb (7.0.11-5) unstable; urgency=low
 
-  * give user friend feedback whenever a command executions fails because the
+  * give user friendly feedback whenever a command execution fails because the
     postgreSQL server is not running (Bug #34723)
     
  -- Lukas Walter <walter@univention.de>  Wed, 02 Jul 2014 16:45:20 +0200
