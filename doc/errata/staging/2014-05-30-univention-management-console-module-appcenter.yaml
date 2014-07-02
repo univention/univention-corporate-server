@@ -6,7 +6,8 @@ fix: 3.0.51-22.256.201407011022
 version: [2]
 desc: |
   This update fixes the following issues:
-  * After a app (un)-installation the overview of UMC modules is reloaded immediately.
+  * After an app (un)-installation the overview of UMC modules is reloaded
+    immediately.
   * Improved performance: Applications are opened immediately when clicking on
     them from the App Gallery.
   * Improved performance: When new apps are added or existing apps' meta
