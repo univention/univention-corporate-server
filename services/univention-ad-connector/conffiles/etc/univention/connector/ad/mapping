@@ -112,7 +112,12 @@ if ignore_filter:
 						    univention.connector.ad.disable_user_from_ucs,
 						    ],
 
-			post_ucs_modify_functions=[ univention.connector.ad.password.password_sync_kinit,
+			post_ucs_modify_functions=[ @!@
+if baseConfig.is_true('ad/member', False'):
+	print '						univention.connector.ad.password.password_sync_kinit,'
+else:
+	print '						univention.connector.ad.password.password_sync,'
+@!@
 						    univention.connector.ad.set_univentionObjectFlag_to_synced,
 						    univention.connector.ad.primary_group_sync_to_ucs,
 						    univention.connector.ad.object_memberships_sync_to_ucs,

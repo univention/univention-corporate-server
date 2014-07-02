@@ -1,3 +1,12 @@
+univention-ad-connector (8.0.17-7) unstable; urgency=low
+
+  * Don't synchronize windows computers while updating (Bug #35091)
+  * Use KINIT in AD member mode only (Bug #35091)
+  * Set synced flag in AD member mode only (Bug #35091)
+  * Bump version
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Jul 2014 07:48:54 +0200
+
 univention-ad-connector (8.0.17-5) unstable; urgency=low
 
   * Merge from ucs-in-ad-domain preview (Bug #35091)
