@@ -1,3 +1,11 @@
+univention-ldap (10.0.17-37) unstable; urgency=low
+
+  * UCS in AD domain update (Bug #35093)
+    [ Arvid Requate ]
+     * Support pwd_scheme_kinit (Bug #34091)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Jul 2014 08:41:42 +0200
+
 univention-ldap (10.0.17-36) unstable; urgency=low
 
   * New share-userquota binary attribute:

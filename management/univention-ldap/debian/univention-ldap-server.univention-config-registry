@@ -59,3 +59,4 @@ Variables: ldap/index/sub
 Variables: ldap/online/master
 Variables: ldap/translogfile
 Variables: ldap/k5pwd
+Variables: ldap/pwd_scheme_kinit
