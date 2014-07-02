@@ -1,3 +1,12 @@
+univention-directory-manager-modules (10.0.1-2) unstable; urgency=low
+
+  * Bug #34092: show attributes as readonly when UCS is part of an AD
+  	domain;
+  * merges svn r48050 r48049 r48032 r48014 r48013 r47823 r47822 r47821
+  	r47806 r47792 r47767
+
+ -- Florian Best <best@univention.de>  Wed, 02 Jul 2014 16:14:27 +0200
+
 univention-directory-manager-modules (10.0.1-1) unstable; urgency=low
 
   * added support for svgz files to udm_extension listener module

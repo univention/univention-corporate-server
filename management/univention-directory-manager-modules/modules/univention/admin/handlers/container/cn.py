@@ -59,7 +59,8 @@ property_descriptions={
 			options=[],
 			required=1,
 			may_change=1,
-			identifies=1
+			identifies=1,
+			readonly_when_synced=1,
 		),
 	'policyPath': univention.admin.property(
 			short_description=_('Add to standard policy containers'),
@@ -69,7 +70,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'dhcpPath': univention.admin.property(
 			short_description=_('Add to standard DHCP containers'),
@@ -79,7 +80,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'dnsPath': univention.admin.property(
 			short_description=_('Add to standard DNS containers'),
@@ -89,7 +90,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'userPath': univention.admin.property(
 			short_description=_('Add to standard user containers'),
@@ -99,7 +100,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'groupPath': univention.admin.property(
 			short_description=_('Add to standard group containers'),
@@ -109,7 +110,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'computerPath': univention.admin.property(
 			short_description=_('Add to standard computer containers'),
@@ -119,7 +120,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'networkPath': univention.admin.property(
 			short_description=_('Add to standard network containers'),
@@ -129,7 +130,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'sharePath': univention.admin.property(
 			short_description=_('Add to standard share containers'),
@@ -139,7 +140,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'printerPath': univention.admin.property(
 			short_description=_('Add to standard printer containers'),
@@ -149,7 +150,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'mailPath': univention.admin.property(
 			short_description=_('Add to standard mail containers'),
@@ -159,7 +160,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'licensePath': univention.admin.property(
 			short_description=_('Add to standard license containers'),
@@ -169,7 +170,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'description': univention.admin.property(
 			short_description=_('Description'),
@@ -180,7 +181,8 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=1,
 		),
 }
 

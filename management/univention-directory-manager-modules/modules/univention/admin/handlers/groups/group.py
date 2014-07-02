@@ -91,7 +91,8 @@ property_descriptions={
 			options=['posix', 'samba'],
 			required=1,
 			may_change=1,
-			identifies=1
+			identifies=1,
+			readonly_when_synced=1,
 		),
 	'gidNumber': univention.admin.property(
 			short_description=_('Group ID'),
@@ -146,6 +147,7 @@ property_descriptions={
 			dontsearch = True,
 			may_change = True,
 			identifies = False,
+			readonly_when_synced=True,
 	),
 	'description': univention.admin.property(
 			short_description=_('Description'),
@@ -156,7 +158,8 @@ property_descriptions={
 			options=['posix', 'samba'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=1,
 		),
 	'users': univention.admin.property(
 			short_description=_('Users'),
@@ -167,7 +170,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			dontsearch=1,
-			identifies=0
+			identifies=0,
 		),
 	'hosts': univention.admin.property(
 			short_description=_('Hosts'),
@@ -179,7 +182,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			dontsearch=1,
-			identifies=0
+			identifies=0,
 		),
 	'mailAddress': univention.admin.property(
 			short_description=_('Mail address'),
@@ -191,7 +194,8 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			dontsearch=0,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=1,
 		),
 	'memberOf': univention.admin.property(
 			short_description=_('Member of'),
@@ -202,7 +206,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			dontsearch=1,
-			identifies=0
+			identifies=0,
 		),
 	'nestedGroup': univention.admin.property(
 			short_description=_('Groups'),
@@ -213,7 +217,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			dontsearch=1,
-			identifies=0
+			identifies=0,
 		),
 	'allowedEmailUsers': univention.admin.property(
 			short_description=_( 'Users that are allowed to send e-mails to the group' ),
@@ -224,7 +228,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			dontsearch=1,
-			identifies=0
+			identifies=0,
 		),
 	'allowedEmailGroups': univention.admin.property(
 			short_description=_('Groups that are allowed to send e-mails to the group'),
@@ -235,7 +239,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			dontsearch=1,
-			identifies=0
+			identifies=0,
 		)
 }
 

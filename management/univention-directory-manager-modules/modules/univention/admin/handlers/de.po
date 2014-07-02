@@ -114,6 +114,14 @@ msgstr "DHCP"
 msgid "DNS Alias"
 msgstr "DNS-Alias"
 
+#: __init__.py:404
+msgid "Objects from Active Directory can not be moved."
+msgstr "Objekte aus Active-Directory-Domänen können nicht verschoben werden."
+
+#: __init__.py:404
+msgid "Objects from Active Directory can not be removed."
+msgstr "Objekte aus Active-Directory-Domänen können nicht gelöscht werden."
+
 #~ msgid "There is more than one DNS Forward-Zone-Entry."
 #~ msgstr "Es existiert mehr als ein Eintrag in einer DNS-Forward-Zone."
 
