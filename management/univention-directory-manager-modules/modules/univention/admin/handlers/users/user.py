@@ -131,7 +131,8 @@ property_descriptions={
 			include_in_default_search=1,
 			required=1,
 			may_change=1,
-			identifies=1
+			identifies=1,
+			readonly_when_synced=1,
 		),
 	'uidNumber': univention.admin.property(
 			short_description=_('User ID'),
@@ -165,7 +166,8 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=1,
 		),
 	'lastname': univention.admin.property(
 			short_description=_('Last name'),
@@ -175,7 +177,8 @@ property_descriptions={
 			include_in_default_search=1,
 			required=1,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=True,
 		),
 	'gecos': univention.admin.property(
 			short_description=_('GECOS'),
@@ -198,7 +201,8 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			default = '<firstname> <lastname><:strip>',
-			identifies=0
+			identifies=0,
+			readonly_when_synced=1,
 		),
 	'title': univention.admin.property(
 			short_description=_('Title'),
@@ -208,7 +212,7 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'sambaPrivileges': univention.admin.property(
 			short_description = _( 'Samba privileges' ),
@@ -229,7 +233,8 @@ property_descriptions={
 			include_in_default_search=1,
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=1,
 		),
 	'organisation': univention.admin.property(
 			short_description=_('Organisation'),
@@ -239,7 +244,8 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=True,
 		),
 	'userexpiry': univention.admin.property(
 			short_description=_('Account expiry date'),
@@ -250,7 +256,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			dontsearch=1,
-			identifies=0
+			identifies=0,
 		),
 	'passwordexpiry': univention.admin.property(
 			short_description=_('Password expiry date'),
@@ -262,7 +268,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			dontsearch=1,
-			identifies=0
+			identifies=0,
 		),
 	'pwdChangeNextLogin': univention.admin.property(
 			short_description=_('Change password on next login'),
@@ -273,7 +279,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			dontsearch=1,
-			identifies=0
+			identifies=0,
 		),
 	'disabled': univention.admin.property(
 			short_description=_('Account deactivation'),
@@ -316,7 +322,8 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=1,
 		),
 	'e-mail': univention.admin.property(
 			short_description=_('E-mail address(es)'),
@@ -337,7 +344,8 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=1,
 		),
 	'city': univention.admin.property(
 			short_description=_('City'),
@@ -347,7 +355,8 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=1,
 		),
 	'phone': univention.admin.property(
 			short_description=_('Telephone number(s)'),
@@ -357,7 +366,8 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=1,
 		),
 	'employeeNumber': univention.admin.property(
 			short_description=_('Employee number'),
@@ -368,7 +378,7 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'roomNumber': univention.admin.property(
 			short_description=_('Room number'),
@@ -378,7 +388,7 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'secretary': univention.admin.property(
 			short_description=_('Superior'),
@@ -388,7 +398,7 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'departmentNumber': univention.admin.property(
 			short_description=_('Department number'),
@@ -398,7 +408,7 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'employeeType': univention.admin.property(
 			short_description=_('Employee type'),
@@ -408,7 +418,7 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'homePostalAddress': univention.admin.property(
 			short_description=_('Private postal address'),
@@ -418,7 +428,7 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'homeTelephoneNumber': univention.admin.property(
 			short_description=_('Private telephone number(s)'),
@@ -428,7 +438,8 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=1,
 		),
 	'mobileTelephoneNumber': univention.admin.property(
 			short_description=_('Mobile phone number(s)'),
@@ -438,7 +449,8 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=1,
 		),
 	'pagerTelephoneNumber': univention.admin.property(
 			short_description=_('Pager telephone number(s)'),
@@ -448,7 +460,8 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=1,
 		),
 	'birthday' : univention.admin.property(
 			short_description=_('Birthday'),
@@ -458,7 +471,7 @@ property_descriptions={
 			options=['person'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 	),
 	'unixhome': univention.admin.property(
 			short_description=_('Unix home directory'),
@@ -491,7 +504,7 @@ property_descriptions={
 			options=['samba'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'scriptpath': univention.admin.property(
 			short_description=_('Windows logon script'),
@@ -501,7 +514,8 @@ property_descriptions={
 			options=['samba'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=1,
 		),
 	'profilepath': univention.admin.property(
 			short_description=_('Windows profile directory'),
@@ -511,7 +525,8 @@ property_descriptions={
 			options=['samba'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=1,
 		),
 	'homedrive': univention.admin.property(
 			short_description=_('Windows home drive'),
@@ -521,7 +536,7 @@ property_descriptions={
 			options=['samba'],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'sambaRID': univention.admin.property(
 			short_description=_('Relative ID'),
@@ -543,7 +558,7 @@ property_descriptions={
 			required=0,
 			dontsearch=1,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'primaryGroup': univention.admin.property(
 			short_description=_('Primary group'),
@@ -554,7 +569,7 @@ property_descriptions={
 			required=1,
 			dontsearch=1,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 	'mailHomeServer': univention.admin.property(
 			short_description=_('Mail home server'),
@@ -579,6 +594,7 @@ property_descriptions={
 			dontsearch=0,
 			may_change=1,
 			identifies=0,
+			readonly_when_synced=1,
 		),
 	'mailAlternativeAddress': univention.admin.property(
 			short_description=_('Alternative e-mail addresses'),
@@ -646,6 +662,7 @@ property_descriptions={
 			dontsearch=0,
 			may_change=1,
 			identifies=0,
+			readonly_when_synced=1,
 		),
 	'sambaLogonHours': univention.admin.property(
 			short_description=_('Permitted times for Windows logins'),
@@ -657,6 +674,7 @@ property_descriptions={
 			dontsearch=1,
 			may_change=1,
 			identifies=0,
+			readonly_when_synced=1,
 		),
 	'jpegPhoto': univention.admin.property(
 			short_description=_("Picture of the user (JPEG format)"),
@@ -667,7 +685,7 @@ property_descriptions={
 			dontsearch=1,
 			may_change=1,
 			options=['person'],
-			identifies=0
+			identifies=0,
 	),
 	'userCertificate': univention.admin.property(
 			short_description=_("PKI user certificate (DER format)"),
@@ -678,7 +696,7 @@ property_descriptions={
 			dontsearch=1,
 			may_change=1,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateIssuerCountry': univention.admin.property(
 			short_description=_('Issuer Country'),
@@ -689,7 +707,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateIssuerState': univention.admin.property(
 			short_description=_('Issuer State'),
@@ -700,7 +718,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateIssuerLocation': univention.admin.property(
 			short_description=_('Issuer Location'),
@@ -711,7 +729,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateIssuerOrganisation': univention.admin.property(
 			short_description=_('Issuer Organisation'),
@@ -722,7 +740,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateIssuerOrganisationalUnit': univention.admin.property(
 			short_description=_('Issuer Organisational Unit'),
@@ -733,7 +751,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateIssuerCommonName': univention.admin.property(
 			short_description=_('Issuer Common Name'),
@@ -744,7 +762,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateIssuerMail': univention.admin.property(
 			short_description=_('Issuer Mail'),
@@ -755,7 +773,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateSubjectCountry': univention.admin.property(
 			short_description=_('Subject Country'),
@@ -766,7 +784,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateSubjectState': univention.admin.property(
 			short_description=_('Subject State'),
@@ -777,7 +795,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateSubjectLocation': univention.admin.property(
 			short_description=_('Subject Location'),
@@ -788,7 +806,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateSubjectOrganisation': univention.admin.property(
 			short_description=_('Subject Organisation'),
@@ -799,7 +817,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateSubjectOrganisationalUnit': univention.admin.property(
 			short_description=_('Subject Organisational Unit'),
@@ -810,7 +828,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateSubjectCommonName': univention.admin.property(
 			short_description=_('Subject Common Name'),
@@ -821,7 +839,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateSubjectMail': univention.admin.property(
 			short_description=_('Subject Mail'),
@@ -832,7 +850,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateDateNotBefore': univention.admin.property(
 			short_description=_('Valid from'),
@@ -843,7 +861,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateDateNotAfter': univention.admin.property(
 			short_description=_('Valid until'),
@@ -854,7 +872,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateVersion': univention.admin.property(
 			short_description=_('Version'),
@@ -865,7 +883,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'certificateSerial': univention.admin.property(
 			short_description=_('Serial'),
@@ -876,7 +894,7 @@ property_descriptions={
 			dontsearch=1,
 			editable=0,
 			options=['pki'],
-			identifies=0
+			identifies=0,
 		),
 	'umcProperty' : univention.admin.property(
 			short_description=_('UMC user preferences'),
@@ -886,7 +904,7 @@ property_descriptions={
 			multivalue=1,
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
 		),
 }
 

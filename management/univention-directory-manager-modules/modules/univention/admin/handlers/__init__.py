@@ -65,6 +65,13 @@ s4connector_search = False
 # FIXME: What is the use of the following line?
 # __path__.append("users")
 
+
+_prevent_to_change_ad_properties = True
+def disable_ad_restrictions(disable=True):
+	global _prevent_to_change_ad_properties
+	_prevent_to_change_ad_properties = disable
+
+
 # manages properties
 class base(object):
 	def __init__(self, co, lo, position, dn='', superordinate = None ):
@@ -195,6 +202,13 @@ class base(object):
 		return 1
 
 	def __setitem__(self, key, value):
+		def _changeable():
+			yield self.descriptions[key].editable
+			if not self.descriptions[key].may_change:
+				yield key not in self.oldinfo or self.oldinfo[key] == value
+			if _prevent_to_change_ad_properties:
+				yield not (self.descriptions[key].readonly_when_synced and self._is_synced_object() and self.exists())
+
 		# property does not exist
 		options=0
 		if not self.has_key(key):
@@ -208,7 +222,7 @@ class base(object):
 				return
 			raise univention.admin.uexceptions.noProperty, key
 		# attribute may not be changed
-		elif (not self.descriptions[key].may_change and self.oldinfo.has_key(key) and self.oldinfo[key] != value) or not self.descriptions[key].editable:
+		elif not all(_changeable()):
 			raise univention.admin.uexceptions.valueMayNotChange, _('key=%s old=%s new=%s') % (key, self[key], value)
 		# required attribute may not be removed
 		elif self.descriptions[key].required and not value:
@@ -382,6 +396,9 @@ class base(object):
 
 		if not self.exists():
 			raise univention.admin.uexceptions.noObject
+
+		if _prevent_to_change_ad_properties and self._is_synced_object():
+			raise univention.admin.uexceptions.invalidOperation(_('Objects from Active Directory can not be moved.'))
 
 		goaldn = ','.join(ldap.explode_dn(newdn)[1:])
 		goalmodule = univention.admin.modules.identifyOne(goaldn, self.lo.get(goaldn))
@@ -967,6 +984,10 @@ class simpleLdap(base):
 	def _remove(self, remove_childs=0):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,'handlers/__init__._remove() called for %s' % self.dn)
 		self.exceptions=[]
+
+		if _prevent_to_change_ad_properties and self._is_synced_object():
+			raise univention.admin.uexceptions.invalidOperation(_('Objects from Active Directory can not be removed.'))
+
 		if hasattr(self,"_ldap_pre_remove"):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL,'_ldap_pre_remove() called')
 			self._ldap_pre_remove()
@@ -2899,3 +2920,6 @@ class simplePolicy(simpleLdap):
 		simpleLdap.__setitem__(self, key, newvalue)
 		if self.hasChanged(key):
 			self.changes=1
+
+	def _is_synced_object(self):
+		return 'synced' in self.oldattr.get('univentionObjectFlag', [])
