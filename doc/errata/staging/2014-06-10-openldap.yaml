@@ -3,8 +3,13 @@ release: "3.2"
 version: [2]
 scope: ucs_3.2-0-errata3.2-2
 src: openldap
-fix: 2.4.35-1.161.201406101711
+fix: 2.4.35-1.162.201407020834
 desc: |
- The OpenLDAP schema for NIS (nis.schema) has been altered:
- The schema definition of the attribute "shadowExpire" contains now
- a ORDERING statement.
+ This update fixes the following issues:
+ * The OpenLDAP schema for NIS (nis.schema) has been altered:
+   The schema definition of the attribute "shadowExpire" contains now
+   a ORDERING statement.
+ * A new OpenLDAP overlay module has been added: pwd_scheme_kinit. It
+   allows to set the userPassword attribute to {KINIT} which redirects
+   the authentication to a kerberos server.
+bug: [35088,35092]
