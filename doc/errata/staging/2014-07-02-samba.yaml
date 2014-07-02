@@ -1,0 +1,20 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: samba
+fix: 2:4.1.0-1.651.201406300815
+version: [2]
+desc: |
+    * These four security vulnerabilities have been fixed:
+      * Denial of service (infinite CPU loop) in nmbd
+      * Denial of service (daemon crash) in the smbd file server daemon
+      * Information leak in shadow_copy VFS module (not used in the default
+        configuration)
+      * Incorrect parsing of the require_membership_of option in Winbind
+bug: [35192]
+cve:
+ - CVE-2014-0244
+ - CVE-2014-3493
+ - CVE-2012-6150
+ - CVE-2014-0178
+

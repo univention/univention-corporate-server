@@ -11,16 +11,4 @@ desc: |
       on the file. In Samba 4.0, this has been fixed. To re-establishing the
       old behaviour the new UCR variable samba/acl/allow/execute/always has
       been added (default True).
-    * In addition four security vulnerabilities have been fixed:
-      * Denial of service (infinite CPU loop) in nmbd
-      * Denial of service (daemon crash) in the smbd file server daemon
-      * Information leak in shadow_copy VFS module (not used in the default
-        configuration)
-      * Incorrect parsing of the require_membership_of option in Winbind
-bug: [33785, 35192]
-cve:
- - CVE-2014-0244
- - CVE-2014-3493
- - CVE-2012-6150
- - CVE-2014-0178
-
+bug: [33785]
