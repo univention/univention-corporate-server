@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.76-9) unstable; urgency=low
+
+  * Bug #34092: add _is_synced_object to base class
+
+ -- Florian Best <best@univention.de>  Wed, 02 Jul 2014 16:57:35 +0200
+
 univention-directory-manager-modules (9.0.76-8) unstable; urgency=low
 
   * Bug #34092: show attributes as readonly when UCS is part of an AD

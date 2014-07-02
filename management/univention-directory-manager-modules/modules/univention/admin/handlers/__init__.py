@@ -522,6 +522,9 @@ class base(object):
 
 		return self._remove(remove_childs)
 
+	def _is_synced_object(self):
+		return False  # see simpleLdap, only fallback
+
 
 class simpleLdap(base):
 
