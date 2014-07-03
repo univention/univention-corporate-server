@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.76-11) unstable; urgency=low
+
+  * revert svn r51405 (Bug #35062)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 03 Jul 2014 12:34:11 +0200
+
 univention-directory-manager-modules (9.0.76-10) unstable; urgency=low
 
   * Bug #34092: forgot to merge svn r48049

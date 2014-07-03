@@ -20,8 +20,6 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-smbpasswd,
  shell-univention-lib,
  python-univention-lib (>= 3.0.25-5),
- imagemagick,
- libmagickcore3-extra,
  python-univention-directory-manager-cli (= ${binary:Version})
 Provides: ${python:Provides}
 Replaces: python-univention-lib (<< 1.0.15-1)
