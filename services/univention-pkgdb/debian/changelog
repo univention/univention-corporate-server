@@ -1,8 +1,14 @@
+univention-pkgdb (7.0.11-7) unstable; urgency=low
+
+  * version bump (Bug #34723)
+    
+ -- Lukas Walter <walter@univention.de>  Thu, 03 Jul 2014 12:36:21 +0200
+
 univention-pkgdb (7.0.11-6) unstable; urgency=low
 
   * fixed typo (Bug #34723)
     
- -- Lukas Walter <walter@univention.de>  Wed, 03 Jul 2014 12:12:10 +0200
+ -- Lukas Walter <walter@univention.de>  Thu, 03 Jul 2014 12:12:10 +0200
 
 univention-pkgdb (7.0.11-5) unstable; urgency=low
 
