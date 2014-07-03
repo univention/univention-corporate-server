@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.76-10) unstable; urgency=low
+
+  * Bug #34092: forgot to merge svn r48049
+
+ -- Florian Best <best@univention.de>  Thu, 03 Jul 2014 08:51:20 +0200
+
 univention-directory-manager-modules (9.0.76-9) unstable; urgency=low
 
   * Bug #34092: add _is_synced_object to base class

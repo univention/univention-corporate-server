@@ -1373,7 +1373,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				self['lastname']=sn
 		except Exception, e:					# FIXME: we should NEVER catch all exceptions
 			# at least write some debuging output..
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Caught exception: %s' % e )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Caught exception: %s' % e )
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Continuing without dn..')
 			self.dn=None
 			return

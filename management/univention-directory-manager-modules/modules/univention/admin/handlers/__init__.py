@@ -206,8 +206,8 @@ class base(object):
 			yield self.descriptions[key].editable
 			if not self.descriptions[key].may_change:
 				yield key not in self.oldinfo or self.oldinfo[key] == value
-			if _prevent_to_change_ad_properties:
-				yield not (self.descriptions[key].readonly_when_synced and self._is_synced_object() and self.exists())
+			#if _prevent_to_change_ad_properties:  # FIXME: users.user.object.__init__ modifies firstname and lastname by hand
+			#	yield not (self.descriptions[key].readonly_when_synced and self._is_synced_object() and self.exists())
 
 		# property does not exist
 		options=0
@@ -522,9 +522,6 @@ class base(object):
 
 		return self._remove(remove_childs)
 
-	def _is_synced_object(self):
-		return False  # see simpleLdap, only fallback
-
 
 class simpleLdap(base):
 
@@ -793,6 +790,8 @@ class simpleLdap(base):
 #+++# MODIFY #+++#
 	def _modify(self, modify_childs=1, ignore_license=0):
 		self.exceptions=[]
+
+		self.__prevent_ad_property_change()
 
 		if hasattr(self,"_ldap_pre_modify"):
 			self._ldap_pre_modify()
@@ -1133,6 +1132,20 @@ class simpleLdap(base):
 		for pname, prop in properties.items():
 			if hasattr(prop.syntax, 'checkLdap'):
 				prop.syntax.checkLdap(self.lo, self.info.get(pname))
+
+	def __prevent_ad_property_change(self):
+		if not _prevent_to_change_ad_properties or not self._is_synced_object():
+			return
+
+		for key in self.descriptions:
+			if self.descriptions[key].readonly_when_synced:
+				value = self.info.get(key)
+				oldval = self.oldinfo.get(key)
+				if oldval != value:
+					raise univention.admin.uexceptions.valueMayNotChange, _('key=%s old=%s new=%s') % (key, oldval, value)
+
+	def _is_synced_object(self):
+		return 'synced' in self.oldattr.get('univentionObjectFlag', [])
 
 
 class simpleComputer( simpleLdap ):
@@ -2923,6 +2936,3 @@ class simplePolicy(simpleLdap):
 		simpleLdap.__setitem__(self, key, newvalue)
 		if self.hasChanged(key):
 			self.changes=1
-
-	def _is_synced_object(self):
-		return 'synced' in self.oldattr.get('univentionObjectFlag', [])
