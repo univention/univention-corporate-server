@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.152-36) unstable; urgency=low
+
+  * Bug #34243: only show reload-UMC message once; fix setting of category
+  	name
+
+ -- Florian Best <best@univention.de>  Thu, 03 Jul 2014 15:21:32 +0200
+
 univention-management-console-frontend (3.0.152-35) unstable; urgency=low
 
   * fixed quoting in web server join script (Bug #33615)

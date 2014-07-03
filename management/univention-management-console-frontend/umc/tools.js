@@ -207,6 +207,8 @@ define([
 						}
 					}]
 				});
+			} else {
+				return; // show this dialog only once per session
 			}
 			if (!this._reloadDialog.open) {
 				// check if UMC needs a browser reload and prompt the user to reload

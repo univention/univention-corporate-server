@@ -670,7 +670,7 @@ define([
 			progressDialog.show();
 
 			var userPreferencesDefered = this._loadUserPreferences();
-			var modulesDeferred = this._loadModules(progressDialog).then(lang.hitch(this, '_reloadModuleStore'));
+			var modulesDeferred = this._loadModules(progressDialog, true).then(lang.hitch(this, '_reloadModuleStore'));
 			var reload = all([modulesDeferred, userPreferencesDefered]);
 			reload.then(lang.hitch(this, function() {
 				this._setupOverviewSearchSidebarCategories();
@@ -747,8 +747,9 @@ define([
 			});
 		},
 
-		_loadModules: function(progressDialog) {
-			return tools.umcpCommand('get/modules/list', null, false).then(lang.hitch(this, function(data) {
+		_loadModules: function(progressDialog, reload) {
+			var options = reload ? {reload: true} : null;
+			return tools.umcpCommand('get/modules/list', options, false).then(lang.hitch(this, function(data) {
 				// update progress
 				var _modules = lang.getObject('modules', false, data) || [];
 				var modules = [];
@@ -878,6 +879,7 @@ define([
 
 			categories.unshift({
 				label: _('Favorites'),
+				name: _('Favorites'),
 				id: '_favorites_',
 				priority: Number.POSITIVE_INFINITY
 			});
