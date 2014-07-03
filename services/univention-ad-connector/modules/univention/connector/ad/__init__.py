@@ -1406,11 +1406,11 @@ class ad(univention.connector.ucs):
 			else:
 				# remove member only if he was in the cache on AD side
 				# otherwise it is possible that the user was just created on AD and we are on the way back
-				if member_dn.lower() in self.group_members_cache_con.get(object['dn'].lower(), []):
+				if ( member_dn.lower() in self.group_members_cache_con.get(object['dn'].lower(), []) ) or (self.property.get('group') and self.property['group'].sync_mode in ['write', 'none']):
 					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: No")
 					del_members.append(member_dn)
 				else:
-					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: %s was not found in group member ucs cache of %s, don't delete" % (member_dn.lower(), object['dn'].lower()))
+					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: %s was not found in group member con cache of %s, don't delete" % (member_dn.lower(), object['dn'].lower()))
 
 		
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to add: %s" % add_members)
