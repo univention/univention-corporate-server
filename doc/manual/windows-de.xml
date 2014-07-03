@@ -336,9 +336,10 @@ instanceType: 4
 		  </para>
 
 		  <para>
-			Gruppenrichtlinien werden im Gegensatz zu den UCS-Richtlinien (siehe <xref linkend="central:policies"/>) nicht in der &ucsUMC;
-			konfiguriert, sondern mit einem  separaten Editor konfiguriert, den <emphasis>Remote
-			Server Administration Tools (RSAT)</emphasis>.
+			Gruppenrichtlinien werden im Gegensatz zu den UCS-Richtlinien (siehe <xref
+			linkend="central:policies"/>) nicht in der &ucsUMC;, sondern mit einem  separaten Editor
+			konfiguriert, den <emphasis>Remote Server Administration Tools (RSAT)</emphasis>. Die
+			Einrichtung ist in <xref linkend="gpo:install"/> dokumentiert.
 		  </para>
 
 		  <para>
@@ -347,10 +348,8 @@ instanceType: 4
 			<itemizedlist>
 			  <listitem><simpara>
 				<emphasis>Benutzerrichtlinien</emphasis> konfigurieren die Einstellungen eines
-				Benutzers, z.B. die Vorkonfiguration des Desktops oder die Beschränkung von Funktionen
-				in der Benutzersitzung. Auch Anwendungen können über Gruppenrichtlinien konfiguriert
-				werden wie z.B. die Startseite des Internet Explorers oder Einstellungen in
-				LibreOffice.
+				Benutzers, z.B. die Vorkonfiguration des Desktops. Auch Anwendungen können über Gruppenrichtlinien konfiguriert
+				werden (z.B. die Startseite des Microsoft Internet Explorers oder Einstellungen in LibreOffice).
 			  </simpara></listitem>
 
 			  <listitem><simpara>
@@ -362,28 +361,28 @@ instanceType: 4
 
 		  <para>
 			Computerrichtlinien werden erstmalig beim Systemstart ausgewertet, Benutzerrichtlinien bei
-			der Anmeldung. Gruppenrichtlinien werden in der Grundeinstellung regelmässig aktualisiert
-			(alle 90-120 Minuten, der Zeitraum wird zur Vermeidung von Lastspitzen nach dem
-			Zufallsprinzip variiert ) und auf das System angewendet. Die Auswertung der
-			Gruppenrichtlinien kann durch Aufruf des Befehls <command>gpupdate</command> auch gezielt
-			gestartet werden. 
+			der Anmeldung. Die Richtlinien werden auch für angemeldete Benutzer/laufende Systeme
+			fortlaufend ausgewertet und aktualisiert (in der Grundeinstellung alle 90-120 Minuten,
+			der Zeitraum wird zur Vermeidung von Lastspitzen nach dem Zufallsprinzip variiert).
 		  </para>
 
 		  <para>
-			Einige Richtlinien - z.B. zur Installation von Software oder für Anmeldeskripte- werden
+			Die Auswertung der Gruppenrichtlinien kann durch Aufruf des Befehls
+			<command>gpupdate</command> auch gezielt gestartet werden.
+		  </para>
+
+		  <para>
+			Einige Richtlinien - z.B. zur Installation von Software oder für Anmeldeskripte - werden
 			nur bei der Anmeldung (Benutzerrichtlinien) oder beim Systemstart (Rechnerrichtlinien)
 			ausgewertet. 
 		  </para>
 
 		  <para>
 			Die meisten Gruppenrichtlinien setzen nur einen Wert in der Windows-Registry, der dann
-			von Windows oder einer Applikation ausgewertet wird. Da Standard-Benutzer keine
-			Einstellungen der Registry editieren können, können so auch eingeschränkte
+			von Windows oder einer Applikation ausgewertet wird. Da Standardbenutzer keine
+			Einstellungen der Windows Registry editieren können, können so auch eingeschränkte
 			Benutzer-Desktops konfiguriert werden, in denen z.B. Benutzer den Windows Task Manager
-			nicht aufrufen dürfen. Neben Richtlinien gibt es auch
-			<emphasis>Preferences</emphasis>. Sie können benutzt werden um Einstellungen zu
-			forcieren. Mit Preferences erfolgt eine Vorkonfiguration, die vom Benutzer noch beliebig
-			angepasst werden kann.
+			nicht aufrufen dürfen.
 		  </para>
 
 		  <para>
@@ -419,6 +418,12 @@ instanceType: 4
 			Featureverwaltungs-Tools</guimenu> die Option <guimenu>Tools für die
 			Gruppenrichtlinienverwaltung</guimenu> aktiviert wird.
 		  </para>
+
+		  <para>
+			Nach der Aktivierung kann der Gruppenrichtlinieneditor unter <guimenu>Start ->
+			Verwaltung -> Gruppenrichtlinienverwaltung</guimenu> aufgerufen werden.
+		  </para>
+
 		</section>
 
 		<section id="gpo:config">
@@ -427,7 +432,7 @@ instanceType: 4
 		  <para>
 			Gruppenrichtlinien können von Benutzern konfiguriert werden, die Mitglied der Gruppe
 			<emphasis>Domain Admins</emphasis> sind (z.B. der
-			<emphasis>Administrator</emphasis>. Bei der Anmeldung muss beachtet werden, das keine
+			<emphasis>Administrator</emphasis>). Bei der Anmeldung muss beachtet werden, das keine
 			Anmeldung mit dem lokalen Administrator-Konto erfolgt, sondern mit dem
 			Administrator-Konto der Domäne. Der Gruppenrichtlinieneditor kann auf einem beliebigen
 			System der Domäne aufgerufen werden. 
@@ -443,15 +448,15 @@ instanceType: 4
 
 			<itemizedlist>
 			  <listitem><simpara>
-				Sie können im <guimenu>Group Policy Objects</guimenu>-Order angelegt und dann mit
-				verschiedenen Positionen im LDAP verknüpft werden. Dies ist sinnvoll wenn eine
+				Sie können im <guimenu>Gruppenrichtlinienobjekte</guimenu>-Order angelegt und dann mit
+				verschiedenen Positionen im LDAP verknüpft werden. Dies ist sinnvoll, wenn eine
 				Richtlinie an mehreren Positionen im LDAP verknüpft werden soll.
 			  </simpara></listitem>
 
 			  <listitem><simpara>
 				Die GPO kann ad hoc an einer LDAP-Position erstellt und dabei direkt verknüpft
 				werden. Für kleine und mittlere Domänen ist das der einfachere Weg. Auch ad hoc
-				erstellte Domänen werden im  <guimenu>Group Policy Objects</guimenu>-Order angezeigt.
+				erstellte Domänen werden im  <guimenu>Gruppenrichtlinienobjekte</guimenu>-Ordner angezeigt.
 			  </simpara></listitem>
 			</itemizedlist>
 		  </para>
@@ -467,6 +472,12 @@ instanceType: 4
 		  </para>
 
 		  <para>
+			<figure><title>Bearbeiten einer Richtlinie</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-edit-policy-de.png"/>
+			</figure>
+		  </para>
+
+		  <para>
 			Zwei Standard-Richtlinien sind vordefiniert:
 
 			<itemizedlist>
@@ -479,13 +490,13 @@ instanceType: 4
 				Die <emphasis>Default Domain Controller Policy</emphasis> hat in einer Samba-Domäne
 				keine Verwendung (in einer Microsoft AD-Domäne würden die Einstellungen der
 				Microsoft-Domänencontroller über diese Richtlinie erfolgen). Die Konfiguration der
-				Samba-Domänencontroller erfolgt in UCS über die UCS-Domänenverwaltung.
+				Samba-Domänencontroller erfolgt in UCS weitgehend über &ucsUCR;.
 			  </simpara></listitem>
 			</itemizedlist>
 		  </para>
 
 		  <para>
-			AD-Domänen können in Sites strukturiert werden. Dies kann verwendet werden um etwa
+			AD-Domänen können in Sites strukturiert werden. Dies kann z.B. verwendet werden um 
 			Standorte in einer Domäne zu gruppieren. Im Hauptmenü des Gruppenrichtlinien-Editors
 			werden alle Sites aufgeführt. Dort findet sich auch eine Liste von Domänen. Die
 			aktuellen Samba-Versionen unterstützen keine Forest-Domänen, so dass hier immer nur eine
@@ -493,7 +504,7 @@ instanceType: 4
 		  </para>
 
 		  <para>
-			Jede Domäne besteht aus verschiedenen Organisations-Einheiten. Dies kann z.B. verwendet
+			Eine Domäne kann in verschiedene Organisations-Einheiten strukturiert werden. Dies kann z.B. verwendet
 			werden um die Mitarbeiter der Buchhaltung und die Benutzer der Verwaltung in
 			unterschiedlichen LDAP-Positionen zu speichern.
 		  </para>
@@ -501,9 +512,18 @@ instanceType: 4
 		  <para>
 			Gruppenrichtlinien können sich gegenseitig überlagern. Es gilt das Prinzip der
 			Vererbung, d.h. höherliegende Einstellungen überschreiben die untergeordneten. Die
-			effektiven Einstellungen können mit dem Befehl <command>gpresult</command> auf dem
-			Windows-Client angezeigt werden. Die Richtlinien werden in folgender Reihenfolge
-			ausgewertet:
+			effektiven Einstellungen für einen Benutzer können mit dem Befehl <command>gpresult
+			/user BENUTZERNAME /v </command> auf dem Windows-Client angezeigt werden:
+		  </para>
+
+		  <para>
+			<figure><title>Auswertung der GPO für den Benutzer user01</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-gpresult-de.png"/>
+			</figure>
+		  </para>
+
+		  <para>
+			Die Richtlinien werden in folgender Reihenfolge ausgewertet:
 
 			<itemizedlist>
 			  <listitem><simpara>
@@ -535,7 +555,7 @@ instanceType: 4
 		  </para>
 
 		  <para>
-			Ein Beispiel: Eine Firma verbietet den Zugriff auf den Windos Task Manager in der Grundeinstellunge. Dazu wird die Einstellung
+			Ein Beispiel: Eine Firma verbietet den Zugriff auf den Windos Task Manager in der Grundeinstellungen. Dazu wird die Einstellung
 			<guimenu>Zugriff auf Task Manager unterbinden</guimenu> aktiviert und und das <emphasis>Default Domain
 			Policy-Objekt gebunden</emphasis>. Für einige technisch versiertere Benutzer soll der Task Manager
 			dennoch verfügbar sein. Diese Benutzer sind in der OU <emphasis>Technik</emphasis> abgelegt. Nun wird eine
@@ -551,15 +571,15 @@ instanceType: 4
 		  <para>
 			Eine Gruppenrichtlinie besteht aus zwei Teilen: Eine Datei mit Einstellungen, die auf
 			dem Windows-System umgesetzt werden sollen (gespeichert in der SYSVOL-Freigabe (siehe
-			<xref linkend="windows:sysvolshare"/>) und einer Referenz auf diese Datei im
+			<xref linkend="windows:sysvolshare"/>)) und einer Referenz auf diese Datei im
 			LDAP-Verzeichnis (gespeichert im Group Policy Container des LDAP-Verzeichnisses).
 		  </para>
 
 		  <para>
-			Während die LDAP-Replikationen zwischen Domänencontrollern innerhalb weniger Sekunden
+			Während die LDAP-Replikation zwischen Domänencontrollern innerhalb weniger Sekunden
 			umgesetzt ist, wird die SYSVOL-Freigabe in der Grundstellung nur alle fünf Minuten
-			repliziert. Es ist zu beachten, dass die Anwendung von frisch konfigurierten
-			Gruppenrichtlinien in diesem Zeitpunkt fehlschlagen kann.
+			repliziert. Es ist zu beachten, dass die Anwendung von neu konfigurierten
+			Gruppenrichtlinien in diesem Zeitraum fehlschlagen kann.
 		  </para>
 		</section>
 
@@ -568,18 +588,19 @@ instanceType: 4
 		<section id="gpo:adm">
 		  <title>Administrative Vorlagen (ADM)</title>
 		  <para>
-			Wird eine Software verwendet, die auf einen Registry-Key reagiert und soll dieser
-			ebenfalls in der Gruppenrichtlinien verwaltet werden, können die vordefinierten
-			Gruppenrichtlinien durch administrative Vorlagen erweitert werden. In einer solchen
-			Vorlage wird definiert unter welchem Namen die Einstellungen im
-			Gruppenrichtlinien-Editor erscheinen soll und welcher Wert dadurch in der
-			Windows-Registry gesetzt wird. Administrative Vorlagen werden in sogenannten ADM-Dateien
-			gespeichert.
+			Die vordefinierten Gruppenrichtlinien können durch sogenannte <emphasis>administrative
+			Vorlagen</emphasis> erweitert werden. In einer solchen Vorlage wird definiert unter
+			welchem Namen die Einstellungen im Gruppenrichtlinien-Editor erscheinen soll und welcher
+			Wert dadurch in der Windows-Registry gesetzt wird. Administrative Vorlagen werden in
+			sogenannten <emphasis>ADM-Dateien</emphasis> gespeichert.
 		  </para>
 
 		  <para>
-			Ein Beispiel für eine ADM-Datei. Hier wird eine Rechner-Richtlinie definiert, in der ein
-			Registry-Key des (fiktiven) Univention RDP-Client konfiguriert wird:
+			Das folgende Beispiel für eine ADM-Date definiert eine Rechner-Richtlinie, in der ein
+			Registry-Key des (fiktiven) Univention RDP-Client konfiguriert wird. Weiterführende
+			Informationen zum Format von ADM-Dateien sind unter <biblioref linkend="microsoft-adm-templates"/> und <biblioref linkend="adm-templates-howto"/> zu
+			finden. Die administrativen Vorlagen müssen die Dateiendung <emphasis>.adm</emphasis>
+			verwenden:
 
 			<programlisting language="sh">
 CLASS MACHINE
@@ -593,23 +614,44 @@ VALUEOFF "Deaktiviert"
 END POLICY
 END CATEGORY
 			</programlisting>
-			ADM-Dateien werden ebenfalls in der SYSVOL-Freigabe gespeichert und repliziert.
-			Weiterführende Informationen:
-			http://support. microsoft. com/kb/225087/ en
-			http://www.frickelsoft.net/blog/downloads/howto_admTemplates.pdf
 		  </para>
 
-		  TODO: Wie werden ADM-Templates in den Gruppenrichtlinien-Editor eingebunden?
+		  <para>
+			<figure><title>Die eingebundene administrative Vorlage</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-adm-template-de.png"/>
+			</figure>
+		  </para>
 
+		  <para>
+			Die ADM-Datei muss anschließend über den Gruppenrichtlinieneditor importiert
+			werden. Dazu wird im Kontextmenü der <guimenu>Administrativen Vorlagen</guimenu> die
+			Option <guimenu>Vorlagen hinzufügen/entfernen</guimenu> aufgerufen. Mit
+			<guimenu>Hinzufügen</guimenu> kann dann eine ADM-Datei importiert werden.Die
+			administrativen Vorlagen werden ebenfalls in der SYSVOL-Freigabe gespeichert und
+			repliziert. 
+		  </para>
 		</section>
 
 		<section id="gpo:wmifilter">
-		  <title>Beschränkung der Richtlinienanwendung durch WMI-Filter</title>
+		  <title>Anwendung von Richtlinien auf Basis von Rechnereigenschaften (WMI-Filter)</title>
 		  <para>
-			Die Zuordnung der Richtlinien kann durch <emphasis>WMI-Filter</emphasis> weiter
-			verfeinert werden, z.B. indem eine Software-Installations-Richtlinie auf Systeme
-			beschränkt wird, die über min. 8 GB RAM verfügen.
+			Richtlinien können auch auf Basis von Systemeigenschaften konfiguriert werden. Diese
+			Eigenschaften werden über die Windows Management Instrumentation-Schnittstelle (WMI)
+			bereitgestellt. Der darauf aufbauende Mechanismus wird als WMI-Filterung bezeichnet.
+			Damit ist es beispielsweise möglich eine Richtlinie nur auf PCs mit einer 64
+			Bit-Prozessor-Architektur oder mit min. 8 GB RAM anzuwenden. Ändert sich eine
+			Eigenschaft eines Systems (z.B. weil mehr Speicher eingebaut wurde), wird der jeweilige
+			Filter automatisch aktiviert.
 		  </para>
+
+		  <para>
+			Die WMI-Filter werden in der Domänenstruktur im Container <guimenu>WMI-Filter</guimenu>
+			angezeigt. Mit <guimenu>Neu</guimenu> kann ein weiterer Filter definiert werden. Unter
+			<guimenu>Abfragen</guimenu> werden die Filterregeln definiert. Die Regeln werden in
+			einer SQL-ähnlichen Syntax definiert. Filter-Beispiele finden sich in <biblioref
+			linkend="microsoft-wmi-filter"/> und  <biblioref linkend="add-wmi-filters"/>.
+		  </para>
+
 		</section>
 
 	  </section>
