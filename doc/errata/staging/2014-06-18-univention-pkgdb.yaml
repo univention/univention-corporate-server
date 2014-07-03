@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-pkgdb
-fix: 7.0.11-5.180.201407021648
+fix: 7.0.11-6.181.201407031214
 version: [2]
 desc: |
   When the initilization of the univention-pkgdb UMC module, or any
