@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.97-25) unstable; urgency=low
+
+  * Bug #34093: copy images
+
+ -- Florian Best <best@univention.de>  Thu, 03 Jul 2014 12:33:47 +0200
+
 univention-management-console-module-udm (4.0.97-24) unstable; urgency=low
 
   * Bug #34092: show attributes as readonly in Active Directory
