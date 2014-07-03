@@ -32,6 +32,7 @@ section "Create user and group"
 
 udm_create "groups/group" || fail_test 110
 udm_create "users/user" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
 
 section "Add user to group"
 

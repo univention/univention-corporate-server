@@ -7,6 +7,8 @@
 ##  - 18433
 ## versions:
 ##  3.0-0: skip
+## tags:
+##  - groupsync
 
 # skip test, see https://forge.univention.org/bugzilla/show_bug.cgi?id=28696
 exit 131

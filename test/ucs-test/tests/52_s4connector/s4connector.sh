@@ -593,6 +593,12 @@ function connector_running_on_this_host ()
 	return $?
 }
 
+function ad_connector_restart ()
+{
+	invoke-rc.d univention-s4-connector restart
+	sleep 3 # wait a few seconds
+}
+
 
 # vim:syntax=sh
 # Local Variables:

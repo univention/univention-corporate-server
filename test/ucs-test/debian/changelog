@@ -1,3 +1,10 @@
+ucs-test (4.0.166-46) unstable; urgency=low
+
+  * 5*_*connector: added more connector group membership tests
+    (Bug #35234)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Jul 2014 08:59:03 +0200
+
 ucs-test (4.0.166-45) unstable; urgency=low
 
   * Bug #35177: Made tests for app codes executable
