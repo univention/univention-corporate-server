@@ -1,3 +1,9 @@
+univention-lib (3.0.26-22) unstable; urgency=low
+
+  * revert svn r51405 (Bug #35062)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 03 Jul 2014 12:42:12 +0200
+
 univention-lib (3.0.26-21) unstable; urgency=low
 
   * corrected svgz treatment in umc_module.py (Bug #35062)

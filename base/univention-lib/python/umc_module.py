@@ -42,7 +42,7 @@ def uncompress_file(filename):
 
 def image_mime_type_of_buffer(data):
 	mime_type = get_mime_type(data)
-	if mime_type in ('image/jpeg', 'image/png', 'image/svg+xml', 'application/x-gzip'):
+	if mime_type in ('image/jpeg', 'image/png', 'image/svg+xml'):
 		return mime_type
 	else:
 		raise univention.admin.uexceptions.valueError( "Not a supported image format: %s" % (mime_type,))
@@ -57,7 +57,7 @@ def imagecategory_of_buffer(data):
 	mime_type = image_mime_type_of_buffer(uncompressed_data)
 	if mime_type in ('image/jpeg', 'image/png'):
 		return (mime_type, compression_mime_type, "%sx%s" % imagedimensions_of_buffer(uncompressed_data))
-	elif mime_type in ('image/svg+xml', 'application/x-gzip'):
+	elif mime_type in ('image/svg+xml'):
 		return (mime_type, compression_mime_type, "scalable")
 
 def default_filename_suffix_for_mime_type(mime_type, compression_mime_type):
