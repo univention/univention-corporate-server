@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-11) unstable; urgency=low
+
+  * Added missing graphics (Bug #35090)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Jul 2014 12:14:02 +0200
+
 univention-ad-connector (8.0.17-10) unstable; urgency=low
 
   * The group_members_cache_con is not be filled in write mode. So we
