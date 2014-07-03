@@ -327,7 +327,7 @@ instanceType: 4
 			Gruppenrichtlinien sind eine Active Directory-Funktion, die die zentrale Konfiguration von
 			Rechner- und Benutzereinstellungen erlaubt. Gruppenrichtlinien werden auch von
 			Samba-AD-Domänen unterstützt. Die Richtlinien greifen nur auf Windows-Clients; Linux- oder
-			Mac OS-System werden die Einstellungen nicht aus.
+			Mac OS-System werten die Einstellungen nicht aus.
 		  </para>
 		
 		  <para>
@@ -336,7 +336,7 @@ instanceType: 4
 		  </para>
 
 		  <para>
-			Gruppenrichtlinien werden im Gegensatz zu den UCS-Richtlinien nicht in der &ucsUMC;
+			Gruppenrichtlinien werden im Gegensatz zu den UCS-Richtlinien (siehe <xref linkend="central:policies"/>) nicht in der &ucsUMC;
 			konfiguriert, sondern mit einem  separaten Editor konfiguriert, den <emphasis>Remote
 			Server Administration Tools (RSAT)</emphasis>.
 		  </para>
@@ -363,12 +363,16 @@ instanceType: 4
 		  <para>
 			Computerrichtlinien werden erstmalig beim Systemstart ausgewertet, Benutzerrichtlinien bei
 			der Anmeldung. Gruppenrichtlinien werden in der Grundeinstellung regelmässig aktualisiert
-			(alle 90-120 Minuten, der Zeitraum wird nach dem Zufallsprinzip variiert um Lastspitzung
-			zu vermeiden) und auf das System angewendet. Einige Richtlinien - z.B. zur Installation
-			von Software oder für Anmeldeskripte- werden nur bei der Anmeldung (Benutzerrichtlinien)
-			oder beim Systemstart (Rechnerrichtlinien) ausgewertet. Die Auswertung der
-			Gruppenrichtlinien durch Aufruf des Befehl <command>gpupdate</command> auch gezielt
-			gestartet werden.
+			(alle 90-120 Minuten, der Zeitraum wird zur Vermeidung von Lastspitzen nach dem
+			Zufallsprinzip variiert ) und auf das System angewendet. Die Auswertung der
+			Gruppenrichtlinien kann durch Aufruf des Befehls <command>gpupdate</command> auch gezielt
+			gestartet werden. 
+		  </para>
+
+		  <para>
+			Einige Richtlinien - z.B. zur Installation von Software oder für Anmeldeskripte- werden
+			nur bei der Anmeldung (Benutzerrichtlinien) oder beim Systemstart (Rechnerrichtlinien)
+			ausgewertet. 
 		  </para>
 
 		  <para>
@@ -376,14 +380,10 @@ instanceType: 4
 			von Windows oder einer Applikation ausgewertet wird. Da Standard-Benutzer keine
 			Einstellungen der Registry editieren können, können so auch eingeschränkte
 			Benutzer-Desktops konfiguriert werden, in denen z.B. Benutzer den Windows Task Manager
-			nicht aufrufen dürfen.
-		  </para>
-
-		  <para>
-			Neben Richtlinien gibt es auch Preferences. Richtlinien-Einstellungen aktivieren
-			Registry-Keys, die vom Benutzer nicht weitergehend angepasst werden können. Sie können
-			benutzt werden um Einstellungen zu forcieren. Mit Preferences erfolgt eine
-			Vorkonfiguration, die vom Benutzer noch beliebig angepasst werden kann.
+			nicht aufrufen dürfen. Neben Richtlinien gibt es auch
+			<emphasis>Preferences</emphasis>. Sie können benutzt werden um Einstellungen zu
+			forcieren. Mit Preferences erfolgt eine Vorkonfiguration, die vom Benutzer noch beliebig
+			angepasst werden kann.
 		  </para>
 
 		  <para>
@@ -407,8 +407,8 @@ instanceType: 4
 		  </para>
 
 		  <para>
-			<figure><title>Gruppenrichtlinien-Editor</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/win_policy_de.png"/>
+			<figure><title>Aktivierung der Gruppenrichtlinienverwaltung</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-activate-de.png"/>
 			</figure>
 		  </para>
 
@@ -425,9 +425,17 @@ instanceType: 4
 		  <title>Konfiguration von Richtlinien mit dem Gruppenrichtlinien-Editor</title>
 
 		  <para>
-			Gruppenrichtlinien müssen mit Domänen-Administrator-Rechten konfiguriert werden. Dazu
-			muss der Gruppenrichtlinieneditor von einem beliebigen System in der Domäne aufgerufen
-			werden.
+			Gruppenrichtlinien können von Benutzern konfiguriert werden, die Mitglied der Gruppe
+			<emphasis>Domain Admins</emphasis> sind (z.B. der
+			<emphasis>Administrator</emphasis>. Bei der Anmeldung muss beachtet werden, das keine
+			Anmeldung mit dem lokalen Administrator-Konto erfolgt, sondern mit dem
+			Administrator-Konto der Domäne. Der Gruppenrichtlinieneditor kann auf einem beliebigen
+			System der Domäne aufgerufen werden. 
+		  </para>
+
+		  <para>
+			Wenn mehr als ein Samba-Domänencontroller eingesetzt wird, muss die Replikation der
+			GPO-Daten berücksichtigt werden, siehe <xref linkend="gpo:gposync"/>.
 		  </para>
 
 		  <para>
@@ -449,40 +457,13 @@ instanceType: 4
 		  </para>
 
 		  <para>
-			Eine Richtlinie, die bearbeitet wird kann drei Zustände annehmen, sie kann aktiviert,
+			Eine Richtlinie kann drei Zustände annehmen; sie kann aktiviert,
 			deaktiviert oder nicht gesetzt sein. Die Auswirkung bezieht sich immer auf die
 			Formulierung der Richtlinie. Wenn diese beispielsweise <guimenu>Deaktiviere Feature
 			xy</guimenu> heisst, muss die Richtlinie aktiviert werden um das Feature
 			abzuschalten. Einige Richtlinien haben zusätzliche Optionen, z.B. könnte die Richtlinie
 			<guimenu>Aktiviere Mail-Quota</guimenu> eine zusätzliche Option mitbringen um die
 			Speichermenge zu verwalten.
-		  </para>
-
-		  <para>
-			AD-Domänen können in Sites strukturiert werden. Dies kann verwendet werden um etwa
-			Standorte in einer Domäne zu gruppieren. Im Hauptmenü des Gruppenrichtlinien-Editors
-			werden alle Sites aufgeführt. Dort findet sich auch eine Liste von Domänen. Die
-			aktuellen Samba-Versionen unterstützen keine Forest-Domänen, so dass hier immer nur eine
-			Domäne angezeigt wird.
-		  </para>
-
-		  <para>
-			Jede Domäne besteht aus verschiedenen Organisations-Einheiten. Dies kann z.B. verwendet
-			werden um die Mitarbeiter der Buchhaltung und die Benutzer der Verwaltung in
-			unterschiedlichen LDAP-Positionen zu speichern.
-		  </para>
-
-		  <para>
-			Die im Gruppenrichtlinien-Editor konfigurierten Einstellungen können mit verschiedenen
-			LDAP-Positionen verknüpft werden. Abhängig von der Position im LDAP werden dann
-			unterschiedliche Einstellungen überschrieben. Ein Beispiel: Eine Firma verbietet den
-			Zugriff auf den Windos Task Manager in der Grundeinstellunge. Dazu wird die Einstellung
-			"Zugriff auf Task Manager unterbinden " aktiviert und und das Default Domain
-			Policy-Objekt gebunden. Für einige technisch versiertere Benutzer soll der Task Manager
-			dennoch verfügbar sein. Diese Benutzer sind in der OU Technik abgelegt. Nun wird eine
-			zweite Richtlinie "Zugriff auf Task Manager unterbinden: deaktiviert" erstellt an die OU
-			Technik gebunden. Dies folgt dem Prinzip der Vererbung und ist <xref linkend="gpo:eval"/>
-			geschrieben:
 		  </para>
 
 		  <para>
@@ -502,29 +483,20 @@ instanceType: 4
 			  </simpara></listitem>
 			</itemizedlist>
 		  </para>
-		</section>
 
-		<section id="gpo:gposync">
-		  <title>Konfiguration von Gruppenrichtlinien in Umgebungen mit mehr als einem
-		  Samba-Domänencontroller</title>
 		  <para>
-			Eine Gruppenrichtlinie besteht aus zwei Teilen: Eine Datei mit Einstellungen, die auf
-			dem Windows-System umgesetzt werden sollen (gespeichert in der SYSVOL-Freigabe (siehe
-			<xref linkend="windows:sysvolshare"/>) und einer Referenz auf diese Datei im
-			LDAP-Verzeichnis (gespeichert im Group Policy Container des LDAP-Verzeichnisses).
+			AD-Domänen können in Sites strukturiert werden. Dies kann verwendet werden um etwa
+			Standorte in einer Domäne zu gruppieren. Im Hauptmenü des Gruppenrichtlinien-Editors
+			werden alle Sites aufgeführt. Dort findet sich auch eine Liste von Domänen. Die
+			aktuellen Samba-Versionen unterstützen keine Forest-Domänen, so dass hier immer nur eine
+			Domäne angezeigt wird.
 		  </para>
 
 		  <para>
-			Während die LDAP-Replikationen zwischen Domänencontrollern innerhalb weniger Sekunden
-			umgesetzt ist, wird die SYSVOL-Freigabe in der Grundstellung nur alle fünf Minuten
-			repliziert. Es ist zu beachten, dass die Anwendung von frisch konfigurierten
-			Gruppenrichtlinien in diesem Zeitpunkt fehlschlagen kann.
+			Jede Domäne besteht aus verschiedenen Organisations-Einheiten. Dies kann z.B. verwendet
+			werden um die Mitarbeiter der Buchhaltung und die Benutzer der Verwaltung in
+			unterschiedlichen LDAP-Positionen zu speichern.
 		  </para>
-		</section>
-
-
-		<section id="gpo:eval">
-		  <title>Auswertungsreihenfolge von Gruppenrichtlinien</title>
 
 		  <para>
 			Gruppenrichtlinien können sich gegenseitig überlagern. Es gilt das Prinzip der
@@ -561,7 +533,37 @@ instanceType: 4
 			  </simpara></listitem>
 			</itemizedlist>
 		  </para>
+
+		  <para>
+			Ein Beispiel: Eine Firma verbietet den Zugriff auf den Windos Task Manager in der Grundeinstellunge. Dazu wird die Einstellung
+			<guimenu>Zugriff auf Task Manager unterbinden</guimenu> aktiviert und und das <emphasis>Default Domain
+			Policy-Objekt gebunden</emphasis>. Für einige technisch versiertere Benutzer soll der Task Manager
+			dennoch verfügbar sein. Diese Benutzer sind in der OU <emphasis>Technik</emphasis> abgelegt. Nun wird eine
+			zweite Richtlinie <guimenu>Zugriff auf Task Manager unterbinden: deaktiviert</guimenu> erstellt an die OU
+			<emphasis>Technik</emphasis> gebunden.
+		  </para>
+
 		</section>
+
+		<section id="gpo:gposync">
+		  <title>Konfiguration von Gruppenrichtlinien in Umgebungen mit mehr als einem
+		  Samba-Domänencontroller</title>
+		  <para>
+			Eine Gruppenrichtlinie besteht aus zwei Teilen: Eine Datei mit Einstellungen, die auf
+			dem Windows-System umgesetzt werden sollen (gespeichert in der SYSVOL-Freigabe (siehe
+			<xref linkend="windows:sysvolshare"/>) und einer Referenz auf diese Datei im
+			LDAP-Verzeichnis (gespeichert im Group Policy Container des LDAP-Verzeichnisses).
+		  </para>
+
+		  <para>
+			Während die LDAP-Replikationen zwischen Domänencontrollern innerhalb weniger Sekunden
+			umgesetzt ist, wird die SYSVOL-Freigabe in der Grundstellung nur alle fünf Minuten
+			repliziert. Es ist zu beachten, dass die Anwendung von frisch konfigurierten
+			Gruppenrichtlinien in diesem Zeitpunkt fehlschlagen kann.
+		  </para>
+		</section>
+
+
 
 		<section id="gpo:adm">
 		  <title>Administrative Vorlagen (ADM)</title>
