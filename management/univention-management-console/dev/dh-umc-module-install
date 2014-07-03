@@ -165,11 +165,15 @@ def do_package( package, core ):
 . /usr/share/univention-lib/base.sh
 call_joinscript %s || true
 ''' % join_script)
+			f_postinst.write('invoke-rc.d univention-management-console-server reload || true\n')
 			f_postinst.write('''
 # generate a new hash for the UMC frontend in order to avoid caching problems
 . /usr/share/univention-lib/umc.sh
 umc_frontend_new_hash
 ''')
+
+		with open(os.path.join('debian', package + '.prerm.debhelper'), 'a') as f_prerm:
+			f_prerm.write('invoke-rc.d univention-management-console-server reload || true\n')
 
 if __name__ == '__main__':
 	# parse all options

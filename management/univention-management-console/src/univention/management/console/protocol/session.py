@@ -386,7 +386,10 @@ class Processor( signals.Provider ):
 		if 'modules/list' in msg.arguments:
 			moduleManager.load()
 			categoryManager.load()
-			self._reload_acls_and_permitted_commands()
+			if isinstance(msg.options, dict) and msg.options.get('reload'):
+				CORE.info('Reloading ACLs for existing session')
+				self._reload_acls_and_permitted_commands()
+
 			modules = []
 			for id, module in self.__command_list.items():
 				# check for translation

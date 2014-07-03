@@ -1,3 +1,10 @@
+univention-management-console (6.0.25-1) unstable; urgency=low
+
+  * Bug #34243: add parameter 'reload' to modules/list; revert dh-umc-install
+  	changes
+
+ -- Florian Best <best@univention.de>  Thu, 03 Jul 2014 14:55:33 +0200
+
 univention-management-console (6.0.24-14) unstable; urgency=low
 
   * use UMC_Error instead of UMC_ModuleInitError (Bug #34723)
