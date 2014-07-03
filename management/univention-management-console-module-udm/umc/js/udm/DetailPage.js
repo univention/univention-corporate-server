@@ -156,6 +156,8 @@ define([
 		objectNameSingular: '',
 		objectNamePlural: '',
 
+		objectFlags: null,
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
@@ -263,6 +265,7 @@ define([
 				this._receivedObjOrigData = vals;
 				this._form.setFormValues(vals);
 				this._getInitialFormValues();
+				this.set('objectFlags', vals.$flags$[0]);
 
 				// as soon as the policy widgets are rendered, update the policy values
 				policyDeferred.then(lang.hitch(this, function() {
@@ -625,6 +628,25 @@ define([
 			return layout;
 		},
 
+		_prepareIndividualProperties: function(properties) {
+			if (!this.ldapName) {
+				return;
+			}
+
+			var isSyncedObject = -1 !== this.objectFlags.indexOf('synced');
+			if (isSyncedObject) {
+				// evauluate AD connector flag
+				array.forEach(properties, lang.hitch(this, function(prop) {
+					if (prop.readonly_when_synced) {
+						var widget = this._form.getWidget(prop.id);
+						if (!widget.get('disabled')) {
+							widget.set('disabled', true);
+						}
+					}
+				}));
+			}
+		},
+
 		_prepareOptions: function(properties, layout, template, formBuiltDeferred) {
 			var isNewObject = !this.ldapName;
 
@@ -841,6 +863,10 @@ define([
 				if (!this.ldapName && !this._multiEdit) {
 					// search for given default values in the properties... these will be replaced
 				}
+			}));
+
+			loadedDeferred.then(lang.hitch(this, function() {
+				this._prepareIndividualProperties(properties);
 			}));
 
 			return all([loadedDeferred, formBuiltDeferred]);

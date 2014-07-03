@@ -15,3 +15,9 @@ Description[de]=Univention Directory Reports werden nach einiger Zeit (siehe 'di
 Description[en]=Univention Directory Reports are automatically removed through a Cron job after some retention time (see 'directory/reports/cleanup/age'). This variable configures the time in Cron syntax, see 'man 5 crontab'.
 Type=str
 Categories=management-umc
+
+[directory/manager/web/modules/.*/.*/show/adnotification]
+Description[de]=Mit dieser Variable kann pro Modul eingestellt werden, ob ein Warnhinweis beim Hinzufügen von Objekten im Active Directory-Modus angezeigt werden soll.
+Description[en]=This variable allows to configure for every module whether a warning should be displayed when creating objects if the system is in Active Directory mode.
+Type=str
+Categories=management-umc

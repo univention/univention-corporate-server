@@ -599,7 +599,7 @@ class UDM_Module( object ):
 
 	def get_properties( self, ldap_dn=None ):
 		# scan the layout to only find elements which are displayed
-		# special case: options, they are not explicitely specified in the module layout
+		# special case: options and the dn: They are not explicitely specified in the module layout
 		inLayout = set(('$options$', '$dn$'))
 		def _scanLayout(_layout):
 			if isinstance(_layout, list):
@@ -669,6 +669,7 @@ class UDM_Module( object ):
 				'identifies' : bool( prop.identifies ),
 				'threshold' : prop.threshold,
 				'nonempty_is_default' : ucr.is_true( value=str(prop.nonempty_is_default) ),
+				'readonly_when_synced': prop.readonly_when_synced,
 			}
 
 			# default value
@@ -770,6 +771,7 @@ class UDM_Module( object ):
 							'label' : obj[ module.identifies ],
 							'objectType': module.name,
 							'operations': module.operations,
+							'$flags$': obj.oldattr.get('univentionObjectFlag', []),
 							'title' : module.title,
 							'icon' : 'udm-%s' % module.name.replace( '/', '-' ),
 						})

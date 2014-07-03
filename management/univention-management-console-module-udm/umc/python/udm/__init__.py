@@ -455,6 +455,7 @@ class Instance( Base, ProgressMixin ):
 						if pol_mod and pol_mod.name:
 							props[ '$policies$' ][ pol_mod.name ] = policy
 					props[ '$labelObjectType$' ] = module.title;
+					props['$flags$'] = obj.oldattr.get('univentionObjectFlag', []),
 					result.append( props )
 				else:
 					MODULE.process( 'The LDAP object for the LDAP DN %s could not be found' % ldap_dn )
@@ -515,6 +516,7 @@ class Instance( Base, ProgressMixin ):
 				entry = {
 					'$dn$' : obj.dn,
 					'$childs$' : module.childs,
+					'$flags$': obj.oldattr.get('univentionObjectFlag', []),
 					'objectType' : module.name,
 					'labelObjectType' : module.subtitle,
 					'name' : module.obj_description( obj ) or udm_objects.description( obj ),
@@ -929,6 +931,7 @@ class Instance( Base, ProgressMixin ):
 							'path': ldap_dn2path( item.dn ),
 							'objectType': '%s/%s' % (base, typ),
 							'operations': module.operations,
+							'$flags$': item.oldattr.get('univentionObjectFlag', []),
 						})
 				except UDM_Error, e:
 					success = False
@@ -984,12 +987,15 @@ class Instance( Base, ProgressMixin ):
 					continue
 				if object_type == '$containers$' and not module.childs:
 					continue
-				entries.append( { '$dn$' : obj.dn,
-								  '$childs$' : module.childs,
-								  'objectType' : module.name,
-								  'labelObjectType' : module.subtitle,
-								  'name' : udm_objects.description(obj),
-								  'path' : ldap_dn2path( obj.dn, include_rdn = False ) } )
+				entries.append({
+					'$dn$': obj.dn,
+					'$childs$': module.childs,
+					'objectType': module.name,
+					'labelObjectType': module.subtitle,
+					'name': udm_objects.description(obj),
+					'path': ldap_dn2path(obj.dn, include_rdn = False),
+					'$flags$': obj.oldattr.get('univentionObjectFlag', []),
+				})
 
 			return entries
 

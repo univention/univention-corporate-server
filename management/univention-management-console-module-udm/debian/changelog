@@ -1,3 +1,12 @@
+univention-management-console-module-udm (4.0.97-24) unstable; urgency=low
+
+  * Bug #34092: show attributes as readonly in Active Directory
+  	Mode
+  * Bug #34093: Display a warning in Active Directory Mode before creating objects
+  	which are not synced back to AD.
+
+ -- Florian Best <best@univention.de>  Thu, 03 Jul 2014 08:53:23 +0200
+
 univention-management-console-module-udm (4.0.97-23) unstable; urgency=low
 
   * Bug #34200: Make display property for UDM grids configurable

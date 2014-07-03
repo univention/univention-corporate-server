@@ -996,6 +996,31 @@ msgstr "Benutzer"
 msgid "users"
 msgstr "Benutzer"
 
+#: umc/js/udm/wizards/FirstPageWizard.js:171
+msgid "No synchronisation to Active Directory"
+msgstr "Keine synchronisation zu Active Directory"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:178
+msgid ""
+"Objects created with UCS will not be synchronised to the Active Directory "
+"domain."
+msgstr "Objekte, die mit UCS erstellt wurden, werden nicht in die Active Directory-Domäne synchronisiert."
+
+#: umc/js/udm/wizards/FirstPageWizard.js:179
+msgid ""
+"This UCS system is configured to be a member of an Active Directory domain."
+msgstr "Dieses UCS-System ist als Mitglied einer Active Directory-Domäne konfiguriert."
+
+#: umc/js/udm/wizards/FirstPageWizard.js:180
+#, python-format
+msgid ""
+"To create new %s please use the corresponding Active Directory utilities."
+msgstr "Um neue %s anzulegen sollten die entsprechenden Active Directory-Hilfsmittel verwendet werden."
+
+#: umc/js/udm/wizards/FirstPageWizard.js:177
+msgid "<b>Caution!</b>"
+msgstr "<b>Achtung!</b>"
+
 #~ msgid "%s type"
 #~ msgstr "%styp"
 
