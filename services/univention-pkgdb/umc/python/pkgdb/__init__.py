@@ -212,9 +212,9 @@ class Instance(Base):
 
 		self._update_system_roles_and_versions()
 
-	def connection(func):
+	def db_connection(func):
 		def _connect(self, *args, **kwargs):
-			if self.dbConnection is None:
+			if self.connection is None:
 				self.connect()
 			else:
 				self.test_connection()
@@ -225,12 +225,12 @@ class Instance(Base):
 	def connect(self):
 		# Create a connection to the pkgdb
 		try:
-			self.dbConnection = updb.open_database_connection(self.ucr, pkgdbu=True)
+			self.connection = updb.open_database_connection(self.ucr, pkgdbu=True)
 		except pgdb.InternalError as ex:
 			MODULE.error('Could not establish connection to the PostgreSQL server: %s' % ex)
 			raise UMC_CommandError(_('Could not establish connection to the database.\n\n%s') % SERVER_NOT_RUNNING_MSG)
 		else:
-			self.cursor = self.dbConnection.cursor()
+			self.cursor = self.connection.cursor()
 
 	def test_connection(self):
 		# test if connection is still active
@@ -238,8 +238,8 @@ class Instance(Base):
 			self.cursor.execute('SELECT TRUE')
 		except pgdb.OperationalError as ex:
 			MODULE.error('Connection to the PostgreSQL server lost: %s' % ex)
-			self.dbConnection = None
-			raise UMC_CommandError(_('Connection to the dabase lost.\n\n%s') % SERVER_NOT_RUNNING_MSG)
+			self.connection = None
+			raise UMC_CommandError(_('Connection to the database lost.\n\n%s') % SERVER_NOT_RUNNING_MSG)
 
 	@simple_response
 	def reinit(self):
@@ -255,11 +255,11 @@ class Instance(Base):
 		PROPOSALS['sysversion_lower'] = PROPOSALS['sysversion']
 		PROPOSALS['sysversion_greater'] = PROPOSALS['sysversion']
 
-	@connection
+	@db_connection
 	def _get_system_roles(self):
 		return [role[0] for role in updb.sql_getall_systemroles(self.cursor)]
 			
-	@connection
+	@db_connection
 	def _get_system_versions(self):
 		return [version[0] for version in updb.sql_getall_systemversions(self.cursor)]
 
@@ -267,7 +267,7 @@ class Instance(Base):
 		page=ChoicesSanitizer(choices=PAGES, required=True),
 		key=ChoicesSanitizer(choices=CRITERIA_OPERATOR.keys())
 	)
-	@connection
+	@db_connection
 	@simple_response
 	def query(self, page, key, pattern=''):
 		""" Query to fill the grid. The structure of the corresponding grid
@@ -288,7 +288,7 @@ class Instance(Base):
 		return [_convert_to_grid(record, names) for record in result]
 
 	@sanitize(page=ChoicesSanitizer(choices=PAGES, required=True))
-	@connection
+	@db_connection
 	@simple_response
 	@log
 	def keys(self, page):
@@ -296,7 +296,7 @@ class Instance(Base):
 		return _combobox_data(CRITERIA[page])
 
 	@sanitize(page=ChoicesSanitizer(choices=PAGES, required=True))
-	@connection
+	@db_connection
 	@simple_response
 	@log
 	def proposals(self, page, key=''):
@@ -314,7 +314,7 @@ class Instance(Base):
 		return ''
 
 	@sanitize(page=ChoicesSanitizer(choices=PAGES, required=True))
-	@connection
+	@db_connection
 	@simple_response
 	@log
 	def columns(self, page, key=''):
