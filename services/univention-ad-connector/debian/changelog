@@ -1,4 +1,10 @@
-univention-ad-connector (8.0.17-8) unstable; urgency=medium
+univention-ad-connector (8.0.17-9) unstable; urgency=low
+
+  * Fixed python tracebacks from last merge (Bug #35090)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Jul 2014 09:03:00 +0200
+
+univention-ad-connector (8.0.17-8) unstable; urgency=low
 
   * Added missing graphics (Bug #35090)
 

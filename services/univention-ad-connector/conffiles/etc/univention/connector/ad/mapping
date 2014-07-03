@@ -113,7 +113,7 @@ if ignore_filter:
 						    ],
 
 			post_ucs_modify_functions=[ @!@
-if baseConfig.is_true('ad/member', False'):
+if baseConfig.is_true('ad/member', False):
 	print '						univention.connector.ad.password.password_sync_kinit,'
 else:
 	print '						univention.connector.ad.password.password_sync,'

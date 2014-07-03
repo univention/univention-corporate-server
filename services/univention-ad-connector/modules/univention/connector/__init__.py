@@ -51,7 +51,10 @@ univention.admin.modules.update()
 # update choices-lists which are defined in LDAP
 univention.admin.syntax.update_choices()
 
-univention.admin.handlers.disable_ad_restrictions(disable=False)
+try:
+	univention.admin.handlers.disable_ad_restrictions(disable=False)
+except AttributeError:
+	ud.debug(ud.LDAP, ud.INFO, 'univention.admin.handlers.disable_ad_restrictions is not available')
 
 
 # util functions defined during mapping
