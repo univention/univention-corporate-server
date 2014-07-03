@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: univention-ad-connector
+fix: 8.0.17-10.388.201407031005
+version: [2]
+desc: |
+  This update fixes the following issues:
+  * Support for the ad/member mode has been added.
+  * In some cases a removed group membership was not synchronized
+    from OpenLDAP to Samba 4 in write mode.
+bug: [35091,35234]
