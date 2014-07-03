@@ -557,54 +557,28 @@ def install_umcicons(dn, attrs):
 	for object_data in attrs.get('univentionUMCIcon', []):
 		module_name = attrs.get('cn')[0]
 		(mime_type, compression_mime_type, subdir) = imagecategory_of_buffer(object_data)
-		
 		targetdir = os.path.join(UMC_ICON_BASEDIR, subdir)
-		filename = "udm-%s" % module_name.replace('/', '-')
-		filename_suffix = default_filename_suffix_for_mime_type(mime_type, compression_mime_type)
-		iconpath = os.path.join(targetdir, '%s%s' % (filename, filename_suffix))
 
-		if os.path.exists(targetdir):
-			ud.debug(ud.LISTENER, ud.INFO, '%s: Creating UMC icon %s' % (name, iconpath))
-			with open(iconpath, 'w') as f:
-				f.write(object_data)
-		else:
-			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error creating UMC icon %s. Parent directory does not exist.' % (name, iconpath))
-		# create corresponding png icons if image is svg
-		if subdir == 'scalable':
-			ud.debug(ud.LISTENER, ud.INFO, '%s: Creating corresponding PNG files' % name)
-			for geometry, density in (('16', '4.43'), ('50', '13.84')):
-				resolution = '%sx%s' % (geometry, geometry)
-				pngPath = os.path.join(UMC_ICON_BASEDIR, resolution, '%s.png' % filename)
-				ud.debug(ud.LISTENER, ud.INFO, '%s: Creating corresponding PNG file %s' % (name, pngPath))
-				s = subprocess.Popen(['convert', '-resize', resolution, '-density', density, iconpath, pngPath], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-				s.wait()
-				if s.returncode != 0:
-					ud.debug(ud.LISTENER, ud.ERROR, '%s: Error converting SVGZ ("convert" reported: %r)' % (name, s.stderr.read()))
-				
+		filename_suffix = default_filename_suffix_for_mime_type(mime_type, compression_mime_type)
+		filename = os.path.join(targetdir, "udm-%s%s" % (module_name.replace('/', '-'), filename_suffix))
+
+		if not os.path.exists(targetdir):
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing %s. Parent directory does not exist.' % (name, filename))
+			continue
+		with open(filename, 'w') as f:
+			f.write(object_data)
 
 def remove_umcicons(dn, attrs):
 	for object_data in attrs.get('univentionUMCIcon', []):
 		module_name = attrs.get('cn')[0]
 		(mime_type, compression_mime_type, subdir) = imagecategory_of_buffer(object_data)
-		
 		targetdir = os.path.join(UMC_ICON_BASEDIR, subdir)
-		filename = "udm-%s" % module_name.replace('/', '-')
+
 		filename_suffix = default_filename_suffix_for_mime_type(mime_type, compression_mime_type)
-		iconpath = os.path.join(targetdir, '%s%s' % (filename, filename_suffix))
+		filename = os.path.join(targetdir, "udm-%s%s" % (module_name.replace('/', '-'), filename_suffix))
 
-		ud.debug(ud.LISTENER, ud.INFO, '%s: Removing UMC icon %s.' % (name, iconpath))
-		if os.path.exists(iconpath):
-			os.unlink(iconpath)
+		ud.debug(ud.LISTENER, ud.INFO, '%s: Removing %s.' % (name, filename))
+		if os.path.exists(filename):
+			os.unlink(filename)
 		else:
-			ud.debug(ud.LISTENER, ud.INFO, '%s: Warning: UMC icon %s does not exist.' % (name, iconpath))
-
-		# remove corresponding png icons if image is svg
-		if subdir == 'scalable':
-			for resolution in ('16x16', '50x50'):
-				pngPath = os.path.join(UMC_ICON_BASEDIR, resolution, '%s.png' % filename)
-				if os.path.exists(pngPath):
-					ud.debug(ud.LISTENER, ud.INFO, '%s: Removing corresponding PNG file %s' % (name, pngPath))
-					os.unlink(pngPath)
-				else:
-					ud.debug(ud.LISTENER, ud.WARN, '%s: Warning: corresponding PNG file %s does not exist.' % (name, pngPath))
-			
+			ud.debug(ud.LISTENER, ud.INFO, '%s: Warning: %s does not exist.' % (name, filename))

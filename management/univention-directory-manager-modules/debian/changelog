@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.2-1) unstable; urgency=low
+
+  * revert svn r51404 (Bug #35062)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 01 Jul 2014 14:42:06 +0200
+
 univention-directory-manager-modules (10.0.1-2) unstable; urgency=low
 
   * Bug #34092: show attributes as readonly when UCS is part of an AD
