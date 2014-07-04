@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.17-11) unstable; urgency=low
+
+  * Bug #35122: Automatically update the UVMM grid view in an defined interval
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 04 Jul 2014 12:51:12 +0200
+
 univention-virtual-machine-manager-daemon (3.0.17-10) unstable; urgency=low
 
   * Bug #35122: Automatically update the UVMM grid when clicking on the tree

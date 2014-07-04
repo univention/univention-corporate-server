@@ -59,6 +59,7 @@ define([
 	"umc/widgets/ComboBox",
 	"umc/widgets/TextBox",
 	"umc/widgets/Button",
+	"umc/modules/uvmm/GridUpdater",
 	"umc/modules/uvmm/TreeModel",
 	"umc/modules/uvmm/DomainPage",
 	"umc/modules/uvmm/DomainWizard",
@@ -66,7 +67,7 @@ define([
 	"umc/i18n!umc/modules/uvmm"
 ], function(declare, lang, array, string, query, Deferred, on, entities, Menu, MenuItem, ContentPane, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, ExpandingTitlePane, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
-	CheckBox, ComboBox, TextBox, Button, TreeModel, DomainPage, DomainWizard, types, _) {
+	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, types, _) {
 
 	var isRunning = function(item) {
 		return (item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
@@ -104,6 +105,9 @@ define([
 
 		_progressBar: null,
 		_progressContainer: null,
+
+		// internal flag to indicate that GridUpdater should show a notification
+		_itemCountChangedNoteShowed: false,
 
 		uninitialize: function() {
 			this.inherited(arguments);
@@ -198,6 +202,20 @@ define([
 				this._grid.on('FilterDone', lang.hitch(this, '_selectInputText')); // FIXME: ?
 
 				this._grid._grid.on('StyleRow', lang.hitch(this, '_adjustIconColumns'));
+
+				// setup autoUpdater
+				this._gridUpdater = new GridUpdater({
+					grid: this._grid,
+					interval: parseInt(ucr['uvmm/umc/autoupdate/interval'], 10),
+					onItemCountChanged: lang.hitch(this, function() {
+						if (!this._itemCountChangedNoteShowed) {
+							this.addNotification(_('The number of virtual machines changed. To update the view, click on "Search".'));
+							this._itemCountChangedNoteShowed = true;
+						}
+					})
+				});
+				this.own(this._gridUpdater);
+
 			} ) );
 			// generate the navigation tree
 			var model = new TreeModel({
@@ -1150,6 +1168,7 @@ define([
 			}).then(lang.hitch(this, function(response) {
 				this._tree.model.changes(response.result);
 			}));
+			this._itemCountChangedNoteShowed = false;
 		},
 
 		updateProgress: function(i, n) {
