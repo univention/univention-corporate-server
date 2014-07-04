@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-virtual-machine-manager-daemon
-fix: 3.0.17-10.496.201407021649
+fix: 3.0.17-11.497.201407041252
 version: [2]
 desc: |
   This update fixes the following issue:
@@ -12,4 +12,6 @@ desc: |
     uvmm/umc/autosearch now only prevents the very first search on startup;
     manually clicking on the tree on the left refreshes the list even when
     autosearch is disabled.
+    Additionally, the grid is updated non-invasively at a configurable
+    interval (new UCR variable uvmm/umc/autoupdate/interval).
 bug: [35122]
