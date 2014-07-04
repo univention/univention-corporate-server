@@ -117,8 +117,7 @@ if not (configRegistry.has_key('%s/ad/ldap/host' % CONFIGBASENAME)
 	and configRegistry.has_key('%s/ad/ldap/port' % CONFIGBASENAME)
 	and configRegistry.has_key('%s/ad/ldap/binddn' % CONFIGBASENAME)
 	and configRegistry.has_key('%s/ad/ldap/bindpw' % CONFIGBASENAME)
-	and configRegistry.has_key('%s/ad/ldap/base' % CONFIGBASENAME)
-	and (configRegistry.has_key('%s/ad/ldap/certificate' % CONFIGBASENAME) or (configRegistry.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and configRegistry['%s/ad/ldap/ssl' % CONFIGBASENAME] == 'no'))):
+	and configRegistry.has_key('%s/ad/ldap/base' % CONFIGBASENAME)):
         print ""
 	print "This is univention-adsearch"
 	print ""
@@ -127,7 +126,7 @@ if not (configRegistry.has_key('%s/ad/ldap/host' % CONFIGBASENAME)
 	print "The Settings are not complete, please check the following univention-config-registry Values:"
 	print "%s/ad/ldap/host, %s/ad/ldap/port," % (CONFIGBASENAME, CONFIGBASENAME)
 	print "%s/ad/ldap/binddn, %s/ad/ldap/bindpw," % (CONFIGBASENAME, CONFIGBASENAME)
-	print "%s/ad/ldap/base, %s/ad/ldap/certificate" % (CONFIGBASENAME, CONFIGBASENAME)
+	print "%s/ad/ldap/base" % (CONFIGBASENAME)
 	sys.exit(1)
 	
 
@@ -151,8 +150,10 @@ ca_file = configRegistry['%s/ad/ldap/certificate' % CONFIGBASENAME]
 start_tls = 2
 if configRegistry.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and configRegistry['%s/ad/ldap/ssl' % CONFIGBASENAME] == "no":
 	start_tls = 0
-else:
+elif ca_file:
 	ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, ca_file )
+else:
+	ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
 lo = ldap.initialize(ldapuri)
 

@@ -130,29 +130,28 @@ def connect():
 		f.close()
 		sys.exit(1)
 
-	if not baseConfig.has_key('%s/ad/ldap/certificate' % CONFIGBASENAME) and not (baseConfig.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and baseConfig['%s/ad/ldap/ssl' % CONFIGBASENAME] == 'no') :
-		print '%s/ad/ldap/certificate not set' % CONFIGBASENAME
-		f.close()
-		sys.exit(1)
-
+	ca_file = baseConfig.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
 	if baseConfig.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True) or baseConfig.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False):
-		# create a new CAcert file, which contains the UCS CA and the AD CA,
-		# see Bug #17768 for details
-		#  https://forge.univention.org/bugzilla/show_bug.cgi?id=17768
-		new_ca_filename = '/var/cache/univention-ad-connector/CAcert-%s.pem' % CONFIGBASENAME
-		new_ca = open(new_ca_filename, 'w')
+		if ca_file:
+			# create a new CAcert file, which contains the UCS CA and the AD CA,
+			# see Bug #17768 for details
+			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=17768
+			new_ca_filename = '/var/cache/univention-ad-connector/CAcert-%s.pem' % CONFIGBASENAME
+			new_ca = open(new_ca_filename, 'w')
 
-		ca = open('/etc/univention/ssl/ucsCA/CAcert.pem', 'r')
-		new_ca.write(string.join(ca.readlines(),''))
-		ca.close()
+			ca = open('/etc/univention/ssl/ucsCA/CAcert.pem', 'r')
+			new_ca.write(string.join(ca.readlines(),''))
+			ca.close()
 
-		ca = open(baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME])
-		new_ca.write(string.join(ca.readlines(),''))
-		ca.close()
+			ca = open(baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME])
+			new_ca.write(string.join(ca.readlines(),''))
+			ca.close()
 
-		new_ca.close()
-		
-		ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, new_ca_filename )
+			new_ca.close()
+			
+			ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, new_ca_filename )
+		else:
+			ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 	
 
 	if not baseConfig.has_key('%s/ad/listener/dir' % CONFIGBASENAME):

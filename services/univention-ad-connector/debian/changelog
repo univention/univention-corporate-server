@@ -1,3 +1,10 @@
+univention-ad-connector (8.0.17-12) unstable; urgency=low
+
+  * Make a secure LDAP connection possible without having the root
+    certificate from AD (Bug #35253)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Jul 2014 06:59:33 +0200
+
 univention-ad-connector (8.0.17-11) unstable; urgency=low
 
   * Added missing graphics (Bug #35090)
