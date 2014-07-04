@@ -581,7 +581,7 @@ ServerName printserver.example.com
 		</section>
 	</chapter>
 
-    <chapter>
+    <chapter id="extdom:ssl">
 	  <title>Advanced SSL certificate handling</title>
 
 	  <section>
@@ -598,7 +598,7 @@ ServerName printserver.example.com
 		  an external system.
 		</para>
 
-        <section>
+        <section id="extdom:ssl:storage">
             <title>Storage of the certificates</title>
 			<para>
 			  The certificates are stored in the directory <filename class="directory">/etc/univention/ssl/</filename>
@@ -643,7 +643,7 @@ ServerName printserver.example.com
 			</variablelist>
 		</section>
 
-        <section>
+        <section id="extdom:ssl:list">
             <title>Displaying the certificates</title>
 			<para>
 			  The following command is used to display a list of all the available, valid certificates:
@@ -673,7 +673,7 @@ univention-certificate check -name fullyqualifiedhostname
 			</para>
 		</section>
 
-        <section>
+        <section id="extdom:ssl:revoke">
             <title>Revoking a certificate</title>
 			<para>
 			  The following command is used to revoke a certificate:
@@ -687,7 +687,7 @@ univention-certificate revoke -name fullyqualifiedhostname
 			</para>
 		</section>
 
-        <section>
+        <section id="extdom:ssl:create">
             <title>Creating a certificate</title>
 			<para>
 			  The following command can be used to create a new certificate:
@@ -704,7 +704,7 @@ univention-certificate new -name fullyqualifiedhostname
 		</section>
 	  </section>
 
-	  <section>
+	  <section id="extdom:ssl:sign">
 		<title>Signing of certificate signing requests by the UCS certificate authority</title>
         <para>
 		  A certificate signing request (CSR) is a request submitted to a certificate authority (CA)
