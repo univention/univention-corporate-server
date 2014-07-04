@@ -287,8 +287,9 @@
 							A (more exhaustive) description that will be displayed when
 							viewing the details of the application. Since UCS 3.2 this
 							description needs to be in HTML (this also means that characters
-							like "&amp;" need to be escaped). Other variables are escaped if
-							not stated otherwise.
+							like "&amp;" need to be escaped to "&amp;amp;"). Other variables
+							are escaped automatically if not stated otherwise (meaning that
+							"&amp;" may be used).
 						</simpara>
 					</listitem>
 				</varlistentry>
