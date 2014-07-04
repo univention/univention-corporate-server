@@ -64,12 +64,12 @@ class TestLicenseClient(HTMLParser):
                                "kundeEmail": "umc-test@univention.de",
                                "BaseDN": "",
                                "EndDate": "",
-                               "Servers": 5,
+                               "Servers": 50,
                                "Support": 0,
                                "PremiumSupport": 0,
-                               "Users": 5,
-                               "ManagedClients": 5,
-                               "CorporateClients": 5,
+                               "Users": 50,
+                               "ManagedClients": 50,
+                               "CorporateClients": 50,
                                "VirtualDesktopUsers": 0,
                                "VirtualDesktopClients": 0,
                                "Type": "UCS"}
@@ -328,16 +328,16 @@ class TestLicenseClient(HTMLParser):
                                       "(default=ValidTest.license)")
         self.Parser.add_argument("-s", "--Servers", type=int,
                                  help="Max amount of servers allowed with "
-                                      "the license (default=5)")
+                                      "the license (default=50)")
         self.Parser.add_argument("-u", "--Users", type=int,
                                  help="Max amount of users allowed with "
-                                      "the license (default=5)")
+                                      "the license (default=50)")
         self.Parser.add_argument("-mc", "--ManagedClients", type=int,
                                  help="Max amount of managed clients "
-                                      "allowed with the license (default=5)")
+                                      "allowed with the license (default=50)")
         self.Parser.add_argument("-cc", "--CorporateClients", type=int,
                                  help="Max amount of corporate clients "
-                                      "allowed with the license (default=5)")
+                                      "allowed with the license (default=50)")
         self.Parser.add_argument("-ll", "--LogLevel", help="Logging level: "
                                  "INFO|DEBUG|ERROR|CRITICAL (default=INFO)")
 
