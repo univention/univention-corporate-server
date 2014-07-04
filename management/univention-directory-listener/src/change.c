@@ -298,12 +298,11 @@ int change_delete_dn(NotifierID id, char *dn, char command)
 	signals_block();
 	if (handlers_delete(dn, &entry, command) == 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "deleted from cache: %s", dn);
-		cache_delete_entry_lower_upper(id, dn);
 	} else {
 		/* update information which modules failed and are still to be run */
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "at least one delete handler failed");
-		cache_update_entry_lower(id, dn, &entry);
 	}
+	cache_delete_entry_lower_upper(id, dn);
 	signals_unblock();
 	cache_free_entry(NULL, &entry);
 
@@ -745,23 +744,23 @@ int change_update_dn(struct transaction *trans) {
 		snprintf(filter, sizeof(filter), "(entryUUID=%s)", uuid);
 		trans->cur.uuid = strdup(uuid);
 	} else {
+retry_dn:
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "updating by DN %s", trans->cur.notify.dn);
 		base = trans->cur.notify.dn;
 		scope = LDAP_SCOPE_BASE;
 		snprintf(filter, sizeof(filter), "(objectClass=*)");
 	}
 
+	bool delete = false;
 	rv = ldap_search_ext_s(trans->lp->ld, base, scope, filter, attrs, attrsonly, serverctrls, clientctrls, &timeout, sizelimit, &res);
 	if (rv == LDAP_NO_SUCH_OBJECT) {
-		// FIXME: trans->cur.notify.command = 'd' // to overwrite 'r' without 'a'
-		rv = change_delete_dn(trans->cur.notify.id, trans->cur.notify.dn, trans->cur.notify.command);
+		delete = true;
 	} else if (rv == LDAP_SUCCESS) {
 		if ((trans->ldap = ldap_first_entry(trans->lp->ld, res)) == NULL) {
 			/* entry exists (since we didn't get NO_SUCH_OBJECT),
 			* but was probably excluded through ACLs which makes it
 			* non-existent for us */
-			// FIXME: trans->cur.notify.command = 'd' // to overwrite 'r' without 'a'
-			rv = change_delete_dn(trans->cur.notify.id, trans->cur.notify.dn, trans->cur.notify.command);
+			delete = true;
 		} else {
 			rv = change_update_cache(trans);
 		}
@@ -771,6 +770,14 @@ int change_update_dn(struct transaction *trans) {
 		_free_transaction_op(&trans->cur);
 	}
 	ldap_msgfree(res);
+	if (delete) {
+		// FIXME: trans->cur.notify.command = 'd' // to overwrite 'r' without 'a'
+		rv = change_delete_dn(trans->cur.notify.id, trans->cur.notify.dn, trans->cur.notify.command);
+		if (uuid) {
+			uuid = NULL;
+			goto retry_dn;
+		}
+	}
 
 out:
 	return rv;
