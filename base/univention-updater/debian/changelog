@@ -1,8 +1,8 @@
-univention-updater (9.0.41-3) unstable; urgency=medium
+univention-updater (9.0.41-4) unstable; urgency=medium
 
   * Transfer UCS component installation status in APT user agent (Bug #33807)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 04 Jul 2014 14:56:56 +0200
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 04 Jul 2014 15:22:37 +0200
 
 univention-updater (9.0.41-2) unstable; urgency=low
 

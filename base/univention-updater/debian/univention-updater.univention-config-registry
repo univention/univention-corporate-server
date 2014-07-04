@@ -68,3 +68,4 @@ Variables: version/patchlevel
 Variables: version/erratalevel
 Variables: uuid/system
 Variables: uuid/license
+Variables: repository/app_center/installed
