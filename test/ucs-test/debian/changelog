@@ -1,3 +1,11 @@
+ucs-test (4.0.166-47) unstable; urgency=low
+
+  * univention/testing/license_client.py: a tool to issue licenses for
+    testing environments (Bug #35205)
+  * debian/control: added 'python-argparse' to 'ucs-test-framework'
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 04 Jul 2014 11:34:52 +0200
+
 ucs-test (4.0.166-46) unstable; urgency=low
 
   * 5*_*connector: added more connector group membership tests
