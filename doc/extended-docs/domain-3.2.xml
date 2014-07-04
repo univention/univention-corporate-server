@@ -611,9 +611,9 @@ ServerName printserver.example.com
 				<varlistentry>
 					<term><filename>req.pem</filename></term>
 					<listitem>
-						<para>
+						<simpara>
 							This file contains the original request with which the certificate was created.
-						</para>
+						</simpara>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
