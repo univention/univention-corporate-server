@@ -953,7 +953,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 	<section id="uvmm::profile">
 		<title>Profiles</title>
 		<para>
-			Profiles are used in <acronym>UVMM</acronym> to store initial settings when creating new virtual machines.
+			Profiles are used to store initial settings when creating new virtual machines.
 			Amongst others this includes the following settings:
 		</para>
 		<itemizedlist>
@@ -962,7 +962,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			<listitem><simpara>default RAM size</simpara></listitem>
 			<listitem><simpara>default size for new disk images</simpara></listitem>
 			<listitem><simpara>default boot order for fully-virtualized virtual machines</simpara></listitem>
-			<listitem><simpara>use of para-virtual device drivers</simpara></listitem>
+			<listitem><simpara>use of paravirtual device drivers</simpara></listitem>
 			<listitem><simpara>default settings for direct access per <acronym>VNC</acronym></simpara></listitem>
 			<listitem><simpara>network bridge name</simpara></listitem>
 		</itemizedlist>
@@ -975,7 +975,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			<title>Changing default network</title>
 			<para>
 				The name of the bridge used as the default network interface is stored in <acronym>UVMM</acronym> profiles.
-				If the default interface <filename class="device">eth0</filename> is changed, they name should be updated.
+				If the default interface <filename class="device">eth0</filename> is changed, the name should be updated as well.
 				The following command updates all profiles currently using interface <filename class="device">eth0</filename> to use the bridge <filename class="device">br0</filename>:
 			</para>
 			<programlisting language="sh">
