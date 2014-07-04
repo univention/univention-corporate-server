@@ -1,3 +1,10 @@
+ucs-ec2-tools (0.1.20-2) unstable; urgency=low
+
+  * examples/jenkins/autotest-*.cfg: copy the ~/ec2/license/license.secret
+    file to access the license shop from autotest envs (Bug #35205)
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 04 Jul 2014 13:00:56 +0200
+
 ucs-ec2-tools (0.1.20-1) unstable; urgency=low
 
   * Increase EC2 connection timeout (Bug #34866)
