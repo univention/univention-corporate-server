@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-updater
-fix: 9.0.41-2.1257.201406251547
+fix: 9.0.41-4.1260.201407041523
 version: [2]
 desc: |
   This errata update fixes serveral issues:
@@ -11,4 +11,5 @@ desc: |
   * univention-add-app no longer registers a link in the UCS startsite and
     removes the component again if called with --master (just like the App
     Center module)
-bug: [34809, 35022]
+  Additionally, the UCS component installation status is now transferred via apt-get user agent.
+bug: [34809, 35022, 33807]
