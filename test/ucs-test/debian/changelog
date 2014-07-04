@@ -1,3 +1,10 @@
+ucs-test (4.0.166-48) unstable; urgency=low
+
+  * udm.py#stop_cli_server(): catch psutil.NoSuchProcess instead of
+    psutil.error.NoSuchProcess (Bug #35220)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 04 Jul 2014 12:55:14 +0200
+
 ucs-test (4.0.166-47) unstable; urgency=low
 
   * univention/testing/license_client.py: a tool to issue licenses for
