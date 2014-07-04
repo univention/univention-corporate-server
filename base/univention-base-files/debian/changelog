@@ -1,3 +1,10 @@
+univention-base-files (4.0.0-3) unstable; urgency=low
+
+  * Removed console-tools from dependency list otherwise the initial
+    debootstrap fails (Bug #35138)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 04 Jul 2014 15:30:59 +0200
+
 univention-base-files (4.0.0-2) unstable; urgency=low
 
   * Set package priority to important (Bug #35138)

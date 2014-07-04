@@ -23,7 +23,6 @@ Depends: ${misc:Depends},
  lsof,
  console-data,
  console-common,
- console-tools,
  bzip2,
  psmisc,
  lsb-base
