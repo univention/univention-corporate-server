@@ -399,7 +399,7 @@ class UCSTestUDM(object):
 					if len(proc.cmdline) >= 2 and proc.cmdline[0].startswith('/usr/bin/python') and proc.cmdline[1] == self.PATH_UDM_CLI_SERVER:
 						print 'sending signal %s to process %s (%r)' % (signal, proc.pid, proc.cmdline,)
 						os.kill(proc.pid, signal)
-			except psutil.NoSuchProcess:
+			except psutil.NoSuchProcess, IOError:
 				# process not running anymore
 				print 'process already terminated'
 

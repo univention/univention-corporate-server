@@ -1,3 +1,9 @@
+ucs-test (4.0.166-50) unstable; urgency=low
+
+  * udm.py#stop_cli_server(): also catch IOError (Bug #35220)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 07 Jul 2014 13:39:12 +0200
+
 ucs-test (4.0.166-49) unstable; urgency=low
 
   * 52_s4connector/02*concurrent_changes*: Added more concurrent changes
