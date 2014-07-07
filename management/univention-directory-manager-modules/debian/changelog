@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.76-12) unstable; urgency=low
+
+  * Bug #34902: Set more attributes to readonly when synced; merge svn 48069
+
+ -- Florian Best <best@univention.de>  Mon, 07 Jul 2014 13:07:47 +0200
+
 univention-directory-manager-modules (9.0.76-11) unstable; urgency=low
 
   * revert svn r51405 (Bug #35062)

@@ -112,6 +112,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
+			readonly_when_synced=1,
 			options=['samba']
 		),
 	'sambaGroupType': univention.admin.property(
@@ -171,6 +172,7 @@ property_descriptions={
 			may_change=1,
 			dontsearch=1,
 			identifies=0,
+			readonly_when_synced=1,
 		),
 	'hosts': univention.admin.property(
 			short_description=_('Hosts'),
@@ -183,6 +185,7 @@ property_descriptions={
 			may_change=1,
 			dontsearch=1,
 			identifies=0,
+			readonly_when_synced=1,
 		),
 	'mailAddress': univention.admin.property(
 			short_description=_('Mail address'),
@@ -207,6 +210,7 @@ property_descriptions={
 			may_change=1,
 			dontsearch=1,
 			identifies=0,
+			readonly_when_synced=1,
 		),
 	'nestedGroup': univention.admin.property(
 			short_description=_('Groups'),
@@ -218,6 +222,7 @@ property_descriptions={
 			may_change=1,
 			dontsearch=1,
 			identifies=0,
+			readonly_when_synced=1,
 		),
 	'allowedEmailUsers': univention.admin.property(
 			short_description=_( 'Users that are allowed to send e-mails to the group' ),

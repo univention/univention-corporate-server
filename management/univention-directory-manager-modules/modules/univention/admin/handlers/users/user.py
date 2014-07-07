@@ -155,6 +155,7 @@ property_descriptions={
 			identifies=0,
 			editable=0,
 			dontsearch=1,
+			readonly_when_synced=1,
 			options=['posix','samba']
 		),
 	'firstname': univention.admin.property(
@@ -213,6 +214,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
+			readonly_when_synced=1,
 		),
 	'sambaPrivileges': univention.admin.property(
 			short_description = _( 'Samba privileges' ),
@@ -269,6 +271,7 @@ property_descriptions={
 			may_change=1,
 			dontsearch=1,
 			identifies=0,
+			readonly_when_synced=1,
 		),
 	'pwdChangeNextLogin': univention.admin.property(
 			short_description=_('Change password on next login'),
@@ -280,6 +283,7 @@ property_descriptions={
 			may_change=1,
 			dontsearch=1,
 			identifies=0,
+			readonly_when_synced=1,
 		),
 	'disabled': univention.admin.property(
 			short_description=_('Account deactivation'),
@@ -313,6 +317,7 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 			dontsearch=1
+			readonly_when_synced=1,
 		),
 	'street': univention.admin.property(
 			short_description=_('Street'),
@@ -547,6 +552,7 @@ property_descriptions={
 			may_change=1,
 			dontsearch=1,
 			identifies=0,
+			readonly_when_synced=1,
 			options=['samba']
 		),
 	'groups': univention.admin.property(
@@ -559,6 +565,7 @@ property_descriptions={
 			dontsearch=1,
 			may_change=1,
 			identifies=0,
+			readonly_when_synced=1,
 		),
 	'primaryGroup': univention.admin.property(
 			short_description=_('Primary group'),
@@ -570,6 +577,7 @@ property_descriptions={
 			dontsearch=1,
 			may_change=1,
 			identifies=0,
+			readonly_when_synced=1,
 		),
 	'mailHomeServer': univention.admin.property(
 			short_description=_('Mail home server'),
@@ -606,6 +614,7 @@ property_descriptions={
 			dontsearch=0,
 			may_change=1,
 			identifies=0,
+			readonly_when_synced=1,
 		),
 	'overridePWHistory': univention.admin.property(
 			short_description=_('Override password history'),
@@ -617,6 +626,7 @@ property_descriptions={
 			dontsearch=1,
 			may_change=1,
 			identifies=0,
+			readonly_when_synced=1,
 		),
 	'overridePWLength': univention.admin.property(
 			short_description=_('Override password check'),
@@ -628,6 +638,7 @@ property_descriptions={
 			dontsearch=1,
 			may_change=1,
 			identifies=0,
+			readonly_when_synced=1,
 		),
 	'homeShare': univention.admin.property(
 			short_description=_('Home share'),
