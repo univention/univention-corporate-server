@@ -211,6 +211,8 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 			break
 		else
 			echo -n "."
+			# restart bind9 every 200 seconds
+			expr $count % 100 >/dev/null || /etc/init.d/bind9 restart
 			# restart samba4 every 200 seconds
 			expr $count % 200 >/dev/null || /etc/init.d/samba4 restart
 			sleep 1
