@@ -316,7 +316,7 @@ property_descriptions={
 			required=1,
 			may_change=1,
 			identifies=0,
-			dontsearch=1
+			dontsearch=1,
 			readonly_when_synced=1,
 		),
 	'street': univention.admin.property(
