@@ -1,6 +1,10 @@
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # UCS test
+"""
+A tool to obtain licenses for the UCS test environments.
+"""
 #
 # Copyright 2014 Univention GmbH
 #
@@ -29,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from sys import exit
+from sys import modules, exit
 from os import path
 import logging
 
@@ -176,15 +180,15 @@ class TestLicenseClient(HTMLParser):
             exit(1)
         return response
 
-    def make_get_request(self, url, body, headers):
+    def make_get_request(self, url, headers):
         """
-        Makes a GET request with the given 'url', 'body', 'headers' and
+        Makes a GET request with the given 'url', 'headers' and
         returns the response
         """
-        self.log.debug("In 'make_get_request' method: url='%s', body='%s', "
-                       "headers='%s'" % (url, body, headers))
+        self.log.debug("In 'make_get_request' method: url='%s', "
+                       "headers='%s'" % (url, headers))
         try:
-            self.Connection.request("GET", url, body, headers)
+            self.Connection.request("GET", url, headers=headers)
             response = self.Connection.getresponse()
         except HTTPException as exc:
             self.log.exception("An HTTP Exception occured while making '%s' "
@@ -254,7 +258,6 @@ class TestLicenseClient(HTMLParser):
                    "Accept": "text/plain"}
         response = self.make_get_request('/shop/testing/' +
                                          self.link_to_license,
-                                         {},
                                          headers)
         self.log.debug("The response status is '%s', reason is '%s', "
                        "headers are '%s'" % (response.status, response.reason,
@@ -282,7 +285,7 @@ class TestLicenseClient(HTMLParser):
                                % exc)
             exit(1)
 
-    def update_with_parsed_data(self, args):
+    def update_with_parsed_args(self, args):
         """
         Updates the loglevel and license filename settings if given
         among the parsed arguments. Merges parsed data with default
@@ -344,7 +347,7 @@ class TestLicenseClient(HTMLParser):
         args = self.Parser.parse_args()
         args = vars(args)  # converting Namespace to a dictionary
         self.log.debug("Parsed arguments are: '%s'" % args)
-        self.update_with_parsed_data(args)
+        self.update_with_parsed_args(args)
 
     def main(self, base_dn="", end_date="", server_url="", license_file=""):
         """
@@ -383,7 +386,6 @@ class TestLicenseClient(HTMLParser):
 
 
 if __name__ == '__main__':
-    Client = TestLicenseClient(ArgumentParser(description="A tool to obtain "
-                                              "licenses for the UCS test "
-                                              "environment"))
+    description = modules[__name__].__doc__
+    Client = TestLicenseClient(ArgumentParser(description=description))
     Client.main()
