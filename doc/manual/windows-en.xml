@@ -1550,7 +1550,9 @@ The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are e
 	<title>Introduction</title>
 	<para>
 	  UCS supports the takeover of user, group and computer objects as well as Group Policy Objects
-	  (GPOs) from a Microsoft Active Directory (AD) domain. The takeover is an interactive process
+	  (GPOs) from a Microsoft Active Directory (AD) domain. 
+	  <!-- Die Windows-Clients müssen dabei nicht erneut der Domäne beitreten. -->
+	  The takeover is an interactive process
 	  consisting of three distinct phases:
 
 	  <itemizedlist>
@@ -1590,12 +1592,13 @@ The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are e
 	  </itemizedlist>
 	</para>
 
-	<para>
-	  The <command>univention-ad-takeover</command> script is installed as a part of the package
-	  <package>univention-s4-connector</package> and needs to be run as the
-	  <emphasis>root</emphasis> user on the domain controller that runs the Univention S4 Connector
-	  (usually the master domain controller). 
-	</para>
+	<!-- <para> -->
+	<!--   Für die Migration muss die Applikation <emphasis>Active Directory Takeover</emphasis> aus dem -->
+	<!--   Univention App Center installiert werden. Sie muss auf dem System installiert werden, auf dem -->
+	<!--   der Univention S4 Connector läuft (siehe <xref linkend="windows:s4connector"/>, normalerweise -->
+	<!--   der &ucsMaster;). -->
+	<!-- </para> -->
+
   </section>
 
   <section id="windows:adtakeover:preparations">
@@ -1645,8 +1648,8 @@ net user administrator PASSWORD
 
   </section>
 
-  <section id="windows:adtakeover:phase1">
-	<title>Takeover phase 1</title>
+  <section id="windows:adtakeover:migrate">
+	<title>Domain migration</title>
 	<para>
 	  The takeover must be initiated on the UCS domain controller that runs the Univention S4 Connector
 	  (by default the &ucsMaster;). During the takeover process Samba must only run on this UCS
@@ -1656,8 +1659,8 @@ net user administrator PASSWORD
 	</para>
 
 	<para>
-	  Other Samba systems can be stopped by logging into each of the other UCS domain controllers as
-	  root user and running
+	  Other Samba systems can be stopped by logging into each of the other UCS domain controllers as the
+	  <emphasis>root</emphasis>user and running
 
 	  <programlisting language="sh">
 /etc/init.d/samba4 stop
@@ -1674,28 +1677,36 @@ ucr set connector/s4/mapping/group/grouptype=false
 	  </programlisting>
 	</para>
 
-	<para>
-	  The takeover process can be started from the command line by running the following command as the root user:
+	<!-- <para> -->
+	<!--   Die Übernahme erfolgt mit dem &ucsUMC;-Modul <guimenu>Active Directory -->
+	<!--   Takeover</guimenu>. Unter <guimenu>Name or address of the Domain Controller</guimenu> -->
+	<!--   IP-Adresse des AD-Systems angegeben werden. Unter <guimenu>Active Directory -->
+	<!--   Administratorkonto</guimenu> muss ein Konto der AD-Domäne angegebe werden, das Mitglied der -->
+	<!--   AD-Gruppe  <emphasis>Domain Admins</emphasis> ist (z.B. der -->
+	<!--   <emphasis>Administrator</emphasis>) und unter <guimenu>Active Directory -->
+	<!--   Administratorpasswort</guimenu> das dazugehörige Passwort. -->
+	<!-- </para> -->
 
-	  <programlisting language="sh">
-univention-ad-takeover IP-of-the-AD-server
-	  </programlisting>
-	</para>
+	<!-- <figure> -->
+	<!--   <title>Erste Phase der Domänenmigration</title> -->
+	<!--   <graphic scalefit="1" width="80%" fileref="illustrations/takeover1-en.png"/> -->
+	<!-- </figure> -->
+
+	<!-- <para> -->
+	<!--   Das Modul prüft, ob der AD-Domänencontroller erreicht werden kann und zeigt die zu -->
+	<!--   migrierenden Domänendaten an. -->
+
+	<!-- <figure> -->
+	<!--   <title>Übersicht über die zu migrierenden Daten</title> -->
+	<!--   <graphic scalefit="1" width="80%" fileref="illustrations/takeover2-en.png"/> -->
+	<!-- </figure> -->
+	<!-- </para> -->
 
 	<para>
-	  The script will try to access the LDAP directory of the specified Active Directory server and asks for the password of the <emphasis>Administrator</emphasis>
-	  account on the AD server. By adding the <emphasis>-U</emphasis> option a different member account of the Active
-	  Directory group <emphasis>Domain Admins</emphasis> can be used.
-	</para>
-
-	<para>
-	  The script performs the following steps:
+	  <!-- Nach einem Klick auf <guimenu>Next</guimenu> werden die folgenden Schritte durchgeführt.  -->
+	  Additional information is logged to <filename>/var/log/univention/ad-takeover.log</filename>.
 
 	  <itemizedlist>
-		<listitem><simpara>
-		  Check that the AD domain controller can be accessed
-		</simpara></listitem>
-
 		<listitem><simpara>
 		  Adjust the system time of the UCS system to the system time of the Active Directory domain
 		  controller in case the UCS time is behind by more than three minutes.
@@ -1711,35 +1722,28 @@ univention-ad-takeover IP-of-the-AD-server
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
-	
-	<para>
-	  The script output is shown on the terminal. Additional information is logged to
-	  <filename>/var/log/univention/ad-takeover.log</filename>.
-	</para>
-  </section>
 
-  <section id="windows:adtakeover:phase2">
-	<title>Takeover phase 2</title>
 	<para>
-	  With the completion of phase I the UCS domain controller now contains all users, groups and
-	  computers of the Active Directory domain. This is required for the correct takeover of
-	  permissions of the files and directories that will be copied in phase II.
+	  The UCS domain controller now contains all users, groups and
+	  computers of the Active Directory domain. This is required for the following takeover of
+	  permissions of the files and directories in the SYSVOL share. Further
+	  information on the SYSVOL share can be found at <xref linkend="windows:sysvolshare"/>.
 	</para>
 
 	<para>
 	  This phase requires to log onto the Active Directory domain controller as the
 	  <emphasis>Administrator</emphasis>. There a command needs to be started to copy the group
-	  policy files from the Active Directory SYSVOL share to the UCS SYSVOL share. Further
-	  information on the SYSVOL share can be found at <xref linkend="windows:sysvolshare"/>.
+	  policy files from the Active Directory SYSVOL share to the UCS SYSVOL share.
 	</para>
 
 	<para>
-	  For convenience the <command>univention-ad-takeover</command> script prints this command line
-	  to the screen at the end of phase I:
+	  <!-- Das aufzurufende Kommando wird im UMC-Modul angezeigt. Wenn es erfolgreich aufgerufen wurde, -->
+	  <!-- muss mit <guimenu>Weiter</guimenu> bestätigt werden. -->
 
-	  <programlisting language="sh">
-robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\sysvol
-	  </programlisting>
+	  <figure>
+		<title>Copying the sysvol share</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/takeover3-en.png"/>
+	  </figure>
 
 	  It may be necessary to install the required robocopy tool, which is part of the Windows Server
 	  2003 Resource Kit Tools. Starting with Windows 2008 the tool is already installed.
@@ -1755,24 +1759,20 @@ robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\sysvol
 	<para>
 	  After successful completion of this step, it is now necessary to shutdown all domain
 	  controllers of the Active Directory domain. 
-	</para>
-  </section>
+	  <!-- Danach muss im UMC-Modul auf <guimenu>Next</guimenu> geklickt werden. -->
 
-  <section id="windows:adtakeover:phase3">
-	<title>Takeover phase 3</title>
-	<para>
-	  The takeover process proceeds on the command line of the UCS domain controller, where the
-	  <command>univention-ad-takeover</command> commands keeps waiting to continue with phase III.
+	  <figure>
+		<title>Shutdown of the AD server(s)</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/takeover4-en.png"/>
+	  </figure>
 	</para>
 
 	<para>
-	  The script performs the following steps:
+	  The following steps are now performed:
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Ensure that the AD server is no longer accessible. This is important, because the script
-		  will claim all FSMO roles for the UCS domain controller to finalise the AD takeover
-		  process.
+		  Claiming all FSMO roles for the UCS domain controller.
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1795,6 +1795,7 @@ robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\sysvol
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
+
   </section>
 
   <section id="windows:adtakeover:finalsteps">
