@@ -5,7 +5,6 @@
 ##  - univention-directory-manager-tools
 ## tags:
 ##  - basic
-##  - apptest
 ## exposure: dangerous
 
 import univention.testing.strings as uts

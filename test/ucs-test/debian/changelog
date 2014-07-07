@@ -1,3 +1,10 @@
+ucs-test (4.0.166-51) unstable; urgency=low
+
+  * 00_base/90change_user_pwd_via_udm: removed the app test flag. It
+    should be re-added if the test case is stable (Bug #35276)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Jul 2014 20:28:52 +0200
+
 ucs-test (4.0.166-50) unstable; urgency=low
 
   * udm.py#stop_cli_server(): also catch IOError (Bug #35220)
