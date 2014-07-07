@@ -1,3 +1,10 @@
+ucs-test (4.0.166-49) unstable; urgency=low
+
+  * 52_s4connector/02*concurrent_changes*: Added more concurrent changes
+    test cases (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Jul 2014 07:53:14 +0200
+
 ucs-test (4.0.166-48) unstable; urgency=low
 
   * udm.py#stop_cli_server(): catch psutil.NoSuchProcess instead of
