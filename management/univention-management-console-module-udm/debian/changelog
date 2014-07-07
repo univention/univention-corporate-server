@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.97-26) unstable; urgency=low
+
+  * Bug #34093: Set the adnotifcation variables in univention-join; merge svn48117
+  * Bug #34093: Update AD domain warning; merge svn48140
+
+ -- Florian Best <best@univention.de>  Mon, 07 Jul 2014 13:42:20 +0200
+
 univention-management-console-module-udm (4.0.97-25) unstable; urgency=low
 
   * Bug #34093: copy images

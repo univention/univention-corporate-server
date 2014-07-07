@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-07-03 08:56+0200\n"
+"POT-Creation-Date: 2014-07-07 13:39+0200\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,13 +47,13 @@ msgstr "%s-Vorlage"
 msgid "(multi-edit)"
 msgstr "(Mehrfachbearbeitung)"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:196
-msgid "<b>Caution!</b>"
-msgstr "<b>Achtung!</b>"
-
 #: umc/js/udm/LicenseDialog.js:126
 msgid "<b>License type:</b> GPL"
 msgstr "<b>Lizenztyp:</b> GPL"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:196
+msgid "<b>Warning!</b>"
+msgstr "<b>Warnung!</b>"
 
 #: umc/js/udm/CreateReportDialog.js:135
 #, python-format
@@ -537,6 +537,15 @@ msgstr ""
 "Lizenzinformation kann entweder direkt als Datei hochgeladen oder per copy "
 "and paste in das Textfeld importiert werden."
 
+#: umc/js/udm/wizards/FirstPageWizard.js:197
+#, python-format
+msgid ""
+"Newly created %s will only be available on UCS systems and not in the Active "
+"Directory domain."
+msgstr ""
+"Neu erzeugte %s werden nur auf UCS Systemen und nicht in der Active "
+"Directory Domäne vorhanden sein."
+
 #: umc/js/udm/wizards/FirstPageWizard.js:356
 msgid "Next"
 msgstr "Weiter"
@@ -554,10 +563,6 @@ msgstr "Kein LDAP-Position wurde ausgewählt."
 msgid "No changes have been made."
 msgstr "Keine Änderungen wurden vorgenommen."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:190
-msgid "No synchronisation to Active Directory"
-msgstr "Keine synchronisation zu Active Directory"
-
 #: umc/js/udm/wizards/FirstPageWizard.js:267
 #: umc/js/udm/wizards/FirstPageWizard.js:307
 msgid "None"
@@ -570,14 +575,6 @@ msgstr "Das Verschieben von Containern kann einige Zeit in Anspruch nehmen."
 #: umc/js/udm/MultiObjectSelect.js:107
 msgid "Object property"
 msgstr "Objekteigenschaft"
-
-#: umc/js/udm/wizards/FirstPageWizard.js:197
-msgid ""
-"Objects created with UCS will not be synchronised to the Active Directory "
-"domain."
-msgstr ""
-"Objekte, die mit UCS erstellt wurden, werden nicht in die Active Directory-"
-"Domäne synchronisiert."
 
 #: umc/js/udm.js:391
 msgid "Only objects of the same type can be edited together"
@@ -626,6 +623,10 @@ msgstr "Bitte bestätigen Sie das Löschen der %d ausgewählten %s!"
 msgid "Please login again to complete the import process."
 msgstr "Bitte erneut einloggen, um den Importvorgang zu vervollständigen."
 
+#: umc/js/udm/wizards/FirstPageWizard.js:199
+msgid "Please press <i>Next</i> to ignore this warning."
+msgstr "Klicken Sie bitte auf <i>Weiter</i> um diese Warnung zu ignorieren"
+
 #: umc/js/udm.js:1398
 msgid ""
 "Please select a container in the LDAP directory tree. The new object will be "
@@ -644,6 +645,15 @@ msgstr ""
 #, python-format
 msgid "Please select an LDAP position to move %s:"
 msgstr "Bitte wählen Sie eine LDAP-Position aus für das Verschieben von %s:"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:198
+#, python-format
+msgid ""
+"Please use the Active Directory administration utilities to create new "
+"domain %s."
+msgstr ""
+"Bitte benutzen Sie die Active Directory Administrations-Tools um neue "
+"Domänen-%s anzulegen."
 
 #: umc/js/udm/DetailPage.js:285
 #, python-format
@@ -848,20 +858,9 @@ msgstr "Das übergeordnete Objekt, für welches die Suche ausgeführt wird."
 msgid "The type of the LDAP object."
 msgstr "Der Typ des LDAP-Objekts."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:198
-msgid ""
-"This UCS system is configured to be a member of an Active Directory domain."
-msgstr ""
-"Dieses UCS-System ist als Mitglied einer Active Directory-Domäne "
-"konfiguriert."
-
-#: umc/js/udm/wizards/FirstPageWizard.js:199
-#, python-format
-msgid ""
-"To create new %s please use the corresponding Active Directory utilities."
-msgstr ""
-"Um neue %s anzulegen sollten die entsprechenden Active Directory-Hilfsmittel "
-"verwendet werden."
+#: umc/js/udm/wizards/FirstPageWizard.js:190
+msgid "This UCS system is part of an Active Directory domain"
+msgstr "Dieses UCS System ist Teil einer Active Directory Domäne"
 
 #: umc/js/udm/wizards/FirstPageWizard.js:239
 #: umc/js/udm/wizards/FirstPageWizard.js:257
@@ -1040,3 +1039,16 @@ msgstr "Benutzer"
 
 #~ msgid "The import of the license has failed: "
 #~ msgstr "Der Import der Lizenz ist fehlgeschlagen: "
+
+#~ msgid ""
+#~ "This UCS system is configured to be a member of an Active Directory "
+#~ "domain."
+#~ msgstr ""
+#~ "Dieses UCS-System ist als Mitglied einer Active Directory-Domäne "
+#~ "konfiguriert."
+
+#~ msgid ""
+#~ "To create new %s please use the corresponding Active Directory utilities."
+#~ msgstr ""
+#~ "Um neue %s anzulegen sollten die entsprechenden Active Directory-"
+#~ "Hilfsmittel verwendet werden."

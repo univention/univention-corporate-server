@@ -187,16 +187,16 @@ define([
 			var style = 'background-image: url(\'' + imageUrl + '\'); background-size: 100px; min-width: 100px; min-height: 100px; background-repeat: no-repeat; padding-left: 100px; padding-top: 20px; margin: 0 1.5em; ';
 			return {
 				name: 'activeDirectoryPage',
-				headerText: _('No synchronisation to Active Directory'),
+				headerText: _('This UCS system is part of an Active Directory domain'),
 				widgets: [{
 					type: 'Text',
 //					style: style,  // FIXME: somehow gets set on two dom elements
 					name: 'active_directory_warning',
 					content:
-						'<div style="' + style + '">' + _('<b>Caution!</b>') + ' ' +
-						_('Objects created with UCS will not be synchronised to the Active Directory domain.') + ' ' +
-						_('This UCS system is configured to be a member of an Active Directory domain.') + ' ' +
-						_('To create new %s please use the corresponding Active Directory utilities.', this.objectNamePlural) +
+						'<div style="' + style + '">' + _('<b>Warning!</b>') + ' ' +
+						_('Newly created %s will only be available on UCS systems and not in the Active Directory domain.', this.objectNamePlural) + ' ' +
+						_('Please use the Active Directory administration utilities to create new domain %s.', this.objectNamePlural) + ' ' +
+						_('Please press <i>Next</i> to ignore this warning.') +
 						'<br/><br/></div>'
 				}]
 			};

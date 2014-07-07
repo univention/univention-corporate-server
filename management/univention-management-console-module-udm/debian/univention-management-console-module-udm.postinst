@@ -57,13 +57,6 @@ univention-config-registry set directory/reports/cleanup/cron?"0 0 * * *" \
 # simple forms (wizards)
 univention-config-registry set directory/manager/web/modules/wizards/disabled?no
 
-# ad notification
-univention-config-registry set \
-	directory/manager/web/modules/users/user/show/adnotification?true \
-	directory/manager/web/modules/groups/group/show/adnotification?true \
-	directory/manager/web/modules/container/cn/show/adnotification?true \
-	directory/manager/web/modules/container/ou/show/adnotification?true
-
 VARIABLES=
 # remove default search
 if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 3.0.12-1; then
