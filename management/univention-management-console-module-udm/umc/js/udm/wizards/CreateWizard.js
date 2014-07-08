@@ -157,9 +157,9 @@ define([
 					});
 				}
 			}));
-			if (pageName == 'page0' && this.firstPageAvailable) {
+			if (pageName == 'page0' && this.preWizardAvailable) {
 				buttons.unshift({
-					name: 'back_to_first_page',
+					name: 'back_to_pre_wizard',
 					label: _('Back'),
 					align: 'right',
 					callback: lang.hitch(this, function() {

@@ -178,10 +178,8 @@ define([
 			this._preWizard.on('Finished', createWizard);  // the wizard either finished by hand
 			this.canContinue.then(createWizard);  // or it should not be displayed at all (onFinished was immediately fired so we missed the event)
 			// TODO: replace event by deferred to make it stable because: The order here is important: 1. selectChild(this._preWizard) 2. _preWizard.on('Finished', createWizard)
-			// otherwiste the prewdget gets selected after the real wizard has been selected so that the wrong wizard is shown
-			this.canContinue.then(undefined, lang.hitch(this, function() {
-				this._preWizard.selectCorrectChild();
-			}));
+			// otherwise the prewidget gets selected after the real wizard has been selected so that the wrong wizard is shown
+			this.canContinue.then(undefined, lang.hitch(this._preWizard, 'selectCorrectChild'));
 		},
 
 		buildCreateWizard: function(firstPageValues, objectTypeName) {
@@ -202,7 +200,7 @@ define([
 							objectTypeName: objectTypeName,
 							detailPage: detailsValues.detailPage,
 							template: detailsValues.template,
-							firstPageAvailable: this.canContinue.isRejected(),
+							preWizardAvailable: this.canContinue.isRejected(),
 							properties: detailsValues.properties
 						});
 						// insert at position 1. If another createWizard is added

@@ -50,7 +50,11 @@ define([
 			this.inherited(arguments);
 			this._canContinue = new Deferred();
 
-			this.pages = [this._getOptionSelectionPage(), this._getActiveDirectoryWarningPage()];
+			if (this.moduleFlavor == 'navigation') {
+				this.pages = [this._getOptionSelectionPage(), this._getActiveDirectoryWarningPage()];
+			} else {
+				this.pages = [this._getActiveDirectoryWarningPage(), this._getOptionSelectionPage()];
+			}
 		},
 
 		canContinue: function() {
@@ -190,7 +194,7 @@ define([
 				headerText: _('This UCS system is part of an Active Directory domain'),
 				widgets: [{
 					type: 'Text',
-//					style: style,  // FIXME: somehow gets set on two dom elements
+//					style: style,  // FIXME: somehow the style is set on two dom elements
 					name: 'active_directory_warning',
 					content:
 						'<div style="' + style + '">' + _('<b>Warning!</b>') + ' ' +
@@ -326,17 +330,18 @@ define([
 
 		getObjectTypeName: function() {
 			var firstPageValues = this.getValues();
-				var objectTypeName;
-				array.some(this.types, function(type) {
-					if (type.id == firstPageValues.objectType) {
-						objectTypeName = type.label;
-						return true;
-					}
-				});
-				if (!objectTypeName) {
-					// cache may return empty label for no sub modules
-					objectTypeName = this.objectNameSingular;
+			var objectTypeName;
+			array.some(this.types, function(type) {
+				if (type.id == firstPageValues.objectType) {
+					objectTypeName = type.label;
+					return true;
 				}
+			});
+			if (!objectTypeName) {
+				// cache may return empty label for no sub modules
+				objectTypeName = this.objectNameSingular;
+			}
+			return objectTypeName;
 		},
 
 		focusFirstWidget: function(pageName) {
