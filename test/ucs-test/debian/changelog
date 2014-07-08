@@ -1,3 +1,12 @@
+ucs-test (4.0.166-52) unstable; urgency=low
+
+  * 60_umc-system/80_umc-service-license: a test for UMC
+    license management (Bug #34620);
+  * 60_umc-system/FreeForPersonalUseTest.license: a template of
+    a 'Free' license for the test
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 08 Jul 2014 10:51:42 +0200
+
 ucs-test (4.0.166-51) unstable; urgency=low
 
   * 00_base/90change_user_pwd_via_udm: removed the app test flag. It
