@@ -136,22 +136,36 @@ from ..log import MODULE
 
 _ = Translation( 'univention.management.console' ).translate
 
-class UMC_Error( Exception ):
+
+class UMC_Error(Exception):
+	status = BAD_REQUEST
+
+	def __init__(self, message=None, status=None, result=None):
+		super(UMC_Error, self).__init__(message)
+		self.msg = message
+		self.result = result
+		if isinstance(status, int):
+			self.status = status
+
+
+class UMC_OptionTypeError(UMC_Error):
 	pass
 
-class UMC_OptionTypeError( UMC_Error ):
+
+class UMC_OptionMissing(UMC_Error):
 	pass
 
-class UMC_OptionSanitizeError( UMC_OptionTypeError ):
-	def __init__( self, message, body = None ):
-		self.message = message
-		self.body = body
 
-class UMC_OptionMissing( UMC_Error ):
-	pass
+class UMC_CommandError(UMC_Error):
+	def __str__(self):
+		return ''
 
-class UMC_CommandError( UMC_Error ):
-	pass
+
+class UMC_OptionSanitizeError(UMC_OptionTypeError):
+
+	def __init__(self, message, body=None):
+		status = 409  # HTTP Conflict
+		super(UMC_OptionSanitizeError, self).__init__(message, status, body)
 
 
 class Base( signals.Provider, Translation ):
@@ -204,19 +218,17 @@ class Base( signals.Provider, Translation ):
 			func = getattr( self, method )
 			func( request )
 			return
-		except UMC_OptionSanitizeError, e:
-			status = 409 # Conflict
-			message = e.message
-			result = e.body
-		except UMC_OptionTypeError, e:
-			status = BAD_REQUEST
-			message = _(  'An option passed to %s has the wrong type: %s' ) % ( method, str( e ) )
-		except UMC_OptionMissing, e:
-			status = BAD_REQUEST
-			message = _(  'One or more options to %s are missing: %s' ) % ( method, str( e ) )
-		except UMC_CommandError, e:
-			status = BAD_REQUEST
-			message = _(  'The command has failed: %s' ) % str( e )
+		except UMC_Error as exc:
+			status = exc.status
+			result = exc.result
+			if isinstance(exc, UMC_OptionTypeError):
+				message = _('An option passed to %s has the wrong type: %s') % (method, exc)
+			elif isinstance(exc, UMC_OptionMissing):
+				message = _('One or more options to %s are missing: %s') % (method, exc)
+			elif isinstance(exc, UMC_CommandError):
+				message = _('The command has failed: %s') % (exc,)
+			else:
+				message = str(exc)
 		except BaseException, e:
 			status = MODULE_ERR_COMMAND_FAILED
 			import traceback

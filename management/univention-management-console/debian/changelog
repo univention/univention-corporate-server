@@ -1,3 +1,9 @@
+univention-management-console (6.0.24-16) unstable; urgency=low
+
+  * Bug #34244: enhance error handling to display user friendly error messages
+
+ -- Florian Best <best@univention.de>  Tue, 08 Jul 2014 16:40:48 +0200
+
 univention-management-console (6.0.24-15) unstable; urgency=low
 
   * Bug #34243: add parameter 'reload' to modules/list; revert dh-umc-install
