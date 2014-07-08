@@ -1,3 +1,9 @@
+univention-samba4 (3.0.39-26) unstable; urgency=low
+
+  * fixed univention-samba4-backup (Bug #35084) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Jul 2014 15:50:05 +0200
+
 univention-samba4 (3.0.39-25) unstable; urgency=low
 
   * always clean up the samba dir before join
