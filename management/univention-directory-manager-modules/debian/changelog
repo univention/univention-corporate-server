@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.76-13) unstable; urgency=low
+
+  * proof_uniqueMembers: do not crash on empty uniqueMember attribute
+  (Bug #33030)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 03 Jul 2014 15:08:11 +0200
+
 univention-directory-manager-modules (9.0.76-12) unstable; urgency=low
 
   * Bug #34092: Set more attributes to readonly when synced; merge svn 48069

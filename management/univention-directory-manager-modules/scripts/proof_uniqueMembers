@@ -147,7 +147,11 @@ def check_groups_by_dn(conn, group_dn, group):
 	remmembers = set()
 	for member_dn in group_member_dns:
 		# Split uid=USER, cn=user,dc=FQDN
-		member_filter, base = member_dn.split(',', 1)
+		try:
+			member_filter, base = member_dn.split(',', 1)
+		except ValueError:
+			continue
+
 		try:
 			member_result = conn.search_s(base, ldap.SCOPE_ONELEVEL,
 					member_filter, ['objectClass'])
