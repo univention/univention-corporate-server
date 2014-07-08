@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.51-23) unstable; urgency=low
+
+  * Bug #35136: Escape ID and Version of an app for LDAP registration
+  * Bug #35271: Set repository/app_center/installed in postinst
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 08 Jul 2014 11:40:14 +0200
+
 univention-management-console-module-appcenter (3.0.51-22) unstable; urgency=low
 
   * Bug #32935: Fix archive unpacking, add log messages, add fallback if

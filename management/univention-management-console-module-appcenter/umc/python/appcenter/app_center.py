@@ -59,6 +59,7 @@ from PIL import Image
 from httplib import HTTPException
 from socket import error as SocketError
 from ldap import LDAPError
+from ldap.filter import escape_filter_chars
 
 # related third party
 from simplejson import loads
@@ -128,7 +129,7 @@ class ApplicationLDAPObject(object):
 		self.reload()
 
 	def reload(self):
-		result = appcenter_udm_module.lookup(self._co, self._lo, 'id=%s' % self._ldap_id)
+		result = appcenter_udm_module.lookup(self._co, self._lo, 'id=%s' % escape_filter_chars(self._ldap_id))
 		if result:
 			self._udm_obj = result[0]
 			self._udm_obj.open()
@@ -144,7 +145,7 @@ class ApplicationLDAPObject(object):
 		base = 'cn=apps,cn=univention,%s' % ucr.get('ldap/base')
 		pos.setDn(base)
 		for container in reversed(containers):
-			if not container_udm_module.lookup(co, lo, 'cn=%s' % container, base=base):
+			if not container_udm_module.lookup(co, lo, 'cn=%s' % escape_filter_chars(container), base=base):
 				container_obj = container_udm_module.object(co, lo, pos, 'cn=%s' % container)
 				container_obj.open()
 				container_obj.info['name'] = container
@@ -1283,7 +1284,8 @@ class Application(object):
 					ldap_object = iapp.get_ldap_object(or_create=True)
 					ldap_object.add_localhost()
 					break
-			udm_objects = appcenter_udm_module.lookup(co, lo, '(&(id=%s_*)(server=%s))' % (self.id, localhost))
+			same_app_filter = '(&(id=%s_*)(server=%s))' % (escape_filter_chars(self.id), escape_filter_chars(localhost))
+			udm_objects = appcenter_udm_module.lookup(co, lo, same_app_filter)
 			for udm_object in udm_objects:
 				udm_object.open()
 				if installed_version != udm_object.info['version']:
