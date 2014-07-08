@@ -1101,7 +1101,8 @@ def handler(dn, new, listener_old, operation):
 			reconnect=1
 			connect(ldif=1)
 			handler(dn, new, listener_old, operation)
-		handler(dn, new, cur, operation)
+		else:
+			handler(dn, new, cur, operation)
 
 	except ldap.CONSTRAINT_VIOLATION, msg:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Constraint violation: dn=%s: %s' % (dn,msg[0]['desc']))
