@@ -1702,7 +1702,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	<!-- </para> -->
 
 	<para>
-	  <!-- Nach einem Klick auf <guimenu>Next</guimenu> werden die folgenden Schritte durchgeführt.  -->
+	  <!-- Nach einem Klick auf <guimenu>Next</guimenu> werden die folgenden Schritte durchgeführt.  --> 
 	  Additional information is logged to <filename>/var/log/univention/ad-takeover.log</filename>.
 
 	  <itemizedlist>
@@ -1724,9 +1724,9 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<para>
 	  The UCS domain controller now contains all users, groups and
-	  computers of the Active Directory domain. This is required for the following takeover of
-	  permissions of the files and directories in the SYSVOL share. Further
-	  information on the SYSVOL share can be found at <xref linkend="windows:sysvolshare"/>.
+	  computers of the Active Directory domain.
+	  <!-- Im nächsten Schritt wird die SYSVOL-Freigabe kopiert, -->
+	  <!-- in der u.a. die Gruppenrichtlinien gespeichert werden -->
 	</para>
 
 	<para>
@@ -1767,11 +1767,13 @@ ucr set connector/s4/mapping/group/grouptype=false
 	</para>
 
 	<para>
-	  The following steps are now performed:
+	  The following steps are now automatically performed:
 
 	  <itemizedlist>
 		<listitem><simpara>
 		  Claiming all FSMO roles for the UCS domain controller.
+		  <!-- Diese kennzeichnen verschiedene -->
+		  <!-- Aufgaben, die ein Server in einer AD-Domäne übernehmen kann. -->
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1800,7 +1802,7 @@ ucr set connector/s4/mapping/group/grouptype=false
   <section id="windows:adtakeover:finalsteps">
 	<title>Final steps of the takeover</title>
 	<para>
-	  After completion of the AD Takeover script the following steps are required:
+	  Finally the following steps are required:
 
 	  <itemizedlist>
 		<listitem><simpara>

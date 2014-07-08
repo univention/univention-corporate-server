@@ -2058,7 +2058,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	</para>
 
 	<para>
-	  Nach einem Klick auf <guimenu>Weiter</guimenu> werden die folgenden Schritte
+	  Nach einem Klick auf <guimenu>Weiter</guimenu> werden die folgenden Schritte automatisch
 	  durchgeführt. Zusätzliche Informationen werden nach
 	  <filename>/var/log/univention/ad-takeover.log</filename> protokolliert.
 
@@ -2082,9 +2082,8 @@ ucr set connector/s4/mapping/group/grouptype=false
 	
 	<para>
 	  Nun enthält der UCS-Domänencontroller  alle Benutzer, Gruppen und
-	  Rechner aus der Active Directory-Domäne. Dies ist nötig für die folgende Übernahme der
-	  Berechtigungen der Dateien und Verzeichnisse der SYSVOL-Freigabe. Weitere Informationen zur
-	  SYSVOL-Freigabe finden sich in <xref linkend="windows:sysvolshare"/>.
+	  Rechner aus der Active Directory-Domäne. Im nächsten Schritt wird die SYSVOL-Freigabe kopiert,
+	  in der u.a. die Gruppenrichtlinien gespeichert werden.
 	</para>
 
 	<para>
@@ -2113,7 +2112,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	</para>
 
 	<para>
-	  Nach erfolgreichem Abschluss dieser Schritte sollten der/die AD-Domänencontroller nun
+	  Nach erfolgreichem Abschluss dieser Schritte sollten der/die AD-Domänencontroller 
 	  heruntergefahren werden. Anschließend muss im UMC-Modul auf <guimenu>Weiter</guimenu> geklickt
 	  werden.
 
@@ -2124,11 +2123,12 @@ ucr set connector/s4/mapping/group/grouptype=false
 	</para>
 
 	<para>
-	  Die folgenden Schritte werden nun durchgeführt:
+	  Die folgenden Schritte werden nun automatisch durchgeführt:
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Übertragung der FSMO-Rollen auf den UCS-Domänencontroller
+		  Übertragung der FSMO-Rollen auf den UCS-Domänencontroller. Diese kennzeichnen verschiedene
+		  Aufgaben, die ein Server in einer AD-Domäne übernehmen kann.
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2156,8 +2156,7 @@ ucr set connector/s4/mapping/group/grouptype=false
   <section id="windows:adtakeover:finalsteps">
 	<title>Abschluß der Übernahme</title>
 	<para>
-	  Nachdem das Übernahme-Skript aufgerufen wurde müssen noch die folgenden Schritte durchgeführt
-	  werden:
+	  Abschließend  müssen noch die folgenden Schritte durchgeführt werden:
 
 	  <itemizedlist>
 		<listitem><simpara>
