@@ -2,6 +2,9 @@
 ## desc: Test the UMC file quota module
 ## bugs: [34625]
 ## exposure: dangerous
+## versions:
+##  3.0-0: skip
+##  3.2-3: fixed
 
 import sys
 sys.path.insert(0, '.')
