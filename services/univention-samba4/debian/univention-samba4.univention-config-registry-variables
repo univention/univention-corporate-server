@@ -446,6 +446,12 @@ Description[en]=This variable configures the time/interval when to start the bac
 Type=str
 Categories=service-samba
 
+[samba4/backup/cron/options]
+Description[de]=Diese Variable erlaubt die Konfiguration von Parametern für das per cron gestartete univention-samba4-backup.
+Description[en]=This variable allows the configuration of options for the univention-samba4-backup started by cron.
+Type=str
+Categories=service-samba
+
 [samba/acl/allow/execute/always]
 Description[de]=Ist diese Variable aktiviert oder nicht gesetzt, prüft Samba die Ausführungs-Rechte einer Datei nicht bei "open for execution" Request von Windows Clients.
 Description[en]=If this parameter is activated or unset, Samba does not check execute permissions of files for "open for execution" protocol request from a Windows clients.

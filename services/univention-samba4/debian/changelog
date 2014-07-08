@@ -1,3 +1,9 @@
+univention-samba4 (3.0.39-27) unstable; urgency=low
+
+  * added samba4/backup/cron/options (Bug #35085) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Jul 2014 16:13:01 +0200
+
 univention-samba4 (3.0.39-26) unstable; urgency=low
 
   * fixed univention-samba4-backup (Bug #35084) 
