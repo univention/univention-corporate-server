@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-samba4
-fix: 3.0.39-26.580.201407081550
+fix: 3.0.39-27.581.201407081613
 version: [2]
 desc: |
     This updates fixes the following issues in univention-samba4:
@@ -15,4 +15,6 @@ desc: |
       private directory before the join and if the samba4 join fails, the
       join is aborted .
     * A typo in univention-samba4-backup has been fixed.
-bug: [35137, 34422, 35084]
+    * The UCR variable samba4/backup/cron/options has been added to configure
+      options for the univention-samba4-backup script started by cron.
+bug: [35137, 34422, 35084, 35085]
