@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.152-37) unstable; urgency=low
+
+  * set response.timeout in cherrpy config to umc/http/session/timeout
+    (Bug #35052)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 08 Jul 2014 12:46:09 +0200
+
 univention-management-console-frontend (3.0.152-36) unstable; urgency=low
 
   * Bug #34243: only show reload-UMC message once; fix setting of category
