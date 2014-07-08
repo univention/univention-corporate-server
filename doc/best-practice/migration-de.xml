@@ -4,7 +4,11 @@
 	<title>Einleitung</title>
 	<para>
 	  Diese Dokumentation beschreibt das Vorgehen bei der Migration einer Microsoft Active
-	  Directory-Domäne auf Basis von Windows Server 2003/2008/2012 auf &ucsUCS;.
+	  Directory-Domäne auf Basis von Windows Server 2003/2008/2012 auf &ucsUCS;. Der
+	  Domänencontroller-Dienst wird durch UCS in AD-kompatibler Weise bereitgestellt: Ein
+	  Windows-Client, der in die AD-Domäne gejoint wurde, ist nach der Migration auch in der
+	  UCS-Domäne verfügbar, d.h. es ist kein erneuter Domänenbeitritt nötig. Alle Benutzerkonten und
+	  Gruppen werden ebenfalls migriert.
 	</para>
 
 	<para>
@@ -12,22 +16,20 @@
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Migration eine Umgebung mit einem Domänencontroller und einer AD-Site (z.B. Microsoft
+		  Migration einer Umgebung mit einem Domänencontroller und einer AD-Site (z.B. Microsoft
 		  Small Business Server)
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Migration einer verteilten Active Directory-Umgebung mit mehreren Domänencontrollern und
-		  verteilten Standorten
+		  Migration einer verteilten Active Directory-Umgebung mit mehreren Domänencontrollern
+		  (z.B. für verteilte Standorte oder für große Umgebungen)
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
 
 	<para>
-	  Neben der Migration der Kern-Domänendienste (also Anmeldung, Datei-/Druckdienste) besteht auch
-	  die Möglichkeit verschiedene Dienste einer AD-Umgebung zu migrieren: Das Univention App Center
-	  stellt verschiedene Applikationen bereit, die z.B. einen Exchange-Groupware-Server oder einen
-	  Sharepoint-Dienst ablösen können. Dies wird in TODOREF beschrieben.
+	  Neben der Migration der Kern-Domänendienste (Benutzeranmeldungen, Client-Integration) können
+	  auch Datei-/Druckdienste auf UCS migriert werden. 
 	</para>
   </section>
 
@@ -49,6 +51,7 @@
 		UCS-Server. Wenn die Umgebung später wächst oder aus anderen Gründen verteilt werden soll ist eine
 		Aufteilung von Diensten jederzeit nachträglich möglich.
 	  </para>
+
 	</section>
 
 	<section id="bestpractice:migration:single:installucs">
@@ -116,24 +119,27 @@
 	</section>
 
 	<section id="bestpractice:migration:single:services">
-	  <title>Installation des UCS-Systems</title>
+	  <title>Migration der Dienste des AD-Systems</title>
+
 	  <para>
-		Es muss nun geprüft werden, welche Dienste durch den AD-Server aktuell bereitgestellt
-		werden:
+		Die Daten aus dem Verzeichnisdienst (z.B. Benutzer, Gruppen und Rechnerkonten) sowie die
+		Gruppenrichtlinieninformationen werden im Rahmen der Übernahme der AD-Domäne automatisch
+		nach UCS migriert.
 	  </para>
 
 	  <para>
-		Der Domänencontroller-Dienst wird durch UCS in AD-kompatibler Weise bereitgestellt: Ein
-		Windows-Client, der in die AD-Domäne gejoint wurde, ist nach der Migration auch in der
-		UCS-Domäne verfügbar, d.h. es ist kein erneuter Domänenbeitritt nötig. Alle
-		Benutzerkonten und Gruppen werden ebenfalls migriert. Nach Durchführung der Migration ist
-		der AD-Server nicht mehr verfügbar, d.h. alle weiteren vom AD-Server bereitgestellten
-		Dienste müssen migriert werden. Hierfür gibt es prinzipiell zwei verschiedene Möglichkeiten:
+		Nach Durchführung der Migration ist der AD-Domänencontroller nicht mehr verfügbar. D.h. wenn
+		auf dem Server über den Anmeldedienst hinaus noch Dienste betrieben werden, müssen diese
+		ebenfalls migriert werden. Hierfür gibt es prinzipiell zwei verschiedene Möglichkeiten:
 
 		<itemizedlist>
 		  <listitem><simpara>
-			Migration der Dienste auf den UCS-Server. Dies wird für verschiedene Dienste in TODOREF
-			beschrieben.
+			Die Migration der Dienste auf den UCS-Server. Dies wird in <xref
+			linkend="bestpractice:migration:fileshare"/> für Datei-Freigaben und in <xref
+			linkend="bestpractice:migration:printshare"/> für Drucker-Freigaben Dienste
+			beschrieben. Das Univention App Center bietet verschiedene Applikationen zur
+			Installation an, die ebenfalls bestehende Software wie z.B. Microsoft Exchange ersetzen
+			könnenn (<xref linkend="bestpractice:migration:appcenter"/>)
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -149,50 +155,221 @@
 		kein langes Wartungsfenster für die Migration von AD auf UCS nötig; die Umstellung sollte in
 		unter einer Stunde erledigt sein. Wenn während der Umstellung auch Dienste migriert werden
 		sollen, kann sich dieses Fenster deutlich ausweiten, die Entzerrung der Migration durch
-		Migration der Dienste auf einen Memberserve ist daher empfehlenswert.
+		Migration der Dienste auf einen Memberserver ist daher empfehlenswert. 
 	  </para>
 	</section>
 
-	<section id="bestpractice:migration:single:services:migrate">
-	  <title>Migration von Diensten auf einem Windows-Server</title>
-
-	  <section id="bestpractice:migration:single:services:migrate:fileshare">
-		<title>Migration von Datei-Freigaben</title>
-
-		<para>
-		  Ein UCS-Domänencontroller bietet standardmässig auch Dateidienste an. Alternativ kann auch
-		  ein UCS-Memberserver installiert werden, der Dateidienste bereitstellt.
-
-		  TODO: Migration
-		</para>
-
-	  </section>
-
-	  <section id="bestpractice:migration:single:services:migrate:printshare">
-		<title>Migration von Drucker-Freigaben</title>
-
-		<para>
-		  Jeder UCS-Server kann Druckdienste anbieten. Dazu muss im &ucsUMC;-Modul
-		  <guimenu>Univention App Center</guimenu> in der Sektion <guimenu>UCS-Komponenten</guimenu>
-		  die Applikation <emphasis>Druckserver (CUPS)</emphasis> ausgewählt werden.
-
-		  TODO: Migration
-		</para>
-
-	  </section>
-
-	  <section id="bestpractice:migration:single:services:migrate:exchange">
-		<title>Migration von Microsoft Exchange</title>
-
-		<para>
-		  Wenn auf dem AD-Server Microsoft Exchange betrieben wird, besteht die Möglichkeit auf eine
-		  Groupware aus dem Univention App Center zu migrieren. Diese sind im Univention App Center
-		  in der Sektion <emphasis>Collaboration</emphasis> zu finden. Diese Groupware-Lösungen
-		  werden von externen Anbietern bereitgestellt und mit Support versorgt.
-		</para>
-	  </section>
+	<section id="bestpractice:migration:takeover">
+	  <title>Migration der AD-Domäne</title>
+	  
 	</section>
 
+
+
   </section>
+
+  <section id="bestpractice:migration:services">
+	<title>Migration von Diensten auf einem Windows-Server auf &ucsUCS;</title>
+
+	<section id="bestpractice:migration:fileshare">
+	  <title>Migration von Datei-Freigaben</title>
+
+	  <para>
+		Ein UCS-Domänencontroller bietet standardmässig auch Dateidienste an. Alternativ kann auch
+		ein UCS-Memberserver installiert werden, der Dateidienste bereitstellt.
+	  </para>
+
+	  <para>
+		Jeder UCS-Samba-Server (Domänencontroller und Memberserver) stellt standardmässig
+		Dateidienste bereit. Für die Migration von Dateifreigaben auf Windows-Servern steht kein
+		standardisiertes Übernahme-Tool bereit: Die Freigaben müssen auf dem UCS-Server angelegt
+	  und die Daten kopiert werden.		</para>
+
+	  <para>
+		Um eine korrekte Übernahme der Dateiberechtigungen zu erreichen ist es nötig, das der
+		AD-Server auf die gleiche Benutzer-Basis zugreift:
+
+		<itemizedlist>
+		  <listitem><simpara>
+			Der AD-Server ist als Member-Server in die UCS-Domäne gejoint
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Der AD-Server ist ein Domänencontroller und wird während einer AD-Takeover-Migration
+			in die temporär UCS-Domäne gejoint (bevor er final abgeschaltet wird)
+		  </simpara></listitem>
+		</itemizedlist>
+
+		Die Dateibesitzrechte der Dateien werden auf dem AD-Server anhand der SID-Informationen
+		gespeichert. Würden die Dateien des Fileservers auf das UCS-System migriert, bevor die
+		Benutzerdaten verfügbar sind, wären die Dateien später nicht ohne weiteres einzelnen Benutzer
+		zuordbar.
+	  </para>
+
+	  <para>
+		Die auf einem AD-Server vorhandenen Datei-Freigaben sind unter <guimenu>Start ->
+		Verwaltung -> Freigabe- und Speicherverwaltung</guimenu> zu finden. Im Reiter
+		<guimenu>Freigaben</guimenu> werden alle veröffentlichten Freigaben aufgeführt. Im
+		Kontextmenü einer Freigabe unter <guimenu>Eigenschaften</guimenu> werden die Eigenschaften
+		einer Freigabe angezeigt, im folgenden Beispiel eine Freigabe mit dem Namen
+		<emphasis>Documentation</emphasis>, die den Pfad <emphasis>C:\Documentation</emphasis>
+		unter dem Freigabepfad <emphasis>\\ADSERVER\Documentation</emphasis> bereitstellt.
+
+		<figure id="bestpractice-migrate-cifs">
+		  <title>Zu migrierende Freigabe</title>
+		  <graphic scalefit="1" width="80%" fileref="illustrations/cifs-migrate-de.png"/>
+		</figure>
+
+		Für diese Freigabe wird nun in der Freigabenverwaltung der &ucsUMC; eine Freigabe
+		angelegt. Das Freigaben-Modul bietet vielfältige Möglichkeiten, die im UCS-Handbuch
+		dokumentiert sind (TODOREF), für die Übernahme der Daten reichen aber wenige Einstellungen
+		aus. Die folgenden Werte müssen beim Anlegen der Freigabe(n) im UMC-Modul
+		<guimenu>Freigaben</guimenu> min. angelegt werden:
+
+		<itemizedlist>
+		  <listitem><simpara>
+			<emphasis>Name</emphasis>: Der Name, den die Freigabe unter Windows verwendete. Die
+			Regeln für den Freigaben sind unter UCS strikter als in AD; wenn der unter Windows
+			verwendete Name nocht anwendbar ist, kann im Reiter <guimenu>Samba-Name</guimenu> ein
+			zusätzlicher Name konfiguriert, der beim Zugriff über CIFS angezeigt wird. Der Name
+			muss nicht notwendigerweise identisch sein, um Irritationen bei den Benutzern zu
+			minimieren ist es aber empfehlenswert.
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			<emphasis>Server</emphasis>: Der UCS-Server, die Freigabe bereitstellen soll
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			<emphasis>Pfad</emphasis>: Der Pfad, unter dem die Daten der Freigabe auf dem
+			UCS-Server gespeichert werden. Existiert der Pfad noch nicht, wird er automatisch
+			angelegt. Die Berechtigungen dieses Verzeichnisses können unter
+			<emphasis>Dateiberechtigungen für das Wurzelverzeichnis der Freigabe</emphasis>
+			konfiguriert werden.
+		  </simpara></listitem>
+		</itemizedlist>
+	  </para>
+
+	  <para>
+		Nun müssen die Daten der Freigabe vom Windows-Server auf das UCS-System kopiert
+		werden. Dazu erfolgt eine Anmeldung auf dem Windows-Server, die Daten werden mit
+		<command>robocopy</command> kopiert (es ist ab Windows 2008 vorinstalliert und kann unter
+		Windows 2003 mit den Windows Server 2003 Resource Kit Tools nachinstalliert werden). Ein
+		Beispiel:
+
+		<programlisting language="sh">
+		  robocopy /mir /sec /z \\ADSERVER\Documentation \\UCSSERVER\Documentation
+		</programlisting>
+
+		Anschließend sollte von einem Windows-Client der Domäne zu Zugriff auf die Freigabe auf
+		dem UCS-Server getestet werden. Hier sollten alle Berechtigungen weiterhin korrekt
+		angewendet werden. 
+	  </para>
+
+	  <para>
+		Um zu verhindern, das sweitere Änderungen an der Freigabe auf dem Windows-Server erfolgen
+		sollte nach der Migration der Daten die Freigabe auf dem Windows-Server deaktiviert
+		werden. Dazu muss unter <guimenu>Start -> Verwaltung -> Freigabe- und
+		Speicherverwaltung</guimenu> im Kontextmenü der migrierten Freigabe die Option
+		<guimenu>Freigabe beenden</guimenu> gewählt werden.
+	  </para>
+
+	</section>
+
+	<section id="bestpractice:migration:single:services:migrate:printshare">
+	  <title>Migration von Drucker-Freigaben</title>
+
+	  <para>
+		Jeder UCS-Server kann Druckdienste anbieten. Dazu muss im &ucsUMC;-Modul
+		<guimenu>Univention App Center</guimenu> in der Sektion <guimenu>UCS-Komponenten</guimenu>
+		die Applikation <emphasis>Druckserver (CUPS)</emphasis> ausgewählt werden. Für die Migration
+		von Druckerfreigaben auf Windows-Servern steht kein standardisiertes Übernahme-Tool bereit:
+		Die Freigaben müssen auf dem UCS-Server angelegt werden.
+	  </para>
+
+	  <para>
+		Die auf einem AD-Server vorhandenen Drucker-Freigaben sind unter <guimenu>Start ->
+		Verwaltung -> Druckverwaltun</guimenu> zu finden. Unter <guimenu>Druckerserver</guimenu>
+		wird der Name des Windows-Servers aufgeführt. Dort sind unter <guimenu>Drucker</guimenu>
+		alle registrierten Druckerfreigaben aufgeführt. Im Kontext-Menü eines Druckers können unter
+		<guimenu>Eigenschaften</guimenu> die Einstellungen abgerufen werden. Im folgenden Beispiel
+		ist ein Brother DCP-116C als Netzwerkdrucker unter der Adresse 192.168.0.100 angebunden.
+
+	  <figure id="bestpractice-migrate-print">
+		<title>Zu migrierender Drucker</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/print-migrate-de.png"/>
+	  </figure>
+
+		Für diese Druckerfreigabe wird nun in der Druckerverwaltung der &ucsUMC; ein Drucker
+		angelegt. Das Drucker-Modul bietet vielfältige Möglichkeiten, die im UCS-Handbuch
+		dokumentiert sind (TODOREF), für die Übernahme der Druckerfreigaben reichen aber wenige Einstellungen
+		aus. Die folgenden Werte müssen beim Anlegen der Drucker im UMC-Modul
+		<guimenu>Drucker</guimenu> min. angelegt werden:
+
+		<itemizedlist>
+		  <listitem><simpara>
+			<emphasis>Name</emphasis>: Der Name, den die Druckerfreigabe unter Windows verwendete. Der Name
+			muss nicht notwendigerweise identisch sein, um Irritationen bei den Benutzern zu
+			minimieren ist es aber empfehlenswert. Die
+			Regeln für den Druckerfreigaben sind unter UCS strikter als in AD; wenn der unter Windows
+			verwendete Name nicht anwendbar ist, kann unter <guimenu>Samba-Name</guimenu> ein
+			zusätzlicher Name konfiguriert, der beim Zugriff von Windows-Clients angezeigt wird.
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			<emphasis>Server</emphasis>: Der UCS-Server, der die Druckerfreigabe bereitstellen soll.
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			<emphasis>Verbindung</emphasis>: Der Drucker kann entweder lokal an den Druckserver
+			angeschlossen sein oder auf einen IP-fähigen Drucker zugreifen. Das Format
+			<emphasis>Protokoll</emphasis> und das <emphasis>Ziel</emphasis> unterscheiden sich je
+			nach Protokoll. Das genaue Format ist im UCS-Handbuch unter TODOREF dokumentiert.
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			<emphasis>Drucker-Hersteller</emphasis> und <emphasis>Drucker-Modell</emphasis>: Das
+			UCS-Drucksystem basiert auf CUPS. Die technischen Fähigkeiten eines Druckers werden in
+			sogenannten PPD-Dateien spezifiziert. In diesen Dateien ist beispielsweise festgehalten,
+			ob ein Drucker farbig drucken kann, ob ein beidseitiger Druck möglich ist, welche
+			Papierschächte vorhanden sind, welche Auflösungen unterstützt und welche
+			Druckerbefehlssprachen unterstützt werden (z.B. PCL oder Postscript). Hier muss der
+			entsprechende Drucker ausgewählt werden.
+		  </simpara></listitem>
+		</itemizedlist>
+	  </para>
+
+	  <para>
+		Wenn auf dem Windows-Druckserver serverseitig Drucker-Treiber hinterlegt wurden, müssen
+		diese für den UCS-Druckserver erneut hochgeladen werden. Das Vorgehen dazu ist in TODOREF im
+		UCS-Handbuch dokumentiert. 
+	  </para>
+
+	  <para>
+		Anschließend sollte von einem Windows-Client der Domäne eine Testseite über den migrierten
+		Drucker ausgedruckt werden.
+	  </para>
+
+	  <para>
+		Die migrierten Druckerfreigaben können anschließent auf dem Windows-Server entfernt
+		werden. Dazu muss unter <guimenu>Start -> Verwaltung -> Druckverwaltung</guimenu> im
+		Kontextmenü der migrierten Freigabe die Option <guimenu>Löschen</guimenu> gewählt werden.
+	  </para>
+	</section>
+
+	<section id="bestpractice:migration:appcenter">
+	  <title>Migration weiterer Dienste (z.B. Microsoft Exchange)</title>
+
+	  <para>
+		Wenn auf dem AD-Server Microsoft Exchange betrieben wird, besteht die Möglichkeit auf eine
+		Groupware aus dem Univention App Center zu migrieren. Diese sind im Univention App Center
+		in der Sektion <emphasis>Collaboration</emphasis> zu finden. Diese Groupware-Lösungen
+		werden von externen Anbietern bereitgestellt und mit Support versorgt.
+	  </para>
+	</section>
+  </section>
+
+
+
 
 </chapter>
