@@ -7,6 +7,6 @@ version: [1,2]
 desc: |
   This update fixes a replication problem, when an object is removed and
   re-created at the same location.
-  This happend when a failing listener module prevents the removal of the
+  This happened when a failing listener module prevents the removal of the
   object from the listener cache, which is used to track objects being moved.
 bug: [35261]

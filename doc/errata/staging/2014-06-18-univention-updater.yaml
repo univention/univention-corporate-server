@@ -5,11 +5,11 @@ src: univention-updater
 fix: 9.0.41-4.1260.201407041523
 version: [2]
 desc: |
-  This update fixes serveral issues:
+  This update fixes several issues:
   * The local UCR variable uuid/license is now removed if the key ID is missing
     in the UCS license.
   * univention-add-app no longer registers a link on the UCS startsite and
     removes the component again if called with --master (just like the App
     Center module)
-  * The component installation status is now transferred via apt-get user agent.
+  * The component installation status is now transferred via the apt user agent.
 bug: [34809, 35022, 33807]
