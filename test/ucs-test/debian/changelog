@@ -1,3 +1,9 @@
+ucs-test (4.0.166-53) unstable; urgency=low
+
+  * udm.py#stop_cli_server(): really catch IOError (Bug #35220)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 08 Jul 2014 11:25:10 +0200
+
 ucs-test (4.0.166-52) unstable; urgency=low
 
   * 60_umc-system/80_umc-service-license: a test for UMC
