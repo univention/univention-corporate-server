@@ -3,7 +3,7 @@ release: "3.2"
 version: [1, 2]
 scope: ucs_3.2-0-errata3.2-2
 src: linux
-fix: 3.10.11-1.68.201407011355
+fix: 3.10.11-1.72.201407070823
 desc: |
  The Linux kernel in Univention Corporate Server has been updated to 3.10.46.
  This provides many bugfixes and also addresses the following security
@@ -31,6 +31,7 @@ desc: |
  * Integer overflow when processing lz4 compressed kernel images
  * Various information disclosure, use-after-frees and integer 
    overflows in ALSA user controls
+ * Privilege escalation in ptrace on amd64
  In addition a patch was integrated which fixes a kernel oops in the Xen netback
  driver.
 note: This is the first part of the fix, which provides the new kernel package.
@@ -66,5 +67,6 @@ cve:
  - CVE-2014-4654
  - CVE-2014-4653
  - CVE-2014-4652
+ - CVE-2014-4699
 
 
