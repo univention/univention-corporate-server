@@ -1966,8 +1966,7 @@ immer in dieser Gruppe Mitglied.
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Ein Backup des/der AD-Server(s) sollte durchgeführt werden (wenn der AD-Server
-		  virtualisiert betrieben wird, kann ein Snapshot erfolgen).
+		  Ein Backup des/der AD-Server(s) sollte durchgeführt werden.
 		</simpara></listitem>
 
 		<listitem><simpara>

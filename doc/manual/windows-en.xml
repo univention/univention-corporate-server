@@ -1608,8 +1608,7 @@ The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are e
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  A backup of the AD server(s) should be performed. If the AD server is running on a
-		  virtualization solution, a snapshot should be made. 
+		  A backup of the AD server(s) should be performed.
 		</simpara></listitem>
 
 		<listitem><simpara>
