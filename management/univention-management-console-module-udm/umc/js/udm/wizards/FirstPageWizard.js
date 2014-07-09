@@ -46,6 +46,8 @@ define([
 		superordinates: null,
 		templates: null,
 
+		_canContinue: null, // deferred which indicates if any of the pages in this wizard should be displayed or not
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this._canContinue = new Deferred();
@@ -89,6 +91,7 @@ define([
 
 		updateObjectType: function() {
 			// make sure that object type is consistent and ad page gets hidden
+			// this is only necessary in navigation flavor because there the AD warning is the first page and varies on the selected object type
 			var form = this._pages['firstPage']._form;
 			var objectTypeWidget = form.getWidget('objectType');
 			if (objectTypeWidget) {
@@ -109,6 +112,8 @@ define([
 		},
 
 		shouldShowOptionSelectionPage: function() {
+			// we have to show the page if any of the widgets comboboxes (e.g. object type, position, ...)
+			// has more than one possible choice
 			var form = this._pages['firstPage']._form;
 			var formNecessary = false;
 			tools.forIn(form._widgets, function(iname, iwidget) {
@@ -124,29 +129,50 @@ define([
 
 		next: function(currentPage) {
 			var next = this.inherited(arguments);
-			return (next && !this._pages[next].get('disabled') && next) || currentPage;
+			if (next) {
+				if (!this._pages[next].get('disabled')) {
+					return next;
+				} else if (next !== currentPage) {
+					var next2 = this.next(next);
+					if (next2 !== next) {
+						return next2;
+					}
+				}
+			}
+			return currentPage;
 		},
+
 		previous: function(currentPage) {
 			var prev = this.inherited(arguments);
-			return (prev && !this._pages[prev].get('disabled') && prev) || currentPage;
+			if (prev) {
+				if (!this._pages[prev].get('disabled')) {
+					return prev;
+				} else if (prev != currentPage) {
+					var prev2 = this.previous(prev);
+					if (prev2 !== prev) {
+						return prev2;
+					}
+				}
+			}
+			return currentPage;
 		},
+
 		hasNext: function(currentPage) {
 			return this.next(currentPage) != currentPage;
 		},
+
 		hasPrevious: function(currentPage) {
-			if (!this.shouldShowOptionSelectionPage()) {
-				return false;
-			}
 			return this.previous(currentPage) != currentPage;
 		},
 
 		hideOptionSelectionPage: function() {
-			//this._pages['firstPage'].set('disabled', true);
+			this._pages['firstPage'].set('disabled', true);
 			this.selectChild(this._pages.activeDirectoryPage);
 		},
 
 		hideActiveDirectoryPage: function() {
 			this._pages['activeDirectoryPage'].set('disabled', true);
+			this.selectChild(this._pages.firstPage);
 		},
 
 		showActiveDirectoryPage: function() {

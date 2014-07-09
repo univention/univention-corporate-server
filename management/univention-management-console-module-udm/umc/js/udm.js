@@ -1438,6 +1438,9 @@ define([
 				this._newObjectDialog = null;
 			}));
 			onHandlerRegistered.resolve();
+			if (!this._newObjectDialog) {
+				return; // already destroyed
+			}
 			this.standbyDuring(this._newObjectDialog.canContinue);
 			this._newObjectDialog.canContinue.then(
 				lang.hitch(this, function() {

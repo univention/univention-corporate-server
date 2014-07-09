@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.97-29) unstable; urgency=low
+
+  * Bug #34093: fix displaying of new object dialogue in specific
+  	circumstances
+
+ -- Florian Best <best@univention.de>  Wed, 09 Jul 2014 14:27:12 +0200
+
 univention-management-console-module-udm (4.0.97-28) unstable; urgency=medium
 
   * Bug #34246: reverted commit r50381
