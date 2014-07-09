@@ -210,7 +210,7 @@
 
 		<para>
 			If a live migration of virtual machines between different virtualization servers is planned, the storage pool must be stored on a system which can be accessed by all virtualization servers (e.g., an NFS share or an iSCSI target).
-			This is described in <biblioref linkend="uvmm-technical-details"/>.
+			This is described in <xref linkend="uvmm::storagepools"/>.
 		</para>
 		<para>
 			Image files are created as sparse files with the specified size, i.e., these files only grow when they are used and then up to the maximally specified size and thus initially require only minimal disk space.
