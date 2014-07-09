@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-quota
-fix: 8.0.6-7.127.201407021447
+fix: 8.0.6-8.128.201407090947
 version: [2]
 desc: |
  * The quota for the root (/) partition can now be configured via the 
