@@ -6,9 +6,13 @@ fix: 6.0.24-16.791.201407081642
 version: [2]
 desc: |
   This update fixes the following issues:
-  * The internal cache of UMC modules in the UMC Server is now invalidated before they are requested.
-  * Changes of system clock (e.g. due to NTP updates) will not make UMC processes die by timeout anymore.
-  * It is now possible for UMC modules to provide a user friendly error message when initialization failed.
-  * The UMC server won't die if it gets a special kind of operationsets
-  * The error handling of requests have been improoved.
+  * The internal cache of UMC modules in the UMC Server is now invalidated
+    before they are requested.
+  * Changes of system clock (e.g. due to NTP updates) will not make UMC
+    processes die by timeout anymore.
+  * It is now possible for UMC modules to provide a user friendly error message
+    when initialization failed.
+  * The UMC server parses operation set strings more carefully now to avoid
+    server crashes.
+  * The error handling of requests have been improved.
 bug: [34723, 34243, 34105, 25196, 34244]
