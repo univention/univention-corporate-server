@@ -2,13 +2,12 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-management-console-module-udm
-fix: 4.0.97-27.451.201407080957
+fix: 4.0.97-28.452.201407091101
 version: [2]
 desc: |
   This update fixes the following issues:
-  * Upon opening a non-existent LDAP object an error message is shown instead of a traceback.
   * The property that is used to in the first column of the grid ("Name") is
     now configurable via UCR
   * Some UDM attributes are shown as readonly if the domain is part of an Active Directory Domain
   * Display a warning in Active Directory Mode before creating objects which are not synchronized back to AD.
-bug: [34246, 34200, 34092, 34093]
+bug: [34200, 34092, 34093]
