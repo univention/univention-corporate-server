@@ -104,7 +104,7 @@ def get_mountpoints_with_quota(user, shares):
 	# Set updatequota flag to True if setquota has to be called.
 	for share, attrs in shares.iteritems():
 		if not attrs['mountpoint'] in _mountpoints:
-			# first time we see this MP while filling the dict
+			# We do not know this MP, so get its quota settings
 			# check what the current userquota is (0 0 0 0 is unlimited/undefined)
 			for line in mtab:
 				current_mountpoint = line.split()[1]  # shares are defined on mountpoints
@@ -125,6 +125,11 @@ def get_mountpoints_with_quota(user, shares):
 									'inodeHardLimit': quota_values[7],
 									'updatequota': initialValue
 											}
+		
+		# The mountpoint will not be in _mountpoints if no quota is activated for it
+		# Continue with next share definition
+		if not attrs['mountpoint'] in _mountpoints:
+			continue
 
 		# If the policy flag for updating the quota is set, set flag that the quota should be set.
 		if attrs['reapplyQuota']:
