@@ -3,7 +3,7 @@ release: "3.2"
 version: [2]
 scope: ucs_3.2-0-errata3.2-2
 src: openldap
-fix: 2.4.35-1.162.201407020834
+fix: 2.4.35-1.163.201407092121
 desc: |
  This update fixes the following issues:
  * The OpenLDAP schema for NIS (nis.schema) has been altered:
@@ -12,4 +12,4 @@ desc: |
  * A new OpenLDAP overlay module has been added: pwd_scheme_kinit. It
    allows to set the userPassword attribute to {KINIT} which redirects
    the authentication to a kerberos server.
-bug: [35088,35092]
+bug: [35329,35092]
