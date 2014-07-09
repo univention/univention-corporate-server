@@ -1,3 +1,12 @@
+univention-system-setup (7.0.69-10) unstable; urgency=low
+
+  * Added welcome page with instructions to set a root password
+    before accessing the setup wizard (Bug #34388)
+  * Welcome page is now the apache default site when installing
+    univention-system-setup-boot
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 09 Jul 2014 13:54:33 +0200
+
 univention-system-setup (7.0.69-9) unstable; urgency=low
 
   * do not announce successfull request processing before the request was
