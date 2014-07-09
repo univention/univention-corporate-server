@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.6-1) unstable; urgency=low
+
+  * proof_uniqueMembers: simplified last change (Bug #33030)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 09 Jul 2014 16:14:09 +0200
+
 univention-directory-manager-modules (10.0.5-1) unstable; urgency=low
 
   * proof_uniqueMembers: also remove empty uniqueMember attributes
