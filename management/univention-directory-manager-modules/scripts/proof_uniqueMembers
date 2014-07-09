@@ -150,6 +150,7 @@ def check_groups_by_dn(conn, group_dn, group):
 		try:
 			member_filter, base = member_dn.split(',', 1)
 		except ValueError:
+			remmembers.add('')
 			continue
 
 		try:

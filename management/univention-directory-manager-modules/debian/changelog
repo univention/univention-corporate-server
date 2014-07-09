@@ -1,9 +1,16 @@
+univention-directory-manager-modules (9.0.76-14) unstable; urgency=low
+
+  * proof_uniqueMembers: also remove empty uniqueMember attributes
+  (Bug #33030)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 09 Jul 2014 11:54:02 +0200
+
 univention-directory-manager-modules (9.0.76-13) unstable; urgency=low
 
   * proof_uniqueMembers: do not crash on empty uniqueMember attribute
   (Bug #33030)
 
- -- Lukas Walter <walter@univention.de>  Thu, 03 Jul 2014 15:08:11 +0200
+ -- Lukas Walter <walter@univention.de>  Tue, 08 Jul 2014 15:08:11 +0200
 
 univention-directory-manager-modules (9.0.76-12) unstable; urgency=low
 
