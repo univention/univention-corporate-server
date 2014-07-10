@@ -1,3 +1,10 @@
+univention-management-console (6.0.24-19) unstable; urgency=low
+
+  * Bug #34243: also reload translation gettext instance when reloading
+  	modules
+
+ -- Florian Best <best@univention.de>  Thu, 10 Jul 2014 17:19:38 +0200
+
 univention-management-console (6.0.24-18) unstable; urgency=low
 
   * Bug #34243: add possibility to translate messages before the initial SET

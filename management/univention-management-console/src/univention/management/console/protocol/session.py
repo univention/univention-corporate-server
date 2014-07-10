@@ -231,6 +231,9 @@ class Processor( signals.Provider ):
 		self.acls = LDAP_ACLs(self.lo, self.__username, ucr['ldap/base'])
 		self.__command_list = moduleManager.permitted_commands(ucr['hostname'], self.acls)
 
+	def _reload_i18n(self):
+		self.i18n.set_locale(str(self.i18n.locale))
+
 	def _init_ldap_connection(self):
 		try:
 			# get LDAP connection with machine account
@@ -389,6 +392,7 @@ class Processor( signals.Provider ):
 			if isinstance(msg.options, dict) and msg.options.get('reload'):
 				CORE.info('Reloading ACLs for existing session')
 				self._reload_acls_and_permitted_commands()
+				self._reload_i18n()
 
 			modules = []
 			for id, module in self.__command_list.items():
