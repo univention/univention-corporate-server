@@ -100,7 +100,7 @@ class ModuleServer( Server ):
 				error = '\n'.join((_('The requested module %r does not exists.') % (modname,),
 					_('The module may have been removed recently.'),
 					_('Please relogin to the Univention Management Console to see if the error persists.'),
-					_('Further information can be found in the logfile %s') % ('/var/log/univention/management-console-module-%s.' % (modname,),),
+					_('Further information can be found in the logfile %s.') % ('/var/log/univention/management-console-module-%s.log' % (modname,),),
 				))
 			self.__init_error_message = error
 		else:

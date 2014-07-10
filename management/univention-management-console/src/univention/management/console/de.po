@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-07-10 14:14+0200\n"
+"POT-Creation-Date: 2014-07-10 16:49+0200\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,8 +79,11 @@ msgstr ""
 #: univention/management/console/protocol/modserver.py:97
 #, python-format
 msgid ""
-"Failed to load module %s: %s\n%s"
-msgstr "Konnte das Modul %s nicht laden: %s\n%s"
+"Failed to load module %s: %s\n"
+"%s"
+msgstr ""
+"Konnte das Modul %s nicht laden: %s\n"
+"%s"
 
 #: univention/management/console/protocol/definitions.py:111
 msgid "Forbidden"
@@ -178,7 +181,9 @@ msgstr "Eine oder mehrere Optionen für %s fehlen: %s"
 msgid ""
 "Please relogin to the Univention Management Console to see if the error "
 "persists."
-msgstr "Bitte erneut an der Univention Management Console einloggen um zu sehen, ob der Fehler bestehen bleibt."
+msgstr ""
+"Bitte erneut an der Univention Management Console einloggen um zu sehen, ob "
+"der Fehler bestehen bleibt."
 
 #: univention/management/console/modules/mixins.py:129
 msgid "Please wait for operation to finish"
@@ -323,68 +328,3 @@ msgstr ""
 #: univention/management/console/protocol/message.py:246
 msgid "error parsing UMCP message body"
 msgstr "Fehler beim Parsen des UMCP-Nachrichtenrumpfes"
-
-#~ msgid "Attribute %s just available for MIME type %s"
-#~ msgstr "Das Attribut %s ist nur verfügar für den MIME-Typ %s"
-
-#~ msgid ""
-#~ "Base type verification failed (type %(base)s): function to verify syntax "
-#~ "could not be found (%(function)s)"
-#~ msgstr ""
-#~ "Basistypprüfung is fehlgeschlagen (Typ %(base)s): Es konnte keine "
-#~ "Überprüfungsfunktion gefunden werden"
-
-#~ msgid ""
-#~ "Base type verification failed (type %(base)s): no verify function defined"
-#~ msgstr ""
-#~ "Basistypprüfung is fehlgeschlagen (Typ %(base)s): Es ist keine "
-#~ "Überprüfungsfunktion definiert"
-
-#~ msgid "Command not allowed"
-#~ msgstr "Kommando ist nicht erlaubt"
-
-#~ msgid ""
-#~ "Execution of verification function %(function)s for syntax %(base)s "
-#~ "failed:"
-#~ msgstr ""
-#~ "Die Ausführung der Überprüfungsfunktion %(function)s für die Syntax "
-#~ "%(base)s ist fehlgeschlagen:"
-
-#~ msgid "Invalid regular expression (%(regex)s): %(message)s"
-#~ msgstr "Ungültiger regulärer Ausdruck (%(regex)s): %(message)s"
-
-#~ msgid "No valid choices specified"
-#~ msgstr "Es wurden keine Auswahlmöglichkeiten definiert"
-
-#~ msgid "Part of the body is missing"
-#~ msgstr "Ein Teil des Nachrichtenrumpfes fehlt"
-
-#~ msgid "Unknown syntax %s"
-#~ msgstr "Unbekannte Syntax %s"
-
-#~ msgid "Value contains invalid characters"
-#~ msgstr "Im Wert sind ungültige Zeichen enthalten"
-
-#~ msgid "Value does not match any of the specified choices"
-#~ msgstr "Der Wert entspricht keinem der angegebenen Auswahlmöglichkeiten"
-
-#~ msgid "Value is not a dictionary"
-#~ msgstr "Es handelt sich nicht um ein Dictionary"
-
-#~ msgid "Value is not a list"
-#~ msgstr "Es ist keine Liste"
-
-#~ msgid "Value is not an boolean"
-#~ msgstr "Es ist kein bool'scher Wert"
-
-#~ msgid "Value is not an integer"
-#~ msgstr "Es ist kein ganzzahliger Wert"
-
-#~ msgid "Value is not n floating point number"
-#~ msgstr "Es ist keine Gleitkommazahl"
-
-#~ msgid "Value is not of type string"
-#~ msgstr "Der Wert ist keine Zeichenkette"
-
-#~ msgid "name"
-#~ msgstr "Name"
