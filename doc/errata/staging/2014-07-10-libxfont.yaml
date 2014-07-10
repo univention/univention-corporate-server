@@ -1,0 +1,17 @@
+product: ucs
+release: "3.2"
+version: [1, 2]
+scope: ucs_3.2-0-errata3.2-2
+src: libxfont
+fix: 1:1.4.1-5.36.201407101634
+desc: |
+ Multiple security issues have been found in libxfont:
+ * Integer overflow in font parsing
+ * Mising input sanitising and integer overflows in the handling of XFS replies
+ This update fixes these vulnerabilities.
+note:
+bug: [34827]
+cve:
+ - CVE-2014-0209
+ - CVE-2014-0210
+ - CVE-2014-0211
