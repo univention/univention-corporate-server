@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.97-31) unstable; urgency=low
+
+  * Bug #34244: Add translation of the error message.
+
+ -- Florian Best <best@univention.de>  Thu, 10 Jul 2014 09:46:31 +0200
+
 univention-management-console-module-udm (4.0.97-30) unstable; urgency=low
 
   * Bug #34244: display a human readable error message when the LDAP-Server

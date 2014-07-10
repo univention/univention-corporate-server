@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-07-09 10:51+0200\n"
+"POT-Creation-Date: 2014-07-10 09:37+0200\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,69 +12,93 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/udm/__init__.py:301
+#: umc/python/udm/udm_ldap.py:113
+#, python-format
+msgid " on %s"
+msgstr " auf %s"
+
+#: umc/python/udm/__init__.py:314
 #, python-format
 msgid "%($dn$)s moved"
 msgstr "%($dn$)s verschoben"
 
-#: umc/python/udm/__init__.py:1144
+#: umc/python/udm/__init__.py:1157
 #, python-format
 msgid "An error occurred while sending the request: %s"
 msgstr "Ein Fehler ist während des Anforderns aufgetreten: %s"
 
-#: umc/python/udm/__init__.py:1128
+#: umc/python/udm/udm_ldap.py:109
+msgid "Cannot connect to the LDAP-Service."
+msgstr "Konnte nicht zum LDAP-Dienst verbinden."
+
+#: umc/python/udm/__init__.py:1141
 msgid "Cannot parse License from LDAP"
 msgstr "Fehler beim Auslesen der Lizenz aus dem LDAP"
 
-#: umc/python/udm/__init__.py:372
+#: umc/python/udm/__init__.py:385
 #, python-format
 msgid "Could not find a matching UDM module for the LDAP object %s"
 msgstr ""
 "Es konnte kein passendes UDM-Modul für das LDAP-Object %s gefunden werden"
 
-#: umc/python/udm/udm_ldap.py:333 umc/python/udm/__init__.py:491
+#: umc/python/udm/__init__.py:504 umc/python/udm/udm_ldap.py:366
 #, python-format
 msgid "Could not find an UDM module for the superordinate object %s"
 msgstr ""
 "Es konnte kein UDM-Modul für das übergeordnete Objekt %s gefunden werden"
 
-#: umc/python/udm/__init__.py:308
+#: umc/python/udm/__init__.py:321
 msgid "Could not identify the given LDAP object"
 msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 
-#: umc/python/udm/__init__.py:330 umc/python/udm/__init__.py:362
+#: umc/python/udm/udm_ldap.py:118
+msgid ""
+"If the problem persists additional hints about the cause can be found in the "
+"following log file:"
+msgstr "Wenn das Problem bestehen bleibt können weitere Hinweise über die Ursache in der folgenden Protokolldatei gefunden werden:"
+
+#: umc/python/udm/udm_ldap.py:117
+msgid "Install the latest software updates"
+msgstr "Installieren Sie die aktuellsten Softwareaktualisierungen"
+
+#: umc/python/udm/__init__.py:343 umc/python/udm/__init__.py:375
 msgid "Invalid object definition"
 msgstr "Ungültige Objektdefinition"
 
-#: umc/python/udm/__init__.py:368
+#: umc/python/udm/__init__.py:381
 msgid "LDAP DN of object missing"
 msgstr "Die LDAP-DN des Objektes fehlt"
 
-#: umc/python/udm/__init__.py:292
+#: umc/python/udm/__init__.py:305
 #, python-format
 msgid "LDAP error: %s."
 msgstr "LDAP-Fehler: %s."
 
-#: umc/python/udm/__init__.py:403
+#: umc/python/udm/__init__.py:416
 msgid "LDAP object could not be identified"
 msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 
-#: umc/python/udm/__init__.py:149
+#: umc/python/udm/__init__.py:162
 msgid "License not found. During this session add and modify are disabled."
 msgstr ""
 "Keine Lizenz gefunden. Während dieser Sitzung ist das Hinzufügen und "
 "Bearbeiten von Objekten nicht möglich."
 
+#: umc/python/udm/udm_ldap.py:112
+#, python-format
+msgid "Make sure the domaincontroller master is running and reachable from %s"
+msgstr "Stellen Sie sicher, dass der Domänencontroller master läuft und von %s erreichbar ist."
+
 #: umc/python/udm/tools.py:68
 msgid "More than one object has been found."
 msgstr "Es wurde mehr als ein Objekt gefunden"
 
-#: umc/python/udm/__init__.py:301
+#: umc/python/udm/__init__.py:314
 #, python-format
 msgid "Moving %d object(s)"
 msgstr "Verschiebe %d Objekt(e)"
 
-#: umc/python/udm/__init__.py:101
+#: umc/python/udm/__init__.py:109
 msgid "No flavor or valid UDM module name specified"
 msgstr "Keine gültige Variante oder existierendes UDM-Modul wurden angegeben"
 
@@ -82,28 +106,34 @@ msgstr "Keine gültige Variante oder existierendes UDM-Modul wurden angegeben"
 msgid "No license has been found."
 msgstr "Es wurde keine Lizenz gefunden"
 
-#: umc/python/udm/udm_ldap.py:760
+#: umc/python/udm/udm_ldap.py:793
 msgid "None"
 msgstr "Keins"
 
-#: umc/python/udm/udm_ldap.py:563
+#: umc/python/udm/udm_ldap.py:596
 msgid "Objects referencing this policy object"
 msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
 
-#: umc/python/udm/__init__.py:554
+#: umc/python/udm/__init__.py:567
 msgid "PDF document"
 msgstr "PDF Dokument"
 
-#: umc/python/udm/udm_ldap.py:272 umc/python/udm/__init__.py:830
+#: umc/python/udm/__init__.py:843 umc/python/udm/udm_ldap.py:305
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
 
-#: umc/python/udm/udm_ldap.py:563
+#: umc/python/udm/udm_ldap.py:596
 msgid "Referencing objects"
 msgstr "Referenzierende Objekte"
 
-#: umc/python/udm/__init__.py:270
+#: umc/python/udm/udm_ldap.py:113 umc/python/udm/udm_ldap.py:115
+msgid ""
+"Restart the LDAP service either on command line via \"invoke-rc.d slapd "
+"restart\" or with the system services UMC module"
+msgstr "Starten Sie den LDAP-Dienst entweder per Kommandozeile über \"invoke-rc.d slapd restart\" oder mit dem Systemdienste UMC Modul neu."
+
+#: umc/python/udm/__init__.py:283
 #, python-format
 msgid ""
 "The LDAP base of the license does not match the LDAP base of the UCS domain "
@@ -112,9 +142,13 @@ msgstr ""
 "Die LDAP-Basis der Lizenz stimmt nicht mit der LDAP-Basis der UCS-Domäne "
 "(%s) überein."
 
-#: umc/python/udm/__init__.py:306
+#: umc/python/udm/__init__.py:319
 msgid "The destination is missing"
 msgstr "Das Ziel fehlt"
+
+#: umc/python/udm/udm_ldap.py:110
+msgid "The following steps can help to solve this problem:"
+msgstr "Die folgenden Schritte können helfen, dass Problem zu beheben:"
 
 #: umc/python/udm/tools.py:72
 #, python-format
@@ -125,12 +159,12 @@ msgstr ""
 "Die Lizenz konnte nicht eingespielt werden. Die LDAP-Basis stimmt nicht "
 "überein (erwartet: %s, gefunden: %s)."
 
-#: umc/python/udm/udm_ldap.py:286 umc/python/udm/udm_ldap.py:300
+#: umc/python/udm/udm_ldap.py:319 umc/python/udm/udm_ldap.py:333
 #, python-format
 msgid "The property %s has an invalid value: %s"
 msgstr "Die Eigenschaft '%s' hat einen nicht gültigen Wert: %s"
 
-#: umc/python/udm/udm_ldap.py:444
+#: umc/python/udm/udm_ldap.py:477
 msgid ""
 "The query you have entered timed out. Please narrow down your search by "
 "specifiying more query parameters"
@@ -138,7 +172,7 @@ msgstr ""
 "Die angeforderte Suche lieferte zu viele Ergebnisse und wurde abgebrochen. "
 "Bitte schränken Sie die Suche durch weitere Suchparameter ein."
 
-#: umc/python/udm/udm_ldap.py:446
+#: umc/python/udm/udm_ldap.py:479
 #, python-format
 msgid ""
 "The query you have entered yields too many matching entries. Please narrow "
@@ -151,11 +185,11 @@ msgstr ""
 "Begrenzung der Anzahl an Treffern beträgt %s und kann mit der UCR-Variable "
 "directory/manager/web/sizelimit angepasst werden."
 
-#: umc/python/udm/__init__.py:310
+#: umc/python/udm/__init__.py:323
 msgid "This object can not be moved"
 msgstr "Das Objekt kann nicht verschoben werden"
 
-#: umc/python/udm/__init__.py:179
+#: umc/python/udm/__init__.py:192
 msgid ""
 "You are currently using the \"Free for personal use\" edition of Univention "
 "Corporate Server."
@@ -163,7 +197,7 @@ msgstr ""
 "Sie verwenden derzeit die \"Free for personal use\" Ausgabe von Univention "
 "Corporate Server."
 
-#: umc/python/udm/__init__.py:169
+#: umc/python/udm/__init__.py:182
 msgid ""
 "You have too many DVS client accounts for your license. During this session "
 "add and modify are disabled."
@@ -171,7 +205,7 @@ msgstr ""
 "Sie haben mehr DVS-Client-Konten, als Ihre Lizenz erlaubt. Während dieser "
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:167
+#: umc/python/udm/__init__.py:180
 msgid ""
 "You have too many DVS user accounts for your license. During this session "
 "add and modify are disabled."
@@ -179,7 +213,7 @@ msgstr ""
 "Sie haben mehr DVS-Benutzerkonten, als Ihre Lizenz erlaubt. Während dieser "
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:155
+#: umc/python/udm/__init__.py:168
 msgid ""
 "You have too many client accounts for your license. During this session add "
 "and modify are disabled."
@@ -187,7 +221,7 @@ msgstr ""
 "Sie haben mehr Benutzerkonten, als Ihre Lizenz erlaubt. Während dieser "
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:161
+#: umc/python/udm/__init__.py:174
 msgid ""
 "You have too many corporate client accounts for your license. During this "
 "session add and modify are disabled."
@@ -196,7 +230,7 @@ msgstr ""
 "Während dieser Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht "
 "möglich."
 
-#: umc/python/udm/__init__.py:163
+#: umc/python/udm/__init__.py:176
 msgid ""
 "You have too many desktop accounts for your license. During this session add "
 "and modify are disabled."
@@ -204,7 +238,7 @@ msgstr ""
 "Sie haben mehr Desktop Rechner, als Ihre Lizenz erlaubt. Während dieser "
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:165
+#: umc/python/udm/__init__.py:178
 msgid ""
 "You have too many groupware accounts for your license. During this session "
 "add and modify are disabled."
@@ -212,7 +246,7 @@ msgstr ""
 "Sie haben mehr Groupware Konten, als Ihre Lizenz erlaubt. Während dieser "
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:159
+#: umc/python/udm/__init__.py:172
 msgid ""
 "You have too many managed client accounts for your license. During this "
 "session add and modify are disabled."
@@ -220,7 +254,7 @@ msgstr ""
 "Sie haben mehr Managed-Client-Konten, als Ihre Lizenz erlaubt. Während "
 "dieser Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:157
+#: umc/python/udm/__init__.py:170
 msgid ""
 "You have too many server accounts for your license. During this session add "
 "and modify are disabled."
@@ -228,7 +262,7 @@ msgstr ""
 "Sie haben mehr Server-Konten, als Ihre Lizenz erlaubt. Während dieser "
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:151 umc/python/udm/__init__.py:153
+#: umc/python/udm/__init__.py:164 umc/python/udm/__init__.py:166
 msgid ""
 "You have too many user accounts for your license. During this session add "
 "and modify are disabled."
@@ -236,7 +270,7 @@ msgstr ""
 "Sie haben mehr Benutzerkonten, als Ihre Lizenz erlaubt. Während dieser "
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:177
+#: umc/python/udm/__init__.py:190
 msgid ""
 "Your license does not allow modifications. During this session add and "
 "modify are disabled."
@@ -244,14 +278,14 @@ msgstr ""
 "Die installierte Lizenz erlaubt keine Änderungen. Während dieser Sitzung ist "
 "das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:171
+#: umc/python/udm/__init__.py:184
 msgid ""
 "Your license is expired. During this session add and modify are disabled."
 msgstr ""
 "Die Lizenz ist abgelaufen. Während dieser Sitzung ist das Hinzufügen und "
 "Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:173
+#: umc/python/udm/__init__.py:186
 msgid ""
 "Your license is not valid for your LDAP-Base. During this session add and "
 "modify are disabled."
@@ -259,14 +293,14 @@ msgstr ""
 "Die installierte Linzenz wurde nicht für diese Basis-DN ausgestellt. Während "
 "dieser Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:175
+#: umc/python/udm/__init__.py:188
 msgid ""
 "Your license is not valid. During this session add and modify are disabled."
 msgstr ""
 "Ihre Lizenz ist nicht gültig. Während dieser Sitzung ist das Hinzufügen und "
 "Bearbeiten von Objekten nicht möglich."
 
-#: umc/python/udm/__init__.py:181
+#: umc/python/udm/__init__.py:194
 msgid ""
 "Your license status could not be validated. Thus, you are not eligible to "
 "support and maintenance. If you have bought a license, please contact "
@@ -277,7 +311,7 @@ msgstr ""
 "Sie über eine Lizenz verfügen, wenden Sie sich bitte an Univention oder "
 "Ihren Univention Partner."
 
-#: umc/python/udm/__init__.py:558
+#: umc/python/udm/__init__.py:571
 msgid "text file"
 msgstr "Textdatei"
 
