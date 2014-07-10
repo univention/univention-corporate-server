@@ -69,4 +69,4 @@ override_dh_fixperms:
 	chmod +x debian/univention-pkgdb/usr/lib/univention-directory-listener/system/pkgdb.py
 
 %:
-	dh $@
+	dh $@ --with 'python_support'
