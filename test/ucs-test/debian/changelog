@@ -1,3 +1,9 @@
+ucs-test (4.0.166-55) unstable; urgency=low
+
+  * Disable re-join (Bug #34624)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Jul 2014 09:57:45 +0200
+
 ucs-test (4.0.166-54) unstable; urgency=low
 
   * Disable quota test until UCS-3.2-3 (Bug #34625)

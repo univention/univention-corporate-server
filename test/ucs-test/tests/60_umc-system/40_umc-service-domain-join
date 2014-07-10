@@ -294,6 +294,8 @@ class TestUMCDomainJoinModule(TestUMCSystem):
                            " '%s' after all pending scripts were executed"
                            % (test_script + '_copy2', test_script_state))
 
+            return  # PMH 2014-07-10: Skip join for now
+
             # case 4: clean the status file and check a complete re-join
             print("Clearing the status file and making a re-join request."
                   " (This operation may take up to 20 minutes)")
