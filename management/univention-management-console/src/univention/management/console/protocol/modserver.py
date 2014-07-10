@@ -96,6 +96,11 @@ class ModuleServer( Server ):
 		except Exception as exc:
 			error = _('Failed to import module %s: %s\n%s') % (modname, exc, traceback.format_exc())
 			MODULE.error(error)
+			if isinstance(exc, ImportError) and str(exc).startswith('No module named'):
+				error = '\n'.join(('The requested module %r does not exists.' % (modname,),
+					'This could be caused by a current removal of the module.',
+					'Please relogin to the Univention Management Console to see if the error persists.',
+				))
 			self.__init_error_message = error
 		else:
 			self.__handler.signal_connect('success', notifier.Callback(self._reply, True))
@@ -193,7 +198,7 @@ class ModuleServer( Server ):
 			resp.status = MODULE_ERR_INIT_FAILED
 			resp.message = self.__init_error_message
 			self.response(resp)
-			notifier.timer_add(2000, self._timed_out)
+			notifier.timer_add(10000, self._timed_out)
 			return
 
 		if msg.command == 'SET':
@@ -238,23 +243,20 @@ class ModuleServer( Server ):
 			if 'acls' in msg.options and 'commands' in msg.options and 'credentials' in msg.options:
 				try:
 					self.__handler.init()
-				except BaseException as e:
+				except BaseException as exc:
 					self.__handler = None
-					msg = str(e)
+					error = 'The initialization of the module failed: %s' % (exc,)
 					trace = traceback.format_exc()
 
-					MODULE.error('The init function of the module failed\n%s' % trace)
+					MODULE.error('The init function of the module failed\n%s: %s' % (exc, trace,))
 					resp.status = MODULE_ERR_INIT_FAILED
-					
-					if msg:
-						msg = 'The initialization of the module failed: %s' % msg
 
 					from ..modules import UMC_Error
-					if not isinstance(e, UMC_Error) or not msg:
-						msg = trace
+					if not isinstance(exc, UMC_Error):
+						error = trace
 
-					self.__init_error_message = msg
-					resp.message = msg
+					self.__init_error_message = error
+					resp.message = error
 
 			self.response( resp )
 			return
@@ -312,7 +314,6 @@ class ModuleServer( Server ):
 	def response( self, msg ):
 		"""Sends an UMCP response to the client"""
 		PROTOCOL.info( 'Sending UMCP RESPONSE %s' % msg.id )
-		data = str( msg )
 		self.__queue += str(msg)
 
 		if self._do_send( self.__comm ):
