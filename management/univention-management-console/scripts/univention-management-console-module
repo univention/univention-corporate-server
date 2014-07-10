@@ -33,7 +33,7 @@
 
 from univention.management.console.log import MODULE, log_init
 from univention.management.console.config import MODULE_DEBUG_LEVEL, ucr
-from univention.lib.i18n import Locale
+from univention.lib.i18n import Locale, Translation
 
 from daemon.daemon import DaemonContext
 from optparse import OptionParser
@@ -91,6 +91,8 @@ if __name__ == '__main__':
 		locale_obj = Locale( options.language )
 		locale.setlocale( locale.LC_MESSAGES, str( locale_obj ) )
 		localeok = True
+		translation = Translation('univention-management-console')
+		translation.set_language(options.language)
 	except:
 		MODULE.error( 'The specified locale is not available (cmdline: %s)' % str( locale_obj ) )
 

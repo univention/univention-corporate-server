@@ -1,3 +1,10 @@
+univention-management-console (6.0.24-18) unstable; urgency=low
+
+  * Bug #34243: add possibility to translate messages before the initial SET
+  	locale command was triggered.
+
+ -- Florian Best <best@univention.de>  Thu, 10 Jul 2014 14:25:00 +0200
+
 univention-management-console (6.0.24-17) unstable; urgency=low
 
   * Bug #34243: enhance error handling to display user friendly error messages

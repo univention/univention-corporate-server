@@ -45,9 +45,9 @@ from ..acl import ACLs
 from ..module import Module
 from ..log import MODULE, PROTOCOL
 
-from univention.lib.i18n import Locale, NullTranslation
+from univention.lib.i18n import Locale, Translation
 
-_ = NullTranslation( 'univention.management.console' ).translate
+_ = Translation( 'univention.management.console' ).translate
 
 import sys
 import traceback
@@ -94,12 +94,13 @@ class ModuleServer( Server ):
 			self.__module = __import__(file_, [], [], modname)
 			self.__handler = self.__module.Instance()
 		except Exception as exc:
-			error = _('Failed to import module %s: %s\n%s') % (modname, exc, traceback.format_exc())
+			error = _('Failed to load module %s: %s\n%s') % (modname, exc, traceback.format_exc())
 			MODULE.error(error)
-			if isinstance(exc, ImportError) and str(exc).startswith('No module named'):
-				error = '\n'.join(('The requested module %r does not exists.' % (modname,),
-					'This could be caused by a current removal of the module.',
-					'Please relogin to the Univention Management Console to see if the error persists.',
+			if isinstance(exc, ImportError) and str(exc).startswith('No module named %s' % (modname,)):
+				error = '\n'.join((_('The requested module %r does not exists.') % (modname,),
+					_('The module may have been removed recently.'),
+					_('Please relogin to the Univention Management Console to see if the error persists.'),
+					_('Further information can be found in the logfile %s') % ('/var/log/univention/management-console-module-%s.' % (modname,),),
 				))
 			self.__init_error_message = error
 		else:
@@ -245,7 +246,7 @@ class ModuleServer( Server ):
 					self.__handler.init()
 				except BaseException as exc:
 					self.__handler = None
-					error = 'The initialization of the module failed: %s' % (exc,)
+					error = _('The initialization of the module failed: %s') % (exc,)
 					trace = traceback.format_exc()
 
 					MODULE.error('The init function of the module failed\n%s: %s' % (exc, trace,))
