@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-management-console-module-udm
-fix: 4.0.97-29.453.201407091433
+fix: 4.0.97-31.455.201407100947
 version: [2]
 desc: |
   This update fixes the following issues:
@@ -10,4 +10,5 @@ desc: |
     now configurable via UCR
   * Some UDM attributes are shown as readonly if the domain is part of an Active Directory Domain
   * Display a warning in Active Directory Mode before creating objects which are not synchronized back to AD.
-bug: [34200, 34092, 34093]
+  * Display a human readable error message when the connection to the LDAP server failed.
+bug: [34200, 34092, 34093, 34244]
