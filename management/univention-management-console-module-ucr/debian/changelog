@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (4.0.0-1) unstable; urgency=low
+
+  * Bug #35145: Start UCS 4.0 development
+
+ -- Florian Best <best@univention.de>  Thu, 10 Jul 2014 17:46:19 +0200
+
 univention-management-console-module-ucr (3.0.3-2) unstable; urgency=low
 
   * Bug #33118: fix typos

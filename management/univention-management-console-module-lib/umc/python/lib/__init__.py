@@ -1,4 +1,4 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 #
 # Univention Management Console
 #  Module lib containing low-lewel commands to control the UMC server

@@ -1,3 +1,9 @@
+univention-management-console-module-ipchange (3.0.0-1) unstable; urgency=low
+
+  * Bug #35145: Start UCS 4.0 development
+
+ -- Florian Best <best@univention.de>  Thu, 10 Jul 2014 17:45:26 +0200
+
 univention-management-console-module-ipchange (2.0.5-1) unstable; urgency=low
 
   * Bug #32048: Add keywords to UMC module definition

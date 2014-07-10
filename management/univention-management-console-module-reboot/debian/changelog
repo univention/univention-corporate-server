@@ -1,3 +1,9 @@
+univention-management-console-module-reboot (4.0.0-1) unstable; urgency=low
+
+  * Bug #35145: Start UCS 4.0 development
+
+ -- Florian Best <best@univention.de>  Thu, 10 Jul 2014 17:44:48 +0200
+
 univention-management-console-module-reboot (3.0.3-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)
