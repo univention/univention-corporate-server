@@ -1,10 +1,10 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module: manages a CUPS server
 #
-# Copyright 2006-2013 Univention GmbH
+# Copyright 2006-2014 Univention GmbH
 #
 # http://www.univention.de/
 #

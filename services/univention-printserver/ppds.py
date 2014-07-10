@@ -1,11 +1,11 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
 # Univention Print Server
 #  helper script: prints out a list of univention admin commands to create
 #  settings/printermodel objects for all existing PPDs
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
