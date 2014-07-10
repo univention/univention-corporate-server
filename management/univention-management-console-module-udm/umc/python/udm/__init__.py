@@ -62,16 +62,24 @@ import univention.directory.reports as udr
 
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
-from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, set_credentials, container_modules, info_syntax_choices, search_syntax_choices_by_key
+from .udm_ldap import (
+	UDM_Error, UDM_Module, UDM_Settings, check_license,
+	ldap_dn2path, get_module, read_syntax_choices, list_objects,
+	LDAP_Connection, set_credentials, container_modules,
+	info_syntax_choices, search_syntax_choices_by_key,
+	LDAP_ServerDown
+)
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
 
 _ = Translation( 'univention-management-console-module-udm' ).translate
 
+
 class Instance( Base, ProgressMixin ):
+
 	def __init__( self ):
 		Base.__init__( self )
 		self.settings = None
-		self.reports = None
+		self.reports_cfg = None
 		self.modules_with_childs = []
 		install_opener(ucr)
 
@@ -114,7 +122,7 @@ class Instance( Base, ProgressMixin ):
 		return self._get_module(object_type, request.flavor)
 
 	def _check_thread_error( self, thread, result, request ):
-		"""Checks if the thread returned an exception. In that case in
+		"""Checks if the thread returned an exception. In that case an
 		error response is send and the function returns True. Otherwise
 		False is returned."""
 		if not isinstance( result, BaseException ):
@@ -126,6 +134,11 @@ class Instance( Base, ProgressMixin ):
 
 		msg = '%s\n%s: %s\n' % ( ''.join( traceback.format_tb( thread.exc_info[ 2 ] ) ), thread.exc_info[ 0 ].__name__, str( thread.exc_info[ 1 ] ) )
 		MODULE.process( 'An internal error occurred: %s' % msg )
+
+		if isinstance(result, LDAP_ServerDown):
+			self.finished(request.id, None, str(result), success=False, status=result.status)
+			return True
+
 		self.finished( request.id, None, msg, False )
 		return True
 
