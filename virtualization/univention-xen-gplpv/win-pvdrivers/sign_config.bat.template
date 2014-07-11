@@ -1,4 +1,0 @@
-SET CERT_FILENAME=private certificate .pfx
-SET CERT_PASSWORD=pfx password
-SET CERT_CROSS_CERT_FILENAME=MS Cross Signing Certificate .cer (if you have a proper authenticode cert)
-SET CERT_PUBLIC_FILENAME=public certificate .cer (if you _don't_ have a proper authenticode cert)

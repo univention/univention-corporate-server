@@ -1,6 +1,0 @@
-LIBRARY  XENPCI.SYS
-
-EXPORTS
-;  DllInitialize PRIVATE
-;  DllUnload PRIVATE
-;  XenTestExport
