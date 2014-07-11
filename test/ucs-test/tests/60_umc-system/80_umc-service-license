@@ -9,15 +9,17 @@ import sys
 sys.path.insert(0, '.')
 from TestUMCSystemModule import TestUMCSystem
 
-from os import remove, path
-from shutil import copy as file_copy
+from os import path
+from shutil import rmtree, copy as file_copy
 from time import sleep, time, localtime, strftime
 from subprocess import Popen, PIPE
+from tempfile import mkdtemp
 
 from univention import uldap
 import univention.testing.utils as utils
+from univention.testing.codes import TestCodes
 from univention.testing.strings import random_username
-from univention.testing.license_client import TestLicenseClient
+from univention.testing.license_client import TestLicenseClient, CredentialsMissing
 
 
 class TestUMCLicenseManagement(TestUMCSystem):
@@ -29,6 +31,7 @@ class TestUMCLicenseManagement(TestUMCSystem):
         self.ldap_base = ''
         self.license_dn = ''
         self.license_dump_successful = False
+        self.temp_license_folder = mkdtemp()
 
         self.users_to_delete = []
         self.computers_to_delete = []
@@ -59,9 +62,9 @@ class TestUMCLicenseManagement(TestUMCSystem):
         UCR variable and removing its ending
         """
         try:
-            self.test_network_ip = self.UCR['interfaces/eth0/network']
-            self.test_network_ip = self.test_network_ip[
-                                       :self.test_network_ip.rfind('.') + 1]
+            test_network_ip = self.UCR['interfaces/eth0/network']
+            self.test_network_ip = test_network_ip[:test_network_ip.rfind('.')
+                                                   + 1]
         except KeyError as exc:
             utils.fail("A KeyError exception while selecting an IP address "
                        "subnet for the test: %r" % exc)
@@ -102,6 +105,9 @@ class TestUMCLicenseManagement(TestUMCSystem):
                 elif obj_type == 'user':
                     self.users_to_delete.append(obj_name)
             else:
+                print("The creation of a %s (attempt %s) failed, request "
+                      "result: '%s', " % (obj_type, (obj + 1),
+                                          request_result[0]))
                 return obj
         return amount
 
@@ -222,7 +228,7 @@ class TestUMCLicenseManagement(TestUMCSystem):
         launched 'univention-ldapsearch' with self.license_dn argument
         If done without errors, sets 'self.license_dump_successful'=True
         """
-        print "\nSaving initial license to file: ", license_file
+        print "\nSaving initial license to file: '%s'" % license_file
         try:
             with open(license_file, 'w') as license:
                 proc = Popen(("univention-ldapsearch",
@@ -325,7 +331,8 @@ class TestUMCLicenseManagement(TestUMCSystem):
         """
         print("\nUploading an expired license 'ExpiredTest.license' "
                                                                "for the test")
-        self.import_new_license('ExpiredTest.license')
+        self.import_new_license(self.temp_license_folder +
+                                '/ExpiredTest.license')
 
         print "\nAttempting to create 10 computers with an expired license"
         self.expired_license_limits_check('computer')
@@ -350,7 +357,8 @@ class TestUMCLicenseManagement(TestUMCSystem):
         Uploads a valid license, creates 10 computers and users with it
         """
         print "\nUploading a valid license 'ValidTest.license' for the test"
-        self.import_new_license('ValidTest.license')
+        self.import_new_license(self.temp_license_folder +
+                                '/ValidTest.license')
 
         print "\nAttempting to create 10 computers with a valid license"
         self.valid_license_limits_check('computer')
@@ -410,7 +418,7 @@ class TestUMCLicenseManagement(TestUMCSystem):
         and users with it
         """
         print "\nUploading a 'junk' license 'JunkTest.license' for the test"
-        self.import_new_license('JunkTest.license')
+        self.import_new_license(self.temp_license_folder + '/JunkTest.license')
 
         print "\nAttempting to create 10 computers with a 'junk' license"
         self.junk_license_limits_check('computer')
@@ -423,13 +431,21 @@ class TestUMCLicenseManagement(TestUMCSystem):
         Gets a 'ValidTest.license' by ordering and downloading it
         from the licensing server via LicenseClient tool
         """
-        print "Obtaining a valid license for the test:"
+        print "\nObtaining a valid license for the test:"
         end_date = time()
         end_date += 2630000  # approx. amount of seconds in 1 month
         end_date = strftime('%d.%m.%Y', localtime(end_date))
+
         self.LicenseClient = TestLicenseClient()
-        self.LicenseClient.main(base_dn=self.ldap_base,
-                                end_date=end_date)
+        valid_license_file = self.temp_license_folder + '/ValidTest.license'
+        try:
+            self.LicenseClient.main(base_dn=self.ldap_base,
+                                    end_date=end_date,
+                                    license_file=valid_license_file)
+        except CredentialsMissing as exc:
+            print("\nMissing a secret file with password to order a license: "
+                  "%r" % exc)
+            sys.exit(TestCodes.REASON_INSTALL)
 
     def get_expired_license(self):
         """
@@ -440,9 +456,17 @@ class TestUMCLicenseManagement(TestUMCSystem):
         end_date = time()
         end_date -= 2630000  # approx. amount of seconds in 1 month
         end_date = strftime('%d.%m.%Y', localtime(end_date))
-        self.LicenseClient.main(base_dn=self.ldap_base,
-                                end_date=end_date,
-                                license_file='ExpiredTest.license')
+
+        expired_license_file = (self.temp_license_folder +
+                                '/ExpiredTest.license')
+        try:
+            self.LicenseClient.main(base_dn=self.ldap_base,
+                                    end_date=end_date,
+                                    license_file=expired_license_file)
+        except CredentialsMissing as exc:
+            print("\nMissing a secret file with password to order a license: "
+                  "%r" % exc)
+            sys.exit(TestCodes.REASON_INSTALL)
 
     def modify_free_license_template(self):
         """
@@ -453,7 +477,7 @@ class TestUMCLicenseManagement(TestUMCSystem):
         if not path.exists('FreeForPersonalUseTest.license'):
             print("Cannot find the 'FreeForPersonalUseTest.license' file, "
                   "skipping the test...")
-            self.return_code_result_skip()
+            sys.exit(TestCodes.REASON_INSTALL)
         try:
             with open('FreeForPersonalUseTest.license', 'r+') as free_license:
                 lines = free_license.readlines()
@@ -473,9 +497,11 @@ class TestUMCLicenseManagement(TestUMCSystem):
         changes a line with license signature.
         """
         print "\nGenerating a junk license based on valid license for the test"
-        file_copy('ValidTest.license', 'JunkTest.license')
+        junk_license_file = self.temp_license_folder + '/JunkTest.license'
+        file_copy(self.temp_license_folder + '/ValidTest.license',
+                  junk_license_file)
         try:
-            with open('JunkTest.license', 'r+') as junk_license:
+            with open(junk_license_file, 'r+') as junk_license:
                 lines = junk_license.readlines()
                 junk_license.seek(0)
                 for line in lines:
@@ -499,7 +525,7 @@ class TestUMCLicenseManagement(TestUMCSystem):
         self.modify_free_license_template()
         self.generate_junk_license()
 
-    def restore_initial_license_and_cleanup(self):
+    def restore_initial_license_and_cleanup(self, license_file):
         """
         Restores the initially dumped license, removes created
         computers and users if there were any
@@ -507,15 +533,15 @@ class TestUMCLicenseManagement(TestUMCSystem):
         if self.license_dump_successful:
             self.restart_umc_server()
             print("\nRestoring initially dumped license from file "
-                  "'InitiallyInstalled.license' and deleting "
-                  "the license file")
-            self.import_new_license('InitiallyInstalled.license')
-            try:
-                remove('InitiallyInstalled.license')
-            except OSError as exc:
-                print("An OSError while deleting the initial "
-                      "license file: '%s', license file was not removed"
-                      % exc)
+                  "'%s' and removing temp folder with license files"
+                  % license_file)
+            self.import_new_license(license_file)
+        try:
+            rmtree(self.temp_license_folder)
+        except OSError as exc:
+            print("An OSError while deleting the temporary"
+                  "folder with license files: '%s'" % exc)
+
         print "\nRemoving created test computers and users (if any):"
         self.delete_created_computers()
         self.delete_created_users()
@@ -532,9 +558,14 @@ class TestUMCLicenseManagement(TestUMCSystem):
         self.test_network_dn = "cn=default,cn=networks," + self.ldap_base
         self.select_ip_address_subnet()
 
+        print("Temporary folder to be used to store obtained test licenses: "
+              "'%s'" % self.temp_license_folder)
+        initial_license_file = (self.temp_license_folder +
+                                '/InitiallyInstalled.license')
+
         try:
             self.prepare_licenses_for_test()
-            self.dump_current_license_to_file('InitiallyInstalled.license')
+            self.dump_current_license_to_file(initial_license_file)
             self.run_free_license_checks()
             self.run_expired_license_checks()
             self.restart_umc_server()
@@ -542,7 +573,7 @@ class TestUMCLicenseManagement(TestUMCSystem):
             self.run_modified_signature_license_checks()
             self.run_junk_license_checks()
         finally:
-            self.restore_initial_license_and_cleanup()
+            self.restore_initial_license_and_cleanup(initial_license_file)
 
 
 if __name__ == '__main__':
