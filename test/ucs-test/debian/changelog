@@ -1,3 +1,10 @@
+ucs-test (4.0.166-56) unstable; urgency=low
+
+  * 52_s4connector/02?_concurrent_changes_in_*_same_attribute: skip
+    tests until Bug #35336 is fixed (Bug #35336)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Jul 2014 06:26:52 +0200
+
 ucs-test (4.0.166-55) unstable; urgency=low
 
   * Disable re-join (Bug #34624)
