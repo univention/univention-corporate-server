@@ -85,7 +85,7 @@ msgstr ""
 #, python-format
 msgid "Make sure the domaincontroller master is running and reachable from %s"
 msgstr ""
-"Stellen Sie sicher, dass der Domänencontroller Master läuft und von %s "
+"Stellen Sie sicher, dass der Domänencontroller Master läuft und von %s aus "
 "erreichbar ist"
 
 #: umc/python/udm/tools.py:68
