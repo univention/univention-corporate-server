@@ -320,37 +320,391 @@ instanceType: 4
 	  <section id="gruppenrichtlinien">
 		<title>Group policies</title>
 
-		<figure><title>Group policy editor</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/win_policy_en.png"/>
-		</figure>
+<!-- 		<section id="gpo:intro"> -->
+<!-- 		  <title>Einführung</title> -->
 
-		<para>
-		  Group policies are an Active Directory feature which allows the central configuration of
-		  computers and user settings. They are only supported in Samba AD domains.
-		</para>
+<!-- 		  <para> -->
+<!-- 			Gruppenrichtlinien sind eine Active Directory-Funktion, die die zentrale Konfiguration von -->
+<!-- 			Vorgaben für Rechner und Benutzer erlaubt. Gruppenrichtlinien werden auch von -->
+<!-- 			Samba-AD-Domänen unterstützt. Die Richtlinien greifen nur auf Windows-Clients; Linux- oder -->
+<!-- 			Mac OS-Systeme werten die Richtlinien nicht aus. -->
+<!-- 		  </para> -->
+		
+<!-- 		  <para> -->
+<!-- 			Gruppenrichtlinien werden ausgehend von der englischen Bezeichung <emphasis>Group policy -->
+<!-- 			objects</emphasis> auch oft als GPOs bezeichnet. Genauer gesagt kann ein -->
+<!-- 			Gruppenrichtlinienobjekt eine Reihe von Richtlinien beinhalten. Trotz ihres Namens -->
+<!-- 			lassen sich Gruppenrichtlinienobjekte nicht direkt bestimmten Benutzergruppen zuweisen, -->
+<!-- 			sondern sie werden vielmehr mit bestimmten AD-Verwaltungseinheiten (Domänen, Sites oder -->
+<!-- 			Organisationseinheiten) im Samba-Verzeichnisdienst (Samba DS/AD) verknüpft und beziehen -->
+<!-- 			sich dadurch auf untergeordnete Objekte. Eine gruppen- oder benutzerspezifische -->
+<!-- 			Auswertung ist nur indirekt über die <emphasis>Sicherheitseinstellungen</emphasis> eines -->
+<!-- 			Gruppenrichtlinienobjekts möglich, in denen sich das Recht <emphasis>Gruppenrichtlinie -->
+<!-- 			übernehmen</emphasis> gezielt auf bestimmte Gruppen, Benutzer oder Computer einschränken -->
+<!-- 			lässt. -->
+<!-- 		  </para> -->
 
-		<para>
-		  The setting up of group policies can be performed with the <emphasis>Remote Server
-		  Administration Tools (RSAT) for Windows 7</emphasis> <footnote><para><ulink
-		  url="http://www.microsoft.com/downloads/details.aspx?FamilyID=7d2f6ad7-656b-4313-a005-4e344e43997d"/></para></footnote>
-		  or the <emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
-		  <footnote><para><ulink
-		  url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>. After the
-		  installation has been completed, the group policy editor must be activated in the Control
-		  Panel, by enabling the option <guimenu>Group Policy Management Tools</guimenu> under
-		  <guimenu>Programs -> Turn Windows features on or off -> Remote Server Administration Tools ->
-		  Feature Administration Tools</guimenu>.
-		</para>
+<!-- 		  <para> -->
+<!-- 			Grundsätzlich sind die <emphasis>Gruppenrichtlinien</emphasis> (<emphasis>Group -->
+<!-- 			Policies</emphasis> (GPO)) von den sehr ähnlich benannten -->
+<!-- 			<emphasis>Gruppenrichtlinieneinstellungen</emphasis> (<emphasis>Group Policy Preferences -->
+<!-- 			(GPP)</emphasis>) zu unterscheiden: -->
+<!-- 			<itemizedlist> -->
+<!-- 			  <listitem><simpara> -->
+<!-- 		        Die über <emphasis>Gruppenrichtlinien</emphasis> (GPOs) getroffenen Vorgaben sind -->
+<!-- 				bindend, während sich über <emphasis>Gruppenrichtlinieneinstellungen</emphasis> -->
+<!-- 				(GPPs) nur Präferenzen in die Registry von Windows-Clients eintragen lassen, die -->
+<!-- 				aber unter Umständen am Client überschrieben werden können. -->
+<!-- 			  </simpara></listitem> -->
 
-		<para>
-		  The group policies are saved in the SYSVOL share, see <xref linkend="windows:sysvolshare"/>.
-		</para>
+<!-- 			  <listitem><simpara> -->
+<!-- 		        Die über <emphasis>Gruppenrichtlinien</emphasis> (GPOs) getroffenen Vorgaben werden -->
+<!-- 				zudem dynamisch auf die Zielobjekte angewendet, wo hingegen die über -->
+<!-- 				<emphasis>Gruppenrichtlinieneinstellungen</emphasis> (GPPs) getroffenen -->
+<!-- 				Einstellungen statisch in die Registry von Windows-Clients eintragen werden (man -->
+<!-- 				spricht hier auch von <emphasis>Tattooing</emphasis>). -->
+<!-- 			  </simpara></listitem> -->
+<!-- 			</itemizedlist> -->
+<!-- 		    Aus diesen Gründen sind <emphasis>Gruppenrichtlinien</emphasis> (GPOs) in den meisten -->
+<!-- 			Fällen den <emphasis>Gruppenrichtlinieneinstellungen</emphasis> (GPPs) -->
+<!-- 			vorzuziehen. Dieses Kapitel bezieht sich im weiteren ausschließlich auf -->
+<!-- 			<emphasis>Gruppenrichtlinien</emphasis> (GPOs). -->
+<!-- 		  </para> -->
 
-		<para>
-		  Windows Group Policies are not supported by Mac OS X clients.
-		</para>
+<!-- 		  <para> -->
+<!-- 			Gruppenrichtlinien werden im Gegensatz zu den UCS-Richtlinien (siehe <xref -->
+<!-- 			linkend="central:policies"/>) nicht in der &ucsUMC;, sondern mit einem  separaten Editor -->
+<!-- 			konfiguriert, mit der <emphasis>Gruppenrichtlinienverwaltung</emphasis>, die Teil der -->
+<!-- 			<emphasis>Remote Server Administration Tools (RSAT)</emphasis> ist. Die Einrichtung ist -->
+<!-- 			in <xref linkend="gpo:install"/> dokumentiert. -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Es existieren zwei Arten von Richtlinien: -->
+			
+<!-- 			<itemizedlist> -->
+<!-- 			  <listitem><simpara> -->
+<!-- 				<emphasis>Benutzerrichtlinien</emphasis> konfigurieren die Einstellungen eines -->
+<!-- 				Benutzers, z.B. die Vorkonfiguration des Desktops. Auch Anwendungen können über Gruppenrichtlinien konfiguriert -->
+<!-- 				werden (z.B. die Startseite des Microsoft Internet Explorers oder Einstellungen in LibreOffice). -->
+<!-- 			  </simpara></listitem> -->
+
+<!-- 			  <listitem><simpara> -->
+<!-- 				<emphasis>Computer-Richtlinien</emphasis> definieren die Einstellungen von -->
+<!-- 				Windows-Clients. -->
+<!-- 			  </simpara></listitem> -->
+<!-- 			</itemizedlist> -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Computerrichtlinien werden erstmalig beim Systemstart ausgewertet, Benutzerrichtlinien bei -->
+<!-- 			der Anmeldung. Die Richtlinien werden auch für angemeldete Benutzer/laufende Systeme -->
+<!-- 			fortlaufend ausgewertet und aktualisiert (in der Grundeinstellung alle 90-120 Minuten, -->
+<!-- 			der Zeitraum wird zur Vermeidung von Lastspitzen nach dem Zufallsprinzip variiert). -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Die Auswertung der Gruppenrichtlinien kann durch Aufruf des Befehls -->
+<!-- 			<command>gpupdate /force</command> auch gezielt gestartet werden. -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Einige Richtlinien - z.B. zur Installation von Software oder für Anmeldeskripte - werden -->
+<!-- 			nur bei der Anmeldung (Benutzerrichtlinien) oder beim Systemstart (Rechnerrichtlinien) -->
+<!-- 			ausgewertet. -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Die meisten Gruppenrichtlinien setzen nur einen Wert in der Windows-Registry, der dann -->
+<!-- 			von Windows oder einer Applikation ausgewertet wird. Da Standardbenutzer keine -->
+<!-- 			Einstellungen in dem entsprechenden Teil der Windows Registry editieren können, können so auch eingeschränkte -->
+<!-- 			Benutzer-Desktops konfiguriert werden, in denen z.B. Benutzer den Windows Task Manager -->
+<!-- 			nicht aufrufen dürfen. -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Die Gruppenrichtlinien werden in der SYSVOL-Freigabe gespeichert, siehe <xref -->
+<!-- 			linkend="windows:sysvolshare"/>. Verknüpft mit Benutzer- und Rechnerkonten werden sie im -->
+<!-- 			Samba-Verzeichnisdienst. -->
+<!-- 		  </para> -->
+
+<!-- 		</section> -->
+
+<!-- 		<section id="gpo:install"> -->
+<!-- 		  <title>Installation der Gruppenrichtlinienverwaltung</title> -->
+
+<!-- 		  <para> -->
+<!-- 			Die Gruppenrichtlinienverwaltung kann als Teil der <emphasis>Remote Server -->
+<!-- 			Administration Tools</emphasis> auf Windows Clients installiert werden. Sie können für Windows 7 unter <footnote><para><ulink -->
+<!-- 			url="http://www.microsoft.com/downloads/details.aspx?FamilyID=7d2f6ad7-656b-4313-a005-4e344e43997d"/></para></footnote> -->
+<!-- 			oder für Windows 8 unter <emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis> -->
+<!-- 			<footnote><para><ulink -->
+<!-- 			url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote> -->
+<!-- 			bezogen werden. -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			<figure><title>Aktivierung der Gruppenrichtlinienverwaltung</title> -->
+<!-- 			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-activate-de.png"/> -->
+<!-- 			</figure> -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Nach der Installation muss die Gruppenrichtlinienverwaltung in der Windows-Systemsteuerung -->
+<!-- 			noch aktiviert werden, in dem unter <guimenu>Start -> Systemsteuerung -> Programme -> -->
+<!-- 			Windows-Funktionen aktivieren und deaktivieren -> Remoteserver-Verwaltungstools -> -->
+<!-- 			Featureverwaltungs-Tools</guimenu> die Option <guimenu>Tools für die -->
+<!-- 			Gruppenrichtlinienverwaltung</guimenu> aktiviert wird. -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Nach der Aktivierung kann die Gruppenrichtlinienverwaltung unter <guimenu>Start -> -->
+<!-- 			Verwaltung -> Gruppenrichtlinienverwaltung</guimenu> aufgerufen werden. -->
+<!-- 		  </para> -->
+
+<!-- 		</section> -->
+
+<!-- 		<section id="gpo:config"> -->
+<!-- 		  <title>Konfiguration von Richtlinien mit der Gruppenrichtlinienverwaltung</title> -->
+
+<!-- 		  <para> -->
+<!-- 			Gruppenrichtlinien können von Benutzern konfiguriert werden, die Mitglied der Gruppe -->
+<!-- 			<emphasis>Domain Admins</emphasis> sind (z.B. der -->
+<!-- 			<emphasis>Administrator</emphasis>). Bei der Anmeldung muss beachtet werden, dass keine -->
+<!-- 			Anmeldung mit dem lokalen Administrator-Konto erfolgt, sondern mit dem -->
+<!-- 			Administrator-Konto der Domäne. Die Gruppenrichtlinienverwaltung kann auf einem beliebigen -->
+<!-- 			System der Domäne aufgerufen werden. -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Wenn mehr als ein Samba-Domänencontroller eingesetzt wird, muss die Replikation der -->
+<!-- 			GPO-Daten berücksichtigt werden, siehe <xref linkend="gpo:gposync"/>. -->
+<!-- 		  </para> -->
+<!-- 		  <para> -->
+<!-- 			Es gibt zwei prinzipielle Möglichkeiten GPOs zu erstellen: -->
+
+<!-- 			<itemizedlist> -->
+<!-- 			  <listitem><simpara> -->
+<!-- 				Sie können im <guimenu>Gruppenrichtlinienobjekte</guimenu>-Order angelegt und dann mit -->
+<!-- 				verschiedenen Positionen im LDAP verknüpft werden. Dies ist sinnvoll, wenn eine -->
+<!-- 				Richtlinie mit mehreren Positionen im LDAP verknüpft werden soll. -->
+<!-- 			  </simpara></listitem> -->
+
+<!-- 			  <listitem><simpara> -->
+<!-- 				Die GPO kann ad hoc an einer LDAP-Position erstellt und dabei direkt verknüpft -->
+<!-- 				werden. Für kleine und mittlere Domänen ist das der einfachere Weg. Auch ad hoc -->
+<!-- 				erstellte Domänen werden im  <guimenu>Gruppenrichtlinienobjekte</guimenu>-Ordner angezeigt. -->
+<!-- 			  </simpara></listitem> -->
+<!-- 			</itemizedlist> -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Eine Richtlinie kann drei Zustände annehmen; sie kann aktiviert, -->
+<!-- 			deaktiviert oder nicht gesetzt sein. Die Auswirkung bezieht sich immer auf die -->
+<!-- 			Formulierung der Richtlinie. Wenn diese beispielsweise <guimenu>Deaktiviere Feature -->
+<!-- 			xy</guimenu> heisst, muss die Richtlinie aktiviert werden um das Feature -->
+<!-- 			abzuschalten. Einige Richtlinien haben zusätzliche Optionen, z.B. könnte die Richtlinie -->
+<!-- 			<guimenu>Aktiviere Mail-Quota</guimenu> eine zusätzliche Option mitbringen um die -->
+<!-- 			Speichermenge zu verwalten. -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			<figure><title>Bearbeiten einer Richtlinie</title> -->
+<!-- 			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-edit-policy-de.png"/> -->
+<!-- 			</figure> -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Zwei Standard-Richtlinienobjekte sind vordefiniert: -->
+
+<!-- 			<itemizedlist> -->
+<!-- 			  <listitem><simpara> -->
+<!-- 				Das <emphasis>Default Domain Policy</emphasis> Objekt kann verwendet werden, um globale -->
+<!-- 				Richtlinien für alle Benutzer und Rechner der gesamten Domäne zu konfigurieren. -->
+<!-- 			  </simpara></listitem> -->
+
+<!-- 			  <listitem><simpara> -->
+<!-- 				Das <emphasis>Default Domain Controller Policy</emphasis> Objekt hat in einer Samba-Domäne -->
+<!-- 				keine Verwendung (in einer Microsoft AD-Domäne würden die Richtlinien für -->
+<!-- 				Microsoft-Domänencontroller über dieses Objekt erfolgen). Die Konfiguration der -->
+<!-- 				Samba-Domänencontroller erfolgt in UCS weitgehend über &ucsUCR;. -->
+<!-- 			  </simpara></listitem> -->
+<!-- 			</itemizedlist> -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			AD-Domänen können in Sites strukturiert werden. Dies kann z.B. verwendet werden um -->
+<!-- 			Standorte in einer Domäne zu gruppieren. Im Hauptmenü der Gruppenrichtlinienverwaltung -->
+<!-- 			werden alle Sites aufgeführt. Dort findet sich auch eine Liste von Domänen. Die -->
+<!-- 			aktuellen Samba-Versionen unterstützen keine Forest-Domänen, so dass hier immer nur eine -->
+<!-- 			Domäne angezeigt wird. -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Eine Domäne kann in verschiedene Organisations-Einheiten (OUs) strukturiert werden. Dies kann z.B. verwendet -->
+<!-- 			werden, um die Mitarbeiter der Buchhaltung und die Benutzer der Verwaltung in -->
+<!-- 			unterschiedlichen LDAP-Positionen zu speichern. -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Gruppenrichtlinien können sich gegenseitig überlagern. Es gilt das Prinzip der -->
+<!-- 			Vererbung, d.h. höherliegende Richtlinien überschreiben die untergeordneten. Die -->
+<!-- 			effektiven Richtlinien für einen Benutzer können sowohl mit dem Modellierungsassistenten -->
+<!-- 			der Gruppenrichtlinienverwaltung als auch an der Windows-Kommandozeile mit dem Befehl -->
+<!-- 			<command>gpresult /user BENUTZERNAME /v </command> auf dem Windows-Client angezeigt -->
+<!-- 			werden: -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			<figure><title>Auswertung der GPO für den Benutzer user01</title> -->
+<!-- 			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-gpresult-de.png"/> -->
+<!-- 			</figure> -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Die Richtlinien werden in folgender Reihenfolge ausgewertet: -->
+
+<!-- 			<itemizedlist> -->
+<!-- 			  <listitem><simpara> -->
+<!-- 				Richtlinien der <emphasis>Default Domain Policy</emphasis> gelten als -->
+<!-- 				Grundeinstellung für alle Benutzer und Rechner der gesamten Domäne. -->
+<!-- 			  </simpara></listitem> -->
+
+<!-- 			  <listitem><simpara> -->
+<!-- 				Mit einer OU verknüpfte Richtlinien überschreiben Richtlinien aus der Default Domain -->
+<!-- 				Policy. Sind OUs weiter verschachtelt, greifen im Konfliktfall die jeweils "untersten" -->
+<!-- 				Richtlinien, d.h. die, die näher am Zielobjekt verknüpft sind. Es gilt folgende -->
+<!-- 				Auswertungsreihenfolge: -->
+
+<!-- 				<itemizedlist> -->
+<!-- 				  <listitem><simpara> -->
+<!-- 					Zuweisung einer Richtlinie zu einer Active Directory-Site -->
+<!-- 				  </simpara></listitem> -->
+
+<!-- 				  <listitem><simpara> -->
+<!-- 					Vorgaben der Default Domain Policy -->
+<!-- 				  </simpara></listitem> -->
+
+<!-- 				  <listitem><simpara> -->
+<!-- 					Zuweisung einer Richtlinie zu einer Organisationseinheit / OU (jede -->
+<!-- 					unterliegende OU überstimmt wiederum Richtlinien aus übergeordneten OUs) -->
+<!-- 				  </simpara></listitem> -->
+<!-- 				</itemizedlist> -->
+<!-- 			  </simpara></listitem> -->
+<!-- 			</itemizedlist> -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Ein Beispiel: Eine Firma verbietet allgemein den Zugriff auf den Windows Task -->
+<!-- 			Manager. Dazu wird im <emphasis>Default Domain Policy-Objekt</emphasis> die Richtlinie -->
+<!-- 			<guimenu>Zugriff auf Task Manager unterbinden</guimenu> aktiviert. Für einige technisch -->
+<!-- 			versiertere Benutzer soll der Task Manager dennoch verfügbar sein. Diese Benutzer sind -->
+<!-- 			in der OU <emphasis>Technik</emphasis> abgelegt. Nun wird ein zusätzliches -->
+<!-- 			Gruppenrichtlinienobjekt angelegt, in dem Richtlinie <guimenu>Zugriff auf Task Manager -->
+<!-- 			unterbinden</guimenu> auf <emphasis>deaktiviert</emphasis> gesetzt wird. Dieses neue GPO -->
+<!-- 			wird mit der OU <emphasis>Technik</emphasis> verbunden. -->
+<!-- 		  </para> -->
+
+<!-- 		</section> -->
+
+<!-- 		<section id="gpo:gposync"> -->
+<!-- 		  <title>Konfiguration von Gruppenrichtlinien in Umgebungen mit mehr als einem -->
+<!-- 		  Samba-Domänencontroller</title> -->
+<!-- 		  <para> -->
+<!-- 			Eine Gruppenrichtlinie besteht technisch aus zwei Teilen: Zum einen gibt es ein -->
+<!-- 			Verzeichnis im Dateisystem der Domänencontroller, das die eigentlichen -->
+<!-- 			Richtlinien-Dateien enthält, die auf dem Windows-System umgesetzt werden sollen -->
+<!-- 			(gespeichert in der SYSVOL-Freigabe (siehe <xref linkend="windows:sysvolshare"/>)). -->
+<!-- 			Zum anderen gibt es ein gleichnamiges Objekt im LDAP-Baum des Samba-Verzeichnisdienstes -->
+<!-- 			(Samba DS/AD), das üblicherweise unter einem LDAP-Container namens <emphasis>Group -->
+<!-- 			Policy Objects</emphasis> abgelegt ist. -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Während die LDAP-Replikation zwischen Domänencontrollern innerhalb weniger Sekunden -->
+<!-- 			umgesetzt ist, werden die Dateien in der SYSVOL-Freigabe in der Grundeinstellung nur alle fünf Minuten -->
+<!-- 			repliziert. Es ist zu beachten, dass die Anwendung von neu konfigurierten -->
+<!-- 			Gruppenrichtlinien in diesem Zeitraum fehlschlagen kann, falls ein Client zufällig einen -->
+<!-- 			Domänencontroller konsultiert, der noch nicht die aktuellen Dateien zu sich repliziert -->
+<!-- 			hat. -->
+<!-- 		  </para> -->
+<!-- 		</section> -->
+
+<!-- 		<section id="gpo:adm"> -->
+<!-- 		  <title>Administrative Vorlagen (ADM)</title> -->
+<!-- 		  <para> -->
+<!-- 			Die in der Gruppenrichtlinienverwaltung angezeigten Richtlinien können durch sogenannte <emphasis>Administrative -->
+<!-- 			Vorlagen</emphasis> erweitert werden. In einer solchen Vorlage wird definiert unter -->
+<!-- 			welchem Namen die Richtlinie in der Gruppenrichtlinienverwaltung erscheinen soll und welcher -->
+<!-- 			Wert dadurch in der Windows-Registry gesetzt wird. Administrative Vorlagen werden in -->
+<!-- 			sogenannten <emphasis>ADMX-Dateien</emphasis> (früher <emphasis>ADM-Dateien</emphasis>) -->
+<!-- 			gespeichert <biblioref linkend="admx-reference"/>. ADMX-Dateien bieten unter anderem -->
+<!-- 			den Vorteil, dass sie zentral über mehrere Domänencontroller bereitgestellt werden können, damit -->
+<!-- 			die Gruppenrichtlinienverwaltung an allen Windows-Clients die gleichen -->
+<!-- 			Konfigurationsmöglichkeiten zeigt (<biblioref linkend="admx-central"/>). -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Das folgende Beispiel für eine ADM-Datei definiert eine Rechner-Richtlinie, in der ein -->
+<!-- 			Registry-Key des (fiktiven) Univention RDP-Client konfiguriert wird. -->
+<!-- 			ADM-Dateien können über Third-Party-Werkzeuge in das neuere ADMX-Format umgewandelt werden. -->
+<!-- 			Weiterführende Informationen zum Format von ADM-Dateien sind unter <biblioref -->
+<!-- 			linkend="microsoft-adm-templates"/> und <biblioref linkend="adm-templates-howto"/> zu -->
+<!-- 			finden. Die administrativen Vorlagen müssen die Dateiendung <emphasis>.adm</emphasis> verwenden: -->
+
+<!-- 			<programlisting language="sh"> -->
+<!-- CLASS MACHINE -->
+<!-- CATEGORY "Univention" -->
+<!-- POLICY "RDP-Client" -->
+<!-- KEYNAME "Univention\RDP\StorageRedirect" -->
+<!-- EXPLAIN "Ist diese Option aktiviert, wird Soundausgabe im RDP-Client aktiviert" -->
+<!-- VALUENAME "Sound-Weiterleitung" -->
+<!-- VALUEON "Aktiviert" -->
+<!-- VALUEOFF "Deaktiviert" -->
+<!-- END POLICY -->
+<!-- END CATEGORY -->
+<!-- 			</programlisting> -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			<figure><title>Die eingebundene administrative Vorlage</title> -->
+<!-- 			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-adm-template-de.png"/> -->
+<!-- 			</figure> -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Die ADM-Datei kann anschließend in das ADMX-Format umgewandelt oder aber direkt über die Gruppenrichtlinienverwaltung importiert -->
+<!-- 			werden. Dazu wird im Kontextmenü der <guimenu>Administrativen Vorlagen</guimenu> die -->
+<!-- 			Option <guimenu>Vorlagen hinzufügen/entfernen</guimenu> aufgerufen. Mit -->
+<!-- 			<guimenu>Hinzufügen</guimenu> kann dann eine ADM-Datei importiert werden. Die -->
+<!-- 			administrativen Vorlagen werden ebenfalls in der SYSVOL-Freigabe gespeichert und -->
+<!-- 			repliziert, wodurch die Gruppenrichtlinienverwaltung von den Windows-Clients aus auf sie zugreifen kann. -->
+<!-- 		  </para> -->
+<!-- 		</section> -->
+
+<!-- 		<section id="gpo:wmifilter"> -->
+<!-- 		  <title>Anwendung von Richtlinien auf Basis von Rechnereigenschaften (WMI-Filter)</title> -->
+<!-- 		  <para> -->
+<!-- 			Richtlinien können auch auf Basis von Systemeigenschaften konfiguriert werden. Diese -->
+<!-- 			Eigenschaften werden über die Windows Management Instrumentation-Schnittstelle (WMI) -->
+<!-- 			bereitgestellt. Der darauf aufbauende Mechanismus wird als WMI-Filterung bezeichnet. -->
+<!-- 			Damit ist es beispielsweise möglich eine Richtlinie nur auf PCs mit einer 64 -->
+<!-- 			Bit-Prozessor-Architektur oder mit min. 8 GB RAM anzuwenden. Ändert sich eine -->
+<!-- 			Eigenschaft eines Systems (z.B. weil mehr Speicher eingebaut wurde), wird der jeweilige -->
+<!-- 			Filter automatisch vom Client neu ausgewertet. -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Die WMI-Filter werden in der Domänenstruktur im Container <guimenu>WMI-Filter</guimenu> -->
+<!-- 			angezeigt. Mit <guimenu>Neu</guimenu> kann ein weiterer Filter definiert werden. Unter -->
+<!-- 			<guimenu>Abfragen</guimenu> werden die Filterregeln definiert. Die Regeln werden in -->
+<!-- 			einer SQL-ähnlichen Syntax definiert. Regel-Beispiele finden sich in <biblioref -->
+<!-- 			linkend="microsoft-wmi-filter"/> und  <biblioref linkend="add-wmi-filters"/>. -->
+<!-- 		  </para> -->
+
+<!-- 		</section> -->
+
 	  </section>
-
 
 	  <section id="netlogon-freigabe:samba4">
 		<title>Logon scripts / NETLOGON share</title>
