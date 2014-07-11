@@ -1,3 +1,9 @@
+univention-management-console (6.0.24-20) unstable; urgency=low
+
+  * Bug #34243: fix typos in translation
+
+ -- Florian Best <best@univention.de>  Fri, 11 Jul 2014 10:35:06 +0200
+
 univention-management-console (6.0.24-19) unstable; urgency=low
 
   * Bug #34243: also reload translation gettext instance when reloading

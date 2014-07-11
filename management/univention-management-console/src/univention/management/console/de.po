@@ -233,12 +233,12 @@ msgstr "Die Ausführung eines Kommandos hat zu einem fatalen Fehler geführt"
 
 #: univention/management/console/protocol/definitions.py:136
 msgid "The initialization of the module caused a fatal error"
-msgstr "Die initialisierung des Moduls führte zu einem fatalen Fehler"
+msgstr "Die Initialisierung des Moduls führte zu einem fatalen Fehler"
 
 #: univention/management/console/protocol/modserver.py:249
 #, python-format
 msgid "The initialization of the module failed: %s"
-msgstr "Die initialisierung des Moduls ist fehlgeschlagen: %s"
+msgstr "Die Initialisierung des Moduls ist fehlgeschlagen: %s"
 
 #: univention/management/console/modules/sanitizers.py:433
 #, python-format
