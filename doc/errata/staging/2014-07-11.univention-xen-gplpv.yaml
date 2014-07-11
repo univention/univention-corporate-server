@@ -1,0 +1,10 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: univention-xen-gplpv
+fix: 1:1.0.1092-3.11.201407111319
+version: [2]
+desc: |
+  * James Harper's XEN GPLPV drivers have been updated to
+    version 1.0.1092.
+bug: [35167]
