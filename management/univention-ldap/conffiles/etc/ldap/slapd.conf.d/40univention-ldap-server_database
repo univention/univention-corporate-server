@@ -6,6 +6,8 @@ if configRegistry.has_key('ldap/translogfile') and configRegistry['ldap/translog
 	print "moduleload\ttranslog.so"
 if configRegistry.is_true('ldap/k5pwd', True):
 	print "moduleload\tk5pwd.so"
+if configRegistry.is_true('ldap/pwd_scheme_kinit', True):
+	print "moduleload\tpwd_scheme_kinit.so"
 @!@
 
 database	@%@ldap/database/type@%@
@@ -17,6 +19,8 @@ if configRegistry.has_key('ldap/translogfile') and configRegistry['ldap/translog
 	print "translog\t%s" % configRegistry['ldap/translogfile']
 if configRegistry.is_true('ldap/k5pwd', True):
 	print "overlay\tk5pwd"
+if configRegistry.is_true('ldap/pwd_scheme_kinit', True):
+	print "overlay\tpwd_scheme_kinit"
 @!@
 
 
