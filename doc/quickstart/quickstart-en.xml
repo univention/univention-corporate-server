@@ -231,7 +231,7 @@
 		<listitem><simpara>
 		  Univention Corporate Client can be installed from the Univention App Center for the deployment of
 		  centrally administrated Linux-based desktop. Further information can be found in the UCC
-		  manual <biblioref linkend="ucc-handbuch"/>.
+		  manual <biblioref linkend="ucc-manual"/>.
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
@@ -277,7 +277,7 @@
   <bibliomixed id="ucs-systemrole"/>
   <bibliomixed id="ucs-winjoin"/>
   <bibliomixed id="ucs-macjoin"/>
-  <bibliomixed id="ucc-handbuch"/>
+  <bibliomixed id="ucc-manual"/>
 </bibliography>
 
 <?dbhtml-include href="../stylesheets/piwik.html"?>
