@@ -45,6 +45,13 @@ from httplib import HTTPSConnection, HTTPException
 from HTMLParser import HTMLParser, HTMLParseError
 
 
+class CredentialsMissing(Exception):
+    """
+    A custom exception to be raised when a 'license.secret' file is not found
+    """
+    pass
+
+
 class TestLicenseClient(HTMLParser):
 
     def __init__(self, ArgParser=None):
@@ -121,7 +128,8 @@ class TestLicenseClient(HTMLParser):
         if not path.exists(secret_file):
             self.log.critical("The '%s' secret file does not exist, cannot "
                               "proceed without password" % secret_file)
-            exit(1)
+            raise CredentialsMissing("The '%s' secret file does not exist"
+                                     % secret_file)
         try:
             with open(secret_file, 'r') as password:
                 self.server_password = password.read()
