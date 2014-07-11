@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-s4-connector
-fix: 8.0.33-49.477.201407070811
+fix: 8.0.33-51.479.201407112038
 version: [2]
 desc: |
   This update fixes the following issues:
@@ -13,4 +13,7 @@ desc: |
     from OpenLDAP to Samba 4 in write mode.
   * Restart bind9 instead of samba4 if the ldap/master can't be
     resolved.
-bug: [32263,33621,35238,34865]
+  * Two tools for removing rejected objects have been added:
+     /usr/share/univention-s4-connector/remove_ucs_rejected.py
+     /usr/share/univention-s4-connector/remove_s4_rejected.py
+bug: [32263,33621,35238,34865,32194]
