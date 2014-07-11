@@ -7,8 +7,7 @@ fix: 1.4.10-4.60.201407101644
 desc: |
  A security issue has been found in gnupg:
  * Denial of service through malformed packets
- This update fixes this vulnerability.
-note:
+note: This update fixes this vulnerability.
 bug: [35190]
 cve:
  - CVE-2014-4617

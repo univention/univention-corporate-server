@@ -8,8 +8,7 @@ desc: |
  Multiple security issues have been found in libxfont:
  * Integer overflow in font parsing
  * Mising input sanitising and integer overflows in the handling of XFS replies
- This update fixes these vulnerabilities.
-note:
+note: This update fixes these vulnerabilities.
 bug: [34827]
 cve:
  - CVE-2014-0209
