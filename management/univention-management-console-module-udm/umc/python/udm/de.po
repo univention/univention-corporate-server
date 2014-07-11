@@ -134,7 +134,7 @@ msgstr "Referenzierende Objekte"
 #: umc/python/udm/udm_ldap.py:113 umc/python/udm/udm_ldap.py:115
 msgid ""
 "Restart the LDAP service either via \"invoke-rc.d slapd restart\" on command "
-"line or with the UMC module \"system services\""
+"line or with the UMC module \"System services\""
 msgstr ""
 "Starten Sie den LDAP-Dienst entweder über \"invoke-rc.d "
 "slapd restart\" per Kommandozeile oder mit dem UMC Modul \"Systemdienste\" neu."

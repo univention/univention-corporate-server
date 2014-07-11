@@ -109,10 +109,10 @@ class LDAP_ServerDown(UMC_Error):
 			yield _('Cannot connect to the LDAP service.')
 			yield _('The following steps can help to solve this problem:')
 			if not is_master:
-				yield ' * ' + _('Make sure the domaincontroller master is running and reachable from %s') % (fqdn,),
-				yield ' * ' + _('Restart the LDAP service either via "invoke-rc.d slapd restart" on command line or with the UMC module "system services"') + _(' on %s') % (ucr.get('ldap/master'),)
+				yield ' * ' + _('Make sure the domaincontroller master is running and reachable from %s') % (fqdn,)
+				yield ' * ' + _('Restart the LDAP service either via "invoke-rc.d slapd restart" on command line or with the UMC module "System services"') + _(' on %s') % (ucr.get('ldap/master'),)
 			else:
-				yield ' * ' + _('Restart the LDAP service either via "invoke-rc.d slapd restart" on command line or with the UMC module "system services"')
+				yield ' * ' + _('Restart the LDAP service either via "invoke-rc.d slapd restart" on command line or with the UMC module "System services"')
 			if updates_available:
 				yield ' * ' + _('Install the latest software updates')
 			yield _('If the problem persists additional hints about the cause can be found in the following log file:')
