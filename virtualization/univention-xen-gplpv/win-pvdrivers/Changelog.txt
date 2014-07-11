@@ -1,0 +1,12 @@
+See http://xenbits.xensource.com/ext/win-pvdrivers.hg for commit log.
+
+0.10.0.135
+. Migrate/Save/Restore should now be working under Xen 3.4.1
+
+0.10.0.134
+. Fixed a device eject bug that probably caused problems in Migrate/Save/Restore
+. Fixed an RX Checksum calculation bug
+
+0.10.0.133
+. Added a txtsetup.oem and instructions file for making use of GPLPV during textmode install
+

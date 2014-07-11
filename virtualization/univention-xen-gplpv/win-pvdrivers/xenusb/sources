@@ -1,0 +1,19 @@
+!INCLUDE ..\common.inc
+TARGETNAME=xenusb
+TARGETTYPE=DRIVER
+KMDF_VERSION_MAJOR=1
+NTTARGETFILE0=$(NTTARGETFILES) $(OBJ_PATH)\$(O)\$(TARGETNAME).inf
+TARGETLIBS=$(TARGETLIBS) ..\xenpci\$(O)\xenpci.lib
+TARGETLIBS=$(TARGETLIBS) $(DDK_LIB_PATH)\wdmsec.lib
+TARGETLIBS=$(TARGETLIBS) $(DDK_LIB_PATH)\Rtlver.lib
+TARGETLIBS=$(TARGETLIBS) $(DDK_LIB_PATH)\..\..\wlh\*\aux_klib.lib
+!IF $(386)
+TARGETLIBS=$(TARGETLIBS) $(LIBLFDS_DIR)\bin\i386\liblfds.lib
+!ELSE
+TARGETLIBS=$(TARGETLIBS) $(LIBLFDS_DIR)\bin\AMD64\liblfds.lib
+!ENDIF
+
+
+
+
+SOURCES=xenusb.rc xenusb.c xenusb_fdo.c xenusb_hub.c xenusb_huburb.c xenusb_devurb.c xenusb_decode.c

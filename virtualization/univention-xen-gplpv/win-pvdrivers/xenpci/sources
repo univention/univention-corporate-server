@@ -1,0 +1,24 @@
+!INCLUDE ..\common.inc
+TARGETNAME=xenpci
+INF_NAME=xenpci
+TARGETTYPE=EXPORT_DRIVER
+KMDF_VERSION_MAJOR=1
+NTTARGETFILE0=$(NTTARGETFILE0) $(OBJ_PATH)\$(O)\$(INF_NAME).inf
+TARGETLIBS=$(TARGETLIBS) $(DDK_LIB_PATH)\wdmsec.lib $(DDK_LIB_PATH)\Rtlver.lib \
+           $(DDK_LIB_PATH)\..\..\wlh\*\aux_klib.lib
+
+!IF $(386)
+TARGETLIBS=$(TARGETLIBS) $(LIBLFDS_DIR)\bin\i386\liblfds.lib
+!ELSE
+TARGETLIBS=$(TARGETLIBS) $(LIBLFDS_DIR)\bin\AMD64\liblfds.lib
+!ENDIF
+
+AMD64_SOURCES=hypercall.asm
+# dbgprint_hook.asm
+I386_SOURCES=tpr_emulate.asm
+# dbgprint_hook.asm
+
+SOURCES=xenpci.rc xenpci.c xenpci_fdo.c xenpci_pdo.c xenpci_export.c \
+        evtchn.c gnttbl.c xenbus.c xenpci_device_interface.c \
+        xenbus_device_interface.c xenpci_highsync.c xenpci_patch_kernel.c \
+        xenpci_dbgprint.c

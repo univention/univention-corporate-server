@@ -29,9 +29,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION := $(shell dpkg-parsechangelog | sed -rne 's/^Version: (0\.)?([0-9.]+)\.[0-9]+-[0-9.]+$$/0.\2/p')
-BUILD_NUMBER := $(shell dpkg-parsechangelog | sed -rne 's/^Version: [0-9.]+\.([0-9]+)-[0-9.]+$$/\1/p')
+VERSION = 1.0
+BUILD_NUMBER = 1092
 GPLPV_VERSION := ${VERSION}.${BUILD_NUMBER}
+REVISION = 85b99b9795a6
 
 binary binary-arch binary-indep build build-arch build-indep clean install install-arch install-indep:
 	dh $@
@@ -45,9 +46,7 @@ win-pvdrivers:
 	@echo "Cloning tag ${GPLPV_VERSION}..."
 	quilt pop -a || test $$? = 2
 	$(RM) -r "$@"
-	hg clone -r "${GPLPV_VERSION}" http://xenbits.xensource.com/ext/win-pvdrivers "$@"
-	cd "$@" && hg rename ShutdownMon/Properties/AssemblyInfo.cs shutdownmon/Properties/AssemblyInfo.cs
-	cd "$@" && hg commit -m 'Fix file name case' -u packages@univention.de
+	hg clone -r "${REVISION}" http://xenbits.xensource.com/ext/win-pvdrivers "$@"
 	quilt push -a
 win-pvdrivers/build_number.bat:
 	@echo "Setting build numer ${BUILD_NUMBER}..."

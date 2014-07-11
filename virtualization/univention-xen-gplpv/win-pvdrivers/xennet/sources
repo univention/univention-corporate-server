@@ -1,0 +1,21 @@
+!include "..\common.inc"
+TARGETNAME=xennet
+TARGETTYPE=DRIVER
+INF_NAME=$(TARGETNAME)
+!IF "$(WIN2K_DDKBUILD)" == "1"
+C_DEFINES=$(C_DEFINES) -D_WIN2K_COMPAT_SLIST_USAGE
+!ENDIF
+TARGETLIBS=$(TARGETLIBS) $(DDK_LIB_PATH)\ndis.lib
+TARGETLIBS=$(TARGETLIBS) ..\xenpci\$(O)\xenpci.lib
+!IF $(386)
+TARGETLIBS=$(TARGETLIBS) $(LIBLFDS_DIR)\bin\i386\liblfds.lib
+!ELSE
+TARGETLIBS=$(TARGETLIBS) $(LIBLFDS_DIR)\bin\AMD64\liblfds.lib
+!ENDIF
+!IF "$(DDK_TARGET_OS)" == "Win2K" || "$(DDK_TARGET_OS)" == "WinXP" || "$(DDK_TARGET_OS)" == "WinNET"
+C_DEFINES=$(C_DEFINES) -D_GPLPV_NDIS5
+!ELSE
+C_DEFINES=$(C_DEFINES) -D_GPLPV_NDIS6
+!ENDIF
+NTTARGETFILE0=$(NTTARGETFILE0) $(OBJ_PATH)\$(O)\$(INF_NAME).inf
+SOURCES=xennet.rc xennet.c xennet_tx.c xennet_rx.c xennet_oid.c xennet_common.c

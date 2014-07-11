@@ -1,8 +1,8 @@
 #!/usr/bin/make -f
 
-CERT_FILENAME := Univention_Class_3_Code_Signing_2010.p12
-CERT_PUBLIC_FILENAME := Univention_Class_3_Code_Signing_2010.der
-all:: Univention_Class_3_Code_Signing_2010.der
+CERT_FILENAME := Univention_Class_3_Code_Signing_2010-valid-till-2017.p12
+CERT_PUBLIC_FILENAME := Univention_Class_3_Code_Signing_2010-valid-till-2017.der
+all:: Univention_Class_3_Code_Signing_2010-valid-till-2017.der
 # subject= 
 #     countryName               = DE
 #     stateOrProvinceName       = Bremen
@@ -67,5 +67,5 @@ all:: VeriSign_Class_3_Public_Primary_Certification_Authority_-_G5.pem
 ##     localityName              = Redmond
 ##     organizationName          = Microsoft Corporation
 ##     commonName                = Microsoft Code Verification Root
-Univention_Class_3_Code_Signing_2010.p12 Univention_Class_3_Code_Signing_2010.pem VeriSign_CodeSigning_CA.pem VeriSign_Root_CA.pem:
+Univention_Class_3_Code_Signing_2010-valid-till-2017.p12 Univention_Class_3_Code_Signing_2010-valid-till-2017.pem VeriSign_CodeSigning_CA.pem VeriSign_Root_CA.pem:
 	scp galant:/home/groups/77_entwicklung/89_ssl-zertifikate/symantec_codesigning/"$@" "$@"

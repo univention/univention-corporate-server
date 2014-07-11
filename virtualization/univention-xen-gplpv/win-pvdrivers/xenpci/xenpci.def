@@ -1,0 +1,37 @@
+LIBRARY  XENPCI.SYS
+
+EXPORTS
+;  DllInitialize PRIVATE
+;  DllUnload PRIVATE
+;  XenTestExport
+
+ XnGetVersion
+ XnOpenDevice
+ XnCloseDevice
+ XnGetValue
+
+ XnBindEvent
+ XnUnbindEvent
+ XnNotify
+
+ XnAllocateGrant
+ XnFreeGrant
+ XnGrantAccess
+ XnEndAccess
+
+; XnAddWatch
+; XnRemoveWatch
+ XnReadString
+ XnWriteString
+ XnReadInt32
+ XnWriteInt32
+ XnReadInt64
+ XnWriteInt64
+
+ XnGetHypercallStubs
+ XnSetHypercallStubs
+
+ XnDebugPrint
+ XnPrintDump
+
+ XnTmemOp

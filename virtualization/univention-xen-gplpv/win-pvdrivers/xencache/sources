@@ -1,0 +1,7 @@
+!INCLUDE ..\common.inc
+TARGETNAME=xencache
+TARGETTYPE=DRIVER
+NTTARGETFILE0=$(NTTARGETFILES) $(OBJ_PATH)\$(O)\$(TARGETNAME).inf
+TARGETLIBS=$(TARGETLIBS) ..\xenpci\$(O)\xenpci.lib
+TARGETLIBS= $(TARGETLIBS) $(IFSKIT_LIB_PATH)\fltMgr.lib
+SOURCES=xencache.rc xencache.c

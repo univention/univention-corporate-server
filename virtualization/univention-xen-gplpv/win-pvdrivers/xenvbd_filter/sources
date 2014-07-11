@@ -1,0 +1,13 @@
+!INCLUDE "..\common.inc"
+TARGETNAME=xenvbdfilter
+TARGETTYPE=DRIVER
+KMDF_VERSION_MAJOR=1
+!IF $(386)
+TARGETLIBS=$(TARGETLIBS) ..\xenpci\obj$(BUILD_ALT_DIR)\i386\xenpci.lib
+!ELSE
+TARGETLIBS=$(TARGETLIBS) ..\xenpci\obj$(BUILD_ALT_DIR)\AMD64\xenpci.lib
+!ENDIF
+!IF "$(DDK_TARGET_OS)" == "Win2K" || "$(DDK_TARGET_OS)" == "WinXP" || "$(DDK_TARGET_OS)" == "WinNET"
+!ELSE
+!ENDIF
+SOURCES=xenvbd_filter.rc xenvbd_filter.c
