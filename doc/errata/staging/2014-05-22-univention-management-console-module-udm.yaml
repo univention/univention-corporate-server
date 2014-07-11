@@ -6,7 +6,7 @@ fix: 4.0.97-35.459.201407111358
 version: [2]
 desc: |
   This update fixes the following issues:
-  * The property that is used to in the first column of the grid ("Name") is
+  * The property that is used in the first column of the grid ("Name") is
     now configurable via UCR
   * Some UDM attributes are shown as readonly if the domain is part of an Active Directory Domain
   * Display a warning in Active Directory Mode before creating objects which are not synchronized back to AD.
