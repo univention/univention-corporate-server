@@ -86,7 +86,7 @@ msgstr ""
 msgid "Make sure the domaincontroller master is running and reachable from %s"
 msgstr ""
 "Stellen Sie sicher, dass der Domänencontroller Master läuft und von %s "
-"erreichbar ist."
+"erreichbar ist"
 
 #: umc/python/udm/tools.py:68
 msgid "More than one object has been found."
