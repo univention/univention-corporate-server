@@ -38,7 +38,7 @@ binary binary-arch binary-indep build build-arch build-indep clean install insta
 	dh $@
 
 override_dh_auto_build:
-	genisoimage -J -R -o "Xen Windows drivers (gplpv ${BUILD_NUMBER}).iso" msi-packages
+	genisoimage -J -R -o "Xen Windows drivers (gplpv ${GPLPV_VERSION}).iso" msi-packages
 
 get-orig-source: win-pvdrivers win-pvdrivers/build_number.bat win-pvdrivers/sign_config.bat
 .PHONY: win-pvdrivers
