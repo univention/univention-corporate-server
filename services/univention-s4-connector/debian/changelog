@@ -1,3 +1,30 @@
+univention-s4-connector (8.0.33-50) unstable; urgency=low
+
+  * Added new helper tools:
+    (Bug #32194)
+     - remove_s4_rejected.py
+       Removes a S4 object from the list of rejected S4 objects.
+       See univention-s4connector-list-rejected
+     - remove_ucs_rejected.py
+       Removes an UCS object from the list of rejected UCS objects.
+       See univention-s4connector-list-rejected
+    (Bug #33621)
+     - DN2base64Guid.py
+       Converts the objectGUID of an S4 object to base64. This is helpful
+       for debugging the /etc/univention/connector/s4cache.sqlite values.
+     - base64Guid2DN.py
+       Decodes the base64 based objectGUID and returns the S4 DN. This is
+       helpful for debugging the /etc/univention/connector/s4cache.sqlite
+       values.
+     - resync_object_from_s4.py
+       Removes all cache entries of an S4 object and resyncs this object
+       from S4 to OpenLDAP.
+     - resync_object_from_ucs.py
+       Removes all cache entries of an UCS object and resyncs this object
+       from OpenLDAP to UCS.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Jul 2014 20:16:38 +0200
+
 univention-s4-connector (8.0.33-49) unstable; urgency=low
 
   * Restart bind9 if the ldap/master can't be resolved (Bug #34865)
