@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-07-10 09:37+0200\n"
+"POT-Creation-Date: 2014-07-11 10:21+0200\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,8 @@ msgid "An error occurred while sending the request: %s"
 msgstr "Ein Fehler ist während des Anforderns aufgetreten: %s"
 
 #: umc/python/udm/udm_ldap.py:109
-msgid "Cannot connect to the LDAP-Service."
+#, fuzzy
+msgid "Cannot connect to the LDAP service."
 msgstr "Konnte nicht zum LDAP-Dienst verbinden."
 
 #: umc/python/udm/__init__.py:1141
@@ -55,11 +56,13 @@ msgstr "Das LDAP-Objekt konnte nicht identifiziert werden"
 msgid ""
 "If the problem persists additional hints about the cause can be found in the "
 "following log file:"
-msgstr "Wenn das Problem bestehen bleibt können weitere Hinweise über die Ursache in der folgenden Protokolldatei gefunden werden:"
+msgstr ""
+"Wenn das Problem bestehen bleibt, können weitere Hinweise über die Ursache in "
+"der folgenden Protokolldatei gefunden werden:"
 
 #: umc/python/udm/udm_ldap.py:117
 msgid "Install the latest software updates"
-msgstr "Installieren Sie die aktuellsten Softwareaktualisierungen"
+msgstr "Installieren Sie alle Softwareaktualisierungen"
 
 #: umc/python/udm/__init__.py:343 umc/python/udm/__init__.py:375
 msgid "Invalid object definition"
@@ -87,7 +90,9 @@ msgstr ""
 #: umc/python/udm/udm_ldap.py:112
 #, python-format
 msgid "Make sure the domaincontroller master is running and reachable from %s"
-msgstr "Stellen Sie sicher, dass der Domänencontroller master läuft und von %s erreichbar ist."
+msgstr ""
+"Stellen Sie sicher, dass der Domänencontroller master läuft und von %s "
+"erreichbar ist."
 
 #: umc/python/udm/tools.py:68
 msgid "More than one object has been found."
@@ -129,9 +134,11 @@ msgstr "Referenzierende Objekte"
 
 #: umc/python/udm/udm_ldap.py:113 umc/python/udm/udm_ldap.py:115
 msgid ""
-"Restart the LDAP service either on command line via \"invoke-rc.d slapd "
-"restart\" or with the system services UMC module"
-msgstr "Starten Sie den LDAP-Dienst entweder per Kommandozeile über \"invoke-rc.d slapd restart\" oder mit dem Systemdienste UMC Modul neu."
+"Restart the LDAP service either via \"invoke-rc.d slapd restart\" on command "
+"line or with the UMC module \"system services\""
+msgstr ""
+"Starten Sie den LDAP-Dienst entweder über \"invoke-rc.d "
+"slapd restart\" per Kommandozeile oder mit dem  UMC Modul \"Systemdienste\" neu."
 
 #: umc/python/udm/__init__.py:283
 #, python-format
@@ -148,7 +155,7 @@ msgstr "Das Ziel fehlt"
 
 #: umc/python/udm/udm_ldap.py:110
 msgid "The following steps can help to solve this problem:"
-msgstr "Die folgenden Schritte können helfen, dass Problem zu beheben:"
+msgstr "Die folgenden Schritte können helfen, das Problem zu beheben:"
 
 #: umc/python/udm/tools.py:72
 #, python-format

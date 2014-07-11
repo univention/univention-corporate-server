@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.97-32) unstable; urgency=low
+
+  * Bug #34244: fix typos in translation
+
+ -- Florian Best <best@univention.de>  Fri, 11 Jul 2014 10:34:16 +0200
+
 univention-management-console-module-udm (4.0.97-31) unstable; urgency=low
 
   * Bug #34244: Add translation of the error message.
