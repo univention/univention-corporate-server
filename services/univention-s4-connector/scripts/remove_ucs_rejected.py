@@ -38,7 +38,7 @@ from optparse import OptionParser
 
 class ObjectNotFound(BaseException): pass
 
-def remove_ucs_rejected(self, ucs_dn):
+def remove_ucs_rejected(ucs_dn):
 	cache_db = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
 	c = cache_db.cursor()
 	c.execute("SELECT key FROM 'UCS rejected' WHERE value='%s'" % ucs_dn)
@@ -63,7 +63,7 @@ if __name__ == '__main__':
 	ucs_dn = args[0]
 
 	try:
-		remove_ucs_rejected.remove(ucs_dn)
+		remove_ucs_rejected(ucs_dn)
 	except ObjectNotFound:
 		print 'ERROR: The object %s was not found.' % ucs_dn
 		sys.exit(1)
