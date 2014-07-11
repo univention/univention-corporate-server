@@ -28,7 +28,6 @@ msgid "An error occurred while sending the request: %s"
 msgstr "Ein Fehler ist während des Anforderns aufgetreten: %s"
 
 #: umc/python/udm/udm_ldap.py:109
-#, fuzzy
 msgid "Cannot connect to the LDAP service."
 msgstr "Konnte nicht zum LDAP-Dienst verbinden."
 
