@@ -90,7 +90,7 @@ msgstr ""
 #, python-format
 msgid "Make sure the domaincontroller master is running and reachable from %s"
 msgstr ""
-"Stellen Sie sicher, dass der Domänencontroller master läuft und von %s "
+"Stellen Sie sicher, dass der Domänencontroller Master läuft und von %s "
 "erreichbar ist."
 
 #: umc/python/udm/tools.py:68
@@ -137,7 +137,7 @@ msgid ""
 "line or with the UMC module \"system services\""
 msgstr ""
 "Starten Sie den LDAP-Dienst entweder über \"invoke-rc.d "
-"slapd restart\" per Kommandozeile oder mit dem  UMC Modul \"Systemdienste\" neu."
+"slapd restart\" per Kommandozeile oder mit dem UMC Modul \"Systemdienste\" neu."
 
 #: umc/python/udm/__init__.py:283
 #, python-format
