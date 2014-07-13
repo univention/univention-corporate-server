@@ -1,3 +1,10 @@
+ucs-test (4.0.166-57) unstable; urgency=low
+
+  * 52_s4connector/023_concurrent_deletion_in_ad: skip test until Bug
+    #35345 is fixed (Bug #35345)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 13 Jul 2014 13:12:18 +0200
+
 ucs-test (4.0.166-56) unstable; urgency=low
 
   * 52_s4connector/02?_concurrent_changes_in_*_same_attribute: skip
