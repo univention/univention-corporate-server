@@ -1,4 +1,6 @@
+import os
 import sys
+import shutil
 
 import simplejson as json
 from time import sleep
@@ -114,6 +116,62 @@ class TestUMCSystem(object):
     def make_service_query_request(self):
         """Makes a 'services/query' UMC request and returns result"""
         return self.make_query_request('services')
+
+    def make_join_scripts_query_request(self):
+        """
+        Queries for all join scripts by making a UMC request
+        'join/scripts/query'
+        """
+        return self.make_query_request('join/scripts', {"*": "*"})
+
+    def make_join_request(self, request, hostname=None,
+                          script_names=[], force=False):
+        """
+        Makes a UMC request as the provided 'request'.
+        (Used with 40* and 41* domain join tests.)
+        """
+        if request == 'join':
+            options = {"hostname": hostname,
+                       "username": self.username,
+                       "password": self.password}
+        elif request == 'run':
+            options = {"scripts": script_names,
+                       "force": force,
+                       "username": self.username,
+                       "password": self.password}
+        else:
+            utils.fail("The join request '%s' is not supported" % request)
+
+        options = {"options": options}
+        options = json.dumps(options)
+        try:
+            # defining request explicitly, since UMCConnection raises
+            # Exceptions for anything other than response with status 200
+            umc_connection = self.Connection.get_connection()
+            umc_connection.request('POST',
+                                   '/umcp/command/join/' + request,
+                                   options,
+                                   self.Connection._headers)
+            request_result = umc_connection.getresponse()
+            request_result = request_result.read()
+            if not request_result:
+                utils.fail("Request 'join/%s' with options "
+                           "'%s' failed, hostname '%s'"
+                           % (request, options, self.hostname))
+
+            request_result = json.loads(request_result)
+            if request_result.get('status') != 202:
+                utils.fail("Request 'join/%s' did not return "
+                           "status 202, hostname: '%s', response '%s'"
+                           % (request, self.hostname, request_result))
+            if not request_result.get('result')['success']:
+                utils.fail("Request 'join/%s' did not return "
+                           "success=True in the response: '%s',"
+                           "hostname '%s'"
+                           % (request, request_result, self.hostname))
+        except Exception as exc:
+            utils.fail("Exception while making 'join/%s' request: %s"
+                       % (request, exc))
 
     def check_service_presence(self, request_result, service_name):
         """
@@ -268,6 +326,34 @@ class TestUMCSystem(object):
         except Exception as exc:
             utils.fail("Exception while making 'udm/remove' request: %s" %
                        exc)
+
+    def copy_file(self, src, dst):
+        """
+        Makes a copy of the 'src' file to 'dst' file if 'src' exists
+        """
+        try:
+            if os.path.exists(src):
+                shutil.copy2(src, dst)
+            else:
+                utils.fail("Failed to find the file at the provided "
+                           "path '%s'" % src)
+        except (OSError, shutil.Error) as exc:
+            utils.fail("An exception while coping the file from '%s',"
+                       " to '%s', error '%s'" % (src, dst, exc))
+
+    def delete_file(self, path):
+        """
+        Checks if 'path' file exists and deletes it
+        """
+        try:
+            if os.path.exists(path):
+                os.remove(path)
+            else:
+                print("Failed to find the file at the provided path '%s'"
+                      % path)
+        except OSError as exc:
+            utils.fail("An exception occured while deleting a file located at "
+                       "'%s': '%s'" % (path, exc))
 
     def return_code_result_skip(self):
         """Method to stop the test with the code 77, RESULT_SKIP """
