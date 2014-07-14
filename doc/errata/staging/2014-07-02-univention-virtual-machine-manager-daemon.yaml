@@ -14,4 +14,6 @@ desc: |
     autosearch is disabled.
     Additionally, the grid is updated non-invasively at a configurable
     interval (new UCR variable uvmm/umc/autoupdate/interval).
-bug: [35122]
+  * Paused VMs are now handled more similar to running VMs, which allows, for
+    exmaple, VNC to be used for paused VMs, too.
+bug: [35122, 35107]
