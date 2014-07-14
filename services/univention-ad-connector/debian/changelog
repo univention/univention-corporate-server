@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-14) unstable; urgency=low
+
+  * Check SSL/TLS settings (Bug #35091)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Jul 2014 09:18:23 +0200
+
 univention-ad-connector (8.0.17-13) unstable; urgency=low
 
   * More AD member updates (Bug #35091):

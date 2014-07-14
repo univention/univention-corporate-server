@@ -41,6 +41,7 @@ from samba.dcerpc import nbt
 from samba.net import Net
 from samba.param import LoadParm
 import ldb
+import ldap
 import os
 
 class invalidUCSServerRole(Exception):
@@ -158,7 +159,6 @@ def lookup_adds_dc(ad_server=None, realm=None, ucr=None):
 			net = Net(creds=None, lp=lp)
 			cldap_res = net.finddc(address=ad_server,
 				flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
-			print cldap_res
 		except RuntimeError as ex:
 			raise failedADConnect(["Connection to AD Server %s failed" % (ad_server,), ex.args[0]])
 	elif realm:
@@ -180,6 +180,9 @@ def lookup_adds_dc(ad_server=None, realm=None, ucr=None):
 			ad_server_ip = stdout.strip()
 		except OSError as ex:
 			log("INFO: net lookup %s failed: %s" % (cldap_res.pdc_dns_name, ex.args[1]))
+
+	if not ad_server_ip:
+		ad_server_ip = ad_server
 
 	ad_ldap_base = None
 	remote_ldb = ldb.Ldb()
@@ -263,6 +266,21 @@ def install_univention_samba():
 	if not pm.is_installed('univention-samba'):
 		pm.install('univention-samba')
 
+def server_supports_ssl(server):
+	ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
+	ldapuri = "ldap://%s:389" % (server)
+	lo = ldap.initialize(ldapuri)
+	try:
+		lo.start_tls_s()
+	except ldap.UNAVAILABLE:
+		return False
+	return True
+
+def enable_ssl():
+	univention.config_registry.handler_set([u'connector/ad/ldap/ssl=yes'])
+
+def disable_ssl():
+	univention.config_registry.handler_set([u'connector/ad/ldap/ssl=no'])
 
 def configure_ad_member(ad_server_ip, username, password, ucr=None):
 	if not ucr:
@@ -347,13 +365,12 @@ def configure_ad_member(ad_server_ip, username, password, ucr=None):
 			u'connector/ad/mapping/user/ignorelist=krbtgt,root,pcpatch',
 		]
 	)
-
-	# Set temporary variables, this should be removed for a final release
-	univention.config_registry.handler_set(
-		[
-			u'connector/ad/ldap/ssl=no'
-		]
-	)
+	
+	if server_supports_ssl(server=ad_domain_info["DC DNS Name"]):
+		enable_ssl()
+	else:
+		print "WARNING: ssl is not supported"
+		disable_ssl()
 
 
 	# Show warnings in UMC
