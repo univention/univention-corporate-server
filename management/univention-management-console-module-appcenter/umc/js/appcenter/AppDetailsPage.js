@@ -660,6 +660,13 @@ define([
 		},
 
 		_detailFieldCustomNotifyVendor: function() {
+			if (this.app.withoutrepository) {
+				// without repository: Uses UCS repository:
+				//   strictly speaking, we get the information
+				//   about installation by some access logs
+				//   (although this is not sent on purpose)
+				return null;
+			}
 			var maintainer = this.app.maintainer && this.app.maintainer != this.app.vendor;
 			if (this.app.notifyvendor) {
 				if (maintainer) {

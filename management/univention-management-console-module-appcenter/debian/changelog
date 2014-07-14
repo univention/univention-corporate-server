@@ -1,3 +1,32 @@
+univention-management-console-module-appcenter (3.0.51-23) unstable; urgency=low
+
+  * Bug #35136: Escape ID and Version of an app for LDAP registration
+  * Bug #35271: Set repository/app_center/installed in postinst
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 08 Jul 2014 11:40:14 +0200
+
+univention-management-console-module-appcenter (3.0.51-22) unstable; urgency=low
+
+  * Bug #32935: Fix archive unpacking, add log messages, add fallback if
+    all.tar.gz does not exist
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 01 Jul 2014 10:21:06 +0200
+
+univention-management-console-module-appcenter (3.0.51-21) unstable; urgency=low
+
+  * Bug #35177: Setting UCR variable in join script, not postinst
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 25 Jun 2014 12:33:56 +0200
+
+univention-management-console-module-appcenter (3.0.51-20) unstable; urgency=low
+
+  * Bug #35177: All installed apps are saved in the UCR variable
+    repository/app_center/installed
+  * Bug #35176: Do not show a note about informing the vendor when the app is
+    a UCS component
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 24 Jun 2014 16:37:36 +0200
+
 univention-management-console-module-appcenter (3.0.51-19) unstable; urgency=low
 
   * Bug #34243: move reload of UMC modules into lib/server

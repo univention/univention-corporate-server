@@ -53,6 +53,7 @@ def register_all_installed():
 	for app in Application.all_installed(package_manager):
 		app.register(component_manager, package_manager)
 		app.tell_ldap(ucr, package_manager, inform_about_error=False)
+	Application._set_ucr_codes_variable(component_manager.ucr, package_manager)
 
 if __name__ == '__main__':
 	args = ucr.get('hostname'), ucr.get('domainname'), Application.get_server(with_scheme=True)

@@ -37,7 +37,8 @@ import platform
 import time
 from distutils.version import LooseVersion
 from gzip import GzipFile
-from tarfile import TarFile
+import tarfile
+from math import ceil
 import base64
 from StringIO import StringIO
 import ConfigParser
@@ -47,18 +48,18 @@ import locale
 import os.path
 import re
 from threading import Thread
-from hashlib import md5
 import traceback
 import urllib
 import urllib2
 from glob import glob
 import cgi
-from urlparse import urlsplit, urlunsplit, urljoin
+from urlparse import urlsplit, urljoin
 from datetime import datetime
 from PIL import Image
 from httplib import HTTPException
 from socket import error as SocketError
 from ldap import LDAPError
+from ldap.filter import escape_filter_chars
 
 # related third party
 from simplejson import loads
@@ -66,6 +67,7 @@ from simplejson import loads
 # univention
 from univention.management.console.log import MODULE
 from univention.config_registry import ConfigRegistry, handler_commit
+from univention.config_registry.frontend import ucr_update
 import univention.uldap as uldap
 import univention.management.console as umc
 from univention.lib.umc_connection import UMCConnection
@@ -75,7 +77,7 @@ import univention.admin.handlers.container.cn as container_udm_module
 import univention.admin.uexceptions as udm_errors
 
 # local application
-from util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, set_save_commit_load
+from util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, set_save_commit_load, get_md5
 
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons'
@@ -127,7 +129,7 @@ class ApplicationLDAPObject(object):
 		self.reload()
 
 	def reload(self):
-		result = appcenter_udm_module.lookup(self._co, self._lo, 'id=%s' % self._ldap_id)
+		result = appcenter_udm_module.lookup(self._co, self._lo, 'id=%s' % escape_filter_chars(self._ldap_id))
 		if result:
 			self._udm_obj = result[0]
 			self._udm_obj.open()
@@ -143,7 +145,7 @@ class ApplicationLDAPObject(object):
 		base = 'cn=apps,cn=univention,%s' % ucr.get('ldap/base')
 		pos.setDn(base)
 		for container in reversed(containers):
-			if not container_udm_module.lookup(co, lo, 'cn=%s' % container, base=base):
+			if not container_udm_module.lookup(co, lo, 'cn=%s' % escape_filter_chars(container), base=base):
 				container_obj = container_udm_module.object(co, lo, pos, 'cn=%s' % container)
 				container_obj.open()
 				container_obj.info['name'] = container
@@ -350,6 +352,7 @@ class Application(object):
 		self.id = self.ldap_id = self.ldap_container = None
 		self.set_id(self._options['id'])
 		self.name = self._options['name']
+		self.code = self._options.get('code')
 		self.version = self._options['version']
 
 		# get the name of the component
@@ -573,15 +576,10 @@ class Application(object):
 				# compare with local cache
 				cached_filename = os.path.join(CACHE_DIR, filename)
 				files_in_json_file.append(cached_filename)
-				local_md5sum = None
-				m = md5()
-				if os.path.exists(cached_filename):
-					with open(cached_filename, 'r') as f:
-						m.update(f.read())
-						local_md5sum = m.hexdigest()
+				local_md5sum = get_md5(cached_filename)
 				if remote_md5sum != local_md5sum:
 					# ask to re-download this file
-					files_to_download.append((remote_url, filename))
+					files_to_download.append((remote_url, filename, remote_md5sum))
 					something_changed = True
 		# remove those files that apparently do not exist on server anymore
 		for cached_filename in glob(os.path.join(CACHE_DIR, '*')):
@@ -590,68 +588,126 @@ class Application(object):
 				something_changed = True
 				os.unlink(cached_filename)
 		num_files_to_be_downloaded = len(files_to_download)
-		MODULE.process('%d file(s) need to be downloaded' % num_files_to_be_downloaded)
-		if num_files_to_be_downloaded > 5:
-			# a lot of files to download? Do not download them
-			#   one at a time. Download the full archive!
-			archive_url = urljoin('%s/' % cls.get_metainf_url(), 'all.tar.gz')
+		MODULE.process('%d file(s) are new' % num_files_to_be_downloaded)
+		num_files_threshold = 5
+		if num_files_to_be_downloaded > num_files_threshold:
+			files_to_download = cls._download_archive(files_to_download)
+		threads = []
+		max_threads = 10
+		files_per_thread = max(num_files_threshold, int(ceil(float(len(files_to_download)) / max_threads)))
+		while files_to_download:
+			# normally, this should be only one thread as
+			# _download_archive() is used if many files are to be downloaded
+			# but if all.tar.gz fails, everything needs to be downloaded
+			# don't do this at once, at this opens 100 connections.
+			files_to_download_in_thread, files_to_download = files_to_download[:files_per_thread], files_to_download[files_per_thread:]
+			MODULE.process('Starting to download %d file(s) directly' % len(files_to_download_in_thread))
+			thread = Thread(target=cls._download_directly, args=(files_to_download_in_thread,))
+			thread.start()
+			threads.append(thread)
+			time.sleep(0.1) # wait 100 milliseconds so that not all threads start at the same time
+		for thread in threads:
+			thread.join()
+		if something_changed:
+			cls._update_local_files()
+
+	@classmethod
+	def _download_archive(cls, files_to_download):
+		# a lot of files to download? Do not download them
+		#   one at a time. Download the full archive!
+		files_still_to_download = []
+		archive_url = urljoin('%s/' % cls.get_metainf_url(), 'all.tar.gz')
+		try:
+			MODULE.process('Downloading "%s"...' % archive_url)
+			# for some reason saving this in memory is flawed.
+			# using StringIO and GZip objects has issues
+			# with "empty" files in tar.gz archives, i.e.
+			# doublets like .png logos
+			with open(os.path.join(CACHE_DIR, 'all.tar.gz'), 'wb') as f:
+				f.write(urlopen(archive_url).read())
+			archive = tarfile.open(f.name, 'r:*')
 			try:
-				compressed = StringIO(urlopen(archive_url).read())
-				content = StringIO(GzipFile(mode='rb', fileobj=compressed).read())
-				archive = TarFile(fileobj=content)
-			except:
-				MODULE.error('Could not read "%s"' % archive_url)
-				raise
-			else:
-				for filename_url, filename in files_to_download:
+				for filename_url, filename, remote_md5sum in files_to_download:
 					MODULE.info('Extracting %s' % filename)
 					try:
 						archive.extract(filename, path=CACHE_DIR)
+						local_md5sum = get_md5(os.path.join(CACHE_DIR, filename))
+						if local_md5sum != remote_md5sum:
+							MODULE.warn('Checksum for %s should be %r but was %r! Download manually' % (filename, remote_md5sum, local_md5sum))
+							raise KeyError(filename)
 					except KeyError:
 						MODULE.warn('%s not found in archive!' % filename)
-		else:
-			for filename_url, filename in files_to_download:
-				# dont forget to quote: 'foo & bar.ini' -> 'foo%20&%20bar.ini'
-				# but dont quote https:// -> https%3A//
-				parts = list(urlsplit(filename_url))
-				parts[2] = urllib2.quote(parts[2]) # 0 -> scheme, 1 -> netloc, 2 -> path
-				filename_url = urlunsplit(parts)
+						files_still_to_download.append((filename_url, filename, remote_md5sum))
+			finally:
+				archive.close()
+				os.unlink(f.name)
+			return files_still_to_download
+		except Exception as exc:
+			MODULE.error('Could not read "%s": %s' % (archive_url, exc))
+			return files_to_download
 
-				cached_filename = os.path.join(CACHE_DIR, filename)
+	@classmethod
+	def _download_directly(cls, files_to_download):
+		for filename_url, filename, remote_md5sum in files_to_download:
+			# dont forget to quote: 'foo & bar.ini' -> 'foo%20&%20bar.ini'
+			# but dont quote https:// -> https%3A//
+			path = urllib2.quote(urlsplit(filename_url).path)
+			filename_url = '%s%s' % (cls.get_server(with_scheme=True), path)
 
-				MODULE.info('Downloading %s to %s' % (filename_url, cached_filename))
-				try:
-					urlcontent = urlopen(filename_url)
-				except Exception as e:
-					MODULE.error('Error downloading %s: %s' % (filename_url, e))
-				else:
-					with open(cached_filename, 'wb') as f:
-						f.write(urlcontent.read())
-		if something_changed:
-			# some variables could change apps.xml
-			# e.g. Name, Description
-			cls.update_conffiles()
+			cached_filename = os.path.join(CACHE_DIR, filename)
 
-			# TODO: would be nice if vendors provided ${app}16.png
-			# special handling for icons
-			for png in glob(os.path.join(FRONTEND_ICONS_DIR, '**', 'apps-*.png')):
-				os.unlink(png)
-			# images are created as -rw-------
-			# change the mode to that every other image is installed with
-			# (normally -rw-r--r--)
-			template_png = glob(os.path.join(FRONTEND_ICONS_DIR, '**', '*.png'))[0]
-			for png in glob(os.path.join(CACHE_DIR, '*.png')):
-				app_id, ext = os.path.splitext(os.path.basename(png))
-				# 50x50
-				png_50 = os.path.join(FRONTEND_ICONS_DIR, '50x50', 'apps-%s.png' % app_id)
-				shutil.copy2(png, png_50)
-				shutil.copymode(template_png, png_50)
-				# 16x16
-				png_16 = os.path.join(FRONTEND_ICONS_DIR, '16x16', 'apps-%s.png' % app_id)
-				image = Image.open(png)
-				new_image = image.resize((16, 16))
-				new_image.save(png_16)
-				shutil.copymode(template_png, png_16)
+			MODULE.info('Downloading %s to %s' % (filename_url, cached_filename))
+			try:
+				urlcontent = urlopen(filename_url)
+			except Exception as e:
+				MODULE.error('Error downloading %s: %s' % (filename_url, e))
+			else:
+				with open(cached_filename, 'wb') as f:
+					f.write(urlcontent.read())
+				local_md5sum = get_md5(cached_filename)
+				if local_md5sum != remote_md5sum:
+					MODULE.error('Checksum for %s should be %r but was %r! Giving up for this time!' % (filename, remote_md5sum, local_md5sum))
+
+	@classmethod
+	def _update_local_files(cls):
+		# some variables could change apps.xml
+		# e.g. Name, Description
+		cls.update_conffiles()
+
+		# TODO: would be nice if vendors provided ${app}16.png
+		# special handling for icons
+		for png in glob(os.path.join(FRONTEND_ICONS_DIR, '**', 'apps-*.png')):
+			os.unlink(png)
+		# images are created as -rw-------
+		# change the mode to that every other image is installed with
+		# (normally -rw-r--r--)
+		template_png = glob(os.path.join(FRONTEND_ICONS_DIR, '**', '*.png'))[0]
+		for png in glob(os.path.join(CACHE_DIR, '*.png')):
+			app_id, ext = os.path.splitext(os.path.basename(png))
+			# 50x50
+			png_50 = os.path.join(FRONTEND_ICONS_DIR, '50x50', 'apps-%s.png' % app_id)
+			shutil.copy2(png, png_50)
+			shutil.copymode(template_png, png_50)
+			# 16x16
+			png_16 = os.path.join(FRONTEND_ICONS_DIR, '16x16', 'apps-%s.png' % app_id)
+			image = Image.open(png)
+			new_image = image.resize((16, 16))
+			new_image.save(png_16)
+			shutil.copymode(template_png, png_16)
+
+	#@classmethod
+	#def set_server(cls, host=None, scheme=None):
+	#	if host and scheme:
+	#		new_server = '%s://%s' % (scheme, host)
+	#	elif host:
+	#		new_server = host
+	#	elif scheme:
+	#		current_server = cls.get_server(with_scheme=False)
+	#		new_server = '%s://%s' % (scheme, current_server)
+	#	else:
+	#		# no-op
+	#		return
+	#	ucr_update(ucr, {'repository/app_center/server' : new_server})
 
 	@classmethod
 	def all_installed(cls, package_manager, force_reread=False, only_local=False, localize=True):
@@ -796,7 +852,7 @@ class Application(object):
 		return res
 
 	def __repr__(self):
-		return '<Application id="%s" name="%s (%s)" component="%s">' % (self.id, self.name, self.version, self.component_id)
+		return '<Application id="%s" name="%s (%s)" code="%s" component="%s">' % (self.id, self.name, self.version, self.code, self.component_id)
 
 	@HardRequirement('install', 'update')
 	def must_have_valid_license(self):
@@ -957,8 +1013,15 @@ class Application(object):
 			# serveral other (app relevant) packages; for example
 			# in postinst or joinscript (on master).
 			# see Bug #33535 and Bug #31261
-			packages = package_manager.get_packages(default_packages)
-			return len(packages) == len(default_packages) and all(package.is_installed for package in packages)
+			for package_name in default_packages:
+				try:
+					package = package_manager.get_package(package_name, raise_key_error=True)
+				except KeyError:
+					return False
+				else:
+					if not package.is_installed:
+						return False
+			return True
 
 	def uninstall(self, package_manager, component_manager):
 		# reload ucr variables
@@ -987,7 +1050,7 @@ class Application(object):
 			status = 200
 		except:
 			status = 500
-		self._send_information('uninstall', status)
+		self._finished('uninstall', status, component_manager.ucr, package_manager)
 		return status == 200
 
 	def install_dry_run(self, package_manager, component_manager, remove_component=True, username=None, password=None, only_master_packages=False, dont_remote_install=False, function='install', force=False):
@@ -1221,7 +1284,8 @@ class Application(object):
 					ldap_object = iapp.get_ldap_object(or_create=True)
 					ldap_object.add_localhost()
 					break
-			udm_objects = appcenter_udm_module.lookup(co, lo, '(&(id=%s_*)(server=%s))' % (self.id, localhost))
+			same_app_filter = '(&(id=%s_*)(server=%s))' % (escape_filter_chars(self.id), escape_filter_chars(localhost))
+			udm_objects = appcenter_udm_module.lookup(co, lo, same_app_filter)
 			for udm_object in udm_objects:
 				udm_object.open()
 				if installed_version != udm_object.info['version']:
@@ -1428,8 +1492,12 @@ class Application(object):
 			except (LDAPError, udm_errors.base):
 				pass
 			status = 500
-		self._send_information(send_as, status)
+		self._finished(send_as, status, component_manager.ucr, package_manager)
 		return status == 200
+
+	def _finished(self, action, status, ucr, package_manager):
+		self._set_ucr_codes_variable(ucr, package_manager)
+		self._send_information(action, status)
 
 	def _send_information(self, action, status):
 		if not self.get('notifyvendor'):
@@ -1452,6 +1520,15 @@ class Application(object):
 			urlopen(request)
 		except:
 			MODULE.warn(traceback.format_exc())
+
+	@classmethod
+	def _set_ucr_codes_variable(cls, ucr, package_manager):
+		installed_codes = []
+		for app in cls.all_installed(package_manager):
+			if app.code:
+				installed_codes.append(app.code)
+		codes_variable = '-'.join(sorted(installed_codes))
+		ucr_update(ucr, {'repository/app_center/installed' : codes_variable})
 
 	@classmethod
 	def update_conffiles(cls):
