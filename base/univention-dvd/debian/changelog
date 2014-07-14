@@ -1,0 +1,5 @@
+univention-dvd (0.0.1-1) unstable; urgency=low
+
+  * Bug #30547: initial version
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 14 Jul 2014 17:33:47 +0200

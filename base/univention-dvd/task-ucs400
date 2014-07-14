@@ -1,0 +1,12 @@
+/* this file may NOT contain leading or trailing whilespaces !!! */
+
+#include <debian-installer+kernel>
+#include <forcd1>
+
+univention-debootstrap
+
+univention-server-master
+univention-server-backup
+univention-server-slave
+univention-server-member
+univention-base-system
