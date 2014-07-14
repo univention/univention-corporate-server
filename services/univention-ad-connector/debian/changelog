@@ -1,3 +1,11 @@
+univention-ad-connector (8.0.17-13) unstable; urgency=low
+
+  * More AD member updates (Bug #35091):
+      Install univention-samba
+      Stop heimdal and samba4
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Jul 2014 08:16:15 +0200
+
 univention-ad-connector (8.0.17-12) unstable; urgency=low
 
   * Make a secure LDAP connection possible without having the root

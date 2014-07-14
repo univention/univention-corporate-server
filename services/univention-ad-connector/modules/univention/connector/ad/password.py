@@ -251,15 +251,20 @@ def password_sync_kinit(connector, key, ucs_object):
 
 	object=connector._object_mapping(key, ucs_object, 'ucs')
 
-	ucs_result=connector.lo.search(base=ucs_object['dn'], attr=['userPassword'])
+	attr = {'userPassword': '{KINIT}', 'sambaNTPassword': 'NO PASSWORD*********************', 'sambaLMPassword': 'NO PASSWORD*********************'}
+
+	ucs_result=connector.lo.search(base=ucs_object['dn'], attr=attr.keys())
 	
-	userPassword = None
-	if ucs_result[0][1].has_key('userPassword'):
-		userPassword = ucs_result[0][1]['userPassword'][0]
-	ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: userPassword: %s" % userPassword)
-	if userPassword == '{KINIT}':
-		return
-	connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'userPassword', '{KINIT}')])
+	modlist = []
+	for attribute in attr.keys():
+		expected_value = attr[key]
+		if ucs_result[0][1].has_key(attribute):
+			userPassword = ucs_result[0][1][attribute][0]
+			if userPassword != expected_value:
+				modlist.append((ldap.MOD_REPLACE, attribute, expected_value))
+
+	if modlist:
+		connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), modlist)
 
 def password_sync(connector, key, ucs_object):
 	_d=ud.function('ldap.ad.password_sync')

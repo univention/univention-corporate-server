@@ -35,6 +35,7 @@ from exceptions import Exception
 import subprocess
 from datetime import datetime, timedelta
 import univention.config_registry
+import univention.lib.package_manager
 # from samba.netcmd.common import netcmd_get_domain_infos_via_cldap
 from samba.dcerpc import nbt
 from samba.net import Net
@@ -106,21 +107,33 @@ def time_sync(ad_ip, tolerance=180, critical_difference=360):
 
 
 def set_timeserver(timeserver, ucr=None):
-
 	univention.config_registry.handler_set([u'timeserver=%s' % (timeserver,)])
 
+	restart_service("ntp")
+
+def stop_service(service):
+	return invoke_service(service, "stop")
+
+def start_service(service):
+	return invoke_service(service, "start")
+
+def restart_service(service):
+	return invoke_service(service, "restart")
+
+def invoke_service(service, cmd):
+	if not os.path.exists('/etc/init.d/%s' % service):
+		return
 	try:
-		p1 = subprocess.Popen(["invoke-rc.d", "ntp", "restart"],
+		p1 = subprocess.Popen(["invoke-rc.d", service, cmd],
 			close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		stdout, stderr = p1.communicate()
 	except OSError as ex:
-		log("ERROR: invoke-rc.d ntp restart failed: " % (ex.args[1],))
+		log("ERROR: invoke-rc.d %s %s failed: %s" % (service, cmd, ex.args[1],))
 		return
 
 	if p1.returncode:
-		log("ERROR: invoke-rc.d ntp restart failed (%d)" % (p1.returncode,))
+		log("ERROR: invoke-rc.d %s %s failed (%d)" % (service, cmd, p1.returncode,))
 		return
-
 
 def lookup_adds_dc(ad_server=None, realm=None, ucr=None):
 	'''CLDAP lookup'''
@@ -145,6 +158,7 @@ def lookup_adds_dc(ad_server=None, realm=None, ucr=None):
 			net = Net(creds=None, lp=lp)
 			cldap_res = net.finddc(address=ad_server,
 				flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
+			print cldap_res
 		except RuntimeError as ex:
 			raise failedADConnect(["Connection to AD Server %s failed" % (ad_server,), ex.args[0]])
 	elif realm:
@@ -242,6 +256,13 @@ def ucs_addServiceToLocalUCSMaster(service):
 		log("ERROR: UDM command failed (%d)" % (p1.returncode,))
 		return
 
+def install_univention_samba():
+	pm = univention.lib.package_manager.PackageManager()
+	pm.update()
+	pm.noninteractive()
+	if not pm.is_installed('univention-samba'):
+		pm.install('univention-samba')
+
 
 def configure_ad_member(ad_server_ip, username, password, ucr=None):
 	if not ucr:
@@ -281,10 +302,27 @@ def configure_ad_member(ad_server_ip, username, password, ucr=None):
 			u'kerberos/kpasswdserver'
 		]
 	)
+
+	### Configure Samba 4 & Heimdal
+	stop_service("samba4")
+	stop_service("heimdal-kdc")
+
+	univention.config_registry.handler_set(
+		[
+			u'samba4/autostart=false',
+			u'kerberos/autostart=false',
+		]
+	)
+	
 	
 	ucs_addServiceToLocalUCSMaster("AD Member")
 
-	univention.config_registry.handler_set([u'ad/member=true'])
+	univention.config_registry.handler_set(
+		[
+			u'ad/member=true',
+			u'connector/ad/mapping/user/password/kinit=true',
+		]
+	)
 
 	### Store bind information for univention-ad-connector
 	bindpw_file = "/etc/univention/connector/ad/bindpw"
@@ -293,6 +331,9 @@ def configure_ad_member(ad_server_ip, username, password, ucr=None):
 	with file(bindpw_file, 'w') as f:
 		os.chmod(bindpw_file, 0600)
 		f.write(password)
+
+	# install univention-samba
+	install_univention_samba()
 
 	binddn = 'cn=%s,cn=users,%s' % (username, ad_domain_info["LDAP Base"])
 
@@ -313,6 +354,7 @@ def configure_ad_member(ad_server_ip, username, password, ucr=None):
 			u'connector/ad/ldap/ssl=no'
 		]
 	)
+
 
 	# Show warnings in UMC
 	# Change displayed name of users from "username" to "displayName" (as in AD)
