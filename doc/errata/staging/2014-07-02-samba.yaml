@@ -17,8 +17,8 @@ desc: |
       after they changed the logon password for their account. Domains
       affected by this need to manually remove the object
       "CN=BCKUPKEY_PREFERRED Secret" from the Samba directory service after
-      the update make Samba internally genrate a new ticket for the Backupkey
-      protocol.
+      the update to make Samba internally generate a new ticket for the 
+      Backupkey protocol.
 bug: [35192, 35287]
 cve:
  - CVE-2014-0244
