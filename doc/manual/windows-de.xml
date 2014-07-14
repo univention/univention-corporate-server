@@ -524,7 +524,7 @@ instanceType: 4
 			  </simpara></listitem>
 
 			  <listitem><simpara>
-				Das <emphasis>Default Domain Controller Policy</emphasis> Objekt hat in einer Samba-Domäne
+				Das <emphasis>Default Domain Controllers Policy</emphasis> Objekt hat in einer Samba-Domäne
 				keine Verwendung (in einer Microsoft AD-Domäne würden die Richtlinien für
 				Microsoft-Domänencontroller über dieses Objekt erfolgen). Die Konfiguration der
 				Samba-Domänencontroller erfolgt in UCS weitgehend über &ucsUCR;.

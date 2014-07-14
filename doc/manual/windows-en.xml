@@ -344,6 +344,8 @@ instanceType: 4
 <!-- 			lässt. -->
 <!-- 		  </para> -->
 
+<!-- <emphasis>Security Filtering</emphasis> -->
+
 <!-- 		  <para> -->
 <!-- 			Grundsätzlich sind die <emphasis>Gruppenrichtlinien</emphasis> (<emphasis>Group -->
 <!-- 			Policies</emphasis> (GPO)) von den sehr ähnlich benannten -->
@@ -378,6 +380,8 @@ instanceType: 4
 <!-- 			<emphasis>Remote Server Administration Tools (RSAT)</emphasis> ist. Die Einrichtung ist -->
 <!-- 			in <xref linkend="gpo:install"/> dokumentiert. -->
 <!-- 		  </para> -->
+
+<!-- <emphasis>Group Policy Management</emphasis> -->
 
 <!-- 		  <para> -->
 <!-- 			Es existieren zwei Arten von Richtlinien: -->
@@ -443,11 +447,11 @@ instanceType: 4
 <!-- 			bezogen werden. -->
 <!-- 		  </para> -->
 
-<!-- 		  <para> -->
-<!-- 			<figure><title>Aktivierung der Gruppenrichtlinienverwaltung</title> -->
-<!-- 			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-activate-de.png"/> -->
-<!-- 			</figure> -->
-<!-- 		  </para> -->
+		  <para>
+			<figure><title>Activating the Group Policy Management Tools</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-activate-en.png"/>
+			</figure>
+		  </para>
 
 <!-- 		  <para> -->
 <!-- 			Nach der Installation muss die Gruppenrichtlinienverwaltung in der Windows-Systemsteuerung -->
@@ -457,10 +461,15 @@ instanceType: 4
 <!-- 			Gruppenrichtlinienverwaltung</guimenu> aktiviert wird. -->
 <!-- 		  </para> -->
 
+<!-- <guimenu>Start -> Control Panel -> Programs -> Turn Windows features on or off -> Remote Server Administration Tools -> Feature Administration Tools</guimenu> -->
+<!-- <guimenu>Group Policy Management Tools</guimenu> -->
+
 <!-- 		  <para> -->
 <!-- 			Nach der Aktivierung kann die Gruppenrichtlinienverwaltung unter <guimenu>Start -> -->
 <!-- 			Verwaltung -> Gruppenrichtlinienverwaltung</guimenu> aufgerufen werden. -->
 <!-- 		  </para> -->
+
+<!-- <guimenu>Start -> Administrative Tools -> Group Policy Management</guimenu> -->
 
 <!-- 		</section> -->
 
@@ -490,6 +499,8 @@ instanceType: 4
 <!-- 				Richtlinie mit mehreren Positionen im LDAP verknüpft werden soll. -->
 <!-- 			  </simpara></listitem> -->
 
+<!-- <guimenu>Group Policy Objects</guimenu> -->
+
 <!-- 			  <listitem><simpara> -->
 <!-- 				Die GPO kann ad hoc an einer LDAP-Position erstellt und dabei direkt verknüpft -->
 <!-- 				werden. Für kleine und mittlere Domänen ist das der einfachere Weg. Auch ad hoc -->
@@ -508,11 +519,11 @@ instanceType: 4
 <!-- 			Speichermenge zu verwalten. -->
 <!-- 		  </para> -->
 
-<!-- 		  <para> -->
-<!-- 			<figure><title>Bearbeiten einer Richtlinie</title> -->
-<!-- 			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-edit-policy-de.png"/> -->
-<!-- 			</figure> -->
-<!-- 		  </para> -->
+		  <para>
+			<figure><title>Editing a policy</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-edit-policy-en.png"/>
+			</figure>
+		  </para>
 
 <!-- 		  <para> -->
 <!-- 			Zwei Standard-Richtlinienobjekte sind vordefiniert: -->
@@ -531,6 +542,8 @@ instanceType: 4
 <!-- 			  </simpara></listitem> -->
 <!-- 			</itemizedlist> -->
 <!-- 		  </para> -->
+
+<!-- <emphasis>Default Domain Controllers Policy</emphasis> -->
 
 <!-- 		  <para> -->
 <!-- 			AD-Domänen können in Sites strukturiert werden. Dies kann z.B. verwendet werden um -->
@@ -555,11 +568,11 @@ instanceType: 4
 <!-- 			werden: -->
 <!-- 		  </para> -->
 
-<!-- 		  <para> -->
-<!-- 			<figure><title>Auswertung der GPO für den Benutzer user01</title> -->
-<!-- 			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-gpresult-de.png"/> -->
-<!-- 			</figure> -->
-<!-- 		  </para> -->
+		  <para>
+			<figure><title>Evaluating the GPO for the user user01</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-gpresult-en.png"/>
+			</figure>
+		  </para>
 
 <!-- 		  <para> -->
 <!-- 			Die Richtlinien werden in folgender Reihenfolge ausgewertet: -->
@@ -604,6 +617,8 @@ instanceType: 4
 <!-- 			unterbinden</guimenu> auf <emphasis>deaktiviert</emphasis> gesetzt wird. Dieses neue GPO -->
 <!-- 			wird mit der OU <emphasis>Technik</emphasis> verbunden. -->
 <!-- 		  </para> -->
+
+<!-- <emphasis>Remove Task Manager</emphasis> -->
 
 <!-- 		</section> -->
 
@@ -652,25 +667,25 @@ instanceType: 4
 <!-- 			linkend="microsoft-adm-templates"/> und <biblioref linkend="adm-templates-howto"/> zu -->
 <!-- 			finden. Die administrativen Vorlagen müssen die Dateiendung <emphasis>.adm</emphasis> verwenden: -->
 
-<!-- 			<programlisting language="sh"> -->
-<!-- CLASS MACHINE -->
-<!-- CATEGORY "Univention" -->
-<!-- POLICY "RDP-Client" -->
-<!-- KEYNAME "Univention\RDP\StorageRedirect" -->
-<!-- EXPLAIN "Ist diese Option aktiviert, wird Soundausgabe im RDP-Client aktiviert" -->
-<!-- VALUENAME "Sound-Weiterleitung" -->
-<!-- VALUEON "Aktiviert" -->
-<!-- VALUEOFF "Deaktiviert" -->
-<!-- END POLICY -->
-<!-- END CATEGORY -->
-<!-- 			</programlisting> -->
+			<programlisting language="sh">
+CLASS MACHINE
+CATEGORY "Univention"
+POLICY "RDP client"
+KEYNAME "Univention\RDP\StorageRedirect"
+EXPLAIN "If this opion it activated, sound output is enabled in the RDP client"
+VALUENAME "Sound redirection"
+VALUEON "Activated"
+VALUEOFF "Deactivated"
+END POLICY
+END CATEGORY
+			</programlisting>
 <!-- 		  </para> -->
 
-<!-- 		  <para> -->
-<!-- 			<figure><title>Die eingebundene administrative Vorlage</title> -->
-<!-- 			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-adm-template-de.png"/> -->
-<!-- 			</figure> -->
-<!-- 		  </para> -->
+		  <para>
+			<figure><title>The activated administrative template</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-adm-template-en.png"/>
+			</figure>
+		  </para>
 
 <!-- 		  <para> -->
 <!-- 			Die ADM-Datei kann anschließend in das ADMX-Format umgewandelt oder aber direkt über die Gruppenrichtlinienverwaltung importiert -->
@@ -681,6 +696,9 @@ instanceType: 4
 <!-- 			repliziert, wodurch die Gruppenrichtlinienverwaltung von den Windows-Clients aus auf sie zugreifen kann. -->
 <!-- 		  </para> -->
 <!-- 		</section> -->
+
+<!-- <guimenu>Administrative templates</guimenu> -->
+<!-- <guimenu>Add/Remove Templates -> Add</guimenu> -->
 
 <!-- 		<section id="gpo:wmifilter"> -->
 <!-- 		  <title>Anwendung von Richtlinien auf Basis von Rechnereigenschaften (WMI-Filter)</title> -->
@@ -701,6 +719,9 @@ instanceType: 4
 <!-- 			einer SQL-ähnlichen Syntax definiert. Regel-Beispiele finden sich in <biblioref -->
 <!-- 			linkend="microsoft-wmi-filter"/> und  <biblioref linkend="add-wmi-filters"/>. -->
 <!-- 		  </para> -->
+
+<!-- <guimenu>WMI Filters</guimenu> -->
+<!-- <guimenu>Queries</guimenu> -->
 
 <!-- 		</section> -->
 
