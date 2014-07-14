@@ -5,8 +5,8 @@ src: univention-ldap
 fix: 10.0.17-39.696.201407020857
 version: [2]
 desc: |
-  * A regression in the ldap ACL's has been fixed. The ACL's for
-    the dc and memberserver container now again allow subfolders
+  * A regression in the LDAP ACLs has been fixed. The ACLs for
+    the "dc" and "memberserver" containers now again allow subfolders
     (in cn=dc resp. cn=memberserver).
   * New share-userquota binary attribute: Reapply quota on every login
   * Support for the overlay module pwd_scheme_kinit has been added
