@@ -157,8 +157,7 @@ class UMC_OptionMissing(UMC_Error):
 
 
 class UMC_CommandError(UMC_Error):
-	def __str__(self):
-		return ''
+	pass
 
 
 class UMC_OptionSanitizeError(UMC_OptionTypeError):
