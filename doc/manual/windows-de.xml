@@ -347,8 +347,8 @@ instanceType: 4
 		  <para>
 			Grundsätzlich sind die <emphasis>Gruppenrichtlinien</emphasis> (<emphasis>Group
 			Policies</emphasis> (GPO)) von den sehr ähnlich benannten
-			<emphasis>Gruppenrichtlinieneinstellungen</emphasis> (<emphasis>Group Policy Preferences
-			(GPP)</emphasis>) zu unterscheiden:
+			<emphasis>Gruppenrichtlinieneinstellungen</emphasis> (<emphasis>Group Policy
+			Preferences</emphasis> (GPP)) zu unterscheiden:
 			<itemizedlist>
 			  <listitem><simpara>
 		        Die über <emphasis>Gruppenrichtlinien</emphasis> (GPOs) getroffenen Vorgaben sind
@@ -375,7 +375,7 @@ instanceType: 4
 			Gruppenrichtlinien werden im Gegensatz zu den UCS-Richtlinien (siehe <xref
 			linkend="central:policies"/>) nicht in der &ucsUMC;, sondern mit einem  separaten Editor
 			konfiguriert, mit der <emphasis>Gruppenrichtlinienverwaltung</emphasis>, die Teil der
-			<emphasis>Remote Server Administration Tools (RSAT)</emphasis> ist. Die Einrichtung ist
+			<emphasis>Remote Server Administration Tools</emphasis> (RSAT) ist. Die Einrichtung ist
 			in <xref linkend="gpo:install"/> dokumentiert.
 		  </para>
 
@@ -596,7 +596,7 @@ instanceType: 4
 
 		  <para>
 			Ein Beispiel: Eine Firma verbietet allgemein den Zugriff auf den Windows Task
-			Manager. Dazu wird im <emphasis>Default Domain Policy-Objekt</emphasis> die Richtlinie
+			Manager. Dazu wird im <emphasis>Default Domain Policy</emphasis>-Objekt die Richtlinie
 			<guimenu>Zugriff auf Task Manager unterbinden</guimenu> aktiviert. Für einige technisch
 			versiertere Benutzer soll der Task Manager dennoch verfügbar sein. Diese Benutzer sind
 			in der OU <emphasis>Technik</emphasis> abgelegt. Nun wird ein zusätzliches
@@ -631,7 +631,7 @@ instanceType: 4
 		</section>
 
 		<section id="gpo:adm">
-		  <title>Administrative Vorlagen (ADM)</title>
+		  <title>Administrative Vorlagen (ADMX/ADM)</title>
 		  <para>
 			Die in der Gruppenrichtlinienverwaltung angezeigten Richtlinien können durch sogenannte <emphasis>Administrative
 			Vorlagen</emphasis> erweitert werden. In einer solchen Vorlage wird definiert unter
