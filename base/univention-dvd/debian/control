@@ -6,7 +6,10 @@ Build-Depends: debhelper (>= 9)
 
 Package: univention-dvd
 Architecture: all
-Depends: ${misc:Depends}
+Depends: ${misc:Depends},
+ debian-cd,
+ mtools,
+ dosfstools
 Description: UCS-DVD build settings
  This package contains the DVD build settings and DVD
  trigger files for UCS DVDs.

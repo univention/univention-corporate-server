@@ -1,3 +1,11 @@
+univention-dvd (0.1.0-1) unstable; urgency=low
+
+  * Bug #30547: added patched version of make_disc_trees.pl which
+    replaces the original version of debian-cd
+  * Bug #30547: added dependencies to debian-cd, mtools and dosfstools
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 14 Jul 2014 20:46:21 +0200
+
 univention-dvd (0.0.1-1) unstable; urgency=low
 
   * Bug #30547: initial version
