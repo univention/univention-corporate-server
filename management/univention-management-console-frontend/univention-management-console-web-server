@@ -758,6 +758,7 @@ def run_cherrypy():
 		'server.socket_port': int( configRegistry.get( 'umc/http/port', 8090 ) ),
 		'server.socket_host': configRegistry.get( 'umc/http/interface', '127.0.0.1' ),
 		'server.request_queue_size' : 100,
+		'response.timeout' : _session_timeout,
 		'engine.autoreload_on': False,
 		'tools.response_headers.on': True,
 		'tools.response_headers.headers': [

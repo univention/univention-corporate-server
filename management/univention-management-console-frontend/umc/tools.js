@@ -188,6 +188,7 @@ define([
 		},
 
 		_reloadDialog: null,
+		_reloadDialogOpened: false,
 		checkReloadRequired: function() {
 			if (!this._reloadDialog) {
 				// The URL does not exists, so the symlink is deleted
@@ -208,11 +209,12 @@ define([
 					}]
 				});
 			}
-			if (!this._reloadDialog.open) {
+			if (!this._reloadDialog.open && !this._reloadDialogOpened) {
 				// check if UMC needs a browser reload and prompt the user to reload
 				return this.urlExists('umc/').then(undefined, lang.hitch(this, function(e) {
 					if (e.response.status === 404) {
 						this._reloadDialog.show();
+						this._reloadDialogOpened = true;
 					}
 				}));
 			}
