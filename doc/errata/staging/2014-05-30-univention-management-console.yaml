@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-management-console
-fix: 6.0.24-20.795.201407111108
+fix: 6.0.24-21.796.201407141633
 version: [2]
 desc: |
   This update fixes the following issues:
@@ -15,4 +15,4 @@ desc: |
   * The UMC server parses operation set strings more carefully now to avoid
     server crashes.
   * The error handling of requests have been improved.
-bug: [34723, 34243, 34105, 25196, 34244]
+bug: [34243, 34723, 34105, 25196, 34244]
