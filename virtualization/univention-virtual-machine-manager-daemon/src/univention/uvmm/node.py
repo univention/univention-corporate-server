@@ -1466,6 +1466,7 @@ def domain_state(uri, domain, state):
 					(libvirt.VIR_DOMAIN_BLOCKED,  'SUSPEND' ): lambda:dom.managedSave(0),
 					(libvirt.VIR_DOMAIN_PAUSED,   'PAUSE'   ): None,
 					(libvirt.VIR_DOMAIN_PAUSED,   'RUN'     ): dom.resume,
+					(libvirt.VIR_DOMAIN_PAUSED,   'SHUTDOWN'): dom.destroy,
 					(libvirt.VIR_DOMAIN_PAUSED,   'SHUTOFF' ): dom.destroy,
 					(libvirt.VIR_DOMAIN_SHUTDOWN, 'RUN'     ): dom.create,
 					(libvirt.VIR_DOMAIN_SHUTDOWN, 'SHUTDOWN'): None,

@@ -70,13 +70,12 @@ define([
 	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, types, _) {
 
 	var isRunning = function(item) {
-		return (item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
+		return (item.state == 'RUNNING' || item.state == 'IDLE' || item.state == 'PAUSED') && item.node_available;
 	};
 
 	var canStart = function(item) {
-		return !isRunning(item);
+		return item.node_available && (item.state != 'RUNNING' && item.state != 'IDLE');
 	};
-
 
 	var canVNC = function(item) {
 		return isRunning(item) && item.vnc_port;
@@ -931,9 +930,7 @@ define([
 				isStandardAction: false,
 				isMultiAction: true,
 				callback: lang.hitch(this, '_shutdown'),
-				canExecute: function(item) {
-					return (item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
-				}
+				canExecute: isRunning
 			}, {
 				name: 'stop',
 				label: _( 'Stop' ),
@@ -946,9 +943,7 @@ define([
 					/* buttonLabel */ _( 'Stop' ),
 					/* newState */ 'SHUTOFF',
 					/* action */ 'stop'),
-				canExecute: function(item) {
-					return isRunning(item);
-				}
+				canExecute: isRunning
 			}, {
 				name: 'pause',
 				label: _( 'Pause' ),
@@ -957,7 +952,7 @@ define([
 				isMultiAction: true,
 				callback: lang.hitch(this, '_changeState', 'PAUSE', 'pause' ),
 				canExecute: function(item) {
-					return isRunning(item);
+					return isRunning(item) && item.state != 'PAUSED';
 				}
 			}, {
 				name: 'suspend',
@@ -1003,7 +998,7 @@ define([
 				isMultiAction: true,
 				callback: lang.hitch(this, '_migrateDomain' ),
 				canExecute: function(item) {
-					return item.state != 'PAUSE'; // FIXME need to find out if there are more than one node of this type
+					return item.state != 'PAUSED'; // FIXME need to find out if there are more than one node of this type
 				}
 			}, {
 				name: 'remove',
@@ -1032,7 +1027,7 @@ define([
 			var item = this._grid._grid.getItem(rowIndex);
 			var percentage = Math.round(item.cpuUsage);
 
-			if (item.state == 'RUNNING' || item.state == 'IDLE') {
+			if (isRunning(item)) {
 				// only show CPU info, if the machine is running
 				return new ProgressBar({
 					value: percentage + '%'
