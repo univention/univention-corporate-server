@@ -1,3 +1,10 @@
+ucs-test (4.0.166-58) unstable; urgency=low
+
+  * 60_umc-system/41_umc-service-complete-domain-rejoin:
+    test complete rejoin (Bug #34624)
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 14 Jul 2014 15:43:09 +0200
+
 ucs-test (4.0.166-57) unstable; urgency=low
 
   * 52_s4connector/023_concurrent_deletion_in_ad: skip test until Bug
