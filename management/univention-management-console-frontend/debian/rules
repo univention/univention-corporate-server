@@ -39,4 +39,4 @@ override_dh_auto_install:
 	dh_auto_install --exclude .svn
 
 %:
-	dh $@
+	dh $@ --with 'python_support'
