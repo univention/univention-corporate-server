@@ -7,49 +7,49 @@
 	  Directory-Domäne auf Basis von Windows Server 2003/2008/2012 auf &ucsUCS;. Der
 	  Domänencontroller-Dienst wird durch UCS in AD-kompatibler Weise bereitgestellt: Ein
 	  Windows-Client, der in die AD-Domäne gejoint wurde, ist nach der Migration auch in der
-	  UCS-Domäne verfügbar, d.h. es ist kein erneuter Domänenbeitritt nötig. Alle Benutzerkonten und
-	  Gruppen werden ebenfalls migriert.
+	  UCS-Domäne verfügbar, d.h. es ist kein erneuter Domänenbeitritt nötig. Das komplette Inhalt
+	  des AD-LDAP-Verzeichnis wird migriert (und somit auch all alle Benutzerkonten und Gruppen).
 	</para>
 
 	<para>
-	  Es werden zwei Szenarien unterschieden:
+	  In dieser Dokumentation werden zwei Szenarien unterschieden:
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Migration einer Umgebung mit einem Domänencontroller und einer AD-Site (z.B. Microsoft
-		  Small Business Server)
+		  Migration einer Umgebung mit nur einem Domänencontroller (z.B. Microsoft
+		  Small Business Server) (<xref linkend="bestpractice:migration:single"/>)
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  Migration einer verteilten Active Directory-Umgebung mit mehreren Domänencontrollern
-		  (z.B. für verteilte Standorte oder für große Umgebungen)
+		  (z.B. für verteilte Standorte oder für große Umgebungen) (<xref linkend="bestpractice:migration:distrib"/>)
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
 
 	<para>
 	  Neben der Migration der Kern-Domänendienste (Benutzeranmeldungen, Client-Integration) können
-	  auch Datei-/Druckdienste auf UCS migriert werden. 
+	  auch Datei-/Druckdienste auf UCS migriert werden (<xref linkend="bestpractice:migration:services"/>).
 	</para>
   </section>
 
-  <section>
+  <section id="bestpractice:migration:single">
 	<title>Migration einer AD-Domäne mit einem Domänencontroller (Single-Server-Umgebung)</title>
 
-	<section>
+	<section id="bestpractice:migration:single:intro">
 	  <title>Einleitung</title>
 
 	  <para>
 		Jede UCS-Umgebung besteht aus min. einem &ucsMaster; und einer beliebigen Anzahl weiterer
-		Server. So besteht beispielsweise die Möglichkeit einen Dienst wie Groupware auf einen
-		separaten Server zu verteilen oder an verschiedenen Standorten einen lokalen Server zu
-		betreiben.
+		Server. So besteht beispielsweise die Möglichkeit an verschiedenen Standorten einen lokalen
+		Server zu betreiben.
 	  </para>
 
 	  <para>
-		Diese Variante der Migrations-Dokumentation beschreibt die Migration auf einen einzelnen
-		UCS-Server. Wenn die Umgebung später wächst oder aus anderen Gründen verteilt werden soll ist eine
-		Aufteilung von Diensten jederzeit nachträglich möglich.
+		Diese Variante der Migrations-Dokumentation beschreibt die Migration des
+		AD-Domänencontrollers auf einen einzelnen UCS-Domänencontroller. Wenn die Umgebung später
+		wächst oder aus anderen Gründen verteilt werden soll, ist eine Aufteilung von Diensten
+		jederzeit nachträglich möglich.
 	  </para>
 
 	</section>
@@ -58,12 +58,12 @@
 	  <title>Installation des UCS-Systems</title>
 	  <para>
 		Für die Migration wird ein separater Server mit UCS installiert. Die Installation des
-		Systems kann anhand des UCS-Quickstart Guides erfolgen TODOREF. Bei der Installation müssen
+		Systems kann anhand des UCS-Quickstart Guides erfolgen (TODOREF). Bei der Installation müssen
 		die folgenden Einstellungen gewählt werden:
 
 		<itemizedlist>
 		  <listitem><simpara>
-			<emphasis>Sprache</emphasis>,<emphasis>Zeitzone</emphasis>, <emphasis>Tastaturbelegung</emphasis>: Beliebig
+			<emphasis>Sprache</emphasis>, <emphasis>Zeitzone</emphasis>, <emphasis>Tastaturbelegung</emphasis>: Beliebig
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -73,24 +73,24 @@
 		  <listitem><simpara>
 			<emphasis>Vollständiger Rechnername</emphasis>: Dieser Wert besteht aus dem Rechnernamen und dem
 			Domänennamen. In <emphasis>server1.company.example</emphasis> ist
-			<emphasis>server1</emphasis> der Rechnernamen und <emphasis>company.example</emphasis>
-			der Domänenname. Der Rechnername kann beliebige gewählt werden, darf aber in der
-			aktuellen AD-Domäne noch nicht in Verwendung sein. Als Domänenname muss der
+			<emphasis>server1</emphasis> der Rechnername und <emphasis>company.example</emphasis>
+			der Domänenname. Der Rechnername kann beliebig gewählt werden, darf aber in der
+			zu migrierenden AD-Domäne noch nicht in Verwendung sein. Als Domänenname muss der
 			AD-Domänenname verwendet werden (er wird z.B. in der Windows-Systemsteuerung unter
-			<guimenu>System und Sicherheits -> System</guimenu> im Feld <guimenu>Domäne</guimenu>
+			<guimenu>System und Sicherheit -> System</guimenu> im Feld <guimenu>Domäne</guimenu>
 			angezeigt.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
 			<emphasis>LDAP-Basis</emphasis> und <emphasis>Windows-Domäne</emphasis> werden auf Basis
-			des vollständigen Rechnernamens vorschlagen, hier sollte der vorgeschlagene Wert
+			des vollständigen Rechnernamens vorschlagen, hier sollte der vom Installationsdialog vorgeschlagene Wert
 			übernommen werden.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
 			<emphasis>Root-Passwort</emphasis>: Das hier konfigurierte Passwort ist auch das
-			initiale Passwort für das Administrator-Konto auf dem UCS-Server. Hier sollte dasselbe
-			Administrator-Passwort wie in der AD-Domäne verwendet werden.
+			initiale Passwort für das <emphasis>Administrator</emphasis>-Konto auf dem UCS-Server. Hier sollte dasselbe
+			<emphasis>Administrator</emphasis>-Passwort wie in der AD-Domäne verwendet werden.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -99,12 +99,12 @@
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			<emphasis>Netzwerk-Konfiguration</emphasis>: Es muss eine IPv4-Adresse im selben Subnetz wie der zu
-		  übernehmende AD-Domänencontroller verwendet werden.
+			<emphasis>Netzwerk-Konfiguration</emphasis>: Es muss eine IPv4-Adresse aus dem Subnetz
+			des zu migrierenden AD-Domänencontrollers verwendet werden.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			Die Softwareauswahl kann komplett leergelassen werden. Alle benötigten Applikationen
+			Die Softwareauswahl kann komplett leer gelassen werden. Alle benötigten Applikationen
 			werden später aus dem Univention App Center installiert.
 		  </simpara></listitem>
 		</itemizedlist>
@@ -118,33 +118,56 @@
 
 	</section>
 
+
+	<section id="bestpractice:migration:test">
+	  <title>Testlauf einer Migration</title>
+	  <para>
+		Die hier beschriebene Migration kann komplett vorab getestet werden. Dies ist sinnvoll, um
+		potentielle Probleme vorab zu ermitteln und ein Zeitfenster für die Migration ankündigen zu
+		können:
+
+		<itemizedlist>
+		  <listitem><simpara>
+			Wenn der AD-Server virtualisiert ist, kann ein Clone des AD-Servers migriert werden.
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Wird die AD-Migration im AD-Takeover an der Stelle abgebrochen wird, an der normalerweise der
+			AD-Server heruntergefahren würde, können alle Funktionen wie Domänenanmeldungen, GPOs
+			etc. trotzdem getestet werden. Die während des Takeovers eingerichtete Replikation der
+			Verzeichnisdaten ist unidirektional von AD nach UCS, d.h. wenn während der Testphase
+			Änderungen in der &ucsUMC; durchgeführt werden, werden diese nicht an das AD übertragen.
+			Wird ein AD-Takeover für eine Testmigration abgebrochen, sollte das Rechnerkonto des
+			UCS-Servers vor der eigentlichen produktiven Migration aus den Rechnerkonten des Active
+			Directory gelöscht werden.
+		  </simpara></listitem>
+		</itemizedlist>
+	  </para>
+	</section>
+
 	<section id="bestpractice:migration:single:services">
 	  <title>Migration der Dienste des AD-Systems</title>
 
 	  <para>
 		Die Daten aus dem Verzeichnisdienst (z.B. Benutzer, Gruppen und Rechnerkonten) sowie die
 		Gruppenrichtlinieninformationen werden im Rahmen der Übernahme der AD-Domäne automatisch
-		nach UCS migriert.
-	  </para>
-
-	  <para>
-		Nach Durchführung der Migration ist der AD-Domänencontroller nicht mehr verfügbar. D.h. wenn
-		auf dem Server über den Anmeldedienst hinaus noch Dienste betrieben werden, müssen diese
-		ebenfalls migriert werden. Hierfür gibt es prinzipiell zwei verschiedene Möglichkeiten:
+		nach UCS migriert. Nach Durchführung der Migration ist der AD-Domänencontroller nicht mehr verfügbar. D.h. wenn
+		auf dem AD-Domänencontoller über den Anmeldedienst hinaus noch Dienste betrieben werden, müssen diese
+		ebenfalls migriert werden. Hierfür gibt es prinzipiell zwei verschiedene Vorgehensweisen:
 
 		<itemizedlist>
 		  <listitem><simpara>
 			Die Migration der Dienste auf den UCS-Server. Dies wird in <xref
 			linkend="bestpractice:migration:fileshare"/> für Datei-Freigaben und in <xref
-			linkend="bestpractice:migration:printshare"/> für Drucker-Freigaben Dienste
-			beschrieben. Das Univention App Center bietet verschiedene Applikationen zur
+			linkend="bestpractice:migration:single:services:migrate:printshare"/> für Drucker-Freigaben
+			beschrieben. Das Univention App Center bietet darüberhinaus verschiedene Applikationen zur
 			Installation an, die ebenfalls bestehende Software wie z.B. Microsoft Exchange ersetzen
-			könnenn (<xref linkend="bestpractice:migration:appcenter"/>)
+			können (<xref linkend="bestpractice:migration:appcenter"/>)
 		  </simpara></listitem>
 
 		  <listitem><simpara>
 			Installation eines Member-Servers in der AD-Domäne und Migration der Dienste auf diesen
-			Server. Der Memberserver später im Rahmen der Übernahme der AD-Domäne automatisch in die
+			Server. Der Memberserver wird später im Rahmen der Übernahme der AD-Domäne automatisch in die
 			UCS-Domäne übernommen.
 		  </simpara></listitem>
 		</itemizedlist>
@@ -152,8 +175,7 @@
 
 	  <para>
 		Werden neben dem Anmeldedienst alle weiteren Dienste auf einen Memberserver migriert, ist
-		kein langes Wartungsfenster für die Migration von AD auf UCS nötig; die Umstellung sollte in
-		unter einer Stunde erledigt sein. Wenn während der Umstellung auch Dienste migriert werden
+		kein langes Wartungsfenster für die Migration von AD auf UCS nötig. Wenn während der Umstellung auch Dienste migriert werden
 		sollen, kann sich dieses Fenster deutlich ausweiten, die Entzerrung der Migration durch
 		Migration der Dienste auf einen Memberserver ist daher empfehlenswert. 
 	  </para>
@@ -161,8 +183,73 @@
 
 	<section id="bestpractice:migration:takeover">
 	  <title>Migration der AD-Domäne</title>
-	  
+
+	  <para>
+		Nun erfolgt die Migration des AD-Servers. Die folgenden Schritte werden dabei umgesetzt:
+
+		<itemizedlist>
+		  <listitem><simpara>
+			Beitritt des UCS-Domänencontrollers in die Active Directory Domäne
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Kopieren der Gruppenrichtliniendateien aus Active Directory nach UCS
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Abschalten des AD-Servers und Zuweisung der FSMO-Rollen auf den UCS-Domänencontroller
+		  </simpara></listitem>
+		</itemizedlist>
+	  </para>
+		
+	  <para>
+		Die Migration erfolgt über die App Center-Applikation <emphasis>Active Directory
+		Takeover</emphasis> und ist im UCS-Handbuch (<biblioref linkend="ad-takeover"/>) ausführlich dokumentiert.
+	  </para>
+
+
 	</section>
+
+	<section id="bestpractice:migration:extend">
+	  <title>Erweiterungen</title>
+	  <para>
+		Die beschriebene Migration deckt die Basisdienste eine AD-Domäne ab. Darüberhinaus bietet
+		UCS eine Vielfalt von weiteren Komponenten, die durch die UCS-Lizenz bereits abgedeckt sind
+		und zu einem späteren Zeitpunkt in die migrierte Domäne integriert werden können, z.B.
+
+		<itemizedlist>
+		  <listitem><simpara>
+			Integration von Mac OS X-Systemen <biblioref linkend="ucs-macjoin"/>
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Integration von Linux-Desktop auf Basis von Ubuntu <biblioref linkend="ubuntu-join"/>
+			oder Univention Corporate Client <biblioref linkend="ucc-manual"/>
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Single Sign On mit Webdiensten über einen SAML Identity Providers <biblioref linkend="wiki-saml"/>
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			IP-Management mit DHCP <biblioref linkend="ucs-dhcp"/>
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Web-Proxy für Caching und Policy Management/Virenscan <biblioref linkend="ucs-proxy"/>
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Service-Überwachung mit Nagios <biblioref linkend="ucs-nagios"/>
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Virtualisierung mit KVM/Xen <biblioref linkend="ucs-uvmm"/>
+		  </simpara></listitem>
+		</itemizedlist>
+	  </para>
+	</section>
+
 
 
 
@@ -175,28 +262,24 @@
 	  <title>Migration von Datei-Freigaben</title>
 
 	  <para>
-		Ein UCS-Domänencontroller bietet standardmässig auch Dateidienste an. Alternativ kann auch
-		ein UCS-Memberserver installiert werden, der Dateidienste bereitstellt.
-	  </para>
-
-	  <para>
 		Jeder UCS-Samba-Server (Domänencontroller und Memberserver) stellt standardmässig
 		Dateidienste bereit. Für die Migration von Dateifreigaben auf Windows-Servern steht kein
 		standardisiertes Übernahme-Tool bereit: Die Freigaben müssen auf dem UCS-Server angelegt
-	  und die Daten kopiert werden.		</para>
+		und die Daten kopiert werden.	
+	  </para>
 
 	  <para>
-		Um eine korrekte Übernahme der Dateiberechtigungen zu erreichen ist es nötig, das der
-		AD-Server auf die gleiche Benutzer-Basis zugreift:
+		Um eine korrekte Übernahme der Dateiberechtigungen zu erreichen muss der
+		AD-Server auf die gleiche Benutzer-Basis zugreifen. Die kann auf zwei Wegen erreicht werden:
 
 		<itemizedlist>
 		  <listitem><simpara>
-			Der AD-Server ist als Member-Server in die UCS-Domäne gejoint
+			Der AD-Server ist als &ucsMember; in die UCS-Domäne gejoint
 		  </simpara></listitem>
 
 		  <listitem><simpara>
 			Der AD-Server ist ein Domänencontroller und wird während einer AD-Takeover-Migration
-			in die temporär UCS-Domäne gejoint (bevor er final abgeschaltet wird)
+			temporär in die UCS-Domäne gejoint (bevor er final abgeschaltet wird)
 		  </simpara></listitem>
 		</itemizedlist>
 
@@ -222,7 +305,7 @@
 
 		Für diese Freigabe wird nun in der Freigabenverwaltung der &ucsUMC; eine Freigabe
 		angelegt. Das Freigaben-Modul bietet vielfältige Möglichkeiten, die im UCS-Handbuch
-		dokumentiert sind (TODOREF), für die Übernahme der Daten reichen aber wenige Einstellungen
+		dokumentiert sind <biblioref linkend="ucs-share"/>, für die Übernahme der Daten reichen aber wenige Einstellungen
 		aus. Die folgenden Werte müssen beim Anlegen der Freigabe(n) im UMC-Modul
 		<guimenu>Freigaben</guimenu> min. angelegt werden:
 
@@ -230,14 +313,14 @@
 		  <listitem><simpara>
 			<emphasis>Name</emphasis>: Der Name, den die Freigabe unter Windows verwendete. Die
 			Regeln für den Freigaben sind unter UCS strikter als in AD; wenn der unter Windows
-			verwendete Name nocht anwendbar ist, kann im Reiter <guimenu>Samba-Name</guimenu> ein
+			verwendete Name nicht anwendbar ist, kann im Reiter <guimenu>Samba-Name</guimenu> ein
 			zusätzlicher Name konfiguriert, der beim Zugriff über CIFS angezeigt wird. Der Name
-			muss nicht notwendigerweise identisch sein, um Irritationen bei den Benutzern zu
-			minimieren ist es aber empfehlenswert.
+			muss nicht notwendigerweise identisch sein. Um Irritationen bei den Benutzern zu
+			minimieren, ist es aber empfehlenswert.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			<emphasis>Server</emphasis>: Der UCS-Server, die Freigabe bereitstellen soll
+			<emphasis>Server</emphasis>: Der UCS-Server, die Freigabe bereitstellen soll.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -283,8 +366,8 @@
 		Jeder UCS-Server kann Druckdienste anbieten. Dazu muss im &ucsUMC;-Modul
 		<guimenu>Univention App Center</guimenu> in der Sektion <guimenu>UCS-Komponenten</guimenu>
 		die Applikation <emphasis>Druckserver (CUPS)</emphasis> ausgewählt werden. Für die Migration
-		von Druckerfreigaben auf Windows-Servern steht kein standardisiertes Übernahme-Tool bereit:
-		Die Freigaben müssen auf dem UCS-Server angelegt werden.
+		von Druckerfreigaben auf Windows-Servern steht kein standardisiertes Übernahme-Tool bereit.
+		Die Freigaben müssen manuell auf dem UCS-Server angelegt werden.
 	  </para>
 
 	  <para>
@@ -297,12 +380,12 @@
 
 	  <figure id="bestpractice-migrate-print">
 		<title>Zu migrierender Drucker</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/print-migrate-de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations/printer-migrate-de.png"/>
 	  </figure>
 
 		Für diese Druckerfreigabe wird nun in der Druckerverwaltung der &ucsUMC; ein Drucker
 		angelegt. Das Drucker-Modul bietet vielfältige Möglichkeiten, die im UCS-Handbuch
-		dokumentiert sind (TODOREF), für die Übernahme der Druckerfreigaben reichen aber wenige Einstellungen
+		dokumentiert sind <biblioref linkend="ucs-print"/>, für die Übernahme der Druckerfreigaben reichen aber wenige Einstellungen
 		aus. Die folgenden Werte müssen beim Anlegen der Drucker im UMC-Modul
 		<guimenu>Drucker</guimenu> min. angelegt werden:
 
@@ -341,8 +424,8 @@
 
 	  <para>
 		Wenn auf dem Windows-Druckserver serverseitig Drucker-Treiber hinterlegt wurden, müssen
-		diese für den UCS-Druckserver erneut hochgeladen werden. Das Vorgehen dazu ist in TODOREF im
-		UCS-Handbuch dokumentiert. 
+		diese für den UCS-Druckserver erneut hochgeladen werden. Das Vorgehen dazu ist im
+		UCS-Handbuch dokumentiert <biblioref linkend="ucs-print-umc"/>.
 	  </para>
 
 	  <para>
@@ -369,7 +452,8 @@
 	</section>
   </section>
 
-
-
+  <section id="bestpractice:migration:distrib">
+	<title>Migration einer AD-Domäne mit mehreren Domänencontrollern</title>
+  </section>
 
 </chapter>

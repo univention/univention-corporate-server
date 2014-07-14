@@ -4,22 +4,36 @@
 
 <!ENTITY migration SYSTEM "migration-de.xml">
 
-<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
 
   %entities;
 ]>
-<book lang="en" id='scenarios'>
+<book lang="de" id='bestpractice'>
 <bookinfo>
-  <title>Best practice guide for deployments of Univention Corporate Server</title>
+  <title>Empfehlungen/"Best practices" für den Einsatz von Univention Corporate Server</title>
   <revhistory>
      <revision>
         <revnumber>3.2</revnumber>
-        <date>1 Dec 2013</date>
+        <date>1 Aug 2014</date>
      </revision>
   </revhistory>
 </bookinfo>
 
   &migration;
+
+  <bibliography>
+	<bibliomixed id="ad-takeover"/>
+	<bibliomixed id="ucs-macjoin"/>
+	<bibliomixed id="ubuntu-join"/>
+	<bibliomixed id="ucc-manual"/>
+	<bibliomixed id="wiki-saml"/>
+	<bibliomixed id="ucs-dhcp"/>
+	<bibliomixed id="ucs-proxy"/>
+	<bibliomixed id="ucs-nagios"/>
+	<bibliomixed id="ucs-uvmm"/>
+	<bibliomixed id="ucs-shares"/>
+  </bibliography>
+  
 
 <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
