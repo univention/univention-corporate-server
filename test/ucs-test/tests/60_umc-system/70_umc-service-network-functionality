@@ -165,22 +165,22 @@ class TestUMCNetworkFunctionality(TestUMCSystem):
         default fields presence
         """
         for network in self.query_networks():
-            if not '$dn$' in network:
+            if '$dn$' not in network:
                 utils.fail("The field '$dn$' was not found in the "
                            "networks query, '%s'" % network)
-            if not 'name' in network:
+            if 'name' not in network:
                 utils.fail("The field 'name' was not found in the "
                            "networks query, '%s'" % network)
-            if not '$childs$' in network:
+            if '$childs$' not in network:
                 utils.fail("The field '$childs$' was not found in the "
                            "networks query, '%s'" % network)
-            if not 'labelObjectType' in network:
+            if 'labelObjectType' not in network:
                 utils.fail("The field 'labelObjectType' was not found in the "
                            "networks query, '%s'" % network)
-            if not 'objectType' in network:
+            if 'objectType' not in network:
                 utils.fail("The field 'objectType' was not found in the "
                            "networks query, '%s'" % network)
-            if not 'path' in network:
+            if 'path' not in network:
                 utils.fail("The field 'path' was not found in the "
                            "networks query, '%s'" % network)
 
@@ -261,7 +261,7 @@ class TestUMCNetworkFunctionality(TestUMCSystem):
                        "options for IP addresses in the test range: "
                        "'%s', while should not" % (self.test_network_name,
                        network_config, self.test_ip_range))
-        if not ('nextFreeIp' in network_config.get('message')):
+        if 'nextFreeIp' not in network_config.get('message'):
             utils.fail("The response message '%s' does not include "
                        "'nextFreeIp', possibly another error with the "
                        "status code 591 " % network_config)

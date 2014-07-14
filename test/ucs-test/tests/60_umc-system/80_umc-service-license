@@ -170,10 +170,10 @@ class TestUMCLicenseManagement(TestUMCSystem):
             if license_info['keyID']:
                 utils.fail("The free license should not have a license key: "
                            "'%s'" % license_info)
-            if not (license_info['support'] in ('0', 0)):  # str possible
+            if license_info['support'] not in ('0', 0):  # str possible
                 utils.fail("The free license 'support' should be '0', "
                            "however: '%s'" % license_info)
-            if not (license_info['premiumSupport'] in ('0', 0)):  # str poss.
+            if license_info['premiumSupport'] not in ('0', 0):  # str poss.
                 utils.fail("The free license 'premiumSupport' should be '0', "
                            "however: '%s'" % license_info)
             if license_info['endDate'] != "unlimited":

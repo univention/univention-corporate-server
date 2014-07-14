@@ -32,7 +32,8 @@ class TestUMCServiceList(object):
             # extracting the 'uid' value of the username string
             self.username = self.username.split(',')[0][len('uid='):]
         except Exception as exc:
-            print "Failed to get the UCR username and/or a password for test"
+            print("Failed to get the UCR username and/or a password for test,"
+                  " '%s'" % exc)
             self.return_code_result_skip()
         if self.hostname is None:
             print "The hostname in the UCR should not be 'None'"
@@ -62,16 +63,16 @@ class TestUMCServiceList(object):
     def check_response_structure(self, request_result):
         """Check the response general structure for obligatory keys"""
         for result in request_result:
-            if not 'service' in result:
+            if 'service' not in result:
                 utils.fail("The 'service' field was not found in the "
                            "UMC response: %s" % result)
-            if not 'isRunning' in result:
+            if 'isRunning' not in result:
                 utils.fail("The 'isRunning' field was not found in the "
                            "UMC response: %s" % result)
-            if not 'description' in result:
+            if 'description' not in result:
                 utils.fail("The 'description' field was not found in the "
                            "UMC response: %s" % result)
-            if not 'autostart' in result:
+            if 'autostart' not in result:
                 utils.fail("The 'autostart' field was not found in the "
                            "UMC response: %s" % result)
 

@@ -58,19 +58,19 @@ class TestUMCQuotasManagement(TestUMCSystem):
         Checks if 'quotas_query' has all default fields
         """
         for quota in quotas_query:
-            if not 'partitionSize' in quota:
+            if 'partitionSize' not in quota:
                 utils.fail("The field 'partitionSize' was not found in "
                            "quotas query '%s'" % quota)
-            if not 'mountPoint' in quota:
+            if 'mountPoint' not in quota:
                 utils.fail("The field 'mountPoint' was not found in "
                            "quotas query '%s'" % quota)
-            if not 'partitionDevice' in quota:
+            if 'partitionDevice' not in quota:
                 utils.fail("The field 'partitionDevice' was not found in "
                            "quotas query '%s'" % quota)
-            if not 'freeSpace' in quota:
+            if 'freeSpace' not in quota:
                 utils.fail("The field 'freeSpace' was not found in "
                            "quotas query '%s'" % quota)
-            if not 'inUse' in quota:
+            if 'inUse' not in quota:
                 utils.fail("The field 'inUse' was not found in "
                            "quotas query '%s'" % quota)
 

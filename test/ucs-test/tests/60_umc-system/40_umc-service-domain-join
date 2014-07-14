@@ -46,7 +46,7 @@ class TestUMCDomainJoinModule(TestUMCSystem):
                       % path)
         except OSError as exc:
             utils.fail("An exception occured while deleting a file located at "
-                       "'%s'" % path)
+                       "'%s': '%s'" % (path, exc))
 
     def link_join_script(self, script_name, path):
         """

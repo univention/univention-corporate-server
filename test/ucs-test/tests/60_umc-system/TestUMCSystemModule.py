@@ -41,7 +41,8 @@ class TestUMCSystem(object):
             # extracting the 'uid' value of the username string
             self.username = self.username.split(',')[0][len('uid='):]
         except Exception as exc:
-            print "Failed to get the UCR username and/or a password for test"
+            print("Failed to get the UCR username and/or a password for test,"
+                  " '%s'" % exc)
             self.return_code_result_skip()
         if self.hostname is None:
             print "The hostname in the UCR should not be 'None'"
@@ -161,11 +162,11 @@ class TestUMCSystem(object):
                                "dnsEntryZoneForward": dns_forward,
                                "name": computer_name,
                                "dnsEntryZoneReverse": dns_reverse,
-                    "$options$": {"samba": True,
-                                  "kerberos": True,
-                                  "posix": True,
-                                  "nagios": False},
-                                  "$policies$": {}},
+                               "$options$": {"samba": True,
+                                             "kerberos": True,
+                                             "posix": True,
+                                             "nagios": False},
+                                             "$policies$": {}},
                     "options": {"container": "cn=computers," + self.ldap_base,
                                 "objectType": "computers/windows"}}]
         return self.make_udm_request("add", options, "computers/computer")
