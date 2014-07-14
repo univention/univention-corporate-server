@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (2.0.0-1) unstable; urgency=low
+
+  * Bug #35145: Start UCS 4.0 development
+
+ -- Florian Best <best@univention.de>  Mon, 14 Jul 2014 10:32:00 +0200
+
 univention-management-console-module-adtakeover (1.0.10-26) unstable; urgency=medium
 
   * Move fix_gpo_container_names code to fix_sysvol_acls (Bug #34776)
