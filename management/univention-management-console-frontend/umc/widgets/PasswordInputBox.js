@@ -103,7 +103,9 @@ define([
 				disabled: this.disabled,
 				name: this.name + '_1',
 				isValid: lang.hitch(this, '_checkValidity', 1),
-				validator: lang.hitch(this, '_checkValidity', 1)
+				validator: lang.hitch(this, '_checkValidity', 1),
+				invalidMessage: this.invalidMessage,
+				pattern: this.pattern
 			}))[0];
 			this._secondWidget = this.own(new PasswordBox({
 				required: this.required,
@@ -111,6 +113,7 @@ define([
 				name: this.name + '_2',
 				isValid: lang.hitch(this, '_checkValidity', 2),
 				validator: lang.hitch(this, '_checkValidity', 2),
+				_isValidSubset: lang.hitch(this, '_checkValidity', 2),
 				invalidMessage: _('The passwords do not match, please retype again.')
 			}))[0];
 			this._setLabelAttr(this.label);
@@ -182,7 +185,9 @@ define([
 		},
 
 		validate: function() {
+			this._firstWidget._hasBeenBlurred = this._hasBeenBlurred;
 			this._firstWidget.validate();
+			this._secondWidget._hasBeenBlurred = this._hasBeenBlurred;
 			this._secondWidget.validate();
 			return this.inherited(arguments);
 		},

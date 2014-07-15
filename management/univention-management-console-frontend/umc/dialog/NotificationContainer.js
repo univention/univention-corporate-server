@@ -156,6 +156,10 @@ define([
 			this._closeButton.placeAt(this.footerNode);
 
 			this._notificationBubble = new _NotificationBubble({});
+			if (!tools.status('displayUsername')) {
+				// hide red notification bubble
+				domStyle.set(this._notificationBubble.domNode, 'visibility', 'hidden');
+			}
 			this.own(this._notificationBubble);
 		},
 

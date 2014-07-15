@@ -525,6 +525,12 @@ define([
 			var widgets = [];
 
 			tools.forIn(this._widgets, function(iname, iwidget) {
+				if (!iwidget.get('visible')) {
+					// ignore hidden widgets
+					return;
+				}
+				// need to set _hasBeenBlurred such that the state is displayed correctly
+				iwidget._hasBeenBlurred = true;
 				if ( iwidget.validate !== undefined ) {
 					if ( iwidget._maskValidSubsetError !== undefined ) {
 						iwidget._maskValidSubsetError = false;

@@ -74,6 +74,7 @@ define([
 			domainname: '',
 			overview: true,
 			displayUsername: true,
+			displayMenu: true,
 			width: null,
 			setupGui: false,
 			loggingIn: false,
@@ -82,7 +83,9 @@ define([
 			// default value for the session timeout
 			// it will be replaced by the ucr variable 'umc/http/session/timeout' onLogin
 			sessionTimeout: 300,
-			sessionLastRequest: new Date(0)
+			sessionLastRequest: new Date(0),
+			autoStartModule: null,
+			autoStartFlavor: null
 		},
 
 		status: function(/*String?*/ key, /*Mixed?*/ value) {
@@ -1445,6 +1448,24 @@ define([
 				simpleRedirect(host);
 			}
 
+		},
+
+		defer: function(func, waitingTime) {
+			// summary:
+			//		Defers the execution of the fiven function for a specified
+			//		amount of milliseconds.
+			// func: Function
+			// waitingTime: Integer
+			// 		Milliseconds how long the execution of the function will be
+			// 		deferred. Default value is 0.
+			// returns:
+			//		A deferred object with the return value of the given function.
+			waitingTime = waitingTime || 0;
+			var deferred = new Deferred();
+			setTimeout(function() {
+				deferred.resolve(func());
+			}, waitingTime);
+			return deferred.promise;
 		}
 	});
 

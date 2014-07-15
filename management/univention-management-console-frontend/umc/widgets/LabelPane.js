@@ -69,11 +69,17 @@ define([
 		content: '',
 
 		// disabled: Boolean
-		//		if the content of the label pane should be disabled. the content widgets must support it
+		//		if the content of the label pane should be disabled. the
+		//		content widgets must support it
 		disabled: false,
 
 		// the widget's class name as CSS class
 		'class': 'umcLabelPane',
+
+		// labelConf: Object
+		//		Dictionary with properties (e.g., "style") that will mixed
+		//		directly into the label widget.
+		labelConf: null,
 
 		// label: String
 		label: null,
@@ -101,6 +107,11 @@ define([
 			// label attribute
 			if (null === this.label || undefined === this.label) {
 				this.label = this.content.label || '';
+			}
+
+			// mix labelConf properties into 'this' scope
+			if (this.content && 'labelConf' in this.content && this.content.labelConf) {
+				lang.mixin(this, this.content.labelConf);
 			}
 		},
 

@@ -1,3 +1,21 @@
+univention-management-console-frontend (3.0.152-39) unstable; urgency=medium
+
+  Bug #34484:
+  * Adjust CSS rules to integrate dijit/form/Select
+  * Use Dojo async attribute
+  * If UMC overview is disabled and a startup module is specified, only load
+    AMD modules of the startup UMC module
+  * Allow dynamic reloading of translations
+  * Added radio button widget
+  * Added tools.defer()
+  * Fixed validation of Form
+  * Fixed vertical scrolling issues with the Grid in Firefox
+  * Allow configuration of LabelPanes via the widget property 'labelConf'
+  * TextBox: allow dynamic changing of 'inlineLabel'
+  * Wizard: added convenience method isPageVisible()
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 15 Jul 2014 16:10:18 +0200
+
 univention-management-console-frontend (3.0.152-38) unstable; urgency=low
 
   * Bug #34243: only show reload-UMC message once

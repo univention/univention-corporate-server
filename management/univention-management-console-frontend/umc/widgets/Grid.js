@@ -39,6 +39,7 @@ define([
 	"dojo/dom-style",
 	"dojo/topic",
 	"dojo/aspect",
+	"dojo/on",
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/form/DropDownButton",
@@ -57,7 +58,7 @@ define([
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
 ], function(declare, lang, array, win, construct, attr, geometry, style,
-		topic, aspect, Menu, MenuItem, DropDownButton, BorderContainer,
+		topic, aspect, on, Menu, MenuItem, DropDownButton, BorderContainer,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
 
@@ -68,6 +69,22 @@ define([
 			// force start=0
 			arguments[0] = 0;
 			this.inherited(arguments);
+		},
+
+		createView: function() {
+			// workaround for FF:
+			// if clicking into the last column, it might happen that the scrollbox
+			// scrolls to the left such that the checkbox of the very first column
+			// are moved half outside of the grid's visible area. This workaround makes
+			// sure that horizontal scroll position is always 0 if via CSS horizontal
+			// scrolling is disabled (i.e., overflow-x: hidden).
+			var view = this.inherited(arguments);
+			view.own(on(view.scrollboxNode, 'scroll', function(evt) {
+				if (view.scrollboxNode.scrollLeft != 0 && style.get(view.scrollboxNode, 'overflowX') == 'hidden') {
+					view.scrollboxNode.scrollLeft = 0;
+				}
+			}));
+			return view;
 		}
 	});
 

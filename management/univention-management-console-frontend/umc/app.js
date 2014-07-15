@@ -63,6 +63,7 @@ define([
 	"dijit/form/DropDownButton",
 	"dijit/layout/BorderContainer",
 	"dijit/layout/TabContainer",
+	"dijit/layout/StackContainer",
 	"dijit/registry",
 	"umc/tools",
 	"umc/dialog",
@@ -77,7 +78,7 @@ define([
 	"umc/widgets/Tooltip",
 	"umc/i18n!",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, string, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, registry, tools, dialog, store, ProgressInfo, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Text, Button, UMCTooltip, _) {
+], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, string, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, StackContainer, registry, tools, dialog, store, ProgressInfo, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Text, Button, UMCTooltip, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -469,6 +470,8 @@ define([
 
 			if (typeof props.module == "string") {
 				// a startup module is specified
+				tools.status('autoStartModule', props.module);
+				tools.status('autoStartFlavor', typeof props.flavor == "string" ? props.flavor : null);
 				on.once(this, 'GuiDone', lang.hitch(this, function() {
 					var hasOnlyOneModule = this._getLaunchableModules().length == 1;
 					if (hasOnlyOneModule) {
@@ -634,11 +637,8 @@ define([
 				return;
 			}
 
-			// prompt a dialog showing the progress of loading modules
-			var progressDialog = new _ProgressDialog({});
-			progressDialog.show();
-
 			// load data dynamically
+			var progressDialog = new _ProgressDialog({});
 			var ucrDeferred = this._loadUcrVariables();
 			var userPreferencesDefered = this._loadUserPreferences();
 			var modulesDeferred = this._loadModules(progressDialog).then(lang.hitch(this, '_initModuleStore'));
@@ -749,10 +749,22 @@ define([
 
 		_loadModules: function(progressDialog, reload) {
 			var options = reload ? {reload: true} : null;
+			var onlyLoadAutoStartModule = !tools.status('overview') && tools.status('autoStartModule');
+			if (!onlyLoadAutoStartModule) {
+				progressDialog.show();
+			}
 			return tools.umcpCommand('get/modules/list', options, false).then(lang.hitch(this, function(data) {
 				// update progress
 				var _modules = lang.getObject('modules', false, data) || [];
 				var modules = [];
+
+				if (onlyLoadAutoStartModule) {
+					_modules = array.filter(_modules, function(imod) {
+						var moduleMatched = tools.status('autoStartModule') == imod.id;
+						var flavorMatched = !tools.status('autoStartFlavor') || tools.status('autoStartFlavor') == imod.flavor;
+						return moduleMatched && flavorMatched;
+					});
+				}
 
 				var ndeps = 0;
 				var modulesLoadedDeferred = new Deferred();
@@ -1003,6 +1015,9 @@ define([
 		},
 
 		_setupSettingsMenu: function() {
+			if (!this._settingsMenu) {
+				return;
+			}
 			this._settingsMenu.addChild(new CheckedMenuItem({
 				label: _('Tooltips'),
 				checked: tools.preferences('tooltips'),
@@ -1062,6 +1077,9 @@ define([
 		},
 
 		_setupHelpMenu: function() {
+			if (!this._helpMenu) {
+				return;
+			}
 			this._helpMenu.addChild(new MenuItem({
 				label: _('Help'),
 				onClick : lang.hitch(this, '_showHelpDialog')
@@ -1113,6 +1131,9 @@ define([
 		},
 
 		_setupHostInfoMenu: function() {
+			if (!this._hostInfo) {
+				return;
+			}
 			// update the host information in the header
 			var fqdn = tools.status('fqdn');
 			tools.umcpCommand('get/hosts/list').then(lang.hitch(this, function(data) {
@@ -1489,10 +1510,17 @@ define([
 			}).placeAt(baseWin.body());
 
 			// container for all modules tabs
-			this._tabContainer = new TabContainer({
-				region: 'center',
-				'class': 'umcMainTabContainer'
-			});
+			if (tools.status('overview')) {
+				this._tabContainer = new TabContainer({
+					region: 'center',
+					'class': 'umcMainTabContainer'
+				});
+			} else {
+				this._tabContainer = new StackContainer({
+					region: 'center',
+					'class': 'umcMainTabContainer dijitTabContainer dijitTabContainerTop'
+				});
+			}
 
 			// register events for closing and focusing
 			this._tabContainer.watch('selectedChildWidget', function(name, oldModule, newModule) {
@@ -1520,21 +1548,29 @@ define([
 			});
 			header.addChild(this._headerRight);
 
-			// the host info and menu
-			this._hostMenu = new Menu({});
-			this._hostInfo = new DropDownButton({
-				id: 'umcMenuHost',
-				label: '',
-				disabled: true,
-				dropDown: this._hostMenu
+			var _addToHeader = lang.hitch(this, function(tooltipLabel, button) {
+				new UMCTooltip({
+					label: tooltipLabel,
+					connectId: [ button.domNode ]
+				});
+				this._headerRight.addChild(button);
 			});
-			this._headerRight.addChild(this._hostInfo);
-
-			this._headerRight.addChild(new Text({
-				'class': 'umcHeaderSeparator'
-			}));
 
 			if (tools.status('displayUsername')) {
+				// the host info and menu
+				this._hostMenu = new Menu({});
+				this._hostInfo = new DropDownButton({
+					id: 'umcMenuHost',
+					label: '',
+					disabled: true,
+					dropDown: this._hostMenu
+				});
+				this._headerRight.addChild(this._hostInfo);
+
+				this._headerRight.addChild(new Text({
+					'class': 'umcHeaderSeparator'
+				}));
+
 				// display the username
 				this._headerRight.addChild(new Text({
 					id: 'umcMenuUsername',
@@ -1547,47 +1583,39 @@ define([
 				this._headerRight.addChild(new Text({
 					'class': 'umcHeaderSeparator'
 				}));
+
+				// the settings context menu
+				this._settingsMenu = new Menu({});
+				_addToHeader(_('Settings'), new DropDownButton({
+					id: 'umcMenuSettings',
+					iconClass: 'icon24-umc-menu-settings',
+					dropDown: this._settingsMenu
+				}));
+
+				// the help context menu
+				this._helpMenu = new Menu({});
+				_addToHeader(_('Help'), new DropDownButton({
+					id: 'umcMenuHelp',
+					iconClass: 'icon24-umc-menu-help',
+					dropDown: this._helpMenu
+				}));
+
+				// the notification button
+				_addToHeader(_('Notifications'), new Button({
+					id: 'umcMenuNotifications',
+					iconClass: 'icon24-umc-menu-notifications',
+					onClick: lang.hitch(dialog, 'toggleNotifications')
+				}));
+
+				// the logout button
+				_addToHeader(_('Logout'), new Button({
+					id: 'umcMenuLogout',
+					iconClass: 'icon24-umc-menu-logout',
+					onClick: lang.hitch(this, function() {
+						this.relogin();
+					})
+				}));
 			}
-
-			var _addToHeader = lang.hitch(this, function(tooltipLabel, button) {
-				new UMCTooltip({
-					label: tooltipLabel,
-					connectId: [ button.domNode ]
-				});
-				this._headerRight.addChild(button);
-			});
-
-			// the settings context menu
-			this._settingsMenu = new Menu({});
-			_addToHeader(_('Settings'), new DropDownButton({
-				id: 'umcMenuSettings',
-				iconClass: 'icon24-umc-menu-settings',
-				dropDown: this._settingsMenu
-			}));
-
-			// the help context menu
-			this._helpMenu = new Menu({});
-			_addToHeader(_('Help'), new DropDownButton({
-				id: 'umcMenuHelp',
-				iconClass: 'icon24-umc-menu-help',
-				dropDown: this._helpMenu
-			}));
-
-			// the notification button
-			_addToHeader(_('Notifications'), new Button({
-				id: 'umcMenuNotifications',
-				iconClass: 'icon24-umc-menu-notifications',
-				onClick: lang.hitch(dialog, 'toggleNotifications')
-			}));
-
-			// the logout button
-			_addToHeader(_('Logout'), new Button({
-				id: 'umcMenuLogout',
-				iconClass: 'icon24-umc-menu-logout',
-				onClick: lang.hitch(this, function() {
-					this.relogin();
-				})
-			}));
 
 			// put everything together
 			this._topContainer.startup();

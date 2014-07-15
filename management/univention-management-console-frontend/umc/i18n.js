@@ -34,11 +34,12 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/kernel",
 	"dojo/request",
+	"dojo/when",
 	"dojo/promise/all",
 	"dojo/json",
 	"dojo/Deferred",
 	"dojox/string/sprintf"
-], function(i18nTools, lang, array, kernel, request, all, json, Deferred, sprintf) {
+], function(i18nTools, lang, array, kernel, request, when, all, json, Deferred, sprintf) {
 
 	// Internal helper function to split the module name into the module
 	// path and name.
@@ -59,23 +60,48 @@ define([
 		return lang.replace('{1}/i18n/{0}/{2}.json', [ language, scope[0], scope[1] ]);
 	};
 
-	// internal function and list of erroneous/missing translation information
-	var _ignoreModules = {};
-	var _ignore = function(language, _scope) {
-		var scope = _splitScope(_scope);
-		lang.setObject(lang.replace('{0}.{1}.{2}', [language, scope[0], scope[1]]), true, _ignoreModules);
-	};
-	var _ignored = function(language, _scope) {
-		var scope = _splitScope(_scope);
-		return lang.getObject(lang.replace('{0}.{1}.{2}', [language, scope[0], scope[1]]), false, _ignoreModules) || false;
-	};
-
 	// Internal regular expression to split locales in to the language and the
 	// territory (which is ignored at the moment).
 	var _i18nLocalRegExp = /^([a-z]{2,3})(_([a-z]{2,3}))?/i;
+	var _language = function() {
+		// detect the locale language (ignore territory)
+		var m = _i18nLocalRegExp.exec(kernel.locale);
+		var language = m[1] || 'en'; // default is English
+		return language.toLowerCase();
+	}
 
 	// object which stores translation dict by path
-	var cachedData = {};
+	var _cache = {};
+	var _set = function(language, scope, translations) {
+		lang.setObject(lang.replace('{0}.{1}', [language, scope]), translations, _cache);
+	};
+	var _load = function(language, scope) {
+		// get the URL and load its JSON data
+		var path = _scopePath(language, scope);
+		var deferred = new Deferred();
+		request(require.toUrl(path)).then(function(_data) {
+			// parse JSON data and store results
+			var data = _data ? json.parse(_data) : {};
+			_set(language, scope, data);
+			deferred.resolve(data);
+		}, function(error) {
+			// i18n data could not be loaded, ignore them in the future
+			//_ignore(language, scope);
+			console.log(lang.replace('INFO: Localization files for scope "{0}" in language "{1}" not available!', [scope, language]));
+			_set(language, scope, {});
+			deferred.resolve({});
+		});
+		_set(language, scope, deferred);
+		return deferred;
+	};
+	var _get = function(language, scope) {
+		var data = lang.getObject(lang.replace('{0}.{1}', [language, scope]), false, _cache);
+		if (data !== undefined) {
+			// we already have already cached the specified scope
+			return data;
+		}
+		return _load(language, scope);
+	};
 
 	return {
 		// summary:
@@ -102,22 +128,32 @@ define([
 		// |	});
 
 		load: function (params, req, load, config) {
-			// detect the locale language (ignore territory)
-			var m = _i18nLocalRegExp.exec(kernel.locale);
-			var language = m[1] || 'en'; // default is English
-			language = language.toLowerCase();
-
 			// Internal dictionary of translation from English -> current language
-			var _translations = [];
+			//var _translations = [];
 
-			var translate = function(/*String*/ _msg, /*mixed...*/ filler) {
+			// use 'umc.app' and 'umc.branding' as backup path to allow other class to override a
+			// UMC base class without loosing its translations (see Bug #24864)
+			var scopes = params.split(/\s*,\s*/);
+			scopes.push('umc/branding');
+			scopes.push('umc/app');
+
+			// filter out empty scopes
+			scopes = array.filter(scopes, function(iscope) {
+				return iscope;
+			});
+
+			var translate = function(/*String*/ msg, /*mixed...*/ filler) {
 				// get message to display (defaults to original message)
-				var msg = _msg;
+				var language = _language();
+				var _msg = '';
+				var _data = {};
 				var i = 0;
-				for (i = 0; i < _translations.length; ++i) {
-					if (_translations[i][_msg] && typeof _translations[i][_msg] == "string") {
-						// we found a translation... take it and break the loop
-						msg = _translations[i][_msg];
+				for (i = 0; i < scopes.length; ++i) {
+					_data = _get(language, scopes[i]);
+					_msg = _data[msg];
+					if (_msg && typeof _msg == "string") {
+						// we found a translation... break the loop
+						msg = _msg;
 						break;
 					}
 				}
@@ -136,24 +172,19 @@ define([
 				// try to get the original message given the localized message
 				// note: if the string has been expanded (e.g., with '%s' etc.)
 				//       this will not be possible.
-				var msg = null;
-				var translations = _translations.slice(); // shallow copy
-				var i;
-				for (i = arguments.length - 1; i > 0; --i) {
-					// add specified scopes
-					var iscope = arguments[i];
-					if (cachedData[iscope] !== undefined && !_ignored(language, iscope)) {
-						// ok, we have this scope already loaded
-						translations.unshift(cachedData[iscope]);
-					}
-				}
 
 				// iterate over all scopes and try to find the original of the localized string
-				for (i = 0; i < translations.length && msg === null; ++i) {
+				var language = _language();
+				var msg = null;
+				var _data = {};
+				var i, ival, ikey;
+				for (i = 0; i < scopes.length && msg === null; ++i) {
+					_data = _get(language, scopes[i]);
+
 					// iterate over all entries of the scope
-					for (var ikey in translations[i]) {
-						if (translations[i].hasOwnProperty(ikey)) {
-							var ival = translations[i][ikey];
+					for (ikey in _data) {
+						if (_data.hasOwnProperty(ikey)) {
+							ival = _data[ikey];
 							if (ival == _msg) {
 								// we found the original
 								msg = ikey;
@@ -165,63 +196,18 @@ define([
 				return msg || _msg; // return by default the localized string
 			};
 
-			// use 'umc.app' and 'umc.branding' as backup path to allow other class to override a
-			// UMC base class without loosing its translations (see Bug #24864)
-			var scopes = params.split(/\s*,\s*/);
-			scopes.push('umc/branding');
-			scopes.push('umc/app');
-
-			// ignore i18n files that could not be loaded previously
-			scopes = array.filter(scopes, function(iscope) {
-				return iscope && !_ignored(language, iscope);
-			});
-
-			// try to load the JSON translation file for the current language
-			// via the dojo/text! plugin as dependencies
-			var deferred = new Deferred();
-			var ndone = 0;
-			var results = [];
-			var resolved = function() {
-				// call the resolve function of the deferred if all requests are finished
-				++ndone;
-				if (ndone >= scopes.length) {
-					deferred.resolve(results);
-				}
+			translate.load = function() {
+				// try to load the JSON translation files for the current language
+				var language = _language();
+				var deferreds = array.map(scopes, function(iscope) {
+					return _get(language, iscope);
+				});
+				return all(deferreds);
 			};
 
-			array.forEach(scopes, function(iscope, i) {
-				if (cachedData[iscope] !== undefined) {
-					// we already have already cached the specified scope
-					resolved();
-					results[i] = cachedData[iscope];
-					return;
-				}
+			translate.scopes = scopes;
 
-				// new scope, get the URL and load its JSON data
-				var path = _scopePath(language, iscope);
-				request(require.toUrl(path)).then(function(idata) {
-					// parse JSON data and store results
-					cachedData[iscope] = (results[i] = idata ? json.parse(idata) : null);
-					resolved();
-				}, function(error) {
-					// i18n data could not be loaded, ignore them in the future
-					_ignore(language, iscope);
-					console.log(lang.replace('INFO: Localization files for scope "{0}" in language "{1}" not available!', [iscope, language]));
-
-					resolved();
-				});
-			});
-
-			// collect all results and call callback when everything is done
-			deferred.then(function(results) {
-				_translations = [];
-				array.forEach(results, function(idata, i) {
-					if (idata) {
-						_translations.push(idata);
-					}
-				});
-
-				// done -> return reference to translate function
+			translate.load().then(function() {
 				load(translate);
 			});
 		}
