@@ -3,6 +3,8 @@
 #include <debian-installer+kernel>
 #include <forcd1>
 
+linux-image-3.10.0-ucs71-amd64
+
 univention-debootstrap
 
 univention-server-master
