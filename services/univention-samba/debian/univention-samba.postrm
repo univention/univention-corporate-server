@@ -89,7 +89,8 @@ if [ "$1" = "remove" ]; then
 			samba/netlogon/sync \
 			samba/domain/logons \
 			samba/password/checkscript \
-			windows/wins-support
+			windows/wins-support \
+			samba/role
 
 	test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener crestart
 fi

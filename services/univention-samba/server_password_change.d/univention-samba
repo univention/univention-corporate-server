@@ -68,6 +68,7 @@ def run_postchange():
 	machine_password = open('/etc/machine.secret', 'r').read().strip()
 	ldap_hostdn = ucr.get('ldap/hostdn')
 	samba_user = ucr.get('samba/user')
+	samba_role = ucr.get('samba/role')
 	server_role = ucr.get('server/role')
 	ldap_base = ucr.get('ldap/base')
 
@@ -91,7 +92,7 @@ def run_postchange():
 	if samba_idmap_domains:
 		idmap_domains.extend(samba_idmap_domains)
 
-	if server_role in ('domaincontroller_slave', 'memberserver'):	## this is the criterion used in 26univention-samba.inst
+	if (server_role == 'domaincontroller_slave') or (samba_role == 'memberserver'):	## this is the criterion used in 26univention-samba.inst
 		if samba_user == ldap_hostdn:
 			samba_user_secret = open('/etc/machine.secret', 'r').read().strip()
 

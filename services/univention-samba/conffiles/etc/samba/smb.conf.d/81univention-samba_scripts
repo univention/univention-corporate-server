@@ -3,7 +3,9 @@
 if configRegistry.get('samba/password/checkscript'):
 	print ' check password script = %s' %  configRegistry['samba/password/checkscript']
 
-if configRegistry['server/role'] == 'domaincontroller_master' or configRegistry.get('samba/domainmaster') == 'yes':
+if configRegistry.get('samba/role') == 'memberserver':
+	pass
+elif configRegistry['server/role'] == 'domaincontroller_master' or configRegistry.get('samba/domainmaster') == 'yes':
 	def add_script(key, option, default):
 		if configRegistry.is_false(key, False): # if the value is set to false, the script will be diabled
 			pass

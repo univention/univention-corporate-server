@@ -1,3 +1,29 @@
+univention-samba (8.0.19-1) unstable; urgency=low
+
+  * added univention-samba-ad-member (Bug #35095)
+  * Merge from ucs-in-ad-domain preview (Bug #35095)
+
+    [ Arvid Requate ]
+     * Remove configure_adds_dc_as_kdc function (Bug #34091)
+     * remove the development version settings of timeserver (Bug #34091)
+     * Let UCR variable ad/member decide upon AD Member mode (Bug #34091)
+     * Abort join of another UCS DC if the UCS master claims to be AD Member (Bug #34091) 
+     * support explicit choice of samba/dc (Bug #34091)
+     * ADDS DC lookup was moved to python-univention-lib (Bug #34091)
+     * remove the development version settings of nameserver and AD-Connector (Bug #34091)
+     * Lookup and store ADDS LDAP bind info for AD Connector (Bug #34091)
+     * Keep the Samba4 KDC detection unchanged (Bug #34091)
+     * Exit joinscript ASAP if required credentials are missing (Bug #34091)
+     * Restart NTP server after changing UCR timeserver (Bug #34091)
+     * Reconfigure UCR nameserver in AD Memberserver mode, at least for join (Bug #34091)
+     * Exit joinscript if no credentials are given (Bug #34091)
+     * Locate ADDS DC via net lookup dsgetdcname (Bug #34091)
+     * Sync time with ADDS DC using SNTP and set it as timeserver (Bug #34091)
+     * Set kerberos/kpasswdserver (Bug #34091)
+     * Separate samba/role from server/role for (Bug #34091)
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Jul 2014 16:44:38 +0200
+
 univention-samba (8.0.18-3) unstable; urgency=low
 
   * Added samba/acl/allow/execute/always (Bug #33785) 

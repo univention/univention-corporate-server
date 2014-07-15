@@ -41,6 +41,12 @@ override_dh_fixperms:
 	chmod 755 debian/univention-samba/usr/share/univention-samba/slave-sync
 	chmod 755 debian/univention-samba/usr/lib/univention-directory-listener/system/samba-privileges.py
 	chmod 755 debian/univention-samba/usr/share/univention-samba/addmachine.sh
+	chmod 755 debian/univention-samba-ad-member/usr/share/univention-samba/kerberize_user
+	chmod 755 debian/univention-samba-ad-member/usr/lib/univention-directory-listener/system/samba-shares.py
+	chmod 755 debian/univention-samba-ad-member/usr/share/univention-samba/remove-samba-account
+	chmod 755 debian/univention-samba-ad-member/usr/share/univention-samba/slave-sync
+	chmod 755 debian/univention-samba-ad-member/usr/lib/univention-directory-listener/system/samba-privileges.py
+	chmod 755 debian/univention-samba-ad-member/usr/share/univention-samba/addmachine.sh
 	dh_fixperms 
 
 override_dh_auto_test:
@@ -48,6 +54,15 @@ override_dh_auto_test:
 	dh_auto_test
 
 %:
+	cp debian/univention-samba.dirs debian/univention-samba-ad-member.dirs
+	cp debian/univention-samba.install debian/univention-samba-ad-member.install
+	cp debian/univention-samba.links debian/univention-samba-ad-member.links
+	cp debian/univention-samba.postinst debian/univention-samba-ad-member.postinst
+	cp debian/univention-samba.postrm debian/univention-samba-ad-member.postrm
+	cp debian/univention-samba.preinst debian/univention-samba-ad-member.preinst
+	cp debian/univention-samba.prerm debian/univention-samba-ad-member.prerm
+	cp debian/univention-samba.univention-config-registry debian/univention-samba-ad-member.univention-config-registry
+	cp debian/univention-samba.univention-config-registry-categories debian/univention-samba-ad-member.univention-config-registry-categories
+	cp debian/univention-samba.univention-config-registry-variables debian/univention-samba-ad-member.univention-config-registry-variables
+	cp debian/univention-samba.univention-service debian/univention-samba-ad-member.univention-service
 	dh $@
-
-

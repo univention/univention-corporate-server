@@ -60,37 +60,30 @@ if [ "$1" = "configure" ]; then
 			mkdir -p /etc/univention/skel/windows-profiles/default
 			mkdir -p /etc/univention/skel/windows-profiles/default.V2
 		fi
-
-		## hotfix for Bug #31052, may be removed in ucs3.1-2
-		if dpkg --compare-versions "$2" lt '7.0.17-6' && dpkg --compare-versions "$2" gt '7.0.17-5'; then
-			if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-				echo "hotfix for Bug #31052: setting idmap secret for '*' from /etc/ldap.secret"
-				net idmap secret '*' $(cat /etc/ldap.secret) 2>/dev/null
-			fi
-		fi
-
-		## update fix for Bug #31921, may be removed after ucs3.2-0
-		if dpkg --compare-versions "$2" lt-nl '8.0.3-1'; then
-			old_max_protocol=$(univention-config-registry get samba/max_protocol)
-			if [ -n "$old_max_protocol" ]; then
-				univention-config-registry set samba/max/protocol?"$old_max_protocol"
-			fi
-		fi
-
-		## set default for Bug #32394, may be removed after ucs3.2-0
-		if dpkg --compare-versions "$2" lt-nl '8.0.0'; then
-			ucr set samba/max/protocol?NT1
-		fi
-
 	fi
 fi
 
+# set samba/role
+# normally samba/role derives from server_role, but if ad/member is true
+# samba/role is always memberserver
+if is_ucr_true ad/member; then
+	univention-config-registry set samba/role?"memberserver"
+else
+	case "${server_role}" in
+		domaincontroller_*)
+			univention-config-registry set samba/role?"domaincontroller"
+			;;
+		*)
+			univention-config-registry set samba/role?"memberserver"
+			;;
+	esac
+fi
 
 univention-config-registry set samba/share/home?yes \
 							   samba/share/groups?no \
 							   samba/adminusers?"administrator join-backup"
 
-if [ "$server_role" != "memberserver" ]
+if [ "$samba_role" = "domaincontroller" ]
 then
 	if [ -n "$samba_netbios_name" ]
 	then

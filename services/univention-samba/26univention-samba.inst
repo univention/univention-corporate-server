@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 #
 # Univention Samba
 #  join script
@@ -94,13 +94,81 @@ configure_ldapmaster_as_winsserver ()
 	univention-config-registry set windows/wins-support=no windows/wins-server="${ldap_master}"
 }
 
+configure_samba_role() {
+	if is_ucr_true ad/member; then
+		univention-config-registry set samba/role="memberserver"
+		echo "INFO: ad/member is true, will join as memberserver into an AD domain"
+	else
+		case "${server_role}" in
+			domaincontroller_*)
+				univention-config-registry set samba/role?"domaincontroller"
+				;;
+			*)
+				univention-config-registry set samba/role?"memberserver"
+				;;
+		esac
+	fi
+	samba_role=$(univention-config-registry get samba/role)
+
+	if [ "${samba_role}" != "memberserver" ]; then
+		## check again if we can join as DC
+		case "${server_role}" in
+			domaincontroller_*)
+				local master_is_admember
+				master_is_admember=$(univention-directory-manager computers/domaincontroller_master list "$@" \
+					--filter univentionService="AD Member" | sed -ne 's/^DN: //p')
+				if [ -n "$master_is_admember" ]; then
+					echo "ERROR: UCS Master claims to be Memberserver in an AD domain, cannot join as DC."
+					echo "       Please run univention-join again to configure this system as AD Member."
+					exit 1
+				fi
+		esac
+	fi
+}
+
+configure_s4_dc_as_kdc() {
+	local kdc
+	if [ -n "$1" ]; then
+		kdc="$1"
+	else
+		kdc="$(LC_ALL=C net ads lookup | sed -ne 's|^Domain Controller:[\t]*||p' | head -n 1)"
+	fi
+
+	if [ -n "$kdc" ]; then
+		univention-config-registry set \
+			kerberos/defaults/dns_lookup_kdc=false \
+			kerberos/kdc="$kdc"
+	fi
+}
+
 ### --- END helper functions ---
 
-# Join as ADS member if the S4 connector is installed.
+### Determine Samba join credentials
+extract_binddn_and_bindpwd_from_args "$@"
+
+if [ -n "$dcaccount" -a -n "$bindpwd" ]; then
+	samba_account="$dcaccount"
+	samba_pwd="$bindpwd"
+elif [ "${server_role}" = "domaincontroller_master" ]; then
+	if [ "${samba_role}" = "memberserver" ]; then
+		echo "INFO: Cannot run joinscript in memberserver mode without join credentials. Please run:"
+		printf "\tunivention-run-join-scripts --ask-pass\n"
+		echo "to complete the domain join."
+		exit 2
+	fi
+elif [ -e /etc/backup-join.secret ]; then
+	samba_account="join-backup"
+	samba_pwd="$(cat /etc/backup-join.secret)"
+fi
+
+configure_samba_role
+
+# Join as ADS member if the S4 connector is installed
+#                    or if the UCS Master claims to be a AD Memberserver
 # To overwrite this setting:
 #  ucr set --force samba/domain/security=ads
 #  ucr set --force samba/domain/security=domain
-if [ -n "$s4setup" ]; then
+if [ -n "$s4setup" ] || is_ucr_true ad/member; then
 	univention-config-registry set samba/domain/security=ads
 
 	/usr/share/univention-samba/mount_extfs_with_user_xattr.py
@@ -112,11 +180,9 @@ if [ -n "$s4setup" ]; then
 	fi
 
 	## set samba/share/home=yes on a memberserver, if it is a join into a samba4 domain and if it is the first join
-	if [ "$JS_LAST_EXECUTED_VERSION" = 0 -a "$server_role" = "memberserver" ]; then
+	if [ "$JS_LAST_EXECUTED_VERSION" = 0 -a "$samba_role" = "memberserver" ]; then
 		univention-config-registry set samba/share/home=yes
 	fi
-
-
 else
 	univention-config-registry set samba/domain/security=domain
 fi
@@ -145,7 +211,7 @@ if [ -x /etc/init.d/winbind ]; then
 	/etc/init.d/winbind stop
 fi
 
-if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" ]; then
+if [ "$server_role" = "domaincontroller_slave" -o "$samba_role" = "memberserver" ]; then
 	univention-config-registry set	samba/user="$ldap_hostdn" \
 									samba/user/pwdfile?"/etc/machine.secret"
 	smbpasswd -w $(cat /etc/machine.secret)
@@ -170,24 +236,17 @@ eval "$(univention-config-registry shell samba/user/pwdfile samba/user)"
 /etc/init.d/samba restart
 sleep 3
 
-extract_binddn_and_bindpwd_from_args "$@"
-
-if [ -n "$dcaccount" -a -n "$bindpwd" ]; then
-	samba_account="$dcaccount"
-	samba_pwd="$bindpwd"
-elif [ -e /etc/backup-join.secret ]; then
-	samba_account="join-backup"
-	samba_pwd="$(cat /etc/backup-join.secret)"
-fi
-
 security="$(univention-config-registry get samba/domain/security)"
 if [ "$security" = "ads" ]; then
 	# Use the correct kerberos KDC
-	if [ -z "$kerberos_kdc" ]; then
-		kdc="$(LC_ALL=C net ads lookup | sed -ne 's|^Domain Controller:[\t]*||p' | head -n 1)"
-		if [ -n "$kdc" ]; then
-			univention-config-registry set	kerberos/defaults/dns_lookup_kdc=false \
-											kerberos/kdc="$kdc"
+	if is_ucr_true ad/member && [ -n "$samba_dc" ]; then
+		univention-config-registry set \
+			kerberos/defaults/dns_lookup_kdc=false \
+			kerberos/kdc="$samba_dc" \
+			kerberos/kpasswdserver="$samba_dc"
+	else
+		if [ -z "$kerberos_kdc" ]; then
+			configure_s4_dc_as_kdc "$samba_dc"
 		fi
 	fi
 	JOIN_CMD="net ads join"
@@ -203,26 +262,44 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	fi
 
 	machine_secret="$(cat /etc/machine.secret)"
-	# Join against the global workgroup
-	if $JOIN_CMD -U${samba_account}%${samba_pwd} machinepass="$machine_secret"; then
-		if [ "${server_role}" = "domaincontroller_master" ]; then
-			configure_localhost_as_winsserver
+	if [ -n "$samba_dc" ]; then
+		if $JOIN_CMD -U"$samba_account"%"$samba_pwd" -S"$samba_dc" machinepass="$machine_secret"; then
+			univention-config-registry set windows/wins-support=no windows/wins-server?"$samba_dc"
 		else
-			disable_local_winsserver
+			echo "ERROR: Failed to join to $samba_dc via $JOIN_CMD. Please check your Samba DCs and your DNS and WINS configuration."
+			exit 1
 		fi
-	# try to join directly against the DC master
-	elif $JOIN_CMD -U${samba_account}%${samba_pwd} -S${ldap_master} machinepass="$machine_secret"; then
-		if [ "${ldap_master}" = "${hostname}.${domainname}" ]; then
-			configure_localhost_as_winsserver
-		else
-			configure_ldapmaster_as_winsserver
-		fi
-	# try to join against localhost
-	elif $JOIN_CMD -U${samba_account}%${samba_pwd} -Slocalhost machinepass="$machine_secret"; then
-		configure_localhost_as_winsserver
 	else
-		echo "ERROR: Failed to join via $JOIN_CMD. Please check your Samba DCs and your DNS and WINS configuration."
-		exit 1
+		# Join against the global workgroup
+		if $JOIN_CMD -U"$samba_account"%"$samba_pwd" machinepass="$machine_secret"; then
+			## Fine, the automatic DC locator succeeded and we are joined
+			if [ "${server_role}" = "domaincontroller_master" ]; then
+				if [ "${samba_role}" = "domaincontroller" ]; then
+					configure_localhost_as_winsserver
+				else
+					disable_local_winsserver
+				fi
+			else
+				disable_local_winsserver
+			fi
+
+		elif is_ucr_true ad/member; then
+			echo "ERROR: Failed to join to AD DC via $JOIN_CMD. Please check your Samba DCs and your DNS and WINS configuration."
+			exit 1
+		# try to join directly against the DC master
+		elif $JOIN_CMD -U"$samba_account"%"$samba_pwd" -S"$ldap_master" machinepass="$machine_secret"; then
+			if [ "${ldap_master}" = "${hostname}.${domainname}" ]; then
+				configure_localhost_as_winsserver
+			else
+				configure_ldapmaster_as_winsserver
+			fi
+		# try to join against localhost
+		elif $JOIN_CMD -U"$samba_account"%"$samba_pwd" -Slocalhost machinepass="$machine_secret"; then
+			configure_localhost_as_winsserver
+		else
+			echo "ERROR: Failed to join via $JOIN_CMD. Please check your Samba DCs and your DNS and WINS configuration."
+			exit 1
+		fi
 	fi
 
 	# restart samba
@@ -234,8 +311,8 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	test -x /etc/init.d/winbind && { /etc/init.d/winbind start; sleep 3; }
 
 	# set default printer permissions
-	net rpc rights -U${samba_account}%${samba_pwd} grant Printer-Admins SePrintOperatorPrivilege
-	net rpc rights -U${samba_account}%${samba_pwd} grant Administrator SePrintOperatorPrivilege
+	net rpc rights -U"$samba_account"%"$samba_pwd" grant Printer-Admins SePrintOperatorPrivilege
+	net rpc rights -U"$samba_account"%"$samba_pwd" grant Administrator SePrintOperatorPrivilege
 
 else
 	# stop samba
@@ -283,6 +360,12 @@ if [ $winbind_was_running -eq 1 ]; then
 fi
 
 ucs_addServiceToLocalhost 'Samba 3' "$@"
+
+if [ "${samba_role}" = "memberserver" ]; then
+	if [ "${server_role}" = "domaincontroller_master" ]; then
+		ucs_addServiceToLocalhost "AD Member" "$@"
+	fi
+fi
 
 # sync netlogon share
 /usr/share/univention-samba/slave-sync >>/var/log/univention/samba-sync.log

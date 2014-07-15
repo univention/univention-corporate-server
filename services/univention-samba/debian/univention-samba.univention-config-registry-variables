@@ -429,3 +429,9 @@ Description[de]=Ist diese Variable aktiviert oder nicht gesetzt, prüft Samba di
 Description[en]=If this parameter is activated or unset, Samba does not check execute permissions of files for "open for execution" protocol request from a Windows clients.
 Type=bool
 Categories=service-samba
+
+[samba/role]
+Description[de]=Diese Variable definiert die Rolle als der lokale Samba Dienst während des Domänenbeitritts konfiguriert wird. Gewöhnlich sollte diese Variable nicht manuell angepasst werden.
+Description[en]=This variable defines the role the local samba service is configured as at join time. Usually variable should not be modified manually.
+Type=str
+Categories=service-samba

@@ -2,7 +2,7 @@
 	; ldap
 
 @!@
-if configRegistry.get('server/role') not in [ 'memberserver', None ]:
+if configRegistry.get('samba/role') not in [ 'memberserver', None ]:
 	ldapserver = configRegistry['ldap/server/name'].split(' ')
 	if configRegistry.get('ldap/server/addition',''):
 		ldapserver.extend( configRegistry.get('ldap/server/addition').split(' ') )
@@ -12,6 +12,8 @@ if configRegistry.get('server/role') not in [ 'memberserver', None ]:
 	print '\tauth methods = %s' % configRegistry.get('samba/auth/methods', 'guest sam winbind')
 
 if configRegistry.get('server/role') == 'memberserver' and configRegistry.get('samba/memberserver/passdb/ldap','').lower() in ('yes', 'true'):
+	import sys
+	print >> sys.stderr, "INFO: Running UCS Memberserver with passdb ldap."	## Info comment
 	ldapserver = configRegistry['ldap/server/name'].split(' ')
 	if configRegistry.get('ldap/server/addition',''):
 		ldapserver.extend( configRegistry.get('ldap/server/addition').split(' ') )
@@ -32,7 +34,7 @@ else:
 
 print '\tldap ssl = start tls'
 
-if configRegistry.get('server/role') not in [ 'memberserver', None ]:
+if configRegistry.get('samba/role') not in [ 'memberserver', None ]:
 	if configRegistry.get('samba/ldap/replication/sleep'):
 		print '\tldap replication sleep = %s' %  configRegistry['samba/ldap/replication/sleep']
 

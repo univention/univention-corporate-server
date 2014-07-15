@@ -7,6 +7,39 @@ Build-Depends: debhelper (>> 7),
  ucslint-univention
 Standards-Version: 3.5.2
 
+Package: univention-samba-ad-member
+Architecture: all
+Pre-Depends: samba (>= 3.0.20),
+ univention-config
+Depends: ${misc:Depends},
+ univention-config (>= 8.0.2),
+ univention-base-files,
+ univention-ldap-client (>= 1.4),
+ univention-directory-manager-tools,
+ smbclient,
+ winbind,
+ univention-directory-listener,
+ rsync,
+ univention-ssh,
+ expect,
+ univention-samba-local-config,
+ python-tdb,
+ samba-common-bin,
+ shell-univention-lib (>= 1.0.6),
+ python-univention-lib (>= 1.0.45)
+Conflicts: samba-ad-dc,
+ samba-dsdb-modules,
+ univention-samba
+Description: UCS - Samba AD member mode
+ This package contains the configuration for the Samba
+ AD member mode. It provides authentication, file and
+ print services for Windows computers.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
 Package: univention-samba
 Architecture: all
 Pre-Depends: samba (>= 3.0.20),
