@@ -149,16 +149,17 @@ extract_binddn_and_bindpwd_from_args "$@"
 if [ -n "$dcaccount" -a -n "$bindpwd" ]; then
 	samba_account="$dcaccount"
 	samba_pwd="$bindpwd"
-elif [ "${server_role}" = "domaincontroller_master" ]; then
-	if [ "${samba_role}" = "memberserver" ]; then
+else
+	if is_ucr_true ad/member; then
 		echo "INFO: Cannot run joinscript in memberserver mode without join credentials. Please run:"
 		printf "\tunivention-run-join-scripts --ask-pass\n"
 		echo "to complete the domain join."
 		exit 2
 	fi
-elif [ -e /etc/backup-join.secret ]; then
-	samba_account="join-backup"
-	samba_pwd="$(cat /etc/backup-join.secret)"
+	if [ -e /etc/backup-join.secret ]; then
+		samba_account="join-backup"
+		samba_pwd="$(cat /etc/backup-join.secret)"
+	fi
 fi
 
 configure_samba_role

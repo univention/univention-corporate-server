@@ -1,3 +1,9 @@
+univention-samba (8.0.19-2) unstable; urgency=low
+
+  * fixed join script (Bug #35095) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 15 Jul 2014 14:54:07 +0200
+
 univention-samba (8.0.19-1) unstable; urgency=low
 
   * added univention-samba-ad-member (Bug #35095)
