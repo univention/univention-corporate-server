@@ -1,3 +1,9 @@
+univention-system-setup (7.0.69-11) unstable; urgency=medium
+
+  * Bug #34484: [WIP] Integration of new appliance wizard
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 15 Jul 2014 16:07:57 +0200
+
 univention-system-setup (7.0.69-10) unstable; urgency=low
 
   * Added welcome page with instructions to set a root password

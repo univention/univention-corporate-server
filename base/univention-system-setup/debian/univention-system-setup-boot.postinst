@@ -96,6 +96,9 @@ if [ "$1" = "configure" ] && [ ! -e /var/univention-join/joined ]; then
 			/etc/init.d/apache2 restart
 		fi
 	fi
+
+	# make sure that the App Center cache is up-to-date
+	/usr/sbin/univention-register-apps
 fi
 
 #DEBHELPER#

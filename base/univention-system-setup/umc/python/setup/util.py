@@ -44,17 +44,12 @@ import sys
 import apt
 import psutil
 import csv
-import imp
 import os.path
+import simplejson as json
+import random
 
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
-
-installer_i18n = Translation( 'installer', localedir = '/lib/univention-installer/locale' )
-
-if not '/lib/univention-installer/' in sys.path:
-	sys.path.append('/lib/univention-installer/')
-import package_list
 
 ucr=univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -71,6 +66,8 @@ PATH_PASSWORD_FILE = '/var/cache/univention-system-setup/secret'
 CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
 CMD_ENABLE_EXEC_WITH_RESTART = '/usr/share/univention-updater/enable-apache2-umc'
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
+CITY_DATA_PATH = '/usr/share/univention-system-setup/city_data.json'
+COUNTRY_DATA_PATH = '/usr/share/univention-system-setup/country_data.json'
 
 RE_IPV4_TYPE = re.compile('^interfaces/[^/]*/type$')
 RE_LOCALE = re.compile(r'([^.@ ]+).*')
@@ -101,6 +98,9 @@ UCR_VARIABLES = [
 def timestamp():
 	return time.strftime('%Y-%m-%d %H:%M:%S')
 
+def is_system_joined():
+	return os.path.exists('/var/univention-join/joined')
+
 def load_values():
 	# load UCR variables
 	ucr.load()
@@ -113,7 +113,7 @@ def load_values():
 	values['physical_interfaces'] = [idev['name'] for idev in detect_interfaces()]
 
 	# see whether the system has been joined or not
-	values['joined'] = os.path.exists('/var/univention-join/joined')
+	values['joined'] = is_system_joined()
 
 	# root password
 	values['root_password'] = ''
@@ -256,7 +256,7 @@ class ProgressParser( object ):
 		self.old.reset()
 		self.fractions = copy.copy( ProgressParser.FRACTIONS )
 		system_role = ucr.get('server/role')
-		joined = os.path.exists('/var/univention-join/joined')
+		joined = is_system_joined()
 		wizard_mode = system_role == 'domaincontroller_master' and not joined
 		if not wizard_mode:
 			# when not wizard_mode, the software page is not rendered
@@ -609,6 +609,7 @@ def dhclient(interface, timeout=None):
 	os.unlink(tempfilename)
 	return dhcp_dict
 
+#TODO: rewrite
 def get_components(role=None):
 	'''Returns a list of components that may be installed on the current system.'''
 
@@ -617,8 +618,7 @@ def get_components(role=None):
 		role = ucr.get('server/role')
 
 	# reload for correct locale
-	imp.reload(package_list)
-	pkglist = [ jpackage for icategory in package_list.PackageList
+	pkglist = [ jpackage for icategory in []
 			for jpackage in icategory['Packages']
 			if 'all' in jpackage['Possible'] or role in jpackage['Possible'] ]
 
@@ -637,8 +637,8 @@ def get_components(role=None):
 	# generate a unique ID for each component
 	for ipkg in pkglist:
 		ipkg['id'] = ':'.join(ipkg['Packages'])
-		ipkg[ 'Description' ] = installer_i18n.translate( ipkg[ 'Description' ] )
-		ipkg[ 'Name' ] = installer_i18n.translate( ipkg[ 'Name' ] )
+		ipkg[ 'Description' ] = ''#installer_i18n.translate( ipkg[ 'Description' ] )
+		ipkg[ 'Name' ] = ''#installer_i18n.translate( ipkg[ 'Name' ] )
 
 	return pkglist
 
@@ -805,4 +805,29 @@ def get_available_locales(pattern, category='language_en'):
 			})
 
 	return locales
+
+_city_data = None
+def get_city_data():
+	global _city_data
+	if not _city_data:
+		with open(CITY_DATA_PATH) as infile:
+			_city_data = json.load(infile)
+	return _city_data
+
+_country_data = None
+def get_country_data():
+	global _country_data
+	if not _country_data:
+		with open(COUNTRY_DATA_PATH) as infile:
+			_country_data = json.load(infile)
+	return _country_data
+
+def get_random_nameserver(country):
+	ipv4_servers = country.get('ipv4') or country.get('ipv4_erroneous') or [None]
+	ipv6_servers = country.get('ipv6') or country.get('ipv6_erroneous') or [None]
+	return dict(
+		ipv4_nameserver=random.choice(ipv4_servers),
+		ipv6_nameserver=random.choice(ipv6_servers),
+	)
+
 

@@ -55,12 +55,13 @@ Conflicts: univention-system-setup-appliance,
  univention-managed-client,
  univention-mobile-client,
  univention-basesystem,
- univention-system-setup (<< 5.0.129-1)
+ univention-system-setup (<< 5.0.129-1),
 Depends: ${misc:Depends},
  shell-univention-lib,
  univention-system-setup (= ${source:Version}),
  univention-server-master,
- univention-network-common
+ univention-network-common,
+ univention-management-console-module-appcenter
 Recommends: firefox-en | firefox-de | firefox,
  xinit,
  kde-window-manager
@@ -82,6 +83,8 @@ Depends: univention-management-console-server,
  univention-system-setup (= ${source:Version}),
  univention-updater,
  univention-management-console-module-lib,
+ univention-management-console-module-appcenter,
+ python-univention-lib,
  python-apt
 Description: UMC module for Univention system setup
  This package contains the UMC module for the UCS System Setup.
