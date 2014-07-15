@@ -31,14 +31,14 @@
 	</para>
 	</chapter>
 
-<chapter>
+<chapter id="slapd">
 	<title>OpenLDAP and listener/notifier domain replication</title>
 	<para>
 		As a core element in the operation and administration of a UCS domain, the
 		performance of the LDAP server plays a central role in the overall performance.
 	</para>
 
-	<section>
+	<section id="slapd:index">
 		<title>Indices</title>
 		<para>
 			Comparable with other database systems, OpenLDAP runs indices about commonly
@@ -59,7 +59,7 @@
 		</para>
 	</section>
 
-	<section>
+	<section id="slapd:bdb">
 		<title>Configuration of the database backend (BDB)</title>
 		<para>
 			The data of the LDAP server are stored in a database in the Berkeley database
@@ -127,7 +127,7 @@
 			</listitem>
 		</itemizedlist>
 
-		<section>
+		<section id="slapd:acl">
 			<title>OpenLDAP ACLs</title>
 			<para>
 				Access to the information contained in the LDAP directory is controlled by
@@ -145,7 +145,7 @@
 		</section>
 	</section>
 
-	<section>
+	<section id="listener">
 		<title>Univention Directory Listener</title>
 		<para>
 			In the default setting, the Univention Directory Listener performs safety
@@ -157,7 +157,7 @@
 	</section>
 </chapter>
 
-<chapter>
+<chapter id="nscd">
 	<title>Name Service Cache Daemon (NSCD)</title>
 	<para>
 		Name resolutions can be cached by the <emphasis>Name Service Cache
@@ -201,7 +201,7 @@
 	</para>
 </chapter>
 
-<chapter>
+<chapter id="group:cache">
 	<title>Local group cache</title>
 
 	<para>
@@ -230,7 +230,7 @@
 <chapter>
   <title>UCS management system</title>
 
-  <section>
+  <section id="umc:search:auto">
 	<title>Disabling automatic search</title>
 	<para>
 	  By default all objects are automatically searched for in the domain management
@@ -240,7 +240,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="umc:search:limit">
 	<title>Imposing a size limit for searches</title>
 	<para>
 	  The &ucsUCRV; <envar>directory/manager/web/sizelimit</envar> is used to impose an upper limit
@@ -254,7 +254,7 @@
 
 <chapter>
 	<title>Further services and components</title>
-	<section>
+	<section id="squid">
 		<title>Squid</title>
 		<para>
 			If the Squid proxy service is used with NTLM authentication, the authentication
@@ -267,7 +267,7 @@
 		</para>
 	</section>
 
-	<section>
+	<section id="bind">
 		<title>Bind</title>
 		<para>
 		  Bind can use two different backends for its configuration: OpenLDAP or the internal LDB
@@ -283,7 +283,7 @@
 		</para>
 	</section>
 
-	<section>
+	<section id="kernel">
 		<title>Kernel</title>
 		<para>
 			In medium and larger environments the maximum number of open files allowed by the Linux kernel may be set too low by default.
@@ -348,7 +348,7 @@
 		</variablelist>
 	</section>
 
-	<section>
+	<section id="samba">
 		<title>Samba</title>
 		<para>
 			Samba uses its own mechanism to specify the maximum number of open files.
