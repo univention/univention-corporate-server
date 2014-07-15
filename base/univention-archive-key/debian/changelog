@@ -1,3 +1,9 @@
+univention-archive-key (4.0.0-4) unstable; urgency=low
+
+  * Ship the archive signature key for the upcoming UCS 4.0 (Bug #35213)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 30 Jun 2014 11:49:54 +0200
+
 univention-archive-key (4.0.0-3) unstable; urgency=low
 
   * Readd .install file (Bug #23926)
