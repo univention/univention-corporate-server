@@ -130,9 +130,8 @@
 
 
 	</bibliography>
-	<!--
+
 	<?dbhtml-include href="../stylesheets/piwik.html"?>
-	-->
 	<index/>
 </book>
 <!-- vim:set ts=2 sw=2 noet ft=docbk:-->
