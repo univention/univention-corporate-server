@@ -30,19 +30,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+cd src
 lang=de
-po=src/univention/management/console/$lang.po
+po=univention/management/console/$lang.po
 pot=${po}t
 pox=${po}x
 
-xgettext -L Python -o $pot $(find src -type d -name .svn -prune -false -o -name '*.py')
+xgettext --msgid-bugs-address=packages@univention.de --copyright-holder='Univention GmbH' -L Python -o $pot $(find . -type d -name .svn -prune -false -o -name '*.py')
 
 xgettext --output=$pot \
 	--language=Python \
 	--keyword=N_:1 \
 	--sort-output 
 
-msgmerge $po $pot > $pox
+msgmerge --sort-output $po $pot > $pox
 
 echo "Now you need to fix up all 'fuzzy' entries in your editor..."
 read answ
@@ -60,6 +61,7 @@ while true; do
 	if [ -z "$yn" -o "$yn" = "y" -o "$yn" = "Y" ]; then
 		echo "Copying po file"
 		cp $pox $po
+		break
 	elif [ "$yn" = "n" -o "$yn" = "N" ]; then
 		echo "Aborting"
 		break

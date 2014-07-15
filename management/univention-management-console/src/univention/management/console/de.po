@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-07-10 16:49+0200\n"
+"POT-Creation-Date: 2014-07-15 11:37+0200\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,7 +36,7 @@ msgid "A non-fatal error has occurred processing may continue"
 msgstr ""
 "Ein nicht fataler Fehler ist aufgetreten; die Bearbeitung wird fortgesetzt"
 
-#: univention/management/console/modules/__init__.py:225
+#: univention/management/console/modules/__init__.py:224
 #, python-format
 msgid "An option passed to %s has the wrong type: %s"
 msgstr "Eine Option für %s hat den falschen Typ: %s"
@@ -65,7 +65,7 @@ msgstr "Verbindung zum Modulprozess ist fehlgeschlagen"
 msgid "Error occurred during command processing"
 msgstr "Fehler ist während der Kommandoverarbeitung aufgetreten"
 
-#: univention/management/console/modules/__init__.py:235
+#: univention/management/console/modules/__init__.py:234
 #, python-format
 msgid ""
 "Execution of command '%(command)s' has failed:\n"
@@ -172,7 +172,7 @@ msgstr "OK, Anfrage zum Beenden des Moduls"
 msgid "OK, partial response"
 msgstr "OK, Partielle Antwort"
 
-#: univention/management/console/modules/__init__.py:227
+#: univention/management/console/modules/__init__.py:226
 #, python-format
 msgid "One or more options to %s are missing: %s"
 msgstr "Eine oder mehrere Optionen für %s fehlen: %s"
@@ -222,7 +222,7 @@ msgstr "Authentisierung ist fehlgeschlagen"
 msgid "The command '%s' do not have any arguments"
 msgstr "Das Kommando '%s' hat keine Argumente"
 
-#: univention/management/console/modules/__init__.py:229
+#: univention/management/console/modules/__init__.py:228
 #, python-format
 msgid "The command has failed: %s"
 msgstr "Das Kommando ist fehlgeschlagen: %s"
