@@ -36,13 +36,13 @@ import uuid
 from univention.lib.i18n import Translation
 from univention.management.console.modules import UMC_OptionTypeError, Base
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import *
 
-_ = Translation( 'PACKAGENAME' ).translate
+_ = Translation('PACKAGENAME').translate
 
-class Instance( Base ):
+
+class Instance(Base):
 	# list of dummy entries
-	entries = map(lambda x: { 'id': str(uuid.uuid4()), 'name': x[0], 'color': x[1] }, [
+	entries = map(lambda x: {'id': str(uuid.uuid4()), 'name': x[0], 'color': x[1]}, [
 		['Zackary Cavaco', 'Blue'],
 		['Shon Hodermarsky', 'Green'],
 		['Jude Nachtrieb', 'Green'],
@@ -69,16 +69,16 @@ class Instance( Base ):
 		# this initialization method is called when the module process is created
 		pass
 
-	def colors( self, request ):
+	def colors(self, request):
 		"""Returns a list of all existing colors."""
-		MODULE.info( 'MODULEID.colors: options: %s' % str( request.options ) )
+		MODULE.info('MODULEID.colors: options: %s' % str(request.options))
 		allColors = set(map(lambda x: x['color'], Instance.entries))
-		allColors = map(lambda x: { 'id': x, 'label': x }, allColors)
-		allColors.append({ 'id': 'None', 'label': _('All colors') })
-		MODULE.info( 'MODULEID.colors: result: %s' % str( allColors ) )
+		allColors = map(lambda x: {'id': x, 'label': x}, allColors)
+		allColors.append({'id': 'None', 'label': _('All colors')})
+		MODULE.info('MODULEID.colors: result: %s' % str(allColors))
 		self.finished(request.id, allColors)
 
-	def query( self, request ):
+	def query(self, request):
 		"""Searches for entries in a dummy list
 
 		requests.options = {}
@@ -87,29 +87,28 @@ class Instance( Base ):
 
 		return: [ { 'id' : <unique identifier>, 'name' : <display name>, 'color' : <name of favorite color> }, ... ]
 		"""
-		MODULE.info( 'MODULEID.query: options: %s' % str( request.options ) )
+		MODULE.info('MODULEID.query: options: %s' % str(request.options))
 		color = request.options.get('color', 'None')
 		pattern = request.options.get('name', '')
 		result = filter(lambda x: (color == 'None' or color == x['color']) and x['name'].find(pattern) >= 0, Instance.entries)
-		MODULE.info( 'MODULEID.query: results: %s' % str( result ) )
-		self.finished( request.id, result )
+		MODULE.info('MODULEID.query: results: %s' % str(result))
+		self.finished(request.id, result)
 
-	def get( self, request ):
+	def get(self, request):
 		"""Returns the objects for the given IDs
 
 		requests.options = [ <ID>, ... ]
 
 		return: [ { 'id' : <unique identifier>, 'name' : <display name>, 'color' : <name of favorite color> }, ... ]
 		"""
-		MODULE.info( 'MODULEID.get: options: %s' % str( request.options ) )
+		MODULE.info('MODULEID.get: options: %s' % str(request.options))
 		ids = request.options
 		result = []
-		if isinstance( ids, ( list, tuple ) ):
+		if isinstance(ids, (list, tuple)):
 			ids = set(ids)
 			result = filter(lambda x: x['id'] in ids, Instance.entries)
 		else:
-			MODULE.warn( 'MODULEID.get: wrong parameter, expected list of strings, but got: %s' % str( ids ) )
-			raise UMC_OptionTypeError( 'Expected list of strings, but got: %s' % str(ids) )
-		MODULE.info( 'MODULEID.get: results: %s' % str( result ) )
-		self.finished( request.id, result )
-
+			MODULE.warn('MODULEID.get: wrong parameter, expected list of strings, but got: %s' % str(ids))
+			raise UMC_OptionTypeError('Expected list of strings, but got: %s' % str(ids))
+		MODULE.info('MODULEID.get: results: %s' % str(result))
+		self.finished(request.id, result)

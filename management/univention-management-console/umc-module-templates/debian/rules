@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 #
-# Univention Directory Manager
+# Univention Management Console Module
 #  rules file for the debian package
 #
 # Copyright YEAR Univention GmbH
@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 %:
-	dh $@
+	dh $@ --with 'python_support'
 
 override_dh_auto_test:
 	ucslint
