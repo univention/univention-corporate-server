@@ -1,3 +1,9 @@
+univention-archive-key (5.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Jul 2014 07:26:31 +0200
+
 univention-archive-key (4.0.0-4) unstable; urgency=low
 
   * Ship the archive signature key for the upcoming UCS 4.0 (Bug #35213)
