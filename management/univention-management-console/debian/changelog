@@ -1,4 +1,76 @@
-univention-management-console (6.0.25-5) unstable; urgency=low
+univention-management-console (6.0.24-21) unstable; urgency=low
+
+  * Bug #34243: fix typo
+
+ -- Florian Best <best@univention.de>  Mon, 14 Jul 2014 16:32:22 +0200
+
+univention-management-console (6.0.24-20) unstable; urgency=low
+
+  * Bug #34243: fix typos in translation
+
+ -- Florian Best <best@univention.de>  Fri, 11 Jul 2014 10:35:06 +0200
+
+univention-management-console (6.0.24-19) unstable; urgency=low
+
+  * Bug #34243: also reload translation gettext instance when reloading
+  	modules
+
+ -- Florian Best <best@univention.de>  Thu, 10 Jul 2014 17:19:38 +0200
+
+univention-management-console (6.0.24-18) unstable; urgency=low
+
+  * Bug #34243: add possibility to translate messages before the initial SET
+  	locale command was triggered.
+
+ -- Florian Best <best@univention.de>  Thu, 10 Jul 2014 14:25:00 +0200
+
+univention-management-console (6.0.24-17) unstable; urgency=low
+
+  * Bug #34243: enhance error handling to display user friendly error messages
+
+ -- Florian Best <best@univention.de>  Thu, 10 Jul 2014 12:01:59 +0200
+
+univention-management-console (6.0.24-16) unstable; urgency=low
+
+  * Bug #34244: enhance error handling to display user friendly error messages
+
+ -- Florian Best <best@univention.de>  Tue, 08 Jul 2014 16:40:48 +0200
+
+univention-management-console (6.0.24-15) unstable; urgency=low
+
+  * Bug #34243: add parameter 'reload' to modules/list; revert dh-umc-install
+  	changes
+
+ -- Florian Best <best@univention.de>  Thu, 03 Jul 2014 14:55:33 +0200
+
+univention-management-console (6.0.24-14) unstable; urgency=low
+
+  * use UMC_Error instead of UMC_ModuleInitError (Bug #34723)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 02 Jul 2014 11:19:04 +0200
+
+univention-management-console (6.0.24-13) unstable; urgency=low
+
+  * fixed circular import (Bug #34723)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 20 Jun 2014 13:09:02 +0200
+
+univention-management-console (6.0.24-12) unstable; urgency=low
+
+  * version bump, corrected bug number in changelog (Bug #34723)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 18 Jun 2014 17:39:06 +0200
+
+univention-management-console (6.0.24-11) unstable; urgency=low
+
+  * added possibility for UMC modules to return a user friendly error message
+  	when initialization fails by raising instances of UMC_ModuleInitError
+    and passing a string as proper description
+    (Bug #34723)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 17 Jun 2014 17:02:04 +0200
+
+univention-management-console (6.0.24-10) unstable; urgency=low
 
   * use a 1sec timer function reducing the remaining time until timeout by 1 in
     each iteration if there are no active requests to be time leap independent
@@ -6,19 +78,19 @@ univention-management-console (6.0.25-5) unstable; urgency=low
 
  -- Lukas Walter <walter@univention.de>  Mon, 16 Jun 2014 16:00:21 +0200
 
-univention-management-console (6.0.25-4) unstable; urgency=low
+univention-management-console (6.0.24-9) unstable; urgency=low
 
   * Bug #25196: fix typos
 
  -- Florian Best <best@univention.de>  Fri, 13 Jun 2014 16:44:51 +0200
 
-univention-management-console (6.0.25-2) unstable; urgency=low
+univention-management-console (6.0.24-8) unstable; urgency=low
 
   * Bug #34243: revert removal of umc_frontend_new_hash
 
  -- Florian Best <best@univention.de>  Fri, 13 Jun 2014 16:20:02 +0200
 
-univention-management-console (6.0.25-1) unstable; urgency=low
+univention-management-console (6.0.24-7) unstable; urgency=low
 
   * Bug #25196: UMC-Server won't die cause of operationsets
 

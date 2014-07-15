@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-12 11:35+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2014-07-10 16:49+0200\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,160 +16,56 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/univention/management/console/verify.py:86
-msgid "Value is not an boolean"
-msgstr "Es ist kein bool'scher Wert"
-
-#: src/univention/management/console/verify.py:98
-msgid "Value is not an integer"
-msgstr "Es ist kein ganzzahliger Wert"
-
-#: src/univention/management/console/modules/enable.py:59
-msgid "Invalid progress ID"
-msgstr "Ungültige Fortschritt ID"
-
-#: src/univention/management/console/verify.py:110
-msgid "Value is not n floating point number"
-msgstr "Es ist keine Gleitkommazahl"
-
-#: src/univention/management/console/verify.py:118
-#, python-format
-msgid "Invalid regular expression (%(regex)s): %(message)s"
-msgstr "Ungültiger regulärer Ausdruck (%(regex)s): %(message)s"
-
-#: src/univention/management/console/verify.py:132
-#: src/univention/management/console/verify.py:192
-msgid "Value is not of type string"
-msgstr "Der Wert ist keine Zeichenkette"
-
-#: src/univention/management/console/verify.py:137
-#: src/univention/management/console/verify.py:141
-msgid "Value contains invalid characters"
-msgstr "Im Wert sind ungültige Zeichen enthalten"
-
-#: src/univention/management/console/verify.py:153
-msgid "Value is not a list"
-msgstr "Es ist keine Liste"
-
-#: src/univention/management/console/verify.py:166
-msgid "Value is not a dictionary"
-msgstr "Es handelt sich nicht um ein Dictionary"
-
-#: src/univention/management/console/verify.py:195
-msgid "No valid choices specified"
-msgstr "Es wurden keine Auswahlmöglichkeiten definiert"
-
-#: src/univention/management/console/verify.py:198
-msgid "Value does not match any of the specified choices"
-msgstr "Der Wert entspricht keinem der angegebenen Auswahlmöglichkeiten"
-
-#: src/univention/management/console/modules/sanitizers.py:111
+#: univention/management/console/modules/sanitizers.py:111
 #, python-format
 msgid "%d error(s) occurred"
 msgstr "%d Fehler aufgetreten"
 
-#: src/univention/management/console/modules/sanitizers.py:160
-msgid "Argument required"
-msgstr "Argument erforderlich"
-
-#: src/univention/management/console/modules/sanitizers.py:245
-#: src/univention/management/console/modules/decorators.py:361
-msgid "Not a \"dict\""
-msgstr "Ist kein \"dict\""
-
-#: src/univention/management/console/modules/sanitizers.py:248
-msgid "Has more than the allowed keys"
-msgstr "Hat mehr Schlüssel als erlaubt"
-
-#: src/univention/management/console/modules/sanitizers.py:287
-#: src/univention/management/console/modules/decorators.py:344
-msgid "Not a \"list\""
-msgstr "Ist keine \"list\""
-
-#: src/univention/management/console/modules/sanitizers.py:290
-#, python-format
-msgid "Must have at least %(min_elements)d element(s)"
-msgstr "Muss mindestens %(min_elements)d Element(e) haben"
-
-#: src/univention/management/console/modules/sanitizers.py:292
-#, python-format
-msgid "May have at most %(max_elements)d element(s)"
-msgstr "Darf höchstens %(max_elements)d Element(e) haben"
-
-#: src/univention/management/console/modules/sanitizers.py:319
-msgid "Cannot be converted to a boolean"
-msgstr "Kann nicht in einen Wahrheitswert umgewandelt werden"
-
-#: src/univention/management/console/modules/sanitizers.py:350
-msgid "Cannot be converted to a number"
-msgstr "Kann nicht in eine Zahl umgewandelt werden"
-
-#: src/univention/management/console/modules/sanitizers.py:355
-#: src/univention/management/console/modules/sanitizers.py:358
-#: src/univention/management/console/modules/sanitizers.py:362
-#: src/univention/management/console/modules/sanitizers.py:365
-#, python-format
-msgid "Should stay %s"
-msgstr "Sollte %s bleiben"
-
-#: src/univention/management/console/modules/sanitizers.py:435
-#, python-format
-msgid ""
-"The maximum number of asterisks (*) in the search string is "
-"%(max_number_of_asterisks)d"
-msgstr ""
-"Die Höchstzahl an Sternen (*) im Suchwort ist %(max_number_of_asterisks)d"
-
-#: src/univention/management/console/modules/sanitizers.py:537
-msgid "Value is not a string"
-msgstr "Wert ist keine Zeichenkette"
-
-#: src/univention/management/console/modules/sanitizers.py:540
-#, python-format
-msgid "Value is too short, it has to be at least of length %(minimum)d"
-msgstr ""
-"Wert ist zu kurz, seine Länge muss mindestens %(minimum)d Zeichen betragen"
-
-#: src/univention/management/console/modules/sanitizers.py:543
-#, python-format
-msgid "Value is too long, it has to be at most of length %(maximum)d"
-msgstr ""
-"Wert ist zu lang, seine Länge darf höchstens %(maximum)d Zeichen betragen"
-
-#: src/univention/management/console/modules/sanitizers.py:546
-msgid "Value is invalid"
-msgstr "Wert ist ungültig"
-
-#: src/univention/management/console/modules/sanitizers.py:571
-#, python-format
-msgid "Value has to be one of %(choices)r"
-msgstr "Wert muss aus %(choices)r stammen"
-
-#: src/univention/management/console/modules/decorators.py:386
-msgid "Please wait for operation to finish"
-msgstr "Bitte warten, bis die Aktion durchgeführt wurde"
-
-#: src/univention/management/console/modules/decorators.py:543
+#: univention/management/console/modules/decorators.py:590
 #, python-format
 msgid "%s can only be used as UPLOAD"
 msgstr "%s kann nur als UPLOAD genutzt werden"
 
-#: src/univention/management/console/modules/__init__.py:212
+#: univention/management/console/protocol/message.py:262
+#, python-format
+msgid "'%s' is not a valid UMCP command"
+msgstr "'%s' ist kein gültiges UMCP-Kommando"
+
+#: univention/management/console/protocol/definitions.py:106
+msgid "A non-fatal error has occurred processing may continue"
+msgstr ""
+"Ein nicht fataler Fehler ist aufgetreten; die Bearbeitung wird fortgesetzt"
+
+#: univention/management/console/modules/__init__.py:225
 #, python-format
 msgid "An option passed to %s has the wrong type: %s"
 msgstr "Eine Option für %s hat den falschen Typ: %s"
 
-#: src/univention/management/console/modules/__init__.py:215
-#, python-format
-msgid "One or more options to %s are missing: %s"
-msgstr "Eine oder mehrere Optionen für %s fehlen: %s"
+#: univention/management/console/modules/sanitizers.py:160
+msgid "Argument required"
+msgstr "Argument erforderlich"
 
-#: src/univention/management/console/modules/__init__.py:218
-#, python-format
-msgid "The command has failed: %s"
-msgstr "Das Kommando ist fehlgeschlagen: %s"
+#: univention/management/console/protocol/definitions.py:109
+msgid "Bad request"
+msgstr "Fehlerhafte Anfrage"
 
-#: src/univention/management/console/modules/__init__.py:222
+#: univention/management/console/modules/sanitizers.py:317
+msgid "Cannot be converted to a boolean"
+msgstr "Kann nicht in einen Wahrheitswert umgewandelt werden"
+
+#: univention/management/console/modules/sanitizers.py:348
+msgid "Cannot be converted to a number"
+msgstr "Kann nicht in eine Zahl umgewandelt werden"
+
+#: univention/management/console/protocol/definitions.py:124
+msgid "Connection to module process failed"
+msgstr "Verbindung zum Modulprozess ist fehlgeschlagen"
+
+#: univention/management/console/protocol/definitions.py:134
+msgid "Error occurred during command processing"
+msgstr "Fehler ist während der Kommandoverarbeitung aufgetreten"
+
+#: univention/management/console/modules/__init__.py:235
 #, python-format
 msgid ""
 "Execution of command '%(command)s' has failed:\n"
@@ -180,200 +76,255 @@ msgstr ""
 "\n"
 "%(text)s"
 
-#: src/univention/management/console/protocol/message.py:198
-#: src/univention/management/console/protocol/definitions.py:127
-msgid "Unparsable message header"
-msgstr "Unverständlicher nachrichtenkopf"
-
-#: src/univention/management/console/protocol/message.py:211
-msgid "Invalid length information"
-msgstr "Ungültige Längenangabe"
-
-#: src/univention/management/console/protocol/message.py:217
+#: univention/management/console/protocol/modserver.py:97
 #, python-format
-msgid "Unknown UMCP command: %s"
-msgstr "Unbekanntes UMCP Kommando: %s"
-
-#: src/univention/management/console/protocol/message.py:224
-#, python-format
-msgid "The command '%s' do not have any arguments"
-msgstr "Das Kommando '%s' hat keine Argumente"
-
-#: src/univention/management/console/protocol/message.py:230
-msgid "The message body is not (yet) complete"
-msgstr "Der Nachrichtenrumpf ist (noch) nicht vollständig"
-
-#: src/univention/management/console/protocol/message.py:199
-msgid "The message header is not (yet) complete"
-msgstr "Der Nachrichtenkopf ist (noch) nicht vollständig"
-
-#: src/univention/management/console/protocol/message.py:246
-msgid "error parsing UMCP message body"
-msgstr "Fehler beim Parsen des UMCP-Nachrichtenrumpfes"
-
-#: src/univention/management/console/protocol/message.py:262
-#, python-format
-msgid "'%s' is not a valid UMCP command"
-msgstr "'%s' ist kein gültiges UMCP-Kommando"
-
-#: src/univention/management/console/protocol/message.py:303
-msgid "Unknown mime type"
-msgstr "Unbekannter MIME-Typ"
-
-#: src/univention/management/console/protocol/definitions.py:96
-#: src/univention/management/console/protocol/definitions.py:160
-msgid "Unknown status code"
-msgstr "Unbekannter Status-Code"
-
-#: src/univention/management/console/protocol/definitions.py:101
-msgid "OK, operation successful"
-msgstr "OK, Operation erfolgreich"
-
-#: src/univention/management/console/protocol/definitions.py:102
-msgid "OK, containing report message"
-msgstr "OK, enthält Nachricht"
-
-#: src/univention/management/console/protocol/definitions.py:103
-msgid "OK, partial response"
-msgstr "OK, Partielle Antwort"
-
-#: src/univention/management/console/protocol/definitions.py:104
-msgid "OK, operation successful ask for shutdown of connection"
-msgstr "OK, Anfrage zum Beenden des Moduls"
-
-#: src/univention/management/console/protocol/definitions.py:106
-msgid "A non-fatal error has occured processing may continue"
+msgid ""
+"Failed to load module %s: %s\n"
+"%s"
 msgstr ""
-"Ein nicht fataler Fehler ist aufgetreten; die Bearbeitung wird fortgesetzt"
+"Konnte das Modul %s nicht laden: %s\n"
+"%s"
 
-#: src/univention/management/console/protocol/definitions.py:109
-msgid "Bad request"
-msgstr "Fehlerhafte Anfrage"
-
-#: src/univention/management/console/protocol/definitions.py:110
-msgid "Unauthorized"
-msgstr "Nicht authorisiert"
-
-#: src/univention/management/console/protocol/definitions.py:111
+#: univention/management/console/protocol/definitions.py:111
 msgid "Forbidden"
 msgstr "Verboten"
 
-#: src/univention/management/console/protocol/definitions.py:112
-msgid "Not found"
-msgstr "Nicht gefunden"
+#: univention/management/console/protocol/modserver.py:103
+#, python-format
+msgid "Further information can be found in the logfile %s."
+msgstr "Weitere Informationen können der Protokolldatei %s entnommen werden."
 
-#: src/univention/management/console/protocol/definitions.py:113
-msgid "Invalid command arguments"
-msgstr "Ungültige Kommandoargumente"
+#: univention/management/console/modules/sanitizers.py:245
+msgid "Has more than the allowed keys"
+msgstr "Hat mehr Schlüssel als erlaubt"
 
-#: src/univention/management/console/protocol/definitions.py:114
-msgid "Invalid or missing command options"
-msgstr "Ungültige or fehlende Kommando-Optionen"
-
-#: src/univention/management/console/protocol/definitions.py:115
-msgid "The authentication has failed"
-msgstr "Authentisierung ist fehlgeschlagen"
-
-#: src/univention/management/console/protocol/definitions.py:116
-msgid "The account is expired and can not be used anymore"
-msgstr "Das Konto ist abgelaufen und kann nicht mehr verwendet werden"
-
-#: src/univention/management/console/protocol/definitions.py:117
-msgid "The account as been disabled"
-msgstr "Das Konto wurde deaktiviert"
-
-#: src/univention/management/console/protocol/definitions.py:118
-msgid "Specified locale is not available"
-msgstr "Angegebene Sprache ist nicht verfügbar"
-
-#: src/univention/management/console/protocol/definitions.py:121
+#: univention/management/console/protocol/definitions.py:122
 msgid "Internal error"
 msgstr "Interner Fehler"
 
-#: src/univention/management/console/protocol/definitions.py:122
-msgid "Module process died unexpectedly"
-msgstr "Modulprozess hat sich unerwartet beendet"
-
-#: src/univention/management/console/protocol/definitions.py:123
-msgid "Connection to module process failed"
-msgstr "Verbindung zum Modulprozess ist fehlgeschlagen"
-
-#: src/univention/management/console/protocol/definitions.py:124
-msgid "SSL server certificate is not trustworthy"
-msgstr "SSL-Zertifikat ist nicht vertrauenswürdig"
-
-#: src/univention/management/console/protocol/definitions.py:128
-msgid "Unknown command"
-msgstr "Unbekanntes Kommando"
-
-#: src/univention/management/console/protocol/definitions.py:129
-msgid "Invalid number of arguments"
-msgstr "Ungültige Anzahl von Argumenten"
-
-#: src/univention/management/console/protocol/definitions.py:130
-msgid "Unparsable message body"
-msgstr "Unverständlicher nachrichtenrumpf"
-
-#: src/univention/management/console/protocol/definitions.py:133
-msgid "Error occuried during command processing"
-msgstr "Fehler ist während der Kommandoverarbeitung aufgetreten"
-
-#: src/univention/management/console/protocol/definitions.py:134
-msgid "The execution of a command caused an fatal error"
-msgstr "Die Ausführung eines Kommandos hat zu einem fatalen Fehler geführt"
-
-#: src/univention/management/console/protocol/modserver.py:227
-#, python-format
-msgid ""
-"The init function of the module has failed: %s: %s\n"
-"%s"
-msgstr ""
-"Die init-Funktion des Moduls ist fehlgeschlagen: %s: %s\n"
-"%s"
-
-#: src/univention/management/console/protocol/server.py:239
+#: univention/management/console/protocol/server.py:243
 #, python-format
 msgid "Invalid UCR variable requested: %s"
 msgstr "Ungültige UCR-Variable: %s"
 
-#: src/univention/management/console/syntax.py:194
-#, python-format
-msgid "Unknown syntax %s"
-msgstr "Unbekannte Syntax %s"
+#: univention/management/console/protocol/definitions.py:113
+msgid "Invalid command arguments"
+msgstr "Ungültige Kommandoargumente"
 
-#: src/univention/management/console/syntax.py:207
+#: univention/management/console/protocol/message.py:213
+msgid "Invalid length information"
+msgstr "Ungültige Längenangabe"
+
+#: univention/management/console/protocol/definitions.py:130
+msgid "Invalid number of arguments"
+msgstr "Ungültige Anzahl von Argumenten"
+
+#: univention/management/console/protocol/definitions.py:114
+msgid "Invalid or missing command options"
+msgstr "Ungültige or fehlende Kommando-Optionen"
+
+#: univention/management/console/modules/mixins.py:141
+msgid "Invalid progress ID"
+msgstr "Ungültige Fortschritt ID"
+
+#: univention/management/console/modules/sanitizers.py:290
+#, python-format
+msgid "May have at most %(max_elements)d element(s)"
+msgstr "Darf höchstens %(max_elements)d Element(e) haben"
+
+#: univention/management/console/protocol/definitions.py:123
+msgid "Module process died unexpectedly"
+msgstr "Modulprozess hat sich unerwartet beendet"
+
+#: univention/management/console/modules/sanitizers.py:288
+#, python-format
+msgid "Must have at least %(min_elements)d element(s)"
+msgstr "Muss mindestens %(min_elements)d Element(e) haben"
+
+#: univention/management/console/modules/sanitizers.py:242
+#: univention/management/console/modules/decorators.py:290
+#: univention/management/console/modules/decorators.py:384
+msgid "Not a \"dict\""
+msgstr "Ist kein \"dict\""
+
+#: univention/management/console/modules/sanitizers.py:285
+#: univention/management/console/modules/decorators.py:367
+msgid "Not a \"list\""
+msgstr "Ist keine \"list\""
+
+#: univention/management/console/protocol/definitions.py:112
+msgid "Not found"
+msgstr "Nicht gefunden"
+
+#: univention/management/console/protocol/definitions.py:102
+msgid "OK, containing report message"
+msgstr "OK, enthält Nachricht"
+
+#: univention/management/console/protocol/definitions.py:101
+msgid "OK, operation successful"
+msgstr "OK, Operation erfolgreich"
+
+#: univention/management/console/protocol/definitions.py:104
+msgid "OK, operation successful ask for shutdown of connection"
+msgstr "OK, Anfrage zum Beenden des Moduls"
+
+#: univention/management/console/protocol/definitions.py:103
+msgid "OK, partial response"
+msgstr "OK, Partielle Antwort"
+
+#: univention/management/console/modules/__init__.py:227
+#, python-format
+msgid "One or more options to %s are missing: %s"
+msgstr "Eine oder mehrere Optionen für %s fehlen: %s"
+
+#: univention/management/console/protocol/modserver.py:102
+msgid ""
+"Please relogin to the Univention Management Console to see if the error "
+"persists."
+msgstr ""
+"Bitte erneut an der Univention Management Console einloggen um zu sehen, ob "
+"der Fehler bestehen bleibt."
+
+#: univention/management/console/modules/mixins.py:129
+msgid "Please wait for operation to finish"
+msgstr "Bitte warten, bis die Aktion durchgeführt wurde"
+
+#: univention/management/console/protocol/definitions.py:125
+msgid "SSL server certificate is not trustworthy"
+msgstr "SSL-Zertifikat ist nicht vertrauenswürdig"
+
+#: univention/management/console/modules/sanitizers.py:353
+#: univention/management/console/modules/sanitizers.py:356
+#: univention/management/console/modules/sanitizers.py:360
+#: univention/management/console/modules/sanitizers.py:363
+#, python-format
+msgid "Should stay %s"
+msgstr "Sollte %s bleiben"
+
+#: univention/management/console/protocol/definitions.py:118
+msgid "Specified locale is not available"
+msgstr "Angegebene Sprache ist nicht verfügbar"
+
+#: univention/management/console/protocol/definitions.py:117
+msgid "The account as been disabled"
+msgstr "Das Konto wurde deaktiviert"
+
+#: univention/management/console/protocol/definitions.py:116
+msgid "The account is expired and can not be used anymore"
+msgstr "Das Konto ist abgelaufen und kann nicht mehr verwendet werden"
+
+#: univention/management/console/protocol/definitions.py:115
+msgid "The authentication has failed"
+msgstr "Authentisierung ist fehlgeschlagen"
+
+#: univention/management/console/protocol/message.py:226
+#, python-format
+msgid "The command '%s' do not have any arguments"
+msgstr "Das Kommando '%s' hat keine Argumente"
+
+#: univention/management/console/modules/__init__.py:229
+#, python-format
+msgid "The command has failed: %s"
+msgstr "Das Kommando ist fehlgeschlagen: %s"
+
+#: univention/management/console/protocol/definitions.py:135
+msgid "The execution of a command caused a fatal error"
+msgstr "Die Ausführung eines Kommandos hat zu einem fatalen Fehler geführt"
+
+#: univention/management/console/protocol/definitions.py:136
+msgid "The initialization of the module caused a fatal error"
+msgstr "Die Initialisierung des Moduls führte zu einem fatalen Fehler"
+
+#: univention/management/console/protocol/modserver.py:249
+#, python-format
+msgid "The initialization of the module failed: %s"
+msgstr "Die Initialisierung des Moduls ist fehlgeschlagen: %s"
+
+#: univention/management/console/modules/sanitizers.py:433
 #, python-format
 msgid ""
-"Base type verification failed (type %(base)s): no verify function defined"
+"The maximum number of asterisks (*) in the search string is "
+"%(max_number_of_asterisks)d"
 msgstr ""
-"Basistypprüfung is fehlgeschlagen (Typ %(base)s): Es ist keine "
-"Überprüfungsfunktion definiert"
+"Die Höchstzahl an Sternen (*) im Suchwort ist %(max_number_of_asterisks)d"
 
-#: src/univention/management/console/syntax.py:213
+#: univention/management/console/protocol/message.py:232
+msgid "The message body is not (yet) complete"
+msgstr "Der Nachrichtenrumpf ist (noch) nicht vollständig"
+
+#: univention/management/console/protocol/message.py:199
+msgid "The message header is not (yet) complete"
+msgstr "Der Nachrichtenkopf ist (noch) nicht vollständig"
+
+#: univention/management/console/protocol/modserver.py:101
+msgid "The module may have been removed recently."
+msgstr "Das Modul könnte kürzlich entfernt worden sein."
+
+#: univention/management/console/protocol/definitions.py:119
+msgid "The password has expired and must be renewed"
+msgstr "Das Passwort ist abgelaufen und muss erneuert werden"
+
+#: univention/management/console/protocol/modserver.py:100
 #, python-format
-msgid ""
-"Base type verification failed (type %(base)s): function to verify syntax "
-"could not be found (%(function)s)"
-msgstr ""
-"Basistypprüfung is fehlgeschlagen (Typ %(base)s): Es konnte keine "
-"Überprüfungsfunktion gefunden werden"
+msgid "The requested module %r does not exists."
+msgstr "Das angefragte Modul %r existiert nicht."
 
-#: src/univention/management/console/syntax.py:219
+#: univention/management/console/protocol/definitions.py:110
+msgid "Unauthorized"
+msgstr "Nicht authorisiert"
+
+#: univention/management/console/protocol/message.py:219
 #, python-format
-msgid ""
-"Execution of verification function %(function)s for syntax %(base)s failed:"
+msgid "Unknown UMCP command: %s"
+msgstr "Unbekanntes UMCP Kommando: %s"
+
+#: univention/management/console/protocol/definitions.py:129
+msgid "Unknown command"
+msgstr "Unbekanntes Kommando"
+
+#: univention/management/console/protocol/message.py:306
+msgid "Unknown mime type"
+msgstr "Unbekannter MIME-Typ"
+
+#: univention/management/console/protocol/definitions.py:96
+#: univention/management/console/protocol/definitions.py:162
+msgid "Unknown status code"
+msgstr "Unbekannter Status-Code"
+
+#: univention/management/console/protocol/definitions.py:131
+msgid "Unparsable message body"
+msgstr "Unverständlicher nachrichtenrumpf"
+
+#: univention/management/console/protocol/message.py:200
+#: univention/management/console/protocol/definitions.py:128
+msgid "Unparsable message header"
+msgstr "Unverständlicher nachrichtenkopf"
+
+#: univention/management/console/modules/sanitizers.py:581
+#, python-format
+msgid "Value has to be one of %(choices)r"
+msgstr "Wert muss aus %(choices)r stammen"
+
+#: univention/management/console/modules/sanitizers.py:551
+msgid "Value is invalid"
+msgstr "Wert ist ungültig"
+
+#: univention/management/console/modules/sanitizers.py:542
+msgid "Value is not a string"
+msgstr "Wert ist keine Zeichenkette"
+
+#: univention/management/console/modules/sanitizers.py:548
+#, python-format
+msgid "Value is too long, it has to be at most of length %(maximum)d"
 msgstr ""
-"Die Ausführung der Überprüfungsfunktion %(function)s für die Syntax %(base)s "
-"ist fehlgeschlagen:"
+"Wert ist zu lang, seine Länge darf höchstens %(maximum)d Zeichen betragen"
 
-#~ msgid "Attribute %s just available for MIME type %s"
-#~ msgstr "Das Attribut %s ist nur verfügar für den MIME-Typ %s"
+#: univention/management/console/modules/sanitizers.py:545
+#, python-format
+msgid "Value is too short, it has to be at least of length %(minimum)d"
+msgstr ""
+"Wert ist zu kurz, seine Länge muss mindestens %(minimum)d Zeichen betragen"
 
-#~ msgid "name"
-#~ msgstr "Name"
-
-#~ msgid "Part of the body is missing"
-#~ msgstr "Ein Teil des Nachrichtenrumpfes fehlt"
-
-#~ msgid "Command not allowed"
-#~ msgstr "Kommando ist nicht erlaubt"
+#: univention/management/console/protocol/message.py:246
+msgid "error parsing UMCP message body"
+msgstr "Fehler beim Parsen des UMCP-Nachrichtenrumpfes"

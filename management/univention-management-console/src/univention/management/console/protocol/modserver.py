@@ -45,9 +45,9 @@ from ..acl import ACLs
 from ..module import Module
 from ..log import MODULE, PROTOCOL
 
-from univention.lib.i18n import Locale, NullTranslation
+from univention.lib.i18n import Locale, Translation
 
-_ = NullTranslation( 'univention.management.console' ).translate
+_ = Translation( 'univention.management.console' ).translate
 
 import sys
 import traceback
@@ -94,8 +94,14 @@ class ModuleServer( Server ):
 			self.__module = __import__(file_, [], [], modname)
 			self.__handler = self.__module.Instance()
 		except Exception as exc:
-			error = _('Failed to import module %s: %s\n%s') % (modname, exc, traceback.format_exc())
+			error = _('Failed to load module %s: %s\n%s') % (modname, exc, traceback.format_exc())
 			MODULE.error(error)
+			if isinstance(exc, ImportError) and str(exc).startswith('No module named %s' % (modname,)):
+				error = '\n'.join((_('The requested module %r does not exists.') % (modname,),
+					_('The module may have been removed recently.'),
+					_('Please relogin to the Univention Management Console to see if the error persists.'),
+					_('Further information can be found in the logfile %s.') % ('/var/log/univention/management-console-module-%s.log' % (modname,),),
+				))
 			self.__init_error_message = error
 		else:
 			self.__handler.signal_connect('success', notifier.Callback(self._reply, True))
@@ -193,7 +199,7 @@ class ModuleServer( Server ):
 			resp.status = MODULE_ERR_INIT_FAILED
 			resp.message = self.__init_error_message
 			self.response(resp)
-			notifier.timer_add(2000, self._timed_out)
+			notifier.timer_add(10000, self._timed_out)
 			return
 
 		if msg.command == 'SET':
@@ -238,16 +244,19 @@ class ModuleServer( Server ):
 			if 'acls' in msg.options and 'commands' in msg.options and 'credentials' in msg.options:
 				try:
 					self.__handler.init()
-				except BaseException as e:
+				except BaseException as exc:
 					self.__handler = None
-					error = _('The init function of the module has failed: %s: %s\n%s') % (
-						e.__class__.__name__,
-						e,
-						traceback.format_exc()
-					)
-					self.__init_error_message = error
-					MODULE.error(error)
+					error = _('The initialization of the module failed: %s') % (exc,)
+					trace = traceback.format_exc()
+
+					MODULE.error('The init function of the module failed\n%s: %s' % (exc, trace,))
 					resp.status = MODULE_ERR_INIT_FAILED
+
+					from ..modules import UMC_Error
+					if not isinstance(exc, UMC_Error):
+						error = trace
+
+					self.__init_error_message = error
 					resp.message = error
 
 			self.response( resp )
@@ -306,7 +315,6 @@ class ModuleServer( Server ):
 	def response( self, msg ):
 		"""Sends an UMCP response to the client"""
 		PROTOCOL.info( 'Sending UMCP RESPONSE %s' % msg.id )
-		data = str( msg )
 		self.__queue += str(msg)
 
 		if self._do_send( self.__comm ):
