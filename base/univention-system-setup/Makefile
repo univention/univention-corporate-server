@@ -27,12 +27,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-.PHONY: build install
+.PHONY: build install clean
 
 # extend the list LANGUAGES to support l10n for other languages
 LANGUAGES := de en
+JSON_FILES := city-data/country_data.json city-data/city_data.json
 
-build: city-data/country_data.json city-data/city_data.json
+build: $(JSON_FILES)
+
+clean:
+	rm -f city-data/alternateNames.txt city-data/cities15000.txt $(JSON_FILES)
 
 install: build
 	@echo "Nothing to install"
@@ -40,7 +44,7 @@ install: build
 %.txt: %.zip
 	unzip -u -d "$(*D)" $<
 
-%/country_data.json: city-data/countryInfo.txt
+%/country_data.json: city-data/countryInfo.txt city-data/alternateNames.txt
 	city-data/create_country_data.py "$@" $(LANGUAGES)
 
 %/city_data.json: city-data/cities15000.txt city-data/alternateNames.txt

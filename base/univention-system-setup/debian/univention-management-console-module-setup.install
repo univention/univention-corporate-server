@@ -1,5 +1,3 @@
-umc/js/setup/de/help_default.html	/usr/share/univention-management-console-frontend/js/umc/modules/setup/de
-umc/js/setup/en/help_default.html	/usr/share/univention-management-console-frontend/js/umc/modules/setup/en
 umc/python/setup/netconf	usr/share/pyshared/univention/management/console/modules/setup/
 city-data/*json		usr/share/univention-system-setup
 umc/js/setup/*png	usr/share/univention-management-console-frontend/js/umc/modules/setup

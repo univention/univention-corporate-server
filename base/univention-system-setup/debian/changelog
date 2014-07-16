@@ -1,3 +1,18 @@
+univention-system-setup (7.0.69-13) unstable; urgency=medium
+
+  Bug #34484 [WIP]
+  * fixed fuzzy entries
+  * removed obsolete files
+  * fixed copyrights
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 16 Jul 2014 21:45:34 +0200
+
+univention-system-setup (7.0.69-12) unstable; urgency=medium
+
+  * Bug #34484: [WIP] removal of obsolete parts
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 16 Jul 2014 16:16:24 +0200
+
 univention-system-setup (7.0.69-11) unstable; urgency=medium
 
   * Bug #34484: [WIP] Integration of new appliance wizard

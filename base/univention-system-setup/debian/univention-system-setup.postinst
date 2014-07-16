@@ -37,11 +37,4 @@ create_logfile /var/log/univention/setup.log "root:adm" 640
 
 chmod -R 700 /var/cache/univention-system-setup
 
-univention-config-registry set 'system/setup/boot/help?/usr/share/univention-management-console-frontend/js/umc/modules/setup/:help_default.html'
-
-# path has changed at 3.1, this can be removed later
-if [ "$(univention-config-registry get 'system/setup/boot/help')" = "/usr/share/univention-management-console-frontend/js/umc/modules/_setup/:help_default.html" ]; then
-	univention-config-registry set 'system/setup/boot/help=/usr/share/univention-management-console-frontend/js/umc/modules/setup/:help_default.html'
-fi
-
 exit 0
