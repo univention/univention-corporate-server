@@ -25,7 +25,7 @@
 	"repositories": [{
 		"type": "svn",
 		"url": "http://forge.univention.org/svn/dev",
-		"path": "branches/ucs-3.1/ucs/management/univention-management-console-frontend"
+		"path": "branches/ucs-4.0/ucs4.0-0/management/univention-management-console-frontend"
 	}],
 	"dependencies": {
 		"dojo": "~1.8",

@@ -54,26 +54,6 @@ univention-config-registry set "umc/http/session/timeout?600" \
 	umc/http/interface?127.0.0.1 \
 	umc/server/upload/min_free_space?51200
 
-if dpkg --compare-versions "$2" lt-nl 1.0.8-1; then
-	univention-config-registry unregister univention-directory-manager || true
-    dpkg-query -W -f='${Conffiles}' univention-directory-manager | egrep -- '-(en|de)\.html' | sort -u | while read path md5 flag; do
-		# make sure the path exists
-        [ ! -e "$path" ] && continue
-
-		# if the flag "obsolete" is given, we may remove the file immediately
-		if [ "$flag" = obsolete ]; then
-			rm -f "$path"
-			continue
-		fi
-
-		# remove if file has not been modified
-		currentMd5="$(md5sum "$path" | sed -e 's/ .*//')"
-		[ "$currentMd5" = "$md5" ] && rm -f "$path"
-    done
-	# remove link in apache's sites-enabled
-	rm -f /etc/apache2/sites-enabled/univention-directory-manager
-fi
-
 call_joinscript 34univention-management-console-web-server.inst
 
 exit 0

@@ -62,9 +62,4 @@ dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/usr/share/un
 dpkg-maintscript-helper rm_conffile /etc/univention/templates/info/univention-management-console-frontend.info 3.0.129-1~ -- "$@"
 univention-config-registry update
 
-if dpkg --compare-versions "$2" le-nl 3.0.129-1
-then
-	rm -f /usr/share/univention-management-console-frontend/languages.json
-fi
-
 exit 0

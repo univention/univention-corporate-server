@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.0.0-3) unstable; urgency=low
+
+  * Bug #35145: remove obsolete things
+
+ -- Florian Best <best@univention.de>  Wed, 16 Jul 2014 13:20:15 +0200
+
 univention-management-console-frontend (4.0.0-2) unstable; urgency=low
 
   * Bug #35145: rename build dependency nodejs-0.8 to nodejs
