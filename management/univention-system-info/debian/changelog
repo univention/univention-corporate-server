@@ -1,3 +1,9 @@
+univention-system-info (5.0.0-1) unstable; urgency=low
+
+  * Bug #35145: Start UCS 4.0 development
+
+ -- Florian Best <best@univention.de>  Wed, 16 Jul 2014 11:24:02 +0200
+
 univention-system-info (4.0.4-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)

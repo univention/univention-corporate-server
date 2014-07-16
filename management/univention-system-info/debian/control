@@ -7,6 +7,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  python-support,
  univention-management-console-dev,
  python-all
+XS-Python-Version: 2.6, 2.7
 Standards-Version: 3.8.2
 
 Package: univention-system-info

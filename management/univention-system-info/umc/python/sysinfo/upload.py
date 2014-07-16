@@ -1,4 +1,4 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 # Copyright (C) 2004,2005,2006,2008,2009 Fabien SEISEN
 # 
 # This library is free software; you can redistribute it and/or
