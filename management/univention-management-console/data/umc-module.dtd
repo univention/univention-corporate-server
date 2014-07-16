@@ -1,7 +1,54 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!ELEMENT umc (module)>
-<!ELEMENT module (name, description, command)*
-<!ELEMENT name (#PCDATA)>
-<!ELEMENT command (description*)>
-<!ELEMENT command (description*)>
+<!ELEMENT umc (module|definitions|categories)>
+<!-- version:  only "2.0" -->
+<!ATTLIST umc
+	version (2.0) #FIXED "2.0"
+>
 
+<!ELEMENT module ((name,description,keywords?)?,(flavor|categories)*,command+)>
+<!-- priority: order of module (new with UCS-3.1)
+	id:       unique module ID
+	icon:     base directory
+	version:  only "1.0"
+	notifier: use specific notifier loop 'qt' -->
+<!ATTLIST module
+	id CDATA #REQUIRED
+	icon CDATA #REQUIRED
+	priority CDATA #IMPLIED
+	version (1.0) #FIXED "1.0"
+	notifier (qt) #IMPLIED
+>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT keywords (#PCDATA)>
+<!ELEMENT flavor (name,description,keywords?)>
+<!-- priority:   order of flavours (new with UCS-3.1)
+	icon:       file name without suffix relative to umc/module/@icon
+	id:         unique module ID
+	overwrites: over-write other flavor -->
+<!ATTLIST flavor
+	icon CDATA #REQUIRED
+	priority CDATA #IMPLIED
+	id CDATA #REQUIRED
+	overwrites CDATA #IMPLIED
+>
+<!ELEMENT categories (category+)>
+<!-- domain: ??? -->
+<!ATTLIST categories
+	domain CDATA #IMPLIED
+>
+<!ELEMENT category (name?)>
+<!-- priority: order of categories (new with UCS-3.1)
+	name:     usage from umc/module; one of 'favorites'(100) 'system'(3) or a custom one
+	id:       used for definition in umc/categories -->
+<!ATTLIST category
+	priority CDATA #IMPLIED
+	name CDATA #IMPLIED
+	id CDATA #IMPLIED
+>
+<!ELEMENT command EMPTY>
+<!-- name: name of UMC function
+	function: name of python function -->
+<!ATTLIST command
+	name CDATA #REQUIRED
+	function CDATA #REQUIRED
+>

@@ -1,3 +1,9 @@
+univention-management-console (7.0.0-3) unstable; urgency=low
+
+  * Bug #35145: remove obsolete things
+
+ -- Florian Best <best@univention.de>  Wed, 16 Jul 2014 13:35:37 +0200
+
 univention-management-console (7.0.0-2) unstable; urgency=low
 
   * Bug #35145: rename dependency python-pyopenssl to python-openssl

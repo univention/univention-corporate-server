@@ -47,6 +47,7 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  python-univention-management-console (= ${source:Version}),
+ univention-base-files,
  shell-univention-lib (>= 1.0.10-1),
  python-daemon,
  python-univention-lib (>= 1.0.25-1)

@@ -2,15 +2,7 @@
 <umc version="2.0">
   <module icon="ucr/module" version="2.0">
 	<name>Univention Configuration Registry</name>
-	<name lang="de_DE">Univention Configuration Registry</name>
 	<description>Managing UCR variables</description>
-	<description lang="de_DE">Verwaltung von UCR-Variablen</description>
-	<command name="ucr/set" function="set">
-	  <description>Set UCR variables</description>
-	  <description lang="de_DE">Setzen von UCR-Variablen</description>
-	  <return>
-		<syntax type="umc-boolean"/>
-	  </return>
-	</command>
+	<command name="ucr/set" function="set" />
   </module>
 </umc>

@@ -40,29 +40,6 @@ univention-config-registry set \
 	umc/module/debug/level?2 \
 	umc/module/timeout?600
 
-# see Bug #30033
-# 5.0.57-1.716.201212090209 is the version originally shipped with UCS 3.1
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" le "5.0.57-1.716.201212090209"; then
-	eval "$(univention-config-registry shell umc/server/debug/level umc/module/debug/level)"
-	if [ "$umc_server_debug_level" -eq 1 ]; then
-		univention-config-registry set umc/server/debug/level=2
-	fi
-	if [ "$umc_module_debug_level" -eq 1 ]; then
-		univention-config-registry set umc/module/debug/level=2
-	fi
-fi
-
-# remove old baseconfig commands
-/usr/sbin/univention-management-console-acls remove --user root \
-			--command 'baseconfig/*'
-
-# root shouldn't have access to the app center by default
-# https://forge.univention.org/bugzilla/show_bug.cgi?id=30292
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" le "5.0.57-1.717.201301301749"; then
-	/usr/sbin/univention-management-console-acls remove --user root \
-				--command 'appcenter/*'
-fi
-
 # create UMC ACLs for user root
 eval "$(ucr shell server/role)"
 
