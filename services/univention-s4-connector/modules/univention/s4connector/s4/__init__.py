@@ -2331,6 +2331,9 @@ class s4(univention.s4connector.ucs):
 					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to addlist: %s" % addlist)
 					raise
 
+				new_s4_object = self.get_object(object['dn'])
+				self.s4cache.add_entry(new_s4_object.get('objectGUID'), new_s4_object)
+
 				if property_type == 'group':
 					self.group_members_cache_con[object['dn'].lower()] = []
 					ud.debug(ud.LDAP, ud.INFO, "group_members_cache_con[%s]: []" % (object['dn'].lower()))
