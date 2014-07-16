@@ -1,3 +1,9 @@
+univention-dojo (8.0.0-1) unstable; urgency=low
+
+  * Bug #35145: Start UCS 4.0 development
+
+ -- Florian Best <best@univention.de>  Wed, 16 Jul 2014 09:47:38 +0200
+
 univention-dojo (7.0.6-2) unstable; urgency=low
 
   * Bug #33990: update to Dojo 1.9.3
