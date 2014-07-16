@@ -1,3 +1,9 @@
+univention-join (7.0.0-1) unstable; urgency=low
+
+  * Bug #35145: Start UCS 4.0 development
+
+ -- Florian Best <best@univention.de>  Wed, 16 Jul 2014 12:25:53 +0200
+
 univention-join (6.0.18-3) unstable; urgency=low
 
   * added execution rights to 04univention-samba-role.inst (Bug #35094) 
