@@ -1,9 +1,6 @@
-#!/bin/sh
+#!/usr/bin/make -f
 #
-# Univention System Setup
-#  postrm script
-#
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,26 +27,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell)"
+.PHONY: build install
 
-. /usr/share/univention-lib/all.sh
+# extend the list LANGUAGES to support l10n for other languages
+LANGUAGES := de en
 
-# Reset apache2/startsite
-system_setup_boot_startsite='ucs-overview/initialsetup.html'
-if [ "$apache2_startsite" = "$system_setup_boot_startsite" ] ; then
-	ucr set apache2/startsite="$system_setup_prev_apache2_startsite"
-	ucr unset system/setup/prev/apache2/startsite
-	if [ -x /etc/init.d/apache2 ]; then
-		/etc/init.d/apache2 restart
-	fi
-fi
+build: city-data/country_data.json city-data/city_data.json
 
-update-rc.d -f univention-system-setup-boot-prepare remove
+install: build
+	@echo "Nothing to install"
 
-# Activate urandom init script, was deactivated when installing univention-system-setup-boot
-# Runlevel settings should equal initscripts.postinst values
-update-rc.d urandom start 55 S . start 30 0 6 . || exit $?
+%.txt: %.zip
+	unzip -u -d "$(*D)" $<
 
-#DEBHELPER#
+%/country_data.json: city-data/countryInfo.txt
+	city-data/create_country_data.py "$@" $(LANGUAGES)
 
-exit 0
+%/city_data.json: city-data/cities15000.txt city-data/alternateNames.txt
+	city-data/create_city_data.py "$@" $(LANGUAGES)
+

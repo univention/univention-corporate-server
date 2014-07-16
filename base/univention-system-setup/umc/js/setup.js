@@ -29,6 +29,7 @@
 /*global define require window setTimeout*/
 
 define([
+	"dojo/_base/kernel",
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
@@ -46,17 +47,18 @@ define([
 	"umc/widgets/TabContainer",
 	"umc/widgets/ProgressBar",
 	"umc/modules/lib/server",
+	"./setup/ApplianceWizard",
 	"umc/i18n!umc/modules/setup",
 // Pages:
-	"umc/modules/setup/LanguagePage",
-	"umc/modules/setup/BasisPage",
-	"umc/modules/setup/NetworkPage",
-	"umc/modules/setup/CertificatePage",
-	"umc/modules/setup/SoftwarePage",
-	"umc/modules/setup/SystemRolePage",
-	"umc/modules/setup/HelpPage"
-], function(declare, lang, array, all, topic, when, Deferred, DijitDialog, timing,
-	tools, dialog, Text, Form, Module, TabContainer, ProgressBar, libServer, _) {
+	"./setup/LanguagePage",
+	"./setup/BasisPage",
+	"./setup/NetworkPage",
+	"./setup/CertificatePage"
+//	"./setup/SoftwarePage",
+//	"./setup/SystemRolePage",
+//	"./setup/HelpPage"
+], function(dojo, declare, lang, array, all, topic, when, Deferred, DijitDialog, timing,
+	tools, dialog, Text, Form, Module, TabContainer, ProgressBar, libServer, ApplianceWizard, _) {
 
 	var CancelDialogException = declare("umc.modules.setup.CancelDialogException", null, {
 		// empty class that indicates that the user canceled a dialog
@@ -67,6 +69,11 @@ define([
 		// pages: String[]
 		//		List of all setup-pages that are visible.
 		pages: [ 'LanguagePage', 'BasisPage', 'NetworkPage', 'CertificatePage' ],
+
+		wizard: null,
+
+		// this module can only be opened once
+		unique: true,
 
 		// 100% opacity during rendering the module
 		//standbyOpacity: 1,
@@ -153,13 +160,12 @@ define([
 				allPages.splice(allPages.indexOf('NetworkPage'), 1);
 			}
 
-			// add the SoftwarePage, SystemRolePage and HelpPage to the list of pages for the wizard mode
+			// add the SoftwarePage and SystemRolePage to the list of pages for the wizard mode
 			if (this.wizard_mode) {
 				// add the SystemRolePage to the list of pages for the wizard mode if the packages have been downloaded
 				if (tools.isTrue(ucr['system/setup/boot/select/role'])) {
 					allPages.unshift('SystemRolePage');
 				}
-				allPages.unshift('HelpPage');
 
 				// SoftwarePage is only available in appliance mode. Otherwise software components should be managed by
 				// the App Center
@@ -178,182 +184,94 @@ define([
 					black_list = black_list.split(' ');
 					allPages = array.filter(allPages, function(page) { return array.indexOf(black_list, page) === -1; });
 				}
-			}
-
-			if (this.wizard_mode) {
-				// wizard mode
-
-				// disallow page changing more than every 500 milliseconds
-				this._timerPageChange = new timing.Timer(500);
-				this._timerPageChange.onTick = lang.hitch(this, function() { this._timerPageChange.stop(); });
-
-				// create all pages dynamically
-				this._pages = [];
-				array.forEach(allPages, function(iclass, i) {
-					var ipath = 'umc/modules/setup/' + iclass;
-					var Class = require(ipath);
-
-					// get the buttons we need
-					var buttons = [];
-					if (i < allPages.length - 1) {
-						buttons.push({
-							name: 'submit',
-							label: _('Next'),
-							callback: lang.hitch(this, function() {
-								if (!this._timerPageChange.isRunning) {
-									// switch to next visible page
-									// precondition: the last page is never invisible!
-									var nextpage = i + 1;
-									while ((nextpage < allPages.length) && (! this._pages[nextpage].visible)) {
-										nextpage += 1;
-									}
-									this.selectChildIfValid(nextpage);
-									this._timerPageChange.start();
-								}
-							})
-						});
-					}
-					if (i > 0) {
-						buttons.push({
-							name: 'restore',
-							label: _('Back'),
-							callback: lang.hitch(this, function() {
-								// switch to previous visible page
-								// precondition: the first page is never invisible!
-								var prevpage = i - 1;
-								while ((0 < prevpage) && (! this._pages[prevpage].visible)) {
-									prevpage -= 1;
-								}
-								this.selectChild(this._pages[prevpage]);
-							})
-						});
-					}
-					if (i == allPages.length - 1) {
-						buttons.push({
-							name: 'submit',
-							label: _('Apply settings'),
-							callback: lang.hitch(this, function() {
-								this.save();
-							})
-						});
-					}
-
-					// make a new page
-					var ipage = new Class({
-						umcpCommand: lang.hitch(this, 'umcpCommand'),
-						footerButtons: buttons,
-						moduleFlavor: this.moduleFlavor,
-						wizard_mode: this.wizard_mode,
-						local_mode: this.local_mode,
-						addNotification: lang.hitch(this, 'addNotification'),
-						addWarning: lang.hitch(this, 'addWarning'),
-						isLoading: lang.hitch(this, 'isLoading')
-					});
-					ipage.on('save', lang.hitch(this, function() {
-						if (i < allPages.length - 1) {
-							// switch to next visible page
-							// precondition: the last page is never invisible!
-							var nextpage = i + 1;
-							while ((nextpage < allPages.length) && (! this._pages[nextpage].visible)) {
-								nextpage += 1;
-							}
-							this.selectChildIfValid(nextpage);
-						} else {
-							this.save();
-						}
-					}));
-					this.addChild(ipage);
-					this._pages.push(ipage);
-
-				}, this);
-				// Now we know which pages were loaded, adjust HelpPage text
-				array.forEach(this._pages, lang.hitch(this, function(page) {
-					// if page is HelpPage...
-					if (page.setHelp !== undefined) {
-						page.setHelp(this._pages);
-					}
-				}));
+				this._renderWizard(allPages, values);
 			}
 			else {
-				// normal mode... we need a TabContainer
-				var tabContainer = new TabContainer({
-					nested: true
-				});
-
-				// each page has the same buttons for saving/resetting
-				var buttons = [ {
-						name: 'close',
-						label: _( 'Close' ),
-						align: 'left',
-						callback: lang.hitch( this, function() {
-							dialog.confirm( _( 'Should the UMC module be closed? All unsaved modification will be lost.' ), [ {
-								label: _( 'Close' ),
-								callback: lang.hitch( this, function() {
-									topic.publish('/umc/tabs/close', this );
-								} )
-							}, {
-								label: _( 'Cancel' ),
-								'default': true
-							} ] );
-						} )
-				}, {
-					name: 'submit',
-					label: _( 'Apply changes' ),
-					callback: lang.hitch(this, function() {
-						this.save();
-					})
-				}, {
-					name: 'restore',
-					label: _('Reset'),
-					callback: lang.hitch(this, function() {
-						this.load();
-						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'reset');
-					})
-				}];
-
-				// create all pages dynamically
-				this._pages = [];
-				var tabInDomDeferred = new Deferred();
-				array.forEach(allPages, function(iclass) {
-					// create new page
-					var ipath = 'umc/modules/setup/' + iclass;
-					var Class = require(ipath);
-					var ipage = new Class({
-						umcpCommand: lang.hitch(this, 'umcpCommand'),
-						footerButtons: buttons,
-						moduleFlavor: this.moduleFlavor,
-						wizard_mode: this.wizard_mode,
-						local_mode: this.local_mode,
-						onSave: lang.hitch(this, function() {
-							this.save();
-						}),
-						addNotification: lang.hitch(this, 'addNotification'),
-						addWarning: lang.hitch(this, 'addWarning'),
-						isLoading: lang.hitch(this, 'isLoading')
-					});
-					tabContainer.addChild(ipage);
-					this._pages.push(ipage);
-
-					// hide tab if page is not visible
-					this.own(ipage.watch('visible', function(name, oldval, newval) {
-						if ((newval === true) || (newval === undefined)) {
-							tabContainer.showChild(ipage);
-						} else {
-							tabContainer.hideChild(ipage);
-						}
-					}));
-
-					// evaluate initial visibility
-					tabInDomDeferred.then(function() {
-						if (ipage.get('visible') === false) {
-							tabContainer.hideChild(ipage);
-						}
-					});
-				}, this);
-
-				this.addChild(tabContainer);
-				tabInDomDeferred.resolve();
+				this._renderTabs(allPages, values);
 			}
+
+			this.startup();
+			this.standby(false);
+		},
+
+		_renderTabs: function(allPages, values) {
+			var tabContainer = new TabContainer({
+				nested: true
+			});
+
+			// each page has the same buttons for saving/resetting
+			var buttons = [ {
+				name: 'close',
+				label: _( 'Close' ),
+				align: 'left',
+				callback: lang.hitch( this, function() {
+					dialog.confirm( _( 'Should the UMC module be closed? All unsaved modification will be lost.' ), [ {
+						label: _( 'Close' ),
+						callback: lang.hitch( this, function() {
+							topic.publish('/umc/tabs/close', this );
+						} )
+					}, {
+						label: _( 'Cancel' ),
+						'default': true
+					} ] );
+				} )
+			}, {
+				name: 'submit',
+				label: _( 'Apply changes' ),
+				callback: lang.hitch(this, function() {
+					this.save();
+				})
+			}, {
+				name: 'restore',
+				label: _('Reset'),
+				callback: lang.hitch(this, function() {
+					this.load();
+					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'reset');
+				})
+			}];
+
+			// create all pages dynamically
+			this._pages = [];
+			var tabInDomDeferred = new Deferred();
+			array.forEach(allPages, function(iclass) {
+				// create new page
+				var ipath = 'umc/modules/setup/' + iclass;
+				var Class = require(ipath);
+				var ipage = new Class({
+					umcpCommand: lang.hitch(this, 'umcpCommand'),
+					footerButtons: buttons,
+					moduleFlavor: this.moduleFlavor,
+					wizard_mode: this.wizard_mode,
+					local_mode: this.local_mode,
+					onSave: lang.hitch(this, function() {
+						this.save();
+					}),
+					addNotification: lang.hitch(this, 'addNotification'),
+					addWarning: lang.hitch(this, 'addWarning'),
+					isLoading: lang.hitch(this, 'isLoading')
+				});
+				tabContainer.addChild(ipage);
+				this._pages.push(ipage);
+
+				// hide tab if page is not visible
+				this.own(ipage.watch('visible', function(name, oldval, newval) {
+					if ((newval === true) || (newval === undefined)) {
+						tabContainer.showChild(ipage);
+					} else {
+						tabContainer.hideChild(ipage);
+					}
+				}));
+
+				// evaluate initial visibility
+				tabInDomDeferred.then(function() {
+					if (ipage.get('visible') === false) {
+						tabContainer.hideChild(ipage);
+					}
+				});
+			}, this);
+
+			this.addChild(tabContainer);
+			tabInDomDeferred.resolve();
 
 			// connect to valuesChanged callback of every page
 			array.forEach(this._pages, lang.hitch(this, function(ipage) {
@@ -362,9 +280,56 @@ define([
 				}));
 				ipage.setValues(values);
 			}));
+		},
 
-			this.startup();
-			this.standby(false);
+		_renderWizard: function(allPages, values) {
+			this.wizard = new ApplianceWizard({
+				//progressBar: progressBar
+				visiblePages: allPages,
+				local_mode: this.local_mode,
+				values: values
+			});
+			this.addChild(this.wizard);
+			this.wizard.on('Finished', lang.hitch(this, function() {
+				topic.publish('/umc/tabs/close', this);
+			}));
+			this.wizard.on('Cancel', lang.hitch(this, function() {
+				topic.publish('/umc/tabs/close', this);
+			}));
+			this.wizard.on('Reload', lang.hitch(this, '_reloadWizard', allPages, values));
+		},
+
+		_reloadWizard: function(allPages, values, newLocale) {
+			// update internal locale settings
+			var _setLocale = function() {
+				dojo.locale = newLocale;
+				var locale = newLocale.replace('-', '_');
+				var deferreds = [];
+				deferreds.push(tools.umcpCommand('set', {
+					locale: locale
+				}, false));
+				deferreds.push(tools.umcpCommand('setup/set_locale', {
+					locale: locale
+				}, false));
+				deferreds.push(_.load());
+				return all(deferreds);
+			};
+
+			// remove wizard and render it again
+			var _cleanup = lang.hitch(this, function() {
+				this.removeChild(this.wizard);
+				this.wizard.destroy();
+				this._renderWizard(allPages, values);
+			});
+
+			// chain tasks with some time in between to allow a smooth standby animation
+			this.standby(true);
+			var self = this;
+			tools.defer(_setLocale, 200).then(function() {
+				return tools.defer(_cleanup, 200);
+			}).then(function() {
+				return tools.defer(lang.hitch(self, 'standby', false), 200);
+			});
 		},
 
 		_displayNetworkPageWarning: function(networkDisabledBy) {

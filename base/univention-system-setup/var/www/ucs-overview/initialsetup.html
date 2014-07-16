@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title data-i18n="header"></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/sticky-footer.css">
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/univention-system-setup.css">
+
+		<script type="text/javascript">
+			//<!--
+			function getQuery(/*String*/ param, /*mixed*/ defaultVal) {
+				// parse the URI query string
+				var query = window.location.search.substring(1);
+				var vars = query.split('&');
+				for (var i = 0; i < vars.length; i++) {
+					// parse the tuple
+					var tuple = vars[i].split('=');
+
+					// check whether we found the particular parameter we are interested in
+					if (2 == tuple.length && param == tuple[0]) {
+						return tuple[1];
+					}
+				}
+
+				// otherwise return the specified default value
+				return defaultVal;
+			}
+
+			var locale = getQuery('lang');
+			if (locale) {
+				locale = locale.replace('_', '-');
+			}
+			var dojoConfig = {
+				isDebug: false,
+				locale: locale,
+				async: true
+			};
+
+			//-->
+		</script>
+		<script type="text/javascript" src="js/dojo.js"></script>
+		<script type="text/javascript">
+			require(["js-initialsetup/initialstartsite", "dojo/domReady!"], function(initialstartsite) {
+				initialstartsite.start();
+			});
+		</script>
+	</head>
+	<body>
+		<div id="wrap">
+			<div id="site-header">
+				<div class="container">
+					<h1 id="site-title"></h1>
+					<h2 id="header-claim" data-i18n="claim"></h2>
+					<ul class="nav nav-tabs" style="display: none!important;">
+						<li class="active col-md-6"><a href="#service" data-i18n="services"></a></li>
+						<li class="col-md-6"><a href="#admin" data-i18n="admin"></a></li>
+					</ul>
+					<div id="header-right">
+						<div class="dropdown">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+								<span class="button-text"></span><span class="arrow"></span>
+							</button>
+							<ul id="language-switcher" class="dropdown-menu" role="menu"></ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container" id="content">
+				<div class="initialsetupwrapper">
+					<div class="initialsetupicon" style="background-image: url(/ucs-overview/img/welcome.png);"></span>
+					<span class="initialsetuptitle" data-i18n="setupTitle"></span>
+					<span class="initialsetuptext" data-i18n="setupText"></span>
+					<span class="initialsetuptext" data-i18n="setupText2"></span>
+					<span class="initialsetupcode" data-i18n="setupSshCommand"></span>
+					<span id="initialsetuplink" class="initialsetuptext"><span data-i18n="setupText3"></span><a href="/univention-management-console/?module=setup&username=root" data-i18n="setupLinkText"></a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="bs-footer" id="footer" role="contentinfo">
+			<div class="container">
+			</div>
+    	</div>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js" charset="utf-8" async defer></script>
+		<script type="text/javascript" src="js/tab.js"></script>
+	</body>
+</html>

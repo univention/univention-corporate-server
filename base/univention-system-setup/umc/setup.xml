@@ -21,7 +21,11 @@
 		<command name="setup/lang/countrycodes" function="lang_countrycodes" />
 		<command name="setup/net/interfaces" function="net_interfaces" />
 		<command name="setup/net/dhclient" function="net_dhclient" />
+		<!--TODO remove-->
 		<command name="setup/software/components" function="software_components" />
 		<command name="setup/keymap/save" function="save_keymap" />
+		<command name="setup/find_city" function="find_city"/>
+		<command name="setup/apps/query" function="apps_query"/>
+		<command name="setup/set_locale" function="set_locale"/>
 	</module>
 </umc>

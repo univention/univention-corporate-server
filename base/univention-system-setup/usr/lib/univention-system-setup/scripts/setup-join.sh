@@ -232,7 +232,7 @@ ucr commit \
 
 # Reset the apache2 startsite
 startsite="$(ucr get apache2/startsite)"
-if [ "$startsite" = 'univention-management-console/?module=setup\&username=root' ]; then
+if [ "$startsite" = 'ucs-overview/initialsetup.html' ]; then
 	ucr set apache2/startsite="$(ucr get system/setup/prev/apache2/startsite)"
 fi
 

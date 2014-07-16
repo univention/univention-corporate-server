@@ -1,9 +1,6 @@
-#!/bin/sh
+#!/usr/bin/python
 #
-# Univention System Setup
-#  postrm script
-#
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2012-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,26 +27,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell)"
+import sys
+import simplejson as json
+import _util
 
-. /usr/share/univention-lib/all.sh
+if __name__ == '__main__':
+	# check argument (action)
+	args = sys.argv[1:]
+	if len(args) != 2 or '--help' in args or '-h' in args:
+		print >>sys.stderr, 'usage: create_localized_country_labels.py <languageCode> <outfile.json>'
+		sys.exit(1)
 
-# Reset apache2/startsite
-system_setup_boot_startsite='ucs-overview/initialsetup.html'
-if [ "$apache2_startsite" = "$system_setup_boot_startsite" ] ; then
-	ucr set apache2/startsite="$system_setup_prev_apache2_startsite"
-	ucr unset system/setup/prev/apache2/startsite
-	if [ -x /etc/init.d/apache2 ]; then
-		/etc/init.d/apache2 restart
-	fi
-fi
-
-update-rc.d -f univention-system-setup-boot-prepare remove
-
-# Activate urandom init script, was deactivated when installing univention-system-setup-boot
-# Runlevel settings should equal initscripts.postinst values
-update-rc.d urandom start 55 S . start 30 0 6 . || exit $?
-
-#DEBHELPER#
-
-exit 0
+	print 'generating country label data...'
+	countries = _util.get_country_code_to_geonameid_map(3)
+	country_ids = set(countries.values())
+	labels = _util.get_localized_names(country_ids, args[0])
+	final_lables = dict([(icountry, labels.get(igeonameid, '')) for icountry, igeonameid in countries.iteritems()])
+	with open(args[1], 'w') as outfile:
+		json.dump(final_lables, outfile)
+	print '... done :)'

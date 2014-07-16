@@ -1,9 +1,6 @@
-#!/bin/sh
+#!/usr/bin/python
 #
-# Univention System Setup
-#  postrm script
-#
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2012-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,26 +27,33 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell)"
+import sys
+import simplejson as json
+import _util
 
-. /usr/share/univention-lib/all.sh
+if __name__ == '__main__':
+	# check argument (action)
+	args = sys.argv[1:]
+	if not len(args) or '--help' in args or '-h' in args:
+		print >>sys.stderr, 'options: <outfile.json> <locale1> [<locale2>...]'
+		sys.exit(1)
 
-# Reset apache2/startsite
-system_setup_boot_startsite='ucs-overview/initialsetup.html'
-if [ "$apache2_startsite" = "$system_setup_boot_startsite" ] ; then
-	ucr set apache2/startsite="$system_setup_prev_apache2_startsite"
-	ucr unset system/setup/prev/apache2/startsite
-	if [ -x /etc/init.d/apache2 ]; then
-		/etc/init.d/apache2 restart
-	fi
-fi
+	locales = args[1:]
 
-update-rc.d -f univention-system-setup-boot-prepare remove
+	print 'generating city data...'
+	city_data = _util.get_city_data()
+	city_geonameids = set(city_data.keys());
+	for iid, icity in city_data.iteritems():
+		icity['id'] = iid
 
-# Activate urandom init script, was deactivated when installing univention-system-setup-boot
-# Runlevel settings should equal initscripts.postinst values
-update-rc.d urandom start 55 S . start 30 0 6 . || exit $?
+	for ilocale in locales + ['']:
+		print 'loading data for locale %s' % ilocale
+		city_names = _util.get_localized_names(city_geonameids, ilocale)
+		for iid, ilabel in city_names.iteritems():
+			city_data[iid].setdefault('label', dict())[ilocale] = ilabel
 
-#DEBHELPER#
+	with open(args[0], 'wb') as outfile:
+		json.dump(city_data.values(), outfile, indent=2)
 
-exit 0
+	print '... done :)'
+

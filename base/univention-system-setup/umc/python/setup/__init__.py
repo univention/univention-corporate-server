@@ -38,36 +38,38 @@ import notifier
 import notifier.threads
 import re
 import csv
-from univention.lib.i18n import Translation
-import univention.management.console.modules as umcm
+from univention.lib.i18n import Translation, Locale
 import univention.config_registry
 import util
 import os
 import copy
 import subprocess
+import simplejson as json
+import locale as _locale
+import urllib2
 
+from univention.management.console.modules import Base, UMC_CommandError
 from univention.management.console.log import MODULE
-from univention.management.console.modules.sanitizers import PatternSanitizer
+from univention.management.console.modules.sanitizers import PatternSanitizer, StringSanitizer, IntegerSanitizer
 from univention.management.console.modules.decorators import sanitize, simple_response
-
 from univention.management.console.modules.setup.network import Interfaces, DeviceError
+from univention.management.console.modules.appcenter.app_center import Application
+from univention.lib.package_manager import PackageManager
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 _ = Translation('univention-management-console-module-setup').translate
 
-PATH_SYS_CLASS_NET = '/sys/class/net'
 
 RE_IPV4 = re.compile(r'^interfaces/(([^/]+?)(_[0-9])?)/(address|netmask)$')
 RE_IPV6_DEFAULT = re.compile(r'^interfaces/([^/]+)/ipv6/default/(prefix|address)$')
 RE_SPACE = re.compile(r'\s+')
 RE_SSL = re.compile(r'^ssl/.*')
 
-
-class Instance(umcm.Base):
+class Instance(Base):
 	def __init__(self):
-		umcm.Base.__init__(self)
+		Base.__init__(self)
 		self._finishedLock = threading.Lock()
 		self._finishedResult = True
 		self._progressParser = util.ProgressParser()
@@ -76,8 +78,23 @@ class Instance(umcm.Base):
 		os.umask( 0022 )
 
 	def init( self ):
-		util.installer_i18n.set_language( str( self.locale ) )
-		os.environ[ 'LC_ALL' ] = str( self.locale )
+		os.environ['LC_ALL'] = str(self.locale)
+		_locale.setlocale(_locale.LC_ALL, str(self.locale))
+		self.package_manager = PackageManager(
+			info_handler=MODULE.process,
+			step_handler=None,
+			error_handler=MODULE.warn,
+			lock=False,
+			always_noninteractive=True,
+		)
+		self.package_manager.set_finished() # currently not working. accepting new tasks
+
+		if util.is_system_joined():
+			self._preload_city_data()
+
+	def _preload_city_data(self):
+		util.get_city_data()
+		util.get_country_data()
 
 	def destroy(self):
 		if self._cleanup_required:
@@ -522,9 +539,103 @@ class Instance(umcm.Base):
 
 		return util.dhclient(interface, timeout)
 
+	@sanitize(locale=StringSanitizer(default='en_US'))
 	@simple_response
-	def software_components(self, role=None):
-		'''Return a list of all available software packages. Entries have the properties
-		"id", "label", and "packages" which is an array of the Debian package names.'''
-		return [ { 'id': i['id'], 'label': i['Name'], 'packages': i['Packages'] }
-				for i in util.get_components(role=role) ]
+	def set_locale(self, locale):
+		locale = Locale(locale)
+		locale.codeset = self.locale.codeset
+		MODULE.info('Switching language to: %s' % locale)
+		try:
+			_locale.setlocale(_locale.LC_ALL, str(locale))
+		except _locale.Error as exc:
+			MODULE.warn('Locale %s is not supported, using fallback locale "C" instead.' % locale)
+			_locale.setlocale(_locale.LC_ALL, 'C')
+		self.locale = locale
+
+	@sanitize(pattern=StringSanitizer(), max_results=IntegerSanitizer(minimum=1, default=5))
+	@simple_response
+	def find_city(self, pattern, max_results):
+		pattern = pattern.decode(self.locale.codeset).lower()
+		MODULE.info('pattern: %s' % pattern);
+		if not pattern:
+			return []
+
+		# for the given pattern, find matching cities
+		city_data = util.get_city_data()
+		matches = []
+		for icity in city_data:
+			match = None
+			for jlabel in icity.get('label', {}).itervalues():
+				label = jlabel.decode(self.locale.codeset).lower()
+				if pattern in label:
+					# matching score is the overlap if the search pattern and the matched text
+					# (as fraction between 0 and 1)
+					match_score = len(pattern) / float(len(label))
+					if match and match_score < match['match_score']:
+						# just keep the best match of a city
+						continue
+					if match_score > 0.1:
+						# found a match with more than 10% overlap :)
+						match = icity.copy()
+						match['match'] = jlabel
+						match['match_score'] = match_score
+			if match:
+				matches.append(match)
+		MODULE.info('Search for pattern "%s" with %s matches' % (pattern, len(matches)))
+		if not matches:
+			return None
+
+		# add additional score w.r.t. the population size of the city
+		# such that the largest city gains additional 0.4 on top
+		max_population = max([imatch['population'] for imatch in matches])
+		weighted_inv_max_population = 0.6 / float(max_population)
+		for imatch in matches:
+			imatch['final_score'] = imatch['match_score'] + weighted_inv_max_population * imatch['population']
+
+		# sort matches...
+		def _cmp(imatch, jmatch):
+			'''Sort matched cities after their match score and then after their population.'''
+			result = -cmp(imatch['match_score'], jmatch['match_score'])
+			if result:
+				return result
+			return -cmp(imatch['population'], jmatch['population'])
+
+		matches.sort(key=lambda x: x['final_score'], reverse=True)
+		MODULE.info('Top 5 matches: %s' % json.dumps(matches[:5], indent=2))
+		matches = matches[:max_results]
+
+		# add additional information about keyboard layout, time zone etc. and
+		# get the correct localized labels
+		def _get_lang(label_dict):
+			return label_dict.get(self.locale.language) or label_dict.get('en', '') or label_dict.get('', '')
+
+		country_data = util.get_country_data()
+		for imatch in matches:
+			match_country = country_data.get(imatch.get('country'))
+			if match_country:
+				imatch.update(util.get_random_nameserver(match_country))
+				imatch.update(dict(
+					default_keyboard=match_country.get('default_keyboard'),
+					default_lang=match_country.get('default_lang'),
+					country_label=_get_lang(match_country.get('label', {})),
+					label=_get_lang(imatch.get('label')) or imatch.get('match'),
+				))
+
+		return matches
+
+	@simple_response
+	def apps_query(self):
+		# circumvent download of categories.ini file
+		Application._get_category_translations(fake=True)
+		try:
+			applications = Application.all(only_local=True)
+		except (urllib2.HTTPError, urllib2.URLError) as e:
+			raise UMC_CommandError(_('Could not query App Center: %s') % e)
+		result = []
+		for iapp in applications:
+			if iapp.get('withoutrepository') and iapp.allowed_on_local_server():
+				props = iapp.to_dict(self.package_manager)
+				result.append(props)
+		return result
+
+
