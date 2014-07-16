@@ -55,15 +55,6 @@ if [ ! -e /var/univention-join/joined ] && [ "$server_role" = "domaincontroller_
 	univention-config-registry set 'system/setup/showloginmessage?true'
 fi
 
-# remove initscript to place updated version by DEBHELPER (Bug #23870)
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.19-5; then
-	update-rc.d -f univention-system-setup-boot remove
-fi
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.107-1; then
-	update-rc.d -f univention-system-setup-appliance remove
-fi
-
 # prepare the server role selection
 if [ "$1" = "configure" ] && [ ! -e /var/univention-join/joined ]; then
 	mkdir -p /var/cache/univention-system-setup/packages/
