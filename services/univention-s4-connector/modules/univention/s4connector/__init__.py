@@ -709,7 +709,7 @@ class ucs:
 			entryUUID = new.get('entryUUID')[0]
 			if entryUUID:
 				if self.was_entryUUID_deleted(entryUUID):
-					ud.debug(ud.LDAP, ud.PROCESS, "__sync_file_from_ucs: Object with entryUUID %s was already deleted. Don't recreate." % entryUUID)
+					ud.debug(ud.LDAP, ud.PROCESS, "__sync_file_from_ucs: Object with entryUUID %s was already deleted. Don't re-create." % entryUUID)
 					return True
 			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: old: %s" % old)
 			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new: %s" % new)
@@ -1217,13 +1217,13 @@ class ucs:
 		except univention.admin.uexceptions.noObject:
 			return None
 
-	def update_deleted_cache_after_removal_in_ucs(self, entryUUID, objectGUID):
+	def update_deleted_cache_after_removal(self, entryUUID, objectGUID):
 		if not entryUUID:
 			return
 		# use a dummy value
 		if not objectGUID:
 			objectGUID='objectGUID'
-		ud.debug(ud.LDAP, ud.INFO, "update_deleted_cache_after_removal_in_ucs: Save entryUUID %s as deleted to UCS deleted cache. ObjectGUUID: %s" % (entryUUID, objectGUID))
+		ud.debug(ud.LDAP, ud.INFO, "update_deleted_cache_after_removal: Save entryUUID %s as deleted to UCS deleted cache. ObjectGUUID: %s" % (entryUUID, base64.encodestring(objectGUID)))
 		self._set_config_option('UCS deleted', entryUUID, base64.encodestring(objectGUID))
 
 	def was_entryUUID_deleted(self, entryUUID):
@@ -1250,7 +1250,7 @@ class ucs:
 		try:
 			ucs_object.open()
 			ucs_object.remove()
-			self. update_deleted_cache_after_removal_in_ucs(entryUUID, objectGUID)
+			self. update_deleted_cache_after_removal(entryUUID, objectGUID)
 			return True
 		except Exception, e:
 			ud.debug(ud.LDAP, ud.INFO,"delete object exception: %s"%e)

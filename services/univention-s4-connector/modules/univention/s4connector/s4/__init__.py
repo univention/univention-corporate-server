@@ -2510,11 +2510,22 @@ class s4(univention.s4connector.ucs):
 							   "sync from ucs return True" )
 		return True # FIXME: return correct False if sync fails
 
+	def _get_objectGUID(self, dn):
+		objectGUID = ''
+		try:
+			s4_object = self.get_object(dn)
+			objectGUID = s4_object.get('objectGUID')[0]
+		except:
+			ud.debug(ud.LDAP, ud.WARN, "Failed to search objectGUID for %s" % dn)
+		return objectGUID
+
 	def delete_in_s4(self, object, property_type ):
 		_d=ud.function('ldap.delete_in_s4')
 		ud.debug(ud.LDAP, ud.ALL,"delete: %s" % object['dn'])
 		ud.debug(ud.LDAP, ud.ALL,"delete_in_s4: %s" % object)
 		try:
+			objectGUID = self._get_objectGUID(object['dn'])
+			self.update_deleted_cache_after_removal(object.get('attributes').get('entryUUID')[0], objectGUID)
 			self.lo_s4.lo.delete_s(compatible_modstring(object['dn']))
 		except ldap.NO_SUCH_OBJECT:
 			pass # object already deleted
