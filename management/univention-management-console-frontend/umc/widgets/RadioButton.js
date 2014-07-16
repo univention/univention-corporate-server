@@ -40,7 +40,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/LabelPane"
 ], function(declare, lang, array, RadioButton, registry, tools, _FormWidgetMixin, ContainerWidget, LabelPane) {
-	return declare("umc.modules.uccsetup.RadioButton", [ RadioButton, _FormWidgetMixin ], {
+	return declare("umc.widgets.RadioButton", [ RadioButton, _FormWidgetMixin ], {
 		value: null,
 
 		// name: String
