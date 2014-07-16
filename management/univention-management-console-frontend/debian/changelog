@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.0.0-4) unstable; urgency=low
+
+  * Bug #35145: adapt path to nodejs
+
+ -- Florian Best <best@univention.de>  Wed, 16 Jul 2014 14:04:03 +0200
+
 univention-management-console-frontend (4.0.0-3) unstable; urgency=low
 
   * Bug #35145: remove obsolete things
