@@ -1,3 +1,9 @@
+univention-management-console (7.0.0-2) unstable; urgency=low
+
+  * Bug #35145: rename dependency python-pyopenssl to python-openssl
+
+ -- Florian Best <best@univention.de>  Wed, 16 Jul 2014 11:03:38 +0200
+
 univention-management-console (7.0.0-1) unstable; urgency=low
 
   * Bug #35145: Start UCS 4.0 development
