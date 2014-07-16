@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.0.0-2) unstable; urgency=low
+
+  * Bug #35145: rename build dependency nodejs-0.8 to nodejs
+  * Add univention-base-files dependency
+
+ -- Florian Best <best@univention.de>  Wed, 16 Jul 2014 10:50:40 +0200
+
 univention-management-console-frontend (4.0.0-1) unstable; urgency=low
 
   * Bug #35145: Start UCS 4.0 development
