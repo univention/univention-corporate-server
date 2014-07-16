@@ -25,15 +25,25 @@
   <para>
 	Univention Corporate Server (UCS) is a server operating system based on Debian with
 	integrated management system for the central administration of servers, services, clients,
-	desktops and users. This quickstart guide offers a short introduction on how to get started with
-	UCS. Detailed descriptions can be found in the UCS manual <biblioref linkend="ucs-handbuch"/>.
+	desktops and users. 
+  </para>
+  
+  <para>
+	This quickstart guide offers a short introduction on how to get started with UCS. Several
+	featues of UCS are only mentioned briefly with a reference to further documentation. The
+	documention on UCS is available at <ulink url="http://docs.univention.de"/>.
   </para>
 
   <para>
 	The installation DVD can be downloaded from the Univention website at <ulink url="http://www.univention.com/download-and-support/ucs-download/"/>.
 	Installation DVDs are available for the amd64 (64-bit) and i386 (32-bit) CPU
-	architectures. Almost all server hardware purchased in recent years should be 64 bit
-	capable. The installation of the 64 bit version is recommended.
+	architectures. The installation of the 64 bit version is recommended.
+  </para>
+
+  <para>
+	Alternatively preinstalled images for VMWare and VirtualBox can be used. These are available for
+	download at <ulink
+	url="http://www.univention.de/download-und-support/ucs-download/vorinstallierte-vm-images/"/>..
   </para>
 
   <para>
@@ -54,7 +64,11 @@
 
   <para>
 	The installation is performed via a menu-driven text installer and can be used both
-	interactively and completely profile-based. The system language, keyboard layout and time zone
+	interactively and completely profile-based <biblioref linkend="ext-doc-inst"/>.
+  </para>
+
+  <para>
+	The system language, keyboard layout and time zone
 	can be selected in accordance with local requirements.
   </para>
 
@@ -64,22 +78,19 @@
   </figure>
   
   <para>
-	<guimenu>Domain Controller Master</guimenu> should be selected as the system role. It is always
-	the first system of a UCS domain. All changes to the domain data (e.g. users, groups, computer
-	accounts etc.) are always made on the &ucsMaster;. All other system join the UCS domain during
+	The &ucsMaster; is always the first system of a UCS domain, it should be selected as the system role.
+	All other system join the UCS domain during
 	the installation. An overview of the additional system roles can be found in the UCS manual
 	<biblioref linkend="ucs-systemrole"/>.
   </para>
-
-  <figure id="quick-fqdn">
-	<title>Configuration of the basic settings</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/domainname-en.png"/>
-  </figure>
 
   <para>
 	The fully qualified domain name of the &ucsUCS; system under which the
 	computer should be accessible in the network should be entered
 	under <guimenu>Fully qualified domain name</guimenu> (e.g., mail.example.com).
+	A non-public domain name can be chosen here, e.g. <emphasis>company.local</emphasis>.
+	(If the system is to be used as mail server the mail domains can be selected independently of
+	the domain name).
 	The <guimenu>LDAP base</guimenu> and the <guimenu>Windows domain</guimenu> are suggested based
 	on the complete computer name and only need to be adjusted in exceptional cases.
 	The root password must be at least eight characters long and is also set as the password for the
@@ -87,36 +98,26 @@
 	(&ucsMaster;).
   </para>
 
-  <figure id="quick-part">
-	<title>Automatic partitioning</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/autopart-de.png"/>
-  </figure>
-
   <para>
 	An autopartitioning feature can be used during the installation which creates an LVM partion on the first
-	hard drive by default. The use of this option is recommended.
+	hard drive by default.
+	If hard drive encryption or software RAID is to be used, the installation must be performed in
+	expert mode. This is documented in the extended installation documentation <biblioref
+	linkend="ext-doc-inst"/>. When using RAID, a hardware controller is recommended.
   </para>
-
-  <figure id="quick-network">
-	<title>Network configuration</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/network-de.png"/>
-  </figure>
 
   <para>
 	A valid network configuration should be set during the installation. If, for example, a
 	gateway and a name server are specified, but the name server cannot be reached, this may
 	result in unnecessary timeouts. In these cases, it makes more sense not to specify a gateway.
+	The network configuration can be employed using DHCP, e.g. if UCS is used on a cloud provider
+	without a static IP address.
   </para>
 
   <para>
 	The installed software components can be adapted later at any time and subsequently installed
 	from the Univention App Center.
   </para>
-
-  <figure id="quick-installation">
-	<title>Installation</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/installation-en.png"/>
-  </figure>
 
   <para>
 	After confirming the configuration settings the installation is initiated. Once completed, the
@@ -130,14 +131,35 @@
 
 	<para>
 	  The installed UCS system is configured via the web-based &ucsUMC; (reachable at https://server_ip or
-	  http://server_ip). The log in to the &ucsUMC; is performed as the
-	  <emphasis>Administrator</emphasis> with the password specified for the
-	  <emphasis>root</emphasis> user during the installation.
+	  http://server_ip, HTTPS is recommended) which be reached under <guimenu>System and domain settings</guimenu>.
+	  The login to the &ucsUMC; is performed as the  <emphasis>Administrator</emphasis> with the
+	  password specified for the <emphasis>root</emphasis> user during the installation.
+	</para>
+
+	<para>
+	  &ucsUMC; (UMC) is the central tool for web-based administration of the UCS domain. UMC
+	  supports two basic module types:
+
+	  <itemizedlist>
+		<listitem><simpara>
+		  <emphasis>Domain modules</emphasis> manage all the data saved in the LDAP directory, e.g.,
+		  users, groups or host accounts. All the modifications made here apply to the whole
+		  domain and are automatically replicated to all further LDAP servers. Domain modules are
+		  only displayed on the &ucsMaster; and &ucsBackup;. All the domain modules can also be
+		  controlled with a command line interface, the &ucsUDM; <biblioref linkend="ucs-udm"/>.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  <emphasis>System modules</emphasis> allow the configuration or management of an individual
+		  system, e.g., the starting or stopping of services or the installation of software from
+		  the Univention App Center.
+		</simpara></listitem>
+	  </itemizedlist>
 	</para>
 
 	<figure id="quick-umclogin">
-	  <title>Anmeldung an der UMC</title>
-	  <graphic scalefit="1" width="40%" fileref="illustrations/umc-login-en.png"/>
+	  <title>Modules in the UMC</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/umc-modules-en.png"/>
 	</figure>
 
 	<para>
