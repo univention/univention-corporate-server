@@ -15,6 +15,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  python-univention-lib,
  python-univention-management-console,
  python-imaging,
+ python-simplejson,
  univention-installer-modules,
  unzip
 XS-Python-Version: 2.6
@@ -86,6 +87,7 @@ Depends: univention-management-console-server,
  univention-management-console-module-lib,
  univention-management-console-module-appcenter,
  python-univention-lib,
+ python-simplejson,
  python-apt
 Description: UMC module for Univention system setup
  This package contains the UMC module for the UCS System Setup.

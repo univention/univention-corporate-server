@@ -228,10 +228,15 @@ define([
 
 	var _regDN = /^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$/;
 
-	var _regEmail = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-	var _invalidEmailMessage = _('Invalid email address!<br>Expected format is:<i>mail@example.com</i>');
-
 	var _invalidPasswordMessage = _('A minimum length of 8 characters is required for the password.');
+
+	var _regEmailAddress = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+	var _invalidEmailAddressMessage = _('Invalid email address!<br>Expected format is:<i>mail@example.com</i>');
+	_validateEmailAddress = function(email) {
+		var isEmailAddress = _regEmailAddress.test(email);
+		var acceptEmtpy = !email && !this.required
+		return acceptEmtpy || isEmailAddress;
+	};
 
 	var _invalidIPAddressMessage = _('Invalid IP address!<br>Expected format is IPv4 or IPv6.');
 	var _validateIPAddress = function(ip) {
@@ -502,9 +507,10 @@ define([
 				}, {
 					type: TextBox,
 					name: 'email',
-					label: _('Email address to activate UCS (<a href="javascript: void(0);" class="more-information">more information</a>)')
+					label: _('Email address to activate UCS (<a href="javascript: void(0);" class="more-information">more information</a>)'),
+					validator: _validateEmailAddress,
+					invalidMessage: _invalidEmailAddressMessage
 				}, {
-					//TODO: update description field automatically?
 					type: TextBox,
 					name: 'description',
 					label: _('Account description')
@@ -937,6 +943,11 @@ define([
 			var fqdn = lang.replace('{0}.{1}.local', [hostname, organization]);
 			this.getWidget('network', 'fqdn').set('value', fqdn);
 			this.getWidget('network', 'hostOrFQDN').set('value', hostname);
+			var description = _('Domain administrator account');
+			if (_organization) {
+				description = _('Domain administrator account for %s', _organization);
+			}
+			this.getWidget('user-master', 'description').set('value', description);
 		},
 
 		_updateLDAPBase: function(fqdn) {

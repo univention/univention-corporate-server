@@ -1,3 +1,11 @@
+univention-system-setup (7.0.69-15) unstable; urgency=medium
+
+  Bug #34484 [WIP]
+  * email validation + auto account description
+  * added missing dependencies
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 16 Jul 2014 22:43:25 +0200
+
 univention-system-setup (7.0.69-14) unstable; urgency=medium
 
   * Bug #34484: [WIP] added missing build dependency
