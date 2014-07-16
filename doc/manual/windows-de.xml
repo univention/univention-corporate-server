@@ -468,7 +468,7 @@ instanceType: 4
 		  <title>Konfiguration von Richtlinien mit der Gruppenrichtlinienverwaltung</title>
 
 		  <para>
-			Gruppenrichtlinien können von Benutzern konfiguriert werden, die Mitglied der Gruppe
+			Gruppenrichtlinien können nur von Benutzern konfiguriert werden, die Mitglied der Gruppe
 			<emphasis>Domain Admins</emphasis> sind (z.B. der
 			<emphasis>Administrator</emphasis>). Bei der Anmeldung muss beachtet werden, dass keine
 			Anmeldung mit dem lokalen Administrator-Konto erfolgt, sondern mit dem
@@ -641,7 +641,7 @@ instanceType: 4
 			gespeichert <biblioref linkend="admx-reference"/>. ADMX-Dateien bieten unter anderem
 			den Vorteil, dass sie zentral über mehrere Domänencontroller bereitgestellt werden können, damit
 			die Gruppenrichtlinienverwaltung an allen Windows-Clients die gleichen
-			Konfigurationsmöglichkeiten zeigt (<biblioref linkend="admx-central"/>).
+			Konfigurationsmöglichkeiten zeigt <biblioref linkend="admx-central"/>.
 		  </para>
 
 		  <para>
@@ -687,7 +687,7 @@ END CATEGORY
 		  <para>
 			Richtlinien können auch auf Basis von Systemeigenschaften konfiguriert werden. Diese
 			Eigenschaften werden über die Windows Management Instrumentation-Schnittstelle (WMI)
-			bereitgestellt. Der darauf aufbauende Mechanismus wird als WMI-Filterung bezeichnet.
+			bereitgestellt. Der darauf aufbauende Mechanismus wird als <emphasis>WMI-Filterung</emphasis> bezeichnet.
 			Damit ist es beispielsweise möglich eine Richtlinie nur auf PCs mit einer 64
 			Bit-Prozessor-Architektur oder mit min. 8 GB RAM anzuwenden. Ändert sich eine
 			Eigenschaft eines Systems (z.B. weil mehr Speicher eingebaut wurde), wird der jeweilige

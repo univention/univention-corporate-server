@@ -320,204 +320,185 @@ instanceType: 4
 	  <section id="gruppenrichtlinien">
 		<title>Group policies</title>
 
-<!-- 		<section id="gpo:intro"> -->
-<!-- 		  <title>Einführung</title> -->
-
-<!-- 		  <para> -->
-<!-- 			Gruppenrichtlinien sind eine Active Directory-Funktion, die die zentrale Konfiguration von -->
-<!-- 			Vorgaben für Rechner und Benutzer erlaubt. Gruppenrichtlinien werden auch von -->
-<!-- 			Samba-AD-Domänen unterstützt. Die Richtlinien greifen nur auf Windows-Clients; Linux- oder -->
-<!-- 			Mac OS-Systeme werten die Richtlinien nicht aus. -->
-<!-- 		  </para> -->
-		
-<!-- 		  <para> -->
-<!-- 			Gruppenrichtlinien werden ausgehend von der englischen Bezeichung <emphasis>Group policy -->
-<!-- 			objects</emphasis> auch oft als GPOs bezeichnet. Genauer gesagt kann ein -->
-<!-- 			Gruppenrichtlinienobjekt eine Reihe von Richtlinien beinhalten. Trotz ihres Namens -->
-<!-- 			lassen sich Gruppenrichtlinienobjekte nicht direkt bestimmten Benutzergruppen zuweisen, -->
-<!-- 			sondern sie werden vielmehr mit bestimmten AD-Verwaltungseinheiten (Domänen, Sites oder -->
-<!-- 			Organisationseinheiten) im Samba-Verzeichnisdienst (Samba DS/AD) verknüpft und beziehen -->
-<!-- 			sich dadurch auf untergeordnete Objekte. Eine gruppen- oder benutzerspezifische -->
-<!-- 			Auswertung ist nur indirekt über die <emphasis>Sicherheitseinstellungen</emphasis> eines -->
-<!-- 			Gruppenrichtlinienobjekts möglich, in denen sich das Recht <emphasis>Gruppenrichtlinie -->
-<!-- 			übernehmen</emphasis> gezielt auf bestimmte Gruppen, Benutzer oder Computer einschränken -->
-<!-- 			lässt. -->
-<!-- 		  </para> -->
-
-<!-- <emphasis>Security Filtering</emphasis> -->
-
-<!-- 		  <para> -->
-<!-- 			Grundsätzlich sind die <emphasis>Gruppenrichtlinien</emphasis> (<emphasis>Group -->
-<!-- 			Policies</emphasis> (GPO)) von den sehr ähnlich benannten -->
-<!-- 			<emphasis>Gruppenrichtlinieneinstellungen</emphasis> (<emphasis>Group Policy Preferences -->
-<!-- 			(GPP)</emphasis>) zu unterscheiden: -->
-<!-- 			<itemizedlist> -->
-<!-- 			  <listitem><simpara> -->
-<!-- 		        Die über <emphasis>Gruppenrichtlinien</emphasis> (GPOs) getroffenen Vorgaben sind -->
-<!-- 				bindend, während sich über <emphasis>Gruppenrichtlinieneinstellungen</emphasis> -->
-<!-- 				(GPPs) nur Präferenzen in die Registry von Windows-Clients eintragen lassen, die -->
-<!-- 				aber unter Umständen am Client überschrieben werden können. -->
-<!-- 			  </simpara></listitem> -->
-
-<!-- 			  <listitem><simpara> -->
-<!-- 		        Die über <emphasis>Gruppenrichtlinien</emphasis> (GPOs) getroffenen Vorgaben werden -->
-<!-- 				zudem dynamisch auf die Zielobjekte angewendet, wo hingegen die über -->
-<!-- 				<emphasis>Gruppenrichtlinieneinstellungen</emphasis> (GPPs) getroffenen -->
-<!-- 				Einstellungen statisch in die Registry von Windows-Clients eintragen werden (man -->
-<!-- 				spricht hier auch von <emphasis>Tattooing</emphasis>). -->
-<!-- 			  </simpara></listitem> -->
-<!-- 			</itemizedlist> -->
-<!-- 		    Aus diesen Gründen sind <emphasis>Gruppenrichtlinien</emphasis> (GPOs) in den meisten -->
-<!-- 			Fällen den <emphasis>Gruppenrichtlinieneinstellungen</emphasis> (GPPs) -->
-<!-- 			vorzuziehen. Dieses Kapitel bezieht sich im weiteren ausschließlich auf -->
-<!-- 			<emphasis>Gruppenrichtlinien</emphasis> (GPOs). -->
-<!-- 		  </para> -->
-
-<!-- 		  <para> -->
-<!-- 			Gruppenrichtlinien werden im Gegensatz zu den UCS-Richtlinien (siehe <xref -->
-<!-- 			linkend="central:policies"/>) nicht in der &ucsUMC;, sondern mit einem  separaten Editor -->
-<!-- 			konfiguriert, mit der <emphasis>Gruppenrichtlinienverwaltung</emphasis>, die Teil der -->
-<!-- 			<emphasis>Remote Server Administration Tools (RSAT)</emphasis> ist. Die Einrichtung ist -->
-<!-- 			in <xref linkend="gpo:install"/> dokumentiert. -->
-<!-- 		  </para> -->
-
-<!-- <emphasis>Group Policy Management</emphasis> -->
-
-<!-- 		  <para> -->
-<!-- 			Es existieren zwei Arten von Richtlinien: -->
-			
-<!-- 			<itemizedlist> -->
-<!-- 			  <listitem><simpara> -->
-<!-- 				<emphasis>Benutzerrichtlinien</emphasis> konfigurieren die Einstellungen eines -->
-<!-- 				Benutzers, z.B. die Vorkonfiguration des Desktops. Auch Anwendungen können über Gruppenrichtlinien konfiguriert -->
-<!-- 				werden (z.B. die Startseite des Microsoft Internet Explorers oder Einstellungen in LibreOffice). -->
-<!-- 			  </simpara></listitem> -->
-
-<!-- 			  <listitem><simpara> -->
-<!-- 				<emphasis>Computer-Richtlinien</emphasis> definieren die Einstellungen von -->
-<!-- 				Windows-Clients. -->
-<!-- 			  </simpara></listitem> -->
-<!-- 			</itemizedlist> -->
-<!-- 		  </para> -->
-
-<!-- 		  <para> -->
-<!-- 			Computerrichtlinien werden erstmalig beim Systemstart ausgewertet, Benutzerrichtlinien bei -->
-<!-- 			der Anmeldung. Die Richtlinien werden auch für angemeldete Benutzer/laufende Systeme -->
-<!-- 			fortlaufend ausgewertet und aktualisiert (in der Grundeinstellung alle 90-120 Minuten, -->
-<!-- 			der Zeitraum wird zur Vermeidung von Lastspitzen nach dem Zufallsprinzip variiert). -->
-<!-- 		  </para> -->
-
-<!-- 		  <para> -->
-<!-- 			Die Auswertung der Gruppenrichtlinien kann durch Aufruf des Befehls -->
-<!-- 			<command>gpupdate /force</command> auch gezielt gestartet werden. -->
-<!-- 		  </para> -->
-
-<!-- 		  <para> -->
-<!-- 			Einige Richtlinien - z.B. zur Installation von Software oder für Anmeldeskripte - werden -->
-<!-- 			nur bei der Anmeldung (Benutzerrichtlinien) oder beim Systemstart (Rechnerrichtlinien) -->
-<!-- 			ausgewertet. -->
-<!-- 		  </para> -->
-
-<!-- 		  <para> -->
-<!-- 			Die meisten Gruppenrichtlinien setzen nur einen Wert in der Windows-Registry, der dann -->
-<!-- 			von Windows oder einer Applikation ausgewertet wird. Da Standardbenutzer keine -->
-<!-- 			Einstellungen in dem entsprechenden Teil der Windows Registry editieren können, können so auch eingeschränkte -->
-<!-- 			Benutzer-Desktops konfiguriert werden, in denen z.B. Benutzer den Windows Task Manager -->
-<!-- 			nicht aufrufen dürfen. -->
-<!-- 		  </para> -->
-
-<!-- 		  <para> -->
-<!-- 			Die Gruppenrichtlinien werden in der SYSVOL-Freigabe gespeichert, siehe <xref -->
-<!-- 			linkend="windows:sysvolshare"/>. Verknüpft mit Benutzer- und Rechnerkonten werden sie im -->
-<!-- 			Samba-Verzeichnisdienst. -->
-<!-- 		  </para> -->
-
-<!-- 		</section> -->
-
-<!-- 		<section id="gpo:install"> -->
-<!-- 		  <title>Installation der Gruppenrichtlinienverwaltung</title> -->
-
-<!-- 		  <para> -->
-<!-- 			Die Gruppenrichtlinienverwaltung kann als Teil der <emphasis>Remote Server -->
-<!-- 			Administration Tools</emphasis> auf Windows Clients installiert werden. Sie können für Windows 7 unter <footnote><para><ulink -->
-<!-- 			url="http://www.microsoft.com/downloads/details.aspx?FamilyID=7d2f6ad7-656b-4313-a005-4e344e43997d"/></para></footnote> -->
-<!-- 			oder für Windows 8 unter <emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis> -->
-<!-- 			<footnote><para><ulink -->
-<!-- 			url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote> -->
-<!-- 			bezogen werden. -->
-<!-- 		  </para> -->
+		<section id="gpo:intro">
+		  <title>Introduction</title>
 
 		  <para>
-			<figure><title>Activating the Group Policy Management Tools</title>
+			Group policies are an Active Directory feature which allows the central configuration of
+			settings for computers and users. Group policies are also supported by Samba AD
+			domains. The policies only apply to Windows clients; Linux or Mac OS systems cannot
+			evaluate the policies.
+		  </para>
+		
+		  <para>
+			Group policies are often referred to as GPOs (<emphasis>group policy
+			objects</emphasis>). Put more precisely, a GPO can contain a series of policies. Despite
+			their name, group policy objects cannot be assigned directly to certain user groups, but
+			instead are linked with certain AD administration units (domains,
+			sites or organisational units) in the Samba directory service (Samba DS/AD) and thus
+			refer to subordinate objects. A group-specific or user-specific evaluation is only
+			indirectly possible via the <emphasis>Security Filtering</emphasis> of a group policy
+			object, in which the <emphasis>Apply group policy Allow/Deny</emphasis> privilege can be directly
+			restricted to certain groups, users or computers.
+		  </para>
+
+		  <para>
+			As a basic rule, a distinction must be made between <emphasis>group policies</emphasis>
+			(GPOs) and the similarly named <emphasis>group policy preferences (GPPs)</emphasis>:
+
+			<itemizedlist>
+			  <listitem><simpara>
+				The settings made via <emphasis>GPOs</emphasis> are binding, whereas
+				<emphasis>GPPs</emphasis> are merely used to enter preferences in the registry of
+				Windows clients, which can still be overwritten on the client in certain
+				circumstances.
+			  </simpara></listitem>
+
+			  <listitem><simpara>
+				The settings made via <emphasis>GPOs</emphasis> are also dynamically applied to the
+				target objects, whereas, in contrast, the settings made via
+				<emphasis>GPPs</emphasis> are entered statically in the registry of Windows clients
+				(this is also referred to as <emphasis>tattooing</emphasis>).
+			  </simpara></listitem>
+			</itemizedlist>
+
+			For these reasons, <emphasis>GPOs</emphasis> are preferable to <emphasis>GPPs</emphasis>
+			in the majority of cases. This remainder of this section deals exclusively with
+			<emphasis>GPOs</emphasis>.
+		  </para>
+
+		  <para>
+			In contrast to UCS policies (see <xref linkend="central:policies"/>), group policies are
+			not configured in the &ucsUMC;, but instead are configured in a separate editor, the
+			<emphasis>Group Policy Management</emphasis> editor, which is a component of the
+			<emphasis>Remote Server Administration Tools (RSAT)</emphasis>. The installation is described
+			in <xref linkend="gpo:install"/>.
+		  </para>
+
+		  <para>
+			There are two types of policies:
+			
+			<itemizedlist>
+			  <listitem><simpara>
+				<emphasis>User policies</emphasis> configure a user's settings, e.g., the
+				preconfiguration of the desktop. It is also possible to configure applications via
+				group policies (e.g., the start page of Microsoft Internet Explorer or settings in
+				LibreOffice).
+			  </simpara></listitem>
+
+			  <listitem><simpara>
+				<emphasis>Computer policies</emphasis> define a Windows client's settings.
+			  </simpara></listitem>
+			</itemizedlist>
+		  </para>
+
+		  <para>
+			Computer policies are evaluated for the first time the computer starts up; user policies
+			during login. The policies are also continually evaluated for logged in users / running
+			systems and updated (every 90-120 minutes in the default setting. The period varies at
+			random to avoid peak loads.)
+		  </para>
+
+		  <para>
+			The command <command>gpupdate /force</command> can also be run specifically to start the
+			evaluation of group policies.
+		  </para>
+
+		  <para>
+			Some policies - e.g., for the installation of software or for login scripts - are only
+			evaluated during login (user policies) or system startup (computer policies).
+		  </para>
+
+		  <para>
+			The majority of group policies only set one value in the Windows registry, which is then
+			evaluated by Windows or an application. As standard users cannot modify any settings in
+			the corresponding section of the Windows registry, it is also possible to configure
+			restricted user desktops in which, for example, users cannot open the Windows Task
+			Manager.
+		  </para>
+
+		  <para>
+			The group policies are stored in the SYSVOL share, see <xref
+			linkend="windows:sysvolshare"/>. They are linked with user and host accounts in the
+			Samba directory service.
+		  </para>
+
+		</section>
+
+		<section id="gpo:install">
+		  <title>Installation of Group Policy Management</title>
+
+		  <para>
+			Group Policy Management can be installed as a component of the <emphasis>Remote Server
+			Administration Tools</emphasis> on Windows clients. They can be found at
+			<footnote><para><ulink
+			url="http://www.microsoft.com/downloads/details.aspx?FamilyID=7d2f6ad7-656b-4313-a005-4e344e43997d"/></para></footnote>
+			for Windows 7 or at <emphasis>Remote Server Administration Tools (RSAT) for Windows
+			8</emphasis> <footnote><para><ulink
+			url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>
+			for Windows 8.
+		  </para>
+
+		  <para>
+			<figure><title>Activating the Group Policy Management tools</title>
 			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-activate-en.png"/>
 			</figure>
 		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Nach der Installation muss die Gruppenrichtlinienverwaltung in der Windows-Systemsteuerung -->
-<!-- 			noch aktiviert werden, in dem unter <guimenu>Start -> Systemsteuerung -> Programme -> -->
-<!-- 			Windows-Funktionen aktivieren und deaktivieren -> Remoteserver-Verwaltungstools -> -->
-<!-- 			Featureverwaltungs-Tools</guimenu> die Option <guimenu>Tools für die -->
-<!-- 			Gruppenrichtlinienverwaltung</guimenu> aktiviert wird. -->
-<!-- 		  </para> -->
+		  <para>
+			Following the installation, Group Policy Management must still be enabled in the Windows
+			Control Panel. This is done by enabling the <guimenu>Group Policy Management Tools</guimenu>
+			option under <guimenu>Start -> Control Panel -> Programs -> Turn Windows features on or off
+			->  Remote Server Administration Tools -> Feature Administration Tools</guimenu>.
+		  </para>
 
-<!-- <guimenu>Start -> Control Panel -> Programs -> Turn Windows features on or off -> Remote Server Administration Tools -> Feature Administration Tools</guimenu> -->
-<!-- <guimenu>Group Policy Management Tools</guimenu> -->
+		  <para>
+			Following the enabling, Group Policy Management can be run under <guimenu>Start ->
+			Administrative Tools -> Group Policy Management </guimenu>.
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Nach der Aktivierung kann die Gruppenrichtlinienverwaltung unter <guimenu>Start -> -->
-<!-- 			Verwaltung -> Gruppenrichtlinienverwaltung</guimenu> aufgerufen werden. -->
-<!-- 		  </para> -->
+		</section>
 
-<!-- <guimenu>Start -> Administrative Tools -> Group Policy Management</guimenu> -->
+		<section id="gpo:config">
+		  <title>Configuration of policies with Group Policy Management</title>
 
-<!-- 		</section> -->
+		  <para>
+			Group policies can only be configured by users who are members of the <emphasis>Domain
+			Admins</emphasis> group (e.g., the <emphasis>Administrator</emphasis>). When logging in,
+			attention must be paid to logging in with the domain Administrator account and not the
+			local Administrator account. Group Policy Management can be run on any system in the
+			domain.
+		  </para>
 
-<!-- 		<section id="gpo:config"> -->
-<!-- 		  <title>Konfiguration von Richtlinien mit der Gruppenrichtlinienverwaltung</title> -->
+		  <para>
+			If more than one Samba domain controller is in use, consideration must be given to the
+			replication of the GPO data, see <xref linkend="gpo:gposync"/>.
+		  </para>
+		  <para>
+			There are two basic possibilities for creating GPOs:
 
-<!-- 		  <para> -->
-<!-- 			Gruppenrichtlinien können von Benutzern konfiguriert werden, die Mitglied der Gruppe -->
-<!-- 			<emphasis>Domain Admins</emphasis> sind (z.B. der -->
-<!-- 			<emphasis>Administrator</emphasis>). Bei der Anmeldung muss beachtet werden, dass keine -->
-<!-- 			Anmeldung mit dem lokalen Administrator-Konto erfolgt, sondern mit dem -->
-<!-- 			Administrator-Konto der Domäne. Die Gruppenrichtlinienverwaltung kann auf einem beliebigen -->
-<!-- 			System der Domäne aufgerufen werden. -->
-<!-- 		  </para> -->
+			<itemizedlist>
+			  <listitem><simpara>
+				They can be created in the <guimenu>Group Policy Objects</guimenu> folder and then
+				linked to different positions in the LDAP. This is practical if a policy is to be
+				linked to several positions in the LDAP.
+			  </simpara></listitem>
 
-<!-- 		  <para> -->
-<!-- 			Wenn mehr als ein Samba-Domänencontroller eingesetzt wird, muss die Replikation der -->
-<!-- 			GPO-Daten berücksichtigt werden, siehe <xref linkend="gpo:gposync"/>. -->
-<!-- 		  </para> -->
-<!-- 		  <para> -->
-<!-- 			Es gibt zwei prinzipielle Möglichkeiten GPOs zu erstellen: -->
+			  <listitem><simpara>
+				The GPO can also be created at an LDAP position ad hoc and then directly linked to
+				it. This is the simpler means for small and medium-sized domains. Domains created ad
+				hoc are also shown in the <guimenu>Group Policy Objects</guimenu> folder.
+			  </simpara></listitem>
+			</itemizedlist>
+		  </para>
 
-<!-- 			<itemizedlist> -->
-<!-- 			  <listitem><simpara> -->
-<!-- 				Sie können im <guimenu>Gruppenrichtlinienobjekte</guimenu>-Order angelegt und dann mit -->
-<!-- 				verschiedenen Positionen im LDAP verknüpft werden. Dies ist sinnvoll, wenn eine -->
-<!-- 				Richtlinie mit mehreren Positionen im LDAP verknüpft werden soll. -->
-<!-- 			  </simpara></listitem> -->
-
-<!-- <guimenu>Group Policy Objects</guimenu> -->
-
-<!-- 			  <listitem><simpara> -->
-<!-- 				Die GPO kann ad hoc an einer LDAP-Position erstellt und dabei direkt verknüpft -->
-<!-- 				werden. Für kleine und mittlere Domänen ist das der einfachere Weg. Auch ad hoc -->
-<!-- 				erstellte Domänen werden im  <guimenu>Gruppenrichtlinienobjekte</guimenu>-Ordner angezeigt. -->
-<!-- 			  </simpara></listitem> -->
-<!-- 			</itemizedlist> -->
-<!-- 		  </para> -->
-
-<!-- 		  <para> -->
-<!-- 			Eine Richtlinie kann drei Zustände annehmen; sie kann aktiviert, -->
-<!-- 			deaktiviert oder nicht gesetzt sein. Die Auswirkung bezieht sich immer auf die -->
-<!-- 			Formulierung der Richtlinie. Wenn diese beispielsweise <guimenu>Deaktiviere Feature -->
-<!-- 			xy</guimenu> heisst, muss die Richtlinie aktiviert werden um das Feature -->
-<!-- 			abzuschalten. Einige Richtlinien haben zusätzliche Optionen, z.B. könnte die Richtlinie -->
-<!-- 			<guimenu>Aktiviere Mail-Quota</guimenu> eine zusätzliche Option mitbringen um die -->
-<!-- 			Speichermenge zu verwalten. -->
-<!-- 		  </para> -->
+		  <para>
+			A policy can have one of three statuses: enabled, disabled or unset. The effect is
+			always based on the formulation of the policy. For example, if it says <guimenu>Disable
+			feature xy</guimenu>, the policy must be enabled to switch off the feature. Some
+			policies have additional options, for example the <guimenu>Enable mail quota</guimenu>
+			policy could include an additional option for managing the storage space.
+		  </para>
 
 		  <para>
 			<figure><title>Editing a policy</title>
@@ -525,48 +506,43 @@ instanceType: 4
 			</figure>
 		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Zwei Standard-Richtlinienobjekte sind vordefiniert: -->
+		  <para>
+			Two standard policy objects are predefined:
 
-<!-- 			<itemizedlist> -->
-<!-- 			  <listitem><simpara> -->
-<!-- 				Das <emphasis>Default Domain Policy</emphasis> Objekt kann verwendet werden, um globale -->
-<!-- 				Richtlinien für alle Benutzer und Rechner der gesamten Domäne zu konfigurieren. -->
-<!-- 			  </simpara></listitem> -->
+			<itemizedlist>
+			  <listitem><simpara>
+				The <emphasis>Default Domain Policy</emphasis> object can be used to configure
+				global policies for all users and computers within the same domain.
+			  </simpara></listitem>
 
-<!-- 			  <listitem><simpara> -->
-<!-- 				Das <emphasis>Default Domain Controller Policy</emphasis> Objekt hat in einer Samba-Domäne -->
-<!-- 				keine Verwendung (in einer Microsoft AD-Domäne würden die Richtlinien für -->
-<!-- 				Microsoft-Domänencontroller über dieses Objekt erfolgen). Die Konfiguration der -->
-<!-- 				Samba-Domänencontroller erfolgt in UCS weitgehend über &ucsUCR;. -->
-<!-- 			  </simpara></listitem> -->
-<!-- 			</itemizedlist> -->
-<!-- 		  </para> -->
+			  <listitem><simpara>
+				The <emphasis>Default Domain Controllers Policy</emphasis> object has no use in a
+				Samba domain (in a Microsoft AD domain the policies for Microsoft domain controllers
+				would be performed via this object). The configuration of the Samba domain
+				controllers in UCS is largely performed via &ucsUCR;.
+			  </simpara></listitem>
+			</itemizedlist>
+		  </para>
 
-<!-- <emphasis>Default Domain Controllers Policy</emphasis> -->
+		  <para>
+			AD domains can be structured in sites. All the sites are listed in the main menu of Global Policy Management. There
+			is also a list of the domains there. The current Samba versions do not support forest
+			domains, so there is only ever one domain displayed here.
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			AD-Domänen können in Sites strukturiert werden. Dies kann z.B. verwendet werden um -->
-<!-- 			Standorte in einer Domäne zu gruppieren. Im Hauptmenü der Gruppenrichtlinienverwaltung -->
-<!-- 			werden alle Sites aufgeführt. Dort findet sich auch eine Liste von Domänen. Die -->
-<!-- 			aktuellen Samba-Versionen unterstützen keine Forest-Domänen, so dass hier immer nur eine -->
-<!-- 			Domäne angezeigt wird. -->
-<!-- 		  </para> -->
+		  <para>
+			One domain can be structured in different organisational units (OUs). This can, for
+			example, be used to store the employees from accounting and the users in the
+			administration department in different LDAP positions.
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Eine Domäne kann in verschiedene Organisations-Einheiten (OUs) strukturiert werden. Dies kann z.B. verwendet -->
-<!-- 			werden, um die Mitarbeiter der Buchhaltung und die Benutzer der Verwaltung in -->
-<!-- 			unterschiedlichen LDAP-Positionen zu speichern. -->
-<!-- 		  </para> -->
-
-<!-- 		  <para> -->
-<!-- 			Gruppenrichtlinien können sich gegenseitig überlagern. Es gilt das Prinzip der -->
-<!-- 			Vererbung, d.h. höherliegende Richtlinien überschreiben die untergeordneten. Die -->
-<!-- 			effektiven Richtlinien für einen Benutzer können sowohl mit dem Modellierungsassistenten -->
-<!-- 			der Gruppenrichtlinienverwaltung als auch an der Windows-Kommandozeile mit dem Befehl -->
-<!-- 			<command>gpresult /user BENUTZERNAME /v </command> auf dem Windows-Client angezeigt -->
-<!-- 			werden: -->
-<!-- 		  </para> -->
+		  <para>
+			Group policies can mutually overlap. In this case, the inheritance principle applies,
+			e.g., the superordinate policies overwrite the subordinate ones. The applicable policies
+			for a user can be displayed on the Windows client either with the modelling wizard in
+			Group Policy Management or by entering the command <command>gpresult /user USERNAME
+			/v </command> in the Windows command line.
+		  </para>
 
 		  <para>
 			<figure><title>Evaluating the GPO for the user user01</title>
@@ -574,98 +550,94 @@ instanceType: 4
 			</figure>
 		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Die Richtlinien werden in folgender Reihenfolge ausgewertet: -->
+		  <para>
+			The policies are evaluated in the following order:
 
-<!-- 			<itemizedlist> -->
-<!-- 			  <listitem><simpara> -->
-<!-- 				Richtlinien der <emphasis>Default Domain Policy</emphasis> gelten als -->
-<!-- 				Grundeinstellung für alle Benutzer und Rechner der gesamten Domäne. -->
-<!-- 			  </simpara></listitem> -->
+			<itemizedlist>
+			  <listitem><simpara>
+				In the default setting, <emphasis>Default Domain Policy</emphasis> settings apply
+				for all the users and computers within the domain.
+			  </simpara></listitem>
 
-<!-- 			  <listitem><simpara> -->
-<!-- 				Mit einer OU verknüpfte Richtlinien überschreiben Richtlinien aus der Default Domain -->
-<!-- 				Policy. Sind OUs weiter verschachtelt, greifen im Konfliktfall die jeweils "untersten" -->
-<!-- 				Richtlinien, d.h. die, die näher am Zielobjekt verknüpft sind. Es gilt folgende -->
-<!-- 				Auswertungsreihenfolge: -->
+			  <listitem><simpara>
+				Policies linked to an OU overwrite policies from the default domain policy. If the
+				OUs are nested further, in the case of conflict, the "most subordinate" policies in
+				each case, in other words the one most closely linked to the target object,
+				apply. The following evaluation order applies:
 
-<!-- 				<itemizedlist> -->
-<!-- 				  <listitem><simpara> -->
-<!-- 					Zuweisung einer Richtlinie zu einer Active Directory-Site -->
-<!-- 				  </simpara></listitem> -->
+				<itemizedlist>
+				  <listitem><simpara>
+					Assignment of a policy to an Active Directory site
+				  </simpara></listitem>
 
-<!-- 				  <listitem><simpara> -->
-<!-- 					Vorgaben der Default Domain Policy -->
-<!-- 				  </simpara></listitem> -->
+				  <listitem><simpara>
+					Settings of the default domain policy
+				  </simpara></listitem>
 
-<!-- 				  <listitem><simpara> -->
-<!-- 					Zuweisung einer Richtlinie zu einer Organisationseinheit / OU (jede -->
-<!-- 					unterliegende OU überstimmt wiederum Richtlinien aus übergeordneten OUs) -->
-<!-- 				  </simpara></listitem> -->
-<!-- 				</itemizedlist> -->
-<!-- 			  </simpara></listitem> -->
-<!-- 			</itemizedlist> -->
-<!-- 		  </para> -->
+				  <listitem><simpara>
+					Assignment of a policy to an organisational unit (OU) (in turn, each subordinate
+					OU overrules policies from superordinate OUs).
+				  </simpara></listitem>
+				</itemizedlist>
+			  </simpara></listitem>
+			</itemizedlist>
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Ein Beispiel: Eine Firma verbietet allgemein den Zugriff auf den Windows Task -->
-<!-- 			Manager. Dazu wird im <emphasis>Default Domain Policy-Objekt</emphasis> die Richtlinie -->
-<!-- 			<guimenu>Zugriff auf Task Manager unterbinden</guimenu> aktiviert. Für einige technisch -->
-<!-- 			versiertere Benutzer soll der Task Manager dennoch verfügbar sein. Diese Benutzer sind -->
-<!-- 			in der OU <emphasis>Technik</emphasis> abgelegt. Nun wird ein zusätzliches -->
-<!-- 			Gruppenrichtlinienobjekt angelegt, in dem Richtlinie <guimenu>Zugriff auf Task Manager -->
-<!-- 			unterbinden</guimenu> auf <emphasis>deaktiviert</emphasis> gesetzt wird. Dieses neue GPO -->
-<!-- 			wird mit der OU <emphasis>Technik</emphasis> verbunden. -->
-<!-- 		  </para> -->
+		  <para>
+			Example: A company blocks access to the Windows Task Manager in general. This is done by
+			enabling the <guimenu>Remove Task Manager</guimenu> policy in the
+			<emphasis>Default Domain Policy</emphasis> object. However, the Task Manager should
+			still be available to some staff with the requisite technical expertise. These users are
+			saved in the <emphasis>IT staff</emphasis> OU. An additional group policy object is
+			now created in which the <guimenu>Remove Task Manager</guimenu> policy is set
+			to <emphasis>disabled</emphasis>. The new GPO is linked with the
+			<emphasis>IT staff</emphasis> OU.
+		  </para>
 
-<!-- <emphasis>Remove Task Manager</emphasis> -->
+		</section>
 
-<!-- 		</section> -->
+		<section id="gpo:gposync">
+		  <title>Configuration of group policies in environments with more than one Samba domain controller</title>
 
-<!-- 		<section id="gpo:gposync"> -->
-<!-- 		  <title>Konfiguration von Gruppenrichtlinien in Umgebungen mit mehr als einem -->
-<!-- 		  Samba-Domänencontroller</title> -->
-<!-- 		  <para> -->
-<!-- 			Eine Gruppenrichtlinie besteht technisch aus zwei Teilen: Zum einen gibt es ein -->
-<!-- 			Verzeichnis im Dateisystem der Domänencontroller, das die eigentlichen -->
-<!-- 			Richtlinien-Dateien enthält, die auf dem Windows-System umgesetzt werden sollen -->
-<!-- 			(gespeichert in der SYSVOL-Freigabe (siehe <xref linkend="windows:sysvolshare"/>)). -->
-<!-- 			Zum anderen gibt es ein gleichnamiges Objekt im LDAP-Baum des Samba-Verzeichnisdienstes -->
-<!-- 			(Samba DS/AD), das üblicherweise unter einem LDAP-Container namens <emphasis>Group -->
-<!-- 			Policy Objects</emphasis> abgelegt ist. -->
-<!-- 		  </para> -->
+		  <para>
+			A group policy is technically composed of two parts: On the one hand there is a
+			directory in the domain controllers' file system which contains the actual policy files
+			which are to be implemented on the Window system (saved in the SYSVOL share (see <xref
+			linkend="windows:sysvolshare"/>)). On the other hand there is an object with the same
+			name in the LDAP tree of the Samba directory service (Samba DS/AD), which is usually
+			saved below an LDAP container named <emphasis>Group Policy Objects</emphasis>.
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Während die LDAP-Replikation zwischen Domänencontrollern innerhalb weniger Sekunden -->
-<!-- 			umgesetzt ist, werden die Dateien in der SYSVOL-Freigabe in der Grundeinstellung nur alle fünf Minuten -->
-<!-- 			repliziert. Es ist zu beachten, dass die Anwendung von neu konfigurierten -->
-<!-- 			Gruppenrichtlinien in diesem Zeitraum fehlschlagen kann, falls ein Client zufällig einen -->
-<!-- 			Domänencontroller konsultiert, der noch nicht die aktuellen Dateien zu sich repliziert -->
-<!-- 			hat. -->
-<!-- 		  </para> -->
-<!-- 		</section> -->
+		  <para>
+			Although the LDAP replication between the domain controllers is performed in just a few
+			seconds, the files in the SYSVOL share are only replicated every five minutes in the
+			default setting. It must be noted that the application of newly configured group
+			policies in this period may fail if a client happens to consult a domain controller
+			which has not yet replicated the current files.
+		  </para>
+		</section>
 
-<!-- 		<section id="gpo:adm"> -->
-<!-- 		  <title>Administrative Vorlagen (ADM)</title> -->
-<!-- 		  <para> -->
-<!-- 			Die in der Gruppenrichtlinienverwaltung angezeigten Richtlinien können durch sogenannte <emphasis>Administrative -->
-<!-- 			Vorlagen</emphasis> erweitert werden. In einer solchen Vorlage wird definiert unter -->
-<!-- 			welchem Namen die Richtlinie in der Gruppenrichtlinienverwaltung erscheinen soll und welcher -->
-<!-- 			Wert dadurch in der Windows-Registry gesetzt wird. Administrative Vorlagen werden in -->
-<!-- 			sogenannten <emphasis>ADMX-Dateien</emphasis> (früher <emphasis>ADM-Dateien</emphasis>) -->
-<!-- 			gespeichert <biblioref linkend="admx-reference"/>. ADMX-Dateien bieten unter anderem -->
-<!-- 			den Vorteil, dass sie zentral über mehrere Domänencontroller bereitgestellt werden können, damit -->
-<!-- 			die Gruppenrichtlinienverwaltung an allen Windows-Clients die gleichen -->
-<!-- 			Konfigurationsmöglichkeiten zeigt (<biblioref linkend="admx-central"/>). -->
-<!-- 		  </para> -->
+		<section id="gpo:adm">
+		  <title>Administrative templates (ADM)</title>
+		  <para>
+			The policies displayed in Group Policy Management can be expanded with so-called
+			<emphasis>administrative templates</emphasis>. This type of template defines the name
+			under which the policy should appear in Group Policy Management and which value should
+			be set in the Windows registry. Administrative templates are saved in so-called
+			<emphasis>ADMX files</emphasis> (previously <emphasis>ADM files</emphasis>) <biblioref
+			linkend="admx-reference"/>. Among other things, ADMX files offer the advantage that they
+			can be provided centrally across several domain controllers so that Group Policy
+			Management on all Windows clients displays the same configuration possibilities
+			<biblioref linkend="admx-central"/>.
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Das folgende Beispiel für eine ADM-Datei definiert eine Rechner-Richtlinie, in der ein -->
-<!-- 			Registry-Key des (fiktiven) Univention RDP-Client konfiguriert wird. -->
-<!-- 			ADM-Dateien können über Third-Party-Werkzeuge in das neuere ADMX-Format umgewandelt werden. -->
-<!-- 			Weiterführende Informationen zum Format von ADM-Dateien sind unter <biblioref -->
-<!-- 			linkend="microsoft-adm-templates"/> und <biblioref linkend="adm-templates-howto"/> zu -->
-<!-- 			finden. Die administrativen Vorlagen müssen die Dateiendung <emphasis>.adm</emphasis> verwenden: -->
+		  <para>
+			The following example of an ADM file defines a computer policy in which a registry key
+			is configured for the (ficticious) Univention RDP client. ADM files can also be
+			converted to the newer ADMX format using third-party tools. Further information on the
+			format of ADM files can be found under <biblioref linkend="microsoft-adm-templates"/>
+			and <biblioref linkend="adm-templates-howto"/>. The administrative template must have
+			the file suffix <emphasis>.adm</emphasis>:
 
 			<programlisting language="sh">
 CLASS MACHINE
@@ -679,7 +651,7 @@ VALUEOFF "Deactivated"
 END POLICY
 END CATEGORY
 			</programlisting>
-<!-- 		  </para> -->
+		  </para>
 
 		  <para>
 			<figure><title>The activated administrative template</title>
@@ -687,43 +659,36 @@ END CATEGORY
 			</figure>
 		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Die ADM-Datei kann anschließend in das ADMX-Format umgewandelt oder aber direkt über die Gruppenrichtlinienverwaltung importiert -->
-<!-- 			werden. Dazu wird im Kontextmenü der <guimenu>Administrativen Vorlagen</guimenu> die -->
-<!-- 			Option <guimenu>Vorlagen hinzufügen/entfernen</guimenu> aufgerufen. Mit -->
-<!-- 			<guimenu>Hinzufügen</guimenu> kann dann eine ADM-Datei importiert werden. Die -->
-<!-- 			administrativen Vorlagen werden ebenfalls in der SYSVOL-Freigabe gespeichert und -->
-<!-- 			repliziert, wodurch die Gruppenrichtlinienverwaltung von den Windows-Clients aus auf sie zugreifen kann. -->
-<!-- 		  </para> -->
-<!-- 		</section> -->
+		  <para>
+			The ADM file can then be converted to the ADMX format or imported directly via Group
+			Policy Management. This is done by running the <guimenu>Add/Remove Templates</guimenu>
+			option in the <guimenu>Administrative templates</guimenu> context
+			menu. <guimenu>Add</guimenu> can be used to import an ADM file. The administrative
+			templates are also saved in the SYSVOL share and replicated, which allows Group Policy
+			Management to access them from the Windows clients.
+		  </para>
+		</section>
 
-<!-- <guimenu>Administrative templates</guimenu> -->
-<!-- <guimenu>Add/Remove Templates -> Add</guimenu> -->
+		<section id="gpo:wmifilter">
+		  <title>Application of policies based on computer properties (WMI filters)</title>
+		  <para>
+			It is also possible to configure policies based on system properties. These properties
+			are provided via the Windows Management Instrumentation interface. The mechanism which
+			builds on this is known as <emphasis>WMI filtering</emphasis>. This makes it possible, for example, to apply
+			a policy only to PCS with a 64-bit processor architecture or with at least 8 GB of
+			RAM. If a system property changes (e.g., if more memory is installed), the respective
+			filter is automatically re-evaluated by the client. 
+		  </para>
 
-<!-- 		<section id="gpo:wmifilter"> -->
-<!-- 		  <title>Anwendung von Richtlinien auf Basis von Rechnereigenschaften (WMI-Filter)</title> -->
-<!-- 		  <para> -->
-<!-- 			Richtlinien können auch auf Basis von Systemeigenschaften konfiguriert werden. Diese -->
-<!-- 			Eigenschaften werden über die Windows Management Instrumentation-Schnittstelle (WMI) -->
-<!-- 			bereitgestellt. Der darauf aufbauende Mechanismus wird als WMI-Filterung bezeichnet. -->
-<!-- 			Damit ist es beispielsweise möglich eine Richtlinie nur auf PCs mit einer 64 -->
-<!-- 			Bit-Prozessor-Architektur oder mit min. 8 GB RAM anzuwenden. Ändert sich eine -->
-<!-- 			Eigenschaft eines Systems (z.B. weil mehr Speicher eingebaut wurde), wird der jeweilige -->
-<!-- 			Filter automatisch vom Client neu ausgewertet. -->
-<!-- 		  </para> -->
+		  <para>
+			The WMI filters are displayed in the domain structure in the <guimenu>WMI
+			Filters</guimenu> container. <guimenu>New</guimenu> can be used to define an additional
+			filter. The filter rules are defined under <guimenu>Queries</guimenu>. The rules are
+			defined in a syntax similar to SQL. Examples rules can be found in <biblioref
+			linkend="microsoft-wmi-filter"/> and <biblioref linkend="add-wmi-filters"/>.
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Die WMI-Filter werden in der Domänenstruktur im Container <guimenu>WMI-Filter</guimenu> -->
-<!-- 			angezeigt. Mit <guimenu>Neu</guimenu> kann ein weiterer Filter definiert werden. Unter -->
-<!-- 			<guimenu>Abfragen</guimenu> werden die Filterregeln definiert. Die Regeln werden in -->
-<!-- 			einer SQL-ähnlichen Syntax definiert. Regel-Beispiele finden sich in <biblioref -->
-<!-- 			linkend="microsoft-wmi-filter"/> und  <biblioref linkend="add-wmi-filters"/>. -->
-<!-- 		  </para> -->
-
-<!-- <guimenu>WMI Filters</guimenu> -->
-<!-- <guimenu>Queries</guimenu> -->
-
-<!-- 		</section> -->
+		</section>
 
 	  </section>
 
@@ -1925,10 +1890,8 @@ The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are e
 	<title>Introduction</title>
 	<para>
 	  UCS supports the takeover of user, group and computer objects as well as Group Policy Objects
-	  (GPOs) from a Microsoft Active Directory (AD) domain. 
-	  <!-- Die Windows-Clients müssen dabei nicht erneut der Domäne beitreten. -->
-	  The takeover is an interactive process
-	  consisting of three distinct phases:
+	  (GPOs) from a Microsoft Active Directory (AD) domain. Windows clients do not need to rejoin
+	  the domain. The takeover is an interactive process consisting of three distinct phases:
 
 	  <itemizedlist>
 		<listitem><simpara>
@@ -1967,12 +1930,12 @@ The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are e
 	  </itemizedlist>
 	</para>
 
-	<!-- <para> -->
-	<!--   Für die Migration muss die Applikation <emphasis>Active Directory Takeover</emphasis> aus dem -->
-	<!--   Univention App Center installiert werden. Sie muss auf dem System installiert werden, auf dem -->
-	<!--   der Univention S4 Connector läuft (siehe <xref linkend="windows:s4connector"/>, normalerweise -->
-	<!--   der &ucsMaster;). -->
-	<!-- </para> -->
+	<para>
+	  The <emphasis>Active Directory Takeover</emphasis> application must be installed from the
+	  Univention App Center for the migration. It must be installed on the system where the
+	  Univention S4 Connector is running (see <xref linkend="windows:s4connector"/>, usually the
+	  &ucsMaster;).
+	</para>
 
   </section>
 
@@ -2051,33 +2014,33 @@ ucr set connector/s4/mapping/group/grouptype=false
 	  </programlisting>
 	</para>
 
-	<!-- <para> -->
-	<!--   Die Übernahme erfolgt mit dem &ucsUMC;-Modul <guimenu>Active Directory -->
-	<!--   Takeover</guimenu>. Unter <guimenu>Name or address of the Domain Controller</guimenu> -->
-	<!--   IP-Adresse des AD-Systems angegeben werden. Unter <guimenu>Active Directory -->
-	<!--   Administratorkonto</guimenu> muss ein Konto der AD-Domäne angegebe werden, das Mitglied der -->
-	<!--   AD-Gruppe  <emphasis>Domain Admins</emphasis> ist (z.B. der -->
-	<!--   <emphasis>Administrator</emphasis>) und unter <guimenu>Active Directory -->
-	<!--   Administratorpasswort</guimenu> das dazugehörige Passwort. -->
-	<!-- </para> -->
+	<para>
+	  The takeover is performed with the <guimenu>Active Directory Takeover</guimenu> &ucsUMC;
+	  module. The IP address of the AD system must be specified under <guimenu>Name or address of
+	  the Domain Controller</guimenu>. An account in the AD domain must be specified under
+	  <guimenu>Active Directory Administrator account</guimenu> which is a member of the AD group
+	  <emphasis>Domain Admins</emphasis> (e.g., the <emphasis>Administrator</emphasis>) and the
+	  corresponding password entered under <guimenu>Active Directory Administrator
+	  password</guimenu>.
+	</para>
 
-	<!-- <figure> -->
-	<!--   <title>Erste Phase der Domänenmigration</title> -->
-	<!--   <graphic scalefit="1" width="80%" fileref="illustrations/takeover1-en.png"/> -->
-	<!-- </figure> -->
-
-	<!-- <para> -->
-	<!--   Das Modul prüft, ob der AD-Domänencontroller erreicht werden kann und zeigt die zu -->
-	<!--   migrierenden Domänendaten an. -->
-
-	<!-- <figure> -->
-	<!--   <title>Übersicht über die zu migrierenden Daten</title> -->
-	<!--   <graphic scalefit="1" width="80%" fileref="illustrations/takeover2-en.png"/> -->
-	<!-- </figure> -->
-	<!-- </para> -->
+	<figure>
+	  <title>First phase of domain migration</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/takeover1-en.png"/>
+	</figure>
 
 	<para>
-	  <!-- Nach einem Klick auf <guimenu>Next</guimenu> werden die folgenden Schritte durchgeführt.  --> 
+	  The module checks whether the AD domain controller can be accessed and displays the domain
+	  data to be migrated.
+
+	<figure>
+	  <title>Overview of the data to be migrated</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/takeover2-en.png"/>
+	</figure>
+	</para>
+
+	<para>
+	  When <guimenu>Next</guimenu> is clicked, the following steps are performed automatically.
 	  Additional information is logged to <filename>/var/log/univention/ad-takeover.log</filename>.
 
 	  <itemizedlist>
@@ -2098,10 +2061,9 @@ ucr set connector/s4/mapping/group/grouptype=false
 	</para>
 
 	<para>
-	  The UCS domain controller now contains all users, groups and
-	  computers of the Active Directory domain.
-	  <!-- Im nächsten Schritt wird die SYSVOL-Freigabe kopiert, -->
-	  <!-- in der u.a. die Gruppenrichtlinien gespeichert werden -->
+	  The UCS domain controller now contains all users, groups and computers of the Active Directory
+	  domain. In the next step, the SYSVOL share is copied, in which among other things the group
+	  policies are stored.
 	</para>
 
 	<para>
@@ -2111,8 +2073,8 @@ ucr set connector/s4/mapping/group/grouptype=false
 	</para>
 
 	<para>
-	  <!-- Das aufzurufende Kommando wird im UMC-Modul angezeigt. Wenn es erfolgreich aufgerufen wurde, -->
-	  <!-- muss mit <guimenu>Weiter</guimenu> bestätigt werden. -->
+	  The command to be run in shown in the UMC module. If it has been successfully run, it must be
+	  confirmed with <guimenu>Next</guimenu>.
 
 	  <figure>
 		<title>Copying the sysvol share</title>
@@ -2132,8 +2094,8 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<para>
 	  After successful completion of this step, it is now necessary to shutdown all domain
-	  controllers of the Active Directory domain. 
-	  <!-- Danach muss im UMC-Modul auf <guimenu>Next</guimenu> geklickt werden. -->
+	  controllers of the Active Directory domain. Then <guimenu>Next</guimenu> must be clicked in
+	  the UMC module.
 
 	  <figure>
 		<title>Shutdown of the AD server(s)</title>
@@ -2146,9 +2108,8 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Claiming all FSMO roles for the UCS domain controller.
-		  <!-- Diese kennzeichnen verschiedene -->
-		  <!-- Aufgaben, die ein Server in einer AD-Domäne übernehmen kann. -->
+		  Claiming all FSMO roles for the UCS domain controller. These describe different tasks that
+		  a server can take on in an AD domain.
 		</simpara></listitem>
 
 		<listitem><simpara>
