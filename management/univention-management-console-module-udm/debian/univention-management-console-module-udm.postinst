@@ -34,18 +34,6 @@
 
 eval "$(univention-config-registry shell)"
 
-# remove old variables
-VARIABLES="directory/manager/timeout"
-for mod in modwizard modbrowse; do
-	varname="directory_manager_web_${mod}_defaults_visible_results"
-	eval var=\$${varname}
-	[ -n "${var}" ] && VARIABLES="${VARIABLES} directory/manager/web/${mod}/defaults/visible-results"
-done
-[ -n "$VARIABLES" ] && univention-config-registry unset $VARIABLES
-
-# not required anymore. syntax postalAddress is directly set in the property descriptions
-ucr unset directory/manager/web/modules/users/user/properties/homePostalAddress/syntax
-
 # autosearch and size limit
 univention-config-registry set directory/manager/web/modules/autosearch?1 \
 	directory/manager/web/sizelimit?2000
@@ -56,95 +44,6 @@ univention-config-registry set directory/reports/cleanup/cron?"0 0 * * *" \
 
 # simple forms (wizards)
 univention-config-registry set directory/manager/web/modules/wizards/disabled?no
-
-VARIABLES=
-# remove default search
-if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 3.0.12-1; then
-	# do something on update from VERSION <= 3.0-9-1 to current Version
-	# but NOT on initial installation ==> -n "$2"
-
-	i=users/user
-	searchdefault=$(univention-config-registry get directory/manager/web/modules/${i}/search/default)
-	if [ -n "$searchdefault" ] && [ "$searchdefault" = "username" ]; then
-		VARIABLES="${VARIABLES} directory/manager/web/modules/${i}/search/default"
-	fi
-
-	i=dhcp/service
-	searchdefault=$(univention-config-registry get directory/manager/web/modules/${i}/search/default)
-	if [ -n "$searchdefault" ] && [ "$searchdefault" = "service" ]; then
-		VARIABLES="${VARIABLES} directory/manager/web/modules/${i}/search/default"
-	fi
-	for i in \
-		computers/computer \
-		computers/domaincontroller_backup \
-		computers/domaincontroller_master \
-		computers/domaincontroller_slave \
-		computers/ipmanagedclient \
-		computers/macos \
-		computers/managedclient \
-		computers/memberserver \
-		computers/mobileclient \
-		computers/thinclient \
-		computers/trustaccount \
-		computers/windows \
-		computers/windows_domaincontroller \
-		dhcp/dhcp \
-		groups/group \
-		mail/domain \
-		mail/folder \
-		mail/lists \
-		mail/mail \
-		nagios/service \
-		networks/network \
-		policies/admin_container \
-		policies/autostart \
-		policies/clientdevices \
-		policies/console_access \
-		policies/desktop \
-		policies/dhcp_boot \
-		policies/dhcp_dns \
-		policies/dhcp_dnsupdate \
-		policies/dhcp_leasetime \
-		policies/dhcp_netbios \
-		policies/dhcp_routing \
-		policies/dhcp_scope \
-		policies/dhcp_statements \
-		policies/ldapserver \
-		policies/mailquota \
-		policies/maintenance \
-		policies/managedclientpackages \
-		policies/masterpackages \
-		policies/memberpackages \
-		policies/mobileclientpackages \
-		policies/nfsmounts \
-		policies/policy \
-		policies/print_quota \
-		policies/printserver \
-		policies/pwhistory \
-		policies/registry \
-		policies/release \
-		policies/repositoryserver \
-		policies/repositorysync \
-		policies/share_userquota \
-		policies/slavepackages \
-		policies/sound \
-		policies/thinclient \
-		policies/windowsinstallation \
-		policies/xfree \
-		shares/print \
-		shares/printer \
-		shares/printergroup \
-		shares/share
-	do
-		searchdefault=$(univention-config-registry get directory/manager/web/modules/${i}/search/default)
-		if [ -n "$searchdefault" ] && [ "$searchdefault" = "name" ]; then
-			VARIABLES="${VARIABLES} directory/manager/web/modules/${i}/search/default"
-		fi
-	done
-	if [ -n "${VARIABLES}" ]; then
-		univention-config-registry unset ${VARIABLES}
-	fi
-fi
 
 univention-config-registry set directory/manager/web/modules/computers/computer/add/default?"computers/windows"
 

@@ -9,7 +9,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  ucslint-univention,
  python-all
 Standards-Version: 3.5.2
-XS-Python-Version: 2.6
+XS-Python-Version: 2.6, 2.7
 
 Package: univention-management-console-module-udm
 Architecture: all

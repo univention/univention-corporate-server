@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.0.0-1) unstable; urgency=low
+
+  * Bug #35145: Start UCS 4.0 development
+
+ -- Florian Best <best@univention.de>  Wed, 16 Jul 2014 14:44:42 +0200
+
 univention-management-console-module-udm (4.0.97-35) unstable; urgency=low
 
   * Bug #34244: fix typos in translation
