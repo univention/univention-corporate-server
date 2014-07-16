@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-54) unstable; urgency=low
+
+  * scripts/remove_ucs_rejected.py: support multiple rejects for one DN
+    (Bug #32194)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Jul 2014 20:52:23 +0200
+
 univention-s4-connector (8.0.33-53) unstable; urgency=low
 
   * Add the newly created S4 object to the s4 cache (Bug #33621)

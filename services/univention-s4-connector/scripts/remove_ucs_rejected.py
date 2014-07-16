@@ -42,11 +42,13 @@ def remove_ucs_rejected(ucs_dn):
 	cache_db = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
 	c = cache_db.cursor()
 	c.execute("SELECT key FROM 'UCS rejected' WHERE value='%s'" % ucs_dn)
-	filename = c.fetchone()
-	if not filename:
+	filenames = c.fetchall()
+	if not filenames:
 		raise ObjectNotFound
-	if os.path.exists(filename[0]):
-		os.remove(filename[0])
+	for filename in filenames:
+		if filename:
+			if os.path.exists(filename[0]):
+				os.remove(filename[0])
 	c.execute("DELETE FROM 'UCS rejected' WHERE value='%s'" % ucs_dn)
 	cache_db.commit()
 	cache_db.close()
