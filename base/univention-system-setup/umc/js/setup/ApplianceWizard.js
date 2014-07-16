@@ -228,6 +228,9 @@ define([
 
 	var _regDN = /^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$/;
 
+	var _regEmail = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+	var _invalidEmailMessage = _('Invalid email address!<br>Expected format is:<i>mail@example.com</i>');
+
 	var _invalidPasswordMessage = _('A minimum length of 8 characters is required for the password.');
 
 	var _invalidIPAddressMessage = _('Invalid IP address!<br>Expected format is IPv4 or IPv6.');
