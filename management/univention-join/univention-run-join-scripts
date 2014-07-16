@@ -127,6 +127,12 @@ if [ ! -e /var/univention-join/joined ]; then
 	exit 1
 fi
 
+if [ "$samba_role" = "memberserver" ]; then
+	if [ -z "$DCACCOUNT" ] || [ -z "$DCPWD" ]; then
+		ASK_PASS=1
+	fi
+fi
+
 if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 	if [ -z "$DCACCOUNT" ]; then
 		echo -n "Enter DC Master Account : "
