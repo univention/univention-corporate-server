@@ -224,7 +224,7 @@ define([
 				deferred.resolve(ucr);
 				return deferred;
 			}
-			return tools.ucr(['directory/manager/web*', 'ldap/base']).then(lang.hitch(this, function(ucr) {
+			return tools.ucr(['directory/manager/web*', 'ldap/base', 'ad/member']).then(lang.hitch(this, function(ucr) {
 				this._ucr = lang.setObject('umc.modules.udm.ucr', ucr);
 			}));
 		},
@@ -423,6 +423,7 @@ define([
 				isStandardAction: true,
 				isMultiAction: true,
 				iconClass: 'umcIconDelete',
+				canExecute: lang.hitch(this, '_canDelete'),
 				callback: lang.hitch(this, function(ids, objects) {
 					this.removeObjects(objects);
 				})
@@ -431,6 +432,7 @@ define([
 				label: _('Move to...'),
 				description: _( 'Move objects to a different LDAP position.' ),
 				isMultiAction: true,
+				canExecute: lang.hitch(this, '_canMove'),
 				callback: lang.hitch(this, function(ids, objects) {
 					this.moveObjects(objects);
 				})
@@ -598,7 +600,7 @@ define([
 						//   probably because of invalid autoObjProperty
 						//   -> leads to traceback in the backend (LDAP filter)
 						widget.set('value', 'None'); // 'Default properties'
-						return
+						return;
 					}
 					var label = _( 'Property value' );
 					array.some(widget.getAllItems(), function(iitem) {
@@ -877,6 +879,14 @@ define([
 			this.addChild(this._searchPage);
 		},
 
+		_canMove: function(item) {
+			return -1 === array.indexOf(item.$flags$, 'synced');
+		},
+
+		_canDelete: function(item) {
+			return -1 === array.indexOf(item.$flags$, 'synced');
+		},
+
 		_reloadSuperordinates: function() {
 			var widget = this._searchForm.getWidget('superordinate');
 			if (widget) {
@@ -899,8 +909,8 @@ define([
 		_updateMenuAvailability: function() {
 			var operations = this._navContextItemFocused.operations;
 			this._menuEdit.set('disabled', operations.indexOf('edit') === -1);
-			this._menuDelete.set('disabled', operations.indexOf('remove') === -1);
-			this._menuMove.set('disabled', operations.indexOf('move') === -1);
+			this._menuDelete.set('disabled', operations.indexOf('remove') === -1 || !this._canDelete(this._navContextItemFocused));
+			this._menuMove.set('disabled', operations.indexOf('move') === -1 || !this._canMove(this._navContextItemFocused));
 		},
 
 		_setSuperordinateAndFilter: function(superordinate) {
@@ -1173,7 +1183,7 @@ define([
 			} else {
 				item = this._grid._grid.getItem(rowIndex);
 			}
-			// get the iconNamae
+			// get the iconName
 			var iconName = item.objectType || '';
 			iconName = iconName.replace('/', '-');
 
@@ -1428,6 +1438,9 @@ define([
 				this._newObjectDialog = null;
 			}));
 			onHandlerRegistered.resolve();
+			if (!this._newObjectDialog) {
+				return; // already destroyed
+			}
 			this.standbyDuring(this._newObjectDialog.canContinue);
 			this._newObjectDialog.canContinue.then(
 				lang.hitch(this, function() {

@@ -41,7 +41,7 @@ define([
 				widgets: [
 					['title', 'firstname', 'lastname'], // row one
 					['username'] // row two
-					// TODO: show mailPrimaryAddress iff there is a mail domain
+					// TODO: show mailPrimaryAddress if there is a mail domain
 					// ['mailPrimaryAddress'] // row three
 				]
 			}, { // page two

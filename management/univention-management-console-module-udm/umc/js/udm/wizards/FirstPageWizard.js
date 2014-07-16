@@ -26,18 +26,356 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define require*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/promise/all",
+	"dojo/Deferred",
+	"umc/tools",
 	"umc/widgets/Wizard",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, Wizard, _) {
+], function(declare, lang, array, all, Deferred, tools, Wizard, _) {
 
 	return declare("umc.modules.udm.wizards.FirstPageWizard", [ Wizard ], {
+
+		types: null,
+		containers: null,
+		superordinates: null,
+		templates: null,
+
+		_canContinue: null, // deferred which indicates if any of the pages in this wizard should be displayed or not
+
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this._canContinue = new Deferred();
+
+			if (this.moduleFlavor == 'navigation') {
+				this.pages = [this._getOptionSelectionPage(), this._getActiveDirectoryWarningPage()];
+			} else {
+				this.pages = [this._getActiveDirectoryWarningPage(), this._getOptionSelectionPage()];
+			}
+		},
+
+		canContinue: function() {
+			return this._canContinue;
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			var form = this._pages['firstPage']._form;
+			form.ready().then(lang.hitch(this, function() {
+				var formNecessary = this.shouldShowOptionSelectionPage();
+				var showADPage = this.shouldShowActiveDirectoryPage();
+
+				if (formNecessary || showADPage) {
+					this._canContinue.reject();
+					if (!formNecessary) {
+						this.hideOptionSelectionPage();
+					}
+					if (!showADPage) {
+						this.hideActiveDirectoryPage();
+					}
+					if (formNecessary/* && showADPage (FIXME: the state could be incorrect)*/) {
+						this.updateObjectType();
+					}
+				} else {
+					this._canContinue.resolve();
+					this._finish();
+				}
+			}));
+		},
+
+		updateObjectType: function() {
+			// make sure that object type is consistent and ad page gets hidden
+			// this is only necessary in navigation flavor because there the AD warning is the first page and varies on the selected object type
+			var form = this._pages['firstPage']._form;
+			var objectTypeWidget = form.getWidget('objectType');
+			if (objectTypeWidget) {
+				objectTypeWidget.watch('value', lang.hitch(this, function(name, old, objectType) {
+					if (!objectType) {
+						return;
+					}
+					if (this.shouldShowActiveDirectoryPage(objectType)) {
+						this.showActiveDirectoryPage();
+					} else {
+						this.hideActiveDirectoryPage();
+					}
+					this._updateButtons('firstPage');
+					this._updateButtons('activeDirectoryPage');
+					this.set('title', this.getObjectTypeName());
+				}));
+			}
+		},
+
+		shouldShowOptionSelectionPage: function() {
+			// we have to show the page if any of the widgets comboboxes (e.g. object type, position, ...)
+			// has more than one possible choice
+			var form = this._pages['firstPage']._form;
+			var formNecessary = false;
+			tools.forIn(form._widgets, function(iname, iwidget) {
+				if (iwidget.getAllItems) { // ComboBox, but not HiddenInput
+					var items = iwidget.getAllItems();
+					if (items.length > 1) {
+						formNecessary = true;
+					}
+				}
+			});
+			return formNecessary;
+		},
+
+		next: function(currentPage) {
+			var next = this.inherited(arguments);
+			if (next) {
+				if (!this._pages[next].get('disabled')) {
+					return next;
+				} else if (next !== currentPage) {
+					var next2 = this.next(next);
+					if (next2 !== next) {
+						return next2;
+					}
+				}
+			}
+			return currentPage;
+		},
+
+		previous: function(currentPage) {
+			var prev = this.inherited(arguments);
+			if (prev) {
+				if (!this._pages[prev].get('disabled')) {
+					return prev;
+				} else if (prev != currentPage) {
+					var prev2 = this.previous(prev);
+					if (prev2 !== prev) {
+						return prev2;
+					}
+				}
+			}
+			return currentPage;
+		},
+
+		hasNext: function(currentPage) {
+			return this.next(currentPage) != currentPage;
+		},
+
+		hasPrevious: function(currentPage) {
+			return this.previous(currentPage) != currentPage;
+		},
+
+		hideOptionSelectionPage: function() {
+			this._pages['firstPage'].set('disabled', true);
+			this.selectChild(this._pages.activeDirectoryPage);
+		},
+
+		hideActiveDirectoryPage: function() {
+			this._pages['activeDirectoryPage'].set('disabled', true);
+			this.selectChild(this._pages.firstPage);
+		},
+
+		showActiveDirectoryPage: function() {
+			this._pages['activeDirectoryPage'].set('disabled', false);
+		},
+
+		selectCorrectChild: function() {
+			var formNecessary = this.shouldShowOptionSelectionPage();
+			var showADPage = this.shouldShowActiveDirectoryPage();
+
+			if (!formNecessary) {
+				this.hideOptionSelectionPage();
+			}
+			if (!showADPage) {
+				this.hideActiveDirectoryPage();
+			}
+			this._updateButtons('firstPage');
+			this._updateButtons('activeDirectoryPage');
+		},
+
+		shouldShowActiveDirectoryPage: function() {
+			var objectType = this.moduleFlavor;
+			if (this._pages) {
+				var form = this._pages['firstPage']._form;
+				var objectTypeWidget = form.getWidget('objectType');
+				if (objectTypeWidget) {
+					objectType = objectTypeWidget.get('value');
+				}
+			}
+			return this.shouldShowActiveDirectoryPageFor(objectType);
+		},
+
+		shouldShowActiveDirectoryPageFor: function(objectType) {
+			var ucr = lang.getObject('umc.modules.udm.ucr', false) || {};
+			var activeDirectoryEnabled = tools.isTrue(ucr['ad/member']);
+			var enabledForCurrentObjectType = tools.isTrue(ucr['directory/manager/web/modules/' + objectType + '/show/adnotification']);
+			return activeDirectoryEnabled && enabledForCurrentObjectType;
+		},
+
+		_getActiveDirectoryWarningPage: function() {
+			var imageUrl = require.toUrl('dijit/themes/umc/icons/50x50/udm-ad-warning.png');
+			var style = 'background-image: url(\'' + imageUrl + '\'); background-size: 100px; min-width: 100px; min-height: 100px; background-repeat: no-repeat; padding-left: 100px; padding-top: 20px; margin: 0 1.5em; ';
+			return {
+				name: 'activeDirectoryPage',
+				headerText: _('This UCS system is part of an Active Directory domain'),
+				widgets: [{
+					type: 'Text',
+//					style: style,  // FIXME: somehow the style is set on two dom elements
+					name: 'active_directory_warning',
+					content:
+						'<div style="' + style + '">' + _('<b>Warning!</b>') + ' ' +
+						_('Newly created %s will only be available on UCS systems and not in the Active Directory domain.', this.objectNamePlural) + ' ' +
+						_('Please use the Active Directory administration utilities to create new domain %s.', this.objectNamePlural) + ' ' +
+						_('Please press <i>Next</i> to ignore this warning.') +
+						'<br/><br/></div>'
+				}]
+			};
+		},
+
+		_getOptionSelectionPage: function() {
+			var types = this.types, containers = this.containers, superordinates = this.superordinates, templates= this.templates;
+			// depending on the list we get, create a form for adding
+			// a new LDAP object
+			var widgets = [];
+			var layout = [];
+
+			if ('navigation' != this.moduleFlavor) {
+				// we need the container in any case
+				widgets.push({
+					type: 'ComboBox',
+					name: 'container',
+					label: _('Container'),
+					description: _('The container in which the LDAP object shall be created.'),
+					visible: containers.length > 1,
+					staticValues: containers
+				});
+				layout.push('container');
+
+				if (superordinates.length) {
+					// we have superordinates
+					widgets.push({
+						type: 'ComboBox',
+						name: 'superordinate',
+						label: _('Superordinate'),
+						description: _('The corresponding superordinate for the LDAP object.'),
+						staticValues: array.map(superordinates, function(superordinate) {
+							return superordinate.title ? {id: superordinate.id, label: superordinate.title + ': ' + superordinate.label } : superordinate;
+						}),
+						visible: superordinates.length > 1,
+						value: this.selectedSuperordinate
+					}, {
+						type: 'ComboBox',
+						name: 'objectType',
+						label: _('Type'),
+						value: this.defaultObjectType,
+						description: _('The exact object type of the new LDAP object.'),
+						umcpCommand: this.umcpCommand,
+						dynamicValues: lang.hitch(this, function(options) {
+							return this.moduleCache.getChildModules(options.superordinate, null, true);
+						}),
+						depends: 'superordinate'
+					});
+					layout.push('superordinate', 'objectType');
+				} else {
+					// no superordinates
+					// object types
+					if (types.length) {
+						widgets.push({
+							type: 'ComboBox',
+							name: 'objectType',
+							value: this.defaultObjectType,
+							label: _('Type'),
+							description: _('The exact object type of the new LDAP object.'),
+							visible: types.length > 1,
+							staticValues: types
+						});
+						layout.push('objectType');
+					}
+
+					// templates
+					if (templates.length) {
+						templates.unshift({ id: 'None', label: _('None') });
+						widgets.push({
+							type: 'ComboBox',
+							name: 'objectTemplate',
+							value: this.defaultObjectType,  // see Bug #13073, for users/user, there exists only one object type
+							label: _('%s template', tools.capitalize(this.objectNameSingular)),
+							description: _('A template defines rules for default object properties.'),
+							autoHide: true,
+							staticValues: templates
+						});
+						layout.push('objectTemplate');
+					}
+				}
+			} else {
+				// for the navigation, we show all elements and let them query their content automatically
+				widgets = [{
+					type: 'HiddenInput',
+					name: 'container',
+					value: this.selectedContainer.id
+				}, {
+					type: 'Text',
+					name: 'container_help',
+					content: _('<p>The LDAP object will be created in the container:</p><p><i>%s</i></p>', this.selectedContainer.path || this.selectedContainer.label)
+				}, {
+					type: 'ComboBox',
+					name: 'objectType',
+					label: _('Type'),
+					description: _('The exact object type of the new LDAP object.'),
+					visible: types.length > 1,
+					staticValues: types
+				}, {
+					type: 'ComboBox',
+					name: 'objectTemplate',
+					label: _('%s template', tools.capitalize(this.objectNameSingular)),
+					description: _('A template defines rules for default object properties.'),
+					depends: 'objectType',
+					umcpCommand: this.umcpCommand,
+					dynamicValues: lang.hitch(this, function(options) {
+						return this.moduleCache.getTemplates(options.objectType);
+					}),
+					staticValues: [ { id: 'None', label: _('None') } ],
+					autoHide: true
+				}];
+				layout = [ 'container', 'container_help', 'objectType', 'objectTemplate' ];
+			}
+
+			return {
+				name: 'firstPage',
+				headerText: this.get('title'),
+				widgets: widgets,
+				layout: layout
+			};
+		},
+
+		getValues: function() {
+			var values = this.inherited(arguments);
+			values.objectType = values.objectType || this.moduleFlavor;
+			return values;
+		},
+
+		getObjectTypeName: function() {
+			var firstPageValues = this.getValues();
+			var objectTypeName;
+			array.some(this.types, function(type) {
+				if (type.id == firstPageValues.objectType) {
+					objectTypeName = type.label;
+					return true;
+				}
+			});
+			if (!objectTypeName) {
+				// cache may return empty label for no sub modules
+				objectTypeName = this.objectNameSingular;
+			}
+			return objectTypeName;
+		},
+
 		focusFirstWidget: function(pageName) {
+			return;
+			// TODO: needs consistency? (check which pages are displayed)
+			if (this.selectedChildWidget != this._pages.firstPage) {
+				return;
+			}
 			var buttons = this._pages[pageName]._footerButtons;
 			buttons.finish.focus();
 		},
@@ -53,4 +391,3 @@ define([
 		}
 	});
 });
-

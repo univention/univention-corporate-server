@@ -26,23 +26,21 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/on",
 	"dojo/topic",
 	"dojo/promise/all",
 	"dojo/Deferred",
 	"dijit/Dialog",
 	"dijit/layout/StackContainer",
 	"umc/tools",
-	"umc/modules/udm/cache",
 	"umc/modules/udm/wizards/FirstPageWizard",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, on, topic, all, Deferred, Dialog, StackContainer, tools, cache, FirstPageWizard, _) {
+], function(declare, lang, array, topic, all, Deferred, Dialog, StackContainer, tools, FirstPageWizard, _) {
 
 	return declare("umc.modules.udm.NewObjectDialog", [ Dialog ], {
 		// summary:
@@ -134,170 +132,54 @@ define([
 				iarray.sort(tools.cmpObjects('label'));
 			});
 
-
-			// depending on the list we get, create a form for adding
-			// a new LDAP object
-			var widgets = [];
-			var layout = [];
-
-			if ('navigation' != this.moduleFlavor) {
-				// we need the container in any case
-				widgets.push({
-					type: 'ComboBox',
-					name: 'container',
-					label: _('Container'),
-					description: _('The container in which the LDAP object shall be created.'),
-					visible: containers.length > 1,
-					staticValues: containers
-				});
-				layout.push('container');
-
-				if (superordinates.length) {
-					// we have superordinates
-					widgets.push({
-						type: 'ComboBox',
-						name: 'superordinate',
-						label: _('Superordinate'),
-						description: _('The corresponding superordinate for the LDAP object.'),
-						staticValues: array.map(superordinates, function(superordinate) {
-							return superordinate.title ? {id: superordinate.id, label: superordinate.title + ': ' + superordinate.label } : superordinate;
-						}),
-						visible: superordinates.length > 1,
-						value: this.selectedSuperordinate
-					}, {
-						type: 'ComboBox',
-						name: 'objectType',
-						label: _('Type'),
-						value: this.defaultObjectType,
-						description: _('The exact object type of the new LDAP object.'),
-						umcpCommand: this.umcpCommand,
-						dynamicValues: lang.hitch(this, function(options) {
-							return this.moduleCache.getChildModules(options.superordinate, null, true);
-						}),
-						depends: 'superordinate'
-					});
-					layout.push('superordinate', 'objectType');
-				} else {
-					// no superordinates
-					// object types
-					if (types.length) {
-						widgets.push({
-							type: 'ComboBox',
-							name: 'objectType',
-							value: this.defaultObjectType,
-							label: _('Type'),
-							description: _('The exact object type of the new LDAP object.'),
-							visible: types.length > 1,
-							staticValues: types
-						});
-						layout.push('objectType');
-					}
-
-					// templates
-					if (templates.length) {
-						templates.unshift({ id: 'None', label: _('None') });
-						widgets.push({
-							type: 'ComboBox',
-							name: 'objectTemplate',
-							value: this.defaultObjectType,  // see Bug #13073, for users/user, there exists only one object type
-							label: _('%s template', tools.capitalize(this.objectNameSingular)),
-							description: _('A template defines rules for default object properties.'),
-							autoHide: true,
-							staticValues: templates
-						});
-						layout.push('objectTemplate');
-					}
-				}
-			} else {
-				// for the navigation, we show all elements and let them query their content automatically
-				widgets = [{
-					type: 'HiddenInput',
-					name: 'container',
-					value: this.selectedContainer.id
-				}, {
-					type: 'Text',
-					name: 'container_help',
-					content: _('<p>The LDAP object will be created in the container:</p><p><i>%s</i></p>', this.selectedContainer.path || this.selectedContainer.label)
-				}, {
-					type: 'ComboBox',
-					name: 'objectType',
-					label: _('Type'),
-					description: _('The exact object type of the new LDAP object.'),
-					visible: types.length > 1,
-					staticValues: types
-				}, {
-					type: 'ComboBox',
-					name: 'objectTemplate',
-					label: _('%s template', tools.capitalize(this.objectNameSingular)),
-					description: _('A template defines rules for default object properties.'),
-					depends: 'objectType',
-					umcpCommand: this.umcpCommand,
-					dynamicValues: lang.hitch(this, function(options) {
-						return this.moduleCache.getTemplates(options.objectType);
-					}),
-					staticValues: [ { id: 'None', label: _('None') } ],
-					autoHide: true
-				}];
-				layout = [ 'container', 'container_help', 'objectType', 'objectTemplate' ];
-			}
-
 			this._wizardContainer = new StackContainer({
-				style: 'width: 630px; height:310px;'
+				style: 'width: 630px; height: 310px;'
 			});
-			this._firstPageWizard = new FirstPageWizard({
-				pages: [{
-					name: 'firstPage',
-					headerText: this.get('title'),
-					widgets: widgets,
-					layout: layout
-				}]
+			this._preWizard = new FirstPageWizard({
+				types: types,
+				containers: containers,
+				superordinates: superordinates,
+				templates: templates,
+				title: this.get('title'),
+				defaultObjectType: this.defaultObjectType,
+				moduleCache: this.moduleCache,
+				moduleFlavor: this.moduleFlavor,
+				umcpCommand: this.umcpCommand,
+				objectNamePlural: this.objectNamePlural,
+				objectNameSingular: this.objectNameSingular,
+				selectedContainer: this.selectedContainer,
+				selectedSuperordinate: this.selectedSuperordinate
 			});
-			this._wizardContainer.addChild(this._firstPageWizard);
+
+			this._preWizard.canContinue().then(lang.hitch(this, function() {
+				this.canContinue.resolve();
+			}), lang.hitch(this, function() {
+				this.canContinue.reject();
+			}));
+
+			this._wizardContainer.addChild(this._preWizard);
 			this._wizardContainer.startup();
-			this._wizardContainer.selectChild(this._firstPageWizard);
+			this._wizardContainer.selectChild(this._preWizard);
 			this.own(this._wizardContainer);
+
 			this.set('content', this._wizardContainer);
 
-			this._firstPageWizard.on('Cancel', lang.hitch(this, function() {
+			this._preWizard.on('Cancel', lang.hitch(this, function() {
 				this.hide();
 			}));
-			this._firstPageWizard.on('Finished', lang.hitch(this, function() {
-				var firstPageValues = this._firstPageWizard.getValues();
-				firstPageValues.objectType = firstPageValues.objectType || this.moduleFlavor;
-				var objectTypeName;
-				array.some(types, function(type) {
-					if (type.id == firstPageValues.objectType) {
-						objectTypeName = type.label;
-						return true;
-					}
-				});
-				if (!objectTypeName) {
-					// cache may return empty label for no sub modules
-					objectTypeName = this.objectNameSingular;
-				}
+
+			var createWizard = lang.hitch(this, function() {
+				var firstPageValues = this._preWizard.getValues();
+				var objectTypeName = this._preWizard.getObjectTypeName();
 				this.mayCreateWizard.then(lang.hitch(this, function() {
 					this.buildCreateWizard(firstPageValues, objectTypeName);
 				}));
-			}));
-
-			var form = this._firstPageWizard._pages.firstPage._form;
-			form.ready().then(lang.hitch(this, function() {
-				var formNecessary = false;
-				tools.forIn(form._widgets, function(iname, iwidget) {
-					if (iwidget.getAllItems) { // ComboBox, but not HiddenInput
-						var items = iwidget.getAllItems();
-						if (items.length > 1) {
-							formNecessary = true;
-						}
-					}
-				});
-				if (formNecessary) {
-					this.canContinue.reject();
-				} else {
-					this.canContinue.resolve();
-					this._firstPageWizard._finish();
-				}
-			}));
+			});
+			this._preWizard.on('Finished', createWizard);  // the wizard either finished by hand
+			this.canContinue.then(createWizard);  // or it should not be displayed at all (onFinished was immediately fired so we missed the event)
+			// TODO: replace event by deferred to make it stable because: The order here is important: 1. selectChild(this._preWizard) 2. _preWizard.on('Finished', createWizard)
+			// otherwise the prewidget gets selected after the real wizard has been selected so that the wrong wizard is shown
+			this.canContinue.then(undefined, lang.hitch(this._preWizard, 'selectCorrectChild'));
 		},
 
 		buildCreateWizard: function(firstPageValues, objectTypeName) {
@@ -307,7 +189,7 @@ define([
 				wizardDeferred.reject();
 			}
 			this._readyForCreateWizard = new Deferred();
-			this._firstPageWizard.standbyDuring(all([this.createWizardAdded, wizardDeferred]));
+			this._preWizard.standbyDuring(all([this.createWizardAdded, wizardDeferred]));
 			this.onFirstPageFinished(firstPageValues);
 
 			wizardDeferred.then(
@@ -318,7 +200,7 @@ define([
 							objectTypeName: objectTypeName,
 							detailPage: detailsValues.detailPage,
 							template: detailsValues.template,
-							firstPageAvailable: this.canContinue.isRejected(),
+							preWizardAvailable: this.canContinue.isRejected(),
 							properties: detailsValues.properties
 						});
 						// insert at position 1. If another createWizard is added
@@ -366,7 +248,8 @@ define([
 						});
 						createWizard.on('BackToFirstPage', lang.hitch(this, function() {
 							this.createWizardAdded = new Deferred();
-							this._wizardContainer.selectChild(this._firstPageWizard);
+							this._preWizard.selectCorrectChild();
+							this._wizardContainer.selectChild(this._preWizard);
 							this._wizardContainer.removeChild(createWizard);
 							createWizard.destroyRecursive();
 						}));
@@ -392,7 +275,7 @@ define([
 		},
 
 		focusNextOnFirstPage: function() {
-			this._firstPageWizard.focusFirstWidget('firstPage');
+			this._preWizard.focusFirstWidget('firstPage');
 		},
 
 		setDetails: function(detailPage, template, properties) {
@@ -414,4 +297,3 @@ define([
 		}
 	});
 });
-

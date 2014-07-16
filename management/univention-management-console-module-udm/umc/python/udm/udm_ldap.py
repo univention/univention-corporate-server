@@ -37,7 +37,7 @@ import threading
 import gc
 
 from univention.management.console import Translation
-from univention.management.console.modules import UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
+from univention.management.console.modules import UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, UMC_Error
 
 import univention.admin as udm
 import univention.admin.layout as udm_layout
@@ -52,7 +52,7 @@ from ...log import MODULE
 
 from .syntax import widget, default_value
 
-from ldap import LDAPError
+from ldap import LDAPError, SERVER_DOWN
 
 try:
     import univention.admin.license
@@ -89,23 +89,50 @@ _ldap_connection = None
 _ldap_position = None
 _licenseCheck = 0
 
+
 class LDAP_ConnectionError( Exception ):
 	pass
+
+
+class LDAP_ServerDown(UMC_Error):
+
+	def __init__(self):
+		super(LDAP_ServerDown, self).__init__(self.ldap_server_down_error_message())
+		self.status = 503
+
+	def ldap_server_down_error_message(self):
+		def _message():
+			ucr.load()
+			is_master = ucr.get('server/role') == 'domaincontroller_master'
+			updates_available = ucr.is_true('update/available')
+			fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+			yield _('Cannot connect to the LDAP service.')
+			yield _('The following steps can help to solve this problem:')
+			if not is_master:
+				yield ' * ' + _('Make sure the domaincontroller master is running and reachable from %s') % (fqdn,)
+			yield ' * ' + _('Restart the LDAP service on the domaincontroller master either via "invoke-rc.d slapd restart" on command line or with the UMC module "System services"')
+			if updates_available:
+				yield ' * ' + _('Install the latest software updates')
+			yield _('If the problem persists additional hints about the cause can be found in the following log file:')
+			yield ' * /var/log/univention/management-console-module-udm.log'
+
+		return '\n'.join(_message())
+
 
 def LDAP_Connection( func ):
 	"""This decorator function provides an open LDAP connection that can
 	be accessed via the variable ldap_connection and a vaild position
-	within the LDAP directory in the viariable ldap_position. It reuses
+	within the LDAP directory in the variable ldap_position. It reuses
 	an already open connection or creates a new one. If the function
-	fails with an LDAP error the decorators tries to reopen the LDAP
+	fails with an LDAP error the decorator tries to reopen the LDAP
 	connection and invokes the function again. if it still fails an
 	LDAP_ConnectionError is raised.
 
-	When using the decorator the method get to additional keyword arguments.
+	When using the decorator the method get two additional keyword arguments.
 
 	example:
 	  @LDAP_Connection
-	  def do_ldap_stuff( arg1, arg2, ldap_connection = None, ldap_positio = None ):
+	  def do_ldap_stuff( arg1, arg2, ldap_connection = None, ldap_position = None ):
 		  ...
 		  ldap_connection.searchDn( ..., position = ldap_position )
 		  ...
@@ -146,6 +173,8 @@ def LDAP_Connection( func ):
 				po = udm_uldap.position( lo.base )
 			except udm_errors.noObject, e:
 				raise e
+			except SERVER_DOWN:
+				raise LDAP_ServerDown()
 			except LDAPError, e:
 				raise LDAP_ConnectionError( 'Opening LDAP connection failed: %s' % str( e ) )
 
@@ -166,6 +195,8 @@ def LDAP_Connection( func ):
 				po = udm_uldap.position( lo.base )
 			except udm_errors.noObject, e:
 				raise e
+			except SERVER_DOWN:
+				raise LDAP_ServerDown()
 			except ( LDAPError, udm_errors.base ), e:
 				raise LDAP_ConnectionError( 'Opening LDAP connection failed: %s' % str( e ) )
 
@@ -599,7 +630,7 @@ class UDM_Module( object ):
 
 	def get_properties( self, ldap_dn=None ):
 		# scan the layout to only find elements which are displayed
-		# special case: options, they are not explicitely specified in the module layout
+		# special case: options and the dn: They are not explicitely specified in the module layout
 		inLayout = set(('$options$', '$dn$'))
 		def _scanLayout(_layout):
 			if isinstance(_layout, list):
@@ -669,6 +700,7 @@ class UDM_Module( object ):
 				'identifies' : bool( prop.identifies ),
 				'threshold' : prop.threshold,
 				'nonempty_is_default' : ucr.is_true( value=str(prop.nonempty_is_default) ),
+				'readonly_when_synced': prop.readonly_when_synced,
 			}
 
 			# default value
@@ -770,6 +802,7 @@ class UDM_Module( object ):
 							'label' : obj[ module.identifies ],
 							'objectType': module.name,
 							'operations': module.operations,
+							'$flags$': obj.oldattr.get('univentionObjectFlag', []),
 							'title' : module.title,
 							'icon' : 'udm-%s' % module.name.replace( '/', '-' ),
 						})

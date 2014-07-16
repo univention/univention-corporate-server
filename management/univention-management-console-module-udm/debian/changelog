@@ -1,3 +1,82 @@
+univention-management-console-module-udm (4.0.97-35) unstable; urgency=low
+
+  * Bug #34244: fix typos in translation
+
+ -- Florian Best <best@univention.de>  Fri, 11 Jul 2014 13:58:16 +0200
+
+univention-management-console-module-udm (4.0.97-34) unstable; urgency=low
+
+  * Bug #34244: fix typos in translation
+
+ -- Florian Best <best@univention.de>  Fri, 11 Jul 2014 13:35:08 +0200
+
+univention-management-console-module-udm (4.0.97-33) unstable; urgency=low
+
+  * Bug #34244: fix typos in translation
+
+ -- Florian Best <best@univention.de>  Fri, 11 Jul 2014 11:23:38 +0200
+
+univention-management-console-module-udm (4.0.97-32) unstable; urgency=low
+
+  * Bug #34244: fix typos in translation
+
+ -- Florian Best <best@univention.de>  Fri, 11 Jul 2014 10:34:16 +0200
+
+univention-management-console-module-udm (4.0.97-31) unstable; urgency=low
+
+  * Bug #34244: Add translation of the error message.
+
+ -- Florian Best <best@univention.de>  Thu, 10 Jul 2014 09:46:31 +0200
+
+univention-management-console-module-udm (4.0.97-30) unstable; urgency=low
+
+  * Bug #34244: display a human readable error message when the LDAP-Server
+  	cannot be contacted.
+
+ -- Florian Best <best@univention.de>  Thu, 10 Jul 2014 09:33:34 +0200
+
+univention-management-console-module-udm (4.0.97-29) unstable; urgency=low
+
+  * Bug #34093: fix displaying of new object dialogue in specific
+  	circumstances
+
+ -- Florian Best <best@univention.de>  Wed, 09 Jul 2014 14:27:12 +0200
+
+univention-management-console-module-udm (4.0.97-28) unstable; urgency=medium
+
+  * Bug #34246: reverted commit r50381
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 09 Jul 2014 10:53:47 +0200
+
+univention-management-console-module-udm (4.0.97-27) unstable; urgency=low
+
+  * Bug #34093: fix recreation of CreateWizard after successful object
+  	creation
+
+ -- Florian Best <best@univention.de>  Tue, 08 Jul 2014 09:53:13 +0200
+
+univention-management-console-module-udm (4.0.97-26) unstable; urgency=low
+
+  * Bug #34093: Set the adnotifcation variables in univention-join; merge svn48117
+  * Bug #34093: Update AD domain warning; merge svn48140
+
+ -- Florian Best <best@univention.de>  Mon, 07 Jul 2014 13:42:20 +0200
+
+univention-management-console-module-udm (4.0.97-25) unstable; urgency=low
+
+  * Bug #34093: copy images
+
+ -- Florian Best <best@univention.de>  Thu, 03 Jul 2014 12:33:47 +0200
+
+univention-management-console-module-udm (4.0.97-24) unstable; urgency=low
+
+  * Bug #34092: show attributes as readonly in Active Directory
+  	Mode
+  * Bug #34093: Display a warning in Active Directory Mode before creating objects
+  	which are not synced back to AD.
+
+ -- Florian Best <best@univention.de>  Thu, 03 Jul 2014 08:53:23 +0200
+
 univention-management-console-module-udm (4.0.97-23) unstable; urgency=low
 
   * Bug #34200: Make display property for UDM grids configurable

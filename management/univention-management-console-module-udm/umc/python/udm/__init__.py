@@ -62,17 +62,24 @@ import univention.directory.reports as udr
 
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
-from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, set_credentials, container_modules, info_syntax_choices, search_syntax_choices_by_key
+from .udm_ldap import (
+	UDM_Error, UDM_Module, UDM_Settings, check_license,
+	ldap_dn2path, get_module, read_syntax_choices, list_objects,
+	LDAP_Connection, set_credentials, container_modules,
+	info_syntax_choices, search_syntax_choices_by_key,
+	LDAP_ServerDown
+)
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
-from univention.admin.uldap import explodeDn
 
 _ = Translation( 'univention-management-console-module-udm' ).translate
 
+
 class Instance( Base, ProgressMixin ):
+
 	def __init__( self ):
 		Base.__init__( self )
 		self.settings = None
-		self.reports = None
+		self.reports_cfg = None
 		self.modules_with_childs = []
 		install_opener(ucr)
 
@@ -115,7 +122,7 @@ class Instance( Base, ProgressMixin ):
 		return self._get_module(object_type, request.flavor)
 
 	def _check_thread_error( self, thread, result, request ):
-		"""Checks if the thread returned an exception. In that case in
+		"""Checks if the thread returned an exception. In that case an
 		error response is send and the function returns True. Otherwise
 		False is returned."""
 		if not isinstance( result, BaseException ):
@@ -127,6 +134,11 @@ class Instance( Base, ProgressMixin ):
 
 		msg = '%s\n%s: %s\n' % ( ''.join( traceback.format_tb( thread.exc_info[ 2 ] ) ), thread.exc_info[ 0 ].__name__, str( thread.exc_info[ 1 ] ) )
 		MODULE.process( 'An internal error occurred: %s' % msg )
+
+		if isinstance(result, LDAP_ServerDown):
+			self.finished(request.id, None, str(result), success=False, status=result.status)
+			return True
+
 		self.finished( request.id, None, msg, False )
 		return True
 
@@ -348,8 +360,7 @@ class Instance( Base, ProgressMixin ):
 										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
-	@LDAP_Connection
-	def put( self, request, ldap_connection = None, ldap_position = None ):
+	def put( self, request ):
 		"""Modifies the given list of LDAP objects.
 
 		requests.options = [ { 'options' : {}, 'object' : {} }, ... ]
@@ -371,21 +382,15 @@ class Instance( Base, ProgressMixin ):
 				ldap_dn = properties[ '$dn$' ]
 				module = get_module( request.flavor, ldap_dn )
 				if module is None:
-					dn_part = explodeDn( ldap_dn )[ 0 ]
-					control_dn_list = ldap_connection.searchDn(dn_part)
-					if ldap_dn in control_dn_list:
-						result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( _('LDAP object exists, but cannot be opened: %s' ) % ldap_dn ) })
-					else:
-						result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( _('Could not find LDAP object: %s' ) % ldap_dn ) })
-				else:
-					MODULE.info( 'Modifying LDAP object %s' % ldap_dn )
-					if '$labelObjectType$' in properties:
-						del properties[ '$labelObjectType$' ]
-					try:
-						module.modify( properties )
-						result.append( { '$dn$' : ldap_dn, 'success' : True } )
-					except UDM_Error, e:
-						result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( e ) } )
+					raise UMC_OptionTypeError( _( 'Could not find a matching UDM module for the LDAP object %s' ) % ldap_dn )
+				MODULE.info( 'Modifying LDAP object %s' % ldap_dn )
+				if '$labelObjectType$' in properties:
+					del properties[ '$labelObjectType$' ]
+				try:
+					module.modify( properties )
+					result.append( { '$dn$' : ldap_dn, 'success' : True } )
+				except UDM_Error, e:
+					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( e ) } )
 
 			return result
 
@@ -455,6 +460,7 @@ class Instance( Base, ProgressMixin ):
 						if pol_mod and pol_mod.name:
 							props[ '$policies$' ][ pol_mod.name ] = policy
 					props[ '$labelObjectType$' ] = module.title;
+					props['$flags$'] = obj.oldattr.get('univentionObjectFlag', []),
 					result.append( props )
 				else:
 					MODULE.process( 'The LDAP object for the LDAP DN %s could not be found' % ldap_dn )
@@ -515,6 +521,7 @@ class Instance( Base, ProgressMixin ):
 				entry = {
 					'$dn$' : obj.dn,
 					'$childs$' : module.childs,
+					'$flags$': obj.oldattr.get('univentionObjectFlag', []),
 					'objectType' : module.name,
 					'labelObjectType' : module.subtitle,
 					'name' : module.obj_description( obj ) or udm_objects.description( obj ),
@@ -929,6 +936,7 @@ class Instance( Base, ProgressMixin ):
 							'path': ldap_dn2path( item.dn ),
 							'objectType': '%s/%s' % (base, typ),
 							'operations': module.operations,
+							'$flags$': item.oldattr.get('univentionObjectFlag', []),
 						})
 				except UDM_Error, e:
 					success = False
@@ -984,12 +992,15 @@ class Instance( Base, ProgressMixin ):
 					continue
 				if object_type == '$containers$' and not module.childs:
 					continue
-				entries.append( { '$dn$' : obj.dn,
-								  '$childs$' : module.childs,
-								  'objectType' : module.name,
-								  'labelObjectType' : module.subtitle,
-								  'name' : udm_objects.description(obj),
-								  'path' : ldap_dn2path( obj.dn, include_rdn = False ) } )
+				entries.append({
+					'$dn$': obj.dn,
+					'$childs$': module.childs,
+					'objectType': module.name,
+					'labelObjectType': module.subtitle,
+					'name': udm_objects.description(obj),
+					'path': ldap_dn2path(obj.dn, include_rdn = False),
+					'$flags$': obj.oldattr.get('univentionObjectFlag', []),
+				})
 
 			return entries
 
