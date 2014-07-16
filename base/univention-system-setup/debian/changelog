@@ -1,3 +1,9 @@
+univention-system-setup (8.0.0-1) unstable; urgency=low
+
+  * Bug #35145: Bug #35267: Start UCS 4.0 development
+
+ -- Florian Best <best@univention.de>  Wed, 16 Jul 2014 14:18:41 +0200
+
 univention-system-setup (7.0.69-11) unstable; urgency=medium
 
   * Bug #34484: [WIP] Integration of new appliance wizard

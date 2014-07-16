@@ -1,4 +1,4 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -473,7 +473,7 @@ def cleanup():
 
 		# Maybe the system-setup CMD tool was started
 		for p in psutil.process_iter():
-			if p.name == 'python2.6' and '/usr/share/univention-system-setup/univention-system-setup' in p.cmdline:
+			if p.name == 'python2.7' and '/usr/share/univention-system-setup/univention-system-setup' in p.cmdline:
 				p.kill()
 
 	# Run cleanup-pre scripts

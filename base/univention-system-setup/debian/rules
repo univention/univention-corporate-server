@@ -56,4 +56,4 @@ override_dh_auto_test:
 	run-parts -a -v tests
 
 %:
-	dh $@
+	dh $@ --with 'python_support'
