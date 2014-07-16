@@ -83,6 +83,8 @@ univention-config-registry set samba/share/home?yes \
 							   samba/share/groups?no \
 							   samba/adminusers?"administrator join-backup"
 
+
+eval "$(univention-config-registry shell samba/role)"
 if [ "$samba_role" = "domaincontroller" ]
 then
 	if [ -n "$samba_netbios_name" ]

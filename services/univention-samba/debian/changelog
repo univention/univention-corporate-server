@@ -1,3 +1,9 @@
+univention-samba (8.0.19-3) unstable; urgency=low
+
+  * fixed postinst (Bug #35095) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 Jul 2014 14:23:34 +0200
+
 univention-samba (8.0.19-2) unstable; urgency=low
 
   * fixed join script (Bug #35095) 
