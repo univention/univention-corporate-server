@@ -1,3 +1,10 @@
+ucs-test (4.0.166-59) unstable; urgency=low
+
+  * 52_s4connector/022_concurrent_deletion_in_ucs: Try to emulate a
+    rejected object (Bug #32263)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Jul 2014 16:33:59 +0200
+
 ucs-test (4.0.166-58) unstable; urgency=low
 
   * 60_umc-system/41_umc-service-complete-domain-rejoin:

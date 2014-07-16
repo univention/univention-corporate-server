@@ -30,30 +30,26 @@ for((i=0;i<10;i++)); do
 	echo "* Round $((i+1)) of 10"
 	echo "********************************************"
 
+	UDM_groups_group_name="$(random_chars)"
+	udm_create "groups/group" || fail_test 110
+
 	username1="$(random_chars)"
 	lastname1="$(random_chars)"
 	create_user "$username1" "$lastname1"
+	udm_modify "groups/group" "" "" "" "" \
+			--append users="uid=$username1,cn=users,$ldap_base" \
 
 	username2="$(random_chars)"
 	lastname2="$(random_chars)"
 	create_user "$username2" "$lastname2"
+	udm_modify "groups/group" "" "" "" "" \
+			--append users="uid=$username2,cn=users,$ldap_base" \
 
 	username3="$(random_chars)"
 	lastname3="$(random_chars)"
 	create_user "$username3" "$lastname3"
-
-	UDM_groups_group_name="$(random_chars)"
-	udm_create "groups/group" || fail_test 110
-
 	udm_modify "groups/group" "" "" "" "" \
-			--append users="uid=$username1,cn=users,$ldap_base" \
-			--append users="uid=$username2,cn=users,$ldap_base"
-
-	sleep $i
-
-	group_removeuser "$username2" "$UDM_groups_group_name"
-	group_adduser "$username3" "$UDM_groups_group_name"
-
+			--append users="uid=$username3,cn=users,$ldap_base" \
 
 	sleep $i
 
@@ -62,6 +58,9 @@ for((i=0;i<10;i++)); do
 	user_remove "$username2"
 	user_remove "$username3"
 
+	ad_wait_for_synchronization; fail_bool 0 110
+
+	/etc/init.d/univention-s4-connector restart
 	ad_wait_for_synchronization; fail_bool 0 110
 		
 	udm_exists "groups/group" && fail_test 110
