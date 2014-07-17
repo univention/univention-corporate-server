@@ -12,7 +12,8 @@ Build-Depends: debhelper,
  libsmbclient-raw-dev,
  gcc-mingw32,
  libsamba-hostconfig-dev,
- libndr-standard-dev
+ libndr-standard-dev,
+ python
 
 Package: winexe
 Architecture: any
