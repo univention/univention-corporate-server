@@ -15,6 +15,7 @@ Build-Depends: debhelper,
  libsamba-hostconfig-dev,
  libndr-standard-dev,
  libgensec0,
+ libnetapi0,
  python
 
 Package: winexe

@@ -1,3 +1,9 @@
+winexe (1.1.0-5) unstable; urgency=low
+
+  * added libnetapi0 to build dependencies (Bug #34572) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Jul 2014 10:29:05 +0200
+
 winexe (1.1.0-4) unstable; urgency=low
 
   * added libgensec0 to build dependencies (Bug #34572) 
