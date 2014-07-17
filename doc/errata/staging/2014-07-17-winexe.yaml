@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: winexe
+fix: 1.1.0-7.7.201407171042
+version: [2]
+desc: |
+    * winexe (remote Windows®-command executor) has been added
+      to the unmaintained part of the software repository
+bug: [34572]
+
