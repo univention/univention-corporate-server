@@ -5,6 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper,
  build-essential,
  pkg-config,
+ libdcerpc-dev,
  libtalloc-dev,
  libtevent-dev,
  samba-dev,
