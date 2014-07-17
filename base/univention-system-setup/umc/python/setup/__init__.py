@@ -53,8 +53,14 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules.sanitizers import PatternSanitizer, StringSanitizer, IntegerSanitizer
 from univention.management.console.modules.decorators import sanitize, simple_response
 from univention.management.console.modules.setup.network import Interfaces, DeviceError
-from univention.management.console.modules.appcenter.app_center import Application
-from univention.lib.package_manager import PackageManager
+try:
+    # execute imports in try/except block as during build test scripts are
+    # triggered that refer to the netconf python submodules... and this
+    # reference triggers the import below
+    from univention.management.console.modules.appcenter.app_center import Application
+    from univention.lib.package_manager import PackageManager
+except ImportError as e:
+    MODULE.warn('Ignoring import error: %s' % e)
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()

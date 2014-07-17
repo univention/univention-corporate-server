@@ -1,3 +1,17 @@
+univention-system-setup (8.0.1-0) unstable; urgency=low
+
+  * merge svn 51886:51890
+  * Bug #34484: [WIP] make sure that test cases can be run during build
+  * email validation + auto account description
+  * added missing dependencies
+  * Bug #34484: [WIP] added missing build dependency
+  * fixed fuzzy entries
+  * removed obsolete files
+  * fixed copyrights
+  * Bug #34484: [WIP] removal of obsolete parts
+
+ -- Florian Best <best@univention.de>  Thu, 17 Jul 2014 07:33:00 +0200
+
 univention-system-setup (8.0.0-1) unstable; urgency=low
 
   * Bug #35145: Bug #35267: Start UCS 4.0 development

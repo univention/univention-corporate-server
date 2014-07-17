@@ -1,7 +1,3 @@
 Type: file
 File: etc/logrotate.d/univention-system-setup
 Variables: logrotate/.*
-
-Type: script
-Script: update_sytem_setup_help.sh
-Variables: system/setup/boot/help
