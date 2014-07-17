@@ -1,3 +1,10 @@
+univention-samba4 (3.0.39-28) unstable; urgency=medium
+
+  * Abort joinscript if domaincontroller_master claims service "AD Member"
+    (Bug #35252)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Jul 2014 18:44:37 +0200
+
 univention-samba4 (3.0.39-27) unstable; urgency=low
 
   * added samba4/backup/cron/options (Bug #35085) 

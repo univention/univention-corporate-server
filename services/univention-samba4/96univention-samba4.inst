@@ -72,6 +72,21 @@ SYSVOL_PATH='/var/lib/samba/sysvol'
 
 ### --- BEGIN helper functions ---
 
+check_for_ad_member_mode() {
+	case "${server_role}" in
+		domaincontroller_*)
+			local master_is_admember
+			master_is_admember=$(univention-directory-manager computers/domaincontroller_master list "$@" \
+				--filter univentionService="AD Member" | sed -ne 's/^DN: //p')
+			if [ -n "$master_is_admember" ]; then
+				echo "ERROR: UCS Master claims to be Memberserver in an AD domain, cannot join as Samba DC."
+				echo "       Please run univention-join again to configure this system as AD Member."
+				exit 1
+			fi
+			;;
+	esac
+}
+
 operatingSystem_attribute() {
 	operation=$1
 
@@ -733,6 +748,8 @@ if [ -n "$binddn" ]; then
 	dcaccount=$(ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret \
 	             -s base -b "$binddn" uid | ldapsearch-wrapper | sed -n 's/^uid: //p')
 fi
+
+check_for_ad_member_mode
 
 univention-config-registry commit /etc/samba/smb.conf		# 03univention-directory-listener.inst might remove include
 
