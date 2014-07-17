@@ -35,16 +35,13 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/event",
 	"dojo/query",
-	"dojo/dom-construct",
 	"dojo/dom-class",
 	"dojo/on",
 	"dojo/Evented",
-	"dojo/keys",
 	"dojo/topic",
 	"dojo/Deferred",
 	"dojo/store/Memory",
 	"dijit/form/Select",
-	"dijit/form/ComboBox",
 	"dijit/Tooltip",
 	"dojox/html/styles",
 	"umc/dialog",
@@ -59,10 +56,11 @@ define([
 	"umc/widgets/Wizard",
 	"umc/widgets/Grid",
 	"umc/widgets/RadioButton",
+	"./LiveSearch",
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, query, domConstruct, domClass, on, Evented, keys, topic, Deferred, Memory, Select, DijitComboBox, Tooltip, styles, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, Wizard, Grid, RadioButton, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, query, domClass, on, Evented, topic, Deferred, Memory, Select, Tooltip, styles, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, Wizard, Grid, RadioButton, LiveSearch, i18nTools, _) {
 	var modulePath = require.toUrl('umc/modules/setup');
 	styles.insertCssRule('.umcIconInfo', lang.replace('background-image: url({0}/info-icon.png); width: 16px; height: 16px;', [modulePath]));
 	styles.insertCssRule('.setupLangField', 'vertical-align: middle; margin: 1px 0 1px 5px;');
@@ -127,77 +125,6 @@ define([
 			// dummy method, just to make sure that the class is recognized
 			// as object store instance
 			return {};
-		}
-	});
-
-	var _LiveSearch = declare([DijitComboBox, TextBox], {
-		searchAttr: 'label',
-		hasDownArrow: false,
-		autoComplete: false,
-		highlightMatch: 'none',
-		store: null,
-		_searchNode: null,
-		_searchingNode: null,
-		_currentNode: null,
-		inlineLabel: _('e.g., Boston...'),
-
-		buildRendering: function() {
-			this.inherited(arguments);
-
-			this._currentNode = this._buttonNode;
-
-			this._searchNode = lang.clone(this._buttonNode);
-			this._searchNode.style.display = '';
-			this._searchNode.childNodes[0].style.backgroundImage = 'url("' + require.toUrl('umc/modules/setup/search-icon.png') + '")';
-			this._searchNode.childNodes[0].style.backgroundPosition = 'center';
-			this.own(on(this._searchNode, 'click', lang.hitch(this, 'loadDropDown')));
-
-			this._searchingNode = lang.clone(this._searchNode);
-			this._searchingNode.childNodes[0].style.backgroundImage = 'url("' + require.toUrl('dijit/themes/umc/form/images/loading.gif') + '")';
-
-			this._setState('search');
-		},
-
-		postCreate: function() {
-			this.inherited(arguments);
-
-			this.store.on('searching', lang.hitch(this, '_setState', 'searching'));
-			this.store.on('searchFinished', lang.hitch(this, '_setState', 'search'));
-		},
-
-		_setState: function(state) {
-			var newNode = this._currentNode;
-			if (state == 'searching') {
-				newNode = this._searchingNode;
-			}
-			else {
-				newNode = this._searchNode;
-			}
-			domConstruct.place(newNode, this._currentNode, 'replace');
-			this._currentNode = newNode;
-		},
-
-		loadDropDown: function() {
-			this._startSearch(this.get('value'));
-		},
-
-		_onKey: function(evt) {
-			var lastResult = this.store.lastResult;
-			if (evt.keyCode == keys.ENTER) {
-				if (this.state != 'searching' && lastResult.length && this._opened) {
-					// select first item
-					this.set('item', lastResult[0]);
-					this.closeDropDown();
-					dojoEvent.stop(evt);
-					return;
-				}
-				if (this.state == 'searching' || !this.get('item')) {
-					// ignore key event
-					dojoEvent.stop(evt);
-					return;
-				}
-			}
-			this.inherited(arguments);
 		}
 	});
 
@@ -320,8 +247,8 @@ define([
 						}
 					})
 				}, {
-					type: _LiveSearch,
-					name: 'search',
+					type: LiveSearch,
+					name: '_search',
 					store: new _CityStore(),
 					label: _('Enter a near city to preconfigure settings such as timezone, system language, keyboard layout.'),
 					labelConf: { style: 'margin-top: .75em;' }
@@ -377,7 +304,7 @@ define([
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
-					name: 'createDomain',
+					name: '_createDomain',
 					label: '<b>' + _('Create a new UCS domain') + '</b>',
 					checked: true,
 					labelConf: { style: 'margin-top: 0; margin-bottom: 0;' }
@@ -389,7 +316,7 @@ define([
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
-					name: 'joinDomain',
+					name: '_joinDomain',
 					label: '<b>' + _('Join into an existing UCS domain') + '</b>',
 					labelConf: { style: 'margin-top: 1.5em; margin-bottom: 0;' }
 				}, {
@@ -415,7 +342,7 @@ define([
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
-					name: 'backup',
+					name: '_roleBackup',
 					label: _('<b>Domain controller backup</b>'),
 					checked: true,
 					labelConf: { style: 'margin-top: 0em; margin-bottom: 0'	}
@@ -427,7 +354,7 @@ define([
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
-					name: 'slave',
+					name: '_roleSlave',
 					label: _('<b>Domain controller slave</b>'),
 					labelConf: { style: 'margin-top: 2em; margin-bottom: 0'	}
 				}, {
@@ -438,7 +365,7 @@ define([
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
-					name: 'member',
+					name: '_roleMember',
 					label: _('<b>Member server</b>'),
 					labelConf: { style: 'margin-top: 2em; margin-bottom: 0'	}
 				}, {
@@ -455,8 +382,8 @@ define([
 				layout: [
 					'help',
 					'organization',
-					['lastname', 'firstname'],
-					'email', 'description', 'password'
+					['account/lastname', 'account/firstname'],
+					'email', 'account/description', 'root_password'
 				],
 				widgets: [{
 					type: Text,
@@ -470,12 +397,12 @@ define([
 					onChange: lang.hitch(this, '_updateOrganizationName')
 				}, {
 					type: TextBox,
-					name: 'lastname',
+					name: 'account/lastname',
 					label: _('Lastname'),
 					size: 'Half'
 				}, {
 					type: TextBox,
-					name: 'firstname',
+					name: 'account/firstname',
 					label: _('Firstname'),
 					size: 'Half'
 /*				}, {
@@ -490,7 +417,7 @@ define([
 					invalidMessage: _invalidEmailAddressMessage
 				}, {
 					type: TextBox,
-					name: 'description',
+					name: 'account/description',
 					label: _('Account description')
 				}, {
 //					type: Text,
@@ -499,7 +426,7 @@ define([
 //				}, {
 					type: PasswordInputBox,
 					required: true,
-					name: 'password',
+					name: 'root_password',
 					label: _('Password')
 				}]
 			}, {
@@ -510,13 +437,13 @@ define([
 					'helpMaster',
 					'helpNonMaster',
 					['fqdn', 'ldapBase'],
-					'hostOrFQDN',
-					'password',
-					'dhcpIP',
-					['ip1', 'netmask1'],
-					['ip2', 'netmask2'],
-					['ip3', 'netmask3'],
-					['ip4', 'netmask4'],
+					'hostname',
+					'root_password',
+					'_dhcpIP',
+					['_ip1', '_netmask1'],
+					['_ip2', '_netmask2'],
+					['_ip3', '_netmask3'],
+					['_ip4', '_netmask4'],
 					'gateway',
 					['nameserver1', 'nameserver2'],
 					['dns/forwarder1', 'dns/forwarder2'],
@@ -550,7 +477,7 @@ define([
 					invalidMessage: _invalidLDAPBase
 				}, {
 					type: TextBox,
-					name: 'hostOrFQDN',
+					name: 'hostname',
 					label: _('Hostname or fully qualified domain name'),
 					visible: false,
 					required: true,
@@ -558,19 +485,19 @@ define([
 					invalidMessage: _invalidHostOrFQDNMessage
 				}, {
 					type: PasswordInputBox,
-					name: 'password',
+					name: 'root_password',
 					label: _('Local root password'),
 					visible: false,
 					required: true
 				}, {
 					type: CheckBox,
-					name: 'dhcpIP',
+					name: '_dhcpIP',
 					label: _('Obtain IP address automatically (DHCP)'),
 					labelConf: { style: 'margin-top: 2em;' },
 					onChange: lang.hitch(this, '_disableNetworkAddressWidgets')
 				}, {
 					type: TextBox,
-					name: 'ip1',
+					name: '_ip1',
 					label: _('IPv4 address/IPv6 address ({interface})'),
 					inlineLabel: '',
 					value: '',
@@ -579,14 +506,14 @@ define([
 					validator: _validateIPAddress
 				}, {
 					type: TextBox,
-					name: 'netmask1',
+					name: '_netmask1',
 					label: _('IPv4 net mask/IPv6 prefix ({interface})'),
 					inlineLabel: '',
 					invalidMessage: _invalidIPAddressMessage,
 					validator: _validateIPAddress
 				}, {
 					type: TextBox,
-					name: 'ip2',
+					name: '_ip2',
 					label: _('IPv4 address/IPv6 address ({interface})'),
 					inlineLabel: '',
 					value: '',
@@ -596,7 +523,7 @@ define([
 					validator: _validateIPAddress
 				}, {
 					type: TextBox,
-					name: 'netmask2',
+					name: '_netmask2',
 					label: _('IPv4 net mask/IPv6 prefix ({interface})'),
 					inlineLabel: '',
 					visible: false,
@@ -604,7 +531,7 @@ define([
 					validator: _validateIPAddress
 				}, {
 					type: TextBox,
-					name: 'ip3',
+					name: '_ip3',
 					label: _('IPv4 address/IPv6 address ({interface})'),
 					inlineLabel: '',
 					visible: false,
@@ -614,7 +541,7 @@ define([
 					validator: _validateIPAddress
 				}, {
 					type: TextBox,
-					name: 'netmask3',
+					name: '_netmask3',
 					label: _('IPv4 net mask/IPv6 prefix ({interface})'),
 					inlineLabel: '',
 					visible: false,
@@ -622,7 +549,7 @@ define([
 					validator: _validateIPAddress
 				}, {
 					type: TextBox,
-					name: 'ip4',
+					name: '_ip4',
 					label: _('IPv4 address/IPv6 address ({interface})'),
 					inlineLabel: '',
 					visible: false,
@@ -632,7 +559,7 @@ define([
 					validator: _validateIPAddress
 				}, {
 					type: TextBox,
-					name: 'netmask4',
+					name: '_netmask4',
 					label: _('IPv4 net mask/IPv6 prefix ({interface})'),
 					inlineLabel: '',
 					visible: false,
@@ -727,8 +654,8 @@ define([
 		_disableNetworkAddressWidgets: function(disable) {
 			var idx = 0;
 			for (idx = 1; idx <= 3; ++idx) {
-				this.getWidget('network', 'ip' + idx).set('disabled', disable);
-				this.getWidget('network', 'netmask' + idx).set('disabled', disable);
+				this.getWidget('network', '_ip' + idx).set('disabled', disable);
+				this.getWidget('network', '_netmask' + idx).set('disabled', disable);
 			}
 			this.getWidget('network', 'gateway').set('disabled', disable);
 		},
@@ -752,7 +679,7 @@ define([
 		_setupPasswordBoxes: function() {
 			// change width to 1/2
 			array.forEach(['user-master', 'network'], function(ipage) {
-				var passwordWidget = this.getWidget(ipage, 'password');
+				var passwordWidget = this.getWidget(ipage, 'root_password');
 				array.forEach([passwordWidget._firstWidget, passwordWidget._secondWidget], function(iwidget) {
 					domClass.remove(iwidget.domNode, 'umcSize-One');
 					domClass.add(iwidget.domNode, 'umcSize-Half');
@@ -773,7 +700,7 @@ define([
 		},
 
 		_setupCitySearch: function() {
-			var searchWidget = this.getWidget('welcome', 'search');
+			var searchWidget = this.getWidget('welcome', '_search');
 			searchWidget.watch('item', lang.hitch(this, function(attr, oldval, newval) {
 				this._updateCityInfo(newval);
 			}));
@@ -796,7 +723,7 @@ define([
 					label: _('Software component'),
 					formatter: lang.hitch(this, function(value, idx) {
 						var item = this._gallery._grid.getItem(idx);
-						return lang.replace('<div>{name}</div><div style="color:#818181;">{description}</div>', item);
+						return lang.replace('<div>{name}</div><div style="color:#818181;">{account/description}</div>', item);
 					})
 				}, {
 					name: 'longdescription',
@@ -849,8 +776,8 @@ define([
 				devices = ['eth0'];
 			}
 			array.forEach(devices, function(idev, i) {
-				var ipWidget = this.getWidget('network', 'ip' + (i + 1));
-				var maskWidget = this.getWidget('network', 'netmask' + (i + 1));
+				var ipWidget = this.getWidget('network', '_ip' + (i + 1));
+				var maskWidget = this.getWidget('network', '_netmask' + (i + 1));
 				var conf = { 'interface': idev };
 				ipWidget.set('label', lang.replace(ipWidget.get('label'), conf));
 				ipWidget.set('visible', true);
@@ -917,12 +844,12 @@ define([
 			var hostname = this._randomHostName();
 			var fqdn = lang.replace('{0}.{1}.local', [hostname, organization]);
 			this.getWidget('network', 'fqdn').set('value', fqdn);
-			this.getWidget('network', 'hostOrFQDN').set('value', hostname);
+			this.getWidget('network', 'hostname').set('value', hostname);
 			var description = _('Domain administrator account');
 			if (_organization) {
 				description = _('Domain administrator account for %s', _organization);
 			}
-			this.getWidget('user-master', 'description').set('value', description);
+			this.getWidget('user-master', 'account/description').set('value', description);
 		},
 
 		_updateLDAPBase: function(fqdn) {
@@ -941,37 +868,37 @@ define([
 				helpMaster: true,
 				helpNonMaster: false,
 				fqdn: true,
-				hostOrFQDN: false,
+				hostname: false,
 				ldapBase: true,
-				password: false,
+				root_password: false,
 				nameserver1: false,
 				nameserver2: false,
 				'dns/forwarder1': true,
 				'dns/forwarder2': true
 			};
 			var role = this._getRole();
-			if (role == 'backup' || role == 'slave') {
+			if (role == '_roleBackup' || role == '_roleSlave') {
 				visibilities = {
 					helpMaster: false,
 					helpNonMaster: true,
 					fqdn: false,
-					hostOrFQDN: true,
+					hostname: true,
 					ldapBase: false,
-					password: true,
+					root_password: true,
 					nameserver1: true,
 					nameserver2: true,
 					'dns/forwarder1': true,
 					'dns/forwarder2': true
 				};
 			}
-			else if (role == 'member') {
+			else if (role == '_roleMember') {
 				visibilities = {
 					helpMaster: false,
 					helpNonMaster: true,
 					fqdn: false,
-					hostOrFQDN: true,
+					hostname: true,
 					ldapBase: false,
-					password: true,
+					root_password: true,
 					nameserver1: true,
 					nameserver2: true,
 					'dns/forwarder1': false,
@@ -1052,7 +979,7 @@ define([
 			if (isIPv4Address) {
 				var ipParts = ip.split('.');
 				var netmask = '255.255.255.0';
-				var netmaskWidget = this.getWidget(pageName, 'netmask' + idx);
+				var netmaskWidget = this.getWidget(pageName, '_netmask' + idx);
 				netmaskWidget.set('value', netmask);
 
 				if (idx == 1) {
@@ -1077,11 +1004,11 @@ define([
 		},
 
 		_getRole: function() {
-			var createDomain = this.getWidget('role', 'createDomain').get('value');
+			var createDomain = this.getWidget('role', '_createDomain').get('value');
 			if (createDomain) {
 				return 'master';
 			}
-			var role = array.filter(['backup', 'slave', 'member'], function(irole) {
+			var role = array.filter(['_roleSackup', '_roleSlave', '_roleMember'], function(irole) {
 				return this.getWidget('role-nonmaster', irole).get('value');
 			}, this);
 			if (!role.length) {
@@ -1091,7 +1018,7 @@ define([
 		},
 
 		_isRoleMaster: function() {
-			if (this.getWidget('createDomain').get('value')) {
+			if (this.getWidget('_createDomain').get('value')) {
 				return true;
 			}
 			return false;
@@ -1141,7 +1068,7 @@ define([
 				return isValid;
 			}
 			if (pageName == 'user-master' || pageName == 'network') {
-				var passwordWidget = this.getWidget(pageName, 'password');
+				var passwordWidget = this.getWidget(pageName, 'root_password');
 				var password = passwordWidget.get('value');
 				if (passwordWidget.get('visible') && password.length < 8) {
 					dialog.alert(_('The root password is too short. For security reasons, your password must contain at least 8 characters.'));
@@ -1189,7 +1116,7 @@ define([
 			return this._forcePageTemporarily(nextPage);
 		},
 
-		previous: function(pageName) {
+		previous: function() {
 			// disallow page changing more than every 500 milliseconds (Bug #27734)
 			if (this._forcedPage) {
 				return this._forcedPage;
@@ -1197,15 +1124,7 @@ define([
 			return this._forcePageTemporarily(this.inherited(arguments));
 		},
 
-		hasNext: function(pageName) {
-			return this.inherited(arguments);
-		},
-
-		hasPrevious: function(pageName) {
-			return this.inherited(arguments);
-		},
-
-		canCancel: function(pageName) {
+		canCancel: function() {
 			return false;
 		},
 
