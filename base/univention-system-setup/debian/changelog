@@ -1,3 +1,9 @@
+univention-system-setup (8.0.2-0) unstable; urgency=low
+
+  * Bug #34484: [WIP] fixed jshint warnings, auto values for ssl UCR variables
+
+ -- Florian Best <best@univention.de>  Thu, 17 Jul 2014 10:41:13 +0200
+
 univention-system-setup (8.0.1-0) unstable; urgency=low
 
   * merge svn 51886:51890

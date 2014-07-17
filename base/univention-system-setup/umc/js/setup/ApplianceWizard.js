@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define require console*/
 
 define([
 	"dojo/_base/kernel",
@@ -42,47 +42,27 @@ define([
 	"dojo/keys",
 	"dojo/topic",
 	"dojo/Deferred",
-	"dojo/when",
-	"dojo/promise/all",
-	"dojo/data/ObjectStore",
 	"dojo/store/Memory",
-	"dojo/store/Observable",
 	"dijit/form/Select",
 	"dijit/form/ComboBox",
-	"dijit/form/DropDownButton",
-	"dijit/DropDownMenu",
-	"dijit/MenuItem",
-	"dijit/layout/BorderContainer",
 	"dijit/Tooltip",
 	"dojox/html/styles",
-	"dojox/geo/charting/Map",
-	"dojo/has!touch?dojox/geo/charting/TouchInteractionSupport:dojox/geo/charting/MouseInteractionSupport",
-	"dojox/geo/charting/KeyboardInteractionSupport",
 	"umc/dialog",
 	"umc/tools",
-	"umc/store",
-	"umc/widgets/ContainerWidget",
-	"umc/widgets/Page",
-	"umc/widgets/Form",
-	"umc/widgets/ExpandingTitlePane",
-	"umc/widgets/Module",
 	"umc/widgets/TextBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/ComboBox",
-	"umc/widgets/Uploader",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/widgets/TitlePane",
 	"umc/widgets/PasswordInputBox",
-	"umc/widgets/MultiInput",
 	"umc/widgets/Wizard",
-	"umc/widgets/GalleryPane",
 	"umc/widgets/Grid",
 	"umc/widgets/RadioButton",
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, query, domConstruct, domClass, on, Evented, keys, topic, Deferred, when, all, ObjectStore, Memory, Observable, Select, DijitComboBox, DropDownButton, DropDownMenu, MenuItem, BorderContainer, Tooltip, styles, Map, Interaction, Keyboard, dialog, tools, store, ContainerWidget, Page, Form, ExpandingTitlePane, Module, TextBox, CheckBox, ComboBox, Uploader, Text, Button, TitlePane, PasswordInputBox, MultiInput, Wizard, GalleryPane, Grid, RadioButton, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, query, domConstruct, domClass, on, Evented, keys, topic, Deferred, Memory, Select, DijitComboBox, Tooltip, styles, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, Wizard, Grid, RadioButton, i18nTools, _) {
 	var modulePath = require.toUrl('umc/modules/setup');
 	styles.insertCssRule('.umcIconInfo', lang.replace('background-image: url({0}/info-icon.png); width: 16px; height: 16px;', [modulePath]));
 	styles.insertCssRule('.setupLangField', 'vertical-align: middle; margin: 1px 0 1px 5px;');
@@ -104,7 +84,7 @@ define([
 		);
 	});
 
-	var _Grid = declare('umc.modules.setup.ApplianceWizard', [Grid], {
+	var _Grid = declare('umc.modules.setup.ApplianceWizard', Grid, {
 		_onRowClick: function(evt) {
 			if (evt.cellIndex === 0) {
 				// the checkbox cell was pressed, this does already the wanted behavior
@@ -115,9 +95,9 @@ define([
 		}
 	});
 
-	var _CityStore = declare(Evented, {
+	var _CityStore = declare('umc.modules.setup.CityStore', Evented, {
 		lastResult: [],
-		query: function(query, options) {
+		query: function(query) {
 			this.emit('searching', {});
 			var pattern = query.label.toString();
 			if (pattern.length) {
@@ -228,13 +208,11 @@ define([
 
 	var _regDN = /^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$/;
 
-	var _invalidPasswordMessage = _('A minimum length of 8 characters is required for the password.');
-
-	var _regEmailAddress = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+	var _regEmailAddress = /^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/;
 	var _invalidEmailAddressMessage = _('Invalid email address!<br>Expected format is:<i>mail@example.com</i>');
-	_validateEmailAddress = function(email) {
+	var _validateEmailAddress = function(email) {
 		var isEmailAddress = _regEmailAddress.test(email);
-		var acceptEmtpy = !email && !this.required
+		var acceptEmtpy = !email && !this.required;
 		return acceptEmtpy || isEmailAddress;
 	};
 
@@ -242,34 +220,34 @@ define([
 	var _validateIPAddress = function(ip) {
 		var isIPv4Address = _regIPv4.test(ip);
 		var isIPv6Address = _regIPv6.test(ip);
-		var acceptEmtpy = !ip && !this.required
+		var acceptEmtpy = !ip && !this.required;
 		return acceptEmtpy || isIPv4Address || isIPv6Address;
 	};
 
 	var _validateHostname = function(hostname) {
 		var isFQDN = _regFQDN.test(hostname);
 		var hasNoDots = hostname.indexOf('.') < 0;
-		var acceptEmtpy = !hostname && !this.required
-		return acceptEmtpy || (isFQDN && hasNoDots)
+		var acceptEmtpy = !hostname && !this.required;
+		return acceptEmtpy || (isFQDN && hasNoDots);
 	};
 
 	var _invalidFQDNMessage = _('Invalid fully qualified domain name!<br>Expected format: <i>hostname.mydomain.local</i>');
 	var _validateFQDN = function(fqdn) {
 		var isFQDN = _regFQDN.test(fqdn);
 		var hasEnoughParts = fqdn.split('.').length >= 3;
-		var acceptEmtpy = !fqdn && !this.required
+		var acceptEmtpy = !fqdn && !this.required;
 		return acceptEmtpy || (isFQDN && hasEnoughParts);
 	};
 
 	var _invalidHostOrFQDNMessage = _('Invalid hostname or fully qualified domain name!<br>Expected format: <i>myhost</i> or <i>hostname.mydomain.local</i>');
 	var _validateHostOrFQDN = function(hostOrFQDN) {
-		var acceptEmtpy = !hostOrFQDN && !this.required
+		var acceptEmtpy = !hostOrFQDN && !this.required;
 		return acceptEmtpy || _validateFQDN(hostOrFQDN) || _validateHostname(hostOrFQDN);
 	};
 
 	var _invalidLDAPBase = _('Invalid LDAP base!<br>Expected format: dc=mydomain,dc=local');
 	var _validateLDAPBase = function(ldapBase) {
-		var acceptEmtpy = !ldapBase && !this.required
+		var acceptEmtpy = !ldapBase && !this.required;
 		return acceptEmtpy || _regDN.test(ldapBase);
 	};
 
@@ -484,7 +462,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('<p>Enter profile information and a password for your administrator account.</p><p>The password is mandatory, it will be used for the domain administrator as well as for the local superuser <i>root</i>.</p>'),
+					content: _('<p>Enter profile information and a password for your administrator account.</p><p>The password is mandatory, it will be used for the domain administrator as well as for the local superuser <i>root</i>.</p>')
 				}, {
 					type: TextBox,
 					name: 'organization',
@@ -541,8 +519,8 @@ define([
 					['ip4', 'netmask4'],
 					'gateway',
 					['nameserver1', 'nameserver2'],
-					['forwarder1', 'forwarder2'],
-					'proxy',
+					['dns/forwarder1', 'dns/forwarder2'],
+					'proxy/http',
 					'configureProxySettings'
 				],
 				widgets: [{
@@ -683,7 +661,7 @@ define([
 					validator: _validateIPAddress
 				}, {
 					type: TextBox,
-					name: 'forwarder1',
+					name: 'dns/forwarder1',
 					label: _('Preferred external name server'),
 					visible: false,
 					required: true,
@@ -691,7 +669,7 @@ define([
 					validator: _validateIPAddress
 				}, {
 					type: TextBox,
-					name: 'forwarder2',
+					name: 'dns/forwarder2',
 					label: _('Alternate external name server'),
 					visible: false,
 					invalidMessage: _invalidIPAddressMessage,
@@ -705,7 +683,7 @@ define([
 					content: ''
 				}, {
 					type: TextBox,
-					name: 'proxy',
+					name: 'proxy/http',
 					label: _('HTTP proxy (e.g., <i>http://proxy.mydomain.local:3128</i>)'),
 					visible: false
 				}]
@@ -756,7 +734,7 @@ define([
 		},
 
 		configureProxySettings: function() {
-			this.getWidget('network', 'proxy').set('visible', true);
+			this.getWidget('network', 'proxy/http').set('visible', true);
 			this.getWidget('network', 'configureProxySettings').set('visible', false);
 		},
 
@@ -837,7 +815,7 @@ define([
 				}],
 				query: {pattern:"*"},
 				'class': 'umcUCSSetupSoftwareGrid',
-				footerFormatter: function(nItems, nItemsTotal) {
+				footerFormatter: function(nItems) {
 					if (!nItems) {
 						return _('No additional software component will be installed.');
 					}
@@ -883,19 +861,16 @@ define([
 
 		_setLocaleValues: function(data) {
 			if (data.timezone) {
-				var timezoneWidget = this.getWidget('locale', 'timezone');
-				timezoneWidget.setInitialValue(data.timezone);
+				this.getWidget('locale', 'timezone').setInitialValue(data.timezone);
 			}
 			if (data.ipv4_nameserver) {
-				var forwarderWidget = this.getWidget('network', 'forwarder1').set('value', data.ipv4_nameserver);
+				this.getWidget('network', 'dns/forwarder1').set('value', data.ipv4_nameserver);
 			}
 			if (data.locale) {
-				var localeWidget = this.getWidget('locale', 'locale/default');
-				localeWidget.setInitialValue(data.locale);
+				this.getWidget('locale', 'locale/default').setInitialValue(data.locale);
 			}
 			if (data.keyboard) {
-				var layoutWidget = this.getWidget('locale', 'locale/keymap');
-				layoutWidget.setInitialValue(data.keyboard);
+				this.getWidget('locale', 'locale/keymap').setInitialValue(data.keyboard);
 			}
 		},
 
@@ -971,9 +946,9 @@ define([
 				password: false,
 				nameserver1: false,
 				nameserver2: false,
-				forwarder1: true,
-				forwarder2: true
-			}
+				'dns/forwarder1': true,
+				'dns/forwarder2': true
+			};
 			var role = this._getRole();
 			if (role == 'backup' || role == 'slave') {
 				visibilities = {
@@ -985,9 +960,9 @@ define([
 					password: true,
 					nameserver1: true,
 					nameserver2: true,
-					forwarder1: true,
-					forwarder2: true
-				}
+					'dns/forwarder1': true,
+					'dns/forwarder2': true
+				};
 			}
 			else if (role == 'member') {
 				visibilities = {
@@ -999,9 +974,9 @@ define([
 					password: true,
 					nameserver1: true,
 					nameserver2: true,
-					forwarder1: false,
-					forwarder2: false
-				}
+					'dns/forwarder1': false,
+					'dns/forwarder2': false
+				};
 			}
 			tools.forIn(visibilities, function(iid, ivisible) {
 				var iwidget = this.getWidget('network', iid);
@@ -1034,7 +1009,7 @@ define([
 				var localeWidget = this.getWidget('locale', 'locale/default');
 				var locale = city.default_lang + '_' + city.country;
 				array.some(localeWidget.getAllItems(), function(ilocale) {
-					if (ilocale.id.indexOf(locale) == 0) {
+					if (ilocale.id.indexOf(locale) === 0) {
 						// found matching locale -> break loop
 						city.locale = ilocale.id;
 						defaultLang = ilocale.label;
@@ -1239,7 +1214,7 @@ define([
 		},
 
 		getValues: function() {
-			var vals = {};
+			var _vals = {};
 			array.forEach(this.pages, function(ipageConf) {
 				if (this.isPageVisible(ipageConf.name)) {
 					var ipage = this.getPage(ipageConf.name);
@@ -1249,11 +1224,14 @@ define([
 					tools.forIn(ipage._form._widgets, function(iname, iwidget) {
 						var val = iwidget.get('value');
 						if (iwidget.get('visible') && val !== undefined) {
-							vals[iname] = iwidget.get('value');
+							_vals[iname] = iwidget.get('value');
 						}
 					});
 				}
 			}, this);
+
+			var countryCode = _vals['locale/default'];
+			var vals = _vals;
 			return vals;
 		}
 	});
