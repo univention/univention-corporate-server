@@ -1,3 +1,9 @@
+univention-management-console (7.0.0-4) unstable; urgency=low
+
+  * Bug #35145: remove obsolete things
+
+ -- Florian Best <best@univention.de>  Thu, 17 Jul 2014 16:05:49 +0200
+
 univention-management-console (7.0.0-3) unstable; urgency=low
 
   * Bug #35145: remove obsolete things

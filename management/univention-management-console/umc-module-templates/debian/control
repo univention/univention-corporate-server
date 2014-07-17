@@ -14,7 +14,6 @@ Package: PACKAGENAME
 Architecture: all
 Depends: ${misc:Depends},
  univention-management-console-server,
- devscripts
 Description: MODULEDESC
  MODULEDESC
  .
