@@ -1,3 +1,10 @@
+univention-system-setup (8.0.2-1) unstable; urgency=low
+
+  * Bug #35145: Bug #35267: remove dependency and build-dependency on
+  	univention-installer-modules as the package is obsolete
+
+ -- Florian Best <best@univention.de>  Thu, 17 Jul 2014 10:42:48 +0200
+
 univention-system-setup (8.0.2-0) unstable; urgency=low
 
   * Bug #34484: [WIP] fixed jshint warnings, auto values for ssl UCR variables

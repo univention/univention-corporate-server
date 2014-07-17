@@ -16,7 +16,6 @@ Build-Depends: debhelper (>= 7.0.50~),
  python-univention-management-console,
  python-imaging,
  python-simplejson,
- univention-installer-modules,
  unzip
 XS-Python-Version: 2.6, 2.7
 
@@ -24,7 +23,6 @@ Package: univention-system-setup
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  univention-config (>= 8.0-2),
- univention-installer-modules,
  univention-ipcalc,
  whois,
  passwd,
@@ -81,7 +79,6 @@ Package: univention-management-console-module-setup
 Architecture: all
 Depends: univention-management-console-server,
  univention-directory-manager-tools (>> 7.0.147),
- univention-installer-modules,
  univention-system-setup (= ${source:Version}),
  univention-updater,
  univention-management-console-module-lib,
