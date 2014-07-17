@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (1.0.10-27) unstable; urgency=medium
+
+  * Move fix_gpo_container_names code to check_gpo_presence (Bug #34776)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Jul 2014 16:16:04 +0200
+
 univention-management-console-module-adtakeover (1.0.10-26) unstable; urgency=medium
 
   * Move fix_gpo_container_names code to fix_sysvol_acls (Bug #34776)

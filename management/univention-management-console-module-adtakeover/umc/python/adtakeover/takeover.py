@@ -1379,53 +1379,6 @@ class AD_Takeover_Finalize():
 
 	def fix_sysvol_acls(self):
 
-		## first try to fix AD case issue "6AC1786C-016F-11D2-945F-00C04fB984F9".
-		msgs = self.samdb.search(base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
-							expression="(objectClass=groupPolicyContainer)",
-							attrs=["cn", "gPCFileSysPath"])
-		for obj in msgs:
-			name = obj["cn"][0]
-			if name.upper() == name:
-				continue
-
-			change = ldb.Message()
-			change.dn = ldb.Dn(self.samdb, dn=str(obj.dn))
-			if "gPCFileSysPath" in obj:
-				basedirname = '/var/lib/samba/sysvol/%s/Policies' % self.ucr["domainname"]
-				subdirname = obj["gPCFileSysPath"][0].split("\\")[-1]
-				if not os.path.exists(os.path.join(basedirname, subdirname)) and \
-					os.path.exists(os.path.join(basedirname, subdirname.replace(name, name.upper()))):
-					new_gPCFileSysPath = obj["gPCFileSysPath"][0].replace(name, name.upper())
-					change["gPCFileSysPath"] = ldb.MessageElement(new_gPCFileSysPath, ldb.FLAG_MOD_REPLACE, "gPCFileSysPath")
-					self.samdb.modify(change)
-				else:
-					log.warn("GPO %s path %s not found" % (obj.dn, obj["gPCFileSysPath"][0],))
-
-				## check for similar object of different case:
-				msgs2 = self.samdb.search(base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
-									expression="(&(objectClass=groupPolicyContainer)(cn=%s))" % (name,),
-									attrs=["cn", "gPCFileSysPath"])
-				if len(msgs2) > 1:
-					for obj2 in msgs2:
-						name2 = obj2["cn"][0]
-						if name2.upper() != name2:
-							## only consider upper case objects here.
-							continue
-						if name2 == name:
-							## obsolete, but better safe than sorry
-							continue
-						if "gPCFileSysPath" in obj2 and obj2["gPCFileSysPath"][0] != new_gPCFileSysPath:
-							log.warn("GPO object %s and %s look similar, but their gPCFileSysPath differ, leaving them untouched." % (obj.dn, obj2.dn))
-							log.warn("Probably %s should be obsolete?" % (obj2.dn,))
-							continue
-						try:
-							log.info("Removing %s from SAM database." % (obj2.dn,))
-							log.info("Keeping similar object %s." % (obj.dn,))
-							self.samdb.delete(obj2.dn)
-						except:
-							log.debug("Removal of object %s from Samba4 SAM database failed. See %s for details." % (obj2.dn, LOGFILE_NAME,))
-							log.debug(traceback.format_exc())
-						
 		## Backup current NTACLs on sysvol
 		p = subprocess.Popen(["getfattr", "-m", "-", "-d", "-R", SYSVOL_PATH], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		(stdout, stderr) = p.communicate()
@@ -1731,6 +1684,55 @@ def check_gpo_presence():
 		lp.load('/dev/null')
 
 	samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(lp), lp=lp)
+
+	## first try to fix AD case issue "6AC1786C-016F-11D2-945F-00C04fB984F9".
+	msgs = samdb.search(base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
+						expression="(objectClass=groupPolicyContainer)",
+						attrs=["cn", "gPCFileSysPath"])
+	for obj in msgs:
+		name = obj["cn"][0]
+		if name.upper() == name:
+			continue
+
+		change = ldb.Message()
+		change.dn = ldb.Dn(samdb, dn=str(obj.dn))
+		if "gPCFileSysPath" in obj:
+			basedirname = '/var/lib/samba/sysvol/%s/Policies' % ucr["domainname"]
+			subdirname = obj["gPCFileSysPath"][0].split("\\")[-1]
+			if not os.path.exists(os.path.join(basedirname, subdirname)) and \
+				os.path.exists(os.path.join(basedirname, subdirname.replace(name, name.upper()))):
+				new_gPCFileSysPath = obj["gPCFileSysPath"][0].replace(name, name.upper())
+				change["gPCFileSysPath"] = ldb.MessageElement(new_gPCFileSysPath, ldb.FLAG_MOD_REPLACE, "gPCFileSysPath")
+				samdb.modify(change)
+			else:
+				log.warn("GPO %s path %s not found" % (obj.dn, obj["gPCFileSysPath"][0],))
+
+			## check for similar object of different case:
+			msgs2 = samdb.search(base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
+								expression="(&(objectClass=groupPolicyContainer)(cn=%s))" % (name,),
+								attrs=["cn", "gPCFileSysPath"])
+			if len(msgs2) > 1:
+				for obj2 in msgs2:
+					name2 = obj2["cn"][0]
+					if name2.upper() != name2:
+						## only consider upper case objects here.
+						continue
+					if name2 == name:
+						## obsolete, but better safe than sorry
+						continue
+					if "gPCFileSysPath" in obj2 and obj2["gPCFileSysPath"][0] != new_gPCFileSysPath:
+						log.warn("GPO object %s and %s look similar, but their gPCFileSysPath differ, leaving them untouched." % (obj.dn, obj2.dn))
+						log.warn("Probably %s should be obsolete?" % (obj2.dn,))
+						continue
+					try:
+						log.info("Removing %s from SAM database." % (obj2.dn,))
+						log.info("Keeping similar object %s." % (obj.dn,))
+						samdb.delete(obj2.dn)
+					except:
+						log.debug("Removal of object %s from Samba4 SAM database failed. See %s for details." % (obj2.dn, LOGFILE_NAME,))
+						log.debug(traceback.format_exc())
+						
+	## next check versions
 	msgs = samdb.search(base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
 						expression="(objectClass=groupPolicyContainer)",
 						attrs=["cn", "gPCFileSysPath", "versionNumber"])
