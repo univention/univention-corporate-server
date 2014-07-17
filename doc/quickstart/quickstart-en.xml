@@ -178,8 +178,7 @@
   <title>UCS updates / Installing additional software</title>
 
   <para>
-	Release or errata updates (security updates and critical bugfixes) can be installed in the UMC
-	module <guimenu>Online updates</guimenu>.
+	UCS updates can be installed in the UMC module <guimenu>Online updates</guimenu>.
   </para>
 
   <para>
@@ -239,8 +238,9 @@
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Windows clients can join an AD-compatible Windows domain provided by the Samba
-		  component. Further information on setting up Samba and the domain join of Windows clients
+		  Windows clients can join an AD-compatible Windows domain provided by the <emphasis>Active
+		  Directory compatible domain controller</emphasis> component (implemented using the software Samba).
+		  Further information on setting up Samba and the domain join of Windows clients
 		  can be found in the UCS manual <biblioref linkend="ucs-winjoin"/>.
 		</simpara></listitem>
 
@@ -255,9 +255,54 @@
 		  centrally administrated Linux-based desktop. Further information can be found in the UCC
 		  manual <biblioref linkend="ucc-manual"/>.
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  Ubuntu systems <biblioref linkend="ubuntu-join"/> and other Linux distributions like
+		  Debian, SuSE or Red Hat can also be integrated into the domain <biblioref linkend="integrate-other-linux"/>.
+		</simpara></listitem>
+
+
 	  </itemizedlist>
 	</para>
 </chapter>
+
+<chapter id="quickstart:extend">
+  <title>Further expansion of the domain</title>
+
+  <para>
+	This quickstart guide only provides an entry into UCS. UCS is very scalable, additional services
+	can simply be installed on additional systems. This domain join is described in <biblioref
+	linkend="ucs-join"/>.
+  </para>
+
+  <para>
+	UCS offers various additional services which are covered by the UCS license and which can be
+	integrated at a later point in time:
+
+	<itemizedlist>
+	  <listitem><simpara>
+		Single-sign-on with web services using a SAML identity provider <biblioref linkend="wiki-saml"/>
+	  </simpara></listitem>
+	  
+	  <listitem><simpara>
+		IP management using DHCP <biblioref linkend="ucs-dhcp"/>
+	  </simpara></listitem>
+	  
+	  <listitem><simpara>
+		Web proxy for caching and policy management / virus scan <biblioref linkend="ucs-proxy"/>
+	  </simpara></listitem>
+	  
+	  <listitem><simpara>
+		Service monitoring with Nagios <biblioref linkend="ucs-nagios"/>
+	  </simpara></listitem>
+	  
+	  <listitem><simpara>
+		Virtualisation with KVM / Xen <biblioref linkend="ucs-uvmm"/>
+	  </simpara></listitem>
+	</itemizedlist>
+  </para>
+</chapter>
+
 
 <chapter id="quickstart:furtherinfo">
   <title>Further information</title>
@@ -300,6 +345,16 @@
   <bibliomixed id="ucs-winjoin"/>
   <bibliomixed id="ucs-macjoin"/>
   <bibliomixed id="ucc-manual"/>
+  <bibliomixed id="ext-doc-inst"/>
+  <bibliomixed id="ucs-uvmm"/>
+  <bibliomixed id="ucs-proxy"/>
+  <bibliomixed id="ucs-nagios"/>
+  <bibliomixed id="ucs-dhcp"/>
+  <bibliomixed id="ubuntu-join"/>
+  <bibliomixed id="ucs-udm"/>
+  <bibliomixed id="ucs-join"/>
+  <bibliomixed id="wiki-saml"/>
+  <bibliomixed id="integrate-other-linux"/>
 </bibliography>
 
 <?dbhtml-include href="../stylesheets/piwik.html"?>

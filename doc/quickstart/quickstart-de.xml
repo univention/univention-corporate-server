@@ -176,7 +176,7 @@
   <title>UCS-Updates / Installation weiterer Software</title>
 
   <para>
-	UCS-Release- oder Errata-Updates (Sicherheits-Updates und kritische Bugfixes) können über das
+	UCS-Updates (Sicherheits-Updates und kritische Bugfixes) können über das
 	&ucsUMC;-Modul <guimenu>Online Updates</guimenu> installiert werden.
   </para>
 
@@ -239,9 +239,10 @@
 	<itemizedlist>
 	  <listitem><simpara>
 		Windows-Clients können einer AD-kompatible Windows-Domäne beitreten, die durch die
-		Komponente Samba bereitgestellt wird. Weitere Informationen zur Einrichtung von Samba und
-		dem Domänenbeitritt von Windows-Clients findet sich im UCS-Handbuch <biblioref linkend="ucs-winjoin"/>.
-
+		Komponente <emphasis>Active Directory-kompatibler Domänencontroller</emphasis> (umgesetzt
+		durch die Software Samba) bereitgestellt wird. Weitere Informationen zur Einrichtung von
+		Samba und dem Domänenbeitritt von Windows-Clients findet sich im UCS-Handbuch <biblioref
+		linkend="ucs-winjoin"/>.
 	  </simpara></listitem>
 	  
 	  <listitem><simpara>
@@ -255,10 +256,55 @@
 		Corporate Client aus dem Univention App Center installiert werden. Weitere Informationen
 		finden sich im UCC-Handbuch <biblioref linkend="ucc-manual"/>.
 	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Ubuntu-Systeme <biblioref linkend="ubuntu-join"/> und andere Linux-Distributionen wie
+		Debian, SuSE oder Red Hat können ebenfalls in die Domäne integriert werden <biblioref
+		linkend="integrate-other-linux"/>.
+	  </simpara></listitem>
+
 	</itemizedlist>
 	
   </para>
 </chapter>
+
+<chapter id="quickstart:extend">
+  <title>Weiterer Ausbau der Domäne</title>
+
+  <para>
+	Dieser Quickstart Guide beschreibt nur einen Einsteig in UCS. UCS ist sehr skalierbar, weitere
+	Dienste können einfach auf weiteren Systemen installiert werden. Der Domänenbeitritt weiterer
+	UCS-Server ist in <biblioref linkend="ucs-join"/> beschrieben.
+  </para>
+
+  <para>
+	Darüberhinaus bietet UCS eine Vielfalt von weiteren Komponenten, die durch die UCS-Lizenz
+	bereits abgedeckt sind und zu einem späteren Zeitpunkt integriert werden können, z.B.
+
+	<itemizedlist>
+	  <listitem><simpara>
+		Single Sign On mit Webdiensten über einen SAML Identity Providers <biblioref linkend="wiki-saml"/>
+	  </simpara></listitem>
+	  
+	  <listitem><simpara>
+		IP-Management mit DHCP <biblioref linkend="ucs-dhcp"/>
+	  </simpara></listitem>
+	  
+	  <listitem><simpara>
+		Web-Proxy für Caching und Policy Management/Virenscan <biblioref linkend="ucs-proxy"/>
+	  </simpara></listitem>
+	  
+	  <listitem><simpara>
+		Service-Überwachung mit Nagios <biblioref linkend="ucs-nagios"/>
+	  </simpara></listitem>
+	  
+	  <listitem><simpara>
+		Virtualisierung mit KVM/Xen <biblioref linkend="ucs-uvmm"/>
+	  </simpara></listitem>
+	</itemizedlist>
+  </para>
+</chapter>
+
 
 <chapter id="quickstart:furtherinfo">
   <title>Weitere Informationen</title>
@@ -302,6 +348,16 @@
   <bibliomixed id="ucs-winjoin"/>
   <bibliomixed id="ucs-macjoin"/>
   <bibliomixed id="ucc-manual"/>
+  <bibliomixed id="ext-doc-inst"/>
+  <bibliomixed id="ucs-uvmm"/>
+  <bibliomixed id="ucs-proxy"/>
+  <bibliomixed id="ucs-nagios"/>
+  <bibliomixed id="ucs-dhcp"/>
+  <bibliomixed id="ubuntu-join"/>
+  <bibliomixed id="ucs-udm"/>
+  <bibliomixed id="ucs-join"/>
+  <bibliomixed id="wiki-saml"/>
+  <bibliomixed id="integrate-other-linux"/>
 </bibliography>
 
 <?dbhtml-include href="../stylesheets/piwik.html"?>
