@@ -7,7 +7,7 @@ import os
 import base64
 import ConfigParser
 
-COMMAND_DIR="./vbs"
+COMMAND_DIR = "/usr/share/ucs-windows-tools/vbs/"
 
 class WinExe:
 
