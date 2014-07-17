@@ -16,6 +16,8 @@ Build-Depends: debhelper,
  libndr-standard-dev,
  libgensec0,
  libnetapi0,
+ libc6-dev,
+ mingw32-runtime,
  python
 
 Package: winexe

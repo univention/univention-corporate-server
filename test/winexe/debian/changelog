@@ -1,3 +1,9 @@
+winexe (1.1.0-6) unstable; urgency=low
+
+  * added mingw32-runtime, libc6-dev to build dependencies (Bug #34572) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Jul 2014 10:35:13 +0200
+
 winexe (1.1.0-5) unstable; urgency=low
 
   * added libnetapi0 to build dependencies (Bug #34572) 
