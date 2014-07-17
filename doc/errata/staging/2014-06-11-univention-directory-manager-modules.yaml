@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-directory-manager-modules
-fix: 9.0.76-15.1214.201407091611
+fix: 9.0.76-16.1215.201407171853
 version: [2]
 desc: |
  This update fixes several issues:
@@ -20,4 +20,5 @@ desc: |
    Active Directory domain.
  * The script "proof_uniqueMembers" will no more crash on empty uniqueMember
    attributes.
-bug: [33120, 34037, 34200, 34250, 28630, 33174, 34092, 33030]
+ * The dns/alias name attribute is now limited to valid DNS labels.
+bug: [33120, 34037, 34200, 34250, 28630, 33174, 34092, 33030, 35254]
