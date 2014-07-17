@@ -1,0 +1,5 @@
+ucs-windows-tools (1.0.0-1) unstable; urgency=low
+
+  * initial release (Bug #35394) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Jul 2014 12:46:04 +0200

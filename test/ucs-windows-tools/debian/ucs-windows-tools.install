@@ -1,0 +1,6 @@
+lib/*.py usr/share/pyshared/univention/
+vbs/*.vbs usr/share/ucs-windows-tools/vbs/
+bin/ucs-windows-domain-join usr/bin/
+bin/ucs-windows-list-ad-users usr/bin/
+bin/ucs-windows-populate-ad usr/bin/
+bin/ucs-windows-run-command usr/bin/
