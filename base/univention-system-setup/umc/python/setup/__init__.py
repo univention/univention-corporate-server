@@ -217,6 +217,15 @@ class Instance(Base):
 		orgValues = util.load_values()
 		values = request.options.get('values', {})
 
+		if values['server/role'] == 'domaincontroller_master':
+			# add values for SSL UCR variables
+			default_locale = Locale(values['locale/default'])
+			values['ssl/state'] = default_locale.territory
+			values['ssl/locality'] = default_locale.territory
+			values['ssl/organization'] = values['organization']
+			values['ssl/organizationalunit'] = 'Univention Corporate Server'
+			values['ssl/email'] = 'ssl@{domainname}' % values
+
 		# determine new system role
 		oldrole = orgValues.get('server/role', '')
 		newrole = values.get('server/role', oldrole)
