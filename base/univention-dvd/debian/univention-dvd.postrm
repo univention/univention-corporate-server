@@ -32,7 +32,8 @@
 
 dpkg-divert --rename --quiet \
    --divert /usr/share/debian-cd/tools/make_disc_trees.pl.ORIG \
-   --package univention-dvd \
    --remove /usr/share/debian-cd/tools/make_disc_trees.pl
+
+#DEBHELPER#
 
 exit 0

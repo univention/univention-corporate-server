@@ -1,0 +1,13 @@
+apt-mirror-setup
+apt-setup-udeb
+choose-mirror
+choose-mirror-bin
+#
+debian-archive-keyring-udeb
+debian-edu-archive-keyring-udeb
+debian-ports-archive-keyring-udeb
+emdebian-archive-keyring-udeb
+#
+pkgsel
+#
+user-setup-udeb
