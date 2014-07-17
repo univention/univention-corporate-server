@@ -18,6 +18,7 @@ Build-Depends: debhelper,
  libnetapi0,
  libc6-dev,
  mingw32-runtime,
+ mingw-w64,
  python
 
 Package: winexe
