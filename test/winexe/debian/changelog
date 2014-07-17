@@ -1,0 +1,5 @@
+winexe (1.1.0-1) unstable; urgency=low
+
+  * initial release (Bug #34572) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Jul 2014 09:46:35 +0200
