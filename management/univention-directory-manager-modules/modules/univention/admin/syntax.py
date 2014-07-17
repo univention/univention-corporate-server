@@ -1196,6 +1196,9 @@ class reverseLookupZoneName(simple):
 	regex = re.compile(r'^((([0-9a-f]\.){1,31}ip6\.arpa)|(((([1-9]?[0-9])|(1[0-9]{0,2})|(2([0-4][0-9]|5[0-5])))\.){1,3}in-addr.arpa))$')
 	error_message = _("The name of a reverse zone for IPv4 consists of the reversed subnet address followed by .in-addr.arpa (example: \"0.168.192.in-addr.arpa\") or for IPv6 in nibble format followed by .ip6.arpa (example: \"0.0.0.0.0.0.1.0.8.b.d.0.1.0.0.2.ip6.arpa\")")
 
+class dnsLabel(simple):
+	regex = re.compile(r'^[0-9A-Za-z]([0-9A-Za-z-]{0,61}[0-9A-Za-z])?$')
+
 class dnsZone(simple):
 	_re_label = r'[0-9A-Za-z]([0-9A-Za-z-]{0,61}[0-9A-Za-z])?'
 	regex = re.compile(r'^(%s)(\.(%s))*$' % (_re_label, _re_label, ))

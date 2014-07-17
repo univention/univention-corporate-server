@@ -55,7 +55,7 @@ property_descriptions={
 	'name': univention.admin.property(
 			short_description=_('Alias'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.dnsLabel,
 			multivalue=0,
 			include_in_default_search=1,
 			options=[],

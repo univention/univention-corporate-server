@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.76-16) unstable; urgency=low
+
+  * limit possible characters in dns/alias (Bug #35254)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 17 Jul 2014 18:51:30 +0200
+
 univention-directory-manager-modules (9.0.76-15) unstable; urgency=low
 
   * proof_uniqueMembers: simplified last change (Bug #33030)
