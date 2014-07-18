@@ -1452,7 +1452,7 @@ define([
 
 		defer: function(func, waitingTime) {
 			// summary:
-			//		Defers the execution of the fiven function for a specified
+			//		Defers the execution of the given function for a specified
 			//		amount of milliseconds.
 			// func: Function
 			// waitingTime: Integer
