@@ -1,0 +1,17 @@
+#!/bin/sh
+
+. /usr/share/debconf/confmodule
+
+db_progress START 0 6 di-univention-system-setup/progress/title
+
+for i in univention-system-setup univention-management-console univention-management-console-server ; do
+	db_subst di-univention-system-setup/progress/step_install PKG "$i"
+	db_progress INFO di-univention-system-setup/progress/step_install
+	apt-install $i
+done
+db_progress STOP
+
+db_input critical di-univention-system-setup/foo
+db_go
+
+exit 0

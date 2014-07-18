@@ -1,0 +1,15 @@
+Source: di-univention-system-setup
+Section: debian-installer
+Priority: standard
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 9), 
+ po-debconf (>= 0.5.0)
+
+Package: di-univention-system-setup
+Architecture: i386 amd64
+XB-Subarchitecture: ${subarch}
+Provides: bootable-system
+Depends: cdebconf-udeb, kernel-installer, di-utils, installed-base, created-fstab, bootable-system
+XB-Installer-Menu-Item: 7650
+Package-Type: udeb
+Description: Install Univention System Setup on disk
