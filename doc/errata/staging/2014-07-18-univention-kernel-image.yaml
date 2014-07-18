@@ -1,0 +1,13 @@
+product: ucs
+release: "3.2"
+version: [1,2]
+scope: ucs_3.2-0-errata3.2-2
+src: univention-kernel-image
+fix: 7.0.0-14.55.201407180759
+desc: |
+ This update fixes a local privilege escalation in the handling of 
+ L2TP sockets in the Linux kernel.
+note: This is the second part of the fix, which updates the meta package
+bug: [35226]
+cve:
+ - CVE-2014-4943
