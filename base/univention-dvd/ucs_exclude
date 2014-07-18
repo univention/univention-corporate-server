@@ -11,3 +11,5 @@ emdebian-archive-keyring-udeb
 pkgsel
 #
 user-setup-udeb
+#
+lilo-installer

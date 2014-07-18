@@ -1,3 +1,9 @@
+univention-dvd (0.2.0-3) unstable; urgency=low
+
+  * Bug #35384,35385,35372,35375: Fix path
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Jul 2014 14:50:12 +0200
+
 univention-dvd (0.2.0-2) unstable; urgency=low
 
   * Bug #35384,35385,35372,35375 d-i: disable modules
