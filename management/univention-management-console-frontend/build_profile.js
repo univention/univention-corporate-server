@@ -62,7 +62,7 @@ var profile = (function() {
 			location: "tmp/xstyle"
 		}],
 
-		optimize : "shrinksafe.keepLines",
+		optimize : "closure",
 		//localeList : "de-de,en-us",
 		cssOptimize: "comments.keepLines",
 		copyTests: false,

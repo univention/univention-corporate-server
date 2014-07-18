@@ -104,7 +104,7 @@ define([
 				{ type: 'Text', name: 'empty1', content: '' },
 				{ type: 'Text', name: 'empty2', content: '' },
 				{ type: 'Text', name: 'empty3', content: '' },
-				{ type: 'Text', name: 'empty4', content: '' },
+				{ type: 'Text', name: 'empty4', content: '' }
 			] );
 			
 			array.forEach( [ 'Setgid', 'Stickybit' ], lang.hitch( this, function( item ) {
