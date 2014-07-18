@@ -3,6 +3,7 @@
           "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 
 <!ENTITY migration SYSTEM "migration-de.xml">
+<!ENTITY planning SYSTEM "planning-de.xml">
 
 <!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
 
@@ -19,6 +20,7 @@
   </revhistory>
 </bookinfo>
 
+  &planning;
   &migration;
 
   <bibliography>

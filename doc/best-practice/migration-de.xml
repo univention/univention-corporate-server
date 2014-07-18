@@ -1,4 +1,4 @@
-<chapter>
+<chapter id="bestpractice:migration">
   <title>Migration einer Active Directory-Domäne nach &ucsUCS;</title>
   <section>
 	<title>Einleitung</title>
@@ -119,32 +119,6 @@
 	</section>
 
 
-	<section id="bestpractice:migration:test">
-	  <title>Testlauf einer Migration</title>
-	  <para>
-		Die hier beschriebene Migration kann komplett vorab getestet werden. Dies ist sinnvoll, um
-		potentielle Probleme vorab zu ermitteln und ein Zeitfenster für die Migration ankündigen zu
-		können:
-
-		<itemizedlist>
-		  <listitem><simpara>
-			Wenn der AD-Server virtualisiert ist, kann ein Clone des AD-Servers migriert werden.
-		  </simpara></listitem>
-
-		  <listitem><simpara>
-			Wird die AD-Migration im AD-Takeover an der Stelle abgebrochen wird, an der normalerweise der
-			AD-Server heruntergefahren würde, können alle Funktionen wie Domänenanmeldungen, GPOs
-			etc. trotzdem getestet werden. Die während des Takeovers eingerichtete Replikation der
-			Verzeichnisdaten ist unidirektional von AD nach UCS, d.h. wenn während der Testphase
-			Änderungen in der &ucsUMC; durchgeführt werden, werden diese nicht an das AD übertragen.
-			Wird ein AD-Takeover für eine Testmigration abgebrochen, sollte das Rechnerkonto des
-			UCS-Servers vor der eigentlichen produktiven Migration aus den Rechnerkonten des Active
-			Directory gelöscht werden.
-		  </simpara></listitem>
-		</itemizedlist>
-	  </para>
-	</section>
-
 	<section id="bestpractice:migration:single:services">
 	  <title>Migration der Dienste des AD-Systems</title>
 
@@ -210,50 +184,101 @@
 
 	</section>
 
-	<section id="bestpractice:migration:extend">
-	  <title>Erweiterungen</title>
+
+  <section id="bestpractice:migration:distrib">
+	<title>Migration einer AD-Domäne mit mehreren Domänencontrollern</title>
+
+	<para>
+	  Der Ablauf einer Migration einer verteilten AD-Umgebung unterscheidet sich nur in einzelnen
+	  Aspekten von der Migration eines einzelnen AD-Servers. Dieser Abschnitt verweist daher
+	  tw. auf einzelne Sektionen dieser Dokumentation und zeigt nur die Unterschiede auf.
+	</para>
+
+	<section id="bestpractice:migration:distrib:planning">
+	  <title>Bestandsaufnahme und Planung</title>
+
 	  <para>
-		Die beschriebene Migration deckt die Basisdienste eine AD-Domäne ab. Darüberhinaus bietet
-		UCS eine Vielfalt von weiteren Komponenten, die durch die UCS-Lizenz bereits abgedeckt sind
-		und zu einem späteren Zeitpunkt in die migrierte Domäne integriert werden können, z.B.
+		Zuerst sollte eine Bestandsaufnahme der Windows-Server der zu migrierenden Domäne erfolgen:
 
 		<itemizedlist>
 		  <listitem><simpara>
-			Integration von Mac OS X-Systemen <biblioref linkend="ucs-macjoin"/>
+			Wieviele Domänencontroller gibt es? Welche Dienste laufen neben den Anmeldediensten auf
+			diesen Systemen (z.B. Datei- oder Druckdienste)=
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			Integration von Linux-Desktop auf Basis von Ubuntu <biblioref linkend="ubuntu-join"/>
-			oder Univention Corporate Client <biblioref linkend="ucc-manual"/>
+			Als nächstes sollte ermittelt werden, welcher der AD-Domänencontroller der primäre ist
+			und welches die FSMO-Rollen übernimmt. Dies ist in <biblioref linkend="microsoft-fsmo"/> beschrieben.
+		  </simpara></listitem>
+		</itemizedlist>
+
+		<listitem><simpara>
+		  Bei einer Migration können die AD-Domänencontroller auf die gleiche Anzahl
+		  Samba-Domänencontroller migriert werden. Es ist aber auch möglich bei etwa einer
+		  Migration auf neuere Hardware auch Systeme zu konsolidieren und die auf weniger
+		  Samba-Server zu migrieren als unter Active Directory.
+		</simpara></listitem>
+	  </para>
+	</section>
+
+	<section id="bestpractice:migration:distrib:ucsinstall">
+	  <title>Installation der UCS-Server</title>
+
+	  <para>
+		Zuerst wird der &ucsMaster; installiert, das erste System einer UCS-Domäne. Die Installation
+		erfolgt analog zur Single-Server-Umgebung wie in <xref
+		linkend="bestpractice:migration:single:ucsinstall"/> beschrieben.
+	  </para>
+
+	  <para>
+		Die weiteren Samba-Domänencontroller werden später hinzugefügt. Die UCS-Server, auf denen
+		Samba installiert werden soll, können schon vorab installiert und gejoint werden, der
+		Samba-Dienst darf aber nach erfolgter AD-Übernahme installiert werden.
+	  </para>
+	</section>
+
+	<section id="bestpractice:migration:distrib:services">
+	  <title>Migration der Dienste des AD-Systems</title>
+
+	  <para>
+		Die Anmelde-Dienste werden im Rahmen der AD-Übernahme migriert, andere Dienste auf den
+		AD-Domänencontrollern müssen vorher auf einen Member-Server migriert werden oder auf das
+		UCS-System. Die Vorgehensweise wird in <xref
+		linkend="bestpractice:migration:single:services"/> beschrieben.
+	  </para>
+	</section>
+
+	<section id="bestpractice:distrib:takeover">
+	  <title>Migration der AD-Domäne</title>
+
+	  <para>
+		Nun erfolgt die Migration des AD-Servers. Dies erfolgt in den folgenden Schritten:
+
+		<itemizedlist>
+		  <listitem><simpara>
+			Vor der Migration müssen alle AD-Domänencontroller, die nicht die FSMO-Rollen innehaben
+			(siehe <xref linkend="bestpractice:migration:single:planning"/>, abgeschaltet werden.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			Single Sign On mit Webdiensten über einen SAML Identity Providers <biblioref linkend="wiki-saml"/>
+			Nun wird der primäre AD-Domänencontroller auf den &ucsMaster; migriert. Dabei tritt das
+			UCS-System temporär der AD-Domäne bei, repliziert alle LDAP-Daten und werden die
+			Gruppenrichtliniendateien kopiert. Nach der Übernahme der FSMO-Rollen durch das
+			UCS-System wird der AD-Server abgeschaltet. Die Migration erfolgt über die App
+			Center-Applikation <emphasis>Active Directory Takeover</emphasis> und ist im
+			UCS-Handbuch (<biblioref linkend="ad-takeover"/>) ausführlich dokumentiert.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			IP-Management mit DHCP <biblioref linkend="ucs-dhcp"/>
-		  </simpara></listitem>
-
-		  <listitem><simpara>
-			Web-Proxy für Caching und Policy Management/Virenscan <biblioref linkend="ucs-proxy"/>
-		  </simpara></listitem>
-
-		  <listitem><simpara>
-			Service-Überwachung mit Nagios <biblioref linkend="ucs-nagios"/>
-		  </simpara></listitem>
-
-		  <listitem><simpara>
-			Virtualisierung mit KVM/Xen <biblioref linkend="ucs-uvmm"/>
+			Anschließend wird auf den UCS-Systemen, die zusätzlich als Domänencontroller betrieben
+			werden, Samba installiert. Die Verzeichnisdienst-Daten und das GPO-Verzeichnis wird
+			automatisch repliziert.
 		  </simpara></listitem>
 		</itemizedlist>
 	  </para>
 	</section>
-
-
-
-
   </section>
+
 
   <section id="bestpractice:migration:services">
 	<title>Migration von Diensten auf einem Windows-Server auf &ucsUCS;</title>
@@ -452,8 +477,72 @@
 	</section>
   </section>
 
-  <section id="bestpractice:migration:distrib">
-	<title>Migration einer AD-Domäne mit mehreren Domänencontrollern</title>
+	<section id="bestpractice:migration:test">
+	  <title>Testlauf einer Migration</title>
+	  <para>
+		Die hier beschriebene Migration kann komplett vorab getestet werden. Dies ist sinnvoll, um
+		potentielle Probleme vorab zu ermitteln und ein Zeitfenster für die Migration ankündigen zu
+		können:
+
+		<itemizedlist>
+		  <listitem><simpara>
+			Wenn der AD-Server virtualisiert ist, kann ein Clone des AD-Servers migriert werden.
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Wird die AD-Migration im AD-Takeover an der Stelle abgebrochen wird, an der normalerweise der
+			AD-Server heruntergefahren würde, können alle Funktionen wie Domänenanmeldungen, GPOs
+			etc. trotzdem getestet werden. Die während des Takeovers eingerichtete Replikation der
+			Verzeichnisdaten ist unidirektional von AD nach UCS, d.h. wenn während der Testphase
+			Änderungen in der &ucsUMC; durchgeführt werden, werden diese nicht an das AD übertragen.
+			Wird ein AD-Takeover für eine Testmigration abgebrochen, sollte das Rechnerkonto des
+			UCS-Servers vor der eigentlichen produktiven Migration aus den Rechnerkonten des Active
+			Directory gelöscht werden.
+		  </simpara></listitem>
+		</itemizedlist>
+	  </para>
+	</section>
+
+	<section id="bestpractice:migration:extend">
+	  <title>Erweiterungen</title>
+	  <para>
+		Die beschriebene Migration deckt die Basisdienste eine AD-Domäne ab. Darüberhinaus bietet
+		UCS eine Vielfalt von weiteren Komponenten, die durch die UCS-Lizenz bereits abgedeckt sind
+		und zu einem späteren Zeitpunkt in die migrierte Domäne integriert werden können, z.B.
+
+		<itemizedlist>
+		  <listitem><simpara>
+			Integration von Mac OS X-Systemen <biblioref linkend="ucs-macjoin"/>
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Integration von Linux-Desktop auf Basis von Ubuntu <biblioref linkend="ubuntu-join"/>
+			oder Univention Corporate Client <biblioref linkend="ucc-manual"/>
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Single Sign On mit Webdiensten über einen SAML Identity Providers <biblioref linkend="wiki-saml"/>
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			IP-Management mit DHCP <biblioref linkend="ucs-dhcp"/>
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Web-Proxy für Caching und Policy Management/Virenscan <biblioref linkend="ucs-proxy"/>
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Service-Überwachung mit Nagios <biblioref linkend="ucs-nagios"/>
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Virtualisierung mit KVM/Xen <biblioref linkend="ucs-uvmm"/>
+		  </simpara></listitem>
+		</itemizedlist>
+	  </para>
+	</section>
   </section>
+
 
 </chapter>
