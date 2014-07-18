@@ -173,6 +173,27 @@ class TestUMCSystem(object):
             utils.fail("Exception while making 'join/%s' request: %s"
                        % (request, exc))
 
+    def wait_rejoin_to_complete(self, poll_attempts):
+        """
+        Polls the join process via UMC 'join/running' request to make
+        sure joining is still going on, sleeps 10 secs after every poll
+        attempt, fails in case process still going after the given
+        'poll_attempts'. Returns when process is not reported as running.
+        """
+        for attempt in range(poll_attempts):
+            try:
+                request_result = self.Connection.request('join/running')
+                if request_result is None:
+                    utils.fail("No response on UMC 'join/running' request")
+                elif request_result is False:
+                    return
+            except Exception as exc:
+                utils.fail("Exception while making 'join/running' request: %s"
+                           % exc)
+            print "Waiting 10 seconds before next poll request..."
+            sleep(10)
+        utils.fail("Failed to wait for re-join process to complete")
+
     def check_service_presence(self, request_result, service_name):
         """
         Check if the service with 'service_name' was listed in the response

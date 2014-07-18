@@ -9,7 +9,6 @@
 
 import os
 import sys
-from time import sleep
 
 sys.path.insert(0, '.')
 from TestUMCSystemModule import TestUMCSystem
@@ -98,7 +97,7 @@ class TestUMCDomainJoinModule(TestUMCSystem):
                   "in the '%s'" % (test_script, script_link_path))
             self.link_join_script(test_script + '.inst',
                                   script_link_path + test_script + '.inst')
-            sleep(5)  # wait to make sure we get the correct script state
+            self.wait_rejoin_to_complete(5)  # check running state and wait
             test_script_state = self.get_join_script_state(test_script)
             if test_script_state:
                 utils.fail("The state of the join script '%s' is 'configured'"
@@ -110,7 +109,7 @@ class TestUMCDomainJoinModule(TestUMCSystem):
             print("Executing test join script '%s' via UMC request"
                   % test_script)
             self.make_join_request('run', script_names=[test_script])
-            sleep(5)  # wait to make sure we get the correct script state
+            self.wait_rejoin_to_complete(5)  # check running state and wait
             test_script_state = self.get_join_script_state(test_script)
             if not test_script_state:
                 utils.fail("The state of the join script '%s' 'configured' is"
@@ -125,7 +124,7 @@ class TestUMCDomainJoinModule(TestUMCSystem):
             self.make_join_request('run',
                                    script_names=[test_script],
                                    force=True)
-            sleep(5)  # wait to make sure we get the correct script state
+            self.wait_rejoin_to_complete(5)  # check running state and wait
             test_script_state = self.get_join_script_state(test_script)
             if not test_script_state:
                 utils.fail("The state of the join script '%s' 'configured' is"
@@ -145,7 +144,7 @@ class TestUMCDomainJoinModule(TestUMCSystem):
                                   script_link_path + test_script
                                   + '_copy2.inst')
             self.execute_pending_scripts()
-            sleep(5)  # wait to make sure we get the correct script state
+            self.wait_rejoin_to_complete(5)  # check running state and wait
             test_script_state = self.get_join_script_state(test_script
                                                            + '_copy1')
             if not test_script_state:
@@ -168,7 +167,6 @@ class TestUMCDomainJoinModule(TestUMCSystem):
                                          + '_copy1.inst')
             self.remove_join_script_link(script_link_path + test_script
                                          + '_copy2.inst')
-
             # Deleting test join script copies:
             self.delete_file(test_script + '_copy1.inst')
             self.delete_file(test_script + '_copy2.inst')

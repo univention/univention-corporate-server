@@ -10,7 +10,6 @@
 
 import sys
 from os import path
-from time import sleep
 
 sys.path.insert(0, '.')
 from TestUMCSystemModule import TestUMCSystem
@@ -38,27 +37,6 @@ class TestUMCDomainRejoin(TestUMCSystem):
             if File:
                 File.close()
 
-    def wait_rejoin_to_complete(self):
-        """
-        Polls the join process via UMC 'join/running' request to make
-        sure joining is still going on, sleeps 10 secs after every poll
-        attempt, fails in case process still going after 120 queries
-        (i.e. 20 mins). Returns when process is not reported as running.
-        """
-        for attempt in range(120):
-            try:
-                request_result = self.Connection.request('join/running')
-                if request_result is None:
-                    utils.fail("No response on UMC 'join/running' request")
-                elif request_result is False:
-                    return
-            except Exception as exc:
-                utils.fail("Exception while making 'join/running' request: %s"
-                           % exc)
-            print "Waiting 10 seconds before next poll request..."
-            sleep(10)
-        utils.fail("Failed to wait for re-join process to complete")
-
     def main(self):
         """
         A method to test the UMC domain complete rejoin
@@ -84,7 +62,7 @@ class TestUMCDomainRejoin(TestUMCSystem):
                                % result)
             self.make_join_request('join',
                                    hostname=self.UCR.get('ldap/master'))
-            self.wait_rejoin_to_complete()
+            self.wait_rejoin_to_complete(120)
             # check that all scripts are 'configured'==True after rejoin
             for result in self.make_join_scripts_query_request():
                 if not result.get('configured'):
