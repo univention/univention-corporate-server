@@ -64,6 +64,11 @@ define([
 		_setContentAttr: function(content) {
 			this.content = content;
 			this.contentNode.innerHTML = content;
+		},
+
+		isValid: function() {
+			// text is always valid
+			return true;
 		}
 	});
 });

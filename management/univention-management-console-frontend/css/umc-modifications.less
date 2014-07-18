@@ -31,46 +31,37 @@
 @import "variables";
 
 
-.dijitTextBox {
-	width: 25em;
-	margin-right: 10px;
-	vertical-align: middle;
-}
-
-.dijitTimeTextBox {
-	width: 8em!important; /*set hard value for umc/widgets/TimeBox; Bug #29789*/
-}
-
-.dijitInputInner {
+.umc .dijitInputInner {
 	-webkit-appearance: none;
 }
 
-.dijitSpinner .dijitSpinnerButtonContainer,
-.dijitComboBox .dijitArrowButtonContainer {
+.umc .dijitSpinner .dijitSpinnerButtonContainer,
+.umc .dijitSelect .dijitArrowButtonContainer,
+.umc .dijitComboBox .dijitArrowButtonContainer {
 	border-width: inherit; /* DEL */
 }
 
 /* 'body' wurde upstream auch  */
-.dijitAlignTop,
-.dijitAlignBottom,
-.dijitAlignLeft,
-.dijitAlignRight {
+.umc .dijitAlignTop,
+.umc .dijitAlignBottom,
+.umc .dijitAlignLeft,
+.umc .dijitAlignRight {
 	overflow: inherit; /* DEL */
 }
 
-.dijitTabContainerBottom-container,
-.dijitTabContainerTop-container,
-.dijitTabContainerLeft-container,
-.dijitTabContainerRight-container {
+.umc .dijitTabContainerBottom-container,
+.umc .dijitTabContainerTop-container,
+.umc .dijitTabContainerLeft-container,
+.umc .dijitTabContainerRight-container {
 	border: inherit; /* DEL */
 }
 
 
-.dijitTab .tabLabel {
+.umc .dijitTab .tabLabel {
 	font-size: 1.166em;
 }
 
-.dijitStackContainer-child {
+.umc .dijitStackContainer-child {
 	 border: inherit; /* DEL */
 }
 
@@ -102,8 +93,16 @@
   padding: 0.3em 0.25em 0.3em 0.25em !important;
 }
 
-.umc .dijitTextBox {
+.umc .dijitTextBox,
+.umc .dijitSelect {
 	margin-bottom: 10px;
+	width: 25em;
+	margin-right: 10px;
+	vertical-align: middle;
+}
+
+.umc .dijitTimeTextBox {
+	width: 8em!important; /*set hard value for umc/widgets/TimeBox; Bug #29789*/
 }
 
 .umc .umcLabelPaneCheckBox {
@@ -137,6 +136,12 @@
   background-image: url(form/images/umcHostInfoArrows.png);
 }
 
+.umc .dijitSelect .dijitArrowButton {
+  width: 21px;
+}
+
+.umc .dijitSelect .dijitArrowButtonInner,
+.umc .dijitSelectFocused .dijitArrowButton .dijitArrowButtonInner,
 .umc .dijitComboBox .dijitArrowButtonInner {
   background-position: -33px 53%;
   width: 21px;
@@ -144,35 +149,42 @@
   border: 0 none;
 }
 
+.umc .dijitSelect .dijitButtonNode,
 .umc .dijitComboBox .dijitButtonNode {
   background-image: url(form/images/formHighlight.png);
 }
 
+.umc .dijitSelect .dijitHasDropDownOpen,
 .umc .dijitComboBox .dijitHasDropDownOpen {
   background-position: 100% 0%; /* DEL */
   padding: 0; /* DEL */
 }
 
+.umc .dijitSelect .dijitHasDropDownOpen .dijitArrowButtonInner,
 .umc .dijitComboBox .dijitHasDropDownOpen .dijitArrowButtonInner {
   background-position: -68px 53%; /* DEL */
   border: 0 none; /*DEL*/
 }
 
 .umc .dijitComboBoxOpenOnClickHover .dijitArrowButtonInner,
+.umc .dijitSelectHover .dijitArrowButton .dijitArrowButtonInner,
 .umc .dijitComboBox .dijitDownArrowButtonHover .dijitArrowButtonInner {
   background-position: -68px 53%;
 }
 
+.umc .dijitSelectDisabled .dijitArrowButtonInner,
 .umc .dijitComboBoxDisabled .dijitArrowButtonInner {
   background-position: 2px 50%!important;
 }
 .umc .dijitDropDownButtonDisabled .dijitArrowButtonInner {
   background-position: -151px 50%!important;
 }
+.dj_borderbox .umc .dijitSelect .dijitHasDropDownOpen .dijitArrowButtonInner,
 .dj_borderbox .umc .dijitComboBox .dijitHasDropDownOpen .dijitArrowButtonInner {
   width: 21px; /* DEL */
 }
 
+.dj_borderbox .umc .dijitSelectFocused .dijitHasDropDownOpen .dijitArrowButtonInner,
 .dj_borderbox .umc .dijitComboBoxFocused .dijitHasDropDownOpen .dijitArrowButtonInner {
   width: 21px; /* DEL */
 }
@@ -314,7 +326,8 @@
 }
 
 .umc .dijitSelectFocused .dijitArrowButton {
-  background-color: @greenApple;
+  background-color: @grayAthens;
+  padding: 0;
 }
 
 /**

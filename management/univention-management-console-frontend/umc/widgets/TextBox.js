@@ -64,21 +64,43 @@ define([
 		inlineLabel: null,
 		_inlineLabelNode: null,
 
-		postCreate: function() {
-			this.inherited(arguments);
-			if (this.inlineLabel) {
-				this._inlineLabelNode = put(this.focusNode, '-span.umcInlineLabel', this.inlineLabel);
-				this.own(on(this._inlineLabelNode, 'click', lang.hitch(this, 'focus')));
-				this._updateInlineLabel();
-				this.on('keydown', lang.hitch(this, '_updateInlineLabel', 'keydown'));
-				this.on('focus', lang.hitch(this, '_updateInlineLabel', 'focus'));
-				this.on('blur', lang.hitch(this, '_updateInlineLabel', 'blur'));
-			}
+		_createInlineLabelNode: function(value) {
+			this._inlineLabelNode = put(this.focusNode, '-span.umcInlineLabel', value);
+			this.own(on(this._inlineLabelNode, 'click', lang.hitch(this, 'focus')));
 		},
 
-		_updateInlineLabel: function(eventType) {
+		_updateInlineLabelVisibility: function(eventType) {
 			var showInlineLabel = !this.get('value') && eventType != 'keydown';
 			put(this._inlineLabelNode, showInlineLabel ? '.umcEmptyValue' : '!umcEmptyValue');
+		},
+
+		_registerInlineLabelEvents: function() {
+			this.on('keydown', lang.hitch(this, '_updateInlineLabelVisibility', 'keydown'));
+			this.on('focus', lang.hitch(this, '_updateInlineLabelVisibility', 'focus'));
+			this.on('blur', lang.hitch(this, '_updateInlineLabelVisibility', 'blur'));
+		},
+
+		_setInlineLabelAttr: function(value) {
+			if (!this._inlineLabelNode) {
+				return;
+			}
+
+			// update node content
+			put(this._inlineLabelNode, '', {
+				innerHTML: value
+			});
+
+			// notify observers
+			this._set('inlineLabel', value);
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			if (this.inlineLabel !== null) {
+				this._createInlineLabelNode(this.inlineLabel);
+				this._registerInlineLabelEvents();
+				this._updateInlineLabelVisibility();
+			}
 		},
 
 		//FIXME: the name should be different from _loadValues, e.g., _dependencyUpdate,

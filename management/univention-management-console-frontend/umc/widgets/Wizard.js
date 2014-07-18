@@ -245,6 +245,14 @@ define([
 			}
 		},
 
+		isPageVisible: function(/*String*/ pageName) {
+			// summary:
+			//		Specifies whether a page is visible or not. The method will
+			//		be evaluated automatically next() and previous(). Defaults
+			//		to true.
+			return true;
+		},
+
 		next: function(/*String*/ pageName) {
 			// summary:
 			//		next() is called when the user requested to advance to the next page.
@@ -253,14 +261,21 @@ define([
 			//		indicates that the start page is requested.
 			//		By default the wizard implements a logic that takes the order as given
 			//		by the `pages` property.
+
+			// no pageName defined
 			if ((null === pageName || undefined === pageName) && this.pages.length) {
 				return this.pages[0].name;
 			}
+
 			var i = this._getPageIndex(pageName);
 			if (i < 0) {
+				// pageName does not exist
 				return pageName;
 			}
-			return this.pages[Math.min(i + 1, this.pages.length - 1)].name;
+
+			// find the next visible page
+			for (++i; i < this.pages.length && !this.isPageVisible(this.pages[i].name); ++i) { }
+			return this.pages[Math.min(i, this.pages.length - 1)].name;
 		},
 
 		hasPrevious: function(/*String*/ pageName) {
@@ -292,7 +307,10 @@ define([
 			if (i < 0) {
 				return pageName;
 			}
-			return this.pages[Math.max(i - 1, 0)].name;
+
+			// find the next visible page
+			for (--i; i >= 0 && !this.isPageVisible(this.pages[i].name); --i) { }
+			return this.pages[Math.max(i, 0)].name;
 		},
 
 		_finish: function(/*String*/ pageName) {

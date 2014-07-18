@@ -65,31 +65,32 @@
 				isDebug: false,
 				debugAtAllCosts: false,
 				locale: locale,
-				async: true
+				async: true,
+				deps: [],
+				callback: function() {
+					require(["dojo/parser", "umc/app", "umc/tools", "umc/widgets/ContainerWidget", "dojo/domReady!"], function(parser, app, tools) {
+						// parse the DOM tree
+						parser.parse();
+
+						// set the version of the UMC frontend
+						tools.status('version', '%VERSION%');
+
+						// start the application when everything has been loaded
+						app.start({
+							username: getQuery('username'),
+							password: getQuery('password'),
+							module: getQuery('module'),
+							flavor: getQuery('flavor'),
+							overview: getQuery('overview', true),
+							width: getQuery('width'),
+							displayUsername: getQuery('displayUsername', true)
+						});
+					});
+				}
 			};
 			//-->
 		</script>
-		<script type="text/javascript" src="js%HASH%/dojo/dojo.js%JSSUFFIX%"></script>
-		<script type="text/javascript">
-			require(["dojo/parser", "umc/app", "umc/tools", "umc/widgets/ContainerWidget", "dojo/domReady!"], function(parser, app, tools) {
-				// parse the DOM tree
-				parser.parse();
-
-				// set the version of the UMC frontend
-				tools.status('version', '%VERSION%');
-
-				// start the application when everything has been loaded
-				app.start({
-					username: getQuery('username'),
-					password: getQuery('password'),
-					module: getQuery('module'),
-					flavor: getQuery('flavor'),
-					overview: getQuery('overview', true),
-					width: getQuery('width'),
-					displayUsername: getQuery('displayUsername', true)
-				});
-			});
-		</script>
+		<script type="text/javascript" async src="js%HASH%/dojo/dojo.js%JSSUFFIX%"></script>
 	</head>
 	<body class="umc">
 		<div id="univentionLogoWrapper">
