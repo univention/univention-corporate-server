@@ -259,12 +259,12 @@ def ucs_addServiceToLocalUCSMaster(service):
 		log("ERROR: UDM command failed (%d)" % (p1.returncode,))
 		return
 
-def install_univention_samba():
+def install_univention_samba_ad_member():
 	pm = univention.lib.package_manager.PackageManager()
 	pm.update()
 	pm.noninteractive()
-	if not pm.is_installed('univention-samba'):
-		pm.install('univention-samba')
+	if not pm.is_installed('univention-samba-ad-member'):
+		pm.install('univention-samba-ad-member')
 
 def server_supports_ssl(server):
 	ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
@@ -350,8 +350,8 @@ def configure_ad_member(ad_server_ip, username, password, ucr=None):
 		os.chmod(bindpw_file, 0600)
 		f.write(password)
 
-	# install univention-samba
-	install_univention_samba()
+	# install univention-samba-ad-member
+	install_univention_samba_ad_member()
 
 	binddn = 'cn=%s,cn=users,%s' % (username, ad_domain_info["LDAP Base"])
 

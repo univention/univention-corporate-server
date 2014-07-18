@@ -257,7 +257,7 @@ def password_sync_kinit(connector, key, ucs_object):
 	
 	modlist = []
 	for attribute in attr.keys():
-		expected_value = attr[key]
+		expected_value = attr[attribute]
 		if ucs_result[0][1].has_key(attribute):
 			userPassword = ucs_result[0][1][attribute][0]
 			if userPassword != expected_value:
