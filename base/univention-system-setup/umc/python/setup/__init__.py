@@ -78,8 +78,8 @@ class Instance(Base):
 	def init( self ):
 		os.environ['LC_ALL'] = str(self.locale)
 		_locale.setlocale(_locale.LC_ALL, str(self.locale))
-			if util.is_system_joined():
-		self._preload_city_data()
+		if not util.is_system_joined():
+			self._preload_city_data()
 
 	def _preload_city_data(self):
 		util.get_city_data()

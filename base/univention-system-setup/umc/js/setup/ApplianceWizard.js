@@ -1064,6 +1064,23 @@ define([
 			this.getWidget('summary', 'info').set('content', msg);
 		},
 
+		_updateValidationPage: function(details) {
+
+		},
+
+		_validateWithServer: function() {
+			var vals = this.getValues();
+			return tools.umcpCommand('setup/validate', { values: vals }).then(lang.hitch(this, function(response) {
+				var allValid = array.every(response.result, function(ivalidation) {
+					return ivalidation.valid;
+				});
+				if (!allValid) {
+					this._updateValidationPage(response.result);
+				}
+				return allValid;
+			}));
+		},
+
 		_getRole: function() {
 			var createDomain = this.getWidget('role', '_createDomain').get('value');
 			if (createDomain) {
@@ -1153,19 +1170,29 @@ define([
 			if (this._forcedPage) {
 				return this._forcedPage;
 			}
+			topic.publish('/umc/actions', this.moduleID, 'wizard', pageName, 'next');
 
 			// validation of form fields
 			if (!this._validateForm(pageName)) {
 				return this._forcePageTemporarily(pageName);
 			}
 
-			// exceptions for specific pages
+			// extra handling for specific pages
+			var nextPage = this.inherited(arguments);
 			if (pageName == 'welcome-adapt-locale-settings') {
 				return this._forcePageTemporarily('locale');
 			}
-
-			// get the next visible page
-			var nextPage = this.inherited(arguments);
+			if (nextPage == 'validation') {
+				return this._validateWithServer().then(function(isValid) {
+					// jump to summary page if everything is fine...
+					// else display validation errors
+					return isValid ? 'summary' : 'validation';
+				}, function(err) {
+					// fallback -> the error will be displayed anyways...
+					// stay on the current page
+					return pageName;
+				});
+			}
 
 			// update display information
 			if (nextPage == 'network') {
@@ -1185,6 +1212,7 @@ define([
 			if (this._forcedPage) {
 				return this._forcedPage;
 			}
+			topic.publish('/umc/actions', this.moduleID, 'wizard', pageName, 'previous');
 			return this._forcePageTemporarily(this.inherited(arguments));
 		},
 
@@ -1192,13 +1220,13 @@ define([
 			return false;
 		},
 
-		hasNext: function(pageName) {
+/*		hasNext: function(pageName) {
 			var result = this.inherited(arguments);
 			if (pageName == 'error' || pageName == 'validation') {
 				return false;
 			}
 			return result;
-		},
+		},*/
 
 		onReload: function(newLocale) {
 			// event stub

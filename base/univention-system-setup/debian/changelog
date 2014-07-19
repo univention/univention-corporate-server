@@ -1,3 +1,11 @@
+univention-system-setup (7.0.69-21) unstable; urgency=medium
+
+  Bug #34484 [WIP]
+  * fixed indentation error
+  * perform server side validation
+
+ -- Alexander Kläser <klaeser@univention.de>  Sat, 19 Jul 2014 14:19:38 +0200
+
 univention-system-setup (7.0.69-20) unstable; urgency=medium
 
   * Bug #34484: [WIP] make sure that test cases can be run during build 
