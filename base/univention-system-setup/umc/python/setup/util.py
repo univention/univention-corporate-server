@@ -47,9 +47,20 @@ import csv
 import os.path
 import simplejson as json
 import random
+import dns.resolver
+import dns.reversename
 
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
+
+#try:
+#    # execute imports in try/except block as during build test scripts are
+#    # triggered that refer to the netconf python submodules... and this
+#    # reference triggers the import below
+from univention.management.console.modules.appcenter.app_center import Application
+from univention.lib.package_manager import PackageManager
+#except ImportError as e:
+#    MODULE.warn('Ignoring import error: %s' % e)
 
 ucr=univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -125,9 +136,6 @@ def load_values():
 	else:
 		values['timezone']=''
 
-	# get installed components
-	values['components'] = ' '.join([icomp['id'] for icomp in get_installed_components()])
-
 	return values
 
 def _xkeymap(keymap):
@@ -146,12 +154,66 @@ def _xkeymap(keymap):
 	fp.close()
 	return xkeymap
 
+def auto_complete_values_for_join(newValues):
+	# try to automatically determine the domain
+	if newValues['server/role'] != 'domaincontroller_master' and 'domainname' not in newValues and 'nameserver1' in newValues:
+		newValues['domainname'] = util.get_nameserver_domain(newValues['nameserver1'])
+		if not newValues['domainname']:
+			raise Exception(_('Cannot automatically determine the domain. Please specify the servers fully qualified domain name.'))
+
+	# add lists with all packages that should be removed/installed on the system
+	if 'components' in newValues:
+		selectedComponents = set(newValues.get('components', []))
+		currentComponents = set()
+		for iapp in get_apps():
+			if iapp['is_installed']:
+				for ipackages in (iapp['defaultpackages'], iapp['defaultpackagesmaster']):
+					currentComponents = currentComponents.union(ipackages)
+
+		# set of all available software packages
+		allComponents = set()
+		for iapp in get_apps():
+			for ipackages in (iapp['defaultpackages'], iapp['defaultpackagesmaster']):
+				allComponents = allComponents.union(ipackages)
+
+		# get all packages that shall be removed
+		removeComponents = list(allComponents & (currentComponents - selectedComponents))
+		newValues['packages_remove'] = ' '.join(removeComponents)
+
+		# get all packages that shall be installed
+		installComponents = list(allComponents & (selectedComponents - currentComponents))
+		newValues['packages_install'] = ' '.join(installComponents)
+
+	if 'locale/keymap' in newValues:
+		xkeymap = _xkeymap(newValues['locale/keymap'])
+		if xkeymap:
+			newValues['xorg/keyboard/options/XkbLayout'] = xkeymap['layout']
+			newValues['xorg/keyboard/options/XkbVariant'] = xkeymap['variant']
+
+	if newValues['server/role'] == 'domaincontroller_master':
+		# add newValues for SSL UCR variables
+		default_locale = Locale(newValues['locale/default'])
+		newValues['ssl/state'] = default_locale.territory
+		newValues['ssl/locality'] = default_locale.territory
+		newValues['ssl/organization'] = newValues['organization']
+		newValues['ssl/organizationalunit'] = 'Univention Corporate Server'
+		newValues['ssl/email'] = 'ssl@{domainname}' % newValues
+
+	if 'locale' not in newValues:
+		# auto set the locale variable if not specified
+		# make sure that en_US is supported in any case
+		newValues['locale'] = newValues['locale/default']
+		usLocale = 'en_US.UTF-8:UTF-8'
+		if usLocale not in newValues['locale']:
+			newValues['locale'] = '%s %s' % (newValues['locale'], usLocale)
+
+	if 'windows/domain' not in newValues:
+		newValues['windows/domain'] = util.domain2windowdomain(newValues.get('domainname'))
+
+	return newValues
 
 def pre_save(newValues):
 	'''Modify the final dict before saving it to the profile file.'''
-
-	# use new system role (or as fallback the current system role)
-	role = newValues.get('server/role', ucr.get('server/role'))
 
 	# network interfaces
 	from univention.management.console.modules.setup.network import Interfaces
@@ -160,34 +222,6 @@ def pre_save(newValues):
 		interfaces.from_dict(newValues.pop('interfaces'))
 		interfaces.check_consistency()
 		newValues.update(dict((key, value or '') for key, value in interfaces.to_ucr().iteritems()))
-
-	# add lists with all packages that should be removed/installed on the system
-	if 'components' in newValues:
-		regSpaces = re.compile(r'\s+')
-		selectedComponents = set(regSpaces.split(newValues.get('components', '')))
-		currentComponents = set([icomp['id'] for icomp in get_installed_components()])
-		allComponents = set([ icomp['id'] for icomp in get_components() ])
-
-		# get all packages that shall be removed
-		removeComponents = list(allComponents & (currentComponents - selectedComponents))
-		newValues['packages_remove'] = ' '.join([ i.replace(':', ' ') for i in removeComponents ])
-
-		allComponents = set([ icomp['id'] for icomp in get_components(role=role) ])
-
-		# get all packages that shall be installed
-		installComponents = list(allComponents & (selectedComponents - currentComponents))
-		newValues['packages_install'] = ' '.join([ i.replace(':', ' ') for i in installComponents ])
-
-#	if 'locale' in newValues:
-#		# js returns locale as list
-#		newValues['locale'] = ' '.join(newValues['locale'])
-
-	if 'locale/keymap' in newValues:
-		xkeymap = _xkeymap(newValues['locale/keymap'])
-		if xkeymap:
-			newValues['xorg/keyboard/options/XkbLayout'] = xkeymap['layout']
-			newValues['xorg/keyboard/options/XkbVariant'] = xkeymap['variant']
-
 
 def write_profile(values):
 	old_umask = os.umask(0177)
@@ -609,49 +643,30 @@ def dhclient(interface, timeout=None):
 	os.unlink(tempfilename)
 	return dhcp_dict
 
-#TODO: rewrite
-def get_components(role=None):
-	'''Returns a list of components that may be installed on the current system.'''
+_apps = None
+def get_apps():
+	global _apps
+	if _apps:
+		return _apps
 
-	# get all package sets that are available for the current system role
-	if not role:
-		role = ucr.get('server/role')
+	package_manager = PackageManager(
+		info_handler=MODULE.process,
+		step_handler=None,
+		error_handler=MODULE.warn,
+		lock=False,
+		always_noninteractive=True,
+	)
+	package_manager.set_finished() # currently not working. accepting new tasks
 
-	# reload for correct locale
-	pkglist = [ jpackage for icategory in []
-			for jpackage in icategory['Packages']
-			if 'all' in jpackage['Possible'] or role in jpackage['Possible'] ]
-
-	# filter whitelisted packages
-	whitelist = ucr.get('system/setup/packages/whitelist')
-	if whitelist:
-		whitelist = whitelist.split(' ')
-		pkglist = [ipkg for ipkg in pkglist if all(jpkg in whitelist for jpkg in ipkg['Packages'])]
-
-	# filter blacklisted packages
-	blacklist = ucr.get('system/setup/packages/blacklist')
-	if blacklist:
-		blacklist = blacklist.split(' ')
-		pkglist = [ipkg for ipkg in pkglist if not any(jpkg in blacklist for jpkg in ipkg['Packages'])]
-
-	# generate a unique ID for each component
-	for ipkg in pkglist:
-		ipkg['id'] = ':'.join(ipkg['Packages'])
-		ipkg[ 'Description' ] = ''#installer_i18n.translate( ipkg[ 'Description' ] )
-		ipkg[ 'Name' ] = ''#installer_i18n.translate( ipkg[ 'Name' ] )
-
-	return pkglist
-
-def get_installed_packages():
-	'''Returns a list of all installed packages on the system.'''
-	cache = apt.Cache()
-	return [ p.name for p in cache if p.is_installed ]
-
-def get_installed_components():
-	'''Returns a list of components that are currently fully installed on the system.'''
-	allPackages = set(get_installed_packages())
-	allComponents = get_components()
-	return [ icomp for icomp in allComponents if not len(set(icomp['Packages']) - allPackages) ]
+	# circumvent download of categories.ini file
+	Application._get_category_translations(fake=True)
+	try:
+		applications = Application.all(only_local=True)
+	except (urllib2.HTTPError, urllib2.URLError) as e:
+		# should not happen as we only access cached, local data
+		raise UMC_CommandError(_('Could not query App Center: %s') % e)
+	_apps = [iapp.to_dict(package_manager) for iapp in applications if iapp.get('withoutrepository')]
+	return _apps
 
 # from univention-installer/installer/modules/70_net.py
 def is_proxy(proxy):
@@ -722,8 +737,25 @@ def is_domainname(domainname):
 is_domainname.RE = re.compile(r'^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$', re.I)
 
 def is_windowsdomainname(domainname):
-	return is_windowsdomainname.RE.match(domainname) is not None
+	return is_windowsdomainname.RE.match(domainname) is not None and len(domainname) < 14
 is_windowsdomainname.RE = re.compile(r"^[A-Z](?:[A-Z0-9-]*[A-Z0-9])?$")
+
+def domain2windowdomain(domainname):
+	if '.' in domainname:
+		windomain = domainname.split('.')[0]
+	windomain = windomain.upper()
+
+	invalidChars = re.compile(r"^[^A-Z]*([A-Z0-9-]*?)[^A-Z0-9]*$")
+	match = invalidChars.match(windomain)
+	if match:
+		windomain = match.group(1)
+	else:
+		windomain = ''
+
+	if not windomain:
+		# fallback name
+		windomain = 'UCSDOMAIN'
+	return windomain
 
 def is_domaincontroller(domaincontroller):
 	return is_domaincontroller.RE.match(domaincontroller) is not None
@@ -736,6 +768,21 @@ def is_ascii(str):
 		return True
 	except:
 		return False
+
+def get_nameserver_domain(nameserver):
+	# register nameserver
+	resolver = dns.resolver.Resolver()
+	resolver.nameservers = [nameserver]
+
+	# perform a reverse lookup
+	reverse_address = dns.reversename.from_address(nameserver)
+	reverse_lookup = resolver.query(reverse_address, 'PTR')
+	if len(reverse_lookup):
+		fqdn = reverse_lookup[0]
+		parts = [i for i in fqdn.target.labels if i]
+		return '.'.join(parts[1:])
+	else:
+		return None
 
 def get_available_locales(pattern, category='language_en'):
 	'''Return a list of all available locales.'''

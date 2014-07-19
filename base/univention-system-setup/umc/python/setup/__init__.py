@@ -53,14 +53,6 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules.sanitizers import PatternSanitizer, StringSanitizer, IntegerSanitizer
 from univention.management.console.modules.decorators import sanitize, simple_response
 from univention.management.console.modules.setup.network import Interfaces, DeviceError
-try:
-    # execute imports in try/except block as during build test scripts are
-    # triggered that refer to the netconf python submodules... and this
-    # reference triggers the import below
-    from univention.management.console.modules.appcenter.app_center import Application
-    from univention.lib.package_manager import PackageManager
-except ImportError as e:
-    MODULE.warn('Ignoring import error: %s' % e)
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -86,17 +78,8 @@ class Instance(Base):
 	def init( self ):
 		os.environ['LC_ALL'] = str(self.locale)
 		_locale.setlocale(_locale.LC_ALL, str(self.locale))
-		self.package_manager = PackageManager(
-			info_handler=MODULE.process,
-			step_handler=None,
-			error_handler=MODULE.warn,
-			lock=False,
-			always_noninteractive=True,
-		)
-		self.package_manager.set_finished() # currently not working. accepting new tasks
-
-		if util.is_system_joined():
-			self._preload_city_data()
+			if util.is_system_joined():
+		self._preload_city_data()
 
 	def _preload_city_data(self):
 		util.get_city_data()
@@ -216,21 +199,13 @@ class Instance(Base):
 		# get old and new values
 		orgValues = util.load_values()
 		values = request.options.get('values', {})
-
-		if values['server/role'] == 'domaincontroller_master':
-			# add values for SSL UCR variables
-			default_locale = Locale(values['locale/default'])
-			values['ssl/state'] = default_locale.territory
-			values['ssl/locality'] = default_locale.territory
-			values['ssl/organization'] = values['organization']
-			values['ssl/organizationalunit'] = 'Univention Corporate Server'
-			values['ssl/email'] = 'ssl@{domainname}' % values
+		util.auto_complete_values_for_join(values)
 
 		# determine new system role
 		oldrole = orgValues.get('server/role', '')
 		newrole = values.get('server/role', oldrole)
 		if newrole == 'basesystem' or orgValues.get('joined'):
-			raise Exception( _('Base systems and already joined systems cannot be joined.') )
+			raise Exception(_('Base systems and already joined systems cannot be joined.'))
 
 		def _thread(request, obj, username, password):
 			# acquire the lock until the scripts have been executed
@@ -375,8 +350,7 @@ class Instance(Base):
 		_check('server/role', lambda x: not(orgValues.get('joined')) or (orgValues.get('server/role') == values.get('server/role')), _('The system role may not change on a system that has already joined to domain.'))
 
 		# basis
-		components = RE_SPACE.split(values.get('components', ''))
-		packages = set(reduce(lambda x, y: x + y, [ i.split(':') for i in components ]))
+		packages = set(values.get('components', []))
 
 		_check('hostname', util.is_hostname, _('The hostname is not a valid fully qualified domain name in lowercase (e.g. host.example.com).'))
 		_check('hostname', lambda x: len(x) <= 13, _('A valid NetBIOS name can not be longer than 13 characters. If Samba is installed, the hostname should be shortened.'), critical=('univention-samba' in packages or 'univention-samba4' in packages))
@@ -399,12 +373,13 @@ class Instance(Base):
 		_check('root_password', lambda x: len(x) >= 8, _("The root password is too short. For security reasons, your password must contain at least 8 characters."))
 		_check('root_password', util.is_ascii, _("The root password may only contain ascii characters."))
 
-		# ssl
+		# ssl + email
 		for ikey, iname in [('ssl/state', _('State')), ('ssl/locality', _('Location'))]:
 			_check(ikey, lambda x: len(x) <= 128, _('The following value is too long, only 128 characters allowed: %s') % iname)
-		for ikey, iname in [('ssl/organization', _('Organization')), ('ssl/organizationalunit', _('Business unit')), ('ssl/email', _('Email address'))]:
+		for ikey, iname in [('ssl/organization', _('Organization')), ('ssl/organizationalunit', _('Business unit')), ('ssl/email', _('Email address')), ('email_address', _('Email address'))]:
 			_check(ikey, lambda x: len(x) <= 64, _('The following value is too long, only 64 characters allowed: %s') % iname)
-		_check('ssl/email', lambda x: x.find('@') >= 0, _("Please enter a valid email address"))
+		for ikey in ['ssl/email', 'email_address']:
+			_check(ikey, lambda x: x.find('@') >= 0, _("Please enter a valid email address"))
 
 		# net
 		try:
@@ -640,17 +615,6 @@ class Instance(Base):
 
 	@simple_response
 	def apps_query(self):
-		# circumvent download of categories.ini file
-		Application._get_category_translations(fake=True)
-		try:
-			applications = Application.all(only_local=True)
-		except (urllib2.HTTPError, urllib2.URLError) as e:
-			raise UMC_CommandError(_('Could not query App Center: %s') % e)
-		result = []
-		for iapp in applications:
-			if iapp.get('withoutrepository') and iapp.allowed_on_local_server():
-				props = iapp.to_dict(self.package_manager)
-				result.append(props)
-		return result
+		return util.get_apps()
 
 

@@ -1,3 +1,19 @@
+univention-system-setup (7.0.69-19) unstable; urgency=medium
+
+  Bug #34484 [WIP]
+  * fixed reference to undefined
+  * fixed undefined description of apps
+  * added package dependencies
+  * added automatic DNS query of domain name
+  * ensure that wizard values are returned in the correct format for backend
+  * ensure that apps are displayed only for the selected server role
+  * replaced old software component handling from installer with apps
+  * read pre-configured DHCP settings + apply them to the network wizard page
+  * add backend-side auto completion of specific config values
+  * add UCS system activation via submitted email address in setup-join.sh
+
+ -- Alexander Kläser <klaeser@univention.de>  Sat, 19 Jul 2014 12:50:43 +0200
+
 univention-system-setup (7.0.69-18) unstable; urgency=medium
 
   Bug #34484 [WIP]

@@ -86,8 +86,10 @@ Depends: univention-management-console-server,
  univention-updater,
  univention-management-console-module-lib,
  univention-management-console-module-appcenter,
+ univention-management-console-frontend (>= 3.0.152-40),
  python-univention-lib,
  python-simplejson,
+ python-dnspython,
  python-apt
 Description: UMC module for Univention system setup
  This package contains the UMC module for the UCS System Setup.
