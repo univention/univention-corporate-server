@@ -47,20 +47,20 @@ import csv
 import os.path
 import simplejson as json
 import random
-import dns.resolver
-import dns.reversename
 
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
 
-#try:
-#    # execute imports in try/except block as during build test scripts are
-#    # triggered that refer to the netconf python submodules... and this
-#    # reference triggers the import below
-from univention.management.console.modules.appcenter.app_center import Application
-from univention.lib.package_manager import PackageManager
-#except ImportError as e:
-#    MODULE.warn('Ignoring import error: %s' % e)
+try:
+    # execute imports in try/except block as during build test scripts are
+    # triggered that refer to the netconf python submodules... and this
+    # reference triggers the import below
+	import dns.resolver
+	import dns.reversename
+	from univention.management.console.modules.appcenter.app_center import Application
+	from univention.lib.package_manager import PackageManager
+except ImportError as e:
+    MODULE.warn('Ignoring import error: %s' % e)
 
 ucr=univention.config_registry.ConfigRegistry()
 ucr.load()

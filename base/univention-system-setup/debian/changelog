@@ -1,3 +1,9 @@
+univention-system-setup (7.0.69-20) unstable; urgency=medium
+
+  * Bug #34484: [WIP] make sure that test cases can be run during build 
+
+ -- Alexander Kläser <klaeser@univention.de>  Sat, 19 Jul 2014 13:32:25 +0200
+
 univention-system-setup (7.0.69-19) unstable; urgency=medium
 
   Bug #34484 [WIP]

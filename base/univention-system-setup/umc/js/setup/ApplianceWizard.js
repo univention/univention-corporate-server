@@ -626,6 +626,15 @@ define([
 				headerText: _('Software configuration'),
 				helpText: _('<p>Select software components for installation on this system.</p><p>It is also possible to skip this step and to install components after the initial setup via the App Center. Most apps will be available after the UCS setup.</p>')
 			}, {
+				name: 'validation',
+				headerText: _('Invalid entries'),
+				helpText: _('The following entries could not be validated:'),
+				widgets: [{
+					type: Text,
+					name: 'info',
+					content: ''
+				}]
+			}, {
 				name: 'summary',
 				headerText: _('Confirm configuration settings'),
 				helpText: _('Please confirm the chosen UCS configuration:'),
@@ -1181,6 +1190,14 @@ define([
 
 		canCancel: function() {
 			return false;
+		},
+
+		hasNext: function(pageName) {
+			var result = this.inherited(arguments);
+			if (pageName == 'error' || pageName == 'validation') {
+				return false;
+			}
+			return result;
 		},
 
 		onReload: function(newLocale) {
