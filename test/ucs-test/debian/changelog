@@ -1,3 +1,10 @@
+ucs-test (4.0.166-60) unstable; urgency=low
+
+  * 00_base/47faillog_account-smb-krb: skip this test in S4 environment
+    (Bug #35014)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 19 Jul 2014 14:08:21 +0200
+
 ucs-test (4.0.166-59) unstable; urgency=low
 
   * 52_s4connector/022_concurrent_deletion_in_ucs: Try to emulate a
