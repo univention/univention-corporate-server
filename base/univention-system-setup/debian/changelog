@@ -1,3 +1,9 @@
+univention-system-setup (7.0.69-22) unstable; urgency=medium
+
+  * Bug #34484: [WIP] integration of server side validation + summary
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 21 Jul 2014 00:14:41 +0200
+
 univention-system-setup (7.0.69-21) unstable; urgency=medium
 
   Bug #34484 [WIP]

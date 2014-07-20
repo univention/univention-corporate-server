@@ -349,14 +349,11 @@ class Instance(Base):
 		# system role
 		_check('server/role', lambda x: not(orgValues.get('joined')) or (orgValues.get('server/role') == values.get('server/role')), _('The system role may not change on a system that has already joined to domain.'))
 
-		# basis
+		# host and domain name
 		packages = set(values.get('components', []))
-
 		_check('hostname', util.is_hostname, _('The hostname is not a valid fully qualified domain name in lowercase (e.g. host.example.com).'))
 		_check('hostname', lambda x: len(x) <= 13, _('A valid NetBIOS name can not be longer than 13 characters. If Samba is installed, the hostname should be shortened.'), critical=('univention-samba' in packages or 'univention-samba4' in packages))
-
 		_check('domainname', util.is_domainname, _("Please enter a valid fully qualified domain name in lowercase (e.g. host.example.com)."))
-
 		hostname = allValues.get('hostname')
 		domainname = allValues.get('domainname')
 		if len(hostname + domainname) >= 63:
@@ -364,12 +361,22 @@ class Instance(Base):
 		if hostname == domainname.split('.')[0]:
 			_append('domainname', _("Hostname is equal to domain name."))
 
+		# see whether the domain can be determined automatically
+		if not util.is_system_joined() and allValues['server/role'] != 'domaincontroller_master' and 'domainname' not in allValues:
+			if 'nameserver1' not in allValues:
+				_append('nameserver1', _('A domain name server needs to specified.'))
+			elif not util.get_nameserver_domain(allValues['nameserver1']):
+				_append('domainname', _('The domain cannot automatically be determined. Please specify the servers fully qualified domain name.'))
+
+		# windows domain
 		_check('windows/domain', lambda x: x == x.upper(), _("The windows domain name can only consist of upper case characters."))
 		_check('windows/domain', lambda x: len(x) < 14, _("The length of the windows domain name needs to be smaller than 14 characters."))
 		_check('windows/domain', util.is_windowsdomainname, _("The windows domain name is not valid."))
 
+		# LDAP base
 		_check('ldap/base', lambda x: x.find(' ') == -1, _("The LDAP base may not contain any blanks (e.g., dc=test,dc=net)."))
 
+		# root password
 		_check('root_password', lambda x: len(x) >= 8, _("The root password is too short. For security reasons, your password must contain at least 8 characters."))
 		_check('root_password', util.is_ascii, _("The root password may only contain ascii characters."))
 

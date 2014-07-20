@@ -64,7 +64,7 @@ define([
 	var modulePath = require.toUrl('umc/modules/setup');
 	styles.insertCssRule('.umcIconInfo', lang.replace('background-image: url({0}/info-icon.png); width: 16px; height: 16px;', [modulePath]));
 	styles.insertCssRule('.setupLangField', 'vertical-align: middle; margin: 1px 0 1px 5px;');
-	//styles.insertCssRule('.umc-setup-page .umcGalleryPane .umcGalleryItem', 'width: 405px;');
+	styles.insertCssRule('.umc-setup-page-listing li', 'padding-bottom: 0.75em;');
 	styles.insertCssRule('.umc-setup-page-software th .dojoxGridRowSelector', 'display: none;');
 	styles.insertCssRule('.umc-setup-page-software .umcUCSSetupSoftwareGrid', 'margin-left: 200px;');
 	styles.insertCssRule('.umc-setup-page-software .umcPageHelpText', 'margin-left: 200px;');
@@ -133,8 +133,6 @@ define([
 	var _regIPv6 = /^((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?$/;
 	var _regFQDN = /^(?=.{1,255}$)[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?(?:\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?)*\.?$/;
 
-	var _regDN = /^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$/;
-
 	var _regEmailAddress = /^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/;
 	var _invalidEmailAddressMessage = _('Invalid email address!<br>Expected format is:<i>mail@example.com</i>');
 	var _validateEmailAddress = function(email) {
@@ -177,6 +175,7 @@ define([
 		return acceptEmtpy || _validateFQDN(hostOrFQDN) || _validateHostname(hostOrFQDN);
 	};
 
+	var _regDN = /^([^=, ]+=[^=, ]+,)*[^=, ]+=[^=, ]+$/;
 	var _invalidLDAPBase = _('Invalid LDAP base!<br>Expected format: dc=mydomain,dc=local');
 	var _validateLDAPBase = function(ldapBase) {
 		ldapBase = ldapBase || '';
@@ -627,6 +626,7 @@ define([
 				helpText: _('<p>Select software components for installation on this system.</p><p>It is also possible to skip this step and to install components after the initial setup via the App Center. Most apps will be available after the UCS setup.</p>')
 			}, {
 				name: 'validation',
+				'class': 'umc-setup-page-listing',
 				headerText: _('Invalid entries'),
 				helpText: _('The following entries could not be validated:'),
 				widgets: [{
@@ -636,6 +636,7 @@ define([
 				}]
 			}, {
 				name: 'summary',
+				'class': 'umc-setup-page-listing',
 				headerText: _('Confirm configuration settings'),
 				helpText: _('Please confirm the chosen UCS configuration:'),
 				widgets: [{
@@ -743,7 +744,7 @@ define([
 		},
 
 		_getAppQuery: function() {
-			var serverRole = this._getSelectedServerRole()
+			var serverRole = this._getRole()
 			var query = {
 				// make sure that all software components are allowed for the
 				// specified server role
@@ -910,6 +911,7 @@ define([
 		},
 
 		_updateLDAPBase: function(fqdn) {
+			fqdn = fqdn.replace(/ /g, '');  // remove all spaces from fqdn
 			var fqdnParts = fqdn.split('.').slice(1);
 			var ldapBaseParts = array.map(fqdnParts, function(ipart) {
 				return 'dc=' + ipart;
@@ -934,7 +936,7 @@ define([
 				'dns/forwarder2': true
 			};
 			var role = this._getRole();
-			if (role == '_roleBackup' || role == '_roleSlave') {
+			if (role == 'domaincontroller_backup' || role == 'domaincontroller_slave') {
 				visibilities = {
 					helpMaster: false,
 					helpNonMaster: true,
@@ -948,7 +950,7 @@ define([
 					'dns/forwarder2': true
 				};
 			}
-			else if (role == '_roleMember') {
+			else if (role == 'memberserver') {
 				visibilities = {
 					helpMaster: false,
 					helpNonMaster: true,
@@ -1052,47 +1054,109 @@ define([
 			this._gallery.filter(this._getAppQuery());
 		},
 
-		_updateSummaryPage: function() {
-			var vals = this.getValues();
-			var msg = '';
-			if (vals.role) {
-				msg += lang.replace('<p><b>{txt}</b>: {role}</p>', {
-					txt: _('System role:'),
-					role: vals.role
-				});
+		_key2label: function(key) {
+			// special handling of keys
+			if (key == 'email_address') {
+				return _('Email address to activate UCS');
 			}
+
+			// find matching widget to given key
+			var widget = this.getWidget(key);
+			if (widget) {
+				return widget.label;
+			}
+
+			// special handling of remaining keys
+			if (key.indexOf('interfaces') === 0) {
+				return _('Network interfaces');
+			}
+			if (key == 'interfaces/primary') {
+				return _('Primary network interface');
+			}
+			if (key == 'domainname' || key == 'hostname') {
+				if (this._isRoleMaster()) {
+					return this.getWidget('network', '_fqdn').label;
+				}
+				return this.getWidget('network', 'hostname').label;
+			}
+			if (key == 'components') {
+				return this.getPage('software').headerText;
+			}
+			return null;
+		},
+
+		_updateSummaryPage: function() {
+			var _vals = this._gatherVisibleValues();
+			var vals = this.getValues();
+			var msg = '<ul>';
+
+			var _append = function() {
+				var label, value;
+				if (arguments.length == 1) {
+					label = arguments[0];
+					msg += '<li>' + label + '</li>';
+					return;
+				}
+				var label = arguments[0];
+				var value = arguments[1];
+				msg += '<li><b>' + label + '<b>: ' + value + '</li>';
+			};
+
+			if (vals['server/role'] == 'domaincontroller_master') {
+				_append(_('A new UCS domain will be created.'));
+			}
+			else {
+				var role = {
+					'domaincontroller_backup': _('DC Backup'),
+					'domaincontroller_slave': _('DC Slave'),
+					'memberserver': _('Member server')
+				}[vals['server/role']];
+				_append(_('This sytem will join an existing UCS domain in the role %s.', role));
+			}
+			msg += '</ul>';
 			this.getWidget('summary', 'info').set('content', msg);
+			console.log(msg);
 		},
 
 		_updateValidationPage: function(details) {
+			var msg = '<ul>';
+			array.forEach(details, function(ientry) {
+				if (ientry.valid) {
+					// ignore valid entries
+					return;
+				}
 
+				// prepare list item for invalid entry
+				msg += '<li>';
+				var label = this._key2label(ientry.key);
+				if (label) {
+					msg += '<b>' + label + ':</b><br/>';
+				}
+				msg += ientry.message;
+				msg += '</li>';
+			}, this);
+			msg += '</ul>';
+
+			// display validation information
+			this.getWidget('validation', 'info').set('content', msg);
 		},
 
 		_validateWithServer: function() {
 			var vals = this.getValues();
+			this.standby(true);
 			return tools.umcpCommand('setup/validate', { values: vals }).then(lang.hitch(this, function(response) {
-				var allValid = array.every(response.result, function(ivalidation) {
-					return ivalidation.valid;
+				this.standby(false);
+				var allValid = array.every(response.result, function(ientry) {
+					return ientry.valid;
 				});
 				if (!allValid) {
 					this._updateValidationPage(response.result);
 				}
 				return allValid;
+			}), lang.hitch(this, function(err) {
+				this.standby(false);
+				throw err;
 			}));
-		},
-
-		_getRole: function() {
-			var createDomain = this.getWidget('role', '_createDomain').get('value');
-			if (createDomain) {
-				return 'master';
-			}
-			var role = array.filter(['_roleBackup', '_roleSlave', '_roleMember'], function(irole) {
-				return this.getWidget('role-nonmaster', irole).get('value');
-			}, this);
-			if (!role.length) {
-				throw new Error('No role chosen!');
-			}
-			return role[0];
 		},
 
 		_isRoleMaster: function() {
@@ -1165,6 +1229,15 @@ define([
 			return pageName;
 		},
 
+		_updateButtons: function(pageName) {
+			this.inherited(arguments);
+			if (pageName == 'validation') {
+				var buttons = this._pages[pageName]._footerButtons;
+				domClass.add(buttons.next.domNode, 'dijitHidden');
+				domClass.add(buttons.previous.domNode, 'umcSubmitButton');
+			}
+		},
+
 		next: function(pageName) {
 			// disallow page changing more than every 500 milliseconds (Bug #27734)
 			if (this._forcedPage) {
@@ -1183,11 +1256,15 @@ define([
 				return this._forcePageTemporarily('locale');
 			}
 			if (nextPage == 'validation') {
-				return this._validateWithServer().then(function(isValid) {
+				return this._validateWithServer().then(lang.hitch(this, function(isValid) {
 					// jump to summary page if everything is fine...
 					// else display validation errors
-					return isValid ? 'summary' : 'validation';
-				}, function(err) {
+					if (isValid) {
+						this._updateSummaryPage();
+						return 'summary';
+					}
+					return 'validation';
+				}), function(err) {
 					// fallback -> the error will be displayed anyways...
 					// stay on the current page
 					return pageName;
@@ -1198,21 +1275,21 @@ define([
 			if (nextPage == 'network') {
 				this._updateNetworkPage();
 			}
-			if (nextPage == 'summary') {
-				this._updateSummaryPage();
-			}
 			if (nextPage == 'software') {
 				this._updateAppGallery();
 			}
 			return this._forcePageTemporarily(nextPage);
 		},
 
-		previous: function() {
+		previous: function(pageName) {
 			// disallow page changing more than every 500 milliseconds (Bug #27734)
 			if (this._forcedPage) {
 				return this._forcedPage;
 			}
 			topic.publish('/umc/actions', this.moduleID, 'wizard', pageName, 'previous');
+			if (pageName == 'error' || pageName == 'summary') {
+				return this._forcePageTemporarily('software');
+			}
 			return this._forcePageTemporarily(this.inherited(arguments));
 		},
 
@@ -1252,7 +1329,7 @@ define([
 			return _vals;
 		},
 
-		_getSelectedServerRole: function() {
+		_getRole: function() {
 			var _vals = this._gatherVisibleValues();
 			if (_vals._createDomain) {
 				return 'domaincontroller_master';
@@ -1327,7 +1404,7 @@ define([
 			}
 
 			// server role handling
-			vals['server/role'] = this._getSelectedServerRole();
+			vals['server/role'] = this._getRole();
 
 			// software components
 			var packages = [];
@@ -1339,7 +1416,7 @@ define([
 
 			// prepare the dictionary with final values
 			tools.forIn(_vals, function(ikey, ival) {
-				if (typeof ikey == "string" && ikey.indexOf('_') !== 0) {
+				if (typeof ikey == "string" && ikey.indexOf('_') !== 0 && ival) {
 					// ignore values starting with '_'
 					vals[ikey] = ival;
 				}
