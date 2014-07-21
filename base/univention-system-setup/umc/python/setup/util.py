@@ -132,10 +132,10 @@ def load_values():
 
 def _xkeymap(keymap):
 	'''Determine the x-keymap which belongs to 'keymap' by
-	parsing /lib/univention-installer/locale/all-kmaps'''
+	parsing /usr/share/univention-system-setup/locale/all-kmaps'''
 
 	xkeymap = {'layout' : '', 'variant' : ''}
-	fp = open('/lib/univention-installer/locale/all-kmaps', 'r')
+	fp = open('/usr/share/univention-system-setup/locale/all-kmaps', 'r')
 	for line in fp:
 		line_split = line.strip('\n').split(':')
 		if line_split[1] == keymap:
@@ -571,7 +571,7 @@ def dhclient(interface, timeout=None):
 			'-1',
 			'-lf', '/tmp/dhclient.leases',
 			'-pf', pidfilename,
-			'-sf', '/lib/univention-installer/dhclient-script-wrapper',
+			'-sf', '/usr/share/univention-system-setup/dhclient-script-wrapper',
 			'-e', 'dhclientscript_outputfile=%s' % (tempfilename,),
 			interface)
 	p = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
@@ -653,7 +653,6 @@ def get_installed_components():
 	allComponents = get_components()
 	return [ icomp for icomp in allComponents if not len(set(icomp['Packages']) - allPackages) ]
 
-# from univention-installer/installer/modules/70_net.py
 def is_proxy(proxy):
 	if proxy and proxy != 'http://' and proxy != 'https://':
 		if not proxy.startswith('http://') and not proxy.startswith('https://'):
@@ -695,7 +694,6 @@ def is_ipv6netmask(addr_netmask):
 		return False
 	return True
 
-# from univention-installer/installer/objects.py
 def is_hostname(hostname):
 	return is_hostname.RE.match(hostname) is not None
 is_hostname.RE = re.compile("^[a-z]([a-z0-9-]*[a-z0-9])*$")
@@ -741,9 +739,9 @@ def get_available_locales(pattern, category='language_en'):
 	'''Return a list of all available locales.'''
 	try:
 		fsupported = open('/usr/share/i18n/SUPPORTED')
-		flanguages = open('/lib/univention-installer/locale/languagelist')
+		flanguages = open('/usr/share/univention-system-setup/locale/languagelist')
 	except:
-		MODULE.error( 'Cannot find locale data for languages in /lib/univention-installer/locale' )
+		MODULE.error( 'Cannot find locale data for languages in /usr/share/univention-system-setup/locale' )
 		return
 
 	# get all locales that are supported
@@ -772,7 +770,7 @@ def get_available_locales(pattern, category='language_en'):
 			continue
 
 		# each language might be spoken in several countries
-		ipath = '/lib/univention-installer/locale/short-list/%s.short' % ilang[0]
+		ipath = '/usr/share/univention-system-setup/locale/short-list/%s.short' % ilang[0]
 		if os.path.exists(ipath):
 			try:
 				# open the short list with countries belonging to the language

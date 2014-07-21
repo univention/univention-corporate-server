@@ -1,3 +1,11 @@
 umc/python/setup/netconf	usr/share/pyshared/univention/management/console/modules/setup/
 city-data/*json		usr/share/univention-system-setup
 umc/js/setup/*png	usr/share/univention-management-console-frontend/js/umc/modules/setup
+usr/share/univention-system-setup/dhclient-script-wrapper
+usr/share/univention-system-setup/locale/all-kmaps
+usr/share/univention-system-setup/locale/countrycode2timezone
+usr/share/univention-system-setup/locale/default-kmaps
+usr/share/univention-system-setup/locale/languagelist
+usr/share/univention-system-setup/locale/timezone
+usr/share/univention-system-setup/locale/short-list/*.short
+usr/share/univention-system-setup/locale/country_codes

@@ -457,7 +457,7 @@ class Instance(Base):
 		'''Returns default timezone for given locale.'''
 		countrycode = request.options.get('countrycode', '')
 		timezone = None
-		file = open('/lib/univention-installer/locale/countrycode2timezone')
+		file = open('/usr/share/univention-system-setup/locale/countrycode2timezone')
 
 		reader = csv.reader(file, delimiter=' ')
 		for row in reader:
@@ -475,9 +475,9 @@ class Instance(Base):
 	def lang_timezones(self, request):
 		'''Return a list of all available time zones.'''
 		try:
-			file = open('/lib/univention-installer/locale/timezone')
+			file = open('/usr/share/univention-system-setup/locale/timezone')
 		except:
-			MODULE.error( 'Cannot find locale data for timezones in /lib/univention-installer/locale' )
+			MODULE.error( 'Cannot find locale data for timezones in /usr/share/univention-system-setup/locale' )
 			self.finished(request.id, None)
 			return
 
@@ -490,7 +490,7 @@ class Instance(Base):
 		# use "or ''" to be sure to not get None
 		countrycode = (request.options.get('countrycode') or  '').upper()
 		keymap = None
-		file = open('/lib/univention-installer/locale/default-kmaps')
+		file = open('/usr/share/univention-system-setup/locale/default-kmaps')
 
 		reader = csv.reader(file, delimiter=':')
 		for row in reader:
@@ -508,9 +508,9 @@ class Instance(Base):
 	def lang_keymaps(self, request):
 		'''Return a list of all available keyboard layouts.'''
 		try:
-			file = open('/lib/univention-installer/locale/all-kmaps')
+			file = open('/usr/share/univention-system-setup/locale/all-kmaps')
 		except:
-			MODULE.error( 'Cannot find locale data for keymaps in /lib/univention-installer/locale' )
+			MODULE.error( 'Cannot find locale data for keymaps in /usr/share/univention-system-setup/locale' )
 			self.finished(request.id, None)
 			return
 
@@ -522,9 +522,9 @@ class Instance(Base):
 	def lang_countrycodes(self, request):
 		'''Return a list of all countries with their two letter chcountry codes.'''
 		try:
-			file = open('/lib/univention-installer/locale/country_codes')
+			file = open('/usr/share/univention-system-setup/locale/country_codes')
 		except:
-			MODULE.error( 'Cannot find locale data for keymaps in /lib/univention-installer/locale' )
+			MODULE.error( 'Cannot find locale data for keymaps in /usr/share/univention-system-setup/locale' )
 			self.finished(request.id, None)
 			return
 

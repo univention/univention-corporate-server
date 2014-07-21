@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention Installer
-#  Refresh gettext entries for univention-installer and univention-system-setup
+#  Refresh gettext entries for univention-system-setup
 #
 # Copyright 2004-2014 Univention GmbH
 #

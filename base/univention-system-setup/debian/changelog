@@ -1,3 +1,9 @@
+univention-system-setup (8.0.4-1) unstable; urgency=low
+
+  * Bug #35145: Bug #35267: integrate dependencies from univention-installer-modules
+
+ -- Florian Best <best@univention.de>  Mon, 21 Jul 2014 15:14:38 +0200
+
 univention-system-setup (8.0.3-1) unstable; urgency=low
 
   Bug #34484 [WIP]
