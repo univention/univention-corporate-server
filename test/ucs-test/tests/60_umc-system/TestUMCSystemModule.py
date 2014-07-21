@@ -192,7 +192,7 @@ class TestUMCSystem(object):
                            % exc)
             print "Waiting 10 seconds before next poll request..."
             sleep(10)
-        utils.fail("Failed to wait for re-join process to complete")
+        utils.fail("Failed to wait for join script(-s) to finish")
 
     def check_service_presence(self, request_result, service_name):
         """
