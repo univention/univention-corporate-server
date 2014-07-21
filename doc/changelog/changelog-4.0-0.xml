@@ -54,6 +54,9 @@
 	<title>OpenLDAP</title>
 	  <itemizedlist>
 		  <listitem><simpara>
+			MDB is the new default backend database for OpenLDAP (see &ucsUCRV;
+			<envar>ldap/database/type</envar> for OpenLDAP database settings, 
+			<ulink url="&ucsbug;34994">Bug 34994</ulink>)
 		  </simpara></listitem>
 	  </itemizedlist>
 
