@@ -35,6 +35,7 @@ define([
 	"dojo/string",
 	"dojo/query",
 	"dojo/Deferred",
+	"dojo/on",
 	"dojox/html/entities",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -58,23 +59,23 @@ define([
 	"umc/widgets/ComboBox",
 	"umc/widgets/TextBox",
 	"umc/widgets/Button",
+	"umc/modules/uvmm/GridUpdater",
 	"umc/modules/uvmm/TreeModel",
 	"umc/modules/uvmm/DomainPage",
 	"umc/modules/uvmm/DomainWizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, string, query, Deferred, entities, Menu, MenuItem, ContentPane, ProgressBar, Dialog, _TextBoxMixin,
+], function(declare, lang, array, string, query, Deferred, on, entities, Menu, MenuItem, ContentPane, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, ExpandingTitlePane, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
-	CheckBox, ComboBox, TextBox, Button, TreeModel, DomainPage, DomainWizard, types, _) {
+	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, types, _) {
 
 	var isRunning = function(item) {
-		return (item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
+		return (item.state == 'RUNNING' || item.state == 'IDLE' || item.state == 'PAUSED') && item.node_available;
 	};
 
 	var canStart = function(item) {
-		return !isRunning(item);
+		return item.node_available && (item.state != 'RUNNING' && item.state != 'IDLE');
 	};
-
 
 	var canVNC = function(item) {
 		return isRunning(item) && item.vnc_port;
@@ -103,6 +104,9 @@ define([
 
 		_progressBar: null,
 		_progressContainer: null,
+
+		// internal flag to indicate that GridUpdater should show a notification
+		_itemCountChangedNoteShowed: false,
 
 		uninitialize: function() {
 			this.inherited(arguments);
@@ -197,6 +201,20 @@ define([
 				this._grid.on('FilterDone', lang.hitch(this, '_selectInputText')); // FIXME: ?
 
 				this._grid._grid.on('StyleRow', lang.hitch(this, '_adjustIconColumns'));
+
+				// setup autoUpdater
+				this._gridUpdater = new GridUpdater({
+					grid: this._grid,
+					interval: parseInt(ucr['uvmm/umc/autoupdate/interval'], 10),
+					onItemCountChanged: lang.hitch(this, function() {
+						if (!this._itemCountChangedNoteShowed) {
+							this.addNotification(_('The number of virtual machines changed. To update the view, click on "Search".'));
+							this._itemCountChangedNoteShowed = true;
+						}
+					})
+				});
+				this.own(this._gridUpdater);
+
 			} ) );
 			// generate the navigation tree
 			var model = new TreeModel({
@@ -285,22 +303,29 @@ define([
 
 			// register events
 			this._domainPage.on('UpdateProgress', lang.hitch(this, 'updateProgress'));
-			this._searchPage.on('Show', lang.hitch(this, '_selectInputText'));
 		},
 
 		postCreate: function() {
 			this.inherited(arguments);
 
-			this.own(this._tree.watch('path', lang.hitch(this, function() {
-				var searchType = this._searchForm.getWidget('type').get('value');
-				if (searchType == 'domain') {
-					this._finishedDeferred.then(lang.hitch(this, function(ucr) {
-						if (tools.isTrue(ucr['uvmm/umc/autosearch'])) {
-							this.filter();
-						}
-					}));
-				}
-			})));
+			on.once(this._tree, 'load', lang.hitch(this, function() {
+				this.own(this._tree.watch('path', lang.hitch(this, function() {
+					var searchType = this._searchForm.getWidget('type').get('value');
+					if (searchType == 'domain') {
+						this.filter();
+					}
+				})));
+				this._searchPage.on('show', lang.hitch(this, function() {
+					this._selectInputText();
+					this.filter();
+				}));
+				this._selectInputText();
+				this._finishedDeferred.then(lang.hitch(this, function(ucr) {
+					if (tools.isTrue(ucr['uvmm/umc/autosearch'])) {
+						this.filter();
+					}
+				}));
+			}));
 		},
 
 		_selectInputText: function() {
@@ -905,9 +930,7 @@ define([
 				isStandardAction: false,
 				isMultiAction: true,
 				callback: lang.hitch(this, '_shutdown'),
-				canExecute: function(item) {
-					return (item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
-				}
+				canExecute: isRunning
 			}, {
 				name: 'stop',
 				label: _( 'Stop' ),
@@ -920,9 +943,7 @@ define([
 					/* buttonLabel */ _( 'Stop' ),
 					/* newState */ 'SHUTOFF',
 					/* action */ 'stop'),
-				canExecute: function(item) {
-					return isRunning(item);
-				}
+				canExecute: isRunning
 			}, {
 				name: 'pause',
 				label: _( 'Pause' ),
@@ -931,7 +952,7 @@ define([
 				isMultiAction: true,
 				callback: lang.hitch(this, '_changeState', 'PAUSE', 'pause' ),
 				canExecute: function(item) {
-					return isRunning(item);
+					return isRunning(item) && item.state != 'PAUSED';
 				}
 			}, {
 				name: 'suspend',
@@ -977,7 +998,7 @@ define([
 				isMultiAction: true,
 				callback: lang.hitch(this, '_migrateDomain' ),
 				canExecute: function(item) {
-					return item.state != 'PAUSE'; // FIXME need to find out if there are more than one node of this type
+					return item.state != 'PAUSED'; // FIXME need to find out if there are more than one node of this type
 				}
 			}, {
 				name: 'remove',
@@ -1006,7 +1027,7 @@ define([
 			var item = this._grid._grid.getItem(rowIndex);
 			var percentage = Math.round(item.cpuUsage);
 
-			if (item.state == 'RUNNING' || item.state == 'IDLE') {
+			if (isRunning(item)) {
 				// only show CPU info, if the machine is running
 				return new ProgressBar({
 					value: percentage + '%'
@@ -1142,6 +1163,7 @@ define([
 			}).then(lang.hitch(this, function(response) {
 				this._tree.model.changes(response.result);
 			}));
+			this._itemCountChangedNoteShowed = false;
 		},
 
 		updateProgress: function(i, n) {
