@@ -115,6 +115,6 @@ Subfile: etc/postgresql/9.1/main/pg_ident.conf.d/00-pg_ident.conf
 
 Type: file
 File: etc/postgresql/9.1/main/postgresql.conf
-Variables: postgres/maxconnections
-Variables: postgres/listenaddress
+Variables: postgres9/maxconnections
+Variables: postgres9/listenaddress
 Variables: locale/default
