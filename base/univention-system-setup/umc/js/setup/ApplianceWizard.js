@@ -64,7 +64,9 @@ define([
 	var modulePath = require.toUrl('umc/modules/setup');
 	styles.insertCssRule('.umcIconInfo', lang.replace('background-image: url({0}/info-icon.png); width: 16px; height: 16px;', [modulePath]));
 	styles.insertCssRule('.setupLangField', 'vertical-align: middle; margin: 1px 0 1px 5px;');
-	styles.insertCssRule('.umc-setup-page-listing li', 'padding-bottom: 0.75em;');
+	styles.insertCssRule('.umc-setup-page-validation li', 'padding-bottom: 0.75em;');
+	styles.insertCssRule('.umc-setup-page-summary ul', 'margin-top: 0;');
+	styles.insertCssRule('.umc-setup-page-summary p', 'margin-top: 0.75em;');
 	styles.insertCssRule('.umc-setup-page-software th .dojoxGridRowSelector', 'display: none;');
 	styles.insertCssRule('.umc-setup-page-software .umcUCSSetupSoftwareGrid', 'margin-left: 200px;');
 	styles.insertCssRule('.umc-setup-page-software .umcPageHelpText', 'margin-left: 200px;');
@@ -134,7 +136,7 @@ define([
 	var _regFQDN = /^(?=.{1,255}$)[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?(?:\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?)*\.?$/;
 
 	var _regEmailAddress = /^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/;
-	var _invalidEmailAddressMessage = _('Invalid email address!<br>Expected format is:<i>mail@example.com</i>');
+	var _invalidEmailAddressMessage = _('Invalid e-mail address!<br>Expected format is:<i>mail@example.com</i>');
 	var _validateEmailAddress = function(email) {
 		email = email || '';
 		var isEmailAddress = _regEmailAddress.test(email);
@@ -213,6 +215,10 @@ define([
 			Tooltip.hide(node);
 			dojoEvent.stop(evt);
 		});
+	};
+
+	var _alert = function(msg) {
+		dialog.alert(msg, _('Validation error'));
 	};
 
 	return declare('umc.modules.setup.ApplianceWizard', Wizard, {
@@ -387,7 +393,7 @@ define([
 				layout: [
 					'help',
 					'organization',
-					['account/lastname', 'account/firstname'],
+					['account/firstname', 'account/lastname'],
 					'email_address', 'account/description', 'root_password'
 				],
 				widgets: [{
@@ -410,14 +416,13 @@ define([
 					name: 'account/firstname',
 					label: _('Firstname'),
 					size: 'Half'
-/*				}, {
-					type: Text,
-					name: 'helpEmail',
-					content: _('<p>Enter your email address optionally to activate UCS immediately (<a>more information</a>).</p>')*/
 				}, {
 					type: TextBox,
 					name: 'email_address',
-					label: _('Email address to activate UCS (<a href="javascript: void(0);" class="more-information">more information</a>)'),
+					label: _('E-mail address to activate UCS')
+						+ ' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showUCSActivationInfo(event);">'
+						+ _('more information')
+						+ '</a>)',
 					validator: _validateEmailAddress,
 					invalidMessage: _invalidEmailAddressMessage
 				}, {
@@ -626,7 +631,7 @@ define([
 				helpText: _('<p>Select software components for installation on this system.</p><p>It is also possible to skip this step and to install components after the initial setup via the App Center. Most apps will be available after the UCS setup.</p>')
 			}, {
 				name: 'validation',
-				'class': 'umc-setup-page-listing',
+				'class': 'umc-setup-page-validation',
 				headerText: _('Invalid entries'),
 				helpText: _('The following entries could not be validated:'),
 				widgets: [{
@@ -636,9 +641,9 @@ define([
 				}]
 			}, {
 				name: 'summary',
-				'class': 'umc-setup-page-listing',
+				'class': 'umc-setup-page-summary',
 				headerText: _('Confirm configuration settings'),
-				helpText: _('Please confirm the chosen UCS configuration:'),
+				helpText: _('Please confirm the chosen configuration settings which are summarized below.'),
 				widgets: [{
 					type: Text,
 					name: 'info',
@@ -695,6 +700,11 @@ define([
 			this.getWidget('network', 'configureProxySettings').set('visible', false);
 		},
 
+		showUCSActivationInfo: function(evt) {
+			var msg = _('A valid e-mail address allows to activate the UCS system for using the App Center. An e-mail with an updated license key will then be sent to your e-mail address. This license can be uploaded via the license dialog in Univention Management Console.');
+			_showTooltip(evt.target, msg, evt);
+		},
+
 		_addWidgetToPage: function(pageName, widget) {
 			var page = this.getPage(pageName);
 			if (page._form) {
@@ -737,8 +747,8 @@ define([
 		},
 
 		_setupJavaScriptLinks: function() {
-			array.forEach(['configureProxySettings'], function(iid) {
-				var iwidget = this.getWidget('network', iid);
+			array.forEach(['configureProxySettings', 'email_address'], function(iid) {
+				var iwidget = this.getWidget(iid);
 				iwidget.set('label', lang.replace(iwidget.label, this));
 			}, this);
 		},
@@ -1057,7 +1067,7 @@ define([
 		_key2label: function(key) {
 			// special handling of keys
 			if (key == 'email_address') {
-				return _('Email address to activate UCS');
+				return _('E-mail address to activate UCS');
 			}
 
 			// find matching widget to given key
@@ -1075,9 +1085,9 @@ define([
 			}
 			if (key == 'domainname' || key == 'hostname') {
 				if (this._isRoleMaster()) {
-					return this.getWidget('network', '_fqdn').label;
+					return _('Fully qualified domain name');
 				}
-				return this.getWidget('network', 'hostname').label;
+				return _('Hostname');
 			}
 			if (key == 'components') {
 				return this.getPage('software').headerText;
@@ -1088,22 +1098,32 @@ define([
 		_updateSummaryPage: function() {
 			var _vals = this._gatherVisibleValues();
 			var vals = this.getValues();
-			var msg = '<ul>';
+			var msg = '';
 
-			var _append = function() {
-				var label, value;
-				if (arguments.length == 1) {
-					label = arguments[0];
-					msg += '<li>' + label + '</li>';
-					return;
+			// helper functions
+			var _append = function(label, value) {
+				label = arguments[0];
+				value = arguments[1];
+				if (value) {
+					msg += '<li><i>' + label + '</i>: ' + value + '</li>';
 				}
-				var label = arguments[0];
-				var value = arguments[1];
-				msg += '<li><b>' + label + '<b>: ' + value + '</li>';
 			};
 
+			var _getItem = function(items, id) {
+				var item = null;
+				array.some(items, function(iitem) {
+					if (iitem.id == id) {
+						item = iitem;
+						return true;
+					}
+				});
+				return item;
+			};
+
+			// system role
+			msg += '<p><b>' + _('UCS configuration') + '</b>: ';
 			if (vals['server/role'] == 'domaincontroller_master') {
-				_append(_('A new UCS domain will be created.'));
+				msg += _('A new UCS domain will be created.');
 			}
 			else {
 				var role = {
@@ -1111,11 +1131,86 @@ define([
 					'domaincontroller_slave': _('DC Slave'),
 					'memberserver': _('Member server')
 				}[vals['server/role']];
-				_append(_('This sytem will join an existing UCS domain in the role %s.', role));
+				msg += _('This sytem will join an existing UCS domain with the role <i>%s</i>.', role);
+			}
+			msg += '</p>';
+
+			// localization settings
+			msg += '<p><b>' + _('Localization settings') + '</b></p>';
+			msg += '<ul>';
+			array.forEach(['locale/default', 'timezone', 'locale/keymap'], function(ikey) {
+				var iwidget = this.getWidget('locale', ikey);
+				var item = _getItem(iwidget.getAllItems(), vals[ikey]);
+				_append(iwidget.label, item.label);
+			}, this);
+			msg += '</ul>';
+
+			// administrator account
+			if (this._isRoleMaster()) {
+				msg += '<p><b>' + _('Administrator account information') + '</b></p>';
+				msg += '<ul>';
+				_append(_('Organization name'), vals.organization);
+				if (vals['account/lastname'] && vals['account/firstname']) {
+					_append(_('Name'), vals['account/firstname'] + ' ' + vals['account/lastname']);
+				}
+				else {
+					_append(_('Firstname'), vals['account/firstname']);
+					_append(_('Lastname'), vals['account/lastname']);
+				}
+				_append(_('Account description'), vals['account/description']);
+				_append(_('E-mail address to activate UCS'), vals.email_address);
+				msg += '</ul>';
+			}
+
+			// network settings
+			msg += '<p><b>' + _('Domain and host configuration') + '</b></p>';
+			msg += '<ul>';
+			_append(_('Fully qualified domain name'), _vals._fqdn);
+			_append(_('Hostname'), _vals.hostname);
+			_append(_('LDAP base'), vals['ldap/base']);
+			if (_vals._dhcp) {
+				_append(_('Address configuration'), _('IP address is obtained dynamically via DHCP'));
+			}
+			else {
+				array.forEach(this._getNetworkDevices(), function(idev, i) {
+					var iip = _vals['_ip' + i];
+					var imask = _vals['_netmask' + i];
+					if (!iip || !imask) {
+						return;
+					}
+					_append(_('Address for %s', idev), iip + '/' + imask);
+				}, this);
+				_append(_('Gateway'), vals.gateway);
+			}
+
+			var nameservers = array.filter([vals.nameserver1, vals.nameserver2], function(inameserver) {
+				return inameserver;
+			}).join(', ');
+			_append(_('UCS domain name server'), nameservers);
+
+			var forwarders = array.filter([vals['dns/forwarder1'], vals['dns/forwarder2']], function(iforwarder) {
+				return iforwarder;
+			}).join(', ');
+			_append(_('External name server'), forwarders);
+
+			_append(_('HTTP proxy'), vals['proxy/http']);
+			msg += '</ul>';
+
+			// software components
+			var apps = this._gallery.getSelectedItems();
+			if (!apps.length) {
+				msg += '<p><b>' + _('Software components') + '</b>: ' + _('No additional software components will be installed.') + '</p>';
+			}
+			else {
+				msg += '<p><b>' + _('Software components') + '</b></p>';
+				msg += '<ul>';
+				array.forEach(apps, function(iapp) {
+					msg += '<li>' + iapp.name + '</li>';
+				});
 			}
 			msg += '</ul>';
+
 			this.getWidget('summary', 'info').set('content', msg);
-			console.log(msg);
 		},
 
 		_updateValidationPage: function(details) {
@@ -1200,22 +1295,67 @@ define([
 			return true;
 		},
 
-		_validateForm: function(pageName) {
+		_validatePage: function(pageName) {
+			if (pageName == 'software') {
+				// validate software components
+				var packages = {};
+				array.forEach(this._gallery.getSelectedItems(), function(iapp) {
+					var ipackages = [].concat(iapp.defaultpackages, iapp.defaultpackagesmaster);
+					array.forEach(ipackages, function(ipackage) {
+						packages[ipackage] = true;
+					});
+				});
+				if (packages['univention-samba'] && packages['univention-samba4']) {
+					_alert(_('<p>It is not possible to install Samba 3 and Samba 4 on one system.</p><p>Please select only one of these components.</p>'));
+					return false;
+				}
+				if (packages['univention-virtual-machine-manager-node-kvm'] && packages['univention-virtual-machine-manager-node-xen']) {
+					_alert(_('<p>It is not possible to install KVM and XEN components on one system.</p><p>Please select only one of these components.</p>'));
+					return false;
+				}
+			}
+
 			var page = this.getPage(pageName);
 			if (!page || !page._form) {
 				return true;
 			}
-			var isValid = page._form.validate();
-			if (!isValid) {
-				return isValid;
+			var invalidWidgets = page._form.getInvalidWidgets();
+			if (invalidWidgets.length !== 0) {
+				// focus the first invalid widget
+				array.some(invalidWidgets, function(ikey) {
+					var iwidget = this.getWidget(pageName, ikey);
+					if (iwidget.focus) {
+						iwidget.focus();
+						return true;
+					}
+				}, this);
+				return false;
 			}
+
+			// password length check
 			if (pageName == 'user-master' || pageName == 'network') {
 				var passwordWidget = this.getWidget(pageName, 'root_password');
 				var password = passwordWidget.get('value');
 				if (passwordWidget.get('visible') && password.length < 8) {
-					dialog.alert(_('The root password is too short. For security reasons, your password must contain at least 8 characters.'));
+					passwordWidget.focus();
+					_alert(_('The root password is too short. For security reasons, your password must contain at least 8 characters.'));
 					return false;
 				}
+			}
+
+			// check network device configuration
+			if (pageName == 'network') {
+				var _vals = this._gatherVisibleValues();
+				var nConfiguredInterfaces = 0;
+				for (var idx = 0; idx < 4; ++idx) {
+					nConfiguredInterfaces += Boolean(_vals['_ip' + idx] && _vals['_netmask' + idx]);
+				}
+				if (!nConfiguredInterfaces) {
+					this.getWidget('network', '_ip0').focus();
+					_alert(_('At least one network device needs to be properly configured.'));
+					return false;
+				}
+
 			}
 			return true;
 		},
@@ -1246,7 +1386,7 @@ define([
 			topic.publish('/umc/actions', this.moduleID, 'wizard', pageName, 'next');
 
 			// validation of form fields
-			if (!this._validateForm(pageName)) {
+			if (!this._validatePage(pageName)) {
 				return this._forcePageTemporarily(pageName);
 			}
 
@@ -1313,7 +1453,7 @@ define([
 			// collect values from visible pages and visible widgets
 			var _vals = {};
 			array.forEach(this.pages, function(ipageConf) {
-				if (this.isPageVisible(ipageConf.name)) {
+				if (this.isPageVisible(ipageConf.name) || ipageConf.name == 'locale') {
 					var ipage = this.getPage(ipageConf.name);
 					if (!ipage || !ipage._form) {
 						return;
@@ -1409,8 +1549,7 @@ define([
 			// software components
 			var packages = [];
 			array.forEach(this._gallery.getSelectedItems(), function(iapp) {
-				packages = packages.concat(iapp.defaultpackages)
-				packages = packages.concat(iapp.defaultpackagesmaster);
+				packages = packages.concat(iapp.defaultpackages, iapp.defaultpackagesmaster);
 			});
 			vals['components'] = packages;
 

@@ -362,11 +362,11 @@ class Instance(Base):
 			_append('domainname', _("Hostname is equal to domain name."))
 
 		# see whether the domain can be determined automatically
-		if not util.is_system_joined() and allValues['server/role'] != 'domaincontroller_master' and 'domainname' not in allValues:
+		if not util.is_system_joined() and newrole != 'domaincontroller_master' and 'domainname' not in values:
 			if 'nameserver1' not in allValues:
 				_append('nameserver1', _('A domain name server needs to specified.'))
 			elif not util.get_nameserver_domain(allValues['nameserver1']):
-				_append('domainname', _('The domain cannot automatically be determined. Please specify the servers fully qualified domain name.'))
+				_append('domainname', _('The domain cannot automatically be determined. Make sure that the correct name server has been specified or enter a fully qualified domain name of the system.'))
 
 		# windows domain
 		_check('windows/domain', lambda x: x == x.upper(), _("The windows domain name can only consist of upper case characters."))

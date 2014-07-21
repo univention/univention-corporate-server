@@ -57,6 +57,7 @@ try:
     # reference triggers the import below
 	import dns.resolver
 	import dns.reversename
+	import dns.exception
 	from univention.management.console.modules.appcenter.app_center import Application
 	from univention.lib.package_manager import PackageManager
 except ImportError as e:
@@ -772,17 +773,20 @@ def is_ascii(str):
 def get_nameserver_domain(nameserver):
 	# register nameserver
 	resolver = dns.resolver.Resolver()
+	resolver.lifetime = 10  # make sure that we get an early timeout
 	resolver.nameservers = [nameserver]
 
 	# perform a reverse lookup
-	reverse_address = dns.reversename.from_address(nameserver)
-	reverse_lookup = resolver.query(reverse_address, 'PTR')
-	if len(reverse_lookup):
-		fqdn = reverse_lookup[0]
-		parts = [i for i in fqdn.target.labels if i]
-		return '.'.join(parts[1:])
-	else:
-		return None
+	try:
+		reverse_address = dns.reversename.from_address(nameserver)
+		reverse_lookup = resolver.query(reverse_address, 'PTR')
+		if len(reverse_lookup):
+			fqdn = reverse_lookup[0]
+			parts = [i for i in fqdn.target.labels if i]
+			return '.'.join(parts[1:])
+	except dns.exception.Timeout as exc:
+		pass
+	return None
 
 def get_available_locales(pattern, category='language_en'):
 	'''Return a list of all available locales.'''
