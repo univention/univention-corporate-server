@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.0.2-1) unstable; urgency=low
+
+  * Bug #35145: use closure as JavaScript build optimizer
+
+ -- Florian Best <best@univention.de>  Mon, 21 Jul 2014 08:37:28 +0200
+
 univention-management-console-frontend (4.0.1-1) unstable; urgency=low
 
   Bug #34484:

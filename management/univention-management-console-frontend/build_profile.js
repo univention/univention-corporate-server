@@ -33,37 +33,23 @@
 
 var profile = (function() {
 	return {
-		//stripConsole : "all",
-		basePath : ".",
-		releaseDir : "build",
-		releaseName : "js",
+		stripConsole : "normal",
+		basePath : "./tmp",
+		releaseDir : "../build/js",
 		action : "release",
 
-		packages:[{
-			name: "dojo",
-			location: "tmp/dojo"
-		}, {
-			name: "dijit",
-			location: "tmp/dijit"
-		}, {
-			name: "dojox",
-			location: "tmp/dojox"
-		}, {
-			name: "umc",
-			location: "tmp/umc"
-		}, {
-			name: "dgrid",
-			location: "tmp/dgrid"
-		}, {
-			name: "put-selector",
-			location: "tmp/put-selector"
-		}, {
-			name: "xstyle",
-			location: "tmp/xstyle"
-		}],
+		packages: [
+			"dojo",
+			"dijit",
+			"dojox",
+			"umc",
+			"dgrid",
+			"put-selector",
+			"xstyle"
+		],
 
+		layerOptimize : "closure",
 		optimize : "closure",
-		//localeList : "de-de,en-us",
 		cssOptimize: "comments.keepLines",
 		copyTests: false,
 
