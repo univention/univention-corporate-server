@@ -41,7 +41,7 @@ create_logfile /var/log/univention/updater.log "root:adm" 640
 create_logfile /var/log/univention/actualise.log "root:adm" 640
 
 convert_component () { # Convert repository/online/component/*/parts to .../unmaintained
-	python -c '#!/usr/bin/python2.6
+	python -c '#!/usr/bin/python2.7
 import sys
 from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()

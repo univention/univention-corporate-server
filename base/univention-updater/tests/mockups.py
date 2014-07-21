@@ -1,4 +1,4 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 # vim:set fileencoding=utf-8 filetype=python tabstop=4 shiftwidth=4 expandtab:
 """Replacements to test updater in stable local environment."""
 # pylint: disable-msg=C0301,R0903,R0913
