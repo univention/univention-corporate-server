@@ -54,9 +54,6 @@ define([
 	"./setup/BasisPage",
 	"./setup/NetworkPage",
 	"./setup/CertificatePage"
-//	"./setup/SoftwarePage",
-//	"./setup/SystemRolePage",
-//	"./setup/HelpPage"
 ], function(dojo, declare, lang, array, all, topic, when, Deferred, DijitDialog, timing,
 	tools, dialog, Text, Form, Module, TabContainer, ProgressBar, libServer, ApplianceWizard, _) {
 

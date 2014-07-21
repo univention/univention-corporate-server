@@ -221,6 +221,12 @@ fi
 )
 progress_next_step $nJoinSteps
 
+email=$(get_profile_var email_address)
+if [ "$server_role" = "domaincontroller_master" -a -n "$email" ]; then
+	echo "Activating the UCS license for the email address $email"
+	/usr/sbin/umc-command -r -U Administrator -y /var/lib/univention-ldap/root.secret udm/request_new_license -o email="$email"
+fi
+
 # Cleanup
 rm -f /var/lib/univention-ldap/root.secret
 

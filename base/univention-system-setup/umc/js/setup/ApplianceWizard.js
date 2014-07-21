@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 Univention GmbH
+ * Copyright 2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -64,7 +64,9 @@ define([
 	var modulePath = require.toUrl('umc/modules/setup');
 	styles.insertCssRule('.umcIconInfo', lang.replace('background-image: url({0}/info-icon.png); width: 16px; height: 16px;', [modulePath]));
 	styles.insertCssRule('.setupLangField', 'vertical-align: middle; margin: 1px 0 1px 5px;');
-	//styles.insertCssRule('.umc-setup-page .umcGalleryPane .umcGalleryItem', 'width: 405px;');
+	styles.insertCssRule('.umc-setup-page-validation li', 'padding-bottom: 0.75em;');
+	styles.insertCssRule('.umc-setup-page-summary ul', 'margin-top: 0;');
+	styles.insertCssRule('.umc-setup-page-summary p', 'margin-top: 0.75em;');
 	styles.insertCssRule('.umc-setup-page-software th .dojoxGridRowSelector', 'display: none;');
 	styles.insertCssRule('.umc-setup-page-software .umcUCSSetupSoftwareGrid', 'margin-left: 200px;');
 	styles.insertCssRule('.umc-setup-page-software .umcPageHelpText', 'margin-left: 200px;');
@@ -82,7 +84,7 @@ define([
 		);
 	});
 
-	var _Grid = declare('umc.modules.setup.ApplianceWizard', Grid, {
+	var _Grid = declare(Grid, {
 		_onRowClick: function(evt) {
 			if (evt.cellIndex === 0) {
 				// the checkbox cell was pressed, this does already the wanted behavior
@@ -133,11 +135,10 @@ define([
 	var _regIPv6 = /^((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?$/;
 	var _regFQDN = /^(?=.{1,255}$)[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?(?:\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?)*\.?$/;
 
-	var _regDN = /^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$/;
-
 	var _regEmailAddress = /^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/;
-	var _invalidEmailAddressMessage = _('Invalid email address!<br>Expected format is:<i>mail@example.com</i>');
+	var _invalidEmailAddressMessage = _('Invalid e-mail address!<br>Expected format is:<i>mail@example.com</i>');
 	var _validateEmailAddress = function(email) {
+		email = email || '';
 		var isEmailAddress = _regEmailAddress.test(email);
 		var acceptEmtpy = !email && !this.required;
 		return acceptEmtpy || isEmailAddress;
@@ -145,6 +146,7 @@ define([
 
 	var _invalidIPAddressMessage = _('Invalid IP address!<br>Expected format is IPv4 or IPv6.');
 	var _validateIPAddress = function(ip) {
+		ip = ip || '';
 		var isIPv4Address = _regIPv4.test(ip);
 		var isIPv6Address = _regIPv6.test(ip);
 		var acceptEmtpy = !ip && !this.required;
@@ -152,6 +154,7 @@ define([
 	};
 
 	var _validateHostname = function(hostname) {
+		hostname = hostname || '';
 		var isFQDN = _regFQDN.test(hostname);
 		var hasNoDots = hostname.indexOf('.') < 0;
 		var acceptEmtpy = !hostname && !this.required;
@@ -160,6 +163,7 @@ define([
 
 	var _invalidFQDNMessage = _('Invalid fully qualified domain name!<br>Expected format: <i>hostname.mydomain.local</i>');
 	var _validateFQDN = function(fqdn) {
+		fqdn = fqdn || '';
 		var isFQDN = _regFQDN.test(fqdn);
 		var hasEnoughParts = fqdn.split('.').length >= 3;
 		var acceptEmtpy = !fqdn && !this.required;
@@ -168,12 +172,15 @@ define([
 
 	var _invalidHostOrFQDNMessage = _('Invalid hostname or fully qualified domain name!<br>Expected format: <i>myhost</i> or <i>hostname.mydomain.local</i>');
 	var _validateHostOrFQDN = function(hostOrFQDN) {
+		hostOrFQDN = hostOrFQDN || '';
 		var acceptEmtpy = !hostOrFQDN && !this.required;
 		return acceptEmtpy || _validateFQDN(hostOrFQDN) || _validateHostname(hostOrFQDN);
 	};
 
+	var _regDN = /^([^=, ]+=[^=, ]+,)*[^=, ]+=[^=, ]+$/;
 	var _invalidLDAPBase = _('Invalid LDAP base!<br>Expected format: dc=mydomain,dc=local');
 	var _validateLDAPBase = function(ldapBase) {
+		ldapBase = ldapBase || '';
 		var acceptEmtpy = !ldapBase && !this.required;
 		return acceptEmtpy || _regDN.test(ldapBase);
 	};
@@ -210,7 +217,11 @@ define([
 		});
 	};
 
-	return declare([Wizard], {
+	var _alert = function(msg) {
+		dialog.alert(msg, _('Validation error'));
+	};
+
+	return declare('umc.modules.setup.ApplianceWizard', Wizard, {
 		// __systemsetup__ user is logged in at local firefox session
 		local_mode: false,
 
@@ -237,7 +248,7 @@ define([
 					content: _('<p>Welcome to Univention Corporate Server (UCS). A few questions are needed to complete the configuration process.</p><p>If this system will become member of an existing UCS domain, credentials of a valid domain administrator account are necessary.</p>')
 				}, {
 					type: Select,
-					name: 'language',
+					name: '_language',
 					label: _('To proceed, choose your language:'),
 					options: _getDecoratedLanguageOptions(),
 					value: i18nTools.defaultLang(),
@@ -382,8 +393,8 @@ define([
 				layout: [
 					'help',
 					'organization',
-					['account/lastname', 'account/firstname'],
-					'email', 'account/description', 'root_password'
+					['account/firstname', 'account/lastname'],
+					'email_address', 'account/description', 'root_password'
 				],
 				widgets: [{
 					type: Text,
@@ -405,14 +416,13 @@ define([
 					name: 'account/firstname',
 					label: _('Firstname'),
 					size: 'Half'
-/*				}, {
-					type: Text,
-					name: 'helpEmail',
-					content: _('<p>Enter your email address optionally to activate UCS immediately (<a>more information</a>).</p>')*/
 				}, {
 					type: TextBox,
-					name: 'email',
-					label: _('Email address to activate UCS (<a href="javascript: void(0);" class="more-information">more information</a>)'),
+					name: 'email_address',
+					label: _('E-mail address to activate UCS')
+						+ ' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showUCSActivationInfo(event);">'
+						+ _('more information')
+						+ '</a>)',
 					validator: _validateEmailAddress,
 					invalidMessage: _invalidEmailAddressMessage
 				}, {
@@ -436,14 +446,14 @@ define([
 				layout: [
 					'helpMaster',
 					'helpNonMaster',
-					['fqdn', 'ldapBase'],
+					['_fqdn', 'ldap/base'],
 					'hostname',
 					'root_password',
-					'_dhcpIP',
+					'_dhcp',
+					['_ip0', '_netmask0'],
 					['_ip1', '_netmask1'],
 					['_ip2', '_netmask2'],
 					['_ip3', '_netmask3'],
-					['_ip4', '_netmask4'],
 					'gateway',
 					['nameserver1', 'nameserver2'],
 					['dns/forwarder1', 'dns/forwarder2'],
@@ -462,7 +472,7 @@ define([
 					content: _('Specify hostname as well as a password for the local superuser <i>root</i> and configure network settings for this system.')
 				}, {
 					type: TextBox,
-					name: 'fqdn',
+					name: '_fqdn',
 					label: _('Fully qualified domain name'),
 					required: true,
 					onChange: lang.hitch(this, '_updateLDAPBase'),
@@ -470,7 +480,7 @@ define([
 					invalidMessage: _invalidFQDNMessage
 				}, {
 					type: TextBox,
-					name: 'ldapBase',
+					name: 'ldap/base',
 					label: _('LDAP base'),
 					required: true,
 					validator: _validateLDAPBase,
@@ -491,17 +501,34 @@ define([
 					required: true
 				}, {
 					type: CheckBox,
-					name: '_dhcpIP',
+					name: '_dhcp',
 					label: _('Obtain IP address automatically (DHCP)'),
 					labelConf: { style: 'margin-top: 2em;' },
 					onChange: lang.hitch(this, '_disableNetworkAddressWidgets')
+				}, {
+					type: TextBox,
+					name: '_ip0',
+					label: _('IPv4 address/IPv6 address ({interface})'),
+					inlineLabel: '',
+					value: '',
+					onChange: lang.hitch(this, '_updateNetwork', 0),
+					invalidMessage: _invalidIPAddressMessage,
+					validator: _validateIPAddress
+				}, {
+					type: TextBox,
+					name: '_netmask0',
+					label: _('IPv4 net mask/IPv6 prefix ({interface})'),
+					inlineLabel: '',
+					invalidMessage: _invalidIPAddressMessage,
+					validator: _validateIPAddress
 				}, {
 					type: TextBox,
 					name: '_ip1',
 					label: _('IPv4 address/IPv6 address ({interface})'),
 					inlineLabel: '',
 					value: '',
-					onChange: lang.hitch(this, '_updateNetwork', 'network', 1),
+					visible: false,
+					onChange: lang.hitch(this, '_updateNetwork', 1),
 					invalidMessage: _invalidIPAddressMessage,
 					validator: _validateIPAddress
 				}, {
@@ -509,6 +536,7 @@ define([
 					name: '_netmask1',
 					label: _('IPv4 net mask/IPv6 prefix ({interface})'),
 					inlineLabel: '',
+					visible: false,
 					invalidMessage: _invalidIPAddressMessage,
 					validator: _validateIPAddress
 				}, {
@@ -516,9 +544,9 @@ define([
 					name: '_ip2',
 					label: _('IPv4 address/IPv6 address ({interface})'),
 					inlineLabel: '',
-					value: '',
 					visible: false,
-					onChange: lang.hitch(this, '_updateNetwork', 'network', 2),
+					value: '',
+					onChange: lang.hitch(this, '_updateNetwork', 2),
 					invalidMessage: _invalidIPAddressMessage,
 					validator: _validateIPAddress
 				}, {
@@ -536,30 +564,12 @@ define([
 					inlineLabel: '',
 					visible: false,
 					value: '',
-					onChange: lang.hitch(this, '_updateNetwork', 'network', 3),
+					onChange: lang.hitch(this, '_updateNetwork', 3),
 					invalidMessage: _invalidIPAddressMessage,
 					validator: _validateIPAddress
 				}, {
 					type: TextBox,
 					name: '_netmask3',
-					label: _('IPv4 net mask/IPv6 prefix ({interface})'),
-					inlineLabel: '',
-					visible: false,
-					invalidMessage: _invalidIPAddressMessage,
-					validator: _validateIPAddress
-				}, {
-					type: TextBox,
-					name: '_ip4',
-					label: _('IPv4 address/IPv6 address ({interface})'),
-					inlineLabel: '',
-					visible: false,
-					value: '',
-					onChange: lang.hitch(this, '_updateNetwork', 'network', 3),
-					invalidMessage: _invalidIPAddressMessage,
-					validator: _validateIPAddress
-				}, {
-					type: TextBox,
-					name: '_netmask4',
 					label: _('IPv4 net mask/IPv6 prefix ({interface})'),
 					inlineLabel: '',
 					visible: false,
@@ -620,9 +630,20 @@ define([
 				headerText: _('Software configuration'),
 				helpText: _('<p>Select software components for installation on this system.</p><p>It is also possible to skip this step and to install components after the initial setup via the App Center. Most apps will be available after the UCS setup.</p>')
 			}, {
+				name: 'validation',
+				'class': 'umc-setup-page-validation',
+				headerText: _('Invalid entries'),
+				helpText: _('The following entries could not be validated:'),
+				widgets: [{
+					type: Text,
+					name: 'info',
+					content: ''
+				}]
+			}, {
 				name: 'summary',
+				'class': 'umc-setup-page-summary',
 				headerText: _('Confirm configuration settings'),
-				helpText: _('Please confirm the chosen UCS configuration:'),
+				helpText: _('Please confirm the chosen configuration settings which are summarized below.'),
 				widgets: [{
 					type: Text,
 					name: 'info',
@@ -651,9 +672,23 @@ define([
 			}];
 		},
 
+		_isDHCPPreConfigured: function() {
+			var dev = lang.getObject('interfaces.' + this._getNetworkDevices()[0], this.values);
+			return dev.ip4dynamic || dev.ip6dynamic;
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+
+			// if DHCP is pre-configured, set widgets accordingly
+			if (this._isDHCPPreConfigured()) {
+				this.getWidget('network', '_dhcp').set('value', true);
+				this.getWidget('network', 'gateway').set('value', this.values.gateway);
+			}
+		},
+
 		_disableNetworkAddressWidgets: function(disable) {
-			var idx = 0;
-			for (idx = 1; idx <= 3; ++idx) {
+			for (var idx = 0; idx < 4; ++idx) {
 				this.getWidget('network', '_ip' + idx).set('disabled', disable);
 				this.getWidget('network', '_netmask' + idx).set('disabled', disable);
 			}
@@ -663,6 +698,11 @@ define([
 		configureProxySettings: function() {
 			this.getWidget('network', 'proxy/http').set('visible', true);
 			this.getWidget('network', 'configureProxySettings').set('visible', false);
+		},
+
+		showUCSActivationInfo: function(evt) {
+			var msg = _('A valid e-mail address allows to activate the UCS system for using the App Center. An e-mail with an updated license key will then be sent to your e-mail address. This license can be uploaded via the license dialog in Univention Management Console.');
+			_showTooltip(evt.target, msg, evt);
 		},
 
 		_addWidgetToPage: function(pageName, widget) {
@@ -707,10 +747,34 @@ define([
 		},
 
 		_setupJavaScriptLinks: function() {
-			array.forEach(['configureProxySettings'], function(iid) {
-				var iwidget = this.getWidget('network', iid);
+			array.forEach(['configureProxySettings', 'email_address'], function(iid) {
+				var iwidget = this.getWidget(iid);
 				iwidget.set('label', lang.replace(iwidget.label, this));
 			}, this);
+		},
+
+		_getAppQuery: function() {
+			var serverRole = this._getRole()
+			var query = {
+				// make sure that all software components are allowed for the
+				// specified server role
+				serverrole: {
+					test: function(val) {
+						return !val.length || array.indexOf(val, serverRole) >= 0;
+					}
+				}
+			};
+
+			if (serverRole != 'domaincontroller_master') {
+				// hide entries that need to install packages on the DC master
+				query.defaultpackagesmaster = {
+					test: function(val) {
+						return !val.length;
+					}
+				}
+			}
+
+			return query;
 		},
 
 		_setupAppGallery: function() {
@@ -723,7 +787,7 @@ define([
 					label: _('Software component'),
 					formatter: lang.hitch(this, function(value, idx) {
 						var item = this._gallery._grid.getItem(idx);
-						return lang.replace('<div>{name}</div><div style="color:#818181;">{account/description}</div>', item);
+						return lang.replace('<div>{name}</div><div style="color:#818181;">{description}</div>', item);
 					})
 				}, {
 					name: 'longdescription',
@@ -740,7 +804,7 @@ define([
 						return button;
 					}
 				}],
-				query: {pattern:"*"},
+				query: {id:"*"},
 				'class': 'umcUCSSetupSoftwareGrid',
 				footerFormatter: function(nItems) {
 					if (!nItems) {
@@ -763,11 +827,11 @@ define([
 				array.forEach(response.result, function(iitem) {
 					this._apps.put(iitem);
 				}, this);
-				this._gallery.filter();
+				this._gallery.filter(this._getAppQuery());
 			}));
 		},
 
-		_setupNetworkDevices: function() {
+		_getNetworkDevices: function() {
 			var devices = this.values.physical_interfaces;
 			if (!devices || !devices.length) {
 				// This should not happen!
@@ -775,9 +839,13 @@ define([
 				console.error('No network interface could be detected! Assuming there is one interface named "eth0".');
 				devices = ['eth0'];
 			}
-			array.forEach(devices, function(idev, i) {
-				var ipWidget = this.getWidget('network', '_ip' + (i + 1));
-				var maskWidget = this.getWidget('network', '_netmask' + (i + 1));
+			return devices;
+		},
+
+		_setupNetworkDevices: function() {
+			array.forEach(this._getNetworkDevices(), function(idev, i) {
+				var ipWidget = this.getWidget('network', '_ip' + i);
+				var maskWidget = this.getWidget('network', '_netmask' + i);
 				var conf = { 'interface': idev };
 				ipWidget.set('label', lang.replace(ipWidget.get('label'), conf));
 				ipWidget.set('visible', true);
@@ -843,7 +911,7 @@ define([
 			organization = organization.replace(/[\s()]+/g, '-');
 			var hostname = this._randomHostName();
 			var fqdn = lang.replace('{0}.{1}.local', [hostname, organization]);
-			this.getWidget('network', 'fqdn').set('value', fqdn);
+			this.getWidget('network', '_fqdn').set('value', fqdn);
 			this.getWidget('network', 'hostname').set('value', hostname);
 			var description = _('Domain administrator account');
 			if (_organization) {
@@ -853,12 +921,13 @@ define([
 		},
 
 		_updateLDAPBase: function(fqdn) {
+			fqdn = fqdn.replace(/ /g, '');  // remove all spaces from fqdn
 			var fqdnParts = fqdn.split('.').slice(1);
 			var ldapBaseParts = array.map(fqdnParts, function(ipart) {
 				return 'dc=' + ipart;
 			});
 			var ldapBase = ldapBaseParts.join(',');
-			var ldapBaseWidget = this.getWidget('network', 'ldapBase');
+			var ldapBaseWidget = this.getWidget('network', 'ldap/base');
 			ldapBaseWidget.set('value', ldapBase);
 		},
 
@@ -867,9 +936,9 @@ define([
 			var visibilities = {
 				helpMaster: true,
 				helpNonMaster: false,
-				fqdn: true,
+				_fqdn: true,
 				hostname: false,
-				ldapBase: true,
+				'ldap/base': true,
 				root_password: false,
 				nameserver1: false,
 				nameserver2: false,
@@ -877,13 +946,13 @@ define([
 				'dns/forwarder2': true
 			};
 			var role = this._getRole();
-			if (role == '_roleBackup' || role == '_roleSlave') {
+			if (role == 'domaincontroller_backup' || role == 'domaincontroller_slave') {
 				visibilities = {
 					helpMaster: false,
 					helpNonMaster: true,
-					fqdn: false,
+					_fqdn: false,
 					hostname: true,
-					ldapBase: false,
+					'ldap/base': false,
 					root_password: true,
 					nameserver1: true,
 					nameserver2: true,
@@ -891,13 +960,13 @@ define([
 					'dns/forwarder2': true
 				};
 			}
-			else if (role == '_roleMember') {
+			else if (role == 'memberserver') {
 				visibilities = {
 					helpMaster: false,
 					helpNonMaster: true,
-					fqdn: false,
+					_fqdn: false,
 					hostname: true,
-					ldapBase: false,
+					'ldap/base': false,
 					root_password: true,
 					nameserver1: true,
 					nameserver2: true,
@@ -973,48 +1042,216 @@ define([
 			resultWidget.addChild(changeSettingsButton);
 		},
 
-		_updateNetwork: function(pageName, idx, ip) {
+		_updateNetwork: function(idx, ip) {
 			ip = lang.trim(ip);
 			var isIPv4Address = _regIPv4.test(ip);
 			if (isIPv4Address) {
 				var ipParts = ip.split('.');
 				var netmask = '255.255.255.0';
-				var netmaskWidget = this.getWidget(pageName, '_netmask' + idx);
+				var netmaskWidget = this.getWidget('network', '_netmask' + idx);
 				netmaskWidget.set('value', netmask);
 
-				if (idx == 1) {
+				var gatewayWidget = this.getWidget('network', 'gateway');
+				if (idx == 0 && !gatewayWidget.get('value')) {
 					// suggest a gateway address for the first IP address
 					var gateway = ipParts.slice(0, -1).join('.') + '.1';
-					var gatewayWidget = this.getWidget(pageName, 'gateway');
 					gatewayWidget.set('value', gateway);
 				}
 			}
 		},
 
+		_updateAppGallery: function() {
+			this._gallery.filter(this._getAppQuery());
+		},
+
+		_key2label: function(key) {
+			// special handling of keys
+			if (key == 'email_address') {
+				return _('E-mail address to activate UCS');
+			}
+
+			// find matching widget to given key
+			var widget = this.getWidget(key);
+			if (widget) {
+				return widget.label;
+			}
+
+			// special handling of remaining keys
+			if (key.indexOf('interfaces') === 0) {
+				return _('Network interfaces');
+			}
+			if (key == 'interfaces/primary') {
+				return _('Primary network interface');
+			}
+			if (key == 'domainname' || key == 'hostname') {
+				if (this._isRoleMaster()) {
+					return _('Fully qualified domain name');
+				}
+				return _('Hostname');
+			}
+			if (key == 'components') {
+				return this.getPage('software').headerText;
+			}
+			return null;
+		},
+
 		_updateSummaryPage: function() {
+			var _vals = this._gatherVisibleValues();
 			var vals = this.getValues();
 			var msg = '';
-			if (vals.role) {
-				msg += lang.replace('<p><b>{txt}</b>: {role}</p>', {
-					txt: _('System role:'),
-					role: vals.role
+
+			// helper functions
+			var _append = function(label, value) {
+				label = arguments[0];
+				value = arguments[1];
+				if (value) {
+					msg += '<li><i>' + label + '</i>: ' + value + '</li>';
+				}
+			};
+
+			var _getItem = function(items, id) {
+				var item = null;
+				array.some(items, function(iitem) {
+					if (iitem.id == id) {
+						item = iitem;
+						return true;
+					}
+				});
+				return item;
+			};
+
+			// system role
+			msg += '<p><b>' + _('UCS configuration') + '</b>: ';
+			if (vals['server/role'] == 'domaincontroller_master') {
+				msg += _('A new UCS domain will be created.');
+			}
+			else {
+				var role = {
+					'domaincontroller_backup': _('DC Backup'),
+					'domaincontroller_slave': _('DC Slave'),
+					'memberserver': _('Member server')
+				}[vals['server/role']];
+				msg += _('This sytem will join an existing UCS domain with the role <i>%s</i>.', role);
+			}
+			msg += '</p>';
+
+			// localization settings
+			msg += '<p><b>' + _('Localization settings') + '</b></p>';
+			msg += '<ul>';
+			array.forEach(['locale/default', 'timezone', 'locale/keymap'], function(ikey) {
+				var iwidget = this.getWidget('locale', ikey);
+				var item = _getItem(iwidget.getAllItems(), vals[ikey]);
+				_append(iwidget.label, item.label);
+			}, this);
+			msg += '</ul>';
+
+			// administrator account
+			if (this._isRoleMaster()) {
+				msg += '<p><b>' + _('Administrator account information') + '</b></p>';
+				msg += '<ul>';
+				_append(_('Organization name'), vals.organization);
+				if (vals['account/lastname'] && vals['account/firstname']) {
+					_append(_('Name'), vals['account/firstname'] + ' ' + vals['account/lastname']);
+				}
+				else {
+					_append(_('Firstname'), vals['account/firstname']);
+					_append(_('Lastname'), vals['account/lastname']);
+				}
+				_append(_('Account description'), vals['account/description']);
+				_append(_('E-mail address to activate UCS'), vals.email_address);
+				msg += '</ul>';
+			}
+
+			// network settings
+			msg += '<p><b>' + _('Domain and host configuration') + '</b></p>';
+			msg += '<ul>';
+			_append(_('Fully qualified domain name'), _vals._fqdn);
+			_append(_('Hostname'), _vals.hostname);
+			_append(_('LDAP base'), vals['ldap/base']);
+			if (_vals._dhcp) {
+				_append(_('Address configuration'), _('IP address is obtained dynamically via DHCP'));
+			}
+			else {
+				array.forEach(this._getNetworkDevices(), function(idev, i) {
+					var iip = _vals['_ip' + i];
+					var imask = _vals['_netmask' + i];
+					if (!iip || !imask) {
+						return;
+					}
+					_append(_('Address for %s', idev), iip + '/' + imask);
+				}, this);
+				_append(_('Gateway'), vals.gateway);
+			}
+
+			var nameservers = array.filter([vals.nameserver1, vals.nameserver2], function(inameserver) {
+				return inameserver;
+			}).join(', ');
+			_append(_('UCS domain name server'), nameservers);
+
+			var forwarders = array.filter([vals['dns/forwarder1'], vals['dns/forwarder2']], function(iforwarder) {
+				return iforwarder;
+			}).join(', ');
+			_append(_('External name server'), forwarders);
+
+			_append(_('HTTP proxy'), vals['proxy/http']);
+			msg += '</ul>';
+
+			// software components
+			var apps = this._gallery.getSelectedItems();
+			if (!apps.length) {
+				msg += '<p><b>' + _('Software components') + '</b>: ' + _('No additional software components will be installed.') + '</p>';
+			}
+			else {
+				msg += '<p><b>' + _('Software components') + '</b></p>';
+				msg += '<ul>';
+				array.forEach(apps, function(iapp) {
+					msg += '<li>' + iapp.name + '</li>';
 				});
 			}
+			msg += '</ul>';
+
 			this.getWidget('summary', 'info').set('content', msg);
 		},
 
-		_getRole: function() {
-			var createDomain = this.getWidget('role', '_createDomain').get('value');
-			if (createDomain) {
-				return 'master';
-			}
-			var role = array.filter(['_roleSackup', '_roleSlave', '_roleMember'], function(irole) {
-				return this.getWidget('role-nonmaster', irole).get('value');
+		_updateValidationPage: function(details) {
+			var msg = '<ul>';
+			array.forEach(details, function(ientry) {
+				if (ientry.valid) {
+					// ignore valid entries
+					return;
+				}
+
+				// prepare list item for invalid entry
+				msg += '<li>';
+				var label = this._key2label(ientry.key);
+				if (label) {
+					msg += '<b>' + label + ':</b><br/>';
+				}
+				msg += ientry.message;
+				msg += '</li>';
 			}, this);
-			if (!role.length) {
-				throw new Error('No role chosen!');
-			}
-			return role[0];
+			msg += '</ul>';
+
+			// display validation information
+			this.getWidget('validation', 'info').set('content', msg);
+		},
+
+		_validateWithServer: function() {
+			var vals = this.getValues();
+			this.standby(true);
+			return tools.umcpCommand('setup/validate', { values: vals }).then(lang.hitch(this, function(response) {
+				this.standby(false);
+				var allValid = array.every(response.result, function(ientry) {
+					return ientry.valid;
+				});
+				if (!allValid) {
+					this._updateValidationPage(response.result);
+				}
+				return allValid;
+			}), lang.hitch(this, function(err) {
+				this.standby(false);
+				throw err;
+			}));
 		},
 
 		_isRoleMaster: function() {
@@ -1058,22 +1295,67 @@ define([
 			return true;
 		},
 
-		_validateForm: function(pageName) {
+		_validatePage: function(pageName) {
+			if (pageName == 'software') {
+				// validate software components
+				var packages = {};
+				array.forEach(this._gallery.getSelectedItems(), function(iapp) {
+					var ipackages = [].concat(iapp.defaultpackages, iapp.defaultpackagesmaster);
+					array.forEach(ipackages, function(ipackage) {
+						packages[ipackage] = true;
+					});
+				});
+				if (packages['univention-samba'] && packages['univention-samba4']) {
+					_alert(_('<p>It is not possible to install Samba 3 and Samba 4 on one system.</p><p>Please select only one of these components.</p>'));
+					return false;
+				}
+				if (packages['univention-virtual-machine-manager-node-kvm'] && packages['univention-virtual-machine-manager-node-xen']) {
+					_alert(_('<p>It is not possible to install KVM and XEN components on one system.</p><p>Please select only one of these components.</p>'));
+					return false;
+				}
+			}
+
 			var page = this.getPage(pageName);
 			if (!page || !page._form) {
 				return true;
 			}
-			var isValid = page._form.validate();
-			if (!isValid) {
-				return isValid;
+			var invalidWidgets = page._form.getInvalidWidgets();
+			if (invalidWidgets.length !== 0) {
+				// focus the first invalid widget
+				array.some(invalidWidgets, function(ikey) {
+					var iwidget = this.getWidget(pageName, ikey);
+					if (iwidget.focus) {
+						iwidget.focus();
+						return true;
+					}
+				}, this);
+				return false;
 			}
+
+			// password length check
 			if (pageName == 'user-master' || pageName == 'network') {
 				var passwordWidget = this.getWidget(pageName, 'root_password');
 				var password = passwordWidget.get('value');
 				if (passwordWidget.get('visible') && password.length < 8) {
-					dialog.alert(_('The root password is too short. For security reasons, your password must contain at least 8 characters.'));
+					passwordWidget.focus();
+					_alert(_('The root password is too short. For security reasons, your password must contain at least 8 characters.'));
 					return false;
 				}
+			}
+
+			// check network device configuration
+			if (pageName == 'network') {
+				var _vals = this._gatherVisibleValues();
+				var nConfiguredInterfaces = 0;
+				for (var idx = 0; idx < 4; ++idx) {
+					nConfiguredInterfaces += Boolean(_vals['_ip' + idx] && _vals['_netmask' + idx]);
+				}
+				if (!nConfiguredInterfaces) {
+					this.getWidget('network', '_ip0').focus();
+					_alert(_('At least one network device needs to be properly configured.'));
+					return false;
+				}
+
 			}
 			return true;
 		},
@@ -1087,39 +1369,66 @@ define([
 			return pageName;
 		},
 
+		_updateButtons: function(pageName) {
+			this.inherited(arguments);
+			if (pageName == 'validation') {
+				var buttons = this._pages[pageName]._footerButtons;
+				domClass.add(buttons.next.domNode, 'dijitHidden');
+				domClass.add(buttons.previous.domNode, 'umcSubmitButton');
+			}
+		},
+
 		next: function(pageName) {
 			// disallow page changing more than every 500 milliseconds (Bug #27734)
 			if (this._forcedPage) {
 				return this._forcedPage;
 			}
+			topic.publish('/umc/actions', this.moduleID, 'wizard', pageName, 'next');
 
 			// validation of form fields
-			if (!this._validateForm(pageName)) {
+			if (!this._validatePage(pageName)) {
 				return this._forcePageTemporarily(pageName);
 			}
 
-			// exceptions for specific pages
+			// extra handling for specific pages
+			var nextPage = this.inherited(arguments);
 			if (pageName == 'welcome-adapt-locale-settings') {
 				return this._forcePageTemporarily('locale');
 			}
-
-			// get the next visible page
-			var nextPage = this.inherited(arguments);
+			if (nextPage == 'validation') {
+				return this._validateWithServer().then(lang.hitch(this, function(isValid) {
+					// jump to summary page if everything is fine...
+					// else display validation errors
+					if (isValid) {
+						this._updateSummaryPage();
+						return 'summary';
+					}
+					return 'validation';
+				}), function(err) {
+					// fallback -> the error will be displayed anyways...
+					// stay on the current page
+					return pageName;
+				});
+			}
 
 			// update display information
 			if (nextPage == 'network') {
 				this._updateNetworkPage();
 			}
-			if (nextPage == 'summary') {
-				this._updateSummaryPage();
+			if (nextPage == 'software') {
+				this._updateAppGallery();
 			}
 			return this._forcePageTemporarily(nextPage);
 		},
 
-		previous: function() {
+		previous: function(pageName) {
 			// disallow page changing more than every 500 milliseconds (Bug #27734)
 			if (this._forcedPage) {
 				return this._forcedPage;
+			}
+			topic.publish('/umc/actions', this.moduleID, 'wizard', pageName, 'previous');
+			if (pageName == 'error' || pageName == 'summary') {
+				return this._forcePageTemporarily('software');
 			}
 			return this._forcePageTemporarily(this.inherited(arguments));
 		},
@@ -1128,14 +1437,23 @@ define([
 			return false;
 		},
 
+/*		hasNext: function(pageName) {
+			var result = this.inherited(arguments);
+			if (pageName == 'error' || pageName == 'validation') {
+				return false;
+			}
+			return result;
+		},*/
+
 		onReload: function(newLocale) {
 			// event stub
 		},
 
-		getValues: function() {
+		_gatherVisibleValues: function() {
+			// collect values from visible pages and visible widgets
 			var _vals = {};
 			array.forEach(this.pages, function(ipageConf) {
-				if (this.isPageVisible(ipageConf.name)) {
+				if (this.isPageVisible(ipageConf.name) || ipageConf.name == 'locale') {
 					var ipage = this.getPage(ipageConf.name);
 					if (!ipage || !ipage._form) {
 						return;
@@ -1148,9 +1466,100 @@ define([
 					});
 				}
 			}, this);
+			return _vals;
+		},
 
-			var countryCode = _vals['locale/default'];
-			var vals = _vals;
+		_getRole: function() {
+			var _vals = this._gatherVisibleValues();
+			if (_vals._createDomain) {
+				return 'domaincontroller_master';
+			}
+			else if (_vals._roleBackup) {
+				return 'domaincontroller_backup';
+			}
+			else if (_vals._roleSlave) {
+				return 'domaincontroller_slave';
+			}
+			else {
+				return 'memberserver';
+			}
+		},
+
+		getValues: function() {
+			// network configuration
+			var _vals = this._gatherVisibleValues();
+			var vals = {
+				interfaces: {}
+			};
+			if (this._isDHCPPreConfigured() && _vals._dhcp) {
+				// nothing to do... leave the preconfigurred settings
+			}
+			else if (_vals._dhcp) {
+				// activate DHCP configuration for eth0
+				vals.interfaces.eth0 = {
+					name: 'eth0',
+					interfaceType: 'Ethernet',
+					ip4dynamic: true
+				}
+			}
+			else {
+				// prepare values for network interfaces
+				array.forEach(this._getNetworkDevices(), function(idev, i) {
+					// make sure valid values are set
+					var iip = _vals['_ip' + i];
+					var imask = _vals['_netmask' + i];
+					if (!iip || !imask) {
+						return;
+					}
+
+					// prepare interface entry
+					var iconf = {
+						name: idev,
+						interfaceType: 'Ethernet'
+					};
+					var isIPv4Address = _regIPv4.test(iip);
+					if (isIPv4Address) {
+						// IPv4 address
+						iconf.ip4 = [[iip, imask]];
+					} else {
+						// IPv6 address
+						iconf.ip6 = [[iip, imask]];
+					}
+					vals.interfaces[idev] = iconf;
+				});
+			}
+
+			// domain name handling
+			if (_validateFQDN(_vals.hostname)) {
+				// FQDN is specified instead of hostname
+				_vals._fqdn = _vals.hostname;
+			}
+			if (_vals._fqdn) {
+				// FQDN is specified
+				// -> split FQDN into hostname and domain name
+				var parts = _vals.hostname.split('.');
+				_vals.hostname = parts.shift;
+				_vals.domainname = parts.join('.');
+
+			}
+
+			// server role handling
+			vals['server/role'] = this._getRole();
+
+			// software components
+			var packages = [];
+			array.forEach(this._gallery.getSelectedItems(), function(iapp) {
+				packages = packages.concat(iapp.defaultpackages, iapp.defaultpackagesmaster);
+			});
+			vals['components'] = packages;
+
+			// prepare the dictionary with final values
+			tools.forIn(_vals, function(ikey, ival) {
+				if (typeof ikey == "string" && ikey.indexOf('_') !== 0 && ival) {
+					// ignore values starting with '_'
+					vals[ikey] = ival;
+				}
+			});
 			return vals;
 		}
 	});

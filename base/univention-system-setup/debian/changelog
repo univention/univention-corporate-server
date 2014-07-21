@@ -1,3 +1,22 @@
+univention-system-setup (8.0.5-1) unstable; urgency=low
+
+  Bug #34484 [WIP]
+  * integration of server side validation + summary
+  * perform server side validation
+  * make sure that test cases can be run during build 
+  * fixed reference to undefined
+  * fixed undefined description of apps
+  * added package dependencies
+  * added automatic DNS query of domain name
+  * ensure that wizard values are returned in the correct format for backend
+  * ensure that apps are displayed only for the selected server role
+  * replaced old software component handling from installer with apps
+  * read pre-configured DHCP settings + apply them to the network wizard page
+  * add backend-side auto completion of specific config values
+  * add UCS system activation via submitted email address in setup-join.sh
+
+ -- Florian Best <best@univention.de>  Mon, 21 Jul 2014 15:19:52 +0200
+
 univention-system-setup (8.0.4-1) unstable; urgency=low
 
   * Bug #35145: Bug #35267: integrate dependencies from univention-installer-modules
