@@ -34,41 +34,15 @@ class WinExe:
 
 		return
 
-	def error(self, msg):
+	def __error(self, msg):
 		print >> sys.stderr, "%s" % msg
 
-	def error_and_exit(self, msg):
-		self.error(msg)
+	def __error_and_exit(self, msg):
+		self.__error(msg)
 		sys.exit(1)
-		
-	def check_options(self):
-
-
-		self.opts, self.args = self.parser.parse_args()
-
-		config = ConfigParser.ConfigParser()
-		config.read(os.path.join(os.environ['HOME'], ".winexe.ini"))
-		for i in ["domain", "domain_admin", "local_admin", "local_password", "client", "domain_password"]:
-			if config.has_section("default") and config.has_option("default", i):
-				self.opts.ensure_value(i, config.get("default", i))
-
-		if not self.opts.domain:
-			self.error_and_exit("option --domain is required")
-		if not self.opts.domain_admin:
-			self.error_and_exit("option --domain-admin is required")
-		if not self.opts.domain_password:
-			self.error_and_exit("option --domain-password is required")
-		if not self.opts.local_admin:
-			self.error_and_exit("option --local-admin is required")
-		if not self.opts.local_password:
-			self.error_and_exit("option --local-password is required")
-		if not self.opts.client:
-			self.error_and_exit("option --client is required")
-
-		return
 
 	# TODO better check if IPC$ is reachable for client
-	def client_reachable(self, timeout=1):
+	def __client_reachable(self, timeout=1):
 
 		for i in range(timeout):
 			try:
@@ -80,7 +54,11 @@ class WinExe:
 				time.sleep(1)
 		return False
 
-	def copy_script(self, vbs, domain=True, debug=False, dont_fail=False):
+	def __build_winexe_cmd(self, *args, **kwarg):
+
+		domain = kwarg.get("domain", True)
+		runas_user = kwarg.get("runas_user", self.opts.domain_admin)
+		runas_password = kwarg.get("runas_password", self.opts.domain_password)
 
 		cmd = []
 		cmd.append("winexe")
@@ -89,12 +67,33 @@ class WinExe:
 			cmd.append("-U")
 			cmd.append(self.opts.domain + "\\" + self.opts.domain_admin + "%" + self.opts.domain_password)
 			cmd.append("--runas")
-			cmd.append(self.opts.domain + "\\" + self.opts.domain_admin + "%" + self.opts.domain_password)
+			cmd.append(self.opts.domain + "\\" + runas_user + "%" + runas_password)
 		else:
 			cmd.append("-U")
 			cmd.append(self.opts.local_admin + "%" + self.opts.local_password)
 		
 		cmd.append("//" + self.opts.client)
+		return cmd
+
+
+	# TODO
+	# certutil is required on the client as we need it to decode the
+	# base64 encoded scripts, is there a better way?
+	def __client_has_certutil(self, *args, **kwarg):
+
+		cmd = self.__build_winexe_cmd(args, kwarg)
+		cmd = cmd + ['certutil']
+		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		so, se = p.communicate()
+		if p.returncode:
+			self.__error_and_exit("certutil not found on client %s!" % self.opts.client)
+
+	def __copy_script(self, *args, **kwarg):
+
+		debug = kwarg.get("debug", False)
+		vbs = kwarg.get("vbs", "")
+
+		cmd = self.__build_winexe_cmd(args, kwarg)
 
 		# copy file to client in chunks of 4000 chars
 		base64 = open(vbs, "r").read().encode("base64").replace("\n", "")
@@ -108,7 +107,7 @@ class WinExe:
 			p = subprocess.Popen(copy, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			so, se = p.communicate()
 			if p.returncode:
-				self.error_and_exit("failed to copy %s.vbs (%s, %s, %s)" % (command, p.returncode, so, se))
+				self.__error_and_exit("failed to copy %s.vbs (%s, %s, %s)" % (command, p.returncode, so, se))
 
 		# decode script
 		decode = cmd + ["certutil -f -decode c:\\%s.tmp c:\\%s.vbs" % (command, command)]
@@ -117,9 +116,33 @@ class WinExe:
 		p = subprocess.Popen(decode, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		so, se = p.communicate()
 		if p.returncode:
-			self.error_and_exit("failed to copy %s.vbs (%s, %s, %s)" % (command, p.returncode, so, se))
+			self.__error_and_exit("failed to copy %s.vbs (%s, %s, %s)" % (command, p.returncode, so, se))
 
 		return 0
+
+
+	def check_options(self):
+
+		self.opts, self.args = self.parser.parse_args()
+		config = ConfigParser.ConfigParser()
+		config.read(os.path.join(os.environ['HOME'], ".ucs-windows-tools.ini"))
+		for i in ["domain", "domain_admin", "local_admin", "local_password", "client", "domain_password"]:
+			if config.has_section("default") and config.has_option("default", i):
+				self.opts.ensure_value(i, config.get("default", i))
+		if not self.opts.domain:
+			self.__error_and_exit("option --domain is required")
+		if not self.opts.domain_admin:
+			self.__error_and_exit("option --domain-admin is required")
+		if not self.opts.domain_password:
+			self.__error_and_exit("option --domain-password is required")
+		if not self.opts.local_admin:
+			self.__error_and_exit("option --local-admin is required")
+		if not self.opts.local_password:
+			self.__error_and_exit("option --local-password is required")
+		if not self.opts.client:
+			self.__error_and_exit("option --client is required")
+
+		return
 
 	def winexec(self, *args, **kwarg):
 
@@ -131,7 +154,7 @@ class WinExe:
 		runas_password = kwarg.get("runas_password", self.opts.domain_password)
 
 		if len(args) < 1:
-			self.error_and_exit("no command for winexec")
+			self.__error_and_exit("no command for winexec")
 		command = args[0]
 		command_args = []
 		if len(args) > 1:
@@ -139,8 +162,10 @@ class WinExe:
 				if i:
 					command_args.append(str(i))
 
-		if not self.client_reachable():
-			 self.error_and_exit("client %s is not reachable" % self.opts.client)
+		if not self.__client_reachable():
+			self.__error_and_exit("client %s is not reachable!" % self.opts.client)
+
+		self.__client_has_certutil()
 
 		cmd = []
 		cmd.append("winexe")
@@ -159,7 +184,7 @@ class WinExe:
 		# check if command is a vbs script and copy command
 		vbs = os.path.join(self.command_dir, command + ".vbs")
 		if os.path.isfile(vbs):
-			self.copy_script(vbs, domain=domain, dont_fail=dont_fail, debug=debug)
+			self.__copy_script(vbs=vbs, domain=domain, debug=debug)
 			cmd.append("cscript c:\\%s.vbs %s" % (command, " ".join(command_args)))
 		else:
 			if command_args:
@@ -202,15 +227,15 @@ class WinExe:
 
 		# check if command was susccessfull
 		if process.returncode != 0 and not dont_fail:
-			self.error_and_exit("command %s failed with %s" % (command, process.returncode))
+			self.__error_and_exit("command %s failed with %s" % (command, process.returncode))
 
 		return process.returncode, mystdout, mystderr
 
 	def wait_for_client(self, timeout=1, domain=True):
 
 		# check if client is reachable
-		if not self.client_reachable(timeout=timeout):
-			self.error_and_exit("wait_for_client failed (client %s is not reachable)" % self.opts.client)
+		if not self.__client_reachable(timeout=timeout):
+			self.__error_and_exit("wait_for_client failed (client %s is not reachable)" % self.opts.client)
 
 		# check winexe
 		for i in range(timeout):
@@ -219,16 +244,16 @@ class WinExe:
 				return 0
 			time.sleep(1)
 
-		self.error_and_exit("wait_for_client failed (winexe to %s failed)" % self.opts.client)
+		self.__error_and_exit("wait_for_client failed (winexe to %s failed)" % self.opts.client)
 
 	def wait_until_client_is_gone(self, timeout=1):
 
 		for i in range(timeout):
-			if not self.client_reachable(timeout=1):
+			if not self.__client_reachable(timeout=1):
 				return 0
 			time.sleep(1)
 
-		self.error_and_exit("wait_until_client_is_gone failed, client %s still reachable after %s attempts" % (self.opts.client, timeout))
+		self.__error_and_exit("wait_until_client_is_gone failed, client %s still reachable after %s attempts" % (self.opts.client, timeout))
 
 	def check_user_login(self, runas_user, runas_password):
 		ret, stdout, stderr = self.winexec(
@@ -238,4 +263,4 @@ class WinExe:
 			quiet=True,
 			dont_fail=True)
 		if ret != 0:
-			self.error_and_exit("check_user_login for %s failed with %s (%s)" % (runas_user, ret, stdout + stderr))
+			self.__error_and_exit("check_user_login for %s failed with %s (%s)" % (runas_user, ret, stdout + stderr))

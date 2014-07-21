@@ -36,7 +36,7 @@ import univention.winexe
 
 winexe = univention.winexe.WinExe()
 winexe.options.add_option("--user-name", dest="user_name", default="vbsTestUser", help="prefix for the user name (vbsTestUser)")
-winexe.options.add_option("--password", dest="password", default="univentionUCS3.2", help="the accounts password (univentionUCS3.2)")
+winexe.options.add_option("--password", dest="password", default="Univention.99", help="the accounts password (Univention.99)")
 winexe.options.add_option("--users", dest="users", type="int", help="number of users to create (10)", default=10)
 winexe.options.add_option("--group-name", dest="group_name", default="vbsTestGroup", help="prefix for the group name (vbsTestGroup)")
 winexe.options.add_option("--groups", dest="groups", type="int", help="number of users to create (10)", default=10)

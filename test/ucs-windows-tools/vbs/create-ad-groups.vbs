@@ -9,13 +9,13 @@ strNumberOfGroups = WScript.Arguments(1)
 On Error Resume Next
 
 Set objRootLDAP = GetObject("LDAP://rootDSE")
-Set objContainer = GetObject("LDAP://CN=Groups," & objRootLDAP.Get("defaultNamingContext"))
+Set objContainer = GetObject("LDAP://CN=Users," & objRootLDAP.Get("defaultNamingContext"))
 
 For i = 1 To strNumberOfGroups
  
 	strName = strGroupName & i
 
-	Set objGroup = GetObject("LDAP://CN=" & strName & ",CN=Groups," & objRootLDAP.Get("defaultNamingContext"))
+	Set objGroup = GetObject("LDAP://CN=" & strName & ",CN=Users," & objRootLDAP.Get("defaultNamingContext"))
 
 	If objGroup Then
 		WScript.Echo "group cn=" & strName & " already exists"

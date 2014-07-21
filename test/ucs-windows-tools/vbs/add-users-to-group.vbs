@@ -11,13 +11,13 @@ strNumberOfGroups = WScript.Arguments(3)
 On Error Resume Next
 
 Set objRootLDAP = GetObject("LDAP://rootDSE")
-Set objContainer = GetObject("LDAP://CN=Groups," & objRootLDAP.Get("defaultNamingContext"))
+Set objContainer = GetObject("LDAP://CN=Users," & objRootLDAP.Get("defaultNamingContext"))
 
 For i = 1 To strNumberOfGroups
 
 
 	strGName = strGroupName & i
-	Set objGroup = GetObject("LDAP://CN=" & strGName & ",CN=Groups," & objRootLDAP.Get("defaultNamingContext"))
+	Set objGroup = GetObject("LDAP://CN=" & strGName & ",CN=Users," & objRootLDAP.Get("defaultNamingContext"))
 
 	If objGroup Then
 		For j = 1 To strNumberOfUsers
