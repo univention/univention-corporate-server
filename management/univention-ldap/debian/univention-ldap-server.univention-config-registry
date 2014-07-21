@@ -68,3 +68,5 @@ Variables: ldap/threads
 Variables: ldap/tool-threads
 Variables: ldap/database/mdb/maxsize
 Variables: ldap/database/mdb/checkpoint
+Variables: ldap/cachesize
+Variables: ldap/idlcachesize
