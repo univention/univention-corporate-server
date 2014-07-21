@@ -1,3 +1,9 @@
+univention-dvd (0.2.0-4) unstable; urgency=low
+
+  * Re-enable user-setup-udeb to setup root password (Bug #35375)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 21 Jul 2014 15:57:28 +0200
+
 univention-dvd (0.2.0-3) unstable; urgency=low
 
   * Bug #35384,35385,35372,35375: Fix path
