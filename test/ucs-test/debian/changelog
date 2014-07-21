@@ -1,3 +1,10 @@
+ucs-test (4.0.166-61) unstable; urgency=low
+
+  * 60_umc/06_non-ucr-policies: a test for non-UCR policies
+    handling in the UMC (Bug #35314)
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 21 Jul 2014 15:03:25 +0200
+
 ucs-test (4.0.166-60) unstable; urgency=low
 
   * 00_base/47faillog_account-smb-krb: skip this test in S4 environment
