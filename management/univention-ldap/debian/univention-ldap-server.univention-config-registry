@@ -29,6 +29,10 @@ Variables: ldap/replog
 Variables: ldap/translogfile
 Variables: ldap/timeout
 Variables: ldap/online/master
+Variables: ldap/threads
+Variables: ldap/tool-threads
+Variables: ldap/database/mdb/maxsize
+Variables: ldap/database/mdb/checkpoint
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -60,3 +64,7 @@ Variables: ldap/online/master
 Variables: ldap/translogfile
 Variables: ldap/k5pwd
 Variables: ldap/pwd_scheme_kinit
+Variables: ldap/threads
+Variables: ldap/tool-threads
+Variables: ldap/database/mdb/maxsize
+Variables: ldap/database/mdb/checkpoint

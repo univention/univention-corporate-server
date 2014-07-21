@@ -55,8 +55,11 @@ if [ "$ldap_server_type" = "slave" -a ! -f /var/lib/univention-ldap/schema.conf 
 fi
 
 # initialize ldap
-
-files=$(find /var/lib/univention-ldap/ldap/ -name "id2entry.*" -type f)
+database_name="id2entry"
+if [ "mdb" = "$ldap_database_type" ]; then
+	database_name="data"
+fi
+files=$(find /var/lib/univention-ldap/ldap/ -name "$database_name.*" -type f)
 if [ -z "$files" ] ; then
 	killall slapd >/dev/null 2>&1
 	killall slapd >/dev/null 2>&1
@@ -68,7 +71,9 @@ if [ -z "$files" ] ; then
 		mv "/etc/ldap/slapd.d/cn=config.ldif" "/etc/ldap/slapd.d/cn=config.ldif.DISABLED"
 	fi
 
-	univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
+	if [ ! "mdb" = "$ldap_database_type" ]; then
+		univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
+	fi
 
 	if [ -z "$LDAP_SECRET" ]; then
 		pw_crypt=$(mkpasswd --hash=md5 -s < /etc/ldap.secret)

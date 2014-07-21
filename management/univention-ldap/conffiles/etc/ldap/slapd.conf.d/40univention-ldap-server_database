@@ -23,11 +23,16 @@ if configRegistry.is_true('ldap/pwd_scheme_kinit', True):
 	print "overlay\tpwd_scheme_kinit"
 @!@
 
+@!@
+if configRegistry['ldap/database/type'] == "mdb":
+	print "maxsize\t%s" % configRegistry.get("ldap/database/mdb/maxsize", "2147483648") # 2GB default (sparse!)
+else:
+	print "cachesize\t%s" % configRegistry.get("ldap/cachesize")
+	print "idlcachesize\t%s" % configRegistry.get("ldap/idlcachesize")
 
-
-cachesize   @%@ldap/cachesize@%@
-idlcachesize   @%@ldap/idlcachesize@%@
+@!@
 threads		@%@ldap/threads@%@
+tool-threads @%@ldap/tool-threads@%@
 
 @!@
 if configRegistry['ldap/database/type'] == "bdb":
@@ -35,6 +40,10 @@ if configRegistry['ldap/database/type'] == "bdb":
 		print 'checkpoint %s'%configRegistry['ldap/database/bdb/checkpoint']
 	else:
 		print 'checkpoint 1024 30'
+
+if configRegistry['ldap/database/type'] == "mdb":
+	if configRegistry.has_key('ldap/database/mdb/checkpoint') and configRegistry['ldap/database/mdb/checkpoint']:
+		print 'checkpoint %s'%configRegistry['ldap/database/mdb/checkpoint']
 
 index_attrs={}
 indextypes=['pres','eq','sub','approx']

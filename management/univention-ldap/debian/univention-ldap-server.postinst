@@ -73,33 +73,37 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 fi
 
 # configure firewall
-ucr set security/packetfilter/package/univention-ldap-server/tcp/389/all="ACCEPT" \
-		security/packetfilter/package/univention-ldap-server/tcp/389/all/en="LDAP" \
-		security/packetfilter/package/univention-ldap-server/tcp/636/all="ACCEPT" \
-		security/packetfilter/package/univention-ldap-server/tcp/636/all/en="LDAPS" \
-		security/packetfilter/package/univention-ldap-server/tcp/7389/all="ACCEPT" \
-		security/packetfilter/package/univention-ldap-server/tcp/7389/all/en="LDAP" \
-		security/packetfilter/package/univention-ldap-server/tcp/7636/all="ACCEPT" \
-		security/packetfilter/package/univention-ldap-server/tcp/7636/all/en="LDAPS"
+ucr set \
+	security/packetfilter/package/univention-ldap-server/tcp/389/all="ACCEPT" \
+	security/packetfilter/package/univention-ldap-server/tcp/389/all/en="LDAP" \
+	security/packetfilter/package/univention-ldap-server/tcp/636/all="ACCEPT" \
+	security/packetfilter/package/univention-ldap-server/tcp/636/all/en="LDAPS" \
+	security/packetfilter/package/univention-ldap-server/tcp/7389/all="ACCEPT" \
+	security/packetfilter/package/univention-ldap-server/tcp/7389/all/en="LDAP" \
+	security/packetfilter/package/univention-ldap-server/tcp/7636/all="ACCEPT" \
+	security/packetfilter/package/univention-ldap-server/tcp/7636/all/en="LDAPS"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
-univention-config-registry set	ldap/debug/level?0 \
-								slapd/port?"7389,389" \
-								slapd/port/ldaps?"7636,636" \
-								ldap/database/type?bdb \
-								ldap/sizelimit?400000 \
-								ldap/cachesize?20000 \
-								ldap/idlcachesize?20000 \
-								ldap/idletimeout?360 \
-								ldap/index/autorebuild?yes \
-								ldap/threads?16 \
-								ldap/acl/user/password/change?no \
-								ldap/acl/slavepdc?yes \
-								ldap/acl/nestedgroups?yes \
-								ldap/database/bdb/db_config_options?"set_flags" \
-								ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE" \
-								ldap/autostart?yes \
-								ldap/maxopenfiles?8192 # Bug #17705
+ucr set \
+	ldap/debug/level?0 \
+	slapd/port?"7389,389" \
+	slapd/port/ldaps?"7636,636" \
+	ldap/database/type?mdb \
+	ldap/database/mdb/maxsize?2147483648 \
+	ldap/sizelimit?400000 \
+	ldap/cachesize?20000 \
+	ldap/idlcachesize?20000 \
+	ldap/idletimeout?360 \
+	ldap/index/autorebuild?yes \
+	ldap/threads?16 \
+	ldap/tool-threads?1 \
+	ldap/acl/user/password/change?no \
+	ldap/acl/slavepdc?yes \
+	ldap/acl/nestedgroups?yes \
+	ldap/database/bdb/db_config_options?"set_flags" \
+	ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE" \
+	ldap/autostart?yes \
+	ldap/maxopenfiles?8192 # Bug #17705
 
 # UDM Property Attributes
 udm_prop_attrs="univentionUDMPropertyVersion,univentionUDMPropertyModule,univentionUDMPropertyShortDescription,univentionUDMPropertyLongDescription,univentionUDMPropertySyntax,univentionUDMPropertyMultivalue,univentionUDMPropertyDefault,univentionUDMPropertyLdapMapping,univentionUDMPropertyObjectClass,univentionUDMPropertyDeleteObjectClass,univentionUDMPropertyValueMayChange,univentionUDMPropertyLayoutTabName,univentionUDMPropertyLayoutOverwriteTab,univentionUDMPropertyLayoutOverwritePosition,univentionUDMPropertyLayoutPosition,univentionUDMPropertyCLIName,univentionUDMPropertyTranslationShortDescription,univentionUDMPropertyTranslationLongDescription,univentionUDMPropertyTranslationTabName,univentionUDMPropertyOptions,univentionUDMPropertyLayoutTabAdvanced,univentionUDMPropertyValueRequired,univentionUDMPropertyHook,univentionUDMPropertyDoNotSearch"

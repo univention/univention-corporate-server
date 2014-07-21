@@ -36,6 +36,12 @@ Description[en]=The number of server threads used by the LDAP server.
 Type=int
 Categories=service-ldap
 
+[ldap/tool-threads]
+Description[de]=Die Anzahl der verwendeten Tool-Threads (slapadd, slapindex).
+Description[en]=The maximum number of threads to use in tool mode (slapadd, slapindex).
+Type=int
+Categories=service-ldap
+
 [ldap/maxopenfiles]
 Description[de]=Die maximale Anzahl an Dateien, die der LDAP-Server öffnen kann. Wenn der Wert angepasst wird, müssen ggf. auch Unix-Prozesslimits angepasst werden.
 Description[en]=The maximum of files the LDAP server can open. If the value is adapted, Unix process limits might need to be expanded as well.
@@ -148,4 +154,16 @@ Categories=service-ldap
 Description[de]=Mit dieser Variable kann ein Zeitraum in Sekunden konfiguriert werden, nach dessen Ablauf eine LDAP-Verbindung serverseitig geschlossen wird. Wenn der Wert auf 0 gesetzt wird, wird kein Ablaufzeitraum angewendet.
 Description[en]=This variable is used to configure a time period in seconds after which the LDAP connection is closed on the server side. When the value is set to 0, no expiry period is in use.
 Type=int
+Categories=service-ldap
+
+[ldap/database/mdb/maxsize]
+Description[de]=Die maximale Größe der Datenbank in Bytes.
+Description[en]=The maximum size of the database in bytes.
+Type=int
+Categories=service-ldap
+
+[ldap/database/mdb/checkpoint]
+Description[de]=Diese Variable konfiguriert die Häufigkeit mit der die Daten aus dem 'Transaction Log' in die Datenbank geschrieben werden. Änderungen sind nur in Ausnahmefällen nötig und sollten sorgfältig getestet werden. Die Syntax ist unter <http://www.openldap.org/faq/data/cache/1072.html> beschrieben.
+Description[en]=This variable configures the frequency for checkpointing the database transaction log upon updating the database. Changes are only needed in exceptional cases and should be tested carefully. The syntax is documented at <http://www.openldap.org/faq/data/cache/1072.html>.
+Type=str
 Categories=service-ldap
