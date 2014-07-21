@@ -1,3 +1,9 @@
+ucs-windows-tools (1.0.0-5) unstable; urgency=low
+
+  * small fixes (Bug #35394) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Jul 2014 16:02:53 +0200
+
 ucs-windows-tools (1.0.0-4) unstable; urgency=low
 
   * support batch and powershell scripts (Bug #35394) 

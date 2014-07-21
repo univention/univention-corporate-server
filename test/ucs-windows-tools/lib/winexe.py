@@ -19,12 +19,14 @@ class WinExe:
 		group = optparse.OptionGroup(self.parser, "General options")
 
 		group.add_option("--domain", dest="domain", help="the AD domain name")
+		group.add_option("--no-domain", dest="no_domain", action="store_true", default=False, help="the AD domain name")
 		group.add_option("--domain-admin", dest="domain_admin", help="the domain administrator account")
 		group.add_option("--domain-password", dest="domain_password", help="the domain administrator password")
 		group.add_option("--local-admin", dest="local_admin", help="the local administrator account")
 		group.add_option("--local-password", dest="local_password", help="the local administrator password")
 		group.add_option("--port", dest="port", type="int", default=445, help="winexe port (445)")
 		group.add_option("--client", dest="client", help="the windows client")
+		group.add_option("--debug", dest="debug", action="store_true", default=False, help="verbose output")
 		
 		self.parser.add_option_group(group)
 
@@ -51,16 +53,12 @@ class WinExe:
 				time.sleep(1)
 		return False
 
-	def __build_winexe_cmd(self, *args, **kwarg):
-
-		domain = kwarg.get("domain", True)
-		runas_user = kwarg.get("runas_user", self.opts.domain_admin)
-		runas_password = kwarg.get("runas_password", self.opts.domain_password)
+	def __build_winexe_cmd(self, domain=True, runas_user=None, runas_password=None):
 
 		cmd = []
 		cmd.append("winexe")
 		cmd.append("--interactive=0")
-		if domain:
+		if domain and runas_user and runas_password:
 			cmd.append("-U")
 			cmd.append(self.opts.domain + "\\" + self.opts.domain_admin + "%" + self.opts.domain_password)
 			cmd.append("--runas")
@@ -73,25 +71,24 @@ class WinExe:
 		return cmd
 
 
-	# TODO
-	# certutil is required on the client as we need it to decode the
-	# base64 encoded scripts, is there a better way?
-	def __client_has_certutil(self, *args, **kwarg):
+	def __copy_script(self, script=None, domain=True, debug=None):
 
-		cmd = self.__build_winexe_cmd(args, kwarg)
-		cmd = cmd + ['certutil']
-		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		extension = script.split(".")[-1]
+		cmd = self.__build_winexe_cmd(domain=domain)
+
+		# check certutil
+		# TODO
+		# certutil is required on the client as we need it to decode the
+		# base64 encoded scripts, is there a better way?
+		certutil = cmd + ['certutil']
+		p = subprocess.Popen(certutil, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		so, se = p.communicate()
+		if debug:
+			print certutil
+			print so
+			print se
 		if p.returncode:
 			self.error_and_exit("certutil not found on client %s!" % self.opts.client)
-
-	def __copy_script(self, *args, **kwarg):
-
-		debug = kwarg.get("debug", False)
-		script = kwarg.get("script", "")
-		extension = script.split(".")[-1]
-
-		cmd = self.__build_winexe_cmd(args, kwarg)
 
 		# copy file to client in chunks of 4000 chars
 		base64 = open(script, "r").read().encode("base64").replace("\n", "")
@@ -100,10 +97,12 @@ class WinExe:
 		for i in range(0, len(base64), 4000):
 			copy = cmd + ["cmd /C echo %s %s c:\\%s.tmp" % (base64[i:i+4000], overwrite, command)]
 			overwrite = ">>"
-			if debug:
-				print copy
 			p = subprocess.Popen(copy, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			so, se = p.communicate()
+			if debug:
+				print copy
+				print so
+				print se
 			if p.returncode:
 				self.error_and_exit("failed to copy %s.%s (%s, %s, %s)" % (command, extension, p.returncode, so, se))
 
@@ -148,9 +147,11 @@ class WinExe:
 	def winexec(self, *args, **kwarg):
 
 		domain = kwarg.get("domain", True)
+		if self.opts.no_domain:
+			domain = False
 		quiet = kwarg.get("quiet", False)
 		dont_fail = kwarg.get("dont_fail", False)
-		debug = kwarg.get("debug", False)
+		debug = kwarg.get("debug", self.opts.debug)
 		runas_user = kwarg.get("runas_user", self.opts.domain_admin)
 		runas_password = kwarg.get("runas_password", self.opts.domain_password)
 
@@ -166,21 +167,7 @@ class WinExe:
 		if not self.__client_reachable():
 			self.error_and_exit("client %s is not reachable!" % self.opts.client)
 
-		self.__client_has_certutil()
-
-		cmd = []
-		cmd.append("winexe")
-		cmd.append("--interactive=0")
-		if domain:
-			cmd.append("-U")
-			cmd.append(self.opts.domain + "\\" + self.opts.domain_admin + "%" + self.opts.domain_password)
-			cmd.append("--runas")
-			cmd.append(self.opts.domain + "\\" + runas_user + "%" + runas_password)
-		else:
-			cmd.append("-U")
-			cmd.append(self.opts.local_admin + "%" + self.opts.local_password)
-
-		cmd.append("//" + self.opts.client)
+		cmd = self.__build_winexe_cmd(domain=domain, runas_user=runas_user, runas_password=runas_password)
 
 		script = glob.glob(self.command_dir + command + ".*")
 		if script and len(script) == 1:
@@ -190,7 +177,7 @@ class WinExe:
 			elif script[0].endswith(".vbs"):
 				cmd.append("cscript c:\\%s.vbs %s" % (command, " ".join(command_args)))
 			elif script[0].endswith(".ps1"):
-				cmd.append("PowerShell.exe -ExecutionPolicy Bypass -Command c:\\%s.ps1 %s" % (command, " ".join(command_args)))
+				cmd.append("PowerShell.exe -Noninteractive -ExecutionPolicy Bypass -Command c:\\%s.ps1 %s" % (command, " ".join(command_args)))
 			else:
 				self.error_and_exit("script has an unknown file extension: %s"  % script[0])
 		else:
@@ -237,7 +224,7 @@ class WinExe:
 
 		return process.returncode, mystdout, mystderr
 
-	def wait_for_client(self, timeout=1, domain=True):
+	def wait_for_client(self, timeout=1):
 
 		# check if client is reachable
 		if not self.__client_reachable(timeout=timeout):
