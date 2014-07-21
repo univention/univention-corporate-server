@@ -12,7 +12,7 @@ Architecture: all
 Pre-Depends: rdate
 Depends: ${misc:Depends},
  openssl,
- # univention-directory-listener,
+# univention-directory-listener,
  openssl-blacklist,
  shell-univention-lib (>= 3.0.1-1),
  python-univention-lib (>= 3.0.1-1)

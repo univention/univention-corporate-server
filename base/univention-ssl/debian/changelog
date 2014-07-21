@@ -1,3 +1,9 @@
+univention-ssl (9.0.0-3) unstable; urgency=low
+
+  * Bug #35144: disabled dependency to univention-directory-listener temporarily
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 21 Jul 2014 10:05:02 +0200
+
 univention-ssl (9.0.0-2) unstable; urgency=low
 
   * Bug #35144: disabled dependency to univention-directory-listener temporarily
