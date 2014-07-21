@@ -34,6 +34,7 @@
 
 # Due to Bug #27786 dummy config files have to be created, otherwise
 # postgresql is not reinstallable
+touch /etc/postgresql/9.1/main/pg_hba.conf
 touch /etc/postgresql/8.4/main/pg_hba.conf
 touch /etc/postgresql/8.3/main/pg_hba.conf
 touch /etc/postgresql/7.4/main/pg_hba.conf

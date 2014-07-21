@@ -91,3 +91,30 @@ File: etc/postgresql/8.4/main/postgresql.conf
 Variables: postgres8/maxconnections
 Variables: postgres8/listenaddress
 Variables: locale/default
+
+Type: multifile
+Multifile: etc/postgresql/9.1/main/pg_hba.conf
+User: postgres
+Group: postgres
+Mode: 0640
+
+Type: subfile
+Multifile: etc/postgresql/9.1/main/pg_hba.conf
+Subfile: etc/postgresql/9.1/main/pg_hba.conf.d/00-pg_hba.conf
+
+Type: subfile
+Multifile: etc/postgresql/9.1/main/pg_hba.conf
+Subfile: etc/postgresql/9.1/main/pg_hba.conf.d/99-pg_hba.conf
+
+Type: multifile
+Multifile: etc/postgresql/9.1/main/pg_ident.conf
+
+Type: subfile
+Multifile: etc/postgresql/9.1/main/pg_ident.conf
+Subfile: etc/postgresql/9.1/main/pg_ident.conf.d/00-pg_ident.conf
+
+Type: file
+File: etc/postgresql/9.1/main/postgresql.conf
+Variables: postgres/maxconnections
+Variables: postgres/listenaddress
+Variables: locale/default
