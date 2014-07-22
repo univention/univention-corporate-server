@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-60) unstable; urgency=low
+
+  * Use plain objectGUID for S4 sqlite tables (Bug #33621, Bug #32263)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jul 2014 07:03:19 +0200
+
 univention-s4-connector (8.0.33-59) unstable; urgency=low
 
   * s4connector/s4cache.py: Normalize the values before comparing

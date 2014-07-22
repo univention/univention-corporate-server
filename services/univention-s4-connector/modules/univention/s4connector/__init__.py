@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, codecs, base64, string, os, cPickle, types, random, traceback, copy, time
+import sys, codecs, string, os, cPickle, types, random, traceback, copy, time
 import ldap
 import pdb
 import univention_baseconfig
@@ -41,6 +41,8 @@ import univention.admin.modules
 import univention.admin.objects
 import univention.debug2 as ud
 import base64
+from samba.ndr import ndr_unpack
+from samba.dcerpc import misc
 from signal import *
 term_signal_caught = False
 
@@ -1223,8 +1225,9 @@ class ucs:
 		# use a dummy value
 		if not objectGUID:
 			objectGUID='objectGUID'
-		ud.debug(ud.LDAP, ud.INFO, "update_deleted_cache_after_removal: Save entryUUID %s as deleted to UCS deleted cache. ObjectGUUID: %s" % (entryUUID, base64.encodestring(objectGUID)))
-		self._set_config_option('UCS deleted', entryUUID, base64.encodestring(objectGUID))
+		objectGUID_str = str(ndr_unpack(misc.GUID, objectGUID))
+		ud.debug(ud.LDAP, ud.INFO, "update_deleted_cache_after_removal: Save entryUUID %s as deleted to UCS deleted cache. ObjectGUUID: %s" % (entryUUID, objectGUID_str))
+		self._set_config_option('UCS deleted', entryUUID, objectGUID_str)
 
 	def was_entryUUID_deleted(self, entryUUID):
 		objectGUID = self.config.get('UCS deleted', entryUUID)
@@ -1241,7 +1244,8 @@ class ucs:
 			ud.debug(ud.LDAP, ud.PROCESS, "Delete of %s was disabled in mapping" % object['dn'])
 			return True
 
-		objectGUID = object['attributes'].get('objectGUID')[0]
+		guid_unicode = object['attributes'].get('objectGUID')[0]
+		objectGUID = guid_unicode.encode('ISO-8859-1')	## to compensate for __object_from_element
 		entryUUID = self._get_entryUUID(object['dn'])
 
 		module = self.modules[property_type]
@@ -1329,7 +1333,9 @@ class ucs:
 				pass
 
 		try:
-			guid = original_object.get('attributes').get('objectGUID')[0]
+			guid_unicode = original_object.get('attributes').get('objectGUID')[0]
+			guid_blob = guid_unicode.encode('ISO-8859-1')	## to compensate for __object_from_element
+			guid = str(ndr_unpack(misc.GUID, guid_blob))
 
 			object['changed_attributes'] = []
 			if object['modtype'] == 'modify' and original_object:
