@@ -1269,7 +1269,7 @@ class ucs:
 					object_mapping = self._object_mapping(key, subobject, 'ucs')
 					ud.debug(ud.LDAP, ud.WARN,"delete subobject: %s"% object_mapping['dn'])
 					if not self._ignore_object(key,object_mapping):
-						if not self.sync_to_ucs(key, subobject, object_mapping['dn']):
+						if not self.sync_to_ucs(key, subobject, object_mapping['dn'], object):
 							try:
 								ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed: %s"% result[0])
 							except (ldap.SERVER_DOWN, SystemExit):
