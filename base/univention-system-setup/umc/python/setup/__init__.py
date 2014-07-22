@@ -46,9 +46,8 @@ import copy
 import subprocess
 import simplejson as json
 import locale as _locale
-import urllib2
 
-from univention.management.console.modules import Base, UMC_CommandError
+from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
 from univention.management.console.modules.sanitizers import PatternSanitizer, StringSanitizer, IntegerSanitizer
 from univention.management.console.modules.decorators import sanitize, simple_response
@@ -248,7 +247,7 @@ class Instance(Base):
 				success = False
 				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
 				MODULE.warn( 'Exception during saving the settings: %s\n%s' % (result, msg) )
-			self.finished(request.id, sucess)
+			self.finished(request.id, success)
 
 		thread = notifier.threads.Simple( 'save',
 			notifier.Callback(_thread, request, self, request.options.get('username'), request.options.get('password')), _finished)

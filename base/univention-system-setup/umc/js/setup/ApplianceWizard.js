@@ -496,7 +496,14 @@ define([
 					name: '_dhcp',
 					label: _('Obtain IP address automatically (DHCP)'),
 					labelConf: { style: 'margin-top: 2em;' },
-					onChange: lang.hitch(this, '_disableNetworkAddressWidgets')
+					onChange: lang.hitch(this, function(value) {
+						this._disableNetworkAddressWidgets(value);
+						var focused = this.getWidget('network', '_dhcp').focused;
+						if (value && focused) {
+							// see whether DHCP is working
+							this._dhclient();
+						}
+					})
 				}, {
 					type: TextBox,
 					name: '_ip0',
@@ -690,29 +697,18 @@ define([
 				var address = result[interfaceName + '_ip'];
 				if (!address && !netmask) {
 					dialog.alert(_('DHCP query failed.'));
+					this.getWidget('network', '_dhcp').set('value', false);
 					return;
 				}
 
-				this.setValues({
-					ip4dynamic: false, // set "Dynamic (DHCP)" to false
-					ip4: [[address, netmask]]
-				});
+				// set gateway
+				if (result.gateway) {
+					this.getWidget('network', 'gateway').set('value', result.gateway);
+				}
 
-				if (result.gateway || result.nameserver_1) {
-					var nameservers = array.filter([result.nameserver_1, result.nameserver_2, result.nameserver_3], function(n) { return n;}).join(', ');
-					var description = string.substitute('<ul><li>${0}: ${1}</li><li>${2}: ${3}</li></ul>', [_('Gateway'), result.gateway || _('None'), _('Nameserver'), nameservers]);
-
-					dialog.confirm(_('Should the nameserver and gateway be set: %s', description), [
-						{label: _('set'), name: 'yes', 'default': true},
-						{label: _("don't set"), name: 'no'}
-					]).then(lang.hitch(this, function(answer) {
-						if (answer === 'yes') {
-							this.setValues({
-								gateway: result.gateway || '',
-								nameserver: [[result.nameserver_1], [result.nameserver_2], [result.nameserver_3]]
-							});
-						}
-					}));
+				// set domain nameserver
+				if (!this._isRoleMaster() && result.is_ucs_nameserver_1) {
+					this.getWidget('network', 'nameserver1').set('value', result.nameserver_1);
 				}
 			}), lang.hitch(this, function(error) {
 				dialog.alert(_('DHCP query failed.'));
