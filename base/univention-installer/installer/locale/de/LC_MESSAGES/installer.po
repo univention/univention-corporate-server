@@ -272,7 +272,7 @@ msgstr "Windows Memberserver (Samba 3 / Samba 4)"
 
 #: installer/package_list.py:91
 msgid "Active Directory Connection"
-msgstr "Active Directory Connection"
+msgstr "Active Directory Verbindung"
 
 #: installer/package_list.py:96
 msgid "Sync users and groups with Active Directory"
