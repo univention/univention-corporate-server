@@ -410,7 +410,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('<p>Enter the name of your organization, an e-mail address to active UCS and a password for your administrator account.</p><p>The password is mandatory, it will be used for the domain administrator as well as for the local superuser <i>root</i>.</p>')
+					content: _('<p>Enter the name of your organisation, an e-mail address to activate UCS and a password for your administrator account.</p><p>The password is mandatory, it will be used for the domain administrator as well as for the local superuser <i>root</i>.</p>')
 				}, {
 					type: TextBox,
 					name: 'organization',
@@ -678,6 +678,45 @@ define([
 				this.getWidget('network', '_dhcp').set('value', true);
 				this.getWidget('network', 'gateway').set('value', this.values.gateway);
 			}
+		},
+
+		_dhclient: function() {
+			var interfaceName = this._getNetworkDevices()[0];
+			this.standbyDuring(tools.umcpCommand('setup/net/dhclient', {
+				'interface': interfaceName
+			})).then(lang.hitch(this, function(response) {
+				var result = response.result;
+				var netmask = result[interfaceName + '_netmask'];
+				var address = result[interfaceName + '_ip'];
+				if (!address && !netmask) {
+					dialog.alert(_('DHCP query failed.'));
+					return;
+				}
+
+				this.setValues({
+					ip4dynamic: false, // set "Dynamic (DHCP)" to false
+					ip4: [[address, netmask]]
+				});
+
+				if (result.gateway || result.nameserver_1) {
+					var nameservers = array.filter([result.nameserver_1, result.nameserver_2, result.nameserver_3], function(n) { return n;}).join(', ');
+					var description = string.substitute('<ul><li>${0}: ${1}</li><li>${2}: ${3}</li></ul>', [_('Gateway'), result.gateway || _('None'), _('Nameserver'), nameservers]);
+
+					dialog.confirm(_('Should the nameserver and gateway be set: %s', description), [
+						{label: _('set'), name: 'yes', 'default': true},
+						{label: _("don't set"), name: 'no'}
+					]).then(lang.hitch(this, function(answer) {
+						if (answer === 'yes') {
+							this.setValues({
+								gateway: result.gateway || '',
+								nameserver: [[result.nameserver_1], [result.nameserver_2], [result.nameserver_3]]
+							});
+						}
+					}));
+				}
+			}), lang.hitch(this, function(error) {
+				dialog.alert(_('DHCP query failed.'));
+			}));
 		},
 
 		_disableNetworkAddressWidgets: function(disable) {

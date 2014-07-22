@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-09 13:40+0200\n"
+"POT-Creation-Date: 2014-07-22 13:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,10 +17,12 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 #: var/www/ucs-overview/js-initialsetup/initialstartsite.js:71
+#, python-brace-format
 msgid "UCS - {hostname}.{domainname}"
 msgstr "UCS - {hostname}.{domainname}"
 
 #: var/www/ucs-overview/js-initialsetup/initialstartsite.js:72
+#, python-brace-format
 msgid "Welcome to Univention Corporate Server <b>{hostname}.{domainname}</b>"
 msgstr ""
 "Willkommen auf Univention Corporate Server <b>{hostname}.{domainname}</b>"
