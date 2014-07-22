@@ -100,7 +100,7 @@ class EntryDiff(object):
 		return self.set_old - self.intersect
 
 	def changed(self):
-		return set(o for o in self.intersect if self.old[o] != self.new[o])
+		return set(o for o in self.intersect if set(self.old[o]) != set(self.new[o]))
 
 
 class S4Cache:

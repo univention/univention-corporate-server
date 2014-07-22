@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-59) unstable; urgency=low
+
+  * s4connector/s4cache.py: Normalize the values before comparing
+    (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jul 2014 06:46:52 +0200
+
 univention-s4-connector (8.0.33-58) unstable; urgency=low
 
   * Added old pbject to sync_to_ucs call (Bug #33621)
