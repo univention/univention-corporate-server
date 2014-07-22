@@ -198,7 +198,7 @@ def auto_complete_values_for_join(newValues):
 		newValues['ssl/locality'] = default_locale.territory
 		newValues['ssl/organization'] = newValues['organization']
 		newValues['ssl/organizationalunit'] = 'Univention Corporate Server'
-		newValues['ssl/email'] = 'ssl@{domainname}' % newValues
+		newValues['ssl/email'] = 'ssl@{domainname}'.format(**newValues)
 
 	if 'locale' not in newValues:
 		# auto set the locale variable if not specified

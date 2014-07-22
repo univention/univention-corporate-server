@@ -1,3 +1,12 @@
+univention-system-setup (7.0.69-26) unstable; urgency=medium
+
+  Bug #34484:
+  * set primary interface automatically
+  * fixed typo for setting ssl/email
+  * fixed the activation of UCS (via umc call)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 22 Jul 2014 13:16:46 +0200
+
 univention-system-setup (7.0.69-25) unstable; urgency=medium
 
   Bug #34484:

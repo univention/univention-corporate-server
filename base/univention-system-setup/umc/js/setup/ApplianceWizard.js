@@ -1649,6 +1649,7 @@ define([
 					interfaceType: 'Ethernet',
 					ip4dynamic: true
 				};
+				vals['interfaces/primary'] = 'eth0';
 			}
 			else {
 				// prepare values for network interfaces
@@ -1658,6 +1659,9 @@ define([
 					var imask = _vals['_netmask' + i];
 					if (!iip || !imask) {
 						return;
+					}
+					if (!vals['interfaces/primary']) {
+						vals['interfaces/primary'] = idev;
 					}
 
 					// prepare interface entry
