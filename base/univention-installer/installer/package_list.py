@@ -88,7 +88,7 @@ PackageList=[
 					'Description': _("Samba Services"),
 				},
 				{
-					'Name': _('Active Directory Connector'),
+					'Name': _('Active Directory Connection'),
 					'Packages': ['univention-ad-connector'],
 					'Edition': [ 'ucs' ],
 					'Active': [ ],
