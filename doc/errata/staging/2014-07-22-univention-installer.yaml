@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: univention-installer
+fix: 9.0.32-6.1111.201407220937
+version: [2]
+desc: |
+    * The component Active Directory Connector has been renamed
+      to Active Directory Connection in the software selection 
+      of the installer.
+bug: [35414]
+
