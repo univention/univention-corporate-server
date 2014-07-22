@@ -4,7 +4,7 @@
 # UCS Virtual Machine Manager Node
 #  rules file
 #
-# Copyright 2010-2013 Univention GmbH
+# Copyright 2010-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,7 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 %:
-	dh $@
+	dh $@ --with python_support
 
 override_dh_auto_install:
 	univention-install-config-registry

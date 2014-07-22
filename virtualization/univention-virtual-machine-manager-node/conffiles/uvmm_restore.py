@@ -1,10 +1,10 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
 # UCS Virtual Machine Manager Node Common
 #  script to link restore documentation in backup directory
 #
-# Copyright 2010-2013 Univention GmbH
+# Copyright 2010-2014 Univention GmbH
 #
 # http://www.univention.de/
 #

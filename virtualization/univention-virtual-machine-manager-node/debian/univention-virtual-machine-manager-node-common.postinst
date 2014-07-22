@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Node Common
 #  postinst script
 #
-# Copyright 2010-2013 Univention GmbH
+# Copyright 2010-2014 Univention GmbH
 #
 # <http://www.univention.de/>
 #
@@ -53,34 +53,6 @@ configure)
 		/usr/lib/univention-install/43univention-virtual-machine-manager-node-common.inst || true
 		;;
 	esac
-
-	# Rename listener from "uvmm-node" to "libvirtd-acl"
-	if dpkg --compare-versions "$2" lt-nl 0.1.20
-	then
-		old=/var/lib/univention-directory-listener/handlers/uvmm-node
-		new=/var/lib/univention-directory-listener/handlers/libvirtd-acl
-		if [ -e "$old" ]
-		then
-			if [ -e "$new" ]
-			then
-				rm -f "$old"
-			else
-				mv "$old" "$new"
-			fi
-		fi
-	fi
-	invoke-rc.d univention-directory-listener restart
-
-	# Append required suffix .conf
-	dpkg-maintscript-helper mv_conffile /etc/modprobe.d/loop /etc/modprobe.d/loop.conf 2.0.0~ -- "$@"
-
-	# Rename back uvmm-node-common and divert libvirt-bin
-	dpkg-maintscript-helper rm_conffile /etc/init.d/univention-virtual-machine-manager-node-common 2.0.2~ -- "$@"
-	test -L /etc/init.d/univention-virtual-machine-manager-node-common ||
-		ln -s -f libvirt-bin /etc/init.d/univention-virtual-machine-manager-node-common
-	update-rc.d -f univention-virtual-machine-manager-node-common remove
-	update-rc.d libvirt-bin defaults 28 72 >/dev/null
-	univention-config-registry update
 
 	# Setup runit
 	test -e /etc/runit/univention/univention-libvirt ||

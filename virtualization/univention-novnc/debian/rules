@@ -2,7 +2,7 @@
 #
 # univention-novnc
 #
-# Copyright 2013 Univention GmbH
+# Copyright 2013-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,7 +31,7 @@
 
 clean:
 	make -C utils clean
-	dh clean
+	dh clean --with python_support
 
 build:
 	#make -C utils rebind.so
@@ -44,4 +44,4 @@ override_dh_auto_test:
 	ucslint
 
 %:
-	dh ${@}
+	dh $@ --with python_support

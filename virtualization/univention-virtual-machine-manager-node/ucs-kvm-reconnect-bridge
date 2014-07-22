@@ -1,8 +1,8 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 """
 Re-connect interfaces of running VMs to their bridges.
 """
-# Copyright 2010-2013 Univention GmbH
+# Copyright 2010-2014 Univention GmbH
 #
 # http://www.univention.de/
 #

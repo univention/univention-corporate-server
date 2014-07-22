@@ -1,3 +1,9 @@
+univention-novnc (0.4+0+20131014+git142aa45-5) unstable; urgency=low
+
+  * UCS-4.0 version bump (Bug #35425)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 21 Jul 2014 17:17:14 +0200
+
 univention-novnc (0.4+0+20131014+git142aa45-4) unstable; urgency=low
 
   * Add HTML Metatags to forbid caching of vnc_auto.html. This avoids certificate

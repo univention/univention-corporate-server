@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Node Common
 #  postinst script
 #
-# Copyright 2010-2013 Univention GmbH
+# Copyright 2010-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -51,16 +51,6 @@ fi
 
 adduser --quiet libvirt-qemu cdrom
 
-case "$1" in
-	configure)
-		# Bug #22303: Un-divert wrapper which was used [0.1.18-3 .. 0.1.32-1[
-		if dpkg --compare-versions 0.1.18-3 le "$2" && dpkg --compare-versions "$2" lt-nl 0.1.32~
-		then
-			dpkg-divert --package univention-virtual-machine-manager-node-kvm --rename --remove /usr/bin/kvm
-		fi
-	;;
-esac
-
 ucr set security/packetfilter/package/univention-virtual-machine-manager-node-kvm/tcp/49152:49215/all="ACCEPT" \
 		security/packetfilter/package/univention-virtual-machine-manager-node-kvm/tcp/49152:49215/all/en="kvm-migration" \
 		security/packetfilter/package/univention-virtual-machine-manager-node-kvm/tcp/5900:5999/all="ACCEPT" \
@@ -68,16 +58,6 @@ ucr set security/packetfilter/package/univention-virtual-machine-manager-node-kv
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 #DEBHELPER#
-
-case "$1" in
-	configure)
-		# Bug #30590: Re-construct bridge after uvvm-node-kvm restart
-		if dpkg --compare-versions "$2" le-nl 2.0.2-2.61.201301252219
-		then
-			python2.6 /usr/lib/univention-virtual-machine-manager-node-kvm/ucs-kvm-reconnect-bridge
-		fi
-	;;
-esac
 
 uinst=/usr/lib/univention-install/56univention-virtual-machine-manager-node-kvm.uinst
 [ -e "$uinst" ] && rm "$uinst"

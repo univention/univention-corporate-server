@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Node
 #  prerm script
 #
-# Copyright 2012-2013 Univention GmbH
+# Copyright 2012-2014 Univention GmbH
 #
 # <http://www.univention.de/>
 #
@@ -43,8 +43,5 @@ remove)
 	cp /usr/lib/univention-uninstall/57univention-virtual-machine-manager-node-common.uinst /usr/lib/univention-install/
 	;;
 esac
-
-dpkg-maintscript-helper mv_conffile /etc/modprobe.d/loop /etc/modprobe.d/loop.conf 2.0.0~ -- "$@"
-dpkg-maintscript-helper rm_conffile /etc/init.d/univention-virtual-machine-manager-node-common 2.0.2~ -- "$@"
 
 exit 0

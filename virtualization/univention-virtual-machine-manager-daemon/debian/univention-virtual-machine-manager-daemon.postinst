@@ -60,20 +60,6 @@ case "$1" in
 	ln -sf /etc/univention/ssl/$hostname.$domainname/private.key /etc/pki/libvirt/private/clientkey.pem
 	rm -rf /etc/pki/CA/cacert.pem
 	ln -sf /etc/univention/ssl/ucsCA/CAcert.pem /etc/pki/CA/cacert.pem
-	invoke-rc.d univention-directory-listener stop
-
-	if dpkg --compare-versions "$2" lt '2.0.10~' &&
-		[ -L /etc/rc0.d/K20univention-virtual-machine-manager-daemon ] &&
-		[ -L /etc/rc1.d/K20univention-virtual-machine-manager-daemon ] &&
-		[ -L /etc/rc2.d/S20univention-virtual-machine-manager-daemon ] &&
-		[ -L /etc/rc3.d/S20univention-virtual-machine-manager-daemon ] &&
-		[ -L /etc/rc4.d/S20univention-virtual-machine-manager-daemon ] &&
-		[ -L /etc/rc5.d/S20univention-virtual-machine-manager-daemon ] &&
-		[ -L /etc/rc6.d/K20univention-virtual-machine-manager-daemon ]
-	then
-		update-rc.d -f univention-virtual-machine-manager-daemon remove >/dev/null
-	fi
-
 	invoke-rc.d univention-directory-listener restart
 	;;
 

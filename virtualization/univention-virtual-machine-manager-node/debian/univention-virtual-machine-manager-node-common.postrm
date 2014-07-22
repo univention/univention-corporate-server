@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Node
 #  postrm script
 #
-# Copyright 2010-2013 Univention GmbH
+# Copyright 2010-2014 Univention GmbH
 #
 # <http://www.univention.de/>
 #
@@ -39,14 +39,6 @@ purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
 *)
 	echo "postrm called with unknown argument \`$1'" >&2
 	exit 1
-	;;
-esac
-
-dpkg-maintscript-helper mv_conffile /etc/modprobe.d/loop /etc/modprobe.d/loop.conf 2.0.0~ -- "$@"
-dpkg-maintscript-helper rm_conffile /etc/init.d/univention-virtual-machine-manager-node-common 2.0.2~ -- "$@"
-case "$1" in
-purge|remove)
-	rm -f /etc/init.d/univention-virtual-machine-manager-node-common
 	;;
 esac
 

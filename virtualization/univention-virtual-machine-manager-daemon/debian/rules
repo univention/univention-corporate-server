@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 %:
-	dh $@
+	dh $@ --with python_support
 
 override_dh_auto_build:
 	dh-umc-module-build

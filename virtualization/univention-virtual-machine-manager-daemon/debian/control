@@ -5,11 +5,11 @@ Maintainer: Univention GmbH <packages@univention.de>
 Uploaders: Philipp Hahn <hahn@univention.de>,
  Andreas Büsching <buesching@univention.de>,
 Standards-Version: 3.7.2
-XS-Python-Version: 2.6
-Build-Depends: debhelper (>= 7.0.50~),
+XS-Python-Version: 2.6, 2.7
+Build-Depends: debhelper (>= 9),
  ucslint-univention,
  python-support,
- python2.6-dev,
+ python2.7-dev,
  univention-config-dev,
  univention-management-console-dev
 

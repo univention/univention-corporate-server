@@ -1,4 +1,4 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
 # UCS Virtual Machine Manager Daemon
@@ -67,7 +67,7 @@ def handler(dn, new, old):
 	except StandardError, e: # NameError, KeyError
 		new_services = []
 		new_fqdn = ""
-	
+
 	for service in old_services:
 		if service not in SERVICES:
 			continue
