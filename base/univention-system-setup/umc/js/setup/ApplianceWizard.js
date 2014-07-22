@@ -1625,6 +1625,9 @@ define([
 			if (pageName == 'error') {
 				return this._criticalJoinErrorOccurred;
 			}
+			if (pageName == 'done') {
+				return false;
+			}
 			return result;
 		},
 
@@ -1704,8 +1707,7 @@ define([
 						name: idev,
 						interfaceType: 'Ethernet'
 					};
-					var isIPv4Address = _regIPv4.test(iip);
-					if (isIPv4Address) {
+					if (_regIPv4.test(iip)) {
 						// IPv4 address
 						iconf.ip4 = [[iip, imask]];
 						iconf.ip6 = [];
@@ -1716,6 +1718,12 @@ define([
 					}
 					vals.interfaces[idev] = iconf;
 				});
+			}
+
+			// handle ipv6 gateway
+			if (_regIPv6.test(_vals.gateway)) {
+				_vals['ipv6/gateway'] = _vals.gateway;
+				_vals.gateway = '';
 			}
 
 			// domain name handling
