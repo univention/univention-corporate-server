@@ -2,5 +2,5 @@
 Description[de]=UVMM noVNC Dienst
 Description[en]=UVMM noVNC Service
 icon=service/uvmm/novnc
-programs=/usr/bin/python2.6 /usr/share/novnc/utils/websockify
+programs=/usr/bin/python2.7 /usr/share/novnc/utils/websockify
 start_type=uvmm/novnc/autostart

@@ -1,3 +1,9 @@
+univention-novnc (0.4+0+20131014+git142aa45-6) unstable; urgency=low
+
+  * Fix python2.7 usage (Bug #35425)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 22 Jul 2014 10:29:36 +0200
+
 univention-novnc (0.4+0+20131014+git142aa45-5) unstable; urgency=low
 
   * UCS-4.0 version bump (Bug #35425)
