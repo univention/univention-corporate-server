@@ -1,3 +1,9 @@
+ucslint (4.0.0-2) unstable; urgency=low
+
+  * Bug #35135: set compat level to 9
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 22 Jul 2014 10:45:45 +0200
+
 ucslint (4.0.0-1) unstable; urgency=low
 
   * Bug #35135: bumped version for UCS 4
