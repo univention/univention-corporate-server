@@ -44,6 +44,7 @@ define([
 	"dijit/form/Select",
 	"dijit/Tooltip",
 	"dojox/html/styles",
+	"dojox/timing/_base",
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/TextBox",
@@ -56,15 +57,17 @@ define([
 	"umc/widgets/Wizard",
 	"umc/widgets/Grid",
 	"umc/widgets/RadioButton",
+	"umc/widgets/ProgressBar",
 	"./LiveSearch",
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, query, domClass, on, Evented, topic, Deferred, Memory, Select, Tooltip, styles, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, Wizard, Grid, RadioButton, LiveSearch, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, query, domClass, on, Evented, topic, Deferred, Memory, Select, Tooltip, styles, timing, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
 	var modulePath = require.toUrl('umc/modules/setup');
 	styles.insertCssRule('.umcIconInfo', lang.replace('background-image: url({0}/info-icon.png); width: 16px; height: 16px;', [modulePath]));
 	styles.insertCssRule('.setupLangField', 'vertical-align: middle; margin: 1px 0 1px 5px;');
 	styles.insertCssRule('.umc-setup-page-validation li', 'padding-bottom: 0.75em;');
+	styles.insertCssRule('.umc-setup-page-error li', 'padding-bottom: 0.75em;');
 	styles.insertCssRule('.umc-setup-page-summary ul', 'margin-top: 0;');
 	styles.insertCssRule('.umc-setup-page-summary p', 'margin-top: 0.75em;');
 	styles.insertCssRule('.umc-setup-page-software th .dojoxGridRowSelector', 'display: none;');
@@ -228,15 +231,22 @@ define([
 		// original values as return by the load command
 		values: {},
 
+		// a timer used it in _cleanup
+		// to make sure the session does not expire
+		_keepAlive: null,
+
 		autoValidate: false,
 		autoFocus: true,
 
 		_gallery: null,
 		_matchedCity: null,
 		_forcedPage: null,
+		_progressBar: null,
+		_criticalJoinErrorOccurred: false,
 
 		constructor: function(props) {
 			lang.mixin(this, props);
+
 			this.pages = [{
 				'class': 'umc-setup-page umc-setup-page-welcome',
 				name: 'welcome',
@@ -299,7 +309,7 @@ define([
 					dynamicValues: 'setup/lang/keymaps',
 					onChange: lang.hitch(this, function(value) {
 						if(this.local_mode) {
-							this.umcpCommand('setup/keymap/save', {keymap: value});
+							tools.umcpCommand('setup/keymap/save', {keymap: value});
 						}
 					})
 				}]
@@ -393,14 +403,14 @@ define([
 				layout: [
 					'help',
 					'organization',
-					['account/firstname', 'account/lastname'],
-					'email_address', 'account/description', 'root_password'
+					'email_address',
+					'root_password'
 				],
 				widgets: [{
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('<p>Enter profile information and a password for your administrator account.</p><p>The password is mandatory, it will be used for the domain administrator as well as for the local superuser <i>root</i>.</p>')
+					content: _('<p>Enter the name of your organisation, an e-mail address to activate UCS and a password for your administrator account.</p><p>The password is mandatory, it will be used for the domain administrator as well as for the local superuser <i>root</i>.</p>')
 				}, {
 					type: TextBox,
 					name: 'organization',
@@ -408,32 +418,14 @@ define([
 					onChange: lang.hitch(this, '_updateOrganizationName')
 				}, {
 					type: TextBox,
-					name: 'account/lastname',
-					label: _('Lastname'),
-					size: 'Half'
-				}, {
-					type: TextBox,
-					name: 'account/firstname',
-					label: _('Firstname'),
-					size: 'Half'
-				}, {
-					type: TextBox,
 					name: 'email_address',
-					label: _('E-mail address to activate UCS')
-						+ ' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showUCSActivationInfo(event);">'
-						+ _('more information')
-						+ '</a>)',
+					label: _('E-mail address to activate UCS') +
+						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showUCSActivationInfo(event);">' +
+						_('more information') +
+						'</a>)',
 					validator: _validateEmailAddress,
 					invalidMessage: _invalidEmailAddressMessage
 				}, {
-					type: TextBox,
-					name: 'account/description',
-					label: _('Account description')
-				}, {
-//					type: Text,
-//					name: 'helpRootPassword',
-//					content: _('<p>Choose a password for the system\'s root user as well as the domain Administrator.</p>')
-//				}, {
 					type: PasswordInputBox,
 					required: true,
 					name: 'root_password',
@@ -504,7 +496,14 @@ define([
 					name: '_dhcp',
 					label: _('Obtain IP address automatically (DHCP)'),
 					labelConf: { style: 'margin-top: 2em;' },
-					onChange: lang.hitch(this, '_disableNetworkAddressWidgets')
+					onChange: lang.hitch(this, function(value) {
+						this._disableNetworkAddressWidgets(value);
+						var focused = this.getWidget('network', '_dhcp').focused;
+						if (value && focused) {
+							// see whether DHCP is working
+							this._dhclient();
+						}
+					})
 				}, {
 					type: TextBox,
 					name: '_ip0',
@@ -614,9 +613,9 @@ define([
 				}, {
 					type: Text,
 					name: 'configureProxySettings',
-					label: '<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').configureProxySettings();">'
-						+ _('(configure proxy settings)')
-						+ '</a>',
+					label: '<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').configureProxySettings();">' +
+						_('(configure proxy settings)') +
+						'</a>',
 					content: ''
 				}, {
 					type: TextBox,
@@ -632,7 +631,7 @@ define([
 			}, {
 				name: 'validation',
 				'class': 'umc-setup-page-validation',
-				headerText: _('Invalid entries'),
+				headerText: _('Validation failed'),
 				helpText: _('The following entries could not be validated:'),
 				widgets: [{
 					type: Text,
@@ -651,8 +650,9 @@ define([
 				}]
 			}, {
 				name: 'error',
+				'class': 'umc-setup-page-error',
 				headerText: _('UCS setup - An error ocurred'),
-				helpText: _('An error occurred during the configuration setup of UCS. The following information will give some more details on which exact problems occurred during the setup process.'),
+				helpText: '',
 				widgets: [{
 					type: Text,
 					name: 'info',
@@ -667,7 +667,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('<p>Congratulations, UCS has been successfully set up with the specified settings.</p><p>Click on the button <i>Finish</i> to complete the setup process.</p>')
+					content: _('<p>UCS has been successfully set up with the specified settings.</p><p>Click on the button <i>Continue</i> to complete the setup process.</p>')
 				}]
 			}];
 		},
@@ -685,6 +685,34 @@ define([
 				this.getWidget('network', '_dhcp').set('value', true);
 				this.getWidget('network', 'gateway').set('value', this.values.gateway);
 			}
+		},
+
+		_dhclient: function() {
+			var interfaceName = this._getNetworkDevices()[0];
+			this.standbyDuring(tools.umcpCommand('setup/net/dhclient', {
+				'interface': interfaceName
+			})).then(lang.hitch(this, function(response) {
+				var result = response.result;
+				var netmask = result[interfaceName + '_netmask'];
+				var address = result[interfaceName + '_ip'];
+				if (!address && !netmask) {
+					dialog.alert(_('DHCP query failed.'));
+					this.getWidget('network', '_dhcp').set('value', false);
+					return;
+				}
+
+				// set gateway
+				if (result.gateway) {
+					this.getWidget('network', 'gateway').set('value', result.gateway);
+				}
+
+				// set domain nameserver
+				if (!this._isRoleMaster() && result.is_ucs_nameserver_1) {
+					this.getWidget('network', 'nameserver1').set('value', result.nameserver_1);
+				}
+			}), lang.hitch(this, function(error) {
+				dialog.alert(_('DHCP query failed.'));
+			}));
 		},
 
 		_disableNetworkAddressWidgets: function(disable) {
@@ -754,7 +782,7 @@ define([
 		},
 
 		_getAppQuery: function() {
-			var serverRole = this._getRole()
+			var serverRole = this._getRole();
 			var query = {
 				// make sure that all software components are allowed for the
 				// specified server role
@@ -771,7 +799,7 @@ define([
 					test: function(val) {
 						return !val.length;
 					}
-				}
+				};
 			}
 
 			return query;
@@ -854,6 +882,14 @@ define([
 			}, this);
 		},
 
+		_setupFooterButtons: function() {
+			// change labels of footer buttons on particular pages
+			var buttons = this._pages.summary._footerButtons;
+			buttons.finish.set('label', _('Continue'));
+			buttons = this._pages.error._footerButtons;
+			buttons.previous.set('label', _('Reconfigure'));
+		},
+
 		_setLocaleValues: function(data) {
 			if (data.timezone) {
 				this.getWidget('locale', 'timezone').setInitialValue(data.timezone);
@@ -887,6 +923,21 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+
+			// make the session not expire before the user can confirm the
+			// cleanup dialog started (and stopped) in _cleanup
+			this._keepAlive = new timing.Timer(1000 * 30);
+			this._keepAlive.onTick = function() {
+				// dont do anything important here, just
+				// make sure that umc does not forget us
+				// dont even handle errors
+				tools.umcpCommand('setup/finished', {}, false);
+			};
+
+			// setup the progress bar
+			this._progressBar = new ProgressBar();
+			this.own(this._progressBar);
+
 			this._setupCitySearch();
 			this._setupPasswordBoxes();
 			this._setupTooltips();
@@ -894,6 +945,7 @@ define([
 			this._setupNetworkDevices();
 			this._setupAppGallery();
 			this._setLocaleDefault();
+			this._setupFooterButtons();
 			this._updateOrganizationName('');
 		},
 
@@ -913,11 +965,6 @@ define([
 			var fqdn = lang.replace('{0}.{1}.local', [hostname, organization]);
 			this.getWidget('network', '_fqdn').set('value', fqdn);
 			this.getWidget('network', 'hostname').set('value', hostname);
-			var description = _('Domain administrator account');
-			if (_organization) {
-				description = _('Domain administrator account for %s', _organization);
-			}
-			this.getWidget('user-master', 'account/description').set('value', description);
 		},
 
 		_updateLDAPBase: function(fqdn) {
@@ -1052,7 +1099,7 @@ define([
 				netmaskWidget.set('value', netmask);
 
 				var gatewayWidget = this.getWidget('network', 'gateway');
-				if (idx == 0 && !gatewayWidget.get('value')) {
+				if (idx === 0 && !gatewayWidget.get('value')) {
 					// suggest a gateway address for the first IP address
 					var gateway = ipParts.slice(0, -1).join('.') + '.1';
 					gatewayWidget.set('value', gateway);
@@ -1150,14 +1197,6 @@ define([
 				msg += '<p><b>' + _('Administrator account information') + '</b></p>';
 				msg += '<ul>';
 				_append(_('Organization name'), vals.organization);
-				if (vals['account/lastname'] && vals['account/firstname']) {
-					_append(_('Name'), vals['account/firstname'] + ' ' + vals['account/lastname']);
-				}
-				else {
-					_append(_('Firstname'), vals['account/firstname']);
-					_append(_('Lastname'), vals['account/lastname']);
-				}
-				_append(_('Account description'), vals['account/description']);
 				_append(_('E-mail address to activate UCS'), vals.email_address);
 				msg += '</ul>';
 			}
@@ -1234,6 +1273,39 @@ define([
 
 			// display validation information
 			this.getWidget('validation', 'info').set('content', msg);
+		},
+
+		_updateErrorPage: function(details, critical) {
+			var msg = '<ul>';
+			array.forEach(details, function(idetail) {
+				msg += '<li>' + idetail + '</li>';
+			});
+			msg += '</ul>';
+
+			var helpText = '';
+			if (critical) {
+				helpText = '<p>' + _('The system join process failed. The following information will give some more details on which exact problem occurred during the setup process.') + '</p>';
+				msg += '<p>' + _('You may reconfigure the settings and restart the join process. You may end the wizard leaving the system unjoined. The system can be joined later via the UMC module <i>Domain join</i>.') + '</p>';
+			} else {
+				helpText = '<p>' + _('The system join was successful, however, the following errors occurred while applying the configuration settings.') + '</p>';
+				msg += '<p>' + _('The settings can always be adpated in the UMC module <i>Basic settings</i>. Please confirm now to complete the process.') + '</p>';
+			}
+
+			// display validation information
+			this.getPage('error').set('helpText', helpText);
+			this.getWidget('error', 'info').set('content', msg);
+
+			// update button labels
+			var buttons = this._pages.error._footerButtons;
+			if (critical) {
+				buttons.finish.set('label', _('Continue unjoined'));
+			}
+			else {
+				buttons.finish.set('label', _('Continue'));
+			}
+
+			// save the state
+			this._criticalJoinErrorOccurred = critical;
 		},
 
 		_validateWithServer: function() {
@@ -1355,9 +1427,92 @@ define([
 					_alert(_('At least one network device needs to be properly configured.'));
 					return false;
 				}
-
 			}
 			return true;
+		},
+
+		join: function() {
+			var _credentials = function() {
+				var msg = '<p>' + _('The specified settings will be applied to the system and the system will be joined into the domain. Please enter username and password of a domain administrator account.') + '</p>';
+				return dialog.confirmForm({
+					widgets: [{
+						name: 'text',
+						type: Text,
+						content: msg
+					}, {
+						name: 'username',
+						type: 'TextBox',
+						label: _('Username')
+					}, {
+						name: 'password',
+						type: 'PasswordBox',
+						label: _('Password')
+					}],
+					layout: [ 'text', 'username', 'password' ],
+					title: _('Domain admin credentials'),
+					submit: _('Join'),
+					cancel: _('Cancel'),
+					style: 'max-width: 400px;'
+				});
+			};
+
+			// function to save data
+			var _join = function(values, username, password) {
+				var deferred = new Deferred();
+
+				// send save command to server
+				this._progressBar.reset(_('Initialize the configuration process ...'));
+				this.standby(true, this._progressBar);
+				tools.umcpCommand('setup/join', {
+					values: values,
+					// make sure that the username/password are null and not undefined
+					// ... server cannot handle "undefined"
+					username: username || null,
+					password: password || null
+				}, false);
+
+				// poll whether script has finished
+				tools.defer(lang.hitch(this, function() {
+					this._progressBar.auto(
+						'setup/finished',
+						{},
+						lang.hitch(deferred, 'resolve'),
+						null,
+						_('Configuration finished'),
+						true
+					);
+				}), 500);
+
+				return deferred.then(lang.hitch(this, function() {
+					this.standby(false);
+				}));
+			};
+
+			var _handleJoinErrors = function() {
+				this.standby(false);
+				var errors = this._progressBar.getErrors();
+				if (errors.errors.length) {
+					this._updateErrorPage(errors.errors, errors.critical);
+					return false;
+				}
+				return true;
+			};
+
+			// chain all methods together
+			var deferred = null;
+			var values = this.getValues();
+			if (values['server/role'] == 'domaincontroller_master') {
+				deferred = lang.hitch(this, _join)(values);
+			}
+			else {
+				// for any other role than DC master, we need domain admin credentials
+				deferred = lang.hitch(this, _credentials)();
+				deferred = deferred.then(lang.hitch(this, function(opt) {
+					return _join(values, opt.username, opt.password);
+				}));
+			}
+			deferred = deferred.then(lang.hitch(this, _handleJoinErrors));
+			return deferred;
 		},
 
 		_forcePageTemporarily: function(pageName) {
@@ -1371,8 +1526,8 @@ define([
 
 		_updateButtons: function(pageName) {
 			this.inherited(arguments);
+			var buttons = this._pages[pageName]._footerButtons;
 			if (pageName == 'validation') {
-				var buttons = this._pages[pageName]._footerButtons;
 				domClass.add(buttons.next.domNode, 'dijitHidden');
 				domClass.add(buttons.previous.domNode, 'umcSubmitButton');
 			}
@@ -1390,8 +1545,17 @@ define([
 				return this._forcePageTemporarily(pageName);
 			}
 
-			// extra handling for specific pages
+			// start/stop timer
 			var nextPage = this.inherited(arguments);
+			var keepSessionAlive = (nextPage == 'error' || nextPage == 'done');
+			if (keepSessionAlive && !this._keepAlive.isRunning) {
+				this._keepAlive.start();
+			}
+			if (!keepSessionAlive && this._keepAlive.isRunning) {
+				this._keepAlive.stop();
+			}
+
+			// extra handling for specific pages
 			if (pageName == 'welcome-adapt-locale-settings') {
 				return this._forcePageTemporarily('locale');
 			}
@@ -1408,6 +1572,11 @@ define([
 					// fallback -> the error will be displayed anyways...
 					// stay on the current page
 					return pageName;
+				});
+			}
+			if (pageName == 'summary') {
+				return this.join().then(function(success) {
+					return success ? 'done' : 'error';
 				});
 			}
 
@@ -1427,6 +1596,12 @@ define([
 				return this._forcedPage;
 			}
 			topic.publish('/umc/actions', this.moduleID, 'wizard', pageName, 'previous');
+
+			// stop timer
+			if (this._keepAlive.isRunning) {
+				this._keepAlive.stop();
+			}
+
 			if (pageName == 'error' || pageName == 'summary') {
 				return this._forcePageTemporarily('software');
 			}
@@ -1437,13 +1612,21 @@ define([
 			return false;
 		},
 
-/*		hasNext: function(pageName) {
+		hasNext: function(pageName) {
 			var result = this.inherited(arguments);
-			if (pageName == 'error' || pageName == 'validation') {
+			if (pageName == 'error') {
 				return false;
 			}
 			return result;
-		},*/
+		},
+
+		hasPrevious: function(pageName) {
+			var result = this.inherited(arguments);
+			if (pageName == 'error') {
+				return this._criticalJoinErrorOccurred;
+			}
+			return result;
+		},
 
 		onReload: function(newLocale) {
 			// event stub
@@ -1500,7 +1683,8 @@ define([
 					name: 'eth0',
 					interfaceType: 'Ethernet',
 					ip4dynamic: true
-				}
+				};
+				vals['interfaces/primary'] = 'eth0';
 			}
 			else {
 				// prepare values for network interfaces
@@ -1510,6 +1694,9 @@ define([
 					var imask = _vals['_netmask' + i];
 					if (!iip || !imask) {
 						return;
+					}
+					if (!vals['interfaces/primary']) {
+						vals['interfaces/primary'] = idev;
 					}
 
 					// prepare interface entry
@@ -1521,8 +1708,10 @@ define([
 					if (isIPv4Address) {
 						// IPv4 address
 						iconf.ip4 = [[iip, imask]];
+						iconf.ip6 = [];
 					} else {
 						// IPv6 address
+						iconf.ip4 = [];
 						iconf.ip6 = [[iip, imask]];
 					}
 					vals.interfaces[idev] = iconf;
@@ -1530,15 +1719,15 @@ define([
 			}
 
 			// domain name handling
-			if (_validateFQDN(_vals.hostname)) {
+			if (_vals.hostname && _validateFQDN(_vals.hostname)) {
 				// FQDN is specified instead of hostname
 				_vals._fqdn = _vals.hostname;
 			}
 			if (_vals._fqdn) {
 				// FQDN is specified
 				// -> split FQDN into hostname and domain name
-				var parts = _vals.hostname.split('.');
-				_vals.hostname = parts.shift;
+				var parts = _vals._fqdn.split('.');
+				_vals.hostname = parts.shift();
 				_vals.domainname = parts.join('.');
 
 			}
@@ -1551,7 +1740,7 @@ define([
 			array.forEach(this._gallery.getSelectedItems(), function(iapp) {
 				packages = packages.concat(iapp.defaultpackages, iapp.defaultpackagesmaster);
 			});
-			vals['components'] = packages;
+			vals.components = packages;
 
 			// prepare the dictionary with final values
 			tools.forIn(_vals, function(ikey, ival) {

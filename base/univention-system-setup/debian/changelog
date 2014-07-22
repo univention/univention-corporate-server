@@ -1,3 +1,19 @@
+univention-system-setup (8.0.6-1) unstable; urgency=low
+
+  Bug #34484:
+  * integration and cleanup of appliance join and standard setup save process
+  * handle errors during setup process
+  * removed first name, last name, and description for Administrator account
+  * fixed a few typos in the python files
+  * set primary interface automatically
+  * fixed typo for setting ssl/email
+  * fixed the activation of UCS (via umc call)
+  * integrated DHCP query
+  * added DNS checks for UCS nameserver
+  * fixed pyflake errors
+
+ -- Florian Best <best@univention.de>  Tue, 22 Jul 2014 14:57:50 +0200
+
 univention-system-setup (8.0.5-1) unstable; urgency=low
 
   Bug #34484 [WIP]

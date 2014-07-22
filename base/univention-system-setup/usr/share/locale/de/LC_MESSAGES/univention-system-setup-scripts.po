@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-20 14:40+0100\n"
+"POT-Creation-Date: 2014-07-22 13:37+0200\n"
 "PO-Revision-Date: 2012-02-20 14:41+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,90 +16,90 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:145
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:167
 msgid "Domain join"
 msgstr "Domänen-Join"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:151
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:173
 msgid "Preparing domain join"
 msgstr "Vorbereitung des Domänen-Joins"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:190
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:212
 msgid "Configure"
 msgstr "Einrichten von"
 
-#: usr/lib/univention-system-setup/scripts/basis/10hostname:35
+#: usr/lib/univention-system-setup/scripts/10_basis/10hostname:35
 msgid "Setting hostname"
 msgstr "Einrichten des Rechnernamens"
 
-#: usr/lib/univention-system-setup/scripts/basis/12domainname:35
+#: usr/lib/univention-system-setup/scripts/10_basis/12domainname:37
 msgid "Setting domainname"
 msgstr "Einrichten des Domänennamens"
 
-#: usr/lib/univention-system-setup/scripts/basis/14ldap_basis:35
+#: usr/lib/univention-system-setup/scripts/10_basis/14ldap_basis:35
 msgid "Setting LDAP base"
 msgstr "Einrichten der LDAP-Basis"
 
-#: usr/lib/univention-system-setup/scripts/basis/16windows_domain:35
+#: usr/lib/univention-system-setup/scripts/10_basis/16windows_domain:35
 msgid "Setting windows domain"
 msgstr "Einrichten der Windows-Domäne"
 
-#: usr/lib/univention-system-setup/scripts/basis/18root_password:35
+#: usr/lib/univention-system-setup/scripts/10_basis/18root_password:35
 msgid "Setting root password"
 msgstr "Einrichten des Root-Passworts"
 
-#: usr/lib/univention-system-setup/scripts/keyboard/10keyboard:35
+#: usr/lib/univention-system-setup/scripts/10_basis/20initscripts:35
+msgid "Configuring init-scripts"
+msgstr "Einrichten der Init-Skripte"
+
+#: usr/lib/univention-system-setup/scripts/15_keyboard/10keyboard:35
 msgid "Setting keyboard layout"
 msgstr "Einrichten des Tastaturlayouts"
 
-#: usr/lib/univention-system-setup/scripts/language/10language:35
+#: usr/lib/univention-system-setup/scripts/20_language/10language:35
 msgid "Generating locales"
 msgstr "Erstellen der Locale-Daten"
 
-#: usr/lib/univention-system-setup/scripts/language/11default_locale:35
+#: usr/lib/univention-system-setup/scripts/20_language/11default_locale:35
 msgid "Setting the default locale"
 msgstr "Setzen der Standard-Locale"
 
-#: usr/lib/univention-system-setup/scripts/net/10interfaces:50
-msgid "Configuring IPv4 network devices"
-msgstr "Einrichten der IPv4-Netzwerkgeräte"
-
-#: usr/lib/univention-system-setup/scripts/net/11ipv6interfaces:50
-msgid "Configure IPv6 network devices"
-msgstr "Einrichten der IPv6-Netzwerkgeräte"
-
-#: usr/lib/univention-system-setup/scripts/net/12gateway:35
+#: usr/lib/univention-system-setup/scripts/30_net/12gateway:35
 msgid "Setting IPv4 gateway"
 msgstr "Setzen des IPv4-Gateways"
 
-#: usr/lib/univention-system-setup/scripts/net/13ipv6gateway:35
+#: usr/lib/univention-system-setup/scripts/30_net/13ipv6gateway:35
 msgid "Setting IPv6 gateway"
 msgstr "Setzen des IPv6-Gateways"
 
-#: usr/lib/univention-system-setup/scripts/net/14nameserver:35
+#: usr/lib/univention-system-setup/scripts/30_net/14nameserver:35
 msgid "Setting nameserver"
 msgstr "Einrichten des Rechnernamens"
 
-#: usr/lib/univention-system-setup/scripts/net/16forwarder:35
+#: usr/lib/univention-system-setup/scripts/30_net/16forwarder:35
 msgid "Setting external nameservers"
 msgstr "Einrichten des Rechnernamens"
 
-#: usr/lib/univention-system-setup/scripts/net/18proxy:35
+#: usr/lib/univention-system-setup/scripts/30_net/18proxy:35
 msgid "Setting proxy"
 msgstr "Setzen des Proxys"
 
-#: usr/lib/univention-system-setup/scripts/role/10role:35
-msgid "Configuring server role"
-msgstr "Einrichten der Systemrolle"
+#: usr/lib/univention-system-setup/scripts/35_timezone/10timezone:35
+msgid "Configuring time zones"
+msgstr "Einrichten der Zeitzonen"
 
-#: usr/lib/univention-system-setup/scripts/software/10software:35
-msgid "Configuring software components"
-msgstr "Einrichten der Software-Komponenten"
-
-#: usr/lib/univention-system-setup/scripts/ssl/10ssl:50
+#: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:50
 msgid "Generating SSL certificate"
 msgstr "Erstellen der SSL-Zertifikate"
 
-#: usr/lib/univention-system-setup/scripts/timezone/10timezone:35
-msgid "Configuring time zones"
-msgstr "Einrichten der Zeitzonen"
+#~ msgid "Configuring IPv4 network devices"
+#~ msgstr "Einrichten der IPv4-Netzwerkgeräte"
+
+#~ msgid "Configure IPv6 network devices"
+#~ msgstr "Einrichten der IPv6-Netzwerkgeräte"
+
+#~ msgid "Configuring server role"
+#~ msgstr "Einrichten der Systemrolle"
+
+#~ msgid "Configuring software components"
+#~ msgstr "Einrichten der Software-Komponenten"

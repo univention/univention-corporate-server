@@ -221,6 +221,9 @@ fi
 )
 progress_next_step $nJoinSteps
 
+# allow a restart of server components without actually restarting them
+/usr/share/univention-updater/enable-apache2-umc --no-restart
+
 email=$(get_profile_var email_address)
 if [ "$server_role" = "domaincontroller_master" -a -n "$email" ]; then
 	echo "Activating the UCS license for the email address $email"
@@ -252,9 +255,6 @@ ucr commit /etc/pam.d/*
 
 # Removed system setup login message
 ucr set system/setup/showloginmessage=false
-
-# allow a restart of server components without actually restarting them
-/usr/share/univention-updater/enable-apache2-umc --no-restart
 
 # last but not least: call hooks
 if [ -d /usr/lib/univention-system-setup/appliance-hooks.d ]; then

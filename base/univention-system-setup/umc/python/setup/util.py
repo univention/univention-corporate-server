@@ -40,16 +40,16 @@ import threading
 import univention.config_registry
 import time
 import re
-import sys
-import apt
 import psutil
 import csv
 import os.path
 import simplejson as json
 import random
+import urllib2
 
-from univention.lib.i18n import Translation
+from univention.lib.i18n import Translation, Locale
 from univention.management.console.log import MODULE
+from univention.management.console.modules import UMC_CommandError
 
 try:
     # execute imports in try/except block as during build test scripts are
@@ -62,6 +62,8 @@ try:
 	from univention.lib.package_manager import PackageManager
 except ImportError as e:
     MODULE.warn('Ignoring import error: %s' % e)
+
+_ = Translation('univention-management-console-module-setup').translate
 
 ucr=univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -158,9 +160,9 @@ def _xkeymap(keymap):
 def auto_complete_values_for_join(newValues):
 	# try to automatically determine the domain
 	if newValues['server/role'] != 'domaincontroller_master' and 'domainname' not in newValues and 'nameserver1' in newValues:
-		newValues['domainname'] = util.get_nameserver_domain(newValues['nameserver1'])
+		newValues['domainname'] = get_nameserver_domain(newValues['nameserver1'])
 		if not newValues['domainname']:
-			raise Exception(_('Cannot automatically determine the domain. Please specify the servers fully qualified domain name.'))
+			raise Exception(_('Cannot automatically determine the domain. Please specify the server\'s fully qualified domain name.'))
 
 	# add lists with all packages that should be removed/installed on the system
 	if 'components' in newValues:
@@ -198,7 +200,7 @@ def auto_complete_values_for_join(newValues):
 		newValues['ssl/locality'] = default_locale.territory
 		newValues['ssl/organization'] = newValues['organization']
 		newValues['ssl/organizationalunit'] = 'Univention Corporate Server'
-		newValues['ssl/email'] = 'ssl@{domainname}' % newValues
+		newValues['ssl/email'] = 'ssl@{domainname}'.format(**newValues)
 
 	if 'locale' not in newValues:
 		# auto set the locale variable if not specified
@@ -209,7 +211,7 @@ def auto_complete_values_for_join(newValues):
 			newValues['locale'] = '%s %s' % (newValues['locale'], usLocale)
 
 	if 'windows/domain' not in newValues:
-		newValues['windows/domain'] = util.domain2windowdomain(newValues.get('domainname'))
+		newValues['windows/domain'] = domain2windowdomain(newValues.get('domainname'))
 
 	return newValues
 
@@ -609,6 +611,7 @@ def dhclient(interface, timeout=None):
 			'-sf', '/usr/share/univention-system-setup/dhclient-script-wrapper',
 			'-e', 'dhclientscript_outputfile=%s' % (tempfilename,),
 			interface)
+	MODULE.info('Launch dhclient query via command: %s' % (cmd, ))
 	p = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
 	# read from stderr until timeout, following recipe of subprocess.communicate()
@@ -637,11 +640,19 @@ def dhclient(interface, timeout=None):
 		pass
 
 	dhcp_dict={}
+	MODULE.info('dhclient returned the following values:')
 	with open(tempfilename) as file:
 		for line in file.readlines():
 			key, value = line.strip().split('=', 1)
 			dhcp_dict[key]=value[1:-1]
+			MODULE.info('  %s: %s' % (key, dhcp_dict[key]))
 	os.unlink(tempfilename)
+
+	# see wether the nameserver is part of a UCS domain
+	if 'nameserver_1' in dhcp_dict:
+		dhcp_dict['is_ucs_nameserver_1'] = bool(get_nameserver_domain(dhcp_dict['nameserver_1']))
+		MODULE.info('Check wether the nameserver %s is a UCS nameserver -> %s' % (dhcp_dict['nameserver_1'], dhcp_dict['is_ucs_nameserver_1']))
+
 	return dhcp_dict
 
 _apps = None
@@ -768,6 +779,20 @@ def is_ascii(str):
 	except:
 		return False
 
+def is_ucs_domain(nameserver, domain):
+	# register nameserver
+	resolver = dns.resolver.Resolver()
+	resolver.lifetime = 10  # make sure that we get an early timeout
+	resolver.nameservers = [nameserver]
+
+	# perform a SRV lookup
+	try:
+		resolver.query('_domaincontroller_master._tcp.%s' % domain, 'SRV')
+		return True
+	except dns.resolver.NXDOMAIN as exc:
+		MODULE.warn('No valid UCS domain (%s) at nameserver %s!' % (domain, nameserver))
+	return False
+
 def get_nameserver_domain(nameserver):
 	# register nameserver
 	resolver = dns.resolver.Resolver()
@@ -778,12 +803,18 @@ def get_nameserver_domain(nameserver):
 	try:
 		reverse_address = dns.reversename.from_address(nameserver)
 		reverse_lookup = resolver.query(reverse_address, 'PTR')
-		if len(reverse_lookup):
-			fqdn = reverse_lookup[0]
-			parts = [i for i in fqdn.target.labels if i]
-			return '.'.join(parts[1:])
+		if not len(reverse_lookup):
+			return None
+
+		fqdn = reverse_lookup[0]
+		parts = [i for i in fqdn.target.labels if i]
+		domain = '.'.join(parts[1:])
+
+		if not is_ucs_domain(nameserver, domain):
+			return None
+		return domain
 	except dns.exception.Timeout as exc:
-		pass
+		MODULE.warn('Lookup for nameserver %s timed out: %s' % (nameserver, exc))
 	return None
 
 def get_available_locales(pattern, category='language_en'):
