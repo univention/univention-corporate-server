@@ -210,8 +210,6 @@ modules=[]
 for file in files:
 	temp=file.split('.')
 	if len(temp) == 2 and temp[1] == 'py':
-		if not file == '85_software.py':
-			continue
 		if cmdline.has_key( 'recover' ) and cmdline[ 'recover' ]:
 			if not file in [ '01_modules.py' ]:
 				continue

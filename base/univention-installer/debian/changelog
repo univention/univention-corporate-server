@@ -1,3 +1,9 @@
+univention-installer (9.0.32-7) unstable; urgency=low
+
+  * fixed last commit (Bug #35414) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 22 Jul 2014 09:42:11 +0200
+
 univention-installer (9.0.32-6) unstable; urgency=low
 
   * Renamed Active Directory Connector to 
