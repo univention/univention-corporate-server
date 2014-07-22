@@ -360,12 +360,17 @@ class Instance(Base):
 			_append('domainname', _('The length of fully qualified domain name is greater than 63 characters.'))
 		if hostname == domainname.split('.')[0]:
 			_append('domainname', _("Hostname is equal to domain name."))
+                if not util.is_system_joined():
+                    if newrole == 'domaincontroller_master' and not values.get('domainname'):
+                        _append('domainname', _("No fully qualified domain name has been specified for the system."))
+                    elif not values.get('hostname'):
+                        _append('hostname', _("No hostname has been specified for the system."))
 
 		# see whether the domain can be determined automatically
 		if not util.is_system_joined() and newrole != 'domaincontroller_master' and 'domainname' not in values:
-			if 'nameserver1' not in allValues:
+			if 'nameserver1' not in values:
 				_append('nameserver1', _('A domain name server needs to specified.'))
-			elif not util.get_nameserver_domain(allValues['nameserver1']):
+			elif not util.get_nameserver_domain(values['nameserver1']):
 				_append('domainname', _('The domain cannot automatically be determined. Make sure that the correct name server has been specified or enter a fully qualified domain name of the system.'))
 
 		# windows domain

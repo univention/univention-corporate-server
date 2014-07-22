@@ -48,7 +48,7 @@ import os.path
 import simplejson as json
 import random
 
-from univention.lib.i18n import Translation
+from univention.lib.i18n import Locale
 from univention.management.console.log import MODULE
 
 try:
@@ -158,7 +158,7 @@ def _xkeymap(keymap):
 def auto_complete_values_for_join(newValues):
 	# try to automatically determine the domain
 	if newValues['server/role'] != 'domaincontroller_master' and 'domainname' not in newValues and 'nameserver1' in newValues:
-		newValues['domainname'] = util.get_nameserver_domain(newValues['nameserver1'])
+		newValues['domainname'] = get_nameserver_domain(newValues['nameserver1'])
 		if not newValues['domainname']:
 			raise Exception(_('Cannot automatically determine the domain. Please specify the servers fully qualified domain name.'))
 
@@ -209,7 +209,7 @@ def auto_complete_values_for_join(newValues):
 			newValues['locale'] = '%s %s' % (newValues['locale'], usLocale)
 
 	if 'windows/domain' not in newValues:
-		newValues['windows/domain'] = util.domain2windowdomain(newValues.get('domainname'))
+		newValues['windows/domain'] = domain2windowdomain(newValues.get('domainname'))
 
 	return newValues
 

@@ -1,3 +1,13 @@
+univention-system-setup (7.0.69-25) unstable; urgency=medium
+
+  Bug #34484:
+  * integration and cleanup of appliance join and standard setup save process
+  * handle errors during setup process
+  * removed first name, last name, and description for Administrator account
+  * fixed a few typos in the python files
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 22 Jul 2014 12:50:05 +0200
+
 univention-system-setup (7.0.69-24) unstable; urgency=medium
 
   * Bug #34484: [WIP] fixed fuzzy entries

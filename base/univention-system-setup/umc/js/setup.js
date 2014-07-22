@@ -35,14 +35,9 @@ define([
 	"dojo/_base/array",
 	"dojo/promise/all",
 	"dojo/topic",
-	"dojo/when",
 	"dojo/Deferred",
-	"dijit/Dialog",
-	"dojox/timing/_base",
 	"umc/tools",
 	"umc/dialog",
-	"umc/widgets/Text",
-	"umc/widgets/Form",
 	"umc/widgets/Module",
 	"umc/widgets/TabContainer",
 	"umc/widgets/ProgressBar",
@@ -54,12 +49,16 @@ define([
 	"./setup/BasisPage",
 	"./setup/NetworkPage",
 	"./setup/CertificatePage"
-], function(dojo, declare, lang, array, all, topic, when, Deferred, DijitDialog, timing,
-	tools, dialog, Text, Form, Module, TabContainer, ProgressBar, libServer, ApplianceWizard, _) {
+], function(dojo, declare, lang, array, all, topic, Deferred,
+	tools, dialog, Module, TabContainer, ProgressBar, libServer, ApplianceWizard, _) {
 
 	var CancelDialogException = declare("umc.modules.setup.CancelDialogException", null, {
 		// empty class that indicates that the user canceled a dialog
 	});
+
+	var _alert = function(msg) {
+		dialog.alert(msg, _('Validation error'));
+	};
 
 	return declare("umc.modules.setup", [ Module ], {
 
@@ -86,10 +85,6 @@ define([
 		// internal dict to save error messages while polling
 		_saveErrors: null,
 
-		// a timer used it in _cleanup
-		// to make sure the session does not expire
-		_keepAlive: null,
-
 		// Date when page was last changed
 		_timePageChanges: new Date(),
 
@@ -98,17 +93,6 @@ define([
 
 			// query the system role
 			this.standby(true);
-
-			// make the session not expire
-			// before the user can confirm the cleanup dialog
-			// started (and stopped) in _cleanup
-			this._keepAlive = new timing.Timer(1000 * 30);
-			this._keepAlive.onTick = function() {
-				// dont do anything important here, just
-				// make sure that umc does not forget us
-				// dont even handle errors
-				tools.umcpCommand('setup/finished', {}, false);
-			};
 
 			// load some ucr variables
 			var deferred_ucr = tools.ucr([
@@ -142,7 +126,7 @@ define([
 			var system_role = ucr['server/role'];
 
 			// set wizard mode only on unjoined DC Master
-			this.wizard_mode = ( system_role == 'domaincontroller_master') && (! values.joined);
+			this.wizard_mode = (system_role == 'domaincontroller_master') && (!values.joined);
 
 			// we are in local mode if the user is __systemsetup__
 			this.local_mode = tools.status('username') == '__systemsetup__';
@@ -282,16 +266,22 @@ define([
 		_renderWizard: function(allPages, values) {
 			this.wizard = new ApplianceWizard({
 				//progressBar: progressBar
+				moduleID: this.moduleID,
 				visiblePages: allPages,
 				local_mode: this.local_mode,
 				values: values
 			});
 			this.addChild(this.wizard);
-			this.wizard.on('Finished', lang.hitch(this, function() {
-				topic.publish('/umc/tabs/close', this);
-			}));
-			this.wizard.on('Cancel', lang.hitch(this, function() {
-				topic.publish('/umc/tabs/close', this);
+			this.wizard.on('Finished', lang.hitch(this, function(newValues) {
+				// wizard is done -> call cleanup command and redirect browser to new web address
+				topic.publish('/umc/actions', this.moduleID, 'wizard', 'done');
+				tools.umcpCommand('setup/cleanup', {}, undefined, undefined, {
+					// long polling options
+					messageInterval: 30,
+					xhrTimeout: 40
+				}).then(lang.hitch(this, function() {
+					this._redirectBrowser(newValues.interfaces, newValues['interfaces/primary']);
+				}));
 			}));
 			this.wizard.on('Reload', lang.hitch(this, '_reloadWizard', allPages, values));
 		},
@@ -419,91 +409,30 @@ define([
 			return newIpAddress;
 		},
 
+		_redirectBrowser: function(interfaces, primary_interface) {
+			// redirect to new UMC address and set username to Administrator
+			this._progressBar.reset();
+			this._progressBar.setInfo(_('Restarting server components...'), _('This may take a few seconds...'), Number.POSITIVE_INFINITY);
+			this.standby(true, this._progressBar);
+
+			var username = 'Administrator';
+			var target = window.location.href.replace(new RegExp( "/univention-management-console.*", "g" ), '/univention-management-console/?username=' + username);
+
+			// Consider IP changes, replace old ip in url by new ip
+			var newIp = this._getNewIpAddress(interfaces, primary_interface || 'eth0');
+			if (newIp) {
+				var oldIp = window.location.host;
+				target = target.replace(oldIp, newIp);
+			}
+
+			// give the restart/services function 10 seconds time to restart the services
+			setTimeout(function () {
+				window.location.replace(target);
+			}, 12000);
+		},
+
 		save: function() {
-			// helper function
-			var matchesSummary = function(key, summary) {
-				var matched = false;
-				// iterate over all assigned variables
-				array.forEach(summary.variables, function(ikey) {
-					// key is a regular expression or a string
-					if (typeof ikey == "string" && key == ikey ||
-							ikey.test && ikey.test(key)) {
-						matched = true;
-						return false;
-					}
-				});
-				return matched;
-			};
-
 			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'save');
-
-			// confirm dialog to continue with boot process
-			var _cleanup = lang.hitch(this, function(msg, hasCancel, loadAfterCancel, cancelLabel, applyLabel) {
-				if (cancelLabel === undefined) {
-					cancelLabel = _('Cancel');
-				}
-				if (applyLabel === undefined) {
-					applyLabel = _('Continue');
-				}
-				var choices = [{
-					name: 'apply',
-					'default': true,
-					label: applyLabel
-				}];
-				if (hasCancel) {
-					// show continue and cancel buttons
-					choices = [{
-						name: 'cancel',
-						'default': true,
-						label: cancelLabel
-					}, {
-						name: 'apply',
-						label: applyLabel
-					}];
-				}
-
-				this._keepAlive.start();
-
-				return dialog.confirm(msg, choices).then(lang.hitch(this, function(response) {
-					if (response == 'cancel') {
-						// do not continue
-						this._keepAlive.stop();
-						if (loadAfterCancel) {
-							this.load();
-						}
-						return;
-					}
-
-					// shut down web browser and restart apache and UMC
-					// use long polling to make sure the command succeeds (Bug #27632)
-					return this.umcpCommand('setup/cleanup', {}, undefined, undefined, {
-						// long polling options
-						messageInterval: 30,
-						xhrTimeout: 40
-					}).then(lang.hitch(this, function() {
-						// redirect to UMC and set username to Administrator on DC master
-						var username = 'Administrator';
-						if (this.role == 'basesystem') {
-							// use root on basesystem
-							username = 'root';
-						}
-						var target = window.location.href.replace(new RegExp( "/univention-management-console.*", "g" ), '/univention-management-console/?username=' + username);
-
-						// Consider IP changes, replace old ip in url by new ip
-						var values = this.getValues();
-						var newIp = this._getNewIpAddress(values.interfaces, values['interfaces/primary'] || 'eth0');
-						if (newIp) {
-							var oldIp = window.location.host;
-							target = target.replace(oldIp, newIp);
-						}
-
-						// give the restart/services function 10 seconds time to restart the services
-						setTimeout(function () {
-							window.location.replace(target);
-						}, 10000);
-					}));
-				}));
-			});
 
 			// get all entries that have changed and collect a summary of all changes
 			var values = {};
@@ -548,238 +477,149 @@ define([
 				}, this);
 			}, this);
 
-			// initiate some local check variables
-			var joined = this._orgValues.joined;
-			var newValues = this.getValues();
-			var role = newValues['server/role'];
-			if (!role) {
-				role = this._orgValues['server/role'];
-			}
-
 			// only submit data to server if there are changes and the system is joined
-			if (!nchanges && !this.wizard_mode) {
+			if (!nchanges) {
 				dialog.alert(_('No changes have been made.'));
 				return;
 			}
 
-			// see whether a UMC server, UMC web server, and apache restart is necessary:
-			// -> installation/removal of software components
-			// -> update of SSL certificate
-			var umcRestart = 'components' in values;
-			tools.forIn(values, function(name) {
-				if ((/^ssl\/.*$/).test(name)) {
-					umcRestart = true;
-				}
-			});
+			// helper function
+			var _matchesSummary = function(key, summary) {
+				var matched = false;
+				// iterate over all assigned variables
+				array.forEach(summary.variables, function(ikey) {
+					// key is a regular expression or a string
+					if (typeof ikey == "string" && key == ikey ||
+							ikey.test && ikey.test(key)) {
+						matched = true;
+						return false;
+					}
+				});
+				return matched;
+			};
 
-			// check whether all page widgets are valid
-			var allValid = true;
-			var validationMessage = '<p>' + _('The following entries could not be validated:') + '</p><ul style="max-height:200px; overflow:auto;">';
-			array.forEach(this._pages, function(ipage) {
-				if (!ipage._form) {
-					return true;
-				}
-				tools.forIn(ipage._form._widgets, lang.hitch(this, function(ikey, iwidget) {
-					if (iwidget.isValid && false === iwidget.isValid()) {
-						if (allValid) {
-							// jump to the first invalid widget
-							this.selectPage(ipage);
+			// function to locally validate the pages
+			var _localValidation = function() {
+				var allValid = true;
+				var validationMessage = '<p>' + _('The following entries could not be validated:') + '</p><ul style="max-height:200px; overflow:auto;">';
+				array.forEach(this._pages, function(ipage) {
+					if (!ipage._form) {
+						return true;
+					}
+					tools.forIn(ipage._form._widgets, lang.hitch(this, function(ikey, iwidget) {
+						if (iwidget.isValid && false === iwidget.isValid()) {
+							if (allValid) {
+								// jump to the first invalid widget
+								this.selectPage(ipage);
+							}
+							allValid = false;
+							validationMessage += '<li>' + ipage.get('title') + '/' + iwidget.get('label') + '</li>';
 						}
-						allValid = false;
-						validationMessage += '<li>' + ipage.get('title') + '/' + iwidget.get('label') + '</li>';
+					}));
+				}, this);
+				validationMessage += '</ul>';
+
+				if (!allValid) {
+					_alert(validationMessage);
+					throw new Error('Validation failed!');
+				}
+			};
+
+			// function to confirm changes
+			var _confirmChanges = function(values, summaries) {
+				// first see which message needs to be displayed for the confirmation message
+				tools.forIn(values, function(ikey) {
+					array.forEach(summaries, function(idesc) {
+						if (_matchesSummary(ikey, idesc)) {
+							idesc.showConfirm = true;
+						}
+					}, this);
+				}, this);
+
+				// construct message for confirmation
+				var confirmMessage = '<p>' + _('The following changes will be applied to the system:') + '</p><ul style="max-height:200px; overflow:auto;">';
+				array.forEach(summaries, function(idesc) {
+					if (idesc.showConfirm) {
+						confirmMessage += '<li>' + idesc.description + ': ' + idesc.values + '</li>';
+					}
+				});
+				confirmMessage += '</ul><p>' + _('Please confirm to apply these changes to the system. This may take some time.') + '</p>';
+
+				return dialog.confirm(confirmMessage, [{
+					name: 'cancel',
+					'default': true,
+					label: _('Cancel')
+				}, {
+					name: 'apply',
+					label: _('Apply changes')
+				}]).then(lang.hitch(this, function(response) {
+					if ('apply' != response) {
+						// throw new error to indicate that action has been canceled
+						throw new CancelDialogException();
 					}
 				}));
-			}, this);
-			if (!allValid) {
-				this.standby(false);
-				dialog.alert(validationMessage);
-				return;
-			}
+			};
 
-			// validate the changes
-			this.standby(true);
-			this.umcpCommand('setup/validate', { values: values }).then(lang.hitch(this, function(data) {
-				var allValid = true;
-				array.forEach(data.result, lang.hitch(this, function(ivalidation) {
-					if (!ivalidation.valid) {
-						if (allValid) {
-							// focus the first invalid page
-							array.forEach(this._pages, function(ipage) {
-								if (ipage._form && ipage._form.getWidget(ivalidation.key)) {
-									this.selectPage(ipage);
+			// function for server side validation of user changes
+			var _remoteValidation = function(values, summaries) {
+				this.standby(true);
+				return this.umcpCommand('setup/validate', { values: values }).then(lang.hitch(this, function(data) {
+					var allValid = true;
+					array.forEach(data.result, function(ivalidation) {
+						if (!ivalidation.valid) {
+							if (allValid) {
+								// focus the first invalid page
+								array.forEach(this._pages, function(ipage) {
+									if (ipage._form && ipage._form.getWidget(ivalidation.key)) {
+										this.selectPage(ipage);
+									}
+								}, this);
+							}
+							allValid = false;
+						}
+						if (ivalidation.message) {
+							// find the correct description to be displayed
+							array.forEach(summaries, function(idesc) {
+								if (_matchesSummary(ivalidation.key, idesc)) {
+									idesc.validationMessages = idesc.validationMessages || [];
+									idesc.validationMessages.push(ivalidation.message);
 								}
 							}, this);
 						}
-						allValid = false;
+					}, this);
+
+					if (allValid) {
+						// everythin fine, continue
+						return;
 					}
-					if (ivalidation.message) {
-						// find the correct description to be displayed
-						array.forEach(summaries, function(idesc) {
-							if (matchesSummary(ivalidation.key, idesc)) {
-								idesc.validationMessages = idesc.validationMessages || [];
-								idesc.validationMessages.push(ivalidation.message);
-							}
-						});
 
-					}
-				}));
-
-				// construct message for validation
-				array.forEach(summaries, function(idesc) {
-					//console.log('#', require('dojo/json').stringify(idesc));
-					array.forEach(idesc.validationMessages || [], function(imsg) {
-						validationMessage += '<li>' + idesc.description + ': ' + imsg + '</li>';
-					});
-				});
-
-				if (!allValid) {
-					// something could not be validated
-					this.standby(false);
-					dialog.alert(validationMessage);
-					return;
-				}
-
-				// function to confirm changes
-				var _confirmChanges = lang.hitch(this, function() {
-					// first see which message needs to be displayed for the confirmation message
-					tools.forIn(values, function(ikey) {
-						array.forEach(summaries, function(idesc) {
-							if (matchesSummary(ikey, idesc)) {
-								idesc.showConfirm = true;
-							}
-						});
-					});
-
-					// construct message for confirmation
-					var confirmMessage = '<p>' + _('The following changes will be applied to the system:') + '</p><ul style="max-height:200px; overflow:auto;">';
+					// something could not be validated... construct message for validation
+					var validationMessage = '<p>' + _('The following entries could not be validated:') + '</p><ul style="max-height:200px; overflow:auto;">';
 					array.forEach(summaries, function(idesc) {
-						if (idesc.showConfirm) {
-							confirmMessage += '<li>' + idesc.description + ': ' + idesc.values + '</li>';
-						}
+						array.forEach(idesc.validationMessages || [], function(imsg) {
+							validationMessage += '<li>' + idesc.description + ': ' + imsg + '</li>';
+						});
 					});
-					confirmMessage += '</ul><p>' + _('Please confirm to apply these changes to the system. This may take some time.') + '</p>';
+					validationMessage += '</ul>';
+					_alert(validationMessage);
+					throw new Error('Validation failed!');
+				}));
+			};
 
-					return dialog.confirm(confirmMessage, [{
-						name: 'cancel',
-						'default': true,
-						label: _('Cancel')
-					}, {
-						name: 'apply',
-						label: _('Apply changes')
-					}]).then(lang.hitch(this, function(response) {
-						if ('apply' != response) {
-							// throw new error to indicate that action has been canceled
-							throw new CancelDialogException();
-						}
-						this.standby( false );
-					}));
-				});
+			// function to save data
+			var _save = function(values, umc_url) {
+				var deferred = new Deferred();
 
-				// function to ask the user for DC account data
-				var _password = lang.hitch(this, function() {
-					var msg = '<p>' + _('The specified settings will be applied to the system and the system will be joined into the domain. Please enter username and password of a domain administrator account.') + '</p>';
-					var deferred = new Deferred();
-					var _dialog = null;
-					var form = new Form({
-						widgets: [{
-							name: 'text',
-							type: Text,
-							content: msg
-						}, {
-							name: 'username',
-							type: 'TextBox',
-							label: _('Username')
-						}, {
-							name: 'password',
-							type: 'PasswordBox',
-							label: _('Password')
-						}],
-						buttons: [{
-							name: 'submit',
-							label: _('Join'),
-							callback: lang.hitch(this, function() {
-								this.standby(false);
-								deferred.resolve({
-									username: form.getWidget('username').get('value'),
-									password: form.getWidget('password').get('value')
-								});
-								_dialog.hide();
-								_dialog.destroyRecursive();
-								form.destroyRecursive();
-							})
-						}, {
-							name: 'cancel',
-							label: _('Cancel'),
-							callback: lang.hitch(this, function() {
-								deferred.reject();
-								this.standby(false);
-								_dialog.hide();
-								_dialog.destroyRecursive();
-								form.destroyRecursive();
-							})
-						}],
-						layout: [ 'text', 'username', 'password' ]
-					});
-					_dialog = new DijitDialog({
-						title: _('Account data'),
-						content: form,
-						style: 'max-width: 400px;'
-					});
-					_dialog.on('Hide', lang.hitch(this, function() {
-						if (!deferred.isFulfilled()) {
-							// user clicked the close button
-							this.standby(false);
-							deferred.reject();
-						}
-					}));
-					_dialog.show();
-					return deferred;
-				});
+				// send save command to server
+				this._progressBar.reset(_('Initialize the configuration process ...'));
+				this.standby(false, this._progressBar);
+				this.standby(true, this._progressBar);
+				this.umcpCommand('setup/save', {
+					values: values
+				}, false);
 
-				// confirmation message for the master
-				var _confirmMaster = lang.hitch(this, function() {
-					var msg = '<p>' + _('The specified settings will be applied to the system. This may take some time. Please confirm to proceed.') + '</p>';
-					return dialog.confirm(msg, [{
-						name: 'cancel',
-						label: _('Cancel')
-					}, {
-						name: 'apply',
-						'default': true,
-						label: _('Apply changes')
-					}]).then(lang.hitch(this, function(response) {
-						if ('apply' != response) {
-							// throw new error to indicate that action has been canceled
-							throw new CancelDialogException();
-						}
-						this.standby( false );
-					}));
-				});
-
-				// function to save data
-				var _save = lang.hitch(this, function(username, password) {
-					// make sure that the parameters are not undefined,
-					// otherwise an 'Invalid JSON Document' is return by the server
-					username = username || null;
-					password = password || null;
-
-					var deferred = new Deferred();
-
-					// send save command to server
-					this._progressBar.reset(_( 'Initialize the configuration process ...' ));
-					this.standby( true, this._progressBar );
-					var command = null;
-					if (!this.wizard_mode || role == 'basesystem') {
-						command = this.umcpCommand('setup/save', {
-							values: values
-						}, false);
-					} else {
-						command = this.umcpCommand('setup/join', {
-							values: values,
-							username: username,
-							password: password
-						}, false);
-					}
-					// poll whether script has finished
+				// poll whether script has finished
+				tools.defer(lang.hitch(this, function() {
 					this._progressBar.auto(
 						'setup/finished',
 						{},
@@ -792,164 +632,87 @@ define([
 						_('Configuration finished'),
 						true
 					);
+				}), 500);
 
-					return deferred;
-				});
+				return deferred.then(lang.hitch(this, function() {
+					this.standby(false);
+				}));
+			};
 
-				// ask user whether UMC server components shall be restarted or not
-				var _restart = lang.hitch(this, function() {
-					libServer.askRestart(_('The changes have been applied successfully.'));
+			// ask user whether UMC server components shall be restarted or not
+			var _restart = function() {
+				libServer.askRestart(_('The changes have been applied successfully.'));
+				this.load(); // sets 'standby(false)'
+			};
+
+			// notify user that saving was successful
+			var _success = function() {
+				this.addNotification(_('The changes have been applied successfully.'));
+				this.load(); // sets 'standby(false)'
+			};
+
+			// tell user that saving was not successful (has to confirm)
+			var _failure = function(errorHtml) {
+				var msg = _('Not all changes could be applied successfully:') + errorHtml;
+				var choices = [{
+					name: 'apply',
+					'default': true,
+					label: _('Ok')
+				}];
+				return dialog.confirm(msg, choices).then(lang.hitch(this, function() {
 					this.load(); // sets 'standby(false)'
-				});
+				}));
+			};
 
-				// notify user that saving was successful
-				var _success = lang.hitch(this, function() {
-					this.addNotification(_('The changes have been applied successfully.'));
-					this.load(); // sets 'standby(false)'
-				});
-
-				// tell user that saving was not successful (has to confirm)
-				var _failure = lang.hitch(this, function(errorHtml) {
-					var msg = this._embedErrorHTML(_('Not all changes could be applied successfully:'), errorHtml);
-					var choices = [{
-						name: 'apply',
-						'default': true,
-						label: _('Ok')
-					}];
-					return dialog.confirm(msg, choices).then(lang.hitch(this, function(response) {
-						this.load(); // sets 'standby(false)'
-						return;
-					}));
-				});
-				// show the correct dialogs
-				var deferred = null;
-				if (!this.wizard_mode) {
-					// normal setup scenario, confirm changes and then save
-					deferred = _confirmChanges().then(function() {
-						return _save();
+			// show success/error message and eventually restart UMC server components
+			var _checkForErrorsDuringSave = function(values) {
+				var errors = this._progressBar.getErrors().errors;
+				if (errors.length) {
+					// errors have occurred
+					var errorHtml = '<ul style="overflow: auto; max-height: 400px;">';
+					array.forEach(errors, function(error) {
+						errorHtml += '<li>' + error + '</li>';
 					});
-				}
-				else if (role != 'domaincontroller_master') {
-					// unjoined system scenario and not master
-					// we need a proper DC administrator account
-					deferred = _password().then(function(opt) {
-						return _save(opt.username, opt.password);
-					});
-				}
-				else {
-					// unjoined master
-					deferred = _confirmMaster().then(function() {
-						return _save();
-					});
-				}
-
-				if (this.wizard_mode) {
-					// kill the browser and restart the UMC services in wizard mode
-					deferred = deferred.then(lang.hitch(this, function() {
-						var errors = this._progressBar.getErrors();
-						var errorHtml = this._buildErrorHtml(errors.errors);
-						if (!errorHtml) {
-							return _cleanup(_('The configuration was successful. Please confirm to complete the process.'));
-						} else if (errors.critical) {
-							return _cleanup(this._embedErrorHTML(
-								_('The system join was not successful.'),
-								errorHtml,
-								_('You may return, reconfigure the settings, and retry the join process. You may also continue and end the wizard leaving the system unjoined. The system can be joined later via the UMC module "Domain join".')
-								), true, true, _('Reconfigure, retry'), _('Continue unjoined'));
-						} else {
-							return _cleanup(this._embedErrorHTML(
-								_('The system join was successful, however, errors occurred while applying the configuration settings:'),
-								errorHtml,
-								_('The settings can be changed in the UMC module "Basic settings" after the join process has been completed. Please confirm now to complete the process.')
-								));
+					errorHtml += '</ul>';
+					return _failure(errorHtml);
+				} else {
+					// see whether a UMC server, UMC web server, and apache restart is necessary:
+					// -> installation/removal of software components
+					// -> update of SSL certificate
+					var umcRestartNeeded = 'components' in values;
+					tools.forIn(values, function(name) {
+						if ((/^ssl\/.*$/).test(name)) {
+							umcRestartNeeded = true;
 						}
-					}));
+					});
+
+					// everything went well :)
+					if (umcRestartNeeded) {
+						return _restart();
+					}
+					else {
+						return _success();
+					}
 				}
-				else {
-					// show success/error message and eventually restart UMC server components
-					deferred = deferred.then(lang.hitch(this, function() {
-						var errors = this._progressBar.getErrors();
-						var errorHtml = this._buildErrorHtml(errors.errors);
-						if (errorHtml) {
-							// errors have occurred
-							return _failure(errorHtml);
-						} else {
-							// everything went well :)
-							if (umcRestart) {
-								return _restart();
-							}
-							else {
-								return _success();
-							}
-						}
-					}));
-				}
+			};
 
-				// error case, turn off standby animation
-				deferred.then(
-					function() {},
-					lang.hitch(this, function() {
-						this.standby(false);
-					})
-				);
-			}), lang.hitch(this, function() {
-				this.standby(false);
-			}));
-		},
-
-		_buildErrorHtml: function(errors) {
-			var errorHtml = '';
-			array.forEach(errors, function(error) {
-				errorHtml += '<li>' + error + '</li>';
-			});
-			if (errorHtml) {
-				errorHtml = '<ul style="overflow: auto; max-height: 400px;">' + errorHtml + '</ul>';
-			}
-			return errorHtml;
-		},
-
-		_embedErrorHTML: function(first, errorHtml, last) {
-			var html = errorHtml;
-			if (first) {
-				html = first + html;
-			}
-			if (last) {
-				html = html + last;
-			}
-			return html;
+			// chain all methods together
+			var deferred = new Deferred();
+			deferred.resolve();
+			deferred = deferred.then(lang.hitch(this, _localValidation, values));
+			deferred = deferred.then(lang.hitch(this, _confirmChanges, values, summaries));
+			deferred = deferred.then(lang.hitch(this, _remoteValidation, values, summaries));
+			deferred = deferred.then(lang.hitch(this, _save, values, umc_url));
+			deferred = deferred.then(lang.hitch(this, _checkForErrorsDuringSave, values));
+			deferred.then(
+				lang.hitch(this, 'standby', false),
+				lang.hitch(this, 'standby', false)
+			);
 		},
 
 		selectPage: function(page) {
-			if (this.wizard_mode) {
-				return this.selectChild(page);
-			}
 			var tabcontainer = this.getChildren()[0];
 			return tabcontainer.selectChild(page);
-		},
-
-		selectChildIfValid: function(nextpage) {
-			var current_page = this._pages[nextpage - 1];
-			when(current_page.validate === undefined || current_page.validate(),
-				lang.hitch(this, function(value) {
-					if (value) {
-						var page = this._pages[nextpage];
-						this.selectChild(page);
-						// focus first widget in page
-						// if (page._form) {
-						// 	tools.forIn(page._form._widgets, function(iname, iwidget) {
-						// 		if (!iwidget.get('disabled')) {
-						// 			try {
-						// 				iwidget.focus();
-						// 			} catch(e) {
-						// 			}
-						// 			return false;
-						// 		}
-						// 	});
-						// }
-					}
-				})
-			);
 		}
-
 	});
 });
