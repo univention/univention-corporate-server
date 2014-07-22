@@ -250,10 +250,12 @@ class S4Cache:
 
 	def _get_attr_id_and_create_if_not_exists(self, attr):
 		_d = ud.function('S4Cache.%s' % func_name())
-		if not self._get_attr_id(attr):
+		attr_id = self._get_attr_id(attr)
+		if not attr_id:
 			self._create_attr(attr)
+			attr_id = self._get_attr_id(attr)
 
-		return self._get_attr_id(attr)
+		return attr_id
 
 	def _add_entry(self, guid, entry):
 		_d = ud.function('S4Cache.%s' % func_name())

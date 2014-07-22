@@ -48,8 +48,12 @@ from samba.samdb import SamDB
 from samba.param import LoadParm
 from samba.auth import system_session
 from samba.credentials import Credentials
+from samba.dcerpc import misc
+from samba.ndr import ndr_unpack
 
 class GuidNotFound(BaseException): pass
+
+class GuidNotInCache(BaseException): pass
 
 class S4Resync:
 	def __init__(self):
@@ -68,8 +72,8 @@ class S4Resync:
 		res = samdb.search(self.s4_dn, scope=ldb.SCOPE_BASE, attrs=["objectGuid", "uSNChanged"])
 
 		for msg in res:
-			guid = msg.get("objectGuid", idx=0)
-			self.guid = base64.encodestring(guid)[:-1]
+			guid_blob = msg.get("objectGuid", idx=0)
+			self.guid = ndr_unpack(misc.GUID, guid_blob)
 			self.usn = msg.get("uSNChanged", idx=0)
 
 		if not self.guid:
@@ -85,6 +89,8 @@ class S4Resync:
 			c.execute("DELETE from DATA where guid_id = '%s'" % guid_id)
 			c.execute("DELETE from GUIDS where id = '%s'" % guid_id)
 			cache_db.commit()
+		else:
+			raise GuidNotInCache
 		cache_db.close()
 
 	def _add_object_to_rejected(self):
@@ -104,7 +110,7 @@ class S4Resync:
 
 if __name__ == '__main__':
 
-	parser = OptionParser(usage='sync_object_new_from_ucs.py dn')
+	parser = OptionParser(usage='resync_object_from_s4.py dn')
 	(options, args) = parser.parse_args()
 	
 	if len(args) != 1:
@@ -121,8 +127,11 @@ if __name__ == '__main__':
 		print 'ERROR: The S4 object %s was not found.' % s4_dn
 		sys.exit(1)
 	except GuidNotFound:
-		print 'ERROR: The S4 search failed (objectGUID was not found.'
+		print 'ERROR: The S4 search failed (objectGUID was not found).'
 		sys.exit(1)
+	except GuidNotInCache:
+		print 'INFO: Ok, the objectGUID %s is not in the S4Cache currently.' % (resync.guid,)
+		sys.exit(0)
 	
 	print 'The resync of %s has been initialized.' % s4_dn
 

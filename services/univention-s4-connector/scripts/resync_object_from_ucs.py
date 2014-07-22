@@ -72,7 +72,7 @@ class UCSResync:
 
 if __name__ == '__main__':
 
-	parser = OptionParser(usage='sync_object_new_from_ucs.py dn')
+	parser = OptionParser(usage='resync_object_from_ucs.py dn')
 	(options, args) = parser.parse_args()
 	
 	if len(args) != 1:

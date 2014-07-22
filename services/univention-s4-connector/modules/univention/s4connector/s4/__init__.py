@@ -2379,101 +2379,104 @@ class s4(univention.s4connector.ucs):
 							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The following attribute has been changed: %s" % attr)
 			
 							for attribute in attribute_type.keys():
-								if attribute_type[attribute].ldap_attribute == attr:
-									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Found a corresponding mapping defintion: %s" % attribute)
+								if attribute_type[attribute].ldap_attribute != attr:
+									continue
 
-									s4_attribute = attribute_type[attribute].con_attribute
-									s4_other_attribute = attribute_type[attribute].con_other_attribute
+								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Found a corresponding mapping defintion: %s" % attribute)
+								s4_attribute = attribute_type[attribute].con_attribute
+								s4_other_attribute = attribute_type[attribute].con_other_attribute
 
-									if not attribute_type[attribute].sync_mode in ['write', 'sync']:
-										ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s is in not in wroite or sync mode. Skipping" % attribute)
-										continue
+								if not attribute_type[attribute].sync_mode in ['write', 'sync']:
+									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s is in not in write or sync mode. Skipping" % attribute)
+									continue
 
-									modify = False
+								modify = False
 
-									# Get the UCS attributes
-									old_values = set(old_ucs_object.get(attr, []))
-									new_values = set(new_ucs_object.get(attr, []))
+								# Get the UCS attributes
+								old_values = set(old_ucs_object.get(attr, []))
+								new_values = set(new_ucs_object.get(attr, []))
 
-									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: old_values: %s" % old_values)
-									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: new_values: %s" % new_values)
+								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: old_values: %s" % old_values)
+								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: new_values: %s" % new_values)
 
-									if attribute_type[attribute].compare_function:
-										if not attribute_type[attribute].compare_function(list(old_values), list(new_values)):
-											modify = True
-									elif not univention.s4connector.compare_lowercase(list(old_values), list(new_values)): # FIXME: use defined compare-function from mapping.py
-										modify=True
+								if attribute_type[attribute].compare_function:
+									if not attribute_type[attribute].compare_function(list(old_values), list(new_values)):
+										modify = True
+								elif not univention.s4connector.compare_lowercase(list(old_values), list(new_values)): # FIXME: use defined compare-function from mapping.py
+									modify=True
 
-									if not modify:
-										ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: no modification necessary for %s" % attribute)
+								if not modify:
+									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: no modification necessary for %s" % attribute)
+									continue
 
-									if modify:
-										# So, at this point we have the old and the new UCS object.
-										# Thus we can create the diff, but we have to check the current S4 object
+								# So, at this point we have the old and the new UCS object.
+								# Thus we can create the diff, but we have to check the current S4 object
 
-										if not old_values:
-											to_add = new_values
-											to_remove = set([])
-										elif not new_values:
-											to_remove = old_values
-											to_add = set([])
+								if not old_values:
+									to_add = new_values
+									to_remove = set([])
+								elif not new_values:
+									to_remove = old_values
+									to_add = set([])
+								else:
+									to_add = new_values - old_values
+									to_remove = old_values - new_values
+
+								if s4_other_attribute:
+									# in this case we need lists because sets are unorded and the order is important
+									current_s4_values = set(s4_object.get(s4_attribute, []))
+									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 values: %s" % current_s4_values)
+
+									current_s4_other_values = set(s4_object.get(s4_other_attribute, []))
+									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 other values: %s" % current_s4_other_values)
+
+									new_s4_values = current_s4_values - to_remove
+									if not new_s4_values and to_add:
+										for n_value in new_ucs_object.get(attr, []):
+											if n_value in to_add:
+												to_add = to_add - set([n_value])
+												new_s4_values = [n_value]
+												break
+
+									new_s4_other_values = (current_s4_other_values | to_add) - to_remove
+									if current_s4_values != new_s4_values:
+										if new_s4_values:
+											modlist.append((ldap.MOD_REPLACE, s4_attribute, new_s4_values))
 										else:
-											to_add = new_values - old_values
-											to_remove = old_values - new_values
+											modlist.append((ldap.MOD_REPLACE, s4_attribute, []))
 
-										if s4_other_attribute:
-											# in this case we need lists because sets are unorded and the order is important
-											current_s4_values = set(s4_object.get(s4_attribute, []))
-											ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 values: %s" % current_s4_values)
+									if current_s4_other_values != new_s4_other_values:
+										modlist.append((ldap.MOD_REPLACE, s4_other_attribute, new_s4_other_values))
+								else:
+									current_s4_values = set(s4_object.get(s4_attribute, []))
 
-											current_s4_other_values = set(s4_object.get(attribute_type[attribute].con_other_attribute, []))
-											ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 other values: %s" % current_s4_other_values)
+									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 values: %s" % current_s4_values)
 
-											new_s4_values = current_s4_values - to_remove
-											if not new_s4_values and to_add:
-												for n_value in new_ucs_object.get(attr, []):
-													if n_value in to_add:
-														to_add = to_add - set([n_value])
-														new_s4_values = [n_value]
-														break
+									if (to_add or to_remove) and attribute_type[attribute].single_value:
+										modify=False
+										if not current_s4_values or not value:
+											modify=True
+										elif attribute_type[attribute].compare_function:
+											if not attribute_type[attribute].compare_function(list(current_s4_values), list(value)):
+												modify=True
+										elif not univention.s4connector.compare_lowercase(list(current_s4_values), list(value)):
+											modify=True
+										if modify:
+											modlist.append((ldap.MOD_REPLACE, s4_attribute, value))
+									else:
+										if to_remove:
+											r = current_s4_values & to_remove
+											if r:
+												modlist.append((ldap.MOD_DELETE, s4_attribute, r))
+										if to_add:
+											a = to_add - current_s4_values
+											if a:
+												modlist.append((ldap.MOD_ADD, s4_attribute, a))
 
-											new_s4_other_values = (current_s4_other_values | to_add) - to_remove
-											if current_s4_values != new_s4_values:
-												if new_s4_values:
-													modlist.append((ldap.MOD_REPLACE, s4_attribute, new_s4_values))
-												else:
-													modlist.append((ldap.MOD_REPLACE, s4_attribute, []))
-
-											if current_s4_other_values != new_s4_other_values:
-												modlist.append((ldap.MOD_REPLACE, s4_other_attribute, new_s4_other_values))
-										else:
-											current_s4_values = set(s4_object.get(s4_attribute, []))
-
-											ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 values: %s" % current_s4_values)
-
-											if (to_add or to_remove) and attribute_type[attribute].single_value:
-												modify=False
-												if not current_s4_values or not value:
-													modify=True
-												elif attribute_type[attribute].compare_function:
-													if not attribute_type[attribute].compare_function(list(current_s4_values), list(value)):
-														modify=True
-												elif not univention.s4connector.compare_lowercase(list(current_s4_values), list(value)):
-													modify=True
-												if modify:
-													modlist.append((ldap.MOD_REPLACE, s4_attribute, value))
-											else:
-												if to_remove:
-													r = current_s4_values & to_remove
-													if r:
-														modlist.append((ldap.MOD_DELETE, s4_attribute, r))
-												if to_add:
-													a = to_add - current_s4_values
-													if a:
-														modlist.append((ldap.MOD_ADD, s4_attribute, a))
-
-				ud.debug(ud.LDAP, ud.INFO, "to modify: %s" % object['dn'])
-				if modlist:
+				if not modlist:
+					ud.debug(ud.LDAP, ud.ALL, "nothing to modify: %s" % object['dn'])
+				else:
+					ud.debug(ud.LDAP, ud.INFO, "to modify: %s" % object['dn'])
 					ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: modlist: %s" % modlist)
 					try:
 						self.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), compatible_modlist(modlist), serverctrls=self.serverctrls_for_add_and_modify)
