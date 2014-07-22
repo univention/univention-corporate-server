@@ -2525,8 +2525,8 @@ class s4(univention.s4connector.ucs):
 		ud.debug(ud.LDAP, ud.ALL,"delete_in_s4: %s" % object)
 		try:
 			objectGUID = self._get_objectGUID(object['dn'])
-			self.update_deleted_cache_after_removal(object.get('attributes').get('entryUUID')[0], objectGUID)
 			self.lo_s4.lo.delete_s(compatible_modstring(object['dn']))
+			self.update_deleted_cache_after_removal(object.get('attributes').get('entryUUID')[0], objectGUID)
 		except ldap.NO_SUCH_OBJECT:
 			pass # object already deleted
 		except ldap.NOT_ALLOWED_ON_NONLEAF:

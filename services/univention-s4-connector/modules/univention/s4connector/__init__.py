@@ -1250,7 +1250,7 @@ class ucs:
 		try:
 			ucs_object.open()
 			ucs_object.remove()
-			self. update_deleted_cache_after_removal(entryUUID, objectGUID)
+			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
 			return True
 		except Exception, e:
 			ud.debug(ud.LDAP, ud.INFO,"delete object exception: %s"%e)
