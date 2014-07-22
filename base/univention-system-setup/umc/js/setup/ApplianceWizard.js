@@ -359,7 +359,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('Specify the type of role for the system to join into the an existing UCS domain.')
+					content: _('Specify the type of role for the system to join into an existing UCS domain.')
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
@@ -410,7 +410,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('<p>Enter the name of your organisation, an e-mail address to activate UCS and a password for your administrator account.</p><p>The password is mandatory, it will be used for the domain administrator as well as for the local superuser <i>root</i>.</p>')
+					content: _('<p>Enter the name of your organisation, an e-mail address to activate UCS and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>')
 				}, {
 					type: TextBox,
 					name: 'organization',
@@ -507,7 +507,7 @@ define([
 				}, {
 					type: TextBox,
 					name: '_ip0',
-					label: _('IPv4 address/IPv6 address ({interface})'),
+					label: _('IPv4 address/IPv6 address {interface}'),
 					inlineLabel: '',
 					value: '',
 					onChange: lang.hitch(this, '_updateNetwork', 0),
@@ -516,14 +516,14 @@ define([
 				}, {
 					type: TextBox,
 					name: '_netmask0',
-					label: _('IPv4 net mask/IPv6 prefix ({interface})'),
+					label: _('IPv4 net mask/IPv6 prefix {interface}'),
 					inlineLabel: '',
 					invalidMessage: _invalidIPAddressMessage,
 					validator: _validateIPAddress
 				}, {
 					type: TextBox,
 					name: '_ip1',
-					label: _('IPv4 address/IPv6 address ({interface})'),
+					label: _('IPv4 address/IPv6 address {interface}'),
 					inlineLabel: '',
 					value: '',
 					visible: false,
@@ -533,7 +533,7 @@ define([
 				}, {
 					type: TextBox,
 					name: '_netmask1',
-					label: _('IPv4 net mask/IPv6 prefix ({interface})'),
+					label: _('IPv4 net mask/IPv6 prefix {interface}'),
 					inlineLabel: '',
 					visible: false,
 					invalidMessage: _invalidIPAddressMessage,
@@ -541,7 +541,7 @@ define([
 				}, {
 					type: TextBox,
 					name: '_ip2',
-					label: _('IPv4 address/IPv6 address ({interface})'),
+					label: _('IPv4 address/IPv6 address {interface}'),
 					inlineLabel: '',
 					visible: false,
 					value: '',
@@ -551,7 +551,7 @@ define([
 				}, {
 					type: TextBox,
 					name: '_netmask2',
-					label: _('IPv4 net mask/IPv6 prefix ({interface})'),
+					label: _('IPv4 net mask/IPv6 prefix {interface}'),
 					inlineLabel: '',
 					visible: false,
 					invalidMessage: _invalidIPAddressMessage,
@@ -559,7 +559,7 @@ define([
 				}, {
 					type: TextBox,
 					name: '_ip3',
-					label: _('IPv4 address/IPv6 address ({interface})'),
+					label: _('IPv4 address/IPv6 address {interface}'),
 					inlineLabel: '',
 					visible: false,
 					value: '',
@@ -569,7 +569,7 @@ define([
 				}, {
 					type: TextBox,
 					name: '_netmask3',
-					label: _('IPv4 net mask/IPv6 prefix ({interface})'),
+					label: _('IPv4 net mask/IPv6 prefix {interface}'),
 					inlineLabel: '',
 					visible: false,
 					invalidMessage: _invalidIPAddressMessage,
@@ -627,7 +627,7 @@ define([
 				name: 'software',
 				'class': 'umc-setup-page umc-setup-page-software',
 				headerText: _('Software configuration'),
-				helpText: _('<p>Select software components for installation on this system.</p><p>It is also possible to skip this step and to install components after the initial setup via the App Center. Most apps will be available after the UCS setup.</p>')
+				helpText: _('<p>Select UCS software components for installation on this system. This step can also be skipped; the components are also available in the Univention App Center in the category <i>UCS components</i>.</p><p>Third-party software (e.g., groupware) is also available through the Univention App Center.</p>')
 			}, {
 				name: 'validation',
 				'class': 'umc-setup-page-validation',
@@ -729,7 +729,7 @@ define([
 		},
 
 		showUCSActivationInfo: function(evt) {
-			var msg = _('A valid e-mail address allows to activate the UCS system for using the App Center. An e-mail with an updated license key will then be sent to your e-mail address. This license can be uploaded via the license dialog in Univention Management Console.');
+			var msg = _('A valid e-mail address allows to activate the UCS system for using the Univention App Center. An e-mail with a personlized license key will then be sent to your e-mail address. This license can be uploaded via the license dialog in Univention Management Console.');
 			_showTooltip(evt.target, msg, evt);
 		},
 
@@ -753,18 +753,6 @@ define([
 					domClass.add(iwidget.domNode, 'umcSize-Half');
 				}, this);
 			}, this);
-		},
-
-		_setupTooltips: function() {
-			var userAccountPage = this.getPage('user-master');
-			var moreInfoNode = query('.more-information', userAccountPage.domNode);
-			if (!moreInfoNode.length) {
-				return;
-			}
-			moreInfoNode = moreInfoNode[0];
-			var msg = _('Enter a valid e-mail address to activate the App Center on this system. You will then receive an updated license key for the activiation. Leave the field empty to perform the activation later via the settings menu.');
-
-			this.own(on(moreInfoNode, 'click', lang.partial(_showTooltip, moreInfoNode, msg)));
 		},
 
 		_setupCitySearch: function() {
@@ -871,10 +859,15 @@ define([
 		},
 
 		_setupNetworkDevices: function() {
-			array.forEach(this._getNetworkDevices(), function(idev, i) {
+			var devices = this._getNetworkDevices();
+			array.forEach(devices, function(idev, i) {
 				var ipWidget = this.getWidget('network', '_ip' + i);
 				var maskWidget = this.getWidget('network', '_netmask' + i);
-				var conf = { 'interface': idev };
+				var conf = { 'interface': '(' + idev + ')' };
+				if (devices.length == 1) {
+					// do not show the device name if there is only one network device
+					conf = { 'interface': '' };
+				}
 				ipWidget.set('label', lang.replace(ipWidget.get('label'), conf));
 				ipWidget.set('visible', true);
 				maskWidget.set('label', lang.replace(maskWidget.get('label'), conf));

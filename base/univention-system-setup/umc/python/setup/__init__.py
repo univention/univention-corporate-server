@@ -377,7 +377,7 @@ class Instance(Base):
 			if 'nameserver1' not in values:
 				_append('nameserver1', _('A domain name server needs to specified.'))
 			elif not util.get_nameserver_domain(values['nameserver1']):
-				_append('domainname', _('The domain cannot automatically be determined. Make sure that the correct name server has been specified or enter a fully qualified domain name of the system.'))
+				_append('domainname', _('The domain cannot automatically be determined. Make sure that the correct UCS domain name server has been specified or enter a fully qualified domain name of the system.'))
 
 		# windows domain
 		_check('windows/domain', lambda x: x == x.upper(), _("The windows domain name can only consist of upper case characters."))
