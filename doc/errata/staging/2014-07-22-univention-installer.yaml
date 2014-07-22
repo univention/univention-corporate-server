@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-installer
-fix: 9.0.32-7.1112.201407220942
+fix: 9.0.32-8.1113.201407221106
 version: [2]
 desc: |
     * The component Active Directory Connector has been renamed
