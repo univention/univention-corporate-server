@@ -1,3 +1,10 @@
+univention-system-setup (7.0.69-30) unstable; urgency=medium
+
+  * Bug #34484: fixed indentation and moved UCS activiation (as script in
+    cleanup-post.d directory)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 22 Jul 2014 19:00:11 +0200
+
 univention-system-setup (7.0.69-29) unstable; urgency=medium
 
   Bug #34484:

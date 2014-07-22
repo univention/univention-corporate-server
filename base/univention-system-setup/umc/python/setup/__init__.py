@@ -183,6 +183,9 @@ class Instance(Base):
 				success = False
 				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
 				MODULE.warn( 'Exception during saving the settings: %s\n%s' % (result, msg) )
+				self._progressParser.current.errors.append(_('Encountered unexpected error during setup process: %s') % result)
+				self._progressParser.current.critical = True
+				self._finishedResult = True
 
 			self.finished(request.id, success)
 
@@ -198,7 +201,6 @@ class Instance(Base):
 		# get old and new values
 		orgValues = util.load_values()
 		values = request.options.get('values', {})
-		util.auto_complete_values_for_join(values)
 
 		# determine new system role
 		oldrole = orgValues.get('server/role', '')
@@ -214,6 +216,7 @@ class Instance(Base):
 				self._progressParser.reset()
 
 				# write the profile file and run setup scripts
+				util.auto_complete_values_for_join(values)
 				util.pre_save(values)
 
 				# on unjoined DC master the nameserver must be set to the external nameserver
@@ -247,6 +250,10 @@ class Instance(Base):
 				success = False
 				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
 				MODULE.warn( 'Exception during saving the settings: %s\n%s' % (result, msg) )
+				self._progressParser.current.errors.append(_('Encountered unexpected error during setup process: %s') % result)
+				self._progressParser.current.critical = True
+				self._finishedResult = True
+
 			self.finished(request.id, success)
 
 		thread = notifier.threads.Simple( 'save',
@@ -359,11 +366,11 @@ class Instance(Base):
 			_append('domainname', _('The length of fully qualified domain name is greater than 63 characters.'))
 		if hostname == domainname.split('.')[0]:
 			_append('domainname', _("Hostname is equal to domain name."))
-                if not util.is_system_joined():
-                    if newrole == 'domaincontroller_master' and not values.get('domainname'):
-                        _append('domainname', _("No fully qualified domain name has been specified for the system."))
-                    elif not values.get('hostname'):
-                        _append('hostname', _("No hostname has been specified for the system."))
+		if not util.is_system_joined():
+			if newrole == 'domaincontroller_master' and not values.get('domainname'):
+				_append('domainname', _("No fully qualified domain name has been specified for the system."))
+			elif not values.get('hostname'):
+				_append('hostname', _("No hostname has been specified for the system."))
 
 		# see whether the domain can be determined automatically
 		if not util.is_system_joined() and newrole != 'domaincontroller_master' and 'domainname' not in values:

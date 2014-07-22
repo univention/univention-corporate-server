@@ -652,7 +652,7 @@ define([
 				name: 'error',
 				'class': 'umc-setup-page-error',
 				headerText: _('UCS setup - An error ocurred'),
-				helpText: '',
+				helpText: '_',
 				widgets: [{
 					type: Text,
 					name: 'info',
