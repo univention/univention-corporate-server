@@ -64,6 +64,7 @@ define([
 	"dojo/NodeList-manipulate"
 ], function(dojo, declare, lang, array, dojoEvent, query, domClass, on, Evented, topic, Deferred, Memory, Select, Tooltip, styles, timing, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
 	var modulePath = require.toUrl('umc/modules/setup');
+	styles.insertCssRule('.umc-ucssetup-wizard-indent', 'margin-left: 27px;');
 	styles.insertCssRule('.umcIconInfo', lang.replace('background-image: url({0}/info-icon.png); width: 16px; height: 16px;', [modulePath]));
 	styles.insertCssRule('.setupLangField', 'vertical-align: middle; margin: 1px 0 1px 5px;');
 	styles.insertCssRule('.umc-setup-page-validation li', 'padding-bottom: 0.75em;');
@@ -255,7 +256,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('<p>Welcome to Univention Corporate Server (UCS). A few questions are needed to complete the configuration process.</p><p>If this system will become member of an existing UCS domain, credentials of a valid domain administrator account are necessary.</p>')
+					content: _('<p>Welcome to Univention Corporate Server (UCS).</p><p>A few questions are needed to complete the configuration process.</p>')
 				}, {
 					type: Select,
 					name: '_language',
@@ -332,8 +333,8 @@ define([
 				}, {
 					type: Text,
 					name: 'newDomainHelpText',
-					content: _('Configure this system as standalone and with a new UCS domain. Additional systems can join the domain later to use account information supplied by this system.'),
-					labelConf: { style: 'margin-left: 2.3em' }
+					content: '<p>' + _('Configure this system as standalone and with a new UCS domain. Additional systems can join the domain later to use account information supplied by this system.') + '</p>',
+					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
@@ -343,8 +344,8 @@ define([
 				}, {
 					type: Text,
 					name: 'joinDomainHelpText',
-					content: _('This system will join a group of existing systems which share user and computer accounts, credentials and other trustworthy information.'),
-					labelConf: { style: 'margin-left: 2.3em' }
+					content: '<p>' + _('This system will join a group of existing systems which share user and computer accounts, credentials and other trustworthy information.') + '</p>',
+					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
 				}, {
 					type: Text,
 					name: 'ifUnsureHelpText',
@@ -359,7 +360,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('Specify the type of role for the system to join into an existing UCS domain.')
+					content: _('<p>Specify the type of role for the system to join into an existing UCS domain. For this, credentials of a valid domain Administrator account will be necessary.</p>')
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
@@ -371,29 +372,29 @@ define([
 					type: Text,
 					name: 'helpBackup',
 					content: ('<p>The DC backup is the fallback system for the DC master and can take over the role of the DC master permanently.</p>'),
-					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
+					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_roleSlave',
 					label: _('<b>Domain controller slave</b>'),
-					labelConf: { style: 'margin-top: 2em; margin-bottom: 0'	}
+					labelConf: { style: 'margin-top: 1.5em; margin-bottom: 0'	}
 				}, {
 					type: Text,
 					name: 'helpSlave',
 					content: ('<p>DC slave systems are ideal for site servers and distribution of load-intensive services. Local services running on a DC slave can access a local read-only replica of the LDAP server.</p>'),
-					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
+					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_roleMember',
 					label: _('<b>Member server</b>'),
-					labelConf: { style: 'margin-top: 2em; margin-bottom: 0'	}
+					labelConf: { style: 'margin-top: 1.5em; margin-bottom: 0'	}
 				}, {
 					type: Text,
 					name: 'helpMember',
 					content: ('<p>Member servers are server systems without a local LDAP server. Access to domain data here is performed via other servers in the domain.</p>'),
-					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
+					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
 				}]
 			}, {
 				'class': 'umc-setup-page umc-setup-page-user',
@@ -420,7 +421,7 @@ define([
 					type: TextBox,
 					name: 'email_address',
 					label: _('E-mail address to activate UCS') +
-						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showUCSActivationInfo(event);">' +
+						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'email\');">' +
 						_('more information') +
 						'</a>)',
 					validator: _validateEmailAddress,
@@ -480,7 +481,10 @@ define([
 				}, {
 					type: TextBox,
 					name: 'hostname',
-					label: _('Hostname or fully qualified domain name'),
+					label: _('Hostname or fully qualified domain name') +
+						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'hostname\');">' +
+						_('more information') +
+						'</a>)',
 					visible: false,
 					required: true,
 					validator: _validateHostOrFQDN,
@@ -620,7 +624,10 @@ define([
 				}, {
 					type: TextBox,
 					name: 'proxy/http',
-					label: _('HTTP proxy (e.g., <i>http://proxy.mydomain.local:3128</i>)'),
+					label: _('HTTP proxy') +
+						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'proxy\');">' +
+						_('more information') +
+						'</a>)',
 					visible: false
 				}]
 			}, {
@@ -728,9 +735,20 @@ define([
 			this.getWidget('network', 'configureProxySettings').set('visible', false);
 		},
 
-		showUCSActivationInfo: function(evt) {
-			var msg = _('A valid e-mail address allows to activate the UCS system for using the Univention App Center. An e-mail with a personlized license key will then be sent to your e-mail address. This license can be uploaded via the license dialog in Univention Management Console.');
-			_showTooltip(evt.target, msg, evt);
+		showTooltip: function(evt, type) {
+			var msg = '';
+			if (type == 'email') {
+				msg = _('A valid e-mail address allows to activate the UCS system for using the Univention App Center. An e-mail with a personlized license key will then be sent to your e-mail address. This license can be uploaded via the license dialog in Univention Management Console.');
+			}
+			else if (type == 'hostname') {
+				msg = _('For a specified host name, the domain name is automatically deferred from the domain name server. A fully qualified domain may be necessary for mail server setups with differing domains.<br/>Note that the domain name <b>cannot</b> be changed after the UCS setup wizard has been completed.');
+			}
+			else if (type == 'proxy') {
+				msg = _('A proxy address needs to be specified in the format: <i>http://proxy.mydomain.local:3128</i><br/>Proxy access with username and password may be specified via the format: <i>http://username:password@proxy.mydomain.local:3128</i>');
+			}
+			if (msg) {
+				_showTooltip(evt.target, msg, evt);
+			}
 		},
 
 		_addWidgetToPage: function(pageName, widget) {
@@ -763,8 +781,13 @@ define([
 		},
 
 		_setupJavaScriptLinks: function() {
-			array.forEach(['configureProxySettings', 'email_address'], function(iid) {
-				var iwidget = this.getWidget(iid);
+			array.forEach([
+					['network', 'configureProxySettings'],
+					['user-master', 'email_address'],
+					['network', 'hostname'],
+					['network', 'proxy/http']
+				], function(iitem) {
+				var iwidget = this.getWidget(iitem[0], iitem[1]);
 				iwidget.set('label', lang.replace(iwidget.label, this));
 			}, this);
 		},
@@ -932,8 +955,8 @@ define([
 			this.own(this._progressBar);
 
 			this._setupCitySearch();
-			this._setupPasswordBoxes();
 			this._setupJavaScriptLinks();
+			this._setupPasswordBoxes();
 			this._setupNetworkDevices();
 			this._setupAppGallery();
 			this._setLocaleDefault();
