@@ -34,6 +34,8 @@ import ldb
 import ldap
 import os
 import subprocess
+import apt
+import sys
 from datetime import datetime, timedelta
 from samba.dcerpc import nbt
 from samba.net import Net
@@ -42,6 +44,7 @@ import univention.config_registry
 import univention.uldap
 import univention.lib.package_manager
 
+UNIVENTION_SAMBA_MIN_PACKAGE_VERSION = "8.0.19-6.472.201407231046"
 
 class faildToSetService(Exception):
 	'''ucs_addServiceToLocalhost failed'''
@@ -58,6 +61,9 @@ class failedADConnect(Exception):
 class domainnameMismatch(Exception):
 	'''Domain Names don't match'''
 
+
+class univentionSambaWrongVersion(Exception):
+	'''univention-samba candiate has wrong version'''
 
 class timeSyncronizationFailed(Exception):
 	'''Time synchronization failed.'''
@@ -133,20 +139,36 @@ def add_admember_service_to_localhost():
 def add_adconnector_service_to_localhost():
 	_add_service_to_localhost('AD Connector')
 
+def pm_info_handler(info):
+	sys.stdout.write("%s\n" % info)
 
-def install_univention_samba():
-	pm = univention.lib.package_manager.PackageManager()
+def pm_error_handler(error):
+	sys.stderr.write("%s\n" % error)
+
+def remove_install_univention_samba(info_handler=pm_info_handler, step_handler=None, error_handler=pm_error_handler, install=True, uninstall=True):
+	pm = univention.lib.package_manager.PackageManager(
+		info_handler=info_handler,
+		step_handler=step_handler,
+		error_handler=error_handler,
+		always_noninteractive=True,
+	)
 	pm.update()
 	pm.noninteractive()
-	if not pm.is_installed('univention-samba'):
-		pm.install('univention-samba')
 
-def uninstall_univention_samba():
-	pm = univention.lib.package_manager.PackageManager()
-	pm.update()
-	pm.noninteractive()
-	if pm.is_installed('univention-samba'):
+	# check version
+	us = pm.get_package('univention-samba')
+	if not apt.VersionCompare(us.candidate.version, UNIVENTION_SAMBA_MIN_PACKAGE_VERSION) >= 0:
+		raise univentionSambaWrongVersion(
+			"The package univention-samba in this version (%) does not support AD member mode. Please upgrade to version %s"
+			% (us.candidate.version, UNIVENTION_SAMBA_MIN_PACKAGE_VERSION))
+
+	# uninstall first to get rid of the configured samba/* ucr vars
+	if uninstall and pm.is_installed('univention-samba'):
 		pm.uninstall('univention-samba')
+
+	# install 
+	if install:
+		pm.install('univention-samba')
 
 def lookup_adds_dc(ad_server=None, realm=None, ucr=None):
 	'''CLDAP lookup'''
@@ -412,7 +434,7 @@ def configure_ad_member(ad_server_ip, username, password):
 
 	prepare_ucr_settings()
 
-	install_univention_samba()
+	remove_install_univention_samba()
 
 	prepare_connector_settings(username, password, ad_domain_info)
 
@@ -441,33 +463,30 @@ def revert_ucr_settings():
 def configure_backup_as_ad_member():
 	# TODO something else?
 	prepare_ucr_settings()
-	uninstall_univention_samba()
-	install_univention_samba()
+	remove_install_univention_samba()
 
 def configure_slave_as_ad_member():
 	# TODO something else?
 	prepare_ucr_settings()
-	uninstall_univention_samba()
-	install_univention_samba()
+	remove_install_univention_samba()
 
 def configure_member_as_ad_member():
 	# TODO something else?
 	prepare_ucr_settings()
-	uninstall_univention_samba()
-	install_univention_samba()
+	remove_install_univention_samba()
 
 def revert_backup_ad_member ():
 	# TODO something else?
 	revert_ucr_settings()
-	uninstall_univention_samba()
+	remove_install_univention_samba(install=False)
 
 def revert_slave_ad_member():
 	# TODO something else?
 	revert_ucr_settings()
-	uninstall_univention_samba()
+	remove_install_univention_samba(install=False)
 
 def revert_member_ad_member():
 	# TODO something else?
 	revert_ucr_settings()
-	uninstall_univention_samba()
+	remove_install_univention_samba(install=False)
 
