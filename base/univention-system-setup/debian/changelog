@@ -1,3 +1,15 @@
+univention-system-setup (8.0.7-1) unstable; urgency=low
+
+  Bug #34484:
+  * take ipv6/gateway into account
+  * remove 'back' button on last wizard page
+  * let appliance page refer to UMC without header and without overview page
+  * fixed indentation and moved UCS activiation (as script in
+    cleanup-post.d directory)
+  * added translations
+
+ -- Florian Best <best@univention.de>  Wed, 23 Jul 2014 07:42:26 +0200
+
 univention-system-setup (8.0.6-1) unstable; urgency=low
 
   Bug #34484:

@@ -52,16 +52,16 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules import UMC_CommandError
 
 try:
-    # execute imports in try/except block as during build test scripts are
-    # triggered that refer to the netconf python submodules... and this
-    # reference triggers the import below
+	# execute imports in try/except block as during build test scripts are
+	# triggered that refer to the netconf python submodules... and this
+	# reference triggers the import below
 	import dns.resolver
 	import dns.reversename
 	import dns.exception
 	from univention.management.console.modules.appcenter.app_center import Application
 	from univention.lib.package_manager import PackageManager
 except ImportError as e:
-    MODULE.warn('Ignoring import error: %s' % e)
+	MODULE.warn('Ignoring import error: %s' % e)
 
 _ = Translation('univention-management-console-module-setup').translate
 
