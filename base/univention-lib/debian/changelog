@@ -1,3 +1,9 @@
+univention-lib (3.0.26-25) unstable; urgency=low
+
+  * added shell wrapper for univention.lib.admember (Bug #35095) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 10:39:32 +0200
+
 univention-lib (3.0.26-24) unstable; urgency=low
 
   * python/admember: fixed is_domain_in_admember_mode function
