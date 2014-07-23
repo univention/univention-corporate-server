@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.76-17) unstable; urgency=low
+
+  * Temporarily set the dns/alias syntax back to string again. The new
+    label breaks S4 backups and slaves (Bug #35254)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Jul 2014 06:14:46 +0200
+
 univention-directory-manager-modules (9.0.76-16) unstable; urgency=low
 
   * limit possible characters in dns/alias (Bug #35254)
