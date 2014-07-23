@@ -59,10 +59,9 @@ Conflicts: univention-system-setup-appliance,
 Depends: ${misc:Depends},
  shell-univention-lib,
  univention-system-setup (= ${source:Version}),
- univention-server-master,
  univention-network-common,
  univention-management-console-module-appcenter
-Recommends: firefox-en | firefox-de | firefox,
+Recommends: iceweasel | firefox-en | firefox-de | firefox,
  xinit,
  kde-window-manager
 Replaces: univention-setup-boot, univention-system-setup-appliance

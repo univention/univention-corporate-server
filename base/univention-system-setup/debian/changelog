@@ -1,3 +1,11 @@
+univention-system-setup (8.0.7-2) unstable; urgency=low
+
+  * uss-boot: remove dependecy to univention-server-master
+  * uss-boot: allow iceweasel as browser
+    Bug #35267
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Jul 2014 12:36:05 +0200
+
 univention-system-setup (8.0.7-1) unstable; urgency=low
 
   Bug #34484:
