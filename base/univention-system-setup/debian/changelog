@@ -1,3 +1,10 @@
+univention-system-setup (7.0.69-35) unstable; urgency=medium
+
+  * Bug #34484: fixed lang.hitch usage in ApplianceWizard:join(), minor text
+    adaptations
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Jul 2014 14:47:30 +0200
+
 univention-system-setup (7.0.69-34) unstable; urgency=low
 
   Bug #34388:

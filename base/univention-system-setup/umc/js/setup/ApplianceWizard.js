@@ -741,7 +741,7 @@ define([
 				msg = _('A valid e-mail address allows to activate the UCS system for using the Univention App Center. An e-mail with a personlized license key will then be sent to your e-mail address. This license can be uploaded via the license dialog in Univention Management Console.');
 			}
 			else if (type == 'hostname') {
-				msg = _('For a specified host name, the domain name is automatically deferred from the domain name server. A fully qualified domain may be necessary for mail server setups with differing domains.<br/>Note that the domain name <b>cannot</b> be changed after the UCS setup wizard has been completed.');
+				msg = _('For a specified host name, the domain name is automatically derived from the domain name server. A fully qualified domain may be necessary for mail server setups with differing domains.<br/>Note that the domain name <b>cannot</b> be changed after the UCS setup wizard has been completed.');
 			}
 			else if (type == 'proxy') {
 				msg = _('A proxy address needs to be specified in the format: <i>http://proxy.mydomain.local:3128</i><br/>Proxy access with username and password may be specified via the format: <i>http://username:password@proxy.mydomain.local:3128</i>');
@@ -1447,7 +1447,7 @@ define([
 		},
 
 		join: function() {
-			var _credentials = function() {
+			var _credentials = lang.hitch(this, function() {
 				var msg = '<p>' + _('The specified settings will be applied to the system and the system will be joined into the domain. Please enter username and password of a domain administrator account.') + '</p>';
 				return dialog.confirmForm({
 					widgets: [{
@@ -1469,10 +1469,10 @@ define([
 					cancel: _('Cancel'),
 					style: 'max-width: 400px;'
 				});
-			};
+			});
 
 			// function to save data
-			var _join = function(values, username, password) {
+			var _join = lang.hitch(this, function(values, username, password) {
 				var deferred = new Deferred();
 
 				// send save command to server
@@ -1501,9 +1501,9 @@ define([
 				return deferred.then(lang.hitch(this, function() {
 					this.standby(false);
 				}));
-			};
+			});
 
-			var _handleJoinErrors = function() {
+			var _hasJoinErrors = lang.hitch(this, function() {
 				this.standby(false);
 				var errors = this._progressBar.getErrors();
 				if (errors.errors.length) {
@@ -1511,22 +1511,22 @@ define([
 					return false;
 				}
 				return true;
-			};
+			});
 
 			// chain all methods together
 			var deferred = null;
 			var values = this.getValues();
 			if (values['server/role'] == 'domaincontroller_master') {
-				deferred = lang.hitch(this, _join)(values);
+				deferred = _join(values);
 			}
 			else {
 				// for any other role than DC master, we need domain admin credentials
-				deferred = lang.hitch(this, _credentials)();
-				deferred = deferred.then(lang.hitch(this, function(opt) {
+				deferred = _credentials();
+				deferred = deferred.then(function(opt) {
 					return _join(values, opt.username, opt.password);
-				}));
+				});
 			}
-			deferred = deferred.then(lang.hitch(this, _handleJoinErrors));
+			deferred = deferred.then(_hasJoinErrors);
 			return deferred;
 		},
 
