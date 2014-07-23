@@ -153,7 +153,7 @@ def remove_install_univention_samba(info_handler=log, step_handler=None, error_h
 	us = pm.get_package('univention-samba')
 	if not apt.VersionCompare(us.candidate.version, UNIVENTION_SAMBA_MIN_PACKAGE_VERSION) >= 0:
 		raise univentionSambaWrongVersion(
-			"The package univention-samba in this version (%) does not support AD member mode. Please upgrade to version %s"
+			"The package univention-samba in this version (%s) does not support AD member mode. Please upgrade to version %s"
 			% (us.candidate.version, UNIVENTION_SAMBA_MIN_PACKAGE_VERSION))
 
 	# uninstall first to get rid of the configured samba/* ucr vars
