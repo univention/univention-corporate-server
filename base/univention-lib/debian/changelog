@@ -1,3 +1,10 @@
+univention-lib (3.0.26-24) unstable; urgency=low
+
+  * python/admember: fixed is_domain_in_admember_mode function
+    (Bug #35091)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Jul 2014 10:35:28 +0200
+
 univention-lib (3.0.26-23) unstable; urgency=low
 
   * Migrate admember functions from univention-ad-connector to

@@ -93,7 +93,7 @@ def is_domain_in_admember_mode(ucr=None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 	lo = univention.uldap.getMachineConnection()
-	res = lo.search(base=ucr.get('ldap/master'), scope=ldap.SCOPE_BASE, filter='(univentionService=AD Member)')
+	res = lo.search(base=ucr.get('ldap/base'), filter='(&(univentionServerRole=master)(univentionService=AD Member))')
 	if res:
 		return True
 	return False
