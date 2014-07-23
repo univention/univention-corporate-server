@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-system-setup
-fix: 7.0.69-31.594.201407222016
+fix: 7.0.69-34.598.201407231359
 version: [2]
 desc: |
   This update fixes the following issues:
@@ -22,7 +22,7 @@ desc: |
   * Request successfull request processing will not be reported before the actual
     request processing anymore.
   * Added welcome page with instructions to set a root password
-    before accessing the setup wizard
+    before accessing the setup wizard for EC2 setups
   * Welcome page is now the apache default site when installing
     univention-system-setup-boot
 bug: [34484,34105,34388]
