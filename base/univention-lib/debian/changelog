@@ -1,3 +1,10 @@
+univention-lib (3.0.26-23) unstable; urgency=low
+
+  * Migrate admember functions from univention-ad-connector to
+    python/admember.py (Bug #35091)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Jul 2014 08:19:57 +0200
+
 univention-lib (3.0.26-22) unstable; urgency=low
 
   * revert svn r51405 (Bug #35062)
