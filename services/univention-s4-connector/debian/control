@@ -32,7 +32,7 @@ Package: univention-s4-connector
 Architecture: all
 Depends: ${misc:Depends},
  python-univention-connector-s4 (= ${binary:Version}),
- shell-univention-lib (>= 3.0.26-14),
+ shell-univention-lib (>= 3.0.26-25),
  python-univention-lib (>= 3.0.26-7),
  samba4-clients,
  univention-samba4 (>= 2.0.44-3),

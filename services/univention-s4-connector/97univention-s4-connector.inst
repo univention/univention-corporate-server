@@ -41,6 +41,16 @@ eval "$(univention-config-registry shell)"
 
 NAME="S4 Connector"
 
+if is_domain_in_admember_mode; then
+	echo "ERROR: The domain is in AD Member Mode."
+	## Don't autostart S4 Connector
+	/etc/init.d/univention-s4-connector stop
+	univention-config-registry set	connector/s4/autostart?no \
+						connector/s4/listener/disabled=true
+	/etc/init.d/univention-directory-listener crestart
+	exit 1
+fi
+
 if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 	# Remove existing sqlite DB while re-joining
 	internal_db="/etc/univention/connector/s4internal.sqlite"
