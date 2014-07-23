@@ -1,3 +1,12 @@
+univention-system-setup (8.0.7-3) unstable; urgency=low
+
+  Bug #34388:
+  * Only show introduction page if UCRV server/amazon is set to true
+  * Removed duplicate code from javascript
+  * Changed directory structure 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 23 Jul 2014 14:07:22 +0200
+
 univention-system-setup (8.0.7-2) unstable; urgency=low
 
   * uss-boot: remove dependecy to univention-server-master

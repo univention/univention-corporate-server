@@ -94,7 +94,6 @@ read yn
 if [ -z "$yn" -o "$yn" = "y" ]; then
 	echo "Copying po file"
 	cp ${pox} ${po}
-	./po2json.py ${po}
 fi
 
 rm -rf ${po}?

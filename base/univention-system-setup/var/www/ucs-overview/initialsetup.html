@@ -44,7 +44,7 @@
 		</script>
 		<script type="text/javascript" src="js/dojo.js"></script>
 		<script type="text/javascript">
-			require(["js-initialsetup/initialstartsite", "dojo/domReady!"], function(initialstartsite) {
+			require(["js/initialstartsite", "dojo/domReady!"], function(initialstartsite) {
 				initialstartsite.start();
 			});
 		</script>
@@ -70,6 +70,25 @@
 				</div>
 			</div>
 			<div class="container" id="content">
+				<noscript>
+					<div class="container tab-pane">
+						<ul class="items">
+							<li class="item col-md-6 warning">
+								<span class="wrapper">
+									<span class="icon"></span>
+									<span class="title">JavaScript required</span>
+									<span class="text">
+										A browser with JavaScript enabled is required in order to use this service.
+										<!--[if IE]>
+										<br /><br />
+										Please check your security settings and add this address to your trusted sites.
+										<![endif]-->
+									</span>
+								</span>
+							</li>
+						</ul>
+					</div>
+				</noscript>
 				<div class="initialsetupwrapper">
 					<div class="initialsetupicon" style="background-image: url(/ucs-overview/img/welcome.png);"></span>
 					<span class="initialsetuptitle" data-i18n="setupTitle"></span>
