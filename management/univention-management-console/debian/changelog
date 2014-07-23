@@ -1,3 +1,10 @@
+univention-management-console (7.0.0-5) unstable; urgency=low
+
+  * Move univention-management-console-module-quota from depends to
+    recommends (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Jul 2014 13:23:09 +0200
+
 univention-management-console (7.0.0-4) unstable; urgency=low
 
   * Bug #35145: remove obsolete things
