@@ -2,12 +2,19 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-system-setup
-fix: 7.0.69-10.571.201407091358
+fix: 7.0.69-31.594.201407222016
 version: [2]
 desc: |
   This update fixes the following issues:
   * The setup wizard for UCS appliance has been entirely re-structured and
-    rewritten.
+    rewritten, obsolete code paths have been cleaned up.
+    Some of the new features inlcude:
+    - A live search for world-wide cities to preconfigure locale settings.
+    - Wizard language can be changed on the fly without a page load.
+    - Some fields (host + domain name, gateway address etc.) are pre-filled
+      with suggested values to ease the configuration.
+    - The UCS license activation can now be carried within the wizard.
+    - UCS components from the App Center can be installed in the wizard.
   * The univention-system-setup module process will not read the setup script
     output from pipe anymore. Instead, the output is directly written to the log.
     This way, running setup scripts will not terminate when the UMC module process

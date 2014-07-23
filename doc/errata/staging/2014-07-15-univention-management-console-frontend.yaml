@@ -2,9 +2,24 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-management-console-frontend
-fix: 3.0.152-38.837.201407090845
+fix: 3.0.152-40.840.201407161222
 version: [2]
 desc: |
   This update fixes the following issues:
-  * ...
+  * CSS rules have been adpated to apply the UMC theme to dijit/form/Select.
+  * The async attribute is now used in the script tag that loads dojo.js.
+  * UMC tabs and header are not shown in the appliance mode.
+  * In the appliance mode, only the specified JavaScript module is loaded upon
+    startup instead of all accessible JavaScript modules.
+  * Dynamic reloading of translations is now supported.
+  * A widget for radio buttons has been added.
+  * A method defer() has been added to umc/tools.
+  * The validation of forms has been fixed, such that invalid fields are marked
+    with a red exclamation mark when calling umc/widgets/Form:validate().
+  * Vertical scrolling issues with umc/widgets/Grid in Firefox have been fixed.
+  * The configuration property 'labelConf' has been added to be able to
+    configure LabelPanes directly.
+  * Allow dynamic changing of 'inlineLabel' in umc/widgets/TextBox.
+  * The convenience method isPageVisible() has been added to
+    umc/widgets/Wizard.
 bug: [34484]
