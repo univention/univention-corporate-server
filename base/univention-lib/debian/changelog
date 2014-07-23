@@ -1,3 +1,11 @@
+univention-lib (3.0.26-26) unstable; urgency=low
+
+  * added configure_backup_as_ad_member(), 
+    configure_slave_as_ad_member() and
+    configure_member_as_ad_member() (Bug #35446)
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 11:43:18 +0200
+
 univention-lib (3.0.26-25) unstable; urgency=low
 
   * added shell wrapper for univention.lib.admember (Bug #35095) 

@@ -419,4 +419,11 @@ def configure_ad_member(ad_server_ip, username, password):
 
 	return True
 
+def configure_backup_as_ad_member():
+	prepare_ucr_settings()
 
+def configure_slave_as_ad_member():
+	prepare_ucr_settings()
+
+def configure_member_as_ad_member():
+	prepare_ucr_settings()

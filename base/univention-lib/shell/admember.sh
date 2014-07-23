@@ -28,7 +28,6 @@
 # <http://www.gnu.org/licenses/>.
 
 is_domain_in_admember_mode () {
-
 python -c "
 import univention.lib.admember
 import sys
@@ -39,9 +38,7 @@ else:
 "
 }
 
-
 is_localhost_in_admember_mode () {
-
 python -c "
 import univention.lib.admember
 import sys
@@ -50,5 +47,25 @@ if univention.lib.admember.is_localhost_in_admember_mode():
 else:
         sys.exit(1)
 "
+}
 
+configure_backup_as_ad_member() {
+python -c "
+import univention.lib.admember
+univention.lib.admember.configure_backup_as_ad_member()
+"
+}
+
+configure_slave_as_ad_member () {
+python -c "
+import univention.lib.admember
+univention.lib.admember.configure_slave_as_ad_member()
+"
+}
+
+configure_member_as_ad_member() {
+python -c "
+import univention.lib.admember
+univention.lib.admember.configure_member_as_ad_member()
+"
 }
