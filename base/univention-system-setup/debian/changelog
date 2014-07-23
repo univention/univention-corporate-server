@@ -1,3 +1,12 @@
+univention-system-setup (7.0.69-33) unstable; urgency=medium
+
+  Bug #34484:
+  * some text changes
+  * added tooltips to hostname and proxy field
+  * fixed CSS margins on page for role selection
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Jul 2014 13:38:30 +0200
+
 univention-system-setup (7.0.69-32) unstable; urgency=medium
 
   * Bug #34484: fixed reference to undefined
