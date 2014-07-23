@@ -63,50 +63,7 @@ if [ "$1" = "configure" ]; then
 	fi
 fi
 
-# set samba/role
-# normally samba/role derives from server_role, but if ad/member is true
-# samba/role is always memberserver
-if is_ucr_true ad/member; then
-	univention-config-registry set samba/role?"memberserver"
-else
-	case "${server_role}" in
-		domaincontroller_*)
-			univention-config-registry set samba/role?"domaincontroller"
-			;;
-		*)
-			univention-config-registry set samba/role?"memberserver"
-			;;
-	esac
-fi
-
-univention-config-registry set samba/share/home?yes \
-							   samba/share/groups?no \
-							   samba/adminusers?"administrator join-backup"
-
-
-eval "$(univention-config-registry shell samba/role)"
-if [ "$samba_role" = "domaincontroller" ]
-then
-	if [ -n "$samba_netbios_name" ]
-	then
-		tmphostname=$samba_netbios_name
-	elif [ -n "$samba_ha_master" ]
-	then
-		tmphostname="$samba_ha_master"
-	else
-		tmphostname="$hostname"
-	fi
-	univention-config-registry set samba/profileserver?$tmphostname \
-								   samba/profilepath?'%U\windows-profiles\%a' \
-								   samba/homedirserver?$tmphostname \
-								   samba/homedirpath?%U \
-								   samba/homedirletter?I
-fi
-
 #DEBHELPER#
-
-univention-config-registry set samba/debug/level?0 \
-							   samba/os/level?65
 
 if [ "$1" = "configure" ]; then
 	if [ -z "$2" ]; then
@@ -115,39 +72,45 @@ if [ "$1" = "configure" ]; then
 	fi
 fi
 
-univention-config-registry set samba/script/adduser?true \
-				samba/script/deleteuser?true \
-				samba/script/addgroup?true \
-				samba/script/deletegroup?true \
-				samba/script/addusertogroup?true \
-				samba/script/deleteuserfromgroup?true \
-				samba/script/addmachine?true \
-				samba/script/setprimarygroup?true \
-				samba/script/postusermodify?false \
-				samba/winbind/nested/groups?no \
-				samba/encrypt_passwords?yes \
-				samba/use_spnego?yes \
-				samba/client_use_spnego?yes \
-				samba/oplocks?yes \
-				samba/kernel_oplocks?yes \
-				samba/large_readwrite?yes \
-				samba/deadtime?15 \
-				samba/read_raw?yes \
-				samba/write_raw?yes \
-				samba/max_xmit?65535 \
-				samba/max_open_files?32808 \
-				samba/getwd_cache?yes \
-				samba/store_dos_attributes?yes \
-				samba/preserve_case?yes \
-				samba/short_preserve_case?yes \
-				samba/time_server?yes \
-				samba/guest_account?nobody \
-				samba/map_to_guest?"Bad User" \
-				samba/netlogon/sync?sync \
-				samba/domain/logons?auto \
-				samba/password/checkscript?"/usr/share/univention-samba/password_check %u" \
-				samba/max/protocol?SMB2 \
-				samba/acl/allow/execute/always?yes
+univention-config-registry set \
+	samba/debug/level?0 \
+	samba/os/level?65 \
+	samba/share/home?yes \
+	samba/share/groups?no \
+	samba/adminusers?"administrator join-backup" \
+	samba/script/adduser?true \
+	samba/script/deleteuser?true \
+	samba/script/addgroup?true \
+	samba/script/deletegroup?true \
+	samba/script/addusertogroup?true \
+	samba/script/deleteuserfromgroup?true \
+	samba/script/addmachine?true \
+	samba/script/setprimarygroup?true \
+	samba/script/postusermodify?false \
+	samba/winbind/nested/groups?no \
+	samba/encrypt_passwords?yes \
+	samba/use_spnego?yes \
+	samba/client_use_spnego?yes \
+	samba/oplocks?yes \
+	samba/kernel_oplocks?yes \
+	samba/large_readwrite?yes \
+	samba/deadtime?15 \
+	samba/read_raw?yes \
+	samba/write_raw?yes \
+	samba/max_xmit?65535 \
+	samba/max_open_files?32808 \
+	samba/getwd_cache?yes \
+	samba/store_dos_attributes?yes \
+	samba/preserve_case?yes \
+	samba/short_preserve_case?yes \
+	samba/time_server?yes \
+	samba/guest_account?nobody \
+	samba/map_to_guest?"Bad User" \
+	samba/netlogon/sync?sync \
+	samba/domain/logons?auto \
+	samba/password/checkscript?"/usr/share/univention-samba/password_check %u" \
+	samba/max/protocol?SMB2 \
+	samba/acl/allow/execute/always?yes
 
 if [ "$1" = "configure" ]; then
 	uinst=/usr/lib/univention-install/74univention-samba.uinst
@@ -177,15 +140,16 @@ if [ "$1" = "configure" ]; then
 fi
 
 # configure firewall
-ucr set security/packetfilter/package/univention-samba/tcp/137:139/all="ACCEPT" \
-		security/packetfilter/package/univention-samba/tcp/137:139/all/en="netbios (Samba)" \
-		security/packetfilter/package/univention-samba/udp/137:139/all="ACCEPT" \
-		security/packetfilter/package/univention-samba/udp/137:139/all/en="netbios (Samba)" \
-		security/packetfilter/package/univention-samba/udp/137/all="ACCEPT" \
-		security/packetfilter/package/univention-samba/tcp/445/all="ACCEPT" \
-		security/packetfilter/package/univention-samba/tcp/445/all/en="microsoft-ds (Samba)" \
-		security/packetfilter/package/univention-samba/udp/445/all="ACCEPT" \
-		security/packetfilter/package/univention-samba/udp/445/all/en="microsoft-ds (Samba)"
+ucr set \
+	security/packetfilter/package/univention-samba/tcp/137:139/all="ACCEPT" \
+	security/packetfilter/package/univention-samba/tcp/137:139/all/en="netbios (Samba)" \
+	security/packetfilter/package/univention-samba/udp/137:139/all="ACCEPT" \
+	security/packetfilter/package/univention-samba/udp/137:139/all/en="netbios (Samba)" \
+	security/packetfilter/package/univention-samba/udp/137/all="ACCEPT" \
+	security/packetfilter/package/univention-samba/tcp/445/all="ACCEPT" \
+	security/packetfilter/package/univention-samba/tcp/445/all/en="microsoft-ds (Samba)" \
+	security/packetfilter/package/univention-samba/udp/445/all="ACCEPT" \
+	security/packetfilter/package/univention-samba/udp/445/all/en="microsoft-ds (Samba)"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 exit 0

@@ -164,6 +164,23 @@ fi
 
 configure_samba_role
 
+# configure profile/home settings
+if [ "$samba_role" = "domaincontroller" ]; then
+	if [ -n "$samba_netbios_name" ]; then
+		tmphostname=$samba_netbios_name
+	elif [ -n "$samba_ha_master" ]; then
+		tmphostname="$samba_ha_master"
+	else
+		tmphostname="$hostname"
+	fi
+	univention-config-registry set \
+		samba/profileserver?$tmphostname \
+		samba/profilepath?'%U\windows-profiles\%a' \
+		samba/homedirserver?$tmphostname \
+		samba/homedirpath?%U \
+		samba/homedirletter?I
+fi
+
 # Join as ADS member if the S4 connector is installed
 #                    or if the UCS Master claims to be a AD Memberserver
 # To overwrite this setting:
@@ -361,12 +378,6 @@ if [ $winbind_was_running -eq 1 ]; then
 fi
 
 ucs_addServiceToLocalhost 'Samba 3' "$@"
-
-if [ "${samba_role}" = "memberserver" ]; then
-	if [ "${server_role}" = "domaincontroller_master" ]; then
-		ucs_addServiceToLocalhost "AD Member" "$@"
-	fi
-fi
 
 # sync netlogon share
 /usr/share/univention-samba/slave-sync >>/var/log/univention/samba-sync.log

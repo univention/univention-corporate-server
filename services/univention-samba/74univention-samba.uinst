@@ -51,7 +51,6 @@ if ! is_ucr_true samba4/ignore/mixsetup; then
 	# in this case the directory is used during the migration
 	#	http://wiki.univention.de/index.php?title=Migration_from_Samba_3_to_Samba_4#Update_Scenario_2_-_In_place_upgrade_of_the_Samba_3.2FNT4_to_a_Samba_4.2FAD_domain
 	ucs_removeServiceFromLocalhost "$SERVICE" "$@" || die
-	ucs_removeServiceFromLocalhost "AD Member" "$@" || die
 
 	ucr unset samba/autostart \
 				samba/user \
