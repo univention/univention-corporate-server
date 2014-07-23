@@ -141,6 +141,12 @@ def install_univention_samba():
 	if not pm.is_installed('univention-samba'):
 		pm.install('univention-samba')
 
+def uninstall_univention_samba():
+	pm = univention.lib.package_manager.PackageManager()
+	pm.update()
+	pm.noninteractive()
+	if pm.is_installed('univention-samba'):
+		pm.uninstall('univention-samba')
 
 def lookup_adds_dc(ad_server=None, realm=None, ucr=None):
 	'''CLDAP lookup'''
@@ -435,24 +441,33 @@ def revert_ucr_settings():
 def configure_backup_as_ad_member():
 	# TODO something else?
 	prepare_ucr_settings()
+	uninstall_univention_samba()
+	install_univention_samba()
 
 def configure_slave_as_ad_member():
 	# TODO something else?
 	prepare_ucr_settings()
+	uninstall_univention_samba()
+	install_univention_samba()
 
 def configure_member_as_ad_member():
 	# TODO something else?
 	prepare_ucr_settings()
+	uninstall_univention_samba()
+	install_univention_samba()
 
 def revert_backup_ad_member ():
 	# TODO something else?
 	revert_ucr_settings()
+	uninstall_univention_samba()
 
 def revert_slave_ad_member():
 	# TODO something else?
 	revert_ucr_settings()
+	uninstall_univention_samba()
 
 def revert_member_ad_member():
 	# TODO something else?
 	revert_ucr_settings()
+	uninstall_univention_samba()
 

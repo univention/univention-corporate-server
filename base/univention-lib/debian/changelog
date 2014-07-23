@@ -1,3 +1,9 @@
+univention-lib (3.0.26-28) unstable; urgency=low
+
+  * added uninstall_univention_samba (Bug #35446) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 12:29:29 +0200
+
 univention-lib (3.0.26-27) unstable; urgency=low
 
   * added some more helper function in 
