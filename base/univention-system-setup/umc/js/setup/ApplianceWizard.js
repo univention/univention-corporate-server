@@ -933,7 +933,6 @@ define([
 
 			this._setupCitySearch();
 			this._setupPasswordBoxes();
-			this._setupTooltips();
 			this._setupJavaScriptLinks();
 			this._setupNetworkDevices();
 			this._setupAppGallery();
