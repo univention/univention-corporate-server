@@ -1,3 +1,9 @@
+univention-join (6.0.18-5) unstable; urgency=low
+
+  * log ad member mode (Bug #35446) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 16:02:03 +0200
+
 univention-join (6.0.18-4) unstable; urgency=low
 
   * removed 04univention-samba-role.inst, added

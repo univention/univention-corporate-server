@@ -212,10 +212,11 @@ check_ad_member_mode () {
 
 	# switch to ad member mode
 	if is_domain_in_admember_mode; then
-			configure_nonmaster_as_ad_member "$server_role" || failed_message "could not set AD Member Mode"
+			configure_nonmaster_as_ad_member "$server_role" >>/var/log/univention/join.log 2>&1 || failed_message "could not set AD Member Mode"
 	else
 		if is_localhost_in_admember_mode; then
-			revert_nonmaster_ad_member "$server_role" || failed_message "could not revert AD Member Mode"
+			echo "Leaving AD Member Mode"
+			revert_nonmaster_ad_member "$server_role" >>/var/log/univention/join.log 2>&1 || failed_message "could not revert AD Member Mode"
 		fi
 	fi
 }
