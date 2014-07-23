@@ -1,9 +1,14 @@
+univention-samba (8.0.19-5) unstable; urgency=low
+
+  * removed univention-samba-ad-member (Bug #35095) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 09:50:01 +0200
+
 univention-samba (8.0.19-4) unstable; urgency=low
 
   * don't add/remove service "AD Member"
   * set profilepath and homedirs settings in
-    join script instead in postinst
-  * remove univention-samba-ad-member (Bug #35095)
+    join script instead in postinst (Bug #35095)
 
  -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 09:45:57 +0200
 
