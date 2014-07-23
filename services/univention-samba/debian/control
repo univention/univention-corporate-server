@@ -25,7 +25,7 @@ Depends: ${misc:Depends},
  univention-samba-local-config,
  python-tdb,
  samba-common-bin,
- shell-univention-lib (>= 1.0.6),
+ shell-univention-lib (>= 3.0.26-25),
  python-univention-lib (>= 1.0.45)
 Conflicts: samba-ad-dc,
  samba-dsdb-modules
