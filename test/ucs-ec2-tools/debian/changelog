@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.0-1) unstable; urgency=low
+
+  * Starting UCS 4.0 development (Bug #35148)
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 23 Jul 2014 07:54:23 +0200
+
 ucs-ec2-tools (0.1.20-1) unstable; urgency=low
 
   * Increase EC2 connection timeout (Bug #34866)
