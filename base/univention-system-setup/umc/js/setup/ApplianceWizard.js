@@ -40,6 +40,7 @@ define([
 	"dojo/Evented",
 	"dojo/topic",
 	"dojo/Deferred",
+	"dojo/promise/all",
 	"dojo/store/Memory",
 	"dijit/form/Select",
 	"dijit/Tooltip",
@@ -62,7 +63,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, query, domClass, on, Evented, topic, Deferred, Memory, Select, Tooltip, styles, timing, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, query, domClass, on, Evented, topic, Deferred, all, Memory, Select, Tooltip, styles, timing, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
 	var modulePath = require.toUrl('umc/modules/setup');
 	styles.insertCssRule('.umc-ucssetup-wizard-indent', 'margin-left: 27px;');
 	styles.insertCssRule('.umcIconInfo', lang.replace('background-image: url({0}/info-icon.png); width: 16px; height: 16px;', [modulePath]));
@@ -1157,7 +1158,8 @@ define([
 			return null;
 		},
 
-		_updateSummaryPage: function() {
+		_updateSummaryPage: function(serverValues) {
+			var guessedDomainName = serverValues.domainname;
 			var _vals = this._gatherVisibleValues();
 			var vals = this.getValues();
 			var msg = '';
@@ -1220,7 +1222,15 @@ define([
 			msg += '<p><b>' + _('Domain and host configuration') + '</b></p>';
 			msg += '<ul>';
 			_append(_('Fully qualified domain name'), _vals._fqdn);
-			_append(_('Hostname'), _vals.hostname);
+			if (_validateHostname(_vals.hostname) && guessedDomainName) {
+				// if the backend gave us a guess for the domain name, show it here
+				_append(_('Fully qualified domain name'), _vals.hostname + '.' + guessedDomainName);
+			}
+			else {
+				// 'hostname' can be host name or FQDN... choose the correct label
+				var hostLabel = _validateFQDN(_vals.hostname) ? _('Fully qualified domain name') : _('Hostname');
+				_append(hostLabel, _vals.hostname);
+			}
 			_append(_('LDAP base'), vals['ldap/base']);
 			if (_vals._dhcp) {
 				_append(_('Address configuration'), _('IP address is obtained dynamically via DHCP'));
@@ -1328,13 +1338,22 @@ define([
 			this.standby(true);
 			return tools.umcpCommand('setup/validate', { values: vals }).then(lang.hitch(this, function(response) {
 				this.standby(false);
-				var allValid = array.every(response.result, function(ientry) {
-					return ientry.valid;
+				var allValid = true;
+				var result = {};
+				array.forEach(response.result, function(ientry) {
+					if (ientry.key && ientry.value) {
+						// check for values that the server returned
+						result[ientry.key] = ientry.value;
+					}
+					else {
+						allValid &= ientry.valid;
+					}
 				});
 				if (!allValid) {
 					this._updateValidationPage(response.result);
 				}
-				return allValid;
+				result.isValid = allValid;
+				return result;
 			}), lang.hitch(this, function(err) {
 				this.standby(false);
 				throw err;
@@ -1575,11 +1594,11 @@ define([
 				return this._forcePageTemporarily('locale');
 			}
 			if (nextPage == 'validation') {
-				return this._validateWithServer().then(lang.hitch(this, function(isValid) {
+				return this._validateWithServer().then(lang.hitch(this, function(response) {
 					// jump to summary page if everything is fine...
 					// else display validation errors
-					if (isValid) {
-						this._updateSummaryPage();
+					if (response.isValid) {
+						this._updateSummaryPage(response);
 						return 'summary';
 					}
 					return 'validation';

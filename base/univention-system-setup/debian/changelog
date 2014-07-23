@@ -1,3 +1,9 @@
+univention-system-setup (7.0.69-36) unstable; urgency=medium
+
+  * Bug #34484: show the guessed domain name in the summary page
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Jul 2014 15:09:43 +0200
+
 univention-system-setup (7.0.69-35) unstable; urgency=medium
 
   * Bug #34484: fixed lang.hitch usage in ApplianceWizard:join(), minor text
