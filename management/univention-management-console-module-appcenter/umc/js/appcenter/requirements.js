@@ -40,6 +40,7 @@ define([
 		this.solutionDescription = args.solutionDescription;
 		this.solutionLabel = args.solutionLabel;
 		this.solution = args.solution;
+		this.stayAfterSolution = args.stayAfterSolution;
 	};
 
 	kernel.extend(Requirement, {
@@ -202,6 +203,21 @@ define([
 			solution: function(opts, details) {
 				opts.appDetailsPage.set('app', details[0]);
 				return opts.appDetailsPage.appLoadingDeferred;
+			}
+		}),
+		shall_only_be_installed_in_ad_env_with_password_service: new Requirement({
+			stayAfterSolution: true,
+			reasonDescription: function() {
+				return _('The application requires the password service to be set up on the Active Directory domain controller server.');
+			},
+			solutionDescription: function() {
+				return _('The steps how to install the service on that machine are described in the online documentation.');
+			},
+			solutionLabel: function() {
+				return _('Open the documentation');
+			},
+			solution: function() {
+				window.open(_('https://docs.univention.de/manual-3.2.html#ad-connector:password-dienst'));
 			}
 		}),
 		shall_have_enough_ram: new Requirement({

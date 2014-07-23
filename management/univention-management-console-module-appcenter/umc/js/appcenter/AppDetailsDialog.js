@@ -127,7 +127,9 @@ define([
 							callback: lang.hitch(this, function() {
 								opts.action = this.actionLabel;
 								var deferred = foundRequirement.solution(opts, details);
-								when(deferred, lang.hitch(this, 'onBack', false), lang.hitch(this, 'onBack', false));
+								if (!foundRequirement.stayAfterSolution) {
+									when(deferred).always(lang.hitch(this, 'onBack', false));
+								}
 							})
 						}];
 						container.addChild(new Form({

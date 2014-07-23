@@ -312,7 +312,7 @@ class Application(object):
 						self._options[k] = _escape_value(k, v)
 
 		# parse boolean values
-		for ikey in ('notifyvendor', 'useractivationrequired', 'useshop', 'withoutrepository', 'endoflife'):
+		for ikey in ('notifyvendor', 'useractivationrequired', 'useshop', 'withoutrepository', 'endoflife', 'admemberissuepassword', 'admemberissuehide'):
 			if ikey in self._options:
 				self._options[ikey] = config.getboolean('Application', ikey)
 			else:
@@ -713,7 +713,7 @@ class Application(object):
 	def all_installed(cls, package_manager, force_reread=False, only_local=False, localize=True):
 		ret = []
 		for app in cls.all(force_reread=force_reread, only_local=only_local, localize=localize):
-			if app.allowed_on_local_server() and app.is_installed(package_manager, strict=False):
+			if not app.has_active_ad_member_issue('hide') and app.allowed_on_local_server() and app.is_installed(package_manager, strict=False):
 				ret.append(app)
 		return ret
 
@@ -823,11 +823,15 @@ class Application(object):
 		allowed_roles = self.get('serverrole')
 		return not allowed_roles or server_role in allowed_roles
 
+	def has_active_ad_member_issue(self, issue):
+		return ucr.is_true('ad/member') and self.get('admemberissue%s' % issue)
+
 	def should_show_up_in_app_center(self, package_manager):
 		# NOT iff:
 		#  * has wrong server role OR
 		#  * is not installed and has EndOfLife=True
-		return self.allowed_on_local_server() and (not self.get('endoflife') or self.is_installed(package_manager))
+		#  * has ADMemberIssueHide and UCS is part of a Windows Active Directory
+		return self.allowed_on_local_server() and (not self.get('endoflife') or self.is_installed(package_manager)) and not self.has_active_ad_member_issue('hide')
 
 	def to_dict(self, package_manager):
 		ucr.load()
@@ -975,6 +979,10 @@ class Application(object):
 		if current_ram < required_ram:
 			return {'minimum' : required_ram, 'current' : current_ram}
 		return True
+
+	@SoftRequirement('install', 'update')
+	def shall_only_be_installed_in_ad_env_with_password_service(self):
+		return not self.has_active_ad_member_issue('password')
 
 	def check_invokation(self, function, package_manager):
 		def _check(hard_requirements):

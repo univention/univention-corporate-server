@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (3.0.51-24) unstable; urgency=low
+
+  * Bug #35454: UCS in AD domains: Hide certain apps when in AD domain
+  * Bug #35453: UCS in AD domains: Show a warning to install password service
+    for certain apps when in AD domain
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 23 Jul 2014 14:54:07 +0200
+
 univention-management-console-module-appcenter (3.0.51-23) unstable; urgency=low
 
   * Bug #35136: Escape ID and Version of an app for LDAP registration
