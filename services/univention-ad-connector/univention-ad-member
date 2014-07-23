@@ -33,8 +33,9 @@
 
 from optparse import OptionParser, OptionValueError
 import getpass
-import univention.admember
 import sys
+
+import univention.lib.admember
 
 if __name__ == "__main__":
 
@@ -72,10 +73,10 @@ This tool configures this system as member of an existing Active Directory domai
 			sys.exit(1)
 
 	try:
-		univention.admember.configure_ad_member(opts.ad_server, opts.username, opts.password)
-	except univention.admember.timeSyncronizationFailed as ex:
+		univention.lib.admember.configure_ad_member(opts.ad_server, opts.username, opts.password)
+	except univention.lib.admember.timeSyncronizationFailed as ex:
 		print "%s" % (ex.args[0],)
 		print "Please syncronize the time of the Active Directory server to the UCS Server and try again."
-	except univention.admember.failedADConnect as ex:
+	except univention.lib.admember.failedADConnect as ex:
 		print "%s" % (ex.args[0][0],)
 
