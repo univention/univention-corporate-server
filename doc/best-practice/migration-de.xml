@@ -58,8 +58,9 @@
 	  <title>Installation des UCS-Systems</title>
 	  <para>
 		Für die Migration wird ein separater Server mit UCS installiert. Die Installation des
-		Systems kann anhand des UCS-Quickstart Guides erfolgen (TODOREF). Bei der Installation müssen
-		die folgenden Einstellungen gewählt werden:
+		Systems kann anhand des UCS-Quickstart Guides erfolgen <biblioref
+		linkend="ucs-quickstart"/>. Bei der Installation müssen die folgenden Einstellungen gewählt
+		werden:
 
 		<itemizedlist>
 		  <listitem><simpara>
@@ -203,7 +204,7 @@
 		<itemizedlist>
 		  <listitem><simpara>
 			Wieviele Domänencontroller gibt es? Welche Dienste laufen neben den Anmeldediensten auf
-			diesen Systemen (z.B. Datei- oder Druckdienste)=
+			diesen Systemen (z.B. Datei- oder Druckdienste)
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -252,7 +253,7 @@
 	  <title>Migration der AD-Domäne</title>
 
 	  <para>
-		Nun erfolgt die Migration des AD-Servers. Dies erfolgt in den folgenden Schritten:
+		Nun erfolgt die Migration der AD-Server. Dies erfolgt in den folgenden Schritten:
 
 		<itemizedlist>
 		  <listitem><simpara>
@@ -432,7 +433,8 @@
 			<emphasis>Verbindung</emphasis>: Der Drucker kann entweder lokal an den Druckserver
 			angeschlossen sein oder auf einen IP-fähigen Drucker zugreifen. Das Format
 			<emphasis>Protokoll</emphasis> und das <emphasis>Ziel</emphasis> unterscheiden sich je
-			nach Protokoll. Das genaue Format ist im UCS-Handbuch unter TODOREF dokumentiert.
+			nach Protokoll. Das genaue Format ist im UCS-Handbuch unter <biblioref
+			linkend="ucs-print"/> dokumentiert.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -459,7 +461,7 @@
 	  </para>
 
 	  <para>
-		Die migrierten Druckerfreigaben können anschließent auf dem Windows-Server entfernt
+		Die migrierten Druckerfreigaben können anschließend auf dem Windows-Server entfernt
 		werden. Dazu muss unter <guimenu>Start -> Verwaltung -> Druckverwaltung</guimenu> im
 		Kontextmenü der migrierten Freigabe die Option <guimenu>Löschen</guimenu> gewählt werden.
 	  </para>

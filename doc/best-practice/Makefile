@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 MAIN_de := bestpractice-de
-#MAIN_en := scenarios-en
-MAIN := $(MAIN_de)
+MAIN_en := bestpractice-en
+MAIN := $(MAIN_de) $(MAIN_en)
 STYLESHEET := univention
 bestpractice-de%: lang := de
 
