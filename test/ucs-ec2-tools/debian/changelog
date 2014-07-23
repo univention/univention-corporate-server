@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.21-1) unstable; urgency=low
+
+  * Bug #35437: added automatic KVM detection in utils.sh
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 23 Jul 2014 08:37:12 +0200
+
 ucs-ec2-tools (0.1.20-2) unstable; urgency=low
 
   * examples/jenkins/autotest-*.cfg: copy the ~/ec2/license/license.secret

@@ -29,12 +29,28 @@
 
 basic_setup ()
 {
-	echo -e "#!/bin/sh\nroute del default ; route add default gw 10.210.216.13" >>/etc/network/if-up.d/z_route
-	chmod +x /etc/network/if-up.d/z_route
-	/etc/network/if-up.d/z_route
-	sleep 10 # just wait a few seconds to give the amazone cloud some time
-	ucr set --force updater/identify="UCS (EC2 Test)"
-	ucr set update/check/cron/enabled=false update/check/boot/enabled=false
+	if grep "QEMU Virtual CPU" /proc/cpuinfo ; then
+		echo "KVM detected"
+		ucr set --force updater/identify="UCS (EC2 Test)"
+		ucr set update/check/cron/enabled=false update/check/boot/enabled=false
+		# wait until Univention System Setup is running and profile file has been moved
+		while ! pgrep -f /opt/firefox/firefox ; do
+			sleep 1s
+			echo -n .
+		done
+		sleep 5s
+		if [ -f /var/cache/univention-system-setup/profile.bak ] ; then
+			mv /var/cache/univention-system-setup/profile.bak /var/cache/univention-system-setup/profile
+		fi
+	else
+		echo "Assuming Amazon Cloud"
+		echo -e "#!/bin/sh\nroute del default ; route add default gw 10.210.216.13" >>/etc/network/if-up.d/z_route
+		chmod +x /etc/network/if-up.d/z_route
+		/etc/network/if-up.d/z_route
+		sleep 10 # just wait a few seconds to give the amazone cloud some time
+		ucr set --force updater/identify="UCS (EC2 Test)"
+		ucr set update/check/cron/enabled=false update/check/boot/enabled=false
+	fi
 }
 
 upgrade_to_latest_errata ()
