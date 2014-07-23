@@ -148,12 +148,12 @@ install_apps_test_packages ()
 
 run_apptests ()
 {
-	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -r apptest
+	run_tests -r apptest "$@"
 }
 
 run_tests ()
 {
-	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log"
+	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
 }
 
 run_join_scripts ()
