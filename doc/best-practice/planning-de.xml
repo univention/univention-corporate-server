@@ -20,8 +20,10 @@
 			<listitem><simpara>
 			  Beitritt eines UCS-Servers in eine Active Directory-Domäne. Dies ist z.B. sinnvoll
 			  wenn eine Software-Komponente aus UCS oder aus dem Univention App Center eingesetzt
-			  werden soll ohne den Rest der Domäne anzupassen. Dies ist in <xref
-			  linkend="bestpractice:admember"/> dokumentiert.
+			  werden soll ohne den Rest der Domäne anzupassen. Diese Funktionalität wird in Kürze in
+			  einem Erratum für UCS 3.2-2 verfügbar sein.
+			  <!-- Dies ist in <xref -->
+			  <!-- linkend="bestpractice:admember"/> dokumentiert. -->
 			</simpara></listitem>
 
 			<listitem><simpara>
@@ -29,7 +31,7 @@
 			  von Verzeichnisdienstobjekten zwischen einem Windows-Server mit Active Directory und
 			  dem OpenLDAP-Verzeichnis aus &ucsUCS;. Beide Domänen existieren parallel und
 			  Benutzer/Gruppen müssen nur in einer Domäne verwaltet werden und werden automatisch in
-			  die jeweils andere repliziert.
+			  die jeweils andere repliziert. Dies ist im UCS-Handbuch dokumentiert <biblioref linkend="ucs-adconnector"/>.
 			</simpara></listitem>
 		  </itemizedlist>
 		</simpara></listitem>

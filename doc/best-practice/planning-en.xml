@@ -18,8 +18,10 @@
 			<listitem><simpara>
 			  Joining a UCS server in an Active Directory domain. This is a good idea, for example,
 			  for using one or two software component from UCS or the Univention App Center without
-			  adapting the rest of the domain. This approach is documented in <xref
-			  linkend="bestpractice:admember"/>.
+			  adapting the rest of the domain. This feature will be available soon as an erratum
+			  update for UCS 3.2-2.
+			  <!-- This approach is documented in <xref -->
+			  <!-- linkend="bestpractice:admember"/>. -->
 			</simpara></listitem>
 
 			<listitem><simpara>
@@ -27,7 +29,7 @@
 			  synchronise directory service objects between a Windows server under Active Directory
 			  and the Open LDAP directory from &ucsUCS;. Both domains exist in parallel and
 			  users/groups only need to be managed in one domain and are automatically replicated in
-			  the respective other.
+			  the respective other. This is documented in the UCS manual <biblioref linkend="ucs-adconnector"/>.
 			</simpara></listitem>
 		  </itemizedlist>
 		</simpara></listitem>

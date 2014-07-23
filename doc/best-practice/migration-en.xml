@@ -55,7 +55,7 @@
 
 	</section>
 
-	<section id="bestpractice:migration:single:installucs">
+	<section id="bestpractice:migration:single:ucsinstall">
 	  <title>Installing the UCS system</title>
 	  <para>
 		A separate server with UCS is installed for the migration. The system installation can be
@@ -212,13 +212,14 @@
 			which will take on the FSMO roles. This is described in <biblioref
 			linkend="microsoft-fsmo"/>.
 		  </simpara></listitem>
+
+		  <listitem><simpara>
+			In the scope of a migration, the AD domain controllers can be migrated to the same number
+			of Samba domain controllers. However, it is also possible consolidate systems to new
+			hardware and to migrate them to fewer Samba servers than in Active Directory.
+		  </simpara></listitem>
 		</itemizedlist>
 
-		<listitem><simpara>
-		  In the scope of a migration, the AD domain controllers can be migrated to the same number
-		  of Samba domain controllers. However, it is also possible consolidate systems to new
-		  hardware and to migrate them to fewer Samba servers than in Active Directory.
-		</simpara></listitem>
 	  </para>
 	</section>
 
@@ -256,7 +257,7 @@
 		<itemizedlist>
 		  <listitem><simpara>
 			Prior to the migration, all domain controllers which do not have FSMO roles must be
-			switched off, see <xref linkend="bestpractice:migration:single:planning"/>.
+			switched off, see <xref linkend="bestpractice:migration:distrib:planning"/>.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -328,7 +329,7 @@
 
 		A share is now created in the share management of the &ucsUMC;. The share module offers a
 		range of possibilities, which are documented in the UCS manual <biblioref
-		linkend="ucs-share"/>. However, just a few settings are enough for the takeover of the
+		linkend="ucs-shares"/>. However, just a few settings are enough for the takeover of the
 		data. The following values need to be saved as a minimum when creating the share(s) in the
 		UMC module <guimenu>Shares</guimenu>:
 
@@ -425,7 +426,7 @@
 			server locally or access an IP-compatible printer. The format
 			<emphasis>Protocol</emphasis> and the <emphasis>Destination</emphasis> differ depending
 			on the protocol. The precise format is documented in the UCS manual <biblioref
-			linkend="ucs-print"/>.
+			linkend="ucs-print-umc"/>.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -442,7 +443,7 @@
 	  <para>
 		If printer drivers have been stored on the Windows print server on the server side, they
 		need to be re-uploaded for the UCS print server. This procedure is documented in the UCS
-		manual <biblioref linkend="ucs-print-umc"/>.
+		manual <biblioref linkend="ucs-winprinter"/>.
 	  </para>
 
 	  <para>

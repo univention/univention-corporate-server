@@ -31,10 +31,18 @@
 	<bibliomixed id="wiki-saml"/>
 	<bibliomixed id="ucs-dhcp"/>
 	<bibliomixed id="ucs-proxy"/>
+	<bibliomixed id="ucs-print"/>
 	<bibliomixed id="ucs-nagios"/>
 	<bibliomixed id="ucs-uvmm"/>
 	<bibliomixed id="ucs-shares"/>
+	<bibliomixed id="microsoft-fsmo"/>
+	<bibliomixed id="ucs-quickstart"/>
+	<bibliomixed id="ucs-print-umc"/>
+	<bibliomixed id="ucs-winprinter"/>
+	<bibliomixed id="ucs-adconnector"/>
   </bibliography>
+
+
   
 
 <?dbhtml-include href="../stylesheets/piwik.html"?>

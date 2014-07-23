@@ -53,8 +53,8 @@
 	  </para>
 
 	</section>
-
-	<section id="bestpractice:migration:single:installucs">
+                 
+	<section id="bestpractice:migration:single:ucsinstall">
 	  <title>Installation des UCS-Systems</title>
 	  <para>
 		Für die Migration wird ein separater Server mit UCS installiert. Die Installation des
@@ -179,7 +179,7 @@
 		
 	  <para>
 		Die Migration erfolgt über die App Center-Applikation <emphasis>Active Directory
-		Takeover</emphasis> und ist im UCS-Handbuch (<biblioref linkend="ad-takeover"/>) ausführlich dokumentiert.
+		Takeover</emphasis> und ist im UCS-Handbuch <biblioref linkend="ad-takeover"/> ausführlich dokumentiert.
 	  </para>
 
 
@@ -211,14 +211,16 @@
 			Als nächstes sollte ermittelt werden, welcher der AD-Domänencontroller der primäre ist
 			und welches die FSMO-Rollen übernimmt. Dies ist in <biblioref linkend="microsoft-fsmo"/> beschrieben.
 		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Bei einer Migration können die AD-Domänencontroller auf die gleiche Anzahl
+			Samba-Domänencontroller migriert werden. Es ist auch möglich bei etwa einer
+			Migration auf neuere Hardware auch Systeme zu konsolidieren und die auf weniger
+			Samba-Server zu migrieren als unter Active Directory.
+		  </simpara></listitem>
+
 		</itemizedlist>
 
-		<listitem><simpara>
-		  Bei einer Migration können die AD-Domänencontroller auf die gleiche Anzahl
-		  Samba-Domänencontroller migriert werden. Es ist aber auch möglich bei etwa einer
-		  Migration auf neuere Hardware auch Systeme zu konsolidieren und die auf weniger
-		  Samba-Server zu migrieren als unter Active Directory.
-		</simpara></listitem>
 	  </para>
 	</section>
 
@@ -234,7 +236,7 @@
 	  <para>
 		Die weiteren Samba-Domänencontroller werden später hinzugefügt. Die UCS-Server, auf denen
 		Samba installiert werden soll, können schon vorab installiert und gejoint werden, der
-		Samba-Dienst darf aber nach erfolgter AD-Übernahme installiert werden.
+		Samba-Dienst darf aber erst nach erfolgter AD-Übernahme installiert werden.
 	  </para>
 	</section>
 
@@ -258,7 +260,7 @@
 		<itemizedlist>
 		  <listitem><simpara>
 			Vor der Migration müssen alle AD-Domänencontroller, die nicht die FSMO-Rollen innehaben
-			(siehe <xref linkend="bestpractice:migration:single:planning"/>, abgeschaltet werden.
+			(siehe <xref linkend="bestpractice:migration:distrib:planning"/>, abgeschaltet werden.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -267,7 +269,7 @@
 			Gruppenrichtliniendateien kopiert. Nach der Übernahme der FSMO-Rollen durch das
 			UCS-System wird der AD-Server abgeschaltet. Die Migration erfolgt über die App
 			Center-Applikation <emphasis>Active Directory Takeover</emphasis> und ist im
-			UCS-Handbuch (<biblioref linkend="ad-takeover"/>) ausführlich dokumentiert.
+			UCS-Handbuch <biblioref linkend="ad-takeover"/> ausführlich dokumentiert.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -331,7 +333,7 @@
 
 		Für diese Freigabe wird nun in der Freigabenverwaltung der &ucsUMC; eine Freigabe
 		angelegt. Das Freigaben-Modul bietet vielfältige Möglichkeiten, die im UCS-Handbuch
-		dokumentiert sind <biblioref linkend="ucs-share"/>, für die Übernahme der Daten reichen aber wenige Einstellungen
+		dokumentiert sind <biblioref linkend="ucs-shares"/>, für die Übernahme der Daten reichen aber wenige Einstellungen
 		aus. Die folgenden Werte müssen beim Anlegen der Freigabe(n) im UMC-Modul
 		<guimenu>Freigaben</guimenu> min. angelegt werden:
 
@@ -434,7 +436,7 @@
 			angeschlossen sein oder auf einen IP-fähigen Drucker zugreifen. Das Format
 			<emphasis>Protokoll</emphasis> und das <emphasis>Ziel</emphasis> unterscheiden sich je
 			nach Protokoll. Das genaue Format ist im UCS-Handbuch unter <biblioref
-			linkend="ucs-print"/> dokumentiert.
+			linkend="ucs-print-umc"/> dokumentiert.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -452,7 +454,7 @@
 	  <para>
 		Wenn auf dem Windows-Druckserver serverseitig Drucker-Treiber hinterlegt wurden, müssen
 		diese für den UCS-Druckserver erneut hochgeladen werden. Das Vorgehen dazu ist im
-		UCS-Handbuch dokumentiert <biblioref linkend="ucs-print-umc"/>.
+		UCS-Handbuch dokumentiert <biblioref linkend="ucs-winprinter"/>.
 	  </para>
 
 	  <para>
