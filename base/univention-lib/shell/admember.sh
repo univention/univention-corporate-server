@@ -63,9 +63,56 @@ univention.lib.admember.configure_slave_as_ad_member()
 "
 }
 
-configure_member_as_ad_member() {
+configure_member_as_ad_member () {
 python -c "
 import univention.lib.admember
 univention.lib.admember.configure_member_as_ad_member()
 "
+}
+
+revert_backup_ad_member () {
+python -c "
+import univention.lib.admember
+univention.lib.admember.revert_backup_ad_member()
+"
+}
+
+revert_slave_ad_member() {
+python -c "
+import univention.lib.admember
+univention.lib.admember.revert_slave_ad_member()
+"
+}
+
+revert_member_ad_member() {
+python -c "
+import univention.lib.admember
+univention.lib.admember.revert_member_ad_member()
+"
+}
+
+configure_nonmaster_as_ad_member () {
+	local role="$1"
+	if [ -n "$role" ]; then
+		if [ "$role" = "domaincontroller_backup" ]; then
+			configure_backup_as_ad_member
+		elif [ "$role" = "domaincontroller_slave" ]; then
+			configure_slave_as_ad_member
+		elif [ "$role" = "memberserver" ]; then
+			configure_member_as_ad_member
+		fi
+	fi
+}
+
+revert_nonmaster_ad_member () {
+	local role="$1"
+	if [ -n "$role" ]; then
+		if [ "$role" = "domaincontroller_backup" ]; then
+			revert_backup_ad_member
+		elif [ "$role" = "domaincontroller_slave" ]; then
+			revert_slave_ad_member
+		elif [ "$role" = "memberserver" ]; then
+			revert_member_ad_member
+		fi
+	fi
 }

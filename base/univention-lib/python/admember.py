@@ -419,11 +419,40 @@ def configure_ad_member(ad_server_ip, username, password):
 
 	return True
 
+def revert_ucr_settings():
+	# TODO something else?
+	univention.config_registry.handler_unset(
+		[
+			u'ad/member',
+			u'directory/manager/web/modules/computers/computer/show/adnotification',
+			u'directory/manager/web/modules/groups/group/show/adnotification',
+			u'directory/manager/web/modules/users/user/show/adnotification',
+			u'directory/manager/web/modules/users/user/display',
+		]
+	)
+
+
 def configure_backup_as_ad_member():
+	# TODO something else?
 	prepare_ucr_settings()
 
 def configure_slave_as_ad_member():
+	# TODO something else?
 	prepare_ucr_settings()
 
 def configure_member_as_ad_member():
+	# TODO something else?
 	prepare_ucr_settings()
+
+def revert_backup_ad_member ():
+	# TODO something else?
+	revert_ucr_settings()
+
+def revert_slave_ad_member():
+	# TODO something else?
+	revert_ucr_settings()
+
+def revert_member_ad_member():
+	# TODO something else?
+	revert_ucr_settings()
+
