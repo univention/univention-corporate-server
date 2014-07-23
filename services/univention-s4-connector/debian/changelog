@@ -1,3 +1,12 @@
+univention-s4-connector (8.0.33-62) unstable; urgency=medium
+
+  * Revert GuidNotInCache part of last patch, this would change the behaviour
+    and break resync of an S4-object which is not found in the cache. Maybe
+    there are use cases for this (Bug #33621).
+  * Give an estimate of the resync delay.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 23 Jul 2014 16:36:18 +0200
+
 univention-s4-connector (8.0.33-61) unstable; urgency=low
 
   * Added more diff mode patches from Arvid (Bug #33621)

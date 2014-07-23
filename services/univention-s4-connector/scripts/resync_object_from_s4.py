@@ -53,8 +53,6 @@ from samba.ndr import ndr_unpack
 
 class GuidNotFound(BaseException): pass
 
-class GuidNotInCache(BaseException): pass
-
 class S4Resync:
 	def __init__(self):
 		self.configRegistry = univention.config_registry.ConfigRegistry()
@@ -89,8 +87,6 @@ class S4Resync:
 			c.execute("DELETE from DATA where guid_id = '%s'" % guid_id)
 			c.execute("DELETE from GUIDS where id = '%s'" % guid_id)
 			cache_db.commit()
-		else:
-			raise GuidNotInCache
 		cache_db.close()
 
 	def _add_object_to_rejected(self):
@@ -129,11 +125,14 @@ if __name__ == '__main__':
 	except GuidNotFound:
 		print 'ERROR: The S4 search failed (objectGUID was not found).'
 		sys.exit(1)
-	except GuidNotInCache:
-		print 'INFO: Ok, the objectGUID %s is not in the S4Cache currently.' % (resync.guid,)
-		sys.exit(0)
 	
-	print 'The resync of %s has been initialized.' % s4_dn
+	estimated_delay = 60
+	try:
+		estimated_delay = int(resync.configRegistry.get('connector/s4/retryrejected', 10)) * int(resync.configRegistry.get('connector/s4/poll/sleep', 5))
+	except ValueError:
+		pass
+
+	print 'The resync of %s has been initialized (estimated sync in %s seconds).' % (s4_dn, estimated_delay)
 
 	sys.exit(0)
 
