@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-17) unstable; urgency=low
+
+  * remove admember from install file (Bug #35091)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Jul 2014 10:12:12 +0200
+
 univention-ad-connector (8.0.17-16) unstable; urgency=low
 
   * Move admember lib to univention-lib (Bug #35091)
