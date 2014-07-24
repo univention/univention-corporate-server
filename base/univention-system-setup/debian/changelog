@@ -1,3 +1,9 @@
+univention-system-setup (8.0.8-3) unstable; urgency=low
+
+  * Bug #35378: fixed missing dependency
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 24 Jul 2014 16:32:58 +0200
+
 univention-system-setup (8.0.8-2) unstable; urgency=low
 
   * Bug #35378: deactivate package download in univention-system-setup-boot.postinst
