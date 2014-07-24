@@ -48,15 +48,17 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
-			this.standbyDuring(tools.umcpCommand('adconnector/state').then(lang.hitch(this, function(response) {
+			this.standbyDuring(tools.umcpCommand('adconnector/state')).then(lang.hitch(this, function(response) {
 				var state = response.result;
-				if (!state.is_configured) {
+				if (!state.configured) {
 					this.wizard = new SetupWizard({});
+					this.addChild(this.wizard);
 				}
 				else {
 					this.configPage = new ConfigPage({
 						initialState: state
 					});
+					this.addChild(this.configPage);
 				}
 			}));
 		},

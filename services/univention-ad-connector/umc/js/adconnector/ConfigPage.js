@@ -53,8 +53,8 @@ define([
 	return declare("umc.modules.adconnector.ConfigPage", Page, {
 		initialState: null,
 
-		helpText: _("This module provides a configuration wizard for the UCS Active Directory Connector to simplify the setup."),
-		headerText: _("Configuration of the UCS Active Directory Connector")
+		helpText: _('This module provides a configuration wizard for the UCS Active Directory Connector to simplify the setup.'),
+		headerText: _('Configuration of the UCS Active Directory Connector'),
 
 		_widgets: null,
 
@@ -158,27 +158,31 @@ define([
 		},
 
 		showHideElements: function(state) {
-			state = state || this.standbyDuring(tools.umcpCommand('adconnector/state');
-			when(state, lang.hitch(this, function(response) {
-				this._update_download_text(response.result);
+			if (!state) {
+				state = this.standbyDuring(tools.umcpCommand('adconnector/state')).then(function(response) {
+					return response.result;
+				});
+			}
+			when(state, lang.hitch(this, function(state) {
+				this._update_download_text(state);
 
-				if (response.result.configured) {
+				if (state.configured) {
 					this._widgets.configured.set('content', _('The configuration process has been finished and all required settings for UCS Active Directory Connector are set.'));
 				} else {
 					this._widgets.configured.set('content', _('The configuration process has not been started yet or is incomplete.'));
 				}
-				if (!response.result.certificate) {
+				if (!state.certificate) {
 					this._widgets.certificateUpload.set('value', _('The Active Directory certificate has not been installed yet.'));
 				} else {
 					this._widgets.certificateUpload.set('value', _('The Active Directory certificate has been successfully installed.'));
 				}
-				if (response.result.running) {
+				if (state.running) {
 					this._widgets.running.set('content', _('UCS Active Directory Connector is currently running.'));
 					this._buttons.start.set('visible', false);
 					this._buttons.stop.set('visible', true);
 				} else {
 					var message = _('UCS Active Directory Connector is not running.');
-					if (!response.result.configured) {
+					if (!state.configured) {
 						message += _(' The Configuation of UCS Active Directory Connector must be completed before the server can be started.');
 						this._buttons.start.set('visible', false);
 						this._buttons.stop.set('visible', false);
@@ -188,7 +192,7 @@ define([
 					}
 					this._widgets.running.set('content', message);
 				}
-			})));
+			}));
 		}
 	});
 

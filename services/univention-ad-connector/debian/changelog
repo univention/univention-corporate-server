@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-20) unstable; urgency=medium
+
+  * Bug #35090 [WIP]: fixed JavaScript syntax error, use admember lib
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Jul 2014 11:14:47 +0200
+
 univention-ad-connector (8.0.17-19) unstable; urgency=medium
 
   * Bug #35090 [WIP]: integrated wizard prototype

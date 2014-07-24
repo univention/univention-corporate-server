@@ -32,7 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import univention.config_registry
-from univention.lib import Translation
+from univention.lib import Translation, admember
 from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
@@ -69,10 +69,11 @@ class Instance( Base ):
 
 	def __init__( self ):
 		Base.__init__( self )
-		self.status_configured = False
 		self.status_certificate = False
 		self.status_running = False
 		self.guessed_baseDN = None
+		self.status_mode_adconnector = False
+		self.status_mode_admember = False
 
 		self.__update_status()
 
@@ -85,11 +86,12 @@ class Instance( Base ):
 		"""
 
 		self.__update_status()
-		self.finished( request.id, {
-			'configured' : self.status_configured,
+		self.finished(request.id, {
 			'certificate' : self.status_certificate,
-			'running' : self.status_running
-			} )
+			'mode_admember' : self.status_mode_admember,
+			'mode_adconnector' : self.status_mode_adconnector,
+			'is_configured' : self.status_mode_adconnector or self.status_mode_admember,
+		})
 
 	def load( self, request ):
 		"""Retrieve current status of the UCS Active Directory Connector configuration and the service
@@ -315,10 +317,11 @@ class Instance( Base ):
 
 	def __update_status( self ):
 		ucr.load()
-		self.status_configured = bool( ucr.get( 'connector/ad/ldap/host' ) and ucr.get( 'connector/ad/ldap/base' ) and ucr.get( 'connector/ad/ldap/binddn' ) and ucr.get( 'connector/ad/ldap/bindpw' ) )
 		fn = ucr.get( 'connector/ad/ldap/certificate' )
 		self.status_certificate = bool( fn and os.path.exists( fn ) )
 		self.status_running = self.__is_process_running( '*python*univention/connector/ad/main.py*' )
+		self.status_mode_admember = admember.is_localhost_in_admember_mode(ucr)
+		self.status_mode_adconnector = admember.is_localhost_in_adconnector_mode(ucr)
 
 	def __is_process_running( self, command ):
 		for proc in psutil.process_iter():

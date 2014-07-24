@@ -51,10 +51,10 @@ define([
 	"umc/widgets/PasswordBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/Wizard",
-	"./adconnector2/RadioButtons",
-	"umc/i18n!umc/modules/adconnector2"
+	"./RadioButtons",
+	"umc/i18n!umc/modules/adconnector"
 ], function(declare, lang, array, domClass, on, topic, Deferred, when, styles, RadioButton, dialog, ProgressBar, tools, Page, Form, ExpandingTitlePane, Module, Text, TextBox, PasswordBox, CheckBox, Wizard, RadioButtons, _) {
-	var modulePath = require.toUrl('umc/modules/adconnector2');
+	var modulePath = require.toUrl('umc/modules/adconnector');
 	styles.insertCssRule('.umc-adconnector-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;');
 	styles.insertCssRule('.umc-adconnector-page .umcLabelPaneCheckBox', 'display: block !important;');
 	array.forEach(['start', 'credentials', 'config', 'info', 'syncconfig', 'syncconfig-left', 'syncconfig-right', 'syncconfig-left-right', 'msi', 'finished'], function(ipage) {
@@ -257,7 +257,7 @@ define([
 		}
 	});
 
-	var _Wizard = declare("umc.modules.adconnector2.Wizard", [ Wizard ], {
+	var _Wizard = declare("umc.modules.adconnector.SetupWizard", [ Wizard ], {
 		autoValidate: true,
 		autoFocus: true,
 
