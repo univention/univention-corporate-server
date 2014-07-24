@@ -77,6 +77,8 @@ Description: Starting univention-system-setup on next boot
 Package: univention-management-console-module-setup
 Architecture: all
 Depends: univention-management-console-server,
+ ${misc:Depends},
+ ${python:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-system-setup (= ${source:Version}),
  univention-updater,

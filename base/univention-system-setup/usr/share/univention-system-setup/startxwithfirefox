@@ -50,7 +50,7 @@ then # call self in xinit as nobody, then start gdm
 	BROWSERPIDFILE="/var/cache/univention-system-setup/browser.pid"
 
 	# stop plymouth - otherwise it is burning CPU power in background
-	plymouth quit
+	#plymouth quit
 
 	# move old profile
 	if [ -f "$USS_PROFILE" ]; then
@@ -63,8 +63,13 @@ then # call self in xinit as nobody, then start gdm
 	fi
 	ln -s /usr/lib/univention-system-setup/addons/{e5bbc237-c99b-4ced-a061-0be27703295f} /opt/firefox/distribution/bundles
 
-	# start X11 and browser ; script returns pid of browser on fd3
-	[ -x /usr/bin/xinit ] && /usr/bin/xinit /bin/su nobody -c "'$0' '$USSURL'" 3> "$BROWSERPIDFILE"
+	export DISPLAY=:0
+	if xwininfo -root -stats > /dev/null 2>/dev/null ; then	
+		/bin/su nobody -c "'$0' '$USSURL'" -- 3> "$BROWSERPIDFILE"
+	else
+		# start X11 and browser ; script returns pid of browser on fd3
+		[ -x /usr/bin/xinit ] && /usr/bin/xinit /bin/su nobody -c "'$0' '$USSURL'" -- 3> "$BROWSERPIDFILE"
+	fi
 
 	# remove pidfile
 	rm -f "$BROWSERPIDFILE"

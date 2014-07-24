@@ -1,3 +1,11 @@
+univention-system-setup (8.0.8-1) unstable; urgency=low
+
+  Bug #35378
+  * added missing dependencies
+  * start X11 server only if not already running
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 24 Jul 2014 10:50:02 +0200
+
 univention-system-setup (8.0.7-4) unstable; urgency=low
 
   * Bug #34388: Updated links to appliance wizard 
