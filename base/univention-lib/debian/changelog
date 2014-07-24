@@ -1,3 +1,10 @@
+univention-lib (3.0.26-33) unstable; urgency=low
+
+  * create _domaincontroller_master on ad during master init (Bug #35461)
+  * take over nameserver settings from master in non-masters system (Bug #35458)
+
+ -- Felix Botner <botner@univention.de>  Thu, 24 Jul 2014 15:03:27 +0200
+
 univention-lib (3.0.26-32) unstable; urgency=low
 
   * admember mode updates (Bug #35091)

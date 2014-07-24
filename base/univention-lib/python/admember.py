@@ -49,18 +49,14 @@ UNIVENTION_SAMBA_MIN_PACKAGE_VERSION = "8.0.19-6.472.201407231046"
 class faildToSetService(Exception):
 	'''ucs_addServiceToLocalhost failed'''
 
-
 class invalidUCSServerRole(Exception):
 	'''Invalid UCS Server Role'''
-
 
 class failedADConnect(Exception):
 	'''Connection to AD Server failed'''
 
-
 class domainnameMismatch(Exception):
 	'''Domain Names don't match'''
-
 
 class univentionSambaWrongVersion(Exception):
 	'''univention-samba candiate has wrong version'''
@@ -68,12 +64,17 @@ class univentionSambaWrongVersion(Exception):
 class timeSyncronizationFailed(Exception):
 	'''Time synchronization failed.'''
 
-
 class manualTimeSyncronizationRequired(timeSyncronizationFailed):
 	'''Time difference critical for Kerberos but syncronization aborted.'''
 
 class sambaJoinScriptFailed(Exception):
 	'''26univention-samba.inst failed'''
+
+class faildToAddServiceRecordToAD(Exception):
+	'''failed to add SRV record in AD'''
+
+class failedToGetUcrVariable(Exception):
+	'''failed to get ucr variable'''
 
 
 def is_localhost_in_admember_mode(ucr=None):
@@ -361,6 +362,7 @@ def prepare_ucr_settings():
 			u'directory/manager/web/modules/groups/group/show/adnotification=true',
 			u'directory/manager/web/modules/users/user/show/adnotification=true',
 			u'directory/manager/web/modules/users/user/display=displayName',
+			u'nameserver/external=true',
 		]
 	)
 	univention.config_registry.handler_unset(
@@ -414,6 +416,54 @@ def run_samba_join_script(username, password, ucr=None):
 		raise sambaJoinScriptFailed()
 
 
+def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
+	if not ucr:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+	
+	log("INFO: Create _domaincontroller_master SRV record on %s" % ad_ip)
+	
+	fd = tempfile.NamedTemporaryFile(delete=False)
+	fd.write('server %s\n' % ad_ip)
+	fd.write('update add _domaincontroller_master._tcp.%s. 10800 SRV 0 0 0 %s.%s.\n' %
+		(ucr.get('domainname'), ucr.get('hostname'), ucr.get('domainname')))
+	fd.write('send\n')
+	fd.write('quit\n')
+	fd.close()
+
+	cmd = ['kinit', '--password-file=/etc/machine.secret']
+	cmd += ['%s\$' % ucr.get('hostname')]
+	cmd += ['nsupdate', '-v', '-g', fd.name]
+	p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	stdout, stderr = p1.communicate()
+	if p1.returncode:
+		log("ERROR: %s failed with %d (%s)" % (cmd, p1.returncode, stderr))
+		raise faildToAddServiceRecordToAD("failed to add SRV record to %s" % ad_ip)
+	os.unlink(fd.name)
+
+def get_ucr_variable_from_ucs(host, server, var):
+	cmd = ['univention-ssh', '/etc/machine.secret']
+	cmd += ['%s\$@%s' % (host, server)]
+	cmd += ['/usr/sbin/ucr get %s' % var]
+	p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	stdout, stderr = p1.communicate()
+	if p1.returncode:
+		log("ERROR: %s failed with %d (%s)" % (cmd, p1.returncode, stderr))
+		raise failedToGetUcrVariable("failed to get UCR variable %s from %s" % (var, server))
+	return stdout.strip()
+
+def set_nameserver_from_ucs_master(ucr=None):
+	if not ucr:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+
+	log("INFO: Set nameservers")
+	
+	for var in ['nameserver1', 'nameserver2', 'nameserver3']:
+		value = get_ucr_variable_from_ucs(ucr.get('hostname'), ucr.get('ldap/master'), var)
+		if value:
+			univention.config_registry.handler_set([u'%s=%s' % (var, value)])
+
 def configure_ad_member(ad_server_ip, username, password):
 
 	check_server_role()
@@ -439,6 +489,8 @@ def configure_ad_member(ad_server_ip, username, password):
 
 	run_samba_join_script(username, password)
 
+	add_domaincontroller_srv_record_in_ad(ad_server_ip)
+
 	prepare_connector_settings(username, password, ad_domain_info)
 
 	
@@ -459,22 +511,32 @@ def revert_ucr_settings():
 			u'directory/manager/web/modules/groups/group/show/adnotification',
 			u'directory/manager/web/modules/users/user/show/adnotification',
 			u'directory/manager/web/modules/users/user/display',
+			u'kerberos/defaults/dns_lookup_kdc',
+		]
+	)
+
+	univention.config_registry.handler_set(
+		[
+			u'nameserver/external=false',
 		]
 	)
 
 
 def configure_backup_as_ad_member():
 	# TODO something else?
+	set_nameserver_from_ucs_master()
 	remove_install_univention_samba()
 	prepare_ucr_settings()
 
 def configure_slave_as_ad_member():
 	# TODO something else?
+	set_nameserver_from_ucs_master()
 	remove_install_univention_samba()
 	prepare_ucr_settings()
 
 def configure_member_as_ad_member():
 	# TODO something else?
+	set_nameserver_from_ucs_master()
 	remove_install_univention_samba()
 	prepare_ucr_settings()
 
