@@ -1,3 +1,9 @@
+univention-system-setup (8.0.8-2) unstable; urgency=low
+
+  * Bug #35378: deactivate package download in univention-system-setup-boot.postinst
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 24 Jul 2014 15:49:23 +0200
+
 univention-system-setup (8.0.8-1) unstable; urgency=low
 
   Bug #35378
