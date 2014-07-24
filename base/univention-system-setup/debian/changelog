@@ -1,3 +1,10 @@
+univention-system-setup (7.0.69-39) unstable; urgency=medium
+
+  * Bug #34484: fixed handling of codest (python module locale returns 'UTF8',
+    yet we need 'UTF-8')
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Jul 2014 16:35:06 +0200
+
 univention-system-setup (7.0.69-38) unstable; urgency=medium
 
   * Bug #34484: make sure that the current locale in UMC is also added to the

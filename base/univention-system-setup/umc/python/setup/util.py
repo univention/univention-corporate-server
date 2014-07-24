@@ -46,7 +46,6 @@ import os.path
 import simplejson as json
 import random
 import urllib2
-import locale as _locale
 
 from univention.lib.i18n import Translation, Locale
 from univention.management.console.log import MODULE
@@ -158,7 +157,7 @@ def _xkeymap(keymap):
 	fp.close()
 	return xkeymap
 
-def auto_complete_values_for_join(newValues):
+def auto_complete_values_for_join(newValues, current_locale=None):
 	# try to automatically determine the domain
 	if newValues['server/role'] != 'domaincontroller_master' and 'domainname' not in newValues and 'nameserver1' in newValues:
 		newValues['domainname'] = get_nameserver_domain(newValues['nameserver1'])
@@ -212,10 +211,9 @@ def auto_complete_values_for_join(newValues):
 		# ... otherwise the setup scripts will fail after regenerating the
 		# locale data (in 20_language/10language)
 		forcedLocales = ['en_US.UTF-8:UTF-8'] # we need en_US locale as default language
-		currentLocale = _locale.getlocale(_locale.LC_ALL)
-		if currentLocale != (None, None):
-			currentLocale = '{0}.{1}:{1}'.format(*currentLocale)
-			forcedLocales.append(currentLocale)
+		if current_locale:
+			current_locale = '{0}.{1}:{1}'.format(str(current_locale), current_locale.codeset)
+			forcedLocales.append(current_locale)
 		for ilocale in forcedLocales:
 			if ilocale not in newValues['locale']:
 				newValues['locale'] = '%s %s' % (newValues['locale'], ilocale)

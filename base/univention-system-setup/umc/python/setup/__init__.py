@@ -216,7 +216,7 @@ class Instance(Base):
 				self._progressParser.reset()
 
 				# write the profile file and run setup scripts
-				util.auto_complete_values_for_join(values)
+				util.auto_complete_values_for_join(values, self.locale)
 				util.pre_save(values)
 
 				# on unjoined DC master the nameserver must be set to the external nameserver
