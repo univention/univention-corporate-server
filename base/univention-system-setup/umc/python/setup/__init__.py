@@ -216,7 +216,7 @@ class Instance(Base):
 				self._progressParser.reset()
 
 				# write the profile file and run setup scripts
-				util.auto_complete_values_for_join(values)
+				util.auto_complete_values_for_join(values, self.locale)
 				util.pre_save(values)
 
 				# on unjoined DC master the nameserver must be set to the external nameserver
@@ -376,8 +376,15 @@ class Instance(Base):
 		if not util.is_system_joined() and newrole != 'domaincontroller_master' and 'domainname' not in values:
 			if 'nameserver1' not in values:
 				_append('nameserver1', _('A domain name server needs to specified.'))
-			elif not util.get_nameserver_domain(values['nameserver1']):
-				_append('domainname', _('The domain cannot automatically be determined. Make sure that the correct UCS domain name server has been specified or enter a fully qualified domain name of the system.'))
+			else:
+				guessed_domain = util.get_nameserver_domain(values['nameserver1'])
+				if not guessed_domain:
+					_append('domainname', _('The domain cannot automatically be determined. Make sure that the correct UCS domain name server has been specified or enter a fully qualified domain name of the system.'))
+				messages.append({
+					'valid': True,
+					'key': 'domainname',
+					'value': guessed_domain,
+				})
 
 		# windows domain
 		_check('windows/domain', lambda x: x == x.upper(), _("The windows domain name can only consist of upper case characters."))
