@@ -72,21 +72,6 @@ SYSVOL_PATH='/var/lib/samba/sysvol'
 
 ### --- BEGIN helper functions ---
 
-check_for_ad_member_mode() {
-	case "${server_role}" in
-		domaincontroller_*)
-			local master_is_admember
-			master_is_admember=$(univention-directory-manager computers/domaincontroller_master list "$@" \
-				--filter univentionService="AD Member" | sed -ne 's/^DN: //p')
-			if [ -n "$master_is_admember" ]; then
-				echo "ERROR: UCS Master claims to be Memberserver in an AD domain, cannot join as Samba DC."
-				echo "       Please run univention-join again to configure this system as AD Member."
-				exit 1
-			fi
-			;;
-	esac
-}
-
 operatingSystem_attribute() {
 	operation=$1
 
@@ -238,7 +223,9 @@ stop_conflicting_services() {
 	unset tmp_ucr_key_value_list
 }
 
-set_samba_role() {
+get_samba_role() {
+	local samba4_role
+
 	case "$server_role" in
 		domaincontroller_*)
 			domaincontroller=true;;
@@ -250,7 +237,20 @@ set_samba_role() {
 		samba4_role='MEMBER'
 	fi
 
-	univention-config-registry set samba4/role="$samba4_role"
+	echo "$samba4_role"
+}
+
+configure_samba_role() {
+	if [ -z "$samba4_role" ]; then
+		samba4_role=$(get_samba_role)
+	fi
+
+	if [ "$samba4_role" != "MEMBER" ] && is_domain_in_admember_mode; then
+		echo "ERROR: The domain is in AD Member Mode, cannot join as $samba4_role."
+		exit 1
+	fi
+
+	univention-config-registry set samba4/role?"$samba4_role"
 }
 
 set_samba4_ldap_base() {
@@ -749,7 +749,7 @@ if [ -n "$binddn" ]; then
 	             -s base -b "$binddn" uid | ldapsearch-wrapper | sed -n 's/^uid: //p')
 fi
 
-check_for_ad_member_mode
+configure_samba_role
 
 univention-config-registry commit /etc/samba/smb.conf		# 03univention-directory-listener.inst might remove include
 
@@ -768,10 +768,6 @@ if [ "$samba4_autostart" != "yes" ]; then
 fi
 
 /usr/share/univention-samba4/scripts/mount_extfs_with_user_xattr.py
-
-if [ -z "$samba4_role" ]; then
-	set_samba_role
-fi
 
 ## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
 set_samba4_ldap_base
