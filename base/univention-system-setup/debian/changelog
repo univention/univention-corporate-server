@@ -1,3 +1,10 @@
+univention-system-setup (7.0.69-38) unstable; urgency=medium
+
+  * Bug #34484: make sure that the current locale in UMC is also added to the
+    list of supported locales
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Jul 2014 14:49:18 +0200
+
 univention-system-setup (7.0.69-37) unstable; urgency=low
 
   * Bug #34388: Updated links to appliance wizard 

@@ -46,6 +46,7 @@ import os.path
 import simplejson as json
 import random
 import urllib2
+import locale as _locale
 
 from univention.lib.i18n import Translation, Locale
 from univention.management.console.log import MODULE
@@ -206,9 +207,18 @@ def auto_complete_values_for_join(newValues):
 		# auto set the locale variable if not specified
 		# make sure that en_US is supported in any case
 		newValues['locale'] = newValues['locale/default']
-		usLocale = 'en_US.UTF-8:UTF-8'
-		if usLocale not in newValues['locale']:
-			newValues['locale'] = '%s %s' % (newValues['locale'], usLocale)
+
+		# make sure that the locale of the current session is also supported
+		# ... otherwise the setup scripts will fail after regenerating the
+		# locale data (in 20_language/10language)
+		forcedLocales = ['en_US.UTF-8:UTF-8'] # we need en_US locale as default language
+		currentLocale = _locale.getlocale(_locale.LC_ALL)
+		if currentLocale != (None, None):
+			currentLocale = '{0}.{1}:{1}'.format(*currentLocale)
+			forcedLocales.append(currentLocale)
+		for ilocale in forcedLocales:
+			if ilocale not in newValues['locale']:
+				newValues['locale'] = '%s %s' % (newValues['locale'], ilocale)
 
 	if 'windows/domain' not in newValues:
 		newValues['windows/domain'] = domain2windowdomain(newValues.get('domainname'))
