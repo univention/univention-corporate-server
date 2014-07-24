@@ -1,3 +1,9 @@
+univention-dvd (0.2.0-5) unstable; urgency=low
+
+  * Bug #35378: added univention-system-setup to task file
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 24 Jul 2014 13:40:32 +0200
+
 univention-dvd (0.2.0-4) unstable; urgency=low
 
   * Re-enable user-setup-udeb to setup root password (Bug #35375)

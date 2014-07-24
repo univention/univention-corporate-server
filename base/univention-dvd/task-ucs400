@@ -7,6 +7,12 @@ linux-image-3.10.0-ucs71-amd64
 
 univention-debootstrap
 
+/* Univention System Setup */
+univention-system-setup-boot
+univention-management-console-module-setup
+univention-management-console-server
+univention-management-console-web-server
+
 univention-server-master
 univention-server-backup
 univention-server-slave
