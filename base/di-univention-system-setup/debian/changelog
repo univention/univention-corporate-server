@@ -1,3 +1,9 @@
+di-univention-system-setup (0.0.5-1) unstable; urgency=low
+
+  * Bug #35378: as a workaround restart all UMC services
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 24 Jul 2014 16:35:29 +0200
+
 di-univention-system-setup (0.0.4-1) unstable; urgency=low
 
   * Bug #35378: allow removal of packages during apt-install and install

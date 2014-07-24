@@ -17,6 +17,11 @@ sleep 2
 db_progress STOP
 db_unregister di-univention-system-setup/progress/title di-univention-system-setup/progress/step_install
 
+mkdir -p /target/var/run/univention-management-console/
+chroot /target /etc/init.d/univention-management-console-server restart
+chroot /target /etc/init.d/univention-management-console-web-server restart
+pkill -f apache2
+chroot /target /etc/init.d/apache2 restart
 chroot /target /usr/share/univention-system-setup/startxwithfirefox
 
 db_input critical di-univention-system-setup/foo
