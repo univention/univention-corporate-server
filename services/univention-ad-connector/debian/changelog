@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-19) unstable; urgency=medium
+
+  * Bug #35090 [WIP]: integrated wizard prototype
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Jul 2014 09:11:33 +0200
+
 univention-ad-connector (8.0.17-18) unstable; urgency=low
 
   * Don't sync 'NO PASSWORD' hashes back to AD (Bug #35091)

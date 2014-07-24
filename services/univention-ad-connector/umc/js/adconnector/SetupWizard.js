@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 Univention GmbH
+ * Copyright 2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -66,6 +66,195 @@ define([
 			lang.replace('.umc-adconnector-page-{name} > form > div', conf),
 			lang.replace('background-image: url({path}/{name}.png)', conf)
 		);
+	});
+
+	//TODO: to be merged into SetupWizard
+	var ADConnectorWizard = declare("umc.modules._adconnector.Wizard", [Wizard], {
+		pages: null,
+
+		variables: null,
+
+		addNotification: dialog.notify,
+
+		constructor: function() {
+			this.pages = [{
+				name: 'fqdn',
+				helpText: '<p>' + _("This wizard configures a synchronized parallel operation of UCS next to a native Active Directory domain.") + " "
+					+ _('If on the other hand the replacement of a native Active Directory domain is desired, Univention AD Takeover should be used instead.') + '</p><p>'
+					+ _('Please enter the fully qualified hostname of the Active Directory server.') + '</p><p>'
+					+ _('The hostname must be resolvable by the UCS server. A DNS entry can be configured in the DNS module, or a static host record can be configured through the Univention Configuration Registry module, e.g.') + '</p>'
+					+ '<p>hosts/static/192.168.0.10=w2k8-ad.example.com</p>',
+				headerText: _('UCS Active Directory Connector configuration'),
+				widgets: [{
+					name: 'LDAP_Host',
+					type: TextBox,
+					required: true,
+					regExp: '.+',
+					invalidMessage: _('The hostname of the Active Directory server is required'),
+					label: _('Active Directory Server')
+				}, {
+					name: 'guess',
+					type: CheckBox,
+					label: _('Automatic determination of the LDAP configuration')
+				}],
+				layout: ['LDAP_Host', 'guess']
+			}, {
+				name: 'ldap',
+				helpText: _('LDAP und kerberos configuration of the Active Directory server needs to be specified for the synchronisation'),
+				headerText: _('LDAP and Kerberos'),
+				widgets: [{
+					name: 'LDAP_Base',
+					type: TextBox,
+					required: true,
+					sizeClass: 'OneAndAHalf',
+					label: _('LDAP base')
+				}, {
+					name: 'LDAP_BindDN',
+					required: true,
+					type: TextBox,
+					sizeClass: 'OneAndAHalf',
+					label: _('LDAP DN of the synchronisation user')
+				}, {
+					name: 'LDAP_Password',
+					type: PasswordBox,
+					label: _('Password of the synchronisation user')
+				}, {
+					name: 'KerberosDomain',
+					type: TextBox,
+					label: _('Kerberos domain')
+				}],
+				layout: ['LDAP_Base', 'LDAP_BindDN', 'LDAP_Password', 'KerberosDomain']
+			}, {
+				name: 'sync',
+				helpText: _('UCS Active Directory Connector supports three types of synchronisation.'),
+				headerText: _('Synchronisation mode'),
+				widgets: [{
+					name: 'MappingSyncMode',
+					type: ComboBox,
+					staticValues: [
+						{
+							id: 'sync',
+							label: 'AD <-> UCS'
+						},{
+							id: 'read',
+							label: 'AD -> UCS'
+						}, {
+							id: 'write',
+							label: 'UCS -> AD'
+						}],
+					label: _('Synchronisation mode')
+				}, {
+					name: 'MappingGroupLanguage',
+					label: _('System language of Active Directory server'),
+					type: ComboBox,
+					staticValues: [
+						{
+							id: 'de',
+							label: _('German')
+						}, {
+							id: 'en',
+							label: _('English')
+						}]
+				}],
+				layout: ['MappingSyncMode', 'MappingGroupLanguage']
+			}, {
+				name: 'extended',
+				helpText: _('The following settings control the internal behaviour of the UCS Active Directory connector. For all attributes reasonable default values are provided.'),
+				headerText: _('Extended settings'),
+				widgets: [{
+					name: 'PollSleep',
+					type: TextBox,
+					sizeClass: 'OneThird',
+					label: _('Poll Interval (seconds)')
+				}, {
+					name: 'RetryRejected',
+					label: _('Retry interval for rejected objects'),
+					type: TextBox,
+					sizeClass: 'OneThird'
+				}, {
+					name: 'DebugLevel',
+					label: _('Debug level of Active Directory Connector'),
+					type: TextBox,
+					sizeClass: 'OneThird'
+				}, {
+					name: 'DebugFunction',
+					label: _('Add debug output for functions'),
+					type: CheckBox,
+					sizeClass: 'OneThird'
+				}],
+				layout: ['PollSleep', 'RetryRejected', 'DebugLevel', 'DebugFunction']
+			}];
+
+		},
+
+		next: function(/*String*/ currentID) {
+			if (!currentID) {
+				tools.forIn(this.variables, lang.hitch(this, function(option, value) {
+					var w = this.getWidget(null, option);
+					if (w) {
+						w.set('value', value);
+					}
+				}));
+				// of no LDAP_base is set activate the automatic determination
+				if (!this.variables.LDAP_base) {
+					this.getWidget('fqdn', 'guess').set('value', true);
+				}
+			} else if (currentID == 'fqdn') {
+				var nameWidget = this.getWidget('LDAP_Host');
+				if (!nameWidget.isValid()) {
+					nameWidget.focus();
+					return null;
+				}
+
+				var guess = this.getWidget('fqdn', 'guess');
+				if (guess.get('value')) {
+					this.standby(true);
+					var server = this.getWidget('fqdn', 'LDAP_Host');
+					tools.umcpCommand('adconnector/guess', { 'LDAP_Host' : server.get('value') }).then(lang.hitch(this, function(response) {
+						if (response.result.LDAP_Base) {
+							this.getWidget('ldap', 'LDAP_Base').set('value', response.result.LDAP_Base);
+							this.getWidget('ldap', 'LDAP_BindDN').set('value', 'cn=Administrator,cn=users,' + response.result.LDAP_Base);
+							this.getWidget('ldap', 'KerberosDomain').set('value', tools.explodeDn(response.result.LDAP_Base, true).join('.'));
+						} else {
+							this.addNotification(response.result.message);
+						}
+						this.standby(false);
+					}));
+				}
+			} else if (currentID == 'ldap') {
+				var valid = true;
+				array.forEach(['LDAP_Base', 'LDAP_BindDN', 'LDAP_Password'], lang.hitch(this, function(widgetName) {
+					if (!this.getWidget(widgetName).isValid()) {
+						this.getWidget(widgetName).focus();
+						valid = false;
+						return false;
+					}
+				}));
+				if (!valid) {
+					return null;
+				}
+
+				var password = this.getWidget('ldap', 'LDAP_Password');
+				if (!this.variables.passwordExists && !password.get('value')) {
+					dialog.alert(_('The password for the synchronisation account is required!'));
+					return currentID;
+				}
+			}
+
+			return this.inherited(arguments);
+		},
+
+		onFinished: function(values) {
+			this.standby(true);
+			tools.umcpCommand('adconnector/save', values).then(lang.hitch(this, function(response) {
+				if (!response.result.success) {
+					dialog.alert(response.result.message);
+				} else {
+					this.addNotification(response.result.message);
+				}
+				this.standby(false);
+			}));
+		}
 	});
 
 	var _Wizard = declare("umc.modules.adconnector2.Wizard", [ Wizard ], {
