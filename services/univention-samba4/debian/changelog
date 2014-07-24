@@ -1,3 +1,9 @@
+univention-samba4 (3.0.39-31) unstable; urgency=medium
+
+  * Add debian/ucslint.overrides (Bug #35252).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Jul 2014 17:51:42 +0200
+
 univention-samba4 (3.0.39-30) unstable; urgency=medium
 
   * Special handling for adtakeover:
