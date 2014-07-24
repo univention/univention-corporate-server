@@ -8,7 +8,7 @@ for i in univention-system-setup-boot univention-system-setup univention-managem
 	db_progress STEP 1
 	db_subst di-univention-system-setup/progress/step_install PKG "$i"
 	db_progress INFO di-univention-system-setup/progress/step_install
-	apt-install $i
+	apt-install "$i"
 	sleep 2
 done
 db_progress SET 5
@@ -17,7 +17,7 @@ sleep 2
 db_progress STOP
 db_unregister di-univention-system-setup/progress/title di-univention-system-setup/progress/step_install
 
-/usr/share/univention-system-setup/startxwithfirefox
+chroot /target /usr/share/univention-system-setup/startxwithfirefox
 
 db_input critical di-univention-system-setup/foo
 db_go
