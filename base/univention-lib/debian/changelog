@@ -1,3 +1,12 @@
+univention-lib (3.0.26-32) unstable; urgency=low
+
+  * admember mode updates (Bug #35091)
+      - use host account for AD connector
+      - run samba join script
+      - fix is_localhost_in_adconnector_mode
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Jul 2014 14:30:00 +0200
+
 univention-lib (3.0.26-31) unstable; urgency=low
 
   * fixed univentionSambaWrongVersion error message (Bug #35446) 

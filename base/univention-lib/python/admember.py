@@ -72,6 +72,9 @@ class timeSyncronizationFailed(Exception):
 class manualTimeSyncronizationRequired(timeSyncronizationFailed):
 	'''Time difference critical for Kerberos but syncronization aborted.'''
 
+class sambaJoinScriptFailed(Exception):
+	'''26univention-samba.inst failed'''
+
 
 def is_localhost_in_admember_mode(ucr=None):
 	if not ucr:
@@ -84,9 +87,8 @@ def is_localhost_in_adconnector_mode(ucr=None):
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
-	lo = univention.uldap.getMachineConnection()
-	res = lo.search(base=ucr.get('ldap/hostdn'), scope=ldap.SCOPE_BASE, filter='(univentionService=AD Connector)')
-	if res:
+
+	if ucr.is_false('ad/member', True) and ucr.get('connector/ad/ldap/host'):
 		return True
 	return False
 
@@ -337,7 +339,7 @@ def set_nameserver(server_ips, ucr=None):
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
-	count = 0
+	count = 1
 	for server_ip in server_ips:
 		univention.config_registry.handler_set([u'nameserver%d=%s' % (count, server_ip)])
 		count += 1
@@ -369,24 +371,19 @@ def prepare_ucr_settings():
 	)
 
 
-def prepare_connector_settings(username, password, ad_domain_info):
-	### Store bind information for univention-ad-connector
+def prepare_connector_settings(username, password, ad_domain_info, ucr=None):
+	if not ucr:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
 
-	bindpw_file = "/etc/univention/connector/ad/bindpw"
-	if not os.path.exists(os.path.dirname(bindpw_file)):
-		os.makedirs(os.path.dirname(bindpw_file))
-	with file(bindpw_file, 'w') as f:
-		os.chmod(bindpw_file, 0600)
-		f.write(password)
-
-	binddn = 'cn=%s,cn=users,%s' % (username, ad_domain_info["LDAP Base"])
+	binddn = 'CN=%s,CN=Computers,%s' % (ucr.get('hostname'), ad_domain_info["LDAP Base"])
 
 	univention.config_registry.handler_set(
 		[
 			u'connector/ad/ldap/host=%s' % ad_domain_info["DC DNS Name"],
 			u'connector/ad/ldap/base=%s' % ad_domain_info["LDAP Base"],
 			u'connector/ad/ldap/binddn=%s' % binddn,
-			u'connector/ad/ldap/bindpw=%s' % bindpw_file,
+			u'connector/ad/ldap/bindpw=/etc/machine.secret',
 			u'connector/ad/mapping/syncmode=read',
 			u'connector/ad/mapping/user/ignorelist=krbtgt,root,pcpatch',
 		]
@@ -402,6 +399,20 @@ def disable_local_heimdal():
 	stop_service("heimdal-kdc")
 	univention.config_registry.handler_set([u'kerberos/autostart=false'])
 
+def run_samba_join_script(username, password, ucr=None):
+	if not ucr:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+
+	binddn = 'uid=%s,cn=users,%s' % (username, ucr.get('ldap/base'))
+
+	p1 = subprocess.Popen(['/usr/lib/univention-install/26univention-samba.inst', '--binddn', binddn, '--bindpwd', password],
+		close_fds=True)
+	stdout, stderr = p1.communicate()
+	
+	if p1.returncode != 0:
+		raise sambaJoinScriptFailed()
+
 
 def configure_ad_member(ad_server_ip, username, password):
 
@@ -415,8 +426,6 @@ def configure_ad_member(ad_server_ip, username, password):
 
 	set_timeserver(ad_server_ip)
 
-	set_nameserver(ad_server_ip)
-
 	set_nameserver([ad_server_ip])
 
 	prepare_ucr_settings()
@@ -428,7 +437,7 @@ def configure_ad_member(ad_server_ip, username, password):
 
 	remove_install_univention_samba()
 
-	prepare_ucr_settings()
+	run_samba_join_script(username, password)
 
 	prepare_connector_settings(username, password, ad_domain_info)
 
