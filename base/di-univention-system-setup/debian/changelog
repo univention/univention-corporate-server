@@ -1,3 +1,10 @@
+di-univention-system-setup (0.0.4-1) unstable; urgency=low
+
+  * Bug #35378: allow removal of packages during apt-install and install
+    recommended packages
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 24 Jul 2014 15:10:11 +0200
+
 di-univention-system-setup (0.0.3-1) unstable; urgency=low
 
   * Bug #35378: install univention-system-setup
