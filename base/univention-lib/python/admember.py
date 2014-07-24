@@ -36,6 +36,7 @@ import os
 import subprocess
 import apt
 import sys
+import tempfile
 from datetime import datetime, timedelta
 from samba.dcerpc import nbt
 from samba.net import Net
@@ -431,8 +432,10 @@ def run_samba_join_script(username, password, ucr=None):
 
 	binddn = 'uid=%s,cn=users,%s' % (username, ucr.get('ldap/base'))
 
+	my_env = os.environ
+	my_env['SMB_CONF_PATH'] = '/etc/samba/smb.conf'
 	p1 = subprocess.Popen(['/usr/lib/univention-install/26univention-samba.inst', '--binddn', binddn, '--bindpwd', password],
-		close_fds=True)
+		close_fds=True, env=my_env)
 	stdout, stderr = p1.communicate()
 	
 	if p1.returncode != 0:

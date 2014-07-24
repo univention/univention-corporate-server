@@ -1,3 +1,10 @@
+univention-lib (3.0.26-36) unstable; urgency=low
+
+  * Re-added tempfile and use a set SMB_CONF_PATH to /etc/samba/smb.conf
+    before running the join script (Bug #35091)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Jul 2014 15:53:19 +0200
+
 univention-lib (3.0.26-35) unstable; urgency=low
 
   * Use the correct dn in prepare_administrator (Bug #35091)
