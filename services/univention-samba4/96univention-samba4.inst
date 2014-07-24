@@ -786,6 +786,20 @@ if [ $JS_LAST_EXECUTED_VERSION -gt 0 ] && [ $JS_LAST_EXECUTED_VERSION -lt 6 ]; t
 	update_pseudo_groups "$@"
 fi
 
+if [ -r '/var/lib/samba/private/.adtakeover' ]; then
+	adtakeover_state=$(</var/lib/samba/private/.adtakeover)
+	echo "INFO: Detected adtakeover state $adtakeover_state"
+fi
+
+if [ "$adtakeover_state" = start ]; then
+	disable_slapd_on_standard_port
+
+	echo "INFO: Stopping univention-samba4 joinscript for AD-Takeover"
+	VERSION=1
+	joinscript_save_current_version
+	exit 0
+fi
+
 if [ "$samba4_role" = 'DC' ]; then
 
 	if [ "$samba_share_netlogon" != "yes" ]; then
