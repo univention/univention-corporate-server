@@ -60,7 +60,7 @@ Depends: ${misc:Depends},
  shell-univention-lib (>= 1.0.6),
  python-univention-lib (>= 3.0.26-23),
  univention-base-files,
- univention-management-console-module-adconnector (= ${binary:Version})
+ univention-management-console-module-adconnector (= ${binary:Version}),
  python-samba,
  python-ldb,
  samba-common-bin

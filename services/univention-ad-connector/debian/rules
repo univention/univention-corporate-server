@@ -40,11 +40,11 @@ MO_FILES := $(PO_FILES:%.po=%.mo)
 	msgfmt --check -o $@ $<
 
 override_dh_auto_build: $(MO_FILES)
-	#dh-umc-module-build
+	dh-umc-module-build
 	dh_auto_build
 
 override_dh_auto_install:
-	#dh-umc-module-install
+	dh-umc-module-install
 	univention-install-config-registry
 	@set -e;\
 	for i in $(MO_FILES); do\
