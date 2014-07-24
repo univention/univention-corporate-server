@@ -1,3 +1,10 @@
+univention-dvd (0.2.0-6) unstable; urgency=low
+
+  * Bug #35378: removed live-installer from installer
+  * Bug #35378: updated tasks file
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 24 Jul 2014 15:06:53 +0200
+
 univention-dvd (0.2.0-5) unstable; urgency=low
 
   * Bug #35378: added univention-system-setup to task file

@@ -8,7 +8,7 @@ for i in univention-system-setup-boot univention-system-setup univention-managem
 	db_progress STEP 1
 	db_subst di-univention-system-setup/progress/step_install PKG "$i"
 	db_progress INFO di-univention-system-setup/progress/step_install
-	apt-install "$i"
+	apt-install --with-recommends --allow-remove "$i"
 	sleep 2
 done
 db_progress SET 5
