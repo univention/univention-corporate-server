@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-24) unstable; urgency=medium
+
+  * Bug #35090 [WIP]: prototype with integrated AD join
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Jul 2014 20:49:30 +0200
+
 univention-ad-connector (8.0.17-23) unstable; urgency=medium
 
   * Bug #35090 [WIP]: enabled build of UMC module, fixed fuzzy entries

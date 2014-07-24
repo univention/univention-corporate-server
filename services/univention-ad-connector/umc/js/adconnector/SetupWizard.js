@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define require setTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -260,6 +260,7 @@ define([
 	var _Wizard = declare("umc.modules.adconnector.SetupWizard", [ Wizard ], {
 		autoValidate: true,
 		autoFocus: true,
+		_progressBar: null,
 
 		constructor: function() {
 			this.pages = [{
@@ -335,6 +336,17 @@ define([
 					content: ''
 				}]
 			}, {
+				'class': 'umc-adconnector-page-info umc-adconnector-page',
+				name: 'error-admember',
+				headerText: _('AD Connection - An error ocurred'),
+				helpText: '<p>' + _('An error occurred during the join process of UCS into the Active Directory domain. The following information will give you some more details on which problems occurred during the join process.') + '</p>',
+				widgets: [{
+					type: Text,
+					'class': 'umcPageHelpText',
+					name: 'info',
+					content: ''
+				}]
+			}, {
 				'class': 'umc-adconnector-page-finished umc-adconnector-page',
 				name: 'finished-admember',
 				headerText: _('Completion of Active Directory Connector'),
@@ -357,13 +369,13 @@ define([
 					name: 'syncmode',
 					staticValues: [{
 						id: 'syncAD2UCS',
-						label: _('Unidirectional synchronisation of Active Directory to UCS.'),
+						label: _('Unidirectional synchronisation of Active Directory to UCS.')
 					}, {
 						id: 'syncUCS2AD',
-						label: _('Unidirectional synchronisation of UCS to Active Directory.'),
+						label: _('Unidirectional synchronisation of UCS to Active Directory.')
 					}, {
 						id: 'syncBidirectional',
-						label: _('Bidirectional synchronisation of UCS and Active Directory.'),
+						label: _('Bidirectional synchronisation of UCS and Active Directory.')
 					}],
 					onChange: lang.hitch(this, function(value) {
 						var map2img = {
@@ -413,6 +425,8 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			this._progressBar = new ProgressBar({});
+			this.own(this._progressBar);
 			var syncmodeWidget = this.getWidget('start', 'syncmode');
 		},
 
@@ -441,11 +455,17 @@ define([
 			this.getWidget('confirm-admember', 'info').set('content', msg);
 		},
 
+		_updateErrorPage: function(mode, message) {
+			message = message || '<p>' + _('An unexpected error occurred. More information about the cause of the error can be found in the log file /var/log/univention/management-console-module-adconnector.log. Please retry the join process after resolving any conflicting issues.') + '</p>';
+			message = message.replace(/\n/g, '<br>');
+			this.getWidget('error-' + mode, 'info').set('content', message);
+		},
+
 		_checkADDomain: function() {
-			var vals = this.getPage('credentials')._form.get('value');
+			var vals = this.getValues();
 			return this.standbyDuring(tools.umcpCommand('adconnector/admember/check_domain', vals)).then(lang.hitch(this, function(response) {
 				this._updateConfirmADMemberPage(response.result);
-				return response.result
+				return response.result;
 			}), function() {
 				return null;
 			});
@@ -464,6 +484,27 @@ define([
 			});
 		},
 
+		join: function(values) {
+			this.standby(false);
+			this._progressBar.reset(_('Joining UCS into Active Directory domain'));
+			var vals = this.getValues();
+			var deferred = tools.umcpProgressCommand(this._progressBar, 'adconnector/admember/join', vals).then(lang.hitch(this, function(result) {
+				this.standby(false);
+				if (!result.success) {
+					this._updateErrorPage(result.error);
+					return false;
+				}
+				return true;
+			}), lang.hitch(this, function(error) {
+				// NOTE: an alert dialogue with the traceback is shown automatically
+				this.standby(false);
+				this._updateErrorPage();
+				return true;
+			}));
+			this.standbyDuring(deferred, this._progressBar);
+			return deferred;
+		},
+
 		isPageVisible: function(pageName) {
 			var isConnectorPage = pageName.indexOf('-adconnector') >= 0;
 			if (isConnectorPage && !this._isConnectorMode()) {
@@ -474,6 +515,10 @@ define([
 				return false;
 			}
 			return true;
+		},
+
+		getValues: function() {
+			return this.getPage('credentials')._form.get('value');
 		},
 
 		next: function(pageName) {
@@ -503,9 +548,17 @@ define([
 						return pageName;
 					}
 					if (!adDomainInfo.ssl_supported) {
-						return this._confirmUnsecureConnectionWithADDomain().then(function(confirmed) {
-							return confirmed ? nextPage : pageName;
-						});
+						return this._confirmUnsecureConnectionWithADDomain().then(lang.hitch(this, function(confirmed) {
+							if (confirmed) {
+								// start join process
+								return this.join().then(function(success) {
+									return success ? 'finished-admember' : 'error-admember';
+								});
+							}
+
+							// confirm dialog canceled
+							return pageName;
+						}));
 					}
 					return nextPage;
 				}));
@@ -522,8 +575,8 @@ define([
 					return nextPage;
 				});
 			}
-			if ((pageName == 'credentials' && this._isMemberMode())
-				|| (pageName == 'config-adconnector' && this._isConnectorMode())) {
+			if ((pageName == 'credentials' && this._isMemberMode()) ||
+				(pageName == 'config-adconnector' && this._isConnectorMode())) {
 				return this._queryDomainInfo().then(function() {
 					return nextPage;
 				});
@@ -554,7 +607,7 @@ define([
 			var _deferred = new Deferred();
 			setTimeout(lang.hitch(this, function() {
 				this.progressBar.setInfo(null, message, percentage);
-				_deferred.resolve()
+				_deferred.resolve();
 			}), seconds * 1000);
 			return _deferred;
 		},
