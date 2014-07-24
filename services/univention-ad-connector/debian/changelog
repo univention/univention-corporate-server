@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-22) unstable; urgency=medium
+
+  * Bug #35090 [WIP]: removed temporary package adconnector2, install graphics
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Jul 2014 18:48:27 +0200
+
 univention-ad-connector (8.0.17-21) unstable; urgency=medium
 
   * Bug #35090 [WIP]: integrated checks for inital connection and SSL
