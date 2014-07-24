@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (1.0.10-28) unstable; urgency=medium
+
+  * run disable_admember_mode before joining the domain (Bug #35346).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Jul 2014 17:41:42 +0200
+
 univention-management-console-module-adtakeover (1.0.10-27) unstable; urgency=medium
 
   * Move fix_gpo_container_names code to check_gpo_presence (Bug #34776)

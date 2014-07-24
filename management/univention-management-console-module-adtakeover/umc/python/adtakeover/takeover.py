@@ -70,6 +70,7 @@ from samba.credentials import Credentials, DONT_USE_KERBEROS
 from univention.management.console.log import MODULE
 import univention.management.console as umc
 import ConfigParser
+import univention.lib.admember
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -267,6 +268,7 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	takeover.time_sync()
 
 	progress.headline(_('Joining the domain'))
+	takeover.disable_admember_mode()
 	progress.percentage(2)
 	progress._scale = 18 - progress._percentage
 	takeover.join_AD(progress)
@@ -789,6 +791,22 @@ class AD_Takeover():
 				raise TimeSynchronizationFailed(_("Internal Error: rdate -s -p failed (%d).") % (p1.returncode,))
 		return True
 
+
+	def disable_admember_mode(self, progress):
+		if univention.lib.admember.is_domain_in_admember_mode():
+			univention.lib.admember.remove_admember_service_from_localhost()
+			run_and_output_to_log(["univention-config-registry", "unset",
+				"ad/member",
+				"connector/s4/listener/disabled",
+				], log.debug)
+			run_and_output_to_log(["univention-config-registry", "set",
+				"connector/ad/autostart=no",
+				"connector/s4/autostart=yes",
+				], log.debug)
+			run_and_output_to_log(["/etc/init.d/univention-ad-connector", "stop"], log.debug)
+			run_and_output_to_log(["/etc/init.d/univention-directory-listener", "crestart"], log.debug)
+			## And now run univention-samba4.inst pre-provision setup (.adtakeover status is "start"), to disable slapd on port 389
+			returncode = run_and_output_to_log(["univention-run-join-scripts"], log.debug)
 
 	def join_AD(self, progress):
 		log.info("Starting phase I of the takeover process.")
