@@ -36,7 +36,7 @@ from univention.lib import Translation, admember
 from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
-from univention.management.console.modules.decorators import file_upload, sanitize
+from univention.management.console.modules.decorators import file_upload, sanitize, simple_response
 from univention.management.console.modules.sanitizers import StringSanitizer
 from univention.management.console.modules import UMC_CommandError
 
@@ -69,12 +69,7 @@ class Instance( Base ):
 
 	def __init__( self ):
 		Base.__init__( self )
-		self.status_certificate = False
-		self.status_running = False
 		self.guessed_baseDN = None
-		self.status_mode_adconnector = False
-		self.status_mode_admember = False
-
 		self.__update_status()
 
 	def state( self, request ):
@@ -91,6 +86,7 @@ class Instance( Base ):
 			'mode_admember' : self.status_mode_admember,
 			'mode_adconnector' : self.status_mode_adconnector,
 			'configured' : self.status_mode_adconnector or self.status_mode_admember,
+			'server_role': ucr.get('server/role'),
 		})
 
 	def load( self, request ):
@@ -328,3 +324,76 @@ class Instance( Base ):
 			if proc.cmdline and fnmatch.fnmatch( ' '.join( proc.cmdline ), command ):
 				return True
 		return False
+
+	@sanitize(
+		username=StringSanitizer(required=True),
+		password=StringSanitizer(required=True),
+		ad_server_ip=StringSanitizer(required=True),
+	)
+	@simple_response
+	def admember_check_domain(self, username, password, ad_server_ip):
+		try:
+			admember.check_server_role()
+			ad_domain_info = admember.lookup_adds_dc(ad_server_ip)
+			admember.check_domain(ad_domain_info)
+			admember.check_connection(ad_server_ip, username, password)
+		except admember.invalidUCSServerRole:
+			raise UMC_CommandError(_('The AD member mode cannot only be configured on a DC master server.'))
+		except admember.failedADConnect:
+			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_domain_info['DC DNS Name'])
+		except admember.domainnameMismatch:
+			raise UMC_CommandError(_('The domain name of the AD Server (%s) does not match the local UCS domain name (%s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % (ad_domain_info["Domain"], ucr['domainname']))
+		except admember.connectionFailed:
+			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info['DC DNS Name'])
+
+		# final info dict that is returned... replace spaces in the keys with '_'
+		info = dict([(key.replace(' ', '_'), value) for key, value in ad_domain_info.iteritems()])
+		info['ssl_supported'] = admember.server_supports_ssl(server=ad_domain_info["DC DNS Name"])
+		return info
+
+	@sanitize(
+		username=StringSanitizer(required=True),
+		password=StringSanitizer(required=True),
+		ad_server_ip=StringSanitizer(required=True),
+	)
+	@simple_response(with_progress=True)
+	def admember_join(self, username, password, ad_server_ip, progress):
+		progress.title =_('Verifying settings for Active Directory domain')
+		progress.total = 100
+
+		def _progress(steps, msg):
+			progress.current = steps
+			progress.message = msg
+
+		admember.check_server_role()
+		ad_domain_info = lookup_adds_dc(ad_server_ip)
+
+		_progress(10, _('Configuration of time synchronization with AD server'))
+		time_sync(ad_server_ip)
+		set_timeserver(ad_server_ip)
+
+		set_nameserver([ad_server_ip])
+
+		prepare_ucr_settings()
+
+		add_admember_service_to_localhost()
+
+		disable_local_heimdal()
+		disable_local_samba4()
+
+		prepare_administrator(username, password)
+
+		remove_install_univention_samba()
+
+		run_samba_join_script(username, password)
+
+		add_domaincontroller_srv_record_in_ad(ad_server_ip)
+
+		prepare_connector_settings(username, password, ad_domain_info)
+
+		if server_supports_ssl(server=ad_domain_info["DC DNS Name"]):
+			enable_ssl()
+		else:
+			print "WARNING: ssl is not supported"
+			disable_ssl()
+

@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-21) unstable; urgency=medium
+
+  * Bug #35090 [WIP]: integrated checks for inital connection and SSL
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Jul 2014 18:14:15 +0200
+
 univention-ad-connector (8.0.17-20) unstable; urgency=medium
 
   * Bug #35090 [WIP]: fixed JavaScript syntax error, use admember lib
