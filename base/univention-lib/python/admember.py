@@ -119,14 +119,14 @@ def check_connection(ad_server_ip, username, password):
 	if p1.returncode != 0:
 		raise connectionFailed()
 
-def prepare_administrator(username, password):
+def prepare_administrator(username, password, ucr=None):
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
 	administrator_dn = 'uid=Administrator,cn=users,%s' % (ucr['ldap/base'])
 
-	p1 = subprocess.Popen(['univention-directory-manager', 'users/user', 'modify', '--dn', 'administrator_dn', '--set', 'password=%s' % password, '--set', 'overridePWHistory=1', '--set', 'overridePWLength=1'], close_fds=True)
+	p1 = subprocess.Popen(['univention-directory-manager', 'users/user', 'modify', '--dn', administrator_dn, '--set', 'password=%s' % password, '--set', 'overridePWHistory=1', '--set', 'overridePWLength=1'], close_fds=True)
 	stdout, stderr = p1.communicate()
 	if p1.returncode != 0:
 		raise failedToSetAdministratorPassword()

@@ -1,3 +1,9 @@
+univention-lib (3.0.26-35) unstable; urgency=low
+
+  * Use the correct dn in prepare_administrator (Bug #35091)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Jul 2014 15:34:19 +0200
+
 univention-lib (3.0.26-34) unstable; urgency=low
 
   * Added more admember functions check_connection() and
