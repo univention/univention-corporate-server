@@ -18,6 +18,7 @@ db_progress STOP
 db_unregister di-univention-system-setup/progress/title di-univention-system-setup/progress/step_install
 
 mkdir -p /target/var/run/univention-management-console/
+chroot /target /usr/sbin/ucr set locale=en_US.UTF-8:UTF-8
 chroot /target /etc/init.d/univention-management-console-server restart
 chroot /target /etc/init.d/univention-management-console-web-server restart
 pkill -f apache2
