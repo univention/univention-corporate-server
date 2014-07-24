@@ -1,3 +1,10 @@
+univention-lib (3.0.26-34) unstable; urgency=low
+
+  * Added more admember functions check_connection() and
+    prepare_administrator() (Bug #35091)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Jul 2014 15:13:43 +0200
+
 univention-lib (3.0.26-33) unstable; urgency=low
 
   * create _domaincontroller_master on ad during master init (Bug #35461)

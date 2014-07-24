@@ -55,8 +55,14 @@ class invalidUCSServerRole(Exception):
 class failedADConnect(Exception):
 	'''Connection to AD Server failed'''
 
+class failedToSetAdministratorPassword(Exception):
+	'''Failed to set the password of the UCS Administrator to the AD password'''
+
 class domainnameMismatch(Exception):
 	'''Domain Names don't match'''
+
+class connectionFailed(Exception):
+	'''Connection to AD failed'''
 
 class univentionSambaWrongVersion(Exception):
 	'''univention-samba candiate has wrong version'''
@@ -107,6 +113,23 @@ def is_domain_in_admember_mode(ucr=None):
 		return True
 	return False
 
+def check_connection(ad_server_ip, username, password):
+	p1 = subprocess.Popen(['smbclient', '-U', '%s%%%s' % (username, password), '-c', 'quit', '//%s/sysvol' % ad_server_ip], close_fds=True)
+	stdout, stderr = p1.communicate()
+	if p1.returncode != 0:
+		raise connectionFailed()
+
+def prepare_administrator(username, password):
+	if not ucr:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+
+	administrator_dn = 'uid=Administrator,cn=users,%s' % (ucr['ldap/base'])
+
+	p1 = subprocess.Popen(['univention-directory-manager', 'users/user', 'modify', '--dn', 'administrator_dn', '--set', 'password=%s' % password, '--set', 'overridePWHistory=1', '--set', 'overridePWLength=1'], close_fds=True)
+	stdout, stderr = p1.communicate()
+	if p1.returncode != 0:
+		raise failedToSetAdministratorPassword()
 
 def server_supports_ssl(server):
 	ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
@@ -472,6 +495,8 @@ def configure_ad_member(ad_server_ip, username, password):
 
 	check_domain(ad_domain_info)
 
+	check_connection(ad_server_ip, username, password)
+
 	time_sync(ad_server_ip)
 
 	set_timeserver(ad_server_ip)
@@ -484,6 +509,8 @@ def configure_ad_member(ad_server_ip, username, password):
 
 	disable_local_heimdal()
 	disable_local_samba4()
+
+	prepare_administrator(username, password)
 
 	remove_install_univention_samba()
 
