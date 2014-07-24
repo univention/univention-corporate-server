@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-join
-fix: 6.0.18-3.466.201406201328
+fix: 6.0.18-6.470.201407231611
 version: [2]
 desc: |
   Support for "UCS as member in an AD Domain" has been added to
