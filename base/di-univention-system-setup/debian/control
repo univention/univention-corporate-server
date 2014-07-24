@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 9),
 Package: di-univention-system-setup
 Architecture: i386 amd64
 XB-Subarchitecture: ${subarch}
-Provides: bootable-system
+Provides: configured-ucs
 Depends: cdebconf-udeb, kernel-installer, di-utils, installed-base, created-fstab, bootable-system
 XB-Installer-Menu-Item: 7650
 Package-Type: udeb
