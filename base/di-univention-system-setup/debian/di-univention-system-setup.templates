@@ -1,7 +1,7 @@
 Template: di-univention-system-setup/progress/title
 Type: text
 # :sl1:
-_Description: Installing Univention System Setup
+_Description: FIXME Now Installing Univention System Setup
 
 Template: di-univention-system-setup/progress/step_install
 Type: text
@@ -10,6 +10,8 @@ _Description: Installing the package ${PKG} ...
 
 Template: di-univention-system-setup/foo
 Type: boolean
+Default: false
 # :sl1:
 _Description: This is a dummy question
  This is a dummy test text
+
