@@ -158,6 +158,10 @@ def _add_service_to_localhost(service):
 	if res != 0:
 		raise faildToSetService
 
+def _remove_service_from_localhost(service):
+	res = subprocess.call('. /usr/share/univention-lib/ldap.sh; ucs_removeServiceFromLocalhost "%s"' % service, shell=True)
+	if res != 0:
+		raise faildToSetService
 
 def add_admember_service_to_localhost():
 	_add_service_to_localhost('AD Member')
@@ -165,6 +169,10 @@ def add_admember_service_to_localhost():
 
 def add_adconnector_service_to_localhost():
 	_add_service_to_localhost('AD Connector')
+
+def remove_admember_service_from_localhost():
+	_remove_service_from_localhost('AD Member')
+
 
 def remove_install_univention_samba(info_handler=log, step_handler=None, error_handler=log, install=True, uninstall=True):
 	pm = univention.lib.package_manager.PackageManager(

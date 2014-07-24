@@ -1,3 +1,9 @@
+univention-lib (3.0.26-37) unstable; urgency=medium
+
+  * Add remove_admember_service_from_localhost (Bug #35346)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Jul 2014 17:27:13 +0200
+
 univention-lib (3.0.26-36) unstable; urgency=low
 
   * Re-added tempfile and use a set SMB_CONF_PATH to /etc/samba/smb.conf
