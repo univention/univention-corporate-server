@@ -90,7 +90,7 @@ class Instance( Base ):
 			'certificate' : self.status_certificate,
 			'mode_admember' : self.status_mode_admember,
 			'mode_adconnector' : self.status_mode_adconnector,
-			'is_configured' : self.status_mode_adconnector or self.status_mode_admember,
+			'configured' : self.status_mode_adconnector or self.status_mode_admember,
 		})
 
 	def load( self, request ):
