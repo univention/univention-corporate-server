@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-31) unstable; urgency=medium
+
+  * Bug #35090 [WIP]: improved error/progress handling for AD member mode
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Jul 2014 18:33:41 +0200
+
 univention-ad-connector (8.0.17-30) unstable; urgency=low
 
   * Bug #35090 [WIP]: added some functionality for ad-connector path in wizard

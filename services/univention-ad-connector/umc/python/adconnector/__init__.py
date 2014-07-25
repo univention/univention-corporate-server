@@ -371,7 +371,8 @@ class Instance(Base, ProgressMixin):
 	def admember_join(self, username, password, ad_server_ip, progress):
 		progress.title =_('Joining UCS into Active Directory domain')
 		progress.total = 100.0
-		success = True
+		progress.warnings = []
+		success = False
 		MODULE.process(progress.title)
 
 		def _progress(steps, msg):
@@ -380,19 +381,26 @@ class Instance(Base, ProgressMixin):
 			MODULE.process(msg)
 			time.sleep(0.2)
 
-		def _err(exc, msg=None):
-			exc_str = str(exc) or exc.__doc__  # if no message, take the doc string
-			MODULE.error('Join process failed [%s]: %s' % (exc.__class__.__name__, exc_str))
+		def _err(exc=None, msg=None):
+
+			exc_str = ''
+			if exc is not None:
+				exc_str = str(exc) or exc.__doc__  # if no message, take the doc string
+				exc_class_name = exc.__class__.__name__
+				MODULE.error('Join process failed [%s]: %s' % (exc_class_name, exc_str))
+
 			if msg:
 				MODULE.error(msg)
 			else:
 				msg = _('An unexpected error occurred: %s') % exc_str
+
 			progress.finish_with_result({
 				'success': False,
 				'error': msg,
+				'warnings': progress.warnings,
 			})
-			success = False
 
+		ad_domain_info = {}
 		try:
 			admember.check_server_role()
 			ad_domain_info = admember.lookup_adds_dc(ad_server_ip)
@@ -414,39 +422,60 @@ class Instance(Base, ProgressMixin):
 			admember.prepare_administrator(username, password)
 
 			_progress(40, _('Configuring software components...'))
-			admember.remove_install_univention_samba()
+
+			_step_offset = 40.0
+			_nsteps = 40.0
+			def _step_handler(step):
+				MODULE.info('Package manager progress: %.1f' % step)
+				progress.current = (step / 100.0) * _nsteps + _step_offset
+
+			def _err_handler(err):
+				MODULE.warn(err)
+				progress.warnings.append(err)
+
+			success = admember.remove_install_univention_samba(info_handler=MODULE.info, error_handler=_err_handler, step_handler=_step_handler)
+			if not success:
+				raise RuntimeError(_('An error occurred while installing necessary software components.'))
+
 			admember.run_samba_join_script(username, password)
 
-			_progress(80, _('Configuring DNS entries...'))
+			_progress(85, _('Configuring DNS entries...'))
 			admember.add_domaincontroller_srv_record_in_ad(ad_server_ip)
 
 			_progress(90, _('Configuring synchronization from AD...'))
 			admember.prepare_connector_settings(username, password, ad_domain_info)
 
-			if admember.server_supports_ssl(server=ad_domain_info["DC DNS Name"]):
+			if admember.server_supports_ssl(server=ad_domain_info.get('DC DNS Name')):
 				_progress(95, _('Configuring SSL settings...'))
 				admember.enable_ssl()
 			else:
 				MODULE.warn('SSL is not supported')
 				admember.disable_ssl()
+			success = True
 		except admember.invalidUCSServerRole as exc:
 			_err(exc, _('The AD member mode cannot only be configured on a DC master server.'))
 		except admember.failedADConnect as exc:
-			_err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_domain_info['DC DNS Name'])
+			_err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_domain_info.get('DC DNS Name'))
 		except admember.domainnameMismatch as exc:
-			_err(exc, _('The domain name of the AD Server (%s) does not match the local UCS domain name (%s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % (ad_domain_info["Domain"], ucr['domainname']))
+			_err(exc, _('The domain name of the AD Server (%s) does not match the local UCS domain name (%s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % (ad_domain_info.get("Domain"), ucr['domainname']))
 		except admember.connectionFailed as exc:
-			_err(exc, _('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info['DC DNS Name'])
+			_err(exc, _('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info.get('DC DNS Name'))
 		except admember.failedToSetAdministratorPassword as exc:
 			_err(exc, _('Failed to set the password of the UCS Administrator to the Active Directory Administrator password.'))
 		except admember.timeSyncronizationFailed as exc:
 			_err(exc, _('Could not synchronize the time between the UCS system and the Active Directory domain controller: %s') % exc)
+		except RuntimeError as exc:
+			_err(exc)
 		except Exception as exc:
 			# catch all other errors that are unlikely to occur
 			_err(exc)
 			MODULE.error('Traceback:\n%s' % ''.join(traceback.format_tb(sys.exc_info()[2])))
 
-		_progress(100, _('Join has been finished successfully'))
+		if success:
+			_progress(100, _('Join has been finished successfully.'))
+		else:
+			_progress(100, _('Join has been finished with a errors.'))
+
 		if hasattr(progress, 'result'):
 			# some error probably occurred -> return the result in the progress
 			return progress.result

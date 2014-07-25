@@ -518,7 +518,7 @@ define([
 			this.standby(false);
 			this._progressBar.reset(_('Joining UCS into Active Directory domain'));
 			var vals = this.getValues();
-			var deferred = tools.umcpProgressCommand(this._progressBar, 'adconnector/admember/join', vals).then(lang.hitch(this, function(result) {
+			var deferred = tools.umcpProgressCommand(this._progressBar, 'adconnector/admember/join', vals, false).then(lang.hitch(this, function(result) {
 				if (!result.success) {
 					this._updateErrorPage('admember', result.error);
 					return false;
