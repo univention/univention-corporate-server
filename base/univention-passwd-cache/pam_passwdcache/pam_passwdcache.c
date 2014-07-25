@@ -2,7 +2,7 @@
  * Univention Password Cache
  *  PAM password cache module
  *
- * Copyright 2004-2012 Univention GmbH
+ * Copyright 2004-2014 Univention GmbH
  *
  * http://www.univention.de/
  *

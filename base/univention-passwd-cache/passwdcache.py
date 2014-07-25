@@ -3,7 +3,7 @@
 # Univention passwdcache
 #  removed deleted user from passwd cache
 #
-# Copyright 2010-2012 Univention GmbH
+# Copyright 2010-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
