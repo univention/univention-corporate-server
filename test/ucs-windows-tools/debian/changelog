@@ -1,3 +1,9 @@
+ucs-windows-tools (1.0.0-6) unstable; urgency=low
+
+  * added ucs-windows-promote-ad (Bug #35394)
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Jul 2014 16:34:10 +0200
+
 ucs-windows-tools (1.0.0-5) unstable; urgency=low
 
   * small fixes (Bug #35394) 
