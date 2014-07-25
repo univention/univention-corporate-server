@@ -45,6 +45,7 @@ from samba.param import LoadParm
 import univention.config_registry
 import univention.uldap
 import univention.lib.package_manager
+import univention.debug as ud
 
 UNIVENTION_SAMBA_MIN_PACKAGE_VERSION = "8.0.19-6.472.201407231046"
 
@@ -100,10 +101,6 @@ def is_localhost_in_adconnector_mode(ucr=None):
 	if ucr.is_false('ad/member', True) and ucr.get('connector/ad/ldap/host'):
 		return True
 	return False
-
-def log(msg):
-	print msg
-
 
 def is_domain_in_admember_mode(ucr=None):
 	if not ucr:
@@ -183,8 +180,12 @@ def add_adconnector_service_to_localhost():
 def remove_admember_service_from_localhost():
 	_remove_service_from_localhost('AD Member')
 
+def info_handler(msg):
+	ud.debug(ud.LDAP, ud.INFO, msg)
+def error_handler(msg):
+	ud.debug(ud.LDAP, ud.ERROR, msg)
 
-def remove_install_univention_samba(info_handler=log, step_handler=None, error_handler=log, install=True, uninstall=True):
+def remove_install_univention_samba(info_handler=info_handler, step_handler=None, error_handler=error_handler, install=True, uninstall=True):
 	pm = univention.lib.package_manager.PackageManager(
 		info_handler=info_handler,
 		step_handler=step_handler,
@@ -246,7 +247,7 @@ def lookup_adds_dc(ad_server=None, realm=None, ucr=None):
 				flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
 			ad_server = cldap_res.pdc_dns_name
 		except RuntimeError as ex:
-			log("No AD Server found for realm %s." % (realm,))
+			ud.debug(ud.LDAP, ud.ERROR, "No AD Server found for realm %s." % (realm,))
 			return ad_domain_info
 
 	ad_server_ip = None
@@ -257,7 +258,7 @@ def lookup_adds_dc(ad_server=None, realm=None, ucr=None):
 			stdout, stderr = p1.communicate()
 			ad_server_ip = stdout.strip()
 		except OSError as ex:
-			log("INFO: net lookup %s failed: %s" % (cldap_res.pdc_dns_name, ex.args[1]))
+			ud.debug(ud.LDAP, ud.INFO, "net lookup %s failed: %s" % (cldap_res.pdc_dns_name, ex.args[1]))
 
 	if not ad_server_ip:
 		ad_server_ip = ad_server
@@ -270,7 +271,7 @@ def lookup_adds_dc(ad_server=None, realm=None, ucr=None):
 			remote_ldb.connect(url="ldap://%s" % ad_server_ip)
 			ad_ldap_base = str(remote_ldb.get_root_basedn())
 		except ldb.LdbError as ex:
-			log("INFO: LDAP connect to %s failed: %s" % (ad_server_ip, ex.args[1]))
+			ud.debug(ud.LDAP, ud.PROCESS, "LDAP connect to %s failed: %s" % (ad_server_ip, ex.args[1]))
 
 	ad_domain_info = {
 		"Forest": cldap_res.forest,
@@ -313,11 +314,11 @@ def invoke_service(service, cmd):
 			close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		stdout, stderr = p1.communicate()
 	except OSError as ex:
-		log("ERROR: invoke-rc.d %s %s failed: %s" % (service, cmd, ex.args[1],))
+		ud.debug(ud.LDAP, ud.ERROR, "invoke-rc.d %s %s failed: %s" % (service, cmd, ex.args[1],))
 		return
 
 	if p1.returncode:
-		log("ERROR: invoke-rc.d %s %s failed (%d)" % (service, cmd, p1.returncode,))
+		ud.debug(ud.LDAP, ud.ERROR, "invoke-rc.d %s %s failed (%d)" % (service, cmd, p1.returncode,))
 		return
 
 
@@ -332,11 +333,11 @@ def time_sync(ad_ip, tolerance=180, critical_difference=360):
 			close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
 		stdout, stderr = p1.communicate()
 	except OSError as ex:
-		log("ERROR: rdate -p -n %s: %s" % (ad_ip, ex.args[1]))
+		ud.debug(ud.LDAP, ud.ERROR, "rdate -p -n %s: %s" % (ad_ip, ex.args[1]))
 		return False
 
 	if p1.returncode:
-		log("ERROR: rdate failed (%d)" % (p1.returncode,))
+		ud.debug(ud.LDAP, ud.ERROR, "rdate failed (%d)" % (p1.returncode,))
 		return False
 
 	TIME_FORMAT = "%a %b %d %H:%M:%S %Z %Y"
@@ -348,20 +349,20 @@ def time_sync(ad_ip, tolerance=180, critical_difference=360):
 	local_datetime = datetime.today()
 	delta_t = local_datetime - remote_datetime
 	if abs(delta_t) < timedelta(0, tolerance):
-		log("INFO: Time difference is less than %d seconds, skipping reset of local time" % (tolerance,))
+		ud.debug(ud.LDAP, ud.PROCESS, "Time difference is less than %d seconds, skipping reset of local time" % (tolerance,))
 	elif local_datetime > remote_datetime:
 		if abs(delta_t) >= timedelta(0, critical_difference):
 			raise manualTimeSyncronizationRequired("Remote clock is behind local clock by more than %s seconds, refusing to turn back time." % critical_difference)
 		else:
-			log("INFO: Remote clock is behind local clock by more than %s seconds, refusing to turn back time." % (tolerance,))
+			ud.debug(ud.LDAP, ud.WARN, "Remote clock is behind local clock by more than %s seconds, refusing to turn back time." % (tolerance,))
 			return False
 	else:
-		log("INFO: Syncronizing time to %s" % ad_ip)
+		ud.debug(ud.LDAP, ud.PROCESS, "Syncronizing time to %s" % ad_ip)
 		p1 = subprocess.Popen(["rdate", "-s", "-n", ad_ip],
 			close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		stdout, stderr = p1.communicate()
 		if p1.returncode:
-			log("ERROR: rdate -s -p failed (%d)" % (p1.returncode,))
+			ud.debug(ud.LDAP, ud.ERROR, "rdate -s -p failed (%d)" % (p1.returncode,))
 			raise timeSyncronizationFailed("rdate -s -p failed (%d)" % (p1.returncode,))
 	return True
 
@@ -502,7 +503,7 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 	
-	log("INFO: Create _domaincontroller_master SRV record on %s" % ad_ip)
+	ud.debug(ud.LDAP, ud.PROCESS, "Create _domaincontroller_master SRV record on %s" % ad_ip)
 	
 	fd = tempfile.NamedTemporaryFile(delete=False)
 	fd.write('server %s\n' % ad_ip)
@@ -518,7 +519,7 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 	p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	stdout, stderr = p1.communicate()
 	if p1.returncode:
-		log("ERROR: %s failed with %d (%s)" % (cmd, p1.returncode, stderr))
+		ud.debug(ud.LDAP, ud.ERROR, "%s failed with %d (%s)" % (cmd, p1.returncode, stderr))
 		raise faildToAddServiceRecordToAD("failed to add SRV record to %s" % ad_ip)
 	os.unlink(fd.name)
 
@@ -530,7 +531,7 @@ def get_ucr_variable_from_ucs(host, server, var):
 	p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	stdout, stderr = p1.communicate()
 	if p1.returncode:
-		log("ERROR: %s failed with %d (%s)" % (cmd, p1.returncode, stderr))
+		ud.debug(ud.LDAP, ud.ERROR, "%s failed with %d (%s)" % (cmd, p1.returncode, stderr))
 		raise failedToGetUcrVariable("failed to get UCR variable %s from %s" % (var, server))
 	return stdout.strip()
 
@@ -540,7 +541,7 @@ def set_nameserver_from_ucs_master(ucr=None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	log("INFO: Set nameservers")
+	ud.debug(ud.LDAP, ud.PROCESS, "Set nameservers")
 	
 	for var in ['nameserver1', 'nameserver2', 'nameserver3']:
 		value = get_ucr_variable_from_ucs(ucr.get('hostname'), ucr.get('ldap/master'), var)
@@ -587,7 +588,7 @@ def configure_ad_member(ad_server_ip, username, password):
 	if server_supports_ssl(server=ad_domain_info["DC DNS Name"]):
 		enable_ssl()
 	else:
-		print "WARNING: ssl is not supported"
+		ud.debug(ud.LDAP, ud.WARN, "WARNING: ssl is not supported")
 		disable_ssl()
 
 	start_service('univention-ad-connector')

@@ -1,3 +1,9 @@
+univention-lib (3.0.26-43) unstable; urgency=low
+
+  * python/admember: use univention.debug (Bug #34091)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Jul 2014 20:54:17 +0200
+
 univention-lib (3.0.26-42) unstable; urgency=medium
 
   * Bug #35091: return boolean when installing/removing software components
