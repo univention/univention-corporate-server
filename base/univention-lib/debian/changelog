@@ -1,3 +1,9 @@
+univention-lib (3.0.26-42) unstable; urgency=medium
+
+  * Bug #35091: return boolean when installing/removing software components
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Jul 2014 16:29:15 +0200
+
 univention-lib (3.0.26-41) unstable; urgency=low
 
   * unset kerberos/adminserver in member mode (Bug #35470) 

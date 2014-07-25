@@ -191,7 +191,8 @@ def remove_install_univention_samba(info_handler=log, step_handler=None, error_h
 		error_handler=error_handler,
 		always_noninteractive=True,
 	)
-	pm.update()
+	if not pm.update():
+		return False
 	pm.noninteractive()
 
 	# check version
@@ -203,11 +204,15 @@ def remove_install_univention_samba(info_handler=log, step_handler=None, error_h
 
 	# uninstall first to get rid of the configured samba/* ucr vars
 	if uninstall and pm.is_installed('univention-samba'):
-		pm.uninstall('univention-samba')
+		if not pm.uninstall('univention-samba'):
+			return False
 
 	# install 
 	if install:
-		pm.install('univention-samba')
+		if not pm.install('univention-samba'):
+			return False
+
+	return True
 
 def lookup_adds_dc(ad_server=None, realm=None, ucr=None):
 	'''CLDAP lookup'''
