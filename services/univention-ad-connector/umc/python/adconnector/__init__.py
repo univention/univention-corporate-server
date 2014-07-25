@@ -334,22 +334,24 @@ class Instance(Base, ProgressMixin):
 		ad_server_ip=StringSanitizer(required=True),
 	)
 	@simple_response
-	def admember_check_domain(self, username, password, ad_server_ip):
+	def admember_check_domain(self, username, password, ad_server_ip, syncmode):
 		try:
-			admember.check_server_role()
+			if syncmode == 'admember':
+				admember.check_server_role()
 			ad_domain_info = admember.lookup_adds_dc(ad_server_ip)
-			admember.check_domain(ad_domain_info)
+			if syncmode == 'admember':
+				admember.check_domain(ad_domain_info)
 			admember.check_connection(ad_server_ip, username, password)
-		except admember.invalidUCSServerRole as exc:
+		except admember.invalidUCSServerRole as exc: # check_server_role()
 			MODULE.warn('Failure: %s' % exc)
 			raise UMC_CommandError(_('The AD member mode cannot only be configured on a DC master server.'))
-		except admember.failedADConnect as exc:
+		except admember.failedADConnect as exc: # lookup_adds_dc()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_domain_info['DC DNS Name'])
-		except admember.domainnameMismatch as exc:
+			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_server_ip)
+		except admember.domainnameMismatch as exc: # check_domain()
 			MODULE.warn('Failure: %s' % exc)
 			raise UMC_CommandError(_('The domain name of the AD Server (%s) does not match the local UCS domain name (%s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % (ad_domain_info["Domain"], ucr['domainname']))
-		except admember.connectionFailed as exc:
+		except admember.connectionFailed as exc: # check_connection()
 			MODULE.warn('Failure: %s' % exc)
 			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info['DC DNS Name'])
 

@@ -1,4 +1,10 @@
-univention-ad-connector (8.0.17-29) unstable; urgency=medim
+univention-ad-connector (8.0.17-30) unstable; urgency=low
+
+  * Bug #35090 [WIP]: added some functionality for ad-connector path in wizard
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 25 Jul 2014 16:45:32 +0200
+
+univention-ad-connector (8.0.17-29) unstable; urgency=low
 
   * Bug #35090 [WIP]: improved error handling for wizard in AD member mode
 

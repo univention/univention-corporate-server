@@ -48,12 +48,13 @@ define([
 	"umc/widgets/Module",
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
+	"umc/widgets/Uploader",
 	"umc/widgets/PasswordBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/Wizard",
 	"./RadioButtons",
 	"umc/i18n!umc/modules/adconnector"
-], function(declare, lang, array, domClass, on, topic, Deferred, when, styles, RadioButton, dialog, ProgressBar, tools, Page, Form, ExpandingTitlePane, Module, Text, TextBox, PasswordBox, CheckBox, Wizard, RadioButtons, _) {
+], function(declare, lang, array, domClass, on, topic, Deferred, when, styles, RadioButton, dialog, ProgressBar, tools, Page, Form, ExpandingTitlePane, Module, Text, TextBox, Uploader, PasswordBox, CheckBox, Wizard, RadioButtons, _) {
 	var modulePath = require.toUrl('umc/modules/adconnector');
 	styles.insertCssRule('.umc-adconnector-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;');
 	styles.insertCssRule('.umc-adconnector-page .umcLabelPaneCheckBox', 'display: block !important;');
@@ -314,13 +315,42 @@ define([
 				}]
 			}, {
 				'class': 'umc-adconnector-page-info umc-adconnector-page',
-				name: 'ssl-admember',
+				name: 'ssl-warning',
 				headerText: _('Security settings'),
 				widgets: [{
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'info',
 					content: _('<p>An encrypted connection to the Active Directory domain could not be established. This has as consequence that authentication data is submitted in plaintext.</p><p>To enable an encrypted connection, a certification authority needs to be configured on the Active Directory server. All necessary steps are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.</p><p>After the certification authority has been set up, press <i>Next</i> to proceed.</p>')
+				}]
+			}, {
+				'class': 'umc-adconnector-page-info umc-adconnector-page',
+				name: 'certificate-warning',
+				headerText: _('Security settings'),
+				widgets: [{
+					type: Text,
+					'class': 'umcPageHelpText',
+					name: 'info',
+					content: _('<p>To achieve a higher level of security, the Active Directory system\'s root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate. The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>. Alternatively, you may proceed with this configuration.</p>'),
+
+				}, {
+					name: 'certificateUpload',
+					type: Uploader,
+					command: 'adconnector/upload/certificate',
+					onUploadStarted: lang.hitch(this, function() {
+						this.standby(true);
+					}),
+					onUploaded: lang.hitch(this, function(result) {
+						this.standby(false);
+						if (typeof result  == "string") {
+							return;
+						}
+						if (result.success) {
+							this.addNotification(_('The certificate was imported successfully'));
+						} else {
+							dialog.alert(_('Failed to import the certificate') + ': ' + result.message);
+						}
+					})
 				}]
 			}, {
 				'class': 'umc-adconnector-page-info umc-adconnector-page',
@@ -366,7 +396,7 @@ define([
 					content: _('Specify the synchronisation direction between the UCS domain and the given Active Directory domain.')
 				}, {
 					type: RadioButtons,
-					name: 'syncmode',
+					name: 'connectormode',
 					staticValues: [{
 						id: 'syncAD2UCS',
 						label: _('Unidirectional synchronisation of Active Directory to UCS.')
@@ -384,11 +414,11 @@ define([
 							syncUCS2AD: '-left',
 							syncBidirectional: '-left-right'
 						};
-						var syncmode = this.getWidget('config-adconnector', 'syncmode').get('value');
+						var connectormode = this.getWidget('config-adconnector', 'connectormode').get('value');
 						var page = this.getPage('config-adconnector');
 						tools.forIn(map2img, lang.hitch(this, function(ikey, ival) {
 							var cssClass = 'umc-adconnector-page-syncconfig' + ival;
-							var useClass = syncmode == ikey;
+							var useClass = connectormode == ikey;
 							domClass.toggle(page.domNode, cssClass, useClass);
 						}));
 					})
@@ -515,30 +545,19 @@ define([
 			return true;
 		},
 
-		getValues: function() {
-			return this.getPage('credentials')._form.get('value');
-		},
-
 		next: function(pageName) {
 			var nextPage = this.inherited(arguments);
-			if (pageName == 'start' && !this._isMemberMode()) {
-				//TODO: fallback for now
-				dialog.alert(_('I can only configure the member mode for now!'));
-				return pageName;
-			}
 			if (pageName == 'credentials') {
-				if (this._isMemberMode()) {
 					return this._checkADDomain().then(function(adDomainInfo) {
 						// server error message is shown, stay on the same page
 						if (!adDomainInfo) {
 							return pageName;
 						}
 						// check for SSL support
-						return adDomainInfo.ssl_supported ? 'confirm-admember' : 'ssl-admember';
+						return adDomainInfo.ssl_supported ? 'certificate-warning' : 'ssl-warning';
 					});
-				}
 			}
-			if (pageName == 'ssl-admember') {
+			if (pageName == 'ssl-warning' || pageName == 'certificate-warning') {
 				// check again for SSL status
 				return this._checkADDomain().then(lang.hitch(this, function(adDomainInfo) {
 					// server error message is shown, stay on the same page
@@ -548,17 +567,21 @@ define([
 					if (!adDomainInfo.ssl_supported) {
 						return this._confirmUnsecureConnectionWithADDomain().then(lang.hitch(this, function(confirmed) {
 							if (confirmed) {
-								// start join process
-								return this.join().then(function(success) {
-									return success ? 'finished-admember' : 'error-admember';
-								});
+								if (this._isMemberMode()) {
+									// start join process
+									return this.join().then(function(success) {
+										return success ? 'finished-admember' : 'error-admember';
+									});
+								} else {
+									return 'config-adconnector';
+								}
 							}
 
 							// confirm dialog canceled
 							return pageName;
 						}));
 					}
-					return nextPage;
+					return 'confirm-admember';
 				}));
 			}
 
