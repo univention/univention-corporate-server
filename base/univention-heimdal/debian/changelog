@@ -1,3 +1,9 @@
+univention-heimdal (8.0.0-1) unstable; urgency=medium
+
+  * Update to UCS 4.0 (Bug #35267)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 25 Jul 2014 17:32:21 +0200
+
 univention-heimdal (7.0.2-2) unstable; urgency=low
 
   * use is_localhost_in_admember_mode to check
