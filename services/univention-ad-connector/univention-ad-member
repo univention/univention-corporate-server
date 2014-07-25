@@ -34,6 +34,7 @@
 from optparse import OptionParser, OptionValueError
 import getpass
 import sys
+import univention.debug as ud
 
 import univention.lib.admember
 
@@ -44,6 +45,7 @@ if __name__ == "__main__":
 	parser.add_option("-p", "--password", action="store")
 	parser.add_option("-a", "--ad_server", action="store")
 	parser.add_option("-l", "--lookup_ad_server", action="store_true")
+	parser.add_option("-d", "--debug", action="store", type="int", default=2, help="debug level 0 to 4")
 
 	opts, args = parser.parse_args()
 
@@ -71,6 +73,9 @@ This tool configures this system as member of an existing Active Directory domai
 		if not opts.ad_server:
 			print "Address of Active Directory domain controller missing"
 			sys.exit(1)
+
+	ud.init('stdout', 1, 0)
+	ud.set_level(ud.LDAP, opts.debug)
 
 	try:
 		univention.lib.admember.configure_ad_member(opts.ad_server, opts.username, opts.password)
