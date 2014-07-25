@@ -1,3 +1,9 @@
+univention-system-setup (8.0.12-2) unstable; urgency=low
+
+  * Bug #34388: Only redirect apache2 startsite on unjoined systems
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 25 Jul 2014 13:20:25 +0200
+
 univention-system-setup (8.0.12-1) unstable; urgency=low
 
   * Bug #35378: moved code from di-univention-system-setup.postinst to startxwithfirefox_installer

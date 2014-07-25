@@ -47,12 +47,12 @@ case "$1" in
 		done |
 		xargs -r ucr unset
 
-		# Show corret IP in motd
+		# Show correct IP in motd
 		if [ -e /etc/motd.setup ]; then
 			ucr commit /etc/motd.setup >/dev/null 2>&1
 		fi
 
-		# Add public ssh key if the system was startet in EC2:
+		# Add public ssh key if the system was started in EC2:
 		if is_ucr_true server/amazon; then
 			test -d /root/.ssh || mkdir -p /root/.ssh
 			test -e /root/.ssh/authorized_keys || touch /root/.ssh/authorized_keys
@@ -61,9 +61,12 @@ case "$1" in
 			if ! grep -q "$key" /root/.ssh/authorized_keys; then
 				echo "$key"  >>/root/.ssh/authorized_keys
 			fi
-
-			ucr set apache2/startsite="ucs-overview/initialsetup.html"
-			invoke-rc.d apache2 reload
+			
+			# Show welcome page on unjoined EC2 systems:
+			if [ ! -e /var/univention-join/joined ]; then
+				ucr set apache2/startsite="ucs-overview/initialsetup.html"
+				invoke-rc.d apache2 reload
+			fi
 		fi
 
 		if is_ucr_true server/amazon && is_ucr_true system/setup/boot/networking; then
