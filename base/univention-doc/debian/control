@@ -4,10 +4,11 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
 Build-Depends: debhelper, univention-config-dev, ucslint-univention
+XS-Python-Version: 2.6, 2.7
 
 Package: univention-doc
 Architecture: all
-Depends: python2.6, python-sphinx, ${misc:Depends}
+Depends: python2.7, python-sphinx, ${misc:Depends}
 Description: tool to build source documentation
  This package contains scripts and configurations for HTML and PDF documentations build from our sources.
  .
