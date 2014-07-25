@@ -1,4 +1,4 @@
-pam-univentionmailcyrus (6.0.0-1) unstable; urgency=medium
+pam-univentionmailcyrus (6.0.0-2) unstable; urgency=medium
 
   * Update to UCS 4.0 (Bug #35267)
 

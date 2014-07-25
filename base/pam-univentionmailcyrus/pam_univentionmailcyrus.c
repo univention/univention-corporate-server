@@ -201,12 +201,12 @@ PAM_EXTERN
 int pam_sm_authenticate(pam_handle_t *pamh, int flags,
                         int argc, const char **argv)
 {
-   int retval, ctrl;
+   int retval;
    const char* auth_user;
    char user[BUFSIZ];
 
    /* Parse the flag values */
-   ctrl = _pam_parse(flags, argc, argv);
+   _pam_parse(flags, argc, argv);
 
    retval = pam_get_item(pamh, PAM_USER, (const void **) &auth_user);
    if (retval != PAM_SUCCESS || auth_user == NULL || *auth_user == '\0') {
