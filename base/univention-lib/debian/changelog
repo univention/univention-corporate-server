@@ -1,3 +1,14 @@
+univention-lib (3.0.26-38) unstable; urgency=low
+
+  * admember mode updates (Bug #35091)
+     - Don't overwrite password for Administrator if it is set to
+       KINIT already
+     - Check reverse lookup for AD DC
+     - Activate kerberos for the AD Connector
+     - Start AD connector at the end of the configuration
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Jul 2014 08:32:29 +0200
+
 univention-lib (3.0.26-37) unstable; urgency=medium
 
   * Add remove_admember_service_from_localhost (Bug #35346)

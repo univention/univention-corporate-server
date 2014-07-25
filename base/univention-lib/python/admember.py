@@ -35,6 +35,7 @@ import ldap
 import os
 import subprocess
 import apt
+import socket
 import sys
 import tempfile
 from datetime import datetime, timedelta
@@ -125,7 +126,16 @@ def prepare_administrator(username, password, ucr=None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	administrator_dn = 'uid=Administrator,cn=users,%s' % (ucr['ldap/base'])
+	lo = univention.uldap.getAdminConnection()
+	res = lo.search(filter='(&(uid=Administrator)(objectClass=shadowAccount))', attr=['userPassword'])
+	if not res:
+		return
+
+	administrator_dn = res[0][0]
+	old_hash = res[0][1].get('userPassword', [None])[0]
+
+	if old_hash == '{KINIT}':
+		return
 
 	p1 = subprocess.Popen(['univention-directory-manager', 'users/user', 'modify', '--dn', administrator_dn, '--set', 'password=%s' % password, '--set', 'overridePWHistory=1', '--set', 'overridePWLength=1'], close_fds=True)
 	stdout, stderr = p1.communicate()
@@ -381,6 +391,14 @@ def set_nameserver(server_ips, ucr=None):
 		if ucr.get(var):
 			univention.config_registry.handler_unset([var])
 
+def prepare_dns_reverse_settngs(ad_server_ip, ad_domain_info):
+	# For python-ldap / GSSAPI / AD we need working reverse looksups
+	try:
+		socket.gethostbyaddr(ad_server_ip)
+	except socket.herror:
+		ip = socket.gethostbyname(ad_domain_info['DC DNS Name'])
+		univention.config_registry.handler_set([u'hosts/static/%s=%s' % (ip, ad_domain_info['DC DNS Name'])])
+	
 
 def prepare_ucr_settings():
 	# Show warnings in UMC
@@ -410,7 +428,7 @@ def prepare_connector_settings(username, password, ad_domain_info, ucr=None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	binddn = 'CN=%s,CN=Computers,%s' % (ucr.get('hostname'), ad_domain_info["LDAP Base"])
+	binddn = '%s$' % (ucr.get('hostname'))
 
 	univention.config_registry.handler_set(
 		[
@@ -418,6 +436,7 @@ def prepare_connector_settings(username, password, ad_domain_info, ucr=None):
 			u'connector/ad/ldap/base=%s' % ad_domain_info["LDAP Base"],
 			u'connector/ad/ldap/binddn=%s' % binddn,
 			u'connector/ad/ldap/bindpw=/etc/machine.secret',
+			u'connector/ad/ldap/kerberos=true',
 			u'connector/ad/mapping/syncmode=read',
 			u'connector/ad/mapping/user/ignorelist=krbtgt,root,pcpatch',
 		]
@@ -523,6 +542,8 @@ def configure_ad_member(ad_server_ip, username, password):
 
 	prepare_administrator(username, password)
 
+	prepare_dns_reverse_settngs(ad_server_ip, ad_domain_info)
+
 	remove_install_univention_samba()
 
 	run_samba_join_script(username, password)
@@ -537,6 +558,8 @@ def configure_ad_member(ad_server_ip, username, password):
 	else:
 		print "WARNING: ssl is not supported"
 		disable_ssl()
+
+	start_service('univention-ad-connector'):
 
 	return True
 
