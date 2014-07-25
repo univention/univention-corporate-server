@@ -336,13 +336,13 @@ define([
 					content: ''
 				}]
 			}, {
-				'class': 'umc-adconnector-page-info umc-adconnector-page',
 				name: 'error-admember',
 				headerText: _('AD Connection - An error ocurred'),
 				helpText: '<p>' + _('An error occurred during the join process of UCS into the Active Directory domain. The following information will give you some more details on which problems occurred during the join process.') + '</p>',
 				widgets: [{
 					type: Text,
 					'class': 'umcPageHelpText',
+					style: 'font-style:italic;',
 					name: 'info',
 					content: ''
 				}]
@@ -489,16 +489,14 @@ define([
 			this._progressBar.reset(_('Joining UCS into Active Directory domain'));
 			var vals = this.getValues();
 			var deferred = tools.umcpProgressCommand(this._progressBar, 'adconnector/admember/join', vals).then(lang.hitch(this, function(result) {
-				this.standby(false);
 				if (!result.success) {
-					this._updateErrorPage(result.error);
+					this._updateErrorPage('admember', result.error);
 					return false;
 				}
 				return true;
 			}), lang.hitch(this, function(error) {
 				// NOTE: an alert dialogue with the traceback is shown automatically
-				this.standby(false);
-				this._updateErrorPage();
+				this._updateErrorPage('admember');
 				return true;
 			}));
 			this.standbyDuring(deferred, this._progressBar);

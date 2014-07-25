@@ -49,6 +49,8 @@ import os.path
 import subprocess
 import time
 import pipes
+import traceback
+import sys
 
 _ = Translation('univention-management-console-module-adconnector').translate
 
@@ -366,51 +368,86 @@ class Instance(Base, ProgressMixin):
 	@simple_response(with_progress=True)
 	def admember_join(self, username, password, ad_server_ip, progress):
 		progress.title =_('Joining UCS into Active Directory domain')
-		progress.total = 100
+		progress.total = 100.0
+		success = True
+		MODULE.process(progress.title)
 
 		def _progress(steps, msg):
-			progress.current = steps
+			progress.current = float(steps)
 			progress.message = msg
+			MODULE.process(msg)
+			time.sleep(0.2)
 
-		admember.check_server_role()
-		ad_domain_info = admember.lookup_adds_dc(ad_server_ip)
+		def _err(exc, msg=None):
+			exc_str = str(exc) or exc.__doc__  # if no message, take the doc string
+			MODULE.error('Join process failed [%s]: %s' % (exc.__class__.__name__, exc_str))
+			if msg:
+				MODULE.error(msg)
+			else:
+				msg = _('An unexpected error occurred: %s') % exc_str
+			progress.finish_with_result({
+				'success': False,
+				'error': msg,
+			})
+			success = False
 
-		_progress(10, _('Configuring time synchronization...'))
-		admember.time_sync(ad_server_ip)
-		admember.set_timeserver(ad_server_ip)
+		try:
+			admember.check_server_role()
+			ad_domain_info = admember.lookup_adds_dc(ad_server_ip)
 
-		_progress(20, _('Configuring DNS server...'))
-		admember.set_nameserver([ad_server_ip])
-		admember.prepare_ucr_settings()
-		admember.add_admember_service_to_localhost()
+			_progress(5, _('Configuring time synchronization...'))
+			admember.time_sync(ad_server_ip)
+			admember.set_timeserver(ad_server_ip)
 
-		_progress(30, _('Configuring Kerberos settings...'))
-		admember.disable_local_heimdal()
-		admember.disable_local_samba4()
+			_progress(10, _('Configuring DNS server...'))
+			admember.set_nameserver([ad_server_ip])
+			admember.prepare_ucr_settings()
+			admember.add_admember_service_to_localhost()
 
-		_progress(50, _('Configuring Administrator account...'))
-		admember.prepare_administrator(username, password)
+			_progress(20, _('Configuring Kerberos settings...'))
+			admember.disable_local_heimdal()
+			admember.disable_local_samba4()
 
-		_progress(60, _('Configuring software components...'))
-		admember.remove_install_univention_samba()
-		admember.run_samba_join_script(username, password)
+			_progress(30, _('Configuring Administrator account...'))
+			admember.prepare_administrator(username, password)
 
-		_progress(80, _('Configuring DNS entries...'))
-		admember.add_domaincontroller_srv_record_in_ad(ad_server_ip)
+			_progress(40, _('Configuring software components...'))
+			admember.remove_install_univention_samba()
+			admember.run_samba_join_script(username, password)
 
-		_progress(90, _('Configuring synchronization from AD...'))
-		admember.prepare_connector_settings(username, password, ad_domain_info)
+			_progress(80, _('Configuring DNS entries...'))
+			admember.add_domaincontroller_srv_record_in_ad(ad_server_ip)
 
-		if admember.server_supports_ssl(server=ad_domain_info["DC DNS Name"]):
-			_progress(95, _('Configuring SSL settings...'))
-			admember.enable_ssl()
-		else:
-			print "WARNING: ssl is not supported"
-			admember.disable_ssl()
+			_progress(90, _('Configuring synchronization from AD...'))
+			admember.prepare_connector_settings(username, password, ad_domain_info)
+
+			if admember.server_supports_ssl(server=ad_domain_info["DC DNS Name"]):
+				_progress(95, _('Configuring SSL settings...'))
+				admember.enable_ssl()
+			else:
+				MODULE.warn('SSL is not supported')
+				admember.disable_ssl()
+		except admember.invalidUCSServerRole as exc:
+			_err(exc, _('The AD member mode cannot only be configured on a DC master server.'))
+		except admember.failedADConnect as exc:
+			_err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_domain_info['DC DNS Name'])
+		except admember.domainnameMismatch as exc:
+			_err(exc, _('The domain name of the AD Server (%s) does not match the local UCS domain name (%s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % (ad_domain_info["Domain"], ucr['domainname']))
+		except admember.connectionFailed as exc:
+			_err(exc, _('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info['DC DNS Name'])
+		except admember.failedToSetAdministratorPassword as exc:
+			_err(exc, _('Failed to set the password of the UCS Administrator to the Active Directory Administrator password.'))
+		except admember.timeSyncronizationFailed as exc:
+			_err(exc, _('Could not synchronize the time between the UCS system and the Active Directory domain controller: %s') % exc)
+		except Exception as exc:
+			# catch all other errors that are unlikely to occur
+			_err(exc)
+			MODULE.error('Traceback:\n%s' % ''.join(traceback.format_tb(sys.exc_info()[2])))
 
 		_progress(100, _('Join has been finished successfully'))
 		if hasattr(progress, 'result'):
 			# some error probably occurred -> return the result in the progress
 			return progress.result
 
-		return {'success': True}
+		return {'success': success}
+

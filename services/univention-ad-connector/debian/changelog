@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-29) unstable; urgency=medim
+
+  * Bug #35090 [WIP]: improved error handling for wizard in AD member mode
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Jul 2014 16:23:38 +0200
+
 univention-ad-connector (8.0.17-28) unstable; urgency=low
 
   * Give more feedback if the kerberos authentication fails (Bug #35349)
