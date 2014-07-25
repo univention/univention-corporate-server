@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-32) unstable; urgency=medium
+
+  * Bug #35090 [WIP]: fixed fuzzy translations
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Jul 2014 18:41:40 +0200
+
 univention-ad-connector (8.0.17-31) unstable; urgency=medium
 
   * Bug #35090 [WIP]: improved error/progress handling for AD member mode
