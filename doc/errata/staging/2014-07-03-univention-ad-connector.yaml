@@ -11,4 +11,5 @@ desc: |
     from OpenLDAP to Samba 4 in write mode.
   * The AD certificate chain is no longer checked if there is no 
     root certificate configured.
-bug: [35091,35234,35253]
+  * Kerberos support has been added to the UCS AD connector.
+bug: [35091,35234,35253,35349]
