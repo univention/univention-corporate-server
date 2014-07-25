@@ -39,6 +39,7 @@ from ldap.controls import SimplePagedResultsControl
 import ldap
 import ldap.sasl
 import subprocess
+import string
 
 class kerberosAuthenticationFailed(Exception): pass
 
@@ -167,10 +168,11 @@ if start_tls > 0:
 
 
 def get_kerberos_ticket():
-	p1 = subprocess.Popen(['kinit', '--no-addresses', '--password-file=%s' % configRegistry['%s/ad/ldap/bindpw' % CONFIGBASENAME], configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME]], close_fds=True)
+	cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % configRegistry['%s/ad/ldap/bindpw' % CONFIGBASENAME], configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME]]
+	p1 = subprocess.Popen(cmd_block, close_fds=True)
 	stdout, stderr = p1.communicate()
 	if p1.returncode != 0:
-		raise kerberosAuthenticationFailed()
+		raise kerberosAuthenticationFailed('The following command failed: "%s"' % string.join(cmd_block))
 
 lo.set_option(ldap.OPT_REFERRALS,0)
 

@@ -42,6 +42,8 @@ import univention.debug2 as ud
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
 
+class kerberosAuthenticationFailed(Exception): pass
+
 # page results
 PAGE_SIZE=1000
 
@@ -683,13 +685,12 @@ class ad(univention.connector.ucs):
 			print "Failed to get SID from AD: %s" % msg
 			sys.exit(1)
 
-	class kerberosAuthenticationFailed(Exception): pass
-
 	def get_kerberos_ticket(self):
-		p1 = subprocess.Popen(['kinit', '--no-addresses', '--password-file=%s' % self.baseConfig['%s/ad/ldap/bindpw' % self.CONFIGBASENAME], self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]], close_fds=True)
+		cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.baseConfig['%s/ad/ldap/bindpw' % self.CONFIGBASENAME], self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]]
+		p1 = subprocess.Popen(cmd_block, close_fds=True)
 		stdout, stderr = p1.communicate()
 		if p1.returncode != 0:
-			raise kerberosAuthenticationFailed()
+			raise kerberosAuthenticationFailed('The following command failed: "%s"' % string.join(cmd_block))
 
 	def open_ad(self):
 		tls_mode = 2
