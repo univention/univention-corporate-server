@@ -1,3 +1,11 @@
+di-univention-system-setup (0.0.5-4) unstable; urgency=low
+
+  * Bug #35378: create /var/run/univention-management-console as
+    workaround for Bug #35466
+  * Bug #35378: fixed killing apache2
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 25 Jul 2014 10:09:07 +0200
+
 di-univention-system-setup (0.0.5-3) unstable; urgency=low
 
   * Bug #35378: updated dependencies (Provides: configured-ucs)
