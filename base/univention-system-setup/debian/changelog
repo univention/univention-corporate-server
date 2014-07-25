@@ -1,3 +1,10 @@
+univention-system-setup (8.0.10-1) unstable; urgency=low
+
+  * Bug #35378: added missing dependency
+  * Bug #35378: fixed startup of firefox if X11 is already running
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 25 Jul 2014 10:00:23 +0200
+
 univention-system-setup (8.0.9-1) unstable; urgency=low
 
   * Bug #34484: fixed reference to undefined

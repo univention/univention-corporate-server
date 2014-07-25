@@ -60,7 +60,8 @@ Depends: ${misc:Depends},
  shell-univention-lib,
  univention-system-setup (= ${source:Version}),
  univention-network-common,
- univention-management-console-module-appcenter
+ univention-management-console-module-appcenter,
+ x11-utils,
 Recommends: iceweasel | firefox-en | firefox-de | firefox,
  xinit,
  kde-window-manager
