@@ -718,8 +718,12 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	univention-config-registry set \
 		ldap/server/name?"$DCNAME" \
 		ldap/master?"$DCNAME" \
-		kerberos/adminserver?"$DCNAME" \
 		>>/var/log/univention/join.log 2>&1
+
+	if ! is_localhost_in_admember_mode; then
+		univention-config-registry set kerberos/adminserver?"$DCNAME"
+	fi
+
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 	set_windows_domain "$DCPWD" "$DCACCOUNT" "$DCNAME" "$WINDOM"
 	eval "$(univention-config-registry shell)"
@@ -789,8 +793,12 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	univention-config-registry set \
 		ldap/server/name?"$DCNAME" \
 		ldap/master?"$DCNAME" \
-		kerberos/adminserver?"$DCNAME" \
 		>>/var/log/univention/join.log 2>&1
+
+	if ! is_localhost_in_admember_mode; then
+		univention-config-registry set kerberos/adminserver?"$DCNAME"
+	fi
+
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 	set_windows_domain "$DCPWD" "$DCACCOUNT" "$DCNAME" "$WINDOM"
 	echo -n "0" >/var/lib/univention-ldap/schema/id/id
@@ -832,8 +840,12 @@ elif [ "$server_role" = "memberserver" ]; then
 		ldap/server/port?7389 \
 		ldap/master?"$DCNAME" \
 		ldap/master/port?7389 \
-		kerberos/adminserver?"$DCNAME" \
 		>>/var/log/univention/join.log 2>&1
+    
+	if ! is_localhost_in_admember_mode; then
+		univention-config-registry set kerberos/adminserver?"$DCNAME"
+	fi
+
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 	set_windows_domain "$DCPWD" "$DCACCOUNT" "$DCNAME" "$WINDOM"
 	touch /var/univention-join/joined
