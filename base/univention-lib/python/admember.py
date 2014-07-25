@@ -559,7 +559,7 @@ def configure_ad_member(ad_server_ip, username, password):
 		print "WARNING: ssl is not supported"
 		disable_ssl()
 
-	start_service('univention-ad-connector'):
+	start_service('univention-ad-connector')
 
 	return True
 
