@@ -1,3 +1,16 @@
+univention-heimdal (7.0.2-2) unstable; urgency=low
+
+  * use is_localhost_in_admember_mode to check
+    member mode (Bug #35470)
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Jul 2014 12:10:57 +0200
+
+univention-heimdal (7.0.2-1) unstable; urgency=low
+
+  * don't set kerberos/kpasswdserver in member mode (Bug #35470)
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Jul 2014 11:02:43 +0200
+
 univention-heimdal (7.0.1-1) unstable; urgency=low
 
   * The keytab listener must not remove the keytab during the cleanup
@@ -27,7 +40,7 @@ univention-heimdal (7.0.0-1) unstable; urgency=low
     current Heimdal
     Remove UCR variable descriptions for kerberos/password/quality/ascii_lowercase,
     kerberos/password/quality/ascii_uppercase, kerberos/password/quality/diff_ok,
-	kerberos/password/quality/dig_credit, kerberos/password/quality/low_credit,
+    kerberos/password/quality/dig_credit, kerberos/password/quality/low_credit,
     kerberos/password/quality/min_length, kerberos/password/quality/oth_credit,
     and kerberos/password/quality/up_credit. These are no longer used, instead
     the password strength requirements are configured for all key types through

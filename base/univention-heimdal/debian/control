@@ -13,7 +13,7 @@ Pre-Depends: heimdal-kdc (>> 0.6.3)
 Depends: ${misc:Depends},
  univention-config-registry,
  univention-base-files,
- shell-univention-lib,
+ shell-univention-lib (>= 3.0.26-41),
  libsasl2-modules-gssapi-heimdal,
  heimdal-servers,
  python-univention,
