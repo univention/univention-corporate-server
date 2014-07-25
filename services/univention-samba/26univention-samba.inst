@@ -260,7 +260,8 @@ if [ "$security" = "ads" ]; then
 			kerberos/kdc="$samba_dc" \
 			kerberos/kpasswdserver="$samba_dc"
 	else
-		if [ -z "$kerberos_kdc" ]; then
+		# use dns for kerberos in member mode
+		if [ -z "$kerberos_kdc" ] && ! is_ucr_true ad/member; then
 			configure_s4_dc_as_kdc "$samba_dc"
 		fi
 	fi

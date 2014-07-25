@@ -1,3 +1,9 @@
+univention-samba (8.0.19-7) unstable; urgency=low
+
+  * use dns for kerberos in member mode (Bug #35470) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Jul 2014 10:57:59 +0200
+
 univention-samba (8.0.19-6) unstable; urgency=low
 
   * replaced ldap search with is_domain_in_admember_mode (Bug #35095) 
