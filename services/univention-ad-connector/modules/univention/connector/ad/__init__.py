@@ -34,6 +34,8 @@
 
 import string, ldap, sys, traceback, base64, time, pdb, os, copy, types
 import array
+import ldap.sasl
+import subprocess
 import univention.uldap
 import univention.connector
 import univention.debug2 as ud
@@ -681,6 +683,14 @@ class ad(univention.connector.ucs):
 			print "Failed to get SID from AD: %s" % msg
 			sys.exit(1)
 
+	class kerberosAuthenticationFailed(Exception): pass
+
+	def get_kerberos_ticket(self):
+		p1 = subprocess.Popen(['kinit', '--no-addresses', '--password-file=%s' % self.baseConfig['%s/ad/ldap/bindpw' % self.CONFIGBASENAME], self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]], close_fds=True)
+		stdout, stderr = p1.communicate()
+		if p1.returncode != 0:
+			raise kerberosAuthenticationFailed()
+
 	def open_ad(self):
 		tls_mode = 2
 		if self.baseConfig.has_key('%s/ad/ldap/ssl' % self.CONFIGBASENAME) and self.baseConfig['%s/ad/ldap/ssl' % self.CONFIGBASENAME] == "no":
@@ -689,7 +699,15 @@ class ad(univention.connector.ucs):
 
 		ldaps = self.baseConfig.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False) # tls or ssl
 
-		self.lo_ad=univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps = ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
+		if self.baseConfig.is_true('%s/ad/ldap/kerberos' % self.CONFIGBASENAME):
+			os.environ['KRB5CCNAME']='/var/cache/univention-ad-connector/krb5.cc'
+			self.get_kerberos_ticket()
+			auth = ldap.sasl.gssapi("")
+			self.lo_ad=univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=None, bindpw=None, start_tls=tls_mode, use_ldaps = ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
+			self.get_kerberos_ticket()
+			self.lo_ad.lo.sasl_interactive_bind_s("", auth)
+		else:
+		 	self.lo_ad=univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps = ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
 
 		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS,0)
 

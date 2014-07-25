@@ -37,6 +37,11 @@ import univention.config_registry
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
 import ldap
+import ldap.sasl
+import subprocess
+
+class kerberosAuthenticationFailed(Exception): pass
+
 
 def encode_object_sid(sid_string, encode_in_base64=True):
     binary_encoding = ""
@@ -161,9 +166,21 @@ if start_tls > 0:
 	lo.start_tls_s()
 
 
+def get_kerberos_ticket():
+	p1 = subprocess.Popen(['kinit', '--no-addresses', '--password-file=%s' % configRegistry['%s/ad/ldap/bindpw' % CONFIGBASENAME], configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME]], close_fds=True)
+	stdout, stderr = p1.communicate()
+	if p1.returncode != 0:
+		raise kerberosAuthenticationFailed()
+
 lo.set_option(ldap.OPT_REFERRALS,0)
 
-lo.simple_bind_s(login_dn, login_pw)
+if configRegistry.is_true('%s/ad/ldap/kerberos' % CONFIGBASENAME):
+	os.environ['KRB5CCNAME']='/var/cache/univention-ad-connector/krb5.cc.search'
+	get_kerberos_ticket()
+	auth = ldap.sasl.gssapi("")
+	lo.sasl_interactive_bind_s("", auth)
+else:
+	lo.simple_bind_s(login_dn, login_pw)
 
 # LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
 lc1 = LDAPControl('1.2.840.113556.1.4.417',criticality=1)
