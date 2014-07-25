@@ -117,24 +117,6 @@ fi
 HOME=$(mktemp -d)
 export HOME
 profilePath=$(mktemp -d -p "$HOME")
-# kwin: do not show border for firefox
-mkdir -p "$HOME"/.kde/share/config/
-echo '[1]
-noborder=true
-noborderrule=2
-maximizehoriz=true
-maximizehorizrule=2
-maximizevert=true
-maximizevertrule=2
-types=1
-windowrole=browser
-windowrolematch=1
-wmclass=navigator firefox
-wmclasscomplete=true
-wmclassmatch=1
-
-[General]
-count=1' >> "$HOME"/.kde/share/config/kwinrulesrc
 # do not show the "know your rights" popup
 echo 'user_pref("browser.rights.3.shown", true);' >> "$profilePath"/prefs.js
 # do not ask for performance reporting
@@ -150,7 +132,8 @@ echo 'user_pref("browser.shell.checkDefaultBrowser", false);' >> "$profilePath"/
 # hide nav bar and menu bar
 echo '<?xml version="1.0"?><RDF:RDF xmlns:NC="http://home.netscape.com/NC-rdf#" xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><RDF:Description RDF:about="chrome://browser/content/browser.xul"><NC:persist RDF:resource="chrome://browser/content/browser.xul#nav-bar"/><NC:persist RDF:resource="chrome://browser/content/browser.xul#toolbar-menubar"/></RDF:Description><RDF:Description RDF:about="chrome://browser/content/browser.xul#nav-bar" collapsed="true" /><RDF:Description RDF:about="chrome://browser/content/browser.xul#toolbar-menubar" autohide="true" /></RDF:RDF>' > "$profilePath"/localstore.rdf
 # start window manager so that firefox' menus work correctly
-kwin &
+
+openbox --config-file /etc/xdg/openbox/rc_no_shortcuts.xml &
 windowManager=$!
 # start browser
 firefox -profile "$profilePath" "$URL" &

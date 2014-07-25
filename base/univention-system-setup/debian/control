@@ -62,9 +62,9 @@ Depends: ${misc:Depends},
  univention-network-common,
  univention-management-console-module-appcenter,
  x11-utils,
+ openbox,
 Recommends: iceweasel | firefox-en | firefox-de | firefox,
  xinit,
- kde-window-manager
 Replaces: univention-setup-boot, univention-system-setup-appliance
 Description: Starting univention-system-setup on next boot
  This package configures the computer to launch UCS System Setup on its next
