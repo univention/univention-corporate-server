@@ -419,7 +419,8 @@ def prepare_ucr_settings():
 	univention.config_registry.handler_unset(
 		[
 			u'kerberos/kdc',
-			u'kerberos/kpasswdserver'
+			u'kerberos/kpasswdserver',
+			u'kerberos/adminserver',
 		]
 	)
 
