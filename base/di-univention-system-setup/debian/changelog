@@ -1,3 +1,9 @@
+di-univention-system-setup (0.0.6-1) unstable; urgency=low
+
+  * Bug #35378: moved code from postinst to univention-system-setup (startxwithfirefox_installer)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 25 Jul 2014 11:43:19 +0200
+
 di-univention-system-setup (0.0.5-4) unstable; urgency=low
 
   * Bug #35378: create /var/run/univention-management-console as

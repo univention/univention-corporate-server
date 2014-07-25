@@ -17,22 +17,8 @@ sleep 2
 db_progress STOP
 db_unregister di-univention-system-setup/progress/title di-univention-system-setup/progress/step_install
 
-# Workaround: the locale is currently required by the UMC
-chroot /target /usr/sbin/ucr set locale=en_US.UTF-8:UTF-8
-
-# Start/Restart UMC and Webserver
-chroot /target /etc/init.d/univention-management-console-server restart
-chroot /target /etc/init.d/univention-management-console-web-server restart
-
-# workaround for Bug 35466
-mkdir -p /target/var/run/univention-management-console/
-
-# after installation an outdated apache process is running that cannot be kill via pid file
-chroot /target pkill -f apache2
-chroot /target /etc/init.d/apache2 restart
-
 # start univention-system-setup
-chroot /target /usr/share/univention-system-setup/startxwithfirefox
+chroot /target /usr/share/univention-system-setup/startxwithfirefox_installer
 
 db_input critical di-univention-system-setup/foo
 db_go
