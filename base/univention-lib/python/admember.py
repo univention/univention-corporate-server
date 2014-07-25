@@ -413,12 +413,34 @@ def prepare_ucr_settings():
 			u'directory/manager/web/modules/users/user/show/adnotification=true',
 			u'directory/manager/web/modules/users/user/display=displayName',
 			u'nameserver/external=true',
+			u'server/password/change=false',
 		]
 	)
 	univention.config_registry.handler_unset(
 		[
 			u'kerberos/kdc',
 			u'kerberos/kpasswdserver'
+		]
+	)
+
+
+def revert_ucr_settings():
+	# TODO something else?
+	univention.config_registry.handler_unset(
+		[
+			u'ad/member',
+			u'directory/manager/web/modules/computers/computer/show/adnotification',
+			u'directory/manager/web/modules/groups/group/show/adnotification',
+			u'directory/manager/web/modules/users/user/show/adnotification',
+			u'directory/manager/web/modules/users/user/display',
+			u'kerberos/defaults/dns_lookup_kdc',
+			u'server/password/change',
+		]
+	)
+
+	univention.config_registry.handler_set(
+		[
+			u'nameserver/external=false',
 		]
 	)
 
@@ -494,6 +516,7 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 		raise faildToAddServiceRecordToAD("failed to add SRV record to %s" % ad_ip)
 	os.unlink(fd.name)
 
+
 def get_ucr_variable_from_ucs(host, server, var):
 	cmd = ['univention-ssh', '/etc/machine.secret']
 	cmd += ['%s\$@%s' % (host, server)]
@@ -504,6 +527,7 @@ def get_ucr_variable_from_ucs(host, server, var):
 		log("ERROR: %s failed with %d (%s)" % (cmd, p1.returncode, stderr))
 		raise failedToGetUcrVariable("failed to get UCR variable %s from %s" % (var, server))
 	return stdout.strip()
+
 
 def set_nameserver_from_ucs_master(ucr=None):
 	if not ucr:
@@ -516,6 +540,7 @@ def set_nameserver_from_ucs_master(ucr=None):
 		value = get_ucr_variable_from_ucs(ucr.get('hostname'), ucr.get('ldap/master'), var)
 		if value:
 			univention.config_registry.handler_set([u'%s=%s' % (var, value)])
+
 
 def configure_ad_member(ad_server_ip, username, password):
 
@@ -562,25 +587,6 @@ def configure_ad_member(ad_server_ip, username, password):
 	start_service('univention-ad-connector')
 
 	return True
-
-def revert_ucr_settings():
-	# TODO something else?
-	univention.config_registry.handler_unset(
-		[
-			u'ad/member',
-			u'directory/manager/web/modules/computers/computer/show/adnotification',
-			u'directory/manager/web/modules/groups/group/show/adnotification',
-			u'directory/manager/web/modules/users/user/show/adnotification',
-			u'directory/manager/web/modules/users/user/display',
-			u'kerberos/defaults/dns_lookup_kdc',
-		]
-	)
-
-	univention.config_registry.handler_set(
-		[
-			u'nameserver/external=false',
-		]
-	)
 
 
 def configure_backup_as_ad_member():

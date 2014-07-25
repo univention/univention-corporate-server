@@ -1,3 +1,9 @@
+univention-lib (3.0.26-40) unstable; urgency=low
+
+  * disbale password change in member mode (Bug #35467)
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Jul 2014 10:29:30 +0200
+
 univention-lib (3.0.26-39) unstable; urgency=low
 
   * Start AD connector at the end of the configuration (Bug #35091)
