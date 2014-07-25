@@ -795,8 +795,8 @@ class AD_Takeover():
 	def disable_admember_mode(self, progress):
 		if univention.lib.admember.is_domain_in_admember_mode():
 			univention.lib.admember.remove_admember_service_from_localhost()
+			univention.lib.admember.revert_ucr_settings()
 			run_and_output_to_log(["univention-config-registry", "unset",
-				"ad/member",
 				"connector/s4/listener/disabled",
 				], log.debug)
 			run_and_output_to_log(["univention-config-registry", "set",

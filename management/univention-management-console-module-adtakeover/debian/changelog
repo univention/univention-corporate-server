@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (1.0.10-29) unstable; urgency=medium
+
+  * call univention.lib.admember.revert_ucr_settings (Bug #35346).
+
+ -- Arvid Requate <requate@univention.de>  Fri, 25 Jul 2014 10:33:54 +0200
+
 univention-management-console-module-adtakeover (1.0.10-28) unstable; urgency=medium
 
   * run disable_admember_mode before joining the domain (Bug #35346).
