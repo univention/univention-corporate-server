@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-heimdal
-fix: 7.0.2-1.153.201407251104
+fix: 7.0.2-2.154.201407251213
 version: [2]
 desc: |
     * AD member mode has been added to univention-heimdal.
