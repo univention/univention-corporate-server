@@ -1,0 +1,158 @@
+#!/bin/bash
+#
+# Univention System Setup
+#  start X server with browser
+#
+# Copyright 2011-2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+if [ -z "$1" ] # no parameter --> called from init script
+then # call self in xinit as nobody, then start gdm
+	echo -e "\n\n\n"
+	echo "$0 has been started at $(date)"
+	echo
+	USS_PROFILE="/var/cache/univention-system-setup/profile"
+
+	# set random password for system setup user
+	USSPASSWD="$(tr -c -d '[:alnum:]' < /dev/urandom | head -c 30)"
+	echo "__systemsetup__:$USSPASSWD" | chpasswd
+
+	default_locale=en_US
+	eval "$(/usr/sbin/univention-config-registry shell locale/default)"
+	if [ -n "$locale_default" ]; then
+		default_locale=${locale_default%%.*}
+	fi
+	USSURL="http://localhost/univention-management-console/?username=__systemsetup__&password=${USSPASSWD}&module=setup&overview=false&displayUsername=false&lang=$default_locale"
+	BROWSERPIDFILE="/var/cache/univention-system-setup/browser.pid"
+
+	# Workaround: the locale is currently required by the UMC
+	/usr/sbin/ucr set locale=en_US.UTF-8:UTF-8
+
+	# Start/Restart UMC and Webserver
+	/etc/init.d/univention-management-console-server restart
+	/etc/init.d/univention-management-console-web-server restart
+
+	# after installation an outdated apache process is running that cannot be kill via pid file
+	pkill -f apache2
+	/etc/init.d/apache2 restart
+
+	# workaround for Bug 35466
+	mkdir -p /var/run/univention-management-console/
+
+	# move old profile
+	if [ -f "$USS_PROFILE" ]; then
+		mv "$USS_PROFILE" "$USS_PROFILE.bak"
+	fi
+
+	# Add 'hide tab bar' addon for this session
+	if [ ! -e /opt/firefox/distribution/bundles ]; then
+		mkdir -p /opt/firefox/distribution/bundles
+	fi
+	ln -s /usr/lib/univention-system-setup/addons/{e5bbc237-c99b-4ced-a061-0be27703295f} /opt/firefox/distribution/bundles
+
+	export DISPLAY=:0
+	if xwininfo -root -stats > /dev/null 2>/dev/null ; then	
+		/bin/su nobody -m --login -c "'$0' '$USSURL'" -- 3> "$BROWSERPIDFILE"
+	else
+		# start X11 and browser ; script returns pid of browser on fd3
+		[ -x /usr/bin/xinit ] && /usr/bin/xinit /bin/su nobody -c "'$0' '$USSURL'" -- 3> "$BROWSERPIDFILE"
+	fi
+
+	# remove pidfile
+	rm -f "$BROWSERPIDFILE"
+
+	# set new random password for system setup user
+	USSPASSWD="$(tr -c -d '[:alnum:]' < /dev/urandom | head -c 30)"
+	echo "__systemsetup__:$USSPASSWD" | chpasswd
+
+	# reset system-setup-boot flag
+	/usr/sbin/univention-config-registry set system/setup/boot/start=false
+
+	# Remove 'hide tab bar' addon
+	rm /opt/firefox/distribution/bundles/{e5bbc237-c99b-4ced-a061-0be27703295f}
+
+	if [ -x /etc/init.d/gdm ] ; then
+		/etc/init.d/gdm start
+	fi
+	exit
+fi
+
+### this is executed by xinit->su as nobody inside the running X server ###
+URL="$1"
+
+# set background
+xwininfo=$(LC_ALL=C xwininfo -root -stats)
+screenWidth=$(sed -ne 's/  Width: //p' <<<"$xwininfo")
+screenHeight=$(sed -ne 's/  Height: //p' <<<"$xwininfo")
+while read imageWidth imageHeight
+do
+	if [ "$imageWidth" -le "$screenWidth" -a "$imageHeight" -le "$screenHeight" ]
+	then
+		break
+	fi
+done < <(find /usr/share/gdm/themes/univention/ -regex '.*/[0-9]+x[0-9]+\.png'|tr -dc '0-9x\n'|tr x ' '|sort -snrk2|sort -snrk1)
+if [ -n "$imageWidth" -a -n "$imageHeight" ]
+then
+	xsetbg -fork -fullscreen /usr/share/gdm/themes/univention/"$imageWidth"x"$imageHeight".png
+fi
+if [ "$screenWidth" -lt 1000 ]
+then
+	URL="${URL}&width=${screenWidth}"
+fi
+
+# create and export a temporary home directory
+HOME=$(mktemp -d)
+export HOME
+profilePath=$(mktemp -d -p "$HOME")
+# do not show the "know your rights" popup
+echo 'user_pref("browser.rights.3.shown", true);' >> "$profilePath"/prefs.js
+# do not ask for performance reporting
+echo 'user_pref("toolkit.telemetry.prompted", 2);' >> "$profilePath"/prefs.js
+echo 'user_pref("toolkit.telemetry.rejected", true);' >> "$profilePath"/prefs.js
+# do not store passwords
+echo 'user_pref("signon.rememberSignons", false);' >> "$profilePath"/prefs.js
+# deactivate firefox autoupdate
+echo 'user_pref("app.update.enabled", false);' >> "$profilePath"/prefs.js
+echo 'user_pref("app.update.auto", false);' >> "$profilePath"/prefs.js
+# deactivate default browser check
+echo 'user_pref("browser.shell.checkDefaultBrowser", false);' >> "$profilePath"/prefs.js
+# hide nav bar and menu bar
+echo '<?xml version="1.0"?><RDF:RDF xmlns:NC="http://home.netscape.com/NC-rdf#" xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><RDF:Description RDF:about="chrome://browser/content/browser.xul"><NC:persist RDF:resource="chrome://browser/content/browser.xul#nav-bar"/><NC:persist RDF:resource="chrome://browser/content/browser.xul#toolbar-menubar"/></RDF:Description><RDF:Description RDF:about="chrome://browser/content/browser.xul#nav-bar" collapsed="true" /><RDF:Description RDF:about="chrome://browser/content/browser.xul#toolbar-menubar" autohide="true" /></RDF:RDF>' > "$profilePath"/localstore.rdf
+# start window manager so that firefox' menus work correctly
+
+openbox --config-file /etc/xdg/openbox/rc_no_shortcuts.xml &
+windowManager=$!
+# start browser
+firefox -profile "$profilePath" "$URL" &
+# send pid of browser to root instance of this script
+echo "$!" >&3
+# wait for browser
+wait %%
+kill "$windowManager"
+wait
+find "$profilePath" -delete
+find "$HOME" -delete
