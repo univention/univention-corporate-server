@@ -7,4 +7,3 @@ version: [2]
 desc: |
     * AD member mode has been added to univention-heimdal.
 bug: [35470]
-

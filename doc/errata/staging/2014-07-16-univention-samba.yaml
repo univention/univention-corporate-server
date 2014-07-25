@@ -6,5 +6,4 @@ fix: 8.0.19-7.473.201407251058
 version: [2]
 desc: |
     * AD member mode has been added to univention-samba.
-bug: [35095]
-
+bug: [35095,35470]

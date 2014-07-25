@@ -7,4 +7,4 @@ version: [2]
 desc: |
    Several functions for configuring the AD member mode have
    been added to univention-lib.
-bug: [34091]
+bug: [34091,35470]
