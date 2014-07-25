@@ -43,7 +43,9 @@ if [ -z "$kerberos_realm" ]; then
 	univention-config-registry set "kerberos/realm?$realm"
 fi
 
-univention-config-registry set kerberos/kpasswdserver?$ldap_master
+if ! is_ucr_true ad/member; then
+	univention-config-registry set kerberos/kpasswdserver?$ldap_master
+fi
 
 eval "$(univention-config-registry shell kerberos/realm)"
 
