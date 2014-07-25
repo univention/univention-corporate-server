@@ -1,3 +1,10 @@
+univention-system-setup (8.0.14-1) unstable; urgency=low
+
+  * Bug #35378: added missing dependency
+  * Bug #35378: set server/role before starting USS
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 25 Jul 2014 15:21:20 +0200
+
 univention-system-setup (8.0.13-1) unstable; urgency=low
 
   * Bug #35378: mount /dev, /dev/pts, /proc and /sys to prevent segfaults
