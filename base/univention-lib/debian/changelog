@@ -1,3 +1,9 @@
+univention-lib (3.0.26-44) unstable; urgency=low
+
+  * Fixed exception names: s/faild/failed/g (Bug #34091)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 27 Jul 2014 14:55:47 +0200
+
 univention-lib (3.0.26-43) unstable; urgency=low
 
   * python/admember: use univention.debug (Bug #34091)

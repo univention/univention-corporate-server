@@ -49,7 +49,7 @@ import univention.debug as ud
 
 UNIVENTION_SAMBA_MIN_PACKAGE_VERSION = "8.0.19-6.472.201407231046"
 
-class faildToSetService(Exception):
+class failedToSetService(Exception):
 	'''ucs_addServiceToLocalhost failed'''
 
 class invalidUCSServerRole(Exception):
@@ -79,7 +79,7 @@ class manualTimeSyncronizationRequired(timeSyncronizationFailed):
 class sambaJoinScriptFailed(Exception):
 	'''26univention-samba.inst failed'''
 
-class faildToAddServiceRecordToAD(Exception):
+class failedToAddServiceRecordToAD(Exception):
 	'''failed to add SRV record in AD'''
 
 class failedToGetUcrVariable(Exception):
@@ -163,12 +163,12 @@ def disable_ssl():
 def _add_service_to_localhost(service):
 	res = subprocess.call('. /usr/share/univention-lib/ldap.sh; ucs_addServiceToLocalhost "%s"' % service, shell=True)
 	if res != 0:
-		raise faildToSetService
+		raise failedToSetService
 
 def _remove_service_from_localhost(service):
 	res = subprocess.call('. /usr/share/univention-lib/ldap.sh; ucs_removeServiceFromLocalhost "%s"' % service, shell=True)
 	if res != 0:
-		raise faildToSetService
+		raise failedToSetService
 
 def add_admember_service_to_localhost():
 	_add_service_to_localhost('AD Member')
@@ -520,7 +520,7 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 	stdout, stderr = p1.communicate()
 	if p1.returncode:
 		ud.debug(ud.LDAP, ud.ERROR, "%s failed with %d (%s)" % (cmd, p1.returncode, stderr))
-		raise faildToAddServiceRecordToAD("failed to add SRV record to %s" % ad_ip)
+		raise failedToAddServiceRecordToAD("failed to add SRV record to %s" % ad_ip)
 	os.unlink(fd.name)
 
 
