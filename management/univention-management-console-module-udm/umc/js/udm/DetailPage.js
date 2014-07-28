@@ -633,8 +633,10 @@ define([
 				return;
 			}
 
+			var ucr = lang.getObject('umc.modules.udm.ucr', false) || {};
+			var activeDirectoryEnabled = tools.isTrue(ucr['ad/member']);
 			var isSyncedObject = -1 !== this.objectFlags.indexOf('synced');
-			if (isSyncedObject) {
+			if (isSyncedObject && activeDirectoryEnabled) {
 				// evauluate AD connector flag
 				array.forEach(properties, lang.hitch(this, function(prop) {
 					if (prop.readonly_when_synced) {

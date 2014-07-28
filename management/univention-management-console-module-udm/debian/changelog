@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.97-36) unstable; urgency=low
+
+  * Bug #34093: evaluate module flavor when showing warning about object
+  	creation in Active Directory mode
+
+ -- Florian Best <best@univention.de>  Mon, 28 Jul 2014 09:53:23 +0200
+
 univention-management-console-module-udm (4.0.97-35) unstable; urgency=low
 
   * Bug #34244: fix typos in translation
