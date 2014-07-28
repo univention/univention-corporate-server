@@ -334,7 +334,8 @@ class Instance(Base, ProgressMixin):
 		ad_server_ip=StringSanitizer(required=True),
 	)
 	@simple_response
-	def admember_check_domain(self, username, password, ad_server_ip, syncmode):
+	def check_domain(self, username, password, ad_server_ip, syncmode):
+		ad_domain_info = {}
 		try:
 			if syncmode == 'admember':
 				admember.check_server_role()
@@ -350,10 +351,10 @@ class Instance(Base, ProgressMixin):
 			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_server_ip)
 		except admember.domainnameMismatch as exc: # check_domain()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_CommandError(_('The domain name of the AD Server (%s) does not match the local UCS domain name (%s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % (ad_domain_info["Domain"], ucr['domainname']))
+			raise UMC_CommandError(_('The domain name of the AD Server (%s) does not match the local UCS domain name (%s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % (ad_domain_info.get("Domain"), ucr['domainname']))
 		except admember.connectionFailed as exc: # check_connection()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info['DC DNS Name'])
+			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info.get('DC DNS Name'))
 
 		# final info dict that is returned... replace spaces in the keys with '_'
 		MODULE.info('Preparing info dict...')
@@ -418,12 +419,15 @@ class Instance(Base, ProgressMixin):
 			admember.disable_local_heimdal()
 			admember.disable_local_samba4()
 
-			_progress(30, _('Configuring Administrator account...'))
+			_progress(25, _('Configuring Administrator account...'))
 			admember.prepare_administrator(username, password)
 
-			_progress(40, _('Configuring software components...'))
+			_progress(30, _('Configuring reverse DNS settings...'))
+			admember.prepare_dns_reverse_settings(ad_server_ip, ad_domain_info)
 
-			_step_offset = 40.0
+			_progress(35, _('Configuring software components...'))
+
+			_step_offset = 35.0
 			_nsteps = 40.0
 			def _step_handler(step):
 				MODULE.info('Package manager progress: %.1f' % step)
@@ -437,6 +441,7 @@ class Instance(Base, ProgressMixin):
 			if not success:
 				raise RuntimeError(_('An error occurred while installing necessary software components.'))
 
+			_progress(80, _('Running Samba join script...'))
 			admember.run_samba_join_script(username, password)
 
 			_progress(85, _('Configuring DNS entries...'))
@@ -452,6 +457,8 @@ class Instance(Base, ProgressMixin):
 				MODULE.warn('SSL is not supported')
 				admember.disable_ssl()
 			success = True
+
+		# error handling...
 		except admember.invalidUCSServerRole as exc:
 			_err(exc, _('The AD member mode cannot only be configured on a DC master server.'))
 		except admember.failedADConnect as exc:
@@ -474,7 +481,7 @@ class Instance(Base, ProgressMixin):
 		if success:
 			_progress(100, _('Join has been finished successfully.'))
 		else:
-			_progress(100, _('Join has been finished with a errors.'))
+			_progress(100, _('Join has been finished with errors.'))
 
 		if hasattr(progress, 'result'):
 			# some error probably occurred -> return the result in the progress

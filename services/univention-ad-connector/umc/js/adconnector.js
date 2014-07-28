@@ -53,6 +53,12 @@ define([
 				if (!state.configured) {
 					this.wizard = new SetupWizard({});
 					this.addChild(this.wizard);
+					this.wizard.on('Finished', lang.hitch(this, function() {
+							topic.publish('/umc/tabs/close', this);
+					}));
+					this.wizard.on('Cancel', lang.hitch(this, function() {
+							topic.publish('/umc/tabs/close', this);
+					}));
 				}
 				else {
 					this.configPage = new ConfigPage({
@@ -61,6 +67,6 @@ define([
 					this.addChild(this.configPage);
 				}
 			}));
-		},
+		}
 	});
 });

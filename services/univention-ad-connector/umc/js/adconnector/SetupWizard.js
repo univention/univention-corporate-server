@@ -38,10 +38,12 @@ define([
 	"dojo/Deferred",
 	"dojo/when",
 	"dojox/html/styles",
+	"dojox/timing/_base",
 	"dijit/form/RadioButton",
 	"umc/dialog",
 	"umc/widgets/ProgressBar",
 	"umc/tools",
+	"umc/modules/lib/server",
 	"umc/widgets/Page",
 	"umc/widgets/Form",
 	"umc/widgets/ExpandingTitlePane",
@@ -54,7 +56,7 @@ define([
 	"umc/widgets/Wizard",
 	"./RadioButtons",
 	"umc/i18n!umc/modules/adconnector"
-], function(declare, lang, array, domClass, on, topic, Deferred, when, styles, RadioButton, dialog, ProgressBar, tools, Page, Form, ExpandingTitlePane, Module, Text, TextBox, Uploader, PasswordBox, CheckBox, Wizard, RadioButtons, _) {
+], function(declare, lang, array, domClass, on, topic, Deferred, when, styles, timing, RadioButton, dialog, ProgressBar, tools, server, Page, Form, ExpandingTitlePane, Module, Text, TextBox, Uploader, PasswordBox, CheckBox, Wizard, RadioButtons, _) {
 	var modulePath = require.toUrl('umc/modules/adconnector');
 	styles.insertCssRule('.umc-adconnector-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;');
 	styles.insertCssRule('.umc-adconnector-page .umcLabelPaneCheckBox', 'display: block !important;');
@@ -258,10 +260,11 @@ define([
 //		}
 //	});
 
-	var _Wizard = declare("umc.modules.adconnector.SetupWizard", [ Wizard ], {
+	return declare("umc.modules.adconnector.SetupWizard", [ Wizard ], {
 		autoValidate: true,
 		autoFocus: true,
 		_progressBar: null,
+		_keepSessionAlive: null,
 
 		constructor: function() {
 			this.pages = [{
@@ -289,18 +292,18 @@ define([
 				}]
 			}, {
 				'class': 'umc-adconnector-page-credentials umc-adconnector-page',
-				name: 'credentials',
+				name: 'credentials-admember',
 				headerText: _('Active Directory domain credentials'),
 				widgets: [{
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('To proceed with the configuration of the connection, enter Active Directory domain information:')
+					content: _('Enter the Active Directory domain information to join the domain.')
 				}, {
 					type: TextBox,
 					name: 'ad_server_ip',
 					required: true,
-					label: _('Address of Active Directory domain controller')
+					label: _('Name of Active Directory domain or address of Active Directory domain controller')
 				}, {
 					type: TextBox,
 					name: 'username',
@@ -312,58 +315,6 @@ define([
 					name: 'password',
 					required: true,
 					label: _('Active Directory password')
-				}]
-			}, {
-				'class': 'umc-adconnector-page-info umc-adconnector-page',
-				name: 'ssl-warning',
-				headerText: _('Security settings'),
-				widgets: [{
-					type: Text,
-					'class': 'umcPageHelpText',
-					name: 'info',
-					content: _('<p>An encrypted connection to the Active Directory domain could not be established. This has as consequence that authentication data is submitted in plaintext.</p><p>To enable an encrypted connection, a certification authority needs to be configured on the Active Directory server. All necessary steps are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.</p><p>After the certification authority has been set up, press <i>Next</i> to proceed.</p>')
-				}]
-			}, {
-				'class': 'umc-adconnector-page-info umc-adconnector-page',
-				name: 'certificate-warning',
-				headerText: _('Security settings'),
-				widgets: [{
-					type: Text,
-					'class': 'umcPageHelpText',
-					name: 'info',
-					content: _('<p>To achieve a higher level of security, the Active Directory system\'s root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate. The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>. Alternatively, you may proceed with this configuration.</p>'),
-
-				}, {
-					name: 'certificateUpload',
-					type: Uploader,
-					command: 'adconnector/upload/certificate',
-					onUploadStarted: lang.hitch(this, function() {
-						this.standby(true);
-					}),
-					onUploaded: lang.hitch(this, function(result) {
-						this.standby(false);
-						if (typeof result  == "string") {
-							return;
-						}
-						if (result.success) {
-							this.addNotification(_('The certificate was imported successfully'));
-						} else {
-							dialog.alert(_('Failed to import the certificate') + ': ' + result.message);
-						}
-					})
-				}]
-			}, {
-				'class': 'umc-adconnector-page-info umc-adconnector-page',
-				name: 'confirm-admember',
-				headerText: _('Configuration of UCS as part of Active Directory domain'),
-				widgets: [{
-					type: Text,
-					name: 'help',
-					content: '<p>' + _('Please confirm to start the join process of this UCS system into the following Active Directory domain:') + '</p>'
-				}, {
-					type: Text,
-					name: 'info',
-					content: ''
 				}]
 			}, {
 				name: 'error-admember',
@@ -385,6 +336,84 @@ define([
 					name: 'help',
 					content: _('<p>Congratulations, Univention Corporate Server has been successfully configured to be part of a Active Directory domain.</p><p>The UCS server is now ready for usage, and domain account information are now available.</p>')
 				}]
+			}, {
+				'class': 'umc-adconnector-page-credentials umc-adconnector-page',
+				name: 'credentials-adconnector',
+				headerText: _('Active Directory domain credentials'),
+				widgets: [{
+					type: Text,
+					'class': 'umcPageHelpText',
+					name: 'help',
+					content: _('Enter the Active Directory domain information to configure the connection.')
+				}, {
+					type: TextBox,
+					name: 'ad_server_ip',
+					required: true,
+					label: _('Address of Active Directory domain controller')
+				}, {
+					type: TextBox,
+					name: 'username',
+					required: true,
+					label: _('Active Directory account'),
+					value: 'Administrator'
+				}, {
+					type: PasswordBox,
+					name: 'password',
+					required: true,
+					label: _('Active Directory password')
+				}]
+			}, {
+				'class': 'umc-adconnector-page-info umc-adconnector-page',
+				name: 'ssl-adconnector',
+				headerText: _('Security settings'),
+				widgets: [{
+					type: Text,
+					'class': 'umcPageHelpText',
+					name: 'info',
+					content: _('<p>An encrypted connection to the Active Directory domain could not be established. This has as consequence that authentication data is submitted in plaintext.</p><p>To enable an encrypted connection, a certification authority needs to be configured on the Active Directory server. All necessary steps are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.</p><p>After the certification authority has been set up, press <i>Next</i> to proceed.</p>')
+				}]
+			}, {
+				'class': 'umc-adconnector-page-info umc-adconnector-page',
+				name: 'certificate-adconnector',
+				headerText: _('Security settings'),
+				widgets: [{
+					type: Text,
+					'class': 'umcPageHelpText',
+					name: 'info',
+					content: _('<p>To achieve a higher level of security, the Active Directory system\'s root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate. The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>. Alternatively, you may proceed without this configuration.</p>'),
+
+				}, {
+					name: 'certificateUpload',
+					type: Uploader,
+					command: 'adconnector/upload/certificate',
+					onUploadStarted: lang.hitch(this, function() {
+						this.standby(true);
+					}),
+					onUploaded: lang.hitch(this, function(result) {
+						this.standby(false);
+						if (typeof result  == "string") {
+							return;
+						}
+						if (result.success) {
+							this.addNotification(_('The certificate was imported successfully'));
+						} else {
+							dialog.alert(_('Failed to import the certificate') + ': ' + result.message);
+						}
+					})
+				}]
+//			}, {
+//				'class': 'umc-adconnector-page-info umc-adconnector-page',
+//				name: 'confirm-admember',
+//				headerText: _('Configuration of UCS as part of Active Directory domain'),
+//				widgets: [{
+//					type: Text,
+//					name: 'help',
+//					content: '<p>' + _('Please confirm to start the join process of this UCS system into the following Active Directory domain:') + '</p>'
+//				}, {
+//					type: Text,
+//					name: 'info',
+//					content: ''
+//				}]
 			}, {
 				'class': 'umc-adconnector-page-syncconfig umc-adconnector-page',
 				name: 'config-adconnector',
@@ -453,11 +482,21 @@ define([
 			}];
 		},
 
+		_setupFooterButtons: function() {
+			// change labels of footer buttons on particular pages
+			var buttons = this.getPage('credentials-admember')._footerButtons;
+			buttons.next.set('label', _('Join AD domain'));
+		},
+
 		buildRendering: function() {
 			this.inherited(arguments);
 			this._progressBar = new ProgressBar({});
 			this.own(this._progressBar);
-			var syncmodeWidget = this.getWidget('start', 'syncmode');
+
+			this._keepSessionAlive = new timing.Timer(1000 * 10);
+			this._keepSessionAlive.onTick = lang.hitch(server, 'ping');
+
+			this._setupFooterButtons();
 		},
 
 		_isConnectorMode: function() {
@@ -468,24 +507,25 @@ define([
 			return this.getWidget('start', 'syncmode').get('value') == 'admember';
 		},
 
-		_updateConfirmADMemberPage: function(info) {
-			var fqdnParts = info.DC_DNS_Name.split(/\./g);
-			info._hostname = fqdnParts.shift();
-			var msg = '<ul>';
-			array.forEach([
-				[_('Active Directory domain'), info.Domain],
-				[_('AD domain controller'), _('%(DC_DNS_Name)s (%(DC_IP)s)', info)],
-				[_('SSL encryption'), info.ssl_supported ? _('Activated') : _('<b>Deactivated!</b>')],
-				[_('LDAP base'), info.LDAP_Base]
-			], function(ientry) {
-				msg += '<li>' + ientry[0] + ': <i>' + ientry[1] + '</i></li>';
-			});
-			msg += '</ul>';
-			msg += _('<p>Click "Next" to inititate the join process into the AD domain.</p>');
-			this.getWidget('confirm-admember', 'info').set('content', msg);
-		},
+//		_updateConfirmADMemberPage: function(info) {
+//			var fqdnParts = info.DC_DNS_Name.split(/\./g);
+//			info._hostname = fqdnParts.shift();
+//			var msg = '<ul>';
+//			array.forEach([
+//				[_('Active Directory domain'), info.Domain],
+//				[_('AD domain controller'), _('%(DC_DNS_Name)s (%(DC_IP)s)', info)],
+//				[_('SSL encryption'), info.ssl_supported ? _('Activated') : _('<b>Deactivated!</b>')],
+//				[_('LDAP base'), info.LDAP_Base]
+//			], function(ientry) {
+//				msg += '<li>' + ientry[0] + ': <i>' + ientry[1] + '</i></li>';
+//			});
+//			msg += '</ul>';
+//			msg += _('<p>Click "Next" to inititate the join process into the AD domain.</p>');
+//			this.getWidget('confirm-admember', 'info').set('content', msg);
+//		},
 
-		_updateErrorPage: function(mode, message) {
+		_updateErrorPage: function(mode, message, warnings) {
+			//TODO: handling of warnings
 			message = message || '<p>' + _('An unexpected error occurred. More information about the cause of the error can be found in the log file /var/log/univention/management-console-module-adconnector.log. Please retry the join process after resolving any conflicting issues.') + '</p>';
 			message = message.replace(/\n/g, '<br>');
 			this.getWidget('error-' + mode, 'info').set('content', message);
@@ -493,8 +533,8 @@ define([
 
 		_checkADDomain: function() {
 			var vals = this.getValues();
-			return this.standbyDuring(tools.umcpCommand('adconnector/admember/check_domain', vals)).then(lang.hitch(this, function(response) {
-				this._updateConfirmADMemberPage(response.result);
+			return this.standbyDuring(tools.umcpCommand('adconnector/check_domain', vals)).then(lang.hitch(this, function(response) {
+				//this._updateConfirmADMemberPage(response.result);
 				return response.result;
 			}), function() {
 				return null;
@@ -520,7 +560,7 @@ define([
 			var vals = this.getValues();
 			var deferred = tools.umcpProgressCommand(this._progressBar, 'adconnector/admember/join', vals, false).then(lang.hitch(this, function(result) {
 				if (!result.success) {
-					this._updateErrorPage('admember', result.error);
+					this._updateErrorPage('admember', result.error, result.warnings);
 					return false;
 				}
 				return true;
@@ -545,19 +585,38 @@ define([
 			return true;
 		},
 
-		next: function(pageName) {
-			var nextPage = this.inherited(arguments);
-			if (pageName == 'credentials') {
+		_nextADMember: function(pageName) {
+			if (pageName == 'credentials-admember') {
+				return this._checkADDomain().then(lang.hitch(this, function(adDomainInfo) {
+					// server error message is shown, stay on the same page
+					if (!adDomainInfo) {
+						return pageName;
+					}
+
+					// start join process
+					return this.join().then(lang.hitch(this, function(success) {
+						if (success) {
+							this._keepSessionAlive.start(); // will be stopped via destroy method
+							return 'finished-admember';
+						}
+						return 'error-admember';
+					}));
+				}));
+			}
+		},
+
+		_nextADConnector: function(pageName) {
+			if (pageName == 'credentials-adconnector') {
 					return this._checkADDomain().then(function(adDomainInfo) {
 						// server error message is shown, stay on the same page
 						if (!adDomainInfo) {
 							return pageName;
 						}
 						// check for SSL support
-						return adDomainInfo.ssl_supported ? 'certificate-warning' : 'ssl-warning';
+						return adDomainInfo.ssl_supported ? 'certificate' : 'ssl';
 					});
 			}
-			if (pageName == 'ssl-warning' || pageName == 'certificate-warning') {
+			if (pageName == 'ssl-adconnector' || pageName == 'certificate-adconnector') {
 				// check again for SSL status
 				return this._checkADDomain().then(lang.hitch(this, function(adDomainInfo) {
 					// server error message is shown, stay on the same page
@@ -567,14 +626,7 @@ define([
 					if (!adDomainInfo.ssl_supported) {
 						return this._confirmUnsecureConnectionWithADDomain().then(lang.hitch(this, function(confirmed) {
 							if (confirmed) {
-								if (this._isMemberMode()) {
-									// start join process
-									return this.join().then(function(success) {
-										return success ? 'finished-admember' : 'error-admember';
-									});
-								} else {
-									return 'config-adconnector';
-								}
+								return 'config-adconnector';
 							}
 
 							// confirm dialog canceled
@@ -584,23 +636,18 @@ define([
 					return 'confirm-admember';
 				}));
 			}
+		},
 
-			//TODO: below here unused for now...
-			if (pageName == 'confirm-admember') {
-				return this._startUCSJoinInAD().then(function() {
-					return nextPage;
-				});
+		next: function(pageName) {
+			var nextPage = this.inherited(arguments);
+			if (pageName == 'start') {
+				return nextPage;
 			}
-			if (pageName == 'msi-adconnector') {
-				return this._startADSync().then(function() {
-					return nextPage;
-				});
+			if (this._isMemberMode()) {
+				return this._nextADMember(pageName);
 			}
-			if ((pageName == 'credentials' && this._isMemberMode()) ||
-				(pageName == 'config-adconnector' && this._isConnectorMode())) {
-				return this._queryDomainInfo().then(function() {
-					return nextPage;
-				});
+			if (this._isConnectorMode()) {
+				return this._nextADConnector(pageName);
 			}
 			return nextPage;
 		},
@@ -613,15 +660,30 @@ define([
 		},
 
 		hasNext: function(pageName) {
-			return pageName.indexOf('Finished') < 0;
+			return pageName.indexOf('finished') < 0;
 		},
 
 		hasPrevious: function(pageName) {
-			return pageName.indexOf('Finished') < 0;
+			return pageName.indexOf('finished') < 0;
 		},
 
 		canCancel: function(pageName) {
-			return pageName.indexOf('Finished') < 0;
+			return pageName.indexOf('finished') < 0;
+		},
+
+		_finish: function(/*String*/ pageName) {
+			if (pageName.indexOf('finished') < 0) {
+				return;
+			}
+
+			if (this._isMemberMode()) {
+				server.askRestart(_('Please confirm to carry out a restart of the UMC server components.')).then(
+					lang.hitch(this, 'onFinished', 'admember'),
+					lang.hitch(this, 'onFinished', 'admember')
+				);
+			} else {
+				this.onFinished('adconnector');
+			}
 		},
 
 		_timeout: function(seconds, percentage, message) {
@@ -687,27 +749,32 @@ define([
 			}).then(function() {
 				return self.standby(false);
 			});
-		}
-	});
+		},
 
-	return declare("umc.modules.adtakeover2", Module , {
-		unique: true,
+		_gatherVisibleValues: function() {
+			// collect values from visible pages and visible widgets
+			var _vals = {};
+			array.forEach(this.pages, function(ipageConf) {
+				if (this.isPageVisible(ipageConf.name)) {
+					var ipage = this.getPage(ipageConf.name);
+					if (!ipage || !ipage._form) {
+						return;
+					}
+					lang.mixin(_vals, ipage._form.get('value'));
+				}
+			}, this);
+			return _vals;
+		},
 
-		buildRendering: function() {
-			var progressBar = new ProgressBar({});
+		getValues: function() {
+			return this._gatherVisibleValues();
+		},
+
+		destroy: function() {
+			if (this._keepSessionAlive.isRunning) {
+				this._keepSessionAlive.stop();
+			}
 			this.inherited(arguments);
-
-			this.wizard = new _Wizard({
-				progressBar: progressBar
-			});
-			this.addChild(this.wizard);
-			this.wizard.on('Finished', lang.hitch(this, function() {
-				topic.publish('/umc/tabs/close', this);
-			}));
-			this.wizard.on('Cancel', lang.hitch(this, function() {
-				topic.publish('/umc/tabs/close', this);
-			}));
 		}
-
 	});
 });

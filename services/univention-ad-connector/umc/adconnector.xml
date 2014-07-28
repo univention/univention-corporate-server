@@ -17,7 +17,7 @@
 		<command name="adconnector/upload/certificate" function="upload_certificate" />
 		<command name="adconnector/private.key" function="private_key" />
 		<command name="adconnector/cert.pem" function="cert_pem" />
-		<command name="adconnector/admember/check_domain" function="admember_check_domain" />
+		<command name="adconnector/check_domain" function="check_domain" />
 		<command name="adconnector/admember/join" function="admember_join" />
 		<command name="adconnector/admember/progress" function="progress" />
 	</module>

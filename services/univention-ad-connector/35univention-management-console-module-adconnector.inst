@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -39,8 +39,15 @@ VERSION=1
 joinscript_init
 
 umc_init
-umc_operation_create "adconnector-all" "Configuration of Univention AD Connector" "" "adconnector/*"
+umc_operation_create "adconnector-all" "Configuration of Univention AD Connector" "" "adconnector/*" "lib/server/*"
 umc_policy_append "default-umc-all" "adconnector-all"
+
+if [ "$JS_LAST_EXECUTED_VERSION" = 1 ]; then
+	# update from version 1: add lib/server/* to UMC operation set
+	udm settings/umc_operationset modify $BIND_ARGS \
+		--dn "cn=adconnector-all,cn=operations,cn=UMC,cn=univention,$ldap_base" \
+		--append operation="lib/server/*"
+fi
 
 joinscript_save_current_version
 

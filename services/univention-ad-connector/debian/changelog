@@ -1,3 +1,14 @@
+univention-ad-connector (8.0.17-34) unstable; urgency=medium
+
+  Bug #35090 [WIP]
+  * added UMC restart at the end of the AD member mode configuration
+  * refactorization for integration of AD connector configuration via wizard
+  * updated commands for join process
+  * removed confirmation page for AD member mode
+  * minor fixes and cleanups
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 28 Jul 2014 12:55:13 +0200
+
 univention-ad-connector (8.0.17-33) unstable; urgency=low
 
   * univention-ad-member: use univention.debug (Bug #34091)
