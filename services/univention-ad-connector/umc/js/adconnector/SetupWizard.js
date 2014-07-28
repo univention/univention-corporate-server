@@ -370,7 +370,12 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'info',
-					content: _('<p>An encrypted connection to the Active Directory domain could not be established. This has as consequence that authentication data is submitted in plaintext.</p><p>To enable an encrypted connection, a certification authority needs to be configured on the Active Directory server. All necessary steps are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.</p><p>After the certification authority has been set up, press <i>Next</i> to proceed.</p>')
+					content: array.map([
+						_('An encrypted connection to the Active Directory domain could not be established. This has as consequence that authentication data is submitted in plaintext.'),
+						_('To enable an encrypted connection, a certification authority needs to be configured on the Active Directory server. All necessary steps are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.'),
+						_('After the certification authority has been set up, press <i>Next</i> to proceed.')], function(para) {
+						return '<p>' + para + '</p>';
+					}).join('')
 				}]
 			}, {
 				'class': 'umc-adconnector-page-info umc-adconnector-page',

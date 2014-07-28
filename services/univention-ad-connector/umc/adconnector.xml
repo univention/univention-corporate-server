@@ -13,6 +13,8 @@
 		<command name="adconnector/guess" function="guess" />
 		<command name="adconnector/defaults" function="defaults" />
 		<command name="adconnector/state" function="state" />
+		<command name="adconnector/enable_ssl" function="enable_ssl" />
+		<command name="adconnector/password_sync_service" function="password_sync_service" />
 		<command name="adconnector/service" function="service" />
 		<command name="adconnector/upload/certificate" function="upload_certificate" />
 		<command name="adconnector/private.key" function="private_key" />

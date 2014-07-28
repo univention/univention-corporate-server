@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-36) unstable; urgency=low
+
+  * Bug #35090 [WIP]: Adaption of ConfigPage to Member/Connector mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 28 Jul 2014 15:53:51 +0200
+
 univention-ad-connector (8.0.17-35) unstable; urgency=medium
 
   * Bug #35090 [WIP]: fixed ucslint error 

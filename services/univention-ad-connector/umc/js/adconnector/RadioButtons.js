@@ -48,7 +48,7 @@ define([
 
 		name: null,
 
-		// the widget's class name as CSS class
+		// the class name of the widget as CSS class
 		'class': 'umcRadioButtons',
 
 		postMixInProperties: function() {

@@ -76,7 +76,7 @@ class Instance(Base, ProgressMixin):
 		self.__update_status()
 
 	def state( self, request ):
-		"""Retrieve current status of the UCS Active Directory Connector configuration and the service
+		"""Retrieve current status of the Active Directory connection configuration and the service
 
 		options: {}
 
@@ -85,6 +85,8 @@ class Instance(Base, ProgressMixin):
 
 		self.__update_status()
 		self.finished(request.id, {
+			'ssl_enabled' : self.status_ssl,
+			'password_sync_enabled' : self.status_password_sync,
 			'certificate' : self.status_certificate,
 			'mode_admember' : self.status_mode_admember,
 			'mode_adconnector' : self.status_mode_adconnector,
@@ -93,7 +95,7 @@ class Instance(Base, ProgressMixin):
 		})
 
 	def load( self, request ):
-		"""Retrieve current status of the UCS Active Directory Connector configuration and the service
+		"""Retrieve current status of the Active Directory connection configuration and the service
 
 		options: {}
 
@@ -111,7 +113,7 @@ class Instance(Base, ProgressMixin):
 
 	@sanitize(LDAP_Host=StringSanitizer(required=True))
 	def save( self, request ):
-		"""Saves the UCS Active Directory Connector configuration
+		"""Saves the Active Directory connection configuration
 
 		options:
 			LDAP_Host: hostname of the AD server
@@ -164,7 +166,7 @@ class Instance(Base, ProgressMixin):
 			self._create_certificate(request)
 			return
 
-		self.finished(request.id, { 'success' : True, 'message' :  _('UCS Active Directory Connector settings have been saved.')})
+		self.finished(request.id, { 'success' : True, 'message' :  _('Active Directory connection settings have been saved.')})
 
 	def _create_certificate(self, request):
 		ssldir = '/etc/univention/ssl/%s' % request.options.get('LDAP_Host')
@@ -172,7 +174,7 @@ class Instance(Base, ProgressMixin):
 			if not os.path.exists(ssldir):
 				MODULE.error( 'Creation of certificate failed (%s)' % ssldir )
 				self.finished(request.id,  {'success' : False, 'message': _('Creation of certificate failed (%s)') % ssldir})
-			self.finished(request.id,  {'success' : True, 'message' :  _('UCS Active Directory Connector settings have been saved and a new certificate for the Active Directory server has been created.')})
+			self.finished(request.id,  {'success' : True, 'message' :  _('Active Directory connection settings have been saved and a new certificate for the Active Directory server has been created.')})
 
 		cmd = '/usr/sbin/univention-certificate new -name %s' % pipes.quote(request.options['LDAP_Host'])
 		MODULE.info( 'Creating new SSL certificate: %s' % cmd )
@@ -303,9 +305,9 @@ class Instance(Base, ProgressMixin):
 				MODULE.info( 'Switching running state of Active Directory Connector failed. exitcode=%s' % result )
 			else:
 				if request.options.get( 'action' ) == 'start':
-					message = _( 'UCS Active Directory Connector has been started.' )
+					message = _( 'Active Directory connection service has been started.' )
 				else:
-					message = _( 'UCS Active Directory Connector has been stopped.' )
+					message = _( 'Active Directory connection service has been stopped.' )
 
 			self.finished( request.id, { 'success' : success, 'message' : message } )
 
@@ -317,6 +319,8 @@ class Instance(Base, ProgressMixin):
 	def __update_status( self ):
 		ucr.load()
 		fn = ucr.get( 'connector/ad/ldap/certificate' )
+		self.status_ssl = ucr.is_true('connector/ad/ldap/ssl')
+		self.status_password_sync = ucr.is_true('connector/ad/mapping/user/password/kinit')
 		self.status_certificate = bool( fn and os.path.exists( fn ) )
 		self.status_running = self.__is_process_running( '*python*univention/connector/ad/main.py*' )
 		self.status_mode_admember = admember.is_localhost_in_admember_mode(ucr)
@@ -351,7 +355,7 @@ class Instance(Base, ProgressMixin):
 			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_server_ip)
 		except admember.domainnameMismatch as exc: # check_domain()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_CommandError(_('The domain name of the AD Server (%s) does not match the local UCS domain name (%s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % (ad_domain_info.get("Domain"), ucr['domainname']))
+			raise UMC_CommandError(_('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain' : ad_domain_info.get("Domain"), 'ucs_domain' : ucr['domainname']})
 		except admember.connectionFailed as exc: # check_connection()
 			MODULE.warn('Failure: %s' % exc)
 			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info.get('DC DNS Name'))
@@ -464,7 +468,7 @@ class Instance(Base, ProgressMixin):
 		except admember.failedADConnect as exc:
 			_err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_domain_info.get('DC DNS Name'))
 		except admember.domainnameMismatch as exc:
-			_err(exc, _('The domain name of the AD Server (%s) does not match the local UCS domain name (%s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % (ad_domain_info.get("Domain"), ucr['domainname']))
+			_err(exc, _('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain' : ad_domain_info["Domain"], 'ucs_domain' : ucr['domainname']})
 		except admember.connectionFailed as exc:
 			_err(exc, _('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info.get('DC DNS Name'))
 		except admember.failedToSetAdministratorPassword as exc:
@@ -488,4 +492,17 @@ class Instance(Base, ProgressMixin):
 			return progress.result
 
 		return {'success': success}
+
+	@simple_response
+	def enable_ssl(self):
+		server = ucr.get('connector/ad/ldap/host')
+		if True: #not admember.server_supports_ssl(server):
+			raise UMC_CommandError(_('Could not establish an encrypted connection. Either "%r" is not reachable or does not support encryption.') % server)
+		admember.enable_ssl()
+		return subprocess.call(['invoke-rc.d', 'univention-ad-connector', 'restart'])
+
+	@simple_response
+	def password_sync_service(self, enable=True):
+		univention.config_registry.handler_set(['connector/ad/mapping/user/password/kinit=%s' % str(enable).lower()])
+		return subprocess.call(['invoke-rc.d', 'univention-ad-connector', 'restart'])
 
