@@ -1,18 +1,24 @@
+univention-s4-connector (8.0.33-66) UNRELEASED; urgency=medium
+
+  * Adjust bug number for Errata update (Bug #35500)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 Jul 2014 18:14:19 +0200
+
 univention-s4-connector (8.0.33-65) unstable; urgency=medium
 
-  * Abort joinscript if is_domain_in_admember_mode (Bug #35252)
+  * Abort joinscript if is_domain_in_admember_mode (Bug #35500)
 
  -- Arvid Requate <requate@univention.de>  Thu, 24 Jul 2014 17:49:23 +0200
 
 univention-s4-connector (8.0.33-64) unstable; urgency=medium
 
-  * Revert last change for errata3.2-2 release (Bug #33621, Bug #35252)
+  * Revert last change for errata3.2-2 release (Bug #33621, Bug #35500)
 
  -- Arvid Requate <requate@univention.de>  Thu, 24 Jul 2014 11:05:29 +0200
 
 univention-s4-connector (8.0.33-63) unstable; urgency=medium
 
-  * Abort joinscript if is_domain_in_admember_mode (Bug #35252)
+  * Abort joinscript if is_domain_in_admember_mode (Bug #35500)
 
  -- Arvid Requate <requate@univention.de>  Wed, 23 Jul 2014 17:17:44 +0200
 
