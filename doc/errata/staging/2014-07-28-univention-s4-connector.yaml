@@ -1,0 +1,9 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: univention-s4-connector
+fix: 8.0.33-66.491.201407281831
+version: [2]
+desc: |
+    * The joinscript of univention-s4-connector was adjusted to abort if the domain is in AD member mode.
+bug: [35500]
