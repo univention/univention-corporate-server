@@ -1,3 +1,9 @@
+univention-samba (8.0.19-9) unstable; urgency=low
+
+  * fixed last commit (Bug #35467) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Jul 2014 14:24:29 +0200
+
 univention-samba (8.0.19-8) unstable; urgency=low
 
   * change password in ad member mode (Bug #35467)

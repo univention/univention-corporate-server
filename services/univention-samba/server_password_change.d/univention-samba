@@ -80,7 +80,7 @@ def run_postchange():
 	## change password on ad in member mode
 	if samba_role == 'memberserver' and univention.lib.admember.is_localhost_in_admember_mode(ucr=ucr):
 		cmd = ['/usr/bin/net', 'ads', 'password', '-P']
-		cmd.append('%s$' % ucr.get('hostname'))
+		cmd.append('%s$' % ucr.get('hostname', '').upper())
 		cmd.append('%s' % machine_password)
 		process = subprocess.Popen(cmd)
 		process.wait()
