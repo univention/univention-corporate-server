@@ -1,3 +1,9 @@
+univention-lib (3.0.26-45) unstable; urgency=low
+
+  * enable password change (Bug #35467) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Jul 2014 12:52:55 +0200
+
 univention-lib (3.0.26-44) unstable; urgency=low
 
   * Fixed exception names: s/faild/failed/g (Bug #34091)

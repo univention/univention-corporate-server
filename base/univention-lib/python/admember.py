@@ -397,7 +397,7 @@ def set_nameserver(server_ips, ucr=None):
 		if ucr.get(var):
 			univention.config_registry.handler_unset([var])
 
-def prepare_dns_reverse_settngs(ad_server_ip, ad_domain_info):
+def prepare_dns_reverse_settings(ad_server_ip, ad_domain_info):
 	# For python-ldap / GSSAPI / AD we need working reverse looksups
 	try:
 		socket.gethostbyaddr(ad_server_ip)
@@ -419,7 +419,6 @@ def prepare_ucr_settings():
 			u'directory/manager/web/modules/users/user/show/adnotification=true',
 			u'directory/manager/web/modules/users/user/display=displayName',
 			u'nameserver/external=true',
-			u'server/password/change=false',
 		]
 	)
 	univention.config_registry.handler_unset(
@@ -441,7 +440,6 @@ def revert_ucr_settings():
 			u'directory/manager/web/modules/users/user/show/adnotification',
 			u'directory/manager/web/modules/users/user/display',
 			u'kerberos/defaults/dns_lookup_kdc',
-			u'server/password/change',
 		]
 	)
 
@@ -574,7 +572,7 @@ def configure_ad_member(ad_server_ip, username, password):
 
 	prepare_administrator(username, password)
 
-	prepare_dns_reverse_settngs(ad_server_ip, ad_domain_info)
+	prepare_dns_reverse_settings(ad_server_ip, ad_domain_info)
 
 	remove_install_univention_samba()
 
