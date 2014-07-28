@@ -71,12 +71,17 @@ from univention.management.console.log import MODULE
 import univention.management.console as umc
 import ConfigParser
 import univention.lib.admember
+from samba import Ldb
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 # load UDM modules
 udm_modules.update()
+try:
+	univention.admin.handlers.disable_ad_restrictions(disable=False)
+except AttributeError:
+	ud.debug(ud.LDAP, ud.INFO, 'univention.admin.handlers.disable_ad_restrictions is not available')
 
 LOGFILE_NAME = "/var/log/univention/ad-takeover.log"
 BACKUP_DIR = "/var/univention-backup/ad-takeover"
@@ -229,10 +234,10 @@ def count_domain_objects_on_server(hostname_or_ip, username, password, progress)
 	ucs_license = UCS_License_detection(ucr)
 
 	progress.headline(_('Connecting to %s') % hostname_or_ip)
-	check_remote_host(hostname_or_ip)
+	ad = AD_Connection(hostname_or_ip)
 
 	progress.message(_('Authenticating'))
-	ad = AD_Connection(hostname_or_ip, username, password)
+	ad.authenticate(username, password)
 
 	progress.message(_('Retrieving information from AD DC'))
 	domain_info = ad.count_objects(ucs_license.ignored_users_list)
@@ -256,11 +261,11 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 
 	progress.headline(_('Connecting to %s') % hostname_or_ip)
 	progress.percentage(0.5)
-	check_remote_host(hostname_or_ip)
+	ad = AD_Connection(hostname_or_ip)
 
 	progress.headline(_('Authenticating'))
 	progress.percentage(0.7)
-	ad = AD_Connection(hostname_or_ip, username, password)
+	ad.authenticate(username, password)
 
 	progress.headline(_('Synchronizing System Clock'))
 	progress.percentage(1)
@@ -395,18 +400,18 @@ class AD_Takeover_State():
 			raise TakeoverError(_("Internal module error: Refusing to set invalid state '%s'.") % new_state)
 
 		current_state = self.current()
-		if current_state == new_state:
-			return
 
 		if new_state == "start":
 			self.check_start()
-			if current_state == "done":
+			if current_state == "start":
+				self._set_persistent_state(new_state)
+			elif current_state == "done":
 				log.info("Starting another takover.")
 				timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
 				statefile_backup = "%s.previous-ad-takeover-%s" % (self.statefile, timestamp)
 				os.rename(self.statefile, statefile_backup)
 				self._set_persistent_state(new_state)
-		elif current_state ==  self.stateorder[i-1]:
+		elif current_state == self.stateorder[i-1]:
 			self._set_persistent_state(new_state)
 		else:
 			raise TakeoverError(_("Internal module error: Cannot go from state '%s' to state '%s'.") % (current_state, new_state))
@@ -582,14 +587,28 @@ class UCS_License_detection():
 
 
 class AD_Connection():
-	def __init__(self, hostname_or_ip, username, password, lp=None):
+	def __init__(self, hostname_or_ip, lp=None):
 
+		self.hostname_or_ip = hostname_or_ip
+		self.ldap_uri = ldap_uri_for_host(hostname_or_ip)
+
+		if lp:
+			self.lp = lp
+		else:
+			self.lp = LoadParm()
+			self.lp.load('/etc/samba/smb.conf')
+
+		ping(hostname_or_ip)
+
+		## To reduce authentication delays first check if an AD is present at all
+		try:
+			Ldb(url=self.ldap_uri, lp=self.lp)
+		except ldb.LdbError:
+			raise ComputerUnreachable(_("Active Directory services not detected at %s.") % hostname_or_ip)
+
+	def authenticate(self, username, password, lp=None):
 		self.username = username
 		self.password = password
-
-		if not lp:
-			lp = LoadParm()
-			lp.load('/dev/null')
 
 		creds = Credentials()
 		# creds.guess(lp)
@@ -599,9 +618,8 @@ class AD_Connection():
 		creds.set_username(self.username)
 		creds.set_password(self.password)
 
-		ldap_uri = ldap_uri_for_host(hostname_or_ip)
 		try:
-			self.samdb = SamDB(ldap_uri, credentials=creds, session_info=system_session(lp), lp=lp)
+			self.samdb = SamDB(self.ldap_uri, credentials=creds, session_info=system_session(self.lp), lp=self.lp)
 		except ldb.LdbError:
 			raise AuthenticationFailed()
 
@@ -609,7 +627,7 @@ class AD_Connection():
 		ntds_guid = self.samdb.get_ntds_GUID()
 		local_ntds_guid = None
 		try:
-			local_samdb = SamDB("ldap://127.0.0.1", credentials=creds, session_info=system_session(lp), lp=lp)
+			local_samdb = SamDB("ldap://127.0.0.1", credentials=creds, session_info=system_session(self.lp), lp=self.lp)
 			local_ntds_guid = local_samdb.get_ntds_GUID()
 		except ldb.LdbError:
 			pass
@@ -640,7 +658,7 @@ class AD_Connection():
 		if not self.domain_sid:
 			raise TakeoverError(_("Failed to determine AD domain SID."))
 
-		self.domain_info = lookup_adds_dc(hostname_or_ip)
+		self.domain_info = lookup_adds_dc(self.hostname_or_ip)
 		self.domain_info['ad_os'] = self.operatingSystem(self.domain_info["ad_netbios_name"])
 
 	def operatingSystem(self, netbios_name):
@@ -826,6 +844,8 @@ class AD_Takeover():
 				shutil.rmtree(self.backup_samba_dir)
 			os.rename(SAMBA_PRIVATE_DIR, self.backup_samba_dir)
 			os.makedirs(SAMBA_PRIVATE_DIR)
+			statefile = os.path.join(self.backup_samba_dir, ".adtakeover")
+			shutil.copy(statefile, SAMBA_PRIVATE_DIR)
 
 		## Adjust some UCR settings
 		if "nameserver1/local" in self.ucr:
@@ -1859,19 +1879,6 @@ def ping(hostname_or_ip):
 
 	if rc != 0:
 		raise ComputerUnreachable(_("Network connection to %s failed.") % hostname_or_ip)
-
-def check_ad_present(hostname_or_ip):
-	ldap_uri = ldap_uri_for_host(hostname_or_ip)
-	try:
-		ldb.Ldb(url=ldap_uri)
-	except ldb.LdbError:
-		raise ComputerUnreachable(_("Active Directory services not detected at %s.") % hostname_or_ip)
-
-def check_remote_host(hostname_or_ip):
-	ping(hostname_or_ip)
-
-	## To reduce authentication delays first check if an AD is present at all
-	check_ad_present(hostname_or_ip)
 
 def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
 	'''CLDAP lookup'''

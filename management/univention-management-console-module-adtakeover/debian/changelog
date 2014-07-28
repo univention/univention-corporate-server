@@ -1,3 +1,10 @@
+univention-management-console-module-adtakeover (1.0.10-31) unstable; urgency=medium
+
+  * Fix Ldb connection check against a native AD failing with FQDN given
+  * Allow UDM modification of objects synchronized from AD (Bug #35346)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 Jul 2014 14:33:36 +0200
+
 univention-management-console-module-adtakeover (1.0.10-30) unstable; urgency=medium
 
   * Fix disable_admember_mode call (Bug #35346)
