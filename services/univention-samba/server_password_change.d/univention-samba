@@ -32,6 +32,7 @@
 import tdb, struct
 import sys, os, time, traceback, subprocess
 from univention.config_registry import ConfigRegistry
+import univention.lib.admember
 
 def write_machine_secret_to_secrets_tdb(machine_password, windows_domain):
 	machine_password_key = 'SECRETS/MACHINE_PASSWORD/%s' % windows_domain
@@ -76,8 +77,16 @@ def run_postchange():
 		sys.stdout.write("ERROR: windows/domain is not set!\n")
 		return 1
 
+	## change password on ad in member mode
+	if samba_role == 'memberserver' and univention.lib.admember.is_localhost_in_admember_mode(ucr=ucr):
+		cmd = ['/usr/bin/net', 'ads', 'password', '-P']
+		cmd.append('%s$' % ucr.get('hostname'))
+		cmd.append('%s' % machine_password)
+		process = subprocess.Popen(cmd)
+		process.wait()
+
+	## store machine.secret in secrets.tdb
 	try:
-		## store machine.secret in secrets.tdb
 		write_machine_secret_to_secrets_tdb(machine_password, windows_domain)
 	except:
 		sys.stdout.write(traceback.format_exc())
