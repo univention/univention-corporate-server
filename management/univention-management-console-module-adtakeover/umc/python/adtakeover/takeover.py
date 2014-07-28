@@ -268,7 +268,7 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	takeover.time_sync()
 
 	progress.headline(_('Joining the domain'))
-	takeover.disable_admember_mode()
+	takeover.disable_admember_mode(progress)
 	progress.percentage(2)
 	progress._scale = 18 - progress._percentage
 	takeover.join_AD(progress)
