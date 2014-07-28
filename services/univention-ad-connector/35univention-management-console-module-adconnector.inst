@@ -44,7 +44,7 @@ umc_policy_append "default-umc-all" "adconnector-all"
 
 if [ "$JS_LAST_EXECUTED_VERSION" = 1 ]; then
 	# update from version 1: add lib/server/* to UMC operation set
-	udm settings/umc_operationset modify $BIND_ARGS \
+	udm settings/umc_operationset modify "$@" \
 		--dn "cn=adconnector-all,cn=operations,cn=UMC,cn=univention,$ldap_base" \
 		--append operation="lib/server/*"
 fi

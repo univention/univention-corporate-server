@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-35) unstable; urgency=medium
+
+  * Bug #35090 [WIP]: fixed ucslint error 
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 28 Jul 2014 14:10:59 +0200
+
 univention-ad-connector (8.0.17-34) unstable; urgency=medium
 
   Bug #35090 [WIP]
