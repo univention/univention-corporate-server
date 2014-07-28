@@ -7,6 +7,7 @@ Build-Depends:
  python-support,
  python-all
 Standards-Version: 3.6.1
+XS-Python-Version: 2.6, 2.7
 
 Package: ucslint
 Architecture: all
@@ -16,7 +17,6 @@ Depends:
  devscripts,
  python-libtre
 Conflicts: ucs-tools (<< 1.2.5)
-XS-Python-Version: 2.6, 2.7
 Description: Check packaging for UCS
  This package contains the Univention tool ucslint that
  is able to check debian source packages against common
@@ -34,7 +34,6 @@ Depends:
  ${misc:Depends},
  ucslint
 Conflicts: ucs-tools (<< 1.2.5)
-XS-Python-Version: 2.6, 2.7
 Description: Univention-specific ucslint tests
  This package contains Univention specific tests for ucslint
  (e.g. copyright checks or maintainer information checks).

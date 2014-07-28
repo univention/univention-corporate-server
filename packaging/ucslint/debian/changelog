@@ -1,3 +1,9 @@
+ucslint (4.0.0-4) unstable; urgency=low
+
+  * Bug #35135: fix XS-Python-Version
+
+ -- Florian Best <best@univention.de>  Mon, 28 Jul 2014 14:40:23 +0200
+
 ucslint (4.0.0-3) unstable; urgency=low
 
   * Bug #35135: set compat level to 9 (part 2)
