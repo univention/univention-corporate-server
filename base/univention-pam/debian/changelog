@@ -1,3 +1,9 @@
+univention-pam (7.0.4-30) unstable; urgency=medium
+
+  * Trigger well-known-sid-name-mapping on SID changes (Bug #35501)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 Jul 2014 18:31:05 +0200
+
 univention-pam (7.0.4-29) unstable; urgency=low
 
   * Fix PAM stack for password change (Bug #34315)

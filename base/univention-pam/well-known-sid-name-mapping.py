@@ -61,7 +61,34 @@ def sidToName(sid):
 		return univention.lib.s4.well_known_domain_rids[rid]
 	return None
 
-def checkAndSet(obj, delete=False):
+def checkAndSet(new, old):
+
+	obj = new or old
+	if not obj:
+		return
+
+	## check either new or old is relevant here
+	well_known_sid = None
+	for candidate in (new, old):
+		if not candidate:
+			continue
+		sambaSid = candidate.get("sambaSID", [None])[0]
+		if not sambaSid:
+			continue
+		default_name = sidToName(sambaSid)
+		if default_name:
+			well_known_sid = sambaSid
+			break
+
+	if not well_known_sid:
+		return
+
+	unset = False
+	if new:
+		if new.get("sambaSID", [None])[0] != well_known_sid:
+			unset = True
+	else:
+		unset = True
 
 	ocs = obj.get('objectClass', [])
 	if 'sambaSamAccount' in ocs:
@@ -78,44 +105,42 @@ def checkAndSet(obj, delete=False):
 		)
 		return
 
-	sambaSid = obj.get("sambaSID", [None])[0]
+	if not obj_name:
+		return
 
-	if obj_name and sambaSid:
-		default_name = sidToName(sambaSid)
-		if default_name:
-			default_name_lower = default_name.lower().replace(" ", "")
-			custom_name_lower = obj_name.lower().replace(" ", "")
-			if not custom_name_lower == default_name_lower and not delete:
-				ucr_key_value = "%s/%s=%s" % (ucr_base, default_name_lower, obj_name)
-				univention.debug.debug(
-					univention.debug.LISTENER,
-					univention.debug.PROCESS,
-					"%s: ucr set %s" % (name, ucr_key_value)
-				)
-				listener.setuid(0)
-				try:
-					univention.config_registry.handler_set([ucr_key_value])
-					return default_name
-				finally:
-					listener.unsetuid()
-			else:
-				# unset ucr var if the custom name of user/group matches the default one,
-				# or if object was deleted
-				unset_ucr_key = "%s/%s" % (ucr_base, default_name_lower)
-				ucr.load()
-				ucr_value = ucr.get(unset_ucr_key)
-				if ucr_value:
-					univention.debug.debug(
-						univention.debug.LISTENER,
-						univention.debug.PROCESS,
-						"%s: ucr unset %s=%s" % (name, unset_ucr_key, ucr_value)
-					)
-					listener.setuid(0)
-					try:
-						univention.config_registry.handler_unset([unset_ucr_key])
-						return default_name
-					finally:
-						listener.unsetuid()
+	default_name_lower = default_name.lower().replace(" ", "")
+	custom_name_lower = obj_name.lower().replace(" ", "")
+	if custom_name_lower == default_name_lower or unset:
+		# unset ucr var if the custom name of user/group matches the default one,
+		# or if object was deleted
+		unset_ucr_key = "%s/%s" % (ucr_base, default_name_lower)
+		ucr.load()
+		ucr_value = ucr.get(unset_ucr_key)
+		if ucr_value:
+			univention.debug.debug(
+				univention.debug.LISTENER,
+				univention.debug.PROCESS,
+				"%s: ucr unset %s=%s" % (name, unset_ucr_key, ucr_value)
+			)
+			listener.setuid(0)
+			try:
+				univention.config_registry.handler_unset([unset_ucr_key])
+				return default_name
+			finally:
+				listener.unsetuid()
+	else:
+		ucr_key_value = "%s/%s=%s" % (ucr_base, default_name_lower, obj_name)
+		univention.debug.debug(
+			univention.debug.LISTENER,
+			univention.debug.PROCESS,
+			"%s: ucr set %s" % (name, ucr_key_value)
+		)
+		listener.setuid(0)
+		try:
+			univention.config_registry.handler_set([ucr_key_value])
+			return default_name
+		finally:
+			listener.unsetuid()
 
 
 def no_relevant_change(new, old):
@@ -131,14 +156,16 @@ def no_relevant_change(new, old):
 		
 		old_name = old.get(name_attr, [])
 		new_name = new.get(name_attr, [])
+		old_sid = old.get("sambaSID", [])
+		new_sid = new.get("sambaSID", [])
 
 		univention.debug.debug(
 			univention.debug.LISTENER,
 			univention.debug.INFO,
-			"%s: mod sid=%s new=%r old=%r" % (name, new.get("sambaSID"), new_name, old_name)
+			"%s: mod (old=%r, oldSid=%s) to (new=%r, newSid=%s)" % (name, old_name, old_sid, new_name, new_sid)
 		)
 
-		return set(old_name) == set(new_name)
+		return (set(old_name) == set(new_name)) and (set(old_sid) == set(new_sid))
 
 def handler(dn, new, old, command):
 	global modified_default_names
@@ -217,7 +244,7 @@ def handler(dn, new, old, command):
 				univention.debug.INFO,
 				"%s: new %s" % (name, new.get("sambaSID"))
 			)
-			changed_default_name = checkAndSet(new)
+			changed_default_name = checkAndSet(new, old)
 			if changed_default_name:
 				modified_default_names.append(changed_default_name)
 
@@ -225,7 +252,7 @@ def handler(dn, new, old, command):
 			if no_relevant_change(new, old):
 				return
 
-			changed_default_name = checkAndSet(new)
+			changed_default_name = checkAndSet(new, old)
 			if changed_default_name:
 				modified_default_names.append(changed_default_name)
 
@@ -235,7 +262,7 @@ def handler(dn, new, old, command):
 			univention.debug.INFO,
 			"%s: del %s" % (name, old.get("sambaSID"))
 		)
-		changed_default_name = checkAndSet(old, delete=True)
+		changed_default_name = checkAndSet(new, old)
 		if changed_default_name:
 			modified_default_names.append(changed_default_name)
 
