@@ -1,0 +1,17 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: syslinux3
+fix: 3.71+dfsg-5.1.201407281355
+version: [2]
+desc: |
+  This updates provides the older version 3.72 of syslinux, a boot loader for
+  Linux. It is used by the UCS network installer.
+  Due to some BIOS incompatibilities the newer syslinux from UCS-3 fails to
+  boot some notebooks like the DELL E6510 either locally or via PXE. The older
+  version can be installed as a replacement version if such problems occur.
+  For this the packages "syslinux3" and "syslinux3-common" must be installed
+  instead of "syslinx" and "syslinux-common" by using the command-line tool
+  "univention-install" as the user "root" or as an Administrator through the
+  UMC web interface by using the App-center module.
+bug: [33531]
