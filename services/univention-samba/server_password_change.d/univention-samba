@@ -32,6 +32,7 @@
 import tdb, struct
 import sys, os, time, traceback, subprocess
 from univention.config_registry import ConfigRegistry
+from datetime import datetime, timedelta
 import univention.lib.admember
 
 def write_machine_secret_to_secrets_tdb(machine_password, windows_domain):
@@ -141,6 +142,48 @@ def run_postchange():
 
 	return 0
 
+def run_prechange():
+
+	windows_domain = ucr.get('windows/domain', '').upper()
+	machine_password = open('/etc/machine.secret', 'r').read().strip()
+	ldap_hostdn = ucr.get('ldap/hostdn')
+	samba_user = ucr.get('samba/user')
+	samba_role = ucr.get('samba/role')
+	server_role = ucr.get('server/role')
+	ldap_base = ucr.get('ldap/base')
+
+	if not windows_domain:
+		sys.stdout.write("ERROR: windows/domain is not set!\n")
+		return 1
+
+	## check time diff with ad server
+	if samba_role == 'memberserver' and univention.lib.admember.is_localhost_in_admember_mode(ucr=ucr):
+
+		TIME_FORMAT = "%a %b %d %H:%M:%S %Z %Y"
+		tolerance = 180
+		info = univention.lib.admember.lookup_adds_dc()
+		if not 'DC IP' in info:
+			sys.stderr.write('could not find DC IP\n')
+			return 1
+
+		env = os.environ.copy()
+		env["LC_ALL"] = "C"
+		p1 = subprocess.Popen(['rdate', '-p', '-n', info['DC IP']],
+			close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
+		stdout, stderr = p1.communicate()
+		
+		if p1.returncode:
+			sys.stderr.write('could not check time in AD DC (%s) - %s\n' % (info['DC IP'], stderr))
+			return 1
+
+		local_datetime = datetime.today()
+		remote_datetime = datetime.strptime(stdout.strip(), TIME_FORMAT)
+		delta_t = local_datetime - remote_datetime		
+		
+		if abs(delta_t) > timedelta(0, tolerance):
+			sys.stderr.write('Time difference with AD server (%s) is too big. Can not change password via net ads.\n' % (info['DC IP']))
+			return 1
+	return 0
 
 if __name__ == '__main__':
 	ucr = ConfigRegistry()
@@ -151,6 +194,9 @@ if __name__ == '__main__':
 	else:
 		if sys.argv[1] == "postchange":
 			rc = run_postchange()
+			sys.exit(rc)
+		elif sys.argv[1] == "prechange":
+			rc = run_prechange()
 			sys.exit(rc)
 		else:
 			sys.exit(0)
