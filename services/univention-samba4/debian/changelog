@@ -1,3 +1,9 @@
+univention-samba4 (3.0.39-32) unstable; urgency=medium
+
+  * Workaround for parsing of VERSION by joinscript_extern_init (Bug #35252).
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 Jul 2014 16:54:41 +0200
+
 univention-samba4 (3.0.39-31) unstable; urgency=medium
 
   * Add debian/ucslint.overrides (Bug #35252).

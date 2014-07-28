@@ -795,7 +795,7 @@ if [ "$adtakeover_state" = start ]; then
 	disable_slapd_on_standard_port
 
 	echo "INFO: Stopping univention-samba4 joinscript for AD-Takeover"
-	VERSION=1
+	eval VERSION=1
 	joinscript_save_current_version
 	exit 0
 fi
