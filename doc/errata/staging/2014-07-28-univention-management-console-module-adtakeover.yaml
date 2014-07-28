@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: univention-management-console-module-adtakeover
+fix: 1.0.10-31.34.201407281434
+version: [2]
+desc: |
+    * The UMC module for AD Takeover has been adjusted to fix a case where the path to one of the
+      two default GPOs did not match the actual folder copied from the Windows AD server.
+    * The UMC module for AD Takeover has been adjusted to support UCS domains in AD member mode.
+bug: [34776, 35346]
