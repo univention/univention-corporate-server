@@ -1,3 +1,9 @@
+univention-join (6.0.18-9) unstable; urgency=low
+
+  * small fix (Bug #35470) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Jul 2014 09:21:00 +0200
+
 univention-join (6.0.18-8) unstable; urgency=low
 
   * small fix (Bug #35470) 
