@@ -118,7 +118,7 @@ bashquote () { # quote arguments for eval
 }
 
 download_host_certificate () {
-	echo -n "Download host certificate "
+	echo -n "Download host certificate: "
 	local HOSTPWD="/etc/machine.secret"
 	local HOSTACCOUNT="$hostname\$"
 	while true
@@ -136,7 +136,7 @@ download_host_certificate () {
 }
 
 check_ldap_tls_connection () {
-	echo -n "Check TLS connection "
+	echo -n "Check TLS connection: "
 
 	eval "$(ucr shell ldap/master/port)"
 
@@ -213,13 +213,15 @@ check_and_configure_ad_member_mode () {
 	# switch to ad member mode
 	if is_domain_in_admember_mode; then
 		if ! is_localhost_in_admember_mode; then
-			echo "Entering AD Member Mode"
+			echo -n "Entering AD Member Mode: "
 			configure_nonmaster_as_ad_member "$server_role" >>/var/log/univention/join.log 2>&1 || failed_message "could not set AD Member Mode"
+			echo -e "\033[60Gdone"
 		fi
 	else
 		if is_localhost_in_admember_mode; then
-			echo "Leaving AD Member Mode"
+			echo -n "Leaving AD Member Mode: "
 			revert_nonmaster_ad_member "$server_role" >>/var/log/univention/join.log 2>&1 || failed_message "could not revert AD Member Mode"
+			echo -e "\033[60Gdone"
 		fi
 	fi
 }
@@ -477,7 +479,7 @@ if [ $server_role != "domaincontroller_master" -a "$server_role" != "domaincontr
 fi
 
 if [ -x /usr/bin/rdate ]; then
-	echo -n "Sync time "
+	echo -n "Sync time: "
 	/usr/bin/rdate "$DCNAME" >/dev/null 2>&1
 	echo -e "\033[60Gdone"
 fi
