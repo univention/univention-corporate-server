@@ -1,3 +1,16 @@
+univention-lib (3.0.26-51) unstable; urgency=low
+
+  * set ldap/sasl/secprops/maxssf=128 in enable_ssl
+    and unset ldap/sasl/secprops/maxssf in disbale_ssl (Bug #35513) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Jul 2014 15:48:31 +0200
+
+univention-lib (3.0.26-50) unstable; urgency=low
+
+  * added debug output (Bug #35467) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Jul 2014 14:31:18 +0200
+
 univention-lib (3.0.26-49) unstable; urgency=low
 
   * admember.py: add dns/dns to show/adnotification UCR variables (Bug #34092)
