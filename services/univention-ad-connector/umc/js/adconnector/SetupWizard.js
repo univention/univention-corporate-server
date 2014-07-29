@@ -278,7 +278,7 @@ define([
 					content: _('<p>This wizards guides the configuration of the connection with an existing Active Directory domain.</p><p>There are two possible ways:</p>')
 				}, {
 					type: RadioButtons,
-					name: 'syncmode',
+					name: 'mode',
 					staticValues: [{
 						id: 'admember',
 						label: _('Configure UCS as part of the Active Directory domain (recommended).')
@@ -499,11 +499,11 @@ define([
 		},
 
 		_isConnectorMode: function() {
-			return this.getWidget('start', 'syncmode').get('value') == 'adconnector';
+			return this.getWidget('start', 'mode').get('value') == 'adconnector';
 		},
 
 		_isMemberMode: function() {
-			return this.getWidget('start', 'syncmode').get('value') == 'admember';
+			return this.getWidget('start', 'mode').get('value') == 'admember';
 		},
 
 //		_updateConfirmADMemberPage: function(info) {
@@ -539,6 +539,7 @@ define([
 
 		_checkADDomain: function() {
 			var vals = this._getCredentials();
+			vals.mode = this._isMemberMode() ? 'admember' : 'adconnector';
 			return this.standbyDuring(tools.umcpCommand('adconnector/check_domain', vals)).then(lang.hitch(this, function(response) {
 				//this._updateConfirmADMemberPage(response.result);
 				return response.result;
@@ -579,14 +580,18 @@ define([
 			return deferred;
 		},
 
-		adConnectorSaveValues: function(values) {
-			this.standbyDuring(tools.umcpCommand('adconnector/adconnector/save', values)).then(lang.hitch(this, function(response) {
+		adConnectorSaveValues: function(adDomainInfo) {
+			var vals = this._getADConnectorValues(adDomainInfo);
+			this.standbyDuring(tools.umcpCommand('adconnector/adconnector/save', vals)).then(lang.hitch(this, function(response) {
 				if (!response.result.success) {
 					dialog.alert(response.result.message);
 					return false
 				}
 				return true;
-			}));
+			}), function(err) {
+				// should not occur, in any case, the error message will be prompted to the user
+				return false;
+			});
 		},
 
 		isPageVisible: function(pageName) {
@@ -663,7 +668,9 @@ define([
 				return 'config-adconnector';
 			}
 			if (pageName == 'config-adconnector') {
-				return this.adConnectorSaveValues(this._adDomainInfo);
+				return this.adConnectorSaveValues(this._adDomainInfo).then(function(success) {
+					return success ? 'finished-adconnector' : pageName;
+				});
 			}
 		},
 
@@ -741,6 +748,7 @@ define([
 				LDAP_Host: vals.DC_DNS_Name,
 				LDAP_Base: vals.LDAP_Base,
 				LDAP_BindDN: lang.replace('cn={username},cn=users,{LDAP_Base}', vals),
+				LDAP_Password: vals.password,
 				KerberosDomain: vals.Domain,
 				MappingSyncMode: vals.connectormode
 			};

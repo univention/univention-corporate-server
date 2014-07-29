@@ -91,6 +91,16 @@ def lookup_ad_domain_info(ad_server):
 		"DC IP": ad_server_ip,
 	}
 
+def guess_ad_domain_language():
+	'''AD Connector supports "en" and "de", this check detects a German AD
+	Domain and returns "en" as fallback.'''
+	cmd = ['/usr/sbin/univention-adsearch', 'cn=Domänen-Admins']
+	p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	stdout, stderr = p1.communicate()
+	if p1.returncode == 0:
+		return 'de'
+	return 'en'
+
 
 class Instance(Base, ProgressMixin):
 	OPTION_MAPPING = ( ( 'LDAP_Host', 'connector/ad/ldap/host', '' ),
@@ -162,9 +172,6 @@ class Instance(Base, ProgressMixin):
 		"""
 
 		self.required_options( request, *map( lambda x: x[ 0 ], Instance.OPTION_MAPPING ) )
-#		self.guessed_baseDN = None
-
-		###TODO: guess group mapping
 
 		for umckey, ucrkey, default in Instance.OPTION_MAPPING:
 			val = request.options[ umckey ]
@@ -201,8 +208,14 @@ class Instance(Base, ProgressMixin):
 			self._create_certificate(request)
 			return
 
-		###TODO: adapt
-		if admember.server_supports_ssl(server=ad_domain_info.get('DC DNS Name')):
+		# UCR variables are set, and now we can try to guess the language of
+		# the AD domain
+		ad_lang = guess_ad_domain_language()
+		univention.config_registry.handler_set( [ u'connector/ad/mapping/group/language=%s' % ad_lang ] )
+
+		# check for SSL support on AD side
+		if admember.server_supports_ssl(server=request.options.get('LDAP_Host')):
+			MODULE.process('Enabling SSL...')
 			admember.enable_ssl()
 		else:
 			MODULE.warn('SSL is not supported')
@@ -378,19 +391,20 @@ class Instance(Base, ProgressMixin):
 		username=StringSanitizer(required=True),
 		password=StringSanitizer(required=True),
 		ad_server_address=StringSanitizer(required=True),
+		mode=StringSanitizer(default='admember'),
 	)
 	@simple_response
-	def check_domain(self, username, password, ad_server_address, syncmode='admember'):
+	def check_domain(self, username, password, ad_server_address, mode):
 		ad_domain_info = {}
 		try:
-			if syncmode == 'admember':
+			if mode == 'admember':
 				admember.check_server_role()
 				ad_domain_info = admember.lookup_adds_dc(ad_server_address)
 			else:
 				ad_domain_info = lookup_ad_domain_info(ad_server_address)
 
 			ad_server_ip = ad_domain_info['DC IP']
-			if syncmode == 'admember':
+			if mode == 'admember':
 				admember.check_domain(ad_domain_info)
 			admember.check_connection(ad_server_ip, username, password)
 		except admember.invalidUCSServerRole as exc: # check_server_role()
@@ -423,7 +437,7 @@ class Instance(Base, ProgressMixin):
 		progress.title =_('Joining UCS into Active Directory domain')
 		progress.total = 100.0
 		progress.warnings = []
-		success = False
+		overall_success = False
 		MODULE.process(progress.title)
 
 		def _progress(steps, msg):
@@ -509,9 +523,8 @@ class Instance(Base, ProgressMixin):
 			_progress(98, _('Registering LDAP service entry...'))
 			admember.add_admember_service_to_localhost()
 
+			overall_success = True
 			_progress(100, _('Join has been finished successfully.'))
-
-			success = True
 
 		# error handling...
 		except admember.invalidUCSServerRole as exc:
@@ -531,11 +544,9 @@ class Instance(Base, ProgressMixin):
 		except Exception as exc:
 			# catch all other errors that are unlikely to occur
 			_err(exc)
-			admember.revert_ucr_settings()
-			admember.revert_connector_settings()
-			MODULE.error('Traceback:\n%s' % ''.join(traceback.format_tb(sys.exc_info()[2])))
+			MODULE.error('Traceback:\n%s' % traceback.format_exc())
 
-		if not success:
+		if not overall_success:
 			_progress(100, _('Join has been finished with errors.'))
 			admember.revert_ucr_settings()
 			admember.revert_connector_settings()
