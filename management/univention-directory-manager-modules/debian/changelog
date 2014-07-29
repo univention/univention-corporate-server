@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.76-18) unstable; urgency=medium
+
+  * revert changes for (Bug #35254)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 29 Jul 2014 12:38:20 +0200
+
 univention-directory-manager-modules (9.0.76-17) unstable; urgency=low
 
   * Temporarily set the dns/alias syntax back to string again. The new
