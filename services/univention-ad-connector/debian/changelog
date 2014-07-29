@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-42) unstable; urgency=medium
+
+  * New script well-known-sid-object-rename (Bug #35507)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jul 2014 12:10:21 +0200
+
 univention-ad-connector (8.0.17-41) unstable; urgency=low
 
   * Bug #35090 [WIP]: Added German translations for ConfigPage

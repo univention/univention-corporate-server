@@ -2,6 +2,7 @@ univention-ad-connector usr/sbin/
 univention-adsearch usr/sbin/
 univention-connector-list-rejected usr/sbin/
 scripts/prepare-new-instance usr/share/univention-ad-connector/scripts
+scripts/well-known-sid-object-rename usr/share/univention-ad-connector/scripts
 
 conffiles/etc/univention/connector/ad/mapping etc/univention/connector/ad/
 files/var/www/univention-ad-connector/.htaccess var/www/univention-ad-connector/
