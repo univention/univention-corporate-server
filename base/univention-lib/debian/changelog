@@ -1,3 +1,11 @@
+univention-lib (3.0.26-46) unstable; urgency=low
+
+  * admember.py: server_supports_ssl: we have to create a new process
+    because there is only one sec context allowed in python-ldap
+    (Bug #34091)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Jul 2014 10:36:32 +0200
+
 univention-lib (3.0.26-45) unstable; urgency=low
 
   * enable password change (Bug #35467) 

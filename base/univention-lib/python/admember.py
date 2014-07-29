@@ -139,7 +139,7 @@ def prepare_administrator(username, password, ucr=None):
 	if p1.returncode != 0:
 		raise failedToSetAdministratorPassword()
 
-def server_supports_ssl(server):
+def _server_supports_ssl(server):
 	ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 	ldapuri = "ldap://%s:389" % (server)
 	lo = ldap.initialize(ldapuri)
@@ -151,6 +151,14 @@ def server_supports_ssl(server):
 		return False
 	return True
 
+def server_supports_ssl(server):
+	# we have to create a new process because there is only one sec context allowed in python-ldap
+	p1 = subprocess.Popen(["python", "-c", 'import univention.lib.admember; print univention.lib.admember._server_supports_ssl("%s")' % server], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	stdout, stderr = p1.communicate()
+	if p1.returncode == 0 and stdout.strip() == 'True':
+		return True
+	else:
+		return False
 
 def enable_ssl():
 	univention.config_registry.handler_set([u'connector/ad/ldap/ssl=yes'])
