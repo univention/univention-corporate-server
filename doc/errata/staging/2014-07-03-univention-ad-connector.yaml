@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-ad-connector
-fix: 8.0.17-39.413.201407290824
+fix: 8.0.17-51.422.201407291930
 version: [2]
 desc: |
   This update fixes the following issues:
