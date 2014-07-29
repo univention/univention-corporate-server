@@ -380,7 +380,7 @@ class Instance(Base, ProgressMixin):
 		ad_server_address=StringSanitizer(required=True),
 	)
 	@simple_response
-	def check_domain(self, username, password, ad_server_address, syncmode):
+	def check_domain(self, username, password, ad_server_address, syncmode='admember'):
 		ad_domain_info = {}
 		try:
 			if syncmode == 'admember':
@@ -389,7 +389,7 @@ class Instance(Base, ProgressMixin):
 			else:
 				ad_domain_info = lookup_ad_domain_info(ad_server_address)
 
-			ad_server_ip = ad_domain_info['DC_IP']
+			ad_server_ip = ad_domain_info['DC IP']
 			if syncmode == 'admember':
 				admember.check_domain(ad_domain_info)
 			admember.check_connection(ad_server_ip, username, password)
@@ -455,7 +455,7 @@ class Instance(Base, ProgressMixin):
 		try:
 			admember.check_server_role()
 			ad_domain_info = admember.lookup_adds_dc(ad_server_address)
-			ad_server_ip = ad_domain_info['DC_IP']
+			ad_server_ip = ad_domain_info['DC IP']
 
 			_progress(5, _('Configuring time synchronization...'))
 			admember.time_sync(ad_server_ip)
@@ -495,7 +495,7 @@ class Instance(Base, ProgressMixin):
 			admember.prepare_connector_settings(username, password, ad_domain_info)
 
 			_progress(80, _('Renaming well known SID objects...'))
-			admember.rename_well_known_sid_objects()
+			admember.rename_well_known_sid_objects(username, password)
 
 			_progress(85, _('Running Samba join script...'))
 			admember.run_samba_join_script(username, password)
@@ -531,6 +531,8 @@ class Instance(Base, ProgressMixin):
 		except Exception as exc:
 			# catch all other errors that are unlikely to occur
 			_err(exc)
+			admember.revert_ucr_settings()
+			admember.revert_connector_settings()
 			MODULE.error('Traceback:\n%s' % ''.join(traceback.format_tb(sys.exc_info()[2])))
 
 		if not success:
@@ -556,10 +558,3 @@ class Instance(Base, ProgressMixin):
 	def password_sync_service(self, enable=True):
 		univention.config_registry.handler_set(['connector/ad/mapping/user/password/kinit=%s' % str(enable).lower()])
 		return subprocess.call(['invoke-rc.d', 'univention-ad-connector', 'restart'])
-
-	@sanitize(
-		syncmode=ChoicesSanitizer(['read', 'write', 'sync']),
-	)
-	@simple_response()
-	def admember_join(self, username, password, ad_server_address, progress):
-		pass
