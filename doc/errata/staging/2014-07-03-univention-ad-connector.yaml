@@ -12,4 +12,7 @@ desc: |
   * The AD certificate chain is no longer checked if there is no 
     root certificate configured.
   * Kerberos support has been added to the UCS AD connector.
-bug: [35091,35234,35253,35349]
+  * A script has been added for renaming groups and users with Well Known SIDs
+    to the corresponding name in the AD domain. This script is for internal use
+    by the setup wizard for the UCS in AD member mode.
+bug: [35091,35234,35253,35349,35507]
