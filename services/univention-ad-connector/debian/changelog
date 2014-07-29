@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-50) unstable; urgency=medium
+
+  * Updated translations (Bug #35507)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jul 2014 18:41:56 +0200
+
 univention-ad-connector (8.0.17-49) unstable; urgency=medium
 
   * admember.prepare_connector_settings has to be done before
