@@ -9,3 +9,9 @@ Description[de]=Der Port, unter dem der primäre LDAP-Server (siehe 'ldap/server
 Description[en]=The port of the primary LDAP server (see 'ldap/server/name').
 Type=int
 Categories=service-ldap
+
+[ldap/sasl/secprops/maxssf]
+Description[de]=Maximaler SASL Sicherheits-Schicht, benötigt für Verbindung mit einem Windows AD Server.
+Description[en]=Maximal SASL security layers. This is needed for Windows AD server connections.
+Type=int
+Categories=service-ldap
