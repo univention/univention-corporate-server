@@ -1,6 +1,6 @@
 xen-4.1 (4.1.3-15) unstable; urgency=low
 
-  * Bug #35488 qemu-dm: Suppress "ungeistered DMA channel" message.
+  * Bug #35488 qemu-dm: Suppress "unregistered DMA channel" message.
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 28 Jul 2014 15:17:02 +0200
 
