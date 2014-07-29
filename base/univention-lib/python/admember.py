@@ -658,11 +658,13 @@ def configure_ad_member(ad_server_ip, username, password):
 
 	remove_install_univention_samba()
 
+	prepare_connector_settings(username, password, ad_domain_info)
+
+	rename_well_known_sid_objects(username, password)
+
 	run_samba_join_script(username, password)
 
 	add_domaincontroller_srv_record_in_ad(ad_server_ip)
-
-	prepare_connector_settings(username, password, ad_domain_info)
 
 	
 	if server_supports_ssl(server=ad_domain_info["DC DNS Name"]):
@@ -670,8 +672,6 @@ def configure_ad_member(ad_server_ip, username, password):
 	else:
 		ud.debug(ud.MODULE, ud.WARN, "WARNING: ssl is not supported")
 		disable_ssl()
-
-	rename_well_known_sid_objects()
 
 	start_service('univention-ad-connector')
 
