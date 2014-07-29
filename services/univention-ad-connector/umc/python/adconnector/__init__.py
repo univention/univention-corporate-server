@@ -497,7 +497,7 @@ class Instance(Base, ProgressMixin):
 	@simple_response
 	def enable_ssl(self):
 		server = ucr.get('connector/ad/ldap/host')
-		if True: #not admember.server_supports_ssl(server):
+		if not admember.server_supports_ssl(server):
 			raise UMC_CommandError(_('Could not establish an encrypted connection. Either "%r" is not reachable or does not support encryption.') % server)
 		admember.enable_ssl()
 		return subprocess.call(['invoke-rc.d', 'univention-ad-connector', 'restart'])
