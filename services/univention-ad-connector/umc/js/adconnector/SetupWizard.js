@@ -55,8 +55,9 @@ define([
 	"umc/widgets/CheckBox",
 	"umc/widgets/Wizard",
 	"./RadioButtons",
+	"./DownloadInfo",
 	"umc/i18n!umc/modules/adconnector"
-], function(declare, lang, array, domClass, on, topic, Deferred, when, styles, timing, RadioButton, dialog, ProgressBar, tools, server, Page, Form, ExpandingTitlePane, Module, Text, TextBox, Uploader, PasswordBox, CheckBox, Wizard, RadioButtons, _) {
+], function(declare, lang, array, domClass, on, topic, Deferred, when, styles, timing, RadioButton, dialog, ProgressBar, tools, server, Page, Form, ExpandingTitlePane, Module, Text, TextBox, Uploader, PasswordBox, CheckBox, Wizard, RadioButtons, DownloadInfo, _) {
 	var modulePath = require.toUrl('umc/modules/adconnector');
 	styles.insertCssRule('.umc-adconnector-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;');
 	styles.insertCssRule('.umc-adconnector-page .umcLabelPaneCheckBox', 'display: block !important;');
@@ -304,7 +305,7 @@ define([
 					type: TextBox,
 					name: 'ad_server_address',
 					required: true,
-					label: _('Address of Active Directory domain controller')
+					label: _('Address of Active Directory domain controller or name of Active Directory domain')
 				}, {
 					type: TextBox,
 					name: 'username',
@@ -450,22 +451,14 @@ define([
 					})
 				}]
 			}, {
-				'class': 'umc-adconnector-page-info umc-adconnector-page',
-				name: 'info-adconnector',
-				headerText: _('Active Directory domain information'),
-				widgets: [{
-					type: Text,
-					name: 'help',
-					content: _('<p>A Windows 2008 R2 Active Directory domain with the domainname <i>example.org</i> has been found. The server <i>admaster</i> (10.200.8.237) will be used as Active Directory domain controller.</p><p>The following domain accounts have been found:</p><ul><li>13 user accounts</li><li>9 groups</li></ul>')
-				}]
-			}, {
 				'class': 'umc-adconnector-page-msi umc-adconnector-page',
 				name: 'msi-adconnector',
 				headerText: _('Installation of password service'),
 				widgets: [{
-					type: Text,
-					name: 'help',
-					content: _('<p>The MSI files are the installation files for the password service and can be started by double clicking on it. The package is installed in the <b>C:&#92;Windows&#92;UCS-AD-Connector</b> directory automatically. Additionally, the password service is integrated into the Windows environment as a system service, which means the service can be started automatically or manually.</p><ul><li><a>ucs-ad-connector.msi</a><br>Installation file for the password service for <b>32bit</b> Windows.<br>It can be started by double clicking on it.</li><li><a>ucs-ad-connector-64bit.msi</a><br>Installation file for the password service for <b>64bit</b> Windows.<br>It can be started by double clicking on it.</li><li><a>vcredist_x86.exe</a><br>Microsoft Visual C++ 2010 Redistributable Package (x86) - <b>Must</b> be installed on a <b>64bit</b> Windows.</li></ul><p>After installing the password service, click "Next" to initiate the synchronisation process.</p>')
+					type: DownloadInfo,
+					name: 'download',
+					// when reaching this site, the AD connector will be configured
+					configured: true
 				}]
 			}, {
 				'class': 'umc-adconnector-page-finished umc-adconnector-page',
@@ -582,7 +575,7 @@ define([
 
 		adConnectorSaveValues: function(adDomainInfo) {
 			var vals = this._getADConnectorValues(adDomainInfo);
-			this.standbyDuring(tools.umcpCommand('adconnector/adconnector/save', vals)).then(lang.hitch(this, function(response) {
+			return this.standbyDuring(tools.umcpCommand('adconnector/adconnector/save', vals)).then(lang.hitch(this, function(response) {
 				if (!response.result.success) {
 					dialog.alert(response.result.message);
 					return false
@@ -594,16 +587,19 @@ define([
 			});
 		},
 
-		isPageVisible: function(pageName) {
-			var isConnectorPage = pageName.indexOf('-adconnector') >= 0;
-			if (isConnectorPage && !this._isConnectorMode()) {
+		adConnectorStart: function() {
+			return this.standbyDuring(tools.umcpCommand('adconnector/service', {
+				action: 'start'
+			})).then(lang.hitch(this, function(response) {
+				if (!response.result.success) {
+					dialog.alert(response.result.message);
+					return false
+				}
+				return true;
+			}), function(err) {
+				// should not occur, in any case, the error message will be prompted to the user
 				return false;
-			}
-			var isMemberPage = pageName.indexOf('-admember') >= 0;
-			if (isMemberPage && !this._isMemberMode()) {
-				return false;
-			}
-			return true;
+			});
 		},
 
 		_nextADMember: function(pageName) {
@@ -632,36 +628,44 @@ define([
 
 		_nextADConnector: function(pageName) {
 			if (pageName == 'credentials-adconnector') {
-					return this._checkADDomain().then(function(adDomainInfo) {
+					return this._checkADDomain().then(lang.hitch(this, function(adDomainInfo) {
 						if (!adDomainInfo) {
-							// server error message is shown, stay on the same page
+							// an error occurred (message is shown automatically) -> stay on the same page
 							return pageName;
 						}
 						this._updateConfigADConnectorPage(adDomainInfo);
+						this._adDomainInfo = adDomainInfo; // save values for later usage
 
-						// check for SSL support
-						return adDomainInfo.ssl_supported ? 'certificate-adconnector' : 'ssl-adconnector';
-					});
+						if (!adDomainInfo.ssl_supported) {
+							// SSL is not available -> show a warning page
+							return 'ssl-adconnector';
+						}
+
+						// SSL is available -> go to certificate page
+						return 'certificate-adconnector';
+					}));
 			}
 			if (pageName == 'ssl-adconnector') {
-				// check again for SSL status
+				// check again for SSL status...
 				return this._checkADDomain().then(lang.hitch(this, function(adDomainInfo) {
 					if (!adDomainInfo) {
 						// server error message is shown, stay on the same page
 						return pageName;
 					}
-					this._adDomainInfo = adDomainInfo;
 					if (!adDomainInfo.ssl_supported) {
-						return this._confirmUnsecureConnectionWithADDomain().then(lang.hitch(this, function(confirmed) {
+						return this._confirmUnsecureConnectionWithADDomain().then(function(confirmed) {
 							if (confirmed) {
+								// really no SSL! -> go to config page directly
 								return 'config-adconnector';
 							}
 
-							// confirm dialog canceled
+							// dialog has been canceled -> stay on the same page
 							return pageName;
-						}));
+						});
 					}
-					return 'confirm-admember';
+
+					// SSL is available now :) -> show certificate page
+					return 'certificate-adconnector';
 				}));
 			}
 			if (pageName == 'certificate-adconnector') {
@@ -669,9 +673,26 @@ define([
 			}
 			if (pageName == 'config-adconnector') {
 				return this.adConnectorSaveValues(this._adDomainInfo).then(function(success) {
+					return success ? 'msi-adconnector' : pageName;
+				});
+			}
+			if (pageName == 'msi-adconnector') {
+				return this.adConnectorStart().then(function(success) {
 					return success ? 'finished-adconnector' : pageName;
 				});
 			}
+		},
+
+		isPageVisible: function(pageName) {
+			var isConnectorPage = pageName.indexOf('-adconnector') >= 0;
+			if (isConnectorPage && !this._isConnectorMode()) {
+				return false;
+			}
+			var isMemberPage = pageName.indexOf('-admember') >= 0;
+			if (isMemberPage && !this._isMemberMode()) {
+				return false;
+			}
+			return true;
 		},
 
 		next: function(pageName) {

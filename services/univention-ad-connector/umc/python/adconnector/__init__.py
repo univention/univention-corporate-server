@@ -62,35 +62,6 @@ FN_BINDPW = '/etc/univention/connector/ad/bindpw'
 DO_NOT_CHANGE_PWD = '********************'
 
 
-def lookup_ad_domain_info(ad_server):
-	lp = LoadParm()
-	lp.load('/dev/null')
-	net = Net(creds=None, lp=lp)
-	cldap_res = net.finddc(address=ad_server, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
-	ad_server_ip = None
-	if cldap_res.pdc_dns_name:
-		try:
-			p1 = subprocess.Popen(['net', 'lookup', cldap_res.pdc_dns_name],
-				close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-			stdout, stderr = p1.communicate()
-			ad_server_ip = stdout.strip()
-		except OSError as ex:
-			MODULE.warn("AD domain net lookup %s failed: %s" % (cldap_res.pdc_dns_name, ex.args[1]))
-
-	if not ad_server_ip:
-		ad_server_ip = ad_server
-
-	return {
-		"Forest": cldap_res.forest,
-		"Domain": cldap_res.dns_domain,
-		"Netbios Domain": cldap_res.domain_name,
-		"DC DNS Name": cldap_res.pdc_dns_name,
-		"DC Netbios Name": cldap_res.pdc_name,
-		"Server Site": cldap_res.server_site,
-		"Client Site": cldap_res.client_site,
-		"DC IP": ad_server_ip,
-	}
-
 def guess_ad_domain_language():
 	'''AD Connector supports "en" and "de", this check detects a German AD
 	Domain and returns "en" as fallback.'''
@@ -171,10 +142,10 @@ class Instance(Base, ProgressMixin):
 		return: { 'success' : (True|False), 'message' : <details> }
 		"""
 
-		self.required_options( request, *map( lambda x: x[ 0 ], Instance.OPTION_MAPPING ) )
+		self.required_options(request, *[x[0] for x in Instance.OPTION_MAPPING if x[2] == ''])
 
 		for umckey, ucrkey, default in Instance.OPTION_MAPPING:
-			val = request.options[ umckey ]
+			val = request.options.get(umckey, default)
 			if val:
 				if isinstance( val, bool ):
 					val = val and 'yes' or 'no'
@@ -399,9 +370,7 @@ class Instance(Base, ProgressMixin):
 		try:
 			if mode == 'admember':
 				admember.check_server_role()
-				ad_domain_info = admember.lookup_adds_dc(ad_server_address)
-			else:
-				ad_domain_info = lookup_ad_domain_info(ad_server_address)
+			ad_domain_info = admember.lookup_adds_dc(ad_server_address)
 
 			ad_server_ip = ad_domain_info['DC IP']
 			if mode == 'admember':
@@ -492,7 +461,7 @@ class Instance(Base, ProgressMixin):
 			_progress(30, _('Configuring software components...'))
 
 			_step_offset = 30.0
-			_nsteps = 40.0
+			_nsteps = 35.0
 			def _step_handler(step):
 				MODULE.process('Package manager progress: %.1f' % step)
 				progress.current = (step / 100.0) * _nsteps + _step_offset
@@ -505,22 +474,22 @@ class Instance(Base, ProgressMixin):
 			if not success:
 				raise RuntimeError(_('An error occurred while installing necessary software components.'))
 
-			_progress(75, _('Configuring synchronization from AD...'))
+			_progress(70, _('Configuring synchronization from AD...'))
 			admember.prepare_connector_settings(username, password, ad_domain_info)
 
-			_progress(80, _('Renaming well known SID objects...'))
+			_progress(75, _('Renaming well known SID objects...'))
 			admember.rename_well_known_sid_objects(username, password)
 
-			_progress(85, _('Running Samba join script...'))
+			_progress(80, _('Running Samba join script...'))
 			admember.run_samba_join_script(username, password)
 
-			_progress(90, _('Configuring DNS entries...'))
+			_progress(85, _('Configuring DNS entries...'))
 			admember.add_domaincontroller_srv_record_in_ad(ad_server_ip)
 
-			_progress(95, _('Starting Active Directory connection service...'))
+			_progress(90, _('Starting Active Directory connection service...'))
 			admember.start_service('univention-ad-connector')
 
-			_progress(98, _('Registering LDAP service entry...'))
+			_progress(95, _('Registering LDAP service entry...'))
 			admember.add_admember_service_to_localhost()
 
 			overall_success = True

@@ -39,7 +39,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/LabelPane"
 ], function(declare, lang, array, RadioButton, tools, _FormWidgetMixin, ContainerWidget, LabelPane) {
-	return declare("umc.modules.adconnector2.RadioButtons", [ ContainerWidget, _FormWidgetMixin ], {
+	return declare("umc.modules.adconnector.RadioButtons", [ ContainerWidget, _FormWidgetMixin ], {
 		value: null,
 
 		staticValues: null,

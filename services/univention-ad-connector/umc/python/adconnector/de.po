@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-adconnector\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-07-29 18:39+0200\n"
+"POT-Creation-Date: 2014-07-29 21:00+0200\n"
 "PO-Revision-Date: 2011-11-09 15:54+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,25 +12,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: umc/python/adconnector/__init__.py:328
+#: umc/python/adconnector/__init__.py:312
 msgid "Active Directory Connector is already running. Nothing to do."
 msgstr ""
 "Der Active Directory Connector ist bereits aktiv. Keine Aktion notwendig."
 
-#: umc/python/adconnector/__init__.py:330
+#: umc/python/adconnector/__init__.py:314
 msgid "Active Directory Connector is already stopped. Nothing to do."
 msgstr ""
 "Der Active Directory Connector ist bereits gestoppt. Keine Aktion notwendig."
 
-#: umc/python/adconnector/__init__.py:350
+#: umc/python/adconnector/__init__.py:334
 msgid "Active Directory connection service has been started."
 msgstr "Der Active Directory-Verbindungsdienst wurde gestartet."
 
-#: umc/python/adconnector/__init__.py:352
+#: umc/python/adconnector/__init__.py:336
 msgid "Active Directory connection service has been stopped."
 msgstr "Der Active Directory-Verbindungsdienst wurde gestoppt."
 
-#: umc/python/adconnector/__init__.py:219
+#: umc/python/adconnector/__init__.py:203
 msgid ""
 "Active Directory connection settings have been saved and a new certificate "
 "for the Active Directory server has been created."
@@ -38,76 +38,76 @@ msgstr ""
 "Die Active Directory-Verbinungseinstellungen wurden gespeichert und ein "
 "neues Zertifikat wurde für den Active Directory Server erzeugt."
 
-#: umc/python/adconnector/__init__.py:211
+#: umc/python/adconnector/__init__.py:195
 msgid "Active Directory connection settings have been saved."
 msgstr "Die Active Directory-Verbinungseinstellungen wurden gespeichert."
 
-#: umc/python/adconnector/__init__.py:492
+#: umc/python/adconnector/__init__.py:475
 msgid "An error occurred while installing necessary software components."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:446
+#: umc/python/adconnector/__init__.py:429
 #, python-format
 msgid "An unexpected error occurred: %s"
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:296
+#: umc/python/adconnector/__init__.py:280
 msgid "Certificate has been uploaded successfully."
 msgstr "Zertifikat wurde erfolgreich installiert."
 
-#: umc/python/adconnector/__init__.py:300
+#: umc/python/adconnector/__init__.py:284
 msgid "Certificate upload or conversion failed."
 msgstr "Zertifikatsinstallation oder -konvertierung fehlgeschlagen."
 
-#: umc/python/adconnector/__init__.py:472
+#: umc/python/adconnector/__init__.py:455
 msgid "Configuring Administrator account..."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:503
+#: umc/python/adconnector/__init__.py:486
 msgid "Configuring DNS entries..."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:464
+#: umc/python/adconnector/__init__.py:447
 msgid "Configuring DNS server..."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:468
+#: umc/python/adconnector/__init__.py:451
 msgid "Configuring Kerberos settings..."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:475
+#: umc/python/adconnector/__init__.py:458
 msgid "Configuring reverse DNS settings..."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:478
+#: umc/python/adconnector/__init__.py:461
 msgid "Configuring software components..."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:494
+#: umc/python/adconnector/__init__.py:477
 msgid "Configuring synchronization from AD..."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:460
+#: umc/python/adconnector/__init__.py:443
 msgid "Configuring time synchronization..."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:401
-#: umc/python/adconnector/__init__.py:520
+#: umc/python/adconnector/__init__.py:384
+#: umc/python/adconnector/__init__.py:502
 #, python-format
 msgid ""
 "Could not connect to AD Server %s. Please verify that the specified address "
 "is correct."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:407
-#: umc/python/adconnector/__init__.py:524
+#: umc/python/adconnector/__init__.py:390
+#: umc/python/adconnector/__init__.py:506
 #, python-format
 msgid ""
 "Could not connect to AD Server %s. Please verify that username and password "
 "are correct."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:551
+#: umc/python/adconnector/__init__.py:533
 #, python-format
 msgid ""
 "Could not establish an encrypted connection. Either \"%r\" is not reachable "
@@ -116,70 +116,70 @@ msgstr ""
 "Es konnte keine verschlüsselte Verbindung aufgebaut werden. Entweder \"%r\" "
 "ist nicht erreichbar oder unterstützt keine Verschlüsselung."
 
-#: umc/python/adconnector/__init__.py:528
+#: umc/python/adconnector/__init__.py:510
 #, python-format
 msgid ""
 "Could not synchronize the time between the UCS system and the Active "
 "Directory domain controller: %s"
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:218
+#: umc/python/adconnector/__init__.py:202
 #, python-format
 msgid "Creation of certificate failed (%s)"
 msgstr "Erstellung eines neuen Zertifikats fehlgeschlagen (%s)"
 
-#: umc/python/adconnector/__init__.py:526
+#: umc/python/adconnector/__init__.py:508
 msgid ""
 "Failed to set the password of the UCS Administrator to the Active Directory "
 "Administrator password."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:512
+#: umc/python/adconnector/__init__.py:496
 msgid "Join has been finished successfully."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:537
+#: umc/python/adconnector/__init__.py:519
 msgid "Join has been finished with errors."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:423
+#: umc/python/adconnector/__init__.py:406
 msgid "Joining UCS into Active Directory domain"
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:509
+#: umc/python/adconnector/__init__.py:492
 msgid "Registering LDAP service entry..."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:497
+#: umc/python/adconnector/__init__.py:480
 msgid "Renaming well known SID objects..."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:500
+#: umc/python/adconnector/__init__.py:483
 msgid "Running Samba join script..."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:196
+#: umc/python/adconnector/__init__.py:174
 #, python-format
 msgid "Saving bind password failed (filename=%(fn)s ; exception=%(exception)s)"
 msgstr ""
 "Speichern des Replikationspasswortes fehlgeschlagen (filename=%(fn)s ; "
 "exception=%(exception)s)"
 
-#: umc/python/adconnector/__init__.py:506
+#: umc/python/adconnector/__init__.py:489
 msgid "Starting Active Directory connection service..."
 msgstr "Active Directory-Verbindungsdienst wird gestartet..."
 
-#: umc/python/adconnector/__init__.py:346
+#: umc/python/adconnector/__init__.py:330
 msgid "Switching running state of Active Directory Connector failed."
 msgstr "Starten/Stoppen des Active Directory Connectors ist fehlgeschlagen."
 
-#: umc/python/adconnector/__init__.py:398
-#: umc/python/adconnector/__init__.py:518
+#: umc/python/adconnector/__init__.py:381
+#: umc/python/adconnector/__init__.py:500
 msgid "The AD member mode cannot only be configured on a DC master server."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:404
-#: umc/python/adconnector/__init__.py:522
+#: umc/python/adconnector/__init__.py:387
+#: umc/python/adconnector/__init__.py:504
 #, python-format
 msgid ""
 "The domain name of the AD Server (%(ad_domain)s) does not match the local "
@@ -187,7 +187,7 @@ msgid ""
 "setup a UCS system with the same domain name as the AD Server."
 msgstr ""
 
-#: umc/python/adconnector/__init__.py:333
+#: umc/python/adconnector/__init__.py:317
 #, python-format
 msgid ""
 "Unknown command (\"%s\") Please report error to your local administrator."

@@ -1,3 +1,12 @@
+univention-ad-connector (8.0.17-53) unstable; urgency=medium
+
+  Bug #35090
+  * finished integration of wizard path for connector
+  * removed function lookup_ad_domain_info()
+  * moved download links into separate widget DownloadInfo
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Jul 2014 21:01:22 +0200
+
 univention-ad-connector (8.0.17-52) unstable; urgency=medium
 
   Bug #35090 [WIP]:
