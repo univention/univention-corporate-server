@@ -66,7 +66,6 @@ clean:
 	dh_testdir
 	$(RM) build-arch-stamp build-indep-stamp
 	rm -Rf xen-${XENVER} .pc
-	-$(MAKE) clean
 	dh_clean  --exclude ./debian.orig
 	rm -f debian/xen-4.1.xend.udev debian/xen-4.1.xen-backend.udev
 	rm -rf .pc/
