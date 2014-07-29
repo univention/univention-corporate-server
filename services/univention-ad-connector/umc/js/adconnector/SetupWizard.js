@@ -265,6 +265,7 @@ define([
 		autoFocus: true,
 		_progressBar: null,
 		_keepSessionAlive: null,
+		_adDomainInfo: null,
 
 		constructor: function() {
 			this.pages = [{
@@ -301,9 +302,9 @@ define([
 					content: _('Enter the Active Directory domain information to join the domain.')
 				}, {
 					type: TextBox,
-					name: 'ad_server_ip',
+					name: 'ad_server_address',
 					required: true,
-					label: _('Name of Active Directory domain or address of Active Directory domain controller')
+					label: _('Address of Active Directory domain controller')
 				}, {
 					type: TextBox,
 					name: 'username',
@@ -347,7 +348,7 @@ define([
 					content: _('Enter the Active Directory domain information to configure the connection.')
 				}, {
 					type: TextBox,
-					name: 'ad_server_ip',
+					name: 'ad_server_address',
 					required: true,
 					label: _('Address of Active Directory domain controller')
 				}, {
@@ -385,7 +386,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'info',
-					content: _('<p>To achieve a higher level of security, the Active Directory system\'s root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate. The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>. Alternatively, you may proceed without this configuration.</p>'),
+					content: _('<p>To achieve a higher level of security, the Active Directory system\'s root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate. The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>. Alternatively, you may proceed without this configuration.</p>')
 
 				}, {
 					name: 'certificateUpload',
@@ -406,47 +407,38 @@ define([
 						}
 					})
 				}]
-//			}, {
-//				'class': 'umc-adconnector-page-info umc-adconnector-page',
-//				name: 'confirm-admember',
-//				headerText: _('Configuration of UCS as part of Active Directory domain'),
-//				widgets: [{
-//					type: Text,
-//					name: 'help',
-//					content: '<p>' + _('Please confirm to start the join process of this UCS system into the following Active Directory domain:') + '</p>'
-//				}, {
-//					type: Text,
-//					name: 'info',
-//					content: ''
-//				}]
 			}, {
 				'class': 'umc-adconnector-page-syncconfig umc-adconnector-page',
 				name: 'config-adconnector',
 				headerText: _('Configuration of Active Directory domain synchronisation'),
 				widgets: [{
 					type: Text,
+					name: 'info',
+					content: ''
+				}, {
+					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('Specify the synchronisation direction between the UCS domain and the given Active Directory domain.')
+					content: '<p>' + _('Specify the synchronisation direction between the UCS domain and the given Active Directory domain.') + '</p>'
 				}, {
 					type: RadioButtons,
 					name: 'connectormode',
 					staticValues: [{
-						id: 'syncAD2UCS',
+						id: 'read',
 						label: _('Unidirectional synchronisation of Active Directory to UCS.')
 					}, {
-						id: 'syncUCS2AD',
+						id: 'write',
 						label: _('Unidirectional synchronisation of UCS to Active Directory.')
 					}, {
-						id: 'syncBidirectional',
+						id: 'sync',
 						label: _('Bidirectional synchronisation of UCS and Active Directory.')
 					}],
 					onChange: lang.hitch(this, function(value) {
 						var map2img = {
 							'default': '',
-							syncAD2UCS: '-right',
-							syncUCS2AD: '-left',
-							syncBidirectional: '-left-right'
+							read: '-right',
+							write: '-left',
+							sync: '-left-right'
 						};
 						var connectormode = this.getWidget('config-adconnector', 'connectormode').get('value');
 						var page = this.getPage('config-adconnector');
@@ -491,6 +483,8 @@ define([
 			// change labels of footer buttons on particular pages
 			var buttons = this.getPage('credentials-admember')._footerButtons;
 			buttons.next.set('label', _('Join AD domain'));
+			var buttons = this.getPage('error-admember')._footerButtons;
+			buttons.next.set('label', _('Retry to join'));
 		},
 
 		buildRendering: function() {
@@ -529,6 +523,13 @@ define([
 //			this.getWidget('confirm-admember', 'info').set('content', msg);
 //		},
 
+		_updateConfigADConnectorPage: function(info) {
+			var fqdnParts = info.DC_DNS_Name.split(/\./g);
+			info._hostname = fqdnParts.shift();
+			var msg = '<p>' + _('The server <i>%(_hostname)s (%(DC_IP)s)</i> is used as Active Directory Domain Controller for the domain <i>%(Domain)s</i>.', info) + '</p>';
+			this.getWidget('config-adconnector', 'info').set('content', msg);
+		},
+
 		_updateErrorPage: function(mode, message, warnings) {
 			//TODO: handling of warnings
 			message = message || '<p>' + _('An unexpected error occurred. More information about the cause of the error can be found in the log file /var/log/univention/management-console-module-adconnector.log. Please retry the join process after resolving any conflicting issues.') + '</p>';
@@ -537,7 +538,7 @@ define([
 		},
 
 		_checkADDomain: function() {
-			var vals = this.getValues();
+			var vals = this._getCredentials();
 			return this.standbyDuring(tools.umcpCommand('adconnector/check_domain', vals)).then(lang.hitch(this, function(response) {
 				//this._updateConfirmADMemberPage(response.result);
 				return response.result;
@@ -559,10 +560,10 @@ define([
 			});
 		},
 
-		join: function(values) {
+		adMemberJoin: function(values) {
 			this.standby(false);
 			this._progressBar.reset(_('Joining UCS into Active Directory domain'));
-			var vals = this.getValues();
+			var vals = this._getCredentials();
 			var deferred = tools.umcpProgressCommand(this._progressBar, 'adconnector/admember/join', vals, false).then(lang.hitch(this, function(result) {
 				if (!result.success) {
 					this._updateErrorPage('admember', result.error, result.warnings);
@@ -576,6 +577,16 @@ define([
 			}));
 			this.standbyDuring(deferred, this._progressBar);
 			return deferred;
+		},
+
+		adConnectorSaveValues: function(values) {
+			this.standbyDuring(tools.umcpCommand('adconnector/adconnector/save', values)).then(lang.hitch(this, function(response) {
+				if (!response.result.success) {
+					dialog.alert(response.result.message);
+					return false
+				}
+				return true;
+			}));
 		},
 
 		isPageVisible: function(pageName) {
@@ -593,13 +604,13 @@ define([
 		_nextADMember: function(pageName) {
 			if (pageName == 'credentials-admember') {
 				return this._checkADDomain().then(lang.hitch(this, function(adDomainInfo) {
-					// server error message is shown, stay on the same page
 					if (!adDomainInfo) {
+						// server error message is shown, stay on the same page
 						return pageName;
 					}
 
 					// start join process
-					return this.join().then(lang.hitch(this, function(success) {
+					return this.adMemberJoin().then(lang.hitch(this, function(success) {
 						if (success) {
 							this._keepSessionAlive.start(); // will be stopped via destroy method
 							return 'finished-admember';
@@ -608,26 +619,33 @@ define([
 					}));
 				}));
 			}
+			if (pageName == 'error-admember') {
+				// retry again
+				return 'credentials-admember';
+			}
 		},
 
 		_nextADConnector: function(pageName) {
 			if (pageName == 'credentials-adconnector') {
 					return this._checkADDomain().then(function(adDomainInfo) {
-						// server error message is shown, stay on the same page
 						if (!adDomainInfo) {
+							// server error message is shown, stay on the same page
 							return pageName;
 						}
+						this._updateConfigADConnectorPage(adDomainInfo);
+
 						// check for SSL support
 						return adDomainInfo.ssl_supported ? 'certificate-adconnector' : 'ssl-adconnector';
 					});
 			}
-			if (pageName == 'ssl-adconnector' || pageName == 'certificate-adconnector') {
+			if (pageName == 'ssl-adconnector') {
 				// check again for SSL status
 				return this._checkADDomain().then(lang.hitch(this, function(adDomainInfo) {
-					// server error message is shown, stay on the same page
 					if (!adDomainInfo) {
+						// server error message is shown, stay on the same page
 						return pageName;
 					}
+					this._adDomainInfo = adDomainInfo;
 					if (!adDomainInfo.ssl_supported) {
 						return this._confirmUnsecureConnectionWithADDomain().then(lang.hitch(this, function(confirmed) {
 							if (confirmed) {
@@ -640,6 +658,12 @@ define([
 					}
 					return 'confirm-admember';
 				}));
+			}
+			if (pageName == 'certificate-adconnector') {
+				return 'config-adconnector';
+			}
+			if (pageName == 'config-adconnector') {
+				return this.adConnectorSaveValues(this._adDomainInfo);
 			}
 		},
 
@@ -691,76 +715,12 @@ define([
 			}
 		},
 
-		_timeout: function(seconds, percentage, message) {
-			var _deferred = new Deferred();
-			setTimeout(lang.hitch(this, function() {
-				this.progressBar.setInfo(null, message, percentage);
-				_deferred.resolve();
-			}), seconds * 1000);
-			return _deferred;
-		},
-
-		_startUCSJoinInAD: function() {
-			this.progressBar.reset(_('UCS join in Active Directory domain'));
-			this.standby(true, this.progressBar);
-			var self = this;
-			return this._timeout(0, 0, _('Contacting Active Directory server')).then(function() {
-				return self._timeout(1, 10, _('Authentification with credentials'));
-			}).then(function() {
-				return self._timeout(1, 20, _('Querying certificates'));
-			}).then(function() {
-				return self._timeout(2, 40, _('Preparing join'));
-			}).then(function() {
-				return self._timeout(2, 60, _('Joining the domain'));
-			}).then(function() {
-				return self._timeout(2, 80, _('Updating local system'));
-			}).then(function() {
-				return self._timeout(1, 100, _('Cleaning up'));
-			}).then(function() {
-				return self.standby(false);
-			});
-		},
-
-		_startADSync: function() {
-			this.progressBar.reset(_('Initiating synchronisation with Active Directory domain'));
-			this.standby(true, this.progressBar);
-			var self = this;
-			return this._timeout(0, 0, _('Contacting Active Directory server')).then(function() {
-				return self._timeout(1, 10, _('Authentification with credentials'));
-			}).then(function() {
-				return self._timeout(1, 20, _('Validating service configuration'));
-			}).then(function() {
-				return self._timeout(3, 40, _('Quering domain accounts'));
-			}).then(function() {
-				return self._timeout(2, 70, _('Starting synchronisation service'));
-			}).then(function() {
-				return self._timeout(1, 100, _('Cleaning up'));
-			}).then(function() {
-				return self.standby(false);
-			});
-		},
-
-		_queryDomainInfo: function() {
-			this.progressBar.reset(_('Querying Active Directory domain information'));
-			this.standby(true, this.progressBar);
-			this.progressBar._progressBar.set('value', Infinity);
-			var self = this;
-			return this._timeout(0, null, _('Contacting Active Directory server')).then(function() {
-				return self._timeout(1, null, _('Querying domain information'));
-			}).then(function() {
-				return self._timeout(1, null, _('Querying user accounts'));
-			}).then(function() {
-				return self._timeout(1, null, _('Querying computer accounts'));
-			}).then(function() {
-				return self.standby(false);
-			});
-		},
-
-		_gatherVisibleValues: function() {
+		_gatherVisibleValues: function(pageName) {
 			// collect values from visible pages and visible widgets
 			var _vals = {};
 			array.forEach(this.pages, function(ipageConf) {
-				if (this.isPageVisible(ipageConf.name)) {
+				var matchesPageName = !pageName || ipageConf.name.indexOf(pageName) >= 0;
+				if (this.isPageVisible(ipageConf.name) && matchesPageName) {
 					var ipage = this.getPage(ipageConf.name);
 					if (!ipage || !ipage._form) {
 						return;
@@ -771,8 +731,24 @@ define([
 			return _vals;
 		},
 
+		_getCredentials: function() {
+			return this._gatherVisibleValues('credentials');
+		},
+
+		_getADConnectorValues: function(adDomainInfo) {
+			var vals = lang.mixin(this._gatherVisibleValues(), adDomainInfo);
+			return {
+				LDAP_Host: vals.DC_DNS_Name,
+				LDAP_Base: vals.LDAP_Base,
+				LDAP_BindDN: lang.replace('cn={username},cn=users,{LDAP_Base}', vals),
+				KerberosDomain: vals.Domain,
+				MappingSyncMode: vals.connectormode
+			};
+		},
+
 		getValues: function() {
-			return this._gatherVisibleValues();
+			// unused in this wizard, overwrite inherited method to return an empty dict
+			return {};
 		},
 
 		destroy: function() {

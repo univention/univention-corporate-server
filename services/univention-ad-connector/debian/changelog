@@ -1,3 +1,12 @@
+univention-ad-connector (8.0.17-47) unstable; urgency=medium
+
+  Bug #35090 [WIP]:
+  * integration of connector wizard path
+  * clean up
+  * adaptation of backend method for join into AD
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Jul 2014 17:57:26 +0200
+
 univention-ad-connector (8.0.17-46) unstable; urgency=low
 
   * Bug #35090 [WIP]: Remove debug code

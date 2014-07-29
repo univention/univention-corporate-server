@@ -8,9 +8,7 @@
 		<categories>
 			<category name="system"/>
 		</categories>
-		<command name="adconnector/save" function="save" />
 		<command name="adconnector/load" function="load" />
-		<command name="adconnector/guess" function="guess" />
 		<command name="adconnector/defaults" function="defaults" />
 		<command name="adconnector/state" function="state" />
 		<command name="adconnector/enable_ssl" function="enable_ssl" />
@@ -20,6 +18,7 @@
 		<command name="adconnector/private.key" function="private_key" />
 		<command name="adconnector/cert.pem" function="cert_pem" />
 		<command name="adconnector/check_domain" function="check_domain" />
+		<command name="adconnector/adconnector/save" function="save" />
 		<command name="adconnector/admember/join" function="admember_join" />
 		<command name="adconnector/admember/progress" function="progress" />
 	</module>

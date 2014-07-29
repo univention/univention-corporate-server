@@ -95,7 +95,8 @@ Description: UCS - AD-connector Exchange configuration
 Package: univention-management-console-module-adconnector
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
- univention-management-console-server
+ univention-management-console-server,
+ python-samba
 Description: UMC module for Univention AD Connector
  This package contains the Univention AD Connector UMC module.
  .
