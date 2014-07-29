@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-lib
-fix: 3.0.26-45.251.201407281253
+fix: 3.0.26-49.255.201407291243
 version: [2]
 desc: |
    Several functions for configuring the AD member mode have
