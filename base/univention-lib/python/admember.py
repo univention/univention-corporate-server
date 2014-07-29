@@ -427,6 +427,9 @@ def set_nameserver(server_ips, ucr=None):
 		if ucr.get(var):
 			univention.config_registry.handler_unset([var])
 
+def rename_well_known_sid_objects():
+	res = subprocess.call('/usr/share/univention-ad-connector/scripts/well-known-sid-object-rename')
+
 def prepare_dns_reverse_settings(ad_server_ip, ad_domain_info):
 	# For python-ldap / GSSAPI / AD we need working reverse looksups
 	try:
@@ -634,6 +637,8 @@ def configure_ad_member(ad_server_ip, username, password):
 	else:
 		ud.debug(ud.LDAP, ud.WARN, "WARNING: ssl is not supported")
 		disable_ssl()
+
+	rename_well_known_sid_objects()
 
 	start_service('univention-ad-connector')
 
