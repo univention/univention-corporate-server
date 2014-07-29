@@ -1,3 +1,9 @@
+univention-lib (3.0.26-49) unstable; urgency=low
+
+  * admember.py: add dns/dns to show/adnotification UCR variables (Bug #34092)
+
+ -- Florian Best <best@univention.de>  Tue, 29 Jul 2014 12:41:06 +0200
+
 univention-lib (3.0.26-48) unstable; urgency=medium
 
   * Call rename_well_known_sid_objects just before starting the connector

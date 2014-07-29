@@ -449,12 +449,12 @@ def prepare_ucr_settings():
 		u'kerberos/defaults/dns_lookup_kdc=true',
 		u'ad/member=true',
 		u'connector/ad/mapping/user/password/kinit=true',
-		u'directory/manager/web/modules/computers/computer/show/adnotification=true',
-		u'directory/manager/web/modules/groups/group/show/adnotification=true',
-		u'directory/manager/web/modules/users/user/show/adnotification=true',
 		u'directory/manager/web/modules/users/user/display=displayName',
 		u'nameserver/external=true',
 	]
+	modules = ('computers/computer', 'groups/group', 'users/user', 'dns/dns')
+	ucr_set += [u'directory/manager/web/modules/%s/show/adnotification=true' % (module,) for module in modules]
+
 	ud.debug(ud.LDAP, ud.PROCESS, "Setting UCR variables: %s" % ucr_set)
 	univention.config_registry.handler_set(ucr_set)
 
@@ -474,12 +474,11 @@ def revert_ucr_settings():
 	# TODO something else?
 	ucr_unset = [
 		u'ad/member',
-		u'directory/manager/web/modules/computers/computer/show/adnotification',
-		u'directory/manager/web/modules/groups/group/show/adnotification',
-		u'directory/manager/web/modules/users/user/show/adnotification',
 		u'directory/manager/web/modules/users/user/display',
 		u'kerberos/defaults/dns_lookup_kdc',
 	]
+	modules = ('computers/computer', 'groups/group', 'users/user', 'dns/dns')
+	ucr_unset += [u'directory/manager/web/modules/%s/show/adnotification' % (module,) for module in modules]
 	ud.debug(ud.LDAP, ud.PROCESS, "Unsetting UCR variables: %s" % ucr_unset)
 	univention.config_registry.handler_unset(ucr_unset)
 
