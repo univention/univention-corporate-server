@@ -288,7 +288,7 @@ class Instance(Base, ProgressMixin):
 			message =_( 'Active Directory Connector is already stopped. Nothing to do.' )
 		elif action not in ( 'start', 'stop' ):
 			MODULE.process( 'State: unknown command: action=%s' % action )
-			message = _( 'Unknown command ("%s") Please report error to your local administrator' ) % action
+			message = _( 'Unknown command ("%s") Please report error to your local administrator.' ) % action
 			success = False
 
 		if message is not None:

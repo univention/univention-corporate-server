@@ -421,8 +421,8 @@ msgstr "LDAP-Basis"
 
 #: umc/js/adconnector/SetupWizard.js:106
 msgid ""
-"LDAP und kerberos configuration of the Active Directory server needs to be "
-"specified for the synchronisation"
+"LDAP and kerberos configuration of the Active Directory server needs to be "
+"specified for the synchronisation."
 msgstr ""
 "Die LDAP- und Kerberos-Konfiguration des Active Directory Servers muss für "
 "die Synchronisation angegeben werden."
@@ -577,7 +577,7 @@ msgstr "Das Zertifikat wurde erfolgreich importiert"
 
 #: umc/js/adconnector/ConfigPage.js:71
 msgid "The domain exists in parallel to an Active Directory domain."
-msgstr "Die Domäne existiert parallel zu einer Active Directory-Domäne"
+msgstr "Die Domäne existiert parallel zu einer Active Directory-Domäne."
 
 #: umc/js/adconnector/SetupWizard.js:165
 msgid ""
@@ -731,7 +731,7 @@ msgstr ""
 #~ msgstr "UCS Active Directory Connector stoppen"
 
 #~ msgid "The Active Directory certificate has been successfully installed."
-#~ msgstr "Das Active Directory Zertifikat wurde erfolgreich installiert"
+#~ msgstr "Das Active Directory Zertifikat wurde erfolgreich installiert."
 
 #~ msgid "The Active Directory certificate has not been installed yet."
 #~ msgstr "Das Active Directory Zertifikat wurde noch nicht installiert."
@@ -752,7 +752,7 @@ msgstr ""
 #~ "Connector to simplify the setup."
 #~ msgstr ""
 #~ "Dieses Modul stellt einen Konfigurationsassistenten zur einfachen "
-#~ "Einrichtung des UCS Active Directory Connector zur Verfügung"
+#~ "Einrichtung des UCS Active Directory Connector zur Verfügung."
 
 #~ msgid "UCS Active Directory Connector Wizard"
 #~ msgstr "UCS Active Directory Connector Assistent"

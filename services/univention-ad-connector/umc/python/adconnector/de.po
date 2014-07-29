@@ -40,7 +40,7 @@ msgstr ""
 
 #: umc/python/adconnector/__init__.py:169
 msgid "Active Directory connection settings have been saved."
-msgstr "Die Active Directory-Verbinungseinstellungen wurden gespeichert"
+msgstr "Die Active Directory-Verbinungseinstellungen wurden gespeichert."
 
 #: umc/python/adconnector/__init__.py:446
 msgid "An error occurred while installing necessary software components."
@@ -190,7 +190,7 @@ msgstr ""
 #: umc/python/adconnector/__init__.py:291
 #, python-format
 msgid ""
-"Unknown command (\"%s\") Please report error to your local administrator"
+"Unknown command (\"%s\") Please report error to your local administrator."
 msgstr ""
 "Unbekanntes Kommando (\"%s\"). Bitte den Fehler beim lokalen Administrator "
 "melden."

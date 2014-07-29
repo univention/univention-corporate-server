@@ -103,7 +103,7 @@ define([
 //				layout: ['LDAP_Host', 'guess']
 //			}, {
 //				name: 'ldap',
-//				helpText: _('LDAP und kerberos configuration of the Active Directory server needs to be specified for the synchronisation'),
+//				helpText: _('LDAP and kerberos configuration of the Active Directory server needs to be specified for the synchronisation.'),
 //				headerText: _('LDAP and Kerberos'),
 //				widgets: [{
 //					name: 'LDAP_Base',
