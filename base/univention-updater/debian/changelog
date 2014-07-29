@@ -1,3 +1,9 @@
+univention-updater (10.0.0-4) unstable; urgency=low
+
+  * Readd univention-directory-policy dependency (Bug #35431)
+
+ -- Florian Best <best@univention.de>  Tue, 29 Jul 2014 13:44:43 +0200
+
 univention-updater (10.0.0-3) unstable; urgency=low
 
   * Remove univention-directory-policy from the dependencies and add it

@@ -14,6 +14,7 @@ Package: univention-updater
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  univention-config-registry,
+ univention-directory-policy,
  netcat,
  wget,
  apt-mirror,
@@ -23,8 +24,6 @@ Depends: ${misc:Depends}, ${python:Depends},
  shell-univention-lib,
  python-univention-lib (>= 1.0.25-1),
  univention-errata-level
-Recommends:
- univention-directory-policy,
 Provides: ${python:Provides}
 Description: UCS - system upgrading tool
  UCS Updater can upgrade your version of UCS.
