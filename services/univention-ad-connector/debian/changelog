@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-41) unstable; urgency=low
+
+  * Bug #35090 [WIP]: Added German translations for ConfigPage
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 29 Jul 2014 09:39:11 +0200
+
 univention-ad-connector (8.0.17-40) unstable; urgency=low
 
   * Allow kerberos bind info for password sync (Bug #35091)

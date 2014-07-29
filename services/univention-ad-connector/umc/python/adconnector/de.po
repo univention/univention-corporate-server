@@ -117,6 +117,7 @@ msgid ""
 "Could not establish an encrypted connection. Either \"%r\" is not reachable "
 "or does not support encryption."
 msgstr ""
+"Es konnte keine verschlüsselte Verbindung aufgebaut werden. Entweder \"%r\" ist nicht erreichbar oder unterstützt keine Verschlüsselung."
 
 #: umc/python/adconnector/__init__.py:477
 #, python-format

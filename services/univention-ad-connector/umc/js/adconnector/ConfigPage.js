@@ -85,8 +85,8 @@ define([
 				type: Text,
 				content: makeParagraphs([
 					_('Currently, an unencrypted connection to the Active Directory domain is used.'),
-					_('To enable an encrypted connection, a certification authority needs to be configured on the Active Directory server. All necessary steps are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.'),
-					_('After the certification authority has been set up, activate the encrypted connection.')
+					_('A certification authority should be configured on the Active Directory server. All necessary steps are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.'),
+					_('Activate the encrypted connection afterwards.')
 				])
 			}, {
 				name: 'certificateUpload',
@@ -118,7 +118,7 @@ define([
 			}, {
 				name: 'downloadNextStepADMember',
 				type: Text,
-				content: _('After the installation the replication of password hashes has to  be activated:')
+				content: _('After the installation the replication of password hashes has to be activated:')
 			}];
 
 			var buttons = [{
