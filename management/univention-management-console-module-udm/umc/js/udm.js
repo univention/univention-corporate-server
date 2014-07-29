@@ -880,11 +880,17 @@ define([
 		},
 
 		_canMove: function(item) {
-			return -1 === array.indexOf(item.$flags$, 'synced');
+			if (tools.isTrue(this._ucr['ad/member'])) {
+				return -1 === array.indexOf(item.$flags$, 'synced');
+			}
+			return true;
 		},
 
 		_canDelete: function(item) {
-			return -1 === array.indexOf(item.$flags$, 'synced');
+			if (tools.isTrue(this._ucr['ad/member'])) {
+				return -1 === array.indexOf(item.$flags$, 'synced');
+			}
+			return true;
 		},
 
 		_reloadSuperordinates: function() {

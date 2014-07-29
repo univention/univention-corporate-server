@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.97-37) unstable; urgency=low
+
+  * Bug #34092: don't grey out fields when ad/member is false
+
+ -- Florian Best <best@univention.de>  Tue, 29 Jul 2014 11:47:44 +0200
+
 univention-management-console-module-udm (4.0.97-36) unstable; urgency=low
 
   * Bug #34093: evaluate module flavor when showing warning about object
