@@ -371,3 +371,4 @@ if __name__ == "__main__":
 	ud.set_level(ud.LDAP, int(debug_level))
 	ad = Well_Known_SID_object_renamer(ucr)
 	ad.rewrite_sambaSIDs_in_OpenLDAP()
+	subprocess.call(["univention-config-registry", "unset", "connector/ad/mapping/group/language"])

@@ -1,3 +1,10 @@
+univention-ad-connector (8.0.17-43) unstable; urgency=medium
+
+  * Script well-known-sid-object-rename
+    Unset connector/ad/mapping/group/language (Bug #35507)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jul 2014 12:21:36 +0200
+
 univention-ad-connector (8.0.17-42) unstable; urgency=medium
 
   * New script well-known-sid-object-rename (Bug #35507)
