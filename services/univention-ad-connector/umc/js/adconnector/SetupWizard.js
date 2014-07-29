@@ -618,7 +618,7 @@ define([
 							return pageName;
 						}
 						// check for SSL support
-						return adDomainInfo.ssl_supported ? 'certificate' : 'ssl';
+						return adDomainInfo.ssl_supported ? 'certificate-adconnector' : 'ssl-adconnector';
 					});
 			}
 			if (pageName == 'ssl-adconnector' || pageName == 'certificate-adconnector') {

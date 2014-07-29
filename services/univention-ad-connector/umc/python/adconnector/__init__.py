@@ -87,6 +87,7 @@ class Instance(Base, ProgressMixin):
 		self.finished(request.id, {
 			'ssl_enabled' : self.status_ssl,
 			'password_sync_enabled' : self.status_password_sync,
+			'running' : self.status_running,
 			'certificate' : self.status_certificate,
 			'mode_admember' : self.status_mode_admember,
 			'mode_adconnector' : self.status_mode_adconnector,

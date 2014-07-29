@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-45) unstable; urgency=low
+
+  * Bug #35090 [WIP]: Send status of running ad connector service
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 29 Jul 2014 14:22:46 +0200
+
 univention-ad-connector (8.0.17-44) unstable; urgency=medium
 
   * Script well-known-sid-object-rename: Strip down initialization

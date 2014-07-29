@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-adconnector\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-07-29 09:34+0200\n"
+"POT-Creation-Date: 2014-07-29 10:20+0200\n"
 "PO-Revision-Date: 2011-11-28 16:53+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -415,10 +415,6 @@ msgstr "LDAP DN des Synchronisationsbenutzers"
 msgid "LDAP and Kerberos"
 msgstr "LDAP und Kerberos"
 
-#: umc/js/adconnector/SetupWizard.js:113 umc/js/adconnector/SetupWizard.js:523
-msgid "LDAP base"
-msgstr "LDAP-Basis"
-
 #: umc/js/adconnector/SetupWizard.js:106
 msgid ""
 "LDAP and kerberos configuration of the Active Directory server needs to be "
@@ -426,6 +422,10 @@ msgid ""
 msgstr ""
 "Die LDAP- und Kerberos-Konfiguration des Active Directory Servers muss für "
 "die Synchronisation angegeben werden."
+
+#: umc/js/adconnector/SetupWizard.js:113 umc/js/adconnector/SetupWizard.js:523
+msgid "LDAP base"
+msgstr "LDAP-Basis"
 
 #: umc/js/adconnector/ConfigPage.js:189
 msgid ""
