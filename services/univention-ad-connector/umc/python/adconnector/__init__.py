@@ -491,17 +491,17 @@ class Instance(Base, ProgressMixin):
 			if not success:
 				raise RuntimeError(_('An error occurred while installing necessary software components.'))
 
-			_progress(75, _('Renaming well known SID objects...'))
+			_progress(75, _('Configuring synchronization from AD...'))
+			admember.prepare_connector_settings(username, password, ad_domain_info)
+
+			_progress(80, _('Renaming well known SID objects...'))
 			admember.rename_well_known_sid_objects()
 
-			_progress(80, _('Running Samba join script...'))
+			_progress(85, _('Running Samba join script...'))
 			admember.run_samba_join_script(username, password)
 
-			_progress(85, _('Configuring DNS entries...'))
+			_progress(90, _('Configuring DNS entries...'))
 			admember.add_domaincontroller_srv_record_in_ad(ad_server_ip)
-
-			_progress(90, _('Configuring synchronization from AD...'))
-			admember.prepare_connector_settings(username, password, ad_domain_info)
 
 			_progress(95, _('Starting Active Directory connection service...'))
 			admember.start_service('univention-ad-connector')
@@ -536,6 +536,7 @@ class Instance(Base, ProgressMixin):
 		if not success:
 			_progress(100, _('Join has been finished with errors.'))
 			admember.revert_ucr_settings()
+			admember.revert_connector_settings()
 
 		if hasattr(progress, 'result'):
 			# some error probably occurred -> return the result in the progress

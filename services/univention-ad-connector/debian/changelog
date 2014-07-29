@@ -1,3 +1,11 @@
+univention-ad-connector (8.0.17-49) unstable; urgency=medium
+
+  * admember.prepare_connector_settings has to be done before
+    running admember.rename_well_known_sid_objects (Bug #35507)
+  * Run admember.revert_connector_settings in case of error
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jul 2014 18:22:31 +0200
+
 univention-ad-connector (8.0.17-48) unstable; urgency=medium
 
   * Script well-known-sid-object-rename (Bug #35507)
