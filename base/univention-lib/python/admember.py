@@ -170,12 +170,16 @@ def server_supports_ssl(server):
 
 def enable_ssl():
 	ud.debug(ud.MODULE, ud.PROCESS, "Enable connector SSL")
-	univention.config_registry.handler_set([u'connector/ad/ldap/ssl=yes'])
+	univention.config_registry.handler_set([
+		u'connector/ad/ldap/ssl=yes',
+		u'ldap/sasl/secprops/maxssf=128',
+	])
 
 
 def disable_ssl():
 	ud.debug(ud.MODULE, ud.PROCESS, "Disable connector SSL")
 	univention.config_registry.handler_set([u'connector/ad/ldap/ssl=no'])
+	univention.config_registry.handler_unset([u'ldap/sasl/secprops/maxssf'])
 
 
 def _add_service_to_localhost(service):
