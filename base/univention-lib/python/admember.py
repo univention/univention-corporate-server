@@ -353,7 +353,7 @@ def invoke_service(service, cmd):
 		ud.debug(ud.MODULE, ud.ERROR, "invoke-rc.d %s %s failed (%d)" % (service, cmd, p1.returncode,))
 		return
 
-	ud.debug(ud.MODULE, ud.PROCESS, "invoke-rc.d %s %s: %s" % (cmd, service, stdout)) 
+	ud.debug(ud.MODULE, ud.PROCESS, "invoke-rc.d %s %s: %s" % (service, cmd, stdout)) 
 
 
 def time_sync(ad_ip, tolerance=180, critical_difference=360):
@@ -431,8 +431,22 @@ def set_nameserver(server_ips, ucr=None):
 		if ucr.get(var):
 			univention.config_registry.handler_unset([var])
 
-def rename_well_known_sid_objects():
-	res = subprocess.call('/usr/share/univention-ad-connector/scripts/well-known-sid-object-rename')
+def rename_well_known_sid_objects(username, password, ucr=None):
+	if not ucr:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+
+	ud.debug(ud.MODULE, ud.PROCESS, "Matching well known object names")
+
+	binddn = '%s@%s' % (username, ucr.get('kerberos/realm'))
+	p1 = subprocess.Popen(['/usr/share/univention-ad-connector/scripts/well-known-sid-object-rename', '--binddn', binddn, '--bindpwd', password],
+		stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+		close_fds=True)
+	stdout, stderr = p1.communicate()
+	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
+	if p1.returncode != 0:
+		ud.debug(ud.MODULE, ud.ERROR, "well-known-sid-object-rename failed with %d (%s)" % (p1.returncode, stderr))
+		raise connectionFailed()
 
 def prepare_dns_reverse_settings(ad_server_ip, ad_domain_info):
 	# For python-ldap / GSSAPI / AD we need working reverse looksups
@@ -513,6 +527,22 @@ def prepare_connector_settings(username, password, ad_domain_info, ucr=None):
 	ud.debug(ud.MODULE, ud.PROCESS, "Setting UCR variables: %s" % ucr_set)
 	univention.config_registry.handler_set(ucr_set)
 
+def revert_connector_settings(ucr=None):
+
+	ud.debug(ud.MODULE, ud.PROCESS, "Revert connector settings")
+
+	# TODO something else?
+	ucr_unset = [
+		u'connector/ad/ldap/host',
+		u'connector/ad/ldap/base',
+		u'connector/ad/ldap/binddn',
+		u'connector/ad/ldap/bindpw',
+		u'connector/ad/ldap/kerberos',
+		u'connector/ad/mapping/syncmode',
+		u'connector/ad/mapping/user/ignorelist',
+	]
+	ud.debug(ud.MODULE, ud.PROCESS, "Unsetting UCR variables: %s" % ucr_unset)
+	univention.config_registry.handler_unset(ucr_unset)
 
 def disable_local_samba4():
 
@@ -540,10 +570,10 @@ def run_samba_join_script(username, password, ucr=None):
 	p1 = subprocess.Popen(['/usr/lib/univention-install/26univention-samba.inst', '--binddn', binddn, '--bindpwd', password],
 		close_fds=True, env=my_env)
 	stdout, stderr = p1.communicate()
+	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
 	if p1.returncode != 0:
 		ud.debug(ud.MODULE, ud.ERROR, "26univention-samba.inst failed with %d (%s)" % (p1.returncode, stderr))
 		raise sambaJoinScriptFailed()
-	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
 
 
 def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
@@ -566,10 +596,10 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 	cmd += ['nsupdate', '-v', '-g', fd.name]
 	p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	stdout, stderr = p1.communicate()
+	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
 	if p1.returncode:
 		ud.debug(ud.MODULE, ud.ERROR, "%s failed with %d (%s)" % (cmd, p1.returncode, stderr))
 		raise failedToAddServiceRecordToAD("failed to add SRV record to %s" % ad_ip)
-	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
 	os.unlink(fd.name)
 
 

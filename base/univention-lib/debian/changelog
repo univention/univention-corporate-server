@@ -1,3 +1,12 @@
+univention-lib (3.0.26-52) unstable; urgency=medium
+
+  * admember.rename_well_known_sid_objects needs Administrator credentials
+    since it is called before the univention-samba join (Bug #35507)
+  * Add admember.revert_connector_settings
+  * minor logging fixes
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jul 2014 18:13:36 +0200
+
 univention-lib (3.0.26-51) unstable; urgency=low
 
   * set ldap/sasl/secprops/maxssf=128 in enable_ssl
