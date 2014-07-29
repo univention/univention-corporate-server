@@ -19,8 +19,8 @@ desc: |
     output from pipe anymore. Instead, the output is directly written to the log.
     This way, running setup scripts will not terminate when the UMC module process
     does.
-  * Request successfull request processing will not be reported before the actual
-    request processing anymore.
+  * Successfull request processing will no longer be reported before the actual
+    request processing is done.
   * Added welcome page with instructions to set a root password
     before accessing the setup wizard for EC2 setups
   * Welcome page is now the apache default site when installing
