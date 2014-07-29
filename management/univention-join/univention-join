@@ -208,7 +208,7 @@ run_join_scripts () {
 
 }
 
-check_ad_member_mode () {
+check_and_configure_ad_member_mode () {
 
 	# switch to ad member mode
 	if is_domain_in_admember_mode; then
@@ -736,7 +736,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	echo -n "0" >/var/lib/univention-ldap/schema/id/id
 	chown listener /var/lib/univention-ldap/schema/id/id
 
-	check_ad_member_mode
+	check_and_configure_ad_member_mode
 	run_join_scripts
 
 elif [ "$server_role" = "domaincontroller_slave" ]; then
@@ -807,7 +807,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	touch /var/univention-join/joined
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
-	check_ad_member_mode
+	check_and_configure_ad_member_mode
 	run_join_scripts
 
 elif [ "$server_role" = "memberserver" ]; then
@@ -851,7 +851,7 @@ elif [ "$server_role" = "memberserver" ]; then
 	touch /var/univention-join/joined
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
-	check_ad_member_mode
+	check_and_configure_ad_member_mode
 	run_join_scripts
 
 else

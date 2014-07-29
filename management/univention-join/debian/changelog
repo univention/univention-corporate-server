@@ -1,3 +1,9 @@
+univention-join (6.0.18-8) unstable; urgency=low
+
+  * small fix (Bug #35470) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Jul 2014 09:07:33 +0200
+
 univention-join (6.0.18-7) unstable; urgency=low
 
   * don't set kerberos/adminserver in member mode
