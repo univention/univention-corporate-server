@@ -1,3 +1,11 @@
+univention-ad-connector (8.0.17-48) unstable; urgency=medium
+
+  * Script well-known-sid-object-rename (Bug #35507)
+    * Add options --binddn and --bindpw to override connector/ad/ldap/bind*
+    * Mask connector/ad/ldap/kerberos in script if true to avoid cached creds
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jul 2014 18:17:06 +0200
+
 univention-ad-connector (8.0.17-47) unstable; urgency=medium
 
   Bug #35090 [WIP]:

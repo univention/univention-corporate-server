@@ -49,19 +49,7 @@ import univention.admin.uexceptions as uexceptions
 # load UDM modules
 udm_modules.update()
 
-# parse commandline options
-
-parser = OptionParser()
-parser.add_option("--configbasename", dest="configbasename",
-                  help="", metavar="CONFIGBASENAME", default="connector")
-(options, args) = parser.parse_args()
-
-CONFIGBASENAME = "connector"
-if options.configbasename:
-	CONFIGBASENAME = options.configbasename
 LOGFILE = "/var/log/univention/connector.log"
-
-sys.path=['/etc/univention/%s/ad/' % CONFIGBASENAME]+sys.path
 
 class AD_Connection(univention.connector.ad.ad): ### stripped down init of univention.connector.ad.ad:
 	def __init__(self, CONFIGBASENAME, baseConfig, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate):
@@ -90,8 +78,10 @@ class AD_Connection(univention.connector.ad.ad): ### stripped down init of unive
 
 class Well_Known_SID_object_renamer():
 
-	def __init__(self, ucr):
+	def __init__(self, ucr, binddn, bindpwd):
 		self.ucr = ucr
+		self.ad_ldap_binddn = binddn
+		self.ad_ldap_bindpwd = bindpwd
 		self.ad_connect()
 
 		self.local_fqdn = '.'.join((self.ucr["hostname"], self.ucr["domainname"]))
@@ -119,12 +109,6 @@ class Well_Known_SID_object_renamer():
 		if not self.ucr.has_key('%s/ad/ldap/base' % CONFIGBASENAME):
 			print '%s/ad/ldap/base not set' % CONFIGBASENAME
 			sys.exit(1)
-		if not self.ucr.has_key('%s/ad/ldap/binddn' % CONFIGBASENAME):
-			print '%s/ad/ldap/binddn not set' % CONFIGBASENAME
-			sys.exit(1)
-		if not self.ucr.has_key('%s/ad/ldap/bindpw' % CONFIGBASENAME):
-			print '%s/ad/ldap/bindpw not set' % CONFIGBASENAME
-			sys.exit(1)
 
 		ca_file = self.ucr.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
 		if self.ucr.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True) or self.ucr.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False):
@@ -150,10 +134,6 @@ class Well_Known_SID_object_renamer():
 				ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 		
 
-		ad_ldap_bindpw=open(self.ucr['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
-		if ad_ldap_bindpw[-1] == '\n':
-			ad_ldap_bindpw=ad_ldap_bindpw[0:-1]
-		
 		poll_sleep=int(self.ucr['%s/ad/poll/sleep' % CONFIGBASENAME])
 		ad_init=None
 		while not ad_init:
@@ -163,8 +143,8 @@ class Well_Known_SID_object_renamer():
 								self.ucr['%s/ad/ldap/host' % CONFIGBASENAME],
 								self.ucr['%s/ad/ldap/port' % CONFIGBASENAME],
 								self.ucr['%s/ad/ldap/base' % CONFIGBASENAME],
-								self.ucr['%s/ad/ldap/binddn' % CONFIGBASENAME],
-								ad_ldap_bindpw,
+								self.ad_ldap_binddn,
+								self.ad_ldap_bindpwd,
 								self.ucr['%s/ad/ldap/certificate' % CONFIGBASENAME]
 								)
 				ad_init=True
@@ -387,10 +367,39 @@ def _connect_ucs(ucr, binddn=None, bindpwd=None):
 if __name__ == "__main__":
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
+	if ucr.is_true('connector/ad/ldap/kerberos'):
+		## we must not use kerberos for this, so we hide the setting from the local ucr copy
+		del ucr['connector/ad/ldap/kerberos']
+
+	parser = OptionParser()
+	parser.add_option("--configbasename", dest="configbasename",
+			  help="", metavar="CONFIGBASENAME", default="connector")
+	parser.add_option("--binddn", dest="binddn",
+			  help="", metavar="BINDDN")
+	parser.add_option("--bindpwd", dest="bindpwd",
+			  help="", metavar="BINDPWD")
+	(options, args) = parser.parse_args()
+
+	CONFIGBASENAME = options.configbasename
+
+	if not options.binddn:
+		options.binddn = ucr.get('%s/ad/ldap/binddn' % CONFIGBASENAME)
+		if not options.binddn:
+			print '--binddn not given and %s/ad/ldap/binddn not set' % CONFIGBASENAME
+			sys,exit(1)
+
+	if not options.bindpwd:
+		bindpwfile = ucr.get('%s/ad/ldap/bindpw' % CONFIGBASENAME)
+		if not bindpwfile:
+			print '--bindpwd not given and %s/ad/ldap/bindpw not set' % CONFIGBASENAME
+			sys,exit(1)
+		options.bindpwd = open(ucr['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
+		if options.bindpwd[-1] == '\n':
+			options.bindpwd = options.bindpwd[0:-1]
 
 	ud.init(LOGFILE, ud.FLUSH, ud.NO_FUNCTION)
 	debug_level = ucr.get('connector/debug/level', 2)
 	ud.set_level(ud.LDAP, int(debug_level))
-	ad = Well_Known_SID_object_renamer(ucr)
+	ad = Well_Known_SID_object_renamer(ucr, options.binddn, options.bindpwd)
 	ad.rewrite_sambaSIDs_in_OpenLDAP()
 	subprocess.call(["univention-config-registry", "unset", "connector/ad/mapping/group/language"])
