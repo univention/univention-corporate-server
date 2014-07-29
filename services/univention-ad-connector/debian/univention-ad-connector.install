@@ -1,6 +1,5 @@
 univention-ad-connector usr/sbin/
 univention-adsearch usr/sbin/
-univention-ad-member usr/share/univention-ad-connector/scripts
 univention-connector-list-rejected usr/sbin/
 scripts/prepare-new-instance usr/share/univention-ad-connector/scripts
 
