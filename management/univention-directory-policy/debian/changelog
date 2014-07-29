@@ -1,3 +1,9 @@
+univention-directory-policy (6.0.0-1) unstable; urgency=low
+
+  * Bug #35431: Start UCS 4.0 development
+
+ -- Florian Best <best@univention.de>  Tue, 29 Jul 2014 13:40:23 +0200
+
 univention-directory-policy (5.0.6-1) unstable; urgency=low
 
   * univention-directory-policy now uses the current joinscript-lib (Bug #28993)
