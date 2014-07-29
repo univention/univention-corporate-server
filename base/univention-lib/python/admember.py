@@ -123,6 +123,8 @@ def prepare_administrator(username, password, ucr=None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
+	ud.debug(ud.LDAP, ud.PROCESS, "Prepare administrator account")
+
 	lo = univention.uldap.getAdminConnection()
 	res = lo.search(filter='(&(uid=Administrator)(objectClass=shadowAccount))', attr=['userPassword'])
 	if not res:
@@ -137,7 +139,9 @@ def prepare_administrator(username, password, ucr=None):
 	p1 = subprocess.Popen(['univention-directory-manager', 'users/user', 'modify', '--dn', administrator_dn, '--set', 'password=%s' % password, '--set', 'overridePWHistory=1', '--set', 'overridePWLength=1'], close_fds=True)
 	stdout, stderr = p1.communicate()
 	if p1.returncode != 0:
+		ud.debug(ud.LDAP, ud.ERROR, "failed to set administrator password: %s" % stderr)
 		raise failedToSetAdministratorPassword()
+	ud.debug(ud.LDAP, ud.PROCESS, "%s" % stdout)
 
 def _server_supports_ssl(server):
 	ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
@@ -152,28 +156,36 @@ def _server_supports_ssl(server):
 	return True
 
 def server_supports_ssl(server):
+
+	ud.debug(ud.LDAP, ud.PROCESS, "Check if server supports SSL")
 	# we have to create a new process because there is only one sec context allowed in python-ldap
 	p1 = subprocess.Popen(["python", "-c", 'import univention.lib.admember; print univention.lib.admember._server_supports_ssl("%s")' % server], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	stdout, stderr = p1.communicate()
 	if p1.returncode == 0 and stdout.strip() == 'True':
+		ud.debug(ud.LDAP, ud.PROCESS, "SSL True")
 		return True
 	else:
+		ud.debug(ud.LDAP, ud.PROCESS, "SSL False")
 		return False
 
 def enable_ssl():
+	ud.debug(ud.LDAP, ud.PROCESS, "Enable connector SSL")
 	univention.config_registry.handler_set([u'connector/ad/ldap/ssl=yes'])
 
 
 def disable_ssl():
+	ud.debug(ud.LDAP, ud.PROCESS, "Disable connector SSL")
 	univention.config_registry.handler_set([u'connector/ad/ldap/ssl=no'])
 
 
 def _add_service_to_localhost(service):
+	ud.debug(ud.LDAP, ud.PROCESS, "Adding service %s to localhost" % service)
 	res = subprocess.call('. /usr/share/univention-lib/ldap.sh; ucs_addServiceToLocalhost "%s"' % service, shell=True)
 	if res != 0:
 		raise failedToSetService
 
 def _remove_service_from_localhost(service):
+	ud.debug(ud.LDAP, ud.PROCESS, "Remove service %s from localhost" % service)
 	res = subprocess.call('. /usr/share/univention-lib/ldap.sh; ucs_removeServiceFromLocalhost "%s"' % service, shell=True)
 	if res != 0:
 		raise failedToSetService
@@ -189,7 +201,8 @@ def remove_admember_service_from_localhost():
 	_remove_service_from_localhost('AD Member')
 
 def info_handler(msg):
-	ud.debug(ud.LDAP, ud.INFO, msg)
+	ud.debug(ud.LDAP, ud.PROCESS, msg)
+
 def error_handler(msg):
 	ud.debug(ud.LDAP, ud.ERROR, msg)
 
@@ -207,17 +220,20 @@ def remove_install_univention_samba(info_handler=info_handler, step_handler=None
 	# check version
 	us = pm.get_package('univention-samba')
 	if not apt.VersionCompare(us.candidate.version, UNIVENTION_SAMBA_MIN_PACKAGE_VERSION) >= 0:
+		ud.debug(ud.LDAP, ud.ERROR, "univention-samba (%s) < %s" % (us.candidate.version, UNIVENTION_SAMBA_MIN_PACKAGE_VERSION))
 		raise univentionSambaWrongVersion(
 			"The package univention-samba in this version (%s) does not support AD member mode. Please upgrade to version %s"
 			% (us.candidate.version, UNIVENTION_SAMBA_MIN_PACKAGE_VERSION))
 
 	# uninstall first to get rid of the configured samba/* ucr vars
 	if uninstall and pm.is_installed('univention-samba'):
+		ud.debug(ud.LDAP, ud.PROCESS, "Uninstall univention-samba")
 		if not pm.uninstall('univention-samba'):
 			return False
 
 	# install 
 	if install:
+		ud.debug(ud.LDAP, ud.PROCESS, "Install univention-samba")
 		if not pm.install('univention-samba'):
 			return False
 
@@ -225,6 +241,8 @@ def remove_install_univention_samba(info_handler=info_handler, step_handler=None
 
 def lookup_adds_dc(ad_server=None, realm=None, ucr=None):
 	'''CLDAP lookup'''
+
+	ud.debug(ud.LDAP, ud.PROCESS, "Lookup ADDS DC")
 
 	ad_domain_info = {}
 
@@ -293,12 +311,14 @@ def lookup_adds_dc(ad_server=None, realm=None, ucr=None):
 		"DC IP": ad_server_ip,
 		}
 
+	ud.debug(ud.LDAP, ud.PROCESS, "AD Info: %s" % ad_domain_info)
+
 	return ad_domain_info
 
 
 def set_timeserver(timeserver, ucr=None):
+	ud.debug(ud.LDAP, ud.PROCESS, "Setting timeserver to %s" % timeserver)
 	univention.config_registry.handler_set([u'timeserver=%s' % (timeserver,)])
-
 	restart_service("ntp")
 
 
@@ -328,6 +348,8 @@ def invoke_service(service, cmd):
 	if p1.returncode:
 		ud.debug(ud.LDAP, ud.ERROR, "invoke-rc.d %s %s failed (%d)" % (service, cmd, p1.returncode,))
 		return
+
+	ud.debug(ud.LDAP, ud.PROCESS, "invoke-rc.d %s %s: %s" % (cmd, service, stdout)) 
 
 
 def time_sync(ad_ip, tolerance=180, critical_difference=360):
@@ -415,47 +437,54 @@ def prepare_dns_reverse_settings(ad_server_ip, ad_domain_info):
 	
 
 def prepare_ucr_settings():
+
+	ud.debug(ud.LDAP, ud.PROCESS, "Prepare UCR settings")
+
 	# Show warnings in UMC
 	# Change displayed name of users from "username" to "displayName" (as in AD)
-	univention.config_registry.handler_set(
-		[
-			u'kerberos/defaults/dns_lookup_kdc=true',
-			u'ad/member=true',
-			u'connector/ad/mapping/user/password/kinit=true',
-			u'directory/manager/web/modules/computers/computer/show/adnotification=true',
-			u'directory/manager/web/modules/groups/group/show/adnotification=true',
-			u'directory/manager/web/modules/users/user/show/adnotification=true',
-			u'directory/manager/web/modules/users/user/display=displayName',
-			u'nameserver/external=true',
-		]
-	)
-	univention.config_registry.handler_unset(
-		[
-			u'kerberos/kdc',
-			u'kerberos/kpasswdserver',
-			u'kerberos/adminserver',
-		]
-	)
+	ucr_set = [
+		u'kerberos/defaults/dns_lookup_kdc=true',
+		u'ad/member=true',
+		u'connector/ad/mapping/user/password/kinit=true',
+		u'directory/manager/web/modules/computers/computer/show/adnotification=true',
+		u'directory/manager/web/modules/groups/group/show/adnotification=true',
+		u'directory/manager/web/modules/users/user/show/adnotification=true',
+		u'directory/manager/web/modules/users/user/display=displayName',
+		u'nameserver/external=true',
+	]
+	ud.debug(ud.LDAP, ud.PROCESS, "Setting UCR variables: %s" % ucr_set)
+	univention.config_registry.handler_set(ucr_set)
+
+	ucr_unset = [
+		u'kerberos/kdc',
+		u'kerberos/kpasswdserver',
+		u'kerberos/adminserver',
+	]
+	ud.debug(ud.LDAP, ud.PROCESS, "Unsetting UCR variables: %s" % ucr_unset)
+	univention.config_registry.handler_unset(ucr_unset)
 
 
 def revert_ucr_settings():
-	# TODO something else?
-	univention.config_registry.handler_unset(
-		[
-			u'ad/member',
-			u'directory/manager/web/modules/computers/computer/show/adnotification',
-			u'directory/manager/web/modules/groups/group/show/adnotification',
-			u'directory/manager/web/modules/users/user/show/adnotification',
-			u'directory/manager/web/modules/users/user/display',
-			u'kerberos/defaults/dns_lookup_kdc',
-		]
-	)
 
-	univention.config_registry.handler_set(
-		[
-			u'nameserver/external=false',
-		]
-	)
+	ud.debug(ud.LDAP, ud.PROCESS, "Revert UCR settings")
+
+	# TODO something else?
+	ucr_unset = [
+		u'ad/member',
+		u'directory/manager/web/modules/computers/computer/show/adnotification',
+		u'directory/manager/web/modules/groups/group/show/adnotification',
+		u'directory/manager/web/modules/users/user/show/adnotification',
+		u'directory/manager/web/modules/users/user/display',
+		u'kerberos/defaults/dns_lookup_kdc',
+	]
+	ud.debug(ud.LDAP, ud.PROCESS, "Unsetting UCR variables: %s" % ucr_unset)
+	univention.config_registry.handler_unset(ucr_unset)
+
+	ucr_set = [
+		u'nameserver/external=false',
+	]
+	ud.debug(ud.LDAP, ud.PROCESS, "Setting UCR variables: %s" % ucr_set)
+	univention.config_registry.handler_set(ucr_set)
 
 
 def prepare_connector_settings(username, password, ad_domain_info, ucr=None):
@@ -463,27 +492,32 @@ def prepare_connector_settings(username, password, ad_domain_info, ucr=None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	binddn = '%s$' % (ucr.get('hostname'))
+	ud.debug(ud.LDAP, ud.PROCESS, "Prepare connector settings")
 
-	univention.config_registry.handler_set(
-		[
-			u'connector/ad/ldap/host=%s' % ad_domain_info["DC DNS Name"],
-			u'connector/ad/ldap/base=%s' % ad_domain_info["LDAP Base"],
-			u'connector/ad/ldap/binddn=%s' % binddn,
-			u'connector/ad/ldap/bindpw=/etc/machine.secret',
-			u'connector/ad/ldap/kerberos=true',
-			u'connector/ad/mapping/syncmode=read',
-			u'connector/ad/mapping/user/ignorelist=krbtgt,root,pcpatch',
-		]
-	)
+	binddn = '%s$' % (ucr.get('hostname'))
+	ucr_set = [
+		u'connector/ad/ldap/host=%s' % ad_domain_info["DC DNS Name"],
+		u'connector/ad/ldap/base=%s' % ad_domain_info["LDAP Base"],
+		u'connector/ad/ldap/binddn=%s' % binddn,
+		u'connector/ad/ldap/bindpw=/etc/machine.secret',
+		u'connector/ad/ldap/kerberos=true',
+		u'connector/ad/mapping/syncmode=read',
+		u'connector/ad/mapping/user/ignorelist=krbtgt,root,pcpatch',
+	]
+	ud.debug(ud.LDAP, ud.PROCESS, "Setting UCR variables: %s" % ucr_set)
+	univention.config_registry.handler_set(ucr_set)
 
 
 def disable_local_samba4():
+
+	ud.debug(ud.LDAP, ud.PROCESS, "Disable local samba4")
 	stop_service("samba4")
 	univention.config_registry.handler_set([u'samba4/autostart=false'])
 
 
 def disable_local_heimdal():
+	
+	ud.debug(ud.LDAP, ud.PROCESS, "Disable local heimdal")
 	stop_service("heimdal-kdc")
 	univention.config_registry.handler_set([u'kerberos/autostart=false'])
 
@@ -492,16 +526,18 @@ def run_samba_join_script(username, password, ucr=None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	binddn = 'uid=%s,cn=users,%s' % (username, ucr.get('ldap/base'))
+	ud.debug(ud.LDAP, ud.PROCESS, "Running samba join script")
 
+	binddn = 'uid=%s,cn=users,%s' % (username, ucr.get('ldap/base'))
 	my_env = os.environ
 	my_env['SMB_CONF_PATH'] = '/etc/samba/smb.conf'
 	p1 = subprocess.Popen(['/usr/lib/univention-install/26univention-samba.inst', '--binddn', binddn, '--bindpwd', password],
 		close_fds=True, env=my_env)
 	stdout, stderr = p1.communicate()
-	
 	if p1.returncode != 0:
+		ud.debug(ud.LDAP, ud.ERROR, "26univention-samba.inst failed with %d (%s)" % (p1.returncode, stderr))
 		raise sambaJoinScriptFailed()
+	ud.debug(ud.LDAP, ud.PROCESS, "%s" % stdout)
 
 
 def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
@@ -527,6 +563,7 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 	if p1.returncode:
 		ud.debug(ud.LDAP, ud.ERROR, "%s failed with %d (%s)" % (cmd, p1.returncode, stderr))
 		raise failedToAddServiceRecordToAD("failed to add SRV record to %s" % ad_ip)
+	ud.debug(ud.LDAP, ud.PROCESS, "%s" % stdout)
 	os.unlink(fd.name)
 
 
@@ -552,6 +589,7 @@ def set_nameserver_from_ucs_master(ucr=None):
 	for var in ['nameserver1', 'nameserver2', 'nameserver3']:
 		value = get_ucr_variable_from_ucs(ucr.get('hostname'), ucr.get('ldap/master'), var)
 		if value:
+			ud.debug(ud.LDAP, ud.PROCESS, "Setting %s=%s" % (var, value))
 			univention.config_registry.handler_set([u'%s=%s' % (var, value)])
 
 

@@ -1,3 +1,9 @@
+univention-lib (3.0.26-47) unstable; urgency=low
+
+  * added debug output (Bug #35467) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Jul 2014 12:15:32 +0200
+
 univention-lib (3.0.26-46) unstable; urgency=low
 
   * admember.py: server_supports_ssl: we have to create a new process
