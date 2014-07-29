@@ -1,3 +1,10 @@
+univention-ad-connector (8.0.17-44) unstable; urgency=medium
+
+  * Script well-known-sid-object-rename: Strip down initialization
+    of the univention.connector.ad.ad class (Bug #35507)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jul 2014 13:02:45 +0200
+
 univention-ad-connector (8.0.17-43) unstable; urgency=medium
 
   * Script well-known-sid-object-rename

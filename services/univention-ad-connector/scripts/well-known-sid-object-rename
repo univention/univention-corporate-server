@@ -63,7 +63,30 @@ LOGFILE = "/var/log/univention/connector.log"
 
 sys.path=['/etc/univention/%s/ad/' % CONFIGBASENAME]+sys.path
 
-import mapping
+class AD_Connection(univention.connector.ad.ad): ### stripped down init of univention.connector.ad.ad:
+	def __init__(self, CONFIGBASENAME, baseConfig, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate):
+
+		self.CONFIGBASENAME = CONFIGBASENAME
+
+		self.ad_ldap_host = ad_ldap_host
+		self.ad_ldap_port = ad_ldap_port
+		self.ad_ldap_base = ad_ldap_base
+		self.ad_ldap_binddn = ad_ldap_binddn
+		self.ad_ldap_bindpw = ad_ldap_bindpw
+		self.ad_ldap_certificate = ad_ldap_certificate
+		self.baseConfig = baseConfig
+
+		self.open_ad()
+
+		try:
+			result = self.lo_ad.lo.search_ext_s(ad_ldap_base,ldap.SCOPE_BASE,
+					'objectclass=domain',['objectSid'],
+					timeout=-1, sizelimit=0)
+			objectSid_blob = result[0][1]['objectSid'][0]
+			self.ad_sid = univention.connector.ad.decode_sid(objectSid_blob)
+		except Exception, msg:
+			print "Failed to get SID from AD: %s" % msg
+			sys.exit(1)
 
 class Well_Known_SID_object_renamer():
 
@@ -86,7 +109,7 @@ class Well_Known_SID_object_renamer():
 			# FIXME: probably sys.exit()?
 
 
-	def ad_connect(self):
+	def ad_connect(self):	## this is taken from univention.connector.ad.main
 		if not self.ucr.has_key('%s/ad/ldap/host' % CONFIGBASENAME):
 			print '%s/ad/ldap/host not set' % CONFIGBASENAME
 			sys.exit(1)
@@ -135,16 +158,15 @@ class Well_Known_SID_object_renamer():
 		ad_init=None
 		while not ad_init:
 			try:
-				self.ad = univention.connector.ad.ad(	CONFIGBASENAME,
-								mapping.ad_mapping,
+				self.ad = AD_Connection(	CONFIGBASENAME,
 								self.ucr,
 								self.ucr['%s/ad/ldap/host' % CONFIGBASENAME],
 								self.ucr['%s/ad/ldap/port' % CONFIGBASENAME],
 								self.ucr['%s/ad/ldap/base' % CONFIGBASENAME],
 								self.ucr['%s/ad/ldap/binddn' % CONFIGBASENAME],
 								ad_ldap_bindpw,
-								self.ucr['%s/ad/ldap/certificate' % CONFIGBASENAME],
-								self.ucr['%s/ad/listener/dir' % CONFIGBASENAME])
+								self.ucr['%s/ad/ldap/certificate' % CONFIGBASENAME]
+								)
 				ad_init=True
 			except ldap.SERVER_DOWN:
 				print "Warning: Can't initialize LDAP-Connections, wait..."
