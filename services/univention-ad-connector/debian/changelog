@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-40) unstable; urgency=low
+
+  * Allow kerberos bind info for password sync (Bug #35091)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Jul 2014 09:31:02 +0200
+
 univention-ad-connector (8.0.17-39) unstable; urgency=low
 
   * Remove univention-ad-member from rules (Bug #34091)

@@ -86,7 +86,12 @@ def set_password_in_ad(connector, samaccountname, pwd):
 
 	a = array.array('c')
 	
-	_append ( a, univention.connector.ad.explode_unicode_dn(connector.lo_ad.binddn,1)[0] )
+	if connector.lo_ad.binddn:
+		bind_username = univention.connector.ad.explode_unicode_dn(connector.lo_ad.binddn,1)[0]
+	else:
+		bind_username = connector.baseConfig['%s/ad/ldap/binddn' % connector.CONFIGBASENAME]
+	
+	_append ( a, bind_username )
 	_append ( a, connector.lo_ad.bindpw )
 	a.append ( 'S' )
 
@@ -112,7 +117,12 @@ def get_password_from_ad(connector, rid):
 	_d=ud.function('ldap.ad.get_password_from_ad')
 	a = array.array('c')
 
-	_append ( a, univention.connector.ad.explode_unicode_dn(connector.lo_ad.binddn,1)[0] )
+	if connector.lo_ad.binddn:
+		bind_username = univention.connector.ad.explode_unicode_dn(connector.lo_ad.binddn,1)[0]
+	else:
+		bind_username = connector.baseConfig['%s/ad/ldap/binddn' % connector.CONFIGBASENAME]
+	
+	_append ( a, bind_username )
 	_append ( a, connector.lo_ad.bindpw )
 	a.append ( 'G' )
 
