@@ -365,11 +365,6 @@ def _connect_ucs(ucr, binddn=None, bindpwd=None):
 
 
 if __name__ == "__main__":
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
-	if ucr.is_true('connector/ad/ldap/kerberos'):
-		## we must not use kerberos for this, so we hide the setting from the local ucr copy
-		del ucr['connector/ad/ldap/kerberos']
 
 	parser = OptionParser()
 	parser.add_option("--configbasename", dest="configbasename",
@@ -381,6 +376,15 @@ if __name__ == "__main__":
 	(options, args) = parser.parse_args()
 
 	CONFIGBASENAME = options.configbasename
+
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+	if ucr.is_true('%s/ad/ldap/kerberos' % CONFIGBASENAME):
+		## we must not use kerberos for this, so we hide the setting from the local ucr copy
+		del ucr['%s/ad/ldap/kerberos' % CONFIGBASENAME]
+	if ucr.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME):
+		## we must not use ssl for this, as we don't know if the server supports it so we hide the var here
+		del ucr['%s/ad/ldap/ssl' % CONFIGBASENAME]
 
 	if not options.binddn:
 		options.binddn = ucr.get('%s/ad/ldap/binddn' % CONFIGBASENAME)

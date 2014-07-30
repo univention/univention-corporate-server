@@ -1,3 +1,11 @@
+univention-ad-connector (8.0.17-54) unstable; urgency=medium
+
+  * Script well-known-sid-object-rename (Bug #35507):
+    * disable connector/ad/ldap/ssl as well for the scope of the script
+    * correctly handle CONFIGBASENAME in ucr tweak for kerberos and ssl
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 10:28:35 +0200
+
 univention-ad-connector (8.0.17-53) unstable; urgency=medium
 
   Bug #35090
