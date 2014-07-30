@@ -1,3 +1,12 @@
+univention-ad-connector (8.0.17-58) unstable; urgency=medium
+
+  * Script well-known-sid-object-rename (Bug #35507):
+    * Improved logging (also to stdout)
+    * Improved docstrings
+    * Avoid shady ucr hack
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 15:41:31 +0200
+
 univention-ad-connector (8.0.17-57) unstable; urgency=low
 
   * Bug #35090: Improve certificate/SSL handling
