@@ -417,6 +417,10 @@ if ignore_filter:
 
 			ignore_subtree = global_ignore_subtree,
 			
+			post_ucs_modify_functions=[ 
+						    univention.connector.ad.set_univentionObjectFlag_to_synced,
+						],
+
 			con_create_objectclass=['top', 'container' ],
 
 			attributes= {
@@ -455,6 +459,10 @@ if ignore_filter:
 @!@
 
 			ignore_subtree = global_ignore_subtree,
+
+			post_ucs_modify_functions=[ 
+						    univention.connector.ad.set_univentionObjectFlag_to_synced,
+						],
 
 			con_create_objectclass=[ 'top', 'organizationalUnit' ],
 

@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-55) unstable; urgency=low
+
+  * Set univentionObjectFlag to synced for cn and ou (Bug #35091)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 30 Jul 2014 12:43:02 +0200
+
 univention-ad-connector (8.0.17-54) unstable; urgency=medium
 
   * Script well-known-sid-object-rename (Bug #35507):
