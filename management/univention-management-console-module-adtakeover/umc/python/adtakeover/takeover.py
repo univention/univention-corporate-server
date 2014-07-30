@@ -1296,10 +1296,10 @@ class AD_Takeover():
 		run_and_output_to_log(["/usr/share/univention-s4-connector/msgpo.py", "--write2ucs"], log.debug)
 
 		### rotate S4 connector log and start the S4 Connector
-		## careful: the postrotate task restarts the connector!
+		## careful: the postrotate task used to "restart" the connector!
 		run_and_output_to_log(["logrotate", "-f", "/etc/logrotate.d/univention-s4-connector"], log.debug)
 
-		## Ok, just in case, start the Connector explicitely
+		## Just in case, start the Connector explicitly
 		log.info("Starting S4 Connector")
 		returncode = run_and_output_to_log(["/etc/init.d/univention-s4-connector", "start"], log.debug)
 		if returncode != 0:
