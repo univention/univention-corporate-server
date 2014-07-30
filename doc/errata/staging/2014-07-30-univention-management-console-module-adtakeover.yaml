@@ -2,8 +2,8 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-management-console-module-adtakeover
-fix: 1.0.10-36.36.201407301614
+fix: 1.0.10-38.37.201407301815
 version: [2]
 desc: |
-    * The pacakge univention-management-console-module-adtakeover was adjusted for AD member mode.
+    * The package univention-management-console-module-adtakeover has been adjusted for AD member mode.
 bug: [35346]
