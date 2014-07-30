@@ -49,7 +49,7 @@ define([
 		_searchNode: null,
 		_searchingNode: null,
 		_currentNode: null,
-		inlineLabel: _('e.g., Boston...'),
+		inlineLabel: null,
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -94,7 +94,7 @@ define([
 		_onKey: function(evt) {
 			var lastResult = this.store.lastResult;
 			if (evt.keyCode == keys.ENTER) {
-				if (this.state != 'searching' && lastResult.length && this._opened) {
+				if (this.state != 'searching' && lastResult.length && this._opened && !this.dropDown.selected) {
 					// select first item
 					this.set('item', lastResult[0]);
 					this.closeDropDown();

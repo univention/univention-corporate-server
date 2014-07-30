@@ -1,3 +1,13 @@
+univention-system-setup (7.0.69-42) unstable; urgency=medium
+
+  Bug #34484:
+  * Fixed multiple network related issues (device handling, DHCP, netmask
+    validation etc.)
+  * Fixed problems with language switch
+  * Removed country flags from language selection
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 30 Jul 2014 18:25:14 +0200
+
 univention-system-setup (7.0.69-41) unstable; urgency=low
 
   * Bug #34388: Only redirect apache2 startsite on unjoined systems
