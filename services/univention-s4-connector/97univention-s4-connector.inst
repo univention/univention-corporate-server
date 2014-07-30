@@ -121,16 +121,6 @@ ucs_registerLDAPExtension "$@" \
 ucs_registerLDAPExtension "$@" \
 	--udm_module /usr/share/pyshared/univention/admin/handlers/settings/mswmifilter.py || die
 
-if [ -r '/var/lib/samba/private/.adtakeover' ]; then
-	adtakeover_state=$(</var/lib/samba/private/.adtakeover)
-	echo "INFO: Detected adtakeover state $adtakeover_state"
-fi
-
-if [ "$adtakeover_state" = joined ]; then
-	echo "INFO: Stopping univention-s4-connector joinscript for AD-Takeover"
-	exit 0
-fi
-
 if ! is_ucr_true 'connector/s4/allow/secondary'; then
 	s4connectorservicehost_dns="$(univention-directory-manager computers/computer list "$@" --filter "(&(univentionService=${NAME})(!(cn=$hostname)))" | sed -ne 's|^DN: ||p')"
 fi
