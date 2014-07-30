@@ -1,3 +1,12 @@
+univention-s4-connector (8.0.33-68) unstable; urgency=medium
+
+  * When running AD Takeover from AD Member mode we should stop the joinscript
+    after creating the required UDM containers and before starting sync and
+    waiting for DNS replication (Bug #35500).
+  * Make logrotate only "crestart" the s4-connector
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 18:12:04 +0200
+
 univention-s4-connector (8.0.33-67) unstable; urgency=medium
 
   * Remove univention-ad-takeover CLI script (Bug #35514)

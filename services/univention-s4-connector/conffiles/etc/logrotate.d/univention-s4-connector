@@ -23,7 +23,7 @@ print "/var/log/univention/*-%s.log {" % name
 for setting in settings.keys():
 	print "\t%s" % settings[setting]
 print '\tpostrotate'
-print '\t\tinvoke-rc.d univention-s4-connector restart > /dev/null'
+print '\t\tinvoke-rc.d univention-s4-connector crestart > /dev/null'
 print '\tendscript'
 print "}"
 @!@
