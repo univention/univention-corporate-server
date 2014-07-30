@@ -282,7 +282,7 @@ def lookup_adds_dc(ad_server=None, ucr=None):
 
 	# no ip addresses
 	if not ips:
-		return ad_domain_info
+		raise failedADConnect(["Connection to AD Server %s failed" % (ad_server)])
 
 	ad_server_ip = None
 	for ip in ips:

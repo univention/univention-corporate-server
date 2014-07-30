@@ -1,3 +1,10 @@
+univention-lib (3.0.26-56) unstable; urgency=low
+
+  * raise exception if no ips could be found in
+    lookup_adds_dc() (Bug #35520) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Jul 2014 13:19:50 +0200
+
 univention-lib (3.0.26-55) unstable; urgency=low
 
   * added python-ipaddr and dnsutils to the 
