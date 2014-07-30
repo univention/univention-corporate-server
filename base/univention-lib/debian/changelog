@@ -1,3 +1,10 @@
+univention-lib (3.0.26-55) unstable; urgency=low
+
+  * added python-ipaddr and dnsutils to the 
+    package dependencies (Bug #35520)
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Jul 2014 12:56:04 +0200
+
 univention-lib (3.0.26-54) unstable; urgency=low
 
   * check cldap and dns in lookup_adds_dc() (Bug #35520) 
