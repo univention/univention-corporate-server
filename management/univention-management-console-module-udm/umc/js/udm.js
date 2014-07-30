@@ -1471,6 +1471,8 @@ define([
 			//		Creates and views the detail page for editing LDAP objects.
 			this._detailPage = new DetailPage({
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
+				addWarning: lang.hitch(this, 'addWarning'),
+				addNotification: lang.hitch(this, 'addNotification'),
 				moduleStore: this.moduleStore,
 				moduleFlavor: this.moduleFlavor,
 				objectType: objectType,

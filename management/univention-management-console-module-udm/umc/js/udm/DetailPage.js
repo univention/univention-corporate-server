@@ -656,7 +656,6 @@ define([
 				return this.moduleStore.get(dn);
 			}))).then(lang.hitch(this, function(objs) {
 				if (array.some(objs, isSyncedObject)) {
-					// TODO: addWarning
 					properties = this._disableSyncedReadonlyProperties(properties);
 				}
 				deferred.resolve(properties);
@@ -671,6 +670,27 @@ define([
 				}
 			}));
 			return properties;
+		},
+
+		addActiveDirectoryWarning: function() {
+			if (!this.active_directory_enabled() || !this.ldapName) {
+				return;
+			}
+			var name;
+			if (this._multiEdit) {
+				name = _('The %s are', this.objectNamePlural);
+			} else {
+				var value = '';
+				tools.forIn(this._form._widgets, function(name, widget) {
+					if (widget.identifies) {
+						value = widget.get('value');
+						value = value instanceof Array ? value.join(" ") : value;
+						return false; // break out of forIn
+					}
+				}, this);
+				name = _('%s "%s" is', this.objectNameSingular, value)
+			}
+			this.addWarning(_('%s part of the Active Directory domain. UCS can only change certain attributes.', name));
 		},
 
 		_prepareOptions: function(properties, layout, template, formBuiltDeferred) {
@@ -846,6 +866,7 @@ define([
 			}))[0];
 			this.set('content', this._form);
 			borderLayout.startup();
+			this._form.ready().then(lang.hitch(this, 'addActiveDirectoryWarning'))
 		},
 
 		renderDetailPage: function(properties, layout, policies, template) {
