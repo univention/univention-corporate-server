@@ -156,8 +156,6 @@ define([
 		objectNameSingular: '',
 		objectNamePlural: '',
 
-		objectFlags: null,
-
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
@@ -214,8 +212,12 @@ define([
 				var policies = lang.clone(results.policies);
 				var properties = lang.clone(results.properties);
 				setTimeout(lang.hitch(this, function() {
-					this.renderDetailPage(properties, layout, policies, template).then(lang.hitch(this, function() {
-						this.loadedDeferred.resolve();
+					this._prepareIndividualProperties(properties).then(lang.hitch(this, function(properties) {
+						this.renderDetailPage(properties, layout, policies, template).then(lang.hitch(this, function() {
+							this.loadedDeferred.resolve();
+						}), lang.hitch(this, function() {
+							this.loadedDeferred.resolve();
+						}));
 					}), lang.hitch(this, function() {
 						this.loadedDeferred.resolve();
 					}));
@@ -265,7 +267,6 @@ define([
 				this._receivedObjOrigData = vals;
 				this._form.setFormValues(vals);
 				this._getInitialFormValues();
-				this.set('objectFlags', vals.$flags$[0]);
 
 				// as soon as the policy widgets are rendered, update the policy values
 				policyDeferred.then(lang.hitch(this, function() {
@@ -572,7 +573,9 @@ define([
 				if ( iprop.readonly ) {
 					iprop.disabled = true;
 				} else {
-					iprop.disabled = this.ldapName === undefined ? false : ! iprop.editable;
+					if (iprop.disabled !== true) {
+						iprop.disabled = this.ldapName === undefined ? false : ! iprop.editable;
+					}
 				}
 				if (this._multiEdit && iprop.identifies) {
 					// in multi-edit mode, one cannot edit the 'name' field, i.e., the identifier
@@ -628,25 +631,66 @@ define([
 			return layout;
 		},
 
+		active_directory_enabled: function() {
+			var ucr = lang.getObject('umc.modules.udm.ucr', false) || {};
+			return tools.isTrue(ucr['ad/member']);
+		},
+
 		_prepareIndividualProperties: function(properties) {
-			if (!this.ldapName) {
-				return;
+			var deferred = new Deferred();
+			var activeDirectoryEnabled = this.active_directory_enabled();
+			if (!this.ldapName || !activeDirectoryEnabled) {
+				// new object / multiEdit...
+				deferred.resolve(properties);
+				return deferred;
 			}
 
-			var ucr = lang.getObject('umc.modules.udm.ucr', false) || {};
-			var activeDirectoryEnabled = tools.isTrue(ucr['ad/member']);
-			var isSyncedObject = -1 !== this.objectFlags.indexOf('synced');
-			if (isSyncedObject && activeDirectoryEnabled) {
-				// evauluate AD connector flag
-				array.forEach(properties, lang.hitch(this, function(prop) {
-					if (prop.readonly_when_synced) {
-						var widget = this._form.getWidget(prop.id);
-						if (!widget.get('disabled')) {
-							widget.set('disabled', true);
-						}
-					}
-				}));
+			var isSyncedObject = function(obj) { return -1 !== obj.$flags$[0].indexOf('synced'); };
+
+			var objects = this.ldapName;
+			if (!this._multiEdit) {
+				objects = [objects];
 			}
+			// load all objects to see if they have univentionObjectFlag == synced
+			all(array.map(objects, lang.hitch(this, function(dn) {
+				return this.moduleStore.get(dn);
+			}))).then(lang.hitch(this, function(objs) {
+				if (array.some(objs, isSyncedObject)) {
+					properties = this._disableSyncedReadonlyProperties(properties);
+				}
+				deferred.resolve(properties);
+			}), function() { deferred.resolve(properties); });
+			return deferred;
+		},
+
+		_disableSyncedReadonlyProperties: function(properties) {
+			array.forEach(properties, lang.hitch(this, function(prop) {
+				if (prop.readonly_when_synced) {
+					prop.disabled = true;
+				}
+			}));
+			return properties;
+		},
+
+		addActiveDirectoryWarning: function() {
+			if (!this.active_directory_enabled() || !this.ldapName) {
+				return;
+			}
+			var name;
+			if (this._multiEdit) {
+				name = _('The %s are', this.objectNamePlural);
+			} else {
+				var value = '';
+				tools.forIn(this._form._widgets, function(name, widget) {
+					if (widget.identifies) {
+						value = widget.get('value');
+						value = value instanceof Array ? value.join(" ") : value;
+						return false; // break out of forIn
+					}
+				}, this);
+				name = _('%s "%s" is', this.objectNameSingular, value)
+			}
+			this.addWarning(_('%s part of the Active Directory domain. UCS can only change certain attributes.', name));
 		},
 
 		_prepareOptions: function(properties, layout, template, formBuiltDeferred) {
@@ -822,6 +866,7 @@ define([
 			}))[0];
 			this.set('content', this._form);
 			borderLayout.startup();
+			this._form.ready().then(lang.hitch(this, 'addActiveDirectoryWarning'))
 		},
 
 		renderDetailPage: function(properties, layout, policies, template) {
@@ -865,10 +910,6 @@ define([
 				if (!this.ldapName && !this._multiEdit) {
 					// search for given default values in the properties... these will be replaced
 				}
-			}));
-
-			loadedDeferred.then(lang.hitch(this, function() {
-				this._prepareIndividualProperties(properties);
 			}));
 
 			return all([loadedDeferred, formBuiltDeferred]);
