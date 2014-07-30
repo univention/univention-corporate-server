@@ -831,7 +831,7 @@ class AD_Takeover():
 			run_and_output_to_log(["/etc/init.d/univention-ad-connector", "stop"], log.debug)
 			run_and_output_to_log(["/etc/init.d/univention-directory-listener", "crestart"], log.debug)
 			## And now run univention-samba4.inst pre-provision setup (.adtakeover status is "start"), to disable slapd on port 389
-			returncode = run_and_output_to_log(["univention-run-join-scripts"], log.debug)
+			returncode = run_and_output_to_log(["univention-run-join-scripts", "--run-scripts", "96univention-samba4.inst"], log.debug)
 
 	def join_AD(self, progress):
 		log.info("Starting phase I of the takeover process.")
@@ -1331,7 +1331,7 @@ class AD_Takeover():
 		## Re-Set NTACLs from nTSecurityDescriptor on sysvol policy directories
 		## This is necessary as 96univention-samba4.inst hasn't run yet at this point in AD Member mode
 		## It's required for robocopy access
-		run_and_output_to_log(["samba-tool", "ntacl", "sysvolreset"], log.debug)
+		subprocess.call(["samba-tool", "ntacl", "sysvolreset"], stdout=DEVNULL, stderr=DEVNULL)
 
 
 class AD_Takeover_Finalize():

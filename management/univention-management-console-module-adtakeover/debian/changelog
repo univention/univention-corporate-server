@@ -1,3 +1,10 @@
+univention-management-console-module-adtakeover (1.0.10-36) unstable; urgency=medium
+
+  * Don't run all remaining joinscripts during disable_admember_mode
+  * Don't log the error messages of the initial ntacl sysvolreset (Bug #35346)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 16:12:37 +0200
+
 univention-management-console-module-adtakeover (1.0.10-35) unstable; urgency=medium
 
   * set_nameserver1_to_local_default_ip before robocopy and
