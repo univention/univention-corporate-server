@@ -581,7 +581,7 @@ def run_samba_join_script(username, password, ucr=None):
 	my_env = os.environ
 	my_env['SMB_CONF_PATH'] = '/etc/samba/smb.conf'
 	p1 = subprocess.Popen(['/usr/lib/univention-install/26univention-samba.inst', '--binddn', binddn, '--bindpwd', password],
-		close_fds=True, env=my_env)
+		close_fds=True, env=my_env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	stdout, stderr = p1.communicate()
 	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
 	if p1.returncode != 0:

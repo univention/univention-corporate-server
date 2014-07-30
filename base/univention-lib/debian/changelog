@@ -1,3 +1,9 @@
+univention-lib (3.0.26-57) unstable; urgency=low
+
+  * added debug output for samba_join (Bug #35520) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Jul 2014 16:27:27 +0200
+
 univention-lib (3.0.26-56) unstable; urgency=low
 
   * raise exception if no ips could be found in
