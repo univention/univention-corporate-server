@@ -296,6 +296,9 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	progress.headline(_('Rebuilding IDMAP'))
 	progress.percentage(98)
 	takeover.rebuild_idmap()
+	progress.message(_('Reconfiguring nameserver'))
+	progress.percentage(99)
+	takeover_final.reconfigure_nameserver_for_samba_backend()
 	progress.percentage(100)
 	state.set_sysvol()
 
@@ -335,9 +338,6 @@ def take_over_domain(progress):
 	progress.message(_('Registering IP in DNS'))
 	progress.percentage(42)
 	takeover_final.create_reverse_DNS_records()
-	progress.message(_('Reconfiguring nameserver'))
-	progress.percentage(52)
-	takeover_final.reconfigure_nameserver_for_samba_backend()
 	progress.message(_('Claiming FSMO roles'))
 	progress.percentage(53)
 	takeover_final.claim_FSMO_roles()
@@ -1310,6 +1310,24 @@ class AD_Takeover():
 		## Save AD server IP for Phase III
 		run_and_output_to_log(["univention-config-registry", "set", "univention/ad/takeover/ad/server/ip=%s" % (self.ad_server_ip) ], log.debug)
 
+	def reconfigure_nameserver_for_samba_backend(self):
+		## Resolve against local Bind9
+		## use OpenLDAP backend until the S4 Connector has run
+		if "nameserver1/local" in self.ucr:
+			nameserver1_orig = self.ucr["nameserver1/local"]
+			run_and_output_to_log(["univention-config-registry", "set", "nameserver1=%s" % nameserver1_orig], log.debug)
+			## unset temporary variable
+			run_and_output_to_log(["univention-config-registry", "unset", "nameserver1/local"], log.debug)
+		else:
+			msg=[]
+			msg.append("Warning: Weird, unable to determine previous nameserver1...")
+			msg.append("         Using localhost as fallback, probably that's the right thing to do.")
+			log.warn("\n".join(msg))
+			run_and_output_to_log(["univention-config-registry", "set", "nameserver1=127.0.0.1"], log.debug)
+
+		## Use Samba4 as DNS backend
+		run_and_output_to_log(["univention-config-registry", "set", "dns/backend=samba4"], log.debug)
+
 
 
 class AD_Takeover_Finalize():
@@ -1602,24 +1620,6 @@ class AD_Takeover_Finalize():
 					log.warn("Warning: Creation of reverse DNS record %s for %s failed. See %s for details." % (self.ad_server_ip, self.local_fqdn, LOGFILE_NAME,))
 		else:
 			log.warn("Warning: Calculation of reverse DNS record %s for %s failed. See %s for details." % (self.ad_server_ip, self.local_fqdn, LOGFILE_NAME,))
-
-	def reconfigure_nameserver_for_samba_backend(self):
-		## Resolve against local Bind9
-		## use OpenLDAP backend until the S4 Connector has run
-		if "nameserver1/local" in self.ucr:
-			nameserver1_orig = self.ucr["nameserver1/local"]
-			run_and_output_to_log(["univention-config-registry", "set", "nameserver1=%s" % nameserver1_orig], log.debug)
-			## unset temporary variable
-			run_and_output_to_log(["univention-config-registry", "unset", "nameserver1/local"], log.debug)
-		else:
-			msg=[]
-			msg.append("Warning: Weird, unable to determine previous nameserver1...")
-			msg.append("         Using localhost as fallback, probably that's the right thing to do.")
-			log.warn("\n".join(msg))
-			run_and_output_to_log(["univention-config-registry", "set", "nameserver1=127.0.0.1"], log.debug)
-
-		## Use Samba4 as DNS backend
-		run_and_output_to_log(["univention-config-registry", "set", "dns/backend=samba4"], log.debug)
 
 	def claim_FSMO_roles(self):
 		## Re-enable replication from Samba4

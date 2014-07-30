@@ -1,3 +1,10 @@
+univention-management-console-module-adtakeover (1.0.10-32) unstable; urgency=medium
+
+  * Reconfigure the nameserver1 back to the local system before the robocopy.
+    This should remove a login delay in case of an UMC timeout (Bug #35346)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 14:14:46 +0200
+
 univention-management-console-module-adtakeover (1.0.10-31) unstable; urgency=medium
 
   * Fix Ldb connection check against a native AD failing with FQDN given
