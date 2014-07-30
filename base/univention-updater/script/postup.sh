@@ -111,8 +111,8 @@ fi
 
 # Move to mirror mode for previous errata component
 ucr set \
-	repository/online/component/3.2-1-errata=false \
-	repository/online/component/3.2-1-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
+	repository/online/component/3.2-2-errata=false \
+	repository/online/component/3.2-2-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
 
 # Set errata component for UCS 3.2-3
 ucr set \
