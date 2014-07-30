@@ -1,3 +1,11 @@
+univention-management-console-module-adtakeover (1.0.10-39) unstable; urgency=medium
+
+  * No need to make a fuss about the first parts of the S4 Connector
+    joinscript, we simply run it once before samba DC is initialized.
+    (Bug #35346).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 18:39:41 +0200
+
 univention-management-console-module-adtakeover (1.0.10-38) unstable; urgency=medium
 
   * Fix some comments (Bug #35346).

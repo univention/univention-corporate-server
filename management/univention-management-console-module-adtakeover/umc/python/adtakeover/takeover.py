@@ -969,7 +969,7 @@ class AD_Takeover():
 
 	def post_join_tasks_and_start_samba_without_drsuapi(self):
 
-		## Now run the Joinscript again (AD Member starts at VERSION=1, regular UCS normally with VERSION=<last>)
+		## Now run the Joinscript again (AD Member starts at VERSION=1, regular UCS is done already)
 		returncode = run_and_output_to_log(["univention-run-join-scripts", "--run-scripts", "96univention-samba4.inst"], log.debug)
 
 		## create backup dir
@@ -1287,9 +1287,6 @@ class AD_Takeover():
 		#print
 
 	def start_s4_connector(self, progress):
-		## Now run the Joinscript again which stops after creating all UDM containers (in AD Member mode)
-		returncode = run_and_output_to_log(["univention-run-join-scripts", "--run-scripts", "97univention-s4-connector.inst"], log.debug)
-
 		old_sleep = self.ucr.get("connector/s4/poll/sleep", "5")
 		old_retry = self.ucr.get("connector/s4/retryrejected", "10")
 		run_and_output_to_log(["univention-config-registry", "set", "connector/s4/poll/sleep=1", "connector/s4/retryrejected=2"], log.debug)
