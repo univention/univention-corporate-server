@@ -279,6 +279,7 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	progress.percentage(2)
 	progress._scale = 18 - progress._percentage
 	takeover.join_AD(progress)
+	state.set_joined()
 	progress.headline(_('Starting Samba'))
 	progress.percentage(18)
 	takeover.post_join_tasks_and_start_samba_without_drsuapi()
@@ -393,7 +394,7 @@ def set_status_done():
 class AD_Takeover_State():
 	def __init__(self):
 		self.statefile = os.path.join(SAMBA_PRIVATE_DIR,".adtakeover")
-		self.stateorder = ("start", "sysvol", "takeover", "finished", "done")
+		self.stateorder = ("start", "joined", "sysvol", "takeover", "finished", "done")
 
 	def _set_persistent_state(self, state):
 		with open(self.statefile, "w") as f:
@@ -439,6 +440,9 @@ class AD_Takeover_State():
 
 	def set_start(self):
 		self._save_state("start")
+
+	def set_joined(self):
+		self._save_state("joined")
 
 	def set_sysvol(self):
 		self._save_state("sysvol")
@@ -830,8 +834,8 @@ class AD_Takeover():
 				], log.debug)
 			run_and_output_to_log(["/etc/init.d/univention-ad-connector", "stop"], log.debug)
 			run_and_output_to_log(["/etc/init.d/univention-directory-listener", "crestart"], log.debug)
-			## And now run univention-samba4.inst pre-provision setup (.adtakeover status is "start"), to disable slapd on port 389
-			returncode = run_and_output_to_log(["univention-run-join-scripts", "--run-scripts", "96univention-samba4.inst"], log.debug)
+			## And now run 96univention-samba4.inst pre-provision setup (.adtakeover status is "start"), to disable slapd on port 389, and 97uinvention-s4-connector.inst
+			returncode = run_and_output_to_log(["univention-run-join-scripts"], log.debug)
 
 	def join_AD(self, progress):
 		log.info("Starting phase I of the takeover process.")
@@ -964,6 +968,10 @@ class AD_Takeover():
 		run_and_output_to_log(["/etc/init.d/nscd", "restart"], log.debug)
 
 	def post_join_tasks_and_start_samba_without_drsuapi(self):
+
+		## Now run the Joinscript again (AD Member starts at VERSION=1, regular UCS normally with VERSION=<last>)
+		returncode = run_and_output_to_log(["univention-run-join-scripts", "--run-scripts", "96univention-samba4.inst"], log.debug)
+
 		## create backup dir
 		if not os.path.exists(BACKUP_DIR):
 			os.mkdir(BACKUP_DIR)
@@ -1063,7 +1071,7 @@ class AD_Takeover():
 		for container_dn in container_list:
 			rdn_list = ldap.explode_dn(container_dn)
 			(ou_type, ou_name) = rdn_list.pop(0).split('=', 1)
-			position = string.replace(','.join(rdn_list).lower(), self.ucr['connector/s4/ldap/base'].lower(), self.ucr['ldap/base'].lower())
+			position = string.replace(','.join(rdn_list).lower(), self.ucr['samba4/ldap/base'].lower(), self.ucr['ldap/base'].lower())
 
 			udm_type = None
 			if ou_type == "OU":
@@ -1279,6 +1287,9 @@ class AD_Takeover():
 		#print
 
 	def start_s4_connector(self, progress):
+		## Now run the Joinscript again which stops after creating all UDM containers (in AD Member mode)
+		returncode = run_and_output_to_log(["univention-run-join-scripts", "--run-scripts", "97univention-s4-connector.inst"], log.debug)
+
 		old_sleep = self.ucr.get("connector/s4/poll/sleep", "5")
 		old_retry = self.ucr.get("connector/s4/retryrejected", "10")
 		run_and_output_to_log(["univention-config-registry", "set", "connector/s4/poll/sleep=1", "connector/s4/retryrejected=2"], log.debug)

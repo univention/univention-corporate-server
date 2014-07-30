@@ -1,3 +1,12 @@
+univention-management-console-module-adtakeover (1.0.10-37) unstable; urgency=medium
+
+  * In AD Member mode we need to run the first parts of the S4 Connector
+    joinscript before starting and waiting for the sync.
+  * In AD Member mode we should let the Samba4 joinscript run to the end
+    after the initial join (Bug #35346).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 18:02:25 +0200
+
 univention-management-console-module-adtakeover (1.0.10-36) unstable; urgency=medium
 
   * Don't run all remaining joinscripts during disable_admember_mode
