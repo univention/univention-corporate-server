@@ -2,25 +2,60 @@
 @%@UCRWARNING=# @%@
 
 ### BEGIN INIT INFO
-# Provides:          networking
-# Required-Start:    mountkernfs $local_fs
+# Provides:          networking ifupdown
+# Required-Start:    mountkernfs $local_fs urandom
 # Required-Stop:     $local_fs
-# Should-Start:      ifupdown
-# Should-Stop:       ifupdown
 # Default-Start:     S
 # Default-Stop:      0 6
 # Short-Description: Raise network interfaces.
+# Description:       Prepare /run/network directory, ifstate file and raise network interfaces, or take them down.
 ### END INIT INFO
 
-PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
+PATH="/sbin:/bin:/usr/sbin:/usr/bin"
+RUN_DIR="/run/network"
+IFSTATE="$RUN_DIR/ifstate"
 
 [ -x /sbin/ifup ] || exit 0
+[ -x /sbin/ifdown ] || exit 0
 
 . /lib/lsb/init-functions
 
+CONFIGURE_INTERFACES=yes
+EXCLUDE_INTERFACES=
+VERBOSE=no
+
+[ -f /etc/default/networking ] && . /etc/default/networking
+
+[ "$VERBOSE" = yes ] && verbose=-v
+
+process_exclusions() {
+    set -- $EXCLUDE_INTERFACES
+    exclusions=""
+    for d
+    do
+	exclusions="-X $d $exclusions"
+    done
+    echo $exclusions
+}
+
 process_options() {
     [ -e /etc/network/options ] || return 0
-    log_warning_msg "/etc/network/options still exists and it will be IGNORED! Read README.Debian of netbase."
+    log_warning_msg "/etc/network/options still exists and it will be IGNORED! Please use /etc/sysctl.conf instead."
+}
+
+check_ifstate() {
+    if [ ! -d "$RUN_DIR" ] ; then
+	if ! mkdir -p "$RUN_DIR" ; then
+	    log_failure_msg "can't create $RUN_DIR"
+	    exit 1
+	fi
+    fi
+    if [ ! -r "$IFSTATE" ] ; then
+	if ! :> "$IFSTATE" ; then
+	    log_failure_msg "can't initialise $IFSTATE"
+	    exit 1
+	fi
+    fi
 }
 
 check_network_file_systems() {
@@ -31,7 +66,6 @@ check_network_file_systems() {
 	exit 0
     fi
 
-    exec 9<&0 < /proc/mounts
     while read DEV MTPT FSTYPE REST; do
 	case $DEV in
 	/dev/nbd*|/dev/nd[a-z]*|/dev/etherd/e*)
@@ -45,14 +79,12 @@ check_network_file_systems() {
 	    exit 0
 	    ;;
 	esac
-    done
-    exec 0<&9 9<&-
+    done < /proc/mounts
 }
 
 check_network_swap() {
     [ -e /proc/swaps ] || return 0
 
-    exec 9<&0 < /proc/swaps
     while read DEV MTPT FSTYPE REST; do
 	case $DEV in
 	/dev/nbd*|/dev/nd[a-z]*|/dev/etherd/e*)
@@ -60,8 +92,26 @@ check_network_swap() {
 	    exit 0
 	    ;;
 	esac
-    done
-    exec 0<&9 9<&-
+    done < /proc/swaps
+}
+
+ifup_hotplug () {
+    if [ -d /sys/class/net ]
+    then
+	    ifaces=$(for iface in $(ifquery --list --allow=hotplug)
+			    do
+				    link=${iface##:*}
+				    link=${link##.*}
+				    if [ -e "/sys/class/net/$link" ] && [ "$(cat /sys/class/net/$link/operstate)" = up ]
+				    then
+					    echo "$iface"
+				    fi
+			    done)
+	    if [ -n "$ifaces" ]
+	    then
+		ifup $ifaces "$@" || true
+	    fi
+    fi
 }
 
 domac () { # change MAC-address
@@ -78,11 +128,23 @@ domac () { # change MAC-address
 
 case "$1" in
 start)
+	if init_is_upstart; then
+		exit 1
+	fi
 	process_options
+	check_ifstate
 	domac
 
+	if [ "$CONFIGURE_INTERFACES" = no ]
+	then
+	    log_action_msg "Not configuring network interfaces, see /etc/default/networking"
+	    exit 0
+	fi
+	set -f
+	exclusions=$(process_exclusions)
 	log_action_begin_msg "Configuring network interfaces"
-	if ifup -a; then
+	if ifup -a $exclusions $verbose && ifup_hotplug $exclusions $verbose
+	then
 	    log_action_end_msg $?
 	else
 	    log_action_end_msg $?
@@ -90,11 +152,27 @@ start)
 	;;
 
 stop)
+	if init_is_upstart; then
+		exit 0
+	fi
 	check_network_file_systems
 	check_network_swap
 
 	log_action_begin_msg "Deconfiguring network interfaces"
-	if ifdown -a --exclude=lo; then
+	if ifdown -a --exclude=lo $verbose; then
+	    log_action_end_msg $?
+	else
+	    log_action_end_msg $?
+	fi
+	;;
+
+reload)
+	process_options
+
+	log_action_begin_msg "Reloading network interfaces configuration"
+	state=$(cat /run/network/ifstate)
+	ifdown -a --exclude=lo $verbose || true
+	if ifup --exclude=lo $state $verbose ; then
 	    log_action_end_msg $?
 	else
 	    log_action_end_msg $?
@@ -102,13 +180,19 @@ stop)
 	;;
 
 force-reload|restart)
+	if init_is_upstart; then
+		exit 1
+	fi
 	process_options
 
-	log_warning_msg "Running $0 $1 is deprecated because it may not enable again some interfaces"
+	log_warning_msg "Running $0 $1 is deprecated because it may not re-enable some interfaces"
 	log_action_begin_msg "Reconfiguring network interfaces"
-	ifdown -a --exclude=lo || true
+	ifdown -a --exclude=lo $verbose || true
 	domac
-	if ifup -a --exclude=lo; then
+	set -f
+	exclusions=$(process_exclusions)
+	if ifup -a --exclude=lo $exclusions $verbose && ifup_hotplug $exclusions $verbose
+	then
 	    log_action_end_msg $?
 	else
 	    log_action_end_msg $?
@@ -116,10 +200,11 @@ force-reload|restart)
 	;;
 
 *)
-	echo "Usage: /etc/init.d/networking {start|stop}"
+	echo "Usage: /etc/init.d/networking {start|stop|reload|restart|force-reload}"
 	exit 1
 	;;
 esac
 
 exit 0
 
+# vim: noet ts=8

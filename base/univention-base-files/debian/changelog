@@ -1,3 +1,9 @@
+univention-base-files (4.0.0-4) unstable; urgency=low
+
+  * Update templates for /etc/init.d/ files (Bug #35522)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 30 Jul 2014 15:45:04 +0200
+
 univention-base-files (4.0.0-3) unstable; urgency=low
 
   * Removed console-tools from dependency list otherwise the initial

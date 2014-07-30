@@ -32,7 +32,12 @@ running()
 	return 1
     fi
 
-    cmd=`cat /proc/$pid/cmdline | tr "\000" "\n"|head -1`
+    if [ ! -d /proc/$pid ]
+    then
+	return 1
+    fi
+
+    cmd=`cat /proc/$pid/cmdline | tr "\000" "\n"|head -n 1`
 
     # No syslogd?
     #
@@ -56,12 +61,10 @@ case "$1" in
     echo "."
     ;;
   restart|force-reload)
-    echo -n "Stopping kernel log daemon: klogd"
+    echo -n "Restarting kernel log daemon: klogd"
     start-stop-daemon --stop --quiet --exec $binpath --pidfile $pidfile
-    echo "."
     sleep 1
-    echo -n "Starting kernel log daemon: klogd"
-    start-stop-daemon --start --quiet --exec $binpath --exec $binpath -- $KLOGD
+    start-stop-daemon --start --quiet --exec $binpath -- $KLOGD
     echo "."
     ;;
   reload-or-restart)

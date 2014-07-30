@@ -2,7 +2,7 @@
 @%@UCRWARNING=# @%@
 
 ### BEGIN INIT INFO
-# Provides:          inetd
+# Provides:          openbsd-inetd
 # Required-Start:    $local_fs $remote_fs
 # Required-Stop:     $local_fs $remote_fs
 # Should-Start:      $syslog
@@ -19,12 +19,6 @@ DAEMON=/usr/sbin/inetd
 [ -e /etc/default/openbsd-inetd ] && . /etc/default/openbsd-inetd
 
 . /lib/lsb/init-functions
-
-disablektelnet () {
-  if ! grep -v -s "^ *#" /etc/inetd.conf | grep -q -s '^telnet[[:space:]].'; then
-    return 0
-  fi
-} 
 
 checkportmap () {
   if ! grep -v -s "^ *#" /etc/inetd.conf | grep -q -s 'rpc/'; then
@@ -43,8 +37,8 @@ checkportmap () {
 } 
 
 checknoservices () {
-    if ! grep -q "^[0-9A-Za-z/]" /etc/inetd.conf; then
-	log_warning_msg "Not starting internet superserver: no services enabled."
+    if ! grep -q "^[[:alnum:]/]" /etc/inetd.conf; then
+	log_action_msg "Not starting internet superserver: no services enabled"
 	exit 0
     fi
 }
@@ -60,7 +54,7 @@ case "$1" in
         checkportmap
 	log_daemon_msg "Starting internet superserver" "inetd"
 	start-stop-daemon --start --quiet --pidfile /var/run/inetd.pid \
-	    --exec $DAEMON -- $OPTIONS
+	    --oknodo --exec $DAEMON -- $OPTIONS
 	log_end_msg 0
 	;;
     stop)
@@ -91,10 +85,14 @@ case "$1" in
 	    --exec $DAEMON -- $OPTIONS
 	log_end_msg 0
 	;;
+    status)
+	status_of_proc -p /var/run/inetd.pid $DAEMON inetd && exit 0 || exit $?
+	;;
     *)
-	echo "Usage: /etc/init.d/inetd {start|stop|reload|force-reload|restart}"
+	echo "Usage: /etc/init.d/openbsd-inetd {start|stop|reload|force-reload|restart|status}"
 	exit 2
 	;;
 esac
 
 exit 0
+
