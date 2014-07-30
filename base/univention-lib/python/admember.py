@@ -38,6 +38,7 @@ import apt
 import socket
 import sys
 import tempfile
+import ipaddr
 from datetime import datetime, timedelta
 from samba.dcerpc import nbt
 from samba.net import Net
@@ -243,65 +244,77 @@ def remove_install_univention_samba(info_handler=info_handler, step_handler=None
 
 	return True
 
-def lookup_adds_dc(ad_server=None, realm=None, ucr=None):
+
+def lookup_adds_dc(ad_server=None, ucr=None):
 	'''CLDAP lookup'''
 
 	ud.debug(ud.MODULE, ud.PROCESS, "Lookup ADDS DC")
 
 	ad_domain_info = {}
-
-	if not ad_server and not realm:
-		if not ucr:
-			ucr = univention.config_registry.ConfigRegistry()
-			ucr.load()
-
-		realm = ucr.get("kerberos/realm")
-
-	if not ad_server and not realm:
-		return ad_domain_info
-
+	ips = []
 	lp = LoadParm()
 	lp.load('/dev/null')
+	if not ucr:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+	if not ad_server:
+		ad_server = ucr.get('domainname')
 
-	if ad_server:
-		try:
-			net = Net(creds=None, lp=lp)
-			cldap_res = net.finddc(address=ad_server,
-				flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
-		except RuntimeError as ex:
-			raise failedADConnect(["Connection to AD Server %s failed" % (ad_server,), ex.args[0]])
-	elif realm:
-		try:
-			net = Net(creds=None, lp=lp)
-			cldap_res = net.finddc(domain=realm,
-				flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
-			ad_server = cldap_res.pdc_dns_name
-		except RuntimeError as ex:
-			ud.debug(ud.MODULE, ud.ERROR, "No AD Server found for realm %s." % (realm,))
-			return ad_domain_info
+	# get ip addresses
+	try:
+		ipaddr.IPAddress(ad_server)
+		ips.append(ad_server)
+	except ValueError:
+		if 'dns/forwarder1' in ucr:
+			try:
+				cmd = ['dig', '@%s' % ucr['dns/forwarder1'], ad_server, '+short']
+				ud.debug(ud.MODULE, ud.PROCESS, "running %s" % cmd)
+				p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+				stdout, stderr = p1.communicate()
+				ud.debug(ud.MODULE, ud.PROCESS, "stdout: %s" % stdout)
+				ud.debug(ud.MODULE, ud.PROCESS, "stderr: %s" % stderr)
+				if p1.returncode == 0:
+					for i in stdout.split('\n'):
+						if i:
+							ips.append(i)
+			except OSError as ex:
+				ud.debug(ud.MODULE, ud.ERROR, "%s failed: %s" % (cmd, ex.args[1]))
+
+	# no ip addresses
+	if not ips:
+		return ad_domain_info
 
 	ad_server_ip = None
-	if cldap_res.pdc_dns_name:
-		try:
-			p1 = subprocess.Popen(['net', 'lookup', cldap_res.pdc_dns_name],
-				close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-			stdout, stderr = p1.communicate()
-			ad_server_ip = stdout.strip()
-		except OSError as ex:
-			ud.debug(ud.MODULE, ud.INFO, "net lookup %s failed: %s" % (cldap_res.pdc_dns_name, ex.args[1]))
+	for ip in ips:
+		try: # check cldap
+			net = Net(creds=None, lp=lp)
+			cldap_res = net.finddc(address=ip, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
+		except RuntimeError as ex:
+			ud.debug(ud.MODULE, ud.ERROR, "Connection to AD Server %s failed: %s" % (ip, ex.args[0]))
+		else:
+			try: # check dns
+				cmd = ['dig', '@%s' % ip]
+				ud.debug(ud.MODULE, ud.PROCESS, "running %s" % cmd)
+				p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+				stdout, stderr = p1.communicate()
+				ud.debug(ud.MODULE, ud.PROCESS, "stdout: %s" % stdout)
+				ud.debug(ud.MODULE, ud.PROCESS, "stderr: %s" % stderr)
+				if p1.returncode == 0: # yes, this is also a DNS server, we are good
+					ad_server_ip = ip
+					break
+			except OSError as ex:
+				ud.debug(ud.MODULE, ud.ERROR, "%s failed: %s" % (cmd, ex.args[1]))
 
-	if not ad_server_ip:
-		ad_server_ip = ad_server
+	if ad_server_ip is None:
+		raise failedADConnect(["Connection to AD Server %s failed" % (ad_server)])
 
 	ad_ldap_base = None
 	remote_ldb = ldb.Ldb()
-
-	if ad_server_ip:
-		try:
-			remote_ldb.connect(url="ldap://%s" % ad_server_ip)
-			ad_ldap_base = str(remote_ldb.get_root_basedn())
-		except ldb.LdbError as ex:
-			ud.debug(ud.MODULE, ud.PROCESS, "LDAP connect to %s failed: %s" % (ad_server_ip, ex.args[1]))
+	try:
+		remote_ldb.connect(url="ldap://%s" % ad_server_ip)
+		ad_ldap_base = str(remote_ldb.get_root_basedn())
+	except ldb.LdbError as ex:
+		ud.debug(ud.MODULE, ud.PROCESS, "LDAP connect to %s failed: %s" % (ad_server_ip, ex.args[1]))
 
 	ad_domain_info = {
 		"Forest": cldap_res.forest,
