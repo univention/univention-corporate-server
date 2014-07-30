@@ -194,6 +194,12 @@ define([
 		},
 
 		shouldShowActiveDirectoryPage: function() {
+			var ucr = lang.getObject('umc.modules.udm.ucr', false) || {};
+			var activeDirectoryEnabled = tools.isTrue(ucr['ad/member']);
+			if (!activeDirectoryEnabled) {
+				return false;
+			}
+			var shouldShow = this.shouldShowActiveDirectoryPageFor(this.moduleFlavor);
 			var objectType = this.moduleFlavor;
 			if (this._pages) {
 				var form = this._pages['firstPage']._form;
@@ -201,15 +207,15 @@ define([
 				if (objectTypeWidget) {
 					objectType = objectTypeWidget.get('value');
 				}
+				shouldShow = shouldShow || this.shouldShowActiveDirectoryPageFor(objectType);
 			}
-			return this.shouldShowActiveDirectoryPageFor(objectType);
+			return shouldShow;
 		},
 
 		shouldShowActiveDirectoryPageFor: function(objectType) {
 			var ucr = lang.getObject('umc.modules.udm.ucr', false) || {};
-			var activeDirectoryEnabled = tools.isTrue(ucr['ad/member']);
 			var enabledForCurrentObjectType = tools.isTrue(ucr['directory/manager/web/modules/' + objectType + '/show/adnotification']);
-			return activeDirectoryEnabled && enabledForCurrentObjectType;
+			return enabledForCurrentObjectType;
 		},
 
 		_getActiveDirectoryWarningPage: function() {
@@ -226,7 +232,7 @@ define([
 						'<div style="' + style + '">' + _('<b>Warning!</b>') + ' ' +
 						_('Newly created %s will only be available on UCS systems and not in the Active Directory domain.', this.objectNamePlural) + ' ' +
 						_('Please use the Active Directory administration utilities to create new domain %s.', this.objectNamePlural) + ' ' +
-						_('Please press <i>Next</i> to ignore this warning.') +
+						_('Press <i>Next</i> to create %s only available on UCS systems.', this.objectNamePlural) +
 						'<br/><br/></div>'
 				}]
 			};

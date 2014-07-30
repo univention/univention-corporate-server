@@ -1,3 +1,14 @@
+univention-management-console-module-udm (5.0.1-1) unstable; urgency=low
+
+  * Bug #34093: evaluate module flavor when showing warning about object
+  creation in Active Directory mode (merges svn r52265)
+  * Bug #34092: don't grey out fields when ad/member is false(merges svn
+  	r52312)
+  * Bug #34092: fix readonly_when_synced property evaluation in multi edit
+  	mode (merges svn r52370)
+
+ -- Florian Best <best@univention.de>  Wed, 30 Jul 2014 12:42:04 +0200
+
 univention-management-console-module-udm (5.0.0-1) unstable; urgency=low
 
   * Bug #35145: Start UCS 4.0 development
