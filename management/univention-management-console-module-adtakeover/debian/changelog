@@ -1,3 +1,11 @@
+univention-management-console-module-adtakeover (1.0.10-33) unstable; urgency=medium
+
+  * perform a reset_sysvol_ntacls before robocopy, required when coming from
+    AD Member
+  * call revert_connector_settings when coming from AD Member (Bug #35346)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 14:41:13 +0200
+
 univention-management-console-module-adtakeover (1.0.10-32) unstable; urgency=medium
 
   * Reconfigure the nameserver1 back to the local system before the robocopy.

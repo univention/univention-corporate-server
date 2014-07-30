@@ -298,7 +298,8 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	takeover.rebuild_idmap()
 	progress.message(_('Reconfiguring nameserver'))
 	progress.percentage(99)
-	takeover_final.reconfigure_nameserver_for_samba_backend()
+	takeover.reconfigure_nameserver_for_samba_backend()
+	takeover.reset_sysvol_ntacls()
 	progress.percentage(100)
 	state.set_sysvol()
 
@@ -814,6 +815,7 @@ class AD_Takeover():
 		if univention.lib.admember.is_domain_in_admember_mode():
 			univention.lib.admember.remove_admember_service_from_localhost()
 			univention.lib.admember.revert_ucr_settings()
+			univention.lib.admember.revert_connector_settings()
 			run_and_output_to_log(["univention-config-registry", "unset",
 				"connector/s4/listener/disabled",
 				], log.debug)
@@ -1328,6 +1330,11 @@ class AD_Takeover():
 		## Use Samba4 as DNS backend
 		run_and_output_to_log(["univention-config-registry", "set", "dns/backend=samba4"], log.debug)
 
+	def reset_sysvol_ntacls(self):
+		## Re-Set NTACLs from nTSecurityDescriptor on sysvol policy directories
+		## This is necessary as 96univention-samba4.inst hasn't run yet at this point in AD Member mode
+		## It's required for robocopy access
+		run_and_output_to_log(["samba-tool", "ntacl", "sysvolreset"], log.debug)
 
 
 class AD_Takeover_Finalize():
