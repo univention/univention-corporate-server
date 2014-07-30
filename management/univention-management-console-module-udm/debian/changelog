@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.97-39) unstable; urgency=low
+
+  * Bug #34093: show also Active Directory warning in edit mode
+  * Bug #34093: fix displaying of warning in navigation flavor
+
+ -- Florian Best <best@univention.de>  Wed, 30 Jul 2014 15:31:53 +0200
+
 univention-management-console-module-udm (4.0.97-38) unstable; urgency=low
 
   * Bug #34092: fix readonly_when_synced property evaluation in multi edit

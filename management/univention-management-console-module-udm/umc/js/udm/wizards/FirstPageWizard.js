@@ -90,7 +90,7 @@ define([
 		},
 
 		updateObjectType: function() {
-			// make sure that object type is consistent and ad page gets hidden
+			// make sure that object type is consistent and AD page gets hidden
 			// this is only necessary in navigation flavor because there the AD warning is the first page and varies on the selected object type
 			var form = this._pages['firstPage']._form;
 			var objectTypeWidget = form.getWidget('objectType');
@@ -101,6 +101,7 @@ define([
 					}
 					if (this.shouldShowActiveDirectoryPage(objectType)) {
 						this.showActiveDirectoryPage();
+						this._updateActiveDirectoryWarningMessage();
 					} else {
 						this.hideActiveDirectoryPage();
 					}
@@ -199,7 +200,22 @@ define([
 			if (!activeDirectoryEnabled) {
 				return false;
 			}
+			var objectType = this.getCurrentObjectType();
 			var shouldShow = this.shouldShowActiveDirectoryPageFor(this.moduleFlavor);
+			shouldShow = shouldShow || this.shouldShowActiveDirectoryPageFor(objectType);
+
+			if (this.moduleFlavor === 'navigation') {
+				var majorType = objectType.split('/')[0];
+				tools.forIn(ucr, function(key, value) {
+					if (new RegExp('^directory\/manager\/web\/modules\/' + majorType + '\/[^/]*\/show/adnotification$').test(key)) {
+						shouldShow = shouldShow || tools.isTrue(value);
+					}
+				});
+			}
+			return shouldShow;
+		},
+
+		getCurrentObjectType: function() {
 			var objectType = this.moduleFlavor;
 			if (this._pages) {
 				var form = this._pages['firstPage']._form;
@@ -207,9 +223,20 @@ define([
 				if (objectTypeWidget) {
 					objectType = objectTypeWidget.get('value');
 				}
-				shouldShow = shouldShow || this.shouldShowActiveDirectoryPageFor(objectType);
 			}
-			return shouldShow;
+			return objectType;
+		},
+
+		getCurrentObjectTypeName: function() {
+			if (this.moduleFlavor !== 'navigation') {
+				return this.objectNamePlural;
+			}
+			try {
+				var o = this._pages['firstPage']._form.getWidget('objectType');
+				return o._ids[o.get('value')].split(':')[0];
+			} catch (error) {
+				return this.objectNamePlural;
+			}
 		},
 
 		shouldShowActiveDirectoryPageFor: function(objectType) {
@@ -220,7 +247,8 @@ define([
 
 		_getActiveDirectoryWarningPage: function() {
 			var imageUrl = require.toUrl('dijit/themes/umc/icons/50x50/udm-ad-warning.png');
-			var style = 'background-image: url(\'' + imageUrl + '\'); background-size: 100px; min-width: 100px; min-height: 100px; background-repeat: no-repeat; padding-left: 100px; padding-top: 20px; margin: 0 1.5em; ';
+			var style = 'background-image: url(\'' + imageUrl + '\'); background-size: 100px; min-width: 100px;' +
+				'min-height: 100px; background-repeat: no-repeat; padding-left: 100px; padding-top: 20px; margin: 0 1.5em; ';
 			return {
 				name: 'activeDirectoryPage',
 				headerText: _('This UCS system is part of an Active Directory domain'),
@@ -228,15 +256,27 @@ define([
 					type: 'Text',
 //					style: style,  // FIXME: somehow the style is set on two dom elements
 					name: 'active_directory_warning',
-					content:
-						'<div style="' + style + '">' + _('<b>Warning!</b>') + ' ' +
-						_('Newly created %s will only be available on UCS systems and not in the Active Directory domain.', this.objectNamePlural) + ' ' +
-						_('Please use the Active Directory administration utilities to create new domain %s.', this.objectNamePlural) + ' ' +
-						_('Press <i>Next</i> to create %s only available on UCS systems.', this.objectNamePlural) +
-						'<br/><br/></div>'
+					labelConf: { style: style },
+					content: this._getActiveDirectoryWarningMessage()
 				}]
 			};
 		},
+
+		_getActiveDirectoryWarningMessage: function() {
+			var objectName = this.getCurrentObjectTypeName();
+			return _('<b>Warning!</b>') + ' ' +
+			_('Newly created %s will only be available on UCS systems and not in the Active Directory domain.', objectName) + ' ' +
+			_('Please use the Active Directory administration utilities to create new domain %s.', objectName) + ' ' +
+			_('Press <i>Next</i> to create %s only available on UCS systems.', objectName) +
+			'<br/><br/>';
+		},
+
+		_updateActiveDirectoryWarningMessage: function() {
+			try {
+				this._pages.activeDirectoryPage._form.getWidget('active_directory_warning').set('content', this._getActiveDirectoryWarningMessage());
+			} catch (error) {}
+		},
+
 
 		_getOptionSelectionPage: function() {
 			var types = this.types, containers = this.containers, superordinates = this.superordinates, templates= this.templates;
