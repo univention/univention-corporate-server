@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-adconnector\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-07-29 21:00+0200\n"
+"POT-Creation-Date: 2014-07-30 15:22+0200\n"
 "PO-Revision-Date: 2011-11-28 16:53+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,18 +80,6 @@ msgid ""
 "p>"
 msgstr ""
 
-#: umc/js/adconnector/ConfigPage.js:89
-msgid ""
-"A certification authority should be configured on the Active Directory "
-"server. All necessary steps are described in the <a href=\"http://docs."
-"univention.de/manual-3.2.html#ad-connector:ad-zertifikat\" target=\"_blank"
-"\">UCS manual</a>."
-msgstr ""
-"Auf dem Active Directory Server sollte eine Zertifizierungsstelle "
-"eingerichtet werden. Die notwendigen Schritte sind im <a href=\"http://docs."
-"univention.de/handbuch-3.2.html#ad-connector:ad-zertifikat\" target=\"_blank"
-"\">UCS Handbuch</a> beschrieben."
-
 #: umc/js/adconnector/SetupWizard.js:323
 msgid "AD Connection - An error ocurred"
 msgstr ""
@@ -100,17 +88,13 @@ msgstr ""
 msgid "AD domain controller"
 msgstr ""
 
-#: umc/js/adconnector/ConfigPage.js:134
+#: umc/js/adconnector/ConfigPage.js:132
 msgid "Activate encrypted connection"
 msgstr "Verschlüsselte Verbindung aktivieren"
 
-#: umc/js/adconnector/ConfigPage.js:138
+#: umc/js/adconnector/ConfigPage.js:136
 msgid "Activate password synchronization"
 msgstr "Passwortsynchronisation aktivieren"
-
-#: umc/js/adconnector/ConfigPage.js:90
-msgid "Activate the encrypted connection afterwards."
-msgstr "Anschließend aktivieren Sie bitte die verschlüsselte Verbindung."
 
 #: umc/js/adconnector/SetupWizard.js:509
 msgid "Activated"
@@ -124,7 +108,7 @@ msgstr "Active Directory Connector"
 msgid "Active Directory Server"
 msgstr "Active Directory Server"
 
-#: umc/js/adconnector/ConfigPage.js:153
+#: umc/js/adconnector/ConfigPage.js:151
 msgid "Active Directory Server configuration"
 msgstr "Active Directory Server Konfiguration"
 
@@ -132,15 +116,15 @@ msgstr "Active Directory Server Konfiguration"
 msgid "Active Directory account"
 msgstr "Active Directory-Konto"
 
-#: umc/js/adconnector/ConfigPage.js:150
+#: umc/js/adconnector/ConfigPage.js:148
 msgid "Active Directory connection service"
 msgstr "Active Directory-Verbindungsdienst"
 
-#: umc/js/adconnector/ConfigPage.js:192
+#: umc/js/adconnector/ConfigPage.js:190
 msgid "Active Directory connection service is currently running."
 msgstr "Active Directory-Verbindungsdienst läuft aktuell."
 
-#: umc/js/adconnector/ConfigPage.js:196
+#: umc/js/adconnector/ConfigPage.js:194
 msgid "Active Directory connection service is not running."
 msgstr "Active Directory-Verbindungsdienst ist nicht gestartet."
 
@@ -176,7 +160,7 @@ msgid ""
 "proceed."
 msgstr ""
 
-#: umc/js/adconnector/ConfigPage.js:121
+#: umc/js/adconnector/ConfigPage.js:119
 msgid ""
 "After the installation the replication of password hashes has to be "
 "activated:"
@@ -214,7 +198,7 @@ msgstr "Automatische Ermittlung der LDAP-Konfiguration"
 msgid "Bidirectional synchronisation of UCS and Active Directory."
 msgstr ""
 
-#: umc/js/adconnector/ConfigPage.js:112
+#: umc/js/adconnector/ConfigPage.js:110
 msgid ""
 "By default the Active Directory connection does not transfer passwords into "
 "the UCS directory service. The system uses the Active Directory Kerberos "
@@ -248,7 +232,7 @@ msgstr ""
 msgid "Continue without encryption"
 msgstr ""
 
-#: umc/js/adconnector/ConfigPage.js:215
+#: umc/js/adconnector/ConfigPage.js:218
 msgid ""
 "Currently, a secured connection between UCS and the Active Directory domain "
 "is used."
@@ -256,7 +240,7 @@ msgstr ""
 "Es wird eine gesicherte Verbindung zwischen der UCS und der Active Directory "
 "Domäne verwendet."
 
-#: umc/js/adconnector/ConfigPage.js:208
+#: umc/js/adconnector/ConfigPage.js:211
 msgid ""
 "Currently, an encrypted connection between UCS and the Active Directory "
 "domain is used."
@@ -264,7 +248,7 @@ msgstr ""
 "Es wird aktuell eine verschlüsselte Verbindung zwischen der UCS und der "
 "Active Directory Domäne verwendet."
 
-#: umc/js/adconnector/ConfigPage.js:88
+#: umc/js/adconnector/ConfigPage.js:205
 msgid ""
 "Currently, an unencrypted connection to the Active Directory domain is used."
 msgstr ""
@@ -275,7 +259,7 @@ msgstr ""
 msgid "Debug level of Active Directory Connector"
 msgstr "Debug-level des UCS Active Directory Connector"
 
-#: umc/js/adconnector/ConfigPage.js:158
+#: umc/js/adconnector/ConfigPage.js:156
 msgid "Download the password service for Windows and the UCS certificate"
 msgstr ""
 "Herunterladen des UCS-Zertifikats und des Passwort-Dienstes für Windows"
@@ -301,7 +285,7 @@ msgstr ""
 msgid "Extended settings"
 msgstr "Erweiterte Einstellungen"
 
-#: umc/js/adconnector/SetupWizard.js:407 umc/js/adconnector/ConfigPage.js:105
+#: umc/js/adconnector/ConfigPage.js:102 umc/js/adconnector/SetupWizard.js:407
 msgid "Failed to import the certificate"
 msgstr "Der Import des Zertifikats ist fehlgeschlagen"
 
@@ -309,7 +293,7 @@ msgstr "Der Import des Zertifikats ist fehlgeschlagen"
 msgid "German"
 msgstr "Deutsch"
 
-#: umc/js/adconnector/ConfigPage.js:113
+#: umc/js/adconnector/ConfigPage.js:111
 msgid ""
 "However, in some szenarios it may be reasonable to transfer passwords. In "
 "this case, The password service should be installed on the Active Directory "
@@ -339,6 +323,13 @@ msgstr ""
 #: umc/js/adconnector/SetupWizard.js:456
 msgid "Installation of password service"
 msgstr ""
+
+#: umc/js/adconnector/ConfigPage.js:88
+msgid ""
+"It is also possible to just activate the encrypted connection without a "
+"certificate."
+msgstr ""
+"Es ist auch möglich, lediglich die verschlüsselte Verbindung ohne Zertifikat zu aktivieren."
 
 #: umc/js/adconnector/DownloadInfo.js:54 umc/js/adconnector/DownloadInfo.js:58
 msgid ""
@@ -390,7 +381,7 @@ msgstr ""
 msgid "Password of the synchronisation user"
 msgstr "Passwort des Synchronisationsbenutzers"
 
-#: umc/js/adconnector/ConfigPage.js:163
+#: umc/js/adconnector/ConfigPage.js:161
 msgid "Password service"
 msgstr "Passwortdienst"
 
@@ -434,15 +425,15 @@ msgid ""
 "Active Directory domain."
 msgstr ""
 
-#: umc/js/adconnector/ConfigPage.js:126
+#: umc/js/adconnector/ConfigPage.js:124
 msgid "Start Active Directory connection service"
 msgstr "Active Directory-Verbindungsdienst starten"
 
-#: umc/js/adconnector/ConfigPage.js:130
+#: umc/js/adconnector/ConfigPage.js:128
 msgid "Stop Active Directory connection service"
 msgstr "Active Directory-Verbindungsdienst stoppen"
 
-#: umc/js/adconnector/ConfigPage.js:142
+#: umc/js/adconnector/ConfigPage.js:140
 msgid "Stop password synchronization"
 msgstr "Passwortsynchronisation deaktivieren"
 
@@ -482,7 +473,7 @@ msgstr ""
 "Die MSI Dateien sind die Installationsdateien für den Passwort-Dienst und "
 "können per Doppelklick gestartet werden."
 
-#: umc/js/adconnector/SetupWizard.js:405 umc/js/adconnector/ConfigPage.js:102
+#: umc/js/adconnector/ConfigPage.js:100 umc/js/adconnector/SetupWizard.js:405
 msgid "The certificate was imported successfully"
 msgstr "Das Zertifikat wurde erfolgreich importiert"
 
@@ -515,7 +506,7 @@ msgstr ""
 msgid "The hostname of the Active Directory server is required"
 msgstr "Der Rechnername des Active Directory Servers wird benötigt"
 
-#: umc/js/adconnector/ConfigPage.js:210
+#: umc/js/adconnector/ConfigPage.js:207 umc/js/adconnector/ConfigPage.js:213
 msgid ""
 "The necessary steps depend on the actual Microsoft Windows version and are "
 "described in the <a href=\"http://docs.univention.de/manual-3.2.html#ad-"
@@ -569,7 +560,7 @@ msgstr ""
 "Dieser Assistent konfiguriert einen synchronisierten parallelen Betrieb von "
 "UCS neben einer nativen Active Directory Domäne."
 
-#: umc/js/adconnector/ConfigPage.js:209
+#: umc/js/adconnector/ConfigPage.js:206 umc/js/adconnector/ConfigPage.js:212
 msgid ""
 "To achieve a higher level of security, the Active Directory system's root "
 "certificate should be exported and uploaded here. The Active Directory "
@@ -608,7 +599,7 @@ msgstr ""
 msgid "Unidirectional synchronisation of UCS to Active Directory."
 msgstr ""
 
-#: umc/js/adconnector/ConfigPage.js:216
+#: umc/js/adconnector/ConfigPage.js:219
 msgid ""
 "When there is a need of adjustment, you may upload a new root certificate of "
 "the Active Directory domain."
@@ -623,6 +614,20 @@ msgstr ""
 #~ msgstr ""
 #~ " Die Konfiguration von UCS Active Directory Connector muss zuerst "
 #~ "abgeschlossen werden bevor der Dienst gestartet werden kann."
+
+#~ msgid ""
+#~ "A certification authority should be configured on the Active Directory "
+#~ "server. All necessary steps are described in the <a href=\"http://docs."
+#~ "univention.de/manual-3.2.html#ad-connector:ad-zertifikat\" target=\"_blank"
+#~ "\">UCS manual</a>."
+#~ msgstr ""
+#~ "Auf dem Active Directory Server sollte eine Zertifizierungsstelle "
+#~ "eingerichtet werden. Die notwendigen Schritte sind im <a href=\"http://"
+#~ "docs.univention.de/handbuch-3.2.html#ad-connector:ad-zertifikat\" target="
+#~ "\"_blank\">UCS Handbuch</a> beschrieben."
+
+#~ msgid "Activate the encrypted connection afterwards."
+#~ msgstr "Anschließend aktivieren Sie bitte die verschlüsselte Verbindung."
 
 #~ msgid "Active Directory domain information"
 #~ msgstr "Active Directory-Domäneninformationen"

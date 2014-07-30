@@ -38,15 +38,13 @@ from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
 from univention.management.console.modules.decorators import file_upload, sanitize, simple_response
 from univention.management.console.modules.mixins import ProgressMixin
-from univention.management.console.modules.sanitizers import StringSanitizer, ChoicesSanitizer
+from univention.management.console.modules.sanitizers import StringSanitizer
 from univention.management.console.modules import UMC_CommandError
 
 import notifier.popen
+from ldap import explode_rdn
 
-from samba.dcerpc import nbt
-from samba.net import Net
-from samba.param import LoadParm
-
+from contextlib import contextmanager
 import fnmatch
 import psutil
 import os.path
@@ -54,24 +52,50 @@ import subprocess
 import time
 import pipes
 import traceback
-import sys
 
 _ = Translation('univention-management-console-module-adconnector').translate
 
 FN_BINDPW = '/etc/univention/connector/ad/bindpw'
 DO_NOT_CHANGE_PWD = '********************'
 
+class ADNotAvailable(Exception):
+	pass
+
+@contextmanager
+def ucr_rollback(ucr, variables):
+	ucr.load()
+	old = {}
+	for variable in variables:
+		old[variable] = ucr.get(variable)
+	try:
+		yield
+	except:
+		univention.config_registry.frontend.ucr_update(ucr, old)
+		raise
+
+def test_connection():
+	'''Search a query that should never fail: RDN of connector/ad/ldap/base'''
+	base = ucr.get('connector/ad/ldap/base')
+	rdn = explode_rdn(base)[0]
+	p1, stdout, stderr = adsearch(rdn)
+	if stderr:
+		MODULE.warn(stderr)
+	if p1.returncode != 0:
+		raise ADNotAvailable()
+
+def adsearch(query):
+	cmd = ['/usr/sbin/univention-adsearch', query]
+	p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	stdout, stderr = p1.communicate()
+	return p1, stdout, stderr
 
 def guess_ad_domain_language():
 	'''AD Connector supports "en" and "de", this check detects a German AD
 	Domain and returns "en" as fallback.'''
-	cmd = ['/usr/sbin/univention-adsearch', 'cn=Domänen-Admins']
-	p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	stdout, stderr = p1.communicate()
+	p1, stdout, stderr = adsearch('cn=Domänen-Admins')
 	if p1.returncode == 0:
 		return 'de'
 	return 'en'
-
 
 class Instance(Base, ProgressMixin):
 	OPTION_MAPPING = ( ( 'LDAP_Host', 'connector/ad/ldap/host', '' ),
@@ -276,9 +300,13 @@ class Instance(Base, ProgressMixin):
 		def _return( pid, status, bufstdout, bufstderr, request, fn ):
 			success = True
 			if status == 0:
-				univention.config_registry.handler_set( [ u'connector/ad/ldap/certificate=%s' % fn ] )
 				message = _( 'Certificate has been uploaded successfully.' )
 				MODULE.info( 'Certificate has been uploaded successfully. status=%s\nSTDOUT:\n%s\n\nSTDERR:\n%s' % ( status, '\n'.join( bufstdout ), '\n'.join( bufstderr ) ) )
+				try:
+					self._enable_ssl_and_test_connection(fn)
+				except UMC_CommandError:
+					message = _('Could not establish connection. Either the certificate is wrong, the Active Directory server is unreachable or it does not support SSL.')
+					success = False
 			else:
 				success = False
 				message = _( 'Certificate upload or conversion failed.' )
@@ -342,13 +370,13 @@ class Instance(Base, ProgressMixin):
 		thread = notifier.threads.Simple( 'service', func, cb )
 		thread.run()
 
-	def __update_status( self ):
+	def __update_status(self):
 		ucr.load()
-		fn = ucr.get( 'connector/ad/ldap/certificate' )
+		fn = ucr.get('connector/ad/ldap/certificate')
 		self.status_ssl = ucr.is_true('connector/ad/ldap/ssl')
 		self.status_password_sync = ucr.is_true('connector/ad/mapping/user/password/kinit')
-		self.status_certificate = bool( fn and os.path.exists( fn ) )
-		self.status_running = self.__is_process_running( '*python*univention/connector/ad/main.py*' )
+		self.status_certificate = bool(fn and os.path.exists(fn))
+		self.status_running = self.__is_process_running('*python*univention/connector/ad/main.py*')
 		self.status_mode_admember = admember.is_localhost_in_admember_mode(ucr)
 		self.status_mode_adconnector = admember.is_localhost_in_adconnector_mode(ucr)
 
@@ -527,15 +555,25 @@ class Instance(Base, ProgressMixin):
 
 		return {'success': success}
 
+	def _enable_ssl_and_test_connection(self, certificate_fname=None):
+		with ucr_rollback(ucr, ['connector/ad/ldap/ssl', 'connector/ad/ldap/certificate']):
+			if certificate_fname:
+				univention.config_registry.handler_set([u'connector/ad/ldap/certificate=%s' % certificate_fname])
+			server = ucr.get('connector/ad/ldap/host')
+			success = False
+			if admember.server_supports_ssl(server):
+				admember.enable_ssl()
+				success = test_connection()
+			if not success:
+				raise UMC_CommandError(_('Could not establish an encrypted connection. Either "%r" is not reachable or does not support encryption.') % server)
+
 	@simple_response
 	def enable_ssl(self):
-		server = ucr.get('connector/ad/ldap/host')
-		if not admember.server_supports_ssl(server):
-			raise UMC_CommandError(_('Could not establish an encrypted connection. Either "%r" is not reachable or does not support encryption.') % server)
-		admember.enable_ssl()
+		self._enable_ssl_and_test_connection()
 		return subprocess.call(['invoke-rc.d', 'univention-ad-connector', 'restart'])
 
 	@simple_response
 	def password_sync_service(self, enable=True):
 		univention.config_registry.handler_set(['connector/ad/mapping/user/password/kinit=%s' % str(enable).lower()])
 		return subprocess.call(['invoke-rc.d', 'univention-ad-connector', 'restart'])
+

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
 	<module id="adconnector" icon="adconnector" priority="3" version="1.0">
-		<name>UCS Active Directory Connector</name>
-		<description>Configuration of the UCS Active Directory Connector of the local system</description>
-		<keywords>adconnector</keywords>
+		<name>Active Directory Connection</name>
+		<description>Configuration of the Active Directory connection of the local system</description>
+		<keywords>adconnector,admember</keywords>
 
 		<categories>
 			<category name="system"/>

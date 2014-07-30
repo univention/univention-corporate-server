@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Configuration of the UCS Active Directory Connector of the local system"
-msgstr "Konfiguration des UCS Active Directory Connectors des lokalen Systems"
+msgid "Configuration of the Active Directory connection of the local system"
+msgstr "Konfiguration der Active Directory-Verbindung des lokalen Systems"
 
-msgid "UCS Active Directory Connector"
-msgstr "UCS Active Directory Connector"
+msgid "Active Directory Connection"
+msgstr "Active Directory-Verbindung"

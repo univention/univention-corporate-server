@@ -82,13 +82,11 @@ define([
 				name: 'running',
 				type: Text
 			}, {
-				name: 'unencrypted',
+				name: 'unencryptedActivateSSL',
 				type: Text,
-				content: makeParagraphs([
-					_('Currently, an unencrypted connection to the Active Directory domain is used.'),
-					_('A certification authority should be configured on the Active Directory server. All necessary steps are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.'),
-					_('Activate the encrypted connection afterwards.')
-				])
+				content: '<p style="margin-top: 4em;">' +
+					_('It is also possible to just activate the encrypted connection without a certificate.') +
+					'</p>'
 			}, {
 				name: 'certificateUpload',
 				type: InfoUploader,
@@ -100,10 +98,10 @@ define([
 					}
 					if (result.success) {
 						this.addNotification(_('The certificate was imported successfully'));
-						this.showHideElements();
 					} else {
 						dialog.alert(_('Failed to import the certificate') + ': ' + result.message);
 					}
+					this.showHideElements();
 				})
 			}, {
 				name: 'downloadInfoADMember',
@@ -151,7 +149,7 @@ define([
 				layout: ['running', 'start', 'stop']
 			}, {
 				label: _('Active Directory Server configuration'),
-				layout: ['unencrypted', ['certificateUpload', 'activate']]
+				layout: ['certificateUpload', 'unencryptedActivateSSL', 'activate']
 			}];
 			if (this.initialState.mode_adconnector) {
 				layout.push({
@@ -199,10 +197,15 @@ define([
 					this._widgets.running.set('content', message);
 				}
 				var certMsg = '';
-				var showUploadButton = true;
+				var showEnableSSL = false;
 				if (!state.certificate) {
 					if (!state.ssl_enabled) {
-						showUploadButton = false;
+						showEnableSSL = state.mode_adconnector;
+						certMsg = makeParagraphs([
+							_('Currently, an unencrypted connection to the Active Directory domain is used.'),
+							_('To achieve a higher level of security, the Active Directory system\'s root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate.'),
+							_('The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.')
+						]);
 					} else {
 						certMsg = makeParagraphs([
 							_('Currently, an encrypted connection between UCS and the Active Directory domain is used.'),
@@ -217,9 +220,9 @@ define([
 					]);
 				}
 				this._widgets.certificateUpload.set('value', certMsg);
-				this._widgets.certificateUpload.set('visible', showUploadButton);
-				this._widgets.unencrypted.set('visible', !showUploadButton);
-				this._buttons.activate.set('visible', !showUploadButton);
+
+				this._widgets.unencryptedActivateSSL.set('visible', showEnableSSL);
+				this._buttons.activate.set('visible', showEnableSSL);
 
 				this._widgets.downloadInfoADMember.set('visible', state.mode_admember);
 				this._widgets.downloadNextStepADMember.set('visible', state.mode_admember);

@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-57) unstable; urgency=low
+
+  * Bug #35090: Improve certificate/SSL handling
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 30 Jul 2014 15:28:49 +0200
+
 univention-ad-connector (8.0.17-56) unstable; urgency=low
 
   * disable_ssl() in admember_join (Bug #35090)
