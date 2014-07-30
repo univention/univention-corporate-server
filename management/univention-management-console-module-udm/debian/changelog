@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.97-38) unstable; urgency=low
+
+  * Bug #34092: fix readonly_when_synced property evaluation in multi edit
+  	mode
+
+ -- Florian Best <best@univention.de>  Wed, 30 Jul 2014 12:44:25 +0200
+
 univention-management-console-module-udm (4.0.97-37) unstable; urgency=low
 
   * Bug #34092: don't grey out fields when ad/member is false
