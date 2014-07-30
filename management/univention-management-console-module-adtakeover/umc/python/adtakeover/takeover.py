@@ -71,6 +71,7 @@ from univention.management.console.log import MODULE
 import univention.management.console as umc
 import ConfigParser
 import univention.lib.admember
+from univention.config_registry.interfaces import Interfaces
 from samba import Ldb
 
 ucr = univention.config_registry.ConfigRegistry()
@@ -78,10 +79,6 @@ ucr.load()
 
 # load UDM modules
 udm_modules.update()
-try:
-	univention.admin.handlers.disable_ad_restrictions(disable=False)
-except AttributeError:
-	ud.debug(ud.LDAP, ud.INFO, 'univention.admin.handlers.disable_ad_restrictions is not available')
 
 LOGFILE_NAME = "/var/log/univention/ad-takeover.log"
 BACKUP_DIR = "/var/univention-backup/ad-takeover"
@@ -91,6 +88,11 @@ SYSVOL_PATH = os.path.join(SAMBA_DIR, 'sysvol')
 
 logging.basicConfig(filename=LOGFILE_NAME, format='%(asctime)s %(message)s', level=logging.DEBUG)
 log = logging.getLogger()
+
+try:
+	univention.admin.handlers.disable_ad_restrictions(disable=False)
+except AttributeError:
+	log.info('univention.admin.handlers.disable_ad_restrictions is not available')
 
 DEVNULL = open(os.devnull, 'w')
 
@@ -1315,17 +1317,21 @@ class AD_Takeover():
 	def reconfigure_nameserver_for_samba_backend(self):
 		## Resolve against local Bind9
 		## use OpenLDAP backend until the S4 Connector has run
-		if "nameserver1/local" in self.ucr:
+		default_ip = Interfaces().get_default_ip_address().ip
+		if default_ip:
+			run_and_output_to_log(["univention-config-registry", "set", "nameserver1=%s" % default_ip], log.debug)
+		elif "nameserver1/local" in self.ucr:
 			nameserver1_orig = self.ucr["nameserver1/local"]
 			run_and_output_to_log(["univention-config-registry", "set", "nameserver1=%s" % nameserver1_orig], log.debug)
-			## unset temporary variable
-			run_and_output_to_log(["univention-config-registry", "unset", "nameserver1/local"], log.debug)
 		else:
 			msg=[]
 			msg.append("Warning: Weird, unable to determine previous nameserver1...")
 			msg.append("         Using localhost as fallback, probably that's the right thing to do.")
 			log.warn("\n".join(msg))
 			run_and_output_to_log(["univention-config-registry", "set", "nameserver1=127.0.0.1"], log.debug)
+
+		## unset temporary variable
+		run_and_output_to_log(["univention-config-registry", "unset", "nameserver1/local"], log.debug)
 
 		## Use Samba4 as DNS backend
 		run_and_output_to_log(["univention-config-registry", "set", "dns/backend=samba4"], log.debug)
