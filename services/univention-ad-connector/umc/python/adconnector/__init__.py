@@ -476,6 +476,7 @@ class Instance(Base, ProgressMixin):
 
 			_progress(70, _('Configuring synchronization from AD...'))
 			admember.prepare_connector_settings(username, password, ad_domain_info)
+			admember.disable_ssl()
 
 			_progress(75, _('Renaming well known SID objects...'))
 			admember.rename_well_known_sid_objects(username, password)

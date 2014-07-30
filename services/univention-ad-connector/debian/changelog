@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-56) unstable; urgency=low
+
+  * disable_ssl() in admember_join (Bug #35090)
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Jul 2014 13:20:42 +0200
+
 univention-ad-connector (8.0.17-55) unstable; urgency=low
 
   * Set univentionObjectFlag to synced for cn and ou (Bug #35091)
