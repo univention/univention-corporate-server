@@ -1,3 +1,14 @@
+univention-system-setup (7.0.69-43) unstable; urgency=medium
+
+  Bug #34484:
+  * Fixed some more network related issues (DHCP timeout, DNS error handling)
+  * Fixed black/white list handing and UCR variable descriptions
+  * Fixed LiveSearch icon size
+  * Fixed internal logic problems
+  * Fixed typos and adapted text parts
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 30 Jul 2014 20:03:43 +0200
+
 univention-system-setup (7.0.69-42) unstable; urgency=medium
 
   Bug #34484:

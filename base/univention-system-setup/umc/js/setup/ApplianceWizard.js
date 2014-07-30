@@ -44,6 +44,7 @@ define([
 	"dojo/store/Memory",
 	"dijit/form/Select",
 	"dijit/Tooltip",
+	"dijit/focus",
 	"dojox/html/styles",
 	"dojox/timing/_base",
 	"umc/dialog",
@@ -63,7 +64,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, query, domClass, on, Evented, topic, Deferred, all, Memory, Select, Tooltip, styles, timing, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, query, domClass, on, Evented, topic, Deferred, all, Memory, Select, Tooltip, focusUtil, styles, timing, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
 	var modulePath = require.toUrl('umc/modules/setup');
 	styles.insertCssRule('.umc-ucssetup-wizard-indent', 'margin-left: 27px;');
 	styles.insertCssRule('.umcIconInfo', lang.replace('background-image: url({0}/info-icon.png); width: 16px; height: 16px;', [modulePath]));
@@ -413,7 +414,7 @@ define([
 				}, {
 					type: Text,
 					name: 'helpBackup',
-					content: ('<p>The DC backup is the fallback system for the DC master and can take over the role of the DC master permanently.</p>'),
+					content: _('<p>The DC backup is the fallback system for the DC master and can take over the role of the DC master permanently.</p>'),
 					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
 				}, {
 					type: RadioButton,
@@ -424,7 +425,7 @@ define([
 				}, {
 					type: Text,
 					name: 'helpSlave',
-					content: ('<p>DC slave systems are ideal for site servers and distribution of load-intensive services. Local services running on a DC slave can access a local read-only replica of the LDAP server.</p>'),
+					content: _('<p>DC slave systems are ideal for site servers and distribution of load-intensive services. Local services running on a DC slave can access a local read-only replica of the LDAP database.</p>'),
 					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
 				}, {
 					type: RadioButton,
@@ -435,7 +436,7 @@ define([
 				}, {
 					type: Text,
 					name: 'helpMember',
-					content: ('<p>Member servers are server systems without a local LDAP server. Access to domain data here is performed via other servers in the domain.</p>'),
+					content: _('<p>Member servers are server systems without a local LDAP server. Access to domain data here is performed via other servers in the domain.</p>'),
 					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
 				}]
 			}, {
@@ -753,6 +754,11 @@ define([
 				});
 			}, this);
 
+			// blur current element
+			tools.defer(function() {
+				focusUtil.curNode && focusUtil.curNode.blur();
+			}, 200);
+
 			this.standbyDuring(all(queries)).then(lang.hitch(this, function(response) {
 				var hasDHCP = false;
 				var gateway = null;
@@ -977,9 +983,10 @@ define([
 		_setupFooterButtons: function() {
 			// change labels of footer buttons on particular pages
 			var buttons = this._pages.summary._footerButtons;
-			buttons.finish.set('label', _('Continue'));
+			buttons.next.set('label', _('Configure system'));
 			buttons = this._pages.error._footerButtons;
 			buttons.previous.set('label', _('Reconfigure'));
+			buttons.finish.set('label', _('Finish'));
 		},
 
 		_setLocaleValues: function(data) {
@@ -1385,7 +1392,7 @@ define([
 			var helpText = '';
 			if (critical) {
 				helpText = '<p>' + _('The system join process failed. The following information will give some more details on which exact problem occurred during the setup process.') + '</p>';
-				msg += '<p>' + _('You may reconfigure the settings and restart the join process. You may end the wizard leaving the system unjoined. The system can be joined later via the UMC module <i>Domain join</i>.') + '</p>';
+				msg += '<p>' + _('You may reconfigure the settings and restart the join process. You may end the wizard and, if necessary, join the system later via the UMC module <i>Domain join</i>.') + '</p>';
 			} else {
 				helpText = '<p>' + _('The system join was successful, however, the following errors occurred while applying the configuration settings.') + '</p>';
 				msg += '<p>' + _('The settings can always be adpated in the UMC module <i>Basic settings</i>. Please confirm now to complete the process.') + '</p>';
@@ -1394,15 +1401,6 @@ define([
 			// display validation information
 			this.getPage('error').set('helpText', helpText);
 			this.getWidget('error', 'info').set('content', msg);
-
-			// update button labels
-			var buttons = this._pages.error._footerButtons;
-			if (critical) {
-				buttons.finish.set('label', _('Continue unjoined'));
-			}
-			else {
-				buttons.finish.set('label', _('Continue'));
-			}
 
 			// save the state
 			this._criticalJoinErrorOccurred = critical;
@@ -1436,10 +1434,9 @@ define([
 		},
 
 		_isRoleMaster: function() {
-			if (this.getWidget('_createDomain').get('value')) {
-				return true;
-			}
-			return false;
+			var showRoleSelection = array.indexOf(this.visiblePages, 'SystemRolePage') > -1;
+			var createNewDomain = this.getWidget('_createDomain').get('value');
+			return createNewDomain || !showRoleSelection;
 		},
 
 		_isPageForRole: function(pageName) {
@@ -1712,7 +1709,8 @@ define([
 			}
 
 			if (pageName == 'error' || pageName == 'summary') {
-				return this._forcePageTemporarily('software');
+				var previousPage = this.isPageVisible('software') ? 'software' : 'network';
+				return this._forcePageTemporarily(previousPage);
 			}
 			return this._forcePageTemporarily(this.inherited(arguments));
 		},
@@ -1766,7 +1764,8 @@ define([
 
 		_getRole: function() {
 			var _vals = this._gatherVisibleValues();
-			if (_vals._createDomain) {
+			var showRoleSelection = array.indexOf(this.visiblePages, 'SystemRolePage') > -1;
+			if (_vals._createDomain || !showRoleSelection) {
 				return 'domaincontroller_master';
 			}
 			else if (_vals._roleBackup) {
@@ -1783,14 +1782,13 @@ define([
 		getValues: function() {
 			// network configuration
 			var _vals = this._gatherVisibleValues();
-			var vals = {
-				interfaces: {}
-			};
+			var vals = {};
 			if (this._isDHCPPreConfigured() && _vals._dhcp) {
 				// nothing to do... leave the preconfigured settings
 			}
 			else {
 				// prepare values for network interfaces
+				vals.interfaces = {};
 				array.forEach(this._getNetworkDevices(), function(idev, i) {
 					// set primary interface
 					if (i === 0) {

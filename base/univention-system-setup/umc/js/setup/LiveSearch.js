@@ -36,15 +36,18 @@ define([
 	"dojo/on",
 	"dojo/keys",
 	"dojo/topic",
+	"dojox/html/styles",
 	"dijit/form/ComboBox",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, dojoEvent, domConstruct, on, keys, topic, DijitComboBox, TextBox, _) {
+], function(declare, lang, dojoEvent, domConstruct, on, keys, topic, styles, DijitComboBox, TextBox, _) {
+	styles.insertCssRule('.umc .umcLiveSearch .dijitArrowButton .dijitArrowButtonInner', 'height: 2.1em !important;');
 	return declare('umc.modules.setup.LiveSearch', [DijitComboBox, TextBox], {
 		searchAttr: 'label',
 		hasDownArrow: false,
 		autoComplete: false,
 		highlightMatch: 'none',
+		'class': 'umcLiveSearch',
 		store: null,
 		_searchNode: null,
 		_searchingNode: null,

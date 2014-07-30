@@ -631,9 +631,10 @@ def dhclient(interface, timeout=None):
 	stderr_thread.setDaemon(True)
 	stderr_thread.start()
 	stderr_thread.join(timeout)
+
 	if stderr:
 		stderr=stderr[0]
-	p.wait()
+
 	# note: despite '-1' background dhclient never seems to terminate
 	try:
 		dhclientpid = int(open(pidfilename,'r').read().strip('\n\r\t '))
@@ -823,6 +824,8 @@ def get_nameserver_domain(nameserver):
 		if not is_ucs_domain(nameserver, domain):
 			return None
 		return domain
+	except dns.resolver.NXDOMAIN as exc:
+		MODULE.warn('Lookup for nameserver %s failed: %s' % (nameserver, exc))
 	except dns.exception.Timeout as exc:
 		MODULE.warn('Lookup for nameserver %s timed out: %s' % (nameserver, exc))
 	return None
