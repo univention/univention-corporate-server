@@ -314,7 +314,7 @@ def lookup_adds_dc(ad_server=None, ucr=None):
 		remote_ldb.connect(url="ldap://%s" % ad_server_ip)
 		ad_ldap_base = str(remote_ldb.get_root_basedn())
 	except ldb.LdbError as ex:
-		ud.debug(ud.MODULE, ud.PROCESS, "LDAP connect to %s failed: %s" % (ad_server_ip, ex.args[1]))
+		raise failedADConnect(["Could not detect LDAP base on %s: %s" % (ad_server, ex.args[1])])
 
 	ad_domain_info = {
 		"Forest": cldap_res.forest,

@@ -1,3 +1,9 @@
+univention-lib (3.0.26-58) unstable; urgency=low
+
+  * fixed lookup_adds_dc (Bug #35520) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 31 Jul 2014 15:03:24 +0200
+
 univention-lib (3.0.26-57) unstable; urgency=low
 
   * added debug output for samba_join (Bug #35520) 
