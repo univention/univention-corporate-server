@@ -1,3 +1,12 @@
+univention-ad-connector (8.0.17-59) unstable; urgency=medium
+
+  Bug #35090:
+  * Automatically add a host static entry in the connector configuration
+  * Added translations [WIP]
+  * Fixed jslint errors, removed unneeded parts
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 31 Jul 2014 14:13:22 +0200
+
 univention-ad-connector (8.0.17-58) unstable; urgency=medium
 
   * Script well-known-sid-object-rename (Bug #35507):

@@ -26,38 +26,29 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require setTimeout*/
+/*global define require */
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/dom-class",
-	"dojo/on",
 	"dojo/topic",
-	"dojo/Deferred",
-	"dojo/when",
 	"dojox/html/styles",
 	"dojox/timing/_base",
-	"dijit/form/RadioButton",
 	"umc/dialog",
 	"umc/widgets/ProgressBar",
 	"umc/tools",
 	"umc/modules/lib/server",
-	"umc/widgets/Page",
-	"umc/widgets/Form",
-	"umc/widgets/ExpandingTitlePane",
-	"umc/widgets/Module",
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
 	"umc/widgets/Uploader",
 	"umc/widgets/PasswordBox",
-	"umc/widgets/CheckBox",
 	"umc/widgets/Wizard",
 	"./RadioButtons",
 	"./DownloadInfo",
 	"umc/i18n!umc/modules/adconnector"
-], function(declare, lang, array, domClass, on, topic, Deferred, when, styles, timing, RadioButton, dialog, ProgressBar, tools, server, Page, Form, ExpandingTitlePane, Module, Text, TextBox, Uploader, PasswordBox, CheckBox, Wizard, RadioButtons, DownloadInfo, _) {
+], function(declare, lang, array, domClass, topic, styles, timing, dialog, ProgressBar, tools, server, Text, TextBox, Uploader, PasswordBox, Wizard, RadioButtons, DownloadInfo, _) {
 	var modulePath = require.toUrl('umc/modules/adconnector');
 	styles.insertCssRule('.umc-adconnector-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;');
 	styles.insertCssRule('.umc-adconnector-page .umcLabelPaneCheckBox', 'display: block !important;');
@@ -72,194 +63,13 @@ define([
 		);
 	});
 
-	//TODO: to be merged into SetupWizard ???
-//	var ADConnectorWizard = declare("umc.modules._adconnector.Wizard", [Wizard], {
-//		pages: null,
-//
-//		variables: null,
-//
-//		addNotification: dialog.notify,
-//
-//		constructor: function() {
-//			this.pages = [{
-//				name: 'fqdn',
-//				helpText: '<p>' + _("This wizard configures a synchronized parallel operation of UCS next to a native Active Directory domain.") + " "
-//					+ _('If on the other hand the replacement of a native Active Directory domain is desired, Univention AD Takeover should be used instead.') + '</p><p>'
-//					+ _('Please enter the fully qualified hostname of the Active Directory server.') + '</p><p>'
-//					+ _('The hostname must be resolvable by the UCS server. A DNS entry can be configured in the DNS module, or a static host record can be configured through the Univention Configuration Registry module, e.g.') + '</p>'
-//					+ '<p>hosts/static/192.168.0.10=w2k8-ad.example.com</p>',
-//				headerText: _('UCS Active Directory Connector configuration'),
-//				widgets: [{
-//					name: 'LDAP_Host',
-//					type: TextBox,
-//					required: true,
-//					regExp: '.+',
-//					invalidMessage: _('The hostname of the Active Directory server is required'),
-//					label: _('Active Directory Server')
-//				}, {
-//					name: 'guess',
-//					type: CheckBox,
-//					label: _('Automatic determination of the LDAP configuration')
-//				}],
-//				layout: ['LDAP_Host', 'guess']
-//			}, {
-//				name: 'ldap',
-//				helpText: _('LDAP and kerberos configuration of the Active Directory server needs to be specified for the synchronisation.'),
-//				headerText: _('LDAP and Kerberos'),
-//				widgets: [{
-//					name: 'LDAP_Base',
-//					type: TextBox,
-//					required: true,
-//					sizeClass: 'OneAndAHalf',
-//					label: _('LDAP base')
-//				}, {
-//					name: 'LDAP_BindDN',
-//					required: true,
-//					type: TextBox,
-//					sizeClass: 'OneAndAHalf',
-//					label: _('LDAP DN of the synchronisation user')
-//				}, {
-//					name: 'LDAP_Password',
-//					type: PasswordBox,
-//					label: _('Password of the synchronisation user')
-//				}, {
-//					name: 'KerberosDomain',
-//					type: TextBox,
-//					label: _('Kerberos domain')
-//				}],
-//				layout: ['LDAP_Base', 'LDAP_BindDN', 'LDAP_Password', 'KerberosDomain']
-//			}, {
-//				name: 'sync',
-//				helpText: _('UCS Active Directory Connector supports three types of synchronisation.'),
-//				headerText: _('Synchronisation mode'),
-//				widgets: [{
-//					name: 'MappingSyncMode',
-//					type: ComboBox,
-//					staticValues: [
-//						{
-//							id: 'sync',
-//							label: 'AD <-> UCS'
-//						},{
-//							id: 'read',
-//							label: 'AD -> UCS'
-//						}, {
-//							id: 'write',
-//							label: 'UCS -> AD'
-//						}],
-//					label: _('Synchronisation mode')
-//				}, {
-//					name: 'MappingGroupLanguage',
-//					label: _('System language of Active Directory server'),
-//					type: ComboBox,
-//					staticValues: [
-//						{
-//							id: 'de',
-//							label: _('German')
-//						}, {
-//							id: 'en',
-//							label: _('English')
-//						}]
-//				}],
-//				layout: ['MappingSyncMode', 'MappingGroupLanguage']
-//			}, {
-//				name: 'extended',
-//				helpText: _('The following settings control the internal behaviour of the UCS Active Directory connector. For all attributes reasonable default values are provided.'),
-//				headerText: _('Extended settings'),
-//				widgets: [{
-//					name: 'PollSleep',
-//					type: TextBox,
-//					sizeClass: 'OneThird',
-//					label: _('Poll Interval (seconds)')
-//				}, {
-//					name: 'RetryRejected',
-//					label: _('Retry interval for rejected objects'),
-//					type: TextBox,
-//					sizeClass: 'OneThird'
-//				}, {
-//					name: 'DebugLevel',
-//					label: _('Debug level of Active Directory Connector'),
-//					type: TextBox,
-//					sizeClass: 'OneThird'
-//				}, {
-//					name: 'DebugFunction',
-//					label: _('Add debug output for functions'),
-//					type: CheckBox,
-//					sizeClass: 'OneThird'
-//				}],
-//				layout: ['PollSleep', 'RetryRejected', 'DebugLevel', 'DebugFunction']
-//			}];
-//
-//		},
-//
-//		next: function(/*String*/ currentID) {
-//			if (!currentID) {
-//				tools.forIn(this.variables, lang.hitch(this, function(option, value) {
-//					var w = this.getWidget(null, option);
-//					if (w) {
-//						w.set('value', value);
-//					}
-//				}));
-//				// of no LDAP_base is set activate the automatic determination
-//				if (!this.variables.LDAP_base) {
-//					this.getWidget('fqdn', 'guess').set('value', true);
-//				}
-//			} else if (currentID == 'fqdn') {
-//				var nameWidget = this.getWidget('LDAP_Host');
-//				if (!nameWidget.isValid()) {
-//					nameWidget.focus();
-//					return null;
-//				}
-//
-//				var guess = this.getWidget('fqdn', 'guess');
-//				if (guess.get('value')) {
-//					this.standby(true);
-//					var server = this.getWidget('fqdn', 'LDAP_Host');
-//					tools.umcpCommand('adconnector/guess', { 'LDAP_Host' : server.get('value') }).then(lang.hitch(this, function(response) {
-//						if (response.result.LDAP_Base) {
-//							this.getWidget('ldap', 'LDAP_Base').set('value', response.result.LDAP_Base);
-//							this.getWidget('ldap', 'LDAP_BindDN').set('value', 'cn=Administrator,cn=users,' + response.result.LDAP_Base);
-//							this.getWidget('ldap', 'KerberosDomain').set('value', tools.explodeDn(response.result.LDAP_Base, true).join('.'));
-//						} else {
-//							this.addNotification(response.result.message);
-//						}
-//						this.standby(false);
-//					}));
-//				}
-//			} else if (currentID == 'ldap') {
-//				var valid = true;
-//				array.forEach(['LDAP_Base', 'LDAP_BindDN', 'LDAP_Password'], lang.hitch(this, function(widgetName) {
-//					if (!this.getWidget(widgetName).isValid()) {
-//						this.getWidget(widgetName).focus();
-//						valid = false;
-//						return false;
-//					}
-//				}));
-//				if (!valid) {
-//					return null;
-//				}
-//
-//				var password = this.getWidget('ldap', 'LDAP_Password');
-//				if (!this.variables.passwordExists && !password.get('value')) {
-//					dialog.alert(_('The password for the synchronisation account is required!'));
-//					return currentID;
-//				}
-//			}
-//
-//			return this.inherited(arguments);
-//		},
-//
-//		onFinished: function(values) {
-//			this.standby(true);
-//			tools.umcpCommand('adconnector/save', values).then(lang.hitch(this, function(response) {
-//				if (!response.result.success) {
-//					dialog.alert(response.result.message);
-//				} else {
-//					this.addNotification(response.result.message);
-//				}
-//				this.standby(false);
-//			}));
-//		}
-//	});
+	var _paragraph = function() {
+		var html = '';
+		array.forEach(arguments, function(para) {
+			html += '<p>' + para + '</p>';
+		});
+		return html;
+	};
 
 	return declare("umc.modules.adconnector.SetupWizard", [ Wizard ], {
 		autoValidate: true,
@@ -290,7 +100,10 @@ define([
 				}, {
 					type: Text,
 					name: 'help2',
-					content: _('<p>Use the recommended first option if Active Directory will be the principal domain. Domain users can directly access applications that are installed on UCS.</p><p>Use the second option for more complex szenarios which necessitate that Active Directory and UCS domains exist in parallel.</p>')
+					content: _paragraph(
+						_('Use the recommended first option if Active Directory will be the principal domain. Domain users can directly access applications that are installed on UCS.'),
+						_('Use the second option for more complex szenarios which necessitate that Active Directory and UCS domains exist in parallel.')
+					)
 				}]
 			}, {
 				'class': 'umc-adconnector-page-credentials umc-adconnector-page',
@@ -336,7 +149,10 @@ define([
 				widgets: [{
 					type: Text,
 					name: 'help',
-					content: _('<p>Congratulations, Univention Corporate Server has been successfully configured to be part of a Active Directory domain.</p><p>The UCS server is now ready for usage, and domain account information are now available.</p>')
+					content: _paragraph(
+						_('The connection with the Active Directory domain has been configured successfully.'),
+						_('It is necessary for already joined UCS systems to re-join the domain. This is done via the UMC module <i>Domain join</i> separately on each system.')
+					)
 				}]
 			}, {
 				'class': 'umc-adconnector-page-credentials umc-adconnector-page',
@@ -372,12 +188,11 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'info',
-					content: array.map([
+					content: _paragraph(
 						_('An encrypted connection to the Active Directory domain could not be established. This has as consequence that authentication data is submitted in plaintext.'),
 						_('To enable an encrypted connection, a certification authority needs to be configured on the Active Directory server. All necessary steps are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.'),
-						_('After the certification authority has been set up, press <i>Next</i> to proceed.')], function(para) {
-						return '<p>' + para + '</p>';
-					}).join('')
+						_('After the certification authority has been set up, press <i>Next</i> to proceed.')
+					)
 				}]
 			}, {
 				'class': 'umc-adconnector-page-info umc-adconnector-page',
@@ -467,7 +282,10 @@ define([
 				widgets: [{
 					type: Text,
 					name: 'help',
-					content: _('<p>Congratulations, the synchronisation of Univention Corporate Server and Active Directory has been succesfully initiated.</p><p>The UCS server is now ready for usage, and domain account information are now available.</p>')
+					content: _paragraph(
+						_('The synchronisation of Univention Corporate Server and Active Directory has been succesfully initiated.'),
+						_('The UCS server is now ready for usage, and domain account information are now available.')
+					)
 				}]
 			}];
 		},
@@ -476,7 +294,7 @@ define([
 			// change labels of footer buttons on particular pages
 			var buttons = this.getPage('credentials-admember')._footerButtons;
 			buttons.next.set('label', _('Join AD domain'));
-			var buttons = this.getPage('error-admember')._footerButtons;
+			buttons = this.getPage('error-admember')._footerButtons;
 			buttons.next.set('label', _('Retry to join'));
 		},
 
@@ -498,23 +316,6 @@ define([
 		_isMemberMode: function() {
 			return this.getWidget('start', 'mode').get('value') == 'admember';
 		},
-
-//		_updateConfirmADMemberPage: function(info) {
-//			var fqdnParts = info.DC_DNS_Name.split(/\./g);
-//			info._hostname = fqdnParts.shift();
-//			var msg = '<ul>';
-//			array.forEach([
-//				[_('Active Directory domain'), info.Domain],
-//				[_('AD domain controller'), _('%(DC_DNS_Name)s (%(DC_IP)s)', info)],
-//				[_('SSL encryption'), info.ssl_supported ? _('Activated') : _('<b>Deactivated!</b>')],
-//				[_('LDAP base'), info.LDAP_Base]
-//			], function(ientry) {
-//				msg += '<li>' + ientry[0] + ': <i>' + ientry[1] + '</i></li>';
-//			});
-//			msg += '</ul>';
-//			msg += _('<p>Click "Next" to inititate the join process into the AD domain.</p>');
-//			this.getWidget('confirm-admember', 'info').set('content', msg);
-//		},
 
 		_updateConfigADConnectorPage: function(info) {
 			var fqdnParts = info.DC_DNS_Name.split(/\./g);
@@ -578,7 +379,7 @@ define([
 			return this.standbyDuring(tools.umcpCommand('adconnector/adconnector/save', vals)).then(lang.hitch(this, function(response) {
 				if (!response.result.success) {
 					dialog.alert(response.result.message);
-					return false
+					return false;
 				}
 				return true;
 			}), function(err) {
@@ -593,7 +394,7 @@ define([
 			})).then(lang.hitch(this, function(response) {
 				if (!response.result.success) {
 					dialog.alert(response.result.message);
-					return false
+					return false;
 				}
 				return true;
 			}), function(err) {
@@ -766,6 +567,7 @@ define([
 		_getADConnectorValues: function(adDomainInfo) {
 			var vals = lang.mixin(this._gatherVisibleValues(), adDomainInfo);
 			return {
+				Host_IP: vals.DC_IP,
 				LDAP_Host: vals.DC_DNS_Name,
 				LDAP_Base: vals.LDAP_Base,
 				LDAP_BindDN: lang.replace('cn={username},cn=users,{LDAP_Base}', vals),

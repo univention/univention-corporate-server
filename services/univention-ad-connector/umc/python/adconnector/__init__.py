@@ -82,6 +82,7 @@ def test_connection():
 		MODULE.warn(stderr)
 	if p1.returncode != 0:
 		raise ADNotAvailable()
+	return True
 
 def adsearch(query):
 	cmd = ['/usr/sbin/univention-adsearch', query]
@@ -154,6 +155,7 @@ class Instance(Base, ProgressMixin):
 		"""Saves the Active Directory connection configuration
 
 		options:
+			Host_IP: IP address of the AD server
 			LDAP_Host: hostname of the AD server
 			LDAP_Base: LDAP base of the AD server
 			LDAP_BindDN: LDAP DN to use for authentication
@@ -166,6 +168,7 @@ class Instance(Base, ProgressMixin):
 		return: { 'success' : (True|False), 'message' : <details> }
 		"""
 
+		self.required_options(request, 'Host_IP')
 		self.required_options(request, *[x[0] for x in Instance.OPTION_MAPPING if x[2] == ''])
 
 		for umckey, ucrkey, default in Instance.OPTION_MAPPING:
@@ -203,10 +206,13 @@ class Instance(Base, ProgressMixin):
 			self._create_certificate(request)
 			return
 
+		# enter a static host entry such that the AD server's FQDN can be resolved
+		univention.config_registry.handler_set([u'hosts/static/%(Host_IP)s=%(LDAP_Host)s' % request.options])
+
 		# UCR variables are set, and now we can try to guess the language of
 		# the AD domain
 		ad_lang = guess_ad_domain_language()
-		univention.config_registry.handler_set( [ u'connector/ad/mapping/group/language=%s' % ad_lang ] )
+		univention.config_registry.handler_set([u'connector/ad/mapping/group/language=%s' % ad_lang])
 
 		# check for SSL support on AD side
 		if admember.server_supports_ssl(server=request.options.get('LDAP_Host')):
@@ -232,46 +238,6 @@ class Instance(Base, ProgressMixin):
 		cb = notifier.Callback( _return, request )
 		proc.signal_connect( 'finished', cb )
 		proc.start()
-
-#	@sanitize(LDAP_Host=StringSanitizer(required=True))
-#	def guess( self, request ):
-#		"""Tries to guess some values like the base DN of the AD server
-#
-#		options: { 'LDAP_Host': <ad server fqdn> }
-#
-#		return: { 'LDAP_Base' : <LDAP base>, 'success' : (True|False) }
-#		"""
-#
-#		def _return( pid, status, buffer, request ):
-#			# dn:
-#			# namingContexts: DC=ad,DC=univention,DC=de
-#			# namingContexts: CN=Configuration,DC=ad,DC=univention,DC=de
-#			# namingContexts: CN=Schema,CN=Configuration,DC=ad,DC=univention,DC=de
-#			# namingContexts: DC=DomainDnsZones,DC=ad,DC=univention,DC=de
-#			# namingContexts: DC=ForestDnsZones,DC=ad,DC=univention,DC=de
-#
-#			self.guessed_baseDN = None
-#			for line in buffer:
-#				if line.startswith( 'namingContexts: ' ):
-#					dn = line.split(': ',1)[1].strip()
-#					if self.guessed_baseDN is None or len( dn ) < len( self.guessed_baseDN ):
-#						self.guessed_baseDN = dn
-#
-#			if self.guessed_baseDN is None:
-#				self.finished( request.id, { 'success' : False, 'message' : _('The LDAP base of the given Active Directory server could not be determined. Maybe the full-qualified hostname is wrong or unresolvable.' ) } )
-#				MODULE.process( 'Could not determine baseDN of given ldap server. Maybe FQDN is wrong or unresolvable! FQDN=%s' % request.options[ 'LDAP_Host' ] )
-#			else:
-#				self.finished( request.id, { 'success' : True, 'LDAP_Base' : self.guessed_baseDN } )
-#
-#			MODULE.info( 'Guessed the LDAP base: %s' % self.guessed_baseDN )
-#
-#
-#		cmd = '/usr/bin/ldapsearch -x -s base -b "" namingContexts -LLL -h %s' % pipes.quote(request.options['LDAP_Host'])
-#		MODULE.info( 'Determine LDAP base for AD server of specified system FQDN: %s' % cmd )
-#		proc = notifier.popen.Shell( cmd, stdout = True )
-#		cb = notifier.Callback( _return, request )
-#		proc.signal_connect( 'finished', cb )
-#		proc.start()
 
 	def private_key(self, request):
 		self._serve_file(request, 'private.key')
