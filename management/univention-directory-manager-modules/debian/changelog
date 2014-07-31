@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.76-22) unstable; urgency=medium
+
+  * Make default for _prevent_to_change_ad_properties dependent on ad/member
+    (Bug #34092)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 31 Jul 2014 17:32:20 +0200
+
 univention-directory-manager-modules (9.0.76-21) unstable; urgency=low
 
   * Set more windows client attributes to readonly when synced
