@@ -44,7 +44,8 @@ from univention.management.console.modules.setup.util import detect_interfaces
 ucr = ConfigRegistry()
 ucr.load()
 
-_ = Translation('univention-management-console-module-setup').translate
+_translation = Translation('univention-management-console-module-setup')
+_ = _translation.translate
 
 RE_INTERFACE = re.compile(r'^interfaces/(?!(?:primary|restart/auto|handler)$)([^/]+?)(_[0-9]+)?/')
 RE_IPV6_ID = re.compile(r'^[a-zA-Z0-9]+\Z')

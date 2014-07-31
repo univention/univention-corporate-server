@@ -58,7 +58,7 @@ try:
 	import dns.resolver
 	import dns.reversename
 	import dns.exception
-	from univention.management.console.modules.appcenter.app_center import Application
+	import univention.management.console.modules.appcenter.app_center as app_center
 	from univention.lib.package_manager import PackageManager
 except ImportError as e:
 	MODULE.warn('Ignoring import error: %s' % e)
@@ -198,7 +198,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		default_locale = Locale(newValues['locale/default'])
 		newValues['ssl/state'] = default_locale.territory
 		newValues['ssl/locality'] = default_locale.territory
-		newValues['ssl/organization'] = newValues['organization']
+		newValues['ssl/organization'] = newValues.get('organization', default_locale.territory)
 		newValues['ssl/organizationalunit'] = 'Univention Corporate Server'
 		newValues['ssl/email'] = 'ssl@{domainname}'.format(**newValues)
 
@@ -212,7 +212,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		# locale data (in 20_language/10language)
 		forcedLocales = ['en_US.UTF-8:UTF-8'] # we need en_US locale as default language
 		if current_locale:
-			current_locale = '{0}.{1}:{1}'.format(str(current_locale), current_locale.codeset)
+			current_locale = '{0}:{1}'.format(str(current_locale), current_locale.codeset)
 			forcedLocales.append(current_locale)
 		for ilocale in forcedLocales:
 			if ilocale not in newValues['locale']:
@@ -631,9 +631,10 @@ def dhclient(interface, timeout=None):
 	stderr_thread.setDaemon(True)
 	stderr_thread.start()
 	stderr_thread.join(timeout)
+
 	if stderr:
 		stderr=stderr[0]
-	p.wait()
+
 	# note: despite '-1' background dhclient never seems to terminate
 	try:
 		dhclientpid = int(open(pidfilename,'r').read().strip('\n\r\t '))
@@ -664,9 +665,9 @@ def dhclient(interface, timeout=None):
 	return dhcp_dict
 
 _apps = None
-def get_apps():
+def get_apps(no_cache=False):
 	global _apps
-	if _apps:
+	if _apps and not no_cache:
 		return _apps
 
 	package_manager = PackageManager(
@@ -679,9 +680,9 @@ def get_apps():
 	package_manager.set_finished() # currently not working. accepting new tasks
 
 	# circumvent download of categories.ini file
-	Application._get_category_translations(fake=True)
+	app_center.Application._get_category_translations(fake=True)
 	try:
-		applications = Application.all(only_local=True)
+		applications = app_center.Application.all(only_local=True)
 	except (urllib2.HTTPError, urllib2.URLError) as e:
 		# should not happen as we only access cached, local data
 		raise UMC_CommandError(_('Could not query App Center: %s') % e)
@@ -821,6 +822,8 @@ def get_nameserver_domain(nameserver):
 		if not is_ucs_domain(nameserver, domain):
 			return None
 		return domain
+	except dns.resolver.NXDOMAIN as exc:
+		MODULE.warn('Lookup for nameserver %s failed: %s' % (nameserver, exc))
 	except dns.exception.Timeout as exc:
 		MODULE.warn('Lookup for nameserver %s timed out: %s' % (nameserver, exc))
 	return None

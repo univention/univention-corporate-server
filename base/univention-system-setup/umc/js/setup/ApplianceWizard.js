@@ -44,6 +44,7 @@ define([
 	"dojo/store/Memory",
 	"dijit/form/Select",
 	"dijit/Tooltip",
+	"dijit/focus",
 	"dojox/html/styles",
 	"dojox/timing/_base",
 	"umc/dialog",
@@ -63,7 +64,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, query, domClass, on, Evented, topic, Deferred, all, Memory, Select, Tooltip, styles, timing, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, query, domClass, on, Evented, topic, Deferred, all, Memory, Select, Tooltip, focusUtil, styles, timing, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
 	var modulePath = require.toUrl('umc/modules/setup');
 	styles.insertCssRule('.umc-ucssetup-wizard-indent', 'margin-left: 27px;');
 	styles.insertCssRule('.umcIconInfo', lang.replace('background-image: url({0}/info-icon.png); width: 16px; height: 16px;', [modulePath]));
@@ -139,6 +140,8 @@ define([
 	var _regIPv4 =  /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$/;
 	var _regIPv6 = /^((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?$/;
 	var _regFQDN = /^(?=.{1,255}$)[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?(?:\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?)*\.?$/;
+	var _regNumber = /^[0-9]+$/;
+	var _regBitMask = /^1*0*$/
 
 	var _regEmailAddress = /^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/;
 	var _invalidEmailAddressMessage = _('Invalid e-mail address!<br>Expected format is:<i>mail@example.com</i>');
@@ -156,6 +159,44 @@ define([
 		var isIPv6Address = _regIPv6.test(ip);
 		var acceptEmtpy = !ip && !this.required;
 		return acceptEmtpy || isIPv4Address || isIPv6Address;
+	};
+
+	var _invalidNetmaskAndPrefixMessage = _('Invalid IPv4 net mask or IPv6 prefix!<br/>Expected for IPv4 is a number between 0 and 32 or a format similar to <i>255.255.255.0</i>.<br/>Expected format for IPv6 is a number between 0 and 128.');
+	var _validateNetmaskAndPrefix = function(mask) {
+		mask = mask || '';
+
+		var acceptEmtpy = !mask && !this.required;
+		if (acceptEmtpy) {
+			return true;
+		}
+
+		var isNumber = _regNumber.test(mask);
+		if (isNumber) {
+			mask = parseInt(mask, 10);
+			return mask >= 0 && mask <= 128;
+		}
+
+		var isIPv4Address = _regIPv4.test(mask);
+		if (!isIPv4Address) {
+			return false;
+		}
+
+		// we have something IP-like, could be a netmask, its format should be something like:
+		// 11111111111111111111111100000000
+		var parts = mask.split('.');
+		var bits = '';
+		array.forEach(parts, function(ipart) {
+			var inum = parseInt(ipart, 10);
+			var bit = inum.toString(2);
+
+			// fill up missing zeros
+			var zeros = '';
+			for (var ibit = 8 - bit.length; ibit > 0; --ibit) {
+				zeros += '0';
+			}
+			bits += zeros + bit;
+		});
+		return _regBitMask.test(bits) && bits.length == 32;
 	};
 
 	var _validateHostname = function(hostname) {
@@ -206,7 +247,7 @@ define([
 				country: _ilang.id.split('-')[1].toLowerCase(),
 				value: _ilang.id
 			}, _ilang);
-			ilang.label = lang.replace('<span class="dijitReset dijitInline dijitIcon setupLangField country-{country}"></span><span class="dijitReset dijitInline setupLangField">{label}</span>', ilang);
+			ilang.label = lang.replace('<span class="dijitReset dijitInline setupLangField">{label}</span>', ilang);
 			return ilang;
 		});
 	};
@@ -274,6 +315,7 @@ define([
 					name: '_search',
 					store: new _CityStore(),
 					label: _('Enter a near city to preconfigure settings such as timezone, system language, keyboard layout.'),
+					inlineLabel: _('e.g., Boston...'),
 					labelConf: { style: 'margin-top: .75em;' }
 				}, {
 					type: TitlePane,
@@ -372,7 +414,7 @@ define([
 				}, {
 					type: Text,
 					name: 'helpBackup',
-					content: ('<p>The DC backup is the fallback system for the DC master and can take over the role of the DC master permanently.</p>'),
+					content: _('<p>The DC backup is the fallback system for the DC master and can take over the role of the DC master permanently.</p>'),
 					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
 				}, {
 					type: RadioButton,
@@ -383,7 +425,7 @@ define([
 				}, {
 					type: Text,
 					name: 'helpSlave',
-					content: ('<p>DC slave systems are ideal for site servers and distribution of load-intensive services. Local services running on a DC slave can access a local read-only replica of the LDAP server.</p>'),
+					content: _('<p>DC slave systems are ideal for site servers and distribution of load-intensive services. Local services running on a DC slave can access a local read-only replica of the LDAP database.</p>'),
 					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
 				}, {
 					type: RadioButton,
@@ -394,7 +436,7 @@ define([
 				}, {
 					type: Text,
 					name: 'helpMember',
-					content: ('<p>Member servers are server systems without a local LDAP server. Access to domain data here is performed via other servers in the domain.</p>'),
+					content: _('<p>Member servers are server systems without a local LDAP server. Access to domain data here is performed via other servers in the domain.</p>'),
 					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
 				}]
 			}, {
@@ -523,8 +565,8 @@ define([
 					name: '_netmask0',
 					label: _('IPv4 net mask/IPv6 prefix {interface}'),
 					inlineLabel: '',
-					invalidMessage: _invalidIPAddressMessage,
-					validator: _validateIPAddress
+					invalidMessage: _invalidNetmaskAndPrefixMessage,
+					validator: _validateNetmaskAndPrefix
 				}, {
 					type: TextBox,
 					name: '_ip1',
@@ -541,8 +583,8 @@ define([
 					label: _('IPv4 net mask/IPv6 prefix {interface}'),
 					inlineLabel: '',
 					visible: false,
-					invalidMessage: _invalidIPAddressMessage,
-					validator: _validateIPAddress
+					invalidMessage: _invalidNetmaskAndPrefixMessage,
+					validator: _validateNetmaskAndPrefix
 				}, {
 					type: TextBox,
 					name: '_ip2',
@@ -559,8 +601,8 @@ define([
 					label: _('IPv4 net mask/IPv6 prefix {interface}'),
 					inlineLabel: '',
 					visible: false,
-					invalidMessage: _invalidIPAddressMessage,
-					validator: _validateIPAddress
+					invalidMessage: _invalidNetmaskAndPrefixMessage,
+					validator: _validateNetmaskAndPrefix
 				}, {
 					type: TextBox,
 					name: '_ip3',
@@ -577,8 +619,8 @@ define([
 					label: _('IPv4 net mask/IPv6 prefix {interface}'),
 					inlineLabel: '',
 					visible: false,
-					invalidMessage: _invalidIPAddressMessage,
-					validator: _validateIPAddress
+					invalidMessage: _invalidNetmaskAndPrefixMessage,
+					validator: _validateNetmaskAndPrefix
 				}, {
 					type: TextBox,
 					name: 'gateway',
@@ -681,8 +723,10 @@ define([
 		},
 
 		_isDHCPPreConfigured: function() {
-			var dev = lang.getObject('interfaces.' + this._getNetworkDevices()[0], this.values);
-			return dev.ip4dynamic || dev.ip6dynamic;
+			return array.some(this._getNetworkDevices(), function(idev) {
+				var dev = this.values.interfaces[idev];
+				return dev.ip4dynamic;
+			}, this);
 		},
 
 		postCreate: function() {
@@ -696,30 +740,67 @@ define([
 		},
 
 		_dhclient: function() {
-			var interfaceName = this._getNetworkDevices()[0];
-			this.standbyDuring(tools.umcpCommand('setup/net/dhclient', {
-				'interface': interfaceName
-			})).then(lang.hitch(this, function(response) {
-				var result = response.result;
-				var netmask = result[interfaceName + '_netmask'];
-				var address = result[interfaceName + '_ip'];
-				if (!address && !netmask) {
+			// send out queries for each network device
+			var queries = {};
+			var dev2index = {};
+			array.forEach(this._getNetworkDevices(), function(idev, i) {
+				// workaround: use umcpProgressCommand() to make the setup/net/dhclient threaded
+				dev2index[idev] = i;
+				queries[idev] = tools.umcpProgressCommand(this._progressBar, 'setup/net/dhclient', {
+					'interface': idev
+				}, false).then(null, function(error) {
+					// catch error case to avoid dojo/promise/all canceling all bundled deferreds
+					return {};
+				});
+			}, this);
+
+			// blur current element
+			tools.defer(function() {
+				focusUtil.curNode && focusUtil.curNode.blur();
+			}, 200);
+
+			this.standbyDuring(all(queries)).then(lang.hitch(this, function(response) {
+				var hasDHCP = false;
+				var gateway = null;
+				var nameserver = null;
+				tools.forIn(response, function(idev, result) {
+					var i = dev2index[idev];
+					var address = result[idev + '_ip'];
+					var netmask = result[idev + '_netmask'];
+					if (!address && !netmask) {
+						// reset ip/mask values
+						this.getWidget('network', '_ip' + i).reset();
+						this.getWidget('network', '_netmask' + i).reset();
+						return;
+					}
+
+					// at least for one device DHCP did work :)
+					hasDHCP = true;
+
+					// handle gateway/nameserver values
+					gateway = gateway || result.gateway;
+					if (result.is_ucs_nameserver_1) {
+						nameserver = nameserver || result.nameserver_1;
+					}
+
+					// set received values
+					this.getWidget('network', '_ip' + i).set('value', address);
+					this.getWidget('network', '_netmask' + i).set('value', netmask);
+				}, this);
+
+				// set received gateway/nameserver values
+				if (gateway) {
+					this.getWidget('network', 'gateway').set('value', gateway);
+				}
+				if (!this._isRoleMaster() && nameserver) {
+					this.getWidget('network', 'nameserver1').set('value', nameserver);
+				}
+
+				// did DHCP work?
+				if (!hasDHCP) {
 					dialog.alert(_('DHCP query failed.'));
 					this.getWidget('network', '_dhcp').set('value', false);
-					return;
 				}
-
-				// set gateway
-				if (result.gateway) {
-					this.getWidget('network', 'gateway').set('value', result.gateway);
-				}
-
-				// set domain nameserver
-				if (!this._isRoleMaster() && result.is_ucs_nameserver_1) {
-					this.getWidget('network', 'nameserver1').set('value', result.nameserver_1);
-				}
-			}), lang.hitch(this, function(error) {
-				dialog.alert(_('DHCP query failed.'));
 			}));
 		},
 
@@ -902,9 +983,10 @@ define([
 		_setupFooterButtons: function() {
 			// change labels of footer buttons on particular pages
 			var buttons = this._pages.summary._footerButtons;
-			buttons.finish.set('label', _('Continue'));
+			buttons.next.set('label', _('Configure system'));
 			buttons = this._pages.error._footerButtons;
 			buttons.previous.set('label', _('Reconfigure'));
+			buttons.finish.set('label', _('Finish'));
 		},
 
 		_setLocaleValues: function(data) {
@@ -1110,7 +1192,7 @@ define([
 			var isIPv4Address = _regIPv4.test(ip);
 			if (isIPv4Address) {
 				var ipParts = ip.split('.');
-				var netmask = '255.255.255.0';
+				var netmask = '24';
 				var netmaskWidget = this.getWidget('network', '_netmask' + idx);
 				netmaskWidget.set('value', netmask);
 
@@ -1310,7 +1392,7 @@ define([
 			var helpText = '';
 			if (critical) {
 				helpText = '<p>' + _('The system join process failed. The following information will give some more details on which exact problem occurred during the setup process.') + '</p>';
-				msg += '<p>' + _('You may reconfigure the settings and restart the join process. You may end the wizard leaving the system unjoined. The system can be joined later via the UMC module <i>Domain join</i>.') + '</p>';
+				msg += '<p>' + _('You may reconfigure the settings and restart the join process. You may end the wizard and, if necessary, join the system later via the UMC module <i>Domain join</i>.') + '</p>';
 			} else {
 				helpText = '<p>' + _('The system join was successful, however, the following errors occurred while applying the configuration settings.') + '</p>';
 				msg += '<p>' + _('The settings can always be adpated in the UMC module <i>Basic settings</i>. Please confirm now to complete the process.') + '</p>';
@@ -1319,15 +1401,6 @@ define([
 			// display validation information
 			this.getPage('error').set('helpText', helpText);
 			this.getWidget('error', 'info').set('content', msg);
-
-			// update button labels
-			var buttons = this._pages.error._footerButtons;
-			if (critical) {
-				buttons.finish.set('label', _('Continue unjoined'));
-			}
-			else {
-				buttons.finish.set('label', _('Continue'));
-			}
 
 			// save the state
 			this._criticalJoinErrorOccurred = critical;
@@ -1361,10 +1434,9 @@ define([
 		},
 
 		_isRoleMaster: function() {
-			if (this.getWidget('_createDomain').get('value')) {
-				return true;
-			}
-			return false;
+			var showRoleSelection = array.indexOf(this.visiblePages, 'SystemRolePage') > -1;
+			var createNewDomain = this.getWidget('_createDomain').get('value');
+			return createNewDomain || !showRoleSelection;
 		},
 
 		_isPageForRole: function(pageName) {
@@ -1456,7 +1528,7 @@ define([
 				for (var idx = 0; idx < 4; ++idx) {
 					nConfiguredInterfaces += Boolean(_vals['_ip' + idx] && _vals['_netmask' + idx]);
 				}
-				if (!nConfiguredInterfaces) {
+				if (!nConfiguredInterfaces && !_vals._dhcp) {
 					this.getWidget('network', '_ip0').focus();
 					_alert(_('At least one network device needs to be properly configured.'));
 					return false;
@@ -1637,7 +1709,8 @@ define([
 			}
 
 			if (pageName == 'error' || pageName == 'summary') {
-				return this._forcePageTemporarily('software');
+				var previousPage = this.isPageVisible('software') ? 'software' : 'network';
+				return this._forcePageTemporarily(previousPage);
 			}
 			return this._forcePageTemporarily(this.inherited(arguments));
 		},
@@ -1691,7 +1764,8 @@ define([
 
 		_getRole: function() {
 			var _vals = this._gatherVisibleValues();
-			if (_vals._createDomain) {
+			var showRoleSelection = array.indexOf(this.visiblePages, 'SystemRolePage') > -1;
+			if (_vals._createDomain || !showRoleSelection) {
 				return 'domaincontroller_master';
 			}
 			else if (_vals._roleBackup) {
@@ -1708,49 +1782,51 @@ define([
 		getValues: function() {
 			// network configuration
 			var _vals = this._gatherVisibleValues();
-			var vals = {
-				interfaces: {}
-			};
+			var vals = {};
 			if (this._isDHCPPreConfigured() && _vals._dhcp) {
-				// nothing to do... leave the preconfigurred settings
-			}
-			else if (_vals._dhcp) {
-				// activate DHCP configuration for eth0
-				vals.interfaces.eth0 = {
-					name: 'eth0',
-					interfaceType: 'Ethernet',
-					ip4dynamic: true
-				};
-				vals['interfaces/primary'] = 'eth0';
+				// nothing to do... leave the preconfigured settings
 			}
 			else {
 				// prepare values for network interfaces
+				vals.interfaces = {};
 				array.forEach(this._getNetworkDevices(), function(idev, i) {
-					// make sure valid values are set
-					var iip = _vals['_ip' + i];
-					var imask = _vals['_netmask' + i];
-					if (!iip || !imask) {
-						return;
-					}
-					if (!vals['interfaces/primary']) {
+					// set primary interface
+					if (i === 0) {
 						vals['interfaces/primary'] = idev;
 					}
 
-					// prepare interface entry
-					var iconf = {
-						name: idev,
-						interfaceType: 'Ethernet'
-					};
-					if (_regIPv4.test(iip)) {
-						// IPv4 address
-						iconf.ip4 = [[iip, imask]];
-						iconf.ip6 = [];
-					} else {
-						// IPv6 address
-						iconf.ip4 = [];
-						iconf.ip6 = [[iip, imask]];
+					if (_vals._dhcp) {
+						// activate DHCP configuration
+						vals.interfaces[idev] = {
+							name: idev,
+							interfaceType: 'Ethernet',
+							ip4dynamic: true
+						};
 					}
-					vals.interfaces[idev] = iconf;
+					else {
+						// make sure valid values are set
+						var iip = _vals['_ip' + i];
+						var imask = _vals['_netmask' + i];
+						if (!iip || !imask) {
+							return;
+						}
+
+						// prepare interface entry
+						var iconf = {
+							name: idev,
+							interfaceType: 'Ethernet'
+						};
+						if (_regIPv4.test(iip)) {
+							// IPv4 address
+							iconf.ip4 = [[iip, imask]];
+							iconf.ip6 = [];
+						} else {
+							// IPv6 address
+							iconf.ip4 = [];
+							iconf.ip6 = [[iip, imask, 'default']];
+						}
+						vals.interfaces[idev] = iconf;
+					}
 				});
 			}
 
@@ -1792,6 +1868,13 @@ define([
 				}
 			});
 			return vals;
+		},
+
+		destroy: function() {
+			if (this._keepAlive.isRunning) {
+				this._keepAlive.stop();
+			}
+			this.inherited(arguments);
 		}
 	});
 });

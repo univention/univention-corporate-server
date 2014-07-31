@@ -1,3 +1,19 @@
+univention-system-setup (8.0.15-1) unstable; urgency=low
+
+  Bug #34484:
+  * Fixed some more network related issues (DHCP timeout, DNS error handling)
+  * Fixed black/white list handing and UCR variable descriptions
+  * Fixed LiveSearch icon size
+  * Fixed internal logic problems
+  * Fixed typos and adapted text parts
+  Bug #34484:
+  * Fixed multiple network related issues (device handling, DHCP, netmask
+    validation etc.)
+  * Fixed problems with language switch
+  * Removed country flags from language selection
+
+ -- Florian Best <best@univention.de>  Thu, 31 Jul 2014 07:21:05 +0200
+
 univention-system-setup (8.0.14-1) unstable; urgency=low
 
   * Bug #35378: added missing dependency

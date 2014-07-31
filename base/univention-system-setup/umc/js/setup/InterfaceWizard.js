@@ -528,7 +528,7 @@ define([
 
 //			if (this.getInterfaceType() === 'Ethernet') {
 //				if (!(values.ip4.length || values.ip4dynamic || values.ip6.length || values.ip6dynamic)) {
-//					dialog.alert(_('At least one ip address have to be specified or DHCP or SLACC have to be enabled.'));
+//					dialog.alert(_('At least one ip address have to be specified or DHCP or SLAAC have to be enabled.'));
 //					return false;
 //				}
 //			}

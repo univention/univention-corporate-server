@@ -134,13 +134,13 @@ if ($all) {
 	foreach my $lang (sort keys %allKeymaps) {
 		my $key = $lang;
 		$lang =~ s/Standard Standard/Standard/;
-		print $lang.":".$allKeymaps{$key}."\n"
+		print $lang.":".$allKeymaps{$key}.":".$standKeymaps{$lang}."\n"
 	}
 }
 else {
 	# print default kmap
 	foreach my $lang (sort keys %standKeymaps) {
-		print $lang." ".$standKeymaps{$lang}."\n"
+		print $lang.":".$standKeymaps{$lang}."\n"
 	}
 }
 
