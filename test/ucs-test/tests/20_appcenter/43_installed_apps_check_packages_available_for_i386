@@ -5,18 +5,17 @@
 ## packages:
 ##   - univention-directory-manager-tools
 ##   - univention-management-console-module-appcenter
-##
-#
-#  Bug #31792
+#  Bug [31792]
 
 import apt
 import re
 import univention.management.console.modules.appcenter.app_center as app
 import univention.lib.package_manager as PM
 import sys
-import urllib2
-import gzip
+from urllib import urlopen
+from gzip import GzipFile
 from StringIO import StringIO
+from urlparse import urljoin
 
 import univention.config_registry
 ucr = univention.config_registry.ConfigRegistry()
@@ -26,21 +25,23 @@ ucr.load()
 def get_installed_default_packages():
 	c = apt.Cache()
 	c.open()
-	packages = {}
 	pm = PM.PackageManager()
 	apps = app.Application.all()
-	default_packages = []
 	installed_apps = {}
+
 	for application in apps:
 		if (application.is_installed(pm)):
 			supported_architectures = application.get('Architecture')
-			if (supported_architectures == '') or (( 'amd64' in supported_architectures) and ('i386' in supported_architectures)) :
+			if (supported_architectures == '') or (supported_architectures == 'all') or (( 'amd64' in supported_architectures) and ('i386' in supported_architectures)) :
 				for idefault_package in application.get('defaultpackages'):
-					installed_apps.setdefault(application.name, []).append(idefault_package)
+					pkgs = installed_apps.setdefault(application.name, [])
+					pkgs.append(idefault_package)
 				if application.get('defaultpackagesmaster'):
 					for idefault_package_master in application.get('defaultpackagesmaster'):
-						installed_apps.setdefault(application.name, []).append(idefault_package_master)
-	default_packages=(set(default_packages))
+						pkgs = installed_apps.setdefault(application.name, [])
+						pkgs.append(idefault_package_master)
+
+	packages = {}
 	for application in installed_apps:
 		for package in installed_apps[application]:
 			pack = c[package]
@@ -52,9 +53,7 @@ def get_installed_default_packages():
 
 def change_architecture(package_repository):
 	other_arch_packages_with_repository= {}
-	for ipackage_name, ipackage_data in package_repository.iteritems():
-		ipackage_version = ipackage_data[0]
-		iuri = ipackage_data[1]
+	for (ipackage_name, (ipackage_version, iuri, _application)) in package_repository.iteritems():
 		if get_local_architecture() == 'amd64':
 			other_arch_packages_with_repository[ipackage_name] = (ipackage_version, iuri.replace('amd64','i386'))
 		else:
@@ -66,14 +65,15 @@ def change_architecture(package_repository):
 def check_packages_available(local_arch_packages_with_repository):
 	other_arch_packages_with_repository = change_architecture(local_arch_packages_with_repository)
 	repository_packages = {}
-	for ipackage in other_arch_packages_with_repository.iteritems():
-		repository_index_url = ipackage[1][1].replace((ipackage[1][1].split('/')[-1]),'Packages.gz')
-		url = urllib2.urlopen(repository_index_url)
-		zipdata = StringIO(url.read())
-		data = gzip.GzipFile(fileobj=zipdata)
+	for (_name, (_version, uri)) in other_arch_packages_with_repository.iteritems():
+		repository_index_url = urljoin(uri ,'Packages.gz')
+		stream = urlopen(repository_index_url)
+		zipdata = StringIO(stream.read())
+		data = GzipFile(fileobj=zipdata)
 		repository_packages.update(filter_packages_and_versions(data))
+
 	not_found_packages = compare_versions(repository_packages, other_arch_packages_with_repository)
-	if len(not_found_packages) > 0:
+	if not_found_packages:
 		main_repository_packages = get_main_repository_packages()
 		not_found_packages = compare_versions(main_repository_packages, other_arch_packages_with_repository)
 	show_result(not_found_packages, local_arch_packages_with_repository)
@@ -91,14 +91,15 @@ def compare_versions(repository_packages, not_found_packages):
 
 def get_main_repository_packages():
 	main_repository_packages = {}
-	repository_server = ucr.get("repository/online/server")
-	ucs_version = ucr.get("version/version")
-	ucs_patchlevel = ucr.get("version/patchlevel")
-	packages_files = ('http://{0}/{1}/maintained/{1}-{2}/i386/Packages.gz'.format(repository_server, ucs_version,ucs_patchlevel)), ('http://{0}/{1}/unmaintained/{1}-{2}/i386/Packages.gz'.format(repository_server, ucs_version, ucs_patchlevel))
+	arch = get_local_architecture(True)
+	packages_files = (
+		'http://%(repository/online/server)s/%(version/version)s/maintained/%(version/version)s-%(version/patchlevel)s/{0}/Packages.gz'.format(arch) % ucr,
+		'http://%(repository/online/server)s/%(version/version)s/unmaintained/%(version/version)s-%(version/patchlevel)s/{0}/Packages.gz'.format(arch) % ucr,
+	)
 	for iurl in packages_files:
-		repository_index_url = urllib2.urlopen(iurl)
-		zipdata = StringIO(repository_index_url.read())
-		data = gzip.GzipFile(fileobj=zipdata)
+		stream = urlopen(iurl)
+		zipdata = StringIO(stream.read())
+		data = GzipFile(fileobj=zipdata)
 		main_repository_packages.update(filter_packages_and_versions(data))
 	return main_repository_packages
 
@@ -127,7 +128,6 @@ def show_result(not_found_packages, local_arch_packages):
 		print
 		print ("Error!")
 		print ("Following package(s) could not be found for architecture " + diff_arch + ":")
-		#for ipackage in not_found_packages.iteritems():
 		for ipackage in not_found_packages:
 			print local_arch_packages[ipackage][1]
 		print
@@ -136,6 +136,7 @@ def show_result(not_found_packages, local_arch_packages):
 		print
 		print ("All packages found in repository")
 		print
+
 
 def get_local_architecture(reversed=False):
 	if sys.maxsize > 2**32:
@@ -152,13 +153,12 @@ def get_local_architecture(reversed=False):
 
 
 if __name__ == "__main__":
-
 	single_architecture_packages = get_installed_default_packages()
 
 	arch = get_local_architecture()
 	print
 	print ("Packages with " + arch + "-only architecture :")
-	for ipackage in single_architecture_packages:
-		print (ipackage + " from App '" + single_architecture_packages[ipackage][2] + "'")
+	for (ipackage, (_version, _uri, application)) in single_architecture_packages.iteritems():
+		print (ipackage + " from App '" + application + "'")
 
 	check_packages_available(single_architecture_packages)

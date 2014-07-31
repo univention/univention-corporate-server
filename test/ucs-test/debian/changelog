@@ -1,3 +1,10 @@
+ucs-test (4.0.166-62) unstable; urgency=low
+
+  * 20_appcenter/43_installed_apps_check_packages_available_for_i386:
+  	Switched from urllib2 to urllib; minor fixes (Bug #31792)
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 31 Jul 2014 13:46:56 +0200
+
 ucs-test (4.0.166-61) unstable; urgency=low
 
   * 60_umc/06_non-ucr-policies: a test for non-UCR policies
