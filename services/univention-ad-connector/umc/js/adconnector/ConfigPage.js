@@ -131,14 +131,14 @@ define([
 				name: 'activate',
 				label: _('Activate encrypted connection'),
 				callback: lang.hitch(this, '_umcpCommandAndUpdate', 'adconnector/enable_ssl')
-			}, {
-				name: 'password_sync',
-				label: _('Activate password synchronization'),
-				callback: lang.hitch(this, '_umcpCommandAndUpdate', 'adconnector/password_sync_service')
-			}, {
-				name: 'password_sync_stop',
-				label: _('Stop password synchronization'),
-				callback: lang.hitch(this, '_umcpCommandAndUpdate', 'adconnector/password_sync_service', {enable: false})
+//			}, {
+//				name: 'password_sync',
+//				label: _('Activate password synchronization'),
+//				callback: lang.hitch(this, '_umcpCommandAndUpdate', 'adconnector/password_sync_service')
+//			}, {
+//				name: 'password_sync_stop',
+//				label: _('Stop password synchronization'),
+//				callback: lang.hitch(this, '_umcpCommandAndUpdate', 'adconnector/password_sync_service', {enable: false})
 			}];
 
 			this._widgets = render.widgets(widgets);
@@ -159,7 +159,7 @@ define([
 			} else {
 				layout.push({
 					label: _('Password service'),
-					layout: ['downloadInfoADMember', 'download', 'downloadNextStepADMember', 'password_sync', 'password_sync_stop']
+					layout: ['downloadInfoADMember', 'download', 'downloadNextStepADMember']
 				});
 			}
 			var _container = render.layout(layout, this._widgets, this._buttons);
@@ -226,8 +226,8 @@ define([
 
 				this._widgets.downloadInfoADMember.set('visible', state.mode_admember);
 				this._widgets.downloadNextStepADMember.set('visible', state.mode_admember);
-				this._buttons.password_sync.set('visible', state.mode_admember && !state.password_sync_enabled);
-				this._buttons.password_sync_stop.set('visible', state.mode_admember && state.password_sync_enabled);
+//				this._buttons.password_sync.set('visible', state.mode_admember && !state.password_sync_enabled);
+//				this._buttons.password_sync_stop.set('visible', state.mode_admember && state.password_sync_enabled);
 			}));
 		}
 	});

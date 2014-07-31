@@ -52,7 +52,7 @@ define([
 	var modulePath = require.toUrl('umc/modules/adconnector');
 	styles.insertCssRule('.umc-adconnector-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;');
 	styles.insertCssRule('.umc-adconnector-page .umcLabelPaneCheckBox', 'display: block !important;');
-	array.forEach(['start', 'credentials', 'config', 'info', 'syncconfig', 'syncconfig-left', 'syncconfig-right', 'syncconfig-left-right', 'msi', 'finished'], function(ipage) {
+	array.forEach(['start', 'credentials', 'config', 'security', 'certificate', 'syncconfig', 'syncconfig-left', 'syncconfig-right', 'syncconfig-left-right', 'msi', 'finished'], function(ipage) {
 		var conf = {
 			name: ipage,
 			path: modulePath
@@ -82,7 +82,7 @@ define([
 			this.pages = [{
 				'class': 'umc-adconnector-page-start umc-adconnector-page',
 				name: 'start',
-				headerText: _('Active Directory Connector'),
+				headerText: _('Active Directory Connection'),
 				widgets: [{
 					type: Text,
 					name: 'help',
@@ -92,7 +92,7 @@ define([
 					name: 'mode',
 					staticValues: [{
 						id: 'admember',
-						label: _('Configure UCS as part of the Active Directory domain (recommended).')
+						label: _('Configure UCS as part of an Active Directory domain (recommended).')
 					}, {
 						id: 'adconnector',
 						label: _('Synchronisation of account data between an Active Directory and a UCS domain.')
@@ -145,7 +145,7 @@ define([
 			}, {
 				'class': 'umc-adconnector-page-finished umc-adconnector-page',
 				name: 'finished-admember',
-				headerText: _('Completion of Active Directory Connector'),
+				headerText: _('Completion of Active Directory Connection'),
 				widgets: [{
 					type: Text,
 					name: 'help',
@@ -181,7 +181,7 @@ define([
 					label: _('Active Directory password')
 				}]
 			}, {
-				'class': 'umc-adconnector-page-info umc-adconnector-page',
+				'class': 'umc-adconnector-page-security umc-adconnector-page',
 				name: 'ssl-adconnector',
 				headerText: _('Security settings'),
 				widgets: [{
@@ -195,9 +195,9 @@ define([
 					)
 				}]
 			}, {
-				'class': 'umc-adconnector-page-info umc-adconnector-page',
+				'class': 'umc-adconnector-page-certificate umc-adconnector-page',
 				name: 'certificate-adconnector',
-				headerText: _('Security settings'),
+				headerText: _('Upload AD root certificate'),
 				widgets: [{
 					type: Text,
 					'class': 'umcPageHelpText',
@@ -217,7 +217,8 @@ define([
 							return;
 						}
 						if (result.success) {
-							this.addNotification(_('The certificate was imported successfully'));
+							dialog.notify(_('The certificate was imported successfully'));
+							this._next('certificate-adconnector'); // advance page
 						} else {
 							dialog.alert(_('Failed to import the certificate') + ': ' + result.message);
 						}
@@ -278,7 +279,7 @@ define([
 			}, {
 				'class': 'umc-adconnector-page-finished umc-adconnector-page',
 				name: 'finished-adconnector',
-				headerText: _('Completion of Active Directory Connector'),
+				headerText: _('Completion of Active Directory Connection'),
 				widgets: [{
 					type: Text,
 					name: 'help',
@@ -307,6 +308,13 @@ define([
 			this._keepSessionAlive.onTick = lang.hitch(server, 'ping');
 
 			this._setupFooterButtons();
+		},
+
+		startup: function() {
+			this.inherited(arguments);
+
+			// pre-select admember mode
+			this.getWidget('start', 'mode').set('value', 'admember');
 		},
 
 		_isConnectorMode: function() {
@@ -498,6 +506,7 @@ define([
 
 		next: function(pageName) {
 			var nextPage = this.inherited(arguments);
+			topic.publish('/umc/actions', 'adconnector', 'wizard', pageName, 'next');
 			if (pageName == 'start') {
 				return nextPage;
 			}
@@ -511,9 +520,7 @@ define([
 		},
 
 		previous: function(pageName) {
-			if (pageName.indexOf('Config') >= 0) {
-				return 'credentials';
-			}
+			topic.publish('/umc/actions', 'adconnector', 'wizard', pageName, 'previous');
 			return this.inherited(arguments);
 		},
 
@@ -522,6 +529,9 @@ define([
 		},
 
 		hasPrevious: function(pageName) {
+			if (pageName == 'error-admember') {
+				return false;
+			}
 			return pageName.indexOf('finished') < 0;
 		},
 
@@ -587,6 +597,14 @@ define([
 				this._keepSessionAlive.stop();
 			}
 			this.inherited(arguments);
+		},
+
+		'goto': function(idx) {
+			var nextPage = this.pages[idx].name;
+			this._updateButtons(nextPage);
+			var page = this._pages[nextPage];
+			this.selectChild(page);
 		}
+
 	});
 });

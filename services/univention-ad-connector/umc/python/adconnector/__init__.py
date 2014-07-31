@@ -372,7 +372,7 @@ class Instance(Base, ProgressMixin):
 			admember.check_connection(ad_server_ip, username, password)
 		except admember.invalidUCSServerRole as exc: # check_server_role()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_CommandError(_('The AD member mode cannot only be configured on a DC master server.'))
+			raise UMC_CommandError(_('The AD member mode can only be configured on a DC master server.'))
 		except admember.failedADConnect as exc: # lookup_adds_dc()
 			MODULE.warn('Failure: %s' % exc)
 			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_server_address)
@@ -492,7 +492,7 @@ class Instance(Base, ProgressMixin):
 
 		# error handling...
 		except admember.invalidUCSServerRole as exc:
-			_err(exc, _('The AD member mode cannot only be configured on a DC master server.'))
+			_err(exc, _('The AD member mode can only be configured on a DC master server.'))
 		except admember.failedADConnect as exc:
 			_err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_domain_info.get('DC DNS Name'))
 		except admember.domainnameMismatch as exc:
@@ -543,6 +543,9 @@ class Instance(Base, ProgressMixin):
 
 	@simple_response
 	def password_sync_service(self, enable=True):
-		univention.config_registry.handler_set(['connector/ad/mapping/user/password/kinit=%s' % str(enable).lower()])
+		# kinit=true  -> do not sync passwords, but use Kerberos authentication
+		# kinit=false -> sync passwords
+		value = str(not enable).lower()
+		univention.config_registry.handler_set(['connector/ad/mapping/user/password/kinit=%s' % value])
 		return subprocess.call(['invoke-rc.d', 'univention-ad-connector', 'restart'])
 

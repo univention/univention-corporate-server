@@ -1,3 +1,20 @@
+univention-ad-connector (8.0.17-62) unstable; urgency=medium
+
+  Bug #35090:
+  * added piwik topic publishing
+  * adjusted texts and added translations
+  * pre-select AD member mode on start page
+  * hide start/stop buttons for password service + fixed backend function
+  * added missing images
+  * enable 'cancel' button
+  * fixed some internal page navigation logic
+  * added hint to allow port for password sync on windows
+  * added target="_blank" for UMCP based download links on IE
+  * automatically advance in (connector config) wizard after uploading AD
+    root certificate
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 31 Jul 2014 18:57:58 +0200
+
 univention-ad-connector (8.0.17-61) unstable; urgency=low
 
   * don't test_connection in upload_certificate if
