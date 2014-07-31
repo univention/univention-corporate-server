@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-60) unstable; urgency=low
+
+  * use ip for server_supports_ssl Bug #35090 
+
+ -- Felix Botner <botner@univention.de>  Thu, 31 Jul 2014 15:12:52 +0200
+
 univention-ad-connector (8.0.17-59) unstable; urgency=medium
 
   Bug #35090:

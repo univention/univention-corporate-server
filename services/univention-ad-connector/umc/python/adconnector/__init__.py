@@ -386,7 +386,7 @@ class Instance(Base, ProgressMixin):
 		# final info dict that is returned... replace spaces in the keys with '_'
 		MODULE.info('Preparing info dict...')
 		info = dict([(key.replace(' ', '_'), value) for key, value in ad_domain_info.iteritems()])
-		info['ssl_supported'] = admember.server_supports_ssl(server=ad_domain_info["DC DNS Name"])
+		info['ssl_supported'] = admember.server_supports_ssl(ad_server_ip)
 		MODULE.info(str(info))
 		return info
 
