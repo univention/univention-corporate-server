@@ -1,3 +1,30 @@
+univention-system-setup (7.0.70-1) unstable; urgency=low
+
+  * Bug #34484: merge svn 52406 svn 52411
+
+ -- Florian Best <best@univention.de>  Thu, 31 Jul 2014 07:19:13 +0200
+
+univention-system-setup (7.0.69-43) unstable; urgency=medium
+
+  Bug #34484:
+  * Fixed some more network related issues (DHCP timeout, DNS error handling)
+  * Fixed black/white list handing and UCR variable descriptions
+  * Fixed LiveSearch icon size
+  * Fixed internal logic problems
+  * Fixed typos and adapted text parts
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 30 Jul 2014 20:03:43 +0200
+
+univention-system-setup (7.0.69-42) unstable; urgency=medium
+
+  Bug #34484:
+  * Fixed multiple network related issues (device handling, DHCP, netmask
+    validation etc.)
+  * Fixed problems with language switch
+  * Removed country flags from language selection
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 30 Jul 2014 18:25:14 +0200
+
 univention-system-setup (7.0.69-41) unstable; urgency=low
 
   * Bug #34388: Only redirect apache2 startsite on unjoined systems

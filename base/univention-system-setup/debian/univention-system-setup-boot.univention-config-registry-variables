@@ -11,13 +11,13 @@ Type=bool
 Categories=system-base
 
 [system/setup/boot/pages/whitelist]
-Description[de]=Diese Variable konfiguriert eine Positivliste für die im Appliance-Konfigurations-Modus dargestellten Dialoge. Nur Dialoge, die hier aufgeführt werden, werden angezeigt. Mehrere Einträge müssen mit Leerzeichen getrennt werden. Mögliche Werte: 'HelpPage', 'SystemRolePage', 'LanguagePage', 'BasisPage', 'NetworkPage', 'CertificatePage' und 'SoftwarePage'. Wenn die Variable nicht gesetzt ist, werden alle Dialoge angezeigt.
-Description[en]=This variable configures a whitelist for the dialogues present in appliance configuration mode. Only dialogues listed here are shown. Multiple entries need to be separated by a blank. Possible values: 'HelpPage', 'SystemRolePage', 'LanguagePage', 'BasisPage', 'NetworkPage', 'CertificatePage' and 'SoftwarePage'. If the variable is unset, all dialogues are shown.
+Description[de]=Diese Variable konfiguriert eine Positivliste für die im Appliance-Konfigurations-Modus dargestellten Dialoge. Nur Dialoge, die hier aufgeführt werden, werden angezeigt. Mehrere Einträge müssen mit Leerzeichen getrennt werden. Mögliche Werte: 'SystemRolePage', 'SoftwarePage'. Wenn die Variable nicht gesetzt ist, werden alle Dialoge angezeigt.
+Description[en]=This variable configures a whitelist for the dialogues present in appliance configuration mode. Only dialogues listed here are shown. Multiple entries need to be separated by a blank. Possible values: 'SystemRolePage', 'SoftwarePage'. If the variable is unset, all dialogues are shown.
 Type=str
 Categories=system-base
 
 [system/setup/boot/pages/blacklist]
-Description[de]=Diese Variable konfiguriert eine Negativeliste für die im Appliance-Konfigurations-Modus dargestellten Dialoge. Dialoge, die hier aufgeführt werden, werden nicht angezeigt. Mehrere Einträge müssen mit Leerzeichen getrennt werden. Mögliche Werte: 'HelpPage', 'SystemRolePage', 'LanguagePage', 'BasisPage', 'NetworkPage', 'CertificatePage' und 'SoftwarePage'. Wenn die Variable nicht gesetzt ist, werden alle Dialoge gezeigt.
-Description[en]=This variable configures a blacklist for the dialogues present in appliance configuration mode. Dialogues listed here are not shown. Multiple entries need to be separated by a blank. Possible values: 'HelpPage', 'SystemRolePage', 'LanguagePage', 'BasisPage', 'NetworkPage', 'CertificatePage' and 'SoftwarePage'. If the variable is unset, all dialogues are shown.
+Description[de]=Diese Variable konfiguriert eine Negativeliste für die im Appliance-Konfigurations-Modus dargestellten Dialoge. Dialoge, die hier aufgeführt werden, werden nicht angezeigt. Mehrere Einträge müssen mit Leerzeichen getrennt werden. Mögliche Werte: 'SystemRolePage', 'SoftwarePage'. Wenn die Variable nicht gesetzt ist, werden alle Dialoge gezeigt.
+Description[en]=This variable configures a blacklist for the dialogues present in appliance configuration mode. Dialogues listed here are not shown. Multiple entries need to be separated by a blank. Possible values: 'SystemRolePage', 'SoftwarePage'. If the variable is unset, all dialogues are shown.
 Type=str
 Categories=system-base

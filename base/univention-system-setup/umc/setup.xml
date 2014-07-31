@@ -27,5 +27,6 @@
 		<command name="setup/find_city" function="find_city"/>
 		<command name="setup/apps/query" function="apps_query"/>
 		<command name="setup/set_locale" function="set_locale"/>
+		<command name="setup/net/progress" function="progress"/>
 	</module>
 </umc>

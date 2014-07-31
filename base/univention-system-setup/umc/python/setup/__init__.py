@@ -47,16 +47,20 @@ import subprocess
 import simplejson as json
 import locale as _locale
 
+from threading import Thread
+
 from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
+from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import PatternSanitizer, StringSanitizer, IntegerSanitizer
 from univention.management.console.modules.decorators import sanitize, simple_response
-from univention.management.console.modules.setup.network import Interfaces, DeviceError
+from . import network
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
-_ = Translation('univention-management-console-module-setup').translate
+_translation = Translation('univention-management-console-module-setup')
+_ = _translation.translate
 
 
 RE_IPV4 = re.compile(r'^interfaces/(([^/]+?)(_[0-9])?)/(address|netmask)$')
@@ -64,7 +68,7 @@ RE_IPV6_DEFAULT = re.compile(r'^interfaces/([^/]+)/ipv6/default/(prefix|address)
 RE_SPACE = re.compile(r'\s+')
 RE_SSL = re.compile(r'^ssl/.*')
 
-class Instance(Base):
+class Instance(Base, ProgressMixin):
 	def __init__(self):
 		Base.__init__(self)
 		self._finishedLock = threading.Lock()
@@ -408,10 +412,10 @@ class Instance(Base):
 
 		# net
 		try:
-			interfaces = Interfaces()
+			interfaces = network.Interfaces()
 			interfaces.from_dict(allValues.get('interfaces', {}))
 			interfaces.check_consistency()
-		except DeviceError as exc:
+		except network.DeviceError as exc:
 			_append('interfaces', str(exc))
 
 		# validate the primary network interface
@@ -427,7 +431,7 @@ class Instance(Base):
 						continue
 					_check(jkey, util.is_ipaddr, _('The specified IP address (%s) is not valid: %s') % (iname, jval))
 
-		if not any(interface.ip4dynamic or interface.ip6dynamic for interface in interfaces.values()) and not allValues.get('nameserver1') and not allValues.get('nameserver2') and not allValues.get('nameserver3'):
+		if newrole != 'domaincontroller_master' and not any(interface.ip4dynamic or interface.ip6dynamic for interface in interfaces.values()) and not allValues.get('nameserver1') and not allValues.get('nameserver2') and not allValues.get('nameserver3'):
 			_append('nameserver1', _('At least one domain name server needs to be given if DHCP or SLAAC is not specified.'))
 
 		# check gateways
@@ -547,8 +551,9 @@ class Instance(Base):
 		'''Return a list of all available network interfaces.'''
 		return [ idev['name'] for idev in util.detect_interfaces() ]
 
-	@simple_response
-	def net_dhclient(self, interface, timeout=45):
+	# workaround: use with_progress to make the method threaded
+	@simple_response(with_progress=True)
+	def net_dhclient(self, interface, timeout=10):
 		'''Request a DHCP address. Expects as options a dict containing the key
 		"interface" and optionally the key "timeout" (in seconds).'''
 
@@ -560,12 +565,20 @@ class Instance(Base):
 		locale = Locale(locale)
 		locale.codeset = self.locale.codeset
 		MODULE.info('Switching language to: %s' % locale)
+		os.environ['LC_ALL'] = str(self.locale)
 		try:
 			_locale.setlocale(_locale.LC_ALL, str(locale))
 		except _locale.Error as exc:
 			MODULE.warn('Locale %s is not supported, using fallback locale "C" instead.' % locale)
 			_locale.setlocale(_locale.LC_ALL, 'C')
 		self.locale = locale
+
+		# dynamically change the translation methods
+		_translation.set_language(str(self.locale))
+		network._translation.set_language(str(self.locale))
+
+		# make sure that locale information is correctly reloaded
+		reload(util.app_center)
 
 	@sanitize(pattern=StringSanitizer(), max_results=IntegerSanitizer(minimum=1, default=5))
 	@simple_response
@@ -640,6 +653,6 @@ class Instance(Base):
 
 	@simple_response
 	def apps_query(self):
-		return util.get_apps()
+		return util.get_apps(True)
 
 
