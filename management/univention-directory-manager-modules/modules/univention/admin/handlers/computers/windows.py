@@ -78,7 +78,8 @@ property_descriptions={
 			options=[],
 			required=1,
 			may_change=1,
-			identifies=1
+			identifies=1,
+			readonly_when_synced=True,
 		),
 	'description': univention.admin.property(
 			short_description=_('Description'),
@@ -88,7 +89,8 @@ property_descriptions={
 			include_in_default_search=1,
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=True,
 		),
 	'operatingSystem': univention.admin.property(
 			short_description=_('Operating system'),
@@ -98,7 +100,8 @@ property_descriptions={
 			include_in_default_search=1,
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=True,
 		),
 	'operatingSystemVersion': univention.admin.property(
 			short_description=_('Operating system version'),
@@ -107,7 +110,8 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			readonly_when_synced=True,
 		),
 	'domain': univention.admin.property(
 			short_description=_('Domain'),
@@ -214,7 +218,8 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
-			dontsearch=1
+			dontsearch=1,
+			readonly_when_synced=True,
 		),
 	'ntCompatibility': univention.admin.property(
 			short_description=_('Initialize password with hostname'),

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.76-21) unstable; urgency=low
+
+  * Set more windows client attributes to readonly when synced
+    (Bug #34092)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 Jul 2014 08:49:57 +0200
+
 univention-directory-manager-modules (9.0.76-20) unstable; urgency=low
 
   * Don't set the CTX flags read only, see Bug #35530 (Bug #34092)
