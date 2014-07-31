@@ -156,6 +156,8 @@ define([
 		objectNameSingular: '',
 		objectNamePlural: '',
 
+		isSyncedObject: null, // object which is modified (or one of multiedited) has univentionObjectFlag == synced
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
@@ -657,6 +659,7 @@ define([
 			}))).then(lang.hitch(this, function(objs) {
 				if (array.some(objs, isSyncedObject)) {
 					properties = this._disableSyncedReadonlyProperties(properties);
+					this.isSyncedObject = true;
 				}
 				deferred.resolve(properties);
 			}), function() { deferred.resolve(properties); });
@@ -673,7 +676,7 @@ define([
 		},
 
 		addActiveDirectoryWarning: function() {
-			if (!this.active_directory_enabled() || !this.ldapName) {
+			if (!this.active_directory_enabled() || !this.ldapName || !this.isSyncedObject) {
 				return;
 			}
 			var name;
@@ -688,7 +691,7 @@ define([
 						return false; // break out of forIn
 					}
 				}, this);
-				name = _('%s "%s" is', this.objectNameSingular, value)
+				name = _('The %s "%s" is', this.objectNameSingular, value);
 			}
 			this.addWarning(_('%s part of the Active Directory domain. UCS can only change certain attributes.', name));
 		},
@@ -866,7 +869,6 @@ define([
 			}))[0];
 			this.set('content', this._form);
 			borderLayout.startup();
-			this._form.ready().then(lang.hitch(this, 'addActiveDirectoryWarning'))
 		},
 
 		renderDetailPage: function(properties, layout, policies, template) {
@@ -877,6 +879,7 @@ define([
 			var formBuiltDeferred = new Deferred();
 			this._policyDeferred = new Deferred();
 			var loadedDeferred = this._loadObject(formBuiltDeferred, this._policyDeferred);
+			formBuiltDeferred.then(lang.hitch(this, 'addActiveDirectoryWarning'));
 
 			if (template && template.length > 0) {
 				template = template[0];
