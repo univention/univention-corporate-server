@@ -118,7 +118,7 @@ def is_system_joined():
 def load_values():
 	# load UCR variables
 	ucr.load()
-	values = dict([ (ikey, ucr[ikey]) for ikey in UCR_VARIABLES ])
+	values = dict((ikey, ucr.get(ikey, '')) for ikey in UCR_VARIABLES)
 
 	# net
 	from univention.management.console.modules.setup.network import Interfaces

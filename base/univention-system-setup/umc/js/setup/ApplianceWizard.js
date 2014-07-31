@@ -34,7 +34,6 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/_base/event",
-	"dojo/query",
 	"dojo/dom-class",
 	"dojo/on",
 	"dojo/Evented",
@@ -64,7 +63,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, query, domClass, on, Evented, topic, Deferred, all, Memory, Select, Tooltip, focusUtil, styles, timing, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Select, Tooltip, focusUtil, styles, timing, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
 	var modulePath = require.toUrl('umc/modules/setup');
 	styles.insertCssRule('.umc-ucssetup-wizard-indent', 'margin-left: 27px;');
 	styles.insertCssRule('.umcIconInfo', lang.replace('background-image: url({0}/info-icon.png); width: 16px; height: 16px;', [modulePath]));
@@ -141,7 +140,7 @@ define([
 	var _regIPv6 = /^((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?$/;
 	var _regFQDN = /^(?=.{1,255}$)[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?(?:\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?)*\.?$/;
 	var _regNumber = /^[0-9]+$/;
-	var _regBitMask = /^1*0*$/
+	var _regBitMask = /^1*0*$/;
 
 	var _regEmailAddress = /^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/;
 	var _invalidEmailAddressMessage = _('Invalid e-mail address!<br>Expected format is:<i>mail@example.com</i>');
@@ -736,6 +735,25 @@ define([
 			if (this._isDHCPPreConfigured()) {
 				this.getWidget('network', '_dhcp').set('value', true);
 				this.getWidget('network', 'gateway').set('value', this.values.gateway);
+				this.getWidget('network', 'dns/forwarder1').set('value', this.values['dns/forwarder1']);
+				this.getWidget('network', 'dns/forwarder2').set('value', this.values['dns/forwarder2']);
+
+				// set IP addresses/netmasks
+				array.forEach(this._getNetworkDevices(), function(idev, i) {
+					var devConf = this.values.interfaces[idev] || {};
+					var ipWidget = this.getWidget('network', '_ip' + i);
+					var maskWidget = this.getWidget('network', '_netmask' + i);
+					if (devConf.ip4 && devConf.ip4.length) {
+						// ipv4 is configured
+						ipWidget.set('value', devConf.ip4[0][0]);
+						maskWidget.set('value', devConf.ip4[0][1]);
+					}
+					else if (devConf.ip6 && devConf.ip6.length) {
+						// ipv6 is configured
+						ipWidget.set('value', devConf.ip6[0][0]);
+						maskWidget.set('value', devConf.ip6[0][1]);
+					}
+				}, this);
 			}
 		},
 
@@ -756,7 +774,9 @@ define([
 
 			// blur current element
 			tools.defer(function() {
-				focusUtil.curNode && focusUtil.curNode.blur();
+				if (focusUtil.curNode) {
+					focusUtil.curNode.blur();
+				}
 			}, 200);
 
 			this.standbyDuring(all(queries)).then(lang.hitch(this, function(response) {
@@ -994,7 +1014,11 @@ define([
 				this.getWidget('locale', 'timezone').setInitialValue(data.timezone);
 			}
 			if (data.ipv4_nameserver) {
-				this.getWidget('network', 'dns/forwarder1').set('value', data.ipv4_nameserver);
+				var forwarderWidget = this.getWidget('network', 'dns/forwarder1');
+				if (!forwarderWidget.get('value')) {
+					// do not overwrite an already configured value (in case DHCP is preconfigured)
+					forwarderWidget.set('value', data.ipv4_nameserver);
+				}
 			}
 			if (data.locale) {
 				this.getWidget('locale', 'locale/default').setInitialValue(data.locale);
@@ -1548,7 +1572,8 @@ define([
 					}, {
 						name: 'username',
 						type: 'TextBox',
-						label: _('Username')
+						label: _('Username'),
+						value: 'Administrator'
 					}, {
 						name: 'password',
 						type: 'PasswordBox',

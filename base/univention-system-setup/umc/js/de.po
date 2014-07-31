@@ -277,7 +277,7 @@ msgstr ""
 
 #: umc/js/setup/ApplianceWizard.js:1533
 msgid "At least one network device needs to be properly configured."
-msgstr "Wenigstens ein Netzwerkgerät muss konfiguiert werden."
+msgstr "Mindestens ein Netzwerkgerät muss konfiguiert werden."
 
 #: umc/js/setup/InterfaceWizard.js:313 umc/js/setup/Interfaces.js:119
 msgid "Autoconfiguration (SLAAC)"
@@ -979,7 +979,7 @@ msgstr "Bitte Löschung der folgenden Netzwerkgeräte bestätigen:"
 
 #: umc/js/setup/ApplianceWizard.js:635
 msgid "Preferred UCS domain name server"
-msgstr "Bevorzugter Domänen-DNS-Server"
+msgstr "Bevorzugter UCS-Domänen-DNS-Server"
 
 #: umc/js/setup/ApplianceWizard.js:648
 msgid "Preferred external name server"
