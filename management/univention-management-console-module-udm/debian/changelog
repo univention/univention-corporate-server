@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.0.3-1) unstable; urgency=low
+
+  * Bug #34093: fix displaying of message for non-AD objects (merge svn52418)
+
+ -- Florian Best <best@univention.de>  Thu, 31 Jul 2014 08:54:57 +0200
+
 univention-management-console-module-udm (5.0.2-1) unstable; urgency=low
 
   * Bug #34093: show also Active Directory warning in edit mode (merge svn r52385)
