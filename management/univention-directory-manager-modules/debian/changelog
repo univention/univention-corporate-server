@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.76-19) unstable; urgency=low
+
+  * Set more attributes to readonly when synced (Bug #34092)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 Jul 2014 07:53:10 +0200
+
 univention-directory-manager-modules (9.0.76-18) unstable; urgency=medium
 
   * revert changes for (Bug #35254)
