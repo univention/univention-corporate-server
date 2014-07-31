@@ -1,3 +1,10 @@
+univention-ad-connector (8.0.17-61) unstable; urgency=low
+
+  * don't test_connection in upload_certificate if
+    connector settings are not valid Bug #35090 
+
+ -- Felix Botner <botner@univention.de>  Thu, 31 Jul 2014 15:40:11 +0200
+
 univention-ad-connector (8.0.17-60) unstable; urgency=low
 
   * use ip for server_supports_ssl Bug #35090 

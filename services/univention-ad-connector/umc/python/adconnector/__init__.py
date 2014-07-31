@@ -526,12 +526,15 @@ class Instance(Base, ProgressMixin):
 			if certificate_fname:
 				univention.config_registry.handler_set([u'connector/ad/ldap/certificate=%s' % certificate_fname])
 			server = ucr.get('connector/ad/ldap/host')
-			success = False
-			if admember.server_supports_ssl(server):
-				admember.enable_ssl()
-				success = test_connection()
-			if not success:
-				raise UMC_CommandError(_('Could not establish an encrypted connection. Either "%r" is not reachable or does not support encryption.') % server)
+			if server:
+				success = False
+				if admember.server_supports_ssl(server):
+					admember.enable_ssl()
+					success = test_connection()
+				if not success:
+					raise UMC_CommandError(_('Could not establish an encrypted connection. Either "%r" is not reachable or does not support encryption.') % server)
+			else:
+				MODULE.warn('connector is not configured yet, cannot test connection')
 
 	@simple_response
 	def enable_ssl(self):
