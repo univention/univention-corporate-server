@@ -47,8 +47,6 @@ import subprocess
 import simplejson as json
 import locale as _locale
 
-from threading import Thread
-
 from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
 from univention.management.console.modules.mixins import ProgressMixin
@@ -350,6 +348,7 @@ class Instance(Base, ProgressMixin):
 				})
 
 		def _append(key, message):
+			MODULE.warn('Validation failed for key %s: %s' % (key, message))
 			messages.append({
 				'key': key,
 				'valid': False,
@@ -377,18 +376,24 @@ class Instance(Base, ProgressMixin):
 				_append('hostname', _("No hostname has been specified for the system."))
 
 		# see whether the domain can be determined automatically
-		if not util.is_system_joined() and newrole != 'domaincontroller_master' and 'domainname' not in values:
+		if not util.is_system_joined() and newrole != 'domaincontroller_master':
 			if 'nameserver1' not in values:
 				_append('nameserver1', _('A domain name server needs to specified.'))
 			else:
-				guessed_domain = util.get_nameserver_domain(values['nameserver1'])
+				# make sure we have a valid UCS nameserver
+				guessed_domain = util.get_domain(values['nameserver1'])
 				if not guessed_domain:
-					_append('domainname', _('The domain cannot automatically be determined. Make sure that the correct UCS domain name server has been specified or enter a fully qualified domain name of the system.'))
-				messages.append({
-					'valid': True,
-					'key': 'domainname',
-					'value': guessed_domain,
-				})
+					_append('nameserver1', _('The specified nameserver %s cannot be contacted.') % values['nameserver1'])
+				elif not util.is_ucs_domain(values['nameserver1'], guessed_domain):
+					_append('nameserver1', _('The specified nameserver %s is not part of a valid UCS domain.') % values['nameserver1'])
+					guessed_domain = None
+				else:
+					# communicate guessed domainname to frontend
+					messages.append({
+						'valid': True,
+						'key': 'domainname',
+						'value': guessed_domain,
+					})
 
 		# windows domain
 		_check('windows/domain', lambda x: x == x.upper(), _("The windows domain name can only consist of upper case characters."))

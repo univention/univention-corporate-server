@@ -378,11 +378,13 @@ define([
 		},
 
 		_getNewIpAddress: function(interfaces, primary_interface) {
+			interfaces = interfaces || {};
 			var newIpAddress = null;
-			var prim = interfaces[primary_interface];
 
 			var currentIP = window.location.host;
 			currentIP = currentIP.replace('[', '').replace(']', '');
+
+			var prim = interfaces[primary_interface];
 			var primIp4 = prim && prim.ip4[0] && prim.ip4[0][0];
 			var primIp6 = prim && prim.ip6[0] && prim.ip6[0][0];
 
