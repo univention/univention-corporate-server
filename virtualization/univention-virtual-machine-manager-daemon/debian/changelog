@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.17-14) unstable; urgency=low
+
+  * Bug #35107: Revert
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 01 Aug 2014 12:11:44 +0200
+
 univention-virtual-machine-manager-daemon (3.0.17-13) unstable; urgency=low
 
   * Bug #35122: Revert
