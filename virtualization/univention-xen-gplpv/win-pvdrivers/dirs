@@ -1,2 +1,0 @@
-
-DIRS=liblfds.6 xenpci xenvbd_scsiport xenvbd_storport xenvbd_filter xennet xenusb copyconfig shutdownmon waitnopendinginstallevents
