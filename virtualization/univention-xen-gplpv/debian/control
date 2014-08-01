@@ -1,0 +1,17 @@
+Source: univention-xen-gplpv
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev, genisoimage
+Standards-Version: 3.8.2
+
+Package: univention-xen-gplpv
+Architecture: all
+Description: UCS - Xen GPLPV driver windows packages
+ This packages provides windows packages (msi) with proper
+ kernel mode code signed gplpv drivers.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

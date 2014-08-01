@@ -1,0 +1,11 @@
+!INCLUDE ..\common.inc
+TARGETNAME=waitnopendinginstallevents
+TARGETTYPE=PROGRAM
+
+
+TARGETLIBS=$(SDK_LIB_PATH)\cfgmgr32.lib
+UMTYPE=console
+UMENTRY=main
+UMBASE=0x400000
+SOURCES=waitnopendinginstallevents.c
+USE_MSVCRT=1

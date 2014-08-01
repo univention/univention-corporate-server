@@ -1,0 +1,79 @@
+[Version]
+Signature="$WINDOWS NT$"
+Class=USB
+ClassGuid={36FC9E60-C465-11CF-8056-444553540000}
+Provider=%XenGplPv%
+CatalogFile="xenusb.cat"
+DriverPackageType=PlugAndPlay
+DriverPackageDisplayName=%XenUSB.DRVDESC%
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[ControlFlags]
+ExcludeFromSelect=*
+
+[Manufacturer]
+%XenGplPv%=XenUSB,NT$ARCH$
+
+[XenUSB.NT$ARCH$]
+%XenUSB.DRVDESC%=XenUSB_Device, XEN\VUSB
+
+[XenUSB]
+%XenUSB.DRVDESC%=XenUSB_Device, XEN\VUSB
+
+[XenUSB_Device.NT]
+CopyFiles=XenUSB.CopyFiles
+AddReg=XenUSB_Device.Addreg
+
+[XenUSB_Device.Addreg]
+HKR,,EnumPropPages32,,"usbui.dll,USBControllerPropPageProvider"
+HKR,,Controller,1,01
+
+[XenUSB.CopyFiles]
+xenusb.sys
+
+[SourceDisksFiles]
+xenusb.sys=1
+
+[SourceDisksNames]
+1 = %DISK_NAME%
+
+[XenUSB_Device.NT.Services]
+AddService=XenUSB,2,XenUSB_Service
+
+[XenUSB_Service]
+DisplayName    = %XenUSB.SVCDESC%                            
+ServiceType    = 1
+StartType      = 3
+ErrorControl   = 1
+ServiceBinary  = %12%\xenusb.sys
+
+
+[DestinationDirs]
+XenUSB_Device_CoInstaller_CopyFiles = 11
+
+[XenUSB_Device.NT.CoInstallers]
+AddReg=XenUSB_Device_CoInstaller_AddReg
+CopyFiles=XenUSB_Device_CoInstaller_CopyFiles
+
+[XenUSB_Device_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+
+[XenUSB_Device_CoInstaller_CopyFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+
+[SourceDisksFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1
+
+[XenUSB_Device.NT.Wdf]
+KmdfService = XenUSB, XenUSB_wdfsect
+
+[XenUSB_wdfsect]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[Strings]
+XenGplPv = "Xen GPL PV Driver Developers"
+XenUSB.SVCDESC = "Xen PVpvUSB Device Driver"
+XenUSB.DRVDESC = "Xen PVUSB Device Driver"
+DISK_NAME = "Xen PVUSB Device Driver Install Disk"
