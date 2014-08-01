@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.76-23) unstable; urgency=low
+
+  * Depend on python-univention-lib (Bug #34092)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Aug 2014 11:24:52 +0200
+
 univention-directory-manager-modules (9.0.76-22) unstable; urgency=medium
 
   * Make default for _prevent_to_change_ad_properties dependent on ad/member
