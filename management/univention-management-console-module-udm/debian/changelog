@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.97-41) unstable; urgency=low
+
+  * Update AD member mode warning message for LDAP navigation
+    (Bug #34093)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Aug 2014 08:54:12 +0200
+
 univention-management-console-module-udm (4.0.97-40) unstable; urgency=low
 
   * Bug #34093: fix displaying of message for non-AD objects

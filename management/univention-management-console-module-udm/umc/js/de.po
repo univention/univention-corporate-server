@@ -555,6 +555,14 @@ msgstr ""
 "Neu erzeugte %s werden nur auf UCS-Systemen und nicht in der Active "
 "Directory Domäne vorhanden sein."
 
+#: umc/js/udm/wizards/FirstPageWizard.js:268
+msgid ""
+"Newly created LDAP objects of this type will only be available on UCS systems "
+"and not in the Active Directory domain."
+msgstr ""
+"Neu erzeugte LDAP-Objekte von diesem Typ werden nur auf UCS-Systemen und nicht in der Active "
+"Directory Domäne vorhanden sein."
+
 #: umc/js/udm/wizards/FirstPageWizard.js:433
 msgid "Next"
 msgstr "Weiter"
@@ -660,6 +668,14 @@ msgstr ""
 "Bitte benutzen Sie die Active Directory Administrations-Tools um neue "
 "Domänen-%s anzulegen."
 
+#: umc/js/udm/wizards/FirstPageWizard.js:269
+msgid ""
+"Please use the Active Directory administration utilities to create new "
+"domain LDAP objects of this type."
+msgstr ""
+"Bitte benutzen Sie die Active Directory Administrations-Tools um neue "
+"Domänen-LDAP-Objekte von diesem Typ anzulegen."
+
 #: umc/js/udm/DetailPage.js:288
 #, python-format
 msgid "Position: <i>%(path)s</i>"
@@ -669,6 +685,11 @@ msgstr "Position: <i>%(path)s</i>"
 #, python-format
 msgid "Press <i>Next</i> to create %s only available on UCS systems."
 msgstr "Klicken Sie auf <i>Weiter</i>, um %s nur für UCS-Systeme anzulegen."
+
+#: umc/js/udm/wizards/FirstPageWizard.js:270
+#, python-format
+msgid "Press <i>Next</i> to create an LDAP object of this type only available on UCS systems."
+msgstr "Klicken Sie auf <i>Weiter</i>, um neue LDAP-Objekt von diesem Typ nur für UCS-Systeme anzulegen."
 
 #: umc/js/udm.js:1577
 msgid "Primary Groups"

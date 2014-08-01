@@ -264,11 +264,19 @@ define([
 
 		_getActiveDirectoryWarningMessage: function() {
 			var objectName = this.getCurrentObjectTypeName();
-			return _('<b>Warning!</b>') + ' ' +
-			_('Newly created %s will only be available on UCS systems and not in the Active Directory domain.', objectName) + ' ' +
-			_('Please use the Active Directory administration utilities to create new domain %s.', objectName) + ' ' +
-			_('Press <i>Next</i> to create %s only available on UCS systems.', objectName) +
-			'<br/><br/>';
+			if (this.moduleFlavor == 'navigation') {
+				return _('<b>Warning!</b>') + ' ' +
+				_('Newly created LDAP objects of this type will only be available on UCS systems and not in the Active Directory domain.')  + ' ' +
+				_('Please use the Active Directory administration utilities to create new domain LDAP objects of this type.') + ' ' +
+				_('Press <i>Next</i> to create an LDAP object of this type only available on UCS systems.') +
+				'<br/><br/>';
+			} else {
+				return _('<b>Warning!</b>') + ' ' +
+				_('Newly created %s will only be available on UCS systems and not in the Active Directory domain.', objectName) + ' ' +
+				_('Please use the Active Directory administration utilities to create new domain %s.', objectName) + ' ' +
+				_('Press <i>Next</i> to create %s only available on UCS systems.', objectName) +
+				'<br/><br/>';
+			}
 		},
 
 		_updateActiveDirectoryWarningMessage: function() {
