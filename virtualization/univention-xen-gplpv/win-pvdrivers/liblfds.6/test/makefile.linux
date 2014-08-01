@@ -1,0 +1,81 @@
+##### paths #####
+BINDIR = bin
+INCDIR = ../inc
+LIBDIR = ../bin
+OBJDIR = obj
+SRCDIR = src
+
+##### misc #####
+QUIETLY = 1>nul 2>nul
+
+##### sources, objects and libraries #####
+BINNAME = test
+BINARY  = $(BINDIR)/$(BINNAME)
+SRCDIRS = .
+SOURCES = abstraction_cpu_count.c test_abstraction.c abstraction_thread_start.c abstraction_thread_wait.c benchmark_freelist.c benchmark_queue.c benchmark_ringbuffer.c benchmark_stack.c test_freelist.c main.c misc.c test_queue.c test_ringbuffer.c test_slist.c test_stack.c
+OBJECTS = $(patsubst %.c,$(OBJDIR)/%.o,$(notdir $(SOURCES)))
+SYSLIBS = -lpthread -lc -lm
+USRLIBS = -llfds
+
+##### CPU variants #####
+GCCARCH = $(shell uname -m)
+
+ifeq ($(GCCARCH),x86_64)
+  GCCARCH = core2
+endif
+
+ifeq ($(findstring arm,$(GCCARCH)),arm)
+  GCCARCH = armv6k
+endif
+
+##### tools #####
+MAKE    = make
+MFLAGS  = 
+
+DG      = gcc
+DGFLAGS = -MM -std=c99 -I"$(SRCDIR)" -I"$(INCDIR)" 
+
+CC      = gcc
+CFBASE  = -Wall -Wno-unknown-pragmas -std=c99 -march=$(GCCARCH) -c -I"$(SRCDIR)" -I"$(INCDIR)"
+CFREL   = -O2 -Wno-strict-aliasing
+CFDBG   = -O0 -g
+
+LD      = gcc
+LFBASE  = -L"$(LIBDIR)"
+LFREL   = -O2 -s
+LFDBG   = -O0 -g
+
+##### variants #####
+CFLAGS  = $(CFBASE) $(CFDBG)
+LFLAGS  = $(LFBASE) $(LFDBG)
+
+ifeq ($(MAKECMDGOALS),rel)
+  CFLAGS  = $(CFBASE) $(CFREL)
+  LFLAGS  = $(LFBASE) $(LFREL)
+endif
+
+##### search paths #####
+vpath %.c $(patsubst %,$(SRCDIR)/%:,$(SRCDIRS))
+
+##### implicit rules #####
+$(OBJDIR)/%.o : %.c
+	$(DG) $(DGFLAGS) $< >$(OBJDIR)/$*.d
+	$(CC) $(CFLAGS) -o $@ $<
+
+##### explicit rules #####
+$(BINARY) : $(OBJECTS)
+	$(LD) -o $(BINARY) $(LFLAGS) $(OBJECTS) $(USRLIBS) $(SYSLIBS)
+	chmod +x $(BINARY)
+
+##### phony #####
+.PHONY : clean rel dbg
+
+clean : 
+	@rm -f $(BINDIR)/$(BINNAME) $(OBJDIR)/*.o $(OBJDIR)/*.d
+
+rel : $(BINARY)
+dbg : $(BINARY)
+
+##### dependencies #####
+-include $(DEPENDS)
+
