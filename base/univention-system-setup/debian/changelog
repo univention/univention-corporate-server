@@ -1,3 +1,9 @@
+univention-system-setup (8.0.15-2) unstable; urgency=low
+
+  * Bug #34388: Updated links to appliance wizard 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 01 Aug 2014 11:51:56 +0200
+
 univention-system-setup (8.0.15-1) unstable; urgency=low
 
   Bug #34484:
