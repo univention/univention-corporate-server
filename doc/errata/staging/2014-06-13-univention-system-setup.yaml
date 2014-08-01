@@ -15,12 +15,8 @@ desc: |
       with suggested values to ease the configuration.
     - The UCS license activation can now be carried within the wizard.
     - UCS components from the App Center can be installed in the wizard.
-  * The univention-system-setup module process will not read the setup script
-    output from pipe anymore. Instead, the output is directly written to the log.
-    This way, running setup scripts will not terminate when the UMC module process
-    does.
-  * Successful request processing will no longer be reported before the actual
-    request processing is done.
+  * Running setup scripts will not terminate when the UMC module process
+    does, and also keep the UMC module process from timing out.
   * Added welcome page with instructions to set a root password
     before accessing the setup wizard for EC2 setups
 bug: [34484,34105,34388]
