@@ -1,3 +1,10 @@
+univention-lib (3.0.26-60) unstable; urgency=low
+
+  * added dependency to python-ldb, python-samba
+    and python-ldap (Bug #35520) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 01 Aug 2014 11:51:56 +0200
+
 univention-lib (3.0.26-59) unstable; urgency=low
 
   * check 'dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3',
