@@ -32,7 +32,7 @@
 
 #DEBHELPER#
 
-iso="Xen Windows drivers (gplpv 1.0.1092).iso"
+iso="Xen Windows drivers (gplpv 372).iso"
 
 pool="$(ucr get uvmm/pool/default/path)"
 

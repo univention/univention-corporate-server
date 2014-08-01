@@ -29,16 +29,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION = 1.0
-BUILD_NUMBER = 1092
+VERSION := $(shell dpkg-parsechangelog | sed -rne 's/^Version: (0\.)?([0-9.]+)\.[0-9]+-[0-9.]+$$/0.\2/p')
+BUILD_NUMBER := $(shell dpkg-parsechangelog | sed -rne 's/^Version: [0-9.]+\.([0-9]+)-[0-9.]+$$/\1/p')
 GPLPV_VERSION := ${VERSION}.${BUILD_NUMBER}
-REVISION = 85b99b9795a6
 
 binary binary-arch binary-indep build build-arch build-indep clean install install-arch install-indep:
 	dh $@
 
 override_dh_auto_build:
-	genisoimage -J -R -o "Xen Windows drivers (gplpv ${GPLPV_VERSION}).iso" msi-packages
+	genisoimage -J -R -o "Xen Windows drivers (gplpv ${BUILD_NUMBER}).iso" msi-packages
 
 get-orig-source: win-pvdrivers win-pvdrivers/build_number.bat win-pvdrivers/sign_config.bat
 .PHONY: win-pvdrivers
@@ -46,7 +45,9 @@ win-pvdrivers:
 	@echo "Cloning tag ${GPLPV_VERSION}..."
 	quilt pop -a || test $$? = 2
 	$(RM) -r "$@"
-	hg clone -r "${REVISION}" http://xenbits.xensource.com/ext/win-pvdrivers "$@"
+	hg clone -r "${GPLPV_VERSION}" http://xenbits.xensource.com/ext/win-pvdrivers "$@"
+	cd "$@" && hg rename ShutdownMon/Properties/AssemblyInfo.cs shutdownmon/Properties/AssemblyInfo.cs
+	cd "$@" && hg commit -m 'Fix file name case' -u packages@univention.de
 	quilt push -a
 win-pvdrivers/build_number.bat:
 	@echo "Setting build numer ${BUILD_NUMBER}..."
