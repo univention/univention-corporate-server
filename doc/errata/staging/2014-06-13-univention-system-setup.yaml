@@ -23,6 +23,4 @@ desc: |
     request processing is done.
   * Added welcome page with instructions to set a root password
     before accessing the setup wizard for EC2 setups
-  * Welcome page is now the apache default site when installing
-    univention-system-setup-boot
 bug: [34484,34105,34388]
