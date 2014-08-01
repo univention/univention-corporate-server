@@ -40,7 +40,7 @@ define([
 
 		_setConfiguredAttr: function(configured) {
 			var downloadText = '<p>' +
-			_('The MSI files are the installation files for the password service and can be started by double clicking on it.') + ' ' +
+			_('The MSI files are the installation files for the password service. The installation can be started on the Active Directory domain controller by double clicking on it.') + ' ' +
 			_('The package is installed in the <b>C:\\Windows\\UCS-AD-Connector</b> directory automatically. Additionally, the password service is integrated into the Windows environment as a system service, which means the service can be started automatically or manually.') +
 			'</p><p>' +
 			_('During a standard installation, the Windows firewall blocks the access to the AD Connection service. This must either be deactivated in System settings or Port 6670/TCP authorised.') +

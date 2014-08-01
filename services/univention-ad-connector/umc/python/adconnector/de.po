@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-adconnector\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-07-31 16:50+0200\n"
+"POT-Creation-Date: 2014-08-01 13:53+0200\n"
 "PO-Revision-Date: 2011-11-09 15:54+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,7 +44,9 @@ msgstr "Die Active Directory-Verbinungseinstellungen wurden gespeichert."
 
 #: umc/python/adconnector/__init__.py:469
 msgid "An error occurred while installing necessary software components."
-msgstr "Ein Fehler trat während der Installation von notwendigen Softwarekomponenten auf."
+msgstr ""
+"Ein Fehler trat während der Installation von notwendigen Softwarekomponenten "
+"auf."
 
 #: umc/python/adconnector/__init__.py:423
 #, python-format
@@ -97,7 +99,9 @@ msgstr "Einrichten der Zeitsynchronisation..."
 msgid ""
 "Could not connect to AD Server %s. Please verify that the specified address "
 "is correct."
-msgstr "Eine Verbindung zum AD-Server %s konnte nicht hergestellt werden. Bitte überprüfen Sie, ob die angegebene Adresse korrekt ist."
+msgstr ""
+"Eine Verbindung zum AD-Server %s konnte nicht hergestellt werden. Bitte "
+"überprüfen Sie, ob die angegebene Adresse korrekt ist."
 
 #: umc/python/adconnector/__init__.py:384
 #: umc/python/adconnector/__init__.py:501
@@ -105,9 +109,11 @@ msgstr "Eine Verbindung zum AD-Server %s konnte nicht hergestellt werden. Bitte 
 msgid ""
 "Could not connect to AD Server %s. Please verify that username and password "
 "are correct."
-msgstr "Eine Verbindung zum AD-Server %s konnte nicht hergestellt werden. Bitte überprüfen Sie Benutzername und Password."
+msgstr ""
+"Eine Verbindung zum AD-Server %s konnte nicht hergestellt werden. Bitte "
+"überprüfen Sie Benutzername und Password."
 
-#: umc/python/adconnector/__init__.py:534
+#: umc/python/adconnector/__init__.py:535
 #, python-format
 msgid ""
 "Could not establish an encrypted connection. Either \"%r\" is not reachable "
@@ -130,7 +136,9 @@ msgstr ""
 msgid ""
 "Could not synchronize the time between the UCS system and the Active "
 "Directory domain controller: %s"
-msgstr "Die Zeit zwischen dem UCS-System und dem Active Directory Domänencontroller konnte nicht synchronisiert werden: %s"
+msgstr ""
+"Die Zeit zwischen dem UCS-System und dem Active Directory Domänencontroller "
+"konnte nicht synchronisiert werden: %s"
 
 #: umc/python/adconnector/__init__.py:232
 #, python-format
@@ -141,7 +149,9 @@ msgstr "Erstellung eines neuen Zertifikats fehlgeschlagen (%s)"
 msgid ""
 "Failed to set the password of the UCS Administrator to the Active Directory "
 "Administrator password."
-msgstr "Das Passwort des UCS-Administrators konnte nicht auf das des Active Directory-Administrators gesetzt werden."
+msgstr ""
+"Das Passwort des UCS-Administrators konnte nicht auf das des Active "
+"Directory-Administrators gesetzt werden."
 
 #: umc/python/adconnector/__init__.py:491
 msgid "Join has been finished successfully."
@@ -185,7 +195,8 @@ msgstr "Starten/Stoppen des Active Directory Connectors ist fehlgeschlagen."
 #: umc/python/adconnector/__init__.py:375
 #: umc/python/adconnector/__init__.py:495
 msgid "The AD member mode can only be configured on a DC master server."
-msgstr "Der AD-Member-Modus kann nur auf einem DC-Master-System konfiguriert werden."
+msgstr ""
+"Der AD-Member-Modus kann nur auf einem DC-Master-System konfiguriert werden."
 
 #: umc/python/adconnector/__init__.py:381
 #: umc/python/adconnector/__init__.py:499
@@ -194,8 +205,11 @@ msgid ""
 "The domain name of the AD Server (%(ad_domain)s) does not match the local "
 "UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to "
 "setup a UCS system with the same domain name as the AD Server."
-msgstr "Der Domänenname des AD-Servers (%(ad_domain)s) unterscheidet sich von der lokalen UCS-Domäne ((%(ucs_domain)s)."
-"Für den AD-Member-Modus ist es notwendig, ein UCS-System mit dem gleichen Domänennamen wie der AD-Server aufzusetzen."
+msgstr ""
+"Der Domänenname des AD-Servers (%(ad_domain)s) unterscheidet sich von der "
+"lokalen UCS-Domäne ((%(ucs_domain)s).Für den AD-Member-Modus ist es "
+"notwendig, ein UCS-System mit dem gleichen Domänennamen wie der AD-Server "
+"aufzusetzen."
 
 #: umc/python/adconnector/__init__.py:311
 #, python-format
