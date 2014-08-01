@@ -1,9 +1,9 @@
 product: ucs
 release: "3.2"
-scope: ucs_3.2-0-errata3.2-2
+scope: ucs_3.2-0-errata3.2-3
 src: univention-virtual-machine-manager-daemon
-fix: 3.0.17-11.497.201407041252
-version: [2]
+fix: 
+version: [3]
 desc: |
   This update fixes the following issue:
   * The list of virtual machines now refreshes automatically in the UMC grid
