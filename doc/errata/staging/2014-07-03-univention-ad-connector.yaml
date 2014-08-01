@@ -2,15 +2,15 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-ad-connector
-fix: 8.0.17-61.431.201407311542
+fix: 8.0.17-63.433.201408011356
 version: [2]
 desc: |
   This update fixes the following issues:
   * Support for the ad/member mode has been added.
-  * In some cases a removed group membership was not synchronized
-    from OpenLDAP to Active Directory in write mode.
-  * The AD certificate chain is no longer checked if there is no 
-    root certificate configured.
+  * In some cases a removed group membership was not synchronized from OpenLDAP
+    to Active Directory in write mode.
+  * The AD certificate chain is no longer checked if there is no root
+    certificate configured.
   * Kerberos support has been added to the UCS AD connector.
   * A script has been added for renaming groups and users with Well Known SIDs
     to the corresponding name in the AD domain. This script is for internal use
