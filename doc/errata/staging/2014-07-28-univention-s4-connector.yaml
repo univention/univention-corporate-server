@@ -2,8 +2,9 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-s4-connector
-fix: 8.0.33-66.491.201407281831
+fix: 8.0.33-69.494.201407301841
 version: [2]
 desc: |
     * The joinscript of univention-s4-connector was adjusted to abort if the domain is in AD member mode.
-bug: [35500]
+    * The command line script univention-ad-takeover has been removed since the UMC module is more recent.
+bug: [35500,35514]
