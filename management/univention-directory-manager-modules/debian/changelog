@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.76-24) unstable; urgency=low
+
+  * Catch univention.lib.admember import error (Bug #34092)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Aug 2014 13:49:25 +0200
+
 univention-directory-manager-modules (9.0.76-23) unstable; urgency=low
 
   * Depend on python-univention-lib (Bug #34092)
