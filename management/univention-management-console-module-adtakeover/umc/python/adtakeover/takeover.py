@@ -71,6 +71,7 @@ from univention.management.console.log import MODULE
 import univention.management.console as umc
 import ConfigParser
 import univention.lib.admember
+from univention.config_registry.interfaces import Interfaces
 from samba import Ldb
 
 ucr = univention.config_registry.ConfigRegistry()
@@ -78,10 +79,6 @@ ucr.load()
 
 # load UDM modules
 udm_modules.update()
-try:
-	univention.admin.handlers.disable_ad_restrictions(disable=False)
-except AttributeError:
-	ud.debug(ud.LDAP, ud.INFO, 'univention.admin.handlers.disable_ad_restrictions is not available')
 
 LOGFILE_NAME = "/var/log/univention/ad-takeover.log"
 BACKUP_DIR = "/var/univention-backup/ad-takeover"
@@ -91,6 +88,11 @@ SYSVOL_PATH = os.path.join(SAMBA_DIR, 'sysvol')
 
 logging.basicConfig(filename=LOGFILE_NAME, format='%(asctime)s %(message)s', level=logging.DEBUG)
 log = logging.getLogger()
+
+try:
+	univention.admin.handlers.disable_ad_restrictions(disable=False)
+except AttributeError:
+	log.info('univention.admin.handlers.disable_ad_restrictions is not available')
 
 DEVNULL = open(os.devnull, 'w')
 
@@ -277,6 +279,7 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	progress.percentage(2)
 	progress._scale = 18 - progress._percentage
 	takeover.join_AD(progress)
+	state.set_joined()
 	progress.headline(_('Starting Samba'))
 	progress.percentage(18)
 	takeover.post_join_tasks_and_start_samba_without_drsuapi()
@@ -296,6 +299,10 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	progress.headline(_('Rebuilding IDMAP'))
 	progress.percentage(98)
 	takeover.rebuild_idmap()
+	progress.message(_('Reset sysvol ACLs'))
+	progress.percentage(99)
+	takeover.reset_sysvol_ntacls()
+	takeover.set_nameserver1_to_local_default_ip()
 	progress.percentage(100)
 	state.set_sysvol()
 
@@ -387,7 +394,7 @@ def set_status_done():
 class AD_Takeover_State():
 	def __init__(self):
 		self.statefile = os.path.join(SAMBA_PRIVATE_DIR,".adtakeover")
-		self.stateorder = ("start", "sysvol", "takeover", "finished", "done")
+		self.stateorder = ("start", "joined", "sysvol", "takeover", "finished", "done")
 
 	def _set_persistent_state(self, state):
 		with open(self.statefile, "w") as f:
@@ -433,6 +440,9 @@ class AD_Takeover_State():
 
 	def set_start(self):
 		self._save_state("start")
+
+	def set_joined(self):
+		self._save_state("joined")
 
 	def set_sysvol(self):
 		self._save_state("sysvol")
@@ -814,6 +824,7 @@ class AD_Takeover():
 		if univention.lib.admember.is_domain_in_admember_mode():
 			univention.lib.admember.remove_admember_service_from_localhost()
 			univention.lib.admember.revert_ucr_settings()
+			univention.lib.admember.revert_connector_settings()
 			run_and_output_to_log(["univention-config-registry", "unset",
 				"connector/s4/listener/disabled",
 				], log.debug)
@@ -823,7 +834,7 @@ class AD_Takeover():
 				], log.debug)
 			run_and_output_to_log(["/etc/init.d/univention-ad-connector", "stop"], log.debug)
 			run_and_output_to_log(["/etc/init.d/univention-directory-listener", "crestart"], log.debug)
-			## And now run univention-samba4.inst pre-provision setup (.adtakeover status is "start"), to disable slapd on port 389
+			## And now run 96univention-samba4.inst pre-provision setup (.adtakeover status is "start"), to disable slapd on port 389, and 97uinvention-s4-connector.inst
 			returncode = run_and_output_to_log(["univention-run-join-scripts"], log.debug)
 
 	def join_AD(self, progress):
@@ -957,6 +968,10 @@ class AD_Takeover():
 		run_and_output_to_log(["/etc/init.d/nscd", "restart"], log.debug)
 
 	def post_join_tasks_and_start_samba_without_drsuapi(self):
+
+		## Now run the Joinscript again (AD Member starts at VERSION=1, regular UCS is done already)
+		returncode = run_and_output_to_log(["univention-run-join-scripts", "--run-scripts", "96univention-samba4.inst"], log.debug)
+
 		## create backup dir
 		if not os.path.exists(BACKUP_DIR):
 			os.mkdir(BACKUP_DIR)
@@ -1056,7 +1071,7 @@ class AD_Takeover():
 		for container_dn in container_list:
 			rdn_list = ldap.explode_dn(container_dn)
 			(ou_type, ou_name) = rdn_list.pop(0).split('=', 1)
-			position = string.replace(','.join(rdn_list).lower(), self.ucr['connector/s4/ldap/base'].lower(), self.ucr['ldap/base'].lower())
+			position = string.replace(','.join(rdn_list).lower(), self.ucr['samba4/ldap/base'].lower(), self.ucr['ldap/base'].lower())
 
 			udm_type = None
 			if ou_type == "OU":
@@ -1278,10 +1293,10 @@ class AD_Takeover():
 		run_and_output_to_log(["/usr/share/univention-s4-connector/msgpo.py", "--write2ucs"], log.debug)
 
 		### rotate S4 connector log and start the S4 Connector
-		## careful: the postrotate task restarts the connector!
+		## careful: the postrotate task used to "restart" the connector!
 		run_and_output_to_log(["logrotate", "-f", "/etc/logrotate.d/univention-s4-connector"], log.debug)
 
-		## Ok, just in case, start the Connector explicitely
+		## Just in case, start the Connector explicitly
 		log.info("Starting S4 Connector")
 		returncode = run_and_output_to_log(["/etc/init.d/univention-s4-connector", "start"], log.debug)
 		if returncode != 0:
@@ -1310,6 +1325,21 @@ class AD_Takeover():
 		## Save AD server IP for Phase III
 		run_and_output_to_log(["univention-config-registry", "set", "univention/ad/takeover/ad/server/ip=%s" % (self.ad_server_ip) ], log.debug)
 
+	def set_nameserver1_to_local_default_ip(self):
+		default_ip = Interfaces().get_default_ip_address().ip
+		if default_ip:
+			run_and_output_to_log(["univention-config-registry", "set", "nameserver1=%s" % default_ip], log.debug)
+		else:
+			msg=[]
+			msg.append("Warning: get_default_ip_address failed, using 127.0.0.1 as fallback")
+			log.warn("\n".join(msg))
+			run_and_output_to_log(["univention-config-registry", "set", "nameserver1=127.0.0.1"], log.debug)
+
+	def reset_sysvol_ntacls(self):
+		## Re-Set NTACLs from nTSecurityDescriptor on sysvol policy directories
+		## This is necessary as 96univention-samba4.inst hasn't run yet at this point in AD Member mode
+		## It's required for robocopy access
+		subprocess.call(["samba-tool", "ntacl", "sysvolreset"], stdout=DEVNULL, stderr=DEVNULL)
 
 
 class AD_Takeover_Finalize():
@@ -1605,7 +1635,6 @@ class AD_Takeover_Finalize():
 
 	def reconfigure_nameserver_for_samba_backend(self):
 		## Resolve against local Bind9
-		## use OpenLDAP backend until the S4 Connector has run
 		if "nameserver1/local" in self.ucr:
 			nameserver1_orig = self.ucr["nameserver1/local"]
 			run_and_output_to_log(["univention-config-registry", "set", "nameserver1=%s" % nameserver1_orig], log.debug)

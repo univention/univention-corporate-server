@@ -38,6 +38,7 @@ import apt
 import socket
 import sys
 import tempfile
+import ipaddr
 from datetime import datetime, timedelta
 from samba.dcerpc import nbt
 from samba.net import Net
@@ -243,65 +244,86 @@ def remove_install_univention_samba(info_handler=info_handler, step_handler=None
 
 	return True
 
-def lookup_adds_dc(ad_server=None, realm=None, ucr=None):
+
+def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 	'''CLDAP lookup'''
 
 	ud.debug(ud.MODULE, ud.PROCESS, "Lookup ADDS DC")
 
 	ad_domain_info = {}
-
-	if not ad_server and not realm:
-		if not ucr:
-			ucr = univention.config_registry.ConfigRegistry()
-			ucr.load()
-
-		realm = ucr.get("kerberos/realm")
-
-	if not ad_server and not realm:
-		return ad_domain_info
-
+	ips = []
 	lp = LoadParm()
 	lp.load('/dev/null')
+	if not ucr:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+	if not ad_server:
+		ad_server = ucr.get('domainname')
 
-	if ad_server:
-		try:
-			net = Net(creds=None, lp=lp)
-			cldap_res = net.finddc(address=ad_server,
-				flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
-		except RuntimeError as ex:
-			raise failedADConnect(["Connection to AD Server %s failed" % (ad_server,), ex.args[0]])
-	elif realm:
-		try:
-			net = Net(creds=None, lp=lp)
-			cldap_res = net.finddc(domain=realm,
-				flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
-			ad_server = cldap_res.pdc_dns_name
-		except RuntimeError as ex:
-			ud.debug(ud.MODULE, ud.ERROR, "No AD Server found for realm %s." % (realm,))
-			return ad_domain_info
+	# get ip addresses
+	try:
+		ipaddr.IPAddress(ad_server)
+		ips.append(ad_server)
+	except ValueError:
+		dig_sources = []
+		for source in ['dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3', 'nameserver1', 'nameserver2', 'nameserver3']:
+			if source in ucr:
+				dig_sources.append("@%s" % ucr[source])
+		for dig_source in dig_sources:
+			try:
+				cmd = ['dig', dig_source, ad_server, '+short']
+				ud.debug(ud.MODULE, ud.PROCESS, "running %s" % cmd)
+				p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+				stdout, stderr = p1.communicate()
+				ud.debug(ud.MODULE, ud.PROCESS, "stdout: %s" % stdout)
+				ud.debug(ud.MODULE, ud.PROCESS, "stderr: %s" % stderr)
+				if p1.returncode == 0:
+					for i in stdout.split('\n'):
+						if i:
+							ips.append(i)
+				if ips:
+					break
+			except OSError as ex:
+				ud.debug(ud.MODULE, ud.ERROR, "%s failed: %s" % (cmd, ex.args[1]))
+
+	# no ip addresses
+	if not ips:
+		raise failedADConnect(["Connection to AD Server %s failed" % (ad_server)])
 
 	ad_server_ip = None
-	if cldap_res.pdc_dns_name:
-		try:
-			p1 = subprocess.Popen(['net', 'lookup', cldap_res.pdc_dns_name],
-				close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-			stdout, stderr = p1.communicate()
-			ad_server_ip = stdout.strip()
-		except OSError as ex:
-			ud.debug(ud.MODULE, ud.INFO, "net lookup %s failed: %s" % (cldap_res.pdc_dns_name, ex.args[1]))
+	for ip in ips:
+		try: # check cldap
+			net = Net(creds=None, lp=lp)
+			cldap_res = net.finddc(address=ip, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
+		except RuntimeError as ex:
+			ud.debug(ud.MODULE, ud.ERROR, "Connection to AD Server %s failed: %s" % (ip, ex.args[0]))
+		else:
+			if not check_dns:
+				ad_server_ip = ip
+				break
+			try: # check dns
+				cmd = ['dig', '@%s' % ip]
+				ud.debug(ud.MODULE, ud.PROCESS, "running %s" % cmd)
+				p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+				stdout, stderr = p1.communicate()
+				ud.debug(ud.MODULE, ud.PROCESS, "stdout: %s" % stdout)
+				ud.debug(ud.MODULE, ud.PROCESS, "stderr: %s" % stderr)
+				if p1.returncode == 0: # yes, this is also a DNS server, we are good
+					ad_server_ip = ip
+					break
+			except OSError as ex:
+				ud.debug(ud.MODULE, ud.ERROR, "%s failed: %s" % (cmd, ex.args[1]))
 
-	if not ad_server_ip:
-		ad_server_ip = ad_server
+	if ad_server_ip is None:
+		raise failedADConnect(["Connection to AD Server %s failed" % (ad_server)])
 
 	ad_ldap_base = None
 	remote_ldb = ldb.Ldb()
-
-	if ad_server_ip:
-		try:
-			remote_ldb.connect(url="ldap://%s" % ad_server_ip)
-			ad_ldap_base = str(remote_ldb.get_root_basedn())
-		except ldb.LdbError as ex:
-			ud.debug(ud.MODULE, ud.PROCESS, "LDAP connect to %s failed: %s" % (ad_server_ip, ex.args[1]))
+	try:
+		remote_ldb.connect(url="ldap://%s" % ad_server_ip)
+		ad_ldap_base = str(remote_ldb.get_root_basedn())
+	except ldb.LdbError as ex:
+		raise failedADConnect(["Could not detect LDAP base on %s: %s" % (ad_server, ex.args[1])])
 
 	ad_domain_info = {
 		"Forest": cldap_res.forest,
@@ -353,7 +375,7 @@ def invoke_service(service, cmd):
 		ud.debug(ud.MODULE, ud.ERROR, "invoke-rc.d %s %s failed (%d)" % (service, cmd, p1.returncode,))
 		return
 
-	ud.debug(ud.MODULE, ud.PROCESS, "invoke-rc.d %s %s: %s" % (cmd, service, stdout)) 
+	ud.debug(ud.MODULE, ud.PROCESS, "invoke-rc.d %s %s: %s" % (service, cmd, stdout)) 
 
 
 def time_sync(ad_ip, tolerance=180, critical_difference=360):
@@ -431,8 +453,22 @@ def set_nameserver(server_ips, ucr=None):
 		if ucr.get(var):
 			univention.config_registry.handler_unset([var])
 
-def rename_well_known_sid_objects():
-	res = subprocess.call('/usr/share/univention-ad-connector/scripts/well-known-sid-object-rename')
+def rename_well_known_sid_objects(username, password, ucr=None):
+	if not ucr:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+
+	ud.debug(ud.MODULE, ud.PROCESS, "Matching well known object names")
+
+	binddn = '%s@%s' % (username, ucr.get('kerberos/realm'))
+	p1 = subprocess.Popen(['/usr/share/univention-ad-connector/scripts/well-known-sid-object-rename', '--binddn', binddn, '--bindpwd', password],
+		stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+		close_fds=True)
+	stdout, stderr = p1.communicate()
+	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
+	if p1.returncode != 0:
+		ud.debug(ud.MODULE, ud.ERROR, "well-known-sid-object-rename failed with %d (%s)" % (p1.returncode, stderr))
+		raise connectionFailed()
 
 def prepare_dns_reverse_settings(ad_server_ip, ad_domain_info):
 	# For python-ldap / GSSAPI / AD we need working reverse looksups
@@ -513,6 +549,22 @@ def prepare_connector_settings(username, password, ad_domain_info, ucr=None):
 	ud.debug(ud.MODULE, ud.PROCESS, "Setting UCR variables: %s" % ucr_set)
 	univention.config_registry.handler_set(ucr_set)
 
+def revert_connector_settings(ucr=None):
+
+	ud.debug(ud.MODULE, ud.PROCESS, "Revert connector settings")
+
+	# TODO something else?
+	ucr_unset = [
+		u'connector/ad/ldap/host',
+		u'connector/ad/ldap/base',
+		u'connector/ad/ldap/binddn',
+		u'connector/ad/ldap/bindpw',
+		u'connector/ad/ldap/kerberos',
+		u'connector/ad/mapping/syncmode',
+		u'connector/ad/mapping/user/ignorelist',
+	]
+	ud.debug(ud.MODULE, ud.PROCESS, "Unsetting UCR variables: %s" % ucr_unset)
+	univention.config_registry.handler_unset(ucr_unset)
 
 def disable_local_samba4():
 
@@ -538,12 +590,12 @@ def run_samba_join_script(username, password, ucr=None):
 	my_env = os.environ
 	my_env['SMB_CONF_PATH'] = '/etc/samba/smb.conf'
 	p1 = subprocess.Popen(['/usr/lib/univention-install/26univention-samba.inst', '--binddn', binddn, '--bindpwd', password],
-		close_fds=True, env=my_env)
+		close_fds=True, env=my_env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	stdout, stderr = p1.communicate()
+	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
 	if p1.returncode != 0:
 		ud.debug(ud.MODULE, ud.ERROR, "26univention-samba.inst failed with %d (%s)" % (p1.returncode, stderr))
 		raise sambaJoinScriptFailed()
-	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
 
 
 def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
@@ -566,10 +618,10 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 	cmd += ['nsupdate', '-v', '-g', fd.name]
 	p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	stdout, stderr = p1.communicate()
+	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
 	if p1.returncode:
 		ud.debug(ud.MODULE, ud.ERROR, "%s failed with %d (%s)" % (cmd, p1.returncode, stderr))
 		raise failedToAddServiceRecordToAD("failed to add SRV record to %s" % ad_ip)
-	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
 	os.unlink(fd.name)
 
 
@@ -628,11 +680,13 @@ def configure_ad_member(ad_server_ip, username, password):
 
 	remove_install_univention_samba()
 
+	prepare_connector_settings(username, password, ad_domain_info)
+
+	rename_well_known_sid_objects(username, password)
+
 	run_samba_join_script(username, password)
 
 	add_domaincontroller_srv_record_in_ad(ad_server_ip)
-
-	prepare_connector_settings(username, password, ad_domain_info)
 
 	
 	if server_supports_ssl(server=ad_domain_info["DC DNS Name"]):
@@ -640,8 +694,6 @@ def configure_ad_member(ad_server_ip, username, password):
 	else:
 		ud.debug(ud.MODULE, ud.WARN, "WARNING: ssl is not supported")
 		disable_ssl()
-
-	rename_well_known_sid_objects()
 
 	start_service('univention-ad-connector')
 

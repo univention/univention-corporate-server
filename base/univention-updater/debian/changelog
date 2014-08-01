@@ -1,9 +1,3 @@
-univention-updater (9.0.42-1) unstable; urgency=low
-
-  * Bug #35508: adjust postup/preup.sh
-
- -- Florian Best <best@univention.de>  Tue, 29 Jul 2014 14:37:10 +0200
-
 univention-updater (9.0.41-4) unstable; urgency=medium
 
   * Transfer UCS component installation status in APT user agent (Bug #33807)

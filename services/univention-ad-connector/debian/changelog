@@ -1,3 +1,139 @@
+univention-ad-connector (8.0.17-62) unstable; urgency=medium
+
+  Bug #35090:
+  * added piwik topic publishing
+  * adjusted texts and added translations
+  * pre-select AD member mode on start page
+  * hide start/stop buttons for password service + fixed backend function
+  * added missing images
+  * enable 'cancel' button
+  * fixed some internal page navigation logic
+  * added hint to allow port for password sync on windows
+  * added target="_blank" for UMCP based download links on IE
+  * automatically advance in (connector config) wizard after uploading AD
+    root certificate
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 31 Jul 2014 18:57:58 +0200
+
+univention-ad-connector (8.0.17-61) unstable; urgency=low
+
+  * don't test_connection in upload_certificate if
+    connector settings are not valid Bug #35090 
+
+ -- Felix Botner <botner@univention.de>  Thu, 31 Jul 2014 15:40:11 +0200
+
+univention-ad-connector (8.0.17-60) unstable; urgency=low
+
+  * use ip for server_supports_ssl Bug #35090 
+
+ -- Felix Botner <botner@univention.de>  Thu, 31 Jul 2014 15:12:52 +0200
+
+univention-ad-connector (8.0.17-59) unstable; urgency=medium
+
+  Bug #35090:
+  * Automatically add a host static entry in the connector configuration
+  * Added translations [WIP]
+  * Fixed jslint errors, removed unneeded parts
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 31 Jul 2014 14:13:22 +0200
+
+univention-ad-connector (8.0.17-58) unstable; urgency=medium
+
+  * Script well-known-sid-object-rename (Bug #35507):
+    * Improved logging (also to stdout)
+    * Improved docstrings
+    * Avoid shady ucr hack
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 15:41:31 +0200
+
+univention-ad-connector (8.0.17-57) unstable; urgency=low
+
+  * Bug #35090: Improve certificate/SSL handling
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 30 Jul 2014 15:28:49 +0200
+
+univention-ad-connector (8.0.17-56) unstable; urgency=low
+
+  * disable_ssl() in admember_join (Bug #35090)
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Jul 2014 13:20:42 +0200
+
+univention-ad-connector (8.0.17-55) unstable; urgency=low
+
+  * Set univentionObjectFlag to synced for cn and ou (Bug #35091)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 30 Jul 2014 12:43:02 +0200
+
+univention-ad-connector (8.0.17-54) unstable; urgency=medium
+
+  * Script well-known-sid-object-rename (Bug #35507):
+    * disable connector/ad/ldap/ssl as well for the scope of the script
+    * correctly handle CONFIGBASENAME in ucr tweak for kerberos and ssl
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 10:28:35 +0200
+
+univention-ad-connector (8.0.17-53) unstable; urgency=medium
+
+  Bug #35090
+  * finished integration of wizard path for connector
+  * removed function lookup_ad_domain_info()
+  * moved download links into separate widget DownloadInfo
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Jul 2014 21:01:22 +0200
+
+univention-ad-connector (8.0.17-52) unstable; urgency=medium
+
+  Bug #35090 [WIP]:
+  * fixed problem with reverting in if case after exception handling
+  * rename syncmode to mode in wizard (to avoid naming collision)
+  * guess AD domain language ('de' or 'en')
+  * further integration of connector wizard
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Jul 2014 19:37:40 +0200
+
+univention-ad-connector (8.0.17-51) unstable; urgency=medium
+
+  * Some fixes (Bug #35507)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jul 2014 19:26:45 +0200
+
+univention-ad-connector (8.0.17-50) unstable; urgency=medium
+
+  * Updated translations (Bug #35507)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jul 2014 18:41:56 +0200
+
+univention-ad-connector (8.0.17-49) unstable; urgency=medium
+
+  * admember.prepare_connector_settings has to be done before
+    running admember.rename_well_known_sid_objects (Bug #35507)
+  * Run admember.revert_connector_settings in case of error
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jul 2014 18:22:31 +0200
+
+univention-ad-connector (8.0.17-48) unstable; urgency=medium
+
+  * Script well-known-sid-object-rename (Bug #35507)
+    * Add options --binddn and --bindpw to override connector/ad/ldap/bind*
+    * Mask connector/ad/ldap/kerberos in script if true to avoid cached creds
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jul 2014 18:17:06 +0200
+
+univention-ad-connector (8.0.17-47) unstable; urgency=medium
+
+  Bug #35090 [WIP]:
+  * integration of connector wizard path
+  * clean up
+  * adaptation of backend method for join into AD
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Jul 2014 17:57:26 +0200
+
+univention-ad-connector (8.0.17-46) unstable; urgency=low
+
+  * Bug #35090 [WIP]: Remove debug code
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 29 Jul 2014 17:20:14 +0200
+
 univention-ad-connector (8.0.17-45) unstable; urgency=low
 
   * Bug #35090 [WIP]: Send status of running ad connector service

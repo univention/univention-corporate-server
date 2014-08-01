@@ -1,3 +1,64 @@
+univention-management-console-module-adtakeover (1.0.10-39) unstable; urgency=medium
+
+  * No need to make a fuss about the first parts of the S4 Connector
+    joinscript, we simply run it once before samba DC is initialized.
+    (Bug #35346).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 18:39:41 +0200
+
+univention-management-console-module-adtakeover (1.0.10-38) unstable; urgency=medium
+
+  * Fix some comments (Bug #35346).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 18:13:25 +0200
+
+univention-management-console-module-adtakeover (1.0.10-37) unstable; urgency=medium
+
+  * In AD Member mode we need to run the first parts of the S4 Connector
+    joinscript before starting and waiting for the sync.
+  * In AD Member mode we should let the Samba4 joinscript run to the end
+    after the initial join (Bug #35346).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 18:02:25 +0200
+
+univention-management-console-module-adtakeover (1.0.10-36) unstable; urgency=medium
+
+  * Don't run all remaining joinscripts during disable_admember_mode
+  * Don't log the error messages of the initial ntacl sysvolreset (Bug #35346)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 16:12:37 +0200
+
+univention-management-console-module-adtakeover (1.0.10-35) unstable; urgency=medium
+
+  * set_nameserver1_to_local_default_ip before robocopy and
+    perform reconfigure_nameserver_for_samba_backend later as usual.
+  * Update translations (Bug #35346).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 15:13:57 +0200
+
+univention-management-console-module-adtakeover (1.0.10-34) unstable; urgency=medium
+
+  * Set nameserver1 to config_registry.Interfaces().get_default_ip_address()
+    after initial domain join, instead of reverting to nameserver1/local,
+    which would be the wrong choice when coming from AD Member (Bug #35346).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 14:54:57 +0200
+
+univention-management-console-module-adtakeover (1.0.10-33) unstable; urgency=medium
+
+  * perform a reset_sysvol_ntacls before robocopy, required when coming from
+    AD Member
+  * call revert_connector_settings when coming from AD Member (Bug #35346)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 14:41:13 +0200
+
+univention-management-console-module-adtakeover (1.0.10-32) unstable; urgency=medium
+
+  * Reconfigure the nameserver1 back to the local system before the robocopy.
+    This should remove a login delay in case of an UMC timeout (Bug #35346)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 14:14:46 +0200
+
 univention-management-console-module-adtakeover (1.0.10-31) unstable; urgency=medium
 
   * Fix Ldb connection check against a native AD failing with FQDN given

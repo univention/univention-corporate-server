@@ -1,14 +1,15 @@
-univention-management-console-module-udm (4.0.99-1) unstable; urgency=low
+univention-management-console-module-udm (4.0.97-41) unstable; urgency=low
 
-  * Bug #34093: fix displaying of message for non-AD objects (merge svn52418)
+  * Update AD member mode warning message for LDAP navigation
+    (Bug #34093)
 
- -- Florian Best <best@univention.de>  Thu, 31 Jul 2014 08:52:47 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Aug 2014 08:54:12 +0200
 
-univention-management-console-module-udm (4.0.98-1) unstable; urgency=low
+univention-management-console-module-udm (4.0.97-40) unstable; urgency=low
 
-  * version bump; Bug #34093
+  * Bug #34093: fix displaying of message for non-AD objects
 
- -- Florian Best <best@univention.de>  Wed, 30 Jul 2014 15:50:02 +0200
+ -- Florian Best <best@univention.de>  Thu, 31 Jul 2014 08:02:24 +0200
 
 univention-management-console-module-udm (4.0.97-39) unstable; urgency=low
 

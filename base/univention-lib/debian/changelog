@@ -1,3 +1,59 @@
+univention-lib (3.0.26-59) unstable; urgency=low
+
+  * check 'dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3',
+    'nameserver1', 'nameserver2' and 'nameserver3' in
+    lookup_adds_dc() (Bug #35520)
+
+ -- Felix Botner <botner@univention.de>  Fri, 01 Aug 2014 09:18:43 +0200
+
+univention-lib (3.0.26-58) unstable; urgency=low
+
+  * fixed lookup_adds_dc (Bug #35520) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 31 Jul 2014 15:03:24 +0200
+
+univention-lib (3.0.26-57) unstable; urgency=low
+
+  * added debug output for samba_join (Bug #35520) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Jul 2014 16:27:27 +0200
+
+univention-lib (3.0.26-56) unstable; urgency=low
+
+  * raise exception if no ips could be found in
+    lookup_adds_dc() (Bug #35520) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Jul 2014 13:19:50 +0200
+
+univention-lib (3.0.26-55) unstable; urgency=low
+
+  * added python-ipaddr and dnsutils to the 
+    package dependencies (Bug #35520)
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Jul 2014 12:56:04 +0200
+
+univention-lib (3.0.26-54) unstable; urgency=low
+
+  * check cldap and dns in lookup_adds_dc() (Bug #35520) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Jul 2014 12:53:21 +0200
+
+univention-lib (3.0.26-53) unstable; urgency=medium
+
+  * Adjust configure_ad_member to be more similar to the UMC module
+    (Bug #35507)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jul 2014 19:41:39 +0200
+
+univention-lib (3.0.26-52) unstable; urgency=medium
+
+  * admember.rename_well_known_sid_objects needs Administrator credentials
+    since it is called before the univention-samba join (Bug #35507)
+  * Add admember.revert_connector_settings
+  * minor logging fixes
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jul 2014 18:13:36 +0200
+
 univention-lib (3.0.26-51) unstable; urgency=low
 
   * set ldap/sasl/secprops/maxssf=128 in enable_ssl

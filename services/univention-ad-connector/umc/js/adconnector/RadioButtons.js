@@ -39,12 +39,12 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/LabelPane"
 ], function(declare, lang, array, RadioButton, tools, _FormWidgetMixin, ContainerWidget, LabelPane) {
-	return declare("umc.modules.adconnector2.RadioButtons", [ ContainerWidget, _FormWidgetMixin ], {
+	return declare("umc.modules.adconnector.RadioButtons", [ ContainerWidget, _FormWidgetMixin ], {
 		value: null,
 
 		staticValues: null,
 
-		_container: null,
+		_radioButtons: null,
 
 		name: null,
 
@@ -62,11 +62,13 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
-			array.forEach(this.staticValues, lang.hitch(this, function(ientry) {
+			this._radioButtons = [];
+			array.forEach(this.staticValues, function(ientry, i) {
 				var radioButton = new RadioButton({
 					name: this.name,
 					value: ientry.id
 				});
+				this._radioButtons[i] = radioButton;
 				var labelPane = new LabelPane({
 					content: radioButton,
 					label: ientry.label
@@ -79,7 +81,19 @@ define([
 					}
 				}));
 				this.addChild(labelPane);
-			}));
+			}, this);
+		},
+
+		_setValueAttr: function(value) {
+			array.some(this.staticValues, function(ientry, i) {
+				if (value == ientry.id) {
+					this._radioButtons[i].set('checked', true);
+					this._set('value', value);
+
+					// break loop
+					return true;
+				}
+			}, this);
 		},
 
 		postCreate: function() {

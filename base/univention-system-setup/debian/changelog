@@ -1,8 +1,11 @@
-univention-system-setup (7.0.70-1) unstable; urgency=low
+univention-system-setup (7.0.69-44) unstable; urgency=medium
 
-  * Bug #34484: merge svn 52406 svn 52411
+  Bug #34484:
+  * Improved handling of DHCP network values
+  * Fixed typos
+  * Fixed jslint errors
 
- -- Florian Best <best@univention.de>  Thu, 31 Jul 2014 07:19:13 +0200
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 31 Jul 2014 11:21:58 +0200
 
 univention-system-setup (7.0.69-43) unstable; urgency=medium
 

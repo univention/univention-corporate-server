@@ -31,13 +31,12 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/_base/array",
+	"dojo/topic",
 	"umc/tools",
 	"umc/widgets/Module",
 	"./adconnector/SetupWizard",
 	"./adconnector/ConfigPage",
-	"umc/i18n!umc/modules/adconnector"
-], function(declare, lang, array, tools, Module, SetupWizard, ConfigPage, _) {
+], function(declare, lang, topic, tools, Module, SetupWizard, ConfigPage) {
 	return declare("umc.modules.adconnector", Module, {
 
 		standbyOpacity: 1.00,
@@ -54,10 +53,12 @@ define([
 					this.wizard = new SetupWizard({});
 					this.addChild(this.wizard);
 					this.wizard.on('Finished', lang.hitch(this, function() {
-							topic.publish('/umc/tabs/close', this);
+						topic.publish('/umc/actions', 'adconnector', 'wizard', 'finish');
+						topic.publish('/umc/tabs/close', this);
 					}));
 					this.wizard.on('Cancel', lang.hitch(this, function() {
-							topic.publish('/umc/tabs/close', this);
+						topic.publish('/umc/actions', 'adconnector', 'wizard', 'cancel');
+						topic.publish('/umc/tabs/close', this);
 					}));
 				}
 				else {

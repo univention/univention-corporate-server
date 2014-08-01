@@ -42,7 +42,9 @@ from univention.management.console.modules.sanitizers import StringSanitizer
 from univention.management.console.modules import UMC_CommandError
 
 import notifier.popen
+from ldap import explode_rdn
 
+from contextlib import contextmanager
 import fnmatch
 import psutil
 import os.path
@@ -50,13 +52,51 @@ import subprocess
 import time
 import pipes
 import traceback
-import sys
 
 _ = Translation('univention-management-console-module-adconnector').translate
 
 FN_BINDPW = '/etc/univention/connector/ad/bindpw'
 DO_NOT_CHANGE_PWD = '********************'
 
+class ADNotAvailable(Exception):
+	pass
+
+@contextmanager
+def ucr_rollback(ucr, variables):
+	ucr.load()
+	old = {}
+	for variable in variables:
+		old[variable] = ucr.get(variable)
+	try:
+		yield
+	except:
+		univention.config_registry.frontend.ucr_update(ucr, old)
+		raise
+
+def test_connection():
+	'''Search a query that should never fail: RDN of connector/ad/ldap/base'''
+	base = ucr.get('connector/ad/ldap/base')
+	rdn = explode_rdn(base)[0]
+	p1, stdout, stderr = adsearch(rdn)
+	if stderr:
+		MODULE.warn(stderr)
+	if p1.returncode != 0:
+		raise ADNotAvailable()
+	return True
+
+def adsearch(query):
+	cmd = ['/usr/sbin/univention-adsearch', query]
+	p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	stdout, stderr = p1.communicate()
+	return p1, stdout, stderr
+
+def guess_ad_domain_language():
+	'''AD Connector supports "en" and "de", this check detects a German AD
+	Domain and returns "en" as fallback.'''
+	p1, stdout, stderr = adsearch('cn=Domänen-Admins')
+	if p1.returncode == 0:
+		return 'de'
+	return 'en'
 
 class Instance(Base, ProgressMixin):
 	OPTION_MAPPING = ( ( 'LDAP_Host', 'connector/ad/ldap/host', '' ),
@@ -65,14 +105,12 @@ class Instance(Base, ProgressMixin):
 					   ( 'KerberosDomain', 'connector/ad/mapping/kerberosdomain', '' ),
 					   ( 'PollSleep', 'connector/ad/poll/sleep', 5 ),
 					   ( 'RetryRejected', 'connector/ad/retryrejected', 10 ),
-					   ( 'DebugLevel', 'connector/debug/level', 1 ),
+					   ( 'DebugLevel', 'connector/debug/level', 2 ),
 					   ( 'DebugFunction', 'connector/debug/function', False ),
 					   ( 'MappingSyncMode', 'connector/ad/mapping/syncmode', 'sync' ),
 					   ( 'MappingGroupLanguage', 'connector/ad/mapping/group/language', 'de' ) )
 
-	def __init__( self ):
-		Base.__init__( self )
-		self.guessed_baseDN = None
+	def init( self ):
 		self.__update_status()
 
 	def state( self, request ):
@@ -113,10 +151,11 @@ class Instance(Base, ProgressMixin):
 		self.finished( request.id, result )
 
 	@sanitize(LDAP_Host=StringSanitizer(required=True))
-	def save( self, request ):
+	def adconnector_save( self, request ):
 		"""Saves the Active Directory connection configuration
 
 		options:
+			Host_IP: IP address of the AD server
 			LDAP_Host: hostname of the AD server
 			LDAP_Base: LDAP base of the AD server
 			LDAP_BindDN: LDAP DN to use for authentication
@@ -129,11 +168,11 @@ class Instance(Base, ProgressMixin):
 		return: { 'success' : (True|False), 'message' : <details> }
 		"""
 
-		self.required_options( request, *map( lambda x: x[ 0 ], Instance.OPTION_MAPPING ) )
-		self.guessed_baseDN = None
+		self.required_options(request, 'Host_IP')
+		self.required_options(request, *[x[0] for x in Instance.OPTION_MAPPING if x[2] == ''])
 
 		for umckey, ucrkey, default in Instance.OPTION_MAPPING:
-			val = request.options[ umckey ]
+			val = request.options.get(umckey, default)
 			if val:
 				if isinstance( val, bool ):
 					val = val and 'yes' or 'no'
@@ -167,6 +206,22 @@ class Instance(Base, ProgressMixin):
 			self._create_certificate(request)
 			return
 
+		# enter a static host entry such that the AD server's FQDN can be resolved
+		univention.config_registry.handler_set([u'hosts/static/%(Host_IP)s=%(LDAP_Host)s' % request.options])
+
+		# UCR variables are set, and now we can try to guess the language of
+		# the AD domain
+		ad_lang = guess_ad_domain_language()
+		univention.config_registry.handler_set([u'connector/ad/mapping/group/language=%s' % ad_lang])
+
+		# check for SSL support on AD side
+		if admember.server_supports_ssl(server=request.options.get('LDAP_Host')):
+			MODULE.process('Enabling SSL...')
+			admember.enable_ssl()
+		else:
+			MODULE.warn('SSL is not supported')
+			admember.disable_ssl()
+
 		self.finished(request.id, { 'success' : True, 'message' :  _('Active Directory connection settings have been saved.')})
 
 	def _create_certificate(self, request):
@@ -179,46 +234,6 @@ class Instance(Base, ProgressMixin):
 
 		cmd = '/usr/sbin/univention-certificate new -name %s' % pipes.quote(request.options['LDAP_Host'])
 		MODULE.info( 'Creating new SSL certificate: %s' % cmd )
-		proc = notifier.popen.Shell( cmd, stdout = True )
-		cb = notifier.Callback( _return, request )
-		proc.signal_connect( 'finished', cb )
-		proc.start()
-
-	@sanitize(LDAP_Host=StringSanitizer(required=True))
-	def guess( self, request ):
-		"""Tries to guess some values like the base DN of the AD server
-
-		options: { 'LDAP_Host': <ad server fqdn> }
-
-		return: { 'LDAP_Base' : <LDAP base>, 'success' : (True|False) }
-		"""
-
-		def _return( pid, status, buffer, request ):
-			# dn:
-			# namingContexts: DC=ad,DC=univention,DC=de
-			# namingContexts: CN=Configuration,DC=ad,DC=univention,DC=de
-			# namingContexts: CN=Schema,CN=Configuration,DC=ad,DC=univention,DC=de
-			# namingContexts: DC=DomainDnsZones,DC=ad,DC=univention,DC=de
-			# namingContexts: DC=ForestDnsZones,DC=ad,DC=univention,DC=de
-
-			self.guessed_baseDN = None
-			for line in buffer:
-				if line.startswith( 'namingContexts: ' ):
-					dn = line.split(': ',1)[1].strip()
-					if self.guessed_baseDN is None or len( dn ) < len( self.guessed_baseDN ):
-						self.guessed_baseDN = dn
-
-			if self.guessed_baseDN is None:
-				self.finished( request.id, { 'success' : False, 'message' : _('The LDAP base of the given Active Directory server could not be determined. Maybe the full-qualified hostname is wrong or unresolvable.' ) } )
-				MODULE.process( 'Could not determine baseDN of given ldap server. Maybe FQDN is wrong or unresolvable! FQDN=%s' % request.options[ 'LDAP_Host' ] )
-			else:
-				self.finished( request.id, { 'success' : True, 'LDAP_Base' : self.guessed_baseDN } )
-
-			MODULE.info( 'Guessed the LDAP base: %s' % self.guessed_baseDN )
-
-
-		cmd = '/usr/bin/ldapsearch -x -s base -b "" namingContexts -LLL -h %s' % pipes.quote(request.options['LDAP_Host'])
-		MODULE.info( 'Determine LDAP base for AD server of specified system FQDN: %s' % cmd )
 		proc = notifier.popen.Shell( cmd, stdout = True )
 		cb = notifier.Callback( _return, request )
 		proc.signal_connect( 'finished', cb )
@@ -251,9 +266,13 @@ class Instance(Base, ProgressMixin):
 		def _return( pid, status, bufstdout, bufstderr, request, fn ):
 			success = True
 			if status == 0:
-				univention.config_registry.handler_set( [ u'connector/ad/ldap/certificate=%s' % fn ] )
 				message = _( 'Certificate has been uploaded successfully.' )
 				MODULE.info( 'Certificate has been uploaded successfully. status=%s\nSTDOUT:\n%s\n\nSTDERR:\n%s' % ( status, '\n'.join( bufstdout ), '\n'.join( bufstderr ) ) )
+				try:
+					self._enable_ssl_and_test_connection(fn)
+				except UMC_CommandError:
+					message = _('Could not establish connection. Either the certificate is wrong, the Active Directory server is unreachable or it does not support SSL.')
+					success = False
 			else:
 				success = False
 				message = _( 'Certificate upload or conversion failed.' )
@@ -317,13 +336,13 @@ class Instance(Base, ProgressMixin):
 		thread = notifier.threads.Simple( 'service', func, cb )
 		thread.run()
 
-	def __update_status( self ):
+	def __update_status(self):
 		ucr.load()
-		fn = ucr.get( 'connector/ad/ldap/certificate' )
+		fn = ucr.get('connector/ad/ldap/certificate')
 		self.status_ssl = ucr.is_true('connector/ad/ldap/ssl')
 		self.status_password_sync = ucr.is_true('connector/ad/mapping/user/password/kinit')
-		self.status_certificate = bool( fn and os.path.exists( fn ) )
-		self.status_running = self.__is_process_running( '*python*univention/connector/ad/main.py*' )
+		self.status_certificate = bool(fn and os.path.exists(fn))
+		self.status_running = self.__is_process_running('*python*univention/connector/ad/main.py*')
 		self.status_mode_admember = admember.is_localhost_in_admember_mode(ucr)
 		self.status_mode_adconnector = admember.is_localhost_in_adconnector_mode(ucr)
 
@@ -336,24 +355,27 @@ class Instance(Base, ProgressMixin):
 	@sanitize(
 		username=StringSanitizer(required=True),
 		password=StringSanitizer(required=True),
-		ad_server_ip=StringSanitizer(required=True),
+		ad_server_address=StringSanitizer(required=True),
+		mode=StringSanitizer(default='admember'),
 	)
 	@simple_response
-	def check_domain(self, username, password, ad_server_ip, syncmode):
+	def check_domain(self, username, password, ad_server_address, mode):
 		ad_domain_info = {}
 		try:
-			if syncmode == 'admember':
+			if mode == 'admember':
 				admember.check_server_role()
-			ad_domain_info = admember.lookup_adds_dc(ad_server_ip)
-			if syncmode == 'admember':
+			ad_domain_info = admember.lookup_adds_dc(ad_server_address)
+
+			ad_server_ip = ad_domain_info['DC IP']
+			if mode == 'admember':
 				admember.check_domain(ad_domain_info)
 			admember.check_connection(ad_server_ip, username, password)
 		except admember.invalidUCSServerRole as exc: # check_server_role()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_CommandError(_('The AD member mode cannot only be configured on a DC master server.'))
+			raise UMC_CommandError(_('The AD member mode can only be configured on a DC master server.'))
 		except admember.failedADConnect as exc: # lookup_adds_dc()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_server_ip)
+			raise UMC_CommandError(_('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_server_address)
 		except admember.domainnameMismatch as exc: # check_domain()
 			MODULE.warn('Failure: %s' % exc)
 			raise UMC_CommandError(_('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain' : ad_domain_info.get("Domain"), 'ucs_domain' : ucr['domainname']})
@@ -364,21 +386,21 @@ class Instance(Base, ProgressMixin):
 		# final info dict that is returned... replace spaces in the keys with '_'
 		MODULE.info('Preparing info dict...')
 		info = dict([(key.replace(' ', '_'), value) for key, value in ad_domain_info.iteritems()])
-		info['ssl_supported'] = admember.server_supports_ssl(server=ad_domain_info["DC DNS Name"])
+		info['ssl_supported'] = admember.server_supports_ssl(ad_server_ip)
 		MODULE.info(str(info))
 		return info
 
 	@sanitize(
 		username=StringSanitizer(required=True),
 		password=StringSanitizer(required=True),
-		ad_server_ip=StringSanitizer(required=True),
+		ad_server_address=StringSanitizer(required=True),
 	)
 	@simple_response(with_progress=True)
-	def admember_join(self, username, password, ad_server_ip, progress):
+	def admember_join(self, username, password, ad_server_address, progress):
 		progress.title =_('Joining UCS into Active Directory domain')
 		progress.total = 100.0
 		progress.warnings = []
-		success = False
+		overall_success = False
 		MODULE.process(progress.title)
 
 		def _progress(steps, msg):
@@ -409,7 +431,8 @@ class Instance(Base, ProgressMixin):
 		ad_domain_info = {}
 		try:
 			admember.check_server_role()
-			ad_domain_info = admember.lookup_adds_dc(ad_server_ip)
+			ad_domain_info = admember.lookup_adds_dc(ad_server_address)
+			ad_server_ip = ad_domain_info['DC IP']
 
 			_progress(5, _('Configuring time synchronization...'))
 			admember.time_sync(ad_server_ip)
@@ -418,33 +441,39 @@ class Instance(Base, ProgressMixin):
 			_progress(10, _('Configuring DNS server...'))
 			admember.set_nameserver([ad_server_ip])
 			admember.prepare_ucr_settings()
-			admember.add_admember_service_to_localhost()
 
-			_progress(20, _('Configuring Kerberos settings...'))
+			_progress(15, _('Configuring Kerberos settings...'))
 			admember.disable_local_heimdal()
 			admember.disable_local_samba4()
 
-			_progress(25, _('Configuring Administrator account...'))
+			_progress(20, _('Configuring Administrator account...'))
 			admember.prepare_administrator(username, password)
 
-			_progress(30, _('Configuring reverse DNS settings...'))
+			_progress(25, _('Configuring reverse DNS settings...'))
 			admember.prepare_dns_reverse_settings(ad_server_ip, ad_domain_info)
 
-			_progress(35, _('Configuring software components...'))
+			_progress(30, _('Configuring software components...'))
 
-			_step_offset = 35.0
-			_nsteps = 40.0
+			_step_offset = 30.0
+			_nsteps = 35.0
 			def _step_handler(step):
-				MODULE.info('Package manager progress: %.1f' % step)
+				MODULE.process('Package manager progress: %.1f' % step)
 				progress.current = (step / 100.0) * _nsteps + _step_offset
 
 			def _err_handler(err):
 				MODULE.warn(err)
 				progress.warnings.append(err)
 
-			success = admember.remove_install_univention_samba(info_handler=MODULE.info, error_handler=_err_handler, step_handler=_step_handler)
+			success = admember.remove_install_univention_samba(info_handler=MODULE.process, error_handler=_err_handler, step_handler=_step_handler)
 			if not success:
 				raise RuntimeError(_('An error occurred while installing necessary software components.'))
+
+			_progress(70, _('Configuring synchronization from AD...'))
+			admember.prepare_connector_settings(username, password, ad_domain_info)
+			admember.disable_ssl()
+
+			_progress(75, _('Renaming well known SID objects...'))
+			admember.rename_well_known_sid_objects(username, password)
 
 			_progress(80, _('Running Samba join script...'))
 			admember.run_samba_join_script(username, password)
@@ -452,20 +481,18 @@ class Instance(Base, ProgressMixin):
 			_progress(85, _('Configuring DNS entries...'))
 			admember.add_domaincontroller_srv_record_in_ad(ad_server_ip)
 
-			_progress(90, _('Configuring synchronization from AD...'))
-			admember.prepare_connector_settings(username, password, ad_domain_info)
+			_progress(90, _('Starting Active Directory connection service...'))
+			admember.start_service('univention-ad-connector')
 
-			if admember.server_supports_ssl(server=ad_domain_info.get('DC DNS Name')):
-				_progress(95, _('Configuring SSL settings...'))
-				admember.enable_ssl()
-			else:
-				MODULE.warn('SSL is not supported')
-				admember.disable_ssl()
-			success = True
+			_progress(95, _('Registering LDAP service entry...'))
+			admember.add_admember_service_to_localhost()
+
+			overall_success = True
+			_progress(100, _('Join has been finished successfully.'))
 
 		# error handling...
 		except admember.invalidUCSServerRole as exc:
-			_err(exc, _('The AD member mode cannot only be configured on a DC master server.'))
+			_err(exc, _('The AD member mode can only be configured on a DC master server.'))
 		except admember.failedADConnect as exc:
 			_err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_domain_info.get('DC DNS Name'))
 		except admember.domainnameMismatch as exc:
@@ -481,12 +508,12 @@ class Instance(Base, ProgressMixin):
 		except Exception as exc:
 			# catch all other errors that are unlikely to occur
 			_err(exc)
-			MODULE.error('Traceback:\n%s' % ''.join(traceback.format_tb(sys.exc_info()[2])))
+			MODULE.error('Traceback:\n%s' % traceback.format_exc())
 
-		if success:
-			_progress(100, _('Join has been finished successfully.'))
-		else:
+		if not overall_success:
 			_progress(100, _('Join has been finished with errors.'))
+			admember.revert_ucr_settings()
+			admember.revert_connector_settings()
 
 		if hasattr(progress, 'result'):
 			# some error probably occurred -> return the result in the progress
@@ -494,16 +521,31 @@ class Instance(Base, ProgressMixin):
 
 		return {'success': success}
 
+	def _enable_ssl_and_test_connection(self, certificate_fname=None):
+		with ucr_rollback(ucr, ['connector/ad/ldap/ssl', 'connector/ad/ldap/certificate']):
+			if certificate_fname:
+				univention.config_registry.handler_set([u'connector/ad/ldap/certificate=%s' % certificate_fname])
+			server = ucr.get('connector/ad/ldap/host')
+			if server:
+				success = False
+				if admember.server_supports_ssl(server):
+					admember.enable_ssl()
+					success = test_connection()
+				if not success:
+					raise UMC_CommandError(_('Could not establish an encrypted connection. Either "%r" is not reachable or does not support encryption.') % server)
+			else:
+				MODULE.warn('connector is not configured yet, cannot test connection')
+
 	@simple_response
 	def enable_ssl(self):
-		server = ucr.get('connector/ad/ldap/host')
-		if True: #not admember.server_supports_ssl(server):
-			raise UMC_CommandError(_('Could not establish an encrypted connection. Either "%r" is not reachable or does not support encryption.') % server)
-		admember.enable_ssl()
+		self._enable_ssl_and_test_connection()
 		return subprocess.call(['invoke-rc.d', 'univention-ad-connector', 'restart'])
 
 	@simple_response
 	def password_sync_service(self, enable=True):
-		univention.config_registry.handler_set(['connector/ad/mapping/user/password/kinit=%s' % str(enable).lower()])
+		# kinit=true  -> do not sync passwords, but use Kerberos authentication
+		# kinit=false -> sync passwords
+		value = str(not enable).lower()
+		univention.config_registry.handler_set(['connector/ad/mapping/user/password/kinit=%s' % value])
 		return subprocess.call(['invoke-rc.d', 'univention-ad-connector', 'restart'])
 

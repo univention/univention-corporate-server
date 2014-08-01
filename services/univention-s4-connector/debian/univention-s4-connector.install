@@ -1,7 +1,6 @@
 univention-s4-connector usr/sbin
 univention-s4connector-list-rejected usr/sbin
 univention-password_sync_ucs_to_s4 usr/sbin
-univention-ad-takeover usr/sbin
 conffiles/etc/univention/s4connector/s4/mapping.py etc/univention/connector/s4/
 97univention-s4-connector.inst usr/lib/univention-install/
 03univention-s4-connector.uinst usr/lib/univention-uninstall/

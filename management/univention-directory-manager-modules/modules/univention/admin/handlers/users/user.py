@@ -226,6 +226,7 @@ property_descriptions={
 			dontsearch = False,
 			may_change = True,
 			identifies = False,
+			readonly_when_synced=True,
 	),
 	'description': univention.admin.property(
 			short_description=_('Description'),
@@ -510,6 +511,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
+			readonly_when_synced=True,
 		),
 	'scriptpath': univention.admin.property(
 			short_description=_('Windows logon script'),
@@ -542,6 +544,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
+			readonly_when_synced=True,
 		),
 	'sambaRID': univention.admin.property(
 			short_description=_('Relative ID'),
