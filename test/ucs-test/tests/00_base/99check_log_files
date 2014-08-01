@@ -1,0 +1,217 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check installation log files for errors, warnings and tracebacks
+## bugs: [30751]
+## tags: [basic]
+## exposure: safe
+
+import re
+import gzip
+from os import path
+from sys import exit
+
+from univention.management.console.modules.setup.setup_script import Profile
+import univention.testing.utils as utils
+import check_log_files_definitions as definitions
+
+
+class CheckLogFiles(object):
+
+    def __init__(self):
+        """
+        Test constructor
+        """
+        self.DefinitionsErrors = definitions.Errors
+        self.DefinitionsWarnings = definitions.Warnings
+
+        self.log_file = ''
+        self.line_counter = 0
+
+        self.max_trace_lines = 40  # max length of a trace in lines
+        self.last_trace_msg = ''
+
+        self.return_code = 100  # will be returned if no errors are found
+
+    def extract_traceback_message(self):
+        """
+        Incorporates the traceback message into one string and returns it.
+        Max length of traceback defined by 'self.max_trace_lines'.
+        """
+        trace_message = ''
+        trace_line = 0
+        last_line = ''
+
+        for line in self.log_file:
+            trace_message += line
+            self.line_counter += 1
+            trace_line += 1
+
+            if (trace_line >= self.max_trace_lines or re.match('.*Error: .*',
+                                                               line)):
+                last_line = line.strip()
+                # break loop if the trace is too big or
+                # if last trace line with error name was found
+                break
+
+        if trace_message not in self.last_trace_msg:
+            self.last_trace_msg = trace_message
+            return trace_message
+        else:
+            return 'Last Traceback "%s" repeats one more time.\n' % last_line
+
+    def check_for_tracebacks(self, line, errors, msg):
+        """
+        Looks for the signs of a traceback in a 'line'.
+        Extracts the traceback message and appends it to the
+        output 'errors' with a given 'msg' in the beginning.
+        """
+        for pattern in definitions.Tracebacks.wanted:
+            if pattern.match(line):
+                errors.append(msg + '\n' + self.extract_traceback_message())
+                return errors
+
+        return errors
+
+    def check_line(self, line, definition, result, msg):
+        """
+        Checks a single 'line' against patterns from 'definition' and
+        adds message 'msg' to list 'result' if pattern is in 'wanted'.
+        Ignores the patterns matching 'ignore'. Returns 'result'.
+        """
+        for pattern in definition.ignore:
+            if pattern.match(line):
+                return result
+
+        for pattern in definition.wanted:
+            if pattern.match(line):
+                result.append(msg)
+                return result
+
+        return result
+
+    def check_log_file(self, filename):
+        """
+        Checks file 'filename' for issues, returns 2-tuple (warnings, errors).
+        Tracebacks would also be included to 'Errors'.
+        """
+        errors = []
+        warnings = []
+        self.line_counter = 0
+        previous_line = ''
+
+        if not path.isfile(filename):
+            print "\nThe file '%s' cannot be found, skipping..." % filename
+            return (None, None)
+
+        basename = path.basename(filename)
+
+        try:
+            if basename.endswith('.gz'):
+                self.log_file = gzip.open(filename, "rb")
+            else:
+                self.log_file = open(filename, "r")
+
+            for line in self.log_file:
+                self.line_counter += 1
+                line = line.strip()
+
+                msg = "%s:%s, %s" % (basename, self.line_counter, line)
+                errors = self.check_for_tracebacks(line, errors, msg)
+
+                # skip the message if it is repeated from the previous line:
+                if line != previous_line:
+                    errors = self.check_line(line,
+                                             self.DefinitionsErrors,
+                                             errors,
+                                             msg)
+                    warnings = self.check_line(line,
+                                               self.DefinitionsWarnings,
+                                               warnings,
+                                               msg)
+
+                previous_line = line
+            self.log_file.close()
+        except (IOError, ValueError) as exc:
+            utils.fail("An exception while working with a log file '%s': '%s'"
+                       % (filename, exc))
+        return (errors, warnings)
+
+    def extend_log_ignore_definitions(self):
+        """
+        Changes log definitions to ignore join related errors
+        (case when joinscripts are not called and thus errors appear)
+        """
+        join_errors = [
+            '.*: Failed to load license information: .*',
+            '.*Usage: /etc/init.d/slapd {start|stop|restart|force-reload|status}.*',
+            '.*invoke-rc.d: initscript slapd, action "(start|restart|crestart)" failed.*',
+            '.*invoke-rc.d: initscript ntp, action "restart" failed.*',
+            'ch.* failed to get attributes of .*/etc/resolv.conf.* No such file or directory']
+
+        join_warnings = [
+            '.*Join script execution has been disabled via call_master_joinscripts.*',
+            '.*To enable saslauthd, edit /etc/default/saslauthd and set START=yes.*']
+
+        # adding warnings and errors caused by absence of
+        # join procedure to the ignore lists
+        self.DefinitionsErrors.ignore_list.extend(join_errors)
+        self.DefinitionsWarnings.ignore_list.extend(join_warnings)
+
+        self.DefinitionsErrors.ignore = map(re.compile,
+                                            self.DefinitionsErrors.ignore_list)
+        self.DefinitionsWarnings.ignore = map(re.compile,
+                                          self.DefinitionsWarnings.ignore_list)
+
+    def check_installation_profile(self):
+        """
+        Looks for the 'call_master_joinscripts' in the
+        '/etc/univention/installation_profile' to ignore the join
+        related errors in case setting is 'false'.
+        """
+        InstallProfile = Profile()
+        InstallProfile.load(filename='/etc/univention/installation_profile')
+
+        if 'false' in InstallProfile.get_list('call_master_joinscripts')[0]:
+            print("\nThe 'call_master_joinscripts' is 'false' in "
+                  "'/etc/univention/installation_profile', "
+                  "adjusting patterns to ignore respective 'join' messages.")
+            self.extend_log_ignore_definitions()
+
+    def main(self, log_files):
+        """
+        Looks for Errors, Tracebacks and Warnings in the given list of
+        'log_files'. Test fails if Errors (or/and Tracebacks) were found.
+        Test passes if only warnings were found.
+        """
+        self.check_installation_profile()
+
+        for filename in log_files:
+            errors, warnings = self.check_log_file(filename)
+
+            if errors:
+                # Errors detected, test should fail with code 110
+                self.return_code = 110
+                print "\nErrors found in '%s':\n" % filename
+                for line in errors:
+                    print " E: %s" % line
+
+            if warnings:
+                print "\nWarnings found in '%s':\n" % filename
+                for line in warnings:
+                    print " W: %s" % line
+
+
+if __name__ == '__main__':
+    log_files = ["/var/log/univention/installation.log",
+                 "/var/log/univention/installation.log.gz",
+                 "/var/log/univention/installer.log",
+                 "/var/log/univention/installer.log.gz",
+                 "/var/log/univention/updater.log",
+                 "/var/log/univention/actualise.log",
+                 "/var/log/univention/join.log",
+                 "/var/log/univention/listener.log",
+                 "/var/log/univention/setup.log"]
+
+    LogChecker = CheckLogFiles()
+    LogChecker.main(log_files)
+
+    exit(LogChecker.return_code)

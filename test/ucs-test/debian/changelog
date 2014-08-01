@@ -1,3 +1,12 @@
+ucs-test (4.0.166-63) unstable; urgency=low
+
+  * 00_base/check_log_files_definitions.py: extended and modified patterns,
+    added separate case for tracebacks;
+    00_base/99check_log_files: a test to extract warnings, errors and
+    tracebacks from the logs (Bug #30751)
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 01 Aug 2014 10:57:53 +0200
+
 ucs-test (4.0.166-62) unstable; urgency=low
 
   * 20_appcenter/43_installed_apps_check_packages_available_for_i386:
