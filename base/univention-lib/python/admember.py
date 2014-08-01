@@ -245,7 +245,7 @@ def remove_install_univention_samba(info_handler=info_handler, step_handler=None
 	return True
 
 
-def lookup_adds_dc(ad_server=None, ucr=None):
+def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 	'''CLDAP lookup'''
 
 	ud.debug(ud.MODULE, ud.PROCESS, "Lookup ADDS DC")
@@ -265,9 +265,13 @@ def lookup_adds_dc(ad_server=None, ucr=None):
 		ipaddr.IPAddress(ad_server)
 		ips.append(ad_server)
 	except ValueError:
-		if 'dns/forwarder1' in ucr:
+		dig_sources = []
+		for source in ['dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3', 'nameserver1', 'nameserver2', 'nameserver3']:
+			if source in ucr:
+				dig_sources.append("@%s" % ucr[source])
+		for dig_source in dig_sources:
 			try:
-				cmd = ['dig', '@%s' % ucr['dns/forwarder1'], ad_server, '+short']
+				cmd = ['dig', dig_source, ad_server, '+short']
 				ud.debug(ud.MODULE, ud.PROCESS, "running %s" % cmd)
 				p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 				stdout, stderr = p1.communicate()
@@ -277,6 +281,8 @@ def lookup_adds_dc(ad_server=None, ucr=None):
 					for i in stdout.split('\n'):
 						if i:
 							ips.append(i)
+				if ips:
+					break
 			except OSError as ex:
 				ud.debug(ud.MODULE, ud.ERROR, "%s failed: %s" % (cmd, ex.args[1]))
 
@@ -292,6 +298,9 @@ def lookup_adds_dc(ad_server=None, ucr=None):
 		except RuntimeError as ex:
 			ud.debug(ud.MODULE, ud.ERROR, "Connection to AD Server %s failed: %s" % (ip, ex.args[0]))
 		else:
+			if not check_dns:
+				ad_server_ip = ip
+				break
 			try: # check dns
 				cmd = ['dig', '@%s' % ip]
 				ud.debug(ud.MODULE, ud.PROCESS, "running %s" % cmd)

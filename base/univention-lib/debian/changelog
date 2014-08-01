@@ -1,3 +1,11 @@
+univention-lib (3.0.26-59) unstable; urgency=low
+
+  * check 'dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3',
+    'nameserver1', 'nameserver2' and 'nameserver3' in
+    lookup_adds_dc() (Bug #35520)
+
+ -- Felix Botner <botner@univention.de>  Fri, 01 Aug 2014 09:18:43 +0200
+
 univention-lib (3.0.26-58) unstable; urgency=low
 
   * fixed lookup_adds_dc (Bug #35520) 
