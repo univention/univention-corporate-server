@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.97-43) unstable; urgency=low
+
+  * Bug #34093: Wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 04 Aug 2014 10:36:48 +0200
+
 univention-management-console-module-udm (4.0.97-42) unstable; urgency=low
 
   * Bug #34093: Fix timing when displaying AD warning in edit mode; wording

@@ -687,7 +687,7 @@ msgid ""
 "Press <i>Next</i> to create an LDAP object of this type only available on "
 "UCS systems."
 msgstr ""
-"Klicken Sie auf <i>Weiter</i>, um neue LDAP-Objekt dieses Typs nur für UCS-"
+"Klicken Sie auf <i>Weiter</i>, um ein neues LDAP-Objekt dieses Typs nur für UCS-"
 "Systeme anzulegen."
 
 #: umc/js/udm.js:1577
