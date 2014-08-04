@@ -81,6 +81,7 @@ ucr.load()
 udm_modules.update()
 
 LOGFILE_NAME = "/var/log/univention/ad-takeover.log"
+JOIN_LOGFILE_NAME = "/var/log/univention/join.log"
 BACKUP_DIR = "/var/univention-backup/ad-takeover"
 SAMBA_DIR = '/var/lib/samba'
 SAMBA_PRIVATE_DIR = os.path.join(SAMBA_DIR, 'private')
@@ -836,7 +837,12 @@ class AD_Takeover():
 			run_and_output_to_log(["/etc/init.d/univention-ad-connector", "stop"], log.debug)
 			run_and_output_to_log(["/etc/init.d/univention-directory-listener", "crestart"], log.debug)
 			## And now run 96univention-samba4.inst pre-provision setup (.adtakeover status is "start"), to disable slapd on port 389, and 97uinvention-s4-connector.inst
-			returncode = run_and_output_to_log(["univention-run-join-scripts"], log.debug)
+			returncode = run_and_output_to_log(["univention-run-join-scripts", "--run-scripts", "96univention-samba4.inst"], log.debug)
+			if returncode:
+				log.error("ERROR: Initial univention-run-join-scripts --run-scripts 96univention-samba4.inst failed (%d)" % (returncode,))
+				univention.lib.admember.add_admember_service_to_localhost()
+				raise DomainJoinFailed(_("The domain join failed. See %s for details.") % JOIN_LOGFILE_NAME)
+			returncode = run_and_output_to_log(["univention-run-join-scripts", "--run-scripts", "97univention-s4-connector.inst"], log.debug)
 
 	def join_AD(self, progress):
 		log.info("Starting phase I of the takeover process.")
@@ -972,6 +978,9 @@ class AD_Takeover():
 
 		## Now run the Joinscript again (AD Member starts at VERSION=1, regular UCS is done already)
 		returncode = run_and_output_to_log(["univention-run-join-scripts", "--run-scripts", "96univention-samba4.inst"], log.debug)
+		if returncode:
+			log.error("ERROR: Final univention-run-join-scripts --run-scripts 96univention-samba4.inst failed (%d)" % (returncode,))
+			raise DomainJoinFailed(_("The domain join failed. See %s for details.") % JOIN_LOGFILE_NAME)
 
 		## create backup dir
 		if not os.path.exists(BACKUP_DIR):
