@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-join
-fix: 6.0.18-10.474.201407290943
+fix: 6.0.18-11.475.201408041153
 version: [2]
 desc: |
   univention-join now checks for the AD member mode during the join.
