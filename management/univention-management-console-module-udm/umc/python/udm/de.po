@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-07-11 11:20+0200\n"
+"POT-Creation-Date: 2014-08-04 09:53+0200\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,7 +36,7 @@ msgid "Could not find a matching UDM module for the LDAP object %s"
 msgstr ""
 "Es konnte kein passendes UDM-Modul für das LDAP-Object %s gefunden werden"
 
-#: umc/python/udm/__init__.py:504 umc/python/udm/udm_ldap.py:364
+#: umc/python/udm/udm_ldap.py:364 umc/python/udm/__init__.py:504
 #, python-format
 msgid "Could not find an UDM module for the superordinate object %s"
 msgstr ""
@@ -117,7 +117,7 @@ msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
 msgid "PDF document"
 msgstr "PDF Dokument"
 
-#: umc/python/udm/__init__.py:843 umc/python/udm/udm_ldap.py:303
+#: umc/python/udm/udm_ldap.py:303 umc/python/udm/__init__.py:843
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
@@ -133,7 +133,8 @@ msgid ""
 "\""
 msgstr ""
 "Starten Sie den LDAP-Dienst entweder über \"invoke-rc.d slapd restart\" per "
-"Kommandozeile oder mit dem UMC Modul \"Systemdienste\" auf dem Domänencontroller Master neu"
+"Kommandozeile oder mit dem UMC Modul \"Systemdienste\" auf dem "
+"Domänencontroller Master neu"
 
 #: umc/python/udm/__init__.py:283
 #, python-format
