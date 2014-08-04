@@ -8,4 +8,4 @@ desc: |
   univention-join now checks for the AD member mode during the join.
   If the domain is in the AD member mode, univention-join configures 
   the local system as part of the AD domain.
-bug: [35470]
+bug: [35470,35446]
