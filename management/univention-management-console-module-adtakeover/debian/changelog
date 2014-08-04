@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (1.0.10-42) unstable; urgency=medium
+
+  * Work around Bug #35561  (Bug #35346).
+
+ -- Arvid Requate <requate@univention.de>  Mon, 04 Aug 2014 18:00:52 +0200
+
 univention-management-console-module-adtakeover (1.0.10-41) unstable; urgency=medium
 
   * Check the return code of the initial run of 96univention-samba.inst

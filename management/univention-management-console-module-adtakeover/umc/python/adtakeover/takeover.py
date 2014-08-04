@@ -837,7 +837,8 @@ class AD_Takeover():
 			run_and_output_to_log(["/etc/init.d/univention-ad-connector", "stop"], log.debug)
 			run_and_output_to_log(["/etc/init.d/univention-directory-listener", "crestart"], log.debug)
 			## And now run 96univention-samba4.inst pre-provision setup (.adtakeover status is "start"), to disable slapd on port 389, and 97uinvention-s4-connector.inst
-			returncode = run_and_output_to_log(["univention-run-join-scripts", "--run-scripts", "96univention-samba4.inst"], log.debug)
+			## Due to Bug #35561 the script needs to be run directly to determine its exit status.
+			returncode = run_and_output_to_log(["/usr/lib/univention-install/96univention-samba4.inst"], log.debug)
 			if returncode:
 				log.error("ERROR: Initial univention-run-join-scripts --run-scripts 96univention-samba4.inst failed (%d)" % (returncode,))
 				univention.lib.admember.add_admember_service_to_localhost()
