@@ -1,0 +1,17 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-2
+src: samba
+fix: 2:4.1.0-1.653.201408041143
+version: [2]
+desc: |
+ This update fixes a security vulnerability:
+ * All current versions of Samba 4.x.x are vulnerable to a remote code
+   execution vulnerability in the nmbd NetBIOS name services daemon.
+   A malicious browser can send packets that may overwrite the heap of
+   the target nmbd NetBIOS name services daemon. It may be possible to
+   use this to generate a remote code execution vulnerability as the
+   superuser (root).
+bug: [35546]
+cve:
+ - CVE-2014-3560
