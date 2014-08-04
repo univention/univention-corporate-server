@@ -491,6 +491,8 @@ def prepare_ucr_settings():
 		u'connector/ad/mapping/user/password/kinit=true',
 		u'directory/manager/web/modules/users/user/display=displayName',
 		u'nameserver/external=true',
+		u'connector/ad/mapping/group/primarymail=true',
+		u'connector/ad/mapping/user/primarymail=true',
 	]
 	modules = ('computers/computer', 'groups/group', 'users/user', 'dns/dns')
 	ucr_set += [u'directory/manager/web/modules/%s/show/adnotification=true' % (module,) for module in modules]

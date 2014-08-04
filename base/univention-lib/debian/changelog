@@ -1,3 +1,11 @@
+univention-lib (3.0.26-61) unstable; urgency=low
+
+  * set connector/ad/mapping/group/primarymail=true
+    connector/ad/mapping/user/primarymail in
+    member mode to sync mail addresses from AD (Bug #35551)
+
+ -- Felix Botner <botner@univention.de>  Mon, 04 Aug 2014 14:48:04 +0200
+
 univention-lib (3.0.26-60) unstable; urgency=low
 
   * added dependency to python-ldb, python-samba
