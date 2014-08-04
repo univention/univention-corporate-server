@@ -831,6 +831,7 @@ class AD_Takeover():
 			run_and_output_to_log(["univention-config-registry", "set",
 				"connector/ad/autostart=no",
 				"connector/s4/autostart=yes",
+				"samba4/ignore/mixsetup=yes",
 				], log.debug)
 			run_and_output_to_log(["/etc/init.d/univention-ad-connector", "stop"], log.debug)
 			run_and_output_to_log(["/etc/init.d/univention-directory-listener", "crestart"], log.debug)

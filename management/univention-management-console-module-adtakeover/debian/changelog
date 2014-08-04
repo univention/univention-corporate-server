@@ -1,3 +1,10 @@
+univention-management-console-module-adtakeover (1.0.10-40) unstable; urgency=medium
+
+  * Set samba4/ignore/mixsetup=yes when coming from AD Member mode
+    (Bug #35346)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 04 Aug 2014 13:55:47 +0200
+
 univention-management-console-module-adtakeover (1.0.10-39) unstable; urgency=medium
 
   * No need to make a fuss about the first parts of the S4 Connector
