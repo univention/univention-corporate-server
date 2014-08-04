@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-management-console-module-adtakeover
-fix: 1.0.10-40.39.201408041356
+fix: 1.0.10-41.40.201408041455
 version: [2]
 desc: |
     * The UMC module for AD Takeover has been adjusted to fix a case where the path to one of the
