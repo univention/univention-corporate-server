@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-ad-connector
-fix: 8.0.17-63.433.201408011356
+fix: 8.0.17-66.435.201408051830
 version: [2]
 desc: |
   This update fixes the following issues:
@@ -15,4 +15,6 @@ desc: |
   * A script has been added for renaming groups and users with Well Known SIDs
     to the corresponding name in the AD domain. This script is for internal use
     by the setup wizard for the UCS in AD member mode.
-bug: [35091,35234,35253,35349,35507]
+  * A script has been added to grand read permission to the CN=Deleted Objects
+    container in Active Directory. This is only required for the AD Member mode.
+bug: [35091,35234,35253,35349,35507,35566]
