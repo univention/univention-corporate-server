@@ -96,7 +96,8 @@ Package: univention-management-console-module-adconnector
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  univention-management-console-server,
- python-samba
+ python-univention-lib (>= 3.0.26-62),
+ python-samba,
 Description: UMC module for Univention AD Connector
  This package contains the Univention AD Connector UMC module.
  .
