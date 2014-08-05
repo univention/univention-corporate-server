@@ -1,3 +1,10 @@
+ucs-test (4.0.166-64) unstable; urgency=low
+
+  * 60_umc-system/31_umc-service-user-authentication: test the UMC user
+    authentication and password change (Bug #34369)
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 05 Aug 2014 14:25:28 +0200
+
 ucs-test (4.0.166-63) unstable; urgency=low
 
   * 00_base/check_log_files_definitions.py: extended and modified patterns,
