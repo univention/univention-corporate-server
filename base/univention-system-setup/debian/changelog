@@ -1,3 +1,9 @@
+univention-system-setup (7.0.69-48) unstable; urgency=low
+
+  * Bug #34484: Change default TLD to .intranet; wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 05 Aug 2014 10:25:41 +0200
+
 univention-system-setup (7.0.69-47) unstable; urgency=medium
 
   * Bug #34484: version bump

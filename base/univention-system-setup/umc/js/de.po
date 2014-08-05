@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-08-01 15:46+0200\n"
+"POT-Creation-Date: 2014-08-05 10:24+0200\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -192,14 +192,14 @@ msgstr "Eine neue UCS-Domäne wird erstellt."
 #: umc/js/setup/ApplianceWizard.js:851
 msgid ""
 "A proxy address needs to be specified in the format: <i>http://proxy."
-"mydomain.local:3128</i><br/>Proxy access with username and password may be "
-"specified via the format: <i>http://username:password@proxy.mydomain."
-"local:3128</i>"
+"mydomain.intranet:3128</i><br/>Proxy access with username and password may "
+"be specified via the format: <i>http://username:password@proxy.mydomain."
+"intranet:3128</i>"
 msgstr ""
 "Eine Proxy-Adresse kann angegeben werden in dem Format: <i>http://proxy."
-"meinedomaene.local:3128</i><br/>Für Proxy-Zugang mit Benutzername und "
+"meinedomaene.intranet:3128</i><br/>Für Proxy-Zugang mit Benutzername und "
 "Password kann das folgenden Format verwendet werden: <i>http://benutzername:"
-"passwort@proxy.meinedomaene.local:3128</i>"
+"passwort@proxy.meinedomaene.intranet:3128</i>"
 
 #: umc/js/setup/ApplianceWizard.js:845
 msgid ""
@@ -281,7 +281,7 @@ msgstr ""
 
 #: umc/js/setup/ApplianceWizard.js:1569
 msgid "At least one network device needs to be properly configured."
-msgstr "Mindestens ein Netzwerkgerät muss konfiguiert werden."
+msgstr "Mindestens ein Netzwerkgerät muss konfiguriert werden."
 
 #: umc/js/setup/InterfaceWizard.js:313 umc/js/setup/Interfaces.js:119
 msgid "Autoconfiguration (SLAAC)"
@@ -331,9 +331,9 @@ msgstr "Bridge ports"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/js/setup/InterfaceGrid.js:132 umc/js/setup/ApplianceWizard.js:1597
-#: umc/js/setup/ApplianceWizard.js:1720 umc/js/setup/BasisPage.js:267
-#: umc/js/setup.js:195 umc/js/setup.js:553
+#: umc/js/setup.js:195 umc/js/setup.js:553 umc/js/setup/InterfaceGrid.js:132
+#: umc/js/setup/ApplianceWizard.js:1597 umc/js/setup/ApplianceWizard.js:1720
+#: umc/js/setup/BasisPage.js:267
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -412,7 +412,7 @@ msgstr "Allgemeiner Name (common name) für das Root-SSL-Zertifikat"
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: umc/js/setup/ApplianceWizard.js:1624 umc/js/setup.js:634
+#: umc/js/setup.js:634 umc/js/setup/ApplianceWizard.js:1624
 msgid "Configuration finished"
 msgstr "Konfiguration abgeschlossen"
 
@@ -483,8 +483,8 @@ msgstr "DHCP-Anfrage schlug fehl."
 msgid "DHCP-Query"
 msgstr "DHCP-Anfrage"
 
-#: umc/js/setup/ApplianceWizard.js:342 umc/js/setup/LanguagePage.js:135
-#: umc/js/setup/LanguagePage.js:236
+#: umc/js/setup/LanguagePage.js:135 umc/js/setup/LanguagePage.js:236
+#: umc/js/setup/ApplianceWizard.js:342
 msgid "Default system locale"
 msgstr "Standard-System-Sprachdefinition"
 
@@ -678,13 +678,11 @@ msgstr "IPv4-Adresse"
 
 #: umc/js/setup/ApplianceWizard.js:558 umc/js/setup/ApplianceWizard.js:574
 #: umc/js/setup/ApplianceWizard.js:592 umc/js/setup/ApplianceWizard.js:610
-#, python-brace-format
 msgid "IPv4 address/IPv6 address {interface}"
 msgstr "IPv4-Adresse/IPv6-Adresse {interface}"
 
 #: umc/js/setup/ApplianceWizard.js:567 umc/js/setup/ApplianceWizard.js:584
 #: umc/js/setup/ApplianceWizard.js:602 umc/js/setup/ApplianceWizard.js:620
-#, python-brace-format
 msgid "IPv4 net mask/IPv6 prefix {interface}"
 msgstr "IPv4-Netzmaske/IPv6-Präfix {interface}"
 
@@ -728,7 +726,7 @@ msgstr ""
 "In den <i>Netzwerkeinstellungen</i> können IP-Adressen (IPv4 und IPv6) sowie "
 "DNS-Server, Gateways und HTTP-Proxy festgelegt werden."
 
-#: umc/js/setup/ApplianceWizard.js:1607 umc/js/setup.js:616
+#: umc/js/setup.js:616 umc/js/setup/ApplianceWizard.js:1607
 msgid "Initialize the configuration process ..."
 msgstr "Initialisiere den Konfigurationsvorgang ..."
 
@@ -774,8 +772,9 @@ msgstr ""
 "0 und 128."
 
 #: umc/js/setup/ApplianceWizard.js:226
-msgid "Invalid LDAP base!<br>Expected format: dc=mydomain,dc=local"
-msgstr "Ungültige LDAP-Basis!<br>Erwartetes Format: dc=meinedomaene,dc=local"
+msgid "Invalid LDAP base!<br>Expected format: dc=mydomain,dc=intranet"
+msgstr ""
+"Ungültige LDAP-Basis!<br>Erwartetes Format: dc=meinedomaene,dc=intranet"
 
 #: umc/js/setup/ApplianceWizard.js:146
 msgid "Invalid e-mail address!<br>Expected format is:<i>mail@example.com</i>"
@@ -785,29 +784,29 @@ msgstr ""
 #: umc/js/setup/ApplianceWizard.js:209
 msgid ""
 "Invalid fully qualified domain name!<br>Expected format: <i>hostname."
-"mydomain.local</i>"
+"mydomain.intranet</i>"
 msgstr ""
 "Ungültiger vollständiger Domänenname!<br>Erwartetes Format: <i>rechnername."
-"meinedomaene.local</i>"
+"meinedomaene.intranet</i>"
 
 #: umc/js/setup/ApplianceWizard.js:218
 msgid ""
 "Invalid hostname or fully qualified domain name!<br>Expected format: "
-"<i>myhost</i> or <i>hostname.mydomain.local</i>"
+"<i>myhost</i> or <i>hostname.mydomain.intranet</i>"
 msgstr ""
 "Ungültiger Rechnername oder vollständiger Domänenname!<br>Erwartetes Format: "
-"<i>rechnername</i> oder <i>rechnername.meinedomaene.local</i>"
+"<i>rechnername</i> oder <i>rechnername.meinedomaene.intranet</i>"
 
 #: umc/js/setup/ApplianceWizard.js:1596
-msgid "Join"
-msgstr "Join"
+msgid "Join domain"
+msgstr "Domäne beitreten"
 
 #: umc/js/setup/ApplianceWizard.js:386
 msgid "Join into an existing UCS domain"
 msgstr "Einer bestehenden UCS-Domäne beitreten"
 
-#: umc/js/setup/ApplianceWizard.js:353 umc/js/setup/LanguagePage.js:88
-#: umc/js/setup/LanguagePage.js:228
+#: umc/js/setup/LanguagePage.js:88 umc/js/setup/LanguagePage.js:228
+#: umc/js/setup/ApplianceWizard.js:353
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
@@ -1099,7 +1098,6 @@ msgid "The changes have been applied successfully."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
 #: umc/js/setup.js:629
-#, python-brace-format
 msgid ""
 "The connection to the server could not be established after {time} seconds. "
 "This problem can occur due to a change of the IP address. In this case, "
@@ -1115,7 +1113,7 @@ msgstr ""
 msgid "The following changes will be applied to the system:"
 msgstr "Die folgenden Änderungen werden auf das System übertragen:"
 
-#: umc/js/setup/ApplianceWizard.js:686 umc/js/setup.js:506 umc/js/setup.js:599
+#: umc/js/setup.js:506 umc/js/setup.js:599 umc/js/setup/ApplianceWizard.js:686
 msgid "The following entries could not be validated:"
 msgstr "Die folgenden Einträge konnten nicht validiert werden:"
 
@@ -1159,8 +1157,8 @@ msgid ""
 "The system join process failed. The following information will give some "
 "more details on which exact problem occurred during the setup process."
 msgstr ""
-"Der Join-Vorgang des Systems schlug fehl. Die folgenden Informationen geben "
-"genauere Informationen über die Problemursache."
+"Der Domänenbeitritt des Systems schlug fehl. Die folgenden Informationen "
+"geben genauere Informationen über die Problemursache."
 
 #: umc/js/setup/ApplianceWizard.js:1433
 msgid ""
@@ -1193,8 +1191,8 @@ msgid "This sytem will join an existing UCS domain with the role <i>%s</i>."
 msgstr ""
 "Das System tritt einer existierenden UCS-Domäne bei mit der Rolle <i>%s</i>."
 
-#: umc/js/setup/ApplianceWizard.js:348 umc/js/setup/LanguagePage.js:82
-#: umc/js/setup/LanguagePage.js:224
+#: umc/js/setup/LanguagePage.js:82 umc/js/setup/LanguagePage.js:224
+#: umc/js/setup/ApplianceWizard.js:348
 msgid "Time zone"
 msgstr "Zeitzone"
 
@@ -1242,7 +1240,7 @@ msgstr "Benutzername"
 msgid "VLAN ID"
 msgstr "VLAN ID"
 
-#: umc/js/setup/ApplianceWizard.js:266 umc/js/setup.js:60
+#: umc/js/setup.js:60 umc/js/setup/ApplianceWizard.js:266
 msgid "Validation error"
 msgstr "Validierungsfehler"
 
@@ -1382,8 +1380,8 @@ msgstr "setzen"
 #~ msgid "Domain controller master"
 #~ msgstr "Domänencontroller Master"
 
-#~ msgid "HTTP proxy (e.g., <i>http://proxy.mydomain.local:3128</i>)"
-#~ msgstr "HTTP-Proxy (bspw. <i>http://proxy.meinedomaene.local:3128</i>)"
+#~ msgid "HTTP proxy (e.g., <i>http://proxy.mydomain.intranet:3128</i>)"
+#~ msgstr "HTTP-Proxy (bspw. <i>http://proxy.meinedomaene.intranet:3128</i>)"
 
 #~ msgid "Help"
 #~ msgstr "Hilfe"

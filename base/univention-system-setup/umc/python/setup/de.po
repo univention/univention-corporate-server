@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-08-01 15:46+0200\n"
+"POT-Creation-Date: 2014-08-04 23:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -285,6 +285,7 @@ msgid "The specified nameserver %s cannot be contacted."
 msgstr "Der angegebene DNS-Server %s kann nicht kontaktiert werden."
 
 #: umc/python/setup/__init__.py:388
+#, python-format
 msgid "The specified nameserver %s is not part of a valid UCS domain."
 msgstr "Der angegebene DNS-Server %s ist nicht Teil einer gültigen UCS-Domäne."
 

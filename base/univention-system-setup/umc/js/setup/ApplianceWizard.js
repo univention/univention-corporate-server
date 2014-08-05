@@ -206,7 +206,7 @@ define([
 		return acceptEmtpy || (isFQDN && hasNoDots);
 	};
 
-	var _invalidFQDNMessage = _('Invalid fully qualified domain name!<br>Expected format: <i>hostname.mydomain.local</i>');
+	var _invalidFQDNMessage = _('Invalid fully qualified domain name!<br>Expected format: <i>hostname.mydomain.intranet</i>');
 	var _validateFQDN = function(fqdn) {
 		fqdn = fqdn || '';
 		var isFQDN = _regFQDN.test(fqdn);
@@ -215,7 +215,7 @@ define([
 		return acceptEmtpy || (isFQDN && hasEnoughParts);
 	};
 
-	var _invalidHostOrFQDNMessage = _('Invalid hostname or fully qualified domain name!<br>Expected format: <i>myhost</i> or <i>hostname.mydomain.local</i>');
+	var _invalidHostOrFQDNMessage = _('Invalid hostname or fully qualified domain name!<br>Expected format: <i>myhost</i> or <i>hostname.mydomain.intranet</i>');
 	var _validateHostOrFQDN = function(hostOrFQDN) {
 		hostOrFQDN = hostOrFQDN || '';
 		var acceptEmtpy = !hostOrFQDN && !this.required;
@@ -223,7 +223,7 @@ define([
 	};
 
 	var _regDN = /^([^=, ]+=[^=, ]+,)*[^=, ]+=[^=, ]+$/;
-	var _invalidLDAPBase = _('Invalid LDAP base!<br>Expected format: dc=mydomain,dc=local');
+	var _invalidLDAPBase = _('Invalid LDAP base!<br>Expected format: dc=mydomain,dc=intranet');
 	var _validateLDAPBase = function(ldapBase) {
 		ldapBase = ldapBase || '';
 		var acceptEmtpy = !ldapBase && !this.required;
@@ -848,7 +848,7 @@ define([
 				msg = _('For a specified host name, the domain name is automatically derived from the domain name server. A fully qualified domain may be necessary for mail server setups with differing domains.<br/>Note that the domain name <b>cannot</b> be changed after the UCS setup wizard has been completed.');
 			}
 			else if (type == 'proxy') {
-				msg = _('A proxy address needs to be specified in the format: <i>http://proxy.mydomain.local:3128</i><br/>Proxy access with username and password may be specified via the format: <i>http://username:password@proxy.mydomain.local:3128</i>');
+				msg = _('A proxy address needs to be specified in the format: <i>http://proxy.mydomain.intranet:3128</i><br/>Proxy access with username and password may be specified via the format: <i>http://username:password@proxy.mydomain.intranet:3128</i>');
 			}
 			if (msg) {
 				_showTooltip(evt.target, msg, evt);
@@ -1086,7 +1086,7 @@ define([
 			organization = organization.toLowerCase();
 			organization = organization.replace(/[\s().]+/g, '-').replace(/-+$/, ''); // remove trailing '-'
 			var hostname = this._randomHostName();
-			var fqdn = lang.replace('{0}.{1}.local', [hostname, organization]);
+			var fqdn = lang.replace('{0}.{1}.intranet', [hostname, organization]);
 			this.getWidget('network', '_fqdn').set('value', fqdn);
 			this.getWidget('network', 'hostname').set('value', hostname);
 		},
@@ -1593,7 +1593,7 @@ define([
 					}],
 					layout: [ 'text', 'username', 'password' ],
 					title: _('Domain admin credentials'),
-					submit: _('Join'),
+					submit: _('Join domain'),
 					cancel: _('Cancel'),
 					style: 'max-width: 400px;'
 				});
