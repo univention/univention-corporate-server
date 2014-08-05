@@ -289,7 +289,6 @@ define([
 
 		constructor: function(props) {
 			lang.mixin(this, props);
-			this.local_mode = true;
 
 			this.pages = [{
 				'class': 'umc-setup-page umc-setup-page-welcome',
@@ -353,7 +352,7 @@ define([
 					label: _('Keyboard layout'),
 					dynamicValues: 'setup/lang/keymaps',
 					onChange: lang.hitch(this, function(value) {
-						if(this.local_mode) {
+						if (this.local_mode) {
 							tools.umcpCommand('setup/keymap/save', {keymap: value});
 						}
 					})
@@ -404,7 +403,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('<p>Specify the type of role for the system to join into an existing UCS domain. For this, credentials of a valid domain Administrator account will be necessary.</p>')
+					content: _('<p>Specify the type of the system to join into an existing UCS domain. For this, credentials of a valid domain Administrator account will be necessary.</p>')
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
@@ -455,7 +454,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('<p>Enter the name of your organisation, an e-mail address to activate UCS and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>')
+					content: _('<p>Enter the name of your organization, an e-mail address to activate UCS and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>')
 				}, {
 					type: TextBox,
 					name: 'organization',
@@ -472,7 +471,7 @@ define([
 					invalidMessage: _invalidEmailAddressMessage
 				}, {
 					type: PasswordInputBox,
-					required: this.local_mode,
+					required: true,
 					name: 'root_password',
 					label: _('Password')
 				}]
@@ -1550,7 +1549,7 @@ define([
 			if (pageName == 'user-master' || pageName == 'network') {
 				var passwordWidget = this.getWidget(pageName, 'root_password');
 				var password = passwordWidget.get('value');
-				if (passwordWidget.get('visible') && passwordWidget.get('required') && password.length < 8) {
+				if (passwordWidget.get('visible') && password && password.length < 8) {
 					passwordWidget.focus();
 					_alert(_('The root password is too short. For security reasons, your password must contain at least 8 characters.'));
 					return false;
