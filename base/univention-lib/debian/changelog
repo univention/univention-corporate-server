@@ -1,3 +1,9 @@
+univention-lib (3.0.26-62) unstable; urgency=medium
+
+  * Add make_deleted_objects_readable_for_this_machine (Bug #35566)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 05 Aug 2014 17:39:18 +0200
+
 univention-lib (3.0.26-61) unstable; urgency=low
 
   * set connector/ad/mapping/group/primarymail=true
