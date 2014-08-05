@@ -190,10 +190,43 @@ class AD_DSACL_modifier():
 				pass
 
 
-	def grant_DSACL_LCRP_to_local_system(self):
+	def get_nTSecurityDescriptor_of_Deleted_Objects(self):
 		ctrls = []
 		ctrls.append(ldap.controls.LDAPControl('1.2.840.113556.1.4.417',criticality=0))
 
+		result = self.ad.lo_ad.lo.search_ext_s("CN=Deleted Objects,%s" % (self.ad.lo_ad.base,),
+			ldap.SCOPE_BASE,
+			"(objectClass=*)", attrlist=["nTSecurityDescriptor",],
+			serverctrls=ctrls)
+		if result and len(result)>0 and result[0] and len(result[0])>0 and result[0][0]: # no referral, so we've got a valid result
+			deleted_objects_dn = result[0][0]
+			obj = result[0][1]
+			desc_ndr = obj.get("nTSecurityDescriptor", [None])[0]
+		else:
+			print "ERROR: CN=Deleted Objects not found in AD"
+			sys.exit(1)
+
+		desc_sddl = None
+		if desc_ndr:
+			desc = ds_sd=ndr_unpack(security.descriptor, desc_ndr)
+			desc_sddl = desc.as_sddl()
+
+		return (deleted_objects_dn, desc_sddl)
+			
+	def initialize_nTSecurityDescriptor_of_Deleted_Objects(self, domainsid):
+		# Probably only the O:DAG:SY fields matter here, as we set 
+		default_desc_sddl = 'O:DAG:SYD:PAI(A;;RPLC;;;BA)(A;;RPWPCCDCLCRCWOWDSDSW;;;SY)S:AI(OU;CIIOIDSA;WP;f30e3bbe-9ff0-11d1-b603-0000f80367c1;bf967aa5-0de6-11d0-a285-00aa003049e2;WD)(OU;CIIOIDSA;WP;f30e3bbf-9ff0-11d1-b603-0000f80367c1;bf967aa5-0de6-11d0-a285-00aa003049e2;WD)'
+
+		desc = security.descriptor.from_sddl(default_desc_sddl, domainsid)
+		desc_ndr = ndr_pack(desc)
+		modify_ctrls = []
+		modify_ctrls.append(ldap.controls.LDAPControl('1.2.840.113556.1.4.417',criticality=0))
+		modify_ctrls.append(ldap.controls.LDAPControl('1.2.840.113556.1.4.801',criticality=1,encodedControlValue='0\x03\x02\x01\x01')) ## value is ASN1 encoded SEQUENCE { INTEGER }, basically it a 1
+		self.ad.lo_ad.lo.modify_ext_s(compatible_modstring(deleted_objects_dn),
+			[(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)],
+			serverctrls=modify_ctrls)
+
+	def grant_DSACL_LCRP_to_local_system(self):
 		result = self.ad.lo_ad.lo.search_ext_s(self.ad.lo_ad.base,ldap.SCOPE_BASE,
 			univention.connector.ad.compatible_modstring("(objectClass=domain)"), attrlist=["objectSid",])
 		if result and len(result)>0 and result[0] and len(result[0])>0 and result[0][0]: # no referral, so we've got a valid result
@@ -215,36 +248,32 @@ class AD_DSACL_modifier():
 			print "ERROR: sAMAccountName %s$ not found in AD" (self.ucr["hostname"],)
 			sys.exit(1)
 
-		desc_sddl = 'O:DAG:SYD:PAI(A;;RPLC;;;BA)(A;;RPWPCCDCLCRCWOWDSDSW;;;SY)S:AI(OU;CIIOIDSA;WP;f30e3bbe-9ff0-11d1-b603-0000f80367c1;bf967aa5-0de6-11d0-a285-00aa003049e2;WD)(OU;CIIOIDSA;WP;f30e3bbf-9ff0-11d1-b603-0000f80367c1;bf967aa5-0de6-11d0-a285-00aa003049e2;WD)'
-
 		new_ace = '(A;;RPLC;;;%s)' % (machine_sid,)
 
-		result = self.ad.lo_ad.lo.search_ext_s("CN=Deleted Objects,%s" % (self.ad.lo_ad.base,),
-			ldap.SCOPE_BASE,
-			"(objectClass=*)", attrlist=["nTSecurityDescriptor",],
-			serverctrls=ctrls)
-		if result and len(result)>0 and result[0] and len(result[0])>0 and result[0][0]: # no referral, so we've got a valid result
-			deleted_objects_dn = result[0][0]
-			obj = result[0][1]
-			desc_ndr = obj.get("nTSecurityDescriptor", [None])[0]
-		else:
-			print "ERROR: CN=Deleted Objects not found in AD"
+		(deleted_objects_dn, desc_sddl) = self.get_nTSecurityDescriptor_of_Deleted_Objects()
+		if not desc_sddl:
+			self.initialize_nTSecurityDescriptor_of_Deleted_Objects()
+			(deleted_objects_dn, desc_sddl) = self.get_nTSecurityDescriptor_of_Deleted_Objects()
+			if not desc_sddl:
+				print "ERROR: Failed to initialize nTSecurityDescriptor for CN=Deleted Objects in AD"
+				sys.exit(1)
+
+		if new_ace in desc_sddl:
+			print "INFO: DSACL of Deleted Objects is already OK."
 			sys.exit(1)
-
-		if desc_ndr:
-			desc = ds_sd=ndr_unpack(security.descriptor, desc_ndr)
-			desc_sddl = desc.as_sddl()
-
+			
 		if desc_sddl.find("(") >= 0:
 			desc_sddl = desc_sddl[:desc_sddl.index("(")] + new_ace + desc_sddl[desc_sddl.index("("):]
 		else:
 			desc_sddl = desc_sddl + new_ace
 		desc = security.descriptor.from_sddl(desc_sddl, domainsid)
 		desc_ndr = ndr_pack(desc)
-		ctrls.append(ldap.controls.LDAPControl('1.2.840.113556.1.4.801',criticality=1,encodedControlValue='0\x03\x02\x01\x01')) ## value is ASN1 encoded SEQUENCE { INTEGER }
+		ctrls = []
+		ctrls.append(ldap.controls.LDAPControl('1.2.840.113556.1.4.417',criticality=0))
 		self.ad.lo_ad.lo.modify_ext_s(compatible_modstring(deleted_objects_dn),
 			[(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)],
 			serverctrls=ctrls)
+		print "INFO: DSACL of Deleted Objects adjusted."
 
 
 def _connect_ucs(ucr, binddn=None, bindpwd=None):

@@ -1,3 +1,10 @@
+univention-ad-connector (8.0.17-66) unstable; urgency=medium
+
+  * DSACL needs to be adjusted in a separate step after initalization
+    (Bug #35566)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 05 Aug 2014 18:28:36 +0200
+
 univention-ad-connector (8.0.17-65) unstable; urgency=medium
 
   * Add dependency on currrent version of python-univention-lib (Bug #35566)
