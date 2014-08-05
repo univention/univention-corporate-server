@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-2
 src: univention-management-console-module-appcenter
-fix: 3.0.51-24.259.201407231526
+fix: 3.0.51-25.260.201408051346
 version: [2]
 desc: |
   This update fixes the following issues:
@@ -11,4 +11,7 @@ desc: |
   * When the system is part of a Windows Active Directory domain, certain
     applications warn before installation that a password service needs to be
     running on the Windows Domain Controller.
-bug: [35454, 35453]
+  * Linked the UCR variable repository/app_center/installed to the creation of
+    certain UMC module definition files. This fixes issues with modules not
+    showing up in "Installed Apps" after the initial setup of the server.
+bug: [35454, 35453, 35565]
