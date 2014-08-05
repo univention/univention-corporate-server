@@ -803,7 +803,7 @@ def is_ucs_domain(nameserver, domain):
 	try:
 		resolver.query('_domaincontroller_master._tcp.%s' % domain, 'SRV')
 		return True
-	except dns.resolver.NXDOMAIN as exc:
+	except dns.resolver.NXDOMAIN:
 		MODULE.warn('No valid UCS domain (%s) at nameserver %s!' % (domain, nameserver))
 	return False
 
