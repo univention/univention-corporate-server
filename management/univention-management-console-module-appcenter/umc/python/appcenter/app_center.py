@@ -829,7 +829,7 @@ class Application(object):
 	def should_show_up_in_app_center(self, package_manager):
 		# NOT iff:
 		#  * has wrong server role OR
-		#  * is not installed and has EndOfLife=True
+		#  * is not installed and has EndOfLife=True OR
 		#  * has ADMemberIssueHide and UCS is part of a Windows Active Directory
 		return self.allowed_on_local_server() and (not self.get('endoflife') or self.is_installed(package_manager)) and not self.has_active_ad_member_issue('hide')
 
@@ -1048,9 +1048,6 @@ class Application(object):
 
 			# remove all existing component versions
 			self.unregister_all_and_register(None, component_manager, package_manager)
-
-			# update package information
-			self.update_conffiles()
 
 			# unregister app in LDAP
 			self.tell_ldap(component_manager.ucr, package_manager)
@@ -1464,10 +1461,9 @@ class Application(object):
 				# there was something else registered, maybe even None
 				previously_registered = previously_registered_by_dry_run
 
-			# install + (dist_upgrade if update)
+			# install (+ dist_upgrade if update)
 			package_manager.log('\n== INSTALLING %s AT %s ==\n' % (self.name, datetime.now()))
 			package_manager.commit(install=to_install, dist_upgrade=not is_install)
-			self.update_conffiles()
 
 			# from now on better dont remove component
 			raised_before_installed = False

@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.51-25) unstable; urgency=low
+
+  * Bug #35565: commit installed apps files upon UCRV
+    repository/app_center/installed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 05 Aug 2014 13:44:10 +0200
+
 univention-management-console-module-appcenter (3.0.51-24) unstable; urgency=low
 
   * Bug #35454: UCS in AD domains: Hide certain apps when in AD domain
