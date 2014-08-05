@@ -1,3 +1,9 @@
+univention-lib (3.0.26-63) unstable; urgency=medium
+
+  * Fix log from make_deleted_objects_readable_for_this_machine (Bug #35566)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 05 Aug 2014 18:27:18 +0200
+
 univention-lib (3.0.26-62) unstable; urgency=medium
 
   * Add make_deleted_objects_readable_for_this_machine (Bug #35566)

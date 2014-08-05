@@ -475,7 +475,7 @@ def make_deleted_objects_readable_for_this_machine(username, password, ucr=None)
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	ud.debug(ud.MODULE, ud.PROCESS, "Matching well known object names")
+	ud.debug(ud.MODULE, ud.PROCESS, "Make Deleted Objects readable for this machine")
 
 	binddn = '%s@%s' % (username, ucr.get('kerberos/realm'))
 	p1 = subprocess.Popen(['/usr/share/univention-ad-connector/scripts/make-deleted-objects-readable-for-this-machine', '--binddn', binddn, '--bindpwd', password],
