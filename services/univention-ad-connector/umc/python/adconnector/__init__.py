@@ -481,6 +481,8 @@ class Instance(Base, ProgressMixin):
 			_progress(85, _('Configuring DNS entries...'))
 			admember.add_domaincontroller_srv_record_in_ad(ad_server_ip)
 
+			admember.make_deleted_objects_readable_for_this_machine(username, password)
+
 			_progress(90, _('Starting Active Directory connection service...'))
 			admember.start_service('univention-ad-connector')
 

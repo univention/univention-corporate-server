@@ -1,0 +1,309 @@
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
+#
+# Univention AD Connector
+#  Grant List and Read access to "CN=Deleted Objects"
+#
+# Copyright 2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+
+import sys, string, time
+from optparse import OptionParser
+
+import ldap
+import univention
+import univention.connector
+import univention.connector.ad
+from univention.connector.ad import compatible_modstring
+import univention.config_registry
+import univention.debug as ud
+import univention.lib.s4
+from samba.dcerpc import security
+from samba.ndr import ndr_unpack, ndr_pack
+import ldap.controls
+import univention.admin.modules as udm_modules
+import univention.admin.filter as udm_filter
+import univention.admin.uexceptions as uexceptions
+# load UDM modules
+udm_modules.update()
+
+LOGFILE = "/var/log/univention/connector.log"
+
+def log(level, msg):
+	prefix = {
+		ud.ERROR: "Error",
+		ud.WARN: "Warning",
+		ud.PROCESS: "Process",
+		ud.INFO: "Info",
+		ud.ALL: "Debug",
+		}
+	ud.debug(ud.LDAP, level, msg)
+	if level <= ud.get_level(ud.LDAP):
+		print "%s: %s" % (prefix.get(level), msg)
+
+class AD_Connection():
+	''' stripped down univention.connector.ad.ad class
+		difference: accept "bindpwd" directly instead of "bindpw" filename
+		difference: don't require mapping
+		difference: Skip init_group_cache code (i.e. use init_group_cache=False)
+		difference: don't use TLS
+		difference: don't use kerberos
+	'''
+
+	def __init__(self, CONFIGBASENAME, baseConfig, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate):
+
+		self.CONFIGBASENAME = CONFIGBASENAME
+
+		self.ad_ldap_host = ad_ldap_host
+		self.ad_ldap_port = ad_ldap_port
+		self.ad_ldap_base = ad_ldap_base
+		self.ad_ldap_binddn = ad_ldap_binddn
+		self.ad_ldap_bindpw = ad_ldap_bindpw
+		self.ad_ldap_certificate = ad_ldap_certificate
+		self.baseConfig = baseConfig
+
+		tls_mode = 0
+		ldaps = self.baseConfig.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False) # tls or ssl
+
+		self.lo_ad=univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps = ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
+
+		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS,0)
+
+		try:
+			result = self.lo_ad.lo.search_ext_s(ad_ldap_base,ldap.SCOPE_BASE,
+					'objectclass=domain',['objectSid'],
+					timeout=-1, sizelimit=0)
+			objectSid_blob = result[0][1]['objectSid'][0]
+			self.ad_sid = univention.connector.ad.decode_sid(objectSid_blob)
+		except Exception, msg:
+			print "Failed to get SID from AD: %s" % msg
+			sys.exit(1)
+
+class AD_DSACL_modifier():
+	''' Provides methods for modifying the nTSecurityDescriptor of CN=Deleted Objects
+		NOTE: copied from univention-management-console-module-adtakeover
+	'''
+
+	def __init__(self, ucr, binddn, bindpwd):
+		self.ucr = ucr
+		self.ad_ldap_binddn = binddn
+		self.ad_ldap_bindpwd = bindpwd
+		self.ad_connect()
+
+		self.local_fqdn = '.'.join((self.ucr["hostname"], self.ucr["domainname"]))
+
+		self.old_domainsid = None
+		self.lo = _connect_ucs(self.ucr)
+		ldap_result = self.lo.search(filter="(&(objectClass=sambaDomain)(sambaDomainName=%s))" % self.ucr["windows/domain"], attr=["sambaSID"])
+		if len(ldap_result) == 1:
+			self.old_domainsid = ldap_result[0][1]["sambaSID"][0]
+		elif len(ldap_result) > 0:
+			log(ud.ERROR, 'Found more than one sambaDomain object with sambaDomainName=%s' % self.           ucr["windows/domain"])
+			# FIXME: probably sys.exit()?
+		else:
+			log(ud.ERROR, 'Did not find a sambaDomain object with sambaDomainName=%s' % self.ucr["windows/domain"])
+			# FIXME: probably sys.exit()?
+
+
+	def ad_connect(self):
+		''' stripped down univention.connector.ad.main
+			difference: pass "bindpwd" directly instead of "bindpw" filename
+		'''
+
+		if not self.ucr.has_key('%s/ad/ldap/host' % CONFIGBASENAME):
+			print '%s/ad/ldap/host not set' % CONFIGBASENAME
+			sys.exit(1)
+		if not self.ucr.has_key('%s/ad/ldap/port' % CONFIGBASENAME):
+			print '%s/ad/ldap/port not set' % CONFIGBASENAME
+			sys.exit(1)
+		if not self.ucr.has_key('%s/ad/ldap/base' % CONFIGBASENAME):
+			print '%s/ad/ldap/base not set' % CONFIGBASENAME
+			sys.exit(1)
+
+		ca_file = self.ucr.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
+		if self.ucr.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True) or self.ucr.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False):
+			if ca_file:
+				# create a new CAcert file, which contains the UCS CA and the AD CA,
+				# see Bug #17768 for details
+				#  https://forge.univention.org/bugzilla/show_bug.cgi?id=17768
+				new_ca_filename = '/var/cache/univention-ad-connector/CAcert-%s.pem' % CONFIGBASENAME
+				new_ca = open(new_ca_filename, 'w')
+
+				ca = open('/etc/univention/ssl/ucsCA/CAcert.pem', 'r')
+				new_ca.write(string.join(ca.readlines(),''))
+				ca.close()
+
+				ca = open(self.ucr['%s/ad/ldap/certificate' % CONFIGBASENAME])
+				new_ca.write(string.join(ca.readlines(),''))
+				ca.close()
+
+				new_ca.close()
+				
+				ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, new_ca_filename )
+			else:
+				ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
+		
+
+		poll_sleep=int(self.ucr['%s/ad/poll/sleep' % CONFIGBASENAME])
+		ad_init=None
+		while not ad_init:
+			try:
+				self.ad = AD_Connection(	CONFIGBASENAME,
+								self.ucr,
+								self.ucr['%s/ad/ldap/host' % CONFIGBASENAME],
+								self.ucr['%s/ad/ldap/port' % CONFIGBASENAME],
+								self.ucr['%s/ad/ldap/base' % CONFIGBASENAME],
+								self.ad_ldap_binddn,
+								self.ad_ldap_bindpwd,
+								self.ucr['%s/ad/ldap/certificate' % CONFIGBASENAME]
+								)
+				ad_init=True
+			except ldap.SERVER_DOWN:
+				print "Warning: Can't initialize LDAP-Connections, wait..."
+				sys.stdout.flush()
+				time.sleep(poll_sleep)
+				pass
+
+
+	def grant_DSACL_LCRP_to_local_system(self):
+		ctrls = []
+		ctrls.append(ldap.controls.LDAPControl('1.2.840.113556.1.4.417',criticality=0))
+
+		result = self.ad.lo_ad.lo.search_ext_s(self.ad.lo_ad.base,ldap.SCOPE_BASE,
+			univention.connector.ad.compatible_modstring("(objectClass=domain)"), attrlist=["objectSid",])
+		if result and len(result)>0 and result[0] and len(result[0])>0 and result[0][0]: # no referral, so we've got a valid result
+			obj = result[0][1]
+			objectSid_ndr = obj.get("objectSid", [None])[0]
+			domainsid = ndr_unpack(security.dom_sid, objectSid_ndr)
+		else:
+			print "ERROR: Domain SID not found in AD"
+			sys.exit(1)
+
+		ldap_filter = "(sAMAccountName=%s$)" % (self.ucr["hostname"],)
+		result = self.ad.lo_ad.lo.search_ext_s(self.ad.lo_ad.base,ldap.SCOPE_SUBTREE,
+			univention.connector.ad.compatible_modstring(ldap_filter), attrlist=["objectSid",])
+		if result and len(result)>0 and result[0] and len(result[0])>0 and result[0][0]: # no referral, so we've got a valid result
+			obj = result[0][1]
+			objectSid_ndr = obj.get("objectSid", [None])[0]
+			machine_sid = ndr_unpack(security.dom_sid, objectSid_ndr)
+		else:
+			print "ERROR: sAMAccountName %s$ not found in AD" (self.ucr["hostname"],)
+			sys.exit(1)
+
+		desc_sddl = 'O:DAG:SYD:PAI(A;;RPLC;;;BA)(A;;RPWPCCDCLCRCWOWDSDSW;;;SY)S:AI(OU;CIIOIDSA;WP;f30e3bbe-9ff0-11d1-b603-0000f80367c1;bf967aa5-0de6-11d0-a285-00aa003049e2;WD)(OU;CIIOIDSA;WP;f30e3bbf-9ff0-11d1-b603-0000f80367c1;bf967aa5-0de6-11d0-a285-00aa003049e2;WD)'
+
+		new_ace = '(A;;RPLC;;;%s)' % (machine_sid,)
+
+		result = self.ad.lo_ad.lo.search_ext_s("CN=Deleted Objects,%s" % (self.ad.lo_ad.base,),
+			ldap.SCOPE_BASE,
+			"(objectClass=*)", attrlist=["nTSecurityDescriptor",],
+			serverctrls=ctrls)
+		if result and len(result)>0 and result[0] and len(result[0])>0 and result[0][0]: # no referral, so we've got a valid result
+			deleted_objects_dn = result[0][0]
+			obj = result[0][1]
+			desc_ndr = obj.get("nTSecurityDescriptor", [None])[0]
+		else:
+			print "ERROR: CN=Deleted Objects not found in AD"
+			sys.exit(1)
+
+		if desc_ndr:
+			desc = ds_sd=ndr_unpack(security.descriptor, desc_ndr)
+			desc_sddl = desc.as_sddl()
+
+		if desc_sddl.find("(") >= 0:
+			desc_sddl = desc_sddl[:desc_sddl.index("(")] + new_ace + desc_sddl[desc_sddl.index("("):]
+		else:
+			desc_sddl = desc_sddl + new_ace
+		desc = security.descriptor.from_sddl(desc_sddl, domainsid)
+		desc_ndr = ndr_pack(desc)
+		ctrls.append(ldap.controls.LDAPControl('1.2.840.113556.1.4.801',criticality=1,encodedControlValue='0\x03\x02\x01\x01')) ## value is ASN1 encoded SEQUENCE { INTEGER }
+		self.ad.lo_ad.lo.modify_ext_s(compatible_modstring(deleted_objects_dn),
+			[(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)],
+			serverctrls=ctrls)
+
+
+def _connect_ucs(ucr, binddn=None, bindpwd=None):
+	''' Connect to OpenLDAP '''
+
+	if binddn and bindpwd:
+		bindpw = bindpwd
+	else:
+		bindpw_file = ucr.get('connector/ldap/bindpw', '/etc/ldap.secret')
+		binddn = ucr.get('connector/ldap/binddn', 'cn=admin,'+ucr['ldap/base'])
+		bindpw=open(bindpw_file).read()
+		if bindpw[-1] == '\n':
+			bindpw=bindpw[0:-1]
+
+	host = ucr.get('connector/ldap/server', ucr.get('ldap/master'))
+
+	try:
+		port = int(ucr.get('connector/ldap/port', ucr.get('ldap/master/port')))
+	except:
+		port = 7389
+
+	lo = univention.admin.uldap.access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=0, follow_referral=True)
+
+	return lo
+
+
+if __name__ == "__main__":
+
+	parser = OptionParser()
+	parser.add_option("--configbasename", dest="configbasename",
+			  help="", metavar="CONFIGBASENAME", default="connector")
+	parser.add_option("--binddn", dest="binddn",
+			  help="", metavar="BINDDN")
+	parser.add_option("--bindpwd", dest="bindpwd",
+			  help="", metavar="BINDPWD")
+	(options, args) = parser.parse_args()
+
+	CONFIGBASENAME = options.configbasename
+
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+
+	if not options.binddn:
+		options.binddn = ucr.get('%s/ad/ldap/binddn' % CONFIGBASENAME)
+		if not options.binddn:
+			print '--binddn not given and %s/ad/ldap/binddn not set' % CONFIGBASENAME
+			sys,exit(1)
+
+	if not options.bindpwd:
+		bindpwfile = ucr.get('%s/ad/ldap/bindpw' % CONFIGBASENAME)
+		if not bindpwfile:
+			print '--bindpwd not given and %s/ad/ldap/bindpw not set' % CONFIGBASENAME
+			sys,exit(1)
+		options.bindpwd = open(ucr['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
+		if options.bindpwd[-1] == '\n':
+			options.bindpwd = options.bindpwd[0:-1]
+
+	ud.init(LOGFILE, ud.FLUSH, ud.NO_FUNCTION)
+	debug_level = ucr.get('connector/debug/level', 2)
+	ud.set_level(ud.LDAP, int(debug_level))
+	ad = AD_DSACL_modifier(ucr, options.binddn, options.bindpwd)
+	ad.grant_DSACL_LCRP_to_local_system()

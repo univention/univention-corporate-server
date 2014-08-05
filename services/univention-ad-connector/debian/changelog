@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-64) unstable; urgency=medium
+
+  * Add make_deleted_objects_readable_for_this_machine (Bug #35566)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 05 Aug 2014 17:40:22 +0200
+
 univention-ad-connector (8.0.17-63) unstable; urgency=medium
 
   * Bug #35090: text adaptations
