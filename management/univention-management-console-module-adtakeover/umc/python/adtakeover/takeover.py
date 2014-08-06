@@ -1063,11 +1063,17 @@ class AD_Takeover():
 		for obj in msgs:
 			name = obj["cn"][0]
 			run_and_output_to_log(["/usr/sbin/univention-directory-manager", "container/msgpo", "delete", "--filter", "name=%s" % name], log.debug)
+			gpo_path = '/var/lib/samba/sysvol/%s/Policies/%s' % (ucr["domainname"], name,)
+			if os.path.exists(gpo_path):
+				shutil.rmtree(gpo_path, ignore_errors=True)
 
 			if name.upper() == name:
 				continue
 
 			run_and_output_to_log(["/usr/sbin/univention-directory-manager", "container/msgpo", "delete", "--filter", "name=%s" % name.upper()], log.debug)
+			gpo_path = '/var/lib/samba/sysvol/%s/Policies/%s' % (ucr["domainname"], name.upper(),)
+			if os.path.exists(gpo_path):
+				shutil.rmtree(gpo_path, ignore_errors=True)
 
 	def rewrite_sambaSIDs_in_OpenLDAP(self):
 		### Phase I.b: Pre-Map SIDs (locale adjustment etc.)
@@ -1768,31 +1774,7 @@ def check_gpo_presence():
 
 	samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(lp), lp=lp)
 
-	## first try to fix AD case issue "6AC1786C-016F-11D2-945F-00C04fB984F9".
-	msgs = samdb.search(base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
-						expression="(objectClass=groupPolicyContainer)",
-						attrs=["cn", "gPCFileSysPath"])
-	for obj in msgs:
-		name = obj["cn"][0]
-		if name.upper() == name:
-			continue
-
-		change = ldb.Message()
-		change.dn = ldb.Dn(samdb, dn=str(obj.dn))
-		if "gPCFileSysPath" in obj:
-			basedirname = '/var/lib/samba/sysvol/%s/Policies' % ucr["domainname"]
-			subdirname = obj["gPCFileSysPath"][0].split("\\")[-1]
-			if os.path.exists(os.path.join(basedirname, subdirname)):
-				pass
-			elif os.path.exists(os.path.join(basedirname, subdirname.replace(name, name.upper()))):
-				log.info("Adjusting gPCFileSysPath %s of %s to uppercase" % (obj["gPCFileSysPath"][0], obj.dn,))
-				new_gPCFileSysPath = obj["gPCFileSysPath"][0].replace(name, name.upper())
-				change["gPCFileSysPath"] = ldb.MessageElement(new_gPCFileSysPath, ldb.FLAG_MOD_REPLACE, "gPCFileSysPath")
-				samdb.modify(change)
-			else:
-				log.warn("GPO %s path %s not found" % (obj.dn, obj["gPCFileSysPath"][0],))
-
-	## next check versions
+	## check versions
 	msgs = samdb.search(base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
 						expression="(objectClass=groupPolicyContainer)",
 						attrs=["cn", "gPCFileSysPath", "versionNumber"])

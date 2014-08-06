@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (1.0.10-46) unstable; urgency=medium
+
+  * Cleanup conflicting GPO directories before the robocopy phase (Bug #34776)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Aug 2014 16:58:40 +0200
+
 univention-management-console-module-adtakeover (1.0.10-45) unstable; urgency=medium
 
   * reduce and simplify the patch (Bug #34776)
