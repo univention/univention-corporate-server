@@ -118,7 +118,7 @@ bashquote () { # quote arguments for eval
 }
 
 download_host_certificate () {
-	echo -n "Download host certificate "
+	echo -n "Download host certificate: "
 	local HOSTPWD="/etc/machine.secret"
 	local HOSTACCOUNT="$hostname\$"
 	while true
@@ -136,7 +136,7 @@ download_host_certificate () {
 }
 
 check_ldap_tls_connection () {
-	echo -n "Check TLS connection "
+	echo -n "Check TLS connection: "
 
 	eval "$(ucr shell ldap/master/port)"
 
@@ -206,6 +206,24 @@ run_join_scripts () {
 		done
 	fi
 
+}
+
+check_and_configure_ad_member_mode () {
+
+	# switch to ad member mode
+	if is_domain_in_admember_mode; then
+		if ! is_localhost_in_admember_mode; then
+			echo -n "Entering AD Member Mode: "
+			configure_nonmaster_as_ad_member "$server_role" >>/var/log/univention/join.log 2>&1 || failed_message "could not set AD Member Mode"
+			echo -e "\033[60Gdone"
+		fi
+	else
+		if is_localhost_in_admember_mode; then
+			echo -n "Leaving AD Member Mode: "
+			revert_nonmaster_ad_member "$server_role" >>/var/log/univention/join.log 2>&1 || failed_message "could not revert AD Member Mode"
+			echo -e "\033[60Gdone"
+		fi
+	fi
 }
 
 # log univention-join call
@@ -461,7 +479,7 @@ if [ $server_role != "domaincontroller_master" -a "$server_role" != "domaincontr
 fi
 
 if [ -x /usr/bin/rdate ]; then
-	echo -n "Sync time "
+	echo -n "Sync time: "
 	/usr/bin/rdate "$DCNAME" >/dev/null 2>&1
 	echo -e "\033[60Gdone"
 fi
@@ -702,8 +720,12 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	univention-config-registry set \
 		ldap/server/name?"$DCNAME" \
 		ldap/master?"$DCNAME" \
-		kerberos/adminserver?"$DCNAME" \
 		>>/var/log/univention/join.log 2>&1
+
+	if ! is_domain_in_admember_mode; then
+		univention-config-registry set kerberos/adminserver?"$DCNAME"
+	fi
+
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 	set_windows_domain "$DCPWD" "$DCACCOUNT" "$DCNAME" "$WINDOM"
 	eval "$(univention-config-registry shell)"
@@ -716,6 +738,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	echo -n "0" >/var/lib/univention-ldap/schema/id/id
 	chown listener /var/lib/univention-ldap/schema/id/id
 
+	check_and_configure_ad_member_mode
 	run_join_scripts
 
 elif [ "$server_role" = "domaincontroller_slave" ]; then
@@ -772,8 +795,12 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	univention-config-registry set \
 		ldap/server/name?"$DCNAME" \
 		ldap/master?"$DCNAME" \
-		kerberos/adminserver?"$DCNAME" \
 		>>/var/log/univention/join.log 2>&1
+
+	if ! is_domain_in_admember_mode; then
+		univention-config-registry set kerberos/adminserver?"$DCNAME"
+	fi
+
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 	set_windows_domain "$DCPWD" "$DCACCOUNT" "$DCNAME" "$WINDOM"
 	echo -n "0" >/var/lib/univention-ldap/schema/id/id
@@ -782,6 +809,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	touch /var/univention-join/joined
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
+	check_and_configure_ad_member_mode
 	run_join_scripts
 
 elif [ "$server_role" = "memberserver" ]; then
@@ -814,13 +842,18 @@ elif [ "$server_role" = "memberserver" ]; then
 		ldap/server/port?7389 \
 		ldap/master?"$DCNAME" \
 		ldap/master/port?7389 \
-		kerberos/adminserver?"$DCNAME" \
 		>>/var/log/univention/join.log 2>&1
+    
+	if ! is_domain_in_admember_mode; then
+		univention-config-registry set kerberos/adminserver?"$DCNAME"
+	fi
+
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 	set_windows_domain "$DCPWD" "$DCACCOUNT" "$DCNAME" "$WINDOM"
 	touch /var/univention-join/joined
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
+	check_and_configure_ad_member_mode
 	run_join_scripts
 
 else

@@ -1,8 +1,65 @@
+univention-join (7.0.0-2) unstable; urgency=medium
+
+  * Merge -r51215:52491 from ucs3.2-3 (Bug #34091)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Aug 2014 11:57:46 +0200
+
 univention-join (7.0.0-1) unstable; urgency=low
 
   * Bug #35145: Start UCS 4.0 development
 
  -- Florian Best <best@univention.de>  Wed, 16 Jul 2014 12:25:53 +0200
+
+univention-join (6.0.18-11) unstable; urgency=low
+
+  * dont ask for join account in member mode (Bug #35446) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 04 Aug 2014 11:52:49 +0200
+
+univention-join (6.0.18-10) unstable; urgency=low
+
+  * small fix (Bug #35470) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Jul 2014 09:43:20 +0200
+
+univention-join (6.0.18-9) unstable; urgency=low
+
+  * small fix (Bug #35470) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Jul 2014 09:21:00 +0200
+
+univention-join (6.0.18-8) unstable; urgency=low
+
+  * small fix (Bug #35470) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Jul 2014 09:07:33 +0200
+
+univention-join (6.0.18-7) unstable; urgency=low
+
+  * don't set kerberos/adminserver in member mode
+    in univention-join (Bug #35470) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Jul 2014 12:07:42 +0200
+
+univention-join (6.0.18-6) unstable; urgency=low
+
+  * do not configure ad member mode if ad/member is
+    already true (Bug #35446)
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 16:08:09 +0200
+
+univention-join (6.0.18-5) unstable; urgency=low
+
+  * log ad member mode (Bug #35446) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 16:02:03 +0200
+
+univention-join (6.0.18-4) unstable; urgency=low
+
+  * removed 04univention-samba-role.inst, added
+    ad member mode check to univention-join (Bug #35446) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 12:30:50 +0200
 
 univention-join (6.0.18-3) unstable; urgency=low
 
