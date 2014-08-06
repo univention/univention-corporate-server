@@ -349,7 +349,7 @@ define([
 				submitButton.set('disabled', false);
 			}), null, lang.hitch(this, function(progress) {
 				// output loading progress as button label
-				var label = _('Loading: %s', progress.message);
+				var label = _('Loading %s...', progress.message);
 				submitButton.set('label', label);
 			}));
 		},
@@ -879,7 +879,7 @@ define([
 			var formBuiltDeferred = new Deferred();
 			this._policyDeferred = new Deferred();
 			var loadedDeferred = this._loadObject(formBuiltDeferred, this._policyDeferred);
-			formBuiltDeferred.then(lang.hitch(this, 'addActiveDirectoryWarning'));
+			loadedDeferred.then(lang.hitch(this, 'addActiveDirectoryWarning'));
 
 			if (template && template.length > 0) {
 				template = template[0];
