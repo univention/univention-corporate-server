@@ -207,7 +207,7 @@ define([
 		return acceptEmtpy || (isFQDN && hasNoDots);
 	};
 
-	var _invalidFQDNMessage = _('Invalid fully qualified domain name!<br>Expected format: <i>hostname.mydomain.local</i>');
+	var _invalidFQDNMessage = _('Invalid fully qualified domain name!<br>Expected format: <i>hostname.mydomain.intranet</i>');
 	var _validateFQDN = function(fqdn) {
 		fqdn = fqdn || '';
 		var isFQDN = _regFQDN.test(fqdn);
@@ -216,7 +216,7 @@ define([
 		return acceptEmtpy || (isFQDN && hasEnoughParts);
 	};
 
-	var _invalidHostOrFQDNMessage = _('Invalid hostname or fully qualified domain name!<br>Expected format: <i>myhost</i> or <i>hostname.mydomain.local</i>');
+	var _invalidHostOrFQDNMessage = _('Invalid hostname or fully qualified domain name!<br>Expected format: <i>myhost</i> or <i>hostname.mydomain.intranet</i>');
 	var _validateHostOrFQDN = function(hostOrFQDN) {
 		hostOrFQDN = hostOrFQDN || '';
 		var acceptEmtpy = !hostOrFQDN && !this.required;
@@ -224,7 +224,7 @@ define([
 	};
 
 	var _regDN = /^([^=, ]+=[^=, ]+,)*[^=, ]+=[^=, ]+$/;
-	var _invalidLDAPBase = _('Invalid LDAP base!<br>Expected format: dc=mydomain,dc=local');
+	var _invalidLDAPBase = _('Invalid LDAP base!<br>Expected format: dc=mydomain,dc=intranet');
 	var _validateLDAPBase = function(ldapBase) {
 		ldapBase = ldapBase || '';
 		var acceptEmtpy = !ldapBase && !this.required;
@@ -282,7 +282,8 @@ define([
 		autoFocus: true,
 
 		_gallery: null,
-		_matchedCity: null,
+		_appGalleryUpdated: null,
+		_nLocaleSettingsConfigured: false,
 		_forcedPage: null,
 		_progressBar: null,
 		_criticalJoinErrorOccurred: false,
@@ -314,7 +315,7 @@ define([
 					type: LiveSearch,
 					name: '_search',
 					store: new _CityStore(),
-					label: _('Enter a near city to preconfigure settings such as timezone, system language, keyboard layout.'),
+					label: _('Enter a city nearby to preconfigure settings such as timezone, system language, keyboard layout.'),
 					inlineLabel: _('e.g., Boston...'),
 					labelConf: { style: 'margin-top: .75em;' }
 				}, {
@@ -352,7 +353,7 @@ define([
 					label: _('Keyboard layout'),
 					dynamicValues: 'setup/lang/keymaps',
 					onChange: lang.hitch(this, function(value) {
-						if(this.local_mode) {
+						if (this.local_mode) {
 							tools.umcpCommand('setup/keymap/save', {keymap: value});
 						}
 					})
@@ -403,7 +404,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('<p>Specify the type of role for the system to join into an existing UCS domain. For this, credentials of a valid domain Administrator account will be necessary.</p>')
+					content: _('<p>Specify the type of the system to join into an existing UCS domain. For this, credentials of a valid domain Administrator account will be necessary.</p>')
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
@@ -454,7 +455,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('<p>Enter the name of your organisation, an e-mail address to activate UCS and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>')
+					content: _('<p>Enter the name of your organization, an e-mail address to activate UCS and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>')
 				}, {
 					type: TextBox,
 					name: 'organization',
@@ -537,7 +538,7 @@ define([
 					name: 'root_password',
 					label: _('Local root password'),
 					visible: false,
-					required: true
+					required: this.local_mode
 				}, {
 					type: CheckBox,
 					name: '_dhcp',
@@ -677,7 +678,7 @@ define([
 				name: 'software',
 				'class': 'umc-setup-page umc-setup-page-software',
 				headerText: _('Software configuration'),
-				helpText: _('<p>Select UCS software components for installation on this system. This step can also be skipped; the components are also available in the Univention App Center in the category <i>UCS components</i>.</p><p>Third-party software (e.g., groupware) is also available through the Univention App Center.</p>')
+				helpText: _('<p>Select UCS software components for installation on this system. This step can be skipped; the components are also available in the Univention App Center in the category <i>UCS components</i>.</p><p>Third-party software (e.g., groupware) is also available through the Univention App Center.</p>')
 			}, {
 				name: 'validation',
 				'class': 'umc-setup-page-validation',
@@ -717,7 +718,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('<p>UCS has been successfully set up with the specified settings.</p><p>Click on the button <i>Continue</i> to complete the setup process.</p>')
+					content: _('<p>UCS has been successfully set up with the specified settings.</p><p>Click on the button <i>Finish</i> to complete the setup process.</p>')
 				}]
 			}];
 		},
@@ -725,7 +726,7 @@ define([
 		_isDHCPPreConfigured: function() {
 			return array.some(this._getNetworkDevices(), function(idev) {
 				var dev = this.values.interfaces[idev];
-				return dev.ip4dynamic;
+				return dev && dev.ip4dynamic;
 			}, this);
 		},
 
@@ -820,13 +821,13 @@ define([
 		showTooltip: function(evt, type) {
 			var msg = '';
 			if (type == 'email') {
-				msg = _('A valid e-mail address allows to activate the UCS system for using the Univention App Center. An e-mail with a personlized license key will then be sent to your e-mail address. This license can be uploaded via the license dialog in Univention Management Console.');
+				msg = _('A valid e-mail address allows to activate the UCS system for using the Univention App Center. An e-mail with a personalized license key will then be sent to your e-mail address. This license can be uploaded via the license dialog in Univention Management Console.');
 			}
 			else if (type == 'hostname') {
 				msg = _('For a specified host name, the domain name is automatically derived from the domain name server. A fully qualified domain may be necessary for mail server setups with differing domains.<br/>Note that the domain name <b>cannot</b> be changed after the UCS setup wizard has been completed.');
 			}
 			else if (type == 'proxy') {
-				msg = _('A proxy address needs to be specified in the format: <i>http://proxy.mydomain.local:3128</i><br/>Proxy access with username and password may be specified via the format: <i>http://username:password@proxy.mydomain.local:3128</i>');
+				msg = _('A proxy address needs to be specified in the format: <i>http://proxy.mydomain.intranet:3128</i><br/>Proxy access with username and password may be specified via the format: <i>http://username:password@proxy.mydomain.intranet:3128</i>');
 			}
 			if (msg) {
 				_showTooltip(evt.target, msg, evt);
@@ -1058,9 +1059,9 @@ define([
 			var organization = _organization || 'mydomain';
 			organization = _replaceUmlauts(organization);
 			organization = organization.toLowerCase();
-			organization = organization.replace(/[\s()]+/g, '-');
+			organization = organization.replace(/[\s().]+/g, '-').replace(/-+$/, ''); // remove trailing '-'
 			var hostname = this._randomHostName();
-			var fqdn = lang.replace('{0}.{1}.local', [hostname, organization]);
+			var fqdn = lang.replace('{0}.{1}.intranet', [hostname, organization]);
 			this.getWidget('network', '_fqdn').set('value', fqdn);
 			this.getWidget('network', 'hostname').set('value', hostname);
 		},
@@ -1134,7 +1135,7 @@ define([
 			}
 
 			// successful match
-			this._matchedCity = city;
+			var nSettingsConfigured = 0;
 			var cityLabel = city.label;
 			if (city.country_label) {
 				cityLabel += ', ' + city.country_label;
@@ -1144,6 +1145,7 @@ define([
 
 			var unknownStr = _('<b>Unknown</b>');
 			msg += _('<tr><td>Timezone:</td><td>%s</td></tr>', city.timezone || unknownStr);
+			nSettingsConfigured += !!city.timezone;
 
 			var defaultLang = unknownStr;
 			if (city.default_lang) {
@@ -1154,6 +1156,7 @@ define([
 						// found matching locale -> break loop
 						city.locale = ilocale.id;
 						defaultLang = ilocale.label;
+						nSettingsConfigured++;
 						return true;
 					}
 				});
@@ -1168,6 +1171,7 @@ define([
 					 if (ilayout.id == city.keyboard) {
 						// found matching layout -> break loop
 						defaultKeyboardLabel = ilayout.label;
+						nSettingsConfigured++;
 						return true;
 					 }
 				});
@@ -1176,6 +1180,7 @@ define([
 			msg += '</table>';
 			resultWidget.set('content', msg);
 			resultWidget.set('visible', true);
+			this._setLocaleDefault(); // set a fallback for unknown values
 			this._setLocaleValues(city);
 
 			// append button to change locale settings
@@ -1185,6 +1190,9 @@ define([
 				onClick: lang.hitch(this, '_next', 'welcome-adapt-locale-settings')
 			});
 			resultWidget.addChild(changeSettingsButton);
+
+			// save how many settings could be configured
+			this._nLocaleSettingsConfigured = nSettingsConfigured;
 		},
 
 		_updateNetwork: function(idx, ip) {
@@ -1192,7 +1200,7 @@ define([
 			var isIPv4Address = _regIPv4.test(ip);
 			if (isIPv4Address) {
 				var ipParts = ip.split('.');
-				var netmask = '24';
+				var netmask = '255.255.255.0';
 				var netmaskWidget = this.getWidget('network', '_netmask' + idx);
 				netmaskWidget.set('value', netmask);
 
@@ -1206,7 +1214,10 @@ define([
 		},
 
 		_updateAppGallery: function() {
-			this._gallery.filter(this._getAppQuery());
+			if (!this._appGalleryUpdated) {
+				this._appGalleryUpdated = true;
+				this._gallery.filter(this._getAppQuery());
+			}
 		},
 
 		_key2label: function(key) {
@@ -1453,7 +1464,7 @@ define([
 			if (!this._isPageForRole(pageName)) {
 				return false;
 			}
-			if (pageName == 'locale' && this._matchedCity) {
+			if (pageName == 'locale' && this._nLocaleSettingsConfigured == 3) {
 				// no need to display page for locale settings
 				return false;
 			}
@@ -1514,7 +1525,7 @@ define([
 			if (pageName == 'user-master' || pageName == 'network') {
 				var passwordWidget = this.getWidget(pageName, 'root_password');
 				var password = passwordWidget.get('value');
-				if (passwordWidget.get('visible') && password.length < 8) {
+				if (passwordWidget.get('visible') && password && password.length < 8) {
 					passwordWidget.focus();
 					_alert(_('The root password is too short. For security reasons, your password must contain at least 8 characters.'));
 					return false;
@@ -1556,7 +1567,7 @@ define([
 					}],
 					layout: [ 'text', 'username', 'password' ],
 					title: _('Domain admin credentials'),
-					submit: _('Join'),
+					submit: _('Join domain'),
 					cancel: _('Cancel'),
 					style: 'max-width: 400px;'
 				});
@@ -1661,10 +1672,38 @@ define([
 				this._keepAlive.stop();
 			}
 
+			// update display information
+			if (nextPage == 'network') {
+				this._updateNetworkPage();
+			}
+			if (nextPage == 'software') {
+				this._updateAppGallery();
+			}
+
 			// extra handling for specific pages
 			if (pageName == 'welcome-adapt-locale-settings') {
 				return this._forcePageTemporarily('locale');
 			}
+
+			// confirm empty passwords (if not required)
+			if (pageName == 'user-master' || pageName == 'network') {
+				var passwordWidget = this.getWidget(pageName, 'root_password');
+				var password = passwordWidget.get('value');
+				if (passwordWidget.get('visible') && !password) {
+					return dialog.confirm(_('Root password empty. Continue?'), [{
+						label: _('Cancel'),
+						name: pageName
+					}, {
+						label: _('Continue'),
+						'default': true,
+						name: nextPage
+					}], _('Warning')).then(lang.hitch(this, function(response) {
+						return this._forcePageTemporarily(response);
+					}));
+				}
+			}
+
+			// update summary page
 			if (nextPage == 'validation') {
 				return this._validateWithServer().then(lang.hitch(this, function(response) {
 					// jump to summary page if everything is fine...
@@ -1684,14 +1723,6 @@ define([
 				return this.join().then(function(success) {
 					return success ? 'done' : 'error';
 				});
-			}
-
-			// update display information
-			if (nextPage == 'network') {
-				this._updateNetworkPage();
-			}
-			if (nextPage == 'software') {
-				this._updateAppGallery();
 			}
 			return this._forcePageTemporarily(nextPage);
 		},

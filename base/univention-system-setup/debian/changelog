@@ -1,3 +1,9 @@
+univention-system-setup (8.0.15-3) unstable; urgency=low
+
+  * Bug #34484: Merged from UCS 3.2-2
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 06 Aug 2014 13:31:40 +0200
+
 univention-system-setup (8.0.15-2) unstable; urgency=low
 
   * Bug #34388: Updated links to appliance wizard 

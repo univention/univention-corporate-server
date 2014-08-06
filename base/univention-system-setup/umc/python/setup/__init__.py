@@ -47,8 +47,6 @@ import subprocess
 import simplejson as json
 import locale as _locale
 
-from threading import Thread
-
 from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
 from univention.management.console.modules.mixins import ProgressMixin
@@ -75,12 +73,15 @@ class Instance(Base, ProgressMixin):
 		self._finishedResult = True
 		self._progressParser = util.ProgressParser()
 		self._cleanup_required = False
+		self._very_first_locale = None
 		# reset umask to default
 		os.umask( 0022 )
 
 	def init( self ):
 		os.environ['LC_ALL'] = str(self.locale)
 		_locale.setlocale(_locale.LC_ALL, str(self.locale))
+		self._very_first_locale = copy.deepcopy(self.locale)
+		MODULE.process('Very first locale is %s. Will be added if this is very first system setup' % self._very_first_locale)
 		if not util.is_system_joined():
 			self._preload_city_data()
 
@@ -220,7 +221,10 @@ class Instance(Base, ProgressMixin):
 				self._progressParser.reset()
 
 				# write the profile file and run setup scripts
-				util.auto_complete_values_for_join(values, self.locale)
+				# use the _very_first_locale not the current one
+				# otherwise some strange python exceptions occur telling us
+				# about unsupported locale strings...
+				util.auto_complete_values_for_join(values, self._very_first_locale)
 				util.pre_save(values)
 
 				# on unjoined DC master the nameserver must be set to the external nameserver
@@ -350,6 +354,7 @@ class Instance(Base, ProgressMixin):
 				})
 
 		def _append(key, message):
+			MODULE.warn('Validation failed for key %s: %s' % (key, message))
 			messages.append({
 				'key': key,
 				'valid': False,
@@ -377,18 +382,24 @@ class Instance(Base, ProgressMixin):
 				_append('hostname', _("No hostname has been specified for the system."))
 
 		# see whether the domain can be determined automatically
-		if not util.is_system_joined() and newrole != 'domaincontroller_master' and 'domainname' not in values:
+		if not util.is_system_joined() and newrole != 'domaincontroller_master':
 			if 'nameserver1' not in values:
 				_append('nameserver1', _('A domain name server needs to specified.'))
 			else:
-				guessed_domain = util.get_nameserver_domain(values['nameserver1'])
+				# make sure we have a valid UCS nameserver
+				guessed_domain = util.get_domain(values['nameserver1'])
 				if not guessed_domain:
-					_append('domainname', _('The domain cannot automatically be determined. Make sure that the correct UCS domain name server has been specified or enter a fully qualified domain name of the system.'))
-				messages.append({
-					'valid': True,
-					'key': 'domainname',
-					'value': guessed_domain,
-				})
+					_append('nameserver1', _('The specified nameserver %s cannot be contacted.') % values['nameserver1'])
+				elif not util.is_ucs_domain(values['nameserver1'], guessed_domain):
+					_append('nameserver1', _('The specified nameserver %s is not part of a valid UCS domain.') % values['nameserver1'])
+					guessed_domain = None
+				else:
+					# communicate guessed domainname to frontend
+					messages.append({
+						'valid': True,
+						'key': 'domainname',
+						'value': guessed_domain,
+					})
 
 		# windows domain
 		_check('windows/domain', lambda x: x == x.upper(), _("The windows domain name can only consist of upper case characters."))
@@ -568,7 +579,7 @@ class Instance(Base, ProgressMixin):
 		os.environ['LC_ALL'] = str(self.locale)
 		try:
 			_locale.setlocale(_locale.LC_ALL, str(locale))
-		except _locale.Error as exc:
+		except _locale.Error:
 			MODULE.warn('Locale %s is not supported, using fallback locale "C" instead.' % locale)
 			_locale.setlocale(_locale.LC_ALL, 'C')
 		self.locale = locale

@@ -160,7 +160,7 @@ def _xkeymap(keymap):
 def auto_complete_values_for_join(newValues, current_locale=None):
 	# try to automatically determine the domain
 	if newValues['server/role'] != 'domaincontroller_master' and 'domainname' not in newValues and 'nameserver1' in newValues:
-		newValues['domainname'] = get_nameserver_domain(newValues['nameserver1'])
+		newValues['domainname'] = get_ucs_domain(newValues['nameserver1'])
 		if not newValues['domainname']:
 			raise Exception(_('Cannot automatically determine the domain. Please specify the server\'s fully qualified domain name.'))
 
@@ -659,7 +659,7 @@ def dhclient(interface, timeout=None):
 
 	# see wether the nameserver is part of a UCS domain
 	if 'nameserver_1' in dhcp_dict:
-		dhcp_dict['is_ucs_nameserver_1'] = bool(get_nameserver_domain(dhcp_dict['nameserver_1']))
+		dhcp_dict['is_ucs_nameserver_1'] = bool(get_ucs_domain(dhcp_dict['nameserver_1']))
 		MODULE.info('Check wether the nameserver %s is a UCS nameserver -> %s' % (dhcp_dict['nameserver_1'], dhcp_dict['is_ucs_nameserver_1']))
 
 	return dhcp_dict
@@ -789,6 +789,9 @@ def is_ascii(str):
 		return False
 
 def is_ucs_domain(nameserver, domain):
+	if not nameserver or not domain:
+		return False
+
 	# register nameserver
 	resolver = dns.resolver.Resolver()
 	resolver.lifetime = 10  # make sure that we get an early timeout
@@ -798,11 +801,17 @@ def is_ucs_domain(nameserver, domain):
 	try:
 		resolver.query('_domaincontroller_master._tcp.%s' % domain, 'SRV')
 		return True
-	except dns.resolver.NXDOMAIN as exc:
+	except dns.resolver.NXDOMAIN:
 		MODULE.warn('No valid UCS domain (%s) at nameserver %s!' % (domain, nameserver))
 	return False
 
-def get_nameserver_domain(nameserver):
+def get_ucs_domain(nameserver):
+	domain = get_domain(nameserver)
+	if not is_ucs_domain(nameserver, domain):
+		return None
+	return domain
+
+def get_domain(nameserver):
 	# register nameserver
 	resolver = dns.resolver.Resolver()
 	resolver.lifetime = 10  # make sure that we get an early timeout
@@ -819,8 +828,6 @@ def get_nameserver_domain(nameserver):
 		parts = [i for i in fqdn.target.labels if i]
 		domain = '.'.join(parts[1:])
 
-		if not is_ucs_domain(nameserver, domain):
-			return None
 		return domain
 	except dns.resolver.NXDOMAIN as exc:
 		MODULE.warn('Lookup for nameserver %s failed: %s' % (nameserver, exc))
