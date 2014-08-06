@@ -1,3 +1,10 @@
+univention-join (6.0.18-11) unstable; urgency=low
+
+  [ Felix Botner ]
+  * dont ask for join account in member mode (Bug #35446) 
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Aug 2014 11:49:24 +0200
+
 univention-join (6.0.18-10) unstable; urgency=low
 
   * small fix (Bug #35470) 
