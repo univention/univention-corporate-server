@@ -14,7 +14,8 @@ Build-Depends: debhelper (>> 7),
 Package: univention-management-console-module-adtakeover
 Architecture: all
 Depends: univention-management-console-server,
- univention-s4-connector
+ univention-s4-connector,
+ python-univention-lib (>= 3.0.26-37)
 Description: UMC module for taking over an AD
  .
  It is part of Univention Corporate Server (UCS), an
