@@ -1,3 +1,9 @@
+univention-ldap (11.0.0-4) unstable; urgency=low
+
+  * added ldap/sasl/secprops/maxssf (Bug #35513)
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Aug 2014 10:58:48 +0200
+
 univention-ldap (11.0.0-3) unstable; urgency=low
 
   * fixed template (Bug #34994) 
