@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (1.0.10-44) unstable; urgency=medium
+
+  * Fix logic change introduced in last commit (Bug #34776)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Aug 2014 15:16:46 +0200
+
 univention-management-console-module-adtakeover (1.0.10-43) unstable; urgency=medium
 
   * Fix two log messages for (Bug #34776)
