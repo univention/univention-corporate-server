@@ -1777,8 +1777,10 @@ def check_gpo_presence():
 		if "gPCFileSysPath" in obj:
 			basedirname = '/var/lib/samba/sysvol/%s/Policies' % ucr["domainname"]
 			subdirname = obj["gPCFileSysPath"][0].split("\\")[-1]
-			if not os.path.exists(os.path.join(basedirname, subdirname)) and \
-				os.path.exists(os.path.join(basedirname, subdirname.replace(name, name.upper()))):
+			if os.path.exists(os.path.join(basedirname, subdirname)):
+				continue
+			elif os.path.exists(os.path.join(basedirname, subdirname.replace(name, name.upper()))):
+				log.info("Adjusting gPCFileSysPath %s of %s to uppercase" % (obj["gPCFileSysPath"][0], obj.dn,))
 				new_gPCFileSysPath = obj["gPCFileSysPath"][0].replace(name, name.upper())
 				change["gPCFileSysPath"] = ldb.MessageElement(new_gPCFileSysPath, ldb.FLAG_MOD_REPLACE, "gPCFileSysPath")
 				samdb.modify(change)
