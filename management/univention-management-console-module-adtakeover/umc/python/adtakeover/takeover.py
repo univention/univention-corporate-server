@@ -1064,6 +1064,11 @@ class AD_Takeover():
 			name = obj["cn"][0]
 			run_and_output_to_log(["/usr/sbin/univention-directory-manager", "container/msgpo", "delete", "--filter", "name=%s" % name], log.debug)
 
+			if name.upper() == name:
+				continue
+
+			run_and_output_to_log(["/usr/sbin/univention-directory-manager", "container/msgpo", "delete", "--filter", "name=%s" % name.upper()], log.debug)
+
 	def rewrite_sambaSIDs_in_OpenLDAP(self):
 		### Phase I.b: Pre-Map SIDs (locale adjustment etc.)
 
@@ -1787,31 +1792,6 @@ def check_gpo_presence():
 			else:
 				log.warn("GPO %s path %s not found" % (obj.dn, obj["gPCFileSysPath"][0],))
 
-			## check for similar object of different case:
-			msgs2 = samdb.search(base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
-								expression="(&(objectClass=groupPolicyContainer)(cn=%s))" % (name,),
-								attrs=["cn", "gPCFileSysPath"])
-			if len(msgs2) > 1:
-				for obj2 in msgs2:
-					name2 = obj2["cn"][0]
-					if name2.upper() != name2:
-						## only consider upper case objects here.
-						continue
-					if name2 == name:
-						## obsolete, but better safe than sorry
-						continue
-					if "gPCFileSysPath" in obj2 and obj2["gPCFileSysPath"][0] != new_gPCFileSysPath:
-						log.warn("GPO object %s and %s look similar, but their gPCFileSysPath differ, leaving them untouched." % (obj.dn, obj2.dn))
-						log.warn("Probably %s should be obsolete?" % (obj2.dn,))
-						continue
-					try:
-						log.info("Removing %s from SAM database." % (obj2.dn,))
-						log.info("Keeping similar object %s." % (obj.dn,))
-						samdb.delete(obj2.dn)
-					except:
-						log.debug("Removal of object %s from Samba4 SAM database failed. See %s for details." % (obj2.dn, LOGFILE_NAME,))
-						log.debug(traceback.format_exc())
-						
 	## next check versions
 	msgs = samdb.search(base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
 						expression="(objectClass=groupPolicyContainer)",
