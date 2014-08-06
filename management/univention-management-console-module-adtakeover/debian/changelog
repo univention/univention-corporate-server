@@ -1,3 +1,35 @@
+univention-management-console-module-adtakeover (1.0.10-47) unstable; urgency=medium
+
+  * Add log message (Bug #34776)
+  * Catch a sqlite3 exception in case the S4 table is not yet created
+    (Bug #35346)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Aug 2014 18:13:17 +0200
+
+univention-management-console-module-adtakeover (1.0.10-46) unstable; urgency=medium
+
+  * Cleanup conflicting GPO directories before the robocopy phase (Bug #34776)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Aug 2014 16:58:40 +0200
+
+univention-management-console-module-adtakeover (1.0.10-45) unstable; urgency=medium
+
+  * reduce and simplify the patch (Bug #34776)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Aug 2014 15:40:00 +0200
+
+univention-management-console-module-adtakeover (1.0.10-44) unstable; urgency=medium
+
+  * Fix logic change introduced in last commit (Bug #34776)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Aug 2014 15:16:46 +0200
+
+univention-management-console-module-adtakeover (1.0.10-43) unstable; urgency=medium
+
+  * Fix two log messages for (Bug #34776)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Aug 2014 14:55:23 +0200
+
 univention-management-console-module-adtakeover (1.0.10-42) unstable; urgency=medium
 
   * Work around Bug #35561  (Bug #35346).
