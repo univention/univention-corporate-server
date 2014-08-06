@@ -16,7 +16,10 @@ Depends: ${python:Depends},
  pwgen,
  python-magic,
  python-ipaddr,
- dnsutils
+ dnsutils,
+ python-ldb,
+ python-samba,
+ python-ldap
 Provides: ${python:Provides}
 Description: UCS - common scripting functions for Python scripts
  This package contains Python functions used by various

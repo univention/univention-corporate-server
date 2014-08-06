@@ -470,6 +470,23 @@ def rename_well_known_sid_objects(username, password, ucr=None):
 		ud.debug(ud.MODULE, ud.ERROR, "well-known-sid-object-rename failed with %d (%s)" % (p1.returncode, stderr))
 		raise connectionFailed()
 
+def make_deleted_objects_readable_for_this_machine(username, password, ucr=None):
+	if not ucr:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+
+	ud.debug(ud.MODULE, ud.PROCESS, "Make Deleted Objects readable for this machine")
+
+	binddn = '%s@%s' % (username, ucr.get('kerberos/realm'))
+	p1 = subprocess.Popen(['/usr/share/univention-ad-connector/scripts/make-deleted-objects-readable-for-this-machine', '--binddn', binddn, '--bindpwd', password],
+		stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+		close_fds=True)
+	stdout, stderr = p1.communicate()
+	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
+	if p1.returncode != 0:
+		ud.debug(ud.MODULE, ud.ERROR, "make-deleted-objects-readable-for-this-machine failed with %d (%s)" % (p1.returncode, stderr))
+		raise connectionFailed()
+
 def prepare_dns_reverse_settings(ad_server_ip, ad_domain_info):
 	# For python-ldap / GSSAPI / AD we need working reverse looksups
 	try:
@@ -491,6 +508,8 @@ def prepare_ucr_settings():
 		u'connector/ad/mapping/user/password/kinit=true',
 		u'directory/manager/web/modules/users/user/display=displayName',
 		u'nameserver/external=true',
+		u'connector/ad/mapping/group/primarymail=true',
+		u'connector/ad/mapping/user/primarymail=true',
 	]
 	modules = ('computers/computer', 'groups/group', 'users/user', 'dns/dns')
 	ucr_set += [u'directory/manager/web/modules/%s/show/adnotification=true' % (module,) for module in modules]
