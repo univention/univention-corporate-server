@@ -48,6 +48,12 @@ import univention.admin.uexceptions
 import univention.admin.localization
 import univention.admin.syntax
 from univention.admin import configRegistry
+try:
+	import univention.lib.admember
+	_prevent_to_change_ad_properties = univention.lib.admember.is_localhost_in_admember_mode()
+except ImportError:
+	univention.debug.debug( univention.debug.ADMIN, univention.debug.WARN, "Failed to import univention.lib.admember")
+	_prevent_to_change_ad_properties = False
 
 translation=univention.admin.localization.translation('univention/admin/handlers')
 _=translation.translate
@@ -66,7 +72,6 @@ s4connector_search = False
 # __path__.append("users")
 
 
-_prevent_to_change_ad_properties = True
 def disable_ad_restrictions(disable=True):
 	global _prevent_to_change_ad_properties
 	_prevent_to_change_ad_properties = disable

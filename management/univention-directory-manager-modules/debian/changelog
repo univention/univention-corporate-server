@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.7-1) unstable; urgency=medium
+
+  * merge -r51666:52475 from ucs 3.2-3 (Bug #34091)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Aug 2014 13:18:30 +0200
+
 univention-directory-manager-modules (10.0.6-1) unstable; urgency=low
 
   * proof_uniqueMembers: simplified last change (Bug #33030)
@@ -58,6 +64,63 @@ univention-directory-manager-modules (10.0.0-1) unstable; urgency=low
   * update to UCS 4.0 (Bug #35146)
 
  -- Lukas Walter <walter@univention.de>  Fri, 20 Jun 2014 15:14:08 +0200
+
+univention-directory-manager-modules (9.0.76-24) unstable; urgency=low
+
+  * Catch univention.lib.admember import error (Bug #34092)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Aug 2014 13:49:25 +0200
+
+univention-directory-manager-modules (9.0.76-23) unstable; urgency=low
+
+  * Depend on python-univention-lib (Bug #34092)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Aug 2014 11:24:52 +0200
+
+univention-directory-manager-modules (9.0.76-22) unstable; urgency=medium
+
+  * Make default for _prevent_to_change_ad_properties dependent on ad/member
+    (Bug #34092)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 31 Jul 2014 17:32:20 +0200
+
+univention-directory-manager-modules (9.0.76-21) unstable; urgency=low
+
+  * Set more windows client attributes to readonly when synced
+    (Bug #34092)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 Jul 2014 08:49:57 +0200
+
+univention-directory-manager-modules (9.0.76-20) unstable; urgency=low
+
+  * Don't set the CTX flags read only, see Bug #35530 (Bug #34092)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 Jul 2014 08:08:10 +0200
+
+univention-directory-manager-modules (9.0.76-19) unstable; urgency=low
+
+  * Set more attributes to readonly when synced (Bug #34092)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 Jul 2014 07:53:10 +0200
+
+univention-directory-manager-modules (9.0.76-18) unstable; urgency=medium
+
+  * revert changes for (Bug #35254)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 29 Jul 2014 12:38:20 +0200
+
+univention-directory-manager-modules (9.0.76-17) unstable; urgency=low
+
+  * Temporarily set the dns/alias syntax back to string again. The new
+    label breaks S4 backups and slaves (Bug #35254)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Jul 2014 06:14:46 +0200
+
+univention-directory-manager-modules (9.0.76-16) unstable; urgency=low
+
+  * limit possible characters in dns/alias (Bug #35254)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 17 Jul 2014 18:51:30 +0200
 
 univention-directory-manager-modules (9.0.76-5) unstable; urgency=low
 
