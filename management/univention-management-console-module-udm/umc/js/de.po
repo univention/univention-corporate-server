@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-07-31 08:05+0200\n"
+"POT-Creation-Date: 2014-08-04 09:54+0200\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,8 +46,8 @@ msgstr ""
 "%s Teil der Active Directory-Domäne. UCS kann nur bestimmte Attribute "
 "verändern."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:348
-#: umc/js/udm/wizards/FirstPageWizard.js:376
+#: umc/js/udm/wizards/FirstPageWizard.js:356
+#: umc/js/udm/wizards/FirstPageWizard.js:384
 #, python-format
 msgid "%s template"
 msgstr "%s-Vorlage"
@@ -60,7 +60,8 @@ msgstr "(Mehrfachbearbeitung)"
 msgid "<b>License type:</b> GPL"
 msgstr "<b>Lizenztyp:</b> GPL"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:267
+#: umc/js/udm/wizards/FirstPageWizard.js:268
+#: umc/js/udm/wizards/FirstPageWizard.js:274
 msgid "<b>Warning!</b>"
 msgstr "<b>Warnung!</b>"
 
@@ -110,7 +111,7 @@ msgstr ""
 "Gewährleistungs-, Support- und Pflegeansprüche, die sich aus unseren "
 "kommerziellen Softwareverträgen ergeben, nicht gelten.</p>"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:365
+#: umc/js/udm/wizards/FirstPageWizard.js:373
 #, python-format
 msgid ""
 "<p>The LDAP object will be created in the container:</p><p><i>%s</i></p>"
@@ -118,8 +119,8 @@ msgstr ""
 "<p>Das LDAP-Objekt wird in dem folgenden Container angelegt:</p><p><i>%s</"
 "i></p>"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:349
-#: umc/js/udm/wizards/FirstPageWizard.js:377
+#: umc/js/udm/wizards/FirstPageWizard.js:357
+#: umc/js/udm/wizards/FirstPageWizard.js:385
 msgid "A template defines rules for default object properties."
 msgstr "Eine Vorlage definiert Regeln für Vorgabewerte eines neuen Objektes."
 
@@ -197,8 +198,8 @@ msgstr "Zurück zur Suche"
 msgid "Boot"
 msgstr "Boot"
 
-#: umc/js/udm/CreateReportDialog.js:113 umc/js/udm/DetailPage.js:984
-#: umc/js/udm/LicenseImportDialog.js:135 umc/js/udm.js:1079 umc/js/udm.js:1370
+#: umc/js/udm/LicenseImportDialog.js:135 umc/js/udm/CreateReportDialog.js:113
+#: umc/js/udm/DetailPage.js:984 umc/js/udm.js:1079 umc/js/udm.js:1370
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -218,8 +219,8 @@ msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 msgid "Clients"
 msgstr "Clients"
 
-#: umc/js/udm/CreateReportDialog.js:161 umc/js/udm/LicenseDialog.js:71
-#: umc/js/udm/LicenseImportDialog.js:64
+#: umc/js/udm/LicenseImportDialog.js:64 umc/js/udm/CreateReportDialog.js:161
+#: umc/js/udm/LicenseDialog.js:71
 msgid "Close"
 msgstr "Schließen"
 
@@ -231,7 +232,7 @@ msgstr "Rechnerinformationen"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:293
+#: umc/js/udm/wizards/FirstPageWizard.js:301
 msgid "Container"
 msgstr "Container"
 
@@ -471,15 +472,10 @@ msgstr ""
 "\"bearbeiten\" wird ein neuer Reiter mit der entsprechenden Richtlinie "
 "geöffnet."
 
-#: umc/js/udm/wizards/CreateWizard.js:137
+#: umc/js/udm/wizards/CreateWizard.js:137 umc/js/udm/DetailPage.js:352
 #, python-format
 msgid "Loading %s..."
 msgstr "Lade %s..."
-
-#: umc/js/udm/DetailPage.js:352
-#, python-format
-msgid "Loading: %s"
-msgstr "Lade: %s..."
 
 #: umc/js/udm/LicenseImportDialog.js:127
 msgid "Logout"
@@ -546,7 +542,7 @@ msgstr ""
 "Lizenzinformation kann entweder direkt als Datei hochgeladen oder per copy "
 "and paste in das Textfeld importiert werden."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:268
+#: umc/js/udm/wizards/FirstPageWizard.js:275
 #, python-format
 msgid ""
 "Newly created %s will only be available on UCS systems and not in the Active "
@@ -555,7 +551,15 @@ msgstr ""
 "Neu erzeugte %s werden nur auf UCS-Systemen und nicht in der Active "
 "Directory Domäne vorhanden sein."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:433
+#: umc/js/udm/wizards/FirstPageWizard.js:269
+msgid ""
+"Newly created LDAP objects of this type will only be available on UCS "
+"systems and not in the Active Directory domain."
+msgstr ""
+"Neu erzeugte LDAP-Objekte dieses Typs werden nur auf UCS-Systemen und nicht "
+"in der Active Directory Domäne vorhanden sein."
+
+#: umc/js/udm/wizards/FirstPageWizard.js:441
 msgid "Next"
 msgstr "Weiter"
 
@@ -572,8 +576,8 @@ msgstr "Kein LDAP-Position wurde ausgewählt."
 msgid "No changes have been made."
 msgstr "Keine Änderungen wurden vorgenommen."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:343
-#: umc/js/udm/wizards/FirstPageWizard.js:383
+#: umc/js/udm/wizards/FirstPageWizard.js:351
+#: umc/js/udm/wizards/FirstPageWizard.js:391
 msgid "None"
 msgstr "Kein"
 
@@ -651,7 +655,7 @@ msgstr ""
 msgid "Please select an LDAP position to move %s:"
 msgstr "Bitte wählen Sie eine LDAP-Position aus für das Verschieben von %s:"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:269
+#: umc/js/udm/wizards/FirstPageWizard.js:276
 #, python-format
 msgid ""
 "Please use the Active Directory administration utilities to create new "
@@ -660,15 +664,31 @@ msgstr ""
 "Bitte benutzen Sie die Active Directory Administrations-Tools um neue "
 "Domänen-%s anzulegen."
 
+#: umc/js/udm/wizards/FirstPageWizard.js:270
+msgid ""
+"Please use the Active Directory administration utilities to create new "
+"domain LDAP objects of this type."
+msgstr ""
+"Bitte benutzen Sie die Active Directory Administrations-Tools um neue "
+"Domänen-LDAP-Objekte dieses Typs anzulegen."
+
 #: umc/js/udm/DetailPage.js:288
 #, python-format
 msgid "Position: <i>%(path)s</i>"
 msgstr "Position: <i>%(path)s</i>"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:270
+#: umc/js/udm/wizards/FirstPageWizard.js:277
 #, python-format
 msgid "Press <i>Next</i> to create %s only available on UCS systems."
 msgstr "Klicken Sie auf <i>Weiter</i>, um %s nur für UCS-Systeme anzulegen."
+
+#: umc/js/udm/wizards/FirstPageWizard.js:271
+msgid ""
+"Press <i>Next</i> to create an LDAP object of this type only available on "
+"UCS systems."
+msgstr ""
+"Klicken Sie auf <i>Weiter</i>, um ein neues LDAP-Objekt dieses Typs nur für UCS-"
+"Systeme anzulegen."
 
 #: umc/js/udm.js:1577
 msgid "Primary Groups"
@@ -769,7 +789,7 @@ msgstr "Vereinfachte Optionen"
 msgid "Start of authority"
 msgstr "Start of Authority Eintrag"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:305 umc/js/udm.js:524
+#: umc/js/udm/wizards/FirstPageWizard.js:313 umc/js/udm.js:524
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
@@ -805,7 +825,7 @@ msgstr "Das LDAP-Objekt konnte nicht gespeichert werden: %(details)s"
 msgid "The changes have been successfully applied."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:294
+#: umc/js/udm/wizards/FirstPageWizard.js:302
 msgid "The container in which the LDAP object shall be created."
 msgstr "Der Container, in dem das LDAP-Objekt erzeugt wird."
 
@@ -813,13 +833,13 @@ msgstr "Der Container, in dem das LDAP-Objekt erzeugt wird."
 msgid "The container in which the query is executed."
 msgstr "Der Container, in dem die Suche ausgeführt wird."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:306
+#: umc/js/udm/wizards/FirstPageWizard.js:314
 msgid "The corresponding superordinate for the LDAP object."
 msgstr "Das dem neuen LDAP-Objekt zugewiesene übergeordnete Objekt."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:317
-#: umc/js/udm/wizards/FirstPageWizard.js:334
-#: umc/js/udm/wizards/FirstPageWizard.js:370
+#: umc/js/udm/wizards/FirstPageWizard.js:325
+#: umc/js/udm/wizards/FirstPageWizard.js:342
+#: umc/js/udm/wizards/FirstPageWizard.js:378
 msgid "The exact object type of the new LDAP object."
 msgstr "Der genaue Objekttyp des neuen LDAP-Objekts."
 
@@ -882,9 +902,9 @@ msgstr "Der Typ des LDAP-Objekts."
 msgid "This UCS system is part of an Active Directory domain"
 msgstr "Dieses UCS-System ist Teil einer Active Directory-Domäne"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:315
-#: umc/js/udm/wizards/FirstPageWizard.js:333
-#: umc/js/udm/wizards/FirstPageWizard.js:369 umc/js/udm.js:561
+#: umc/js/udm/wizards/FirstPageWizard.js:323
+#: umc/js/udm/wizards/FirstPageWizard.js:341
+#: umc/js/udm/wizards/FirstPageWizard.js:377 umc/js/udm.js:561
 #: umc/js/udm.js:1238 umc/js/udm.js:1251
 msgid "Type"
 msgstr "Typ"

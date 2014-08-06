@@ -1,3 +1,14 @@
+univention-management-console-module-udm (5.0.3-2) unstable; urgency=low
+
+  * merged changes from 3.2-2 (Bug #34091)
+   [ Dirk Wiesenthal ]
+    * Bug #34093: Wording
+    * Bug #34093: Fix timing when displaying AD warning in edit mode; wording
+   [ Stefan Gohmann ]
+    * Update AD member mode warning message for LDAP navigation
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Aug 2014 12:10:24 +0200
+
 univention-management-console-module-udm (5.0.3-1) unstable; urgency=low
 
   * Bug #34093: fix displaying of message for non-AD objects (merge svn52418)
