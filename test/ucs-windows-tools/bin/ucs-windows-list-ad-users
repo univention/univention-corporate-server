@@ -34,10 +34,22 @@
 import sys
 import univention.winexe
 
-winexe = univention.winexe.WinExe()
-winexe.check_options()
+parser = univention.winexe.default_options()
+opts, args = parser.parse_args()
+univention.winexe.check_default_options(opts)
 
-winexe.winexec("ad-users")
+winexe = univention.winexe.WinExe()
+	domain=opts.domain,
+	domain_admin=opts.domain_admin,
+	domain_password=opts.domain_password,
+	local_admin=opts.local_admin,
+	local_password=opts.local_password,
+	port=opts.port,
+	client=opts.client,
+	debug=opts.debug,
+)
+
+winexe.list_domain_users()
 
 sys.exit(0)
 

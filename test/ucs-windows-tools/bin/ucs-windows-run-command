@@ -34,16 +34,27 @@
 import sys
 import univention.winexe
 
+parser = univention.winexe.default_options()
+opts, args = parser.parse_args()
+
+if len(args) < 1:
+	sys.stderr.write("need a command to execute\n")
+	sys.exit(1)
+
+command = .args[0]
+myargs = args[1:]
+
 winexe = univention.winexe.WinExe()
-winexe.check_options()
+	domain=opts.domain,
+	domain_admin=opts.domain_admin,
+	domain_password=opts.domain_password,
+	local_admin=opts.local_admin,
+	local_password=opts.local_password,
+	port=opts.port,
+	client=opts.client,
+	debug=opts.debug,
+)
 
-if len(winexe.args) < 1:
-	winexe.error_and_exit("need a command to execute")
-
-command = winexe.args[0]
-args = winexe.args[1:]
-
-winexe.winexec(command, " ".join(args))
+winexe.winexec(command, " ".join(myargs))
 
 sys.exit(0)
-

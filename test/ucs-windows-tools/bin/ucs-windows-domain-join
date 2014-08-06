@@ -32,23 +32,32 @@
 # <http://www.gnu.org/licenses/>.
 
 import sys
+import optparse
 import univention.winexe
 
+parser = univention.winexe.default_options()
+options = optparse.OptionGroup(parser, "More options")
+options.add_option("--dns-server", dest="dns_server", help="the dns server for the domain")
+parser.add_option_group(options)
+opts, args = parser.parse_args()
+
+univention.winexe.check_default_options(opts)
+
+if not opts.dns_server:
+	sys.stderr.write("option --dns-server is required\n")
+	sys.exit(1)
+
 winexe = univention.winexe.WinExe()
-winexe.options.add_option("--dns-server", dest="dns_server", help="the dns server for the domain")
-winexe.check_options()
+	domain=opts.domain,
+	domain_admin=opts.domain_admin,
+	domain_password=opts.domain_password,
+	local_admin=opts.local_admin,
+	local_password=opts.local_password,
+	port=opts.port,
+	client=opts.client,
+	debug=opts.debug,
+)
 
-winexe.winexec("set-dns-server", winexe.opts.dns_server, domain=False)
-winexe.winexec("domain-join", winexe.opts.domain, winexe.opts.domain_admin, winexe.opts.domain_password, domain=False)
-winexe.winexec("firewall-turn-off")
-
-winexe.winexec("reboot")
-winexe.wait_until_client_is_gone(timeout=60)
-winexe.wait_for_client(timeout=60)
-
-winexe.winexec("check-domain", winexe.opts.domain)
-winexe.winexec("activate-ts-service")
-winexe.check_user_login(winexe.opts.domain_admin, winexe.opts.domain_password)
+winexe.domain_join(opts.dns_server)
 
 sys.exit(0)
-
