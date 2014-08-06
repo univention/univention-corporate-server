@@ -1,6 +1,87 @@
+univention-lib (4.0.1-2) unstable; urgency=low
+
+  * merged changes from 3.2-2 (Bug #34091)
+  [ Arvid Requate ]
+    * Fix log from make_deleted_objects_readable_for_this_machine (Bug #35566)
+    * Adjust configure_ad_member to be more similar to the UMC module
+     (Bug #35507)
+    * Add make_deleted_objects_readable_for_this_machine (Bug #35566)
+    * admember.rename_well_known_sid_objects needs Administrator credentials
+      since it is called before the univention-samba join (Bug #35507)
+    * Add admember.revert_connector_settings
+    * minor logging fixes
+    * Call rename_well_known_sid_objects just before starting the connector
+      (Bug #35507)
+    * Add remove_admember_service_from_localhost (Bug #35346)
+  [ Felix Botner ]
+    * set connector/ad/mapping/group/primarymail=true
+      connector/ad/mapping/user/primarymail in
+      member mode to sync mail addresses from AD (Bug #35551)
+    * added dependency to python-ldb, python-samba
+      and python-ldap (Bug #35520) 
+    * check 'dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3',
+      'nameserver1', 'nameserver2' and 'nameserver3' in
+      lookup_adds_dc() (Bug #35520)
+    * fixed lookup_adds_dc (Bug #35520) 
+    * added debug output for samba_join (Bug #35520) 
+    * raise exception if no ips could be found in
+      lookup_adds_dc() (Bug #35520) 
+    * added python-ipaddr and dnsutils to the 
+      package dependencies (Bug #35520)
+    * check cldap and dns in lookup_adds_dc() (Bug #35520) 
+    * set ldap/sasl/secprops/maxssf=128 in enable_ssl
+      and unset ldap/sasl/secprops/maxssf in disbale_ssl (Bug #35513) 
+    * added debug output (Bug #35467) 
+    * enable password change (Bug #35467)
+    * unset kerberos/adminserver in member mode (Bug #35470)
+    * disbale password change in member mode (Bug #35467)
+    * create _domaincontroller_master on ad during master init (Bug #35461)
+    * take over nameserver settings from master in non-masters system (Bug #35458)
+    * fixed univentionSambaWrongVersion error message (Bug #35446)
+    * log package mananger actions (Bug #35446)
+    * renamed install_univention_samba to
+      remove_install_univention_samba and added
+      version check (Bug #35446)
+    * added uninstall_univention_samba (Bug #35446)
+    * added some more helper function in admember lib (Bug #35446)
+    * added configure_backup_as_ad_member(), configure_slave_as_ad_member() and
+      configure_member_as_ad_member() (Bug #35446)
+    * added shell wrapper for univention.lib.admember (Bug #35095)
+  [ Florian Best ] 
+    * admember.py: add dns/dns to show/adnotification UCR variables (Bug #34092)
+  [ Stefan Gohmann ]
+    * admember.py: server_supports_ssl: we have to create a new process
+      because there is only one sec context allowed in python-ldap
+      (Bug #34091)
+    * Fixed exception names: s/faild/failed/g (Bug #34091)
+    * python/admember: use univention.debug (Bug #34091)
+    * Start AD connector at the end of the configuration (Bug #35091)
+    * admember mode updates (Bug #35091)
+      - Don't overwrite password for Administrator if it is set to KINIT already
+      - Check reverse lookup for AD DC
+      - Activate kerberos for the AD Connector
+      - Start AD connector at the end of the configuration
+    * Re-added tempfile and use a set SMB_CONF_PATH to /etc/samba/smb.conf
+      before running the join script (Bug #35091)
+    * Use the correct dn in prepare_administrator (Bug #35091)
+    * Added more admember functions check_connection() and
+      prepare_administrator() (Bug #35091)
+    * admember mode updates (Bug #35091)
+      - use host account for AD connector
+      - run samba join script
+      - fix is_localhost_in_adconnector_mode
+    * python/admember: fixed is_domain_in_admember_mode function (Bug #35091)
+    * Migrate admember functions from univention-ad-connector to python/admember.py (Bug #35091)
+  [ Alexander Kläser]
+    * Bug #35091: return boolean when installing/removing software components
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Aug 2014 11:40:49 +0200
+
 univention-lib (4.0.1-1) unstable; urgency=low
 
   * corrected svgz treatment in umc_module.py (Bug #35062)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 01 Jul 2014 15:34:03 +0200
 
 univention-lib (4.0.0-3) unstable; urgency=low
 
