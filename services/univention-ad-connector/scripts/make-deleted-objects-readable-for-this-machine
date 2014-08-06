@@ -295,13 +295,13 @@ if __name__ == "__main__":
 		options.binddn = ucr.get('%s/ad/ldap/binddn' % CONFIGBASENAME)
 		if not options.binddn:
 			print '--binddn not given and %s/ad/ldap/binddn not set' % CONFIGBASENAME
-			sys,exit(1)
+			sys.exit(1)
 
 	if not options.bindpwd:
 		bindpwfile = ucr.get('%s/ad/ldap/bindpw' % CONFIGBASENAME)
 		if not bindpwfile:
 			print '--bindpwd not given and %s/ad/ldap/bindpw not set' % CONFIGBASENAME
-			sys,exit(1)
+			sys.exit(1)
 		options.bindpwd = open(ucr['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
 		if options.bindpwd[-1] == '\n':
 			options.bindpwd = options.bindpwd[0:-1]
