@@ -1,3 +1,43 @@
+univention-system-setup (7.0.69-50) unstable; urgency=low
+
+  * Bug #34484: Fixed changing locale during session
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 05 Aug 2014 22:31:00 +0200
+
+univention-system-setup (7.0.69-49) unstable; urgency=low
+
+  * Bug #34484: Fixed required root password; wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 05 Aug 2014 11:53:15 +0200
+
+univention-system-setup (7.0.69-48) unstable; urgency=low
+
+  * Bug #34484: Change default TLD to .intranet; wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 05 Aug 2014 10:25:41 +0200
+
+univention-system-setup (7.0.69-47) unstable; urgency=medium
+
+  * Bug #34484: version bump
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 01 Aug 2014 16:07:44 +0200
+
+univention-system-setup (7.0.69-46) unstable; urgency=medium
+
+  Bug #34484:
+  * Fixed a JavaScript error that broke the redirection with pre-configured
+    DHCP network settings that are left unchanged
+  * Fixed problems with clearing the software selection (which got reset when
+    entering the software page)
+  * Only skip locale page if pre-configured values for keyboard, time zone,
+    and default locale could be determined
+  * fixed handling of special characters for suggested domain name
+  * Only require the root password in the local wizard mode.
+  * Improved validation of domain name server.
+  * Various text improvements.
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 01 Aug 2014 12:29:00 +0200
+
 univention-system-setup (7.0.69-45) unstable; urgency=low
 
   * Bug #34388: Updated links to appliance wizard

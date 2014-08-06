@@ -67,7 +67,7 @@ define([
 
 			this.title = _('Certificate');
 			this.headerText = _('Certificate settings');
-			this.helpText = _('Following the <i>certificate settings</i>, a new root certificate will be created for the domain. Note that this step only applies to systems with the role "domaincontroller master".');
+			this.helpText = _('Following the <i>certificate settings</i>, a new root certificate will be created for the domain.');
 			this._orgVals = {};
 		},
 
