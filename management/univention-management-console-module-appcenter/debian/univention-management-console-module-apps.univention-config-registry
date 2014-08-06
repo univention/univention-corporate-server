@@ -1,5 +1,7 @@
 Type: file
 File: usr/share/univention-management-console/i18n/de/apps.mo
+Variables: repository/app_center/installed
 
 Type: file
 File: usr/share/univention-management-console/modules/apps.xml
+Variables: repository/app_center/installed
