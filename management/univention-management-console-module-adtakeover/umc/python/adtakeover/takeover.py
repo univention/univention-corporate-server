@@ -1065,6 +1065,7 @@ class AD_Takeover():
 			run_and_output_to_log(["/usr/sbin/univention-directory-manager", "container/msgpo", "delete", "--filter", "name=%s" % name], log.debug)
 			gpo_path = '/var/lib/samba/sysvol/%s/Policies/%s' % (ucr["domainname"], name,)
 			if os.path.exists(gpo_path):
+				log.info("Removing associated conflicting GPO directory %s." % (gpo_path,))
 				shutil.rmtree(gpo_path, ignore_errors=True)
 
 			if name.upper() == name:
@@ -1073,6 +1074,7 @@ class AD_Takeover():
 			run_and_output_to_log(["/usr/sbin/univention-directory-manager", "container/msgpo", "delete", "--filter", "name=%s" % name.upper()], log.debug)
 			gpo_path = '/var/lib/samba/sysvol/%s/Policies/%s' % (ucr["domainname"], name.upper(),)
 			if os.path.exists(gpo_path):
+				log.info("Removing associated conflicting GPO directory %s." % (gpo_path,))
 				shutil.rmtree(gpo_path, ignore_errors=True)
 
 	def rewrite_sambaSIDs_in_OpenLDAP(self):
@@ -2044,9 +2046,13 @@ def wait_for_s4_connector_replication(ucr, lp, progress = None, max_time=None):
 		highestCommittedUSN = msgs[0]["highestCommittedUSN"][0]
 
 		previous_lastUSN = lastUSN
-		c.execute('select value from S4 where key=="lastUSN"')
-		conn.commit()
-		lastUSN = c.fetchone()[0]
+		try:
+			c.execute('select value from S4 where key=="lastUSN"')
+		except sqlite3.OperationalError as ex:
+			log.debug(str(ex))
+		else:
+			conn.commit()
+			lastUSN = c.fetchone()[0]
 
 		if not ( lastUSN == highestCommittedUSN and lastUSN == previous_lastUSN and highestCommittedUSN == previous_highestCommittedUSN ):
 			static_count = 0

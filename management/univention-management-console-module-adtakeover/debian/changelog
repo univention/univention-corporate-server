@@ -1,3 +1,11 @@
+univention-management-console-module-adtakeover (1.0.10-47) unstable; urgency=medium
+
+  * Add log message (Bug #34776)
+  * Catch a sqlite3 exception in case the S4 table is not yet created
+    (Bug #35346)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Aug 2014 17:36:33 +0200
+
 univention-management-console-module-adtakeover (1.0.10-46) unstable; urgency=medium
 
   * Cleanup conflicting GPO directories before the robocopy phase (Bug #34776)
