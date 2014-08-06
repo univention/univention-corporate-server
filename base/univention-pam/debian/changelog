@@ -1,3 +1,11 @@
+univention-pam (8.0.0-2) unstable; urgency=low
+
+  * merged changes from 3.2-2 (Bug #35501)
+    [ Arvid Requate ]
+     * Trigger well-known-sid-name-mapping on SID changes (Bug #35501)    
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Aug 2014 11:02:28 +0200
+
 univention-pam (8.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35138)
