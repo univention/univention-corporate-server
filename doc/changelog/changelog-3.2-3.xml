@@ -425,6 +425,9 @@
 						<package>python-augeas</package> 
 						<package>python-cheetah</package> 
 						<package>libmail-spf-perl</package> 
+						<package>manpages-dev</package> 
+						<package>re2c</package> 
+						<package>zendframework</package> 
 						(<ulink url="&ucsbug;34260">Bug 34260</ulink>)
 				</simpara></listitem>
 
