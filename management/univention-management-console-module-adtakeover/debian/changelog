@@ -1,3 +1,28 @@
+univention-management-console-module-adtakeover (1.0.10-42) unstable; urgency=medium
+
+  * Work around Bug #35561  (Bug #35346).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Aug 2014 11:41:06 +0200
+
+univention-management-console-module-adtakeover (1.0.10-41) unstable; urgency=medium
+
+  * Check the return code of the initial run of 96univention-samba.inst
+    when coming from AD Member mode. Abort if it is not ok and take care
+    to keep the "AD Member" service signal in that case so the takeover
+    may be tried again later (Bug #35346).
+  * Intially run 96univention-samba.inst and 97univention-s4-connector.inst
+    individually when coming from AD Member mode instead of calling a general
+    run-join-scripts. That should only be done in the end.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 04 Aug 2014 14:55:05 +0200
+
+univention-management-console-module-adtakeover (1.0.10-40) unstable; urgency=medium
+
+  * Set samba4/ignore/mixsetup=yes when coming from AD Member mode
+    (Bug #35346)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 04 Aug 2014 13:55:47 +0200
+
 univention-management-console-module-adtakeover (1.0.10-39) unstable; urgency=medium
 
   * No need to make a fuss about the first parts of the S4 Connector
