@@ -1,0 +1,24 @@
+product: ucs
+release: "3.2"
+version: [1, 2]
+scope: ucs_3.2-0-errata3.2-2
+src: openssl
+fix: 0.9.8o-4.80.201408071228
+desc: |
+ This update fixes multiple security issues in OpenSSL:
+ * Information leak in pretty printing functions (CVE-2014-3508)
+ * Double Free when processing DTLS packets (CVE-2014-3505)
+ * DTLS memory exhaustion (CVE-2014-3506)
+ * DTLS memory leak from zero-length fragments (CVE-2014-3507)
+ * OpenSSL DTLS anonymous EC(DH) denial of service (CVE-2014-3510)
+ * Fix CVE-2012-4929 (CRiME) by disabling zlib compression by default.
+   It can be enabled again by setting the environment variable
+   OPENSSL_NO_DEFAULT_ZLIB.
+note:
+cve:
+ - CVE-2014-3505
+ - CVE-2014-3506
+ - CVE-2014-3507
+ - CVE-2014-3508
+ - CVE-2014-3510
+ - CVE-2012-4929
