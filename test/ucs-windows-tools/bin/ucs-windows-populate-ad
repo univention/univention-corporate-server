@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import sys
+import optparse
 import univention.winexe
 
 parser = univention.winexe.default_options()
@@ -44,7 +45,7 @@ options.add_option("--groups", dest="groups", type="int", help="number of users 
 parser.add_option_group(options)
 opts, args = parser.parse_args()
 
-winexe = univention.winexe.WinExe()
+winexe = univention.winexe.WinExe(
 	domain=opts.domain,
 	domain_admin=opts.domain_admin,
 	domain_password=opts.domain_password,

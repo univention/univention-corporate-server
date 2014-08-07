@@ -25,11 +25,6 @@ def default_options():
 	parser.add_option_group(group)
 	return parser
 
-def check_default_options(self):
-	if not self.domain or not self.domain_admin or not self.domain_password \
-		or not self.local_admin or not self.local_password or not self.port \
-		or not self.client:
-		raise WinExeFailed("Not all mandatory options are defined!")
 
 class WinExeFailed(Exception):
     '''ucs_addServiceToLocalhost failed'''
@@ -63,9 +58,28 @@ class WinExe:
 		self.client = client
 		self.debug = debug
 
-		check_default_options(self)
+		self.__check_default_options()
 
 		return
+
+
+	def __check_default_options(self):
+		if not self.domain:
+			raise WinExeFailed("--domain needs to be specified")
+		if not self.domain_admin:
+			raise WinExeFailed("--domain-admin needs to be specified")
+		if not self.domain_password:
+			raise WinExeFailed("--domain-password needs to be specified")
+		if not self.local_admin:
+			raise WinExeFailed("--local-admin needs to be specified")
+		if not self.local_password:
+			raise WinExeFailed("--local-password needs to be specified")
+		if not self.port:
+			raise WinExeFailed("--port needs to be specified")
+		if not self.client:
+			raise WinExeFailed("--client needs to be specified")
+		return True
+
 
 	# TODO better check if IPC$ is reachable for client
 	def __client_reachable(self, timeout=1):
@@ -85,7 +99,7 @@ class WinExe:
 		cmd = []
 		cmd.append("winexe")
 		cmd.append("--interactive=0")
-		if domain_mode and runas_user and runas_password:
+		if self.domain and domain_mode and runas_user and runas_password:
 			cmd.append("-U")
 			cmd.append(self.domain + "\\" + self.domain_admin + "%" + self.domain_password)
 			cmd.append("--runas")
@@ -189,7 +203,8 @@ class WinExe:
 			elif script[0].endswith(".vbs"):
 				cmd.append("cscript c:\\%s.vbs %s" % (command, " ".join(command_args)))
 			elif script[0].endswith(".ps1"):
-				cmd.append("PowerShell.exe -Noninteractive -ExecutionPolicy Bypass -Command c:\\%s.ps1 %s" % (command, " ".join(command_args)))
+				cmd.append("PowerShell.exe -inputformat none -Noninteractive -ExecutionPolicy Bypass -File c:\\%s.ps1 %s " % (command, " ".join(command_args)))
+
 			else:
 				raise WinExeFailed("script has an unknown file extension: %s"  % script[0])
 		else:
@@ -207,7 +222,7 @@ class WinExe:
 			raise WinExeFailed("waiting for client (%s) failed with timeout %s" % (self.client, timeout))
 		# check winexe
 		for i in range(timeout):
-			retval, stdout, stderr = self.winexec("cmd /C dir", dont_fail=True)
+			retval, stdout, stderr = self.winexec("cmd /C dir c:\\", dont_fail=True)
 			if retval == 0:
 				return 0
 			time.sleep(1)
@@ -276,15 +291,50 @@ class WinExe:
 	def create_ad_users(self, username, password, users):
 		''' creates users users with prefix username and password password '''
 		
-		return self.winexe.winexec("create-ad-users", username, password, users)
+		return self.winexec("create-ad-users", username, password, users)
 
 
 	def create_ad_groups(self, groupname, groups):
 		''' creates groups groups with prefix groupname '''
 
-		return self.winexe.winexec("create-ad-groups", groupname, groups)
+		return self.winexec("create-ad-groups", groupname, groups)
 
 	def add_users_to_group(self, username, users, groupname, groups):
 		''' adds users with prefix username to groups with prefix groupname '''
 
-		return self.winexe.winexec("add-users-to-group", username, users, groupname, groups)
+		return self.winexec("add-users-to-group", username, users, groupname, groups)
+
+	def add_certificate_authority(self):
+		''' install and setup certificate authority '''
+
+		# this is a lib needed in powershell-add-certificate-authority
+		self.__copy_script(self.command_dir + "/powershell-install-certification-authority.ps1")
+
+		self.winexec("powershell-add-certificate-authority", self.domain)
+		self.winexec("reboot")
+		self.wait_until_client_is_gone(timeout=120)
+		self.wait_for_client(timeout=120)
+
+	def get_root_certificate(self, filename="/tmp/ad-cert.pem"):
+		''' export root certificate to filename (/tmp/ad-cert.pem) '''
+
+		self.winexec("cmd /C del c:\\ad-cert.crt")
+		self.winexec("cmd /C del c:\\ad-cert.crt.b64")
+		self.winexec("certutil -store -enterprise CA 0 c:\\ad-cert.crt")
+		self.winexec("certutil -f -encode c:\\ad-cert.crt c:\\ad-cert.crt.b64")
+		returncode, stdout, stderr = self.winexec('cmd /C more c:\\ad-cert.crt.b64')
+		fh = open(filename, "w")
+		fh.write(stdout)
+		fh.close()
+
+	def promote_ad(self, domain_mode, forest_mode, install_root_ca=True):
+		''' create AD domain on windows server '''
+
+		self.winexec("firewall-turn-off")
+		self.winexec("powershell-promote-ad", self.domain, domain_mode, forest_mode)
+		self.wait_until_client_is_gone(timeout=120)
+		self.wait_for_client(timeout=120)
+		if install_root_ca:
+			self.add_certificate_authority()
+			self.get_root_certificate()
+

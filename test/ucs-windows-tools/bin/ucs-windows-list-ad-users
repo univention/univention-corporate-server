@@ -36,9 +36,8 @@ import univention.winexe
 
 parser = univention.winexe.default_options()
 opts, args = parser.parse_args()
-univention.winexe.check_default_options(opts)
 
-winexe = univention.winexe.WinExe()
+winexe = univention.winexe.WinExe(
 	domain=opts.domain,
 	domain_admin=opts.domain_admin,
 	domain_password=opts.domain_password,

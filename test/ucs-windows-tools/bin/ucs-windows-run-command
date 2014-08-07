@@ -41,10 +41,10 @@ if len(args) < 1:
 	sys.stderr.write("need a command to execute\n")
 	sys.exit(1)
 
-command = .args[0]
+command = args[0]
 myargs = args[1:]
 
-winexe = univention.winexe.WinExe()
+winexe = univention.winexe.WinExe(
 	domain=opts.domain,
 	domain_admin=opts.domain_admin,
 	domain_password=opts.domain_password,

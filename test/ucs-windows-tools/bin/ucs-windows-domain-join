@@ -41,13 +41,11 @@ options.add_option("--dns-server", dest="dns_server", help="the dns server for t
 parser.add_option_group(options)
 opts, args = parser.parse_args()
 
-univention.winexe.check_default_options(opts)
-
 if not opts.dns_server:
 	sys.stderr.write("option --dns-server is required\n")
 	sys.exit(1)
 
-winexe = univention.winexe.WinExe()
+winexe = univention.winexe.WinExe(
 	domain=opts.domain,
 	domain_admin=opts.domain_admin,
 	domain_password=opts.domain_password,

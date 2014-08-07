@@ -32,24 +32,27 @@
 # <http://www.gnu.org/licenses/>.
 
 import sys
+import optparse
 import univention.winexe
 
-winexe = univention.winexe.WinExe()
-winexe.options.add_option("--domain-mode", dest="domain_mode", default="Win2008R2", help="Windows domain mode (Win2008R2)")
-winexe.options.add_option("--forest-mode", dest="forest_mode", default="Win2008R2", help="Windows forest mode (Win2008R2)")
-winexe.check_options()
+parser = univention.winexe.default_options()
+options = optparse.OptionGroup(parser, "More options")
+options.add_option("--domain-mode", dest="domain_mode", default="Win2008R2", help="Windows domain mode (Win2008R2)")
+options.add_option("--forest-mode", dest="forest_mode", default="Win2008R2", help="Windows forest mode (Win2008R2)")
+parser.add_option_group(options)
+opts, args = parser.parse_args()
 
-winexe.winexec(
-	"powershell-promote-ad",
-	winexe.opts.domain,
-	winexe.opts.domain_mode,
-	winexe.opts.forest_mode,
+winexe = univention.winexe.WinExe(
+	domain=opts.domain,
+	domain_admin=opts.domain_admin,
+	domain_password=opts.domain_password,
+	local_admin=opts.local_admin,
+	local_password=opts.local_password,
+	port=opts.port,
+	client=opts.client,
+	debug=opts.debug,
 )
 
-winexe.wait_until_client_is_gone(timeout=120)
-winexe.wait_for_client(timeout=120)
-
-print "done"
+winexe.promote_ad(opts.domain_mode, opts.forest_mode)
 
 sys.exit(0)
-
