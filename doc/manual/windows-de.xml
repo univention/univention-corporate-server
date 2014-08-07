@@ -1278,7 +1278,17 @@ ucr set auth/methods="krb5 ldap unix winbind"
 
   <para>
 	Der Betriebsmodus als Teil einer Active Directory-Domäne kann nur auf einem &ucsMaster; konfiguriert werden.
+	Der Name der DNS-Domäne des UCS-Systems muss mit dem der Active Directory-Domäne übereinstimmen.
+	Die Hostnamen selbst müssen natürlich unterschiedlich sein.
   </para>
+
+	<!--
+	<para>
+	  <figure><title>Konfiguration des Betriebsmodus als Teil einer Active Directory-Domäne</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/admember_1-de.png"/>
+	  </figure>
+	</para>
+	-->
 
   <para>
 	Im ersten Dialog der Einrichtungsassistenten ist der Punkt <emphasis>UCS als Teil einer
@@ -1295,6 +1305,14 @@ ucr set auth/methods="krb5 ldap unix winbind"
 	die Domäne bereitstellen.
 	Durch Betätigen der Schaltfläche <guimenu>AD-Domäne beitreten</guimenu> wird der Domänenbeitritt gestartet.
   </para>
+
+	<!--
+	<para>
+	  <figure><title>Domänenbeitritt zu einer Active Directory-Domäne</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/admember_2-de.png"/>
+	  </figure>
+	</para>
+	-->
 
   <para>
     Falls die Systemzeit des UCS-Systems mehr als 5 Minuten gegenüber der Systemzeit des Active Directory-Domänencontrollers vorgeht ist eine manuelle Angleichung der Systemzeiten notwendig. Dies ist notwendig, da die Active Directory Kerberos
@@ -1314,8 +1332,17 @@ ucr set auth/methods="krb5 ldap unix winbind"
     Da in diesem Modus die Active Directory Kerberos Infrastruktur zur Authentifizierung von Benutzern verwendet wird, ist essenziell, dass die Systemzeiten von UCS und Active Directory-Domänencontroller synchron sind (mit einer Toleranz von 5 Minuten). Zu diesem Zweck ist unter UCS der Active Directory-Domänencontroller als NTP-Zeitserver konfiguriert.
     Im Falle von Authentifikationsproblemen sollte immer als erstes die Systemzeit überprüft werden.
   </para>
+
+	<!--
+	<para>
+	  <figure><title>Administrationsdialog für die Active Directory-Verbindung</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/admember_3-de.png"/>
+	  </figure>
+	</para>
+	-->
+
   <para>
-    Nach dieser Einrichtung kann das UMC-Modul <emphasis>Active Directory-Verbindung</emphasis> zur weiteren Administration des Active Directory-Verbindungsdienstes verwendet werden.
+    Nach dieser Einrichtung kann das UMC-Modul <emphasis>Active Directory-Verbindung</emphasis> zur weiteren Administration des Active Directory-Verbindungsdienstes verwendet werden, z.B. um zu prüfen, ob der Dienst läuft und ihn ggf. neu zu starten (siehe <xref linkend="ad-connector:neustart"/>).
   </para>
   <para>
     Um eine verschüsselte Verbindung zwischen Active Directory und &ucsMaster; nicht nur für die Authentifikation sondern auch für den Datenaustausch an sich zu verwenden, kann auf dem Active Directory-Domänencontroller das Root-Zertifikat der Zertifizierungsstelle exportiert und über das UMC-Modul hochgeladen werden. Weitere Informationen dazu liefert <xref linkend="ad-connector:ad-zertifikat"/>.
@@ -1424,6 +1451,10 @@ ucr set auth/methods="krb5 ldap unix winbind"
 	</para>
 
 	<para>
+	  Es ist zu empfehlen, die folgenden Schritte mit einem Webbrowser vom Active Directory-Domänencontroller aus durchzuführen, da Dateien auf den Active Directory-Domänencontroller herunter und in die &ucsUMC; hochgeladen werden müssen.
+	</para>
+
+	<para>
 	  Internet Explorer 6 - der auf Windows 2003-Systemen vorinstalliert ist - wird von der &ucsUMC;
 	  nicht unterstützt. Hier sollte zuerst eine Aktualisierung des Browsers durchgeführt oder ein
 	  alternativer Browser installiert werden.
@@ -1433,18 +1464,18 @@ ucr set auth/methods="krb5 ldap unix winbind"
 	  Im ersten Dialog der Einrichtungsassistenten muss der Punkt <emphasis>Synchronisation von Kontendaten zwischen einer Active Directory und dieser UCS-Domäne</emphasis> ausgewählt und mit <guimenu>Weiter</guimenu> bestätigt werden.
 	</para>
 
+	<!--
 	<para>
-	  Unter <guimenu>Konfiguration</guimenu> wird der Einrichtungs-Status des Connectors
-	  angezeigt. Durch Klick auf <guimenu>UCS Active Directory Connector einrichten</guimenu> kann
-	  die Konfiguration des AD Connectors begonnen werden.
+	  <figure><title>Konfiguration des AD-Connectors in UMC</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_2-de.png"/>
+	  </figure>
 	</para>
+	-->
 
 	<para>
-	  Im Feld <guimenu>Active Directory Server</guimenu> muss der vollqualifizierte Rechnername des
-	  Active Directory Servers angegeben werden. Wenn der Rechnername des AD-Systems für das
-	  UCS-System nicht auflösbar sein sollte, muss für das AD-System ein DNS-Host-Record in der
-	  DNS-Verwaltung der &ucsUMC; angelegt werden (siehe <xref
-	  linkend="networks::dns::hostrecord"/>).
+	  Im nächsten Dialog wird die Adresse eines Active Directory-Domänencontrollers abgefragt.
+	  Hier kann die IP-Adresse oder ein voll qualifizierter DNS-Name eingegeben werden.
+	  Wenn der Rechnername des AD-Systems für das UCS-System nicht auflösbar sein sollte, kann entweder unter UCS der Active Directory DNS-Server als DNS-Forwarder konfiguriert werden oder es kann in der DNS-Verwaltung der &ucsUMC; ein DNS-Host-Record für das AD-System angelegt werden (siehe <xref linkend="networks::dns::hostrecord"/>).
 	</para>
 
 	<para>
@@ -1457,85 +1488,50 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	</programlisting>
 
 	<para>
-	  <figure><title>Konfiguration des AD-Connectors in UMC</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_2-de.png"/>
-	  </figure>
-	</para>
-
-	<para>
-	  Ist die Option <guimenu>Automatische Ermittlung der LDAP-Konfiguration</guimenu> aktiviert,
-	  werden Einstellungen wie die Basis-DN des Active Directory-Verzeichnis oder die
-	  Kerberos-Domäne des AD-Systems automatisch ausgelesen und müssen nicht manuell konfiguriert
-	  werden.
-	</para>
-
-	<para>
-	  Im nächsten Dialog müssen die LDAP- und Kerberos-Einstellungen geprüft,
-	  bzw. eingegeben werden.
-	</para>
-
-	<para>
-	  Im Feld <guimenu>LDAP-DN des Replikationsbenutzers</guimenu> wird die LDAP-DN des Benutzer
-	  konfiguriert, der für den Zugriff auf das Active Directory verwendet wird. Die Einstellung
-	  wird in der &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> gespeichert. Bei Verwendung der
-	  Funktion für die automatische Ermittlung der Basis-DN des Active Directory wird das
-	  Administrator-Konto für die Basis-DN als Vorgabe eingetragen. Der Replikationsbenutzer muss im
+	  Im Feld <guimenu>Active Directory-Konto</guimenu> wird der Benutzer konfiguriert, der für
+	  den Zugriff auf das Active Directory verwendet wird. Die Einstellung wird in der
+	  &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> gespeichert. Der Replikationsbenutzer muss im
 	  Active Directory Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Synchronisiert
 	  der Connector nur lesend von Active Directory zu UCS, kann auch ein Standardbenutzerkonto
 	  angegeben werden.
 	</para>
 
 	<para>
-	  Das verwendete Kennwort für den Zugriff wird im Feld <guimenu>Passwort des
-	  Synchronisationsbenutzers</guimenu> eingetragen und in einer Datei gespeichert.
+	  Das verwendete Kennwort für den Zugriff muss im Feld <guimenu>Active Directory-Passwort</guimenu>
+	  eingetragen werden. Es wird auf dem UCS-System lokal in einer Datei gespeichert,
+	  die nur für den Benutzer <emphasis>root</emphasis> lesbar ist.
 	</para>
 
 	<para>
-	  Nun muss auf <guimenu>Weiter</guimenu> geklickt werden.
+	  Nach Klick auf <guimenu>Weiter</guimenu> prüft der Einrichtungsassistent die Verbindung zum Active Directory-Domänencontroller. Falls keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann wird eine Warnung ausgegeben
+	  in der zur Installation einer Zertifizierungsstelle auf dem Active Directory-Domänencontroller geraten wird.
+	  Es wird empfohlen diesem Rat zu folgen. Nach diesem Schritt kann die Einrichtung durch erneuten Klick auf
+	  <guimenu>Weiter</guimenu> fortgesetzt werden. Falls weiterhin keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann, wird in einem Sicherheitshinweis nachgefragt, ob die Synchronisation ohne SSL-Verschlüsselung eingerichtet werden soll.
+	  Falls dies gewünscht ist, kann die Einrichtung durch Klick auf <guimenu>Fortfaren ohne Verschlüsselung</guimenu> fortgesetzt werden. In diesem Fall findet die Synchronisation der Verzeichnisdaten unverschlüsselt statt.
 	</para>
 
 	<para>
-	  Einige Gruppennamen werden abhängig von der Installationssprache des Servers im Active
-	  Directory anders gespeichert. Unter <guimenu>Systemsprache des Active Directory
-	  Servers</guimenu> kann die verwendete Lokalisierung ausgewählt werden. Weitere Hinweise finden
-	  sich in <xref linkend="ad-connector:gruppen"/>.
+	  Falls der Active Directory-Domänencontroller SSL/TLS-verschüsselte Verbindungen unterstützt bietet der Einrichtungsassistent im nächsten Schritt das <guimenu>Hochladen des AD-Root-Zertifikats</guimenu> an. Dieses Zertifikat muss vorher aus der Active Directory-Zertifizierungsstelle exportiert werden (siehe <xref linkend="ad-connector:ad-zertifikat"/>). Falls dieser Schritt hingegen übersprungen wird, kann das Zertifikat auch zu einem späteren Zeitpunkt über das UMC-Modul hochgeladen und die SSL/TLS-Verschlüsselung aktiviert werden (bis dahin werden dann aber alle Verzeichnisdaten unverschlüsselt synchronisert).
 	</para>
 
 	<para>
-	  Der Connector kann in verschiedenen Modi betrieben werden, die unter
-	  <guimenu>Synchronisationsmodus</guimenu> ausgewählt werden können. Neben einer bidirektionalen
-	  Synchronisation kann auch einseitig von Active Directory nach UCS oder einseitig von UCS in
-	  das Active Directory repliziert werden.
+	  Der Connector kann in verschiedenen Modi betrieben werden, die im nächsten Dialog
+	  <guimenu>Konfiguration der Active Directory-Domänensynchronisation</guimenu> ausgewählt werden können.
+	  Neben einer bidirektionalen Synchronisation kann auch unidirektional von Active Directory nach UCS
+	  oder unidirektional von UCS in das Active Directory repliziert werden.
+	  Nach Auswahl des Modus muss auf <guimenu>Weiter</guimenu> geklickt werden.
 	</para>
 
 	<para>
-	  Nun muss auf <guimenu>Weiter</guimenu> geklickt werden. Die Voreinstellungen im folgenden
-	  Dialog sind für die meisten Umgebungen sinnvoll und brauchen in der Regel nicht verändert
-	  werden.
+	  Im letzten Dialog werden alle zur <guimenu>Installation des Passwortdienstes</guimenu> notwendigen Dateien zum Download auf den Windows-Server angeboten. Weitere Details dazu sind im Abschnitt <xref linkend="ad-connector:password-dienst"/> beschrieben.
 	</para>
 
 	<para>
-	  In <guimenu>Polling-Intervall (in Sekunden)</guimenu> kann festgelegt werden, wie lange nach
-	  einem Lauf ohne Änderungen gewartet wird, bis eine erneute Anfrage gestellt wird.
+	  Nach einem Klick auf <guimenu>Weiter</guimenu> wird die Konfiguration übernommen und der UCS AD Connector wird gestartet.
+	  Der abschliessende Dialog muss dann durch Klick auf <guimenu>Fertigstellen</guimenu> geschlossen werden.
 	</para>
-
 	<para>
-	  Unter <guimenu>Wiederholungsintervall für abgelehnte Objekte</guimenu> wird festgelegt, nach
-	  wievielen Synchronisations-Intervallen zurückgehaltene Änderungen nachträglich eingespielt
-	  werden.
-	</para>
-
-	<para>
-	  Der <guimenu>Debug-Level des Active Directory Connectors</guimenu> konfiguriert wieviele
-	  Debug-Informationen in die Datei <filename>/var/log/univention/connector.log</filename>
-	  protokolliert werden. Mit <guimenu>Debug-Ausgaben für Funktionen ausgeben</guimenu> kann
-	  außerdem festgelegt werden, ob für Funktionsaufrufe weiterer Debug-Output hinzugefügt wird.
-	</para>
-
-	<para>
-	  Nach einem Klick auf <guimenu>Beenden</guimenu> wird die Konfiguration übernommen. Änderungen
-	  werden erst nach einem Neustart des UCS AD Connectors übernommen, siehe <xref
-	  linkend="ad-connector:neustart"/>.
+      Nach dieser Einrichtung kann das UMC-Modul <emphasis>Active Directory-Verbindung</emphasis> zur weiteren Administration des Active Directory-Verbindungsdienstes verwendet werden, z.B. um zu prüfen, ob der Dienst läuft und ihn ggf. neu zu starten (siehe <xref linkend="ad-connector:neustart"/>).
 	</para>
   </section>
 
