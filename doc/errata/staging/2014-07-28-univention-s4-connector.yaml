@@ -5,6 +5,8 @@ src: univention-s4-connector
 fix: 8.0.33-69.494.201407301841
 version: [2]
 desc: |
-    * The joinscript of univention-s4-connector was adjusted to abort if the domain is in AD member mode.
-    * The command line script univention-ad-takeover has been removed since the UMC module is more recent.
+    * The joinscript of univention-s4-connector was adjusted to abort if the
+      domain is in AD member mode.
+    * The command line script univention-ad-takeover has been removed since
+      the UMC module is more recent.
 bug: [35500,35514]
