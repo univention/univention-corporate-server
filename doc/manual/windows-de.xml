@@ -1351,8 +1351,16 @@ ucr set auth/methods="krb5 ldap unix winbind"
     Per Voreinstellung überträgt die so eingerichtete Active Directory-Verbindung keine Passwortdaten aus Active Directory in den UCS Verzeichnisdienst. In einigen Szenarien kann es dennoch sinnvoll sein, die verschlüsselten Passwortdaten zu übertragen. Zu diesem Zweck kann der Passwortdienst auf dem Active Directory Server installiert werden (siehe <xref linkend="ad-connector:password-dienst"/>).
   </para>
   <para>
-  	Im <emphasis>AD Member</emphasis> Modus liest der AD Connector Objektdaten per Voreinstellung mit den Berechtigungen des Maschinenkontos des &ucsMaster;s aus dem Active Directory. Für das Auslesen von verschlüsselten Passwortdaten sind dessen Berechtigungen nicht ausreichend. Daher muss für die Einrichtung des Passwortdienstes zusätzlich manuell die LDAP-DN eines privilegierten Replikationsbenutzers in die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> eingetragen werden. Diser muss im Active Directory Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Das entsprechende Kennwort muss auf dem &ucsMaster; in eine Datei gespeichert werden und ihr Dateiname muss in die &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen werden. Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <emphasis>root</emphasis> Lesezugriff hat.
+  	Im <emphasis>AD Member</emphasis> Modus liest der AD Connector Objektdaten per Voreinstellung mit den Berechtigungen des Maschinenkontos des &ucsMaster;s aus dem Active Directory. Für das Auslesen von verschlüsselten Passwortdaten sind dessen Berechtigungen nicht ausreichend. Daher muss für die Einrichtung des Passwortdienstes zusätzlich manuell die LDAP-DN eines privilegierten Replikationsbenutzers in die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> eingetragen werden. Diser muss im Active Directory Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Das entsprechende Kennwort muss auf dem &ucsMaster; in eine Datei gespeichert werden und ihr Dateiname muss in die &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen werden. Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <emphasis>root</emphasis> Zugriff hat. Die folgenden Kommandos zeigen dies beispielhaft:
   </para>
+
+  <programlisting language="sh">
+ucr set connector/ad/ldap/binddn=Administrator
+ucr set connector/ad/ldap/bindpw=/etc/univention/connector/password
+touch /etc/univention/connector/password
+chmod 600 /etc/univention/connector/password
+echo -n "Administrator password" > /etc/univention/connector/password
+  </programlisting>
 
   <para>
     Falls gewünscht kann zu einem späteren Zeitpunkt der Active Directory-Domänencontroller auch durch den &ucsMaster; abgelöst werden. Dies ist über die Applikation <emphasis>Active Directory Takeover</emphasis> möglich (siehe <xref linkend="windows:adtakeover"/>).
