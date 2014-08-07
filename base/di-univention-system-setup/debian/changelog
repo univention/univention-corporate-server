@@ -1,3 +1,9 @@
+di-univention-system-setup (0.0.7-1) unstable; urgency=low
+
+  * Bug #35378: install system setup via preseed in base-installer
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 07 Aug 2014 18:04:05 +0200
+
 di-univention-system-setup (0.0.6-1) unstable; urgency=low
 
   * Bug #35378: moved code from postinst to univention-system-setup (startxwithfirefox_installer)

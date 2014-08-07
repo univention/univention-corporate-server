@@ -2,23 +2,10 @@
 
 . /usr/share/debconf/confmodule
 
-db_progress START 0 5 di-univention-system-setup/progress/title
-
-for i in univention-system-setup-boot univention-system-setup univention-management-console-server univention-management-console-web-server univention-management-console-module-setup ; do
-	db_progress STEP 1
-	db_subst di-univention-system-setup/progress/step_install PKG "$i"
-	db_progress INFO di-univention-system-setup/progress/step_install
-	apt-install --with-recommends --allow-remove "$i"
-	sleep 2
-done
-db_progress SET 5
-db_progress INFO di-univention-system-setup/progress/step_install
-sleep 2
-db_progress STOP
-db_unregister di-univention-system-setup/progress/title di-univention-system-setup/progress/step_install
-
-# start univention-system-setup
-chroot /target /usr/share/univention-system-setup/startxwithfirefox_installer
+# start univention-system-setup if in GTK mode
+if [ -n "$DISPLAY" ]; then
+	chroot /target /usr/share/univention-system-setup/startxwithfirefox_installer
+fi
 
 db_input critical di-univention-system-setup/foo
 db_go

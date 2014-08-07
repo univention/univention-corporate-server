@@ -6,10 +6,10 @@ Build-Depends: debhelper (>= 9),
  po-debconf (>= 0.5.0)
 
 Package: di-univention-system-setup
-Architecture: i386 amd64
+Architecture: all
 XB-Subarchitecture: ${subarch}
 Provides: configured-ucs
 Depends: cdebconf-udeb, kernel-installer, di-utils, installed-base, created-fstab, bootable-system
 XB-Installer-Menu-Item: 7650
 Package-Type: udeb
-Description: Install Univention System Setup on disk
+Description: Start Univention System Setup
