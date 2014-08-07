@@ -8,7 +8,10 @@ desc: |
   This update fixes the following issues:
   * The property that is used in the first column of the grid ("Name") is
     now configurable via UCR
-  * Some UDM attributes are shown as readonly if the domain is part of an Active Directory Domain
-  * Display a warning in Active Directory Mode before creating objects which are not synchronized back to AD.
-  * Display a human readable error message when the connection to the LDAP server failed.
+  * Some UDM attributes are shown as readonly if the domain is part of an
+    Active Directory Domain
+  * Display a warning in Active Directory Mode before creating objects which
+    are not synchronized back to AD.
+  * Display a human readable error message when the connection to the LDAP
+    server failed.
 bug: [34200, 34092, 34093, 34244]
