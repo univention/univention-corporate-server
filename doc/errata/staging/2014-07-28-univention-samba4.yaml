@@ -5,5 +5,6 @@ src: univention-samba4
 fix: 3.0.39-32.585.201407281655
 version: [2]
 desc: |
-    * The joinscript of univention-samba4 was adjusted to abort if the domain is in AD member mode.
+    * The joinscript of univention-samba4 was adjusted to abort if the domain
+      is in AD member mode.
 bug: [35252]
