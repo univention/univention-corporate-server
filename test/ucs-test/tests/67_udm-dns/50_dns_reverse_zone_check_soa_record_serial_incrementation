@@ -19,6 +19,8 @@ import univention.testing.strings as uts
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
+		
+		# IPv4 case:
 		reverse_zone_properties = {
 			'subnet': '10.20.20',
 			'nameserver': uts.random_string(),
@@ -31,7 +33,27 @@ if __name__ == '__main__':
 			'retry': '8'
 		}
 		reverse_zone = udm.create_object('dns/reverse_zone', **reverse_zone_properties)
-		
+
+		reverse_zone_properties['ttl'] = '12'
+		udm.modify_object('dns/reverse_zone', dn = reverse_zone, ttl = reverse_zone_properties['ttl'])
+		utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (reverse_zone_properties['nameserver'],
+											   reverse_zone_properties['contact'].replace('@', '.'),
+											   '2',
+											   reverse_zone_properties['refresh'],
+											   reverse_zone_properties['retry'],
+											   reverse_zone_properties['expire'],
+											   reverse_zone_properties['ttl'])]
+		})
+
+		# IPv6 case:
+		reverse_zone_properties.update({
+			'subnet': '2011:06f8:13dc:0002:19b7:d592:09dd',
+			'nameserver': uts.random_string(),
+			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+			'ttl': '16',
+		})
+		reverse_zone = udm.create_object('dns/reverse_zone', **reverse_zone_properties)
+
 		reverse_zone_properties['ttl'] = '12'
 		udm.modify_object('dns/reverse_zone', dn = reverse_zone, ttl = reverse_zone_properties['ttl'])
 		utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (reverse_zone_properties['nameserver'],

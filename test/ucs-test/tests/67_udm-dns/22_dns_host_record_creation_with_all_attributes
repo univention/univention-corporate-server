@@ -18,6 +18,7 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		forward_zone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string())
 
+		# IPv4 case:
 		host_record_properties = {
 			'name': uts.random_name(),
 			'zonettl': '128',
@@ -30,6 +31,22 @@ if __name__ == '__main__':
 		utils.verify_ldap_object(host_record, {
 			'dNSTTL': [host_record_properties['zonettl']],
 			'aRecord': [host_record_properties['a']],
+			'tXTRecord': [host_record_properties['txt']],
+			'mXRecord': [host_record_properties['mx']]
+		})
+
+		# IPv6 case:
+		host_record_properties.update({
+			'name': uts.random_name(),
+			'a': '2011:06f8:13dc:0002:19b7:d592:09dd:1041',
+			'mx': '50 %s' % uts.random_string(),
+			'txt': uts.random_string()
+		})
+		host_record = udm.create_object('dns/host_record', superordinate = forward_zone, **host_record_properties)
+
+		utils.verify_ldap_object(host_record, {
+			'dNSTTL': [host_record_properties['zonettl']],
+			'aAAARecord': [host_record_properties['a']],
 			'tXTRecord': [host_record_properties['txt']],
 			'mXRecord': [host_record_properties['mx']]
 		})

@@ -1,9 +1,40 @@
-ucs-test (4.0.166-63) unstable; urgency=low
+ucs-test (4.0.166-66) unstable; urgency=low
+
+  * 67_udm-dns/
+    22_dns_host_record_creation_with_all_attributes,
+    50_dns_reverse_zone_check_soa_record_serial_incrementation,
+    24_dns_host_record_creation_set_a,
+    49_dns_reverse_zone_check_soa_record,
+    25_dns_host_record_modification_set_a,
+    27_dns_host_record_modification_append_a,
+    72_dns_host_record_modification_remove_a,
+    26_dns_host_record_creation_append_a:
+    Tests extended with IPv6 cases (Bug #33041)
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 08 Aug 2014 11:31:51 +0200
+
+ucs-test (4.0.166-65) unstable; urgency=low
 
   * Bug #35584: added small test script that checks if samba/role is
     set correctly
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 08 Aug 2014 11:27:32 +0200
+
+ucs-test (4.0.166-64) unstable; urgency=low
+
+  * 60_umc-system/31_umc-service-user-authentication: test the UMC user
+    authentication and password change (Bug #34369)
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 05 Aug 2014 14:25:28 +0200
+
+ucs-test (4.0.166-63) unstable; urgency=low
+
+  * 00_base/check_log_files_definitions.py: extended and modified patterns,
+    added separate case for tracebacks;
+    00_base/99check_log_files: a test to extract warnings, errors and
+    tracebacks from the logs (Bug #30751)
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 01 Aug 2014 10:57:53 +0200
 
 ucs-test (4.0.166-62) unstable; urgency=low
 
