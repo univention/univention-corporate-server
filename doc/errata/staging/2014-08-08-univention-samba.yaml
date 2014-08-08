@@ -5,6 +5,6 @@ src: univention-samba
 fix: 8.0.19-11.477.201408081022
 version: [2]
 desc: |
-    * Missing initialization of the samba role UCR variable
+    * Missing initialization of the UCR variable samba/role
       has been added to the postinst script of univention-samba.
 bug: [35584]
