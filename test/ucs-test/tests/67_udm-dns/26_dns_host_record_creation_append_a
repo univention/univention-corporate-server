@@ -18,6 +18,12 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		forward_zone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string())
 
-		ips = ['10.20.30.40', '10.20.30.41']
+		# IPv4 case:
+                ips = ['10.20.30.40', '10.20.30.41']
 		host_record = udm.create_object('dns/host_record', superordinate = forward_zone, name = uts.random_name(), append = {'a': ips})
 		utils.verify_ldap_object(host_record, {'aRecord': ips})
+
+		# IPv6 case:
+                ips = ['2011:06f8:13dc:0002:19b7:d592:09dd:1041', '2011:06f8:13dc:0002:19b7:d592:09dd:1042']
+		host_record = udm.create_object('dns/host_record', superordinate = forward_zone, name = uts.random_name(), append = {'a': ips})
+		utils.verify_ldap_object(host_record, {'aAAARecord': ips})
