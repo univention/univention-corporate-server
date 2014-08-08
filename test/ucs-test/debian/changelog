@@ -1,3 +1,10 @@
+ucs-test (4.0.166-67) unstable; urgency=low
+
+  * 51_samba4/46machine_secret_access_sysvol: test smbclient authentication
+    using machine.secret (Bug #30818)
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 08 Aug 2014 15:54:04 +0200
+
 ucs-test (4.0.166-66) unstable; urgency=low
 
   * 67_udm-dns/
