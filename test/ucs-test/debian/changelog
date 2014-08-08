@@ -1,3 +1,10 @@
+ucs-test (4.0.166-63) unstable; urgency=low
+
+  * Bug #35584: added small test script that checks if samba/role is
+    set correctly
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 08 Aug 2014 11:27:32 +0200
+
 ucs-test (4.0.166-62) unstable; urgency=low
 
   * 20_appcenter/43_installed_apps_check_packages_available_for_i386:
