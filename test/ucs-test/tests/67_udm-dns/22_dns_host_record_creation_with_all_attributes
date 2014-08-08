@@ -19,7 +19,7 @@ if __name__ == '__main__':
 		forward_zone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string())
 
 		# IPv4 case:
-                host_record_properties = {
+		host_record_properties = {
 			'name': uts.random_name(),
 			'zonettl': '128',
 			'a': '10.20.30.40',
@@ -36,7 +36,7 @@ if __name__ == '__main__':
 		})
 
 		# IPv6 case:
-                host_record_properties.update({
+		host_record_properties.update({
 			'name': uts.random_name(),
 			'a': '2011:06f8:13dc:0002:19b7:d592:09dd:1041',
 			'mx': '50 %s' % uts.random_string(),
