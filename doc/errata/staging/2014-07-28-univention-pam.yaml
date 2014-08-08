@@ -1,9 +1,0 @@
-product: ucs
-release: "3.2"
-scope: ucs_3.2-0-errata3.2-2
-src: univention-pam
-fix: 7.0.4-30.250.201407281833
-version: [2]
-desc: |
-    * The listener module well-known-sid-name-mapping now recognizes SID changes.
-bug: [35501]

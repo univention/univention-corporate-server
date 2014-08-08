@@ -1,9 +1,0 @@
-product: ucs
-release: "3.2"
-scope: ucs_3.2-0-errata3.2-1
-src: procps
-fix: 1:3.2.8-9.24.201405191334
-version: [1,2]
-desc: |
-  This update fixes a bug in the procps package for users with many groups.
-bug: [34596]
