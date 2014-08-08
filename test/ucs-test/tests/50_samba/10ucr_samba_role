@@ -1,0 +1,16 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check if samba/role is set"
+## exposure: safe
+## bugs: [35584]
+## packages:
+##  - winbind
+##  - univention-samba
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+val="$(ucr get samba/role)"
+if [ ! "$val" = "domaincontroller" -a ! "$val" = "memberserver" ] ; then
+   fail_test 110 "UCR variable samba/role does not contain value 'domaincontroller' or 'memberserver'"
+fi
+
+exit $RETVAL
