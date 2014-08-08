@@ -60,6 +60,18 @@ if [ "$1" = "configure" ]; then
 			mkdir -p /etc/univention/skel/windows-profiles/default
 			mkdir -p /etc/univention/skel/windows-profiles/default.V2
 		fi
+
+		# Set default samba/role on updates (Bug #34091), may be removed after ucs3.x
+		if dpkg --compare-versions "$2" lt-nl '8.0.19-11'; then
+			case "${server_role}" in
+				domaincontroller_*)
+					univention-config-registry set samba/role?"domaincontroller"
+					;;
+				*)
+					univention-config-registry set samba/role?"memberserver"
+					;;
+			esac
+		fi
 	fi
 fi
 

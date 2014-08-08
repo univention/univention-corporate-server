@@ -1,3 +1,9 @@
+univention-samba (8.0.19-11) unstable; urgency=low
+
+  * set default samba/role during update (Bug #35584) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Aug 2014 10:18:16 +0200
+
 univention-samba (8.0.19-10) unstable; urgency=low
 
   * added prechange to password change script to
