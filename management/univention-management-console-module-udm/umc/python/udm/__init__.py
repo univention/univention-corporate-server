@@ -272,13 +272,23 @@ class Instance( Base, ProgressMixin ):
 			}])
 
 		try:
-			ldap_base = ucr.get('ldap/base', '')
+			ldapBase = ucr.get('ldap/base', '')
+			with open(filename, 'rb') as fd:
+				for line in fd:
+					if line.startswith('dn: '):
+						dn = line.strip()[4:]
+						dnWithoutBase = dn[:-len(ldapBase)]
+						if not dn.endswith(ldapBase) or not dnWithoutBase.endswith('cn=univention,'):
+							MODULE.error('The license DN does not match LDAP base (%s): %s' % (ldapBase, dn))
+							_error(_('The LDAP base of the license does not match the LDAP base of the UCS domain (%s).') % ldapBase)
+							return
+
 			with open(filename, 'rb') as fd:
 				importer = LicenseImport(fd)
 
 				# check license
 				try:
-					importer.check(ldap_base)
+					importer.check(ldapBase)
 				except LicenseError as exc:
 					MODULE.error('LicenseImport check failed: %r' % (exc, ))
 					_error(str(exc))

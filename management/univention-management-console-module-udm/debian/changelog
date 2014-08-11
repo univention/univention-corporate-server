@@ -1,9 +1,3 @@
-univention-management-console-module-udm (4.0.98-1) unstable; urgency=low
-
-  * Bug #35580: Fix validation of long DNs when importing license
-
- -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 11 Aug 2014 14:44:23 +0200
-
 univention-management-console-module-udm (4.0.97-43) unstable; urgency=low
 
   * Bug #34093: Wording
