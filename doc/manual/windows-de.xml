@@ -1282,13 +1282,11 @@ ucr set auth/methods="krb5 ldap unix winbind"
 	Die Hostnamen selbst müssen natürlich unterschiedlich sein.
   </para>
 
-	<!--
-	<para>
-	  <figure><title>Konfiguration des Betriebsmodus als Teil einer Active Directory-Domäne</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/admember_1-de.png"/>
-	  </figure>
-	</para>
-	-->
+  <para>
+    <figure><title>Konfiguration des Betriebsmodus als Teil einer Active Directory-Domäne</title>
+      <graphic scalefit="1" width="80%" fileref="illustrations/admember_1-de.png"/>
+    </figure>
+  </para>
 
   <para>
 	Im ersten Dialog der Einrichtungsassistenten ist der Punkt <emphasis>UCS als Teil einer
@@ -1306,13 +1304,11 @@ ucr set auth/methods="krb5 ldap unix winbind"
 	Durch Betätigen der Schaltfläche <guimenu>AD-Domäne beitreten</guimenu> wird der Domänenbeitritt gestartet.
   </para>
 
-	<!--
-	<para>
-	  <figure><title>Domänenbeitritt zu einer Active Directory-Domäne</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/admember_2-de.png"/>
-	  </figure>
-	</para>
-	-->
+  <para>
+    <figure><title>Domänenbeitritt zu einer Active Directory-Domäne</title>
+      <graphic scalefit="1" width="80%" fileref="illustrations/admember_2-de.png"/>
+    </figure>
+  </para>
 
   <para>
     Falls die Systemzeit des UCS-Systems mehr als 5 Minuten gegenüber der Systemzeit des Active Directory-Domänencontrollers vorgeht ist eine manuelle Angleichung der Systemzeiten notwendig. Dies ist notwendig, da die Active Directory Kerberos
@@ -1333,13 +1329,13 @@ ucr set auth/methods="krb5 ldap unix winbind"
     Im Falle von Authentifikationsproblemen sollte immer als erstes die Systemzeit überprüft werden.
   </para>
 
-	<!--
-	<para>
-	  <figure><title>Administrationsdialog für die Active Directory-Verbindung</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/admember_3-de.png"/>
-	  </figure>
-	</para>
-	-->
+  <!--
+  <para>
+    <figure><title>Administrationsdialog für die Active Directory-Verbindung</title>
+      <graphic scalefit="1" width="80%" fileref="illustrations/admember_3-de.png"/>
+    </figure>
+  </para>
+  -->
 
   <para>
     Nach dieser Einrichtung kann das UMC-Modul <emphasis>Active Directory-Verbindung</emphasis> zur weiteren Administration des Active Directory-Verbindungsdienstes verwendet werden, z.B. um zu prüfen, ob der Dienst läuft und ihn ggf. neu zu starten (siehe <xref linkend="ad-connector:neustart"/>).
@@ -1472,13 +1468,11 @@ echo -n "Administrator password" > /etc/univention/connector/password
 	  Im ersten Dialog der Einrichtungsassistenten muss der Punkt <emphasis>Synchronisation von Kontendaten zwischen einer Active Directory und dieser UCS-Domäne</emphasis> ausgewählt und mit <guimenu>Weiter</guimenu> bestätigt werden.
 	</para>
 
-	<!--
 	<para>
 	  <figure><title>Konfiguration des AD-Connectors in UMC</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_2-de.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_1-de.png"/>
 	  </figure>
 	</para>
-	-->
 
 	<para>
 	  Im nächsten Dialog wird die Adresse eines Active Directory-Domänencontrollers abgefragt.
