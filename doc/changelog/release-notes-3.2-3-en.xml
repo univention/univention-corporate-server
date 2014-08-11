@@ -15,7 +15,7 @@
 		<revhistory>
 			<revision>
 				<revnumber>3.2-3</revnumber>
-				<date>FIXME Aug 2014</date>
+				<date>11 Aug 2014</date>
 			</revision>
 		</revhistory>
 
@@ -57,7 +57,7 @@
 
 		  <itemizedlist>
 			<listitem><para>
-				The new module Active Directory Connection merges the domain administrated by UCS and an existing Active Directory. UCS is then available as a platform for the integrated operation of apps in an Active Directory domain.
+				The new module <emphasis>Active Directory Connection</emphasis> merges the domain administrated by UCS and an existing Active Directory. UCS is then available as a platform for the integrated operation of apps in an Active Directory domain.
 			</para></listitem>
 
 			<listitem><para>

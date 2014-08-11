@@ -15,7 +15,7 @@
 		<revhistory>
 			<revision>
 				<revnumber>3.2-3</revnumber>
-				<date>FIXME Aug 2014</date>
+				<date>11 Aug 2014</date>
 			</revision>
 		</revhistory>
 
@@ -57,7 +57,7 @@
 
 			<itemizedlist>
 				<listitem><para>
-					Das neue Modul Active Directory-Verbindung führt die durch UCS verwaltete Domäne und ein bestehendes Active Directory zusammen. UCS steht dann als Plattform für den integrierten Betrieb von Apps in einer Active Directory Domäne zur Verfügung.
+					Das neue Modul <emphasis>Active Directory-Verbindung</emphasis> führt die durch UCS verwaltete Domäne und ein bestehendes Active Directory zusammen. UCS steht dann als Plattform für den integrierten Betrieb von Apps in einer Active Directory-Domäne zur Verfügung.
 				</para></listitem>
 
 				<listitem><para>
@@ -93,11 +93,11 @@
 
 		<para>
 			Auf dem &ucsMaster; wird die maßgebliche (authoritative) Version des LDAP-Verzeichnisdienstes vorgehalten, die an alle übrigen LDAP-Server der UCS-Domäne repliziert wird.
-			Da bei Release-Updates Veränderungen an den LDAP-Schemata auftreten können muss der &ucsMaster; bei einem Release-Update immer als erstes System aktualisiert werden.
+			Da bei Release-Updates Veränderungen an den LDAP-Schemata auftreten können, muss der &ucsMaster; bei einem Release-Update immer als erstes System aktualisiert werden.
 		</para>
 
 		<para>
-			Generell ist es empfehlenswert alle UCS-Systeme möglichst in einem Wartungsfenster zu aktualisieren.
+			Generell ist es empfehlenswert, alle UCS-Systeme möglichst in einem Wartungsfenster zu aktualisieren.
 		</para>
 	</chapter>
 
@@ -128,15 +128,16 @@
 
 		<para>
 			Nach dem Update müssen die neuen oder aktualisierten Join-Skripte ausgeführt werden.
-			Dies kann auf zwei Wegen erfolgen: Entweder über das UMC-Modul <guimenu>Domänenbeitritt</guimenu> oder durch Aufruf des Befehls <command>univention-run-join-scripts</command> als Benutzer <emphasis>root</emphasis>.
+			Dies kann auf zwei Wegen erfolgen: Entweder über das UMC-Modul <guimenu>Domänenbeitritt</guimenu> oder durch Aufruf des folgenden Befehls als Benutzer <emphasis>root</emphasis>:
 		</para>
+		<para><command>univention-run-join-scripts</command></para>
 
 		<para>
 			Anschließend sollte das UCS-System neu gestartet werden.
 		</para>
 
 		<section id="repo:verify">
-			<title>Betrieb eines lokalen Repository-Servers / Preup / Postup-Skripte</title>
+			<title>Betrieb eines lokalen Repository-Servers / Preup- und Postup-Skripte</title>
 			<para>
 				Preup- und Postup-Skripte sind Skripte, die vor und nach Release-Updates aufgerufen werden
 				(z.B. zur Nachbereitung des Updates, etwa die Deinstallation obsoleter Pakete).
@@ -199,11 +200,11 @@ done
 		<section id="relnotes:uefi">
 			<title>UEFI-Installations-DVD</title>
 			<para>
-				Für amd64 steht neben der Standard-Installations-DVD auch ein Medium mit Unterstützung für den Unified Extensible Firmware Interface-Standard (<acronym>UEFI</acronym>) bereit.
+				Für die Architektur <emphasis>amd64</emphasis> steht neben der Standard-Installations-DVD auch ein Medium mit Unterstützung für den Unified Extensible Firmware Interface-Standard (<acronym>UEFI</acronym>) bereit.
 			</para>
 
 			<para>
-				Auf Systemen, die nur einen UEFI-Start unterstützen, muss sie anstelle der Standard-DVD verwendet werden.
+				Auf Systemen, die nur einen UEFI-Start unterstützen, muss die UEFI-Installations-DVD anstelle der Standard-DVD verwendet werden.
 			</para>
 		</section>
 
