@@ -57,7 +57,27 @@
 
 			<itemizedlist>
 				<listitem><para>
-						FIXME
+					Das neue Modul Active Directory-Verbindung führt die durch UCS verwaltete Domäne und ein bestehendes Active Directory zusammen. UCS steht dann als Plattform für den integrierten Betrieb von Apps in einer Active Directory Domäne zur Verfügung.
+				</para></listitem>
+
+				<listitem><para>
+					Der UCS-Einrichtungsassistent wurde komplett überarbeitet und führt den Nutzer nun deutlich komfortabler durch die Domänenkonfiguration von UCS, indem z.B. Konfigurationseinstellungen automatisch ermittelt und entsprechende Vorschläge gemacht werden.
+				</para></listitem>
+
+				<listitem><para>
+					PHP 5.4.4 wurde nach UCS 3.2 zurück portiert. Es kann aus einem separaten Repository installiert werden und wird darüber auch mit Sicherheitsupdates versorgt.
+				</para></listitem>
+
+				<listitem><para>
+					Die OpenLDAP-Replikation wurde deutlich verbessert, indem Änderungen im Verzeichnisdienst nun mit einer eindeutigen ID verfolgt werden. Das erhöht die Replikationsgeschwindigkeit und verringert Replikationsfehler.
+				</para></listitem>
+
+				<listitem><para>
+					Das Linux-Kernel-Paket wurde auf Version 3.10.11 aktualisiert. Dies verbessert neben vielen Bugfixes auch den Hardware-Support.
+				</para></listitem>
+
+				<listitem><para>
+					Die Active Directory-Kompatibilität wurde weiter verbessert, indem nun das Microsoft Data Protection Application Program Interface (DPAPI) unterstützt wird.
 				</para></listitem>
 			</itemizedlist>
 		</para>
@@ -341,7 +361,7 @@ xe vm-param-set uuid=UUIDVM platform:vga=std
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderung seit UCS 3.2-2:
+			Aufgeführt sind die Änderungen seit UCS 3.2-2:
 		</para>
 
 		&changelog;
