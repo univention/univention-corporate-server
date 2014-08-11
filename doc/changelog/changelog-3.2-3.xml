@@ -525,6 +525,7 @@
 		</itemizedlist>
 	</section>
 
+<!--
 	<section id="changelog:umc:user">
 		<title>Users module</title>
 		<itemizedlist>
@@ -533,6 +534,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+-->
 	<section id="changelog:umc:computers">
 		<title>Computers module</title>
 		<itemizedlist>
@@ -543,6 +545,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+<!--
 	<section id="changelog:umc:license">
 		<title>License module</title>
 		<itemizedlist>
@@ -613,6 +616,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+-->
 
 	<section id="changelog:umc:other">
 		<title>Other modules</title>
@@ -651,6 +655,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+<!--
 	<section id="changelog:umc:development">
 		<title>Development of modules for &ucsUMC;</title>
 		<itemizedlist>
@@ -659,9 +664,11 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+-->
 </section>
 
 
+<!--
 <section id="changelog:deployment">
 	<title>Software deployment</title>
 
@@ -674,6 +681,7 @@
 		</itemizedlist>
 	</section>
 </section>
+-->
 
 
 <section id="changelog:lib">
@@ -705,6 +713,7 @@
 <section id="changelog:service">
 	<title>System services</title>
 
+<!--
 	<section id="changelog:service:mail">
 		<title>Mail services</title>
 		<itemizedlist>
@@ -713,6 +722,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+-->
 
 	<section id="changelog:service:virus">
 		<title>Spam/virus detection and countermeasures</title>
@@ -724,6 +734,7 @@
 		</itemizedlist>
 	</section>
 
+<!--
 	<section id="changelog:service:print">
 		<title>Printing services</title>
 		<itemizedlist>
@@ -732,6 +743,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+-->
 
 	<section id="changelog:service:nagios">
 		<title>Nagios</title>
@@ -746,13 +758,16 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+<!--
 	<section id="changelog:service:ssl">
 		<title>SSL</title>
 		<itemizedlist>
 			<listitem><simpara>
+				FIXME
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+-->
 
 	<section id="changelog:service:proxy">
 		<title>Proxy services</title>
@@ -812,6 +827,7 @@
 <section id="changelog:virt">
 	<title>Virtualisation</title>
 
+<!--
 	<section id="changelog:virt:uvmm">
 		<title>Univention Virtual Machine Manager</title>
 		<itemizedlist>
@@ -820,6 +836,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+-->
 	<section id="changelog:virt:xen">
 		<title>Xen</title>
 		<itemizedlist>
