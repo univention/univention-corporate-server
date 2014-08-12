@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-70) unstable; urgency=medium
+
+  * Fix undefined variable (Bug #33263)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 12 Aug 2014 17:27:54 +0200
+
 univention-s4-connector (8.0.33-69) unstable; urgency=medium
 
   * No need to make a fuss about running AD Takeover from AD Member mode,
