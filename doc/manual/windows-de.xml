@@ -1261,7 +1261,7 @@ ucr set auth/methods="krb5 ldap unix winbind"
 
 	<para>
 	  In beiden Modi wird unter UCS der UCS Active Directory-Verbindungsdienst (kurz AD Connector) verwendet, der
-	  Verzeichnisdienstobjekten zwischen einem Windows 2003/2008/2012 Server mit Active Directory
+	  Verzeichnisdienstobjekte zwischen einem Windows 2003/2008/2012-Server mit Active Directory
 	  (AD) und dem OpenLDAP-Verzeichnis aus &ucsUCS; synchronisieren kann.
 	  Der Connector kann auch mehrere AD-Domänen mit einer UCS-Domäne synchronisieren;
 	  dies ist in <xref linkend="ext-doc-win"/> dokumentiert.
@@ -1316,13 +1316,13 @@ ucr set auth/methods="krb5 ldap unix winbind"
     Systemzeiten sollten dabei nicht zurückgestellt werden, um Inkonsistenzen zu vermeiden.
   </para>
   <para>
-    Der Domänenbeitritt läuft automatisch ab. Die abschließende Meldung weist darauf hin, dass eventuell zuvor gejointe UCS-Systeme neu gejoint werden müssen, damit sie ebenfalls korrekt als Mitglied der Active Directory-Domäne betrieben werden können. Der Dialog sollte mit <guimenu>Fertigstellen</guimenu> bestätigt werden. Danach sollte mit einem Klick auf <guimenu>Neustart</guimenu> der UMC-Server neu geladen werden.
+    Der Domänenbeitritt läuft automatisch ab. Die abschließende Meldung weist darauf hin, dass eventuell zuvor gejointe UCS-Systeme neu gejoint werden müssen, damit sie ebenfalls korrekt als Mitglied der Active Directory-Domäne betrieben werden können. Der Dialog sollte mit <guimenu>Fertigstellen</guimenu> bestätigt werden. Danach sollte mit einem Klick auf <guimenu>Neustart</guimenu> der UMC-Server neu gestartet werden.
   </para>
   <para>
     Nach Einrichtung des Betriebsmodus als Mitglied der Active Directory-Domäne (<emphasis>AD Member</emphasis>) findet die Authentifikation gegen den Active Directory-Domänencontroller statt. Daher gilt für den Administrator jetzt das Passwort aus der Active Directory-Domäne. Falls einer Active Directory-Domäne mit nicht-englischsprachiger Sprachkonvention beigetreten wurde, dann wird das <emphasis>Administrator</emphasis>-Konto aus UCS während des Domänenbeitritts automatisch in die Schreibweise des Active Directory umbenannt. Gleiches gilt für alle Benutzer- und Gruppenobjekte mit <emphasis>Well Known SID</emphasis> (z.B. <emphasis>Domain Admins</emphasis>).
   </para>
   <para>
-    Falls zuvor neben dem &ucsMaster; weitere UCS-Systeme in der UCS-Domäne gejoint waren, dann müssen diese neu der Domäne beitreten. Dabei erkennen sie, dass der &ucsMaster; sich im <emphasis>AD Member</emphasis>-Modus befindet und treten ebenfalls der Authentifikationsstruktur der Active Directory-Domäne bei und können so dann z.B. zusätzlich Samba-Dateifreigaben bereitstellen.
+    Falls zuvor neben dem &ucsMaster; weitere UCS-Systeme in der UCS-Domäne gejoint waren, dann müssen diese neu der Domäne beitreten. Dabei erkennen sie, dass der &ucsMaster; sich im <emphasis>AD Member</emphasis>-Modus befindet und treten ebenfalls der Authentifikationsstruktur der Active Directory-Domäne bei und können dann z.B. zusätzlich Samba-Dateifreigaben bereitstellen.
   </para>
   <para>
     Da in diesem Modus die Active Directory-Kerberos-Infrastruktur zur Authentifizierung von Benutzern verwendet wird, ist es essenziell, dass die Systemzeiten von UCS und Active Directory-Domänencontroller synchron sind (mit einer Toleranz von 5 Minuten). Zu diesem Zweck ist unter UCS der Active Directory-Domänencontroller als NTP-Zeitserver konfiguriert.
@@ -1412,7 +1412,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
   </para>
   
   <para>
-    Durch die in beiden Domänen gleichen Benutzereinstellungen, können Benutzer transparent auf
+    Durch die in beiden Domänen gleichen Benutzereinstellungen können Benutzer transparent auf
     Dienste beider Umgebungen zugreifen. Nachdem eine Domänenanmeldung an einer UCS-Domäne
     durchgeführt wurde, ist anschließend eine Verbindung zu einer Dateifreigabe oder einem
     Exchange-Server mit Active Directory ohne erneute Passwortabfrage möglich. Auf den Ressourcen
@@ -1513,7 +1513,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	</para>
 
 	<para>
-	  Falls der Active Directory-Domänencontroller SSL/TLS-verschüsselte Verbindungen unterstützt bietet der Einrichtungsassistent im nächsten Schritt das <guimenu>Hochladen des AD-Root-Zertifikats</guimenu> an. Dieses Zertifikat muss vorher aus der Active Directory-Zertifizierungsstelle exportiert werden (siehe <xref linkend="ad-connector:ad-zertifikat"/>). Falls dieser Schritt hingegen übersprungen wird, kann das Zertifikat auch zu einem späteren Zeitpunkt über das UMC-Modul hochgeladen und die SSL/TLS-Verschlüsselung aktiviert werden (bis dahin werden dann aber alle Verzeichnisdaten unverschlüsselt synchronisert).
+	  Falls der Active Directory-Domänencontroller SSL/TLS-verschüsselte Verbindungen unterstützt, bietet der Einrichtungsassistent im nächsten Schritt das <guimenu>Hochladen des AD-Root-Zertifikats</guimenu> an. Dieses Zertifikat muss vorher aus der Active Directory-Zertifizierungsstelle exportiert werden (siehe <xref linkend="ad-connector:ad-zertifikat"/>). Falls dieser Schritt hingegen übersprungen wird, kann das Zertifikat auch zu einem späteren Zeitpunkt über das UMC-Modul hochgeladen und die SSL/TLS-Verschlüsselung aktiviert werden (bis dahin werden dann aber alle Verzeichnisdaten unverschlüsselt synchronisiert).
 	</para>
 
 	<para>
@@ -1546,7 +1546,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	stattfinden kann. Erzeugt wird das Zertifikat mit dem
 	Zertifikatsdienst des Active Directory. Die nötigen Schritte
 	sind abhängig von der eingesetzten Windows-Version und werden hier
-	beispielhaft für zwei Varianten dargestellt.
+	beispielhaft für drei Varianten dargestellt.
   </para>
 
   <para>
