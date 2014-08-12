@@ -1363,6 +1363,7 @@ class AD_Takeover():
 		## Re-Set NTACLs from nTSecurityDescriptor on sysvol policy directories
 		## This is necessary as 96univention-samba4.inst hasn't run yet at this point in AD Member mode
 		## It's required for robocopy access
+		subprocess.call(["net", "cache", "flush"], stdout=DEVNULL, stderr=DEVNULL)
 		subprocess.call(["samba-tool", "ntacl", "sysvolreset"], stdout=DEVNULL, stderr=DEVNULL)
 
 
@@ -1486,6 +1487,7 @@ class AD_Takeover_Finalize():
 			log.debug(stderr)
 
 		## Re-Set NTACLs from nTSecurityDescriptor on sysvol policy directories
+		subprocess.call(["net", "cache", "flush"], stdout=DEVNULL, stderr=DEVNULL)
 		run_and_output_to_log(["samba-tool", "ntacl", "sysvolreset"], log.debug)
 
 		## Re-set default fACLs so sysvol-sync can read files and directories (See Bug#29065)
