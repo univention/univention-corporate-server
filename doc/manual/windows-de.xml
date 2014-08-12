@@ -1329,13 +1329,11 @@ ucr set auth/methods="krb5 ldap unix winbind"
     Im Falle von Authentifikationsproblemen sollte immer als erstes die Systemzeit überprüft werden.
   </para>
 
-  <!--
   <para>
     <figure><title>Administrationsdialog für die Active Directory-Verbindung</title>
       <graphic scalefit="1" width="80%" fileref="illustrations/admember_3-de.png"/>
     </figure>
   </para>
-  -->
 
   <para>
     Nach dieser Einrichtung kann das UMC-Modul <emphasis>Active Directory-Verbindung</emphasis> zur weiteren Administration des Active Directory-Verbindungsdienstes verwendet werden, z.B. um zu prüfen, ob der Dienst läuft und ihn ggf. neu zu starten (siehe <xref linkend="ad-connector:neustart"/>).
