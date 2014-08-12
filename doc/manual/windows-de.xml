@@ -1206,7 +1206,7 @@ ucr set auth/methods="krb5 ldap unix winbind"
 	<title>Einführung</title>
 
 	<para>
-	  &ucsUCS; kann auf zwei unterschiedliche Arten mit einer bestehenden Active Directory Domäne zusammen
+	  &ucsUCS; kann auf zwei unterschiedliche Arten mit einer bestehenden Active Directory-Domäne zusammen
 	  betrieben werden.
 	  Beide Varianten lassen sich durch die App <emphasis>Active Directory-Verbindung</emphasis>
 	  auf einem &ucsUCS; Master konfigurieren.
@@ -1225,9 +1225,9 @@ ucr set auth/methods="krb5 ldap unix winbind"
 	</para>
 	  
 	<para>
-	  Im ersten Fall, der Konfiguration eines UCS Serversystems als Mitglied einer
+	  Im ersten Fall, der Konfiguration eines UCS-Serversystems als Mitglied einer
           Active Directory-Domäne, dient das Active Directory als führender Verzeichnisdienst
-	  und das jeweilige UCS System tritt dem Vertrauenskontext der Active Directory-Domäne
+	  und das jeweilige UCS-System tritt dem Vertrauenskontext der Active Directory-Domäne
 	  bei.
           Durch die Domänenmitgliedschaft hat das UCS-System limitierten Zugriff auf Kontodaten der Active
 	  Directory-Domäne, die es über den Active Directory-Connector aus dem Active Directory
@@ -1240,8 +1240,8 @@ ucr set auth/methods="krb5 ldap unix winbind"
 
 	<para>
 	  Dieser Modus, in dem UCS als Mitglied einer Active Directory-Domäne betrieben wird, eignet sich,
-	  um eine Active Directory Domäne um Applikationen zu erweitern, die auf der UCS Platform zur
-	  Verfügung stehen. Auf der UCS Platform installierte Apps sind dann für Benutzer der
+	  um eine Active Directory-Domäne um Applikationen zu erweitern, die auf der UCS-Plattform zur
+	  Verfügung stehen. Auf der UCS-Plattform installierte Apps sind dann für Benutzer der
 	  Active Directory-Domäne nutzbar. Die Authentifikation erfolgt dabei weiter gegen native
 	  Microsoft Active Directory Domänencontroller. Die Einrichtung dieses Betriebsmodus ist im Detail in Abschnitt <xref linkend="ad-connector:ad-member-einrichtung"/> beschrieben.
 	</para>
@@ -1296,8 +1296,8 @@ ucr set auth/methods="krb5 ldap unix winbind"
 
   <para>
 	Im nächsten Dialog wird die Adresse eines Active Directory-Domänencontrollers
-	sowie der Name des standard Administrator-Kontos der Active Directory-Domäne
-	und dessen Passwort abgefragt. Hier sollte das standard Active Directory Administratorkonto
+	sowie der Name des Standard-Administrator-Kontos der Active Directory-Domäne
+	und dessen Passwort abgefragt. Hier sollte das Standard-Active Directory-Administratorkonto
 	verwendet werden.
 	Der angegebene Active Directory-Domänencontroller muss auch DNS-Dienste für
 	die Domäne bereitstellen.
@@ -1313,19 +1313,19 @@ ucr set auth/methods="krb5 ldap unix winbind"
   <para>
     Falls die Systemzeit des UCS-Systems mehr als 5 Minuten gegenüber der Systemzeit des Active Directory-Domänencontrollers vorgeht ist eine manuelle Angleichung der Systemzeiten notwendig. Dies ist notwendig, da die Active Directory Kerberos
     Infrastruktur zur Authentifizierung verwendet wird.
-    Systemzeiten sollten dabei nicht zurückgestellt werden um Inkonsistenzen zu vermeiden.
+    Systemzeiten sollten dabei nicht zurückgestellt werden, um Inkonsistenzen zu vermeiden.
   </para>
   <para>
-    Der Domänenbeitritt läuft automatisch ab. Die abschließende Meldung weist darauf hin, dass eventuell zuvor gejointe UCS-Systeme neu gejoint werden müssen damit sie ebenfalls korrekt als Mitglied der Active Directory-Domäne betrieben werden können. Der Dialog sollte mit <guimenu>Fertigstellen</guimenu> bestätigt werden. Danach sollte mit klick auf auf <guimenu>Neustart</guimenu> der UMC-Server neu geladen werden.
+    Der Domänenbeitritt läuft automatisch ab. Die abschließende Meldung weist darauf hin, dass eventuell zuvor gejointe UCS-Systeme neu gejoint werden müssen, damit sie ebenfalls korrekt als Mitglied der Active Directory-Domäne betrieben werden können. Der Dialog sollte mit <guimenu>Fertigstellen</guimenu> bestätigt werden. Danach sollte mit einem Klick auf <guimenu>Neustart</guimenu> der UMC-Server neu geladen werden.
   </para>
   <para>
     Nach Einrichtung des Betriebsmodus als Mitglied der Active Directory-Domäne (<emphasis>AD Member</emphasis>) findet die Authentifikation gegen den Active Directory-Domänencontroller statt. Daher gilt für den Administrator jetzt das Passwort aus der Active Directory-Domäne. Falls einer Active Directory-Domäne mit nicht-englischsprachiger Sprachkonvention beigetreten wurde, dann wird das <emphasis>Administrator</emphasis>-Konto aus UCS während des Domänenbeitritts automatisch in die Schreibweise des Active Directory umbenannt. Gleiches gilt für alle Benutzer- und Gruppenobjekte mit <emphasis>Well Known SID</emphasis> (z.B. <emphasis>Domain Admins</emphasis>).
   </para>
   <para>
-    Falls zuvor neben dem &ucsMaster; weitere UCS-Systeme in der UCS-Domäne gejoint waren, dann müssen diese neu der Domäne beitreten. Dabei erkennen sie, dass der &ucsMaster; sich im <emphasis>AD Member</emphasis> Modus befindet und treten ebenfalls der Authentifikationsstruktur der Active Directory-Domäne bei und können so dann z.B. zusätzlich Samba-Dateifreigaben bereitstellen.
+    Falls zuvor neben dem &ucsMaster; weitere UCS-Systeme in der UCS-Domäne gejoint waren, dann müssen diese neu der Domäne beitreten. Dabei erkennen sie, dass der &ucsMaster; sich im <emphasis>AD Member</emphasis>-Modus befindet und treten ebenfalls der Authentifikationsstruktur der Active Directory-Domäne bei und können so dann z.B. zusätzlich Samba-Dateifreigaben bereitstellen.
   </para>
   <para>
-    Da in diesem Modus die Active Directory Kerberos Infrastruktur zur Authentifizierung von Benutzern verwendet wird, ist essenziell, dass die Systemzeiten von UCS und Active Directory-Domänencontroller synchron sind (mit einer Toleranz von 5 Minuten). Zu diesem Zweck ist unter UCS der Active Directory-Domänencontroller als NTP-Zeitserver konfiguriert.
+    Da in diesem Modus die Active Directory-Kerberos-Infrastruktur zur Authentifizierung von Benutzern verwendet wird, ist es essenziell, dass die Systemzeiten von UCS und Active Directory-Domänencontroller synchron sind (mit einer Toleranz von 5 Minuten). Zu diesem Zweck ist unter UCS der Active Directory-Domänencontroller als NTP-Zeitserver konfiguriert.
     Im Falle von Authentifikationsproblemen sollte immer als erstes die Systemzeit überprüft werden.
   </para>
 
@@ -1344,10 +1344,10 @@ ucr set auth/methods="krb5 ldap unix winbind"
     Um eine verschüsselte Verbindung zwischen Active Directory und &ucsMaster; nicht nur für die Authentifikation sondern auch für den Datenaustausch an sich zu verwenden, kann auf dem Active Directory-Domänencontroller das Root-Zertifikat der Zertifizierungsstelle exportiert und über das UMC-Modul hochgeladen werden. Weitere Informationen dazu liefert <xref linkend="ad-connector:ad-zertifikat"/>.
   </para>
   <para>
-    Per Voreinstellung überträgt die so eingerichtete Active Directory-Verbindung keine Passwortdaten aus Active Directory in den UCS Verzeichnisdienst. In einigen Szenarien kann es dennoch sinnvoll sein, die verschlüsselten Passwortdaten zu übertragen. Zu diesem Zweck kann der Passwortdienst auf dem Active Directory Server installiert werden (siehe <xref linkend="ad-connector:password-dienst"/>).
+    Per Voreinstellung überträgt die so eingerichtete Active Directory-Verbindung keine Passwortdaten aus Active Directory in den UCS-Verzeichnisdienst. In einigen Szenarien kann es dennoch sinnvoll sein, die verschlüsselten Passwortdaten zu übertragen. Zu diesem Zweck kann der Passwortdienst auf dem Active Directory-Server installiert werden (siehe <xref linkend="ad-connector:password-dienst"/>).
   </para>
   <para>
-  	Im <emphasis>AD Member</emphasis> Modus liest der AD Connector Objektdaten per Voreinstellung mit den Berechtigungen des Maschinenkontos des &ucsMaster;s aus dem Active Directory. Für das Auslesen von verschlüsselten Passwortdaten sind dessen Berechtigungen nicht ausreichend. Daher muss für die Einrichtung des Passwortdienstes zusätzlich manuell die LDAP-DN eines privilegierten Replikationsbenutzers in die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> eingetragen werden. Diser muss im Active Directory Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Das entsprechende Kennwort muss auf dem &ucsMaster; in eine Datei gespeichert werden und ihr Dateiname muss in die &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen werden. Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <emphasis>root</emphasis> Zugriff hat. Die folgenden Kommandos zeigen dies beispielhaft:
+  	Im <emphasis>AD Member</emphasis>-Modus liest der AD Connector Objektdaten per Voreinstellung mit den Berechtigungen des Maschinenkontos des &ucsMaster;s aus dem Active Directory. Für das Auslesen von verschlüsselten Passwortdaten sind dessen Berechtigungen nicht ausreichend. Daher muss für die Einrichtung des Passwortdienstes zusätzlich manuell die LDAP-DN eines privilegierten Replikationsbenutzers in die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> eingetragen werden. Dieser muss im Active Directory Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Das entsprechende Kennwort muss auf dem &ucsMaster; in eine Datei gespeichert werden und ihr Dateiname muss in die &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen werden. Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <emphasis>root</emphasis> Zugriff hat. Die folgenden Kommandos zeigen dies beispielhaft:
   </para>
 
   <programlisting language="sh">
@@ -1359,7 +1359,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
   </programlisting>
 
   <para>
-    Falls gewünscht kann zu einem späteren Zeitpunkt der Active Directory-Domänencontroller auch durch den &ucsMaster; abgelöst werden. Dies ist über die Applikation <emphasis>Active Directory Takeover</emphasis> möglich (siehe <xref linkend="windows:adtakeover"/>).
+    Falls gewünscht, kann zu einem späteren Zeitpunkt der Active Directory-Domänencontroller auch durch den &ucsMaster; abgelöst werden. Dies ist über die Applikation <emphasis>Active Directory Takeover</emphasis> möglich (siehe <xref linkend="windows:adtakeover"/>).
   </para>
   </section>
 
@@ -1367,7 +1367,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
   <title>Einrichtung des UCS AD Connectors</title>
 
   <para>
-  	Als alternative zur Mitgliedschaft in einer AD-Domäne, die im vorherigen Abschnitt beschrieben ist, kann der AD Connector dazu verwendet werden, Benutzer- und Gruppenobjekte zwischen einer UCS-Domäne und einer Active Directory-Domäne zu synchronisieren. Diese Betriebsart erlaubt über die unidirektionale Synchronisation hinaus auch die bidirektionale Synchronisation. In dieser Betriebsart bestehen beide Domänen parallel und ihre Authentifikationssysteme funktionieren unabhängig. Voraussetzung dafür ist die Synchronisation der verschlüsselten Passwortdaten. Dafür ist die Installation eines speziellen Passwortdienstes auf dem Active Directory-Domänencontroller notwendig.
+  	Als Alternative zur Mitgliedschaft in einer AD-Domäne, die im vorherigen Abschnitt beschrieben ist, kann der AD Connector dazu verwendet werden, Benutzer- und Gruppenobjekte zwischen einer UCS-Domäne und einer Active Directory-Domäne zu synchronisieren. Diese Betriebsart erlaubt über die unidirektionale Synchronisation hinaus auch die bidirektionale Synchronisation. In dieser Betriebsart bestehen beide Domänen parallel und ihre Authentifikationssysteme funktionieren unabhängig. Voraussetzung dafür ist die Synchronisation der verschlüsselten Passwortdaten. Dafür ist die Installation eines speziellen Passwortdienstes auf dem Active Directory-Domänencontroller notwendig.
   </para>
 
   <para>
