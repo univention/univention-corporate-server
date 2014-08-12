@@ -1311,7 +1311,7 @@ ucr set auth/methods="krb5 ldap unix winbind"
   </para>
 
   <para>
-    Falls die Systemzeit des UCS-Systems mehr als 5 Minuten gegenüber der Systemzeit des Active Directory-Domänencontrollers vorgeht ist eine manuelle Angleichung der Systemzeiten notwendig. Dies ist notwendig, da die Active Directory Kerberos
+    Falls die Systemzeit des UCS-Systems mehr als 5 Minuten gegenüber der Systemzeit des Active Directory-Domänencontrollers vorgeht, ist eine manuelle Angleichung der Systemzeiten notwendig. Dies ist notwendig, da die Active Directory Kerberos
     Infrastruktur zur Authentifizierung verwendet wird.
     Systemzeiten sollten dabei nicht zurückgestellt werden, um Inkonsistenzen zu vermeiden.
   </para>
@@ -1339,7 +1339,7 @@ ucr set auth/methods="krb5 ldap unix winbind"
     Nach dieser Einrichtung kann das UMC-Modul <emphasis>Active Directory-Verbindung</emphasis> zur weiteren Administration des Active Directory-Verbindungsdienstes verwendet werden, z.B. um zu prüfen, ob der Dienst läuft und ihn ggf. neu zu starten (siehe <xref linkend="ad-connector:neustart"/>).
   </para>
   <para>
-    Um eine verschüsselte Verbindung zwischen Active Directory und &ucsMaster; nicht nur für die Authentifikation sondern auch für den Datenaustausch an sich zu verwenden, kann auf dem Active Directory-Domänencontroller das Root-Zertifikat der Zertifizierungsstelle exportiert und über das UMC-Modul hochgeladen werden. Weitere Informationen dazu liefert <xref linkend="ad-connector:ad-zertifikat"/>.
+    Um eine verschüsselte Verbindung zwischen Active Directory und &ucsMaster; nicht nur für die Authentifikation, sondern auch für den Datenaustausch an sich zu verwenden, kann auf dem Active Directory-Domänencontroller das Root-Zertifikat der Zertifizierungsstelle exportiert und über das UMC-Modul hochgeladen werden. Weitere Informationen dazu liefert <xref linkend="ad-connector:ad-zertifikat"/>.
   </para>
   <para>
     Per Voreinstellung überträgt die so eingerichtete Active Directory-Verbindung keine Passwortdaten aus Active Directory in den UCS-Verzeichnisdienst. In einigen Szenarien kann es dennoch sinnvoll sein, die verschlüsselten Passwortdaten zu übertragen. Zu diesem Zweck kann der Passwortdienst auf dem Active Directory-Server installiert werden (siehe <xref linkend="ad-connector:password-dienst"/>).
