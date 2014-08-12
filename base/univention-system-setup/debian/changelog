@@ -1,3 +1,9 @@
+univention-system-setup (7.0.69-51) unstable; urgency=low
+
+  * Bug #35601: Fixed "always-on DHCP"
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 12 Aug 2014 14:58:24 +0200
+
 univention-system-setup (7.0.69-50) unstable; urgency=low
 
   * Bug #34484: Fixed changing locale during session

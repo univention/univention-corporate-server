@@ -521,6 +521,13 @@ class Device(object):
 
 		interface = DeviceType(device['name'], interfaces)
 		interface.parse_ucr()
+
+		# Bug 35601: frontend does not always pass a value for "ip4dynamic"/"ip6dynamic" to the backend
+		if 'ip4dynamic' not in device:
+			device['ip4dynamic'] = False
+		if 'ip6dynamic' not in device:
+			device['ip6dynamic'] = False
+
 		interface.__dict__.update(dict((k, device[k]) for k in set(interface.dict.keys()) - set(['start', 'type', 'order']) if k in device))
 		if interface.ip4dynamic:
 			interface.type = 'dhcp'

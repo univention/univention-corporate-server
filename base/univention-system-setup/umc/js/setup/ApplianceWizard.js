@@ -1870,7 +1870,8 @@ define([
 						// prepare interface entry
 						var iconf = {
 							name: idev,
-							interfaceType: 'Ethernet'
+							interfaceType: 'Ethernet',
+							ip4dynamic: false
 						};
 						if (_regIPv4.test(iip)) {
 							// IPv4 address
