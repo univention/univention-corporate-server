@@ -2,6 +2,7 @@ univention-system-setup (8.0.17-1) unstable; urgency=low
 
   * Bug #35605: try to disable telemetry question in FF
   * Bug #35378: merged changes from startxwithfirefox_installer back into startxwithfirefox
+  * Bug #35496: use all-kmaps from UCS 3.2-3
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 13 Aug 2014 13:30:56 +0200
 
