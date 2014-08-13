@@ -1,3 +1,10 @@
+univention-samba4 (3.0.39-33) unstable; urgency=low
+
+  * Fix: Stop all winbind processes during samba4 join 
+    in 96univention-samba4.inst (Bug #35600)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 13 Aug 2014 12:10:37 +0200
+
 univention-samba4 (3.0.39-32) unstable; urgency=medium
 
   * Workaround for parsing of VERSION by joinscript_extern_init (Bug #35252).
