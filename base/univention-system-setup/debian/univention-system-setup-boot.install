@@ -1,5 +1,4 @@
 usr/share/univention-system-setup/startxwithfirefox
-usr/share/univention-system-setup/startxwithfirefox_installer
 usr/lib/univention-system-setup/cleanup-pre.d
 usr/lib/univention-system-setup/cleanup-post.d
 usr/lib/univention-system-setup/appliance-hooks.d

@@ -1,3 +1,13 @@
+univention-system-setup (8.0.16-1) unstable; urgency=low
+
+  * Bug #35605: try to disable telemetry question in FF
+  * Bug #35378: removed console-tools from dependency list to avoid
+    conflicts
+  * Bug #35378: merged changes from startxwithfirefox_installer back into
+    startxwithfirefox
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 13 Aug 2014 12:36:00 +0200
+
 univention-system-setup (8.0.15-3) unstable; urgency=low
 
   * Bug #34484: Merged from UCS 3.2-2
