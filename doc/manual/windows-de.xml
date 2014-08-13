@@ -1206,17 +1206,15 @@ ucr set auth/methods="krb5 ldap unix winbind"
 	<title>Einführung</title>
 
 	<para>
-	  &ucsUCS; kann auf zwei unterschiedliche Arten mit einer bestehenden Active Directory (AD) Domäne zusammen
-	  betrieben werden.
-	  Beide Varianten lassen sich durch die App <emphasis>Active Directory-Verbindung</emphasis>
-	  auf einem &ucsUCS; Master konfigurieren.
+	  &ucsUCS; kann auf zwei unterschiedliche Arten mit einer bestehenden Active Directory-Domäne (AD-Domäne) zusammen
+	  betrieben werden. Beide Varianten lassen sich durch die Applikation <emphasis>Active Directory-Verbindung</emphasis> aus dem Univention App Center einrichten (siehe <xref linkend="computers::softwaremanagement::installsoftware"/>). Diese steht auf einem &ucsMaster; und &ucsBackup; zur Verfügung.
 	</para>
 
 	<para>
 	  Die beiden Varianten sind:
 	  <itemizedlist>
 	    <listitem><simpara>
-	      UCS als Teil (Domänen-Mitglied) einer AD-Domäne (<emphasis>AD member</emphasis>-Modus, siehe <xref linkend="ad-connector:ad-member-einrichtung"/>)
+	      UCS als Teil (Domänen-Mitglied) einer AD-Domäne (siehe <xref linkend="ad-connector:ad-member-einrichtung"/>)
 	    </simpara></listitem>
 	    <listitem><simpara>
 	      Synchronisation von Kontendaten zwischen einer AD-Domäne und einer UCS-Domäne (siehe <xref linkend="ad-connector:ad-connector-einrichtung"/>)
@@ -1227,36 +1225,19 @@ ucr set auth/methods="krb5 ldap unix winbind"
 	<para>
 	  In beiden Modi wird unter UCS der Active Directory-Verbindungsdienst verwendet (kurz UCS AD-Connector), der Verzeichnisdienstobjekte zwischen einem
 	  Windows 2003/2008/2012-Server mit Active Directory (AD) und dem OpenLDAP-Verzeichnis aus &ucsUCS; synchronisieren kann.
-	  Der Connector kann auch mehrere AD-Domänen mit einer UCS-Domäne synchronisieren;
-	  dies ist in <xref linkend="ext-doc-win"/> dokumentiert.
 	</para>
 
 	<para>
-	  Im ersten Fall, der Konfiguration eines UCS-Serversystems als Mitglied einer
-      AD-Domäne (<emphasis>AD member</emphasis>-Modus), dient das AD als führender Verzeichnisdienst
+	  Im ersten Fall, der Konfiguration eines UCS-Serversystems als Mitglied einer AD-Domäne, dient das AD als führender Verzeichnisdienst
 	  und das jeweilige UCS-System tritt dem Vertrauenskontext der AD-Domäne
-	  bei.
-      Durch die Domänenmitgliedschaft hat das UCS-System limitierten Zugriff auf Kontodaten der Active
-	  Directory-Domäne, die es über den UCS AD-Connector aus dem AD
-	  ausliest und lokal in den eigenen OpenLDAP-basierten Verzeichnisdienst schreibt.
-	  In dieser Konfiguration schreibt der UCS AD-Connector keine Änderungen
-	  in das AD. Ohne Installation eines zusätzlichen priviligierten Passwortdienstes auf
-	  dem AD-Domänencontroller hat es auch keine Möglichkeit, die verschlüsselten Passwortdaten
-	  von AD-Benutzern und -Computern auszulesen.
-	</para>
-
-	<para>
-	  Dieser Modus, in dem UCS als Mitglied einer AD-Domäne betrieben wird, eignet sich,
-	  um eine AD-Domäne um Applikationen zu erweitern, die auf der UCS-Plattform zur
-	  Verfügung stehen. Auf der UCS-Plattform installierte Apps sind dann für Benutzer der
-	  AD-Domäne nutzbar. Die Authentifikation erfolgt dabei weiter gegen native
-	  Microsoft AD Domänencontroller. Die Einrichtung dieses Betriebsmodus ist im Detail in <xref linkend="ad-connector:ad-member-einrichtung"/> beschrieben.
+	  bei. Durch die Domänenmitgliedschaft hat das UCS-System limitierten Zugriff auf Kontodaten der Active
+	  Directory-Domäne. Die Einrichtung dieses Betriebsmodus ist im Detail in <xref linkend="ad-connector:ad-member-einrichtung"/> beschrieben.
 	</para>
 
 	<para>
 	  Der zweite Modus, der sich über die App <emphasis>Active Directory-Verbindung</emphasis>
 	  konfigurieren lässt, dient dazu, die UCS Domäne parallel zu einer bestehenden AD-Domäne
-	  zu betreiben. In diesem Modus ist jedem Domänen-Benutzer sowohl in der UCS als auch
+	  zu betreiben. In diesem Modus ist jedem Domänen-Benutzer sowohl in der UCS- als auch
 	  in der AD-Domäne ein gleichnamiges Benutzerkonto zugeordnet. Durch die
 	  Namensidentität und die Synchronisation der verschlüsselten Passwortdaten ermöglicht
 	  dieser Modus einen transparenten Zugriff zwischen beiden Domänen. Die Authentifikation eines
@@ -1269,30 +1250,37 @@ ucr set auth/methods="krb5 ldap unix winbind"
   <section id="ad-connector:ad-member-einrichtung">
   <title>UCS als Mitglied einer Active Directory-Domäne</title>
 
-  <para>
-	Der Einrichtungsassistent kann mit der Applikation <emphasis>Active Directory-Verbindung</emphasis>
-	aus dem Univention App Center installiert werden. Alternativ kann das Softwarepaket
-	<package>univention-ad-connector</package> installiert werden. Weitere Informationen finden sich in
-	<xref linkend="computers::softwaremanagement::installsoftware"/>.
-  </para>
+	<para>
+		Bei der Konfiguration eines UCS-Serversystems als Mitglied einer AD-Domäne (<emphasis>AD member</emphasis>-Modus)
+		dient das AD als führender Verzeichnisdienst und das jeweilige UCS-System tritt dem Vertrauenskontext der AD-Domäne
+	  bei. Durch die Domänenmitgliedschaft hat das UCS-System limitierten Zugriff auf Kontodaten der Active
+		Directory-Domäne, die es über den UCS AD-Connector aus dem AD ausliest und lokal in den eigenen OpenLDAP-basierten
+		Verzeichnisdienst schreibt. In dieser Konfiguration schreibt der UCS AD-Connector keine Änderungen
+	  in das AD.
+	</para>
+
+	<para>
+	  Der <emphasis>AD member</emphasis>-Modus eignet sich,
+	  um eine AD-Domäne durch Applikationen zu erweitern, die auf der UCS-Plattform zur
+	  Verfügung stehen. Auf der UCS-Plattform installierte Apps sind dann für Benutzer der
+	  AD-Domäne nutzbar. Die Authentifikation erfolgt dabei weiter gegen native
+	  Microsoft AD-Domänencontroller.
+	</para>
 
   <para>
-	Die Applikation <emphasis>Active Directory-Verbindung</emphasis> kann nur auf einem &ucsMaster; oder &ucsBackup; installiert werden.
+		Der Einrichtungsassistent kann mit der Applikation <emphasis>Active Directory-Verbindung</emphasis>
+		aus dem Univention App Center installiert werden. Alternativ kann das Softwarepaket
+		<package>univention-ad-connector</package> installiert werden. Weitere Informationen finden sich in
+		<xref linkend="computers::softwaremanagement::installsoftware"/>.
   </para>
 
   <note>
-  	<para>
-  		Der Betriebsmodus als Teil einer AD-Domäne (<emphasis>AD member</emphasis>-Modus) kann nur auf einem &ucsMaster; konfiguriert werden.
-  		Der Name der DNS-Domäne des UCS-Systems muss mit dem der AD-Domäne übereinstimmen.
-  		Die Hostnamen selbst müssen natürlich unterschiedlich sein.
-  	    Alle AD- und UCS-Server in einer Connector-Umgebung sollten dieselbe Zeitzone verwenden.
-	</para>
+		<itemizedlist>
+			<listitem><simpara>Der <emphasis>AD member</emphasis>-Modus kann nur auf einem &ucsMaster; konfiguriert werden.</simpara></listitem>
+			<listitem><simpara>Der Name der DNS-Domäne des UCS-Systems muss mit dem der AD-Domäne übereinstimmen. Die Hostnamen selbst müssen natürlich unterschiedlich sein.</simpara></listitem>
+			<listitem><simpara>Alle AD- und UCS-Server in einer Connector-Umgebung sollten dieselbe Zeitzone verwenden.</simpara></listitem>
+		</itemizedlist>
   </note>
-
-  <para>
-	Nach Installation der Applikation <emphasis>Active Directory-Verbindung</emphasis>
-	aus dem Univention App Center steht der gleichnamige Einrichtungs-Assistent zur Verfügung.
-  </para>
 
   <para>
     <figure><title>Konfiguration des Betriebsmodus als Teil einer AD-Domäne</title>
@@ -1303,7 +1291,7 @@ ucr set auth/methods="krb5 ldap unix winbind"
   <para>
 	Im ersten Dialog der Einrichtungsassistenten ist der Punkt <emphasis>UCS als Teil einer
 	AD-Domäne konfigurieren</emphasis> vorausgewählt
-	und kann mit <guimenu>Weiter</guimenu> bestätigt werden.
+	und kann mit <mousebutton>Weiter</mousebutton> bestätigt werden.
   </para>
 
   <para>
@@ -1313,7 +1301,7 @@ ucr set auth/methods="krb5 ldap unix winbind"
 	verwendet werden.
 	Der angegebene AD-Domänencontroller muss auch DNS-Dienste für
 	die Domäne bereitstellen.
-    Durch Betätigen der Schaltfläche <guimenu>AD-Domäne beitreten</guimenu> wird der Domänenbeitritt gestartet.
+    Durch Betätigen der Schaltfläche <mousebutton>AD-Domäne beitreten</mousebutton> wird der Domänenbeitritt gestartet.
   </para>
 
   <para>
@@ -1329,18 +1317,18 @@ ucr set auth/methods="krb5 ldap unix winbind"
 
   <para>
     Der Domänenbeitritt läuft automatisch ab.
-    Der abschließende Dialog sollte mit <guimenu>Fertigstellen</guimenu> bestätigt werden. Danach sollte mit einem Klick auf <guimenu>Neustart</guimenu> der UMC-Server neu gestartet werden.
+    Der abschließende Dialog sollte mit <mousebutton>Fertigstellen</mousebutton> bestätigt werden. Danach sollte mit einem Klick auf <mousebutton>Neustart</mousebutton> der UMC-Server neu gestartet werden.
   </para>
 
   <note>
     <para>
-    	Nach Einrichtung des Betriebsmodus als Mitglied der AD-Domäne (<emphasis>AD member</emphasis>-Modus) findet die Authentifikation gegen den AD-Domänencontroller statt. Daher gilt für den Administrator jetzt das Passwort aus der AD-Domäne. Falls einer AD-Domäne mit nicht-englischsprachiger Sprachkonvention beigetreten wurde, dann wird das <emphasis>Administrator</emphasis>-Konto aus UCS während des Domänenbeitritts automatisch in die Schreibweise des AD umbenannt. Gleiches gilt für alle Benutzer- und Gruppenobjekte mit <emphasis>Well Known SID</emphasis> (z.B. <emphasis>Domain Admins</emphasis>).
+			Nach Einrichtung des <emphasis>AD member</emphasis>-Modus findet die Authentifikation gegen den AD-Domänencontroller statt. <emphasis>Daher gilt für den Administrator jetzt das Passwort aus der AD-Domäne.</emphasis> Falls einer AD-Domäne mit nicht-englischsprachiger Sprachkonvention beigetreten wurde, dann wird das <emphasis>Administrator</emphasis>-Konto aus UCS während des Domänenbeitritts automatisch in die Schreibweise des AD umbenannt. Gleiches gilt für alle Benutzer- und Gruppenobjekte mit <emphasis>Well Known SID</emphasis> (z.B. <emphasis>Domain Admins</emphasis>).
     </para>
   </note>
 
   <warning>
     <para>
-    	Falls zuvor neben dem &ucsMaster; weitere UCS-Systeme schon Teil der UCS-Domäne waren, dann müssen diese neu der Domäne beitreten. Dabei erkennen sie, dass der &ucsMaster; sich im <emphasis>AD member</emphasis>-Modus befindet und treten ebenfalls der Authentifikationsstruktur der AD-Domäne bei und können dann z.B. zusätzlich Samba-Dateifreigaben bereitstellen.
+    	Falls zuvor neben dem &ucsMaster; weitere UCS-Systeme schon Teil der UCS-Domäne waren, dann müssen diese der Domäne neu beitreten. Dabei erkennen sie, dass der &ucsMaster; sich im <emphasis>AD member</emphasis>-Modus befindet und treten ebenfalls der Authentifikationsstruktur der AD-Domäne bei und können dann z.B. zusätzlich Samba-Dateifreigaben bereitstellen.
     </para>
   </warning>
 
@@ -1367,7 +1355,7 @@ ucr set auth/methods="krb5 ldap unix winbind"
   </para>
 
   <para>
-    Per Voreinstellung überträgt die so eingerichtete Active Directory-Verbindung keine Passwortdaten aus AD in den UCS-Verzeichnisdienst. In einigen Szenarien kann es dennoch sinnvoll sein, die verschlüsselten Passwortdaten zu übertragen. Manche Apps aus dem Univention App Center benötigen dies. Zu diesem Zweck kann der Passwortdienst auf dem AD-Server installiert werden (siehe <xref linkend="ad-connector:password-dienst"/>).
+    Per Voreinstellung überträgt die so eingerichtete Active Directory-Verbindung keine Passwortdaten aus AD in den UCS-Verzeichnisdienst. In einigen Szenarien kann es dennoch sinnvoll sein, die verschlüsselten Passwortdaten zu übertragen. Manche Apps aus dem Univention App Center beispielsweise benötigen dies. Zu diesem Zweck kann der Passwortdienst auf dem AD-Server installiert werden (siehe <xref linkend="ad-connector:password-dienst"/>).
   </para>
 
   <para>
@@ -1431,17 +1419,17 @@ echo -n "Administrator password" > /etc/univention/connector/password
     Änderungen vorliegen, werden die Verzeichnisdienst-Server weiter abgefragt. Der UCS AD-Connector
     kann auch in einem unidirektionalen Modus betrieben werden.
   </para>
-  
+
   <para>
     Nach dem initialen Sync werden weitere Änderungen in einem festen Intervall abfragt. Dieser
-    Wert ist auf fünf Sekunden eingestellt und kann manuell per &ucsUCR; angepasst werden.
+		Wert ist auf fünf Sekunden eingestellt und kann manuell per &ucsUCR;-Variable <envar>connector/s4/poll/sleep</envar>
+		angepasst werden.
   </para>
-  
+
   <para>
     Sollte ein Objekt nicht synchronisiert werden können, so wird dieses Objekt zunächst
     zurückgestellt ("rejected"). Nach einer konfigurierbaren Anzahl von Durchläufen - das
-    Intervall kann im UMC-Konfigurationsmodul konfiguriert werden, siehe <xref
-    linkend="ad-connector:basicsetup"/>  - wird erneut versucht diese Änderungen wieder
+    Intervall kann im per &ucsUCR;-Variable <envar>connector/s4/retryrejected</envar> angepasst werden - wird erneut versucht diese Änderungen wieder
     einzuspielen. Der Standardwert beträgt zehn Durchläufe. Außerdem wird bei einem Neustart des
     UCS AD-Connectors ebenfalls versucht, die zuvor zurückgewiesenen Änderungen erneut zu
     synchronisieren.
@@ -1451,7 +1439,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
 	<title>Grundkonfiguration des UCS AD-Connectors</title>
 
 	<para>
-	  Der UCS AD-Connector wird über den Assistenten <guimenu>UCS Active Directory-Verbindung</guimenu> der
+	  Der UCS AD-Connector wird über den Assistenten <guimenu>Active Directory-Verbindung</guimenu> der
 	  &ucsUMC; konfiguriert.
 	</para>
 
@@ -1460,10 +1448,6 @@ echo -n "Administrator password" > /etc/univention/connector/password
 	  aus dem Univention App Center installiert werden. Alternativ kann das Softwarepaket
 	  <package>univention-ad-connector</package> installiert werden. Weitere Informationen finden sich in
 	  <xref linkend="computers::softwaremanagement::installsoftware"/>.
-	</para>
-
-	<para>
-	  Die Applikation <emphasis>Active Directory-Verbindung</emphasis> kann nur auf einem &ucsMaster; oder &ucsBackup; installiert werden.
 	</para>
 
 	<note>
@@ -1492,7 +1476,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
 	</para>
 
 	<para>
-	  Im ersten Dialog der Einrichtungsassistenten muss der Punkt <emphasis>Synchronisation von Kontendaten zwischen einer AD und dieser UCS-Domäne</emphasis> ausgewählt und mit <guimenu>Weiter</guimenu> bestätigt werden.
+	  Im ersten Dialog der Einrichtungsassistenten muss der Punkt <emphasis>Synchronisation von Kontendaten zwischen einer AD und dieser UCS-Domäne</emphasis> ausgewählt und mit <mousebutton>Weiter</mousebutton> bestätigt werden.
 	</para>
 
 	<para>
@@ -1532,11 +1516,11 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	</para>
 
 	<para>
-	  Nach Klick auf <guimenu>Weiter</guimenu> prüft der Einrichtungsassistent die Verbindung zum AD-Domänencontroller. Falls keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann wird eine Warnung ausgegeben
+	  Nach Klick auf <mousebutton>Weiter</mousebutton> prüft der Einrichtungsassistent die Verbindung zum AD-Domänencontroller. Falls keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann wird eine Warnung ausgegeben
 	  in der zur Installation einer Zertifizierungsstelle auf dem AD-Domänencontroller geraten wird.
 	  Es wird empfohlen diesem Rat zu folgen. Nach diesem Schritt kann die Einrichtung durch erneuten Klick auf
-	  <guimenu>Weiter</guimenu> fortgesetzt werden. Falls weiterhin keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann, wird in einem Sicherheitshinweis nachgefragt, ob die Synchronisation ohne SSL-Verschlüsselung eingerichtet werden soll.
-	  Falls dies gewünscht ist, kann die Einrichtung durch Klick auf <guimenu>Fortfaren ohne Verschlüsselung</guimenu> fortgesetzt werden. In diesem Fall findet die Synchronisation der Verzeichnisdaten unverschlüsselt statt.
+	  <mousebutton>Weiter</mousebutton> fortgesetzt werden. Falls weiterhin keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann, wird in einem Sicherheitshinweis nachgefragt, ob die Synchronisation ohne SSL-Verschlüsselung eingerichtet werden soll.
+	  Falls dies gewünscht ist, kann die Einrichtung durch Klick auf <mousebutton>Fortfahren ohne Verschlüsselung</mousebutton> fortgesetzt werden. In diesem Fall findet die Synchronisation der Verzeichnisdaten unverschlüsselt statt.
 	</para>
 
 	<para>
@@ -1548,7 +1532,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  <guimenu>Konfiguration der AD-Domänensynchronisation</guimenu> ausgewählt werden können.
 	  Neben einer bidirektionalen Synchronisation kann auch unidirektional von AD nach UCS
 	  oder unidirektional von UCS in das AD repliziert werden.
-	  Nach Auswahl des Modus muss auf <guimenu>Weiter</guimenu> geklickt werden.
+	  Nach Auswahl des Modus muss auf <mousebutton>Weiter</mousebutton> geklickt werden.
 	</para>
 
 	<para>
@@ -1556,13 +1540,21 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	</para>
 
 	<para>
-	  Nach einem Klick auf <guimenu>Weiter</guimenu> wird die Konfiguration übernommen und der UCS AD-Connector wird gestartet.
-	  Der abschliessende Dialog muss dann durch Klick auf <guimenu>Fertigstellen</guimenu> geschlossen werden.
+	  Nach einem Klick auf <mousebutton>Weiter</mousebutton> wird die Konfiguration übernommen und der UCS AD-Connector wird gestartet.
+	  Der abschließende Dialog muss dann durch Klick auf <mousebutton>Fertigstellen</mousebutton> geschlossen werden.
 	</para>
 	<para>
       Nach dieser Einrichtung kann das UMC-Modul <emphasis>Active Directory-Verbindung</emphasis> zur weiteren Administration des UCS Active Directory Connectors verwendet werden, z.B. um zu prüfen, ob der Dienst läuft und ihn ggf. neu zu starten (siehe <xref linkend="ad-connector:neustart"/>).
 	</para>
-  </section>
+
+	<note>
+	  <para>
+			Der Connector kann auch mehrere AD-Domänen mit einer UCS-Domäne synchronisieren;
+			dies ist in <xref linkend="ext-doc-win"/> dokumentiert.
+		</para>
+	</note>
+
+	</section>
 
 <section id="ad-connector:ad-zertifikat">
   <title>Import des SSL-Zertifikats des Active Directory</title>
@@ -1707,7 +1699,7 @@ Nun muss das SSL-AD-Zertifikat über den &ucsUMC;-Assistenten in das
 UCS-System importiert werden.
 </para>
 <para>
-Dies erfolgt durch einen Klick auf <guimenu>Hochladen</guimenu> im
+Dies erfolgt durch einen Klick auf <mousebutton>Hochladen</mousebutton> im
 Untermenü <guimenu>Active Directory Server Konfiguration</guimenu>.
 </para>
 <para>
@@ -1771,12 +1763,11 @@ in der <guimenu>Systemsteuerung</guimenu> deaktiviert werden oder Port
 
 <section id="ad-connector:neustart"><title>Start/Stop des Active Directory Connectors</title>
 <para>
-Abschließend kann der Connector über <guimenu>Active Directory
-  Connector starten</guimenu> gestartet werden und bei Bedarf über <guimenu>
-Active Directory Connector beenden</guimenu> angehalten werden. Alternativ kann
-ein Starten/Stoppen auch über Kommandozeile durch die Befehle
-<command>/etc/init.d/univention-ad-connector start</command> und
-<command>/etc/init.d/univention-ad-connector stop</command> erfolgen.
+	Abschließend kann der Connector über <mousebutton>Active Directory-Verbindungsdienst starten</mousebutton>
+	gestartet werden und bei Bedarf über <mousebutton>Active Directory-Verbindungsdienst stoppen</mousebutton>
+	angehalten werden. Alternativ kann ein Starten/Stoppen auch über Kommandozeile durch die Befehle
+	<command>/etc/init.d/univention-ad-connector start</command> und
+	<command>/etc/init.d/univention-ad-connector stop</command> erfolgen.
 </para>
 </section>
 
