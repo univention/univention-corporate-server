@@ -200,7 +200,7 @@ stop_conflicting_services() {
 		if [ -n "$(pgrep -xf /usr/sbin/winbindd)" ]; then
 			/etc/init.d/winbind stop
 			# Bug #35600: Really stop all winbind processes
-			pkill -xf /usr/sbin/winbindd
+			start-stop-daemon --stop --quiet --retry 2 --exec /usr/sbin/winbindd
 		fi
 	fi
 	if [ -x /etc/init.d/heimdal-kdc ]; then
