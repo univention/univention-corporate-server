@@ -1,0 +1,9 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-3
+src: univention-ad-connector
+fix: 8.0.17-70.439.201408141805
+version: [2,3]
+desc: |
+    * A couple of messages have been improved in the UMC wizard.
+bug: [35602]
