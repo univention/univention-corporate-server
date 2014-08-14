@@ -1,3 +1,15 @@
+univention-management-console-module-udm (4.0.99-1) unstable; urgency=low
+
+  * Bug #35610: version bump
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 14 Aug 2014 11:47:40 +0200
+
+univention-management-console-module-udm (4.0.98-1) unstable; urgency=low
+
+  * Bug #35610: version bump
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 14 Aug 2014 11:47:30 +0200
+
 univention-management-console-module-udm (4.0.97-43) unstable; urgency=low
 
   * Bug #34093: Wording
