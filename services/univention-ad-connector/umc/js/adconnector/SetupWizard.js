@@ -86,7 +86,7 @@ define([
 				widgets: [{
 					type: Text,
 					name: 'help',
-					content: _('<p>This wizards guides the configuration of the connection with an existing Active Directory domain.</p><p>There are two possible ways:</p>')
+					content: _('<p>This wizards guides the configuration of the connection with an existing Active Directory domain.</p><p>There are two exclusive options:</p>')
 				}, {
 					type: RadioButtons,
 					name: 'mode',
@@ -95,14 +95,14 @@ define([
 						label: _('Configure UCS as part of an Active Directory domain (recommended).')
 					}, {
 						id: 'adconnector',
-						label: _('Synchronisation of account data between an Active Directory and a UCS domain.')
+						label: _('Synchronisation of account data between an Active Directory and this UCS domain.')
 					}]
 				}, {
 					type: Text,
 					name: 'help2',
 					content: _paragraph(
 						_('Use the recommended first option if Active Directory will be the principal domain. Domain users can directly access applications that are installed on UCS.'),
-						_('Use the second option for more complex szenarios which necessitate that Active Directory and UCS domains exist in parallel.')
+						_('Use the second option for more complex scenarios which necessitate that Active Directory and UCS domains exist in parallel.')
 					)
 				}]
 			}, {
@@ -133,7 +133,7 @@ define([
 				}]
 			}, {
 				name: 'error-admember',
-				headerText: _('AD Connection - An error ocurred'),
+				headerText: _('AD Connection - An error occurred'),
 				helpText: '<p>' + _('An error occurred during the join process of UCS into the Active Directory domain. The following information will give you some more details on which problems occurred during the join process.') + '</p>',
 				widgets: [{
 					type: Text,
@@ -150,8 +150,8 @@ define([
 					type: Text,
 					name: 'help',
 					content: _paragraph(
-						_('The connection with the Active Directory domain has been configured successfully.'),
-						_('It is necessary for already joined UCS systems to re-join the domain. This is done via the UMC module <i>Domain join</i> separately on each system.')
+						_('The connection to the Active Directory domain has been configured successfully.'),
+						_('It is necessary for already joined UCS systems to re-join the domain. This should be done via the UMC module <i>Domain join</i> separately on each system.')
 					)
 				}]
 			}, {
@@ -162,7 +162,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('Enter the Active Directory domain information to configure the connection.')
+					content: _('Enter the Active Directory domain information to establish the connection.')
 				}, {
 					type: TextBox,
 					name: 'ad_server_address',
@@ -189,7 +189,7 @@ define([
 					'class': 'umcPageHelpText',
 					name: 'info',
 					content: _paragraph(
-						_('An encrypted connection to the Active Directory domain could not be established. This has as consequence that authentication data is submitted in plaintext.'),
+						_('An encrypted connection to the Active Directory domain could not be established. As a consequence authentication data is submitted in plaintext.'),
 						_('To enable an encrypted connection, a certification authority needs to be configured on the Active Directory server. All necessary steps are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.'),
 						_('After the certification authority has been set up, press <i>Next</i> to proceed.')
 					)
@@ -202,7 +202,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'info',
-					content: _('<p>To achieve a higher level of security, the Active Directory system\'s root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate. The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>. Alternatively, you may proceed without this configuration.</p>')
+					content: _('<p>To achieve a higher level of security, the Active Directory root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate. The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>. Alternatively, you may proceed without this configuration.</p>')
 
 				}, {
 					name: 'certificateUpload',
@@ -236,7 +236,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: '<p>' + _('Specify the synchronisation direction between the UCS domain and the given Active Directory domain.') + '</p>'
+					content: '<p>' + _('Select the synchronisation direction between the UCS domain and the given Active Directory domain.') + '</p>'
 				}, {
 					type: RadioButtons,
 					name: 'connectormode',
@@ -285,7 +285,7 @@ define([
 					name: 'help',
 					content: _paragraph(
 						_('The synchronisation of Univention Corporate Server and Active Directory has been succesfully initiated.'),
-						_('The UCS server is now ready for usage, and domain account information are now available.')
+						_('The UCS server is now ready for usage, and domain account data is now available.')
 					)
 				}]
 			}];

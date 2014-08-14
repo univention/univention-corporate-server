@@ -43,7 +43,7 @@ define([
 			_('The MSI files are the installation files for the password service. The installation can be started on the Active Directory domain controller by double clicking on it.') + ' ' +
 			_('The package is installed in the <b>C:\\Windows\\UCS-AD-Connector</b> directory automatically. Additionally, the password service is integrated into the Windows environment as a system service, which means the service can be started automatically or manually.') +
 			'</p><p>' +
-			_('During a standard installation, the Windows firewall blocks the access to the AD Connection service. This must either be deactivated in System settings or Port 6670/TCP authorised.') +
+			_('In a standard setup, the Windows firewall blocks the access to the password service. This must either be deactivated in System settings or Port 6670/TCP authorised.') +
 			'</p>' +
 			'<ul><li><a href="/univention-ad-connector/ucs-ad-connector.msi">ucs-ad-connector.msi</a><br>' +
 			_('Installation file for the password service for <b>%s</b> Windows.<br />It can be started by double clicking on it.', '32bit') +

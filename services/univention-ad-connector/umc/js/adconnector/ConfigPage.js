@@ -69,7 +69,7 @@ define([
 			if (state && state.mode_admember) {
 				this.helpText = _('The system is part of an Active Directory domain.');
 			} else if (state && state.mode_adconnector) {
-				this.helpText = _('The domain exists in parallel to an Active Directory domain.');
+				this.helpText = _('The UCS domain exists in parallel to an Active Directory domain.');
 			}
 			this.helpText += ' ' + _('This module configures the connection between the Univention Corporate Server and Active Directory.');
 			this.showDescription();
@@ -85,7 +85,7 @@ define([
 				name: 'unencryptedActivateSSL',
 				type: Text,
 				content: '<p style="margin-top: 4em;">' +
-					_('It is also possible to just activate the encrypted connection without a certificate.') +
+					_('It is also possible to just activate the encrypted connection without certificate verification.') +
 					'</p>'
 			}, {
 				name: 'certificateUpload',
@@ -107,8 +107,8 @@ define([
 				name: 'downloadInfoADMember',
 				type: Text,
 				content: makeParagraphs([
-					_('By default the Active Directory connection does not transfer passwords into the UCS directory service. The system uses the Active Directory Kerberos infrastructure for authentication.'),
-					_('However, in some szenarios it may be reasonable to transfer passwords. In this case, The password service should be installed on the Active Directory server.')
+					_('By default the Active Directory connection does not transfer encrypted password data into the UCS directory service. The system uses the Active Directory Kerberos infrastructure for authentication.'),
+					_('However, in some scenarios it may be reasonable to transfer encrypted password hashes. In this case, The password service should be installed on the Active Directory server.')
 				])
 			}, {
 				name: 'download',
@@ -116,7 +116,7 @@ define([
 			}, {
 				name: 'downloadNextStepADMember',
 				type: Text,
-				content: _('After the installation the replication of password hashes has to be activated:')
+				content: _('After the installation the replication of password hashes has to be activated.')
 			}];
 
 			var buttons = [{
@@ -148,7 +148,7 @@ define([
 				label: _('Active Directory connection service'),
 				layout: ['running', 'start', 'stop']
 			}, {
-				label: _('Active Directory Server configuration'),
+				label: _('Active Directory connection SSL configuration'),
 				layout: ['certificateUpload', 'unencryptedActivateSSL', 'activate']
 			}];
 			if (this.initialState.mode_adconnector) {
@@ -203,20 +203,20 @@ define([
 						showEnableSSL = state.mode_adconnector;
 						certMsg = makeParagraphs([
 							_('Currently, an unencrypted connection to the Active Directory domain is used.'),
-							_('To achieve a higher level of security, the Active Directory system\'s root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate.'),
+							_('To achieve a higher level of security, the Active Directory root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate.'),
 							_('The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.')
 						]);
 					} else {
 						certMsg = makeParagraphs([
 							_('Currently, an encrypted connection between UCS and the Active Directory domain is used.'),
-							_('To achieve a higher level of security, the Active Directory system\'s root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate.'),
+							_('To achieve a higher level of security, the Active Directory root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate.'),
 							_('The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.')
 						]);
 					}
 				} else {
 					certMsg = makeParagraphs([
 						_('Currently, a secured connection between UCS and the Active Directory domain is used.'),
-						_('When there is a need of adjustment, you may upload a new root certificate of the Active Directory domain.')
+						_('If there is a need for adjustment, you may upload a new root certificate of the Active Directory domain.')
 					]);
 				}
 				this._widgets.certificateUpload.set('value', certMsg);
