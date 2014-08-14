@@ -1,3 +1,9 @@
+univention-system-setup (8.0.18-1) unstable; urgency=low
+
+  * Bug #35601: Fixed "always-on DHCP"
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 12 Aug 2014 14:58:24 +0200
+
 univention-system-setup (8.0.17-1) unstable; urgency=low
 
   * Bug #35605: try to disable telemetry question in FF
