@@ -190,7 +190,7 @@ define([
 					name: 'info',
 					content: _paragraph(
 						_('An encrypted connection to the Active Directory domain could not be established. As a consequence authentication data is submitted in plaintext.'),
-						_('To enable an encrypted connection, a certification authority needs to be configured on the Active Directory server. All necessary steps are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.'),
+						_('To enable an encrypted connection, a certification authority needs to be configured on the Active Directory server. All steps necessary are described in the <a href="http://docs.univention.de/manual-3.2.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.'),
 						_('After the certification authority has been set up, press <i>Next</i> to proceed.')
 					)
 				}]

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-adconnector\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-08-01 13:53+0200\n"
+"POT-Creation-Date: 2014-08-14 18:01+0200\n"
 "PO-Revision-Date: 2011-11-28 16:53+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,13 +74,13 @@ msgstr "Passwortsynchronisation aktivieren"
 msgid "Active Directory Connection"
 msgstr "Active Directory-Verbindung"
 
-#: umc/js/adconnector/ConfigPage.js:151
-msgid "Active Directory connection SSL configuration"
-msgstr "Active Directory-Verbindung SSL-Konfiguration"
-
 #: umc/js/adconnector/SetupWizard.js:126 umc/js/adconnector/SetupWizard.js:175
 msgid "Active Directory account"
 msgstr "Active Directory-Konto"
+
+#: umc/js/adconnector/ConfigPage.js:151
+msgid "Active Directory connection SSL configuration"
+msgstr "Active Directory-Verbindung SSL-Konfiguration"
 
 #: umc/js/adconnector/ConfigPage.js:148
 msgid "Active Directory connection service"
@@ -132,8 +132,7 @@ msgstr ""
 #: umc/js/adconnector/SetupWizard.js:192
 msgid ""
 "An encrypted connection to the Active Directory domain could not be "
-"established. As a consequence authentication data is submitted "
-"in plaintext."
+"established. As a consequence authentication data is submitted in plaintext."
 msgstr ""
 "Es konnte keine verschlüsselte Verbindung zur Active Directory-Domäne "
 "hergestellt werden. Dies hat zur Folge, dass Authentifizierungsdaten im "
@@ -167,13 +166,13 @@ msgstr "Bidirektionale Synchronisation zwischen UCS und Active Directory."
 
 #: umc/js/adconnector/ConfigPage.js:110
 msgid ""
-"By default the Active Directory connection does not transfer encrypted password data into "
-"the UCS directory service. The system uses the Active Directory Kerberos "
-"infrastructure for authentication."
+"By default the Active Directory connection does not transfer encrypted "
+"password data into the UCS directory service. The system uses the Active "
+"Directory Kerberos infrastructure for authentication."
 msgstr ""
 "Standardmäßig überträgt die eingerichtete Active Directory-Verbindung keine "
-"verschlüsselten Passwortdaten in den UCS-Verzeichnisdienst. Das System nutzt die Active "
-"Directory Kerberos Infrastruktur zur Authentifizierung."
+"verschlüsselten Passwortdaten in den UCS-Verzeichnisdienst. Das System nutzt "
+"die Active Directory Kerberos Infrastruktur zur Authentifizierung."
 
 #: umc/js/adconnector/SetupWizard.js:356
 msgid "Cancel"
@@ -219,23 +218,12 @@ msgstr ""
 msgid ""
 "Currently, an unencrypted connection to the Active Directory domain is used."
 msgstr ""
-"Es wird aktuell keine verschlüsselte Verbindung zu der "
-"Active Directory Domäne verwendet."
+"Es wird aktuell keine verschlüsselte Verbindung zu der Active Directory "
+"Domäne verwendet."
 
 #: umc/js/adconnector/ConfigPage.js:156
 msgid "Download the password service for Windows and the UCS certificate"
-msgstr ""
-"Herunterladen des UCS-Zertifikats und des Passwortdienstes für Windows"
-
-#: umc/js/adconnector/DownloadInfo.js:46
-msgid ""
-"In a standard setup, the Windows firewall blocks the access to "
-"the password service. This must either be deactivated in System "
-"settings or Port 6670/TCP authorised."
-msgstr ""
-"In einer Standard-Installation blockiert die Windows-Firewall die Zugriffe "
-"auf den Passwortdienst. Diese muss entweder in der Systemsteuerung "
-"deaktiviert werden oder Port 6670/TCP freigegeben werden. "
+msgstr "Herunterladen des UCS-Zertifikats und des Passwortdienstes für Windows"
 
 #: umc/js/adconnector/SetupWizard.js:165
 msgid ""
@@ -250,19 +238,37 @@ msgstr ""
 "Geben Sie die Active Directory-Domäneninformationen ein, um der Domäne "
 "beizutreten."
 
-#: umc/js/adconnector/SetupWizard.js:223 umc/js/adconnector/ConfigPage.js:102
+#: umc/js/adconnector/ConfigPage.js:102 umc/js/adconnector/SetupWizard.js:223
 msgid "Failed to import the certificate"
 msgstr "Der Import des Zertifikats ist fehlgeschlagen"
 
 #: umc/js/adconnector/ConfigPage.js:111
 msgid ""
-"However, in some scenarios it may be reasonable to transfer encrypted password hashes. In "
-"this case, The password service should be installed on the Active Directory "
-"server."
+"However, in some scenarios it may be reasonable to transfer encrypted "
+"password hashes. In this case, The password service should be installed on "
+"the Active Directory server."
 msgstr ""
-"In einigen Szenarien kann es dennoch sinnvoll sein, die verschlüsselten Passwortdaten zu "
-"übertragen. In diesem Fall sollte der Passwort Dienst auf dem Active "
-"Directory-Server installiert werden."
+"In einigen Szenarien kann es dennoch sinnvoll sein, die verschlüsselten "
+"Passwortdaten zu übertragen. In diesem Fall sollte der Passwort Dienst auf "
+"dem Active Directory-Server installiert werden."
+
+#: umc/js/adconnector/ConfigPage.js:219
+msgid ""
+"If there is a need for adjustment, you may upload a new root certificate of "
+"the Active Directory domain."
+msgstr ""
+"Bei Anpassungsbedarf können Sie hier ein neues Root-Zertifikat aus der "
+"Active Directory Domäne hochladen."
+
+#: umc/js/adconnector/DownloadInfo.js:46
+msgid ""
+"In a standard setup, the Windows firewall blocks the access to the password "
+"service. This must either be deactivated in System settings or Port 6670/TCP "
+"authorised."
+msgstr ""
+"In einer Standard-Installation blockiert die Windows-Firewall die Zugriffe "
+"auf den Passwortdienst. Diese muss entweder in der Systemsteuerung "
+"deaktiviert werden oder Port 6670/TCP freigegeben werden. "
 
 #: umc/js/adconnector/DownloadInfo.js:49 umc/js/adconnector/DownloadInfo.js:51
 #, python-format
@@ -288,7 +294,8 @@ msgstr ""
 #: umc/js/adconnector/SetupWizard.js:154
 msgid ""
 "It is necessary for already joined UCS systems to re-join the domain. This "
-"should be done via the UMC module <i>Domain join</i> separately on each system."
+"should be done via the UMC module <i>Domain join</i> separately on each "
+"system."
 msgstr ""
 "Für bereits gejointe UCS-Systeme ist es notwendig, der Domäne neu "
 "beizutreten. Dies sollte über das UMC-Module <i>Domänenbeitritt</i> separat "
@@ -358,7 +365,8 @@ msgstr "Passwortsynchronisation deaktivieren"
 
 #: umc/js/adconnector/SetupWizard.js:98
 msgid ""
-"Synchronisation of account data between an Active Directory and this UCS domain."
+"Synchronisation of account data between an Active Directory and this UCS "
+"domain."
 msgstr ""
 "Synchronisation von Kontendaten zwischen einer Active Directory und dieser "
 "UCS-Domäne."
@@ -375,8 +383,8 @@ msgstr ""
 msgid ""
 "The <b>private.key</b> file contains the private key to the SSL certificates."
 msgstr ""
-"Die <b>private.key</b> Datei beinhaltet den privaten Schlüssel des "
-"SSL-Zertifikats."
+"Die <b>private.key</b> Datei beinhaltet den privaten Schlüssel des SSL-"
+"Zertifikats."
 
 #: umc/js/adconnector/DownloadInfo.js:43
 msgid ""
@@ -384,18 +392,22 @@ msgid ""
 "installation can be started on the Active Directory domain controller by "
 "double clicking on it."
 msgstr ""
-"Die MSI-Dateien sind die Installationsdateien für den Passwortdienst. "
-"Die Installation kann mit einem Doppelklick gestartet werden."
+"Die MSI-Dateien sind die Installationsdateien für den Passwortdienst. Die "
+"Installation kann mit einem Doppelklick gestartet werden."
+
+#: umc/js/adconnector/ConfigPage.js:72
+msgid "The UCS domain exists in parallel to an Active Directory domain."
+msgstr "Die UCS-Domäne existiert parallel zu einer Active Directory-Domäne."
 
 #: umc/js/adconnector/SetupWizard.js:288
 msgid ""
-"The UCS server is now ready for usage, and domain account data is "
-"now available."
+"The UCS server is now ready for usage, and domain account data is now "
+"available."
 msgstr ""
-"Das UCS-System kann nun eingesetzt werden und Domänen-Kontodaten "
-"sind verfügbar."
+"Das UCS-System kann nun eingesetzt werden und Domänen-Kontodaten sind "
+"verfügbar."
 
-#: umc/js/adconnector/SetupWizard.js:220 umc/js/adconnector/ConfigPage.js:100
+#: umc/js/adconnector/ConfigPage.js:100 umc/js/adconnector/SetupWizard.js:220
 msgid "The certificate was imported successfully"
 msgstr "Das Zertifikat wurde erfolgreich importiert"
 
@@ -405,10 +417,6 @@ msgid ""
 "successfully."
 msgstr ""
 "Die Verbindung zur Active Directory Domäne wurde erfolgreich eingerichtet."
-
-#: umc/js/adconnector/ConfigPage.js:72
-msgid "The UCS domain exists in parallel to an Active Directory domain."
-msgstr "Die UCS-Domäne existiert parallel zu einer Active Directory-Domäne."
 
 #: umc/js/adconnector/ConfigPage.js:207 umc/js/adconnector/ConfigPage.js:213
 msgid ""
@@ -429,18 +437,18 @@ msgid ""
 "can be started automatically or manually."
 msgstr ""
 "Das Paket ist automatisch im <b>C:\\Windows\\UCS-AD-Connector</b> "
-"Verzeichnis installiert. Zusätzlich ist der Passwortdienst als "
-"Systemdienst in die Windows-Umgebung integriert. Dadurch kann der Dienst "
-"automatisch oder manuell gestartet werden."
+"Verzeichnis installiert. Zusätzlich ist der Passwortdienst als Systemdienst "
+"in die Windows-Umgebung integriert. Dadurch kann der Dienst automatisch oder "
+"manuell gestartet werden."
 
 #: umc/js/adconnector/SetupWizard.js:331
 #, python-format
 msgid ""
 "The server <i>%(_hostname)s (%(DC_IP)s)</i> is used as Active Directory "
-"domain controller for the domain <i>%(Domain)s</i>."
+"Domain Controller for the domain <i>%(Domain)s</i>."
 msgstr ""
-"Der Server <i>%(_hostname)s (%(DC_IP)s)</i> wird als Active "
-"Directory-Domänencontroller für die Domäne <i>%(Domain)s</i> genutzt."
+"Der Server <i>%(_hostname)s (%(DC_IP)s)</i> wird als Active Directory-"
+"Domänencontroller für die Domäne <i>%(Domain)s</i> genutzt."
 
 #: umc/js/adconnector/SetupWizard.js:287
 msgid ""
@@ -464,9 +472,9 @@ msgstr ""
 
 #: umc/js/adconnector/ConfigPage.js:206 umc/js/adconnector/ConfigPage.js:212
 msgid ""
-"To achieve a higher level of security, the Active Directory root "
-"certificate should be exported and uploaded here. The Active Directory "
-"certificate service creates that certificate."
+"To achieve a higher level of security, the Active Directory root certificate "
+"should be exported and uploaded here. The Active Directory certificate "
+"service creates that certificate."
 msgstr ""
 "Um eine höhere Sicherheit zu erreichen, sollte auf dem Active Directory "
 "System das Root-Zertifikat exportiert und hier hochgeladen werden. Erzeugt "
@@ -513,14 +521,6 @@ msgid ""
 msgstr ""
 "Benutzen Sie die zweite Option für komplexere Szenarien, die den "
 "Parallelbetrieb der Active Directory- und UCS-Domäne voraussetzen."
-
-#: umc/js/adconnector/ConfigPage.js:219
-msgid ""
-"If there is a need for adjustment, you may upload a new root certificate of "
-"the Active Directory domain."
-msgstr ""
-"Bei Anpassungsbedarf können Sie hier ein neues Root-Zertifikat aus der "
-"Active Directory Domäne hochladen."
 
 #~ msgid ""
 #~ " The Configuation of UCS Active Directory Connector must be completed "

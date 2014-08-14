@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-adconnector\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-08-01 13:53+0200\n"
+"POT-Creation-Date: 2014-08-14 17:56+0200\n"
 "PO-Revision-Date: 2011-11-09 15:54+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,7 +94,7 @@ msgid "Configuring time synchronization..."
 msgstr "Einrichten der Zeitsynchronisation..."
 
 #: umc/python/adconnector/__init__.py:378
-#: umc/python/adconnector/__init__.py:497
+#: umc/python/adconnector/__init__.py:499
 #, python-format
 msgid ""
 "Could not connect to AD Server %s. Please verify that the specified address "
@@ -104,7 +104,7 @@ msgstr ""
 "überprüfen Sie, ob die angegebene Adresse korrekt ist."
 
 #: umc/python/adconnector/__init__.py:384
-#: umc/python/adconnector/__init__.py:501
+#: umc/python/adconnector/__init__.py:503
 #, python-format
 msgid ""
 "Could not connect to AD Server %s. Please verify that username and password "
@@ -113,7 +113,7 @@ msgstr ""
 "Eine Verbindung zum AD-Server %s konnte nicht hergestellt werden. Bitte "
 "überprüfen Sie Benutzername und Password."
 
-#: umc/python/adconnector/__init__.py:535
+#: umc/python/adconnector/__init__.py:537
 #, python-format
 msgid ""
 "Could not establish an encrypted connection. Either \"%r\" is not reachable "
@@ -131,7 +131,7 @@ msgstr ""
 "falsch, der Active Directory-Server ist nicht erreichbar oder er unterstützt "
 "keine Verschlüsselung."
 
-#: umc/python/adconnector/__init__.py:505
+#: umc/python/adconnector/__init__.py:507
 #, python-format
 msgid ""
 "Could not synchronize the time between the UCS system and the Active "
@@ -145,7 +145,7 @@ msgstr ""
 msgid "Creation of certificate failed (%s)"
 msgstr "Erstellung eines neuen Zertifikats fehlgeschlagen (%s)"
 
-#: umc/python/adconnector/__init__.py:503
+#: umc/python/adconnector/__init__.py:505
 msgid ""
 "Failed to set the password of the UCS Administrator to the Active Directory "
 "Administrator password."
@@ -153,11 +153,11 @@ msgstr ""
 "Das Passwort des UCS-Administrators konnte nicht auf das des Active "
 "Directory-Administrators gesetzt werden."
 
-#: umc/python/adconnector/__init__.py:491
+#: umc/python/adconnector/__init__.py:493
 msgid "Join has been finished successfully."
 msgstr "Der Domänenbeitritt wurde erfolgreich abgeschlossen."
 
-#: umc/python/adconnector/__init__.py:514
+#: umc/python/adconnector/__init__.py:516
 msgid "Join has been finished with errors."
 msgstr "Der Domänenbeitritt wurde mit Fehlern abgeschlossen."
 
@@ -165,7 +165,7 @@ msgstr "Der Domänenbeitritt wurde mit Fehlern abgeschlossen."
 msgid "Joining UCS into Active Directory domain"
 msgstr "Beitritt von UCS in die Active Directory-Domäne"
 
-#: umc/python/adconnector/__init__.py:487
+#: umc/python/adconnector/__init__.py:489
 msgid "Registering LDAP service entry..."
 msgstr "Registrierung von LDAP-Service-Einträgen..."
 
@@ -184,7 +184,7 @@ msgstr ""
 "Speichern des Replikationspasswortes fehlgeschlagen (filename=%(fn)s ; "
 "exception=%(exception)s)"
 
-#: umc/python/adconnector/__init__.py:484
+#: umc/python/adconnector/__init__.py:486
 msgid "Starting Active Directory connection service..."
 msgstr "Active Directory-Verbindungsdienst wird gestartet..."
 
@@ -193,13 +193,13 @@ msgid "Switching running state of Active Directory Connector failed."
 msgstr "Starten/Stoppen des Active Directory Connectors ist fehlgeschlagen."
 
 #: umc/python/adconnector/__init__.py:375
-#: umc/python/adconnector/__init__.py:495
+#: umc/python/adconnector/__init__.py:497
 msgid "The AD member mode can only be configured on a DC master server."
 msgstr ""
 "Der AD-Member-Modus kann nur auf einem DC-Master-System konfiguriert werden."
 
 #: umc/python/adconnector/__init__.py:381
-#: umc/python/adconnector/__init__.py:499
+#: umc/python/adconnector/__init__.py:501
 #, python-format
 msgid ""
 "The domain name of the AD Server (%(ad_domain)s) does not match the local "
