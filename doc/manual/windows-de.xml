@@ -1359,7 +1359,10 @@ ucr set auth/methods="krb5 ldap unix winbind"
   </para>
 
   <para>
-  	Im <emphasis>AD member</emphasis>-Modus liest der UCS AD-Connector Objektdaten per Voreinstellung mit den Berechtigungen des Maschinenkontos des &ucsMaster;s aus dem AD. Für das Auslesen von verschlüsselten Passwortdaten sind dessen Berechtigungen nicht ausreichend. Daher muss für die Einrichtung des Passwortdienstes zusätzlich manuell die LDAP-DN eines privilegierten Replikationsbenutzers in die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> eingetragen werden. Dieser muss im AD Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Das entsprechende Kennwort muss auf dem &ucsMaster; in eine Datei gespeichert werden und ihr Dateiname muss in die &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen werden. Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <emphasis>root</emphasis> Zugriff hat. Die folgenden Kommandos zeigen dies beispielhaft:
+  	Im <emphasis>AD member</emphasis>-Modus liest der UCS AD-Connector Objektdaten per Voreinstellung mit den Berechtigungen des Maschinenkontos des &ucsMaster;s aus dem AD. Für das Auslesen von verschlüsselten Passwortdaten sind dessen Berechtigungen nicht ausreichend. Daher muss für die Einrichtung des Passwortdienstes zusätzlich manuell die LDAP-DN eines privilegierten Replikationsbenutzers in die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> eingetragen werden. Dieser muss im AD Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Das entsprechende Kennwort muss auf dem &ucsMaster; in eine Datei gespeichert werden und ihr Dateiname muss in die &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen werden. Falls zu einem späteren Zeitpunkt das Zugriffspasswort geändet wurde, muss das neue Passwort in diese Datei eingetragen werden. Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <emphasis>root</emphasis> Zugriff hat.
+  </para>
+  <para>
+  	Die folgenden Kommandos zeigen die Schritte beispielhaft:
   </para>
 
   <programlisting language="sh">
@@ -1513,6 +1516,10 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  Das verwendete Kennwort für den Zugriff muss im Feld <guimenu>Active Directory-Passwort</guimenu>
 	  eingetragen werden. Es wird auf dem UCS-System lokal in einer Datei gespeichert,
 	  die nur für den Benutzer <emphasis>root</emphasis> lesbar ist.
+	</para>
+
+	<para>
+	  Abschnitt <xref linkend="ad-connector:ad-passwort"/> beschreibt die Schritte, die notwendig sind, falls diese Zugangsdaten zu einem späteren Zeitpunkt angepasst werden müssen.
 	</para>
 
 	<para>
@@ -1859,6 +1866,21 @@ werden.
 </listitem>
 </itemizedlist>
 </section>
+</section>
+
+<section id="ad-connector:AD-passwort"><title>Änderung des AD-Zugriffspassworts</title>
+  <para>
+  	Die vom UCS AD-Connector benötigten Zugangsdaten zum Active Directory werden über die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> und <envar>connector/ad/ldap/bindpw</envar> konfiguriert. Falls das Passwort sich geändert hat oder ein anderes Benutzerkonto verwendet werden soll, können diese Variablen manuell andepasst werden. Über die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> wird die LDAP-DN eines privilegierten Replikationsbenutzers konfiguriert. Dieser muss im AD Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Das entsprechende Kennwort muss lokal auf dem UCS-System in eine Datei gespeichert werden deren Dateiname muss in der &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen sein muss. Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <emphasis>root</emphasis> Zugriff hat. Die folgenden Kommandos zeigen dies beispielhaft:
+  </para>
+
+  <programlisting language="sh">
+eval "$(ucr shell)"
+echo "Updating ${connector_ad_ldap_bindpw?}"
+echo "for AD sync user ${connector_ad_ldap_binddn?}"
+touch "${connector_ad_ldap_bindpw?}"
+chmod 600 "${connector_ad_ldap_bindpw?}"
+echo -n "Current AD Syncuser password" > "${connector_ad_ldap_bindpw?}"
+  </programlisting>
 </section>
 
 <section id="ad-connector:gruppen"><title>Gruppen</title>
