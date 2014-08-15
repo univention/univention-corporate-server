@@ -1,5 +1,5 @@
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -175,7 +175,6 @@ def handler(dn, new, old, command):
 
 	elif old and new and details_complete(old) and not details_complete(new):
 		# data is now incomplete ==> remove entry from rc file
-		
 		flist = objdelete(flist, old)
 		write_rc(flist, fn_fetchmailrc)
 
@@ -221,7 +220,7 @@ def handler(dn, new, old, command):
 				univention.debug.debug( univention.debug.LISTENER, univention.debug.ERROR, 'fetchmail: cannot reset password in LDAP (%s): %s' % (dn, str(e)) )
 			finally:
 				listener.unsetuid()
-			
+
 def initialize():
 	pass
 
