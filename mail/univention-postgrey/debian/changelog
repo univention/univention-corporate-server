@@ -1,3 +1,9 @@
+univention-postgrey (3.0.0-1) unstable; urgency=medium
+
+  * Update to UCS 4.0 (Bug #35264)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 15 Aug 2014 15:50:49 +0200
+
 univention-postgrey (2.0.0-2) unstable; urgency=low
 
   * Bug #30945: updated UCR variable descriptions
