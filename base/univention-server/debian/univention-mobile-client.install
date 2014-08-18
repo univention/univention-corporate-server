@@ -4,4 +4,3 @@ mobile-client etc/init.d/
 check_connection usr/share/univention-mobile-client/
 univention-directory-policy/univention-set-ldap-server usr/lib/univention-directory-policy/
 univention-ldap-server-available usr/sbin/
-

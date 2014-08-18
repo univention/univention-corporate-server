@@ -122,7 +122,6 @@ Package: univention-role-server-common
 Architecture: all
 Depends: ${misc:Depends},
  univention-role-common (= ${source:Version}),
- univention-showload,
  univention-maintenance,
  univention-directory-listener,
  univention-ldap-client,

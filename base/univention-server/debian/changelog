@@ -1,3 +1,9 @@
+univention-server (10.0.0-2) unstable; urgency=low
+
+  * Remove dependency on univention-showload (Bug #35138)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 18 Aug 2014 20:28:17 +0200
+
 univention-server (10.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35138)
@@ -8,7 +14,7 @@ univention-server (10.0.0-1) unstable; urgency=low
 univention-server (9.0.0-4) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
-  * Update/review UCR variable descriptions (Bug #30943)	
+  * Update/review UCR variable descriptions (Bug #30943)
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 17 Jun 2013 14:39:53 +0200
 

@@ -4,4 +4,3 @@ managed-client etc/init.d/
 univention-directory-policy/univention-set-ldap-server usr/lib/univention-directory-policy/
 check_connection usr/share/univention-managed-client/
 univention-ldap-server-available usr/sbin/
-

@@ -64,4 +64,3 @@ if ! test -e /etc/ldap-backup.secret; then
 fi
 
 exit 0
-
