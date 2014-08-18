@@ -1,3 +1,12 @@
+univention-ad-connector (9.0.0-1) UNRELEASED; urgency=medium
+
+  * version bump for UCS 4.0 (Bug #35319)
+  * Adjust for python2.7
+  * raise debian/compat to 9
+  * Update copyright year
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 Aug 2014 18:22:09 +0200
+
 univention-ad-connector (8.0.17-70) unstable; urgency=medium
 
   * Adjusted fuzzy messages (Bug #35602)

@@ -3,7 +3,7 @@
 # Univention AD Connector
 #  Start script for the AD Conenctor
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,5 +34,5 @@
 # before starting the ad connector, generate the mapping file
 cat /etc/univention/connector/ad/mapping | univention-config-registry filter --encode-utf8 >/etc/univention/connector/ad/mapping.py
 
-/usr/bin/python2.6 -W ignore /usr/share/pyshared/univention/connector/ad/main.py
+/usr/bin/python2.7 -W ignore /usr/share/pyshared/univention/connector/ad/main.py
 

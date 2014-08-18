@@ -1,3 +1,12 @@
+univention-samba4wins (6.0.0-1) UNRELEASED; urgency=medium
+
+  * version bump for UCS 4.0 (Bug #35319)
+  * Adjust for python2.7
+  * raise debian/compat to 9
+  * Update copyright year
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 Aug 2014 18:18:09 +0200
+
 univention-samba4wins (5.0.0-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)

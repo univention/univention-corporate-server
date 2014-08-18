@@ -1,3 +1,12 @@
+univention-samba (9.0.0-1) UNRELEASED; urgency=medium
+
+  * version bump for UCS 4.0 (Bug #35319)
+  * Adjust for python2.7
+  * raise debian/compat to 9
+  * Update copyright year
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 Aug 2014 18:19:53 +0200
+
 univention-samba (8.0.19-11) unstable; urgency=low
 
   * set default samba/role during update (Bug #35584) 

@@ -1,9 +1,9 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 #
 # Univention helper script
 #  to remove computer with DC objects from Samba 4 and UDM
 #
-# Copyright 2012-2013 Univention GmbH
+# Copyright 2012-2014 Univention GmbH
 #
 # http://www.univention.de/
 #

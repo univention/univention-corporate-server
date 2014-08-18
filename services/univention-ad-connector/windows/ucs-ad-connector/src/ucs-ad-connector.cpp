@@ -2,7 +2,7 @@
  * Univention AD Connector
  *  this is the password sync service/daemon for the AD side
  * 
- * Copyright 2004-2013 Univention GmbH
+ * Copyright 2004-2014 Univention GmbH
  *
  * http://www.univention.de/
  *

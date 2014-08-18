@@ -1,10 +1,10 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
 # Univention Samba
 #  replace an old SID with a new one
 #
-# Copyright 2001-2013 Univention GmbH
+# Copyright 2001-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
