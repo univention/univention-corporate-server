@@ -1,7 +1,8 @@
 #!/bin/bash
 # 1. Setup ACLs once:
-#    ssh root@master ". common.sh && setup_slapd"
+#    ssh root@master ". common.sh && HOSTNAME=test setup_slapd"
 # 2. Register Listener once:
+#    ssh root@test 'ucr set tests/domainadmin/account?"uid=Administrator,cn=users,$(ucr get ldap/base)" tests/domainadmin/pwd?univention'
 #    ssh root@test ". common.sh && setup_listener"
 # 3. Run tests as often as needed:
 #    run-parts --verbose --regex '^test' doc.34355
