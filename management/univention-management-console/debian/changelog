@@ -1,3 +1,10 @@
+univention-management-console (7.0.1-1) unstable; urgency=low
+
+  * Bug #35466: create socket directory /var/run/univention-management-console
+  	before starting module processes if directory does not exists
+
+ -- Florian Best <best@univention.de>  Mon, 18 Aug 2014 09:22:13 +0200
+
 univention-management-console (7.0.0-5) unstable; urgency=low
 
   * Move univention-management-console-module-quota from depends to

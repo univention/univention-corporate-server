@@ -40,6 +40,7 @@ from optparse import OptionParser
 
 import locale
 import os
+import os.path
 import sys
 
 import notifier
@@ -62,7 +63,7 @@ if __name__ == '__main__':
 
 	default_debug = MODULE_DEBUG_LEVEL
 	parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = default_debug,
-					   help = 'if given than debugging is activated and set to the specified level [default: %default]' )
+					   help = 'if given then debugging is activated and set to the specified level [default: %default]' )
 	parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-module', help = 'specifies an alternative log file [default: %default-<module name>.log]' )
 
 	( options, arguments ) = parser.parse_args()
@@ -100,6 +101,10 @@ if __name__ == '__main__':
 
 	if not options.socket:
 		raise SystemError( 'socket name is missing' )
+
+	# make sure the directory where to place socket files exists
+	if not os.path.exists('/var/run/univention-management-console'):
+		os.mkdir('/var/run/univention-management-console')
 
 	# get the timeout
 	session_timeout = 300
