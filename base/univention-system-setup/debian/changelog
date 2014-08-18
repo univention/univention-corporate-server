@@ -1,6 +1,6 @@
 univention-system-setup (8.0.19-1) unstable; urgency=low
 
-  * Bug #35466: remove workarounD
+  * Bug #35466: remove workaround
 
  -- Florian Best <best@univention.de>  Mon, 18 Aug 2014 09:40:29 +0200
 
