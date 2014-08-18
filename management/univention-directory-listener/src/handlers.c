@@ -42,10 +42,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <sys/types.h>
-#include <python2.6/Python.h>
-#include <python2.6/compile.h>
-#include <python2.6/marshal.h>
-#include <python2.6/node.h>
+#include <python2.7/Python.h>
+#include <python2.7/compile.h>
+#include <python2.7/marshal.h>
+#include <python2.7/node.h>
 #include <univention/debug.h>
 
 #include "cache_lowlevel.h"
@@ -88,7 +88,7 @@ static PyObject* module_import(char *filename)
 
 	namep = strrchr(filename, '.');
 	if ((namep != NULL) && (strcmp(namep, ".pyo") == 0)) {
-		long magic;
+		__attribute__((unused)) long magic;
 
 		magic = PyMarshal_ReadLongFromFile(fp);
 		/* we should probably check the magic here */
@@ -936,7 +936,7 @@ int handlers_set_data_all(char *key, char *value)
 {
 	Handler *handler;
 	PyObject *argtuple;
-	int rv = 1;
+	__attribute__((unused)) int rv = 1;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "setting data for all handlers: key=%s  value=%s", key, strcmp("bindpw", key) ? value : "<HIDDEN>");
 
