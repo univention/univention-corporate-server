@@ -5,6 +5,7 @@ import shutil
 import simplejson as json
 from time import sleep
 from httplib import HTTPException
+from subprocess import Popen, PIPE
 
 from univention.config_registry import ConfigRegistry
 from univention.testing.codes import TestCodes
@@ -249,6 +250,25 @@ class TestUMCSystem(object):
                     "options": {"container": "cn=computers," + self.ldap_base,
                                 "objectType": "computers/windows"}}]
         return self.make_udm_request("add", options, "computers/computer")
+
+    def wait_for_samba_replication(self, username):
+        """
+        Runs a helper shell script with a given 'username' to wait for
+        DRS replication. (Timeout can be found in lib/samba.sh).
+        """
+        # to avoid the need for execute permissions
+        proc = Popen((os.getenv('SHELL', '/bin/bash'),
+                      "samba_repl.sh",
+                      username),
+                     stdout=PIPE,
+                     stderr=PIPE)
+        stdout, stderr = proc.communicate()
+        if stderr:
+            utils.fail("\nWaiting for Samba replication failed, "
+                       "in stderr:\n'%s'" % stderr)
+        if stdout:
+            print("\nWaiting for Samba replication produced the "
+                  "following output:\n%s" % stdout)
 
     def check_obj_exists(self, name, obj_type):
         """

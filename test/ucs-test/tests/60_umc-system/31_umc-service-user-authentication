@@ -241,6 +241,7 @@ class TestUMCUserAuthentication(TestUMCSystem):
                                dn=self.test_user_dn,
                                userexpiry=expiry_date)
 
+        self.wait_for_samba_replication(self.test_username)
         if self.authenticate_to_umc(self.test_password_unicode):
             utils.fail("Authentication with an expired user account "
                        "succeeded.")
@@ -259,6 +260,7 @@ class TestUMCUserAuthentication(TestUMCSystem):
                                dn=self.test_user_dn,
                                disabled="all")
 
+        self.wait_for_samba_replication(self.test_username)
         if self.authenticate_to_umc(self.test_password_unicode):
             utils.fail("Authentication with a deactivated user account "
                        "succeeded.")
@@ -268,6 +270,7 @@ class TestUMCUserAuthentication(TestUMCSystem):
         self.UDM.remove_object('users/user',
                                dn=self.test_user_dn)
 
+        sleep(50)  # should be changed after Bug #35634 is resolved
         if self.authenticate_to_umc(self.test_password_unicode):
             utils.fail("Authentication with a removed user account "
                        "succeeded.")
