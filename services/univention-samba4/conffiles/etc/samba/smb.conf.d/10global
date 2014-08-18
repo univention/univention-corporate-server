@@ -79,5 +79,8 @@ if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 			print '\t%s\t= %s' % (smbstring, value)
 
 print '\tmachine password timeout\t= %d' % int(configRegistry.get('samba/machine_password_timeout', 0))
+
+if configRegistry.is_true('samba/acl/allow/execute/always', True):
+	print '\tacl allow execute always = True'
 @!@
 ; ---------------------</10global>------------------------

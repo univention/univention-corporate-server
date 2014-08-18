@@ -24,6 +24,7 @@ Variables: samba/charset.*
 Variables: samba/enable-privileges
 Variables: samba/socket_options
 Variables: samba/max_open_files
+Variables: samba/acl/allow/execute/always
 
 Type: subfile
 Multifile: etc/samba/smb.conf

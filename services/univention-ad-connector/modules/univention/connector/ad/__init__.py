@@ -34,11 +34,15 @@
 
 import string, ldap, sys, traceback, base64, time, pdb, os, copy, types
 import array
+import ldap.sasl
+import subprocess
 import univention.uldap
 import univention.connector
 import univention.debug2 as ud
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
+
+class kerberosAuthenticationFailed(Exception): pass
 
 # page results
 PAGE_SIZE=1000
@@ -53,6 +57,20 @@ def activate_user (connector, key, object):
                         continue
                 return True
         return False
+
+def set_univentionObjectFlag_to_synced(connector, key, ucs_object):
+	_d=ud.function('set_univentionObjectFlag_to_synced')
+
+	if connector.baseConfig.is_true('ad/member', False):
+		object=connector._object_mapping(key, ucs_object, 'ucs')
+
+		ucs_result=connector.lo.search(base=ucs_object['dn'], attr=['univentionObjectFlag'])
+		
+		flags = ucs_result[0][1].get('univentionObjectFlag', [])
+		if not 'synced' in flags:
+			flags.append('synced')
+			connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'univentionObjectFlag', flags)])
+
 
 def group_members_sync_from_ucs(connector, key, object):
 	return connector.group_members_sync_from_ucs(key, object)
@@ -149,7 +167,7 @@ def ad2samba_time(l):
 	return long(((l-d))/10000000)
 
 # mapping funtions
-def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobject, propertyname, propertyattrib, ocucs, ucsattrib, ocad):
+def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobject, propertyname, propertyattrib, ocucs, ucsattrib, ocad, dn_attr = None):
 	'''
 	map dn of given object (which must have an samaccountname in AD)
 	ocucs and ocad are objectclasses in UCS and AD
@@ -157,10 +175,14 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 	object = copy.deepcopy(given_object)
 
 	samaccountname = ''
+	dn_attr_val = ''
 	
 	if object['dn'] != None:
 		if object['attributes'].has_key('sAMAccountName'):
 			samaccountname=object['attributes']['sAMAccountName'][0]
+		if dn_attr:
+			if object['attributes'].has_key(dn_attr):
+				dn_attr_val=object['attributes'][dn_attr][0]
 		
 	def dn_premapped(object, dn_key, dn_mapping_stored):
 		if (not dn_key in dn_mapping_stored) or (not object[dn_key]):
@@ -229,6 +251,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 				else:
 					newdn = 'cn' + dn[pos:] #new object, don't need to change
 
+				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %s" % newdn)
 			else:
 				# get the object to read the sAMAccountName in AD and use it as name
 				# we have no fallback here, the given dn must be found in AD or we've got an error
@@ -274,7 +297,10 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 					newdn = ucsdn
 					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn is ucsdn")
 				else:
-					newdn = ucsattrib + '=' + samaccountname + dn[pos2:] # guess the old dn
+					if dn_attr:
+						newdn = dn_attr + '=' + dn_attr_val + dn[pos2:] # guess the old dn
+					else:
+						newdn = ucsattrib + '=' + samaccountname + dn[pos2:] # guess the old dn
 			try:
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn for key %s:" % dn_key)
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: olddn: %s" % dn)
@@ -302,6 +328,14 @@ def group_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
 	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
 	'''
 	return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'group', u'cn', u'posixGroup', 'cn', u'group')
+
+def windowscomputer_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
+	'''
+	map dn of given windows computer using the samaccountname/uid
+	connector is an instance of univention.connector.ad, given_object an object-dict,
+	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
+	'''
+	return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'windowscomputer', u'samAccountName', u'posixAccount', 'uid', u'computer', 'cn')
 
 def old_user_dn_mapping(connector, given_object):
 	object = copy.deepcopy(given_object)
@@ -651,6 +685,13 @@ class ad(univention.connector.ucs):
 			print "Failed to get SID from AD: %s" % msg
 			sys.exit(1)
 
+	def get_kerberos_ticket(self):
+		cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.baseConfig['%s/ad/ldap/bindpw' % self.CONFIGBASENAME], self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]]
+		p1 = subprocess.Popen(cmd_block, close_fds=True)
+		stdout, stderr = p1.communicate()
+		if p1.returncode != 0:
+			raise kerberosAuthenticationFailed('The following command failed: "%s"' % string.join(cmd_block))
+
 	def open_ad(self):
 		tls_mode = 2
 		if self.baseConfig.has_key('%s/ad/ldap/ssl' % self.CONFIGBASENAME) and self.baseConfig['%s/ad/ldap/ssl' % self.CONFIGBASENAME] == "no":
@@ -659,7 +700,15 @@ class ad(univention.connector.ucs):
 
 		ldaps = self.baseConfig.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False) # tls or ssl
 
-		self.lo_ad=univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps = ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
+		if self.baseConfig.is_true('%s/ad/ldap/kerberos' % self.CONFIGBASENAME):
+			os.environ['KRB5CCNAME']='/var/cache/univention-ad-connector/krb5.cc'
+			self.get_kerberos_ticket()
+			auth = ldap.sasl.gssapi("")
+			self.lo_ad=univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=None, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps = ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
+			self.get_kerberos_ticket()
+			self.lo_ad.lo.sasl_interactive_bind_s("", auth)
+		else:
+		 	self.lo_ad=univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps = ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
 
 		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS,0)
 
@@ -1376,11 +1425,11 @@ class ad(univention.connector.ucs):
 			else:
 				# remove member only if he was in the cache on AD side
 				# otherwise it is possible that the user was just created on AD and we are on the way back
-				if member_dn.lower() in self.group_members_cache_con.get(object['dn'].lower(), []):
+				if ( member_dn.lower() in self.group_members_cache_con.get(object['dn'].lower(), []) ) or (self.property.get('group') and self.property['group'].sync_mode in ['write', 'none']):
 					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: No")
 					del_members.append(member_dn)
 				else:
-					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: %s was not found in group member ucs cache of %s, don't delete" % (member_dn.lower(), object['dn'].lower()))
+					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: %s was not found in group member con cache of %s, don't delete" % (member_dn.lower(), object['dn'].lower()))
 
 		
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to add: %s" % add_members)
@@ -2079,6 +2128,10 @@ class ad(univention.connector.ucs):
 			# objectClass
 			if self.property[property_type].con_create_objectclass:
 				addlist.append(('objectClass', self.property[property_type].con_create_objectclass))
+
+			# fixed Attributes
+			if self.property[property_type].con_create_attributes:
+				addlist +=  self.property[property_type].con_create_attributes
 
 			if hasattr(self.property[property_type], 'attributes') and self.property[property_type].attributes != None:
 				for attr,value in object['attributes'].items():

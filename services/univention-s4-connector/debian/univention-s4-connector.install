@@ -1,7 +1,6 @@
 univention-s4-connector usr/sbin
 univention-s4connector-list-rejected usr/sbin
 univention-password_sync_ucs_to_s4 usr/sbin
-univention-ad-takeover usr/sbin
 conffiles/etc/univention/s4connector/s4/mapping.py etc/univention/connector/s4/
 97univention-s4-connector.inst usr/lib/univention-install/
 03univention-s4-connector.uinst usr/lib/univention-uninstall/
@@ -14,5 +13,9 @@ scripts/upgrade_groupPolicyContainer.py usr/share/univention-s4-connector/
 scripts/msGPOWQLFilter.py usr/share/univention-s4-connector/
 scripts/upgrade_msWMI-Som.py usr/share/univention-s4-connector/
 scripts/write_password_settings.py usr/share/univention-s4-connector/
+scripts/resync_object_from_ucs.py  usr/share/univention-s4-connector/
+scripts/resync_object_from_s4.py  usr/share/univention-s4-connector/
+scripts/remove_s4_rejected.py usr/share/univention-s4-connector/
+scripts/remove_ucs_rejected.py usr/share/univention-s4-connector/
 etc/network/if-post-down.d/univention-s4-connector etc/network/if-post-down.d/
 server_password_change.d/univention-s4-connector usr/lib/univention-server/server_password_change.d/

@@ -20,7 +20,7 @@ if configRegistry.get('samba/send/spnego/principal'):
 if configRegistry.get('samba/max/protocol'):
 	print '\tmax protocol = %s' % configRegistry.get('samba/max/protocol')
 
-if configRegistry['server/role'] != 'memberserver':
+if configRegistry['samba/role'] == 'domaincontroller':
 	if ( not configRegistry['samba/homedirpath'] or configRegistry['samba/homedirpath']=='local') and configRegistry['samba/homedirserver'] and configRegistry['samba/homedirserver'] == 'local':
 		print '\tlogon home ='
 	elif configRegistry['samba/homedirserver'] and configRegistry['samba/homedirpath']:

@@ -154,4 +154,4 @@ for d in $DIRS; do
 done
 
 find $WHERE -name "samba4_*bz2" -mtime +$DAYS -exec rm  {} \;
-find $WHERE -name "sysvol_*bz2" -mtime +$DAYS -exec rm  {} \;
+find $WHERE -name "sysvol\.*bz2" -mtime +$DAYS -exec rm  {} \;

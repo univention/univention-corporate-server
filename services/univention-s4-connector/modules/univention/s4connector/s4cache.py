@@ -41,45 +41,11 @@ import binascii
 def func_name():
 	return inspect.currentframe().f_back.f_code.co_name
 
-def _is_base64(val):
-	try:
-		# It is not sufficient to run base64.decodestring to detect a base64 string.
-		# When the ascii decode is not possible, it is not a base4 string.
-		val.decode('ascii')
-	except UnicodeDecodeError:
-		return False
-	try:
-		# The string must be casted as str otherwise we saw something like this:
-		#	11.02.2014 03:53:44,141 LDAP        (INFO): _is_base64 returns True for: Í8^Ml%'<U+0097>A²ôâ/! ^RÃ
-		#	11.02.2014 03:53:44,142 LDAP        (WARNING): S4Cache: sqlite: near "<U+0097>A²ôâ": syntax error. SQL command was: [u"SELECT id FROM GUIDS WHERE guid='\xcd8\rl%'\x97A\xb2\xf4\xe2/! \x12\xc3';"
-		base64.decodestring(str(val))
-		return True
-	except binascii.Error:
-		return False
-
 def _decode_base64(val):
 	return base64.decodestring(val)
 
 def _encode_base64(val):
 	return base64.encodestring(val)
-
-def _encode_guid(guid):
-	# guid may be unicode
-
-	if _is_base64(guid):
-		return guid
-
-	if type(guid) == type(u''):
-		return guid.encode('ISO-8859-1').encode('base64')
-	else:
-		return unicode(guid,'latin').encode('ISO-8859-1').encode('base64')
-
-def _decode_guid(guid):
-	try:
-		return base64.decodestring(guid)
-	except binascii.Error:
-		return guid
-
 
 class EntryDiff(object):
 	def __init__(self, old, new):
@@ -100,7 +66,7 @@ class EntryDiff(object):
 		return self.set_old - self.intersect
 
 	def changed(self):
-		return set(o for o in self.intersect if self.old[o] != self.new[o])
+		return set(o for o in self.intersect if set(self.old[o]) != set(self.new[o]))
 
 
 class S4Cache:
@@ -120,8 +86,6 @@ class S4Cache:
 
 	def add_entry(self, guid, entry):
 		_d = ud.function('S4Cache.%s' % func_name())
-
-		guid = _encode_guid(guid).strip()
 
 		if not self._guid_exists(guid):
 			self._add_entry(guid, entry)
@@ -148,8 +112,6 @@ class S4Cache:
 
 		entry = {}
 
-		guid = _encode_guid(guid)
-
 		guid_id = self._get_guid_id(guid)
 
 		if not guid_id:
@@ -174,8 +136,6 @@ class S4Cache:
 
 	def remove_entry(self, guid):
 		_d = ud.function('S4Cache.%s' % func_name())
-
-		guid = _encode_guid(guid)
 
 		guid_id = self._get_guid_id(guid)
 
@@ -237,7 +197,7 @@ class S4Cache:
 		_d = ud.function('S4Cache.%s' % func_name())
 
 		sql_commands = [
-			"SELECT id FROM GUIDS WHERE guid='%s';" % (_encode_guid(guid).strip())
+			"SELECT id FROM GUIDS WHERE guid='%s';" % (guid)
 		]
 
 		rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
@@ -252,7 +212,7 @@ class S4Cache:
 		_d = ud.function('S4Cache.%s' % func_name())
 
 		sql_commands = [
-			"INSERT INTO GUIDS(guid) VALUES('%s');" % (_encode_guid(guid).strip())
+			"INSERT INTO GUIDS(guid) VALUES('%s');" % (guid)
 		]
 
 		rows = self.__execute_sql_commands(sql_commands, fetch_result=False)
@@ -290,10 +250,12 @@ class S4Cache:
 
 	def _get_attr_id_and_create_if_not_exists(self, attr):
 		_d = ud.function('S4Cache.%s' % func_name())
-		if not self._get_attr_id(attr):
+		attr_id = self._get_attr_id(attr)
+		if not attr_id:
 			self._create_attr(attr)
+			attr_id = self._get_attr_id(attr)
 
-		return self._get_attr_id(attr)
+		return attr_id
 
 	def _add_entry(self, guid, entry):
 		_d = ud.function('S4Cache.%s' % func_name())

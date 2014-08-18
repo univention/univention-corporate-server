@@ -4,7 +4,7 @@
 # Univention S4 Connector
 #  control the password sync communication with the s4 password service
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -361,10 +361,10 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 		if ctr3.num_old_keys != 0 and ctr3.num_old_keys != ctr3.num_keys:
 			# TODO: Recommended policy is to fill up old_keys to match num_keys, this will result in a traceback, can we do something better?
 			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos num_keys = %s" % ctr3.num_keys)
-			for k in ctr4.keys:
+			for k in ctr3.keys:
 				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr3.key.keytype: %s" % k.keytype)
 			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos num_old_keys = %s" % ctr3.num_old_keys)
-			for k in ctr4.old_keys:
+			for k in ctr3.old_keys:
 				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr3.old_key.keytype: %s" % k.keytype)
 
 		krb = drsblobs.package_PrimaryKerberosBlob()

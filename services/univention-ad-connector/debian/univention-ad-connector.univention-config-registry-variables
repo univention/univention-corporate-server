@@ -88,6 +88,12 @@ Description[en]=A file containing the password of the synchronisation user (see 
 Type=str
 Categories=service-adcon
 
+[con.*/ad/ldap/kerberos]
+Description[de]=Ist diese Option aktiviert, so wird für die Authentifizierung gegen Active Directory Kerberos verwendet. In diesem Fall sollte connector/ad/ldap/binddn auf den Benutzernamen gesetzt werden. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
+Description[en]=If this option is activated, kerberos is used for the authentication against the Active Directory server. In this case connector/ad/ldap/binddn should be set to the username. If the variable is unset, the option is deactivated.
+Type=str
+Categories=service-adcon
+
 [con.*/ad/ldap/certificate]
 Description[de]=Der Dateiname mit vollem Pfad, in der das von Active Directory exportierte Zertifikat abgelegt ist (zur verschlüsselten Übertragung der Passwörter). Das Zertifikat muß PEM-codiert sein.
 Description[en]=The file name of a certificate exported by Active Directory with its full path (for encrypted transmission of passwords). The certificate needs to be PEM-encoded.

@@ -1,3 +1,110 @@
+univention-samba (8.0.19-11) unstable; urgency=low
+
+  * set default samba/role during update (Bug #35584) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Aug 2014 10:18:16 +0200
+
+univention-samba (8.0.19-10) unstable; urgency=low
+
+  * added prechange to password change script to
+    check time diff in member mode (Bug #35467) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Jul 2014 15:35:17 +0200
+
+univention-samba (8.0.19-9) unstable; urgency=low
+
+  * fixed last commit (Bug #35467) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Jul 2014 14:24:29 +0200
+
+univention-samba (8.0.19-8) unstable; urgency=low
+
+  * change password in ad member mode (Bug #35467)
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Jul 2014 13:37:48 +0200
+
+univention-samba (8.0.19-7) unstable; urgency=low
+
+  * use dns for kerberos in member mode (Bug #35470) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Jul 2014 10:57:59 +0200
+
+univention-samba (8.0.19-6) unstable; urgency=low
+
+  * replaced ldap search with is_domain_in_admember_mode (Bug #35095) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 10:46:14 +0200
+
+univention-samba (8.0.19-5) unstable; urgency=low
+
+  * removed univention-samba-ad-member (Bug #35095) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 09:50:01 +0200
+
+univention-samba (8.0.19-4) unstable; urgency=low
+
+  * don't add/remove service "AD Member"
+  * set profilepath and homedirs settings in
+    join script instead in postinst (Bug #35095)
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 09:45:57 +0200
+
+univention-samba (8.0.19-3) unstable; urgency=low
+
+  * fixed postinst (Bug #35095) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 Jul 2014 14:23:34 +0200
+
+univention-samba (8.0.19-2) unstable; urgency=low
+
+  * fixed join script (Bug #35095) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 15 Jul 2014 14:54:07 +0200
+
+univention-samba (8.0.19-1) unstable; urgency=low
+
+  * added univention-samba-ad-member (Bug #35095)
+  * Merge from ucs-in-ad-domain preview (Bug #35095)
+
+    [ Arvid Requate ]
+     * Remove configure_adds_dc_as_kdc function (Bug #34091)
+     * remove the development version settings of timeserver (Bug #34091)
+     * Let UCR variable ad/member decide upon AD Member mode (Bug #34091)
+     * Abort join of another UCS DC if the UCS master claims to be AD Member (Bug #34091) 
+     * support explicit choice of samba/dc (Bug #34091)
+     * ADDS DC lookup was moved to python-univention-lib (Bug #34091)
+     * remove the development version settings of nameserver and AD-Connector (Bug #34091)
+     * Lookup and store ADDS LDAP bind info for AD Connector (Bug #34091)
+     * Keep the Samba4 KDC detection unchanged (Bug #34091)
+     * Exit joinscript ASAP if required credentials are missing (Bug #34091)
+     * Restart NTP server after changing UCR timeserver (Bug #34091)
+     * Reconfigure UCR nameserver in AD Memberserver mode, at least for join (Bug #34091)
+     * Exit joinscript if no credentials are given (Bug #34091)
+     * Locate ADDS DC via net lookup dsgetdcname (Bug #34091)
+     * Sync time with ADDS DC using SNTP and set it as timeserver (Bug #34091)
+     * Set kerberos/kpasswdserver (Bug #34091)
+     * Separate samba/role from server/role for (Bug #34091)
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Jul 2014 16:44:38 +0200
+
+univention-samba (8.0.18-3) unstable; urgency=low
+
+  * Added samba/acl/allow/execute/always (Bug #33785) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Jun 2014 12:46:43 +0200
+
+univention-samba (8.0.18-2) unstable; urgency=low
+
+  * Added samba/acl/allow/execute/always (Bug #33785) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Jun 2014 12:44:34 +0200
+
+univention-samba (8.0.18-1) unstable; urgency=low
+
+  * Added samba/acl/allow/execute/always (Bug #33785) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Jun 2014 12:08:42 +0200
+
 univention-samba (8.0.16-1) unstable; urgency=medium
 
   * Fix handling of samba/global/options/.*  (Bug #28722)

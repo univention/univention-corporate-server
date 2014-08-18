@@ -4,7 +4,7 @@
 # Univention S4 Connector
 #  Basic class for the UCS connector part
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, codecs, base64, string, os, cPickle, types, random, traceback, copy, time
+import sys, codecs, string, os, cPickle, types, random, traceback, copy, time
 import ldap
 import pdb
 import univention_baseconfig
@@ -41,6 +41,8 @@ import univention.admin.modules
 import univention.admin.objects
 import univention.debug2 as ud
 import base64
+from samba.ndr import ndr_unpack
+from samba.dcerpc import misc
 from signal import *
 term_signal_caught = False
 
@@ -709,7 +711,7 @@ class ucs:
 			entryUUID = new.get('entryUUID')[0]
 			if entryUUID:
 				if self.was_entryUUID_deleted(entryUUID):
-					ud.debug(ud.LDAP, ud.PROCESS, "__sync_file_from_ucs: Object with entryUUID %s was already deleted. Don't recreate." % entryUUID)
+					ud.debug(ud.LDAP, ud.PROCESS, "__sync_file_from_ucs: Object with entryUUID %s was already deleted. Don't re-create." % entryUUID)
 					return True
 			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: old: %s" % old)
 			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new: %s" % new)
@@ -1217,14 +1219,15 @@ class ucs:
 		except univention.admin.uexceptions.noObject:
 			return None
 
-	def update_deleted_cache_after_removal_in_ucs(self, entryUUID, objectGUID):
+	def update_deleted_cache_after_removal(self, entryUUID, objectGUID):
 		if not entryUUID:
 			return
 		# use a dummy value
 		if not objectGUID:
 			objectGUID='objectGUID'
-		ud.debug(ud.LDAP, ud.INFO, "update_deleted_cache_after_removal_in_ucs: Save entryUUID %s as deleted to UCS deleted cache. ObjectGUUID: %s" % (entryUUID, objectGUID))
-		self._set_config_option('UCS deleted', entryUUID, base64.encodestring(objectGUID))
+		objectGUID_str = str(ndr_unpack(misc.GUID, objectGUID))
+		ud.debug(ud.LDAP, ud.INFO, "update_deleted_cache_after_removal: Save entryUUID %s as deleted to UCS deleted cache. ObjectGUUID: %s" % (entryUUID, objectGUID_str))
+		self._set_config_option('UCS deleted', entryUUID, objectGUID_str)
 
 	def was_entryUUID_deleted(self, entryUUID):
 		objectGUID = self.config.get('UCS deleted', entryUUID)
@@ -1241,7 +1244,8 @@ class ucs:
 			ud.debug(ud.LDAP, ud.PROCESS, "Delete of %s was disabled in mapping" % object['dn'])
 			return True
 
-		objectGUID = object['attributes'].get('objectGUID')[0]
+		guid_unicode = object['attributes'].get('objectGUID')[0]
+		objectGUID = guid_unicode.encode('ISO-8859-1')	## to compensate for __object_from_element
 		entryUUID = self._get_entryUUID(object['dn'])
 
 		module = self.modules[property_type]
@@ -1250,7 +1254,7 @@ class ucs:
 		try:
 			ucs_object.open()
 			ucs_object.remove()
-			self. update_deleted_cache_after_removal_in_ucs(entryUUID, objectGUID)
+			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
 			return True
 		except Exception, e:
 			ud.debug(ud.LDAP, ud.INFO,"delete object exception: %s"%e)
@@ -1269,7 +1273,7 @@ class ucs:
 					object_mapping = self._object_mapping(key, subobject, 'ucs')
 					ud.debug(ud.LDAP, ud.WARN,"delete subobject: %s"% object_mapping['dn'])
 					if not self._ignore_object(key,object_mapping):
-						if not self.sync_to_ucs(key, subobject, object_mapping['dn']):
+						if not self.sync_to_ucs(key, subobject, object_mapping['dn'], object):
 							try:
 								ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed: %s"% result[0])
 							except (ldap.SERVER_DOWN, SystemExit):
@@ -1329,7 +1333,9 @@ class ucs:
 				pass
 
 		try:
-			guid = original_object.get('attributes').get('objectGUID')[0]
+			guid_unicode = original_object.get('attributes').get('objectGUID')[0]
+			guid_blob = guid_unicode.encode('ISO-8859-1')	## to compensate for __object_from_element
+			guid = str(ndr_unpack(misc.GUID, guid_blob))
 
 			object['changed_attributes'] = []
 			if object['modtype'] == 'modify' and original_object:

@@ -86,7 +86,12 @@ def set_password_in_ad(connector, samaccountname, pwd):
 
 	a = array.array('c')
 	
-	_append ( a, univention.connector.ad.explode_unicode_dn(connector.lo_ad.binddn,1)[0] )
+	if connector.lo_ad.binddn:
+		bind_username = univention.connector.ad.explode_unicode_dn(connector.lo_ad.binddn,1)[0]
+	else:
+		bind_username = connector.baseConfig['%s/ad/ldap/binddn' % connector.CONFIGBASENAME]
+	
+	_append ( a, bind_username )
 	_append ( a, connector.lo_ad.bindpw )
 	a.append ( 'S' )
 
@@ -112,7 +117,12 @@ def get_password_from_ad(connector, rid):
 	_d=ud.function('ldap.ad.get_password_from_ad')
 	a = array.array('c')
 
-	_append ( a, univention.connector.ad.explode_unicode_dn(connector.lo_ad.binddn,1)[0] )
+	if connector.lo_ad.binddn:
+		bind_username = univention.connector.ad.explode_unicode_dn(connector.lo_ad.binddn,1)[0]
+	else:
+		bind_username = connector.baseConfig['%s/ad/ldap/binddn' % connector.CONFIGBASENAME]
+	
+	_append ( a, bind_username )
 	_append ( a, connector.lo_ad.bindpw )
 	a.append ( 'G' )
 
@@ -135,7 +145,7 @@ def password_sync_ucs(connector, key, object):
 	_d=ud.function('ldap.ad.password_sync_ucs')
 	# externes Programm zum Überptragen des Hash aufrufen
 	# per ldapmodify pwdlastset auf -1 setzen
-	
+
 	compatible_modstring = univention.connector.ad.compatible_modstring
 	try:
 		ud.debug(ud.LDAP, ud.INFO, "Object DN=%s" % object['dn'])
@@ -166,6 +176,10 @@ def password_sync_ucs(connector, key, object):
 	else:
 		pwd='NO PASSWORDXXXXXX'
 		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs: Failed to get NT Hash from UCS")
+
+	if pwd in ['NO PASSWORDXXXXXX', 'NO PASSWORD*********************']:
+		ud.debug(ud.LDAP, ud.PROCESS, "The sambaNTPassword hash is set to %s. Skip the synchronisation of this hash to AD." % pwd)
+		
 
 	if res[0][1].has_key('sambaLMPassword'):
 		pwd+=res[0][1]['sambaLMPassword'][0]
@@ -241,6 +255,26 @@ def password_sync_ucs(connector, key, object):
 		#	connector.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'pwdlastset', "-1")])
 		#else:
 		#	ud.debug(ud.LDAP, ud.ERROR, "password_sync_ucs: Failed to sync Password from AD ")
+
+def password_sync_kinit(connector, key, ucs_object):
+	_d=ud.function('ldap.ad.password_sync_kinit')
+
+	object=connector._object_mapping(key, ucs_object, 'ucs')
+
+	attr = {'userPassword': '{KINIT}', 'sambaNTPassword': 'NO PASSWORD*********************', 'sambaLMPassword': 'NO PASSWORD*********************'}
+
+	ucs_result=connector.lo.search(base=ucs_object['dn'], attr=attr.keys())
+	
+	modlist = []
+	for attribute in attr.keys():
+		expected_value = attr[attribute]
+		if ucs_result[0][1].has_key(attribute):
+			userPassword = ucs_result[0][1][attribute][0]
+			if userPassword != expected_value:
+				modlist.append((ldap.MOD_REPLACE, attribute, expected_value))
+
+	if modlist:
+		connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), modlist)
 
 def password_sync(connector, key, ucs_object):
 	_d=ud.function('ldap.ad.password_sync')

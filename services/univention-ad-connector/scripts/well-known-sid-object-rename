@@ -1,0 +1,438 @@
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
+#
+# Univention AD Connector
+#  Well Known SID object rename script
+#
+# Copyright 2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+
+import sys, string, time
+from optparse import OptionParser
+
+import ldap
+import univention
+import univention.connector
+import univention.connector.ad
+import univention.config_registry
+import univention.debug as ud
+import subprocess
+import univention.lib.s4
+import univention.admin.modules as udm_modules
+import univention.admin.filter as udm_filter
+import univention.admin.uexceptions as uexceptions
+# load UDM modules
+udm_modules.update()
+
+LOGFILE = "/var/log/univention/connector.log"
+
+def log(level, msg):
+	prefix = {
+		ud.ERROR: "Error",
+		ud.WARN: "Warning",
+		ud.PROCESS: "Process",
+		ud.INFO: "Info",
+		ud.ALL: "Debug",
+		}
+	ud.debug(ud.LDAP, level, msg)
+	if level <= ud.get_level(ud.LDAP):
+		print "%s: %s" % (prefix.get(level), msg)
+
+class AD_Connection():
+	''' stripped down univention.connector.ad.ad class
+		difference: accept "bindpwd" directly instead of "bindpw" filename
+		difference: don't require mapping
+		difference: Skip init_group_cache code (i.e. use init_group_cache=False)
+		difference: don't use TLS
+		difference: don't use kerberos
+	'''
+
+	def __init__(self, CONFIGBASENAME, baseConfig, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate):
+
+		self.CONFIGBASENAME = CONFIGBASENAME
+
+		self.ad_ldap_host = ad_ldap_host
+		self.ad_ldap_port = ad_ldap_port
+		self.ad_ldap_base = ad_ldap_base
+		self.ad_ldap_binddn = ad_ldap_binddn
+		self.ad_ldap_bindpw = ad_ldap_bindpw
+		self.ad_ldap_certificate = ad_ldap_certificate
+		self.baseConfig = baseConfig
+
+		tls_mode = 0
+		ldaps = self.baseConfig.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False) # tls or ssl
+
+		self.lo_ad=univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps = ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
+
+		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS,0)
+
+		try:
+			result = self.lo_ad.lo.search_ext_s(ad_ldap_base,ldap.SCOPE_BASE,
+					'objectclass=domain',['objectSid'],
+					timeout=-1, sizelimit=0)
+			objectSid_blob = result[0][1]['objectSid'][0]
+			self.ad_sid = univention.connector.ad.decode_sid(objectSid_blob)
+		except Exception, msg:
+			print "Failed to get SID from AD: %s" % msg
+			sys.exit(1)
+
+class Well_Known_SID_object_renamer():
+	''' Provides methods for renaming users/groups with Well Known SIDs in UDM
+		NOTE: copied from univention-management-console-module-adtakeover
+	'''
+
+	def __init__(self, ucr, binddn, bindpwd):
+		self.ucr = ucr
+		self.ad_ldap_binddn = binddn
+		self.ad_ldap_bindpwd = bindpwd
+		self.ad_connect()
+
+		self.local_fqdn = '.'.join((self.ucr["hostname"], self.ucr["domainname"]))
+
+		self.old_domainsid = None
+		self.lo = _connect_ucs(self.ucr)
+		ldap_result = self.lo.search(filter="(&(objectClass=sambaDomain)(sambaDomainName=%s))" % self.ucr["windows/domain"], attr=["sambaSID"])
+		if len(ldap_result) == 1:
+			self.old_domainsid = ldap_result[0][1]["sambaSID"][0]
+		elif len(ldap_result) > 0:
+			log(ud.ERROR, 'Found more than one sambaDomain object with sambaDomainName=%s' % self.           ucr["windows/domain"])
+			# FIXME: probably sys.exit()?
+		else:
+			log(ud.ERROR, 'Did not find a sambaDomain object with sambaDomainName=%s' % self.ucr["windows/domain"])
+			# FIXME: probably sys.exit()?
+
+
+	def ad_connect(self):
+		''' stripped down univention.connector.ad.main
+			difference: pass "bindpwd" directly instead of "bindpw" filename
+		'''
+
+		if not self.ucr.has_key('%s/ad/ldap/host' % CONFIGBASENAME):
+			print '%s/ad/ldap/host not set' % CONFIGBASENAME
+			sys.exit(1)
+		if not self.ucr.has_key('%s/ad/ldap/port' % CONFIGBASENAME):
+			print '%s/ad/ldap/port not set' % CONFIGBASENAME
+			sys.exit(1)
+		if not self.ucr.has_key('%s/ad/ldap/base' % CONFIGBASENAME):
+			print '%s/ad/ldap/base not set' % CONFIGBASENAME
+			sys.exit(1)
+
+		ca_file = self.ucr.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
+		if self.ucr.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True) or self.ucr.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False):
+			if ca_file:
+				# create a new CAcert file, which contains the UCS CA and the AD CA,
+				# see Bug #17768 for details
+				#  https://forge.univention.org/bugzilla/show_bug.cgi?id=17768
+				new_ca_filename = '/var/cache/univention-ad-connector/CAcert-%s.pem' % CONFIGBASENAME
+				new_ca = open(new_ca_filename, 'w')
+
+				ca = open('/etc/univention/ssl/ucsCA/CAcert.pem', 'r')
+				new_ca.write(string.join(ca.readlines(),''))
+				ca.close()
+
+				ca = open(self.ucr['%s/ad/ldap/certificate' % CONFIGBASENAME])
+				new_ca.write(string.join(ca.readlines(),''))
+				ca.close()
+
+				new_ca.close()
+				
+				ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, new_ca_filename )
+			else:
+				ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
+		
+
+		poll_sleep=int(self.ucr['%s/ad/poll/sleep' % CONFIGBASENAME])
+		ad_init=None
+		while not ad_init:
+			try:
+				self.ad = AD_Connection(	CONFIGBASENAME,
+								self.ucr,
+								self.ucr['%s/ad/ldap/host' % CONFIGBASENAME],
+								self.ucr['%s/ad/ldap/port' % CONFIGBASENAME],
+								self.ucr['%s/ad/ldap/base' % CONFIGBASENAME],
+								self.ad_ldap_binddn,
+								self.ad_ldap_bindpwd,
+								self.ucr['%s/ad/ldap/certificate' % CONFIGBASENAME]
+								)
+				ad_init=True
+			except ldap.SERVER_DOWN:
+				print "Warning: Can't initialize LDAP-Connections, wait..."
+				sys.stdout.flush()
+				time.sleep(poll_sleep)
+				pass
+
+
+	def rewrite_sambaSIDs_in_OpenLDAP(self):
+		
+		## Identify and rename UCS group names to match Samba4 (localized) group names
+		AD_well_known_sids = {}
+		for (rid, name) in univention.lib.s4.well_known_domain_rids.items():
+			AD_well_known_sids["%s-%s" % (self.ad.ad_sid, rid)] = name
+		AD_well_known_sids.update(univention.lib.s4.well_known_sids)
+
+		groupRenameHandler = GroupRenameHandler(self.lo)
+		userRenameHandler = UserRenameHandler(self.lo)
+
+		for (sid, canonical_name) in AD_well_known_sids.items():
+
+			result = self.ad.lo_ad.lo.search_ext_s(self.ad.lo_ad.base,ldap.SCOPE_SUBTREE,
+								     univention.connector.ad.compatible_modstring("(objectSid=%s)" % (sid,)), attrlist=["sAMAccountName", "objectClass"])
+			if result and len(result)>0 and result[0] and len(result[0])>0 and result[0][0]: # no referral, so we've got a valid result
+				obj = result[0][1]
+			else:
+				log(ud.INFO, "Well known SID %s not found in Samba" % (sid,))
+				continue
+
+			ad_object_name = obj.get("sAMAccountName", [None])[0]
+			oc = obj["objectClass"]
+
+			if not ad_object_name:
+				continue
+
+			if sid == "S-1-5-32-550":	## Special: Printer-Admins / Print Operators / Opérateurs d’impression
+				## don't rename, adjust group name mapping for S4 connector instead.
+				subprocess.call(["univention-config-registry", "set", "connector/ad/mapping/group/table/Printer-Admins=%s" % (ad_object_name,)])
+				continue
+
+			ucsldap_object_name = canonical_name	## default
+			## lookup canonical_name in UCSLDAP, for cases like "Replicator/Replicators" and "Server Operators"/"System Operators" that changed in UCS 3.2, see Bug #32461#c2
+			ucssid = sid.replace(self.ad.ad_sid, self.old_domainsid, 1)
+			ldap_result = self.lo.search(filter="(sambaSID=%s)" % (ucssid,), attr=["sambaSID", "uid", "cn"])
+			if len(ldap_result) == 1:
+				if "group" in oc or "foreignSecurityPrincipal" in oc:
+					ucsldap_object_name = ldap_result[0][1].get("cn", [None])[0]
+				elif "user" in oc:
+					ucsldap_object_name = ldap_result[0][1].get("uid", [None])[0]
+			elif len(ldap_result) > 0:
+				log(ud.ERROR, 'Found more than one object with sambaSID=%s' % (sid,))
+			else:
+				log(ud.INFO, 'Did not find an object with sambaSID=%s' % (sid,))
+
+			if not ucsldap_object_name:
+				continue
+
+			ad_object_name=unicode(ad_object_name, 'utf8')
+			if ad_object_name.lower() != ucsldap_object_name.lower():
+				if "group" in oc or "foreignSecurityPrincipal" in oc:
+					groupRenameHandler.rename_ucs_group(ucsldap_object_name, ad_object_name)
+				elif "user" in oc:
+					userRenameHandler.rename_ucs_user(ucsldap_object_name, ad_object_name)
+
+
+class UserRenameHandler:
+	''' Provides methods for renaming users in UDM
+		NOTE: copied from univention-management-console-module-adtakeover
+	'''
+
+	def __init__(self, lo):
+		self.lo = lo
+		self.position = univention.admin.uldap.position(self.lo.base)
+
+		self.module_users_user = udm_modules.get('users/user')
+		udm_modules.init(self.lo, self.position, self.module_users_user)
+
+	def udm_rename_ucs_user(self, userdn, new_name):
+		try:
+			user = self.module_users_user.object(None, self.lo, self.position, userdn)
+			user.open()
+		except uexceptions.ldapError as exc:
+			log(ud.WARN, "Opening user '%s' failed: %s." % (userdn, exc,))
+
+		try:
+			log(ud.PROCESS, "Renaming '%s' to '%s' in UCS LDAP." % (user.dn, new_name))
+			user['username'] = new_name
+			user.modify()
+		except uexceptions.ldapError as exc:
+			log(ud.WARN, "Renaming of user '%s' failed: %s." % (userdn, exc,))
+			return
+
+		dnparts = ldap.explode_dn(userdn)
+		rdn = dnparts[0].split('=', 1)
+		dnparts[0] = '='.join((rdn[0], new_name))
+		new_userdn = ",".join(dnparts)
+
+		return new_userdn
+
+	def rename_ucs_user(self, ucsldap_object_name, ad_object_name):
+		userdns = self.lo.searchDn(
+			filter="(&(objectClass=sambaSamAccount)(uid=%s))" % (ucsldap_object_name, ),
+			base=self.lo.base)
+
+		if len(userdns) > 1:
+			log(ud.WARN, "Found more than one Samba user with name '%s' in UCS LDAP." %
+				(ucsldap_object_name,))
+
+		for userdn in userdns:
+			new_userdn = self.udm_rename_ucs_user(userdn, ad_object_name)
+
+
+class GroupRenameHandler:
+	''' Provides methods for renaming groups in UDM
+		NOTE: copied from univention-management-console-module-adtakeover
+	'''
+
+	_SETTINGS_DEFAULT_UDM_PROPERTIES = (
+		"defaultGroup",
+		"defaultComputerGroup",
+		"defaultDomainControllerGroup",
+		"defaultDomainControllerMBGroup",
+		"defaultClientGroup",
+		"defaultMemberServerGroup",
+	)
+
+	def __init__(self, lo):
+		self.lo = lo
+		self.position = univention.admin.uldap.position(self.lo.base)
+
+		self.module_groups_group = udm_modules.get('groups/group')
+		udm_modules.init(self.lo, self.position, self.module_groups_group)
+
+		self.module_settings_default = udm_modules.get('settings/default')
+		udm_modules.init(self.lo, self.position, self.module_settings_default)
+
+	def udm_rename_ucs_group(self, groupdn, new_name):
+		try:
+			group = self.module_groups_group.object(None, self.lo, self.position, groupdn)
+			group.open()
+		except uexceptions.ldapError as exc:
+			log(ud.WARN, "Opening group '%s' failed: %s." % (groupdn, exc,))
+
+		try:
+			log(ud.PROCESS, "Renaming '%s' to '%s' in UCS LDAP." % (group.dn, new_name))
+			group['name'] = new_name
+			group.modify()
+		except uexceptions.ldapError as exc:
+			log(ud.WARN, "Renaming of group '%s' failed: %s." % (groupdn, exc,))
+			return
+
+		dnparts = ldap.explode_dn(groupdn)
+		rdn = dnparts[0].split('=', 1)
+		dnparts[0] = '='.join((rdn[0], new_name))
+		new_groupdn = ",".join(dnparts)
+
+		return new_groupdn
+
+	def udm_rename_ucs_defaultGroup(self, groupdn, new_groupdn):
+		if not new_groupdn:
+			return
+
+		if not groupdn:
+			return
+
+		lookup_filter = udm_filter.conjunction('|', [
+			udm_filter.expression(propertyname, groupdn)
+			for propertyname in GroupRenameHandler._SETTINGS_DEFAULT_UDM_PROPERTIES
+		])
+
+		referring_objects = udm_modules.lookup('settings/default',
+			None, self.lo, scope = 'sub', base = self.lo.base, filter = lookup_filter)
+		for referring_object in referring_objects:
+			changed = False
+			for propertyname in GroupRenameHandler._SETTINGS_DEFAULT_UDM_PROPERTIES:
+				if groupdn in referring_object[propertyname]:
+					referring_object[propertyname] = new_groupdn
+					changed = True
+			if changed:
+				log(ud.PROCESS, "Modifying '%s' in UCS LDAP." % (referring_object.dn,))
+				referring_object.modify()
+
+
+	def rename_ucs_group(self, ucsldap_object_name, ad_object_name):
+		groupdns = self.lo.searchDn(
+			filter="(&(objectClass=sambaGroupMapping)(cn=%s))" % (ucsldap_object_name, ),
+			base=self.lo.base)
+
+		if len(groupdns) > 1:
+			log(ud.WARN, "Found more than one Samba group with name '%s' in UCS LDAP." %
+				(ucsldap_object_name,))
+
+		for groupdn in groupdns:
+			new_groupdn = self.udm_rename_ucs_group(groupdn, ad_object_name)
+			self.udm_rename_ucs_defaultGroup(groupdn, new_groupdn)
+
+def _connect_ucs(ucr, binddn=None, bindpwd=None):
+	''' Connect to OpenLDAP '''
+
+	if binddn and bindpwd:
+		bindpw = bindpwd
+	else:
+		bindpw_file = ucr.get('connector/ldap/bindpw', '/etc/ldap.secret')
+		binddn = ucr.get('connector/ldap/binddn', 'cn=admin,'+ucr['ldap/base'])
+		bindpw=open(bindpw_file).read()
+		if bindpw[-1] == '\n':
+			bindpw=bindpw[0:-1]
+
+	host = ucr.get('connector/ldap/server', ucr.get('ldap/master'))
+
+	try:
+		port = int(ucr.get('connector/ldap/port', ucr.get('ldap/master/port')))
+	except:
+		port = 7389
+
+	lo = univention.admin.uldap.access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=0, follow_referral=True)
+
+	return lo
+
+
+if __name__ == "__main__":
+
+	parser = OptionParser()
+	parser.add_option("--configbasename", dest="configbasename",
+			  help="", metavar="CONFIGBASENAME", default="connector")
+	parser.add_option("--binddn", dest="binddn",
+			  help="", metavar="BINDDN")
+	parser.add_option("--bindpwd", dest="bindpwd",
+			  help="", metavar="BINDPWD")
+	(options, args) = parser.parse_args()
+
+	CONFIGBASENAME = options.configbasename
+
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+
+	if not options.binddn:
+		options.binddn = ucr.get('%s/ad/ldap/binddn' % CONFIGBASENAME)
+		if not options.binddn:
+			print '--binddn not given and %s/ad/ldap/binddn not set' % CONFIGBASENAME
+			sys,exit(1)
+
+	if not options.bindpwd:
+		bindpwfile = ucr.get('%s/ad/ldap/bindpw' % CONFIGBASENAME)
+		if not bindpwfile:
+			print '--bindpwd not given and %s/ad/ldap/bindpw not set' % CONFIGBASENAME
+			sys,exit(1)
+		options.bindpwd = open(ucr['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
+		if options.bindpwd[-1] == '\n':
+			options.bindpwd = options.bindpwd[0:-1]
+
+	ud.init(LOGFILE, ud.FLUSH, ud.NO_FUNCTION)
+	debug_level = ucr.get('connector/debug/level', 2)
+	ud.set_level(ud.LDAP, int(debug_level))
+	ad = Well_Known_SID_object_renamer(ucr, options.binddn, options.bindpwd)
+	ad.rewrite_sambaSIDs_in_OpenLDAP()
+	subprocess.call(["univention-config-registry", "unset", "connector/ad/mapping/group/language"])

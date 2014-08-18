@@ -51,6 +51,11 @@ univention.admin.modules.update()
 # update choices-lists which are defined in LDAP
 univention.admin.syntax.update_choices()
 
+try:
+	univention.admin.handlers.disable_ad_restrictions(disable=False)
+except AttributeError:
+	ud.debug(ud.LDAP, ud.INFO, 'univention.admin.handlers.disable_ad_restrictions is not available')
+
 
 # util functions defined during mapping
 
@@ -68,14 +73,14 @@ def set_ucs_passwd_user(connector, key, ucs_object):
 	'''
 	set random password to fulfill required values
 	'''
-	ucs_object['password'] = str(int(random.random()*100000000))*8 # at least 8 characters
+	ucs_object['password'] = str(int(random.random()*100000000))*20 # at least 20 characters
 
 def check_ucs_lastname_user(connector, key, ucs_object):
 	'''
 	check if required values for lastname are set
 	'''
 	if not ucs_object.has_key('lastname') or not ucs_object['lastname']:
-		ucs_object['lastname'] = 'none'
+		ucs_object['lastname'] = ucs_object.get('username')
 
 def set_primary_group_user(connector, key, ucs_object):
 	'''
@@ -316,8 +321,8 @@ class attribute:
 		self.reverse_attribute_check=reverse_attribute_check
 
 class property:
-	def __init__(	self, ucs_default_dn='', con_default_dn='', ucs_module='',  sync_mode='', scope='', con_search_filter='', ignore_filter=None, match_filter=None, ignore_subtree=[],
-					con_create_objectclass=[], dn_mapping_function=[], attributes=None, ucs_create_functions=[], post_con_create_functions=[],
+	def __init__(	self, ucs_default_dn='', con_default_dn='', ucs_module='', ucs_module_others=[], sync_mode='', scope='', con_search_filter='', ignore_filter=None, match_filter=None, ignore_subtree=[],
+					con_create_objectclass=[], con_create_attributes=[], dn_mapping_function=[], attributes=None, ucs_create_functions=[], post_con_create_functions=[],
 					post_con_modify_functions=[], post_ucs_modify_functions=[], post_attributes=None, mapping_table=None, position_mapping=[] ):
 
 		self.ucs_default_dn=ucs_default_dn
@@ -325,6 +330,7 @@ class property:
 		self.con_default_dn=con_default_dn
 
 		self.ucs_module=ucs_module
+		self.ucs_module_others=ucs_module_others
 		self.sync_mode=sync_mode
 
 		self.scope=scope
@@ -335,6 +341,7 @@ class property:
 		self.ignore_subtree=ignore_subtree
 
 		self.con_create_objectclass=con_create_objectclass
+		self.con_create_attributes=con_create_attributes
 		self.dn_mapping_function=dn_mapping_function
 		self.attributes=attributes
 
@@ -776,13 +783,26 @@ class ucs:
 
 		# load UCS Modules
 		self.modules={}
+		self.modules_others={}
+		position=univention.admin.uldap.position(self.lo.base)
 		for key in self.property.keys():
 			if self.property[key].ucs_module:
 				self.modules[key]=univention.admin.modules.get(self.property[key].ucs_module)
-				position=univention.admin.uldap.position(self.lo.base)
-				univention.admin.modules.init(self.lo, position, self.modules[key])
+				if hasattr(self.property[key], 'identify'):
+					ud.debug(ud.LDAP, ud.INFO,"Override identify function for %s" % key)
+					self.modules[key].identify = self.property[key].identify
 			else:
 				self.modules[key]=None
+			univention.admin.modules.init(self.lo,position,self.modules[key])
+
+			self.modules_others[key]=[]
+			if self.property[key].ucs_module_others:
+				for m in self.property[key].ucs_module_others:
+					if m:
+						self.modules_others[key].append(univention.admin.modules.get(m))
+				for m in self.modules_others[key]:
+					if m:
+						univention.admin.modules.init(self.lo,position,m)
 		
 		# try to resync rejected changes
 		self.resync_rejected_ucs()
@@ -1358,6 +1378,25 @@ class ucs:
 			if not attribute:
 				raise ValueError,'missing attribute in filter: %s' % filter
 			value = filter[pos+1:]
+
+			if attribute.endswith(':1.2.840.113556.1.4.803:'):
+				# bitwise filter
+				attribute_name=attribute.replace(':1.2.840.113556.1.4.803:','')
+				attribute_value=attributes.get(attribute_name)
+				if attribute_value:
+					try:
+						if type(attribute_value) == type([]):
+							attribute_value=int(attribute_value[0])
+						int_value=int(value)
+						if ((attribute_value & int_value) == int_value):
+							return True
+						else:
+							return False
+					except (ldap.SERVER_DOWN, SystemExit):
+						raise
+					except:
+						ud.debug(ud.LDAP, ud.WARN, "attribute_filter: Failed to convert attributes for bitwise filter")
+						return False
 
 			if value == '*':
 				return attribute in list_lower(attributes.keys())

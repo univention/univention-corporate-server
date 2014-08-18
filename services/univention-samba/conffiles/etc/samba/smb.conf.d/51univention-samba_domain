@@ -2,7 +2,7 @@
 	; domain
 @!@
 domain_logons = configRegistry.get('samba/domain/logons', 'auto')
-if configRegistry['server/role'] != 'memberserver':
+if configRegistry['samba/role'] != 'memberserver':
 	if configRegistry.get( 'samba/role', '' ).lower() == 'bdc':
 		print '\tsecurity = user'
 
@@ -25,9 +25,10 @@ if configRegistry['server/role'] != 'memberserver':
 		print '\tpreferred master = %s' % configRegistry.get( 'samba/preferred/master', 'yes' )
 		print '\tlocal master = %s' % configRegistry.get( 'samba/local/master', 'yes' )
 else:
-	print '\tsecurity = %s' % configRegistry.get('samba/domain/security', 'domain')
+	samba_domain_security = configRegistry.get('samba/domain/security', 'domain')
+	print '\tsecurity = %s' % samba_domain_security
 
-	if configRegistry.get('samba/domain/security', 'domain') == 'ads':
+	if samba_domain_security == 'ads':
 		print '\trealm = %s' % configRegistry.get('kerberos/realm')
 	if not domain_logons in [ 'yes', 'no' ]:
 		domain_logons = 'no'

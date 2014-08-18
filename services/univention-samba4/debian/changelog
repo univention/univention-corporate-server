@@ -1,3 +1,74 @@
+univention-samba4 (3.0.39-34) unstable; urgency=low
+
+  * Use start-stop-daemon instead of pkill (Bug #35600)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 13 Aug 2014 15:58:17 +0200
+
+univention-samba4 (3.0.39-33) unstable; urgency=low
+
+  * Fix: Stop all winbind processes during samba4 join 
+    in 96univention-samba4.inst (Bug #35600)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 13 Aug 2014 12:10:37 +0200
+
+univention-samba4 (3.0.39-32) unstable; urgency=medium
+
+  * Workaround for parsing of VERSION by joinscript_extern_init (Bug #35252).
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 Jul 2014 16:54:41 +0200
+
+univention-samba4 (3.0.39-31) unstable; urgency=medium
+
+  * Add debian/ucslint.overrides (Bug #35252).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Jul 2014 17:51:42 +0200
+
+univention-samba4 (3.0.39-30) unstable; urgency=medium
+
+  * Special handling for adtakeover:
+    If a running adtakeover is detected, only disable the slapd on port 389
+    and then exit the joinscript with VERSION set to 1 (Bug #35252).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Jul 2014 17:14:06 +0200
+
+univention-samba4 (3.0.39-29) unstable; urgency=medium
+
+  * Use library function is_domain_in_admember_mode (Bug #35252).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Jul 2014 16:57:31 +0200
+
+univention-samba4 (3.0.39-28) unstable; urgency=medium
+
+  * Abort joinscript if domaincontroller_master claims service "AD Member"
+    (Bug #35252)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Jul 2014 18:44:37 +0200
+
+univention-samba4 (3.0.39-27) unstable; urgency=low
+
+  * added samba4/backup/cron/options (Bug #35085) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Jul 2014 16:13:01 +0200
+
+univention-samba4 (3.0.39-26) unstable; urgency=low
+
+  * fixed univention-samba4-backup (Bug #35084) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Jul 2014 15:50:05 +0200
+
+univention-samba4 (3.0.39-25) unstable; urgency=low
+
+  * always clean up the samba dir before join
+  * fail if samba join fails (Bug #34422)
+
+ -- Felix Botner <botner@univention.de>  Tue, 24 Jun 2014 09:04:10 +0200
+
+univention-samba4 (3.0.39-24) unstable; urgency=low
+
+  * Added samba/acl/allow/execute/always (Bug #33785) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Jun 2014 12:45:54 +0200
+
 univention-samba4 (3.0.39-23) unstable; urgency=medium
 
   * Save and restore rIDNextRID during re-join and re-provision if possible

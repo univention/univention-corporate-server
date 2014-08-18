@@ -1,3 +1,168 @@
+univention-s4-connector (8.0.33-70) unstable; urgency=medium
+
+  * Fix undefined variable (Bug #33263)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 12 Aug 2014 17:27:54 +0200
+
+univention-s4-connector (8.0.33-69) unstable; urgency=medium
+
+  * No need to make a fuss about running AD Takeover from AD Member mode,
+    revert that part of the last change (Bug #35500).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 18:41:33 +0200
+
+univention-s4-connector (8.0.33-68) unstable; urgency=medium
+
+  * When running AD Takeover from AD Member mode we should stop the joinscript
+    after creating the required UDM containers and before starting sync and
+    waiting for DNS replication (Bug #35500).
+  * Make logrotate only "crestart" the s4-connector
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2014 18:12:04 +0200
+
+univention-s4-connector (8.0.33-67) unstable; urgency=medium
+
+  * Remove univention-ad-takeover CLI script (Bug #35514)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jul 2014 20:00:17 +0200
+
+univention-s4-connector (8.0.33-66) unstable; urgency=medium
+
+  * Adjust bug number for Errata update (Bug #35500)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 Jul 2014 18:14:19 +0200
+
+univention-s4-connector (8.0.33-65) unstable; urgency=medium
+
+  * Abort joinscript if is_domain_in_admember_mode (Bug #35500)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Jul 2014 17:49:23 +0200
+
+univention-s4-connector (8.0.33-64) unstable; urgency=medium
+
+  * Revert last change for errata3.2-2 release (Bug #33621, Bug #35500)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Jul 2014 11:05:29 +0200
+
+univention-s4-connector (8.0.33-63) unstable; urgency=medium
+
+  * Abort joinscript if is_domain_in_admember_mode (Bug #35500)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 23 Jul 2014 17:17:44 +0200
+
+univention-s4-connector (8.0.33-62) unstable; urgency=medium
+
+  * Revert GuidNotInCache part of last patch, this would change the behaviour
+    and break resync of an S4-object which is not found in the cache. Maybe
+    there are use cases for this (Bug #33621).
+  * Give an estimate of the resync delay.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 23 Jul 2014 16:36:18 +0200
+
+univention-s4-connector (8.0.33-61) unstable; urgency=low
+
+  * Added more diff mode patches from Arvid (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jul 2014 17:59:34 +0200
+
+univention-s4-connector (8.0.33-60) unstable; urgency=low
+
+  * Use plain objectGUID for S4 sqlite tables (Bug #33621, Bug #32263)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jul 2014 07:03:19 +0200
+
+univention-s4-connector (8.0.33-59) unstable; urgency=low
+
+  * s4connector/s4cache.py: Normalize the values before comparing
+    (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jul 2014 06:46:52 +0200
+
+univention-s4-connector (8.0.33-58) unstable; urgency=low
+
+  * Added old pbject to sync_to_ucs call (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jul 2014 06:31:43 +0200
+
+univention-s4-connector (8.0.33-56) unstable; urgency=low
+
+  * Update the deleted cache after the deletion of an object
+    (Bug #32263)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jul 2014 06:21:23 +0200
+
+univention-s4-connector (8.0.33-55) unstable; urgency=low
+
+  * Revert: Add the newly created S4 object to the s4 cache (Bug #33621
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Jul 2014 08:36:27 +0200
+
+univention-s4-connector (8.0.33-54) unstable; urgency=low
+
+  * scripts/remove_ucs_rejected.py: support multiple rejects for one DN
+    (Bug #32194)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Jul 2014 20:52:23 +0200
+
+univention-s4-connector (8.0.33-53) unstable; urgency=low
+
+  * Add the newly created S4 object to the s4 cache (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Jul 2014 16:49:44 +0200
+
+univention-s4-connector (8.0.33-52) unstable; urgency=low
+
+  * Update deleted cache while removing object in S4 (Bug #32263)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Jul 2014 16:32:07 +0200
+
+univention-s4-connector (8.0.33-51) unstable; urgency=low
+
+  * Fixed python syntax error from last commit (Bug #32194)
+  * Updated copyright
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Jul 2014 20:37:41 +0200
+
+univention-s4-connector (8.0.33-50) unstable; urgency=low
+
+  * Added new helper tools:
+    (Bug #32194)
+     - remove_s4_rejected.py
+       Removes a S4 object from the list of rejected S4 objects.
+       See univention-s4connector-list-rejected
+     - remove_ucs_rejected.py
+       Removes an UCS object from the list of rejected UCS objects.
+       See univention-s4connector-list-rejected
+    (Bug #33621)
+     - DN2base64Guid.py
+       Converts the objectGUID of an S4 object to base64. This is helpful
+       for debugging the /etc/univention/connector/s4cache.sqlite values.
+     - base64Guid2DN.py
+       Decodes the base64 based objectGUID and returns the S4 DN. This is
+       helpful for debugging the /etc/univention/connector/s4cache.sqlite
+       values.
+     - resync_object_from_s4.py
+       Removes all cache entries of an S4 object and resyncs this object
+       from S4 to OpenLDAP.
+     - resync_object_from_ucs.py
+       Removes all cache entries of an UCS object and resyncs this object
+       from OpenLDAP to UCS.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Jul 2014 20:16:38 +0200
+
+univention-s4-connector (8.0.33-49) unstable; urgency=low
+
+  * Restart bind9 if the ldap/master can't be resolved (Bug #34865)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Jul 2014 08:08:29 +0200
+
+univention-s4-connector (8.0.33-48) unstable; urgency=low
+
+  * The group_members_cache_con is not be filled in write mode. So we
+    have to ignore the previous AD memberships (Bug #35238)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Jul 2014 10:04:11 +0200
+
 univention-s4-connector (8.0.33-47) unstable; urgency=low
 
   * Re-added diff mode changes (Bug #33621 and Bug #32263)

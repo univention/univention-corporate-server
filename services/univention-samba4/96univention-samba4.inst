@@ -199,6 +199,8 @@ stop_conflicting_services() {
 	if [ -x /etc/init.d/winbind ]; then
 		if [ -n "$(pgrep -xf /usr/sbin/winbindd)" ]; then
 			/etc/init.d/winbind stop
+			# Bug #35600: Really stop all winbind processes
+			start-stop-daemon --stop --quiet --retry 2 --exec /usr/sbin/winbindd
 		fi
 	fi
 	if [ -x /etc/init.d/heimdal-kdc ]; then
@@ -223,7 +225,9 @@ stop_conflicting_services() {
 	unset tmp_ucr_key_value_list
 }
 
-set_samba_role() {
+get_samba_role() {
+	local samba4_role
+
 	case "$server_role" in
 		domaincontroller_*)
 			domaincontroller=true;;
@@ -235,7 +239,20 @@ set_samba_role() {
 		samba4_role='MEMBER'
 	fi
 
-	univention-config-registry set samba4/role="$samba4_role"
+	echo "$samba4_role"
+}
+
+configure_samba_role() {
+	if [ -z "$samba4_role" ]; then
+		samba4_role=$(get_samba_role)
+	fi
+
+	if [ "$samba4_role" != "MEMBER" ] && is_domain_in_admember_mode; then
+		echo "ERROR: The domain is in AD Member Mode, cannot join as $samba4_role."
+		exit 1
+	fi
+
+	univention-config-registry set samba4/role?"$samba4_role"
 }
 
 set_samba4_ldap_base() {
@@ -288,32 +305,49 @@ samba_domain_join() {
 		samba_join_options+=( "${SITE_OPTION[@]}" )
 	fi
 
-	if [ -n "$samba4_dc" ]; then
-		samba-tool domain join "$domainname" "$samba4_role" --server "$samba4_dc" \
-							"${samba_join_options[@]}" && success=true \
-							&& univention-config-registry set windows/wins-server?"$samba4_dc"
+	univention-config-registry set windows/wins-support?no
 
+	if [ -n "$samba4_dc" ]; then
+		samba-tool domain join "$domainname" "$samba4_role" --server "$samba4_dc" "${samba_join_options[@]}"
+		if [ $? -eq 0 ]; then
+			univention-config-registry set windows/wins-server?"$samba4_dc"
+			success=true
+		else
+			echo "Failed to join the server $samba4_dc."
+			exit 1
+		fi
 	else
-		samba-tool domain join "$domainname" "$samba4_role" \
-							"${samba_join_options[@]}" && success=true
+		if samba-tool domain info "$domainname"; then
+			samba-tool domain join "$domainname" "$samba4_role" "${samba_join_options[@]}"
+			if [ $? -eq 0 ]; then
+				success=true
+			else
+				echo "Failed to join the domain $domainname."
+				exit 1
+			fi
+		fi
+
 		if [ -z "$success" ]; then
 			# try again with --server
 			cn=($(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret \
 						"(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn \
 										| ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p' ))
-			
 			for name in "${cn[@]}"; do
-				samba-tool domain join "$domainname" "$samba4_role" --server "$name.$domainname" \
-								"${samba_join_options[@]}" && success=true
-				if [ -n "$success" ]; then
-					univention-config-registry set windows/wins-server?"$name.$domainname"
-					break
+				if samba-tool domain info "$name.$domainname"; then
+					samba-tool domain join "$domainname" "$samba4_role" --server "$name.$domainname" "${samba_join_options[@]}"
+					if [ $? -eq 0 ]; then
+						success=true
+						univention-config-registry set windows/wins-server?"$name.$domainname"
+						break
+					else
+						echo "Failed to join the server $name.$domainname."
+						exit 1
+					fi
 				fi
 			done
 		fi
 	fi
 
-	univention-config-registry set windows/wins-support?no
 
 	if [ -z "$success" ]; then
 		echo "Failed to join the domain."
@@ -717,6 +751,8 @@ if [ -n "$binddn" ]; then
 	             -s base -b "$binddn" uid | ldapsearch-wrapper | sed -n 's/^uid: //p')
 fi
 
+configure_samba_role
+
 univention-config-registry commit /etc/samba/smb.conf		# 03univention-directory-listener.inst might remove include
 
 if [ "$JS_LAST_EXECUTED_VERSION" = 0 ]; then
@@ -735,10 +771,6 @@ fi
 
 /usr/share/univention-samba4/scripts/mount_extfs_with_user_xattr.py
 
-if [ -z "$samba4_role" ]; then
-	set_samba_role
-fi
-
 ## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
 set_samba4_ldap_base
 
@@ -754,6 +786,20 @@ create_pseudo_groups "$@"
 
 if [ $JS_LAST_EXECUTED_VERSION -gt 0 ] && [ $JS_LAST_EXECUTED_VERSION -lt 6 ]; then
 	update_pseudo_groups "$@"
+fi
+
+if [ -r '/var/lib/samba/private/.adtakeover' ]; then
+	adtakeover_state=$(</var/lib/samba/private/.adtakeover)
+	echo "INFO: Detected adtakeover state $adtakeover_state"
+fi
+
+if [ "$adtakeover_state" = start ]; then
+	disable_slapd_on_standard_port
+
+	echo "INFO: Stopping univention-samba4 joinscript for AD-Takeover"
+	eval VERSION=1
+	joinscript_save_current_version
+	exit 0
 fi
 
 if [ "$samba4_role" = 'DC' ]; then
@@ -853,9 +899,9 @@ if [ "$samba4_role" = 'DC' ]; then
 					## backup old keytab if samba4 generated it
 					backup_samba4_keytab
 					samba_join_options=( --keep-existing )
-					cleanup_var_lib_samba
 				fi
 
+				cleanup_var_lib_samba
 				samba_domain_join "${samba_join_options[@]}"
 
 				## if the key version number increased, merge the old keys into the new keytab

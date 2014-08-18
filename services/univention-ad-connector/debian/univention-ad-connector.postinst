@@ -45,6 +45,12 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.0-1;
 	done
 fi
 
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.17-7; then
+	# disable windowscomputer sync for existing installations
+	ucr connector/ad/mapping/computer/syncmode?none
+fi
+
+
 univention-config-registry set connector/ad/listener/dir?/var/lib/univention-connector/ad \
 			connector/ad/poll/sleep?5 \
 			connector/ad/retryrejected?10 \
