@@ -61,6 +61,7 @@ def print_sid_mapping(configRegistry):
 							ldap_attribute='sambaSID',
 							ucs_attribute='sambaRID',
 							con_attribute='objectSid',
+							single_value=True,
 							compare_function=univention.s4connector.s4.compare_sid_lists,
 					), ''' % (sync_mode, mapping_str)
 

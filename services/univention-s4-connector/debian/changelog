@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-71) unstable; urgency=medium
+
+  * Define SID as single value (Bug #35626)
+  * Use mapping function for single values if one is defined (Bug #35626)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Aug 2014 11:53:39 +0200
+
 univention-s4-connector (8.0.33-70) unstable; urgency=medium
 
   * Fix undefined variable (Bug #33263)
