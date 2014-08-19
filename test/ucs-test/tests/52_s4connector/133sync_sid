@@ -1,0 +1,126 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Check SID synchronisation"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## tags:
+##  - basic
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. /usr/share/univention-lib/ucr.sh
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+eval "$(ucr shell)"
+if [ -n "$connector_s4_mapping_sid_to_ucs" -a -n "$connector_s4_mapping_sid_to_s4" ]; then
+	trap "ucr set connector/s4/mapping/sid_to_ucs=$connector_s4_mapping_sid_to_ucs connector/s4/mapping/sid_to_s4=$connector_s4_mapping_sid_to_s4; invoke-rc.d univention-s4-connector restart" INT TERM EXIT
+else
+	trap "ucr unset connector/s4/mapping/sid_to_ucs connector/s4/mapping/sid_to_s4; invoke-rc.d univention-s4-connector restart" INT TERM EXIT
+fi
+
+rid=$(random_chars 6 123456789)
+
+ucr unset connector/s4/mapping/sid_to_ucs connector/s4/mapping/sid_to_s4
+
+UDM_groups_group_name="$(random_chars)"
+udm_create "groups/group"; fail_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+AD_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
+ad_exists "$AD_DN"; fail_bool 0 110
+LDAP_DN="cn=$UDM_groups_group_name,cn=groups,$ldap_base"
+
+domain_sid="$(univention-s4search -s base objectSid | sed -ne 's|^objectSid: ||p')"
+
+is_sid_equal ()
+{
+	s4_sid=$(univention-s4search -b "$AD_DN" -s base objectSid | sed -ne 's|^objectSid: ||p')
+	echo $s4_sid
+	ldap_sid=$(univention-ldapsearch -b "$LDAP_DN" -s base sambaSID | sed -ne 's|^sambaSID: ||p')
+	echo $ldap_sid
+	[ "$s4_sid" = "$ldap_sid" ]
+	return $?
+}
+
+set_new_rid_in_ldap ()
+{
+	next_rid
+	udm_modify "groups/group" "" "" "" "" --set sambaRID=$rid || fail_test 110
+	ad_wait_for_synchronization; fail_bool 0 110
+}
+
+set_new_rid_in_s4 ()
+{
+	next_rid
+	new_sid="${domain_sid}-${rid}"
+	python2.6 -c "
+import sys
+sys.path.append('$TESTLIBPATH')
+import s4connector
+from samba.dcerpc import security
+from samba.ndr import ndr_pack, ndr_unpack
+sid=ndr_pack(security.dom_sid('$new_sid'))
+adconnection = s4connector.S4Connection ('connector')
+adconnection.set_attribute_with_provision_ctrl ('$AD_DN', 'objectSid', sid)
+"
+	ad_wait_for_synchronization; fail_bool 0 110
+}
+
+next_rid()
+{
+	rid=$((rid+1))
+}
+
+
+is_sid_equal || fail_test 110
+
+## Sync SID from S4 to LDAP
+ucr set connector/s4/mapping/sid_to_ucs=yes connector/s4/mapping/sid_to_s4=no
+invoke-rc.d univention-s4-connector restart
+
+set_new_rid_in_s4
+is_sid_equal || fail_test 110
+
+set_new_rid_in_ldap
+is_sid_equal && fail_test 110
+
+
+## Sync SID from LDAP to S4 (UCS@school mode)
+ucr set connector/s4/mapping/sid_to_ucs=no connector/s4/mapping/sid_to_s4=yes
+invoke-rc.d univention-s4-connector restart
+
+set_new_rid_in_ldap
+is_sid_equal || fail_test 110
+
+set_new_rid_in_s4
+is_sid_equal && fail_test 110
+
+
+## Sync SID from LDAP to S4 and from S4 to LDAP
+ucr set connector/s4/mapping/sid_to_ucs=yes connector/s4/mapping/sid_to_s4=yes
+invoke-rc.d univention-s4-connector restart
+
+set_new_rid_in_ldap
+is_sid_equal || fail_test 110
+
+set_new_rid_in_s4
+is_sid_equal || fail_test 110
+
+
+## Cleanup
+ad_delete "$AD_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_DN"; fail_bool 1 110
+udm_exists "groups/group"; fail_bool 1 110
+
+exit "$RETVAL"
+
+
