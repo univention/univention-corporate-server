@@ -2462,7 +2462,7 @@ class s4(univention.s4connector.ucs):
 										elif not univention.s4connector.compare_lowercase(list(current_s4_values), list(value)):
 											modify=True
 										if modify:
-											if len(attribute_type[attribute].mapping) > 0 and attribute_type[attribute].mapping[0]:
+											if hasattr(attribute_type[attribute], 'mapping') and len(attribute_type[attribute].mapping) > 0 and attribute_type[attribute].mapping[0]:
 												ud.debug(ud.LDAP, ud.PROCESS, "Calling single value mapping function")
 												value = attribute_type[attribute].mapping[0](self, None, object)
 											modlist.append((ldap.MOD_REPLACE, s4_attribute, value))

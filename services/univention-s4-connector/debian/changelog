@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-72) unstable; urgency=medium
+
+  * Fixed python traceback from last commit (Bug #35626)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Aug 2014 15:25:44 +0200
+
 univention-s4-connector (8.0.33-71) unstable; urgency=medium
 
   * Define SID as single value (Bug #35626)
