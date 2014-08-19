@@ -13,7 +13,16 @@ import univention.testing.strings as uts
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
+		# IPv4 case:
 		reverse_zone = udm.create_object('dns/reverse_zone', subnet = '10.20.30', nameserver = uts.random_string())
+
+		ptr_records = [uts.random_name(), uts.random_name()]
+		ptr = udm.create_object('dns/ptr_record', address = '2', superordinate = reverse_zone, append = {'ptr_record': ptr_records})
+
+		utils.verify_ldap_object(ptr, {'pTRRecord': ptr_records})
+
+		# IPv6 case:
+		reverse_zone = udm.create_object('dns/reverse_zone', subnet = '2011:06f8:13dc:0002:19b7:d592:09dd', nameserver = uts.random_string())
 
 		ptr_records = [uts.random_name(), uts.random_name()]
 		ptr = udm.create_object('dns/ptr_record', address = '2', superordinate = reverse_zone, append = {'ptr_record': ptr_records})

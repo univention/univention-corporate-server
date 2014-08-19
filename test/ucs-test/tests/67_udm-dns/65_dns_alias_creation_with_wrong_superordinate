@@ -8,20 +8,25 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-import sys
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.uldap as uldap
 
-if __name__ == '__main__':
+
+def main(subnet):
 	with udm_test.UCSTestUDM() as udm:
-		reverse_zone = udm.create_object('dns/reverse_zone', nameserver = uts.random_string(), subnet = '10.20.30')
+		reverse_zone = udm.create_object('dns/reverse_zone', nameserver = uts.random_string(), subnet=subnet)
 		try:
 			dns_alias = udm.create_object('dns/alias', name = uts.random_name(), superordinate = reverse_zone)
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-			sys.exit(0)
+			return
 
 		ldap = uldap.getAdminConnection()
 		ldap.delete(dns_alias)
 		utils.fail('UDM did not report an error while trying to create an host record with reverse zone as superordinate')
+
+
+if __name__ == '__main__':
+	for subnet in ('10.20.30', '2011:06f8:13dc:0002:19b7:d592:09dd'):
+		main(subnet)

@@ -17,7 +17,15 @@ import univention.testing.strings as uts
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		ns_records = [uts.random_string(), uts.random_string(), uts.random_string()]
+
+		# IPv4 case:
 		reverse_zone = udm.create_object('dns/reverse_zone', subnet = '10.20.30', nameserver = ns_records[0])
+
+		udm.modify_object('dns/reverse_zone', dn = reverse_zone, append = {'nameserver': ns_records[1:]})
+		utils.verify_ldap_object(reverse_zone, {'nSRecord': ['%s' % ns_record for ns_record in ns_records]})
+
+		# IPv6 case:
+		reverse_zone = udm.create_object('dns/reverse_zone', subnet = '2011:06f8:13dc:0002:19b7:d592:09dd', nameserver = ns_records[0])
 
 		udm.modify_object('dns/reverse_zone', dn = reverse_zone, append = {'nameserver': ns_records[1:]})
 		utils.verify_ldap_object(reverse_zone, {'nSRecord': ['%s' % ns_record for ns_record in ns_records]})

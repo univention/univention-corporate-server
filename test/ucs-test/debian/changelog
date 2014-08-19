@@ -1,3 +1,27 @@
+ucs-test (4.0.166-70) unstable; urgency=low
+
+  * 67_udm-dns/
+        51_dns_reverse_zone_removal
+        63_dns_ptr_modification_remove_records
+        53_dns_reverse_zone_modification_set_nameserver
+        55_dns_reverse_zone_modification_append_nameserver
+        64_dns_host_record_creation_with_wrong_superordinate
+        52_dns_reverse_zone_creation_set_nameserver
+        62_dns_ptr_creation_append_records
+        76_dns_reverse_zone_modification_remove_nameserver
+        74_dns_srv_record_creation_with_wrong_superordinate
+        60_dns_ptr_modification_set_record
+        65_dns_alias_creation_with_wrong_superordinate
+        57_dns_ptr_creation
+        58_dns_ptr_removal
+        61_dns_ptr_modification_append_records
+        59_dns_ptr_creation_set_record
+        54_dns_reverse_zone_creation_append_nameserver
+    
+    Tests extended with IPv6 cases (Bug #33041)
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 19 Aug 2014 11:24:34 +0200
+
 ucs-test (4.0.166-69) unstable; urgency=low
 
   * 52_s4connector/133sync_sid: added a SID sync test case (Bug #35626)
