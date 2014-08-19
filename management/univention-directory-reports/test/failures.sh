@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright 2007-2013 Univention GmbH
+# Copyright 2007-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
