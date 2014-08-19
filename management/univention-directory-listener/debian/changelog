@@ -1,3 +1,9 @@
+univention-directory-listener (9.0.0-2) unstable; urgency=low
+
+  * changed debian/compat level (Bug #35144) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Aug 2014 10:02:34 +0200
+
 univention-directory-listener (9.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35144) 
