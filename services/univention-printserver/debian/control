@@ -9,7 +9,7 @@ Build-Depends: debhelper (>> 7),
  python-support (>= 0.90),
  ucslint-univention,
 Standards-Version: 3.8.2
-XS-Python-Version: 2.7
+XS-Python-Version: 2.6, 2.7
 
 Package: univention-printserver
 Architecture: all
@@ -19,15 +19,12 @@ Depends: ${misc:Depends}, ${python:Depends},
  cups,
  cups-client,
  cups-bsd,
- foomatic-filters-ppds,
- foomatic-db-gutenprint,
- foomatic-db-hpijs,
- cups-driver-gutenprint,
+ printer-driver-gutenprint,
  univention-directory-listener,
  univention-printclient,
  openprinting-ppds,
- linuxprinting.org-ppds,
  hp-ppd,
+ printer-driver-all,
  hpijs-ppds,
  python-pexpect,
  shell-univention-lib,

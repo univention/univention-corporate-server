@@ -1,3 +1,9 @@
+univention-printserver (8.0.0-3) unstable; urgency=low
+
+  * updated printer models in join script (Bug #35147) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Aug 2014 13:34:02 +0200
+
 univention-printserver (8.0.0-2) unstable; urgency=low
 
   * fixed control file (Bug #35147) 
