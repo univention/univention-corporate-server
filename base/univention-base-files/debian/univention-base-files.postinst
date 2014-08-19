@@ -115,27 +115,6 @@ univention-config-registry set sshd/port?22 \
 	sshd/challengeresponse?yes \
 	sshd/passwordauthentication?no
 
-# http://en.wikipedia.org/wiki/Nothofagus_solandri
-# univention-config-registry set version/releasename="mountain beech" # UCS 2.1
-
-# http://en.wikipedia.org/wiki/European_Beech
-# univention-config-registry set version/releasename="copper beech" # UCS 2.2
-
-# htts://en.wikipedia.org/wiki/Hornbeam
-# univention-config-registry set version/releasename="hornbeam" # UCS 2.3
-
-# http://en.wikipedia.org/wiki/Fagus_sylvatica
-# univention-config-registry set version/releasename="golden beech" # UCS 2.4
-
-# http://de.wikipedia.org/wiki/Horn-Lehe
-# univention-config-registry set version/releasename="Horn-Lehe" # UCS 3.0
-
-# http://de.wikipedia.org/wiki/Findorff_%28Bremen%29
-# univention-config-registry set version/releasename="Findorff" # UCS 3.1
-
-# http://de.wikipedia.org/wiki/Borgfeld
-univention-config-registry set version/releasename="Borgfeld" # UCS 3.2
-
 if [ -x /etc/init.d/ntpdate -a -x /etc/rcS.d/S51ntpdate ]; then
 	update-rc.d -f ntpdate remove >/dev/null 2>&1 || true
 	update-rc.d  ntpdate defaults 22 >/dev/null 2>&1 || true
