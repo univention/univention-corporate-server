@@ -1083,7 +1083,7 @@ def handler(dn, new, listener_old, operation):
 		if 'matched' in msg[0]:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tmachted dn: %s' % msg[0]['matched'])
 		reconnect=1
-		handler(dn, new, old, operation)
+		handler(dn, new, listener_old, operation)
 	except ldap.ALREADY_EXISTS, msg:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: %s; trying to apply changes' % (msg[0]['desc'], dn))
 		if 'info' in msg[0]:
@@ -1100,8 +1100,9 @@ def handler(dn, new, listener_old, operation):
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
 			reconnect=1
 			connect(ldif=1)
-			handler(dn, new, old, operation)
-		handler(dn, new, cur, operation)
+			handler(dn, new, listener_old, operation)
+		else:
+			handler(dn, new, cur, operation)
 
 	except ldap.CONSTRAINT_VIOLATION, msg:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Constraint violation: dn=%s: %s' % (dn,msg[0]['desc']))
@@ -1117,7 +1118,7 @@ def handler(dn, new, listener_old, operation):
 		else:
 			reconnect=1
 			connect(ldif=1)
-			handler(dn, new, old, operation)
+			handler(dn, new, listener_old, operation)
 
 def clean():
 	global slave
