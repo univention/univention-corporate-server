@@ -30,6 +30,15 @@ Subfile: etc/postgresql/8.4/main/pg_hba.conf.d/10-pg_hba.conf
 Variables: pgsql/pkgdb/networks
 Variables: pkgdb/requiressl
 
+Type: multifile
+Multifile: etc/postgresql/9.1/main/pg_hba.conf
+
+Type: subfile
+Multifile: etc/postgresql/9.1/main/pg_hba.conf
+Subfile: etc/postgresql/9.1/main/pg_hba.conf.d/10-pg_hba.conf
+Variables: pgsql/pkgdb/networks
+Variables: pkgdb/requiressl
+
 Type: file
 File: etc/logrotate.d/univention-pkgdb
 Variables: logrotate/.*
