@@ -172,28 +172,6 @@ if [ -z "$locale_keymap" ]; then
 		done
 	fi
 fi
-dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/set_locale.py 1.0.48~ -- "$@"
-
-# <https://forge.univention.org/bugzilla/show_bug.cgi?id=26058>
-dpkg-maintscript-helper mv_conffile /etc/univention/templates/files/etc/network/interfaces /etc/univention/templates/files/etc/network/interfaces.d/10-default 2.0.2-1~ -- "$@"
-# <https://forge.univention.org/bugzilla/show_bug.cgi?id=32297>
-if [ configure = "$1" ] &&
-	dpkg --compare-versions "$2" lt-nl 3.0.2 &&
-	[ -f /etc/univention/templates/files/etc/network/interfaces.d/00-base ]
-then
-	# fix template and force update
-	sed -i.dpkg-bak -re 's/^\s*auto\s+lo\s*$|^\s*iface\s+lo\s+inet\s+loopback\s*$/#Bug 32297# &/' \
-		/etc/univention/templates/files/etc/network/interfaces.d/10-default
-	univention-config-registry update
-	univention-config-registry commit /etc/network/interfaces
-fi
-# <https://forge.univention.org/bugzilla/show_bug.cgi?id=31844>
-case "$1" in
-configure)
-	previous=$(ucr get update/ucr/restore)
-	[ -n "$previous" ] && ucr $previous # IFS
-	ucr unset update/ucr/restore
-esac
 
 update-rc.d rdate defaults 21 >/dev/null 2>&1 || true
 
@@ -212,9 +190,6 @@ univention-config-registry set security/packetfilter/package/univention-base-fil
 	security/packetfilter/package/univention-base-files/udp/123/all=ACCEPT \
 	security/packetfilter/package/univention-base-files/udp/123/all/en="ntp"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
-
-# Bug #25715: Restart ntp for fixed ntp.conf on 3.0-0-errataX
-[ "$1" = configure ] && [ -x "/etc/init.d/ntp" ] && dpkg --compare-versions "$2" le 1.0.42-1.64.201112011038 && invoke-rc.d ntp restart || true
 
 # The nouveau driver from Linux 3.10 is incompatible with the UCS xorg userland (Bug #31701)
 univention-config-registry set kernel/blacklist?"nouveau"

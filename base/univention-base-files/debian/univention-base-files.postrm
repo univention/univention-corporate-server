@@ -35,19 +35,7 @@ set -e
 if test "$1" = "purge"; then
 	rm -rf /var/cache/univention-baseconfig
 fi
-dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/set_locale.py 1.0.48~ -- "$@"
-
-# <https://forge.univention.org/bugzilla/show_bug.cgi?id=26058>
-dpkg-maintscript-helper mv_conffile /etc/univention/templates/files/etc/network/interfaces /etc/univention/templates/files/etc/network/interfaces.d/10-default 2.0.2-1~ -- "$@"
 
 #DEBHELPER#
-
-# <https://forge.univention.org/bugzilla/show_bug.cgi?id=31844>
-case "$1" in
-abort-upgrade|abort-install)
-	previous=$(ucr get update/ucr/restore)
-	[ -n "$previous" ] && ucr $previous # IFS
-	ucr unset update/ucr/restore
-esac
 
 exit 0

@@ -1,5 +1,1 @@
 var/log/univention
-etc/X11/Xsession.d
-usr/lib/univention-directory-policy
-usr/share/univention-config-registry
-

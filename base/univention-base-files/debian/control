@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-config-dev,
  ucslint-univention
 Standards-Version: 3.5.2
-XS-Python-Version: 2.6
+XS-Python-Version: 2.6, 2.7
 
 Package: univention-base-packages
 Architecture: all
@@ -25,7 +25,8 @@ Depends: ${misc:Depends},
  console-common,
  bzip2,
  psmisc,
- lsb-base
+ lsb-base,
+ lsb-release,
 Recommends: vim,
  emacs23,
  less,
@@ -51,10 +52,6 @@ Package: univention-base-files
 Architecture: all
 Depends: ${misc:Depends},
  univention-config (>= 8.0.2-1)
-Conflicts: univention-config-registry (<= 7.0.7),
- univention-config (<= 7.0.8)
-Replaces: univention-config-registry (<= 7.0.7),
- univention-config (<= 7.0.8)
 Provides: univention-config-registry
 Description: UCS - base configuration files
  This package contains the base configuration for UCS.

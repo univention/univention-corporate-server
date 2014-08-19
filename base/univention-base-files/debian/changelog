@@ -1,3 +1,11 @@
+univention-base-files (4.0.0-5) unstable; urgency=low
+
+  * Install lsb-release (Bug #35386)
+  * Install for python2.7 too.
+  * Remove obsolete upgrade handling code.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 19 Aug 2014 09:35:32 +0200
+
 univention-base-files (4.0.0-4) unstable; urgency=low
 
   * Update templates for /etc/init.d/ files (Bug #35522)
