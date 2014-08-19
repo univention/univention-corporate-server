@@ -10,12 +10,11 @@
 ## versions:
 ##  3.1-1: skip
 
-
-import univention.testing.utils as util
+import sys
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.uldap as uldap
-
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
@@ -24,8 +23,6 @@ if __name__ == '__main__':
 			dns_host = udm.create_object('dns/host_record', name = uts.random_name(), superordinate = reverse_zone)
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
-
-	
 
 		ldap = uldap.getAdminConnection()
 		ldap.delete(dns_host)

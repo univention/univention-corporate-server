@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Append txt during dns/forward_zone modification
+## desc: Append TXT during dns/forward_zone modification
 ## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -7,12 +7,9 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-
-
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:

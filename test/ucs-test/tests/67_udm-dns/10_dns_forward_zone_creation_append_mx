@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Append mx during dns/forward_zone creation
+## desc: Append MX during dns/forward_zone creation
 ## tags: [udm]
 ## roles: [domaincontroller_master]
 ## bugs: [15654]
@@ -8,16 +8,13 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-
-
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		mx_records = ['40 %s' % uts.random_name(), '50 %s' % uts.random_name()]
 
 		forward_zone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), append = {'mx': mx_records}, nameserver = uts.random_string())
-	  	utils.verify_ldap_object(forward_zone, {'mXRecord': mx_records})
+		utils.verify_ldap_object(forward_zone, {'mXRecord': mx_records})

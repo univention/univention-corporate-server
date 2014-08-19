@@ -10,17 +10,14 @@
 ##  3.1-1: skip
 ##  3.2-0: fixed
 
-
-
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
-
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		reverse_zone = udm.create_object('dns/reverse_zone', subnet = '10.20.30', nameserver = uts.random_string())
-		
+
 		ns_record = uts.random_string()
 		udm.modify_object('dns/reverse_zone', dn = reverse_zone, nameserver = ns_record)
 		utils.verify_ldap_object(reverse_zone, {'nSRecord': ['%s' % ns_record]})

@@ -10,16 +10,12 @@
 ##  3.1-1: skip
 ##  3.2-0: fixed
 
-
-
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
-
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		
 		# IPv4 case:
 		reverse_zone_properties = {
 			'subnet': '10.20.20',

@@ -10,13 +10,9 @@
 ##  3.1-1: skip
 ##  3.2-0: fixed
 
-
-
-import sys
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:

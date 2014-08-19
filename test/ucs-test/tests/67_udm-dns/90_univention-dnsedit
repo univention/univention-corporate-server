@@ -25,7 +25,7 @@ NETMASK="$(get_default_netmask)"
 /usr/share/univention-admin-tools/univention-dnsedit --ignore-exists "$zonename" add zone "root@$domainname." 1 28800 7200 604800 10800 "$hostname.$domainname." || fail_test 110
 
 # add A record
-for((i=0;i<2;i++)); do
+for ((i=0;i<2;i++)); do
 	# do it twice, see Bug #31103
 	/usr/share/univention-admin-tools/univention-dnsedit --ignore-exists "$zonename" add a "$host" "$IP" || fail_test 110
 done
@@ -40,7 +40,7 @@ test -n "$ptr" || fail_test 110
 /usr/share/univention-admin-tools/univention-dnsedit --ignore-exists --reverse "$reversezone" add zone "root@$domainname." 1 28800 7200 604800 10800 "$hostname.$domainname." || fail_test 110
 
 # add ptr
-for((i=0;i<2;i++)); do
+for ((i=0;i<2;i++)); do
 	# do it twice, see Bug #31103
 	/usr/share/univention-admin-tools/univention-dnsedit --ignore-exists --reverse "$reversezone" add ptr "$ptr" "$host.$domainname." || fail_test 110
 done

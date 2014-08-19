@@ -7,19 +7,14 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-
-
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.testing.utils as utils
-
-
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		forward_zone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string())
 
-		
 		locations = ['0 1 2 %s.%s' % (uts.random_name(), uts.random_name()), '3 5 6 %s.%s' % (uts.random_name(), uts.random_name()), '1 4 9 %s.%s' % (uts.random_name(), uts.random_name()), '4 8 2 %s.%s' % (uts.random_name(), uts.random_name())]
 		srv_record = udm.create_object('dns/srv_record', superordinate = forward_zone, name = '%s tcp %s' % (uts.random_string(), uts.random_string()), append = {'location': locations})
 
