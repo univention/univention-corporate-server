@@ -30,8 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-REPOSITORY="updates.software-univention.de"
-#REPOSITORY="testing.univention.de"
+#REPOSITORY="updates.software-univention.de"
+REPOSITORY="testing.software-univention.de"
 . /usr/share/univention-lib/all.sh
 
 create_logfile /var/log/univention/repository.log "root:adm" 640
@@ -40,55 +40,12 @@ create_logfile /var/log/univention/errata-updates.log "root:adm" 640
 create_logfile /var/log/univention/updater.log "root:adm" 640
 create_logfile /var/log/univention/actualise.log "root:adm" 640
 
-convert_component () { # Convert repository/online/component/*/parts to .../unmaintained
-	python -c '#!/usr/bin/python2.7
-import sys
-from univention.config_registry import ConfigRegistry
-ucr = ConfigRegistry()
-ucr.load()
-for key, value in ucr.items():
-	if not key.startswith("repository/online/component/"):
-		continue
-	if not key.endswith("/parts"):
-		continue
-	stem = key[:-6]
-	values = value.split(",")
-	try:
-		values.remove("unmaintained")
-		ucr["%s/unmaintained" % stem] = "yes"
-	except ValueError:
-		pass
-	try:
-		values.remove("maintained")
-	except ValueError:
-		pass
-	if values:
-		print >> sys.stderr, "Unknown parts in %s: %r" % (key, values)
-	else:
-		del ucr[key]
-ucr.save()'
-}
-
 [ -d /etc/apt/sources.list.d ] || mkdir -p /etc/apt/sources.list.d
 
 if [ "$1" = "configure" ]; then
 	# update cronjob-entries
 	if [ -x /usr/lib/univention-directory-policy/univention-policy-maintenance ]; then
 		/usr/lib/univention-directory-policy/univention-policy-maintenance
-	fi
-
-	mirror_default=false
-	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.47-1; then
-		local_repository="$(univention-config-registry get local/repository)"
-		if [ -n "$local_repository" ]; then
-			mirror_default="$local_repository"
-		fi
-	fi
-
-	# Bug #30261: Upgrade u/r/o/c/*/parts to u/r/o/c/*/unmaintained
-	if dpkg --compare-versions "$2" lt-nl 8.0.68
-	then
-		convert_component
 	fi
 
 	univention-config-registry set \
@@ -99,11 +56,11 @@ if [ "$1" = "configure" ]; then
 		update/umc/nextversion?true \
 		update/doc/releasenotes/url"?http://download.univention.de/doc/" \
 		update/doc/releasenotes/description"?http://download.univention.de/doc/"\
-		repository/online?no \
+		repository/online?yes \
 		repository/online/server?"${REPOSITORY}" \
 		repository/online/port?80 \
 		repository/online/unmaintained?no \
-		repository/mirror?"$mirror_default" \
+		repository/mirror?no \
 		repository/mirror/threads?10 \
 		repository/mirror/recreate_packages?yes \
 		repository/mirror/basepath?/var/lib/univention-repository \
@@ -126,6 +83,9 @@ if [ "$1" = "configure" ]; then
 		update/check/boot/enabled?yes \
 		update/check/boot/debug?no \
 		update/available?no \
+		version/releasename?Walle \
+		version/version?4.0 \
+		version/patchlevel?0 \
 		version/erratalevel?0 \
 		uuid/system?"$(cat /proc/sys/kernel/random/uuid)"
 
@@ -147,12 +107,6 @@ if which update-python-modules >/dev/null 2>&1; then
 fi
 
 #DEBHELPER#
-
-# Remove old UCR template for errata updates
-#  https://forge.univention.org/bugzilla/show_bug.cgi?id=26387
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 8.0.54-1; then
-	remove_ucr_template /etc/apt/sources.list.d/18_ucs-online-errata.list
-fi
 
 # Set correct permissions for apt directories (Bug #29450)
 # Can be removed after UCS 3.2-1

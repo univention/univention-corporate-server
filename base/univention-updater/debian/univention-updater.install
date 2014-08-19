@@ -10,7 +10,6 @@ python/univention-repository-delpackage usr/sbin/
 python/univention-repository-addpackage usr/sbin/
 python/univention-repository-migrate usr/sbin/
 
-
 univention-directory-policy/univention-policy-set-repository-server usr/lib/univention-directory-policy/
 univention-directory-policy/univention-policy-repository-sync usr/lib/univention-directory-policy/
 univention-directory-policy/univention-policy-maintenance usr/lib/univention-directory-policy/
