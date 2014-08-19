@@ -77,8 +77,8 @@ readcontinue ()
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: http://docs.univention.de/release-notes-3.2-3-en.html"
-echo " German version:  http://docs.univention.de/release-notes-3.2-3-de.html"
+echo " English version: http://docs.univention.de/release-notes-4.0-0-en.html"
+echo " German version:  http://docs.univention.de/release-notes-4.0-0-de.html"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
@@ -98,7 +98,7 @@ echo ""
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
-	if [ "$update32_ignoressh" != "yes" ]; then
+	if [ "$update40_ignoressh" != "yes" ]; then
 		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or re-run with \"--ignoressh\" to ignore it."
 		exit 1
@@ -106,7 +106,7 @@ if [ -n "$SSH_CLIENT" ]; then
 fi
 
 if [ "$TERM" = "xterm" ]; then
-	if [ "$update32_ignoreterm" != "yes" ]; then
+	if [ "$update40_ignoreterm" != "yes" ]; then
 		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or re-run with \"--ignoreterm\" to ignore it."
 		exit 1
@@ -152,12 +152,12 @@ hold_packages=$(LC_ALL=C dpkg -l | grep ^h | awk '{print $2}')
 if [ -n "$hold_packages" ]; then
 	echo "WARNING: Some packages are marked as hold -- this may interrupt the update and result in an inconsistent"
 	echo "system!"
-	echo "Please check the following packages and unmark them or set the UCR variable update32/ignore_hold to yes"
+	echo "Please check the following packages and unmark them or set the UCR variable update40/ignore_hold to yes"
 	for hp in $hold_packages; do
 		echo " - $hp"
 	done
-	if is_ucr_true update32/ignore_hold; then
-		echo "WARNING: update32/ignore_hold is set to true. Skipped as requested."
+	if is_ucr_true update40/ignore_hold; then
+		echo "WARNING: update40/ignore_hold is set to true. Skipped as requested."
 	else
 		exit 1
 	fi
@@ -202,7 +202,7 @@ pruneOldKernel () {
 		DEBIAN_FRONTEND=noninteractive xargs -r apt-get -o DPkg::Options::=--force-confold -y --force-yes purge
 }
 
-if [ "$update32_pruneoldkernel" = "yes" ]; then
+if [ "$update40_pruneoldkernel" = "yes" ]; then
 	echo "Purging old kernel..." | tee -a /var/log/univention/updater.log
 	pruneOldKernel "2.6.*"
 	pruneOldKernel "3.2.0"
@@ -212,7 +212,7 @@ fi
 
 #####################
 
-check_space(){
+check_space () {
 	partition=$1
 	size=$2
 	usersize=$3
@@ -224,12 +224,12 @@ check_space(){
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
 		echo "         This may interrupt the update and result in an inconsistent system!"
 		echo "         If neccessary you can skip this check by setting the value of the"
-		echo "         config registry variable update32/checkfilesystems to \"no\"."
+		echo "         config registry variable update40/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
-		if [ "$partition" = "/boot" -a ! "$update32_pruneoldkernel" = "yes" ] ; then
+		if [ "$partition" = "/boot" -a ! "$update40_pruneoldkernel" = "yes" ] ; then
 			echo "         Old kernel versions on /boot can be pruned automatically during"
 			echo "         next update attempt by setting config registry variable"
-			echo "         update32/pruneoldkernel to \"yes\"."
+			echo "         update40/pruneoldkernel to \"yes\"."
 		fi
 		echo ""
 		# kill the running univention-updater process
@@ -246,21 +246,19 @@ fi
 mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
 
 # check space on filesystems
-if [ ! "$update32_checkfilesystems" = "no" ]
+if [ "$update40_checkfilesystems" != "no" ]
 then
-
 	check_space "/var/cache/apt/archives" "200000" "200 MB"
 	check_space "/boot" "50000" "50 MB"
 	check_space "/" "500000" "500 MB"
-
 else
-    echo "WARNING: skipped disk-usage-test as requested"
+	echo "WARNING: skipped disk-usage-test as requested"
 fi
 
 
 echo -n "Checking for package status: "
-dpkg -l 2>&1 | LC_ALL=C grep "^[a-zA-Z][A-Z] " >&3 2>&3
-if [ $? = 0 ]; then
+if dpkg -l 2>&1 | LC_ALL=C grep "^[a-zA-Z][A-Z] " >&3 2>&3
+then
 	echo "failed"
 	echo "ERROR: The package state on this system is inconsistent."
 	echo "       Please run 'dpkg --configure -a' manually"
@@ -310,8 +308,8 @@ $update_commands_update >&3 2>&3
 for pkg in $preups; do
 	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then
 		echo -n "Starting pre-upgrade of $pkg: "
-		$update_commands_install "$pkg" >&3 2>&3
-		if [ ! $? = 0 ]; then
+		if ! $update_commands_install "$pkg" >&3 2>&3
+		then
 			echo "failed."
 			echo "ERROR: Failed to upgrade $pkg."
 			exit 1

@@ -2,6 +2,7 @@ univention-updater (10.0.0-6) unstable; urgency=low
 
   * Set UCRVs version/* (Bug #35312, Bug #35635)
   * Remove obsolete upgrade handling code.
+  * Adjust pre- and postup.sh for UCS 4.0-0 (Bug #35132)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 19 Aug 2014 10:10:10 +0200
 
