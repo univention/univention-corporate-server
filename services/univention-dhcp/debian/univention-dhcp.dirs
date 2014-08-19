@@ -4,4 +4,3 @@ etc/runit/univention
 etc/runit/univention-dhcp
 etc/dhcp
 etc/init.d
-etc/univention/daemons/

@@ -77,12 +77,7 @@ bindpwd=`ldap_bindpwd`
 
 service_stop nscd heimdal-kdc univention-directory-notifier
 
-if [ "$server_role" = "fatclient" ]; then
-	server_role="client"
-fi
-
 if [ "$ldap_available" = 1 ]; then
-
 	kerberos_realm="`echo $kerberos_realm | tr '[[:lower:]]' '[[:upper:]]'`"
 	echo `date` : "Configure Kerberos principal name of host in LDAP: " host/$hostname.$new_domainname@$kerberos_realm  >> /var/log/univention/setup.log
 	echo "dn: $ldap_hostdn" >/var/cache/univention-system-setup/krb5principal.rename.ldif

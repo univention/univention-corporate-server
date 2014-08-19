@@ -6,4 +6,3 @@ usr/lib/univention-directory-listener/system
 usr/lib/univention-directory-listener/user
 etc/runit/univention-directory-listener
 usr/lib/univention-install
-etc/univention/daemons

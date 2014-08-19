@@ -149,4 +149,3 @@ if [ -d "/var/lib/univention-system-setup/ldapbase.post" ]; then
 fi
 
 exit 0
-

@@ -1,5 +1,0 @@
-@%@UCRWARNING=# @%@
-
-PATH=/usr/sbin:/usr/bin:/sbin:/bin
-@%@ldap/connection/check@%@ root /usr/share/univention-mobile-client/check_connection "runParts" >/var/log/univention/check_connection.log 2>&1
-@reboot root /usr/share/univention-mobile-client/check_connection "runParts" >/var/log/univention/check_connection.log 2>&1

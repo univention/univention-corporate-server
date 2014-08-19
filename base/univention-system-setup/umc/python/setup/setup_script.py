@@ -346,8 +346,6 @@ class AptScript(SetupScript):
 			'domaincontroller_backup' : 'univention-server-backup',
 			'domaincontroller_slave' : 'univention-server-slave',
 			'memberserver' : 'univention-server-member',
-			'fatclient' : 'univention-managed-client',
-			'mobileclient' : 'univention-mobile-client',
 		}
 		self.current_server_role = self.ucr.get('server/role')
 		self.wanted_server_role = self.profile.get('server/role')

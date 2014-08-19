@@ -89,4 +89,3 @@ if [ -d "/var/lib/univention-system-setup/windowsdomain.post" ]; then
 fi
 
 exit 0
-

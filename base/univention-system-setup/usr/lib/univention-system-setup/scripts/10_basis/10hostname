@@ -71,10 +71,6 @@ binddn=`ldap_binddn`
 bindpwd=`ldap_bindpwd`
 
 if [ "$ldap_available" = 1 ]; then
-
-		if [ "$server_role" = "fatclient" ]; then
-			server_role="client"
-		fi
 		echo `date` : "Configure hostname in LDAP : " $new_hostname  >> /var/log/univention/setup.log
 		univention-directory-manager computers/$server_role modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$ldap_hostdn" --set name=$new_hostname
 
