@@ -1,6 +1,7 @@
 univention-system-setup (8.0.21-1) unstable; urgency=low
 
   * Bug #31751: Remove managed- and mobile client
+  * Bug #35637: Fix appliance mode
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 19 Aug 2014 14:16:16 +0200
 

@@ -69,7 +69,7 @@ class RoleScript(AptScript):
 
 		current_server_role_package = self.get_package_for_role(self.current_server_role)
 		wanted_server_role_package = self.get_package_for_role(self.wanted_server_role)
-		if current_server_role_package is None or wanted_server_role_package is None:
+		if wanted_server_role_package is None:
 			return False
 		self.finish_task()
 

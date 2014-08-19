@@ -51,7 +51,7 @@ univention-config-registry set 'system/setup/boot/start?true' \
 create_logfile /var/log/univention/system-setup-boot.log "root:adm" 640
 
 # Show login message on an unjoined system
-if [ ! -e /var/univention-join/joined ] && [ "$server_role" = "domaincontroller_master" ]; then
+if [ ! -e /var/univention-join/joined ] && [ -z "$server_role" ]; then
 	univention-config-registry set 'system/setup/showloginmessage?true'
 fi
 

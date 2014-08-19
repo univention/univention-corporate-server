@@ -56,8 +56,8 @@ then # call self in xinit as nobody, then start gdm
 	BROWSERPIDFILE="/var/cache/univention-system-setup/browser.pid"
 
 	if [ "$mode" = "installer" ] ; then
-		# Workaround: the locale and server/role is currently required by the UMC
-		/usr/sbin/ucr set locale="en_US.UTF-8:UTF-8" server/role="domaincontroller_master"
+		# Workaround: the locale is currently required by the UMC
+		/usr/sbin/ucr set locale="en_US.UTF-8:UTF-8"
 
 		# Start/Restart UMC and Webserver
 		/etc/init.d/univention-management-console-server restart
@@ -87,7 +87,7 @@ then # call self in xinit as nobody, then start gdm
 	if [ ! -e /opt/firefox/distribution/bundles ]; then
 		mkdir -p /opt/firefox/distribution/bundles
 	fi
-	ln -s /usr/lib/univention-system-setup/addons/{e5bbc237-c99b-4ced-a061-0be27703295f} /opt/firefox/distribution/bundles
+	ln -s /usr/lib/univention-system-setup/addons/\{e5bbc237-c99b-4ced-a061-0be27703295f\} /opt/firefox/distribution/bundles
 
 	export DISPLAY=:0
 	if xwininfo -root -stats > /dev/null 2>/dev/null ; then

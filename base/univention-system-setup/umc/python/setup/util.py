@@ -302,7 +302,7 @@ class ProgressParser( object ):
 		self.fractions = copy.copy( ProgressParser.FRACTIONS )
 		system_role = ucr.get('server/role')
 		joined = is_system_joined()
-		wizard_mode = system_role == 'domaincontroller_master' and not joined
+		wizard_mode = not system_role and not joined
 		if not wizard_mode:
 			# when not wizard_mode, the software page is not rendered
 			#   do not use more than 50% of the progress bar for something
@@ -436,7 +436,7 @@ def run_scripts( progressParser, restartServer = False ):
 					fullLine = ''
 
 	fr.close()
-	
+
 	# enable execution of servers again
 	subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f)
 

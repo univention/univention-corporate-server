@@ -126,7 +126,7 @@ define([
 			var system_role = ucr['server/role'];
 
 			// set wizard mode only on unjoined DC Master
-			this.wizard_mode = (system_role == 'domaincontroller_master') && (!values.joined);
+			this.wizard_mode = (!system_role) && (!values.joined);
 
 			// we are in local mode if the user is __systemsetup__
 			this.local_mode = tools.status('username') == '__systemsetup__';
