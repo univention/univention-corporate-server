@@ -1,4 +1,4 @@
-ucs-test (4.0.166-68) unstable; urgency=low
+ucs-test (4.0.166-69) unstable; urgency=low
 
   * 52_s4connector/133sync_sid: added a SID sync test case (Bug #35626)
 
