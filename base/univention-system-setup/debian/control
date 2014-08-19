@@ -90,7 +90,8 @@ Depends: univention-management-console-server,
  python-simplejson,
  python-dnspython,
  python-psutil,
- python-apt
+ python-apt,
+ univention-ipcalc
 Description: UMC module for Univention system setup
  This package contains the UMC module for the UCS System Setup.
  .

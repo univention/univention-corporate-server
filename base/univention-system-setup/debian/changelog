@@ -1,3 +1,10 @@
+univention-system-setup (8.0.20-1) unstable; urgency=low
+
+  * added univention-ipcalc to dependencies in 
+    univention-management-console-module-setup (Bug #35144)
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Aug 2014 11:35:18 +0200
+
 univention-system-setup (8.0.19-1) unstable; urgency=low
 
   * Bug #35466: remove workaround
