@@ -3,7 +3,7 @@
 # Univention Directory Replication
 #  re-synchronize the local LDAP directory
 #
-# Copyright 2001-2013 Univention GmbH
+# Copyright 2001-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -48,7 +48,7 @@ display_header() {
 base64decode()
 {
 	export IFS=''
-	cat << EOF | python2.6 - $1
+	cat << EOF | python - $1
 import base64,sys
 x=sys.argv[1]
 print base64.decodestring(x)

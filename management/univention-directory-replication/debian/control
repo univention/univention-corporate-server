@@ -1,7 +1,7 @@
 Source: univention-directory-replication
 Section: univention
 Maintainer: Univention GmbH <packages@univention.de>
-Standards-Version: 3.5.5
+Standards-Version: 3.8.2
 Build-Depends: debhelper,
  ucslint-univention,
  univention-config-dev
@@ -13,8 +13,8 @@ Depends: ${misc:Depends},
  shell-univention-lib,
  univention-directory-listener,
  python-univention | python2.6-univention | python2.6-univention-2005,
- python2.6-univention-debug,
- python2.6-ldap,
+ python-univention-debug,
+ python-ldap,
  python-univention-lib (>= 1.0.25-1)
 Conflicts: univention-ldap-replication (<< 1.2.0)
 Description: UCS - Directory replication

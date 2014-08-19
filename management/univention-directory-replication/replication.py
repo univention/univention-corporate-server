@@ -3,7 +3,7 @@
 # Univention Directory Replication
 #  listener module for Directory replication
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -435,6 +435,7 @@ BUILTIN_OIDS=[
 	'1.3.6.1.4.1.4203.666.11.1.4.0.8',	# olcModuleList
 	'1.3.6.1.4.1.4203.666.11.1.4.2.1.1',	# olcBdbConfig
 	'1.3.6.1.4.1.4203.666.11.1.4.2.2.1',	# olcLdifConfig
+	'1.3.6.1.4.1.4203.666.11.1.4.2.12.1',	# olcMdbConfig
 	# new OIDs in official OpenLDAP 2.4 OID space
 	'1.3.6.1.4.1.4203.1.12.2.4.0.0',	# olcConfig
 	'1.3.6.1.4.1.4203.1.12.2.4.0.1',	# olcGlobal

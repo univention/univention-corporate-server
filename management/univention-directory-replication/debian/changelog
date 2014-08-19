@@ -1,3 +1,10 @@
+univention-directory-replication (8.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35144)
+  * added olcMdbConfig OID to BUILTIN_OIDS in replication.py 
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Aug 2014 11:15:28 +0200
+
 univention-directory-replication (7.0.1-7) unstable; urgency=low
 
   * rerun listener handler with listener_old (Bug #34759) 
