@@ -1,3 +1,10 @@
+univention-samba4 (4.0.0-3) unstable; urgency=medium
+
+  * Samba 4.2 provision now offers the new --site option, so we
+    remove our --sitename patch and adjust to the new option (Bug #35319)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 19 Aug 2014 12:09:04 +0200
+
 univention-samba4 (4.0.0-2) unstable; urgency=medium
 
   * Adjusted dependencies to updated Samba 4.2 Debian packages (Bug #35319)

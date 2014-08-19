@@ -217,7 +217,7 @@ if [ -z "$S3_DCS" ] || [ -z "$DOMAIN_SID" ] || is_ucr_true samba4/provision/seco
 		samba-tool domain provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$DOMAIN_SID" \
 							--function-level="$samba4_function_level" \
 							--adminpass="$adminpw" --server-role='domain controller'	\
-							--sitename="$sitename" \
+							--site="$sitename" \
 							--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
 	fi
 
