@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-s4-connector
-fix: 8.0.33-71.496.201408191201
+fix: 8.0.33-72.497.201408191526
 version: [2,3]
 desc: |
     * Fix a traceback due to an undefined variable in the password synchronization module
