@@ -1,3 +1,9 @@
+univention-directory-notifier (9.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35144) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Aug 2014 10:07:51 +0200
+
 univention-directory-notifier (8.0.0-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30946)
