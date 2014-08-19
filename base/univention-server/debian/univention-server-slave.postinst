@@ -30,23 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell)"
-
-univention-config-registry set server/password/interval?21 \
-					bootsplash/theme?domaincontroller_slave
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.15-2; then
-	update-inetd --remove time
-	echo "time            stream  tcp4     nowait  root    internal" >> /etc/inetd.conf
-	echo "time            stream  tcp6     nowait  root    internal" >> /etc/inetd.conf
-	/etc/init.d/openbsd-inetd restart
-fi
-
-if [ "$1" = "configure" -a -z "$2" ]; then
-	echo "time            stream  tcp4     nowait  root    internal" >> /etc/inetd.conf
-	echo "time            stream  tcp6     nowait  root    internal" >> /etc/inetd.conf
-	/etc/init.d/openbsd-inetd restart
-fi
+xargs -d '\n' univention-config-registry set <<__UCR__
+bootsplash/theme?domaincontroller_slave
+ldap/server/port?7389
+ldap/server/type?slave
+server/password/interval?21
+server/role=domaincontroller_slave
+__UCR__
 
 #DEBHELPER#
 

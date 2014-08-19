@@ -1,6 +1,7 @@
 univention-server (10.0.0-3) unstable; urgency=low
 
   * Removed mobile and managed client packages (Bug #31751)
+  * Set server/role (Bug #35635)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 19 Aug 2014 14:33:19 +0200
 

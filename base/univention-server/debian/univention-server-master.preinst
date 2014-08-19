@@ -44,23 +44,23 @@ domainname=$(/bin/dnsdomainname)
 
 if [ -n "$hostname" -a -n "$domainname" ]; then
 	# generate ssl certificate
-	if ! test -e /etc/univention/ssl/$hostname/cert.pem; then
+	if ! test -e "/etc/univention/ssl/$hostname/cert.pem"; then
 		. /usr/share/univention-ssl/make-certificates.sh
 		gencert "$hostname.$domainname" "$hostname.$domainname"
-		ln -sf /etc/univention/ssl/$hostname.$domainname /etc/univention/ssl/$hostname
+		ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
 	fi
 fi
 
 if ! test -e /etc/ldap.secret; then
 	touch /etc/ldap.secret
 	chmod 600 /etc/ldap.secret
-	echo -n "$(create_machine_password)" > /etc/ldap.secret
+	create_machine_password > /etc/ldap.secret
 fi
 
 if ! test -e /etc/ldap-backup.secret; then
 	touch /etc/ldap-backup.secret
 	chmod 600 /etc/ldap-backup.secret
-	echo -n "$(create_machine_password)" > /etc/ldap-backup.secret
+	create_machine_password > /etc/ldap-backup.secret
 fi
 
 exit 0

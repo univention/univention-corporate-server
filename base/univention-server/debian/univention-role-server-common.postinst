@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention Server Backup
-#  preinst script for the debian package
+# Univention Server Common
+#  postinst script for the Debian package
 #
-# Copyright 2003-2014 Univention GmbH
+# Copyright 2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,9 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#DEBHELPER#
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 7.0.15-2; then
+	update-inetd --remove time
+	echo "time            stream  tcp4     nowait  root    internal" >> /etc/inetd.conf
+	echo "time            stream  tcp6     nowait  root    internal" >> /etc/inetd.conf
+	invoke-rc.d openbsd-inetd restart
+fi
 
-univention-config-registry set server/role?domaincontroller_backup \
-					ldap/server/type?slave
+#DEBHELPER#
 
 exit 0

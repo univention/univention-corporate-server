@@ -32,26 +32,16 @@
 
 eval "$(univention-config-registry shell)"
 
-univention-config-registry set ldap/server/name=$hostname.$domainname \
-					ldap/server/port?7389 \
-					ldap/server/type=master \
-					server/password/interval?21 \
-					bootsplash/theme?domaincontroller_master
+xargs -d '\n' univention-config-registry set <<__UCR__
+bootsplash/theme?domaincontroller_master
+ldap/server/name="$hostname.$domainname"
+ldap/server/port?7389
+ldap/server/type=master
+server/password/interval?21
+server/role=domaincontroller_master
+__UCR__
 
 mkdir -p /var/lib/samba/netlogon/scripts/
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.15-2; then
-	update-inetd --remove time
-	echo "time            stream  tcp4     nowait  root    internal" >> /etc/inetd.conf
-	echo "time            stream  tcp6     nowait  root    internal" >> /etc/inetd.conf
-	/etc/init.d/openbsd-inetd restart
-fi
-
-if [ "$1" = "configure" -a -z "$2" ]; then
-	echo "time            stream  tcp4     nowait  root    internal" >> /etc/inetd.conf
-	echo "time            stream  tcp6     nowait  root    internal" >> /etc/inetd.conf
-	/etc/init.d/openbsd-inetd restart
-fi
 
 #DEBHELPER#
 
