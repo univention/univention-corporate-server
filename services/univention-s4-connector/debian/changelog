@@ -1,4 +1,17 @@
-univention-s4-connector (9.0.0-1) UNRELEASED; urgency=medium
+univention-s4-connector (9.0.2-1) unstable; urgency=medium
+
+  * Fixed python traceback from last commit (Bug #35626)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Aug 2014 15:25:44 +0200
+
+univention-s4-connector (9.0.1-1) unstable; urgency=medium
+
+  * Define SID as single value (Bug #35626)
+  * Use mapping function for single values if one is defined (Bug #35626)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Aug 2014 11:53:39 +0200
+
+univention-s4-connector (9.0.0-1) unstable; urgency=medium
 
   * version bump for UCS 4.0 (Bug #35319)
   * Adjust for python2.7
