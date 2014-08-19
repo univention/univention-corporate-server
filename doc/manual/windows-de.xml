@@ -1341,12 +1341,6 @@ ucr set auth/methods="krb5 ldap unix winbind"
   </note>
 
   <para>
-    <figure><title>Administrationsdialog für die Active Directory-Verbindung</title>
-      <graphic scalefit="1" width="80%" fileref="illustrations/admember_3-de.png"/>
-    </figure>
-  </para>
-
-  <para>
     Nach dieser Einrichtung kann das UMC-Modul <emphasis>Active Directory-Verbindung</emphasis> zur weiteren Administration verwendet werden, z.B. um zu prüfen, ob der Dienst läuft und ihn ggf. neu zu starten (siehe <xref linkend="ad-connector:neustart"/>).
   </para>
 
@@ -1377,6 +1371,12 @@ echo -n "Administrator password" > /etc/univention/connector/password
     Falls gewünscht, kann zu einem späteren Zeitpunkt der AD-Domänencontroller auch durch den &ucsMaster; abgelöst werden. Dies ist über die Applikation <emphasis>Active Directory Takeover</emphasis> möglich (siehe <xref linkend="windows:adtakeover"/>).
   </para>
   </section>
+
+  <para>
+    <figure><title>Administrationsdialog für die Active Directory-Verbindung</title>
+      <graphic scalefit="1" width="80%" fileref="illustrations/admember_3-de.png"/>
+    </figure>
+  </para>
 
   <section id="ad-connector:ad-connector-einrichtung">
   <title>Einrichtung des UCS AD-Connectors</title>
@@ -1536,7 +1536,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 
 	<para>
 	  Der Connector kann in verschiedenen Modi betrieben werden, die im nächsten Dialog
-	  <guimenu>Konfiguration der AD-Domänensynchronisation</guimenu> ausgewählt werden können.
+	  <guimenu>Konfiguration der Active Directory-Domänensynchronisation</guimenu> ausgewählt werden können.
 	  Neben einer bidirektionalen Synchronisation kann auch unidirektional von AD nach UCS
 	  oder unidirektional von UCS in das AD repliziert werden.
 	  Nach Auswahl des Modus muss auf <mousebutton>Weiter</mousebutton> geklickt werden.
@@ -1558,7 +1558,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  <para>
 			Der Connector kann auch mehrere AD-Domänen mit einer UCS-Domäne synchronisieren;
 			dies ist in <xref linkend="ext-doc-win"/> dokumentiert.
-		</para>
+	  </para>
 	</note>
 
 	</section>
@@ -1707,7 +1707,7 @@ UCS-System importiert werden.
 </para>
 <para>
 Dies erfolgt durch einen Klick auf <mousebutton>Hochladen</mousebutton> im
-Untermenü <guimenu>Active Directory Server Konfiguration</guimenu>.
+Untermenü <guimenu>Active Directory-Verbindung SSL-Konfiguration</guimenu>.
 </para>
 <para>
 Hierbei öffnet sich ein Fenster, in dem eine Datei ausgewählt wird.
@@ -1726,11 +1726,7 @@ Windows-Server erfordert.
 Die Installations-Pakete werden ebenfalls über den
 Einrichtungs-Assistenten der &ucsUMC; bereitgestellt:
 </para>
-<para>
-<figure><title>Download der Pakete für den Passwortdienst</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_2-de.png"/>
- </figure>
-</para>
+
 <itemizedlist>
 <listitem><simpara><filename>ucs-ad-connector.msi (for 32bit Windows)</filename></simpara></listitem>
 <listitem><simpara><filename>ucs-ad-connector-64bit.msi (for 64bit Windows)</filename></simpara></listitem>
@@ -1765,6 +1761,11 @@ In einer Standard-Installation unter Windows 2008 blockiert die
 Windows-Firewall die Zugriffe auf den UCS AD-Connector. Diese muss entweder
 in der <guimenu>Systemsteuerung</guimenu> deaktiviert werden oder Port
 6670/TCP freigegeben werden.
+</para>
+<para>
+<figure><title>Download der Pakete für den Passwortdienst</title>
+ <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_2-de.png"/>
+ </figure>
 </para>
 </section>
 
