@@ -1,8 +1,2 @@
-usr/sbin
-etc/init.d
-usr/lib/python2.7/site-packages
-usr/share/univention-directory-listener/
-usr/lib/univention-directory-listener/system
 usr/lib/univention-directory-listener/user
 etc/runit/univention-directory-listener
-usr/lib/univention-install
