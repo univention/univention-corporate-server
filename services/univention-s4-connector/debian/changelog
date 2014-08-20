@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.3-1) unstable; urgency=medium
+
+  * samba-tool is in samba-common-bin since some time (Bug #35320)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 20 Aug 2014 16:52:26 +0200
+
 univention-s4-connector (9.0.2-1) unstable; urgency=medium
 
   * Fixed python traceback from last commit (Bug #35626)
