@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  python-support,
  ucslint-univention
 Standards-Version: 3.8.2
-XS-Python-Version: 2.6
+XS-Python-Version: 2.6, 2.7
 
 Package: univention-nagios-server
 Architecture: any
