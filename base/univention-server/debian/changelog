@@ -1,3 +1,9 @@
+univention-server (10.0.0-4) unstable; urgency=low
+
+  * Fix dependency ordering (Bug #35637)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 20 Aug 2014 16:25:51 +0200
+
 univention-server (10.0.0-3) unstable; urgency=low
 
   * Removed mobile and managed client packages (Bug #31751)

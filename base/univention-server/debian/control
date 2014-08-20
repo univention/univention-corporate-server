@@ -11,24 +11,23 @@ Package: univention-server-master
 Architecture: all
 Pre-Depends: univention-ssl,
  shell-univention-lib (>= 3.0.1-1),
- python-univention-lib (>= 3.0.1-1) 
+ python-univention-lib (>= 3.0.1-1),
 Recommends: univention-nagios-client,
  openssh-server,
  python-univention-license
 Depends: ${misc:Depends},
  univention-role-server-common (= ${source:Version}),
+ univention-ldap-acl-master,
  univention-ldap-server,
  univention-heimdal-kdc,
  univention-directory-notifier,
  nscd,
- univention-ldap-acl-master,
  ntp | ntp-server,
  univention-license-import,
  univention-bind,
  univention-management-console-module-udm,
  univention-management-console-module-ipchange,
  univention-management-console,
-Conflicts: exim
 Description: UCS - master domain controller
  This package installs a UCS master domain controller.
  .
@@ -47,12 +46,12 @@ Pre-Depends: univention-config (>= 7.0.25)
 Depends: ${misc:Depends},
  univention-role-server-common (= ${source:Version}),
  univention-ssl,
+ univention-ldap-acl-master,
  univention-ldap-server,
  univention-directory-replication,
  univention-heimdal-kdc,
  univention-directory-notifier,
  nscd,
- univention-ldap-acl-master,
  ntp | ntp-server,
  univention-license-import,
  univention-management-console-module-udm,
@@ -60,7 +59,6 @@ Depends: ${misc:Depends},
  univention-management-console,
  shell-univention-lib (>= 3.0.1-1),
  python-univention-lib (>= 3.0.1-1)
-Conflicts: exim
 Description: UCS - backup domain controller
  This package installs a UCS backup domain controller.
  Unlike slave domain controllers, backup domain controllers
@@ -79,15 +77,14 @@ Recommends: univention-management-console,
  univention-nagios-client
 Depends: ${misc:Depends},
  univention-role-server-common (= ${source:Version}),
+ univention-ldap-acl-slave,
  univention-ldap-server,
  univention-heimdal-kdc,
  nscd,
  univention-directory-replication,
- univention-ldap-acl-slave,
  ntp | ntp-server,
  shell-univention-lib (>= 3.0.1-1),
  python-univention-lib (>= 3.0.1-1)
-Conflicts: exim
 Description: UCS - slave domain controller
  This package installs a UCS slave domain controller.
  Unlike backup domain controllers, slave domain controllers
@@ -109,7 +106,6 @@ Depends: ${misc:Depends},
  ntp | ntp-server,
  shell-univention-lib (>= 3.0.1-1),
  python-univention-lib (>= 3.0.1-1)
-Conflicts: exim
 Description: UCS - member server
  This package installs a UCS member server.
  .
