@@ -1,6 +1,6 @@
-univention-dvd (0.2.0-7) unstable; urgency=low
+univention-dvd (0.2.0-8) unstable; urgency=low
 
-  * Bug #35378: Install recommends by default
+  * Bug #30547: Install recommends by default
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 20 Aug 2014 10:40:12 +0200
 
