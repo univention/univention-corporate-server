@@ -2,7 +2,7 @@
 
 # start univention-system-setup if in GTK mode
 if [ -n "$DISPLAY" ]; then
-	in-target /usr/share/univention-system-setup/startxwithfirefox --installer
+	chroot /target /usr/share/univention-system-setup/startxwithfirefox --installer
 fi
 
 exit 0

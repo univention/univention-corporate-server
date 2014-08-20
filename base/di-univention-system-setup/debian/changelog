@@ -1,3 +1,10 @@
+di-univention-system-setup (0.0.9-2) unstable; urgency=low
+
+  * Bug #35378: Revert use of in-target [r52841], as it creates a denying
+    policy-rc.d
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 20 Aug 2014 10:18:37 +0200
+
 di-univention-system-setup (0.0.9-1) unstable; urgency=low
 
   * Bug #35378: Remove dummy question
