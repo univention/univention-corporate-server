@@ -1,3 +1,9 @@
+univention-maintenance (7.0.0-2) unstable; urgency=low
+
+  * Preferr univention-mail-posfix as default-mta (Bug #35525)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 20 Aug 2014 17:10:47 +0200
+
 univention-maintenance (7.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35138)
@@ -7,7 +13,7 @@ univention-maintenance (7.0.0-1) unstable; urgency=low
 univention-maintenance (6.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
-  * Update/review UCR variable descriptions (Bug #30943)	
+  * Update/review UCR variable descriptions (Bug #30943)
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 10 Jun 2013 15:01:58 +0200
 
@@ -185,4 +191,3 @@ univention-wartung (1.0-1) unstable; urgency=low
   * Initial Release.
 
  -- Sven Dreyer <dreyer@univention.de>  Thu, 28 Aug 2003 11:43:45 +0200
-

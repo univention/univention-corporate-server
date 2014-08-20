@@ -15,7 +15,7 @@ Depends: ${misc:Depends},
  nmap,
  mrtg,
  netcat,
- mail-transport-agent,
+ univention-mail-postfix | mail-transport-agent,
  cron,
  univention-config-registry,
  python-univention-lib (>= 1.0.25-1)
