@@ -1,3 +1,9 @@
+univention-system-setup (8.0.21-2) unstable; urgency=low
+
+  * Bug #35637: Remove setting locale UCRV.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 20 Aug 2014 09:28:46 +0200
+
 univention-system-setup (8.0.21-1) unstable; urgency=low
 
   * Bug #31751: Remove managed- and mobile client
