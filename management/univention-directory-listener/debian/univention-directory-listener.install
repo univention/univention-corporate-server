@@ -4,6 +4,6 @@ src/verify usr/sbin/
 src/listener-ctrl usr/sbin/
 python/get_notifier_id.py usr/share/univention-directory-listener/
 python/ldap_server.py usr/lib/univention-directory-listener/system/
-python/listener.py usr/lib/python2.7/site-packages/
+python/listener.py usr/share/pyshared/
 03univention-directory-listener.inst usr/lib/univention-install/
 etc/network/if-post-down.d/univention-directory-listener etc/network/if-post-down.d/

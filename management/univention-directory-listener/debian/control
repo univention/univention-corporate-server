@@ -7,12 +7,13 @@ Build-Depends: debhelper (>= 9),
  libssl-dev,
  libldap2-dev,
  libdb3-dev,
- python2.7-dev,
+ python-all-dev,
  libunivention-debug-dev (>= 0.8),
  libunivention-config-dev,
  libunivention-policy-dev,
  univention-config-dev,
  libunivention-policy-dev
+XS-Python-Version: 2.6, 2.7
 
 Package: univention-directory-listener
 Architecture: any

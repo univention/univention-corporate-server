@@ -70,4 +70,4 @@ override_dh_installdocs:
 	dh_installdocs --link-doc=univention-directory-listener
 
 %:
-	dh $@
+	dh $@ --with python_support
