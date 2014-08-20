@@ -1,3 +1,9 @@
+univention-nagios-servicechecks (4.0.0-1) unstable; urgency=low
+
+  * Starting UCS 4.0 development (Bug #35265)
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 20 Aug 2014 10:25:13 +0200
+
 univention-nagios-servicechecks (3.0.1-1) unstable; urgency=low
 
   * Updated check_univention_squid and check_univention_dansguardian to check for

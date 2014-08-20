@@ -1,7 +1,7 @@
 /*
  * Univention libvirt nagios plugin
  *
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2011-2014 Univention GmbH
  *
  * http://www.univention.de/
  *

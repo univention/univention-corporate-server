@@ -1,3 +1,9 @@
+univention-nagios-raid (4.0.0-1) unstable; urgency=low
+
+  * Starting UCS 4.0 development (Bug #35265)
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 20 Aug 2014 10:24:06 +0200
+
 univention-nagios-raid (3.0.0-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)

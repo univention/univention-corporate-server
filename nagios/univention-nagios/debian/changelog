@@ -1,3 +1,9 @@
+univention-nagios (8.0.0-1) unstable; urgency=low
+
+  * Starting UCS 4.0 development (Bug #35265)
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 20 Aug 2014 10:13:03 +0200
+
 univention-nagios (7.0.6-4) unstable; urgency=low
 
   * Fix UNIVENTION_NTP nagios check to use check_ntp_time (Bug #34570)

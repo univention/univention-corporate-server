@@ -4,7 +4,7 @@
 # Univention Nagios Plugin
 #  check_univention_ldap: check ldap status
 #
-# Copyright 2007-2013 Univention GmbH
+# Copyright 2007-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
