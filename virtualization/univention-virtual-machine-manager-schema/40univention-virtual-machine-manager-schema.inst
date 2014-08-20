@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 
 NAME="univention-virtual-machine-manager-schema"
 
@@ -123,6 +123,14 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "cn=Virtual Machine Manager,$ldap_base" \
 	--set name="Information" || die
+
+univention-directory-manager container/cn create "$@" --ignore_exists \
+	--position "cn=Virtual Machine Manager,$ldap_base" \
+	--set name="CloudConnection" || die
+
+univention-directory-manager container/cn create "$@" --ignore_exists \
+	--position "cn=Virtual Machine Manager,$ldap_base" \
+	--set name="CloudType" || die
 
 . /usr/share/univention-lib/base.sh || exit 1
 stop_udm_cli_server

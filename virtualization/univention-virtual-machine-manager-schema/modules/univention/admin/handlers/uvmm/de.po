@@ -7,228 +7,170 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager-schema\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-10-25 15:30+0200\n"
+"POT-Creation-Date: 2014-08-20 15:36+0200\n"
 "PO-Revision-Date: 2012-10-25 14:59+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: modules/univention/admin/handlers/uvmm/info.py:46
-msgid "UVMM: Machine information"
-msgstr "UVMM: Informationen zur Maschine"
-
-#: modules/univention/admin/handlers/uvmm/info.py:52
-#: modules/univention/admin/handlers/uvmm/info.py:53
-msgid "UUID"
-msgstr "UUID"
-
-#: modules/univention/admin/handlers/uvmm/info.py:62
-msgid "Description"
-msgstr "Beschreibung"
-
-#: modules/univention/admin/handlers/uvmm/info.py:63
-msgid "Description of virtual machine"
-msgstr "Beschreibung der virtuellen Maschine"
-
-#: modules/univention/admin/handlers/uvmm/info.py:72
-#: modules/univention/admin/handlers/uvmm/profile.py:264
-#: modules/univention/admin/handlers/uvmm/profile.py:265
-msgid "Operating system"
-msgstr "Betriebssystem"
-
-#: modules/univention/admin/handlers/uvmm/info.py:73
-msgid "Name of the operation system"
-msgstr "Name des Betriebssystem"
-
-#: modules/univention/admin/handlers/uvmm/info.py:82
-msgid "Contact"
-msgstr "Kontakt"
-
-#: modules/univention/admin/handlers/uvmm/info.py:91
-msgid "Profile"
-msgstr "Profil"
-
-#: modules/univention/admin/handlers/uvmm/info.py:92
-msgid "Reference to the profile used for defining this VM"
-msgstr "Referenz auf das bei der Definition genutzte Profil"
-
-#: modules/univention/admin/handlers/uvmm/info.py:104
-#: modules/univention/admin/handlers/uvmm/info.py:105
-#: modules/univention/admin/handlers/uvmm/profile.py:313
-#: modules/univention/admin/handlers/uvmm/profile.py:314
-msgid "General"
-msgstr "Allgemein"
-
-#: modules/univention/admin/handlers/uvmm/info.py:104
-msgid "Virtual machine information"
-msgstr "Informationen zur virtuelle Maschine"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:48
-msgid "UVMM: Profile"
-msgstr "UVMM: Profil"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:56
-msgid "hard drive"
-msgstr "Festplatte"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:57
-msgid "CDROM drive"
-msgstr "CDROM-Laufwerk"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:58
-msgid "Network"
-msgstr "Netzwerk"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:65
-msgid "Automatic"
-msgstr "Automatisch"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:74
-msgid "Full virtualization (KVM)"
-msgstr "Volle Virtualisierung (KVM)"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:75
-msgid "Full virtualization (XEN)"
-msgstr "Volle Virtualisierung (XEN)"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:76
-msgid "Paravirtualization (XEN)"
-msgstr "Paravirtualisierung (XEN)"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:84
-msgid "Coordinated Universal Time"
-msgstr "Koordinierte Weltzeit"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:85
-msgid "Local time zone"
-msgstr "Lokale Zeitzone"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:93
-msgid "Hypervisor default"
-msgstr "Hypervisor-Standard"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:94
-msgid "No host cacheing, no forced sync"
-msgstr "Kein Host-Caching, kein erzwungenes sync"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:95
-msgid "Read caching, forced sync"
-msgstr "Lese-Caching, erzwungenes sync"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:96
-msgid "Read/write caching, no forced sync"
-msgstr "Lese-/Schreib-Caching, kein erzwungenes sync"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:97
-msgid "No host caching, forced sync"
-msgstr "Kein Host-Caching, erzwungenes sync"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:98
-msgid "Read/write caching, sync filtered out"
-msgstr "Lese-/Schreib-Caching, herausgefiltertes sync"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:104
-#: modules/univention/admin/handlers/uvmm/profile.py:105
-msgid "Name"
-msgstr "Name"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:114
-msgid "Name prefix"
-msgstr "Namenspräfix"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:115
-msgid "Prefix for the name of virtual machines"
-msgstr "Präfix für den Namen von virtuellen Maschinen"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:124
-msgid "Architecture"
-msgstr "Architektur"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:125
-msgid "Architecture of the virtual machine"
-msgstr "Architektur der virtuellen Maschine"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:134
-#: modules/univention/admin/handlers/uvmm/profile.py:135
-msgid "Virtualisation Technology"
-msgstr "Virtualisierungstechnology"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:144
-msgid "CPUs"
-msgstr "Prozessoren"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:145
-msgid "Number of virtual CPUs"
-msgstr "Anzahl der Prozessoren"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:154
-msgid "Memory"
-msgstr "Speicher"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:155
-msgid "Amount of memory"
-msgstr "Größe des Speichers"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:164
-msgid "Disk space"
-msgstr "Festplatten Speicherplatz"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:165
-msgid "Amount of disk space"
-msgstr "Größe der Festplatte"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:174
-msgid "Disk cache"
-msgstr "Festplatten Cache"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:175
-msgid "Disk cache handling on host"
-msgstr "Festplatten-Cacheverwaltung des Hosts"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:184
-msgid "Network interface"
-msgstr "Netz-Interface"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:185
-msgid "Bridging interface"
-msgstr "Bridging Interface"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:194
-#: modules/univention/admin/handlers/uvmm/profile.py:332
-msgid "Remote access"
-msgstr "Fernzugriff"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:195
+#: modules/univention/admin/handlers/uvmm/profile.py:199
 msgid "Active VNC remote acess"
 msgstr "Aktiviert den VNC Fernzugriff"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:204
-#: modules/univention/admin/handlers/uvmm/profile.py:205
-msgid "Keyboard layout"
-msgstr "Tastaturlayout"
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:56
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:56
+msgid "Add"
+msgstr "Hinzufügen"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:214
-#: modules/univention/admin/handlers/uvmm/profile.py:215
-msgid "Kernel"
-msgstr "Kernel"
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:56
+msgid "Add Cloud Connection"
+msgstr "Cloud-Zuagngsdaten hinzufügen"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:224
-#: modules/univention/admin/handlers/uvmm/profile.py:225
-msgid "Kernel parameter"
-msgstr "Kernel Parameter"
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:56
+msgid "Add Cloud Type"
+msgstr "Cloud-Typ hinzufügen"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:234
-#: modules/univention/admin/handlers/uvmm/profile.py:235
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:55
+msgid "Add, edit and delete Cloud Connections"
+msgstr "Hinzufügen, bearbeiten und löschen von Cloud-Zuagngsdaten"
+
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:55
+msgid "Add, edit and delete Cloud Types"
+msgstr "Hinzufügen, bearbeiten und löschen von Cloud-Typen"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:169
+msgid "Amount of disk space"
+msgstr "Größe der Festplatte"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:159
+msgid "Amount of memory"
+msgstr "Größe des Speichers"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:128
+msgid "Architecture"
+msgstr "Architektur"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:129
+msgid "Architecture of the virtual machine"
+msgstr "Architektur der virtuellen Maschine"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:67
+msgid "Automatic"
+msgstr "Automatisch"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:342
+msgid "Boot configuration"
+msgstr "Bootkonfiguration"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:258
+msgid "Boot devices"
+msgstr "Boot-Device"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:189
+msgid "Bridging interface"
+msgstr "Bridging Interface"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:58
+msgid "CDROM drive"
+msgstr "CDROM-Laufwerk"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:148
+msgid "CPUs"
+msgstr "Prozessoren"
+
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:81
+msgid "Cloud Connection parameters"
+msgstr "Cloud-Zuagngsdaten Parameter"
+
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:54
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:71
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:54
+msgid "Cloud Type"
+msgstr "Cloud-Typ"
+
+#: modules/univention/admin/handlers/uvmm/info.py:86
+msgid "Contact"
+msgstr "Kontakt"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:87
+msgid "Coordinated Universal Time"
+msgstr "Koordinierte Weltzeit"
+
+#: modules/univention/admin/handlers/uvmm/info.py:66
+msgid "Description"
+msgstr "Beschreibung"
+
+#: modules/univention/admin/handlers/uvmm/info.py:67
+msgid "Description of virtual machine"
+msgstr "Beschreibung der virtuellen Maschine"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:178
+msgid "Disk cache"
+msgstr "Festplatten Cache"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:179
+msgid "Disk cache handling on host"
+msgstr "Festplatten-Cacheverwaltung des Hosts"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:168
+msgid "Disk space"
+msgstr "Festplatten Speicherplatz"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:77
+msgid "Full virtualization (KVM)"
+msgstr "Volle Virtualisierung (KVM)"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:78
+msgid "Full virtualization (XEN)"
+msgstr "Volle Virtualisierung (XEN)"
+
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:95
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:96
+#: modules/univention/admin/handlers/uvmm/info.py:109
+#: modules/univention/admin/handlers/uvmm/info.py:110
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:74
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:75
+#: modules/univention/admin/handlers/uvmm/profile.py:319
+#: modules/univention/admin/handlers/uvmm/profile.py:320
+msgid "General"
+msgstr "Allgemein"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:96
+msgid "Hypervisor default"
+msgstr "Hypervisor-Standard"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:238
+#: modules/univention/admin/handlers/uvmm/profile.py:239
 msgid "Initramfs disk"
 msgstr "Iinitramfs Disk"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:244
-msgid "Use advanced kernel configuarion"
-msgstr "Verwende erweiterte Kernelkonfiguration"
+#: modules/univention/admin/handlers/uvmm/profile.py:218
+#: modules/univention/admin/handlers/uvmm/profile.py:219
+msgid "Kernel"
+msgstr "Kernel"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:245
+#: modules/univention/admin/handlers/uvmm/profile.py:228
+#: modules/univention/admin/handlers/uvmm/profile.py:229
+msgid "Kernel parameter"
+msgstr "Kernel Parameter"
+
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:82
+msgid "Key-value pair storing needed parameters for the Cloud Connection"
+msgstr "Schlüssel-Wert-Paar zur Speicherung der benötigten Parameter für die Cloud-Verbindung"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:208
+#: modules/univention/admin/handlers/uvmm/profile.py:209
+msgid "Keyboard layout"
+msgstr "Tastaturlayout"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:88
+msgid "Local time zone"
+msgstr "Lokale Zeitzone"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:249
 msgid ""
 "Manually specify the kernel configuration for paravirtualized machines or "
 "use pyGrub as bootloader"
@@ -236,44 +178,185 @@ msgstr ""
 "Entweder kann manuell die Kernelkonfiguration für die paravirtualisierte "
 "Maschine angegeben werden oder es wird pyGrub als Bootloder verwendet"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:254
-msgid "Boot devices"
-msgstr "Boot-Device"
+#: modules/univention/admin/handlers/uvmm/profile.py:158
+msgid "Memory"
+msgstr "Speicher"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:255
-msgid "Order of boot devices"
-msgstr "Reihenfolge der Boot-Devices"
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:61
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:62
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:61
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:62
+#: modules/univention/admin/handlers/uvmm/profile.py:108
+#: modules/univention/admin/handlers/uvmm/profile.py:109
+msgid "Name"
+msgstr "Name"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:274
-msgid "Use para-virtual driver for hard drives"
-msgstr "Verwende paravirtualisierte Treiber für Festplatten"
+#: modules/univention/admin/handlers/uvmm/info.py:77
+msgid "Name of the operation system"
+msgstr "Name des Betriebssystem"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:283
-msgid "Use para-virtual driver for network interface"
-msgstr "Verwende paravirtualisierte Treiber für Netzwerkkarten"
+#: modules/univention/admin/handlers/uvmm/profile.py:118
+msgid "Name prefix"
+msgstr "Namenspräfix"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:292
-msgid "Use para-virtual driver for CDROM drives"
-msgstr "Verwende paravirtualisierte Treiber für CDROM-Laufwerke"
+#: modules/univention/admin/handlers/uvmm/profile.py:59
+msgid "Network"
+msgstr "Netzwerk"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:301
-msgid "Real Time Clock offset"
-msgstr "Realzeituhrversatz"
+#: modules/univention/admin/handlers/uvmm/profile.py:188
+msgid "Network interface"
+msgstr "Netz-Interface"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:302
+#: modules/univention/admin/handlers/uvmm/profile.py:97
+msgid "No host cacheing, no forced sync"
+msgstr "Kein Host-Caching, kein erzwungenes sync"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:100
+msgid "No host caching, forced sync"
+msgstr "Kein Host-Caching, erzwungenes sync"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:149
+msgid "Number of virtual CPUs"
+msgstr "Anzahl der Prozessoren"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:306
 msgid "Offset of instances Real Time Clock to host computers clock"
 msgstr ""
 "Versatz der Realzeituhr der Instanz gegenüber der Uhr der "
 "Virtualisierungsservers"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:313
-msgid "Virtual machine profile"
-msgstr "Profil für eine virtuelle Maschine"
+#: modules/univention/admin/handlers/uvmm/info.py:76
+#: modules/univention/admin/handlers/uvmm/profile.py:268
+#: modules/univention/admin/handlers/uvmm/profile.py:269
+msgid "Operating system"
+msgstr "Betriebssystem"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:320
+#: modules/univention/admin/handlers/uvmm/profile.py:259
+msgid "Order of boot devices"
+msgstr "Reihenfolge der Boot-Devices"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:79
+msgid "Paravirtualization (XEN)"
+msgstr "Paravirtualisierung (XEN)"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:119
+msgid "Prefix for the name of virtual machines"
+msgstr "Präfix für den Namen von virtuellen Maschinen"
+
+#: modules/univention/admin/handlers/uvmm/info.py:95
+msgid "Profile"
+msgstr "Profil"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:98
+msgid "Read caching, forced sync"
+msgstr "Lese-Caching, erzwungenes sync"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:99
+msgid "Read/write caching, no forced sync"
+msgstr "Lese-/Schreib-Caching, kein erzwungenes sync"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:101
+msgid "Read/write caching, sync filtered out"
+msgstr "Lese-/Schreib-Caching, herausgefiltertes sync"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:305
+msgid "Real Time Clock offset"
+msgstr "Realzeituhrversatz"
+
+#: modules/univention/admin/handlers/uvmm/info.py:96
+msgid "Reference to the profile used for defining this VM"
+msgstr "Referenz auf das bei der Definition genutzte Profil"
+
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:72
+msgid "Reference to the type of the cloud connection"
+msgstr "Referenz auf den Typ der Cloud-Zuagngsdaten"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:198
+#: modules/univention/admin/handlers/uvmm/profile.py:338
+msgid "Remote access"
+msgstr "Fernzugriff"
+
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:56
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:56
+msgid "Search"
+msgstr "Suche"
+
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:56
+msgid "Search for Cloud Connections"
+msgstr "Suche nach Cloud-Zuagngsdaten"
+
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:56
+msgid "Search for Cloud Types"
+msgstr "Suche nach Cloud-Typen"
+
+#: modules/univention/admin/handlers/uvmm/info.py:56
+#: modules/univention/admin/handlers/uvmm/info.py:57
+msgid "UUID"
+msgstr "UUID"
+
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:49
+msgid "UVMM: Cloud Connections"
+msgstr "UVMM: Cloud-Zuagngsdaten"
+
+#: modules/univention/admin/syntax.d/univention-virtual-machine-manager-schema.py:15
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:49
+msgid "UVMM: Cloud Types"
+msgstr "UVMM: Cloud-Typen"
+
+#: modules/univention/admin/handlers/uvmm/info.py:48
+msgid "UVMM: Machine information"
+msgstr "UVMM: Informationen zur Maschine"
+
+#: modules/univention/admin/syntax.d/univention-virtual-machine-manager-schema.py:2
+#: modules/univention/admin/handlers/uvmm/profile.py:48
+msgid "UVMM: Profile"
+msgstr "UVMM: Profil"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:248
+msgid "Use advanced kernel configuarion"
+msgstr "Verwende erweiterte Kernelkonfiguration"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:296
+msgid "Use para-virtual driver for CDROM drives"
+msgstr "Verwende paravirtualisierte Treiber für CDROM-Laufwerke"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:278
+msgid "Use para-virtual driver for hard drives"
+msgstr "Verwende paravirtualisierte Treiber für Festplatten"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:287
+msgid "Use para-virtual driver for network interface"
+msgstr "Verwende paravirtualisierte Treiber für Netzwerkkarten"
+
+#: modules/univention/admin/syntax.d/univention-virtual-machine-manager-schema.py:12
+msgid "Value must be an positive capacity (xx.x [kmgtp][[i]B])"
+msgstr "Wert muss eine positive Kapazität enthalten (xx.x [kmgtp][[i]B])"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:326
 msgid "Virtual hardware"
 msgstr "Virtuelle Hardware"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:336
-msgid "Boot configuration"
-msgstr "Bootkonfiguration"
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:95
+msgid "Virtual machine cloud connection"
+msgstr "Zugangsdaten der Cloud"
+
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:74
+msgid "Virtual machine cloud type"
+msgstr "Typ der Cloud"
+
+#: modules/univention/admin/handlers/uvmm/info.py:109
+msgid "Virtual machine information"
+msgstr "Informationen zur virtuelle Maschine"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:319
+msgid "Virtual machine profile"
+msgstr "Profil für eine virtuelle Maschine"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:138
+#: modules/univention/admin/handlers/uvmm/profile.py:139
+msgid "Virtualisation Technology"
+msgstr "Virtualisierungstechnology"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:57
+msgid "hard drive"
+msgstr "Festplatte"
