@@ -1,3 +1,10 @@
+univention-server (10.0.1-1) unstable; urgency=low
+
+  * Don't set specific bootsplash theme for every server role
+    (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 21 Aug 2014 13:36:44 +0200
+
 univention-server (10.0.0-4) unstable; urgency=low
 
   * Fix dependency ordering (Bug #35637)

@@ -31,7 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 xargs -d '\n' univention-config-registry set <<__UCR__
-bootsplash/theme?domaincontroller_slave
 ldap/server/port?7389
 ldap/server/type?slave
 server/password/interval?21

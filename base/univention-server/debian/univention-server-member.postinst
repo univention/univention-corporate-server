@@ -31,7 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 xargs -d '\n' univention-config-registry set <<__UCR__
-bootsplash/theme?memberserver
 samba/share/home?no
 samba/share/netlogon?no
 server/password/interval?21

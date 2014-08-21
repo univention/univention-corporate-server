@@ -33,7 +33,6 @@
 eval "$(univention-config-registry shell)"
 
 xargs -d '\n' univention-config-registry set <<__UCR__
-bootsplash/theme?domaincontroller_master
 ldap/server/name="$hostname.$domainname"
 ldap/server/port?7389
 ldap/server/type=master
