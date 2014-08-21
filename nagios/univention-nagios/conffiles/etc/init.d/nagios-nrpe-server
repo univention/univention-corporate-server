@@ -56,21 +56,26 @@ case "$1" in
 	    . "/usr/share/univention-config-registry/init-autostart.lib"
 	    check_autostart nagios-client nagios/client/autostart
 	fi
-	test -e $PIDDIR/nrpe.pid && rm $PIDDIR/nrpe.pid
+	if [ "$INETD" = 1 ]; then
+		exit 1
+	fi
 	log_daemon_msg "Starting $DESC" "$NAME"
-	start_daemon $NICENESS $DAEMON -c $CONFIG -d $DAEMON_OPTS
+	start_daemon -p $PIDDIR/nrpe.pid $NICENESS $DAEMON  -c $CONFIG -d $DAEMON_OPTS
 	log_end_msg $?
 	;;
   stop)
 	log_daemon_msg "Stopping $DESC" "$NAME"
-	start-stop-daemon --stop --quiet --oknodo --exec $DAEMON --retry 3
+	start-stop-daemon --stop --quiet --oknodo --pidfile $PIDDIR/nrpe.pid --retry 15
 	log_end_msg $?
 	;;
   reload|force-reload)
 	log_daemon_msg "Reloading $DESC configuration files" "$NAME"
-	start-stop-daemon --stop --signal HUP --quiet --exec $DAEMON
+	start-stop-daemon --stop --signal HUP --quiet --pidfile $PIDDIR/nrpe.pid
 	log_end_msg $?
 	;;
+  status)
+    status_of_proc -p $PIDDIR/nrpe.pid "$DAEMON" "$NAME" && exit 0 || exit $?
+    ;;
   restart)
 	$0 stop
 	sleep 1

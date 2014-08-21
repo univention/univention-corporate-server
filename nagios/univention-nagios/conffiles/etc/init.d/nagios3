@@ -147,6 +147,12 @@ check_univentionConfigComplete () {
 }
 
 start () {
+
+  if [ "$ENABLED" = "no"  ]; then
+	  log_warning_msg "Not starting Nagios3 - set ENABLED to yes in /etc/default/nagios3"
+	  exit 0
+  fi
+
   DIRECTORY=$(dirname $THEPIDFILE)
   [ ! -d $DIRECTORY ] && mkdir -p $DIRECTORY
   chown nagios:nagios $DIRECTORY
@@ -208,7 +214,7 @@ status()
       log_action_end_msg 1 "$DAEMON failed"
       exit 1
     else
-      log_action_end_msg 0 "not running"
+      log_action_end_msg 1 "not running"
       exit 3
     fi
   fi
@@ -229,6 +235,12 @@ reload () {
     exit 6
  fi
 }
+
+
+check() {
+    $DAEMON -v $NAGIOSCFG
+}
+
 
 case "$1" in
   start)
@@ -261,6 +273,9 @@ case "$1" in
   ;;
   status)
     status
+    ;;
+  check)
+    check
     ;;
   *)
     log_failure_msg "Usage: $0 {start|stop|restart|reload|force-reload|status}" >&2
