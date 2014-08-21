@@ -8,7 +8,7 @@ Standards-Version: 3.8.2
 Package: univention-kernel-image
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersion}, univention-initrd (>= 6.0.0-2), xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux-free, firmware-linux-nonfree, firmware-adi, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386], firmware-libertas, firmware-myricom, univention-config 
+Depends: linux-image-${F:KernelVersion}, univention-initrd (>= 6.0.0-2), xfsprogs, libc6-i686 [i386], univention-config 
 Description: UCS - Linux kernel (standard)
  This meta-package depends on the latest UCS kernel image. It supports up to
  64 GB RAM on 32 bit CPUs and up to 128 TB memory on 64 bit CPUs.
@@ -23,7 +23,7 @@ Description: UCS - Linux kernel (standard)
 Package: univention-kernel-image-486
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersion486}, univention-initrd (>= 6.0.0-2), xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux-free, firmware-linux-nonfree, firmware-netxen, firmware-adi, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386], firmware-libertas, firmware-myricom, univention-config 
+Depends: linux-image-${F:KernelVersion486}, univention-initrd (>= 6.0.0-2), xfsprogs, libc6-i686 [i386], univention-config 
 Description: UCS - Linux kernel (for old systems)
  This meta-package depends on the latest UCS kernel image compatible
  with older 32 bit CPUs. The standard kernel in UCS for i386 requires

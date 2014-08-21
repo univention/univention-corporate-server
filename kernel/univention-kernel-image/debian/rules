@@ -30,17 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-export DH_COMPAT=7
+ABI := ucs78
 
-ABI := ucs73
-
-SOURCEVERSION := 3.10
-amd64_VERSION := 3.10.0-${ABI}-amd64
-amd64_VERSION_64 := 3.10.0-${ABI}-amd64
-amd64_VERSION_XEN := 3.10.0-${ABI}-amd64
-i386_VERSION := 3.10.0-${ABI}-686-pae
-i386_VERSION_64 := 3.10.0-${ABI}-pae
-i386_VERSION_XEN := 3.10.0-${ABI}-pae
+SOURCEVERSION := 3.16
+amd64_VERSION := 3.16-${ABI}-amd64
+amd64_VERSION_64 := 3.16-${ABI}-amd64
+amd64_VERSION_XEN := 3.16-${ABI}-amd64
+i386_VERSION := 3.16-${ABI}-686-pae
+i386_VERSION_64 := 3.16-${ABI}-pae
+i386_VERSION_XEN := 3.16-${ABI}-pae
 
 DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
@@ -48,7 +46,7 @@ DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
 KERNELVERSION := ${${DEB_BUILD_ARCH}_VERSION}
 KERNELVERSION64 := ${${DEB_BUILD_ARCH}_VERSION_64}
 KERNELVERSIONXEN := ${${DEB_BUILD_ARCH}_VERSION_XEN}
-KERNELVERSION486 := 3.10.0-${ABI}-486
+KERNELVERSION486 := 3.16-${ABI}-486
 
 configure:
 
