@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.76-25) unstable; urgency=medium
+
+  * In ad/member mode exclude users and clients from license count
+    which are flagged as synced (Bug #35647)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 21 Aug 2014 18:14:48 +0200
+
 univention-directory-manager-modules (9.0.76-24) unstable; urgency=low
 
   [ Stefan Gohmann ]
