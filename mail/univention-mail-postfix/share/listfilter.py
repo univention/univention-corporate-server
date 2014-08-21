@@ -1,9 +1,9 @@
-#!/usr/bin/python2.6 -u
+#!/usr/bin/python2.7 -u
 #
 # Univention mail Postfix Policy
 #  check allowed email senders for groups and distlist
 #
-# Copyright 2005-2013 Univention GmbH
+# Copyright 2005-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
