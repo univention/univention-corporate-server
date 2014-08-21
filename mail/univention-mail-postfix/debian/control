@@ -23,6 +23,7 @@ Conflicts: univention-mail,
  exim4-config,
  univention-mail-postfix-kolab2
 Replaces: univention-mail-postfix-forward (<< 6.0)
+Provides: default-mta
 Breaks: univention-mail-postfix-forward (<< 6.0)
 Description: UCS - postfix configuration
  This package contains a basic configuration for the postfix
