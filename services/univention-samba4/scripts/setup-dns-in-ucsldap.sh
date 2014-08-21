@@ -102,8 +102,6 @@ fi
 ## The DNS-entries recommended by Samba4 provision in /var/lib/samba/private/dns/samba4.qa.zone
 ## need to be created in the UCS directory service for univention-bind
 
-LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH;		## currently necessary for ldbtools
-
 eval "$(univention-config-registry shell)"
 
 # LDB_URI="ldapi:///var/lib/samba/private/ldap_priv/ldapi"	# seems to open a bit too late after samba4 startup
