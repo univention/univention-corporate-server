@@ -1,3 +1,9 @@
+univention-system-setup (8.0.21-3) unstable; urgency=low
+
+  * Bug #35675: Re-add empty scripts directories.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 21 Aug 2014 09:54:31 +0200
+
 univention-system-setup (8.0.21-2) unstable; urgency=low
 
   * Bug #35637: Remove setting locale UCRV.
