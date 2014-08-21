@@ -67,7 +67,7 @@ class RoleScript(AptScript):
 			shutil.copy(filename, '/var/cache/apt/archives/')
 		self.reopen_cache()
 
-		current_server_role_package = self.get_package_for_role(self.current_server_role)
+		current_server_role_package = self.get_package_for_role(self.current_server_role) if self.current_server_role else None
 		wanted_server_role_package = self.get_package_for_role(self.wanted_server_role)
 		if wanted_server_role_package is None:
 			return False
