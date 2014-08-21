@@ -5,7 +5,8 @@ src: univention-s4-connector
 fix: 8.0.33-72.497.201408191526
 version: [2,3]
 desc: |
-    * Fix a traceback due to an undefined variable in the password synchronization module
-    * The SID synchroniation from OpenLDAP to Samba 4 has been fixed. This is
-      used in UCS@school environments.
+  * Fix a traceback due to an undefined variable in the password
+    synchronization module
+  * The SID synchroniation from OpenLDAP to Samba 4 has been fixed. This is
+    used in UCS@school environments.
 bug: [33263,35626]
