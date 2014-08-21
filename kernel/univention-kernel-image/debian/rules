@@ -32,7 +32,7 @@
 
 export DH_COMPAT=7
 
-ABI := ucs63
+ABI := ucs73
 
 SOURCEVERSION := 3.10
 amd64_VERSION := 3.10.0-${ABI}-amd64
