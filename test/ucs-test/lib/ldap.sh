@@ -1,4 +1,4 @@
-PYTHON=python2.6
+PYTHON=python2.7
 
 scriptlet_error () {
 	local function="$1"
