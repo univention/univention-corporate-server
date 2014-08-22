@@ -1,3 +1,10 @@
+ucs-test (5.0.0-5) unstable; urgency=low
+
+  * removed "dh_install --sourcedir=$(CURDIR)" from debian/rules in attempt to
+  	fix build problems(Bug #35664)
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 22 Aug 2014 14:34:55 +0200
+
 ucs-test (5.0.0-4) unstable; urgency=low
 
   * bump version number
