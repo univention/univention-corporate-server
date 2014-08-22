@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python2.6
+#!/usr/share/ucs-test/runner python2.7
 ## desc: Test the schema reregistration of a known objectClass
 ## tags:
 ##  - ldapextensions
