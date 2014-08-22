@@ -1,3 +1,9 @@
+univention-mozilla-firefox (9.0.0-1) unstable; urgency=low
+
+  * Starting UCS 4.0 development (Bug #35266)
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 22 Aug 2014 09:52:21 +0200
+
 univention-mozilla-firefox (8.0.0-3) unstable; urgency=low
 
   * Revert last change (Bug #33640)

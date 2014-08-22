@@ -1,3 +1,9 @@
+univention-java (7.0.0-1) unstable; urgency=low
+
+  * Starting UCS 4.0 development (Bug #35266)
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 22 Aug 2014 09:47:35 +0200
+
 univention-java (6.0.0-6) stable; urgency=low
 
   * Fix ucslint issues 

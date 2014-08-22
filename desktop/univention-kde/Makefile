@@ -3,7 +3,7 @@
 # univention-kde
 #  makefile
 #
-# Copyright 2013 Univention GmbH
+# Copyright 2013-2014 Univention GmbH
 #
 # http://www.univention.de/
 #

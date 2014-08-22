@@ -1,3 +1,9 @@
+univention-kde (9.0.0-1) unstable; urgency=low
+
+  * Starting UCS 4.0 development (Bug #35266)
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 22 Aug 2014 09:48:45 +0200
+
 univention-kde (8.0.0-3) unstable; urgency=low
 
   * Remove univention-flashplugin from Recommends (Bug #31852)

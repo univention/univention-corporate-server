@@ -1,3 +1,9 @@
+univention-x-core (8.0.0-1) unstable; urgency=low
+
+  * Starting UCS 4.0 development (Bug #35266)
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 22 Aug 2014 09:54:11 +0200
+
 univention-x-core (7.0.0-4) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30944)
