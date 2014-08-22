@@ -27,30 +27,6 @@ class TestUMCNetworkFunctionality(TestUMCSystem):
         self.test_ip_range = []
         self.test_computer_name = ''
 
-    def create_computer(self, computer_name, ip_address,
-                        dns_forward, dns_reverse):
-        """
-        Makes a 'udm/add' request to create a computer with a given params
-        """
-        options = [{"object": {"ip": ip_address,
-                               "network": self.test_network_dn,
-                               "unixhome": "/dev/null",
-                               "ntCompatibility": False,
-                               "shell": "/bin/false",
-                               "primaryGroup": "cn=Windows Hosts,cn=groups," +
-                                               self.ldap_base,
-                               "dnsEntryZoneForward": dns_forward,
-                               "name": computer_name,
-                               "dnsEntryZoneReverse": dns_reverse,
-                    "$options$": {"samba": True,
-                                  "kerberos": True,
-                                  "posix": True,
-                                  "nagios": False},
-                                  "$policies$": {}},
-                    "options": {"container": "cn=computers," + self.ldap_base,
-                                "objectType": "computers/windows"}}]
-        return self.make_udm_request("add", options, "computers/computer")
-
     def create_network(self, netmask="24", dns_forward="", dns_reverse="",
                        dhcp_entry=""):
         """
@@ -75,6 +51,17 @@ class TestUMCNetworkFunctionality(TestUMCSystem):
                        "'%s' failed, no success=True in response: '%s'"
                        % (self.test_network_name, options, request_result))
         self.test_network_dn = request_result[0].get('$dn$')
+
+    def query_dhcp_services(self):
+        """
+        Makes a 'udm/query' request to get the DHCP services available
+        """
+        options = {"superordinate": "None",
+                   "objectType": "dhcp/dhcp",
+                   "objectProperty": "None",
+                   "objectPropertyValue": "",
+                   "hidden": True}
+        return self.make_query_request("udm", options, "dhcp/dhcp")
 
     def get_network_config(self, increase_counter=True):
         """
@@ -178,22 +165,22 @@ class TestUMCNetworkFunctionality(TestUMCSystem):
         default fields presence
         """
         for network in self.query_networks():
-            if not '$dn$' in network:
+            if '$dn$' not in network:
                 utils.fail("The field '$dn$' was not found in the "
                            "networks query, '%s'" % network)
-            if not 'name' in network:
+            if 'name' not in network:
                 utils.fail("The field 'name' was not found in the "
                            "networks query, '%s'" % network)
-            if not '$childs$' in network:
+            if '$childs$' not in network:
                 utils.fail("The field '$childs$' was not found in the "
                            "networks query, '%s'" % network)
-            if not 'labelObjectType' in network:
+            if 'labelObjectType' not in network:
                 utils.fail("The field 'labelObjectType' was not found in the "
                            "networks query, '%s'" % network)
-            if not 'objectType' in network:
+            if 'objectType' not in network:
                 utils.fail("The field 'objectType' was not found in the "
                            "networks query, '%s'" % network)
-            if not 'path' in network:
+            if 'path' not in network:
                 utils.fail("The field 'path' was not found in the "
                            "networks query, '%s'" % network)
 
@@ -223,13 +210,19 @@ class TestUMCNetworkFunctionality(TestUMCSystem):
                        "forward zones for '%s' computer" % (domain_name,
                        self.test_computer_name))
 
-        print("\nChecking if DHCP service '%s' is reported "
-              "in choices for '%s' computer"
-              % (domain_name, self.test_computer_name))
-        if not self.check_dns_dhcp_in_choices("dhcpService", domain_name):
-            utils.fail("The '%s' was not reported as an option for DHCP "
-                       "service for '%s' computer" % (domain_name,
-                       self.test_computer_name))
+        print("\nChecking if a DHCP service is reported "
+              "in choices for '%s' computer" % self.test_computer_name)
+        dhcp_services = self.query_dhcp_services()
+        if dhcp_services:
+            dhcp_service_name = dhcp_services[0].get('name')
+            if not self.check_dns_dhcp_in_choices("dhcpService",
+                                                  dhcp_service_name):
+                utils.fail("The '%s' was not reported as an option for DHCP "
+                           "service for '%s' computer" % (dhcp_service_name,
+                           self.test_computer_name))
+        else:
+            print("\nCheck skipped, since no DHCP services in the "
+                  "domain were found...")
 
     def run_address_reservation_checks(self):
         """
@@ -268,7 +261,7 @@ class TestUMCNetworkFunctionality(TestUMCSystem):
                        "options for IP addresses in the test range: "
                        "'%s', while should not" % (self.test_network_name,
                        network_config, self.test_ip_range))
-        if not ('nextFreeIp' in network_config.get('message')):
+        if 'nextFreeIp' not in network_config.get('message'):
             utils.fail("The response message '%s' does not include "
                        "'nextFreeIp', possibly another error with the "
                        "status code 591 " % network_config)

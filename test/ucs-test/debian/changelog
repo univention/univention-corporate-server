@@ -1,3 +1,273 @@
+ucs-test (4.0.166-70) unstable; urgency=low
+
+  * 67_udm-dns/
+        51_dns_reverse_zone_removal
+        63_dns_ptr_modification_remove_records
+        53_dns_reverse_zone_modification_set_nameserver
+        55_dns_reverse_zone_modification_append_nameserver
+        64_dns_host_record_creation_with_wrong_superordinate
+        52_dns_reverse_zone_creation_set_nameserver
+        62_dns_ptr_creation_append_records
+        76_dns_reverse_zone_modification_remove_nameserver
+        74_dns_srv_record_creation_with_wrong_superordinate
+        60_dns_ptr_modification_set_record
+        65_dns_alias_creation_with_wrong_superordinate
+        57_dns_ptr_creation
+        58_dns_ptr_removal
+        61_dns_ptr_modification_append_records
+        59_dns_ptr_creation_set_record
+        54_dns_reverse_zone_creation_append_nameserver
+    
+    Tests extended with IPv6 cases (Bug #33041)
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 19 Aug 2014 11:24:34 +0200
+
+ucs-test (4.0.166-69) unstable; urgency=low
+
+  * 52_s4connector/133sync_sid: added a SID sync test case (Bug #35626)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Aug 2014 10:56:33 +0200
+
+ucs-test (4.0.166-66) unstable; urgency=low
+
+  * 67_udm-dns/
+    22_dns_host_record_creation_with_all_attributes,
+    50_dns_reverse_zone_check_soa_record_serial_incrementation,
+    24_dns_host_record_creation_set_a,
+    49_dns_reverse_zone_check_soa_record,
+    25_dns_host_record_modification_set_a,
+    27_dns_host_record_modification_append_a,
+    72_dns_host_record_modification_remove_a,
+    26_dns_host_record_creation_append_a:
+    Tests extended with IPv6 cases (Bug #33041)
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 08 Aug 2014 11:31:51 +0200
+
+ucs-test (4.0.166-65) unstable; urgency=low
+
+  * Bug #35584: added small test script that checks if samba/role is
+    set correctly
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 08 Aug 2014 11:27:32 +0200
+
+ucs-test (4.0.166-64) unstable; urgency=low
+
+  * 60_umc-system/31_umc-service-user-authentication: test the UMC user
+    authentication and password change (Bug #34369)
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 05 Aug 2014 14:25:28 +0200
+
+ucs-test (4.0.166-63) unstable; urgency=low
+
+  * 00_base/check_log_files_definitions.py: extended and modified patterns,
+    added separate case for tracebacks;
+    00_base/99check_log_files: a test to extract warnings, errors and
+    tracebacks from the logs (Bug #30751)
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 01 Aug 2014 10:57:53 +0200
+
+ucs-test (4.0.166-62) unstable; urgency=low
+
+  * 20_appcenter/43_installed_apps_check_packages_available_for_i386:
+  	Switched from urllib2 to urllib; minor fixes (Bug #31792)
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 31 Jul 2014 13:46:56 +0200
+
+ucs-test (4.0.166-61) unstable; urgency=low
+
+  * 60_umc/06_non-ucr-policies: a test for non-UCR policies
+    handling in the UMC (Bug #35314)
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 21 Jul 2014 15:03:25 +0200
+
+ucs-test (4.0.166-60) unstable; urgency=low
+
+  * 00_base/47faillog_account-smb-krb: skip this test in S4 environment
+    (Bug #35014)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 19 Jul 2014 14:08:21 +0200
+
+ucs-test (4.0.166-59) unstable; urgency=low
+
+  * 52_s4connector/022_concurrent_deletion_in_ucs: Try to emulate a
+    rejected object (Bug #32263)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Jul 2014 16:33:59 +0200
+
+ucs-test (4.0.166-58) unstable; urgency=low
+
+  * 60_umc-system/41_umc-service-complete-domain-rejoin:
+    test complete rejoin (Bug #34624)
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 14 Jul 2014 15:43:09 +0200
+
+ucs-test (4.0.166-57) unstable; urgency=low
+
+  * 52_s4connector/023_concurrent_deletion_in_ad: skip test until Bug
+    #35345 is fixed (Bug #35345)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 13 Jul 2014 13:12:18 +0200
+
+ucs-test (4.0.166-56) unstable; urgency=low
+
+  * 52_s4connector/02?_concurrent_changes_in_*_same_attribute: skip
+    tests until Bug #35336 is fixed (Bug #35336)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Jul 2014 06:26:52 +0200
+
+ucs-test (4.0.166-55) unstable; urgency=low
+
+  * Disable re-join (Bug #34624)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Jul 2014 09:57:45 +0200
+
+ucs-test (4.0.166-54) unstable; urgency=low
+
+  * Disable quota test until UCS-3.2-3 (Bug #34625)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 09 Jul 2014 12:14:59 +0200
+
+ucs-test (4.0.166-53) unstable; urgency=low
+
+  * udm.py#stop_cli_server(): really catch IOError (Bug #35220)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 08 Jul 2014 11:25:10 +0200
+
+ucs-test (4.0.166-52) unstable; urgency=low
+
+  * 60_umc-system/80_umc-service-license: a test for UMC
+    license management (Bug #34620);
+  * 60_umc-system/FreeForPersonalUseTest.license: a template of
+    a 'Free' license for the test
+
+ -- Dmitry Galkin <galkin@univention.de>  Tue, 08 Jul 2014 10:51:42 +0200
+
+ucs-test (4.0.166-51) unstable; urgency=low
+
+  * 00_base/90change_user_pwd_via_udm: removed the app test flag. It
+    should be re-added if the test case is stable (Bug #35276)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Jul 2014 20:28:52 +0200
+
+ucs-test (4.0.166-50) unstable; urgency=low
+
+  * udm.py#stop_cli_server(): also catch IOError (Bug #35220)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 07 Jul 2014 13:39:12 +0200
+
+ucs-test (4.0.166-49) unstable; urgency=low
+
+  * 52_s4connector/02*concurrent_changes*: Added more concurrent changes
+    test cases (Bug #33621)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Jul 2014 07:53:14 +0200
+
+ucs-test (4.0.166-48) unstable; urgency=low
+
+  * udm.py#stop_cli_server(): catch psutil.NoSuchProcess instead of
+    psutil.error.NoSuchProcess (Bug #35220)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 04 Jul 2014 12:55:14 +0200
+
+ucs-test (4.0.166-47) unstable; urgency=low
+
+  * univention/testing/license_client.py: a tool to issue licenses for
+    testing environments (Bug #35205)
+  * debian/control: added 'python-argparse' to 'ucs-test-framework'
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 04 Jul 2014 11:34:52 +0200
+
+ucs-test (4.0.166-46) unstable; urgency=low
+
+  * 5*_*connector: added more connector group membership tests
+    (Bug #35234)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Jul 2014 08:59:03 +0200
+
+ucs-test (4.0.166-45) unstable; urgency=low
+
+  * Bug #35177: Made tests for app codes executable
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 01 Jul 2014 10:03:58 +0200
+
+ucs-test (4.0.166-44) unstable; urgency=low
+
+  * 53_samba-common/05domain-join-ntlm-auth: removed net ads/rpc join
+    (Bug #35224)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 01 Jul 2014 08:13:35 +0200
+
+ucs-test (4.0.166-43) unstable; urgency=low
+
+  * 51_samba4/41samba-tool_user_password_change: currently we have to
+    wait for the connector replication (Bug #35012)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 01 Jul 2014 07:54:41 +0200
+
+ucs-test (4.0.166-42) unstable; urgency=low
+
+  * 00_base/96rename_domain_*: removed workaround for Bug #34802
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Jun 2014 07:36:26 +0200
+
+ucs-test (4.0.166-41) unstable; urgency=low
+
+  * Bug #35177: Added tests for app codes
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 25 Jun 2014 16:26:10 +0200
+
+ucs-test (4.0.166-40) unstable; urgency=low
+
+  * Bug #34343: fixed wrong output
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 20 Jun 2014 14:38:56 +0200
+
+ucs-test (4.0.166-39) unstable; urgency=low
+
+  * Bug #34343: fixed reference to not existing variable
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 20 Jun 2014 14:07:36 +0200
+
+ucs-test (4.0.166-38) unstable; urgency=low
+
+  * Bug #34343: cleanup fixes again
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 20 Jun 2014 10:53:00 +0200
+
+ucs-test (4.0.166-37) unstable; urgency=low
+
+  * Bug #34343: cleanup fixes
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 19 Jun 2014 11:37:02 +0200
+
+ucs-test (4.0.166-36) unstable; urgency=low
+
+  * Bug #35134: removed fixup and improved inline doc
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 18 Jun 2014 10:07:28 +0200
+
+ucs-test (4.0.166-35) unstable; urgency=low
+
+  * Bug #33571: App Center: Test whether the server is registered on the
+    appcenter/app object
+  * Bug #33572: App Center: Test whether the webinterface is correctly
+    registered
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Jun 2014 16:40:12 +0200
+
+ucs-test (4.0.166-34) unstable; urgency=low
+
+  * Bug #35102: stop mailsink after usage
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 17 Jun 2014 12:04:02 +0200
+
+ucs-test (4.0.166-33) unstable; urgency=low
+
+  * Bug #35134: fixup for network.py: make redirection to be more reliable
+    (previously Bug #34288)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 17 Jun 2014 12:02:02 +0200
+
 ucs-test (4.0.166-32) unstable; urgency=low
 
   * Bug #35098: removed dead code

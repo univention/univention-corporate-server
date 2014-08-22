@@ -580,6 +580,12 @@ function ad_set_retry_rejected ()
 	fi
 }
 
+function ad_connector_restart ()
+{
+	invoke-rc.d univention-ad-connector restart
+	sleep 3 # wait a few seconds
+}
+
 # vim:syntax=sh
 # Local Variables:
 # mode: sh

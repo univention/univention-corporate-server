@@ -1,0 +1,79 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Make concurrent changes in AD"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## bugs:
+##  - 33621
+##  - 33466
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+for((i=0;i<10;i++)); do
+
+	echo "********************************************"
+	echo "* Round $((i+1)) of 10"
+	echo "********************************************"
+
+	username="$(random_chars)"
+	ad_createuser "$username" || fail_test 110
+	AD_DN="CN=$username,CN=users,$(ad_get_base)"
+
+	sleep $i
+
+	ad_set_attribute "$AD_DN" "description" "univention"; fail_bool 0 110
+
+	sleep $i
+	ad_set_attribute "$AD_DN" "homePhone" "1"; fail_bool 0 110
+
+	sleep $i
+	ad_set_attribute "$AD_DN" "telephoneNumber" "2"; fail_bool 0 110
+
+	sleep $i
+	ad_set_attribute "$AD_DN" "company" "Test"; fail_bool 0 110
+
+	sleep $i
+	ad_set_attribute "$AD_DN" "streetAddress" "Street"; fail_bool 0 110
+
+	sleep $i
+	ad_set_attribute "$AD_DN" "l" "Bremen"; fail_bool 0 110
+
+	sleep $i
+	ad_set_attribute "$AD_DN" "postalCode" "28359"; fail_bool 0 110
+		
+	sleep $i
+	ad_set_attribute "$AD_DN" "mobile" "3"; fail_bool 0 110
+
+	sleep $i
+	ad_set_attribute "$AD_DN" "pager" "4"; fail_bool 0 110
+
+	sleep $i
+	ad_set_attribute "$AD_DN" "userWorkstations" "pc01"; fail_bool 0 110
+
+	ad_wait_for_synchronization; fail_bool 0 110
+
+	ad_verify_attribute "$AD_DN" "description" "univention"; fail_bool 0 110
+	ad_verify_attribute "$AD_DN" "homePhone" "1"; fail_bool 0 110
+	ad_verify_attribute "$AD_DN" "telephoneNumber" "2"; fail_bool 0 110
+	ad_verify_attribute "$AD_DN" "company" "Test"; fail_bool 0 110
+	ad_verify_attribute "$AD_DN" "streetAddress" "Street"; fail_bool 0 110
+	ad_verify_attribute "$AD_DN" "l" "Bremen"; fail_bool 0 110
+	ad_verify_attribute "$AD_DN" "postalCode" "28359"; fail_bool 0 110
+	ad_verify_attribute "$AD_DN" "mobile" "3"; fail_bool 0 110
+	ad_verify_attribute "$AD_DN" "pager" "4"; fail_bool 0 110
+	ad_verify_attribute "$AD_DN" "userWorkstations" "pc01"; fail_bool 0 110
+
+	ad_delete "$AD_DN" || fail_test 110
+
+	if [ "$RETVAL" != 100 ]; then
+		break
+	fi
+done
+
+exit $RETVAL

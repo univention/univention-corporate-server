@@ -129,7 +129,7 @@ class TestUMCUserModules(TestUMCSystem):
             if not user_module:
                 utils.fail("The 'id' field is empty or not found in the "
                            "list of umc user modules '%s'" % user_modules)
-            if not ('ucr' in user_module):
+            if 'ucr' not in user_module:
                 utils.fail("The newly created test user '%s' in the test "
                            "group '%s' has access to the '%s' "
                            "module, while should have access to the "

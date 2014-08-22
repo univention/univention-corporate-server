@@ -7,13 +7,9 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-
-
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.testing.utils as utils
-
-
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
@@ -21,6 +17,6 @@ if __name__ == '__main__':
 
 		locations = ['0 1 2 %s.%s' % (uts.random_name(), uts.random_name()), '9 3 5 %s.%s' % (uts.random_name(), uts.random_name()), '6 2 4 %s.%s' % (uts.random_name(), uts.random_name())]
 		srv_record = udm.create_object('dns/srv_record', superordinate = forward_zone, name = '%s tcp %s' % (uts.random_string(), uts.random_string()), location = locations[0])
-		
+
 		udm.modify_object('dns/srv_record', dn = srv_record, superordinate = forward_zone, append = {'location': locations[1:]})
 		utils.verify_ldap_object(srv_record, {'sRVRecord': locations})

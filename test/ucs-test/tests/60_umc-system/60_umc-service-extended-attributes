@@ -31,7 +31,7 @@ class TestUMCExtendedAttributes(TestUMCSystem):
         """
         try:
             user = self.get_object([user_dn], "users/user")[0]
-            if not (user[attribute_key] in old_value):
+            if user[attribute_key] not in old_value:
                 utils.fail("The test user (dn='%s') custom attribute '%s' "
                            "value was incorrect after user object creation, "
                            "should be '%s', but in fact '%s'"
@@ -44,7 +44,7 @@ class TestUMCExtendedAttributes(TestUMCSystem):
             self.modify_object(options, "users/user")
 
             user = self.get_object([user_dn], "users/user")[0]
-            if not (user[attribute_key] in new_value):
+            if user[attribute_key] not in new_value:
                 utils.fail("The test user (dn='%s') custom attribute '%s' "
                            "value was not modified after the object "
                            "odification request, should be '%s', "
@@ -71,7 +71,7 @@ class TestUMCExtendedAttributes(TestUMCSystem):
 
         attribute = self.get_object([dn], "navigation")[0]
         try:
-            if not (attribute[attribute_key] in new_value):
+            if attribute[attribute_key] not in new_value:
                 utils.fail("The test '%s' attribute '%s' was not modified "
                            "to '%s' after the modification request was "
                            "done, attribute state is '%s'"
@@ -124,22 +124,22 @@ class TestUMCExtendedAttributes(TestUMCSystem):
         for the default fields
         """
         for attribute in self.query_extended_attributes():
-            if not '$dn$' in attribute:
+            if '$dn$' not in attribute:
                 utils.fail("The field '$dn$' was not found in "
                            "attributes_query '%s'" % attribute)
-            if not 'name' in attribute:
+            if 'name' not in attribute:
                 utils.fail("The field 'name' was not found in "
                            "attributes_query '%s'" % attribute)
-            if not '$childs$' in attribute:
+            if '$childs$' not in attribute:
                 utils.fail("The field '$childs$' was not found in "
                            "attributes_query '%s'" % attribute)
-            if not 'labelObjectType' in attribute:
+            if 'labelObjectType' not in attribute:
                 utils.fail("The field 'labelObjectType' was not found in "
                            "attributes_query '%s'" % attribute)
-            if not 'path' in attribute:
+            if 'path' not in attribute:
                 utils.fail("The field 'path' was not found in "
                            "attributes_query '%s'" % attribute)
-            if not 'objectType' in attribute:
+            if 'objectType' not in attribute:
                 utils.fail("The field 'objectType' was not found in "
                            "attributes_query '%s'" % attribute)
 

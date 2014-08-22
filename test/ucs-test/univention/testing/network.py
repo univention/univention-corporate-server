@@ -84,6 +84,10 @@ class NetworkRedirector(object):
 		# the following lines are optional! NetworkRedirector does automatic cleanup!
 		nethelper.remove_loop('1.2.3.4', '4.3.2.1')
 		nethelper.remove_redirection('1.1.1.1', 25, 60025)
+
+	It is also possible to redirect all traffic to a specific port.
+    The trailing "/0" is important, otherwise the redirection won't work!
+		nethelper.add_redirection('0.0.0.0/0', 25, 60025)
 	"""
 
 	BIN_IPTABLES = '/sbin/iptables'

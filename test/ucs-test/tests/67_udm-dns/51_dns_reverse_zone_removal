@@ -7,16 +7,20 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-
-
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
-
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
+		# IPv4 case:
 		reverse_zone = udm.create_object('dns/reverse_zone', subnet = '10.20.30', nameserver = uts.random_string())
+
+		udm.remove_object('dns/reverse_zone', dn = reverse_zone)
+		utils.verify_ldap_object(reverse_zone, should_exist = False)
+
+		# IPv6 case:
+		reverse_zone = udm.create_object('dns/reverse_zone', subnet = '2011:06f8:13dc:0002:19b7:d592:09dd', nameserver = uts.random_string())
 
 		udm.remove_object('dns/reverse_zone', dn = reverse_zone)
 		utils.verify_ldap_object(reverse_zone, should_exist = False)

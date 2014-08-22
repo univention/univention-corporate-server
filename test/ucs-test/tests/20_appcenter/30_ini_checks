@@ -1,0 +1,42 @@
+#!/usr/share/ucs-test/runner python
+## desc: Checks if inis have meaningful/non-conflicting values
+## tags: [basic,apptest]
+## roles: [domaincontroller_master]
+## exposure: safe
+
+import sys
+
+from univention.management.console.modules.appcenter.app_center import Application
+
+CATEGORIES = set((
+	'Administration',
+	'Business',
+	'Collaboration',
+	'Education',
+	'System services',
+	'UCS components',
+	'Virtualization',
+))
+
+returncode = 100
+
+codes = {}
+for app in Application.all():
+	for ver in app.versions:
+		print 'Checking %r' % ver
+		# codes
+		code = ver.code
+		if code:
+			if code in codes:
+				if codes[code] != ver.id:
+					print ' FAIL: Code %r has already been taken by %r!' % (code, codes[code])
+					returncode = 1
+			else:
+				codes[code] = ver.id
+		# categories
+		unsupported = set(ver.get('unlocalised_categories')) - CATEGORIES
+		for category in unsupported:
+			print ' FAIL: Unsupported category: %s!' % category
+			returncode = 1
+
+sys.exit(returncode)

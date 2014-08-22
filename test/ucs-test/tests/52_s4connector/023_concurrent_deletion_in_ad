@@ -4,7 +4,10 @@
 ## packages:
 ## - univention-s4-connector
 ## bugs:
-##  - 32263
+##  - 35345
+
+# Skip test, waiting for https://forge.univention.org/bugzilla/show_bug.cgi?id=35345
+exit 131
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/udm.sh" || exit 137

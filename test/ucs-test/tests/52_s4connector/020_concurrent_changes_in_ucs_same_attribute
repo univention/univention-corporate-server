@@ -1,0 +1,49 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Make concurrent changes in UCS"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## bugs:
+##  - 35336
+
+# Skip test, waiting for https://forge.univention.org/bugzilla/show_bug.cgi?id=35336
+exit 131
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+for((i=0;i<10;i++)); do
+
+	echo "********************************************"
+	echo "* Round $((i+1)) of 10"
+	echo "********************************************"
+
+	UDM_users_user_username="$(random_chars)"
+	UDM_users_user_lastname="$(random_chars)"
+	UDM_users_user_password="univention"
+	udm_create "users/user"; fail_bool 0 110
+
+
+	for((j=0;j<10;j++)); do
+		udm_modify "users/user" "" "" "" "" \
+			--set description="univention$j" || fail_test 110
+		sleep $i
+	done
+
+	ad_wait_for_synchronization; fail_bool 0 110
+
+	udm_verify_multi_value_udm_attribute_contains "description" "univention9" "users/user"; fail_bool 0 110
+
+	udm_remove "users/user" || fail_test 110
+
+	if [ "$RETVAL" != 100 ]; then
+		break
+	fi
+done
+
+exit $RETVAL

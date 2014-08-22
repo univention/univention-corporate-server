@@ -5,6 +5,7 @@
 ## - univention-ad-connector
 ## tags:
 ##  - basic
+##  - groupsync
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/udm.sh" || exit 137

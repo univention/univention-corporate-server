@@ -16,12 +16,6 @@
 
 eval "$(ucr shell)"
 
-s4_services="$(univention-ldapsearch univentionService="Samba 4" | sed -ne 's|dn: ||p')"
-if [ -n "$s4_services" ]; then	
-	echo "Skip in S4 environments. See https://forge.univention.org/bugzilla/show_bug.cgi?id=34802."
-	exit 137
-fi
-
 GROUPNAME=$(group_randomnameme)
 
 udm-test groups/group modify --dn "cn=Domain Admins,cn=groups,$ldap_base" --set name="$GROUPNAME"

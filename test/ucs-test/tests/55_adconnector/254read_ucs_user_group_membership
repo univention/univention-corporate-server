@@ -3,6 +3,8 @@
 ## exposure: dangerous
 ## packages:
 ## - univention-ad-connector
+## tags:
+##  - groupsync
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/udm.sh" || exit 137
@@ -30,6 +32,7 @@ section "Create user and group"
 
 udm_create "groups/group" || fail_test 110
 udm_create "users/user" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
 
 section "Add user to group"
 
