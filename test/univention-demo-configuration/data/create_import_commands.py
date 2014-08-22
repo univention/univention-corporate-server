@@ -1,8 +1,8 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 #
 # Import example user data including profile images to UCS
 #
-# Copyright 2013 Univention GmbH
+# Copyright 2013-2014 Univention GmbH
 #
 # http://www.univention.de/
 #

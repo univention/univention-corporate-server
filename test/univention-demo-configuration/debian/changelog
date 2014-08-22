@@ -1,3 +1,9 @@
+univention-demo-configuration (3.0.0-01) unstable; urgency=low
+
+  * Migrated univention-demo-configuration to UCS-4.0-0 (Bug #35664)
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 22 Aug 2014 10:49:16 +0200
+
 univention-demo-configuration (2.0.2-10) unstable; urgency=low
 
   * Bug #33443: Allow usage of new Updater module methods
