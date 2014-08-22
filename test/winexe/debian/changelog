@@ -1,0 +1,41 @@
+winexe (1.1.0-7) unstable; urgency=low
+
+  * added mingw-w64 to build dependencies (Bug #34572) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Jul 2014 10:42:03 +0200
+
+winexe (1.1.0-6) unstable; urgency=low
+
+  * added mingw32-runtime, libc6-dev to build dependencies (Bug #34572) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Jul 2014 10:35:13 +0200
+
+winexe (1.1.0-5) unstable; urgency=low
+
+  * added libnetapi0 to build dependencies (Bug #34572) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Jul 2014 10:29:05 +0200
+
+winexe (1.1.0-4) unstable; urgency=low
+
+  * added libgensec0 to build dependencies (Bug #34572) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Jul 2014 10:02:49 +0200
+
+winexe (1.1.0-3) unstable; urgency=low
+
+  * added libdcerpc-dev to build dependencies (Bug #34572) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Jul 2014 09:54:44 +0200
+
+winexe (1.1.0-2) unstable; urgency=low
+
+  * added python to build dependencies (Bug #34572) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Jul 2014 09:50:49 +0200
+
+winexe (1.1.0-1) unstable; urgency=low
+
+  * initial release (Bug #34572) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Jul 2014 09:46:35 +0200

@@ -1,0 +1,33 @@
+Source: winexe
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper,
+ build-essential,
+ pkg-config,
+ libdcerpc-dev,
+ libtalloc-dev,
+ libtevent-dev,
+ samba-dev,
+ libsamba-credentials-dev,
+ libsmbclient-raw-dev,
+ gcc-mingw32,
+ libsamba-hostconfig-dev,
+ libndr-standard-dev,
+ libgensec0,
+ libnetapi0,
+ libc6-dev,
+ mingw32-runtime,
+ mingw-w64,
+ python
+
+Package: winexe
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Remote Windows®-command executor
+ Winexe remotely executes commands on Windows® NT/2000/XP/2003 systems.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
