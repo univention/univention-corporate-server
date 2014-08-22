@@ -1,0 +1,21 @@
+Source: ucs-windows-tools
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 7),
+ python-all,
+ python-support (>= 0.90),
+ univention-config-dev,
+ ucslint-univention
+
+Package: ucs-windows-tools
+Architecture: all
+Depends: ${python:Depends},
+ ${misc:Depends},
+ winexe
+Provides: ${python:Provides}
+Description: windows tool collection for UCS development
+ This package contains tools to test UCS installations.
+ .
+ This package is only relevant for development and testing.
+

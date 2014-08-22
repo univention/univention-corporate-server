@@ -1,0 +1,47 @@
+ucs-windows-tools (1.0.0-8) unstable; urgency=low
+
+  * added create_ad_groups etc to lib (Bug #35096) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Aug 2014 15:16:56 +0200
+
+ucs-windows-tools (1.0.0-7) unstable; urgency=low
+
+  * added create_ad_groups etc to lib (Bug #35096) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Aug 2014 17:16:38 +0200
+
+ucs-windows-tools (1.0.0-6) unstable; urgency=low
+
+  * added ucs-windows-promote-ad (Bug #35394)
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Jul 2014 16:34:10 +0200
+
+ucs-windows-tools (1.0.0-5) unstable; urgency=low
+
+  * small fixes (Bug #35394) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Jul 2014 16:02:53 +0200
+
+ucs-windows-tools (1.0.0-4) unstable; urgency=low
+
+  * support batch and powershell scripts (Bug #35394) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Jul 2014 14:01:37 +0200
+
+ucs-windows-tools (1.0.0-3) unstable; urgency=low
+
+  * support batch and powershell scripts (Bug #35394) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Jul 2014 13:53:46 +0200
+
+ucs-windows-tools (1.0.0-2) unstable; urgency=low
+
+  * small fixes (Bug #35394) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Jul 2014 12:51:15 +0200
+
+ucs-windows-tools (1.0.0-1) unstable; urgency=low
+
+  * initial release (Bug #35394) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Jul 2014 12:46:04 +0200
