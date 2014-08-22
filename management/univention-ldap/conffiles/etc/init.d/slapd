@@ -166,9 +166,10 @@ check_replog_file ()
 if [ -f "$SLAPDCONF" ]; then
 	pidfile=`grep ^pidfile $SLAPDCONF | awk '{print $2}'`
 	if [ -z "$pidfile" ]; then
-		test ! -e /var/run/slapd && mkdir -p /var/run/slapd
 		pidfile="/var/run/slapd/slapd.pid"
 	fi
+	pidfiledir="$(dirname $pidfile)"
+	test ! -e "$pidfiledir" && mkdir -p "$pidfiledir"
 else
 	exit 0
 fi

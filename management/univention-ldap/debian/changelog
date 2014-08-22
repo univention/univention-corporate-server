@@ -1,3 +1,9 @@
+univention-ldap (11.0.2-1) unstable; urgency=medium
+
+  * Create /var/run/slapd directory if it does not exist (Bug #35143)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 22 Aug 2014 08:29:55 +0200
+
 univention-ldap (11.0.1-1) unstable; urgency=medium
 
   * Create /var/run/slapd directory if it does not exist (Bug #35143)
