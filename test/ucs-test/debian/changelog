@@ -1,3 +1,9 @@
+ucs-test (5.0.0-4) unstable; urgency=low
+
+  * bump version number
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 22 Aug 2014 14:01:26 +0200
+
 ucs-test (5.0.0-3) unstable; urgency=low
 
   * fixed wrong python verion in /tests/10_ldap/ldap_extensions_utils.py 
