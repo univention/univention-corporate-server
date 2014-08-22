@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.4-1) unstable; urgency=medium
+
+  * More python2.7 adjustments (Bug #35319)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 22 Aug 2014 07:02:57 +0200
+
 univention-s4-connector (9.0.3-1) unstable; urgency=medium
 
   * samba-tool is in samba-common-bin since some time (Bug #35320)

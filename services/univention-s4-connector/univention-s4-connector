@@ -34,5 +34,5 @@
 # before starting the ad connector, generate the mapping file
 cat /etc/univention/connector/s4/mapping | univention-config-registry filter --encode-utf8 >/etc/univention/connector/s4/mapping.py
 
-/usr/bin/python2.7 -W ignore /usr/lib/pymodules/python2.6/univention/s4connector/s4/main.py
+/usr/bin/python2.7 -W ignore /usr/lib/pymodules/python2.7/univention/s4connector/s4/main.py
 
