@@ -1,3 +1,9 @@
+ucs-test (5.0.0-2) unstable; urgency=low
+
+  * bump version number
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 22 Aug 2014 12:33:17 +0200
+
 ucs-test (5.0.0-1) unstable; urgency=low
 
   * Migrated ucs-test to UCS-4.0-0 (Bug #35664)
