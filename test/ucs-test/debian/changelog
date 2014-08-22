@@ -1,3 +1,12 @@
+ucs-test (5.0.0-6) unstable; urgency=low
+
+  * univention/testing/data.py, line 824:
+    changed "apt.apt_pkg.ParseDepends(dependency)" to
+    "apt.apt_pkg.parse_depends(dependency)"
+    (Bug #35664)
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 22 Aug 2014 15:07:01 +0200
+
 ucs-test (5.0.0-5) unstable; urgency=low
 
   * removed "dh_install --sourcedir=$(CURDIR)" from debian/rules in attempt to

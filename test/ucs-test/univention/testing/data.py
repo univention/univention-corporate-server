@@ -428,7 +428,7 @@ class CheckPackages(Check):
 				break
 
 		for dependency in self.packages:
-			deps = apt.apt_pkg.ParseDepends(dependency)
+			deps = apt.apt_pkg.parse_depends(dependency)
 			for conjunction in deps:
 				conditions = list(check_disjunction(conjunction))
 				success = reduce(or_, (bool(_) for _ in conditions), False)
