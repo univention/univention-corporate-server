@@ -3,7 +3,7 @@
 # ucs-test-tools
 #  debhelper script for the debian package
 #
-# Copyright 2010-2013 Univention GmbH
+# Copyright 2010-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,4 +34,4 @@ override_dh_auto_test:
 	ucslint
 
 %:
-	dh $@
+	dh $@ --with python_support

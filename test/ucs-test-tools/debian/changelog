@@ -1,3 +1,9 @@
+ucs-test-tools (4.0.0-1) unstable; urgency=low
+
+  * Migrated ucs-test-tools to UCS-4.0-0 (Bug #35664)
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 22 Aug 2014 10:36:25 +0200
+
 ucs-test-tools (3.0.0-1) unstable; urgency=low
 
   * import_ldif_*: added two new tools to import a test

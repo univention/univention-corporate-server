@@ -6,6 +6,7 @@ Standards-Version: 3.5.5
 Build-Depends: debhelper (>> 7),
  ucslint-univention,
  univention-config-dev
+XS-Python-Version: 2.6, 2.7
 
 Package: ucs-test-tools
 Architecture: all
