@@ -1,3 +1,9 @@
+di-univention-system-setup (0.0.9-4) unstable; urgency=low
+
+  * Bug #35659: Install recommended packages
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 22 Aug 2014 16:02:13 +0200
+
 di-univention-system-setup (0.0.9-3) unstable; urgency=low
 
   * Bug #35378: Start network in chroot

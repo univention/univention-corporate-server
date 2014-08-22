@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# Install recommends by default from here on: deboostrap is done without
+# recommends, but USS installed through base-installer/includes should.
+#
+# This copies what "d-i base-installer/install-recommends boolean true" does,
+# which comes too late in bootstrap-base.postinst.
+#
+APT_CONFDIR=/target/etc/apt/apt.conf.d
+rm -f "$APT_CONFDIR/00InstallRecommends"
