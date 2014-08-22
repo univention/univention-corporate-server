@@ -1,8 +1,8 @@
-ucs-test (5.0.000-00.1) unstable; urgency=low
+ucs-test (5.0.0-1) unstable; urgency=low
 
   * Migrated ucs-test to UCS-4.0-0 (Bug #35664)
 
- -- Drees Dormann <dormann@univention.de>  Fri, 22 Aug 2014 10:09:35 +0200
+ -- Drees Dormann <dormann@univention.de>  Fri, 22 Aug 2014 11:28:59 +0200
 
 ucs-test (4.0.166-70) unstable; urgency=low
 
