@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require window setTimeout*/
+/*global define,require,window,setTimeout*/
 
 define([
 	"dojo/_base/kernel",

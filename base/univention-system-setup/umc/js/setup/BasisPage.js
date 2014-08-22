@@ -114,12 +114,12 @@ define([
 
 			this.own(this._form.getWidget('fqdn').watch('value', lang.hitch(this, 'onValuesChanged')));
 			var fc = this._form.getWidget('fqdn').watch('value', lang.hitch(this, function(name, oldVal, newVal) {
-				function count(s) { 
+				function count(s) {
 					var n = 0;
 					var i = 0;
-					while ((i = array.indexOf(s, '.', i)) >= 0) { 
-						++n; 
-						++i; 
+					while ((i = array.indexOf(s, '.', i)) >= 0) {
+						++n;
+						++i;
 					}
 					return n;
 				}

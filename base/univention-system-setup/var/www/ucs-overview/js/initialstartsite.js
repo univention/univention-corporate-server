@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console window $*/
+/*global define*/
 
 define([
 	"./startsite",
@@ -48,7 +48,7 @@ define([
 	var module = lang.mixin({}, startsite, {
 		_updateNoScriptElements: function() {
 			var dropdown = query('#header-right .dropdown')[0];
-			var navtabs = query('#site-header .nav-tabs')[0];
+			// var navtabs = query('#site-header .nav-tabs')[0];
 			domStyle.set(dropdown, 'display', 'inherit');
 			// domStyle.set(navtabs, 'display', 'inherit');
 		},

@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console setTimeout*/
+/*global define,console,setTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -217,9 +217,7 @@ define([
 		},
 
 		_consistence: function(iface, removedFrom, insertedInto) {
-			var create = removedFrom === -1;
 			var deleted = insertedInto === -1;
-			var key;
 			iface = this.moduleStore.createDevice(iface);
 
 			if (!deleted) {

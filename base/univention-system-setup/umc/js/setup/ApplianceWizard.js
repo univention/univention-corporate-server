@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console*/
+/*global define,require,console*/
 
 define([
 	"dojo/_base/kernel",
@@ -141,10 +141,10 @@ define([
 	var _regIPv6 = /^((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?$/;
 	var _regFQDN = /^(?=.{1,255}$)[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?(?:\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|\b-){0,61}[0-9A-Za-z])?)*\.?$/;
 	var _regNumber = /^[0-9]+$/;
-	var _regBitMask = /^1*0*$/
+	var _regBitMask = /^1*0*$/;
 
 	var _regEmailAddress = /^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/;
-	var _invalidEmailAddressMessage = _('Invalid e-mail address!<br>Expected format is:<i>mail@example.com</i>');
+	var _invalidEmailAddressMessage = _('Invalid e-mail address!<br/>Expected format is:<i>mail@example.com</i>');
 	var _validateEmailAddress = function(email) {
 		email = email || '';
 		var isEmailAddress = _regEmailAddress.test(email);
@@ -152,7 +152,7 @@ define([
 		return acceptEmtpy || isEmailAddress;
 	};
 
-	var _invalidIPAddressMessage = _('Invalid IP address!<br>Expected format is IPv4 or IPv6.');
+	var _invalidIPAddressMessage = _('Invalid IP address!<br/>Expected format is IPv4 or IPv6.');
 	var _validateIPAddress = function(ip) {
 		ip = ip || '';
 		var isIPv4Address = _regIPv4.test(ip);
@@ -207,7 +207,7 @@ define([
 		return acceptEmtpy || (isFQDN && hasNoDots);
 	};
 
-	var _invalidFQDNMessage = _('Invalid fully qualified domain name!<br>Expected format: <i>hostname.mydomain.intranet</i>');
+	var _invalidFQDNMessage = _('Invalid fully qualified domain name!<br/>Expected format: <i>hostname.mydomain.intranet</i>');
 	var _validateFQDN = function(fqdn) {
 		fqdn = fqdn || '';
 		var isFQDN = _regFQDN.test(fqdn);
@@ -216,7 +216,7 @@ define([
 		return acceptEmtpy || (isFQDN && hasEnoughParts);
 	};
 
-	var _invalidHostOrFQDNMessage = _('Invalid hostname or fully qualified domain name!<br>Expected format: <i>myhost</i> or <i>hostname.mydomain.intranet</i>');
+	var _invalidHostOrFQDNMessage = _('Invalid hostname or fully qualified domain name!<br/>Expected format: <i>myhost</i> or <i>hostname.mydomain.intranet</i>');
 	var _validateHostOrFQDN = function(hostOrFQDN) {
 		hostOrFQDN = hostOrFQDN || '';
 		var acceptEmtpy = !hostOrFQDN && !this.required;
@@ -224,7 +224,7 @@ define([
 	};
 
 	var _regDN = /^([^=, ]+=[^=, ]+,)*[^=, ]+=[^=, ]+$/;
-	var _invalidLDAPBase = _('Invalid LDAP base!<br>Expected format: dc=mydomain,dc=intranet');
+	var _invalidLDAPBase = _('Invalid LDAP base!<br/>Expected format: dc=mydomain,dc=intranet');
 	var _validateLDAPBase = function(ldapBase) {
 		ldapBase = ldapBase || '';
 		var acceptEmtpy = !ldapBase && !this.required;
@@ -555,7 +555,7 @@ define([
 				}, {
 					type: TextBox,
 					name: '_ip0',
-					label: _('IPv4 address/IPv6 address {interface}'),
+					label: _('IPv4/IPv6 address {interface}'),
 					inlineLabel: '',
 					value: '',
 					onChange: lang.hitch(this, '_updateNetwork', 0),
@@ -571,7 +571,7 @@ define([
 				}, {
 					type: TextBox,
 					name: '_ip1',
-					label: _('IPv4 address/IPv6 address {interface}'),
+					label: _('IPv4/IPv6 address {interface}'),
 					inlineLabel: '',
 					value: '',
 					visible: false,
@@ -589,7 +589,7 @@ define([
 				}, {
 					type: TextBox,
 					name: '_ip2',
-					label: _('IPv4 address/IPv6 address {interface}'),
+					label: _('IPv4/IPv6 address {interface}'),
 					inlineLabel: '',
 					visible: false,
 					value: '',
@@ -607,7 +607,7 @@ define([
 				}, {
 					type: TextBox,
 					name: '_ip3',
-					label: _('IPv4 address/IPv6 address {interface}'),
+					label: _('IPv4/IPv6 address {interface}'),
 					inlineLabel: '',
 					visible: false,
 					value: '',
@@ -764,7 +764,7 @@ define([
 
 			// blur current element
 			tools.defer(function() {
-				focusUtil.curNode && focusUtil.curNode.blur();
+				if (focusUtil.curNode) { focusUtil.curNode.blur(); }
 			}, 200);
 
 			this.standbyDuring(all(queries)).then(lang.hitch(this, function(response) {
@@ -1890,7 +1890,6 @@ define([
 				var parts = _vals._fqdn.split('.');
 				_vals.hostname = parts.shift();
 				_vals.domainname = parts.join('.');
-
 			}
 
 			// server role handling

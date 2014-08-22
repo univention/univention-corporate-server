@@ -126,7 +126,7 @@ define([
 				back.push(_('Static (IPv6)') + ': ' + ip6s.join(', '));
 			}
 
-			return back.join('<br>');
+			return back.join('<br/>');
 		},
 		getSummary: function() {
 			var description = this.getConfigurationDescription();
@@ -166,7 +166,7 @@ define([
 			}
 			back.push(_('Bond slaves') + ': ' + this.bond_slaves.join(', '));
 
-			return back.join('<br>');
+			return back.join('<br/>');
 		}
 	});
 
@@ -188,7 +188,7 @@ define([
 			}
 			back.push(_('Bridge ports') + ': ' + this.bridge_ports.join(', '));
 
-			return back.join('<br>');
+			return back.join('<br/>');
 		}
 	});
 
@@ -298,8 +298,8 @@ define([
 			this.inherited(arguments, [device]);
 		},
 		put: function(device) {
-			var device = this.createDevice(device);
-			this.inherited(arguments, [device]);
+			var device2 = this.createDevice(device);
+			this.inherited(arguments, [device2]);
 		},
 		setData: function(data) {
 			this.inherited(arguments, [array.map(data, lang.hitch(this, function(iface) { return this.createDevice(iface); }))]);

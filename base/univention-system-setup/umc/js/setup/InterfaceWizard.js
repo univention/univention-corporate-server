@@ -150,7 +150,7 @@ define([
 //								'Bridge': '',
 //								'Bond': ''
 //							};
-//							this.getWidget('description').set('content', descriptions[interfaceType] + '<br>');
+//							this.getWidget('description').set('content', descriptions[interfaceType] + '<br/>');
 //
 							var name_b = this.getWidget('name_b');
 							if (interfaceType === 'Bridge') {

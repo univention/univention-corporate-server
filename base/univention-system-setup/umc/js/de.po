@@ -678,8 +678,8 @@ msgstr "IPv4-Adresse"
 
 #: umc/js/setup/ApplianceWizard.js:558 umc/js/setup/ApplianceWizard.js:574
 #: umc/js/setup/ApplianceWizard.js:592 umc/js/setup/ApplianceWizard.js:610
-msgid "IPv4 address/IPv6 address {interface}"
-msgstr "IPv4-Adresse/IPv6-Adresse {interface}"
+msgid "IPv4/IPv6 address {interface}"
+msgstr "IPv4/IPv6-Adresse {interface}"
 
 #: umc/js/setup/ApplianceWizard.js:567 umc/js/setup/ApplianceWizard.js:584
 #: umc/js/setup/ApplianceWizard.js:602 umc/js/setup/ApplianceWizard.js:620
@@ -757,8 +757,8 @@ msgid "Interface type"
 msgstr "Netzwerkgerätetyp"
 
 #: umc/js/setup/ApplianceWizard.js:155
-msgid "Invalid IP address!<br>Expected format is IPv4 or IPv6."
-msgstr "Ungültige IP-Adress!<br>Erwartetes Format ist IPv4 oder IPv6."
+msgid "Invalid IP address!<br/>Expected format is IPv4 or IPv6."
+msgstr "Ungültige IP-Adress!<br/>Erwartetes Format ist IPv4 oder IPv6."
 
 #: umc/js/setup/ApplianceWizard.js:164
 msgid ""
@@ -772,29 +772,29 @@ msgstr ""
 "0 und 128."
 
 #: umc/js/setup/ApplianceWizard.js:227
-msgid "Invalid LDAP base!<br>Expected format: dc=mydomain,dc=intranet"
+msgid "Invalid LDAP base!<br/>Expected format: dc=mydomain,dc=intranet"
 msgstr ""
-"Ungültige LDAP-Basis!<br>Erwartetes Format: dc=meinedomaene,dc=intranet"
+"Ungültige LDAP-Basis!<br/>Erwartetes Format: dc=meinedomaene,dc=intranet"
 
 #: umc/js/setup/ApplianceWizard.js:147
-msgid "Invalid e-mail address!<br>Expected format is:<i>mail@example.com</i>"
+msgid "Invalid e-mail address!<br/>Expected format is:<i>mail@example.com</i>"
 msgstr ""
-"Ungültige E-Mail-Adresse!<br>Erwartetes Format: <i>mail@beispiel.de</i>"
+"Ungültige E-Mail-Adresse!<br/>Erwartetes Format: <i>mail@beispiel.de</i>"
 
 #: umc/js/setup/ApplianceWizard.js:210
 msgid ""
-"Invalid fully qualified domain name!<br>Expected format: <i>hostname."
+"Invalid fully qualified domain name!<br/>Expected format: <i>hostname."
 "mydomain.intranet</i>"
 msgstr ""
-"Ungültiger vollständiger Domänenname!<br>Erwartetes Format: <i>rechnername."
+"Ungültiger vollständiger Domänenname!<br/>Erwartetes Format: <i>rechnername."
 "meinedomaene.intranet</i>"
 
 #: umc/js/setup/ApplianceWizard.js:219
 msgid ""
-"Invalid hostname or fully qualified domain name!<br>Expected format: "
+"Invalid hostname or fully qualified domain name!<br/>Expected format: "
 "<i>myhost</i> or <i>hostname.mydomain.intranet</i>"
 msgstr ""
-"Ungültiger Rechnername oder vollständiger Domänenname!<br>Erwartetes Format: "
+"Ungültiger Rechnername oder vollständiger Domänenname!<br/>Erwartetes Format: "
 "<i>rechnername</i> oder <i>rechnername.meinedomaene.intranet</i>"
 
 #: umc/js/setup/ApplianceWizard.js:1570
