@@ -1,3 +1,9 @@
+di-univention-system-setup (0.0.9-5) unstable; urgency=low
+
+  * Bug #35659: Revert last change
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 22 Aug 2014 18:52:42 +0200
+
 di-univention-system-setup (0.0.9-4) unstable; urgency=low
 
   * Bug #35659: Install recommended packages
