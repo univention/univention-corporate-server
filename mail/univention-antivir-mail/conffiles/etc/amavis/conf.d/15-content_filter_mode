@@ -6,8 +6,10 @@ use strict;
 
 #
 # Default antivirus checking mode
-# Uncomment the two lines below to enable it back
-#
+# Please note, that anti-virus checking is DISABLED by 
+# default.
+# If You wish to enable it, please uncomment the following lines:
+
 
 @!@
 if baseConfig.has_key('mail/antivir/scanner') and baseConfig['mail/antivir/scanner'] not in ['', 'none']:
@@ -21,11 +23,13 @@ else:
 
 #
 # Default SPAM checking mode
-# Uncomment the two lines below to enable it back
-#
+# Please note, that anti-spam checking is DISABLED by 
+# default.
+# If You wish to enable it, please uncomment the following lines:
+
 
 @!@
-if baseConfig.has_key('mail/antivir/spam') and baseConfig['mail/antivir/spam'].lower() in ['yes', 'true']:
+if configRegistry.is_true('mail/antivir/spam'):
 	print '@bypass_spam_checks_maps = ('
 	print '   \%bypass_spam_checks, \@bypass_spam_checks_acl, \$bypass_spam_checks_re);'
 else:
@@ -33,5 +37,4 @@ else:
 	print '#   \%bypass_spam_checks, \@bypass_spam_checks_acl, \$bypass_spam_checks_re);'
 @!@
 
-1;  # insure a defined return
-
+1;  # ensure a defined return
