@@ -54,4 +54,4 @@ override_dh_clean:
 	dh_clean
 
 %:
-	dh $@ --with python_support
+	dh $@
