@@ -33,7 +33,7 @@
 export DH_ALWAYS_EXCLUDE=.svn
 
 %:
-	dh $@ --with python_support
+	dh $@
 
 override_dh_install:
 	dh_install --sourcedir=$(CURDIR)

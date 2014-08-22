@@ -6,7 +6,6 @@ Build-Depends: debhelper (>= 8.0.0),
  ucslint-univention,
  python-support
 Standards-Version: 3.6.1
-XS-Python-Version: 2.6, 2.7
 
 Package: ucs-test
 Architecture: all
