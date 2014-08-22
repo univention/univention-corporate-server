@@ -737,6 +737,13 @@ define([
 			if (this._isDHCPPreConfigured()) {
 				this.getWidget('network', '_dhcp').set('value', true);
 				this.getWidget('network', 'gateway').set('value', this.values.gateway);
+				this.getWidget('network', 'dns/forwarder1').set('value', this.values.nameserver1);
+				array.forEach(this._getNetworkDevices(), function(idev, i) {
+					var dev = this.values.interfaces[idev];
+					var old = dev.ip4[0] || dev.ip6[0] || ['', ''];
+					this.getWidget('network', '_ip' + i).set('value', old[0]);
+					this.getWidget('network', '_netmask' + i).set('value', old[1]);
+				}, this);
 			}
 		},
 
@@ -793,8 +800,12 @@ define([
 				if (gateway) {
 					this.getWidget('network', 'gateway').set('value', gateway);
 				}
-				if (!this._isRoleMaster() && nameserver) {
-					this.getWidget('network', 'nameserver1').set('value', nameserver);
+				if (nameserver) {
+					if (this._isRoleMaster()) {
+						this.getWidget('network', 'dns/forwarder1').set('value', nameserver);
+					} else {
+						this.getWidget('network', 'nameserver1').set('value', nameserver);
+					}
 				}
 
 				// did DHCP work?
@@ -994,7 +1005,7 @@ define([
 			if (data.timezone) {
 				this.getWidget('locale', 'timezone').setInitialValue(data.timezone);
 			}
-			if (data.ipv4_nameserver) {
+			if (data.ipv4_nameserver && !this._isDHCPPreConfigured()) {
 				this.getWidget('network', 'dns/forwarder1').set('value', data.ipv4_nameserver);
 			}
 			if (data.locale) {
