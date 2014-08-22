@@ -1,10 +1,10 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
 # Univention Mail Cyrus
 #  check for invalid chars in imap folder names
 #
-# Copyright (C) 2011-2013 Univention GmbH
+# Copyright (C) 2011-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
