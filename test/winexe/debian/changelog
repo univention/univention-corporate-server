@@ -1,3 +1,9 @@
+winexe (2.0.0-1) unstable; urgency=low
+
+  * Migrated winexe to UCS-4.0-0 (Bug #35664)
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 22 Aug 2014 10:53:57 +0200
+
 winexe (1.1.0-7) unstable; urgency=low
 
   * added mingw-w64 to build dependencies (Bug #34572) 

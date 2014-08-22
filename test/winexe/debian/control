@@ -20,6 +20,7 @@ Build-Depends: debhelper,
  mingw32-runtime,
  mingw-w64,
  python
+XS-Python-Version: 2.6, 2.7
 
 Package: winexe
 Architecture: any
