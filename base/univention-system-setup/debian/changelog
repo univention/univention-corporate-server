@@ -1,3 +1,10 @@
+univention-system-setup (8.0.22-1) unstable; urgency=low
+
+  * Bug #35685: add possibility to hide fields in system-setup-appliance mode
+  	on initial UCS installation
+
+ -- Florian Best <best@univention.de>  Mon, 25 Aug 2014 16:05:54 +0200
+
 univention-system-setup (8.0.21-5) unstable; urgency=low
 
   * Bug #35641: Fix master DNS server via DHCP.

@@ -100,6 +100,7 @@ define([
 				'system/setup/boot/select/role',
 				'system/setup/boot/pages/whitelist',
 				'system/setup/boot/pages/blacklist',
+				'system/setup/boot/fields/blacklist',
 				'umc/modules/setup/network/disabled/by'
 			]);
 			// load system setup values (e.g. join status)
@@ -134,40 +135,35 @@ define([
 			// save current values
 			this._orgValues = lang.clone(values);
 
-			// disable network page, See Bug #33006
-			var networkDisabledBy = ucr['umc/modules/setup/network/disabled/by'];
-			if (networkDisabledBy) {
-				this._displayNetworkPageWarning(networkDisabledBy);
-				allPages.splice(allPages.indexOf('NetworkPage'), 1);
-			}
-
 			// add the SoftwarePage and SystemRolePage to the list of pages for the wizard mode
 			if (this.wizard_mode) {
-				// add the SystemRolePage to the list of pages for the wizard mode if the packages have been downloaded
-				if (tools.isTrue(ucr['system/setup/boot/select/role'])) {
-					allPages.unshift('SystemRolePage');
-				}
-
-				// SoftwarePage is only available in appliance mode. Otherwise software components should be managed by
-				// the App Center
-				allPages.push('SoftwarePage');
-
-				// alter pages by a whitelist and/or blacklist. the pages will be removed without any replacement.
+				// add blacklist for pages. The pages will be removed without any replacement.
 				// empty lists are treated as if they were not defined at all (show all pages). list names should
 				// match the names in this.pages and can be separated by a ' '.
-				var white_list = ucr['system/setup/boot/pages/whitelist'];
-				if (white_list) {
-					white_list = white_list.split(' ');
-					allPages = array.filter(allPages, function(page) { return array.indexOf(white_list, page) > -1; });
+				var black_list = (ucr['system/setup/boot/pages/blacklist'] || '').split(' ');
+				if (!tools.isTrue(ucr['system/setup/boot/select/role'])) {
+					black_list.push('SystemRolePage');
 				}
-				var black_list = ucr['system/setup/boot/pages/blacklist'];
-				if (black_list) {
-					black_list = black_list.split(' ');
-					allPages = array.filter(allPages, function(page) { return array.indexOf(black_list, page) === -1; });
-				}
-				this._renderWizard(allPages, values);
+
+				black_list = array.map(black_list, function(page) {
+					var replacements = {
+						'SoftwarePage': 'software',
+						'SystemRolePage': 'role'
+					};
+					return replacements[page] || page;
+				});
+
+				var fieldBlacklist = (ucr['system/setup/boot/fields/blacklist'] || '').split(' ');
+				this._renderWizard(values, black_list, fieldBlacklist);
 			}
 			else {
+				// disable network page, See Bug #33006
+				var networkDisabledBy = ucr['umc/modules/setup/network/disabled/by'];
+				if (networkDisabledBy) {
+					this._displayNetworkPageWarning(networkDisabledBy);
+					allPages.splice(allPages.indexOf('NetworkPage'), 1);
+				}
+
 				this._renderTabs(allPages, values);
 			}
 
@@ -263,11 +259,12 @@ define([
 			}));
 		},
 
-		_renderWizard: function(allPages, values) {
+		_renderWizard: function(values, pageBlacklist, fieldBlacklist) {
 			this.wizard = new ApplianceWizard({
 				//progressBar: progressBar
 				moduleID: this.moduleID,
-				visiblePages: allPages,
+				disabledPages: pageBlacklist,
+				disabledFields: fieldBlacklist,
 				local_mode: this.local_mode,
 				values: values
 			});
@@ -283,10 +280,10 @@ define([
 					this._redirectBrowser(newValues.interfaces, newValues['interfaces/primary']);
 				}));
 			}));
-			this.wizard.on('Reload', lang.hitch(this, '_reloadWizard', allPages, values));
+			this.wizard.on('Reload', lang.hitch(this, '_reloadWizard', values, pageBlacklist, fieldBlacklist));
 		},
 
-		_reloadWizard: function(allPages, values, newLocale) {
+		_reloadWizard: function(values, pageBlacklist, fieldBlacklist, newLocale) {
 			// update internal locale settings
 			var _setLocale = function() {
 				dojo.locale = newLocale;
@@ -306,7 +303,7 @@ define([
 			var _cleanup = lang.hitch(this, function() {
 				this.removeChild(this.wizard);
 				this.wizard.destroy();
-				this._renderWizard(allPages, values);
+				this._renderWizard(values, pageBlacklist, fieldBlacklist);
 			});
 
 			// chain tasks with some time in between to allow a smooth standby animation

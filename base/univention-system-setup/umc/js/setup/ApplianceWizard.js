@@ -288,6 +288,9 @@ define([
 		_progressBar: null,
 		_criticalJoinErrorOccurred: false,
 
+		disabledPages: null,
+		disabledFields: null,
+
 		constructor: function(props) {
 			lang.mixin(this, props);
 
@@ -745,6 +748,50 @@ define([
 					this.getWidget('network', '_netmask' + i).set('value', old[1]);
 				}, this);
 			}
+		},
+
+		evaluateBlacklist: function() {
+			var disable = [];
+			var helpTexts = [];
+			array.forEach(this.disabledFields, lang.hitch(this, function(field) {
+				//user-master:help
+				if (field == 'password') {
+					disable.push(['user-master', 'root_password']);
+					disable.push(['network', 'root_password']);
+				} else if (field == 'network') {
+					disable.push(['network', '_dhcp']);
+					disable.push(['network', '_ip0']);
+					disable.push(['network', '_netmask0']);
+					disable.push(['network', '_ip1']);
+					disable.push(['network', '_netmask1']);
+					disable.push(['network', '_ip2']);
+					disable.push(['network', '_netmask2']);
+					disable.push(['network', '_ip3']);
+					disable.push(['network', '_netmask3']);
+					disable.push(['network', 'gateway']);
+					//disable.push(['network', 'nameserver1']);
+					//disable.push(['network', 'nameserver2']);
+					disable.push(['network', 'dns/forwarder1']);
+					disable.push(['network', 'dns/forwarder2']);
+					disable.push(['network', 'proxy/http']);
+					disable.push(['network', 'configureProxySettings']);
+				} else if(field == 'locale') {
+					disable.push(['welcome', '_language']);
+					disable.push(['welcome', '_search']);
+					disable.push(['welcome', 'result']);
+					disable.push(['locale', 'locale/default']);
+					disable.push(['locale', 'locale/keymap']);
+					disable.push(['locale', 'timezone']);
+				}
+			}));
+
+			array.forEach(disable, lang.hitch(this, function(page_widget) {
+				var widget = this.getWidget(page_widget[0], page_widget[1]);
+				if (widget) {
+					widget.set('visible', false);
+					widget.set('disabled', true);
+				}
+			}));
 		},
 
 		_dhclient: function() {
@@ -1304,14 +1351,16 @@ define([
 			msg += '</p>';
 
 			// localization settings
-			msg += '<p><b>' + _('Localization settings') + '</b></p>';
-			msg += '<ul>';
-			array.forEach(['locale/default', 'timezone', 'locale/keymap'], function(ikey) {
-				var iwidget = this.getWidget('locale', ikey);
-				var item = _getItem(iwidget.getAllItems(), vals[ikey]);
-				_append(iwidget.label, item.label);
-			}, this);
-			msg += '</ul>';
+			if (this.disabledFields.indexOf('locale') < 0) {
+				msg += '<p><b>' + _('Localization settings') + '</b></p>';
+				msg += '<ul>';
+				array.forEach(['locale/default', 'timezone', 'locale/keymap'], function(ikey) {
+					var iwidget = this.getWidget('locale', ikey);
+					var item = _getItem(iwidget.getAllItems(), vals[ikey]);
+					_append(iwidget.label, item.label);
+				}, this);
+				msg += '</ul>';
+			}
 
 			// administrator account
 			if (this._isRoleMaster()) {
@@ -1336,19 +1385,22 @@ define([
 				_append(hostLabel, _vals.hostname);
 			}
 			_append(_('LDAP base'), vals['ldap/base']);
-			if (_vals._dhcp) {
-				_append(_('Address configuration'), _('IP address is obtained dynamically via DHCP'));
-			}
-			else {
-				array.forEach(this._getNetworkDevices(), function(idev, i) {
-					var iip = _vals['_ip' + i];
-					var imask = _vals['_netmask' + i];
-					if (!iip || !imask) {
-						return;
-					}
-					_append(_('Address for %s', idev), iip + '/' + imask);
-				}, this);
-				_append(_('Gateway'), vals.gateway);
+
+			if (this.disabledFields.indexOf('network') < 0) {
+				if (_vals._dhcp) {
+					_append(_('Address configuration'), _('IP address is obtained dynamically via DHCP'));
+				}
+				else {
+					array.forEach(this._getNetworkDevices(), function(idev, i) {
+						var iip = _vals['_ip' + i];
+						var imask = _vals['_netmask' + i];
+						if (!iip || !imask) {
+							return;
+						}
+						_append(_('Address for %s', idev), iip + '/' + imask);
+					}, this);
+					_append(_('Gateway'), vals.gateway);
+				}
 			}
 
 			var nameservers = array.filter([vals.nameserver1, vals.nameserver2], function(inameserver) {
@@ -1356,12 +1408,14 @@ define([
 			}).join(', ');
 			_append(_('UCS domain name server'), nameservers);
 
-			var forwarders = array.filter([vals['dns/forwarder1'], vals['dns/forwarder2']], function(iforwarder) {
-				return iforwarder;
-			}).join(', ');
-			_append(_('External name server'), forwarders);
+			if (this.disabledFields.indexOf('network') < 0) {
+				var forwarders = array.filter([vals['dns/forwarder1'], vals['dns/forwarder2']], function(iforwarder) {
+					return iforwarder;
+				}).join(', ');
+				_append(_('External name server'), forwarders);
 
-			_append(_('HTTP proxy'), vals['proxy/http']);
+				_append(_('HTTP proxy'), vals['proxy/http']);
+			}
 			msg += '</ul>';
 
 			// software components
@@ -1456,7 +1510,7 @@ define([
 		},
 
 		_isRoleMaster: function() {
-			var showRoleSelection = array.indexOf(this.visiblePages, 'SystemRolePage') > -1;
+			var showRoleSelection = array.indexOf(this.disabledPages, 'role') === -1;
 			var createNewDomain = this.getWidget('_createDomain').get('value');
 			return createNewDomain || !showRoleSelection;
 		},
@@ -1480,15 +1534,9 @@ define([
 				return false;
 			}
 
-			// support black and white listing for software page and system role page
-			// as it was the case prior to Bug #34484
-			if (pageName == 'software') {
-				var showSoftwarePage = array.indexOf(this.visiblePages, 'SoftwarePage') > -1;
-				return showSoftwarePage;
-			}
-			if (pageName.indexOf('role') === 0) {
-				var showRoleSelection = array.indexOf(this.visiblePages, 'SystemRolePage') > -1;
-				return showRoleSelection;
+			// support blacklisting of specific pages
+			if (array.indexOf(this.disabledPages, pageName) > -1) {
+				return false;
 			}
 
 			// default
@@ -1544,7 +1592,7 @@ define([
 			}
 
 			// check network device configuration
-			if (pageName == 'network') {
+			if (pageName == 'network' && this.getWidget(pageName, '_ip0').get('visible')) {
 				var _vals = this._gatherVisibleValues();
 				var nConfiguredInterfaces = 0;
 				for (var idx = 0; idx < 4; ++idx) {
@@ -1673,8 +1721,12 @@ define([
 				return this._forcePageTemporarily(pageName);
 			}
 
-			// start/stop timer
 			var nextPage = this.inherited(arguments);
+			if (!pageName && !this.isPageVisible(nextPage)) {
+				nextPage = this.next(nextPage);
+			}
+
+			// start/stop timer
 			var keepSessionAlive = (nextPage == 'error' || nextPage == 'done');
 			if (keepSessionAlive && !this._keepAlive.isRunning) {
 				this._keepAlive.start();
@@ -1690,6 +1742,9 @@ define([
 			if (nextPage == 'software') {
 				this._updateAppGallery();
 			}
+
+			// evaluate blacklist after update of view
+			this.evaluateBlacklist();
 
 			// extra handling for specific pages
 			if (pageName == 'welcome-adapt-locale-settings') {
@@ -1806,7 +1861,7 @@ define([
 
 		_getRole: function() {
 			var _vals = this._gatherVisibleValues();
-			var showRoleSelection = array.indexOf(this.visiblePages, 'SystemRolePage') > -1;
+			var showRoleSelection = array.indexOf(this.disabledPages, 'role') === -1;
 			if (_vals._createDomain || !showRoleSelection) {
 				return 'domaincontroller_master';
 			}
@@ -1828,7 +1883,7 @@ define([
 			if (this._isDHCPPreConfigured() && _vals._dhcp) {
 				// nothing to do... leave the preconfigured settings
 			}
-			else {
+			else if ('interfaces' in _vals) {
 				// prepare values for network interfaces
 				vals.interfaces = {};
 				array.forEach(this._getNetworkDevices(), function(idev, i) {
