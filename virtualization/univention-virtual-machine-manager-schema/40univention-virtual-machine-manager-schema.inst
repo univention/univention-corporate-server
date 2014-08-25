@@ -90,6 +90,9 @@ if [ "$(check_package_status python-univention-directory-manager-legacy-ucd-tcs)
 		--append module="computers/mobileclient" || die
 fi
 
+univention-directory-manager settings/extended_attribute modify "$@" \
+	--dn "cn=ManageableBy,cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
+	--append module="uvmm/cloudconnection" || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
