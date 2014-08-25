@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.0-3) unstable; urgency=low
+
+  * Add UDM module Cloud Connection and icons for Connection and Type (Bug #32842)
+
+ -- Andreas Peichert <peichert@univention.de>  Mon, 25 Aug 2014 16:19:39 +0200
+
 univention-virtual-machine-manager-daemon (4.0.0-2) unstable; urgency=low
 
   * WIP: Integration of cloud instance management with libcloud (Bug #32842)

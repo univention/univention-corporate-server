@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="udm" version="1.0" translationId="uvmm">
+		<categories>
+			<category name="system"/>
+		</categories>
+		<flavor icon="uvmm" priority="10" id="uvmm/cloudconnection">
+			<name>Cloud Connections (UVMM)</name>
+			<description>Manages Cloud Connections</description>
+			<keywords></keywords>
+		</flavor>
+	</module>
+</umc>

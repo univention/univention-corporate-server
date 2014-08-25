@@ -1,1 +1,2 @@
 55univention-management-console-module-uvmm.uinst usr/lib/univention-uninstall/
+umc/uvmm-cloudconnection.xml usr/share/univention-management-console/modules/
