@@ -1,3 +1,9 @@
+ucs-test (4.0.166-71) unstable; urgency=medium
+
+  * New test for Bug #35647
+
+ -- Arvid Requate <requate@univention.de>  Mon, 25 Aug 2014 13:36:46 +0200
+
 ucs-test (4.0.166-70) unstable; urgency=low
 
   * 67_udm-dns/
