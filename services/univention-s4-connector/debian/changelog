@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.4-2) unstable; urgency=medium
+
+  * Adjust to python-ldap 2.4 (Bug #35320)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 25 Aug 2014 17:06:43 +0200
+
 univention-s4-connector (9.0.4-1) unstable; urgency=medium
 
   * More python2.7 adjustments (Bug #35319)

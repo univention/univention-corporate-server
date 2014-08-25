@@ -45,7 +45,7 @@ from samba.ndr import ndr_pack, ndr_unpack
 DECODE_IGNORELIST=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord']
 
 # page results
-PAGE_SIZE=1000
+PAGE_SIZE = 1000
 
 def normalise_userAccountControl (s4connector, key, object):
 	# set userAccountControl to 512 -- accounts synced to samba4 alpha17 had userAccountControl == 544
@@ -1000,7 +1000,7 @@ class s4(univention.s4connector.ucs):
 			base=self.lo_s4.base
 
 		ctrls=[]
-		ctrls.append(SimplePagedResultsControl(ldap.LDAP_CONTROL_PAGE_OID,True,(PAGE_SIZE,'')))
+		ctrls.append(SimplePagedResultsControl(True, PAGE_SIZE, ''))
 
 		if show_deleted:
 			# LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
