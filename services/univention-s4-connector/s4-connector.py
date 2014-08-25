@@ -166,6 +166,8 @@ def clean():
 	listener.setuid(0)
 	try:
 		for directory in dirs:
+			if not os.path.exists(directory):
+				continue
 			for filename in os.listdir(directory):
 				if filename != "tmp":
 					os.remove(os.path.join(directory,filename))

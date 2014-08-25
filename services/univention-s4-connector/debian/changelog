@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.4-5) unstable; urgency=medium
+
+  * Don't attempt to list a non-existent directory (Bug #32813)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 25 Aug 2014 19:03:36 +0200
+
 univention-s4-connector (9.0.4-4) unstable; urgency=medium
 
   * the third half.. (Bug #35320)
