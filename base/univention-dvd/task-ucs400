@@ -530,6 +530,9 @@ libconfig-file-perl
 apache2
 libapache2-mod-wsgi
 
+imapsync
+attr
+lsb-core
 
 /* SugarCRM */
 php5-curl
