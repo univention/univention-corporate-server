@@ -149,6 +149,17 @@ Depends: ${misc:Depends},
  univention-pkgdb-tools,
  shell-univention-lib (>= 1.0.25-1),
  python-univention-lib (>= 1.0.25-1)
+Recommends: vim,
+ emacs23,
+ less,
+ elinks,
+ wget,
+ nmap,
+ zip,
+ unzip,
+ eject,
+ locate,
+ univention-network-common,
 Description: UCS system role common dependencies and files
  This package contains common files used by all system roles.
  .
