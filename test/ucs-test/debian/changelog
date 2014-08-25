@@ -1,3 +1,9 @@
+ucs-test (4.0.166-72) unstable; urgency=medium
+
+  * Another test case for Bug #35647
+
+ -- Arvid Requate <requate@univention.de>  Mon, 25 Aug 2014 15:44:08 +0200
+
 ucs-test (4.0.166-71) unstable; urgency=medium
 
   * New test for Bug #35647
