@@ -1019,14 +1019,14 @@ class s4(univention.s4connector.ucs):
 			pctrls = [
 				c
 				for c in serverctrls
-				if c.controlType == ldap.LDAP_CONTROL_PAGE_OID
+				if c.controlType == SimplePagedResultsControl.controlType
 			]
 			if pctrls:
 				est, cookie = pctrls[0].controlValue
 				if cookie:
 					if pages > 1:
 						ud.debug(ud.LDAP, ud.PROCESS, "S4 search continues, already found %s objects" % len(res))
-					ctrls[0].controlValue = (PAGE_SIZE, cookie)
+					ctrls[0].cookie = cookie
 					msgid = self.lo_s4.lo.search_ext(base, scope, filter, attrlist, serverctrls=ctrls, timeout=-1, sizelimit=0)
 				else:
 					break
