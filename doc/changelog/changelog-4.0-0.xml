@@ -432,6 +432,8 @@
 	<title>Univention S4 Connector</title>
 	  <itemizedlist>
 		<listitem><simpara>
+			A traceback in the cleanup code of the <emphasis>s4-connector</emphasis> listener
+			has been fixed (<ulink url="&ucsbug;32813">Bug 32813</ulink>)
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
