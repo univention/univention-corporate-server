@@ -27,7 +27,7 @@ msgstr "Hinzufügen"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:56
 msgid "Add Cloud Connection"
-msgstr "Cloud-Zuagngsdaten hinzufügen"
+msgstr "Cloud-Zugangsdaten hinzufügen"
 
 #: modules/univention/admin/handlers/uvmm/cloudtype.py:56
 msgid "Add Cloud Type"
@@ -35,7 +35,7 @@ msgstr "Cloud-Typ hinzufügen"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:55
 msgid "Add, edit and delete Cloud Connections"
-msgstr "Hinzufügen, bearbeiten und löschen von Cloud-Zuagngsdaten"
+msgstr "Hinzufügen, bearbeiten und löschen von Cloud-Zugangsdaten"
 
 #: modules/univention/admin/handlers/uvmm/cloudtype.py:55
 msgid "Add, edit and delete Cloud Types"
@@ -83,7 +83,7 @@ msgstr "Prozessoren"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:81
 msgid "Cloud Connection parameters"
-msgstr "Cloud-Zuagngsdaten Parameter"
+msgstr "Cloud-Zugangsdaten Parameter"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:54
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:71
@@ -269,7 +269,7 @@ msgstr "Referenz auf das bei der Definition genutzte Profil"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:72
 msgid "Reference to the type of the cloud connection"
-msgstr "Referenz auf den Typ der Cloud-Zuagngsdaten"
+msgstr "Referenz auf den Typ der Cloud-Zugangsdaten"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:198
 #: modules/univention/admin/handlers/uvmm/profile.py:338
@@ -283,7 +283,7 @@ msgstr "Suche"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:56
 msgid "Search for Cloud Connections"
-msgstr "Suche nach Cloud-Zuagngsdaten"
+msgstr "Suche nach Cloud-Zugangsdaten"
 
 #: modules/univention/admin/handlers/uvmm/cloudtype.py:56
 msgid "Search for Cloud Types"
@@ -296,7 +296,7 @@ msgstr "UUID"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:49
 msgid "UVMM: Cloud Connections"
-msgstr "UVMM: Cloud-Zuagngsdaten"
+msgstr "UVMM: Cloud-Zugangsdaten"
 
 #: modules/univention/admin/syntax.d/univention-virtual-machine-manager-schema.py:15
 #: modules/univention/admin/handlers/uvmm/cloudtype.py:49
