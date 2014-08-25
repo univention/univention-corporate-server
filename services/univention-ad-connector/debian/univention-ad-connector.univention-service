@@ -1,6 +1,6 @@
 [univention-ad-connector]
 Description[de]=Univention AD Connector
 Description[en]=Univention AD Connector
-programs=/usr/lib/pymodules/python2.6/univention/connector/ad/main.py
+programs=/usr/lib/pymodules/python2.7/univention/connector/ad/main.py
 icon=service/ad-connector
 start_type=connector/ad/autostart
