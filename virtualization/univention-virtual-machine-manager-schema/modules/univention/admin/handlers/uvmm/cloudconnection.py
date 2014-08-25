@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager
 #  UDM Virtual Machine Manager Information
 #
-# Copyright 2010-2014 Univention GmbH
+# Copyright 2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,7 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from subprocess import call
 import univention.admin
 import univention.admin.filter as udm_filter
 import univention.admin.mapping as udm_mapping
@@ -50,10 +49,10 @@ short_description = _('UVMM: Cloud Connections')
 long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
 
-usewizard=1
-wizardmenustring=_("Cloud Type")
-wizarddescription=_("Add, edit and delete Cloud Connections")
-wizardoperations={"add":[_("Add"), _("Add Cloud Connection")],"find":[_("Search"), _("Search for Cloud Connections")]}
+usewizard = 1
+wizardmenustring = _("Cloud Type")
+wizarddescription = _("Add, edit and delete Cloud Connections")
+wizardoperations = {"add": [_("Add"), _("Add Cloud Connection")], "find": [_("Search"), _("Search for Cloud Connections")]}
 
 # UDM properties
 property_descriptions = {
@@ -101,23 +100,26 @@ layout = [
 	])
 	]
 
+
 def mapKeyAndValue(old):
-        lst = []
-        for entry in old:
-                lst.append( '%s=%s' % (entry[0], entry[1]) )
-        return lst
+	lst = []
+	for entry in old:
+		lst.append('%s=%s' % (entry[0], entry[1]))
+	return lst
+
 
 def unmapKeyAndValue(old):
-        lst = []
-        for entry in old:
-                lst.append( entry.split('=', 1) )
-        return lst
+	lst = []
+	for entry in old:
+		lst.append(entry.split('=', 1))
+	return lst
 
 # Maping between UDM properties and LDAP attributes
 mapping = udm_mapping.mapping()
 mapping.register('name', 'cn', None, udm_mapping.ListToString)
 mapping.register('type', 'univentionVirtualMachineCloudConnectionTypeRef', None, udm_mapping.ListToString)
 mapping.register('parameter', 'univentionVirtualMachineCloudConnectionParameter', mapKeyAndValue, unmapKeyAndValue)
+
 
 class object(simpleLdap):
 	"""UVMM Cloud Connection."""

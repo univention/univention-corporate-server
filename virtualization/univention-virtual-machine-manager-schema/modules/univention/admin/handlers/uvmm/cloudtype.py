@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager
 #  UDM Virtual Machine Manager Information
 #
-# Copyright 2010-2014 Univention GmbH
+# Copyright 2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,7 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from subprocess import call
 import univention.admin
 import univention.admin.filter as udm_filter
 import univention.admin.mapping as udm_mapping
@@ -50,10 +49,10 @@ short_description = _('UVMM: Cloud Types')
 long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
 
-usewizard=1
-wizardmenustring=_("Cloud Type")
-wizarddescription=_("Add, edit and delete Cloud Types")
-wizardoperations={"add":[_("Add"), _("Add Cloud Type")],"find":[_("Search"), _("Search for Cloud Types")]}
+usewizard = 1
+wizardmenustring = _("Cloud Type")
+wizarddescription = _("Add, edit and delete Cloud Types")
+wizardoperations = {"add": [_("Add"), _("Add Cloud Type")], "find": [_("Search"), _("Search for Cloud Types")]}
 
 # UDM properties
 property_descriptions = {
@@ -81,6 +80,7 @@ layout = [
 # Maping between UDM properties and LDAP attributes
 mapping = udm_mapping.mapping()
 mapping.register('name', 'cn', None, udm_mapping.ListToString)
+
 
 class object(simpleLdap):
 	"""UVMM Cloud Type."""

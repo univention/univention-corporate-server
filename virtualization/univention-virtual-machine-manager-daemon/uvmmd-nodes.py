@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # UCS Virtual Machine Manager Daemon
