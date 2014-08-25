@@ -134,6 +134,16 @@
 		</itemizedlist>
 	</section>
   </section>
+
+  <section id="changelog:domain:dnsserver">
+	<title>DNS server</title>
+	  <itemizedlist>
+		  <listitem><simpara>
+			The DNS server bind has been updated to Version 9.8.4P1
+			(<ulink url="&ucsbug;35668">Bug 35668</ulink>)
+		  </simpara></listitem>
+	  </itemizedlist>
+  </section>
 </section>
 
 
