@@ -1,0 +1,197 @@
+# -*- coding: utf-8 -*-
+#
+# UCS Virtual Machine Manager Daemon
+#  cloud connection and instance handler
+#
+# Copyright 2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+"""UVMM cloud node handler.
+
+This module implements functions to handle cloud connections and instances. This is independent from the on-wire-format.
+"""
+
+import logging
+import threading
+from helpers import TranslatableException, ms, tuple2version, N_ as _, uri_encode
+import univention.admin.uexceptions
+from openstackcloud import OpenStackCloudConnection
+import univention.config_registry as ucr
+
+configRegistry = ucr.ConfigRegistry()
+configRegistry.load()
+
+logger = logging.getLogger('uvmmd.cloudconnection')
+
+STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED')
+
+
+class CloudConnectionError(TranslatableException):
+	"""Error while handling cloud connection."""
+	pass
+
+
+class CloudConnectionMananger(dict):
+	"""
+	Dictionary which holds all connections
+	key is the cloud name, value the CloudConnection
+	"""
+	def __init__(self):
+		super(CloudConnectionMananger, self).__init__()
+
+	def __delitem__(self, cloudname):
+		"""x.__delitem__(i) <==> del x[i]"""
+		self[cloudname].unregister()
+		super(CloudConnectionMananger, self).__delitem__(cloudname)
+
+	def _parse_cloud_info(self, cloud):
+		if "name" not in cloud:
+			raise CloudConnectionError("Field 'name' is required for adding a connection")
+		if "type" not in cloud:
+			raise CloudConnectionError("Field 'type' is required for adding a connection")
+
+	def list(self):
+		connections = []
+		for conn in self.values():
+			connections.append(conn.publicdata)
+		return connections
+
+	def set_poll_frequency(self, freq, name=None):
+		if name:
+			try:
+				self[name].set_frequency(freq)
+			except KeyError:
+				raise CloudConnectionError("No connection to %s" % name)
+		else:
+			for connection in self.values():
+				connection.set_frequency(freq)
+
+	def add_connection(self, cloud):
+		"""
+		Add a new cloud connection
+		cloud: dict with cloud name, type, credentials, urls, ...
+		"""
+		self._parse_cloud_info(cloud)
+
+		if cloud["name"] in self:
+			raise CloudConnectionError("Connection to %s already established" % cloud["name"])
+
+		self[cloud["name"]] = create_cloud_connection(cloud)
+		logger.info("Added connection to %s" % cloud["name"])
+
+	def remove_connection(self, cloudname):
+		"""Remove connection; cloudname = ldap name attribute"""
+		try:
+			del self[cloudname]
+		except KeyError:
+			raise CloudConnectionError("No Connection to %s present" % cloudname)
+		logger.info("Removed connection to %s" % cloudname)
+
+	def list_conn_instances(self, conn_name, pattern="*"):
+		"""
+		List instances available through connection identified by conn_name,
+		matching the pattern. If conn_name = "*", list all connections
+		"""
+		connection_list = []
+		if conn_name in ("*", ""):
+			connection_list = self.values()
+		else:
+			connection_list = [x for x in self.values() if conn_name in x.publicdata.name]
+
+		instances = {}
+		for connection in connection_list:
+			instances[connection.publicdata.name] = connection.list_instances(pattern)
+
+		return instances
+
+	def list_conn_images(self, conn_name=None, pattern="*"):
+		connection_list = []
+		if conn_name in ("*", ""):
+			connection_list = self.values()
+		else:
+			connection_list = [x for x in self.values() if conn_name in x.publicdata.name]
+
+		images = {}
+		for connection in connection_list:
+			images[connection.publicdata.name] = connection.list_images(pattern)
+
+		return images
+
+	def list_conn_sizes(self, conn_name=None):
+		connection_list = []
+		if conn_name in ("*", ""):
+			connection_list = self.values()
+		else:
+			connection_list = [x for x in self.values() if conn_name in x.publicdata.name]
+
+		sizes = {}
+		for connection in connection_list:
+			sizes[connection.publicdata.name] = connection.list_sizes()
+
+		return sizes
+
+	def list_conn_regions(self, conn_name=None):
+		connection_list = []
+		if conn_name in ("*", ""):
+			connection_list = self.values()
+		else:
+			connection_list = [x for x in self.values() if conn_name in x.publicdata.name]
+
+		regions = {}
+		for connection in connection_list:
+			regions[connection.publicdata.name] = connection.list_regions()
+
+		return regions
+
+	def list_conn_keypairs(self, conn_name=None):
+		connection_list = []
+		if conn_name in ("*", ""):
+			connection_list = self.values()
+		else:
+			connection_list = [x for x in self.values() if conn_name in x.publicdata.name]
+
+		keypairs = {}
+		for connection in connection_list:
+			keypairs[connection.publicdata.name] = connection.list_keypairs()
+
+		return keypairs
+
+
+def create_cloud_connection(cloud):
+	if cloud["type"] == "OpenStack":
+		return OpenStackCloudConnection(cloud)
+	elif cloud["type"] == "Amazon EC2":
+		# TODO: implement
+		return
+	else:
+		raise CloudConnectionError("Unknown cloud type %s" % cloud["type"])
+
+
+cloudconnections = CloudConnectionMananger()
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

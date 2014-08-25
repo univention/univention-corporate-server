@@ -41,9 +41,13 @@ __all__ = [
 		'uri_decode',
 		'TimeoutError',
 		'timeout',
+		'CloudConnection',
 		]
 
 import gettext
+import logging
+logger = logging.getLogger('uvmmd.cloudconnection')
+
 N_ = lambda msg: msg
 _ = gettext.translation('univention-virtual-machine-manager', fallback=True).ugettext
 
@@ -187,6 +191,24 @@ __all += ['xen%s' % v for v in ['', '+unix', '+tcp', '+ssh']]
 urlparse.uses_netloc += __all
 urlparse.uses_query += __all
 urlparse.uses_fragment += __all
+
+
+class CloudConnection(object):
+	def __init__(self, cloud):
+		self.type = cloud["type"]
+
+	def list_instances(self):
+		logger.debug("list instances")
+
+	def unregister(self):
+		"""
+		Remove connection to this service
+		"""
+		logger.debug("Removed connection to %s" % self.publicdata.name)
+
+	def set_frequency(self, freq):
+		pass
+
 
 if __name__ == '__main__':
 	import doctest

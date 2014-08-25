@@ -35,6 +35,7 @@
 import sys
 import os
 import locale
+import json
 from optparse import OptionParser
 from univention.uvmm import protocol, client
 from univention.uvmm.helpers import TranslatableException, _, N_
@@ -607,6 +608,101 @@ class Client(object):
 		_subst = dict([kv.split('=', 1) for kv in subst])
 		p = protocol.Request_DOMAIN_CLONE(uri=uri, domain=domain, name=name, subst=_subst)
 		return p
+
+	def cloud_add(self, json_options):
+		"""
+		%prog cloud_add <json_options>
+
+		Define new cloud connection
+		<json_options> defines connection name, credentials, URL, etc. Example:
+		%prog cloud_add "{"name":"myCloud", "type":"OpenStack", "username":"demo", "password":"univention", "auth_url":"http://192.168.0.79:5000", "auth_version":"2.0_password", "tenant":"demo", "service_type":"compute", "service_name":"nova", "service_region":"regionOne"}"
+		"""
+		try:
+			if json_options.startswith('"'):  # json string
+				args = json.loads(json_options)
+			else:  # filename
+				with open(json_options) as f:
+					args = json.load(f)
+
+			if not isinstance(args, dict):
+				raise ValueError("JSON object required")
+		except (TypeError, ValueError) as e:
+			raise ValueError("Could not decode information: %s" % e)
+
+		return protocol.Request_L_CLOUD_ADD(args=args)
+
+	def cloud_remove(self, name):
+		"""
+		%prog cloud_remove name
+
+		Remove cloud connection with the name <name>
+		"""
+		return protocol.Request_L_CLOUD_REMOVE(name=name)
+
+	def cloud_list(self):
+		"""
+		%prog cloud_list
+
+		List all cloud connections
+		"""
+		return protocol.Request_L_CLOUD_LIST()
+
+	def cloud_instance_list(self, conn_name, pattern="*"):
+		"""
+		%prog cloud_instance_list <name> [<pattern>]
+
+		List all instances matching 'pattern' of cloud connections
+		"""
+		return protocol.Request_L_CLOUD_INSTANCE_LIST(conn_name=conn_name, pattern=pattern)
+
+	def cloud_frequency(self, frequency, name=None):
+		"""
+		%prog frequency <frequency> [name]
+
+		Set the interval how often UVMM queries all registered or that specific
+		cloud server. The frequency is given in [ms].
+		Examples:
+			%prog frequency 15000
+			%prog frequency 15000 localOpenStack
+		"""
+		return protocol.Request_L_CLOUD_FREQUENCY(freq=frequency, name=name)
+
+	def cloud_image_list(self, name="*", pattern="*"):
+		"""
+		%prog cloud_image_list <name> [<pattern>]
+
+		List available cloud images matching <pattern> to start new instances with
+		name is the cloud connection name. If empty, list information from all connections
+		"""
+		return protocol.Request_L_CLOUD_IMAGE_LIST(conn_name=name, pattern=pattern)
+
+	def cloud_size_list(self, name="*"):
+		"""
+		%prog cloud_size_list <name>
+
+		List available instance sizes
+		name is the cloud connection name. If empty, list information from all connections
+		"""
+		return protocol.Request_L_CLOUD_SIZE_LIST(conn_name=name)
+
+	def cloud_region_list(self, name="*"):
+		"""
+		%prog cloud_region_list <name>
+
+		List available cloud regions
+		name is the cloud connection name. If empty, list information from all connections
+		"""
+		return protocol.Request_L_CLOUD_REGION_LIST(conn_name=name)
+
+	def cloud_keypair_list(self, name="*"):
+		"""
+		%prog cloud_keypair_list <name>
+
+		List available cloud keypairs
+		name is the cloud connection name. If empty, list information from all connections
+		"""
+		return protocol.Request_L_CLOUD_KEYPAIR_LIST(conn_name=name)
+
 
 if __name__ == '__main__':
 	locale.setlocale(locale.LC_ALL, '')

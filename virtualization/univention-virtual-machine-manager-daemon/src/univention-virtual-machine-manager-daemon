@@ -44,6 +44,7 @@ import signal
 import libvirt
 from threading import Thread
 
+
 def createDaemon(options):
 	"""http://code.activestate.com/recipes/278731/"""
 	UMASK = 0037
@@ -55,18 +56,19 @@ def createDaemon(options):
 		pid = os.fork()
 	except OSError, e:
 		raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
-	if (pid == 0): # 1st child
+	if (pid == 0):  # 1st child
 		# detach from parent environment
 		os.chdir(WORKDIR)
-		os.setsid() # Become new session leader
+		os.setsid()  # Become new session leader
 		os.umask(UMASK)
 
 		try:
 			pid = os.fork()
 		except OSError, e:
 			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
-		if (pid == 0): # 2nd child
+		if (pid == 0):  # 2nd child
 			os.close(read_end)
+
 			def server_ready():
 				"""Notify parent that server is ready."""
 				pid = os.getpid()
@@ -98,13 +100,13 @@ def createDaemon(options):
 				except OSError:
 					pass
 
-			signal.signal(signal.SIGCHLD, signal.SIG_IGN) # child
-			signal.signal(signal.SIGTSTP, signal.SIG_IGN) # terminal stop
-			signal.signal(signal.SIGTTOU, signal.SIG_IGN) # terminal text out
-			signal.signal(signal.SIGTTIN, signal.SIG_IGN) # termianl text in
-		else: # 1st child
+			signal.signal(signal.SIGCHLD, signal.SIG_IGN)  # child
+			signal.signal(signal.SIGTSTP, signal.SIG_IGN)  # terminal stop
+			signal.signal(signal.SIGTTOU, signal.SIG_IGN)  # terminal text out
+			signal.signal(signal.SIGTTIN, signal.SIG_IGN)  # termianl text in
+		else:  # 1st child
 			os._exit(0)
-	else: # parent
+	else:  # parent
 		try:
 			os.close(write_end)
 			pid = os.read(read_end, 11)
@@ -122,6 +124,7 @@ def createDaemon(options):
 				sys.exit(1)
 		except OSError, e:
 			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
+
 
 def install_signal_handlers(options):
 	u"""Install signal handlers."""
@@ -171,15 +174,17 @@ def install_signal_handlers(options):
 		signal.signal(signum, signal.SIG_DFL)
 		os.kill(os.getpid(), signum)
 
-	signal.signal(signal.SIGHUP, signal_handler_logrotate) # hang up
-	signal.signal(signal.SIGUSR1, signal_handler_restart) # user1
-	signal.signal(signal.SIGINT, signal_handler_terminate) # interrupt
-	signal.signal(signal.SIGTERM, signal_handler_terminate) # terminate
-	signal.signal(signal.SIGSEGV, signal_handler_terminate) # memory corrupt
+	signal.signal(signal.SIGHUP, signal_handler_logrotate)  # hang up
+	signal.signal(signal.SIGUSR1, signal_handler_restart)  # user1
+	signal.signal(signal.SIGINT, signal_handler_terminate)  # interrupt
+	signal.signal(signal.SIGTERM, signal_handler_terminate)  # terminate
+	signal.signal(signal.SIGSEGV, signal_handler_terminate)  # memory corrupt
+
 
 def runEventLoop():
 	while True:
 		libvirt.virEventRunDefaultImpl()
+
 
 if __name__ == '__main__':
 	locale.setlocale(locale.LC_ALL, '')
@@ -189,7 +194,7 @@ if __name__ == '__main__':
 	socket_group = OptionGroup(parser, _('Connection options'))
 	socket_group.add_option('-u', '--unix',
 			action='store', dest='socket', default="/var/run/uvmm.socket",
-			help=_('Path to the UNIX socket [%(default)s]') % {'default':'%default'})
+			help=_('Path to the UNIX socket [%(default)s]') % {'default': '%default'})
 	socket_group.add_option('-t', '--tcp',
 			action='store', dest='tcp', default=None, metavar=_("HOST:PORT"),
 			help=_('HOST and PORT number of the TCP socket'))
@@ -201,7 +206,7 @@ if __name__ == '__main__':
 	cache_group = OptionGroup(parser, _('Cache options'))
 	cache_group.add_option('-c', '--cache',
 			action='store', dest='cache', default="/var/cache/univention-virtual-machine-manager-daemon",
-			help=_('cache directory [%(default)s]') % {'default':'%default'})
+			help=_('cache directory [%(default)s]') % {'default': '%default'})
 	cache_group.add_option('-C', '--clean',
 			action='store_true', dest='clean', default=False,
 			help=_('Do not load cached state'))
@@ -210,7 +215,7 @@ if __name__ == '__main__':
 	daemon_group = OptionGroup(parser, _('Daemon options'))
 	daemon_group.add_option('-p', '--pidfile',
 			action='store', dest='pidfile', default="/var/run/uvmmd.pid",
-			help=_('Path to the pid-file [%(default)s]') % {'default':'%default'})
+			help=_('Path to the pid-file [%(default)s]') % {'default': '%default'})
 	daemon_group.add_option('-d', '--daemon',
 			action='store_true', dest='daemonize', default=False,
 			help=_('Fork into background'))
@@ -222,7 +227,7 @@ if __name__ == '__main__':
 			help=_('Print additional information'))
 	daemon_group.add_option('-i', '--config',
 			action='store', dest='conffile', default="/etc/univention/uvmmd.ini",
-			help=_('Path to the ini-file [%(default)s]') % {'default':'%default'})
+			help=_('Path to the ini-file [%(default)s]') % {'default': '%default'})
 	daemon_group.add_option('-I', '--no-ini',
 			action='store_false', dest='read_ini', default=True,
 			help=_('Skip reading ini-file'))
@@ -281,7 +286,7 @@ if __name__ == '__main__':
 	from univention.uvmm.uvmm_ldap import cached, ldap_uris, LdapError
 	try:
 		if not options.clean and options.cache != '':
-			get_ldap_uris = lambda:ldap_uris()
+			get_ldap_uris = lambda: ldap_uris()
 			uris = cached("%s/ldap.pic" % (options.cache,), get_ldap_uris)
 		else:
 			uris = ldap_uris()

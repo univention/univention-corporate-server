@@ -38,11 +38,13 @@ import copy
 
 import protocol
 import node
+import cloudnode
 import storage
 import logging
 from helpers import TranslatableException, N_ as _
 
 logger = logging.getLogger('uvmmd.command')
+
 
 class CommandError(TranslatableException):
 	"""Signal error during command execution."""
@@ -50,7 +52,127 @@ class CommandError(TranslatableException):
 		kv['command'] = command
 		TranslatableException.__init__(self, e, kv)
 
+
 class _Commands:
+	@staticmethod
+	def L_CLOUD_ADD(server, request):
+		""" Add cloud via libcloud """
+		if not isinstance(request.args, dict):
+			raise CommandError('L_CLOUD_ADD', _('args != dict: %(args)s'), args=request.args)
+
+		logger.debug('L_CLOUD_ADD %s' % (request.args))
+		try:
+			cloudnode.cloudconnections.add_connection(request.args)
+		except cloudnode.CloudConnectionError, e:
+			raise CommandError('L_CLOUD_ADD', e)
+
+	@staticmethod
+	def L_CLOUD_REMOVE(server, request):
+		""" Remove cloud via libcloud """
+		if not isinstance(request.name, basestring):
+			raise CommandError('L_CLOUD_REMOVE', _('name != string: %(name)s'), name=request.name)
+
+		logger.debug('L_CLOUD_REMOVE %s' % (request.name))
+		try:
+			cloudnode.cloudconnections.remove_connection(request.name)
+		except cloudnode.CloudConnectionError, e:
+			raise CommandError('L_CLOUD_REMOVE', e)
+
+	@staticmethod
+	def L_CLOUD_LIST(server, request):
+		""" List connected clouds """
+		logger.debug('L_CLOUD_LIST')
+		try:
+			res = protocol.Response_DUMP()
+			res.data = cloudnode.cloudconnections.list()
+			return res
+		except cloudnode.CloudConnectionError, e:
+			raise CommandError('L_CLOUD_LIST', e)
+
+	@staticmethod
+	def L_CLOUD_INSTANCE_LIST(server, request):
+		""" List instances in connected clouds """
+		logger.debug('L_CLOUD_INSTANCE_LIST')
+		if not isinstance(request.conn_name, basestring):
+			raise CommandError('L_CLOUD_INSTANCE_LIST', _('conn_name != string: %(conn_name)s'), conn_name=request.conn_name)
+		if not isinstance(request.pattern, basestring):
+			raise CommandError('L_CLOUD_INSTANCE_LIST', _('pattern != string: %(pattern)s'), pattern=request.pattern)
+		try:
+			res = protocol.Response_DUMP()
+			res.data = cloudnode.cloudconnections.list_conn_instances(request.conn_name, request.pattern)
+			return res
+		except cloudnode.CloudConnectionError, e:
+			raise CommandError('L_CLOUD_INSTANCE_LIST', e)
+
+	@staticmethod
+	def L_CLOUD_FREQUENCY(server, request):
+		"""Set polling interval for cloud connection"""
+		try:
+			freq = int(request.freq)
+		except TypeError:
+			raise CommandError('L_CLOUD_FREQUENCY', _('freq != int: %(freq)s'), freq=request.freq)
+		if request.name is not None and not isinstance(request.name, basestring):
+			raise CommandError('L_CLOUD_FREQUENCY', _('name != string: %(name)s'), name=request.name)
+		logger.debug('L_CLOUD_FREQUENCY %d %s' % (freq, request.name))
+		try:
+			cloudnode.cloudconnections.set_poll_frequency(freq, request.name)
+		except cloudnode.CloudConnectionError, e:
+			raise CommandError('L_CLOUD_FREQUENCY', e)
+
+	@staticmethod
+	def L_CLOUD_IMAGE_LIST(server, request):
+		"""List available cloud instance images of cloud connections"""
+		logger.debug('L_CLOUD_IMAGE_LIST')
+		if not isinstance(request.conn_name, basestring):
+			raise CommandError('L_CLOUD_IMAGE_LIST', _('conn_name != string: %(conn_name)s'), conn_name=request.conn_name)
+		if not isinstance(request.pattern, basestring):
+			raise CommandError('L_CLOUD_IMAGE_LIST', _('pattern != string: %(pattern)s'), pattern=request.pattern)
+		try:
+			res = protocol.Response_DUMP()
+			res.data = cloudnode.cloudconnections.list_conn_images(request.conn_name, request.pattern)
+			return res
+		except cloudnode.CloudConnectionError, e:
+			raise CommandError('L_CLOUD_IMAGE_LIST', e)
+
+	@staticmethod
+	def L_CLOUD_SIZE_LIST(server, request):
+		"""List available cloud instance sizes of cloud connections"""
+		logger.debug('L_CLOUD_SIZE_LIST')
+		if not isinstance(request.conn_name, basestring):
+			raise CommandError('L_CLOUD_SIZE_LIST', _('conn_name != string: %(conn_name)s'), conn_name=request.conn_name)
+		try:
+			res = protocol.Response_DUMP()
+			res.data = cloudnode.cloudconnections.list_conn_sizes(request.conn_name)
+			return res
+		except cloudnode.CloudConnectionError, e:
+			raise CommandError('L_CLOUD_SIZE_LIST', e)
+
+	@staticmethod
+	def L_CLOUD_REGION_LIST(server, request):
+		"""List available cloud regions of cloud connections"""	
+		logger.debug('L_CLOUD_REGION_LIST')
+		if not isinstance(request.conn_name, basestring):
+			raise CommandError('L_CLOUD_REGION_LIST', _('conn_name != string: %(conn_name)s'), conn_name=request.conn_name)
+		try:
+			res = protocol.Response_DUMP()
+			res.data = cloudnode.cloudconnections.list_conn_regions(request.conn_name)
+			return res
+		except cloudnode.CloudConnectionError, e:
+			raise CommandError('L_CLOUD_REGION_LIST', e)
+
+	@staticmethod
+	def L_CLOUD_KEYPAIR_LIST(server, request):
+		"""List available cloud keypairs of cloud connections"""
+		logger.debug('L_CLOUD_KEYPAIR_LIST')
+		if not isinstance(request.conn_name, basestring):
+			raise CommandError('L_CLOUD_KEYPAIR_LIST', _('conn_name != string: %(conn_name)s'), conn_name=request.conn_name)
+		try:
+			res = protocol.Response_DUMP()
+			res.data = cloudnode.cloudconnections.list_conn_keypairs(request.conn_name)
+			return res
+		except cloudnode.CloudConnectionError, e:
+			raise CommandError('L_CLOUD_KEYPAIR_LIST', e)
+
 	@staticmethod
 	def NODE_ADD(server, request):
 		"""Add node to watch list."""

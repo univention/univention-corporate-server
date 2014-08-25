@@ -270,6 +270,63 @@ class Request_AUTHENTICATION(Request):
 	def _default(self):
 		self.command = 'AUTHENTICATION'
 		self.response = [] # (data, PAM.PAM_{SUCCESS|*_ERR|...})
+
+class Request_L_CLOUD_ADD(Request):
+	"""Add libcloud cloud connection"""
+	def _default(self):
+		self.command = 'L_CLOUD_ADD'
+		self.args = None
+
+class Request_L_CLOUD_REMOVE(Request):
+	"""Remove libcloud cloud connection"""
+	def _default(self):
+		self.command = 'L_CLOUD_REMOVE'
+		self.name = None
+
+class Request_L_CLOUD_LIST(Request):
+	"""List libcloud cloud connections"""
+	def _default(self):
+		self.command = 'L_CLOUD_LIST'
+
+class Request_L_CLOUD_INSTANCE_LIST(Request):
+	"""List instances matching 'pattern' of libcloud cloud connections"""
+	def _default(self):
+		self.command = 'L_CLOUD_INSTANCE_LIST'
+		self.conn_name = None
+		self.pattern = None
+
+class Request_L_CLOUD_FREQUENCY(Request):
+	"""Set polling frequency of one or all connections"""
+	def _default(self):
+		self.command = 'L_CLOUD_FREQUENCY'
+		self.freq = None
+		self.name = None
+
+class Request_L_CLOUD_IMAGE_LIST(Request):
+	"""List available cloud instance images of cloud connections"""
+	def _default(self):
+		self.command = 'L_CLOUD_IMAGE_LIST'
+		self.conn_name = None
+		self.pattern = None
+
+class Request_L_CLOUD_SIZE_LIST(Request):
+	"""List available cloud instance sizes of cloud connections"""
+	def _default(self):
+		self.command = 'L_CLOUD_SIZE_LIST'
+		self.conn_name = None
+
+class Request_L_CLOUD_REGION_LIST(Request):
+	"""List available cloud regions of cloud connections"""
+	def _default(self):
+		self.command = 'L_CLOUD_REGION_LIST'
+		self.conn_name = None
+
+class Request_L_CLOUD_KEYPAIR_LIST(Request):
+	"""List available cloud keypairs of cloud connections"""
+	def _default(self):
+		self.command = 'L_CLOUD_KEYPAIR_LIST'
+		self.conn_name = None
+
 class Response(Packet):
 	"""Super class of all responses from UVMM daemon."""
 	def _default(self):
@@ -365,6 +422,74 @@ class Data_Pool(object):
 		self.path = None # optional
 		self.active = False
 		self.type = None
+
+
+class Cloud_Data_Connection(object):
+	"""Container for libcloud connection statistics"""
+	def __init__(self):
+		self.name = None
+		self.url = None
+		self.last_update = None
+
+
+class Cloud_Data_Instance(object):
+	"""Container for libcloud instance statistics"""
+	def __init__(self):
+		self.name = None
+		self.extra = {}
+		self.id = None
+		self.image = None
+		self.private_ips = []
+		self.public_ips = []
+		self.size = None
+		self.state = None
+		self.uuid = None
+		self.available = None  # See class Data_Domain
+
+
+class Cloud_Data_Size(object):
+	"""Container for libcloud size statistics"""
+	def __init__(self):
+		self.name = None
+		self.extra = {}
+		self.id = None
+		self.ram = None
+		self.disk = None
+		self.bandwidth = None
+		self.price = None
+		self.driver = None
+		self.uuid = None
+
+
+class Cloud_Data_Image(object):
+	"""Container for libcloud image statistics"""
+	def __init__(self):
+		self.name = None
+		self.extra = {}
+		self.id = None
+		self.driver = None
+		self.uuid = None
+
+
+class Cloud_Data_Region(object):
+	"""Container for libcloud image statistics"""
+	def __init__(self):
+		self.name = None
+		self.id = None
+		self.driver = None
+		self.country = None
+
+
+class Cloud_Data_Keypair(object):
+	"""Container for libcloud image statistics"""
+	def __init__(self):
+		self.name = None
+		self.fingerprint = None
+		self.public_key = None
+		self.private_key = None
+		self.driver = None
+		self.extra = {}
+
 
 class Data_Snapshot(object):
 	"""Container for snapshot data."""
