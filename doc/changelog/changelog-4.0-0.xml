@@ -29,6 +29,37 @@
   <title>Univention Installer</title>
 	<itemizedlist>
 	  <listitem><simpara>
+		The UCS installation DVD has been revised. The installation is now performed by an adapted version of the debian installer
+		(<ulink url="&ucsbug;30547">Bug 30547</ulink>,
+		<ulink url="&ucsbug;34994">Bug 34994</ulink>,
+		<ulink url="&ucsbug;35370">Bug 35370</ulink>,
+		<ulink url="&ucsbug;35371">Bug 35371</ulink>,
+		<ulink url="&ucsbug;35372">Bug 35372</ulink>,
+		<ulink url="&ucsbug;35373">Bug 35373</ulink>,
+		<ulink url="&ucsbug;35374">Bug 35374</ulink>,
+		<ulink url="&ucsbug;35375">Bug 35375</ulink>,
+		<ulink url="&ucsbug;35376">Bug 35376</ulink>,
+		<ulink url="&ucsbug;35377">Bug 35377</ulink>,
+		<ulink url="&ucsbug;35378">Bug 35378</ulink>,
+		<ulink url="&ucsbug;35384">Bug 35384</ulink>,
+		<ulink url="&ucsbug;35385">Bug 35385</ulink>,
+		<ulink url="&ucsbug;35386">Bug 35386</ulink>,
+		<ulink url="&ucsbug;35400">Bug 35400</ulink>,
+		<ulink url="&ucsbug;35417">Bug 35417</ulink>,
+		<ulink url="&ucsbug;35435">Bug 35435</ulink>,
+		<ulink url="&ucsbug;35491">Bug 35491</ulink>,
+		<ulink url="&ucsbug;35493">Bug 35493</ulink>,
+		<ulink url="&ucsbug;35494">Bug 35494</ulink>,
+		<ulink url="&ucsbug;35495">Bug 35495</ulink>,
+		<ulink url="&ucsbug;35496">Bug 35496</ulink>,
+		<ulink url="&ucsbug;35497">Bug 35497</ulink>,
+		<ulink url="&ucsbug;35498">Bug 35498</ulink>,
+		<ulink url="&ucsbug;35525">Bug 35525</ulink>,
+		<ulink url="&ucsbug;35635">Bug 35635</ulink>,
+		<ulink url="&ucsbug;35636">Bug 35636</ulink>,
+		<ulink url="&ucsbug;35659">Bug 35659</ulink>,
+		<ulink url="&ucsbug;35670">Bug 35670</ulink>,
+		<ulink url="&ucsbug;35696">Bug 35696</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
 </section>
