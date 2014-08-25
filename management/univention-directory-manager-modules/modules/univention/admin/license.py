@@ -47,6 +47,30 @@ _license = None
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
+LDAP_FILTER_not_root = '(!(uidNumber=0))'
+LDAP_FILTER_not_machine = '(!(uid=*$))'
+LDAP_FILTER_user_account = '(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount))'
+LDAP_FILTER_normal_user_account = '(&%s)' % ''.join([LDAP_FILTER_user_account, LDAP_FILTER_not_root, LDAP_FILTER_not_machine])
+LDAP_FILTER_account_not_disabled = '(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))))'
+LDAP_FILTER_managedclients = '(|(objectClass=univentionThinClient)(&(objectClass=univentionClient)(objectClass=posixAccount))(objectClass=univentionMobileClient)(objectClass=univentionWindows)(objectclass=univentionUbuntuClient)(objectClass=univentionLinuxClient)(objectClass=univentionCorporateClient)(objectClass=univentionMacOSClient))'
+
+def ldap_filter_not_objectflag(flag_string_list):
+	ldap_filter_parts = []
+	for flag_string in flag_string_list:
+		ldap_filter_parts.append('(univentionObjectFlag=%s)' % flag_string)
+	if not ldap_filter_parts:
+		return ''
+	elif len(ldap_filter_parts) == 1:
+		return '(!%s)' % ''.join(ldap_filter_parts)
+	else:
+		return '(!(|%s))' % ''.join(ldap_filter_parts)
+
+user_exclude_objectflags = ['temporary', 'functional']
+managedclient_exclude_objectflags = []
+if configRegistry.is_true('ad/member'):
+	user_exclude_objectflags.append('synced')
+	managedclient_exclude_objectflags.append('synced')
+
 class License( object ):
 	( ACCOUNT, CLIENT, DESKTOP, GROUPWARE ) = range( 4 )
 	( USERS, SERVERS, MANAGEDCLIENTS, CORPORATECLIENTS, VIRTUALDESKTOPUSERS, VIRTUALDESKTOPCLIENTS ) = range(6)
@@ -150,12 +174,14 @@ class License( object ):
 				},
 				'2': {
 					# Version 2 since UCS 3.1
-					License.USERS : '(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount))(!(uidNumber=0))(!(uid=*$))(!(univentionObjectFlag=temporary))(!(univentionObjectFlag=functional))(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
+					License.USERS : '(&%s)' % ''.join([LDAP_FILTER_normal_user_account, ldap_filter_not_objectflag(user_exclude_objectflags), LDAP_FILTER_account_not_disabled]),
 					License.SERVERS : '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))',
 					# Thin Clients, Managed Clients, Mobile Clients, Windows Clients, Ubuntu Clients, Linux Clients, UCC Clients, MaxOS X Clients
-					License.MANAGEDCLIENTS :'(|(objectClass=univentionThinClient)(&(objectClass=univentionClient)(objectClass=posixAccount))(objectClass=univentionMobileClient)(objectClass=univentionWindows)(objectclass=univentionUbuntuClient)(objectClass=univentionLinuxClient)(objectClass=univentionCorporateClient)(objectClass=univentionMacOSClient))',
+					License.MANAGEDCLIENTS : '(&%s)' % ''.join([LDAP_FILTER_managedclients, ldap_filter_not_objectflag(managedclient_exclude_objectflags)]),
 					License.CORPORATECLIENTS : '(&(objectclass=univentionCorporateClient))',
 					License.VIRTUALDESKTOPUSERS : '(&(objectClass=univentionDVSUsers)(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount))(!(uidNumber=0))(!(uid=*$))(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))))',
+					## Could be expressed as:
+					## License.VIRTUALDESKTOPUSERS : '(&%s)' % ''.join([ '(objectClass=univentionDVSUsers)', LDAP_FILTER_normal_user_account, LDAP_FILTER_account_not_disabled])
 					License.VIRTUALDESKTOPCLIENTS : '(&(objectclass=univentionDVSComputers))',
 				},
 		}
