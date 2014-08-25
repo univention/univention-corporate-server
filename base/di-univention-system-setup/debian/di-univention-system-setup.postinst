@@ -10,6 +10,10 @@ if [ -n "$DISPLAY" ]; then
 	chroot /target invoke-rc.d univention-runit start
 
 	chroot /target /usr/share/univention-system-setup/startxwithfirefox --installer
+
+	# Disable netinst CD image in sources.list if any other sources are present
+	logger -t finish-install "Disabling netinst CD in sources.list"
+	sed -i "/^deb cdrom:/s/^/#/" /target/etc/apt/sources.list
 fi
 
 exit 0

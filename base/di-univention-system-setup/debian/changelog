@@ -1,3 +1,9 @@
+di-univention-system-setup (0.0.9-6) unstable; urgency=low
+
+  * Bug #35636: Disable CD-ROM as APT source
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 25 Aug 2014 15:32:47 +0200
+
 di-univention-system-setup (0.0.9-5) unstable; urgency=low
 
   * Bug #35659: Revert last change
