@@ -1,3 +1,10 @@
+univention-system-setup (8.0.23-1) unstable; urgency=low
+
+  * Set UCR variable for server role before installing server role
+    package (Bug #35699)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 25 Aug 2014 22:08:51 +0200
+
 univention-system-setup (8.0.22-1) unstable; urgency=low
 
   * Bug #35685: add possibility to hide fields in system-setup-appliance mode

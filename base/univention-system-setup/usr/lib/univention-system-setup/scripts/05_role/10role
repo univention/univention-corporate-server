@@ -76,6 +76,8 @@ class RoleScript(AptScript):
 		if not self.update():
 			return False
 
+		self.ucr.set('server/role', self.wanted_server_role)
+
 		if current_server_role_package:
 			self.uninstall(current_server_role_package)
 		self.install(wanted_server_role_package)
@@ -107,8 +109,6 @@ class RoleScript(AptScript):
 			self.install('univention-directory-listener')
 
 		self.finish_task()
-
-		self.ucr.set('server/role', self.wanted_server_role)
 
 		# Cleanup
 		## rm -f /etc/apt/sources.list/05univention-system-setup.list
