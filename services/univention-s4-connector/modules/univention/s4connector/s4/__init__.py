@@ -1022,7 +1022,7 @@ class s4(univention.s4connector.ucs):
 				if c.controlType == SimplePagedResultsControl.controlType
 			]
 			if pctrls:
-				est, cookie = pctrls[0].controlValue
+				cookie = pctrls[0].cookie
 				if cookie:
 					if pages > 1:
 						ud.debug(ud.LDAP, ud.PROCESS, "S4 search continues, already found %s objects" % len(res))
