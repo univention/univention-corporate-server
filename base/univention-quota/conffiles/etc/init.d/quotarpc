@@ -21,10 +21,13 @@ DESC="quota service"
 DAEMON=/usr/sbin/rpc.rquotad
 
 # check if quota are enabled
-if test -f /etc/exports && egrep -q '^"?/' /etc/exports; then
-        need_rquotad=1
-else
-        need_rquotad=0
+need_rquotad=0
+if test -f /etc/exports && grep -q '^/' /etc/exports; then
+	if grep -q '^[^#]*quota' /etc/fstab; then # normal quota option
+        	need_rquotad=1
+	elif grep -q '^[^#]*qnoenforce' /etc/fstab; then # xfs non-enforced quota
+        	need_rquotad=1
+	fi
 fi
 
 test -f $DAEMON || exit 0
@@ -41,38 +44,38 @@ set -e
 
 case "$1" in
   start)
-        # To start the daemon, portmap must be up and running
-        if [ -x $DAEMON ] && [ $need_rquotad = 1 ]; then
+	# To start the daemon, portmap must be up and running
+	if [ -x $DAEMON ] && [ $need_rquotad = 1 ]; then
            if [ -z "$pidp" ] && [ -z "$pidr" ] ; then
-                log_warning_msg "Not starting $DESC rpc.rquotad, because neither portmap nor rcpbind are running"
-           else
-                log_daemon_msg "Starting $DESC" "rpc.rquotad"
-                start-stop-daemon --start --quiet --exec $DAEMON -- $RPCRQUOTADOPTS
-                log_end_msg $?
-           fi
-        fi
-        ;;
+		log_warning_msg "Not starting $DESC rpc.rquotad, because neither portmap nor rcpbind are running"
+	   else
+		log_daemon_msg "Starting $DESC" "rpc.rquotad"
+		start-stop-daemon --start --quiet --exec $DAEMON -- $RPCRQUOTADOPTS
+		log_end_msg $?
+	   fi
+	fi	
+	;;
   stop)
-        log_daemon_msg "Stopping $DESC" "rpc.rquotad"
-        start-stop-daemon --stop --quiet --oknodo --exec $DAEMON
-        log_end_msg $?
-        ;;
+	log_daemon_msg "Stopping $DESC" "rpc.rquotad"
+	start-stop-daemon --stop --quiet --oknodo --exec $DAEMON
+	log_end_msg $?
+	;;
   restart|force-reload)
-        #
-        #       If the "reload" option is implemented, move the "force-reload"
-        #       option to the "reload" entry above. If not, "force-reload" is
-        #       just the same as "restart".
-        #
-        $0 stop
-        $0 start
-        ;;
+	#
+	#	If the "reload" option is implemented, move the "force-reload"
+	#	option to the "reload" entry above. If not, "force-reload" is
+	#	just the same as "restart".
+	#
+	$0 stop
+	$0 start
+	;;
   status)
-        status_of_proc $DAEMON quotarpc
-        ;;
+	status_of_proc $DAEMON quotarpc
+	;;
   *)
-        echo "Usage: $0 {start|stop|restart|force-reload|status}" >&2
-        exit 1
-        ;;
+	echo "Usage: $0 {start|stop|restart|force-reload|status}" >&2
+	exit 1
+	;;
 esac
 
 exit 0
