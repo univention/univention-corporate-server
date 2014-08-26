@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (2.0.0-2) unstable; urgency=medium
+
+  * Call samba-ad-dc init script instead of samba4 (Bug #35319)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Aug 2014 21:20:42 +0200
+
 univention-management-console-module-adtakeover (2.0.0-1) unstable; urgency=low
 
   [ Florian Best ]

@@ -852,7 +852,7 @@ class AD_Takeover():
 		run_and_output_to_log(["univention-config-registry", "set", "hosts/static/%s=%s %s" % (self.ad_server_ip, self.ad_server_fqdn, self.ad_server_name)], log.debug)
 
 		run_and_output_to_log(["/etc/init.d/univention-s4-connector", "stop"], log.debug)
-		run_and_output_to_log(["/etc/init.d/samba4", "stop"], log.debug)
+		run_and_output_to_log(["/etc/init.d/samba-ad-dc", "stop"], log.debug)
 		progress.percentage_increment_scaled(1.0/32)
 
 		## Move current Samba directory out of the way
@@ -947,7 +947,7 @@ class AD_Takeover():
 			# shutil.copytree(self.backup_samba_dir, SAMBA_PRIVATE_DIR, symlinks=True)
 
 		## Start Samba again
-		run_and_output_to_log(["/etc/init.d/samba4", "start"], log.debug)
+		run_and_output_to_log(["/etc/init.d/samba-ad-dc", "start"], log.debug)
 
 		## Start S4 Connector again
 		run_and_output_to_log(["/etc/init.d/univention-s4-connector", "start"], log.debug)
@@ -1050,7 +1050,7 @@ class AD_Takeover():
 		run_and_output_to_log(["univention-config-registry", "set", "samba4/dcerpc/endpoint/drsuapi=false"], log.debug)
 
 		## Start Samba
-		run_and_output_to_log(["/etc/init.d/samba4", "start"], log.debug)
+		run_and_output_to_log(["/etc/init.d/samba-ad-dc", "start"], log.debug)
 		check_samba4_started()
 
 
@@ -1440,7 +1440,7 @@ class AD_Takeover_Finalize():
 
 	def post_join_fix_samDB(self):
 		## Restart Samba and make sure the rapid restart did not leave the main process blocking
-		run_and_output_to_log(["/etc/init.d/samba4", "restart"], log.debug)
+		run_and_output_to_log(["/etc/init.d/samba-ad-dc", "restart"], log.debug)
 		check_samba4_started()
 
 		## 1. Determine Site of local server, important for locale-dependend names like "Standardname-des-ersten-Standorts"
@@ -1702,7 +1702,7 @@ class AD_Takeover_Finalize():
 		time.sleep(3)
 
 		## Restart Samba and make shure the rapid restart did not leave the main process blocking
-		run_and_output_to_log(["/etc/init.d/samba4", "restart"], log.debug)
+		run_and_output_to_log(["/etc/init.d/samba-ad-dc", "restart"], log.debug)
 		check_samba4_started()
 
 	def create_DNS_SPN(self):
@@ -2087,14 +2087,14 @@ def check_samba4_started():
 	else:
 		if int(stdout) == 1:
 			attempt = 2
-			run_and_output_to_log(["/etc/init.d/samba4", "stop"], log.debug)
+			run_and_output_to_log(["/etc/init.d/samba-ad-dc", "stop"], log.debug)
 			run_and_output_to_log(["pkill", "-9", "-xf", "/usr/sbin/samba -D"], log.debug)
 			p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
 			(stdout, stderr) = p.communicate()
 			if int(stdout) > 0:
 				log.debug("ERROR: Stray Processes:", int(stdout))
 				run_and_output_to_log(["pkill", "-9", "-xf", "/usr/sbin/samba -D"], log.debug)
-			run_and_output_to_log(["/etc/init.d/samba4", "start"], log.debug)
+			run_and_output_to_log(["/etc/init.d/samba-ad-dc", "start"], log.debug)
 			## fallback
 			time.sleep(2)
 			p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
@@ -2103,7 +2103,7 @@ def check_samba4_started():
 				attempt = 3
 				log.debug("ERROR: Stray Processes:", int(stdout))
 				run_and_output_to_log(["pkill", "-9", "-xf", "/usr/sbin/samba -D"], log.debug)
-				run_and_output_to_log(["/etc/init.d/samba4", "start"], log.debug)
+				run_and_output_to_log(["/etc/init.d/samba-ad-dc", "start"], log.debug)
 				## and log
 				time.sleep(2)
 				p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
