@@ -1,3 +1,10 @@
+univention-system-setup (8.0.26-1) unstable; urgency=low
+
+  * Bug #35685: prevent errors when certain values aren't sent along with
+  	join() request
+
+ -- Florian Best <best@univention.de>  Tue, 26 Aug 2014 14:30:08 +0200
+
 univention-system-setup (8.0.25-1) unstable; urgency=low
 
   * Bug #35685: Replace helptexts when fields are disabled

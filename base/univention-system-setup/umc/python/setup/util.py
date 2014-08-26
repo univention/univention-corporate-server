@@ -195,7 +195,10 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 
 	if newValues['server/role'] == 'domaincontroller_master':
 		# add newValues for SSL UCR variables
-		default_locale = Locale(newValues['locale/default'])
+		if 'locale/default' in newValues:
+			default_locale = Locale(newValues['locale/default'])
+		else:
+			default_locale = current_locale or Locale('en_US.UTF-8:UTF-8')
 		newValues['ssl/state'] = default_locale.territory
 		newValues['ssl/locality'] = default_locale.territory
 		newValues['ssl/organization'] = newValues.get('organization', default_locale.territory)
@@ -205,7 +208,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 	if 'locale' not in newValues:
 		# auto set the locale variable if not specified
 		# make sure that en_US is supported in any case
-		newValues['locale'] = newValues['locale/default']
+		newValues['locale'] = newValues.get('locale/default', '')
 
 		# make sure that the locale of the current session is also supported
 		# ... otherwise the setup scripts will fail after regenerating the

@@ -754,7 +754,6 @@ define([
 			var disable = [];
 			var helpTexts = {};
 			array.forEach(this.disabledFields, lang.hitch(this, function(field) {
-				//user-master:help
 				if (field == 'password') {
 					disable.push(['user-master', 'root_password']);
 					disable.push(['network', 'root_password']);
@@ -770,18 +769,20 @@ define([
 					disable.push(['network', '_ip3']);
 					disable.push(['network', '_netmask3']);
 					disable.push(['network', 'gateway']);
-					//disable.push(['network', 'nameserver1']);
-					//disable.push(['network', 'nameserver2']);
-					disable.push(['network', 'dns/forwarder1']);
-					disable.push(['network', 'dns/forwarder2']);
-					disable.push(['network', 'proxy/http']);
-					disable.push(['network', 'configureProxySettings']);
 
 					helpTexts['network'] = {
 						helpMaster:  _('Configure the new UCS domain.'),
-						helpNonMaster: _('Specify hostname and configure nameserver settings for this system.')
+						helpNonMaster: _('Specify hostname and configure network settings for this system.')
 					};
-				} else if(field == 'locale') {
+				} else if (field == 'nameservers') {
+					disable.push(['network', 'nameserver1']);
+					disable.push(['network', 'nameserver2']);
+					disable.push(['network', 'dns/forwarder1']);
+					disable.push(['network', 'dns/forwarder2']);
+				} else if (field == 'proxy') {
+					disable.push(['network', 'proxy/http']);
+					disable.push(['network', 'configureProxySettings']);
+				} else if (field == 'locale') {
 					disable.push(['welcome', '_language']);
 					disable.push(['welcome', '_search']);
 					disable.push(['welcome', 'result']);
@@ -1347,6 +1348,10 @@ define([
 				return item;
 			};
 
+			var isFieldShown = lang.hitch(this, function(field) {
+				return array.indexOf(this.disabledFields, field) < 0;
+			});
+
 			// system role
 			msg += '<p><b>' + _('UCS configuration') + '</b>: ';
 			if (vals['server/role'] == 'domaincontroller_master') {
@@ -1363,7 +1368,7 @@ define([
 			msg += '</p>';
 
 			// localization settings
-			if (this.disabledFields.indexOf('locale') < 0) {
+			if (isFieldShown('locale')) {
 				msg += '<p><b>' + _('Localization settings') + '</b></p>';
 				msg += '<ul>';
 				array.forEach(['locale/default', 'timezone', 'locale/keymap'], function(ikey) {
@@ -1398,7 +1403,7 @@ define([
 			}
 			_append(_('LDAP base'), vals['ldap/base']);
 
-			if (this.disabledFields.indexOf('network') < 0) {
+			if (isFieldShown('network')) {
 				if (_vals._dhcp) {
 					_append(_('Address configuration'), _('IP address is obtained dynamically via DHCP'));
 				}
@@ -1415,17 +1420,19 @@ define([
 				}
 			}
 
-			var nameservers = array.filter([vals.nameserver1, vals.nameserver2], function(inameserver) {
-				return inameserver;
-			}).join(', ');
-			_append(_('UCS domain name server'), nameservers);
+			if (isFieldShown('nameservers')) {
+				var nameservers = array.filter([vals.nameserver1, vals.nameserver2], function(inameserver) {
+					return inameserver;
+				}).join(', ');
+				_append(_('UCS domain name server'), nameservers);
 
-			if (this.disabledFields.indexOf('network') < 0) {
 				var forwarders = array.filter([vals['dns/forwarder1'], vals['dns/forwarder2']], function(iforwarder) {
 					return iforwarder;
 				}).join(', ');
 				_append(_('External name server'), forwarders);
+			}
 
+			if (isFieldShown('proxy')) {
 				_append(_('HTTP proxy'), vals['proxy/http']);
 			}
 			msg += '</ul>';
@@ -1734,9 +1741,6 @@ define([
 			}
 
 			var nextPage = this.inherited(arguments);
-			if (!pageName && !this.isPageVisible(nextPage)) {
-				nextPage = this.next(nextPage);
-			}
 
 			// start/stop timer
 			var keepSessionAlive = (nextPage == 'error' || nextPage == 'done');
