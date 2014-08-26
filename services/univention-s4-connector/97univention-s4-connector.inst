@@ -143,7 +143,7 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 		users_default_administrator=$(custom_username "Administrator")     ## this account already exists in Samba4, set UCS password for it
 		/usr/sbin/univention-password_sync_ucs_to_s4 "$@" "$users_default_administrator"
 		if [ $? != 0 ]; then
-			/etc/init.d/samba4 restart
+			/etc/init.d/samba-ad-dc restart
 			sleep 3
 			/usr/sbin/univention-password_sync_ucs_to_s4 "$@" "$users_default_administrator"
 		fi
@@ -223,8 +223,8 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 			echo -n "."
 			# restart bind9 every 200 seconds
 			expr $count % 100 >/dev/null || /etc/init.d/bind9 restart
-			# restart samba4 every 200 seconds
-			expr $count % 200 >/dev/null || /etc/init.d/samba4 restart
+			# restart samba-ad-dc every 200 seconds
+			expr $count % 200 >/dev/null || /etc/init.d/samba-ad-dc restart
 			sleep 1
 		fi;
 		count=$((count+1))

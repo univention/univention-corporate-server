@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.4-6) unstable; urgency=medium
+
+  * Call samba-ad-dc init script instead of samba4 (Bug #35319)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Aug 2014 21:23:18 +0200
+
 univention-s4-connector (9.0.4-5) unstable; urgency=medium
 
   * Don't attempt to list a non-existent directory (Bug #32813)
