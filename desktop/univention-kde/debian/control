@@ -11,7 +11,7 @@ Package: univention-kde
 Architecture: all
 Recommends: kde-l10n-de,
  okular,
- univention-gdm,
+ kdm,
  univention-mozilla-firefox,
  univention-x-core
 Depends: ${misc:Depends},

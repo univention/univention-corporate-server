@@ -1,3 +1,10 @@
+univention-kde (9.0.1-1) unstable; urgency=low
+
+  * Switch from gdm to kdm (Bug #35266)
+  * Use startkde as default session (Bug #35266)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Aug 2014 21:06:42 +0200
+
 univention-kde (9.0.0-1) unstable; urgency=low
 
   * Starting UCS 4.0 development (Bug #35266)
