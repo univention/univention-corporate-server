@@ -1,3 +1,9 @@
+univention-join (7.0.0-3) unstable; urgency=medium
+
+  * Call samba-ad-dc init script instead of samba4 (Bug #35319)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Aug 2014 21:22:37 +0200
+
 univention-join (7.0.0-2) unstable; urgency=medium
 
   * Merge -r51215:52491 from ucs3.2-3 (Bug #34091)
