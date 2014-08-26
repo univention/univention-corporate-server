@@ -76,6 +76,7 @@ Description: Starting univention-system-setup on next boot
 
 Package: di-univention-system-setup
 Architecture: all
+Section: debian-installer
 XB-Subarchitecture: ${subarch}
 Provides: configured-ucs
 Depends: cdebconf-udeb,
