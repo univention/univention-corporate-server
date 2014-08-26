@@ -3,8 +3,6 @@
 #include <debian-installer+kernel>
 #include <forcd1>
 
-linux-image-3.16-ucs78-amd64
-
 univention-debootstrap
 
 /* Univention System Setup */

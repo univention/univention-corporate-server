@@ -2,6 +2,7 @@ univention-dvd (0.2.0-13) unstable; urgency=low
 
   * Bug #35659: Install recommended packages
   * Bug #35371: Change ISO volume ID to use UCS
+  * Bug #35670: Update UCS kernel build
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 26 Aug 2014 07:28:20 +0200
 
