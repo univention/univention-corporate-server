@@ -2,6 +2,7 @@ univention-system-setup (8.0.26-1) unstable; urgency=low
 
   * Bug #35685: prevent errors when certain values aren't sent along with
   	join() request
+  * Bug #35685: move UCR unset to section called as root.
 
  -- Florian Best <best@univention.de>  Tue, 26 Aug 2014 14:30:08 +0200
 
