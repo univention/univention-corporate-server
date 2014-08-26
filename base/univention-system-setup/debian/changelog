@@ -1,3 +1,9 @@
+univention-system-setup (8.0.25-1) unstable; urgency=low
+
+  * Bug #35685: Replace helptexts when fields are disabled
+
+ -- Florian Best <best@univention.de>  Tue, 26 Aug 2014 08:58:27 +0200
+
 univention-system-setup (8.0.24-1) unstable; urgency=low
 
   * Use firefox instead of iceweasel by default (Bug #35266)

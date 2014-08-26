@@ -752,12 +752,13 @@ define([
 
 		evaluateBlacklist: function() {
 			var disable = [];
-			var helpTexts = [];
+			var helpTexts = {};
 			array.forEach(this.disabledFields, lang.hitch(this, function(field) {
 				//user-master:help
 				if (field == 'password') {
 					disable.push(['user-master', 'root_password']);
 					disable.push(['network', 'root_password']);
+					helpTexts['user-master'] = {help: _('<p>Enter the name of your organization and an e-mail address to activate UCS</p>')};
 				} else if (field == 'network') {
 					disable.push(['network', '_dhcp']);
 					disable.push(['network', '_ip0']);
@@ -775,6 +776,11 @@ define([
 					disable.push(['network', 'dns/forwarder2']);
 					disable.push(['network', 'proxy/http']);
 					disable.push(['network', 'configureProxySettings']);
+
+					helpTexts['network'] = {
+						helpMaster:  _('Configure the new UCS domain.'),
+						helpNonMaster: _('Specify hostname and configure nameserver settings for this system.')
+					};
 				} else if(field == 'locale') {
 					disable.push(['welcome', '_language']);
 					disable.push(['welcome', '_search']);
@@ -791,6 +797,12 @@ define([
 					widget.set('visible', false);
 					widget.set('disabled', true);
 				}
+			}));
+
+			tools.forIn(helpTexts, lang.hitch(this, function(page, value) {
+				tools.forIn(value, lang.hitch(this, function(widget, text) {
+					this.getWidget(page, widget).set('content', text);
+				}));
 			}));
 		},
 

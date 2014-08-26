@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-08-06 13:31+0200\n"
+"POT-Creation-Date: 2014-08-26 08:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,7 +36,7 @@ msgstr ""
 msgid "Base systems and already joined systems cannot be joined."
 msgstr "Basissysteme and bereits gejointe Systeme können nicht gejoint werden."
 
-#: umc/python/setup/network.py:687
+#: umc/python/setup/network.py:694
 msgid "Bond-primary must exist in bond-slaves"
 msgstr "Bond-primary muss in bond-slaves enthalten sein"
 
@@ -52,12 +52,12 @@ msgstr ""
 "Die Domäne kann nicht automatisch bestimmt werden. Bitte geben Sie den "
 "vollständigen Domänennamen des Systems an."
 
-#: umc/python/setup/network.py:781
+#: umc/python/setup/network.py:788
 #, python-format
 msgid "Cannot use bridge %r as bridge-port"
 msgstr "Kann Bridge %r nicht als bridge-port verwenden"
 
-#: umc/python/setup/network.py:683
+#: umc/python/setup/network.py:690
 #, python-format
 msgid "Cannot use device %s: Device must be unconfigured"
 msgstr "Kann Gerät %s nicht verwenden: Gerät muss unkonfiguriert sein"
@@ -72,7 +72,7 @@ msgstr "App-Center-Daten konnten nicht abgefragt werden: %s"
 msgid "Device %r is already in use by %r"
 msgstr "Device %r ist bereits von %r in Benutzung"
 
-#: umc/python/setup/network.py:678
+#: umc/python/setup/network.py:685
 #, python-format
 msgid "Devices used in a bonding must be physical: %s is not"
 msgstr ""
@@ -101,7 +101,7 @@ msgstr "Ein unerwarteter Fehler trat während des Einrichtungsprozesses auf: %s"
 msgid "External name server"
 msgstr "Externer DNS-Server"
 
-#: umc/python/setup/setup_script.py:410
+#: umc/python/setup/setup_script.py:408
 #, python-format
 msgid "Failed to get package for Role %s"
 msgstr "Es konnte kein Paket für die Rolle %s gefunden werden"
@@ -135,16 +135,16 @@ msgstr "Ungültiger IPv6 Bezeichner: %r"
 msgid "Invalid IPv6 netmask: %r"
 msgstr "Ungültige IPv6 Netzmaske: %r"
 
-#: umc/python/setup/network.py:595
+#: umc/python/setup/network.py:602
 msgid "Invalid VLAN ID. Must be between 1 and 4095."
 msgstr "Ungültige VLAN ID. Muss zwischen 1 und 4095 sein."
 
-#: umc/python/setup/network.py:698
+#: umc/python/setup/network.py:705
 #, python-format
 msgid "Invalid bond-mode: %r"
 msgstr "Ungültiger bond-mode: %r"
 
-#: umc/python/setup/network.py:330 umc/python/setup/network.py:593
+#: umc/python/setup/network.py:330 umc/python/setup/network.py:600
 #, python-format
 msgid "Invalid device name: %r"
 msgstr "Ungültiger Gerätename: %r"
@@ -173,12 +173,12 @@ msgstr "Ort"
 msgid "Missing IPv6 default identifier"
 msgstr "Fehlender IPv6 default Bezeichner"
 
-#: umc/python/setup/network.py:669
+#: umc/python/setup/network.py:676
 msgid "Missing device for bond-slaves"
 msgstr "Fehlendes Gerät für bond-slaves"
 
-#: umc/python/setup/network.py:584 umc/python/setup/network.py:674
-#: umc/python/setup/network.py:777
+#: umc/python/setup/network.py:591 umc/python/setup/network.py:681
+#: umc/python/setup/network.py:784
 #, python-format
 msgid "Missing device: %r"
 msgstr "Fehlendes Gerät: %r"
