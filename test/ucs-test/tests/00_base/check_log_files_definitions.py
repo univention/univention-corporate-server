@@ -73,6 +73,6 @@ class Warnings(object):
         '.*Updating certificates in /etc/ssl/certs.* WARNING: Skipping duplicate certificate ca-certificates.crt.*',
         '.*Permanently added .* to the list of known hosts.*',
         '.*usr/sbin/grub-probe: warning: disk does not exist, so falling back to partition device.*',
-        '.*WARNING: cannot read /sys/block/vda.* No such file or directory.*']
+        '.*WARNING: cannot read /sys/block/vda.* (No such file or directory|Datei oder Verzeichnis nicht gefunden).*']
 
     ignore = map(re.compile, ignore_list)
