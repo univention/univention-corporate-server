@@ -39,7 +39,7 @@ override_dh_shlibdeps:
 	echo no shlibdeps	
 
 override_dh_auto_install:
-	tar xjf firefox-*.tar.bz2 -C debian/firefox-de/opt/
+	tar xjf $(shell dpkg --print-architecture)/firefox-*.tar.bz2 -C debian/firefox-de/opt/
 
 %:
 	dh $@

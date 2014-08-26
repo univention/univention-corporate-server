@@ -27,11 +27,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# ensure that firefox finds the GTK+ printer backends on amd64
-arch=`uname -m`
-if [ $arch = "x86_64" ]; then
-    export GTK_PATH=/usr/lib32/gtk-2.0
-fi
-
 exec /opt/firefox/firefox "$@"
 
