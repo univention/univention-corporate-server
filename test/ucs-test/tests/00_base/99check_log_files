@@ -201,7 +201,7 @@ class CheckLogFiles(object):
 
 
 if __name__ == '__main__':
-    log_files = ["/var/log/univention/installation.log",
+    log_files = ("/var/log/univention/installation.log",
                  "/var/log/univention/installation.log.gz",
                  "/var/log/univention/installer.log",
                  "/var/log/univention/installer.log.gz",
@@ -209,7 +209,7 @@ if __name__ == '__main__':
                  "/var/log/univention/actualise.log",
                  "/var/log/univention/join.log",
                  "/var/log/univention/listener.log",
-                 "/var/log/univention/setup.log"]
+                 "/var/log/univention/setup.log")
 
     LogChecker = CheckLogFiles()
     LogChecker.main(log_files)

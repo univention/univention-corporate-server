@@ -71,6 +71,8 @@ class Warnings(object):
         '.*Running /etc/init.d/.* is deprecated.*',
         '.*The resulting partition is not properly aligned for best performance.*',
         '.*Updating certificates in /etc/ssl/certs.* WARNING: Skipping duplicate certificate ca-certificates.crt.*',
-        '.*Permanently added .* to the list of known hosts.*']
+        '.*Permanently added .* to the list of known hosts.*',
+        '.*usr/sbin/grub-probe: warning: disk does not exist, so falling back to partition device.*',
+        '.*WARNING: cannot read /sys/block/vda.* No such file or directory.*']
 
     ignore = map(re.compile, ignore_list)
