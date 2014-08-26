@@ -9,6 +9,4 @@ debian-edu-archive-keyring-udeb
 debian-ports-archive-keyring-udeb
 emdebian-archive-keyring-udeb
 #
-pkgsel
-#
 lilo-installer
