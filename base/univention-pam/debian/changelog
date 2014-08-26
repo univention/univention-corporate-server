@@ -1,3 +1,9 @@
+univention-pam (8.0.1-1) unstable; urgency=low
+
+  * Update to UCR templates to new upstream versions (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Aug 2014 17:35:41 +0200
+
 univention-pam (8.0.0-2) unstable; urgency=low
 
   * merged changes from 3.2-2 (Bug #35501)
