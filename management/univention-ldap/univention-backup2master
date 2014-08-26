@@ -325,7 +325,7 @@ dpkg-divert --divert /usr/lib/univention-directory-listener/replication.py.diver
 # stop openldap, samba, kerberos, listener and notifier
 test -x /etc/init.d/slapd && invoke-rc.d slapd stop
 test -x /etc/init.d/samba && invoke-rc.d samba stop
-test -x /etc/init.d/samba4 && invoke-rc.d samba4 stop
+test -x /etc/init.d/samba-ad-dc && invoke-rc.d samba-ad-dc stop
 test -x /etc/init.d/heimdal-kdc && invoke-rc.d heimdal-kdc stop
 test -x /etc/init.d/univention-directory-notifier && invoke-rc.d univention-directory-notifier stop
 test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener stop
@@ -348,7 +348,7 @@ fi
 # start openldap, samba, kerberos, notifier and listener
 test -x /etc/init.d/slapd && invoke-rc.d slapd start
 test -x /etc/init.d/samba && invoke-rc.d samba start
-test -x /etc/init.d/samba4 && invoke-rc.d samba4 start
+test -x /etc/init.d/samba-ad-dc && invoke-rc.d samba-ad-dc start
 test -x /etc/init.d/heimdal-kdc && invoke-rc.d heimdal-kdc start
 test -x /etc/init.d/univention-directory-notifier && invoke-rc.d univention-directory-notifier start
 test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener start
