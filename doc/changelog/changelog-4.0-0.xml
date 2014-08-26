@@ -4,22 +4,24 @@
 	  <listitem><simpara>
 		All Univention packages have been adapted to Dephelper 9 and to Python
         2.7. In addition the UCR templates have been adapted to the new upstream
-        packages ( <ulink url="&ucsbug;35138">Bug 35138</ulink>,
-		<ulink url="&ucsbug;35147">Bug 35147</ulink>,
-		<ulink url="&ucsbug;35267">Bug 35267</ulink>,
-		<ulink url="&ucsbug;35664">Bug 35664</ulink>,
-		<ulink url="&ucsbug;35669">Bug 35669</ulink>,
+		packages (
+		<ulink url="&ucsbug;35135">Bug 35135</ulink>,
+		<ulink url="&ucsbug;35138">Bug 35138</ulink>,
 		<ulink url="&ucsbug;35143">Bug 35143</ulink>,
-		<ulink url="&ucsbug;35431">Bug 35431</ulink>,
 		<ulink url="&ucsbug;35144">Bug 35144</ulink>,
+		<ulink url="&ucsbug;35145">Bug 35145</ulink>,
+		<ulink url="&ucsbug;35146">Bug 35146</ulink>,
+		<ulink url="&ucsbug;35147">Bug 35147</ulink>,
 		<ulink url="&ucsbug;35264">Bug 35264</ulink>,
 		<ulink url="&ucsbug;35265">Bug 35265</ulink>,
+		<ulink url="&ucsbug;35266">Bug 35266</ulink>,
+		<ulink url="&ucsbug;35267">Bug 35267</ulink>,
 		<ulink url="&ucsbug;35320">Bug 35320</ulink>,
-		<ulink url="&ucsbug;35135">Bug 35135</ulink>,
-		<ulink url="&ucsbug;35146">Bug 35146</ulink>,
-		<ulink url="&ucsbug;35145">Bug 35145</ulink>,
+		<ulink url="&ucsbug;35358">Bug 35358</ulink>,
+		<ulink url="&ucsbug;35431">Bug 35431</ulink>,
 		<ulink url="&ucsbug;35425">Bug 35425</ulink>,
-		<ulink url="&ucsbug;35266">Bug 35266</ulink>).
+		<ulink url="&ucsbug;35664">Bug 35664</ulink>,
+		<ulink url="&ucsbug;35669">Bug 35669</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
 </section>
@@ -403,6 +405,12 @@
 
 <section id="changelog:win">
   <title>Services for Windows</title>
+	<itemizedlist>
+	  <listitem><simpara>
+		Samba has been updated to version 4.2
+		(<ulink url="&ucsbug;35319">Bug 35319</ulink>).
+	  </simpara></listitem>
+	</itemizedlist>
 
   <!-- <section id="changelog:win:nt"> -->
   <!-- 	<title>Samba NT domain support</title> -->
