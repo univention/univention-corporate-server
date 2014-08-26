@@ -428,9 +428,9 @@ def postrun():
 			run_ucs_commit = True
 		if run_ucs_commit:
 			ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
-		if os.path.exists('/etc/init.d/samba4'):
-			initscript = '/etc/init.d/samba4'
-			os.spawnv(os.P_WAIT, initscript, ['samba4', 'reload'])
+		if os.path.exists('/etc/init.d/samba-ad-dc'):
+			initscript = '/etc/init.d/samba-ad-dc'
+			os.spawnv(os.P_WAIT, initscript, ['samba-ad-dc', 'reload'])
 		if os.path.exists('/etc/init.d/samba'):
 			initscript = '/etc/init.d/samba'
 			os.spawnv(os.P_WAIT, initscript, ['samba', 'reload'])

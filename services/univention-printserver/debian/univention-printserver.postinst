@@ -78,8 +78,8 @@ if [ "$1" = "configure" ]; then
 				## only set this when value does not differ from the previous default value
 				univention-config-registry set cups/server="localhost"
 
-				if [ -x "/etc/init.d/samba4" ]; then
-					/etc/init.d/samba4 restart
+				if [ -x "/etc/init.d/samba-ad-dc" ]; then
+					/etc/init.d/samba-ad-dc restart
 				elif [ -x "/etc/init.d/samba" ]; then
 					/etc/init.d/samba crestart
 				fi
