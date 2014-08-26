@@ -721,7 +721,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'help',
-					content: _('<p>UCS has been successfully set up with the specified settings.</p><p>Click on the button <i>Finish</i> to complete the setup process.</p>')
+					content: _('<p>UCS has been successfully set up with the specified settings.</p>') + _('<p>Click on the button <i>Finish</i> to complete the setup process.</p>')
 				}]
 			}];
 		},
@@ -770,7 +770,7 @@ define([
 					disable.push(['network', '_netmask3']);
 					disable.push(['network', 'gateway']);
 
-					helpTexts['network'] = {
+					helpTexts.network = {
 						helpMaster:  _('Configure the new UCS domain.'),
 						helpNonMaster: _('Specify hostname and configure network settings for this system.')
 					};
@@ -789,6 +789,10 @@ define([
 					disable.push(['locale', 'locale/default']);
 					disable.push(['locale', 'locale/keymap']);
 					disable.push(['locale', 'timezone']);
+				} else if (field == 'reboot') {
+					helpTexts.done = {
+						help: _('<p>UCS has been successfully set up with the specified settings.</p>') + _('<p>After clicking on the button <i>Finish</i> to complete the setup process the system will be rebooted.</p>')
+					};
 				}
 			}));
 
