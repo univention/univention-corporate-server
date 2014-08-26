@@ -61,7 +61,7 @@ Depends: ${misc:Depends},
  x11-utils,
  x11-xkb-utils,
  openbox,
-Recommends: iceweasel | firefox-en | firefox-de | firefox,
+Recommends: firefox-en | firefox-de | firefox | iceweasel,
  xinit,
 Replaces: univention-setup-boot, univention-system-setup-appliance
 Description: Starting univention-system-setup on next boot

@@ -1,3 +1,9 @@
+univention-system-setup (8.0.24-1) unstable; urgency=low
+
+  * Use firefox instead of iceweasel by default (Bug #35266)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Aug 2014 08:56:49 +0200
+
 univention-system-setup (8.0.23-1) unstable; urgency=low
 
   * Set UCR variable for server role before installing server role
