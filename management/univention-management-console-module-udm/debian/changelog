@@ -1,8 +1,8 @@
-univention-management-console-module-udm (4.0.99-2) unstable; urgency=low
+univention-management-console-module-udm (4.0.99-3) unstable; urgency=low
 
   * Bug #34333: failures on report creation can not block UMC usage anymore
 
- -- Florian Best <best@univention.de>  Tue, 26 Aug 2014 17:42:13 +0200
+ -- Florian Best <best@univention.de>  Tue, 26 Aug 2014 17:56:06 +0200
 
 univention-management-console-module-udm (4.0.99-1) unstable; urgency=low
 

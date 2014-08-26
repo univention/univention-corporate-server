@@ -560,7 +560,7 @@ class Instance( Base, ProgressMixin ):
 		choices = self.reports_cfg.get_report_names(request.flavor)
 		return dict(
 			report=ChoicesSanitizer(choices=choices, required=True),
-			objects=ListSanitizer(StringSanitizer(minimum=1), required=True, min_element=1)
+			objects=ListSanitizer(StringSanitizer(minimum=1), required=True, min_elements=1)
 		)
 
 	@sanitize_func(sanitize_reports_create)
