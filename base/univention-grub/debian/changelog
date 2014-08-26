@@ -1,3 +1,9 @@
+univention-grub (8.0.1-1) unstable; urgency=low
+
+  * Update to UCR templates to new upstream versions (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Aug 2014 17:15:12 +0200
+
 univention-grub (8.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35138)

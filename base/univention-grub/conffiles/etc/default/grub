@@ -26,6 +26,14 @@ print 'GRUB_CMDLINE_LINUX_DEFAULT="%s"' % defoptions
 GRUB_CMDLINE_LINUX="@%@grub/append@%@"
 GRUB_CMDLINE_XEN="@%@grub/xenhopt@%@"
 
+# Uncomment to enable BadRAM filtering, modify to suit your needs
+# This works with Linux (no patch required) and with any kernel that obtains
+# the memory map information from GRUB (GNU Mach, kernel of FreeBSD ...)
+#GRUB_BADRAM="0x01234567,0xfefefefe,0x89abcdef,0xefefefef"
+
+# Uncomment to disable graphical terminal (grub-pc only)
+#GRUB_TERMINAL=console
+
 # The resolution used on graphical terminal
 # note that you can use only modes which your graphic card supports via VBE
 # you can see them in real GRUB with the command `vbeinfo'
@@ -35,7 +43,7 @@ GRUB_GFXMODE=@%@grub/gfxmode@%@
 #GRUB_DISABLE_LINUX_UUID=true
 
 # Uncomment to disable generation of recovery mode menu entries
-#GRUB_DISABLE_LINUX_RECOVERY="true"
+#GRUB_DISABLE_RECOVERY="true"
 
 # This option passes the video configured in Grub (through grub/gfxmode) to
 # the Linux kernel
@@ -55,3 +63,5 @@ if configRegistry.get('grub/menu/color/highlight', ''):
 	print 'GRUB_MENU_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/menu/color/highlight"]
 @!@
 
+# Uncomment to get a beep at grub start
+#GRUB_INIT_TUNE="480 440 1"

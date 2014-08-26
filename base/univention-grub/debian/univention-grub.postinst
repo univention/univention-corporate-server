@@ -42,7 +42,7 @@ univention-config-registry set grub/timeout?5 \
 	grub/quiet?"yes"  \
 	grub/loglevel?"0" \
 	grub/vga?"789"\
-	grub/gfxmode?"1024x768@32" \
+	grub/gfxmode?"800x600@16" \
 	grub/backgroundimage?"/boot/grub/uniboot.png" \
 	grub/color/normal?"dark-gray/black" \
 	grub/color/highlight?"dark-gray/black" \
