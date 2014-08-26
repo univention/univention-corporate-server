@@ -80,15 +80,16 @@ define([
 
 			// mixin the dialog title
 			lang.mixin(this, {
-				title: _( 'Report for %s', this.objectNameSingular)
-			} );
+				title: _('Report for %s', this.objectNameSingular)
+			});
 		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			var reports = array.map( this.reports, function( item ) {
-				return { id : item, label: item }; } );
+			var reports = array.map(this.reports, function(item) {
+				return {id: item, label: item};
+			});
 
 			var widgets = [{
 				type: ComboBox,
@@ -103,72 +104,74 @@ define([
 			// buttons
 			var buttons = [ {
 				name: 'create',
-				label: _( 'Create' ),
+				label: _('Create'),
 				defaultButton: true,
-				callback: lang.hitch( this, function() {
-					this.onDone( this._form.get('value') );
-				} )
+				callback: lang.hitch(this, function() {
+					this.onDone(this._form.get('value'));
+				})
 			}, {
 				name: 'cancel',
-				label: _( 'Cancel' ),
-				callback: lang.hitch( this, function() {
+				label: _('Cancel'),
+				callback: lang.hitch(this, function() {
 					this.destroyRecursive();
-				} )
+				})
 			} ];
 
 			// now create a Form
-			this._form = new Form( {
+			this._form = new Form({
 				widgets: widgets,
 				layout: layout,
 				buttons: buttons
-			} );
-			this._container = new ContainerWidget( {} );
-			this._container.addChild( this._form );
-			this.set( 'content', this._container );
+			});
+			this._container = new ContainerWidget({});
+			this._container.addChild(this._form);
+			this.set('content', this._container);
 		},
 
-		onDone: function( options ) {
-			this.standby( true );
+		onDone: function(options) {
 
-			this._container.removeChild( this._form );
-			var waiting = new Text( {
-				content: _( '<p>Generating %s report for %d objects.</p><p>This may take a while</p>', this.objectNameSingular, this.objects.length )
-			} );
-			this._container.addChild( waiting );
-			this.set( 'title', _( 'Creating the report ...' ) );
-			this.umcpCommand( 'udm/reports/create', { objects: this.objects, report: options.report } ).then( lang.hitch( this, function( data ) {
+			var waiting = new Text({
+				content: _('<p>Generating %s report for %d objects.</p><p>This may take a while</p>', this.objectNameSingular, this.objects.length)
+			});
+			this._container.addChild(waiting, 0);
+
+			this.set('title', _('Creating the report ...'));
+
+			var request_data = {objects: this.objects, report: options.report};
+			this.standbyDuring(this.umcpCommand('udm/reports/create', request_data, this._form)).then(lang.hitch(this, function(data) {
 				var title = '';
 				var message = '';
 
-				this.standby( false );
-				this._container.removeChild( waiting );
+				this._container.removeChild(this._form);
+				this._container.removeChild(waiting);
 				waiting.destroy();
-				if ( true === data.result.success ) {
-					message = lang.replace( '<p>{0}</p>', [ _( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">%s report</a>', data.result.docType, data.result.URL, this.objectNameSingular ) ] );
-					title = _( 'Report has been created' );
+
+				if (true === data.result.success) {
+					message = lang.replace('<p>{0}</p>', [_('The %s can be downloaded at<br><br><a target="_blank" href="%s">%s report</a>', data.result.docType, data.result.URL, this.objectNameSingular)]);
+					title = _('Report has been created');
 				} else {
-					title = _( 'Report creation has failed' );
-					message = _( 'The report could not be created. Details for the problems can be found in the log files.' );
+					title = _('Report creation has failed');
+					message = _('The report could not be created. Details for the problems can be found in the log files.');
 				}
-				this.set( 'title', title );
-				this._container.addChild( new Text( { content: message } ) );
-				var btnContainer = new ContainerWidget( {
+				this.set('title', title);
+				this._container.addChild(new Text({content: message}));
+
+				var btnContainer = new ContainerWidget({
 					style: 'text-align: center;',
 					'class' : 'umcButtonRow'
-				} );
-				btnContainer.addChild( new Button( {
+				});
+				btnContainer.addChild(new Button({
 					defaultButton: true,
-					label: _( 'Close' ),
+					label: _('Close'),
 					style: 'margin-left: auto;',
-					callback: lang.hitch( this, function() {
+					callback: lang.hitch(this, function() {
 						this.destroyRecursive();
-					} )
-				} ) );
-				this._container.addChild( btnContainer );
-			} ) );
+					})
+				}));
+				this._container.addChild(btnContainer);
+			}), lang.hitch(this, function() {
+				this._container.removeChild(waiting);
+			}));
 		}
 	});
 });
-
-
-
