@@ -10,7 +10,7 @@ for setting in settings.values():
 @!@
 	delaycompress
 	postrotate
-		invoke-rc.d rsyslog reload > /dev/null
+		invoke-rc.d rsyslog rotate > /dev/null
 	endscript
 }
 
@@ -36,6 +36,6 @@ for setting in settings.values():
 	delaycompress
 	sharedscripts
 	postrotate
-		invoke-rc.d rsyslog reload > /dev/null
+		invoke-rc.d rsyslog rotate > /dev/null
 	endscript
 }

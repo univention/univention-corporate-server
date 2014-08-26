@@ -6,7 +6,7 @@
 # Required-Start:  $network $remote_fs $syslog
 # Required-Stop:   $network $remote_fs $syslog
 # Default-Start:   2 3 4 5
-# Default-Stop:    0 1 6
+# Default-Stop: 
 # Short-Description: Start NTP daemon
 ### END INIT INFO
 
@@ -24,12 +24,33 @@ if [ -r /etc/default/$NAME ]; then
 	. /etc/default/$NAME
 fi
 
-if [ -e /etc/ntp.conf.dhcp ]; then
-	NTPD_OPTS="$NTPD_OPTS -c /etc/ntp.conf.dhcp"
+if [ -e /var/lib/ntp/ntp.conf.dhcp ]; then
+	NTPD_OPTS="$NTPD_OPTS -c /var/lib/ntp/ntp.conf.dhcp"
 fi
+
+
+LOCKFILE=/var/lock/ntpdate
+
+lock_ntpdate() {
+	if [ -x /usr/bin/lockfile-create ]; then
+		lockfile-create $LOCKFILE
+		lockfile-touch $LOCKFILE &
+		LOCKTOUCHPID="$!"
+	fi
+}
+
+unlock_ntpdate() {
+	if [ -x /usr/bin/lockfile-create ] ; then
+		kill $LOCKTOUCHPID
+		lockfile-remove $LOCKFILE
+	fi
+}
 
 RUNASUSER=ntp
 UGID=$(getent passwd $RUNASUSER | cut -f 3,4 -d:) || true
+if test "$(uname -s)" = "Linux"; then
+        NTPD_OPTS="$NTPD_OPTS -u $UGID"
+fi
 
 case $1 in
 	start)
@@ -43,8 +64,11 @@ case $1 in
 			log_failure_msg "user \"$RUNASUSER\" does not exist"
 			exit 1
 		fi
-  		start-stop-daemon --start --quiet --oknodo --pidfile $PIDFILE --startas $DAEMON -- -p $PIDFILE -u $UGID $NTPD_OPTS
-		log_end_msg $?
+		lock_ntpdate
+  		start-stop-daemon --start --quiet --oknodo --pidfile $PIDFILE --startas $DAEMON -- -p $PIDFILE $NTPD_OPTS
+		status=$?
+		unlock_ntpdate
+		log_end_msg $status
   		;;
 	stop)
 		log_daemon_msg "Stopping NTP server" "ntpd"
@@ -66,14 +90,7 @@ case $1 in
 		exit 3
 		;;
 	status)
-		pidofproc -p $PIDFILE $DAEMON >/dev/null
-		status=$?
-		if [ $status -eq 0 ]; then
-			log_success_msg "NTP server is running."
-		else
-			log_failure_msg "NTP server is not running."
-		fi
-		exit $status
+		status_of_proc $DAEMON "NTP server"
 		;;
 	*)
 		echo "Usage: $0 {start|stop|restart|try-restart|force-reload|status}"

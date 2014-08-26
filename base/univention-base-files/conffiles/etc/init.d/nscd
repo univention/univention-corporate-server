@@ -1,6 +1,15 @@
 #!/bin/sh
 @%@UCRWARNING=# @%@
+### BEGIN INIT INFO
+# Provides:          nscd
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Starts the Name Service Cache Daemon
+### END INIT INFO
 
+#
 # nscd:		Starts the Name Service Cache Daemon
 #
 # description:  This is a daemon which handles passwd and group lookups
@@ -8,10 +17,7 @@
 #		query.  You should start this daemon only if you use
 #		slow Services like NIS or NIS+
 
-# Sanity checks.
-
-. /lib/lsb/init-functions
-
+PATH="/sbin:/usr/sbin:/bin:/usr/bin"
 NAME="nscd"
 DESC="Name Service Cache Daemon"
 DAEMON="/usr/sbin/nscd"
@@ -22,45 +28,43 @@ umask 022
 [ -f /etc/nscd.conf ] || exit 0
 [ -x "$DAEMON" ] || exit 0
 [ -d /var/run/nscd ] || mkdir -p /var/run/nscd
+. /lib/lsb/init-functions
 
-start()
+start_nscd()
 {
 	# Return
-	#   0 if daemon has been started
-	#   1 if daemon was already running
+	#   0 if daemon has been started or was already running
 	#   2 if daemon could not be started
 
-        # check ucr autostart setting
-        if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-            . "/usr/share/univention-config-registry/init-autostart.lib"
-            check_autostart nscd nscd/autostart
-        fi
+ 	# check ucr autostart setting
+	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+		. "/usr/share/univention-config-registry/init-autostart.lib"
+		check_autostart nscd nscd/autostart
+	fi
 
-	SECURE=""
-	for TABLE in passwd group
-	do
-		if egrep '^'$TABLE':.*nisplus' /etc/nsswitch.conf >/dev/null
-		then
-			/usr/sbin/nscd_nischeck "$TABLE" || SECURE="$SECURE -S $TABLE,yes"
-		fi
-	done
-	start-stop-daemon --start --quiet --pidfile "$PIDFILE" --exec "$DAEMON" --test > /dev/null || return 1
-	start-stop-daemon --start --quiet --pidfile "$PIDFILE" --exec "$DAEMON" -- \
-		$SECURE || return 2
+	start-stop-daemon --start --quiet --pidfile "$PIDFILE" --exec "$DAEMON" --test > /dev/null || return 0
+	start-stop-daemon --start --quiet --pidfile "$PIDFILE" --exec "$DAEMON" || return 2
 }
 
-stop()
+stop_nscd()
 {
 	# Return
 	#   0 if daemon has been stopped
 	#   1 if daemon was already stopped
 	#   2 if daemon could not be stopped
-	start-stop-daemon --stop --quiet --retry=TERM/5/HUP/30/KILL/5 --pidfile "$PIDFILE" --name "$NAME"
-	RETVAL="$?"
-	[ "$RETVAL" = 2 ] && return 2
+
+	# we try to stop using nscd --shutdown, that fails also if nscd is not present.
+	# in that case, fallback to "good old methods"
+	RETVAL=0
+	if ! $DAEMON --shutdown; then
+		start-stop-daemon --stop --quiet --pidfile "$PIDFILE" --name "$NAME" --test > /dev/null
+		RETVAL="$?"
+		[ "$?" -ne 0  -a  "$?" -ne 1 ] && return 2
+	fi
+
 	# Wait for children to finish too
 	start-stop-daemon --stop --quiet --oknodo --retry=0/30/KILL/5 --exec "$DAEMON" > /dev/null
-	[ "$?" = 2 ] && return 2
+	[ "$?" -ne 0  -a  "$?" -ne 1 ] && return 2
 	rm -f "$PIDFILE"
 	return "$RETVAL"
 }
@@ -76,48 +80,50 @@ status()
 
 case "$1" in
 start)
-	log_daemon_msg "Starting NSCD"
-	start
+	log_daemon_msg "Starting $DESC" "$NAME"
+	start_nscd
 	case "$?" in
-		0) echo "." ; exit 0 ;;
-		1) echo " (already running)." ; exit 0 ;;
-		*) echo " (failed)." ; exit 1 ;;
+		0) log_end_msg 0 ; exit 0 ;;
+		1) log_warning_msg " (already running)." ; exit 0 ;;
+		*) log_end_msg 1 ; exit 1 ;;
 	esac
 	;;
 stop)
-	log_daemon_msg "Stopping NSCD"
-	stop
+	log_daemon_msg "Stopping $DESC" "$NAME"
+	stop_nscd
 	case "$?" in
-		0) echo "." ; exit 0 ;;
-		1) echo " (not running)." ; exit 0 ;;
-		*) echo " (failed)." ; exit 1 ;;
+		0) log_end_msg 0 ; exit 0 ;;
+		1) log_warning_msg " (not running)." ; exit 0 ;;
+		*) log_end_msg 1 ; exit 1 ;;
 	esac
 	;;
 restart|force-reload|reload)
-	log_daemon_msg "Restarting NSCD"
-	stop
-	$DAEMON --invalidate passwd --invalidate group
+	log_daemon_msg "Restarting $DESC" "$NAME"
+	for table in passwd group hosts ; do
+		$DAEMON --invalidate $table
+	done
+	stop_nscd
 	case "$?" in
 	0|1)
-		start
+		start_nscd
 		case "$?" in
-			0) echo "." ; exit 0 ;;
-			1) echo " (failed -- old process is still running)." ; exit 1 ;;
-			*) echo " (failed to start)." ; exit 1 ;;
+			0) log_end_msg 0 ; exit 0 ;;
+			1) log_failure_msg " (failed -- old process is still running)." ; exit 1 ;;
+			*) log_failure_msg " (failed to start)." ; exit 1 ;;
 		esac
 		;;
 	*)
-		log_daemon_msg " (failed to stop)."
+		log_failure_msg " (failed to stop)."
 		exit 1
 		;;
 	esac
 	;;
 status)
-	log_daemon_msg "Status of NSCD"
+	log_daemon_msg "Status of $DESC service: "
 	status
 	case "$?" in
-		0) echo "not running." ; exit 1 ;;
-		1) echo "running." ; exit 0 ;;
+		0) log_failure_msg "not running." ; exit 3 ;;
+		1) log_success_msg "running." ; exit 0 ;;
 	esac
 	;;
 *)
@@ -125,3 +131,4 @@ status)
 	exit 1
 	;;
 esac
+

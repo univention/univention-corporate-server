@@ -35,7 +35,7 @@ case "$1" in
 	stop)
 		;;
 	*)
-		echo "Usage: /etc/init.d/ntpdate {start|stop|restart}"
+		echo "Usage: /etc/init.d/rdate {start|stop|restart}"
 		exit 1
 		;;
 esac
