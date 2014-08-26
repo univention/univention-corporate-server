@@ -1,3 +1,9 @@
+univention-base-files (4.0.1-1) unstable; urgency=low
+
+  * Remove Univention Thin Client from /etc/issue* (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Aug 2014 06:55:34 +0200
+
 univention-base-files (4.0.0-6) unstable; urgency=low
 
   * Remove old codenames (Bug #35635)

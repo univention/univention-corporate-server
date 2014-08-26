@@ -19,6 +19,6 @@ else:
 if configRegistry.get('version/version'):
 	print  '%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel'))
 else:
-	print 'Univention Thin Client'
+	print menutitle
 @!@
 
