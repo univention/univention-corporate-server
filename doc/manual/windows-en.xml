@@ -1168,11 +1168,11 @@ net rpc trustdom list
 
 
 <section id="ad-connector:general">
-  <title>UCS Active Directory Connector</title>
+  <title>Active Directory Connection</title>
   <section id="ad-connector:einfuehrung">
 	<title>Introduction</title>
 	<para>
-	  &ucsUCS; can be operated together with an existing Active Directory domain (AD domain) in two different ways. Both modes can be set up using the <emphasis>Active Directory Connector</emphasis> application from the Univention App Center (see <xref linkend="computers::softwaremanagement::installsoftware"/>). This is available on a &ucsMaster; and &ucsBackup;.
+	  &ucsUCS; can be operated together with an existing Active Directory domain (AD domain) in two different ways. Both modes can be set up using the <emphasis>Active Directory Connection</emphasis> application from the Univention App Center (see <xref linkend="computers::softwaremanagement::installsoftware"/>). This is available on a &ucsMaster; and &ucsBackup;.
 	</para>
 
 	<para>
@@ -1186,9 +1186,9 @@ net rpc trustdom list
 	    </simpara></listitem>
 	  </itemizedlist>
 	</para>
-	  
+
 	<para>
-	  In both modes, the Active Directory Connector service is used in UCS (UCS AD Connector for short), which can synchronise the directory service objects between a Windows 2003/2008/2012 server with Active Directory (AD) and the OpenLDAP directory of &ucsUCS;.
+	  In both modes, the Active Directory Connection service is used in UCS (UCS AD Connector for short), which can synchronise the directory service objects between a Windows 2003/2008/2012 server with Active Directory (AD) and the OpenLDAP directory of &ucsUCS;.
 	</para>
 
 	<para>
@@ -1196,7 +1196,7 @@ net rpc trustdom list
 	</para>
 
 	<para>
-	  The second mode, which can be configured via the <emphasis>Active Directory Connector</emphasis> app, is used to run the UCS domain parallel to an existing AD domain. In this mode, each domain user is assigned a user account with the same name in both the UCS and the AD domain. Thanks to the use of the name identity and the synchronisation of the encrypted password data, this mode allows transparent access between the two domains. In this mode, the authentication of a user in the UCS domain occurs directly within the UCS domain and as such is not directly dependent on the AD domain. The set-up of this operating mode is described in detail in <xref linkend="ad-connector:ad-connector-einrichtung"/>.
+	  The second mode, which can be configured via the <emphasis>Active Directory Connection</emphasis> app, is used to run the UCS domain parallel to an existing AD domain. In this mode, each domain user is assigned a user account with the same name in both the UCS and the AD domain. Thanks to the use of the name identity and the synchronisation of the encrypted password data, this mode allows transparent access between the two domains. In this mode, the authentication of a user in the UCS domain occurs directly within the UCS domain and as such is not directly dependent on the AD domain. The set-up of this operating mode is described in detail in <xref linkend="ad-connector:ad-connector-einrichtung"/>.
 	</para>
   </section>
 
@@ -1212,7 +1212,7 @@ net rpc trustdom list
 	</para>
 
   <para>
-		The set-up wizard can be installed with the <emphasis>Active Directory Connector</emphasis> from the Univention App Center. Alternatively, the software package <package>univention-ad-connector</package> can be installed. Further information can be found in <xref linkend="computers::softwaremanagement::installsoftware"/>.
+		The set-up wizard can be installed with the app <emphasis>Active Directory Connection</emphasis> from the Univention App Center. Alternatively, the software package <package>univention-ad-connector</package> can be installed. Further information can be found in <xref linkend="computers::softwaremanagement::installsoftware"/>.
   </para>
 
   <note>
@@ -1276,7 +1276,7 @@ net rpc trustdom list
   </note>
 
   <para>
-    Following this set-up, the <emphasis>Active Directory Connector</emphasis> UMC module can be used for further administration, e.g., for checking whether the service is running and to restart it if necessary (see <xref linkend="ad-connector:neustart"/>).
+    Following this set-up, the <emphasis>Active Directory Connection</emphasis> UMC module can be used for further administration, e.g., for checking whether the service is running and to restart it if necessary (see <xref linkend="ad-connector:neustart"/>).
   </para>
 
   <para>
@@ -1307,7 +1307,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
   </para>
 
   <para>
-    <figure><title>Administration dialogue for the Active Directory Connector</title>
+    <figure><title>Administration dialogue for the Active Directory Connection</title>
       <graphic scalefit="1" width="80%" fileref="illustrations/admember_3-en.png"/>
     </figure>
   </para>
@@ -1318,7 +1318,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
   <title>Setup of the UCS AD connector</title>
 
   <para>
-  	As an alternative to membership in an AD domain, as described in the previous section, the UCS Active Directory Connector can be used to synchronise user and group objects between a UCS domain and an AD domain. In addition to unidirectional synchronisation, this operating mode also allows bidirectional synchronisation. In this operating mode, both domains exist in parallel and their authentication systems function independently. The prerequisite for this is the synchronisation of the encrypted password data. This requires the installation of a special password service on the AD domain controller.
+  	As an alternative to membership in an AD domain, as described in the previous section, the Active Directory Connection can be used to synchronise user and group objects between a UCS domain and an AD domain. In addition to unidirectional synchronisation, this operating mode also allows bidirectional synchronisation. In this operating mode, both domains exist in parallel and their authentication systems function independently. The prerequisite for this is the synchronisation of the encrypted password data. This requires the installation of a special password service on the AD domain controller.
   </para>
 
   <para>
@@ -1455,7 +1455,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	The subsequent dialogue window needs to be closed by clicking on <mousebutton>Finish</mousebutton>.
   </para>
   <para>
-    Following this set-up, the <emphasis>Active Directory Connector</emphasis> UMC module can be used for further administration of the UCS Active Directory Connector, e.g., for checking whether the service is running and restart it if necessary (see <xref linkend="ad-connector:neustart"/>).
+    Following this set-up, the <emphasis>Active Directory Connection</emphasis> UMC module can be used for further administration of the Active Directory Connection, e.g., for checking whether the service is running and restart it if necessary (see <xref linkend="ad-connector:neustart"/>).
   </para>
 
   <note>
@@ -1668,7 +1668,7 @@ in <guimenu>System settings</guimenu> or Port 6670/TCP authorised.
 </para>
 </section>
 
-<section id="ad-connector:neustart"><title>Starting/Stopping the Active Directory connector</title>
+<section id="ad-connector:neustart"><title>Starting/Stopping the Active Directory Connection</title>
 <para>
 The connector can be started using <mousebutton>Start Active
   Directory connection service</mousebutton> and stopped using
