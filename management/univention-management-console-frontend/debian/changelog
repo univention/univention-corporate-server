@@ -1,3 +1,11 @@
+univention-management-console-frontend (4.0.3-1) unstable; urgency=low
+
+  * Bug #35685: fix hasPrevious() hasNext() next() and previous() methods for
+  	Wizards which have the first or last page invisible. This fixes also
+  	displaying of back/next buttons.
+
+ -- Florian Best <best@univention.de>  Tue, 26 Aug 2014 11:05:38 +0200
+
 univention-management-console-frontend (4.0.2-1) unstable; urgency=low
 
   * Bug #35145: use closure as JavaScript build optimizer

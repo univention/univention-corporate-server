@@ -207,11 +207,17 @@ define([
 		hasNext: function(/*String*/ pageName) {
 			// summary:
 			//		Specifies whether there exists a following page for the specified page name.
-			//		By default any page but the last one has a follow-up.
+			//		By default any page which has a visible follower has a follow-up.
 			if (!this.pages.length) {
 				return false;
 			}
-			return this.pages[this.pages.length - 1].name != pageName;
+			var pageIndex = this._getPageIndex(pageName);
+			return array.some(this.pages, lang.hitch(this, function(page, i) {
+				if (i <= pageIndex) {
+					return false;
+				}
+				return this.isPageVisible(page.name);
+			}));
 		},
 
 		_next: function(/*String*/ currentPage) {
@@ -264,6 +270,9 @@ define([
 
 			// no pageName defined
 			if ((null === pageName || undefined === pageName) && this.pages.length) {
+				if (!this.isPageVisible(this.pages[0].name)) {
+					return this.next(this.pages[0].name);
+				}
 				return this.pages[0].name;
 			}
 
@@ -281,11 +290,17 @@ define([
 		hasPrevious: function(/*String*/ pageName) {
 			// summary:
 			//		Specifies whether there exists a previous page for the specified page name.
-			//		By default any page but the first one has a previous page.
+			//		By default any page which has a visible page before has a previous page.
 			if (!this.pages.length) {
 				return false;
 			}
-			return this.pages[0].name != pageName;
+			var pageIndex = this._getPageIndex(pageName);
+			return array.some(this.pages, lang.hitch(this, function(page, i) {
+				if (i >= pageIndex) {
+					return false;
+				}
+				return this.isPageVisible(page.name);
+			}));
 		},
 
 		_previous: function(/*String*/ currentPage) {
@@ -308,9 +323,13 @@ define([
 				return pageName;
 			}
 
-			// find the next visible page
+			// find the previous visible page
 			for (--i; i >= 0 && !this.isPageVisible(this.pages[i].name); --i) { }
-			return this.pages[Math.max(i, 0)].name;
+			var previous = this.pages[Math.max(i, 0)].name;
+			if (!this.isPageVisible(previous)) {
+				return pageName;
+			}
+			return previous;
 		},
 
 		_finish: function(/*String*/ pageName) {
