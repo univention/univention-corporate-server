@@ -1,3 +1,10 @@
+univention-system-setup (8.0.27-1) unstable; urgency=low
+
+  * Set UCR variable for server role before installing server role
+    package. Part two, commit ucr (Bug #35699)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Aug 2014 17:52:00 +0200
+
 univention-system-setup (8.0.26-2) unstable; urgency=low
 
   * Bug #35685: hide also first page (welcome)

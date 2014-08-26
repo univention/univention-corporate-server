@@ -77,6 +77,7 @@ class RoleScript(AptScript):
 			return False
 
 		self.ucr.set('server/role', self.wanted_server_role)
+		self.ucr.commit()
 
 		if current_server_role_package:
 			self.uninstall(current_server_role_package)
