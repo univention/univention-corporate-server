@@ -1,3 +1,9 @@
+univention-system-setup (8.0.29-1) unstable; urgency=low
+
+  * Bug #35378: Merge di-univention-system-setup package
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 26 Aug 2014 17:29:15 +0200
+
 univention-system-setup (8.0.28-1) unstable; urgency=low
 
   * Bug #35582: Show "about to reboot" hint on last page on installation

@@ -1,9 +1,0 @@
-#!/bin/sh
-. /usr/share/debconf/confmodule
-
-db_get di-univention-system-setup/skip
-if [ "$RET" = true ]; then
-        exit 1
-fi
-
-exit 0
