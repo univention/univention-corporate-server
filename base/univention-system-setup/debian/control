@@ -84,6 +84,7 @@ Depends: cdebconf-udeb,
  installed-base,
  created-fstab,
  bootable-system,
+ ${misc:Depends},
 XB-Installer-Menu-Item: 7650
 Package-Type: udeb
 Description: Start Univention System Setup

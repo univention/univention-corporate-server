@@ -1,3 +1,9 @@
+univention-system-setup (8.0.29-2) unstable; urgency=low
+
+  * Bug #35378: Merge di-univention-system-setup package
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 26 Aug 2014 20:05:39 +0200
+
 univention-system-setup (8.0.29-1) unstable; urgency=low
 
   * Bug #35378: Merge di-univention-system-setup package
