@@ -757,7 +757,7 @@ define([
 				if (field == 'password') {
 					disable.push(['user-master', 'root_password']);
 					disable.push(['network', 'root_password']);
-					helpTexts['user-master'] = {help: _('<p>Enter the name of your organization and an e-mail address to activate UCS</p>')};
+					helpTexts['user-master'] = {help: _('<p>Enter the name of your organization and an e-mail address to activate UCS.</p>')};
 				} else if (field == 'network') {
 					disable.push(['network', '_dhcp']);
 					disable.push(['network', '_ip0']);
@@ -1611,7 +1611,7 @@ define([
 			}
 
 			// check network device configuration
-			if (pageName == 'network' && this.getWidget(pageName, '_ip0').get('visible')) {
+			if (pageName == 'network' && this.getWidget('network', '_ip0').get('visible')) {
 				var _vals = this._gatherVisibleValues();
 				var nConfiguredInterfaces = 0;
 				for (var idx = 0; idx < 4; ++idx) {

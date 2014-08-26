@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-08-26 14:31+0200\n"
+"POT-Creation-Date: 2014-08-26 14:44+0200\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,11 +82,11 @@ msgstr ""
 
 #: umc/js/setup/ApplianceWizard.js:760
 msgid ""
-"<p>Enter the name of your organization and an e-mail address to activate "
-"UCS</p>"
+"<p>Enter the name of your organization and an e-mail address to activate UCS."
+"</p>"
 msgstr ""
 "<p>Geben Sie den Namen Ihrer Organisation und eine E-Mail-Adresse für die "
-"Aktivierung von UCS ein</p>"
+"Aktivierung von UCS ein.</p>"
 
 #: umc/js/setup/ApplianceWizard.js:461
 msgid ""
