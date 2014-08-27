@@ -177,13 +177,15 @@
 	  </itemizedlist>
   </section>
 
-  <!-- <section id="changelog:umc:setup"> -->
-  <!-- 	<title>Basic settings / Appliance mode</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+  <section id="changelog:umc:setup">
+  	<title>Basic settings / Appliance mode</title>
+  	  <itemizedlist>
+  		<listitem><simpara>
+  			During the UCS installation some fields which are already configured will be hidden in the system setup wizard
+  			<ulink url="&ucsbug;35685">Bug 35685</ulink>).
+  		</simpara></listitem>
+  	  </itemizedlist>
+  </section>
 
   <section id="changelog:umc:user">
 	<title>Users module</title>
