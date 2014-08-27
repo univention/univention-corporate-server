@@ -1,3 +1,9 @@
+univention-bind (9.0.2-1) unstable; urgency=low
+
+  * Better use a new dict to make ucslint happy (Bug #35320)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 27 Aug 2014 09:26:07 +0200
+
 univention-bind (9.0.1-1) unstable; urgency=medium
 
   * Consider multiarch changes for the samba4 dlz module (Bug #35320)
