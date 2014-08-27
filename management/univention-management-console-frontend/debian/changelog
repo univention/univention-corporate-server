@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.0.3-2) unstable; urgency=low
+
+  * Bug #35654: version bump
+
+ -- Florian Best <best@univention.de>  Wed, 27 Aug 2014 16:25:02 +0200
+
 univention-management-console-frontend (4.0.3-1) unstable; urgency=low
 
   * Bug #35685: fix hasPrevious() hasNext() next() and previous() methods for
