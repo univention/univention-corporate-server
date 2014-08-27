@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-uvmm 2.0.40-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-10-18 15:13+0200\n"
+"POT-Creation-Date: 2014-08-27 14:47+0200\n"
 "PO-Revision-Date: 2013-05-23 09:17+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -42,6 +42,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: umc/python/uvmm/cloud.py:80
+msgid "Cloud connection"
+msgstr "Cloud-Verbindung"
 
 #: umc/python/uvmm/domains.py:436
 msgid "Could not determine architecture for domain"
@@ -96,7 +100,7 @@ msgstr "Ungültiger Domain Status: %s"
 msgid "Paravirtualization (XEN)"
 msgstr "Paravirtualisierung (XEN)"
 
-#: umc/python/uvmm/nodes.py:98 umc/python/uvmm/__init__.py:144
+#: umc/python/uvmm/__init__.py:145 umc/python/uvmm/nodes.py:98
 msgid "Physical servers"
 msgstr "Physikalische Server"
 
@@ -117,7 +121,7 @@ msgstr "Unbekanntes Profil"
 msgid "Unknown profile given"
 msgstr "Unbekanntes Profil wurde angegeben"
 
-#: umc/python/uvmm/__init__.py:149
+#: umc/python/uvmm/__init__.py:150
 msgid "Unknown query type"
 msgstr "Unbekannter Anfragetyp"
 

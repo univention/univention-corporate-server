@@ -152,7 +152,9 @@ define([
 				label: _('Displayed type'),
 				staticValues: [
 					{ id: 'domain', label: _('Virtual machine') },
-					{ id: 'node', label: _('Physical server') }
+					{ id: 'node', label: _('Physical server') },
+					{ id: 'instance', label: _('Cloud instance') },
+					{ id: 'cloud', label: _('Cloud connection') }
 				],
 				size: 'Half'
 			}, {
@@ -1061,7 +1063,7 @@ define([
 
 		_iconClass: function(item) {
 			var iconName = 'uvmm-' + item.type;
-			if (item.type == 'node') {
+			if (item.type == 'node' || item.type == 'cloud') {
 				if (item.virtech) {
 					iconName += '-' + item.virtech;
 				}

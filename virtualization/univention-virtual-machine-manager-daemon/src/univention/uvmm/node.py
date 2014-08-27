@@ -926,7 +926,7 @@ node_list = nodes.list
 
 def group_list():
 	"""Return list of groups for nodes."""
-	return ['default'] # FIXME
+	return ['default', 'cloudconnections'] # FIXME
 
 def _domain_backup(dom, save=True):
 	"""Save domain definition to backup file."""

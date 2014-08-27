@@ -39,17 +39,18 @@ from univention.management.console.protocol.definitions import MODULE_ERR_COMMAN
 
 from notifier import Callback
 
-from .uvmmd import UVMM_RequestBroker
-from .nodes import Nodes
-from .profiles import Profiles
-from .storages import Storages
-from .domains import Domains
-from .snapshots import Snapshots
+from univention.management.console.modules.uvmm.uvmmd import UVMM_RequestBroker
+from univention.management.console.modules.uvmm.nodes import Nodes
+from univention.management.console.modules.uvmm.profiles import Profiles
+from univention.management.console.modules.uvmm.storages import Storages
+from univention.management.console.modules.uvmm.domains import Domains
+from univention.management.console.modules.uvmm.snapshots import Snapshots
+from univention.management.console.modules.uvmm.cloud import Cloud
 
 _ = Translation('univention-management-console-modules-uvmm').translate
 
 
-class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots):
+class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Cloud):
 	"""
 	UMC functions for UVMM handling.
 	"""

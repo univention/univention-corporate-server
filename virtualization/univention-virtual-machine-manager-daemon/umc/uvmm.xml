@@ -40,5 +40,6 @@
 		<command name="uvmm/storage/volume/deletable" function="storage_volume_deletable"/>
 		<command name="uvmm/profile/query" function="profile_query"/>
 		<command name="uvmm/profile/get" function="profile_get"/>
+		<command name="uvmm/cloud/query" function="cloud_query"/>
 	</module>
 </umc>

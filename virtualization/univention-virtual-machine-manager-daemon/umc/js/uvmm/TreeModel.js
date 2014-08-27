@@ -87,17 +87,17 @@ define([
 				this.umcpCommand('uvmm/group/query', {
 				}).then(lang.hitch(this, function(data) {
 					var results = data.result instanceof Array ? data.result : [];
-					results.sort();
+					//results.sort();
 					onComplete(array.map(results, lang.hitch(this, function(groupname) {
 						return {
 							id: groupname,
-							label: groupname == 'default' ? _('Physical servers') : groupname,
+							label: groupname == 'default' ? _('Physical servers') : (groupname == 'cloudconnections' ? _('Cloud connections') : groupname),
 							type: 'group',
 							icon: 'uvmm-group'
 						};
 					})));
 				}));
-			} else if (parentItem.type == 'group') {
+			} else if (parentItem.type == 'group' && parentItem.id == 'default') {
 				this.umcpCommand('uvmm/node/query', {
 					nodePattern: ''
 				}).then(lang.hitch(this, function(data) {
@@ -109,6 +109,19 @@ define([
 					})));
 				}));
 			} else if (parentItem.type == 'node') {
+				onComplete([]);
+			} else if (parentItem.type == 'group' && parentItem.id == 'cloudconnections') {
+				this.umcpCommand('uvmm/cloud/query', {
+					nodePattern: ''
+				}).then(lang.hitch(this, function(data) {
+					var results = data.result instanceof Array ? data.result : [];
+					results.sort(tools.cmpObjects('label'));
+					onComplete(array.map(results, lang.hitch(this, function(node) {
+						node.label = this._cutDomain( node.label );
+						return node;
+					})));
+				}));
+			} else if (parentItem.type == 'cloud') {
 				onComplete([]);
 			}
 		},

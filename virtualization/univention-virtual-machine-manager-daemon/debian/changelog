@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.0-4) unstable; urgency=low
+
+  * Add Cloud Connection into UVMM frontend (Bug #32842)
+
+ -- Andreas Peichert <peichert@univention.de>  Wed, 27 Aug 2014 15:15:50 +0200
+
 univention-virtual-machine-manager-daemon (4.0.0-3) unstable; urgency=low
 
   * Add UDM module Cloud Connection and icons for Connection and Type (Bug #32842)
