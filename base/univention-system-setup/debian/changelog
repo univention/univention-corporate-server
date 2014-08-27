@@ -1,3 +1,9 @@
+univention-system-setup (8.0.29-3) unstable; urgency=low
+
+  * Bug #35378: Start network in chroot
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 27 Aug 2014 08:50:41 +0200
+
 univention-system-setup (8.0.29-2) unstable; urgency=low
 
   * Bug #35378: Merge di-univention-system-setup package
