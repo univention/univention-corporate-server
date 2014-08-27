@@ -107,4 +107,7 @@ if [ -z "$postfix_autostart" ] || [ "$postfix_autostart" = "yes" ]; then
 	/etc/init.d/postfix restart
 fi
 
+# restart to activate new listener module
+/etc/init.d/univention-directory-listener crestart
+
 exit 0

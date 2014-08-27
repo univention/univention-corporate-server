@@ -1,3 +1,4 @@
 share/listfilter.py usr/share/univention-mail-postfix/
 share/postmap-transport.sh usr/share/univention-mail-postfix/
 usr/lib/univention-server/server_password_change.d/50univention-mail-server usr/lib/univention-server/server_password_change.d/
+hosteddomains.py /usr/lib/univention-directory-listener/system

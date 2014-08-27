@@ -45,9 +45,6 @@ for file in transport virtual canonical access relocated; do
   postmap /etc/postfix/$file
 done
 
-# restart to activate new listener module
-/etc/init.d/univention-directory-listener crestart
-
 . /usr/share/univention-lib/all.sh
 call_joinscript 67univention-mail-server.inst
 
