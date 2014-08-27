@@ -65,7 +65,7 @@ except ImportError as e:
 
 _ = Translation('univention-management-console-module-setup').translate
 
-ucr=univention.config_registry.ConfigRegistry()
+ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 PATH_SYS_CLASS_NET = '/sys/class/net'
@@ -159,8 +159,12 @@ def _xkeymap(keymap):
 
 def auto_complete_values_for_join(newValues, current_locale=None):
 	# try to automatically determine the domain
-	if newValues['server/role'] != 'domaincontroller_master' and 'domainname' not in newValues and 'nameserver1' in newValues:
-		newValues['domainname'] = get_ucs_domain(newValues['nameserver1'])
+	if newValues['server/role'] != 'domaincontroller_master' and not newValues.get('domainname'):
+		ucr.load()
+		for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):
+			if newValues.get('domainname'):
+				break
+			newValues['domainname'] = get_ucs_domain(newValues.get(nameserver, ucr.get(nameserver)))
 		if not newValues['domainname']:
 			raise Exception(_('Cannot automatically determine the domain. Please specify the server\'s fully qualified domain name.'))
 

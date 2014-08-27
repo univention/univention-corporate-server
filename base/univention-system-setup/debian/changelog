@@ -1,3 +1,9 @@
+univention-system-setup (8.0.30-1) unstable; urgency=low
+
+  * Bug #35685: hide also nameservers in installation mode
+
+ -- Florian Best <best@univention.de>  Wed, 27 Aug 2014 15:00:57 +0200
+
 univention-system-setup (8.0.29-3) unstable; urgency=low
 
   * Bug #35378: Start network in chroot

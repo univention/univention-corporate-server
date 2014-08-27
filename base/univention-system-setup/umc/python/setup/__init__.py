@@ -66,7 +66,9 @@ RE_IPV6_DEFAULT = re.compile(r'^interfaces/([^/]+)/ipv6/default/(prefix|address)
 RE_SPACE = re.compile(r'\s+')
 RE_SSL = re.compile(r'^ssl/.*')
 
+
 class Instance(Base, ProgressMixin):
+
 	def __init__(self):
 		Base.__init__(self)
 		self._finishedLock = threading.Lock()
@@ -198,7 +200,6 @@ class Instance(Base, ProgressMixin):
 			notifier.Callback( _thread, request, self ), _finished )
 		thread.run()
 
-
 	def join(self, request):
 		'''Join and reconfigure the system according to the values specified in the dict given as
 		option named "values".'''
@@ -267,7 +268,6 @@ class Instance(Base, ProgressMixin):
 		thread = notifier.threads.Simple( 'save',
 			notifier.Callback(_thread, request, self, request.options.get('username'), request.options.get('password')), _finished)
 		thread.run()
-
 
 	def check_finished(self, request):
 		'''Check whether the join/setup scripts are finished. This method implements a long
@@ -369,9 +369,9 @@ class Instance(Base, ProgressMixin):
 		_check('hostname', util.is_hostname, _('The hostname is not a valid fully qualified domain name in lowercase (e.g. host.example.com).'))
 		_check('hostname', lambda x: len(x) <= 13, _('A valid NetBIOS name can not be longer than 13 characters. If Samba is installed, the hostname should be shortened.'), critical=('univention-samba' in packages or 'univention-samba4' in packages))
 		_check('domainname', util.is_domainname, _("Please enter a valid fully qualified domain name in lowercase (e.g. host.example.com)."))
-		hostname = allValues.get('hostname')
-		domainname = allValues.get('domainname')
-		if len(hostname + domainname) >= 63:
+		hostname = allValues.get('hostname', '')
+		domainname = allValues.get('domainname', '')
+		if len('%s%s' % (hostname, domainname)) >= 63:
 			_append('domainname', _('The length of fully qualified domain name is greater than 63 characters.'))
 		if hostname == domainname.split('.')[0]:
 			_append('domainname', _("Hostname is equal to domain name."))
@@ -380,26 +380,6 @@ class Instance(Base, ProgressMixin):
 				_append('domainname', _("No fully qualified domain name has been specified for the system."))
 			elif not values.get('hostname'):
 				_append('hostname', _("No hostname has been specified for the system."))
-
-		# see whether the domain can be determined automatically
-		if not util.is_system_joined() and newrole != 'domaincontroller_master':
-			if 'nameserver1' not in values:
-				_append('nameserver1', _('A domain name server needs to specified.'))
-			else:
-				# make sure we have a valid UCS nameserver
-				guessed_domain = util.get_domain(values['nameserver1'])
-				if not guessed_domain:
-					_append('nameserver1', _('The specified nameserver %s cannot be contacted.') % values['nameserver1'])
-				elif not util.is_ucs_domain(values['nameserver1'], guessed_domain):
-					_append('nameserver1', _('The specified nameserver %s is not part of a valid UCS domain.') % values['nameserver1'])
-					guessed_domain = None
-				else:
-					# communicate guessed domainname to frontend
-					messages.append({
-						'valid': True,
-						'key': 'domainname',
-						'value': guessed_domain,
-					})
 
 		# windows domain
 		_check('windows/domain', lambda x: x == x.upper(), _("The windows domain name can only consist of upper case characters."))
@@ -442,8 +422,39 @@ class Instance(Base, ProgressMixin):
 						continue
 					_check(jkey, util.is_ipaddr, _('The specified IP address (%s) is not valid: %s') % (iname, jval))
 
-		if newrole != 'domaincontroller_master' and not any(interface.ip4dynamic or interface.ip6dynamic for interface in interfaces.values()) and not allValues.get('nameserver1') and not allValues.get('nameserver2') and not allValues.get('nameserver3'):
-			_append('nameserver1', _('At least one domain name server needs to be given if DHCP or SLAAC is not specified.'))
+		def guess_domain(obj):
+			for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):
+				nameserver = obj.get(nameserver)
+				if nameserver:
+					guessed_domain = util.get_ucs_domain(nameserver)
+					if guessed_domain:
+						return guessed_domain
+
+		if not util.is_system_joined() and newrole != 'domaincontroller_master':
+			if all(nameserver in values and not values[nameserver] for nameserver in ('nameserver1', 'nameserver2', 'nameserver3')):
+				# 'nameserver1'-key exists → widget is displayed → = not in UCS/debian installer mode
+				if not any(interface.ip4dynamic or interface.ip6dynamic for interface in interfaces.values()):
+					_append('nameserver1', _('A domain name server needs to be specified.'))
+					#_append('nameserver1', _('At least one domain name server needs to be given if DHCP or SLAAC is not specified.'))
+
+			# see whether the domain can be determined automatically
+			ucr.load()
+			for obj in [values, ucr]:
+				guessed_domain = guess_domain(obj)
+				if guessed_domain:
+					# communicate guessed domainname to frontend
+					messages.append({
+						'valid': True,
+						'key': 'domainname',
+						'value': guessed_domain,
+					})
+					break
+			else:
+			 	if not values.get('domainname'):
+					_append('domainname', _('Cannot automatically determine the domain. Please specify the server\'s fully qualified domain name.'))
+
+				if values.get('nameserver1'):
+					_append('nameserver1', _('The specified nameserver %s is not part of a valid UCS domain.') % (values['nameserver1'],))
 
 		# check gateways
 		if values.get('gateway'): # allow empty value

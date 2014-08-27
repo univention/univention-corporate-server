@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: umc/python/setup/__init__.py:387
-msgid "A domain name server needs to specified."
+msgid "A domain name server needs to be specified."
 msgstr "Ein Domänen-DNS-Server muss angegeben werden."
 
 #: umc/python/setup/__init__.py:370

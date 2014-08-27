@@ -777,8 +777,15 @@ define([
 				} else if (field == 'nameservers') {
 					disable.push(['network', 'nameserver1']);
 					disable.push(['network', 'nameserver2']);
-					disable.push(['network', 'dns/forwarder1']);
-					disable.push(['network', 'dns/forwarder2']);
+					if (this.getWidget('role', '_createDomain').get('value')) {
+						disable.push(['network', 'dns/forwarder1']);
+						disable.push(['network', 'dns/forwarder2']);
+					} else {
+						this.getWidget('network', 'dns/forwarder1').set('disabled', false);
+						this.getWidget('network', 'dns/forwarder1').set('visible', true);
+						this.getWidget('network', 'dns/forwarder2').set('disabled', false);
+						this.getWidget('network', 'dns/forwarder2').set('visible', true);
+					}
 				} else if (field == 'proxy') {
 					disable.push(['network', 'proxy/http']);
 					disable.push(['network', 'configureProxySettings']);
@@ -1429,7 +1436,9 @@ define([
 					return inameserver;
 				}).join(', ');
 				_append(_('UCS domain name server'), nameservers);
+			}
 
+			if (!isFieldShown('nameservers') || vals['server/role'] == 'domaincontroller_master') {
 				var forwarders = array.filter([vals['dns/forwarder1'], vals['dns/forwarder2']], function(iforwarder) {
 					return iforwarder;
 				}).join(', ');
