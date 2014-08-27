@@ -188,6 +188,7 @@ kde-l10n-de
 okular
 xserver-xorg-input-vmmouse
 ttf-liberation
+xterm
 
 /* Development + Packaging Tools */
 univention-directory-manager-module-example
