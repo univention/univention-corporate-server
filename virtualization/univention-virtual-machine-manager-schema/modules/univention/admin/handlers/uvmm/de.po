@@ -27,7 +27,7 @@ msgstr "Hinzufügen"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:56
 msgid "Add Cloud Connection"
-msgstr "Cloud-Zugangsdaten hinzufügen"
+msgstr "Cloud-Verbindungen hinzufügen"
 
 #: modules/univention/admin/handlers/uvmm/cloudtype.py:56
 msgid "Add Cloud Type"
@@ -35,7 +35,7 @@ msgstr "Cloud-Typ hinzufügen"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:55
 msgid "Add, edit and delete Cloud Connections"
-msgstr "Hinzufügen, bearbeiten und löschen von Cloud-Zugangsdaten"
+msgstr "Hinzufügen, bearbeiten und löschen von Cloud-Verbindungen"
 
 #: modules/univention/admin/handlers/uvmm/cloudtype.py:55
 msgid "Add, edit and delete Cloud Types"
@@ -83,7 +83,7 @@ msgstr "Prozessoren"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:81
 msgid "Cloud Connection parameters"
-msgstr "Cloud-Zugangsdaten Parameter"
+msgstr "Parameter der Cloud-Verbindunge"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:54
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:71
@@ -269,7 +269,7 @@ msgstr "Referenz auf das bei der Definition genutzte Profil"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:72
 msgid "Reference to the type of the cloud connection"
-msgstr "Referenz auf den Typ der Cloud-Zugangsdaten"
+msgstr "Referenz auf den Typ der Cloud-Verbindung"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:198
 #: modules/univention/admin/handlers/uvmm/profile.py:338
@@ -283,7 +283,7 @@ msgstr "Suche"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:56
 msgid "Search for Cloud Connections"
-msgstr "Suche nach Cloud-Zugangsdaten"
+msgstr "Suche nach Cloud-Verbindungen"
 
 #: modules/univention/admin/handlers/uvmm/cloudtype.py:56
 msgid "Search for Cloud Types"
@@ -296,7 +296,7 @@ msgstr "UUID"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:49
 msgid "UVMM: Cloud Connections"
-msgstr "UVMM: Cloud-Zugangsdaten"
+msgstr "UVMM: Cloud-Verbindungen"
 
 #: modules/univention/admin/syntax.d/univention-virtual-machine-manager-schema.py:15
 #: modules/univention/admin/handlers/uvmm/cloudtype.py:49
@@ -338,7 +338,7 @@ msgstr "Virtuelle Hardware"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:95
 msgid "Virtual machine cloud connection"
-msgstr "Zugangsdaten der Cloud"
+msgstr "Verbindungen der Cloud"
 
 #: modules/univention/admin/handlers/uvmm/cloudtype.py:74
 msgid "Virtual machine cloud type"

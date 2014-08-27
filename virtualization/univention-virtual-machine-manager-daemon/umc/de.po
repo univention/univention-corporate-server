@@ -19,7 +19,7 @@ msgid "Virtual machines (UVMM)"
 msgstr "Virtuelle Maschinen (UVMM)"
 
 msgid "Manages Cloud Connections"
-msgstr "Verwaltung von Cloud-Zugangsdaten"
+msgstr "Verwaltung von Cloud-Verbindungen"
 
 msgid "Cloud Connections (UVMM)"
-msgstr "Cloud-Zugangsdaten (UVMM)"
+msgstr "Cloud-Verbindungen (UVMM)"
