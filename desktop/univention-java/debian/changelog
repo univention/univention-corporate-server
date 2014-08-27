@@ -1,3 +1,9 @@
+univention-java (7.0.0-2) unstable; urgency=low
+
+  * Removed dependency ia32-libs-gtk [amd64] (Bug #35266)
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 27 Aug 2014 10:24:52 +0200
+
 univention-java (7.0.0-1) unstable; urgency=low
 
   * Starting UCS 4.0 development (Bug #35266)
