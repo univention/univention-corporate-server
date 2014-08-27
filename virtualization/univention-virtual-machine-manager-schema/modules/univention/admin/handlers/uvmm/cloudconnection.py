@@ -45,14 +45,10 @@ module = 'uvmm/cloudconnection'
 default_containers = ['cn=Cloud Connection,cn=Virtual Machine Manager']
 
 childs = 0
-short_description = _('UVMM: Cloud Connections')
+short_description = _('UVMM: Cloud Connection')
 long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
 
-usewizard = 1
-wizardmenustring = _("Cloud Type")
-wizarddescription = _("Add, edit and delete Cloud Connections")
-wizardoperations = {"add": [_("Add"), _("Add Cloud Connection")], "find": [_("Search"), _("Search for Cloud Connections")]}
 
 # UDM properties
 property_descriptions = {

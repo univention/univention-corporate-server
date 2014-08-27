@@ -45,14 +45,10 @@ module = 'uvmm/cloudtype'
 default_containers = ['cn=Cloud Type,cn=Virtual Machine Manager']
 
 childs = 0
-short_description = _('UVMM: Cloud Types')
+short_description = _('UVMM: Cloud Type')
 long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
 
-usewizard = 1
-wizardmenustring = _("Cloud Type")
-wizarddescription = _("Add, edit and delete Cloud Types")
-wizardoperations = {"add": [_("Add"), _("Add Cloud Type")], "find": [_("Search"), _("Search for Cloud Types")]}
 
 # UDM properties
 property_descriptions = {

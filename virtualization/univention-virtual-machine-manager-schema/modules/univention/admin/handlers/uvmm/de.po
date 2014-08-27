@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager-schema\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-08-20 15:36+0200\n"
+"POT-Creation-Date: 2014-08-27 16:59+0200\n"
 "PO-Revision-Date: 2012-10-25 14:59+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -19,27 +19,6 @@ msgstr ""
 #: modules/univention/admin/handlers/uvmm/profile.py:199
 msgid "Active VNC remote acess"
 msgstr "Aktiviert den VNC Fernzugriff"
-
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:56
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:56
-msgid "Add"
-msgstr "Hinzufügen"
-
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:56
-msgid "Add Cloud Connection"
-msgstr "Cloud-Verbindungen hinzufügen"
-
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:56
-msgid "Add Cloud Type"
-msgstr "Cloud-Typ hinzufügen"
-
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:55
-msgid "Add, edit and delete Cloud Connections"
-msgstr "Hinzufügen, bearbeiten und löschen von Cloud-Verbindungen"
-
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:55
-msgid "Add, edit and delete Cloud Types"
-msgstr "Hinzufügen, bearbeiten und löschen von Cloud-Typen"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:169
 msgid "Amount of disk space"
@@ -81,13 +60,11 @@ msgstr "CDROM-Laufwerk"
 msgid "CPUs"
 msgstr "Prozessoren"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:81
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:76
 msgid "Cloud Connection parameters"
 msgstr "Parameter der Cloud-Verbindunge"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:54
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:71
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:54
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:66
 msgid "Cloud Type"
 msgstr "Cloud-Typ"
 
@@ -127,12 +104,12 @@ msgstr "Volle Virtualisierung (KVM)"
 msgid "Full virtualization (XEN)"
 msgstr "Volle Virtualisierung (XEN)"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:95
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:96
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:90
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:91
 #: modules/univention/admin/handlers/uvmm/info.py:109
 #: modules/univention/admin/handlers/uvmm/info.py:110
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:74
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:75
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:69
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:70
 #: modules/univention/admin/handlers/uvmm/profile.py:319
 #: modules/univention/admin/handlers/uvmm/profile.py:320
 msgid "General"
@@ -157,9 +134,11 @@ msgstr "Kernel"
 msgid "Kernel parameter"
 msgstr "Kernel Parameter"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:82
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:77
 msgid "Key-value pair storing needed parameters for the Cloud Connection"
-msgstr "Schlüssel-Wert-Paar zur Speicherung der benötigten Parameter für die Cloud-Verbindung"
+msgstr ""
+"Schlüssel-Wert-Paar zur Speicherung der benötigten Parameter für die Cloud-"
+"Verbindung"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:208
 #: modules/univention/admin/handlers/uvmm/profile.py:209
@@ -182,10 +161,10 @@ msgstr ""
 msgid "Memory"
 msgstr "Speicher"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:61
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:62
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:61
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:62
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:56
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:57
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:56
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:57
 #: modules/univention/admin/handlers/uvmm/profile.py:108
 #: modules/univention/admin/handlers/uvmm/profile.py:109
 msgid "Name"
@@ -267,7 +246,7 @@ msgstr "Realzeituhrversatz"
 msgid "Reference to the profile used for defining this VM"
 msgstr "Referenz auf das bei der Definition genutzte Profil"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:72
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:67
 msgid "Reference to the type of the cloud connection"
 msgstr "Referenz auf den Typ der Cloud-Verbindung"
 
@@ -276,30 +255,20 @@ msgstr "Referenz auf den Typ der Cloud-Verbindung"
 msgid "Remote access"
 msgstr "Fernzugriff"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:56
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:56
-msgid "Search"
-msgstr "Suche"
-
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:56
-msgid "Search for Cloud Connections"
-msgstr "Suche nach Cloud-Verbindungen"
-
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:56
-msgid "Search for Cloud Types"
-msgstr "Suche nach Cloud-Typen"
-
 #: modules/univention/admin/handlers/uvmm/info.py:56
 #: modules/univention/admin/handlers/uvmm/info.py:57
 msgid "UUID"
 msgstr "UUID"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:49
-msgid "UVMM: Cloud Connections"
-msgstr "UVMM: Cloud-Verbindungen"
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:48
+msgid "UVMM: Cloud Connection"
+msgstr "UVMM: Cloud-Verbindung"
+
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:48
+msgid "UVMM: Cloud Type"
+msgstr "UVMM: Cloud-Typ"
 
 #: modules/univention/admin/syntax.d/univention-virtual-machine-manager-schema.py:15
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:49
 msgid "UVMM: Cloud Types"
 msgstr "UVMM: Cloud-Typen"
 
@@ -336,11 +305,11 @@ msgstr "Wert muss eine positive Kapazität enthalten (xx.x [kmgtp][[i]B])"
 msgid "Virtual hardware"
 msgstr "Virtuelle Hardware"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:95
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:90
 msgid "Virtual machine cloud connection"
 msgstr "Verbindungen der Cloud"
 
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:74
+#: modules/univention/admin/handlers/uvmm/cloudtype.py:69
 msgid "Virtual machine cloud type"
 msgstr "Typ der Cloud"
 
