@@ -1,3 +1,10 @@
+univention-x-core (8.0.0-2) unstable; urgency=low
+
+  * Removed the dependencies univention-fonts 
+  * and xserver-xorg-video-via (Bug #35266)
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 27 Aug 2014 12:20:20 +0200
+
 univention-x-core (8.0.0-1) unstable; urgency=low
 
   * Starting UCS 4.0 development (Bug #35266)
