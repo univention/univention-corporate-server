@@ -29,7 +29,11 @@
 
 @%@UCRWARNING=# @%@
 
-export LDB_MODULES_PATH=/usr/lib/samba/ldb/
+if [ "$(uname -m)" = "x86_64" ]; then
+	export LDB_MODULES_PATH=/usr/lib/x86_64-linux-gnu/ldb/
+else
+	export LDB_MODULES_PATH=/usr/lib/i386-linux-gnu/ldb/
+fi
 
 # dirs under /var/run can go away on reboots.
 mkdir -p /var/run/named
