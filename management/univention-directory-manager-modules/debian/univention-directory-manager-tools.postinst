@@ -43,9 +43,4 @@ univention-config-registry set "directory/manager/cmd/debug/level"?"0" \
 create_logfile /var/log/univention/directory-manager-cmd.log "root:adm" 640
 create_logfile /var/log/univention/sync-memberuid.log "root:adm" 640
 
-if [ "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions "$2" lt-nl 7.0.274-1; then
-	# when updating, convert jpegPhoto attributes for users/user to binary format (Bug #26872)
-	/usr/share/univention-directory-manager-tools/convert-user-base64-photos convert
-fi
-
 exit 0

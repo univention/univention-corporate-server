@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.8-2) unstable; urgency=low
+
+  * Bug #35146: remove obsolete update instructions in postinst
+
+ -- Florian Best <best@univention.de>  Wed, 27 Aug 2014 09:33:56 +0200
+
 univention-directory-manager-modules (10.0.8-1) unstable; urgency=medium
 
   * In ad/member mode exclude users and clients from license count
