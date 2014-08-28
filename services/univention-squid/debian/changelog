@@ -1,3 +1,9 @@
+univention-squid (8.0.1-1) unstable; urgency=medium
+
+  * Remove winbind4 from dependency list (Bug #35319)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 28 Aug 2014 18:54:33 +0200
+
 univention-squid (8.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35147) 

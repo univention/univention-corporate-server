@@ -12,7 +12,7 @@ Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  squid3,
  univention-config (>= 8.0.2),
- winbind | winbind4,
+ winbind,
  univention-heimdal-common (>>5.0.24-1),
  python-ipaddr,
  python-crypto
