@@ -80,6 +80,7 @@ import univention.admin.uexceptions as udm_errors
 from util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, set_save_commit_load, get_md5
 
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
+LOCAL_ARCHIVE = '/usr/share/univention-appcenter/local/all.tar.gz'
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons'
 ucr = ConfigRegistry()
 ucr.load()
@@ -551,7 +552,30 @@ class Application(object):
 		return cls._category_translations
 
 	@classmethod
+	def _extract_local_archive(cls):
+		if os.listdir(CACHE_DIR):
+			# we already have a cache. our archive is just outdated...
+			return
+		MODULE.process('Filling the App Center file cache from our local archive!')
+		try:
+			archive = tarfile.open(LOCAL_ARCHIVE, 'r:*')
+		except (tarfile.TarError, IOError) as e:
+			MODULE.warn('Error while reading %s: %s' % (LOCAL_ARCHIVE, e))
+			return
+		try:
+			for member in archive.getmembers():
+				filename = member.name
+				if os.path.sep in filename:
+					# just some paranoia
+					continue
+				MODULE.info('Extracting %s' % filename)
+				archive.extract(filename, path=CACHE_DIR)
+		finally:
+			archive.close()
+
+	@classmethod
 	def sync_with_server(cls):
+		cls._extract_local_archive()
 		something_changed = False
 		json_url = urljoin('%s/' % cls.get_metainf_url(), 'index.json.gz')
 		MODULE.process('Downloading "%s"...' % json_url)

@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (4.0.0-3) unstable; urgency=low
+
+  * Bug #35683: Add a starting archive for ini files that can be unpackaged
+    even without network connection
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 28 Aug 2014 15:29:08 +0200
+
 univention-management-console-module-appcenter (4.0.0-2) unstable; urgency=low
 
   * Bug #35565: commit installed apps files upon UCRV

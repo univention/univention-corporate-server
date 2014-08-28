@@ -207,7 +207,7 @@ class Instance(umcm.Base):
 		if not application:
 			MODULE.process('Application not found: %s' % application_id)
 			can_continue = False
-		if not only_master_packages:
+		if can_continue and not only_master_packages:
 			forbidden, warnings = application.check_invokation(function, self.package_manager)
 			if forbidden:
 				MODULE.process('Cannot %s %s: %r' % (function, application_id, forbidden))

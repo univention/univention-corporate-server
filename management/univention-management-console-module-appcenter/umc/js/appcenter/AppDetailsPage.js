@@ -397,7 +397,7 @@ define([
 			};
 
 			this._progressBar.reset(_('%s: Performing software tests on involved systems', this.app.name));
-			this._progressBar._progressBar.set('value', Infinity);
+			this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
 			var invokation = tools.umcpCommand(command, commandArguments).then(lang.hitch(this, function(data) {
 				var result = data.result;
 				var headline = '';
