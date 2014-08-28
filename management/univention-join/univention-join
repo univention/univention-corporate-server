@@ -747,7 +747,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 
 	if [ -e "/etc/ldap-backup.secret" ]; then cat /etc/ldap-backup.secret >>/etc/ldap-backup.secret.SAVE; fi
 
-	univention-scp "$DCPWD" "${DCACCOUNT}@${DCNAME}:/etc/ldap-backup.secret /etc/ldap-backup.secret" >/var/log/univention/join.log 2>&1
+	univention-scp "$DCPWD" "${DCACCOUNT}@${DCNAME}:/etc/ldap-backup.secret /etc/ldap-backup.secret" >>/var/log/univention/join.log 2>&1
 
 	echo -e "\033[60Gdone"
 

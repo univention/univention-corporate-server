@@ -1,3 +1,9 @@
+univention-join (6.0.18-12) unstable; urgency=low
+
+  * don't overwrite join.log on slaves (Bug #34909) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 28 Aug 2014 15:26:51 +0200
+
 univention-join (6.0.18-11) unstable; urgency=low
 
   [ Felix Botner ]
