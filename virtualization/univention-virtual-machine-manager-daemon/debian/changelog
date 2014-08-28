@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.18-1) unstable; urgency=low
+
+  * Bug #35107: Fix handling of paused VMs.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 28 Aug 2014 11:54:37 +0200
+
 univention-virtual-machine-manager-daemon (3.0.17-14) unstable; urgency=low
 
   * Bug #35107: Revert
