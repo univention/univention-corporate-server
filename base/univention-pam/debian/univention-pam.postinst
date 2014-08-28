@@ -144,9 +144,9 @@ test -x /etc/init.d/nscd && /etc/init.d/nscd restart
 
 # default limits
 univention-config-registry set \
-	'security/limits/default/user/soft/nofile'?'32768' \
-	'security/limits/default/user/hard/nofile'?'32768' \
-	'security/limits/group/Domain Users/hard/nproc'?'1000'
+	'security/limits/default/user/soft/nofile?32768' \
+	'security/limits/default/user/hard/nofile?32768' \
+	'security/limits/group/Domain Users/hard/nproc?1000'
 
 # Bug #32415, can be removed after 4.0-0
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.1-2; then
