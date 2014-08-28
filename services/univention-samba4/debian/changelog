@@ -1,3 +1,10 @@
+univention-samba4 (3.0.39-35) unstable; urgency=low
+
+  * ignore tar "file changed as we read it" warning in 
+    univention-samba4-backup (Bug #35392)
+
+ -- Felix Botner <botner@univention.de>  Thu, 28 Aug 2014 12:32:10 +0200
+
 univention-samba4 (3.0.39-34) unstable; urgency=low
 
   * Use start-stop-daemon instead of pkill (Bug #35600)

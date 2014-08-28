@@ -122,31 +122,47 @@ for d in $DIRS; do
 	relativedirname=`find . -type d -name "$d" -prune`
 	n=`echo $d | sed 's/\//_/g'`
 	if [ "$d" = "private" ]; then
-		find $relativedirname -name "*.ldb.bak" -exec rm {} \;
-		for ldb in `find $relativedirname -name "*.ldb"`; do
-			tdbbackup $ldb
-			Status=$?
-			if [ $Status -ne 0 ]; then
-				echo "Error while backing up $ldb - status $Status"
-				exit 1
-			fi
+		for db in tdb ldb; do
+			find $relativedirname -name "*.$db.bak" -exec rm {} \;
+			for file in `find $relativedirname -name "*.$db"`; do
+				tdbbackup $file
+				Status=$?
+				if [ $Status -ne 0 ]; then
+					echo "Error while backing up $file with tdbbackup - status $Status"
+					exit 1
+				fi
+			done
 		done
 		# Run the backup.
 		#    --warning=no-file-ignored set to suppress "socket ignored" messages.
-		tar cjf ${WHERE}/samba4_${n}.${WHEN}.tar.bz2  $relativedirname --exclude=\*.ldb --warning=no-file-ignored --transform 's/.ldb.bak$/.ldb/'
+		#    --warning=no-file-changed set to suppress "file changed as we read it" messages.
+		tar cjf ${WHERE}/samba4_${n}.${WHEN}.tar.bz2  $relativedirname \
+			--exclude=smbd.tmp \
+			--exclude=\*.ldb \
+			--exclude=\*.tdb \
+			--warning=no-file-ignored \
+			--warning=no-file-changed \
+			--transform 's/.ldb.bak$/.ldb/' \
+			--transform 's/.tdb.bak$/.tdb/' 
 		Status=$?
 		if [ $Status -ne 0 -a $Status -ne 1 ]; then
 			# Ignore 1 - private dir is always changing.
 			echo "Error while archiving ${WHERE}/samba4_${n}.${WHEN}.tar.bz2 - status = $Status"
 			exit 1
 		fi
-		find $relativedirname -name "*.ldb.bak" -exec rm {} \;
+		for db in tdb ldb; do
+			find $relativedirname -name "*.$db.bak" -exec rm {} \;
+		done
 	else
 		# Run the backup.
 		#    --warning=no-file-ignored set to suppress "socket ignored" messages.
-		tar cjf ${WHERE}/${n}.${WHEN}.tar.bz2  $relativedirname --warning=no-file-ignored
+		#    --warning=no-file-changed set to suppress "file changed as we read it" messages.
+		tar cjf ${WHERE}/${n}.${WHEN}.tar.bz2  $relativedirname \
+			--warning=no-file-ignored \
+			--warning=no-file-changed
 		Status=$?
-		if [ $Status -ne 0 ]; then
+		if [ $Status -ne 0 -a $Status -ne 1 ]; then
+			# Ignore 1 - sysvol may change
 			echo "Error while archiving ${WHERE}/${n}.${WHEN}.tar.bz2 - status = $Status"
 			exit 1
 		fi
