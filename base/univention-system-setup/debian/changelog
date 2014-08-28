@@ -1,3 +1,10 @@
+univention-system-setup (8.0.32-1) unstable; urgency=low
+
+  * Bug #35587: fix suggestion of FQDN build from value entered in the
+    organization field
+
+ -- Florian Best <best@univention.de>  Thu, 28 Aug 2014 08:52:07 +0200
+
 univention-system-setup (8.0.31-1) unstable; urgency=low
 
   * Bug #35378: clean /etc/apt/sources.list

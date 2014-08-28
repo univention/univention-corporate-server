@@ -1141,7 +1141,7 @@ define([
 			var organization = _organization || 'mydomain';
 			organization = _replaceUmlauts(organization);
 			organization = organization.toLowerCase();
-			organization = organization.replace(/[\s().]+/g, '-').replace(/-+$/, ''); // remove trailing '-'
+			organization = organization.replace(/[^0-9a-z\-]+/g, '-').replace(/-+$/, '').replace(/^-+/, '').replace(/-+/, '-');
 			var hostname = this._randomHostName();
 			var fqdn = lang.replace('{0}.{1}.intranet', [hostname, organization]);
 			this.getWidget('network', '_fqdn').set('value', fqdn);
