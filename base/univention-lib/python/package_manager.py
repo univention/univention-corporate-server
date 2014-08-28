@@ -180,50 +180,50 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 
 	def fork(self):
 		# start a new pipe
-		self.fd_pipe_read, self.fd_pipe_write = os.pipe()
-
-		# wrap handle for reading end of the pipe... for convenience
-		self.pipe_read = os.fdopen(self.fd_pipe_read)
+		fd_pipe_read, fd_pipe_write = os.pipe()
 
 		# we better have a real file when using low-level routines
 		# basically taken from: https://bugs.launchpad.net/jockey/+bug/280291
 		p = os.fork()
 		if p == 0:
 			# child -> redirect stdout/stderr of dpkg to pipe
-			os.dup2(self.fd_pipe_write, sys.stdout.fileno())
-			os.dup2(self.fd_pipe_write, sys.stderr.fileno())
+			os.dup2(fd_pipe_write, sys.stdout.fileno())
+			os.dup2(fd_pipe_write, sys.stderr.fileno())
 
 			# close unneeded pipe handles
-			os.close(self.fd_pipe_read)
-			os.close(self.fd_pipe_write)
+			os.close(fd_pipe_read)
+			os.close(fd_pipe_write)
 		else:
 			# parent -> close write handle
-			os.close(self.fd_pipe_write)
-			
+			os.close(fd_pipe_write)
+
+			# wrap handle for reading end of the pipe... for convenience
+			pipe_read = os.fdopen(fd_pipe_read)
+
 			# start thread that monitors the pipes output
-			self._check_pipe_thread = threading.Thread(target=self.check_pipe)
+			self._check_pipe_thread = threading.Thread(target=self.check_pipe, args=(pipe_read,))
+			self._check_pipe_thread.daemon = True
 			self._check_pipe_thread.start()
 
 		return p
 
-	def check_pipe(self):
+	def check_pipe(self, pipe_read):
 		while True:
 			try:
 				# read the next line
-				output = self.pipe_read.readline()
+				output = pipe_read.readline()
 				if not output:
 					# pipe has been closed -> we are done
-					break 
+					break
 
 				# we got a new line -> send to info handler
 				self.progress_state.info(output.strip())
-				
 			except (OSError, IOError):
 				# something unexpected happened -> break loop
 				break
 
 		# close the pipe's read end
-		self.pipe_read.close()
+		pipe_read.close()
 
 	# status == pmstatus
 	def status_change(self, pkg, percent, status):
