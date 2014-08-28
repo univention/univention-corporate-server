@@ -1,3 +1,10 @@
+univention-system-setup (7.0.69-54) unstable; urgency=low
+
+  * Do not show Firefox data submission policy popup during 
+    system setup (Bug #35605)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 28 Aug 2014 17:21:10 +0200
+
 univention-system-setup (7.0.69-53) unstable; urgency=low
 
   * Moved setup of apache startsite on EC2 to an earlier stage (Bug #35721) 

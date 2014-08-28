@@ -135,6 +135,11 @@ echo 'user_pref("browser.rights.3.shown", true);' >> "$profilePath"/prefs.js
 # do not ask for performance reporting
 echo 'user_pref("toolkit.telemetry.prompted", 2);' >> "$profilePath"/prefs.js
 echo 'user_pref("toolkit.telemetry.rejected", true);' >> "$profilePath"/prefs.js
+echo 'user_pref("datareporting.policy.dataSubmissionPolicyAccepted", true);' >> "$profilePath"/prefs.js
+echo 'user_pref("datareporting.policy.dataSubmissionPolicyAcceptedVersion", 1);' >> "$profilePath"/prefs.js
+echo 'user_pref("datareporting.policy.dataSubmissionPolicyNotifiedTime", "1365509001307");' >> "$profilePath"/prefs.js
+echo 'user_pref("datareporting.policy.dataSubmissionPolicyResponseTime", "1365517336671");' >> "$profilePath"/prefs.js
+echo 'user_pref("datareporting.policy.dataSubmissionPolicyResponseType", "accepted-info-bar-dismissed");' >> "$profilePath"/prefs.js
 # do not store passwords
 echo 'user_pref("signon.rememberSignons", false);' >> "$profilePath"/prefs.js
 # deactivate firefox autoupdate
