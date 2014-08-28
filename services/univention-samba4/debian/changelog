@@ -1,3 +1,10 @@
+univention-samba4 (4.0.0-5) unstable; urgency=low
+
+  * ignore tar "file changed as we read it" warning in 
+    univention-samba4-backup (Bug #35392)
+
+ -- Felix Botner <botner@univention.de>  Thu, 28 Aug 2014 12:57:45 +0200
+
 univention-samba4 (4.0.0-4) unstable; urgency=medium
 
   * LDB_MODULES_PATH=/usr/lib/ldb is not valid any longer with multi-arch
