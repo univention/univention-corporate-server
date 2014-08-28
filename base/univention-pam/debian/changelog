@@ -1,3 +1,9 @@
+univention-pam (8.0.1-2) unstable; urgency=low
+
+  * fixed default nofile limit (Bug #32415) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 28 Aug 2014 15:12:28 +0200
+
 univention-pam (8.0.1-1) unstable; urgency=low
 
   * Update to UCR templates to new upstream versions (Bug #35138)
