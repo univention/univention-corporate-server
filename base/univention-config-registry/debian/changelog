@@ -1,3 +1,9 @@
+univention-config-registry (9.0.6-10) unstable; urgency=low
+
+  * skip writing cache if process has no write permission (Bug #35368) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 28 Aug 2014 16:09:28 +0200
+
 univention-config-registry (9.0.6-9) unstable; urgency=low
 
   * Set the default for ldap/client/retry/count to 10 (Bug #34293)
