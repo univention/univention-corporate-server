@@ -1,3 +1,9 @@
+univention-system-setup (7.0.69-53) unstable; urgency=low
+
+  * Moved setup of apache startsite on EC2 to an earlier stage (Bug #35721) 
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 28 Aug 2014 17:15:56 +0200
+
 univention-system-setup (7.0.69-52) unstable; urgency=low
 
   * Bug #35587: fix suggestion of FQDN build from value entered in the
