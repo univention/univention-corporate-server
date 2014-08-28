@@ -1,3 +1,9 @@
+univention-join (7.0.0-4) unstable; urgency=low
+
+  * don't overwrite join.log on slaves (Bug #34909) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 28 Aug 2014 15:32:32 +0200
+
 univention-join (7.0.0-3) unstable; urgency=medium
 
   * Call samba-ad-dc init script instead of samba4 (Bug #35319)
