@@ -61,12 +61,6 @@ case "$1" in
 			if ! grep -q "$key" /root/.ssh/authorized_keys; then
 				echo "$key"  >>/root/.ssh/authorized_keys
 			fi
-			
-			# Show welcome page on unjoined EC2 systems:
-			if [ ! -e /var/univention-join/joined ]; then
-				ucr set apache2/startsite="ucs-overview/initialsetup.html"
-				invoke-rc.d apache2 reload
-			fi
 		fi
 
 		if is_ucr_true server/amazon && is_ucr_true system/setup/boot/networking; then

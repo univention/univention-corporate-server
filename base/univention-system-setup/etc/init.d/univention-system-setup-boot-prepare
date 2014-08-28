@@ -50,6 +50,14 @@ case "$1" in
 		# recreate ssl certificates if they are missing
 		[ ! -d /etc/univention/ssl ] && dpkg-reconfigure univention-ssl
 
+		# Show welcome page on unjoined EC2 systems:
+		if is_ucr_true server/amazon; then
+			if [ ! -e /var/univention-join/joined ]; then
+				ucr set apache2/startsite="ucs-overview/initialsetup.html"
+				invoke-rc.d apache2 reload
+			fi
+		fi
+
 		log_action_end_msg 0
 		;;
 	stop)

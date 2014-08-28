@@ -1,3 +1,10 @@
+univention-system-setup (8.0.32-2) unstable; urgency=low
+
+  * Moved setup of apache startsite on EC2 to an earlier stage in the boot
+    process (Bug #35721)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 28 Aug 2014 17:34:25 +0200
+
 univention-system-setup (8.0.32-1) unstable; urgency=low
 
   * Bug #35587: fix suggestion of FQDN build from value entered in the
