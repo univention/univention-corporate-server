@@ -144,10 +144,19 @@ test -x /etc/init.d/nscd && /etc/init.d/nscd restart
 
 # default limits
 univention-config-registry set \
-	security/limits/user/default/user/soft/nofile?'32768' \
-	security/limits/user/default/user/hard/nofile?'32768' \
-	'security/limits/group/Domain Users/hard/nproc?1000'
+	'security/limits/default/user/soft/nofile'?'32768' \
+	'security/limits/default/user/hard/nofile'?'32768' \
+	'security/limits/group/Domain Users/hard/nproc'?'1000'
 
+# Bug #32415, can be removed after 3.2-3
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.4-31; then
+	if [ -n "$security_limits_user_default_user_soft_nofile" ]; then
+		ucr unset security/limits/user/default/user/soft/nofile
+	fi
+	if [ -n "$security_limits_user_default_user_hard_nofile" ]; then
+		ucr unset security/limits/user/default/user/hard/nofile
+	fi
+fi
 
 call_joinscript 11univention-pam.inst
 

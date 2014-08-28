@@ -1,3 +1,9 @@
+univention-pam (7.0.4-31) unstable; urgency=low
+
+  * fixed default nofile limit (Bug #32415) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 28 Aug 2014 14:47:24 +0200
+
 univention-pam (7.0.4-30) unstable; urgency=medium
 
   * Trigger well-known-sid-name-mapping on SID changes (Bug #35501)
