@@ -40,6 +40,7 @@ import random
 import re
 import subprocess
 import cPickle
+import errno
 from pwd import getpwnam
 from grp import getgrnam
 from univention.config_registry.misc import replace_umlaut, directory_files
@@ -731,13 +732,16 @@ class ConfigHandlers:
 
 	def _save_cache(self):
 		"""Write cache file."""
-		cache_file = open(ConfigHandlers.CACHE_FILE, 'w')
-		cache_file.write(ConfigHandlers.VERSION_NOTICE)
-		pickler = cPickle.Pickler(cache_file)
-		pickler.dump(self._handlers)
-		pickler.dump(self._subfiles)
-		pickler.dump(self._multifiles)
-		cache_file.close()
+		try:
+			with open(ConfigHandlers.CACHE_FILE, 'w') as cache_file:
+				cache_file.write(ConfigHandlers.VERSION_NOTICE)
+				pickler = cPickle.Pickler(cache_file)
+				pickler.dump(self._handlers)
+				pickler.dump(self._subfiles)
+				pickler.dump(self._multifiles)
+		except IOError as ex:
+			if ex.errno != errno.EACCES:
+				raise
 
 	def register(self, package, ucr):
 		"""Register new info file for package."""
