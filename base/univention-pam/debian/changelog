@@ -1,3 +1,9 @@
+univention-pam (7.0.4-32) unstable; urgency=low
+
+  * fixed quoting (Bug #32415) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 28 Aug 2014 15:46:49 +0200
+
 univention-pam (7.0.4-31) unstable; urgency=low
 
   * fixed default nofile limit (Bug #32415) 
