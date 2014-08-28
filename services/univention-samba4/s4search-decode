@@ -118,13 +118,6 @@ def decode_supplementalCredentials(value, kvno = 0):
 			for line in traceback.format_exc().split('\n'):
 				print "### %s" % line
 
-def decode_dnsRecord(value):
-	object_data = ndr_unpack(dnsp.DnssrvRpcRecord, binascii.a2b_base64(value))
-	print "# decoded:"
-	for line in ndr_print(object_data).split('\n'):
-		if line:
-			print "# %s" % line
-
 def decode_100nanosectimestamp(value):
 	offset = 116444736000000000L #difference between 1601 and 1970
 	return datetime.fromtimestamp((int(value) - offset)/10000000).isoformat(' ')
@@ -183,8 +176,11 @@ class decode_drsblob():
 
 objecttypes = {
 	'dnsRecord': decode_drsblob(dnsp.DnssrvRpcRecord),
+	'dNSProperty': decode_drsblob(dnsp.DnsProperty),
 	'replPropertyMetaData': decode_drsblob(drsblobs.replPropertyMetaDataBlob),
 	'repsFrom': decode_drsblob(drsblobs.repsFromToBlob),
+	'repsTo': decode_drsblob(drsblobs.repsFromToBlob),
+	'replUpToDateVector': decode_drsblob(drsblobs.replUpToDateVectorBlob),
 	'supplementalCredentials': decode_supplementalCredentials,
 	'unicodePwd': decode_unicodePwd,
 	'krb5Key': decode_krb5Key,

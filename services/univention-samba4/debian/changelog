@@ -1,3 +1,11 @@
+univention-samba4 (4.0.0-6) unstable; urgency=medium
+
+  * Add support for repsTo, replUpToDateVector and dNSProperty to
+    s4search-decode (Bug #35319)
+  * remove unused code from s4search-decode
+
+ -- Arvid Requate <requate@univention.de>  Thu, 28 Aug 2014 15:03:16 +0200
+
 univention-samba4 (4.0.0-5) unstable; urgency=low
 
   * ignore tar "file changed as we read it" warning in 
