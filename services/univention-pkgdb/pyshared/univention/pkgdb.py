@@ -468,7 +468,7 @@ def action_scan(connection, cursor, config_registry):
 	sysrole    = config_registry['server/role']
 	ldaphostdn = config_registry['ldap/hostdn']
 	apt_pkg.init()
-	architecture = apt_pkg.Config.find("APT::Architecture")
+	architecture = apt_pkg.config.find("APT::Architecture")
 	log('Starting scan of system %r' % (sysname, ))
 	try:
 		sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, architecture)
