@@ -27,11 +27,18 @@
 		  configuration changes, which need to be made to integrate the Ubuntu client into the UCS
 		  domain. After successful integration users can authenticate on the Ubuntu clients with
 		  their standard UCS domain password and user name.
-		</para>
+	</para>
 
         <para>
 		  This configuration has been tested with Ubuntu 14.04 LTS as well as Kubuntu 14.04 LTS.
-		</para>
+	</para>
+
+	<caution><para>
+		  In case a command fails or does not return the expected output, 
+		  please make sure that all configuration options and files are entered and
+		  have been written as shown in this document. For example, some text editors do not
+  		  preserve the indentation which is required for some config files.
+	</para></caution>
 
         <section>
             <title>Integration into the LDAP directory and the SSL certificate authority</title>
@@ -48,8 +55,8 @@ sudo bash
 export MASTER_IP=192.168.0.3
 
 mkdir /etc/univention
-ssh root@${MASTER_IP} ucr shell |
-    grep -v ^hostname= >/etc/univention/ucr_master
+ssh root@${MASTER_IP} ucr shell | 
+ grep -v ^hostname= >/etc/univention/ucr_master
 echo "master_ip=${MASTER_IP}" >>/etc/univention/ucr_master
 chmod 660 /etc/univention/ucr_master
 . /etc/univention/ucr_master
@@ -167,31 +174,30 @@ nss_shadow=   shadow:   compat
 nss_netgroup= netgroup: nis
 
 pam_auth=
-	auth [success=3 default=ignore] pam_unix.so nullok_secure \
-		try_first_pass
-	auth requisite pam_succeed_if.so uid >= 500 quiet
-	auth [success=1 default=ignore] pam_sss.so use_first_pass
-	auth requisite pam_deny.so
-	auth required pam_permit.so
+        auth [success=3 default=ignore] pam_unix.so nullok_secure try_first_pass
+        auth requisite pam_succeed_if.so uid >= 500 quiet
+        auth [success=1 default=ignore] pam_sss.so use_first_pass
+        auth requisite pam_deny.so
+        auth required pam_permit.so
 
 pam_account=
-	account required pam_unix.so
-	account sufficient pam_localuser.so
-	account sufficient pam_succeed_if.so uid < 500 quiet
-	account [default=bad success=ok user_unknown=ignore] pam_sss.so
-	account required pam_permit.so
+        account required pam_unix.so
+        account sufficient pam_localuser.so
+        account sufficient pam_succeed_if.so uid < 500 quiet
+        account [default=bad success=ok user_unknown=ignore] pam_sss.so
+        account required pam_permit.so
 
 pam_password=
-	password sufficient pam_unix.so obscure sha512
-	password sufficient pam_sss.so use_authtok
-	password required pam_deny.so
+        password sufficient pam_unix.so obscure sha512
+        password sufficient pam_sss.so use_authtok
+        password required pam_deny.so
 
 pam_session=
-	session required pam_mkhomedir.so skel=/etc/skel/ umask=0077
-	session optional pam_keyinit.so revoke
-	session required pam_limits.so
-	session [success=1 default=ignore] pam_sss.so
-	session required pam_unix.so
+        session required pam_mkhomedir.so skel=/etc/skel/ umask=0077
+        session optional pam_keyinit.so revoke
+        session required pam_limits.so
+        session [success=1 default=ignore] pam_sss.so
+        session required pam_unix.so
 __EOF__
 auth-client-config -n -a -p sss
 
