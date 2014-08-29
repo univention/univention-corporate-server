@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-3
+src: univention-directory-notifier
+fix: 8.0.1-1.78.201408291613
+version: [3]
+desc: |
+ The notifier join script now waits for the first initialization of the
+ listener on a DC master. This avoids a race condition during the
+ DC master installation.
+bug: [35723]
