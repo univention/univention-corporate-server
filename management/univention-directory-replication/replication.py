@@ -436,6 +436,9 @@ BUILTIN_OIDS=[
 	'1.3.6.1.4.1.4203.666.11.1.4.2.1.1',	# olcBdbConfig
 	'1.3.6.1.4.1.4203.666.11.1.4.2.2.1',	# olcLdifConfig
 	'1.3.6.1.4.1.4203.666.11.1.4.2.12.1',	# olcMdbConfig
+	'1.3.6.1.4.1.4203.1.12.2.3.2.12.1',	# olcDbMaxReaders
+	'1.3.6.1.4.1.4203.1.12.2.3.2.12.2',	# olcDbMaxSize
+	'1.3.6.1.4.1.4203.1.12.2.3.2.12.3',	# olcDbEnvFlags
 	# new OIDs in official OpenLDAP 2.4 OID space
 	'1.3.6.1.4.1.4203.1.12.2.4.0.0',	# olcConfig
 	'1.3.6.1.4.1.4203.1.12.2.4.0.1',	# olcGlobal
