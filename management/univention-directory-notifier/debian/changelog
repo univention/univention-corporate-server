@@ -1,3 +1,11 @@
+univention-directory-notifier (9.0.1-1) unstable; urgency=low
+
+  * The notifier join script now waits for the first initialization of
+    the listener on a DC master. This avoids a race condition during the
+    DC master installation (Bug #35723)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Aug 2014 16:10:12 +0200
+
 univention-directory-notifier (9.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35144) 
