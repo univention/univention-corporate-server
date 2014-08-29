@@ -1,3 +1,9 @@
+univention-dhcp (9.0.0-2) unstable; urgency=low
+
+  * fixed init file (Bug #35138) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 29 Aug 2014 10:26:44 +0200
+
 univention-dhcp (9.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35138) 

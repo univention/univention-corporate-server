@@ -55,14 +55,14 @@ case "$1" in
 			. "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart dhcpd dhcpd/autostart
 		fi
-		log_action_msg "Starting univention-dhcp daemon"
+		log_daemon_msg "Starting univention-dhcp" "dhcpd"
 		sv up univention-dhcp
-		log_action_end_msg 0
+		log_end_msg $?
 		;;
 	stop)
-		log_action_msg "Stopping univention-dhcp daemon"
+		log_daemon_msg "Stopping univention-dhcp" "dhcpd"
 		sv down univention-dhcp
-		log_action_end_msg 0
+		log_end_msg $?
 		;;
 	restart|force-reload)
 		# check ucr autostart setting
@@ -70,9 +70,9 @@ case "$1" in
 			. "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart dhcpd dhcpd/autostart
 		fi
-		log_action_msg "Restarting univention-dhcp daemon"
-		sv restart univention-dhcp
-		log_action_end_msg 0
+		log_daemon_msg "Restarting univention-dhcp" "dhcpd"
+		sv restart univention-dhcp 1>/dev/null
+		log_end_msg $?
 		;;
 	crestart)
 		# check ucr autostart setting
