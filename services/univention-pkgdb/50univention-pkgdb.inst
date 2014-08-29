@@ -45,7 +45,7 @@ fi
 # wait for replication of service record (up to 1 minute)
 for i in $(seq 20)
 do
-	if host -t SRV "_pkgdb._tcp.$domainname"
+	if host -t SRV "_pkgdb._tcp.$domainname" >/dev/null
 	then # service record available
 		break
 	fi

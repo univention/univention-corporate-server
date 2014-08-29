@@ -1,3 +1,9 @@
+univention-pkgdb (8.0.0-5) unstable; urgency=low
+
+  * hide "Host _pkgdb._tcp...not found: 3(NXDOMAIN)" warning in join script (Bug #35147)
+
+ -- Felix Botner <botner@univention.de>  Fri, 29 Aug 2014 10:53:55 +0200
+
 univention-pkgdb (8.0.0-4) unstable; urgency=low
 
   * fixed pyshared/univention/pkgdb.py (Bug #35147) 
