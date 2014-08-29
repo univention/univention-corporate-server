@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+"""
+List Amazon EC2 instances.
+"""
 #
 # Copyright 2013-2014 Univention GmbH
 #
@@ -35,10 +38,12 @@ import boto
 from boto.ec2 import regions
 from boto.vpc import VPCConnection
 
+
 def main():
 	# option parser
-	usage = '''%s [options]''' % sys.argv[0]
-	parser = OptionParser(usage=usage)
+	usage = '''%prog [options]'''
+	description = sys.modules[__name__].__doc__
+	parser = OptionParser(usage=usage, description=description)
 	parser.add_option("-a", "--all", action="store_true",
 			dest="all", default=False, help="List all instances")
 	parser.add_option("-r", "--region", action="store",
@@ -74,4 +79,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-

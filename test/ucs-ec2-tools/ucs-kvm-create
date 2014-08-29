@@ -34,6 +34,7 @@ Run ucs-test in local KVM test environment.
 
 from optparse import OptionParser
 import os
+import sys
 import logging
 
 try:
@@ -43,28 +44,32 @@ except ImportError:
 	import univention.ec2.lib as univention_ec2_lib
 	from univention.ec2.lib import _print_done, _print_process
 
+
 def main():
 	"""
 	Create KVM instances for testing.
 	"""
 
 	usage = '''%prog [options] -c config_file '''
-	parser = OptionParser(usage=usage)
+	description = sys.modules[__name__].__doc__
+	parser = OptionParser(usage=usage, description=description)
 	parser.add_option("-c", "--conf", action="store",
 			dest="config_file", help="Config file")
 
-	(options, _args) = parser.parse_args()
+	(options, args) = parser.parse_args()
 
-	if not options.config_file:
-		parser.error('fail: -c config_file is required')
-	if not os.path.exists(options.config_file):
-		parser.error('fail: "%s" does not exist' % options.config_file)
+	try:
+		config_file, = [options.config_file] if options.config_file else args
+	except ValueError:
+		parser.error('-c config_file is required')
+	if not os.path.exists(config_file):
+		parser.error('"%s" does not exist' % config_file)
 
 	# config parser
 	_print_process('Parse options and config files')
 	config = univention_ec2_lib.Parser()
-	config.set_filename(options.config_file)
-	config.read(options.config_file)
+	config.set_filename(config_file)
+	config.read(config_file)
 	_print_done()
 
 	# The paramiko module uses the logging module
@@ -116,6 +121,7 @@ def main():
 		for vm in vms:
 			print 'Running command phase (%d/%d) on VM %s' % (phase + 1, max_command, vm.get_name())
 			vm.run_commands(phase)
+
 
 if __name__ == '__main__':
 	main()

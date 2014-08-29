@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+"""
+Terminate Amazon EC2 instances by AMI.
+"""
 #
 # Copyright 2013-2014 Univention GmbH
 #
@@ -35,12 +38,14 @@ import boto
 from boto.ec2 import regions
 from boto.vpc import VPCConnection
 
+
 def main():
 	# option parser
-	usage = '''%s [options] ''' % sys.argv[0]
-	parser = OptionParser(usage=usage)
+	usage = '''%prog [options] <-a AMI[,AMI...] | AMI [AMI...]>'''
+	description = sys.modules[__name__].__doc__
+	parser = OptionParser(usage=usage, description=description)
 	parser.add_option("-r", "--region", action="store",
-			dest="region", default='eu-west-1', help="EC region")
+			dest="region", default='eu-west-1', help="EC region [%default]")
 	parser.add_option("-a", "--ami", action="store",
 			dest="amis", help="Comma-separated ist of AMIs to terminate")
 	parser.add_option("-f", "--force", action="store_true",
@@ -48,20 +53,22 @@ def main():
 
 	(options, args) = parser.parse_args()
 
-	if not options.amis:
-		print 'At least one AMI is required, use -a X-XXXXXXXX'
-		sys.exit(2)
-		
+	if options.amis:
+		amis = options.amis.split(',')
+	elif args:
+		amis = args
+	else:
+		parser.error('At least one AMI is required, use -a X-XXXXXXXX')
+
 	# config parser
 	aws_cfg = {}
-
 	for region in regions(**aws_cfg):
 		if region.name == options.region:
 			aws_cfg['region'] = region
 			break
 
 	ec2 = boto.connect_ec2(**aws_cfg)
-	reservations = ec2.get_all_instances(instance_ids=options.amis.split(','))
+	reservations = ec2.get_all_instances(instance_ids=amis)
 	instances = [i for r in reservations for i in r.instances]
 	for instance in instances:
 		name = instance.tags.get('Name')
@@ -70,13 +77,16 @@ def main():
 		print 'AMI:    %s' % instance.id
 		print 'Status: %s' % instance.state
 		print 'Key:    %s' % instance.key_name
-		res = raw_input(' : Terminate this instance (Y|n)? ')
-		if options.force or not res or res in ['Y', 'y']:
-			instance.terminate()
-		else:
-			print 'Skipping ...'
+		if instance.state == 'terminated':
+			print "Skippting already terminated instance."
+			continue
+		if not options.force:
+			res = raw_input(' : Terminate this instance (Y|n)? ')
+			if res not in ('Y', 'y'):
+				print 'Skipping ...'
+				continue
+		instance.terminate()
 
 
 if __name__ == '__main__':
 	main()
-
