@@ -1,3 +1,9 @@
+univention-management-console-module-reboot (4.0.0-2) unstable; urgency=low
+
+  * Bug #35145: update copyrights
+
+ -- Florian Best <best@univention.de>  Fri, 29 Aug 2014 11:16:30 +0200
+
 univention-management-console-module-reboot (4.0.0-1) unstable; urgency=low
 
   * Bug #35145: Start UCS 4.0 development
