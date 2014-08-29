@@ -287,6 +287,7 @@ class Request_L_CLOUD_LIST(Request):
 	"""List libcloud cloud connections"""
 	def _default(self):
 		self.command = 'L_CLOUD_LIST'
+		self.pattern = None
 
 class Request_L_CLOUD_INSTANCE_LIST(Request):
 	"""List instances matching 'pattern' of libcloud cloud connections"""
@@ -315,10 +316,10 @@ class Request_L_CLOUD_SIZE_LIST(Request):
 		self.command = 'L_CLOUD_SIZE_LIST'
 		self.conn_name = None
 
-class Request_L_CLOUD_REGION_LIST(Request):
-	"""List available cloud regions of cloud connections"""
+class Request_L_CLOUD_LOCATION_LIST(Request):
+	"""List available cloud locations of cloud connections"""
 	def _default(self):
-		self.command = 'L_CLOUD_REGION_LIST'
+		self.command = 'L_CLOUD_LOCATION_LIST'
 		self.conn_name = None
 
 class Request_L_CLOUD_KEYPAIR_LIST(Request):
@@ -326,6 +327,40 @@ class Request_L_CLOUD_KEYPAIR_LIST(Request):
 	def _default(self):
 		self.command = 'L_CLOUD_KEYPAIR_LIST'
 		self.conn_name = None
+
+class Request_L_CLOUD_SECGROUP_LIST(Request):
+	"""List available cloud security groups of cloud connections"""
+	def _default(self):
+		self.command = 'L_CLOUD_SECGROUP_LIST'
+		self.conn_name = None
+
+class Request_L_CLOUD_NETWORK_LIST(Request):
+	"""List available cloud networks of cloud connections"""
+	def _default(self):
+		self.command = 'L_CLOUD_NETWORK_LIST'
+		self.conn_name = None
+
+class Request_L_CLOUD_INSTANCE_STATE(Request):
+	"""Change instance state"""
+	def _default(self):
+		self.command = 'L_CLOUD_INSTANCE_STATE'
+		self.conn_name = None
+		self.instance_id = None
+		self.state = None
+
+class Request_L_CLOUD_INSTANCE_TERMINATE(Request):
+	"""Terminate a cloud instance"""
+	def _default(self):
+		self.command = 'L_CLOUD_INSTANCE_TERMINATE'
+		self.conn_name = None
+		self.instance_id = None
+
+class Request_L_CLOUD_INSTANCE_CREATE(Request):
+	"""Create a new cloud instance"""
+	def _default(self):
+		self.command = 'L_CLOUD_INSTANCE_CREATE'
+		self.conn_name = None
+		self.args = {}
 
 class Response(Packet):
 	"""Super class of all responses from UVMM daemon."""
@@ -430,6 +465,7 @@ class Cloud_Data_Connection(object):
 		self.name = None
 		self.url = None
 		self.last_update = None
+		self.last_update_try = None
 
 
 class Cloud_Data_Instance(object):
@@ -471,8 +507,8 @@ class Cloud_Data_Image(object):
 		self.uuid = None
 
 
-class Cloud_Data_Region(object):
-	"""Container for libcloud image statistics"""
+class Cloud_Data_Location(object):
+	"""Container for libcloud location statistics"""
 	def __init__(self):
 		self.name = None
 		self.id = None
@@ -481,13 +517,50 @@ class Cloud_Data_Region(object):
 
 
 class Cloud_Data_Keypair(object):
-	"""Container for libcloud image statistics"""
+	"""Container for libcloud keypair statistics"""
 	def __init__(self):
 		self.name = None
 		self.fingerprint = None
 		self.public_key = None
 		self.private_key = None
 		self.driver = None
+		self.extra = {}
+
+
+class Cloud_Data_Secgroup(object):
+	"""Container for libcloud security group statistics"""
+	def __init__(self):
+		self.name = None
+		self.id = None
+		self.driver = None
+		self.description = None
+		self.tenant_id = None
+		self.rules = {}
+		self.extra = {}
+
+
+class Cloud_Data_Secgroup_Rule(object):
+	""" Container for libcloud security group rules statistics"""
+	def __init__(self):
+		self.id = None
+		self.parent_group_id = None
+		self.ip_protocol = None
+		self.from_port = None
+		self.to_port = None
+		self.driver = None
+		self.ip_range = None
+		self.group = None
+		self.tenant_id = None
+		self.extra = {}
+
+
+class Cloud_Data_Network(object):
+	"""Container for libcloud network statistics"""
+	def __init__(self):
+		self.name = None
+		self.id = None
+		self.driver = None
+		self.cidr = None
 		self.extra = {}
 
 

@@ -196,6 +196,8 @@ urlparse.uses_fragment += __all
 class CloudConnection(object):
 	def __init__(self, cloud):
 		self.type = cloud["type"]
+		self.DEFAULT_FREQUENCY = 15 * 1000  # ms
+		self.MAX_UPDATE_INTERVAL = 5 * 60 * 1000  # ms
 
 	def list_instances(self):
 		logger.debug("list instances")

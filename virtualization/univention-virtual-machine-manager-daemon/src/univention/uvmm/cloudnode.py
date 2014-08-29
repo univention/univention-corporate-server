@@ -36,6 +36,9 @@ This module implements functions to handle cloud connections and instances. This
 
 import logging
 import threading
+import fnmatch
+import re
+
 from helpers import TranslatableException, ms, tuple2version, N_ as _, uri_encode
 import univention.admin.uexceptions
 from openstackcloud import OpenStackCloudConnection
@@ -73,11 +76,29 @@ class CloudConnectionMananger(dict):
 		if "type" not in cloud:
 			raise CloudConnectionError("Field 'type' is required for adding a connection")
 
-	def list(self):
-		connections = []
+	def _check_if_connection_exists(self, conn_name):
+		if conn_name not in self:
+			raise CloudConnectionError("No connection named %s available" % conn_name)
+
+	def _get_connections(self, conn_name="*"):
+		connection_list = []
+		if conn_name in ("*", ""):
+			connection_list = self.values()
+		else:
+			self._check_if_connection_exists(conn_name)
+			connection_list = [self[conn_name]]
+		return connection_list
+
+	def list(self, pattern="*"):
+		connection_list = []
+
+		regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
 		for conn in self.values():
-			connections.append(conn.publicdata)
-		return connections
+			if regex.match(conn.publicdata.name) is not None:
+				# publicdata => class Cloud_Data_Connection
+				connection_list.append(conn.publicdata)
+
+		return connection_list
 
 	def set_poll_frequency(self, freq, name=None):
 		if name:
@@ -115,11 +136,7 @@ class CloudConnectionMananger(dict):
 		List instances available through connection identified by conn_name,
 		matching the pattern. If conn_name = "*", list all connections
 		"""
-		connection_list = []
-		if conn_name in ("*", ""):
-			connection_list = self.values()
-		else:
-			connection_list = [x for x in self.values() if conn_name in x.publicdata.name]
+		connection_list = self._get_connections(conn_name)
 
 		instances = {}
 		for connection in connection_list:
@@ -127,12 +144,8 @@ class CloudConnectionMananger(dict):
 
 		return instances
 
-	def list_conn_images(self, conn_name=None, pattern="*"):
-		connection_list = []
-		if conn_name in ("*", ""):
-			connection_list = self.values()
-		else:
-			connection_list = [x for x in self.values() if conn_name in x.publicdata.name]
+	def list_conn_images(self, conn_name="*", pattern="*"):
+		connection_list = self._get_connections(conn_name)
 
 		images = {}
 		for connection in connection_list:
@@ -140,12 +153,8 @@ class CloudConnectionMananger(dict):
 
 		return images
 
-	def list_conn_sizes(self, conn_name=None):
-		connection_list = []
-		if conn_name in ("*", ""):
-			connection_list = self.values()
-		else:
-			connection_list = [x for x in self.values() if conn_name in x.publicdata.name]
+	def list_conn_sizes(self, conn_name="*"):
+		connection_list = self._get_connections(conn_name)
 
 		sizes = {}
 		for connection in connection_list:
@@ -153,31 +162,53 @@ class CloudConnectionMananger(dict):
 
 		return sizes
 
-	def list_conn_regions(self, conn_name=None):
-		connection_list = []
-		if conn_name in ("*", ""):
-			connection_list = self.values()
-		else:
-			connection_list = [x for x in self.values() if conn_name in x.publicdata.name]
+	def list_conn_locations(self, conn_name="*"):
+		connection_list = self._get_connections(conn_name)
 
 		regions = {}
 		for connection in connection_list:
-			regions[connection.publicdata.name] = connection.list_regions()
+			regions[connection.publicdata.name] = connection.list_locations()
 
 		return regions
 
-	def list_conn_keypairs(self, conn_name=None):
-		connection_list = []
-		if conn_name in ("*", ""):
-			connection_list = self.values()
-		else:
-			connection_list = [x for x in self.values() if conn_name in x.publicdata.name]
+	def list_conn_keypairs(self, conn_name="*"):
+		connection_list = self._get_connections(conn_name)
 
 		keypairs = {}
 		for connection in connection_list:
 			keypairs[connection.publicdata.name] = connection.list_keypairs()
 
 		return keypairs
+
+	def list_conn_secgroups(self, conn_name="*"):
+		connection_list = self._get_connections(conn_name)
+
+		secgroups = {}
+		for connection in connection_list:
+			secgroups[connection.publicdata.name] = connection.list_secgroups()
+
+		return secgroups
+
+	def list_conn_networks(self, conn_name="*"):
+		connection_list = self._get_connections(conn_name)
+
+		networks = {}
+		for connection in connection_list:
+			networks[connection.publicdata.name] = connection.list_networks()
+
+		return networks
+
+	def instance_state(self, conn_name, instance_id, state):
+		self._check_if_connection_exists(conn_name)
+		self[conn_name].instance_state(instance_id, state)
+
+	def instance_terminate(self, conn_name, instance_id):
+		self._check_if_connection_exists(conn_name)
+		self[conn_name].instance_terminate(instance_id)
+
+	def instance_create(self, conn_name, args):
+		self._check_if_connection_exists(conn_name)
+		self[conn_name].instance_create(args)
 
 
 def create_cloud_connection(cloud):

@@ -82,9 +82,11 @@ class _Commands:
 	def L_CLOUD_LIST(server, request):
 		""" List connected clouds """
 		logger.debug('L_CLOUD_LIST')
+		if not isinstance(request.pattern, basestring):
+			raise CommandError('L_CLOUD_LIST', _('pattern != string: %(pattern)s'), pattern=request.pattern)
 		try:
 			res = protocol.Response_DUMP()
-			res.data = cloudnode.cloudconnections.list()
+			res.data = cloudnode.cloudconnections.list(request.pattern)
 			return res
 		except cloudnode.CloudConnectionError, e:
 			raise CommandError('L_CLOUD_LIST', e)
@@ -148,17 +150,17 @@ class _Commands:
 			raise CommandError('L_CLOUD_SIZE_LIST', e)
 
 	@staticmethod
-	def L_CLOUD_REGION_LIST(server, request):
-		"""List available cloud regions of cloud connections"""	
-		logger.debug('L_CLOUD_REGION_LIST')
+	def L_CLOUD_LOCATION_LIST(server, request):
+		"""List available cloud locations of cloud connections"""	
+		logger.debug('L_CLOUD_LOCATION_LIST')
 		if not isinstance(request.conn_name, basestring):
-			raise CommandError('L_CLOUD_REGION_LIST', _('conn_name != string: %(conn_name)s'), conn_name=request.conn_name)
+			raise CommandError('L_CLOUD_LOCATION_LIST', _('conn_name != string: %(conn_name)s'), conn_name=request.conn_name)
 		try:
 			res = protocol.Response_DUMP()
-			res.data = cloudnode.cloudconnections.list_conn_regions(request.conn_name)
+			res.data = cloudnode.cloudconnections.list_conn_locations(request.conn_name)
 			return res
 		except cloudnode.CloudConnectionError, e:
-			raise CommandError('L_CLOUD_REGION_LIST', e)
+			raise CommandError('L_CLOUD_LOCATION_LIST', e)
 
 	@staticmethod
 	def L_CLOUD_KEYPAIR_LIST(server, request):
@@ -172,6 +174,73 @@ class _Commands:
 			return res
 		except cloudnode.CloudConnectionError, e:
 			raise CommandError('L_CLOUD_KEYPAIR_LIST', e)
+
+	@staticmethod
+	def L_CLOUD_SECGROUP_LIST(server, request):
+		"""List available cloud security groups of cloud connections"""
+		logger.debug('L_CLOUD_SECGROUP_LIST')
+		if not isinstance(request.conn_name, basestring):
+			raise CommandError('L_CLOUD_SECGROUP_LIST', _('conn_name != string: %(conn_name)s'), conn_name=request.conn_name)
+		try:
+			res = protocol.Response_DUMP()
+			res.data = cloudnode.cloudconnections.list_conn_secgroups(request.conn_name)
+			return res
+		except cloudnode.CloudConnectionError, e:
+			raise CommandError('L_CLOUD_SECGROUPS_LIST', e)
+
+	@staticmethod
+	def L_CLOUD_NETWORK_LIST(server, request):
+		"""List available cloud networks of cloud connections"""
+		logger.debug('L_CLOUD_NETWORK_LIST')
+		if not isinstance(request.conn_name, basestring):
+			raise CommandError('L_CLOUD_NETWORK_LIST', _('conn_name != string: %(conn_name)s'), conn_name=request.conn_name)
+		try:
+			res = protocol.Response_DUMP()
+			res.data = cloudnode.cloudconnections.list_conn_networks(request.conn_name)
+			return res
+		except cloudnode.CloudConnectionError, e:
+			raise CommandError('L_CLOUD_NETWORK_LIST', e)
+
+	@staticmethod
+	def L_CLOUD_INSTANCE_STATE(server, request):
+		"""Change instance state"""
+		logger.debug('L_CLOUD_INSTANCE_STATE')
+		if not isinstance(request.conn_name, basestring):
+			raise CommandError('L_CLOUD_INSTANCE_STATE', _('conn_name != string: %(conn_name)s'), conn_name=request.conn_name)
+		if not isinstance(request.instance_id, basestring):
+			raise CommandError('L_CLOUD_INSTANCE_STATE', _('instance_id != string: %(instance_id)s'), instance_id=request.instance_id)
+		if not request.state in ('RUN', 'PAUSE', 'SHUTDOWN', 'SHUTOFF', 'SOFTRESTART', 'RESTART', 'SUSPEND'):
+			raise CommandError('L_CLOUD_INSTANCE_STATE', _('unsupported state: %(state)s'), state=request.state)
+		try:
+			cloudnode.cloudconnections.instance_state(request.conn_name, request.instance_id, request.state)
+		except cloudnode.CloudConnectionError, e:
+			raise CommandError('L_CLOUD_INSTANCE_STATE', e)
+
+	@staticmethod
+	def L_CLOUD_INSTANCE_TERMINATE(server, request):
+		"""Terminate a cloud instance"""
+		logger.debug('L_CLOUD_INSTANCE_TERMINATE')
+		if not isinstance(request.conn_name, basestring):
+			raise CommandError('L_CLOUD_INSTANCE_TERMINATE', _('conn_name != string: %(conn_name)s'), conn_name=request.conn_name)
+		if not isinstance(request.instance_id, basestring):
+			raise CommandError('L_CLOUD_INSTANCE_TERMINATE', _('instance_id != string: %(instance_id)s'), instance_id=request.instance_id)
+		try:
+			cloudnode.cloudconnections.instance_terminate(request.conn_name, request.instance_id)
+		except cloudnode.CloudConnectionError, e:
+			raise CommandError('L_CLOUD_INSTANCE_TERMINATE', e)
+
+	@staticmethod
+	def L_CLOUD_INSTANCE_CREATE(server, request):
+		"""Create a new cloud instance"""
+		logger.debug('L_CLOUD_INSTANCE_CREATE')
+		if not isinstance(request.conn_name, basestring):
+			raise CommandError('L_CLOUD_INSTANCE_CREATE', _('conn_name != string: %(conn_name)s'), conn_name=request.conn_name)
+		if not isinstance(request.args, dict):
+			raise CommandError('L_CLOUD_INSTANCE_CREATE', _('args != dict: %(args)s'), agrs=request.args)
+		try:
+			cloudnode.cloudconnections.instance_create(request.conn_name, request.args)
+		except cloudnode.CloudConnectionError, e:
+			raise CommandError('L_CLOUD_INSTANCE_CREATE', e)
 
 	@staticmethod
 	def NODE_ADD(server, request):
