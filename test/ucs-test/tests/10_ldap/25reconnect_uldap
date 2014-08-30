@@ -39,7 +39,7 @@ def _start_slapd():
 	return subprocess.Popen(['invoke-rc.d', 'slapd', 'start']).wait()
 
 def _start_delyed(delay):
-	subprocess.Popen('sleep %s; invoke-rc.d slapd start' % delay, shell=True)
+	subprocess.Popen('sleep %s; invoke-rc.d slapd start' % delay, shell=True).wait()
 
 def _wait_for_slapd_to_be_started():
 	# This could be done a litte bit better
