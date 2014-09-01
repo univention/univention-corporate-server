@@ -32,8 +32,8 @@
             </para>
 
             <para>
-                If you configure your own bridges, bonds or VLANs using the UMC or the &ucsUCR;
-                variables described above you need to deactivate these scripts by
+                If you configure your own bridges, bonds or VLANs using the UMC as described
+                in <xref linkend="ucs-network"/> you need to deactivate these scripts by
                 setting the following UCR variables:
             </para>
 
@@ -56,7 +56,11 @@ udm uvmm/profile list --filter interface=eth0 |
        xargs -r -n 1 -d '\n' udm uvmm/profile modify --set interface=br0 --dn
             </programlisting>
         </section>
+    </chapter>
 
-	</chapter>
+    <bibliography>
+        <bibliomixed id="ucs-network"/>
+    </bibliography>
+
     <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
