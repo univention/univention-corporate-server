@@ -315,6 +315,7 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 		else
 			if [ "${server_role}" = "domaincontroller_master" ]; then
 				echo "WARNING: Failed to join via $JOIN_CMD, continuing anyway."
+				configure_localhost_as_winsserver
 			else
 				echo "ERROR: Failed to join via $JOIN_CMD. Please check your Samba DCs and your DNS and WINS configuration."
 				exit 1
