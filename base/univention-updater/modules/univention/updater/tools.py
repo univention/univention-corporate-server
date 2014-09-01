@@ -1604,11 +1604,12 @@ class UniventionUpdater:
 		# USER_AGENT='updater/identify - version/version-version/patchlevel errata version/erratalevel - uuid/system - uuid/license'
 		# USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 4c52d2da-d04d-4b05-a593-1974ee851fc8'
 		# USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 00000000-0000-0000-0000-000000000000'
-		return '%s - %s-%s errata%s - %s - %s' % ( self.configRegistry.get('updater/identify', 'UCS'), 
+		return '%s - %s-%s errata%s - %s - %s - %s' % ( self.configRegistry.get('updater/identify', 'UCS'), 
 								self.configRegistry.get('version/version'), self.configRegistry.get('version/patchlevel'),
 								self.configRegistry.get('version/erratalevel'),
 								self.configRegistry.get('uuid/system', '00000000-0000-0000-0000-000000000000'),
-								self.configRegistry.get('uuid/license', '00000000-0000-0000-0000-000000000000') )
+								self.configRegistry.get('uuid/license', '00000000-0000-0000-0000-000000000000'),
+								','.join(self.configRegistry.get('repository/app_center/installed', '').split('-')) )
 
 	@staticmethod
 	def call_sh_files(scripts, logname, *args):
