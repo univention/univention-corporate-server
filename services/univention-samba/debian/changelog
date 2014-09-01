@@ -1,3 +1,9 @@
+univention-samba (9.0.0-4) unstable; urgency=medium
+
+  * net idmap secret  is now called net idmap set secret (Bug #35765)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 01 Sep 2014 18:23:25 +0200
+
 univention-samba (9.0.0-3) unstable; urgency=medium
 
   * dh_pysupport is not used any longer by default (Bug #35320)

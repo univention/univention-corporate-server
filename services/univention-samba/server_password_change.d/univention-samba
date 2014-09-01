@@ -114,7 +114,7 @@ def run_postchange():
 				## store secret for idmap domain
 				sys.stdout.write("setting idmap secret for '%s' from /etc/machine.secret\n" % idmap_domain)
 				sys.stdout.flush()
-				process = subprocess.Popen(['net', 'idmap', 'secret', idmap_domain, machine_password])
+				process = subprocess.Popen(['net', 'idmap', 'set', 'secret', idmap_domain, machine_password])
 				process.wait()
 		else:
 			## don't touch anything, just issue a warning
