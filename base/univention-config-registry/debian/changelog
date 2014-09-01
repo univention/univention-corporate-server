@@ -1,3 +1,9 @@
+univention-config-registry (9.0.6-11) unstable; urgency=low
+
+  * fixed iter_templates in univention-check-templates (Bug #35202) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 01 Sep 2014 15:58:40 +0200
+
 univention-config-registry (9.0.6-10) unstable; urgency=low
 
   * skip writing cache if process has no write permission (Bug #35368) 
