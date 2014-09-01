@@ -777,7 +777,7 @@ define([
 				} else if (field == 'nameservers') {
 					disable.push(['network', 'nameserver1']);
 					disable.push(['network', 'nameserver2']);
-					if (this.getWidget('role', '_createDomain').get('value')) {
+					if (this.getWidget('role', '_createDomain').get('value') || this.getWidget('role-nonmaster', '_roleMember').get('value')) {
 						disable.push(['network', 'dns/forwarder1']);
 						disable.push(['network', 'dns/forwarder2']);
 					} else {
@@ -798,7 +798,7 @@ define([
 					disable.push(['locale', 'timezone']);
 				} else if (field == 'reboot') {
 					helpTexts.done = {
-						help: _('<p>UCS has been successfully set up with the specified settings.</p>') + _('<p>After clicking on the button <i>Finish</i> to complete the setup process the system will be rebooted.</p>')
+						help: _('<p>UCS has been successfully set up with the specified settings.</p>') + _('<p>After clicking on the button <i>Finish</i> the system will be prepared for the first boot procedure and will be rebooted.</p>')
 					};
 				}
 			}));
@@ -1438,7 +1438,7 @@ define([
 				_append(_('UCS domain name server'), nameservers);
 			}
 
-			if (!isFieldShown('nameservers') || vals['server/role'] == 'domaincontroller_master') {
+			if (!isFieldShown('nameservers') || (vals['server/role'] != 'domaincontroller_master' || vals['server/role'] != 'memberserver')) {
 				var forwarders = array.filter([vals['dns/forwarder1'], vals['dns/forwarder2']], function(iforwarder) {
 					return iforwarder;
 				}).join(', ');

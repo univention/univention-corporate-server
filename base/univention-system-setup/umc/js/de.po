@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-08-27 15:07+0200\n"
+"POT-Creation-Date: 2014-09-01 17:08+0200\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,11 +72,10 @@ msgstr ""
 
 #: umc/js/setup/ApplianceWizard.js:801
 msgid ""
-"<p>After clicking on the button <i>Finish</i> to complete the setup process "
-"the system will be rebooted.</p>"
+"<p>After clicking on the button <i>Finish</i> the system will be prepared "
+"for the first boot procedure and will be rebooted.</p>"
 msgstr ""
-"<p>Nach dem Klicken auf die Schaltfläche <i>Fertigstellen</i>, um die "
-"Einrichtung abzuschließen wird das System neugestartet.</p>"
+"<p>Nach dem Klicken auf die Schaltfläche <i>Fertigstellen</i> wird das System auf den ersten Bootvorgang vorbereitet und neu gestartet.</p>"
 
 #: umc/js/setup/ApplianceWizard.js:724
 msgid "<p>Click on the button <i>Finish</i> to complete the setup process.</p>"
