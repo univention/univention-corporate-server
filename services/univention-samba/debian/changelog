@@ -1,4 +1,11 @@
-univention-samba (9.0.0-1) UNRELEASED; urgency=medium
+univention-samba (9.0.0-2) unstable; urgency=medium
+
+  * Remove conflict against samba-dsdb-modules (Bug #35320)
+    (This has been introduced for UCS@school Bug 27370).
+
+ -- Arvid Requate <requate@univention.de>  Mon, 01 Sep 2014 16:47:23 +0200
+
+univention-samba (9.0.0-1) unstable; urgency=medium
 
   * version bump for UCS 4.0 (Bug #35319)
   * Adjust for python2.7
