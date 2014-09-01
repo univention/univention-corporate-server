@@ -1,0 +1,10 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-3
+src: univention-updater
+fix: 9.0.42-3.1270.201409010740
+version: [2,3]
+desc: |
+ The HTTP HEAD query of the updater now also transfers the component
+ installation status.
+bug: [35645]
