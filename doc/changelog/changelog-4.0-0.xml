@@ -419,15 +419,20 @@
 	  </simpara></listitem>
 	</itemizedlist>
 
-  <section id="changelog:win:nt"> -->
-  	<title>Samba NT domain support</title> -->
-  	  <itemizedlist> -->
-  		<listitem><simpara> -->
+  <section id="changelog:win:nt">
+  	<title>Samba NT domain support</title>
+  	  <itemizedlist>
+  		<listitem><simpara>
 			<command>net idmap secret</command> has been renamed to <command>net idmap set secret</command>
 		(<ulink url="&ucsbug;35765">Bug 35765</ulink>).
-  		</simpara></listitem> -->
-  	  </itemizedlist> -->
-  </section> -->
+  		</simpara></listitem>
+  		<listitem><simpara>
+			The univention-samba joinscript has been adjusted to allow a self join to fail on a DC master.
+			Samba currently does not support this
+		(<ulink url="&ucsbug;35766">Bug 35766</ulink>).
+  		</simpara></listitem>
+  	  </itemizedlist>
+  </section>
 
   <section id="changelog:win:ad">
 	<title>Samba AD domain support</title>
