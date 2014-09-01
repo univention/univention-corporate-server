@@ -128,7 +128,6 @@ try:
 					continue
 				for conffile in conffiles.splitlines():
 					fields = [_.strip() for _ in conffile.rsplit(' ', 1) if _]
-					print fields
 					# skip obsolete and new conffiles
 					if not fields or 'newconffile' in fields or 'obsolete' in fields:
 						continue
