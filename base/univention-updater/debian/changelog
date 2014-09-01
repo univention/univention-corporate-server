@@ -1,3 +1,9 @@
+univention-updater (9.0.42-4) unstable; urgency=low
+
+  * Build only Python 2.6 modules (Bug #34781)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 01 Sep 2014 07:49:02 +0200
+
 univention-updater (9.0.42-3) unstable; urgency=medium
 
   * The HTTP HEAD query of the updater now also transfers the component
