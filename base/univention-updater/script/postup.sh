@@ -101,11 +101,7 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 	/usr/sbin/univention-check-templates >>"$UPDATER_LOG" 2>&1
 	rc=$?
 	if [ "$rc" != 0 ]; then
-		if [ "$rc" = 1 ]; then
-			echo "Warning: $rc UCR template was not updated. Please check $UPDATER_LOG or execute univention-check-templates as root."
-		else
-			echo "Warning: $rc UCR templates were not updated. Please check $UPDATER_LOG or execute univention-check-templates as root."
-		fi
+		echo "Warning: UCR templates were not updated. Please check $UPDATER_LOG or execute univention-check-templates as root."
 	fi
 fi
 

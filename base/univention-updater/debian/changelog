@@ -1,3 +1,10 @@
+univention-updater (9.0.42-5) unstable; urgency=low
+
+  * Adjust postup.sh to new univention-check-templates return codes
+    (Bug #34972)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 01 Sep 2014 08:17:59 +0200
+
 univention-updater (9.0.42-4) unstable; urgency=low
 
   * Build only Python 2.6 modules (Bug #34781)
