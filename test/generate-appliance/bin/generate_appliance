@@ -1,0 +1,989 @@
+#!/usr/bin/python
+# coding: utf-8
+#
+# generate_appliance
+#  create virtual appliances for various virtualization systems from a single disk image
+#
+# Copyright 2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+from __future__ import unicode_literals
+from cStringIO import StringIO
+import VMDKstream
+import hashlib
+import lxml.builder
+import lxml.etree
+import optparse
+import os
+import shutil
+import stat
+import subprocess
+import sys
+import tarfile
+import tempfile
+import uuid
+import zipfile
+
+
+class File(object):
+	'''base class for delayed file/image actions'''
+	def __init__(self):
+		self._available = False
+
+	@staticmethod
+	def lazy(fun):
+		def newfun(self, *args, **kwargs):
+			if not self._available:
+				self._create()
+				self._available = True
+			return fun(self, *args, **kwargs)
+		return newfun
+
+	@staticmethod
+	def hashed(fun):
+		def newfun(self, *args, **kwargs):
+			ret = fun(self, *args, **kwargs)
+			return hashlib.sha256(repr(ret)).hexdigest()
+		return newfun
+
+	@property
+	def hash(self):
+		raise NotImplementedError()
+
+	def _create(self):
+		raise NotImplementedError()
+
+
+class Raw(File):
+	'''represents a "RAW" disk image'''
+	def __init__(self, inputfile):
+		self._inputfile = inputfile
+		File.__init__(self)
+
+	@property
+	@File.hashed
+	def hash(self):
+		return (Raw, self._inputfile, )
+
+	@File.lazy
+	def path(self):
+		return self._path
+
+	@File.lazy
+	def size(self):
+		return os.stat(self._path).st_size
+
+	def _create(self):
+		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+		store = os.path.join(STOREDIR, self.hash)
+		target = os.path.join(store, 'image.raw')
+		if not os.path.exists(store):
+			os.mkdir(store)
+			cmd = ('qemu-img','convert','-O','raw','/dev/stdin','image.raw', )
+			subprocess.check_call(cmd, cwd=TEMPDIR, stdin=self._inputfile)
+			output = os.path.join(TEMPDIR, 'image.raw')
+			os.rename(output, target)
+		self._path = target
+		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+
+
+class Vmdk(File):
+	def __init__(self, raw, streamOptimized=False):
+		assert isinstance(raw, (Raw, ))
+		self._raw = raw
+		self._streamOptimized = streamOptimized
+		File.__init__(self)
+
+	@property
+	@File.hashed
+	def hash(self):
+		return (Vmdk, self._raw.hash, self._streamOptimized, )
+
+	@File.lazy
+	def path(self):
+		return self._path
+
+	def _create(self):
+		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+		store = os.path.join(STOREDIR, self.hash)
+		target = os.path.join(store, 'image.vmdk')
+		if not os.path.exists(store):
+			os.mkdir(store)
+			output = os.path.join(TEMPDIR, 'image.vmdk')
+			if self._streamOptimized:
+				# qemu-img 1.1 is broken
+				#cmd = ('qemu-img','convert','-f','raw','-O','vmdk','-o','subformat=streamOptimized', self._raw.path(), 'image.vmdk', )
+				#subprocess.check_call(cmd, cwd=TEMPDIR)
+				# use VMDKstream instead
+				VMDKstream.convert_to_stream(self._raw.path(), output)
+			else:
+				cmd = ('qemu-img','convert','-f','raw','-O','vmdk','-o','subformat=monolithicSparse', self._raw.path(), 'image.vmdk', )
+				subprocess.check_call(cmd, cwd=TEMPDIR)
+			os.rename(output, target)
+		self._path = target
+		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+
+
+class Tar(File):
+	def __init__(self, file_list, format=tarfile.USTAR_FORMAT):
+		for _, source_file in file_list:
+			assert isinstance(source_file, (File, )) or isinstance(source_file, str)
+		self._file_list = file_list
+		self._format = format
+		File.__init__(self)
+
+	@property
+	@File.hashed
+	def hash(self):
+		def hash(thing):
+			if isinstance(thing, str):
+				return hashlib.sha256(thing).hexdigest()
+			return thing.hash
+		return (Tar, [(name, hash(source_file)) for name, source_file in self._file_list], )
+
+	@File.lazy
+	def path(self):
+		return self._path
+
+	def _create(self):
+		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+		store = os.path.join(STOREDIR, self.hash)
+		target = os.path.join(store, 'archive.tar')
+		if not os.path.exists(store):
+			os.mkdir(store)
+			archive = tarfile.TarFile(name=target, mode='w', format=self._format)
+			for name, source_file in self._file_list:
+				if isinstance(source_file, str):
+					handle = StringIO(source_file)
+				else:
+					handle = open(source_file.path(), 'rb')
+				info = tarfile.TarInfo(name)
+				info.uname = info.gname = 'someone'
+				info.mode = stat.S_IRUSR | stat.S_IWUSR
+				handle.seek(0, os.SEEK_END)
+				info.size = handle.tell()
+				handle.seek(0, os.SEEK_SET)
+				archive.addfile(info, handle)
+			archive.close()
+		self._path = target
+		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+
+
+class Pkzip(File):
+	def __init__(self, file_list):
+		for _, source_file in file_list:
+			assert isinstance(source_file, (File, )) or isinstance(source_file, str)
+		self._file_list = file_list
+		File.__init__(self)
+
+	@property
+	@File.hashed
+	def hash(self):
+		def hash(thing):
+			if isinstance(thing, str):
+				return hashlib.sha256(thing).hexdigest()
+			return thing.hash
+		return (Tar, [(name, hash(source_file)) for name, source_file in self._file_list], )
+
+	@File.lazy
+	def path(self):
+		return self._path
+
+	def _create(self):
+		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+		store = os.path.join(STOREDIR, self.hash)
+		target = os.path.join(store, 'archive.zip')
+		if not os.path.exists(store):
+			os.mkdir(store)
+			archive = zipfile.ZipFile(file=target, mode='w', compression=zipfile.ZIP_DEFLATED, allowZip64=True)
+			for name, source_file in self._file_list:
+				if isinstance(source_file, str):
+					archive.writestr(name, source_file)
+				else:
+					archive.write(source_file.path(), name)
+			archive.close()
+		self._path = target
+		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+
+
+class Target(object):
+	'''represents the process for creating a complete image for a platform'''
+	def create(self, image):
+		raise NotImplementedError()
+
+	def __str__(self):
+		'''descriptive display name'''
+		raise NotImplementedError()
+
+	def __repr__(self):
+		'''input/typing friendly identifier'''
+		raise NotImplementedError()
+
+	@property
+	def is_default(self):
+		return True
+
+
+def encode_vmware_uuid(uuid):
+	encoded = ' '.join([b.encode('hex') for b in uuid.bytes])
+	encoded = encoded[:23] + '-' + encoded[24:]
+	return encoded
+
+def create_vmxf(machine_uuid, image_name):
+	E = lxml.builder.ElementMaker()
+	foundry = E.Foundry(
+		E.VM(
+			E.VMId(
+				encode_vmware_uuid(machine_uuid),
+				type='string',
+			),
+			E.ClientMetaData(
+				E.clientMetaDataAttributes(),
+				E.HistoryEventList(),
+			),
+			E.vmxPathName(
+				'%s.vmx' % (image_name, ),
+				type='string',
+			),
+		),
+	)
+	return lxml.etree.tostring(foundry, encoding='UTF-8', xml_declaration=True, pretty_print=True)
+
+def encode_vmx_file(vmx):
+	output = '.encoding = "UTF-8"\n'
+	for key, value, in sorted(vmx.items()):
+		output += '%s = "%s"\n' % (key, value, )
+	return output.encode('UTF-8')
+
+def create_vmx(machine_name, image_name, image_uuid):
+	vmx = {
+		'config.version': "8",
+		'virtualHW.version': "9",
+		'vcpu.hotadd': "TRUE",
+		'scsi0.present': "TRUE",
+		'scsi0.virtualDev': "lsilogic",
+		'memsize': "1024",
+		'mem.hotadd': "TRUE",
+		'scsi0:0.present': "TRUE",
+		'scsi0:0.fileName': "%s.vmdk" % (image_name, ),
+		'ide1:0.present': "TRUE",
+		'ide1:0.fileName': "auto detect",
+		'ide1:0.deviceType': "cdrom-raw",
+		'floppy0.startConnected': "FALSE",
+		'floppy0.fileName': "",
+		'floppy0.autodetect': "TRUE",
+		'ethernet0.present': "TRUE",
+		'ethernet0.wakeOnPcktRcv': "FALSE",
+		'ethernet0.addressType': "generated",
+		'usb.present': "TRUE",
+		'ehci.present': "TRUE",
+		'ehci.pciSlotNumber': "34",
+		'pciBridge0.present': "TRUE",
+		'pciBridge4.present': "TRUE",
+		'pciBridge4.virtualDev': "pcieRootPort",
+		'pciBridge4.functions': "8",
+		'pciBridge5.present': "TRUE",
+		'pciBridge5.virtualDev': "pcieRootPort",
+		'pciBridge5.functions': "8",
+		'pciBridge6.present': "TRUE",
+		'pciBridge6.virtualDev': "pcieRootPort",
+		'pciBridge6.functions': "8",
+		'pciBridge7.present': "TRUE",
+		'pciBridge7.virtualDev': "pcieRootPort",
+		'pciBridge7.functions': "8",
+		'vmci0.present': "TRUE",
+		'hpet0.present': "TRUE",
+		'usb.vbluetooth.startConnected': "TRUE",
+		'displayName': machine_name,
+		'guestOS': "other26xlinux",
+		'nvram': "%s.nvram" % (image_name, ),
+		'virtualHW.productCompatibility': "hosted",
+		'gui.exitOnCLIHLT': "FALSE",
+		'powerType.powerOff': "hard",
+		'powerType.powerOn': "hard",
+		'powerType.suspend': "hard",
+		'powerType.reset': "hard",
+		'extendedConfigFile': "%s.vmxf" % (image_name, ),
+		'scsi0.pciSlotNumber': "16",
+		'ethernet0.generatedAddress': "00:0C:29:DD:56:97",
+		'ethernet0.pciSlotNumber': "33",
+		'usb.pciSlotNumber': "32",
+		'vmci0.id': "417158807",
+		'vmci0.pciSlotNumber': "35",
+		'uuid.location': encode_vmware_uuid(image_uuid),
+		'uuid.bios': encode_vmware_uuid(image_uuid),
+		'cleanShutdown': "TRUE",
+		'replay.supported': "FALSE",
+		'replay.filename': "",
+		'scsi0:0.redo': "",
+		'pciBridge0.pciSlotNumber': "17",
+		'pciBridge4.pciSlotNumber': "21",
+		'pciBridge5.pciSlotNumber': "22",
+		'pciBridge6.pciSlotNumber': "23",
+		'pciBridge7.pciSlotNumber': "24",
+		'usb:1.present': "TRUE",
+		'ethernet0.generatedAddressOffset': "0",
+		'softPowerOff': "TRUE",
+		'usb:1.speed': "2",
+		'usb:1.deviceType': "hub",
+		'usb:1.port': "1",
+		'usb:1.parent': "-1",
+		'ide1:0.autodetect': "TRUE",
+		'usb:0.present': "TRUE",
+		'usb:0.deviceType': "hid",
+		'usb:0.port': "0",
+		'usb:0.parent': "-1",
+	}
+	return encode_vmx_file(vmx)
+
+class VMware(Target):
+	def __str__(self):
+		return 'Zipped VMware®-compatible (VMDK based)'
+
+	def __repr__(self):
+		return 'vmware'
+
+	def create(self, image, options):
+		machine_name = 'UCS %s' % (options.version, )
+		machine_uuid = uuid.uuid4()
+		image_uuid = uuid.uuid4()
+		image_name = 'UCS %s' % (
+			options.version,
+		)
+		archive_name = 'ucs-%s-vmware.zip' % (
+			options.version,
+		)
+		if os.path.exists(archive_name):
+			raise IOError('Output file %r exists' % (archive_name, ))
+		files = [
+			('UCS %s/' % (options.version, ),
+			 str(), ),
+			('UCS %s/UCS %s.vmdk' % (options.version, options.version, ),
+			 Vmdk(image), ),
+			('UCS %s/UCS %s.vmxf' % (options.version, options.version, ),
+			 create_vmxf(machine_uuid, image_name), ),
+			('UCS %s/UCS %s.vmx' % (options.version, options.version, ),
+			 create_vmx(machine_name, image_name, image_uuid), ),
+			('UCS %s/UCS %s.vmsd' % (options.version, options.version, ),
+			 str(), ),
+		]
+		zip = Pkzip(files)
+		shutil.copyfile(zip.path(), archive_name)
+VMware = VMware()
+
+
+LICENSE = '''The complete source code of Univention Corporate Server is provided
+under GNU Affero General Public License (AGPL). The software is tried-
+and-tested and regularly updated. For private users, UCS is free of charge with\x20
+infinite use for up to 5 users and support is provided via the Univention forum.
+\x20
+Commercial users can obtain UCS at reasonable prices and have guaranteed, individually adjustable support.
+\x20
+http://www.univention.de/en/univention/oss/
+http://www.univention.de/en/download-and-support/free-for-personal-use-edition/licensing-conditions/'''
+
+ANNOTATION = '''Univention Corporate Server (UCS) is a complete solution to provide standard
+IT services (like domain management or file services for Microsoft Windows
+clients) in the cloud and to integrate them with additional systems like
+groupware, CRM or ECM.
+\x20
+Univention Corporate Server (UCS) is a reliable, pre-configured Linux server
+operating system featuring:
+\x20
+* Active Directory like domain services compatible with Microsoft Active
+Directory
+\x20
+* A mature and easy-to-use web-based management system for user, rights and
+infrastructure management
+\x20
+* A scalable underlying concept suited for single server scenarios as well as
+to run and manage thousands of clients and servers for thousands of users
+within one single UCS domain
+\x20
+* An app center, providing single-click installation and integration of many
+business applications from 3rd parties and Univention
+\x20
+* Management capabilities to manage Linux- and UNIX-based clients
+\x20
+* Command line, scripting interfaces and APIs for automatization and extension
+\x20
+Thus, Univention Corporate Server is the best fit to provide Microsoft Server
+like services in the cloud or on-premises, to run and operate corporate IT
+environments with Windows- and Linux-based clients and to extend those
+environments with proven enterprise software, also either in the cloud or
+on-premises.'''
+
+def create_ovf_descriptor(machine_name, machine_version, machine_uuid, image_name, image_size, image_uuid):
+	OVF_NAMESPACE = 'http://schemas.dmtf.org/ovf/envelope/1'
+	OVF = '{%s}' % (OVF_NAMESPACE, )
+	RASD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData'
+	RASD = '{%s}' % (RASD_NAMESPACE, )
+	VBOX_NAMESPACE = 'http://www.virtualbox.org/ovf/machine'
+	VBOX = '{%s}' % (VBOX_NAMESPACE, )
+	VSSD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData'
+	VSSD = '{%s}' % (VSSD_NAMESPACE, )
+	XML_NAMESPACE = 'http://www.w3.org/XML/1998/namespace'
+	XML = '{%s}' % (XML_NAMESPACE, )
+	XSI_NAMESPACE = 'http://www.w3.org/2001/XMLSchema-instance'
+	XSI = '{%s}' % (XSI_NAMESPACE, )
+
+	E = lxml.builder.ElementMaker(nsmap={
+		None: OVF_NAMESPACE,
+		'ovf': OVF_NAMESPACE,
+		'rasd': RASD_NAMESPACE,
+		'vbox': VBOX_NAMESPACE,
+		'vssd': VSSD_NAMESPACE,
+		'xsi': XSI_NAMESPACE,
+	})
+
+	Eovf = lxml.builder.ElementMaker(namespace=OVF_NAMESPACE)
+	Erasd = lxml.builder.ElementMaker(namespace=RASD_NAMESPACE)
+	Evbox = lxml.builder.ElementMaker(namespace=VBOX_NAMESPACE)
+	Evssd = lxml.builder.ElementMaker(namespace=VSSD_NAMESPACE)
+
+	envelope = E.Envelope(
+		E.References(
+			E.File(**{
+				OVF + 'href': image_name,
+				OVF + 'id': 'file1',
+				}
+			),
+		),
+		E.DiskSection(
+			E.Info('List of the virtual disks used in the package'),
+			E.Disk(**{
+				OVF + 'capacity': '%d' % (image_size, ),
+				OVF + 'diskId': 'vmdisk1',
+				OVF + 'fileRef': 'file1',
+				OVF + 'format': 'http://www.vmware.com/interfaces/specifications/vmdk.html#streamOptimized',
+				VBOX + 'uuid': str(image_uuid),
+			}),
+		),
+		E.NetworkSection(
+			E.Info('Logical networks used in the package'),
+			E.Network(
+				E.Description('Logical network used by this appliance.'),
+				**{
+					OVF + 'name': 'Bridged',
+				}
+			),
+		),
+		E.VirtualSystem(
+			E.Info('A virtual machine'),
+			E.ProductSection(
+				E.Info('Meta-information about the installed software'),
+				E.Product('Univention Corporate Server (UCS)'),
+				E.Vendor('Univention GmbH'),
+				E.Version(machine_version),
+				E.ProductUrl('http://www.univention.de/en/products/ucs/'),
+				E.VendorUrl('http://www.univention.de/en/'),
+			),
+			E.AnnotationSection(
+				E.Info('A human-readable annotation'),
+				E.Annotation(ANNOTATION),
+			),
+			E.EulaSection(
+				E.Info('License agreement for the virtual system'),
+				E.License(LICENSE),
+			),
+			E.OperatingSystemSection(
+				E.Info('The kind of installed guest operating system'),
+				E.Description('Linux'),
+				Evbox.OSType(
+					'Linux',
+					**{
+						OVF + 'required': 'false',
+					}
+				),
+				**{
+					OVF + 'id': '36',
+				}
+			),
+			E.VirtualHardwareSection(
+				E.Info('Virtual hardware requirements for a virtual machine'),
+				E.System(
+					Evssd.ElementName('Virtual Hardware Family'),
+					Evssd.InstanceID('0'),
+					Evssd.VirtualSystemIdentifier(machine_name),
+					Evssd.VirtualSystemType('virtualbox-2.2'),
+				),
+				E.Item(
+					Erasd.Caption('1 virtual CPU'),
+					Erasd.Description('Number of virtual CPUs'),
+					Erasd.ElementName('1 virtual CPU'),
+					Erasd.InstanceID('1'),
+					Erasd.ResourceType('3'),
+					Erasd.VirtualQuantity('1'),
+				),
+				E.Item(
+					Erasd.AllocationUnits('MegaBytes'),
+					Erasd.Caption('1024 MB of memory'),
+					Erasd.Description('Memory Size'),
+					Erasd.ElementName('1024 MB of memory'),
+					Erasd.InstanceID('2'),
+					Erasd.ResourceType('4'),
+					Erasd.VirtualQuantity('1024'),
+				),
+				E.Item(
+					Erasd.Address('0'),
+					Erasd.Caption('ideController0'),
+					Erasd.Description('IDE Controller'),
+					Erasd.ElementName('ideController0'),
+					Erasd.InstanceID('3'),
+					Erasd.ResourceSubType('PIIX4'),
+					Erasd.ResourceType('5'),
+				),
+				E.Item(
+					Erasd.Address('1'),
+					Erasd.Caption('ideController1'),
+					Erasd.Description('IDE Controller'),
+					Erasd.ElementName('ideController1'),
+					Erasd.InstanceID('4'),
+					Erasd.ResourceSubType('PIIX4'),
+					Erasd.ResourceType('5'),
+				),
+				E.Item(
+					Erasd.AutomaticAllocation('true'),
+					Erasd.Caption("Ethernet adapter on 'Bridged'"),
+					Erasd.Connection('Bridged'),
+					Erasd.ElementName("Ethernet adapter on 'Bridged'"),
+					Erasd.InstanceID('5'),
+					Erasd.ResourceSubType('PCNet32'),
+					Erasd.ResourceType('10'),
+				),
+				E.Item(
+					Erasd.AddressOnParent('3'),
+					Erasd.AutomaticAllocation('false'),
+					Erasd.Caption('sound'),
+					Erasd.Description('Sound Card'),
+					Erasd.ElementName('sound'),
+					Erasd.InstanceID('6'),
+					Erasd.ResourceSubType('ensoniq1371'),
+					Erasd.ResourceType('35'),
+				),
+				E.Item(
+					Erasd.AddressOnParent('0'),
+					Erasd.Caption('disk1'),
+					Erasd.Description('Disk Image'),
+					Erasd.ElementName('disk1'),
+					Erasd.HostResource('/disk/vmdisk1'),
+					Erasd.InstanceID('7'),
+					Erasd.Parent('3'),
+					Erasd.ResourceType('17'),
+				),
+				E.Item(
+					Erasd.AddressOnParent('0'),
+					Erasd.AutomaticAllocation('true'),
+					Erasd.Caption('cdrom1'),
+					Erasd.Description('CD-ROM Drive'),
+					Erasd.ElementName('cdrom1'),
+					Erasd.InstanceID('8'),
+					Erasd.Parent('4'),
+					Erasd.ResourceType('15'),
+				),
+			),
+			Evbox.Machine(
+				Eovf.Info('Complete VirtualBox machine configuration in VirtualBox format'),
+				E.Description(ANNOTATION),
+				E.ExtraData(
+					E.ExtraDataItem(name='GUI/LastCloseAction', value='powerOff'),
+					E.ExtraDataItem(name='GUI/LastGuestSizeHint', value='1024,768'),
+					E.ExtraDataItem(name='GUI/LastNormalWindowPosition', value='894,77,1024,810'),
+				),
+				E.Hardware(
+					E.CPU(
+						E.HardwareVirtEx(enabled='true', exclusive='true'),
+						E.HardwareVirtExNestedPaging(enabled='true'),
+						E.HardwareVirtExVPID(enabled='true'),
+						E.PAE(enabled='true'),
+						E.HardwareVirtExLargePages(enabled='false'),
+						E.HardwareVirtForce(enabled='false'),
+						count='1', hotplug='false',
+					),
+					E.Memory(RAMSize='1024', PageFusion='false'),
+					E.HID(Pointing='PS2Mouse', Keyboard='PS2Keyboard'),
+					E.HPET(enabled='false'),
+					E.Chipset(type='PIIX3'),
+					E.Boot(
+						E.Order(position='1', device='DVD'),
+						E.Order(position='2', device='HardDisk'),
+						E.Order(position='3', device='None'),
+						E.Order(position='4', device='None'),
+					),
+					E.Display(
+						VRAMSize='12', monitorCount='1',
+						accelerate3D='false', accelerate2DVideo='false',
+					),
+					E.RemoteDisplay(enabled='false', authType='Null', authTimeout='5000'),
+					E.BIOS(
+						E.ACPI(enabled='true'),
+						E.IOAPIC(enabled='false'),
+						E.Logo(fadeIn='true', fadeOut='true', displayTime='0'),
+						E.BootMenu(mode='MessageAndMenu'),
+						E.TimeOffset(value='0'),
+						E.PXEDebug(enabled='false'),
+					),
+					E.USBController(enabled='false', enabledEhci='true'), # TODO: enabledEhci=false?
+					E.Network(
+						E.Adapter(
+							E.DisabledModes(
+								E.NAT(
+									E.DNS(**{
+										'pass-domain': 'true',
+										'use-proxy': 'false',
+										'use-host-resolver': 'false',
+									}),
+									E.Alias(**{
+										'logging': 'false',
+										'proxy-only': 'false',
+										'use-same-ports': 'false',
+									}),
+								),
+							),
+							E.BridgedInterface(name='eth0'),
+							slot='0', enabled='true', MACAddress='08002743CF18',
+							cable='true', speed='0', type='Am79C973',
+						),
+						E.Adapter(
+							E.DisabledModes(
+								E.NAT(
+									E.DNS(**{
+										'pass-domain': 'true',
+										'use-proxy': 'false',
+										'use-host-resolver': 'false',
+									}),
+									E.Alias(**{
+										'logging': 'false',
+										'proxy-only': 'false',
+										'use-same-ports': 'false',
+									}),
+								),
+							),
+							slot='1', enabled='false', MACAddress='080027AD0012',
+							cable='true', speed='0', type='Am79C973',
+						),
+						E.Adapter(
+							E.DisabledModes(
+								E.NAT(
+									E.DNS(**{
+										'pass-domain': 'true',
+										'use-proxy': 'false',
+										'use-host-resolver': 'false',
+									}),
+									E.Alias(**{
+										'logging': 'false',
+										'proxy-only': 'false',
+										'use-same-ports': 'false',
+									}),
+								),
+							),
+							slot='2', enabled='false', MACAddress='080027E827E8',
+							cable='true', speed='0', type='Am79C973',
+						),
+						E.Adapter(
+							E.DisabledModes(
+								E.NAT(
+									E.DNS(**{
+										'pass-domain': 'true',
+										'use-proxy': 'false',
+										'use-host-resolver': 'false',
+									}),
+									E.Alias(**{
+										'logging': 'false',
+										'proxy-only': 'false',
+										'use-same-ports': 'false',
+									}),
+								),
+							),
+							slot='3', enabled='false', MACAddress='0800273CC82C',
+							cable='true', speed='0', type='Am79C973',
+						),
+						E.Adapter(
+							E.DisabledModes(
+								E.NAT(
+									E.DNS(**{
+										'pass-domain': 'true',
+										'use-proxy': 'false',
+										'use-host-resolver': 'false',
+									}),
+									E.Alias(**{
+										'logging': 'false',
+										'proxy-only': 'false',
+										'use-same-ports': 'false',
+									}),
+								),
+							),
+							slot='4', enabled='false', MACAddress='0800275AB1B4',
+							cable='true', speed='0', type='Am79C973',
+						),
+						E.Adapter(
+							E.DisabledModes(
+								E.NAT(
+									E.DNS(**{
+										'pass-domain': 'true',
+										'use-proxy': 'false',
+										'use-host-resolver': 'false',
+									}),
+									E.Alias(**{
+										'logging': 'false',
+										'proxy-only': 'false',
+										'use-same-ports': 'false',
+									}),
+								),
+							),
+							slot='5', enabled='false', MACAddress='0800276A2E02',
+							cable='true', speed='0', type='Am79C973',
+						),
+						E.Adapter(
+							E.DisabledModes(
+								E.NAT(
+									E.DNS(**{
+										'pass-domain': 'true',
+										'use-proxy': 'false',
+										'use-host-resolver': 'false',
+									}),
+									E.Alias(**{
+										'logging': 'false',
+										'proxy-only': 'false',
+										'use-same-ports': 'false',
+									}),
+								),
+							),
+							slot='6', enabled='false', MACAddress='08002704EBD2',
+							cable='true', speed='0', type='Am79C973',
+						),
+						E.Adapter(
+							E.DisabledModes(
+								E.NAT(
+									E.DNS(**{
+										'pass-domain': 'true',
+										'use-proxy': 'false',
+										'use-host-resolver': 'false',
+									}),
+									E.Alias(**{
+										'logging': 'false',
+										'proxy-only': 'false',
+										'use-same-ports': 'false',
+									}),
+								),
+							),
+							slot='7', enabled='false', MACAddress='0800273CA436',
+							cable='true', speed='0', type='Am79C973',
+						),
+					),
+					E.UART(
+						E.Port(slot='0', enabled='false', IOBase='0x3f8', IRQ='4', hostMode='Disconnected'),
+						E.Port(slot='1', enabled='false', IOBase='0x2f8', IRQ='3', hostMode='Disconnected'),
+					),
+					E.LPT(
+						E.Port(slot='0', enabled='false', IOBase='0x378', IRQ='4'),
+						E.Port(slot='1', enabled='false', IOBase='0x378', IRQ='4'),
+					),
+					E.AudioAdapter(controller='AC97', driver='Pulse', enabled='true'),
+					E.RTC(localOrUTC='UTC'),
+					E.SharedFolders(),
+					E.Clipboard(mode='Bidirectional'),
+					E.IO(
+						E.IoCache(enabled='true', size='5'),
+						E.BandwidthGroups(),
+					),
+					E.HostPci(
+						E.Devices(),
+					),
+					E.Guest(memoryBalloonSize='0'),
+					E.GuestProperties(),
+					version='2',
+				),
+				E.StorageControllers(
+					E.StorageController(
+						E.AttachedDevice(
+							E.Image(uuid='{%s}' % (image_uuid, )),
+							type='HardDisk',
+							port='0',
+							device='0',
+						),
+						E.AttachedDevice(
+							passthrough='false',
+							type='DVD',
+							port='1',
+							device='0',
+						),
+						name='IDE-Controller',
+						type='PIIX4',
+						PortCount='2',
+						useHostIOCache='true',
+						Bootable='true',
+					),
+				),
+				**{
+					OVF + 'required': 'false',
+					'version': '1.12-linux',
+					'name': machine_name,
+					'OSType': 'Linux',
+					'snapshotFolder': 'Snapshots',
+					'lastStateChange': '2014-08-14T12:49:13Z',
+					'uuid': '{%s}' % (machine_uuid, ),
+				}
+			),
+			**{
+				OVF + 'id': machine_name,
+			}
+		),
+		**{
+			XML + 'lang': 'en-US',
+			OVF + 'version': '1.0',
+		}
+	)
+	return lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True)
+
+class Virtualbox(Target):
+	def __str__(self):
+		return 'VirtualBox OVA (VMDK based)'
+
+	def __repr__(self):
+		return 'ova-virtualbox'
+
+	def create(self, image, options):
+		machine_name = 'UCS %s' % (options.version, )
+		machine_uuid = uuid.uuid4()
+		image_uuid = uuid.uuid4()
+		image_name = 'ucs-%s-virtualbox-disk1.vmdk' % (
+			options.version,
+		)
+		descriptor_name = 'ucs-%s-virtualbox.ovf' % (
+			options.version,
+		)
+		archive_name = 'ucs-%s-virtualbox.ova' % (
+			options.version,
+		)
+		if os.path.exists(archive_name):
+			raise IOError('Output file %r exists' % (archive_name, ))
+		# HACK: change image descriptor to expected format
+		VMDKstream.image_descriptor_template = '''# Disk DescriptorFile
+version=1
+CID=4fd3c93e
+parentCID=ffffffff
+createType="streamOptimized"
+
+# Extent description
+RDONLY #SECTORS# SPARSE "call-me-stream.vmdk"
+
+# The disk Data Base\x20
+#DDB
+
+ddb.virtualHWVersion = "4"
+ddb.adapterType="ide"
+ddb.geometry.cylinders="#CYLINDERS#"
+ddb.geometry.heads="255"
+ddb.geometry.sectors="63"
+ddb.geometry.biosCylinders="1024"
+ddb.geometry.biosHeads="255"
+ddb.geometry.biosSectors="63"
+ddb.uuid.image="%s"
+ddb.uuid.parent="00000000-0000-0000-0000-000000000000"
+ddb.uuid.modification="00000000-0000-0000-0000-000000000000"
+ddb.uuid.parentmodification="00000000-0000-0000-0000-000000000000"
+ddb.comment=""
+''' % (image_uuid, )
+		descriptor = create_ovf_descriptor(
+			machine_name, options.version, machine_uuid,
+			image_name, image.size(), image_uuid,
+		)
+		files = [
+			(descriptor_name, descriptor, ),
+			(image_name, Vmdk(image, streamOptimized=True), ),
+		]
+		ova = Tar(files)
+		shutil.copyfile(ova.path(), archive_name)
+Virtualbox = Virtualbox()
+
+
+TARGETS = frozenset((VMware, Virtualbox))
+assert len(frozenset(map(repr, TARGETS))) == len(TARGETS), 'target names not unique'
+
+
+def parse_options():
+	parser = optparse.OptionParser()
+	defaults = [('%r' % (target, ), True, ) for target in TARGETS if target.is_default]
+	parser.set_defaults(choices=defaults)
+	parser.usage = '%prog [options]\n create virtual appliances for various virtualization systems from a single disk image'
+	parser.add_option('-s', '--source', help='source image (required)')
+	parser.add_option('-v', '--version', help='version string of appliance')
+	parser.add_option(
+		'-o', '--only', action='store_const', dest='choices', const=[],
+		help='ignore default selections, only create selected targets (must be the first option)',
+	)
+	for target in TARGETS:
+		helptext = 'create "%s"' % (target, )
+		if target.is_default:
+			helptext += ' (selected by default)'
+		parser.add_option(
+			'--%r' % (target, ), help=helptext,
+			action='append_const', dest='choices',
+			const=('%r' % (target, ), True, )
+		)
+		parser.add_option(
+			'--no-%r' % (target, ),
+			action='append_const', dest='choices',
+			const=('%r' % (target, ), False, )
+		)
+	(options, args, ) = parser.parse_args()
+	reverse = dict(('%r' % (target, ), target, ) for target in TARGETS)
+	options.choices = frozenset(
+		reverse[name] for (name, wanted) in dict(options.choices).items() if wanted
+	)
+	if args:
+		parser.error('additional parameter')
+	if options.version is None:
+		parser.error('version string is required')
+	if options.source is None:
+		parser.error('source image is required')
+	try:
+		options.source = open(options.source, 'rb')
+	except IOError, e:
+		parser.error(e)
+	return options
+
+def main():
+	options = parse_options()
+	source_image = Raw(options.source)
+	for choice in options.choices:
+		choice.create(source_image, options)
+	return os.EX_OK
+
+if __name__ == "__main__":
+	WORKDIR = tempfile.mkdtemp(prefix='imagestore ')
+	TEMPDIR = os.path.join(WORKDIR, 'tmp')
+	os.mkdir(TEMPDIR)
+	STOREDIR = os.path.join(WORKDIR, 'store')
+	os.mkdir(STOREDIR)
+	try:
+		sys.exit(main())
+	finally:
+		print 'Cleanup'
+		cmd = ('find', WORKDIR, '(','-type','f','-printf','  %f\\n','-o','-true',')','-delete', )
+		subprocess.call(cmd)

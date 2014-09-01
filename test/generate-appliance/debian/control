@@ -1,0 +1,16 @@
+Source: generate-appliance
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 7.0.50~)
+
+Package: generate-appliance
+Architecture: all
+Depends: qemu-utils, python-lxml, vmdk-stream-converter
+Description: Create virtual appliances for various virtualization systems
+ Create virtual appliances for various virtualization systems from a single disk image
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

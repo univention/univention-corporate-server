@@ -1,0 +1,5 @@
+generate-appliance (0.0.1-0) unstable; urgency=medium
+
+  * Initial release. (Bug #35756)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 29 Aug 2014 18:36:07 +0200
