@@ -34,6 +34,8 @@ from univention.lib.i18n import Translation
 
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 from univention.management.console.log import MODULE
+from univention.management.console.modules.decorators import sanitize
+from univention.management.console.modules.sanitizers import SearchSanitizer
 
 from notifier import Callback
 
@@ -45,7 +47,7 @@ class Cloud(object):
 	Handle cloud connections and instances.
 	"""
 
-	#FIXME @sanitize(nodePattern=SearchSanitizer(default='*'))
+	@sanitize(nodePattern=SearchSanitizer(default='*'))
 	def cloud_query(self, request):
 		"""
 		Searches clouds by the given pattern
@@ -60,7 +62,7 @@ class Cloud(object):
 			'available': (True|False),
 			}, ...]
 		"""
-		#FIXME self.required_options(request, 'nodePattern')
+		self.required_options(request, 'nodePattern')
 
 		def _finished(thread, result, request):
 			"""
@@ -79,7 +81,7 @@ class Cloud(object):
 						'label': d.name,
 						'group': _('Cloud connection'),
 						'type': 'cloud',
-						'available': False,  # FIXME d.last_try == d.last_update,
+						'available': d.last_update_try == d.last_update,
 						})
 
 				MODULE.info('success: %s, data: %s' % (success, clouds))
@@ -95,5 +97,5 @@ class Cloud(object):
 		self.uvmm.send(
 				'L_CLOUD_LIST',
 				Callback(_finished, request),
-				#FIXME pattern=request.options['nodePattern']
+				pattern=request.options['nodePattern']
 				)
