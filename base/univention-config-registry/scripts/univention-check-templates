@@ -127,7 +127,7 @@ try:
 				except KeyError:
 					continue
 				for conffile in conffiles.splitlines():
-					fields = [_.strip() for _ in conffile.split(' ') if _]
+					fields = [_.strip() for _ in conffile.rsplit(' ', 1) if _]
 					# skip obsolete and new conffiles
 					if not fields or 'newconffile' in fields or 'obsolete' in fields:
 						continue
@@ -141,7 +141,7 @@ except ImportError:
 			for line in dpkg_status:
 				if line.startswith(prefix):
 					line = line.strip()
-					fields = [_.strip() for _ in line.split(' ')]
+					fields = [_.strip() for _ in line.rsplit(' ', 1)]
 					# skip obsolete and new conffiles
 					if not fields or 'newconffile' in fields or 'obsolete' in fields:
 						continue
