@@ -139,6 +139,10 @@ class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Cloud):
 			self.node_query(request)
 		elif request.options['type'] == 'domain':
 			self.domain_query(request)
+		elif request.options['type'] == 'cloud':
+			self.cloud_query(request)
+		elif request.options['type'] == 'instance':
+			self.instance_query(request)
 		elif request.options['type'] == 'group':
 			self.finished(request.id, [{
 				'id': 'default',

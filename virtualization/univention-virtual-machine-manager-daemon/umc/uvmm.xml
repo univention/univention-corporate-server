@@ -41,5 +41,6 @@
 		<command name="uvmm/profile/query" function="profile_query"/>
 		<command name="uvmm/profile/get" function="profile_get"/>
 		<command name="uvmm/cloud/query" function="cloud_query"/>
+		<command name="uvmm/instance/query" function="instance_query"/>
 	</module>
 </umc>

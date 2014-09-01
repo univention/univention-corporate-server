@@ -66,7 +66,7 @@ class Cloud(object):
 
 		def _finished(thread, result, request):
 			"""
-			Process asynchronous UVMM CLOUD_LIST answer.
+			Process asynchronous UVMM L_CLOUD_LIST answer.
 			"""
 			if self._check_thread_error(thread, result, request):
 				return
@@ -98,4 +98,73 @@ class Cloud(object):
 				'L_CLOUD_LIST',
 				Callback(_finished, request),
 				pattern=request.options['nodePattern']
+				)
+
+	@sanitize(domainPattern=SearchSanitizer(default='*'))
+	def instance_query(self, request):
+		"""
+		Returns a list of instances matching domainPattern on the clouds matching nodePattern.
+
+		options: {
+			['nodePattern': <cloud pattern>,]
+			['domainPattern': <instance pattern>,]
+			}
+
+		return: [{
+			'node_available': True,
+			'extra': {
+				'key_name': None,
+				'disk_config': 'MANUAL',
+				'flavorId': '1',
+				'availability_zone': 'nova',
+				'password': None,
+				'metadata': {}
+			},
+			'label': 'automagic-997898',
+			'type': 'instance',
+			'id': 'myCloud2#e2c8e274-2e17-499c-a3f9-620fb249578c',
+			'nodeName': 'myCloud2'
+		}, ... ]
+		"""
+
+		def _finished(thread, result, request):
+			"""
+			Process asynchronous UVMM L_CLOUD_INSTANCE_LIST answer.
+			"""
+			if self._check_thread_error(thread, result, request):
+				return
+
+			instances = []
+			success, data = result
+
+			if success:
+				for hostname, insts in data.items():
+					for inst in insts:
+						instance_uri = '%s#%s' % (hostname, inst.id)
+						instances.append({
+							'id': instance_uri,
+							'label': inst.name,
+							'nodeName': hostname,
+							'state': ('RUNNING' if inst.state == 0 else 'SHUTOFF'),  # FIXME
+							'type': 'instance',
+							'suspended': None,  # FIXME
+							'description': '',  # FIXME
+							'node_available': inst.available,
+							'extra': inst.extra,
+						})
+				MODULE.info('success: %s, data: %s' % (success, instances))
+				self.finished(request.id, instances)
+			else:
+				self.finished(
+						request.id,
+						None,
+						str(data),
+						status=MODULE_ERR_COMMAND_FAILED
+						)
+
+		self.uvmm.send(
+				'L_CLOUD_INSTANCE_LIST',
+				Callback(_finished, request),
+				conn_name=request.options.get('nodePattern', ''),
+				pattern=request.options['domainPattern']
 				)

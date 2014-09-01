@@ -1027,6 +1027,9 @@ define([
 			//		Formatter method for cpu usage.
 
 			var item = this._grid._grid.getItem(rowIndex);
+			if (undefined === item.cpuUsage) {
+				return '';
+			}
 			var percentage = Math.round(item.cpuUsage);
 
 			if (isRunning(item)) {
@@ -1071,7 +1074,7 @@ define([
 					iconName += '-off';
 				}
 			}
-			else if (item.type == 'domain') {
+			else if (item.type == 'domain' || item.type == 'instance') {
 				if ( !item.node_available ) {
 					iconName += '-off';
 				} else if (item.state == 'RUNNING' || item.state == 'IDLE') {
@@ -1108,7 +1111,7 @@ define([
 						state: types.getDomainStateDescription( item ),
 						node: item.nodeName,
 						description: entities.encode(item.description).replace('\n', '<br>'),
-						vnc_port: item.vnc_port == -1 ? '' : _( 'VNC-Port: %s', item.vnc_port)
+						vnc_port: !canVNC(item) ? '' : _( 'VNC-Port: %s', item.vnc_port)
 					} ),
 					connectId: [ widget.domNode ],
 					position: [ 'below' ]
@@ -1136,7 +1139,7 @@ define([
 			var nodePattern = '', domainPattern = '', type = search_vals.type;
 
 			// apply filter from search
-			if (type == 'domain') {
+			if (type == 'domain' || type == 'instance') {
 				domainPattern = search_vals.pattern;
 
 				// only search for domains of the selected node in the tree
@@ -1160,11 +1163,19 @@ define([
 			this._grid.setColumnsAndActions(columns, actions);
 
 			// update tree
-			tools.umcpCommand('uvmm/node/query', {
-				nodePattern: nodePattern
-			}).then(lang.hitch(this, function(response) {
-				this._tree.model.changes(response.result);
-			}));
+			if (tree_item && tree_item.type == 'node') {
+				tools.umcpCommand('uvmm/node/query', {
+					nodePattern: nodePattern
+				}).then(lang.hitch(this, function(response) {
+					this._tree.model.changes(response.result);
+				}));
+			} else if (tree_item && tree_item.type == 'cloud') {
+				tools.umcpCommand('uvmm/cloud/query', {
+					nodePattern: nodePattern
+				}).then(lang.hitch(this, function(response) {
+					this._tree.model.changes(response.result);
+				}));
+			}
 			this._itemCountChangedNoteShowed = false;
 		},
 
