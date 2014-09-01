@@ -37,7 +37,8 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-libvirt (>= 0.9.12),
  python-openssl,
  python-pam,
- python-univention-directory-manager (>> 6.0.103)
+ python-univention-directory-manager (>> 6.0.103),
+ python-libcloud
 Provides: ${python:Provides}
 Description: UCS Virtual Machine Manager Daemon - Python bindings
  This package contains the UCS Virtual Machine Manager Daemon
