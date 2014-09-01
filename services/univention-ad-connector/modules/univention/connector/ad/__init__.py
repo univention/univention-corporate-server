@@ -45,7 +45,7 @@ from ldap.controls import SimplePagedResultsControl
 class kerberosAuthenticationFailed(Exception): pass
 
 # page results
-PAGE_SIZE=1000
+PAGE_SIZE = 1000
 
 def activate_user (connector, key, object):
         # set userAccountControl to 544
@@ -856,7 +856,7 @@ class ad(univention.connector.ucs):
 			base=self.lo_ad.base
 
 		ctrls=[]
-		ctrls.append(SimplePagedResultsControl(ldap.LDAP_CONTROL_PAGE_OID,True,(PAGE_SIZE,'')))
+		ctrls.append(SimplePagedResultsControl(True, PAGE_SIZE, ''))
 
 		if show_deleted:
 			# LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
@@ -875,14 +875,14 @@ class ad(univention.connector.ucs):
 			pctrls = [
 				c
 				for c in serverctrls
-				if c.controlType == ldap.LDAP_CONTROL_PAGE_OID
+				if c.controlType == SimplePagedResultsControl.controlType
 			]
 			if pctrls:
-				est, cookie = pctrls[0].controlValue
+				cookie = pctrls[0].cookie
 				if cookie:
 					if pages > 1:
 						ud.debug(ud.LDAP, ud.PROCESS, "AD search continues, already found %s objects" % len(res))
-					ctrls[0].controlValue = (PAGE_SIZE, cookie)
+					ctrls[0].cookie = cookie
 					msgid = self.lo_ad.lo.search_ext(base, scope, filter, attrlist, serverctrls=ctrls, timeout=-1, sizelimit=0)
 				else:
 					break
