@@ -1,3 +1,10 @@
+univention-updater (10.0.2-1) unstable; urgency=low
+
+  * Adjust postup.sh to new univention-check-templates return codes
+    (Bug #34972)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 01 Sep 2014 08:17:59 +0200
+
 univention-updater (10.0.1-1) unstable; urgency=medium
 
   * The HTTP HEAD query of the updater now also transfers the component
