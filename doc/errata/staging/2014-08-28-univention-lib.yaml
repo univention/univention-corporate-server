@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-lib
-fix: 3.0.26-65.274.201409020848
+fix: 3.0.26-66.276.201409021435
 version: [3,2]
 desc: |
   * This update fixes a problem with reading progress report lines from 'dpkg'
