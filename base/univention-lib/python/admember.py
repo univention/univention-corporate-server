@@ -435,7 +435,7 @@ def check_domain(ad_domain_info, ucr=None):
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
-	if ad_domain_info["Domain"] != ucr["domainname"]:
+	if ad_domain_info["Domain"].lower() != ucr["domainname"].lower():
 		raise domainnameMismatch("The domain of the AD Server does not match the local domain: %s"
 			% (ad_domain_info["Domain"],))
 
