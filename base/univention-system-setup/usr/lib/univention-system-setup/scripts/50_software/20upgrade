@@ -1,0 +1,63 @@
+#!/bin/sh
+#
+# Univention Setup
+#  install all updates
+#
+# Copyright 2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
+
+doit=$(get_profile_var "update/system/after/setup")
+
+if [ "$doit" != "True" ]; then
+	exit 0
+fi
+
+info_header "$0" "$(gettext "Upgrading the system")"
+progress_msg "$(gettext "This might take a while depending on the number of pending updates.")"
+
+eval "$(ucr shell)"
+
+if [ "$server_role" = "domaincontroller_master" ]; then
+	# Update to latest patchlevel
+	echo "Running upgrade on DC Master: univention-upgrade --noninteractive --updateto $version_version-99"
+	univention-upgrade --noninteractive --updateto "$version_version-99"
+else
+	# Try to update to the same version as DC master
+	if [ -e /var/univention-join/joined ]; then
+		vv=$(univention-ssh /etc/machine.secret $hostname\$@$ldap_server_name /usr/sbin/ucr get version/version 2>/dev/null)
+		pl=$(univention-ssh /etc/machine.secret $hostname\$@$ldap_server_name /usr/sbin/ucr get version/patchlevel 2>/dev/null)
+		echo "Running upgrade to DC Master version: univention-upgrade --noninteractive --updateto $vv-$pl"
+		univention-upgrade --noninteractive --updateto "$vv-$pl"
+	else
+		echo "Running normal upgrade: univention-upgrade --noninteractive --updateto $version_version-0"
+		univention-upgrade --noninteractive --updateto "$version_version-0"
+	fi
+fi
+
+exit 0

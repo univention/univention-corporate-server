@@ -1,3 +1,9 @@
+univention-system-setup (8.0.35-2) unstable; urgency=low
+
+  * Bug #33839: Add a checkbox to install all upgrades at the end of setup
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 01 Sep 2014 12:19:04 +0200
+
 univention-system-setup (8.0.35-1) unstable; urgency=low
 
   * fixed copyright date in var/www/ucs-overview/js/initialstartsite.js

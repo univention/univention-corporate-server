@@ -701,6 +701,11 @@ define([
 					type: Text,
 					name: 'info',
 					content: ''
+				}, {
+					type: CheckBox,
+					name: 'update/system/after/setup',
+					value: true,
+					label: '' // master: Install all updates, else: Install all updates up to DC master
 				}]
 			}, {
 				name: 'error',
@@ -1364,9 +1369,12 @@ define([
 			});
 
 			// system role
+			var version = tools.status('ucsVersion').split('-')[0];
+			var updateWidget = this.getWidget('summary', 'update/system/after/setup');
 			msg += '<p><b>' + _('UCS configuration') + '</b>: ';
 			if (vals['server/role'] == 'domaincontroller_master') {
 				msg += _('A new UCS domain will be created.');
+				updateWidget.set('label', _('Install all available updates for UCS %s after the setup', version));
 			}
 			else {
 				var role = {
@@ -1375,6 +1383,7 @@ define([
 					'memberserver': _('Member server')
 				}[vals['server/role']];
 				msg += _('This sytem will join an existing UCS domain with the role <i>%s</i>.', role);
+				updateWidget.set('label', _('Update the server to the version of the DC Master system after the setup'));
 			}
 			msg += '</p>';
 
