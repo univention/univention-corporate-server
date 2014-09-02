@@ -2,10 +2,11 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-management-console-module-udm
-fix: 4.0.99-3.472.201408261757
+fix: 4.0.99-4.473.201409021724
 version: [3]
 desc: |
   This update fixes the following issue:
-  * failures on report creation can not block UMC usage anymore
-bug: [34333]
+  * Failures on report creation can not block UMC usage anymore
+  * Long base DNs in license files are now handled correctly
+bug: [34333,35580]
 
