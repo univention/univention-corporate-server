@@ -1,3 +1,9 @@
+ucs-test (4.0.166-73) unstable; urgency=low
+
+  * Bug #30751: 00_base/99check_log_files
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 02 Sep 2014 16:05:39 +0200
+
 ucs-test (4.0.166-72) unstable; urgency=medium
 
   * Another test case for Bug #35647
@@ -29,7 +35,7 @@ ucs-test (4.0.166-70) unstable; urgency=low
         61_dns_ptr_modification_append_records
         59_dns_ptr_creation_set_record
         54_dns_reverse_zone_creation_append_nameserver
-    
+
     Tests extended with IPv6 cases (Bug #33041)
 
  -- Dmitry Galkin <galkin@univention.de>  Tue, 19 Aug 2014 11:24:34 +0200
@@ -458,7 +464,7 @@ ucs-test (4.0.166-6) unstable; urgency=low
 
   * /60_umc-system/23_umc-service-create-user:
     test user creation, modification and deletion via UMC (Bug #34791)
-  * /60_umc-system/TestUMCSystemModule.py: 
+  * /60_umc-system/TestUMCSystemModule.py:
     new helper methods to ease the deletion and checking of objects.
 
  -- Dmitry Galkin <galkin@univention.de>  Fri, 16 May 2014 10:50:02 +0200
@@ -540,7 +546,7 @@ ucs-test (4.0.164-44) unstable; urgency=low
 
 ucs-test (4.0.164-43) unstable; urgency=low
 
-  * Bug #29211: 
+  * Bug #29211:
     52_s4connector/dnstests.py:
      adapted wait_for_sync() to match
      s4connector.sh/ad_wait_for_syncronisation()
@@ -673,7 +679,7 @@ ucs-test (4.0.164-29) unstable; urgency=low
 
 ucs-test (4.0.164-28) unstable; urgency=low
 
-  * fixed traceback when trying to terminate UDM CLI server 
+  * fixed traceback when trying to terminate UDM CLI server
   (Bug #34348)
 
  -- Lukas Walter <walter@univention.de>  Tue, 08 Apr 2014 12:02:26 +0200
@@ -867,7 +873,7 @@ ucs-test (4.0.164-2) unstable; urgency=low
 
 ucs-test (4.0.164-1) unstable; urgency=low
 
-  * ignore listfilter.secret template in 25check-permissions-etc-secret (Bug #26910) 
+  * ignore listfilter.secret template in 25check-permissions-etc-secret (Bug #26910)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Mar 2014 09:12:24 +0100
 
