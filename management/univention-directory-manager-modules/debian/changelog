@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.76-26) unstable; urgency=medium
+
+  * Allow the modification of mailAlternativeAddress in AD member mode
+    (Bug #35672)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Sep 2014 09:13:53 +0200
+
 univention-directory-manager-modules (9.0.76-25) unstable; urgency=medium
 
   * In ad/member mode exclude users and clients from license count
