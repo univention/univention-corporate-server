@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-XS-Python-Version: 2.6
+XS-Python-Version: 2.6, 2.7
 Build-Depends: debhelper,
  python-all,
  python-support,

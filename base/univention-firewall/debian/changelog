@@ -1,3 +1,9 @@
+univention-firewall (7.0.0-2) unstable; urgency=low
+
+  * fixed XS-Python-Version (Bug #35138) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Sep 2014 11:06:18 +0200
+
 univention-firewall (7.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35138)
