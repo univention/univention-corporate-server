@@ -2,8 +2,10 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-ad-connector
-fix: 8.0.17-70.439.201408141805
+fix: 8.0.17-71.443.201409021037
 version: [2,3]
 desc: |
-    * A couple of messages have been improved in the UMC wizard.
-bug: [35602]
+  * A couple of messages have been improved in the UMC wizard.
+  * The determination of the Active Directory language has been fixed. This
+    is needed for the group name mapping.
+bug: [35602,35572]
