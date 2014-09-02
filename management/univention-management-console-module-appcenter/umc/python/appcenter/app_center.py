@@ -555,7 +555,7 @@ class Application(object):
 	def _extract_local_archive(cls):
 		if os.listdir(CACHE_DIR):
 			# we already have a cache. our archive is just outdated...
-			return
+			return False
 		MODULE.process('Filling the App Center file cache from our local archive!')
 		try:
 			archive = tarfile.open(LOCAL_ARCHIVE, 'r:*')
@@ -572,11 +572,11 @@ class Application(object):
 				archive.extract(filename, path=CACHE_DIR)
 		finally:
 			archive.close()
+		return True
 
 	@classmethod
 	def sync_with_server(cls):
-		cls._extract_local_archive()
-		something_changed = False
+		something_changed = cls._extract_local_archive()
 		json_url = urljoin('%s/' % cls.get_metainf_url(), 'index.json.gz')
 		MODULE.process('Downloading "%s"...' % json_url)
 		try:

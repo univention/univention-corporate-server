@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.0.0-4) unstable; urgency=low
+
+  * Bug #35683: Update local files after extracting initial archive
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 02 Sep 2014 10:24:50 +0200
+
 univention-management-console-module-appcenter (4.0.0-3) unstable; urgency=low
 
   * Bug #35683: Add a starting archive for ini files that can be unpackaged
