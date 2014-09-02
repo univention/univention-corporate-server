@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-management-console-module-adtakeover
-fix: 1.0.10-49.49.201409021605
+fix: 1.0.10-50.50.201409021802
 version: [2,3]
 desc: |
     * When running AD takeover out of AD member mode its necessary to flush samba caches
