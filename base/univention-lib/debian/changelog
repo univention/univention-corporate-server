@@ -1,3 +1,9 @@
+univention-lib (3.0.26-66) unstable; urgency=medium
+
+  * Bug #31319: make sure that atjobs is EINTR-safe
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 02 Sep 2014 14:20:47 +0200
+
 univention-lib (3.0.26-65) unstable; urgency=medium
 
   * admember.py: ignore domain name spelling (Bug #35757)
