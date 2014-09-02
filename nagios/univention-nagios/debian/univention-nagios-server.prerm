@@ -37,5 +37,9 @@ if [ "$1" = "remove" ] ; then
 	cp /usr/lib/univention-uninstall/28univention-nagios-server.uinst /usr/lib/univention-install/
 fi
 
+# remove symlink (Bug #35078)
+if [ -L /etc/apache2/conf.d/nagios3.conf ]; then
+	rm -f /etc/apache2/conf.d/nagios3.conf
+fi
 
 exit 0
