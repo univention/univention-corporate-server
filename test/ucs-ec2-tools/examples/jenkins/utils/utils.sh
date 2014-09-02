@@ -55,9 +55,8 @@ basic_setup ()
 
 upgrade_to_latest_errata ()
 {
-	# Bug #34336: needs further discussion if release or only errata updates are expected
-	#local current="$(ucr get version/version)-$(ucr get version/patchlevel)"
-	upgrade_to_latest # --updateto "$current"
+	local current="$(ucr get version/version)-$(ucr get version/patchlevel)"
+	upgrade_to_latest --updateto "$current"
 }
 
 upgrade_to_latest_test_errata ()
@@ -79,10 +78,12 @@ upgrade_to_testing ()
 
 upgrade_to_latest ()
 {
-	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@" || (echo "ERROR: univention-upgrade failed in attempt 1 with exitcode $?"; ps faxwww ; ucr search update/check)
+	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@" && return 0
+	(echo "ERROR: univention-upgrade failed in attempt 1 with exitcode $?"; ps faxwww ; ucr search update/check)
 	# Workaround for Bug #31561
 	sleep 300
-	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@" || (echo "ERROR: univention-upgrade failed in attempt 2 with exitcode $?"; ps faxwww ; ucr search update/check)
+	univention-upgrade --noninteractive --ignoreterm --ignoressh "$@" && return 0
+	(echo "ERROR: univention-upgrade failed in attempt 2 with exitcode $?"; ps faxwww ; ucr search update/check)
 }
 
 run_setup_join ()
