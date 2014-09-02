@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.76-29) unstable; urgency=medium
+
+  * Don't break UDM if more than one : is set in automountInformation
+    (Bug #34541)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Sep 2014 14:02:57 +0200
+
 univention-directory-manager-modules (9.0.76-28) unstable; urgency=medium
 
   * Change regular expression for group names to unicode (Bug #35521)
