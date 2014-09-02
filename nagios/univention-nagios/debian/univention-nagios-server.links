@@ -1,5 +1,4 @@
 /usr/share/nagios/htdocs/images/logos/base /usr/share/nagios2/htdocs-nuvola/images/logos/base
-/etc/nagios3/apache2.conf /etc/apache2/conf.d/nagios3.conf
 /usr/share/nagios3/htdocs/contexthelp usr/share/nagios3/htdocs-nuvola/contexthelp
 /usr/share/nagios3/htdocs/docs usr/share/nagios3/htdocs-nuvola/docs
 /usr/share/univention-nagios-server/icons usr/share/nagios3/htdocs-nuvola/images/logos/univention

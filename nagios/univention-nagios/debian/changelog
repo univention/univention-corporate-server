@@ -1,3 +1,9 @@
+univention-nagios (7.0.6-5) unstable; urgency=low
+
+  * FIX broken apache config (Bug #35078)
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 02 Sep 2014 15:04:31 +0200
+
 univention-nagios (7.0.6-4) unstable; urgency=low
 
   * Fix UNIVENTION_NTP nagios check to use check_ntp_time (Bug #34570)
