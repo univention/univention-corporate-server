@@ -866,7 +866,7 @@ class uid_umlauts_lower_except_first_letter(simple):
 class gid(simple):
 	min_length=1
 	max_length=32
-	regex = re.compile( '(?u)^\w([\w -.]*\w)?$' )
+	regex = re.compile( "(?u)^\w([\w -’.]*\w)?$" )
 	error_message = _("Value may not contain other than numbers, letters and dots!")
 
 class sharePath( simple ):

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.76-27) unstable; urgency=medium
+
+  * Allow ’ in group names. This is needed for default French groups
+    (Bug #35521)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Sep 2014 13:05:12 +0200
+
 univention-directory-manager-modules (9.0.76-26) unstable; urgency=medium
 
   * Allow the modification of mailAlternativeAddress in AD member mode
