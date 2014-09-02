@@ -37,7 +37,7 @@ Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: UCS System Setup tools
  This package provides the tool to configure the system, especially its name,
- domain, network configuration, software.
+ domain, network configuration, and software.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -53,7 +53,6 @@ Conflicts: univention-system-setup-appliance,
  univention-server-slave,
  univention-server-member,
  univention-basesystem,
- univention-system-setup (<< 5.0.129-1),
 Depends: ${misc:Depends},
  shell-univention-lib,
  univention-system-setup (= ${source:Version}),
@@ -64,6 +63,8 @@ Depends: ${misc:Depends},
  openbox,
 Recommends: firefox-en | firefox-de | firefox | iceweasel,
  xinit,
+ univention-kernel-image,
+ univention-grub,
 Replaces: univention-setup-boot, univention-system-setup-appliance
 Description: Starting univention-system-setup on next boot
  This package configures the computer to launch UCS System Setup on its next
@@ -89,6 +90,13 @@ Depends: cdebconf-udeb,
 XB-Installer-Menu-Item: 7650
 Package-Type: udeb
 Description: Start Univention System Setup
+ This package is used to lauch Univention System Setup in boot mode from
+ the Debian based UCS installer.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
 
 Package: univention-management-console-module-setup
 Architecture: all
@@ -107,7 +115,7 @@ Depends: univention-management-console-server,
  python-psutil,
  python-apt,
  univention-ipcalc
-Description: UMC module for Univention system setup
+Description: UMC module for Univention System Setup
  This package contains the UMC module for the UCS System Setup.
  .
  It is part of Univention Corporate Server (UCS), an
