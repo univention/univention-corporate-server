@@ -8,4 +8,6 @@ desc: |
   * This update fixes a problem with reading progress report lines from 'dpkg'
     while installing Apps, which lead to the installation getting stuck.
   * The AD member setup does now ignore the spelling of the domain name.
-bug: [35729,35757]
+  * The python module atjobs is now EINTR-safe, i.e., for interrupted function
+    call signals
+bug: [35729,35757,31319]
