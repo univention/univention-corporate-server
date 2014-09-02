@@ -80,6 +80,10 @@ def _split_config(lines):
 		yield line
 
 
+class TimeoutError(Exception):
+	pass
+
+
 class VM:
 	"""
 	Generic instance.
@@ -163,7 +167,7 @@ class VM:
 				time.sleep(5)
 				now = time.time()
 		else:
-			raise
+			raise TimeoutError(timeout)
 
 	def create_profiles(self):
 		''' Write the given profile to the instance '''
@@ -666,7 +670,7 @@ class VM_EC2(VM):
 			now = time.time()
 		else:
 			self._log('Timeout waiting for instance')
-			raise
+			raise TimeoutError(timeout)
 
 
 def _print_process(msg):
