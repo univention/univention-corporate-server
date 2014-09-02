@@ -1784,7 +1784,13 @@ def check_gpo_presence():
 						attrs=["cn", "gPCFileSysPath", "versionNumber"])
 
 	sysvol_dir = "/var/lib/samba/sysvol"
-	default_policies_dir = os.path.join(sysvol_dir, samdb.domain_dns_name(), "Policies")
+	samdb_domain_dns_name = samdb.domain_dns_name()
+	sam_sysvol_dom_dir = os.path.join(sysvol_dir, samdb_domain_dns_name)
+	if not os.path.isdir(sam_sysvol_dom_dir):
+		if samdb_domain_dns_name != ucr["domainname"]:
+			os.symlink(ucr["domainname"], sam_sysvol_dom_dir)
+	sam_policies_dir = os.path.join(sam_sysvol_dom_dir, "Policies")
+
 	for obj in msgs:
 		name = obj["cn"][0]
 		if "gPCFileSysPath" in obj:
@@ -1793,9 +1799,9 @@ def check_gpo_presence():
 				gpo_path = os.path.join(sysvol_dir, subdir.replace('\\', '/'))
 			except ValueError as ex:
 				log.error(ex.args[0])
-				gpo_path = os.path.join(default_policies_dir, name)
+				gpo_path = os.path.join(sam_policies_dir, name)
 		else:
-			gpo_path = os.path.join(default_policies_dir, name)
+			gpo_path = os.path.join(sam_policies_dir, name)
 		if not os.path.isdir(gpo_path):
 			log.error("GPO missing in SYSVOL: %s" % name)
 			raise SysvolGPOMissing()

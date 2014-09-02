@@ -1,3 +1,17 @@
+univention-management-console-module-adtakeover (2.0.1-2) unstable; urgency=medium
+
+  * Handle different case spelling of domainname in sysvol directory
+    (Bug #35769)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Sep 2014 18:01:32 +0200
+
+univention-management-console-module-adtakeover (2.0.1-1) unstable; urgency=medium
+
+  * Handle different case spelling of domainname in sysvol directory
+    (Bug #35769)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Sep 2014 16:04:40 +0200
+
 univention-management-console-module-adtakeover (2.0.0-2) unstable; urgency=medium
 
   * Call samba-ad-dc init script instead of samba4 (Bug #35319)
