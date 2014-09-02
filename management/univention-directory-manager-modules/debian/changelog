@@ -1,3 +1,10 @@
+univention-directory-manager-modules (10.0.9-1) unstable; urgency=medium
+
+  * Allow the modification of mailAlternativeAddress in AD member mode
+    (Bug #35672)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Sep 2014 09:13:53 +0200
+
 univention-directory-manager-modules (10.0.8-2) unstable; urgency=low
 
   * Bug #35146: remove obsolete update instructions in postinst

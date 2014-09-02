@@ -617,7 +617,7 @@ property_descriptions={
 			dontsearch=0,
 			may_change=1,
 			identifies=0,
-			readonly_when_synced=1,
+			readonly_when_synced=0,
 		),
 	'overridePWHistory': univention.admin.property(
 			short_description=_('Override password history'),
