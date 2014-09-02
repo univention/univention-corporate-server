@@ -1,3 +1,10 @@
+univention-nagios-raid (4.0.0-2) unstable; urgency=low
+
+  * Using check_raid from nagios-plugins-contrib
+  * instead of check_linux_raid (Bug #35265)
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 02 Sep 2014 09:43:11 +0200
+
 univention-nagios-raid (4.0.0-1) unstable; urgency=low
 
   * Starting UCS 4.0 development (Bug #35265)

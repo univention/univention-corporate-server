@@ -45,7 +45,7 @@ fi
 univention-directory-manager nagios/service create "$@" --ignore_exists \
 	--position "cn=nagios,$ldap_base" \
 	--set name="UNIVENTION_RAID" \
-	--set checkCommand="check_linux_raid" \
+	--set checkCommand="check_raid" \
 	--set normalCheckInterval=10 \
 	--set retryCheckInterval=1 \
 	--set maxCheckAttempts=5 \
