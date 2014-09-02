@@ -93,9 +93,13 @@ def adsearch(query):
 def guess_ad_domain_language():
 	'''AD Connector supports "en" and "de", this check detects a German AD
 	Domain and returns "en" as fallback.'''
-	p1, stdout, stderr = adsearch('cn=Domänen-Admins')
-	if p1.returncode == 0:
-		return 'de'
+	p1, stdout, stderr = adsearch('sAMAccountName=Domänen-Admins'.encode('latin1'))
+	if stderr:
+		MODULE.warn('adsearch "sAMAccountName=Domänen-Admins" stderr: %s' % stderr)
+	for line in stdout.split('\n'):
+		line = line.lower().strip()
+		if line.decode('latin1') == 'samaccountname: domänen-admins':
+			return 'de'
 	return 'en'
 
 class Instance(Base, ProgressMixin):
@@ -209,11 +213,6 @@ class Instance(Base, ProgressMixin):
 		# enter a static host entry such that the AD server's FQDN can be resolved
 		univention.config_registry.handler_set([u'hosts/static/%(Host_IP)s=%(LDAP_Host)s' % request.options])
 
-		# UCR variables are set, and now we can try to guess the language of
-		# the AD domain
-		ad_lang = guess_ad_domain_language()
-		univention.config_registry.handler_set([u'connector/ad/mapping/group/language=%s' % ad_lang])
-
 		# check for SSL support on AD side
 		if admember.server_supports_ssl(server=request.options.get('LDAP_Host')):
 			MODULE.process('Enabling SSL...')
@@ -221,6 +220,11 @@ class Instance(Base, ProgressMixin):
 		else:
 			MODULE.warn('SSL is not supported')
 			admember.disable_ssl()
+
+		# UCR variables are set, and now we can try to guess the language of
+		# the AD domain
+		ad_lang = guess_ad_domain_language()
+		univention.config_registry.handler_set([u'connector/ad/mapping/group/language=%s' % ad_lang])
 
 		self.finished(request.id, { 'success' : True, 'message' :  _('Active Directory connection settings have been saved.')})
 

@@ -1,3 +1,10 @@
+univention-ad-connector (8.0.17-71) unstable; urgency=medium
+
+  * Fixed guess_ad_domain_language function() and call it after the ssl
+    decision has been made (Bug #35572)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Sep 2014 10:32:36 +0200
+
 univention-ad-connector (8.0.17-70) unstable; urgency=medium
 
   * Adjusted fuzzy messages (Bug #35602)
