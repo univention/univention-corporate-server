@@ -1,6 +1,7 @@
 ucs-ec2-tools (1.0.1-2) unstable; urgency=low
 
   * Bug #35148: Fix UCS-4.0 adaption
+  * Bug #35733: Fix reboot for broken pre-UCS-4.0-interim1 EC2 images
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 02 Sep 2014 14:12:06 +0200
 

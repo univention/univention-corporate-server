@@ -167,4 +167,15 @@ run_join_scripts ()
 	fi
 }
 
+do_reboot () {
+	# Bug #35733: pre UCS-4.0-0 interim-1 EC2 images is broken due to insserv
+	up () {
+		update-rc.d -f "$1" remove
+		update-rc.d "$@"
+	}
+	[ -L /etc/rc2.d/S08univention-runit ] ||
+	eval "$(sed -rne 's/^[ \t]*update-rc\.d[ \t]+([a-z][^\|>]+).*/up \1/p' /var/lib/dpkg/info/*.postinst | sort -u)"
+	reboot
+}
+
 # vim:set filetype=sh ts=4:
