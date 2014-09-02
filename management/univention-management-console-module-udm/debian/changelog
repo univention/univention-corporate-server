@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.99-4) unstable; urgency=medium
+
+  * Bug #35580: fix handling of license LDIF files to allow for long DNs
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 02 Sep 2014 17:10:33 +0200
+
 univention-management-console-module-udm (4.0.99-3) unstable; urgency=low
 
   * Bug #34333: failures on report creation can not block UMC usage anymore

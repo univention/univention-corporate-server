@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-08-04 09:54+0200\n"
+"POT-Creation-Date: 2014-09-02 17:08+0200\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -65,7 +65,7 @@ msgstr "<b>Lizenztyp:</b> GPL"
 msgid "<b>Warning!</b>"
 msgstr "<b>Warnung!</b>"
 
-#: umc/js/udm/CreateReportDialog.js:135
+#: umc/js/udm/CreateReportDialog.js:134
 #, python-format
 msgid "<p>Generating %s report for %d objects.</p><p>This may take a while</p>"
 msgstr ""
@@ -198,7 +198,7 @@ msgstr "Zurück zur Suche"
 msgid "Boot"
 msgstr "Boot"
 
-#: umc/js/udm/LicenseImportDialog.js:135 umc/js/udm/CreateReportDialog.js:113
+#: umc/js/udm/LicenseImportDialog.js:135 umc/js/udm/CreateReportDialog.js:114
 #: umc/js/udm/DetailPage.js:984 umc/js/udm.js:1079 umc/js/udm.js:1370
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -219,7 +219,7 @@ msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 msgid "Clients"
 msgstr "Clients"
 
-#: umc/js/udm/LicenseImportDialog.js:64 umc/js/udm/CreateReportDialog.js:161
+#: umc/js/udm/LicenseImportDialog.js:64 umc/js/udm/CreateReportDialog.js:165
 #: umc/js/udm/LicenseDialog.js:71
 msgid "Close"
 msgstr "Schließen"
@@ -240,7 +240,7 @@ msgstr "Container"
 msgid "Corporate Clients"
 msgstr "Corporate Clients"
 
-#: umc/js/udm/CreateReportDialog.js:106
+#: umc/js/udm/CreateReportDialog.js:107
 msgid "Create"
 msgstr "Erstellen"
 
@@ -687,8 +687,8 @@ msgid ""
 "Press <i>Next</i> to create an LDAP object of this type only available on "
 "UCS systems."
 msgstr ""
-"Klicken Sie auf <i>Weiter</i>, um ein neues LDAP-Objekt dieses Typs nur für UCS-"
-"Systeme anzulegen."
+"Klicken Sie auf <i>Weiter</i>, um ein neues LDAP-Objekt dieses Typs nur für "
+"UCS-Systeme anzulegen."
 
 #: umc/js/udm.js:1577
 msgid "Primary Groups"
@@ -715,11 +715,11 @@ msgstr "Neu laden"
 msgid "Remove certificate"
 msgstr "Zertifikat entfernen"
 
-#: umc/js/udm/CreateReportDialog.js:150
+#: umc/js/udm/CreateReportDialog.js:153
 msgid "Report creation has failed"
 msgstr "Erstellen des Reports ist fehlgeschlagen"
 
-#: umc/js/udm/CreateReportDialog.js:96
+#: umc/js/udm/CreateReportDialog.js:97
 #, python-format
 msgid "Report for %d %s"
 msgstr "Report für %d %s"
@@ -729,7 +729,7 @@ msgstr "Report für %d %s"
 msgid "Report for %s"
 msgstr "Report für %s"
 
-#: umc/js/udm/CreateReportDialog.js:148
+#: umc/js/udm/CreateReportDialog.js:151
 msgid "Report has been created"
 msgstr "Report wurde erstellt"
 
@@ -807,7 +807,7 @@ msgstr "%s \"%s\" ist"
 msgid "The %s are"
 msgstr "Die %s sind"
 
-#: umc/js/udm/CreateReportDialog.js:147
+#: umc/js/udm/CreateReportDialog.js:150
 #, python-format
 msgid ""
 "The %s can be downloaded at<br><br><a target=\"_blank\" href=\"%s\">%s "
@@ -878,7 +878,7 @@ msgstr "Die Lizenz wurde erfolgreich importiert."
 msgid "The object property on which the query is filtered."
 msgstr "Die Objekteigenschaft, nach der gesucht wird."
 
-#: umc/js/udm/CreateReportDialog.js:151
+#: umc/js/udm/CreateReportDialog.js:154
 msgid ""
 "The report could not be created. Details for the problems can be found in "
 "the log files."
@@ -886,7 +886,7 @@ msgstr ""
 "Der Report konnte nicht erstellt werden. Weitere Informationen sind in den "
 "Logdateien zu finden."
 
-#: umc/js/udm/CreateReportDialog.js:97
+#: umc/js/udm/CreateReportDialog.js:98
 msgid "The report template that should be used for the report."
 msgstr "Die zuverwendende Reportvorlage"
 
@@ -1008,6 +1008,7 @@ msgid "groups"
 msgstr "Gruppen"
 
 #: umc/js/udm/ComboBox.js:336
+#, python-brace-format
 msgid "in {size} objects"
 msgstr "insgesamt {size} Objekte"
 

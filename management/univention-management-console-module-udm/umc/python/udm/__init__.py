@@ -265,20 +265,20 @@ class Instance( Base, ProgressMixin ):
 		filename = None
 		if isinstance(request.options, (list, tuple)) and request.options:
 			# file upload
-			filename = request.options[ 0 ][ 'tmpfile' ]
+			filename = request.options[0]['tmpfile']
 			if not os.path.realpath(filename).startswith(TEMPUPLOADDIR):
 				self.finished(request.id, [{'success': False, 'message': 'invalid file path'}])
 				return
 		else:
-			self.required_options( request, 'license' )
-			lic = request.options[ 'license' ]
+			self.required_options(request, 'license')
+			lic = request.options['license']
 
 			# Replace non-breaking space with a normal space
 			# https://forge.univention.org/bugzilla/show_bug.cgi?id=30098
 			lic = lic.replace(unichr(160), " ")
 
-			lic_file = tempfile.NamedTemporaryFile( delete = False )
-			lic_file.write( lic )
+			lic_file = tempfile.NamedTemporaryFile(delete = False)
+			lic_file.write(lic)
 			lic_file.close()
 			filename = lic_file.name
 
@@ -288,29 +288,10 @@ class Instance( Base, ProgressMixin ):
 			}])
 
 		try:
-			ldapBase = ucr.get('ldap/base', '')
 			with open(filename, 'rb') as fd:
-				for line in fd:
-					if line.startswith('dn: '):
-						dn = line.strip()[4:]
-						dnWithoutBase = dn[:-len(ldapBase)]
-						if not dn.endswith(ldapBase) or not dnWithoutBase.endswith('cn=univention,'):
-							MODULE.error('The license DN does not match LDAP base (%s): %s' % (ldapBase, dn))
-							_error(_('The LDAP base of the license does not match the LDAP base of the UCS domain (%s).') % ldapBase)
-							return
-
-			with open(filename, 'rb') as fd:
+				# check license and write it to LDAP
 				importer = LicenseImport(fd)
-
-				# check license
-				try:
-					importer.check(ldapBase)
-				except LicenseError as exc:
-					MODULE.error('LicenseImport check failed: %r' % (exc, ))
-					_error(str(exc))
-					return
-
-				# write license
+				importer.check(ucr.get('ldap/base', ''))
 				importer.write( self._user_dn, self._password )
 		except (ValueError, AttributeError, LDAPError) as exc:
 			MODULE.error('License import failed (malformed LDIF): %r' % (exc, ))
@@ -322,10 +303,14 @@ class Instance( Base, ProgressMixin ):
 			else:
 				_error()
 			return
+		except LicenseError as exc:
+			MODULE.error('LicenseImport check failed: %r' % (exc, ))
+			_error(str(exc))
+			return
 		finally:
-			os.unlink( filename )
+			os.unlink(filename)
 
-		self.finished( request.id, [ { 'success' : True } ] )
+		self.finished(request.id, [{'success' : True}])
 
 	@multi_response(progress=[_('Moving %d object(s)'), _('%($dn$)s moved')])
 	def move(self, iterator, object, options):
