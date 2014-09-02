@@ -1,3 +1,10 @@
+univention-system-setup (8.0.35-1) unstable; urgency=low
+
+  * fixed copyright date in var/www/ucs-overview/js/initialstartsite.js
+    Bug #35267
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Sep 2014 10:21:39 +0200
+
 univention-system-setup (8.0.34-1) unstable; urgency=low
 
   * Bug #35735: Install univention-grub
