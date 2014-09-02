@@ -1507,7 +1507,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				except ValueError:
 					pass
 				if unc.find(':') > 1:
-					host, path = unc.split(':')
+					host, path = unc.split(':',1)
 					sharepath=path
 					while len(sharepath) > 1:
 						res = univention.admin.modules.lookup(univention.admin.modules.get('shares/share'), None, self.lo, filter='(&(host=%s)(path=%s))' % (host, sharepath), scope='domain')
