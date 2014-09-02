@@ -1,3 +1,10 @@
+univention-ad-connector (9.0.1-1) unstable; urgency=medium
+
+  * Fixed guess_ad_domain_language function() and call it after the ssl
+    decision has been made (Bug #35572)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Sep 2014 10:32:36 +0200
+
 univention-ad-connector (9.0.0-3) unstable; urgency=medium
 
   * Adjust to python-ldap 2.4 (Bug #35320)
