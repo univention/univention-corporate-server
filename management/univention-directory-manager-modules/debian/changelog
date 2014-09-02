@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.11.1) unstable; urgency=medium
+
+  * Change regular expression for group names to unicode (Bug #35521)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Sep 2014 13:37:25 +0200
+
 univention-directory-manager-modules (10.0.10-1) unstable; urgency=medium
 
   * Allow ’ in group names. This is needed for default French groups
