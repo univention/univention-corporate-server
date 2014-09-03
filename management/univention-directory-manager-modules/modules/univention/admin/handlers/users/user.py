@@ -1503,7 +1503,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			if self.oldattr.has_key('automountInformation'):
 				unc = ''
 				try:
-					flags, unc = re.split(' *', self.oldattr['automountInformation'][0])
+					flags, unc = re.split(' *', self.oldattr['automountInformation'][0], 1)
 				except ValueError:
 					pass
 				if unc.find(':') > 1:
