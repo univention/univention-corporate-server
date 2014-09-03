@@ -31,7 +31,7 @@ List Amazon EC2 instances.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from optparse import OptionParser
+from optparse import OptionParser, OptionGroup
 import os
 import sys
 import boto
@@ -39,17 +39,41 @@ from boto.ec2 import regions
 from boto.vpc import VPCConnection
 
 
-def main():
-	# option parser
+def parse_args():
 	usage = '''%prog [options]'''
 	description = sys.modules[__name__].__doc__
 	parser = OptionParser(usage=usage, description=description)
-	parser.add_option("-a", "--all", action="store_true",
-			dest="all", default=False, help="List all instances")
 	parser.add_option("-r", "--region", action="store",
 			dest="region", default='eu-west-1', help="EC region")
 
-	(options, args) = parser.parse_args()
+	group = OptionGroup(parser, "Filter options")
+	group.add_option("-a", "--all", action="store_true",
+			dest="all", default=False, help="List VMs of all users")
+	group.add_option("-S", "--state", action="store",
+			type="choice", choices=("running", "stopped", "shutting-down", "terminated"),
+			dest="state", help="Filter on VM state")
+	group.add_option("-A", "--ami", action="store",
+			dest="ami", help="Filter on AMI")
+	group.add_option("-K", "--key", action="store",
+			dest="key", help="Filter on SSH Key")
+	group.add_option("-N", "--name", action="store",
+			default='Test-%s-' % os.getenv('USER'),
+			dest="name", help="Filter on VM name [%default]")
+	group.add_option("-T", "--tag", action="append", nargs=2,
+			dest="tag", default=[], help="Filter on VM tag")
+	parser.add_option_group(group)
+
+	group = OptionGroup(parser, "Display options")
+	group.add_option("-t", "--tags", action="store_true",
+			dest="tags", default=False, help="Display tags")
+	parser.add_option_group(group)
+
+	return parser.parse_args()
+
+
+def main():
+	# option parser
+	(options, args) = parse_args()
 
 	# config parser
 	aws_cfg = {}
@@ -63,18 +87,40 @@ def main():
 	reservations = ec2.get_all_instances()
 	instances = [i for r in reservations for i in r.instances]
 	for instance in instances:
-		name = instance.tags.get('Name')
-		if name and (options.all or name.startswith('Test-%s-' % (os.getenv('USER')))):
-			print 'Name:   %s' % instance.tags.get('Name')
-			print 'IP:     %s' % instance.ip_address
-			print 'AMI:    %s' % instance.id
-			print 'Status: %s' % instance.state
-			print 'Key:    %s' % instance.key_name
-			if instance.vpc_id:
-				print 'IP:     %s' % instance.private_ip_address
+		if options.state and options.state != instance.state:
+			continue
+		if options.ami and options.ami != instance.id:
+			continue
+		if options.key and options.key != instance.key_name:
+			continue
+		try:
+			name = instance.tags['Name']
+		except KeyError:
+			continue
+		if not options.all and options.name and options.name not in name:
+			continue
+		if options.tag:
+			for key, value in options.tag:
+				try:
+					if value in instance.tags[key]:
+						break
+				except KeyError:
+					pass
 			else:
-				print 'IP:     %s' % instance.ip_address
-			print
+				continue
+
+		print 'Name:   %s' % name
+		if instance.ip_address:
+			print 'IP:     %s' % instance.ip_address
+		if instance.vpc_id:
+			print 'IP:     %s' % instance.private_ip_address
+		print 'AMI:    %s' % instance.id
+		print 'Status: %s' % instance.state
+		print 'Key:    %s' % instance.key_name
+		if options.tags:
+			for key, value in instance.tags.items():
+				print 'Tag:    %s=%s' % (key, value)
+		print
 
 
 if __name__ == '__main__':
