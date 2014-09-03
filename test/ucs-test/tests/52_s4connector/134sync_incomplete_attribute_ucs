@@ -1,0 +1,48 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Check for incomplete sync from UCS to AD"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_lastname="$(random_chars)"
+UDM_users_user_password="U$(random_chars)123"
+UDM_users_user_firstname="$(random_chars)"
+UDM_users_user_description="$(random_chars)"
+UDM_users_user_phone="21132423423424242342244234327748238743283264873264876328746328764873264873268746328746238764873264873268743268746328" # this is invalid in S4
+
+AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "sync"
+
+udm_create "users/user" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user"; fail_bool 0 110
+ad_exists "$AD_DN"; fail_bool 0 110
+
+# if the back sync from S4 to UCS is not blocked due to the invalid phone,
+# the empty description is synced back from S4 to UCS
+udm_verify_udm_attribute "description" "$UDM_users_user_description" "users/user"; fail_bool 0 110
+
+udm_remove "users/user" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user"; fail_bool 1 110
+ad_exists "$AD_DN"; fail_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

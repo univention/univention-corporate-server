@@ -1,3 +1,10 @@
+ucs-test (5.0.2-1) unstable; urgency=medium
+
+  * 52_s4connector:134sync_incomplete_attribute*: added test cases for
+    incomple sync (Bug #35391)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 03 Sep 2014 21:40:32 +0200
+
 ucs-test (5.0.1-3) unstable; urgency=low
 
   * Fixed last two python2.6 entries (Bug #35664)
