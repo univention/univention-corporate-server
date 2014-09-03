@@ -1,0 +1,6 @@
+Module: supphealth
+Python: umc/python
+Definition: umc/supphealth.xml
+Category: umc/categories/supphealth.xml
+Javascript: umc/js
+Icons: umc/icons

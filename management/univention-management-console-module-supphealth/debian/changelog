@@ -1,0 +1,11 @@
+univention-management-console-module-supphealth (1.0.0-1) unstable; urgency=low
+
+  * Non-maintainer upload.
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 03 Sep 2014 16:09:00 +0200
+
+univention-management-console-module-supphealth (0.1.0-1) unstable; urgency=low
+
+  * Initial release (Bug #34765)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 18 Mar 2014 13:05:54 +0100

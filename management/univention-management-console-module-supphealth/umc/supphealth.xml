@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="supphealth" icon="supphealth" version="1.0">
+		<name>Basic system diagnosis</name>
+		<description>System test for known issues</description>
+		<keywords>support</keywords>
+		<categories>
+			<category name="system"/>
+		</categories>
+		<command name="supphealth/run" function="run" />
+		<command name="supphealth/query" function="query" />
+		<command name="supphealth/get" function="get" />
+	</module>
+</umc>
