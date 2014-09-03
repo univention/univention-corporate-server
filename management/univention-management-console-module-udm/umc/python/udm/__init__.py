@@ -49,7 +49,9 @@ from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 from univention.management.console.modules.decorators import simple_response, sanitize, multi_response
-from univention.management.console.modules.sanitizers import LDAPSearchSanitizer, EmailSanitizer
+from univention.management.console.modules.sanitizers import (
+	LDAPSearchSanitizer, EmailSanitizer, ChoicesSanitizer,
+	ListSanitizer, StringSanitizer)
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.session import TEMPUPLOADDIR
@@ -72,6 +74,20 @@ from .udm_ldap import (
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
 
 _ = Translation( 'univention-management-console-module-udm' ).translate
+
+def sanitize_func(sanitizer_func):
+	from univention.management.console.modules.decorators import copy_function_meta_data, sanitize
+	def _decorated(function):
+		def _response(self, request):
+			sanitizer_parameters = sanitizer_func(self, request)
+			if isinstance(sanitizer_parameters, dict):
+				sanitizer = sanitize(**sanitizer_parameters)
+			else: #if isinstance(sanitizer_parameters, (list, tuple)):
+				sanitizer = sanitize(*sanitizer_parameters)
+			return sanitizer(function)(self, request)
+		copy_function_meta_data(function, _response)
+		return _response
+	return _decorated
 
 
 class Instance( Base, ProgressMixin ):
@@ -540,7 +556,15 @@ class Instance( Base, ProgressMixin ):
 		"""Returns a list of reports for the given object type"""
 		self.finished( request.id, self.reports_cfg.get_report_names( request.flavor ) )
 
-	def reports_create( self, request ):
+	def sanitize_reports_create(self, request):
+		choices = self.reports_cfg.get_report_names(request.flavor)
+		return dict(
+			report=ChoicesSanitizer(choices=choices, required=True),
+			objects=ListSanitizer(StringSanitizer(minimum=1), required=True, min_elements=1)
+		)
+
+	@sanitize_func(sanitize_reports_create)
+	def reports_create(self, request):
 		"""Creates a report for the given LDAP DNs and returns the file
 
 		requests.options = {}
@@ -549,11 +573,6 @@ class Instance( Base, ProgressMixin ):
 
 		return: report file
 		"""
-
-		if not 'report' in request.options:
-			raise UMC_OptionMissing( "No report is specified" )
-		if not 'objects' in request.options or not request.options[ 'objects' ]:
-			raise UMC_OptionMissing( "No LDAP DNs specified to include in the report" )
 
 		@LDAP_Connection
 		def _thread( request, ldap_connection = None, ldap_position = None ):
