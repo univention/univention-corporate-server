@@ -60,7 +60,7 @@ set_new_rid_in_s4 ()
 {
 	next_rid
 	new_sid="${domain_sid}-${rid}"
-	python2.6 -c "
+	python2.7 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import s4connector

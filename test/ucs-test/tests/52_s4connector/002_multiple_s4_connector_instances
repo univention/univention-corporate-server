@@ -16,7 +16,7 @@ echo "Check for a running connector"
 pgrep -f "/usr/bin/python2.7 -W ignore /usr/lib/pymodules/python2.7/univention/s4connector/s4/main.py" || fail_test 1
 
 echo "Try to start a second connector instance"
-/usr/bin/python2.6 -W ignore /usr/lib/pymodules/python2.7/univention/s4connector/s4/main.py && fail_test 110
+/usr/bin/python2.7 -W ignore /usr/lib/pymodules/python2.7/univention/s4connector/s4/main.py && fail_test 110
 
 if [ "$RETVAL" = 110 ]; then
 	pkill -f "/usr/bin/python2.7 -W ignore /usr/lib/pymodules/python2.7/univention/s4connector/s4/main.py"
