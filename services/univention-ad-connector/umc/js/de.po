@@ -36,7 +36,7 @@ msgid ""
 "Active Directory domain.</p><p>There are two exclusive options:</p>"
 msgstr ""
 "<p>Dieser Assistent führt durch die Konfiguration der Verbindung mit einer "
-"bestehenden Active Directory-Domäne.</p><p>Es gibt zwei grunsätzliche "
+"bestehenden Active Directory-Domäne.</p><p>Es gibt zwei grundsätzliche "
 "Möglichkeiten:</p>"
 
 #: umc/js/adconnector/SetupWizard.js:205
@@ -126,7 +126,7 @@ msgid ""
 "After the installation the replication of password hashes has to be "
 "activated."
 msgstr ""
-"Nach der Installation muss die Replikation der Passwort Hashes aktiviert "
+"Nach der Installation muss die Replikation der Passwort-Hashes aktiviert "
 "werden."
 
 #: umc/js/adconnector/SetupWizard.js:192
@@ -145,7 +145,7 @@ msgid ""
 "problems occurred during the join process."
 msgstr ""
 "Ein Fehler trat während des Beitritts von UCS zur Active Directory-Domäne "
-"auf .Die folgenden Informationen enthalten weitere Details über das genauere "
+"auf. Die folgenden Informationen enthalten weitere Details über das genauere "
 "Problem."
 
 #: umc/js/adconnector/SetupWizard.js:337
@@ -172,7 +172,7 @@ msgid ""
 msgstr ""
 "Standardmäßig überträgt die eingerichtete Active Directory-Verbindung keine "
 "verschlüsselten Passwortdaten in den UCS-Verzeichnisdienst. Das System nutzt "
-"die Active Directory Kerberos Infrastruktur zur Authentifizierung."
+"die Active Directory-Kerberos-Infrastruktur zur Authentifizierung."
 
 #: umc/js/adconnector/SetupWizard.js:356
 msgid "Cancel"
@@ -212,7 +212,7 @@ msgid ""
 "domain is used."
 msgstr ""
 "Es wird aktuell eine verschlüsselte Verbindung zwischen der UCS und der "
-"Active Directory Domäne verwendet."
+"Active Directory-Domäne verwendet."
 
 #: umc/js/adconnector/ConfigPage.js:205
 msgid ""
@@ -249,7 +249,7 @@ msgid ""
 "the Active Directory server."
 msgstr ""
 "In einigen Szenarien kann es dennoch sinnvoll sein, die verschlüsselten "
-"Passwortdaten zu übertragen. In diesem Fall sollte der Passwort Dienst auf "
+"Passwortdaten zu übertragen. In diesem Fall sollte der Passwortdienst auf "
 "dem Active Directory-Server installiert werden."
 
 #: umc/js/adconnector/ConfigPage.js:219
@@ -258,7 +258,7 @@ msgid ""
 "the Active Directory domain."
 msgstr ""
 "Bei Anpassungsbedarf können Sie hier ein neues Root-Zertifikat aus der "
-"Active Directory Domäne hochladen."
+"Active Directory-Domäne hochladen."
 
 #: umc/js/adconnector/DownloadInfo.js:46
 msgid ""
@@ -368,7 +368,7 @@ msgid ""
 "Synchronisation of account data between an Active Directory and this UCS "
 "domain."
 msgstr ""
-"Synchronisation von Kontendaten zwischen einer Active Directory und dieser "
+"Synchronisation von Kontendaten zwischen einer Active Directory- und dieser "
 "UCS-Domäne."
 
 #: umc/js/adconnector/DownloadInfo.js:66
@@ -416,7 +416,7 @@ msgid ""
 "The connection to the Active Directory domain has been configured "
 "successfully."
 msgstr ""
-"Die Verbindung zur Active Directory Domäne wurde erfolgreich eingerichtet."
+"Die Verbindung zur Active Directory-Domäne wurde erfolgreich eingerichtet."
 
 #: umc/js/adconnector/ConfigPage.js:207 umc/js/adconnector/ConfigPage.js:213
 msgid ""
