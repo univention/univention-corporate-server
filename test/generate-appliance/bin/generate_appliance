@@ -102,9 +102,10 @@ class Raw(File):
 		store = os.path.join(STOREDIR, self.hash)
 		target = os.path.join(store, 'image.raw')
 		if not os.path.exists(store):
+			log('Creating RAW')
 			os.mkdir(store)
-			cmd = ('qemu-img','convert','-O','raw','/dev/stdin','image.raw', )
-			subprocess.check_call(cmd, cwd=TEMPDIR, stdin=self._inputfile)
+			cmd = ('qemu-img','convert','-p','-O','raw','/dev/stdin','image.raw', )
+			subprocess.check_call(cmd, cwd=TEMPDIR, stdin=self._inputfile, stdout=sys.stderr)
 			output = os.path.join(TEMPDIR, 'image.raw')
 			os.rename(output, target)
 		self._path = target
@@ -128,6 +129,7 @@ class Vmdk(File):
 		return self._path
 
 	def _create(self):
+		self._raw.path()
 		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
 		store = os.path.join(STOREDIR, self.hash)
 		target = os.path.join(store, 'image.vmdk')
@@ -135,14 +137,16 @@ class Vmdk(File):
 			os.mkdir(store)
 			output = os.path.join(TEMPDIR, 'image.vmdk')
 			if self._streamOptimized:
+				log('Creating VMDK (streamOptimized)')
 				# qemu-img 1.1 is broken
 				#cmd = ('qemu-img','convert','-f','raw','-O','vmdk','-o','subformat=streamOptimized', self._raw.path(), 'image.vmdk', )
 				#subprocess.check_call(cmd, cwd=TEMPDIR)
 				# use VMDKstream instead
 				VMDKstream.convert_to_stream(self._raw.path(), output)
 			else:
-				cmd = ('qemu-img','convert','-f','raw','-O','vmdk','-o','subformat=monolithicSparse', self._raw.path(), 'image.vmdk', )
-				subprocess.check_call(cmd, cwd=TEMPDIR)
+				log('Creating VMDK (monolithic)')
+				cmd = ('qemu-img','convert','-p','-f','raw','-O','vmdk','-o','subformat=monolithicSparse', self._raw.path(), 'image.vmdk', )
+				subprocess.check_call(cmd, cwd=TEMPDIR, stdout=sys.stderr)
 			os.rename(output, target)
 		self._path = target
 		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
@@ -170,13 +174,16 @@ class Tar(File):
 		return self._path
 
 	def _create(self):
+		[source_file.path() for _, source_file in self._file_list if isinstance(source_file, File)]
 		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
 		store = os.path.join(STOREDIR, self.hash)
 		target = os.path.join(store, 'archive.tar')
 		if not os.path.exists(store):
+			log('Creating TAR')
 			os.mkdir(store)
 			archive = tarfile.TarFile(name=target, mode='w', format=self._format)
 			for name, source_file in self._file_list:
+				log('  %s' % (name, ))
 				if isinstance(source_file, str):
 					handle = StringIO(source_file)
 				else:
@@ -196,7 +203,8 @@ class Tar(File):
 class Pkzip(File):
 	def __init__(self, file_list):
 		for _, source_file in file_list:
-			assert isinstance(source_file, (File, )) or isinstance(source_file, str)
+			if source_file is not None:
+				assert isinstance(source_file, (File, )) or isinstance(source_file, str)
 		self._file_list = file_list
 		File.__init__(self)
 
@@ -204,6 +212,8 @@ class Pkzip(File):
 	@File.hashed
 	def hash(self):
 		def hash(thing):
+			if thing is None:
+				return None
 			if isinstance(thing, str):
 				return hashlib.sha256(thing).hexdigest()
 			return thing.hash
@@ -214,18 +224,28 @@ class Pkzip(File):
 		return self._path
 
 	def _create(self):
+		[source_file.path() for _, source_file in self._file_list if isinstance(source_file, File)]
 		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
 		store = os.path.join(STOREDIR, self.hash)
 		target = os.path.join(store, 'archive.zip')
 		if not os.path.exists(store):
+			log('Creating PKZIP')
 			os.mkdir(store)
-			archive = zipfile.ZipFile(file=target, mode='w', compression=zipfile.ZIP_DEFLATED, allowZip64=True)
 			for name, source_file in self._file_list:
-				if isinstance(source_file, str):
-					archive.writestr(name, source_file)
+				if source_file is None:
+					os.mkdir(os.path.join(TEMPDIR, name))
+				elif isinstance(source_file, str):
+					with open(os.path.join(TEMPDIR, name), 'w') as f:
+						f.write(source_file)
 				else:
-					archive.write(source_file.path(), name)
-			archive.close()
+					os.link(source_file.path(), os.path.join(TEMPDIR, name))
+			cmd = ['zip', target, ] + [name for name, _ in self._file_list]
+			subprocess.check_call(cmd, cwd=TEMPDIR, stdout=sys.stderr)
+			for name, source_file in reversed(self._file_list):
+				if source_file is None:
+					os.rmdir(os.path.join(TEMPDIR, name))
+				else:
+					os.unlink(os.path.join(TEMPDIR, name))
 		self._path = target
 		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
 
@@ -368,31 +388,37 @@ class VMware(Target):
 		return 'vmware'
 
 	def create(self, image, options):
-		machine_name = 'UCS %s' % (options.version, )
+		machine_name = '%s %s' % (
+			options.product,
+			options.version,
+		)
+		image_name = '%s %s' % (
+			options.product,
+			options.version,
+		)
+		archive_name = '%s-%s-vmware.zip' % (
+			options.product.replace(' ', '-').lower(),
+			options.version,
+		)
 		machine_uuid = uuid.uuid4()
 		image_uuid = uuid.uuid4()
-		image_name = 'UCS %s' % (
-			options.version,
-		)
-		archive_name = 'ucs-%s-vmware.zip' % (
-			options.version,
-		)
 		if os.path.exists(archive_name):
 			raise IOError('Output file %r exists' % (archive_name, ))
 		files = [
-			('UCS %s/' % (options.version, ),
-			 str(), ),
-			('UCS %s/UCS %s.vmdk' % (options.version, options.version, ),
+			('%s/' % (image_name, ),
+			 None, ),
+			('%s/%s.vmdk' % (image_name, image_name, ),
 			 Vmdk(image), ),
-			('UCS %s/UCS %s.vmxf' % (options.version, options.version, ),
+			('%s/%s.vmxf' % (image_name, image_name, ),
 			 create_vmxf(machine_uuid, image_name), ),
-			('UCS %s/UCS %s.vmx' % (options.version, options.version, ),
+			('%s/%s.vmx' % (image_name, image_name, ),
 			 create_vmx(machine_name, image_name, image_uuid), ),
-			('UCS %s/UCS %s.vmsd' % (options.version, options.version, ),
+			('%s/%s.vmsd' % (image_name, image_name, ),
 			 str(), ),
 		]
 		zip = Pkzip(files)
 		shutil.copyfile(zip.path(), archive_name)
+		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
 VMware = VMware()
 
 
@@ -868,18 +894,24 @@ class Virtualbox(Target):
 		return 'ova-virtualbox'
 
 	def create(self, image, options):
-		machine_name = 'UCS %s' % (options.version, )
+		machine_name = '%s %s' % (
+			options.product,
+			options.version,
+		)
+		image_name = '%s-%s-virtualbox-disk1.vmdk' % (
+			options.product.replace(' ', '-').lower(),
+			options.version,
+		)
+		descriptor_name = '%s-%s-virtualbox.ovf' % (
+			options.product.replace(' ', '-').lower(),
+			options.version,
+		)
+		archive_name = '%s-%s-virtualbox.ova' % (
+			options.product.replace(' ', '-').lower(),
+			options.version,
+		)
 		machine_uuid = uuid.uuid4()
 		image_uuid = uuid.uuid4()
-		image_name = 'ucs-%s-virtualbox-disk1.vmdk' % (
-			options.version,
-		)
-		descriptor_name = 'ucs-%s-virtualbox.ovf' % (
-			options.version,
-		)
-		archive_name = 'ucs-%s-virtualbox.ova' % (
-			options.version,
-		)
 		if os.path.exists(archive_name):
 			raise IOError('Output file %r exists' % (archive_name, ))
 		# HACK: change image descriptor to expected format
@@ -919,6 +951,7 @@ ddb.comment=""
 		]
 		ova = Tar(files)
 		shutil.copyfile(ova.path(), archive_name)
+		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
 Virtualbox = Virtualbox()
 
 
@@ -932,6 +965,7 @@ def parse_options():
 	parser.set_defaults(choices=defaults)
 	parser.usage = '%prog [options]\n create virtual appliances for various virtualization systems from a single disk image'
 	parser.add_option('-s', '--source', help='source image (required)')
+	parser.add_option('-p', '--product', help='product name of appliance (default: %default)', default='UCS')
 	parser.add_option('-v', '--version', help='version string of appliance')
 	parser.add_option(
 		'-o', '--only', action='store_const', dest='choices', const=[],
@@ -968,6 +1002,10 @@ def parse_options():
 		parser.error(e)
 	return options
 
+def log(text):
+	sys.stderr.write(text + '\n')
+	sys.stderr.flush()
+
 def main():
 	options = parse_options()
 	source_image = Raw(options.source)
@@ -984,6 +1022,6 @@ if __name__ == "__main__":
 	try:
 		sys.exit(main())
 	finally:
-		print 'Cleanup'
+		log('Cleanup')
 		cmd = ('find', WORKDIR, '(','-type','f','-printf','  %f\\n','-o','-true',')','-delete', )
-		subprocess.call(cmd)
+		subprocess.call(cmd, stdout=sys.stderr)

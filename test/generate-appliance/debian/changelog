@@ -1,3 +1,10 @@
+generate-appliance (0.0.2-0) unstable; urgency=medium
+
+  * Add progress output (Bug #35756)
+  * Fix ZIP issue
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 03 Sep 2014 19:20:21 +0200
+
 generate-appliance (0.0.1-0) unstable; urgency=medium
 
   * Initial release. (Bug #35756)
