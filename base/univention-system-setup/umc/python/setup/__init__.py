@@ -383,7 +383,7 @@ class Instance(Base, ProgressMixin):
 
 		# windows domain
 		_check('windows/domain', lambda x: x == x.upper(), _("The windows domain name can only consist of upper case characters."))
-		_check('windows/domain', lambda x: len(x) < 14, _("The length of the windows domain name needs to be smaller than 14 characters."))
+		_check('windows/domain', lambda x: len(x) <= 15, _("The windows domain name cannot be longer than 15 characters."))
 		_check('windows/domain', util.is_windowsdomainname, _("The windows domain name is not valid."))
 
 		# LDAP base

@@ -1,3 +1,10 @@
+univention-system-setup (8.0.36-1) unstable; urgency=low
+
+  * Windows NETBIOS domain names can be up to 15 characters long
+    (Bug #35599)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Sep 2014 18:05:36 +0200
+
 univention-system-setup (8.0.35-4) unstable; urgency=low
 
   * Prevent double registration (Bug #35711) 
