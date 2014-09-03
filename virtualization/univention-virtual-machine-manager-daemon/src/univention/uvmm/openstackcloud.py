@@ -230,7 +230,7 @@ class OpenStackCloudConnection(CloudConnection):
 		regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
 		instances = []
 		for instance in self._instances:
-			if regex.match(instance.name) is not None:
+			if regex.match(instance.name) is not None or regex.match(instance.id) is not None:
 				i = Cloud_Data_Instance()
 				i.name = instance.name
 				i.extra = instance.extra

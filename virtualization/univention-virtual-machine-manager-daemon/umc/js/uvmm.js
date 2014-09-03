@@ -63,11 +63,12 @@ define([
 	"umc/modules/uvmm/TreeModel",
 	"umc/modules/uvmm/DomainPage",
 	"umc/modules/uvmm/DomainWizard",
+	"umc/modules/uvmm/InstancePage",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
 ], function(declare, lang, array, string, query, Deferred, on, entities, Menu, MenuItem, ContentPane, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, ExpandingTitlePane, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
-	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, types, _) {
+	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, types, _) {
 
 	var isRunning = function(item) {
 		return (item.state == 'RUNNING' || item.state == 'IDLE' || item.state == 'PAUSED') && item.node_available;
@@ -91,6 +92,7 @@ define([
 
 		// internal reference to the detail page for editing an UDM object
 		_domainPage: null,
+		_instancePage: null,
 
 		// reference to a `umc.widgets.Tree` instance which is used to display the container
 		// hierarchy for the UDM navigation module
@@ -303,6 +305,18 @@ define([
 			});
 			this.addChild(this._domainPage);
 
+			// setup the instance page
+			this._instancePage = new InstancePage({
+				onClose: lang.hitch(this, function() {
+					this.selectChild(this._searchPage);
+					this.set('title', this.defaultTitle);
+				}),
+				moduleWidget: this,
+				addNotification: lang.hitch(this, 'addNotification'),
+				addWarning: lang.hitch(this, 'addWarning')
+			});
+			this.addChild(this._instancePage);
+
 			// register events
 			this._domainPage.on('UpdateProgress', lang.hitch(this, 'updateProgress'));
 		},
@@ -313,7 +327,7 @@ define([
 			on.once(this._tree, 'load', lang.hitch(this, function() {
 				this.own(this._tree.watch('path', lang.hitch(this, function() {
 					var searchType = this._searchForm.getWidget('type').get('value');
-					if (searchType == 'domain') {
+					if (searchType == 'domain' || searchType == 'instance') {
 						this.filter();
 					}
 				})));
@@ -566,6 +580,67 @@ define([
 
 		},
 
+		_removeInstance: function( ids, items ) {
+			var _dialog = null, form = null;
+			var domain = items[ 0 ];
+			var domain_details = null;
+			var domainURI = ids[ 0 ];
+			var widgets = [
+				{
+					type: Text,
+					name: 'question',
+					content: '<p>' + lang.replace( _( 'Should the selected instance {label} be removed?' ), {
+						label: entities.encode(domain.label)
+					} ) + '</p>',
+					label: ''
+				} ];
+			var layout = [ 'question' ];
+
+			var _cleanup = function() {
+				_dialog.hide();
+				form.destroyRecursive();
+			};
+
+			var _remove = lang.hitch( this, function() {
+				this.updateProgress( 0, 1 );
+
+				tools.umcpCommand('uvmm/instance/remove', {
+					domainURI: domainURI
+				} ).then( lang.hitch( this, function( response ) {
+					this.updateProgress( 1, 1 );
+					this.moduleStore.onChange();
+				} ), lang.hitch( this, function() {
+					this.updateProgress( 1, 1 );
+				} ) );
+			} );
+
+			form = new Form({
+				widgets: widgets,
+				buttons: [{
+					name: 'submit',
+					label: _( 'delete' ),
+					style: 'float: right;',
+					callback: function() {
+						_cleanup();
+						_remove();
+					}
+				}, {
+					name: 'cancel',
+					label: _('Cancel'),
+					callback: _cleanup
+				}],
+				layout: layout
+			});
+
+			_dialog = new Dialog({
+				title: _( 'Remove a instance' ),
+				content: form,
+				'class' : 'umcPopup'
+			});
+			_dialog.show();
+
+		},
+
 		_addDomain: function() {
 			var wizard = null;
 
@@ -710,6 +785,31 @@ define([
 			}));
 		},
 
+		_changeStateInstance: function(/*String*/ newState, action, ids, items ) {
+			// chain all UMCP commands
+			var deferred = new Deferred();
+			deferred.resolve();
+
+			array.forEach(ids, function(iid, i) {
+				deferred = deferred.then(lang.hitch(this, function() {
+					this.updateProgress(i, ids.length);
+					return tools.umcpCommand('uvmm/instance/state', {
+						uri: iid,
+						state: newState
+					});
+				}));
+			}, this);
+
+			// finish the progress bar and add error handler
+			deferred = deferred.then(lang.hitch(this, function() {
+				this.moduleStore.onChange();
+				this.updateProgress(ids.length, ids.length);
+			}), lang.hitch(this, function(error) {
+				this.moduleStore.onChange();
+				this.updateProgress(ids.length, ids.length);
+			}));
+		},
+
 		_cloneDomain: function( ids ) {
 			var _dialog = null, form = null;
 
@@ -787,6 +887,14 @@ define([
 			this.selectChild(this._domainPage);
 		},
 
+		openInstancePage: function(ids) {
+			if (!ids.length) {
+				return;
+			}
+			this._instancePage.load(ids[0]);
+			this.selectChild(this._instancePage);
+		},
+
 		_getGridColumns: function(type) {
 			if (type == 'node') {
 				return [{
@@ -803,6 +911,21 @@ define([
 					label: _('Memory usage'),
 					width: 'adjust',
 					formatter: lang.hitch(this, 'memoryUsageFormatter')
+				}];
+			}
+
+			if (type == 'instance') {
+				return [{
+					name: 'label',
+					label: _('Name'),
+					formatter: lang.hitch(this, 'iconFormatter')
+				}, {
+					name: 'start',
+					label: _('Start'),
+					width: '50px',
+					'class': 'uvmmStartColumn',
+					description: _( 'Start the instance' ),
+					formatter: lang.hitch(this, '_startFormatter')
 				}];
 			}
 
@@ -856,12 +979,13 @@ define([
 			if (item._univention_cache_button_start) {
 				return item._univention_cache_button_start;
 			}
+			var call = item.type == 'instance' ? '_changeStateInstance' : '_changeState'
 			var id = item[this._grid.moduleStore.idProperty];
 			var btn = new Button({
 				label: '',
 				iconClass: 'umcIconPlay',
 				style: 'padding: 0; display: inline; margin: 0;',
-				callback: lang.hitch(this, '_changeState', 'RUN', 'start', [id], [item])
+				callback: lang.hitch(this, call, 'RUN', 'start', [id], [item])
 			});
 			this.own(btn);
 			var tooltip = new Tooltip({
@@ -900,9 +1024,54 @@ define([
 		},
 
 		_getGridActions: function(type) {
-			if (type == 'node') {
+			if (type == 'node' || type == 'cloud') {
 				// we do not have any actions for nodes
 				return [];
+			}
+
+			if (type == 'instance') {
+				return [{
+					name: 'edit',
+					label: _( 'Edit' ),
+					isStandardAction: true,
+					isMultiAction: false,
+					iconClass: 'umcIconEdit',
+					description: _( 'Edit the configuration of the virtual machine' ),
+					callback: lang.hitch(this, 'openInstancePage')
+				}, {
+					name: 'start',
+					label: _( 'Start' ),
+					iconClass: 'umcIconPlay',
+					description: _( 'Start the instance' ),
+					isStandardAction: true,
+					isMultiAction: true,
+					callback: lang.hitch(this, '_changeStateInstance', 'RUN', 'start' ),
+					canExecute: canStart
+				}, {
+					name: 'restart',
+					label: _( 'Restart' ),
+					isStandardAction: false,
+					isMultiAction: true,
+					callback: lang.hitch(this, '_changeStateInstance', 'RESTART', 'restart' ),
+					canExecute: isRunning
+				}, {
+					name: 'softrestart',
+					label: _( 'Shutdown & Restart' ),
+					isStandardAction: false,
+					isMultiAction: true,
+					callback: lang.hitch(this, '_changeStateInstance', 'SOFTRESTART', 'softrestart' ),
+					canExecute: isRunning
+				},{
+					name: 'remove',
+					label: _( 'Remove' ),
+					isStandardAction: false,
+					isMultiAction: false,
+					iconClass: 'umcIconDelete',
+					callback: lang.hitch(this, '_removeInstance' ),
+					canExecute: function(item) {
+						return item.node_available;
+					}
+				}];
 			}
 
 			// else type == 'domain'

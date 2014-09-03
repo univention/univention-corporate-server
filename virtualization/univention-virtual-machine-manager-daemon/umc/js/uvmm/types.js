@@ -113,6 +113,8 @@ define([
 			// convert storage capacity to pretty human readable text
 			var unit;
 			if (undefined === val || null === val || "" === val) {
+				return '';
+				// FIXME: phahn, what was the purpose of this?
 				return this.get("displayedValue");
 			} else if (val < 1024) {
 				return sprintf('%d B', val);

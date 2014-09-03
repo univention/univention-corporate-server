@@ -35,9 +35,10 @@ from univention.lib.i18n import Translation
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import sanitize
-from univention.management.console.modules.sanitizers import SearchSanitizer
+from univention.management.console.modules.sanitizers import SearchSanitizer, ChoicesSanitizer
 
 from notifier import Callback
+from urlparse import urldefrag
 
 _ = Translation('univention-management-console-modules-uvmm').translate
 
@@ -138,13 +139,13 @@ class Cloud(object):
 			success, data = result
 
 			if success:
-				for hostname, insts in data.items():
+				for conn_name, insts in data.items():
 					for inst in insts:
-						instance_uri = '%s#%s' % (hostname, inst.id)
+						instance_uri = '%s#%s' % (conn_name, inst.id)
 						instances.append({
 							'id': instance_uri,
 							'label': inst.name,
-							'nodeName': hostname,
+							'nodeName': conn_name,
 							'state': ('RUNNING' if inst.state == 0 else 'SHUTOFF'),  # FIXME
 							'type': 'instance',
 							'suspended': None,  # FIXME
@@ -167,4 +168,49 @@ class Cloud(object):
 				Callback(_finished, request),
 				conn_name=request.options.get('nodePattern', ''),
 				pattern=request.options['domainPattern']
+				)
+
+	@sanitize(state=ChoicesSanitizer(choices=('RUN', 'RESTART', 'SOFTRESTART')))
+	def instance_state(self, request):
+		"""
+		Set the state a instance instance_id on cloud conn_name.
+
+		options: {
+			'uri': <conn_name#instance_id>,
+			'state': (RUN|RESTART|SOFTRESTART),
+			}
+
+		return:
+		"""
+		self.required_options(request, 'uri', 'state')
+
+		conn_name, instance_id = urldefrag(request.options['uri'])
+		state = request.options['state']
+
+		self.uvmm.send(
+				'L_CLOUD_INSTANCE_STATE',
+				Callback(self._thread_finish, request),
+				conn_name=conn_name,
+				instance_id=instance_id,
+				state=state,
+				)
+
+	def instance_remove(self, request):
+		"""
+		Removes a instance.
+
+		options: {
+			'domainURI': <domain uri>
+			}
+
+		return:
+		"""
+		self.required_options(request, 'domainURI')
+		conn_name, instance_id = urldefrag(request.options['domainURI'])
+
+		self.uvmm.send(
+				'L_CLOUD_INSTANCE_TERMINATE',
+				Callback(self._thread_finish, request),
+				conn_name=conn_name,
+				instance_id=instance_id
 				)
