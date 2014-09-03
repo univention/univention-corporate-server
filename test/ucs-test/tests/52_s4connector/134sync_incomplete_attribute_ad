@@ -1,0 +1,49 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Check for incomplete sync from AD to UCS"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+UDM_users_user_username="$(random_chars)"
+
+AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "sync"
+
+
+ad_createuser $UDM_users_user_username $UDM_users_user_description "CN=users,$(ad_get_base)"
+ad_wait_for_synchronization; fail_bool 0 110
+ad_set_attribute "$AD_DN" "description" "123"
+ad_set_attribute "$AD_DN" "telephoneNumber" "12 üüü 34" #invalid syntax in UCS
+ad_set_attribute "$AD_DN" "homePhone" "456"
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user"; fail_bool 0 110
+ad_exists "$AD_DN"; fail_bool 0 110
+
+ad_verify_attribute "$AD_DN" "description" "123" || fail_test 110
+ad_verify_attribute "$AD_DN" "telephoneNumber" "12 üüü 34" || fail_test 110
+ad_verify_attribute "$AD_DN" "homePhone" "456" || fail_test 110
+
+ad_delete "$AD_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user"; fail_bool 1 110
+ad_exists "$AD_DN"; fail_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
