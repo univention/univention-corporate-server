@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-72) unstable; urgency=medium
+
+  * Feedback from QA (Bug #35602)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Sep 2014 17:08:48 +0200
+
 univention-ad-connector (8.0.17-71) unstable; urgency=medium
 
   * Fixed guess_ad_domain_language function() and call it after the ssl
