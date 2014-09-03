@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-74) unstable; urgency=medium
+
+  * Removed MOD_DELETE for con_other_attribute during ldap add 
+    (Bug #31172)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 03 Sep 2014 17:01:08 +0200
+
 univention-s4-connector (8.0.33-73) unstable; urgency=medium
 
   * Added a locking table to avoid overwrites from objects which have

@@ -220,6 +220,10 @@ if __name__ == '__main__':
 		print 'E: uuid1 is locked for UCS'
 
 	l.lock_ucs(uuid1)
+	l.lock_ucs(uuid1)
+	l.lock_ucs(uuid1)
+	l.lock_ucs(uuid1)
+	l.lock_ucs(uuid1)
 
 	if l.is_s4_locked(guid1):
 		print 'E: guid1 is locked for S4'
