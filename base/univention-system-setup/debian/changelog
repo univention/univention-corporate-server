@@ -1,3 +1,9 @@
+univention-system-setup (7.0.69-55) unstable; urgency=low
+
+  * Prevent double registration (Bug #35711)
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 03 Sep 2014 09:38:07 +0200
+
 univention-system-setup (7.0.69-54) unstable; urgency=low
 
   * Do not show Firefox data submission policy popup during 
