@@ -169,6 +169,7 @@ run_join_scripts ()
 
 do_reboot () {
 	# Bug #35733: pre UCS-4.0-0 interim-1 EC2 images is broken due to insserv
+	return
 	up () {
 		update-rc.d -f "$1" remove
 		update-rc.d "$@"
