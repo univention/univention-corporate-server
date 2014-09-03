@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/python2.6
+#!/usr/share/ucs-test/runner /usr/bin/python2.7
 ## desc: Checking for UCR template warnings in all UCR conffiles
 ## tags:
 ##  - basic

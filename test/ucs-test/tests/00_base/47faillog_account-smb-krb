@@ -33,7 +33,7 @@ posix_login () {
 	[ -z "$expire" ] || [ "$expire" -gt 1 ]
 }
 posix_login () {
-	python2.6 -c '
+	python2.7 -c '
 import sys
 import os
 import PAM

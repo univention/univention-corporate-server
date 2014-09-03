@@ -78,7 +78,7 @@ AD_ESTIMATED_MAX_COMPUTATION_TIME=3
 #
 
 function ad_is_connector_running () {
-	# if ps ax | grep -v "grep" | grep -qs "/usr/lib/pymodules/python2.6/univention/connector/ad/main.py"
+	# if ps ax | grep -v "grep" | grep -qs "/usr/lib/pymodules/python2.7/univention/connector/ad/main.py"
 	if ps ax | grep -v "grep" | grep -qs "/usr/share/pyshared/univention/connector/ad/main.py"
 	then
 		return 0
@@ -178,7 +178,7 @@ function ad_exists () {
 	local dn="$1"
 	local configbase="${2:-connector}"
 
-	python2.6 -c "
+	python2.7 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
@@ -217,7 +217,7 @@ function ad_move () {
 	local newdn="$2"
 	local configbase="${3:-connector}"
 
-	python2.6 -c "
+	python2.7 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
@@ -241,7 +241,7 @@ function ad_set_attribute () {
 	local value="$3"
 	local configbase="${4:-connector}"
 
-	python2.6 -c "
+	python2.7 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
@@ -264,7 +264,7 @@ function ad_delete_attribute () {
 	local name="$2"
 	local configbase="${3:-connector}"
 
-	python2.6 -c "
+	python2.7 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
@@ -288,7 +288,7 @@ function ad_append_to_attribute () {
 	local value="$3"
 	local configbase="${4:-connector}"
 
-	python2.6 -c "
+	python2.7 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
@@ -312,7 +312,7 @@ function ad_remove_from_attribute () {
 	local value="$3"
 	local configbase="${4:-connector}"
 
-	python2.6 -c "
+	python2.7 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
@@ -336,7 +336,7 @@ function ad_createuser () {
 	local position="$3"
 	local configbase="${4:-connector}"
 
-	python2.6 -c "
+	python2.7 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
@@ -360,7 +360,7 @@ function ad_group_create () {
 	local position="$3"
 	local configbase="${4:-connector}"
 
-	python2.6 -c "
+	python2.7 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
@@ -384,7 +384,7 @@ function ad_container_create () {
 	local position="$3"
 	local configbase="${4:-connector}"
 
-	python2.6 -c "
+	python2.7 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
@@ -408,7 +408,7 @@ function ad_createou () {
 	local position="$3"
 	local configbase="${4:-connector}"
 
-	python2.6 -c "
+	python2.7 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
@@ -431,7 +431,7 @@ function ad_get_attribute () {
 	local attribute="$2"
 	local configbase="${3:-connector}"
 
-python2.6 -c "
+python2.7 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
@@ -499,7 +499,7 @@ function ad_get_primary_group () {
 	local user_dn="$1"
 	local configbase="${2:-connector}"
 
-python2.6 -c "
+python2.7 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector
@@ -523,7 +523,7 @@ function ad_set_primary_group () {
 	local group_dn="$2"
 	local configbase="${3:-connector}"
 
-python2.6 -c "
+python2.7 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import adconnector

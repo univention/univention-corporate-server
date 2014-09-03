@@ -1,3 +1,10 @@
+ucs-test (5.0.1-2) unstable; urgency=low
+
+  * Changed remaining occurrences of "python2.6" inside testscripts to "python2.7"
+    (Bug #35664)
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 03 Sep 2014 15:19:30 +0200
+
 ucs-test (5.0.1-1) unstable; urgency=medium
 
   * 10_ldap/25reconnect_uldap: wait for subprocess call (Bug #35741)

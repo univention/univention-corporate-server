@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python2.6
+#!/usr/share/ucs-test/runner python2.7
 ## desc: Try to install all default packages
 ## tags: [basic]
 ## packages: [univention-system-setup]

@@ -768,7 +768,7 @@ udm_kill_univention_cli_server () {
 	done
 }
 
-_UDM_HOOK_FOLDER="/usr/lib/python2.6/site-packages/univention/admin/hooks.d"
+_UDM_HOOK_FOLDER="/usr/lib/python2.7/site-packages/univention/admin/hooks.d"
 _UDM_HOOK_NAME="ucs_test_hook.py"
 udm_extended_attribute_install_hook () {
 	local hook="$1"

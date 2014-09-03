@@ -21,7 +21,7 @@ Application.must_not_have_concurrent_operation = lambda x: True
 # the next lines are a workaround for the following traceback:
 #   Error in function stop
 #   Traceback (most recent call last):
-#     File "/usr/lib/python2.6/dist-packages/apt/progress/text.py", line 229, in stop
+#     File "/usr/lib/python2.7/dist-packages/apt/progress/text.py", line 229, in stop
 #       signal.signal(signal.SIGWINCH, self._signal)
 #   ValueError: signal only works in main thread
 def _dummy(*args):
