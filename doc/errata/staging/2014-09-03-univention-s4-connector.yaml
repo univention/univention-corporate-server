@@ -1,0 +1,10 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-3
+src: univention-s4-connector
+fix: 8.0.33-73.505.201409031622
+version: [2,3]
+desc: |
+ * A locking table has been added to the S4 connector which is used to
+   avoid the synchronisation of incomplete objects.
+bug: [35391]
