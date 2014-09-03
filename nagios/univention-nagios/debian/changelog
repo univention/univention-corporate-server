@@ -1,3 +1,9 @@
+univention-nagios (8.0.0-3) unstable; urgency=low
+
+  * added a missing / to the symlink (Bug #35078)
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 03 Sep 2014 12:49:07 +0200
+
 univention-nagios (8.0.0-2) unstable; urgency=low
 
   * FIX broken apache config (Bug #35078)

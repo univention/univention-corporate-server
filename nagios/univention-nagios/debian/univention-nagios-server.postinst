@@ -140,7 +140,7 @@ fi
 
 # create symlink here instead of u*-n*-server.links (Bug #35078)
 if [ ! -L /etc/apache2/conf.d/nagios3.conf ]; then
-	ln -s etc/nagios3/apache2.conf /etc/apache2/conf.d/nagios3.conf
+	ln -s /etc/nagios3/apache2.conf /etc/apache2/conf.d/nagios3.conf
 fi
 
 exit 0
