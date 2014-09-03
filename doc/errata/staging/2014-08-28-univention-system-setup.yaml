@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-system-setup
-fix: 7.0.69-54.657.201408281722
+fix: 7.0.69-55.663.201409030959
 version: [3]
 desc: |
   This update fixes the following issues:
@@ -12,4 +12,7 @@ desc: |
     stage in the boot process
   * Do not show Firefox data submission policy popup during
     system setup
-bug: [35587,35721.35605]
+  * If an email address is given during the system setup
+    the startup wizard won't ask for an activation address.
+    This prevents a possible double registration.
+bug: [35587,35721,35605,35711]
