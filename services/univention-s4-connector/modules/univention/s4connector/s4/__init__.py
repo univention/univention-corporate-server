@@ -41,6 +41,7 @@ from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
 from samba.dcerpc import security
 from samba.ndr import ndr_pack, ndr_unpack
+from samba.dcerpc import misc
 
 DECODE_IGNORELIST=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord']
 
@@ -740,7 +741,7 @@ class s4(univention.s4connector.ucs):
 		if not self.config.has_section('S4 rejected'):
 			ud.debug(ud.LDAP, ud.INFO,"__init__: init add config section 'S4 rejected'")
 			self.config.add_section('S4 rejected')
-			
+
 		if not self.config.has_option('S4','lastUSN'):
 			ud.debug(ud.LDAP, ud.INFO,"__init__: init lastUSN with 0")
 			self._set_config_option('S4','lastUSN','0')
@@ -2271,13 +2272,24 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: remove %s from group cache" % object['dn'])
 			self.group_mapping_cache_con[object['dn'].lower()] = None
 
-		s4_object=self.get_object(object['dn'])
+		s4_object = self.get_object(object['dn'])
+		if s4_object:
+			guid_blob = s4_object.get('objectGUID')[0]
+			objectGUID = str(ndr_unpack(misc.GUID, guid_blob))
+
+			if self.lockingdb.is_s4_locked(objectGUID):
+				ud.debug(ud.LDAP, ud.PROCESS, "Unable to sync %s (GUID: %s). The object is currently locked." % (object['dn'], objectGUID))
+				return False
 
 		#
 		# ADD
 		#
 		if (object['modtype'] == 'add' and not s4_object) or (object['modtype'] == 'modify' and not s4_object):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: add object: %s"%object['dn'])
+	
+			entryUUID = object['attributes'].get('entryUUID')[0]
+			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: lock UCS entryUUID: %s" % entryUUID)
+			self.lockingdb.lock_ucs(entryUUID)
 
 			self.addToCreationList(object['dn'])
 
@@ -2354,6 +2366,8 @@ class s4(univention.s4connector.ucs):
 						ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s" % f)
 						f(self, property_type, object)
 						ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s (done)" % f)
+			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: unlock UCS entryUUID: %s" % entryUUID)
+			self.lockingdb.unlock_ucs(entryUUID)
 
 		#
 		# MODIFY

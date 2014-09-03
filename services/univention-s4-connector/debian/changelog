@@ -1,3 +1,10 @@
+univention-s4-connector (9.0.5-1) unstable; urgency=medium
+
+  * Added a locking table to avoid overwrites from objects which have
+    been synchronized half (Bug #35391)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 03 Sep 2014 16:21:51 +0200
+
 univention-s4-connector (9.0.4-6) unstable; urgency=medium
 
   * Call samba-ad-dc init script instead of samba4 (Bug #35319)
