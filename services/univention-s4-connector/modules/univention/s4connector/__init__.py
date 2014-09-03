@@ -47,6 +47,7 @@ from signal import *
 term_signal_caught = False
 
 from univention.s4connector.s4cache import S4Cache
+from univention.s4connector.lockingdb import LockingDB
 import sqlite3 as lite
 
 univention.admin.modules.update()
@@ -413,6 +414,9 @@ class ucs:
 		s4cachedbfile='/etc/univention/%s/s4cache.sqlite' % self.CONFIGBASENAME
 		self.s4cache = S4Cache(s4cachedbfile)
 
+		lockingdbfile='/etc/univention/%s/lockingdb.sqlite' % self.CONFIGBASENAME
+		self.lockingdb = LockingDB(lockingdbfile)
+
 		configfile='/etc/univention/%s/s4internal.cfg' % self.CONFIGBASENAME
 		if os.path.exists(configfile):
 			ud.debug(ud.LDAP, ud.PROCESS, "Converting %s into a sqlite database" % configfile)
@@ -713,6 +717,7 @@ class ucs:
 				if self.was_entryUUID_deleted(entryUUID):
 					ud.debug(ud.LDAP, ud.PROCESS, "__sync_file_from_ucs: Object with entryUUID %s was already deleted. Don't re-create." % entryUUID)
 					return True
+
 			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: old: %s" % old)
 			#ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new: %s" % new)
 			if old and new:
@@ -1332,6 +1337,13 @@ class ucs:
 				# In this case we use the base DN
 				pass
 
+		if old_object:
+			uuid = self.lo.getAttr(old_object.dn, 'entryUUID')
+			if uuid:
+				if self.lockingdb.is_ucs_locked(uuid[0]):
+					ud.debug(ud.LDAP, ud.PROCESS, "Unable to sync %s (UUID: %s). The object is currently locked." % (old_object.dn, uuid[0]))
+					return False
+
 		try:
 			guid_unicode = original_object.get('attributes').get('objectGUID')[0]
 			guid_blob = guid_unicode.encode('ISO-8859-1')	## to compensate for __object_from_element
@@ -1355,6 +1367,10 @@ class ucs:
 			ud.debug(ud.LDAP, ud.INFO, "The following attributes have been changed: %s" % object['changed_attributes'])
 						
 			result = False
+			if object['modtype'] == 'add':
+				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: lock S4 guid: %s" % guid)
+				self.lockingdb.lock_s4(guid)
+
 			if hasattr(self.property[property_type],"ucs_sync_function"):
 				result = self.property[property_type].ucs_sync_function(self, property_type, object)
 			else:
@@ -1399,6 +1415,10 @@ class ucs:
 				self._debug_traceback(ud.ERROR,
 									  "failed in post_con_modify_functions")
 				result = False				
+
+			if object['modtype'] == 'add' and result:
+				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: unlock S4 guid: %s" % guid)
+				self.lockingdb.unlock_s4(guid)
 
 			ud.debug(ud.LDAP, ud.INFO,
 					       "Return  result for DN (%s)" % object['dn'])

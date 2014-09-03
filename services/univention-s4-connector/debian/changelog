@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-73) unstable; urgency=medium
+
+  * Added a locking table to avoid overwrites from objects which have
+    been synchronized half (Bug #35391)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 03 Sep 2014 16:21:51 +0200
+
 univention-s4-connector (8.0.33-72) unstable; urgency=medium
 
   * Fixed python traceback from last commit (Bug #35626)
