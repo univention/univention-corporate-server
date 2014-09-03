@@ -245,8 +245,8 @@ msgstr "Die Länge von System- und Domänennamen ist größer als 63 Zeichen."
 
 #: umc/python/setup/__init__.py:400
 msgid ""
-"The length of the windows domain name needs to be smaller than 14 characters."
-msgstr "Die Länge des Windows Domain Names ist größer als 14 Zeichen."
+"The windows domain name cannot be longer than 15 characters."
+msgstr "Der Windows-Domänenname darf nicht länger als 15 Zeichen sein."
 
 #: umc/python/setup/__init__.py:427
 msgid "The primary network device must exist."
