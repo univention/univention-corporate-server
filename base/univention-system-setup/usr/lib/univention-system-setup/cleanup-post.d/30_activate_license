@@ -38,6 +38,8 @@ if [ "$server_role" = "domaincontroller_master" -a -n "$email" ]; then
 	echo "Activating the UCS license with the email address $email..."
 	/usr/sbin/umc-command -r -U "$hostname\$" -y /etc/machine.secret udm/request_new_license -o email="$email"
 	echo "... done"
+	# create a new ucr variable to prevent that the umc wizard is also asking for an email address Bug #35711
+	ucr set umc/web/activation_email=true
 fi
 
 

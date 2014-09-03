@@ -1,3 +1,9 @@
+univention-system-setup (8.0.35-4) unstable; urgency=low
+
+  * Prevent double registration (Bug #35711) 
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 03 Sep 2014 10:40:42 +0200
+
 univention-system-setup (8.0.35-3) unstable; urgency=low
 
   * Bug #33839: Wording
