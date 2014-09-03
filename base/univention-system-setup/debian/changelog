@@ -1,3 +1,9 @@
+univention-system-setup (8.0.35-3) unstable; urgency=low
+
+  * Bug #33839: Wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 03 Sep 2014 09:14:10 +0200
+
 univention-system-setup (8.0.35-2) unstable; urgency=low
 
   * Bug #33839: Add a checkbox to install all upgrades at the end of setup

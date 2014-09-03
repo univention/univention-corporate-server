@@ -98,7 +98,9 @@ msgstr "Aktualisiere das System"
 
 #: usr/lib/univention-system-setup/scripts/50_software/20upgrade:43
 msgid "This might take a while depending on the number of pending updates."
-msgstr "Je nach Anzahl der verfügbaren Aktualisierungen kann das eine Weile dauern."
+msgstr ""
+"Abhängig von der Anzahl der austehenden Updates, kann dies einige Zeit "
+"dauern."
 
 #~ msgid "Configuring IPv4 network devices"
 #~ msgstr "Einrichten der IPv4-Netzwerkgeräte"
