@@ -61,8 +61,8 @@ define([
 	};
 
 	var isLicenseActivated = function() {
-		return tools.ucr('uuid/license').then(function(ucr) {
-			return Boolean(ucr['uuid/license']);
+		return tools.ucr(['uuid/license', 'umc/web/activation_email']).then(function(ucr) {
+			return Boolean(ucr['uuid/license']) || Boolean(ucr['umc/web/activation_email']);
 		});
 	}
 
@@ -71,7 +71,9 @@ define([
 		isLicenseActivated().then(function(activated) {
 			var docs = ['welcome', 'feedback', 'activation', 'help', 'finished'];
 			if (activated) {
-				// remove license activation page if system is already activated
+				// remove license activation page if system is already activated or
+				// the user has already insert an email adress for the activation
+				// during the the system setup
 				var indexActivation = array.indexOf(docs, 'activation');
 				if (indexActivation >= 0) {
 					docs.splice(indexActivation, 1);

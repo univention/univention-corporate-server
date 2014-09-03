@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.0.3-3) unstable; urgency=low
+
+  * Prevent double registration (Bug #35711)
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 03 Sep 2014 10:43:09 +0200
+
 univention-management-console-frontend (4.0.3-2) unstable; urgency=low
 
   * Bug #35654: version bump
