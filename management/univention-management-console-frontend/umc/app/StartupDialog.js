@@ -62,7 +62,7 @@ define([
 
 	var isLicenseActivated = function() {
 		return tools.ucr(['uuid/license', 'umc/web/activation_email']).then(function(ucr) {
-			return Boolean(ucr['uuid/license']) || Boolean(ucr['umc/web/activation_email']);
+			return Boolean(ucr['uuid/license']) || tools.isTrue(ucr['umc/web/activation_email']);
 		});
 	}
 

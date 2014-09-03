@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.0.3-4) unstable; urgency=low
+
+  * Using tools.isTrue instead of Boolean (Bug #35711)
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 03 Sep 2014 13:53:52 +0200
+
 univention-management-console-frontend (4.0.3-3) unstable; urgency=low
 
   * Prevent double registration (Bug #35711)
