@@ -2,10 +2,12 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-s4-connector
-fix: 8.0.33-75.509.201409040628
+fix: 8.0.33-76.511.201409040716
 version: [2,3]
 desc: |
  * A locking table has been added to the S4 connector which is used to
    avoid the synchronisation of incomplete objects.
  * A synchronization error for the telephone number has been fixed.
-bug: [35391,31172]
+ * The inital group membership sync has been fixed if the group exists
+   on both sides and the group members are different.
+bug: [35391,31172,33319]
