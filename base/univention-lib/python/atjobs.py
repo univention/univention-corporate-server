@@ -106,8 +106,9 @@ def list( extended = False ):
 	extended is set to True the parser also extras the comments and the
 	command to execute. This can be used to re-schedule a job.'''
 	p = subprocess.Popen('/usr/bin/atq', stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+	out = p.communicate()[0].splitlines()
 	jobs = []
-	for line in p.stdout:
+	for line in out:
 		ijob = _parseJob(line)
 		if ijob:
 			jobs.append(_parseJob(line))
@@ -133,11 +134,12 @@ def remove( nr ):
 		return result[ 0 ].rm()
 
 def _parseScript( job ):
-	p = subprocess.Popen( [ '/usr/bin/at', '-c', str( job.nr ) ], stdout = subprocess.PIPE )
+	p = subprocess.Popen( [ '/usr/bin/at', '-c', str( job.nr ) ], stdout = subprocess.PIPE, stderr = subprocess.PIPE )
+	out = p.communicate()[0].splitlines()
 	job.comments = {}
 	script = False
 	job.command = ''
-	for line in p.stdout:
+	for line in out:
 		if script:
 			job.command += line
 			continue
@@ -198,4 +200,5 @@ class AtJob(object):
 	def rm(self):
 		'''Remove the job from the queue.'''
 		p = subprocess.Popen(['/usr/bin/atrm', str(self.nr)], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+		p.communicate()
 
