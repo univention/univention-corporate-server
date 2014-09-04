@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-79) unstable; urgency=low
+
+  * check sync_mode in post_con_modify_functions 
+    object_memberships_sync* (Bug #35251)
+
+ -- Felix Botner <botner@univention.de>  Thu, 04 Sep 2014 13:10:04 +0200
+
 univention-s4-connector (8.0.33-78) unstable; urgency=medium
 
   * Fixed non-leaf exception handling (Bug #27290)
