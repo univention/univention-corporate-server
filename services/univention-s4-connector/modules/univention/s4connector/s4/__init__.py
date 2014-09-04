@@ -1578,9 +1578,11 @@ class s4(univention.s4connector.ucs):
 				ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Yes")
 				add_members.remove(member_dn_lower)
 			else:
-				# remove member only if he was in the cache on S4 side
-				# otherwise it is possible that the user was just created on S4 and we are on the way back
-				if ( member_dn_lower in self.group_members_cache_con.get(object['dn'].lower(), []) ) or (self.property.get('group') and self.property['group'].sync_mode in ['write', 'none']):
+				if object['modtype'] == 'add':
+					ud.debug(ud.LDAP, ud.PROCESS, "group_members_sync_from_ucs: %s is newly added. For this case don't remove the membership." %i (object['dn'].lower()))
+				elif ( member_dn_lower in self.group_members_cache_con.get(object['dn'].lower(), []) ) or (self.property.get('group') and self.property['group'].sync_mode in ['write', 'none']):
+					# remove member only if he was in the cache on S4 side
+					# otherwise it is possible that the user was just created on S4 and we are on the way back
 					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: No")
 					del_members.add(member_dn)
 				else:
