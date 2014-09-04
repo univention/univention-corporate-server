@@ -1384,8 +1384,12 @@ class s4(univention.s4connector.ucs):
 		sync group membership in S4 if object was changend in UCS
 		"""
 		_d=ud.function('ldap.object_memberships_sync_from_ucs')
-		ud.debug(ud.LDAP, ud.INFO,
-				       "object_memberships_sync_from_ucs: object: %s" % object)
+		ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_from_ucs: object: %s" % object)
+
+		if 'group' in self.property:
+			if getattr(self.property['group'], 'sync_mode', '') == 'read':
+				ud.debug(ud.LDAP, ud.INFO, "group memberships sync to s4 ignored, group sync_mode is read")
+				return
 
 		# search groups in UCS which have this object as member
 
@@ -1623,6 +1627,11 @@ class s4(univention.s4connector.ucs):
 		_d=ud.function('ldap.object_memberships_sync_to_ucs')
 		# disable this debug line, see Bug #12031
 		# ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_to_ucs: object: %s" % object)
+
+		if 'group' in self.property:
+			if getattr(self.property['group'], 'sync_mode', '') == 'write':
+				ud.debug(ud.LDAP, ud.INFO, "group memberships sync to ucs ignored, group sync_mode is write")
+				return
 
 		object_s4 = self._object_mapping(key, object)
 
