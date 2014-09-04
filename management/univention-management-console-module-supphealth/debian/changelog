@@ -1,6 +1,6 @@
 univention-management-console-module-supphealth (1.0.0-1) unstable; urgency=low
 
-  * Non-maintainer upload.
+  * Starting UCS 4.0-0 development (Bug #34765)
 
  -- Alexander Kramer <kramer@univention.de>  Wed, 03 Sep 2014 16:09:00 +0200
 
