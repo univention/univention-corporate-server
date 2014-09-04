@@ -1,7 +1,14 @@
+generate-appliance (0.1.0-0) unstable; urgency=medium
+
+  * Add ESXi support (Bug #35756)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 04 Sep 2014 18:49:02 +0200
+
 generate-appliance (0.0.2-0) unstable; urgency=medium
 
   * Add progress output (Bug #35756)
   * Fix ZIP issue
+  * Add --product option
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 03 Sep 2014 19:20:21 +0200
 

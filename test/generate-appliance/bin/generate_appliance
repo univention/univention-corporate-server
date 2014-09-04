@@ -97,6 +97,10 @@ class Raw(File):
 	def size(self):
 		return os.stat(self._path).st_size
 
+	@File.lazy
+	def used_size(self):
+		return os.stat(self._path).st_blocks * 512
+
 	def _create(self):
 		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
 		store = os.path.join(STOREDIR, self.hash)
@@ -127,6 +131,10 @@ class Vmdk(File):
 	@File.lazy
 	def path(self):
 		return self._path
+
+	@File.lazy
+	def size(self):
+		return os.stat(self._path).st_size
 
 	def _create(self):
 		self._raw.path()
@@ -463,7 +471,7 @@ environments with Windows- and Linux-based clients and to extend those
 environments with proven enterprise software, also either in the cloud or
 on-premises.'''
 
-def create_ovf_descriptor(machine_name, machine_version, machine_uuid, image_name, image_size, image_uuid):
+def create_ovf_descriptor_virtualbox(machine_name, machine_version, machine_uuid, image_name, image_size, image_uuid):
 	OVF_NAMESPACE = 'http://schemas.dmtf.org/ovf/envelope/1'
 	OVF = '{%s}' % (OVF_NAMESPACE, )
 	RASD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData'
@@ -941,7 +949,7 @@ ddb.uuid.modification="00000000-0000-0000-0000-000000000000"
 ddb.uuid.parentmodification="00000000-0000-0000-0000-000000000000"
 ddb.comment=""
 ''' % (image_uuid, )
-		descriptor = create_ovf_descriptor(
+		descriptor = create_ovf_descriptor_virtualbox(
 			machine_name, options.version, machine_uuid,
 			image_name, image.size(), image_uuid,
 		)
@@ -955,7 +963,441 @@ ddb.comment=""
 Virtualbox = Virtualbox()
 
 
-TARGETS = frozenset((VMware, Virtualbox))
+def create_ovf_descriptor_esxi(machine_name, machine_version, machine_uuid, image_name, image_size, image_packed_size, image_used_size, image_uuid):
+	OVF_NAMESPACE = 'http://schemas.dmtf.org/ovf/envelope/1'
+	OVF = '{%s}' % (OVF_NAMESPACE, )
+	CIM_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/common'
+	CIM = '{%s}' % (CIM_NAMESPACE, )
+	RASD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData'
+	RASD = '{%s}' % (RASD_NAMESPACE, )
+	VBOX_NAMESPACE = 'http://www.virtualbox.org/ovf/machine'
+	VBOX = '{%s}' % (VBOX_NAMESPACE, )
+	VSSD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData'
+	VSSD = '{%s}' % (VSSD_NAMESPACE, )
+	XML_NAMESPACE = 'http://www.w3.org/XML/1998/namespace'
+	XML = '{%s}' % (XML_NAMESPACE, )
+	XSI_NAMESPACE = 'http://www.w3.org/2001/XMLSchema-instance'
+	XSI = '{%s}' % (XSI_NAMESPACE, )
+	VMW_NAMESPACE = 'http://www.vmware.com/schema/ovf'
+	VMW = '{%s}' % (VMW_NAMESPACE, )
+
+	E = lxml.builder.ElementMaker(nsmap={
+		None: OVF_NAMESPACE,
+		'ovf': OVF_NAMESPACE,
+		'cim': CIM_NAMESPACE,
+		'rasd': RASD_NAMESPACE,
+		'vmw': VMW_NAMESPACE,
+		'vssd': VSSD_NAMESPACE,
+		'xsi': XSI_NAMESPACE,
+	})
+
+	Eovf = lxml.builder.ElementMaker(namespace=OVF_NAMESPACE)
+	Erasd = lxml.builder.ElementMaker(namespace=RASD_NAMESPACE)
+	Evbox = lxml.builder.ElementMaker(namespace=VBOX_NAMESPACE)
+	Evmw = lxml.builder.ElementMaker(namespace=VMW_NAMESPACE)
+	Evssd = lxml.builder.ElementMaker(namespace=VSSD_NAMESPACE)
+
+	envelope = E.Envelope(
+		E.References(
+			E.File(**{
+				OVF + 'href': image_name,
+				OVF + 'id': 'file1',
+				OVF + 'size': '%d' % (image_packed_size, ),
+				}
+			),
+		),
+		E.DiskSection(
+			E.Info('Virtual disk information'),
+			E.Disk(**{
+				OVF + 'capacityAllocationUnits': 'byte * 2^30',
+				OVF + 'capacity': '%d' % (image_size / 2**30, ),
+				OVF + 'populatedSize': '%d' % (image_used_size, ),
+				OVF + 'diskId': 'vmdisk1',
+				OVF + 'fileRef': 'file1',
+				OVF + 'format': 'http://www.vmware.com/interfaces/specifications/vmdk.html#streamOptimized',
+			}),
+		),
+		E.NetworkSection(
+			E.Info('The list of logical networks'),
+			E.Network(
+				E.Description('The VM Network network'),
+				**{
+					OVF + 'name': 'VM Network',
+				}
+			),
+		),
+		E.VirtualSystem(
+			E.Info('A virtual machine'),
+			E.Name(machine_name),
+			E.ProductSection(
+				E.Info('Meta-information about the installed software'),
+				E.Product('Univention Corporate Server (UCS)'),
+				E.Vendor('Univention GmbH'),
+				E.Version(machine_version),
+				E.ProductUrl('http://www.univention.de/en/products/ucs/'),
+				E.VendorUrl('http://www.univention.de/en/'),
+			),
+			E.AnnotationSection(
+				E.Info('A human-readable annotation'),
+				E.Annotation(ANNOTATION),
+			),
+			E.EulaSection(
+				E.Info('License agreement for the virtual system'),
+				E.License(LICENSE),
+			),
+			E.OperatingSystemSection(
+				E.Info('The kind of installed guest operating system'),
+				**{
+					OVF + 'id': '99',
+					VMW + 'osType': 'other26xLinuxGuest',
+				}
+			),
+			E.VirtualHardwareSection(
+				E.Info('Virtual hardware requirements'),
+				E.System(
+					Evssd.ElementName('Virtual Hardware Family'),
+					Evssd.InstanceID('0'),
+					Evssd.VirtualSystemIdentifier(machine_name),
+					Evssd.VirtualSystemType('vmx-07'),
+				),
+				E.Item(
+					Erasd.AllocationUnits('hertz * 10^6'),
+					Erasd.Description('Number of Virtual CPUs'),
+					Erasd.ElementName('1 virtual CPU(s)'),
+					Erasd.InstanceID('1'),
+					Erasd.ResourceType('3'),
+					Erasd.VirtualQuantity('1'),
+				),
+				E.Item(
+					Erasd.AllocationUnits('byte * 2^20'),
+					Erasd.Description('Memory Size'),
+					Erasd.ElementName('1024MB of memory'),
+					Erasd.InstanceID('2'),
+					Erasd.ResourceType('4'),
+					Erasd.VirtualQuantity('1024'),
+				),
+				E.Item(
+					Erasd.Address('0'),
+					Erasd.Description('SCSI Controller'),
+					Erasd.ElementName('SCSI Controller 0'),
+					Erasd.InstanceID('3'),
+					Erasd.ResourceSubType('lsilogic'),
+					Erasd.ResourceType('6'),
+				),
+				E.Item(
+					Erasd.Address('0'),
+					Erasd.Description('USB Controller (EHCI)'),
+					Erasd.ElementName('USB Controller'),
+					Erasd.InstanceID('4'),
+					Erasd.ResourceSubType('vmware.usb.ehci'),
+					Erasd.ResourceType('23'),
+					Evmw.Config(**{
+						OVF + 'required': 'false',
+						VMW + 'key': 'autoConnectDevices',
+						VMW + 'value': 'false',
+					}),
+					Evmw.Config(**{
+						OVF + 'required': 'false',
+						VMW + 'key': 'ehciEnabled',
+						VMW + 'value': 'true',
+					}),
+					Evmw.Config(**{
+						OVF + 'required': 'false',
+						VMW + 'key': 'slotInfo.ehciPciSlotNumber',
+						VMW + 'value': '-1',
+					}),
+					Evmw.Config(**{
+						OVF + 'required': 'false',
+						VMW + 'key': 'slotInfo.pciSlotNumber',
+						VMW + 'value': '-1',
+					}),
+					**{
+						OVF + 'required': 'false',
+					}
+				),
+				E.Item(
+					Erasd.Address('1'),
+					Erasd.Description('IDE Controller'),
+					Erasd.ElementName('VirtualIDEController 1'),
+					Erasd.InstanceID('5'),
+					Erasd.ResourceType('5'),
+				),
+				E.Item(
+					Erasd.Address('0'),
+					Erasd.Description('IDE Controller'),
+					Erasd.ElementName('VirtualIDEController 0'),
+					Erasd.InstanceID('6'),
+					Erasd.ResourceType('5'),
+				),
+				E.Item(
+					Erasd.AutomaticAllocation('false'),
+					Erasd.ElementName('VirtualVideoCard'),
+					Erasd.InstanceID('7'),
+					Erasd.ResourceType('24'),
+					Evmw.Config(**{
+						OVF + 'required': 'false',
+						VMW + 'key': 'enable3DSupport',
+						VMW + 'value': 'false',
+					}),
+					Evmw.Config(**{
+						OVF + 'required': 'false',
+						VMW + 'key': 'enableMPTSupport',
+						VMW + 'value': 'false',
+					}),
+					Evmw.Config(**{
+						OVF + 'required': 'false',
+						VMW + 'key': 'use3dRenderer',
+						VMW + 'value': 'automatic',
+					}),
+					Evmw.Config(**{
+						OVF + 'required': 'false',
+						VMW + 'key': 'useAutoDetect',
+						VMW + 'value': 'false',
+					}),
+					Evmw.Config(**{
+						OVF + 'required': 'false',
+						VMW + 'key': 'videoRamSizeInKB',
+						VMW + 'value': '16384',
+					}),
+					**{
+						OVF + 'required': 'false',
+					}
+				),
+				E.Item(
+					Erasd.AutomaticAllocation('false'),
+					Erasd.ElementName('VirtualVMCIDevice'),
+					Erasd.InstanceID('8'),
+					Erasd.ResourceSubType('vmware.vmci'),
+					Erasd.ResourceType('1'),
+					Evmw.Config(**{
+						OVF + 'required': 'false',
+						VMW + 'key': 'allowUnrestrictedCommunication',
+						VMW + 'value': 'false',
+					}),
+					**{
+						OVF + 'required': 'false',
+					}
+				),
+				E.Item(
+					Erasd.AddressOnParent('0'),
+					Erasd.AutomaticAllocation('false'),
+					Erasd.ElementName('CD-ROM 1'),
+					Erasd.InstanceID('9'),
+					Erasd.Parent('5'),
+					Erasd.ResourceSubType('vmware.cdrom.remotepassthrough'),
+					Erasd.ResourceType('15'),
+					Evmw.Config(**{
+						OVF + 'required': 'false',
+						VMW + 'key': 'backing.exclusive',
+						VMW + 'value': 'false',
+					}),
+					**{
+						OVF + 'required': 'false',
+					}
+				),
+				E.Item(
+					Erasd.AddressOnParent('0'),
+					Erasd.ElementName('Hard Disk 1'),
+					Erasd.HostResource('ovf:/disk/vmdisk1'),
+					Erasd.InstanceID('10'),
+					Erasd.Parent('3'),
+					Erasd.ResourceType('17'),
+					Evmw.Config(**{
+						OVF + 'required': 'false',
+						VMW + 'key': 'backing.writeThrough',
+						VMW + 'value': 'false',
+					}),
+				),
+				E.Item(
+					Erasd.AddressOnParent('0'),
+					Erasd.AutomaticAllocation('false'),
+					Erasd.Description('Floppy Drive'),
+					Erasd.ElementName('Floppy 1'),
+					Erasd.InstanceID('11'),
+					Erasd.ResourceSubType('vmware.floppy.remotedevice'),
+					Erasd.ResourceType('14'),
+					**{
+						OVF + 'required': 'false',
+					}
+				),
+				E.Item(
+					Erasd.AddressOnParent('7'),
+					Erasd.AutomaticAllocation('true'),
+					Erasd.Connection('VM Network'),
+					Erasd.Description('PCNet32 ethernet adapter on "VM Network"'),
+					Erasd.ElementName('Ethernet 1'),
+					Erasd.InstanceID('12'),
+					Erasd.ResourceSubType('PCNet32'),
+					Erasd.ResourceType('10'),
+					Evmw.Config(**{
+						OVF + 'required': 'false',
+						VMW + 'key': 'wakeOnLanEnabled',
+						VMW + 'value': 'true',
+					}),
+				),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'cpuHotAddEnabled',
+					VMW + 'value': 'true',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'cpuHotRemoveEnabled',
+					VMW + 'value': 'false',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'firmware',
+					VMW + 'value': 'bios',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'virtualICH7MPresent',
+					VMW + 'value': 'false',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'virtualSMCPresent',
+					VMW + 'value': 'false',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'memoryHotAddEnabled',
+					VMW + 'value': 'true',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'nestedHVEnabled',
+					VMW + 'value': 'false',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'powerOpInfo.powerOffType',
+					VMW + 'value': 'hard',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'powerOpInfo.resetType',
+					VMW + 'value': 'hard',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'powerOpInfo.standbyAction',
+					VMW + 'value': 'checkpoint',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'powerOpInfo.suspendType',
+					VMW + 'value': 'hard',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'tools.afterPowerOn',
+					VMW + 'value': 'false',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'tools.afterResume',
+					VMW + 'value': 'false',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'tools.beforeGuestShutdown',
+					VMW + 'value': 'false',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'tools.beforeGuestStandby',
+					VMW + 'value': 'false',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'tools.syncTimeWithHost',
+					VMW + 'value': 'false',
+				}),
+				Evmw.Config(**{
+					OVF + 'required': 'false',
+					VMW + 'key': 'tools.toolsUpgradePolicy',
+					VMW + 'value': 'manual',
+				}),
+			),
+			**{
+				OVF + 'id': machine_name,
+			}
+		),
+		**{
+			VMW + 'buildId': 'build-1331820',
+		}
+	)
+	return lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True)
+class ESXi(Target):
+	def __str__(self):
+		return 'VMware ESXi OVA (VMDK based)'
+
+	def __repr__(self):
+		return 'ova-esxi'
+
+	def create(self, image, options):
+		machine_name = '%s %s' % (
+			options.product,
+			options.version,
+		)
+		image_name = '%s_%s-esxi-disk1.vmdk' % (
+			options.product.replace(' ', '_'),
+			options.version,
+		)
+		descriptor_name = '%s %s ESXi.ovf' % (
+			options.product,
+			options.version,
+		)
+		archive_name = '%s-%s-ESXi.ova' % (
+			options.product.replace(' ', '-').lower(),
+			options.version,
+		)
+		machine_uuid = uuid.uuid4()
+		image_uuid = uuid.uuid4()
+		if os.path.exists(archive_name):
+			raise IOError('Output file %r exists' % (archive_name, ))
+		# HACK: change image descriptor to expected format
+		VMDKstream.image_descriptor_template = '''# Disk DescriptorFile
+version=1\x20
+CID=b9478e33\x20
+parentCID=ffffffff\x20
+createType="streamOptimized"\x20
+
+# Extent description
+RDONLY #SECTORS# SPARSE "call-me-stream.vmdk"
+
+# The Disk Data Base\x20
+#DDB
+
+ddb.adapterType = "lsilogic"
+ddb.encoding = "windows-1252"
+ddb.geometry.biosCylinders="1024"
+ddb.geometry.biosHeads="255"
+ddb.geometry.biosSectors="63"
+ddb.geometry.cylinders="#CYLINDERS#"
+ddb.geometry.heads="255"
+ddb.geometry.sectors="63"
+ddb.longContentID = "6c27be515acd422fbdb62c0afffffffe"
+ddb.virtualHWVersion = "7"
+'''
+		descriptor = create_ovf_descriptor_esxi(
+			machine_name, options.version, machine_uuid,
+			image_name, image.size(), Vmdk(image, streamOptimized=True).size(),
+			image.used_size(), image_uuid,
+		)
+		files = [
+			(descriptor_name, descriptor, ),
+			(image_name, Vmdk(image, streamOptimized=True), ),
+		]
+		ova = Tar(files)
+		shutil.copyfile(ova.path(), archive_name)
+		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
+ESXi = ESXi()
+
+
+TARGETS = frozenset((VMware, Virtualbox, ESXi))
 assert len(frozenset(map(repr, TARGETS))) == len(TARGETS), 'target names not unique'
 
 
