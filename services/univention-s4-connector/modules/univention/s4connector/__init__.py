@@ -1229,8 +1229,9 @@ class ucs:
 			return
 		# use a dummy value
 		if not objectGUID:
-			objectGUID='objectGUID'
-		objectGUID_str = str(ndr_unpack(misc.GUID, objectGUID))
+			objectGUID_str='objectGUID'
+		else:
+			objectGUID_str = str(ndr_unpack(misc.GUID, objectGUID))
 		ud.debug(ud.LDAP, ud.INFO, "update_deleted_cache_after_removal: Save entryUUID %s as deleted to UCS deleted cache. ObjectGUUID: %s" % (entryUUID, objectGUID_str))
 		self._set_config_option('UCS deleted', entryUUID, objectGUID_str)
 
@@ -1249,8 +1250,11 @@ class ucs:
 			ud.debug(ud.LDAP, ud.PROCESS, "Delete of %s was disabled in mapping" % object['dn'])
 			return True
 
-		guid_unicode = object['attributes'].get('objectGUID')[0]
-		objectGUID = guid_unicode.encode('ISO-8859-1')	## to compensate for __object_from_element
+		if object['attributes'].get('objectGUID'):
+			guid_unicode = object['attributes'].get('objectGUID')[0]
+			objectGUID = guid_unicode.encode('ISO-8859-1')	## to compensate for __object_from_element
+		else:
+			objectGUID = None
 		entryUUID = self._get_entryUUID(object['dn'])
 
 		module = self.modules[property_type]
@@ -1263,9 +1267,9 @@ class ucs:
 			return True
 		except Exception, e:
 			ud.debug(ud.LDAP, ud.INFO,"delete object exception: %s"%e)
-			if str(e) == "Operation not allowed on non-leaf": # need to delete subtree
+			if str(e).startswith("Operation not allowed on non-leaf"): # need to delete subtree
 				ud.debug(ud.LDAP, ud.INFO,"remove object from UCS failed, need to delete subtree")
-				for result in self.search_ucs(base=object['dn']):
+				for result in self.search_ucs(base=object['dn'], attr=['*', '+']):
 					if compare_lowercase(result[0], object['dn']):
 						continue
 					ud.debug(ud.LDAP, ud.INFO,"delete: %s"% result[0])
@@ -1288,7 +1292,7 @@ class ucs:
 							return False
 
 
-				return delete_in_ucs(property_type, object, module, position)
+				return self.delete_in_ucs(property_type, object, module, position)
 			elif str(e) == "noObject": #already deleted #TODO: check if it's really match
 				return True
 			else:
