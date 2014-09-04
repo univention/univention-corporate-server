@@ -14,4 +14,7 @@ desc: |
    OpenLDAP.
  * The sync_mode is now also check in the post modify membership update 
    functions .
-bug: [35391,31172,33319,27290,35251]
+ * The S4 connector doesn't no longer delete the OpenLDA domain
+   controller object if the deleted Samba 4 object was a Windows
+   computer.
+bug: [35391,31172,33319,27290,35251,35563]
