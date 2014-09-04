@@ -27,6 +27,7 @@ Architecture: all
 Depends: univention-config,
  python,
  python-yaml,
+ python-apt (>= 0.8),
  python-argparse,
  ucs-test-modules-all | ucs-test-module,
  dpkg-dev,

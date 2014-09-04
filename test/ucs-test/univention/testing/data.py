@@ -156,7 +156,7 @@ class _TestReader(object):  # pylint: disable-msg=R0903
 				while line:
 					self.digest.update(line)
 					line = self.stream.readline(size)
-					
+
 
 class Verdict(object):
 	"""
@@ -419,7 +419,7 @@ class CheckPackages(Check):
 							TestCodes.REASON_INSTALL)
 					continue
 				if dep_version and not \
-						apt.apt_pkg.CheckDep(ver.version, dep_op, dep_version):
+						apt.apt_pkg.check_dep(ver.version, dep_op, dep_version):
 					yield Verdict(Verdict.ERROR,
 							'Package %s version mismatch' % (name,),
 							TestCodes.REASON_INSTALL)
