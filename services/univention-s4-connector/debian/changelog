@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.33-75) unstable; urgency=medium
+
+  * Always cleanup the locking table when the sync was successful
+    (Bug #35391)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Sep 2014 06:26:12 +0200
+
 univention-s4-connector (8.0.33-74) unstable; urgency=medium
 
   * Removed MOD_DELETE for con_other_attribute during ldap add 

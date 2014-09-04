@@ -1416,7 +1416,8 @@ class ucs:
 									  "failed in post_con_modify_functions")
 				result = False				
 
-			if object['modtype'] == 'add' and result:
+			if result:
+				# Always unlock if the sync was successful
 				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: unlock S4 guid: %s" % guid)
 				self.lockingdb.unlock_s4(guid)
 
