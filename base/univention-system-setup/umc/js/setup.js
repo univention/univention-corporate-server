@@ -360,13 +360,9 @@ define([
 
 		load: function() {
 			// get settings from server
-			this.standby(true);
-			return this.umcpCommand('setup/load').then(lang.hitch(this, function(data) {
+			return this.standbyDuring(this.umcpCommand('setup/load')).then(lang.hitch(this, function(data) {
 				// update setup pages with loaded values
 				this.setValues(data.result);
-				this.standby(false);
-			}), lang.hitch(this, function() {
-				this.standby(false);
 			}));
 		},
 
@@ -498,7 +494,7 @@ define([
 			};
 
 			// function to locally validate the pages
-			var _localValidation = function() {
+			var _localValidation = lang.hitch(this, function() {
 				var allValid = true;
 				var validationMessage = '<p>' + _('The following entries could not be validated:') + '</p><ul style="max-height:200px; overflow:auto;">';
 				array.forEach(this._pages, function(ipage) {
@@ -522,10 +518,10 @@ define([
 					_alert(validationMessage);
 					throw new Error('Validation failed!');
 				}
-			};
+			});
 
 			// function to confirm changes
-			var _confirmChanges = function(values, summaries) {
+			var _confirmChanges = lang.hitch(this, function(values, summaries) {
 				// first see which message needs to be displayed for the confirmation message
 				tools.forIn(values, function(ikey) {
 					array.forEach(summaries, function(idesc) {
@@ -557,10 +553,10 @@ define([
 						throw new CancelDialogException();
 					}
 				}));
-			};
+			});
 
 			// function for server side validation of user changes
-			var _remoteValidation = function(values, summaries) {
+			var _remoteValidation = lang.hitch(this, function(values, summaries) {
 				this.standby(true);
 				return this.umcpCommand('setup/validate', { values: values }).then(lang.hitch(this, function(data) {
 					var allValid = true;
@@ -603,10 +599,10 @@ define([
 					_alert(validationMessage);
 					throw new Error('Validation failed!');
 				}));
-			};
+			});
 
 			// function to save data
-			var _save = function(values, umc_url) {
+			var _save = lang.hitch(this, function(values, umc_url) {
 				var deferred = new Deferred();
 
 				// send save command to server
@@ -636,22 +632,22 @@ define([
 				return deferred.then(lang.hitch(this, function() {
 					this.standby(false);
 				}));
-			};
+			});
 
 			// ask user whether UMC server components shall be restarted or not
-			var _restart = function() {
+			var _restart = lang.hitch(this, function() {
 				libServer.askRestart(_('The changes have been applied successfully.'));
 				this.load(); // sets 'standby(false)'
-			};
+			});
 
 			// notify user that saving was successful
-			var _success = function() {
+			var _success = lang.hitch(this, function() {
 				this.addNotification(_('The changes have been applied successfully.'));
 				this.load(); // sets 'standby(false)'
-			};
+			});
 
 			// tell user that saving was not successful (has to confirm)
-			var _failure = function(errorHtml) {
+			var _failure = lang.hitch(this, function(errorHtml) {
 				var msg = _('Not all changes could be applied successfully:') + errorHtml;
 				var choices = [{
 					name: 'apply',
@@ -661,10 +657,10 @@ define([
 				return dialog.confirm(msg, choices).then(lang.hitch(this, function() {
 					this.load(); // sets 'standby(false)'
 				}));
-			};
+			});
 
 			// show success/error message and eventually restart UMC server components
-			var _checkForErrorsDuringSave = function(values) {
+			var _checkForErrorsDuringSave = lang.hitch(this, function(values) {
 				var errors = this._progressBar.getErrors().errors;
 				if (errors.length) {
 					// errors have occurred
@@ -693,16 +689,16 @@ define([
 						return _success();
 					}
 				}
-			};
+			});
 
 			// chain all methods together
 			var deferred = new Deferred();
 			deferred.resolve();
-			deferred = deferred.then(lang.hitch(this, _localValidation, values));
-			deferred = deferred.then(lang.hitch(this, _confirmChanges, values, summaries));
-			deferred = deferred.then(lang.hitch(this, _remoteValidation, values, summaries));
-			deferred = deferred.then(lang.hitch(this, _save, values, umc_url));
-			deferred = deferred.then(lang.hitch(this, _checkForErrorsDuringSave, values));
+			deferred = deferred.then(lang.partial(_localValidation, values));
+			deferred = deferred.then(lang.partial(_confirmChanges, values, summaries));
+			deferred = deferred.then(lang.partial(_remoteValidation, values, summaries));
+			deferred = deferred.then(lang.partial(_save, values, umc_url));
+			deferred = deferred.then(lang.partial(_checkForErrorsDuringSave, values));
 			deferred.then(
 				lang.hitch(this, 'standby', false),
 				lang.hitch(this, 'standby', false)
