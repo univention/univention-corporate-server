@@ -916,6 +916,10 @@ def handler(dn, new, listener_old, operation):
 		else:
 			connected=1
 
+	if 'MEMBEROF' in new:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'replication: skipping replicated MEMBEROF: %s' % (new['MEMBEROF'],))
+		del new['MEMBEROF']
+
 	if flatmode:
 		dn = handlerFlatmode( l, dn, new, listener_old )
 
