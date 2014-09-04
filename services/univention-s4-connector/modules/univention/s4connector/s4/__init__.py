@@ -2281,13 +2281,14 @@ class s4(univention.s4connector.ucs):
 				ud.debug(ud.LDAP, ud.PROCESS, "Unable to sync %s (GUID: %s). The object is currently locked." % (object['dn'], objectGUID))
 				return False
 
+		entryUUID = object['attributes'].get('entryUUID')[0]
+
 		#
 		# ADD
 		#
 		if (object['modtype'] == 'add' and not s4_object) or (object['modtype'] == 'modify' and not s4_object):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: add object: %s"%object['dn'])
 	
-			entryUUID = object['attributes'].get('entryUUID')[0]
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: lock UCS entryUUID: %s" % entryUUID)
 			self.lockingdb.lock_ucs(entryUUID)
 
@@ -2362,8 +2363,6 @@ class s4(univention.s4connector.ucs):
 						ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s" % f)
 						f(self, property_type, object)
 						ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s (done)" % f)
-			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: unlock UCS entryUUID: %s" % entryUUID)
-			self.lockingdb.unlock_ucs(entryUUID)
 
 		#
 		# MODIFY
@@ -2519,6 +2518,8 @@ class s4(univention.s4connector.ucs):
 								   (object['dn'],object['modtype']))
 			return False
 
+		ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: unlock UCS entryUUID: %s" % entryUUID)
+		self.lockingdb.unlock_ucs(entryUUID)
 
 		self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
