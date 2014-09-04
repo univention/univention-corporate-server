@@ -1,3 +1,10 @@
+univention-system-setup (7.0.69-51) unstable; urgency=low
+
+  * Bug #35815: fix reloading of settings and displaying of messages
+    after saving settings in basic settings module
+
+ -- Florian Best <best@univention.de>  Thu, 04 Sep 2014 13:17:33 +0200
+
 univention-system-setup (7.0.69-50) unstable; urgency=low
 
   * Bug #34484: Fixed changing locale during session
