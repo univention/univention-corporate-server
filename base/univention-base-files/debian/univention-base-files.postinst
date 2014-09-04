@@ -44,7 +44,7 @@ univention-config-registry set ldap/base?dc=univention,dc=unconfigured \
 	logrotate/create?"640 root adm" \
 	logrotate/notifempty?yes \
 	nameserver/option/timeout?2 \
-	update/secure_apt?no \
+	update/secure_apt?yes \
 	ucr/backup/enabled?yes \
 	ucr/replog/enabled?yes \
 	ntp/signed?yes \

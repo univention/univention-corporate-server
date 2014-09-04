@@ -1,6 +1,7 @@
 univention-base-files (4.0.3-1) unstable; urgency=low
 
   * Bug #35637: install univention-archive-key by default
+  * Bug #35708: Enable secure APT by default
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 04 Sep 2014 16:20:15 +0200
 
