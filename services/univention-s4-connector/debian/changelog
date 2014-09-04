@@ -1,3 +1,13 @@
+univention-s4-connector (8.0.33-80) unstable; urgency=medium
+
+  * delete_in_ucs: added a special handling for windows computer. If the
+    computer is a normal member in AD and a DC in OpenLDAP, the computer
+    will be removed and re-added if Samba 4 will be installed on the DC
+    slave. Without this special check the object will be removed by the
+    connector (Bug #35563)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Sep 2014 14:54:49 +0200
+
 univention-s4-connector (8.0.33-79) unstable; urgency=low
 
   * check sync_mode in post_con_modify_functions 

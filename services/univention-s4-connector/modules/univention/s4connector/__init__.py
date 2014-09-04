@@ -1257,6 +1257,21 @@ class ucs:
 			objectGUID = None
 		entryUUID = self._get_entryUUID(object['dn'])
 
+		if property_type == 'windowscomputer':
+			# Sepcial handling for windows computer:
+			#  In AD the computer is a windows computer in UCS the computer is a DC.
+			#  If Samba 4 will be installed on the Slave, Samba 4 deletes the object
+			#  and this deletion must not be synced to OpenLDAP.
+			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=35563
+			try:
+				result = self.search_ucs(base=object['dn'], scope='base', attr=['objectClass'], unique=True)
+			except univention.admin.uexceptions.noObject:
+				ud.debug(ud.LDAP, ud.PROCESS, "The object was not found in UCS: %s" % object['dn'])
+				return True
+			if 'univentionDomainController' in result[0][1].get('objectClass'):
+				ud.debug(ud.LDAP, ud.PROCESS, "The windows computer %s is a Domain Controller in OpenLDAP. The deletion will be skipped." % object['dn'])
+				return True
+
 		module = self.modules[property_type]
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
 
