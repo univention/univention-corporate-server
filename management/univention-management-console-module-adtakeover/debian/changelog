@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (1.0.10-51) unstable; urgency=medium
+
+  * Rename sysvol domain directory to AD spelling (Bug #35769)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 04 Sep 2014 15:45:09 +0200
+
 univention-management-console-module-adtakeover (1.0.10-50) unstable; urgency=medium
 
   * Handle different case spelling of domainname in sysvol directory

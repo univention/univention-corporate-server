@@ -288,7 +288,7 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 	progress.percentage(22)
 	takeover.rewrite_sambaSIDs_in_OpenLDAP()
 	progress.headline(_('Checking group policies'))
-	takeover.remove_conflicting_msgpo_objects_from_LDAP()
+	takeover.remove_conflicting_msgpo_objects()
 	progress.headline(_('Initializing the S4 Connector listener'))
 	progress.percentage(23)
 	progress._scale = 70 - progress._percentage
@@ -1054,16 +1054,25 @@ class AD_Takeover():
 		check_samba4_started()
 
 
-	def remove_conflicting_msgpo_objects_from_LDAP(self):
+	def remove_conflicting_msgpo_objects(self):
 		'''The S4 Connector prefers OpenLDAP objects, so we must remove conflicting ones'''
+
+		sysvol_dir = "/var/lib/samba/sysvol"
+		samdb_domain_dns_name = self.samdb.domain_dns_name()
+		sam_sysvol_dom_dir = os.path.join(sysvol_dir, samdb_domain_dns_name)
+		ucs_sysvol_dom_dir = os.path.join(sysvol_dir, ucr["domainname"])
+		if samdb_domain_dns_name != ucr["domainname"]:
+			if os.path.isdir(ucs_sysvol_dom_dir) and not os.path.isdir(sam_sysvol_dom_dir):
+				os.rename(ucs_sysvol_dom_dir, sam_sysvol_dom_dir)
 
 		msgs = self.samdb.search(base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
 							expression="(objectClass=groupPolicyContainer)",
 							attrs=["cn"])
+
 		for obj in msgs:
 			name = obj["cn"][0]
 			run_and_output_to_log(["/usr/sbin/univention-directory-manager", "container/msgpo", "delete", "--filter", "name=%s" % name], log.debug)
-			gpo_path = '/var/lib/samba/sysvol/%s/Policies/%s' % (ucr["domainname"], name,)
+			gpo_path = '%s/Policies/%s' % (sam_sysvol_dom_dir, name,)
 			if os.path.exists(gpo_path):
 				log.info("Removing associated conflicting GPO directory %s." % (gpo_path,))
 				shutil.rmtree(gpo_path, ignore_errors=True)
@@ -1072,7 +1081,7 @@ class AD_Takeover():
 				continue
 
 			run_and_output_to_log(["/usr/sbin/univention-directory-manager", "container/msgpo", "delete", "--filter", "name=%s" % name.upper()], log.debug)
-			gpo_path = '/var/lib/samba/sysvol/%s/Policies/%s' % (ucr["domainname"], name.upper(),)
+			gpo_path = '%s/Policies/%s' % (sam_sysvol_dom_dir, name.upper(),)
 			if os.path.exists(gpo_path):
 				log.info("Removing associated conflicting GPO directory %s." % (gpo_path,))
 				shutil.rmtree(gpo_path, ignore_errors=True)
@@ -1784,13 +1793,7 @@ def check_gpo_presence():
 						attrs=["cn", "gPCFileSysPath", "versionNumber"])
 
 	sysvol_dir = "/var/lib/samba/sysvol"
-	samdb_domain_dns_name = samdb.domain_dns_name()
-	sam_sysvol_dom_dir = os.path.join(sysvol_dir, samdb_domain_dns_name)
-	if not os.path.isdir(sam_sysvol_dom_dir):
-		if samdb_domain_dns_name != ucr["domainname"]:
-			os.symlink(ucr["domainname"], sam_sysvol_dom_dir)
-	sam_policies_dir = os.path.join(sam_sysvol_dom_dir, "Policies")
-
+	default_policies_dir = os.path.join(sysvol_dir, samdb.domain_dns_name(), "Policies")
 	for obj in msgs:
 		name = obj["cn"][0]
 		if "gPCFileSysPath" in obj:
@@ -1799,9 +1802,9 @@ def check_gpo_presence():
 				gpo_path = os.path.join(sysvol_dir, subdir.replace('\\', '/'))
 			except ValueError as ex:
 				log.error(ex.args[0])
-				gpo_path = os.path.join(sam_policies_dir, name)
+				gpo_path = os.path.join(default_policies_dir, name)
 		else:
-			gpo_path = os.path.join(sam_policies_dir, name)
+			gpo_path = os.path.join(default_policies_dir, name)
 		if not os.path.isdir(gpo_path):
 			log.error("GPO missing in SYSVOL: %s" % name)
 			raise SysvolGPOMissing()
