@@ -67,6 +67,11 @@ class LicenseImport( ldif.LDIFParser ):
 		elif self.dncount > 1:
 			raise LicenseError( _( "More than one object has been found." ) )
 
+		# check whether DN matches the LDAP base
+		dnWithoutBase = self.dn[:-len(base)]
+		if not self.dn.endswith(base) or not dnWithoutBase.endswith('cn=univention,'):
+			raise LicenseError( _( 'The LDAP base of the license does not match the LDAP base of the UCS domain (%s).' ) % base )
+
 		# check LDAP base
 		if self.base.lower() not in [base.lower(), 'free for personal use edition']:
 			raise LicenseError( _( "The license can not be applied. The LDAP base does not match (expected %s, found: %s)." ) % ( base, self.base ) )

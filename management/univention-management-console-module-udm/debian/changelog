@@ -4,6 +4,12 @@ univention-management-console-module-udm (5.0.4-1) unstable; urgency=low
 
  -- Florian Best <best@univention.de>  Wed, 03 Sep 2014 12:54:09 +0200
 
+univention-management-console-module-udm (5.0.3-3) unstable; urgency=low
+
+  * Bug #35580: fix handling of license LDIF files to allow for long DNs
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 02 Sep 2014 17:10:33 +0200
+
 univention-management-console-module-udm (5.0.3-2) unstable; urgency=low
 
   * merged changes from 3.2-2 (Bug #34091)
