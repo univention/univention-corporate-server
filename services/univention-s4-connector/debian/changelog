@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-77) unstable; urgency=medium
+
+  * Fixed typo in last commit (Bug #33319)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Sep 2014 08:23:04 +0200
+
 univention-s4-connector (8.0.33-76) unstable; urgency=medium
 
   * Don't remove group members if the group exists during the first sync
