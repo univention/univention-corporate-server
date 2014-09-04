@@ -1,0 +1,10 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-3
+src: samba
+fix: 2:4.1.0-1.681.201409041406
+version: [3]
+desc: |
+ * When installing broken printdrivers, samba returned a wrong
+   error code. This has been fixed.
+bug: [32771]
