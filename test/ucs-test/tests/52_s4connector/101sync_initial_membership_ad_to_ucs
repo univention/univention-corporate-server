@@ -36,6 +36,8 @@ ad_group_create "$G1" || fail_test 110
 ad_createuser "$B1" || fail_test 110
 ad_group_create "$G2" || fail_test 110
 ad_createuser "$B2" || fail_test 110
+UDM_groups_group_name="$G1"
+udm_create "groups/group" || fail_test 110
 
 #AD doesn't allow this operation
 #ad_append_to_attribute "$AD_B1_DN" "memberOf" "$AD_G1_DN" || fail_test 110

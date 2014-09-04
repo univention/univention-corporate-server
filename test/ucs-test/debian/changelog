@@ -1,3 +1,10 @@
+ucs-test (5.0.3-1) unstable; urgency=medium
+
+  * 52_s4connector/101sync_initial_membership_ad_to_ucs: create one
+    group on both sides (Bug #33319)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Sep 2014 07:10:35 +0200
+
 ucs-test (5.0.2-1) unstable; urgency=medium
 
   * 52_s4connector:134sync_incomplete_attribute*: added test cases for
