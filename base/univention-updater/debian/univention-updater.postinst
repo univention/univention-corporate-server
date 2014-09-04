@@ -83,11 +83,34 @@ if [ "$1" = "configure" ]; then
 		update/check/boot/enabled?yes \
 		update/check/boot/debug?no \
 		update/available?no \
-		version/releasename?Walle \
 		version/version?4.0 \
 		version/patchlevel?0 \
 		version/erratalevel?0 \
 		uuid/system?"$(cat /proc/sys/kernel/random/uuid)"
+
+	# http://en.wikipedia.org/wiki/Nothofagus_solandri
+	# univention-config-registry set version/releasename="mountain beech" # UCS 2.1
+
+	# http://en.wikipedia.org/wiki/European_Beech
+	# univention-config-registry set version/releasename="copper beech" # UCS 2.2
+
+	# htts://en.wikipedia.org/wiki/Hornbeam
+	# univention-config-registry set version/releasename="hornbeam" # UCS 2.3
+
+	# http://en.wikipedia.org/wiki/Fagus_sylvatica
+	# univention-config-registry set version/releasename="golden beech" # UCS 2.4
+
+	# http://de.wikipedia.org/wiki/Horn-Lehe
+	# univention-config-registry set version/releasename="Horn-Lehe" # UCS 3.0
+
+	# http://de.wikipedia.org/wiki/Findorff_%28Bremen%29
+	# univention-config-registry set version/releasename="Findorff" # UCS 3.1
+
+	# http://de.wikipedia.org/wiki/Borgfeld
+	# univention-config-registry set version/releasename="Borgfeld" # UCS 3.2
+	
+	# http://de.wikipedia.org/wiki/Walle_%28Bremen%29
+	univention-config-registry set version/releasename="Walle" # UCS 4.0
 
 	if [ -z "$2" ]; then
 		# enable current errata component

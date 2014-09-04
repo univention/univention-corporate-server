@@ -1,3 +1,9 @@
+univention-updater (10.0.3-1) unstable; urgency=low
+
+  * releasename (Bug #35312) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 04 Sep 2014 10:26:58 +0200
+
 univention-updater (10.0.2-1) unstable; urgency=low
 
   * Adjust postup.sh to new univention-check-templates return codes
