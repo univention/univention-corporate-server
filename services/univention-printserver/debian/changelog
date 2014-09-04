@@ -1,3 +1,9 @@
+univention-printserver (7.0.11-2) unstable; urgency=medium
+
+  * Set "force printername" in cups-printers listener (Bug #33505)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 04 Sep 2014 17:42:50 +0200
+
 univention-printserver (7.0.11-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)
