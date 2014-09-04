@@ -6,17 +6,15 @@ fix: 7.0.69-57.667.201409041323
 version: [2,3]
 desc: |
   This update fixes the following issues:
-  * Fix suggestion of FQDN build from value entered
-    in the organization field in appliance mode
-  * Moved setup of apache startsite on EC2 to an earlier
-    stage in the boot process
-  * Do not show Firefox data submission policy popup during
-    system setup
-  * If an email address is given during the system setup
-    the startup wizard won't ask for an activation address.
-    This prevents a possible double registration.
-  * The Windows NETBIOS domain name can now be up to
-    15 characters long.
-  * fix reloading of settings and displaying of messages
-    after saving settings in basic settings module
+  * Fixed suggestion of FQDN build from value entered in the organization field
+    in appliance mode.
+  * Moved setup of apache startsite on EC2 to an earlier stage in the boot
+    process.
+  * Do not show Firefox data submission policy popup during system setup.
+  * If an email address is given during the system setup the startup wizard
+    will not ask for an activation address. This prevents a possible double
+    registration.
+  * The Windows NETBIOS domain name can now be up to 15 characters long.
+  * Problems with reloading values and displaying messages after saving changes
+    have been corrected.
 bug: [35587,35721,35605,35711,35599,35815]
