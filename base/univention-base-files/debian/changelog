@@ -1,3 +1,9 @@
+univention-base-files (4.0.3-1) unstable; urgency=low
+
+  * Bug #35637: install univention-archive-key by default
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 04 Sep 2014 16:20:15 +0200
+
 univention-base-files (4.0.2-1) unstable; urgency=low
 
   * Update to UCR templates to new upstream versions (Bug #35138)

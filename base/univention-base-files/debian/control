@@ -12,6 +12,7 @@ Package: univention-base-packages
 Architecture: all
 Depends: ${misc:Depends},
  univention-base-files (= ${source:Version}),
+ univention-archive-key,
  python-ipaddr,
  rsyslog,
  bash-completion,
