@@ -1,3 +1,10 @@
+univention-system-setup (7.0.69-57) unstable; urgency=low
+
+  * Bug #35815: fix reloading of settings and displaying of messages
+    after saving settings in basic settings module
+
+ -- Florian Best <best@univention.de>  Thu, 04 Sep 2014 13:17:43 +0200
+
 univention-system-setup (7.0.69-56) unstable; urgency=medium
 
   * Windows NETBIOS domain names can be up to 15 characters long
