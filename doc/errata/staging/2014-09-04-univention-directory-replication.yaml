@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-3
+src: univention-directory-replication
+fix: 7.0.1-8.80.201409041707
+version: [2,3]
+desc: |
+ * A replication issue has been fixed which could occur when joining
+   a UCS DC into a domain which had the memberof LDAP overlay
+   active at some point and later deactivated it.
+bug: [34759]
