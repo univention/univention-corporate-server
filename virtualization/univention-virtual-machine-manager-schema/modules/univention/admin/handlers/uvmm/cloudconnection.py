@@ -42,7 +42,7 @@ from univention.admin.layout import Tab, Group
 _ = translation('univention.admin.handlers.uvmm').translate
 
 module = 'uvmm/cloudconnection'
-default_containers = ['cn=Cloud Connection,cn=Virtual Machine Manager']
+default_containers = ['cn=CloudConnection,cn=Virtual Machine Manager']
 
 childs = 0
 short_description = _('UVMM: Cloud Connection')
@@ -68,7 +68,7 @@ property_descriptions = {
 			syntax=udm_syntax.UvmmCloudType,
 			multivalue=False,
 			options=[],
-			required=False,
+			required=True,
 			may_change=True,
 			identifies=False
 		),
