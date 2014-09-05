@@ -163,12 +163,20 @@ class CheckLogFiles(object):
         related errors in case setting is 'false'.
         """
         InstallProfile = Profile()
-        InstallProfile.load(filename='/etc/univention/installation_profile')
-
-        if 'false' in InstallProfile.get_list('call_master_joinscripts')[0]:
-            print("\nThe 'call_master_joinscripts' is 'false' in "
-                  "'/etc/univention/installation_profile', "
-                  "adjusting patterns to ignore respective 'join' messages.")
+        try:
+            InstallProfile.load(filename='/etc/univention/installation_profile')
+            if bool(re.match('false',
+                             InstallProfile.get_list('call_master_joinscripts')[0],
+                             re.IGNORECASE)):
+                print("\nThe 'call_master_joinscripts' is 'false' in "
+                      "'/etc/univention/installation_profile', adjusting "
+                      "patterns to ignore respective 'join' messages.")
+                self.extend_log_ignore_definitions()
+        except (IOError, IndexError) as exc:
+            print("\nAn error occured while trying to check the installation "
+                  "profile for 'call_master_joinscripts' setting: %r "
+                  "Adjusting patterns to ignore respective 'join' messages."
+                  % exc)
             self.extend_log_ignore_definitions()
 
     def main(self, log_files):
