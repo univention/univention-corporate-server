@@ -1,3 +1,9 @@
+ucs-test (4.0.166-77) unstable; urgency=low
+
+  * Bug #30751: 00_base/99check_log_files
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 05 Sep 2014 13:31:56 +0200
+
 ucs-test (4.0.166-76) unstable; urgency=medium
 
   * 52_s4connector/138sync_gpo: added test case for GPO creation and
