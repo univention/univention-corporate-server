@@ -89,6 +89,9 @@ class CloudConnectionMananger(dict):
 			connection_list = [self[conn_name]]
 		return connection_list
 
+	def set_cache(self, cache):
+		self.cache_dir = cache
+
 	def list(self, pattern="*"):
 		connection_list = []
 
@@ -120,7 +123,7 @@ class CloudConnectionMananger(dict):
 		if cloud["name"] in self:
 			raise CloudConnectionError("Connection to %s already established" % cloud["name"])
 
-		self[cloud["name"]] = create_cloud_connection(cloud)
+		self[cloud["name"]] = create_cloud_connection(cloud, self.cache_dir)
 		logger.info("Added connection to %s" % cloud["name"])
 
 	def remove_connection(self, cloudname):
@@ -211,9 +214,9 @@ class CloudConnectionMananger(dict):
 		self[conn_name].instance_create(args)
 
 
-def create_cloud_connection(cloud):
+def create_cloud_connection(cloud, cache_dir):
 	if cloud["type"] == "OpenStack":
-		return OpenStackCloudConnection(cloud)
+		return OpenStackCloudConnection(cloud, cache_dir)
 	elif cloud["type"] == "Amazon EC2":
 		# TODO: implement
 		return

@@ -201,3 +201,33 @@ def ldap_modify(uuid):
 		record['profile'] = None
 		record.commit = record.create
 	return record
+
+
+def ldap_cloud_connections():
+	filt = '(objectClass=univentionVirtualMachineCloudConnection)'
+	lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
+	try:
+		cloudconnections = []
+		res = lo.search(filt)
+		for dn, data in res:
+			if 'univentionVirtualMachineCloudConnectionParameter' in data:
+				c = {}
+				c['name'] = data['cn'][0]
+				# Search cloudtype parameter
+				typebase = data['univentionVirtualMachineCloudConnectionTypeRef'][0]
+				res = lo.search(base=typebase)
+				cloudtype = res[0][1]['cn'][0]
+				c['type'] = cloudtype
+				for p in data['univentionVirtualMachineCloudConnectionParameter']:
+					if '=' not in p:
+						logger.error('Expected "=" in cloud connection parameter. Connection %s, parameter %s' % (dn, p))
+						continue
+					logger.error("%s" % p)
+					p_name = p.split('=', 1)[0]
+					p_value = p.split('=', 1)[1]
+					c[p_name] = p_value
+				cloudconnections.append(c)
+
+		return cloudconnections
+	except LDAPError, e:
+		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))

@@ -43,8 +43,16 @@ import threading
 import fnmatch
 import re
 import errno
+import os
+import stat
+import hashlib
+try:
+	import cPickle as pickle
+except ImportError:
+	import pickle
 
-from helpers import CloudConnection, TranslatableException, ms
+from node import PersistentCached
+from helpers import CloudConnection, TranslatableException, ms, uri_encode
 from protocol import Cloud_Data_Connection, Cloud_Data_Instance, Cloud_Data_Image, Cloud_Data_Size, Cloud_Data_Location, Cloud_Data_Keypair, Cloud_Data_Network, Cloud_Data_Secgroup, Cloud_Data_Secgroup_Rule
 import univention.config_registry as ucr
 
@@ -83,13 +91,22 @@ OPENSTACK_CREATE_ATTRIBUTES = {
 	}
 
 
-NODESTATES = {
-		0: "RUNNING",
-		1: "REBOOTING",
-		2: "TERMINATED",
-		3: "PENDING",
-		4: "UNKNOWN",
-		5: "STOPPED"
+"""
+LIBCLOUD Standard states for a node
+:cvar RUNNING: Node is running.
+:cvar REBOOTING: Node is rebooting.
+:cvar TERMINATED: Node is terminated. This node can't be started later on.
+:cvar STOPPED: Node is stopped. This node can be started later on.
+:cvar PENDING: Node is pending.
+:cvar UNKNOWN: Node state is unknown.
+"""
+LIBCLOUD_UVMM_STATE_MAPPING = {
+		NodeState.RUNNING: "RUNNING",
+		NodeState.REBOOTING: "PENDING",
+		NodeState.TERMINATED: "NOSTATE",
+		NodeState.PENDING: "PENDING",
+		NodeState.UNKNOWN: "NOSTATE",
+		NodeState.STOPPED: "SHUTDOWN"
 		}
 
 
@@ -97,10 +114,12 @@ class OpenStackCloudConnectionError(TranslatableException):
 	pass
 
 
-class OpenStackCloudConnection(CloudConnection):
-	def __init__(self, cloud):
+class OpenStackCloudConnection(CloudConnection, PersistentCached):
+	def __init__(self, cloud, cache_dir):
 		super(OpenStackCloudConnection, self).__init__(cloud)
 		self._check_connection_attributes(cloud)
+		self._cache_dir = cache_dir
+		self._cache_hash = ""
 
 		self._instances = []
 		self._images = []
@@ -116,16 +135,57 @@ class OpenStackCloudConnection(CloudConnection):
 
 		self.publicdata = Cloud_Data_Connection()
 		self.publicdata.name = cloud["name"]
+		self.publicdata.cloudtype = cloud["type"]
 		self.publicdata.url = cloud["url"]
 		self.publicdata.last_update = -1
 		self.publicdata.last_update_try = -1
+		self.publicdata.available = False
+		self._last_expensive_update = -1000000
 
+		self.cache_restore()
 		self._create_connection(cloud)
-		logger.debug("new openstack connection")
 
 		# Start thread for periodic updates
 		self.updatethread = threading.Thread(group=None, target=self.run, name="%s-%s" % (self.publicdata.name, self.publicdata.url), args=(), kwargs={})
 		self.updatethread.start()
+
+	# Caching
+	def cache_file_name(self, suffix=".pic"):
+		return os.path.join(self._cache_dir, uri_encode(self.publicdata.name) + suffix)
+
+	def cache_save(self):
+		instances = self.list_instances()
+		new_name = self.cache_file_name(suffix=".new")
+		old_name = self.cache_file_name()
+
+		data = pickle.dumps(instances)
+		data_hash = hashlib.md5(data).hexdigest()
+		if data_hash == self._cache_hash:  # No change in data, no need to write changes
+			return
+		self._cache_hash = data_hash
+
+		try:
+			fd = os.open(new_name, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, stat.S_IREAD | stat.S_IWRITE)
+			os.write(fd, data)
+		finally:
+			os.close(fd)
+		os.rename(new_name, old_name)
+
+	def cache_restore(self):
+		# check if there is a cache file
+		cache_file_name = self.cache_file_name()
+		if os.path.isfile(cache_file_name):
+			cache_file = open(cache_file_name, 'r')
+			try:
+				data = pickle.Unpickler(cache_file)
+				if data:
+					self._instances = data.load()
+					for instance in self._instances:
+						logger.debug("loaded cached instance %s" % instance.name)
+						instance.available = False
+						instance.state = 4  # state UNKNOWN
+			finally:
+				cache_file.close()
 
 	def _check_connection_attributes(self, cloud):
 		if "username" not in cloud:
@@ -194,14 +254,15 @@ class OpenStackCloudConnection(CloudConnection):
 
 			self.publicdata.last_update_try = time.time()
 			self._instances = self.driver.list_nodes()
-			self._images = self.driver.list_images()
-			self._sizes = self.driver.list_sizes()
-			self._locations = self.driver.list_locations()
-			self._keypairs = self.driver.list_key_pairs()
-			self._security_groups = self.driver.ex_list_security_groups()
-			self._networks = self.driver.ex_list_networks()
+
+			# Expensive update if
+			# last expensive update was more than self.EXPENSIVE_UPDATE_INTERVAL ago
+			if (self.publicdata.last_update - self._last_expensive_update) * 1000 > self.EXPENSIVE_UPDATE_INTERVAL:
+				self.update_expensive()
 
 			self.publicdata.last_update = time.time()
+			self.publicdata.last_update_try = self.publicdata.last_update
+			self.cache_save()
 			self.current_frequency = self.config_default_frequency
 			logger.debug("Updating took %s seconds for %s" % (self.publicdata.last_update - self.publicdata.last_update_try, self.publicdata.name))
 		except InvalidCredsError as e:
@@ -213,13 +274,26 @@ class OpenStackCloudConnection(CloudConnection):
 		except LibcloudError as e:
 			logger.error("Connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, e))
 		except Exception as e:
-			if e.errno == errno.ECONNREFUSED:
-				logger.error("Connection %s: %s refused (ECONNREFUSED)" % (self.publicdata.name, self.publicdata.url))
+			if hasattr(e, 'errno'):
+				if e.errno == errno.ECONNREFUSED:
+					logger.error("Connection %s: %s refused (ECONNREFUSED)" % (self.publicdata.name, self.publicdata.url))
+				else:
+					logger.error("Unknown exception in update in thread %s with unknown errno %s: %s" % (self.publicdata.name, e.errno, self.publicdata.url), exc_info=True)
 			else:
-				logger.error("Exception in update in thread %s: %s" % (self.publicdata.name, self.publicdata.url), exc_info=True)
+				logger.error("Unknown exception in update in thread %s: %s" % (self.publicdata.name, self.publicdata.url), exc_info=True)
 
 		logger.debug("Next update for %s: %s" % (self.publicdata.name, ms(self.current_frequency)))
-		self.publicdata.last_update_try = self.publicdata.last_update
+		self.publicdata.available = self.publicdata.last_update == self.publicdata.last_update_try
+
+	def update_expensive(self):
+		logger.debug("Expensive update for %s: %s" % (self.publicdata.name, self.publicdata.url))
+		self._images = self.driver.list_images()
+		self._sizes = self.driver.list_sizes()
+		self._locations = self.driver.list_locations()
+		self._keypairs = self.driver.list_key_pairs()
+		self._security_groups = self.driver.ex_list_security_groups()
+		self._networks = self.driver.ex_list_networks()
+		self._last_expensive_update = time.time()
 
 	def set_frequency(self, freq):
 		self.config_default_frequency = freq
@@ -235,13 +309,19 @@ class OpenStackCloudConnection(CloudConnection):
 				i.name = instance.name
 				i.extra = instance.extra
 				i.id = instance.id
-				i.image = instance.image
+				i.image = instance.extra['imageId']
 				i.private_ips = instance.private_ips
 				i.public_ips = instance.public_ips
 				i.size = instance.size
-				i.state = instance.state
+				i.state = LIBCLOUD_UVMM_STATE_MAPPING[instance.state]
 				i.uuid = instance.uuid
-				i.available = self.publicdata.last_update == self.publicdata.last_update_try
+				i.available = self.publicdata.available
+
+				# information not directly provided by libcloud:
+				# instance size-name. Openstack provides sizeinfo in extra['flavorId']
+				size_temp = [s for s in self._sizes if s.id == instance.extra['flavorId']]
+				if size_temp:
+					i.u_size_name = size_temp[0].name
 
 				instances.append(i)
 
@@ -399,13 +479,13 @@ class OpenStackCloudConnection(CloudConnection):
 				(NodeState.UNKNOWN,    "SHUTOFF"): self._shutoff_instance,
 				(NodeState.RUNNING,    "SUSPEND"): self._suspend_instance
 				}
-		logger.debug("STATE: connection: %s instance %s (id:%s), oldstate: %s (%s), requested: %s" % (self.publicdata.name, instance.name, instance.id, instance.state, NODESTATES[instance.state], state))
+		logger.debug("STATE: connection: %s instance %s (id:%s), oldstate: %s (%s), requested: %s" % (self.publicdata.name, instance.name, instance.id, instance.state, instance.state, state))
 		try:
 			transition = OS_TRANSITION[(instance.state, state)]
 			if transition:
 				transition(instance)
 			else:
-				logger.debug("NOP state transition: %s -> %s" % (NODESTATES[instance.state], state))
+				logger.debug("NOP state transition: %s -> %s" % (instance.state, state))
 		except KeyError:
 			raise OpenStackCloudConnectionError("Unsupported State transition (%s -> %s) requested" % (instance.state, state))
 		except Exception, e:
@@ -513,7 +593,7 @@ class OpenStackCloudConnection(CloudConnection):
 
 		# libcloud call
 		try:
-			logger.debug("ARGS: %s" % kwargs)
+			logger.debug("CREATE INSTANCE. ARGS: %s" % kwargs)
 			self.driver.create_node(**kwargs)
 		except Exception, e:
 			raise OpenStackCloudConnectionError("Instance could not be created: %s" % e)

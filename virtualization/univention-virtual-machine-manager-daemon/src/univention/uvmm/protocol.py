@@ -463,9 +463,11 @@ class Cloud_Data_Connection(object):
 	"""Container for libcloud connection statistics"""
 	def __init__(self):
 		self.name = None
+		self.cloudtype = None
 		self.url = None
 		self.last_update = None
 		self.last_update_try = None
+		self.available = False
 
 
 class Cloud_Data_Instance(object):
@@ -481,6 +483,7 @@ class Cloud_Data_Instance(object):
 		self.state = None
 		self.uuid = None
 		self.available = None  # See class Data_Domain
+		self.u_size_name = "unknown"
 
 
 class Cloud_Data_Size(object):

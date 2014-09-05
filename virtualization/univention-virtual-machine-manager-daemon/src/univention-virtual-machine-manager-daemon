@@ -193,8 +193,8 @@ if __name__ == '__main__':
 
 	socket_group = OptionGroup(parser, _('Connection options'))
 	socket_group.add_option('-u', '--unix',
-			action='store', dest='socket', default="/var/run/uvmm.socket",
-			help=_('Path to the UNIX socket [%(default)s]') % {'default': '%default'})
+				action='store', dest='socket', default="/var/run/uvmm.socket",
+				help=_('Path to the UNIX socket [%(default)s]') % {'default': '%default'})
 	socket_group.add_option('-t', '--tcp',
 			action='store', dest='tcp', default=None, metavar=_("HOST:PORT"),
 			help=_('HOST and PORT number of the TCP socket'))
@@ -282,8 +282,13 @@ if __name__ == '__main__':
 	for uri in arguments:
 		node_add(uri)
 
+	# Add cloud connections
+	from univention.uvmm.cloudnode import cloudconnections
+	if not options.clean and options.cache != '':
+		cloudconnections.set_cache(options.cache)
+
 	# Add nodes from LDAP
-	from univention.uvmm.uvmm_ldap import cached, ldap_uris, LdapError
+	from univention.uvmm.uvmm_ldap import cached, ldap_uris, LdapError, ldap_cloud_connections
 	try:
 		if not options.clean and options.cache != '':
 			get_ldap_uris = lambda: ldap_uris()
@@ -293,6 +298,10 @@ if __name__ == '__main__':
 
 		for uri in uris:
 			node_add(uri)
+
+		for connection in ldap_cloud_connections():
+			cloudconnections.add_connection(connection)
+
 	except LdapError, msg:
 		logger.warning(msg)
 
