@@ -1,3 +1,9 @@
+univention-system-setup (7.0.69-60) unstable; urgency=low
+
+  * Removed creation of umc/web/activation_email (Bug #35711)
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 08 Sep 2014 15:28:10 +0200
+
 univention-system-setup (7.0.69-59) unstable; urgency=low
 
   * Fixed wrong variable name in univention-system-setup (Bug #34090)
