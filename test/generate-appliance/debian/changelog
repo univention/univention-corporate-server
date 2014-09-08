@@ -1,3 +1,10 @@
+generate-appliance (0.1.1-0) unstable; urgency=medium
+
+  * Add --tempdir (Bug #35756)
+  * Unify OVA VMDKs
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 08 Sep 2014 15:51:06 +0200
+
 generate-appliance (0.1.0-0) unstable; urgency=medium
 
   * Add ESXi support (Bug #35756)

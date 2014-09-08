@@ -1358,6 +1358,7 @@ def parse_options():
 	parser.add_option('-s', '--source', help='source image (required)')
 	parser.add_option('-p', '--product', help='product name of appliance (default: %default)', default='UCS')
 	parser.add_option('-v', '--version', help='version string of appliance')
+	parser.add_option('-t', '--tempdir', help='temporary directory to use')
 	parser.add_option(
 		'-o', '--only', action='store_const', dest='choices', const=[],
 		help='ignore default selections, only create selected targets (must be the first option)',
@@ -1398,21 +1399,22 @@ def log(text):
 	sys.stderr.flush()
 
 def main():
+	global WORKDIR, TEMPDIR, STOREDIR
 	options = parse_options()
-	source_image = Raw(options.source)
-	for choice in options.choices:
-		choice.create(source_image, options)
-	return os.EX_OK
-
-if __name__ == "__main__":
-	WORKDIR = tempfile.mkdtemp(prefix='imagestore ')
+	WORKDIR = tempfile.mkdtemp(prefix='imagestore ', dir=options.tempdir)
 	TEMPDIR = os.path.join(WORKDIR, 'tmp')
 	os.mkdir(TEMPDIR)
 	STOREDIR = os.path.join(WORKDIR, 'store')
 	os.mkdir(STOREDIR)
 	try:
-		sys.exit(main())
+		source_image = Raw(options.source)
+		for choice in options.choices:
+			choice.create(source_image, options)
+		return os.EX_OK
 	finally:
 		log('Cleanup')
 		cmd = ('find', WORKDIR, '(','-type','f','-printf','  %f\\n','-o','-true',')','-delete', )
 		subprocess.call(cmd, stdout=sys.stderr)
+
+if __name__ == "__main__":
+	sys.exit(main())
