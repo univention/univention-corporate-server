@@ -232,3 +232,18 @@ def ldap_cloud_connections():
 		return cloudconnections
 	except LDAPError, e:
 		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
+
+def ldap_cloud_types():
+	filt = '(objectClass=univentionVirtualMachineCloudType)'
+	lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
+	try:
+		cloudtypes = []
+		res = lo.search(filt)
+		for dn, data in res:
+			c = {}
+			c['name'] = data['cn'][0]
+			cloudtypes.append(c)
+
+		return cloudtypes
+	except LDAPError, e:
+		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))

@@ -64,11 +64,13 @@ define([
 	"umc/modules/uvmm/DomainPage",
 	"umc/modules/uvmm/DomainWizard",
 	"umc/modules/uvmm/InstancePage",
+	"umc/modules/uvmm/CreatePage",
+	"umc/modules/uvmm/CloudConnectionWizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
 ], function(declare, lang, array, string, query, Deferred, on, entities, Menu, MenuItem, ContentPane, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, ExpandingTitlePane, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
-	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, types, _) {
+	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, CreatePage, CloudConnectionWizard, types, _) {
 
 	var isRunning = function(item) {
 		return (item.state == 'RUNNING' || item.state == 'IDLE' || item.state == 'PAUSED') && item.node_available;
@@ -641,7 +643,37 @@ define([
 
 		},
 
-		_addDomain: function() {
+		openCreatePage: function() {
+			var page = null;
+
+			var _cleanup = lang.hitch(this, function() {
+				this.selectChild(this._searchPage);
+				this.removeChild(page);
+				page.destroyRecursive();
+			});
+
+			var _finished = lang.hitch(this, function(values) {
+				_cleanup();
+				console.log('# openCreatePage: ', values);
+				var func = {
+					'domain': lang.hitch(this, '_addDomain'),
+					'cloud': lang.hitch(this, '_addCloudConnection'),
+				}[values.type];
+				if (func) {
+					func(values);
+				}
+			});
+
+			page = new CreatePage({
+				onCancel: _cleanup,
+				onFinished: _finished,
+				umcpCommand: lang.hitch(this, 'umcpCommand'),
+			});
+			this.addChild(page);
+			this.selectChild(page);
+		},
+		
+		_addDomain: function(values) {
 			var wizard = null;
 
 			var _cleanup = lang.hitch(this, function() {
@@ -665,21 +697,53 @@ define([
 			});
 
 			var nodeURI /*= undefined*/;
-			try {
+/*			try {
 				var tree_path = this._tree.get('path');
 				var tree_item = tree_path[tree_path.length - 1];
 				if (tree_item.type == 'node' && tree_item.available) {
 					nodeURI = tree_item.id;
 				}
-			} catch (err) { }
+			} catch (err) { }*/
 			wizard = new DomainWizard({
 				onFinished: _finished,
 				onCancel: _cleanup
-			}, nodeURI);
+			}, values.nodeURI);
 			this.addChild(wizard);
 			this.selectChild(wizard);
 		},
 
+		_addCloudConnection: function(values) {
+			var wizard = null;
+
+			var _cleanup = lang.hitch(this, function() {
+				this.selectChild(this._searchPage);
+				this.removeChild(wizard);
+				wizard.destroyRecursive();
+			});
+
+			var _finished = lang.hitch(this, function(values) {
+				this.standby(true);
+				tools.umcpCommand('uvmm/cloud/add', {
+					cloud: values
+				}).then(lang.hitch(this, function() {
+					_cleanup();
+					this._tree.reload();
+					this.standby(false);
+				}), lang.hitch(this, function() {
+					this.standby(false);
+				}));
+				
+			});
+
+			wizard = new CloudConnectionWizard({
+				onFinished: _finished,
+				onCancel: _cleanup
+			}, values.cloudtype);
+			this.addChild(wizard);
+			this.selectChild(wizard);
+		},
+		
+		
 		_shutdown: function(ids, items) {
 			tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
 				if (tools.isTrue(prefs.uvmmShutdownSeen)) {
@@ -1025,8 +1089,14 @@ define([
 
 		_getGridActions: function(type) {
 			if (type == 'node' || type == 'cloud') {
-				// we do not have any actions for nodes
-				return [];
+				return [{
+					name: 'add',
+					label: _( 'Create' ),
+					iconClass: 'umcIconAdd',
+					isMultiAction: false,
+					isContextAction: false,
+					callback: lang.hitch(this, 'openCreatePage' )
+				}];
 			}
 
 			if (type == 'instance') {
@@ -1061,7 +1131,7 @@ define([
 					isMultiAction: true,
 					callback: lang.hitch(this, '_changeStateInstance', 'SOFTRESTART', 'softrestart' ),
 					canExecute: isRunning
-				},{
+				}, {
 					name: 'remove',
 					label: _( 'Remove' ),
 					isStandardAction: false,
@@ -1071,6 +1141,13 @@ define([
 					canExecute: function(item) {
 						return item.node_available;
 					}
+				}, {
+					name: 'add',
+					label: _( 'Create' ),
+					iconClass: 'umcIconAdd',
+					isMultiAction: false,
+					isContextAction: false,
+					callback: lang.hitch(this, 'openCreatePage' )
 				}];
 			}
 
@@ -1187,7 +1264,7 @@ define([
 				iconClass: 'umcIconAdd',
 				isMultiAction: false,
 				isContextAction: false,
-				callback: lang.hitch(this, '_addDomain' )
+				callback: lang.hitch(this, 'openCreatePage' )
 			}];
 		},
 

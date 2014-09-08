@@ -44,5 +44,6 @@
 		<command name="uvmm/instance/query" function="instance_query"/>
 		<command name="uvmm/instance/state" function="instance_state"/>
 		<command name="uvmm/instance/remove" function="instance_remove"/>
+		<command name="uvmm/cloudtype/get" function="cloudtype_get"/>
 	</module>
 </umc>

@@ -36,6 +36,7 @@ from univention.management.console.protocol.definitions import MODULE_ERR_COMMAN
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import sanitize
 from univention.management.console.modules.sanitizers import SearchSanitizer, ChoicesSanitizer
+from univention.uvmm.uvmm_ldap import ldap_cloud_types
 
 from notifier import Callback
 from urlparse import urldefrag
@@ -146,10 +147,10 @@ class Cloud(object):
 							'id': instance_uri,
 							'label': inst.name,
 							'nodeName': conn_name,
-							'state': ('RUNNING' if inst.state == 0 else 'SHUTOFF'),  # FIXME
+							'state': inst.state,
 							'type': 'instance',
 							'suspended': None,  # FIXME
-							'description': '',  # FIXME
+							'description': '%s [%s]' % (inst.u_size_name, inst.state),
 							'node_available': inst.available,
 							'extra': inst.extra,
 						})
@@ -214,3 +215,16 @@ class Cloud(object):
 				conn_name=conn_name,
 				instance_id=instance_id
 				)
+
+	def cloudtype_get(self, request):
+		"""
+		Returns a list of all cloudtypes from ldap.
+		"""
+		cloudtypes = []
+		for item in ldap_cloud_types():
+			cloudtypes.append({
+				'id': item['name'],
+				'label': item['name']
+				})
+
+		self.finished(request.id, cloudtypes)

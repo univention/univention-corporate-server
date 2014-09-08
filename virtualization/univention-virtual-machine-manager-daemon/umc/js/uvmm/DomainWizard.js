@@ -55,6 +55,49 @@ define([
 		_driveStore: null,
 		_driveGrid: null,
 		_driveContainer: null,
+		
+		_loadValuesOfProfile: function() {
+			// put limit on memory
+			try {
+				var nodeURI = this.getWidget('nodeURI');
+				var maxMem = nodeURI.store.getValue(nodeURI.item, 'memAvailable');
+				this.getWidget('maxMem').get('constraints').max = maxMem;
+			} catch (err) { }
+
+			// query the profile settings
+			this.standby(true);
+			var profileDN = this.getWidget('profileDN').get('value');
+			tools.umcpCommand('uvmm/profile/get', {
+				profileDN: profileDN
+			}).then(lang.hitch(this, function(data) {
+				// we got the profile...
+				this._profile = data.result;
+				this._profile.profileDN = profileDN;
+
+				// pre-set the form fields
+				var nodeURI = this.getWidget('nodeURI').get('value');
+				this.getWidget('general', 'nodeURI').set('value', nodeURI);
+				this.getWidget('profile').set('value', profileDN);
+				this.getWidget('domain_type').set('value', this._profile.virttech.split('-')[0]);
+				this.getWidget('name').set('value', this._profile.name_prefix || '');
+				if (types.getNodeType(nodeURI) == 'xen') {
+					this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[A-Za-z0-9_\\-.:+]+$' : '.*');
+				} else {
+					this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
+				}
+				this.getWidget('maxMem').set('value', types.parseCapacity(this._profile.ram || '4 MiB'));
+				this.getWidget('vcpus').set('value', this._profile.cpus);
+				this.getWidget('vnc').set('value', this._profile.vnc);
+
+				// update page header
+				this._pages.general.set('headerText', _('Create a virtual machine (profile: %s)', this._profile.name));
+
+				this.standby(false);
+			}), lang.hitch(this, function() {
+				// fallback... switch off the standby animation
+				this.standby(false);
+			}));
+		},
 
 		constructor: function(props, nodeURI) {
 			// grid for the drives
@@ -81,7 +124,7 @@ define([
 			// mixin the page structure
 			lang.mixin(this, {
 				pages: [{
-					name: 'profile',
+/*					name: 'profile',
 					headerText: _('Create a virtual machine'),
 					helpText: _('By selecting a profile for the virtual machine most of the settings will be set to default values. In the following steps some of these values might be modified. After the creation of the virtual machine all parameters, extended settings und attached drives can be adjusted. It should be ensured that the profile is for the correct architecture as this option can not be changed afterwards.'),
 					widgets: [{
@@ -97,19 +140,27 @@ define([
 						depends: 'nodeURI',
 						dynamicValues: types.getProfiles
 					}]
-				}, {
+				}, {*/
 					name: 'general',
-					headerText: '...',
+					headerText: _('Create a virtual machine'),
 					helpText: _('The following settings were read from the selected profile and can be modified now.'),
 					widgets: [{
 						name: 'nodeURI',
-						type: HiddenInput
+						type: HiddenInput,
+						value: nodeURI
 					}, {
 						name: 'profile',
 						type: HiddenInput
 					}, {
 						name: 'domain_type',
 						type: HiddenInput
+					}, {
+						name: 'profileDN',
+						type: ComboBox,
+						label: _('Profile'),
+						dynamicOptions: {nodeURI: nodeURI},
+						dynamicValues: types.getProfiles,
+						onChange: lang.hitch(this, '_loadValuesOfProfile')
 					}, {
 						name: 'name',
 						type: TextBox,
@@ -150,7 +201,7 @@ define([
 						name: 'vcpus',
 						type: ComboBox,
 						label: _('Number of CPUs'),
-						depends: 'nodeURI',
+						dynamicOptions: {nodeURI: nodeURI},
 						dynamicValues: types.getCPUs
 					}, {
 						name: 'vnc',
@@ -179,10 +230,10 @@ define([
 
 		next: function(pageName) {
 			var nextName = this.inherited(arguments);
-			if (pageName == 'profile') {
+			/*if (pageName == 'profile') {
 				// put limit on memory
 				try {
-					var nodeURI = this.getWidget('profile', 'nodeURI');
+					var nodeURI = this.getWidget('nodeURI');
 					var maxMem = nodeURI.store.getValue(nodeURI.item, 'memAvailable');
 					this.getWidget('maxMem').get('constraints').max = maxMem;
 				} catch (err) { }
@@ -198,7 +249,7 @@ define([
 					this._profile.profileDN = profileDN;
 
 					// pre-set the form fields
-					var nodeURI = this.getWidget('profile', 'nodeURI').get('value');
+					var nodeURI = this.getWidget('nodeURI').get('value');
 					this.getWidget('general', 'nodeURI').set('value', nodeURI);
 					this.getWidget('profile').set('value', profileDN);
 					this.getWidget('domain_type').set('value', this._profile.virttech.split('-')[0]);
@@ -221,7 +272,7 @@ define([
 					this.standby(false);
 				}));
 			}
-			else if (pageName == 'general') {
+			else*/ if (pageName == 'general') {
 				// update the domain info for the drive grid
 				array.forEach( [ 'name', 'maxMem' ], lang.hitch( this, function( widgetName ) {
 					if ( ! this.getWidget( widgetName ).isValid() ) {
