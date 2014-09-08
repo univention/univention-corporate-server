@@ -124,7 +124,7 @@ univention.debug.debug(
 STATE_DIR = '/var/lib/univention-directory-replication'
 LDIF_FILE = os.path.join(STATE_DIR, 'failed.ldif')
 
-EXCLUDE_ATTRIBUTES=['subschemaSubentry', 'hasSubordinates', 'entryDN']
+EXCLUDE_ATTRIBUTES=['subschemaSubentry', 'hasSubordinates', 'entryDN', 'MEMBEROF']
 
 # don't use built-in OIDs from slapd
 BUILTIN_OIDS=[
@@ -915,10 +915,6 @@ def handler(dn, new, listener_old, operation):
 				time.sleep(10)
 		else:
 			connected=1
-
-	if 'MEMBEROF' in new:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'replication: skipping replicated MEMBEROF: %s' % (new['MEMBEROF'],))
-		del new['MEMBEROF']
 
 	if flatmode:
 		dn = handlerFlatmode( l, dn, new, listener_old )

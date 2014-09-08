@@ -1,3 +1,9 @@
+univention-directory-replication (8.0.1-2) unstable; urgency=medium
+
+  * Add MEMBEROF to the EXCLUDE_ATTRIBUTES list (Bug #35480)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 08 Sep 2014 11:19:04 +0200
+
 univention-directory-replication (8.0.1-1) unstable; urgency=medium
 
   * Skip replicated MEMBEROF attribute (Bug #35480)
