@@ -440,7 +440,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 			if realm:
 				ocs.extend(['krb5Principal', 'krb5KDCEntry'])
-				al.append(('krb5PrincipalName', ['host/'+self.info['name']+'.'+realm.lower()+'@'+realm]))
 				al.append(('krb5MaxLife', '86400'))
 				al.append(('krb5MaxRenew', '604800'))
 				al.append(('krb5KDCFlags', '126'))
