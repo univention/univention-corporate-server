@@ -1,4 +1,4 @@
-univention-directory-notifier (8.0.2-1) unstable; urgency=medium
+univention-directory-notifier (8.0.1-3) unstable; urgency=medium
 
   * Changed quoting in 15univention-directory-notifier-post.inst
     (Bug #35723)
