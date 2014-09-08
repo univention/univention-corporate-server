@@ -1509,20 +1509,20 @@ define([
 		},
 
 		_getLinkLocalDHCPAddresses: function() {
+			var fallbackDevices = [];
 			if (this.getWidget('network', '_dhcp').get('value')){
-				var fallbackDevices = [];
 				array.forEach(this._getNetworkDevices(), function(idev, i) {
 					var ip = this.getWidget('network', '_ip' + i).get('value');
 					var mask = this.getWidget('network', '_netmask' + i).get('value');
 					if ((ip.indexOf('169.254') === 0) && (mask=='255.255.0.0')) {
-						fallbackDevices.push([
+						fallbackDevices.push({
 							name: idev,
 							ip: ip
-						]);
+						});
 					}
 				}, this);
-				return fallbackDevices;
 			}
+			return fallbackDevices;
 		},
 
 		_validatePage: function(pageName) {
@@ -1723,10 +1723,10 @@ define([
 			if (pageName == 'network'){
 				if (this.getWidget('network', '_dhcp').get('value')) {
 					var fallbackDevices = this._getLinkLocalDHCPAddresses();
-					if (fallbackDevices.devices.length) {
+					if (fallbackDevices.length) {
 						var devicesStr = array.map(fallbackDevices, function(idev) {
 							return lang.replace('<li><b>{name}:</b> {ip}</li>', idev);
-  						}).join('\n').
+  						}).join('\n');
 	  					var msg = _('<p>One or more network interfaces could not obtain an IP address via DHCP. These interfaces will use automatic generated private addresses instead (APIPA).</p> <ul> %s </ul> <p>Please adjust your DHCP settings or confirm use of private address(es).</p>', devicesStr);
 						var buttonLabel = _('Continue with 169.254.*.* addresse(s)')
 						var allDevices = this._getNetworkDevices();
@@ -1742,7 +1742,7 @@ define([
 							'default': true,
 							name: nextPage
 						}], _('Warning')).then(lang.hitch(this, function(response) {
-						return this._forcePageTemporarily(response);
+							return this._forcePageTemporarily(response);
 						}));
 					}
 				}
