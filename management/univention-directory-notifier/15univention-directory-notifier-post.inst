@@ -96,7 +96,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	test -n "$listener_debug_level" && \
 		debugLevel="$listener_debug_level"
 
-	options="$options -x -ZZ -d $debugLevel -i -h $ldap_master -b "$ldap_base" -m $moduledir -c $cachedir"
+	options="$options -x -ZZ -d $debugLevel -i -h $ldap_master -b \"$ldap_base\" -m $moduledir -c $cachedir"
 
 	test -x /usr/sbin/univention-directory-listener && \
 		/usr/sbin/univention-directory-listener $options \
