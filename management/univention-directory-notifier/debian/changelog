@@ -1,3 +1,10 @@
+univention-directory-notifier (8.0.2-1) unstable; urgency=medium
+
+  * Changed quoting in 15univention-directory-notifier-post.inst
+    (Bug #35723)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 08 Sep 2014 21:49:28 +0200
+
 univention-directory-notifier (8.0.1-2) unstable; urgency=medium
 
   * Fix quoting in previous change (Bug #35723)
