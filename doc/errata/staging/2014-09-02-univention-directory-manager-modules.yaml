@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-directory-manager-modules
-fix: 9.0.76-30.1236.201409031042
+fix: 9.0.76-31.1238.201409081339
 version: [2,3]
 desc: |
   * The modification of the alternative mail address is now allowed in
@@ -11,4 +11,6 @@ desc: |
     of a French Active Directory are allowed now.
   * A traceback has been fixed if more than one colon is set in the 
     automountInformation attribute.
-bug: [35672,35521,34541]
+  * The setting of the Kerberos principal name for computer/macos
+    objects has been fixed.
+bug: [35672,35521,34541,35526]
