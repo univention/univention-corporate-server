@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.0.4-2) unstable; urgency=low
+
+  * Variable will be only set if request is successful (Bug #35711)
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 08 Sep 2014 15:20:20 +0200
+
 univention-management-console-module-udm (5.0.4-1) unstable; urgency=low
 
   * Bug #34333: failures on report creation can not block UMC usage anymore
