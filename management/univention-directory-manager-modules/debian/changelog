@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.14-1) unstable; urgency=low
+
+  * fixed krb5PrincipalName in macos.py (Bug #35526) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 08 Sep 2014 13:43:56 +0200
+
 univention-directory-manager-modules (10.0.13-1) unstable; urgency=medium
 
   * Fix another automountInformation split error (Bug #34541)
