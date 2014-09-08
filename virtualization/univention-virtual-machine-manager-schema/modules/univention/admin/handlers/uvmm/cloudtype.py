@@ -42,7 +42,7 @@ from univention.admin.layout import Tab, Group
 _ = translation('univention.admin.handlers.uvmm').translate
 
 module = 'uvmm/cloudtype'
-default_containers = ['cn=Cloud Type,cn=Virtual Machine Manager']
+default_containers = ['cn=CloudType,cn=Virtual Machine Manager']
 
 childs = 0
 short_description = _('UVMM: Cloud Type')
