@@ -300,7 +300,10 @@ if __name__ == '__main__':
 			node_add(uri)
 
 		for connection in ldap_cloud_connections():
-			cloudconnections.add_connection(connection)
+			try:
+				cloudconnections.add_connection(connection)
+			except TranslatableException as e:
+				logger.error("Could not add connection %s (from ldap): %s" % (connection["name"], e))
 
 	except LdapError, msg:
 		logger.warning(msg)

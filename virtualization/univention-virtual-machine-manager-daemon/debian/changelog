@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.0-8) unstable; urgency=low
+
+  * Improve error handling when loading ldap connections (Bug #32842) 
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 08 Sep 2014 11:52:36 +0200
+
 univention-virtual-machine-manager-daemon (4.0.0-7) unstable; urgency=low
 
   * WIP: Integration of cloud instance management with libcloud (Bug #32842)

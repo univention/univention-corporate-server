@@ -205,6 +205,8 @@ def ldap_modify(uuid):
 
 def ldap_cloud_connections():
 	filt = '(objectClass=univentionVirtualMachineCloudConnection)'
+	# ensure that we should manage the host
+	filt = '(&%s(|(!(univentionVirtualMachineManageableBy=*))(univentionVirtualMachineManageableBy=%s)))' % ( filt, HOST_FQDN )
 	lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
 	try:
 		cloudconnections = []
@@ -222,7 +224,6 @@ def ldap_cloud_connections():
 					if '=' not in p:
 						logger.error('Expected "=" in cloud connection parameter. Connection %s, parameter %s' % (dn, p))
 						continue
-					logger.error("%s" % p)
 					p_name = p.split('=', 1)[0]
 					p_value = p.split('=', 1)[1]
 					c[p_name] = p_value
