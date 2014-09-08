@@ -1,3 +1,11 @@
+univention-directory-listener (9.0.2-1) unstable; urgency=medium
+
+  * Do atomic locking on the cache (Bug #34013)
+  * Avoid double-freeing the cache database cursor
+  * Let the exit_handler flag and skip if he is running already
+
+ -- Arvid Requate <requate@univention.de>  Mon, 08 Sep 2014 17:52:11 +0200
+
 univention-directory-listener (9.0.1-1) unstable; urgency=medium
 
   * Use python support (Bug #35144)

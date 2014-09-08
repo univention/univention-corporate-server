@@ -34,6 +34,7 @@
 #include <sys/types.h>
 #include <wait.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <unistd.h>
 
@@ -105,6 +106,13 @@ void sig_usr2_handler(int sig)
 void exit_handler(int sig)
 {
 	char **c;
+	static bool exit_handler_running = false;
+
+	if (exit_handler_running) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received another signal %d, ignoring", sig);
+		return;
+	}
+	exit_handler_running = true;
 
 	if (sig)
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received signal %d", sig);

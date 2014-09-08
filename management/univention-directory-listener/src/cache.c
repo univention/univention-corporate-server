@@ -88,7 +88,6 @@ char *cache_dir = "/var/lib/univention-directory-listener";
 char *ldap_dir = "/var/lib/univention-ldap";
 
 DB *dbp;
-DBC *dbc_cur = NULL;
 #ifdef WITH_DB42
 DB_ENV *dbenvp;
 #endif
@@ -138,14 +137,13 @@ int cache_init(void)
 		return -1 ;
 	}
 
-	if (lockf(fileno(lock_fp), F_TEST, 0) != 0) {
+	if (lockf(fileno(lock_fp), F_TLOCK, 0) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 				"Could not get lock for database [%s]; "
 				"Is another listener processs running?\n",
 				lock_file);
 		exit(0);
 	}
-	lockf(fileno(lock_fp), F_LOCK, 0);
 
 #ifdef WITH_DB42
 	if ((rv = db_env_create(&dbenvp, 0)) != 0) {
@@ -579,7 +577,6 @@ int cache_first_entry(DBC **cur, char **dn, CacheEntry *entry)
 		dbp->err(dbp, rv, "cursor");
 		return rv;
 	}
-	dbc_cur=*cur;
 
 	return cache_next_entry(cur, dn, entry);
 }
@@ -654,7 +651,6 @@ int cache_next_entry(DBC **cur, char **dn, CacheEntry *entry)
 
 int cache_free_cursor(DBC *cur)
 {
-	dbc_cur = NULL;
 	return cur->c_close(cur);
 }
 
@@ -662,11 +658,10 @@ int cache_close(void)
 {
 	int rv;
 
-	if ( dbc_cur != NULL )
-		cache_free_cursor(dbc_cur);
 	if (dbp && (rv = dbp->close(dbp, 0)) != 0) {
 		dbp->err(dbp, rv, "close");
 	}
+	dbp = NULL;
 #ifdef WITH_DB42
 	if ((rv = dbenvp->close(dbenvp, 0)) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
@@ -678,6 +673,7 @@ int cache_close(void)
 		if (rc == 0) {
 			fclose(lock_fp);
 		}
+		lock_fp = NULL;
 	}
 	return rv;
 }
