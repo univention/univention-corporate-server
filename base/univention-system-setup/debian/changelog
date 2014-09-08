@@ -1,3 +1,10 @@
+univention-system-setup (7.0.69-58) unstable; urgency=low
+
+  * UMC now warns the user if DHCP is selected but instead of a lease
+    a link-local address is used (Bug #34090)
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 08 Sep 2014 09:25:49 +0200
+
 univention-system-setup (7.0.69-57) unstable; urgency=low
 
   * Bug #35815: fix reloading of settings and displaying of messages
