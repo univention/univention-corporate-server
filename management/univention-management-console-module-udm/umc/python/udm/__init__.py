@@ -60,6 +60,8 @@ import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.uexceptions as udm_errors
 
+from univention.config_registry import handler_set
+
 import univention.directory.reports as udr
 
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
@@ -1160,5 +1162,7 @@ class Instance( Base, ProgressMixin ):
 				detail = str(e)
 			raise UMC_CommandError(_('An error occurred while sending the request: %s') % detail)
 		else:
+			# creating a new ucr variable to prevent double registration (Bug #35711)
+			handler_set(['umc/web/activation_email=true'])
 			return True
 
