@@ -97,7 +97,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		debugLevel="$listener_debug_level"
 
 	test -x /usr/sbin/univention-directory-listener && \
-		/usr/sbin/univention-directory-listener x -ZZ -d $debugLevel -i \
+		/usr/sbin/univention-directory-listener -x -ZZ -d $debugLevel -i \
 			-h $ldap_master -b "$ldap_base" -m $moduledir -c $cachedir \
 			-D "cn=admin,$ldap_base" -y /etc/ldap.secret
 	
