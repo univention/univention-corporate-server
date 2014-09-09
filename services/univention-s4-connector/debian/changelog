@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.14-1) unstable; urgency=low
+
+  * fixed sync_mode check in post_con_modify_functions (Bug #35251) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 09 Sep 2014 09:46:06 +0200
+
 univention-s4-connector (9.0.13-1) unstable; urgency=medium
 
   * Don't set the telephoneNumber to the otherTelephoneNumber while
