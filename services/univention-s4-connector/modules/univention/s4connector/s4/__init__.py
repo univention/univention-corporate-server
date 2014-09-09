@@ -1387,7 +1387,7 @@ class s4(univention.s4connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_from_ucs: object: %s" % object)
 
 		if 'group' in self.property:
-			if getattr(self.property['group'], 'sync_mode', '') == 'read':
+			if getattr(self.property['group'], 'sync_mode', '') in ['read', 'none']:
 				ud.debug(ud.LDAP, ud.INFO, "group memberships sync to s4 ignored, group sync_mode is read")
 				return
 
@@ -1629,7 +1629,7 @@ class s4(univention.s4connector.ucs):
 		# ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_to_ucs: object: %s" % object)
 
 		if 'group' in self.property:
-			if getattr(self.property['group'], 'sync_mode', '') == 'write':
+			if getattr(self.property['group'], 'sync_mode', '') in ['write', 'none']:
 				ud.debug(ud.LDAP, ud.INFO, "group memberships sync to ucs ignored, group sync_mode is write")
 				return
 
