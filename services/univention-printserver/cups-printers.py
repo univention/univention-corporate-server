@@ -351,7 +351,8 @@ def handler(dn, new, old):
 				print >>fp, 'path = /tmp'
 				print >>fp, 'guest ok = yes'
 				print >>fp, 'printable = yes'
-				print >>fp, 'force printername = yes'
+				if listener.baseConfig.is_true('samba/force_printername', True):
+					print >>fp, 'force printername = yes'
 				if perm:
 					if new['univentionPrinterACLtype'][0] == 'allow':
 						print >>fp, 'valid users = %s' % perm

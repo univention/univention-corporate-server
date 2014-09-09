@@ -81,3 +81,9 @@ Description[de]=Eine durch Leerzeichen separierte Liste von IP Adressen, denen d
 Description[en]=A blank separated list of IP addresses which are forbidden to print.
 Type=str
 Categories=service-cups
+
+[samba/force_printername]
+Description[de]=Über diese Variable lässt sich die Voreinstellung für die Samba Druckeroption "force printername" konfigurieren. Veränderte Einstellungen für diese Varable wirken sich nur auf neue und modifizierte Druckfreigaben aus.
+Description[en]=This variable configures the default for the Samba printer option "force printername". Adjustments of this variable only affect new or modified printer shares.
+Type=str
+Categories=service-cups
