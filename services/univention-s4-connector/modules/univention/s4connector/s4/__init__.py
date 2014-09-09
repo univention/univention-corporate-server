@@ -2458,7 +2458,7 @@ class s4(univention.s4connector.ucs):
 												new_s4_values = [n_value]
 												break
 
-									new_s4_other_values = (current_s4_other_values | to_add) - to_remove
+									new_s4_other_values = (current_s4_other_values | to_add) - to_remove - current_s4_values
 									if current_s4_values != new_s4_values:
 										if new_s4_values:
 											modlist.append((ldap.MOD_REPLACE, s4_attribute, new_s4_values))
