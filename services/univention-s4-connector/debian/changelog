@@ -1,3 +1,10 @@
+univention-s4-connector (9.0.13-1) unstable; urgency=medium
+
+  * Don't set the telephoneNumber to the otherTelephoneNumber while
+    changing the number (Bug #31172)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Sep 2014 06:51:20 +0200
+
 univention-s4-connector (9.0.12-1) unstable; urgency=medium
 
   * delete_in_ucs: added a special handling for windows computer. If the
