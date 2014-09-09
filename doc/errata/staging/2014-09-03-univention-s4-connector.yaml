@@ -12,8 +12,8 @@ desc: |
    on both sides and the group members are different.
  * Objects which are deleted in Samba 4 are now recursively removed in
    OpenLDAP.
- * The sync_mode is now also check in the post modify membership update 
-   functions .
+ * The sync_mode is now being checked in the post modify membership update 
+   functions.
  * The S4 connector doesn't no longer delete the OpenLDA domain
    controller object if the deleted Samba 4 object was a Windows
    computer.
