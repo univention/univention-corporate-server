@@ -32,10 +32,10 @@
 """UVMM cloud openstack handler"""
 
 from libcloud.common.types import LibcloudError, MalformedResponseError, ProviderError, InvalidCredsError
-from libcloud.compute.types import Provider, NodeState
+from libcloud.compute.types import Provider  # , NodeState
 from libcloud.compute.providers import get_driver
 import libcloud.security
-libcloud.security.VERIFY_SSL_CERT = False
+# libcloud.security.VERIFY_SSL_CERT = False
 
 import time
 import logging
@@ -46,10 +46,13 @@ import errno
 import os
 import stat
 import hashlib
+import ssl
 try:
 	import cPickle as pickle
 except ImportError:
 	import pickle
+
+os.environ['LIBCLOUD_DEBUG'] = '/dev/stderr'
 
 from node import PersistentCached
 from helpers import CloudConnection, TranslatableException, ms, uri_encode
@@ -91,22 +94,43 @@ OPENSTACK_CREATE_ATTRIBUTES = {
 	}
 
 
-"""
-LIBCLOUD Standard states for a node
-:cvar RUNNING: Node is running.
-:cvar REBOOTING: Node is rebooting.
-:cvar TERMINATED: Node is terminated. This node can't be started later on.
-:cvar STOPPED: Node is stopped. This node can be started later on.
-:cvar PENDING: Node is pending.
-:cvar UNKNOWN: Node state is unknown.
-"""
+class NodeState(object):
+	"""
+	LIBCLOUD Standard states for a node
+	:cvar RUNNING: Node is running.
+	:cvar REBOOTING: Node is rebooting.
+	:cvar TERMINATED: Node is terminated. This node can't be started later on.
+	:cvar STOPPED: Node is stopped. This node can be started later on.
+	:cvar PENDING: Node is pending.
+	:cvar UNKNOWN: Node state is unknown.
+	:cvar SUSPENDED: Node is suspended.
+	:cvar ERROR: Node is an error state. Usually no operations can be performed
+		on the node once it ends up in the error state.
+	:cvar PAUSED: Node is paused.
+	:cvar UNKNOWN: Node state is unknown.
+	"""
+	RUNNING = 0
+	REBOOTING = 1
+	TERMINATED = 2
+	PENDING = 3
+	UNKNOWN = 4
+	STOPPED = 5
+	SUSPENDED = 6
+	ERROR = 7
+	PAUSED = 8
+
+
 LIBCLOUD_UVMM_STATE_MAPPING = {
 		NodeState.RUNNING: "RUNNING",
 		NodeState.REBOOTING: "PENDING",
 		NodeState.TERMINATED: "NOSTATE",
 		NodeState.PENDING: "PENDING",
 		NodeState.UNKNOWN: "NOSTATE",
-		NodeState.STOPPED: "SHUTDOWN"
+		NodeState.STOPPED: "SHUTDOWN",
+		NodeState.SUSPENDED: "SUSPENDED",
+		NodeState.ERROR: "CRASHED",
+		NodeState.PAUSED: "PAUSED",
+		NodeState.UNKNOWN: "NOSTATE"
 		}
 
 
@@ -253,7 +277,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			self.current_frequency = min(self.current_frequency * 2, self.MAX_UPDATE_INTERVAL)
 
 			self.publicdata.last_update_try = time.time()
-			self._instances = self.driver.list_nodes()
+			self._instances = self._exec_libcloud(lambda: self.driver.list_nodes())
 
 			# Expensive update if
 			# last expensive update was more than self.EXPENSIVE_UPDATE_INTERVAL ago
@@ -265,34 +289,20 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			self.cache_save()
 			self.current_frequency = self.config_default_frequency
 			logger.debug("Updating took %s seconds for %s" % (self.publicdata.last_update - self.publicdata.last_update_try, self.publicdata.name))
-		except InvalidCredsError as e:
-			logger.error("Invalid credentials provided for connection %s: %s" % (self.publicdata.name, self.publicdata.url))
-		except MalformedResponseError as e:
-			logger.error("Malformed response from connection, correct endpoint specified? %s: %s; %s" % (self.publicdata.name, self.publicdata.url, str(e)))
-		except ProviderError as e:
-			logger.error("Connection %s: %s: httpcode: %s, %s" % (self.publicdata.name, self.publicdata.url, e.http_code, e))
-		except LibcloudError as e:
-			logger.error("Connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, e))
-		except Exception as e:
-			if hasattr(e, 'errno'):
-				if e.errno == errno.ECONNREFUSED:
-					logger.error("Connection %s: %s refused (ECONNREFUSED)" % (self.publicdata.name, self.publicdata.url))
-				else:
-					logger.error("Unknown exception in update in thread %s with unknown errno %s: %s" % (self.publicdata.name, e.errno, self.publicdata.url), exc_info=True)
-			else:
-				logger.error("Unknown exception in update in thread %s: %s" % (self.publicdata.name, self.publicdata.url), exc_info=True)
+		except Exception:
+			logger.error("Exception in update in thread %s: %s" % (self.publicdata.name, self.publicdata.url), exc_info=False)
 
 		logger.debug("Next update for %s: %s" % (self.publicdata.name, ms(self.current_frequency)))
 		self.publicdata.available = self.publicdata.last_update == self.publicdata.last_update_try
 
 	def update_expensive(self):
 		logger.debug("Expensive update for %s: %s" % (self.publicdata.name, self.publicdata.url))
-		self._images = self.driver.list_images()
-		self._sizes = self.driver.list_sizes()
-		self._locations = self.driver.list_locations()
-		self._keypairs = self.driver.list_key_pairs()
-		self._security_groups = self.driver.ex_list_security_groups()
-		self._networks = self.driver.ex_list_networks()
+		self._images = self._exec_libcloud(lambda: self.driver.list_images())
+		self._sizes = self._exec_libcloud(lambda: self.driver.list_sizes())
+		self._locations = self._exec_libcloud(lambda: self.driver.list_locations())
+		self._keypairs = self._exec_libcloud(lambda: self.driver.list_key_pairs())
+		self._security_groups = self._exec_libcloud(lambda: self.driver.ex_list_security_groups())
+		self._networks = self._exec_libcloud(lambda: self.driver.ex_list_networks())
 		self._last_expensive_update = time.time()
 
 	def set_frequency(self, freq):
@@ -434,16 +444,19 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		return secgroups
 
 	def _boot_instance(self, instance):
-		self.driver.ex_hard_reboot_node(instance)
+		self._exec_libcloud(lambda: self.driver.ex_hard_reboot_node(instance))
 
 	def _softreboot_instance(self, instance):
-		self.driver.ex_soft_reboot_node(instance)
+		self._exec_libcloud(lambda: self.driver.ex_soft_reboot_node(instance))
 
 	def _reboot_instance(self, instance):
-		self.driver.ex_hard_reboot_node(instance)
+		self._exec_libcloud(lambda: self.driver.ex_hard_reboot_node(instance))
 
 	def _pause_instance(self, instance):
-		raise OpenStackCloudConnectionError("PAUSE: Not yet implemented")
+		self._exec_libcloud(lambda: self.driver.ex_pause_node(instance))
+
+	def _unpause_instance(self, instance):
+		self._exec_libcloud(lambda: self.driver.ex_unpause_node(instance))
 
 	def _shutdown_instance(self, instance):
 		raise OpenStackCloudConnectionError("SHUTDOWN: Not yet implemented")
@@ -452,7 +465,10 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		raise OpenStackCloudConnectionError("SHUTOFF: Not yet implemented")
 
 	def _suspend_instance(self, instance):
-		raise OpenStackCloudConnectionError("SUSPEND: Not yet implemented")
+		self._exec_libcloud(lambda: self.driver.ex_suspend_node(instance))
+
+	def _resume_instance(self, instance):
+		self._exec_libcloud(lambda: self.driver.ex_resume_node(instance))
 
 	def instance_state(self, instance_id, state):
 		# instance is a libcloud.Node object
@@ -465,6 +481,8 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 				(NodeState.PENDING,    "RUN"): None,
 				(NodeState.UNKNOWN,    "RUN"): self._boot_instance,
 				(NodeState.STOPPED,    "RUN"): self._boot_instance,
+				(NodeState.SUSPENDED,  "RUN"): self._resume_instance,
+				(NodeState.PAUSED,     "RUN"): self._unpause_instance,
 				(NodeState.RUNNING,    "SOFTRESTART"): self._softreboot_instance,
 				(NodeState.RUNNING,    "RESTART"): self._reboot_instance,
 				(NodeState.REBOOTING,  "RESTART"): None,
@@ -477,7 +495,8 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 				(NodeState.REBOOTING,  "SHUTOFF"): self._shutoff_instance,
 				(NodeState.PENDING,    "SHUTOFF"): self._shutoff_instance,
 				(NodeState.UNKNOWN,    "SHUTOFF"): self._shutoff_instance,
-				(NodeState.RUNNING,    "SUSPEND"): self._suspend_instance
+				(NodeState.PAUSED,     "SHUTOFF"): self._shutoff_instance,
+				(NodeState.RUNNING,    "SUSPEND"): self._suspend_instance,
 				}
 		logger.debug("STATE: connection: %s instance %s (id:%s), oldstate: %s (%s), requested: %s" % (self.publicdata.name, instance.name, instance.id, instance.state, instance.state, state))
 		try:
@@ -498,7 +517,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		instance = self._get_instance_by_id(instance_id)
 		name = instance.name
 		try:
-			self.driver.destroy_node(instance)
+			self._exec_libcloud(lambda: self.driver.destroy_node(instance))
 			# Update instance information
 			self.timerEvent.set()
 		except Exception, e:  # Unfortunately, libcloud only throws "Exception"
@@ -594,10 +613,41 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		# libcloud call
 		try:
 			logger.debug("CREATE INSTANCE. ARGS: %s" % kwargs)
-			self.driver.create_node(**kwargs)
+			self._exec_libcloud(lambda: self.driver.create_node(**kwargs))
 		except Exception, e:
 			raise OpenStackCloudConnectionError("Instance could not be created: %s" % e)
 
+	# Execute lambda function
+	def _exec_libcloud(self, func):
+		try:
+			return func()
+		except InvalidCredsError as e:
+			logger.error("Invalid credentials provided for connection %s: %s" % (self.publicdata.name, self.publicdata.url))
+			raise
+		except MalformedResponseError as e:
+			logger.error("Malformed response from connection, correct endpoint specified? %s: %s; %s" % (self.publicdata.name, self.publicdata.url, str(e)))
+			raise
+		except ProviderError as e:
+			logger.error("Connection %s: %s: httpcode: %s, %s" % (self.publicdata.name, self.publicdata.url, e.http_code, e))
+			raise
+		except LibcloudError as e:
+			logger.error("Connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, e))
+			raise
+		except ssl.SSLError as e:
+			logger.error("Error with SSL connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, e))
+			raise
+		except Exception as e:
+			if hasattr(e, 'errno'):
+				if e.errno == errno.ECONNREFUSED:
+					logger.error("Connection %s: %s refused (ECONNREFUSED)" % (self.publicdata.name, self.publicdata.url))
+				elif e.errno == errno.EHOSTUNREACH:
+					logger.error("Connection %s: %s no route to host (EHOSTUNREACH)" % (self.publicdata.name, self.publicdata.url))
+
+				else:
+					logger.error("Unknown exception %s with unknown errno %s: %s" % (self.publicdata.name, e.errno, self.publicdata.url), exc_info=True)
+			else:
+				logger.error("Unknown exception  %s: %s" % (self.publicdata.name, self.publicdata.url), exc_info=True)
+			raise
 
 if __name__ == '__main__':
 	import doctest
