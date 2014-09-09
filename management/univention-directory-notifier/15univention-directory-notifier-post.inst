@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Directory Notifier
 #  join script
@@ -88,6 +88,15 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	# https://forge.univention.org/bugzilla/show_bug.cgi?id=35723
 
 	stop_listener
+
+	# Notifier need some seconds ...
+	echo -n "Waiting for notifier: "
+	for((i=0;i<15;i++)); do
+		nc -z localhost 6669 && break
+		echo -n "."
+		sleep 1
+	done
+	test $i = 15 && echo " fail" || echo " done"
 
 	cachedir=/var/lib/univention-directory-listener
 	moduledir=/usr/lib/univention-directory-listener/system
