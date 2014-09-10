@@ -8,4 +8,4 @@ desc: |
  * A replication issue has been fixed which could occur when joining
    a UCS DC into a domain which had the memberof LDAP overlay
    active at some point and later deactivated it.
-bug: [34759]
+bug: [35480]
