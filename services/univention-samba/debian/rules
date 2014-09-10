@@ -30,22 +30,25 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_install:
+override_dh_pysupport:
+	dh_pysupport
+ifneq (,$(findstring univention-samba-local-config, $(shell dh_listpackages)))
+	echo update-python-modules --post-install >> debian/univention-samba-local-config.postinst.debhelper
+endif
 	univention-install-config-registry
-	dh_auto_install 
 
 override_dh_fixperms:
+	dh_fixperms
 	chmod 755 debian/univention-samba/usr/share/univention-samba/kerberize_user
 	chmod 755 debian/univention-samba/usr/lib/univention-directory-listener/system/samba-shares.py
 	chmod 755 debian/univention-samba/usr/share/univention-samba/remove-samba-account
 	chmod 755 debian/univention-samba/usr/share/univention-samba/slave-sync
 	chmod 755 debian/univention-samba/usr/lib/univention-directory-listener/system/samba-privileges.py
 	chmod 755 debian/univention-samba/usr/share/univention-samba/addmachine.sh
-	dh_fixperms 
 
 override_dh_auto_test:
 	ucslint
 	dh_auto_test
 
 %:
-	dh $@
+	dh $@ --with python_support

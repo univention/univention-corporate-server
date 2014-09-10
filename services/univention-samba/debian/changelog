@@ -1,3 +1,9 @@
+univention-samba (9.0.0-7) unstable; urgency=medium
+
+  * Fix for python-support and python2.7 (Bug #35828)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Sep 2014 16:03:23 +0200
+
 univention-samba (9.0.0-6) unstable; urgency=medium
 
   * Fix error messages about undefined wins support parameter (Bug #35766)
