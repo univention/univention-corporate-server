@@ -1163,6 +1163,6 @@ class Instance( Base, ProgressMixin ):
 			raise UMC_CommandError(_('An error occurred while sending the request: %s') % detail)
 		else:
 			# creating a new ucr variable to prevent double registration (Bug #35711)
-			handler_set(['umc/web/activation_email=true'])
+			handler_set(['ucs/web/license/requested=true'])
 			return True
 

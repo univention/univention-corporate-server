@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.99-6) unstable; urgency=low
+
+  * Bug #35711: renamed the variable name to ucs/web/license/requested=true
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Sep 2014 10:39:11 +0200
+
 univention-management-console-module-udm (4.0.99-5) unstable; urgency=low
 
   * Bug #35711: Added variable creation to __init__.py
