@@ -60,21 +60,26 @@
 	<chapter id="relnotes:order">
 		<title>Recommended update order for environments with more than one UCS server</title>
 
+		<para>FIXME</para>
 	</chapter>
 
 	<chapter id="relnotes:prepare">
 		<title>Preparation of update</title>
 
+		<para>FIXME</para>
 	</chapter>
 
 	<chapter id="relnotes:post">
 		<title>Postprocessing of the update</title>
+
+		<para>FIXME</para>
 	</chapter>
 
 
 	<chapter id="relnotes:packages">
 		<title>Further notes on selected packages</title>
 
+		<para>FIXME</para>
 	</chapter>
 
 	<chapter id="relnotes:changelog">

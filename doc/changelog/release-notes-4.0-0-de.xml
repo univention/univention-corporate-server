@@ -60,22 +60,25 @@
 	<chapter id="relnotes:order">
 		<title>Empfohlene Update-Reihenfolge für Umgebungen mit mehr als einem UCS-Server</title>
 
+		<para>FIXME</para>
 	</chapter>
 
 	<chapter id="relnotes:prepare">
 		<title>Vorbereitung des Updates</title>
 
+		<para>FIXME</para>
 	</chapter>
 
 	<chapter id="relnotes:post">
 		<title>Nachbereitung des Updates</title>
 
+		<para>FIXME</para>
 	</chapter>
-
 
 	<chapter id="relnotes:packages">
 		<title>Hinweise zum Einsatz einzelner Pakete</title>
 
+		<para>FIXME</para>
 	</chapter>
 
 	<chapter id="relnotes:changelog">
