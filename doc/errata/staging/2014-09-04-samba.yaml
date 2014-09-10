@@ -7,6 +7,6 @@ version: [3]
 desc: |
  * When installing broken printdrivers, samba returned a wrong error code
    (access denied).  This has been fixed.
- * A bug has been fixed which could prevent a takeover of Windows 2012 servers with
-   enabled recycle bin.
+ * A bug has been fixed which could prevent a takeover of Windows 2012 servers
+   with enabled recycle bin.
 bug: [32771,35443]
