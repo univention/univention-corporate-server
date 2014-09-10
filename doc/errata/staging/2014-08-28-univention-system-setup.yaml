@@ -14,6 +14,7 @@ desc: |
   * The Windows NETBIOS domain name can now be up to 15 characters long.
   * Problems with reloading values and displaying messages after saving changes
     have been corrected.
-  * The UMC now warns the user if DHCP is selected but a link-local IP address is used.
+  * The UMC now warns the user if DHCP is selected but a link-local IP address
+    is used.
     This can occur if DHCP is preconfigured but no DHCP lease could be obtained.
 bug: [34090,35587,35721,35605,35599,35815]
