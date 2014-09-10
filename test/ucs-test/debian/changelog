@@ -1,3 +1,9 @@
+ucs-test (5.0.8-1) unstable; urgency=medium
+
+  * 53_samba-common/50quota: added more debug (Bug #35844)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Sep 2014 06:26:27 +0200
+
 ucs-test (5.0.7-1) unstable; urgency=medium
 
   * 53_samba-common/50quota: added more debug (Bug #35844)
