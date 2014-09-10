@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-44) unstable; urgency=low
+
+  * Bug #35711: fix checking for ucs/web/license/requested
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Sep 2014 13:44:45 +0200
+
 univention-management-console-frontend (3.0.152-43) unstable; urgency=low
 
   * Bug #35711: renamed the variable name to ucs/web/license/requested=true 

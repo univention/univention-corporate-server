@@ -61,8 +61,8 @@ define([
 	};
 
 	var isLicenseActivated = function() {
-		return tools.ucr(['uuid/license', 'ucs/web/license/requested=true']).then(function(ucr) {
-			return Boolean(ucr['uuid/license']) || tools.isTrue(ucr['ucs/web/license/requested=true']);
+		return tools.ucr(['uuid/license', 'ucs/web/license/requested']).then(function(ucr) {
+			return Boolean(ucr['uuid/license']) || tools.isTrue(ucr['ucs/web/license/requested']);
 		});
 	}
 
