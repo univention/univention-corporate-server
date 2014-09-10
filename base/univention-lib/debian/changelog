@@ -1,3 +1,9 @@
+univention-lib (3.0.26-67) unstable; urgency=low
+
+  * Bug #35729: revert r53120: Fix stall in dpkg status pipe reading code
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 28 Aug 2014 12:43:18 +0200
+
 univention-lib (3.0.26-66) unstable; urgency=medium
 
   * Bug #31319: make sure that atjobs is EINTR-safe

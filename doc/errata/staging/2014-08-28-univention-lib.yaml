@@ -5,9 +5,7 @@ src: univention-lib
 fix: 3.0.26-66.276.201409021435
 version: [3,2]
 desc: |
-  * This update fixes a problem with reading progress report lines from 'dpkg'
-    while installing Apps, which lead to the installation getting stuck.
   * The AD member setup does now ignore the spelling of the domain name.
   * The python module atjobs is now EINTR-safe, i.e., for interrupted function
     call signals.
-bug: [35729,35757,31319]
+bug: [35757,31319]
