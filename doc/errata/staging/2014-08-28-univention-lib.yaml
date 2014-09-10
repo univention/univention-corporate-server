@@ -9,5 +9,5 @@ desc: |
     while installing Apps, which lead to the installation getting stuck.
   * The AD member setup does now ignore the spelling of the domain name.
   * The python module atjobs is now EINTR-safe, i.e., for interrupted function
-    call signals
+    call signals.
 bug: [35729,35757,31319]
