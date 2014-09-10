@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.152-43) unstable; urgency=low
+
+  * Bug #35711: renamed the variable name to ucs/web/license/requested=true 
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Sep 2014 10:44:34 +0200
+
 univention-management-console-frontend (3.0.152-42) unstable; urgency=low
 
   * Using tools.isTrue instead of Boolean (Bug #35711)
