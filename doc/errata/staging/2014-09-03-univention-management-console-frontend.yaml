@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-management-console-frontend
-fix: 3.0.152-42.853.201409031502
+fix: 3.0.152-43.855.201409101048
 version: [3]
 desc: |
 If an email address is given during the system setup
