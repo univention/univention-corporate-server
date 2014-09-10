@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 1.0.103-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-09-08 18:15+0200\n"
+"POT-Creation-Date: 2014-09-10 17:16+0200\n"
 "PO-Revision-Date: 2013-07-24 19:03+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -57,7 +57,7 @@ msgstr "%(nSelected)d %(objPlural)s von %(nTotal)d ausgewählt"
 msgid "%(nSelected)d %(objSingular)s of %(nTotal)d selected"
 msgstr "%(nSelected)d %(objSingular)s von %(nTotal)d ausgewählt"
 
-#: umc/js/uvmm.js:813
+#: umc/js/uvmm.js:815
 #, python-format
 msgid "%s domain"
 msgstr "%s der Domäne"
@@ -92,7 +92,7 @@ msgstr ""
 "Zurückmigrieren oder Löschen der Maschine. Stellen Sie dabei sicher, dass "
 "keine mehrfach eingebundenen Image-Dateien gelöscht werden.</p>"
 
-#: umc/js/uvmm.js:758
+#: umc/js/uvmm.js:760
 msgid ""
 "<p>Shutting down virtual machines cleanly required the cooperation of their "
 "guest operating system.</p><p>For KVM ACPI must be enabled.</p><p>For XEN PV-"
@@ -142,7 +142,7 @@ msgstr ""
 "Der Name für die virtuelle Maschine wird benötigt und sollte nicht der "
 "vorgeschlagenen Namenspräfix entsprechen"
 
-#: umc/js/uvmm.js:907
+#: umc/js/uvmm.js:909
 msgid "A valid clone name cannot contain \"/\" and may not start with \".\" ."
 msgstr ""
 "Ein gültiger Klonname darf keine \"/\" enthalten und kann nicht mit \".\" "
@@ -272,7 +272,7 @@ msgstr "CDROM-Laufwerk"
 msgid "CDROM drive"
 msgstr "CDROM-Laufwerk"
 
-#: umc/js/uvmm.js:970 umc/js/uvmm.js:1003
+#: umc/js/uvmm.js:972 umc/js/uvmm.js:1005
 msgid "CPU usage"
 msgstr "CPU-Auslastung"
 
@@ -283,8 +283,8 @@ msgstr "Caching"
 #: umc/js/uvmm/DriveGrid.js:310 umc/js/uvmm/DriveGrid.js:341
 #: umc/js/uvmm/SnapshotGrid.js:180 umc/js/uvmm/SnapshotGrid.js:206
 #: umc/js/uvmm/SnapshotGrid.js:243 umc/js/uvmm/InterfaceGrid.js:133
-#: umc/js/uvmm.js:448 umc/js/uvmm.js:569 umc/js/uvmm.js:631 umc/js/uvmm.js:806
-#: umc/js/uvmm.js:932
+#: umc/js/uvmm.js:448 umc/js/uvmm.js:569 umc/js/uvmm.js:631 umc/js/uvmm.js:808
+#: umc/js/uvmm.js:934
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -297,7 +297,7 @@ msgstr "Medium wechseln"
 msgid "Choose existing image"
 msgstr "Auswahl einer vorhandenen Image-Datei"
 
-#: umc/js/uvmm.js:1226
+#: umc/js/uvmm.js:1228
 msgid "Clone"
 msgstr "Klonen"
 
@@ -325,12 +325,12 @@ msgstr "Kontakt"
 msgid "Coordinated Universal Time"
 msgstr "Koordinierte Weltzeit (UTC)"
 
-#: umc/js/uvmm/SnapshotGrid.js:168 umc/js/uvmm.js:919 umc/js/uvmm.js:1094
-#: umc/js/uvmm.js:1146 umc/js/uvmm.js:1263
+#: umc/js/uvmm/SnapshotGrid.js:168 umc/js/uvmm.js:921 umc/js/uvmm.js:1096
+#: umc/js/uvmm.js:1148 umc/js/uvmm.js:1265
 msgid "Create"
 msgstr "Erstellen"
 
-#: umc/js/uvmm.js:939
+#: umc/js/uvmm.js:941
 msgid "Create a clone"
 msgstr "Erstellen eines Klons"
 
@@ -474,7 +474,7 @@ msgstr ""
 "aktualisiert."
 
 #: umc/js/uvmm/DriveGrid.js:86 umc/js/uvmm/InterfaceGrid.js:91
-#: umc/js/uvmm.js:254 umc/js/uvmm.js:1105 umc/js/uvmm.js:1158
+#: umc/js/uvmm.js:254 umc/js/uvmm.js:1107 umc/js/uvmm.js:1160
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -486,7 +486,7 @@ msgstr "Laufwerk bearbeiten"
 msgid "Edit network interface"
 msgstr "Bearbeiten einer Netzwerkschnittstelle"
 
-#: umc/js/uvmm.js:1109 umc/js/uvmm.js:1162
+#: umc/js/uvmm.js:1111 umc/js/uvmm.js:1164
 msgid "Edit the configuration of the virtual machine"
 msgstr "Konfiguration der virtuellen Maschinen bearbeiten"
 
@@ -563,7 +563,7 @@ msgstr "Allgemein"
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
-#: umc/js/uvmm.js:914
+#: umc/js/uvmm.js:916
 msgid "Generate new MAC addresses"
 msgstr "Neue MAC-Adressen erzeugen"
 
@@ -652,7 +652,7 @@ msgstr "Image"
 msgid "Image format"
 msgstr "Image-Format"
 
-#: umc/js/uvmm.js:913
+#: umc/js/uvmm.js:915
 msgid "Inherit MAC addresses"
 msgstr "MAC-Adressen übernehmen"
 
@@ -696,7 +696,7 @@ msgstr "Lokale Zeitzone"
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: umc/js/uvmm.js:911
+#: umc/js/uvmm.js:913
 msgid "MAC addresses"
 msgstr "MAC-Adressen"
 
@@ -720,11 +720,11 @@ msgstr "Speicher"
 msgid "Memory (default unit MB)"
 msgstr "Größe des Arbeitsspeichers (Standardeinheit MB)"
 
-#: umc/js/uvmm.js:975
+#: umc/js/uvmm.js:977
 msgid "Memory usage"
 msgstr "Arbeitsspeichernutzung"
 
-#: umc/js/uvmm.js:436 umc/js/uvmm.js:1244
+#: umc/js/uvmm.js:436 umc/js/uvmm.js:1246
 msgid "Migrate"
 msgstr "Migrieren"
 
@@ -738,8 +738,8 @@ msgstr "NAT"
 
 #: umc/js/uvmm/DomainWizard.js:169 umc/js/uvmm/InstancePage.js:99
 #: umc/js/uvmm/DomainPage.js:113 umc/js/uvmm/SnapshotGrid.js:56
-#: umc/js/uvmm/CloudConnectionWizard.js:132 umc/js/uvmm.js:966
-#: umc/js/uvmm.js:984 umc/js/uvmm.js:999
+#: umc/js/uvmm/CloudConnectionWizard.js:172 umc/js/uvmm.js:968
+#: umc/js/uvmm.js:986 umc/js/uvmm.js:1001
 msgid "Name"
 msgstr "Name"
 
@@ -788,7 +788,7 @@ msgstr "Nicht löschbar"
 msgid "Number of CPUs"
 msgstr "Anzahl der CPUs"
 
-#: umc/js/uvmm.js:1019 umc/js/uvmm.js:1239
+#: umc/js/uvmm.js:1021 umc/js/uvmm.js:1241
 msgid "Open a view to the virtual machine {label} on {nodeName}"
 msgstr "Öffnet eine Anzeige der virtuellen Maschine {label} auf {nodeName}"
 
@@ -830,7 +830,7 @@ msgstr ""
 "installiert werden, siehe <a href=\"http://wiki.univention.de/index.php?"
 "title=UVMM_Technische_Details\">Univention Wiki.</a>"
 
-#: umc/js/uvmm.js:1197
+#: umc/js/uvmm.js:1199
 msgid "Pause"
 msgstr "Pausieren"
 
@@ -842,12 +842,12 @@ msgstr "Physikalischer Server"
 msgid "Physical servers"
 msgstr "Physikalische Server"
 
-#: umc/js/uvmm/CloudConnectionWizard.js:138
+#: umc/js/uvmm/CloudConnectionWizard.js:178
 msgid "Please enter the corresponding credentials for the cloud connection:"
 msgstr ""
 "Bitte geben Sie die dazugehörigen Zugangsdaten für die Cloud-Verbindung an:"
 
-#: umc/js/uvmm.js:905
+#: umc/js/uvmm.js:907
 msgid "Please enter the name for the clone:"
 msgstr "Geben die den Namen für den Klon ein:"
 
@@ -855,7 +855,7 @@ msgstr "Geben die den Namen für den Klon ein:"
 msgid "Please enter the name for the snapshot:"
 msgstr "Geben Sie den Namen für den Sicherungspunkt ein:"
 
-#: umc/js/uvmm.js:1381
+#: umc/js/uvmm.js:1383
 msgid "Please select a valid search type."
 msgstr "Bitte wählen Sie einen gültigen Suchtypen."
 
@@ -863,7 +863,7 @@ msgstr "Bitte wählen Sie einen gültigen Suchtypen."
 msgid "Please select the destination server:"
 msgstr "Auswahl des Zielservers"
 
-#: umc/js/uvmm/CloudConnectionWizard.js:128
+#: umc/js/uvmm/CloudConnectionWizard.js:164
 msgid "Please specify name for the cloud connection:"
 msgstr "Bitte geben die den Namen für die Cloud-Verbindung an:"
 
@@ -920,8 +920,8 @@ msgstr "Lese-/Schreib-Caching, herausgefiltertes sync (unsafe)"
 msgid "Register a new cloud connection service account."
 msgstr "Eintragen einer neuen Cloud-Verbindung."
 
-#: umc/js/uvmm/CloudConnectionWizard.js:127
-#: umc/js/uvmm/CloudConnectionWizard.js:137
+#: umc/js/uvmm/CloudConnectionWizard.js:163
+#: umc/js/uvmm/CloudConnectionWizard.js:177
 msgid "Register a new cloud connection."
 msgstr "Eintragen einer neuen Cloud-Verbindung."
 
@@ -934,7 +934,7 @@ msgid "Remote access"
 msgstr "VNC-Fernzugriff"
 
 #: umc/js/uvmm/InterfaceGrid.js:103 umc/js/uvmm/InterfaceGrid.js:129
-#: umc/js/uvmm.js:1136 umc/js/uvmm.js:1253
+#: umc/js/uvmm.js:1138 umc/js/uvmm.js:1255
 msgid "Remove"
 msgstr "Löschen"
 
@@ -946,11 +946,11 @@ msgstr "Löschen einer Instanz"
 msgid "Remove a virtual machine"
 msgstr "Löschen einer virtuellen Maschine"
 
-#: umc/js/uvmm.js:1177
+#: umc/js/uvmm.js:1179
 msgid "Request virtual machine shutdown using ACPI"
 msgstr "Herunterfahren der virtuellen Maschine mittels ACPI"
 
-#: umc/js/uvmm.js:1122 umc/js/uvmm.js:1217
+#: umc/js/uvmm.js:1124 umc/js/uvmm.js:1219
 msgid "Restart"
 msgstr "Neu starten"
 
@@ -1017,19 +1017,19 @@ msgstr "Soll die ausgewählte Instanz {label} gelöscht werden?"
 msgid "Should the selected virtual machine {label} be removed?"
 msgstr "Soll die ausgewählte virtuelle Maschine {label} gelöscht werden?"
 
-#: umc/js/uvmm.js:763
+#: umc/js/uvmm.js:765
 msgid "Show this warning again"
 msgstr "Diese Warnung erneut anzeigen"
 
-#: umc/js/uvmm.js:1186
+#: umc/js/uvmm.js:1188
 msgid "Shut off the virtual machine"
 msgstr "Ausschalten einer virtuellen Maschine"
 
-#: umc/js/uvmm.js:766 umc/js/uvmm.js:1175
+#: umc/js/uvmm.js:768 umc/js/uvmm.js:1177
 msgid "Shutdown"
 msgstr "Herunterfahren"
 
-#: umc/js/uvmm.js:1129
+#: umc/js/uvmm.js:1131
 msgid "Shutdown & Restart"
 msgstr "Herunterfahren & Neu starten"
 
@@ -1076,31 +1076,31 @@ msgstr "Spanisch"
 msgid "Specify the capacity for the new volume"
 msgstr "Geben Sie die Speicherkapazität für das neue Image an"
 
-#: umc/js/uvmm.js:988 umc/js/uvmm.js:1009 umc/js/uvmm.js:1113
-#: umc/js/uvmm.js:1166
+#: umc/js/uvmm.js:990 umc/js/uvmm.js:1011 umc/js/uvmm.js:1115
+#: umc/js/uvmm.js:1168
 msgid "Start"
 msgstr "Starten"
 
-#: umc/js/uvmm.js:991 umc/js/uvmm.js:1115
+#: umc/js/uvmm.js:993 umc/js/uvmm.js:1117
 msgid "Start the instance"
 msgstr "Starten einer Instanz"
 
-#: umc/js/uvmm.js:1012 umc/js/uvmm.js:1168
+#: umc/js/uvmm.js:1014 umc/js/uvmm.js:1170
 msgid "Start the virtual machine"
 msgstr "Starten einer virtuellen Maschine"
 
-#: umc/js/uvmm.js:1356
+#: umc/js/uvmm.js:1358
 msgid ""
 "State: {state}<br>Server: {node}<br>Description: {description}<br>{vnc_port}"
 msgstr ""
 "Status: {state}<br>Server: {node}<br>Beschreibung: {description}<br>"
 "{vnc_port}"
 
-#: umc/js/uvmm.js:1184 umc/js/uvmm.js:1191
+#: umc/js/uvmm.js:1186 umc/js/uvmm.js:1193
 msgid "Stop"
 msgstr "Beenden"
 
-#: umc/js/uvmm.js:1190
+#: umc/js/uvmm.js:1192
 msgid ""
 "Stopping the virtual machine will turn it off without shutting down the "
 "operating system. Should the operation be continued?"
@@ -1108,7 +1108,7 @@ msgstr ""
 "Das Beenden der virtuellen Maschine schaltet diese aus ohne das "
 "Betriebssystem zuvor herunterzufahren. Soll die Aktion fortgesetzt werden?"
 
-#: umc/js/uvmm.js:1207
+#: umc/js/uvmm.js:1209
 msgid "Suspend"
 msgstr "Speichern & Beenden"
 
@@ -1200,10 +1200,14 @@ msgstr ""
 "Die Quelle ist der Name der Netzwerkschnittstelle des physikalischen Server "
 "die als Bridge konfiguriert ist. Normalerweise ist dies eth0."
 
-#: umc/js/uvmm.js:786 umc/js/uvmm.js:828
+#: umc/js/uvmm.js:788 umc/js/uvmm.js:830
 msgid "The state of the selected virtual machines can not be changed"
 msgstr ""
 "Der Status der ausgewählten virtuellen Maschinen kann nicht geändert werden"
+
+#: umc/js/uvmm/CloudConnectionWizard.js:57
+msgid "The url is invalid!<br/>Expected format is: <i>http(s)://</i>"
+msgstr "Die url ist ungültig!<br/>Das erwartete Format ist: <i>http(s)://</i>"
 
 #: umc/js/uvmm/DriveWizard.js:199
 msgid "The volume capacity is invalid"
@@ -1287,12 +1291,12 @@ msgstr "VNC Port"
 msgid "VNC password"
 msgstr "VNC-Passwort"
 
-#: umc/js/uvmm.js:1360
+#: umc/js/uvmm.js:1362
 #, python-format
 msgid "VNC-Port: %s"
 msgstr "VNC-Port: %s"
 
-#: umc/js/uvmm.js:1016 umc/js/uvmm.js:1235
+#: umc/js/uvmm.js:1018 umc/js/uvmm.js:1237
 msgid "View"
 msgstr "Anzeigen"
 
@@ -1300,7 +1304,7 @@ msgstr "Anzeigen"
 msgid "Virtual machine"
 msgstr "Virtuelle Maschine"
 
-#: umc/js/uvmm.js:753
+#: umc/js/uvmm.js:755
 msgid "Virtual machine shutdown"
 msgstr "Virtuelle Maschine herunterfahren"
 
