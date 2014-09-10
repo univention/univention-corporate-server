@@ -68,7 +68,7 @@ logger = logging.getLogger('uvmmd.openstackconnection')
 OPENSTACK_CONNECTION_ATTRIBUTES = {
 		"username": "key",
 		"password": "secret",
-		"url": "ex_force_auth_url",
+		"auth_url": "ex_force_auth_url",
 		"auth_version": "ex_force_auth_version",
 		"service_type": "ex_force_service_type",
 		"service_name": "ex_force_service_name",
@@ -160,7 +160,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		self.publicdata = Cloud_Data_Connection()
 		self.publicdata.name = cloud["name"]
 		self.publicdata.cloudtype = cloud["type"]
-		self.publicdata.url = cloud["url"]
+		self.publicdata.url = cloud["auth_url"]
 		self.publicdata.last_update = -1
 		self.publicdata.last_update_try = -1
 		self.publicdata.available = False
@@ -216,11 +216,11 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			raise OpenStackCloudConnectionError("username attribute is required")
 		if "password" not in cloud:
 			raise OpenStackCloudConnectionError("password attribute is required")
-		if "url" not in cloud:
-			raise OpenStackCloudConnectionError("url attribute is required")
+		if "auth_url" not in cloud:
+			raise OpenStackCloudConnectionError("auth_url attribute is required")
 
 	def _create_connection(self, cloud):
-		logger.debug("Creating connection to %s" % cloud["url"])
+		logger.debug("Creating connection to %s" % cloud["auth_url"])
 		params = {}
 		for param in cloud:
 			if param in OPENSTACK_CONNECTION_ATTRIBUTES:

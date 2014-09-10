@@ -119,9 +119,19 @@ class Cloud(object):
 		name = request.options.get('name')
 		parameter = request.options.get('parameter')
 
+		# add cloud to ldap
 		ldap_cloud_connection_add(cloudtype, name, parameter)
 
-		self.finished(request.id, [])
+		# add cloud to uvmm
+		args = parameter
+		args['name'] = name
+		args['type'] = cloudtype
+
+		self.uvmm.send(
+				'L_CLOUD_ADD',
+				Callback(self._thread_finish, request),
+				args=args
+				)
 
 	@sanitize(domainPattern=SearchSanitizer(default='*'))
 	def instance_query(self, request):
