@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-09-08 09:10+0200\n"
+"POT-Creation-Date: 2014-09-10 11:03+0200\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -185,10 +185,9 @@ msgid ""
 "p><p>Because of this some functions like the Appcenter or software-updates "
 "will not be accessible</p>"
 msgstr ""
-"<p>Mit den aktuellen Einstellungen ist <b> kein </b> Internetzugriff "
-"möglich.</p><p>Dadurch werden einige Funktionen wie zum Beispiel das "
-"Appcenter oder Software-Aktualisierungen nicht zur Verfügung stehen.</p>"
-
+"<p>Mit den aktuellen Einstellungen ist <b> kein </b> Internetzugriff möglich."
+"</p><p>Dadurch werden einige Funktionen wie zum Beispiel das Appcenter oder "
+"Software-Aktualisierungen nicht zur Verfügung stehen.</p>"
 
 #: umc/js/setup/ApplianceWizard.js:1168
 #, python-format
@@ -478,6 +477,10 @@ msgstr "Fortfahren"
 #: umc/js/setup/ApplianceWizard.js:1731
 msgid "Continue with 169.254.*.* addresse(s)"
 msgstr "Fortfahren mit 169.254.*.* Adresse(n)"
+
+#: umc/js/setup/ApplianceWizard.js:1735
+msgid "Continue without internet access"
+msgstr "Ohne Internetzugriff fortfahren"
 
 #: umc/js/setup/CertificatePage.js:86
 msgid "Country"

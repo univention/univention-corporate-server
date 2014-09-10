@@ -1732,7 +1732,7 @@ define([
 						var allDevices = this._getNetworkDevices();
 						if (fallbackDevices.length === allDevices.length ) {
 							msg = _('<p>With the current settings <b> no </b> internet access is available.</p><p>Because of this some functions like the Appcenter or software-updates will not be accessible</p>') + msg;
-							buttonLabel = ('Continue <b>without</b> internet access');
+							buttonLabel = _('Continue without internet access');
 						}
 						return dialog.confirm(msg, [{
 							label: _('Cancel'),

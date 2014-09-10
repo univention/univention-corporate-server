@@ -1,3 +1,9 @@
+univention-system-setup (7.0.69-61) unstable; urgency=low
+
+  * Fixed translation error in ApplianceWizard.js (Bug #34090)
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 10 Sep 2014 11:06:47 +0200
+
 univention-system-setup (7.0.69-60) unstable; urgency=low
 
   * Removed creation of umc/web/activation_email (Bug #35711)
