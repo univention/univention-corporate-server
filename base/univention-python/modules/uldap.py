@@ -31,9 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import ldap
-import types
-import time
-import sys
 import ldap.schema
 import univention.debug
 from univention.config_registry import ConfigRegistry
@@ -84,7 +81,7 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[]):
 		lo=access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
 	except ldap.SERVER_DOWN, e:
 		if ucr['ldap/backup']:
-			backup=string.split(ucr['ldap/backup'],' ')[0]
+			backup=ucr['ldap/backup'].split(' ')[0]
 			lo=access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,'+ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
 		else:
 			raise ldap.SERVER_DOWN, e
@@ -176,17 +173,7 @@ class access:
 
 		self.client_connection_attempt = client_retry_count+1
 
-		i=0
-		while i <= self.client_connection_attempt:
-			try:
-				self.__open(ca_certfile)
-				break
-			except ldap.SERVER_DOWN:
-				if i >= (self.client_connection_attempt-1):
-					raise
-				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "Can't contact LDAP server. Try again (%d/%d)" % (i+1,self.client_connection_attempt))
-				time.sleep(1)
-			i+=1
+		self.__open(ca_certfile)
 
 	def __encode_pwd(self, pwd):
 		if isinstance( pwd, unicode ):

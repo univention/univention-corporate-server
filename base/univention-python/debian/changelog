@@ -1,3 +1,9 @@
+univention-python (8.0.1-1) unstable; urgency=low
+
+  * Bug #35852: Fix LDAP reconnect count
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 09 Sep 2014 20:13:58 +0200
+
 univention-python (8.0.0-3) unstable; urgency=low
 
   * Call explicit python_support (Bug #35138)
