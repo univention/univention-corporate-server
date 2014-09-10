@@ -60,6 +60,8 @@ SERVICES = {
 LDAP_UVMM_RDN = "cn=Virtual Machine Manager"
 LDAP_INFO_RDN = "cn=Information,%s" % LDAP_UVMM_RDN
 LDAP_PROFILES_RDN = "cn=Profiles,%s" % LDAP_UVMM_RDN
+LDAP_CLOUD_CONNECTION_RDN = "cn=CloudConnection,%s" % LDAP_UVMM_RDN
+LDAP_CLOUD_TYPE_RDN = "cn=CloudType,%s" % LDAP_UVMM_RDN
 
 class LdapError(TranslatableException):
 	"""LDAP error."""
@@ -204,6 +206,7 @@ def ldap_modify(uuid):
 
 
 def ldap_cloud_connections():
+	""" Return a list of all cloud connections."""
 	filt = '(objectClass=univentionVirtualMachineCloudConnection)'
 	# ensure that we should manage the host
 	filt = '(&%s(|(!(univentionVirtualMachineManageableBy=*))(univentionVirtualMachineManageableBy=%s)))' % ( filt, HOST_FQDN )
@@ -233,7 +236,31 @@ def ldap_cloud_connections():
 	except LDAPError, e:
 		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
 
+def ldap_cloud_connection_add(cloudtype, name, parameter):
+	""" Add a new cloud connection."""
+	try:
+		lo, position = univention.admin.uldap.getAdminConnection()
+		dn = 'cn=%s,%s,%s' % (name, LDAP_CLOUD_CONNECTION_RDN, position.getDn())
+		dn_typeref = 'cn=%s,%s,%s' % (cloudtype, LDAP_CLOUD_TYPE_RDN, position.getDn())
+		parameter_lst = []
+		for k,v in parameter.items():
+			if (k and v):
+				parameter_lst.append('%s=%s' % (k,v))
+		attrs = {
+			'objectClass': ['univentionVirtualMachineCloudConnection', 'univentionVirtualMachineHostOC', 'univentionObject'],
+			'univentionObjectType': 'uvmm/cloudconnection',
+			'cn': name,
+			'univentionVirtualMachineCloudConnectionTypeRef': dn_typeref,
+			'univentionVirtualMachineCloudConnectionParameter': parameter_lst
+		}
+		modlist = [(k,v) for k,v in attrs.items()]
+		lo.add(dn, modlist)
+
+	except LDAPError, e:
+		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
+
 def ldap_cloud_types():
+	""" Return a list of all cloud types."""
 	filt = '(objectClass=univentionVirtualMachineCloudType)'
 	lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
 	try:

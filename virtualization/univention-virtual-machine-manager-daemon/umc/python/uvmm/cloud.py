@@ -36,7 +36,8 @@ from univention.management.console.protocol.definitions import MODULE_ERR_COMMAN
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import sanitize
 from univention.management.console.modules.sanitizers import SearchSanitizer, ChoicesSanitizer
-from univention.uvmm.uvmm_ldap import ldap_cloud_types
+from univention.uvmm.uvmm_ldap import ldap_cloud_types, ldap_cloud_connection_add
+from subprocess import call
 
 from notifier import Callback
 from urlparse import urldefrag
@@ -101,6 +102,26 @@ class Cloud(object):
 				Callback(_finished, request),
 				pattern=request.options['nodePattern']
 				)
+
+	def cloud_add(self, request):
+		"""
+		Add a new cloud connection into ldap.
+		options: {
+			['cloudtype': <uvmm/cloudtype>,]
+			['name': <new cloud name>,]
+			['parameter': <key/value parameter>,]
+			}
+
+		return: []
+		"""
+		self.required_options(request, 'cloudtype', 'name', 'parameter')
+		cloudtype = request.options.get('cloudtype')
+		name = request.options.get('name')
+		parameter = request.options.get('parameter')
+
+		ldap_cloud_connection_add(cloudtype, name, parameter)
+
+		self.finished(request.id, [])
 
 	@sanitize(domainPattern=SearchSanitizer(default='*'))
 	def instance_query(self, request):

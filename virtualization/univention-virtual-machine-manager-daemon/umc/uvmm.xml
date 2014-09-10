@@ -41,6 +41,7 @@
 		<command name="uvmm/profile/query" function="profile_query"/>
 		<command name="uvmm/profile/get" function="profile_get"/>
 		<command name="uvmm/cloud/query" function="cloud_query"/>
+		<command name="uvmm/cloud/add" function="cloud_add"/>
 		<command name="uvmm/instance/query" function="instance_query"/>
 		<command name="uvmm/instance/state" function="instance_state"/>
 		<command name="uvmm/instance/remove" function="instance_remove"/>

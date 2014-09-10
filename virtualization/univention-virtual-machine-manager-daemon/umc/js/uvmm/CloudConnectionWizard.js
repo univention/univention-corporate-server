@@ -44,18 +44,44 @@ define([
 	"umc/widgets/CheckBox",
 	"umc/widgets/HiddenInput",
 	"umc/widgets/Wizard",
+	"umc/widgets/Form",
 	"umc/widgets/ContainerWidget",
 	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Memory, Observable, MappedTextBox, tools, dialog, TitlePane, TextArea, TextBox, Text, ComboBox, CheckBox, HiddenInput, Wizard, ContainerWidget, DriveGrid, types, _) {
+], function(declare, lang, array, Memory, Observable, MappedTextBox, tools, dialog, TitlePane, TextArea, TextBox, Text, ComboBox, CheckBox, HiddenInput, Wizard, Form, ContainerWidget, DriveGrid, types, _) {
 
 	return declare("umc.modules.uvmm.CloudConnectionWizard", [ Wizard ], {
 		autoValidate: true,
 
+		_invalidUrlMessage: _('The url is invalid!<br/>Expected format is: <i>http(s)://</i>'),
+		_validateUrl: function(url) {
+			url = url || '';
+			var _regUrl = /^(http|https)+:\/\//;
+			var isUrl = _regUrl.test(url);
+			var acceptEmtpy = !url && !this.required;
+			return acceptEmtpy || isUrl;
+		},
+
 		_getWidgets: function(cloudtype) {
 			if (cloudtype == 'OpenStack') {
 				return [{
+					name: 'parameter',
+					type: Form,
+					label: '&nbsp;',
+					layout: [
+						'username',
+						'auth_version',
+						[ 'password', 'auth_token' ],
+						'auth_url',
+						'tenant',
+						'service_region',
+						'service_type',
+						'service_name',
+						'base_url',
+					],
+					widgets: 
+				[{
 					name: 'username',
 					type: TextBox,
 					label: 'username',
@@ -69,9 +95,9 @@ define([
 						{ id: '2.0_apikey', label: '2.0_apikey' },
 					],
 					onChange: lang.hitch(this, function(value){
-						var widget = this.getWidget('credentials', 'password');
+						var widget = this.getWidget('credentials', 'parameter').getWidget('password');
 						widget.set('disabled', value.indexOf('2.0_password') < 0);
-						var widget = this.getWidget('credentials', 'auth_token');
+						var widget = this.getWidget('credentials', 'parameter').getWidget('auth_token');
 						widget.set('disabled', value.indexOf('2.0_apikey') < 0);
 					}),
 					required: true
@@ -88,10 +114,12 @@ define([
 					depends: 'auth_version',
 					required: true
 				}, {
-					name: 'url',
+					name: 'auth_url',
 					type: TextBox,
-					label: 'url',
-					required: true
+					label: 'auth_url',
+					required: true,
+					validator: this._validateUrl,
+					invalidMessage: this._invalidUrlMessage,
 				}, {
 					name: 'tenant',
 					type: TextBox,
@@ -114,9 +142,17 @@ define([
 					label: 'service_name',
 					value: 'nova',
 					required: false
+				}, {
+					name: 'base_url',
+					type: TextBox,
+					label: 'base_url',
+					required: false,
+					validator: this._validateUrl,
+					invalidMessage: this._invalidUrlMessage,
 				}]
+				}];
 			}
-			return [{}]
+			return [{}];
 		},
 
 		constructor: function(props, cloudtype) {
@@ -127,6 +163,10 @@ define([
 					headerText: _('Register a new cloud connection.'),
 					helpText: _('Please specify name for the cloud connection:'),
 					widgets: [{
+						name: 'cloudtype',
+						type: HiddenInput,
+						value: cloudtype
+					}, {
 						name: 'name',
 						type: TextBox,
 						label: _('Name'),

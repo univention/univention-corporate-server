@@ -724,7 +724,9 @@ define([
 			var _finished = lang.hitch(this, function(values) {
 				this.standby(true);
 				tools.umcpCommand('uvmm/cloud/add', {
-					cloud: values
+					cloudtype: values.cloudtype,
+ 					name: values.name,
+					parameter: values.parameter
 				}).then(lang.hitch(this, function() {
 					_cleanup();
 					this._tree.reload();
