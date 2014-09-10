@@ -1,3 +1,18 @@
+univention-system-setup (8.0.38-2) unstable; urgency=low
+
+  * Fixed wrong variable name in univention-system-setup
+  * Fixed traqnslation in ApplianceWizard.js
+  	(Bug #34090)
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 08 Sep 2014 12:04:22 +0200
+
+univention-system-setup (8.0.38-1) unstable; urgency=low
+
+  * UMC now warns the user if DHCP is selected but instead of a lease
+    a link-local address is used (Bug #34090)
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 08 Sep 2014 09:25:49 +0200
+
 univention-system-setup (8.0.37-2) unstable; urgency=low
 
   * Bug #35711: Removed the variable creation

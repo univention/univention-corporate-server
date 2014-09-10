@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-09-01 12:08+0200\n"
+"POT-Creation-Date: 2014-09-10 13:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -235,11 +235,6 @@ msgid ""
 "The length of fully qualified domain name is greater than 63 characters."
 msgstr "Die Länge von System- und Domänennamen ist größer als 63 Zeichen."
 
-#: umc/python/setup/__init__.py:386
-msgid ""
-"The windows domain name cannot be longer than 15 characters."
-msgstr "Der Windows-Domänenname darf nicht länger als 15 Zeichen sein."
-
 #: umc/python/setup/__init__.py:413
 msgid "The primary network device must exist."
 msgstr "Das primäre Netzwerkgerät muss existieren."
@@ -292,6 +287,10 @@ msgstr ""
 #: umc/python/setup/__init__.py:385
 msgid "The windows domain name can only consist of upper case characters."
 msgstr "Die Windows-Domäne kann nur aus Großbuchstaben bestehen."
+
+#: umc/python/setup/__init__.py:386
+msgid "The windows domain name cannot be longer than 15 characters."
+msgstr "Der Windows-Domänenname darf nicht länger als 15 Zeichen sein."
 
 #: umc/python/setup/__init__.py:387
 msgid "The windows domain name is not valid."

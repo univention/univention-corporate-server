@@ -1580,6 +1580,23 @@ define([
 			return true;
 		},
 
+		_getLinkLocalDHCPAddresses: function() {
+			var fallbackDevices = [];
+			if (this.getWidget('network', '_dhcp').get('value')){
+				array.forEach(this._getNetworkDevices(), function(idev, i) {
+					var ip = this.getWidget('network', '_ip' + i).get('value');
+					var mask = this.getWidget('network', '_netmask' + i).get('value');
+					if ((ip.indexOf('169.254') === 0) && (mask=='255.255.0.0')) {
+						fallbackDevices.push({
+							name: idev,
+							ip: ip
+						});
+					}
+				}, this);
+			}
+			return fallbackDevices;
+		},
+
 		_validatePage: function(pageName) {
 			if (pageName == 'software') {
 				// validate software components
@@ -1773,6 +1790,36 @@ define([
 			if (nextPage == 'network') {
 				this._updateNetworkPage();
 			}
+
+			// check dhcp config
+			if (pageName == 'network'){
+				if (this.getWidget('network', '_dhcp').get('value')) {
+					var fallbackDevices = this._getLinkLocalDHCPAddresses();
+					if (fallbackDevices.length) {
+						var devicesStr = array.map(fallbackDevices, function(idev) {
+							return lang.replace('<li><b>{name}:</b> {ip}</li>', idev);
+  						}).join('\n');
+	  					var msg = _('<p>One or more network interfaces could not obtain an IP address via DHCP. These interfaces will use automatic generated private addresses instead (APIPA).</p> <ul> %s </ul> <p>Please adjust your DHCP settings or confirm use of private address(es).</p>', devicesStr);
+						var buttonLabel = _('Continue with 169.254.*.* addresse(s)')
+						var allDevices = this._getNetworkDevices();
+						if (fallbackDevices.length === allDevices.length ) {
+							msg = _('<p>With the current settings <b> no </b> internet access is available.</p><p>Because of this some functions like the Appcenter or software-updates will not be accessible</p>') + msg;
+							buttonLabel =  _('Continue without internet access');
+						}
+						return dialog.confirm(msg, [{
+							label: _('Cancel'),
+							name: pageName
+						}, {
+							label: buttonLabel,
+							'default': true,
+							name: nextPage
+						}], _('Warning')).then(lang.hitch(this, function(response) {
+							return this._forcePageTemporarily(response);
+						}));
+					}
+				}
+			}
+
 			if (nextPage == 'software') {
 				this._updateAppGallery();
 			}
