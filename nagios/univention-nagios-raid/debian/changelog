@@ -1,3 +1,9 @@
+univention-nagios-raid (4.0.0-3) unstable; urgency=low
+
+  * Increased join script version number (Bug #35265)
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 11 Sep 2014 08:46:34 +0200
+
 univention-nagios-raid (4.0.0-2) unstable; urgency=low
 
   * Using check_raid from nagios-plugins-contrib
