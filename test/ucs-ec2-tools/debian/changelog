@@ -1,3 +1,11 @@
+ucs-ec2-tools (0.1.22-2) unstable; urgency=low
+
+  * ucs-ec2-create: upon creating a windows vm instead of an initial connect
+    ports 139 and 445 are scanned to se if vm is reachable (Bug #35850)
+  * utils.sh: added function install_ucs_windows_tools (Bug #35854)
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 11 Sep 2014 16:14:28 +0200
+
 ucs-ec2-tools (0.1.22-1) unstable; urgency=low
 
   * Bug #34229: added additional packages for UCS@school auto test

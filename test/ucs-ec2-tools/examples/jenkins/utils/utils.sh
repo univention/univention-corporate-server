@@ -146,6 +146,13 @@ install_apps_test_packages ()
 	ucr set repository/online/unmaintained=no
 }
 
+install_ucs_windows_tools ()
+{
+	ucr set repository/online/unmaintained=yes
+	univention-install --yes ucs-windows-tools
+	ucr set repository/online/unmaintained=no
+}
+
 run_apptests ()
 {
 	run_tests -r apptest "$@"
