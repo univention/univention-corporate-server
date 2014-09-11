@@ -40,6 +40,7 @@ import traceback
 import json
 from socket import error as socket_error
 from select import select
+import nmap
 try:
 	from shlex import quote
 except ImportError:
@@ -103,6 +104,13 @@ class VM:
 		except ConfigParser.NoOptionError:
 			self.profile = None
 
+		# see if its a windows vm or not
+		try:
+			self._is_windows = config.get(section, 'windows')
+		except ConfigParser.NoOptionError:
+			self._is_windows = None
+
+
 		# Read and save the file lines and ignore comments
 		try:
 			lines = config.get(section, 'files')
@@ -142,6 +150,34 @@ class VM:
 		"""Connect via ssh to VM."""
 		raise NotImplementedError()
 
+	def _waiting_for_open_ports(self, ports, timeout=3600):
+		""" Probe given ports until one of them is reported 'open' (returns True) or timeout is reached (returns False). Ports must be a List ['a', 'b']. """
+		scanner = nmap.PortScanner()
+		ports_string = ','.join(ports)
+		ip = self.get_ip()
+		start = now = time.time()
+
+		# scan until timout is reachedo or there is an open port
+		while now - start < timeout:
+			scan_result = scanner.scan(ip, ports_string)
+			now = time.time()
+			self._log('Pending %d...'  % (timeout - now + start))
+			if not scan_result['scan']:
+				self._log('Error: No scan results were returned')
+				continue
+			port_status = scan_result['scan'].get(ip, {}).get('tcp')
+			if port_status is None:
+				continue
+			for port in ports:
+				if not int(port) in port_status:
+					continue
+				if port_status[int(port)]['state'] == u'open':
+					return True
+
+		self._log("Port(s) %s could not be reached" % (', '.join(ports), ))
+		return False
+
+
 	def connect(self):
 		''' Wait until the connection is ready '''
 		self.client = paramiko.SSHClient()
@@ -149,33 +185,45 @@ class VM:
 		start = now = time.time()
 		# TODO: make the timeout configurable
 		timeout = 3600
-		while now - start < timeout:
-			try:
-				self._connect_vm()
-				break
-			except socket_error:
-				self._log('Pending %d...'  % (timeout - now + start))
-				time.sleep(5)
-				now = time.time()
-			except paramiko.AuthenticationException:
-				self._log('Authentication failed %d...' % (timeout - now + start))
-				time.sleep(5)
-				now = time.time()
-			except Exception, ex:
-				self._log('Unknown error "%s"...'  % (ex,))
-				self._log('Pending %d...'  % (timeout - now + start))
-				time.sleep(5)
-				now = time.time()
+		# connect via ssh if it's a linux host
+		if not self._is_windows:
+			while now - start < timeout:
+				try:
+					self._connect_vm()
+					break
+				except socket_error:
+					self._log('Pending %d...'  % (timeout - now + start))
+					time.sleep(5)
+					now = time.time()
+				except paramiko.AuthenticationException:
+					self._log('Authentication failed %d...' % (timeout - now + start))
+					time.sleep(5)
+					now = time.time()
+				except Exception, ex:
+					self._log('Unknown error "%s"...'  % (ex,))
+					self._log('Pending %d...'  % (timeout - now + start))
+					time.sleep(5)
+					now = time.time()
+			else:
+				raise TimeoutError(timeout)
+		# port probe if it's a windows host
 		else:
-			raise TimeoutError(timeout)
+			# if port 139 or 445 is open we should be able to connect to the windows host
+			if not self._waiting_for_open_ports('139, 445'):
+				self._log('Not able to reach %s' % (self.get_ip(), ))
+				raise TimeoutError(timeout)
+
+
 
 	def create_profiles(self):
 		''' Write the given profile to the instance '''
+		if self._is_windows:
+			return
 		if not self.profile:
 			return
 
-		self._open_client_sftp_connection()
 
+		self._open_client_sftp_connection()
 		remote_profile = self.client_sftp.file('/var/cache/univention-system-setup/profile', 'w')
 		print >> remote_profile, self.profile
 		remote_profile.close()
@@ -184,6 +232,8 @@ class VM:
 
 	def copy_files(self):
 		''' Copy the given files to the instance '''
+		if self._is_windows:
+			return
 		if not self.files:
 			return
 

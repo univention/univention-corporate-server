@@ -12,6 +12,7 @@ Architecture: all
 Depends: ${misc:Depends},
  python-boto (>> 2.2.2),
  python-paramiko,
+ python-nmap,
  python
 Description: Tools to create test environments via EC2
  This package contains various command line tools
