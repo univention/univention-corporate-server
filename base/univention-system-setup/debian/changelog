@@ -1,4 +1,4 @@
-univention-system-setup (8.0.38-1) unstable; urgency=low
+univention-system-setup (8.0.39-1) unstable; urgency=low
 
   * Bug #35490, Bug #35532:
     - always set system/setup/boot/start=true during installation
