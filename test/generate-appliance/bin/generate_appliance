@@ -1048,8 +1048,8 @@ def create_ovf_descriptor_esxi(machine_name, machine_version, machine_uuid, imag
 			E.OperatingSystemSection(
 				E.Info('The kind of installed guest operating system'),
 				**{
-					OVF + 'id': '99',
-					VMW + 'osType': 'other26xLinuxGuest',
+					OVF + 'id': '100',
+					VMW + 'osType': 'other26xLinux64Guest',
 				}
 			),
 			E.VirtualHardwareSection(
