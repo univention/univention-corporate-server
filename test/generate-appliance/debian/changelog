@@ -1,3 +1,9 @@
+generate-appliance (0.2.1-1) unstable; urgency=medium
+
+  * VirtualBox: Debian_64 instead of Linux_64 (Bug #35756)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 12 Sep 2014 14:32:46 +0200
+
 generate-appliance (0.2.1-0) unstable; urgency=medium
 
   * Make metadata configurable (Bug #35756)

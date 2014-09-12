@@ -543,15 +543,15 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 			),
 			E.OperatingSystemSection(
 				E.Info('The kind of installed guest operating system'),
-				E.Description('Other_64'),
+				E.Description('Debian_64'),
 				Evbox.OSType(
-					'Linux_64',
+					'Debian_64',
 					**{
 						OVF + 'required': 'false',
 					}
 				),
 				**{
-					OVF + 'id': '102',
+					OVF + 'id': '96',
 				}
 			),
 			E.VirtualHardwareSection(
@@ -874,7 +874,7 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 					OVF + 'required': 'false',
 					'version': '1.12-linux',
 					'name': machine_name,
-					'OSType': 'Linux_64',
+					'OSType': 'Debian_64',
 					'snapshotFolder': 'Snapshots',
 					'lastStateChange': '2014-08-14T12:49:13Z',
 					'uuid': '{%s}' % (machine_uuid, ),
