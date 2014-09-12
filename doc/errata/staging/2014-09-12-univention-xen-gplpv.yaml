@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-3
+src: univention-xen-gplpv
+fix: 11.0.372-3.13.201409121157
+version: [2,3]
+desc: |
+  This update fixes the following issue:
+  * The code signing certificate expired and has been replaced
+    with a new certificate valid until 10.10.2017.
+bug: [35849]
