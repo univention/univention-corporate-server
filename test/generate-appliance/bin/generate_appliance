@@ -1439,6 +1439,10 @@ def parse_options():
 		parser.error('version string is required')
 	if options.source is None:
 		parser.error('source image is required')
+	if options.tempdir is not None:
+		options.tempdir = os.path.realpath(options.tempdir)
+		if not os.path.isdir(options.tempdir):
+			parser.error('Tempdir %r is not a directory!')
 	try:
 		options.source = open(options.source, 'rb')
 	except IOError, e:
