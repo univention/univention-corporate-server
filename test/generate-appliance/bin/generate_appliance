@@ -46,8 +46,8 @@ import sys
 import tarfile
 import tempfile
 import uuid
-import zipfile
 
+WORKDIR = TEMPDIR = STOREDIR = None
 
 class File(object):
 	'''base class for delayed file/image actions'''
@@ -82,6 +82,7 @@ class Raw(File):
 	'''represents a "RAW" disk image'''
 	def __init__(self, inputfile):
 		self._inputfile = inputfile
+		self._path = None
 		File.__init__(self)
 
 	@property
@@ -121,6 +122,7 @@ class Vmdk(File):
 		assert isinstance(raw, (Raw, ))
 		self._raw = raw
 		self._streamOptimized = streamOptimized
+		self._path = None
 		File.__init__(self)
 
 	@property
@@ -161,21 +163,22 @@ class Vmdk(File):
 
 
 class Tar(File):
-	def __init__(self, file_list, format=tarfile.USTAR_FORMAT):
+	def __init__(self, file_list, fileformat=tarfile.USTAR_FORMAT):
 		for _, source_file in file_list:
 			assert isinstance(source_file, (File, )) or isinstance(source_file, str)
 		self._file_list = file_list
-		self._format = format
+		self._format = fileformat
+		self._path = None
 		File.__init__(self)
 
 	@property
 	@File.hashed
 	def hash(self):
-		def hash(thing):
+		def hashed(thing):
 			if isinstance(thing, str):
 				return hashlib.sha256(thing).hexdigest()
 			return thing.hash
-		return (Tar, [(name, hash(source_file)) for name, source_file in self._file_list], )
+		return (Tar, [(name, hashed(source_file)) for name, source_file in self._file_list], )
 
 	@File.lazy
 	def path(self):
@@ -214,18 +217,19 @@ class Pkzip(File):
 			if source_file is not None:
 				assert isinstance(source_file, (File, )) or isinstance(source_file, str)
 		self._file_list = file_list
+		self._path = None
 		File.__init__(self)
 
 	@property
 	@File.hashed
 	def hash(self):
-		def hash(thing):
+		def hashed(thing):
 			if thing is None:
 				return None
 			if isinstance(thing, str):
 				return hashlib.sha256(thing).hexdigest()
 			return thing.hash
-		return (Tar, [(name, hash(source_file)) for name, source_file in self._file_list], )
+		return (Tar, [(name, hashed(source_file)) for name, source_file in self._file_list], )
 
 	@File.lazy
 	def path(self):
@@ -260,7 +264,7 @@ class Pkzip(File):
 
 class Target(object):
 	'''represents the process for creating a complete image for a platform'''
-	def create(self, image):
+	def create(self, image, options):
 		raise NotImplementedError()
 
 	def __str__(self):
@@ -276,8 +280,8 @@ class Target(object):
 		return True
 
 
-def encode_vmware_uuid(uuid):
-	encoded = ' '.join([b.encode('hex') for b in uuid.bytes])
+def encode_vmware_uuid(universally_unique_identifier):
+	encoded = ' '.join([b.encode('hex') for b in universally_unique_identifier.bytes])
 	encoded = encoded[:23] + '-' + encoded[24:]
 	return encoded
 
@@ -307,7 +311,10 @@ def encode_vmx_file(vmx):
 		output += '%s = "%s"\n' % (key, value, )
 	return output.encode('UTF-8')
 
-def create_vmx(machine_name, image_name, image_uuid):
+def create_vmx(image_name, image_uuid, options):
+	machine_name = options.product
+	if options.version is not None:
+		machine_name += ' ' + options.version
 	vmx = {
 		'config.version': "8",
 		'virtualHW.version': "9",
@@ -396,36 +403,25 @@ class VMware(Target):
 		return 'vmware'
 
 	def create(self, image, options):
-		machine_name = '%s %s' % (
-			options.product,
-			options.version,
-		)
-		image_name = '%s %s' % (
-			options.product,
-			options.version,
-		)
-		archive_name = '%s-%s-vmware.zip' % (
-			options.product.replace(' ', '-').lower(),
-			options.version,
-		)
+		archive_name = '%s-vmware.zip' % (options.filename, )
 		machine_uuid = uuid.uuid4()
 		image_uuid = uuid.uuid4()
 		if os.path.exists(archive_name):
 			raise IOError('Output file %r exists' % (archive_name, ))
 		files = [
-			('%s/' % (image_name, ),
+			('%s/' % (options.filename, ),
 			 None, ),
-			('%s/%s.vmdk' % (image_name, image_name, ),
+			('%s/%s.vmdk' % (options.filename, options.filename, ),
 			 Vmdk(image), ),
-			('%s/%s.vmxf' % (image_name, image_name, ),
-			 create_vmxf(machine_uuid, image_name), ),
-			('%s/%s.vmx' % (image_name, image_name, ),
-			 create_vmx(machine_name, image_name, image_uuid), ),
-			('%s/%s.vmsd' % (image_name, image_name, ),
+			('%s/%s.vmxf' % (options.filename, options.filename, ),
+			 create_vmxf(machine_uuid, options.filename), ),
+			('%s/%s.vmx' % (options.filename, options.filename, ),
+			 create_vmx(options.filename, image_uuid, options), ),
+			('%s/%s.vmsd' % (options.filename, options.filename, ),
 			 str(), ),
 		]
-		zip = Pkzip(files)
-		shutil.copyfile(zip.path(), archive_name)
+		pkzip = Pkzip(files)
+		shutil.copyfile(pkzip.path(), archive_name)
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
 VMware = VMware()
 
@@ -471,19 +467,17 @@ environments with Windows- and Linux-based clients and to extend those
 environments with proven enterprise software, also either in the cloud or
 on-premises.'''
 
-def create_ovf_descriptor_virtualbox(machine_name, machine_version, machine_uuid, image_name, image_size, image_uuid):
+def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image_uuid, options):
+	machine_name = options.product
+	if options.version is not None:
+		machine_name += ' ' + options.version
+
 	OVF_NAMESPACE = 'http://schemas.dmtf.org/ovf/envelope/1'
-	OVF = '{%s}' % (OVF_NAMESPACE, )
 	RASD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData'
-	RASD = '{%s}' % (RASD_NAMESPACE, )
 	VBOX_NAMESPACE = 'http://www.virtualbox.org/ovf/machine'
-	VBOX = '{%s}' % (VBOX_NAMESPACE, )
 	VSSD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData'
-	VSSD = '{%s}' % (VSSD_NAMESPACE, )
 	XML_NAMESPACE = 'http://www.w3.org/XML/1998/namespace'
-	XML = '{%s}' % (XML_NAMESPACE, )
 	XSI_NAMESPACE = 'http://www.w3.org/2001/XMLSchema-instance'
-	XSI = '{%s}' % (XSI_NAMESPACE, )
 
 	E = lxml.builder.ElementMaker(nsmap={
 		None: OVF_NAMESPACE,
@@ -494,6 +488,9 @@ def create_ovf_descriptor_virtualbox(machine_name, machine_version, machine_uuid
 		'xsi': XSI_NAMESPACE,
 	})
 
+	OVF = '{%s}' % (OVF_NAMESPACE, )
+	VBOX = '{%s}' % (VBOX_NAMESPACE, )
+	XML = '{%s}' % (XML_NAMESPACE, )
 	Eovf = lxml.builder.ElementMaker(namespace=OVF_NAMESPACE)
 	Erasd = lxml.builder.ElementMaker(namespace=RASD_NAMESPACE)
 	Evbox = lxml.builder.ElementMaker(namespace=VBOX_NAMESPACE)
@@ -530,11 +527,11 @@ def create_ovf_descriptor_virtualbox(machine_name, machine_version, machine_uuid
 			E.Info('A virtual machine'),
 			E.ProductSection(
 				E.Info('Meta-information about the installed software'),
-				E.Product('Univention Corporate Server (UCS)'),
-				E.Vendor('Univention GmbH'),
-				E.Version(machine_version),
-				E.ProductUrl('http://www.univention.de/en/products/ucs/'),
-				E.VendorUrl('http://www.univention.de/en/'),
+				E.Product(options.product),
+				E.Vendor(options.vendor),
+				E.Version(options.version),
+				E.ProductUrl(options.product_url),
+				E.VendorUrl(options.vendor_url),
 			),
 			E.AnnotationSection(
 				E.Info('A human-readable annotation'),
@@ -902,22 +899,9 @@ class Virtualbox(Target):
 		return 'ova-virtualbox'
 
 	def create(self, image, options):
-		machine_name = '%s %s' % (
-			options.product,
-			options.version,
-		)
-		image_name = '%s-%s-virtualbox-disk1.vmdk' % (
-			options.product.replace(' ', '-').lower(),
-			options.version,
-		)
-		descriptor_name = '%s-%s-virtualbox.ovf' % (
-			options.product.replace(' ', '-').lower(),
-			options.version,
-		)
-		archive_name = '%s-%s-virtualbox.ova' % (
-			options.product.replace(' ', '-').lower(),
-			options.version,
-		)
+		image_name = '%s-virtualbox-disk1.vmdk' % (options.filename, )
+		descriptor_name = '%s-virtualbox.ovf' % (options.filename, )
+		archive_name = '%s-virtualbox.ova' % (options.filename, )
 		machine_uuid = uuid.uuid4()
 		image_uuid = uuid.uuid4()
 		if os.path.exists(archive_name):
@@ -950,8 +934,9 @@ ddb.uuid.parentmodification="00000000-0000-0000-0000-000000000000"
 ddb.comment=""
 ''' % (image_uuid, )
 		descriptor = create_ovf_descriptor_virtualbox(
-			machine_name, options.version, machine_uuid,
+			machine_uuid,
 			image_name, image.size(), image_uuid,
+			options,
 		)
 		files = [
 			(descriptor_name, descriptor, ),
@@ -963,23 +948,17 @@ ddb.comment=""
 Virtualbox = Virtualbox()
 
 
-def create_ovf_descriptor_esxi(machine_name, machine_version, machine_uuid, image_name, image_size, image_packed_size, image_used_size, image_uuid):
-	OVF_NAMESPACE = 'http://schemas.dmtf.org/ovf/envelope/1'
-	OVF = '{%s}' % (OVF_NAMESPACE, )
+def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_used_size, options):
+	machine_name = options.product
+	if options.version is not None:
+		machine_name += ' ' + options.version
+
 	CIM_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/common'
-	CIM = '{%s}' % (CIM_NAMESPACE, )
+	OVF_NAMESPACE = 'http://schemas.dmtf.org/ovf/envelope/1'
 	RASD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData'
-	RASD = '{%s}' % (RASD_NAMESPACE, )
-	VBOX_NAMESPACE = 'http://www.virtualbox.org/ovf/machine'
-	VBOX = '{%s}' % (VBOX_NAMESPACE, )
-	VSSD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData'
-	VSSD = '{%s}' % (VSSD_NAMESPACE, )
-	XML_NAMESPACE = 'http://www.w3.org/XML/1998/namespace'
-	XML = '{%s}' % (XML_NAMESPACE, )
-	XSI_NAMESPACE = 'http://www.w3.org/2001/XMLSchema-instance'
-	XSI = '{%s}' % (XSI_NAMESPACE, )
 	VMW_NAMESPACE = 'http://www.vmware.com/schema/ovf'
-	VMW = '{%s}' % (VMW_NAMESPACE, )
+	VSSD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData'
+	XSI_NAMESPACE = 'http://www.w3.org/2001/XMLSchema-instance'
 
 	E = lxml.builder.ElementMaker(nsmap={
 		None: OVF_NAMESPACE,
@@ -991,9 +970,9 @@ def create_ovf_descriptor_esxi(machine_name, machine_version, machine_uuid, imag
 		'xsi': XSI_NAMESPACE,
 	})
 
-	Eovf = lxml.builder.ElementMaker(namespace=OVF_NAMESPACE)
+	OVF = '{%s}' % (OVF_NAMESPACE, )
+	VMW = '{%s}' % (VMW_NAMESPACE, )
 	Erasd = lxml.builder.ElementMaker(namespace=RASD_NAMESPACE)
-	Evbox = lxml.builder.ElementMaker(namespace=VBOX_NAMESPACE)
 	Evmw = lxml.builder.ElementMaker(namespace=VMW_NAMESPACE)
 	Evssd = lxml.builder.ElementMaker(namespace=VSSD_NAMESPACE)
 
@@ -1031,11 +1010,11 @@ def create_ovf_descriptor_esxi(machine_name, machine_version, machine_uuid, imag
 			E.Name(machine_name),
 			E.ProductSection(
 				E.Info('Meta-information about the installed software'),
-				E.Product('Univention Corporate Server (UCS)'),
-				E.Vendor('Univention GmbH'),
-				E.Version(machine_version),
-				E.ProductUrl('http://www.univention.de/en/products/ucs/'),
-				E.VendorUrl('http://www.univention.de/en/'),
+				E.Product(options.product),
+				E.Vendor(options.vendor),
+				E.Version(options.version),
+				E.ProductUrl(options.product_url),
+				E.VendorUrl(options.vendor_url),
 			),
 			E.AnnotationSection(
 				E.Info('A human-readable annotation'),
@@ -1338,24 +1317,9 @@ class ESXi(Target):
 		return 'ova-esxi'
 
 	def create(self, image, options):
-		machine_name = '%s %s' % (
-			options.product,
-			options.version,
-		)
-		image_name = '%s_%s-esxi-disk1.vmdk' % (
-			options.product.replace(' ', '_'),
-			options.version,
-		)
-		descriptor_name = '%s %s ESXi.ovf' % (
-			options.product,
-			options.version,
-		)
-		archive_name = '%s-%s-ESXi.ova' % (
-			options.product.replace(' ', '-').lower(),
-			options.version,
-		)
-		machine_uuid = uuid.uuid4()
-		image_uuid = uuid.uuid4()
+		image_name = '%s-ESXi-disk1.vmdk' % (options.filename, )
+		descriptor_name = '%s ESXi.ovf' % (options.filename, )
+		archive_name = '%s-ESXi.ova' % (options.filename, )
 		if os.path.exists(archive_name):
 			raise IOError('Output file %r exists' % (archive_name, ))
 		# HACK: change image descriptor to expected format
@@ -1383,9 +1347,9 @@ ddb.longContentID = "6c27be515acd422fbdb62c0afffffffe"
 ddb.virtualHWVersion = "7"
 '''
 		descriptor = create_ovf_descriptor_esxi(
-			machine_name, options.version, machine_uuid,
 			image_name, image.size(), Vmdk(image, streamOptimized=True).size(),
-			image.used_size(), image_uuid,
+			image.used_size(),
+			options,
 		)
 		files = [
 			(descriptor_name, descriptor, ),
@@ -1407,8 +1371,16 @@ def parse_options():
 	parser.set_defaults(choices=defaults)
 	parser.usage = '%prog [options]\n create virtual appliances for various virtualization systems from a single disk image'
 	parser.add_option('-s', '--source', help='source image (required)')
-	parser.add_option('-p', '--product', help='product name of appliance (default: %default)', default='UCS')
+	parser.add_option('-f', '--filename', help='filename of appliance (default: derived from product)')
+	parser.add_option('-p', '--product', help='product name of appliance (default: %default)',
+					  default='Univention Corporate Server (UCS)')
+	parser.add_option('--product-url', help='product URL of appliance (default: %default)',
+					  default='http://www.univention.de/en/products/ucs/')
 	parser.add_option('-v', '--version', help='version string of appliance')
+	parser.add_option('--vendor', help='vendor string of appliance (default: %default)',
+					  default='Univention GmbH')
+	parser.add_option('--vendor-url', help='vendor URL of appliance (default: %default)',
+					  default='http://www.univention.de/en/')
 	parser.add_option('-t', '--tempdir', help='temporary directory to use')
 	parser.add_option(
 		'-o', '--only', action='store_const', dest='choices', const=[],
@@ -1435,14 +1407,21 @@ def parse_options():
 	)
 	if args:
 		parser.error('additional parameter')
-	if options.version is None:
-		parser.error('version string is required')
 	if options.source is None:
 		parser.error('source image is required')
 	if options.tempdir is not None:
 		options.tempdir = os.path.realpath(options.tempdir)
 		if not os.path.isdir(options.tempdir):
 			parser.error('Tempdir %r is not a directory!')
+	if options.filename is None:
+		options.filename = options.product.replace(' ', '-')
+		if options.version is not None:
+			options.filename += '-' + options.version.replace(' ', '-')
+		# remove special characters
+		for char in '#! \t\\/$\'"();.`:*?{}[]<>|&~%=':
+			options.filename = options.filename.replace(char, '-')
+		# remove duplicate dashes
+		options.filename = '-'.join([x for x in options.filename.split('-') if x])
 	try:
 		options.source = open(options.source, 'rb')
 	except IOError, e:

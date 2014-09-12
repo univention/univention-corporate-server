@@ -1,3 +1,10 @@
+generate-appliance (0.2.1-0) unstable; urgency=medium
+
+  * Make metadata configurable (Bug #35756)
+  * fix install path
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 12 Sep 2014 13:26:54 +0200
+
 generate-appliance (0.1.2-0) unstable; urgency=medium
 
   * Generate amd64 metadata (Bug #35756)
