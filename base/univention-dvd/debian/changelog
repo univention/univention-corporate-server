@@ -1,3 +1,9 @@
+univention-dvd (0.2.0-15) unstable; urgency=low
+
+  * Bug #35406: Include (non-)free firmware files on DVD
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Sep 2014 14:39:53 +0200
+
 univention-dvd (0.2.0-14) unstable; urgency=low
 
   * Bug #35659: Include xterm as default x-terminal-emulator

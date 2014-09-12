@@ -30,6 +30,10 @@ univention-kernel-headers
 univention-kernel-source
 univention-initrd
 dkms
+/* add the list of firmware packages here too if required */
+#ifdef FORCE_FIRMWARE
+#    include <firmware>
+#endif
 
 /* UCR */
 univention-config-registry
