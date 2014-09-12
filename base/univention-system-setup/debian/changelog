@@ -1,3 +1,12 @@
+univention-system-setup (8.0.38-1) unstable; urgency=low
+
+  * Bug #35490, Bug #35532:
+    - always set system/setup/boot/start=true during installation
+    - do not set system/setup/boot/start to false during firefox startup
+    - set system/setup/boot/start=false if USS is actually configuring the system
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 12 Sep 2014 16:08:28 +0200
+
 univention-system-setup (8.0.38-2) unstable; urgency=low
 
   * Fixed wrong variable name in univention-system-setup
