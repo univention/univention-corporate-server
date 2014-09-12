@@ -44,6 +44,14 @@ if [ ! -d "$pool" ]; then
 	mkdir -p "$pool"
 fi
 
+# new 372 build with newer certs
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.372-2 ; then
+	if [ -e "$pool/Xen Windows drivers (gplpv 372).iso" ]; then
+		rm -f "$pool/Xen Windows drivers (gplpv 372).iso"
+	fi
+fi
+
+
 if [ ! -e "$pool/$iso" -a ! -L "$pool/$iso" ]; then
 	cp "/usr/share/univention-xen-gplpv/$iso" "$pool/$iso"
 fi

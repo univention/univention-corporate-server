@@ -1,3 +1,9 @@
+univention-xen-gplpv (11.0.372-3) unstable; urgency=low
+
+  * fixed update (Bug #35849) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 12 Sep 2014 11:56:23 +0200
+
 univention-xen-gplpv (11.0.372-2) unstable; urgency=low
 
   * new certificate (Bug #35849)
