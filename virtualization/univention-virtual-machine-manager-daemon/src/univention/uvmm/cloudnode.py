@@ -35,13 +35,12 @@ This module implements functions to handle cloud connections and instances. This
 """
 
 import logging
-import threading
 import fnmatch
 import re
 
-from helpers import TranslatableException, ms, tuple2version, N_ as _, uri_encode
-import univention.admin.uexceptions
+from cloudconnection import CloudConnectionError
 from openstackcloud import OpenStackCloudConnection
+from ec2cloud import EC2CloudConnection
 import univention.config_registry as ucr
 
 configRegistry = ucr.ConfigRegistry()
@@ -50,11 +49,6 @@ configRegistry.load()
 logger = logging.getLogger('uvmmd.cloudconnection')
 
 STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED')
-
-
-class CloudConnectionError(TranslatableException):
-	"""Error while handling cloud connection."""
-	pass
 
 
 class CloudConnectionMananger(dict):
@@ -67,7 +61,7 @@ class CloudConnectionMananger(dict):
 
 	def __delitem__(self, cloudname):
 		"""x.__delitem__(i) <==> del x[i]"""
-		self[cloudname].unregister()
+		self[cloudname].unregister(wait=True)
 		super(CloudConnectionMananger, self).__delitem__(cloudname)
 
 	def _parse_cloud_info(self, cloud):
@@ -218,8 +212,7 @@ def create_cloud_connection(cloud, cache_dir):
 	if cloud["type"] == "OpenStack":
 		return OpenStackCloudConnection(cloud, cache_dir)
 	elif cloud["type"] == "Amazon EC2":
-		# TODO: implement
-		return
+		return EC2CloudConnection(cloud, cache_dir)
 	else:
 		raise CloudConnectionError("Unknown cloud type %s" % cloud["type"])
 

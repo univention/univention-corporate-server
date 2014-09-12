@@ -498,6 +498,7 @@ class Cloud_Data_Size(object):
 		self.price = None
 		self.driver = None
 		self.uuid = None
+		self.vcpus = None
 
 
 class Cloud_Data_Image(object):
@@ -538,7 +539,8 @@ class Cloud_Data_Secgroup(object):
 		self.driver = None
 		self.description = None
 		self.tenant_id = None
-		self.rules = {}
+		self.in_rules = {}
+		self.out_rules = {}
 		self.extra = {}
 
 

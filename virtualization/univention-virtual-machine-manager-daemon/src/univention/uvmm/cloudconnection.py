@@ -1,0 +1,239 @@
+# -*- coding: utf-8 -*-
+#
+# UCS Virtual Machine Manager Daemon
+#  python module
+#
+# Copyright 2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import logging
+import stat
+import hashlib
+import os
+import threading
+import time
+import re
+import fnmatch
+try:
+	import cPickle as pickle
+except ImportError:
+	import pickle
+
+from protocol import Cloud_Data_Connection, Cloud_Data_Image, Cloud_Data_Size, Cloud_Data_Keypair, Cloud_Data_Network
+from helpers import TranslatableException, ms, uri_encode
+
+logger = logging.getLogger('uvmmd.cloudconnection')
+
+
+class CloudConnectionError(TranslatableException):
+	"""Error while handling cloud connection."""
+	pass
+
+
+class CloudConnection(object):
+	def __init__(self, cloud, cache_dir):
+		self.type = cloud["type"]
+		self.DEFAULT_FREQUENCY = 15 * 1000  # ms
+		self.MAX_UPDATE_INTERVAL = 5 * 60 * 1000  # ms
+		self.EXPENSIVE_UPDATE_INTERVAL = 5 * 60 * 1000  # ms
+
+		self._cache_dir = cache_dir
+		self._cache_hash = ""
+
+		self.config_default_frequency = self.DEFAULT_FREQUENCY
+		self.current_frequency = self.DEFAULT_FREQUENCY
+		self.timerEvent = threading.Event()
+
+		self.publicdata = Cloud_Data_Connection()
+		self.publicdata.name = cloud["name"]
+		self.publicdata.cloudtype = cloud["type"]
+		self.publicdata.last_update = -1
+		self.publicdata.last_update_try = -1
+		self.publicdata.available = False
+		self._last_expensive_update = -1000000
+
+		self._instances = []
+		self._keypairs = []
+		self._images = []
+		self._sizes = []
+		self._networks = []
+
+		self.cache_restore()
+
+		self._create_connection(cloud)
+
+	def _create_connection(self, cloud):
+		pass
+
+	def unregister(self, wait=False):
+		"""
+		Remove connection to this service
+		"""
+		# Wakeup thread, wait for termination
+		if self.updatethread is not None:
+			thread = self.updatethread
+			self.updatethread = None
+			self.timerEvent.set()
+			while wait:
+				thread.join(1.0)
+				if thread.isAlive():
+					logger.warning("Thread still alive: %s" % self.publicdata.name)
+				else:
+					wait = False
+		logger.debug("Removed connection to %s" % self.publicdata.name)
+
+	def set_frequency(self, freq):
+		self.config_default_frequency = freq
+		self.current_frequency = freq
+		self.timerEvent.set()
+
+	def run(self):
+		logger.info("Starting update thread for %s: %s" % (self.publicdata.name, self.publicdata.url))
+		while self.updatethread is not None:
+			try:
+				self.update()
+			except Exception:
+				# Catch all exceptions and do not crash the thread
+				logger.error("Exception in thread %s: %s" % (self.publicdata.name, self.publicdata.url), exc_info=True)
+			self.timerEvent.clear()
+			self.timerEvent.wait(self.current_frequency / 1000.0)
+
+		logger.info("Stopping update thread for %s: %s" % (self.publicdata.name, self.publicdata.url))
+
+	def update(self):
+		try:
+			logger.debug("Updating information for %s: %s" % (self.publicdata.name, self.publicdata.url))
+			# double update freqency in case an update error occurs
+			# this is reset if no exception occurs at the end of this try: statement
+			self.current_frequency = min(self.current_frequency * 2, self.MAX_UPDATE_INTERVAL)
+
+			self.publicdata.last_update_try = time.time()
+			self._instances = self._exec_libcloud(lambda: self.driver.list_nodes())
+
+			# Expensive update if
+			# last expensive update was more than self.EXPENSIVE_UPDATE_INTERVAL ago
+			if (self.publicdata.last_update - self._last_expensive_update) * 1000 > self.EXPENSIVE_UPDATE_INTERVAL:
+				self.update_expensive()
+
+			self.publicdata.last_update = time.time()
+			logger.debug("Updating took %s seconds for %s" % (self.publicdata.last_update - self.publicdata.last_update_try, self.publicdata.name))
+			self.publicdata.last_update_try = self.publicdata.last_update
+			self.cache_save()
+			self.current_frequency = self.config_default_frequency
+		except Exception:
+			logger.error("Exception in update() in thread %s: %s" % (self.publicdata.name, self.publicdata.url), exc_info=False)
+
+		logger.debug("Next update for %s: %s" % (self.publicdata.name, ms(self.current_frequency)))
+		self.publicdata.available = self.publicdata.last_update == self.publicdata.last_update_try
+
+	def update_expensive(self):
+		pass
+
+	# Caching
+	def cache_file_name(self, suffix=".pic"):
+		return os.path.join(self._cache_dir, uri_encode(self.publicdata.name) + suffix)
+
+	def cache_save(self):
+		instances = self.list_instances()
+		new_name = self.cache_file_name(suffix=".new")
+		old_name = self.cache_file_name()
+
+		data = pickle.dumps(instances)
+		data_hash = hashlib.md5(data).hexdigest()
+		if data_hash == self._cache_hash:  # No change in data, no need to write changes
+			return
+		self._cache_hash = data_hash
+
+		try:
+			fd = os.open(new_name, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, stat.S_IREAD | stat.S_IWRITE)
+			os.write(fd, data)
+		finally:
+			os.close(fd)
+		os.rename(new_name, old_name)
+
+	def cache_restore(self):
+		# check if there is a cache file
+		cache_file_name = self.cache_file_name()
+		if os.path.isfile(cache_file_name):
+			cache_file = open(cache_file_name, 'r')
+			try:
+				data = pickle.Unpickler(cache_file)
+				if data:
+					self._instances = data.load()
+					for instance in self._instances:
+						logger.debug("loaded cached instance %s" % instance.name)
+						instance.available = False
+						instance.state = 4  # state UNKNOWN
+			finally:
+				cache_file.close()
+
+	def _get_instance_by_id(self, instance_id):
+		"""
+		Find and return the Node object which has the id <instance_id>
+		Raise OpenStackCloudConnectionError if <instance_id> can not be found
+		"""
+		instance = [x for x in self._instances if x.id == instance_id]
+		if not instance:
+			raise CloudConnectionError("No instance with id:%s for connection %s" % (instance_id, self.publicdata.name))
+		# instance.id is unique for a connection
+		return instance[0]
+
+	def list_keypairs(self):
+		keypairs = []
+		for keypair in self._keypairs:
+			k = Cloud_Data_Keypair()
+			k.name = keypair.name
+			k.driver = keypair.driver.name
+			k.fingerprint = keypair.fingerprint
+			k.public_key = keypair.public_key
+			k.private_key = keypair.private_key
+			k.extra = keypair.extra
+
+			keypairs.append(k)
+
+		return keypairs
+
+	def list_images(self, pattern="*"):
+		regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
+		images = []
+		for image in self._images:
+			if image.name and regex.match(image.name) is not None:
+				i = Cloud_Data_Image()
+				i.name = image.name
+				i.extra = image.extra
+				i.id = image.id
+				i.driver = image.driver.name
+				i.uuid = image.uuid
+
+				images.append(i)
+
+		return images
+
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

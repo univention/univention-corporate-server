@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # UCS Virtual Machine Manager Daemon
-#  cloud connection to openstack instances
+#  cloud connection to EC2 instances
 #
 # Copyright 2014 Univention GmbH
 #
@@ -29,11 +29,12 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-"""UVMM cloud openstack handler"""
+"""UVMM cloud ec2 handler"""
 
 from libcloud.common.types import LibcloudError, MalformedResponseError, ProviderError, InvalidCredsError
-from libcloud.compute.types import Provider  # , NodeState
+from libcloud.compute.types import Provider, NodeState, KeyPairDoesNotExistError
 from libcloud.compute.providers import get_driver
+from libcloud.compute.drivers.ec2 import IdempotentParamError
 
 import time
 import logging
@@ -46,95 +47,74 @@ import ssl
 from node import PersistentCached
 from helpers import TranslatableException
 from cloudconnection import CloudConnection
-from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Secgroup_Rule, Cloud_Data_Size, Cloud_Data_Network
+from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Size, Cloud_Data_Network
 import univention.config_registry as ucr
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
-logger = logging.getLogger('uvmmd.openstackconnection')
+logger = logging.getLogger('uvmmd.ec2connection')
 
 # Mapping of ldap attribute to libcloud parameter name
-OPENSTACK_CONNECTION_ATTRIBUTES = {
-		"username": "key",
+EC2_CONNECTION_ATTRIBUTES = {
+		"access_id": "key",
 		"password": "secret",
-		"auth_url": "ex_force_auth_url",
-		"base_url": "ex_force_base_url",
-		"auth_version": "ex_force_auth_version",
-		"service_type": "ex_force_service_type",
-		"service_name": "ex_force_service_name",
-		"tenant": "ex_tenant_name",
-		"service_region": "ex_force_service_region",
-		"auth_token": "ex_force_auth_token",
-		"base_url": "ex_force_base_url",
+		"secure": "secure",
+		"host": "host",
+		"port": "port",
+		"region": "region",
 		}
 
-OPENSTACK_CREATE_ATTRIBUTES = {
+EC2_CREATE_ATTRIBUTES = {
 		"name": "name",
-		"keyname": "ex_keyname",
 		"size_id": "size",
 		"image_id": "image",
-		"location_id": "location",
+		"location": "location",
+		"keyname": "ex_keyname",
 		"userdata": "ex_userdata",
 		"security_group_ids": "ex_security_groups",
 		"metadata": "ex_metadata",
-		"network_ids": "networks",
-		"disk_config": "ex_disk_config",
-		"admin_pass": "ex_admin_pass",
-		"availability_zone": "ex_availability_zone",
+		"min_instance_count": "ex_mincount",
+		"max_instance_count": "ex_maxcount",
+		"clienttoken": "ex_clienttoken",
+		"blockdevicemappings": "ex_blockdevicemappings",
+		"iamprofile": "ex_iamprofile",
+		"ebs_optimized": "ex_ebs_optimized",
+		"subnet": "ex_subnet"
 	}
 
 
-class NodeState(object):
-	"""
-	LIBCLOUD Standard states for a node
-	:cvar RUNNING: Node is running.
-	:cvar REBOOTING: Node is rebooting.
-	:cvar TERMINATED: Node is terminated. This node can't be started later on.
-	:cvar STOPPED: Node is stopped. This node can be started later on.
-	:cvar PENDING: Node is pending.
-	:cvar UNKNOWN: Node state is unknown.
-	:cvar SUSPENDED: Node is suspended.
-	:cvar ERROR: Node is an error state. Usually no operations can be performed
-		on the node once it ends up in the error state.
-	:cvar PAUSED: Node is paused.
-	:cvar UNKNOWN: Node state is unknown.
-	"""
-	RUNNING = 0
-	REBOOTING = 1
-	TERMINATED = 2
-	PENDING = 3
-	UNKNOWN = 4
-	STOPPED = 5
-	SUSPENDED = 6
-	ERROR = 7
-	PAUSED = 8
-
-
-LIBCLOUD_UVMM_STATE_MAPPING = {
+LIBCLOUD_EC2_UVMM_STATE_MAPPING = {
 		NodeState.RUNNING: "RUNNING",
-		NodeState.REBOOTING: "PENDING",
-		NodeState.TERMINATED: "NOSTATE",
 		NodeState.PENDING: "PENDING",
+		NodeState.TERMINATED: "NOSTATE",
 		NodeState.UNKNOWN: "NOSTATE",
 		NodeState.STOPPED: "SHUTDOWN",
-		NodeState.SUSPENDED: "SUSPENDED",
-		NodeState.ERROR: "CRASHED",
-		NodeState.PAUSED: "PAUSED",
-		NodeState.UNKNOWN: "NOSTATE"
 		}
 
 
-class OpenStackCloudConnectionError(TranslatableException):
+PROVIDER_MAPPING = {
+		"EC2_US_EAST": Provider.EC2_US_EAST,
+		"EC2_EU_WEST": Provider.EC2_EU_WEST,
+		"EC2_US_WEST": Provider.EC2_US_WEST,
+		"EC2_US_WEST_OREGON": Provider.EC2_US_WEST_OREGON,
+		"EC2_AP_SOUTHEAST": Provider.EC2_AP_SOUTHEAST,
+		"EC2_AP_NORTHEAST": Provider.EC2_AP_NORTHEAST,
+		"EC2_SA_EAST": Provider.EC2_SA_EAST,
+		"EC2_AP_SOUTHEAST2": Provider.EC2_AP_SOUTHEAST2,
+		}
+
+
+class EC2CloudConnectionError(TranslatableException):
 	pass
 
 
-class OpenStackCloudConnection(CloudConnection, PersistentCached):
+class EC2CloudConnection(CloudConnection, PersistentCached):
 	def __init__(self, cloud, cache_dir):
+		super(EC2CloudConnection, self).__init__(cloud, cache_dir)
 		self._check_connection_attributes(cloud)
-		super(OpenStackCloudConnection, self).__init__(cloud, cache_dir)
 
-		self.publicdata.url = cloud["auth_url"]
+		self.publicdata.url = cloud["region"]
 
 		self._locations = []
 		self._security_groups = []
@@ -144,20 +124,21 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		self.updatethread.start()
 
 	def _check_connection_attributes(self, cloud):
-		if "username" not in cloud:
-			raise OpenStackCloudConnectionError("username attribute is required")
+		if "access_id" not in cloud:
+			raise EC2CloudConnectionError("access_id attribute is required")
 		if "password" not in cloud:
-			raise OpenStackCloudConnectionError("password attribute is required")
-		if "auth_url" not in cloud:
-			raise OpenStackCloudConnectionError("auth_url attribute is required")
+			raise EC2CloudConnectionError("password attribute is required")
+		if "region" not in cloud:
+			raise EC2CloudConnectionError("region attribute is required")
 
 	def _create_connection(self, cloud):
-		logger.debug("Creating connection to %s" % cloud["auth_url"])
+		logger.debug("Creating connection to %s" % cloud["region"])
 		params = {}
 		for param in cloud:
-			if param in OPENSTACK_CONNECTION_ATTRIBUTES:
-				params[OPENSTACK_CONNECTION_ATTRIBUTES[param]] = cloud[param]
-		os = get_driver(Provider.OPENSTACK)
+			if param in EC2_CONNECTION_ATTRIBUTES:
+				params[EC2_CONNECTION_ATTRIBUTES[param]] = cloud[param]
+
+		os = get_driver(PROVIDER_MAPPING[cloud["region"]])
 
 		p = params.copy()
 		p["secret"] = "******"
@@ -166,11 +147,12 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 
 	def update_expensive(self):
 		logger.debug("Expensive update for %s: %s" % (self.publicdata.name, self.publicdata.url))
+		# self._images = self._exec_libcloud(lambda: self.driver.list_images(ex_owner="aws-marketplace"))
 		self._images = self._exec_libcloud(lambda: self.driver.list_images())
 		self._sizes = self._exec_libcloud(lambda: self.driver.list_sizes())
 		self._locations = self._exec_libcloud(lambda: self.driver.list_locations())
 		self._keypairs = self._exec_libcloud(lambda: self.driver.list_key_pairs())
-		self._security_groups = self._exec_libcloud(lambda: self.driver.ex_list_security_groups())
+		self._security_groups = self._exec_libcloud(lambda: self.driver.ex_get_security_groups())  # ex_get_ for ec2!
 		self._networks = self._exec_libcloud(lambda: self.driver.ex_list_networks())
 		self._last_expensive_update = time.time()
 
@@ -183,19 +165,18 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 				i.name = instance.name
 				i.extra = instance.extra
 				i.id = instance.id
-				i.image = instance.extra['imageId']
+				i.image = instance.extra['image_id']
 				i.private_ips = instance.private_ips
 				i.public_ips = instance.public_ips
 				i.size = instance.size
-				i.state = LIBCLOUD_UVMM_STATE_MAPPING[instance.state]
+				i.state = LIBCLOUD_EC2_UVMM_STATE_MAPPING[instance.state]
 				i.uuid = instance.uuid
 				i.available = self.publicdata.available
 
-				# information not directly provided by libcloud:
-				# instance size-name. Openstack provides sizeinfo in extra['flavorId']
-				size_temp = [s for s in self._sizes if s.id == instance.extra['flavorId']]
-				if size_temp:
-					i.u_size_name = size_temp[0].name
+				# TODO: information not directly provided by libcloud:
+				# size_temp = [s for s in self._sizes if s.id == instance.extra['flavorId']]
+				# if size_temp:
+				# 	i.u_size_name = size_temp[0].name
 
 				instances.append(i)
 
@@ -220,25 +201,11 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			s = Cloud_Data_Secgroup()
 			s.id = secgroup.id
 			s.name = secgroup.name
-			s.description = secgroup.description
-			s.driver = secgroup.driver.name
-			s.tenant_id = secgroup.tenant_id
-			s.in_rules = []
-			for rule in secgroup.rules:
-				r = Cloud_Data_Secgroup_Rule()
-				r.id = rule.id
-				r.parent_group_id = rule.parent_group_id
-				r.ip_protocol = rule.ip_protocol
-				r.from_port = rule.from_port
-				r.to_port = rule.to_port
-				r.driver = rule.driver.name
-				r.ip_range = rule.ip_range
-				r.group = rule.group
-				r.tenant_id = rule.tenant_id
-				r.extra = rule.extra
-
-				s.in_rules.append(r)
+			s.description = secgroup.extra["description"]
+			s.in_rules = secgroup.ingress_rules
+			s.out_rules = secgroup.egress_rules
 			s.extra = secgroup.extra
+			s.tenant_id = secgroup.extra["owner_id"]
 
 			secgroups.append(s)
 
@@ -257,7 +224,6 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			i.disk = size.disk
 			i.bandwidth = size.bandwidth
 			i.price = size.price
-			i.vcpus = size.vcpus
 
 			sizes.append(i)
 
@@ -269,40 +235,39 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			s = Cloud_Data_Network()
 			s.id = network.id
 			s.name = network.name
-			s.cidr = network.cidr
-			s.driver = network.driver.name
 			s.extra = network.extra
+			s.cidr = network.cidr_block
 
 			networks.append(s)
 
 		return networks
 
 	def _boot_instance(self, instance):
-		self._exec_libcloud(lambda: self.driver.ex_hard_reboot_node(instance))
+		self._exec_libcloud(lambda: self.driver.ex_start_node(instance))
 
 	def _softreboot_instance(self, instance):
-		self._exec_libcloud(lambda: self.driver.ex_soft_reboot_node(instance))
+		self._exec_libcloud(lambda: self.driver.reboot_node(instance))
 
 	def _reboot_instance(self, instance):
-		self._exec_libcloud(lambda: self.driver.ex_hard_reboot_node(instance))
+		raise EC2CloudConnectionError("RESTART: Not yet implemented")
 
 	def _pause_instance(self, instance):
-		self._exec_libcloud(lambda: self.driver.ex_pause_node(instance))
+		raise EC2CloudConnectionError("PAUSE: Not yet implemented")
 
 	def _unpause_instance(self, instance):
-		self._exec_libcloud(lambda: self.driver.ex_unpause_node(instance))
+		raise EC2CloudConnectionError("RESUME: Not yet implemented")
 
 	def _shutdown_instance(self, instance):
-		raise OpenStackCloudConnectionError("SHUTDOWN: Not yet implemented")
+		raise EC2CloudConnectionError("SHUTDOWN: Not yet implemented")
 
 	def _shutoff_instance(self, instance):
-		raise OpenStackCloudConnectionError("SHUTOFF: Not yet implemented")
+		self._exec_libcloud(lambda: self.driver.ex_stop_node(instance))
 
 	def _suspend_instance(self, instance):
-		self._exec_libcloud(lambda: self.driver.ex_suspend_node(instance))
+		raise EC2CloudConnectionError("SUSPEND: Not yet implemented")
 
 	def _resume_instance(self, instance):
-		self._exec_libcloud(lambda: self.driver.ex_resume_node(instance))
+		raise EC2CloudConnectionError("RESUME: Not yet implemented")
 
 	def instance_state(self, instance_id, state):
 		# instance is a libcloud.Node object
@@ -311,26 +276,16 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		OS_TRANSITION = {
 				# (NodeState.TERMINATED, "*"): None, cannot do anything with terminated instances
 				(NodeState.RUNNING,    "RUN"): None,
-				(NodeState.REBOOTING,  "RUN"): None,
 				(NodeState.PENDING,    "RUN"): None,
 				(NodeState.UNKNOWN,    "RUN"): self._boot_instance,
 				(NodeState.STOPPED,    "RUN"): self._boot_instance,
-				(NodeState.SUSPENDED,  "RUN"): self._resume_instance,
-				(NodeState.PAUSED,     "RUN"): self._unpause_instance,
-				(NodeState.RUNNING,    "SOFTRESTART"): self._softreboot_instance,
-				(NodeState.RUNNING,    "RESTART"): self._reboot_instance,
-				(NodeState.REBOOTING,  "RESTART"): None,
+				(NodeState.RUNNING,    "SOFTRESTART"): self._reboot_instance,
 				(NodeState.PENDING,    "RESTART"): None,
-				(NodeState.UNKNOWN,    "RESTART"): self._reboot_instance,
-				(NodeState.STOPPED,    "RESTART"): self._reboot_instance,
-				(NodeState.RUNNING,    "PAUSE"): self._pause_instance,
 				(NodeState.RUNNING,    "SHUTDOWN"): self._shutdown_instance,
 				(NodeState.RUNNING,    "SHUTOFF"): self._shutoff_instance,
 				(NodeState.REBOOTING,  "SHUTOFF"): self._shutoff_instance,
 				(NodeState.PENDING,    "SHUTOFF"): self._shutoff_instance,
 				(NodeState.UNKNOWN,    "SHUTOFF"): self._shutoff_instance,
-				(NodeState.PAUSED,     "SHUTOFF"): self._shutoff_instance,
-				(NodeState.RUNNING,    "SUSPEND"): self._suspend_instance,
 				}
 		logger.debug("STATE: connection: %s instance %s (id:%s), oldstate: %s (%s), requested: %s" % (self.publicdata.name, instance.name, instance.id, instance.state, instance.state, state))
 		try:
@@ -340,9 +295,9 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			else:
 				logger.debug("NOP state transition: %s -> %s" % (instance.state, state))
 		except KeyError:
-			raise OpenStackCloudConnectionError("Unsupported State transition (%s -> %s) requested" % (instance.state, state))
+			raise EC2CloudConnectionError("Unsupported State transition (%s -> %s) requested" % (instance.state, state))
 		except Exception, e:
-			raise OpenStackCloudConnectionError("Error trying to %s instance %s (id:%s): %s" % (state, instance.name, instance_id, e))
+			raise EC2CloudConnectionError("Error trying to %s instance %s (id:%s): %s" % (state, instance.name, instance_id, e))
 		logger.debug("STATE: done")
 		self.timerEvent.set()
 
@@ -355,101 +310,115 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			# Update instance information
 			self.timerEvent.set()
 		except Exception, e:  # Unfortunately, libcloud only throws "Exception"
-			raise OpenStackCloudConnectionError("Error while destroying instance %s (id:%s): %s" % (name, instance_id, e))
+			raise EC2CloudConnectionError("Error while destroying instance %s (id:%s): %s" % (name, instance_id, e))
 		logger.info("Destroyed instance %s (id:%s), using connection %s" % (name, instance_id, self.publicdata.name))
 
 	def instance_create(self, args):
 		# Check args
 		kwargs = {}
 		if "name" not in args:
-			raise OpenStackCloudConnectionError("<name> attribute required for new instance")
+			raise EC2CloudConnectionError("<name> attribute required for new instance")
 		else:
-			kwargs[OPENSTACK_CREATE_ATTRIBUTES["name"]] = args["name"]
+			kwargs[EC2_CREATE_ATTRIBUTES["name"]] = args["name"]
 
 		if "keyname" not in args:
-			raise OpenStackCloudConnectionError("<keyname> attribute required for new instance")
+			raise EC2CloudConnectionError("<keyname> attribute required for new instance")
 		else:
 			key = [kp for kp in self._keypairs if kp.name == args["keyname"]]
 			if not key:
-				raise OpenStackCloudConnectionError("No keypair with name %s found." % args["keyname"])
+				raise EC2CloudConnectionError("No keypair with name %s found." % args["keyname"])
 
-			kwargs[OPENSTACK_CREATE_ATTRIBUTES["keyname"]] = args["keyname"]
+			kwargs[EC2_CREATE_ATTRIBUTES["keyname"]] = args["keyname"]
 
 		if "size_id" not in args:
-			raise OpenStackCloudConnectionError("<size_id> attribute required for new instance")
+			raise EC2CloudConnectionError("<size_id> attribute required for new instance")
 		else:
 			size = [s for s in self._sizes if s.id == args["size_id"]]
 			if not size:
-				raise OpenStackCloudConnectionError("No size with id %s found." % args["size_id"])
+				raise EC2CloudConnectionError("No size with id %s found." % args["size_id"])
 
-			kwargs[OPENSTACK_CREATE_ATTRIBUTES["size_id"]] = size[0]
+			kwargs[EC2_CREATE_ATTRIBUTES["size_id"]] = size[0]
 
 		if "image_id" not in args:
-			raise OpenStackCloudConnectionError("<image_id> attribute required for new instance")
+			raise EC2CloudConnectionError("<image_id> attribute required for new instance")
 		else:
 			image = [i for i in self._images if i.id == args["image_id"]]
 			if not image:
-				raise OpenStackCloudConnectionError("No image with id %s found." % args["image_id"])
+				raise EC2CloudConnectionError("No image with id %s found." % args["image_id"])
 
-			kwargs[OPENSTACK_CREATE_ATTRIBUTES["image_id"]] = image[0]
+			kwargs[EC2_CREATE_ATTRIBUTES["image_id"]] = image[0]
 
 		if "location_id" in args:
 			if not isinstance(args["location_id"], str):
-				raise OpenStackCloudConnectionError("<location_id> attribute must be a string")
-			kwargs[OPENSTACK_CREATE_ATTRIBUTES["location_id"]] = args["location_id"]
+				raise EC2CloudConnectionError("<location_id> attribute must be a string")
+			kwargs[EC2_CREATE_ATTRIBUTES["location_id"]] = args["location_id"]
 
 		if "userdata" in args:
 			if not (isinstance(args["userdata"], str) or isinstance(args["userdata"], unicode)):
-				raise OpenStackCloudConnectionError("<userdata> attribute must be a string")
-			kwargs[OPENSTACK_CREATE_ATTRIBUTES["userdata"]] = args["userdata"]
+				raise EC2CloudConnectionError("<userdata> attribute must be a string")
+			kwargs[EC2_CREATE_ATTRIBUTES["userdata"]] = args["userdata"]
 
 		if "metadata" in args:
 			if not isinstance(args["metadata"], dict):
 				logger.debug("metadata type: %s" % args["metadata"].__class__)
-				raise OpenStackCloudConnectionError("<metadata> attribute must be a dict")
-			kwargs[OPENSTACK_CREATE_ATTRIBUTES["metadata"]] = args["metadata"]
-
-		if "availability_zone" in args:
-			if not isinstance(args["availability_zone"], str):
-				raise OpenStackCloudConnectionError("<availability_zone> attribute must be a string")
-			kwargs[OPENSTACK_CREATE_ATTRIBUTES["availability_zone"]] = args["availability_zone"]
-
-		if "disk_config" in args:
-			if args["disk_config"] not in ["AUTO", "MANUAL"]:
-				raise OpenStackCloudConnectionError("<disk_config> attribute must be AUTO or MANUAL")
-			kwargs[OPENSTACK_CREATE_ATTRIBUTES["disk_config"]] = args["disk_config"]
-
-		if "admin_pass" in args:
-			if not isinstance(args["admin_pass"], str):
-				raise OpenStackCloudConnectionError("<admin_pass> attribute must be a string")
-			kwargs[OPENSTACK_CREATE_ATTRIBUTES["admin_pass"]] = args["admin_pass"]
+				raise EC2CloudConnectionError("<metadata> attribute must be a dict")
+			kwargs[EC2_CREATE_ATTRIBUTES["metadata"]] = args["metadata"]
 
 		if "security_group_ids" in args:
 			if not (isinstance(args["security_group_ids"], list)):
-				raise OpenStackCloudConnectionError("<security_group_ids> attribute must be a list")
+				raise EC2CloudConnectionError("<security_group_ids> attribute must be a list")
 
 			secgroups = [s for s in self._security_groups if s.id in args["security_group_ids"]]
 			if not secgroups:
-				raise OpenStackCloudConnectionError("No security group with id %s found." % args["security_group_ids"])
+				raise EC2CloudConnectionError("No security group with id %s found." % args["security_group_ids"])
 
-			kwargs[OPENSTACK_CREATE_ATTRIBUTES["security_group_ids"]] = secgroups
+			kwargs[EC2_CREATE_ATTRIBUTES["security_group_ids"]] = [s.name for s in secgroups]
 
-		if "network_ids" in args:
-			if not (isinstance(args["network_ids"], list)):
-				raise OpenStackCloudConnectionError("<network_ids> attribute must be a list")
+		if "min_instance_count" in args:
+			if not (isinstance(args["min_instance_count"], int)):
+				raise EC2CloudConnectionError("<min_instance_count> attribute must be an integer")
+			kwargs[EC2_CREATE_ATTRIBUTES["min_instance_count"]] = args["min_instance_count"]
 
-			networks = [n for n in self._networks if n.id in args["network_ids"]]
-			if not networks:
-				raise OpenStackCloudConnectionError("No network with id %s found." % args["network_ids"])
+		if "max_instance_count" in args:
+			if not (isinstance(args["max_instance_count"], int)):
+				raise EC2CloudConnectionError("<max_instance_count> attribute must be an integer")
+			kwargs[EC2_CREATE_ATTRIBUTES["max_instance_count"]] = args["max_instance_count"]
 
-			kwargs[OPENSTACK_CREATE_ATTRIBUTES["network_ids"]] = networks
+		if ("min_instance_count" in args) and ("max_instance_count" in args):
+			if args["min_instance_count"] >= args["max_instance_count"]:
+				raise EC2CloudConnectionError("<min_instance_count> must be smaller than <max_instance_count>")
+
+		if "clienttoken" in args:
+			if not (isinstance(args["clienttoken"], str)):
+				raise EC2CloudConnectionError("<clienttoken> attribute must be a string")
+			kwargs[EC2_CREATE_ATTRIBUTES["clienttoken"]] = args["clienttoken"]
+
+		if "blockdevicemappings" in args:
+			if not (isinstance(args["blockdevicemappings"], list)):
+				raise EC2CloudConnectionError("<blockdevicemappings> attribute must be a list")
+			kwargs[EC2_CREATE_ATTRIBUTES["blockdevicemappings"]] = args["blockdevicemappings"]
+
+		if "iamprofile" in args:
+			if not (isinstance(args["iamprofile"], str)):
+				raise EC2CloudConnectionError("<iamprofile> attribute must be a string")
+			kwargs[EC2_CREATE_ATTRIBUTES["iamprofile"]] = args["iamprofile"]
+
+		if "ebs_optimized" in args:
+			if not (isinstance(args["ebs_optimized"], bool)):
+				raise EC2CloudConnectionError("<ebs_optimized> attribute must be a bool")
+			kwargs[EC2_CREATE_ATTRIBUTES["ebs_optimized"]] = args["ebs_optimized"]
+
+		if "subnet" in args:
+			if not (isinstance(args["subnet"], str)):
+				raise EC2CloudConnectionError("<subnet> attribute must be a string")
+			kwargs[EC2_CREATE_ATTRIBUTES["subnet"]] = args["subnet"]
 
 		# libcloud call
 		try:
-			logger.debug("CREATE INSTANCE. ARGS: %s" % kwargs)
+			logger.debug("CREATE INSTANCE, connection:%s ARGS: %s" % (self.publicdata.name, kwargs))
 			self._exec_libcloud(lambda: self.driver.create_node(**kwargs))
 		except Exception, e:
-			raise OpenStackCloudConnectionError("Instance could not be created: %s" % e)
+			raise EC2CloudConnectionError("Instance could not be created: %s" % e)
 
 	# Execute lambda function
 	def _exec_libcloud(self, func):
@@ -463,6 +432,12 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			raise
 		except ProviderError as e:
 			logger.error("Connection %s: %s: httpcode: %s, %s" % (self.publicdata.name, self.publicdata.url, e.http_code, e))
+			raise
+		except IdempotentParamError as e:
+			logger.error("Connection %s: %s, same client token sent, but made different request" % (self.publicdata.name, self.publicdata.url))
+			raise
+		except KeyPairDoesNotExistError as e:
+			logger.error("Connection %s: %s the requested keypair does not exist" % (self.publicdata.name, self.publicdata.url))
 			raise
 		except LibcloudError as e:
 			logger.error("Connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, e))
@@ -479,8 +454,12 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 
 				else:
 					logger.error("Unknown exception %s with unknown errno %s: %s" % (self.publicdata.name, e.errno, self.publicdata.url), exc_info=True)
+			elif hasattr(e, 'message'):
+				logger.error("%s: %s Error: %s" % (self.publicdata.name, self.publicdata.url, e.message))
+				if "RequestExpired" in e.message:
+					raise EC2CloudConnectionError("RequestExpired for connection %s, check system time" % self.publicdata.name)
 			else:
-				logger.error("Unknown exception  %s: %s" % (self.publicdata.name, self.publicdata.url), exc_info=True)
+				logger.error("Unknown exception %s: %s, %s" % (self.publicdata.name, self.publicdata.url, dir(e)), exc_info=True)
 			raise
 
 if __name__ == '__main__':
