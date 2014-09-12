@@ -347,7 +347,7 @@ def create_vmx(machine_name, image_name, image_uuid):
 		'hpet0.present': "TRUE",
 		'usb.vbluetooth.startConnected': "TRUE",
 		'displayName': machine_name,
-		'guestOS': "other26xlinux",
+		'guestOS': "other26xlinux-64",
 		'nvram': "%s.nvram" % (image_name, ),
 		'virtualHW.productCompatibility': "hosted",
 		'gui.exitOnCLIHLT': "FALSE",
