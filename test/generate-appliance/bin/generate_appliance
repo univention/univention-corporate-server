@@ -126,7 +126,7 @@ class Vmdk(File):
 	@property
 	@File.hashed
 	def hash(self):
-		return (Vmdk, self._raw.hash, self._streamOptimized, )
+		return (Vmdk, VMDKstream.image_descriptor_template, self._raw.hash, self._streamOptimized, )
 
 	@File.lazy
 	def path(self):
@@ -922,6 +922,33 @@ class Virtualbox(Target):
 		image_uuid = uuid.uuid4()
 		if os.path.exists(archive_name):
 			raise IOError('Output file %r exists' % (archive_name, ))
+		# HACK: change image descriptor to expected format
+		VMDKstream.image_descriptor_template = '''# Disk DescriptorFile
+version=1
+CID=4fd3c93e
+parentCID=ffffffff
+createType="streamOptimized"
+
+# Extent description
+RDONLY #SECTORS# SPARSE "call-me-stream.vmdk"
+
+# The disk Data Base\x20
+#DDB
+
+ddb.virtualHWVersion = "4"
+ddb.adapterType="ide"
+ddb.geometry.cylinders="#CYLINDERS#"
+ddb.geometry.heads="255"
+ddb.geometry.sectors="63"
+ddb.geometry.biosCylinders="1024"
+ddb.geometry.biosHeads="255"
+ddb.geometry.biosSectors="63"
+ddb.uuid.image="%s"
+ddb.uuid.parent="00000000-0000-0000-0000-000000000000"
+ddb.uuid.modification="00000000-0000-0000-0000-000000000000"
+ddb.uuid.parentmodification="00000000-0000-0000-0000-000000000000"
+ddb.comment=""
+''' % (image_uuid, )
 		descriptor = create_ovf_descriptor_virtualbox(
 			machine_name, options.version, machine_uuid,
 			image_name, image.size(), image_uuid,
@@ -1331,6 +1358,30 @@ class ESXi(Target):
 		image_uuid = uuid.uuid4()
 		if os.path.exists(archive_name):
 			raise IOError('Output file %r exists' % (archive_name, ))
+		# HACK: change image descriptor to expected format
+		VMDKstream.image_descriptor_template = '''# Disk DescriptorFile
+version=1\x20
+CID=b9478e33\x20
+parentCID=ffffffff\x20
+createType="streamOptimized"\x20
+
+# Extent description
+RDONLY #SECTORS# SPARSE "call-me-stream.vmdk"
+
+# The Disk Data Base\x20
+#DDB
+
+ddb.adapterType = "lsilogic"
+ddb.encoding = "windows-1252"
+ddb.geometry.biosCylinders="1024"
+ddb.geometry.biosHeads="255"
+ddb.geometry.biosSectors="63"
+ddb.geometry.cylinders="#CYLINDERS#"
+ddb.geometry.heads="255"
+ddb.geometry.sectors="63"
+ddb.longContentID = "6c27be515acd422fbdb62c0afffffffe"
+ddb.virtualHWVersion = "7"
+'''
 		descriptor = create_ovf_descriptor_esxi(
 			machine_name, options.version, machine_uuid,
 			image_name, image.size(), Vmdk(image, streamOptimized=True).size(),
