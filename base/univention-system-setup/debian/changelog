@@ -1,4 +1,4 @@
-univention-system-setup (8.0.39-2) unstable; urgency=low
+univention-system-setup (8.0.41-1) unstable; urgency=low
 
   * Bug #35490, Bug #35532:
     - set system/setup/boot/start=false if USS has finished
