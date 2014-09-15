@@ -1,3 +1,9 @@
+univention-dojo (8.0.0-3) unstable; urgency=low
+
+  * Bug #35764: Included patch for debugging problems
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 15 Sep 2014 08:15:58 +0200
+
 univention-dojo (8.0.0-2) unstable; urgency=low
 
   * Bug #35764: Updated dojo to version 1.10

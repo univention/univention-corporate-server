@@ -54,6 +54,7 @@ dojo: dojo-*.tar.gz
 	tar -xzf $<
 	[ ! -d $@ ] && mv $@*/ $@ || true
 	cd dojo; \
+	patch -p1 < ../fix_domReady_console_error.patch && \
 	patch -p1 < ../fix_bashism.patch && \
 	patch -p1 < ../fix_grid_focus.patch && \
 	patch -p1 < ../fix_standbyOpacity.patch && \
