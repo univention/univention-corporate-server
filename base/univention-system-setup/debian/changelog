@@ -1,3 +1,10 @@
+univention-system-setup (8.0.39-2) unstable; urgency=low
+
+  * Bug #35490, Bug #35532:
+    - set system/setup/boot/start=false if USS has finished
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 15 Sep 2014 14:00:48 +0200
+
 univention-system-setup (8.0.40-1) unstable; urgency=low
 
   * Bug #35921: Show debconf title while starting USS
