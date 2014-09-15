@@ -1,3 +1,9 @@
+univention-system-setup (8.0.40-1) unstable; urgency=low
+
+  * Bug #35921: Show debconf title while starting USS
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Sep 2014 10:20:43 +0200
+
 univention-system-setup (8.0.39-1) unstable; urgency=low
 
   * Bug #35490, Bug #35532:
@@ -10,8 +16,7 @@ univention-system-setup (8.0.39-1) unstable; urgency=low
 univention-system-setup (8.0.38-2) unstable; urgency=low
 
   * Fixed wrong variable name in univention-system-setup
-  * Fixed traqnslation in ApplianceWizard.js
-  	(Bug #34090)
+  * Fixed traqnslation in ApplianceWizard.js (Bug #34090)
 
  -- Drees Dormann <dormann@univention.de>  Mon, 08 Sep 2014 12:04:22 +0200
 

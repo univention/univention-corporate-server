@@ -1,10 +1,4 @@
 Template: di-univention-system-setup/progress/title
 Type: text
-# :sl1:
-_Description: Installing Univention System Setup
-
-Template: di-univention-system-setup/progress/step_install
-Type: text
-# :sl1:
-_Description: Installing the package ${PKG} ...
+_Description: Starting Univention System Setup...
 

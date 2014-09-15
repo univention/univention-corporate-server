@@ -30,13 +30,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/debconf/confmodule
+
 #DEBHELPER#
 
 # activate univention-system-setup-boot
 chroot /target /usr/sbin/ucr set system/setup/boot/start=true
 # start univention-system-setup if in GTK mode
 if [ -n "$DISPLAY" ]; then
+	db_progress START 0 2 di-univention-system-setup/progress/title
+	db_progress STEP 1
 	chroot /target /usr/share/univention-system-setup/startxwithfirefox --installer
+	db_progress SET 2
+	db_progress STOP
 fi
 
 exit 0

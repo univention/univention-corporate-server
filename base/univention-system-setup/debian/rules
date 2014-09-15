@@ -58,3 +58,7 @@ override_dh_auto_test:
 
 %:
 	dh $@ --with 'python_support'
+
+
+po/templates.pot: po/POTFILES.in
+	debconf-updatepo --msgid-bugs-address='Univention GmbH <packages@univention.de>'

@@ -1,0 +1,21 @@
+# Copyright (C) 2014 Univention GmbH
+# Philipp Hahn <hahn@univention.de>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-syste-setup 4.0\n"
+"Report-Msgid-Bugs-To: Univention GmbH <packages@univention.de>\n"
+"POT-Creation-Date: 2014-09-15 11:52+0200\n"
+"PO-Revision-Date: 2014-09-15 11:49+0200\n"
+"Last-Translator: Philipp Hahn <hahn@univention.de>\n"
+"Language-Team: German <de@li.org>\n"
+"Language: German\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: text
+#. Description
+#: ../di-univention-system-setup.templates:1001
+msgid "Starting Univention System Setup..."
+msgstr "Starte Univention System Setup..."
