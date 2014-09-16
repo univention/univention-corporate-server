@@ -1,3 +1,9 @@
+univention-lib (3.0.26-64) unstable; urgency=low
+
+  * Bug #35729: Fix stall in dpkg status pipe reading code
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 16 Sep 2014 17:38:41 +0200
+
 univention-lib (3.0.26-63) unstable; urgency=medium
 
   * Fix log from make_deleted_objects_readable_for_this_machine (Bug #35566)
