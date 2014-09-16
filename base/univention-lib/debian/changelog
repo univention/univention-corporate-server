@@ -1,3 +1,9 @@
+univention-lib (4.0.3-2) unstable; urgency=low
+
+  * Bug #35729: Fix stall in dpkg status pipe reading code
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 16 Sep 2014 17:40:00 +0200
+
 univention-lib (4.0.3-1) unstable; urgency=medium
 
   * Bug #31319: make sure that atjobs is EINTR-safe
