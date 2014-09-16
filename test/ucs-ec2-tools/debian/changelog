@@ -1,6 +1,7 @@
 ucs-ec2-tools (1.0.1-4) unstable; urgency=low
 
   * Bug #35767: Switch to updated UCS-4.0 EC2 AMI
+  * Bug #35733: Re-enable reboot
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 16 Sep 2014 17:23:37 +0200
 
