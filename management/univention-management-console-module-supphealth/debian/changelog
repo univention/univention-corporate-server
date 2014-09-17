@@ -2,6 +2,8 @@ univention-management-console-module-diagnostic (1.0.1-1) unstable; urgency=low
 
   * Bug #34765: code cleanup
   * sed -i 's/supphealth/diagnostic/g' $(find ! -wholename '*svn*' -type f)
+  * for i in $(find ! -wholename '*svn*' -name '*supphealth*'); do svn mv "$i"
+  	"$(echo -en "$i" | sed s/supphealth/diagnostic/g)"; done
 
  -- Florian Best <best@univention.de>  Wed, 17 Sep 2014 12:22:33 +0200
 
