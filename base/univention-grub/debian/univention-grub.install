@@ -1,3 +1,2 @@
-usr/share/univention-grub/uniboot.xpm.gz usr/share/univention-grub
 usr/share/univention-grub/uniboot.png usr/share/univention-grub
 univention-grub-generate-menu-lst usr/sbin

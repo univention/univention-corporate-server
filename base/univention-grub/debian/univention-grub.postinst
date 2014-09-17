@@ -62,7 +62,7 @@ fi
 # dpkg tries to use symlinks during package extraction which fails usually on FAT32.
 # /boot/grub may be FAT32, so the following files are extracted somewhere else and
 # copied back to /boot/grub.
-cp -f /usr/share/univention-grub/uniboot.{xpm.gz,png} /boot/grub/
+cp -f /usr/share/univention-grub/uniboot.png /boot/grub/
 
 # Install grub on new installation
 if [ "$1" = configure -a -z "$2" ];  then
