@@ -1,16 +1,17 @@
-univention-management-console-module-supphealth (1.0.1-1) unstable; urgency=low
+univention-management-console-module-diagnostic (1.0.1-1) unstable; urgency=low
 
   * Bug #34765: code cleanup
+  * sed -i 's/supphealth/diagnostic/g' $(find ! -wholename '*svn*' -type f)
 
  -- Florian Best <best@univention.de>  Wed, 17 Sep 2014 12:22:33 +0200
 
-univention-management-console-module-supphealth (1.0.0-1) unstable; urgency=low
+univention-management-console-module-diagnostic (1.0.0-1) unstable; urgency=low
 
   * Starting UCS 4.0-0 development (Bug #34765)
 
  -- Alexander Kramer <kramer@univention.de>  Wed, 03 Sep 2014 16:09:00 +0200
 
-univention-management-console-module-supphealth (0.1.0-1) unstable; urgency=low
+univention-management-console-module-diagnostic (0.1.0-1) unstable; urgency=low
 
   * Initial release (Bug #34765)
 

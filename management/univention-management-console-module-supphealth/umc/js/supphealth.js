@@ -39,10 +39,10 @@ define([
 	'umc/widgets/Module',
 	'umc/widgets/TextBox',
 	'umc/widgets/ComboBox',
-	'umc/modules/supphealth/DetailPage',
-	'umc/i18n!umc/modules/supphealth'
+	'umc/modules/diagnostic/DetailPage',
+	'umc/i18n!umc/modules/diagnostic'
 ], function(declare, lang, on, dialog, tools, Grid, Page, SearchForm, Module, TextBox, ComboBox, DetailPage, _) {
-	return declare('umc.modules.supphealth',  Module, {
+	return declare('umc.modules.diagnostic',  Module, {
 
 		_grid: null,
 		_overviewPage: null,
@@ -186,7 +186,7 @@ define([
 		},
 
 		_runTests: function(selectedPlugins) {
-			this.standbyDuring(this.umcpCommand('supphealth/run', selectedPlugins)).then(lang.hitch(this, function(ids, items) {
+			this.standbyDuring(this.umcpCommand('diagnostic/run', selectedPlugins)).then(lang.hitch(this, function(ids, items) {
 				this._grid.filter({searchPattern: ''});
 			}));
 		},

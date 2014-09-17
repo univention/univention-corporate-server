@@ -1,4 +1,4 @@
-Source: univention-management-console-module-supphealth
+Source: univention-management-console-module-diagnostic
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
@@ -10,7 +10,7 @@ Build-Depends: debhelper (>= 7.0.50~),
 Standards-Version: 3.7.2
 XS-Python-Version: 2.6, 2.7
 
-Package: univention-management-console-module-supphealth
+Package: univention-management-console-module-diagnostic
 Architecture: all
 Depends: ${misc:Depends},
  univention-management-console-server,

@@ -38,9 +38,9 @@ define([
 	'umc/widgets/Text',
 	'umc/widgets/TextArea',
 	'umc/widgets/StandbyMixin',
-	'umc/i18n!umc/modules/supphealth'
+	'umc/i18n!umc/modules/diagnostic'
 ], function(declare, lang, dialog, tools, Form, Page, Text, TextArea, StandbyMixin, _) {
-	return declare('umc.modules.supphealth.DetailPage', [Page, StandbyMixin], {
+	return declare('umc.modules.diagnostic.DetailPage', [Page, StandbyMixin], {
 		
 		moduleStore: null,
 		timestampFormatter: null,

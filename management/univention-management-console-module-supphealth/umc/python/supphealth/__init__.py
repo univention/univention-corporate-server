@@ -39,7 +39,7 @@ from univention.management.console.log import MODULE
 
 from plugins import getPlugin, Plugin
 
-_ = Translation('univention-management-console-module-supphealth').translate
+_ = Translation('univention-management-console-module-diagnostic').translate
 
 
 class Instance(Base):

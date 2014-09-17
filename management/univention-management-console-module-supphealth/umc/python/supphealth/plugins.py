@@ -37,7 +37,7 @@ from time import localtime, strftime
 
 from univention.lib.i18n import Translation
 
-_ = Translation('univention-management-console-module-supphealth').translate
+_ = Translation('univention-management-console-module-diagnostic').translate
 
 # internal plugin cache
 PLUGIN_CACHE = {}
@@ -50,7 +50,7 @@ def getPlugin(plugin_filename):
 
 
 class Plugin(object):
-	ROOT_DIRECTORY = '/usr/share/univention-management-console-module-supphealth/plugins'
+	ROOT_DIRECTORY = '/usr/share/univention-management-console-module-diagnostic/plugins'
 	TIMESTAMP_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 	def __init__(self, plugin_filename):
@@ -104,7 +104,7 @@ class Plugin(object):
 
 
 class PluginLog(object):
-	ROOT_DIRECTORY = '/var/cache/univention-management-console-module-supphealth/logs'
+	ROOT_DIRECTORY = '/var/cache/univention-management-console-module-diagnostic/logs'
 	OUTPUT_SEPERATOR = '===== OUTPUT ====='
 
 	def __init__(self, plugin_filename):

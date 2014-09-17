@@ -1,7 +1,7 @@
 #!/bin/sh
 # -*- coding: utf-8 -*-
 #
-# Univention Management Console Module supphealth
+# Univention Management Console Module diagnostic
 #  join script
 #
 # Copyright 2014 Univention GmbH
@@ -39,8 +39,8 @@ VERSION=1
 joinscript_init
 
 umc_init
-umc_operation_create "supphealth-all" "supphealth" "" "supphealth/*"
-umc_policy_append "default-umc-all" "supphealth-all"
+umc_operation_create "diagnostic-all" "diagnostic" "" "diagnostic/*"
+umc_policy_append "default-umc-all" "diagnostic-all"
 
 joinscript_save_current_version
 

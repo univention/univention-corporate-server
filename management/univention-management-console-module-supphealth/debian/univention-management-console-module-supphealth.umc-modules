@@ -1,4 +1,4 @@
-Module: supphealth
+Module: diagnostic
 Python: umc/python
-Definition: umc/supphealth.xml
+Definition: umc/diagnostic.xml
 Javascript: umc/js
