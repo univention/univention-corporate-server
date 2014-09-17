@@ -678,7 +678,7 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 						E.TimeOffset(value='0'),
 						E.PXEDebug(enabled='false'),
 					),
-					E.USBController(enabled='false', enabledEhci='true'), # TODO: enabledEhci=false?
+					E.USBController(enabled='false', enabledEhci='false'),
 					E.Network(
 						E.Adapter(
 							E.DisabledModes(
@@ -1317,9 +1317,9 @@ class ESXi(Target):
 		return 'ova-esxi'
 
 	def create(self, image, options):
-		image_name = '%s-ESXi-disk1.vmdk' % (options.filename, )
-		descriptor_name = '%s ESXi.ovf' % (options.filename, )
-		archive_name = '%s-ESXi.ova' % (options.filename, )
+		image_name = '%s-ESX-disk1.vmdk' % (options.filename, )
+		descriptor_name = '%s ESX.ovf' % (options.filename, )
+		archive_name = '%s-ESX.ova' % (options.filename, )
 		if os.path.exists(archive_name):
 			raise IOError('Output file %r exists' % (archive_name, ))
 		# HACK: change image descriptor to expected format

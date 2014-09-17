@@ -1,3 +1,10 @@
+generate-appliance (0.2.2-1) unstable; urgency=medium
+
+  * VirtualBox: Change to USB default disabled (Bug #35756)
+  * ESXi: Change filename
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 17 Sep 2014 17:27:16 +0200
+
 generate-appliance (0.2.1-1) unstable; urgency=medium
 
   * VirtualBox: Debian_64 instead of Linux_64 (Bug #35756)
