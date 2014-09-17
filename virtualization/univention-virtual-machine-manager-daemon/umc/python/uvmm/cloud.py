@@ -84,6 +84,7 @@ class Cloud(object):
 						'label': d.name,
 						'group': _('Cloud connection'),
 						'type': 'cloud',
+						'cloudtype': d.cloudtype,
 						'available': d.last_update_try == d.last_update,
 						})
 
@@ -131,6 +132,157 @@ class Cloud(object):
 				'L_CLOUD_ADD',
 				Callback(self._thread_finish, request),
 				args=args
+				)
+
+	def cloud_list_keypair(self, request):
+		"""
+		Returns a list of keypair for the given cloud conn_name.
+		"""
+		self.required_options(request, 'conn_name')
+		conn_name = request.options.get('conn_name')
+
+		def _finished(thread, result, request):
+			"""
+			Process asynchronous UVMM L_CLOUD_KEYPAIR_LIST answer.
+			"""
+			if self._check_thread_error(thread, result, request):
+				return
+
+			success, data = result
+			if success:
+				keypair_list = [
+						{'id': item.name, 'label': item.name}
+						for conn_name, images in data.items()
+						for item in images
+						]
+
+				self.finished(request.id, keypair_list)
+			else:
+				self.finished(
+						request.id,
+						None,
+						message=str(data),
+						status=MODULE_ERR_COMMAND_FAILED
+						)
+
+		self.uvmm.send(
+				'L_CLOUD_KEYPAIR_LIST',
+				Callback(_finished, request),
+				conn_name=conn_name
+				)
+
+	def cloud_list_size(self, request):
+		"""
+		Returns a list of hardware sizes for the given cloud conn_name.
+		"""
+		self.required_options(request, 'conn_name')
+		conn_name = request.options.get('conn_name')
+
+		def _finished(thread, result, request):
+			"""
+			Process asynchronous UVMM L_CLOUD_SIZE_LIST answer.
+			"""
+			if self._check_thread_error(thread, result, request):
+				return
+
+			success, data = result
+			if success:
+				size_list = [
+						{'id': item.id, 'label': item.name}
+						for conn_name, images in data.items()
+						for item in images
+						]
+
+				self.finished(request.id, size_list)
+			else:
+				self.finished(
+						request.id,
+						None,
+						message=str(data),
+						status=MODULE_ERR_COMMAND_FAILED
+						)
+
+		self.uvmm.send(
+				'L_CLOUD_SIZE_LIST',
+				Callback(_finished, request),
+				conn_name=conn_name
+				)
+
+	@sanitize(pattern=SearchSanitizer(default='*'))
+	def cloud_list_image(self, request):
+		"""
+		Returns a list of images by a pattern for the given cloud conn_name.
+		"""
+		self.required_options(request, 'conn_name')
+		conn_name = request.options.get('conn_name')
+		pattern = request.options.get('pattern')
+
+		def _finished(thread, result, request):
+			"""
+			Process asynchronous UVMM L_CLOUD_IMAGE_LIST answer.
+			"""
+			if self._check_thread_error(thread, result, request):
+				return
+
+			success, data = result
+			if success:
+				image_list = [
+						{'id': item.id, 'label': item.name}
+						for conn_name, images in data.items()
+						for item in images
+						]
+
+				self.finished(request.id, image_list)
+			else:
+				self.finished(
+						request.id,
+						None,
+						message=str(data),
+						status=MODULE_ERR_COMMAND_FAILED
+						)
+
+		self.uvmm.send(
+				'L_CLOUD_IMAGE_LIST',
+				Callback(_finished, request),
+				conn_name=conn_name,
+				pattern=pattern
+				)
+
+	def cloud_list_secgroup(self, request):
+		"""
+		Returns a list of security groups for the given cloud conn_name.
+		"""
+		self.required_options(request, 'conn_name')
+		conn_name = request.options.get('conn_name')
+
+		def _finished(thread, result, request):
+			"""
+			Process asynchronous UVMM L_CLOUD_SECGROUP_LIST answer.
+			"""
+			if self._check_thread_error(thread, result, request):
+				return
+
+			success, data = result
+			if success:
+				secgroup_list = [
+						{'id': item.id, 'label': item.name}
+						for conn_name, images in data.items()
+						for item in images
+						]
+
+				self.finished(request.id, secgroup_list)
+			else:
+				self.finished(
+						request.id,
+						None,
+						message=str(data),
+						status=MODULE_ERR_COMMAND_FAILED
+						)
+
+		self.uvmm.send(
+				'L_CLOUD_SECGROUP_LIST',
+				Callback(_finished, request),
+				conn_name=conn_name
 				)
 
 	@sanitize(domainPattern=SearchSanitizer(default='*'))
@@ -245,6 +397,33 @@ class Cloud(object):
 				Callback(self._thread_finish, request),
 				conn_name=conn_name,
 				instance_id=instance_id
+				)
+
+	def instance_add(self, request):
+		"""
+		Create a new instance on cloud conn_name.
+
+		options: {
+			'conn_name': <cloud connection name>,
+			'parameter': {...},
+			}
+
+		return:
+		"""
+		self.required_options(request, 'conn_name', 'name', 'parameter')
+		conn_name = request.options.get('conn_name')
+		name = request.options.get('name')
+		parameter = request.options.get('parameter')
+
+		args = parameter
+		args['name'] = name
+		args['security_group_ids'] = [parameter['security_group_ids']]
+
+		self.uvmm.send(
+				'L_CLOUD_INSTANCE_CREATE',
+				Callback(self._thread_finish, request),
+				conn_name=conn_name,
+				args=args
 				)
 
 	def cloudtype_get(self, request):

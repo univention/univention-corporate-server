@@ -64,13 +64,14 @@ define([
 	"umc/modules/uvmm/DomainPage",
 	"umc/modules/uvmm/DomainWizard",
 	"umc/modules/uvmm/InstancePage",
+	"umc/modules/uvmm/InstanceWizard",
 	"umc/modules/uvmm/CreatePage",
 	"umc/modules/uvmm/CloudConnectionWizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
 ], function(declare, lang, array, string, query, Deferred, on, entities, Menu, MenuItem, ContentPane, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, ExpandingTitlePane, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
-	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, CreatePage, CloudConnectionWizard, types, _) {
+	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, CloudConnectionWizard, types, _) {
 
 	var isRunning = function(item) {
 		return (item.state == 'RUNNING' || item.state == 'IDLE' || item.state == 'PAUSED') && item.node_available;
@@ -654,10 +655,10 @@ define([
 
 			var _finished = lang.hitch(this, function(values) {
 				_cleanup();
-				console.log('# openCreatePage: ', values);
 				var func = {
 					'domain': lang.hitch(this, '_addDomain'),
 					'cloud': lang.hitch(this, '_addCloudConnection'),
+					'instance': lang.hitch(this, '_addInstance')
 				}[values.type];
 				if (func) {
 					func(values);
@@ -744,8 +745,35 @@ define([
 			this.addChild(wizard);
 			this.selectChild(wizard);
 		},
-		
-		
+
+		_addInstance: function(values) {
+			var wizard = null;
+			var _cleanup = lang.hitch(this, function() {
+				this.selectChild(this._searchPage);
+				this.removeChild(wizard);
+				wizard.destroyRecursive();
+			});
+
+			var _finished = lang.hitch(this, function(values) {
+				var add = tools.umcpCommand('uvmm/instance/add', {
+					conn_name: values.cloud,
+					name: values.name,
+					parameter: values.parameter
+				}).then(lang.hitch(this, function() {
+					_cleanup();
+					this.moduleStore.onChange();
+				}));
+				this.standbyDuring(add);
+			});
+
+			wizard = new InstanceWizard({
+				onFinished: _finished,
+				onCancel: _cleanup
+			}, values.cloudtype, values.cloud);
+			this.addChild(wizard);
+			this.selectChild(wizard);
+		},
+
 		_shutdown: function(ids, items) {
 			tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
 				if (tools.isTrue(prefs.uvmmShutdownSeen)) {

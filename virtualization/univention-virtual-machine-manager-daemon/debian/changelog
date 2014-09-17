@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.0-11) unstable; urgency=low
+
+  * Add openstack instance wizard (Bug #35942)
+
+ -- Andreas Peichert <peichert@univention.de>  Wed, 17 Sep 2014 16:53:27 +0200
+
 univention-virtual-machine-manager-daemon (4.0.0-10) unstable; urgency=low
 
   * Added EC2 connection wizard (Bug #35943)

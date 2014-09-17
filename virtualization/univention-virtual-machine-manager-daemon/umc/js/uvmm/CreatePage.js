@@ -226,6 +226,7 @@ define([
 			if (this.type == 'vm' && server.type == 'cloud') {
 				values.type = 'instance';
 				values.cloud = server.id;
+				values.cloudtype = server.cloudtype;
 			}
 			else if (this.type == 'vm' && server.type == 'node') {
 				values.type = 'domain';

@@ -359,6 +359,34 @@ define([
 				return data.result;
 			});
 		},
+		getCloudListKeypair: function(options) {
+			return tools.umcpCommand('uvmm/cloud/list/keypair', {
+				conn_name: options.conn_name
+			}).then(function(data) {
+				return data.result;
+			});
+		},
+		getCloudListSize: function(options) {
+			return tools.umcpCommand('uvmm/cloud/list/size', {
+				conn_name: options.conn_name
+			}).then(function(data) {
+				return data.result;
+			});
+		},
+		getCloudListImage: function(options) {
+			return tools.umcpCommand('uvmm/cloud/list/image', {
+				conn_name: options.conn_name
+			}).then(function(data) {
+				return data.result;
+			});
+		},
+		getCloudListSecgroup: function(options) {
+			return tools.umcpCommand('uvmm/cloud/list/secgroup', {
+				conn_name: options.conn_name
+			}).then(function(data) {
+				return data.result;
+			});
+		},
 		getNodeType: function( uri ) {
 			var colon = uri.indexOf( ':' );
 			if ( colon == -1 ) {
