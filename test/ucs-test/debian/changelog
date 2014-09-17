@@ -1,3 +1,11 @@
+ucs-test (4.0.166-80) unstable; urgency=medium
+
+  * ucs-test-modules-all: added dependency to ucs-test-udm-
+    customattribute, ucs-test-udm-groups, ucs-test-udm-printers and
+    ucs-test-udm-syntax (Bug #32934)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Sep 2014 08:00:52 +0200
+
 ucs-test (4.0.166-79) unstable; urgency=medium
 
   * 53_samba-common/50quota: added more debug (Bug #35844)
