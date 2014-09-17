@@ -1,3 +1,11 @@
+ucs-test (5.0.9-2) unstable; urgency=medium
+
+  * ucs-test-modules-all: added dependency to ucs-test-udm-
+    customattribute, ucs-test-udm-groups, ucs-test-udm-printers and
+    ucs-test-udm-syntax (Bug #32934)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Sep 2014 08:00:52 +0200
+
 ucs-test (5.0.9-1) unstable; urgency=low
 
   * Bug #35741: 10_ldap/25reconnect_uldap: revert subprocess.call.wait
