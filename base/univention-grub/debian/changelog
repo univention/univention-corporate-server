@@ -1,3 +1,9 @@
+univention-grub (8.0.3-1) unstable; urgency=low
+
+  * grub/gfxpayload as default for linux video mode (Bug #28604)
+
+ -- Felix Botner <botner@univention.de>  Wed, 17 Sep 2014 18:32:34 +0200
+
 univention-grub (8.0.2-1) unstable; urgency=low
 
   * new grub background (Bug #35934) 

@@ -10,6 +10,12 @@ Description[en]=Graphical resolution for the boot menu, e.g. 1024x768 (width x h
 Type=str
 Categories=system-base
 
+[grub/gfxpayload]
+Description[de]=Definiert in welchem Video Mode der Linux Kernel gestartet werden soll, ersetzt die "vga=" boot Option.
+Description[en]=Controls the video mode in which the Linux kernel starts up, replacing the "vga=" boot option.
+Type=str
+Categories=system-base
+
 [grub/xenhopt]
 Description[de]=Diese Optionen werden an den Xen-Hypervisor weitergegeben, z.B. 'dom0_mem=1024M'.
 Description[en]=These options are passed to the Xen hypervisor, e.g. 'dom0_mem=1024M'.

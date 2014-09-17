@@ -47,7 +47,7 @@ GRUB_GFXMODE=@%@grub/gfxmode@%@
 
 # This option passes the video configured in Grub (through grub/gfxmode) to
 # the Linux kernel
-#GRUB_GFXPAYLOAD_LINUX=keep
+GRUB_GFXPAYLOAD_LINUX=@%@grub/gfxpayload@%@
 
 # Background image and menu color
 @!@

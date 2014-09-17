@@ -7,6 +7,7 @@ Variables: grub/xenhopt
 Variables: grub/quiet
 Variables: grub/loglevel
 Variables: grub/gfxmode
+Variables: grub/gfxpayload
 Variables: grub/bootsplash
 Variables: grub/backgroundimage
 Variables: grub/color/normal

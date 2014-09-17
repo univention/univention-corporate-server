@@ -36,13 +36,18 @@ eval "$(univention-config-registry shell)"
 
 . /usr/share/univention-lib/ucr.sh
 
+# update to 4.0
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.2-1; then
+	ucr unset grub/vga
+fi
+
 # Bug #24858: xen-4.1 needs 800x600
 univention-config-registry set grub/timeout?5 \
 	kernel/postinst_hook?"/usr/sbin/update-grub" \
 	grub/quiet?"yes"  \
 	grub/loglevel?"0" \
-	grub/vga?"789"\
 	grub/gfxmode?"800x600@16" \
+	grub/gfxpayload?"800x600@24,800x600@16,800x600" \
 	grub/backgroundimage?"/boot/grub/uniboot.png" \
 	grub/color/normal?"dark-gray/black" \
 	grub/color/highlight?"dark-gray/black" \
