@@ -17,7 +17,6 @@ msgid "-----"
 msgstr ""
 
 #: umc/js/diagnostic/DetailPage.js:57
-#, fuzzy
 msgid ""
 "All available information about the test and the result of its last execution"
 msgstr "Alle über die letzte Test Ausführung verfügbaren Informationen"

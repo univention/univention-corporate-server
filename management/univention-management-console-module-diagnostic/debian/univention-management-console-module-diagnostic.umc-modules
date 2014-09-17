@@ -2,3 +2,4 @@ Module: diagnostic
 Python: umc/python
 Definition: umc/diagnostic.xml
 Javascript: umc/js
+Icons: 

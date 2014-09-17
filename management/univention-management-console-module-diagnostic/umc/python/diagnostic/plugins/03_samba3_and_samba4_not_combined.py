@@ -1,7 +1,17 @@
-#!/bin/bash
-## title: Samba3 and Samba4 conflict
-## description: Ensure that Samba3 and Samba4 are not installed at the same time
+#!/usr/bin/python2.7
 
+import subprocess
+
+from univention.lib.i18n import Translation
+_ = Translation('univention-management-console-module-diagnostic').translate
+
+title = _('Samba3 and Samba4 conflict')
+description = _('Ensure that Samba3 and Samba4 are not installed at the same time')
+
+def run():
+	# FIXME
+	return subprocess.call('/bin/bash', stdin='''
+#!/bin/bash
 
 dpkg -s univention-samba 2>/dev/null
 samba3_installed=$?
@@ -26,4 +36,4 @@ if [ $samba4_installed == 0 ]; then
 	echo 'Samba4 is installed'
 else
 	echo 'Samba4 is not installed'
-fi
+fi'''), '', ''

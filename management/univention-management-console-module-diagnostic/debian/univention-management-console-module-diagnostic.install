@@ -1,1 +1,1 @@
-plugins/* /usr/share/univention-management-console-module-diagnostic/plugins/
+umc/python/diagnostic/plugins/* /usr/share/pyshared/univention/management/console/modules/diagnostic/plugins/

@@ -26,10 +26,13 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
+/*global define*/
 
 define([
 	'dojo/_base/declare',
 	'dojo/_base/lang',
+	'dojo/_base/array',
+	'dojo/promise/all',
 	'dojo/on',
 	'umc/dialog',
 	'umc/tools',
@@ -41,13 +44,13 @@ define([
 	'umc/widgets/ComboBox',
 	'umc/modules/diagnostic/DetailPage',
 	'umc/i18n!umc/modules/diagnostic'
-], function(declare, lang, on, dialog, tools, Grid, Page, SearchForm, Module, TextBox, ComboBox, DetailPage, _) {
+], function(declare, lang, array, all, on, dialog, tools, Grid, Page, SearchForm, Module, TextBox, ComboBox, DetailPage, _) {
 	return declare('umc.modules.diagnostic',  Module, {
 
 		_grid: null,
 		_overviewPage: null,
 		_detailPage: null,
-		idProperty: 'plugin_filename',
+		idProperty: 'plugin',
 
 		timestampFormatter: function(value) {
 			if (!value) {
@@ -79,6 +82,40 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.standbyOpacity = 1;
+			this.fixModuleStore();
+		},
+
+		fixModuleStore: function() {
+			this.moduleStore.get = lang.hitch(this.moduleStore, function(id, handleErrors) {
+				var data = {};
+				data[this.idProperty] = id;
+				return this._genericCmd('get', data, handleErrors);
+			});
+			this.moduleStore.put = lang.hitch(this.moduleStore, function(object, options, handleErrors) {
+				return this._genericCmd('put', object, handleErrors);
+			});
+			this.moduleStore.remove = lang.hitch(this.moduleStore, function(object, options, handleErrors) {
+				return this._genericCmd('delete', object, handleErrors);
+			});
+			this.moduleStore._genericMultiCmd = lang.hitch(this.moduleStore, function(type, params, handleErrors) {
+				var args = arguments;
+				var that = this;
+				return all(array.map(params, function(param) {
+					return that.inherited('_genericMultiCmd', args, [type, param, handleErrors]);
+				}));
+			});
+			this.moduleStore._genericCmd = lang.hitch(this.moduleStore, function(type, param, handleErrors) {
+				if (this._doingTransaction) {
+					this._addTransactions(type, [param]);
+				}
+				else {
+					return this._genericMultiCmd(type, [param], handleErrors).then(function(results) {
+						if (results && results instanceof Array) {
+							return results[0];
+						}
+					});
+				}
+			});
 		},
 
 		buildRendering: function() {
@@ -145,7 +182,7 @@ define([
 				defaultAction: 'details',
 				columns: columns,
 				moduleStore: this.moduleStore,
-				query: {searchPattern: ''}
+				query: {pattern: ''}
 			});
 
 			this._overviewPage.addChild(this._grid);
@@ -154,11 +191,11 @@ define([
 				region: 'top',
 				widgets: [{
 					type: TextBox,
-					name: 'searchPattern',
+					name: 'pattern',
 					description: _('Specifies the substring pattern which is searched for in the test names'),
 					label: _('Search pattern')
 				}],
-				layout: [['searchPattern', 'submit']],
+				layout: [['pattern', 'submit']],
 				onSearch: lang.hitch(this, function(values) {
 					this._grid.filter(values);
 				})
@@ -186,8 +223,10 @@ define([
 		},
 
 		_runTests: function(selectedPlugins) {
-			this.standbyDuring(this.umcpCommand('diagnostic/run', selectedPlugins)).then(lang.hitch(this, function(ids, items) {
-				this._grid.filter({searchPattern: ''});
+			this.standbyDuring(all(array.map(selectedPlugins, lang.hitch(this, function(plugin) {
+				return this.umcpCommand('diagnostic/run', {plugin: plugin});
+			})))).then(lang.hitch(this, function() {
+				this._grid.filter({pattern: ''});
 			}));
 		},
 

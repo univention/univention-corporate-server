@@ -15,8 +15,7 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-management-console-server,
  devscripts
-Description: Support health
- Support health
+Description: System Diagnosis UMC module
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
