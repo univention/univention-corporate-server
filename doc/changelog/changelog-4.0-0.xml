@@ -101,6 +101,21 @@
 	<!-- 	</itemizedlist> -->
 	<!-- </section> -->
   </section>
+
+
+	<section id="changelog:basis:boot">
+		<title>Boot Loader</title>
+		<itemizedlist>
+			<listitem><simpara>
+				The boot loader design has been adapted to UCS 4.0
+				(<ulink url="&ucsbug;35934">Bug 35934</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The design of the bootsplash has been adapted to UCS 4.0
+				(<ulink url="&ucsbug;35935">Bug 35935</ulink>).
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 </section>
 
 
