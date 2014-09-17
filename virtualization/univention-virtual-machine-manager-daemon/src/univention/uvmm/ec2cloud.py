@@ -135,7 +135,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		logger.debug("Creating connection to %s" % cloud["region"])
 		params = {}
 		for param in cloud:
-			if param in EC2_CONNECTION_ATTRIBUTES:
+			if param in EC2_CONNECTION_ATTRIBUTES and cloud[param]:
 				params[EC2_CONNECTION_ATTRIBUTES[param]] = cloud[param]
 
 		os = get_driver(PROVIDER_MAPPING[cloud["region"]])

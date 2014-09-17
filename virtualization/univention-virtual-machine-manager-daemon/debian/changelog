@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (4.0.0-10) unstable; urgency=low
+
+  * Added EC2 connection wizard (Bug #35943)
+  * Filter empty attributes before calling libcloud (Bug #35950)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 17 Sep 2014 15:39:04 +0200
+
 univention-virtual-machine-manager-daemon (4.0.0-9) unstable; urgency=low
 
   * WIP: Integration of cloud instance management with libcloud (Bug #32842)

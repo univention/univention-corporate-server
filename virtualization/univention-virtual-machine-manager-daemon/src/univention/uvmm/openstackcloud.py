@@ -155,7 +155,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		logger.debug("Creating connection to %s" % cloud["auth_url"])
 		params = {}
 		for param in cloud:
-			if param in OPENSTACK_CONNECTION_ATTRIBUTES:
+			if param in OPENSTACK_CONNECTION_ATTRIBUTES and cloud[param]:
 				params[OPENSTACK_CONNECTION_ATTRIBUTES[param]] = cloud[param]
 		os = get_driver(Provider.OPENSTACK)
 
@@ -428,7 +428,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			if not (isinstance(args["security_group_ids"], list)):
 				raise OpenStackCloudConnectionError("<security_group_ids> attribute must be a list")
 
-			secgroups = [s for s in self._security_groups if s.id in args["security_group_ids"]]
+			secgroups = [s for s in self._security_groups if str(s.id) in args["security_group_ids"]]
 			if not secgroups:
 				raise OpenStackCloudConnectionError("No security group with id %s found." % args["security_group_ids"])
 

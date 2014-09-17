@@ -39,6 +39,7 @@ define([
 	"umc/widgets/TitlePane",
 	"umc/widgets/TextArea",
 	"umc/widgets/TextBox",
+	"umc/widgets/PasswordInputBox",
 	"umc/widgets/Text",
 	"umc/widgets/ComboBox",
 	"umc/widgets/CheckBox",
@@ -49,7 +50,7 @@ define([
 	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Memory, Observable, MappedTextBox, tools, dialog, TitlePane, TextArea, TextBox, Text, ComboBox, CheckBox, HiddenInput, Wizard, Form, ContainerWidget, DriveGrid, types, _) {
+], function(declare, lang, array, Memory, Observable, MappedTextBox, tools, dialog, TitlePane, TextArea, TextBox, PasswordInputBox, Text, ComboBox, CheckBox, HiddenInput, Wizard, Form, ContainerWidget, DriveGrid, types, _) {
 
 	return declare("umc.modules.uvmm.CloudConnectionWizard", [ Wizard ], {
 		autoValidate: true,
@@ -151,7 +152,63 @@ define([
 					invalidMessage: this._invalidUrlMessage,
 				}]
 				}];
-			}
+			};
+			if (cloudtype == 'EC2') {
+				return [{
+					name: 'parameter',
+					type: Form,
+					label: '&nbsp;',
+					layout: [
+						'region',
+						'access_id',
+						'password',
+						['host', 'port'],
+						'secure',
+					],
+					widgets: 
+				[{
+					name: 'access_id',
+					type: TextBox,
+					label: 'Access Key ID',
+					required: true
+				}, {
+					name: 'password',
+					type: PasswordInputBox,
+					label: 'Secret Access Key',
+					required: true
+				}, {
+					name: 'region',
+					type: ComboBox,
+					staticValues: [
+						{ id: 'EC2_EU_WEST', label: 'EU (Ireland)' },
+						{ id: 'EC2_US_EAST', label: 'US East (N. Virginia)' },
+						{ id: 'EC2_US_WEST', label: 'US West (N. California)' },
+						{ id: 'EC2_US_WEST_OREGON', label: 'US West (Oregon)' },
+						{ id: 'EC2_AP_SOUTHEAST', label: 'Asia Pacific (Sydney)' },
+						{ id: 'EC2_AP_NORTHEAST', label: 'Asia Pacific (Tokyo)' },
+						{ id: 'EC2_AP_SOUTHEAST2', label: 'Asia Pacific (Singapore)' },
+						{ id: 'EC2_SA_EAST', label: 'South America (São Paulo)' },
+					],
+					label: 'EC2 Region',
+					required: true
+				}, {
+					name: 'host',
+					type: TextBox,
+					label: 'host',
+					required: false
+				}, {
+					name: 'port',
+					type: TextBox,
+					label: 'port',
+					required: false
+				}, {
+					name: 'secure',
+					type: CheckBox,
+					label: 'secure',
+					value: false,
+					required: false
+				}
+				]}]};
 			return [{}];
 		},
 

@@ -211,7 +211,7 @@ class CloudConnectionMananger(dict):
 def create_cloud_connection(cloud, cache_dir):
 	if cloud["type"] == "OpenStack":
 		return OpenStackCloudConnection(cloud, cache_dir)
-	elif cloud["type"] == "Amazon EC2":
+	elif cloud["type"] == "EC2":
 		return EC2CloudConnection(cloud, cache_dir)
 	else:
 		raise CloudConnectionError("Unknown cloud type %s" % cloud["type"])
