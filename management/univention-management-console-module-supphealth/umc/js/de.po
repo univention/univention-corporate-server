@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-supphealth\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-04-09 01:57+0200\n"
+"POT-Creation-Date: 2014-09-17 12:22+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,29 +12,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/supphealth.js:65 umc/js/supphealth.js:76
+#: umc/js/supphealth.js:62 umc/js/supphealth.js:77
 msgid "-----"
 msgstr ""
 
-#: umc/js/supphealth/DetailPage.js:70
+#: umc/js/supphealth/DetailPage.js:57
+#, fuzzy
 msgid ""
-"All available information about the test and the result of it's last "
-"execution"
+"All available information about the test and the result of its last execution"
 msgstr "Alle über die letzte Test Ausführung verfügbaren Informationen"
 
-#: umc/js/supphealth/DetailPage.js:75
+#: umc/js/supphealth/DetailPage.js:61
 msgid "Back to overview"
 msgstr "Zurück zur Übersicht"
 
-#: umc/js/supphealth/DetailPage.js:137
+#: umc/js/supphealth/DetailPage.js:102
 msgid "Description"
 msgstr "Beschreibung"
 
-#: umc/js/supphealth.js:130
+#: umc/js/supphealth.js:107
 msgid "Details"
 msgstr "Details"
 
-#: umc/js/supphealth/DetailPage.js:69
+#: umc/js/supphealth/DetailPage.js:56
 msgid "Details of last test result"
 msgstr "Details des letzten Testergebnisses"
 
@@ -42,78 +42,77 @@ msgstr "Details des letzten Testergebnisses"
 msgid "Execution failed"
 msgstr "Ausführung fehlgeschlagen"
 
-#: umc/js/supphealth.js:274
+#: umc/js/supphealth.js:201
 msgid "Feature not implemented yet"
 msgstr "Feature noch nicht implementiert"
 
-#: umc/js/supphealth.js:153 umc/js/supphealth/DetailPage.js:137
+#: umc/js/supphealth/DetailPage.js:103 umc/js/supphealth.js:129
 msgid "Last executed"
 msgstr "Zuletzt ausgeführt"
 
-#: umc/js/supphealth.js:163
+#: umc/js/supphealth.js:139
 msgid "Last result"
 msgstr "Letztes Ergebnis"
 
-#: umc/js/supphealth.js:59
+#: umc/js/supphealth.js:55
 msgid "Never"
 msgstr "Nie"
 
-#: umc/js/supphealth.js:158 umc/js/supphealth/DetailPage.js:137
+#: umc/js/supphealth/DetailPage.js:105 umc/js/supphealth.js:134
 msgid "Problem summary"
 msgstr "Problem Zusammenfassung"
 
-#: umc/js/supphealth.js:73
+#: umc/js/supphealth.js:72
 msgid "Problems detected"
 msgstr "Probleme gefunden"
 
-#: umc/js/supphealth/DetailPage.js:137
+#: umc/js/supphealth/DetailPage.js:104
 msgid "Result"
 msgstr "Ergebnis"
 
-#: umc/js/supphealth.js:122
+#: umc/js/supphealth.js:99
 msgid "Run"
 msgstr "Ausführen"
 
-#: umc/js/supphealth.js:123
+#: umc/js/supphealth.js:100
 msgid "Run selected tests"
 msgstr "Ausgewählte Tests ausführen"
 
-#: umc/js/supphealth.js:197
+#: umc/js/supphealth.js:160
 msgid "Search pattern"
 msgstr "Suchbegriff"
 
-#: umc/js/supphealth.js:196
+#: umc/js/supphealth.js:159
 msgid "Specifies the substring pattern which is searched for in the test names"
 msgstr "Spezifiert den den Suchbegriff nach dem in den Testnamen gesucht wird"
 
-#: umc/js/supphealth.js:138
+#: umc/js/supphealth.js:115
 msgid "Submit"
 msgstr "Übermitteln"
 
-#: umc/js/supphealth.js:139
+#: umc/js/supphealth.js:116
 msgid "Submit resulsts to Univention Support"
 msgstr "Ergebnisse an den Univention Support übermitteln"
 
-#: umc/js/supphealth.js:71
+#: umc/js/supphealth.js:69
 msgid "Successful"
 msgstr "Erfolgreich"
 
-#: umc/js/supphealth/DetailPage.js:107
+#: umc/js/supphealth/DetailPage.js:81
 msgid "Test information"
 msgstr "Test Informationen"
 
-#: umc/js/supphealth/DetailPage.js:110
+#: umc/js/supphealth/DetailPage.js:84
 msgid "Test output"
 msgstr "Test Ausgabe"
 
-#: umc/js/supphealth.js:113
-msgid "Test results"
-msgstr "Test Ergebnisse"
-
-#: umc/js/supphealth.js:149 umc/js/supphealth/DetailPage.js:137
+#: umc/js/supphealth/DetailPage.js:101 umc/js/supphealth.js:125
 msgid "Title"
 msgstr "Titel"
 
-#: umc/js/supphealth.js:131
+#: umc/js/supphealth.js:108
 msgid "View details"
 msgstr "Details ansehen"
+
+#~ msgid "Test results"
+#~ msgstr "Test Ergebnisse"

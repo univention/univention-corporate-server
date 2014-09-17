@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 Univention GmbH
+ * Copyright 2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -40,36 +40,22 @@ define([
 	'umc/widgets/StandbyMixin',
 	'umc/i18n!umc/modules/supphealth'
 ], function(declare, lang, dialog, tools, Form, Page, Text, TextArea, StandbyMixin, _) {
-	return declare('umc.modules.supphealth.DetailPage', [ Page, StandbyMixin ], {
+	return declare('umc.modules.supphealth.DetailPage', [Page, StandbyMixin], {
 		
-		// UMC API helper class for backend communication
 		moduleStore: null,
-
 		timestampFormatter: null,
-
 		summaryFormatter: null,
-		
 		resultFormatter: null,
-
 		_form: null,
 
 		postMixInProperties: function() {
-			// is called after all inherited properties/methods have been mixed
-			// into the object (originates from dijit._Widget)
-
-			// it is important to call the parent's postMixInProperties() method
 			this.inherited(arguments);
 
-			// Set the opacity for the standby animation to 100% in order to mask
-			// GUI changes when the module is opened. Call this.standby(true|false)
-			// to enable/disable the animation.
 			this.standbyOpacity = 1;
 
-			// set the page header
 			this.headerText = _('Details of last test result');
-			this.helpText = _('All available information about the test and the result of it\'s last execution');
+			this.helpText = _('All available information about the test and the result of its last execution');
 
-			// configure buttons for the footer of the detail page
 			this.footerButtons = [{
 				name: 'back',
 				label: _('Back to overview'),
@@ -78,18 +64,8 @@ define([
 		},
 
 		buildRendering: function() {
-			// is called after all DOM nodes have been setup
-			// (originates from dijit._Widget)
-
-			// it is important to call the parent's postMixInProperties() method
 			this.inherited(arguments);
-			this.renderDetailPage();
-		},
 
-		renderDetailPage: function() {
-			// render the form containing all detail information that may be edited
-
-			// specify all widgets
 			var widgets = [{
 				type: Text,
 				name: 'test_header',
@@ -101,8 +77,6 @@ define([
 				style: 'width: 100%; height: 500px'
 			}];
 
-			// specify the layout... additional dicts are used to group form elements
-			// together into title panes
 			var layout = [{
 				label: _('Test information'),
 				layout: ['test_header']
@@ -111,40 +85,28 @@ define([
 				layout: ['output']
 			}];
 
-			// create the form
 			this._form = new Form({
 				widgets: widgets,
 				layout: layout,
 				moduleStore: this.moduleStore,
-				// alows the form to be scrollable when the window size is not large enough
 				scrollable: true
 			});
 
-			// add form to page... the page extends a BorderContainer, by default
-			// an element gets added to the center region
 			this.addChild(this._form);
 		},
 
 		load: function(id) {
-			// run load animation
-			this.standby(true);
+			this.standbyDuring(this.moduleStore.get(id)).then(lang.hitch(this, function(object) {
+				var content = lang.replace('<p><b>{0}: </b>{1}</p><p><b>{2}: </b>{3}</p><p><b>{4}: </b>{5}</p><p><b>{6}: </b>{7}</p><p><b>{8}: </b>{9}</p>', [
+					_('Title'), object.title,
+					_('Description'), object.description,
+					_('Last executed'), this.timestampFormatter(object.timestamp),
+					_('Result'), this.resultFormatter(object.result),
+					_('Problem summary'), this.summaryFormatter(object.summary)
+				]);
 
-			this.moduleStore.get(id).then(lang.hitch(this, function(object) {
-				// stop load animation
-				this.standby(false);
-
-				// fill test header child widget with request result
-				this._form._widgets['test_header'].set('content','<p><b>'+_('Title')+': </b>'+object.title+'</p><p><b>'+_('Description')+': </b>'+object.description+'<p><p><b>'+_('Last executed')+': </b>'+this.timestampFormatter(object.timestamp)+'</p><p><b>'+_('Result')+': </b>'+this.resultFormatter(object.result)+'</p><br/><p><b>'+_('Problem summary')+': </b>'+this.summaryFormatter(object.summary)+'</p>');
-
-				if(object.output)
-					this._form._widgets['output'].set('value', object.output);
-				else
-					this._form._widgets['output'].set('value', '');
-
-			}), lang.hitch(this, function() {
-				// error handler: switch of the standby animation
-				// error messages will be displayed automatically
-				this.standby(false);
+				this._form._widgets.test_header.set('content', content);
+				this._form._widgets.output.set('value', object.output || '');
 			}));
 		},
 

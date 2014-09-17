@@ -39,57 +39,53 @@ from univention.management.console.log import MODULE
 
 from plugins import getPlugin, Plugin
 
-
 _ = Translation('univention-management-console-module-supphealth').translate
 
 
-
 class Instance(Base):
-	'''
-	Adapter class which is instanced exactly once by the UMC server.
-
-	Inherits all methods which are required for communicating with the
-	UMC server from "Base"
-	'''
 
 	def run(self, request):
-		'''
-		Run requested plugins.
+		'''Run requested plugins.
 
 		request.options is an array containing the file names of the requested
 		plugins.
 		'''
 
-		for pluginFileName in request.options:
-			plugin = getPlugin(pluginFileName)
+		for plugin_filename in request.options:
+			plugin = getPlugin(plugin_filename)
 			if plugin.validHeader:
 				plugin.execute()
 		self.finished(request.id, [])
 
-	def query(self, request):
-		'''
-		Return grid relevant information about all plugins whose names contain the
-		given search pattern.
-
-		request.options is a mapping containing the related search pattern.
-		'''
-
-		searchPattern = request.options['searchPattern']
+	@simple_response
+	def query(self, searchPattern):
 		result = []
-		for pluginFileName in listdir(Plugin.ROOT_DIRECTORY):
-			plugin = getPlugin(pluginFileName)
+		for plugin_filename in listdir(Plugin.ROOT_DIRECTORY):
+			plugin = getPlugin(plugin_filename)
+
 			if not plugin.validHeader or not searchPattern.lower() in plugin.header['title'].lower():
 				continue
-			result.append(dict(pluginFileName=plugin.fileName, title=plugin.header['title'], description=plugin.header['description'], **plugin.status))
-		self.finished(request.id, result)
+
+			result.append(dict(
+				plugin_filename=plugin.fileName,
+				title=plugin.header['title'],
+				description=plugin.header['description'],
+				**plugin.status
+			))
+		return result
 
 	def get(self, request):
 		'''
-		Get all information about a plugin and it's last execution result.
+		Get all information about a plugin and its last execution result.
 
 		Due to UMC definitions, request.options is an array containing only the
 		file name of the requested plugin instead of a simple string.
 		'''
 
 		plugin = getPlugin(request.options[0])
-		self.finished(request.id, [dict(pluginFileName=plugin.fileName, title=plugin.header['title'], description=plugin.header['description'], **plugin.lastResult)])
+		self.finished(request.id, [dict(
+			plugin_filename=plugin.fileName,
+			title=plugin.header['title'],
+			description=plugin.header['description'],
+			**plugin.lastResult
+		)])

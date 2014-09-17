@@ -39,21 +39,22 @@ from univention.lib.i18n import Translation
 
 _ = Translation('univention-management-console-module-supphealth').translate
 
-# internal plugin cache 
+# internal plugin cache
 PLUGIN_CACHE = {}
 
-def getPlugin(pluginFileName):
-	if not pluginFileName in PLUGIN_CACHE:
-		PLUGIN_CACHE[pluginFileName] = Plugin(pluginFileName)
-	return PLUGIN_CACHE[pluginFileName]
+
+def getPlugin(plugin_filename):
+	if not plugin_filename in PLUGIN_CACHE:
+		PLUGIN_CACHE[plugin_filename] = Plugin(plugin_filename)
+	return PLUGIN_CACHE[plugin_filename]
 
 
-class Plugin:
+class Plugin(object):
 	ROOT_DIRECTORY = '/usr/share/univention-management-console-module-supphealth/plugins'
 	TIMESTAMP_FORMAT = '%Y-%m-%d %H:%M:%S'
 
-	def __init__(self, pluginFileName):
-		self.fileName = pluginFileName
+	def __init__(self, plugin_filename):
+		self.fileName = plugin_filename
 		self.path = '%s/%s' % (Plugin.ROOT_DIRECTORY, self.fileName)
 		self.log = PluginLog(self.fileName)
 		self.header = {'title':'', 'description':''}
@@ -101,12 +102,13 @@ class Plugin:
 	def status(self):
 		return self.log.load(headerOnly=True)
 
-class PluginLog:
+
+class PluginLog(object):
 	ROOT_DIRECTORY = '/var/cache/univention-management-console-module-supphealth/logs'
 	OUTPUT_SEPERATOR = '===== OUTPUT ====='
 
-	def __init__(self, pluginFileName):
-		self.path = '%s/%s.log' % (PluginLog.ROOT_DIRECTORY, pluginFileName)
+	def __init__(self, plugin_filename):
+		self.path = '%s/%s.log' % (PluginLog.ROOT_DIRECTORY, plugin_filename)
 
 	def load(self, headerOnly=False):
 		'''
@@ -123,11 +125,14 @@ class PluginLog:
 		outputStart = 5
 		result['timestamp'] = logLines[0].split('date: ')[1].strip()
 		result['result'] = logLines[1].split('result: ')[1].strip()
+
 		if len(logLines) > 3 and 'summary:' in logLines[3]:
 			result['summary'] = logLines[3].split('summary:')[1].strip()
 			outputStart += 2
+
 		if not headerOnly and len(logLines) >= outputStart:
 			result['output'] = ''.join(logLines[outputStart:])
+
 		return result
 
 	def update(self, timestamp, result, output='', errorMsg=''):

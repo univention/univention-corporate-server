@@ -1,3 +1,9 @@
+univention-management-console-module-supphealth (1.0.1-1) unstable; urgency=low
+
+  * Bug #34765: code cleanup
+
+ -- Florian Best <best@univention.de>  Wed, 17 Sep 2014 12:22:33 +0200
+
 univention-management-console-module-supphealth (1.0.0-1) unstable; urgency=low
 
   * Starting UCS 4.0-0 development (Bug #34765)
