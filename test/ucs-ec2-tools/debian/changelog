@@ -1,3 +1,10 @@
+ucs-ec2-tools (0.1.22-3) unstable; urgency=low
+
+  * added function promote_ad_windows tu utils.sh ( for promoting
+    an win2k8/2k12 server to ad-domaincontroller ) (Bug #35855)
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 18 Sep 2014 09:50:53 +0200
+
 ucs-ec2-tools (0.1.22-2) unstable; urgency=low
 
   * ucs-ec2-create: upon creating a windows vm instead of an initial connect
