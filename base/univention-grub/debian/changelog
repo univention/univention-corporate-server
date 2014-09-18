@@ -1,3 +1,9 @@
+univention-grub (8.0.3-2) unstable; urgency=low
+
+  * new menu colors (Bug #35934) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 18 Sep 2014 09:53:17 +0200
+
 univention-grub (8.0.3-1) unstable; urgency=low
 
   * grub/gfxpayload as default for linux video mode (Bug #28604)

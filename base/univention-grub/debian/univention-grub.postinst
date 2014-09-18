@@ -39,6 +39,11 @@ eval "$(univention-config-registry shell)"
 # update to 4.0
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.2-1; then
 	ucr unset grub/vga
+	ucr set \
+		grub/color/normal="light-gray/black" \
+		grub/color/highlight="light-gray/black" \
+		grub/menu/color/normal="light-gray/black" \
+		grub/menu/color/highlight="white/light-gray" \
 fi
 
 # Bug #24858: xen-4.1 needs 800x600
@@ -49,10 +54,10 @@ univention-config-registry set grub/timeout?5 \
 	grub/gfxmode?"800x600@16" \
 	grub/gfxpayload?"800x600@24,800x600@16,800x600" \
 	grub/backgroundimage?"/boot/grub/uniboot.png" \
-	grub/color/normal?"dark-gray/black" \
-	grub/color/highlight?"dark-gray/black" \
-	grub/menu/color/normal?"dark-gray/black" \
-	grub/menu/color/highlight?"white/green" \
+	grub/color/normal?"light-gray/black" \
+	grub/color/highlight?"light-gray/black" \
+	grub/menu/color/normal?"light-gray/black" \
+	grub/menu/color/highlight?"white/light-gray" \
 	grub/generate-menu-lst?"yes"
 
 # grub needs to read the file unicode.pf2 for gfxmode,
