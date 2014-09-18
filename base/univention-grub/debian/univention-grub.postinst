@@ -43,7 +43,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.2-1; t
 		grub/color/normal="light-gray/black" \
 		grub/color/highlight="light-gray/black" \
 		grub/menu/color/normal="light-gray/black" \
-		grub/menu/color/highlight="white/light-gray" \
+		grub/menu/color/highlight="white/light-gray"
 fi
 
 # Bug #24858: xen-4.1 needs 800x600
