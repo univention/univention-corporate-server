@@ -66,37 +66,32 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			var widgets = [{
-				type: Text,
-				name: 'test_header',
-				disabled: true
-			}, {
-				type: TextArea,
-				name: 'output',
-				disabled: true,
-				style: 'width: 100%; height: 500px'
-			}];
-
-			var layout = [{
-				label: _('Test information'),
-				layout: ['test_header']
-			}, {
-				label: _('Test output'),
-				layout: ['output']
-			}];
-
 			this._form = new Form({
-				widgets: widgets,
-				layout: layout,
+				widgets: [{
+					type: TextArea,
+					name: 'output',
+					disabled: true,
+					rows: 12,
+					style: 'width: 100%;'
+				}],
+				layout: [{
+					label: _('Test output'),
+					layout: ['output']
+				}],
+				region: 'main',
 				moduleStore: this.moduleStore,
 				scrollable: true
 			});
 
-			this.addChild(this._form);
-		},
+//			this._infos = new Text({
+//				content: '',
+//				region: 'nav'
+//			});
 
-		load: function(id) {
-			this.standbyDuring(this.moduleStore.get(id)).then(lang.hitch(this, function(object) {
+//			this.addChild(this._infos);
+			this.addChild(this._form);
+
+			this.standbyDuring(this.moduleStore.get(this.plugin)).then(lang.hitch(this, function(object) {
 				var content = lang.replace('<p><b>{0}: </b>{1}</p><p><b>{2}: </b>{3}</p><p><b>{4}: </b>{5}</p><p><b>{6}: </b>{7}</p><p><b>{8}: </b>{9}</p>', [
 					_('Title'), object.title,
 					_('Description'), object.description,
@@ -105,8 +100,9 @@ define([
 					_('Problem summary'), this.summaryFormatter(object.summary)
 				]);
 
-				this._form._widgets.test_header.set('content', content);
-				this._form._widgets.output.set('value', object.output || '');
+//				this._infos.set('content', content);
+				this.set('helpText', content);
+				this._form.getWidget('output').set('value', object.output || '');
 			}));
 		},
 

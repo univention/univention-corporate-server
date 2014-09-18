@@ -1,6 +1,6 @@
 #!/usr/bin/python2.7
 
-import subprocess
+from subprocess import Popen, PIPE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -9,8 +9,8 @@ title = _('Consistency of UCR templates')
 description = _('Verifys whether all installed UCR templates are in their original state')
 
 def run():
-	# FIXME
-	return subprocess.call('/bin/bash', stdin='''
+	process = Popen(['/bin/bash', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+	stdout, stderr = process.communicate('''
 #!/bin/bash
 output=$("univention-check-templates" 2>/dev/null)
 if [ $? != 0 ]; then
@@ -21,4 +21,5 @@ if [ $? != 0 ]; then
 	echo 'summary: Modified UCR templates found'
 	exit 1
 fi
-echo "No modified UCR templates found"'''), '', ''
+echo "No modified UCR templates found"''')
+	return not process.returncode, stdout, stderr

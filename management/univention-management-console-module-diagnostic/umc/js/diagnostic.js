@@ -209,17 +209,6 @@ define([
 			this._overviewPage.addChild(this._searchForm);
 			this._overviewPage.startup();
 
-			this._detailPage = new DetailPage({
-				moduleStore: this.moduleStore,
-				timestampFormatter: this.timestampFormatter,
-				summaryFormatter: this.summaryFormatter,
-				resultFormatter: this.resultFormatter
-			});
-			this.addChild(this._detailPage);
-
-			this._detailPage.on('close', lang.hitch(this, function() {
-				this.selectChild(this._overviewPage);
-			}));
 		},
 
 		_runTests: function(selectedPlugins) {
@@ -231,8 +220,22 @@ define([
 		},
 
 		_viewDetails: function(ids, items) {
-			this.selectChild(this._detailPage);
-			this._detailPage.load(ids[0]);
+			var detailPage = new DetailPage({
+				plugin: ids[0],
+				moduleStore: this.moduleStore,
+				timestampFormatter: this.timestampFormatter,
+				summaryFormatter: this.summaryFormatter,
+				resultFormatter: this.resultFormatter
+			});
+			this.own(detailPage);
+
+			detailPage.on('close', lang.hitch(this, function() {
+				this.selectChild(this._overviewPage);
+				this.removeChild(detailPage);
+			}));
+
+			this.addChild(detailPage);
+			this.selectChild(detailPage);
 		},
 
 		_submitResults: function() {

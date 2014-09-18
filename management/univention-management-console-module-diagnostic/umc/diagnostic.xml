@@ -7,8 +7,9 @@
 		<categories>
 			<category name="system"/>
 		</categories>
-		<command name="diagnostic/run" function="run" />
-		<command name="diagnostic/query" function="query" />
-		<command name="diagnostic/get" function="get" />
+		<command name="diagnostic/run" function="run"/>
+		<command name="diagnostic/query" function="query"/>
+		<command name="diagnostic/get" function="get"/>
+		<command name="diagnostic/progress" function="progress"/>
 	</module>
 </umc>

@@ -39,6 +39,7 @@ from time import strftime, gmtime
 from univention.management.console.modules import Base
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import PatternSanitizer
+from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.log import MODULE
 
 from univention.management.console.modules.diagnostic import plugins
@@ -187,12 +188,12 @@ class PluginLog(object):
 				write(stderr)
 
 
-class Instance(Base):
+class Instance(Base, ProgressMixin):
 
 	def init(self):
 		self.plugins = Plugins()
 
-	@simple_response
+	@simple_response(with_progress=True)
 	def run(self, plugin):
 		plugin = self.plugins.get(plugin)
 		return plugin.execute()

@@ -1,6 +1,6 @@
 #!/usr/bin/python2.7
 
-import subprocess
+from subprocess import Popen, PIPE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -9,8 +9,8 @@ title = _('Samba3 and Samba4 conflict')
 description = _('Ensure that Samba3 and Samba4 are not installed at the same time')
 
 def run():
-	# FIXME
-	return subprocess.call('/bin/bash', stdin='''
+	process = Popen(['/bin/bash', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+	stdout, stderr = process.communicate('''
 #!/bin/bash
 
 dpkg -s univention-samba 2>/dev/null
@@ -36,4 +36,5 @@ if [ $samba4_installed == 0 ]; then
 	echo 'Samba4 is installed'
 else
 	echo 'Samba4 is not installed'
-fi'''), '', ''
+fi''')
+	return not process.returncode, stdout, stderr
