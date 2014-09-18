@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-xen-gplpv
-fix: 11.0.372-3.13.201409121157
+fix: 11.0.373-1.14.201409171802
 version: [2,3]
 desc: |
   This update fixes the following issue:
