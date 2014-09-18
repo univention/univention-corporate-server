@@ -1,3 +1,10 @@
+ucs-ec2-tools (0.1.22-4) unstable; urgency=low
+
+  * /python/ec2/lib.py: fixed wrong port format in def connect
+    (Bug #35850)
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 18 Sep 2014 11:08:59 +0200
+
 ucs-ec2-tools (0.1.22-3) unstable; urgency=low
 
   * added function promote_ad_windows tu utils.sh ( for promoting
