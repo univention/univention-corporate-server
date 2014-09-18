@@ -33,6 +33,8 @@
 
 from os import listdir
 import os.path
+import traceback
+from time import strftime, gmtime
 
 from univention.management.console.modules import Base
 from univention.management.console.modules.decorators import simple_response, sanitize
@@ -86,12 +88,11 @@ class Plugin(object):
 
 	@property
 	def last_result(self):
-		return self.log.load()
+		return self.log.last_result
 
 	@property
 	def status(self):
-		# TODO: rename last_status?
-		return self.log.load(header_only=True)
+		return self.log.status
 
 	def __init__(self, plugin):
 		self.plugin = plugin
@@ -106,8 +107,7 @@ class Plugin(object):
 		)
 
 	def match(self, pattern):
-		# TODO: maybe description, etc.
-		return pattern.match(self.title)
+		return pattern.match(self.title) or pattern.match(self.description)
 
 	def __str__(self):
 		return '%s' % (self.plugin,)
@@ -125,55 +125,66 @@ class Plugin(object):
 
 class PluginLog(object):
 
-	OUTPUT_SEPERATOR = '===== OUTPUT ====='
+	@property
+	def last_result(self):
+		return self.load()
+
+	@property
+	def status(self):
+		return self.load(header_only=True)
 
 	def __init__(self, plugin):
 		self.path = '/var/log/univention/management-console-module-diagnostic-%s.log' % (plugin,)
 
 	def load(self, header_only=False):
-		'''
-		Parse log file and return its content.
-		Only return header information if "header_only"
-		is true.
-		'''
+		if not os.path.exists(self.path):
+			return {}
 
-		result = {}
-		if not exists(self.path):
-			return result
+		s = os.stat(self.path)
+		timestamp = strftime('%Y-%m-%d %H:%M:%S', gmtime(s.st_mtime))
 
-		logLines = open(self.path).readlines()
-		outputStart = 5
-		result['timestamp'] = logLines[0].split('date: ')[1].strip()
-		result['result'] = logLines[1].split('result: ')[1].strip()
+		with open(self.path) as fd:
+			line = lambda x: fd.readline().rpartition(x)[2].strip()
+			result = int(line('result: '))
+			summary = line('summary: ')
+			output = None
+			if not header_only:
+				output = ''.join(fd.readlines())
 
-		if len(logLines) > 3 and 'summary:' in logLines[3]:
-			result['summary'] = logLines[3].split('summary:')[1].strip()
-			outputStart += 2
+		return dict(
+			timestamp=timestamp,
+			result=result,
+			output=output,
+			summary=summary,
+		)
 
-		if not header_only and len(logLines) >= outputStart:
-			result['output'] = ''.join(logLines[outputStart:])
+	def update(self, success, stdout='', stderr=''):
+		'''Rewrite log file with the given success information'''
 
-		return result
-
-	def update(self, result, output='', errorMsg=''):
-		'''Rewrite log file with the given result information'''
-
-		timestamp = strftime('%Y-%m-%d %H:%M:%S')
-		output = output.strip()
-		errorMsg = errorMsg.strip()
+		stdout = stdout.strip()
+		stderr = stderr.strip()
 
 		with open(self.path, 'w') as log:
-			log.write('date: %s\nresult: %s\n' % (timestamp, int(result)))
-			if 'summary:' in output:
-				split = output.split('summary:')
-				output = ''.join(split[:-1])
-				log.write('\nsummary: %s\n' % split[-1].strip())
-			if output or errorMsg:
-				log.write('\n\n%s\n' % PluginLog.OUTPUT_SEPERATOR)
-			if output:
-				log.write('%s\n' % output)
-			if errorMsg:
-				log.write('\n\nErrors:\n=======\n%s' % errorMsg)
+			write = lambda l: log.write('%s\n' % (l,))
+
+			write('result: %s' % (int(not success)))
+
+			summary, _, stdout = stdout.partition('\n')
+			_, sep, summary = summary.rpartition('summary: ')
+			if not sep:
+				stdout = '%s%s' % (summary, stdout)
+				summary = ''
+
+			if summary:
+				write('\nsummary: %s' % (summary,))
+
+			if stdout:
+				write('\n\n===== OUTPUT =====')
+				write(stdout)
+
+			if stderr:
+				write('\n\n==== ERRORS =====')
+				write(stderr)
 
 
 class Instance(Base):

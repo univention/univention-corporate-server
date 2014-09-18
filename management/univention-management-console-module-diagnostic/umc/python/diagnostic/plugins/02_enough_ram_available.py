@@ -10,14 +10,16 @@ title = _('Enough RAM available for running UCS')
 description = _('Test whether the total amount of physical RAM is sufficient for running an UCS system')
 
 def run():
-	virtMem = psutil.total_virtmem()
-	print _('Available physical memory: %i bytes (%i GB)') % (psutil.TOTAL_PHYMEM, psutil.TOTAL_PHYMEM / 1000 / 1000 / 1000)
-	print _('Available virtual memory (swap): %i bytes (%i GB)') % (virtMem, virtMem / 1000 / 1000 / 1000)
+	stdout = ''
+	stderr = ''
+	virtual_memory = psutil.total_virtmem()
+	stdout += _('Available physical memory: %i bytes (%i GB)') % (psutil.TOTAL_PHYMEM, psutil.TOTAL_PHYMEM / 1000 / 1000 / 1000)
+	stdout += _('Available virtual memory (swap): %i bytes (%i GB)') % (virtual_memory, virtual_memory / 1000 / 1000 / 1000)
 
 	if psutil.TOTAL_PHYMEM < 2000000000:
-		print _('\n\nIt is recommended to have at least 2GB of physical memory to run an UCS system')
-		print _('summary: Available physical memory is less than the recommended minimum')
-		return False, '', ''
+		stderr += _('\n\nIt is recommended to have at least 2GB of physical memory to run an UCS system')
+		stderr += _('summary: Available physical memory is less than the recommended minimum')
+		return False, stdout, stderr
 
-	print _('\nThe recommended minimum of 2 GB physical memory to run an UCS system are available')
-	return True, '', ''
+	stdout += _('\nThe recommended minimum of 2 GB physical memory to run an UCS system are available')
+	return True, stdout, stderr
