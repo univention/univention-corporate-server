@@ -209,7 +209,7 @@ class VM:
 		# port probe if it's a windows host
 		else:
 			# if port 139 or 445 is open we should be able to connect to the windows host
-			if not self._waiting_for_open_ports('139, 445'):
+			if not self._waiting_for_open_ports(['139', '445']):
 				self._log('Not able to reach %s' % (self.get_ip(), ))
 				raise TimeoutError(timeout)
 
