@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.1-5) unstable; urgency=low
+
+  * added function promote_ad_windows tu utils.sh ( for promoting
+    an win2k8/2k12 server to ad-domaincontroller ) (Bug #35855)
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 18 Sep 2014 09:50:53 +0200
+
 ucs-ec2-tools (1.0.1-4) unstable; urgency=low
 
   * Bug #35767: Switch to updated UCS-4.0 EC2 AMI

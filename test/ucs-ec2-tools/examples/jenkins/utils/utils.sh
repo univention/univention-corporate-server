@@ -178,4 +178,71 @@ do_reboot () {
 	reboot
 }
 
+wait_for_windows ()
+{
+	local IP="$1"
+	local TIMEOUT="$2"
+	python -c "
+import sys
+import time
+import nmap
+ports = ['139', '445']
+scanner = nmap.PortScanner()
+ports_string = ','.join(ports)
+start = now = time.time()
+while now - start < $TIMEOUT:
+	scan_result = scanner.scan($IP, ports_string)
+	now = time.time()
+	if not scan_result['scan']:
+		continue
+	port_status = scan_result['scan'].get($IP, {}).get('tcp')
+	if port_status is None:
+		continue
+	for port in ports:
+		if not int(port) in port_status:
+			continue
+		if port_status[int(port)]['state'] == u'open':
+			sys.exit(0)
+sys.exit(1)"
+}
+
+ _winexe_execute_and_wait_for_reboot ()
+{
+	local IP="$1"
+	local COMMANDS="$2"
+	winexe -U "testadmin%Univention@99" //$IP "$COMMANDS" > /dev/null
+	sleep 120  #wait for reboot
+}
+
+ verify_domain_set ()
+{
+	local IP="$1"
+	local NETBIOSDOM="$2"
+	wait_for_windows "'$IP'" 360
+	if [ $? -eq 0 ]; then
+		local TESTDOMAIN=$(winexe -U "testadmin%Univention@99" //$IP "cmd.exe /C echo %USERDOMAIN%" | sed 's/\r//')
+		if [[ "$TESTDOMAIN" == $NETBIOSDOM ]]; then
+			echo "Success promoting domain on $IP"
+		else
+			echo "Error promoting domain on $IP"
+		fi
+	else
+		echo "Timeout contacting $IP"
+	fi
+}
+
+promote_ad_win ()
+{
+	local IP="$1"
+	local DOMAIN="$2"
+	local NETBIOSDOM="$3"
+	if [[ ! -z "$IP" ]] && [[ ! -z "$DOMAIN" ]] && [[ ! -z "$NETBIOSDOM" ]]; then
+		COMMANDS="dcpromo.exe /unattend /ReplicaOrNewDomain:Domain /InstallDNS:Yes /SafeModeAdminPassword:Univention@99 /CreateDNSDelegation:No /NewDomain:Forest /ConfirmGC:Yes /NewDomainDNSName:$DOMAIN /DomainNetBiosName:$NETBIOSDOM /RebootOnCompletion:Yes"
+		_winexe_execute_and_wait_for_reboot "$IP" "$COMMANDS"
+		verify_domain_set "$IP" "$NETBIOSDOM"
+	else
+		echo "You must specify an ip ,domain name and a netbios domain name."
+	fi
+}
+
 # vim:set filetype=sh ts=4:
