@@ -34,6 +34,10 @@ STR_ALPHA = u'abcdefghijklmnopqrstuvwxyz'
 STR_ALPHANUM = STR_ALPHA + STR_NUMERIC
 STR_ALPHANUMDOTDASH = STR_ALPHANUM + '.-'
 
+STR_SPECIAL_CHARACTER = u' !#$%&*-/:?@[]^_`{|}~´€Ω®½'
+STR_UMLAUT = u'äöüßâêôûŵẑŝĝĵŷĉ'
+STR_UMLAUTNUM = STR_UMLAUT + STR_NUMERIC
+
 import random
 
 def random_string(length=10, alpha=True, numeric=True, charset=None, encoding='utf-8'):
@@ -61,6 +65,17 @@ def random_name(length=10):
 	create random name (1 ALPHA, 8 ALPHANUM, 1 ALPHA)
 	"""
 	return random_string(length=1, alpha=True, numeric=False) + random_string(length=(length-2), alpha=True, numeric=True) + random_string(length=1, alpha=True, numeric=False)
+
+def random_name_special_characters(length=10):
+	"""
+	create random name (1 UMLAUT, 2 ALPHA, 6 SPECIAL_CHARACTERS + UMLAUT, 1 UMLAUTNUM)
+	"""
+	return '%s%s%s%s' % (
+			random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUT),
+			random_string(length=2, alpha=True, numeric=False),
+			random_string(length=(length-4), alpha=False, numeric=False, charset=STR_SPECIAL_CHARACTER + STR_UMLAUT),
+			random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUTNUM)
+			)
 
 def random_username(length=10):
 	return random_name(length)
