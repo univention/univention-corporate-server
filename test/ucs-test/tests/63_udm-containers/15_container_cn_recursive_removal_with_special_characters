@@ -1,0 +1,30 @@
+#!/usr/share/ucs-test/runner python
+## desc: Remove container/cn recursively special characters
+## tags: [udm,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		cn_name = uts.random_name_special_characters()
+		cn2_name = uts.random_name_special_characters()
+
+		cn = udm.create_object('container/cn', name = cn_name)
+		cn2 = udm.create_object('container/cn', name = cn2_name)
+		cn3 = udm.create_object('container/cn', name = uts.random_name_special_characters())
+
+		udm.move_object('container/cn', dn = cn, position = cn2)
+		udm.move_object('container/cn', dn = cn2, position = cn3)
+		cn = 'cn=%s,cn=%s,%s' % (cn_name, cn2_name, cn3)
+
+		udm.remove_object('container/cn', dn = cn3)
+		utils.verify_ldap_object(cn, should_exist = False)

@@ -1,0 +1,74 @@
+#!/usr/share/ucs-test/runner python
+## desc: Rename a container/ou with subobjects from lower to upper case with special characters
+## tags: [udm,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.config_registry as configRegistry
+import sys
+
+
+if __name__ == '__main__':
+	ucr = configRegistry.ConfigRegistry()
+	ucr.load()
+
+	with udm_test.UCSTestUDM() as udm:
+		def test_organizational_unit(parent, add_user):
+			if parent is None:
+				parent = ucr.get('ldap/base')
+			user_name = 'X' + uts.random_string() # test preserving name (case sensitivity)
+
+			ou_name = uts.random_name_special_characters()
+			ou_name_new = ou_name.upper()
+
+			ou = udm.create_object('container/ou', position=parent, name = ou_name)
+			if add_user:
+				user = udm.create_user(position=ou, username=user_name)
+
+			try:
+				udm.modify_object('container/ou', dn = ou, name = ou_name_new)
+			except AssertionError:
+				pass
+			lo = utils.get_ldap_connection()
+			fail = False
+			for dn, entry in lo.search(filter='ou=temporary_move_container_*'):
+				to_be_removed = udm._cleanup.setdefault('container/ou', [])
+				to_be_removed.append(dn)
+				fail = True
+			if fail:
+				utils.fail('ou = %s remained' % dn)
+
+			new_ou = 'ou=%s,%s' % (ou_name_new, parent)
+			new_user = 'uid=%s,%s' % (user_name, new_ou)
+
+			utils.verify_ldap_object(new_ou, should_exist = True)
+			if add_user:
+				for dn, entry in lo.search(filter='uid=%s' % user_name):
+					if entry.get('uid')[0] != user_name:
+						utils.fail('CASE SENSITIVITY: uid = %s; expected: %s' % (entry.get('uid')[0], user_name))
+				utils.verify_ldap_object(new_user, should_exist = True)
+
+			for dn, entry in lo.search(filter='ou=%s' % ou_name_new):
+				if entry.get('ou')[0] != ou_name_new:
+					utils.fail('ou = %s; expected: %s' % (entry.get('ou')[0], ou_name_new))
+			return new_ou
+
+		# EMPTY
+		# FIRST LEVEL
+		first_level_unit = test_organizational_unit(parent=None, add_user=False)
+
+		# SECOND LEVEL
+		test_organizational_unit(parent=first_level_unit, add_user=False)
+
+		# WITH USER
+		# FIRST LEVEL
+		first_level_unit = test_organizational_unit(parent=None, add_user=True)
+
+		# SECOND LEVEL
+		test_organizational_unit(parent=first_level_unit, add_user=True)
