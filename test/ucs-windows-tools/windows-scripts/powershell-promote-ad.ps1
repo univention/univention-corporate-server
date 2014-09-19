@@ -119,7 +119,13 @@ try {
 	Import-Module Servermanager
 }
 Catch {
-	error("$_")
+	# error("$_")
+	promoWithDCpromo `
+		-domain "$domain" `
+		-domainMode "$domainMode" `
+		-forestMode "$forestMode" `
+		-password "$password" `
+		-domainNetBios "$domainNetBios"
 }
 
 if ((gwmi win32_computersystem).partofdomain -eq $true) {

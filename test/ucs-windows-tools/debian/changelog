@@ -1,3 +1,9 @@
+ucs-windows-tools (1.0.0-9) unstable; urgency=low
+
+  * domain_mode=False for dc promo (Bug #35096) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 19 Sep 2014 14:45:11 +0200
+
 ucs-windows-tools (1.0.0-8) unstable; urgency=low
 
   * added create_ad_groups etc to lib (Bug #35096) 

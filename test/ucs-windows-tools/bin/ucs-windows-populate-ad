@@ -33,9 +33,15 @@
 
 import sys
 import optparse
-import univention.winexe
+import os
 
-parser = univention.winexe.default_options()
+if os.path.exists('./lib/winexe.py'):
+	sys.path.append('./lib')
+	import winexe
+else:
+	import univention.winexe as winexe
+
+parser = winexe.default_options()
 options = optparse.OptionGroup(parser, "More options")
 options.add_option("--user-name", dest="username", default="vbsTestUser", help="prefix for the user name (vbsTestUser)")
 options.add_option("--password", dest="password", default="Univention.99", help="the accounts password (Univention.99)")
@@ -45,7 +51,7 @@ options.add_option("--groups", dest="groups", type="int", help="number of users 
 parser.add_option_group(options)
 opts, args = parser.parse_args()
 
-winexe = univention.winexe.WinExe(
+wexe = winexe.WinExe(
 	domain=opts.domain,
 	domain_admin=opts.domain_admin,
 	domain_password=opts.domain_password,
@@ -57,13 +63,16 @@ winexe = univention.winexe.WinExe(
 )
 
 if opts.users > 0:
-	winexe.create_ad_users(opts.username, opts.password, opts.users)
+	retval, out, err = wexe.create_ad_users(opts.username, opts.password, opts.users)
+	print out
 
 if opts.groups > 0:
-	winexe.create_ad_groups(opts.groupname, opts.groups)
+	retval, out, err = wexe.create_ad_groups(opts.groupname, opts.groups)
+	print out
 
 if opts.groups > 0 and opts.users > 0:
-	winexe.add_users_to_group(opts.username, opts.users, opts.groupname, opts.groups)
+	retval, out, err = wexe.add_users_to_group(opts.username, opts.users, opts.groupname, opts.groups)
+	print out
 
 sys.exit(0)
 
