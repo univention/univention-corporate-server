@@ -17,8 +17,6 @@ if configRegistry.get('grub/loglevel', False):
 rootdelay= configRegistry.get('grub/rootdelay', '5')
 defoptions += ' rootdelay=%s' % rootdelay
 
-if configRegistry.get('grub/vga', False):
-	defoptions += ' vga=%s' % configRegistry['grub/vga']
 defoptions += ' %s' % configRegistry.get('grub/bootsplash', 'splash')
 print 'GRUB_CMDLINE_LINUX_DEFAULT="%s"' % defoptions
 @!@

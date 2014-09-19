@@ -76,25 +76,9 @@ cp -f /usr/share/univention-grub/uniboot.png /boot/grub/
 
 # Install grub on new installation
 if [ "$1" = configure -a -z "$2" ];  then
-
 	# invoke grub-mkdevicemap (required for KVM machines)
 	grub-mkdevicemap $grub_boot
-	# if EFI is enabled
-	if is_ucr_true grub/efi ; then
-		# EFI activated
-		modprobe efivars
-		# install grub
-		if stat -f /boot/grub/ -c "%T" | egrep -qi "FAT|MSDOS" ; then
-			/usr/sbin/grub-install --target=x86_64-efi --efi-directory=/boot/grub
-		else
-			/usr/sbin/grub-install --target=x86_64-efi
-		fi
-	else
-		# no EFI found
-		if [ -n "$grub_boot" ]; then
-			/usr/sbin/grub-install --no-floppy "$grub_boot"
-		fi
-	fi
+
 	update-grub
 fi
 

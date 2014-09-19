@@ -1,6 +1,12 @@
+univention-grub (8.0.3-4) unstable; urgency=low
+
+  * Bug #33397: Remove old UEFI code
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 18 Sep 2014 13:13:28 +0200
+
 univention-grub (8.0.3-3) unstable; urgency=low
 
-  * Bug #35934: Fix shell script syntax error in last commi
+  * Bug #35934: Fix shell script syntax error in last commit
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 18 Sep 2014 11:09:47 +0200
 

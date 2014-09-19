@@ -10,7 +10,7 @@ Build-Depends: debhelper,
 Package: univention-grub
 Architecture: all
 Depends: ${misc:Depends},
- grub-pc | univention-uefi | univention-uefi-secureboot,
+ grub-pc | grub-efi | univention-uefi-secureboot,
  initramfs-tools,
  lvm2,
  memtest86+,
@@ -22,4 +22,3 @@ Description: UCS - meta package for the Grub2 configuration
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
-
