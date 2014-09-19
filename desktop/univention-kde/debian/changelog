@@ -1,3 +1,9 @@
+univention-kde (9.0.2-1) unstable; urgency=low
+
+  * UCS 4.0 kde theme (Bug #35936) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 19 Sep 2014 13:13:58 +0200
+
 univention-kde (9.0.1-1) unstable; urgency=low
 
   * Switch from gdm to kdm (Bug #35266)

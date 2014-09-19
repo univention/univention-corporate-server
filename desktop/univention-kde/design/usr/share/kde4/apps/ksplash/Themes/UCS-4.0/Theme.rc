@@ -1,0 +1,9 @@
+[KSplash Theme: UCS-4.0]
+Name = UCS-4.0 Splash Screen
+Description = UCS-4.0 Splash Screen
+Version = 1.0
+Author = Univention GmbH <packages@univention.de>
+Homepage = http://www.univention.de
+
+# Theme behaviour settings.
+Engine = KSplashX

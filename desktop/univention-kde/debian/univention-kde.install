@@ -67,7 +67,10 @@ design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1920x1080/background.png usr/s
 design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/Theme.rc usr/share/kde4/apps/ksplash/Themes/UCS-3.0/
 design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1024x768/background.png usr/share/kde4/apps/ksplash/Themes/UCS-3.0/1024x768/ 
 design/usr/share/kde4/apps/ksplash/Themes/UCS-3.0/Preview.png usr/share/kde4/apps/ksplash/Themes/UCS-3.0/
+design/usr/share/kde4/apps/ksplash/Themes/UCS-4.0  usr/share/kde4/apps/ksplash/Themes/
+design/usr/share/wallpapers/UCS-4.0 usr/share/wallpapers/
 univention.svg usr/share/icons/hicolor/scalable/apps/
+profiles/* usr/share/univention-kde-profiles/
 univention.desktop usr/share/applications/
 usr/share/locale/*/LC_MESSAGES/*.mo
 univention-root-login-notification.desktop /usr/share/autostart/

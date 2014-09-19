@@ -1,22 +1,4 @@
 Type: file
-File: etc/kde2/kickerrc
-
-Type: file
-File: etc/kde2/konquerorrc
-
-Type: file
-File: etc/kde2/kwinrc
-
-Type: file
-File: etc/kde2/system.kdeglobals
-
-Type: file
-File: etc/kde3/kdeprintrc
-
-Type: file
-File: etc/univention/skel/.mcoprc
-
-Type: file
 File: usr/share/apps/kdeprint/specials.desktop
 
 Type: file
