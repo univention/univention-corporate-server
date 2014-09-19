@@ -1,0 +1,11 @@
+[kdm/usetheme]
+Description[de]=Definiert ob der KDM im Design-Modus gestartet werden soll.
+Description[en]=Whether the greeter should be themed.
+Type=bool
+Categories=system-desktop
+
+[kdm/theme]
+Description[de]=Das Design für den Login Manager.
+Description[en]=The theme to use for the greeter.
+Type=bool
+Categories=system-desktop
