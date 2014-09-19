@@ -1,0 +1,24 @@
+#!/usr/share/ucs-test/runner python
+## desc: Move container/ou into another container/ou  with special characters
+## tags: [udm,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+
+
+if __name__ == '__main__':
+
+	with udm_test.UCSTestUDM() as udm:
+		ou_name = uts.random_name_special_characters()
+
+		ou = udm.create_object('container/ou', name = ou_name)
+		ou2 = udm.create_object('container/ou', name = uts.random_name_special_characters())
+		
+		udm.move_object('container/ou', dn = ou, position = ou2)
+		utils.verify_ldap_object('ou=%s,%s' % (ou_name, ou2))

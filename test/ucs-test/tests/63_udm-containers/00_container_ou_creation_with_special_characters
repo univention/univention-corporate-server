@@ -1,0 +1,18 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create container/ou with specials characters
+## tags: [udm,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		ou = udm.create_object('container/ou', name = uts.random_name_special_characters())
+		utils.verify_ldap_object(ou)

@@ -1,0 +1,45 @@
+#!/usr/share/ucs-test/runner python
+## desc: Rename a container/ou with un-moveable subobjects from lower to upper case with special characters
+## tags: [udm,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.config_registry as configRegistry
+import sys
+
+
+if __name__ == '__main__':
+	ucr = configRegistry.ConfigRegistry()
+	ucr.load()
+
+	with udm_test.UCSTestUDM() as udm:
+		user_name = uts.random_string()
+		network_name = uts.random_string()
+
+		ou_name = uts.random_name_special_characters()
+		ou_name_new = ou_name.upper()
+
+		ou = udm.create_object('container/ou', name = ou_name)
+		user = udm.create_user(position=ou, username=user_name)
+		network = udm.create_object('networks/network', position=ou, name=network_name, network='1.1.1.1', netmask='24')
+
+		try:
+			udm.modify_object('container/ou', dn = ou, name = ou_name_new)
+		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
+			pass
+
+		new_ou = 'ou=%s,%s' % (ou_name_new,ucr.get('ldap/base'))
+		new_user = 'uid=%s,ou=%s,%s' % (user_name, ou_name_new, ucr.get('ldap/base'))
+		utils.verify_ldap_object(new_ou, should_exist = True)
+		utils.verify_ldap_object(new_user, should_exist = True)
+
+		lo = utils.get_ldap_connection()
+		for dn, entry in lo.search(filter='ou=%s' % ou_name):
+			if entry.get('ou')[0] != ou_name:
+				utils.fail('ou = %s; expected: %s' % (entry.get('ou')[0], ou_name))
