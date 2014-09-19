@@ -1,3 +1,10 @@
+ucs-ec2-tools (0.1.22-5) unstable; urgency=low
+
+  * python/ec2/lib.py added '-PN' to python-nmap command (Bug #35850)
+  * added examples/jenkins/autotest-220-ad-win2k8-master.cfg (Bug #35913)
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 19 Sep 2014 11:58:24 +0200
+
 ucs-ec2-tools (0.1.22-4) unstable; urgency=low
 
   * /python/ec2/lib.py: fixed wrong port format in def connect

@@ -155,7 +155,7 @@ class VM:
 
 		# scan until timout is reachedo or there is an open port
 		while now - start < timeout:
-			scan_result = scanner.scan(ip, ports_string)
+			scan_result = scanner.scan(ip, ports_string, '-PN')
 			now = time.time()
 			self._log('Pending %d...'  % (timeout - now + start))
 			if not scan_result['scan']:
