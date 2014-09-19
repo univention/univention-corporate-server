@@ -34,15 +34,28 @@
 
 #DEBHELPER#
 
+db_progress START 0 4 di-univention-system-setup/progress/title
+db_progress STEP 1
+db_progress INFO di-univention-system-setup/progress/uss
+
 # activate univention-system-setup-boot
-chroot /target /usr/sbin/ucr set system/setup/boot/start=true
+in-target /usr/sbin/ucr set system/setup/boot/start=true
 # start univention-system-setup if in GTK mode
 if [ -n "$DISPLAY" ]; then
-	db_progress START 0 2 di-univention-system-setup/progress/title
-	db_progress STEP 1
 	chroot /target /usr/share/univention-system-setup/startxwithfirefox --installer
-	db_progress SET 2
-	db_progress STOP
 fi
+
+db_progress SET 2
+db_progress INFO di-univention-system-setup/progress/grub
+apt-install univention-grub
+
+db_progress SET 3
+db_progress INFO di-univention-system-setup/progress/ucr
+in-target /usr/sbin/ucr commit
+
+db_progress SET 4
+db_progress INFO di-univention-system-setup/progress/done
+sleep 1
+db_progress STOP
 
 exit 0

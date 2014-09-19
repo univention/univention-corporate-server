@@ -1,4 +1,19 @@
 Template: di-univention-system-setup/progress/title
 Type: text
+_Description: Setup Univention Corporate Server
+
+Template: di-univention-system-setup/progress/uss
+Type: text
 _Description: Starting Univention System Setup...
 
+Template: di-univention-system-setup/progress/grub
+Type: text
+_Description: Setting up boot loader GRUB...
+
+Template: di-univention-system-setup/progress/ucr
+Type: text
+_Description: Generating UCR configuration files...
+
+Template: di-univention-system-setup/progress/done
+Type: text
+_Description: Done.
