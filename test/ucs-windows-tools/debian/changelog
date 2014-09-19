@@ -1,3 +1,9 @@
+ucs-windows-tools (2.0.1-1) unstable; urgency=low
+
+  * domain_mode=False for dc promo (Bug #35096) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 19 Sep 2014 14:46:38 +0200
+
 ucs-windows-tools (2.0.0-1) unstable; urgency=low
 
   * Migrated ucs-windows-tools to UCS-4.0-0 (Bug #35664)

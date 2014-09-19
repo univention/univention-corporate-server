@@ -8,7 +8,10 @@ import os
 import base64
 import ConfigParser
 
-COMMAND_DIR = "/usr/share/ucs-windows-tools/windows-scripts/"
+if os.path.exists('./windows-scripts'):
+	COMMAND_DIR = './windows-scripts/'
+else:
+	COMMAND_DIR = '/usr/share/ucs-windows-tools/windows-scripts/'
 
 def default_options():
 	usage = "usage: %prog [OPTIONS]"
@@ -23,8 +26,25 @@ def default_options():
 	group.add_option("--client", dest="client", help="the windows client")
 	group.add_option("--debug", dest="debug", action="store_true", default=False, help="verbose output")
 	parser.add_option_group(group)
-	return parser
 
+	# get default options from config
+	config = ConfigParser.ConfigParser()
+	config.read(os.path.join(os.environ['HOME'], ".ucs-windows-tools.ini"))
+	if config.has_section("default"):
+		if config.has_option("default", "domain"):
+			parser.set_defaults(domain=config.get("default", "domain"))
+		if config.has_option("default", "domain_admin"):
+			parser.set_defaults(domain_admin=config.get("default", "domain_admin"))
+		if config.has_option("default", "local_admin"):
+			parser.set_defaults(local_admin=config.get("default", "local_admin"))
+		if config.has_option("default", "local_password"):
+			parser.set_defaults(local_password=config.get("default", "local_password"))
+		if config.has_option("default", "client"):
+			parser.set_defaults(client=config.get("default", "client"))
+		if config.has_option("default", "domain_password"):
+			parser.set_defaults(domain_password=config.get("default", "domain_password"))
+
+	return parser
 
 class WinExeFailed(Exception):
     '''ucs_addServiceToLocalhost failed'''
@@ -42,12 +62,6 @@ class WinExe:
 		debug=None,
 	):
 
-		#config = ConfigParser.ConfigParser()
-		#config.read(os.path.join(os.environ['HOME'], ".ucs-windows-tools.ini"))
-		#for i in ["domain", "domain_admin", "local_admin", "local_password", "client", "domain_password"]:
-		#	if config.has_section("default") and config.has_option("default", i):
-		#		self.opts.ensure_value(i, config.get("default", i))
-
 		self.command_dir = COMMAND_DIR
 		self.domain = domain
 		self.domain_admin = domain_admin
@@ -64,6 +78,7 @@ class WinExe:
 
 
 	def __check_default_options(self):
+
 		if not self.domain:
 			raise WinExeFailed("--domain needs to be specified")
 		if not self.domain_admin:
@@ -330,8 +345,8 @@ class WinExe:
 	def promote_ad(self, domain_mode, forest_mode, install_root_ca=True):
 		''' create AD domain on windows server '''
 
-		self.winexec("firewall-turn-off")
-		self.winexec("powershell-promote-ad", self.domain, domain_mode, forest_mode)
+		self.winexec("firewall-turn-off", domain_mode=False)
+		self.winexec("powershell-promote-ad", self.domain, domain_mode, forest_mode, domain_mode=False)
 		self.wait_until_client_is_gone(timeout=120)
 		self.wait_for_client(timeout=120)
 		if install_root_ca:

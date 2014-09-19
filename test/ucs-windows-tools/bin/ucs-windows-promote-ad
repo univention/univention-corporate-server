@@ -33,16 +33,22 @@
 
 import sys
 import optparse
-import univention.winexe
+import os
 
-parser = univention.winexe.default_options()
+if os.path.exists('./lib/winexe.py'):
+	sys.path.append('./lib')
+	import winexe
+else:
+	import univention.winexe as winexe
+
+parser = winexe.default_options()
 options = optparse.OptionGroup(parser, "More options")
 options.add_option("--domain-mode", dest="domain_mode", default="Win2008R2", help="Windows domain mode (Win2008R2)")
 options.add_option("--forest-mode", dest="forest_mode", default="Win2008R2", help="Windows forest mode (Win2008R2)")
 parser.add_option_group(options)
 opts, args = parser.parse_args()
 
-winexe = univention.winexe.WinExe(
+wexe = winexe.WinExe(
 	domain=opts.domain,
 	domain_admin=opts.domain_admin,
 	domain_password=opts.domain_password,
@@ -53,6 +59,6 @@ winexe = univention.winexe.WinExe(
 	debug=opts.debug,
 )
 
-winexe.promote_ad(opts.domain_mode, opts.forest_mode)
+wexe.promote_ad(opts.domain_mode, opts.forest_mode)
 
 sys.exit(0)
