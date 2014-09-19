@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE greeter SYSTEM "greeter.dtd">
+
+<greeter id="theme">
+	<style
+		font="Sans 12"
+		window-text-color="#787878"
+		base-color="#787878"
+		alternate-base-color="#787878"
+		text-color="#787878"
+		disabled-text-color="#787878"
+		base-alpha="0"
+		disabled-base-color="#787878"
+		disabled-base-alpha="0.25"
+		disabled-highlight-alpha="0.0"
+		all-highlight-color="#787878"
+		all-highlight-alpha="0.25"
+		frame="false"
+	/>
+
+	<!-- background -->
+	<item type="pixmap" id="background" background="true">
+		<normal wallpaper="UCS-4.0-clean" scalemode="free"/>
+		<pos x="0" y="0" width="100%" height="100%"/>
+	</item>
+
+	<!-- login -->
+	<item type="pixmap" id="greeter">
+		<normal file="rectangle.png"/>
+		<pos anchor="c" x="50%" y="50%" width="308" height="308"/>
+		<fixed>
+			<item type="rect" id="user-field">
+				<pos anchor="c" x="50%" y="30%" width="80%"/>
+				<fixed>
+					<item type="pixmap">
+						<pos anchor="w" x="0" y="50%"/>
+						<normal file="user_icon.png"/>
+					</item>
+					<item type="pixmap">
+						<pos anchor="w" x="42" y="10" width="196"/>
+						<normal file="lineedit.png"/>
+					</item>
+					<item type="entry" id="user-entry">
+						<pos anchor="w" x="40" y="-1" width="200"/>
+					</item>
+				</fixed>
+			</item>
+			<item type="rect" id="user-field2">
+				<pos anchor="c" x="50%" y="55%" width="80%"/>
+				<fixed>
+					<item type="pixmap" button="true">
+						<pos anchor="w" x="0" y="50%"/>
+						<normal file="lock.png"/>
+					</item>
+					<item type="pixmap">
+						<pos anchor="w" x="42" y="10" width="196"/>
+						<normal file="lineedit.png"/>
+					</item>
+					<item type="entry" id="pw-entry">
+						<pos anchor="w" x="40" y="-1" width="200"/>
+					</item>
+				</fixed>
+			</item>
+			<item type="rect" id="system-session">
+				<pos anchor="c" x="50%" y="82%"/>
+				<fixed>
+					<item type="pixmap" id="login_button" button="true">
+						<normal file="login_normal.png"/>
+						<prelight file="login_active.png"/>
+						<active file="login_active.png"/>
+						<pos anchor="c" x="50%" y="50%"/>
+					</item>
+				</fixed>
+			</item>
+		</fixed>
+	</item> 
+
+	<!-- session and system -->
+	<item type="rect">
+		<pos anchor="c" x="100%" y="0%"/>
+		<fixed>
+			<item type="pixmap" id="session_button" button="true">
+				<normal file="session_normal.png"/>
+				<prelight file="session_active.png"/>
+				<active file="session_active.png"/>
+				<pos anchor="c" x="-48" y="22"/>
+			</item>
+			<item type="pixmap" id="system_button" button="true">
+				<normal file="system_normal.png"/>
+				<prelight file="system_active.png"/>
+				<active file="system_active.png"/>
+				<pos anchor="c" x="-22" y="22"/>
+			</item>
+		</fixed>
+	</item>
+
+	<!-- date -->
+	<item type="rect">
+		<pos anchor="c" x="100%" y="100%"/>
+		<fixed>
+			<item type="label">
+				<pos anchor="se" x="-4" y="-6"/>
+				<normal font="Sans Bold 8" color="#787878"/>
+				<text>%c</text>
+			</item>
+		</fixed>
+	</item>
+
+	<!-- caps lock warning -->
+	<item type="rect" id="caps-lock-warning">
+		<pos anchor="c" x="50%" y="50%" width="308" height="308"/>
+		<fixed>
+			<item type="label" id="mesage">
+				<normal font="Sans Bold 10"/>
+				<pos anchor="c" x="50%" y="-5%"/>
+				<stock type="caps-lock-warning"/>
+			</item>	
+		</fixed>
+	</item>
+
+	<!-- pam message -->
+	<item type="rect" id="pam-error-paceholder">
+		<pos anchor="c" x="50%" y="50%" widht="308" height="308"/>
+		<fixed>
+			<item type="label" id="pam-error">
+				<pos x="50%" y="105%" anchor="c"/>
+				<normal font="Sans Bold 10"/>
+				<text></text>
+			</item>
+		</fixed>
+	</item>
+
+</greeter>

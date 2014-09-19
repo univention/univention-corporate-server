@@ -1,0 +1,10 @@
+@%@BCWARNING=# @%@
+
+@!@
+if configRegistry.is_true("kdm/usetheme", True):
+	print "USETHEME=true"
+else:
+	print "USETHEME=false"
+
+print "THEME=%s" % configRegistry.get("kdm/theme", "/usr/share/kde4/apps/kdm/themes/ucs")
+@!@

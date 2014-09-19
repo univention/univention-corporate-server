@@ -1,0 +1,10 @@
+# This is not really a .desktop file like the rest, but it is useful to treat
+# it as such
+
+[KdmGreeterTheme]
+Greeter=ucs.xml
+Name=UCS
+
+Author=Univention GmbH
+Copyright=GPL 2014 Univention GmbH
+Screenshot=screenshot.png
