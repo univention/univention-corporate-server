@@ -1,3 +1,9 @@
+univention-mail-postfix (8.0.13-2) unstable; urgency=low
+
+  * create tmp. dh parameter files (Bug #35923) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 22 Sep 2014 15:15:43 +0200
+
 univention-mail-postfix (8.0.13-1) unstable; urgency=low
 
   * made TLS Forward Secrecy more visible/configurable (Bug #35923)
