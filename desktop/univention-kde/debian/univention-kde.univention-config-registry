@@ -10,3 +10,6 @@ Variables: hal/devices/group
 
 Type: file
 File: usr/share/univention-kde-profiles/kde4-menu/.kde/share/config/kickoffrc
+
+Type: file
+File: usr/share/kde4/apps/desktoptheme/default/metadata.desktop

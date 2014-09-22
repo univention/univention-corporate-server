@@ -2,46 +2,48 @@ SCALE ON
 BACKGROUND_IMAGE 0 0 background.jpg
 SCALE OFF
 
-# the image is 308x308, make it centered, all icons need the same adjustment too
-IMAGE_REL CC 0 0 CC rectangle.png
+ANIM_REL 1 CC 0 0 CC 30 box-anim.png 308 0
 
-IMAGE_REL CC -117 -20 LT icon-off.png
-IMAGE_REL CC -75 -20 LT icon-off.png
-IMAGE_REL CC -33 -20 LT icon-off.png
-IMAGE_REL CC 9 -20 LT icon-off.png
-IMAGE_REL CC 51 -20 LT icon-off.png
-IMAGE_REL CC 93 -20 LT icon-off.png
+# the image is 308x308, make it centered, all icons need the same adjustment too
+#IMAGE_REL CC 0 0 CC rectangle.png
+#
+#IMAGE_REL CC -117 -20 LT icon-off.png
+#IMAGE_REL CC -75 -20 LT icon-off.png
+#IMAGE_REL CC -33 -20 LT icon-off.png
+#IMAGE_REL CC 9 -20 LT icon-off.png
+#IMAGE_REL CC 51 -20 LT icon-off.png
+#IMAGE_REL CC 93 -20 LT icon-off.png
 
 # these have their relative positions to the rectangle adjusted
 # (i.e. half of the rectangle size)
-ANIM_REL 1 CC -117 -20 LT 30 icon-anim.png 20 1
-WAIT_STATE kded
-STOP_ANIM 1
-IMAGE_REL CC -117 -20 LT icon-on.png
-
-ANIM_REL 2 CC -75 -20 LT 30 icon-anim.png 20 1
-WAIT_STATE confupdate
-STOP_ANIM 2
-IMAGE_REL CC -75 -20 LT icon-on.png
-
-ANIM_REL 3 CC -33 -20 LT 30 icon-anim.png 20 1
-WAIT_STATE kcminit
-STOP_ANIM 3
-IMAGE_REL CC -33 -20 LT icon-on.png
-
-ANIM_REL 4 CC 9 -20 LT 29 icon-anim.png 20 1
-WAIT_STATE ksmserver
-STOP_ANIM 4
-IMAGE_REL CC 9 -20 LT icon-on.png
-
-ANIM_REL 5 CC 51 -20  LT 30 icon-anim.png 20 1
-WAIT_STATE wm
-STOP_ANIM 5
-IMAGE_REL CC 51 -20 LT icon-on.png
-
-ANIM_REL 6 CC 93 -20 LT 30 icon-anim.png 20 1
-WAIT_STATE desktop
-STOP_ANIM 6
-IMAGE_REL CC 93 -20 LT icon-on.png
+#ANIM_REL 1 CC -117 -20 LT 30 icon-anim.png 20 0
+#WAIT_STATE kded
+#STOP_ANIM 1
+#IMAGE_REL CC -117 -20 LT icon-on.png
+#
+#ANIM_REL 2 CC -75 -20 LT 30 icon-anim.png 20 1
+#WAIT_STATE confupdate
+#STOP_ANIM 2
+#IMAGE_REL CC -75 -20 LT icon-on.png
+#
+#ANIM_REL 3 CC -33 -20 LT 30 icon-anim.png 20 1
+#WAIT_STATE kcminit
+#STOP_ANIM 3
+#IMAGE_REL CC -33 -20 LT icon-on.png
+#
+#ANIM_REL 4 CC 9 -20 LT 29 icon-anim.png 20 1
+#WAIT_STATE ksmserver
+#STOP_ANIM 4
+#IMAGE_REL CC 9 -20 LT icon-on.png
+#
+#ANIM_REL 5 CC 51 -20  LT 30 icon-anim.png 20 1
+#WAIT_STATE wm
+#STOP_ANIM 5
+#IMAGE_REL CC 51 -20 LT icon-on.png
+#
+#ANIM_REL 6 CC 93 -20 LT 30 icon-anim.png 20 1
+#WAIT_STATE desktop
+#STOP_ANIM 6
+#IMAGE_REL CC 93 -20 LT icon-on.png
 
 WAIT_STATE ready

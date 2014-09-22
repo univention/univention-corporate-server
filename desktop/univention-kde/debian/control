@@ -11,7 +11,6 @@ Package: univention-kde
 Architecture: all
 Recommends: kde-l10n-de,
  okular,
- univention-kdm,
  univention-mozilla-firefox,
  univention-x-core
 Depends: ${misc:Depends},
@@ -19,7 +18,8 @@ Depends: ${misc:Depends},
  univention-config-registry,
  univention-directory-manager-tools,
  kde-standard (>= 5:66),
- univention-kde-setdirs
+ univention-kde-setdirs,
+ univention-kdm,
 Description: UCS - KDE desktop
  This package installs the KDE desktop.
  .
