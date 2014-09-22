@@ -375,7 +375,8 @@ define([
 		},
 		getCloudListImage: function(options) {
 			return tools.umcpCommand('uvmm/cloud/list/image', {
-				conn_name: options.conn_name
+				conn_name: options.conn_name,
+				pattern: options.pattern,
 			}).then(function(data) {
 				return data.result;
 			});

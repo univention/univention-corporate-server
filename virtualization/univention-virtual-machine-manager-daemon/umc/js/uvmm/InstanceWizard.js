@@ -54,6 +54,26 @@ define([
 	return declare("umc.modules.uvmm.InstanceWizard", [ Wizard ], {
 		autoValidate: true,
 
+		_size_id: null,
+		_get_size_id: function(newVal) {
+			var value = array.filter(this._size_id, function(item) {
+				return item.id == newVal;
+			});
+			if (!value.length) {
+				return null;
+			}
+			return value[0];
+		},
+		_update_size_info_text: function(newVal) {
+			var widget = this.getWidget('details', 'parameter').getWidget('size_info_text');
+			var text = this._get_size_id(newVal);
+			if (text) {
+				widget.set('content', '<p>' + _('Memory') + ': ' + text.ram + '</p>' +
+					'<p>' + _('Hard drive') + ': ' + text.disk + '</p>'
+				);
+			}
+		},
+
 		_getWidgets: function(cloudtype, cloud) {
 			if (cloudtype == 'OpenStack') {
 				return [{
@@ -62,7 +82,7 @@ define([
 					label: '&nbsp;',
 					layout: [
 						'keyname',
-						'size_id',
+						['size_id', 'size_info_text'],
 						'image_id',
 						'security_group_ids'
 					],
@@ -80,7 +100,14 @@ define([
 						sortDynamicValues: false,
 						dynamicOptions: {conn_name: cloud},
 						dynamicValues: types.getCloudListSize,
-						required: true
+						required: true,
+						onChange: lang.hitch(this, function(newVal) {
+							this._update_size_info_text(newVal);
+						})
+					}, {
+						type: Text,
+						name: 'size_info_text',
+						content: ''
 					}, {
 						name: 'image_id',
 						type: ComboBox,
@@ -89,6 +116,69 @@ define([
 						dynamicValues: types.getCloudListImage,
 						required: true
 						
+					}, {
+						name: 'security_group_ids',
+						type: ComboBox,
+						label: 'security_group_ids',
+						dynamicOptions: {conn_name: cloud},
+						dynamicValues: types.getCloudListSecgroup,
+						required: true
+					}]
+				}];
+			}
+			if (cloudtype == 'EC2') {
+				return [{
+					name: 'parameter',
+					type: Form,
+					label: '&nbsp;',
+					layout: [
+						'keyname',
+						['size_id', 'size_info_text'],
+						['image_id', 'image_univention'],
+						'security_group_ids'
+					],
+					widgets: [{
+						name: 'keyname',
+						type: ComboBox,
+						label: 'keyname',
+						dynamicOptions: {conn_name: cloud},
+						dynamicValues: types.getCloudListKeypair,
+						required: true
+					}, {
+						name: 'size_id',
+						type: ComboBox,
+						label: 'size_id',
+						sortDynamicValues: false,
+						dynamicOptions: {conn_name: cloud},
+						dynamicValues: types.getCloudListSize,
+						required: true,
+						onChange: lang.hitch(this, function(newVal) {
+							this._update_size_info_text(newVal);
+						})
+					}, {
+						type: Text,
+						name: 'size_info_text',
+						content: ''
+					}, {
+						name: 'image_id',
+						type: ComboBox,
+						label: 'image_id',
+						sortDynamicValues: false,
+						dynamicOptions: {conn_name: cloud, pattern: '223093067001'},
+						dynamicValues: types.getCloudListImage,
+						required: true
+					}, {
+						name: 'image_univention',
+						type: CheckBox,
+						value: true,
+						label: _('Univention images'),
+						description: _('Show only images which are provided by Univention.'),
+						onChange: lang.hitch(this, function(newVal) {
+							var widget = this.getWidget('details', 'parameter').getWidget('image_id');
+							var options = widget.get('dynamicOptions');
+							options.pattern = newVal ? '223093067001' : '';
+							widget.set('dynamicOptions', options);
+						})
 					}, {
 						name: 'security_group_ids',
 						type: ComboBox,
@@ -130,6 +220,16 @@ define([
 					widgets: this._getWidgets(cloudtype, cloud)
 				}]
 			});
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			// store umcp response of "size_id" for updating "size_info_text"
+			var widget = this.getWidget('details', 'parameter').getWidget('size_id');
+			widget.on('dynamicValuesLoaded', lang.hitch(this, function(value) {
+				this._size_id = value;
+				this._update_size_info_text(value[0].id);
+			}));
 		},
 
 		_finish: function(pageName) {

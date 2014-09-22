@@ -187,11 +187,15 @@ class Cloud(object):
 
 			success, data = result
 			if success:
-				size_list = [
-						{'id': item.id, 'label': item.name}
-						for conn_name, images in data.items()
-						for item in images
-						]
+				size_list = []
+				for conn_name, images in data.items():
+					for item in images:
+						size_list.append({
+							'id': item.id,
+							'label': item.u_displayname,
+							'disk': item.disk,
+							'ram': item.ram,
+						})
 
 				self.finished(request.id, size_list)
 			else:

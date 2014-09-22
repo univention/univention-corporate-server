@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 1.0.103-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-09-17 16:43+0200\n"
+"POT-Creation-Date: 2014-09-22 12:16+0200\n"
 "PO-Revision-Date: 2013-07-24 19:03+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -338,7 +338,7 @@ msgstr "Erstellen eines Klons"
 msgid "Create a new image"
 msgstr "Erstellen einer neuen Image-Datei"
 
-#: umc/js/uvmm/InstanceWizard.js:110 umc/js/uvmm/InstanceWizard.js:128
+#: umc/js/uvmm/InstanceWizard.js:166 umc/js/uvmm/InstanceWizard.js:184
 #: umc/js/uvmm/CreatePage.js:91
 msgid "Create a new virtual machine instance."
 msgstr "Erstellen einer neuen virtuellen Instanz."
@@ -738,7 +738,7 @@ msgid "NAT"
 msgstr "NAT"
 
 #: umc/js/uvmm/DomainWizard.js:169 umc/js/uvmm/InstancePage.js:99
-#: umc/js/uvmm/InstanceWizard.js:123 umc/js/uvmm/DomainPage.js:113
+#: umc/js/uvmm/InstanceWizard.js:179 umc/js/uvmm/DomainPage.js:113
 #: umc/js/uvmm/SnapshotGrid.js:56 umc/js/uvmm/CloudConnectionWizard.js:229
 #: umc/js/uvmm.js:996 umc/js/uvmm.js:1014 umc/js/uvmm.js:1029
 msgid "Name"
@@ -848,7 +848,7 @@ msgid "Please enter the corresponding credentials for the cloud connection:"
 msgstr ""
 "Bitte geben Sie die dazugehörigen Zugangsdaten für die Cloud-Verbindung an:"
 
-#: umc/js/uvmm/InstanceWizard.js:129
+#: umc/js/uvmm/InstanceWizard.js:185
 msgid "Please enter the corresponding details for virtual machine instance:"
 msgstr "Bitte geben Sie die dazugehörigen Details der Instanz an:"
 
@@ -872,7 +872,7 @@ msgstr "Auswahl des Zielservers"
 msgid "Please specify name for the cloud connection:"
 msgstr "Bitte geben die den Namen für die Cloud-Verbindung an:"
 
-#: umc/js/uvmm/InstanceWizard.js:111
+#: umc/js/uvmm/InstanceWizard.js:167
 msgid "Please specify name for the instance:"
 msgstr "Bitte geben die den Namen für die Instanz an:"
 
@@ -1025,6 +1025,10 @@ msgstr "Soll die ausgewählte Instanz {label} gelöscht werden?"
 #: umc/js/uvmm.js:473
 msgid "Should the selected virtual machine {label} be removed?"
 msgstr "Soll die ausgewählte virtuelle Maschine {label} gelöscht werden?"
+
+#: umc/js/uvmm/InstanceWizard.js:141
+msgid "Show only images which are provided by Univention."
+msgstr "Zeige nur von Univention bereitgestellte Images."
 
 #: umc/js/uvmm.js:793
 msgid "Show this warning again"
@@ -1283,6 +1287,10 @@ msgstr ""
 #: umc/js/uvmm/InterfaceGrid.js:59
 msgid "Type"
 msgstr "Typ"
+
+#: umc/js/uvmm/InstanceWizard.js:140
+msgid "Univention images"
+msgstr "Univention Image"
 
 #: umc/js/uvmm.js:542
 msgid "Unknown"
