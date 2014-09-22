@@ -1,3 +1,9 @@
+ucs-test (5.0.11-1) unstable; urgency=low
+
+  * Bug #35552: Fix 00_base/02server_password_change
+
+ -- Arvid Requate <requate@univention.de>  Mon, 22 Sep 2014 19:33:15 +0200
+
 ucs-test (5.0.10-1) unstable; urgency=low
 
   * Bug #35969: Fix unsigned source file test
