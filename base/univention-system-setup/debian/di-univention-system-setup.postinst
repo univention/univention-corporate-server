@@ -34,7 +34,9 @@
 
 #DEBHELPER#
 
-db_progress START 0 4 di-univention-system-setup/progress/title
+db_settitle di-univention-system-setup/progress/title
+
+db_progress START 0 4 di-univention-system-setup/progress/text
 db_progress STEP 1
 db_progress INFO di-univention-system-setup/progress/uss
 

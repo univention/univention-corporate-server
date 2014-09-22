@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup 4.0\n"
 "Report-Msgid-Bugs-To: Univention GmbH <packages@univention.de>\n"
-"POT-Creation-Date: 2014-09-19 14:40+0200\n"
+"POT-Creation-Date: 2014-09-22 16:16+0200\n"
 "PO-Revision-Date: 2014-09-22 08:21+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. Type: text
+#. Type: title
 #. Description
 #: ../di-univention-system-setup.templates:1001
 msgid "Setup Univention Corporate Server"
@@ -23,23 +23,29 @@ msgstr "Univention Corporate Server Setup"
 #. Type: text
 #. Description
 #: ../di-univention-system-setup.templates:2001
+msgid "Configuring Univention Corporate Server..."
+msgstr "Konfiguriere Univention Corporate Server..."
+
+#. Type: text
+#. Description
+#: ../di-univention-system-setup.templates:3001
 msgid "Starting Univention System Setup..."
 msgstr "Starte Univention System Setup..."
 
 #. Type: text
 #. Description
-#: ../di-univention-system-setup.templates:3001
+#: ../di-univention-system-setup.templates:4001
 msgid "Setting up boot loader GRUB..."
 msgstr "Konfiguriere Bootload GRUB..."
 
 #. Type: text
 #. Description
-#: ../di-univention-system-setup.templates:4001
+#: ../di-univention-system-setup.templates:5001
 msgid "Generating configuration files..."
 msgstr "Generiere Konfigurationsdateien..."
 
 #. Type: text
 #. Description
-#: ../di-univention-system-setup.templates:5001
+#: ../di-univention-system-setup.templates:6001
 msgid "Done."
 msgstr "Fertig."

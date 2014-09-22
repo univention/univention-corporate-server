@@ -1,6 +1,10 @@
 Template: di-univention-system-setup/progress/title
-Type: text
+Type: title
 _Description: Setup Univention Corporate Server
+
+Template: di-univention-system-setup/progress/text
+Type: text
+_Description: Configuring Univention Corporate Server...
 
 Template: di-univention-system-setup/progress/uss
 Type: text
