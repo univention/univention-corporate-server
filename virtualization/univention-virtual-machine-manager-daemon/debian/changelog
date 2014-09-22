@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (4.0.0-12) unstable; urgency=low
+
+  * Add search by image id and image owner for EC2 connections
+  * Fix traceback when listing EC2 images (Bug #35951)
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 22 Sep 2014 12:09:12 +0200
+
 univention-virtual-machine-manager-daemon (4.0.0-11) unstable; urgency=low
 
   * Add openstack instance wizard (Bug #35942)

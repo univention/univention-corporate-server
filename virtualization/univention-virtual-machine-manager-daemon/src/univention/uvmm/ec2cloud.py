@@ -47,7 +47,7 @@ import ssl
 from node import PersistentCached
 from helpers import TranslatableException
 from cloudconnection import CloudConnection
-from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Size, Cloud_Data_Network
+from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Size, Cloud_Data_Network, Cloud_Data_Image
 import univention.config_registry as ucr
 
 configRegistry = ucr.ConfigRegistry()
@@ -163,7 +163,10 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 			if regex.match(instance.name) is not None or regex.match(instance.id) is not None:
 				i = Cloud_Data_Instance()
 				i.name = instance.name
-				i.extra = instance.extra
+				# filter detailed network information
+				extra = instance.extra
+				extra['network_interfaces'] = 'removed_by_ucs'
+				i.extra = extra
 				i.id = instance.id
 				i.image = instance.extra['image_id']
 				i.private_ips = instance.private_ips
@@ -241,6 +244,27 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 			networks.append(s)
 
 		return networks
+
+	def list_images(self, pattern="*"):
+		# Expand pattern with *
+		pattern = "*%s*" % pattern
+		regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
+		images = []
+		logger.debug("list_images in %s, pattern %s" % (self.publicdata.name, pattern))
+		for image in self._images:
+			if ((image.name and regex.match(image.name)) or
+				(image.id and regex.match(image.id)) or
+				(image.extra['owner_id'] and regex.match(image.extra['owner_id']))):
+				i = Cloud_Data_Image()
+				i.name = image.name
+				i.extra = image.extra
+				i.id = image.id
+				i.driver = image.driver.name
+				i.uuid = image.uuid
+
+				images.append(i)
+
+		return images
 
 	def _boot_instance(self, instance):
 		self._exec_libcloud(lambda: self.driver.ex_start_node(instance))

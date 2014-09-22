@@ -218,10 +218,12 @@ class CloudConnection(object):
 		return keypairs
 
 	def list_images(self, pattern="*"):
+		# Expand pattern with *
+		pattern = "*%s*" % pattern
 		regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
 		images = []
 		for image in self._images:
-			if image.name and regex.match(image.name) is not None:
+			if image.name and regex.match(image.name):
 				i = Cloud_Data_Image()
 				i.name = image.name
 				i.extra = image.extra
