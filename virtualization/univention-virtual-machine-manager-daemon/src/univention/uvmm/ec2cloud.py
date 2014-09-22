@@ -171,15 +171,10 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 				i.image = instance.extra['image_id']
 				i.private_ips = instance.private_ips
 				i.public_ips = instance.public_ips
-				i.size = instance.size
+				i.size = i.u_size_name = instance.size
 				i.state = LIBCLOUD_EC2_UVMM_STATE_MAPPING[instance.state]
 				i.uuid = instance.uuid
 				i.available = self.publicdata.available
-
-				# TODO: information not directly provided by libcloud:
-				# size_temp = [s for s in self._sizes if s.id == instance.extra['flavorId']]
-				# if size_temp:
-				# 	i.u_size_name = size_temp[0].name
 
 				instances.append(i)
 
@@ -227,6 +222,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 			i.disk = size.disk
 			i.bandwidth = size.bandwidth
 			i.price = size.price
+			i.u_displayname = "%s - %s" % (i.id, i.name)
 
 			sizes.append(i)
 
@@ -250,7 +246,6 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		pattern = "*%s*" % pattern
 		regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
 		images = []
-		logger.debug("list_images in %s, pattern %s" % (self.publicdata.name, pattern))
 		for image in self._images:
 			if ((image.name and regex.match(image.name)) or
 				(image.id and regex.match(image.id)) or

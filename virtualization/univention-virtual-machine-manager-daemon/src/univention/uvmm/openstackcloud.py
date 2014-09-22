@@ -258,6 +258,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			i.bandwidth = size.bandwidth
 			i.price = size.price
 			i.vcpus = size.vcpus
+			i.u_displayname = "%s" % i.name
 
 			sizes.append(i)
 

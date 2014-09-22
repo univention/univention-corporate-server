@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (4.0.0-13) unstable; urgency=low
+
+  * Host and Port field have been removed from the
+    EC2 connection wizard (Bug #35943)
+  * Set and send a displayname for instance sizes
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 22 Sep 2014 14:42:00 +0200
+
 univention-virtual-machine-manager-daemon (4.0.0-12) unstable; urgency=low
 
   * Add search by image id and image owner for EC2 connections

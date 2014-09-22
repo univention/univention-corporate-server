@@ -39,7 +39,6 @@ define([
 	"umc/widgets/TitlePane",
 	"umc/widgets/TextArea",
 	"umc/widgets/TextBox",
-	"umc/widgets/PasswordInputBox",
 	"umc/widgets/Text",
 	"umc/widgets/ComboBox",
 	"umc/widgets/CheckBox",
@@ -50,7 +49,7 @@ define([
 	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Memory, Observable, MappedTextBox, tools, dialog, TitlePane, TextArea, TextBox, PasswordInputBox, Text, ComboBox, CheckBox, HiddenInput, Wizard, Form, ContainerWidget, DriveGrid, types, _) {
+], function(declare, lang, array, Memory, Observable, MappedTextBox, tools, dialog, TitlePane, TextArea, TextBox, Text, ComboBox, CheckBox, HiddenInput, Wizard, Form, ContainerWidget, DriveGrid, types, _) {
 
 	return declare("umc.modules.uvmm.CloudConnectionWizard", [ Wizard ], {
 		autoValidate: true,
@@ -162,7 +161,6 @@ define([
 						'region',
 						'access_id',
 						'password',
-						['host', 'port'],
 						'secure',
 					],
 					widgets: 
@@ -173,7 +171,7 @@ define([
 					required: true
 				}, {
 					name: 'password',
-					type: PasswordInputBox,
+					type: TextBox,
 					label: 'Secret Access Key',
 					required: true
 				}, {
@@ -192,20 +190,10 @@ define([
 					label: 'EC2 Region',
 					required: true
 				}, {
-					name: 'host',
-					type: TextBox,
-					label: 'host',
-					required: false
-				}, {
-					name: 'port',
-					type: TextBox,
-					label: 'port',
-					required: false
-				}, {
 					name: 'secure',
 					type: CheckBox,
 					label: 'secure',
-					value: false,
+					value: true,
 					required: false
 				}
 				]}]};
