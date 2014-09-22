@@ -1,3 +1,9 @@
+ucs-test (5.0.10-1) unstable; urgency=low
+
+  * Bug #35969: Fix unsigned source file test
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 22 Sep 2014 13:06:05 +0200
+
 ucs-test (5.0.9-2) unstable; urgency=medium
 
   * ucs-test-modules-all: added dependency to ucs-test-udm-
