@@ -3,10 +3,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: univention-syste-setup 4.0\n"
+"Project-Id-Version: univention-system-setup 4.0\n"
 "Report-Msgid-Bugs-To: Univention GmbH <packages@univention.de>\n"
 "POT-Creation-Date: 2014-09-19 14:40+0200\n"
-"PO-Revision-Date: 2014-09-19 14:41+0200\n"
+"PO-Revision-Date: 2014-09-22 08:21+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: German\n"
@@ -30,13 +30,13 @@ msgstr "Starte Univention System Setup..."
 #. Description
 #: ../di-univention-system-setup.templates:3001
 msgid "Setting up boot loader GRUB..."
-msgstr "Configurierte Bootload GRUB..."
+msgstr "Konfiguriere Bootload GRUB..."
 
 #. Type: text
 #. Description
 #: ../di-univention-system-setup.templates:4001
-msgid "Generating UCR configuration files..."
-msgstr "Generiere UCR Konfigurationsdateien..."
+msgid "Generating configuration files..."
+msgstr "Generiere Konfigurationsdateien..."
 
 #. Type: text
 #. Description

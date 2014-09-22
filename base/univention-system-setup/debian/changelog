@@ -1,3 +1,9 @@
+univention-system-setup (8.0.41-3) unstable; urgency=low
+
+  * Bug #35921: Adapt debconf texts
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 22 Sep 2014 08:22:18 +0200
+
 univention-system-setup (8.0.41-2) unstable; urgency=low
 
   * Bug #33397: Delay install of univention-grub
