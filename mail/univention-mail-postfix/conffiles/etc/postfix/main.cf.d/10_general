@@ -20,7 +20,6 @@ else:
 # some basic path definitions
 command_directory = /usr/sbin
 daemon_directory = /usr/lib/postfix
-program_directory = /usr/lib/postfix
 
 
 # some basic mail system settings

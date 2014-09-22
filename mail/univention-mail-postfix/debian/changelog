@@ -1,3 +1,9 @@
+univention-mail-postfix (9.0.0-4) unstable; urgency=low
+
+  * made TLS Forward Secrecy more visible/configurable (Bug #35923)
+
+ -- Felix Botner <botner@univention.de>  Mon, 22 Sep 2014 15:27:35 +0200
+
 univention-mail-postfix (9.0.0-3) unstable; urgency=low
 
   * moved hosteddomains.py to u-m-postfix (Bug #35232) 
@@ -471,7 +477,7 @@ univention-mail-postfix (6.0.12-1) unstable; urgency=low
 univention-mail-postfix (6.0.11-1) unstable; urgency=low
 
   * added dependecy to univention-mail-cyrus for 
-    univentiion-mail-server (Bug #22151)
+    univention-mail-server (Bug #22151)
 
  -- Felix Botner <botner@univention.de>  Wed, 21 Sep 2011 16:52:59 +0200
 

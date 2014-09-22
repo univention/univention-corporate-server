@@ -58,6 +58,11 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.15; 
 	fi
 fi
 
+# (re)create DH parameter
+openssl gendh -out /etc/postfix/dh_512.pem.tmp -2 512 && mv /etc/postfix/dh_512.pem.tmp /etc/postfix/dh_512.pem
+openssl gendh -out /etc/postfix/dh_1024.pem.tmp -2 1024 && mv /etc/postfix/dh_1024.pem.tmp /etc/postfix/dh_1024.pem
+openssl gendh -out /etc/postfix/dh_2048.pem.tmp -2 2048 && mv /etc/postfix/dh_2048.pem.tmp /etc/postfix/dh_2048.pem
+
 univention-config-registry set \
 	postfix/autostart?yes \
 	mail/postfix/virtual/enabled?no \
@@ -74,7 +79,13 @@ univention-config-registry set \
 	mail/postfix/ldaptable/starttls?yes \
 	mail/postfix/ldaptable/tlsrequirecert?yes \
 	mail/postfix/ldaptable/tlscacertfile?"/etc/univention/ssl/ucsCA/CAcert.pem" \
-	mail/postfix/ldaptable/debuglevel?0
+	mail/postfix/ldaptable/debuglevel?0 \
+	mail/postfix/smtpd/tls/dh1024/param/file?/etc/postfix/dh_2048.pem \
+	mail/postfix/smtpd/tls/dh512/param/file?/etc/postfix/dh_512.pem \
+	mail/postfix/smtpd/tls/eecdh/grade?strong \
+	mail/postfix/tls/preempt/cipherlist?yes \
+	mail/postfix/smtpd/tls/loglevel?1 \
+	mail/postfix/smtp/tls/loglevel?1
 
 eval "$(univention-config-registry shell)"
 
