@@ -306,9 +306,13 @@ mkdsc () { # Create dummy source package [name [version [arch [dir]]]]
 	EOF
 	: >"${BASEDIR}/${name}-${version}/debian/copyright"
 	(cd "${BASEDIR}" && dpkg-source -b "${pkgname}-${version}") >&3 2>&3
-	DSC="${BASEDIR}/${name}_${version}.dsc"
 	TGZ="${BASEDIR}/${name}_${version}.tar.gz"
-	[ -z "${dir}" ] || cp "${DSC}" "${TGZ}" "${dir}/"
+	DSC="${BASEDIR}/${name}_${version}.dsc"
+	if mkgpg
+	then
+		gpgsign "${DSC}"
+	fi
+	[ -z "${dir}" ] || mv "${DSC}" "${TGZ}" "${dir}/"
 }
 
 mkpkg () { # Create Package files for ${1}. Optional arguments go to dpkg-scanpackages.
@@ -335,19 +339,44 @@ mkpkg () { # Create Package files for ${1}. Optional arguments go to dpkg-scanpa
 		release . >Release.tmp 2>&3
 	mv Release.tmp Release
 
-	gpgsign <Release >Release.gpg
+	gpgsign Release
 	cd "${OLDPWD}"
 }
 
 gpgsign () { # sign file
 	mkgpg
+	local out sign
+	case "${1:-}" in
+	Release|*.sh)
+		sign=--detach-sign
+		out="${1}.gpg"
+		cp "$1" "${GPG_DIR}/in"
+		;;
+	""|-)
+		sign=--detach-sign
+		out="$2"
+		cat "$1" >"${GPG_DIR}/in"
+		;;
+	*.dsc)
+		sign=--clearsign
+		out="${1}"
+		(cat "$1" && echo "") >"${GPG_DIR}/in"
+		;;
+	*)
+		echo "Failed to sign '${1}'" >&2
+		return 1
+		;;
+	esac
+	rm -f "${GPG_DIR}/out"
 	chroot "${GPG_DIR}" "${GPG_BIN}" \
 		--batch \
 		--keyring "${GPGPUB#${GPG_DIR}}" \
 		--secret-keyring "${GPGSEC#${GPG_DIR}}" \
 		--armor \
 		--default-key "${GPGID}" \
-		--detach-sign
+		"${sign}" \
+		--output out in
+	cp "${GPG_DIR}/out" "${out}"
 }
 
 mksrc () { # Create Sources files for ${1}. Optional arguments go to dpkg-scansources.
@@ -358,6 +387,23 @@ mksrc () { # Create Sources files for ${1}. Optional arguments go to dpkg-scanso
 	dpkg-scansources "${@}" "${subdir}" > "${dir}/Sources" 2>&3
 	gzip -n -9 <"${dir}/Sources" >"${dir}/Sources.gz"
 	bzip2 -9 <"${dir}/Sources" >"${dir}/Sources.bz2"
+	cd "${OLDPWD}"
+
+	case "${_update_secure_apt}" in
+		0|false|no|off) return 0 ;;
+	esac
+	mkgpg
+	cd "${dir}"
+	rm -f Release Release.tmp Release.gpg
+	apt-ftparchive \
+		-o "APT::FTPArchive::Release::Origin=Univention" \
+		-o "APT::FTPArchive::Release::Label=Univention" \
+		-o "APT::FTPArchive::Release::Version=${subdir%%/*}" \
+		-o "APT::FTPArchive::Release::Codename=${subdir}" \
+		release . >Release.tmp 2>&3
+	mv Release.tmp Release
+
+	gpgsign Release
 	cd "${OLDPWD}"
 }
 
@@ -413,7 +459,7 @@ mksh () { # Create shell scripts $@ in $1
 		esac
 		if mkgpg
 		then
-			gpgsign <"${dir}/${1}.sh" >"${dir}/${1}.sh.gpg"
+			gpgsign "${dir}/${1}.sh"
 		fi
 		shift
 	done
