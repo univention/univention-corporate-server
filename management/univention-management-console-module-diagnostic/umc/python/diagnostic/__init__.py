@@ -48,9 +48,33 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 
-class Plugins(object):
+class Problem(Exception):
+	def __init__(self, message, **kwargs):
+		super(Problem, self).__init__(message)
+		self.kwargs = kwargs
+
+class Conflict(Problem): pass
+class Warning(Problem): pass
+class Critical(Problem): pass
+
+
+class Instance(Base, ProgressMixin):
 
 	PLUGIN_DIR = os.path.dirname(plugins.__file__)
+
+	def init(self):
+		self.modules = {}
+		self.load()
+
+	@simple_response
+	def run(self, plugin, **kwargs):
+		plugin = self.get(plugin)
+		return plugin.execute(**kwargs) # TODO: thread
+
+	@sanitize(pattern=PatternSanitizer(default='.*'))
+	@simple_response
+	def query(self, pattern):
+		return [plugin.dict for plugin in self if plugin.match(pattern)]
 
 	@property
 	def plugins(self):
@@ -58,17 +82,13 @@ class Plugins(object):
 			if plugin.endswith('.py') and plugin != '__init__.py':
 				yield plugin[:-3]
 
-	def __init__(self):
-		self.modules = {}
-		self.load()
-
 	def load(self):
 		for plugin in self.plugins:
 			try:
 				self.modules[plugin] = Plugin(plugin)
-			except ImportError:
+			except ImportError as exc:
+				MODULE.error('Could not load plugin %r: %r' % (plugin, exc))
 				raise
-				pass
 
 	def get(self, plugin):
 		return self.modules[plugin]
@@ -81,24 +101,41 @@ class Plugin(object):
 
 	@property
 	def title(self):
+		u"""A title for the problem"""
 		return getattr(self.module, 'title', '')
 
 	@property
 	def description(self):
+		u"""A description of the problem and how to solve it"""
 		return getattr(self.module, 'description', '')
 
 	@property
-	def last_result(self):
-		return self.log.last_result
+	def buttons(self):
+		u"""Buttons which are displayed e.g. to automatically solve the problem"""
+		return getattr(self.module, 'buttons', [])
 
 	@property
-	def status(self):
-		return self.log.status
+	def popups(self):
+		u"""Buttons with pop ups"""
+		return getattr(self.module, 'popups', [])
+
+	@property
+	def umc_modules(self):
+		u"""References to UMC modules which can help solving the problem.
+			(module, flavor, properties)
+		"""
+		return getattr(self.module, 'umc_modules', [])
+
+	@property
+	def links(self):
+		u"""Links to e.g. related SDB articles
+			(url, link_name)
+		"""
+		return getattr(self.module, 'links', [])
 
 	def __init__(self, plugin):
 		self.plugin = plugin
 		self.load()
-		self.log = PluginLog(str(self))
 
 	def load(self):
 		self.module = __import__(
@@ -107,119 +144,109 @@ class Plugin(object):
 			level=0
 		)
 
+	def execute(self, *args, **kwargs):
+		success = True
+		errors = {}
+		try:
+			try:
+				result = self.module.run(*args, **kwargs)
+				if isinstance(result, dict):
+					errors.update(result)
+			except Conflict:
+				raise
+			except:
+				raise Conflict(traceback.format_exc())
+		except Conflict as exc:
+			success = False
+			errors.update(exc.kwargs)
+
+		result = dict(
+			success=success
+		)
+		result.update(self.dict)
+		result.update(errors)
+		return result
+
 	def match(self, pattern):
 		return pattern.match(self.title) or pattern.match(self.description)
 
 	def __str__(self):
 		return '%s' % (self.plugin,)
 
-	def execute(self):
-		try:
-			success, stdout, stderr = self.module.run()
-		except:
-			success = False
-			stdout = ''
-			stderr = traceback.format_exc()
-
-		self.log.update(success, stdout, stderr)
-
-
-class PluginLog(object):
-
 	@property
-	def last_result(self):
-		return self.load()
-
-	@property
-	def status(self):
-		return self.load(header_only=True)
-
-	def __init__(self, plugin):
-		self.path = '/var/log/univention/management-console-module-diagnostic-%s.log' % (plugin,)
-
-	def load(self, header_only=False):
-		if not os.path.exists(self.path):
-			return {}
-
-		s = os.stat(self.path)
-		timestamp = strftime('%Y-%m-%d %H:%M:%S', gmtime(s.st_mtime))
-
-		with open(self.path) as fd:
-			line = lambda x: fd.readline().rpartition(x)[2].strip()
-			result = int(line('result: '))
-			summary = line('summary: ')
-			output = None
-			if not header_only:
-				output = ''.join(fd.readlines())
-
+	def dict(self):
 		return dict(
-			timestamp=timestamp,
-			result=result,
-			output=output,
-			summary=summary,
+			id=str(self),
+			plugin=str(self),
+			title=self.title,
+			description=self.description,
+			umc_modules=self.umc_modules,
+			links=self.links,
+			buttons=self.buttons,
+			popups=self.popups,
 		)
 
-	def update(self, success, stdout='', stderr=''):
-		'''Rewrite log file with the given success information'''
 
-		stdout = stdout.strip()
-		stderr = stderr.strip()
-
-		with open(self.path, 'w') as log:
-			write = lambda l: log.write('%s\n' % (l,))
-
-			write('result: %s' % (int(not success)))
-
-			summary, _, stdout = stdout.partition('\n')
-			_, sep, summary = summary.rpartition('summary: ')
-			if not sep:
-				stdout = '%s%s' % (summary, stdout)
-				summary = ''
-
-			if summary:
-				write('\nsummary: %s' % (summary,))
-
-			if stdout:
-				write('\n\n===== OUTPUT =====')
-				write(stdout)
-
-			if stderr:
-				write('\n\n==== ERRORS =====')
-				write(stderr)
-
-
-class Instance(Base, ProgressMixin):
-
-	def init(self):
-		self.plugins = Plugins()
-
-	@simple_response(with_progress=True)
-	def run(self, plugin):
-		plugin = self.plugins.get(plugin)
-		return plugin.execute()
-
-	@sanitize(pattern=PatternSanitizer())
-	@simple_response
-	def query(self, pattern):
-		result = []
-		for plugin in self.plugins:
-			if not plugin.match(pattern):
-				continue
-
-			result.append(dict(
-				plugin=str(plugin),
-				title=plugin.title,
-				description=plugin.description,
-				**plugin.status
-			))
-		return result
-
-	@simple_response
-	def get(self, plugin):
-		plugin = self.plugins.get(plugin)
-		return dict(
-			plugin=str(plugin),
-			title=plugin.title,
-			description=plugin.description,
-			**plugin.last_result
-		)
+#class PluginLog(object):
+#
+#	@property
+#	def last_result(self):
+#		return self.load()
+#
+#	@property
+#	def status(self):
+#		return self.load(header_only=True)
+#
+#	def __init__(self, plugin):
+#		self.path = '/var/log/univention/management-console-module-diagnostic-%s.log' % (plugin,)
+#
+#	def load(self, header_only=False):
+#		if not os.path.exists(self.path):
+#			return {}
+#
+#		s = os.stat(self.path)
+#		timestamp = strftime('%Y-%m-%d %H:%M:%S', gmtime(s.st_mtime))
+#
+#		with open(self.path) as fd:
+#			line = lambda x: fd.readline().rpartition(x)[2].strip()
+#			result = int(line('result: '))
+#			summary = line('summary: ')
+#			output = None
+#			if not header_only:
+#				output = ''.join(fd.readlines())
+#
+#		return dict(
+#			timestamp=timestamp,
+#			result=result,
+#			success=result==0,
+#			output=output,
+#			summary=summary,
+#		)
+#
+#	def update(self, success, stdout='', stderr=''):
+#		'''Rewrite log file with the given success information'''
+#
+#		stdout = stdout.strip()
+#		stderr = stderr.strip()
+#
+#		with open(self.path, 'w') as log:
+#			write = lambda l: log.write('%s\n' % (l,))
+#
+#			write('result: %s' % (int(not success)))
+#
+#			summary, _, stdout = stdout.partition('\n')
+#			_, sep, summary = summary.rpartition('summary: ')
+#			if not sep:
+#				stdout = '%s%s' % (summary, stdout)
+#				summary = ''
+#
+#			if summary:
+#				write('\nsummary: %s' % (summary,))
+#
+#			if stdout:
+#				write('\n\n===== OUTPUT =====')
+#				write(stdout)
+#
+#			if stderr:
+#				write('\n\n==== ERRORS =====')
+#				write(stderr)
