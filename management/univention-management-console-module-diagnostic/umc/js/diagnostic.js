@@ -34,212 +34,172 @@ define([
 	'dojo/_base/array',
 	'dojo/promise/all',
 	'dojo/on',
+	"dojo/dom-class",
+	"dojo/dom-construct",
+	"dojo/Deferred",
+	"dojox/html/styles",
 	'umc/dialog',
+	'umc/app',
 	'umc/tools',
-	'umc/widgets/Grid',
 	'umc/widgets/Page',
-	'umc/widgets/SearchForm',
 	'umc/widgets/Module',
 	'umc/widgets/TextBox',
 	'umc/widgets/ComboBox',
+	"umc/widgets/GalleryPane",
+	"dojo/data/ObjectStore",
+	"dojo/store/Memory",
+	"dojo/store/Observable",
+	"umc/widgets/ProgressBar",
+	"umc/widgets/Button",
+	"put-selector/put",
 	'umc/modules/diagnostic/DetailPage',
 	'umc/i18n!umc/modules/diagnostic'
-], function(declare, lang, array, all, on, dialog, tools, Grid, Page, SearchForm, Module, TextBox, ComboBox, DetailPage, _) {
+], function(declare, lang, array, all, on, domClass, domConstruct, Deferred, styles, dialog, app, tools, Page, Module, TextBox, ComboBox, GalleryPane, ObjectStore, Memory, Observable, ProgressBar, Button, put, DetailPage, _) {
+
+	styles.insertCssRule('.diagnosticGrid h1', 'margin-bottom: 0');
+	styles.insertCssRule('.diagnosticGrid .dijitButtonText', 'font-size: 1em');
+
+	GalleryPane = declare([GalleryPane], {
+
+		getItemName: function(item) {
+			return item.title;
+		},
+
+		getButtonCallback: function(button, item) {
+			return lang.hitch(this, function() {
+				this.module._runDiagnose(item, {action: button.action});
+			});
+		},
+
+		renderRow: function(item) {
+			var div = put('div.diagnosticGrid');
+			put(div, 'h1', item.title);
+			put(div, 'div', item.description);
+
+			array.forEach(item.umc_modules, function(link) {
+				link = app.linkToModule(link[0], link[1]);
+				if (link) {
+					domConstruct.create('div', {innerHTML: link}, div);
+				}
+			});
+
+			array.forEach(item.links, function(link) {
+				domConstruct.create('a', {href: link[0], innerHTML: link[1] || link[0]}, div);
+			});
+
+			var buttons = put(div, 'div');
+			array.forEach(item.buttons, lang.hitch(this, function(button) {
+				new Button({
+					label: button.label,
+					callback: this.getButtonCallback(button, item)
+				}).placeAt(buttons);
+			}));
+
+			return div;
+		}
+	});
+
 	return declare('umc.modules.diagnostic',  Module, {
 
 		_grid: null,
 		_overviewPage: null,
 		_detailPage: null,
 		idProperty: 'plugin',
-
-		timestampFormatter: function(value) {
-			if (!value) {
-				return _('Never');
-			}
-			return value;
-		},
-
-		summaryFormatter: function(value) {
-			if (!value) {
-				return _('-----');
-			}
-			return value;
-		},
-
-		resultFormatter: function(value) {
-			if (value == '0') {
-				return '<span style="color:green">' + _('Successful') + '</span>';
-			}
-			else if (value == '1') {
-				return '<span style="color:orange">' + _('Problems detected') + '</span>';
-			}
-			else if (value == '-1') {
-				return '<span style="color:red">' + _('Execution failed') + '</span>';
-			}
-			return _('-----');
-		},
+		standbyOpacity: 0.5,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this.standbyOpacity = 1;
-			this.fixModuleStore();
-		},
-
-		fixModuleStore: function() {
-			this.moduleStore.get = lang.hitch(this.moduleStore, function(id, handleErrors) {
-				var data = {};
-				data[this.idProperty] = id;
-				return this._genericCmd('get', data, handleErrors);
-			});
-			this.moduleStore.put = lang.hitch(this.moduleStore, function(object, options, handleErrors) {
-				return this._genericCmd('put', object, handleErrors);
-			});
-			this.moduleStore.remove = lang.hitch(this.moduleStore, function(object, options, handleErrors) {
-				return this._genericCmd('delete', object, handleErrors);
-			});
-			this.moduleStore._genericMultiCmd = lang.hitch(this.moduleStore, function(type, params, handleErrors) {
-				var args = arguments;
-				var that = this;
-				return all(array.map(params, function(param) {
-					return that.inherited('_genericMultiCmd', args, [type, param, handleErrors]);
-				}));
-			});
-			this.moduleStore._genericCmd = lang.hitch(this.moduleStore, function(type, param, handleErrors) {
-				if (this._doingTransaction) {
-					this._addTransactions(type, [param]);
-				}
-				else {
-					return this._genericMultiCmd(type, [param], handleErrors).then(function(results) {
-						if (results && results instanceof Array) {
-							return results[0];
-						}
-					});
-				}
-			});
 		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this.standby(true);
-
 			this._overviewPage = new Page({
 				headerText: this.description,
-				helpText: ''
+				helpText: _('Within this module the system can be anaylzed for various known problems. ') +
+				_('If the system is able to automatically repair found problems it offers the function in the context menu. ') +
+				_('Otherwise the problems can be solved manually with help of the displayed links to articles by using the linked UMC modules. ')
 			});
-
 			this.addChild(this._overviewPage);
 
-			var actions = [{
-				name: 'run',
-				label: _('Run'),
-				description: _('Run selected tests'),
-				iconClass: 'umcIconPlay',
-				isStandardAction: true,
-				isMultiAction: true,
-				callback: lang.hitch(this, '_runTests')
-			}, {
-				name: 'details',
-				label: _('Details'),
-				description: _('View details'),
-				iconClass: 'umcIconView',
-				isStandardAction: true,
-				isMultiAction: false,
-				callback: lang.hitch(this, '_viewDetails')
-			}, {
-				name: 'submit',
-				label: _('Submit'),
-				description: _('Submit resulsts to Univention Support'),
-				iconClass: 'umcIconReport',
-				isStandardAction: true,
-				isMultiAction: true,
-				callback: lang.hitch(this, '_submitResults')
-			}];
+//			this._runButton = new Button({
+//				label: _('Start full diagnose'),
+//				callback: lang.hitch(this, '_runFullDiagnose'),
+//				region: 'nav'
+//			});
 
-			var columns = [{
-				name: 'title',
-				label: _('Title'),
-				width: '35%'
-			}, {
-				name: 'timestamp',
-				label: _('Last executed'),
-				width: '20%',
-				formatter: this.timestampFormatter
-			}, {
-				name: 'summary',
-				label: _('Problem summary'),
-				width: '35%',
-				formatter: this.summaryFormatter
-			}, {
-				name: 'result',
-				label: _('Last result'),
-				width: '10%',
-				formatter: this.resultFormatter
-			}];
-
-			this._grid = new Grid({
-				actions: actions,
-				defaultAction: 'details',
-				columns: columns,
-				moduleStore: this.moduleStore,
-				query: {pattern: ''}
+			this._grid = new GalleryPane({
+				store: this._store,
+				query: function(item) {
+					return !item.success;
+				},
+				region: 'main'
 			});
 
+//			this._overviewPage.addChild(this._runButton);
+//			this._overviewPage.addChild(this._progressBar);
 			this._overviewPage.addChild(this._grid);
-
-			this._searchForm = new SearchForm({
-				region: 'top',
-				widgets: [{
-					type: TextBox,
-					name: 'pattern',
-					description: _('Specifies the substring pattern which is searched for in the test names'),
-					label: _('Search pattern')
-				}],
-				layout: [['pattern', 'submit']],
-				onSearch: lang.hitch(this, function(values) {
-					this._grid.filter(values);
-				})
-			});
-
-			on.once(this._searchForm, 'valuesInitialized', lang.hitch(this, function() {
-				// turn off the standby animation as soon as all form values have been loaded
-				this.standby(false);
-			}));
-
-			this._overviewPage.addChild(this._searchForm);
 			this._overviewPage.startup();
 
-		},
-
-		_runTests: function(selectedPlugins) {
-			this.standbyDuring(all(array.map(selectedPlugins, lang.hitch(this, function(plugin) {
-				return this.umcpCommand('diagnostic/run', {plugin: plugin});
-			})))).then(lang.hitch(this, function() {
-				this._grid.filter({pattern: ''});
+			this.load().then(lang.hitch(this, function() {
+				this._runFullDiagnose();
 			}));
 		},
 
-		_viewDetails: function(ids, items) {
-			var detailPage = new DetailPage({
-				plugin: ids[0],
-				moduleStore: this.moduleStore,
-				timestampFormatter: this.timestampFormatter,
-				summaryFormatter: this.summaryFormatter,
-				resultFormatter: this.resultFormatter
-			});
-			this.own(detailPage);
-
-			detailPage.on('close', lang.hitch(this, function() {
-				this.selectChild(this._overviewPage);
-				this.removeChild(detailPage);
+		load: function() {
+			return this.standbyDuring(this.umcpCommand('diagnostic/query')).then(lang.hitch(this, function(response) {
+				this._store = new Observable(new Memory({
+					idProperty: 'plugin',
+					data: response.result
+				}));
+				this._grid.set('store', this._store);
 			}));
-
-			this.addChild(detailPage);
-			this.selectChild(detailPage);
 		},
 
-		_submitResults: function() {
-			dialog.alert(_('Feature not implemented yet'));
+		_runFullDiagnose: function() {
+			var plugins = this._grid.store.query();
+			this._stepInc = 100 / plugins.length;
+
+			this._progressBar = new ProgressBar({});
+			this._progressBar.setInfo(_('Running full diagnose...'), undefined, Infinity);
+
+			var deferred = new Deferred();
+			this._progressBar.feedFromDeferred(deferred);
+
+			this.standbyDuring(all(array.map(plugins, lang.hitch(this, function(plugin) {
+
+				this._grid.store.put(lang.mixin(plugin, {
+					'status': 'loading'
+				}));
+				this._grid.set('query', this._grid.query);
+
+				return this._runDiagnose(plugin).then(lang.hitch(this, function() {
+					var percentage = this._progressBar._progressBar.get('value') + this._stepInc;
+					deferred.progress({
+						message: _('Diagnose of "%s" was successful', plugin.title),
+						percentage: percentage
+					});
+				}));
+			}))), this._progressBar).then(lang.hitch(this, function() {
+				this.load();
+			}));
+		},
+
+		_runSingleDiagnose: function(plugin, opts) {
+			this.standbyDuring(this._runDiagnose(plugin, opts));
+		},
+
+		_runDiagnose: function(plugin, opts) {
+			var run = this.umcpCommand('diagnostic/run', lang.mixin({plugin: plugin.id}, opts));
+			run.then(lang.hitch(this, function(result) {
+				this._grid.store.put(lang.mixin(plugin, result, {
+					'status': 'executed'
+				}));
+
+				this._grid.set('query', this._grid.query);
+			}));
+			return run;
 		}
+
 	});
 });

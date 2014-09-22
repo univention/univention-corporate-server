@@ -1,25 +1,17 @@
 #!/usr/bin/python2.7
 
 from subprocess import Popen, PIPE
+from univention.management.console.modules.diagnostic import Conflict
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-title = _('Consistency of UCR templates')
-description = _('Verifys whether all installed UCR templates are in their original state')
+title = _('Custom modified UCR templates')
+description = _('Some Univention Config Registry templates are not in their original state.')
 
 def run():
-	process = Popen(['/bin/bash', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
-	stdout, stderr = process.communicate('''
-#!/bin/bash
-output=$("univention-check-templates" 2>/dev/null)
-if [ $? != 0 ]; then
-	echo -e 'The following UCR templates have been modified, moved or are missing:\n'
-	for line in $output; do
-		echo $line
-	done
-	echo 'summary: Modified UCR templates found'
-	exit 1
-fi
-echo "No modified UCR templates found"''')
-	return not process.returncode, stdout, stderr
+	import time
+	time.sleep(2)
+	process = Popen(['/usr/sbin/univention-check-templates'], stdout=PIPE, stderr=PIPE)
+	if process.returncode:
+		raise Conflict('%s%s' (stdout, stderr))

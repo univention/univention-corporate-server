@@ -48,10 +48,12 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 
+_('Problem'); _('Conflict'); _('Warning'); _('Critical')
 class Problem(Exception):
 	def __init__(self, message, **kwargs):
 		super(Problem, self).__init__(message)
 		self.kwargs = kwargs
+		kwargs['type'] = _(self.__class__.__name__)
 
 class Conflict(Problem): pass
 class Warning(Problem): pass
@@ -68,6 +70,7 @@ class Instance(Base, ProgressMixin):
 
 	@simple_response
 	def run(self, plugin, **kwargs):
+		MODULE.error('### %r' % (kwargs,))
 		plugin = self.get(plugin)
 		return plugin.execute(**kwargs) # TODO: thread
 
@@ -112,7 +115,9 @@ class Plugin(object):
 	@property
 	def buttons(self):
 		u"""Buttons which are displayed e.g. to automatically solve the problem"""
-		return getattr(self.module, 'buttons', [])
+		buttons = list(getattr(self.module, 'buttons', []))
+		buttons.append({'label': _('Test again')})
+		return buttons
 
 	@property
 	def popups(self):
