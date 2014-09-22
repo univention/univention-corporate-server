@@ -115,6 +115,14 @@
 				(<ulink url="&ucsbug;35935">Bug 35935</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
+		<itemizedlist>
+			<listitem><simpara>
+				The kernel boot options vga is deprecated and has been 
+				replaced with grub's gfxpayload to control the video mode 
+				in which the Linux kernel starts up
+				(<ulink url="&ucsbug;28604">Bug 28604</ulink>).
+			</simpara></listitem>
+		</itemizedlist>
 	</section>
 </section>
 
