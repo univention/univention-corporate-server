@@ -512,6 +512,10 @@
 		the amd64 platform. Previously it was always shipped as 32 bit application
 		(<ulink url="&ucsbug;35266">Bug 35266</ulink>).
       </simpara></listitem>
+      <listitem><simpara>
+		The web browser <package>firefox</package> was updated to version 31.1 ESR.
+		(<ulink url="&ucsbug;35702">Bug 35702</ulink>).
+      </simpara></listitem>
 	</itemizedlist>
 </section>
 
