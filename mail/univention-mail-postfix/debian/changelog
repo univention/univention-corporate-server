@@ -1,3 +1,9 @@
+univention-mail-postfix (9.0.0-5) unstable; urgency=low
+
+  * added cron job for re-creating dh parameter files (Bug #35923)  
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Sep 2014 10:57:26 +0200
+
 univention-mail-postfix (9.0.0-4) unstable; urgency=low
 
   * made TLS Forward Secrecy more visible/configurable (Bug #35923)

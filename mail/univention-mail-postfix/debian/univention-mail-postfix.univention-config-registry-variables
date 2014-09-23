@@ -292,3 +292,9 @@ Description[de]=TLS Loglevel for den Postfix SMTP Server.
 Description[en]=Enable additional Postfix SMTP server logging of TLS activity.
 Type=int
 Categories=service-mail
+
+[mail/postfix/cron/recreate/dh/parameter]
+Description[de]=Cronjob Intervall für die Erneuerung der DH Parameter Dateien (Forward Secrecy).
+Description[en]=Cronjob interval for recreating dh parameter files (forward secrecy).
+Type=str
+Categories=service-mail
