@@ -297,3 +297,7 @@ Variables: mail/postfix/policy/listfilter
 User: listfilter
 Group: root
 Mode: 0440
+
+Type: file
+File: etc/cron.d/univention-mail-postfix
+Variables: mail/postfix/cron/recreate/dh/parameter

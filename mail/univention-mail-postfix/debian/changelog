@@ -1,3 +1,9 @@
+univention-mail-postfix (8.0.13-3) unstable; urgency=low
+
+  * added cron job for re-creating dh parameter files (Bug #35923) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Sep 2014 09:30:09 +0200
+
 univention-mail-postfix (8.0.13-2) unstable; urgency=low
 
   * create tmp. dh parameter files (Bug #35923) 

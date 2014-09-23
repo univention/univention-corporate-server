@@ -58,10 +58,9 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.15; 
 	fi
 fi
 
-# (re)create DH keys
-openssl gendh -out /etc/postfix/dh_512.pem.tmp -2 512 && mv /etc/postfix/dh_512.pem.tmp /etc/postfix/dh_512.pem
-openssl gendh -out /etc/postfix/dh_1024.pem.tmp -2 1024 && mv /etc/postfix/dh_1024.pem.tmp /etc/postfix/dh_1024.pem
-openssl gendh -out /etc/postfix/dh_2048.pem.tmp -2 2048 && mv /etc/postfix/dh_2048.pem.tmp /etc/postfix/dh_2048.pem
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.13-3; then
+	/usr/share/univention-mail-postfix/create-dh-parameter-files.sh
+fi
 
 univention-config-registry set \
 	postfix/autostart?yes \
@@ -89,13 +88,15 @@ univention-config-registry set \
 
 eval "$(univention-config-registry shell)"
 
-# set UCR variables only on fresh installations
+# fresh installations
 if [ "$1" = "configure" -a -z "$2" ] ; then
 	univention-config-registry set \
 		mail/postfix/smtpd/restrictions/recipient/10="permit_mynetworks" \
 		mail/postfix/smtpd/restrictions/recipient/30="permit_sasl_authenticated" \
 		mail/postfix/smtpd/restrictions/recipient/50="reject_unauth_destination" \
 		mail/postfix/smtpd/restrictions/recipient/70="reject_unlisted_recipient"
+
+	/usr/share/univention-mail-postfix/create-dh-parameter-files.sh
 fi
 
 for file in transport virtual canonical access relocated; do
