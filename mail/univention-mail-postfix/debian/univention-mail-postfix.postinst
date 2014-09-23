@@ -122,4 +122,7 @@ fi
 # restart to activate new listener module
 /etc/init.d/univention-directory-listener crestart
 
+# reload cron
+invoke-rc.d cron reload
+
 exit 0
