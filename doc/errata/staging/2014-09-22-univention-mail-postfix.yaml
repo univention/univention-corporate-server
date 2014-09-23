@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-mail-postfix
-fix: 3.0.26-68.278.201409161801
+fix: 8.0.13-5.223.201409231059
 version: [3,2]
 desc: |
   Several UCR varibales have been added to univention-mail-postfix
@@ -14,7 +14,9 @@ desc: |
   * mail/postfix/tls/preempt/cipherlist
   * mail/postfix/smtpd/tls/loglevel
   * mail/postfix/smtp/tls/loglevel
+  * mail/postfix/cron/recreate/dh/parameter
   During installation univention-mail-postfix now creates a set of
   DH parameter files for EDH ciphers to use instead of the built-in
-  parameters.
+  parameters and the cronjob /etc/cron.d/univention-mail-postfix has
+  been added to daily recreate the DH parameter files.
 bug: [35923]
