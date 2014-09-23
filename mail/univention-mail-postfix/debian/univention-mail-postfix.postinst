@@ -84,7 +84,8 @@ univention-config-registry set \
 	mail/postfix/smtpd/tls/eecdh/grade?strong \
 	mail/postfix/tls/preempt/cipherlist?yes \
 	mail/postfix/smtpd/tls/loglevel?1 \
-	mail/postfix/smtp/tls/loglevel?1
+	mail/postfix/smtp/tls/loglevel?1 \
+	mail/postfix/cron/recreate/dh/parameter?'0 4 * * *'
 
 eval "$(univention-config-registry shell)"
 
