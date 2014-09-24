@@ -926,7 +926,13 @@ node_list = nodes.list
 
 def group_list():
 	"""Return list of groups for nodes."""
-	return ['default', 'cloudconnections'] # FIXME
+	group = []
+	if (len(node_list('default','*')) > 0):
+		group.append('default')
+	from univention.uvmm.cloudnode import cloudconnections
+	if (len(cloudconnections.list()) > 0):
+		group.append('cloudconnections')
+	return group
 
 def _domain_backup(dom, save=True):
 	"""Save domain definition to backup file."""
