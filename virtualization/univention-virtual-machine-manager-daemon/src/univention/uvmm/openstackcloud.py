@@ -184,6 +184,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 				i.extra = instance.extra
 				i.id = instance.id
 				i.image = instance.extra['imageId']
+				i.key_name = instance.extra['key_name']
 				i.private_ips = instance.private_ips
 				i.public_ips = instance.public_ips
 				i.size = instance.size
@@ -194,8 +195,17 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 				# information not directly provided by libcloud:
 				# instance size-name. Openstack provides sizeinfo in extra['flavorId']
 				size_temp = [s for s in self._sizes if s.id == instance.extra['flavorId']]
+				i.u_size_name = '<Unknown>'
 				if size_temp:
 					i.u_size_name = size_temp[0].name
+
+				image_name = [im for im in self._images if im.id == instance.extra['imageId']]
+				i.u_image_name = '<Unknown>'
+				if image_name:
+					i.u_image_name = image_name[0].name
+
+				# TODO: no libcloud support for querying instance security groups
+				i.secgroups = '<Unknown>'
 
 				instances.append(i)
 

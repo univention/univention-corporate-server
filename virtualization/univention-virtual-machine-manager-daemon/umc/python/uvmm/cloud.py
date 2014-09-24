@@ -340,6 +340,12 @@ class Cloud(object):
 							'description': '%s [%s]' % (inst.u_size_name, inst.state),
 							'node_available': inst.available,
 							'extra': inst.extra,
+							'public_ips': inst.public_ips,
+							'private_ips': inst.private_ips,
+							'u_size_name': inst.u_size_name,
+							'keypair': inst.key_name,
+							'image': inst.u_image_name,
+							'securitygroup': inst.secgroups,
 						})
 				MODULE.info('success: %s, data: %s' % (success, instances))
 				self.finished(request.id, instances)

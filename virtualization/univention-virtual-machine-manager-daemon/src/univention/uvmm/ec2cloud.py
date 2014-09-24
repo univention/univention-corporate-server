@@ -169,12 +169,24 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 				i.extra = extra
 				i.id = instance.id
 				i.image = instance.extra['image_id']
+				i.key_name = instance.extra['key_name']
 				i.private_ips = instance.private_ips
 				i.public_ips = instance.public_ips
-				i.size = i.u_size_name = instance.size
+				i.size = i.u_size_name = instance.extra['instance_type']
 				i.state = LIBCLOUD_EC2_UVMM_STATE_MAPPING[instance.state]
 				i.uuid = instance.uuid
 				i.available = self.publicdata.available
+
+				# information not directly provided by libcloud:
+				image_name = [im for im in self._images if im.id == instance.image]
+				i.u_image_name = '<Unknown>'
+				if image_name:
+					i.u_image_name = image_name[0].name
+
+				secgroups = [s['group_name'] for s in instance.extra['groups']]
+				i.secgroups = '<Unknown>'
+				if secgroups:
+					i.secgroups = '; '.join(secgroups)
 
 				instances.append(i)
 

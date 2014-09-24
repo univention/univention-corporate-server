@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.0-15) unstable; urgency=low
+
+  * Show additional instance details on 'edit instance' page (Bug #35944)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 24 Sep 2014 13:01:51 +0200
+
 univention-virtual-machine-manager-daemon (4.0.0-14) unstable; urgency=low
 
   * Update instance wizard (Bug #35942)

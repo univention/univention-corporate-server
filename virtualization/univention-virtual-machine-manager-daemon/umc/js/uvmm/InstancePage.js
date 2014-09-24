@@ -97,11 +97,38 @@ define([
 					name: 'label',
 					type: TextBox,
 					label: _('Name')
+				}, {
+					name: 'public_ips',
+					type: TextBox,
+					label: _('Public IP address')
+				}, {
+					name: 'private_ips',
+					type: TextBox,
+					label: _('Private IP addresseesess')
+				}, {
+					name: 'u_size_name',
+					type: TextBox,
+					label: _('Instance size')
+				}, {
+					name: 'keypair',
+					type: TextBox,
+					label: _('Keypair')
+				}, {
+					name: 'image',
+					type: TextBox,
+					label: _('Image')
+				}, {
+					name: 'securitygroup',
+					type: TextBox,
+					label: _('Security group')
 				}],
 				layout: [{
 					label: _('Settings'),
 					layout: [
-						'label'
+						['label', ],
+						['public_ips', 'private_ips'],
+						['u_size_name', 'keypair'],
+						['image', 'securitygroup'],
 					]
 				}],
 				scrollable: true
