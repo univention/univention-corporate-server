@@ -1,3 +1,13 @@
+ucs-windows-tools (1.0.0-10) unstable; urgency=low
+
+  * wait_for_client:set longer timeout, added
+    possibility to use with domain_mode=False
+  * added function set_local_user_password and
+    shutdown_remote_win_host
+    (Bug #35855)
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 24 Sep 2014 11:54:36 +0200
+
 ucs-windows-tools (1.0.0-9) unstable; urgency=low
 
   * domain_mode=False for dc promo (Bug #35096) 
