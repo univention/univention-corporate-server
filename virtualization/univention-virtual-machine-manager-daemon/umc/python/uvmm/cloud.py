@@ -85,7 +85,7 @@ class Cloud(object):
 						'group': _('Cloud connection'),
 						'type': 'cloud',
 						'cloudtype': d.cloudtype,
-						'available': d.last_update_try == d.last_update,
+						'available': d.available,
 						})
 
 				MODULE.info('success: %s, data: %s' % (success, clouds))
@@ -195,6 +195,7 @@ class Cloud(object):
 							'label': item.u_displayname,
 							'disk': item.disk,
 							'ram': item.ram,
+							'vcpus': item.vcpus,
 						})
 
 				self.finished(request.id, size_list)

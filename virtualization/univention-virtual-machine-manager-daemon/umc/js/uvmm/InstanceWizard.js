@@ -66,11 +66,15 @@ define([
 		},
 		_update_size_info_text: function(newVal) {
 			var widget = this.getWidget('details', 'parameter').getWidget('size_info_text');
-			var text = this._get_size_id(newVal);
-			if (text) {
-				widget.set('content', '<p>' + _('Memory') + ': ' + text.ram + '</p>' +
-					'<p>' + _('Hard drive') + ': ' + text.disk + '</p>'
-				);
+			var size = this._get_size_id(newVal);
+			if (size) {
+				var text = '';
+				if (size.vcpus !== null) {
+					text += _('Number of CPUs') + ': ' + size.vcpus + ', ';
+				}
+				text += _('Memory') + ': ' + size.ram + ' MB, ';
+				text += _('Hard drive') + ': ' + size.disk + ' GB ';
+				widget.set('content', '<p>' + text + '</p>');
 			}
 		},
 
@@ -107,15 +111,17 @@ define([
 					}, {
 						type: Text,
 						name: 'size_info_text',
-						content: ''
+						content: '',
+						label: '&nbsp;'
 					}, {
 						name: 'image_id',
 						type: ComboBox,
 						label: 'image_id',
 						dynamicOptions: {conn_name: cloud},
-						dynamicValues: types.getCloudListImage,
+						dynamicValues: lang.hitch(this, function(options) {
+							return this.standbyDuring(types.getCloudListImage(options));
+						}),
 						required: true
-						
 					}, {
 						name: 'security_group_ids',
 						type: ComboBox,
@@ -127,6 +133,7 @@ define([
 				}];
 			}
 			if (cloudtype == 'EC2') {
+				var owner_id = 223093067001; // univention images
 				return [{
 					name: 'parameter',
 					type: Form,
@@ -158,14 +165,17 @@ define([
 					}, {
 						type: Text,
 						name: 'size_info_text',
-						content: ''
+						content: '',
+						label: '&nbsp;'
 					}, {
 						name: 'image_id',
 						type: ComboBox,
 						label: 'image_id',
 						sortDynamicValues: false,
-						dynamicOptions: {conn_name: cloud, pattern: '223093067001'},
-						dynamicValues: types.getCloudListImage,
+						dynamicOptions: {conn_name: cloud, pattern: owner_id},
+						dynamicValues: lang.hitch(this, function(options) {
+							return this.standbyDuring(types.getCloudListImage(options));
+						}),
 						required: true
 					}, {
 						name: 'image_univention',
@@ -176,7 +186,7 @@ define([
 						onChange: lang.hitch(this, function(newVal) {
 							var widget = this.getWidget('details', 'parameter').getWidget('image_id');
 							var options = widget.get('dynamicOptions');
-							options.pattern = newVal ? '223093067001' : '';
+							options.pattern = newVal ? owner_id : '';
 							widget.set('dynamicOptions', options);
 						})
 					}, {
