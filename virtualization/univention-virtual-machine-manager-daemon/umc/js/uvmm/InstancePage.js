@@ -104,7 +104,7 @@ define([
 				}, {
 					name: 'private_ips',
 					type: TextBox,
-					label: _('Private IP addresseesess')
+					label: _('Private IP address')
 				}, {
 					name: 'u_size_name',
 					type: TextBox,
