@@ -1423,6 +1423,11 @@ define([
 				var tree_item = lang.clone(tree_path).pop();
 				if (tree_item && tree_item.type == 'node' && tree_item.id) {
 					nodePattern = tree_item.id;
+					type = 'domain';
+				}
+				if (tree_item && tree_item.type == 'cloud' && tree_item.id) {
+					nodePattern = tree_item.id;
+					type = 'instance';
 				}
 			} else {
 				nodePattern = search_vals.pattern;
