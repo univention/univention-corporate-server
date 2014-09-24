@@ -1,0 +1,45 @@
+#!/usr/share/ucs-test/runner python
+## desc: install all packages from a release
+## roles: [domaincontroller_master]
+## tags: [apptest]
+## exposure: careful
+## packages: []
+
+import subprocess
+import glob
+
+def run_command(cmd):
+	print ' ** %r' % cmd
+	popen_obj = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	out, err = popen_obj.communicate()
+	ret = popen_obj.returncode
+	if ret != 0:
+		print 'Return code = %s,\nOut= %s' % (ret, out)
+		return 1
+
+def apt_update():
+	cmd = ['apt-get', 'update']
+	return run_command(cmd)
+
+def test_install(pkg_name):
+	cmd = ['apt-get', '-s', 'install', pkg_name]
+	return run_command(cmd)
+
+def main():
+	if not apt_update():
+		files = glob.glob('/var/lib/apt/lists/*Packages')
+		broken_list = []
+		for filename in files:
+			with open(filename) as f:
+				for line in f:
+					if 'Package: ' in line:
+					# if 'Package: ' in line and 'univention' in line:
+						pkg_name= line.strip().split('Package: ',1)[1]
+						if test_install(pkg_name):
+							broken_list.append(pkg_name)
+		print broken_list
+	else:
+		print 'apt-get update faile'
+
+if __name__ == '__main__':
+	main()
