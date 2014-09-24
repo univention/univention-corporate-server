@@ -233,7 +233,7 @@ define([
 				persist: false,
 				showRoot: false,
 				autoExpand: true,
-				path: [ model.root.id, 'default' ],
+				path: [ model.root.id ],
 				// customize the method getIconClass()
 				//onClick: lang.hitch(this, 'filter'),
 				getIconClass: lang.hitch(this, function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
