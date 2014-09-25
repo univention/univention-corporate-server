@@ -173,7 +173,7 @@ run_join_scripts ()
 	fi
 }
 
-promote_ad_win_2k12 ()
+promote_ad_w2k12 ()
 {
 	local HOST="$1"
 	local DOMAIN="$2"
@@ -181,7 +181,6 @@ promote_ad_win_2k12 ()
 	python -c "
 import univention.winexe
 win=univention.winexe.WinExe('$DOMAIN', 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
-win.set_local_user_password('administrator', 'Univention@99')
 win.promote_ad('Win2008R2', 'Win2008R2')
 "
 	else
@@ -189,7 +188,7 @@ win.promote_ad('Win2008R2', 'Win2008R2')
 	fi
 }
 
-promote_ad_win_2k8 ()
+promote_ad_w2k8 ()
 {
 	local HOST="$1"
 	local DOMAIN="$2"
@@ -197,7 +196,6 @@ promote_ad_win_2k8 ()
 	python -c "
 import univention.winexe
 win=univention.winexe.WinExe('$DOMAIN', 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
-win.set_local_user_password('administrator', 'Univention@99')
 win.promote_ad('Win2008', 'Win2008')
 "
 	else

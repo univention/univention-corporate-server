@@ -1,3 +1,15 @@
+ucs-ec2-tools (0.1.22-8) unstable; urgency=low
+
+  * utils.sh:
+    changed naming scheme of functions:
+    promote_ad_win_2k8 -> promote_ad_w2k8
+  * python/ec2/lib.py:
+    in def run_commands changed if not self._is_windows
+    to if not self.commands
+    (Bug #35855)
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 25 Sep 2014 17:11:16 +0200
+
 ucs-ec2-tools (0.1.22-7) unstable; urgency=low
 
   * utils.sh:
