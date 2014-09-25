@@ -286,6 +286,8 @@ class VM:
 
 	def run_commands(self, phase):
 		''' Run all commands for a given phase e.g. for command1 '''
+		if not self.commands:
+			return
 		for cmdline in self.commands[phase]:
 			try:
 				_print_process('  %s' % cmdline)

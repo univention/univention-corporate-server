@@ -1,3 +1,35 @@
+ucs-ec2-tools (1.0.1-9) unstable; urgency=low
+
+  * utils.sh:
+    changed naming scheme of functions:
+    promote_ad_win_2k8 -> promote_ad_w2k8
+  * python/ec2/lib.py:
+    in def run_commands changed if not self._is_windows
+    to if not self.commands
+    (Bug #35855)
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 25 Sep 2014 17:22:01 +0200
+
+ucs-ec2-tools (1.0.1-8) unstable; urgency=low
+
+  * utils.sh:
+     promote_ad_win is now using python / ps scripts from
+     ucs-windows-tools
+     added function to shutdown remote windows host
+     removed unneeded functions
+     (Bug #35855)
+  * adjusted examples/jenkins/autotest-220-ad-win2k8-master.cfg
+    (Bug #35913)
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 24 Sep 2014 12:09:24 +0200
+
+ucs-ec2-tools (1.0.1-7) unstable; urgency=low
+
+  * python/ec2/lib.py: prohibit execution of run_commands for windows vm's
+    (Bug #35850)
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 19 Sep 2014 13:23:12 +0200
+
 ucs-ec2-tools (1.0.1-6) unstable; urgency=low
 
   * /python/ec2/lib.py: fixed wrong port format in def connect
