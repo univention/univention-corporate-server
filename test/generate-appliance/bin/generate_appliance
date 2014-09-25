@@ -769,7 +769,7 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
 				E.Info('Meta-information about the installed software'),
 				E.Product(options.product),
 				E.Vendor(options.vendor),
-				E.Version(options.version),
+				E.Version(options.version) if options.version is not None else '',
 				E.ProductUrl(options.product_url),
 				E.VendorUrl(options.vendor_url),
 			),
@@ -1075,7 +1075,7 @@ class ESXi(Target):
 
 	def create(self, image, options):
 		image_name = '%s-ESX-disk1.vmdk' % (options.filename, )
-		descriptor_name = '%s ESX.ovf' % (options.filename, )
+		descriptor_name = '%s-ESX.ovf' % (options.filename, )
 		archive_name = '%s-ESX.ova' % (options.filename, )
 		if os.path.exists(archive_name):
 			raise IOError('Output file %r exists' % (archive_name, ))
