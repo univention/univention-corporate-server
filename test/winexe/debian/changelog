@@ -1,16 +1,8 @@
-winexe (2.0.0-2) unstable; urgency=low
+winexe (1.1.0-9) unstable; urgency=low
 
-  * removed debian/control "Pyhton-support + XS-Python-Version"
-    and debian/rules "--with python_support"
-    (Bug #35664)
+  * fixed dependencies (Bug #35999)
 
- -- Drees Dormann <dormann@univention.de>  Fri, 22 Aug 2014 11:34:07 +0200
-
-winexe (2.0.0-1) unstable; urgency=low
-
-  * Migrated winexe to UCS-4.0-0 (Bug #35664)
-
- -- Drees Dormann <dormann@univention.de>  Fri, 22 Aug 2014 10:53:57 +0200
+ -- Felix Botner <botner@univention.de>  Thu, 25 Sep 2014 16:57:04 +0200
 
 winexe (1.1.0-7) unstable; urgency=low
 
