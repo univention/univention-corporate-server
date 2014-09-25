@@ -1,3 +1,9 @@
+winexe (1.1.0-8) unstable; urgency=low
+
+  * fixed dependencies (Bug #35999)
+
+ -- Felix Botner <botner@univention.de>  Thu, 25 Sep 2014 16:50:12 +0200
+
 winexe (1.1.0-7) unstable; urgency=low
 
   * added mingw-w64 to build dependencies (Bug #34572) 
