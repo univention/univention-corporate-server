@@ -13,7 +13,7 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Proxy server')
-description = _('The proxy server can currently not be used. Make sure it is correctly configured.')
+description = _('The proxy server can currently not be used. Make sure it is correctly configured using the {setup:network}.\n')
 umc_modules = [('setup', 'network', {})]
 buttons = [{
 	'label': _('Disable proxy'),
@@ -53,7 +53,7 @@ def check():
 		try:
 			curl.perform()
 		except pycurl.error:
-			raise Conflict(traceback.format_exc())
+			raise Conflict('%s\n\n%s' (description, traceback.format_exc()))
 		else:
 			page = buf.getvalue()
 			buf.close()

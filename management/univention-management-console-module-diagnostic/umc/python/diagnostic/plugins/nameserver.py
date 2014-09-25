@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from univention.management.console.config import ucr
-from univention.management.console.modules.diagnostic import Conflict
+from univention.management.console.modules.diagnostic import Warning
 
 import dns.resolver
 import dns.exception
@@ -11,15 +11,14 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Nameserver(s) are not responsive')
-description = _('Some of the configured nameservers are not responding to DNS-Queries. Please make sure the DNS settings in the {networks} module are correctly set up.')
+description = _('Some of the configured nameservers are not responding to DNS-Queries.\nPlease make sure the DNS settings in the {setup:network} module are correctly set up.\n')
 umc_modules = [('setup', 'network', {})]
 
 
 def run():
 	ucr.load()
-	stdout = ''
-	stderr = ''
-	success = True
+	desc = ''
+	success = ''
 
 	hostnames = {
 		'www.univention.de': ('dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3'),
@@ -34,9 +33,10 @@ def run():
 			answers = query_dns_server(ucr[nameserver], hostname)
 			success = success and answers
 			if not answers:
-				stderr += _('The nameserver %r(%r) is not responsive.') % (nameserver, ucr[nameserver])
+				desc += _('The nameserver %s (UCR variable %r) is not responsive.\n') % (ucr[nameserver], nameserver)
 
-	return success, stdout, stderr
+	if True or not success:
+		raise Warning('%s%s' % (description, desc))
 
 
 def query_dns_server(nameserver, hostname):

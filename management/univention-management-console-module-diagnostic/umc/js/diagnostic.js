@@ -45,19 +45,25 @@ define([
 	'umc/widgets/Module',
 	'umc/widgets/TextBox',
 	'umc/widgets/ComboBox',
+	'umc/widgets/ContainerWidget',
+	'umc/widgets/TitlePane',
 	"umc/widgets/GalleryPane",
 	"dojo/data/ObjectStore",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"umc/widgets/ProgressBar",
 	"umc/widgets/Button",
+	"umc/widgets/Text",
 	"put-selector/put",
 	'umc/modules/diagnostic/DetailPage',
 	'umc/i18n!umc/modules/diagnostic'
-], function(declare, lang, array, all, on, domClass, domConstruct, Deferred, styles, dialog, app, tools, Page, Module, TextBox, ComboBox, GalleryPane, ObjectStore, Memory, Observable, ProgressBar, Button, put, DetailPage, _) {
+], function(declare, lang, array, all, on, domClass, domConstruct, Deferred, styles, dialog, app, tools, Page, Module, TextBox, ComboBox, ContainerWidget, TitlePane, GalleryPane, ObjectStore, Memory, Observable, ProgressBar, Button, Text, put, DetailPage, _) {
 
-	styles.insertCssRule('.diagnosticGrid h1', 'margin-bottom: 0');
+	styles.insertCssRule('.diagnosticDescription', '/*background-color: #e6e6e6; border: thin solid #d3d3d3;*/ white-space: pre; word-break: break-all; word-wrap: break-word;');
+	styles.insertCssRule('.diagnosticGrid h1', 'margin-bottom: 0; border-bottom: thin solid #000');
 	styles.insertCssRule('.diagnosticGrid .dijitButtonText', 'font-size: 1em');
+	styles.insertCssRule('.diagnosticGrid span.critical', 'color: red;');
+	styles.insertCssRule('.diagnosticGrid span.warning', 'color: orange;');
 
 	GalleryPane = declare([GalleryPane], {
 
@@ -73,15 +79,25 @@ define([
 
 		renderRow: function(item) {
 			var div = put('div.diagnosticGrid');
-			put(div, 'h1', item.title);
-			put(div, 'div', item.description);
+			var heading = put(div, 'h1');
+			if (item.type) {
+				put(heading, lang.replace('span.{type}', item), lang.replace('{type}: ', item));
+			}
+			put(heading, 'span', item.title);
 
+			var description = item.description;
 			array.forEach(item.umc_modules, function(link) {
+				var repl = link[1] ? ('{' + link[0] + ':' + link[1] + '}') : ('{' + link[0] + '}');
 				link = app.linkToModule(link[0], link[1]);
 				if (link) {
-					domConstruct.create('div', {innerHTML: link}, div);
+					if (description.indexOf(repl) !== -1) {
+						description = description.replace(repl, link);
+					} else {
+						domConstruct.create('div', {innerHTML: link}, div);
+					}
 				}
 			});
+			new Text({content: description}).placeAt(put(div, 'div.diagnosticDescription'));
 
 			array.forEach(item.links, function(link) {
 				domConstruct.create('a', {href: link[0], innerHTML: link[1] || link[0]}, div);
@@ -131,7 +147,7 @@ define([
 			this._grid = new GalleryPane({
 				store: this._store,
 				query: function(item) {
-					return !item.success;
+					return item.success === false;
 				},
 				region: 'main'
 			});
@@ -139,10 +155,12 @@ define([
 //			this._overviewPage.addChild(this._runButton);
 //			this._overviewPage.addChild(this._progressBar);
 			this._overviewPage.addChild(this._grid);
+			this.container = new ContainerWidget({});
+			this._overviewPage.addChild(this.container);
 			this._overviewPage.startup();
 
 			this.load().then(lang.hitch(this, function() {
-				this._runFullDiagnose();
+				this._runFullDiagnose().then(lang.hitch(this, 'renderGrid'));
 			}));
 		},
 
@@ -156,6 +174,17 @@ define([
 			}));
 		},
 
+		renderGrid: function() {
+			return;
+			this._grid.store.query(this._grid.query).forEach(lang.hitch(this, function(item) {
+				this.container.addChild(new TitlePane({
+					title: item.title,
+					content: GalleryPane.renderRow(item)
+				}));
+				
+			}));
+		},
+
 		_runFullDiagnose: function() {
 			var plugins = this._grid.store.query();
 			this._stepInc = 100 / plugins.length;
@@ -166,7 +195,7 @@ define([
 			var deferred = new Deferred();
 			this._progressBar.feedFromDeferred(deferred);
 
-			this.standbyDuring(all(array.map(plugins, lang.hitch(this, function(plugin) {
+			return this.standbyDuring(all(array.map(plugins, lang.hitch(this, function(plugin) {
 
 				this._grid.store.put(lang.mixin(plugin, {
 					'status': 'loading'
@@ -181,7 +210,7 @@ define([
 					});
 				}));
 			}))), this._progressBar).then(lang.hitch(this, function() {
-				this.load();
+//				this.load();
 			}));
 		},
 
@@ -191,8 +220,8 @@ define([
 
 		_runDiagnose: function(plugin, opts) {
 			var run = this.umcpCommand('diagnostic/run', lang.mixin({plugin: plugin.id}, opts));
-			run.then(lang.hitch(this, function(result) {
-				this._grid.store.put(lang.mixin(plugin, result, {
+			run.then(lang.hitch(this, function(data) {
+				this._grid.store.put(lang.mixin(plugin, data.result, {
 					'status': 'executed'
 				}));
 

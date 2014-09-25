@@ -50,10 +50,13 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 _('Problem'); _('Conflict'); _('Warning'); _('Critical')
 class Problem(Exception):
-	def __init__(self, message, **kwargs):
-		super(Problem, self).__init__(message)
+	def __init__(self, description=None, **kwargs):
+		super(Problem, self).__init__(description)
 		self.kwargs = kwargs
-		kwargs['type'] = _(self.__class__.__name__)
+		kwargs['type'] = self.__class__.__name__.lower()
+		# _(self.__class__.__name__)
+		if description:
+			kwargs['description'] = description
 
 class Conflict(Problem): pass
 class Warning(Problem): pass
@@ -72,7 +75,9 @@ class Instance(Base, ProgressMixin):
 	def run(self, plugin, **kwargs):
 		MODULE.error('### %r' % (kwargs,))
 		plugin = self.get(plugin)
-		return plugin.execute(**kwargs) # TODO: thread
+		def thread():
+			return plugin.execute(**kwargs)
+		return thread
 
 	@sanitize(pattern=PatternSanitizer(default='.*'))
 	@simple_response
@@ -157,11 +162,11 @@ class Plugin(object):
 				result = self.module.run(*args, **kwargs)
 				if isinstance(result, dict):
 					errors.update(result)
-			except Conflict:
+			except Problem:
 				raise
 			except:
-				raise Conflict(traceback.format_exc())
-		except Conflict as exc:
+				raise Problem(traceback.format_exc())
+		except Problem as exc:
 			success = False
 			errors.update(exc.kwargs)
 

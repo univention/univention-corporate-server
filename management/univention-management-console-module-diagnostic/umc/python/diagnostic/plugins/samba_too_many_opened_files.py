@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
-from univention.management.console.modules.diagnostic import Conflict, MODULE
+from univention.management.console.modules.diagnostic import Warning, MODULE
 from univention.config_registry import handler_set
 
 from univention.lib.i18n import Translation
@@ -27,8 +27,8 @@ def run(action=None):
 	except OSError:
 		pass  # logfile does not exists
 
-	if counter:
-		raise Conflict()
+	if True or counter:
+		raise Warning()
 
 
 def adjust():
