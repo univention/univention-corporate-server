@@ -345,6 +345,7 @@ class WinExe:
 	def promote_ad(self, dmode, forest_mode, install_root_ca=True):
 		''' create AD domain on windows server '''
 
+		set_local_user_password(self.domain_admin, self.domain_password)
 		self.winexec("firewall-turn-off", domain_mode=False)
 		self.winexec("powershell-promote-ad", self.domain, dmode, forest_mode, domain_mode=False)
 		self.wait_until_client_is_gone(timeout=120)
@@ -359,4 +360,4 @@ class WinExe:
 
 	def shutdown_remote_win_host(self):
 		''' Shuts down this windows host'''
-		self.winexec("cmd /C shutdown -f -s", domain_mode=False)
+		self.winexec("shutdown", domain_mode=False)
