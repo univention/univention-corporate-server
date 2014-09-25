@@ -229,7 +229,7 @@ class WinExe:
 
 		return self.__run_command(cmd, dont_fail=dont_fail)
 
-	def wait_for_client(self, timeout=1):
+	def wait_for_client(self, timeout=1, domain_mode=True):
 		''' wait timeout seconds until client is reachable and winexe works '''
 
 		# check if client is reachable
@@ -237,7 +237,7 @@ class WinExe:
 			raise WinExeFailed("waiting for client (%s) failed with timeout %s" % (self.client, timeout))
 		# check winexe
 		for i in range(timeout):
-			retval, stdout, stderr = self.winexec("cmd /C dir c:\\", dont_fail=True)
+			retval, stdout, stderr = self.winexec("cmd /C dir c:\\", dont_fail=True, domain_mode=domain_mode)
 			if retval == 0:
 				return 0
 			time.sleep(1)
@@ -328,7 +328,7 @@ class WinExe:
 		self.winexec("powershell-add-certificate-authority", self.domain)
 		self.winexec("reboot")
 		self.wait_until_client_is_gone(timeout=120)
-		self.wait_for_client(timeout=120)
+		self.wait_for_client(timeout=600)
 
 	def get_root_certificate(self, filename="/tmp/ad-cert.pem"):
 		''' export root certificate to filename (/tmp/ad-cert.pem) '''
@@ -342,14 +342,22 @@ class WinExe:
 		fh.write(stdout)
 		fh.close()
 
-	def promote_ad(self, domain_mode, forest_mode, install_root_ca=True):
+	def promote_ad(self, dmode, forest_mode, install_root_ca=True):
 		''' create AD domain on windows server '''
 
+		set_local_user_password(self.domain_admin, self.domain_password)
 		self.winexec("firewall-turn-off", domain_mode=False)
-		self.winexec("powershell-promote-ad", self.domain, domain_mode, forest_mode, domain_mode=False)
+		self.winexec("powershell-promote-ad", self.domain, dmode, forest_mode, domain_mode=False)
 		self.wait_until_client_is_gone(timeout=120)
-		self.wait_for_client(timeout=120)
+		self.wait_for_client(timeout=600)
 		if install_root_ca:
 			self.add_certificate_authority()
 			self.get_root_certificate()
 
+	def set_local_user_password(self, user, password):
+		''' Changes the password of a local windows user '''
+		self.winexec("cmd /C net user %s" % (user + " " + password ), domain_mode=False)
+
+	def shutdown_remote_win_host(self):
+		''' Shuts down this windows host'''
+		self.winexec("shutdown", domain_mode=False)

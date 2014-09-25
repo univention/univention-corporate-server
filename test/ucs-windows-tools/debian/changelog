@@ -1,3 +1,22 @@
+ucs-windows-tools (2.0.1-3) unstable; urgency=low
+
+  * set_local_user_password is now called from
+    within promote_ad function
+  * changed shutdown_remote_win_host to use vbs script
+    (Bug #35855)
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 25 Sep 2014 17:30:31 +0200
+
+ucs-windows-tools (2.0.1-2) unstable; urgency=low
+
+  * wait_for_client:set longer timeout, added
+    possibility to use with domain_mode=False
+  * added function set_local_user_password and
+    shutdown_remote_win_host
+    (Bug #35855)
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 24 Sep 2014 11:54:36 +0200
+
 ucs-windows-tools (2.0.1-1) unstable; urgency=low
 
   * domain_mode=False for dc promo (Bug #35096) 
