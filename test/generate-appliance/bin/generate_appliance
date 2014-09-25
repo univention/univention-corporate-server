@@ -321,7 +321,7 @@ def create_vmx(image_name, image_uuid, options):
 		'vcpu.hotadd': "TRUE",
 		'scsi0.present': "TRUE",
 		'scsi0.virtualDev': "lsilogic",
-		'memsize': "1024",
+		'memsize': "%d" % (options.memory_size, ),
 		'mem.hotadd': "TRUE",
 		'scsi0:0.present': "TRUE",
 		'scsi0:0.fileName': "%s.vmdk" % (image_name, ),
@@ -572,12 +572,12 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 				),
 				E.Item(
 					Erasd.AllocationUnits('MegaBytes'),
-					Erasd.Caption('1024 MB of memory'),
+					Erasd.Caption('%d MB of memory' % (options.memory_size, )),
 					Erasd.Description('Memory Size'),
-					Erasd.ElementName('1024 MB of memory'),
+					Erasd.ElementName('%d MB of memory' % (options.memory_size, )),
 					Erasd.InstanceID('2'),
 					Erasd.ResourceType('4'),
-					Erasd.VirtualQuantity('1024'),
+					Erasd.VirtualQuantity('%d' % (options.memory_size, )),
 				),
 				E.Item(
 					Erasd.Address('0'),
@@ -807,10 +807,10 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
 				E.Item(
 					Erasd.AllocationUnits('byte * 2^20'),
 					Erasd.Description('Memory Size'),
-					Erasd.ElementName('1024MB of memory'),
+					Erasd.ElementName('%dMB of memory' % (options.memory_size, )),
 					Erasd.InstanceID('2'),
 					Erasd.ResourceType('4'),
-					Erasd.VirtualQuantity('1024'),
+					Erasd.VirtualQuantity('%d' % (options.memory_size, )),
 				),
 				E.Item(
 					Erasd.Address('0'),
@@ -1128,6 +1128,8 @@ def parse_options():
 	parser.set_defaults(choices=defaults)
 	parser.usage = '%prog [options]\n create virtual appliances for various virtualization systems from a single disk image'
 	parser.add_option('-s', '--source', help='source image (required)')
+	parser.add_option('-m', '--memory-size', default=1024, type='int',
+					  help='size of virtual memory (MiB, default: %default)')
 	parser.add_option('-f', '--filename', help='filename of appliance (default: derived from product)')
 	parser.add_option('-p', '--product', help='product name of appliance (default: %default)',
 					  default='Univention Corporate Server (UCS)')
