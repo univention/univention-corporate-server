@@ -318,6 +318,7 @@ def create_vmx(image_name, image_uuid, options):
 	vmx = {
 		'config.version': "8",
 		'virtualHW.version': "9",
+		'numvcpus': "%d" % (options.cpu_count, ),
 		'vcpu.hotadd': "TRUE",
 		'scsi0.present': "TRUE",
 		'scsi0.virtualDev': "lsilogic",
@@ -529,7 +530,7 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 				E.Info('Meta-information about the installed software'),
 				E.Product(options.product),
 				E.Vendor(options.vendor),
-				E.Version(options.version),
+				E.Version(options.version) if options.version is not None else '',
 				E.ProductUrl(options.product_url),
 				E.VendorUrl(options.vendor_url),
 			),
@@ -563,12 +564,12 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 					Evssd.VirtualSystemType('virtualbox-2.2'),
 				),
 				E.Item(
-					Erasd.Caption('1 virtual CPU'),
+					Erasd.Caption('%d virtual CPU' % (options.cpu_count, )),
 					Erasd.Description('Number of virtual CPUs'),
-					Erasd.ElementName('1 virtual CPU'),
+					Erasd.ElementName('%d virtual CPU' % (options.cpu_count, )),
 					Erasd.InstanceID('1'),
 					Erasd.ResourceType('3'),
-					Erasd.VirtualQuantity('1'),
+					Erasd.VirtualQuantity('%d' % (options.cpu_count, )),
 				),
 				E.Item(
 					Erasd.AllocationUnits('MegaBytes'),
@@ -799,10 +800,10 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
 				E.Item(
 					Erasd.AllocationUnits('hertz * 10^6'),
 					Erasd.Description('Number of Virtual CPUs'),
-					Erasd.ElementName('1 virtual CPU(s)'),
+					Erasd.ElementName('%d virtual CPU(s)' % (options.cpu_count, )),
 					Erasd.InstanceID('1'),
 					Erasd.ResourceType('3'),
-					Erasd.VirtualQuantity('1'),
+					Erasd.VirtualQuantity('%d' % (options.cpu_count, )),
 				),
 				E.Item(
 					Erasd.AllocationUnits('byte * 2^20'),
@@ -1130,6 +1131,8 @@ def parse_options():
 	parser.add_option('-s', '--source', help='source image (required)')
 	parser.add_option('-m', '--memory-size', default=1024, type='int',
 					  help='size of virtual memory (MiB, default: %default)')
+	parser.add_option('-c', '--cpu-count', default=1, type='int',
+					  help='virtual CPU count (default: %default)')
 	parser.add_option('-f', '--filename', help='filename of appliance (default: derived from product)')
 	parser.add_option('-p', '--product', help='product name of appliance (default: %default)',
 					  default='Univention Corporate Server (UCS)')
