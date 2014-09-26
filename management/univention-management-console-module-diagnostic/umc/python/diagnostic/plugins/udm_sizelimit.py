@@ -46,3 +46,8 @@ def run():
 			description += '{udm:%s} having %i objects\n' % (module, count)
 		description += _('To adjust this please change the UCR variable directory/manager/web/sizelimit to a higher value within the {ucr}.\n')
 		raise Warning(description, umc_modules=umc_modules)
+
+
+if __name__ == '__main__':
+	from univention.management.console.modules.diagnostic import main
+	main()

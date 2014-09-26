@@ -20,3 +20,8 @@ def run():
 		description += _('Available virtual memory (swap): %i bytes (%.2f GB)\n') % (virtual_memory, virtual_memory / 1000.0 / 1000.0 / 1000.0)
 		description += _('The {top} can give an overview of how much memory is currently in use by the current running processes.\n')
 		raise Conflict(description)
+
+
+if __name__ == '__main__':
+	from univention.management.console.modules.diagnostic import main
+	main()

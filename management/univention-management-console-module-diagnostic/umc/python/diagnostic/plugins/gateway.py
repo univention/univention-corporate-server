@@ -24,3 +24,8 @@ def run():
 	stdout, stderr = process.communicate()
 	if True or process.returncode:
 		raise Critical('%s%s%s' % (description, stderr, stderr))
+
+
+if __name__ == '__main__':
+	from univention.management.console.modules.diagnostic import main
+	main()

@@ -55,64 +55,21 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/Text",
 	"put-selector/put",
+	"dgrid/Selection",
 	'umc/modules/diagnostic/DetailPage',
 	'umc/i18n!umc/modules/diagnostic'
-], function(declare, lang, array, all, on, domClass, domConstruct, Deferred, styles, dialog, app, tools, Page, Module, TextBox, ComboBox, ContainerWidget, TitlePane, GalleryPane, ObjectStore, Memory, Observable, ProgressBar, Button, Text, put, DetailPage, _) {
+], function(declare, lang, array, all, on, domClass, domConstruct, Deferred, styles, dialog, app, tools, Page, Module, TextBox, ComboBox, ContainerWidget, TitlePane, GalleryPane, ObjectStore, Memory, Observable, ProgressBar, Button, Text, put, Selection, DetailPage, _) {
 
 	styles.insertCssRule('.diagnosticDescription', '/*background-color: #e6e6e6; border: thin solid #d3d3d3;*/ white-space: pre; word-break: break-all; word-wrap: break-word;');
 	styles.insertCssRule('.diagnosticGrid h1', 'margin-bottom: 0; border-bottom: thin solid #000');
 	styles.insertCssRule('.diagnosticGrid .dijitButtonText', 'font-size: 1em');
-	styles.insertCssRule('.diagnosticGrid span.critical', 'color: red;');
-	styles.insertCssRule('.diagnosticGrid span.warning', 'color: orange;');
+	styles.insertCssRule('.diagnosticGrid .critical span.dijitTitlePaneTextNode::before', lang.replace('color: red; content: "{0}";', [_('Critical: ')]));
+	styles.insertCssRule('.diagnosticGrid .conflict span.dijitTitlePaneTextNode::before', lang.replace('color: darkorange; content: "{0}";', [_('Conflict: ')]));
+	styles.insertCssRule('.diagnosticGrid .warning  span.dijitTitlePaneTextNode::before', lang.replace('color: orange; content: "{0}";', [_('Warning: ')]));
+	styles.insertCssRule('.diagnosticGrid .problemfixed span.dijitTitlePaneTextNode::before', lang.replace('color: green; content: "{0}";', [_('Problem repaired: ')]));
 
-	GalleryPane = declare([GalleryPane], {
-
-		getItemName: function(item) {
-			return item.title;
-		},
-
-		getButtonCallback: function(button, item) {
-			return lang.hitch(this, function() {
-				this.module._runDiagnose(item, {action: button.action});
-			});
-		},
-
-		renderRow: function(item) {
-			var div = put('div.diagnosticGrid');
-			var heading = put(div, 'h1');
-			if (item.type) {
-				put(heading, lang.replace('span.{type}', item), lang.replace('{type}: ', item));
-			}
-			put(heading, 'span', item.title);
-
-			var description = item.description;
-			array.forEach(item.umc_modules, function(link) {
-				var repl = link[1] ? ('{' + link[0] + ':' + link[1] + '}') : ('{' + link[0] + '}');
-				link = app.linkToModule(link[0], link[1]);
-				if (link) {
-					if (description.indexOf(repl) !== -1) {
-						description = description.replace(repl, link);
-					} else {
-						domConstruct.create('div', {innerHTML: link}, div);
-					}
-				}
-			});
-			new Text({content: description}).placeAt(put(div, 'div.diagnosticDescription'));
-
-			array.forEach(item.links, function(link) {
-				domConstruct.create('a', {href: link[0], innerHTML: link[1] || link[0]}, div);
-			});
-
-			var buttons = put(div, 'div');
-			array.forEach(item.buttons, lang.hitch(this, function(button) {
-				new Button({
-					label: button.label,
-					callback: this.getButtonCallback(button, item)
-				}).placeAt(buttons);
-			}));
-
-			return div;
-		}
+	GalleryPane = declare([GalleryPane, Selection], {
+		allowTextSelection: true
 	});
 
 	return declare('umc.modules.diagnostic',  Module, {
@@ -143,22 +100,30 @@ define([
 //				callback: lang.hitch(this, '_runFullDiagnose'),
 //				region: 'nav'
 //			});
+//			this._overviewPage.addChild(this._runButton);
+
+//			this.container = new ContainerWidget({
+//				'class': 'diagnosticGrid'
+//			});
+//			this._overviewPage.addChild(this.container);
 
 			this._grid = new GalleryPane({
+				'class': 'diagnosticGrid',
 				store: this._store,
+				renderRow: lang.hitch(this, function(item) {
+					return this.renderRow(item).domNode;
+				}),
 				query: function(item) {
 					return item.success === false;
 				},
+				sort: 'type', // FIXME: sort by group, 1. Critical 2. Conflict 3. Warning
+				noDataMessage: _('No problems could be found.'),
+				loadingMessage: _('Analyzing for problems...'),
 				region: 'main'
 			});
-
-//			this._overviewPage.addChild(this._runButton);
-//			this._overviewPage.addChild(this._progressBar);
 			this._overviewPage.addChild(this._grid);
-			this.container = new ContainerWidget({});
-			this._overviewPage.addChild(this.container);
-			this._overviewPage.startup();
 
+			this._overviewPage.startup();
 			this.load().then(lang.hitch(this, function() {
 				this._runFullDiagnose().then(lang.hitch(this, 'renderGrid'));
 			}));
@@ -177,12 +142,51 @@ define([
 		renderGrid: function() {
 			return;
 			this._grid.store.query(this._grid.query).forEach(lang.hitch(this, function(item) {
-				this.container.addChild(new TitlePane({
-					title: item.title,
-					content: GalleryPane.renderRow(item)
-				}));
-				
+				this.container.addChild(this.renderRow(item));
 			}));
+		},
+
+		renderRow: function(item) {
+			var div = put('div');
+
+			var description = item.description;
+			array.forEach(item.umc_modules, function(link) {
+				var repl = link[1] ? ('{' + link[0] + ':' + link[1] + '}') : ('{' + link[0] + '}');
+				link = app.linkToModule(link[0], link[1]);
+				if (link) {
+					if (description.indexOf(repl) !== -1) {
+						description = description.replace(repl, link);
+					} else {
+						domConstruct.create('div', {innerHTML: link}, div);
+					}
+				}
+			});
+			new Text({content: description}).placeAt(put(div, 'div.diagnosticDescription'));
+
+			array.forEach(item.links, function(link) {
+				domConstruct.create('a', {href: link[0], innerHTML: link[1] || link[0]}, div);
+			});
+
+			var buttons = put(div, 'div');
+			array.forEach(item.buttons, lang.hitch(this, function(button) {
+				new Button({
+					label: button.label,
+					callback: this.getButtonCallback(button, item)
+				}).placeAt(buttons);
+			}));
+
+			return new TitlePane({
+				title: item.title,
+				'class': '' + item.type,
+				open: item.status == 'reloading',
+				content: div
+			});
+		},
+
+		getButtonCallback: function(button, item) {
+			return lang.hitch(this, function() {
+				this._runSingleDiagnose(item, {args: {action: button.action}});
+			});
 		},
 
 		_runFullDiagnose: function() {
@@ -197,11 +201,6 @@ define([
 
 			return this.standbyDuring(all(array.map(plugins, lang.hitch(this, function(plugin) {
 
-				this._grid.store.put(lang.mixin(plugin, {
-					'status': 'loading'
-				}));
-				this._grid.set('query', this._grid.query);
-
 				return this._runDiagnose(plugin).then(lang.hitch(this, function() {
 					var percentage = this._progressBar._progressBar.get('value') + this._stepInc;
 					deferred.progress({
@@ -215,15 +214,17 @@ define([
 		},
 
 		_runSingleDiagnose: function(plugin, opts) {
+			this._grid.store.put(lang.mixin(plugin, {
+				'status': 'reloading'
+			}));
+			this._grid.set('query', this._grid.query);
 			this.standbyDuring(this._runDiagnose(plugin, opts));
 		},
 
 		_runDiagnose: function(plugin, opts) {
 			var run = this.umcpCommand('diagnostic/run', lang.mixin({plugin: plugin.id}, opts));
 			run.then(lang.hitch(this, function(data) {
-				this._grid.store.put(lang.mixin(plugin, data.result, {
-					'status': 'executed'
-				}));
+				this._grid.store.put(lang.mixin(plugin, data.result));
 
 				this._grid.set('query', this._grid.query);
 			}));

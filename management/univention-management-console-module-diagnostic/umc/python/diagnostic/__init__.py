@@ -38,7 +38,7 @@ from time import strftime, gmtime
 
 from univention.management.console.modules import Base
 from univention.management.console.modules.decorators import simple_response, sanitize
-from univention.management.console.modules.sanitizers import PatternSanitizer
+from univention.management.console.modules.sanitizers import PatternSanitizer, DictSanitizer, StringSanitizer
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.log import MODULE
 
@@ -48,19 +48,18 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 
-_('Problem'); _('Conflict'); _('Warning'); _('Critical')
 class Problem(Exception):
 	def __init__(self, description=None, **kwargs):
 		super(Problem, self).__init__(description)
 		self.kwargs = kwargs
 		kwargs['type'] = self.__class__.__name__.lower()
-		# _(self.__class__.__name__)
 		if description:
 			kwargs['description'] = description
 
 class Conflict(Problem): pass
 class Warning(Problem): pass
 class Critical(Problem): pass
+class ProblemFixed(Problem): pass
 
 
 class Instance(Base, ProgressMixin):
@@ -71,12 +70,17 @@ class Instance(Base, ProgressMixin):
 		self.modules = {}
 		self.load()
 
+	@sanitize(
+		plugin=StringSanitizer(required=True),
+		args=DictSanitizer({})
+	)
 	@simple_response
-	def run(self, plugin, **kwargs):
-		MODULE.error('### %r' % (kwargs,))
+	def run(self, plugin, args=None):
+		MODULE.error('### plugin %r %r' % (plugin, args,))
 		plugin = self.get(plugin)
+		args = args or {}
 		def thread():
-			return plugin.execute(**kwargs)
+			return plugin.execute(**args)
 		return thread
 
 	@sanitize(pattern=PatternSanitizer(default='.*'))
@@ -143,6 +147,10 @@ class Plugin(object):
 		"""
 		return getattr(self.module, 'links', [])
 
+	@property
+	def actions(self):
+		return getattr(self.module, 'actions', {})
+
 	def __init__(self, plugin):
 		self.plugin = plugin
 		self.load()
@@ -154,12 +162,13 @@ class Plugin(object):
 			level=0
 		)
 
-	def execute(self, *args, **kwargs):
+	def execute(self, action=None, **kwargs):
 		success = True
 		errors = {}
+		execute = self.actions.get(action, self.module.run)
 		try:
 			try:
-				result = self.module.run(*args, **kwargs)
+				result = execute(**kwargs)
 				if isinstance(result, dict):
 					errors.update(result)
 			except Problem:
@@ -195,3 +204,7 @@ class Plugin(object):
 			buttons=self.buttons,
 			popups=self.popups,
 		)
+
+
+def main():
+	print 'TODO: someday implement?'

@@ -61,3 +61,8 @@ def check():
 			MODULE.info(page[:100])
 		finally:
 			curl.close()
+
+
+if __name__ == '__main__':
+	from univention.management.console.modules.diagnostic import main
+	main()

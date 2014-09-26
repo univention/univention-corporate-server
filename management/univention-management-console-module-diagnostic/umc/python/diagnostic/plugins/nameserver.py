@@ -56,3 +56,8 @@ def query_dns_server(nameserver, hostname):
 		raise
 		return False
 	return True
+
+
+if __name__ == '__main__':
+	from univention.management.console.modules.diagnostic import main
+	main()
