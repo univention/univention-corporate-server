@@ -1,3 +1,10 @@
+ucs-ec2-tools (1.0.1-10) unstable; urgency=low
+  * merged missing commit 53779 from 3.2-3 svn
+  * python/ec2/lib.py added '-PN' to python-nmap command (Bug #35850)
+  * added examples/jenkins/autotest-220-ad-win2k8-master.cfg (Bug #35913)
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 19 Sep 2014 11:58:24 +0200
+
 ucs-ec2-tools (1.0.1-9) unstable; urgency=low
 
   * utils.sh:
