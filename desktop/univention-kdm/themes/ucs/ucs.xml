@@ -25,7 +25,7 @@
 	</item>
 
 	<!-- univention logo -->
-	<item type="pixmap" id="univention-logo">
+	<item type="pixmap" id="univention-logo" background="true">
 		<normal file="univention-logo.png"/>
 	</item>
 
