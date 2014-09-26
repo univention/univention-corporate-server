@@ -6,7 +6,7 @@
 ## exposure: careful
 ## bugs: [35959]
 ## versions: 
-##  1.0-0: found
+##  3.2-3: skip
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
