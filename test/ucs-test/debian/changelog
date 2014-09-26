@@ -1,3 +1,11 @@
+ucs-test (4.0.167-1) unstable; urgency=low
+
+  * Bug #8052 test scripts added "*_with_special_characters"
+	scripts 06_.._with_special_characters and 07_.._with_special_characters
+	are skipped for the current version because they fail because of Bug #35959.
+
+ -- Ammar Najjar <najjar@univention.de>  Fri, 26 Sep 2014 11:30:57 +0200
+
 ucs-test (4.0.166-82) unstable; urgency=medium
 
   * Bug #35552: Fix 00_base/02server_password_change
