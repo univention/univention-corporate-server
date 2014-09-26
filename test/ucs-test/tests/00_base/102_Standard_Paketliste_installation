@@ -3,10 +3,14 @@
 ## roles: [domaincontroller_master]
 ## tags: [apptest]
 ## exposure: careful
+## bugs: [36006]
+## versions:
+##  1.0-0: found
 ## packages: []
 
 import re
 import subprocess
+import univention.testing.utils as utils
 
 def run_command(cmd):
 	"""Runs cmd command in terminal"""
@@ -41,23 +45,17 @@ def get_packets_list():
 	search_result = run_command(cmd)
 	return re.findall(re.compile(r'univentionPackageDefinition: (\w*)\n'), search_result)
 
-def cups_exists(packet_list):
-	"""Returns True if packet cups exist"""
-	return ('cups' in packet_list)
-
 def main():
 	packets = get_packets_list()
-	if cups_exists(packets):
-		return 1
+	if apt_update() != 1:
+		broken_pkgs = []
+		for packet in packets:
+			if test_install(packet) == 1:
+				broken_pkgs.append(packet)
+		if broken_pkgs:
+			utils.fail('Un-installable Packages: %r' % broken_pkgs)
 	else:
-		if apt_update() != 1:
-			broken_pkgs = []
-			for packet in packets:
-				if test_install(packet) == 1:
-					broken_pkgs.append(packet)
-			print 'Broken Packages:', broken_pkgs
-		else:
-			print 'apt-get update failed'
+		utils.fail('apt-get update failed')
 
 
 if __name__ == '__main__':
