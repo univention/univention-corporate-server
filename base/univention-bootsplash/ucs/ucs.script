@@ -1,4 +1,4 @@
-# This is an example plymouth plugin script
+# This is the Univention Corporate Server 4 plymouth plugin script
 
 # background image
 bg.image = Image("bg.png");
@@ -6,16 +6,22 @@ bg.sprite = Sprite(bg.image);
 resized.bg.image = bg.image.Scale(Window.GetWidth(), Window.GetHeight());
 bg.sprite.SetImage(resized.bg.image);
 
+# univention logo
+univention.image = Image("univention-logo.png");
+univention.sprite = Sprite(univention.image);
+univention.sprite.SetImage(univention.image);
+
+
 # box image
-box.image = Image("logo-box.png");
+box.image = Image("logo-box.png").Scale(Window.GetWidth() / 4, Window.GetWidth() / 4);
 box.sprite = Sprite(box.image);
 box.sprite.SetOpacity(0.0);
 box.sprite.SetX(Window.GetX() + Window.GetWidth()  / 2 - box.image.GetWidth()  / 2);
 box.sprite.SetY(Window.GetY() + Window.GetHeight() / 2 - box.image.GetHeight() / 2);
 
-# univention logo
+# animantion
 for (i=0; i<=47; i++) {
-	logo[i].image = Image("logo" + i + ".png");
+	logo[i].image = Image("logo" + i + ".png").Scale(Window.GetWidth() / 4, Window.GetWidth() / 4);
 }
 logo.sprite = Sprite(logo[0].image);
 logo.sprite.SetOpacity(1.0);
@@ -29,8 +35,8 @@ status = "normal";
 
 line_height = Image.Text("AfpqtM").GetHeight();
 
-# to determine the mode of operation plymouth was started in use Plymouth.GetMode 
-# which returns a string of one of: "boot", "shutdown", "suspend", "resume" or unknown. 
+# to determine the mode of operation plymouth was started in use Plymouth.GetMode
+# which returns a string of one of: "boot", "shutdown", "suspend", "resume" or unknown.
 #status = Plymouth.GetMode ();
 
 ##########
@@ -135,20 +141,21 @@ fun StringCopy (source, beginning, end) {
 }
 
 # it makes sense to use it only for
-# numbers up to 100
+# numbers up to 150
 fun StringToInteger (str) {
-    int = -1;
-    for (i=0; i<=100; i++) {
-        if (i+"" == str) {
-            int = i;
-            break;
-        }
-    }
-    return int;
+	int = -1;
+	for (i=0; i<=150; i++) {
+		if (i+"" == str) {
+			int = i;
+			break;
+		}
+	}
+	return int;
 }
 
 # ask-question dialog
 ASK_PROMPT_LINES = 15;
+question.font = "Sans 13";
 fun ask_dialog() {
 
 	local.text;
@@ -166,13 +173,13 @@ fun ask_dialog() {
 		local.msg;
 		for (i=0; i < ASK_PROMPT_LINES; i++) {
 			if (list[i]) {
-				prompt[i].image = Image.Text(list[i], 0, 0, 0);
+				prompt[i].image = Image.Text(list[i], 0.4, 0.4, 0.4, 1, question.font);
 				prompt[i].sprite.SetImage(prompt[i].image);
 				prompt.x = prompt[i].sprite.GetX();
 				prompt.y = prompt[i].sprite.GetY();
 			}
 			else {
-				prompt[i].image = Image.Text("", 0, 0, 0);
+				prompt[i].image = Image.Text("", 0, 0, 0, 1, question.font);
 				prompt[i].sprite.SetImage(prompt[i].image);
 			}
 		}
@@ -184,9 +191,9 @@ fun ask_dialog() {
 		local.prompt = global.ask.prompt;
 		string = "-> " + string;
 		local.text = global.ask.text;
-		text.image = Image.Text(string, 0, 0, 0);
+		text.image = Image.Text(string, 0.4, 0.4, 0.4, 1, question.font);
 		text.sprite.SetImage(text.image);
-		text.sprite.SetOpacity(0.5);
+		text.sprite.SetOpacity(0.75);
 		text.sprite.SetPosition(
 			prompt.x,
 			prompt.y + 20,
@@ -201,21 +208,22 @@ fun ask_dialog() {
 
 # ask password dialog
 PASSWORD_PROMPT_LINES = 6;
+password.font = "Sans 13";
 fun dialog_setup() {
 
 	local.lock;
 	local.entry;
 	local.prompt;
-	
+
 	lock.image = Image("lock.png");
 	entry.image = Image("entry.png");
-	
+
 	lock.sprite = Sprite(lock.image);
 	lock.x = Window.GetX() + Window.GetWidth()  / 2 - lock.image.GetWidth() / 2;
 	lock.y = Window.GetY() + Window.GetHeight() / 2 - global.box.image.GetHeight() / 3;
 	lock.z = 10000;
 	lock.sprite.SetPosition(lock.x, lock.y, lock.z);
-	
+
 	entry.sprite = Sprite(entry.image);
 	entry.x = Window.GetX() + Window.GetWidth()  / 2 - entry.image.GetWidth() / 2;
 	entry.y = Window.GetY() + Window.GetHeight() / 2 - entry.image.GetHeight() / 2;
@@ -234,7 +242,7 @@ fun dialog_setup() {
 		local.msg;
 		for (i=0; i < PASSWORD_PROMPT_LINES; i++) {
 			if (!list[i]) list[i] = "";
-			msg = Image.Text(list[i], 0, 0, 0);
+			msg = Image.Text(list[i], 0.4, 0.4, 0.4, 1, password.font);
 			prompt[i].SetImage(msg);
 		}
 	};
@@ -288,7 +296,7 @@ fun display_normal_callback () {
 	global.logo.sprite.SetOpacity(1.0);
 }
 
-# the callback function is called when the display should return to normal 
+# the callback function is called when the display should return to normal
 Plymouth.SetDisplayNormalFunction(display_normal_callback);
 
 ############
@@ -329,7 +337,7 @@ fun display_password_callback (prompt, bullets) {
 	}
 }
 
-# the callback function is called when the display should display a 
+# the callback function is called when the display should display a
 # password dialogue. First arg is prompt string, the second is the number of bullets.
 Plymouth.SetDisplayPasswordFunction(display_password_callback);
 
@@ -338,11 +346,12 @@ Plymouth.SetDisplayPasswordFunction(display_password_callback);
 ##########
 
 statusmsg.sprite = Sprite();
+statusmsg.font = "Sans 13";
 statusmsg.sprite.SetX(Window.GetX() + Window.GetWidth()  / 2 - box.image.GetWidth()  / 2 + 5);
 statusmsg.sprite.SetY(Window.GetY() + Window.GetHeight() / 2 + box.image.GetHeight() / 2);
 
 fun update_status_callback (text) {
-	local.image = Image.Text(text, 0, 0, 0);
+	local.image = Image.Text(text, 0.4, 0.4, 0.4, 1, statusmsg.font);
 	string_it = 0;
 	update_strings[string_it] = "";
 	for (i=0; (String(text).CharAt(i) != ""); i++) {
@@ -356,16 +365,16 @@ fun update_status_callback (text) {
 		local.device = update_strings[1];
 		local.progress = update_strings[2];
 		if (StringToInteger(progress) >= 100)
-			image = Image.Text("", 0, 0, 0);
+			image = Image.Text("", 0, 0, 0, 1, statusmsg.font);
 		else
-			image = Image.Text("Checking disk " + device + " (" + progress + "% complete)", 0, 0, 0);
+			image = Image.Text("Checking disk " + device + " (" + progress + "%)", 0.4, 0.4, 0.4, 1, statusmsg.font);
 	}
 	statusmsg.sprite.SetImage(image);	
 }
 
 # the callback function is called with the new boot status string
 Plymouth.SetUpdateStatusFunction(update_status_callback);
-    
+
 ########
 # quit #
 ########
@@ -397,7 +406,7 @@ fun question_callback (prompt, string) {
 	global.ask.text.setText(string);
 }
 
-# the callback function is called when the display should display a question 
+# the callback function is called when the display should display a question
 # dialogue. First arg is prompt string, the second is the entry contents.
 Plymouth.SetDisplayQuestionFunction(question_callback);
 
@@ -406,14 +415,14 @@ Plymouth.SetDisplayQuestionFunction(question_callback);
 ###########
 
 # message 
+message.font = "Sans 13";
 message.sprite = Sprite();
-message.sprite.SetPosition(10, 5, 10000);
+message.sprite.SetPosition(10, 12, 10000);
 message.maxLength = 100;
 
 # fsck action line
 message_action.sprite = Sprite();
-message_action.sprite.SetPosition(10, 30, 10000);
-message_action.maxLength = 100;
+message_action.sprite.SetPosition(10, 32, 10000);
 
 fun message_callback (text) {
 
@@ -430,12 +439,16 @@ fun message_callback (text) {
 		text += "...";
 	}
 
+	local.start = Window.GetWidth() - 10 - Image.Text(text, 0, 0, 0, 0, message.font).GetWidth(); 
+
 	if (keys != NULL) {
-		local.image = Image.Text(text, 0, 0, 0);
-		message_action.sprite.SetImage(image);
+		message_action.sprite.SetX(local.start);
+		local.image = Image.Text(text, 0.4, 0.4, 0.4, 1, message.font);
+		message_action.sprite.SetImage(local.image);
 	}
 	else {
-		local.image = Image.Text(text, 0, 0, 0);
+		message.sprite.SetX(local.start);
+		local.image = Image.Text(text, 0.4, 0.4, 0.4, 1, message.font);
 		message.sprite.SetImage(image);
 	}
 }
@@ -455,7 +468,7 @@ fun refresh_callback () {
 	index = Math.Int(logo.count % 48);
 	global.logo.sprite.SetImage(logo[index].image);
 }
-  
+
 # calling Plymouth.SetRefreshFunction with a function will set that 
 # function to be called up to 50 times every second
 Plymouth.SetRefreshFunction (refresh_callback);

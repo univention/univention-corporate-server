@@ -32,38 +32,15 @@
 
 eval "$(univention-config-registry shell)"
 
-# update to ucs 3.0 with plymouth, can be removed after 3.0-0
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1; then
-	univention-config-registry set bootsplash/theme="ucs"
-
-	splash=false
-	if echo $grub_append | grep -iq '\<splash\>'; then   
-		splash=true
-	fi
-	if echo $grub_append | grep -iq '\<splash=silent\>'; then
-		splash=true
-	fi
-	if echo $grub_append | grep -iq '\<nosplash\>'; then
-		splash=false
-	fi
-	# remove splash stuff from grub/append
-	new=$(echo $grub_append | sed 's|\<nosplash\>||g;s|\<splash=silent\>||g;s|\<splash\>||g')
-	univention-config-registry set grub/append="$new"
-	if [ "true" = "$splash" ]; then
-		univention-config-registry set grub/bootsplash=splash
-	else
-		univention-config-registry set grub/bootsplash=nosplash
-	fi
-fi
-
-
 univention-config-registry set \
 	bootsplash/theme?"ucs" \
 	grub/bootsplash?splash
 
 #DEBHELPER#
 
-update-initramfs -u
+if [ -x /usr/sbin/update-initramfs ]; then
+	update-initramfs -u
+fi
 
 if [ -x /usr/bin/update-grub ]; then
 	update-grub

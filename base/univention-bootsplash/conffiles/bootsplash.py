@@ -1,9 +1,11 @@
-import os
+from subprocess import call
 
 def postinst(baseConfig, changes):
 	theme = changes.get("bootsplash/theme", False)
-	if theme and type(()) == type(theme):
+	try:
 		old, new = theme
-		if new:
-			os.system("plymouth-set-default-theme %s" % new)
-			os.system("update-initramfs -u")
+	except (TypeError, ValueError):
+		pass
+	else:
+ 		if new:
+			call(("plymouth-set-default-theme", "--rebuild-initrd", new))
