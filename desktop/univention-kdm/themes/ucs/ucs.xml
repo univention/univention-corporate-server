@@ -20,8 +20,13 @@
 
 	<!-- background -->
 	<item type="pixmap" id="background" background="true">
-		<normal wallpaper="UCS-4.0-clean" scalemode="free"/>
+		<normal file="bg.jpg" scalemode="free"/>
 		<pos x="0" y="0" width="100%" height="100%"/>
+	</item>
+
+	<!-- univention logo -->
+	<item type="pixmap" id="univention-logo">
+		<normal file="univention-logo.png"/>
 	</item>
 
 	<!-- login -->
@@ -29,40 +34,46 @@
 		<normal file="rectangle.png"/>
 		<pos anchor="c" x="50%" y="50%" width="308" height="308"/>
 		<fixed>
+			<item type="pixmap">
+				<normal file="ucs-logo.png"/>
+				<pos anchor="c" x="50%" y="30%"/>
+			</item>
 			<item type="rect" id="user-field">
-				<pos anchor="c" x="50%" y="30%" width="80%"/>
+				<pos anchor="c" x="50%" y="65%" width="89%"/>
 				<fixed>
 					<item type="pixmap">
 						<pos anchor="w" x="0" y="50%"/>
 						<normal file="user_icon.png"/>
 					</item>
-					<item type="pixmap">
-						<pos anchor="w" x="42" y="10" width="196"/>
-						<normal file="lineedit.png"/>
-					</item>
 					<item type="entry" id="user-entry">
-						<pos anchor="w" x="40" y="-1" width="200"/>
+						<pos anchor="w" y="4" x="35" width="75%"/>
+						<style font="Sans 14"/>
+					</item>
+					<item type="pixmap">
+						<pos anchor="w" y="20" width="100%" height="2"/>
+						<normal alpha="0.25" file="line.png"/>
 					</item>
 				</fixed>
 			</item>
 			<item type="rect" id="user-field2">
-				<pos anchor="c" x="50%" y="55%" width="80%"/>
+				<pos anchor="c" x="50%" y="85%" width="89%"/>
 				<fixed>
-					<item type="pixmap" button="true">
+					<item type="pixmap">
 						<pos anchor="w" x="0" y="50%"/>
 						<normal file="lock.png"/>
 					</item>
-					<item type="pixmap">
-						<pos anchor="w" x="42" y="10" width="196"/>
-						<normal file="lineedit.png"/>
-					</item>
 					<item type="entry" id="pw-entry">
-						<pos anchor="w" x="40" y="-1" width="200"/>
+						<pos anchor="w" y="4" x="35" width="75%"/>
+						<style font="Sans 8"/>
+					</item>
+					<item type="pixmap">
+						<pos anchor="w" y="20" height="2" width="100%"/>
+						<normal alpha="0.25" file="line.png"/>
 					</item>
 				</fixed>
 			</item>
 			<item type="rect" id="system-session">
-				<pos anchor="c" x="50%" y="82%"/>
+				<pos anchor="c" x="90%" y="85%"/>
 				<fixed>
 					<item type="pixmap" id="login_button" button="true">
 						<normal file="login_normal.png"/>
