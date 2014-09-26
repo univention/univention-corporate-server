@@ -1,8 +1,9 @@
 SCALE ON
 BACKGROUND_IMAGE 0 0 background.jpg
 SCALE OFF
-
-ANIM_REL 1 CC 0 0 CC 30 box-anim.png 308 0
+IMAGE 0 0 univention-logo.png
+SCALE OFF
+ANIM_REL 1 CC 0 0 CC 48 box-anim.png 75 0
 
 # the image is 308x308, make it centered, all icons need the same adjustment too
 #IMAGE_REL CC 0 0 CC rectangle.png

@@ -1,0 +1,92 @@
+This is a splashscreen which basically depends only on libX11 and libpng.
+It includes few sources from Qt which have been modified to work without
+QApplication. Due to almost no link dependencies and no QApplication
+initialization this splashscreen has a very fast startup.
+Please see file LICENSE for the licensing terms.
+
+LIMITATIONS:
+This implementation can only draw images and animations. This means that
+e.g. texts need to be pre-rendered into images. i18n support is however
+provided by mimicking KLocale's mechanism for localizing non-text resources.
+
+USAGE:
+ksplashx <theme> [--test]
+
+NOTES:
+Add a comment in description.txt and update it everytime you change anything.
+Caching of the splash is done and the timestamp of description.txt is used.
+Alternatively, update at least Theme.rc.
+New images are alphablended (if needed) with what's in the splash window
+and then they replace what's at their position. Animations have all frames
+alphablended (if needed) with what's in the splash window but they do not
+replace window contents permanently.
+In a theme directory there can be a subdirectory for each screen resolution
+named the same like the resolution (e.g. "1600x1200"). A best match is searched
+for the active screen resolution. It should be usually enough to have just
+one set, e.g. 1600x1200; especially with SCALE OFF.
+Low color screen depths are supported, with bpp <= 8 a directory called with
+"-locolor" (e.g. "1600x1200-locolor") appended is always searched first.
+
+FORMAT:
+# comments start with #
+# commands are case-sensitive
+# whether to enable scaling (SCALE ON) or not (SCALE OFF) to fit current screen resolution
+# if enabled, all positions and sizes are scaled by ratio between their primary resolution size
+# and current resolution size (e.g. a 80x80 image at 100,0 in 1600x1200
+# is scaled to 40x40 at 50,0 for 800x600)
+# defaults to ON, it's suggested to always explicitly specify
+# it is possible to toggle scaling also several times (e.g. scale background image, not scale the rest)
+SCALE ON/OFF
+# like SCALE, for only one dimension
+SCALEX ON/OFF
+SCALEY ON/OFF
+# x y w h - geometry of the splash window (screen size by default)
+# if x or y are negative, they're relative to the right/bottom side
+GEOMETRY x y w h
+# geometry of the splash window relatively to the screen
+# relative position is specified as x_rel,y_rel offset of reference point of the window
+# to reference point of the screen
+# reference point is specified as two letters, first being X, second being Y:
+# L - left, R - right, C - center, T - top, B - bottom
+# e.g. GEOMETRY_REL LC 100 0 CC places window's center 100 pixels to the right of middle of left screen edge
+GEOMETRY_REL screen_ref x_rel y_rel window_ref w h
+# color to fill the window with (this command also clears the whole window)
+# not necessary if image(s) will fill the area entirely
+BACKGROUND color
+# place an image called name (no path, include extension) at position x,y
+IMAGE x y name
+# Same as image but this image is painted on every screen in xinerama setups
+BACKGROUND_IMAGE x y name
+# place an image called name (no path, include extension) at relative position
+# see description of GEOMETRY_REL for screen_ref, x_rel, y_rel and image_ref (=window_ref)
+IMAGE_REL screen_ref x_rel y_xrel image_ref name
+# place animation from file 'name' at position x,y, id is 'number'
+# animation is specified in a non-animated file as a sequence of images in rows,
+# images wrap at 10 columns
+# image contains 'frames' frames and there's 'delay' pause between each frame
+# the animation repeats 'repeat' times, with 0 for infinite (optional field defaulting to 0)
+ANIM number x y frames name delay [repeat]
+# place animation
+# see description of ANIM for number, frames, name, delay and repeat
+# see description of GEOMETRY_REL for screen_ref, x_rel, y_rel and image_ref (=window_ref)
+ANIM_REL number screen_ref x_rel y_rel image_ref frames name delay [repeat]
+# stop animation with the given id
+# this also clears the animation from the window
+STOP_ANIM number
+# wait until the specified ksplash state
+# see the splash toplevel README file (one directory up)
+# specifying "ready" means waiting until whole startup is complete (should be used at the very end)
+WAIT_STATE state
+
+HOW TO CREATE ANIM PNG FILE:
+Since there's only PNG support, animation have to be prepared as separate frames.
+In order to improve performance, all frames are put together in one big PNG file.
+Steps:
+1. Animation must be prepared as a list of images.
+2. In the utils/ directory there's prepareanim utility. Run it as
+./prepareanim <frame images>
+where
+frame images - list of images for animation in their order
+3. File result.png will be created.
+It is also possible to create the resulting PNG manually - frames are added
+in rows, rows wrap at 10th frame.
