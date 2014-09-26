@@ -5,7 +5,7 @@
 ## exposure: careful
 ## bugs: [36006]
 ## versions:
-##  1.0-0: found
+##  3.2-3: skip
 ## packages: []
 
 import re
