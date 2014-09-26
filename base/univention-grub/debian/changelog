@@ -1,3 +1,9 @@
+univention-grub (8.0.3-5) unstable; urgency=low
+
+  * new menu colors (Bug #35934) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 26 Sep 2014 13:32:46 +0200
+
 univention-grub (8.0.3-4) unstable; urgency=low
 
   * Bug #33397: Remove old UEFI code
