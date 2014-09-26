@@ -5,8 +5,8 @@
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## bugs: [35959]
-## versions: 
-##  3.2-3: skip
+## versions:
+##  4.0-0: skip
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
