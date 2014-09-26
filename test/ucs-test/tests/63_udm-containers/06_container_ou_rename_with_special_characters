@@ -4,6 +4,9 @@
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
+## bugs: [35959]
+## versions: 
+##  1.0-0: found
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
