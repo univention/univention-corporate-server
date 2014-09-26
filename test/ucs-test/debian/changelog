@@ -1,10 +1,10 @@
 ucs-test (5.0.12-1) unstable; urgency=low
 
   * Bug #8052 test scripts added "*_with_special_characters" 
-	scripts 06_.._with_special_characters and 07_.._with_special_characters
-	are skipped for the current version because they fail because of Bug #35959.
+  *	scripts 06_.._with_special_characters and 07_.._with_special_characters
+  *	are skipped for the current version because they fail because of Bug #35959.
   * Bug #15219: test script added "102_Standard_Paketliste_installation"
-	which is skipped for the current version, it fails because of Bug #36006.
+  *	which is skipped for the current version, it fails because of Bug #36006.
   * Bug #16053 : test script added "103_packages_held_back"
 
  -- Ammar Najjar <najjar@univention.de>  Fri, 26 Sep 2014 11:17:49 +0200
