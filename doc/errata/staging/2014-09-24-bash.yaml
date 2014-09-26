@@ -1,0 +1,26 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-errata3.1-1
+src: bash
+fix: 4.1-3.37.201409261338
+desc: |
+ Stephane Chazelas discovered a vulnerability in bash, the GNU
+ Bourne-Again Shell, related to how environment variables are
+ processed. In many common configurations, this vulnerability is
+ exploitable over the network, especially if bash has been configured
+ as the system shell.
+ Additionally there are two out-of-bounds array accesses in the bash parser,
+ which were revealed in Red Hat's internal analysis for these issues and
+ also independently reported by Todd Sabin:
+ * Parser can allow out-of-bounds memory access while handling redir_stack
+   (CVE-2014-7186)
+ * Off-by-one error in deeply nested flow control constructs
+   (CVE-2014-7187)
+cve:
+ - CVE-2014-6271
+ - CVE-2014-7169
+ - CVE-2014-7186
+ - CVE-2014-7187
+bug:
+ - 36003
