@@ -345,7 +345,7 @@ class WinExe:
 	def promote_ad(self, dmode, forest_mode, install_root_ca=True):
 		''' create AD domain on windows server '''
 
-		set_local_user_password(self.domain_admin, self.domain_password)
+		self.set_local_user_password(self.domain_admin, self.domain_password)
 		self.winexec("firewall-turn-off", domain_mode=False)
 		self.winexec("powershell-promote-ad", self.domain, dmode, forest_mode, domain_mode=False)
 		self.wait_until_client_is_gone(timeout=120)
