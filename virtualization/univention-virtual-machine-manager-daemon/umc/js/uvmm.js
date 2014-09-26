@@ -229,6 +229,7 @@ define([
 			});
 			this._tree = new Tree({
 				//style: 'width: auto; height: auto;',
+				region: 'nav',
 				model: model,
 				persist: false,
 				showRoot: false,
@@ -241,13 +242,7 @@ define([
 				})
 			});
 			this._tree.dndController.singular = true;
-			var treePane = new ContentPane({
-				content: this._tree,
-				region: 'left',
-				splitter: true,
-				style: 'width: 200px;'
-			});
-			titlePane.addChild(treePane);
+			titlePane.addChild(this._tree);
 
 			// add a context menu to edit/delete items
 			var menu = new Menu({});
@@ -668,7 +663,7 @@ define([
 			page = new CreatePage({
 				onCancel: _cleanup,
 				onFinished: _finished,
-				umcpCommand: lang.hitch(this, 'umcpCommand'),
+				umcpCommand: lang.hitch(this, 'umcpCommand')
 			});
 			this.addChild(page);
 			this.selectChild(page);
@@ -1073,7 +1068,7 @@ define([
 			if (item._univention_cache_button_start) {
 				return item._univention_cache_button_start;
 			}
-			var call = item.type == 'instance' ? '_changeStateInstance' : '_changeState'
+			var call = item.type == 'instance' ? '_changeStateInstance' : '_changeState';
 			var id = item[this._grid.moduleStore.idProperty];
 			var btn = new Button({
 				label: '',
