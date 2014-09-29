@@ -81,6 +81,13 @@
 	color: transparent;
 	margin-top: 3px;
 }
+#umcLoginDialog .umcLoginForm input[type=submit]:hover {
+	background-position-x: -20px;
+}
+#umcLoginDialog .umcLoginForm input[type=submit]:active {
+	background-position-x: -40px;
+}
+
 #umcLoginDialog .umcLoginForm label:nth-last-child(1) input {
 	float: left;
 }
@@ -126,9 +133,17 @@
 		box-shadow: none;
 		background: none;
 		.dijitArrowButtonInner {
-			icon-image(0, -200, "../", 20px, 25px);
+			icon-image(0, -180, "../", 20px, 25px);
 		}
 	}
+}
+#umcLanguageSwitch .dijitHover .dijitArrowButtonInner {
+	background-position-x: -20px;
+	opacity: 0.66;
+}
+#umcLanguageSwitch .dijitActive .dijitArrowButtonInner {
+	background-position-x: -20px;
+	opacity: 1;
 }
 
 #umcFakeLoginLogo {

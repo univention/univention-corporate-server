@@ -203,11 +203,20 @@
 .claro .dijitComboBox .dijitDownArrowButtonHover,
 .claro .dijitComboBoxFocused .dijitArrowButton {
 	//background-color:$arrowbutton-hovered-background-color;
+	.dijitArrowButtonInner {
+		background-position-x: -20px;
+		opacity: 0.66;
+	}
 }
 
 .claro .dijitComboBoxOpenOnClickHover .dijitArrowButtonInner,
 .claro .dijitComboBox .dijitDownArrowButtonHover .dijitArrowButtonInner {
 	//background-position:-70px 53%;
+}
+
+.claro .dijitComboBox .dijitDownArrowButtonActive .dijitArrowButtonInner {
+	background-position-x: -20px;
+	opacity: 1;
 }
 
 /* Arrow Button change when drop down is open */

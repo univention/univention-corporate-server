@@ -109,16 +109,19 @@
 	color: $text-color-lighter;
 }
 
-
 /* hover status */
 .claro .dijitButtonHover .dijitButtonNode,
 .claro .dijitDropDownButtonHover .dijitButtonNode,
 .claro .dijitComboButton .dijitButtonNodeHover, 
 .claro .dijitComboButton .dijitDownArrowButtonHover,
 .claro .dijitToggleButtonHover .dijitButtonNode {
-	background-color: desaturate(darken($button-hovered-background-color, 10), 20);
+	//background-color: desaturate(darken($button-hovered-background-color, 10), 20);
 	color:$text-color;
 	transition-duration: .2s;
+	.dijitArrowButtonInner {
+		background-position-x: -20px;
+		opacity: 0.66;
+	}
 }
 
 /* active, checked status */
@@ -130,6 +133,10 @@
 	background-color: desaturate(darken($button-pressed-background-color, 10), 20);
 	box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.2);
 	transition-duration: .1s;
+	.dijitArrowButtonInner {
+		background-position-x: -20px;
+		opacity: 1;
+	}
 }
 
 /* disabled status */

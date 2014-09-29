@@ -1,0 +1,48 @@
+@import "variables";
+
+// helper function to generate rules for hover and active states
+icon-rule($iconName, $xoffset, $yoffset, $height=20px, $width=20px) {
+	for $suffix in "" White {
+		$xoffsetColor = 0
+		$opacityHover = 0.66
+		$opacityActive = 1
+		if ($suffix == "White") {
+			$xoffsetColor = -40
+			$opacityHover = 1
+			$opacityActive = 0.66
+		}
+		.umc{$iconName}Icon{$suffix} {
+			icon-image($xoffset + $xoffsetColor, $yoffset, "", $width, $height);
+		}
+		.dijitHover .umc{$iconName}Icon{$suffix} {
+			background-position-x: ($xoffset - 20px + $xoffsetColor);
+			opacity: $opacityHover;
+		}
+		.dijitActive .umc{$iconName}Icon{$suffix} {
+			background-position-x: ($xoffset - 20px + $xoffsetColor);
+			opacity: $opacityActive;
+		}
+	}
+}
+
+icon-rule("Down", 0, 0);
+icon-rule("Up", -80, 0);
+icon-rule("Left", -160, 0);
+icon-rule("Right", -240, 0);
+
+icon-rule("ArrowDown", 0, -20);
+icon-rule("ArrowUp", -80, -20);
+icon-rule("ArrowLeft", -160, -20);
+icon-rule("ArrowRight", -240, -20);
+
+icon-rule("ContextMenu", 0, -40);
+icon-rule("Close", 0, -60);
+icon-rule("SmallClose", -80, -60);
+icon-rule("Minimize", 0, -80);
+icon-rule("Empty", 0, -100);
+icon-rule("Checked", -80, -100);
+icon-rule("LargeRight", 0, -120);
+icon-rule("LargeClose", 0, -140);
+icon-rule("Save", 0, -160);
+icon-rule("Lang", 0, -180, 25px);
+

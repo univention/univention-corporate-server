@@ -63,14 +63,30 @@
 	//height: $width-arrow-sprite;
 	//width: $width-arrow-sprite;
 	float: right;
-	icon-image(-40, 0);
+	icon-image(-80, 0);
 }
 .claro .dijitTitlePaneTitleOpen .dijitArrowNode, .claro .dijitFieldsetTitleOpen .dijitArrowNode {
 	background-position: 0 0;
 }
-.claro .dijitTitlePaneTitleClosed .dijitArrowNode, .claro .dijitFieldsetTitleClosed .dijitArrowNode {
-	background-position: -$width-arrow-sprite 0;
+.claro .dijitTitlePane, .claro .dijitFieldset {
+	.dijitTitlePaneTitleHover .dijitArrowNode {
+		background-position-x: -20px;
+		opacity: 0.66;
+	}
+	.dijitTitlePaneTitleActive .dijitArrowNode {
+		opacity: 1;
+	}
 }
+
+.claro .dijitTitlePane {
+	.dijitTitlePaneTitleClosed .dijitArrowNode {
+		background-position-x: -160px;
+	}
+	.dijitTitlePaneTitleClosed.dijitTitlePaneTitleHover .dijitArrowNode {
+		background-position-x: -180px;
+	}
+}
+
 .claro .dijitTitlePaneContentOuter {
 	//background: $pane-background-color;
 	//border:1px solid $border-color;
