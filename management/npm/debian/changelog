@@ -1,3 +1,9 @@
+npm (0.0.2-3) unstable; urgency=low
+
+  * Bug #35654: version bump
+
+ -- Florian Best <best@univention.de>  Mon, 29 Sep 2014 19:57:14 +0200
+
 npm (0.0.2-2) unstable; urgency=low
 
   * Bug #35822: Adapted the npm copyright information
