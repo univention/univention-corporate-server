@@ -32,16 +32,13 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dijit/TitlePane",
 	"umc/dialog",
-	"umc/widgets/ContainerWidget",
 	"umc/widgets/Form",
 	"umc/widgets/Module",
 	"umc/widgets/Page",
-	"umc/widgets/TextBox",
-	"umc/widgets/ComboBox",
+	"umc/widgets/TextArea",
 	"umc/i18n!umc/modules/reboot"
-], function(declare, lang, array, DijitTitlePane, dialog, ContainerWidget, Form, Module, Page, TextBox, ComboBox, _) {
+], function(declare, lang, array, dialog, Form, Module, Page, TextArea, _) {
 
 	return declare("umc.modules.reboot", Module, {
 
@@ -57,54 +54,37 @@ define([
 			});
 			this.addChild(this._page);
 
-			var widgets = [{
-				type: ComboBox,
-				name: 'action',
-				value: 'reboot',
-				label: _('Action'),
-				staticValues: [
-					{id: 'reboot', label: _('Reboot')},
-					{id: 'halt', label: _('Stop')}
-				]
-			}, {
-				type: TextBox,
-				name: 'message',
-				label: _('Reason for this reboot/shutdown')
-			}];
-
 			var buttons = [{
-				name: 'submit',
-				label: _('Execute'),
-				callback: lang.hitch(this, function() {
-					var vals = this._form.get('value');
-					this.shutdown(vals);
-				})
+				name: 'halt',
+				label: _('Stop'),
+				'default': true,
+				callback: lang.hitch(this, 'shutdown', false)
+			}, {
+				name: 'reboot',
+				label: _('Reboot'),
+				'default': true,
+				callback: lang.hitch(this, 'shutdown', true)
 			}];
-
-			var layout = [['action'], ['message']];
 
 			this._form = new Form({
-				widgets: widgets,
-				buttons: buttons,
-				layout: layout
+				region: 'main',
+				widgets: [{
+					type: TextArea,
+					rows: 4,
+					name: 'message',
+					label: _('Reason for this reboot/shutdown')
+				}],
+				buttons: buttons
 			});
+			this._page.addChild(this._form);
 
-			var container = new ContainerWidget({
-				scrollable: true
-			});
-			this._page.addChild(container);
-
-			var titlePane = new DijitTitlePane({
-				title: _('Actions'),
-				content: this._form
-			});
-
-			container.addChild(titlePane);
 		},
 
-		shutdown: function(data) {
+		shutdown: function(reboot) {
+			var msg = this._form.getWidget('message').get('value');
+
 			var message;
-			if (data.action == 'reboot') {
+			if (reboot) {
 				message = _('Please confirm to reboot the computer');
 			} else {
 				message = _('Please confirm to shutdown the computer');
@@ -113,7 +93,10 @@ define([
 			dialog.confirm(message, [{
 				label: _('OK'),
 				callback: lang.hitch(this, function() {
-					this.umcpCommand('reboot/reboot', data);
+					this.umcpCommand('reboot/reboot', {
+						action: reboot ? 'reboot' : 'halt',
+						message: msg
+					});
 				})
 			}, {
 				'default': true,
