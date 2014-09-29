@@ -1,0 +1,85 @@
+@import "../variables";
+
+button-nodijit() {
+	.dijitButtonNode {
+		background: none;
+		border-radius: 0;
+		border: none;
+		padding: 0;
+		box-shadow: none;
+
+		.dijitButtonText {
+			display: none;
+		}
+		.dijitIcon {
+			display: block;
+			margin: auto;
+		}
+	}
+}
+
+.umc .umcModuleHeader {
+	width: 100%;
+	min-height: 90px;
+	margin-bottom: 2em;
+	padding-top: 25px;
+	.umcModuleHeaderWrapper {
+		margin: auto;
+	}
+
+	.umcModuleHeaderSticky {
+		position: fixed;
+		top: 0;
+		font-size: 0.7em;
+		z-index: 900;
+	}
+
+	// TODO: special css class for those
+	.dijitButton.umcCloseButton,
+	.dijitButton.umcHelpButton,
+	.dijitButton.umcBackButton,
+	.dijitButton.umcSaveButton {
+		button-nodijit();
+		padding-top: 0.9em;
+	}
+
+	.dijitButton.umcCloseButton .dijitIcon {
+		icon-image(-20, -60, "../");
+	}
+
+	.dijitButtonHover.umcCloseButton .dijitIcon,
+	.dijitButtonFocused.umcCloseButton .dijitIcon {
+		icon-image(-20, -60, "../");
+	}
+
+	.dijitButton.umcHelpButton .dijitIcon {
+		icon-image(-20, -80, "../");
+	}
+
+	.dijitButton.umcBackButton .dijitIcon {
+		icon-image(-120, -20, "../");
+	}
+
+	.dijitButton.umcSaveButton .dijitIcon {
+		icon-image(0, -100, "../");
+	}
+}
+
+.umc .umcModuleTitle {
+	font-size: $font-size-large;
+	color: $text-color-dark-background;
+	font-weight: bold;
+}
+
+.umc .umcModule {
+	background-color: #ffffff;
+	.umcModuleWrapper {
+		margin: 0 auto;
+		padding: 0;
+	}
+
+	.umcTree {
+		max-height: 500px;
+		min-height: 250px;
+	}
+}

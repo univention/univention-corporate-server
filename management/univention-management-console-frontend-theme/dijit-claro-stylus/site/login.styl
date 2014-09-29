@@ -1,0 +1,139 @@
+@import "../variables";
+
+#umcLoginWrapper {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	display: none;
+}
+
+#umcLoginDialog, .umcLoginDialog {
+	background-image: url('../images/login_bg.png');
+	background-color: #eeeeef;
+	width: 313px;
+	height: 313px;
+	margin: 0 auto;
+	padding: 3px;
+	border: 0 none;
+	position: relative !important;
+}
+
+#umcLoginDialog * {
+	overflow: hidden;
+}
+
+#umcLoginCenterer {
+	height: 50%;
+	margin-bottom: -156px; /* half of the height of #umcLoginDialog*/
+}
+
+#umcLoginIframe {
+	border: 0 none;
+	height: 0;
+	width: 0;
+}
+
+#umcLoginDialog.umcLoginLoading,
+.umcLoginDialog.umcLoginLoading {
+	background-image: url('../images/login_bg.gif');
+}
+#umcLoginDialog .umcLoginLogo img {
+	height: 120px;
+	margin: 53px auto 0;
+	display: block;
+	transition(margin-top 1s);
+}
+
+#umcLoginDialog.umcLoginLoading .umcLoginLogo img {
+	margin-top: 85px;
+}
+
+#umcLoginDialog .umcLoginForm {
+	margin: 15px;
+}
+
+#umcLoginDialog.umcLoginLoading .umcLoginForm {
+	display: none!important;
+}
+
+#umcLoginDialog .umcLoginForm label {
+	width: 100%;
+	height: 30px;
+	display: block;
+	padding: 0;
+	margin: 20px 0;
+	border-bottom: thin solid #969696;
+}
+#umcLoginDialog .umcLoginForm input {
+	padding: 0;
+	margin: 0;
+	border: 0 none;
+	outline: none;
+	background: transparent;
+	font-size: 1.5em;
+	color: #787878;
+	width: 100%;
+	height: 100%;
+}
+#umcLoginDialog .umcLoginForm input[type=submit] {
+	icon-image(0, -120, "../", 20px, 20px);
+	float: left;
+	color: transparent;
+	margin-top: 3px;
+}
+#umcLoginDialog .umcLoginForm label:nth-last-child(1) input {
+	float: left;
+}
+#umcLoginDialog .umcLoginForm label:nth-last-child(1) input:first-child {
+	width: 92%;
+	width: 257px;
+}
+#umcLoginMessages {
+	margin: 0 auto;
+	padding: 1.3em;
+	width: 313px;
+	background-color: #696969;
+	border: thin solid #a8a8a8;
+	color: #ffffff;
+	font-size: 0.9em;
+}
+#umcLoginMessages a {
+	color: #ffffff;
+	text-decoration: underline;
+}
+#umcLoginMessages a:hover,
+#umcLoginMessages a:focus {
+	color: #7db523;
+}
+#umcLoginMessages h1 {
+	font-size: 1.7em;
+	margin: 0;
+	padding: 0.3em 0;
+	margin-bottom: 0.3em;
+	border-bottom: thin inset #ffffff;
+}
+#umcLoginMessages p {
+	margin: 0;
+	padding: 0;
+}
+
+#umcLanguageSwitch {
+	position: absolute;
+	top: 0;
+	right: 0;
+	.dijitButtonNode {
+		border: 0 none;
+		box-shadow: none;
+		background: none;
+		.dijitArrowButtonInner {
+			icon-image(0, -200, "../", 20px, 25px);
+		}
+	}
+}
+
+#umcFakeLoginLogo {
+	position: absolute;
+	width: 200px;
+	height: 40px;
+	background: url("../images/univention.svg") no-repeat 10px 12px;
+}

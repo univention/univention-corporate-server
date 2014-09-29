@@ -1,0 +1,93 @@
+@import "../variables";
+
+.umc .umcOverviewContainer {
+	padding: 0;
+}
+
+/* Category tabs */
+.umc .umcCategoryBar {
+	text-align: center;
+	margin-bottom: 35px;
+}
+
+.umc .umcCategoryBar .dijitButton {
+	min-width: 95px;
+	max-width: 160px;
+	margin: 5px 0;
+	position: relative;
+
+	.dijitButtonNode {
+		margin: auto;
+		padding: 0;
+		border: 0 none;
+		background: none;
+		box-shadow: none;
+		display: block;
+	}
+
+	.dijitButtonText {
+		display: block;
+		font-size: 1em;
+		margin-top: 0.5em;
+	}
+
+	.dijitIcon {
+		display: block;
+		position: absolute;
+		width: 100%;
+		background-position: center top;
+	}
+
+
+//		.dijitButtonContents {
+//			width: 65px;
+//			padding-top: 83px;
+//			border: 0 none;
+//			margin: 10px 32px;
+//			padding: 0;
+//			background-size: 64px;
+//			background-repeat: no-repeat;
+//			background-position: top center;
+//		}
+
+}
+
+/* LiveSearchSidebar */
+.umcLiveSearchSidebar {
+	.dijitButton {
+		font-size: 100%;
+		background: none;
+		border: none;
+		display: block;
+		margin: 0.4em 0 0 0;
+		padding: 0;
+
+		.dijitButtonContents {
+			outline: none;
+		}
+
+		.dijitButtonText {
+			text-decoration: none;
+			padding-left: 0.416em;
+			padding-right: 0.416em;
+		}
+	}
+
+	.umcButton.umcCategorySelected .dijitButtonText {
+		font-weight: bold;
+	}
+
+	.dijitButtonHover,
+	.dijitButtonActive {
+		box-shadow(none);
+		border-radius(5px);
+		transition-duration(0.3s);
+
+		.dijitButtonNode {
+			text-shadow: none;
+			background: none;
+		}
+	}
+}
+
+

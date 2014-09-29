@@ -1,0 +1,151 @@
+@import "../variables";
+
+/* GalleryPane */
+.umcGalleryPane.dgrid {
+	overflow: hidden;
+	height: auto;
+	border: none;
+
+	.dgrid-scroller {
+		outline: none;
+		position: relative;
+		overflow: visible;
+	}
+
+	.dgrid-selected {
+		background-color: inherit;
+	}
+}
+
+.umcGalleryPane {
+	// disable selection on touch devices
+	// taken from: http://stackoverflow.com/a/11237968
+	-webkit-touch-callout:none;
+	-webkit-user-select:none;
+
+	.umcGalleryCategoryHeader {
+		display: block;
+		padding-bottom: 0.416em;
+		margin-bottom: 5px;
+		font-size: 1.166em;
+		clear: left;
+		// on the android tablet the border would only be displayed at width ~300px
+		// this background image hack fixes the problem, see:
+		//   http://stackoverflow.com/a/13550951
+		background-image: url(../images/blank.png);
+	}
+
+	.umcGalleryWrapperItem {
+		padding: 5px;
+	}
+
+	.umcGalleryItem {
+		position: relative;
+		outline: none;
+		padding: 5px;
+		background-color: rgba(255, 255, 255, 0.5);
+
+		// definitions in px instead of em due to size of image in px
+		//padding: 15px 20px;
+		//margin: 0 12px 10px 0;
+		height: 100px;
+
+		.umcGalleryName {
+			font-size: $font-size-medium;
+			color: $text-color-lighter;
+			font-weight: bold;
+			border-bottom: solid 1px $gallery-border-color;
+			line-height: 1.05em;
+			height: 55%;
+		}
+
+		.umcGalleryDescription {
+			color: $text-color-lightest;
+			line-height: 1.05em;
+			margin-top: 5px;
+		}
+
+		.umcGalleryIcon {
+			margin: 0;
+			padding-bottom: 0;
+//			position: absolute;
+//			visibility: hidden;
+//			display: none;
+			height: 70px;
+			float: left;
+		}
+
+		.umcGalleryStatusIcon {
+			position: absolute;
+			top: 5px;
+			left: 66px;
+			width: 24px;
+			height: 24px;
+		}
+
+		.umcFavoriteIconDefault,
+		.umcFavoriteIconInverted {
+			position: absolute;
+			top: 0;
+			right: 10px;
+			width: 10px;
+			height: 10px;
+			line-height: 0;
+		}
+
+		.umcGalleryContextIcon {
+			background-size: 18px;
+			position: absolute;
+			top: 5px;
+			left: auto;
+			right: 10px;
+			width: 24px;
+			height: 24px;
+		}
+	}
+
+	.umcGalleryItemActive,
+	.umcGalleryItem:hover {
+	//	background-color: @grayAthens;
+	//	.border-radius(5px);
+		cursor: pointer;
+		.umcGalleryCategoryFavorite {
+			background-color: #ffffff!important;
+		}
+		.umcGalleryName,
+		.umcGalleryDescription {
+			color: white;
+			border-color: white;
+		}
+		.umcFavoriteIconDefault {
+			display: none;
+		}
+	}
+}
+
+// no left/right padding for full size item
+@media (max-width: 767px) {
+	.umcGalleryPane .umcGalleryWrapperItem {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+
+/* UMC overview page icons */
+.umcOverviewPane {
+//	.umcGalleryItemActive .umcGalleryContextIcon,
+//	.umcGalleryItem:hover .umcGalleryContextIcon {
+//		visibility: visible!important;
+//	}
+//	.umcGalleryItem	.umcGalleryContextIcon {
+//		visibility: hidden;
+//	}
+
+	.umcGalleryName,
+	.umcGalleryDescription {
+		//padding-left: 60px !important;
+	}
+}
+
+
