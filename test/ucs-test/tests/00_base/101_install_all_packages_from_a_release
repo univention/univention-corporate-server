@@ -26,7 +26,7 @@ def apt_update():
 
 def test_install(pkg_name):
 	"""Simulate packages installation"""
-	cmd = ['apt-get', '-s', 'install', pkg_name]
+	cmd = ['apt-get', '-s', 'install','--no-install-recommends', pkg_name]
 	return run_command(cmd)
 
 def main():
@@ -40,8 +40,8 @@ def main():
 						re.compile(r'Package: (.*)\n[^<]*Maintainer: (.*) \<'),
 						f.read()
 						)
-				# check only packages whose maintainer = 'Univention GmbH'
-				pkgs = [x[0] for x in pkgs_list if x[1] == 'Univention GmbH']
+				# check only packages whose maintainer is not 'Debian Install System Team'
+				pkgs = [x[0] for x in pkgs_list if x[1] != 'Debian Install System Team']
 				for pkg in pkgs:
 					if test_install(pkg):
 						broken_pkgs.append(pkg)
