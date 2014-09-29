@@ -1,3 +1,9 @@
+univention-updater (10.0.4-1) unstable; urgency=low
+
+  * Bug #35654: UMC design adaptions
+
+ -- Florian Best <best@univention.de>  Mon, 29 Sep 2014 19:30:01 +0200
+
 univention-updater (10.0.3-1) unstable; urgency=low
 
   * releasename (Bug #35312) 

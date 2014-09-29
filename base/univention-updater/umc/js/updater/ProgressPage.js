@@ -50,17 +50,16 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, domClass, dialog, tools, Page, _LogViewer, Button, ContainerWidget, Text, ExpandingTitlePane, libServer, _) {
+], function(declare, lang, domClass, dialog, tools, Page, _LogViewer, Button, ContainerWidget, Text, libServer, _) {
 	return declare("umc.modules.updater.ProgressPage", Page, {
 
 		// Polling interval for eventually running Updater jobs. If this is
 		// set to zero it effectively stops the timer.
-		_interval:		1000,
+		_interval: 1000,
 
-		_job_key:		'', 			// the key of the currently running job
+		_job_key: '', 			// the key of the currently running job
 
 		_reboot_required: null,
 
@@ -70,39 +69,33 @@ define([
 
 			// If I don't do that -> the page will switch 'show module help description' off
 			lang.mixin(this, {
-				helpText:	' ',
-				title:		_("Update progress")
+				helpText: ' ',
+				title: _("Update progress")
 			});
 		},
 
 		buildRendering: function() {
-
 			this.inherited(arguments);
 
-			this._pane = new ExpandingTitlePane({
-				title:		_("Log file view")
-			});
-			this.addChild(this._pane);
-
 			this._head = new Text({
-				region:		'top',
-				content:	_("... please wait ...")
+				region: 'top',
+				content: _("... please wait ...")
 			});
-			this._pane.addChild(this._head);
+			this.addChild(this._head);
 
 			this._log = new _LogViewer({
-				region:			'center',
-				query:			'updater/installer/logfile'
+				region: 'center',
+				query: 'updater/installer/logfile'
 			});
-			this._pane.addChild(this._log);
+			this.addChild(this._log);
 
 			this._log.on('queryerror', lang.hitch(this, 'onQueryError'));
 			this._log.on('querysuccess', lang.hitch(this, 'onQuerySuccess'));
 
 			// returns to the calling page
 			this._close = new Button({
-				label:		_("Back"),
-				onClick:	lang.hitch(this, function() {
+				label: _("Back"),
+				onClick: lang.hitch(this, function() {
 					// local function to close the log view
 					var _closeLogView = lang.hitch(this, function() {
 						this.onStopWatching();
@@ -126,16 +119,15 @@ define([
 				})
 			});
 			var container = new ContainerWidget({
-				region:	'bottom'
+				region: 'footer'
 			});
 			container.addChild(this._close);
-			this._pane.addChild(container);
+			this.addChild(container);
 			this._allow_close(false);
 		},
 
 		// starts the polling timer as late as possible.
 		startup: function() {
-
 			this.inherited(arguments);
 			this._query_job_status();
 		},
@@ -143,17 +135,13 @@ define([
 		// callback that processes job status and reschedules itself.
 		_process_job_status: function(data) {
 
-			if (data !== null)
-			{
+			if (data !== null) {
 				// This is the response that tells us which job is running. As soon as we have this
 				// key we will ask for the full properties hash until the job is finished.
-				if (typeof(data.result) == 'string')
-				{
+				if (typeof(data.result) == 'string') {
 					var txt = data.result;
-					if (txt !== '')
-					{
-						if (this._job_key === '')
-						{
+					if (txt !== '') {
+						if (this._job_key === '') {
 							this._job_key = txt;			// from now on, we'll fetch full job details
 							this._log.setJobKey(txt);		// tell the logViewer which job we're referring to.
 						}
@@ -163,20 +151,16 @@ define([
 						this.onJobStarted();
 						this._allow_close(false);		// close button now invisible.
 					}
-					if (data.result !== '')
-					{
+					if (data.result !== '') {
 						// start the first call for 'update/installer/status' if we got a job name
-						if ((this._interval) && (! this._timer))
-						{
+						if ((this._interval) && (! this._timer)) {
 							this._timer = window.setTimeout(lang.hitch(this, function() {
 								this._timer = '';
 								this._query_job_status();
 							}), this._interval);
 						}
 					}
-				}
-				else
-				{
+				} else {
 					// This knows about all details of the job, and it will know when the job
 					// is finished.
 					this._last_job = data.result;	// remember for later
@@ -199,8 +183,7 @@ define([
 					// {
 					// }
 
-					if (data.result.running)
-					{
+					if (data.result.running) {
 						// reschedule this as long as the job runs.
 						if ((this._interval) && (! this._timer))
 						{
@@ -209,20 +192,13 @@ define([
 								this._query_job_status();
 							}), this._interval);
 						}
-					}
-					else
-					{
+					} else {
 						this._allow_close(true);		// does the rest.
 					}
-
-					this._pane.layout();
-
 				}
-			}
-			else {
+			} else {
 				// error case, request could not been sent... try again
-				if ((this._interval) && (! this._timer))
-				{
+				if ((this._interval) && (! this._timer)) {
 					this._timer = window.setTimeout(lang.hitch(this, function() {
 						this._timer = '';
 						this._query_job_status();
@@ -236,10 +212,8 @@ define([
 		// details. The handler _process_job_status() handles this gracefully.
 		_query_job_status: function() {
 
-			if (this._job_key === '')
-			{
-				tools.umcpCommand(
-					'updater/installer/running', {}, false).then(
+			if (this._job_key === '') {
+				tools.umcpCommand('updater/installer/running', {}, false).then(
 					lang.hitch(this, function(data) {
 						this.onQuerySuccess('updater/installer/running');
 						this._process_job_status(data);
@@ -249,19 +223,17 @@ define([
 						this._process_job_status(null);							// only for rescheduling
 					})
 				);
-			}
-			else
-			{
-				tools.umcpCommand('updater/installer/status', {job:this._job_key}, false).then(
-						lang.hitch(this, function(data) {
-							this.onQuerySuccess("updater/installer/status(" + this._job_key + ")");
-							this._process_job_status(data);
-						}),
-						lang.hitch(this, function(data) {
-							this.onQueryError('updater/installer/status', data);		// handles error
-							this._process_job_status(null);							// only for rescheduling
-						})
-					);
+			} else {
+				tools.umcpCommand('updater/installer/status', {job: this._job_key}, false).then(
+					lang.hitch(this, function(data) {
+						this.onQuerySuccess("updater/installer/status(" + this._job_key + ")");
+						this._process_job_status(data);
+					}),
+					lang.hitch(this, function(data) {
+						this.onQueryError('updater/installer/status', data);		// handles error
+						this._process_job_status(null);							// only for rescheduling
+					})
+				);
 			}
 		},
 
@@ -327,7 +299,6 @@ define([
 
 		// updater Module calls this when the ProgressPage is to be opened.
 		startWatching: function() {
-
 			// ensure a clean look (and not some stale text from last job)
 			this._head.set('content', _("... loading job data ..."));
 
@@ -346,7 +317,6 @@ define([
 
 		// lets the timer loop stop when the module is closed.
 		uninitialize: function() {
-
 			this.inherited(arguments);
 			this._interval = 0;
 		},
@@ -363,8 +333,7 @@ define([
 		_switch_headings: function(status) {
 
 			// avoid doing that repeatedly
-			if (status == this._last_heading_status)
-			{
+			if (status == this._last_heading_status) {
 				return;
 			}
 
@@ -372,19 +341,19 @@ define([
 
 			var headings = {
 				'running': {
-					// title:			_("Update in progress"),
-					headerText:		_("Univention Updater is working"),
-					helpText:		_("As long as the Univention Updater is updating your system, you're not allowed to manage settings. You may watch the progress, or close the module.")
+					// title: _("Update in progress"),
+					headerText: _("Univention Updater is working"),
+					helpText: _("As long as the Univention Updater is updating your system, you're not allowed to manage settings. You may watch the progress, or close the module.")
 				},
 				'success': {
-					// title:			_("Update finished"),
-					headerText:		_("Univention Updater job completed"),
-					helpText:		_("Univention Updater has successfully finished the current job. You may read through the log file. If you're finished you may press the 'back' button to close this view.")
+					// title: _("Update finished"),
+					headerText: _("Univention Updater job completed"),
+					helpText: _("Univention Updater has successfully finished the current job. You may read through the log file. If you're finished you may press the 'back' button to close this view.")
 				},
 				'failed': {
-					// title:			_("Update failed"),
-					headerText:		_("Univention Updater job failed"),
-					helpText:		_("Univention Updater could not successfully complete the current job. The log file should show the cause of the failure. If you're finished examining the log file you may press the 'back' button to close this view.")
+					// title: _("Update failed"),
+					headerText: _("Univention Updater job failed"),
+					helpText: _("Univention Updater could not successfully complete the current job. The log file should show the cause of the failure. If you're finished examining the log file you may press the 'back' button to close this view.")
 				}
 			};
 
