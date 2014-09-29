@@ -87,21 +87,30 @@ define([
 					label: '&nbsp;',
 					layout: [
 						'keyname',
-						['size_id', 'size_info_text'],
 						'image_id',
+						['size_id', 'size_info_text'],
 						'security_group_ids'
 					],
 					widgets: [{
 						name: 'keyname',
 						type: ComboBox,
-						label: 'keyname',
+						label: _('Select a key pair'),
 						dynamicOptions: {conn_name: cloud},
 						dynamicValues: types.getCloudListKeypair,
 						required: true
 					}, {
+						name: 'image_id',
+						type: ComboBox,
+						label: _('Choose an Image'),
+						dynamicOptions: {conn_name: cloud},
+						dynamicValues: lang.hitch(this, function(options) {
+							return this.standbyDuring(types.getCloudListImage(options));
+						}),
+						required: true
+					}, {
 						name: 'size_id',
 						type: ComboBox,
-						label: 'size_id',
+						label: _('Choose an Instance Size'),
 						sortDynamicValues: false,
 						dynamicOptions: {conn_name: cloud},
 						dynamicValues: types.getCloudListSize,
@@ -115,18 +124,9 @@ define([
 						content: '',
 						label: '&nbsp;'
 					}, {
-						name: 'image_id',
-						type: ComboBox,
-						label: 'image_id',
-						dynamicOptions: {conn_name: cloud},
-						dynamicValues: lang.hitch(this, function(options) {
-							return this.standbyDuring(types.getCloudListImage(options));
-						}),
-						required: true
-					}, {
 						name: 'security_group_ids',
 						type: ComboBox,
-						label: 'security_group_ids',
+						label: _('Configure Security Group'),
 						dynamicOptions: {conn_name: cloud},
 						dynamicValues: types.getCloudListSecgroup,
 						required: true
@@ -141,21 +141,21 @@ define([
 					label: '&nbsp;',
 					layout: [
 						'keyname',
-						['size_id', 'size_info_text'],
 						['image_id', 'image_univention'],
+						['size_id', 'size_info_text'],
 						'security_group_ids'
 					],
 					widgets: [{
 						name: 'keyname',
 						type: ComboBox,
-						label: 'keyname',
+						label: _('Select a key pair'),
 						dynamicOptions: {conn_name: cloud},
 						dynamicValues: types.getCloudListKeypair,
 						required: true
 					}, {
 						name: 'size_id',
 						type: ComboBox,
-						label: 'size_id',
+						label: _('Choose an Instance Size'),
 						sortDynamicValues: false,
 						dynamicOptions: {conn_name: cloud},
 						dynamicValues: types.getCloudListSize,
@@ -171,7 +171,7 @@ define([
 					}, {
 						name: 'image_id',
 						type: ComboBox,
-						label: 'image_id',
+						label: _('Choose AMI'),
 						sortDynamicValues: false,
 						dynamicOptions: {conn_name: cloud, pattern: owner_id},
 						dynamicValues: lang.hitch(this, function(options) {
@@ -182,7 +182,7 @@ define([
 						name: 'image_univention',
 						type: CheckBox,
 						value: true,
-						label: _('Univention images'),
+						label: _('Only show Univention images'),
 						description: _('Show only images which are provided by Univention.'),
 						onChange: lang.hitch(this, function(newVal) {
 							var widget = this.getWidget('details', 'parameter').getWidget('image_id');
@@ -193,7 +193,7 @@ define([
 					}, {
 						name: 'security_group_ids',
 						type: ComboBox,
-						label: 'security_group_ids',
+						label: _('Configure Security Group'),
 						dynamicOptions: {conn_name: cloud},
 						dynamicValues: types.getCloudListSecgroup,
 						required: true
@@ -221,7 +221,7 @@ define([
 					}, {
 						name: 'name',
 						type: TextBox,
-						label: _('Name'),
+						label: _('Instance Name'),
 						required: true
 					}]
 				}, {

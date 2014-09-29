@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.0-17) unstable; urgency=low
+
+  * Improved UMC wizard texts, added translations (Bug #35991)
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 29 Sep 2014 16:44:22 +0200
+
 univention-virtual-machine-manager-daemon (4.0.0-16) unstable; urgency=low
 
   * Bug #35942: fix typos which prevent module opening?

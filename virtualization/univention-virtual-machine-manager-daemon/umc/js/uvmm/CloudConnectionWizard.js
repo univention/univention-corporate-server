@@ -84,15 +84,15 @@ define([
 				[{
 					name: 'username',
 					type: TextBox,
-					label: 'username',
+					label: _('Username'),
 					required: true
 				}, {
 					name: 'auth_version',
 					type: ComboBox,
-					label: 'auth_version',
+					label: _('Use the following authentication type'),
 					staticValues: [
-						{ id: '2.0_password', label: '2.0_password' },
-						{ id: '2.0_apikey', label: '2.0_apikey' },
+						{ id: '2.0_password', label: _('Password') },
+						{ id: '2.0_apikey', label: _('API Key') },
 					],
 					onChange: lang.hitch(this, function(value){
 						var widget = this.getWidget('credentials', 'parameter').getWidget('password');
@@ -104,48 +104,48 @@ define([
 				}, {
 					name: 'password',
 					type: TextBox,
-					label: 'password',
+					label: _('Password'),
 					depends: 'auth_version',
 					required: true
 				}, {
 					name: 'auth_token',
 					type: TextBox,
-					label: 'auth_token',
+					label: _('API Key'),
 					depends: 'auth_version',
 					required: true
 				}, {
 					name: 'auth_url',
 					type: TextBox,
-					label: 'auth_url',
+					label: _('Authentication URL endpoint'),
 					required: true,
 					validator: this._validateUrl,
 					invalidMessage: this._invalidUrlMessage,
 				}, {
 					name: 'tenant',
 					type: TextBox,
-					label: 'tenant',
+					label: _('Tenant'),
 					required: false
 				}, {
 					name: 'service_region',
 					type: TextBox,
-					label: 'service_region',
+					label: _('Service region'),
 					required: false
 				}, {
 					name: 'service_type',
 					type: TextBox,
-					label: 'service_type',
+					label: _('Service type'),
 					value: 'compute',
 					required: false
 				}, {
 					name: 'service_name',
 					type: TextBox,
-					label: 'service_name',
+					label: _('Service name'),
 					value: 'nova',
 					required: false
 				}, {
 					name: 'base_url',
 					type: TextBox,
-					label: 'base_url',
+					label: _('Service URL endpoint'),
 					required: false,
 					validator: this._validateUrl,
 					invalidMessage: this._invalidUrlMessage,
@@ -167,12 +167,12 @@ define([
 				[{
 					name: 'access_id',
 					type: TextBox,
-					label: 'Access Key ID',
+					label: _('Access Key ID'),
 					required: true
 				}, {
 					name: 'password',
 					type: TextBox,
-					label: 'Secret Access Key',
+					label: _('Secret Access Key'),
 					required: true
 				}, {
 					name: 'region',
@@ -187,12 +187,12 @@ define([
 						{ id: 'EC2_AP_SOUTHEAST2', label: 'Asia Pacific (Singapore)' },
 						{ id: 'EC2_SA_EAST', label: 'South America (São Paulo)' },
 					],
-					label: 'EC2 Region',
+					label: _('EC2 Region'),
 					required: true
 				}, {
 					name: 'secure',
 					type: CheckBox,
-					label: 'secure',
+					label: _('Secure connection'),
 					value: true,
 					required: false
 				}
