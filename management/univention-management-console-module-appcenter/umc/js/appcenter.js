@@ -54,22 +54,16 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			var loadPage = {
-				'appcenter': lang.hitch(this, '_loadAppcenter'),
-				'packages': lang.hitch(this, '_loadPackages'),
-				'components': lang.hitch(this, '_loadComponents')
-			}[this.moduleFlavor];
-			loadPage();
-
-			var page = {
-				'appcenter': this._appCenterPage,
-				'packages': this._packages,
-				'components': this._components
-			}[this.moduleFlavor];
-			this.selectChild(page);
+			if (this.moduleFlavor == 'components') {
+				this._renderComponents();
+			} else if (this.moduleFlavor == 'packages') {
+				this._renderPackages();
+			} else {
+				this._renderAppcenter();
+			}
 		},
 
-		_loadAppcenter: function() {
+		_renderAppcenter: function() {
 			// FIXME: this is a synchronous call and can
 			// potentially fail although the module would
 			// be loaded later on. this may not be of any
@@ -115,6 +109,7 @@ define([
 			this.addChild(this._appCenterPage);
 			this.addChild(this._appDetailsDialog);
 			this.addChild(this._appDetailsPage);
+			this.selectChild(this._appCenterPage);
 
 			// share appCenterInformation among AppCenter and DetailPage
 			//   needs to be specified in AppDetailsPage for apps.js
@@ -152,7 +147,7 @@ define([
 			}));
 		},
 
-		_loadPackages: function() {
+		_renderPackages: function() {
 			this._packagesStore = store('package', 'appcenter/packages');
 			this._packages = new PackagesPage({
 				moduleID: this.moduleID,
@@ -163,7 +158,7 @@ define([
 			this.addChild(this._packages);
 		},
 
-		_loadComponents: function() {
+		_renderComponents: function() {
 			this._componentsStore = store('name', 'appcenter/components');
 			this._components = new SettingsPage({
 				moduleID: this.moduleID,
@@ -180,6 +175,7 @@ define([
 			});
 			this.addChild(this._components);
 			this.addChild(this._details);
+			this.selectChild(this._components);
 
 			// install default component
 			this._components.on('installcomponent', lang.hitch(this, function(ids) {
