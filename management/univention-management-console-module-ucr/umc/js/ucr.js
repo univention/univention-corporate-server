@@ -44,14 +44,13 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/SearchForm",
 	"umc/widgets/StandbyMixin",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/TextBox",
 	"umc/widgets/Text",
 	"umc/widgets/HiddenInput",
 	"umc/widgets/ComboBox",
 	"umc/widgets/Tooltip",
 	"umc/i18n!umc/modules/ucr"
-], function(declare, lang, kernel, array, has, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, ExpandingTitlePane, TextBox, Text, HiddenInput, ComboBox, Tooltip, _) {
+], function(declare, lang, kernel, array, has, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, TextBox, Text, HiddenInput, ComboBox, Tooltip, _) {
 	var _DetailDialog = declare([ Dialog, StandbyMixin ], {
 		_form: null,
 
@@ -223,11 +222,6 @@ define([
 			});
 			this.addChild(this._page);
 
-			var titlePane = new ExpandingTitlePane({
-				title: _('Entries')
-			});
-			this._page.addChild(titlePane);
-
 			//
 			// add data grid
 			//
@@ -293,7 +287,7 @@ define([
 
 			// generate the data grid
 			this._grid = new Grid({
-				region: 'center',
+				region: 'main',
 				actions: actions,
 				columns: columns,
 				moduleStore: this.moduleStore,
@@ -303,7 +297,6 @@ define([
 					pattern: "*"
 				}
 			});
-			titlePane.addChild(this._grid);
 
 			//
 			// add search widget
@@ -344,13 +337,14 @@ define([
 
 			// generate the search widget
 			this._searchForm = new SearchForm({
-				region: 'top',
+				region: 'nav',
 				widgets: widgets,
 				layout: [[ 'category', 'key', 'pattern', 'submit' ]]
 			});
-			titlePane.addChild(this._searchForm);
 			this._searchForm.on('search', lang.hitch(this._grid, 'filter'));
 
+			this._page.addChild(this._searchForm);
+			this._page.addChild(this._grid);
 			this._page.startup();
 
 			// Do not focus on touch devices (e.g. tablets)
@@ -403,6 +397,4 @@ define([
 			return widget;
 		}
 	});
-
 });
-
