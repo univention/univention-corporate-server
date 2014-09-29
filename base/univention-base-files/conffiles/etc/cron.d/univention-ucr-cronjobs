@@ -42,7 +42,7 @@ def setup_cronjob(key):
 		print "MAILTO=%s" % mailto
 		print "%s %s %s" % (time, user, command)
 
-path = configRegistry.get('cron/path', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/opt/scalix/bin')
+path = configRegistry.get('cron/path', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
 print 'PATH="%s"' % path
 
 disabled_globally = configRegistry.is_true('cron/ucrdisabled', False)

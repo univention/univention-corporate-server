@@ -1,3 +1,9 @@
+univention-base-files (4.0.4-1) unstable; urgency=low
+
+  * removed scalix path from defaut profile (Bug #32628)
+
+ -- Felix Botner <botner@univention.de>  Mon, 29 Sep 2014 10:04:23 +0200
+
 univention-base-files (4.0.3-1) unstable; urgency=low
 
   * Bug #35637: install univention-archive-key by default

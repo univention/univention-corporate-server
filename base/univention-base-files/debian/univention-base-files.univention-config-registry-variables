@@ -519,8 +519,8 @@ Type=str
 Categories=system-base
 
 [cron/path]
-Description[de]=Mit dieser Variable kann die PATH-Umgebungsvariable für die in UCR definierten Cron-Job (siehe 'cron/JOBNAME/*') gesetzt werden. Ist die Variable nicht gesetzt, gilt '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/opt/scalix/bin'.
-Description[en]=This variable allows the configuration of the PATH environment variable for cron jobs defined in UCR (see 'cron/JOBNAME/*'). If the variable is unset, '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/opt/scalix/bin' applies.
+Description[de]=Mit dieser Variable kann die PATH-Umgebungsvariable für die in UCR definierten Cron-Job (siehe 'cron/JOBNAME/*') gesetzt werden. Ist die Variable nicht gesetzt, gilt '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11'.
+Description[en]=This variable allows the configuration of the PATH environment variable for cron jobs defined in UCR (see 'cron/JOBNAME/*'). If the variable is unset, '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11' applies.
 Type=str
 Categories=system-base
 
