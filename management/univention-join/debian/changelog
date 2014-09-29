@@ -1,3 +1,9 @@
+univention-join (7.1.0-1) unstable; urgency=low
+
+  * Bug #35654: UMC design adaptions
+
+ -- Florian Best <best@univention.de>  Thu, 25 Sep 2014 12:43:47 +0200
+
 univention-join (7.0.0-4) unstable; urgency=low
 
   * don't overwrite join.log on slaves (Bug #34909) 

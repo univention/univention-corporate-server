@@ -43,7 +43,6 @@ define([
 	"umc/widgets/Module",
 	"umc/widgets/Page",
 	"umc/widgets/Text",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/TextBox",
 	"umc/widgets/PasswordBox",
 	"umc/widgets/ProgressBar",
@@ -52,30 +51,24 @@ define([
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/join"
 ], function(declare, lang, topic, all, BorderContainer, entities, dialog, tools, app, ContainerWidget, ConfirmDialog,
-			Module, Page, Text, ExpandingTitlePane, TextBox, PasswordBox, ProgressBar, JoinForm, JoinGrid, Lib_Server, _) {
+			Module, Page, Text, TextBox, PasswordBox, ProgressBar, JoinForm, JoinGrid, Lib_Server, _) {
 
 	var JoinPage = declare("umc.modules.join.JoinPage", [Page], {
-		_titlePane: null,
 		_form: null,
 		_joining: null, // flag for the last executed action
 
 		headerText: _("Initial system join"),
+		//helpText: _('credentials') TODO: add something?
 
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._titlePane = new ExpandingTitlePane({
-				title: _("credentials")
-			});
-			this.addChild(this._titlePane);
-
 			this._form = new JoinForm({});
-			this._titlePane.addChild(this._form);
+			this.addChild(this._form);
 		}
 	});
 
 	var StatusPage = declare("umc.modules.join.StatusPage", [Page], {
-		_titlePane: null,
 		_grid: null,
 
 		headerText: _("Join status"),
@@ -84,20 +77,14 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._titlePane = new ExpandingTitlePane({
-				title: _("Join status")
-			});
-			this.addChild(this._titlePane);
-
 			this._grid = new JoinGrid({
 				sortIndex: 2
 			});
-			this._titlePane.addChild(this._grid);
+			this.addChild(this._grid);
 		}
 	});
 
 	var LogPage = declare("umc.modules.join.LogPage", [Page], {
-		_titlePane: null,
 		_logtext: null, // text widget that holds log
 
 		headerText: _("Join log"),
@@ -114,24 +101,19 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._titlePane = new ExpandingTitlePane({
-				title: _("Join log")
-			});
-			this.addChild(this._titlePane);
-
-			var container = new BorderContainer({gutters: false});
-			this._titlePane.addChild(container);
+			var container = new BorderContainer({gutters: false});  // TODO: replace by ContainerWidget?
+			this.addChild(container);
 
 			// temporary container for scrolling to the bottom
 			var logContainer = new ContainerWidget({
-				region:			'center',
+				region:			'main',
 				scrollable:		true
 			});
 			container.addChild(logContainer);
 
 			// FIXME use a generic CSS class that requests a specific monospaced font
 			this._logtext = new Text({
-				region:			'center',
+				region:			'main',
 				content:		_('... loading log ...'),
 				style:			'font-family:monospace;'
 			});
@@ -160,7 +142,7 @@ define([
 	return declare("umc.modules.join", [ Module ], {
 
 		standbyOpacity: 1,
-		region: 'center',
+		region: 'main',
 
 		_serverRole: null,
 
