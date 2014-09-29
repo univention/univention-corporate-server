@@ -152,7 +152,7 @@ class Command( JSON_Object ):
 class Flavor( JSON_Object ):
 	'''Defines a flavor of a module. This provides another name and icon
 	in the overview and may influence the behaviour of the module.'''
-	def __init__(self, id='', icon='', name='', description='', overwrites=None, deactivated=False, priority=-1, translationId=None, keywords=None):
+	def __init__(self, id='', icon='', name='', description='', overwrites=None, deactivated=False, priority=-1, translationId=None, keywords=None, categories=None):
 		self.id = id
 		self.name = name
 		self.description = description
@@ -162,6 +162,7 @@ class Flavor( JSON_Object ):
 		self.deactivated = deactivated
 		self.priority = priority
 		self.translationId = translationId
+		self.categories = categories or []
 
 class Module( JSON_Object ):
 	'''Represents a command attribute'''
@@ -278,19 +279,24 @@ class XML_Definition( ET.ElementTree ):
 	def flavors( self ):
 		'''Retrieve list of flavor objects'''
 		for elem in self.findall( 'module/flavor' ):
-			flavor = Flavor( elem.get( 'id' ), elem.get( 'icon' ) )
-			flavor.overwrites = elem.get( 'overwrites', '' ).split( ',' )
-			flavor.deactivated = (elem.get( 'deactivated', 'no' ).lower() in ('yes','true','1'))
-			flavor.translationId = self.translationId
-			flavor.name = elem.findtext( 'name' )
-			flavor.description = elem.findtext( 'description' )
-			flavor.keywords = re.split(KEYWORD_PATTERN, elem.findtext('keywords', '')) + [flavor.name]
+			name = elem.findtext('name')
+			priority = None
 			try:
-				flavor.priority = float(elem.get('priority', -1))
+				priority = float(elem.get('priority', -1))
 			except ValueError:
 				RESOURCES.warn( 'No valid number type for property "priority": %s' % elem.get('priority') )
-				flavor.priority = None
-			yield flavor
+			yield Flavor(
+				id=elem.get('id'),
+				icon=elem.get('icon'),
+				name=name,
+				overwrites=elem.get('overwrites', '').split(','),
+				deactivated=(elem.get('deactivated', 'no').lower() in ('yes','true','1')),
+				translationId=self.translationId,
+				description=elem.findtext('description'),
+				keywords=re.split(KEYWORD_PATTERN, elem.findtext('keywords', '')) + [name],
+				priority=priority,
+				categories=[cat.get('name') for cat in elem.findall('categories/category')]
+			)
 
 	@property
 	def categories( self ):

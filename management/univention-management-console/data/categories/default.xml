@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
 	<categories>
-		<category priority="3" id="system">
+		<category priority="99999" id="_favorites_" icon="category-favorites.svg" color="#46bef0">
+			<name>Favorites</name>
+		</category>
+		<category priority="100" id="users" icon="category-users.svg" color="#fac800">
+			<name>Users</name>
+		</category>
+		<category priority="80" id="devices" icon="category-devices.svg" color="#ff4632">
+			<name>Devices</name>
+		</category>
+		<category priority="60" id="domain" icon="category-domain.svg" color="#146edc">
+			<name>Domain</name>
+		</category>
+		<category priority="40" id="system" icon="category-system.svg" color="#a05adc">
 			<name>System</name>
+		</category>
+		<category priority="20" id="software" icon="category-software.svg" color="#50c80a">
+			<name>Software</name>
 		</category>
 	</categories>
 </umc>

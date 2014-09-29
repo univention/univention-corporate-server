@@ -54,6 +54,10 @@ flexibility.
 
 import sys
 import inspect
+import types
+import traceback
+import notifier
+import notifier.threads
 from threading import Thread
 
 from univention.lib.i18n import Translation
@@ -231,10 +235,10 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
 
 	Before::
 
-	 def my_func(self, response):
-	   variable1 = response.options.get('variable1')
-	   variable2 = response.options.get('variable2')
-	   flavor = response.flavor or 'default flavor'
+	 def my_func(self, request):
+	   variable1 = request.options.get('variable1')
+	   variable2 = request.options.get('variable2')
+	   flavor = request.flavor or 'default flavor'
 	   if variable1 is None:
 	     self.finished(request.id, None, message='variable1 is required', success=False)
 	     return
@@ -303,7 +307,22 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
 			self.finished(request.id, progress_obj.initialised())
 		else:
 			result = _multi_response(self, request)
-			self.finished(request.id, result[0])
+			if not isinstance(result[0], types.FunctionType):
+				self.finished(request.id, result[0])
+			else:
+				# return value is a function which is meant to be executed as thread
+				# TODO: replace notfier by threading
+
+				def thread_end(thread, result, request):
+					if isinstance(result, BaseException):
+						self.finished(request.id, None, message=''.join(traceback.format_exception(*thread.exc_info)), status=500)
+						return
+					self.finished(request.id, result)
+
+				thread = notifier.Callback(result[0], self, request)
+				thread_end = notifier.Callback(thread_end, request)
+				thread = notifier.threads.Simple('simple_response', thread, thread_end)
+				thread.run()
 
 	copy_function_meta_data(function, _response)
 	return _response
@@ -398,7 +417,6 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False, 
 							# check for required arguments (those without default)
 							raise UMC_OptionMissing(arg)
 
-		
 		# checked for required arguments, set default... now run!
 		iterator = RequestOptionsIterator(request.options, arguments, single_values)
 		nones = [None] * len(arguments)
@@ -428,11 +446,9 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False, 
 			thread.start()
 			return progress_obj.initialised()
 		else:
-			result = []
-			for res in function(self, iterator, *nones):
-				result.append(res)
-			return result
+			return list(function(self, iterator, *nones))
 	return _response
+
 
 class RequestOptionsIterator(object):
 	def __init__(self, everything, names, single_values):

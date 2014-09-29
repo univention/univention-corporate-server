@@ -49,17 +49,17 @@ define([
 		// internal reference to the formular containing all form widgets of an UDM object
 		_form: null,
 
+		// Set the opacity for the standby animation to 100% in order to mask
+		// GUI changes when the module is opened. Call this.standby(true|false)
+		// to enabled/disable the animation.
+		standbyOpacity: 1,
+
 		postMixInProperties: function() {
 			// is called after all inherited properties/methods have been mixed
 			// into the object (originates from dijit._Widget)
 
 			// it is important to call the parent's postMixInProperties() method
 			this.inherited(arguments);
-
-			// Set the opacity for the standby animation to 100% in order to mask
-			// GUI changes when the module is opened. Call this.standby(true|false)
-			// to enable/disable the animation.
-			this.standbyOpacity = 1;
 
 			// set the page header
 			this.headerText = _('Object properties');

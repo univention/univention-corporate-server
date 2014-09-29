@@ -37,12 +37,11 @@ define([
 	"umc/tools",
 	"umc/widgets/Page",
 	"umc/widgets/Form",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/Module",
 	"umc/widgets/TextBox",
 	"umc/widgets/TextArea",
 	"umc/i18n!umc/modules/MODULEID"
-], function(declare, lang, on, topic, dialog, tools, Page, Form, ExpandingTitlePane, Module, TextBox, TextArea, _) {
+], function(declare, lang, on, topic, dialog, tools, Page, Form, Module, TextBox, TextArea, _) {
 	return declare("umc.modules.MODULEID", [ Module ], {
 		// summary:
 		//		Template module to ease the UMC module development.
@@ -50,17 +49,17 @@ define([
 		//		This module is a template module in order to aid the development of
 		//		new modules for Univention Management Console.
 
+		// Set the opacity for the standby animation to 100% in order to mask
+		// GUI changes when the module is opened. Call this.standby(true|false)
+		// to enabled/disable the animation.
+		standbyOpacity: 1,
+
 		postMixInProperties: function() {
 			// is called after all inherited properties/methods have been mixed
 			// into the object (originates from dijit._Widget)
 
 			// it is important to call the parent's postMixInProperties() method
 			this.inherited(arguments);
-
-			// Set the opacity for the standby animation to 100% in order to mask
-			// GUI changes when the module is opened. Call this.standby(true|false)
-			// to enabled/disable the animation.
-			this.standbyOpacity = 1;
 		},
 
 		buildRendering: function() {
@@ -86,11 +85,6 @@ define([
 		},
 
 		renderPage: function( defaultValues ) {
-			// umc.widgets.ExpandingTitlePane is an extension of dijit.layout.BorderContainer
-			var titlePane = new ExpandingTitlePane( {
-				title: _( 'Sending a message' )
-			} );
-
 			//
 			// form
 			//
@@ -130,7 +124,7 @@ define([
 			// generate the form
 			this._form = new Form({
 				// property that defines the widget's position in a dijit.layout.BorderContainer
-				region: 'top',
+				region: 'nav',
 				widgets: widgets,
 				layout: layout,
 				scrollable: true
@@ -140,9 +134,6 @@ define([
 			on.once(this._form, 'valuesInitialized', function() {
 				this.standby( false );
 			});
-
-			// add form to the title pane
-			titlePane.addChild(this._form);
 
 			// submit changes
 			var buttons = [ {
@@ -180,12 +171,12 @@ define([
 
 			this._page = new Page({
 				headerText: this.description,
-				helpText: '',
+				helpText: _('Sending a message'),
 				footerButtons: buttons
 			});
 
 			this.addChild(this._page);
-			this._page.addChild( titlePane );
+			this._page.addChild(this._form);
 		},
 
 		onSubmit: function( values ) {

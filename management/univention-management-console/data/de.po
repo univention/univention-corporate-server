@@ -14,3 +14,18 @@ msgstr ""
 
 msgid "System"
 msgstr "System"
+
+msgid "Favorites"
+msgstr "Favoriten"
+
+msgid "Users"
+msgstr "Benutzer"
+
+msgid "Devices"
+msgstr "Geräte"
+
+msgid "Domain"
+msgstr "Domäne"
+
+msgid "Software"
+msgstr "Software"

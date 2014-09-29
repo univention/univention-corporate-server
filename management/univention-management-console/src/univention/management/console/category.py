@@ -88,6 +88,14 @@ class XML_Definition( ET.ElementTree ):
 		return self._root.get( 'id' )
 
 	@property
+	def icon(self):
+		return self._root.get('icon')
+
+	@property
+	def color(self):
+		return self._root.get('color')
+
+	@property
 	def priority( self ):
 		"""Returns the priority of the category. If no priority is
 		defined the default priority of -1 is returned. None is returned
@@ -107,7 +115,13 @@ class XML_Definition( ET.ElementTree ):
 		:rtype: dict
 		"""
 
-		return { 'id' : self.id, 'name' : self.name, 'priority': self.priority }
+		return {
+			'id': self.id,
+			'name': self.name,
+			'icon': self.icon,
+			'color': self.color,
+			'priority': self.priority
+		}
 
 class Manager( dict ):
 	'''This class manages all available categories.'''
@@ -128,7 +142,10 @@ class Manager( dict ):
 				continue
 			try:
 				definitions = ET.ElementTree( file = os.path.join( Manager.DIRECTORY, filename ) )
-				i18nDomain = definitions.find( 'categories' ).get( 'domain' )
+				categories = definitions.find('categories')
+				if categories is None:
+					continue
+				i18nDomain = categories.get('domain')
 				for category_elem in definitions.findall( 'categories/category' ):
 					category = XML_Definition( root = category_elem, domain = i18nDomain )
 					self[ category.id ] = category

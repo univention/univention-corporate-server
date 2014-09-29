@@ -387,18 +387,28 @@ class Processor( signals.Provider ):
 		res.status = SUCCESS
 
 		if 'modules/list' in msg.arguments:
-			moduleManager.load()
 			categoryManager.load()
+			moduleManager.load()
 			if isinstance(msg.options, dict) and msg.options.get('reload'):
 				CORE.info('Reloading ACLs for existing session')
 				self._reload_acls_and_permitted_commands()
 				self._reload_i18n()
+
+			favorites = set()
+			userObj = self._get_user_obj()
+			if userObj:
+				favorites = dict(userObj.info.get('umcProperty', [])).setdefault('favorites', '').strip()
+				favorites.split(',')
 
 			modules = []
 			for id, module in self.__command_list.items():
 				# check for translation
 				if module.flavors:
 					for flavor in module.flavors:
+						favcat = []
+						if '%s:%s' % (id, flavor.id) in favorites:
+							favcat.append('_favorites_')
+
 						translationId = flavor.translationId
 						if not translationId:
 							translationId = id
@@ -408,33 +418,41 @@ class Processor( signals.Provider ):
 							'name' : self.i18n._( flavor.name, translationId ),
 							'description' : self.i18n._( flavor.description, translationId ),
 							'icon' : flavor.icon,
-							'categories' : module.categories,
+							'categories' : (flavor.categories or module.categories) + favcat,
 							'priority' : flavor.priority,
 							'keywords': list(set(flavor.keywords + [self.i18n._(keyword, translationId) for keyword in flavor.keywords]))
 						})
 				else:
+					favcat = []
+					if id in favorites:
+						favcat.append('_favorites_')
 					modules.append({
 						'id' : id,
 						'name' : self.i18n._( module.name, id ),
 						'description' : self.i18n._( module.description, id ),
 						'icon' : module.icon,
-						'categories' : module.categories,
+						'categories' : module.categories + favcat,
 						'priority' : module.priority,
 						'keywords': list(set(module.keywords + [self.i18n._(keyword, id) for keyword in module.keywords]))
 					})
-			res.body[ 'modules' ] = modules
-			_ucr_dict = dict( ucr.items() )
-
-			categories = []
-			for catID, category in categoryManager.items():
-				categories.append( { 'id' : catID, 'name' : self.i18n._( category.name, category.domain ).format( **_ucr_dict ), 'priority' : category.priority } )
-
-			res.body[ 'categories' ] = categories
-			CORE.info( 'Modules: %s' % modules )
-			CORE.info( 'Categories: %s' % str( res.body[ 'categories' ] ) )
+			res.body['modules'] = modules
+			CORE.info('Modules: %s' % (modules,))
 
 		elif 'categories/list' in msg.arguments:
-			res.body[ 'categories' ] = categoryManager.all()
+			categoryManager.load()
+			ucr.load()
+			_ucr_dict = dict(ucr.items())
+			categories = []
+			for catID, category in categoryManager.items():
+				categories.append({
+					'id': catID,
+					'icon': category.icon,
+					'color': category.color,
+					'name': self.i18n._(category.name, category.domain).format(**_ucr_dict),
+					'priority': category.priority
+				})
+			res.body['categories'] = categories
+			CORE.info('Categories: %s' % (res.body['categories'],))
 		elif 'user/preferences' in msg.arguments:
 			# fallback is an empty dict
 			res.body['preferences'] = {}

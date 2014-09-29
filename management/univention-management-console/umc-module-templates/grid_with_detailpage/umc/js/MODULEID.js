@@ -36,13 +36,12 @@ define([
 	"umc/widgets/Grid",
 	"umc/widgets/Page",
 	"umc/widgets/SearchForm",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/Module",
 	"umc/widgets/TextBox",
 	"umc/widgets/ComboBox",
 	"umc/modules/MODULEID/DetailPage",
 	"umc/i18n!umc/modules/MODULEID"
-], function(declare, lang, on, dialog, Grid, Page, SearchForm, ExpandingTitlePane, Module, TextBox, ComboBox, DetailPage, _) {
+], function(declare, lang, on, dialog, Grid, Page, SearchForm, Module, TextBox, ComboBox, DetailPage, _) {
 	return declare("umc.modules.MODULEID", [ Module ], {
 		// summary:
 		//		Template module to ease the UMC module development.
@@ -62,17 +61,17 @@ define([
 		// internal reference to the detail page for editing an object
 		_detailPage: null,
 
+		// Set the opacity for the standby animation to 100% in order to mask
+		// GUI changes when the module is opened. Call this.standby(true|false)
+		// to enabled/disable the animation.
+		standbyOpacity: 1,
+
 		postMixInProperties: function() {
 			// is called after all inherited properties/methods have been mixed
 			// into the object (originates from dijit._Widget)
 
 			// it is important to call the parent's postMixInProperties() method
 			this.inherited(arguments);
-
-			// Set the opacity for the standby animation to 100% in order to mask
-			// GUI changes when the module is opened. Call this.standby(true|false)
-			// to enabled/disable the animation.
-			this.standbyOpacity = 1;
 		},
 
 		buildRendering: function() {
@@ -103,13 +102,6 @@ define([
 			// umc.widgets.Module is also a StackContainer instance that can hold
 			// different pages (see also umc.widgets.TabbedModule)
 			this.addChild(this._searchPage);
-
-			// umc.widgets.ExpandingTitlePane is an extension of dijit.layout.BorderContainer
-			var titlePane = new ExpandingTitlePane({
-				title: _('Search results')
-			});
-			this._searchPage.addChild(titlePane);
-
 
 			//
 			// data grid
@@ -156,8 +148,8 @@ define([
 			// generate the data grid
 			this._grid = new Grid({
 				// property that defines the widget's position in a dijit.layout.BorderContainer,
-				// 'center' is its default value, so no need to specify it here explicitely
-				// region: 'center',
+				// using 'main' instead of the default 'center'
+				 region: 'main',
 				actions: actions,
 				// defines which data fields are displayed in the grids columns
 				columns: columns,
@@ -167,10 +159,6 @@ define([
 				// initial query
 				query: { colors: 'None', name: '' }
 			});
-
-			// add the grid to the title pane
-			titlePane.addChild(this._grid);
-
 
 			//
 			// search form
@@ -202,7 +190,7 @@ define([
 			// generate the search form
 			this._searchForm = new SearchForm({
 				// property that defines the widget's position in a dijit.layout.BorderContainer
-				region: 'top',
+				region: 'nav',
 				widgets: widgets,
 				layout: layout,
 				onSearch: lang.hitch(this, function(values) {
@@ -217,8 +205,10 @@ define([
 				this.standby(false);
 			}));
 
-			// add search form to the title pane
-			titlePane.addChild(this._searchForm);
+			// add search form and grid to the search page
+			this._searchPage.addChild(this._searchForm);
+			this._searchPage.addChild(this._grid);
+
 
 			//
 			// conclusion

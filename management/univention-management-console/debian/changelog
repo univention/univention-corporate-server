@@ -1,3 +1,45 @@
+univention-management-console (7.1.4-1) unstable; urgency=low
+
+  * Bug #35654: UMC design adaptions
+
+ -- Florian Best <best@univention.de>  Mon, 29 Sep 2014 16:16:29 +0200
+
+univention-management-console (7.1.3-1) unstable; urgency=low
+
+  * Bug #35654: adapt category colors
+
+ -- Florian Best <best@univention.de>  Mon, 29 Sep 2014 10:15:04 +0200
+
+univention-management-console (7.1.2-1) unstable; urgency=medium
+
+  * Bug #35654: fine tuning for colors + domain icon
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 26 Sep 2014 18:42:46 +0200
+
+univention-management-console (7.1.1-1) unstable; urgency=medium
+
+  * Bug #35654: adapt category icons
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 26 Sep 2014 18:29:11 +0200
+
+univention-management-console (7.1.0-2) unstable; urgency=low
+
+  * Bug #35654: UMC design adaptions
+
+ -- Florian Best <best@univention.de>  Thu, 25 Sep 2014 12:43:47 +0200
+
+univention-management-console (7.1.1-1) unstable; urgency=medium
+
+  * Bug #35654: add category icons
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 19 Sep 2014 14:46:34 +0200
+
+univention-management-console (7.1.0-1) unstable; urgency=low
+
+  * Bug #35654: UMC design adaptions
+
+ -- Florian Best <best@univention.de>  Tue, 02 Sep 2014 17:49:58 +0200
+
 univention-management-console (7.0.1-1) unstable; urgency=low
 
   * Bug #35466: create socket directory /var/run/univention-management-console
