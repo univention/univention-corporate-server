@@ -38,52 +38,43 @@ define([
 	"umc/widgets/SearchForm",
 	"umc/widgets/TextBox",
 	"umc/widgets/ComboBox",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/i18n!umc/modules/printers"
-], function(declare, lang, dialog, store, Page, Grid, SearchForm, TextBox, ComboBox, ExpandingTitlePane, _) {
+], function(declare, lang, dialog, store, Page, Grid, SearchForm, TextBox, ComboBox, _) {
 	return declare("umc.modules.printers.OverviewPage", [ Page ], {
 
-		_last_filter:			{ key: 'printer', pattern: '' },
+		_last_filter: { key: 'printer', pattern: '' },
 
 		postMixInProperties: function() {
 			lang.mixin(this,{
-				helpText:		_("This module lets you manage the printers defined on your machine"),
-				headerText:		_("Printer administration")
+				helpText: _("This module lets you manage the printers defined on your machine"),
+				headerText: _("Printer administration")
 			});
 
 			this.inherited(arguments);
 		},
 
 		buildRendering: function() {
-
 			this.inherited(arguments);
 
-			var pane = new ExpandingTitlePane({
-				title:				_("Printer administration")
-			});
-			this.addChild(pane);
-
 			this._form = new SearchForm({
-				region:					'top',
+				region: 'nav',
 				widgets: [{
-					name:				'key',
-					type:				ComboBox,
-					label:			_("Search key"),
+					name: 'key',
+					type: ComboBox,
+					label: _("Search key"),
 					staticValues: [
 					 	 { id: 'printer',		label: _("Printer name")},
 					 	 { id: 'description',	label: _("Description")},
 					 	 { id: 'location',		label: _("Location") }
 					],
-					sortStaticValues:	false
+					sortStaticValues: false
 				}, {
-					name:				'pattern',
-					type:				TextBox,
-					label:			_("Pattern"),
-					value:			''
+					name: 'pattern',
+					type: TextBox,
+					label: _("Pattern"),
+					value: ''
 				}],
-				layout: [
-			 	 [ 'key', 'pattern', 'submit' ]
-				],
+				layout: [['key', 'pattern', 'submit']],
 				onSearch: lang.hitch(this, function(values) {
 					this._enable_search_button(false);
 					this._last_filter = values;			// save for easy refresh
@@ -91,32 +82,32 @@ define([
 				})
 			});
 			this._enable_search_button(false);
-			pane.addChild(this._form);
+			this.addChild(this._form);
 
 			var columns = [{
-				name:		'server',
-				label:		_("Server")
+				name: 'server',
+				label: _("Server")
 			}, {
-				name:		'printer',
-				label:		_("Printer")
+				name: 'printer',
+				label: _("Printer")
 			}, {
-				name:		'status',
-				label:		_("Status"),
+				name: 'status',
+				label: _("Status"),
 				// 'enabled'/'disabled' are kind of keywords, just as they're returned
 				// from cups if invoked without locale (LANG=C).
 				// Our wording for this is 'active'/'inactive'.
-				formatter:	lang.hitch(this,function(value) {
+				formatter: lang.hitch(this,function(value) {
 					switch(value)
 					{
-						case 'enabled': 	return _("active");
-						case 'disabled':	return _("inactive");
+						case 'enabled': return _("active");
+						case 'disabled': return _("inactive");
 					}
 					return _("unknown");
 				})
 			}, {
-				name:		'quota',
-				label:		_("Quota"),
-				formatter:	lang.hitch(this,function(value) {
+				name: 'quota',
+				label: _("Quota"),
+				formatter: lang.hitch(this,function(value) {
 					if (value)		// only true or false?
 					{
 						return _("active");
@@ -124,26 +115,26 @@ define([
 					return _("inactive");
 				})
 			}, {
-				name:		'location',
-				label:		_("Location")
+				name: 'location',
+				label: _("Location")
 			}, {
-				name:		'description',
-				label:		_("Description")
+				name: 'description',
+				label: _("Description")
 			}];
 
 			var actions = [{
-				name:		'open',
-				label:		_("View details"),
+				name: 'open',
+				label: _("View details"),
 				isStandardAction: true,
-				callback:	lang.hitch(this,function(id, values) {
+				callback: lang.hitch(this,function(id, values) {
 					// 2.4 uses the printer ID as key property, so we do that as well.
 					this.openDetail(id[0]);
 				})
 			}, {
-				name:		'activate',
-				label:		_("Activate"),
+				name: 'activate',
+				label: _("Activate"),
 				isStandardAction: true,
-				callback:	lang.hitch(this, function(ids) {
+				callback: lang.hitch(this, function(ids) {
 					// no multi action for now, but who knows...
 					for (var p in ids)
 					{
@@ -158,10 +149,10 @@ define([
 					return (values.status == 'disabled');
 				})
 			}, {
-				name:		'deactivate',
-				label:		_("Deactivate"),
+				name: 'deactivate',
+				label: _("Deactivate"),
 				isStandardAction: true,
-				callback:	lang.hitch(this, function(ids) {
+				callback: lang.hitch(this, function(ids) {
 					// no multi action for now, but who knows...
 					for (var p in ids)
 					{
@@ -176,37 +167,37 @@ define([
 					return (values.status == 'enabled');
 				})
 			}, {
-				name:				'editquota',
-				label:				_("Edit quota"),
-				isStandardAction:	false,
-				callback:	lang.hitch(this,function(ids) {
+				name: 'editquota',
+				label: _("Edit quota"),
+				isStandardAction: false,
+				callback: lang.hitch(this,function(ids) {
 					this.editQuota(ids[0]);
 				}),
-				canExecute:	lang.hitch(this,function(values) {
+				canExecute: lang.hitch(this,function(values) {
 					return (values.quota);	// true or false
 				})
 			}, {
-				name:				'refresh',
-				label:				_("Refresh printer list"),
-				isContextAction:	false,
+				name: 'refresh',
+				label: _("Refresh printer list"),
+				isContextAction: false,
 				callback: lang.hitch(this, function() {
 					this._refresh_view();
 				})
 			}];
 
 			this._grid = new Grid({
-				columns:			columns,
-				region:				'center',
-				actions:			actions,
-				defaultAction:		'open',
-				moduleStore:		store('printer','printers'),
+				columns: columns,
+				region: 'main',
+				actions: actions,
+				defaultAction: 'open',
+				moduleStore: store('printer','printers'),
 				// fill grid on first open
-				query:				{key:'printer', pattern: '*'},
+				query: {key:'printer', pattern: '*'},
 				onFilterDone: lang.hitch(this, function(success) {
 					this._enable_search_button(true);
 				})
 			});
-			pane.addChild(this._grid);
+			this.addChild(this._grid);
 		},
 
 		_enable_search_button: function(on) {
@@ -221,13 +212,9 @@ define([
 
 		// will be called with the result of 'managePrinter'
 		_manage_callback: function(success,message) {
-
-			if (success)
-			{
+			if (success) {
 				this._refresh_view();
-			}
-			else
-			{
+			} else {
 				dialog.alert(message);
 			}
 		},
@@ -255,6 +242,5 @@ define([
 		// main module listens here to open the quota page.
 		editQuota: function(args) {
 		}
-
 	});
 });

@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define,console*/
 
 define([
 	"dojo/_base/declare",
@@ -38,132 +38,103 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/Grid",
 	"umc/widgets/Text",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/modules/printers/QuotaDialog",
 	"umc/i18n!umc/modules/printers"
-], function(declare, lang, when, dialog, store, tools, Page, Grid, Text, ExpandingTitlePane, QuotaDialog, _) {
+], function(declare, lang, when, dialog, store, tools, Page, Grid, Text, QuotaDialog, _) {
 
 	return declare("umc.modules.printers.QuotaPage", [ Page ], {
 
 		postMixInProperties: function() {
-
 			lang.mixin(this,{
-				helpText:		_("Current quota records for printer"),
-				headerText:		_("Printer quota")
+				helpText: _("Current quota records for printer"),
+				headerText: _("Printer quota")
 			});
 
 			this.inherited(arguments);
 		},
 
 		buildRendering: function() {
-
 			this.inherited(arguments);
-
-			var pane = new ExpandingTitlePane({
-				title:				_("Printer quota")
-			});
-			this.addChild(pane);
 
 			this._head = new Text({
-				region:			'top',
-				content:		'',
-				style:			'padding-bottom:1em;font-size:115%;'
+				region: 'nav',
+				content: '',
+				style: 'padding-bottom:1em;font-size:115%;'
 			});
-			pane.addChild(this._head);
+			this.addChild(this._head);
 
-			var columns = [
-				{
-					name:		'user',
-					label:		_("User")
-				},
-				{
-					name:		'used',
-					label:		_("Pages used")
-				},
-				{
-					name:		'soft',
-					label:		_("Soft limit")
-				},
-				{
-					name:		'hard',
-					label:		_("Hard limit")
-				},
-				{
-					name:		'total',
-					label:		_("Lifetime page counter")
-				}
-			];
+			var columns = [{
+				name: 'user',
+				label: _("User")
+			}, {
+				name: 'used',
+				label: _("Pages used")
+			}, {
+				name: 'soft',
+				label: _("Soft limit")
+			}, {
+				name: 'hard',
+				label: _("Hard limit")
+			}, {
+				name: 'total',
+				label: _("Lifetime page counter")
+			}];
 
-			var actions = [
-				{
-					name:				'clear',
-					label:				_("Reset user quota"),
-					isMultiAction:		true,
-					isStandardAction: true,
-					callback: lang.hitch(this, function(ids,values) {
-						this._reset_quota_entries(values);
-					})
-				},
-				{
-					name:				'edit',
-					label:				_("Edit"),
-					isStandardAction: true,
-					callback: lang.hitch(this, function(ids,values) {
-						// always use the first value since multiselect doesn't make sense.
-						this._edit_quota_entry(values[0]);
-					})
-				},
-				{
-					name:				'back',
-					label:				_("Back"),
-					isContextAction:	false,
-					callback: lang.hitch(this, function() {
-						this.closeQuota();
-					})
-				},
-				{
-					name:				'refresh',
-					label:				_("Refresh"),
-					isContextAction:	false,
-					callback: lang.hitch(this, function() {
-						this._refresh_view();
-					})
-				},
-				{
-					name:				'add',
-					label:				_("Add new record"),
-					isContextAction:	false,
-					callback: lang.hitch(this, function(ids) {
-						this._add_quota_entry();
-					})
-				}
-			];
+			var actions = [{
+				name: 'clear',
+				label: _("Reset user quota"),
+				isMultiAction: true,
+				isStandardAction: true,
+				callback: lang.hitch(this, function(ids,values) {
+					this._reset_quota_entries(values);
+				})
+			}, {
+				name: 'edit',
+				label: _("Edit"),
+				isStandardAction: true,
+				callback: lang.hitch(this, function(ids,values) {
+					// always use the first value since multiselect doesn't make sense.
+					this._edit_quota_entry(values[0]);
+				})
+			}, {
+				name: 'back',
+				label: _("Back"),
+				isContextAction: false,
+				callback: lang.hitch(this, function() {
+					this.closeQuota();
+				})
+			}, {
+				name: 'refresh',
+				label: _("Refresh"),
+				isContextAction: false,
+				callback: lang.hitch(this, function() {
+					this._refresh_view();
+				})
+			}, {
+				name: 'add',
+				label: _("Add new record"),
+				isContextAction: false,
+				callback: lang.hitch(this, function(ids) {
+					this._add_quota_entry();
+				})
+			}];
 
 			this._grid = new Grid({
-				region:			'center',
-				columns:		columns,
-				actions:		actions,
-				moduleStore:	store('user','printers/quota')
+				region: 'main',
+				columns: columns,
+				actions: actions,
+				moduleStore: store('user','printers/quota')
 			});
-			pane.addChild(this._grid);
-
-		},
-
-		startup: function() {
-
-			this.inherited(arguments);
-
+			this.addChild(this._grid);
 		},
 
 		// Calling page passes args here. Arg is here the printer ID.
 		setArgs: function(args) {
-
 			this._printer_id = args;
 			this._refresh_view();
 		},
 
 		onHide: function() {
-
 			this.inherited(arguments);		// do I need this?
 
 			// on next show(), the previous content
@@ -173,9 +144,7 @@ define([
 		},
 
 		onShow: function() {
-
 			this.inherited(arguments);		// do I need this?
-
 		},
 
 		// called when the page is shown, but can equally be called
@@ -188,8 +157,7 @@ define([
 			this._grid.filter({printer:this._printer_id});
 
 			// on first open: create the child dialog where we can edit one quota entry.
-			if (! this._dialog)
-			{
+			if (!this._dialog) {
 				this._dialog = new QuotaDialog();
 				this.own(this._dialog);
 
@@ -200,7 +168,6 @@ define([
 	//			this._dialog,on('Cancel',lang.hitch(this, function() {
 	//				// nothing to do here.
 	//			}));
-
 			}
 
 		},
@@ -211,13 +178,10 @@ define([
 		_set_quota_entry: function(values) {
 			tools.umcpCommand('printers/quota/set',values).then(
 				lang.hitch(this,function(data) {
-					if (data.result)
-					{
+					if (data.result) {
 						// an error message from the edpykota tool
 						dialog.alert(data.result);
-					}
-					else
-					{
+					} else {
 						// success -> refresh view.
 						this._refresh_view();
 					}
@@ -250,9 +214,8 @@ define([
 						return [];
 					})
 				);
-			}
-			else {
-					return this._userList;
+			} else {
+				return this._userList;
 			}
 		},
 
@@ -261,11 +224,11 @@ define([
 			this._dialog.show();
 			when(this._getUserList(), lang.hitch(this, function(userList) {
 				this._dialog.setValues({
-					printer: 		this._printer_id,
-					soft:			null,
-					hard:			null,
-					users:			this._cleaned_userlist(userList),
-					title:			_("Add quota entry")
+					printer: this._printer_id,
+					soft: null,
+					hard: null,
+					users: this._cleaned_userlist(userList),
+					title: _("Add quota entry")
 				});
 			}));
 		},
@@ -274,17 +237,14 @@ define([
 		// values is here a tuple of fields; this is always a single action.
 		_edit_quota_entry: function(values) {
 
-			try
-			{
+			try {
 				var val = {
-					printer:	this._printer_id,
-					title:		_("Edit quota entry")
+					printer: this._printer_id,
+					title: _("Edit quota entry")
 				};
 				this._dialog.setValues(lang.mixin(val,values));
 				this._dialog.show();
-			}
-			catch(ex)
-			{
+			} catch(ex) {
 				console.error('edit_quota_entry(): ' + ex.message);
 			}
 		},
@@ -294,8 +254,7 @@ define([
 		_reset_quota_entries: function(values) {
 
 			// if nothing is selected... why does the grid call the callback?
-			if (values.length === 0)
-			{
+			if (values.length === 0) {
 				return;
 			}
 
@@ -303,23 +262,19 @@ define([
 			//			we can't know if some of them contain spaces or
 			//			any other separator chars.
 			var users = [];
-			for (var u in values)
-			{
+			for (var u in values) {
 				users.push(values[u]['user']);
 			}
 
 			tools.umcpCommand('printers/quota/reset',{
-				printer:			this._printer_id,
-				users:				users
+				printer: this._printer_id,
+				users: users
 			}).then(
 				lang.hitch(this,function(data) {
-					if (data.result)
-					{
+					if (data.result) {
 						// an error message from the edpykota tool
 						dialog.alert(data.result);
-					}
-					else
-					{
+					} else {
 						// success -> refresh view.
 						this._refresh_view();
 					}
@@ -343,20 +298,17 @@ define([
 
 			var usr = {};	// not an array: i want to to check for containedness!
 			var items = this._grid.getAllItems();
-			for (var i in items)
-			{
+			for (var i in items) {
 				var u = items[i]['user'];
 				usr[u] = u;
 			}
 
-			for (var s in src)
-			{
+			for (var s in src) {
 				var sitem = src[s];
 
 				// take this source item only if it is not contained
 				// in the 'usr' dict.
-				if (typeof(usr[sitem]) == 'undefined')
-				{
+				if (typeof(usr[sitem]) == 'undefined') {
 					result.push(sitem);
 				}
 			}
