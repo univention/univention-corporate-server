@@ -36,7 +36,6 @@ define([
 	"umc/store",
 	"umc/modules/firewall/DetailDialog",
 	"umc/widgets/ComboBox",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/Grid",
 	"umc/widgets/Module",
 	"umc/widgets/Page",
@@ -46,8 +45,7 @@ define([
 	"umc/widgets/Tooltip",
 	"umc/i18n!umc/modules/firewall"
 ], function(array, declare, lang, dialog, store, DetailDialog, ComboBox,
-            ExpandingTitlePane, Grid, Module, Page, SearchForm, Text, TextBox,
-            Tooltip, _) {
+            Grid, Module, Page, SearchForm, Text, TextBox, Tooltip, _) {
 	return declare("umc.modules.firewall", [Module], {
 
 		moduleStore: null,
@@ -68,14 +66,10 @@ define([
 			this.inherited(arguments);
 
 			this._page = new Page({
-				headerText: _('Firewall')
+				headerText: _('Firewall'),
+				headerText: _('List of rules')
 			});
 			this.addChild(this._page);
-
-			var titlePane = new ExpandingTitlePane({
-				title: _('List of rules')
-			});
-			this._page.addChild(titlePane);
 
 			var actions = [{
 				name: 'add',
@@ -142,7 +136,7 @@ define([
 					pattern: '*'
 				}
 			});
-			titlePane.addChild(this._grid);
+			this._page.addChild(this._grid);
 
 			var widgets = [{
 				type: ComboBox,
@@ -171,7 +165,7 @@ define([
 				onSearch: lang.hitch(this._grid, 'filter')
 			});
 
-			titlePane.addChild(this._searchWidget);
+			this._page.addChild(this._searchWidget);
 
 			this._grid.on('FilterDone', lang.hitch(this, function() {
 				var gridItems = this._grid.getAllItems();
