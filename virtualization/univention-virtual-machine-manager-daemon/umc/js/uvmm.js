@@ -48,7 +48,6 @@ define([
 	"umc/widgets/Module",
 	"umc/widgets/Page",
 	"umc/widgets/Form",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/Grid",
 	"umc/widgets/SearchForm",
 	"umc/widgets/Tree",
@@ -70,7 +69,7 @@ define([
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
 ], function(declare, lang, array, string, query, Deferred, on, entities, Menu, MenuItem, ContentPane, ProgressBar, Dialog, _TextBoxMixin,
-	tools, dialog, Module, Page, Form, ExpandingTitlePane, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
+	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
 	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, CloudConnectionWizard, types, _) {
 
 	var isRunning = function(item) {
@@ -140,11 +139,6 @@ define([
 				//helpText: _('<p>This module provides a management interface for physical servers that are registered within the UCS domain.</p><p>The tree view on the left side shows an overview of all existing physical servers and the residing virtual machines. By selecting one of the physical servers statistics of the current state are displayed to get an impression of the health of the hardware system. Additionally actions like start, stop, suspend and resume for each virtual machine can be invoked on each of the instances.</p><p>Also possible is direct access to virtual machines. Therefor it must be activated in the configuration.</p><p>Each virtual machine entry in the tree view provides access to detailed information und gives the possibility to change the configuration or state and migrated it to another physical server.</p>')
 			});
 			this.addChild(this._searchPage);
-			var titlePane = new ExpandingTitlePane({
-				title: _('Search for virtual machines and physical servers'),
-				design: 'sidebar'
-			});
-			this._searchPage.addChild(titlePane);
 
 			//
 			// add data grid
@@ -178,7 +172,7 @@ define([
 				layout: layout,
 				onSearch: lang.hitch(this, 'filter')
 			});
-			titlePane.addChild(this._searchForm);
+			this._searchPage.addChild(this._searchForm);
 
 			// generate the data grid
 			this._finishedDeferred.then( lang.hitch( this, function( ucr ) {
@@ -202,7 +196,7 @@ define([
 					}),*/
 				});
 
-				titlePane.addChild(this._grid);
+				this._searchPage.addChild(this._grid);
 
 				// register event
 				this._grid.on('FilterDone', lang.hitch(this, '_selectInputText')); // FIXME: ?
@@ -242,7 +236,7 @@ define([
 				})
 			});
 			this._tree.dndController.singular = true;
-			titlePane.addChild(this._tree);
+			this._searchPage.addChild(this._tree);
 
 			// add a context menu to edit/delete items
 			var menu = new Menu({});
@@ -1401,7 +1395,7 @@ define([
 			//		and the selected server/group.
 
 			// validate the search form
-			var search_vals = this._searchForm.gatherFormValues();
+			var search_vals = this._searchForm.get('value');
 			if (!this._searchForm.getWidget('type').isValid()) {
 				dialog.alert(_('Please select a valid search type.'));
 				return;

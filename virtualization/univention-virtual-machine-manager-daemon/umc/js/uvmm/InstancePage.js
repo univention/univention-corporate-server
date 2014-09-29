@@ -26,38 +26,25 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define,console*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/store/Memory",
-	"dojo/store/Observable",
 	"dojo/Deferred",
 	"dojo/promise/all",
-	"dijit/form/MappedTextBox",
 	"umc/tools",
 	"umc/dialog",
-	"umc/store",
 	"umc/widgets/Page",
 	"umc/widgets/Form",
-	"umc/widgets/ContainerWidget",
 	"umc/widgets/TabContainer",
-	"umc/widgets/TitlePane",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/TextBox",
-	"umc/widgets/TextArea",
 	"umc/widgets/HiddenInput",
-	"umc/widgets/ComboBox",
-	"umc/widgets/MultiInput",
-	"umc/widgets/CheckBox",
-	"umc/widgets/PasswordBox",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Memory, Observable, Deferred, all, MappedTextBox, tools, dialog, store, Page, Form, ContainerWidget, TabContainer, TitlePane, ExpandingTitlePane, StandbyMixin,
-	TextBox, TextArea, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, types, _) {
+], function(declare, lang, array, Deferred, all, tools, dialog, Page, Form, TabContainer, StandbyMixin, TextBox, HiddenInput, types, _) {
 
 	return declare("umc.modules.uvmm.InstancePage", [ TabContainer, StandbyMixin ], {
 		nested: true,
@@ -125,10 +112,10 @@ define([
 				layout: [{
 					label: _('Settings'),
 					layout: [
-						['label', ],
+						['label'],
 						['public_ips', 'private_ips'],
 						['u_size_name', 'keypair'],
-						['image', 'securitygroup'],
+						['image', 'securitygroup']
 					]
 				}],
 				scrollable: true

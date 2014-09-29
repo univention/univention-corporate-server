@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define, location*/
+/*global define,location*/
 
 define([
 	"dojo/_base/declare",
@@ -43,7 +43,6 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/TabContainer",
 	"umc/widgets/TitlePane",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/TextBox",
 	"umc/widgets/TextArea",
@@ -57,7 +56,7 @@ define([
 	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Memory, Observable, MappedTextBox, tools, dialog, store, Page, Form, ContainerWidget, TabContainer, TitlePane, ExpandingTitlePane, StandbyMixin,
+], function(declare, lang, array, Memory, Observable, MappedTextBox, tools, dialog, store, Page, Form, ContainerWidget, TabContainer, TitlePane, StandbyMixin,
 	TextBox, TextArea, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, InterfaceGrid, DriveGrid, types, _) {
 
 	return declare("umc.modules.uvmm.DomainPage", [ TabContainer, StandbyMixin ], {
@@ -375,11 +374,7 @@ define([
 				moduleStore: this._snapshotStore,
 				onUpdateProgress: lang.hitch(this, 'onUpdateProgress')
 			});
-			titlePane = new ExpandingTitlePane({
-				title: _('Snapshots')
-			});
-			titlePane.addChild(this._snapshotGrid);
-			this._snapshotPage.addChild(titlePane);
+			this._snapshotPage.addChild(this._snapshotGrid);
 
 			// add pages in the correct order
 			this.addChild(this._generalPage);
