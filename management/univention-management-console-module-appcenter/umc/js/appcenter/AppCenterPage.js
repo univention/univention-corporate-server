@@ -85,7 +85,7 @@ define([
 
 			if (this.liveSearch) {
 				this._searchSidebar = new LiveSearchSidebar({
-					region: 'left',
+					region: 'nav',
 					searchableAttributes: ['name', 'description', 'longdescription', 'categories']
 				});
 				this.addChild(this._searchSidebar);

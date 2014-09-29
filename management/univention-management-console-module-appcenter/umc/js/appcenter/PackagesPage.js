@@ -65,7 +65,7 @@ define([
 			this.own(this._progressBar);
 
 			this._form = new SearchForm({
-				region: 'top',
+				region: 'nav',
 				_publishPrefix: 'packages'
 			});
 			this._form.on('submit', lang.hitch(this, function() {
@@ -147,7 +147,7 @@ define([
 
 			// create a grid in the 'center' region
 			this._grid = new Grid({
-				region: 'center',
+				region: 'main',
 				actions: actions,
 				columns: columns,
 				moduleStore: this.moduleStore,

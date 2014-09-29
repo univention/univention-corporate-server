@@ -37,11 +37,10 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/Grid",
 	"umc/widgets/TitlePane",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/Form",
 	"umc/store",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, dialog, tools, Page, Grid, TitlePane, ExpandingTitlePane, Form, store, _) {
+], function(declare, lang, array, dialog, tools, Page, Grid, TitlePane, Form, store, _) {
 	return declare("umc.modules.appcenter.SettingsPage", [ Page ], {
 
 		moduleStore: null,
@@ -115,7 +114,7 @@ define([
 
 			var titlePaneForm = new TitlePane({
 				title: _("General repository settings"),
-				region: 'top',
+				region: 'nav',
 				toggleable: false
 			});
 
@@ -264,13 +263,7 @@ define([
 				actions: actions,
 				columns: columns
 			});
-
-			var titlePane = new ExpandingTitlePane({
-				region: 'center',
-				title: _('Repository components')
-			});
-			titlePane.addChild(this._grid);
-			this.addChild(titlePane);
+			this.addChild(this._grid);
 		},
 
 		// switch over to the detail edit form, along with this id (empty if 'add')

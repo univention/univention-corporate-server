@@ -1,3 +1,27 @@
+univention-management-console-module-appcenter (4.1.2-1) unstable; urgency=medium
+
+  * Bug #35654: add category color to app gallery items
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 26 Sep 2014 18:49:05 +0200
+
+univention-management-console-module-appcenter (4.1.1-1) unstable; urgency=medium
+
+  * Bug #35654: add new category icon
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 26 Sep 2014 18:33:30 +0200
+
+univention-management-console-module-appcenter (4.1.0-2) unstable; urgency=low
+
+  * Bug #35654: changing order of appcenter modules
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 26 Sep 2014 10:51:28 +0200
+
+univention-management-console-module-appcenter (4.1.0-1) unstable; urgency=low
+
+  * Bug #35654: UMC design adaptions
+
+ -- Florian Best <best@univention.de>  Thu, 25 Sep 2014 12:43:51 +0200
+
 univention-management-console-module-appcenter (4.0.0-5) unstable; urgency=low
 
   * Bug #35781: Enable management of apps throughout the domain

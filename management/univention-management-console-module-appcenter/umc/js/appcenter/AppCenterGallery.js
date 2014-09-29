@@ -31,13 +31,16 @@
 define([
 	"dojo/_base/declare",
 	"put-selector/put",
+	"dojo/dom-class",
 	"umc/tools",
 	"umc/widgets/GalleryPane"
-], function(declare, put, tools, GalleryPane) {
+], function(declare, put, domClass, tools, GalleryPane) {
 	return declare("umc.modules.appcenter.AppCenterGallery", [ GalleryPane ], {
-		region: 'center',
+		region: 'main',
 
 		style: 'height: 100%; width: 100%;',
+
+		bootstrapClasses: "col-xs-12.col-sm-6.col-md-6.col-lg-6",
 
 		getIconClass: function(item) {
 			return tools.getIconClass(item.icon, 50, 'umcAppCenter');
@@ -73,6 +76,12 @@ define([
 				});
 			}
 			return iconClass;
+		},
+
+		renderRow: function(item, options) {
+			var div = this.inherited(arguments);
+			domClass.add(div.firstElementChild, 'umcGalleryCategory-software');
+			return div;
 		}
 	});
 });

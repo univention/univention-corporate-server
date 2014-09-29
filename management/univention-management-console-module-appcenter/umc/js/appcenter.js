@@ -37,7 +37,6 @@ define([
 	"dojo/topic",
 	"umc/store",
 	"umc/widgets/Module",
-	"umc/widgets/TabContainer",
 	"umc/modules/appcenter/AppCenterPage",
 	"umc/modules/appcenter/AppDetailsPage",
 	"umc/modules/appcenter/AppDetailsDialog",
@@ -46,16 +45,31 @@ define([
 	"umc/modules/appcenter/SettingsPage",
 	"umc/modules/appcenter/DetailsPage",
 	"umc/i18n!umc/modules/appcenter" // not needed atm
-], function(declare, lang, array, when, Deferred, topic, store, Module, TabContainer, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppChooseHostDialog, PackagesPage, SettingsPage, DetailsPage, _) {
+], function(declare, lang, array, when, Deferred, topic, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppChooseHostDialog, PackagesPage, SettingsPage, DetailsPage, _) {
 	return declare("umc.modules.appcenter", [ Module ], {
 
 		unique: true, // only one appcenter may be open at once
 		idProperty: 'package',
 
 		buildRendering: function() {
-
 			this.inherited(arguments);
 
+			var loadPage = {
+				'appcenter': lang.hitch(this, '_loadAppcenter'),
+				'packages': lang.hitch(this, '_loadPackages'),
+				'components': lang.hitch(this, '_loadComponents')
+			}[this.moduleFlavor];
+			loadPage();
+
+			var page = {
+				'appcenter': this._appCenterPage,
+				'packages': this._packages,
+				'components': this._components
+			}[this.moduleFlavor];
+			this.selectChild(page);
+		},
+
+		_loadAppcenter: function() {
 			// FIXME: this is a synchronous call and can
 			// potentially fail although the module would
 			// be loaded later on. this may not be of any
@@ -72,9 +86,6 @@ define([
 
 			this._componentsStore = store('name', 'appcenter/components');
 			this._packagesStore = store('package', 'appcenter/packages');
-
-			this._tabContainer = new TabContainer({nested: true}); // simulate a TabbedModule. Weird IE-Bug prevents standby in TabbedModule
-			this.addChild(this._tabContainer);
 
 			this._appCenterPage = new AppCenterPage({
 				moduleID: this.moduleID,
@@ -101,12 +112,59 @@ define([
 				udmAccessible: udmAccessible,
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
+			this.addChild(this._appCenterPage);
+			this.addChild(this._appDetailsDialog);
+			this.addChild(this._appDetailsPage);
+
+			// share appCenterInformation among AppCenter and DetailPage
+			//   needs to be specified in AppDetailsPage for apps.js
+			this._appCenterPage.appCenterInformation = this._appDetailsPage.appCenterInformation;
+			// switched from app center to app details and back
+			this._appCenterPage.on('showApp', lang.hitch(this, function(app) {
+				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
+				this._appDetailsPage.set('app', app);
+				this._appChooseHostDialog.set('app', app);
+				this.standbyDuring(this._appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
+					this.selectChild(this._appDetailsPage);
+				}));
+			}));
+			this._appDetailsPage.on('back', lang.hitch(this, function() {
+				this.selectChild(this._appCenterPage);
+			}));
+			this._appDetailsDialog.on('showUp', lang.hitch(this, function() {
+				this.selectChild(this._appDetailsDialog);
+			}));
+			this._appChooseHostDialog.on('showUp', lang.hitch(this, function() {
+				this.selectChild(this._appChooseHostDialog);
+			}));
+			this._appChooseHostDialog.on('back', lang.hitch(this, function() {
+				this.selectChild(this._appDetailsPage);
+			}));
+			this._appDetailsDialog.on('back', lang.hitch(this, function(continued) {
+				var loadPage = true;
+				if (!continued) {
+					loadPage = this._appDetailsPage.reloadPage();
+					this.standbyDuring(loadPage);
+				}
+				when(loadPage).then(lang.hitch(this, function() {
+					this.selectChild(this._appDetailsPage);
+				}));
+			}));
+		},
+
+		_loadPackages: function() {
+			this._packagesStore = store('package', 'appcenter/packages');
 			this._packages = new PackagesPage({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
 				moduleStore: this._packagesStore,
 				standby: lang.hitch(this, 'standby')
 			});
+			this.addChild(this._packages);
+		},
+
+		_loadComponents: function() {
+			this._componentsStore = store('name', 'appcenter/components');
 			this._components = new SettingsPage({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
@@ -120,18 +178,8 @@ define([
 				moduleStore: this._componentsStore,
 				standby: lang.hitch(this, 'standby')
 			});
-
-			this._tabContainer.addChild(this._appCenterPage);
-			this._tabContainer.addChild(this._appDetailsDialog);
-			this._tabContainer.addChild(this._appChooseHostDialog);
-			this._tabContainer.addChild(this._appDetailsPage);
-			this._tabContainer.addChild(this._packages);
-			this._tabContainer.addChild(this._components);
-			this._tabContainer.addChild(this._details);
-
-			// share appCenterInformation among AppCenter and DetailPage
-			//   needs to be specified in AppDetailsPage for apps.js
-			this._appCenterPage.appCenterInformation = this._appDetailsPage.appCenterInformation;
+			this.addChild(this._components);
+			this.addChild(this._details);
 
 			// install default component
 			this._components.on('installcomponent', lang.hitch(this, function(ids) {
@@ -152,7 +200,7 @@ define([
 					}));
 					when(deferred, lang.hitch(this, function() {
 						this.standby(false);
-						this._tabContainer.selectChild(this._packages);
+						this.selectChild(this._packages);
 						this._packages._call_installer('install', pkgs, true);
 					}));
 				} catch(error) {
@@ -161,41 +209,9 @@ define([
 				}
 			}));
 
-			// switched from app center to app details and back
-			this._appCenterPage.on('showApp', lang.hitch(this, function(app) {
-				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
-				this._appDetailsPage.set('app', app);
-				this._appChooseHostDialog.set('app', app);
-				this.standbyDuring(this._appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
-					this.exchangeChild(this._appCenterPage, this._appDetailsPage);
-				}));
-			}));
-			this._appDetailsPage.on('back', lang.hitch(this, function() {
-				this.exchangeChild(this._appDetailsPage, this._appCenterPage);
-			}));
-			this._appChooseHostDialog.on('showUp', lang.hitch(this, function() {
-				this.exchangeChild(this._appDetailsPage, this._appChooseHostDialog);
-			}));
-			this._appChooseHostDialog.on('back', lang.hitch(this, function() {
-				this.exchangeChild(this._appChooseHostDialog, this._appDetailsPage);
-			}));
-			this._appDetailsDialog.on('showUp', lang.hitch(this, function() {
-				this.exchangeChild(this._appDetailsPage, this._appDetailsDialog);
-			}));
-			this._appDetailsDialog.on('back', lang.hitch(this, function(continued) {
-				var loadPage = true;
-				if (!continued) {
-					loadPage = this._appDetailsPage.reloadPage();
-					this.standbyDuring(loadPage);
-				}
-				when(loadPage).then(lang.hitch(this, function() {
-					this.exchangeChild(this._appDetailsDialog, this._appDetailsPage);
-				}));
-			}));
-
 			// switches from 'add' or 'edit' (components grid) to the detail form
 			this._components.on('showdetail', lang.hitch(this, function(id) {
-				this.exchangeChild(this._components, this._details);
+				this.selectChild(this._details);
 				if (id) {
 					// if an ID is given: pass it to the detail page and let it load
 					// the corresponding component record
@@ -209,46 +225,8 @@ define([
 			// closes detail form and returns to grid view.
 			this._details.on('closedetail', lang.hitch(this, function() {
 				this._details._form.clearFormValues();
-				this.exchangeChild(this._details, this._components);
+				this.selectChild(this._components);
 			}));
-
-		},
-
-		startup: function() {
-			this.inherited(arguments);
-
-			this._tabContainer.hideChild(this._details);
-			this._tabContainer.hideChild(this._appDetailsPage);
-			this._tabContainer.hideChild(this._appDetailsDialog);
-			this._tabContainer.hideChild(this._appChooseHostDialog);
-
-		},
-
-		selectComponentsPage: function() {
-			this._details.onCloseDetail();
-			this._tabContainer.selectChild(this._components);
-		},
-
-		// FIXME: this is quite cool. should go into TabbedModule
-		// exchange two tabs, preserve selectedness.
-		exchangeChild: function(from, to) {
-			var what = 'nothing';
-			try {
-				what = 'getting FROM selection';
-				var is_selected = from.get('selected');
-				what = 'hiding FROM';
-				this._tabContainer.hideChild(from);
-				what = 'showing TO';
-				this._tabContainer.showChild(to);
-				if (is_selected) {
-					what = 'selecting TO';
-					this._tabContainer.selectChild(to);
-				}
-			} catch(error) {
-				console.error("exchangeChild: [" + what + "] " + error.message);
-			}
 		}
-
 	});
 });
-

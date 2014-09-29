@@ -156,7 +156,7 @@ define([
 		},
 
 		showErrataHint: function() {
-			var repositoryButton = lang.replace('<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'appcenter\').selectComponentsPage()">{name}</a>', {name: _('Repository Settings')});
+			var repositoryButton = lang.replace('<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'appcenter\', \'components\')">{name}</a>', {name: _('Repository Settings')});
 			this._container.addChild(new Text({
 				content: _('These changes contain <strong>all package upgrades available</strong> and thus may <strong>include errata updates</strong>. If this is not intended, the corresponding components have to be temporarily deactivated first using the tab "%s" in the App Center.', repositoryButton),
 				style: {paddingBottom: '.25em'}

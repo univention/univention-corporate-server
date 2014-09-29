@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-  <categories>
-	<category priority="-100" id="apps">
-	  <name>Installed Applications</name>
-	</category>
-  </categories>
+	<categories>
+		<category priority="-100" id="apps" icon="category-apps.svg" color="#009646">
+			<name>Installed Applications</name>
+		</category>
+	</categories>
 </umc>
