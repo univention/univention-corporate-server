@@ -52,6 +52,8 @@ define([
 
 		disabled: false,
 
+		sizeClass: '',
+
 		// the widget's class name as CSS class
 		'class': 'umcPasswordInputBox',
 
@@ -90,8 +92,6 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-
-			this.sizeClass = null;
 		},
 
 		buildRendering: function() {
@@ -99,6 +99,7 @@ define([
 
 			// create password fields
 			this._firstWidget = this.own(new PasswordBox({
+				sizeClass: this.sizeClass,
 				required: this.required,
 				disabled: this.disabled,
 				name: this.name + '_1',
@@ -106,8 +107,10 @@ define([
 				validator: lang.hitch(this, '_checkValidity', 1),
 				invalidMessage: this.invalidMessage,
 				pattern: this.pattern
+
 			}))[0];
 			this._secondWidget = this.own(new PasswordBox({
+				sizeClass: this.sizeClass,
 				required: this.required,
 				disabled: this.disabled,
 				name: this.name + '_2',
@@ -137,6 +140,9 @@ define([
 
 		postCreate: function() {
 			this.inherited(arguments);
+			if (this.sizeClass == 'One') {
+				this.sizeClass = 'Two';
+			}
 
 			// hook validate for the second box with the onChange event of the first one
 			this.own(this._firstWidget.watch('value', lang.hitch(this, function() {

@@ -41,6 +41,11 @@ define([
 	"dojo/query",
 	"dojo/dom-attr",
 	"dojo/dom-class",
+	"dojo/dom-style",
+	"dojo/dom-geometry",
+	"dojox/html/styles",
+	"dojo/fx",
+	"dojo/_base/fx",
 	"dojo/Deferred",
 	"dijit/Dialog",
 	"dijit/DialogUnderlay",
@@ -51,20 +56,28 @@ define([
 	"umc/widgets/StandbyMixin",
 	"umc/i18n/tools",
 	"umc/i18n!",
-	"dojo/domReady!"
-], function(declare, lang, array, win, aspect, has, on, mouse, dom, query, attr, domClass, Deferred, Dialog, DialogUnderlay, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
+	"dojo/domReady!",
+	"dojo/NodeList-dom"
+], function(declare, lang, array, win, aspect, has, on, mouse, dom, query, attr, domClass, domStyle, geometry, styles, fx, baseFx, Deferred, Dialog, DialogUnderlay, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
+
+	_('Username');
+	_('Password');
+	_('New Password');
+	_('New Password (retype)');
+	_('Login');
+
 	return declare("umc.dialog.LoginDialog", [StandbyMixin], {
 		// our own variables
 		_connections: null,
 		_iframe: null,
-		_languageBox: null,
-		_languageLabel: null,
 		_text: null,
 
 		_username: null,
 		_password: null,
 		_newPassword: null,
 		_updateFormDeferred: null,
+
+		id: 'umcLoginWrapper',
 
 		// internal flag whether the dialog is rendered or not
 		_isRendered: false,
@@ -73,8 +86,9 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this.containerNode = dom.byId('umc_LoginDialog');
-			this.domNode = dom.byId('umc_LoginWrapper');
+			this._replaceLabels();
+			this.containerNode = dom.byId('umcLoginDialog');
+			this.domNode = dom.byId('umcLoginWrapper');
 		},
 
 		buildRendering: function() {
@@ -86,29 +100,20 @@ define([
 			// set the properties for the dialog underlay element
 			this.underlayAttrs = {
 				dialogId: this.id,
-				'class': 'dijitDialogUnderlay'
+				'class': 'dijitDialogUnderlay umcLoginDialogUnderlay'
 			};
 
-			this._iframe = dom.byId('umc_LoginDialog_Iframe');
-			// initialize the iframe
+			// initialize the form+iframe
+			this._iframe = dom.byId('umcLoginIframe');
+			this._form = dom.byId('umcLoginForm');
 			this._initForm();
 
-			// create the upper info text
+			// create the info text
 			this._text = new Text({
-				style: 'margin-left: auto; margin-right: auto; margin-top: 1em; width: 280px;',
+				id: 'umcLoginMessages',
 				content: ''
 			});
-
-			// create the language_combobox
-			this._languageBox = new ComboBox({
-				staticValues: i18nTools.availableLanguages,
-				value: i18nTools.defaultLang(),
-				sizeClass: null
-			});
-			this._languageLabel = new LabelPane({
-				label: _('Language'),
-				content: this._languageBox
-			});
+			this._text.placeAt(this.domNode, 'last');
 
 			// automatically resize the DialogUnderlay container
 			this.own(on(win.global, 'resize', lang.hitch(this, function() {
@@ -116,30 +121,6 @@ define([
 					DialogUnderlay._singleton.layout();
 				}
 			})));
-		},
-
-		postCreate: function() {
-			this.inherited(arguments);
-
-			this._text.placeAt(this.containerNode, 'first');
-			this._languageLabel.placeAt('umc_LoginDialog_FormContainer');
-		},
-
-		startup: function() {
-			this.inherited(arguments);
-
-			// we need to manually startup the widgets
-			this._languageBox.startup();
-			this._languageLabel.startup();
-
-			// register onchange event
-			// watch('value') will not be triggered when
-			// the ComboBox has to take the first choice
-			// while dojo wanted to use another locale
-			// (e.g. because of navigator.language)
-			this._languageBox.on('change', function(newLang) {
-				i18nTools.setLanguage(newLang);
-			});
 		},
 
 		updateForm: function(passwordExpired, statusMessage, detail) {
@@ -195,46 +176,21 @@ define([
 		},
 
 		_setLoginMessageAttr: function(message) {
-			var logindialog = query('.umc_LoginMessage');
-			logindialog[0].innerHTML = message;
-			logindialog.style('display', 'block');
+			this._text.set('content', '<h1>' + _('Authentication failure') + '</h1><p>' + message + '</p>');
+			setTimeout(function() {
+				fx.wipeIn({node: 'umcLoginMessages'}).play();
+			}, 200);
 		},
 
 		_initForm: function() {
+			// FIXME: remove this endless loop
 			// wait until the iframe is completely loaded
 			setTimeout(lang.hitch(this, function() {
 				// check whether the form is available or not
 				var state = lang.getObject('contentWindow.state', false, this._iframe);
 				if (state === 'loaded') {
-					this._updateFormDeferred.then(lang.hitch(this, function(showNewPassword) {
-						// we are able to access the form
-						win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
-							// because of the iframe we need to manually translate the content
-							attr.set(dom.byId('umc_LabelPane_Username'), 'innerHTML', _('Username'));
-							attr.set(dom.byId('umc_LabelPane_Password'), 'innerHTML', _('Password'));
-							attr.set(dom.byId('umc_LabelPane_NewPassword'), 'innerHTML', _('New Password'));
-							attr.set(dom.byId('umc_LabelPane_NewPasswordRetype'), 'innerHTML', _('%(label)s (retype)', {label: _('New Password')}));
-							attr.set(dom.byId('umc_SubmitButton_label'), 'innerHTML', _('Login'));
-							if (showNewPassword) {
-								domClass.add('umc_OuterLabelPane_Username', 'dijitHidden');
-								domClass.add('umc_OuterLabelPane_Password', 'dijitHidden');
-								domClass.remove('umc_OuterLabelPane_NewPassword', 'dijitHidden');
-								domClass.remove('umc_OuterLabelPane_NewPasswordRetype', 'dijitHidden');
-								if (this._username) {
-									dom.byId('umc_UsernameInput').value = this._username;
-									tools.status('username', this._username); // already set status, otherwise _setInitialFocus may cause problems
-								}
-								if (this._password) {
-									dom.byId('umc_PasswordInput').value = this._password;
-								}
-								if (!has('touch')) {
-									dom.byId('umc_NewPasswordInput').focus()
-								}
-							}
-						}));
-					}));
-
 					// each time the page is loaded, we need to connect to the form events
+					this._updateFormDeferred.then(lang.hitch(this, '_updateView'));
 					this._connectEvents();
 
 					this._isRendered = true;
@@ -248,132 +204,117 @@ define([
 			}), 100);
 		},
 
+		_updateView: function(showNewPassword) {
+			//win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
+				query('#umcLoginForm').style('display', showNewPassword ? 'none' : 'block');
+				query('#umcNewPasswordForm').style('display', showNewPassword ? 'block' : 'none');
+				if (showNewPassword) {
+					if (this._username) {
+						dom.byId('umcLoginUsername').value = this._username;
+						tools.status('username', this._username); // already set status, otherwise _setInitialFocus may cause problems
+					}
+					if (this._password) {
+						dom.byId('umcLoginPassword').value = this._password;
+					}
+					dom.byId('umcLoginNewPassword').value = '';
+					dom.byId('umcLoginNewPasswordRetype').value = '';
+					if (!has('touch')) {
+						dom.byId('umcLoginNewPassword').focus();
+					}
+				} else {
+					dom.byId('umcLoginPassword').value = '';
+				}
+			//}));
+		},
+
+		_resetForm: function() {
+			// reset all hidden values in the iframe
+			win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
+				query('input').forEach(function(node) {
+					node.value = '';
+				});
+			}));
+			query('input', this._form).forEach(function(node) {
+				node.value = '';
+			});
+		},
+
 		_connectEvents: function() {
-			// TODO: cleanup?
-			var form;
-			var usernameInput;
-			var usernameContainer;
-			var passwordInput;
-			var passwordContainer;
-			var newPasswordInput;
-			var newPasswordContainer;
-			var newPasswordRetypeInput;
-			var newPasswordRetypeContainer;
+			//this._disconnectEvents();
+			this._connections = [];
+			var iframeLoginForm, usernameInput, passwordInput, newPasswordInput, newPasswordRetypeInput;
 
 			win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
-				form = dom.byId('umc_Form');
-				usernameInput = dom.byId('umc_UsernameInput');
-				usernameContainer = dom.byId('umc_UsernameContainer');
-				passwordInput = dom.byId('umc_PasswordInput');
-				passwordContainer = dom.byId('umc_PasswordContainer');
-				newPasswordInput = dom.byId('umc_NewPasswordInput');
-				newPasswordContainer = dom.byId('umc_NewPasswordContainer');
-				newPasswordRetypeInput = dom.byId('umc_NewPasswordRetypeInput');
-				newPasswordRetypeContainer = dom.byId('umc_NewPasswordRetypeContainer');
+				iframeLoginForm = dom.byId('umcLoginForm');
+				usernameInput = dom.byId('umcLoginUsername');
+				passwordInput = dom.byId('umcLoginPassword');
+				newPasswordInput = dom.byId('umcLoginNewPassword');
+				newPasswordRetypeInput = dom.byId('umcLoginNewPasswordRetype');
 			}));
 
-			this._connections = [];
+			var iframe = this._iframe.contentWindow.document;
+			var forms = [[dom.byId('umcLoginForm'), dom.byId('umcLoginForm', iframe)], [dom.byId('umcNewPasswordForm'), dom.byId('umcNewPasswordForm', iframe)]];
 			// register all events
-			this._connections.push(
-				on(form, 'submit', lang.hitch(this, function(evt) {
-					if (newPasswordInput.value !== newPasswordRetypeInput.value) {
-						this.set('LoginMessage', _('The passwords do not match, please retype again.'));
-						evt.preventDefault();
-						return;
-					}
+			array.forEach(forms, lang.hitch(this, function(ff) {
+				var form = ff[0];
+				var iform = ff[1];
+
+				this._connections.push(on(iform, 'submit', lang.hitch(this, function(evt) {
 					var username = usernameInput.value;
 					var password = passwordInput.value;
-					var newPassword = newPasswordInput.value;
+					var newPassword;
+
+					if (iform !== iframeLoginForm) {
+						if (newPasswordInput.value !== newPasswordRetypeInput.value) {
+							this.set('LoginMessage', _('The passwords do not match, please retype again.'));
+							evt.preventDefault();
+							return;
+						}
+						newPassword = newPasswordInput.value;
+					}
+
 					this._authenticate(username, password, newPassword);
 					this._isRendered = false;
 					this._initForm();
-				}))
-			);
+				})));
 
-			var fields = [
-				[usernameInput, usernameContainer],
-				[passwordInput, passwordContainer],
-				[newPasswordInput, newPasswordContainer],
-				[newPasswordRetypeInput, newPasswordRetypeContainer]
-			];
-			var settingsArray = [
-				[mouse.enter, this._setHover, true],
-				[mouse.leave, this._setHover, false],
-				['focus', this._setFocus, true],
-				['blur', this._setFocus, false]
-			];
-			array.forEach(fields, lang.hitch(this, function(field) {
-				var input = field[0];
-				var container = field[1];
-				array.forEach(settingsArray, lang.hitch(this, function(setting) {
-					var evt = setting[0];
-					var func = setting[1];
-					var flag = setting[2];
-					this._connections.push(on(input, evt, function(e) {
-						func(container, flag);
+				this._connections.push(on(form, 'submit', lang.hitch(this, function(evt) {
+					evt.preventDefault();
+
+					query('.umcLoginForm input').forEach(lang.hitch(this, function(node) {
+						var iframeNode = dom.byId(node.id, iframe);
+						if (iframeNode) {
+							iframeNode.value = node.value;
+						}
 					}));
-				}));
+					iform.submit.click();
+				})));
 			}));
 		},
 
 		_disconnectEvents: function() {
-			array.forEach(this._connections, function(icon) {
-				icon.remove();
+			array.forEach(this._connections, function(con) {
+				con.remove();
 			});
+			this._connections = [];
 		},
 
-		_setInitialFocus: function() {
-			win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
-				if (tools.status('username')) {
-					// username is specified, we need to auto fill
-					// the username and disable the textbox.
-					attr.set('umc_UsernameInput', 'value', tools.status('username'));
-					if (!has('touch')) {
-						dom.byId('umc_PasswordInput').focus();
+		_replaceLabels: function() {
+			query('.umcLoginForm', this.domNode).forEach(lang.hitch(this, function(form) {
+				query('input', form).forEach(lang.hitch(this, function(node) {
+					if (attr.get(node, 'placeholder')) {
+						attr.set(node, 'placeholder', _(attr.get(node, 'placeholder')));
 					}
-					this._setFocus('umc_PasswordContainer', true);
-
-					// disable the username field during relogin, i.e., when the GUI has been previously set up
-					if (tools.status('setupGui')) {
-						attr.set('umc_UsernameInput', 'disabled', true);
-						domClass.add('umc_UsernameContainer', 'dijitTextBoxDisabled dijitValidationTextBoxDisabled dijitDisabled');
-					}
-				} else {
-					// initial focus on username input
-					if (!has('touch')) {
-						dom.byId('umc_UsernameInput').focus();
-					}
-					this._setFocus('umc_UsernameContainer', true);
-				}
+				}));
 			}));
-		},
-
-		_getFocusItems: function(domNode) {
-			this._setInitialFocus();
-		},
-
-		_setFocus: function(obj, enable) {
-			if (enable === true) {
-				domClass.add(obj, 'dijitTextBoxFocused dijitValidationTextBoxFocused dijitFocused');
-			} else if (enable === false) {
-				domClass.remove(obj, 'dijitTextBoxFocused dijitValidationTextBoxFocused dijitFocused');
-			}
-		},
-
-		_setHover: function(obj, enable) {
-			if (enable === true) {
-				domClass.add(obj, 'dijitTextBoxHover dijitValidationTextBoxHover dijitHover');
-			} else if (enable === false) {
-				domClass.remove(obj, 'dijitTextBoxHover dijitValidationTextBoxHover dijitHover');
-			}
+			domClass.toggle(dom.byId('umcLoginDialog'), 'umcLoginLoading', false);
 		},
 
 		_authenticate: function(username, password, new_password) {
-			this.standby(true);
 			// save in case password expired and username and password have to be sent again
 			this._username = username;
 			this._password = password;
-			args = {
+			var args = {
 				username: username,
 				password: password
 			};
@@ -382,6 +323,7 @@ define([
 				args.new_password = new_password;
 			}
 			this._updateFormDeferred = new Deferred();
+			this.standby(true);
 			tools.umcpCommand('auth', args).then(lang.hitch(this, function(data) {
 				// delete password ASAP. should not be stored
 				this._username = null;
@@ -389,20 +331,29 @@ define([
 				this._newPassword = null;
 				this._passwordExpired = false;
 				this._updateFormDeferred.resolve(this._passwordExpired);
-
-				// disable standby in any case
-				this.standby(false);
+				this._resetForm();
 
 				// make sure that we got data
 				this.onLogin(username);
-				this.hide();
+				if (tools.status('setupGui')) {
+					// the module loading bar was already triggered
+					this.hide();
+				}
 			}), lang.hitch(this, function(error) {
-				// disable standby in any case
+				// don't call _updateFormDeferred or _resetForm here!
+				// It would break setting of new_password
 				this.standby(false);
 				this._setInitialFocus();
 				Dialog._DialogLevelManager.show(this, this.underlayAttrs);
 				Dialog._DialogLevelManager.hide(this);
 			}));
+		},
+
+		standby: function(standby) {
+			domClass.toggle(dom.byId('umcLoginDialog'), 'umcLoginLoading', standby);
+			if (standby && this._text.get('content')) {
+				fx.wipeOut({node: this._text.id, properties: { duration: 500 }}).play();
+			}
 		},
 
 		show: function() {
@@ -414,35 +365,77 @@ define([
 
 			// update info text
 			var msg = '';
+
+			// Show warning if connection is unsecured
+			if (window.location.protocol === 'http:') {
+				var link = '<a href="https://' + window.location.href.slice(7) + '">';
+				msg += '<h1>' + _('Insecure Connection') + '</h1>';
+				msg += '<p>' + _('This network connection is not encrypted. All personal or sensitive data will be transmitted in plain text. Please follow %s this link</a> to use a secure SSL connection.', link) + '</p>';
+			}
+
 			if (tools.status('setupGui')) {
 				// user has already logged in before, show message for relogin
-				msg = '<p>' + _('Your session has been closed due to inactivity. Please login again.') + '</p>';
-			} else {
-				msg = '<p>' + _('Welcome to Univention Management Console. Please enter your domain username and password for login.') + '</p>';
+				msg = '<h1>' + _('Session timeout')  + '</h1><p>' + _('Your session has been closed due to inactivity. Please login again.') + '</p>';
 
-				// Show warning if connection is unsecured
-				if (window.location.protocol === 'http:') {
-					msg += '<p style="margin: 5px 0;"><b>' + _('Insecure Connection') + ': </b>';
-					msg += _('This network connection is not encrypted. All personal or sensitive data will be transmitted in plain text. Please follow %s this link</a> to use a secure SSL connection.', '<a href="https://' + window.location.href.slice(7) + '">') + '</p>';
-				}
+				// remove language selection after first successful login
+				query('#umcLanguageSwitch').style('display', 'none');
+				query('#umcFakeLoginLogo').style('display', 'none');
 			}
-			// if login failed display a notification
-			msg += '<p class="umc_LoginMessage" style="display: none; color: #ff0000;"></p>';
 
+			query('#umcLoginMessages').style('display', 'none');
 			this._text.set('content', msg);
 
-			if (this._isRendered) {
-				query('.umcShowHide').style('display', 'block');
+			var _show = lang.hitch(this, function() {
+				query('#umcLoginWrapper').style('display', 'block');
+				query('#umcLoginDialog').style('opacity', '1');  // baseFx.fadeOut sets opacity to 0
 				this._setInitialFocus();
 				Dialog._DialogLevelManager.show(this, this.underlayAttrs);
+				if (this._text.get('content')) {
+					setTimeout(function() {
+						fx.wipeIn({node: 'umcLoginMessages'}).play();
+					}, 200);
+				}
+			});
+
+			if (this._isRendered) {
+				_show();
 			} else {
 				var handle = aspect.after(this, '_connectEvents', lang.hitch(this, function() {
-					query('.umcShowHide').style('display', 'block');
-					this._setInitialFocus();
-					Dialog._DialogLevelManager.show(this, this.underlayAttrs);
+					_show();
+					try {
+						styles.insertCssRule('.umcBodyBackground', lang.replace('background: {0}!important;', [domStyle.get(win.body(), 'background')]));
+						domClass.add(dom.byId('dijit_DialogUnderlay_0'), 'umcBodyBackground');
+					} catch (e) {
+						// guessed the ID
+						console.log(e);
+					}
+
 					handle.remove();
 				}));
 			}
+		},
+
+		_setInitialFocus: function() {
+			//win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
+				if (tools.status('username')) {
+					// username is specified, we need to auto fill
+					// the username and disable the textbox.
+					attr.set('umcLoginUsername', 'value', tools.status('username'));
+					if (!has('touch')) {
+						dom.byId('umcLoginPassword').focus();
+					}
+
+					// disable the username field during relogin, i.e., when the GUI has been previously set up
+					if (tools.status('setupGui')) {
+						attr.set('umcLoginUsername', 'disabled', true);
+					}
+				} else {
+					// initial focus on username input
+					if (!has('touch')) {
+						dom.byId('umcLoginUsername').focus();
+					}
+				}
+			//}));
 		},
 
 		hide: function() {
@@ -453,8 +446,31 @@ define([
 			this.set('open', false);
 
 			// hide the dialog
-			query('.umcShowHide').style('display', 'none');
-			Dialog._DialogLevelManager.hide(this);
+			var anim = baseFx.fadeOut({node: 'umcLoginDialog', duration: 300});
+			anim.on('End', lang.hitch(this, function() {
+				query('#umcLoginWrapper').style('display', 'none');
+				Dialog._DialogLevelManager.hide(this);
+				this.standby(false);
+				try {
+					domClass.remove(dom.byId('dijit_DialogUnderlay_0'), 'umcBodyBackground');
+				} catch (e) {
+					// guessed the ID
+					console.log(e);
+				}
+			}));
+			anim.play();
+		},
+
+		__debug: function() {
+			query('#umcLoginLogo').style('display', 'none');
+			win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
+				query('.umcLoginForm').style('display', 'block');
+			}));
+			query('.umcLoginForm').style('display', 'block');
+			query('#umcLoginIframe').style('display', 'block');
+			query('#umcLoginIframe').style('width', 'inherit');
+			query('#umcLoginIframe').style('height', 'inherit');
+			query('#umcLoginDialog').style('height', 'inherit');
 		},
 
 		onLogin: function(/*String*/ username) {

@@ -31,17 +31,64 @@
 define([
 	"dojo/_base/declare",
 	"umc/widgets/TabContainer",
+	"dijit/layout/StackContainer",
+	"umc/widgets/TabController",
+	"umc/widgets/Page",
 	"umc/widgets/_ModuleMixin",
-	"umc/widgets/StandbyMixin"
-], function(declare, TabContainer, _ModuleMixin, StandbyMixin) {
-	return declare("umc.widgets.TabbedModule", [ TabContainer, _ModuleMixin, StandbyMixin ], {
+	"umc/widgets/StandbyMixin",
+	"umc/widgets/Module"
+], function(declare, TabContainer, StackContainer, TabController, Page, _ModuleMixin, StandbyMixin, Module) {
+	return declare("umc.widgets.TabbedModule", [Module], {
 		// summary:
 		//		Basis class for module classes.
 		//		It extends dijit.layout.TabContainer and adds some module specific
 		//		properties/methods.
 
 		// subtabs should be displayed as nested tabs
-		nested: true
+		nested: true,
+
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			this._tabs = new StackContainer({
+				'class': 'umcTabbedModuleTabs',
+				nested: this._nested,
+				doLayout: false
+			});
+			this._tabController = new TabController({
+				'class': 'umcTabbedModuleTabController',
+				region: 'nav',
+				containerId: this._tabs.id
+			});
+			var ctn = new Page({noFooter: true});
+			ctn.addChild(this._tabController);
+			ctn.addChild(this._tabs);
+			this.addChild(ctn);
+			//this._bottom.addChild(this._tabController);
+		},
+
+		onClose: function() {
+			return this._tabs.onClose();
+		},
+
+		addTab: function(/*dijit/_WidgetBase*/ widget, /*int?*/ insertIndex) {
+			return this._tabs.addChild(widget, insertIndex);
+		},
+
+		selectTab: function(/*dijit/_WidgetBase|String*/ page, /*Boolean*/ animate) {
+			return this._tabs.selectChild(page, animate);
+		},
+
+		removeTab: function(/*dijit/_WidgetBase*/ page) {
+			return this._tabs.removeChild(page);
+		},
+
+		hideTab: function(/*dijit/_WidgetBase*/ page) {
+			return this._tabs.hideTab(page);
+		},
+
+		showTab: function(/*dijit/_WidgetBase*/ page) {
+			return this._tabs.showTab(page);
+		}
 	});
 });
-

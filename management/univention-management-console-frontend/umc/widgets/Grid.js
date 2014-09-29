@@ -98,7 +98,7 @@ define([
 		}
 	});
 
-	return declare("umc.widgets.Grid", [BorderContainer, StandbyMixin], {
+	return declare("umc.widgets.Grid", [ContainerWidget, StandbyMixin], {
 		// summary:
 		//		Encapsulates a complex grid with store, UMCP commands and action buttons;
 		//		offers easy access to select items etc.
@@ -255,7 +255,7 @@ define([
 
 			// add a header for the grid
 			this._header = new ContainerWidget({
-				region: 'top',
+			//	region: 'top',
 				'class': 'umcGridHeader'
 			});
 			this.addChild(this._header);
@@ -263,7 +263,7 @@ define([
 			// create the grid
 			this._grid = new _Grid({
 				store: this._dataStore,
-				region: 'center',
+			//	region: 'center',
 				query: this.query,
 				queryOptions: { ignoreCase: true },
 				'class': 'umcGrid',
@@ -287,7 +287,7 @@ define([
 
 			// add a footer for the grid
 			this._footer = new ContainerWidget({
-				region: 'bottom',
+			//	region: 'bottom',
 				'class': 'umcGridFooter'
 			});
 			this._createFooter();
@@ -410,6 +410,10 @@ define([
 
 			// set new grid structure
 			this._grid.setStructure(gridColumns);
+		},
+
+		resize: function() {
+			// FIXME: deprecated warning
 		},
 
 		_getHeaderWidth: function(text) {
@@ -546,7 +550,7 @@ define([
 
 			// add a toolbar which contains all non-context actions
 			this._toolbar = new ContainerWidget({
-				region: 'top',
+				//region: 'top',
 				style: 'float: left',
 				'class': 'umcGridToolBar'
 			});
@@ -738,7 +742,7 @@ define([
 			this._footer.startup();
 
 			// redo the layout since we added elements
-			this.layout();
+			//this.layout();
 
 			return true;
 		},
@@ -778,7 +782,7 @@ define([
 			this.standby(true);
 			this._grid.filter(query);
 			this.clearDisabledItems(false);
-			this.layout();
+			//this.layout();
 		},
 
 		getAllItems: function() {

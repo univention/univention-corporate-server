@@ -36,19 +36,11 @@ dojoDir:=/usr/share/univention-dojo
 version:=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 buildDir:=$(CURDIR)/build
 tmpDir:=$(CURDIR)/tmp
-themesDir:=$(tmpDir)/dijit/themes
 jsFiles:=$(shell find umc -name "*.js")
-
-# collect all less files...
-# the UMC theme is based on claro with some additional .less files
-claroLessFiles:=$(shell find $(dojoDir)/dijit/themes/claro -name "*.less" | sed 's|^.*themes/claro/|$(themesDir)/umc/|')
-umcLessFiles:=$(shell find css -name "*.less" | sed 's|^css/|$(themesDir)/umc/|')
-lessFiles:=$(claroLessFiles) $(umcLessFiles)
-cssFiles:=$(lessFiles:%.less=%.css)
 
 .PHONY: build build-dev build-common install clean jslint i18n umc/package.json $(tmpDir)/umc/app/login.html $(buildDir)/index.html $(buildDir)/debug.html
 
-build: build-common $(buildDir)/js/dojo/dojo.js.uncompressed.js $(themesDir)/umc
+build: build-common $(buildDir)/js/dojo/dojo.js.uncompressed.js
 
 # the automatically generated module umc/widgets contains a require to all umc widgets
 umc/widgets.js:
@@ -65,7 +57,7 @@ umc/package.json:
 $(tmpDir):
 	mkdir -p $@
 	cp -rfs $(dojoDir)/* $@
-	@# remove dojo util directory
+	# remove dojo util directory
 	rm -rf $@/util
 	cp -rfs "$(CURDIR)/umc" $@
 
@@ -94,72 +86,48 @@ $(tmpDir)/umc/app/login.html: login.html
 	sed 's/%HASH%/_$(timestamp)/;' login.html > $@
 	cp $@ $(dir $@)/blank.html
 
-%.css: %.less
-	@# compile less file
-	./lessc $< $@
-	@# replace .claro rules with .umc rule
-	sed -i 's/\.claro\>/.umc/g; s/"""/"/g;' $@
-
-# copy css and image data into umc themes directory
-$(themesDir)/umc:
-	@#rsync -rp --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css $@
-	@# symlinks for css style sheets and images
-	cp -rf $(dojoDir)/dijit/themes/claro $@
-	@# remove claro.css and all .css files that have a .less source
-	rm $@/claro.css
-	for i in $$(find $@ -name "*.less"); do rm -f $${i%.less}.css; done
-	cp -rsf $(CURDIR)/css/* $@
-	@# merge claro variables and our variables (recursive include not possible with less)
-	mv $@/variables.less $@/variables.orig.less
-	cat $(themesDir)/claro/variables.less $@/variables.orig.less > $@/variables.less
-	@# remove claro compile.js file
-	rm $@/compile.js
-
-$(themesDir)/umc/icons: $(themesDir)/umc
-	@# scale all icons
-	@# treat umc-menu* icons differently and create a version with different
-	@# background for the hover effect
-	for s in 16 24 50; do \
-		path="$@/$${s}x$${s}"; \
-		mkdir -p "$$path"; \
-		for isrc in icons/*.svg*; do \
-			name="$${isrc##*/}"; \
-			name="$${name%.*}"; \
-			dest="$$path/$${name}.png"; \
-			echo "creating $$dest"; \
-			convert -background none "$$isrc" -resize x$$s "$$dest"; \
-		done; \
-	done
-
 build-dev: build-common
-	@# symlink javascript code
+	# symlink javascript code
 	[ -e $(buildDir)/js ] || ln -s $(tmpDir) $(buildDir)/js
-	@# symlinks for installed modules
+	# symlinks for installed modules
 	mkdir -p $(tmpDir)/umc/modules
 	cp -frsn /usr/share/univention-management-console-frontend/js/umc/modules/* $(tmpDir)/umc/modules
-	@# symlinks for installed icons
-	mkdir -p $(themesDir)/umc/icons/
-	cp -frsn /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/* $(themesDir)/umc/icons/
+	# if the umc theme package exists, as well, call "make build-dev"
+	# there, as well, and link its sources in
+	if [ -d ../univention-management-console-frontend-theme ]; then \
+		oldPath=$$PWD; \
+		cd ../univention-management-console-frontend-theme; \
+		make build-dev; \
+		cd $$oldPath; \
+		rm -rf $(tmpDir)/dijit/themes/umc; \
+		ln -s $$oldPath/../univention-management-console-frontend-theme/css $(tmpDir)/dijit/themes/umc; \
+	fi
 
-build-common: i18n umc/widgets.js umc/package.json $(tmpDir) $(themesDir)/umc $(themesDir)/umc/icons $(cssFiles) $(tmpDir)/umc/app/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
-	@# symlink to javascript dir with timestamp
+
+build-common: i18n umc/widgets.js umc/package.json $(tmpDir) $(cssFiles) $(tmpDir)/umc/app/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
+	# symlink to javascript dir with timestamp
 	rm -f "$(buildDir)/js_"*
 	ln -s "js" "$(buildDir)/js_"'$(timestamp)'
-	@# install JSON translation file for framework
+	# install JSON translation file for framework
 	for i in "$(CURDIR)/umc/"*.json; do \
 		lang=$${i##*/}; \
 		lang=$${lang%.*}; \
 		mkdir -p "$(tmpDir)/umc/i18n/$$lang"; \
 		cp $$i "$(tmpDir)/umc/i18n/$$lang/app.json"; \
 	done
-	@# create empty branding localisation files to not cause 404 errors
+	# create empty branding localisation files to not cause 404 errors
 	touch "$(tmpDir)/umc/i18n/en/branding.json" "$(tmpDir)/umc/i18n/de/branding.json"
 
 install: build
-	@# copy all files from the build directory .. exclude file of the tmp directory
+	# copy all files from the build directory .. exclude file of the tmp directory
 	mkdir -p "$(DESTDIR)$(pkgDir)"
 	rsync -rpl --exclude ".svn" "$(buildDir)/" "$(DESTDIR)$(pkgDir)"
 
 clean:
 	rm -rf $(tmpDir) $(buildDir) umc.xml umc/widgets.js umc/{en,de}.json umc/package.json
+	# if the umc theme package exists, as well, call "make clean" there, as well
+	if [ -d ../univention-management-console-frontend-theme ]; then \
+		cd ../univention-management-console-frontend-theme; \
+		make clean; \
+	fi
 

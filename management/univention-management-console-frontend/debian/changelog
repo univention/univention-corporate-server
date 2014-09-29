@@ -1,3 +1,137 @@
+univention-management-console-frontend (4.1.16-1) unstable; urgency=low
+
+  * Bug #35654: UMC design adaptions
+
+ -- Florian Best <best@univention.de>  Mon, 29 Sep 2014 16:32:13 +0200
+
+univention-management-console-frontend (4.1.15-1) unstable; urgency=low
+
+  * [WIP] Bug #35654: adjust form widget size classes in responsive style
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 23 Sep 2014 16:50:45 +0200
+
+univention-management-console-frontend (4.1.14-1) unstable; urgency=medium
+
+  * [WIP] Bug #35654: adjust header CSS classes
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 22 Sep 2014 19:01:50 +0200
+
+univention-management-console-frontend (4.1.13-1) unstable; urgency=medium
+
+  * [WIP] Bug #35654: add favorite icons
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 22 Sep 2014 15:12:10 +0200
+
+univention-management-console-frontend (4.1.12-1) unstable; urgency=medium
+
+  [WIP] Bug #35654:
+  * adapt getIconClass() to handle scalable graphics
+  * remove obsolete adaptations for mobile devices
+  * adjust format of TODO list
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 19 Sep 2014 14:47:42 +0200
+
+univention-management-console-frontend (4.1.11-1) unstable; urgency=medium
+
+  * [WIP] Bug #35654: Added CategoryButton for overview page
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 17 Sep 2014 17:46:07 +0200
+
+univention-management-console-frontend (4.1.10-1) unstable; urgency=low
+
+  * [WIP] Bug #35654: Adapted Makefile with extended clean target 
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 16 Sep 2014 17:44:57 +0200
+
+univention-management-console-frontend (4.1.9-1) unstable; urgency=low
+
+  * [WIP] Bug #35654: Adapted ExpandingTitle, added container class
+  * adapted Page.js
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 16 Sep 2014 17:35:05 +0200
+
+univention-management-console-frontend (4.1.8-1) unstable; urgency=medium
+
+  [WIP] Bug #35654:
+  * Adjust LabelPane layout
+  * Do not adjust layout in module StackContainer
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 16 Sep 2014 15:24:56 +0200
+
+univention-management-console-frontend (4.1.7-1) unstable; urgency=medium
+
+  * [WIP] Bug #35654: fix fuzzy entries
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 15 Sep 2014 17:28:07 +0200
+
+univention-management-console-frontend (4.1.6-1) unstable; urgency=medium
+
+  * [WIP] Bug #35654: adapt gallery style, add bootstrap CSS classes
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 15 Sep 2014 17:21:34 +0200
+
+univention-management-console-frontend (4.1.5-4) unstable; urgency=medium
+
+  * [WIP] Bug #35654: add dependency on theme
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 15 Sep 2014 16:02:38 +0200
+
+univention-management-console-frontend (4.1.5-3) unstable; urgency=medium
+
+  * [WIP] Bug #35654: fix rules for category colors
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 15 Sep 2014 14:33:51 +0200
+
+univention-management-console-frontend (4.1.5-2) unstable; urgency=medium
+
+  * [WIP] Bug #35654: fixed CSS class for TabController
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 15 Sep 2014 12:29:53 +0200
+
+univention-management-console-frontend (4.1.5-1) unstable; urgency=medium
+
+  [WIP] Bug #35654
+  * try to automatically call 'make build-dev' in the umc theme package
+  * replace CSS rule name umcSubmitButton with dijitDefaultButton
+  * fix index.html includes
+
+ -- Alexander Kläser <klaeser@univention.de>  Sun, 14 Sep 2014 00:30:45 +0200
+
+univention-management-console-frontend (4.1.4-1) unstable; urgency=medium
+
+  * [WIP] Bug #35654: integration with theme
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 11 Sep 2014 14:30:43 +0200
+
+univention-management-console-frontend (4.1.3-1) unstable; urgency=medium
+
+  Bug #35654:
+  * remove CSS theme from Makefile
+  * fix error in umc/dialog/LoginDialog
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 10 Sep 2014 16:40:29 +0200
+
+univention-management-console-frontend (4.1.2-1) unstable; urgency=low
+
+  * Bug #35654: UMC design adaptions
+
+ -- Florian Best <best@univention.de>  Tue, 02 Sep 2014 11:09:52 +0200
+
+univention-management-console-frontend (4.1.1-1) unstable; urgency=low
+
+  * Bug #35654: UMC design adaptions
+  * encouple Header from App
+  * display MenuItems in a separate menu
+  * encouple startup checks from App
+
+ -- Florian Best <best@univention.de>  Fri, 29 Aug 2014 13:58:48 +0200
+
+univention-management-console-frontend (4.1.0-2) unstable; urgency=low
+
+  * Bug #35654: version bump
+
+ -- Florian Best <best@univention.de>  Wed, 27 Aug 2014 16:29:11 +0200
+
 univention-management-console-frontend (4.0.3-6) unstable; urgency=low
 
   * Bug #35711: fix checking for ucs/web/license/requested

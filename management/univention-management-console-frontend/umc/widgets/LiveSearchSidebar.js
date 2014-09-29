@@ -61,6 +61,8 @@ define([
 		//		Reference to the 'all' category
 		allCategory: null,
 
+		searchLabel: null,
+
 		baseClass: 'umcLiveSearchSidebar',
 
 		style: 'overflow: auto;',
@@ -77,8 +79,7 @@ define([
 			}
 
 			this._searchTextBox = new TextBox({
-				inlineLabel: _('Search term'),
-				style: 'width: 135px;'
+				inlineLabel: this.searchLabel || _('Search term')
 			});
 			this.addChild(this._searchTextBox);
 

@@ -3,19 +3,11 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Univention Management Console</title>
 		<link rel="icon" href="js%HASH%/dijit/themes/umc/favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="js%HASH%/dijit/themes/umc/favicon.ico" type="image/x-icon" />
-		<style type="text/css">
-			@import url("js%HASH%/dojo/resources/dojo.css");
-			@import url("js%HASH%/dijit/themes/umc/umc.css");
-			@import url("js%HASH%/dijit/themes/umc/country-flags.css");
-			@import url("js%HASH%/dijit/themes/umc/umcGrid.css");
-			@import url("js%HASH%/dijit/themes/umc/EnhancedGrid.css");
-			@import url("js%HASH%/dijit/themes/umc/umcEnhancedGrid.css");
-			/*@import url("css%HASH%/dojox/form/resources/CheckedMultiSelect.css");*/
-			@import url("js%HASH%/dijit/themes/umc/Toaster.css");
-		</style>
+		<link rel="stylesheet" href="js%HASH%/dijit/themes/umc/umc.css" type="text/css"/>
 
 		<!--[if IE 8]>
 		  <link rel="stylesheet" href="js%HASH%/dijit/themes/umc/ie/ie8.css" type="text/css" media="screen" title="IE 8 CSS" />
@@ -62,13 +54,15 @@
 				locale = locale.replace('_', '-');
 			}
 			var dojoConfig = {
-				isDebug: false,
-				debugAtAllCosts: false,
+				has: {
+					'dojo-undef-api': true
+				},
+				isDebug: window.location.pathname.indexOf('/debug') != -1,
 				locale: locale,
 				async: true,
 				deps: [],
 				callback: function() {
-					require(["dojo/parser", "umc/app", "umc/tools", "umc/widgets/ContainerWidget", "dojo/domReady!"], function(parser, app, tools) {
+					require(["dojo/parser", "umc/app", "umc/tools", "umc/app/LanguageSwitch", "dojo/domReady!"], function(parser, app, tools) {
 						// parse the DOM tree
 						parser.parse();
 
@@ -92,31 +86,44 @@
 		</script>
 		<script type="text/javascript" async src="js%HASH%/dojo/dojo.js%JSSUFFIX%"></script>
 	</head>
-	<body class="umc">
-		<div id="univentionLogoWrapper">
-			<div id="univentionLogo"></div>
-			<noscript style="width: 100%;">
-				<div style="margin: 40px auto; width: 50%;">
-					<h1>A browser with JavaScript enabled is needed in order to use Univention Management Console.</h1>
-					<h1>Um die Univention Management Console benutzen zu können, wird ein Browser mit JavaScript-Unterstützung benötigt.</h1>
-					<!--[if IE]>
-						<h1 style="margin-top: 100px;">Please check your security settings and add this address to your trusted sites.</h1>
-						<h1>Bitte überprüfen Sie Ihre Sicherheitseinstellungen und fügen Sie diese Adresse in die Liste Ihrer vertrauenswürdigen Seiten hinzu.</h1>
-					<![endif]-->
+	<body class="umc umcOverviewShown">
+		<div id="umcLoginWrapper">
+			<div id="umcFakeLoginLogo"></div>
+			<div id="umcLanguageSwitch" data-dojo-type="umc/app/LanguageSwitch"></div>
+			<div id="umcLoginCenterer"></div>
+			<div id="umcLoginDialog" class="umcLoginLoading dijitDialog dojoxDialog umcLoginDialog">
+				<div id="umcLoginLogo" class="umcLoginLogo">
+					<img id="umcLoginLogo" src="js%HASH%/dijit/themes/umc/images/login_logo.png"/>
 				</div>
-			</noscript>
-		</div>
-		<div class="umcNotificationTopWrapper">
-		</div>
-		<div id="umc_LoginWrapper" class="umcShowHide" style="position: absolute; height: 100%; width: 100%; display: none;">
-			<div class="umcShowHide" style="height:50%; margin-bottom:-190px;"></div>
-			<div id="umc_LoginDialog" class="umcShowHide dijitDialog dojoxDialog umcLoginDialog">
-				<div id="umc_LoginDialog_ContainerWidget" data-dojo-type="umc/widgets/ContainerWidget">
-					<div id="umc_LoginDialog_FormContainer" class="umcLoginForm umcLoginDialogFormContainer">
-						<iframe id="umc_LoginDialog_Iframe" src="js%HASH%/umc/app/login.html" frameborder="0" class="umcLoginDialogFormContainer"></iframe>
-					</div>
-				</div>
+				<form id="umcLoginForm" name="umcLoginForm" action="blank.html" method="post" class="umcLoginForm" autocomplete="on">
+					<label for="umcLoginUsername">
+						<input placeholder="Username" id="umcLoginUsername" name="username" type="text" autocomplete="on"/>
+					</label>
+					<label for="umcLoginPassword">
+						<input placeholder="Password" id="umcLoginPassword" name="password" type="password" autocomplete="on"/>
+						<input id="umcLoginSubmit" type="submit" name="submit" value="Login"/>
+					</label>
+				</form>
+				<form id="umcNewPasswordForm" name="umcLoginForm" action="blank.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
+					<label for="umcLoginNewPassword">
+						<input placeholder="New Password" id="umcLoginNewPassword" name="new_password" type="password"/>
+					</label>
+					<label for="umcLoginNewPasswordRetype">
+						<input placeholder="New Password (retype)" id="umcLoginNewPasswordRetype" type="password"/>
+						<input type="submit" name="submit" value="Login"/>
+					</label>
+				</form>
+				<iframe id="umcLoginIframe" src="js%HASH%/umc/app/login.html"></iframe>
 			</div>
 		</div>
+		<div id="umcTopContainer" class="umcTopContainer"></div>
+		<noscript style="margin: 40px auto; width: 50%; display: block;">
+			<h1>A browser with JavaScript enabled is needed in order to use Univention Management Console.</h1>
+			<h1>Um die Univention Management Console benutzen zu können, wird ein Browser mit JavaScript-Unterstützung benötigt.</h1>
+			<!--[if IE]>
+				<h1 style="margin-top: 100px;">Please check your security settings and add this address to your trusted sites.</h1>
+				<h1>Bitte überprüfen Sie Ihre Sicherheitseinstellungen und fügen Sie diese Adresse in die Liste Ihrer vertrauenswürdigen Seiten hinzu.</h1>
+			<![endif]-->
+		</noscript>
 	</body>
 </html>

@@ -262,7 +262,7 @@ define([
 
 			// add the Buttons
 			container = new ContainerWidget({});
-			container.addChild(new Button({
+			this._addButton = new Button({
 				label: _('Add'),
 				iconClass: 'umcIconAdd',
 				onClick: lang.hitch(this, function() {
@@ -283,13 +283,15 @@ define([
 					this.onShowDialog( this._detailDialog );
 					this._detailDialog.show();
 				})
-			}));
-			container.addChild(new Button({
+			});
+			container.addChild(this._addButton);
+			this._removeButton = new Button({
 				label: _('Remove'),
 				iconClass: 'umcIconDelete',
 				onClick: lang.hitch(this, '_removeSelectedElements'),
 				style: 'float: right;'
-			}));
+			});
+			container.addChild(this._removeButton);
 			this.addChild(container);
 		},
 
@@ -319,6 +321,12 @@ define([
 				values.push( item.id );
 			} );
 			return values;
+		},
+
+		_setDisabledAttr: function(disabled) {
+			this._multiSelect.set('disabled', disabled);
+			this._addButton.set('disabled', disabled);
+			this._removeButton.set('disabled', disabled);
 		},
 
 		getQueryWidget: function(name) {

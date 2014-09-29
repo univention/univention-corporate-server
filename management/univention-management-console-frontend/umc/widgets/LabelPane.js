@@ -37,8 +37,9 @@ define([
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
 	"dijit/_Container",
+	"dijit/form/CheckBox",
 	"umc/tools"
-], function(declare, lang, Deferred, domClass, attr, _WidgetBase, _TemplatedMixin, _Container, tools) {
+], function(declare, lang, Deferred, domClass, attr, _WidgetBase, _TemplatedMixin, _Container, DijitCheckBox, tools) {
 	lang.extend(_WidgetBase, {
 		// isLabelDisplayed: Boolean?
 		//		If specified as true, LabelPane assumes that the widget itself will take
@@ -55,12 +56,10 @@ define([
 		// summary:
 		//		Simple widget that displays a widget/HTML code with a label above.
 
-		// don't use float, use display:inline-block; we need a hack for IE7 here, see:
-		//   http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/
-		templateString: '<div style="display:inline-block;vertical-align:top;zoom:1;*display:inline;" class="umcLabelPane">' +
-			'<div class="umcLabelPaneLabelNode umcLabelPaneLabeNodeTop" style="display:block;"><label dojoAttachPoint="labelNodeTop" for=""></label></div>' +
-			'<span dojoAttachPoint="containerNode,contentNode" style=""></span>' +
-			'<span class="umcLabelPaneLabelNode umcLabelPaneLabeNodeRight" style=""><label dojoAttachPoint="labelNodeRight" for=""></label></span>' +
+		templateString: '<div class="umcLabelPane">' +
+			'<span dojoAttachPoint="containerNode,contentNode"></span>' +
+			'<span class="umcLabelPaneLabelNode umcLabelPaneLabeNodeRight"><label dojoAttachPoint="labelNodeRight" for=""></label></span>' +
+			'<div class="umcLabelPaneLabelNode umcLabelPaneLabeNodeBottom"><label dojoAttachPoint="labelNodeBottom" for=""></label></div>' +
 			'</div>',
 
 		// content: String|dijit/_WidgetBase
@@ -84,7 +83,7 @@ define([
 		// label: String
 		label: null,
 
-		labelNodeTop: null,
+		labelNodeBottom: null,
 
 		labelNodeRight: null,
 
@@ -153,6 +152,8 @@ define([
 		_setLabelAttr: function(label) {
 			if (lang.getObject('content.isLabelDisplayed', false, this)) {
 				// the widget displays the label itself
+				domClass.add(this.labelNodeRight, 'dijitHidden');
+				domClass.add(this.labelNodeBottom, 'dijitHidden');
 				return;
 			}
 
@@ -160,27 +161,22 @@ define([
 			if (lang.getObject('domNode', false, this.content) &&
 					lang.getObject('declaredClass', false, this.content) &&
 					lang.getObject('required', false, this.content)) {
-				label = label + ' (*)';
+				label = label + ' *';
 			}
 			this.label = label;
 
 			// set the labels' 'for' attribute
 			if (lang.getObject('id', false, this.content) && lang.getObject('declaredClass', false, this.content)) {
 				attr.set(this.labelNodeRight, 'for', this.content.id);
-				attr.set(this.labelNodeTop, 'for', this.content.id);
+				attr.set(this.labelNodeBottom, 'for', this.content.id);
 			}
 
-			// only for check boxes, place the label right of the widget
-			if (tools.inheritsFrom(this.content, 'dijit.form.CheckBox')) {
-				attr.set(this.labelNodeRight, 'innerHTML', label);
-				if (label) {
-					attr.set(this.labelNodeTop, 'innerHTML', '');
-					domClass.add(this.domNode, 'umcLabelPaneCheckBox');
-				}
-			}
-			else {
-				attr.set(this.labelNodeTop, 'innerHTML', label);
-			}
+			// for checkboxes -> place the label right of the widget
+			// ... hide unused label node
+			var isCheckBox = lang.getObject('isInstanceOf', false, this.content) && this.content.isInstanceOf(DijitCheckBox);
+			attr.set(isCheckBox ? this.labelNodeRight : this.labelNodeBottom, 'innerHTML', label);
+			domClass.toggle(this.labelNodeRight, 'dijitHidden', !isCheckBox);
+			domClass.toggle(this.labelNodeBottom, 'dijitHidden', isCheckBox);
 		},
 
 		_setBetweenNonCheckBoxesAttr: function(betweenNonCheckBoxes) {
@@ -200,6 +196,9 @@ define([
 			else if (lang.getObject('domNode', false, content) && lang.getObject('declaredClass', false, content)) {
 				this.contentNode.innerHTML = '';
 				this.addChild(content);
+			}
+			if (lang.getObject('sizeClass', false, content)) {
+				domClass.add(this.domNode, 'umcSize-' + this.content.sizeClass);
 			}
 			this.set( 'disabled', this.disabled );
 		},

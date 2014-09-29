@@ -462,6 +462,7 @@ define([
 		}
 	});
 
+	lang.setObject('umc.dialog', dialog);
 	return dialog;
 });
 

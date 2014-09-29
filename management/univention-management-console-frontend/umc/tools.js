@@ -36,6 +36,7 @@ define([
 	"dojo/_base/xhr",
 	"dojo/Deferred",
 	"dojo/json",
+	"dojo/string",
 	"dojo/topic",
 	"dojo/cookie",
 	"dijit/Dialog",
@@ -46,8 +47,9 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
+	"umc/i18n/tools",
 	"umc/i18n!"
-], function(lang, array, _window, xhr, basexhr, Deferred, json, topic, cookie, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, _) {
+], function(lang, array, _window, xhr, basexhr, Deferred, json, string, topic, cookie, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, i18nTools, _) {
 
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
@@ -406,6 +408,7 @@ define([
 					data: body,
 					handleAs: 'json',
 					headers: {
+						'Accept-Language': i18nTools.defaultLang(),
 						'Content-Type': 'application/json'
 					}
 				});
@@ -649,7 +652,7 @@ define([
 				if (411 == status || 415 == status) {
 					// authentification failed, show a notification
 					dialog.login();
-					dialog._loginDialog.updateForm(415 === status, statusMessage, null);
+					dialog._loginDialog.updateForm(415 === status, statusMessage, message);
 				} else if(401 == status) {
 					// session has expired
 					topic.publish('/umc/actions', 'session', 'expired');
@@ -1020,31 +1023,47 @@ define([
 
 		_existingIconClasses: {},
 
-		getIconClass: function(iconName, size, prefix) {
+		getIconClass: function(icon, size, prefix) {
 			// check whether the css rule for the given icon has already been added
-			size = size || 16;
 			var values = {
-				s: size,
-				icon: iconName
+				s: size || 16,
+				icon: icon,
+				dir: 'scalable'
 			};
+
+			if (/\.png$/.test(icon)) {
+				// adjust the dir name for PNG images
+				values.dir = lang.replace('{s}x{s}', values);
+			}
+
+			// remove SVG/PNG extension
+			if (/\.(png|svg)$/.test(icon)) {
+				values.icon = icon.replace(/\.(png|svg)$/, '');
+			}
+
 			var iconClass;
-			if (iconName.substr(0, 4) == ('http')) {
+			if (icon.substr(0, 4) == ('http')) {
 				// absolute path. use!
 				// iconClass must be modified to the icon file name
-				values.url = iconName;
-				iconClass = lang.replace('abs{s}-{icon}', {s: size, icon: iconName.replace(/\.png$/, '').replace(/.*\//, '')});
+				values.url = icon;
+				values.icon = icon.replace(/\.\w*$/, '').replace(/.*\//, '');
+				iconClass = lang.replace('abs{s}-{icon}', values);
 			} else {
 				// search in local icons directory
 				values.url = require.toUrl('dijit/themes');
-				values.url = lang.replace("{url}/umc/icons/{s}x{s}/{icon}.png", values);
+				values.url = lang.replace('{url}/umc/icons/{dir}/{icon}.svg', values);
 				iconClass = lang.replace('icon{s}-{icon}', values);
 			}
-			if (prefix !== undefined) {
+
+			// prefix handling
+			if (prefix) {
 				iconClass = lang.replace('{prefix}-{class}', {
 					prefix: prefix,
 					'class': iconClass
 				});
 			}
+
+			// create rule if it has not already been created
 			if (!(iconClass in this._existingIconClasses)) {
 				try {
 					// add dynamic style sheet information for the given icon
@@ -1466,9 +1485,36 @@ define([
 				deferred.resolve(func());
 			}, waitingTime);
 			return deferred.promise;
+		},
+
+		linkToModule: function(/*Object*/ props) {
+			// summary:
+			// 		returns a HTML <a> tag which opens a specific given UMC module
+			// 		or null if the module doesn't exists
+			// module: String
+			// flavor: String?
+			// props: Object?
+			// linkName: String?
+			var moduleId = props.module;
+			var moduleFlavor = props.flavor;
+
+			var module = require('umc/app').getModule(moduleId, moduleFlavor);
+			if (!module) {
+				return null;
+			}
+
+			var linkName = string.substitute(props.linkName || _('"${moduleName}" module'), { moduleName: module.name });
+			var args = {
+				module: json.stringify(moduleId).replace(/'/g, '\\"'),
+				flavor: json.stringify(moduleFlavor || null).replace(/'/g, '\\"'),
+				props: json.stringify(props.props || {}).replace(/'/g, '\\"'),
+				link: linkName
+			};
+
+			return lang.replace('<a href="javascript:void(0)" onclick=\'require("umc/app").openModule({module}, {flavor}, {props})\'>{link}</a>', args);
 		}
 	});
 
+	lang.setObject('umc.tools', tools);
 	return tools;
 });
-

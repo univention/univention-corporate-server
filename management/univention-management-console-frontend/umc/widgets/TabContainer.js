@@ -92,7 +92,7 @@ define([
 			// iterate over all tabs
 			array.forEach(this.getChildren(), function(ipage) {
 				// find all widgets that inherit from dojox/grid/_Grid on the tab
-				array.forEach(ipage.getDescendants(), function(iwidget) {
+				array.forEach(ipage.getChildren(), function(iwidget) {
 					if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
 						// hook to onShow event
 						ipage.on('show', function() {
@@ -104,4 +104,3 @@ define([
 		}
 	});
 });
-

@@ -16,7 +16,8 @@ Build-Depends: debhelper (>= 7.0.50~),
 Package: univention-management-console-frontend
 Architecture: all
 Depends: ${misc:Depends},
- univention-apache
+ univention-apache,
+ univention-management-console-frontend-theme
 Description: UCS Management Console - Web based computer administration tool
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement

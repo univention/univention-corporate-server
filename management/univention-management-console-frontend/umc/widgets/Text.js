@@ -30,9 +30,10 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/dom-class",
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin"
-], function(declare, _WidgetBase, _TemplatedMixin) {
+], function(declare, domClass, _WidgetBase, _TemplatedMixin) {
 	return declare("umc.widgets.Text", [_WidgetBase, _TemplatedMixin], {
 		// summary:
 		//		Simple widget that displays a given label, e.g., some text to
@@ -64,6 +65,10 @@ define([
 		_setContentAttr: function(content) {
 			this.content = content;
 			this.contentNode.innerHTML = content;
+		},
+
+		_setVisibleAttr: function(visible) {
+			domClass.toggle(this.domNode, 'dijitHidden', !visible);
 		},
 
 		isValid: function() {

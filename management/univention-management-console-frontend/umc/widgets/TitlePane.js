@@ -56,7 +56,7 @@ define([
 			//        in a closed TitlePane
 
 			// iterate over all tabs
-			array.forEach(this.getDescendants(), function(iwidget) {
+			array.forEach(this.getChildren(), function(iwidget) {
 				if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
 					// hook to changes for 'open'
 					this.own(this.watch('open', function(attr, oldVal, newVal) {

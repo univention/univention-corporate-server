@@ -95,7 +95,7 @@
 
 .umc .dijitTextBox,
 .umc .dijitSelect {
-	margin-bottom: 10px;
+	margin-top: 10px;
 	width: 25em;
 	margin-right: 10px;
 	vertical-align: middle;
@@ -245,7 +245,7 @@
 
 /* Buttons should have margins within LabelPanes, but not in the last LabelPane */
 .umc .umcLabelPane .dijitButton:last-child {
-		margin-right: 0.8em;
+	margin-right: 0.8em;
 }
 
 .umc .dijitDownArrowButton .dijitButtonText {
@@ -741,7 +741,9 @@
 .umc .dijitTitlePaneTitle {
   background-image: none; /* DEL */
   background-repeat: inherit; /* DEL */
-  border: 2px solid @grayAthens;
+  background: none;
+//  border: 2px solid @grayAthens;
+  border: 0 none;
   padding: 0 7px 3px 7px !important;
 }
 
@@ -762,16 +764,19 @@
 }
 
 .umc .dijitTitlePaneTitleHover {
-	background-color: @greenMantis;
+//	background-color: @greenMantis;
+	background: none;
+	background-color: transparent;
 }
 
 .umc .dijitTitlePaneTitleHover .dijitTitlePaneTextNode {
-  color: white;
-  border-color: @greenMantis;
+//  color: white;
+//  border-color: @greenMantis;
 }
 
 .umc .dijitTitlePaneContentOuter {
-  border: 1px solid @grayAthens;
+//  border: 1px solid @grayAthens;
+	border: 0 none;
 }
 
 .umc .dijitTitlePaneContentInner {
@@ -779,8 +784,13 @@
 }
 
 .umc .dijitTitlePaneTextNode {
+	font-weight: bold;
 	position: relative;
 	top: 1px;
+}
+
+.umc .dijitTitlePane .dijitArrowNode {
+	float: right;
 }
 
 .umc .dijitSpinner .dijitArrowButton {
@@ -791,76 +801,6 @@
 .umc .dijitSpinner .dijitUpArrowButtonActive {
   background-color: @greenMantis;
 }
-
-/* @group Login */
-
-.umcLoginDialog {
-	width: 300px;
-	padding: 25px;
-	margin: auto;
-	position: relative !important;
-}
-
-.umcLoginDialog .umcText {
-	padding: 0;
-	width: 260px !important;
-	margin: 0 auto 15px auto;
-}
-
-.umcLoginDialog * {
-	overflow: hidden;
-}
-
-.umcLoginDialog .umcContainerWidget {
-	width: 225px;
-	margin: 0 auto;
-}
-
-.umc .umcLoginDialog .dojoxDialogPaneContent {
-	margin: 0 auto !important;
-	height: 410px !important;
-}
-.umcLoginDialog .dojoxDialogPaneContent .contentNode {
-	margin-bottom: 10px;
-}
-
-.umcLoginDialogFormContainer {
-	width: 225px;
-	height: 17.5em;
-}
-
-.umcLoginForm {
-	overflow: hidden;
-}
-
-#umc_Form {
-	width: auto !important;
-	height: 100% !important;
-	margin-top: 0 !important;
-	margin-bottom: 0;
-}
-
-.umcLoginForm .umcSubmitButton {
-	margin-top: 0.8em;
-	margin-right: 8px;
-	float: right;
-	position: relative;
-	top: 4em;
-}
-
-.umcLoginForm .umcLabelPane {
-	margin-bottom: 0 !important;
-}
-
-.umcLoginDialogFormContainer .umcLabelPane {
-	position: relative;
-	top: -8.3em;
-}
-
-.umcLoginForm .dijitTextBox {
-	width: 215px !important;
-}
-
 
 /* @group Forms */
 
@@ -873,11 +813,11 @@
 }
 
 .umcLabelPaneLabelNode {
-	margin-bottom: 0.416em;
+	margin-top: 0.416em;
 }
 
 .umc .umcMultiSelect, .umc .umcMultiObjectSelect {
-	margin-bottom: 10px !important;
+	margin-top: 10px !important;
 }
 
 .umc .umcLabelPaneCheckBox .umcLabelPaneLabeNodeTop {
@@ -940,6 +880,7 @@
 
 .umc .umcGridHeader {
 	padding-bottom: 0.5em;
+	height: 20px;
 
 	.dijitToggleButton,
 	.dijitButton,
@@ -1055,11 +996,11 @@ textarea {
 .umcPageHeader h1 {
 	margin: 0.833em 0;
 	padding: 0 0 0.556em 0.311em;
-	border-bottom: 1px solid @grayDusty;
+//	border-bottom: 1px solid @grayDusty;
 	// on the android tablet the border would not be displayed at full width
 	// this background image hack fixes the problem, see:
 	//   http://stackoverflow.com/a/13550951
-	background-image:url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
+//	background-image:url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
 }
 
 .umcPageNote {
@@ -1101,6 +1042,8 @@ textarea {
 
 .dijitTitlePane {
 	margin: 0 0 15px 0;
+	border-top: thin solid black;
+	padding-top: 15px;
 }
 
 /* removes padding in ExpandingTitlePane as this causes troubles with
@@ -1122,7 +1065,7 @@ textarea {
 
 /* @group footer */
 .umcPageFooter {
-  border-top: 1px solid @grayShip;
+  //border-top: 1px solid @grayShip;
   margin-top: 0.833em;
   padding-top: 0.833em;
 }

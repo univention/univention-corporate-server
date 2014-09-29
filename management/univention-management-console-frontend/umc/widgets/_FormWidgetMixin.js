@@ -60,10 +60,6 @@ define([
 
 		postCreate: function() {
 			this.inherited( arguments );
-
-			if ( this.sizeClass ) {
-				domClass.add( this.domNode, 'umcSize-' + this.sizeClass );
-			}
 			domClass.add( this.domNode, 'umcFormWidget' );
 		},
 
@@ -83,7 +79,7 @@ define([
 			// not all of our widgets (or the dijit base classes)
 			//   define "isValid", in this case return true
 			// see Bug#30965
-			var superIsValid = this.inherited(arguments, true); // only return the function, not yet called
+			var superIsValid = this.getInherited(arguments);
 			if (superIsValid !== undefined) {
 				return superIsValid.apply(this, arguments);
 			} else {

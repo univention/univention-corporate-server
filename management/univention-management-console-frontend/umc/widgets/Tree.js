@@ -72,6 +72,10 @@ define([
 			this.rootNode = null;
 		},
 
+		resize: function() {
+			console.log('### Tree.resize');
+		},
+
 		/**
 		 * reload the whole tree
 		 *

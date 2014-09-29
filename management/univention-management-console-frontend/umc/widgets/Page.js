@@ -30,6 +30,7 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/kernel",
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/_base/fx",
@@ -39,15 +40,16 @@ define([
 	"dojo/dom-style",
 	"dojo/dom-class",
 	"dojo/topic",
-	"dijit/layout/BorderContainer",
+	"dijit/layout/ContentPane",
 	"umc/tools",
 	"umc/dialog",
 	"umc/render",
 	"umc/widgets/Text",
+	"umc/widgets/Tree",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!"
-], function(declare, lang, array, baseFX, on, mouse, query, style, domClass, topic, BorderContainer, tools, dialog, render, Text, ContainerWidget, _) {
-	return declare("umc.widgets.Page", BorderContainer, {
+], function(declare, kernel, lang, array, baseFX, on, mouse, query, style, domClass, topic, ContentPane, tools, dialog, render, Text, Tree, ContainerWidget, _) {
+	return declare("umc.widgets.Page", ContainerWidget, {
 		// summary:
 		//		Class that abstracts a displayable page for a module.
 		//		Offers the possibility to enter a help text that is shown or not
@@ -87,8 +89,6 @@ define([
 
 		i18nClass: 'umc.app',
 
-		gutters: false,
-
 		//style: 'width: 100%; height: 100%;',
 
 		_helpTextPane: null,
@@ -107,7 +107,7 @@ define([
 			this.helpText = newVal;
 			if (this._helpTextPane) {
 				this._helpTextPane.set('content', newVal);
-				this.layout();
+				//this.layout();
 			}
 		},
 
@@ -118,10 +118,11 @@ define([
 					display: newVal ? 'block' : 'none'
 				});
 				this._headerTextPane.set('content', '<h1>' + newVal + '</h1>');
-				this.layout();
+				//this.layout();
 			}
 			this._set('headerText', newVal);
 		},
+
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -133,27 +134,39 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			// add the header
-			this._headerTextPane = new Text({
-				region: 'top',
-				'class': 'umcPageHeader'
+			this._nav = new ContainerWidget({
+				'class': 'umcPageNav dijitHidden'
 			});
-			this.addChild(this._headerTextPane);
-			this.set('headerText', this.headerText);
+			this._main = new ContainerWidget({
+				'class': 'umcPageMain col-xs-12'
+			});
+			ContainerWidget.prototype.addChild.apply(this, [this._nav]);
+			ContainerWidget.prototype.addChild.apply(this, [this._main]);
+
+			this._footer = new ContainerWidget({
+				region: 'footer',
+				'class': 'umcPageFooter col-xs-12'
+			});
+			ContainerWidget.prototype.addChild.apply(this, [this._footer]);
+
+			// add the header
+			if (this.headerText) {
+				this._headerTextPane = new Text({
+					region: 'nav',
+					'class': 'umcPageHeader'
+				});
+				this.addChild(this._headerTextPane);
+				this.set('headerText', this.headerText);
+			}
 
 			if (tools.preferences('moduleHelpText') && this.helpText) {
 				// display the module helpText
 				this._createHelpTextPane();
-				this.addChild(this._helpTextPane, 1);
+				this.addChild(this._helpTextPane);
 			}
 
 			if (!this.noFooter) {
 				// create the footer container(s)
-				this._footer = new ContainerWidget({
-					region: 'bottom',
-					'class': 'umcPageFooter'
-				});
-				this.addChild(this._footer);
 				var footerLeft = new ContainerWidget({
 					style: 'float: left'
 				});
@@ -206,20 +219,30 @@ define([
 			}
 		},
 
-		_createHelpTextPane: function() {
-			this._helpTextPane = new Text({
-				content: this.helpText,
-				region: 'top',
-				'class': 'umcPageHelpText'
-			});
+		addChild: function(widget, position) {
+			if (!widget.region || widget.region == 'center' || widget.region == 'right') {
+				widget.region = 'main';
+			} else if (widget.region == 'top' || widget.region == 'left') {
+				widget.region = 'nav';
+			} else if (widget.region == 'bottom') {
+				widget.region = 'footer';
+			}
+
+			if (widget.region == 'nav') {
+				this._nav.addChild.apply(this._nav, arguments);
+			} else if (widget.region == 'footer') {
+				this._footer.addChild.apply(this._footer, arguments);
+			} else {
+				this._main.addChild.apply(this._main, arguments);
+			}
 		},
 
-		addChild: function(child) {
-			// use 'center' as default region
-			if (!child.region) {
-				child.region = 'center';
-			}
-			this.inherited(arguments);
+		_createHelpTextPane: function() {
+			this._helpTextPane = new Text({
+				region: 'nav',
+				content: this.helpText,
+				'class': 'umcPageHelpText'
+			});
 		},
 
 		showDescription: function() {
@@ -235,7 +258,8 @@ define([
 				opacity: 0,
 				display: 'block'
 			});
-			this.addChild(this._helpTextPane, 1);
+			var position = this._headerTextPane ? 1 : 0;
+			this.addChild(this._helpTextPane, position);
 			//this.layout();
 
 			// fade in the help text
@@ -269,22 +293,36 @@ define([
 			// summary:
 			//		Show a notification. This is a deprecated method, use dialog.notify(),
 			//		dialog.warn(), Module.addNotification(), or Module.addWarning() instead.
+			kernel.deprecated('umc/widgets/Page:addNote()', 'use dialog.notify(), dialog.warn(), Module.addNotification(), or Module.addWarning() instead!');
 			this.addNotification(message);
 		},
 
 		clearNotes: function() {
 			// summary:
 			//		Deprecated method.
+			kernel.deprecated('umc/widgets/Page:clearNotes()', 'remove it, it has no effect!');
 		},
 
 		startup: function() {
 			this.inherited(arguments);
 
+			domClass.remove(this._nav.domNode);
+			domClass.remove(this._main.domNode);
+			domClass.add(this._nav.domNode, this._nav['class']);
+			domClass.add(this._main.domNode, this._main['class']);
+
+			var hasNav = this._nav.getChildren().length;
+			if (hasNav) {
+				domClass.toggle(this._nav.domNode, "dijitHidden", false);
+				domClass.add(this._nav.domNode, "col-xs-12 col-md-4");
+				domClass.add(this._main.domNode, "col-sm-12 col-md-8");
+			}
+
 			// FIXME: Workaround for refreshing problems with datagrids when they are rendered
 			//        on an inactive tab.
 
 			// iterate over all widgets
-			array.forEach(this.getDescendants(), function(iwidget) {
+			array.forEach(this.getChildren(), function(iwidget) {
 				if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
 					// hook to onShow event
 					this.on('show', lang.hitch(this, function() {

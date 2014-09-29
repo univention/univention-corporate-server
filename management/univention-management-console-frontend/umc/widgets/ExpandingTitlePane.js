@@ -26,106 +26,73 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define */
+/*global define,dijit*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojo/_base/kernel",
 	"dijit/layout/ContentPane",
-	"dijit/layout/BorderContainer"
-], function(declare, lang, ContentPane, BorderContainer) {
-	return declare("umc.widgets.ExpandingTitlePane", BorderContainer, {
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/Page"
+], function(declare, lang, array, kernel, ContentPane, ContainerWidget, Page) {
+	return declare("umc.widgets.ExpandingTitlePane", ContainerWidget, {
 		// summary:
-		//		Widget visually similar to dijit/TitlePane which expands in height/width
-		//		(e.g., in a dijit/layout/BorderContainer) and can display scollable	content.
-		// description:
-		//		This widget is visually similar to a (non-closable) dijit/TitlePane.
-		//		However, it can be used in cases where the size of the widgets is
-		//		adapted to a given layout (e.g., as a center element in a
-		//		dijit/layout.BorderContainer), and where the content may be scrollable.
+		//		Obsolete widget which adds itself to the parent and removes its domNode
 
-		// title: String
-		//		Title displayed in the header element of the widget.
-		title: '',
+		style: 'display: none;',
+		parentNode: null,
 
-		// the widget's class name as CSS class
-		'class': 'umcExpandingTitlePane',
-
-		// gutters are set to false by default
-		gutters: false,
-
-		// internal reference to the main container to which child elements are added
-		_contentContainer: null,
-
-		// internal reference to the ContentPane that holds the title
-		_titlePane: null,
-
-		_userProps: null,
-
-		constructor: function(props) {
-			// store the user defined properties
-			this._userProps = lang.mixin({}, props);
+		constructor: function() {
+			this.inherited(arguments);
+			kernel.deprecated('umc.widgets.ExpandingTitlePane', 'do not use it anymore!');
+			this._widgets = [];
 		},
 
-		postMixInProperties: function() {
-			this.inherited(arguments);
-
-			this.design = 'sidebar';
-
-			// remove title from the attributeMap
-			delete this.attributeMap.title;
+		getParentWidget: function() {
+			// usually parentNode.parentNode should be a Page object
+			var widget = dijit.getEnclosingWidget(lang.getObject('parentNode.parentNode', false, this));
+			if (!widget || !widget.isInstanceOf(Page)) {
+				// no Page object -> fallback to the next parent widget
+				widget = dijit.getEnclosingWidget(this.parentNode);
+			}
+			return widget;
 		},
 
-		buildRendering: function() {
-			this.inherited(arguments);
-
-			// create the title element... style it to look like the head of a dijit/TitlePane
-			this._titlePane = new ContentPane({
-				'class': 'dijitTitlePaneTitle',
-				content: '<div class="dijitTitlePaneTitleFocus">' + this.title + '</div>',
-				region: 'top'
-			});
-			this.inherited('addChild', [ this._titlePane ]);
-
-			// create the container for the main content... add css classes to be similar
-			// the dijit/TitlePane container
-			var props = lang.mixin({}, this._userProps, {
-				title: '',
-				region: 'center',
-				gutters: false,
-				'class': 'dijitTitlePaneContentOuter dijitTitlePaneContentInner'
-			});
-			this._contentContainer = new BorderContainer(props);
-			this.inherited('addChild', [ this._contentContainer ]);
+		__addChild: function(child) {
+			if (this.parentWidget && this.parentWidget.addChild) {
+				this.parentWidget.addChild(child);
+			}
 		},
 
 		addChild: function(child) {
-			if (!child.region) {
-				child.region = 'center';
+			if (!this._started) {
+				this._widgets.push(child);
+			} else {
+				this.__addChild(child);
 			}
-			this._contentContainer.addChild(child);
 		},
 
-		removeChild: function(child) {
-			this._contentContainer.removeChild(child);
+		getChildren: function() {
+			if (this.parentWidget && this.parentWidget.getChildren) {
+				return this.parentWidget.getChildren();
+			}
+			return this.inherited(arguments);
 		},
 
 		startup: function() {
 			this.inherited(arguments);
-			this._contentContainer.startup();
-		},
 
-		layout: function() {
-			this.inherited(arguments);
-			this._contentContainer.layout();
-		},
+			// get the parent node and remove ourself from the DOM
+			this.parentWidget = this.getParentWidget();
+			this.parentNode = this.domNode.parentNode;
+			this.parentNode.removeChild(this.domNode);
+			this.domNode = null;
 
-		_setTitleAttr: function(newTitle) {
-			this._set('title', newTitle);
-			if (this._titlePane) {
-				this._titlePane.set('content', '<div class="dijitTitlePaneTitleFocus">' + this.title + '</div>');
-			}
+			// add all buffered child widgets to the DOM
+			array.forEach(this._widgets, lang.hitch(this, '__addChild'));
+			this._widgets = [];
 		}
 	});
 });
-

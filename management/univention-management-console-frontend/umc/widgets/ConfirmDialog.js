@@ -53,7 +53,7 @@ define([
 		tools = _tools;
 	});
 
-	return declare("umc/widgets/ConfirmDialog", [ Dialog ], {
+	return declare("umc.widgets.ConfirmDialog", [ Dialog ], {
 		// summary:
 		//		Class that provides a customizable confirmation dialog.
 		//		(For easier access see dialog.confirm().)

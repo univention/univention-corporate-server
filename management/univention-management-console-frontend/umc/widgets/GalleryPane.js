@@ -268,14 +268,25 @@ define([
 			return item.description || '';
 		},
 
+		getItemName: function(item) {
+			return item.name || '';
+		},
+
+		bootstrapClasses: "col-xs-12.col-sm-6.col-md-4.col-lg-3",
+
 		renderRow: function(item) {
-			// create gallery item
-			var div = put(lang.replace('div.umcGalleryItem[moduleID={moduleID}]', {
-				moduleID: item.$id$
+			// create gallery item with bootstrap size classes
+			var wrapperDiv = put(lang.replace('div.umcGalleryWrapperItem.{bootstrapClasses}[moduleID={moduleID}]', {
+				moduleID: item.$id$,
+				bootstrapClasses: this.bootstrapClasses
 			}));
+			var div = put(wrapperDiv, lang.replace('div.umcGalleryItem', item));
 			var description = this.getItemDescription(item);
-			put(div, 'div.umcGalleryIcon.' + this.getIconClass(item));
-			put(div, 'div.umcGalleryName', item.name || '');
+			var iconClass = this.getIconClass(item);
+			if (iconClass) {
+				put(div, 'div.umcGalleryIcon.' + iconClass);
+			}
+			put(div, 'div.umcGalleryName', this.getItemName(item));
 			put(div, 'div.umcGalleryDescription', description);
 			if (this._contextMenu) {
 				put(div, 'div.umcGalleryContextIcon.' + tools.getIconClass('context-menu', 24));
@@ -295,7 +306,7 @@ define([
 				}
 			}
 
-			return div;
+			return wrapperDiv;
 		},
 
 		getIconClass: function(item) {

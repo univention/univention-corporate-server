@@ -31,9 +31,10 @@
 define([
 	"dojo/_base/declare",
 	"dojo/dom-style",
+	"dojo/dom-class",
 	"dijit/_WidgetBase",
 	"dijit/_Container"
-], function(declare, style, _WidgetBase, _Container) {
+], function(declare, style, domClass, _WidgetBase, _Container) {
 	return declare("umc.widgets.ContainerWidget", [_WidgetBase, _Container], {
 		// description:
 		//		Combination of Widget and Container class.
@@ -45,6 +46,10 @@ define([
 		//		If set to true, the container will set its width/height to 100% in order
 		//		to enable scrollbars.
 		scrollable: false,
+
+		_setVisibleAttr: function(visible) {
+			domClass.toggle(this.domNode, 'dijitHidden', !visible);
+		},
 
 		buildRendering: function() {
 			this.inherited(arguments);

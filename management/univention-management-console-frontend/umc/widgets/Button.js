@@ -45,15 +45,12 @@ define([
 
 		visible: true,
 
-		// the widget's class name as CSS class
-		'class': 'umcButton',
-
 		type: 'button',
 
 		constructor: function(props) {
 			lang.mixin(this, props);
 			if (this.defaultButton) {
-				this['class'] = 'umcSubmitButton';
+				this['class'] = 'dijitDefaultButton';
 			}
 		},
 
