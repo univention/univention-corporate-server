@@ -37,19 +37,17 @@ define([
 	"umc/tools",
 	"umc/store",
 	"umc/widgets/Grid",
-	"umc/widgets/TabbedModule",
+	"umc/widgets/Module",
 	"umc/widgets/Page",
 	"umc/modules/quota/PageContainer",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/i18n!umc/modules/quota"
-], function(declare, lang, array, sprintf, dialog, tools, store, Grid, TabbedModule, Page, PageContainer, ExpandingTitlePane, _) {
+], function(declare, lang, array, sprintf, dialog, tools, store, Grid, Module, Page, PageContainer, _) {
 
-	return declare("umc.modules.quota", [ TabbedModule ], {
+	return declare("umc.modules.quota", [ Module ], {
 
 		idProperty: 'partitionDevice',
 		moduleStore: null,
 		_overviewPage: null,
-		_pageContainer: null,
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -69,11 +67,6 @@ define([
 				helpText: _('Set, unset and modify filesystem quota')
 			});
 			this.addChild(this._overviewPage);
-
-			var titlePane = new ExpandingTitlePane({
-				title: _('Partition overview')
-			});
-			this._overviewPage.addChild(titlePane);
 
 			var actions = [{
 				name: 'activate',
@@ -154,7 +147,7 @@ define([
 			}];
 
 			this._grid = new Grid({
-				region: 'center',
+				region: 'main',
 				actions: actions,
 				columns: columns,
 				moduleStore: this.moduleStore,
@@ -162,7 +155,7 @@ define([
 					dummy: 'dummy'
 				}
 			});
-			titlePane.addChild(this._grid);
+
 			this._grid.on('FilterDone', lang.hitch(this, function() {
 				var gridItems = this._grid.getAllItems(); // TODO rename?
 				array.forEach(gridItems, lang.hitch(this, function(item) {
@@ -172,6 +165,7 @@ define([
 				}));
 			}));
 
+			this._overviewPage.addChild(this._grid);
 			this._overviewPage.startup();
 		},
 
@@ -223,14 +217,20 @@ define([
 		},
 
 		createPageContainer: function(partitionDevice) {
-			this._pageContainer = new PageContainer({
+			var _pageContainer = new PageContainer({
 				title: partitionDevice,
 				closable: true,
 				moduleID: this.moduleID,
 				partitionDevice: partitionDevice
 			});
-			this.addChild(this._pageContainer);
-			this.selectChild(this._pageContainer);
+			this.addChild(_pageContainer);
+			this.selectChild(_pageContainer);
+
+			_pageContainer.on('showOverview', lang.hitch(this, function() {
+				this.selectChild(this._overviewPage);
+				this.removeChild(_pageContainer);
+				_pageContainer.destroyRecursive();
+			}));
 		}
 	});
 });

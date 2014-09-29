@@ -39,9 +39,8 @@ define([
 	"umc/widgets/TextBox",
 	"umc/widgets/Page",
 	"umc/widgets/NumberSpinner",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/i18n!umc/modules/quota"
-], function(declare, lang, array, dialog, tools, Form, Text, TextBox,  Page, NumberSpinner, ExpandingTitlePane, _) {
+], function(declare, lang, array, dialog, tools, Form, Text, TextBox,  Page, NumberSpinner, _) {
 
 	return declare("umc.modules.quota.DetailPage", [ Page ], {
 
@@ -52,11 +51,7 @@ define([
 			this.inherited(arguments);
 			this.renderForm();
 
-			var titlePane = new ExpandingTitlePane({
-				title: _('Quota settings')
-			});
-			this.addChild(titlePane);
-			titlePane.addChild(this._form);
+			this.addChild(this._form);
 		},
 
 		postMixInProperties: function() {
@@ -70,7 +65,7 @@ define([
 				label: _('Save changes'),
 				callback: lang.hitch(this, function() {
 					if (this.validateValues()) {
-						var values = this._form.gatherFormValues();
+						var values = this._form.get('value');
 						this.onSetQuota(values);
 					}
 				})
@@ -139,7 +134,7 @@ define([
 			var layout = [['user', 'partitionDevice'], ['sizeLimitSoft', 'sizeLimitHard'], ['fileLimitSoft', 'fileLimitHard']];
 
 			this._form = new Form({
-				region: 'top',
+				region: 'main',
 				widgets: widgets,
 				layout: layout
 			});

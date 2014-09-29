@@ -45,7 +45,7 @@ define([
 		_partitionPage: null,
 		_detailPage: null,
 
-		buildRendering: function(partitionDevice) {
+		buildRendering: function() {
 			this.inherited(arguments);
 			this.renderPartitionPage();
 			this.renderDetailPage();
@@ -68,6 +68,7 @@ define([
 				this._detailPage.init(userQuota);
 				this.selectChild(this._detailPage);
 			}));
+			this._partitionPage.on('showOverview', lang.hitch(this, 'onShowOverview'));
 		},
 
 		renderDetailPage: function() {
@@ -88,6 +89,10 @@ define([
 					}
 				}));
 			}));
+		},
+
+		onShowOverview: function() {
+			// event stub
 		}
 	});
 });

@@ -40,9 +40,8 @@ define([
 	"umc/widgets/SearchForm",
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/i18n!umc/modules/quota"
-], function(declare, lang, array, sprintf, dialog, tools, Grid, Page, SearchForm, Text, TextBox, ExpandingTitlePane, _) {
+], function(declare, lang, array, sprintf, dialog, tools, Grid, Page, SearchForm, Text, TextBox, _) {
 	return declare("umc.modules.quota.PartitionPage", [ Page ], {
 
 		moduleStore: null,
@@ -60,21 +59,25 @@ define([
 			}));
 		},
 
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.footerButtons = [{
+				label: _('Back to overview'),
+				callback: lang.hitch(this, 'onShowOverview')
+			}];
+		},
+
 		buildRendering: function() {
 			this.inherited(arguments);
 			this.renderGrid();
-			var titlePane = new ExpandingTitlePane({
-				title: _('Quota settings')
-			});
-			this.addChild(titlePane);
 			this._partitionInfo = new Text({
-				region: 'top',
+				region: 'nav',
 				content: '<p>' + _('loading...') + '</p>'
 			});
 			this._getPartitionInfo();
-			titlePane.addChild(this._partitionInfo);
-			titlePane.addChild(this._searchForm);
-			titlePane.addChild(this._grid);
+			this.addChild(this._partitionInfo);
+			this.addChild(this._searchForm);
+			this.addChild(this._grid);
 		},
 
 		postCreate: function() {
@@ -91,7 +94,7 @@ define([
 			}];
 
 			this._searchForm = new SearchForm({
-				region: 'top',
+				region: 'nav',
 				widgets: widgets,
 				layout: [['filter', 'submit', 'reset']],
 				onSearch: lang.hitch(this, function(data) {
@@ -162,7 +165,7 @@ define([
 			}];
 
 			this._grid = new Grid({
-				region: 'center',
+				region: 'main',
 				actions: actions,
 				columns: columns,
 				moduleStore: this.moduleStore,
@@ -174,9 +177,13 @@ define([
 		},
 
 		filter: function() {
-			var data = this._searchForm.gatherFormValues();
+			var data = this._searchForm.get('value');
 			data.partitionDevice = this.partitionDevice;
 			this._grid.filter(data);
+		},
+
+		onShowOverview: function() {
+			return true;
 		},
 
 		onShowDetailPage: function(data) {
