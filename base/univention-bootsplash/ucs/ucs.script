@@ -418,7 +418,7 @@ Plymouth.SetDisplayQuestionFunction(question_callback);
 message.font = "Sans 13";
 message.sprite = Sprite();
 message.sprite.SetPosition(10, 12, 10000);
-message.maxLength = 100;
+message.maxLength = 80;
 
 # fsck action line
 message_action.sprite = Sprite();
