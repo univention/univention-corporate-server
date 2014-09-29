@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="pkgdb" icon="pkgdb" priority="7" version="1.0">
+	<module id="pkgdb" priority="7" version="1.0">
 		<name>Software monitor</name>
 		<description>Manage installed software versions of UCS systems in the domain</description>
 		<keywords>pkgdb</keywords>
 		<categories>
-			<category name="system"/>
+			<category name="software"/>
 		</categories>
 
 		<command name="pkgdb/reinit" function="reinit" />

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-pkgdb\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-07-04 10:25+0200\n"
+"POT-Creation-Date: 2014-09-10 16:08+0200\n"
 "PO-Revision-Date: 2011-10-22 15:11+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,10 +36,6 @@ msgstr "Paketversion"
 msgid "Package<br/>state"
 msgstr "Paket-<br/>status"
 
-#: umc/js/pkgdb.js:53
-msgid "Packages"
-msgstr "Pakete"
-
 #: umc/js/pkgdb/SearchForm.js:73 umc/js/pkgdb/SearchForm.js:85
 msgid "Pattern"
 msgstr "Suchbegriff"
@@ -48,7 +44,7 @@ msgstr "Suchbegriff"
 msgid "Search"
 msgstr "Suchen"
 
-#: umc/js/pkgdb.js:47
+#: umc/js/pkgdb.js:46
 msgid "Search UCS systems"
 msgstr "Suche nach UCS-Systemen"
 
@@ -56,7 +52,7 @@ msgstr "Suche nach UCS-Systemen"
 msgid "Search for:"
 msgstr "Suche nach:"
 
-#: umc/js/pkgdb.js:54
+#: umc/js/pkgdb.js:52
 msgid "Search software packages"
 msgstr "Suche nach Software-Paketen"
 
@@ -67,10 +63,6 @@ msgstr "Selektions-<br/>status"
 #: umc/js/pkgdb/KeyTranslator.js:71
 msgid "System role"
 msgstr "Systemrolle"
-
-#: umc/js/pkgdb.js:46
-msgid "Systems"
-msgstr "Systeme"
 
 #: umc/js/pkgdb/KeyTranslator.js:74
 msgid "UCS version"

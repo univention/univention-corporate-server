@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
@@ -40,15 +40,13 @@ define([
 	"umc/widgets/Grid",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/modules/pkgdb/SearchForm",
 	"umc/modules/pkgdb/KeyTranslator",
 	"umc/i18n!umc/modules/pkgdb"
-], function(declare, lang, Deferred, aspect, topic, domClass, tools, store, Grid, Page, StandbyMixin, ExpandingTitlePane, SearchForm, KeyTranslator, _) {
+], function(declare, lang, Deferred, aspect, topic, domClass, tools, store, Grid, Page, StandbyMixin, SearchForm, KeyTranslator, _) {
 
 	// Page with a unified layout
 	//
-	//	-	whole thing stuffed into an ExpandingTitlePane
 	//	-	one-line search form (for now...?)
 	//	-	results grid
 	//
@@ -65,16 +63,11 @@ define([
 
 			this.inherited(arguments);
 
-			this._pane = new ExpandingTitlePane({
-				title:			this.title
-			});
-			this.addChild(this._pane);
-
 			this._searchform = new SearchForm({
-				region:			'top',
+				region:			'main',
 				pageKey:		this.pageKey
 			});
-			this._pane.addChild(this._searchform);
+			this.addChild(this._searchform);
 
 			// Listen to the submit event
 			this._searchform.on('ExecuteQuery',lang.hitch(this, function(query) {
@@ -147,7 +140,7 @@ define([
 				}
 
 				var newgrid = new Grid({
-					region:			'center',
+					region:			'main',
 					actions:		[],
 					columns:		columns,
 					moduleStore:	store(fields[0],'pkgdb')
@@ -156,12 +149,12 @@ define([
 				if (this._grid)
 				{
 					// detach and free old grid instance
-					this._pane.removeChild(this._grid);
+					this.removeChild(this._grid);
 					this._grid.uninitialize();
 					this._grid = null;
 				}
 				this._grid = newgrid;
-				this._pane.addChild(this._grid);
+				this.addChild(this._grid);
 
 				// No time to debug why this Grid does not call 'onFilterDone()'
 				this._grid.on('FilterDone', lang.hitch(this, function(success) {

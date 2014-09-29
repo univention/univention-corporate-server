@@ -43,18 +43,16 @@ define([
 			this.umcpCommand('/pkgdb/reinit');
 
 			var syspage = new Page({
-				title:			_("Systems"),
-				headerText:		_("Search UCS systems"),
-				pageKey:		'systems'
+				title: _("Search UCS systems"),
+				pageKey: 'systems'
 			});
-			this.addChild(syspage);
+			this.addTab(syspage);
 
 			var packpage = new Page({
-				title:			_("Packages"),
-				headerText:		_("Search software packages"),
-				pageKey:		'packages'
+				title: _("Search software packages"),
+				pageKey: 'packages'
 			});
-			this.addChild(packpage);
+			this.addTab(packpage);
 		}
 	});
 });
