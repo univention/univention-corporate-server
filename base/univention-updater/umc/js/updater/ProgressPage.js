@@ -78,13 +78,13 @@ define([
 			this.inherited(arguments);
 
 			this._head = new Text({
-				region: 'top',
+				region: 'nav',
 				content: _("... please wait ...")
 			});
 			this.addChild(this._head);
 
 			this._log = new _LogViewer({
-				region: 'center',
+				region: 'main',
 				query: 'updater/installer/logfile'
 			});
 			this.addChild(this._log);
@@ -119,7 +119,7 @@ define([
 				})
 			});
 			var container = new ContainerWidget({
-				region: 'footer'
+				region: 'bottom'
 			});
 			container.addChild(this._close);
 			this.addChild(container);

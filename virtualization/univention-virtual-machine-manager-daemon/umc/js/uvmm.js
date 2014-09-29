@@ -167,7 +167,7 @@ define([
 
 			// generate the search widget
 			this._searchForm = new SearchForm({
-				region: 'top',
+				region: 'nav',
 				widgets: widgets,
 				layout: layout,
 				onSearch: lang.hitch(this, 'filter')
@@ -177,7 +177,7 @@ define([
 			// generate the data grid
 			this._finishedDeferred.then( lang.hitch( this, function( ucr ) {
 				this._grid = new Grid({
-					region: 'center',
+					region: 'main',
 					actions: this._getGridActions('domain'),
 					actionLabel: ucr[ 'uvmm/umc/action/label' ] != 'no', // hide labels of action columns
 					columns: this._getGridColumns('domain'),

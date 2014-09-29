@@ -255,7 +255,6 @@ define([
 
 			// add a header for the grid
 			this._header = new ContainerWidget({
-			//	region: 'top',
 				'class': 'umcGridHeader'
 			});
 			this.addChild(this._header);
@@ -263,7 +262,6 @@ define([
 			// create the grid
 			this._grid = new _Grid({
 				store: this._dataStore,
-			//	region: 'center',
 				query: this.query,
 				queryOptions: { ignoreCase: true },
 				'class': 'umcGrid',
@@ -287,7 +285,6 @@ define([
 
 			// add a footer for the grid
 			this._footer = new ContainerWidget({
-			//	region: 'bottom',
 				'class': 'umcGridFooter'
 			});
 			this._createFooter();
@@ -550,7 +547,6 @@ define([
 
 			// add a toolbar which contains all non-context actions
 			this._toolbar = new ContainerWidget({
-				//region: 'top',
 				style: 'float: left',
 				'class': 'umcGridToolBar'
 			});

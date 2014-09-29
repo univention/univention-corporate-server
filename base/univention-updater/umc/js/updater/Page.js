@@ -49,9 +49,9 @@ define([
 			this.own(this.watch('headerText', lang.hitch(this, function(name, oldval, newval) {
 				var children = this.getChildren();
 				// the header text element is (currently) not a member variable,
-				// so I have to search for the one element that has region='top'
+				// so I have to search for the one element that has region='nav'
 				array.forEach(children, function(child) {
-					if (child.get('region') == 'top') {
+					if (child.get('region') == 'nav') {
 						child.set('content', '<h1>' + newval + '</h1>');
 						return;
 					}

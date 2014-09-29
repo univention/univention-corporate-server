@@ -127,7 +127,7 @@ define([
 			}];
 
 			this._grid = new Grid({
-				region: 'center',
+				region: 'main',
 				actions: actions,
 				columns: columns,
 				sortIndex: 2,
@@ -159,7 +159,7 @@ define([
 			}];
 
 			this._searchWidget = new SearchForm({
-				region: 'top',
+				region: 'nav',
 				widgets: widgets,
 				layout: [['category', 'pattern', 'submit']],
 				onSearch: lang.hitch(this._grid, 'filter')
