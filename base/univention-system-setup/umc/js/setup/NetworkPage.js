@@ -140,11 +140,6 @@ define([
 			this._form.on('submit', lang.hitch(this, 'onSave'));
 
 			this.addChild(this._form);
-
-			// FIXME: as the grid is a border container it has to be resized manually if it is used as form element
-			this.own(aspect.after(this, 'resize', lang.hitch(this, function() {
-				this._form._widgets.interfaces.resize();
-			})));
 		},
 
 		postCreate: function() {

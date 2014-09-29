@@ -52,7 +52,7 @@ then # call self in xinit as nobody, then start gdm
 	if [ -n "$locale_default" ]; then
 		default_locale=${locale_default%%.*}
 	fi
-	USSURL="http://localhost/univention-management-console/?username=__systemsetup__&password=${USSPASSWD}&module=setup&overview=false&displayUsername=false&lang=$default_locale"
+	USSURL="http://localhost/univention-management-console/?username=__systemsetup__&password=${USSPASSWD}&module=setup&flavor=wizard&overview=false&displayUsername=false&lang=$default_locale"
 	BROWSERPIDFILE="/var/cache/univention-system-setup/browser.pid"
 
 	if [ "$mode" = "installer" ] ; then

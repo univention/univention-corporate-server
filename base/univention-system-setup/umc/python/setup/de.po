@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-09-10 13:05+0200\n"
+"POT-Creation-Date: 2014-09-29 16:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,7 +36,7 @@ msgstr "Bond-primary muss in bond-slaves enthalten sein"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/python/setup/util.py:169 umc/python/setup/__init__.py:454
+#: umc/python/setup/__init__.py:454 umc/python/setup/util.py:169
 msgid ""
 "Cannot automatically determine the domain. Please specify the server's fully "
 "qualified domain name."

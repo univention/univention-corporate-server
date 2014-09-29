@@ -195,7 +195,7 @@ define([
 		},
 
 		getValues: function() {
-			var vals = this._form.gatherFormValues();
+			var vals = this._form.get('value');
 			var parts = vals.fqdn.split('.');
 			vals.hostname = typeof parts[0] == "string" ? parts[0] : '';
 			vals.domainname = parts.slice(1).join('.');

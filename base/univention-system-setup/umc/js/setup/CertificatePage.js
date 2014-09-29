@@ -186,7 +186,7 @@ define([
 		},
 
 		getValues: function() {
-			return this._form.gatherFormValues();
+			return this._form.get('value');
 		},
 
 		getSummary: function() {

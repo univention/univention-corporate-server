@@ -927,7 +927,7 @@ define([
 				page.removeChild(page._form);
 			}
 			if (!widget.region) {
-				widget.region = 'center';
+				widget.region = 'main';
 			}
 			page.addChild(widget);
 		},
@@ -1800,7 +1800,7 @@ define([
 							return lang.replace('<li><b>{name}:</b> {ip}</li>', idev);
   						}).join('\n');
 	  					var msg = _('<p>One or more network interfaces could not obtain an IP address via DHCP. These interfaces will use automatic generated private addresses instead (APIPA).</p> <ul> %s </ul> <p>Please adjust your DHCP settings or confirm use of private address(es).</p>', devicesStr);
-						var buttonLabel = _('Continue with 169.254.*.* addresse(s)')
+						var buttonLabel = _('Continue with 169.254.*.* addresse(s)');
 						var allDevices = this._getNetworkDevices();
 						if (fallbackDevices.length === allDevices.length ) {
 							msg = _('<p>With the current settings <b> no </b> internet access is available.</p><p>Because of this some functions like the Appcenter or software-updates will not be accessible</p>') + msg;

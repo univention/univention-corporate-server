@@ -201,7 +201,7 @@ define([
 		},
 
 		getValues: function() {
-			var vals = this._form.gatherFormValues();
+			var vals = this._form.get('value');
 			vals.locale = vals.locale.join(' ');
 			return vals;
 		},

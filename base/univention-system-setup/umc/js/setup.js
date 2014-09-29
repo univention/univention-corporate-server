@@ -39,7 +39,6 @@ define([
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/Module",
-	"umc/widgets/TabContainer",
 	"umc/widgets/ProgressBar",
 	"umc/modules/lib/server",
 	"./setup/ApplianceWizard",
@@ -50,7 +49,7 @@ define([
 	"./setup/NetworkPage",
 	"./setup/CertificatePage"
 ], function(dojo, declare, lang, array, all, topic, Deferred,
-	tools, dialog, Module, TabContainer, ProgressBar, libServer, ApplianceWizard, _) {
+	tools, dialog, Module, ProgressBar, libServer, ApplianceWizard, _) {
 
 	var CancelDialogException = declare("umc.modules.setup.CancelDialogException", null, {
 		// empty class that indicates that the user canceled a dialog
@@ -127,7 +126,8 @@ define([
 			var system_role = ucr['server/role'];
 
 			// set wizard mode only on unjoined DC Master
-			this.wizard_mode = (!system_role) && (!values.joined);
+			//this.wizard_mode = (!system_role) && (!values.joined);
+			this.wizard_mode = this.moduleFlavor === 'wizard';
 
 			// we are in local mode if the user is __systemsetup__
 			this.local_mode = tools.status('username') == '__systemsetup__';
@@ -172,12 +172,9 @@ define([
 		},
 
 		_renderTabs: function(allPages, values) {
-			var tabContainer = new TabContainer({
-				nested: true
-			});
 
 			// each page has the same buttons for saving/resetting
-			var buttons = [ {
+			var buttons = [/* {
 				name: 'close',
 				label: _( 'Close' ),
 				align: 'left',
@@ -192,7 +189,7 @@ define([
 						'default': true
 					} ] );
 				} )
-			}, {
+			}, */{
 				name: 'submit',
 				label: _( 'Apply changes' ),
 				callback: lang.hitch(this, function() {
@@ -207,56 +204,34 @@ define([
 				})
 			}];
 
-			// create all pages dynamically
-			this._pages = [];
-			var tabInDomDeferred = new Deferred();
-			array.forEach(allPages, function(iclass) {
-				// create new page
-				var ipath = 'umc/modules/setup/' + iclass;
-				var Class = require(ipath);
-				var ipage = new Class({
-					umcpCommand: lang.hitch(this, 'umcpCommand'),
-					footerButtons: buttons,
-					moduleFlavor: this.moduleFlavor,
-					wizard_mode: this.wizard_mode,
-					local_mode: this.local_mode,
-					onSave: lang.hitch(this, function() {
-						this.save();
-					}),
-					addNotification: lang.hitch(this, 'addNotification'),
-					addWarning: lang.hitch(this, 'addWarning'),
-					isLoading: lang.hitch(this, 'isLoading')
-				});
-				tabContainer.addChild(ipage);
-				this._pages.push(ipage);
+			var iclass = {
+				languages: 'LanguagePage',
+				network: 'NetworkPage',
+				certificate: 'CertificatePage',
+				general: 'BasisPage'
+			}[this.moduleFlavor];
 
-				// hide tab if page is not visible
-				this.own(ipage.watch('visible', function(name, oldval, newval) {
-					if ((newval === true) || (newval === undefined)) {
-						tabContainer.showChild(ipage);
-					} else {
-						tabContainer.hideChild(ipage);
-					}
-				}));
-
-				// evaluate initial visibility
-				tabInDomDeferred.then(function() {
-					if (ipage.get('visible') === false) {
-						tabContainer.hideChild(ipage);
-					}
-				});
-			}, this);
-
-			this.addChild(tabContainer);
-			tabInDomDeferred.resolve();
-
-			// connect to valuesChanged callback of every page
-			array.forEach(this._pages, lang.hitch(this, function(ipage) {
-				ipage.on('valuesChanged', lang.hitch(this, function() {
-					this.ready().then(lang.hitch(this, 'updateAllValues'));
-				}));
-				ipage.setValues(values);
+			var ipath = 'umc/modules/setup/' + iclass;
+			var Class = require(ipath);
+			var ipage = new Class({
+				umcpCommand: lang.hitch(this, 'umcpCommand'),
+				footerButtons: buttons,
+				moduleFlavor: this.moduleFlavor,
+				wizard_mode: this.wizard_mode,
+				local_mode: this.local_mode,
+				onSave: lang.hitch(this, function() {
+					this.save();
+				}),
+				addNotification: lang.hitch(this, 'addNotification'),
+				addWarning: lang.hitch(this, 'addWarning'),
+				isLoading: lang.hitch(this, 'isLoading')
+			});
+			this._pages = [ipage];
+			this.addChild(ipage);
+			ipage.on('valuesChanged', lang.hitch(this, function() {
+				this.ready().then(lang.hitch(this, 'updateAllValues'));
 			}));
+			ipage.setValues(values);
 		},
 
 		_renderWizard: function(values, pageBlacklist, fieldBlacklist) {
@@ -268,7 +243,11 @@ define([
 				local_mode: this.local_mode,
 				values: values
 			});
+			this.wizard.watch('selectedChildWidget', lang.hitch(this, function(name, oldV, page) {
+				this.set('title', page.get('headerText'));
+			}));
 			this.addChild(this.wizard);
+			this.set('title', this.wizard.selectedChildWidget.get('headerText'));
 			this.wizard.on('Finished', lang.hitch(this, function(newValues) {
 				// wizard is done -> call cleanup command and redirect browser to new web address
 				topic.publish('/umc/actions', this.moduleID, 'wizard', 'done');

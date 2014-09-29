@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="setup" icon="setup" priority="1" version="1.0">
+	<module id="setup" priority="1" version="1.0">
 		<name>Basic settings</name>
 		<description>Configuration of basic settings of the local system</description>
 		<keywords>basic,system,setup,settings,configuration,locale,network,timezone,hostname</keywords>
+		<flavor priority="1" id="wizard">
+			<name>UCS setup wizard</name>
+			<description></description>
+			<keywords>system setup, wizard</keywords>
+		</flavor>
+		<flavor priority="1" id="languages">
+			<name>Language settings</name>
+			<description>All language relevant configurations</description>
+			<keywords>timezone,locale,keyboard</keywords>
+		</flavor>
+		<flavor priority="1" id="network">
+			<name>Network settings</name>
+			<description>Specify IP addresses, name servers, gateways and HTTP proxies</description>
+			<keywords>ip,dhcp,dns,nameserver,forwarder,gateway,interface</keywords>
+		</flavor>
+		<flavor priority="1" id="general">
+			<name>Basic settings</name>
+			<description>Define host and domain names and set the root password</description>
+			<keywords>hostname,password,domainname,fqdn</keywords>
+		</flavor>
+		<flavor priority="1" id="certificate">
+			<name>Certificate settings</name>
+			<description>Create a new root certificate</description>
+			<keywords>SSL,organization</keywords>
+		</flavor>
 		<categories>
 			<category name="system"/>
 		</categories>
