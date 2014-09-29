@@ -79,7 +79,7 @@ class Instance(Base, ProgressMixin):
 		MODULE.error('### plugin %r %r' % (plugin, args,))
 		plugin = self.get(plugin)
 		args = args or {}
-		def thread():
+		def thread(self, request):
 			return plugin.execute(**args)
 		return thread
 

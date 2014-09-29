@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="setup" icon="setup" priority="1" version="1.0">
+	<module id="setup" priority="1" version="1.0">
 		<name>Basic settings</name>
 		<description>Configuration of basic settings of the local system</description>
 		<keywords>basic,system,setup,settings,configuration,locale,network,timezone,hostname</keywords>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="firewall" icon="firewall" version="1.0">
+	<module id="firewall" version="1.0">
 		<name>Firewall</name>
 		<description>Managing firewall configuration</description>
 		<keywords></keywords>

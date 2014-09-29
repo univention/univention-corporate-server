@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="appcenter" icon="appcenter-module" priority="15" version="1.0">
+	<module id="appcenter" priority="15" version="1.0">
 		<name>App Center</name>
 		<description>Installation of apps and software packages on the local system, repository server configuration</description>
 		<keywords>app center,install,packages,software,updates,components</keywords>

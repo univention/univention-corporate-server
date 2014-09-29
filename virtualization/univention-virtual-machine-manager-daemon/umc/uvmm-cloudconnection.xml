@@ -4,7 +4,7 @@
 		<categories>
 			<category name="domain"/>
 		</categories>
-		<flavor icon="udm-uvmm-cloudconnection" priority="10" id="uvmm/cloudconnection">
+		<flavor priority="10" id="uvmm/cloudconnection">
 			<name>Cloud Connections (UVMM)</name>
 			<description>Manages Cloud Connections</description>
 			<keywords></keywords>

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="uvmm" icon="uvmm" priority="11" version="1.0">
+	<module id="uvmm" priority="11" version="1.0">
 		<name>Virtual machines (UVMM)</name>
 		<description>Manages virtual machines</description>
 		<keywords></keywords>
 		<!-- UVMM daemon -->
-		<flavor icon="uvmm" id="uvmm">
+		<flavor id="uvmm">
 			<name>Virtual machines (UVMM)</name>
 			<description>Manages virtual machines</description>
 			<keywords></keywords>
 		</flavor>
 		<!-- Deactivated: Just for translation and used by uvmm-cloudconnection.xml -->
-		<flavor icon="uvmm" id="uvmm/cloudconnection" deactivated="yes">
+		<flavor id="uvmm/cloudconnection" deactivated="yes">
 			<name>Cloud Connections (UVMM)</name>
 			<description>Manages Cloud Connections</description>
 			<keywords></keywords>
