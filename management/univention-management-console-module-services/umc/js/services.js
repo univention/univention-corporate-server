@@ -36,12 +36,11 @@ define([
 	"umc/tools",
 	"umc/widgets/Module",
 	"umc/widgets/Page",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/Grid",
 	"umc/widgets/SearchForm",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/services"
-], function(declare, lang, array, dialog, tools, Module, Page, ExpandingTitlePane, Grid, SearchForm, TextBox, _) {
+], function(declare, lang, array, dialog, tools, Module, Page, Grid, SearchForm, TextBox, _) {
 	return declare("umc.modules.services", [ Module ], {
 
 		moduleStore: null,
@@ -58,11 +57,6 @@ define([
 				headerText: _('System services')
 			});
 			this.addChild(this._page);
-
-			var titlePane = new ExpandingTitlePane({
-				title: _('List of services')
-			});
-			this._page.addChild(titlePane);
 
 			var actions = [{
 				name: 'start',
@@ -180,7 +174,7 @@ define([
 			}];
 
 			this._grid = new Grid({
-				region: 'center',
+				region: 'main',
 				actions: actions,
 				columns: columns,
 				moduleStore: this.moduleStore,
@@ -188,7 +182,6 @@ define([
 					pattern: ''
 				}
 			});
-			titlePane.addChild(this._grid);
 
 			var widgets = [{
 				type: TextBox,
@@ -198,13 +191,14 @@ define([
 			}];
 
 			this._searchWidget = new SearchForm({
-				region: 'top',
+				region: 'nav',
 				widgets: widgets,
 				layout: [[ 'pattern', 'submit', 'reset' ]],
 				onSearch: lang.hitch(this._grid, 'filter')
 			});
 
-			titlePane.addChild(this._searchWidget);
+			this._page.addChild(this._searchWidget);
+			this._page.addChild(this._grid);
 
 			this._page.startup();
     	},
