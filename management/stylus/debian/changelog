@@ -1,0 +1,68 @@
+stylus (0.0.0-11) unstable; urgency=low
+
+  * Bug #35823: Adapted symlink and stylus.install
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 11 Sep 2014 09:46:08 +0200
+
+stylus (0.0.0-10) unstable; urgency=low
+
+  * Bug #35823: Removed directories and dependency,
+    added symlink and version number
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 11 Sep 2014 09:23:02 +0200
+
+stylus (0.0.0-9) unstable; urgency=low
+
+  * Bug #35823: Adapted the link for more information
+    about the workaround
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Sep 2014 13:02:07 +0200
+
+stylus (0.0.0-8) unstable; urgency=low
+
+  * Bug #35823: just another attemp to avoid the 
+    "SELF_SIGNED_CERT_IN_CHAIN” error
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Sep 2014 12:47:49 +0200
+
+stylus (0.0.0-7) unstable; urgency=low
+
+  * Bug #35823: try to use another possible fix
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Sep 2014 12:17:18 +0200
+
+stylus (0.0.0-6) unstable; urgency=low
+
+  * Bug #35823: moved the position of the fix
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Sep 2014 12:09:23 +0200
+
+stylus (0.0.0-5) unstable; urgency=low
+
+  * Bug #35823: upgrading npm to avoid error
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Sep 2014 11:54:38 +0200
+
+stylus (0.0.0-4) unstable; urgency=low
+
+  * Bug #35823: use cp -r instead of mv in the Makefile
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Sep 2014 09:54:40 +0200
+
+stylus (0.0.0-3) unstable; urgency=low
+
+  * Bug #35823: Adapted some copyright information
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Sep 2014 09:33:54 +0200
+
+stylus (0.0.0-2) unstable; urgency=low
+
+  * Bug #35823: Added Makefile and dependencies
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Sep 2014 08:34:57 +0200
+
+stylus (0.0.0-1) unstable; urgency=medium
+
+  * Bug #35823: Initial release
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 04 Sep 2014 12:02:55 +0200
