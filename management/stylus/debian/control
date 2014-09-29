@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper, 
  npm,
+ ucslint,
  nodejs-legacy
 Standards-Version: 3.7.2
 
