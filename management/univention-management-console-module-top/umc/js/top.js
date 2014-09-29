@@ -35,13 +35,12 @@ define([
 	"umc/dialog",
 	"umc/widgets/Module",
 	"umc/widgets/Page",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/Grid",
 	"umc/widgets/SearchForm",
 	"umc/widgets/ComboBox",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/top"
-], function(declare, lang, sprintf, dialog, Module, Page, ExpandingTitlePane, Grid, SearchForm, ComboBox, TextBox, _) {
+], function(declare, lang, sprintf, dialog, Module, Page, Grid, SearchForm, ComboBox, TextBox, _) {
 	return declare("umc.modules.top", [ Module ], {
 
 		_grid: null,
@@ -86,11 +85,6 @@ define([
 			});
 			this.addChild(this._page);
 
-			var titlePane = new ExpandingTitlePane({
-				title: _('Entries')
-			});
-			this._page.addChild(titlePane);
-
 			var actions = [{
 				name: 'terminate',
 				label: _('Terminate'),
@@ -134,7 +128,7 @@ define([
 			}];
 
 			this._grid = new Grid({
-				region: 'center',
+				region: 'main',
 				actions: actions,
 				columns: columns,
 				moduleStore: this.moduleStore,
@@ -144,7 +138,6 @@ define([
 					pattern: ''
 				}
 			});
-			titlePane.addChild(this._grid);
 
 			var widgets = [{
 				type: ComboBox,
@@ -165,13 +158,14 @@ define([
 			}];
 
 			this._searchWidget = new SearchForm({
-				region: 'top',
+				region: 'nav',
 				widgets: widgets,
 				layout: [[ 'category', 'pattern', 'submit', 'reset' ]],
 				onSearch: lang.hitch(this._grid, 'filter')
 			});
 
-			titlePane.addChild(this._searchWidget);
+			this._page.addChild(this._searchWidget);
+			this._page.addChild(this._grid);
 
 			this._page.startup();
 		}
