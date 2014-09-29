@@ -64,7 +64,7 @@ define([
 			var headerButtons = [{
 				name: 'help',
 				label: _('Help'),
-				iconClass: 'umcIconHelp',
+				iconClass: 'umcHelpIconWhite',
 				'class': 'umcHelpButton',
 				callback: lang.hitch(this, function() {
 					topic.publish('/umc/tabs/help', this);
@@ -74,7 +74,7 @@ define([
 				headerButtons.push({
 					name: 'close',
 					label: _('Close'),
-					iconClass: 'umcIconClose',
+					iconClass: 'umcCloseIconWhite',
 					'class': 'umcCloseButton',
 					callback: lang.hitch(this, 'closeModule')
 				});

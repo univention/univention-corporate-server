@@ -696,6 +696,7 @@ define([
 			this._backToOverviewButton = new Button({
 				label: _('Back to overview'),
 				'class': 'umcBackToOverview',
+				iconClass: 'umcArrowUpIcon',
 				onClick: function() {
 					require('umc/app').switchToOverview();
 				}
