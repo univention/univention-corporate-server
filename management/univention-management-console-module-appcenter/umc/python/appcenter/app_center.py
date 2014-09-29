@@ -77,7 +77,7 @@ import univention.admin.handlers.container.cn as container_udm_module
 import univention.admin.uexceptions as udm_errors
 
 # local application
-from util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, set_save_commit_load, get_md5
+from util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5
 
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/local/all.tar.gz'
@@ -755,6 +755,8 @@ class Application(object):
 
 		if cls._all_applications is None:
 			cls._all_applications = []
+			# first of all, look for local archive
+			cls._extract_local_archive()
 			# query all applications from the server
 			if not only_local:
 				cls.sync_with_server()
@@ -850,18 +852,67 @@ class Application(object):
 	def has_active_ad_member_issue(self, issue):
 		return ucr.is_true('ad/member') and self.get('admemberissue%s' % issue)
 
-	def should_show_up_in_app_center(self, package_manager):
+	def should_show_up_in_app_center(self, package_manager, domainwide_managed=None):
 		# NOT iff:
-		#  * has wrong server role OR
+		#  * has wrong server role while not domainwide_managed OR
 		#  * is not installed and has EndOfLife=True OR
 		#  * has ADMemberIssueHide and UCS is part of a Windows Active Directory
-		return self.allowed_on_local_server() and (not self.get('endoflife') or self.is_installed(package_manager)) and not self.has_active_ad_member_issue('hide')
+		if domainwide_managed is None:
+			domainwide_managed = self.domainwide_managed()
+		return (domainwide_managed or self.allowed_on_local_server()) and (not self.get('endoflife') or self.is_installed(package_manager)) and not self.has_active_ad_member_issue('hide')
 
-	def to_dict(self, package_manager):
+	def get_installations(self, hosts=None):
+		lo = uldap.getMachineConnection(ldap_master=False)
+		try:
+			ret = {}
+			try:
+				app_objs = appcenter_udm_module.lookup(None, lo, None, base=self.ldap_container)
+			except LDAPError: # NO_SUCH_OBJECT (self.ldap_container)
+				app_objs = []
+			for app_obj in app_objs:
+				# do not do it multiple times in the next loop
+				app_obj.open()
+			if hosts is None:
+				hosts = get_all_hosts(lo)
+			for computer_obj in hosts:
+				role = computer_obj.info.get('serverRole')[0]
+				description = computer_obj.info.get('description')
+				ip = computer_obj.info.get('ip') # list
+				version = None
+				for app_obj in app_objs:
+					if computer_obj.info.get('fqdn') in app_obj.info.get('server', []):
+						version = app_obj.info.get('version')
+						break
+				ret[computer_obj['name']] = {
+					'version': version,
+					'description': description,
+					'ip': ip,
+					'role': role,
+				}
+			return ret
+		finally:
+			del lo
+
+	@classmethod
+	def domainwide_managed(self, hosts=None):
+		ret = ucr.is_true('appcenter/domainwide')
+		if ret:
+			if hosts is None:
+				hosts = get_all_hosts(ucr=ucr)
+			ret = bool(hosts)
+		return ret
+
+	def to_dict(self, package_manager, domainwide_managed=None, hosts=None):
 		ucr.load()
 		res = copy.copy(self._options)
 		res['component_id'] = self.component_id
 
+		if domainwide_managed is None:
+			domainwide_managed = self.domainwide_managed(hosts)
+		if domainwide_managed:
+			res['installations'] = self.get_installations(hosts)
+		else:
+			res['installations'] = None
 		res['is_installed'] = self.is_installed(package_manager)
 		res['is_current'] = self.is_current(ucr)
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
@@ -1340,6 +1391,44 @@ class Application(object):
 		package_manager.reopen_cache()
 		return packages
 
+	@classmethod
+	def _query_remote_progress(cls, connection, package_manager):
+		all_errors = set()
+		number_failures = 0
+		number_failures_max = 20
+		host = connection._host
+		while True:
+			try:
+				result = connection.request('appcenter/progress')
+			except (HTTPException, SocketError) as e:
+				MODULE.warn('%s: appcenter/progress returned an error: %s' % (host, e))
+				number_failures += 1
+				if number_failures >= number_failures_max:
+					MODULE.error('%s: Remote App Center cannot be contacted for more than %d seconds. Maybe just a long Apache Restart? Presume failure! Check logs on remote machine, maybe installation was successful.' % number_failures_max)
+					return False
+				time.sleep(1)
+				continue
+			else:
+				# everything okay. reset "timeout"
+				number_failures = 0
+			MODULE.info('Result from %s: %r' % (host, result))
+			info = result['info']
+			steps = result['steps']
+			errors = ['%s: %s' % (host, error) for error in result['errors']]
+			if info:
+				package_manager.progress_state.info(_('Output from %(host)s: %(info)s') % {'host' : host, 'info' : info})
+			if steps:
+				steps = float(steps) # bug in package_manager in 3.1-0: int will result in 0 because of division and steps < max_steps
+				package_manager.progress_state.percentage(steps)
+			for error in errors:
+				if error not in all_errors:
+					package_manager.progress_state.error(error)
+					all_errors.add(error)
+			if result['finished'] is True:
+				break
+			time.sleep(0.1)
+		return all_errors
+
 	def install_master_packages_on_host(self, package_manager, function, host, username, password):
 		if function == 'update':
 			function = 'update-schema'
@@ -1348,39 +1437,7 @@ class Application(object):
 		connection = UMCConnection(host, username, password, error_handler=MODULE.warn)
 		result = connection.request('appcenter/invoke', {'function' : function, 'application' : self.id, 'force' : True, 'dont_remote_install' : True})
 		if result['can_continue']:
-			all_errors = set()
-			number_failures = 0
-			number_failures_max = 20
-			while True:
-				try:
-					result = connection.request('appcenter/progress')
-				except (HTTPException, SocketError) as e:
-					MODULE.warn('%s: appcenter/progress returned an error: %s' % (host, e))
-					number_failures += 1
-					if number_failures >= number_failures_max:
-						MODULE.error('%s: Remote App Center cannot be contacted for more than %d seconds. Maybe just a long Apache Restart? Presume failure! Check logs on remote machine, maybe installation was successful.' % number_failures_max)
-						return False
-					time.sleep(1)
-					continue
-				else:
-					# everything okay. reset "timeout"
-					number_failures = 0
-				MODULE.info('Result from %s: %r' % (host, result))
-				info = result['info']
-				steps = result['steps']
-				errors = ['%s: %s' % (host, error) for error in result['errors']]
-				if info:
-					package_manager.progress_state.info(_('Output from %(host)s: %(info)s') % {'host' : host, 'info' : info})
-				if steps:
-					steps = float(steps) # bug in package_manager in 3.1-0: int will result in 0 because of division and steps < max_steps
-					package_manager.progress_state.percentage(steps)
-				for error in errors:
-					if error not in all_errors:
-						package_manager.progress_state.error(error)
-						all_errors.add(error)
-				if result['finished'] is True:
-					break
-				time.sleep(0.1)
+			all_errors = self._query_remote_progress(connection, package_manager)
 			return len(all_errors) == 0
 		else:
 			MODULE.warn('%r' % result)

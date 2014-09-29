@@ -32,22 +32,21 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/aspect",
 	"dojo/when",
 	"dojo/Deferred",
 	"dojo/topic",
-	"umc/app",
 	"umc/store",
 	"umc/widgets/Module",
 	"umc/widgets/TabContainer",
 	"umc/modules/appcenter/AppCenterPage",
 	"umc/modules/appcenter/AppDetailsPage",
 	"umc/modules/appcenter/AppDetailsDialog",
+	"umc/modules/appcenter/AppChooseHostDialog",
 	"umc/modules/appcenter/PackagesPage",
 	"umc/modules/appcenter/SettingsPage",
 	"umc/modules/appcenter/DetailsPage",
 	"umc/i18n!umc/modules/appcenter" // not needed atm
-], function(declare, lang, array, aspect, when, Deferred, topic, UMCApplication, store, Module, TabContainer, AppCenterPage, AppDetailsPage, AppDetailsDialog, PackagesPage, SettingsPage, DetailsPage, _) {
+], function(declare, lang, array, when, Deferred, topic, store, Module, TabContainer, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppChooseHostDialog, PackagesPage, SettingsPage, DetailsPage, _) {
 	return declare("umc.modules.appcenter", [ Module ], {
 
 		unique: true, // only one appcenter may be open at once
@@ -88,11 +87,17 @@ define([
 				moduleFlavor: this.moduleFlavor,
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
+			this._appChooseHostDialog = new AppChooseHostDialog({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				standbyDuring: lang.hitch(this, 'standbyDuring')
+			});
 			this._appDetailsPage = new AppDetailsPage({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
 				updateApplications: lang.hitch(this._appCenterPage, 'updateApplications'),
 				detailsDialog: this._appDetailsDialog,
+				hostDialog: this._appChooseHostDialog,
 				udmAccessible: udmAccessible,
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
@@ -118,6 +123,7 @@ define([
 
 			this._tabContainer.addChild(this._appCenterPage);
 			this._tabContainer.addChild(this._appDetailsDialog);
+			this._tabContainer.addChild(this._appChooseHostDialog);
 			this._tabContainer.addChild(this._appDetailsPage);
 			this._tabContainer.addChild(this._packages);
 			this._tabContainer.addChild(this._components);
@@ -159,12 +165,19 @@ define([
 			this._appCenterPage.on('showApp', lang.hitch(this, function(app) {
 				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
 				this._appDetailsPage.set('app', app);
+				this._appChooseHostDialog.set('app', app);
 				this.standbyDuring(this._appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
 					this.exchangeChild(this._appCenterPage, this._appDetailsPage);
 				}));
 			}));
 			this._appDetailsPage.on('back', lang.hitch(this, function() {
 				this.exchangeChild(this._appDetailsPage, this._appCenterPage);
+			}));
+			this._appChooseHostDialog.on('showUp', lang.hitch(this, function() {
+				this.exchangeChild(this._appDetailsPage, this._appChooseHostDialog);
+			}));
+			this._appChooseHostDialog.on('back', lang.hitch(this, function() {
+				this.exchangeChild(this._appChooseHostDialog, this._appDetailsPage);
 			}));
 			this._appDetailsDialog.on('showUp', lang.hitch(this, function() {
 				this.exchangeChild(this._appDetailsPage, this._appDetailsDialog);
@@ -207,6 +220,7 @@ define([
 			this._tabContainer.hideChild(this._details);
 			this._tabContainer.hideChild(this._appDetailsPage);
 			this._tabContainer.hideChild(this._appDetailsDialog);
+			this._tabContainer.hideChild(this._appChooseHostDialog);
 
 		},
 

@@ -30,9 +30,10 @@
 
 define([
 	"dojo/_base/declare",
+	"put-selector/put",
 	"umc/tools",
 	"umc/widgets/GalleryPane"
-], function(declare, tools, GalleryPane) {
+], function(declare, put, tools, GalleryPane) {
 	return declare("umc.modules.appcenter.AppCenterGallery", [ GalleryPane ], {
 		region: 'center',
 
@@ -40,6 +41,15 @@ define([
 
 		getIconClass: function(item) {
 			return tools.getIconClass(item.icon, 50, 'umcAppCenter');
+		},
+
+		renderRow: function(item) {
+			if (item.isSeparator) {
+				var div = put('div.umcGalleryCategoryHeader[style=display: block]', item.name);
+				return div;
+			} else {
+				return this.inherited(arguments);
+			}
 		},
 
 		getStatusIconClass: function(item) {
@@ -50,6 +60,17 @@ define([
 				iconClass = tools.getIconClass('appcenter-can_update', 24, 'umcAppCenter');
 			} else if (item.is_installed) {
 				iconClass = tools.getIconClass('appcenter-is_installed', 24, 'umcAppCenter');
+			}
+			if (item.installations) {
+				tools.forIn(item.installations, function(server, info) {
+					if (info.version) {
+						iconClass = tools.getIconClass('appcenter-is_installed', 24, 'umcAppCenter');
+						if ((item.candidate_version || item.version) != info.version) {
+							iconClass = tools.getIconClass('appcenter-can_update', 24, 'umcAppCenter');
+							return false;
+						}
+					}
+				});
 			}
 			return iconClass;
 		}

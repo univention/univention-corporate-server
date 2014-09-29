@@ -43,9 +43,11 @@ from hashlib import md5
 # univention
 from univention.management.console.log import MODULE
 import univention.config_registry
+import univention.uldap as uldap
 from univention.admin.handlers.computers import domaincontroller_master
 from univention.admin.handlers.computers import domaincontroller_backup
-
+from univention.admin.handlers.computers import domaincontroller_slave
+from univention.admin.handlers.computers import memberserver
 
 # local application
 from constants import COMPONENT_BASE, COMP_PARAMS, STATUS_ICONS, DEFAULT_ICON, PUT_SUCCESS, PUT_PROCESSING_ERROR
@@ -84,23 +86,38 @@ def get_hosts(module, lo, ucr=None):
 		if hostname == local_hostname:
 			MODULE.process('%s is me. Skipping' % host.dn)
 			continue
-		if 'LDAP' not in host.info.get('service', []):
-			MODULE.warn('%s does not provide LDAP. Skipping' % host.dn)
-			continue
+		if module is not memberserver:
+			if 'LDAP' not in host.info.get('service', []):
+				MODULE.warn('%s does not provide LDAP. Skipping' % host.dn)
+				continue
 		if 'fqdn' not in host.info:
 			MODULE.warn('%s does not have an FQDN. Skipping' % host.dn)
 			continue
-		hostnames.append(host.info['fqdn'])
+		hostnames.append(host)
 	MODULE.process('Found hosts: %r' % hostnames)
 	return hostnames
 
 def get_master(lo):
 	MODULE.process('Searching DC Master')
-	return get_hosts(domaincontroller_master, lo)[0]
+	return get_hosts(domaincontroller_master, lo)[0].info['fqdn']
 
 def get_all_backups(lo, ucr=None):
 	MODULE.process('Searching DC Backup')
-	return get_hosts(domaincontroller_backup, lo, ucr)
+	return [host.info['fqdn'] for host in get_hosts(domaincontroller_backup, lo, ucr)]
+
+def get_all_hosts(lo=None, ucr=None):
+	delete_lo = False
+	if lo is None:
+		delete_lo = True
+		lo = uldap.getMachineConnection(ldap_master=False)
+	try:
+		return get_hosts(domaincontroller_master, lo, ucr) + \
+				get_hosts(domaincontroller_backup, lo, ucr) + \
+				get_hosts(domaincontroller_slave, lo, ucr) + \
+				get_hosts(memberserver, lo, ucr)
+	finally:
+		if delete_lo:
+			del lo
 
 def get_md5(filename):
 	m = md5()

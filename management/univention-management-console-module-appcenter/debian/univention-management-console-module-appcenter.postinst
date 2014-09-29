@@ -32,7 +32,8 @@
 
 #DEBHELPER#
 
-univention-config-registry set repository/app_center/server?appcenter.software-univention.de
+univention-config-registry set repository/app_center/server?appcenter.software-univention.de \
+	appcenter/domainwide?true
 
 
 if dpkg --compare-versions "$2" lt-nl 3.0.48-3; then

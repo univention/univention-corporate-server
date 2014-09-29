@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
@@ -35,23 +35,18 @@ define([
 	"dojo/_base/array",
 	"dojo/when",
 	"dojo/dom-construct",
-	"dojo/query",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dojo/Deferred",
-	"dojox/image/LightboxNano",
-	"umc/app",
 	"umc/dialog",
 	"umc/tools",
-	"umc/modules/lib/server",
 	"umc/widgets/Page",
-	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
 	"umc/widgets/CheckBox",
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/widgets/LiveSearchSidebar",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, when, domConstruct, query, Memory, Observable, Deferred, Lightbox, UMCApplication, dialog, tools, libServer, Page, ConfirmDialog, Text, CheckBox, AppCenterGallery, LiveSearchSidebar, _) {
+], function(declare, lang, kernel, array, when, domConstruct, Memory, Observable, Deferred, dialog, tools, Page, Text, CheckBox, AppCenterGallery, LiveSearchSidebar, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
@@ -188,10 +183,52 @@ define([
 			return this._applications;
 		},
 
+		_discriminateApps: function(applications) {
+			var installedApps = [];
+			var otherApps = [];
+			array.forEach(applications, function(app) {
+				var installed = app.is_installed;
+				if (app.installations) {
+					tools.forIn(app.installations, function(server, info) {
+						if (info.version) {
+							installed = true;
+						}
+					});
+				}
+				if (installed) {
+					installedApps.push(app);
+				} else {
+					otherApps.push(app);
+				}
+			});
+			return {
+				installedApps: installedApps,
+				otherApps: otherApps
+			};
+		},
+
 		updateApplications: function() {
 			// query all applications
 			this._applications = null;
 			var updating = when(this.getApplications()).then(lang.hitch(this, function(applications) {
+				var discriminatedApps = this._discriminateApps(applications);
+				var installedApps = discriminatedApps.installedApps;
+				var otherApps = discriminatedApps.otherApps;
+				if (installedApps.length && otherApps.length) {
+					applications = [];
+					applications.push({
+						isSeparator: true,
+						id: '_installed',
+						name: _('Installed Applications')
+					});
+					applications = applications.concat(installedApps);
+					applications.push({
+						isSeparator: true,
+						id: '_other',
+						name: _('Available Applications')
+					});
+					applications = applications.concat(otherApps);
+				}
 				this._grid.set('store', new Observable(new Memory({
 					data: applications
 				})));
@@ -218,25 +255,43 @@ define([
 		},
 
 		filterApplications: function() {
-			// query logic for search pattern
-			var query = {};
 			var searchPattern = lang.trim(this._searchSidebar.get('value'));
 			if (searchPattern) {
-				query.name = this._searchSidebar.getSearchQuery(searchPattern);
+				searchPattern = this._searchSidebar.getSearchQuery(searchPattern);
 			}
-
-			// query logic for categories
 			var category = this._searchSidebar.get('category');
-			if (category != _('All')) {
-				query.categories = {
-					test: function(categories) {
-						return (array.indexOf(categories, category) >= 0);
+
+			var query = function(object) {
+				// query logic for search pattern
+				if (searchPattern) {
+					if (!searchPattern.test(object.name, object)) {
+						return false;
 					}
+				}
+
+				// query logic for categories
+				if (category != _('All')) {
+					if (array.indexOf(object.categories, category) === -1) {
+						return false;
+					}
+				}
+
+				return true;
+			};
+
+			var actualQuery = query;
+
+			var filteredApplications = this._grid.store.query(query);
+			var discriminatedApps = this._discriminateApps(filteredApplications);
+
+			if (discriminatedApps.installedApps.length && discriminatedApps.otherApps.length) {
+				actualQuery = function(object) {
+					return object.isSeparator || query(object);
 				};
 			}
 
 			// set query options and refresh grid
-			this.set('appQuery', query);
+			this.set('appQuery', actualQuery);
 		},
 
 		_setAppQueryAttr: function(query) {

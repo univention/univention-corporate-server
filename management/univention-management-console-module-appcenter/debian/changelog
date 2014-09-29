@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (4.0.0-5) unstable; urgency=low
+
+  * Bug #35781: Enable management of apps throughout the domain
+  * Bug #35683: Fix point in time for extracting local archive
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 29 Sep 2014 12:51:55 +0200
+
 univention-management-console-module-appcenter (4.0.0-4) unstable; urgency=low
 
   * Bug #35683: Update local files after extracting initial archive

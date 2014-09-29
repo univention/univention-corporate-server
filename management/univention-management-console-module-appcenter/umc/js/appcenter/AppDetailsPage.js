@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console require window*/
+/*global define console window*/
 
 define([
 	"dojo/_base/declare",
@@ -39,24 +39,22 @@ define([
 	"dojo/io-query",
 	"dojo/topic",
 	"dojo/Deferred",
-	"dojox/timing/_base",
 	"dojo/dom-construct",
 	"dojo/dom-style",
 	"dojox/image/LightboxNano",
 	"put-selector/put",
 	"umc/app",
 	"umc/tools",
-	"umc/modules/lib/server",
 	"umc/dialog",
 	"umc/widgets/TitlePane",
-	"umc/widgets/Text",
-	"umc/widgets/TextBox",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/Button",
 	"umc/widgets/ProgressBar",
 	"umc/widgets/Page",
 	"umc/modules/appcenter/AppCenterGallery",
+	"umc/modules/appcenter/AppInstallationsItem",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, timing, domConstruct, domStyle, Lightbox, put, UMCApplication, tools, libServer, dialog, TitlePane, Text, TextBox, ContainerWidget, ProgressBar, Page, AppCenterGallery, _) {
+], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, domStyle, Lightbox, put, UMCApplication, tools, dialog, TitlePane, ContainerWidget, Button, ProgressBar, Page, AppCenterGallery, AppInstallationsItem, _) {
 	return declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
 		appLoadingDeferred: null,
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
@@ -103,9 +101,43 @@ define([
 				this._set('app', loadedApp);
 				this.detailsDialog.set('app', loadedApp);
 				this.set('headerText', loadedApp.name);
+				this._installationData = null;
+				if (this.app.installations) {
+					this._installationData = [];
+					tools.forIn(this.app.installations, lang.hitch(this, function(name, info) {
+						var installation = new AppInstallationsItem(name, info, this);
+						this._installationData.push(installation);
+					}));
+					this._installationData.sort(function(a, b) {
+						if (a.role == b.role) {
+							return (a.name > b.name) - 0.5;
+						}
+						var roleWeights = {
+							master: 1,
+							backup: 2,
+							slave: 3,
+							member: 4
+						};
+						var roleA = roleWeights[a.role];
+						var roleB = roleWeights[b.role];
+						return roleA - roleB;
+					});
+				}
 				this.buildInnerPage();
 				this.appLoadingDeferred.resolve();
 			}));
+		},
+
+		_appIsInstalledInDomain: function() {
+			return this._appCountInstallations() > 0;
+		},
+
+		_appCountInstallations: function() {
+			var sum = 0;
+			array.forEach(this._installationData, function(item) {
+				sum += item.isInstalled();
+			});
+			return sum;
 		},
 
 		reloadPage: function() {
@@ -117,20 +149,10 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			this.appLoadingDeferred = new Deferred();
-			var timeout = 1000 * Math.min(tools.status('sessionTimeout') / 2, 30);
-			this._keepAliveAfterAppOperation = new timing.Timer(timeout);
-			this._keepAliveAfterAppOperation.onTick = function() {
-				tools.umcpCommand('appcenter/ping', {}, false);
-			};
 			this._progressBar = new ProgressBar({});
 			this.own(this._progressBar);
 			this._grid = new AppCenterGallery({});
 			this.own(this._grid);
-		},
-
-		destroy: function() {
-			this._keepAliveAfterAppOperation.stop();
-			this.inherited(arguments);
 		},
 
 		buildInnerPage: function() {
@@ -189,15 +211,7 @@ define([
 					label: _('Uninstall'),
 					align: 'right',
 					defaultButton: this.app.endoflife,
-					callback: lang.hitch(this, 'uninstallApp')
-				});
-			}
-			if (!this.app.is_installed && !this.app.endoflife) {
-				buttons.push({
-					name: 'install',
-					label: _('Install'),
-					defaultButton: true,
-					callback: lang.hitch(this, 'installApp')
+					callback: lang.hitch(this, 'uninstallApp', null)
 				});
 			}
 			if (this.app.is_installed && this.app.candidate_version) {
@@ -205,7 +219,15 @@ define([
 					name: 'update',
 					label: _('Upgrade'),
 					defaultButton: true,
-					callback: lang.hitch(this, 'upgradeApp')
+					callback: lang.hitch(this, 'upgradeApp', null)
+				});
+			}
+			if (!this.app.endoflife && (!this.app.is_installed || this.app.installations)) {
+				buttons.push({
+					name: 'install',
+					label: _('Install'),
+					defaultButton: true,
+					callback: lang.hitch(this, 'installAppDialog')
 				});
 			}
 			this._page = new Page({
@@ -268,6 +290,78 @@ define([
 				content: this.app.longdescription
 			});
 			this._container.addChild(descriptionPane);
+
+			if (this._appIsInstalledInDomain()) {
+				var installationTable = domConstruct.create('table', {
+					style: {borderSpacing: '1em 0.1em'}
+				});
+				array.forEach(this._installationData, lang.hitch(this, function(item) {
+					if (!item.isInstalled()) {
+						return;
+					}
+					var tr;
+					if (item.isLocal()) {
+						if (this._appCountInstallations() > 1) {
+							domConstruct.create('tr', {style: {height: '4ex'}}, installationTable, 'first');
+						}
+						tr = domConstruct.create('tr', {}, installationTable, 'first');
+					} else {
+						tr = domConstruct.create('tr', {}, installationTable);
+					}
+					domConstruct.create('td', {innerHTML: item.displayName}, tr);
+					// value is a DOM node
+					var td = domConstruct.create('td', {}, tr);
+					var _addButton = lang.hitch(this, function(buttonConf) {
+						var button = new Button(buttonConf);
+						this.own(button);
+						domConstruct.place(button.domNode, td);
+					});
+					if (item.canOpen()) {
+						_addButton({
+							label: _('Open'),
+							callback: function() {
+								item.open();
+							},
+							name: 'open'
+						});
+					}
+					if (item.canUninstall()) {
+						_addButton({
+							label: _('Uninstall'),
+							callback: function() {
+								item.uninstall();
+							},
+							name: 'uninstall'
+						});
+					}
+					if (item.canUpgrade()) {
+						_addButton({
+							label: _('Upgrade'),
+							callback: function() {
+								item.upgrade();
+							},
+							defaultButton: true,
+							name: 'upgrade'
+						});
+					}
+					if (item.canInstall()) {
+						_addButton({
+							label: _('Install'),
+							callback: function() {
+								item.install();
+							},
+							defaultButton: true,
+							name: 'install'
+						});
+					}
+				}));
+				var installationPane = new TitlePane({
+					title: _('Installations throughout the domain'),
+					open: false,
+					content: installationTable
+				});
+				this._container.addChild(installationPane);
+			}
 		},
 
 		openShop: function() {
@@ -291,19 +385,56 @@ define([
 			this.standbyDuring(action);
 		},
 
-		uninstallApp: function() {
+		uninstallApp: function(host) {
 			// before installing, user must read uninstall readme
 			this.showReadme(this.app.readmeuninstall, _('Uninstall Information'), _('Uninstall')).then(lang.hitch(this, function() {
-				this.callInstaller('uninstall').then(lang.hitch(this, function() {
+				this.callInstaller('uninstall', host).then(lang.hitch(this, function() {
 					this.showReadme(this.app.readmepostuninstall, _('Uninstall Information')).then(lang.hitch(this, 'markupErrors'));
 				}));
 			}));
 		},
 
-		installApp: function() {
+		installAppDialog: function() {
+			if (this._installationData) {
+				var hosts = [];
+				var removedDueToInstalled = [];
+				var removedDueToRole = [];
+				array.forEach(this._installationData, function(item) {
+					if (item.canInstall()) {
+						if (item.isLocal()) {
+							hosts.unshift({
+								label: item.displayName,
+								id: item.name
+							});
+						} else {
+							hosts.push({
+								label: item.displayName,
+								id: item.name
+							});
+						}
+					} else {
+						if (item.isInstalled()) {
+							removedDueToInstalled.push(item.displayName);
+						} else if (!item.hasFittingRole()) {
+							removedDueToRole.push(item.displayName);
+						}
+					}
+				});
+				var title =_("Do you really want to %(verb)s %(ids)s?",
+					{verb: _('install'), ids: this.app.name});
+				this.hostDialog.reset(title, hosts, removedDueToInstalled, removedDueToRole);
+				this.hostDialog.showUp().then(lang.hitch(this, function(values) {
+					this.installApp(values.host);
+				}));
+			} else {
+				this.installApp();
+			}
+		},
+
+		installApp: function(host) {
 			this.showReadme(this.app.licenseagreement, _('License agreement'), _('Accept license')).then(lang.hitch(this, function() {
 				this.showReadme(this.app.readmeinstall, _('Install Information'), _('Install')).then(lang.hitch(this, function() {
-					this.callInstaller('install').then(lang.hitch(this, function() {
+					this.callInstaller('install', host).then(lang.hitch(this, function() {
 						// put dedicated module of this app into favorites
 						UMCApplication.addFavoriteModule(this.app.umc_module, this.app.umc_flavor);
 						this.showReadme(this.app.readmepostinstall, _('Install Information')).then(lang.hitch(this, 'markupErrors'));
@@ -312,10 +443,10 @@ define([
 			}));
 		},
 
-		upgradeApp: function() {
+		upgradeApp: function(host) {
 			// before installing, user must read update readme
 			this.showReadme(this.app.candidate_readmeupdate, _('Upgrade Information'), _('Upgrade')).then(lang.hitch(this, function() {
-				this.callInstaller('update').then(lang.hitch(this, function() {
+				this.callInstaller('update', host).then(lang.hitch(this, function() {
 					this.showReadme(this.app.candidate_readmepostupdate, _('Upgrade Information')).then(lang.hitch(this, 'markupErrors'));
 				}));
 			}));
@@ -358,7 +489,7 @@ define([
 			return readmeDeferred;
 		},
 
-		callInstaller: function(func, force, deferred) {
+		callInstaller: function(func, host, force, deferred) {
 			deferred = deferred || new Deferred();
 			var nonInteractive = new Deferred();
 			deferred.then(lang.hitch(nonInteractive, 'resolve'));
@@ -393,6 +524,7 @@ define([
 			var commandArguments = {
 				'function': func,
 				'application': this.app.id,
+				'host': host || '',
 				'force': force === true
 			};
 
@@ -424,7 +556,7 @@ define([
 						if (func == 'update') {
 							this.detailsDialog.showErrataHint();
 						}
-						this.detailsDialog.showPackageChanges(result.install, result.remove, result.broken, false, noHostInfo, _('this server'));
+						this.detailsDialog.showPackageChanges(result.install, result.remove, result.broken, false, noHostInfo, host);
 						tools.forIn(result.hosts_info, lang.hitch(this, function(host, host_info) {
 							this.detailsDialog.showPackageChanges(host_info.result.install, host_info.result.remove, host_info.result.broken, !host_info.compatible_version, false, host);
 						}));
@@ -432,14 +564,14 @@ define([
 					nonInteractive.reject();
 					this.detailsDialog.showUp().then(
 						lang.hitch(this, function() {
-							this.callInstaller(func, true, deferred);
+							this.callInstaller(func, host, true, deferred);
 						}),
 						function() {
 							deferred.reject();
 						}
 					);
 				} else {
-					var progressMessage = _("%(verb)s %(ids)s", {verb: verb1, ids: this.app.name});
+					var progressMessage = _("%(verb)s %(ids)s on %(host)s", {verb: verb1, ids: this.app.name, host: host});
 
 					this.switchToProgressBar(progressMessage).then(function() {
 						deferred.resolve();
@@ -497,10 +629,7 @@ define([
 			this._progressBar.reset(msg);
 			this._progressBar.auto('appcenter/progress',
 				{},
-				lang.hitch(this, function() {
-					this._keepAliveAfterAppOperation.start();
-					deferred.resolve();
-				}),
+				lang.hitch(deferred, 'resolve'),
 				undefined,
 				undefined,
 				true
@@ -537,15 +666,17 @@ define([
 
 		restartOrReload: function() {
 			// update the list of apps
-			this.updateApplications().then(lang.hitch(this, 'reloadPage'));
-			this.standbyDuring(libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.'))).then(
-				lang.hitch(this, function() {
-					this._keepAliveAfterAppOperation.stop();
-				}),
-				lang.hitch(this, function() {
-					this._keepAliveAfterAppOperation.stop();
-				})
-			);
+			// FIXME:
+			//var reloadPage = this.updateApplications().then(lang.hitch(this, function() {
+			//	return this.reloadPage();
+			//}));
+			//var reloadModules = UMCApplication.reloadModules();
+			//this.standbyDuring(all([reloadPage, reloadModules]));
+			this.updateApplications().then(lang.hitch(this, function() {
+				this.standbyDuring(this.reloadPage().then(function() {
+					return UMCApplication.reloadModules();
+				}));
+			}));
 		},
 
 		_detailFieldCustomUsage: function() {

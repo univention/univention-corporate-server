@@ -44,6 +44,7 @@ import apt # for independent apt.Cache
 
 # univention
 from univention.lib.package_manager import PackageManager, LockError
+from univention.lib.umc_connection import UMCConnection
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response
 from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, BooleanSanitizer
@@ -103,9 +104,11 @@ class Instance(umcm.Base):
 			raise umcm.UMC_CommandError(_('Could not query App Center: %s') % e)
 		result = []
 		self.package_manager.reopen_cache()
+		hosts = util.get_all_hosts()
+		domainwide_managed = Application.domainwide_managed(hosts)
 		for application in applications:
-			if application.should_show_up_in_app_center(self.package_manager):
-				props = application.to_dict(self.package_manager)
+			if application.should_show_up_in_app_center(self.package_manager, domainwide_managed=domainwide_managed):
+				props = application.to_dict(self.package_manager, domainwide_managed, hosts)
 				result.append(props)
 		return result
 
@@ -145,7 +148,9 @@ class Instance(umcm.Base):
 			applications = Application.all_installed(self.package_manager, force_reread=True)
 		except (urllib2.HTTPError, urllib2.URLError) as e:
 			raise umcm.UMC_CommandError(_('Could not query App Center: %s') % e)
-		return [app.to_dict(self.package_manager) for app in applications if app.candidate is not None]
+		hosts = util.get_all_hosts()
+		domainwide_managed = Application.domainwide_managed(hosts)
+		return [app.to_dict(self.package_manager, domainwide_managed, hosts) for app in applications if app.candidate is not None]
 
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
 	@simple_response
@@ -162,6 +167,7 @@ class Instance(umcm.Base):
 		function=ChoicesSanitizer(['install', 'uninstall', 'update', 'install-schema', 'update-schema'], required=True),
 		application=StringSanitizer(minimum=1, required=True),
 		force=BooleanSanitizer(),
+		host=StringSanitizer(),
 		only_dry_run=BooleanSanitizer(),
 		dont_remote_install=BooleanSanitizer()
 	)
@@ -173,6 +179,7 @@ class Instance(umcm.Base):
 		# this is necessary because newer app center may talk remotely with older one
 		#   that does not understand new arguments and behaves the old way (in case of
 		#   dry_run: install application although they were asked to dry_run)
+		host = request.options.get('host')
 		function = request.options.get('function')
 		send_as = function
 		if function.startswith('install'):
@@ -185,7 +192,26 @@ class Instance(umcm.Base):
 		only_dry_run = request.options.get('only_dry_run')
 		dont_remote_install = request.options.get('dont_remote_install')
 		only_master_packages = send_as.endswith('schema')
-		MODULE.process('Try to %s (%s) %s. Force? %r. Only master packages? %r. Prevent installation on other systems? %r. Only dry run? %r.' % (function, send_as, application_id, force, only_master_packages, dont_remote_install, only_dry_run))
+		MODULE.process('Try to %s (%s) %s on %s. Force? %r. Only master packages? %r. Prevent installation on other systems? %r. Only dry run? %r.' % (function, send_as, application_id, host, force, only_master_packages, dont_remote_install, only_dry_run))
+
+		# REMOTE invocation!
+		if host and host != self.ucr.get('hostname'):
+			connection = UMCConnection(host, error_handler=MODULE.warn)
+			connection.auth(self._username, self._password)
+			result = connection.request('appcenter/invoke', request.options)
+			self.finished(request.id, result)
+			if result['can_continue']:
+				def _thread_remote(_connection, _package_manager):
+					with _package_manager.locked(reset_status=True, set_finished=True):
+						Application._query_remote_progress(_connection, _package_manager)
+				def _finished_remote(thread, result):
+					if isinstance(result, BaseException):
+						MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
+				thread = notifier.threads.Simple('invoke',
+					notifier.Callback(_thread_remote, connection, self.package_manager), _finished_remote)
+				thread.run()
+			return
+
 		# make sure that the application can be installed/updated
 		can_continue = True
 		delayed_can_continue = True
