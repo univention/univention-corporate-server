@@ -86,10 +86,6 @@ def get_hosts(module, lo, ucr=None):
 		if hostname == local_hostname:
 			MODULE.process('%s is me. Skipping' % host.dn)
 			continue
-		if module is not memberserver:
-			if 'LDAP' not in host.info.get('service', []):
-				MODULE.warn('%s does not provide LDAP. Skipping' % host.dn)
-				continue
 		if 'fqdn' not in host.info:
 			MODULE.warn('%s does not have an FQDN. Skipping' % host.dn)
 			continue

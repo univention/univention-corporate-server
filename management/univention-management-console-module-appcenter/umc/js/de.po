@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-09-26 14:31+0200\n"
+"POT-Creation-Date: 2014-09-29 16:39+0200\n"
 "PO-Revision-Date: 2011-11-02 09:36+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -197,7 +197,7 @@ msgstr "Änderungen anwenden"
 msgid "Are you sure you want to delete the following components: [{ids}]"
 msgstr "Möchten Sie die folgenden Komponenten wirklich löschen: [{ids}]"
 
-#: umc/js/appcenter/AppDetailsDialog.js:180
+#: umc/js/appcenter/AppDetailsDialog.js:174
 msgid "Attention!"
 msgstr "Achtung!"
 
@@ -221,7 +221,7 @@ msgstr "Zurück zur Übersicht"
 msgid "Basic settings"
 msgstr "Allgemeine Einstellungen"
 
-#: umc/js/appcenter/AppDetailsDialog.js:180
+#: umc/js/appcenter/AppDetailsDialog.js:174
 msgid ""
 "Be sure to execute the following command as root on all of these backup "
 "servers <em>after</em> installing the application."
@@ -510,7 +510,7 @@ msgstr "Weiter"
 msgid "No"
 msgstr "Nein"
 
-#: umc/js/appcenter/AppDetailsDialog.js:207
+#: umc/js/appcenter/AppDetailsDialog.js:201
 msgid "No changes"
 msgstr "Keine Änderungen"
 
@@ -714,7 +714,7 @@ msgstr "Fortschritt anzeigen"
 msgid "Show this message again"
 msgstr "Diese Nachricht später wieder zeigen"
 
-#: umc/js/appcenter/AppDetailsDialog.js:217
+#: umc/js/appcenter/AppDetailsDialog.js:211
 #, python-format
 msgid ""
 "Software changes on %(host)s (installed/upgraded: %(installed)s, removed: "
@@ -774,17 +774,17 @@ msgstr ""
 "In der Beschreibung jeder Applikation befindet sich in diesen Fällen ein "
 "entsprechender Hinweis."
 
-#: umc/js/appcenter/AppDetailsDialog.js:174
+#: umc/js/appcenter/AppDetailsDialog.js:168
 msgid "The following hosts cannot be reached:"
 msgstr "Folgende Hosts konnten nicht erreicht werden:"
 
 #: umc/js/appcenter/PackagesPage.js:393
-#: umc/js/appcenter/AppDetailsDialog.js:203
+#: umc/js/appcenter/AppDetailsDialog.js:197
 msgid "The following packages will be installed or upgraded:"
 msgstr "Folgende Pakete werden installiert bzw. aktualisiert:"
 
 #: umc/js/appcenter/PackagesPage.js:397
-#: umc/js/appcenter/AppDetailsDialog.js:204
+#: umc/js/appcenter/AppDetailsDialog.js:198
 msgid "The following packages will be removed:"
 msgstr "Folgende Pakete werden deinstalliert:"
 
@@ -797,15 +797,9 @@ msgstr ""
 "Der Kauf von Lizenzen, Maintenance oder Support ist nicht Teil von "
 "Univention App Center."
 
-#: umc/js/appcenter/AppDetailsDialog.js:170
-msgid "The server tried to connect to DC Backups."
-msgstr "Der Server hat versucht, sich mit den DC Backups zu verbinden."
-
-#: umc/js/appcenter/AppDetailsDialog.js:172
-msgid "The server tried to connect to DC Master and DC Backups."
-msgstr ""
-"Der Server hat versucht, sich mit dem DC Master und den DC Backups zu "
-"verbinden."
+#: umc/js/appcenter/AppDetailsDialog.js:168
+msgid "The server tried to connect to the involved systems."
+msgstr "Der Server hat versucht, sich mit den beteiligten Systemen zu verbinden."
 
 #: umc/js/appcenter/requirements.js:214
 msgid ""
@@ -822,7 +816,7 @@ msgstr ""
 "Das System muss einer Domäne beigetreten sein, bevor die Applikation "
 "installiert werden kann!"
 
-#: umc/js/appcenter/AppDetailsDialog.js:210
+#: umc/js/appcenter/AppDetailsDialog.js:204
 msgid ""
 "The version of the remote App Center is <strong>incompatible</strong> with "
 "the local one. Please update your hosts."
@@ -845,7 +839,7 @@ msgstr ""
 "deaktiviert werden."
 
 #: umc/js/appcenter/requirements.js:130
-#: umc/js/appcenter/AppDetailsDialog.js:180
+#: umc/js/appcenter/AppDetailsDialog.js:174
 msgid "This application requires an extension of the LDAP schema."
 msgstr "Diese Applikation erfordert eine Erweiterung des LDAP Schemas."
 
@@ -882,7 +876,7 @@ msgstr ""
 "Kenntnis."
 
 #: umc/js/appcenter/PackagesPage.js:401
-#: umc/js/appcenter/AppDetailsDialog.js:205
+#: umc/js/appcenter/AppDetailsDialog.js:199
 msgid ""
 "This operation causes problems in the following packages that cannot be "
 "resolved:"
@@ -964,10 +958,10 @@ msgstr ""
 "gespeichert und nicht an Dritte weiter gegeben wird."
 
 #: umc/js/appcenter/SettingsPage.js:252
-#: umc/js/appcenter/AppDetailsDialog.js:192
-#: umc/js/appcenter/AppDetailsDialog.js:212
-#: umc/js/appcenter/AppDetailsDialog.js:213
-#: umc/js/appcenter/AppDetailsDialog.js:214
+#: umc/js/appcenter/AppDetailsDialog.js:186
+#: umc/js/appcenter/AppDetailsDialog.js:206
+#: umc/js/appcenter/AppDetailsDialog.js:207
+#: umc/js/appcenter/AppDetailsDialog.js:208
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -1056,7 +1050,7 @@ msgid "https://docs.univention.de/manual-3.2.html#ad-connector:password-dienst"
 msgstr ""
 "https://docs.univention.de/handbuch-3.2.html#ad-connector:password-dienst"
 
-#: umc/js/appcenter/AppDetailsDialog.js:215
+#: umc/js/appcenter/AppDetailsDialog.js:209
 msgid "incompatible"
 msgstr "inkompatibel"
 
@@ -1221,6 +1215,11 @@ msgstr "aktualisieren"
 #~ "E-Mail-Adresse an. Anschließend wird Ihnen in ein paar Minuten eine "
 #~ "aktualisierte Lizenz an die angegebene E-Mail-Adresse gesendet, die Sie "
 #~ "direkt im Lizenzdialog einspielen und aktualisieren können."
+
+#~ msgid "The server tried to connect to DC Master and DC Backups."
+#~ msgstr ""
+#~ "Der Server hat versucht, sich mit dem DC Master und den DC Backups zu "
+#~ "verbinden."
 
 #~ msgid ""
 #~ "To do this please log in on %(host)s. Open the App Center there and click "

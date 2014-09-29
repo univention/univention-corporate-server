@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-09-29 11:34+0200\n"
+"POT-Creation-Date: 2014-09-29 16:39+0200\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/appcenter/__init__.py:307 umc/python/appcenter/__init__.py:457
+#: umc/python/appcenter/__init__.py:315 umc/python/appcenter/__init__.py:465
 msgid "Another package operation is in progress"
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 
@@ -21,32 +21,32 @@ msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 msgid "Any of %r must be given"
 msgstr "Ein Wert aus %r muss gegeben sein"
 
-#: umc/python/appcenter/__init__.py:144
+#: umc/python/appcenter/__init__.py:142
 #, python-format
 msgid "Could not find an application for %s"
 msgstr "Konnte keine Applikation für %s finden"
 
-#: umc/python/appcenter/__init__.py:104 umc/python/appcenter/__init__.py:143
-#: umc/python/appcenter/__init__.py:153
+#: umc/python/appcenter/__init__.py:105 umc/python/appcenter/__init__.py:141
+#: umc/python/appcenter/__init__.py:151
 #, python-format
 msgid "Could not query App Center: %s"
 msgstr "Konnte das App Center nicht erreichen: %s"
 
-#: umc/python/appcenter/app_center.py:1464
+#: umc/python/appcenter/app_center.py:1469
 #, python-format
 msgid "Installing LDAP packages on %s"
 msgstr "Installiere LDAP Pakete auf %s"
 
-#: umc/python/appcenter/app_center.py:1414
+#: umc/python/appcenter/app_center.py:1419
 #, python-format
 msgid "Output from %(host)s: %(info)s"
 msgstr "Ausgabe von %(host)s: %(info)s"
 
-#: umc/python/appcenter/__init__.py:71
+#: umc/python/appcenter/__init__.py:72
 msgid "Package not found in repository"
 msgstr "Paket wurde in keinem Repository gefunden"
 
-#: umc/python/appcenter/app_center.py:1376
+#: umc/python/appcenter/app_center.py:1381
 msgid ""
 "Registration of the application in LDAP failed. It will be retried every "
 "time the App Center module is opened."
@@ -54,7 +54,7 @@ msgstr ""
 "Die Registrierung der Applikation im LDAP ist fehlgeschlagen. Sie wird bei "
 "jedem Öffnen des App Center Moduls wiederholt werden."
 
-#: umc/python/appcenter/app_center.py:967
+#: umc/python/appcenter/app_center.py:972
 #, python-format
 msgid ""
 "The application needs a %(needs)s-bit operating system. This server is "
@@ -67,7 +67,7 @@ msgstr ""
 msgid "There already is a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
-#: umc/python/appcenter/__init__.py:651
+#: umc/python/appcenter/__init__.py:659
 msgid ""
 "There is no repository at this server (or at least none for the current UCS "
 "version)"
@@ -75,14 +75,14 @@ msgstr ""
 "Auf dem Server befindet sich kein Repository (oder zumindest keins für die "
 "aktuelle UCS Version)"
 
-#: umc/python/appcenter/__init__.py:501
+#: umc/python/appcenter/__init__.py:509
 msgid "installed"
 msgstr "installiert"
 
-#: umc/python/appcenter/__init__.py:503
+#: umc/python/appcenter/__init__.py:511
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/appcenter/__init__.py:499
+#: umc/python/appcenter/__init__.py:507
 msgid "upgradable"
 msgstr "aktualisierbar"

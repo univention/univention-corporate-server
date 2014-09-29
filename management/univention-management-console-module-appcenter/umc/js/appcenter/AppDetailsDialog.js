@@ -165,13 +165,7 @@ define([
 
 		showUnreachableHint: function(unreachable, masterUnreachable) {
 			var componentID = this.app.candidate_component_id || this.app.component_id;
-			var label;
-			if (this.app.is_master) {
-				label = _('The server tried to connect to DC Backups.');
-			} else {
-				label = _('The server tried to connect to DC Master and DC Backups.');
-			}
-			label += ' ' + _('The following hosts cannot be reached:');
+			var label = _('The server tried to connect to the involved systems.') + ' ' + _('The following hosts cannot be reached:');
 			this._container.addChild(new Text({
 				content: label + '<ul><li>' + unreachable.join('</li><li>') + '</li></ul>'
 			}));

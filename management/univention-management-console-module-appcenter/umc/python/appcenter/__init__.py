@@ -36,6 +36,7 @@ import locale
 import time
 import sys
 import urllib2
+from httplib import HTTPException
 
 # related third party
 import notifier
@@ -196,20 +197,29 @@ class Instance(umcm.Base):
 
 		# REMOTE invocation!
 		if host and host != self.ucr.get('hostname'):
-			connection = UMCConnection(host, error_handler=MODULE.warn)
-			connection.auth(self._username, self._password)
-			result = connection.request('appcenter/invoke', request.options)
+			try:
+				connection = UMCConnection(host, error_handler=MODULE.warn)
+				connection.auth(self._username, self._password)
+			except HTTPException:
+				result = {
+					'unreachable' : [host],
+					'master_unreachable' : True,
+					'serious_problems' : True,
+					'software_changes_computed' : True, # not really...
+				}
+			else:
+				result = connection.request('appcenter/invoke', request.options)
+				if result['can_continue']:
+					def _thread_remote(_connection, _package_manager):
+						with _package_manager.locked(reset_status=True, set_finished=True):
+							Application._query_remote_progress(_connection, _package_manager)
+					def _finished_remote(thread, result):
+						if isinstance(result, BaseException):
+							MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
+					thread = notifier.threads.Simple('invoke',
+						notifier.Callback(_thread_remote, connection, self.package_manager), _finished_remote)
+					thread.run()
 			self.finished(request.id, result)
-			if result['can_continue']:
-				def _thread_remote(_connection, _package_manager):
-					with _package_manager.locked(reset_status=True, set_finished=True):
-						Application._query_remote_progress(_connection, _package_manager)
-				def _finished_remote(thread, result):
-					if isinstance(result, BaseException):
-						MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
-				thread = notifier.threads.Simple('invoke',
-					notifier.Callback(_thread_remote, connection, self.package_manager), _finished_remote)
-				thread.run()
 			return
 
 		# make sure that the application can be installed/updated

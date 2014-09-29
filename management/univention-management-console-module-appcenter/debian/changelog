@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (4.1.2-2) unstable; urgency=low
+
+  * Bug #35781: Improved handling when installing on unreachable hosts; do not
+    only find hosts which provide LDAP service
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 29 Sep 2014 17:25:58 +0200
+
 univention-management-console-module-appcenter (4.1.2-1) unstable; urgency=medium
 
   * Bug #35654: add category color to app gallery items
