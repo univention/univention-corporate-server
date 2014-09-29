@@ -516,6 +516,11 @@
 		The web browser <package>firefox</package> was updated to version 31.1 ESR.
 		(<ulink url="&ucsbug;35702">Bug 35702</ulink>).
       </simpara></listitem>
+	  <listitem><simpara>
+		An old, unused scalix directory has been removed from the PATH environment variable
+		in the default profile
+		(<ulink url="&ucsbug;32628">Bug 32628</ulink>).
+	  </simpara></listitem>
 	</itemizedlist>
 </section>
 
