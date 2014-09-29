@@ -1,3 +1,27 @@
+univention-management-console-module-udm (5.1.1-1) unstable; urgency=low
+
+  * Bug #35654: UMC design adaptions
+
+ -- Florian Best <best@univention.de>  Thu, 25 Sep 2014 12:43:53 +0200
+
+univention-management-console-module-udm (5.0.4-2) unstable; urgency=low
+
+  * Variable will be only set if request is successful (Bug #35711)
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 08 Sep 2014 15:20:20 +0200
+
+univention-management-console-module-udm (5.0.4-1) unstable; urgency=low
+
+  * Bug #34333: failures on report creation can not block UMC usage anymore
+
+ -- Florian Best <best@univention.de>  Wed, 03 Sep 2014 12:54:09 +0200
+
+univention-management-console-module-udm (5.0.3-3) unstable; urgency=low
+
+  * Bug #35580: fix handling of license LDIF files to allow for long DNs
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 02 Sep 2014 17:10:33 +0200
+
 univention-management-console-module-udm (5.0.4-3) unstable; urgency=low
 
   * Bug #35711: renamed the variable name to ucs/web/license/requested=true

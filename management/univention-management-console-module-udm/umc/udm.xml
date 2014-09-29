@@ -1,73 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="udm" icon="udm/module" version="1.0">
+	<module id="udm" version="1.0">
 		<name>Univention Directory Manager</name>
 		<description>Manages all UDM modules</description>
 		<keywords></keywords>
-		<flavor icon="udm-users" priority="13" id="users/user">
+		<flavor priority="13" id="users/user">
 			<name>Users</name>
 			<description>Management of domain users</description>
 			<keywords>users</keywords>
+			<categories>
+				<category name="users"/>
+			</categories>
 		</flavor>
-		<flavor icon="udm-groups" priority="12" id="groups/group">
+		<flavor priority="12" id="groups/group">
 			<name>Groups</name>
 			<description>Management of user and computer groups in the domain</description>
 			<keywords>groups</keywords>
+			<categories>
+				<category name="users"/>
+			</categories>
 		</flavor>
-		<flavor icon="udm-computers" priority="11" id="computers/computer">
+		<flavor priority="11" id="computers/computer">
 			<name>Computers</name>
 			<description>Management of computers in the domain</description>
 			<keywords>computers</keywords>
+			<categories>
+				<category name="devices"/>
+			</categories>
 		</flavor>
-		<flavor icon="udm-networks" priority="10" id="networks/network">
+		<flavor priority="10" id="networks/network">
 			<name>Networks</name>
 			<description>Configuration of network settings in the domain</description>
 			<keywords>networks</keywords>
 		</flavor>
-		<flavor icon="udm-dns" priority="9" id="dns/dns">
+		<flavor priority="9" id="dns/dns">
 			<name>DNS</name>
 			<description>Configuration of DNS settings in the domain</description>
 			<keywords>dns</keywords>
 		</flavor>
-		<flavor icon="udm-dhcp" priority="8" id="dhcp/dhcp">
+		<flavor priority="8" id="dhcp/dhcp">
 			<name>DHCP</name>
 			<description>Configuration of DHCP settings in the domain</description>
 			<keywords>dhcp</keywords>
 		</flavor>
-		<flavor icon="udm-shares" priority="7" id="shares/share">
+		<flavor priority="7" id="shares/share">
 			<name>Shares</name>
 			<description>Management of directory shares in the domain</description>
 			<keywords>shares</keywords>
+			<categories>
+				<category name="devices"/>
+			</categories>
 		</flavor>
-		<flavor icon="udm-printers" priority="6" id="shares/print">
+		<flavor priority="6" id="shares/print">
 			<name>Printers</name>
 			<description>Management of printers and printer groups in the domain</description>
 			<keywords>printers</keywords>
+			<categories>
+				<category name="devices"/>
+			</categories>
 		</flavor>
-		<flavor icon="udm-mail" priority="5" id="mail/mail">
+		<flavor priority="5" id="mail/mail">
 			<name>Mail</name>
 			<description>Management of mail domains and mailing lists</description>
 			<keywords>mail,e-mail,email</keywords>
 		</flavor>
-		<flavor icon="udm-nagios" priority="4" id="nagios/nagios">
+		<flavor priority="4" id="nagios/nagios">
 			<name>Nagios</name>
 			<description>Configuration of Nagios settings in the domain</description>
 			<keywords>nagios</keywords>
+			<categories>
+				<category name="devices"/>
+			</categories>
 		</flavor>
-		<flavor icon="udm-policies" priority="3" id="policies/policy">
+		<flavor priority="3" id="policies/policy">
 			<name>Policies</name>
 			<description>Management of domain wide policies</description>
 			<keywords>policy,policies</keywords>
 		</flavor>
-		<flavor icon="udm-navigation" priority="2" id="navigation">
+		<flavor priority="2" id="navigation">
 			<name>LDAP directory</name>
 			<description>Browsing and managing the LDAP tree</description>
 			<keywords>ldap,directory,udm</keywords>
 		</flavor>
-		<flavor icon="udm-self" priority="1" id="users/self">
+		<flavor priority="1" id="users/self">
 			<name>Change Password</name>
 			<description>Password change for the user currently logged in</description>
 			<keywords>change password,password</keywords>
+			<categories>
+				<category name="users"/>
+			</categories>
 		</flavor> 
 		<categories>
 			<category name="domain"/>

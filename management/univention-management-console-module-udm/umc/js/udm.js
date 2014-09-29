@@ -41,7 +41,6 @@ define([
 	"dojo/aspect",
 	"dojo/json",
 	"dojo/dom-style",
-	"dijit/layout/ContentPane",
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/form/_TextBoxMixin",
@@ -56,7 +55,6 @@ define([
 	"umc/widgets/Module",
 	"umc/widgets/Page",
 	"umc/widgets/Grid",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/Form",
 	"umc/widgets/SearchForm",
 	"umc/widgets/Button",
@@ -73,9 +71,9 @@ define([
 	"umc/modules/udm/ComboBox",
 	"umc/modules/udm/CertificateUploader"
 ], function(declare, lang, array, has, Deferred, when, all, on, topic, aspect, json,
-	domStyle, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog,
+	domStyle, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog,
 	store, ContainerWidget, Text, CheckBox, ComboBox, Module, Page, Grid,
-	ExpandingTitlePane, Form, SearchForm, Button, Tree, ProgressBar, TreeModel,
+	Form, SearchForm, Button, Tree, ProgressBar, TreeModel,
 	TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, cache, _)
 {
 	return declare("umc.modules.udm", [ Module ], {
@@ -154,6 +152,9 @@ define([
 
 		_newObjectDialog: null,
 
+		// set the opacity for the standby to 100%
+		standbyOpacity: 1,
+
 		constructor: function() {
 			this._default_columns = [{
 				name: 'name',
@@ -174,9 +175,6 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-
-			// set the opacity for the standby to 100%
-			this.standbyOpacity = 1;
 
 			// name for the objects in the current module
 			var objNames = {
@@ -329,11 +327,6 @@ define([
 				headerText: this.description,
 				helpText: ''
 			});
-			var titlePane = new ExpandingTitlePane({
-				title: _('Search for %s', this.objectNamePlural),
-				design: 'sidebar'
-			});
-			this._searchPage.addChild(titlePane);
 
 			// get the license information
 			if (!tools.status('udm/licenseNote')) {
@@ -341,17 +334,86 @@ define([
 				this.umcpCommand('udm/license', {}, false).then(lang.hitch(this, function(data) {
 					var msg = data.result.message;
 					if (msg) {
-						this._searchPage.addNote(msg);
+						this.addNotification(msg);
 					}
 				}), function() {
 					console.log('WARNING: An error occurred while verifying the license. Ignoring error.');
 				});
 			}
 
-			//
-			// add data grid
-			//
+			this.renderGrid();
+			this.renderSearchForm(containers, superordinates);
 
+			if ('navigation' == this.moduleFlavor || (superordinates && superordinates.length)) {
+				this.renderTree();
+			}
+
+			if (this._tree) {
+				this._searchForm.region = 'main';
+				this._searchPage.addChild(this._tree);
+			}
+			this._searchPage.addChild(this._searchForm);
+			this._searchPage.addChild(this._grid);
+
+			// register to onShow as well as onFilterDone events in order on focus to the
+			// input widget when the tab is changed
+			this._searchPage.on('show', lang.hitch(this, '_selectInputText'));
+			this._grid.on('filterDone', lang.hitch(this, function() {
+				if (!this._newObjectDialog) {
+					// not during "wizard phase"
+					this._selectInputText();
+				}
+			}));
+
+			// register event to update hiding/showing of form fields
+			this._searchForm.ready().then(lang.hitch(this, '_updateSearch'));
+			this._grid.on('filterDone', lang.hitch(this, '_updateSearch'));
+
+			// focus and select text when the objectPropertyValue has been loaded
+			// at the beginning
+			var propertyValueHandle = this._searchForm._widgets.objectPropertyValue.watch('value', lang.hitch(this, function() {
+				propertyValueHandle.remove();
+				this._finishedDeferred.then(lang.hitch(this, '_selectInputText'));
+			}));
+			this.own(propertyValueHandle);
+
+			// show/hide object property filter for the navigation
+			if ('navigation' == this.moduleFlavor) {
+				this.own(this._searchForm._widgets.objectType.watch('value', lang.hitch(this, function(attr, oldval, val) {
+					this._searchForm._widgets.objectProperty.set('visible', 'None' != val && '$containers$' != val);
+					this._searchForm._widgets.objectPropertyValue.set('visible', 'None' != val && '$containers$' != val);
+					this.layout();
+				})));
+			}
+
+			var superordinateWidget = this._searchForm.getWidget('superordinate');
+			if (superordinateWidget) {
+				this.own(superordinateWidget.watch('value', lang.hitch(this, function(attr, oldval, val) {
+					if (tools.isTrue(this._autoSearch)) {
+						// we can relaunch the search after all search form values
+						// have been updated
+						this._searchForm.ready().then(lang.hitch(this, 'filter'));
+					}
+					val = (val === 'None') ? ['None'] : ['None', val];
+					this._tree.set('path', val);
+				})));
+			}
+
+			// check whether we have autosearch activated
+			if ('navigation' != this.moduleFlavor) {
+				if (tools.isTrue(this._autoSearch)) {
+					// connect to the onValuesInitialized event of the form
+					on.once(this._searchForm, 'valuesInitialized', lang.hitch(this, function() {
+						this.filter(this._searchForm.get('value'));
+					}));
+				}
+			}
+
+			this._searchPage.startup();
+			this.addChild(this._searchPage);
+		},
+
+		renderGrid: function() {
 			// define actions
 			var actions = [{
 				name: 'workaround',
@@ -458,7 +520,7 @@ define([
 
 			// generate the data grid
 			this._grid = new Grid({
-				region: 'center',
+				region: 'main',
 				actions: actions,
 				columns: this._default_columns,
 				moduleStore: _store,
@@ -485,12 +547,9 @@ define([
 					return 'edit';
 				})
 			});
+		},
 
-			titlePane.addChild(this._grid);
-
-			//
-			// add search widget
-			//
+		renderSearchForm: function(containers, superordinates) {
 
 			// get configured search values
 			var autoObjProperty = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/default'] ||
@@ -669,16 +728,16 @@ define([
 
 			// generate the search widget
 			this._searchForm = new SearchForm({
-				region: 'top',
+				region: 'nav',
 				widgets: widgets,
 				layout: layout,
 				buttons: buttons,
 				onSearch: lang.hitch(this, 'filter')
 			});
-			titlePane.addChild(this._searchForm);
+		},
 
+		renderTree: function() {
 			// generate the navigation pane for the navigation module
-			if ('navigation' == this.moduleFlavor || (superordinates && superordinates.length)) {
 				if ('navigation' == this.moduleFlavor) {
 					this._navUpButton = this.own(new Button({
 						label: _( 'Parent container' ),
@@ -705,7 +764,7 @@ define([
 
 				var ModelClass = ('navigation' == this.moduleFlavor) ? TreeModel : TreeModelSuperordinate;
 				var model = new ModelClass({
-					umcpCommand: umcpCmd,
+					umcpCommand: lang.hitch(this, 'umcpCommand'),
 					moduleFlavor: this.moduleFlavor,
 					rootName: _('All %s', superordinateName)
 				});
@@ -714,6 +773,7 @@ define([
 					//style: 'width: auto; height: auto;',
 					model: model,
 					persist: false,
+					region: 'nav',
 					// customize the method getIconClass()
 					getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
 						return tools.getIconClass(item.icon || 'udm-container-cn');
@@ -753,12 +813,6 @@ define([
 					}
 
 				})));
-				var treePane = new ContentPane({
-					content: this._tree,
-					region: 'left',
-					splitter: true,
-					style: 'width: 200px;'
-				});
 
 				// add a context menu to edit/delete items
 				var menu = new Menu({});
@@ -810,73 +864,12 @@ define([
 					this.resetPathAndReloadTreeAndFilter([dn]);
 				}));
 
-
 				// keep superordinate widget in sync with the tree for DHCP / DNS
 				this.own(aspect.after(this._tree, 'reload', lang.hitch(this, function() {
 					if (this.moduleFlavor !== 'navigation') {
 						this._reloadSuperordinates();
 					}
 				})));
-
-				titlePane.addChild(treePane);
-			}
-
-			// register to onShow as well as onFilterDone events in order on focus to the
-			// input widget when the tab is changed
-			this._searchPage.on('show', lang.hitch(this, '_selectInputText'));
-			this._grid.on('filterDone', lang.hitch(this, function() {
-				if (!this._newObjectDialog) {
-					// not during "wizard phase"
-					this._selectInputText();
-				}
-			}));
-
-			// register event to update hiding/showing of form fields
-			this._searchForm.ready().then(lang.hitch(this, '_updateSearch'));
-			this._grid.on('filterDone', lang.hitch(this, '_updateSearch'));
-
-			// focus and select text when the objectPropertyValue has been loaded
-			// at the beginning
-			var propertyValueHandle = this._searchForm._widgets.objectPropertyValue.watch('value', lang.hitch(this, function() {
-				propertyValueHandle.remove();
-				this._finishedDeferred.then(lang.hitch(this, '_selectInputText'));
-			}));
-			this.own(propertyValueHandle);
-
-			// show/hide object property filter for the navigation
-			if ('navigation' == this.moduleFlavor) {
-				this.own(this._searchForm._widgets.objectType.watch('value', lang.hitch(this, function(attr, oldval, val) {
-					this._searchForm._widgets.objectProperty.set('visible', 'None' != val && '$containers$' != val);
-					this._searchForm._widgets.objectPropertyValue.set('visible', 'None' != val && '$containers$' != val);
-					this.layout();
-				})));
-			}
-
-			var superordinateWidget = this._searchForm.getWidget('superordinate');
-			if (superordinateWidget) {
-				this.own(superordinateWidget.watch('value', lang.hitch(this, function(attr, oldval, val) {
-					if (tools.isTrue(this._autoSearch)) {
-						// we can relaunch the search after all search form values
-						// have been updated
-						this._searchForm.ready().then(lang.hitch(this, 'filter'));
-					}
-					val = (val === 'None') ? ['None'] : ['None', val];
-					this._tree.set('path', val);
-				})));
-			}
-
-			// check whether we have autosearch activated
-			if ('navigation' != this.moduleFlavor) {
-				if (tools.isTrue(this._autoSearch)) {
-					// connect to the onValuesInitialized event of the form
-					on.once(this._searchForm, 'valuesInitialized', lang.hitch(this, function() {
-						this.filter(this._searchForm.get('value'));
-					}));
-				}
-			}
-
-			this._searchPage.startup();
-			this.addChild(this._searchPage);
 		},
 
 		_canMove: function(item) {

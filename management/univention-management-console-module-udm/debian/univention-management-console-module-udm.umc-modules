@@ -1,6 +1,5 @@
 Module: udm
 Python: umc/python
 Definition: umc/udm.xml
-Category: umc/categories/udm.xml
 Javascript: umc/js
 Icons: umc/icons

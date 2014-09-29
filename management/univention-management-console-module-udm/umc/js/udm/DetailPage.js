@@ -51,6 +51,8 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/TabContainer",
+	"umc/widgets/TabController",
+	"dijit/layout/StackContainer",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/widgets/ComboBox",
@@ -62,11 +64,11 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/widgets"
-], function(declare, lang, array, on, Deferred, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
+], function(declare, lang, array, on, Deferred, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, TabContainer, TabController, StackContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
 
 	var _StandbyPage = declare([Page, StandbyMixin], {});
 
-	return declare("umc.modules.udm.DetailPage", [ ContentPane, StandbyMixin ], {
+	return declare("umc.modules.udm.DetailPage", [ ContentPane,  StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
 		//		in order to edit LDAP objects.
@@ -158,10 +160,11 @@ define([
 
 		isSyncedObject: null, // object which is modified (or one of multiedited) has univentionObjectFlag == synced
 
+		standbyOpacity: 1,
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			this.standbyOpacity = 1;
 			this._multiEdit = this.ldapName instanceof Array;
 		},
 
@@ -359,12 +362,19 @@ define([
 			if (policies && policies.length) {
 				// in case we have policies that apply to the current object, we need an extra
 				// sub tab that groups all policies together
+				var controller = new TabController({
+					region: 'nav',
+					nested: true,
+					containerId: this._tabs.id
+				});
 				this._policiesTab = new _StandbyPage({
 					title: _('[Policies]'),
 					noFooter: true,
+					tabs: controller,
 					headerText: _('Properties inherited from policies'),
 					helpText: _('List of all object properties that are inherited by policies. The values cannot be edited directly. In order to edit a policy, click on the "edit" button to open a particular policy in a new tab.')
 				});
+				this._policiesTab.addChild(controller, 0);
 				this._tabs.addChild(this._policiesTab);
 				this._policiesTab.watch('selected', lang.hitch(this, function(name, oldVal, newVal) {
 					if (!newVal || this._policyDeferred.isFulfilled()) {
@@ -787,18 +797,22 @@ define([
 			this._detailPages = [];
 
 			layout[ 0 ].layout.unshift( [ '$objecttype$', '$location$' ] );
-			return tools.forEachAsync(layout, function(ilayout, i) {
+			return tools.forEachAsync(layout, function(ilayout) {
 				// create a new page, i.e., subtab
+				var controller = new TabController({
+					region: 'nav',
+					containerId: this._tabs.id,
+					nested: true
+				});
+
 				var subTab = new Page({
 					title: ilayout.label || ilayout.name, //TODO: 'name' should not be necessary
 					noFooter: true,
+					tabs: controller,
 					headerText: ilayout.description || ilayout.label || ilayout.name,
 					helpText: ''
 				});
-				if (i === 0 && this.note) {
-					// add the specified note to the first page
-					subTab.addNote(this.note);
-				}
+				subTab.addChild(controller, 0);
 
 				// add rendered layout to subtab and register subtab
 				var subTabWidgets = render.layout(ilayout.layout, widgets);
@@ -842,33 +856,33 @@ define([
 		_renderBorderContainer: function(widgets) {
 			// setup detail page, needs to be wrapped by a form (for managing the
 			// form entries) and a BorderContainer (for the footer with buttons)
-			var borderLayout = this.own(new BorderContainer({
-				gutters: false
-			}))[0];
-			borderLayout.addChild(this._tabs);
+			var container = new ContainerWidget({});
+			this.own(container);
+			container.addChild(this._tabs);
 
 			// buttons
 			this._footerButtons = render.buttons(this.getButtonDefinitions(), this);
+
 			var footer = new ContainerWidget({
-				'class': 'umcPageFooter',
-				region: 'bottom'
+				'class': 'umcPageFooter'
 			});
 			array.forEach(this._footerButtons.$order$, function(i) {
 				footer.addChild(i);
 			});
-			borderLayout.addChild(footer);
+			container.addChild(footer);
 
 			// create the form containing the whole BorderContainer as content and add
 			// the form as content of this class
-			this._form = this.own(new Form({
+			this._form = new Form({
 				widgets: widgets,
-				content: borderLayout,
+				content: container,
 				moduleStore: this.moduleStore,
 				onSubmit: lang.hitch(this, 'save'),
-				style: 'margin:0'
-			}))[0];
+				style: 'margin: 0'
+			});
+			this.own(this._form);
+
 			this.set('content', this._form);
-			borderLayout.startup();
 		},
 
 		renderDetailPage: function(properties, layout, policies, template) {
@@ -887,9 +901,8 @@ define([
 				template = null;
 			}
 			// create detail page
-			this._tabs = new TabContainer({
-				nested: true,
-				region: 'center'
+			this._tabs = new StackContainer({
+				region: 'main'
 			});
 
 			// prepare widgets and layout
@@ -909,11 +922,17 @@ define([
 				this.standby(false);
 				this.templateObject = this.buildTemplate(template, properties, widgets);
 
+				if (this.note) {
+					// display notes
+					this.addNotification(this.note);
+				}
+
 				// initiate the template mechanism (only for new objects)
 				if (!this.ldapName && !this._multiEdit) {
 					// search for given default values in the properties... these will be replaced
 				}
 			}));
+			//this._tabs.selectChild(this._tabs.getChildren[0]);
 
 			return all([loadedDeferred, formBuiltDeferred]);
 		},
@@ -1295,11 +1314,13 @@ define([
 							domClass.toggle( element.$refTitlePane$.domNode, 'dijitHidden', true );
 						}
 					} ) );
-					if ( ! visible ) {
-						this._tabs.hideChild( tab.$refSubTab$ );
-					} else {
-						this._tabs.showChild( tab.$refSubTab$ );
-					}
+					array.forEach(this._tabs.getChildren(), lang.hitch(this, function(page) {
+						if (!visible) {
+							page.tabs.hideChild(tab.$refSubTab$);
+						} else {
+							page.tabs.showChild(tab.$refSubTab$);
+						}
+					}));
 				}
 			} ) );
 		},
