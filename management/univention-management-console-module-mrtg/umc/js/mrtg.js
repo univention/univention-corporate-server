@@ -28,8 +28,6 @@
  */
 /*global define*/
 
-// Inheriting from umc.widgets.TabbedModule so any pages being added
-// will become tabs automatically.
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
@@ -37,122 +35,90 @@ define([
 	"dijit/layout/ContentPane",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Page",
-	"umc/widgets/ExpandingTitlePane",
+	"umc/widgets/Text",
 	"umc/widgets/TabbedModule",
 	"dojox/layout/TableContainer",
 	"dojox/string/sprintf",
 	"umc/i18n!umc/modules/mrtg"
-], function(declare, lang, array, DijitContentPane, ContainerWidget, Page, ExpandingTitlePane, TabbedModule, TableContainer, sprintf, _) {
+], function(declare, lang, array, DijitContentPane, ContainerWidget, Page, Text, TabbedModule, TableContainer, sprintf, _) {
 	return declare("umc.modules.mrtg", TabbedModule, {
 
 		_page: null,
 		_form: null,
 		
-		// TODO should be set in the base class -> then remove it here.
-		nested: true,		// my tabs are 2nd level
-
 		buildRendering: function() {
 			this.inherited(arguments);
 			
 			// key ...... the file name stub for all images on this tab
-			// label .... the label of the tab itself
-			// heading .. page heading of the tab contents
+			// title... the title of the tab itself
 			// desc ..... help text (switchable)
-			var page_setup = [
-				{
-					key:		"0load",
-					label:		_("Load"),
-					heading:	_("System load"),
-					desc:		_("System load in percent")
-				},
-				{
-					key:		"1sessions",
-					label:		_("Sessions"),
-					heading:	_("Terminal server sessions"),
-					desc:		_("Number of active terminal server sessions")
-				},
-				{
-					key:		"2mem",
-					label:		_("Memory"),
-					heading:	_("Memory usage"),
-					desc:		_("Utilization of system memory in percent")
-				},
-				{
-					key:		"3swap",
-					label:		_("Swap"),
-					heading:	_("Swap space"),
-					desc:		_("Utilization of swap space in percent")
-				}
-			];
+			var page_setup = [{
+				key:		"0load",
+				title:	_("System load"),
+				desc:		_("System load in percent")
+			}, {
+				key:		"1sessions",
+				title:	_("Terminal server sessions"),
+				desc:		_("Number of active terminal server sessions")
+			}, {
+				key:		"2mem",
+				title:	_("Memory usage"),
+				desc:		_("Utilization of system memory in percent")
+			}, {
+				key:		"3swap",
+				title:	_("Swap space"),
+				desc:		_("Utilization of swap space in percent")
+			}];
 			
 			// key ...... file name stub (2nd part) for the corresponding PNG image
 			// label .... how to label this image
-			var tab_setup = [
-				{
-					key:		"day",
-					label:		_("Previous day")
-				},
-				{
-					key:		"week",
-					label:		_("Previous week")
-				},
-				{
-					key:		"month",
-					label:		_("Previous month")
-				},
-				{
-					key:		"year",
-					label:		_("Previous year")
-				}
-			];
+			var tab_setup = [ {
+				key:		"day",
+				label:		_("Previous day")
+			}, {
+				key:		"week",
+				label:		_("Previous week")
+			}, {
+				key:		"month",
+				label:		_("Previous month")
+			}, {
+				key:		"year",
+				label:		_("Previous year")
+			}];
 
 			// Build tabs and attach them to page
-			for (var idx=0; idx<page_setup.length; idx++)
-			{
+			array.forEach(page_setup, lang.hitch(this, function(page) {
 				var tab = new Page({
-					title:			page_setup[idx].label,
-					headerText:		page_setup[idx].heading,
-					closable:		false
-					});
-				this.addChild(tab);
+					title: page.title,
+					closable: false
+				});
+				this.addTab(tab);
 
-				// Title pane without rollup/down
-				var cont = new ExpandingTitlePane({
-					title:			page_setup[idx].desc
-				});
-				tab.addChild(cont);
-				
-				// ExpandingTitlePane doesn't honor 'scrollable'
-				// but we might need it
-				var scroll = new ContainerWidget({
-					scrollable:		true
-				});
-				cont.addChild(scroll);
-				
+				tab.addChild(new Text({
+					content: lang.replace('<h1>{0}</h1>', [page.desc]),
+					'class': 'umcPageHeader',
+					style: 'text-align: center'
+				}));
+
 				// three-column grid layout
 				var grid = new TableContainer({
 					cols: 3
 				});
-				scroll.addChild(grid);
-				for (var i=0; i<tab_setup.length; i++)
-				{
+				tab.addChild(grid);
+
+				array.forEach(tab_setup, function(tab) {
 					grid.addChild(new DijitContentPane({
-						content: 	sprintf(
-										"<span style='white-space:nowrap;'>%s</span>",
-										tab_setup[i].label)
+						content: sprintf("<span style='white-space:nowrap;'>%s</span>", tab.label)
 					}));
 					grid.addChild(new DijitContentPane({
-						content:	sprintf(
-										"<img src='/statistik/ucs_%s-%s.png'>",
-										page_setup[idx].key,
-										tab_setup[i].key)
+						content: sprintf("<img src='/statistik/ucs_%s-%s.png'>", page.key, tab.key)
 					}));
 					// third column used as spacer
 					grid.addChild(new DijitContentPane({
-						content:	'&nbsp;'
+						content: '&nbsp;'
 					}));
-				}
-			}
-		}	
+				});
+			}));
+		}
 	});
 });
