@@ -1,3 +1,9 @@
+ucs-windows-tools (2.0.1-5) unstable; urgency=low
+
+  * fixed get_root_certificate (Bug #35855) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 30 Sep 2014 12:53:39 +0200
+
 ucs-windows-tools (2.0.1-4) unstable; urgency=low
 
   * fixed missing "self." in winexe.py(Bug #35855)
