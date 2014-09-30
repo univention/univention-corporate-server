@@ -3,7 +3,9 @@
 	<itemizedlist>
 	  <listitem><simpara>
 		The underlying Debian version has been updated to Debian Wheezy 7.6
-		(<ulink url="&ucsbug;33835">Bug 33835</ulink>).
+		(<ulink url="&ucsbug;33835">Bug 33835</ulink>,
+		 <ulink url="&ucsbug;33836">Bug 33836</ulink>.
+		 <ulink url="&ucsbug;35669">Bug 35688</ulink>).
 	  </simpara></listitem>
 	  <listitem><simpara>
 		All Univention packages have been adapted to Dephelper 9 and to Python
@@ -27,8 +29,7 @@
 		<ulink url="&ucsbug;35664">Bug 35664</ulink>,
 		<ulink url="&ucsbug;35669">Bug 35669</ulink>,
 		<ulink url="&ucsbug;35828">Bug 35828</ulink>,
-		<ulink url="&ucsbug;35931">Bug 35931</ulink>,
-		<ulink url="&ucsbug;33836">Bug 33836</ulink>).
+		<ulink url="&ucsbug;35931">Bug 35931</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
 </section>
