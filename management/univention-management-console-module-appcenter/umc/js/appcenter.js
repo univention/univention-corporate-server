@@ -108,6 +108,7 @@ define([
 			});
 			this.addChild(this._appCenterPage);
 			this.addChild(this._appDetailsDialog);
+			this.addChild(this._appChooseHostDialog);
 			this.addChild(this._appDetailsPage);
 			this.selectChild(this._appCenterPage);
 
