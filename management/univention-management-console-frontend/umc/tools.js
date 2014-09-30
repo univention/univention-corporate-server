@@ -1024,6 +1024,7 @@ define([
 		_existingIconClasses: {},
 
 		getIconClass: function(icon, size, prefix) {
+			icon = icon || '';
 			// check whether the css rule for the given icon has already been added
 			var values = {
 				s: size || 16,

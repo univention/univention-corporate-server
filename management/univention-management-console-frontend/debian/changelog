@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.19-1) unstable; urgency=low
+
+  * Bug #35654: fix tools.getIconClass (backwards compatibility)
+
+ -- Florian Best <best@univention.de>  Tue, 30 Sep 2014 15:03:40 +0200
+
 univention-management-console-frontend (4.1.18-1) unstable; urgency=low
 
   * Bug #35654: add headerButtons of module child to the module header
