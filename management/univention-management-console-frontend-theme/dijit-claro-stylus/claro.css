@@ -21,14 +21,14 @@
 @import url("ProgressBar.css");
 @import url("TimePicker.css");
 @import url("layout/BorderContainer.css");
-@import url("Tree.css"); 
+@import url("Tree.css");
 @import url("Toolbar.css");
 @import url("Editor.css");/*in order to test button or menu item with icon */
 @import url("../../icons/editorIcons.css"); /*sprite for editor icons to be used by all themes*/
 @import url("TitlePane.css");
 @import url("form/NumberSpinner.css");
+@import url("Grid.css");
 @import url("../../../dojox/grid/resources/Grid.css");
 @import url("../../../dojox/image/resources/LightboxNano.css");
-@import url("Grid.css");
 @import url("icons.css");
 @import url("site.css");
