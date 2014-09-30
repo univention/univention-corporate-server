@@ -33,12 +33,10 @@ define([
 	"dojo/_base/lang",
 	"dojo/topic",
 	"dojo/promise/all",
-	"dijit/layout/BorderContainer",
 	"dojox/html/entities",
 	"umc/dialog",
 	"umc/tools",
 	"umc/app",
-	"umc/widgets/ContainerWidget",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Module",
 	"umc/widgets/Page",
@@ -50,7 +48,7 @@ define([
 	"umc/modules/join/Grid",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/join"
-], function(declare, lang, topic, all, BorderContainer, entities, dialog, tools, app, ContainerWidget, ConfirmDialog,
+], function(declare, lang, topic, all, entities, dialog, tools, app, ConfirmDialog,
 			Module, Page, Text, TextBox, PasswordBox, ProgressBar, JoinForm, JoinGrid, Lib_Server, _) {
 
 	var JoinPage = declare("umc.modules.join.JoinPage", [Page], {
@@ -101,24 +99,14 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			var container = new BorderContainer({gutters: false});  // TODO: replace by ContainerWidget?
-			this.addChild(container);
-
-			// temporary container for scrolling to the bottom
-			var logContainer = new ContainerWidget({
-				region:			'main',
-				scrollable:		true
-			});
-			container.addChild(logContainer);
-
 			// FIXME use a generic CSS class that requests a specific monospaced font
 			this._logtext = new Text({
 				region:			'main',
 				content:		_('... loading log ...'),
-				style:			'font-family:monospace;'
+				style:			'font-family: monospace;'
 			});
 
-			logContainer.addChild(this._logtext);
+			this.addChild(this._logtext);
 		},
 
 		onShowGrid: function() {
@@ -430,7 +418,7 @@ define([
 					name: 'username',
 					type: TextBox,
 					label: _('Username'),
-					value: tools.status('username')
+					value: tools.status('username') == 'root' ? 'Administrator' : tools.status('username')
 				}, {
 					name: 'password',
 					type: PasswordBox,
