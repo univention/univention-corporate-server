@@ -43,7 +43,6 @@ define([
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/form/DropDownButton",
-	"dijit/layout/BorderContainer",
 	"dojo/data/ObjectStore",
 	"dojox/grid/EnhancedGrid",
 	"dojox/grid/cells",
@@ -58,7 +57,7 @@ define([
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
 ], function(declare, lang, array, win, construct, attr, geometry, style,
-		topic, aspect, on, Menu, MenuItem, DropDownButton, BorderContainer,
+		topic, aspect, on, Menu, MenuItem, DropDownButton,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
 
@@ -241,7 +240,7 @@ define([
 			this._dataStore = new ObjectStore({
 				objectStore: this.moduleStore
 			});
-			this.own(this._dataStore);
+			//this.own(this._dataStore);  // ObjectStore doesn't have a destroyRecursive method
 
 			this._disabledIDs = {};
 		},

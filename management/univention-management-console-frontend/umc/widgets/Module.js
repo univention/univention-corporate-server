@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/topic",
+	"dojo/aspect",
 	"dojo/dom-class",
 	"dijit/layout/StackContainer",
 	"dojox/html/entities",
@@ -43,7 +44,7 @@ define([
 	"umc/widgets/ModuleHeader",
 	"umc/widgets/StandbyMixin",
 	"umc/i18n!"
-], function(declare, lang, array, topic, domClass, StackContainer, entities, tools, render, _ModuleMixin, ContainerWidget, ModuleHeader, StandbyMixin, _) {
+], function(declare, lang, array, topic, aspect, domClass, StackContainer, entities, tools, render, _ModuleMixin, ContainerWidget, ModuleHeader, StandbyMixin, _) {
 	return declare("umc.widgets.Module", [ContainerWidget, _ModuleMixin, StandbyMixin], {
 		// summary:
 		//		Basis class for module classes.
@@ -81,6 +82,37 @@ define([
 			}
 
 			this.headerButtons = headerButtons.concat(this.headerButtons);
+
+			this._registerHeaderButtonsHandling();
+
+		},
+
+		_registerHeaderButtonsHandling: function() {
+			this._headerButtonsMap = {};
+			aspect.after(this, 'addChild', lang.hitch(this, function(child) {
+				if (child.headerButtons) {
+					var container = new ContainerWidget({
+						style: 'display: inline-block; margin: 0; padding: 0;'
+					});
+					child.own(container);
+					array.forEach(render.buttons(child.headerButtons, container).$order$, function(btn) {
+						container.addChild(btn);
+					});
+					this._top._right.addChild(container, 0);
+					this._headerButtonsMap[child.id] = container;
+				}
+			}), true);
+
+			this.watch('selectedChildWidget', lang.hitch(this, function(name, old, child) {
+				tools.forIn(this._headerButtonsMap, lang.hitch(this, function(id, ctn) {
+					if (!ctn.domNode) {
+						// child has been removed
+						delete this._headerButtonsMap[id];
+						return;
+					}
+					domClass.toggle(ctn.domNode, 'dijitHidden', id !== child.id);
+				}));
+			}));
 		},
 
 		resetTitle: function() {

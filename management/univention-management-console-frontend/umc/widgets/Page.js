@@ -40,15 +40,13 @@ define([
 	"dojo/dom-style",
 	"dojo/dom-class",
 	"dojo/topic",
-	"dijit/layout/ContentPane",
 	"umc/tools",
 	"umc/dialog",
 	"umc/render",
 	"umc/widgets/Text",
-	"umc/widgets/Tree",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!"
-], function(declare, kernel, lang, array, baseFX, on, mouse, query, style, domClass, topic, ContentPane, tools, dialog, render, Text, Tree, ContainerWidget, _) {
+], function(declare, kernel, lang, array, baseFX, on, mouse, query, style, domClass, topic, tools, dialog, render, Text, ContainerWidget, _) {
 	return declare("umc.widgets.Page", ContainerWidget, {
 		// summary:
 		//		Class that abstracts a displayable page for a module.
@@ -60,12 +58,14 @@ define([
 		// helpText: String
 		//		Text that describes the module, will be displayed at the top of a page.
 		helpText: '',
+		helpTextRegion: 'nav',
 
 		// headerText: String
 		//		Text that will be displayed as header title.
 		headerText: null,
+		headerTextRegion: 'nav',
 
-		// footer: Object[]?
+		// footerButtons: Object[]?
 		//		Optional array of dicts that describes buttons that shall be added
 		//		to the footer. The default button will be displayed on the right
 		footerButtons: null,
@@ -88,8 +88,6 @@ define([
 		'class': 'umcPage',
 
 		i18nClass: 'umc.app',
-
-		//style: 'width: 100%; height: 100%;',
 
 		_helpTextPane: null,
 		_headerTextPane: null,
@@ -152,7 +150,7 @@ define([
 			// add the header
 			if (this.headerText) {
 				this._headerTextPane = new Text({
-					region: 'nav',
+					region: this.headerTextRegion,
 					'class': 'umcPageHeader'
 				});
 				this.addChild(this._headerTextPane);
@@ -239,7 +237,7 @@ define([
 
 		_createHelpTextPane: function() {
 			this._helpTextPane = new Text({
-				region: 'nav',
+				region: this.helpTextRegion,
 				content: this.helpText,
 				'class': 'umcPageHelpText'
 			});
@@ -258,7 +256,7 @@ define([
 				opacity: 0,
 				display: 'block'
 			});
-			var position = this._headerTextPane ? 1 : 0;
+			var position = this._headerTextPane && this._headerTextPane == this._nav.getChildren()[0] ? 1 : 0;
 			this.addChild(this._helpTextPane, position);
 			//this.layout();
 
