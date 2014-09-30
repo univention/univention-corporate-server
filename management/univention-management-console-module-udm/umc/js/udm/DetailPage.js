@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define setTimeout*/
+/*global define,setTimeout,dijit*/
 
 define([
 	"dojo/_base/declare",
@@ -41,8 +41,6 @@ define([
 	"dojo/topic",
 	"dojo/json",
 	"dijit/TitlePane",
-	"dijit/layout/BorderContainer",
-	"dijit/layout/ContentPane",
 	"umc/render",
 	"umc/tools",
 	"umc/dialog",
@@ -50,7 +48,6 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
-	"umc/widgets/TabContainer",
 	"umc/widgets/TabController",
 	"dijit/layout/StackContainer",
 	"umc/widgets/Text",
@@ -64,11 +61,11 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/widgets"
-], function(declare, lang, array, on, Deferred, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, TabContainer, TabController, StackContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
+], function(declare, lang, array, on, Deferred, all, style, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
 
 	var _StandbyPage = declare([Page, StandbyMixin], {});
 
-	return declare("umc.modules.udm.DetailPage", [ ContentPane,  StandbyMixin ], {
+	return declare("umc.modules.udm.DetailPage", [ ContainerWidget, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
 		//		in order to edit LDAP objects.
@@ -173,6 +170,8 @@ define([
 			//		Query necessary information from the server for the object detail page
 			//		and initiate the rendering process.
 			this.inherited(arguments);
+
+			this.headerButtons = this.getButtonDefinitions();
 
 			this.standby(true);
 
@@ -343,7 +342,7 @@ define([
 		},
 
 		_displayProgressOnSubmitButton: function() {
-			var submitButton = this._footerButtons.submit;
+			var submitButton = dijit.byId(this.id + '_SubmitButton');
 			var origLabel = submitButton.get('label');
 			submitButton.set('disabled', true);
 			this._form.ready().then(lang.hitch(this, function() {
@@ -853,25 +852,14 @@ define([
 			}, this);
 		},
 
-		_renderBorderContainer: function(widgets) {
+		_renderForm: function(widgets) {
 			// setup detail page, needs to be wrapped by a form (for managing the
-			// form entries) and a BorderContainer (for the footer with buttons)
+			// form entries)
 			var container = new ContainerWidget({});
-			this.own(container);
 			container.addChild(this._tabs);
+			this.own(container);
 
-			// buttons
-			this._footerButtons = render.buttons(this.getButtonDefinitions(), this);
-
-			var footer = new ContainerWidget({
-				'class': 'umcPageFooter'
-			});
-			array.forEach(this._footerButtons.$order$, function(i) {
-				footer.addChild(i);
-			});
-			container.addChild(footer);
-
-			// create the form containing the whole BorderContainer as content and add
+			// create the form containing the whole Container as content and add
 			// the form as content of this class
 			this._form = new Form({
 				widgets: widgets,
@@ -882,7 +870,7 @@ define([
 			});
 			this.own(this._form);
 
-			this.set('content', this._form);
+			this.addChild(this._form);
 		},
 
 		renderDetailPage: function(properties, layout, policies, template) {
@@ -915,7 +903,7 @@ define([
 			this._autoUpdateTabTitle(widgets);
 			this._renderSubTabs(widgets, layout).then(lang.hitch(this, function() {
 				this._renderPolicyTab(policies);
-				this._renderBorderContainer(widgets);
+				this._renderForm(widgets);
 				this._renderMultiEditCheckBoxes(widgets);
 				this._registerOptionWatchHandler();
 				formBuiltDeferred.resolve();
@@ -1006,16 +994,20 @@ define([
 			return [{
 				name: 'close',
 				label: closeLabel,
+				iconClass: 'umcLeftIconWhite',
 				callback: lang.hitch(this, function() {
 					topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'cancel');
 					this.onCloseTab();
-				}),
-				style: 'float: left'
+				})
 			}, {
 				name: 'submit',
+				id: this.id + '_SubmitButton',
+				iconClass: 'umcSaveIconWhite',
 				label: createLabel,
-				style: 'float: right'
-			}];
+				callback: lang.hitch(this, function() {
+					this._form.onSubmit();
+				})
+			}].reverse();
 		},
 
 		getValues: function() {

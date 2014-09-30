@@ -59,6 +59,7 @@ define([
 	"umc/widgets/SearchForm",
 	"umc/widgets/Button",
 	"umc/widgets/Tree",
+	"umc/widgets/MixedInput",
 	"umc/widgets/ProgressBar",
 	"umc/modules/udm/TreeModel",
 	"umc/modules/udm/TreeModelSuperordinate",
@@ -73,7 +74,7 @@ define([
 ], function(declare, lang, array, has, Deferred, when, all, on, topic, aspect, json,
 	domStyle, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog,
 	store, ContainerWidget, Text, CheckBox, ComboBox, Module, Page, Grid,
-	Form, SearchForm, Button, Tree, ProgressBar, TreeModel,
+	Form, SearchForm, Button, Tree, MixedInput, ProgressBar, TreeModel,
 	TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, cache, _)
 {
 	return declare("umc.modules.udm", [ Module ], {
@@ -679,7 +680,7 @@ define([
 					this._updateSearch();
 				})
 			}, {
-				type: 'MixedInput',
+				type: MixedInput,
 				name: 'objectPropertyValue',
 				label: _( 'Property value' ),
 				dynamicValues: lang.hitch(this, function(options) {

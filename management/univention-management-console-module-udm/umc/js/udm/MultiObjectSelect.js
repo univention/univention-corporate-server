@@ -34,8 +34,9 @@ define([
 	"dojo/_base/array",
 	"umc/tools",
 	"umc/widgets/MultiObjectSelect",
+	"umc/widgets/MixedInput",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, tools, MultiObjectSelect, _) {
+], function(declare, lang, array, tools, MultiObjectSelect, MixedInput, _) {
 	return declare("umc.modules.udm.MultiObjectSelect", [ MultiObjectSelect ], {
 		// summary:
 		//		This class extends the normal MultiObjectSelect in order to encapsulate
@@ -126,7 +127,7 @@ define([
 					widget.set('label', label);
 				})
 			}, {
-				type: 'MixedInput',
+				type: MixedInput,
 				name: 'objectPropertyValue',
 				label: _( 'Property value' ),
 				dynamicValues: 'udm/values',
