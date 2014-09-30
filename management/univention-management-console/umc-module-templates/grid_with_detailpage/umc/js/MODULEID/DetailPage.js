@@ -130,8 +130,7 @@ define([
 				scrollable: true
 			});
 
-			// add form to page... the page extends a BorderContainer, by default
-			// an element gets added to the center region
+			// add form to page...
 			this.addChild(this._form);
 
 			// hook to onSubmit event of the form

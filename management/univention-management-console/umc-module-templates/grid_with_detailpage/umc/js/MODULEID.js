@@ -86,11 +86,6 @@ define([
 			this.standby(true);
 
 			// render the page containing search form and grid
-			this.renderSearchPage();
-		},
-
-		renderSearchPage: function(containers, superordinates) {
-			// render all GUI elements for the search formular and the grid
 
 			// setup search page and its main widgets
 			// for the styling, we need a title pane surrounding search form and grid
@@ -147,9 +142,8 @@ define([
 
 			// generate the data grid
 			this._grid = new Grid({
-				// property that defines the widget's position in a dijit.layout.BorderContainer,
-				// using 'main' instead of the default 'center'
-				 region: 'main',
+				// property that defines the widget's position
+				region: 'main',
 				actions: actions,
 				// defines which data fields are displayed in the grids columns
 				columns: columns,

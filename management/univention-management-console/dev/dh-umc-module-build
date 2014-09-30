@@ -36,13 +36,7 @@ import sys
 from optparse import OptionParser
 
 import univention.debhelper as dh_ucs
-
-try:
-	sys.path.insert( 0, './dev' )
-	import dh_umc
-except BaseException, e:
-	print 'warning:', str( e )
-	import univention.dh_umc as dh_umc
+import univention.dh_umc as dh_umc
 
 """Helps installing UMC modules. It parses a RFC 822 file called
 $(package).umc-modules and installs the specified components of a module

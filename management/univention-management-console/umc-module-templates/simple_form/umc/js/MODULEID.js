@@ -84,7 +84,7 @@ define([
 			} ) );
 		},
 
-		renderPage: function( defaultValues ) {
+		renderPage: function(defaultValues) {
 			//
 			// form
 			//
@@ -123,7 +123,7 @@ define([
 
 			// generate the form
 			this._form = new Form({
-				// property that defines the widget's position in a dijit.layout.BorderContainer
+				// property that defines the widget's position
 				region: 'nav',
 				widgets: widgets,
 				layout: layout,
