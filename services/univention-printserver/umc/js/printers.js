@@ -45,7 +45,6 @@ define([
 		_quota_from_page:	'',			// remembers the page from which the 'editQuota' was called
 
 		buildRendering: function() {
-
 			this.inherited(arguments);
 
 			this._pages = {
@@ -94,21 +93,17 @@ define([
  		},
 
  		startup: function() {
-
  			this.inherited(arguments);
 
  			this._switch_page('overview');
  		},
 
  		_switch_page: function(name, args) {
-
- 			if ((args) && (typeof (this._pages[name].setArgs) == 'function'))
-			{
+ 			if ((args) && (typeof (this._pages[name].setArgs) == 'function')) {
 				this._pages[name].setArgs(args);
 			}
 
  			this.selectChild(this._pages[name]);
-
  		},
 
  		// Most management functions can be called from overview or detail view, so we write
@@ -117,8 +112,7 @@ define([
 
  			var cmd = '';
  			var args = {};
- 			switch(func)
- 			{
+ 			switch(func) {
  				case 'activate':
  					cmd = 'printers/enable';
  					args = { printer: printer, on: true };
@@ -128,23 +122,17 @@ define([
  					args = { printer: printer, on: false };
  					break;
  			}
- 			if (cmd)
- 			{
- 				tools.umcpCommand(cmd,args).then(
- 					lang.hitch(this, function(data) {
- 						if (data.result.length)
- 						{
- 							callback(false,data.result);
- 						}
- 						else
- 						{
- 							callback(true);
- 						}
- 					}),
- 					lang.hitch(this, function(data) {
+
+ 			if (cmd) {
+ 				tools.umcpCommand(cmd,args).then(lang.hitch(this, function(data) {
+ 					if (data.result.length) {
  						callback(false,data.result);
- 					})
- 				);
+ 					} else {
+ 						callback(true);
+ 					}
+ 				}), lang.hitch(this, function(data) {
+ 					callback(false,data.result);
+ 				}));
  			}
  		}
 
