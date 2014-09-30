@@ -46,7 +46,7 @@ define([
 	"umc/i18n!umc/modules/uvmm"
 ], function(declare, lang, array, Deferred, all, tools, dialog, Page, Form, TabContainer, StandbyMixin, TextBox, HiddenInput, types, _) {
 
-	return declare("umc.modules.uvmm.InstancePage", [ TabContainer, StandbyMixin ], {
+	return declare("umc.modules.uvmm.InstancePage", [ Page, StandbyMixin ], {
 		nested: true,
 
 		_generalPage: null,
@@ -54,27 +54,28 @@ define([
 		_instance: null,
 
 		addNotification: dialog.notify,
+		headerText: _('General settings'),
+
+		postMixInProperties: function() {
+			this.inherited(arguments);
+
+			this.footerButtons = [{
+				label: _('Back to overview'),
+				name: 'cancel',
+				callback: lang.hitch(this, 'onClose')
+			}, {
+				label: _('Save'),
+				defaultButton: true,
+				name: 'save',
+				callback: lang.hitch(this, 'save')
+			}];
+		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
 			//
 			// general settings page
 			//
-
-			this._generalPage = new Page({
-				headerText: _('General settings'),
-				title: _('General'),
-				footerButtons: [{
-					label: _('Back to overview'),
-					name: 'cancel',
-					callback: lang.hitch(this, 'onClose')
-				}, {
-					label: _('Save'),
-					defaultButton: true,
-					name: 'save',
-					callback: lang.hitch(this, 'save')
-				}]
-			});
 
 			this._generalForm = new Form({
 				widgets: [{
@@ -121,10 +122,7 @@ define([
 				scrollable: true
 			});
 			this._generalForm.on('Submit', lang.hitch(this, 'save'));
-			this._generalPage.addChild(this._generalForm);
-
-			// add pages in the correct order
-			this.addChild(this._generalPage);
+			this.addChild(this._generalForm);
 		},
 
 		save: function() {
