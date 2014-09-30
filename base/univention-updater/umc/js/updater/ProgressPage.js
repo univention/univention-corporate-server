@@ -323,7 +323,7 @@ define([
 
 		// on switch to this page: set initial headings, and fetch
 		// the 'job running' status at least once.
-		onShow: function() {
+		_onShow: function() {
 			this._switch_headings('running');
 			this._query_job_status();
 		},

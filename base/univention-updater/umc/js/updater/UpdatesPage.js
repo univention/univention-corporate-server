@@ -708,7 +708,7 @@ define([
 		},
 
 		// ensures refresh whenever we're returning from any action.
-		onShow: function() {
+		_onShow: function() {
 
 			this.inherited(arguments);
 			// show standby while loading data
