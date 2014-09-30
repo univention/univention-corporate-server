@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="appcenter" priority="15" version="1.0">
-		<flavor priority="99" id="appcenter">
+	<module id="appcenter" priority="50" version="1.0">
+		<flavor priority="50" id="appcenter">
 			<name>App Center</name>
 			<description>Installation of apps</description>
 			<keywords>install,uninstall,software,update</keywords>
@@ -9,7 +9,7 @@
 				<category name="software"/>
 			</categories>
 		</flavor>
-		<flavor priority="98" id="packages">
+		<flavor priority="50" id="packages">
 			<name>Software Management</name>
 			<description>Installation of software packages</description>
 			<keywords>update,install,uninstall</keywords>
@@ -17,7 +17,7 @@
 				<category name="software"/>
 			</categories>
 		</flavor>
-		<flavor priority="97" id="components">
+		<flavor priority="50" id="components">
 			<name>Repository Settings</name>
 			<description>Repository server configuration</description>
 			<keywords/>
