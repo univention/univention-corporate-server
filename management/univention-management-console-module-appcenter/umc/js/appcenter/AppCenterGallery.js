@@ -47,12 +47,14 @@ define([
 		},
 
 		renderRow: function(item) {
+			var div;
 			if (item.isSeparator) {
-				var div = put('div.umcGalleryCategoryHeader[style=display: block]', item.name);
-				return div;
+				div = put('div.umcGalleryCategoryHeader[style=display: block]', item.name);
 			} else {
-				return this.inherited(arguments);
+				div = this.inherited(arguments);
+				domClass.add(div.firstElementChild, 'umcGalleryCategory-software');
 			}
+			return div;
 		},
 
 		getStatusIconClass: function(item) {
@@ -76,12 +78,6 @@ define([
 				});
 			}
 			return iconClass;
-		},
-
-		renderRow: function(item, options) {
-			var div = this.inherited(arguments);
-			domClass.add(div.firstElementChild, 'umcGalleryCategory-software');
-			return div;
 		}
 	});
 });

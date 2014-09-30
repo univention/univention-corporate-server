@@ -55,7 +55,6 @@ from glob import glob
 import cgi
 from urlparse import urlsplit, urljoin
 from datetime import datetime
-from PIL import Image
 from httplib import HTTPException
 from socket import error as SocketError
 from ldap import LDAPError
@@ -156,7 +155,7 @@ class ApplicationLDAPObject(object):
 			pos.setDn(base)
 		base64icon = ''
 		try:
-			with open(os.path.join(FRONTEND_ICONS_DIR, '50x50', '%s.png' % app.get('icon'))) as f:
+			with open(os.path.join(FRONTEND_ICONS_DIR, '50x50', app.get('icon'))) as f:
 				base64icon = base64.b64encode(f.read())
 		except IOError:
 			pass
@@ -361,7 +360,7 @@ class Application(object):
 		self.component_id = 'unknown'
 		if m:
 			self.component_id = m.groupdict()['id']
-		self.icon = self._options['icon'] = 'apps-%s' % self.component_id
+		self.icon = self._options['icon'] = 'apps-%s.png' % self.component_id
 
 		self._fetch_file('readme', 'README', localize)
 		self._fetch_file('licenseagreement', 'LICENSE_AGREEMENT', localize)
@@ -712,12 +711,6 @@ class Application(object):
 			png_50 = os.path.join(FRONTEND_ICONS_DIR, '50x50', 'apps-%s.png' % app_id)
 			shutil.copy2(png, png_50)
 			shutil.copymode(template_png, png_50)
-			# 16x16
-			png_16 = os.path.join(FRONTEND_ICONS_DIR, '16x16', 'apps-%s.png' % app_id)
-			image = Image.open(png)
-			new_image = image.resize((16, 16))
-			new_image.save(png_16)
-			shutil.copymode(template_png, png_16)
 
 	#@classmethod
 	#def set_server(cls, host=None, scheme=None):
@@ -1272,7 +1265,7 @@ class Application(object):
 		if ucsoverviewcategory and webinterface:
 			registry_key = 'ucs/web/overview/entries/%s/%s/%%s' % (ucsoverviewcategory, self.id)
 			variables = {
-				'icon' : '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s.png' % self.get('icon'),
+				'icon' : '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s' % self.get('icon'),
 				'label' : self.get_localised('name'),
 				'label/de' : self.get_localised('name', 'de'),
 				'description' : self.get_localised('description'),

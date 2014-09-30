@@ -31,7 +31,6 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/_base/kernel",
 	"dojo/_base/array",
 	"dojo/when",
 	"dojo/dom-construct",
@@ -46,7 +45,7 @@ define([
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/widgets/LiveSearchSidebar",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, when, domConstruct, Memory, Observable, Deferred, dialog, tools, Page, Text, CheckBox, AppCenterGallery, LiveSearchSidebar, _) {
+], function(declare, lang, array, when, domConstruct, Memory, Observable, Deferred, dialog, tools, Page, Text, CheckBox, AppCenterGallery, LiveSearchSidebar, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
@@ -66,23 +65,6 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			if (this.addMissingAppButton) {
-				var locale = kernel.locale.slice( 0, 2 ).toLowerCase();
-				var href = 'https://www.univention.de/en/products/ucs/app-catalogue/vote-for-app/';
-				if (locale == 'de') {
-					href = 'https://www.univention.de/produkte/ucs/app-katalog/vote-for-app/';
-				}
-				var footerRight = this._footer.getChildren()[1];
-				var voteForAppAnchor = domConstruct.create('a', {
-					href: href,
-					target: '_blank',
-					style: {color: '#414142'},
-					title: _('Let us know, if you you miss any application in Univention App Center!'),
-					innerHTML: _('Suggest new app')
-				});
-				domConstruct.place(voteForAppAnchor, footerRight.domNode);
-			}
-
 			if (this.liveSearch) {
 				this._searchSidebar = new LiveSearchSidebar({
 					region: 'nav',
@@ -90,6 +72,20 @@ define([
 				});
 				this.addChild(this._searchSidebar);
 				this._searchSidebar.on('search', lang.hitch(this, 'filterApplications'));
+			}
+
+			if (this.addMissingAppButton) {
+				var voteForAppAnchor = domConstruct.create('a', {
+					href: _('https://www.univention.de/en/products/ucs/app-catalogue/vote-for-app/'),
+					target: '_blank',
+					style: {color: '#414142'},
+					title: _('Let us know, if you you miss any application in Univention App Center!'),
+					innerHTML: _('Suggest new app')
+				});
+				this.addChild(new Text({
+					content: voteForAppAnchor.outerHTML,
+					region: 'nav'
+				}));
 			}
 
 			this._grid = new AppCenterGallery({
