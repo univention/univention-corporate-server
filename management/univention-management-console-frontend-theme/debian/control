@@ -12,6 +12,8 @@ Build-Depends: debhelper (>= 7.0.50~),
 Package: univention-management-console-frontend-theme
 Architecture: all
 Depends: ${misc:Depends}
+Breaks: univention-management-console-frontend (<< 4.0.0)
+Replaces: univention-management-console-frontend (<< 4.0.0)
 Description: Univention Management Console - theme data
  This package contains CSS and graphic theme data for UMC
  .
