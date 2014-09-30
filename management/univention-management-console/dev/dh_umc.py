@@ -215,7 +215,7 @@ def read_modules( package, core = False ):
 def _appendPoEntry( poFile, xmlEntry ):
 	"""Helper function to access text property of XML elements and to find the
 	corresponding po-entry."""
-	if xmlEntry != None:
+	if xmlEntry and xmlEntry.text is not None:
 		poFile.append( polib.POEntry( msgid = xmlEntry.text, msgstr = '' ) )
 
 def module_xml2po( module, po_file, language ):
