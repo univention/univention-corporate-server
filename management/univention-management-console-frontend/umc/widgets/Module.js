@@ -161,6 +161,9 @@ define([
 			ContainerWidget.prototype.addChild.apply(this, [this._top]);
 			ContainerWidget.prototype.addChild.apply(this, [this._bottom]);
 			this.__colorizeModuleHeader();
+
+			// redirect childrens to stack container
+			this.containerNode = this.__container.containerNode;
 		},
 
 		__colorizeModuleHeader: function() {
@@ -171,25 +174,28 @@ define([
 			domClass.add(this._top.domNode, lang.replace('umcModuleHeader-{0}', [cls]).replace(/[^_a-zA-Z0-9\-]/g, '-'));
 		},
 
-		addChild: function() {
-			return this.__container.addChild.apply(this.__container, arguments);
-		},
-
-		selectChild: function() {
-			return this.__container.selectChild.apply(this.__container, arguments);
+		selectChild: function(child, animate) {
+			return this.__container.selectChild(child, animate);
 		},
 
 		onClose: function() {
 			return this.__container.onClose && this.__container.onClose() || true;
 		},
 
-		layout: function() { },
+		addChild: function(child, idx) {
+			return this.__container.addChild(child, idx);
+		},
+
+		layout: function() {
+			this.__container.layout();
+		},
 
 		closeModule: function() {
 			topic.publish('/umc/tabs/close', this);
 		},
 
 		startup: function() {
+			this.__container.startup();
 			this.inherited(arguments);
 
 			// FIXME: Workaround for refreshing problems with datagrids when they are rendered

@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.20-1) unstable; urgency=medium
+
+  * Bug #35654: fix handling of containerNode in Module class
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 30 Sep 2014 18:16:20 +0200
+
 univention-management-console-frontend (4.1.19-1) unstable; urgency=low
 
   * Bug #35654: fix tools.getIconClass (backwards compatibility)
