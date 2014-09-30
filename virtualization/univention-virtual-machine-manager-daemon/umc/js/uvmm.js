@@ -1402,14 +1402,14 @@ define([
 			}
 
 			var nodePattern = '', domainPattern = '', type = search_vals.type;
+			var tree_path = this._tree.get('path');
+			var tree_item = lang.clone(tree_path).pop();
 
 			// apply filter from search
 			if (type == 'domain' || type == 'instance') {
 				domainPattern = search_vals.pattern;
 
 				// only search for domains of the selected node in the tree
-				var tree_path = this._tree.get('path');
-				var tree_item = lang.clone(tree_path).pop();
 				if (tree_item && tree_item.type == 'node' && tree_item.id) {
 					nodePattern = tree_item.id;
 					type = 'domain';

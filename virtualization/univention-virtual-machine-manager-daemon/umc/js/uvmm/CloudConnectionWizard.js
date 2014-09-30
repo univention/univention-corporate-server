@@ -55,10 +55,7 @@ define([
 
 		_getWidgets: function(cloudtype) {
 			if (cloudtype == 'OpenStack') {
-				return [{
-					name: 'parameter',
-					type: Form,
-					label: '&nbsp;',
+				return {
 					layout: [
 						'username',
 						'auth_version',
@@ -139,13 +136,10 @@ define([
 						validator: this._validateUrl,
 						invalidMessage: this._invalidUrlMessage
 					}]
-				}];
+				};
 			}
 			if (cloudtype == 'EC2') {
-				return [{
-					name: 'parameter',
-					type: Form,
-					label: '&nbsp;',
+				return {
 					layout: [
 						'region',
 						'access_id',
@@ -184,13 +178,14 @@ define([
 						value: true,
 						required: false
 					} ]
-				}];
+				};
 			}
-			return [{}];
+			return {};
 		},
 
 		constructor: function(props, cloudtype) {
 			// mixin the page structure
+			var conf = this._getWidgets(cloudtype);
 			lang.mixin(this, {
 				pages: [{
 					name: 'general',
@@ -210,7 +205,8 @@ define([
 					name: 'credentials',
 					headerText: _('Register a new cloud connection.'),
 					helpText: _('Please enter the corresponding credentials for the cloud connection:'),
-					widgets: this._getWidgets(cloudtype)
+					widgets: conf.widgets,
+					layout: conf.layout
 				}]
 			});
 		},
