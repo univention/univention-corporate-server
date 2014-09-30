@@ -240,7 +240,6 @@ define([
 			this._dataStore = new ObjectStore({
 				objectStore: this.moduleStore
 			});
-			//this.own(this._dataStore);  // ObjectStore doesn't have a destroyRecursive method
 
 			this._disabledIDs = {};
 		},

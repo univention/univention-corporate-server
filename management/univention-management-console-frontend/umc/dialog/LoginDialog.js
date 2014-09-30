@@ -404,7 +404,7 @@ define([
 					_show();
 					try {
 						styles.insertCssRule('.umcBodyBackground', lang.replace('background: {0}!important;', [domStyle.get(win.body(), 'background')]));
-						domClass.add(dom.byId('dijit_DialogUnderlay_0'), 'umcBodyBackground');
+						domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBodyBackground', true);
 					} catch (e) {
 						// guessed the ID
 						console.log(e);
@@ -452,7 +452,7 @@ define([
 				Dialog._DialogLevelManager.hide(this);
 				this.standby(false);
 				try {
-					domClass.remove(dom.byId('dijit_DialogUnderlay_0'), 'umcBodyBackground');
+					domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBodyBackground', false);
 				} catch (e) {
 					// guessed the ID
 					console.log(e);
