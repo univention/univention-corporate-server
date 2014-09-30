@@ -1,3 +1,9 @@
+univention-kernel-image (8.0.2-3) unstable; urgency=low
+
+  * Bug #33844: Remove ipw2x00 & ivtv firmware because of interactive licence
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 30 Sep 2014 13:22:52 +0200
+
 univention-kernel-image (8.0.2-2) unstable; urgency=low
 
   * Bug #33844: Re-add firmware packages as recommends
