@@ -241,7 +241,7 @@ class WinExe:
 			if retval == 0:
 				return 0
 			time.sleep(1)
-			self.__debug("wating for client %s" % self.client)
+			self.__debug("waiting for client %s" % self.client)
 		# failed to connect
 		raise WinExeFailed("waiting for client (%s) failed with timeout %s (can't run winexe)" % (self.client, timeout))
 
@@ -255,6 +255,7 @@ class WinExe:
 			if not self.__client_reachable(timeout=1):
 				return 0
 			time.sleep(1)
+			self.__debug("waiting for client %s to disappear" % self.client)
 		raise WinExeFailed("waiting until client (%s) is gone failed with timeout %s" % (self.client, timeout))
 
 		return True
@@ -330,17 +331,39 @@ class WinExe:
 		self.wait_until_client_is_gone(timeout=120)
 		self.wait_for_client(timeout=600)
 
-	def get_root_certificate(self, filename="/tmp/ad-cert.pem"):
-		''' export root certificate to filename (/tmp/ad-cert.pem) '''
+	def file_exists(self, filename):
+		''' check if filename exists, return TRUE or FALSE (if file does not exists) '''
 
-		self.winexec("cmd /C del c:\\ad-cert.crt")
-		self.winexec("cmd /C del c:\\ad-cert.crt.b64")
-		self.winexec("certutil -store -enterprise CA 0 c:\\ad-cert.crt")
-		self.winexec("certutil -f -encode c:\\ad-cert.crt c:\\ad-cert.crt.b64")
-		returncode, stdout, stderr = self.winexec('cmd /C more c:\\ad-cert.crt.b64')
-		fh = open(filename, "w")
-		fh.write(stdout)
-		fh.close()
+		returncode, stdout, stderr = self.winexec("cmd /C dir %s" % filename, dont_fail=True)
+		if returncode == 0:
+			return True
+		return False
+
+	def get_file(self, filename, destination=None):
+		''' get contents of a file and optional save the contents in destination'''
+
+		self.winexec("certutil -f -encode %s c:\\winexe.tmp.b64" % filename)
+		returncode, stdout, stderr = self.winexec('cmd /C more c:\\winexe.tmp.b64')
+		self.winexec("cmd /C del c:\\winexe.tmp.b64", dont_fail=True)
+		stdout = stdout.replace('-----BEGIN CERTIFICATE-----', '')
+		stdout = stdout.replace('-----END CERTIFICATE-----', '')
+		content = stdout.decode("base64")
+		if destination:
+			with open(destination, 'w') as f:
+				f.write(content)
+		return content
+		
+	def get_root_certificate(self, filename="/tmp/ad-cert.cer"):
+		''' export root certificate to filename (/tmp/ad-cert.cer) '''
+
+		cert = 'c:\\ad-cert.crt'
+		self.winexec("cmd /C del %s" % cert, dont_fail=True)
+		for i in range(0, 20):
+			self.winexec("certutil -store -enterprise CA 0 %s" % cert)
+			time.sleep(1)
+			if self.file_exists(cert):
+				break
+		self.get_file("%s" % cert, destination=filename)
 
 	def promote_ad(self, dmode, forest_mode, install_root_ca=True):
 		''' create AD domain on windows server '''
