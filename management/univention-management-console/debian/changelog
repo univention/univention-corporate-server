@@ -1,3 +1,9 @@
+univention-management-console (7.1.6-1) unstable; urgency=low
+
+  * Bug #35654: fix last commit
+
+ -- Florian Best <best@univention.de>  Tue, 30 Sep 2014 14:20:57 +0200
+
 univention-management-console (7.1.5-1) unstable; urgency=low
 
   * Bug #35654: cleanup of umc module templates and dh-umc-build
