@@ -1,13 +1,8 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-01 12:11+0200\n"
+"POT-Creation-Date: 2014-09-30 15:06+0200\n"
 "PO-Revision-Date: 2012-02-20 14:41+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -92,11 +87,11 @@ msgstr "Einrichten der Zeitzonen"
 msgid "Generating SSL certificate"
 msgstr "Erstellen der SSL-Zertifikate"
 
-#: usr/lib/univention-system-setup/scripts/50_software/20upgrade:42
+#: usr/lib/univention-system-setup/scripts/50_software/20upgrade:41
 msgid "Upgrading the system"
 msgstr "Aktualisiere das System"
 
-#: usr/lib/univention-system-setup/scripts/50_software/20upgrade:43
+#: usr/lib/univention-system-setup/scripts/50_software/20upgrade:42
 msgid "This might take a while depending on the number of pending updates."
 msgstr ""
 "Abhängig von der Anzahl der austehenden Updates, kann dies einige Zeit "

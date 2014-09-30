@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-09-29 16:03+0200\n"
+"POT-Creation-Date: 2014-09-29 20:50+0200\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -309,7 +309,7 @@ msgstr "Alternativer UCS-Domänen-DNS-Server"
 msgid "Alternate external name server"
 msgstr "Alternativer externer DNS-Server"
 
-#: umc/js/setup.js:195 umc/js/setup.js:529
+#: umc/js/setup.js:194 umc/js/setup.js:528
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
@@ -373,7 +373,7 @@ msgstr "Bridge ports"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/js/setup.js:189 umc/js/setup.js:526 umc/js/setup/BasisPage.js:267
+#: umc/js/setup.js:188 umc/js/setup.js:525 umc/js/setup/BasisPage.js:267
 #: umc/js/setup/ApplianceWizard.js:1684 umc/js/setup/ApplianceWizard.js:1810
 #: umc/js/setup/ApplianceWizard.js:1841 umc/js/setup/InterfaceGrid.js:132
 msgid "Cancel"
@@ -416,7 +416,7 @@ msgstr ""
 "zur Folge haben. Dies kann ernsthafte Auswirkungen haben, sollte sich das "
 "System im Produktiveinsatz befinden."
 
-#: umc/js/setup.js:302
+#: umc/js/setup.js:301
 #, python-format
 msgid ""
 "Changing network settings is disabled due to specific UVMM settings. See %s "
@@ -425,7 +425,7 @@ msgstr ""
 "Ändern von Netzwerkeinstellungen ist durch spezifische UVMM Einstellungen "
 "deaktiviert. Für weitere Informationen siehe %s."
 
-#: umc/js/setup.js:306
+#: umc/js/setup.js:305
 msgid ""
 "Changing network settings is disabled. It can be re enabled by unsetting the "
 "UCR variable \"umc/modules/setup/network/disabled/by\"."
@@ -442,7 +442,7 @@ msgstr "Wähle Netzwerkgerätetyp aus"
 msgid "Choose your system's localization settings."
 msgstr "Wählen Sie die Systemsprache"
 
-#: umc/js/setup.js:180 umc/js/setup.js:184
+#: umc/js/setup.js:179 umc/js/setup.js:183
 msgid "Close"
 msgstr "Schließen"
 
@@ -454,7 +454,7 @@ msgstr "Allgemeiner Name (common name) für das Root-SSL-Zertifikat"
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: umc/js/setup.js:607 umc/js/setup/ApplianceWizard.js:1711
+#: umc/js/setup.js:606 umc/js/setup/ApplianceWizard.js:1711
 msgid "Configuration finished"
 msgstr "Konfiguration abgeschlossen"
 
@@ -780,7 +780,7 @@ msgstr ""
 "In den <i>Netzwerkeinstellungen</i> können IP-Adressen (IPv4 und IPv6) sowie "
 "DNS-Server, Gateways und HTTP-Proxy festgelegt werden."
 
-#: umc/js/setup.js:589 umc/js/setup/ApplianceWizard.js:1694
+#: umc/js/setup.js:588 umc/js/setup/ApplianceWizard.js:1694
 msgid "Initialize the configuration process ..."
 msgstr "Initialisiere den Konfigurationsvorgang ..."
 
@@ -974,7 +974,7 @@ msgstr "Keine zusätzliche Software-Komponente wird installiert."
 msgid "No additional software components will be installed."
 msgstr "Keine zusätzliche Software-Komponenten werden installiert."
 
-#: umc/js/setup.js:457
+#: umc/js/setup.js:456
 msgid "No changes have been made."
 msgstr "Es wurden keine Änderungen vorgenommen."
 
@@ -982,7 +982,7 @@ msgstr "Es wurden keine Änderungen vorgenommen."
 msgid "None"
 msgstr "Kein"
 
-#: umc/js/setup.js:631
+#: umc/js/setup.js:630
 msgid "Not all changes could be applied successfully:"
 msgstr "Nicht alle Änderungen konnten erfolgreich übernommen werden."
 
@@ -990,7 +990,7 @@ msgstr "Nicht alle Änderungen konnten erfolgreich übernommen werden."
 msgid "Obtain IP address automatically (DHCP)"
 msgstr "IP-Adresse automatisch beziehen (DHCP)"
 
-#: umc/js/setup.js:635
+#: umc/js/setup.js:634
 msgid "Ok"
 msgstr "Ok"
 
@@ -1026,7 +1026,7 @@ msgstr ""
 "Bitte bestätigen Sie die gewählten Einstellungen, die unten zusammengefasst "
 "dargestellt werden."
 
-#: umc/js/setup.js:521
+#: umc/js/setup.js:520
 msgid ""
 "Please confirm to apply these changes to the system. This may take some time."
 msgstr ""
@@ -1058,11 +1058,11 @@ msgstr "Erneut konfigurieren"
 msgid "Removed:"
 msgstr "Gelöscht:"
 
-#: umc/js/setup.js:201
+#: umc/js/setup.js:200
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: umc/js/setup.js:390
+#: umc/js/setup.js:389
 msgid "Restarting server components..."
 msgstr "Neustart der Server-Komponenten..."
 
@@ -1078,7 +1078,7 @@ msgstr "Root-Passwort ist leer. Möchten Sie fortfahren?"
 msgid "SSL root certificate"
 msgstr "SSL-Root-Zertifikat"
 
-#: umc/js/setup.js:301
+#: umc/js/setup.js:300
 msgid "Setup for UCS Virtual Machine Manager"
 msgstr "Einrichtung für UCS Virtual Machine Manager"
 
@@ -1086,7 +1086,7 @@ msgstr "Einrichtung für UCS Virtual Machine Manager"
 msgid "Several network types can be chosen."
 msgstr "Mehrere Netzwerktypen können ausgewählt werden."
 
-#: umc/js/setup.js:183
+#: umc/js/setup.js:182
 msgid "Should the UMC module be closed? All unsaved modification will be lost."
 msgstr ""
 "Soll das UMC-Modul geschlossen werden? Alle nicht gespeicherten Änderungen "
@@ -1153,11 +1153,11 @@ msgstr ""
 "und Domänenname, LDAP-Basis, Windows-Domänename und das Passwort für die "
 "Systemadministration (root) fest. "
 
-#: umc/js/setup.js:619 umc/js/setup.js:625
+#: umc/js/setup.js:618 umc/js/setup.js:624
 msgid "The changes have been applied successfully."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
-#: umc/js/setup.js:602
+#: umc/js/setup.js:601
 msgid ""
 "The connection to the server could not be established after {time} seconds. "
 "This problem can occur due to a change of the IP address. In this case, "
@@ -1169,11 +1169,11 @@ msgstr ""
 "führen sein. Loggen Sie sich in diesem Fall erneut auf Univention Management "
 "Console unter der {linkStart}neuen Adresse{linkEnd} ein."
 
-#: umc/js/setup.js:515
+#: umc/js/setup.js:514
 msgid "The following changes will be applied to the system:"
 msgstr "Die folgenden Änderungen werden auf das System übertragen:"
 
-#: umc/js/setup.js:479 umc/js/setup.js:572 umc/js/setup/ApplianceWizard.js:689
+#: umc/js/setup.js:478 umc/js/setup.js:571 umc/js/setup/ApplianceWizard.js:689
 msgid "The following entries could not be validated:"
 msgstr "Die folgenden Einträge konnten nicht validiert werden:"
 
@@ -1232,7 +1232,7 @@ msgstr ""
 msgid "There are no more physical interfaces to create."
 msgstr "Es gibt keine weiteren physikalischen Netzwerkgeräte zum hinzufügen."
 
-#: umc/js/setup.js:390
+#: umc/js/setup.js:389
 msgid "This may take a few seconds..."
 msgstr "Dies kann einige Sekunden in Anspruch nehmen..."
 
@@ -1304,7 +1304,7 @@ msgstr "Benutzername"
 msgid "VLAN ID"
 msgstr "VLAN ID"
 
-#: umc/js/setup.js:60 umc/js/setup/ApplianceWizard.js:267
+#: umc/js/setup.js:59 umc/js/setup/ApplianceWizard.js:267
 msgid "Validation error"
 msgstr "Validierungsfehler"
 
@@ -1351,7 +1351,7 @@ msgstr "nicht setzen"
 msgid "e.g., Boston..."
 msgstr "bspw. Bremen..."
 
-#: umc/js/setup.js:301
+#: umc/js/setup.js:300
 #, python-format
 msgid "http://docs.univention.de/computers-%s.html#uvmm"
 msgstr ""

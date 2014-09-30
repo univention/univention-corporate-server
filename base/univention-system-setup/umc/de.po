@@ -37,8 +37,8 @@ msgid "Basic settings"
 msgstr "Basis-Einstellungen"
 
 #: umc/setup.xml: 24
-msgid "Define host and domain names, ldap base  and set the root password"
-msgstr "Setzen von Rechner- und Domänennamen, der LDAP-Basis und des root Passworts"
+msgid "Define hostname, domainname and set the root password"
+msgstr "Setzen von Rechner- und Domänennamen und des root Passworts"
 
 #: umc/setup.xml: 28
 msgid "Certificate settings"
