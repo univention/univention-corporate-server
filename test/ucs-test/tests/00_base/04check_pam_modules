@@ -11,15 +11,14 @@ whitelist=(pam_gnome_keyring.so)
 modules=$(grep -v '#' /etc/pam.conf $(run-parts --list /etc/pam.d) | grep -o 'pam_.*\.so' | sort -u | grep -F -v "$(IFS=$'\n\t '; echo ${whitelist[*]} )")
 
 result=0
+ARCH=$(perl -mDpkg::Arch=debarch_to_gnutriplet,get_raw_host_arch -e 'print debarch_to_gnutriplet(get_raw_host_arch())')
+
 for mod in $modules # IFS
 do
-	if [ ! -e "/lib/security/$mod" ] 
+	if [ ! -e "/lib/security/$mod" ] && [ ! -e "/lib/$ARCH/security/$mod" ]
 	then
-		if [ ! -e "/lib/x86_64-linux-gnu/security/$mod" ]
-		then
-			echo "$mod does not exist"
-			result=1
-		fi
+		echo "$mod does not exist"
+		result=1
 	fi
 done
 exit $result
