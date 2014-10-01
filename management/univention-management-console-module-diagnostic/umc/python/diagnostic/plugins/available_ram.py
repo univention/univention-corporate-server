@@ -8,7 +8,10 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Not enough RAM available for running UCS')
-umc_modules = [('top', '', {})]
+umc_modules = [{
+	'module': 'top'
+}]
+
 
 def run():
 	virtual_memory = psutil.total_virtmem()

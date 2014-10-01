@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from univention.management.console.config import ucr
-from univention.management.console.modules.diagnostic import Conflict, MODULE
+from univention.management.console.modules.diagnostic import Conflict, ProblemFixed, MODULE
+from univention.config_registry import handler_unset
 
 from urlparse import urlparse
 import pycurl
@@ -14,19 +15,24 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Proxy server')
 description = _('The proxy server can currently not be used. Make sure it is correctly configured using the {setup:network}.\n')
-umc_modules = [('setup', 'network', {})]
+umc_modules = [{
+	'module': 'setup',
+	'flavor': 'network'
+}]
 buttons = [{
 	'label': _('Disable proxy'),
 	'action': 'disable'
 }]
+actions = {}
 
-def run(action=None):
-	if action == 'disable':
-		return disable_proxy()
-	else:
-		return check()
 
-def check():
+def disable_proxy():
+	handler_unset(['proxy/http'])
+	raise ProblemFixed(_('The proxy has been disabled.'))
+actions['disable'] = disable_proxy
+
+
+def run():
 	ucr.load()
 
 	proxy = ucr.get('proxy/http')

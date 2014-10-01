@@ -11,18 +11,18 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 title = _('Gateway is not reachable')
 description = _('Please make sure the gateway is correctly configured in the {setup:network} UMC module.\nIf the settings are correct the problem relies in the gateway: Make sure the gateway is running.\n')
 
-umc_modules = [
-	('setup', 'network', {}),
-	('udm', 'networks/network', {}),
-#	('ucr', '', {})
-]
+umc_modules = [{
+	'module': 'setup',
+	'flavor': 'network'
+}]
+
 
 def run():
 	ucr.load()
 	gateway = ucr.get('gateway')
 	process = Popen(['/bin/ping', '-c1', '-w500', gateway], stdout=PIPE, stderr=PIPE)
 	stdout, stderr = process.communicate()
-	if True or process.returncode:
+	if process.returncode:
 		raise Critical('%s%s%s' % (description, stderr, stderr))
 
 

@@ -9,10 +9,11 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 title = _('Custom modified UCR templates')
 description = _('Some Univention Config Registry templates are not in their original state.\n')
 
+
 def run():
 	process = Popen(['/usr/sbin/univention-check-templates'], stdout=PIPE, stderr=STDOUT)
 	stdout, stderr = process.communicate()
-	if True or process.returncode:
+	if process.returncode:
 		raise Warning('%s%s' % (description, stdout))
 
 

@@ -39,8 +39,8 @@ define([
 	"dojo/Deferred",
 	"dojox/html/styles",
 	'umc/dialog',
-	'umc/app',
 	'umc/tools',
+	'umc/render',
 	'umc/widgets/Page',
 	'umc/widgets/Module',
 	'umc/widgets/TextBox',
@@ -56,9 +56,8 @@ define([
 	"umc/widgets/Text",
 	"put-selector/put",
 	"dgrid/Selection",
-	'umc/modules/diagnostic/DetailPage',
 	'umc/i18n!umc/modules/diagnostic'
-], function(declare, lang, array, all, on, domClass, domConstruct, Deferred, styles, dialog, app, tools, Page, Module, TextBox, ComboBox, ContainerWidget, TitlePane, GalleryPane, ObjectStore, Memory, Observable, ProgressBar, Button, Text, put, Selection, DetailPage, _) {
+], function(declare, lang, array, all, on, domClass, domConstruct, Deferred, styles, dialog, tools, render, Page, Module, TextBox, ComboBox, ContainerWidget, TitlePane, GalleryPane, ObjectStore, Memory, Observable, ProgressBar, Button, Text, put, Selection, _) {
 
 	styles.insertCssRule('.diagnosticDescription', '/*background-color: #e6e6e6; border: thin solid #d3d3d3;*/ white-space: pre; word-break: break-all; word-wrap: break-word;');
 	styles.insertCssRule('.diagnosticGrid h1', 'margin-bottom: 0; border-bottom: thin solid #000');
@@ -67,6 +66,8 @@ define([
 	styles.insertCssRule('.diagnosticGrid .conflict span.dijitTitlePaneTextNode::before', lang.replace('color: darkorange; content: "{0}";', [_('Conflict: ')]));
 	styles.insertCssRule('.diagnosticGrid .warning  span.dijitTitlePaneTextNode::before', lang.replace('color: orange; content: "{0}";', [_('Warning: ')]));
 	styles.insertCssRule('.diagnosticGrid .problemfixed span.dijitTitlePaneTextNode::before', lang.replace('color: green; content: "{0}";', [_('Problem repaired: ')]));
+	styles.insertCssRule('.diagnosticGrid .success span.dijitTitlePaneTextNode::before', lang.replace('color: green; content: "{0}";', [_('Success: ')]));
+	styles.insertCssRule('.diagnosticGrid .problem span.dijitTitlePaneTextNode::before', lang.replace('color: orange; content: "{0}";', [_('Problem: ')]));
 
 	GalleryPane = declare([GalleryPane, Selection], {
 		allowTextSelection: true
@@ -82,6 +83,7 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+
 		},
 
 		buildRendering: function() {
@@ -91,41 +93,38 @@ define([
 				headerText: this.description,
 				helpText: _('Within this module the system can be anaylzed for various known problems. ') +
 				_('If the system is able to automatically repair found problems it offers the function in the context menu. ') +
-				_('Otherwise the problems can be solved manually with help of the displayed links to articles by using the linked UMC modules. ')
+				_('Otherwise the problems can be solved manually with help of the displayed links to articles by using the linked UMC modules. '),
+				headerButtons: [{
+					name: 'start_diagnose',
+					label: _('Start full diagnose'),
+					callback: lang.hitch(this, '_runFullDiagnose')
+				}]
 			});
 			this.addChild(this._overviewPage);
-
-//			this._runButton = new Button({
-//				label: _('Start full diagnose'),
-//				callback: lang.hitch(this, '_runFullDiagnose'),
-//				region: 'nav'
-//			});
-//			this._overviewPage.addChild(this._runButton);
-
-//			this.container = new ContainerWidget({
-//				'class': 'diagnosticGrid'
-//			});
-//			this._overviewPage.addChild(this.container);
 
 			this._grid = new GalleryPane({
 				'class': 'diagnosticGrid',
 				store: this._store,
 				renderRow: lang.hitch(this, function(item) {
-					return this.renderRow(item).domNode;
+					var row = this.renderRow(item);
+					this.own(row);
+					return row.domNode;
 				}),
 				query: function(item) {
+					// only show failed entries
 					return item.success === false;
 				},
 				sort: 'type', // FIXME: sort by group, 1. Critical 2. Conflict 3. Warning
-				noDataMessage: _('No problems could be found.'),
+				noDataMessage: _('No problems could be detected.'),
 				loadingMessage: _('Analyzing for problems...'),
 				region: 'main'
 			});
 			this._overviewPage.addChild(this._grid);
 
 			this._overviewPage.startup();
+
 			this.load().then(lang.hitch(this, function() {
-				this._runFullDiagnose().then(lang.hitch(this, 'renderGrid'));
+				this._runFullDiagnose();
 			}));
 		},
 
@@ -139,41 +138,47 @@ define([
 			}));
 		},
 
-		renderGrid: function() {
-			return;
-			this._grid.store.query(this._grid.query).forEach(lang.hitch(this, function(item) {
-				this.container.addChild(this.renderRow(item));
-			}));
-		},
-
 		renderRow: function(item) {
 			var div = put('div');
 
 			var description = item.description;
-			array.forEach(item.umc_modules, function(link) {
-				var repl = link[1] ? ('{' + link[0] + ':' + link[1] + '}') : ('{' + link[0] + '}');
-				link = app.linkToModule(link[0], link[1]);
-				if (link) {
-					if (description.indexOf(repl) !== -1) {
-						description = description.replace(repl, link);
-					} else {
-						domConstruct.create('div', {innerHTML: link}, div);
+			array.forEach(item.umc_modules, function(module) {
+				var repl = module.flavor ? ('{' + module.module + ':' + module.flavor + '}') : ('{' + module.module + '}');
+				var link = tools.linkToModule(module);
+				if (description.indexOf(repl) !== -1) {
+					if (!link) {
+						link = _('"%s - %s" Module (as Administrator)', module.module, module.flavor);
 					}
+					description = description.replace(repl, link);
+				} else if (link) {
+					domConstruct.create('div', {innerHTML: link}, div);
 				}
 			});
-			new Text({content: description}).placeAt(put(div, 'div.diagnosticDescription'));
 
 			array.forEach(item.links, function(link) {
-				domConstruct.create('a', {href: link[0], innerHTML: link[1] || link[0]}, div);
+				var a = domConstruct.create('a', {href: link.href, innerHTML: link.label || link.href});
+				var repl = '{' + link.name  + '}';
+				if (description.indexOf(repl) !== -1) {
+					var content = domConstruct.create('div');
+					content.appendChild(a);
+					description = description.replace(repl, content.innerHTML);
+				} else {
+					div.appendChild(a);
+				}
 			});
 
-			var buttons = put(div, 'div');
-			array.forEach(item.buttons, lang.hitch(this, function(button) {
-				new Button({
-					label: button.label,
+			new Text({content: description}).placeAt(put(div, 'div.diagnosticDescription'));
+
+			var buttons = render.buttons(array.map(item.buttons, lang.hitch(this, function(button) {
+				return lang.mixin(button, {
 					callback: this.getButtonCallback(button, item)
-				}).placeAt(buttons);
-			}));
+				});
+			})), this);
+
+			var buttonctn = put(div, 'div');
+			array.forEach(buttons.$order$, function(button) {
+				button.placeAt(buttonctn);
+			});
 
 			return new TitlePane({
 				title: item.title,
@@ -193,14 +198,15 @@ define([
 			var plugins = this._grid.store.query();
 			this._stepInc = 100 / plugins.length;
 
-			this._progressBar = new ProgressBar({});
+			this._progressBar = new ProgressBar({
+				region: 'nav'
+			});
 			this._progressBar.setInfo(_('Running full diagnose...'), undefined, Infinity);
 
 			var deferred = new Deferred();
 			this._progressBar.feedFromDeferred(deferred);
 
 			return this.standbyDuring(all(array.map(plugins, lang.hitch(this, function(plugin) {
-
 				return this._runDiagnose(plugin).then(lang.hitch(this, function() {
 					var percentage = this._progressBar._progressBar.get('value') + this._stepInc;
 					deferred.progress({
@@ -209,16 +215,42 @@ define([
 					});
 				}));
 			}))), this._progressBar).then(lang.hitch(this, function() {
-//				this.load();
+				if (!this._store.query(this._grid.query).length) {
+					this._store.add({
+						plugin: '_success_',
+						success: false,
+						type: 'success',
+						title: _('No problems could be detected.'),
+						description: ''
+					});
+					this._grid.set('query', this._grid.query);
+				}
 			}));
 		},
+
+// don't block with progressbar?
+//		standby: function(standby, progressbar) {
+//			if (this._progressBar) {
+//				domClass.toggle(this._progressBar, 'dijitHidden', !standby);
+//				if (!standby) {
+//					this._overviewPage.removeChild(this._progressBar);
+//					this._progressBar = null;
+//				} else {
+//					this._overviewPage.addChild(this._progressBar/*, 0*/);
+//				}
+//				return;
+//			}
+//			this.inherited(arguments, [standby]);
+//		},
 
 		_runSingleDiagnose: function(plugin, opts) {
 			this._grid.store.put(lang.mixin(plugin, {
 				'status': 'reloading'
 			}));
 			this._grid.set('query', this._grid.query);
-			this.standbyDuring(this._runDiagnose(plugin, opts));
+			this.standbyDuring(this._runDiagnose(plugin, opts)).then(lang.hitch(this, function() {
+				this.addNotification(_('Finished running diagnose of "%s" again.', plugin.title));
+			}));
 		},
 
 		_runDiagnose: function(plugin, opts) {

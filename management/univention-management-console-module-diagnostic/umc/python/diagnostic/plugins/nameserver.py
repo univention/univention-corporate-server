@@ -11,8 +11,11 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Nameserver(s) are not responsive')
-description = _('Some of the configured nameservers are not responding to DNS-Queries.\nPlease make sure the DNS settings in the {setup:network} module are correctly set up.\n')
-umc_modules = [('setup', 'network', {})]
+description = _('Some of the configured nameservers are not responding to DNS-Queries.\nPlease make sure the DNS settings in the {setup:network} are correctly set up.\n')
+umc_modules = [{
+	'module': 'setup',
+	'flavor': 'network'
+}]
 
 
 def run():
@@ -35,7 +38,7 @@ def run():
 			if not answers:
 				desc += _('The nameserver %s (UCR variable %r) is not responsive.\n') % (ucr[nameserver], nameserver)
 
-	if True or not success:
+	if not success:
 		raise Warning('%s%s' % (description, desc))
 
 

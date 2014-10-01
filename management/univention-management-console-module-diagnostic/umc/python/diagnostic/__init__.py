@@ -34,7 +34,6 @@
 from os import listdir
 import os.path
 import traceback
-from time import strftime, gmtime
 
 from univention.management.console.modules import Base
 from univention.management.console.modules.decorators import simple_response, sanitize
@@ -55,7 +54,9 @@ class Problem(Exception):
 		kwargs['type'] = self.__class__.__name__.lower()
 		if description:
 			kwargs['description'] = description
+		#kwargs['success'] = False  # debugging ;)
 
+class Success(Problem): pass
 class Conflict(Problem): pass
 class Warning(Problem): pass
 class Critical(Problem): pass
@@ -180,7 +181,8 @@ class Plugin(object):
 			errors.update(exc.kwargs)
 
 		result = dict(
-			success=success
+			success=success,
+			type='success'
 		)
 		result.update(self.dict)
 		result.update(errors)
