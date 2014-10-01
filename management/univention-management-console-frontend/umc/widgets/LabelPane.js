@@ -38,8 +38,10 @@ define([
 	"dijit/_TemplatedMixin",
 	"dijit/_Container",
 	"dijit/form/CheckBox",
-	"umc/tools"
-], function(declare, lang, Deferred, domClass, attr, _WidgetBase, _TemplatedMixin, _Container, DijitCheckBox, tools) {
+	"dijit/form/Button",
+	"umc/tools",
+	"umc/widgets/HiddenInput"
+], function(declare, lang, Deferred, domClass, attr, _WidgetBase, _TemplatedMixin, _Container, DijitCheckBox, DijitButton, tools, HiddenInput) {
 	lang.extend(_WidgetBase, {
 		// isLabelDisplayed: Boolean?
 		//		If specified as true, LabelPane assumes that the widget itself will take
@@ -114,12 +116,17 @@ define([
 			}
 		},
 
+		_isContentInstanceOf: function(Class) {
+			return lang.getObject('isInstanceOf', false, this.content) && this.content.isInstanceOf(Class);
+		},
+
 		postCreate: function() {
 			this.inherited(arguments);
 
 			// register watch handler for label and visibility changes
 			if (lang.getObject('content.watch', false, this)) {
-				if (!tools.inheritsFrom(this.content, 'umc.widgets.Button')) {
+				var isButton = this._isContentInstanceOf(DijitButton);
+				if (!isButton) {
 					// only watch the label and required property if widget is not a button
 					this.own(this.content.watch('label', lang.hitch(this, function(attr, oldVal, newVal) {
 						this.set('label', this.content.get('label') || '');
@@ -140,7 +147,8 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			domClass.toggle(this.domNode, 'dijitHidden', this.content.visible === false);
+			var isHidden = lang.getObject('visible', false, this.content) === false;
+			domClass.toggle(this.domNode, 'dijitHidden', isHidden);
 		},
 
 		startup: function() {
@@ -173,10 +181,17 @@ define([
 
 			// for checkboxes -> place the label right of the widget
 			// ... hide unused label node
-			var isCheckBox = lang.getObject('isInstanceOf', false, this.content) && this.content.isInstanceOf(DijitCheckBox);
-			attr.set(isCheckBox ? this.labelNodeRight : this.labelNodeBottom, 'innerHTML', label);
-			domClass.toggle(this.labelNodeRight, 'dijitHidden', !isCheckBox);
-			domClass.toggle(this.labelNodeBottom, 'dijitHidden', isCheckBox);
+			var isCheckBox = this._isContentInstanceOf(DijitCheckBox);
+			var isHiddenInput = this._isContentInstanceOf(HiddenInput);
+			if (isHiddenInput) {
+				domClass.add(this.labelNodeRight, 'dijitHidden');
+				domClass.add(this.labelNodeBottom, 'dijitHidden');
+			}
+			else {
+				attr.set(isCheckBox ? this.labelNodeRight : this.labelNodeBottom, 'innerHTML', label);
+				domClass.toggle(this.labelNodeRight, 'dijitHidden', !isCheckBox);
+				domClass.toggle(this.labelNodeBottom, 'dijitHidden', isCheckBox);
+			}
 		},
 
 		_setBetweenNonCheckBoxesAttr: function(betweenNonCheckBoxes) {
