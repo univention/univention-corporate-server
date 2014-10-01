@@ -124,3 +124,6 @@ Variables: mail/cyrus/backup-metadata/cron
 Type: file
 File: etc/univention/service.info/services/univention-mail-cyrus.cfg
 Variables: mail/cyrus/initscript
+
+Type: file
+File: etc/default/cyrus-imapd
