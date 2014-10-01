@@ -6,7 +6,7 @@
 		<keywords>adconnector,admember</keywords>
 
 		<categories>
-			<category name="system"/>
+			<category name="domain"/>
 		</categories>
 		<command name="adconnector/load" function="load" />
 		<command name="adconnector/defaults" function="defaults" />

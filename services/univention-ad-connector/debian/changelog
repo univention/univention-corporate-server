@@ -1,3 +1,9 @@
+univention-ad-connector (9.0.3-1) unstable; urgency=low
+
+  * Bug #35654: move module into domain category
+
+ -- Florian Best <best@univention.de>  Wed, 01 Oct 2014 13:52:13 +0200
+
 univention-ad-connector (9.0.2-1) unstable; urgency=medium
 
   * Feedback from QA (Bug #35602)
