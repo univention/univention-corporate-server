@@ -5,7 +5,7 @@
 		<description>Take over an Active Directory Domain</description>
 		<keywords>samba,s4</keywords>
 		<categories>
-			<category name="system"/>
+			<category name="domain"/>
 		</categories>
 		<command name="adtakeover/progress" function="poll" />
 		<command name="adtakeover/check/status" function="check_status" />
