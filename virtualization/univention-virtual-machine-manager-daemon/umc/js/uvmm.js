@@ -155,19 +155,19 @@ define([
 					{ id: 'instance', label: _('Cloud instance') },
 					{ id: 'cloud', label: _('Cloud connection') }
 				],
-				size: 'Half'
+				size: 'One'
 			}, {
 				type: TextBox,
 				name: 'pattern',
 				label: _('Query pattern'),
-				size: 'One',
+				size: 'TwoThirds',
 				value: ''
 			}];
 			var layout = [[ 'type', 'pattern', 'submit' ]];
 
 			// generate the search widget
 			this._searchForm = new SearchForm({
-				region: 'nav',
+				region: 'main',
 				widgets: widgets,
 				layout: layout,
 				onSearch: lang.hitch(this, 'filter')
@@ -223,6 +223,7 @@ define([
 			});
 			this._tree = new Tree({
 				//style: 'width: auto; height: auto;',
+				style: 'height: auto; min-height: 0;',
 				region: 'nav',
 				model: model,
 				persist: false,
@@ -1405,6 +1406,8 @@ define([
 			var tree_path = this._tree.get('path');
 			var tree_item = lang.clone(tree_path).pop();
 
+			var dropdown = this._searchForm.getWidget('type');
+
 			// apply filter from search
 			if (type == 'domain' || type == 'instance') {
 				domainPattern = search_vals.pattern;
@@ -1434,12 +1437,14 @@ define([
 
 			// update tree
 			if (tree_item && tree_item.type == 'node') {
+				dropdown.set('value', 'domain');
 				tools.umcpCommand('uvmm/node/query', {
 					nodePattern: nodePattern
 				}).then(lang.hitch(this, function(response) {
 					this._tree.model.changes(response.result);
 				}));
 			} else if (tree_item && tree_item.type == 'cloud') {
+				dropdown.set('value', 'instance');
 				tools.umcpCommand('uvmm/cloud/query', {
 					nodePattern: nodePattern
 				}).then(lang.hitch(this, function(response) {

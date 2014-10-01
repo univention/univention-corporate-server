@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (4.0.0-21) unstable; urgency=low
+
+  * Change display type according to tree selection (Bug #35945)
+  * Layout improvements 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 01 Oct 2014 16:13:21 +0200
+
 univention-virtual-machine-manager-daemon (4.0.0-20) unstable; urgency=low
 
   * Make instance detail page work with new UMC design (Bug #35945) 

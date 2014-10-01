@@ -80,6 +80,7 @@ define([
 					name: 'label',
 					type: TextBox,
 					label: _('Name'),
+					size: 'Two',
 					readonly: true
 				}, {
 					name: 'public_ips',
