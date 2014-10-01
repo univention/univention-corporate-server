@@ -1,3 +1,10 @@
+ucs-test (5.0.13-1) unstable; urgency=low
+
+  * Bug #35877: adding new modules path to the test script.
+  * Bug #35887: correcting the currect version for ucs4.0.
+
+ -- Ammar Najjar <najjar@univention.de>  Wed, 01 Oct 2014 09:18:26 +0200
+
 ucs-test (5.0.12-1) unstable; urgency=low
 
   * Bug #8052 test scripts added "*_with_special_characters" 
