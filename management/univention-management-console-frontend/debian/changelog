@@ -1,3 +1,11 @@
+univention-management-console-frontend (4.1.21-1) unstable; urgency=low
+
+  * Bug #35654: fix set(visible) of some widgets
+  * fix encoding of feedback body
+  * remove obsolete things
+
+ -- Florian Best <best@univention.de>  Wed, 01 Oct 2014 11:36:08 +0200
+
 univention-management-console-frontend (4.1.20-1) unstable; urgency=medium
 
   * Bug #35654: fix handling of containerNode in Module class

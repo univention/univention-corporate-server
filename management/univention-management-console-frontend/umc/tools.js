@@ -708,7 +708,7 @@ define([
 
 			var feedbackMailto = lang.replace('mailto:{email}?body={body}&subject={subject}', {
 				email: encodeURIComponent(this.status('feedbackAddress')),
-				body: encodeURIComponent(feedbackBody),
+				body: encodeURIComponent(entities.decode(feedbackBody)),
 				subject: encodeURIComponent(this.status('feedbackSubject'))
 			});
 			var feedbackLabel = _('Send as email');

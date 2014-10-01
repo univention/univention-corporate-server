@@ -68,6 +68,7 @@ define([
 		},
 
 		_setVisibleAttr: function(visible) {
+			this._set('visible', visible);
 			domClass.toggle(this.domNode, 'dijitHidden', !visible);
 		},
 

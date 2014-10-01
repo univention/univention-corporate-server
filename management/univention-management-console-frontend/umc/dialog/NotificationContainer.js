@@ -37,6 +37,7 @@ define([
 	"dojo/topic",
 	"dojo/_base/fx",
 	"dojo/dom-style",
+	"dojo/dom-class",
 	"dojo/dom-construct",
 	"dojo/dom-geometry",
 	"dojo/store/Memory",
@@ -47,7 +48,7 @@ define([
 	"umc/widgets/Text",
 	"umc/tools",
 	"umc/i18n!"
-], function(declare, lang, query, win, on, topic, fx, domStyle, domConstruct, domGeometry, Memory, _WidgetBase, _TemplatedMixin, sprintf, Button, Text, tools, _) {
+], function(declare, lang, query, win, on, topic, fx, domStyle, domClass, domConstruct, domGeometry, Memory, _WidgetBase, _TemplatedMixin, sprintf, Button, Text, tools, _) {
 	var _getWrapper = function() {
 		return query('.umcNotificationTopWrapper')[0];
 	};
@@ -128,10 +129,9 @@ define([
 			this._set('view', value);
 		},
 
-		_setVisibleAttr: function(value) {
-			var cssVisibility = value ? 'block' : 'none';
-			domStyle.set(this.domNode, 'display', cssVisibility);
-			this._set('visible', value);
+		_setVisibleAttr: function(visible) {
+			this._set('visible', visible);
+			domClass.toggle(this.domNode, 'dijitHidden', !visible);
 		},
 
 		_stopActiveAnimation: function() {
