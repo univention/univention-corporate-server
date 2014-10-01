@@ -1037,11 +1037,6 @@ define([
 				values.dir = lang.replace('{s}x{s}', values);
 			}
 
-			// remove SVG/PNG extension
-			if (/\.(png|svg)$/.test(icon)) {
-				values.icon = icon.replace(/\.(png|svg)$/, '');
-			}
-
 			var iconClass;
 			if (icon.substr(0, 4) == ('http')) {
 				// absolute path. use!
@@ -1050,9 +1045,15 @@ define([
 				values.icon = icon.replace(/\.\w*$/, '').replace(/.*\//, '');
 				iconClass = lang.replace('abs{s}-{icon}', values);
 			} else {
+				// split filename and filename suffix
+				var reSplitFilename = /(.*?)(?:\.([^.]+))?$/;
+				var filenameParts = reSplitFilename.exec(icon);
+				values.suffix = filenameParts[2] || 'svg';
+				values.icon = filenameParts[1];
+
 				// search in local icons directory
 				values.url = require.toUrl('dijit/themes');
-				values.url = lang.replace('{url}/umc/icons/{dir}/{icon}.svg', values);
+				values.url = lang.replace('{url}/umc/icons/{dir}/{icon}.{suffix}', values);
 				iconClass = lang.replace('icon{s}-{icon}', values);
 			}
 

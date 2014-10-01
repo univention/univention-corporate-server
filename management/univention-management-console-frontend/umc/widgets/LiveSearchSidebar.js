@@ -38,9 +38,9 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/TextBox",
 	"umc/widgets/LabelPane",
-	"umc/widgets/Button",
+	"umc/widgets/RadioButton",
 	"umc/i18n!"
-], function(declare, lang, array, has, domClass, regexp, ContainerWidget, TextBox, LabelPane, Button, _) {
+], function(declare, lang, array, has, domClass, regexp, ContainerWidget, TextBox, LabelPane, RadioButton, _) {
 	return declare("umc.widgets.LiveSearchSidebar", [ContainerWidget], {
 		// summary:
 		//		Offers a side bar for live searching, a set of categories can be defined.
@@ -67,10 +67,17 @@ define([
 
 		style: 'overflow: auto;',
 
+		_radioButtons: null,
+
 		// searchableAttributes: String[]
 		//		Array of strings that shall be searched.
 		//		defaults to ['name', 'description', 'categories', 'keywords']
 		searchableAttributes: null,
+
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this._radioButtons = [];
+		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -83,8 +90,10 @@ define([
 			});
 			this.addChild(this._searchTextBox);
 
-			this._categoryContainer = new ContainerWidget({});
-			this.addChild(this._categoryContainer);
+			this._categoryContainer = new ContainerWidget({
+				'class': 'umcLiveSearchSidebarRadioButtonGroup'
+			});
+			this.addChild(this._categoryContainer)
 		},
 
 		postCreate: function() {
@@ -128,7 +137,14 @@ define([
 		},
 
 		_setCategoryAttr: function(_category) {
-			this._set('category', this._getUniformCategory(_category));
+			var category = this._getUniformCategory(_category);
+			this._set('category', category);
+			array.forEach(this.categories, function(_icat, idx) {
+				var icat = this._getUniformCategory(_icat);
+				if (icat.id == category.id) {
+					this._radioButtons[idx].set('checked', true);
+				}
+			}, this);
 			this._updateCss();
 			this.onSearch();
 			if (!has('touch')) {
@@ -147,16 +163,33 @@ define([
 			this._clearCategoryNodes();
 
 			// add one node elements for each category
-			array.forEach(categories, lang.hitch(this, function(_category) {
+			this._radioButtons = array.map(categories, lang.hitch(this, function(_category, idx) {
 				var category = this._getUniformCategory(_category);
-				this._categoryContainer.addChild(new Button({
+				console.log(category);
+				var radioButton = new RadioButton({
 					label: category.label,
-					_categoryID: category.id,
-					callback: lang.hitch(this, function() {
+					value: category.label,
+					checked: idx == 0,
+					radioButtonGroup: this.id + '-group',
+					_categoryID: category.id
+					/*callback: lang.hitch(this, function() {
 						this.set('value', '');
 						this.set('category', category);
-					})
+					})*/
+				});
+				radioButton.watch('checked', lang.hitch(this, function(attr, oldval, newval) {
+					if (newval) {
+						this.set('value', '');
+						this.set('category', category);
+					}
 				}));
+				var labelPane = new LabelPane({
+					content: radioButton,
+					style: 'width: 100%'
+				});
+				this._categoryContainer.addChild(labelPane);
+
+				return radioButton;
 			}));
 
 			this._set('categories', categories);
