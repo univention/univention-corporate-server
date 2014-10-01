@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.0-20) unstable; urgency=low
+
+  * Make instance detail page work with new UMC design (Bug #35945) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 01 Oct 2014 11:34:15 +0200
+
 univention-virtual-machine-manager-daemon (4.0.0-19) unstable; urgency=low
 
   * Fixed wrong TextBox sizes due to unnecessary

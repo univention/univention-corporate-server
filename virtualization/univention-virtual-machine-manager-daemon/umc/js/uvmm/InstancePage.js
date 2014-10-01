@@ -38,13 +38,12 @@ define([
 	"umc/dialog",
 	"umc/widgets/Page",
 	"umc/widgets/Form",
-	"umc/widgets/TabContainer",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/TextBox",
 	"umc/widgets/HiddenInput",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Deferred, all, tools, dialog, Page, Form, TabContainer, StandbyMixin, TextBox, HiddenInput, types, _) {
+], function(declare, lang, array, Deferred, all, tools, dialog, Page, Form, StandbyMixin, TextBox, HiddenInput, types, _) {
 
 	return declare("umc.modules.uvmm.InstancePage", [ Page, StandbyMixin ], {
 		nested: true,
@@ -63,12 +62,7 @@ define([
 				label: _('Back to overview'),
 				name: 'cancel',
 				callback: lang.hitch(this, 'onClose')
-			}, {
-				label: _('Save'),
-				defaultButton: true,
-				name: 'save',
-				callback: lang.hitch(this, 'save')
-			}];
+			}]; 
 		},
 
 		buildRendering: function() {
@@ -84,31 +78,38 @@ define([
 				}, {
 					name: 'label',
 					type: TextBox,
-					label: _('Name')
+					label: _('Name'),
+					readonly: true
 				}, {
 					name: 'public_ips',
 					type: TextBox,
-					label: _('Public IP address')
+					label: _('Public IP address'),
+					readonly: true
 				}, {
 					name: 'private_ips',
 					type: TextBox,
-					label: _('Private IP address')
+					label: _('Private IP address'),
+					readonly: true
 				}, {
 					name: 'u_size_name',
 					type: TextBox,
-					label: _('Instance size')
+					label: _('Instance size'),
+					readonly: true
 				}, {
 					name: 'keypair',
 					type: TextBox,
-					label: _('Keypair')
+					label: _('Keypair'),
+					readonly: true
 				}, {
 					name: 'image',
 					type: TextBox,
-					label: _('Image')
+					label: _('Image'),
+					readonly: true
 				}, {
 					name: 'securitygroup',
 					type: TextBox,
-					label: _('Security group')
+					label: _('Security group'),
+					readonly: true
 				}],
 				layout: [{
 					label: _('Settings'),
@@ -121,7 +122,6 @@ define([
 				}],
 				scrollable: true
 			});
-			this._generalForm.on('Submit', lang.hitch(this, 'save'));
 			this.addChild(this._generalForm);
 		},
 
@@ -178,9 +178,6 @@ define([
 					if (active) {
 						this.addNotification( _( 'While the virtual machine is running most of the settings can not be changed.' ) );
 					}
-
-					// name should not be editable
-					this._generalForm._widgets.label.set('disabled', true);
 
 					this.selectChild(this._generalPage, true);
 				}
