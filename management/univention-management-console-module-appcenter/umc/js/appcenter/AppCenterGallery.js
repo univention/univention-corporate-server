@@ -38,6 +38,8 @@ define([
 	return declare("umc.modules.appcenter.AppCenterGallery", [ GalleryPane ], {
 		region: 'main',
 
+		baseClass: 'umcGalleryPane umcAppCenterGallery',
+
 		style: 'height: 100%; width: 100%;',
 
 		bootstrapClasses: "col-xs-12.col-sm-6.col-md-6.col-lg-6",
@@ -49,7 +51,7 @@ define([
 		renderRow: function(item) {
 			var div;
 			if (item.isSeparator) {
-				div = put('div.umcGalleryCategoryHeader[style=display: block]', item.name);
+				div = put('div.umcGalleryCategoryHeader.col-xs-12[style=display: block]', item.name);
 			} else {
 				div = this.inherited(arguments);
 				domClass.add(div.firstElementChild, 'umcGalleryCategory-software');

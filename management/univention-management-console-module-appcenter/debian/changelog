@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.4-1) unstable; urgency=medium
+
+  * Bug #35654: minor style fixes, add appcenter.css file
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 01 Oct 2014 20:47:05 +0200
+
 univention-management-console-module-appcenter (4.1.3-3) unstable; urgency=low
 
   * Bug #35781: Fix traceback when LDAP is not yet set up but App Center is

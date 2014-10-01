@@ -44,7 +44,8 @@ define([
 	"umc/modules/appcenter/PackagesPage",
 	"umc/modules/appcenter/SettingsPage",
 	"umc/modules/appcenter/DetailsPage",
-	"umc/i18n!umc/modules/appcenter" // not needed atm
+	"umc/i18n!umc/modules/appcenter", // not needed atm
+	"xstyle/css!umc/modules/appcenter.css"
 ], function(declare, lang, array, when, Deferred, topic, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppChooseHostDialog, PackagesPage, SettingsPage, DetailsPage, _) {
 	return declare("umc.modules.appcenter", [ Module ], {
 
