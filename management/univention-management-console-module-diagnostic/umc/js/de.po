@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-09-17 12:22+0200\n"
+"POT-Creation-Date: 2014-10-01 12:46+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,106 +12,74 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/diagnostic.js:62 umc/js/diagnostic.js:77
-msgid "-----"
+#: umc/js/diagnostic.js:150
+#, python-format
+msgid "\"%s - %s\" Module (as Administrator)"
 msgstr ""
 
-#: umc/js/diagnostic/DetailPage.js:57
+#: umc/js/diagnostic.js:119
+msgid "Analyzing for problems..."
+msgstr "Analysiere auf Probleme..."
+
+#: umc/js/diagnostic.js:66
+msgid "Conflict: "
+msgstr "Konflikt: "
+
+#: umc/js/diagnostic.js:65
+msgid "Critical: "
+msgstr "Kritisch: "
+
+#: umc/js/diagnostic.js:213
+#, python-format
+msgid "Diagnose of \"%s\" was successful"
+msgstr ""
+
+#: umc/js/diagnostic.js:252
+#, python-format
+msgid "Finished running diagnose of \"%s\" again."
+msgstr ""
+
+#: umc/js/diagnostic.js:95
 msgid ""
-"All available information about the test and the result of its last execution"
-msgstr "Alle über die letzte Test Ausführung verfügbaren Informationen"
+"If the system is able to automatically repair found problems it offers the "
+"function in the context menu. "
+msgstr ""
 
-#: umc/js/diagnostic/DetailPage.js:61
-msgid "Back to overview"
-msgstr "Zurück zur Übersicht"
+#: umc/js/diagnostic.js:118 umc/js/diagnostic.js:223
+msgid "No problems could be detected."
+msgstr "Es konnten keine Probleme entdeckt werden."
 
-#: umc/js/diagnostic/DetailPage.js:102
-msgid "Description"
-msgstr "Beschreibung"
+#: umc/js/diagnostic.js:96
+msgid ""
+"Otherwise the problems can be solved manually with help of the displayed "
+"links to articles by using the linked UMC modules. "
+msgstr ""
 
-#: umc/js/diagnostic.js:107
-msgid "Details"
-msgstr "Details"
+#: umc/js/diagnostic.js:68
+msgid "Problem repaired: "
+msgstr "Probleme repariert: "
 
-#: umc/js/diagnostic/DetailPage.js:56
-msgid "Details of last test result"
-msgstr "Details des letzten Testergebnisses"
+#: umc/js/diagnostic.js:70
+msgid "Problem: "
+msgstr "Problem: "
 
-#: umc/js/diagnostic.js:75
-msgid "Execution failed"
-msgstr "Ausführung fehlgeschlagen"
-
-#: umc/js/diagnostic.js:201
-msgid "Feature not implemented yet"
-msgstr "Feature noch nicht implementiert"
-
-#: umc/js/diagnostic/DetailPage.js:103 umc/js/diagnostic.js:129
-msgid "Last executed"
-msgstr "Zuletzt ausgeführt"
-
-#: umc/js/diagnostic.js:139
-msgid "Last result"
-msgstr "Letztes Ergebnis"
-
-#: umc/js/diagnostic.js:55
-msgid "Never"
-msgstr "Nie"
-
-#: umc/js/diagnostic/DetailPage.js:105 umc/js/diagnostic.js:134
-msgid "Problem summary"
-msgstr "Problem Zusammenfassung"
-
-#: umc/js/diagnostic.js:72
-msgid "Problems detected"
-msgstr "Probleme gefunden"
-
-#: umc/js/diagnostic/DetailPage.js:104
-msgid "Result"
-msgstr "Ergebnis"
+#: umc/js/diagnostic.js:204
+msgid "Running full diagnose..."
+msgstr ""
 
 #: umc/js/diagnostic.js:99
-msgid "Run"
-msgstr "Ausführen"
-
-#: umc/js/diagnostic.js:100
-msgid "Run selected tests"
-msgstr "Ausgewählte Tests ausführen"
-
-#: umc/js/diagnostic.js:160
-msgid "Search pattern"
-msgstr "Suchbegriff"
-
-#: umc/js/diagnostic.js:159
-msgid "Specifies the substring pattern which is searched for in the test names"
-msgstr "Spezifiert den den Suchbegriff nach dem in den Testnamen gesucht wird"
-
-#: umc/js/diagnostic.js:115
-msgid "Submit"
-msgstr "Übermitteln"
-
-#: umc/js/diagnostic.js:116
-msgid "Submit resulsts to Univention Support"
-msgstr "Ergebnisse an den Univention Support übermitteln"
+msgid "Start full diagnose"
+msgstr ""
 
 #: umc/js/diagnostic.js:69
-msgid "Successful"
-msgstr "Erfolgreich"
+msgid "Success: "
+msgstr "Erfolg: "
 
-#: umc/js/diagnostic/DetailPage.js:81
-msgid "Test information"
-msgstr "Test Informationen"
+#: umc/js/diagnostic.js:67
+msgid "Warning: "
+msgstr "Warnung: "
 
-#: umc/js/diagnostic/DetailPage.js:84
-msgid "Test output"
-msgstr "Test Ausgabe"
-
-#: umc/js/diagnostic/DetailPage.js:101 umc/js/diagnostic.js:125
-msgid "Title"
-msgstr "Titel"
-
-#: umc/js/diagnostic.js:108
-msgid "View details"
-msgstr "Details ansehen"
-
-#~ msgid "Test results"
-#~ msgstr "Test Ergebnisse"
+#: umc/js/diagnostic.js:94
+msgid ""
+"Within this module the system can be anaylzed for various known problems. "
+msgstr ""

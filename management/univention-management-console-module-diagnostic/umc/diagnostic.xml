@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
 	<module id="diagnostic" version="1.0">
-		<name>Basic system diagnosis</name>
-		<description>System test for known issues</description>
+		<name>System diagnostic</name>
+		<description>Analyse the system for known problems</description>
 		<keywords>support</keywords>
 		<categories>
 			<category name="system"/>

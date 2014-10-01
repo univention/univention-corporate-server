@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (1.0.3-2) unstable; urgency=low
+
+  * Bug #34765: fix some translations / fuzzies
+
+ -- Florian Best <best@univention.de>  Wed, 01 Oct 2014 12:50:09 +0200
+
 univention-management-console-module-diagnostic (1.0.3-1) unstable; urgency=low
 
   * Bug #34765: rewrite

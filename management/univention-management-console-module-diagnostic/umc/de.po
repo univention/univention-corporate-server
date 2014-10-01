@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Basic system diagnosis"
-msgstr "Basis System Diagnose"
+msgid "System diagnostic"
+msgstr "System-Fehlerdiagnose"
 
-msgid "System test for known issues"
-msgstr "Untersuchung des Systems auf bekannte Probleme"
+msgid "Analyse the system for known problems"
+msgstr "Das system auf bekannte Probleme analysieren"
