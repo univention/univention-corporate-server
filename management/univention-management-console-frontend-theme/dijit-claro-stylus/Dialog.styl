@@ -33,7 +33,7 @@
 
 .claro .dijitDialog {
 	border: 1px solid $popup-border-color;
-	box-shadow: 0 1px 5px rgba(0,0,0,0.25);
+	box-shadow: 0 0px 25px rgba(0,0,0,0.15);
 } 
 
 .claro .dijitDialogPaneContent {
@@ -53,7 +53,7 @@
 
 .claro .dijitDialogPaneActionBar {
 	/* gray bar at bottom of dialog with OK/Cancel buttons */
-	background-color: $bar-background-color;
+	//background-color: $bar-background-color;
 	padding: 3px 5px 2px 7px;
 	text-align: right;
 	border-top: 1px solid $minor-border-color;
@@ -76,7 +76,8 @@
 	/* outer container for the titlebar of the dialog */
 	border: 1px solid $dialog-titlebar-border-color;
 	border-top:none;
-	background-color: $dialog-titlebar-background-color;
+	//background-color: $dialog-titlebar-background-color;
+	vertical-gradient-and-filter($tab-gradient-top-color, $tab-gradient-bottom-color);
 	standard-gradient();
 	padding: 5px 7px 4px 7px;
 }
