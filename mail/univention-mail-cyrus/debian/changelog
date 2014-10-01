@@ -1,3 +1,9 @@
+univention-mail-cyrus (7.0.0-3) unstable; urgency=low
+
+  * added ucr header, create cyrus dirs during installation (Bug #35264)
+
+ -- Felix Botner <botner@univention.de>  Wed, 01 Oct 2014 15:34:30 +0200
+
 univention-mail-cyrus (7.0.0-2) unstable; urgency=low
 
   * added ucr template for /etc/default/cyrus-imapd (Bug #35264) 

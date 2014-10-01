@@ -101,6 +101,11 @@ univention-config-registry set mail/cyrus?yes \
 	mail/cyrus/bdb/dbconfig/set_cachesize?"0 2097152 1" \
 	mail/cyrus/bdb/dbconfig/set_lg_regionmax?"2097152"
 
+# fresh installation
+if [ "$1" = "configure" -a -z "$2" ] ; then
+	cyrus-makedirs --cleansquat
+fi
+
 CHROOT=/var/spool/postfix
 addgroup --system postfix || true
 adduser --system --home ${CHROOT} --no-create-home --disabled-password --ingroup postfix postfix
