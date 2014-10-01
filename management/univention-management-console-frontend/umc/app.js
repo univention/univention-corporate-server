@@ -1802,8 +1802,15 @@ define([
 			});
 		},
 
-		__openAllModules: function() {
-			umc.app._moduleStore.query(function(m) { return m.category && m.category !== '_favorites_'; }).forEach(function(m) { umc.app.openModule(m.id, m.flavor); });
+		__openAllModules: function(category) {
+			umc.app._moduleStore.query(function(m) {
+				if (category) {
+					return m.category == category;
+				}
+				return m.category && m.category !== '_favorites_';
+			}).forEach(function(m) {
+				umc.app.openModule(m.id, m.flavor);
+			});
 		},
 
 		onGuiDone: function() {

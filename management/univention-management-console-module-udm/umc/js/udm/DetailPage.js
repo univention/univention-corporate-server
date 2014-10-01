@@ -994,7 +994,7 @@ define([
 			return [{
 				name: 'close',
 				label: closeLabel,
-				iconClass: 'umcLeftIconWhite',
+				iconClass: 'umcCloseIconWhite',
 				callback: lang.hitch(this, function() {
 					topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'cancel');
 					this.onCloseTab();

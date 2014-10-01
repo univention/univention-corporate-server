@@ -160,12 +160,14 @@ define([
 				this.removeChild(this._page);
 				this._page.destroyRecursive();
 			}
-			var buttons = [{
-				name: 'back',
+			var headerButtons = [{
+				name: 'close',
+				iconClass: 'umcCloseIconWhite',
 				label: this.backLabel,
 				align: 'left',
 				callback: lang.hitch(this, 'onBack')
 			}];
+			var buttons = [];
 			if (this.app.useshop) {
 				buttons.push({
 					name: 'shop',
@@ -231,6 +233,7 @@ define([
 				});
 			}
 			this._page = new Page({
+				headerButtons: headerButtons,
 				footerButtons: buttons
 			});
 			this.addChild(this._page);

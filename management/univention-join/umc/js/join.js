@@ -89,8 +89,9 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this.footerButtons = [{
+			this.headerButtons = [{
 				name: 'close',
+				iconClass: 'umcCloseIconWhite',
 				label: _('Show Join status'),
 				callback: lang.hitch(this, 'onShowGrid')
 			}];

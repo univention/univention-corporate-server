@@ -46,7 +46,6 @@ define([
 
 		moduleStore: null,
 		partitionDevice: null,
-		footerButtons: null,
 		_grid: null,
 		_partitionInfo: null,
 		_searchForm: null,
@@ -61,7 +60,9 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this.footerButtons = [{
+			this.headerButtons = [{
+				name: 'close',
+				iconClass: 'umcCloseIconWhite',
 				label: _('Back to overview'),
 				callback: lang.hitch(this, 'onShowOverview')
 			}];

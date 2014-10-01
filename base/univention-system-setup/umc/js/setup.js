@@ -177,6 +177,7 @@ define([
 			var buttons = [/* {
 				name: 'close',
 				label: _( 'Close' ),
+				iconClass: 'umcCloseIconWhite',
 				align: 'left',
 				callback: lang.hitch( this, function() {
 					dialog.confirm( _( 'Should the UMC module be closed? All unsaved modification will be lost.' ), [ {
@@ -191,16 +192,10 @@ define([
 				} )
 			}, */{
 				name: 'submit',
+				iconClass: 'umcSaveIconWhite',
 				label: _( 'Apply changes' ),
 				callback: lang.hitch(this, function() {
 					this.save();
-				})
-			}, {
-				name: 'restore',
-				label: _('Reset'),
-				callback: lang.hitch(this, function() {
-					this.load();
-					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'reset');
 				})
 			}];
 
@@ -215,7 +210,7 @@ define([
 			var Class = require(ipath);
 			var ipage = new Class({
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
-				footerButtons: buttons,
+				headerButtons: buttons,
 				moduleFlavor: this.moduleFlavor,
 				wizard_mode: this.wizard_mode,
 				local_mode: this.local_mode,

@@ -138,6 +138,7 @@ define([
 			// submit changes
 			var buttons = [ {
 				name: 'submit',
+				iconClass: 'umcSaveIconWhite',
 				label: _( 'Send' ),
 				'default': true,
 				callback: lang.hitch( this, function() {
@@ -150,6 +151,7 @@ define([
 				} )
 			}, {
 				name: 'close',
+				iconClass: 'umcCloseIconWhite',
 				label: _('Close'),
 				callback: lang.hitch(this, function() {
 					var values = this._form.get('value');
@@ -172,7 +174,7 @@ define([
 			this._page = new Page({
 				headerText: this.description,
 				helpText: _('Sending a message'),
-				footerButtons: buttons
+				headerButtons: buttons
 			});
 
 			this.addChild(this._page);

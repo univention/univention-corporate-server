@@ -46,32 +46,26 @@ define([
 
 			lang.mixin(this, {
 				title: _("Components"),
-				footerButtons:
-				[
-					{
-						name: 'cancel',
-						'default': false,
-						label: _("Back to overview"),
-						onClick: lang.hitch(this, function() {
-							try
-							{
-								this.onCloseDetail();
-							}
-							catch(error)
-							{
-								console.error("onCancel: " + error.message);
-							}
-						})
-					},
-					{
-						name: 'submit',
-						'default': true,
-						label: _("Apply changes"),
-						onClick: lang.hitch(this, function() {
-							this._form.onSubmit();
-						})
-					}
-				]
+				headerButtons: [{
+					name: 'close',
+					iconClass: 'umcCloseIconWhite',
+					label: _("Back to overview"),
+					callback: lang.hitch(this, function() {
+						try {
+							this.onCloseDetail();
+						} catch(error) {
+							console.error("onCancel: " + error.message);
+						}
+					})
+				}, {
+					name: 'submit',
+					iconClass: 'umcSaveIconWhite',
+					'default': true,
+					label: _("Apply changes"),
+					callback: lang.hitch(this, function() {
+						this._form.onSubmit();
+					})
+				}]
 			});
 		},
 

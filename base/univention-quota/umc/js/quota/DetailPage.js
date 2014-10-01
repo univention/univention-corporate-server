@@ -56,12 +56,14 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this.footerButtons = [{
-				name: 'cancel',
+			this.headerButtons = [{
+				name: 'close',
+				iconClass: 'umcCloseIconWhite',
 				label: _('Back to partition'),
 				callback: lang.hitch(this, 'onClosePage')
 			}, {
 				name: 'submit',
+				iconClass: 'umcSaveIconWhite',
 				label: _('Save changes'),
 				callback: lang.hitch(this, function() {
 					if (this.validateValues()) {

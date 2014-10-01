@@ -65,15 +65,17 @@ define([
 			this.headerText = _('Object properties');
 			this.helpText = _('This page demonstrates how object properties can be viewed for editing.');
 
-			// configure buttons for the footer of the detail page
-			this.footerButtons = [{
+			// configure buttons for the header of the detail page
+			this.headerButtons = [{
 				name: 'submit',
 				label: _('Save'),
+				iconClass: 'umcSaveIconWhite',
 				callback: lang.hitch(this, function() {
 					this._save(this._form.get('value'));
 				})
 			}, {
-				name: 'back',
+				name: 'close',
+				iconClass: 'umcCloseIconWhite',
 				label: _('Back to overview'),
 				callback: lang.hitch(this, 'onClose')
 			}];

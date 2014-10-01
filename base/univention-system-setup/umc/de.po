@@ -18,7 +18,7 @@ msgstr "UCS-Einrichtungsassistent"
 
 #: umc/setup.xml: 13
 msgid "Language settings"
-msgstr "Spracheinstellungen"
+msgstr "Sprach-Einstellungen"
 
 #: umc/setup.xml: 14
 msgid "All language relevant configurations"
@@ -42,7 +42,7 @@ msgstr "Setzen von Rechner- und Domänennamen und des root Passworts"
 
 #: umc/setup.xml: 28
 msgid "Certificate settings"
-msgstr "Zertifikateinstellungen"
+msgstr "Zertifikats-Einstellungen"
 
 #: umc/setup.xml: 29
 msgid "Create a new root certificate"
