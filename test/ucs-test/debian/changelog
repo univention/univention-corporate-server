@@ -1,3 +1,10 @@
+ucs-test (4.0.167-2) unstable; urgency=low
+
+  * 13_indirect_group_user_memberships_file_access: give the group cache
+    more time (Bug #36036)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 01 Oct 2014 15:02:19 +0200
+
 ucs-test (4.0.167-1) unstable; urgency=low
 
   * Bug #8052 test scripts added "*_with_special_characters"
