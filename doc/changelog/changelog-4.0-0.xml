@@ -1,129 +1,121 @@
 <section id="changelog:general">
-  <title>General</title>
+	<title>General</title>
 	<itemizedlist>
-	  <listitem><simpara>
-		The underlying Debian version has been updated to Debian Wheezy 7.6
-		(<ulink url="&ucsbug;33835">Bug 33835</ulink>,
-		 <ulink url="&ucsbug;33836">Bug 33836</ulink>.
-		 <ulink url="&ucsbug;35669">Bug 35688</ulink>).
-	  </simpara></listitem>
-	  <listitem><simpara>
-		All Univention packages have been adapted to Dephelper 9 and to Python
-        2.7. In addition the UCR templates have been adapted to the new upstream
-		packages (
-		<ulink url="&ucsbug;35135">Bug 35135</ulink>,
-		<ulink url="&ucsbug;35138">Bug 35138</ulink>,
-		<ulink url="&ucsbug;35143">Bug 35143</ulink>,
-		<ulink url="&ucsbug;35144">Bug 35144</ulink>,
-		<ulink url="&ucsbug;35145">Bug 35145</ulink>,
-		<ulink url="&ucsbug;35146">Bug 35146</ulink>,
-		<ulink url="&ucsbug;35147">Bug 35147</ulink>,
-		<ulink url="&ucsbug;35264">Bug 35264</ulink>,
-		<ulink url="&ucsbug;35265">Bug 35265</ulink>,
-		<ulink url="&ucsbug;35266">Bug 35266</ulink>,
-		<ulink url="&ucsbug;35267">Bug 35267</ulink>,
-		<ulink url="&ucsbug;35320">Bug 35320</ulink>,
-		<ulink url="&ucsbug;35358">Bug 35358</ulink>,
-		<ulink url="&ucsbug;35431">Bug 35431</ulink>,
-		<ulink url="&ucsbug;35425">Bug 35425</ulink>,
-		<ulink url="&ucsbug;35664">Bug 35664</ulink>,
-		<ulink url="&ucsbug;35669">Bug 35669</ulink>,
-		<ulink url="&ucsbug;35828">Bug 35828</ulink>,
-		<ulink url="&ucsbug;35931">Bug 35931</ulink>).
-	  </simpara></listitem>
+		<listitem><simpara>
+				All Univention packages have been adapted to Dephelper 9 and to Python
+				2.7. In addition the UCR templates have been adapted to the new upstream
+				packages (
+				<ulink url="&ucsbug;33836">Bug 33836</ulink>,
+				<ulink url="&ucsbug;35135">Bug 35135</ulink>,
+				<ulink url="&ucsbug;35138">Bug 35138</ulink>,
+				<ulink url="&ucsbug;35143">Bug 35143</ulink>,
+				<ulink url="&ucsbug;35144">Bug 35144</ulink>,
+				<ulink url="&ucsbug;35145">Bug 35145</ulink>,
+				<ulink url="&ucsbug;35146">Bug 35146</ulink>,
+				<ulink url="&ucsbug;35147">Bug 35147</ulink>,
+				<ulink url="&ucsbug;35264">Bug 35264</ulink>,
+				<ulink url="&ucsbug;35265">Bug 35265</ulink>,
+				<ulink url="&ucsbug;35266">Bug 35266</ulink>,
+				<ulink url="&ucsbug;35267">Bug 35267</ulink>,
+				<ulink url="&ucsbug;35320">Bug 35320</ulink>,
+				<ulink url="&ucsbug;35358">Bug 35358</ulink>,
+				<ulink url="&ucsbug;35431">Bug 35431</ulink>,
+				<ulink url="&ucsbug;35425">Bug 35425</ulink>,
+				<ulink url="&ucsbug;35664">Bug 35664</ulink>,
+				<ulink url="&ucsbug;35669">Bug 35669</ulink>,
+				<ulink url="&ucsbug;35828">Bug 35828</ulink>,
+				<ulink url="&ucsbug;35931">Bug 35931</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 </section>
 
 
 <section id="changelog:installer">
-  <title>Univention Installer</title>
+	<title>Univention Installer</title>
 	<itemizedlist>
-	  <listitem><simpara>
-		The UCS installation DVD has been revised. The installation is now performed by an adapted version of the debian installer
-		(<ulink url="&ucsbug;30547">Bug 30547</ulink>,
-		<ulink url="&ucsbug;34994">Bug 34994</ulink>,
-		<ulink url="&ucsbug;35370">Bug 35370</ulink>,
-		<ulink url="&ucsbug;35371">Bug 35371</ulink>,
-		<ulink url="&ucsbug;35372">Bug 35372</ulink>,
-		<ulink url="&ucsbug;35373">Bug 35373</ulink>,
-		<ulink url="&ucsbug;35374">Bug 35374</ulink>,
-		<ulink url="&ucsbug;35375">Bug 35375</ulink>,
-		<ulink url="&ucsbug;35376">Bug 35376</ulink>,
-		<ulink url="&ucsbug;35377">Bug 35377</ulink>,
-		<ulink url="&ucsbug;35378">Bug 35378</ulink>,
-		<ulink url="&ucsbug;35384">Bug 35384</ulink>,
-		<ulink url="&ucsbug;35385">Bug 35385</ulink>,
-		<ulink url="&ucsbug;35386">Bug 35386</ulink>,
-		<ulink url="&ucsbug;35400">Bug 35400</ulink>,
-		<ulink url="&ucsbug;35417">Bug 35417</ulink>,
-		<ulink url="&ucsbug;35435">Bug 35435</ulink>,
-		<ulink url="&ucsbug;35491">Bug 35491</ulink>,
-		<ulink url="&ucsbug;35493">Bug 35493</ulink>,
-		<ulink url="&ucsbug;35494">Bug 35494</ulink>,
-		<ulink url="&ucsbug;35495">Bug 35495</ulink>,
-		<ulink url="&ucsbug;35496">Bug 35496</ulink>,
-		<ulink url="&ucsbug;35497">Bug 35497</ulink>,
-		<ulink url="&ucsbug;35498">Bug 35498</ulink>,
-		<ulink url="&ucsbug;35525">Bug 35525</ulink>,
-		<ulink url="&ucsbug;35635">Bug 35635</ulink>,
-		<ulink url="&ucsbug;35636">Bug 35636</ulink>,
-		<ulink url="&ucsbug;35659">Bug 35659</ulink>,
-		<ulink url="&ucsbug;35670">Bug 35670</ulink>,
-		<ulink url="&ucsbug;35696">Bug 35696</ulink>.
-		<ulink url="&ucsbug;35699">Bug 35699</ulink>).
-	  </simpara></listitem>
+		<listitem><simpara>
+				The UCS installation DVD has been revised. The installation is now performed by an adapted version of the debian installer
+				(<ulink url="&ucsbug;30547">Bug 30547</ulink>,
+				<ulink url="&ucsbug;34994">Bug 34994</ulink>,
+				<ulink url="&ucsbug;35370">Bug 35370</ulink>,
+				<ulink url="&ucsbug;35371">Bug 35371</ulink>,
+				<ulink url="&ucsbug;35372">Bug 35372</ulink>,
+				<ulink url="&ucsbug;35373">Bug 35373</ulink>,
+				<ulink url="&ucsbug;35374">Bug 35374</ulink>,
+				<ulink url="&ucsbug;35375">Bug 35375</ulink>,
+				<ulink url="&ucsbug;35376">Bug 35376</ulink>,
+				<ulink url="&ucsbug;35377">Bug 35377</ulink>,
+				<ulink url="&ucsbug;35378">Bug 35378</ulink>,
+				<ulink url="&ucsbug;35384">Bug 35384</ulink>,
+				<ulink url="&ucsbug;35385">Bug 35385</ulink>,
+				<ulink url="&ucsbug;35386">Bug 35386</ulink>,
+				<ulink url="&ucsbug;35400">Bug 35400</ulink>,
+				<ulink url="&ucsbug;35417">Bug 35417</ulink>,
+				<ulink url="&ucsbug;35435">Bug 35435</ulink>,
+				<ulink url="&ucsbug;35491">Bug 35491</ulink>,
+				<ulink url="&ucsbug;35493">Bug 35493</ulink>,
+				<ulink url="&ucsbug;35494">Bug 35494</ulink>,
+				<ulink url="&ucsbug;35495">Bug 35495</ulink>,
+				<ulink url="&ucsbug;35496">Bug 35496</ulink>,
+				<ulink url="&ucsbug;35497">Bug 35497</ulink>,
+				<ulink url="&ucsbug;35498">Bug 35498</ulink>,
+				<ulink url="&ucsbug;35525">Bug 35525</ulink>,
+				<ulink url="&ucsbug;35635">Bug 35635</ulink>,
+				<ulink url="&ucsbug;35636">Bug 35636</ulink>,
+				<ulink url="&ucsbug;35659">Bug 35659</ulink>,
+				<ulink url="&ucsbug;35670">Bug 35670</ulink>,
+				<ulink url="&ucsbug;35696">Bug 35696</ulink>.
+				<ulink url="&ucsbug;35699">Bug 35699</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 </section>
 
 
-
-
 <section id="changelog:basic">
-  <title>Basic system services</title>
+	<title>Basic system services</title>
 
-  <!-- <section id="changelog:basic:kernel"> -->
-  <!-- 	<title>Linux kernel and firmware packages</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+	<section id="changelog:basic:kernel">
+		<title>Linux kernel and firmware packages</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <section id="changelog:basis:ucr">
-	<title>Univention Configuration Registry</title>
-	<itemizedlist>
-		  <listitem><simpara>
-		  </simpara></listitem>
-	</itemizedlist>
+	<section id="changelog:basis:ucr">
+		<title>Univention Configuration Registry</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
 
-	<!-- <section id="changelog:basis:ucr:template"> -->
-	<!--   <title>Changes to templates and modules</title> -->
-	<!-- 	<itemizedlist> -->
-	<!-- 	  <listitem><simpara> -->
-	<!-- 	  </simpara></listitem> -->
-	<!-- 	</itemizedlist> -->
-	<!-- </section> -->
-  </section>
-
+		<section id="changelog:basis:ucr:template">
+			<title>Changes to templates and modules</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
 
 	<section id="changelog:basis:boot">
 		<title>Boot Loader</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The boot loader design has been adapted to UCS 4.0
-				(<ulink url="&ucsbug;35934">Bug 35934</ulink>).
+					The boot loader design has been adapted to UCS 4.0
+					(<ulink url="&ucsbug;35934">Bug 35934</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The design of the bootsplash has been adapted to UCS 4.0
-				(<ulink url="&ucsbug;35935">Bug 35935</ulink>).
+					The design of the bootsplash has been adapted to UCS 4.0
+					(<ulink url="&ucsbug;35935">Bug 35935</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 		<itemizedlist>
 			<listitem><simpara>
-				The kernel boot options vga is deprecated and has been 
-				replaced with grub's gfxpayload to control the video mode 
-				in which the Linux kernel starts up
-				(<ulink url="&ucsbug;28604">Bug 28604</ulink>).
+					The kernel boot options vga is deprecated and has been
+					replaced with grub's gfxpayload to control the video mode
+					in which the Linux kernel starts up
+					(<ulink url="&ucsbug;28604">Bug 28604</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -131,411 +123,414 @@
 
 
 <section id="changelog:domain">
-  <title>Domain services</title>
+	<title>Domain services</title>
 
-  <section id="changelog:domain:openldap">
-	<title>OpenLDAP</title>
-	  <itemizedlist>
-		  <listitem><simpara>
-			MDB is the new default backend database for OpenLDAP (see &ucsUCRV;
-			<envar>ldap/database/type</envar> for OpenLDAP database settings, 
-			<ulink url="&ucsbug;34994">Bug 34994</ulink>)
-		  </simpara></listitem>
-	  </itemizedlist>
-
-	<!-- <section id="changelog:domain:openldap:acl"> -->
-	<!--   <title>LDAP ACL changes</title> -->
-	<!-- 	<itemizedlist> -->
-	<!-- 	  <listitem><simpara> -->
-	<!-- 	  </simpara></listitem> -->
-
-	<!-- 	</itemizedlist> -->
-	<!-- </section> -->
-
-	<!-- <section id="changelog:domain:openldap:schema"> -->
-	<!--   <title>LDAP schema changes</title> -->
-	<!-- 	<itemizedlist> -->
-	<!-- 	  <listitem><simpara> -->
-	<!-- 	  </simpara></listitem> -->
-	<!-- 	</itemizedlist> -->
-	<!-- </section> -->
-
-	<section id="changelog:domain:openldap:replication">
-	  <title>Listener/Notifier domain replication</title>
+	<section id="changelog:domain:openldap">
+		<title>OpenLDAP</title>
 		<itemizedlist>
-		  <listitem><simpara>
-		  </simpara></listitem>
+			<listitem><simpara>
+					MDB is the new default backend database for OpenLDAP (see &ucsUCRV;
+					<envar>ldap/database/type</envar> for OpenLDAP database settings,
+					<ulink url="&ucsbug;34994">Bug 34994</ulink>)
+			</simpara></listitem>
+		</itemizedlist>
+
+		<section id="changelog:domain:openldap:acl">
+			<title>LDAP ACL changes</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:domain:openldap:schema">
+			<title>LDAP schema changes</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:domain:openldap:replication">
+			<title>Listener/Notifier domain replication</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:domain:dnsserver">
+		<title>DNS server</title>
+		<itemizedlist>
+			<listitem><simpara>
+					The DNS server bind has been updated to Version 9.8.4P1
+					(<ulink url="&ucsbug;35668">Bug 35668</ulink>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
-  </section>
-
-  <section id="changelog:domain:dnsserver">
-	<title>DNS server</title>
-	  <itemizedlist>
-		  <listitem><simpara>
-			The DNS server bind has been updated to Version 9.8.4P1
-			(<ulink url="&ucsbug;35668">Bug 35668</ulink>)
-		  </simpara></listitem>
-	  </itemizedlist>
-  </section>
 </section>
 
 
 <section id="changelog:umc">
-  <title>Univention Management Console</title>
+	<title>Univention Management Console</title>
 
-  <section id="changelog:umc:web">
-	<title>Univention Management Console web interface</title>
-	  <itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:umc:web">
+		<title>Univention Management Console web interface</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <section id="changelog:umc:server">
-	<title>Univention Management Console server</title>
-	  <itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:umc:server">
+		<title>Univention Management Console server</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <section id="changelog:umc:appcenter">
-	<title>Univention App Center</title>
-	  <itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:umc:appcenter">
+		<title>Univention App Center</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <section id="changelog:umc:setup">
-  	<title>Basic settings / Appliance mode</title>
-  	  <itemizedlist>
-  		<listitem><simpara>
-  			During the UCS installation some fields which are already configured will be hidden in the system setup wizard
-  			<ulink url="&ucsbug;35685">Bug 35685</ulink>).
-  		</simpara></listitem>
-  	  </itemizedlist>
-  </section>
+	<section id="changelog:umc:setup">
+		<title>Basic settings / Appliance mode</title>
+		<itemizedlist>
+			<listitem><simpara>
+					During the UCS installation some fields which are already configured will be hidden in the system setup wizard
+					<ulink url="&ucsbug;35685">Bug 35685</ulink>).
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <section id="changelog:umc:user">
-	<title>Users module</title>
-	  <itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:umc:user">
+		<title>Users module</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <section id="changelog:umc:computers">
-	<title>Users module</title>
-	  <itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:umc:computers">
+		<title>Users module</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <section id="changelog:umc:license">
-	<title>License module</title>
-	  <itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:umc:license">
+		<title>License module</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <!-- <section id="changelog:umc:join"> -->
-  <!-- 	<title>Domain join module</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+	<section id="changelog:umc:join">
+		<title>Domain join module</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <!-- <section id="changelog:umc:update"> -->
-  <!-- 	<title>Online update module</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+	<section id="changelog:umc:update">
+		<title>Online update module</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <!-- <section id="changelog:umc:share"> -->
-  <!-- 	<title>Shares module</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+	<section id="changelog:umc:share">
+		<title>Shares module</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <!-- <section id="changelog:umc:policy"> -->
-  <!-- 	<title>Policies</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+	<section id="changelog:umc:policy">
+		<title>Policies</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <!-- <section id="changelog:umc:printer"> -->
-  <!-- 	<title>Printers module</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+	<section id="changelog:umc:printer">
+		<title>Printers module</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <!-- <section id="changelog:umc:ucr"> -->
-  <!-- 	<title>Univention Configuration Registry module</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+	<section id="changelog:umc:ucr">
+		<title>Univention Configuration Registry module</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <!-- <section id="changelog:umc:ldap"> -->
-  <!-- 	<title>LDAP directory browser</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+	<section id="changelog:umc:ldap">
+		<title>LDAP directory browser</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <section id="changelog:umc:other">
-	<title>Other modules</title>
-	  <itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:umc:other">
+		<title>Other modules</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <section id="changelog:umc:udmcli">
-	<title>&ucsUDM; command line interface and related tools</title>
-	  <itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:umc:udmcli">
+		<title>&ucsUDM; command line interface and related tools</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <section id="changelog:umc:development">
-	<title>Development of modules for &ucsUMC;</title>
-	  <itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:umc:development">
+		<title>Development of modules for &ucsUMC;</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 </section>
 
 
-<!-- <section id="changelog:deployment"> -->
-<!--   <title>Software deployment</title> -->
+<section id="changelog:deployment">
+	<title>Software deployment</title>
+	<itemizedlist>
+		<listitem><simpara>
+				Signature verification for downloaded package files is enabled by default (<ulink url="&ucsbug;35708">Bug 35708</ulink>).
+		</simpara></listitem>
+	</itemizedlist>
 
-<!--   <section id="changelog:deployment:cli"> -->
-<!-- 	<title>Software deployment command line tools</title> -->
-<!-- 	  <itemizedlist> -->
-<!-- 		<listitem><simpara> -->
-<!-- 		</simpara></listitem> -->
-<!-- 	  </itemizedlist> -->
-<!--   </section> -->
-<!-- </section> -->
+	<section id="changelog:deployment:cli">
+		<title>Software deployment command line tools</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+</section>
 
 
 <section id="changelog:lib">
-  <title>Univention Library</title>
+	<title>Univention Library</title>
 	<itemizedlist>
-	  <listitem><simpara>
-		  The new version of the package <package>python-ldap</package> caused the <classname>univention.uldap</classname> implementation to retry failed connects too many times.
-		  This has been fixed (<ulink url="&ucsbug;35841">Bug 35841</ulink>, <ulink url="&ucsbug;35741">Bug 35741</ulink>).
-	  </simpara></listitem>
+		<listitem><simpara>
+				The new version of the package <package>python-ldap</package> caused the <classname>univention.uldap</classname> implementation to retry failed connects too many times.
+				This has been fixed (<ulink url="&ucsbug;35841">Bug 35841</ulink>, <ulink url="&ucsbug;35741">Bug 35741</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 </section>
 
 
 <section id="changelog:service">
-  <title>System services</title>
+	<title>System services</title>
 
-  <section id="changelog:service:mail">
-	<title>Mail services</title>
-	  <itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:service:mail">
+		<title>Mail services</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
+	<section id="changelog:service:virus">
+		<title>Spam/virus detection and countermeasures</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <!-- <section id="changelog:service:virus"> -->
-  <!-- 	<title>Spam/virus detection and countermeasures</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+	<section id="changelog:service:print">
+		<title>Printing services</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <!-- <section id="changelog:service:print"> -->
-  <!-- 	<title>Printing services</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+	<section id="changelog:service:nagios">
+		<title>Nagios</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <section id="changelog:service:nagios">
-	<title>Nagios</title>
-	  <itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:service:ssl">
+		<title>SSL</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <!-- <section id="changelog:service:ssl"> -->
-  <!-- 	<title>SSL</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+	<section id="changelog:service:proxy">
+		<title>Proxy services</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <section id="changelog:service:proxy">
-	<title>Proxy services</title>
-	  <itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:service:pam">
+		<title>PAM / Local group cache</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <!-- <section id="changelog:service:pam"> -->
-  <!-- 	<title>PAM / Local group cache</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
-
-  <!-- <section id="changelog:service:other"> -->
-  <!-- 	<title>Other services</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+	<section id="changelog:service:other">
+		<title>Other services</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 </section>
 
 
 <section id="changelog:virt">
-  <title>Virtualisation</title>
+	<title>Virtualisation</title>
 
-  <section id="changelog:virt:uvmm">
-	<title>Univention Virtual Machine Manager</title>
-	  <itemizedlist>
-		<listitem><simpara>
-			Several packages related to virtualization have been updated to newer versions:
-			<package>libiscsi</package> (1.12.0.2),
-			<package>libusb-1.0</package> (1.0.19),
-			<package>usbredir</package> (0.6.2),
-			<package>spice-protocol</package> (0.12.6),
-			<package>spice</package> (0.12.4),
-			<package>seabios</package> (1.7.5),
-			<package>ipxe</package> (1.0.0),
-			<package>qemu</package> (2.1),
-			<package>libvirt</package> (1.2.7),
-			<package>libvirt-python</package> (1.2.6)
-			(<ulink url="&ucsbug;35768">Bug 35768</ulink>).
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:virt:uvmm">
+		<title>Univention Virtual Machine Manager</title>
+		<itemizedlist>
+			<listitem><simpara>
+					Several packages related to virtualization have been updated to newer versions:
+					<package>libiscsi</package> (1.12.0.2),
+					<package>libusb-1.0</package> (1.0.19),
+					<package>usbredir</package> (0.6.2),
+					<package>spice-protocol</package> (0.12.6),
+					<package>spice</package> (0.12.4),
+					<package>seabios</package> (1.7.5),
+					<package>ipxe</package> (1.0.0),
+					<package>qemu</package> (2.1),
+					<package>libvirt</package> (1.2.7),
+					<package>libvirt-python</package> (1.2.6)
+					(<ulink url="&ucsbug;35768">Bug 35768</ulink>).
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <!-- <section id="changelog:virt:xen"> -->
-  <!-- 	<title>Xen</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+	<section id="changelog:virt:xen">
+		<title>Xen</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 </section>
 
 
 <section id="changelog:win">
-  <title>Services for Windows</title>
+	<title>Services for Windows</title>
 	<itemizedlist>
-	  <listitem><simpara>
-		Samba has been updated to version 4.2
-		(<ulink url="&ucsbug;35319">Bug 35319</ulink>).
-	  </simpara></listitem>
+		<listitem><simpara>
+				Samba has been updated to version 4.2
+				(<ulink url="&ucsbug;35319">Bug 35319</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 
-  <section id="changelog:win:nt">
-  	<title>Samba NT domain support</title>
-  	  <itemizedlist>
-  		<listitem><simpara>
-			<command>net idmap secret</command> has been renamed to <command>net idmap set secret</command>
-		(<ulink url="&ucsbug;35765">Bug 35765</ulink>).
-  		</simpara></listitem>
-  		<listitem><simpara>
-			The univention-samba joinscript has been adjusted to allow a self join to fail on a DC master.
-			Samba currently does not support this
-		(<ulink url="&ucsbug;35766">Bug 35766</ulink>).
-  		</simpara></listitem>
-  	  </itemizedlist>
-  </section>
+	<section id="changelog:win:nt">
+		<title>Samba NT domain support</title>
+		<itemizedlist>
+			<listitem><simpara>
+					<command>net idmap secret</command> has been renamed to <command>net idmap set secret</command>
+					(<ulink url="&ucsbug;35765">Bug 35765</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+					The univention-samba joinscript has been adjusted to allow a self join to fail on a DC master.
+					Samba currently does not support this
+					(<ulink url="&ucsbug;35766">Bug 35766</ulink>).
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <section id="changelog:win:ad">
-	<title>Samba AD domain support</title>
-	  <itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:win:ad">
+		<title>Samba AD domain support</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <section id="changelog:win:takeover">
-	<title>Univention AD Takeover</title>
-	  <itemizedlist>
-		<listitem><simpara>
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:win:takeover">
+		<title>Univention AD Takeover</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <section id="changelog:win:s4c">
-	<title>Univention S4 Connector</title>
-	  <itemizedlist>
-		<listitem><simpara>
-			A traceback in the cleanup code of the <emphasis>s4-connector</emphasis> listener
-			has been fixed (<ulink url="&ucsbug;32813">Bug 32813</ulink>)
-		</simpara></listitem>
-	  </itemizedlist>
-  </section>
+	<section id="changelog:win:s4c">
+		<title>Univention S4 Connector</title>
+		<itemizedlist>
+			<listitem><simpara>
+					A traceback in the cleanup code of the <emphasis>s4-connector</emphasis> listener
+					has been fixed (<ulink url="&ucsbug;32813">Bug 32813</ulink>)
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 
-  <!-- <section id="changelog:win:adc"> -->
-  <!-- 	<title>Univention Active Directory Connector</title> -->
-  <!-- 	  <itemizedlist> -->
-  <!-- 		<listitem><simpara> -->
-  <!-- 		</simpara></listitem> -->
-  <!-- 	  </itemizedlist> -->
-  <!-- </section> -->
+	<section id="changelog:win:adc">
+		<title>Univention Active Directory Connector</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
 </section>
 
 
 <section id="changelog:other">
-  <title>Other changes</title>
+	<title>Other changes</title>
 	<itemizedlist>
-	  <listitem><simpara>
-		The package <package>univention-showload</package> is no longer needed and maintained by Univention. The package can be manually removed (<ulink url="&ucsbug;35138">Bug 35138</ulink>).
-	  </simpara></listitem>
-      <listitem><simpara>
-		The printer models in the join script of
-		<package>univention-printserver</package>  have been updated
-		(<ulink url="&ucsbug;35147">Bug 35147</ulink>).
-      </simpara></listitem>
-      <listitem><simpara>
-		The web browser <package>firefox</package> is now shipped as 64 bit binary on 
-		the amd64 platform. Previously it was always shipped as 32 bit application
-		(<ulink url="&ucsbug;35266">Bug 35266</ulink>).
-      </simpara></listitem>
-      <listitem><simpara>
-		The web browser <package>firefox</package> was updated to version 31.1 ESR.
-		(<ulink url="&ucsbug;35702">Bug 35702</ulink>).
-      </simpara></listitem>
-	  <listitem><simpara>
-		An old, unused scalix directory has been removed from the PATH environment variable
-		in the default profile
-		(<ulink url="&ucsbug;32628">Bug 32628</ulink>).
-	  </simpara></listitem>
+		<listitem><simpara>
+				The package <package>univention-showload</package> is no longer needed and maintained by Univention. The package can be manually removed (<ulink url="&ucsbug;35138">Bug 35138</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+				The printer models in the join script of
+				<package>univention-printserver</package>  have been updated
+				(<ulink url="&ucsbug;35147">Bug 35147</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+				The web browser <package>firefox</package> is now shipped as 64 bit binary on
+				the amd64 platform. Previously it was always shipped as 32 bit application
+				(<ulink url="&ucsbug;35266">Bug 35266</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+				The web browser <package>firefox</package> was updated to version 31.1 ESR.
+				(<ulink url="&ucsbug;35702">Bug 35702</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+				An old, unused scalix directory has been removed from the PATH environment variable
+				in the default profile
+				(<ulink url="&ucsbug;32628">Bug 32628</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 </section>
 
