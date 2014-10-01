@@ -1,3 +1,9 @@
+univention-ldap (11.0.4-1) unstable; urgency=low
+
+  * db5.1 for bdb backend (Bug #35697)
+
+ -- Felix Botner <botner@univention.de>  Wed, 01 Oct 2014 11:50:10 +0200
+
 univention-ldap (11.0.3-1) unstable; urgency=medium
 
   * Call samba-ad-dc init script instead of samba4 (Bug #35319)

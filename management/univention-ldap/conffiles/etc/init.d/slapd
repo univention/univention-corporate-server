@@ -46,7 +46,7 @@ bdbrecover ()
 
 	log_action_begin_msg "Check database: "
 	# determine libdb version that back-bdb.so was linked against
-	back_bdb_version="$(/usr/bin/ldd /usr/lib/ldap/back_bdb.so | sed -n 's|.*/usr/lib/libdb-\([0-9.]*\).so.*|\1|p')"
+	back_bdb_version="$(/usr/bin/ldd /usr/lib/ldap/back_bdb.so | sed -n 's|.*/usr/lib/.*/libdb-\([0-9.]*\).so.*|\1|p')"
 	DBRECOVER="/usr/bin/db${back_bdb_version}_recover"
 	DBSTAT="/usr/bin/db${back_bdb_version}_stat"
 	if [ -e "${DBRECOVER}" ]; then
