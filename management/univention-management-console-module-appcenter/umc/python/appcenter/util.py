@@ -104,8 +104,11 @@ def get_all_backups(lo, ucr=None):
 def get_all_hosts(lo=None, ucr=None):
 	delete_lo = False
 	if lo is None:
+		try:
+			lo = uldap.getMachineConnection(ldap_master=False)
+		except IOError: # /etc/machine.secret => No LDAP set up yet (e.g. system-setup)
+			return []
 		delete_lo = True
-		lo = uldap.getMachineConnection(ldap_master=False)
 	try:
 		return get_hosts(domaincontroller_master, lo, ucr) + \
 				get_hosts(domaincontroller_backup, lo, ucr) + \
