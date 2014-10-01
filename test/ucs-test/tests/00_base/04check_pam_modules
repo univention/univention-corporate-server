@@ -13,10 +13,13 @@ modules=$(grep -v '#' /etc/pam.conf $(run-parts --list /etc/pam.d) | grep -o 'pa
 result=0
 for mod in $modules # IFS
 do
-	if [ ! -e "/lib/security/$mod" ]
+	if [ ! -e "/lib/security/$mod" ] 
 	then
-		echo "$mod does not exist"
-		result=1
+		if [ ! -e "/lib/x86_64-linux-gnu/security/$mod" ]
+		then
+			echo "$mod does not exist"
+			result=1
+		fi
 	fi
 done
 exit $result
