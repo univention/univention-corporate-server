@@ -82,6 +82,7 @@
 		<title>Linux kernel and firmware packages</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The Linux kernel was updated to 3.16.3 (<ulink url="&ucsbug;33844">Bug 33844</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
