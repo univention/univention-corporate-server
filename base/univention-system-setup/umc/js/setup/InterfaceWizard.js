@@ -88,9 +88,9 @@ define([
 					name: 'interfaceType',
 					headerText: _('Choose interface type'),
 					helpText: _('Several network types can be chosen.') +
-						'<ul><li>' + _('<i>Ethernet</i> is a standard physical interface. ') +
-						'</li><li>' +  _('<i>VLAN</i> interfaces can be used to separate network traffic logically while using only one or more physical network interfaces. ') +
-						'</li><li>' + _('<i>Bridge</i> interfaces allows a physical network interface to be shared to connect one or more network segments. ') +
+						'<ul><li>' + _('<i>Ethernet</i> is a standard physical interface.') +
+						'</li><li>' +  _('<i>VLAN</i> interfaces can be used to separate network traffic logically while using only one or more physical network interfaces.') +
+						'</li><li>' + _('<i>Bridge</i> interfaces allows a physical network interface to be shared to connect one or more network segments.') +
 						'</li><li>' + _('<i>Bond</i> interfaces allows two or more physical network interfaces to be coupled.') + '</li></ul>' +
 						_('Further information can be found in the <a href="http://docs.univention.de/manual-%s.html#computers:networkcomplex" target="_blank">UCS documentation</a>.', this.ucsversion),
 					widgets: [{
@@ -351,7 +351,7 @@ define([
 					// A network bridge (software side switch)
 					name: 'Bridge',
 					headerText: _('Bridge configuration'),
-					helpText: _('<i>Bridge</i> interfaces allows a physical network interface to be shared to connect one or more network segments. '),
+					helpText: _('<i>Bridge</i> interfaces allows a physical network interface to be shared to connect one or more network segments.'),
 					widgets: [{
 						name: 'bridge_ports',
 						label: _('Bridge ports'),

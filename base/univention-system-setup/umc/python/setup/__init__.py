@@ -211,8 +211,8 @@ class Instance(Base, ProgressMixin):
 		# determine new system role
 		oldrole = orgValues.get('server/role', '')
 		newrole = values.get('server/role', oldrole)
-		if newrole == 'basesystem' or orgValues.get('joined'):
-			raise Exception(_('Base systems and already joined systems cannot be joined.'))
+		if orgValues.get('joined'):
+			raise Exception(_('Already joined systems cannot be joined.'))
 
 		def _thread(request, obj, username, password):
 			# acquire the lock until the scripts have been executed
@@ -677,4 +677,10 @@ class Instance(Base, ProgressMixin):
 	def apps_query(self):
 		return util.get_apps(True)
 
+	@simple_response
+	def check_ad_existance(self, address):
+		raise NotImplementedError('Not in MS2')
+		#from univention.lib.admember import check_connection
+		#check_connection(address)
+		return 'domaincontroller_master'
 

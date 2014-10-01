@@ -108,7 +108,7 @@ define([
 								// interface is not removeable if used as parent device in a VLAN
 								var deletable = array.every(this.get('value'), function(iface) {
 									if (!iface.isVLAN()) {
-										// we don't have to check here because items != VLAN are disabled if used
+										// we do not have to check here because items != VLAN are disabled if used
 										return true;
 									}
 									if (item.name !== iface.parent_device) {

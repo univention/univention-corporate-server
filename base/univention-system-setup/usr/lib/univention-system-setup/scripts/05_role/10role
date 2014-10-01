@@ -41,25 +41,12 @@ class RoleScript(AptScript):
 	brutal_apt_options = True
 
 	def inner_run(self):
-		# preparation update install autoremove
-		self.steps(4 * 100)
+		# preparation install autoremove
+		self.steps(3 * 100)
 
 		if not self.wanted_server_role or self.wanted_server_role == self.current_server_role:
 			# nothing to do
 			return True
-
-		# These packages will be removed if the server role was changed to memberserver or basesystem
-		# FIXME: These packages are correct only for memberserver, not for basesystem. But as
-		# long as basesystem is not supported this does not matter.
-		base_remove_packages = [
-				'univention-management-console-module-udm',
-				'univention-virtual-machine-manager-schema',
-				'univention-s4-connector',
-				'univention-samba4',
-				'samba4',
-				'univention-ad-connector',
-				'univention-virtual-machine-manager-daemon',
-			]
 
 		# Copy local files into the local cache
 		#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27935
@@ -82,17 +69,6 @@ class RoleScript(AptScript):
 		if current_server_role_package:
 			self.uninstall(current_server_role_package)
 		self.install(wanted_server_role_package)
-
-		self.finish_task()
-
-		# Remove server packages
-		if self.wanted_server_role in ['basesystem', 'memberserver']:
-			# filter those that are unknown (may happen without
-			# network connection): dont try to uninstall them
-			# as they are surely not installed (but not finding
-			# them results in error messages)
-			base_remove_packages = filter(lambda pkg: pkg in self.package_manager.cache, base_remove_packages)
-			self.uninstall(*base_remove_packages)
 
 		self.finish_task()
 
