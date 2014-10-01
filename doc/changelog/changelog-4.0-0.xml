@@ -319,7 +319,7 @@
 	<title>Software deployment</title>
 	<itemizedlist>
 		<listitem><simpara>
-				Signature verification for downloaded package files is enabled by default (<ulink url="&ucsbug;35708">Bug 35708</ulink>).
+				Signature verification for package files is now already enabled during UCS installation (<ulink url="&ucsbug;35708">Bug 35708</ulink>).
 		</simpara></listitem>
 	</itemizedlist>
 
