@@ -161,7 +161,7 @@ define([
 		var acceptEmtpy = !ip && !this.required;
 		return acceptEmtpy || isIPv4Address || isIPv6Address;
 	};
-	var _domainNotAccessibleMessage = _('No domain controller was found at the address of the name server.');
+	var _domainNotAccessibleMessage = 'CHECK NOT YET IMPLEMENTED IN UCS 4.0 MS 2! ALWAYS FAILS! ' + _('No domain controller was found at the address of the name server.'); // FIXME
 	var _validateIPAddressAndDomainAccess = function(ip) {
 		var valid = _validateIPAddress(ip);
 		this.set('invalidMessage', _invalidIPAddressMessage);
@@ -376,9 +376,9 @@ define([
 				'class': 'umc-setup-page umc-setup-page-network',
 				name: 'network',
 				headerText: _('Domain and host configuration'),
+				helpText: _('Specify the network settings for this system.'),
 				layout: [
-					'helpMaster',
-					'helpNonMaster',
+					'help',
 					'_dhcp',
 					['_ip0', '_netmask0'],
 					['_ip1', '_netmask1'],
@@ -391,16 +391,6 @@ define([
 					'configureProxySettings'
 				],
 				widgets: [{
-					type: Text,
-					'class': 'umcPageHelpText',
-					name: 'helpMaster',
-					content: _('Specify the network settings for this system.')
-				}, {
-					type: Text,
-					'class': 'umcPageHelpText',
-					name: 'helpNonMaster',
-					content: _('Specify hostname as well as a password for the local superuser <i>root</i> and configure network settings for this system.')
-				}, {
 					type: CheckBox,
 					name: '_dhcp',
 					label: _('Obtain IP address automatically (DHCP)'),
@@ -497,8 +487,9 @@ define([
 					label: _('Name server of the domain'),
 					required: true,
 					invalidMessage: null, // dynamically set
-					onChange: lang.hitch(this, function() {
+					onChange: lang.hitch(this, function(nameserver) {
 						this.getWidget('network', 'nameserver1')._domainNotAccessible = false;
+						this.getWidget('credentials-ad', '_ad_address').set('value', nameserver);
 					}),
 					validator: _validateIPAddressAndDomainAccess
 				}, {
@@ -541,12 +532,8 @@ define([
 				'class': 'umc-setup-page umc-setup-page-domain',
 				name: 'role',
 				headerText: _('Domain setup'),
+				helpText: _('Will the system be the first system of a new UCS domain or shall it join into an existing one?'),
 				widgets: [{
-					type: Text,
-					'class': 'umcPageHelpText',
-					name: 'help',
-					content: _('Will the system be the first system of a new UCS domain or shall it join into an existing one?')
-				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_createDomain',
@@ -645,19 +632,13 @@ define([
 				'class': 'umc-setup-page umc-setup-page-user',
 				name: 'credentials-master',
 				headerText: _('Administrator account information'),
-				helpText: '',
+				helpText: _('<p>Enter the name of your organization, an e-mail address to activate UCS and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>'),
 				layout: [
-					'help',
 					'organization',
 					'email_address',
 					'root_password'
 				],
 				widgets: [{
-					type: Text,
-					'class': 'umcPageHelpText',
-					name: 'help',
-					content: _('<p>Enter the name of your organization, an e-mail address to activate UCS and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>')
-				}, {
 					type: TextBox,
 					name: 'organization',
 					label: _('Organization name'),
@@ -771,7 +752,7 @@ define([
 					required: this.local_mode
 				}]
 			}, {
-				name: 'software-nonbasesystem',
+				name: 'software',
 				'class': 'umc-setup-page umc-setup-page-software',
 				headerText: _('Software configuration'),
 				helpText: _('<p>Select UCS software components for installation on this system. This step can be skipped; the components are also available in the Univention App Center in the category <i>UCS components</i>.</p><p>Third-party software (e.g., groupware) is also available through the Univention App Center.</p>')
@@ -853,9 +834,7 @@ define([
 			var helpTexts = {};
 			array.forEach(this.disabledFields, lang.hitch(this, function(field) {
 				if (field == 'password') {
-					disable.push(['credentials-master', 'root_password']);
 					disable.push(['fqdn-nonmaster-all', 'root_password']);
-					helpTexts['credentials-master'] = {help: _('<p>Enter the name of your organization and an e-mail address to activate UCS.</p>')};
 				} else if (field == 'network') {
 					disable.push(['network', '_dhcp']);
 					disable.push(['network', '_ip0']);
@@ -867,11 +846,6 @@ define([
 					disable.push(['network', '_ip3']);
 					disable.push(['network', '_netmask3']);
 					disable.push(['network', 'gateway']);
-
-					helpTexts.network = {
-						helpMaster:  _('Configure the new UCS domain.'),
-						helpNonMaster: _('Specify hostname and configure network settings for this system.')
-					};
 				} else if (field == 'nameservers') {
 					disable.push(['network', 'nameserver1']);
 					disable.push(['network', 'nameserver2']);
@@ -1118,7 +1092,7 @@ define([
 					return _('Installation of %d additional software components.', nItems);
 				}
 			});
-			this._addWidgetToPage('software-nonbasesystem', this._gallery);
+			this._addWidgetToPage('software', this._gallery);
 			this._gallery.on('filterDone', lang.hitch(this, function() {
 				this._apps.query({is_installed: true}).forEach(lang.hitch(this, function(iitem) {
 					var idx = this._gallery._grid.getItemIndex(iitem);
@@ -1377,7 +1351,7 @@ define([
 				return _('Hostname');
 			}
 			if (key == 'components') {
-				return this.getPage('software-nonbasesystem').headerText;
+				return this.getPage('software').headerText;
 			}
 			return null;
 		},
@@ -1619,6 +1593,9 @@ define([
 		},
 
 		_isPageForRole: function(pageName) {
+			if (pageName == 'software') {
+				return !this._isRoleBaseSystem();
+			}
 			if (pageName.indexOf('-master') >= 0) {
 				return this._isRoleMaster();
 			}
@@ -1636,9 +1613,6 @@ define([
 			}
 			if (pageName.indexOf('-basesystem') >= 0) {
 				return this._isRoleBaseSystem();
-			}
-			if (pageName.indexOf('-nonbasesystem') >= 0) {
-				return !this._isRoleBaseSystem();
 			}
 			return true;
 		},
@@ -1679,7 +1653,7 @@ define([
 		},
 
 		_validatePage: function(pageName) {
-			if (pageName == 'software-nonbasesystem') {
+			if (pageName == 'software') {
 				// validate software components
 				var packages = {};
 				array.forEach(this._gallery.getSelectedItems(), function(iapp) {
@@ -1728,7 +1702,7 @@ define([
 
 			// check network device configuration
 			if (pageName == 'network' && this.getWidget('network', '_ip0').get('visible')) {
-				var _vals = this._gatherVisibleValues();
+				var _vals = this._pages.network._form.get('value');
 				var nConfiguredInterfaces = 0;
 				for (var idx = 0; idx < 4; ++idx) {
 					nConfiguredInterfaces += Boolean(_vals['_ip' + idx] && _vals['_netmask' + idx]);
@@ -1903,7 +1877,7 @@ define([
 				}
 			}
 
-			if (nextPage == 'software-nonbasesystem') {
+			if (nextPage == 'software') {
 				this._updateAppGallery();
 			}
 
@@ -1984,7 +1958,7 @@ define([
 			}
 
 			if (pageName == 'error' || pageName == 'summary') {
-				previousPage = this.isPageVisible('software-nonbasesystem') ? 'software-nonbasesystem' : 'network';
+				previousPage = this.isPageVisible('software') ? 'software' : 'network';
 			}
 			return this._forcePageTemporarily(previousPage);
 		},
