@@ -1,3 +1,10 @@
+ucs-test (5,0.14-1) unstable; urgency=low
+
+  * 13_indirect_group_user_memberships_file_access: give the group cache
+    more time (Bug #36036)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 01 Oct 2014 15:02:19 +0200
+
 ucs-test (5.0.13-1) unstable; urgency=low
 
   * Bug #35877: adding new modules path to the test script.

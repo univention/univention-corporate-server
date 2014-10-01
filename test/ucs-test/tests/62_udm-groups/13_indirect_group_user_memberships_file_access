@@ -32,6 +32,7 @@ if __name__ == '__main__':
 		another_user = udm.create_user(groups = nested_group)
 
 		utils.wait_for_replication_and_postrun()
+		utils.wait_for_replication_and_postrun()
 
 
 
