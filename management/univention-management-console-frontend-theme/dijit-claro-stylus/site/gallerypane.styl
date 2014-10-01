@@ -44,6 +44,8 @@
 		outline: none;
 		padding: 5px;
 		background-color: rgba(255, 255, 255, 0.5);
+		transition-duration: 0.25s;
+		transition-property: background-color, opacity, border;
 
 		// definitions in px instead of em due to size of image in px
 		//padding: 15px 20px;
@@ -57,12 +59,16 @@
 			border-bottom: solid 1px $gallery-border-color;
 			line-height: 1.05em;
 			height: 55%;
+			transition-duration: inherit;
+			transition-property: color, border;
 		}
 
 		.umcGalleryDescription {
 			color: $text-color-lightest;
 			line-height: 1.05em;
 			margin-top: 5px;
+			transition-duration: inherit;
+			transition-property: color;
 		}
 
 		.umcGalleryIcon {
@@ -94,13 +100,11 @@
 		}
 
 		.umcGalleryContextIcon {
-			background-size: 18px;
+			icon-image(0, -40, "../");
 			position: absolute;
-			top: 5px;
+			top: 11px;
 			left: auto;
-			right: 10px;
-			width: 24px;
-			height: 24px;
+			right: 5px;
 		}
 	}
 
@@ -119,6 +123,16 @@
 		}
 		.umcFavoriteIconDefault {
 			display: none;
+		}
+		.umcGalleryContextIcon {
+			background-position-x: -40px;
+		}
+		.umcGalleryContextIcon:hover {
+			background-position-x: -60px;
+		}
+		.umcGalleryContextIcon:active {
+			background-position-x: -60px;
+			opacity: 0.67;
 		}
 	}
 }
