@@ -30,6 +30,7 @@ Depends: ${misc:Depends},
  univention-management-console-module-sysinfo,
  univention-management-console-module-appcenter,
  univention-management-console-module-apps,
+ univention-management-console-module-diagnostic,
 Recommends:
  univention-management-console-module-quota
 Description: UCS Management Console - Web based computer administration tool
