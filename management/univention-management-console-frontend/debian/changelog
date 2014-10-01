@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.22-2) unstable; urgency=medium
+
+  * Bug #35654: adjust CSS rules for GalleryItems for hover/active mode
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 01 Oct 2014 16:25:18 +0200
+
 univention-management-console-frontend (4.1.22-1) unstable; urgency=medium
 
   * Bug #35654: minor fixes for LabelPane

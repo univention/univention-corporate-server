@@ -1328,7 +1328,7 @@ define([
 					iconClass = tools.getIconClass(category.icon, 70);
 				}
 				var color = category.color || 'white';
-				styles.insertCssRule(lang.replace('.umcGalleryCategory-{id}:hover', category), lang.replace('background-color: {0};', [color]));
+				styles.insertCssRule(lang.replace('.umcGalleryWrapperItem .umcGalleryCategory-{id}:hover, .umcGalleryWrapperItem.umcGalleryItemActive .umcGalleryCategory-{id}', category), lang.replace('background-color: {0};', [color]));
 				var button = new CategoryButton({
 					label: category.label,
 					'class': lang.replace('umcCategory-{id}', category),
