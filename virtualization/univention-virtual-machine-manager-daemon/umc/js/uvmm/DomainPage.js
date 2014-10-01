@@ -90,14 +90,16 @@ define([
 			this._generalPage = new Page({
 				headerText: _('General settings'),
 				title: _('General'),
-				footerButtons: [{
+				headerButtons: [{
+					iconClass: 'umcCloseIconWhite',
+					name: 'close',
 					label: _('Back to overview'),
-					name: 'cancel',
 					callback: lang.hitch(this, 'onClose')
 				}, {
+					name: 'save',
+					iconClass: 'umcSaveIconWhite',
 					label: _('Save'),
 					defaultButton: true,
-					name: 'save',
 					callback: lang.hitch(this, 'save')
 				}]
 			});

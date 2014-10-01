@@ -61,11 +61,13 @@ define([
 			lang.mixin(this, {
 				headerText: _('Create a virtual machine'),
 				helpText: _('Select the cloud in which a new virtual machine instance is going to be created. Alternatively, it is possible to register a new cloud connection.'),
-				footerButtons: [{
+				headerButtons: [{
+					name: 'close',
+					iconClass: 'umcCloseIconWhite',
 					label: _('Back to overview'),
-					name: 'cancel',
 					callback: lang.hitch(this, 'onCancel')
-				}, {
+				}],
+				footerButtons: [{
 					label: _('Next'),
 					defaultButton: true,
 					name: 'next',

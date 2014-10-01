@@ -58,11 +58,12 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			this.footerButtons = [{
+			this.headerButtons = [{
+				name: 'close',
+				iconClass: 'umcCloseIconWhite',
 				label: _('Back to overview'),
-				name: 'cancel',
 				callback: lang.hitch(this, 'onClose')
-			}]; 
+			}];
 		},
 
 		buildRendering: function() {
