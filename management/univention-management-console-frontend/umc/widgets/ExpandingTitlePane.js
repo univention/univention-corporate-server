@@ -88,8 +88,7 @@ define([
 			}
 			// get the parent node and remove ourself from the DOM
 			this.parentWidget = this.getParentWidget();
-			var parentNode = this.parentWidget.domNode;
-			parentNode.removeChild(this.domNode);
+			this.domNode.parentNode.removeChild(this.domNode);
 			this.domNode = null;
 
 			// add all buffered child widgets to the DOM
