@@ -29,6 +29,22 @@ body.umcOverviewShown {
 body.umcOverviewNotShown {
 }
 
+body.umcHeadless {
+
+	#umcHeader,
+	#umcHeader .umcHeaderLeft {
+		height: 42px;
+	}
+	.umcModuleHeader {
+		height: 2px!important;
+		min-height: 2px!important;
+		padding-top: 0!important;
+	}
+	.umcModuleHeader > div {
+		display: none;
+	}
+}
+
 /* Headings */
 .claro h1 {
 	font-size: $font-size-medium;
