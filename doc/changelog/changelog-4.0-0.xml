@@ -134,6 +134,10 @@
 		<title>OpenLDAP</title>
 		<itemizedlist>
 			<listitem><simpara>
+				OpenLDAP has been updated to version 2.4.40
+				(<ulink url="&ucsbug;35697">Bug 35697</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
 					MDB is the new default backend database for OpenLDAP (see &ucsUCRV;
 					<envar>ldap/database/type</envar> for OpenLDAP database settings,
 					<ulink url="&ucsbug;34994">Bug 34994</ulink>)
