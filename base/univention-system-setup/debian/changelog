@@ -1,3 +1,9 @@
+univention-system-setup (8.1.4-1) unstable; urgency=medium
+
+  * Added basesystem to the roles_package_map (Bug #35805)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 02 Oct 2014 08:06:52 +0200
+
 univention-system-setup (8.1.3-4) unstable; urgency=low
 
   * Bug #35805: Adjustments to system-setup-boot
