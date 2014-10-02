@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, STDOUT
 from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import Critical
 
@@ -9,7 +9,11 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Gateway is not reachable')
-description = _('Please make sure the gateway is correctly configured in the {setup:network} UMC module.\nIf the settings are correct the problem relies in the gateway: Make sure the gateway is running.\n')
+description = '\n'.join([
+	_('The gateway %r could not be reached. Please make sure the gateway and related network settings are correctly configured by using the {setup:network}.'),
+	_('If these settings are correct the problem relies in the gateway itself:'),
+	_('Make sure the hardware of the gateway device is working properly.')
+])
 
 umc_modules = [{
 	'module': 'setup',
@@ -20,10 +24,10 @@ umc_modules = [{
 def run():
 	ucr.load()
 	gateway = ucr.get('gateway')
-	process = Popen(['/bin/ping', '-c1', '-w500', gateway], stdout=PIPE, stderr=PIPE)
+	process = Popen(['/bin/ping', '-c1', '-w500', gateway], stdout=PIPE, stderr=STDOUT)
 	stdout, stderr = process.communicate()
 	if process.returncode:
-		raise Critical('%s%s%s' % (description, stderr, stderr))
+		raise Critical('\n'.join([description % (gateway,), '', stdout]))
 
 
 if __name__ == '__main__':

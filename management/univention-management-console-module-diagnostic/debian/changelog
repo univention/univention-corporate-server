@@ -1,3 +1,10 @@
+univention-management-console-module-diagnostic (1.0.4-1) unstable; urgency=low
+
+  * Bug #35864: adaptions to the network plugins
+  * Bug #35866: adaptions to the security limits plugin
+
+ -- Florian Best <best@univention.de>  Thu, 02 Oct 2014 17:41:50 +0200
+
 univention-management-console-module-diagnostic (1.0.3-2) unstable; urgency=low
 
   * Bug #34765: fix some translations / fuzzies

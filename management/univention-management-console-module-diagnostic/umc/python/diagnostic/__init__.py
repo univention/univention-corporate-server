@@ -125,9 +125,7 @@ class Plugin(object):
 	@property
 	def buttons(self):
 		u"""Buttons which are displayed e.g. to automatically solve the problem"""
-		buttons = list(getattr(self.module, 'buttons', []))
-		buttons.append({'label': _('Test again')})
-		return buttons
+		return list(getattr(self.module, 'buttons', []))
 
 	@property
 	def popups(self):
@@ -186,6 +184,7 @@ class Plugin(object):
 		)
 		result.update(self.dict)
 		result.update(errors)
+		result.setdefault('buttons', []).insert(0, {'label': _('Test again')})
 		return result
 
 	def match(self, pattern):

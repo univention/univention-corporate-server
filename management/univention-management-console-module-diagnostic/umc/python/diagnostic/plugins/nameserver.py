@@ -5,13 +5,17 @@ from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import Warning
 
 import dns.resolver
-import dns.exception
+from dns.exception import DNSException, Timeout
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Nameserver(s) are not responsive')
-description = _('Some of the configured nameservers are not responding to DNS-Queries.\nPlease make sure the DNS settings in the {setup:network} are correctly set up.\n')
+description = '\n'.join([
+	_('%d of the configured nameservers are not responding to DNS-Queries.'),
+	_('Please make sure the DNS settings in the {setup:network} are correctly set up.'),
+	_('If the problem persists make sure the nameserver is connected to the network.')
+])
 umc_modules = [{
 	'module': 'setup',
 	'flavor': 'network'
@@ -20,8 +24,7 @@ umc_modules = [{
 
 def run():
 	ucr.load()
-	desc = ''
-	success = ''
+	failed = []
 
 	hostnames = {
 		'www.univention.de': ('dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3'),
@@ -33,13 +36,19 @@ def run():
 			if not ucr.get(nameserver):
 				continue
 
-			answers = query_dns_server(ucr[nameserver], hostname)
-			success = success and answers
-			if not answers:
-				desc += _('The nameserver %s (UCR variable %r) is not responsive.\n') % (ucr[nameserver], nameserver)
+			try:
+				query_dns_server(ucr[nameserver], hostname)
+			except DNSException as exc:
+				msgs = ['\n', _('The nameserver %s (UCR variable %r) is not responsive:') % (ucr[nameserver], nameserver)]
 
-	if not success:
-		raise Warning('%s%s' % (description, desc))
+				if isinstance(exc, Timeout):
+					msgs.append(_('The nameserver ran into a timeout (is it online?).'))
+				else:
+					msgs.append('%s' % (exc,))
+				failed.append('\n'.join(msgs))
+
+	if failed:
+		raise Warning('%s%s' % (description % (len(failed),), '\n'.join(failed)))
 
 
 def query_dns_server(nameserver, hostname):
@@ -47,18 +56,12 @@ def query_dns_server(nameserver, hostname):
 	resolver.lifetime = 10
 	resolver.nameservers = [nameserver]
 
-	# perform a SRV lookup
+	# perform a reverse lookup
 	try:
 		resolver.query(hostname)
 	except dns.resolver.NXDOMAIN:
+		# it's not a problem
 		pass
-	except dns.exception.Timeout:
-		return False
-	except dns.exception.DNSException:
-		# any other exception is ....
-		raise
-		return False
-	return True
 
 
 if __name__ == '__main__':
