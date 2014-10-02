@@ -527,6 +527,9 @@
 				The package <package>univention-showload</package> is no longer needed and maintained by Univention. The package can be manually removed (<ulink url="&ucsbug;35138">Bug 35138</ulink>).
 		</simpara></listitem>
 		<listitem><simpara>
+				The packages for the deprecated system roles <emphasis>mobile client</emphasis> and <emphasis>managed client</emphasis> have been removed (<ulink url="&ucsbug;31751">Bug 31751</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
 				The printer models in the join script of
 				<package>univention-printserver</package>  have been updated
 				(<ulink url="&ucsbug;35147">Bug 35147</ulink>).
@@ -548,4 +551,4 @@
 	</itemizedlist>
 </section>
 
-<!-- vim: set ts=4 sw=2 noet: -->
+<!-- vim: set ts=4 sw=4 noet: -->
