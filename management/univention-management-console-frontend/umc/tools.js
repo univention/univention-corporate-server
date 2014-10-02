@@ -75,7 +75,6 @@ define([
 			hostname: '',
 			domainname: '',
 			overview: true,
-			displayUsername: true,
 			displayMenu: true,
 			width: null,
 			setupGui: false,
@@ -102,8 +101,7 @@ define([
 			//		* username (String): The username of the authenticated user.
 			//		* hostname (String): The hostname on which the UMC is running.
 			//		* domainname (String): The domainname on which the UMC is running.
-			//		* overview (Boolean): Specifies whether or not the overview is visible.
-			//		* displayUsername (Boolean): Specifies whether the username is displayed or not.
+			//		* overview (Boolean): Specifies whether or not the overview is visible and the header is displayed or not.
 			//		* width (Integer): Forces a width for the frontend.
 			// key: String?
 			//		If given, only the value for the specified property is returned.
