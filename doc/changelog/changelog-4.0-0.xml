@@ -352,7 +352,7 @@
 	<itemizedlist>
 		<listitem><simpara>
 				The new version of the package <package>python-ldap</package> caused the <classname>univention.uldap</classname> implementation to retry failed connects too many times.
-				This has been fixed (<ulink url="&ucsbug;35841">Bug 35841</ulink>, <ulink url="&ucsbug;35741">Bug 35741</ulink>).
+				This has been fixed (<ulink url="&ucsbug;35841">Bug 35841</ulink>, <ulink url="&ucsbug;35852">Bug 35852</ulink>).
 		</simpara></listitem>
 		<listitem><simpara>
 				The package <package>python-univention-lib</package> now depends on the package <package>python-imaging</package>
