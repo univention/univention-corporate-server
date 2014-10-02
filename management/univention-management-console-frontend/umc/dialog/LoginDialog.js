@@ -385,33 +385,35 @@ define([
 			query('#umcLoginMessages').style('display', 'none');
 			this._text.set('content', msg);
 
-			var _show = lang.hitch(this, function() {
-				query('#umcLoginWrapper').style('display', 'block');
-				query('#umcLoginDialog').style('opacity', '1');  // baseFx.fadeOut sets opacity to 0
-				this._setInitialFocus();
-				Dialog._DialogLevelManager.show(this, this.underlayAttrs);
-				if (this._text.get('content')) {
-					setTimeout(function() {
-						fx.wipeIn({node: 'umcLoginMessages'}).play();
-					}, 200);
-				}
-			});
-
 			if (this._isRendered) {
-				_show();
+				this._show();
 			} else {
 				var handle = aspect.after(this, '_connectEvents', lang.hitch(this, function() {
-					_show();
-					try {
-						styles.insertCssRule('.umcBodyBackground', lang.replace('background: {0}!important;', [domStyle.get(win.body(), 'background')]));
-						domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBodyBackground', true);
-					} catch (e) {
-						// guessed the ID
-						console.log(e);
-					}
-
+					this._show();
 					handle.remove();
 				}));
+			}
+		},
+
+		_show: function() {
+			query('#umcLoginWrapper').style('display', 'block');
+			query('#umcLoginDialog').style('opacity', '1');  // baseFx.fadeOut sets opacity to 0
+			this._setInitialFocus();
+			Dialog._DialogLevelManager.show(this, this.underlayAttrs);
+			if (this._text.get('content')) {
+				setTimeout(function() {
+					fx.wipeIn({node: 'umcLoginMessages'}).play();
+				}, 200);
+			}
+			// display the body background (hides rendering of GUI) the first time
+			if (!tools.status('setupGui')) {
+				try {
+					styles.insertCssRule('.umcBodyBackground', lang.replace('background: {0}!important;', [domStyle.get(win.body(), 'background')]));
+					domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBodyBackground', true);
+				} catch (e) {
+					// guessed the ID
+					console.log(e);
+				}
 			}
 		},
 
@@ -446,8 +448,7 @@ define([
 			this.set('open', false);
 
 			// hide the dialog
-			var anim = baseFx.fadeOut({node: 'umcLoginDialog', duration: 300});
-			anim.on('End', lang.hitch(this, function() {
+			baseFx.fadeOut({node: 'umcLoginDialog', duration: 300, onEnd: lang.hitch(this, function() {
 				query('#umcLoginWrapper').style('display', 'none');
 				Dialog._DialogLevelManager.hide(this);
 				this.standby(false);
@@ -457,8 +458,7 @@ define([
 					// guessed the ID
 					console.log(e);
 				}
-			}));
-			anim.play();
+			})}).play();
 		},
 
 		__debug: function() {

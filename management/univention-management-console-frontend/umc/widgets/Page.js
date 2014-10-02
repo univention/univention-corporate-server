@@ -121,7 +121,6 @@ define([
 			this._set('headerText', newVal);
 		},
 
-
 		postMixInProperties: function() {
 			this.inherited(arguments);
 

@@ -621,7 +621,7 @@ define([
 		setupHeader: function() {
 			this.setupBackToOverview();
 
-			if (tools.status('displayUsername')) {
+			if (tools.status('overview')) {
 				// display the username
 				this._headerMenu = new Menu({});
 				this._usernameButton = new DropDownButton({
@@ -1005,14 +1005,13 @@ define([
 			//		  with these credentials.
 			//		* module, flavor: if module is given, the module is started immediately,
 			//		  flavor is optional.
-			//		* overview: if false and a module is given for autostart, the overview will
+			//		* overview: if false and a module is given for autostart, the overview and module header will
 			//		  not been shown and the module cannot be closed
-			//		* displayUsername: whether or not the username should be displayed
 			//		* width: forces the width of the GUI to a specific value
 
 			// save some config properties
 			tools.status('width', props.width);
-			tools.status('displayUsername', tools.isTrue(props.displayUsername));
+			tools.status('overview', tools.isTrue(props.overview));
 			// username will be overriden by final authenticated username
 			tools.status('username', props.username || cookie('UMCUsername'));
 			// password has been given in the query string... in this case we may cache it, as well
@@ -1040,7 +1039,6 @@ define([
 				}));
 
 			}
-			tools.status('overview', tools.isTrue(props.overview));
 
 			if (props.username && props.password && typeof props.username == "string" && typeof props.password == "string") {
 				// username and password are given, try to login directly
@@ -1116,6 +1114,10 @@ define([
 
 			if (has('touch')) {
 				this.setupTouchDevices();
+			}
+
+			if (!tools.status('overview')) {
+				domClass.toggle(baseWin.body(), 'umcHeadless', true);
 			}
 
 			// set up fundamental layout parts...
