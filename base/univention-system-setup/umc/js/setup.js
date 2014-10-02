@@ -43,6 +43,7 @@ define([
 	"umc/modules/lib/server",
 	"./setup/ApplianceWizard",
 	"umc/i18n!umc/modules/setup",
+	"xstyle/css!./setup.css",
 // Pages:
 	"./setup/LanguagePage",
 	"./setup/BasisPage",

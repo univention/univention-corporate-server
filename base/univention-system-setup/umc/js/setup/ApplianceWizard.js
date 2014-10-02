@@ -66,30 +66,6 @@ define([
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
 ], function(dojo, declare, lang, array, dojoEvent, query, domClass, on, Evented, topic, Deferred, all, Memory, Select, Tooltip, focusUtil, styles, timing, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
-	var modulePath = require.toUrl('umc/modules/setup');
-	styles.insertCssRule('.umc-ucssetup-wizard-indent', 'margin-left: 27px;');
-	styles.insertCssRule('.umcIconInfo', lang.replace('background-image: url({0}/info-icon.png); width: 16px; height: 16px;', [modulePath]));
-	styles.insertCssRule('.setupLangField', 'vertical-align: middle; margin: 1px 0 1px 5px;');
-	styles.insertCssRule('.umc-setup-page-validation li', 'padding-bottom: 0.75em;');
-	styles.insertCssRule('.umc-setup-page-error li', 'padding-bottom: 0.75em;');
-	styles.insertCssRule('.umc-setup-page-summary ul', 'margin-top: 0;');
-	styles.insertCssRule('.umc-setup-page-summary p', 'margin-top: 0.75em;');
-	styles.insertCssRule('.umc-setup-page-software th .dojoxGridRowSelector', 'display: none;');
-	styles.insertCssRule('.umc-setup-page-software .umcUCSSetupSoftwareGrid', 'margin-left: 200px;');
-	styles.insertCssRule('.umc-setup-page-software .umcPageHelpText', 'margin-left: 200px;');
-	styles.insertCssRule('.umc-setup-page-software', lang.replace('background-repeat: no-repeat; background-position: -100px 10px; min-height: 200px; background-position: -10px 65px; background-image: url({0}/software.png);', [modulePath]));
-	styles.insertCssRule('.umc-setup-page .city-match td', 'padding-right: 0.5em; padding-bottom: 0.25em;');
-	styles.insertCssRule('.umc-setup-page > form > div', 'background-repeat: no-repeat; background-position: 10px 10px; padding-left: 200px; min-height: 200px;');
-	array.forEach(['welcome', 'locale', 'domain', 'user', 'network'], function(ipage) {
-		var conf = {
-			name: ipage,
-			path: modulePath
-		};
-		styles.insertCssRule(
-			lang.replace('.umc-setup-page-{name} > form > div', conf),
-			lang.replace('background-image: url({path}/{name}.png)', conf)
-		);
-	});
 
 	var _Grid = declare(Grid, {
 		_onRowClick: function(evt) {
@@ -327,7 +303,7 @@ define([
 					store: new _CityStore(),
 					label: _('Enter a city nearby to preconfigure settings such as timezone, system language, keyboard layout.'),
 					inlineLabel: _('e.g., Boston...'),
-					labelConf: { style: 'margin-top: .75em;' }
+					labelConf: { style: 'margin-top: 0.75em;' }
 				}, {
 					type: TitlePane,
 					name: 'result',
@@ -541,7 +517,7 @@ define([
 					radioButtonGroup: 'role',
 					name: '_joinDomain',
 					label: '<b>' + _('Join into an existing UCS domain') + '</b>',
-					labelConf: { style: 'margin-top: 1.5em; margin-bottom: 0;' }
+					labelConf: { style: 'margin-top: 0.75em; margin-bottom: 0;' }
 				}, {
 					type: Text,
 					name: 'joinDomainHelpText',
@@ -552,7 +528,7 @@ define([
 					radioButtonGroup: 'role',
 					name: '_adDomain',
 					label: '<b>' + _('Join into an existing Active Directory domain') + '</b>',
-					labelConf: { style: 'margin-top: 1.5em; margin-bottom: 0;' }
+					labelConf: { style: 'margin-top: .75em; margin-bottom: 0;' }
 				}, {
 					type: Text,
 					name: 'adDomainHelpText',
@@ -563,7 +539,7 @@ define([
 					radioButtonGroup: 'role',
 					name: '_noDomain',
 					label: '<b>' + _('Do not use any domain') + '</b>',
-					labelConf: { style: 'margin-top: 1.5em; margin-bottom: 0;' }
+					labelConf: { style: 'margin-top: 0.75em; margin-bottom: 0;' }
 				}, {
 					type: Text,
 					name: 'noDomainHelpText',
@@ -573,7 +549,7 @@ define([
 					type: Text,
 					name: 'ifUnsureHelpText',
 					content: _('If unsure, select <i>Create a new UCS domain</i>.'),
-					labelConf: { style: 'margin-top: 1.5em;' }
+					labelConf: { style: 'margin-top: 0.75em;' }
 				}]
 			}, {
 				'class': 'umc-setup-page umc-setup-page-domain',
@@ -669,7 +645,7 @@ define([
 				}]
 			}, {
 				name: 'credentials-nonmaster',
-				'class': 'umc-setup-page-credentials-nonmaster',
+				'class': 'umc-setup-page umc-setup-page-credentials-nonmaster',
 				headerText: _('Domain join information'),
 				helpText: _('Specify credentials to join into the UCS Domain'),
 				widgets: [{
@@ -686,12 +662,12 @@ define([
 				}]
 			}, {
 				name: 'warning-basesystem',
-				'class': 'umc-setup-page-warning',
+				'class': 'umc-setup-page umc-setup-page-warning',
 				headerText: _('No domain warning'),
 				helpText: _('The installed UCS system will not offer any web-based domain management functions and will not be able to be a domain member. Such an UCS system should only be used in some rare use cases, for example as firewall system.')
 			}, {
 				name: 'fqdn-master',
-				'class': 'umc-setup-page-fqdn',
+				'class': 'umc-setup-page umc-setup-page-fqdn',
 				headerText: _('Host settings'),
 				helpText: _('Specify the name of this system'),
 				layout: [
@@ -715,7 +691,7 @@ define([
 				}]
 			}, {
 				name: 'fqdn-nonmaster-all',
-				'class': 'umc-setup-page-fqdn',
+				'class': 'umc-setup-page umc-setup-page-fqdn',
 				headerText: _('Host settings'),
 				helpText: _('Specify the name of this system'),
 				layout: [
@@ -1187,6 +1163,13 @@ define([
 			this._setLocaleDefault();
 			this._setupFooterButtons();
 			this._updateOrganizationName('');
+
+
+			this.watch('selectedChildWidget', lang.hitch(this, function(name, old, page) {
+				if (page == this.getPage('software')) {
+					this._gallery.resize();
+				}
+			}));
 		},
 
 		_randomHostName: function() {
