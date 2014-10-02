@@ -1,3 +1,10 @@
+univention-system-setup (8.1.6-3) unstable; urgency=medium
+
+  * univention-system-setup-boot.postinst: temporary fix: don't abort on
+    error (Bug #36038)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 02 Oct 2014 15:07:53 +0200
+
 univention-system-setup (8.1.6-2) unstable; urgency=low
 
   * Bug #35654: fix typo

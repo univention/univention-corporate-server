@@ -36,7 +36,7 @@ check_returnvalue ()
 	errormessage=$2
 	if [ "${rval}" != 0 ]; then
 		echo "${errormessage}"
-		exit "${rval}"
+		#exit "${rval}"
 	fi
 }
 
@@ -61,6 +61,7 @@ if [ "$1" = "configure" ] && [ ! -e /var/univention-join/joined ]; then
 	cat /etc/apt/sources.list /etc/apt/sources.list.d/*.list| sed -e 's|deb cdrom:\[.*\]|deb copy:/media/cdrom|' >>$temporary_source_list
 	mkdir -p /var/cache/univention-system-setup/packages/
 	install_cmd="$(univention-config-registry get update/commands/install)"
+ 	apt-get update -o Debug::NoLocking=1 -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages -o Dir::Etc::SourceList="$temporary_source_list"
  	for package in server-master server-backup server-slave server-member basesystem; do
  		$install_cmd --reinstall -d -o Debug::NoLocking=1 -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages -o Dir::Etc::SourceList="$temporary_source_list" univention-${package}
  		check_returnvalue $? "Failed to download required packages for univention-${package}"
