@@ -19,7 +19,8 @@ Depends: ${python:Depends},
  dnsutils,
  python-ldb,
  python-samba,
- python-ldap
+ python-ldap,
+ python-imaging
 Provides: ${python:Provides}
 Description: UCS - common scripting functions for Python scripts
  This package contains Python functions used by various

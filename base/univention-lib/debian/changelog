@@ -1,3 +1,10 @@
+univention-lib (4.0.3-3) unstable; urgency=low
+
+  * python-univention-lib: added a dependency to python-imaging
+    (Bug #36037)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 02 Oct 2014 06:23:06 +0200
+
 univention-lib (4.0.3-2) unstable; urgency=low
 
   * Bug #35729: Fix stall in dpkg status pipe reading code
