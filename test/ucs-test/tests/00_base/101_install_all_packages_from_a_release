@@ -46,9 +46,12 @@ def main():
 				for pkg in pkgs_list:
 					if test_install(pkg):
 						broken_pkgs.append(pkg)
-		print 'Broken Packages:', broken_pkgs
+		if broken_pkgs:
+			print 'Broken Packages:', broken_pkgs
+			return 1
 	else:
 		print 'apt-get update failed'
+		return 1
 
 
 if __name__ == '__main__':
