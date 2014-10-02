@@ -41,7 +41,7 @@ fi
 
 if [ "$1" = "postchange" -o "$1" = "nochange" ] ; then
 	# update listfilter password
-	univention-config-registry commit /etc/postfix/listfilter.secret
+	univention-config-registry commit /etc/listfilter.secret
 	# update ldap query definitions
 	univention-config-registry commit /etc/postfix/ldap.*
 	# start postfix only if it has been stopped by this script

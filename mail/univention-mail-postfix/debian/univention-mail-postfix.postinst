@@ -31,31 +31,13 @@
 
 . /usr/share/univention-lib/all.sh
 
-# Bug 22369: remove all UCR remains from univention-mail-postfix-forward and univention-mail-postfix-kolab2
-#            Required during update step to UCS 3.0-0.
-# Note: empty $2 (on initial install) is also less-than, because lt "[treats] an empty version as earlier than any version"
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 6.0.7 ; then
-	remove_ucr_template /etc/postfix/main.cf
-	remove_ucr_template /etc/postfix/master.cf
-	remove_ucr_info_file univention-mail-postfix-forward.info
-	remove_ucr_info_file univention-mail-postfix-kolab2.info
-fi
-
 #DEBHELPER#
 
 eval "$(univention-config-registry shell)"
 
-# migration from old variables while updating to UCS 3.0 (Bug #22369)
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.15; then
-	if [ -n "$postfix_masquerade_domains" -a -z "$mail_postfix_masquerade_domains" ] ; then
-		univention-config-registry set "mail/postfix/masquerade/domains=$postfix_masquerade_domains"
-	fi
-	if [ -n "$postfix_masquerade_exceptions" -a -z "$mail_postfix_masquerade_exceptions" ] ; then
-		univention-config-registry set "mail/postfix/masquerade/exceptions=$postfix_masquerade_exceptions"
-	fi
-	if [ -n "$mail_relay" -a -z "$mail_relayhost" ] ; then
-		univention-config-registry set "mail/relayhost=$mail_relay"
-	fi
+# update to UCS 4.0
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.0-7 ; then
+	remove_ucr_template /etc/postfix/listfilter.secret
 fi
 
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.13-3; then
@@ -114,7 +96,7 @@ newaliases
 adduser postfix sasl
 
 univention-config-registry commit /etc/mailname
-univention-config-registry commit /etc/postfix/listfilter.secret 
+univention-config-registry commit /etc/listfilter.secret 
 
 if [ -z "$postfix_autostart" ] || [ "$postfix_autostart" = "yes" ]; then
 	/etc/init.d/postfix restart
