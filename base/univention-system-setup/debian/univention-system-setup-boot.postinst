@@ -36,7 +36,7 @@ check_returnvalue ()
 	errormessage=$2
 	if [ "${rval}" != 0 ]; then
 		echo "${errormessage}"
-		#exit "${rval}"
+		exit "${rval}"
 	fi
 }
 
@@ -57,31 +57,27 @@ fi
 
 # prepare the server role selection
 if [ "$1" = "configure" ] && [ ! -e /var/univention-join/joined ]; then
-	temporary_source_list="$(mktemp)"
-	cat /etc/apt/sources.list /etc/apt/sources.list.d/*.list| sed -e 's|deb cdrom:\[.*\]|deb copy:/media/cdrom|' >>$temporary_source_list
 	mkdir -p /var/cache/univention-system-setup/packages/
 	install_cmd="$(univention-config-registry get update/commands/install)"
- 	apt-get update -o Debug::NoLocking=1 -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages -o Dir::Etc::SourceList="$temporary_source_list"
- 	for package in server-master server-backup server-slave server-member basesystem; do
- 		$install_cmd --reinstall -d -o Debug::NoLocking=1 -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages -o Dir::Etc::SourceList="$temporary_source_list" univention-${package}
- 		check_returnvalue $? "Failed to download required packages for univention-${package}"
+# 	for package in server-master server-backup server-slave server-member basesystem; do
+# 		$install_cmd --reinstall -d -o Debug::NoLocking=1 -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages univention-${package}
+# 		check_returnvalue $? "Failed to download required packages for univention-${package}"
 
- 		# Get all dependencies
- 		dependencies="$(LC_ALL=C apt-cache show univention-${package} | grep Depends | head -n 1 | sed -e 's| \| [^,]*||g;s|,||g;s|([^(]*)||g;s|^Depends: ||')"
- 		$install_cmd --reinstall -d -o Debug::NoLocking=1 -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages -o Dir::Etc::SourceList="$temporary_source_list" ${dependencies}
- 		check_returnvalue $? "Failed to download required dependency packages for univention-${package}"
- 	done
-	rm "$temporary_source_list"
+# 		# Get all dependencies
+# 		dependencies="$(LC_ALL=C apt-cache show univention-${package} | grep Depends | head -n 1 | sed -e 's| \| [^,]*||g;s|,||g;s|([^(]*)||g;s|^Depends: ||')"
+# 		$install_cmd --reinstall -d -o Debug::NoLocking=1 -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages ${dependencies}
+# 		check_returnvalue $? "Failed to download required dependency packages for univention-${package}"
+# 	done
 
- 	(
- 		cd /var/cache/univention-system-setup/packages/
- 		apt-ftparchive packages . >Packages
- 		check_returnvalue $? "Failed to create ftparchive directory"
- 	)
+# 	(
+# 		cd /var/cache/univention-system-setup/packages/
+# 		apt-ftparchive packages . >Packages
+# 		check_returnvalue $? "Failed to create ftparchive directory"
+# 	)
 
- 	if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
- 		echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
- 	fi
+# 	if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
+# 		echo "deb file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
+# 	fi
 
 	initialsetup_startsite="ucs-overview/initialsetup.html"
 	system_setup_boot_startsite='univention-management-console/?module=setup\&overview=false\&username=root'

@@ -1,3 +1,10 @@
+univention-system-setup (8.1.6-4) unstable; urgency=low
+
+  * Undo univention-system-setup-boot.postinst changes and move the fix
+    to UCS 4.0 RC (Bug #36038)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 02 Oct 2014 16:47:03 +0200
+
 univention-system-setup (8.1.6-3) unstable; urgency=medium
 
   * univention-system-setup-boot.postinst: temporary fix: don't abort on
