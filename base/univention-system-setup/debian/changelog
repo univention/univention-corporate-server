@@ -1,3 +1,10 @@
+univention-system-setup (8.1.5-2) unstable; urgency=low
+
+  * Bug #35715: Role selection now has more weight in progress bar
+  * Bug #35805: Adjustments to system-setup-boot
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 02 Oct 2014 12:06:09 +0200
+
 univention-system-setup (8.1.5-1) unstable; urgency=low
 
   * Re-enable package download in system-setup-boot postinst

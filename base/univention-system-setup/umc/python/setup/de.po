@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-01 23:39+0200\n"
+"POT-Creation-Date: 2014-10-02 12:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,7 +54,7 @@ msgstr "Kann Bridge %r nicht als bridge-port verwenden"
 msgid "Cannot use device %s: Device must be unconfigured"
 msgstr "Kann Gerät %s nicht verwenden: Gerät muss unkonfiguriert sein"
 
-#: umc/python/setup/util.py:695
+#: umc/python/setup/util.py:696
 #, python-format
 msgid "Could not query App Center: %s"
 msgstr "App-Center-Daten konnten nicht abgefragt werden: %s"
@@ -93,7 +93,7 @@ msgstr "Ein unerwarteter Fehler trat während des Einrichtungsprozesses auf: %s"
 msgid "External name server"
 msgstr "Externer DNS-Server"
 
-#: umc/python/setup/setup_script.py:408
+#: umc/python/setup/setup_script.py:409
 #, python-format
 msgid "Failed to get package for Role %s"
 msgstr "Es konnte kein Paket für die Rolle %s gefunden werden"

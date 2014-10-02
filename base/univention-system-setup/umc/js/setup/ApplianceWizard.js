@@ -309,15 +309,11 @@ define([
 				'class': 'umc-setup-page umc-setup-page-welcome',
 				name: 'welcome',
 				headerText: _('UCS setup'),
+				helpText: _('<p>Welcome to Univention Corporate Server (UCS).</p><p>A few questions are needed to complete the configuration process.</p>'),
 				widgets: [{
-					type: Text,
-					'class': 'umcPageHelpText',
-					name: 'help',
-					content: _('<p>Welcome to Univention Corporate Server (UCS).</p><p>A few questions are needed to complete the configuration process.</p>')
-				}, {
 					type: Select,
 					name: '_language',
-					label: _('To proceed, choose your language:'),
+					label: _('Choose your language'),
 					options: _getDecoratedLanguageOptions(),
 					value: i18nTools.defaultLang(),
 					onChange: lang.hitch(this, function(locale) {
@@ -345,12 +341,8 @@ define([
 				'class': 'umc-setup-page umc-setup-page-locale',
 				name: 'locale',
 				headerText: _('Localization settings'),
+				helpText: _('Choose your system\'s localization settings.'),
 				widgets: [{
-					type: Text,
-					'class': 'umcPageHelpText',
-					name: 'help',
-					content: _('Choose your system\'s localization settings.')
-				}, {
 					type: ComboBox,
 					name: 'locale/default',
 					label: _('Default system locale'),
@@ -378,7 +370,6 @@ define([
 				headerText: _('Domain and host configuration'),
 				helpText: _('Specify the network settings for this system.'),
 				layout: [
-					'help',
 					'_dhcp',
 					['_ip0', '_netmask0'],
 					['_ip1', '_netmask1'],
@@ -588,12 +579,8 @@ define([
 				'class': 'umc-setup-page umc-setup-page-domain',
 				name: 'role-nonmaster-ad',
 				headerText: _('System role'),
+				helpText: _('Specify the type of the system to join into an existing UCS domain. For this, credentials of a valid domain Administrator account will be necessary.'),
 				widgets: [{
-					type: Text,
-					'class': 'umcPageHelpText',
-					name: 'help',
-					content: _('<p>Specify the type of the system to join into an existing UCS domain. For this, credentials of a valid domain Administrator account will be necessary.</p>')
-				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_roleBackup',
@@ -662,7 +649,7 @@ define([
 				name: 'credentials-ad',
 				'class': 'umc-setup-page-credentials-ad',
 				headerText: _('Active Directory join information'),
-				headerText: _('Specify credentials to join into the Active Directory'),
+				helpText: _('Specify credentials to join into the Active Directory'),
 				widgets: [{
 					type: TextBox,
 					name: '_ad_address',
@@ -684,7 +671,7 @@ define([
 				name: 'credentials-nonmaster',
 				'class': 'umc-setup-page-credentials-nonmaster',
 				headerText: _('Domain join information'),
-				headerText: _('Specify credentials to join into the UCS Domain'),
+				helpText: _('Specify credentials to join into the UCS Domain'),
 				widgets: [{
 					type: TextBox,
 					name: '_ucs_user',

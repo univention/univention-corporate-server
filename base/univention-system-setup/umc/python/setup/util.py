@@ -290,9 +290,10 @@ class ProgressParser( object ):
 
 	# fractions of setup scripts
 	FRACTIONS = {
-		'10_basis/12domainname' : 5,
-		'10_basis/14ldap_basis' : 10,
-		'30_net/10interfaces' : 10,
+		'05_role/10role' : 40,
+		'10_basis/12domainname' : 15,
+		'10_basis/14ldap_basis' : 20,
+		'30_net/10interfaces' : 20,
 		'50_software/10software' : 50,
 	}
 

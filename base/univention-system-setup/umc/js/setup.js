@@ -128,7 +128,6 @@ define([
 			// set wizard mode only on unjoined DC Master
 			//this.wizard_mode = (!system_role) && (!values.joined);
 			this.wizard_mode = this.moduleFlavor === 'wizard';
-			this.wizard_mode = true; // FIXME
 
 			// we are in local mode if the user is __systemsetup__
 			this.local_mode = tools.status('username') == '__systemsetup__';
