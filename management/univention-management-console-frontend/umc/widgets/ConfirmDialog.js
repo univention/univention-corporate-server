@@ -143,16 +143,16 @@ define([
 				}
 				array.forEach(widgets, lang.hitch(this, function(widget) {
 					if (tools.inheritsFrom(widget, 'dijit.TitlePane')) {
-						widget._wipeIn.on('End', lang.hitch(this, function() {
+						this.own(widget._wipeIn.on('End', lang.hitch(this, function() {
 							this._relativePosition = null;
 							this._size();
 							this._position();
-						}));
-						widget._wipeOut.on('End', lang.hitch(this, function() {
+						})));
+						this.own(widget._wipeOut.on('End', lang.hitch(this, function() {
 							this._relativePosition = null;
 							this._size();
 							this._position();
-						}));
+						})));
 					}
 				}));
 				this._container.addChild(this.message, 0);
@@ -199,9 +199,9 @@ define([
 			// make sure that the default button is focused
 			defaultButton = defaultButton || buttons.getChildren()[0];
 			if (defaultButton) {
-				this.on('focus', function() {
+				this.own(this.on('focus', function() {
 					defaultButton.focus();
-				});
+				}));
 			}
 
 			// put the layout together

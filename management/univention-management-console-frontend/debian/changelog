@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.26-1) unstable; urgency=low
+
+  * Bug #35654: fix exceptions which happens after closing a ConfirmDialog
+
+ -- Florian Best <best@univention.de>  Thu, 02 Oct 2014 15:44:49 +0200
+
 univention-management-console-frontend (4.1.25-1) unstable; urgency=low
 
   * Bug #35654: fix ExpandingTitlePane
