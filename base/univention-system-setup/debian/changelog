@@ -1,3 +1,10 @@
+univention-system-setup (8.1.5-1) unstable; urgency=low
+
+  * Re-enable package download in system-setup-boot postinst
+    (Bug #36038)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 02 Oct 2014 08:22:51 +0200
+
 univention-system-setup (8.1.4-1) unstable; urgency=medium
 
   * Added basesystem to the roles_package_map (Bug #35805)
