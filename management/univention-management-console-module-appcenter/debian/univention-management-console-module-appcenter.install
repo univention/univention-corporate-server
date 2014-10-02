@@ -4,4 +4,4 @@ ldap/*.acl usr/share/univention-management-console-module-appcenter
 scripts/univention-register-apps usr/sbin/
 scripts/univention-rename-app usr/sbin/
 all.tar.gz usr/share/univention-appcenter/local/
-umc/js/appcenter.js usr/share/univention-management-console-frontend/js/umc/modules
+umc/js/appcenter.css usr/share/univention-management-console-frontend/js/umc/modules
