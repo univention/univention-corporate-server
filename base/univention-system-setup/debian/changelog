@@ -1,3 +1,9 @@
+univention-system-setup (8.1.6-2) unstable; urgency=low
+
+  * Bug #35654: fix typo
+
+ -- Florian Best <best@univention.de>  Thu, 02 Oct 2014 14:13:12 +0200
+
 univention-system-setup (8.1.6-1) unstable; urgency=low
 
   * Bug #35654: fix design of appliance/installer mode
