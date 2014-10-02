@@ -1,3 +1,10 @@
+univention-bind (9.0.4-1) unstable; urgency=low
+
+  * If no dns/forwarder is set, use the nameserver variables as forwarder
+    (Bug #36039)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 02 Oct 2014 07:33:00 +0200
+
 univention-bind (9.0.3-1) unstable; urgency=low
 
   * Also consider multiarch changes for LDB_MODULES_PATH (Bug #35320)

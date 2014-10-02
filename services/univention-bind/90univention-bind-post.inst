@@ -108,6 +108,16 @@ if [ -z "$nameserver_external" ] || ! is_ucr_true nameserver/external; then
 	fi
 
 	if [ "$IP" != "$nameserver1" ]; then
+		if [ -z "$dns_forwarder1" -a -n "$nameserver1" ]; then
+			univention-config-registry set dns/forwarder1="$nameserver1"
+		fi
+		if [ -z "$dns_forwarder2" -a -n "$nameserver2" ]; then
+			univention-config-registry set dns/forwarder2="$nameserver2"
+		fi
+		if [ -z "$dns_forwarder3" -a -n "$nameserver3" ]; then
+			univention-config-registry set dns/forwarder3="$nameserver3"
+		fi
+
 		if [ -z "$nameserver1" ]; then
 			univention-config-registry set nameserver1="$IP"
 		elif [ -z "$nameserver2" ]; then
