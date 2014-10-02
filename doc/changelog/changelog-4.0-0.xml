@@ -172,6 +172,11 @@
 					The DNS server bind has been updated to Version 9.8.4P1
 					(<ulink url="&ucsbug;35668">Bug 35668</ulink>)
 			</simpara></listitem>
+			<listitem><simpara>
+					During the configuration of <package>univention-bind</package> the currently configured
+					nameservers are set as DNS forwarders
+					(<ulink url="&ucsbug;36039">Bug 36039</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </section>
