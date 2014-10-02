@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: install all packages from a release
-## roles: [domaincontroller_master]
+## roles: [domaincontroller_backup]
 ## tags: [apptest]
 ## exposure: careful
 ## packages: []
@@ -12,7 +12,11 @@ import subprocess
 def run_command(cmd):
 	"""Runs cmd command in terminal"""
 	print ' ** %r' % cmd
-	popen_obj = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	popen_obj = subprocess.Popen(
+			cmd,
+			stdout=subprocess.PIPE,
+			stderr=subprocess.PIPE
+			)
 	out, err = popen_obj.communicate()
 	ret = popen_obj.returncode
 	if ret != 0:
@@ -26,7 +30,7 @@ def apt_update():
 
 def test_install(pkg_name):
 	"""Simulate packages installation"""
-	cmd = ['apt-get', '-s', 'install','--no-install-recommends', pkg_name]
+	cmd = ['apt-get', '-s', 'install', pkg_name]
 	return run_command(cmd)
 
 def main():
@@ -35,14 +39,11 @@ def main():
 		broken_pkgs = []
 		for filename in files:
 			with open(filename) as f:
-				# get (package, maintainer) list of tuples
 				pkgs_list = re.findall(
-						re.compile(r'Package: (.*)\n[^<]*Maintainer: (.*) \<'),
+						re.compile(r'Package: (.*)\n'),
 						f.read()
 						)
-				# check only packages whose maintainer is not 'Debian Install System Team'
-				pkgs = [x[0] for x in pkgs_list if x[1] != 'Debian Install System Team']
-				for pkg in pkgs:
+				for pkg in pkgs_list:
 					if test_install(pkg):
 						broken_pkgs.append(pkg)
 		print 'Broken Packages:', broken_pkgs
