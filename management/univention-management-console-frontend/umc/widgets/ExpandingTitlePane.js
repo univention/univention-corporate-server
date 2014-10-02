@@ -26,23 +26,22 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define,dijit*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/_base/kernel",
-	"dijit/layout/ContentPane",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Page"
-], function(declare, lang, array, kernel, ContentPane, ContainerWidget, Page) {
+], function(declare, lang, array, kernel, ContainerWidget, Page) {
 	return declare("umc.widgets.ExpandingTitlePane", ContainerWidget, {
 		// summary:
 		//		Obsolete widget which adds itself to the parent and removes its domNode
 
 		style: 'display: none;',
-		parentNode: null,
+		parentWidget: null,
 
 		constructor: function() {
 			this.inherited(arguments);
@@ -52,10 +51,10 @@ define([
 
 		getParentWidget: function() {
 			// usually parentNode.parentNode should be a Page object
-			var widget = dijit.getEnclosingWidget(lang.getObject('parentNode.parentNode', false, this));
+			var widget = this.getParent().getParent();
 			if (!widget || !widget.isInstanceOf(Page)) {
 				// no Page object -> fallback to the next parent widget
-				widget = dijit.getEnclosingWidget(this.parentNode);
+				widget = this.getParent();
 			}
 			return widget;
 		},
@@ -84,10 +83,13 @@ define([
 		startup: function() {
 			this.inherited(arguments);
 
+			if (this.parentWidget) {
+				return;
+			}
 			// get the parent node and remove ourself from the DOM
 			this.parentWidget = this.getParentWidget();
-			this.parentNode = this.domNode.parentNode;
-			this.parentNode.removeChild(this.domNode);
+			var parentNode = this.parentWidget.domNode;
+			parentNode.removeChild(this.domNode);
 			this.domNode = null;
 
 			// add all buffered child widgets to the DOM
