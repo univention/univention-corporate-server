@@ -1,36 +1,5 @@
 Type: multifile
 Multifile: etc/postfix/main.cf
-Variables: hostname
-Variables: domainname
-Variables: ldap/server/name
-Variables: ldap/base
-Variables: mail/ldap
-Variables: mail/antivir
-Variables: mail/relayauth
-Variables: mail/relayhost
-Variables: mail/archivefolder
-Variables: mail/hosteddomains
-Variables: mail/postfix/mydomains
-Variables: mail/postfix/mynetworks
-Variables: server/role
-Variables: mail/messagesizelimit
-Variables: ldap/base
-Variables: ldap/port
-Variables: ldap/server
-Variables: mail/smtp/helo/name
-Variables: mail/smtp/VRFY/disabled
-Variables: mail/localmailboxsizelimit
-Variables: mail/postfix/masquerade/domains
-Variables: mail/postfix/masquerade/exceptions
-Variables: mail/maps/canonical/sender/enable
-Variables: mail/maps/canonical/sender/classes
-Variables: mail/maps/canonical/recipient/enable
-Variables: mail/maps/canonical/recipient/classes
-Variables: mail/postfix/softbounce
-Variables: mail/postfix/dnslookups
-Variables: mail/postfix/ldap/timeout
-Variables: mail/postfix/policy/listfilter
-Variables: mail/postfix/smtpd/restrictions/recipient/.*
 
 Type: subfile
 Multifile: etc/postfix/main.cf
@@ -44,6 +13,19 @@ Variables: mail/postfix/inet/interfaces
 Variables: mail/postfix/inet/protocols
 Variables: mail/smtp/VRFY/disabled
 Variables: mail/postfix/smtpd/banner
+Variables: mail/messagesizelimit
+Variables: mail/localmailboxsizelimit
+Variables: hostname
+Variables: domainname
+Variables: mail/smtp/helo/name
+Variables: mail/postfix/dnslookups
+Variables: mail/postfix/softbounce
+Variables: mail/postfix/mynetworks
+Variables: mail/postfix/masquerade/domains
+Variables: mail/postfix/masquerade/exceptions
+Variables: mail/relayhost
+Variables: mail/relayauth
+Variables: mail/smtp/VRFY/disabled
 
 Type: subfile
 Multifile: etc/postfix/main.cf
@@ -55,15 +37,23 @@ Variables: mail/postfix/virtual/mailbox/maps
 Variables: mail/postfix/virtual/transport
 Variables: mail/postfix/virtual/enabled
 Variables: mail/postfix/local/header/rewrite/clients
+Variables: mail/maps/canonical/sender/enable
+Variables: mail/maps/canonical/sender/classes
+Variables: mail/maps/canonical/recipient/enable
+Variables: mail/maps/canonical/recipient/classes
 
 Type: subfile
 Multifile: etc/postfix/main.cf
 Subfile: etc/postfix/main.cf.d/50_restrictions
 Variables: mail/postfix/greylisting
+Variables: mail/postfix/smtpd/restrictions/recipient/.*
+Variables: mail/postfix/policy/listfilter
 
 Type: subfile
 Multifile: etc/postfix/main.cf
 Subfile: etc/postfix/main.cf.d/60_tls
+Variables: hostname
+Variables: domainname
 Variables: mail/postfix/ssl/certificate
 Variables: mail/postfix/ssl/key
 Variables: mail/postfix/tls/client/level
@@ -79,31 +69,29 @@ Variables: mail/postfix/smtpd/tls/eecdh/grade
 Type: subfile
 Multifile: etc/postfix/main.cf
 Subfile: etc/postfix/main.cf.d/80_delivery
+Variables: mail/antivir
+Variables: mail/archivefolder
 
 Type: multifile
 Multifile: etc/postfix/master.cf
-Variables: hostname
-Variables: domainname
-Variables: mail/antivir
-Variables: ldap/base
-Variables: ldap/port
-Variables: ldap/server
-Variables: mail/smtpport
-Variables: mail/postfix/policy/listfilter
-Variables: mail/postfix/policy/listfilter/maxproc
-Variables: mail/postfix/smtpd/debug
 
 Type: subfile
 Multifile: etc/postfix/master.cf
 Subfile: etc/postfix/master.cf.d/10_services
+Variables: mail/smtpport
+Variables: mail/postfix/smtpd/debug
 
 Type: subfile
 Multifile: etc/postfix/master.cf
 Subfile: etc/postfix/master.cf.d/30_antivir
+Variables: mail/antivir
 
 Type: subfile
 Multifile: etc/postfix/master.cf
 Subfile: etc/postfix/master.cf.d/70_policy
+Variables: mail/postfix/policy/listfilter
+Variables: mail/postfix/policy/listfilter/maxproc
+Variables: ldap/base
 
 Type: multifile
 Multifile: etc/postfix/transport
@@ -143,156 +131,212 @@ Variables: mail/archivefolder
 
 Type: multifile
 Multifile: etc/postfix/ldap.groups
-Variables: mail/postfix/virtual/.*
-Variables: ldap/server/name
-Variables: ldap/server/port
-Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/.*
-User: postfix
+User: root
 Group: root
 Mode: 0440
 
 Type: subfile
 Multifile: etc/postfix/ldap.groups
 Subfile: etc/postfix/ldap.groups.d/10_base
-
-Type: multifile
-Multifile: etc/postfix/ldap.transport
-Variables: mail/postfix/virtual/.*
+Variables: ldap/base
+Variables: mail/postfix/ldap/timeout
+Variables: ldap/hostdn
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/.*
-User: postfix
+Variables: mail/postfix/ldaptable/tlscacertfile
+Variables: mail/postfix/ldaptable/debuglevel
+Variables: mail/postfix/ldaptable/starttls
+Variables: mail/postfix/ldaptable/tlsrequirecert
+
+Type: multifile
+Multifile: etc/postfix/ldap.transport
+User: root
 Group: root
 Mode: 0440
 
 Type: subfile
 Multifile: etc/postfix/ldap.transport
 Subfile: etc/postfix/ldap.transport.d/10_base
-
-Type: multifile
-Multifile: etc/postfix/ldap.virtualwithcanonical
-Variables: mail/postfix/virtual/.*
+Variables: ldap/base
+Variables: mail/postfix/ldap/timeout
+Variables: ldap/hostdn
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/.*
-User: postfix
+Variables: hostname
+Variables: domainname
+Variables: mail/postfix/ldaptable/tlscacertfile
+Variables: mail/postfix/ldaptable/debuglevel
+Variables: mail/postfix/ldaptable/starttls
+Variables: mail/postfix/ldaptable/tlsrequirecert
+
+Type: multifile
+Multifile: etc/postfix/ldap.virtualwithcanonical
+User: root
 Group: root
 Mode: 0440
 
 Type: subfile
 Multifile: etc/postfix/ldap.virtualwithcanonical
 Subfile: etc/postfix/ldap.virtualwithcanonical.d/10_base
-
-Type: multifile
-Multifile: etc/postfix/ldap.sharedfolderremote
-Variables: mail/postfix/virtual/.*
+Variables: ldap/base
+Variables: mail/postfix/ldap/timeout
+Variables: ldap/hostdn
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/.*
-User: postfix
+Variables: mail/postfix/ldaptable/tlscacertfile
+Variables: mail/postfix/ldaptable/debuglevel
+Variables: mail/postfix/ldaptable/starttls
+Variables: mail/postfix/ldaptable/tlsrequirecert
+
+Type: multifile
+Multifile: etc/postfix/ldap.sharedfolderremote
+User: root
 Group: root
 Mode: 0440
 
 Type: subfile
 Multifile: etc/postfix/ldap.sharedfolderremote
 Subfile: etc/postfix/ldap.sharedfolderremote.d/10_base
-
-Type: multifile
-Multifile: etc/postfix/ldap.virtual
-Variables: mail/postfix/virtual/.*
+Variables: ldap/base
+Variables: mail/postfix/ldap/timeout
+Variables: ldap/hostdn
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/.*
-User: postfix
+Variables: hostname
+Variables: domainname
+Variables: mail/postfix/ldaptable/tlscacertfile
+Variables: mail/postfix/ldaptable/debuglevel
+Variables: mail/postfix/ldaptable/starttls
+Variables: mail/postfix/ldaptable/tlsrequirecert
+
+Type: multifile
+Multifile: etc/postfix/ldap.virtual
+User: root
 Group: root
 Mode: 0440
 
 Type: subfile
 Multifile: etc/postfix/ldap.virtual
 Subfile: etc/postfix/ldap.virtual.d/10_base
-
-Type: multifile
-Multifile: etc/postfix/ldap.virtualdomains
-Variables: mail/postfix/virtual/.*
+Variables: ldap/base
+Variables: mail/postfix/ldap/timeout
+Variables: ldap/hostdn
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/.*
-User: postfix
+Variables: mail/postfix/ldaptable/tlscacertfile
+Variables: mail/postfix/ldaptable/debuglevel
+Variables: mail/postfix/ldaptable/starttls
+Variables: mail/postfix/ldaptable/tlsrequirecert
+
+Type: multifile
+Multifile: etc/postfix/ldap.virtualdomains
+User: root
 Group: root
 Mode: 0440
 
 Type: subfile
 Multifile: etc/postfix/ldap.virtualdomains
 Subfile: etc/postfix/ldap.virtualdomains.d/10_base
-
-Type: multifile
-Multifile: etc/postfix/ldap.sharedfolderlocal
-Variables: mail/postfix/virtual/.*
+Variables: ldap/base
+Variables: mail/postfix/ldap/timeout
+Variables: ldap/hostdn
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/.*
-User: postfix
+Variables: mail/postfix/ldaptable/tlscacertfile
+Variables: mail/postfix/ldaptable/debuglevel
+Variables: mail/postfix/ldaptable/starttls
+Variables: mail/postfix/ldaptable/tlsrequirecert
+
+Type: multifile
+Multifile: etc/postfix/ldap.sharedfolderlocal
+User: root
 Group: root
 Mode: 0440
 
 Type: subfile
 Multifile: etc/postfix/ldap.sharedfolderlocal
 Subfile: etc/postfix/ldap.sharedfolderlocal.d/10_base
-
-Type: multifile
-Multifile: etc/postfix/ldap.canonicalrecipient
-Variables: mail/postfix/virtual/.*
+Variables: ldap/base
+Variables: mail/postfix/ldap/timeout
+Variables: ldap/hostdn
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/.*
-User: postfix
+Variables: hostname
+Variables: domainname
+Variables: mail/postfix/ldaptable/tlscacertfile
+Variables: mail/postfix/ldaptable/debuglevel
+Variables: mail/postfix/ldaptable/starttls
+Variables: mail/postfix/ldaptable/tlsrequirecert
+
+Type: multifile
+Multifile: etc/postfix/ldap.canonicalrecipient
+User: root
 Group: root
 Mode: 0440
 
 Type: subfile
 Multifile: etc/postfix/ldap.canonicalrecipient
 Subfile: etc/postfix/ldap.canonicalrecipient.d/10_base
-
-Type: multifile
-Multifile: etc/postfix/ldap.distlist
-Variables: mail/postfix/virtual/.*
+Variables: ldap/base
+Variables: mail/postfix/ldap/timeout
+Variables: ldap/hostdn
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/.*
-User: postfix
+Variables: mail/postfix/ldaptable/tlscacertfile
+Variables: mail/postfix/ldaptable/debuglevel
+Variables: mail/postfix/ldaptable/starttls
+Variables: mail/postfix/ldaptable/tlsrequirecert
+
+Type: multifile
+Multifile: etc/postfix/ldap.distlist
+User: root
 Group: root
 Mode: 0440
 
 Type: subfile
 Multifile: etc/postfix/ldap.distlist
 Subfile: etc/postfix/ldap.distlist.d/10_base
-
-Type: multifile
-Multifile: etc/postfix/ldap.canonicalsender
-Variables: mail/postfix/virtual/.*
+Variables: ldap/base
+Variables: mail/postfix/ldap/timeout
+Variables: ldap/hostdn
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
-Variables: mail/postfix/ldaptable/.*
-User: postfix
+Variables: mail/postfix/ldaptable/tlscacertfile
+Variables: mail/postfix/ldaptable/debuglevel
+Variables: mail/postfix/ldaptable/starttls
+Variables: mail/postfix/ldaptable/tlsrequirecert
+
+Type: multifile
+Multifile: etc/postfix/ldap.canonicalsender
+User: root
 Group: root
 Mode: 0440
 
 Type: subfile
 Multifile: etc/postfix/ldap.canonicalsender
 Subfile: etc/postfix/ldap.canonicalsender.d/10_base
+Variables: ldap/base
+Variables: mail/postfix/ldap/timeout
+Variables: ldap/hostdn
+Variables: ldap/server/name
+Variables: ldap/server/port
+Variables: ldap/server/addition
+Variables: mail/postfix/ldaptable/tlscacertfile
+Variables: mail/postfix/ldaptable/debuglevel
+Variables: mail/postfix/ldaptable/starttls
+Variables: mail/postfix/ldaptable/tlsrequirecert
 
 Type: file
-File: etc/postfix/listfilter.secret
+File: etc/listfilter.secret
 Variables: mail/postfix/policy/listfilter
 User: listfilter
 Group: root

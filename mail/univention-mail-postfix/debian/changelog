@@ -1,3 +1,11 @@
+univention-mail-postfix (9.0.0-6) unstable; urgency=low
+
+  * Change owner of LDAP configurations to root.
+  * Move needed UCR variables to subfiles.
+  * Remove useless debian/*.dirs files. (Bug #35264)
+
+ -- Felix Botner <botner@univention.de>  Thu, 02 Oct 2014 09:46:16 +0200
+
 univention-mail-postfix (9.0.0-5) unstable; urgency=low
 
   * added cron job for re-creating dh parameter files (Bug #35923)  

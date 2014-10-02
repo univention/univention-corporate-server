@@ -1,5 +1,0 @@
-usr/lib/univention-install
-usr/share/univention-mail-postfix
-usr/lib/univention-server/server_password_change.d
-etc/univention/templates/scripts/etc/postfix
-usr/lib/univention-directory-listener/system
