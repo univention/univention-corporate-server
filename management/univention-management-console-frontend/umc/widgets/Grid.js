@@ -407,8 +407,14 @@ define([
 			this._grid.setStructure(gridColumns);
 		},
 
+		layout: function() {
+			this.resize();
+		},
+
 		resize: function() {
-			// FIXME: deprecated warning
+			if (this._grid) {
+				this._grid.resize();
+			}
 		},
 
 		_getHeaderWidth: function(text) {
@@ -736,7 +742,7 @@ define([
 			this._footer.startup();
 
 			// redo the layout since we added elements
-			//this.layout();
+			this.layout();
 
 			return true;
 		},
@@ -776,7 +782,7 @@ define([
 			this.standby(true);
 			this._grid.filter(query);
 			this.clearDisabledItems(false);
-			//this.layout();
+			this.layout();
 		},
 
 		getAllItems: function() {

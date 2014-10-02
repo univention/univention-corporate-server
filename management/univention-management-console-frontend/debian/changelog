@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.27-1) unstable; urgency=low
+
+  * Bug #35654: implement Grid.resize() and Grid.layout() - maybe this fixes
+  	some strange issues with greyed out Grid
+
+ -- Florian Best <best@univention.de>  Thu, 02 Oct 2014 16:04:55 +0200
+
 univention-management-console-frontend (4.1.26-1) unstable; urgency=low
 
   * Bug #35654: fix exceptions which happens after closing a ConfirmDialog
