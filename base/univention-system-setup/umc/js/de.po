@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-02 10:57+0200\n"
+"POT-Creation-Date: 2014-10-02 13:57+0200\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -556,9 +556,13 @@ msgstr "Löschen"
 msgid "Do not use any domain"
 msgstr "Keine Domäne benutzen"
 
-#: umc/js/setup/ApplianceWizard.js:370 umc/js/setup/ApplianceWizard.js:1422
+#: umc/js/setup/ApplianceWizard.js:1422
 msgid "Domain and host configuration"
 msgstr "Domänen- und Rechnereinstellung"
+
+#: umc/js/setup/ApplianceWizard.js:370
+msgid "Domain and network configuration"
+msgstr "Domänen- und Netzwerkeinstellung"
 
 #: umc/js/setup/ApplianceWizard.js:673
 msgid "Domain join information"
@@ -1154,9 +1158,8 @@ msgid ""
 "Specify the type of the system to join into an existing UCS domain. For "
 "this, credentials of a valid domain Administrator account will be necessary."
 msgstr ""
-"Wählen Sie die Systemrolle aus, um einer bestehenden UCS-Domäne "
-"beizutreten. Dazu sind Zugangsdaten eines gültigen Domänen-Administrator-"
-"Kontos notwendig."
+"Wählen Sie die Systemrolle aus, um einer bestehenden UCS-Domäne beizutreten. "
+"Dazu sind Zugangsdaten eines gültigen Domänen-Administrator-Kontos notwendig."
 
 #: umc/js/setup/CertificatePage.js:92
 msgid "State"

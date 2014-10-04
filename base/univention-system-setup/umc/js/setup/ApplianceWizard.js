@@ -343,7 +343,7 @@ define([
 			}, {
 				'class': 'umc-setup-page umc-setup-page-network',
 				name: 'network',
-				headerText: _('Domain and host configuration'),
+				headerText: _('Domain and network configuration'),
 				helpText: _('Specify the network settings for this system.'),
 				layout: [
 					'_dhcp',

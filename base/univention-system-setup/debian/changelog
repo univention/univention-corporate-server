@@ -1,3 +1,10 @@
+univention-system-setup (8.1.6-5) unstable; urgency=low
+
+  * Bug #35716: Ignore log messages from postinst (et al) when installing
+    software
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 04 Oct 2014 23:07:44 +0200
+
 univention-system-setup (8.1.6-4) unstable; urgency=low
 
   * Undo univention-system-setup-boot.postinst changes and move the fix

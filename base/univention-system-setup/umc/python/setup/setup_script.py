@@ -256,7 +256,6 @@ class SetupScript(object):
 
 	def log(self, *msgs):
 		'''Log messages in a log file'''
-		print '### LOG ###'
 		for msg in msgs:
 			print msg,
 		print
@@ -322,9 +321,15 @@ class SetupScript(object):
 		pass
 
 
-from univention.lib.package_manager import PackageManager
+from univention.lib.package_manager import PackageManager, _PackageManagerLoggerHandler
 from contextlib import contextmanager
 
+
+class _PackageManagerLoggerHandlerWithoutProcess(_PackageManagerLoggerHandler):
+	def emit(self, record):
+		if record.name == 'packagemanager.dpkg.process':
+			return
+		super(_PackageManagerLoggerHandlerWithoutProcess, self).emit(record)
 
 class AptScript(SetupScript):
 	'''More or less just a wrapper around
@@ -334,12 +339,9 @@ class AptScript(SetupScript):
 	brutal_apt_options = True
 
 	def up(self, *args, **kwargs):
-		self.package_manager = PackageManager(
-			info_handler=self.message,
-			step_handler=self.step,
-			error_handler=self.error,
-			handle_only_frontend_errors=True, # ignore pmerror status
-		)
+		self.package_manager = PackageManager(always_noninteractive=False)
+		handler = _PackageManagerLoggerHandlerWithoutProcess(self.message, self.step, self.error)
+		self.package_manager.logger.addHandler(handler)
 
 		self.roles_package_map = {
 			'domaincontroller_master' : 'univention-server-master',
