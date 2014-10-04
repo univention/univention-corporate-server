@@ -574,7 +574,7 @@ define([
 						}
 					);
 				} else {
-					var progressMessage = _("%(verb)s %(ids)s on %(host)s", {verb: verb1, ids: this.app.name, host: host});
+					var progressMessage = _("%(verb)s %(ids)s on %(host)s", {verb: verb1, ids: this.app.name, host: host || _('this host')});
 
 					this.switchToProgressBar(progressMessage).then(function() {
 						deferred.resolve();

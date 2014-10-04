@@ -208,7 +208,7 @@ define([
 			var broken_count = broken ? (broken.length === 0 ? 0 : '<strong>' + broken.length + '</strong>') : _('Unknown');
 			var incompatible_headline = incompatible ? ', <strong>' + _('incompatible') : '</strong>';
 			this._container.addChild(new TitlePane({
-				title: _('Software changes on %(host)s (installed/upgraded: %(installed)s, removed: %(removed)s, erroneous: %(erroneous)s%(incompatible)s)', {host: host, installed: install_count, removed: remove_count, erroneous: broken_count, incompatible: incompatible_headline}),
+				title: _('Software changes on %(host)s (installed/upgraded: %(installed)s, removed: %(removed)s, erroneous: %(erroneous)s%(incompatible)s)', {host: host || _('this host'), installed: install_count, removed: remove_count, erroneous: broken_count, incompatible: incompatible_headline}),
 				open: opened,
 				content: txt
 			}));

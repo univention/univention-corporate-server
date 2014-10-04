@@ -54,7 +54,6 @@ import urllib2
 from glob import glob
 import cgi
 from urlparse import urlsplit, urljoin
-from datetime import datetime
 from httplib import HTTPException
 from socket import error as SocketError
 from ldap import LDAPError
@@ -891,8 +890,8 @@ class Application(object):
 		ret = ucr.is_true('appcenter/domainwide')
 		if ret:
 			if hosts is None:
-				hosts = get_all_hosts(ucr=ucr)
-			ret = bool(hosts)
+				hosts = get_all_hosts()
+			ret = len(hosts) > 1
 		return ret
 
 	def to_dict(self, package_manager, domainwide_managed=None, hosts=None):
@@ -1106,7 +1105,6 @@ class Application(object):
 		try:
 			# remove all packages of the component
 			package_manager.set_max_steps(200)
-			package_manager.log('\n== UNINSTALLING %s AT %s ==\n' % (self.name, datetime.now()))
 			package_manager.commit(remove=self.get('defaultpackages'))
 			package_manager.add_hundred_percent()
 
@@ -1536,7 +1534,6 @@ class Application(object):
 				previously_registered = previously_registered_by_dry_run
 
 			# install (+ dist_upgrade if update)
-			package_manager.log('\n== INSTALLING %s AT %s ==\n' % (self.name, datetime.now()))
 			package_manager.commit(install=to_install, dist_upgrade=not is_install)
 
 			# from now on better dont remove component

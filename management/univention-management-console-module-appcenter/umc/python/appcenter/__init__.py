@@ -84,7 +84,6 @@ class Instance(umcm.Base):
 			step_handler=None,
 			error_handler=MODULE.warn,
 			lock=False,
-			always_noninteractive=True,
 		)
 		self.package_manager.set_finished() # currently not working. accepting new tasks
 		self.uu = UniventionUpdater(False)
@@ -512,10 +511,10 @@ class Instance(umcm.Base):
 
 		# additional fields needed for detail view
 		if full:
-			result['section'] = package.section
-			result['priority'] = package.priority or ''
 			# Some fields differ depending on whether the package is installed or not:
 			if package.is_installed:
+				result['section'] = installed.section
+				result['priority'] = installed.priority or ''
 				result['summary'] = installed.summary # take the current one
 				result['description'] = installed.description
 				result['installed_version'] = installed.version
@@ -524,6 +523,8 @@ class Instance(umcm.Base):
 					result['candidate_version'] = candidate.version
 			else:
 				del result['upgradable'] # not installed: don't show 'upgradable' at all
+				result['section'] = candidate.section
+				result['priority'] = candidate.priority or ''
 				result['description'] = candidate.description
 				result['size'] = candidate.installed_size
 				result['candidate_version'] = candidate.version

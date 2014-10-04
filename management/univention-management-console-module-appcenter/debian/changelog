@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.4-3) unstable; urgency=low
+
+  * Bug #35716: Adjustments for slightly new PackageManager API
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 05 Oct 2014 01:30:05 +0200
+
 univention-management-console-module-appcenter (4.1.4-2) unstable; urgency=low
 
   * Bug #35654: fix path to appcenter.css

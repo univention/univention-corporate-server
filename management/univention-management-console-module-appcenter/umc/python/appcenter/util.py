@@ -74,13 +74,13 @@ def rename_app(old_id, new_id, component_manager, package_manager):
 	app.tell_ldap(component_manager.ucr, package_manager, inform_about_error=False)
 
 def get_hosts(module, lo, ucr=None):
- 	hosts = module.lookup(None, lo, None)
-	hostnames = []
+ 	_hosts = module.lookup(None, lo, None)
+	hosts = []
 	if ucr is not None:
 		local_hostname = ucr.get('hostname')
 	else:
 		local_hostname = None
-	for host in hosts:
+	for host in _hosts:
 		host.open() # needed for fqdn. it may be enough to return 'name'
 		hostname = host.info.get('name')
 		if hostname == local_hostname:
@@ -89,9 +89,9 @@ def get_hosts(module, lo, ucr=None):
 		if 'fqdn' not in host.info:
 			MODULE.warn('%s does not have an FQDN. Skipping' % host.dn)
 			continue
-		hostnames.append(host)
-	MODULE.process('Found hosts: %r' % hostnames)
-	return hostnames
+		hosts.append(host)
+	MODULE.process('Found hosts: %r' % [host.info.get('name') for host in hosts])
+	return hosts
 
 def get_master(lo):
 	MODULE.process('Searching DC Master')
