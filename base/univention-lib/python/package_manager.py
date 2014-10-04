@@ -33,10 +33,10 @@
 
 import sys
 import os
-import time
 import subprocess
 from contextlib import contextmanager
 import threading
+from logging import getLogger, DEBUG, Handler
 
 import apt_pkg
 import apt
@@ -62,12 +62,8 @@ class LockError(Exception):
 	pass
 
 class ProgressState(object):
-	def __init__(self, info_handler, step_handler, error_handler, handle_only_frontend_errors):
-		self.info_handler = info_handler
-		self.step_handler = step_handler
-		self.error_handler = error_handler
-		self.handle_only_frontend_errors = handle_only_frontend_errors
-		self.logfiles = {}
+	def __init__(self, parent_logger):
+		self._logger = parent_logger.getChild('dpkg')
 		self.hard_reset()
 
 	def reset(self):
@@ -84,36 +80,23 @@ class ProgressState(object):
 	def set_finished(self):
 		self._finished = True
 
-	def log(self, msg):
-		if msg is None:
-			return
-		msg = '%s\n' % str(msg).strip()
-		for log in self.logfiles.values():
-			log.write(msg)
+	def get_logger(self, logger_name=None):
+		if logger_name is None:
+			return self._logger
+		return self._logger.getChild(logger_name)
 
-	def info(self, info):
-		self.log(info)
+	def info(self, info, logger_name=None):
 		self._info = info
-		if self.info_handler:
-			self.info_handler(info)
+		self.get_logger(logger_name).info(info)
 
-	def percentage(self, percentage):
-		self.log(percentage)
+	def percentage(self, percentage, logger_name='percentage'):
 		self._percentage = percentage
 		if percentage is not None:
-			if self.step_handler:
-				self.step_handler(self._steps)
+			self.get_logger(logger_name).info(percentage)
 
-	def error(self, error, frontend=True):
-		self.log(error)
-		if frontend:
-			self.info(error)
-			self._errors.append(error)
-		else:
-			if self.handle_only_frontend_errors:
-				return
-		if self.error_handler:
-			self.error_handler(error)
+	def error(self, error, logger_name=None):
+		self._errors.append(error)
+		self.get_logger(logger_name).error(error)
 
 	def add_start_steps(self, steps):
 		self._start_steps += steps
@@ -150,7 +133,7 @@ class MessageWriter(object):
 	def write(self, msg):
 		msg = msg.replace('\r', '').strip()
 		if msg:
-			self.progress_state.info(msg)
+			self.progress_state.info(msg, logger_name='fetch')
 
 class FetchProgress(apt.progress.text.AcquireProgress):
 	'''Used to handle information about fetching packages.
@@ -217,7 +200,7 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 					break
 
 				# we got a new line -> send to info handler
-				self.progress_state.info(output.strip())
+				self.progress_state.info(output.strip(), logger_name='process')
 			except (OSError, IOError):
 				# something unexpected happened -> break loop
 				break
@@ -227,13 +210,13 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 
 	# status == pmstatus
 	def status_change(self, pkg, percent, status):
-		self.progress_state.info(status)
+		self.progress_state.info(status, logger_name='status')
 		self.progress_state.percentage(percent)
 
 	# status == pmerror
 	# they are probably not for frontend-users
 	def error(self, pkg, errormsg):
-		self.progress_state.error('%s: %s' % (pkg, errormsg), frontend=False)
+		self.progress_state.error('%s: %s' % (pkg, errormsg), logger_name='process')
 
 #	def start_update(self):
 #		self.log('SUPDATE')
@@ -250,10 +233,36 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 #	def processing(self, pkg, stage):
 #		self.log('PROCESS', pkg, stage)
 #
+
+class _PackageManagerLoggerHandler(Handler):
+	def __init__(self, info_handler, step_handler, error_handler):
+		super(_PackageManagerLoggerHandler, self).__init__()
+		self.info_handler = info_handler
+		self.step_handler = step_handler
+		self.error_handler = error_handler
+
+	def emit(self, record):
+		if record.name == 'packagemanager.dpkg.percentage':
+			if self.step_handler:
+				self.step_handler(record.msg)
+		elif record.levelname == 'ERROR':
+			if self.error_handler:
+				self.error_handler(record.msg)
+		elif record.levelname == 'INFO':
+			if self.info_handler:
+				self.info_handler(record.msg)
+
 class PackageManager(object):
-	def __init__(self, lock=True, info_handler=None, step_handler=None, error_handler=None, handle_only_frontend_errors=False, always_noninteractive=False):
+	def __init__(self, lock=True, info_handler=None, step_handler=None, error_handler=None, always_noninteractive=True):
+		# parent logger, public. should be extended by adding a handler
+		self.logger = getLogger('packagemanager')
+		self.logger.setLevel(DEBUG)
+		if info_handler or step_handler or error_handler:
+			handler = _PackageManagerLoggerHandler(info_handler, step_handler, error_handler)
+			self.logger.addHandler(handler)
+
 		self.cache = apt.Cache()
-		self.progress_state = ProgressState(info_handler, step_handler, error_handler, handle_only_frontend_errors)
+		self.progress_state = ProgressState(self.logger)
 		self.fetch_progress = FetchProgress(self.progress_state)
 		self.dpkg_progress = DpkgProgress(self.progress_state)
 		self._always_install = []
@@ -291,21 +300,6 @@ class PackageManager(object):
 
 	def is_locked(self):
 		return self.lock_fd is not None
-
-	@contextmanager
-	def logging_to(self, logfile):
-		if logfile.name in self.progress_state.logfiles:
-			# already registered
-			yield
-		else:
-			self.progress_state.logfiles[logfile.name] = logfile
-			try:
-				yield
-			finally:
-				self.progress_state.logfiles.pop(logfile.name)
-
-	def log(self, msg):
-		self.progress_state.log(msg)
 
 	@contextmanager
 	def locked(self, reset_status=False, set_finished=False):
@@ -365,19 +359,7 @@ class PackageManager(object):
 		self.progress_state.set_finished()
 
 	def poll(self, timeout):
-		SLEEP_TIME = 0.2
-		n = timeout / SLEEP_TIME
-		while n:
-			status = self.progress_state.poll()
-			for k, v in status.iteritems():
-				if k != 'errors' and v is not None:
-					break
-			else:
-				time.sleep(SLEEP_TIME)
-				n -= 1
-				continue
-			return status
-		return {'timeout': True}
+		return self.progress_state.poll()
 
 	def reset_status(self):
 		self.progress_state.hard_reset()

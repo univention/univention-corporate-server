@@ -1,3 +1,9 @@
+univention-lib (4.0.3-4) unstable; urgency=low
+
+  * Bug #35716: Allow finer grained log control in PackageManager
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 04 Oct 2014 22:57:38 +0200
+
 univention-lib (4.0.3-3) unstable; urgency=low
 
   * python-univention-lib: added a dependency to python-imaging
