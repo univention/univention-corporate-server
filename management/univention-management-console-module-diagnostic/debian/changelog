@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (1.0.6-1) unstable; urgency=low
+
+  * Bug #35864: fix typo
+
+ -- Florian Best <best@univention.de>  Mon, 06 Oct 2014 17:02:55 +0200
+
 univention-management-console-module-diagnostic (1.0.5-1) unstable; urgency=low
 
   * Bug #35864: add translation, remove all plugins except network and

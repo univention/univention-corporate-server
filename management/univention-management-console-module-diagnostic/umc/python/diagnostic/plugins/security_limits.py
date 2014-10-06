@@ -42,7 +42,7 @@ def run():
 		with open('/var/log/samba/log.smbd', 'rb') as fd:
 			counter = len(re.findall('Too many open files', fd.read()))
 	except (OSError, IOError):
-		pass  # logfile does not exists
+		return # logfile does not exists
 
 	ucr.load()
 	try:
