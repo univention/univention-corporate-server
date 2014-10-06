@@ -221,6 +221,12 @@ fi
 )
 progress_next_step $nJoinSteps
 
+# Run certain scripts that should be executed after univention-join
+# (e.g. univention-upgrade which would require testing new installations
+# each time we release an update)
+echo "Running postjoin scripts"
+run-parts /usr/lib/univention-system-setup/scripts/90_postjoin/
+
 # Cleanup
 rm -f /var/lib/univention-ldap/root.secret
 

@@ -1,3 +1,9 @@
+univention-system-setup (8.1.6-6) unstable; urgency=low
+
+  * Bug #33839: Run univention-upgrade after initial join
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 06 Oct 2014 10:23:37 +0200
+
 univention-system-setup (8.1.6-5) unstable; urgency=low
 
   * Bug #35716: Ignore log messages from postinst (et al) when installing
