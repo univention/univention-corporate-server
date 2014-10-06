@@ -32,6 +32,7 @@ Depends: univention-config,
  ucs-test-modules-all | ucs-test-module,
  dpkg-dev,
  debhelper,
+ fakeroot,
  ${python:Depends},
  ${misc:Depends}
 Description: UCS test environment
