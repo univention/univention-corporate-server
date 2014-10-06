@@ -40,11 +40,17 @@ umc_frontend_new_hash
 eval "$(ucr shell)"
 univention-config-registry set "umc/web/feedback/mail?feedback@univention.de" \
 	"umc/web/feedback/description?[UMC-Feedback] Traceback" \
-	"umc/web/favorites/default?udm:users/user,udm:groups/group,udm:computers/computer,appcenter,updater" \
+	"umc/web/favorites/default?udm:users/user,udm:groups/group,udm:computers/computer,appcenter:appcenter,updater" \
 	"umc/web/sso/enabled=yes" \
 	"umc/web/sso/allow/http=yes" \
 	"umc/web/sso/newwindow=yes" \
 	"umc/web/sso/timeout=15" 
+
+if [ "$umc_web_favorites_default" = 'udm:users/user,udm:groups/group,udm:computers/computer,appcenter,updater' ]; then
+	# fix for default favorites ... appcenter module needs now 
+	# to be addressed as 'appcenter:appcenter'
+	univention-config-registry set "umc/web/favorites/default=udm:users/user,udm:groups/group,udm:computers/computer,appcenter:appcenter,updater"
+fi
 
 # set ucs-overview variables - only if they aren't set, so the user can also login even the system has not joined the domain yet
 # instead of the normal text the user will see: 'Please login as root to join the domain'

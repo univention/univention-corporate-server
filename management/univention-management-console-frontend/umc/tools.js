@@ -75,7 +75,6 @@ define([
 			hostname: '',
 			domainname: '',
 			overview: true,
-			displayMenu: true,
 			width: null,
 			setupGui: false,
 			loggingIn: false,
