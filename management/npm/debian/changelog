@@ -1,3 +1,9 @@
+npm (1.4.27-1) unstable; urgency=medium
+
+  * Bug #35654: version bump to corresponding npm version
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Oct 2014 18:09:10 +0200
+
 npm (0.0.2-3) unstable; urgency=low
 
   * Bug #35654: version bump
