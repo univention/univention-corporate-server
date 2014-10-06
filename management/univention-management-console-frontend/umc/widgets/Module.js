@@ -60,36 +60,17 @@ define([
 			this.inherited(arguments);
 			this.defaultTitle = this.title;
 
-			this._registerHeaderButtonsHandling();
-		},
-
-		_registerHeaderButtonsHandling: function() {
-			this._headerButtonsMap = {};
-			aspect.after(this, 'addChild', lang.hitch(this, function(child) {
-				if (child.headerButtons) {
-					var container = new ContainerWidget({
-						style: 'display: inline-block; margin: 0; padding: 0;'
-					});
-					child.own(container);
-					var buttons = render.buttons(child.headerButtons, container);
-					array.forEach(buttons.$order$, function(btn) {
-						container.addChild(buttons[btn.name]); // important! allow overwriting of button names (e.g close)
-					});
-					this._top._right.addChild(container, 0);
-					this._headerButtonsMap[child.id] = container;
-				}
-			}), true);
-
-			this.watch('selectedChildWidget', lang.hitch(this, function(name, old, child) {
-				tools.forIn(this._headerButtonsMap, lang.hitch(this, function(id, ctn) {
-					if (!ctn.domNode) {
-						// child has been removed
-						delete this._headerButtonsMap[id];
-						return;
-					}
-					domClass.toggle(ctn.domNode, 'dijitHidden', id !== child.id);
-				}));
+			this.__container = new StackContainer({
+				'class': 'umcModuleContent',
+				doLayout: false
+			});
+			this.__container.watch('selectedChildWidget', lang.hitch(this, function(name, oldV, newV) {
+				this.set(name, newV);
 			}));
+
+			this._headerButtonsMap = {};
+			this.__container.watch('selectedChildWidget', lang.hitch(this, '__refreshButtonVisibility'));
+			aspect.after(this.__container, 'addChild', lang.hitch(this, '_addHeaderButtonsToChild'), true);
 		},
 
 		resetTitle: function() {
@@ -120,20 +101,12 @@ define([
 			this._bottom = new ContainerWidget({
 				'class': 'umcModuleWrapper container'
 			});
+			this._bottom.addChild(this.__container);
 
 			this._top = new ModuleHeader({
 				//buttons: render.buttons(this.headerButtons, this),
 				title: this.get('title')
 			});
-
-			this.__container = new StackContainer({
-				'class': 'umcModuleContent',
-				doLayout: false
-			});
-			this.__container.watch('selectedChildWidget', lang.hitch(this, function(name, oldV, newV) {
-				this.set(name, newV);
-			}));
-			this._bottom.addChild(this.__container);
 
 			ContainerWidget.prototype.addChild.apply(this, [this._top]);
 			ContainerWidget.prototype.addChild.apply(this, [this._bottom]);
@@ -160,11 +133,11 @@ define([
 		},
 
 		addChild: function(child, idx) {
-			this._addHeaderButtons(child);
 			return this.__container.addChild(child, idx);
 		},
 
-		_addHeaderButtons: function(child) {
+		_addHeaderButtonsToChild: function(child) {
+			// some default buttons (e.g. close)
 			var headerButtons = [/*{
 				name: 'help',
 				label: _('Help'),
@@ -185,6 +158,34 @@ define([
 			}
 
 			child.headerButtons = headerButtons.concat(child.headerButtons || []);
+
+			if (child.headerButtons && child.headerButtons.length) {
+				var container = new ContainerWidget({
+				//	'class': 'dijitHidden',
+					style: 'display: inline-block; margin: 0; padding: 0;'
+				});
+				child.own(container);
+
+				var buttons = render.buttons(child.headerButtons, container);
+				array.forEach(buttons.$order$, function(btn) {
+					container.addChild(buttons[btn.name]); // important! allow overwriting of button names (e.g close)
+				});
+
+				this._top._right.addChild(container, 0);
+				this._headerButtonsMap[child.id] = container;
+			}
+		},
+
+		__refreshButtonVisibility: function() {
+			var child = this.__container.get('selectedChildWidget');
+			tools.forIn(this._headerButtonsMap, lang.hitch(this, function(id, ctn) {
+				if (!ctn.domNode) {
+					// child has been removed
+					delete this._headerButtonsMap[id];
+					return;
+				}
+				domClass.toggle(ctn.domNode, 'dijitHidden', id !== child.id);
+			}));
 		},
 
 		layout: function() {
@@ -197,6 +198,10 @@ define([
 
 		startup: function() {
 			this.__container.startup();
+			if (this.__container.selectedChildWidget) {
+				this.set('selectedChildWidget', this.__container.selectedChildWidget);
+				this.__refreshButtonVisibility();
+			}
 			this.inherited(arguments);
 
 			// FIXME: Workaround for refreshing problems with datagrids when they are rendered
