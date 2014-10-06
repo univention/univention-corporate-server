@@ -33,13 +33,14 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"umc/widgets/TextBox",
+	"umc/widgets/PasswordBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/HiddenInput",
 	"umc/widgets/Wizard",
 	"umc/widgets/Form",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, TextBox, ComboBox, CheckBox, HiddenInput, Wizard, Form, _) {
+], function(declare, lang, array, TextBox, PasswordBox, ComboBox, CheckBox, HiddenInput, Wizard, Form, _) {
 
 	return declare("umc.modules.uvmm.CloudConnectionWizard", [ Wizard ], {
 		autoValidate: true,
@@ -89,13 +90,13 @@ define([
 						required: true
 					}, {
 						name: 'password',
-						type: TextBox,
+						type: PasswordBox,
 						label: _('Password'),
 						depends: 'auth_version',
 						required: true
 					}, {
 						name: 'auth_token',
-						type: TextBox,
+						type: PasswordBox,
 						label: _('API Key'),
 						depends: 'auth_version',
 						required: true
@@ -153,7 +154,7 @@ define([
 						required: true
 					}, {
 						name: 'password',
-						type: TextBox,
+						type: PasswordBox,
 						label: _('Secret Access Key'),
 						required: true
 					}, {

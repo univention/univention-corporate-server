@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.0-24) unstable; urgency=low
+
+  * Use PasswordBox for respective input fields (Bug #35945) 
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 06 Oct 2014 17:24:09 +0200
+
 univention-virtual-machine-manager-daemon (4.0.0-23) unstable; urgency=low
 
   * UMC design adaptions (Bug #35945) 
