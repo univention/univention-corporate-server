@@ -717,7 +717,7 @@ define([
 				tools.umcpCommand('uvmm/cloud/add', {
 					cloudtype: values.cloudtype,
  					name: values.name,
-					parameter: values.parameter
+					parameter: values
 				}).then(lang.hitch(this, function() {
 					_cleanup();
 					this._tree.reload();

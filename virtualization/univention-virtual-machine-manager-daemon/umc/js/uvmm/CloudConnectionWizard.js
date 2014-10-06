@@ -81,9 +81,9 @@ define([
 							{ id: '2.0_apikey', label: _('API Key') }
 						],
 						onChange: lang.hitch(this, function(value){
-							var password = this.getWidget('credentials', 'parameter').getWidget('password');
+							var password = this.getWidget('password');
 							password.set('disabled', value.indexOf('2.0_password') < 0);
-							var auth_token = this.getWidget('credentials', 'parameter').getWidget('auth_token');
+							var auth_token = this.getWidget('auth_token');
 							auth_token.set('disabled', value.indexOf('2.0_apikey') < 0);
 						}),
 						required: true
