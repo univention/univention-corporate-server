@@ -1,2 +1,2 @@
 tests/43_proxy usr/share/ucs-test/
-tests/43_proxy/essential usr/share/ucs-test/essential
+tests/43_proxy/essential usr/share/ucs-test/43_proxy/essential
