@@ -397,7 +397,7 @@ class Processor( signals.Provider ):
 			favorites = set()
 			userObj = self._get_user_obj()
 			if userObj:
-				favorites = dict(userObj.info.get('umcProperty', [])).setdefault('favorites', '').strip()
+				favorites = dict(userObj.info.get('umcProperty', [])).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
 				favorites.split(',')
 
 			modules = []

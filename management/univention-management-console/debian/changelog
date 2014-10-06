@@ -1,3 +1,9 @@
+univention-management-console (7.1.8-1) unstable; urgency=medium
+
+  * Bug #35654: add fallback for favorites
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Oct 2014 12:16:31 +0200
+
 univention-management-console (7.1.7-2) unstable; urgency=low
 
   * Bug #34765: add univention-management-console-module-diagnostic to the
