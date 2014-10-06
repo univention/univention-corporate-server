@@ -1,9 +1,8 @@
 #!/usr/share/ucs-test/runner python
 ## desc: packages held back
-## roles: [domaincontroller_master]
 ## tags: [apptest]
-## exposure: careful
-## packages: []
+## bugs: [14610]
+## exposure: safe
 
 import apt_pkg
 import univention.testing.utils as utils
