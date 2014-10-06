@@ -49,7 +49,27 @@
 	// Subtract 1px from top/bottom because we add 1px to other nodes, see rules below.
 	// Although we are theoretically only adding 1px to top/bottom browsers seem to pad inputs by 1px on left/right,
 	// although that varies by so compensate for that too.
-	padding: $textbox-padding $textbox-padding;
+	padding: $textbox-padding;
+}
+
+.claro .dijitSelect .dijitInputField:before,
+.claro .dijitTextBox .dijitInputField:before {
+	content: "";
+	position: absolute;
+	height: 5px;
+	bottom: 0;
+	left: 0;
+	border-left: thin solid $border-color;
+}
+
+.claro .dijitSelect .dijitInputField:after,
+.claro .dijitTextBox .dijitInputField:after {
+	content: "";
+	position: absolute;
+	height: 5px;
+	bottom: 0;
+	right: 0;
+	border-right: thin solid $border-color;
 }
 
 .dj_gecko .claro .dijitTextBox .dijitInputInner,
@@ -204,7 +224,7 @@
 .claro .dijitComboBoxFocused .dijitArrowButton {
 	//background-color:$arrowbutton-hovered-background-color;
 	.dijitArrowButtonInner {
-		background-position-x: -20px;
+		background-position: -20px 0;
 		opacity: 0.66;
 	}
 }
@@ -215,7 +235,7 @@
 }
 
 .claro .dijitComboBox .dijitDownArrowButtonActive .dijitArrowButtonInner {
-	background-position-x: -20px;
+	background-position: -20px 0;
 	opacity: 1;
 }
 
@@ -266,6 +286,7 @@ label {
 	.dijitTextBox .umcInlineLabel {
 		visibility: hidden;
 		position: absolute;
+		left: 5px;
 		color: $text-color-lightest;
 	}
 	.dijitTextBox .umcInlineLabel.umcEmptyValue {

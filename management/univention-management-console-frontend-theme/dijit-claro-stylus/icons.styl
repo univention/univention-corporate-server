@@ -15,11 +15,11 @@ icon-rule($iconName, $xoffset, $yoffset, $height=20px, $width=20px) {
 			icon-image($xoffset + $xoffsetColor, $yoffset, "", $width, $height);
 		}
 		.dijitHover .umc{$iconName}Icon{$suffix} {
-			background-position-x: ($xoffset - 20px + $xoffsetColor);
+			background-position: ($xoffset - 20px + $xoffsetColor) unit($yoffset, px);
 			opacity: $opacityHover;
 		}
 		.dijitActive .umc{$iconName}Icon{$suffix} {
-			background-position-x: ($xoffset - 20px + $xoffsetColor);
+			background-position: ($xoffset - 20px + $xoffsetColor) unit($yoffset, px);
 			opacity: $opacityActive;
 		}
 	}

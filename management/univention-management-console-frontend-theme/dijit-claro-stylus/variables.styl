@@ -5,6 +5,8 @@ $secondary-color ?= #e6e6e6;												// Base color for bar-backgrounds
 $text-color ?= #282828;													// Text color for enabled widgets
 $text-color-lighter ?= #5a5a5a;
 $text-color-lightest ?= #787878;
+$grey-lightest ?= #f0f0f0;
+$grey-medium ?= #c8c8c8;
 $disabled-color ?= #d3d3d3;												// Base for disabled backgrounds and borders
 $error-color ?= #be0000;
 $text-color-dark-background ?= #fff;
@@ -25,7 +27,7 @@ $lg-min = 1200px
 
 $container-background-color ?= #fff;										// Backgrounds for various content areas such as TitlePane, ContentPane and Inputs (if changed, adjust selected tab to match)
 
-$minor-selected-color ?= #c8c8c8;						// Color for various arrows and buttons
+$minor-selected-color ?= $grey-medium;						// Color for various arrows and buttons
 $base-border-color ?= #b4b4b4;		// Augmented and used directly by variables to create border colors for various widgets
 $unfocused-clickable-color ?= spin(saturate(lighten($primary-color, 5), 10), 0);				// Background color for enabled buttons, text inputs
 $border-color ?= spin(desaturate(darken($primary-color, 15), 67), 8);						// Border color for (enabled, unhovered) TextBox, Slider, Accordion, BorderContainer, TabContainer
@@ -81,7 +83,7 @@ $textbox-focused-background-color ?= $textbox-background-color;
 $textbox-error-background-color ?= $textbox-background-color;
 $textbox-disabled-background-color ?= $disabled-background-color;
 
-$textbox-padding ?= 0;	// Padding for Textbox, Textarea, etc.
+$textbox-padding ?= 0 5px;	// Padding for Textbox, Textarea, etc.
 
 // CheckBox, RadioButton
 $focus-outline-color ?= darken($secondary-color, 65);											// Color for artificial focus outline around labels of checkboxes

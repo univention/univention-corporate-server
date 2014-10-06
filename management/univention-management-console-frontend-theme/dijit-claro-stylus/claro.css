@@ -29,6 +29,7 @@
 @import url("form/NumberSpinner.css");
 @import url("Grid.css");
 @import url("../../../dojox/grid/resources/Grid.css");
+@import url("../../../dojox/grid/enhanced/resources/Common.css");
 @import url("../../../dojox/image/resources/LightboxNano.css");
 @import url("icons.css");
 @import url("site.css");

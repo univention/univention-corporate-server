@@ -32,12 +32,48 @@
 //		}
 //	}
 //}
+
+.umc .dojoxGridHeader {
+	background-color: $text-color;
+	.dojoxGridCell {
+		background-color: $text-color;
+		color: $text-color-dark-background;a
+	}
+	.dojoxGridCellOver {
+		background-color: $primary-color;
+	}
+	.dojoxGridCellFocus,
+	.dojoxGridCell,
+	.dojoxGridCellOver {
+		border: none;
+	}
+}
+.umc .dojoxGrid {
+	font-family: inherit;
+
+	.dojoxGridRow {
+		background-color: white;
+		border: none;
+	}
+	.dojoxGridRowOdd {
+		background-color: $grey-lightest;
+	}
+	.dojoxGridRowSelected {
+		background-color: $grey-medium;
+	}
+	.dojoxGridCell {
+		background-image: none;
+		border: none;
+	}
+}
+
+.umcGrid .umcGridDefaultAction:hover {
+	text-decoration: underline;
+}
+
 .umc .umcGridFooter {
-  margin-bottom: 0.416em;
-  padding: 0.416em;
-  background-color: #ededee;
-  border-top: 1px solid black;
-  border-bottom: 2px solid #999999;
+  margin-bottom: 0.5em;
+  border-top: thin solid $text-color;
 }
 .umc .dojoxGridArrowButtonChar {
 	display: none;

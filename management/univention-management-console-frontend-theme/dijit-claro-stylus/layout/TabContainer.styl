@@ -90,14 +90,14 @@ topBottom-selected-tab-gradient($direction) {
 .claro .dijitTabChecked .dijitTabCloseButton,
 .claro .dijitTabHover .dijitTabCloseButton,
 .claro .dijitTabActive .dijitTabCloseButton {
-	background-position-x: -120px;
+	background-position: -120px -60px;
 }
 .claro .dijitTab .dijitTabCloseButtonHover {
-	background-position-x: -140px;
+	background-position: -140px -60px;
 	opacity: 1;
 }
 .claro .dijitTab .dijitTabCloseButtonActive {
-	background-position-x: -140px;
+	background-position: -140px -60px;
 	opacity: 0.66;
 }
 .claro .dijitTabSpacer {
@@ -170,6 +170,7 @@ topBottom-selected-tab-gradient($direction) {
 	unselected-tab-gradient(top);
 
 	box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.04);
+	top: 0;
 }
 
 .claro .dijitTabContainerTop-tabs .dijitTabChecked {
@@ -190,7 +191,7 @@ topBottom-selected-tab-gradient($direction) {
 /*************** bottom tab ***************/
 .claro .dijitTabContainerBottom-tabs .dijitTab {
 	/* unselected (and not hovered/pressed) tab */
-	top: -1px;	/* used for overlap */
+	//top: -1px;	/* used for overlap */
 	margin-right: 1px;
 	padding: 2px 3px 7px 3px;
 	border-top-width: 0;

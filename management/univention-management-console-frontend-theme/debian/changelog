@@ -1,3 +1,12 @@
+univention-management-console-frontend-theme (0.0.30-1) unstable; urgency=medium
+
+  Bug #35654
+  * adjust grid styling
+  * fix background position for FF
+  * minor other fixes
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Oct 2014 15:25:02 +0200
+
 univention-management-console-frontend-theme (0.0.29-1) unstable; urgency=low
 
   * Bug #35654: add styling for UMC headless mode
