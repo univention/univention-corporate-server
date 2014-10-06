@@ -52,39 +52,15 @@ define([
 		_top: null,
 		_bottom: null,
 		__container: null,
-		headerButtons: null,
 
 		// initial title set for the module
 		defaultTitle: null,
 
 		postMixInProperties: function() {
-			this.headerButtons = [];
 			this.inherited(arguments);
 			this.defaultTitle = this.title;
 
-			var headerButtons = [{
-				name: 'help',
-				label: _('Help'),
-				iconClass: 'umcHelpIconWhite',
-				'class': 'umcHelpButton',
-				callback: lang.hitch(this, function() {
-					topic.publish('/umc/tabs/help', this);
-				})
-			}];
-			if (this.closable) {
-				headerButtons.push({
-					name: 'close',
-					label: _('Close'),
-					iconClass: 'umcCloseIconWhite',
-					'class': 'umcCloseButton',
-					callback: lang.hitch(this, 'closeModule')
-				});
-			}
-
-			this.headerButtons = headerButtons.concat(this.headerButtons);
-
 			this._registerHeaderButtonsHandling();
-
 		},
 
 		_registerHeaderButtonsHandling: function() {
@@ -95,8 +71,9 @@ define([
 						style: 'display: inline-block; margin: 0; padding: 0;'
 					});
 					child.own(container);
-					array.forEach(render.buttons(child.headerButtons, container).$order$, function(btn) {
-						container.addChild(btn);
+					var buttons = render.buttons(child.headerButtons, container);
+					array.forEach(buttons.$order$, function(btn) {
+						container.addChild(buttons[btn.name]); // important! allow overwriting of button names (e.g close)
 					});
 					this._top._right.addChild(container, 0);
 					this._headerButtonsMap[child.id] = container;
@@ -145,7 +122,7 @@ define([
 			});
 
 			this._top = new ModuleHeader({
-				buttons: render.buttons(this.headerButtons, this),
+				//buttons: render.buttons(this.headerButtons, this),
 				title: this.get('title')
 			});
 
@@ -183,7 +160,31 @@ define([
 		},
 
 		addChild: function(child, idx) {
+			this._addHeaderButtons(child);
 			return this.__container.addChild(child, idx);
+		},
+
+		_addHeaderButtons: function(child) {
+			var headerButtons = [/*{
+				name: 'help',
+				label: _('Help'),
+				iconClass: 'umcHelpIconWhite',
+				'class': 'umcHelpButton',
+				callback: lang.hitch(this, function() {
+					topic.publish('/umc/tabs/help', this);
+				})
+			}*/];
+			if (this.closable) {
+				headerButtons.push({
+					name: 'close',
+					label: _('Close'),
+					iconClass: 'umcCloseIconWhite',
+					'class': 'umcCloseButton',
+					callback: lang.hitch(this, 'closeModule')
+				});
+			}
+
+			child.headerButtons = headerButtons.concat(child.headerButtons || []);
 		},
 
 		layout: function() {

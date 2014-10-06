@@ -49,7 +49,7 @@ define([
 
 		'class': 'umcModuleHeader',
 		_title: null,
-		buttons: null,
+//		buttons: null,
 
 		_setTitleAttr: function(title) {
 			this._title.set('content', title);
@@ -87,9 +87,9 @@ define([
 			});
 			this._left.addChild(this._title);
 
-			array.forEach(this.buttons.$order$, lang.hitch(this, function(button) {
-				this._right.addChild(button);
-			}));
+//			array.forEach(this.buttons.$order$, lang.hitch(this, function(button) {
+//				this._right.addChild(button);
+//			}));
 		}
 	});
 });
