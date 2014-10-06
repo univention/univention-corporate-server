@@ -17,7 +17,7 @@ title = _('Security limits exceeded')
 description = '\n'.join([
 	_('The security limits (e.g. for max_open_files) are currently not configured properly.'),
 	_('This can cause several different serious problems (e.g. the login at samba servers may be impossible, file operations (copy, move) on shares can fail, etc.)'),
-	_('It is suggested to increase the security limits either manually by using {ucr} or to use the automatically suggested limits:'),
+	_('It is suggested to increase the security limits either manually by using {ucr} or to automatically adjust them to the suggested limits:'),
 	'<pre>security/limits/user/*/soft/nofile=%s' % (suggested_limit_soft,),
 	'security/limits/user/*/hard/nofile=%s</pre>' % (suggested_limit_hard,),
 #	_('More related information can be found at the "{sdb}".'),
@@ -37,11 +37,11 @@ actions = {}  # filled at bottom
 
 
 def run():
-	MODULE.info(_('Checking samba logfiles for "Too many open files" messages'))
+	MODULE.info('Checking samba logfiles for "Too many open files" messages')
 	try:
 		with open('/var/log/samba/log.smbd', 'rb') as fd:
 			counter = len(re.findall('Too many open files', fd.read()))
-	except OSError:
+	except (OSError, IOError):
 		pass  # logfile does not exists
 
 	ucr.load()

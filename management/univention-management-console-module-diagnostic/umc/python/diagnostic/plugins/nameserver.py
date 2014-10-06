@@ -12,7 +12,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Nameserver(s) are not responsive')
 description = '\n'.join([
-	_('%d of the configured nameservers are not responding to DNS-Queries.'),
+	_('%d of the configured nameservers are not responding to DNS queries.'),
 	_('Please make sure the DNS settings in the {setup:network} are correctly set up.'),
 	_('If the problem persists make sure the nameserver is connected to the network.')
 ])
@@ -42,7 +42,7 @@ def run():
 				msgs = ['\n', _('The nameserver %s (UCR variable %r) is not responsive:') % (ucr[nameserver], nameserver)]
 
 				if isinstance(exc, Timeout):
-					msgs.append(_('The nameserver ran into a timeout (is it online?).'))
+					msgs.append(_('A timeout occured while reaching the nameserver (is it online?).'))
 				else:
 					msgs.append('%s' % (exc,))
 				failed.append('\n'.join(msgs))

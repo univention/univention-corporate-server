@@ -7,9 +7,6 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-management-console-dev,
  python-all,
  ucslint,
- python-pycurl,
- python-psutil,
- python-dnspython
 Standards-Version: 3.7.2
 XS-Python-Version: 2.6, 2.7
 
@@ -17,7 +14,9 @@ Package: univention-management-console-module-diagnostic
 Architecture: all
 Depends: ${misc:Depends},
  univention-management-console-server,
- devscripts
+ python-pycurl,
+ python-psutil,
+ python-dnspython
 Description: System Diagnosis UMC module
  .
  It is part of Univention Corporate Server (UCS), an
