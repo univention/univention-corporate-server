@@ -189,7 +189,7 @@ define([
 			lang.mixin(this, {
 				pages: [{
 					name: 'general',
-					headerText: _('Register a new cloud connection.'),
+					headerText: _('Create a new cloud connection.'),
 					helpText: _('Please specify name for the cloud connection:'),
 					widgets: [{
 						name: 'cloudtype',
@@ -203,7 +203,7 @@ define([
 					}]
 				}, {
 					name: 'credentials',
-					headerText: _('Register a new cloud connection.'),
+					headerText: _('Create a new cloud connection.'),
 					helpText: _('Please enter the corresponding credentials for the cloud connection:'),
 					widgets: conf.widgets,
 					layout: conf.layout

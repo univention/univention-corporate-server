@@ -130,7 +130,7 @@ define([
 			var cloudLabel = new LabelPane({
 				style: 'display: block; padding-top: 20px;',
 				content: this._cloudRadioButton,
-				label: _('Register a new cloud connection service account.')
+				label: _('Create a new cloud connection service account.')
 			});
 			this._container.addChild(cloudLabel);
 
