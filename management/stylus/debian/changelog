@@ -1,3 +1,9 @@
+stylus (0.48.1-1) unstable; urgency=medium
+
+  * Bug #35823: version bump to corresponding upstream version
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Oct 2014 18:18:19 +0200
+
 stylus (0.0.0-12) unstable; urgency=low
 
   * Bug #35654: version bump
