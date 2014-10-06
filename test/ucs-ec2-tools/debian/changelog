@@ -1,3 +1,10 @@
+ucs-ec2-tools (0.1.22-9) unstable; urgency=low
+
+  * added examples/jenkins/utils/ad-join.py for automatically 
+    joining an ad domain (Bug #35856)
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 06 Oct 2014 14:53:32 +0200
+
 ucs-ec2-tools (0.1.22-8) unstable; urgency=low
 
   * utils.sh:
