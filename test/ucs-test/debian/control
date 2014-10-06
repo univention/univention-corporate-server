@@ -434,6 +434,16 @@ Provides: ucs-test-module
 Description: Test scripts to test the NFS
  This package includes test-cases for the Network File System.
 
+Package: ucs-test-proxy
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ python-pycurl
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts to test basic and ntlm authentications
+ This package includes test-cases for the Basic and NTLM proxy authentications.
+
 Package: ucs-test-modules-all
 Architecture: all
 Depends:
@@ -472,6 +482,7 @@ Depends:
  ucs-test-appcenter,
  ucs-test-umc-system,
  ucs-test-nfs,
+ ucs-test-proxy,
 # ucs-test-ucsschool,
 # ucs-test-login
 Description: UCS test environment meta package
