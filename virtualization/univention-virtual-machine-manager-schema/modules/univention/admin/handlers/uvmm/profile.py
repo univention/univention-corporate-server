@@ -75,8 +75,6 @@ class VirtTech(udm_syntax.select):
 	name = 'VirtTech'
 	choices = [
 		('kvm-hvm', _('Full virtualization (KVM)')),
-		('xen-hvm', _('Full virtualization (XEN)')),
-		('xen-xen', _('Paravirtualization (XEN)')),
 	]
 
 

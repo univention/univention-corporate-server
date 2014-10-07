@@ -100,10 +100,6 @@ msgstr "Festplatten Speicherplatz"
 msgid "Full virtualization (KVM)"
 msgstr "Volle Virtualisierung (KVM)"
 
-#: modules/univention/admin/handlers/uvmm/profile.py:78
-msgid "Full virtualization (XEN)"
-msgstr "Volle Virtualisierung (XEN)"
-
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:90
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:91
 #: modules/univention/admin/handlers/uvmm/info.py:109
@@ -213,10 +209,6 @@ msgstr "Betriebssystem"
 #: modules/univention/admin/handlers/uvmm/profile.py:259
 msgid "Order of boot devices"
 msgstr "Reihenfolge der Boot-Devices"
-
-#: modules/univention/admin/handlers/uvmm/profile.py:79
-msgid "Paravirtualization (XEN)"
-msgstr "Paravirtualisierung (XEN)"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:119
 msgid "Prefix for the name of virtual machines"
