@@ -39,15 +39,18 @@ define([
 	"umc/widgets/Grid",
 	"umc/widgets/Module",
 	"umc/widgets/Page",
-	"umc/modules/quota/PageContainer",
+	"umc/modules/quota/PartitionPage",
+	"umc/modules/quota/DetailPage",
 	"umc/i18n!umc/modules/quota"
-], function(declare, lang, array, sprintf, dialog, tools, store, Grid, Module, Page, PageContainer, _) {
+], function(declare, lang, array, sprintf, dialog, tools, store, Grid, Module, Page, PartitionPage, DetailPage, _) {
 
 	return declare("umc.modules.quota", [ Module ], {
 
 		idProperty: 'partitionDevice',
 		moduleStore: null,
 		_overviewPage: null,
+		_partitionPage: null,
+		_detailPage: null,
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -67,6 +70,7 @@ define([
 				helpText: _('Set, unset and modify filesystem quota')
 			});
 			this.addChild(this._overviewPage);
+			this.selectChild(this._overviewPage);
 
 			var actions = [{
 				name: 'activate',
@@ -88,7 +92,7 @@ define([
 				isMultiAction: false,
 				canExecute: function(item) { return item.inUse; },
 				callback: lang.hitch(this, function(partitionDevice) {
-					this.createPageContainer(partitionDevice[0]);
+					this.editPartition(partitionDevice[0]);
 				})
 			}, {
 				name: 'refresh',
@@ -216,21 +220,53 @@ define([
 			}]);
 		},
 
-		createPageContainer: function(partitionDevice) {
-			var _pageContainer = new PageContainer({
-				title: partitionDevice,
-				closable: true,
-				moduleID: this.moduleID,
-				partitionDevice: partitionDevice
-			});
-			this.addChild(_pageContainer);
-			this.selectChild(_pageContainer);
+		editPartition: function(partitionDevice) {
+			this.renderPartitionPage(partitionDevice);
+			this.renderDetailPage(partitionDevice);
+			this.selectChild(this._partitionPage);
+		},
 
-			_pageContainer.on('showOverview', lang.hitch(this, function() {
-				this.selectChild(this._overviewPage);
-				this.removeChild(_pageContainer);
-				_pageContainer.destroyRecursive();
+		renderPartitionPage: function(partitionDevice) {
+			this._partitionPage = new PartitionPage({
+				partitionDevice: partitionDevice,
+				moduleStore: store('id', this.moduleID + '/users'),
+				headerText: _('Partition: %s', partitionDevice),
+				helpText: _('Set, unset and modify filesystem quota')
+			});
+			this.addChild(this._partitionPage);
+			this._partitionPage.on('ShowDetailPage', lang.hitch(this, function(userQuota) {
+				this._detailPage.init(userQuota);
+				this.selectChild(this._detailPage);
 			}));
+			this._partitionPage.on('showOverview', lang.hitch(this, 'showOverview'));
+		},
+
+		renderDetailPage: function(partitionDevice) {
+			this._detailPage = new DetailPage({
+				partitionDevice: partitionDevice,
+				headerText: _('Add quota setting for a user on partition'),
+				helpText: _('Add quota setting for a user on partition')
+			});
+			this.addChild(this._detailPage);
+			this._detailPage.on('ClosePage', lang.hitch(this, function() {
+				this.selectChild(this._partitionPage);
+			}));
+			this._detailPage.on('SetQuota', lang.hitch(this, function(values) {
+				tools.umcpCommand('quota/users/set', values).then(lang.hitch(this, function(data) {
+					if (data.result.success === true) {
+						this.selectChild(this._partitionPage);
+						this._partitionPage.filter();
+					}
+				}));
+			}));
+		},
+
+		showOverview: function() {
+			this.selectChild(this._overviewPage);
+			this.removeChild(this._partitionPage);
+			this.removeChild(this._detailPage);
+			this._partitionPage.destroyRecursive();
+			this._detailPage.destroyRecursive();
 		}
 	});
 });
