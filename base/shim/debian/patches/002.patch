@@ -6,8 +6,8 @@ use sbsigntool instead of pesign
 
 --- shim-0.2.ORIG/Makefile
 +++ shim-0.2/Makefile
-@@ -49,10 +49,10 @@ shim_cert.h: shim.cer
- 	echo "};" >> $@
+@@ -68,10 +68,10 @@ version.c : version.c.in
+ 		< version.c.in > version.c
  
  certdb/secmod.db: shim.crt
 -	-mkdir certdb
@@ -21,7 +21,7 @@ use sbsigntool instead of pesign
  
  shim.o: $(SOURCES) shim_cert.h
  
-@@ -89,7 +89,8 @@ Cryptlib/OpenSSL/libopenssl.a:
+@@ -114,7 +114,8 @@ lib/lib.a:
  		--target=efi-app-$(ARCH) $^ $@.debug
  
  %.efi.signed: %.efi certdb/secmod.db

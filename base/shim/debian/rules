@@ -30,10 +30,5 @@
 %:
 	dh $@
 
-override_dh_clean:
-	tar xvfa shim-0.2.tar.bz2 --strip-components=1
-	for fn in debian/patches/*.patch ; do patch -p1 -i $$fn ; done
-	dh_clean
-
 override_dh_auto_build:
 	dh_auto_build -- VENDOR_CERT_FILE=univention-uefi-ca.cer
