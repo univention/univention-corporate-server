@@ -78,6 +78,17 @@ define([
 			'<p>' + _('If your UCS environment does not have such a key at it\'s disposal (e.g. UCS Free-for-personal-Use Edition) and the vendor requires a Key ID, you will be asked to request an updated license key directly from Univention. Afterwards the new key can be applied.') + '</p>' +
 			'<p>' + _('The sale of licenses, maintenance or support for the applications uses the default processes of the respective vendor and is not part of Univention App Center.') + '</p>',
 
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.headerButtons = [{
+				name: 'close',
+				iconClass: 'umcCloseIconWhite',
+				label: this.backLabel,
+				align: 'left',
+				callback: lang.hitch(this, 'onBack')
+			}];
+		},
+
 		_setAppAttr: function(app) {
 			this._set('app', app);
 			if (this.appLoadingDeferred.isFulfilled()) {
@@ -160,13 +171,6 @@ define([
 				this.removeChild(this._page);
 				this._page.destroyRecursive();
 			}
-			var headerButtons = [{
-				name: 'close',
-				iconClass: 'umcCloseIconWhite',
-				label: this.backLabel,
-				align: 'left',
-				callback: lang.hitch(this, 'onBack')
-			}];
 			var buttons = [];
 			if (this.app.useshop) {
 				buttons.push({
@@ -233,7 +237,6 @@ define([
 				});
 			}
 			this._page = new Page({
-				headerButtons: headerButtons,
 				footerButtons: buttons
 			});
 			this.addChild(this._page);
