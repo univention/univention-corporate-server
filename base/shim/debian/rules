@@ -28,7 +28,7 @@
 # <http://www.gnu.org/licenses/>.
 
 %:
-	dh $@
+	dh $@ --with quilt
 
 override_dh_auto_build:
 	dh_auto_build -- VENDOR_CERT_FILE=univention-uefi-ca.cer
