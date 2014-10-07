@@ -1,3 +1,11 @@
+generate-appliance (0.2.5-1) unstable; urgency=medium
+
+  * simplify virtualbox hardware (Bug #36023)
+  * simplify ESX hardware (Bug #36023)
+  * simplify VMPlayer hardware (Bug #36023)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 07 Oct 2014 13:16:38 +0200
+
 generate-appliance (0.2.4-1) unstable; urgency=medium
 
   * add --memory-size option (Bug #35998)
