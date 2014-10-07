@@ -1,0 +1,24 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check squid redirecor written to gonfig file
+## tags: apttest
+## exposure: careful
+## bugs: [33332, 35421]
+
+from univention.config_registry import handler_set
+import subprocess
+import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
+
+def restart_squid():
+	return subprocess.call(["/etc/init.d/squid3", "restart"])
+
+def main():
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		handler_set(['squid/cache=false'])
+		if restart_squid():
+			utils.fail('quid/cache=false, squid3 is not able to restart')
+	utils.wait_for_replication_and_postrun()
+	restart_squid()
+
+if __name__ == '__main__':
+	main()
