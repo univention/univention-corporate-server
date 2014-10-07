@@ -17,32 +17,20 @@ Pre-Depends: dpkg (>= 1.15.7.2)
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-base-files,
- libvirt-bin,
+ libvirt-clients,
  dnsmasq-base,
  univention-runit,
  univention-ssl,
  univention-virtual-machine-manager-schema
-Recommends: univention-virtual-machine-manager-node-xen | univention-virtual-machine-manager-node
+Recommends: univention-virtual-machine-manager-node-kvm
 Description: UCS Virtual Machine Manager node
  This meta-package provides basic configuration for virtualization nodes.
-
-Package: univention-virtual-machine-manager-node-xen
-Architecture: all
-Depends: ${misc:Depends},
- univention-directory-manager-tools (>> 7.0.147),
- univention-virtual-machine-manager-node-common,
- univention-xen,
-Recommends: univention-nagios-libvirtd-xen, univention-xen-gplpv
-Provides: univention-virtual-machine-manager-node
-Description: UCS Virtual Machine Manager node using Xen
- This meta-package provides basic configuration for virtualization nodes using
- the Xen hypervisor.
 
 Package: univention-virtual-machine-manager-node-kvm
 Architecture: all
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
- libvirt-bin (>= 0.8.7),
+ libvirt-daemon-system,
  univention-virtual-machine-manager-node-common,
  univention-base-files,
  qemu-kvm,
@@ -52,7 +40,6 @@ Depends: ${misc:Depends},
  python-libvirt,
  python-libxml2
 Recommends: univention-nagios-libvirtd-kvm, univention-kvm-virtio
-Provides: univention-virtual-machine-manager-node
 Description: UCS Virtual Machine Manager node using kvm
  This meta-package provides basic configuration for virtualization nodes using
  kvm.

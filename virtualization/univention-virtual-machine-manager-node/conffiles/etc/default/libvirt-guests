@@ -1,7 +1,7 @@
 @%@UCRWARNING=# @%@
 
 # URIs to check for running guests
-# example: URIS='default xen:/// vbox+tcp://host/system lxc:///'
+# example: URIS='default qemu:///system vbox+tcp://host/system lxc:///'
 #URIS=default
 @!@
 # Set URI to an empty value if the shutdown action is set to ignore

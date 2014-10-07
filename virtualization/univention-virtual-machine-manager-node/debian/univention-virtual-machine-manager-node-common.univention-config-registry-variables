@@ -23,14 +23,14 @@ Type=str
 Categories=uvmm
 
 [uvmm/libvirt/action/boot]
-Description[de]=Ist diese Variable auf 'start' gesetzt, werden virtuelle Maschinen, die beim Herunterfahren des Servers gestoppt wurden, beim Systemstart wieder gestartet. Ist die Variable auf 'ignore' gesetzt, erfolgt kein Neustart (bei Verwendung von Xen erfolgt der Neustart durch ein eigenes Init-Skript).
-Description[en]=If this variable is set to 'start', virtual machines stopped during shutdown of the server are started during system boot. If the variable is set to 'ignore' no restart occurs (if Xen is used, the restart occurs through a separate init script).
+Description[de]=Ist diese Variable auf 'start' gesetzt, werden virtuelle Maschinen, die beim Herunterfahren des Servers gestoppt wurden, beim Systemstart wieder gestartet. Ist die Variable auf 'ignore' gesetzt, erfolgt kein Neustart.
+Description[en]=If this variable is set to 'start', virtual machines stopped during shutdown of the server are started during system boot. If the variable is set to 'ignore' no restart occurs.
 Type=str
 Categories=uvmm
 
 [uvmm/libvirt/action/shutdown]
-Description[de]=Ist diese Variable auf 'suspend' gesetzt, werden virtuelle Maschinen beim Herunterfahren des Servers 'suspendet'. Steht sie auf 'shutdown', werden die virtuellen Maschinen heruntergefahren. Ist die Variable auf 'ignore' gesetzt, erfolgt kein sauberes Herunterfahren (bei Verwendung von Xen erfolgt das Herunterfahren durch ein eigenes Init-Skript).
-Description[en]=If this variable is set to 'suspend', virtual machines are suspended during shutdown of the server. If set to 'shutdown', the virtual machines are shut down. If the variable is set to 'ignore' no clean shutdown occurs (if Xen is used, the shutdown occurs through a separate init script).
+Description[de]=Ist diese Variable auf 'suspend' gesetzt, werden virtuelle Maschinen beim Herunterfahren des Servers 'suspendet'. Steht sie auf 'shutdown', werden die virtuellen Maschinen heruntergefahren. Ist die Variable auf 'ignore' gesetzt, erfolgt kein sauberes Herunterfahren.
+Description[en]=If this variable is set to 'suspend', virtual machines are suspended during shutdown of the server. If set to 'shutdown', the virtual machines are shut down. If the variable is set to 'ignore' no clean shutdown occurs.
 Type=str
 Categories=uvmm
 
@@ -41,8 +41,8 @@ Type=int
 Categories=uvmm
 
 [umc/modules/setup/network]
-Description[de]=Deaktiviert die Netzwerkkonfiguration über UMC solange noch die veralteten Skripte von KVM und Xen aktiviert sind. Lesen Sie <http://docs.univention.de/computers-3.2.html#uvmm> für weitere Informationen.
-Description[en]=Deactivates the network configuration through UMC while the deprecated scripts of KVM and Xen are still active. Read <http://docs.univention.de/computers-3.2.html#uvmm> for more information.
+Description[de]=Deaktiviert die Netzwerkkonfiguration über UMC solange noch die veralteten Skripte von KVM aktiviert sind. Lesen Sie <http://docs.univention.de/computers-3.2.html#uvmm> für weitere Informationen.
+Description[en]=Deactivates the network configuration through UMC while the deprecated scripts of KVM are still active. Read <http://docs.univention.de/computers-3.2.html#uvmm> for more information.
 Type=str
 Categories=uvmm
 

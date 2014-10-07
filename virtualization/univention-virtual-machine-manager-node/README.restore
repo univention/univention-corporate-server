@@ -10,7 +10,7 @@ if the following conditions are fulfilled:
 
 * the hard drive and CDROM images must still be available in the same
   location
-* the virtualization technology must be same as before (Xen or KVM)
+* the virtualization technology must be same as before (KVM)
 
 To get a list of all available backups the following command can be
 used:

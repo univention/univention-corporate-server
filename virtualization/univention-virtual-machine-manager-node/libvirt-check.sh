@@ -32,9 +32,7 @@
 
 logfile="/var/log/univention/virtual-machine-manager-node-errors.log"
 
-if [ -f /proc/xen/privcmd ] && grep -q control_d /proc/xen/capabilities >/dev/null 2>&1; then
-	uri="xen+unix:///"
-elif [ -c /dev/kvm ]; then
+if [ -c /dev/kvm ]; then
 	uri="qemu:///system"
 else
 	exit 0

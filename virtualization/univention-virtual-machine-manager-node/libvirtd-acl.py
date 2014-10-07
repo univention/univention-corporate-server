@@ -45,7 +45,7 @@ from univention.config_registry import ConfigRegistry, handler_set
 import univention.debug as debug
 import subprocess
 
-service_names = set(["Virtual Machine Manager", "XEN Host", "KVM Host"])
+service_names = set(["Virtual Machine Manager", "KVM Host"])
 need_restart = False
 
 def initialize():
