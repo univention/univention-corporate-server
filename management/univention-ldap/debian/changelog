@@ -1,3 +1,10 @@
+univention-ldap (11.0.5-1) unstable; urgency=medium
+
+  * Change default matching rule for univentionInventoryNumber to
+    caseIgnoreMatch (Bug #34262)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 07 Oct 2014 13:05:15 +0200
+
 univention-ldap (11.0.4-1) unstable; urgency=low
 
   * db5.1 for bdb backend (Bug #35697)
