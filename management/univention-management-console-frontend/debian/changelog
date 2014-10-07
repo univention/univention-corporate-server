@@ -1,3 +1,13 @@
+univention-management-console-frontend (4.1.31-1) unstable; urgency=low
+
+  * Bug #35654: fix switching of language
+  * don't display standby animation in the module header
+  * fix adding items to MultiObjectSelect
+  * remove ContainerWidget.scrollable
+  * fix exception in Form.js because of using lang.getObject
+
+ -- Florian Best <best@univention.de>  Tue, 07 Oct 2014 17:36:08 +0200
+
 univention-management-console-frontend (4.1.30-1) unstable; urgency=low
 
   * Bug #35654: fix handling of headerButtons

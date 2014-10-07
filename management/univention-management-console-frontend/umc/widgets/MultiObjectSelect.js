@@ -344,10 +344,12 @@ define([
 			var dialog_store = new DataStore( { store: this._detailDialog._multiSelect.store } );
 			var elements = [];
 			array.forEach( ids.concat(this.get('value')) , lang.hitch( this, function( id ) {
-				var item;
+				var item = undefined;
 				try {
 					item = this._objectStore.get( id );
 				} catch( e ) {
+				}
+				if (item === undefined) {
 					// object does not exist, so we add it ...
 					item = dialog_store.get( id );
 				}

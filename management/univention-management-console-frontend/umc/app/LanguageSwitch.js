@@ -61,7 +61,7 @@ define([
 			array.forEach(i18nTools.availableLanguages, function(language) {
 				this._languageMenu.addChild(new MenuItem({
 					label: language.label,
-					onclick: function() {
+					onClick: function() {
 						i18nTools.setLanguage(language.id);
 					}
 				}));

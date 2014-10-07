@@ -60,7 +60,7 @@ define([
 			this.inherited(arguments);
 			this.defaultTitle = this.title;
 
-			this.__container = new StackContainer({
+			this.__container = new declare([StackContainer, StandbyMixin])({
 				'class': 'umcModuleContent',
 				doLayout: false
 			});
@@ -114,6 +114,10 @@ define([
 
 			// redirect childrens to stack container
 			this.containerNode = this.__container.containerNode;
+		},
+
+		standby: function() {
+			this.__container.standby.apply(this.__container, arguments);
 		},
 
 		__colorizeModuleHeader: function() {

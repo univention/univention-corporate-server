@@ -42,26 +42,9 @@ define([
 
 		'class': 'umcContainerWidget',
 
-		// scrollable: Boolean
-		//		If set to true, the container will set its width/height to 100% in order
-		//		to enable scrollbars.
-		scrollable: false,
-
 		_setVisibleAttr: function(visible) {
 			this._set('visible', visible);
 			domClass.toggle(this.domNode, 'dijitHidden', !visible);
-		},
-
-		buildRendering: function() {
-			this.inherited(arguments);
-
-			if (this.scrollable) {
-				style.set(this.containerNode, {
-					width: '100%',
-					height: '100%',
-					overflow: 'auto'
-				});
-			}
 		}
 	});
 });

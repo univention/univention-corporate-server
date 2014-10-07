@@ -355,9 +355,11 @@ define([
 			}, this);
 
 			// add item ID to the dictionary in case it is not already included
-			var idProperty = lang.getObject('moduleStore.idProperty', false, this);
-			if (idProperty && !(idProperty in vals) && null !== this._loadedID) {
-				vals[idProperty] = this._loadedID;
+			if (this.moduleStore && this.moduleStore.idProperty) {
+				var idProperty = this.moduleStore.idProperty;
+				if (!(idProperty in vals) && null !== this._loadedID) {
+					vals[idProperty] = this._loadedID;
+				}
 			}
 
 			return vals;
