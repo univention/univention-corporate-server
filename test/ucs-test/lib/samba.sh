@@ -62,7 +62,7 @@ wait_for_drs_replication () {
 
 	i=0
 	if [ -z "$value" ]; then
-		echo -n "Waiting for DRS replication, filter: $ldap_filter"
+		echo -n "Waiting for DRS replication for $ldap_filter: "
 		while [ -z "$value" ]; do
 			if [ "$(($t-$t0))" -gt $DRS_REPLICATION_TIMEOUT ]; then
 				fail_fast 1 "TIMEOUT: Replication timout to local sam.ldb after $(($t-$t0)) seconds"
@@ -112,6 +112,29 @@ force_drs_replication () {
 	else
 		samba-tool drs replicate "$source_dc" "$destination_dc" "$partition_dn"
 	fi
+}
+
+wait_for_samba4_idmap_listener() {
+	local ldap_filter sid timeout i
+	local -a opts
+	ldap_filter="${1:?ldap_filter}"
+
+	# wait for samba4-idmap listener, otherwise samba generates a temporary ID from it's idmap pool
+	sid=$(univention-s4search "$ldap_filter" objectSid | sed -n 's/^objectSid: //p')
+	i=0
+	timeout=30
+	while [ -z "$(ldbsearch -H /var/lib/samba/private/idmap.ldb  "objectSid=$sid" xidNumber | sed -n 's/^xidNumber: //p')" ]; do
+		if [ "$((++i))" -gt "$timeout" ]; then
+			fail_fast 1 "samba4-idmap listener didn't assign an xidNumber within $timeout seconds"
+		fi
+		if [ "$i" = 1 ]; then
+			echo -n "Waiting for samba4-idmap listener for $ldap_filter: "
+		else
+			echo -n "."
+		fi
+		sleep 1
+	done
+	echo "."
 }
 
 # vim:set filetype=sh ts=4:

@@ -1,3 +1,9 @@
+ucs-test (4.0.167-3) unstable; urgency=low
+
+  * Bug #35319: Fix timing bug in 51_samba4/48file_access_permissions-fACL
+
+ -- Arvid Requate <requate@univention.de>  Tue, 07 Oct 2014 15:43:30 +0200
+
 ucs-test (4.0.167-2) unstable; urgency=low
 
   * 13_indirect_group_user_memberships_file_access: give the group cache
