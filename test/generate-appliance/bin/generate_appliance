@@ -824,20 +824,6 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
 					}
 				),
 				E.Item(
-					Erasd.Address('1'),
-					Erasd.Description('IDE Controller'),
-					Erasd.ElementName('VirtualIDEController 1'),
-					Erasd.InstanceID('5'),
-					Erasd.ResourceType('5'),
-				),
-				E.Item(
-					Erasd.Address('0'),
-					Erasd.Description('IDE Controller'),
-					Erasd.ElementName('VirtualIDEController 0'),
-					Erasd.InstanceID('6'),
-					Erasd.ResourceType('5'),
-				),
-				E.Item(
 					Erasd.AutomaticAllocation('false'),
 					Erasd.ElementName('VirtualVideoCard'),
 					Erasd.InstanceID('7'),
@@ -888,23 +874,6 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
 				),
 				E.Item(
 					Erasd.AddressOnParent('0'),
-					Erasd.AutomaticAllocation('false'),
-					Erasd.ElementName('CD-ROM 1'),
-					Erasd.InstanceID('9'),
-					Erasd.Parent('5'),
-					Erasd.ResourceSubType('vmware.cdrom.remotepassthrough'),
-					Erasd.ResourceType('15'),
-					Evmw.Config(**{
-						OVF + 'required': 'false',
-						VMW + 'key': 'backing.exclusive',
-						VMW + 'value': 'false',
-					}),
-					**{
-						OVF + 'required': 'false',
-					}
-				),
-				E.Item(
-					Erasd.AddressOnParent('0'),
 					Erasd.ElementName('Hard Disk 1'),
 					Erasd.HostResource('ovf:/disk/vmdisk1'),
 					Erasd.InstanceID('10'),
@@ -915,18 +884,6 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
 						VMW + 'key': 'backing.writeThrough',
 						VMW + 'value': 'false',
 					}),
-				),
-				E.Item(
-					Erasd.AddressOnParent('0'),
-					Erasd.AutomaticAllocation('false'),
-					Erasd.Description('Floppy Drive'),
-					Erasd.ElementName('Floppy 1'),
-					Erasd.InstanceID('11'),
-					Erasd.ResourceSubType('vmware.floppy.remotedevice'),
-					Erasd.ResourceType('14'),
-					**{
-						OVF + 'required': 'false',
-					}
 				),
 				E.Item(
 					Erasd.AddressOnParent('7'),
