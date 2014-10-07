@@ -1,3 +1,9 @@
+ucs-test (5.0.15-5) unstable; urgency=medium
+
+  * Bug #35319: Fix timing issue in 51_samba4/52replication_sysvol
+
+ -- Arvid Requate <requate@univention.de>  Tue, 07 Oct 2014 16:22:49 +0200
+
 ucs-test (5.0.15-4) unstable; urgency=medium
 
   * Bug #35319: Fix timing bug in 51_samba4/48file_access_permissions-fACL

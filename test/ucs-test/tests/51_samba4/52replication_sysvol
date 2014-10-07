@@ -91,20 +91,24 @@ do
 	sleep 1
 done
 
-max_i=100
+max_i=201
 sleep_time=3
 echo "## check whether the directory for the GPO has been replicated to the local system (waiting about $(($max_i * $sleep_time)) seconds)"
 echo "## Note: to speed things up for interactive tests, you may run /usr/share/univention-samba4/scripts/sysvol-sync.sh manually now."
+echo -n "Waiting for cron based sysvol-sync"
 i=0
 while ! [ -d "$gpo_path" ]
 do
 	let i="$i"+1
 	if [ "$i" = "$max_i" ]; then
 		echo
-		fail_fast 1 "Directory for GPO has not been created"
+		fail_fast 1 "Directory for GPO has not been created after $(($i * $sleep_time)) seconds"
 	fi
 	sleep "$sleep_time"
+	echo -n "."
 done
+echo "."
+echo "GPO sysvol replication took $(($i * $sleep_time)) seconds."
 
 echo "## check GPO permissions"
 mode=$(stat -c "%a" "$gpo_path")
