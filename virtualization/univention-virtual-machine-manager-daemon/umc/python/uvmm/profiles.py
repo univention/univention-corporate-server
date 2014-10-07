@@ -68,8 +68,6 @@ class Profiles(object):
 	PROFILE_RDN = 'cn=Profiles,cn=Virtual Machine Manager'
 	VIRTTECH_MAPPING = {
 		'kvm-hvm' : _('Full virtualization (KVM)'),
-		'xen-hvm' : _('Full virtualization (XEN)'),
-		'xen-xen' : _('Paravirtualization (XEN)'),
 		}
 
 	@LDAP_Connection
@@ -96,19 +94,8 @@ class Profiles(object):
 		uri = urlsplit(node_pd.uri)
 		# set default virtualization technology
 		tech = 'kvm' if uri.scheme == 'qemu' else uri.scheme
-		tech_types = set()
 		# read architectures from capabilities
 		archs = set([t.arch for t in node_pd.capabilities]) | set(('automatic',))
-
-		for template in node_pd.capabilities:
-			template_tech = '%s-%s' % (template.domain_type, template.os_type)
-			if not template_tech in Profiles.VIRTTECH_MAPPING:
-				continue
-			tech_types.add(template_tech)
-
-		# Set tech to xen-xen because the CPU extensions are not available
-		if 'xen-xen' in tech_types and not 'xen-hvm' in tech_types:
-			tech = 'xen-xen'
 
 		return [
 				(dn, item)

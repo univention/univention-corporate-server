@@ -114,9 +114,6 @@ class Domains(object):
 				for node_uri, domains in data.items():
 					uri = urlsplit(node_uri)
 					for domain in domains:
-						if domain['uuid'] == '00000000-0000-0000-0000-000000000000':
-							# ignore domain-0 of Xen
-							continue
 						domain_uri = '%s#%s' % (node_uri, domain['uuid'])
 						domain_list.append({
 							'id': domain_uri,
@@ -185,9 +182,6 @@ class Domains(object):
 					continue
 				json[key] = json['annotations'][key]
 
-			# type
-			json['type'] = '%(domain_type)s-%(os_type)s' % json
-
 			# STOP here if domain is not available
 			if not json['available']:
 				MODULE.info('Domain is not available: %s' % (json,))
@@ -202,7 +196,7 @@ class Domains(object):
 			# disks
 			for disk in json['disks']:
 				disk['volumeFilename'] = os.path.basename(disk['source']) if disk['pool'] else disk['source']
-				disk['paravirtual'] = disk['target_bus'] in ('virtio', 'xen')
+				disk['paravirtual'] = disk['target_bus'] in ('virtio',)
 				disk['volumeType'] = disk['type']
 
 			# graphics
@@ -352,36 +346,10 @@ class Domains(object):
 				drive.target_bus = 'fdc'
 			elif driver_pv:
 				drive.target_bus = 'virtio'
-			elif disk.get('paravirtual', None) == False:
+			elif disk.get('paravirtual', None) is False:
 				drive.target_bus = 'ide'
 			else:
 				pass  # keep
-		elif uri.scheme.startswith('xen'):
-			pv_domain = domain_info.os_type == 'xen'
-			if pv_domain:
-				drive.target_bus = 'xen'
-			elif drive.device == Disk.DEVICE_FLOPPY:
-				drive.target_bus = 'fdc'
-			elif driver_pv:
-				drive.target_bus = 'xen'
-			elif disk.get('paravirtual', None) == False:
-				drive.target_bus = 'ide'
-			else:
-				pass  # keep
-
-			# Since UCS 2.4-2 Xen 3.4.3 contains the blktab2 driver from Xen 4.0.1
-			if drive.type == Disk.TYPE_FILE:
-				# Use tapdisk2 by default for disks
-				if drive.device == Disk.DEVICE_DISK and ucr.is_true('uvmm/xen/images/tap2', True):
-					drive.driver = 'tap2'
-					drive.driver_type = 'aio'
-					# if drive.type == 'raw':
-					# 	drive.driver_type = 'aio'
-				else:
-					drive.driver = 'file'
-					drive.driver_type = None # only raw support
-			else:
-				drive.driver = 'phy'
 		else:
 			raise ValueError('Unknown virt-tech "%s"' % (node_uri,))
 
@@ -457,30 +425,8 @@ class Domains(object):
 			else:
 				domain_info.arch = 'i686'
 
-		if 'type' in domain:
-			try:
-				domain_info.domain_type, domain_info.os_type = domain['type'].split('-')
-			except ValueError:
-				domain_info.domain_type, domain_info.os_type = (None, None)
-
-		if domain_info.domain_type is None or domain_info.os_type is None:
-			if profile:
-				domain_info.domain_type, domain_info.os_type = profile.virttech.split('-')
-			else:
-				raise UMC_CommandError(
-						_('Could not determine virtualization technology for domain')
-						)
-
-		# check configuration for para-virtualized machines
-		if domain_info.os_type == 'xen':
-			if profile and getattr(profile, 'advkernelconf', None) != True: # use pyGrub
-				domain_info.bootloader = '/usr/bin/pygrub'
-				domain_info.bootloader_args = '-q' # Bug #19249: PyGrub timeout
-			else:
-				domain_info.kernel = domain['kernel']
-				domain_info.cmdline = domain['cmdline']
-				domain_info.initrd = domain['initrd']
-		# memory
+		domain_info.domain_type = 'qemu'
+		domain_info.os_type = 'hvm'
 		domain_info.maxMem = domain['maxMem']
 
 		# CPUs
@@ -533,15 +479,6 @@ class Domains(object):
 				for disk in domain['disks']
 				]
 		verify_device_files(domain_info)
-		# on _new_ PV machines we should move the CDROM drive to first position
-		if domain_info.uuid is None and domain_info.os_type == 'xen':
-			non_disks, disks = [], []
-			for dev in domain_info.disks:
-				if dev.device == Disk.DEVICE_DISK:
-					disks.append(dev)
-				else:
-					non_disks.append(dev)
-			domain_info.disks = non_disks + disks
 
 		# network interface
 		domain_info.interfaces = []
@@ -555,11 +492,6 @@ class Domains(object):
 				iface.source = interface['source']
 			iface.model = interface['model']
 			iface.mac_address = interface.get('mac_address', None)
-			# if domain_info.os_type == 'hvm':
-			# 	if domain_info.domain_type == 'xen':
-			# 		iface.model = 'netfront'
-			# 	elif domain_info.domain_type in ('kvm', 'qemu'):
-			# 		iface.model = 'virtio'
 			domain_info.interfaces.append(iface)
 
 		def _finished(thread, result, request):
@@ -686,7 +618,7 @@ class Domains(object):
 
 class Bus(object):
 	"""
-	Periphery bus like IDE-, SCSI-, Xen-, VirtIO- und FDC-Bus.
+	Periphery bus like IDE-, SCSI-, VirtIO- und FDC-Bus.
 	"""
 
 	def __init__(self, name, prefix, default=False, unsupported=(Disk.DEVICE_FLOPPY,)):
@@ -760,16 +692,8 @@ def verify_device_files(domain_info):
 	"""
 	Verify block devices are connected to allowed buses.
 	"""
-	if domain_info.domain_type == 'xen' and domain_info.os_type == 'xen':
-		busses = (
-				Bus('ide', 'hd%s'),
-				Bus('xen', 'xvd%s', default=True),
-				Bus('virtio', 'vd%s'),
-				)
-	else:
-		busses = (
+	busses = (
 				Bus('ide', 'hd%s', default=True),
-				Bus('xen', 'xvd%s'),
 				Bus('virtio', 'vd%s'),
 				Bus(
 					'fdc', 'fd%s',

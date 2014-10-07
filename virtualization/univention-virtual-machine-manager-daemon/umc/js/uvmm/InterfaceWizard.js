@@ -42,7 +42,7 @@ define([
 
 	return declare("umc.modules.uvmm.InterfaceWizard", [ Wizard ], {
 
-		constructor: function(props, domain_type, values) {
+		constructor: function(props, values) {
 			values = values || {};
 			// mixin the page structure
 			lang.mixin(this, {
@@ -69,7 +69,7 @@ define([
 						sizeClass: 'One',
 						type: ComboBox,
 						label: _('Driver'),
-						staticValues: types.getInterfaceModels(domain_type),
+						staticValues: types.interfaceModels,
 						value: values.model || 'rtl8139'
 					}, {
 						name: 'source',
@@ -83,7 +83,7 @@ define([
 						name: 'mac_address',
 						sizeClass: 'One',
 						type: TextBox,
-						regExp: '^([0-9A-Fa-f]?[02468AaCcEe])(:[0-9A-Fa-f]{1,2}){5}$',
+						regExp: '^([0-9A-Fa-f]?[02468AaCcEe])([:-]?[0-9A-Fa-f]{1,2}){5}$',
 						invalidMessage: _('Invalid MAC address: The address must be unicast and should have the form "02:23:45:67:89:AB".'),
 						label: _('MAC addresss'),
 						value: values.mac_address || ''

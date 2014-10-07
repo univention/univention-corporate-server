@@ -115,18 +115,7 @@ define([
 						if (!types.isActive(this.domain)) {
 							return true;
 						}
-						if (this.domain.domain_type === 'kvm') {
-							return true;
-						} else if (this.domain.domain_type === 'xen') {
-							if (this.domain.os_type === 'xen') {
-								return false;
-							} else if (this.domain.os_type === 'hvm') {
-								if (item.driver === 'file') {
-									return true;
-								}
-							}
-						}
-						return false;
+						return true;
 					})
 				}, {
 					name: 'add',
@@ -139,7 +128,6 @@ define([
 		},
 
 		_setDomainActiveAttr: function(value) {
-			if (this.domain.domain_type === 'kvm') {
 				this.domainActive = value;
 				this._grid.update();
 
@@ -149,7 +137,6 @@ define([
 						widget.set('disabled', value);
 					}
 				}));
-			}
 		},
 
 		buildRendering: function() {
@@ -216,13 +203,11 @@ define([
 			var disk = items[ 0 ];
 
 			var intro_msg = _( 'All image files are stored in so-called storage pools. They can be stored in a local directory, an LVM partition or a share (e.g. using iSCSI, NFS or CIFS).' );
-			var kvm_msg = _( 'Hard drive images can be administrated in two ways on KVM systems; by default images are saved in the <i>Extended format (qcow2)</i>. This format supports copy-on-write which means that changes do not overwrite the original version, but store new versions in different locations. The internal references of the file administration are then updated to allow both access to the original and the new version. This technique is a prerequisite for efficiently managing snapshots of virtual machines. Alternatively, you can also access a hard drive image in <i>Simple format (raw)</i>. Snapshots can only be created when using hard drive images in <i>Extended format</i>. Only the <i>Simple format</i> is available on Xen systems.' );
+			var kvm_msg = _('Hard drive images can be administrated in two ways on KVM systems; by default images are saved in the <i>Extended format (qcow2)</i>. This format supports copy-on-write which means that changes do not overwrite the original version, but store new versions in different locations. The internal references of the file administration are then updated to allow both access to the original and the new version. This technique is a prerequisite for efficiently managing snapshots of virtual machines. Alternatively, you can also access a hard drive image in <i>Simple format (raw)</i>. Snapshots can only be created when using hard drive images in <i>Extended format</i>.');
 			var pv_msg = _( 'Paravirtualization is a special variant of virtualization in which the virtualized operating system is adapted to the underlying virtualization technology. This improves the performance. Linux systems usually support paravirtualization out of the box. For Windows systems additional support drivers need to be installed, see the <a href="http://wiki.univention.de/index.php?title=UVMM_Technische_Details">Univention wiki</a> for details (currently only available in German).' );
 
 			var msg = '<p>' + intro_msg + '</p>';
-			if ( types.getNodeType( this.domain.nodeURI ) == 'qemu' ) {
-				msg += '<p>' + kvm_msg + '</p>';
-			}
+			msg += '<p>' + kvm_msg + '</p>';
 			msg = '<p>' + pv_msg + '</p>';
 
 			var _dialog = null, form = null;
@@ -315,7 +300,6 @@ define([
 
 			// hide pool for block devices
 			form._widgets.pool.set( 'visible', disk.type != 'block' );
-			form._widgets.driver_cache.set('visible', this.domain.domain_type == 'kvm');
 
 			_dialog = new Dialog({
 				title: _('Edit drive'),

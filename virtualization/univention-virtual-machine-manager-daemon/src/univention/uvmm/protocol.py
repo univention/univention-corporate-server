@@ -105,23 +105,23 @@ class Request_NODE_ADD(Request):
 	"""Add node to watch list."""
 	def _default(self):
 		self.command = 'NODE_ADD'
-		self.uri = None # xen:/// xen+unix:/// xen+ssh://root@bs22.pmhahn22.qa/ qemu:///system qemu+unix:///system qemu+ssh://root@bs22.pmhahn22.qa/system
+		self.uri = None  # qemu:///system qemu+unix:///system qemu+ssh://root@bs22.pmhahn22.qa/system
 class Request_NODE_REMOVE(Request):
 	"""Remove node to watch list."""
 	def _default(self):
 		self.command = 'NODE_REMOVE'
-		self.uri = None # xen:/// xen+unix:/// xen+ssh://root@bs22.pmhahn22.qa/ qemu:///system qemu+unix:///system qemu+ssh://root@bs22.pmhahn22.qa/system
+		self.uri = None  # qemu:///system qemu+unix:///system qemu+ssh://root@bs22.pmhahn22.qa/system
 class Request_NODE_QUERY(Request):
 	"""Query node on watch list."""
 	def _default(self):
 		self.command = 'NODE_QUERY'
-		self.uri = None # xen:/// xen+unix:/// xen+ssh://root@bs22.pmhahn22.qa/ qemu:///system qemu+unix:///system qemu+ssh://root@bs22.pmhahn22.qa/system
+		self.uri = None  # qemu:///system qemu+unix:///system qemu+ssh://root@bs22.pmhahn22.qa/system
 class Request_NODE_FREQUENCY(Request):
 	"""Set query frequency for nodes on watch list."""
 	def _default(self):
 		self.command = 'NODE_FREQUENCY'
 		self.hz = None # 1/ms
-		self.uri = None # xen:/// xen+unix:/// xen+ssh://root@bs22.pmhahn22.qa/ qemu:///system qemu+unix:///system qemu+ssh://root@bs22.pmhahn22.qa/system
+		self.uri = None  # qemu:///system qemu+unix:///system qemu+ssh://root@bs22.pmhahn22.qa/system
 class Request_NODE_LIST(Request):
 	"""Query for list of watched nodes in specific group."""
 	def _default(self):
@@ -403,19 +403,19 @@ class Data_Domain(object):
 	def __init__(self):
 		self.uuid = None
 		self.name = None
-		self.domain_type = None # xen, qemu, kvm
+		self.domain_type = 'qemu'
 		self.arch = 'i686' # i686, x86_64
-		self.os_type = None # linux(=Xen-PV), hvm(=Xen-FV)
+		self.os_type = 'hvm'
 		self.rtc_offset = None
 
-		# Xen-PV
+		# Direct boot
 		self.kernel = None
 		self.cmdline = None
 		self.initrd = None
 		self.bootloader = None
 		self.bootloader_args = None
 
-		# Xen-HVM, Qemu-HVM, Kvm-HVM
+		# Qemu-HVM, Kvm-HVM
 		self.boot = [] # (fd|hd|cdrom|network)+
 
 		self.state = 0

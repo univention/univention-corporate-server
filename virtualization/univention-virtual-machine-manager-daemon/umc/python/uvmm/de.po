@@ -87,18 +87,10 @@ msgstr ""
 msgid "Full virtualization (KVM)"
 msgstr "Voll-Virtualisierung (KVM)"
 
-#: umc/python/uvmm/profiles.py:71
-msgid "Full virtualization (XEN)"
-msgstr "Voll-Virtualisierung (XEN)"
-
 #: umc/python/uvmm/domains.py:611
 #, python-format
 msgid "Invalid domain state: %s"
 msgstr "Ungültiger Domain Status: %s"
-
-#: umc/python/uvmm/profiles.py:72
-msgid "Paravirtualization (XEN)"
-msgstr "Paravirtualisierung (XEN)"
 
 #: umc/python/uvmm/__init__.py:149 umc/python/uvmm/nodes.py:98
 msgid "Physical servers"

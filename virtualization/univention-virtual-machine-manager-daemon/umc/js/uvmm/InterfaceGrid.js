@@ -181,7 +181,7 @@ define([
 				style: 'width: 500px; height:510px;',
 				onFinished: _finished,
 				onCancel: _cleanup
-			}, this.domain.domain_type, item);
+			}, item);
 			_dialog = new Dialog({
 				title: item ? _('Edit network interface') : _('Add network interface'),
 				content: wizard

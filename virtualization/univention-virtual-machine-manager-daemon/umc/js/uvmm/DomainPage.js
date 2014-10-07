@@ -222,23 +222,6 @@ define([
 						staticValues: types.bootDevices
 					} ]
 				}, {
-					name: 'boot_pv',
-					type: ComboBox,
-					label: _('Boot device')
-				}, {
-					name: 'os_type',
-					type: HiddenInput
-				}, {
-					name: 'domain_type',
-					type: HiddenInput
-				}, {
-					name: 'type',
-					depends: 'domain_type',
-					type: ComboBox,
-					readonly: true,
-					label: _('Virtualization technology'),
-					dynamicValues: types.getVirtualizationTechnology
-				}, {
 					name: 'rtc_offset',
 					type: ComboBox,
 					label: _('RTC reference'),
@@ -273,10 +256,8 @@ define([
 						'arch',
 						'vcpus',
 						'maxMem',
-						[ 'domain_type', 'os_type', 'type' ],
 						'rtc_offset',
-						'boot_hvm',
-						'boot_pv'
+						'boot_hvm'
 					]
 				}, {
 					label: _('Remote access'),
@@ -401,21 +382,7 @@ define([
 				dialog.alert(_('The entered data is not valid. Please correct your input.'));
 				return;
 			}
-			// special handling for boot devices
-			var paravirtual = this._domain.type == 'xen-xen';
-			if ( paravirtual ) {
-				var disks = [];
-				array.forEach( this._domain.disks, function( disk ) {
-					if ( values.boot_pv == disk.source ) {
-						disks.unshift( disk );
-					} else {
-						disks.push( disk );
-					}
-				} );
-				values.disks = disks;
-			} else {
-				values.boot = values.boot_hvm;
-			}
+			values.boot = values.boot_hvm;
 
 			this.standby(true);
 			tools.umcpCommand('uvmm/domain/put', {
@@ -471,20 +438,7 @@ define([
 					this._advancedForm.setFormValues(this._domain);
 
 					// special handling for boot devices
-					var paravirtual = this._domain.type == 'xen-xen';
-					this._advancedForm._widgets.boot_pv.set( 'visible', paravirtual );
-					this._advancedForm._widgets.boot_hvm.set( 'visible', ! paravirtual );
-					if ( paravirtual ) {
-						var block_devices = array.map( this._domain.disks, function( disk ) {
-							return { id : disk.source, label: types.blockDevices[ disk.device ] + ': ' + disk.volumeFilename };
-						} );
-						block_devices.unshift( { id: '', label: '' } );
-						this._advancedForm._widgets.boot_pv.set( 'staticValues', block_devices );
-						this._advancedForm._widgets.boot_pv.set( 'value', block_devices[ 1 ].id );
-					} else {
-						this._advancedForm._widgets.boot_hvm.set( 'value', this._domain.boot );
-					}
-					this._advancedForm._widgets.rtc_offset.set('staticValues', types.getRtcOffset(this._domain.type, this._domain.rtc_offset));
+					this._advancedForm._widgets.boot_hvm.set( 'value', this._domain.boot );
 
 					// we need to add pseudo ids for the network interfaces
 					array.forEach(this._domain.interfaces, function(idev, i) {
@@ -503,12 +457,7 @@ define([
 					this._interfaceStore.setData(this._domain.interfaces);
 					this._driveStore.setData(this._domain.disks);
 
-					// Only qemu can do snapshots
-					if (types.getNodeType(this._domain.domainURI) == 'qemu') {
-						this.showChild( this._snapshotPage );
-					} else {
-						this.hideChild( this._snapshotPage );
-					}
+					this.showChild( this._snapshotPage );
 
 					// set visibility of the VNC-Port
 					this._advancedForm._widgets.vnc_port.set('visible', Boolean(this._advancedForm._widgets.vnc_port.get('value')));
@@ -520,20 +469,8 @@ define([
 					}
 					// name should not be editable
 					this._generalForm._widgets.name.set( 'disabled', true );
-					// currently this does not work for xen also (Bug #24829) -> otherwise the following block just deactivates the name for KVM
-					// if ( types.getNodeType( this._domain.domainURI ) == 'qemu' ) {
-					// 	this._generalForm._widgets.name.set( 'disabled', true );
-					// } else {
-					// 	this._generalForm._widgets.name.set( 'disabled', disabled );
-					// }
 
-					// hide architecture for xen domains
-					if ( types.getNodeType( this._domain.domainURI ) == 'qemu' ) {
-						this._advancedForm._widgets.arch.set( 'visible', true );
-						this._advancedForm._widgets.arch.set( 'disabled', domainActive );
-					} else {
-						this._advancedForm._widgets.arch.set( 'visible', false );
-					}
+					this._advancedForm._widgets.arch.set( 'disabled', domainActive );
 					this._driveGrid.set( 'domainActive', domainActive );
 					this._interfaceGrid.set( 'disabled', domainActive );
 					tools.forIn( this._advancedForm._widgets, lang.hitch( this, function( iid, iwidget ) {

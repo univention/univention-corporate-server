@@ -10,12 +10,6 @@ Description[en]=The path to the PAM configuration file with which access control
 Type=str
 Categories=uvmm
 
-[uvmm/xen/images/tap2]
-Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, werden Image-Dateien bei Verwendung von Xen über Blktap2 angesprochen. Ist die Option deaktiviert, wird das Loopback-Device verwendet.
-Description[en]=If this option is activated or the variable unset, image files are accessed using Blktap2 if Xen is used. If the option is disabled, the loop-back device is used.
-Type=bool
-Categories=uvmm
-
 [uvmm/check/interval]
 Description[de]=Diese Variable konfguriert einen Intervall in Minuten, in dem geprüft wird, ob der UVMM-Dienst noch läuft. Setzt man die Variable auf '0' oder ist die Variable nicht gesetzt, erfolgt keine Verfügbarkeitsprüfung.
 Description[en]=This variable configures an interval in minutes for checking whether the UVMM service is running. If the variable is set to '0' or the variable is unset, no availability check is made.

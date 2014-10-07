@@ -216,7 +216,6 @@ class Client(object):
 
 		Add the virtualization server specified by <uri> to the UVMM.
 		Examples:
-			%prog add xen://server.domain.name/
 			%prog add qemu://server.domain.name/system
 		"""
 		return protocol.Request_NODE_ADD(uri=uri)
@@ -227,7 +226,6 @@ class Client(object):
 
 		Remove the virtualization server specified by <uri> from the UVMM.
 		Examples:
-			%prog remove xen://server.domain.name/
 			%prog remove qemu://server.domain.name/system
 		"""
 		return protocol.Request_NODE_REMOVE(uri=uri)
@@ -239,7 +237,6 @@ class Client(object):
 		Query virtualization server specifies by <uri> for all its domains and
 		storage pools.
 		Examples:
-			%prog query xen://server.domain.name/
 			%prog query qemu://server.domain.name/system
 		"""
 		return protocol.Request_NODE_QUERY(uri=uri)
@@ -252,7 +249,6 @@ class Client(object):
 		virtualization server. The frequency is given in [ms].
 		Examples:
 			%prog frequency 15000
-			%prog frequency 15000 xen://server.domain.name/
 			%prog frequency 15000 qemu://server.domain.name/system
 		"""
 		return protocol.Request_NODE_FREQUENCY(hz=frequency, uri=uri)
@@ -297,7 +293,7 @@ class Client(object):
 		specified by its UUID <domain> locally to the file <statefile>.
 		The domain will be turned off.
 		Examples:
-			%prog save xen://server.domain.name/ 1-2-3-4-5 /var/lib/libvirt/save/12345.save
+			%prog save qemu://server.domain.name/system 1-2-3-4-5 /var/lib/libvirt/save/12345.save
 		"""
 		return protocol.Request_DOMAIN_SAVE(uri=uri, domain=domain, statefile=statefile)
 
@@ -308,7 +304,7 @@ class Client(object):
 		On the virtualization server specified by <uri> restore a domain
 		locally from the file <statefile>.
 		Examples:
-			%prog restore xen://server.domain.name/ /var/lib/libvirt/save/12345.save
+			%prog restore qemu://server.domain.name/system /var/lib/libvirt/save/12345.save
 		"""
 		return protocol.Request_DOMAIN_RESTORE(uri=uri, statefile=statefile)
 
@@ -319,7 +315,7 @@ class Client(object):
 		Migrate the domain <domain> from the virtualization server specifies by
 		<uri> to the virtualization server specifies by <target_uri>.
 		Examples:
-			%prog migrate xen://server.domain.name/ 1-2-3-4-5 xen://server2.domain.name/
+			%prog migrate qemu://server.domain.name/system 1-2-3-4-5 qemu://server2.domain.name/system
 		"""
 		return protocol.Request_DOMAIN_MIGRATE(uri=uri, domain=domain, target_uri=target_uri)
 
@@ -330,7 +326,7 @@ class Client(object):
 		Return a list of available domains on the given node
 		<pattern> is an optional globbing pattern for filtering the domain names.
 		Examples:
-			%prog domains xen://server.domain.name/ *
+			%prog domains qemu://server.domain.name/system *
 		"""
 		return protocol.Request_DOMAIN_LIST( uri = uri, pattern = pattern )
 
@@ -340,7 +336,7 @@ class Client(object):
 
 		Return detailed information about a domain
 		Examples:
-			%prog domain_info xen://server.domain.name/ a0087e58-92db-6457-679a-ed81a43defcb
+			%prog domain_info qemu://server.domain.name/system a0087e58-92db-6457-679a-ed81a43defcb
 		"""
 		return protocol.Request_DOMAIN_INFO( uri = uri, domain = domain )
 
@@ -352,7 +348,7 @@ class Client(object):
 		<uri> to the given state <state>, which can be one of
 		  RUN, PAUSE, SUSPEND, RESTART, SHUTDOWN, SHUTOFF
 		Examples:
-			%prog state xen://server.domain.name/ 1-2-3-4-5 PAUSE
+			%prog state qemu://server.domain.name/system 1-2-3-4-5 PAUSE
 		"""
 		return protocol.Request_DOMAIN_STATE(uri=uri, domain=domain, state=state)
 
@@ -365,7 +361,7 @@ class Client(object):
 		according to the format used by libvirt.
 		Examples:
 			%prog define qemu://server.domain.name/system ./domain.xml
-			%prog define xen://server.domain.name/ '<domain type="xen"><name>Name</name>...</domain>'
+			%prog define qemu://server.domain.name/system '<domain type="qemu"><name>Name</name>...</domain>'
 		"""
 		if file_or_xml.startswith('<'):
 			root = ET.fromstring(file_or_xml)
@@ -379,11 +375,7 @@ class Client(object):
 		domain.os_type = root.find('os').findtext('type')
 		try: domain.arch = root.find('os').find('type').attrib['arch']
 		except KeyError: domain.arch = 'i686' # FIXME
-		if domain.os_type == 'linux':
-			domain.kernel = root.find('os').findtext('kernel')
-			domain.cmdline = root.find('os').findtext('cmdline')
-			domain.initrd = root.find('os').findtext('initrd')
-		elif domain.os_type == 'hvm':
+		if domain.os_type == 'hvm':
 			try: domain.boot = [boot.attrib['dev'] for boot in root.find('os').findall('boot')]
 			except AttributeError: pass
 			except KeyError: pass
@@ -486,8 +478,8 @@ class Client(object):
 		All file-volumes of the domain (including shared volumes!) are deleted
 		if "ALL" is given two times.
 		Examples:
-			%prog undefine xen://server.domain.name/ 1-2-3-4-5
-			%prog undefine xen://server.domain.name/ 1-2-3-4-5 ALL ALL
+			%prog undefine qemu://server.domain.name/system 1-2-3-4-5
+			%prog undefine qemu://server.domain.name/system 1-2-3-4-5 ALL ALL
 		"""
 		if ('ALL', 'ALL') == volumes:
 			volumes = None
@@ -500,7 +492,7 @@ class Client(object):
 		Return the names of all storage-pools on the virtualization server
 		specified by <uri>.
 		Examples:
-			%prog pools xen://server.domain.name/
+			%prog pools qemu://server.domain.name/system
 		"""
 		return protocol.Request_STORAGE_POOLS(uri=uri)
 
@@ -513,7 +505,7 @@ class Client(object):
 		<type> can be used to limit the volumes to a specific type; valid
 		values are 'disk', 'cdrom', 'floppy'
 		Examples:
-			%prog volumes xen://server.domain.name/ default
+			%prog volumes qemu://server.domain.name/system default
 		"""
 		return protocol.Request_STORAGE_VOLUMES(uri=uri, pool=pool, type=type)
 
@@ -525,7 +517,7 @@ class Client(object):
 		bytes in the storage-pool named <pool> on the virtualization server
 		specified by <uri>.
 		Examples:
-			%prog volume_define xen://server.domain.name/ default test 8000000000
+			%prog volume_define qemu://server.domain.name/system default test 8000000000
 		"""
 		return protocol.Request_STORAGE_DEFINE(uri=uri, pool=pool, name=name, size=size)
 

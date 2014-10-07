@@ -78,13 +78,8 @@ define([
 				var nodeURI = this.getWidget('nodeURI').get('value');
 				this.getWidget('general', 'nodeURI').set('value', nodeURI);
 				this.getWidget('profile').set('value', profileDN);
-				this.getWidget('domain_type').set('value', this._profile.virttech.split('-')[0]);
 				this.getWidget('name').set('value', this._profile.name_prefix || '');
-				if (types.getNodeType(nodeURI) == 'xen') {
-					this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[A-Za-z0-9_\\-.:+]+$' : '.*');
-				} else {
-					this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
-				}
+				this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
 				this.getWidget('maxMem').set('value', types.parseCapacity(this._profile.ram || '4 MiB'));
 				this.getWidget('vcpus').set('value', this._profile.cpus);
 				this.getWidget('vnc').set('value', this._profile.vnc);
@@ -150,9 +145,6 @@ define([
 						value: nodeURI
 					}, {
 						name: 'profile',
-						type: HiddenInput
-					}, {
-						name: 'domain_type',
 						type: HiddenInput
 					}, {
 						name: 'profileDN',
@@ -252,13 +244,8 @@ define([
 					var nodeURI = this.getWidget('nodeURI').get('value');
 					this.getWidget('general', 'nodeURI').set('value', nodeURI);
 					this.getWidget('profile').set('value', profileDN);
-					this.getWidget('domain_type').set('value', this._profile.virttech.split('-')[0]);
 					this.getWidget('name').set('value', this._profile.name_prefix || '');
-					if (types.getNodeType(nodeURI) == 'xen') {
-						this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[A-Za-z0-9_\\-.:+]+$' : '.*');
-					} else {
-						this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
-					}
+					this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
 					this.getWidget('maxMem').set('value', types.parseCapacity(this._profile.ram || '4 MiB'));
 					this.getWidget('vcpus').set('value', this._profile.cpus);
 					this.getWidget('vnc').set('value', this._profile.vnc);
@@ -299,7 +286,7 @@ define([
 
 			// add standard interface
 			values.interfaces = [{
-				model: types.getDefaultInterfaceModel(this.getWidget('domain_type').get('value'), this._profile.pvinterface),
+				model: this._profile.pvinterface ? 'virtio' : 'rtl8139',
 				source: this._profile.interface
 			}];
 			return values;

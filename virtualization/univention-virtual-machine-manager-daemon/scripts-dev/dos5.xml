@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
-<domain type="xen">
+<domain type="qemu">
   <name>DOS5</name>
   <memory>4096</memory>
   <os>
     <type>hvm</type>
-    <loader>/usr/lib/xen/boot/hvmloader</loader>
     <boot dev="cdrom"/>
     <boot dev="hd"/>
   </os>

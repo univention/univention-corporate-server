@@ -50,7 +50,6 @@ from network import network_start, network_find_by_bridge, NetworkError
 import copy
 import os
 import stat
-import operator
 import errno
 import fnmatch
 import re
@@ -181,10 +180,6 @@ class DomainTemplate(object):
 		except:
 			self.loader = None # optional
 
-		# Work around for Bug #19120: Xen-Fv-64 needs <pae/>
-		if self.domain_type == 'xen' and self.arch == 'x86_64' and not 'pae' in self.features:
-			self.features.append('pae')
-
 	def __str__(self):
 		return 'DomainTemplate(arch=%s dom_type=%s os_type=%s): %s, %s, %s, %s' % (self.arch, self.domain_type, self.os_type, self.emulator, self.loader, self.machines, self.features)
 
@@ -253,12 +248,7 @@ class Domain(PersistentCached):
 
 		self.pd.state, maxMem, curMem, self.pd.vcpus, runtime = info
 
-		if domain.ID() == 0 and domain.connect().getType() == 'Xen':
-			# xen://#Domain-0 always reports (1<<32)-1
-			maxMem = domain.connect().getInfo()[1]
-			self.pd.maxMem = long(maxMem) << 20 # GiB
-		else:
-			self.pd.maxMem = long(maxMem) << 10 # KiB
+		self.pd.maxMem = long(maxMem) << 10 # KiB
 
 		if self.pd.state in (libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
 			self.pd.curMem = 0L
@@ -364,9 +354,6 @@ class Domain(PersistentCached):
 			type = os_.getElementsByTagName( 'type' )
 			if type and type[ 0 ].firstChild and type[ 0 ].firstChild.nodeValue:
 				self.pd.os_type = type[0].firstChild.nodeValue
-				# we should use the identifier xen instead of linux
-				if self.pd.os_type == 'linux':
-					self.pd.os_type = 'xen'
 				if type[ 0 ].hasAttribute( 'arch' ):
 					self.pd.arch = type[0].getAttribute('arch')
 			kernel = os_.getElementsByTagName( 'kernel' )
@@ -645,29 +632,8 @@ class Node(PersistentCached):
 		self.pd.cores = tuple(info[4:8])
 		xml = self.conn.getCapabilities()
 		self.pd.capabilities = DomainTemplate.list_from_xml(xml)
-		type = self.conn.getType()
-		self.pd.supports_suspend = False
-		self.pd.supports_snapshot = False
-		if type == 'QEMU':
-			# Qemu/Kvm supports managedSave
-			self.pd.supports_suspend = True
-			self.pd.supports_snapshot = True
-		elif type == 'Xen':
-			# As of libvirt-0.8.5 Xen doesn't support managedSave, but test dom0
-			dom = self.conn.lookupByID(0)
-			try:
-				dom.hasManagedSaveImage(0)
-				self.pd.supports_suspend = True
-			except libvirt.libvirtError, ex:
-				if ex.get_error_code() != libvirt.VIR_ERR_NO_SUPPORT:
-					logger.error('%s: Exception testing managedSave' % (self.pd.uri,), exc_info=True)
-			# As of libvirt-0.8.5 Xen doesn't support snapshot-*, but test dom0
-			try:
-				dom.snapshotListNames(0)
-				self.pd.supports_snapshot = True
-			except libvirt.libvirtError, ex:
-				if ex.get_error_code() != libvirt.VIR_ERR_NO_SUPPORT:
-					logger.error('%s: Exception testing snapshots' % (self.pd.uri,), exc_info=True)
+		self.pd.supports_suspend = True
+		self.pd.supports_snapshot = True
 		self.libvirt_version = self.conn.getLibVersion()
 
 		def domain_callback(conn, dom, event, detail, node):
@@ -873,8 +839,7 @@ class Nodes(dict):
 
 	def add(self, uri):
 		"""Add node to watch list.
-		>>> #node_add("qemu:///session")
-		>>> #node_add("xen:///")"""
+		>>> #node_add("qemu:///session")"""
 		if uri in self:
 			raise NodeError(_('Hypervisor "%(uri)s" is already connected.'), uri=uri)
 
@@ -1022,14 +987,7 @@ def _domain_edit(node, dom_stat, xml):
 	# /domain/os/loader
 	if defaults and template and template.loader:
 		domain_os_loader = update(domain_os, 'loader', template.loader)
-	if dom_stat.os_type in ('linux', 'xen'):
-		# /domain/os/kernel
-		domain_os_kernel = update(domain_os, 'kernel', dom_stat.kernel)
-		# /domain/os/cmdline
-		domain_os_cmdline = update(domain_os, 'cmdline', dom_stat.cmdline)
-		# /domain/os/initrd
-		domain_os_initrd = update(domain_os, 'initrd', dom_stat.initrd)
-	elif dom_stat.os_type == 'hvm':
+	if dom_stat.os_type == 'hvm':
 		# /domain/os/boot[]
 		domain_os_boots = domain_os.findall('boot')
 		boot = {}
@@ -1234,7 +1192,7 @@ def _domain_edit(node, dom_stat, xml):
 			domain_devices_graphic.attrib['passwd'] = graphics.passwd
 			live_updates.append(domain_devices_graphic)
 
-	if dom_stat.domain_type in ('kvm'): # 'qemu'
+	if dom_stat.domain_type in ('kvm', 'qemu'):
 		models = set()
 		for iface in dom_stat.interfaces:
 			model = getattr(iface, 'model', None) or 'rtl8139'
@@ -1508,7 +1466,7 @@ def domain_state(uri, domain, state):
 			for t in range(20):
 				cur_state = dom.info()[0]
 				if cur_state not in ignore_states:
-					# xen does not send event, do update explicitly
+					# do update explicitly
 					dom_stat.pd.state = cur_state
 					break
 				time.sleep(1)
@@ -1967,57 +1925,6 @@ def domain_clone(uri, domain, name, subst):
 				logger.warning('Failed undo: %(error)s' % {'error': ex})
 
 if __name__ == '__main__':
-	XEN_CAPABILITIES = '''<capabilities>
-		<host>
-			<cpu>
-				<arch>x86_64</arch>
-				<features>
-					<pae/>
-				</features>
-			</cpu>
-			<migration_features>
-				<live/>
-				<uri_transports>
-					<uri_transport>xenmigr</uri_transport>
-				</uri_transports>
-			</migration_features>
-			<topology>
-				<cells num='1'>
-					<cell id='0'>
-						<cpus num='1'>
-							<cpu id='0'/>
-						</cpus>
-					</cell>
-				</cells>
-			</topology>
-		</host>
-		<guest>
-			<os_type>xen</os_type>
-			<arch name='x86_64'>
-				<wordsize>64</wordsize>
-				<emulator>/usr/lib64/xen/bin/qemu-dm</emulator>
-				<machine>xenpv</machine>
-				<domain type='xen'>
-				</domain>
-			</arch>
-		</guest>
-		<guest>
-			<os_type>xen</os_type>
-			<arch name='i686'>
-				<wordsize>32</wordsize>
-				<emulator>/usr/lib64/xen/bin/qemu-dm</emulator>
-				<machine>xenfv</machine>
-				<domain type='xen'>
-				</domain>
-			</arch>
-			<features>
-				<pae/>
-				<nonpae/>
-				<acpi default='on' toggle='yes'/>
-				<apic default='on' toggle='yes'/>
-			</features>
-		</guest>
-	</capabilities>'''
 	KVM_CAPABILITIES = '''<capabilities>
 		<host>
 			<uuid>00020003-0004-0005-0006-000700080009</uuid>

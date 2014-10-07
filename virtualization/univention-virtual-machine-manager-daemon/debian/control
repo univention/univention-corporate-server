@@ -25,7 +25,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  univention-management-console-module-uvmm (= ${source:Version}),
  shell-univention-lib (>= 1.0.25-1),
  python-univention-lib (>= 1.0.25-1)
-Recommends: libvirt-bin,
+Recommends: libvirt-clients,
  univention-nagios-uvmmd
 Description: UCS Virtual Machine Manager Daemon
  This package contains the UCS Virtual Machine Manager Daemon

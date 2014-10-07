@@ -56,15 +56,10 @@ define([
 			{ id: 'network', label: _( 'Network' ) }
 		],
 		rtcOffset: [
-			{ id: 'utc', label: _('Coordinated Universal Time'), vt: ['kvm-hvm', 'xen-xen'] },
-			{ id: 'localtime', label: _('Local time zone'), vt: ['kvm-hvm', 'xen-xen'] },
-			{ id: 'variable', label: _('Guest controlled'), vt: ['kvm-hvm', 'xen-hvm'] }
+			{ id: 'utc', label: _('Coordinated Universal Time'), vt: ['kvm-hvm'] },
+			{ id: 'localtime', label: _('Local time zone'), vt: ['kvm-hvm'] },
+			{ id: 'variable', label: _('Guest controlled'), vt: ['kvm-hvm'] }
 		],
-		getRtcOffset: function(domain_type, rtc_offset) {
-			return array.filter(self.rtcOffset, function(irtc) {
-				return array.indexOf(irtc.vt, domain_type) >= 0 || irtc.id == rtc_offset;
-			});
-		},
 		domainStates: {
 			RUNNING : _( 'running' ),
 			SHUTOFF : _( 'shut off' ),
@@ -136,18 +131,6 @@ define([
 			}
 			return sprintf('%2.2lf %s', val, unit);
 		},
-		virtualizationTechnology: [
-			{ id: 'kvm-hvm', label: _( 'Full virtualization (KVM)' ) },
-			{ id: 'xen-hvm', label: _( 'Full virtualization (XEN)' ) },
-			{ id: 'xen-xen', label: _( 'Paravirtualization (XEN)' ) }
-		],
-		getVirtualizationTechnology: function(options) {
-			// return all technologies that are supported by the corresponding
-			// opertating system type (KVM/Xen)
-			return array.filter(self.virtualizationTechnology, function(itech) {
-				return itech.id.indexOf(options.domain_type) === 0;
-			});
-		},
 		keyboardLayout: [
 			{ id: 'ar', label: _('Arabic') },
 			{ id: 'da', label: _('Danish') },
@@ -207,36 +190,7 @@ define([
 		interfaceModels: {
 			'rtl8139': _( 'Default (RealTek RTL-8139)' ),
 			'e1000': _( 'Intel PRO/1000' ),
-			'netfront': _( 'Paravirtual device (xen)' ),
 			'virtio': _( 'Paravirtual device (virtio)' )
-		},
-		getInterfaceModels: function(domain_type) {
-			var list = [];
-			tools.forIn(self.interfaceModels, function(ikey, ilabel) {
-				if (ikey == 'virtio') {
-					if (domain_type == 'kvm') {
-						list.push({ id: ikey, label: ilabel });
-					}
-				}
-				else if (ikey == 'netfront') {
-					if (domain_type == 'xen') {
-						list.push({ id: ikey, label: ilabel });
-					}
-				}
-				else {
-					list.push({ id: ikey, label: ilabel });
-				}
-			});
-			return list;
-		},
-		getDefaultInterfaceModel: function(/*String*/ domain_type, /*Boolean*/ paravirtual) {
-			if (paravirtual && domain_type == 'xen') {
-				return 'netfront';
-			}
-			if (paravirtual && domain_type == 'kvm') {
-				return 'virtio';
-			}
-			return 'rtl8139';
 		},
 		interfaceTypes: [
 			{ id: 'bridge', label: _( 'Bridge' ) },
@@ -332,10 +286,7 @@ define([
 				list.push(self.RAW);
 			} else {
 				list.push(self.RAW);
-				if (options.domain_type == 'kvm') {
-					// add qcow2 as pre-selected item
-					list.push(self.QCOW2);
-				}
+				list.push(self.QCOW2);
 			}
 			if (list.length === 1) {
 				list = lang.clone(list);

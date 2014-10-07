@@ -60,7 +60,6 @@ case "$1" in
 	rm -f /etc/runit/univention/univention-virtual-machine-manager-daemon
 	rm -rf /etc/runit/univention-virtual-machine-manager-daemon
 	invoke-rc.d univention-directory-listener crestart
-	find /etc/univention/templates -name univention-virtual-machine-manager-node-xen.\* -delete
     ;;
 
     remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)

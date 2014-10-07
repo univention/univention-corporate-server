@@ -131,7 +131,7 @@ class UVMM_ClientAuthenticatedSocket(UVMM_ClientSocket):
 	"""Mixin-class to handle client connection requiring authentication.
 
 	class Auth(UVMM_ClientSSLSocket, UVMM_ClientAuthenticatedSocket): pass
-	c = Auth('xen1.opendvdi.local', 2106)
+	c = Auth('qemu.ucs.local', 2106)
 	c.set_auth_data('Administrator', 'univention')
 	res = c.send(...)
 	"""
@@ -290,24 +290,20 @@ import os.path
 def uvmm_local_uri(local=False):
 	"""Return libvirt-URI for local host.
 	If local=True, use UNIX-socket instead of TCP-socket.
-	Raises ClientError() if neither KVM nor XEN is currently available.
+	Raises ClientError() if KVM is currently available.
 
 	> uvmm_local_uri() #doctest: +ELLIPSIS +IGNORE_EXCEPTION_DETAIL
 	'qemu://.../system'
-	'xen://.../'
 	Traceback (most recent call last):
 	ClientError: ...
 
 	> uvmm_local_uri(local=True) #doctest: +ELLIPSIS +IGNORE_EXCEPTION_DETAIL
 	'qemu:///system'
-	'xen+unix:///'
 	Traceback (most recent call last):
 	ClientError: ...
 	"""
 	if os.path.exists('/dev/kvm'):
 		return local and 'qemu:///system' or 'qemu://%s/system' % FQDN
-	elif os.path.exists('/proc/xen/privcmd'):
-		return local and 'xen+unix:///' or 'xen://%s/' % FQDN
 	else:
 		raise ClientError('Host does not support required virtualization technology.')
 

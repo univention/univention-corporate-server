@@ -10,8 +10,8 @@ virEventLoopPureRegister()
 
 STATE = ['no state', 'running', 'idle', 'paused', 'shut down', 'shut off', 'crashed']
 
-sys.argv += ['xen:///', 'DOS3']
-sys.argv += ['xen://xen4.opendvdi.local/', 'DOS3']
+sys.argv += ['qemu:///system', 'DOS3']
+sys.argv += ['qemu://qemu.ucs.local/system', 'DOS3']
 
 c = libvirt.open(sys.argv[1])
 

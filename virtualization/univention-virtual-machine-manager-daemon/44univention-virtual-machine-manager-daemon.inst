@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION="9"
+VERSION="10"
 
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
@@ -66,11 +66,6 @@ univention-directory-manager container/cn create "$@" \
 univention-directory-manager container/cn create "$@" \
 	--ignore_exists \
 	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-	--set name=xen || die
-
-univention-directory-manager container/cn create "$@" \
-	--ignore_exists \
-	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
 	--set name=kvm || die
 
 # create machine profiles
@@ -81,7 +76,7 @@ kernel=$(readlink -e /vmlinuz)
 # determin keyboard layout
 while [ -n "$locale_keymap" ]
 do
-	for virttech in xen/qemu kvm qemu
+	for virttech in kvm qemu
 	do
 		if [ -e "/usr/share/${virttech}/keymaps/${locale_keymap}" ]
 		then
@@ -156,79 +151,21 @@ create_hvm_profile() {
 	fi
 }
 
-create_xen_profile() {
-	local cn="$1"
-	local prefix="$2"
-	local arch="$3"
-	local ram="$4"
-	local diskspace="$5"
-	local rtcoffset="$6"
-	# create machine profile
-	univention-directory-manager uvmm/profile create "${CREDENTIALS[@]}" \
-		--ignore_exists \
-		--position="cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-		--set name="$cn" \
-		--set name_prefix="$prefix" \
-		--set os="$cn" \
-		--set arch="$arch" \
-		--set cpus=1 \
-		--set virttech="xen-xen" \
-		--set ram="${ram}" \
-		--set diskspace="${diskspace}" \
-		--set interface=eth0 \
-		--set vnc=1 \
-		--set kblayout="${locale_keymap}" \
-		--set advkernelconf=FALSE \
-		--set rtcoffset="$rtcoffset" \
-		--set pvdisk=1 \
-		--set pvcdrom=1 \
-		--set pvinterface=1 || die
-	if [ "$JS_LAST_EXECUTED_VERSION" -lt "$VERSION" ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
-		if [ "$uvmm_profile_autoupdate" != "false" ]; then
-			# update profile settings if uvmm/profile/autoupdate is not set to false
-			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
-				--dn "cn=${cn},cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-				--set diskspace="${diskspace}" \
-				--set arch="${arch}" \
-				--set ram="${ram}" \
-				--set os="${cn}" \
-				--set rtcoffset="$rtcoffset" \
-				--set pvdisk=1 \
-				--set pvcdrom=1 \
-				--set pvinterface=1 || die
-		else
-			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
-				--dn "cn=${cn},cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-				--set diskspace="${diskspace}" \
-				--set os="${cn}" \
-				--set rtcoffset="$rtcoffset" \
-				--set pvdisk=1 \
-				--set pvcdrom=1 \
-				--set pvinterface=1 || die
-		fi
-	fi
-}
-
 # http://support.microsoft.com/kb/314865/de
 #   Mindestens 64 MB RAM (128 MB werden empfohlen)
 #   Mindestens 1,5 GB Speicherplatz auf der Festplatte
-create_hvm_profile "Microsoft Windows XP" "winxp-" "xen" "automatic" "512MB" "0" "0" "0" "10GB" "localtime"
 create_hvm_profile "Microsoft Windows XP" "winxp-" "kvm" "automatic" "512MB" "0" "0" "0" "10GB" "localtime"
 
 # http://windows.microsoft.com/de-DE/windows7/products/system-requirements
 #   1 GB RAM (32-Bit) oder 2 GB RAM (64-Bit)
 #   16 GB verfügbarer Festplattenspeicher (32-Bit) oder 20 GB (64-Bit)
 #   Windows XP-Modus erfordert zusätzliche 1 GB RAM und 15 GB zusätzlichen verfügbaren Festplattenspeicher. 
-create_hvm_profile "Microsoft Windows 7" "win7-" "xen" "automatic" "1024MB" "0" "0" "0" "32GB" "localtime"
-create_hvm_profile "Microsoft Windows 7 (64 Bit)" "win7-64-" "xen" "x86_64" "2048MB" "0" "0" "0" "32GB" "localtime"
 create_hvm_profile "Microsoft Windows 7" "win7-" "kvm" "automatic" "1024MB" "0" "0" "0" "32GB" "localtime"
 create_hvm_profile "Microsoft Windows 7 (64 Bit)" "win7-64-" "kvm" "x86_64" "2048MB" "0" "0" "0" "32GB" "localtime"
 
 # http://blogs.msdn.com/b/b8/archive/2012/02/29/running-the-consumer-preview-system-recommendations.aspx
 #   1 GB RAM (32-bit) or 2 GB RAM (64-bit) 
 #   16 GB available hard disk space (32-bit) or 20 GB (64-bit) 
-create_hvm_profile "Microsoft Windows 8" "win8-" "xen" "automatic" "1024MB" "0" "0" "0" "32GB" "localtime"
-create_hvm_profile "Microsoft Windows 8 (64 Bit)" "win8-64-" "xen" "x86_64" "2048MB" "0" "0" "0" "32GB" "localtime"
 create_hvm_profile "Microsoft Windows 8" "win8-" "kvm" "automatic" "1024MB" "0" "0" "0" "32GB" "localtime"
 create_hvm_profile "Microsoft Windows 8 (64 Bit)" "win8-64-" "kvm" "x86_64" "2048MB" "0" "0" "0" "32GB" "localtime"
 
@@ -239,7 +176,6 @@ create_hvm_profile "Microsoft Windows 8 (64 Bit)" "win8-64-" "kvm" "x86_64" "204
 #        1,5 GB verfügbarer Speicherplatz auf der Festplatte bei x86-basierten PCs; 2 GB für Itanium-basierte PCs; wenn die Installation über ein Netzwerk erfolgt, ist zusätzlicher Speicherplatz erforderlich
 # http://technet.microsoft.com/de-de/library/cc739866%28WS.10%29.aspx
 #   64bit: Speicher Mindestens 1 GB, höchstens 1024 GB (1 TB) RAM.
-create_hvm_profile "Microsoft Windows 2003" "w2k3-" "xen" "automatic" "1024MB" "0" "0" "0" "20GB" "localtime"
 create_hvm_profile "Microsoft Windows 2003" "w2k3-" "kvm" "automatic" "1024MB" "0" "0" "0" "20GB" "localtime"
 
 # http://technet.microsoft.com/de-de/windowsserver/bb430827.aspx
@@ -247,7 +183,6 @@ create_hvm_profile "Microsoft Windows 2003" "w2k3-" "kvm" "automatic" "1024MB" "
 #    mindestens 128 MB Arbeitsspeicher erforderlich; 256 MB oder mehr empfohlen; höchstens 64 GB für x86-basierte Computer; höchstens 2 TB für x64- und ia64-Computer
 # Festplatte
 #    1,2 GB für Netzwerkinstallation; 2,9 GB für Installation von CD
-create_hvm_profile "Microsoft Windows 2003 R2 (64 Bit)" "w2k3r2-" "xen" "x86_64" "768MB" "0" "0" "0" "20GB" "localtime"
 create_hvm_profile "Microsoft Windows 2003 R2 (64 Bit)" "w2k3r2-" "kvm" "x86_64" "768MB" "0" "0" "0" "20GB" "localtime"
 
 # http://msdn.microsoft.com/en-us/windowsserver/cc196364.aspx
@@ -259,7 +194,6 @@ create_hvm_profile "Microsoft Windows 2003 R2 (64 Bit)" "w2k3r2-" "kvm" "x86_64"
 #   Available Disk Space
 #     Minimum: 10GB
 #      Recommended: 40GB or greater
-create_hvm_profile "Microsoft Windows 2008" "w2k8-" "xen" "automatic" "2048MB" "0" "0" "0" "48GB" "localtime"
 create_hvm_profile "Microsoft Windows 2008" "w2k8-" "kvm" "automatic" "2048MB" "0" "0" "0" "48GB" "localtime"
 
 # http://www.microsoft.com/windowsserver2008/en/us/system-requirements.aspx
@@ -269,7 +203,6 @@ create_hvm_profile "Microsoft Windows 2008" "w2k8-" "kvm" "automatic" "2048MB" "
 #   Disc Space
 #     Minimum: 32 GB or greater
 #     Note: Computers with more than 16 GB of RAM will require more disk space for paging, hibernation, and dump files 
-create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "xen" "x86_64" "2048MB" "0" "0" "0" "48GB" "localtime"
 create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "kvm" "x86_64" "2048MB" "0" "0" "0" "48GB" "localtime"
 
 # http://technet.microsoft.com/en-us/library/jj200132.aspx
@@ -278,28 +211,20 @@ create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "kvm" "x86_64"
 #     Recommended: 8 GB
 #   Disc Space
 #     Minimum: 32 GB or greater
-create_hvm_profile "Microsoft Windows 2012 (64 Bit)" "w2012-" "xen" "x86_64" "2048MB" "0" "0" "0" "48GB" "localtime"
 create_hvm_profile "Microsoft Windows 2012 (64 Bit)" "w2012-" "kvm" "x86_64" "2048MB" "0" "0" "0" "48GB" "localtime"
-
-create_xen_profile "UCS 3.1" "ucs31-" "automatic" "1024MB" "20GB" "utc"
-create_xen_profile "UCS 3.1 (64 Bit)" "ucs31-64-" "x86_64" "1024MB" "20GB" "utc"
 
 create_hvm_profile "UCS 3.1" "ucs31-" "kvm" "automatic" "1024MB" "1" "0" "1" "20GB" "utc"
 create_hvm_profile "UCS 3.1 (64 Bit)" "ucs31-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
 
-create_xen_profile "UCS 3.2" "ucs32-" "automatic" "1024MB" "20GB" "utc"
-create_xen_profile "UCS 3.2 (64 Bit)" "ucs32-64-" "x86_64" "1024MB" "20GB" "utc"
-
 create_hvm_profile "UCS 3.2" "ucs32-" "kvm" "automatic" "1024MB" "1" "0" "1" "20GB" "utc"
 create_hvm_profile "UCS 3.2 (64 Bit)" "ucs32-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
 
-create_hvm_profile "Other" "other-" "xen" "automatic" "512MB" "0" "0" "0" "20GB" "utc"
+create_hvm_profile "UCS 4.0" "ucs40-" "kvm" "automatic" "1024MB" "1" "0" "1" "20GB" "utc"
+create_hvm_profile "UCS 4.0 (64 Bit)" "ucs40-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
+
 create_hvm_profile "Other" "other-" "kvm" "automatic" "512MB" "0" "0" "0" "20GB" "utc"
 
-create_hvm_profile "Other (64 Bit)" "other-" "xen" "x86_64" "512MB" "0" "0" "0" "20GB" "utc"
 create_hvm_profile "Other (64 Bit)" "other-" "kvm" "x86_64" "512MB" "0" "0" "0" "20GB" "utc"
-
-# TODO: profiles for xen-xen
 
 # Re-link certificates
 rm -rf /etc/pki/libvirt/clientcert.pem

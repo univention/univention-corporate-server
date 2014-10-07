@@ -95,13 +95,13 @@ msgstr ""
 #: umc/js/uvmm.js:778
 msgid ""
 "<p>Shutting down virtual machines cleanly required the cooperation of their "
-"guest operating system.</p><p>For KVM ACPI must be enabled.</p><p>For XEN PV-"
-"drivers must be installed.</p><p>If the operating system does not cooperate, "
+"guest operating system.</p><p>For KVM ACPI must be enabled.</p>"
+"<p>If the operating system does not cooperate, "
 "\"Stop\" can be used to forcefully turn off the virtual machine.</p>"
 msgstr ""
 "<p>Das saubere Herunterfahren virtueller Maschinen benötigt die Kooperation "
-"der Gastbetriebssysteme.</p><p>Für KVM muß ACPI aktiviert sein.</p><p>Für "
-"XEN müssen die PV-Treiber installiert sein.</p><p>Wenn das Betriebssystem "
+"der Gastbetriebssysteme.</p><p>Für KVM muß ACPI aktiviert sein.</p>"
+"<p>Wenn das Betriebssystem "
 "nicht kooperiert kann \"Beenden\" benutzt werden, um die virtuelle Maschine "
 "zwangsweise auszuschalten.</p>"
 
@@ -593,10 +593,6 @@ msgstr "Französisch-Schweiz"
 msgid "Full virtualization (KVM)"
 msgstr "Voll-Virtualisierung (KVM)"
 
-#: umc/js/uvmm/types.js:141
-msgid "Full virtualization (XEN)"
-msgstr "Voll-Virtualisierung (XEN)"
-
 #: umc/js/uvmm/DomainPage.js:92
 msgid "General"
 msgstr "Allgemein"
@@ -641,8 +637,7 @@ msgid ""
 "prerequisite for efficiently managing snapshots of virtual machines. "
 "Alternatively, you can also access a hard drive image in <i>Simple format "
 "(raw)</i>. Snapshots can only be created when using hard drive images in "
-"<i>Extended format</i>. Only the <i>Simple format</i> is available on Xen "
-"systems."
+"<i>Extended format</i>."
 msgstr ""
 "Festplatten-Images können auf KVM-Systemen in zwei Formaten verwaltet "
 "werden: <p>Standardmässig werden Images im <i>Erweiterten Format (qcow2)</i> "
@@ -654,8 +649,7 @@ msgstr ""
 "Erstellen von Sicherungspunkten/Snapshots von virtuellen Maschinen.  Nur bei "
 "Verwendung von Festplatten-Images im <i>Erweiterten Format</i> können "
 "Sicherungspunkte erstellt werden.Alternativ kann auch im <i>Einfachen Format "
-"(raw)</i> auf ein Festplatten-Image zugegriffen werden. <p>Auf Xen-Systemen "
-"steht nur das <i>Einfache Format</i> zur Verfügung."
+"(raw)</i> auf ein Festplatten-Image zugegriffen werden."
 
 #: umc/js/uvmm/types.js:167
 msgid "Hungarian"
@@ -860,17 +854,9 @@ msgstr "Betriebssystem"
 msgid "Paravirtual device (virtio)"
 msgstr "Paravirtualisiertes Gerät (virtio)"
 
-#: umc/js/uvmm/types.js:210
-msgid "Paravirtual device (xen)"
-msgstr "Paravirtualisiertes Gerät (xen)"
-
 #: umc/js/uvmm/DriveGrid.js:292
 msgid "Paravirtual drive"
 msgstr "Paravirtualisiertes Laufwerk"
-
-#: umc/js/uvmm/types.js:142
-msgid "Paravirtualization (XEN)"
-msgstr "Paravirtualisierung (XEN)"
 
 #: umc/js/uvmm/DriveGrid.js:220
 msgid ""

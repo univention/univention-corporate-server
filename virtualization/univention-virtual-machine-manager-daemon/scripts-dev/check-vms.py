@@ -709,8 +709,6 @@ def main():
     except IndexError:
         if os.path.exists('/dev/kvm'):
             url = 'qemu:///system'
-        elif os.path.exists('/proc/xen/capabilities'):
-            url = 'xen:///'
         else:
             parser.print_usage(sys.stderr)
             sys.exit(2)

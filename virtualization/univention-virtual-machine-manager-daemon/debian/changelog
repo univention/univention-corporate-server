@@ -1,12 +1,19 @@
+univention-virtual-machine-manager-daemon (4.0.1-1) unstable; urgency=low
+
+  * Bug #35656: Drop Xen support.
+  * Only depend on libvirt client tools.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 07 Oct 2014 13:57:19 +0200
+
 univention-virtual-machine-manager-daemon (4.0.0-24) unstable; urgency=low
 
-  * Use PasswordBox for respective input fields (Bug #35945) 
+  * Use PasswordBox for respective input fields (Bug #35945)
 
  -- Erik Damrose <damrose@univention.de>  Mon, 06 Oct 2014 17:24:09 +0200
 
 univention-virtual-machine-manager-daemon (4.0.0-23) unstable; urgency=low
 
-  * UMC design adaptions (Bug #35945) 
+  * UMC design adaptions (Bug #35945)
 
  -- Erik Damrose <damrose@univention.de>  Mon, 06 Oct 2014 17:14:20 +0200
 

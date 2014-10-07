@@ -78,7 +78,7 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
-		
+
 			this._container = new ContainerWidget({});
 
 			/* new vm */

@@ -775,7 +775,7 @@ define([
 							{
 								type: Text,
 								name: 'info_text',
-								content: _('<p>Shutting down virtual machines cleanly required the cooperation of their guest operating system.</p><p>For KVM ACPI must be enabled.</p><p>For XEN PV-drivers must be installed.</p><p>If the operating system does not cooperate, "Stop" can be used to forcefully turn off the virtual machine.</p>')
+								content: _('<p>Shutting down virtual machines cleanly required the cooperation of their guest operating system.</p><p>For KVM ACPI must be enabled.</p><p>If the operating system does not cooperate, "Stop" can be used to forcefully turn off the virtual machine.</p>')
 							}, {
 								type: CheckBox,
 								value: true,
@@ -1229,9 +1229,7 @@ define([
 				isStandardAction: false,
 				isMultiAction: true,
 				callback: lang.hitch(this, '_changeState', 'SUSPEND', 'suspend' ),
-				canExecute: function(item) {
-					return isRunning(item) && types.getNodeType(item.id) == 'qemu';
-				}
+				canExecute: isRunning
 			}, /* { FIXME: not yet fully supported
 				name: 'restart',
 				label: _( 'Restart' ),

@@ -53,7 +53,6 @@ logger = logging.getLogger('uvmmd.ldap')
 
 # Mapping from service name to libvirt-uri
 SERVICES = {
-		"XEN Host": "xen://%s/",
 		"KVM Host": "qemu://%s/system",
 		}
 

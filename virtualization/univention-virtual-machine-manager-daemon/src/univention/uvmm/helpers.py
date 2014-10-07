@@ -169,8 +169,8 @@ Extension ot urlparse for node URIs
 example:
 import urlparse
 
-> urlparse.urlsplit( 'xen://host.domain.tld/system' )
-SplitResult(scheme='xen', netloc='host.domain.tld', path='/system', query='', fragment='')
+> urlparse.urlsplit('qemu://host.domain.tld/system')
+SplitResult(scheme='qemu', netloc='host.domain.tld', path='/system', query='', fragment='')
 """
 
 import urlparse

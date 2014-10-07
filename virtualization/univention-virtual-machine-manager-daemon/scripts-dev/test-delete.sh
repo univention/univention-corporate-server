@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-URL="xen://$(hostname -f)/"
+URL="qemu://$(hostname -f)/system"
 NAME="test$RANDOM"
 IMAGE="/var/lib/libvirt/images/${NAME}.img"
 
@@ -9,12 +9,11 @@ domain () {
 	local name="${1}"
 	local image="${2:-${IMAGE}}"
 	cat <<EOF
-<domain type="xen">
+<domain type="qemu">
   <name>${name}</name>
   <memory>4096</memory>
   <os>
     <type>hvm</type>
-    <loader>/usr/lib/xen/boot/hvmloader</loader>
     <boot dev="cdrom"/>
     <boot dev="hd"/>
   </os>
