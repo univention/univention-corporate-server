@@ -2,7 +2,7 @@ Source: shim
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0), gnu-efi (>= 3.0q), sbsigntool, libnss3-tools, quilt
+Build-Depends: debhelper (>= 7.0), gnu-efi (>= 3.0q), sbsigntool, libnss3-tools, quilt, openssl
 Standards-Version: 3.7.3
 
 Package: shim
