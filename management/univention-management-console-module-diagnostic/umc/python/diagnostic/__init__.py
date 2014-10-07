@@ -111,6 +111,82 @@ class Instance(Base, ProgressMixin):
 
 
 class Plugin(object):
+	u"""A wrapper for a python module underneath of "univention.management.console.modules.diagnostic.plugins".
+
+	These python modules (plugins) may have the following properties:
+
+	:attr dict actions:
+		A mapping of valid action names to function callbacks.
+		These action names can be referenced by additional displayed buttons (see :attr:`buttons`).
+		If a called actions does not exists the run() function is taken as fallback.
+		example:
+			actions = {
+				'remove': my_remove_funct,
+			}
+	:attr str title:
+		A short description of the problem
+		example:
+			title = _('No space left on device')
+	:attr str description:
+		A more detailed description of the problem.
+		The description is able to contain HTML.
+		The description may contain expressions which are replaced by either links to UMC modules
+		or links to third party websites (e.g. an SDB article).
+		Expressions which are replaced look like:
+			UMC-Modules: either {module_id:flavor} or {module_id} if no flavor exists
+			Links: {link_name}
+		See attributes :attr:`umc_modules` and :attr:`links`.
+		example:
+			description = _('There is too few space left on the device /dev/sdb1.
+			Please use {directory_browser} to remove unneeded files. Further information can be found at {sdb}.')
+	:attr list umc_modules:
+		A list containing dicts with the definitions of UMC modules to create links which are either displayed inline the :attr:`description`
+		text or underneath of it. The definition has the same signature as umc.tools.linkToModule().
+		example:
+			umc_modules = [{
+				'module': 'udm',
+				'flavor': 'navigation',
+				'props': {
+					'openObject': {
+						'objectDN': 'uid=Administrator,cn=users,dc=foo,dc=bar',
+						'objectType': 'users/user'
+					}
+				}
+			}]
+	:attr list links:
+		A list of dicts which define regular inline text links (e.g. to SDB articles).
+		They are displayed either in the :attr:`description` or underneath of it.
+		example:
+			links = [{
+				'name': 'sdb',
+				'href': 'https://sdb.univention.de/foo',
+				'label': _('Solve problem XYZ'),
+				'title': '',
+			}]
+	:attr list buttons:
+		A list of umc.widgets.Button definitions which are displayed underneath of
+		the description and are able to execute the actions defined in :attr:`actions`.
+		A callback is automatically added in the frontend.
+		example:
+			[{
+				'action': 'remove',
+				'name': 'remove',
+				'label': _('Remove foo')
+			}]
+
+	The plugin module have to define at least a :method:`run()` function.
+	This function is executed as the primary default action for every interaction.
+	Every defined action callback may raise any of the following exceptions.
+	These exceptions allow the same attributes as the module so that an action is able to overwrite
+	the module attributes for the execution of that specific test.
+
+		Problem
+		+-- Success
+		+-- Conflict
+		+-- Warning
+		+-- Critical
+		+-- ProblemFixed
+	"""
 
 	@property
 	def title(self):

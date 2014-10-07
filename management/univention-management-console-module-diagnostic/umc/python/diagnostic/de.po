@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-06 16:43+0200\n"
+"POT-Creation-Date: 2014-10-07 11:41+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,7 +82,7 @@ msgstr "Proxy-Server-Fehler"
 msgid "Security limits exceeded"
 msgstr "Sicherheitslimits überschritten"
 
-#: umc/python/diagnostic/__init__.py:187
+#: umc/python/diagnostic/__init__.py:263
 msgid "Test again"
 msgstr "Erneut testen"
 
