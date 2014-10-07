@@ -1,4 +1,12 @@
+ucs-windows-tools (2.0.1-6) unstable; urgency=low
+
+  * added set-gateway.vbs to windows-scripts
+  * aded function set_gateway to lib/winexe.py (Bug #36001)
+
+ -- Drees Dormann <dormann@univention.de>  Tue, 07 Oct 2014 11:37:22 +0200
+
 ucs-windows-tools (2.0.1-5) unstable; urgency=low
+
 
   * fixed get_root_certificate (Bug #35855) 
 
