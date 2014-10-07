@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.3-1) unstable; urgency=low
+
+  * Bug #35654: remove margin-bottom under the search form
+
+ -- Florian Best <best@univention.de>  Tue, 07 Oct 2014 17:37:14 +0200
+
 univention-management-console-module-udm (5.1.2-1) unstable; urgency=low
 
   * Bug #35654: show (save/back) buttons in the module header

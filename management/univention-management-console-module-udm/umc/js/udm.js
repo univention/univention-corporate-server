@@ -983,12 +983,6 @@ define([
 					widgets.hidden.set('visible', false);
 					toggleButton.set('label', _('Advanced options'));
 				}
-				// during simple search without search label (default properties)
-				//   we are wasting space at the top. fixing it:
-				var marginTop = widgets.objectPropertyValue.label != '&nbsp;' || this._isAdvancedSearch ? 0 : '-1em';
-				domStyle.set(this._searchForm.domNode, {
-					marginTop: marginTop
-				});
 				this.layout();
 			}
 
