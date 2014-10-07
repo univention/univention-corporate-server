@@ -126,6 +126,7 @@ Methods
 
 import notifier
 import notifier.signals as signals
+import traceback
 
 import univention.debug as ud
 from univention.lib.i18n import Translation
@@ -165,6 +166,33 @@ class UMC_OptionSanitizeError(UMC_OptionTypeError):
 	def __init__(self, message, body=None):
 		status = 409  # HTTP Conflict
 		super(UMC_OptionSanitizeError, self).__init__(message, status, body)
+
+
+def error_handling(function, method=None):
+	method = method or function.__name__
+	def _decorated(self, request, *args, **kwargs):
+		message = ''
+		result = None
+		try:
+			return function(self, request, *args, **kwargs)
+		except UMC_Error as exc:
+			status = exc.status
+			result = exc.result
+			if isinstance(exc, UMC_OptionTypeError):
+				message = _('An option passed to %s has the wrong type: %s') % (method, exc)
+			elif isinstance(exc, UMC_OptionMissing):
+				message = _('One or more options to %s are missing: %s') % (method, exc)
+			elif isinstance(exc, UMC_CommandError):
+				message = _('The command has failed: %s') % (exc,)
+			else:
+				message = str(exc)
+		except:
+			status = MODULE_ERR_COMMAND_FAILED
+			message = _("Execution of command '%(command)s' has failed:\n\n%(text)s")
+			message = message % {'command' : request.arguments[0], 'text' : unicode(traceback.format_exc())}
+		MODULE.process(str(message))
+		self.finished(request.id, result, message, status=status)
+	return _decorated
 
 
 class Base( signals.Provider, Translation ):
@@ -210,37 +238,16 @@ class Base( signals.Provider, Translation ):
 	def execute( self, method, request ):
 		self.__requests[ request.id ] = ( request, method )
 
-		MODULE.info( 'Executing %s' % str( request.arguments ) )
-		message = ''
-		result = None
 		try:
-			func = getattr( self, method )
-			func( request )
+			function = getattr(self, method).im_func
+		except AttributeError:
+			message = _('Method %r (%r) in %r does not exists.\n\n%s') % (method, request.arguments, self.__class__.__module__, traceback.format_exc())
+			self.finished(request.id, None, message=message, status=500)
 			return
-		except UMC_Error as exc:
-			status = exc.status
-			result = exc.result
-			if isinstance(exc, UMC_OptionTypeError):
-				message = _('An option passed to %s has the wrong type: %s') % (method, exc)
-			elif isinstance(exc, UMC_OptionMissing):
-				message = _('One or more options to %s are missing: %s') % (method, exc)
-			elif isinstance(exc, UMC_CommandError):
-				message = _('The command has failed: %s') % (exc,)
-			else:
-				message = str(exc)
-		except BaseException, e:
-			status = MODULE_ERR_COMMAND_FAILED
-			import traceback
-			message = _( "Execution of command '%(command)s' has failed:\n\n%(text)s" ) % \
-					  { 'command' : request.arguments[ 0 ], 'text' : unicode( traceback.format_exc() ) }
-		res = Response( request )
-		res.message = message
-		MODULE.process( str( res.message ) )
-		res.status = status
-		res.result = result
-		self.signal_emit( 'failure', res )
-		if request.id in self.__requests:
-			del self.__requests[ request.id ]
+
+		function = error_handling(function, method)
+		MODULE.info('Executing %s' % (request.arguments,))
+		function(self, request)
 
 	def required_options( self, request, *options ):
 		"""Raises an UMC_OptionMissing exception if any of the given
@@ -263,10 +270,10 @@ class Base( signals.Provider, Translation ):
 
 		if id not in self.__requests:
 			return
-		object, method = self.__requests[ id ]
+		request, method = self.__requests[id]
 
 		if not isinstance( response, Response ):
-			res = Response( object )
+			res = Response(request)
 
 			if mimetype and mimetype != MIMETYPE_JSON:
 				res.mimetype = mimetype
