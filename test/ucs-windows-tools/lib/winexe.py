@@ -384,3 +384,7 @@ class WinExe:
 	def shutdown_remote_win_host(self):
 		''' Shuts down this windows host'''
 		self.winexec("shutdown", domain_mode=False)
+
+	def set_gateway(self, gateway, domain_mode=True):
+		''' Sets the gateway on windows host'''
+		self.winexec("set-gateway", gateway, domain_mode=domain_mode)
