@@ -51,6 +51,8 @@ wait_for_replication
 # force_drs_replication
 wait_for_drs_replication "(sAMAccountName=$username)"
 wait_for_drs_replication "(sAMAccountName=$username2)"
+wait_for_samba4_idmap_listener "(sAMAccountName=$username)"
+wait_for_samba4_idmap_listener "(sAMAccountName=$username2)"
 
 ## wait for samba share export
 echo "----wait for samba share export"
@@ -89,10 +91,15 @@ fi
 echo "----accessing a folder without permission"
 setfacl -m "user:$username:---" "/$sharename/folder3"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "ls folder3\*")"
+rc="$?"
 echo "$output" | grep "NT_STATUS_ACCESS_DENIED"
 if [ "$?" != 0 ]; then
 	echo "$output"
-	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $output"
+	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED (rc: $rc)"
+	echo "----posix, fACLs and NTACLs for folder3:"
+	ls -ld "/$sharename/folder3"
+	getfacl "/$sharename/folder3"
+	samba-tool ntacl get "/$sharename/folder3" --as-sddl
 fi
 
 #----accessing a folder
@@ -102,15 +109,25 @@ output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename
 if [ "$?" != 0 ]; then
 	echo "$output"
 	fail_test 1 "Failed to access the folder even though it should work.."
+	echo "----posix, fACLs and NTACLs for folder3:"
+	ls -ld "/$sharename/folder3"
+	getfacl "/$sharename/folder3"
+	samba-tool ntacl get "/$sharename/folder3" --as-sddl
 fi
+
 
 #----making a folder without permission
 echo "----making a folder without permission"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder3\folder4")"
+rc="$?"
 echo "$output" | grep "NT_STATUS_ACCESS_DENIED"
 if [ "$?" != 0 ]; then
 	echo "$output"
-	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $output"
+	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED (rc: $rc)"
+	echo "----posix, fACLs and NTACLs for folder3:"
+	ls -ld "/$sharename/folder3"
+	getfacl "/$sharename/folder3"
+	samba-tool ntacl get "/$sharename/folder3" --as-sddl
 fi
 
 #----making a folder
@@ -120,6 +137,10 @@ output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename
 if [ "$?" != 0 ]; then
 	echo "$output"
 	fail_test 1 "Failed to make a folder even though it should work."
+	echo "----posix, fACLs and NTACLs for folder3:"
+	ls -ld "/$sharename/folder3"
+	getfacl "/$sharename/folder3"
+	samba-tool ntacl get "/$sharename/folder3" --as-sddl
 fi
 
 
