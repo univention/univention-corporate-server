@@ -1,3 +1,9 @@
+univention-ad-connector (9.0.4-1) unstable; urgency=low
+
+  * Bug #35654: change handling of displaying helpText
+
+ -- Florian Best <best@univention.de>  Wed, 08 Oct 2014 11:31:17 +0200
+
 univention-ad-connector (9.0.3-1) unstable; urgency=low
 
   * Bug #35654: move module into domain category

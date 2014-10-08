@@ -54,7 +54,6 @@ define([
 		initialState: null,
 
 		headerText: _('Configuration of the Active Directory connection'),
-		forceHelpText: true,
 
 		_widgets: null,
 
@@ -72,7 +71,7 @@ define([
 				this.helpText = _('The UCS domain exists in parallel to an Active Directory domain.');
 			}
 			this.helpText += ' ' + _('This module configures the connection between the Univention Corporate Server and Active Directory.');
-			this.showDescription();
+			this.set('helpText', this.helpText);
 		},
 
 		buildRendering: function() {
