@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.33-1) unstable; urgency=low
+
+  * Bug #35654: display label of module header buttons on hover
+
+ -- Florian Best <best@univention.de>  Wed, 08 Oct 2014 15:01:40 +0200
+
 univention-management-console-frontend-theme (0.0.32-1) unstable; urgency=medium
 
   * Bug #35654: remove Grid background color
