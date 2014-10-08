@@ -10,7 +10,7 @@
 			</categories>
 		</flavor>
 		<flavor priority="50" id="packages">
-			<name>Software Management</name>
+			<name>Package Management</name>
 			<description>Installation of software packages</description>
 			<keywords>update,install,uninstall</keywords>
 			<categories>

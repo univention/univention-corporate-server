@@ -147,7 +147,6 @@ define([
 			this._form = new Form({
 				widgets: widgets,
 				layout: layout,
-				scrollable: true,
 				//buttons: buttons,
 				moduleStore: this.moduleStore
 			});

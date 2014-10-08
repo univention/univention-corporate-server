@@ -241,7 +241,6 @@ define([
 			});
 			this.addChild(this._page);
 			this._container = new ContainerWidget({
-				scrollable: true
 			});
 			this._page.addChild(this._container);
 

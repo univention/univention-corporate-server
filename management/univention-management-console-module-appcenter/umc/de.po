@@ -21,8 +21,8 @@ msgid "Installation of apps"
 msgstr "Installation von Apps"
 
 #: umc/appcenter.xml: 13
-msgid "Software Management"
-msgstr "Software Verwaltung"
+msgid "Package Management"
+msgstr "Paket-Verwaltung"
 
 #: umc/appcenter.xml: 14
 msgid "Installation of software packages"
@@ -30,7 +30,7 @@ msgstr "Installation von Software-Paketen"
 
 #: umc/appcenter.xml: 21
 msgid "Repository Settings"
-msgstr "Repository Einstellungen"
+msgstr "Repository-Einstellungen"
 
 #: umc/appcenter.xml: 23
 msgid "Repository server configuration"

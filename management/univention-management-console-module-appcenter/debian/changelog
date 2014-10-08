@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.6-1) unstable; urgency=low
+
+  * Bug #35654: rename flavor to "Package Management", remove ContainerWidget.scrollable
+
+ -- Florian Best <best@univention.de>  Wed, 08 Oct 2014 11:28:58 +0200
+
 univention-management-console-module-appcenter (4.1.5-1) unstable; urgency=low
 
   * Bug #35654: move buttons into module header
