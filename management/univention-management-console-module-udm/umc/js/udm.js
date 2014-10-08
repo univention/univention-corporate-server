@@ -777,7 +777,7 @@ define([
 					region: 'nav',
 					// customize the method getIconClass()
 					getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
-						return tools.getIconClass(item.icon || 'udm-container-cn');
+						return tools.getIconClass((item.icon || 'udm-container-cn') + '.png');
 					}
 				});
 				if ('navigation' !== this.moduleFlavor) {
@@ -1043,7 +1043,7 @@ define([
 				style: 'width: 300px; height: 350px',
 				// customize the method getIconClass()
 				getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
-					return tools.getIconClass(item.icon || 'udm-container-cn');
+					return tools.getIconClass((item.icon || 'udm-container-cn') + '.png');
 				}
 			});
 			container.addChild(tree);

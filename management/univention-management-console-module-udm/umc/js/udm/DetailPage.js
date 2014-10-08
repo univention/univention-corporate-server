@@ -248,9 +248,6 @@ define([
 					formBuild: formBuiltDeferred,
 					properties: this.propertyQuery
 				}).then(lang.hitch(this, function(result) {
-					// hide the type info and ldap path in case of a new object
-					this._form.getWidget( '$objecttype$' ).set( 'visible', false);
-					this._form.getWidget( '$location$' ).set( 'visible', false);
 					if (!this._multiEdit) {
 						this._form.ready().then(lang.hitch(this, function() {
 							this._setNonEmptyValues(result.properties);
@@ -286,8 +283,14 @@ define([
 
 				// var objecttype = vals.$labelObjectType$;
 				var path = tools.ldapDn2Path( this.ldapName, this.ldapBase );
-				this._form.getWidget( '$objecttype$' ).set( 'content', _( 'Type: <i>%(type)s</i>', { type: vals.$labelObjectType$ } ) );
-				this._form.getWidget( '$location$' ).set( 'content', _( 'Position: <i>%(path)s</i>', { path: path } ) );
+				var objecttype = _('Type: <i>%(type)s</i>', { type: vals.$labelObjectType$ });
+				var position = _('Position: <i>%(path)s</i>', { path: path });
+				var position_text = lang.replace('{0}<br>{1}', [objecttype, position]);
+				array.forEach(this._tabs.getChildren(), lang.hitch(this, function(child) {
+					if (child.position_text) {
+						child.position_text.set('content', position_text);
+					}
+				}));
 
 				return this._form.ready();
 			}));
@@ -361,20 +364,13 @@ define([
 			if (policies && policies.length) {
 				// in case we have policies that apply to the current object, we need an extra
 				// sub tab that groups all policies together
-				var controller = new TabController({
-					region: 'nav',
-					nested: true,
-					containerId: this._tabs.id
-				});
 				this._policiesTab = new _StandbyPage({
 					title: _('[Policies]'),
 					noFooter: true,
-					tabs: controller,
 					headerText: _('Properties inherited from policies'),
 					helpText: _('List of all object properties that are inherited by policies. The values cannot be edited directly. In order to edit a policy, click on the "edit" button to open a particular policy in a new tab.')
 				});
-				this._policiesTab.addChild(controller, 0);
-				this._tabs.addChild(this._policiesTab);
+				this._addSubTab(this._policiesTab);
 				this._policiesTab.watch('selected', lang.hitch(this, function(name, oldVal, newVal) {
 					if (!newVal || this._policyDeferred.isFulfilled()) {
 						return;
@@ -397,7 +393,6 @@ define([
 			this._policiesTab.standby(true);
 
 			var policiesContainer = new ContainerWidget({
-				scrollable: true
 			});
 			this._policiesTab.addChild(policiesContainer);
 
@@ -541,21 +536,6 @@ define([
 			// parse the widget configurations
 			var properties = [];
 			var optionMap = {};
-			_properties.push( {
-				type: 'Text',
-				id: '$objecttype$',
-				content: '',
-				style: 'padding-bottom: 5px;',
-				label: ''
-			} );
-			_properties.push( {
-				type: 'Text',
-				id: '$location$',
-				content: '',
-				align: 'right',
-				// style: 'padding-bottom: 10px;',
-				label: ''
-			} );
 			array.forEach(_properties, function(iprop) {
 				// ignore internal properties
 				if ( iprop.id.slice( 0, 1 ) == '$' && iprop.id.slice( -1 ) == '$' ) {
@@ -795,30 +775,21 @@ define([
 			this._propertySubTabMap = {}; // map to remember which form element is displayed on which subtab
 			this._detailPages = [];
 
-			layout[ 0 ].layout.unshift( [ '$objecttype$', '$location$' ] );
 			return tools.forEachAsync(layout, function(ilayout) {
 				// create a new page, i.e., subtab
-				var controller = new TabController({
-					region: 'nav',
-					containerId: this._tabs.id,
-					nested: true
-				});
-
 				var subTab = new Page({
 					title: ilayout.label || ilayout.name, //TODO: 'name' should not be necessary
 					noFooter: true,
-					tabs: controller,
 					headerText: ilayout.description || ilayout.label || ilayout.name,
 					helpText: ''
 				});
-				subTab.addChild(controller, 0);
 
 				// add rendered layout to subtab and register subtab
 				var subTabWidgets = render.layout(ilayout.layout, widgets);
 				ilayout.$refSubTab$ = subTab;
 				style.set(subTabWidgets.domNode, 'overflow', 'auto');
 				subTab.addChild(subTabWidgets);
-				this._tabs.addChild(subTab);
+				this._addSubTab(subTab);
 
 				// update _propertySubTabMap
 				this._detailPages.push(subTab);
@@ -836,6 +807,24 @@ define([
 			}, this, 1, 20).then(lang.hitch(this, function() {
 				this._layoutMap = layout;
 			}));
+		},
+
+		_addSubTab: function(page) {
+			page.tabs = new TabController({
+				region: 'nav',
+				containerId: this._tabs.id,
+				nested: true
+			});
+			page.position_text = new Text({region: 'nav', content: ''});
+
+			page.addChild(page.tabs, 0);
+			page.own(page.tabs);
+
+			page.addChild(page.position_text);
+			page.own(page.position_text);
+
+			this._tabs.addChild(page);
+			this.own(page);
 		},
 
 		_renderMultiEditCheckBoxes: function(widgets) {
