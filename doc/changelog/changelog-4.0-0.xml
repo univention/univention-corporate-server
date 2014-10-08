@@ -142,6 +142,12 @@
 					<envar>ldap/database/type</envar> for OpenLDAP database settings,
 					<ulink url="&ucsbug;34994">Bug 34994</ulink>)
 			</simpara></listitem>
+			<listitem><simpara>
+					The default search rule for the LDAP attribute
+					<emphasis>univentionInventoryNumber</emphasis> has been adjusted
+					to make searches case insensitive.
+					<ulink url="&ucsbug;34262">Bug 34262</ulink>)
+			</simpara></listitem>
 		</itemizedlist>
 
 		<section id="changelog:domain:openldap:acl">
