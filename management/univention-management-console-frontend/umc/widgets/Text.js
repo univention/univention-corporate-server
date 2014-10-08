@@ -63,8 +63,8 @@ define([
 		},
 
 		_setContentAttr: function(content) {
-			this.content = content;
 			this.contentNode.innerHTML = content;
+			this._set('content', content);
 		},
 
 		_setVisibleAttr: function(visible) {

@@ -1,4 +1,10 @@
-univention-management-console-frontend (.1-1) unstable; urgency=low
+univention-management-console-frontend (4.1.33-1) unstable; urgency=low
+
+  * Bug #35654: fix Text.watch('content')
+
+ -- Florian Best <best@univention.de>  Wed, 08 Oct 2014 14:59:08 +0200
+
+univention-management-console-frontend (4.1.32-1) unstable; urgency=low
 
   * Bug #35654: remove user preferences for module help texts and tooltips
 
