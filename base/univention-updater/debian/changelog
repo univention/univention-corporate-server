@@ -1,3 +1,10 @@
+univention-updater (10.0.6-1) unstable; urgency=medium
+
+  * preup univention-ldap-config to change LDAP schema matching rule before
+    slapd dump&restore (Bug #34262)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 08 Oct 2014 11:10:21 +0200
+
 univention-updater (10.0.5-1) unstable; urgency=medium
 
   * Bug #35654: fix refresh on start up, change category

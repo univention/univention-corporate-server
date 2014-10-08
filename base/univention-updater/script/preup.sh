@@ -303,7 +303,7 @@ then
 fi
 
 # Pre-upgrade
-preups=""
+preups="univention-ldap-config"
 $update_commands_update >&3 2>&3
 for pkg in $preups; do
 	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then
