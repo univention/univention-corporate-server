@@ -469,7 +469,8 @@
 	<itemizedlist>
 		<listitem><simpara>
 				Samba has been updated to version 4.2
-				(<ulink url="&ucsbug;35319">Bug 35319</ulink>).
+				(<ulink url="&ucsbug;35319">Bug 35319</ulink>,
+				 <ulink url="&ucsbug;36101">Bug 36101</ulink>).
 		</simpara></listitem>
 	</itemizedlist>
 
