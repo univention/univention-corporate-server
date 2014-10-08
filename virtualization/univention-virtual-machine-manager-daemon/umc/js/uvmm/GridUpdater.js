@@ -33,9 +33,10 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/promise/all",
-	"dojox/timing/_base"
-], function(declare, lang, array, all, timing) {
-	return declare("umc.modules.uvmm.GridUpdater", null, {
+	"dojox/timing/_base",
+	"dijit/Destroyable"
+], function(declare, lang, array, all, timing, Destroyable) {
+	return declare("umc.modules.uvmm.GridUpdater", [Destroyable], {
 		grid: null, // reference to the grid
 		interval: null, // interval in seconds
 		intervalStartsWhenFinishedUpdate: false, // whether the timer should continue while one update process is running ("predictable") or not
