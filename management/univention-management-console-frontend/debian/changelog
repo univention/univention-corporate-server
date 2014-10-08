@@ -1,3 +1,9 @@
+univention-management-console-frontend (.1-1) unstable; urgency=low
+
+  * Bug #35654: remove user preferences for module help texts and tooltips
+
+ -- Florian Best <best@univention.de>  Wed, 08 Oct 2014 11:22:02 +0200
+
 univention-management-console-frontend (4.1.31-1) unstable; urgency=low
 
   * Bug #35654: fix switching of language

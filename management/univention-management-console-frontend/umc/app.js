@@ -62,7 +62,6 @@ define([
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/PopupMenuItem",
-	"dijit/CheckedMenuItem",
 	"dijit/MenuSeparator",
 	"dijit/Tooltip",
 	"dijit/form/DropDownButton",
@@ -72,7 +71,6 @@ define([
 	"umc/widgets/GalleryPane",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Page",
-	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/app/CategoryButton",
 	"umc/i18n!",
@@ -80,8 +78,8 @@ define([
 ], function(declare, lang, kernel, array, baseWin, win, on, aspect, has,
 		Evented, Deferred, when, all, cookie, topic, Memory, Observable,
 		dom, style, domAttr, domClass, domGeometry, domConstruct, locale, styles, gfx, registry, tools, dialog, store,
-		Menu, MenuItem, PopupMenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
-		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Text, Button, CategoryButton, _
+		Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
+		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Button, CategoryButton, _
 ) {
 	// cache UCR variables
 	var _ucr = {};
@@ -720,41 +718,19 @@ define([
 			if (!this._settingsMenu) {
 				return;
 			}
-			this._settingsMenu.addChild(new CheckedMenuItem({
-				label: _('Tooltips'),
-				checked: tools.preferences('tooltips'),
-				onClick: function() {
-					topic.publish('/umc/actions', 'menu-settings', 'tooltips', this.checked ? 'on' : 'off');
-					tools.preferences('tooltips', this.checked);
-				}
-			}));
-			this._settingsMenu.addChild(new CheckedMenuItem({
-				label: _('Module help description'),
-				checked: tools.preferences('moduleHelpText'),
-				onClick: function() {
-					topic.publish('/umc/actions', 'menu-settings', 'module-help-text', this.checked ? 'on' : 'off');
-					tools.preferences('moduleHelpText', this.checked);
-				}
-			}));
-			this._insertLicenseMenuItems();
-		},
 
-		_insertLicenseMenuItems: function() {
 			// try to insert license dialog
-			if (!require('umc/app').getModule('udm')) {
-				return;
+			if (require('umc/app').getModule('udm')) {
+				this._insertActivationMenuItem();
+				this._settingsMenu.addChild(new MenuItem({
+					label: _('Import new license'),
+					onClick : lang.hitch(this, '_showLicenseImportDialog')
+				}), 0);
+				this._settingsMenu.addChild(new MenuItem({
+					label: _('License information'),
+					onClick : lang.hitch(this, '_showLicenseInformationDialog')
+				}), 0);
 			}
-
-			this._insertSeparatorToSettingsMenu();
-			this._insertActivationMenuItem();
-			this._settingsMenu.addChild(new MenuItem({
-				label: _('Import new license'),
-				onClick : lang.hitch(this, '_showLicenseImportDialog')
-			}), 0);
-			this._settingsMenu.addChild(new MenuItem({
-				label: _('License information'),
-				onClick : lang.hitch(this, '_showLicenseInformationDialog')
-			}), 0);
 		},
 
 		_insertActivationMenuItem: function() {
@@ -890,20 +866,10 @@ define([
 			if (!(_hasFFPULicense() && isUserAdmin)) {
 				return;
 			}
-			this._insertSeparatorToSettingsMenu();
 			this._helpMenu.addChild(new MenuItem({
 				label: _('Usage statistics'),
 				onClick: lang.hitch(this, '_showPiwikDialog')
 			}));
-		},
-
-		_insertSeparatorToSettingsMenu: function() {
-			var menuHasSeparator = array.some(this._settingsMenu.getChildren(), function(ientry) {
-				return tools.inheritsFrom(ientry, 'dijit.MenuSeparator');
-			});
-			if (!menuHasSeparator) {
-				this._settingsMenu.addChild(new MenuSeparator({}), 0);
-			}
 		},
 
 		_showPiwikDialog: function() {

@@ -84,7 +84,6 @@ define([
 				delete pageConf.buttons;
 				delete pageConf.layout;
 				pageConf.footerButtons = footerButtons;
-				pageConf.forceHelpText = true;
 				var page = new Page(pageConf);
 
 				// create the page form

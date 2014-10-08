@@ -33,9 +33,8 @@ define([
 	"dojo/_base/lang",
 	"dojo/on",
 	"dojo/aspect",
-	"dijit/Tooltip",
-	"umc/tools"
-], function(declare, lang, on, aspect, Tooltip, tools) {
+	"dijit/Tooltip"
+], function(declare, lang, on, aspect, Tooltip) {
 	/*dojo.extend(dijit._MasterTooltip, {
 		buildRendering: function() {
 			if(!this.domNode){
@@ -59,14 +58,7 @@ define([
 
 	return declare("umc.widgets.Tooltip", Tooltip, {
 		// the widget's class name as CSS class
-		'class': 'umcTooltip',
-
-		_onHover: function() {
-			// only show the tooltip if the config cookie for this is not set or set to 'true'
-			if (tools.preferences('tooltips')) {
-				this.inherited(arguments);
-			}
-		}
+		'class': 'umcTooltip'
 	});
 });
 

@@ -1129,8 +1129,6 @@ define([
 
 		// internal array with default values for all preferences
 		_defaultPreferences: {
-			tooltips: true,
-			moduleHelpText: true
 			//confirm: true
 		},
 

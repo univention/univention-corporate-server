@@ -33,27 +33,20 @@ define([
 	"dojo/_base/kernel",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/_base/fx",
-	"dojo/on",
-	"dojo/mouse",
-	"dojo/query",
 	"dojo/dom-style",
 	"dojo/dom-class",
-	"dojo/topic",
 	"umc/tools",
 	"umc/dialog",
 	"umc/render",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!"
-], function(declare, kernel, lang, array, baseFX, on, mouse, query, style, domClass, topic, tools, dialog, render, Text, ContainerWidget, _) {
+], function(declare, kernel, lang, array, style, domClass, tools, dialog, render, Text, ContainerWidget, _) {
 	return declare("umc.widgets.Page", ContainerWidget, {
 		// summary:
 		//		Class that abstracts a displayable page for a module.
-		//		Offers the possibility to enter a help text that is shown or not
-		//		depending on the user preferences.
 		//		The widget itself is also a container such that children widgets
-		//		may be adde via the 'addChild()' method.
+		//		may be added via the 'addChild()' method.
 
 		// helpText: String
 		//		Text that describes the module, will be displayed at the top of a page.
@@ -78,10 +71,6 @@ define([
 		//		Disable the page footer.
 		noFooter: false,
 
-		// forceHelpText: Boolean
-		//		If set to true, forces the help text to be shown.
-		forceHelpText: false,
-
 		addNotification: lang.hitch(dialog, 'notify'),
 
 		// the widget's class name as CSS class
@@ -91,7 +80,6 @@ define([
 
 		_helpTextPane: null,
 		_headerTextPane: null,
-		_subscriptionHandle: null,
 		_footer: null,
 		_footerButtons: null,
 
@@ -102,22 +90,37 @@ define([
 		},
 
 		_setHelpTextAttr: function(newVal) {
-			this.helpText = newVal;
-			if (this._helpTextPane) {
-				this._helpTextPane.set('content', newVal);
-				//this.layout();
+			if (!this._helpTextPane) {
+				this._helpTextPane = new Text({
+					region: this.helpTextRegion,
+					'class': 'umcPageHelpText'
+				});
+				try {
+					this.addChild(this._helpTextPane, 1);  // insert underneath of headerText
+				} catch (error) {
+					this.addChild(this._helpTextPane);
+				}
 			}
+			style.set(this._helpTextPane.domNode, {
+				display: newVal ? 'block' : 'none'
+			});
+			this._helpTextPane.set('content', newVal);
+			this._set('helpText', newVal);
 		},
 
 		_setHeaderTextAttr: function(newVal) {
-			if (this._headerTextPane) {
-				// hide header if empty string
-				style.set(this._headerTextPane.domNode, {
-					display: newVal ? 'block' : 'none'
+			if (!this._headerTextPane) {
+				this._headerTextPane = new Text({
+					region: this.headerTextRegion,
+					'class': 'umcPageHeader'
 				});
-				this._headerTextPane.set('content', '<h1>' + newVal + '</h1>');
-				//this.layout();
+				this.addChild(this._headerTextPane, 0);
 			}
+			// hide header if empty string
+			style.set(this._headerTextPane.domNode, {
+				display: newVal ? 'block' : 'none'
+			});
+			this._headerTextPane.set('content', '<h1>' + newVal + '</h1>');
 			this._set('headerText', newVal);
 		},
 
@@ -148,18 +151,11 @@ define([
 
 			// add the header
 			if (this.headerText) {
-				this._headerTextPane = new Text({
-					region: this.headerTextRegion,
-					'class': 'umcPageHeader'
-				});
-				this.addChild(this._headerTextPane);
 				this.set('headerText', this.headerText);
 			}
 
-			if (tools.preferences('moduleHelpText') && this.helpText) {
-				// display the module helpText
-				this._createHelpTextPane();
-				this.addChild(this._helpTextPane);
+			if (this.helpText) {
+				this.set('helpText', this.helpText);
 			}
 
 			if (!this.noFooter) {
@@ -189,33 +185,6 @@ define([
 			}
 		},
 
-		postCreate: function() {
-			this.inherited(arguments);
-
-			if (this.forceHelpText) {
-				// help text should be displayed in any case
-				this.showDescription();
-			}
-			else {
-				// register for events to hide the help text information
-				this._subscriptionHandle = topic.subscribe('/umc/preferences/moduleHelpText', lang.hitch(this, function(show) {
-					if (false === show) {
-						this.hideDescription();
-					}
-					else {
-						this.showDescription();
-					}
-				}));
-			}
-		},
-
-		uninitialize: function() {
-			// unsubscribe upon destruction
-			if (this._subscriptionHandle) {
-				this._subscriptionHandle.remove();
-			}
-		},
-
 		addChild: function(widget, position) {
 			if (!widget.region || widget.region == 'center' || widget.region == 'right') {
 				widget.region = 'main';
@@ -232,58 +201,9 @@ define([
 			} else {
 				this._main.addChild.apply(this._main, arguments);
 			}
-		},
-
-		_createHelpTextPane: function() {
-			this._helpTextPane = new Text({
-				region: this.helpTextRegion,
-				content: this.helpText,
-				'class': 'umcPageHelpText'
-			});
-		},
-
-		showDescription: function() {
-			// if we don't have a help text, ignore call
-			if (this._helpTextPane || !this.helpText) {
-				return;
+			if (this._started) {
+				this._adjustSizes();
 			}
-
-			// put the help text in a Text widget and then add it to the container
-			// make the node transparent, yet displayable
-			this._createHelpTextPane();
-			style.set(this._helpTextPane.domNode, {
-				opacity: 0,
-				display: 'block'
-			});
-			var position = this._headerTextPane && this._headerTextPane == this._nav.getChildren()[0] ? 1 : 0;
-			this.addChild(this._helpTextPane, position);
-			//this.layout();
-
-			// fade in the help text
-			baseFX.fadeIn({
-				node: this._helpTextPane.domNode,
-				duration: 500
-			}).play();
-		},
-
-		hideDescription: function() {
-			// if we don't have a help text visible, ignore call
-			if (!this._helpTextPane) {
-				return;
-			}
-
-			// fade out the help text
-			baseFX.fadeOut({
-				node: this._helpTextPane.domNode,
-				duration: 500,
-				onEnd: lang.hitch(this, function() {
-					// remove the text from the layout and destroy widget
-					this.removeChild(this._helpTextPane);
-					this._helpTextPane.destroyRecursive();
-					this._helpTextPane = null;
-					//this.layout();
-				})
-			}).play();
 		},
 
 		addNote: function(message) {
@@ -300,9 +220,7 @@ define([
 			kernel.deprecated('umc/widgets/Page:clearNotes()', 'remove it, it has no effect!');
 		},
 
-		startup: function() {
-			this.inherited(arguments);
-
+		_adjustSizes: function() {
 			domClass.remove(this._nav.domNode);
 			domClass.remove(this._main.domNode);
 			domClass.add(this._nav.domNode, this._nav['class']);
@@ -314,6 +232,11 @@ define([
 				domClass.add(this._nav.domNode, "col-xs-12 col-md-4");
 				domClass.add(this._main.domNode, "col-sm-12 col-md-8");
 			}
+		},
+
+		startup: function() {
+			this.inherited(arguments);
+			this._adjustSizes();
 
 			// FIXME: Workaround for refreshing problems with datagrids when they are rendered
 			//        on an inactive tab.
