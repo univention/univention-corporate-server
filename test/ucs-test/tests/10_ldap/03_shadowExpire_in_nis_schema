@@ -1,0 +1,101 @@
+#!/usr/share/ucs-test/runner python
+## desc: Allow comparison of shadowExpire in nis.schema
+## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave]
+## exposure: dangerous
+## packages: [univention-ldap-server]
+## bugs: [35329, 35088]
+
+from univention.lib.umc_connection import UMCConnection
+from univention.uldap import getMachineConnection
+import httplib
+import re
+import subprocess
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
+
+def nis_schema_conatains_ordering_for_shadowExpire():
+	NIS_FILE = '/etc/ldap/schema/nis.schema'
+	pattern = re.compile(r'\(.*shadowExpire[^\(]+ORDERING integerOrderingMatch[^\)]+\)')
+	with open(NIS_FILE) as fi:
+		search_obj = re.search(pattern, fi.read())
+		return search_obj
+
+def auth(username, passwd, should_pass):
+	ucr = ucr_test.UCSTestConfigRegistry()
+	ucr.load()
+	try:
+		UMCConnection(ucr.get('hostname')).auth(username, passwd)
+	except httplib.HTTPException:
+		if should_pass:
+			utils.fail('Authentiaction faild, expected to pass\nusername: %s, password: %s' %
+					(username, passwd))
+
+def create_user(expiry_date):
+	ucr = ucr_test.UCSTestConfigRegistry()
+	ucr.load()
+	username = uts.random_name()
+	passwd = uts.random_string()
+	cmd = [
+			'udm-test',
+			'users/user',
+			'create',
+			'--position',
+			'cn=users,%s' % ucr.get('ldap/base'),
+			'--set', 'username=%s' % username,
+			'--set', 'lastname=%s' % uts.random_name(),
+			'--set', 'password=%s' % passwd,
+			'--set', 'userexpiry=%s' % expiry_date
+			]
+	subprocess.call(cmd)
+	return username, passwd
+
+def remove_user(username):
+	ucr = ucr_test.UCSTestConfigRegistry()
+	ucr.load()
+	cmd = [
+			'udm-test',
+			'users/user',
+			'remove',
+			'--dn',
+			'uid=%s,cn=users,%s' % (username, ucr.get('ldap/base'))
+			]
+	subprocess.call(cmd)
+
+def ldap_search(filter_):
+	lo = getMachineConnection()
+	found = lo.search(filter=filter_)
+	if found:
+		return [(x[1]['uid'][0], x[1]['shadowExpire'][0]) for x in found]
+
+def run_test(date_diff):
+	local = list(time.localtime(time.time() + date_diff *60*60*24))
+	expiry_date = time.strftime('%Y-%m-%d', local)
+	username, passwd = create_user(expiry_date)
+	current_epoch = int(time.time()/60/60/24)
+	date = current_epoch + date_diff
+	should_pass = date >= current_epoch
+
+	try:
+		print 'Testing Authentication:\nusername=%s, should_pass=%r' % (username, should_pass)
+		auth(username, passwd, should_pass=should_pass)
+		print 'Searching LDAP:\nusername=%s, expirydate=%s' % (username, date)
+		ldap_found = ldap_search('(&(objectClass=posixAccount)(shadowExpire>=%r))' % date)
+		if ldap_found:
+			return (username, str(date)) in ldap_found
+	finally:
+		remove_user(username)
+
+def main():
+	if not nis_schema_conatains_ordering_for_shadowExpire():
+		utils.fail("nis.schema does not contain ordering for shadowExpire")
+	for day in [-2, -1, 0, 1 , 2]:
+		result = run_test(day) 
+		if not result:
+			utils.fail("LDAP is not able to sort Objects with filter: (shadowExpire>=%r)" % 
+					day+int(time.time()/60/60/24))
+
+
+if __name__ == '__main__':
+	main()
