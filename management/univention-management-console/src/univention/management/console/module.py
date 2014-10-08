@@ -327,6 +327,9 @@ class XML_Definition( ET.ElementTree ):
 				return cmd
 		return None
 
+	def __nonzero__(self):
+		return bool(self.find('module'))
+
 _manager = None
 
 class Manager( dict ):
@@ -350,11 +353,14 @@ class Manager( dict ):
 				continue
 			try:
 				mod = XML_Definition( filename = os.path.join( Manager.DIRECTORY, filename ) )
+				if not mod:
+					RESOURCES.info('Empty XML file: %s' % (filename,))
+					continue
 				if mod.deactivated:
 					RESOURCES.info( 'Module is deactivated: %s' % filename )
 					continue
 				RESOURCES.info( 'Loaded module %s' % filename )
-			except xml.parsers.expat.ExpatError, e:
+			except (xml.parsers.expat.ExpatError, ET.ParseError) as e:
 				RESOURCES.warn( 'Failed to load module %s: %s' % ( filename, str( e ) ) )
 				continue
 			# save list of definitions in self

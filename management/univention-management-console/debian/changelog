@@ -1,3 +1,9 @@
+univention-management-console (7.1.10-1) unstable; urgency=low
+
+  * Bug #35654: ignore empty and invalid XML files
+
+ -- Florian Best <best@univention.de>  Wed, 08 Oct 2014 18:08:30 +0200
+
 univention-management-console (7.1.9-1) unstable; urgency=low
 
   * Bug #35654: fix translation of UMC modules
