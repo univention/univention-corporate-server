@@ -360,6 +360,8 @@ define([
 				if (noWrapper) {
 					// hack the empty umcLabelPaneLabeNodeTop out of the dom tree. It consumes space although it is empty
 					query('.umcLabelPaneLabeNodeTop', this._newButton.domNode).forEach(domConstruct.destroy);
+					query('.umcLabelPaneLabeNodeRight', this._newButton.domNode).forEach(domConstruct.destroy);
+					query('.umcLabelPaneLabeNodeBottom', this._newButton.domNode).forEach(domConstruct.destroy);
 				}
 			}));
 		},
@@ -517,6 +519,8 @@ define([
 			if (noWrapper) {
 				// hack the empty umcLabelPaneLabeNodeTop out of the dom tree. It consumes space although it is empty
 				query('.umcLabelPaneLabeNodeTop', labelPane.domNode).forEach(domConstruct.destroy);
+				query('.umcLabelPaneLabeNodeRight', labelPane.domNode).forEach(domConstruct.destroy);
+				query('.umcLabelPaneLabeNodeBottom', labelPane.domNode).forEach(domConstruct.destroy);
 			}
 
 			// add row

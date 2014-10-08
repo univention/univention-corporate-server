@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.34-1) unstable; urgency=low
+
+  * Bug #35654: remove extra space from LabelPanes, update browser
+  	compatibility list, fix background of "About UMC" dialog
+
+ -- Florian Best <best@univention.de>  Wed, 08 Oct 2014 16:56:15 +0200
+
 univention-management-console-frontend (4.1.33-1) unstable; urgency=low
 
   * Bug #35654: fix Text.watch('content')

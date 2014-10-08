@@ -486,8 +486,8 @@ define([
 		},
 
 		_checkBrowser: function() {
-			if (has('ie') < 9 || has('ff') < 4) {
-				// supported browsers are FF 3.6 and IE 8
+			if (has('ie') < 9 || has('ff') < 24) {
+				// supported browsers are Chrome >= 33, FF >= 24, IE >=9 and Safari >= 7
 				// they should work with UMC. albeit, they are
 				// VERY slow and escpecially IE 8 may take minutes (!)
 				// to load a heavy UDM object (on a slow computer at least).
