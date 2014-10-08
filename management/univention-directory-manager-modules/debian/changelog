@@ -1,3 +1,10 @@
+univention-directory-manager-modules (10.0.15-1) unstable; urgency=medium
+
+  * Bug #36101: Extend the ipProtocolSRV syntax for new SRV records
+    created by Samba 4.2
+
+ -- Arvid Requate <requate@univention.de>  Wed, 08 Oct 2014 18:00:06 +0200
+
 univention-directory-manager-modules (10.0.14-1) unstable; urgency=low
 
   * fixed krb5PrincipalName in macos.py (Bug #35526) 

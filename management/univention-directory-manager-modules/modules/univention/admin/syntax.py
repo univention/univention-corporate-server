@@ -1051,7 +1051,7 @@ class ipProtocol(select):
 	choices=[ ( 'tcp', 'TCP' ), ('udp', 'UDP' ) ]
 
 class ipProtocolSRV(select):
-	choices=[ ( 'tcp', 'TCP' ), ( 'udp', 'UDP' ), ( 'msdcs', 'MSDCS' ), ( 'sites', 'SITES' ) ]
+	choices=[ ( 'tcp', 'TCP' ), ( 'udp', 'UDP' ), ( 'msdcs', 'MSDCS' ), ( 'sites', 'SITES' ), ( 'DomainDnsZones', 'DOMAINDNSZONES'), ('ForestDnsZones', 'FORESTDNSZONES') ]
 	size = 'OneThird'
 
 class absolutePath(simple):
