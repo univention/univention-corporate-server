@@ -39,7 +39,6 @@ define([
 	"dojox/html/entities",
 	"dijit/Menu",
 	"dijit/MenuItem",
-	"dijit/layout/ContentPane",
 	"dijit/ProgressBar",
 	"dijit/Dialog",
 	"dijit/form/_TextBoxMixin",
@@ -68,7 +67,7 @@ define([
 	"umc/modules/uvmm/CloudConnectionWizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, string, query, Deferred, on, entities, Menu, MenuItem, ContentPane, ProgressBar, Dialog, _TextBoxMixin,
+], function(declare, lang, array, string, query, Deferred, on, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
 	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, CloudConnectionWizard, types, _) {
 
@@ -1027,14 +1026,14 @@ define([
 			}, {
 				name: 'start',
 				label: _('Start'),
-				width: '50px',
+				width: 'adjust',
 				'class': 'uvmmStartColumn',
 				description: _( 'Start the virtual machine' ),
 				formatter: lang.hitch(this, '_startFormatter')
 			}, {
 				name: 'vnc',
 				label: _('View'),
-				width: '50px',
+				width: 'adjust',
 				description: lang.hitch(this, function(item) {
 					return lang.replace( _( 'Open a view to the virtual machine {label} on {nodeName}' ), item );
 				}),
@@ -1348,7 +1347,7 @@ define([
 					iconName += '-paused';
 				}
 			}
-			return iconName;
+			return iconName + '.png';
 		},
 
 		iconFormatter: function(label, rowIndex) {

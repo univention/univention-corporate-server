@@ -111,7 +111,6 @@ define([
 
 			// and the titlepane into a container
 			this._driveContainer  = new ContainerWidget({
-				scrollable: true,
 				region: 'main'
 			});
 			this._driveContainer.addChild(titlePane);

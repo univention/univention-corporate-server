@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.2-1) unstable; urgency=low
+
+  * Bug #35654: fix column with of display column, add tree icons
+
+ -- Florian Best <best@univention.de>  Wed, 08 Oct 2014 12:06:51 +0200
+
 univention-virtual-machine-manager-daemon (4.0.1-1) unstable; urgency=low
 
   * Bug #35656: Drop Xen support.
