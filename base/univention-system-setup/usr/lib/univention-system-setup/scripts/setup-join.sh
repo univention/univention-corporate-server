@@ -164,62 +164,65 @@ run-parts /usr/lib/univention-system-setup/scripts/50_software/
 
 eval "$(univention-config-registry shell)"
 
-info_header "$(basename $0)" "$(gettext "Domain join")"
+is_profile_var_true "start/join"
+if [ $? -ne 1 ]; then
+	info_header "$(basename $0)" "$(gettext "Domain join")"
 
-# see how many join scripts we need to execute
-joinScripts=(/usr/lib/univention-install/*.inst)
-nJoinSteps=$((${#joinScripts[@]}+1))
-progress_steps $nJoinSteps
-progress_msg "$(gettext "Preparing domain join")"
-progress_next_step
+	# see how many join scripts we need to execute
+	joinScripts=(/usr/lib/univention-install/*.inst)
+	nJoinSteps=$((${#joinScripts[@]}+1))
+	progress_steps $nJoinSteps
+	progress_msg "$(gettext "Preparing domain join")"
+	progress_next_step
 
-# Call join
-if [ -d /var/lib/univention-ldap/ldap ]; then
-	rm -f /var/lib/univention-ldap/ldap/*
-	univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
-fi
-(
-	if [ "$server_role" = "domaincontroller_master" ]; then
-		mkdir -p /var/univention-join/ /usr/share/univention-join/
-		rm -f /var/univention-join/joined /var/univention-join/status
-		touch /var/univention-join/joined /var/univention-join/status
-		ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
-		ln -sf /var/univention-join/status /usr/lib/univention-install/.index.txt
-
-		for i in /usr/lib/univention-install/*.inst; do
-			echo "Configure $i"
-			$i
-		done
-	else
-		if [ -n "$dcaccount" -a -n "$password_file" ]; then
-			# Copy to a temporary password file, because univention-join
-			# will copy the file to the same directory on the master
-			# with the given user credentials. This won't work.
-			pwd_file="$(mktemp)"
-			cp "$password_file" "$pwd_file"
-			/usr/share/univention-join/univention-join -dcaccount "$dcaccount" -dcpwd "$pwd_file"
-			rm -f "$pwd_file"
-		fi
+	# Call join
+	if [ -d /var/lib/univention-ldap/ldap ]; then
+		rm -f /var/lib/univention-ldap/ldap/*
+		univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
 	fi
-) | (
-	# parse the output for lines "^Configure .*" which indicate that a join
-	# script is being executed
-	while read line; do
-		if [ "${line#Configure }" != "$line" ]; then
-			# found line starting with "Configure " ... parse the join script name
-			joinScript=${line#Configure }
-			joinScript=${joinScript%%.inst*}
-			progress_msg "$(gettext "Configure") $(basename $joinScript)"
-			progress_next_step
+	(
+		if [ "$server_role" = "domaincontroller_master" ]; then
+			mkdir -p /var/univention-join/ /usr/share/univention-join/
+			rm -f /var/univention-join/joined /var/univention-join/status
+			touch /var/univention-join/joined /var/univention-join/status
+			ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
+			ln -sf /var/univention-join/status /usr/lib/univention-install/.index.txt
+
+			for i in /usr/lib/univention-install/*.inst; do
+				echo "Configure $i"
+				$i
+			done
+		else
+			if [ -n "$dcaccount" -a -n "$password_file" ]; then
+				# Copy to a temporary password file, because univention-join
+				# will copy the file to the same directory on the master
+				# with the given user credentials. This won't work.
+				pwd_file="$(mktemp)"
+				cp "$password_file" "$pwd_file"
+				/usr/share/univention-join/univention-join -dcaccount "$dcaccount" -dcpwd "$pwd_file"
+				rm -f "$pwd_file"
+			fi
 		fi
-		if [ "${line#* Message:  }" != "$line" ]; then
-			# found line indicating join failed. output
-			progress_join_error "${line#* Message:  }"
-		fi
-		echo "$line"
-	done
-)
-progress_next_step $nJoinSteps
+	) | (
+		# parse the output for lines "^Configure .*" which indicate that a join
+		# script is being executed
+		while read line; do
+			if [ "${line#Configure }" != "$line" ]; then
+				# found line starting with "Configure " ... parse the join script name
+				joinScript=${line#Configure }
+				joinScript=${joinScript%%.inst*}
+				progress_msg "$(gettext "Configure") $(basename $joinScript)"
+				progress_next_step
+			fi
+			if [ "${line#* Message:  }" != "$line" ]; then
+				# found line indicating join failed. output
+				progress_join_error "${line#* Message:  }"
+			fi
+			echo "$line"
+		done
+	)
+	progress_next_step $nJoinSteps
+fi
 
 # Run certain scripts that should be executed after univention-join
 # (e.g. univention-upgrade which would require testing new installations

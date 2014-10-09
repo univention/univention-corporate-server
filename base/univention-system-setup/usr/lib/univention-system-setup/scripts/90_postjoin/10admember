@@ -1,0 +1,126 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Univention System Setup
+#  software installation script
+#
+# Copyright 2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+from univention.lib import admember
+
+from univention.management.console.modules.setup.setup_script import SetupScript, main, _
+
+class AdMemberScript(SetupScript):
+	name = _('Configuring Active Directory connection')
+
+	def inner_run(self):
+		ad_member = self.profile.get('ad/member')
+
+		if not self.ucr.ucr.is_true(value=ad_member):
+			# nothing to do
+			return True
+		if self.profile.get('server/role') != 'domaincontroller_master':
+			# configure only on DC master
+			return True
+
+		self.steps(100)
+
+		def _progress(steps, msg):
+			self.step(steps)
+			self.message(msg)
+
+		def _err(exc, msg):
+			self.error(msg)
+
+		ad_server_address = self.profile.get('ad/address')
+		ad_domain_info = admember.lookup_adds_dc(ad_server_address)
+		ad_server_ip = ad_domain_info['DC IP']
+		username = self.profile.get('ad/username')
+		password = self.profile.get('ad/password')
+
+		try:
+			_progress(10, _('Configuring time synchronization...'))
+			admember.time_sync(ad_server_ip)
+			admember.set_timeserver(ad_server_ip)
+
+			_progress(20, _('Configuring DNS server...'))
+			admember.set_nameserver([ad_server_ip])
+			admember.prepare_ucr_settings()
+
+			_progress(30, _('Configuring Kerberos settings...'))
+			admember.disable_local_heimdal()
+			admember.disable_local_samba4()
+
+			_progress(40, _('Configuring Administrator account...'))
+			admember.prepare_administrator(username, password)
+
+			_progress(50, _('Configuring reverse DNS settings...'))
+			admember.prepare_dns_reverse_settings(ad_server_ip, ad_domain_info)
+
+			_progress(70, _('Configuring synchronization from AD...'))
+			admember.prepare_connector_settings(username, password, ad_domain_info)
+			admember.disable_ssl()
+
+			_progress(75, _('Renaming well known SID objects...'))
+			admember.rename_well_known_sid_objects(username, password)
+
+			_progress(80, _('Running Samba join script...'))
+			admember.run_samba_join_script(username, password)
+
+			_progress(85, _('Configuring DNS entries...'))
+			admember.add_domaincontroller_srv_record_in_ad(ad_server_ip)
+
+			admember.make_deleted_objects_readable_for_this_machine(username, password)
+
+			_progress(90, _('Starting Active Directory connection service...'))
+			admember.start_service('univention-ad-connector')
+
+			_progress(95, _('Registering LDAP service entry...'))
+			admember.add_admember_service_to_localhost()
+
+			_progress(100, _('Join has been finished successfully.'))
+		# error handling...
+		except admember.invalidUCSServerRole as exc:
+			_err(exc, _('The AD member mode can only be configured on a DC master server.'))
+		except admember.failedADConnect as exc:
+			_err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_domain_info.get('DC DNS Name'))
+		except admember.domainnameMismatch as exc:
+			_err(exc, _('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain' : ad_domain_info["Domain"], 'ucs_domain' : self.profile.get('domainname')})
+		except admember.connectionFailed as exc:
+			_err(exc, _('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info.get('DC DNS Name'))
+		except admember.failedToSetAdministratorPassword as exc:
+			_err(exc, _('Failed to set the password of the UCS Administrator to the Active Directory Administrator password.'))
+		except admember.timeSyncronizationFailed as exc:
+			_err(exc, _('Could not synchronize the time between the UCS system and the Active Directory domain controller: %s') % exc)
+		else:
+			return True
+		return False
+
+if __name__ == '__main__':
+	script = AdMemberScript()
+	main(script)

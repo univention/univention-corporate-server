@@ -47,7 +47,8 @@
 		<command name="setup/keymap/save" function="save_keymap" />
 		<command name="setup/find_city" function="find_city"/>
 		<command name="setup/apps/query" function="apps_query"/>
-		<command name="setup/check/ad/existance" function="check_ad_existance"/>
+		<command name="setup/check/domain" function="check_domain"/>
+		<command name="setup/check/credentials" function="check_credentials"/>
 		<command name="setup/set_locale" function="set_locale"/>
 		<command name="setup/net/progress" function="progress"/>
 	</module>

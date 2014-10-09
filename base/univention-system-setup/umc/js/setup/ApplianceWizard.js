@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define,require,console*/
+/*global define console*/
 
 define([
 	"dojo/_base/kernel",
@@ -34,7 +34,6 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/_base/event",
-	"dojo/query",
 	"dojo/dom-class",
 	"dojo/on",
 	"dojo/Evented",
@@ -45,7 +44,6 @@ define([
 	"dijit/form/Select",
 	"dijit/Tooltip",
 	"dijit/focus",
-	"dojox/html/styles",
 	"dojox/timing/_base",
 	"umc/dialog",
 	"umc/tools",
@@ -65,7 +63,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, query, domClass, on, Evented, topic, Deferred, all, Memory, Select, Tooltip, focusUtil, styles, timing, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Select, Tooltip, focusUtil, timing, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
 
 	var _Grid = declare(Grid, {
 		_onRowClick: function(evt) {
@@ -141,7 +139,7 @@ define([
 		var acceptEmtpy = !ip && !this.required;
 		return acceptEmtpy || isIPv4Address || isIPv6Address;
 	};
-	var _domainNotAccessibleMessage = 'CHECK NOT YET IMPLEMENTED IN UCS 4.0 MS 2! ALWAYS FAILS! ' + _('No domain controller was found at the address of the name server.'); // FIXME
+	var _domainNotAccessibleMessage = _('No domain controller was found at the address of the name server.');
 	var _validateIPAddressAndDomainAccess = function(ip) {
 		var valid = _validateIPAddress(ip);
 		this.set('invalidMessage', _invalidIPAddressMessage);
@@ -360,7 +358,6 @@ define([
 					['_ip3', '_netmask3'],
 					'gateway',
 					['nameserver1', 'nameserver2'],
-					//['dns/forwarder1', 'dns/forwarder2'],
 					'proxy/http',
 					'configureProxySettings'
 				],
@@ -458,32 +455,16 @@ define([
 				}, {
 					type: TextBox,
 					name: 'nameserver1',
-					label: _('Name server of the domain'),
-					required: true,
+					label: _('Preferred DNS server'),
 					invalidMessage: null, // dynamically set
-					onChange: lang.hitch(this, function(nameserver) {
+					onChange: lang.hitch(this, function() {
 						this.getWidget('network', 'nameserver1')._domainNotAccessible = false;
-						this.getWidget('credentials-ad', '_ad_address').set('value', nameserver);
 					}),
 					validator: _validateIPAddressAndDomainAccess
 				}, {
 					type: TextBox,
 					name: 'nameserver2',
-					label: _('Alternate UCS domain name server'),
-					invalidMessage: _invalidIPAddressMessage,
-					validator: _validateIPAddress
-				}, {
-					type: TextBox,
-					name: 'dns/forwarder1',
-					label: _('Preferred external name server'),
-					visible: false,
-					invalidMessage: _invalidIPAddressMessage,
-					validator: _validateIPAddress
-				}, {
-					type: TextBox,
-					name: 'dns/forwarder2',
-					label: _('Alternate external name server'),
-					visible: false,
+					label: _('Alternate DNS server'),
 					invalidMessage: _invalidIPAddressMessage,
 					validator: _validateIPAddress
 				}, {
@@ -506,97 +487,97 @@ define([
 				'class': 'umc-setup-page umc-setup-page-domain',
 				name: 'role',
 				headerText: _('Domain setup'),
-				helpText: _('Will the system be the first system of a new UCS domain or shall it join into an existing one?'),
+				helpText: _('Please select your domain settings.'),
 				widgets: [{
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_createDomain',
-					label: '<b>' + _('Create a new UCS domain') + '</b>',
+					label: '<strong>' + _('Create a new UCS domain') + '</strong>',
 					checked: true,
-					labelConf: { style: 'margin-top: 0; margin-bottom: 0;' }
+					labelConf: {style: 'margin-top: 0; margin-bottom: 0;'}
 				}, {
 					type: Text,
 					name: 'newDomainHelpText',
-					content: '<p>' + _('Configure this system as standalone and with a new UCS domain. Additional systems can join the domain later to use account information supplied by this system.') + '</p>',
-					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
-				}, {
-					type: RadioButton,
-					radioButtonGroup: 'role',
-					name: '_joinDomain',
-					label: '<b>' + _('Join into an existing UCS domain') + '</b>',
-					labelConf: { style: 'margin-top: 0.75em; margin-bottom: 0;' }
-				}, {
-					type: Text,
-					name: 'joinDomainHelpText',
-					content: '<p>' + _('This system will join a group of existing systems which share user and computer accounts, credentials and other trustworthy information.') + '</p>',
-					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
+					content: _('Configure this system as first system for the new domain. Additional systems can join the domain later.'),
+					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_adDomain',
-					label: '<b>' + _('Join into an existing Active Directory domain') + '</b>',
-					labelConf: { style: 'margin-top: .75em; margin-bottom: 0;' }
+					label: '<strong>' + _('Join into an existing Active Directory domain') + '</strong>',
+					labelConf: {style: 'margin-top: .75em; margin-bottom: 0;'}
 				}, {
 					type: Text,
 					name: 'adDomainHelpText',
-					content: '<p>' + _('This system will become part of the existing Active Directory domain.') + '</p>',
-					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
+					content: _('This system will become part of the existing Active Directory domain.'),
+					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
+				}, {
+					type: RadioButton,
+					radioButtonGroup: 'role',
+					name: '_joinDomain',
+					label: '<strong>' + _('Join into an existing UCS domain') + '</strong>',
+					labelConf: {style: 'margin-top: 0.75em; margin-bottom: 0;'}
+				}, {
+					type: Text,
+					name: 'joinDomainHelpText',
+					content: _('Use this option if you already have one or more UCS systems.'),
+					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_noDomain',
-					label: '<b>' + _('Do not use any domain') + '</b>',
-					labelConf: { style: 'margin-top: 0.75em; margin-bottom: 0;' }
+					label: '<strong>' + _('Do not use any domain') + '</strong>',
+					labelConf: {style: 'margin-top: 0.75em; margin-bottom: 0;'}
 				}, {
 					type: Text,
 					name: 'noDomainHelpText',
-					content: '<p>' + _('This should only be used in rare use cases, for example as firewall systems.') + '</p>',
-					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
+					content: _('This should only be used in rare use cases, for example as firewall systems.'),
+					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
 					type: Text,
 					name: 'ifUnsureHelpText',
 					content: _('If unsure, select <i>Create a new UCS domain</i>.'),
-					labelConf: { style: 'margin-top: 0.75em;' }
+					labelConf: {style: 'margin-top: 0.75em;'}
 				}]
 			}, {
 				'class': 'umc-setup-page umc-setup-page-domain',
 				name: 'role-nonmaster-ad',
 				headerText: _('System role'),
-				helpText: _('Specify the type of the system to join into an existing UCS domain. For this, credentials of a valid domain Administrator account will be necessary.'),
+				helpText: _('Specify the type of this system.'),
 				widgets: [{
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_roleBackup',
-					label: _('<b>Domain controller backup</b>'),
+					label: '<strong>' + _('Domain controller backup') + '</strong>',
 					checked: true,
-					labelConf: { style: 'margin-top: 0em; margin-bottom: 0'	}
+					labelConf: {style: 'margin-top: 0em; margin-bottom: 0'}
 				}, {
 					type: Text,
 					name: 'helpBackup',
-					content: _('<p>The DC backup is the fallback system for the DC master and can take over the role of the DC master permanently.</p>'),
-					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
+					content: _('A DC backup is the fallback system for the UCS DC master an can take over the role of the DC master permanently. It is recommended to use at least one DC backup in the domain.'),
+					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_roleSlave',
-					label: _('<b>Domain controller slave</b>'),
-					labelConf: { style: 'margin-top: 1.5em; margin-bottom: 0'	}
+					label: '<strong>' + _('Domain controller slave') + '</strong>',
+					labelConf: {style: 'margin-top: 1.5em; margin-bottom: 0'}
 				}, {
 					type: Text,
 					name: 'helpSlave',
-					content: _('<p>DC slave systems are ideal for site servers and distribution of load-intensive services. Local services running on a DC slave can access a local read-only replica of the LDAP database.</p>'),
-					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
+					content: _('DC slave systems are ideal for site servers, they provide authentication services for the domain. Local services running on a DC slave can access the local LDAP database.'),
+					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_roleMember',
-					label: _('<b>Member server</b>'),
-					labelConf: { style: 'margin-top: 1.5em; margin-bottom: 0'	}
+					label: '<strong>' + _('Member server') + '</strong>',
+					labelConf: {style: 'margin-top: 1.5em; margin-bottom: 0'}
 				}, {
 					type: Text,
 					name: 'helpMember',
-					content: _('<p>Member servers are server systems without a local LDAP server. Access to domain data here is performed via other servers in the domain.</p>'),
-					labelConf: { 'class': 'umc-ucssetup-wizard-indent' }
+					content: _('Member servers should be used for services which do not need a local authentication database, for example for file or print servers.'),
+					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}]
 			}, {
 				'class': 'umc-setup-page umc-setup-page-user',
@@ -632,30 +613,59 @@ define([
 				name: 'credentials-ad',
 				'class': 'umc-setup-page-credentials-ad',
 				headerText: _('Active Directory join information'),
-				helpText: _('Specify credentials to join into the Active Directory'),
+				helpText: _('Specify credentials to join into the Active Directory.'),
 				widgets: [{
 					type: TextBox,
-					name: '_ad_address',
+					name: 'ad/address',
 					label: _('Address of Active Directory domain controller or name of Active Directory domain'),
 					required: true
 				}, {
 					type: TextBox,
-					name: '_ad_user',
+					name: 'ad/username',
 					label: _('Active Directory account'),
 					value: 'Administrator',
 					required: true
 				}, {
 					type: PasswordBox,
-					name: '_ad_password',
+					name: 'ad/password',
 					label: _('Active Directory password'),
 					required: true
+				}, {
+					type: Text,
+					name: '_error',
+					content: ''
 				}]
 			}, {
 				name: 'credentials-nonmaster',
 				'class': 'umc-setup-page umc-setup-page-credentials-nonmaster',
 				headerText: _('Domain join information'),
-				helpText: _('Specify credentials to join into the UCS Domain'),
+				helpText: _('Specify credentials to join into the UCS Domain.'),
 				widgets: [{
+					type: CheckBox,
+					name: 'start/join',
+					label: _('Start join at the end of installation'),
+					value: true,
+					onChange: lang.hitch(this, function(value) {
+						this.getWidget('credentials-nonmaster', '_ucs_autosearch_master').set('disabled', !value);
+						this.getWidget('credentials-nonmaster', '_ucs_address').set('disabled', !value || this.getWidget('credentials-nonmaster', '_ucs_autosearch_master').get('value'));
+						this.getWidget('credentials-nonmaster', '_ucs_user').set('disabled', !value);
+						this.getWidget('credentials-nonmaster', '_ucs_password').set('disabled', !value);
+					})
+				}, {
+					type: CheckBox,
+					name: '_ucs_autosearch_master',
+					label: _('Search Domain controller master in DNS'),
+					value: true,
+					onChange: lang.hitch(this, function(value) {
+						this.getWidget('credentials-nonmaster', '_ucs_address').set('disabled', value);
+					})
+				}, {
+					type: TextBox,
+					name: '_ucs_address',
+					label: _('Hostname of Domain controller master'),
+					required: true,
+					disabled: true
+				}, {
 					type: TextBox,
 					name: '_ucs_user',
 					label: _('Administrator account'),
@@ -666,6 +676,10 @@ define([
 					name: '_ucs_password',
 					label: _('Administrator password'),
 					required: true
+				}, {
+					type: Text,
+					name: '_error',
+					content: ''
 				}]
 			}, {
 				name: 'warning-basesystem',
@@ -676,7 +690,7 @@ define([
 				name: 'fqdn-master',
 				'class': 'umc-setup-page umc-setup-page-fqdn',
 				headerText: _('Host settings'),
-				helpText: _('Specify the name of this system'),
+				helpText: _('Specify the name of this system.'),
 				layout: [
 					['_fqdn', 'ldap/base']
 				],
@@ -700,7 +714,7 @@ define([
 				name: 'fqdn-nonmaster-all',
 				'class': 'umc-setup-page umc-setup-page-fqdn',
 				headerText: _('Host settings'),
-				helpText: _('Specify the name of this system'),
+				helpText: _('Specify the name of this system.'),
 				layout: [
 					'hostname',
 					'root_password'
@@ -789,7 +803,6 @@ define([
 			if (this._isDHCPPreConfigured()) {
 				this.getWidget('network', '_dhcp').set('value', true);
 				this.getWidget('network', 'gateway').set('value', this.values.gateway);
-				this.getWidget('network', 'dns/forwarder1').set('value', this.values.nameserver1);
 				array.forEach(this._getNetworkDevices(), function(idev, i) {
 					var dev = this.values.interfaces[idev];
 					var old = dev.ip4[0] || dev.ip6[0] || ['', ''];
@@ -819,15 +832,6 @@ define([
 				} else if (field == 'nameservers') {
 					disable.push(['network', 'nameserver1']);
 					disable.push(['network', 'nameserver2']);
-					if (this.getWidget('role', '_createDomain').get('value') || this.getWidget('role-nonmaster', '_roleMember').get('value')) {
-						disable.push(['network', 'dns/forwarder1']);
-						disable.push(['network', 'dns/forwarder2']);
-					} else {
-						this.getWidget('network', 'dns/forwarder1').set('disabled', false);
-						this.getWidget('network', 'dns/forwarder1').set('visible', true);
-						this.getWidget('network', 'dns/forwarder2').set('disabled', false);
-						this.getWidget('network', 'dns/forwarder2').set('visible', true);
-					}
 				} else if (field == 'proxy') {
 					disable.push(['network', 'proxy/http']);
 					disable.push(['network', 'configureProxySettings']);
@@ -869,7 +873,7 @@ define([
 				dev2index[idev] = i;
 				queries[idev] = this.umcpProgressCommand(this._progressBar, 'setup/net/dhclient', {
 					'interface': idev
-				}, false).then(null, function(error) {
+				}, false).then(null, function() {
 					// catch error case to avoid dojo/promise/all canceling all bundled deferreds
 					return {};
 				});
@@ -914,11 +918,7 @@ define([
 					this.getWidget('network', 'gateway').set('value', gateway);
 				}
 				if (nameserver) {
-					if (this._isRoleMaster()) {
-						this.getWidget('network', 'dns/forwarder1').set('value', nameserver);
-					} else {
-						this.getWidget('network', 'nameserver1').set('value', nameserver);
-					}
+					this.getWidget('network', 'nameserver1').set('value', nameserver);
 				}
 
 				// did DHCP work?
@@ -1118,9 +1118,6 @@ define([
 			if (data.timezone) {
 				this.getWidget('locale', 'timezone').setInitialValue(data.timezone);
 			}
-			if (data.ipv4_nameserver && !this._isDHCPPreConfigured()) {
-				this.getWidget('network', 'dns/forwarder1').set('value', data.ipv4_nameserver);
-			}
 			if (data.locale) {
 				this.getWidget('locale', 'locale/default').setInitialValue(data.locale);
 			}
@@ -1301,6 +1298,20 @@ define([
 				this._appGalleryUpdated = true;
 				this._gallery.filter(this._getAppQuery());
 			}
+			this._autoAddAdConnectorToAppSelection();
+		},
+
+		_autoAddAdConnectorToAppSelection: function() {
+			if (this._isAdMember() && !this._domainHasMaster) {
+				this._apps.query({id: 'adconnector'}).forEach(lang.hitch(this, function(iitem) {
+					var idx = this._gallery._grid.getItemIndex(iitem);
+					this._gallery._grid.selection.addToSelection(idx);
+				}));
+				this._apps.query({id: 'samba4'}).forEach(lang.hitch(this, function(iitem) {
+					var idx = this._gallery._grid.getItemIndex(iitem);
+					this._gallery._grid.selection.addToSelection(idx);
+				}));
+			}
 		},
 
 		_key2label: function(key) {
@@ -1378,7 +1389,7 @@ define([
 					'memberserver': _('Member server')
 				}[role];
 				if (this._isAdMember()) {
-					if (this._adMemberMaster) {
+					if (!this._domainHasMaster) {
 						roleLabel = _('DC Master');
 					}
 					msg += _('This sytem will join an existing AD domain with the role <i>%s</i>.', roleLabel);
@@ -1448,19 +1459,13 @@ define([
 				_append(_('UCS domain name server'), nameservers);
 			}
 
-			if (!isFieldShown('nameservers') || (vals['server/role'] != 'domaincontroller_master' || vals['server/role'] != 'memberserver')) {
-				var forwarders = array.filter([vals['dns/forwarder1'], vals['dns/forwarder2']], function(iforwarder) {
-					return iforwarder;
-				}).join(', ');
-				_append(_('External name server'), forwarders);
-			}
-
 			if (isFieldShown('proxy')) {
 				_append(_('HTTP proxy'), vals['proxy/http']);
 			}
 			msg += '</ul>';
 
 			// software components
+			this._autoAddAdConnectorToAppSelection();
 			var apps = this._gallery.getSelectedItems();
 			if (!apps.length) {
 				msg += '<p><b>' + _('Software components') + '</b>: ' + _('No additional software components will be installed.') + '</p>';
@@ -1552,7 +1557,6 @@ define([
 		},
 
 		_isRoleMaster: function() {
-			// cannot use _getRole() as this uses _isRoleMaster() in _gatherVisibleValues()
 			var showRoleSelection = array.indexOf(this.disabledPages, 'role') === -1;
 			var createNewDomain = this.getWidget('_createDomain').get('value');
 			return createNewDomain || !showRoleSelection;
@@ -1641,11 +1645,11 @@ define([
 					});
 				});
 				if (packages['univention-samba'] && packages['univention-samba4']) {
-					_alert(_('<p>It is not possible to install Samba 3 and Samba 4 on one system.</p><p>Please select only one of these components.</p>'));
+					_alert(_('It is not possible to install Samba 3 and Samba 4 on one system. Please select only one of these components.'));
 					return false;
 				}
 				if (packages['univention-virtual-machine-manager-node-kvm'] && packages['univention-virtual-machine-manager-node-xen']) {
-					_alert(_('<p>It is not possible to install KVM and XEN components on one system.</p><p>Please select only one of these components.</p>'));
+					_alert(_('It is not possible to install KVM and XEN components on one system. Please select only one of these components.'));
 					return false;
 				}
 			}
@@ -1745,13 +1749,8 @@ define([
 				deferred = _join(values);
 			} else {
 				// for any other role, we need domain admin credentials
-				var username = this.getWidget('credentials-nonmaster', '_ucs_user').get('value');
-				var password = this.getWidget('credentials-nonmaster', '_ucs_password').get('value');
-				if (this._isAdMember()) {
-					username = this.getWidget('credentials-ad', '_ad_user').get('value');
-					password = this.getWidget('credentials-ad', '_ad_password').get('value');
-				}
-				deferred = _join(values, username, password);
+				var credentials = this._getCredentials();
+				deferred = _join(values, credentials.username, credentials.password);
 			}
 			deferred = deferred.then(_hasJoinErrors);
 			return deferred;
@@ -1766,11 +1765,59 @@ define([
 			return pageName;
 		},
 
-		_checkAdMember: function() {
+		_getRoleForDomainChecks: function() {
 			var vals = this.getValues();
-			return this.standbyDuring(this.umcpCommand('setup/check/ad/existance', {address: vals.nameserver1}, false).then(function(data) {
+			var role = 'master';
+			if (this._isAdMember()) {
+				role = 'ad';
+			} else if (this._isRoleNonMaster()) {
+				role = 'nonmaster';
+				if (!vals['start/join']) {
+					role = 'none';
+				}
+			} else if (this._isRoleBaseSystem()) {
+				role = 'basesystem';
+			}
+			return role;
+		},
+
+		_checkDomain: function() {
+			var vals = this.getValues();
+			return this.standbyDuring(tools.umcpCommand('setup/check/domain', {role: this._getRoleForDomainChecks(), nameserver: vals.nameserver1}, false).then(function(data) {
 				return data.result;
 			}));
+		},
+
+		_checkCredentials: function() {
+			var params = {role: this._getRoleForDomainChecks()};
+			lang.mixin(params, this._getCredentials());
+			return this.standbyDuring(tools.umcpCommand('setup/check/credentials', params).then(function(data) {
+				return data.result;
+			}));
+		},
+
+		_getCredentials: function() {
+			var address, username, password, dns;
+			var isAdMember = this._isAdMember();
+			if (isAdMember) {
+				dns = false;
+				address = this.getWidget('credentials-ad', 'ad/address').get('value');
+				username = this.getWidget('credentials-ad', 'ad/username').get('value');
+				password = this.getWidget('credentials-ad', 'ad/password').get('value');
+			} else {
+				dns = this.getWidget('credentials-nonmaster', '_ucs_autosearch_master').get('value');
+				address = this.getWidget('credentials-nonmaster', '_ucs_address').get('value');
+				username = this.getWidget('credentials-nonmaster', '_ucs_user').get('value');
+				password = this.getWidget('credentials-nonmaster', '_ucs_password').get('value');
+			}
+			return {
+				ad: isAdMember,
+				dns: dns,
+				nameserver: this.getWidget('network', 'nameserver1').get('value'),
+				address: address,
+				username: username,
+				password: password
+			};
 		},
 
 		_updateButtons: function(pageName) {
@@ -1835,24 +1882,49 @@ define([
 			}
 
 			if (pageName == 'role') {
-				if (this._isAdMember()) {
-					return this._checkAdMember().then(
-						lang.hitch(this, function(role) {
-							if (role == 'domaincontroller_master') {
-								this._adMemberMaster = true;
-								return this._forcePageTemporarily('credentials-ad');
-							} else {
-								this._adMemberMaster = false;
-								return this._forcePageTemporarily('role-nonmaster');
-							}
-						}),
-						lang.hitch(this, function() {
+				return this._checkDomain().then(
+					lang.hitch(this, function(info) {
+						if (!info) {
+							return this._forcePageTemporarily('role-nonmaster-ad');
+						}
+						var dcName = info.dc_name;
+						this.getWidget('credentials-ad', 'ad/address').set('value', dcName);
+						this.getWidget('credentials-nonmaster', '_ucs_address').set('value', dcName);
+						if (info.ucs_master) {
+							// Domain apparently already has a UCS DC Master
+							this._domainHasMaster = true;
+							return this._forcePageTemporarily('role-nonmaster-ad');
+						} else {
+							this._domainHasMaster = false;
+							return this._forcePageTemporarily('credentials-ad');
+						}
+					}),
+					lang.hitch(this, function() {
+						if (this._isAdMember() || this._isRoleNonMaster()) {
 							this.getWidget('network', 'nameserver1')._domainNotAccessible = true;
 							this.getWidget('network', 'nameserver1').validate();
 							return this._forcePageTemporarily('network');
-						})
-					);
-				}
+						} else {
+							// alright, _checkDomain was not supposed to do anything meaningful
+							return this._forcePageTemporarily(nextPage);
+						}
+					})
+				);
+			}
+
+			if (pageName == 'credentials-ad' || pageName == 'credentials-nonmaster') {
+				return this._checkCredentials().then(lang.hitch(this, function(success) {
+					var msg = '';
+					if (success === false) {
+						msg = _('Connection refused. Please recheck the password');
+						nextPage = pageName;
+					} else if (success === null) {
+						msg = _('Connection failed. Please recheck the address');
+						nextPage = pageName;
+					}
+					this.getWidget(pageName, '_error').set('content', '<strong>' + msg + '</strong>');
+					return this._forcePageTemporarily(nextPage);
+				}));
 			}
 
 			if (nextPage == 'software') {
@@ -1895,7 +1967,7 @@ define([
 						return 'summary';
 					}
 					return 'validation';
-				}), function(err) {
+				}), function() {
 					// fallback -> the error will be displayed anyways...
 					// stay on the current page
 					return pageName;
@@ -1928,10 +2000,10 @@ define([
 			}
 
 			if (pageName == 'credentials-ad') {
-				if (this._adMemberMaster) {
-					previousPage = 'role';
+				if (this._domainHasMaster) {
+					previousPage = 'role-nonmaster-ad';
 				} else {
-					previousPage = 'role-nonmaster';
+					previousPage = 'role';
 				}
 			}
 
@@ -1991,7 +2063,8 @@ define([
 		_getRole: function() {
 			var _vals = this._gatherVisibleValues();
 			var showRoleSelection = array.indexOf(this.disabledPages, 'role') === -1;
-			if (_vals._createDomain || !showRoleSelection) {
+			var implicitMaster = this._isAdMember() && !this._domainHasMaster;
+			if (_vals._createDomain || !showRoleSelection || implicitMaster) {
 				return 'domaincontroller_master';
 			} else if (_vals._roleBackup) {
 				return 'domaincontroller_backup';
@@ -2080,6 +2153,7 @@ define([
 
 			// software components
 			var packages = [];
+			this._autoAddAdConnectorToAppSelection();
 			array.forEach(this._gallery.getSelectedItems(), function(iapp) {
 				packages = packages.concat(iapp.defaultpackages, iapp.defaultpackagesmaster);
 			});
@@ -2092,6 +2166,7 @@ define([
 					vals[ikey] = ival;
 				}
 			});
+			vals['ad/member'] = this._isAdMember();
 			return vals;
 		},
 

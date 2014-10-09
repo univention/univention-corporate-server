@@ -34,24 +34,27 @@
 import threading
 import traceback
 import time
-import notifier
-import notifier.threads
 import re
 import csv
-from univention.lib.i18n import Translation, Locale
-import univention.config_registry
-import util
 import os
 import copy
 import subprocess
 import simplejson as json
 import locale as _locale
 
+import notifier
+import notifier.threads
+
 from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import PatternSanitizer, StringSanitizer, IntegerSanitizer
 from univention.management.console.modules.decorators import sanitize, simple_response
+from univention.lib.i18n import Translation, Locale
+import univention.config_registry
+from univention.lib.admember import lookup_adds_dc, check_connection, connectionFailed, failedADConnect
+
+import util
 from . import network
 
 ucr = univention.config_registry.ConfigRegistry()
@@ -678,9 +681,47 @@ class Instance(Base, ProgressMixin):
 		return util.get_apps(True)
 
 	@simple_response
-	def check_ad_existance(self, address):
-		raise NotImplementedError('Not in MS2')
-		#from univention.lib.admember import check_connection
-		#check_connection(address)
-		return 'domaincontroller_master'
+	def check_domain(self, role, nameserver):
+		if role == 'ad':
+			info = lookup_adds_dc(nameserver)
+			dc = info['DC DNS Name']
+			has_ucs_master = util.is_ucs_domain(nameserver, info['Domain'])
+		elif role == 'nonmaster':
+			dc = util.get_master(nameserver)
+			if dc is None:
+				raise Exception('No UCS master found at %s' % nameserver)
+			has_ucs_master = True
+		else:
+			if not nameserver:
+				return
+			raise Exception('Not checking existing domain for role %s' % role)
+		return {'dc_name' : dc, 'ucs_master' : has_ucs_master}
+
+	@simple_response
+	def check_credentials(self, role, dns, nameserver, address, username, password):
+		if role == 'ad':
+			try:
+				info = lookup_adds_dc(address, ucr={'nameserver1' : nameserver})
+				check_connection(info['DC IP'], username, password)
+			except failedADConnect:
+				# Not checked... no AD!
+				return None
+			except connectionFailed:
+				# checked: failed!
+				return False
+			else:
+				return True
+		elif role == 'nonmaster':
+			if dns:
+				domain = util.get_ucs_domain(nameserver)
+			else:
+				domain = '.'.join(address.split('.')[1:])
+			if not domain:
+				# Not checked... no UCS domain!
+				return None
+			with util._temporary_password_file(password) as password_file:
+				return_code = subprocess.call(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo', 'WORKS'])
+				return return_code == 0
+		# master? basesystem? no domain check necessary
+		return True
 

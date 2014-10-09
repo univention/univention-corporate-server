@@ -32,9 +32,9 @@
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
-doit=$(get_profile_var "update/system/after/setup")
+is_profile_var_true "update/system/after/setup"
 
-if [ "$doit" != "True" ]; then
+if [ $? -ne 0 ]; then
 	exit 0
 fi
 

@@ -46,6 +46,7 @@ import os.path
 import simplejson as json
 import random
 import urllib2
+from contextlib import contextmanager
 
 from univention.lib.i18n import Translation, Locale
 from univention.management.console.log import MODULE
@@ -457,6 +458,19 @@ def run_scripts( progressParser, restartServer = False ):
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()
 
+@contextmanager
+def _temporary_password_file(password):
+	# write password file
+	fp = open(PATH_PASSWORD_FILE, 'w')
+	fp.write('%s' % password)
+	fp.close()
+	os.chmod(PATH_PASSWORD_FILE, 0600)
+	try:
+		yield PATH_PASSWORD_FILE
+	finally:
+		# remove password file
+		os.remove(PATH_PASSWORD_FILE)
+
 def run_joinscript( progressParser, _username, password ):
 	# write header before executing join script
 	f = open(LOG_FILE, 'a')
@@ -477,21 +491,15 @@ def run_joinscript( progressParser, _username, password ):
 
 	cmd = [ PATH_JOIN_SCRIPT ]
 	if _username and password:
-		# write password file
-		fp = open(PATH_PASSWORD_FILE, 'w')
-		fp.write('%s' % password)
-		fp.close()
-		os.chmod(PATH_PASSWORD_FILE, 0600)
 
-		# sanitize username
-		reg = re.compile('[^ a-zA-Z_1-9-]')
-		username = reg.sub('_', _username)
+		with _temporary_password_file(password) as password_file:
+			# sanitize username
+			reg = re.compile('[^ a-zA-Z_1-9-]')
+			username = reg.sub('_', _username)
 
-		# run join scripts
-		runit( cmd + [ '--dcaccount', username, '--password_file', PATH_PASSWORD_FILE ] )
+			# run join scripts
+			runit( cmd + [ '--dcaccount', username, '--password_file', password_file ] )
 
-		# remove password file
-		os.remove(PATH_PASSWORD_FILE)
 	else:
 		# run join scripts
 		runit( cmd )
@@ -796,14 +804,18 @@ def is_ascii(str):
 	except:
 		return False
 
+def _get_dns_resolver(nameserver):
+	resolver = dns.resolver.Resolver()
+	resolver.lifetime = 10  # make sure that we get an early timeout
+	resolver.nameservers = [nameserver]
+	return resolver
+
 def is_ucs_domain(nameserver, domain):
 	if not nameserver or not domain:
 		return False
 
 	# register nameserver
-	resolver = dns.resolver.Resolver()
-	resolver.lifetime = 10  # make sure that we get an early timeout
-	resolver.nameservers = [nameserver]
+	resolver = _get_dns_resolver(nameserver)
 
 	# perform a SRV lookup
 	try:
@@ -820,10 +832,13 @@ def get_ucs_domain(nameserver):
 	return domain
 
 def get_domain(nameserver):
+	master = get_master(nameserver)
+	if master:
+		return '.'.join(master.split('.')[1:])
+
+def get_master(nameserver):
 	# register nameserver
-	resolver = dns.resolver.Resolver()
-	resolver.lifetime = 10  # make sure that we get an early timeout
-	resolver.nameservers = [nameserver]
+	resolver = _get_dns_resolver(nameserver)
 
 	# perform a reverse lookup
 	try:
@@ -834,7 +849,7 @@ def get_domain(nameserver):
 
 		fqdn = reverse_lookup[0]
 		parts = [i for i in fqdn.target.labels if i]
-		domain = '.'.join(parts[1:])
+		domain = '.'.join(parts)
 
 		return domain
 	except dns.resolver.NXDOMAIN as exc:

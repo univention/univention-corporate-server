@@ -139,6 +139,21 @@ get_profile_var ()
 	sed -rne "/^ *#/d;s|^$1=||;T;s|([\"'])(.*)\1 *\$|\2|;p;q" "$profile_file"
 }
 
+is_profile_var_true ()
+{
+	value=$(get_profile_var "$1")
+	if [ -z "$value" ]; then
+		return 2
+	fi
+	value=$(echo "$value" | tr [:upper:] [:lower:])
+	for falsevalue in no false 0 disable disabled off; do
+		if [ "$value" = "$falsevalue" ]; then
+			return 1
+		fi
+	done
+	return 0
+}
+
 service_stop ()
 {
 	for service in $@; do

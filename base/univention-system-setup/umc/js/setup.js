@@ -129,6 +129,7 @@ define([
 			// set wizard mode only on unjoined DC Master
 			//this.wizard_mode = (!system_role) && (!values.joined);
 			this.wizard_mode = this.moduleFlavor === 'wizard';
+			this.wizard_mode = true; // FIXME
 
 			// save current values
 			this._orgValues = lang.clone(values);
