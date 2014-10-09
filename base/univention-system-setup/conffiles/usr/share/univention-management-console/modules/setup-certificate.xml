@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<!--
+@%@UCRWARNING=# @%@
+	-->
+@!@
+if configRegistry.get('server/role', '') != 'domaincontroller_master':
+	print '''
+	<module id="setup">
+		<flavor id="certificate" deactivated="yes"/>
+	</module>
+	'''
+@!@
+</umc>
