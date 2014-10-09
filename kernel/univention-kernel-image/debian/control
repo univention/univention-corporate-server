@@ -32,6 +32,8 @@ Recommends:
  firmware-realtek,
  firmware-samsung,
  firmware-ti-connectivity,
+ amd64-microcode,
+ intel-microcode,
 Description: UCS - Linux kernel (standard)
  This meta-package depends on the latest UCS kernel image. It supports up to
  64 GB RAM on 32 bit CPUs and up to 128 TB memory on 64 bit CPUs.
@@ -70,6 +72,8 @@ Recommends:
  firmware-realtek,
  firmware-samsung,
  firmware-ti-connectivity,
+ amd64-microcode,
+ intel-microcode,
 Description: UCS - Linux kernel (for old systems)
  This meta-package depends on the latest UCS kernel image compatible
  with older 32 bit CPUs. The standard kernel in UCS for i386 requires

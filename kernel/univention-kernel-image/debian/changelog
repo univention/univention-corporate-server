@@ -1,3 +1,9 @@
+univention-kernel-image (8.0.3-1) unstable; urgency=low
+
+  * Bug #34437: Recommend CPU microcode updates.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 09 Oct 2014 14:59:02 +0200
+
 univention-kernel-image (8.0.2-3) unstable; urgency=low
 
   * Bug #33844: Remove ipw2x00 & ivtv firmware because of interactive licence
