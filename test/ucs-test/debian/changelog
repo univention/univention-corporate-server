@@ -1,3 +1,14 @@
+ucs-test (5.0.16-1) unstable; urgency=low
+
+  * Bug #35900: add new script 03_shadowExpire_in_nis_schema
+  * Bug #16053: add new script 103_packages_held_back
+  * Bug #15219: add new script 102_Standard_Paketliste_installation
+  * Bug #35909: add new script 43_proxy/02_squid3_without_cache_restart
+  * Bug #35908: add new script 43_proxy/01_squid_redirector_configuration
+  * Bug #26452: add new script 43_proxy/00_http_proxy_basic_ntlm_auth_check
+
+ -- Ammar Najjar <najjar@univention.de>  Thu, 09 Oct 2014 12:02:10 +0200
+
 ucs-test (5.0.15-5) unstable; urgency=medium
 
   * Bug #35319: Fix timing issue in 51_samba4/52replication_sysvol
