@@ -1,3 +1,9 @@
+univention-ldap (11.0.6-2) unstable; urgency=medium
+
+  * Bug #31907: Remove ACLs for cn=admin, obsoleted by "rootdn" setting
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Oct 2014 21:48:03 +0200
+
 univention-ldap (11.0.6-1) unstable; urgency=medium
 
   * Always load the ppolicy schema (Bug #31907)
