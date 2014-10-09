@@ -1296,7 +1296,7 @@ define([
 					iconClass = tools.getIconClass(category.icon, 70);
 				}
 				var color = category.color || 'white';
-				styles.insertCssRule(lang.replace('.umcGalleryWrapperItem .umcGalleryCategory-{id}:hover, .umcGalleryWrapperItem.umcGalleryItemActive .umcGalleryCategory-{id}', category), lang.replace('background-color: {0};', [color]));
+				styles.insertCssRule(lang.replace('.umcGalleryWrapperItem .umcGalleryCategory-{id}:hover, .umcGalleryWrapperItem.umcGalleryItemActive .umcGalleryCategory-{id}', category), lang.replace('background-color: {0}; ', [color]));
 				var button = new CategoryButton({
 					label: category.label,
 					'class': lang.replace('umcCategory-{id}', category),
@@ -1424,11 +1424,12 @@ define([
 			module_flavor_css = module_flavor_css.replace(/[^_a-zA-Z0-9\-]/g, '-');
 			var color = this.__getModuleColor(module);
 			var defaultClasses = '.umc .dijitTabContainerTop-tabs .dijitTab';
+			var cssProperties = lang.replace('background-color: {0}; background-image: none; filter: none;', [color]);
 
 			domClass.add(tab.controlButton.domNode, lang.replace('umcModuleTab-{0}', [module_flavor_css]));
-			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitHover', [defaultClasses, module_flavor_css]), lang.replace('background-color: {0}; background-image: none', [color]));
-			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabChecked', [defaultClasses, module_flavor_css]), lang.replace('background-color: {0}; background-image: none', [color]));
-			styles.insertCssRule(lang.replace('.umcModuleHeader-{0}', [module_flavor_css]), lang.replace('background-color: {0}; background-image: none', [color]));
+			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitHover', [defaultClasses, module_flavor_css]), cssProperties);
+			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabChecked', [defaultClasses, module_flavor_css]), cssProperties);
+			styles.insertCssRule(lang.replace('.umcModuleHeader-{0}', [module_flavor_css]), cssProperties);
 		},
 
 		__getModuleColor: function(module) {

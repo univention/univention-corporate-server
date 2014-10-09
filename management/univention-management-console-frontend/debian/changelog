@@ -1,3 +1,11 @@
+univention-management-console-frontend (4.1.36-1) unstable; urgency=medium
+
+  Bug #35654:
+  * remove IE specific css files
+  * add "filter:none" property for tab coloring (fix for IE9)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 09 Oct 2014 18:29:44 +0200
+
 univention-management-console-frontend (4.1.35-1) unstable; urgency=low
 
   * Bug #35654: fix references to tools.umcpCommand when using it with
