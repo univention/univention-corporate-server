@@ -5,15 +5,12 @@
 ## packages: [univention-ldap-server]
 ## bugs: [35329, 35088]
 
-from univention.lib.umc_connection import UMCConnection
 from univention.uldap import getMachineConnection
-import httplib
 import re
 import time
 import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
-import univention.testing.utils as utils
 import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 
 def nis_schema_conatains_ordering_for_shadowExpire():
 	NIS_FILE = '/etc/ldap/schema/nis.schema'
@@ -21,16 +18,6 @@ def nis_schema_conatains_ordering_for_shadowExpire():
 	with open(NIS_FILE) as fi:
 		search_obj = re.search(pattern, fi.read())
 		return search_obj
-
-def auth(username, passwd, should_pass):
-	ucr = ucr_test.UCSTestConfigRegistry()
-	ucr.load()
-	try:
-		UMCConnection(ucr.get('hostname')).auth(username, passwd)
-	except httplib.HTTPException:
-		if should_pass:
-			utils.fail('Authentiaction faild, expected to pass\nusername: %s, password: %s' %
-					(username, passwd))
 
 def ldap_search(filter_):
 	lo = getMachineConnection()
