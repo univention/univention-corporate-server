@@ -37,16 +37,18 @@ body.claro {
 	background: url(images/background-tile.png) repeat;
 	position: absolute;
 	width: 100%;
-	height: 100%;
+	height: 210px;
 }
 
-body.umcOverviewShown {
+.dj_ie9 body.claro.umcOverviewShown:before,
+.dj_ie8 body.claro.umcOverviewShown:before,
+body.claro.umcOverviewShown {
 	min-height: 100%;
 }
-body.umcOverviewNotShown {
+body.claro.umcOverviewNotShown {
 }
 
-body.umcHeadless {
+body.claro.umcHeadless {
 
 	#umcHeader,
 	#umcHeader .umcHeaderLeft {
