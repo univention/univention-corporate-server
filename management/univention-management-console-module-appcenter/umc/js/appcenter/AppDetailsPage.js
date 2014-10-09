@@ -51,10 +51,11 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/ProgressBar",
 	"umc/widgets/Page",
+	"umc/widgets/Text",
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/modules/appcenter/AppInstallationsItem",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, domStyle, Lightbox, put, UMCApplication, tools, dialog, TitlePane, ContainerWidget, Button, ProgressBar, Page, AppCenterGallery, AppInstallationsItem, _) {
+], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, domStyle, Lightbox, put, UMCApplication, tools, dialog, TitlePane, ContainerWidget, Button, ProgressBar, Page, Text, AppCenterGallery, AppInstallationsItem, _) {
 	return declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
 		appLoadingDeferred: null,
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
@@ -110,8 +111,17 @@ define([
 					return;
 				}
 				this._set('app', loadedApp);
+				this.hostDialog.set('app', app);
 				this.detailsDialog.set('app', loadedApp);
 				this.set('headerText', loadedApp.name);
+				if (this._appDescription) {
+					this._appDescription.destroyRecursive();
+				}
+				this._appDescription = new Text({
+					content: this.app.longdescription,
+					region: 'nav'
+				});
+				this.addChild(this._appDescription);
 				this._installationData = null;
 				if (this.app.installations) {
 					this._installationData = [];
@@ -289,12 +299,6 @@ define([
 				});
 				this._container.addChild(usagePane);
 			}
-
-			var descriptionPane = new TitlePane({
-				title: _('Description'),
-				content: this.app.longdescription
-			});
-			this._container.addChild(descriptionPane);
 
 			if (this._appIsInstalledInDomain()) {
 				var installationTable = domConstruct.create('table', {

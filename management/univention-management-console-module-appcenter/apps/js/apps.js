@@ -34,9 +34,10 @@ define([
 	"dojo/topic",
 	"umc/widgets/Module",
 	"umc/modules/appcenter/AppDetailsPage",
+	"umc/modules/appcenter/AppChooseHostDialog",
 	"umc/modules/appcenter/AppDetailsDialog",
 	"umc/i18n!umc/modules/apps"
-], function(declare, lang, topic, Module, AppDetailsPage, AppDetailsDialog, _) {
+], function(declare, lang, topic, Module, AppDetailsPage, AppChooseHostDialog, AppDetailsDialog, _) {
 	return declare("umc.modules.apps", Module, {
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -51,12 +52,18 @@ define([
 				moduleFlavor: this.moduleFlavor,
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
+			this._choose = new AppChooseHostDialog({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				standbyDuring: lang.hitch(this, 'standbyDuring')
+			});
 			this._page = new AppDetailsPage({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
 				backLabel: _('Close'),
 				getAppCommand: 'apps/get',
 				detailsDialog: this._dialog,
+				hostDialog: this._choose,
 				udmAccessible: udmAccessible,
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
@@ -66,10 +73,17 @@ define([
 			this._page.set('app', {id: this.moduleFlavor});
 			this.standbyDuring(this._page.appLoadingDeferred);
 			this.addChild(this._dialog);
+			this.addChild(this._choose);
 			this.addChild(this._page);
 			this.selectChild(this._page);
 			this._dialog.on('showUp', lang.hitch(this, function() {
 				this.selectChild(this._dialog);
+			}));
+			this._choose.on('showUp', lang.hitch(this, function() {
+				this.selectChild(this._choose);
+			}));
+			this._choose.on('back', lang.hitch(this, function() {
+				this.selectChild(this._page);
 			}));
 			this._dialog.on('back', lang.hitch(this, function() {
 				this.selectChild(this._page);

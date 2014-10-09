@@ -120,7 +120,6 @@ define([
 			this._appCenterPage.on('showApp', lang.hitch(this, function(app) {
 				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
 				this._appDetailsPage.set('app', app);
-				this._appChooseHostDialog.set('app', app);
 				this.standbyDuring(this._appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
 					this.selectChild(this._appDetailsPage);
 				}));

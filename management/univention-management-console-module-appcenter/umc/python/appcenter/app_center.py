@@ -554,6 +554,9 @@ class Application(object):
 		if os.listdir(CACHE_DIR):
 			# we already have a cache. our archive is just outdated...
 			return False
+		if not os.path.exists(LOCAL_ARCHIVE):
+			# for some reason the archive is not there. should only happen when deleted intentionally...
+			return False
 		MODULE.process('Filling the App Center file cache from our local archive!')
 		try:
 			archive = tarfile.open(LOCAL_ARCHIVE, 'r:*')

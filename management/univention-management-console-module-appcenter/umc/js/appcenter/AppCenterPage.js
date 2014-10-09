@@ -79,7 +79,7 @@ define([
 					href: _('https://www.univention.de/en/products/ucs/app-catalogue/vote-for-app/'),
 					target: '_blank',
 					style: {color: '#414142'},
-					title: _('Let us know, if you you miss any application in Univention App Center!'),
+					title: _('Let us know if you you miss any application in Univention App Center!'),
 					innerHTML: _('Suggest new app')
 				});
 				this.addChild(new Text({
