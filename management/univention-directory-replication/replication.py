@@ -467,6 +467,14 @@ BUILTIN_OIDS=[
 	'1.3.6.1.1.1.1.0', #uidNumber
 	# memberOf overlay
 	'1.2.840.113556.1.2.102',  # memberOf
+	# ppolicy overlay
+	'1.3.6.1.4.1.42.2.27.8.1.16', # pwdChangedTime
+	'1.3.6.1.4.1.42.2.27.8.1.17', # pwdAccountLockedTime
+	'1.3.6.1.4.1.42.2.27.8.1.19', # pwdFailureTime
+	'1.3.6.1.4.1.42.2.27.8.1.20', # pwdHistory
+	'1.3.6.1.4.1.42.2.27.8.1.21', # pwdGraceUseTime
+	'1.3.6.1.4.1.42.2.27.8.1.22', # pwdReset
+	'1.3.6.1.4.1.42.2.27.8.1.23', # pwdPolicySubentry
 ]
 
 class LDIFObject:

@@ -1,3 +1,10 @@
+univention-directory-replication (8.0.2-1) unstable; urgency=medium
+
+  * exclude operational ppolicy attributes from schema replication
+    (Bug #31907)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Oct 2014 16:24:54 +0200
+
 univention-directory-replication (8.0.1-2) unstable; urgency=medium
 
   * Add MEMBEROF to the EXCLUDE_ATTRIBUTES list (Bug #35480)
