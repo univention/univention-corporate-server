@@ -52,6 +52,7 @@ define([
 		_criticalError: null,
 
 		_initialComponent: null,
+		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -144,7 +145,7 @@ define([
 			if (pollErrorMsg === undefined) {
 				pollErrorMsg = _('Fetching information from the server failed!');
 			}
-			tools.umcpCommand(umcpCommand,
+			this.umcpCommand(umcpCommand,
 				umcpOptions, undefined, undefined,
 				{
 					messageInterval: 30,

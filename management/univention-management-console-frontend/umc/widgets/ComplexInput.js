@@ -56,7 +56,7 @@ define([
 
 		_order: null,
 
-		umcpCommand: tools.umcpCommand,
+		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 
 		_allReady: null,
 

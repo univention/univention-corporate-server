@@ -121,7 +121,7 @@ define([
 			// The store needs to be available already at construction time, otherwise an
 			// error will be thrown. We need to define it here, in order to create a new
 			// store for each instance.a
-			this.umcpCommand = tools.umcpCommand;
+			this.umcpCommand = lang.hitch(tools, 'umcpCommand');
 			this.store = this._createStore();
 		},
 

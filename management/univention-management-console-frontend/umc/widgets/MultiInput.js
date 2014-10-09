@@ -162,7 +162,7 @@ define([
 				}, this);
 
 				// parse the dynamic value function and create a handler
-				var ifunc = tools.stringOrFunction(iwidget.dynamicValues, this.umcpCommand || tools.umcpCommand);
+				var ifunc = tools.stringOrFunction(iwidget.dynamicValues, this.umcpCommand || lang.hitch(tools, 'umcpCommand'));
 				var handler = lang.hitch(this, this._createHandler(ifunc));
 
 				// replace the widget handler for dynamicValues with our version
@@ -170,7 +170,7 @@ define([
 
 				if (iwidget.dynamicValuesInfo) {
 					// UDM syntax/choices/info
-					var jfunc = tools.stringOrFunction(iwidget.dynamicValuesInfo, this.umcpCommand || tools.umcpCommand);
+					var jfunc = tools.stringOrFunction(iwidget.dynamicValuesInfo, this.umcpCommand || lang.hitch(tools, 'umcpCommand'));
 					var thresholdHandler = lang.hitch(this, this._createHandler(jfunc));
 					iwidget.dynamicValuesInfo = thresholdHandler;
 				}

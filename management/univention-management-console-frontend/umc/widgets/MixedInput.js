@@ -47,7 +47,7 @@ define([
 		//		In order to make the widget send information such as module flavor
 		//		etc., it can be necessary to specify a module specific umcpCommand
 		//		method.
-		umcpCommand: tools.umcpCommand,
+		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 
 		// dynamicValues: String|Function
 		//		see description at `umc/widgets/_SelectMixin`
@@ -90,7 +90,7 @@ define([
 			tools.assert(this.dynamicValues && (typeof this.dynamicValues == "string" || typeof this.dynamicValues == "function"), "For MixedInput, the property 'dynamicValues' needs to be specified.");
 			this.depends = props.depends;
 			//tools.assert(this.depends, "For MixedInput, the property 'depends' needs to be specified.");
-			this.umcpCommand = props.umcpCommand || tools.umcpCommand;
+			this.umcpCommand = props.umcpCommand || lang.hitch(tools, 'umcpCommand');
 		},
 
 		postMixInProperties: function() {

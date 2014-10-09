@@ -50,7 +50,7 @@ define([
 
 		// umcpCommand: Function
 		//		Reference to a particularly flavored umcpCommand.
-		umcpCommand: tools.umcpCommand,
+		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 
 		//TODO: for the future, it would be nice to work with query engines
 		queryEngine: null,

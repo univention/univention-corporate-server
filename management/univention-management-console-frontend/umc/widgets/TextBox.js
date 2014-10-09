@@ -57,7 +57,7 @@ define([
 		//		In order to make the widget send information such as module flavor
 		//		etc., it can be necessary to specify a module specific umcpCommand
 		//		method.
-		umcpCommand: tools.umcpCommand,
+		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 
 		// inlineLabel: String
 		//		If specified, the given string ias positioned as label above the input field.

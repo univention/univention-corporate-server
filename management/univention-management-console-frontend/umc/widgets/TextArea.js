@@ -55,7 +55,7 @@ define([
 		//		In order to make the widget send information such as module flavor
 		//		etc., it can be necessary to specify a module specific umcpCommand
 		//		method.
-		umcpCommand: tools.umcpCommand,
+		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 
 		//FIXME: the name should be different from _loadValues, e.g., _dependencyUpdate,
 		//       and the check for all met dependencies should be done in the Form
