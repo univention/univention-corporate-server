@@ -712,19 +712,47 @@ define([
 			});
 
 			var _finished = lang.hitch(this, function(values) {
-				this.standby(true);
+				// add cloud connection
+				var max = 30;
+				this.updateProgress(0, max);
 				tools.umcpCommand('uvmm/cloud/add', {
 					cloudtype: values.cloudtype,
- 					name: values.name,
+					name: values.name,
 					parameter: values
-				}).then(lang.hitch(this, function() {
-					_cleanup();
-					this._tree.reload();
-					this.standby(false);
-				}), lang.hitch(this, function() {
-					this.standby(false);
+				}).then( lang.hitch( this, function( response ) {
+					this.updateProgress(1, max);
+					this.moduleStore.onChange();
+				}), lang.hitch( this, function() {
+					this.updateProgress(1, max);
 				}));
-				
+				// wait for available connection
+				var counter = 1;
+				var deferred = new Deferred();
+				var wait = lang.hitch(this, function() {
+					tools.umcpCommand('uvmm/cloud/query', {"nodePattern": values.name}, false).then(lang.hitch(this, function(result) {
+						var connection = array.filter(result.result, function(item) {
+							return item.label == values.name;
+						});
+						counter += 1;
+						if (connection[0].available) {
+							this.updateProgress(max, max);
+							deferred.resolve();
+							_cleanup();
+							this._tree.reload();
+						}
+						if (counter >= max) {
+							this.updateProgress(max, max);
+							deferred.resolve();
+							_cleanup();
+							this._tree.reload();
+						}
+						if (!deferred.isResolved()) {
+							tools.defer(wait, 1000);
+						}
+						this.updateProgress(counter, max);
+					}));
+				});
+				tools.defer(wait, 1000);
 			});
 
 			wizard = new CloudConnectionWizard({

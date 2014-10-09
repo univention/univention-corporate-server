@@ -104,7 +104,9 @@ define([
 					var servers = [];
 					array.forEach(results, function(iresult) {
 						array.forEach(iresult.result, function(iserver) {
-							servers.push(iserver);
+							if (tools.isTrue(iserver.available)) {
+								servers.push(iserver);
+							}
 						});
 					});
 					return servers;

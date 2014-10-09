@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (4.0.3-2) unstable; urgency=low
+
+  * hide unavailable cloud connections in create instance wizard (Bug #36093)
+  * add progressbar for create cloud connection wizard (Bug #36093)
+
+ -- Andreas Peichert <peichert@univention.de>  Thu, 09 Oct 2014 17:15:01 +0200
+
 univention-virtual-machine-manager-daemon (4.0.3-1) unstable; urgency=low
 
   * Bug #35122: destroy GridUpdater when module gets closed
