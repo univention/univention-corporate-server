@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.35-1) unstable; urgency=medium
+
+  * Bug #35654: define background via CSS and a tile image
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 09 Oct 2014 18:01:22 +0200
+
 univention-management-console-frontend-theme (0.0.34-1) unstable; urgency=low
 
   * Bug #35654: Add border around TextArea

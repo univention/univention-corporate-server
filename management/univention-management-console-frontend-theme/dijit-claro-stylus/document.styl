@@ -20,7 +20,24 @@ html {
 }
 
 body.claro {
-	background: #eeeeef url(images/background.jpg) no-repeat center 0;
+	background: url(images/background-tile.png) repeat, unquote("linear-gradient(to right top, #cdcdcd 0%, #efefef 50%, #cccccc 100%)") ;
+}
+
+.dj_ie9 body.claro,
+.dj_ie8 body.claro {
+	/* fallback on horizontal gradient for IE8/9 */
+	filter: unquote("progid:DXImageTransform.Microsoft.gradient(startColorstr='#efefef', endColorstr='#cccccc',GradientType=1)");
+	background: #cdcdcd;
+}
+
+.dj_ie9 body.claro:before,
+.dj_ie8 body.claro:before {
+	/* add the repeating background for IE9 additionally */
+	content: "";
+	background: url(images/background-tile.png) repeat;
+	position: absolute;
+	width: 100%;
+	height: 100%;
 }
 
 body.umcOverviewShown {

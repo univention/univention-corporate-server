@@ -71,7 +71,7 @@ css/umc.css: tmp css $(BOOSTRAP_FILE)
 	stylus $(TMP_THEME_DIR) $(TMP_THEME_DIR)/form $(TMP_THEME_DIR)/layout $(TMP_THEME_DIR)/site
 	# Workaround: mark several commands as comments (/*TMP ... */) 
 	# to avoid parse errors with stylus
-	sed -i 's/.*\(^\s\+#\|filter: alpha\|filter: progid\|top: expression\).*/\/\*TMP\0\*\//; /\/\*TMP/ { s|/\*[^*]*\*/\*/|*/| }' $$(find tmp/dojo tmp/dijit -name "*.css")
+	sed -i 's/.*\(^\s\+#\|filter: alpha\|filter:\|top: expression\).*/\/\*TMP\0\*\//; /\/\*TMP/ { s|/\*[^*]*\*/\*/|*/| }' $$(find tmp/dojo tmp/dijit -name "*.css")
 	# compile all .css files into one big file
 	stylus --resolve-url --include-css $(TMP_THEME_CSS)
 	# Workaround: remove the temporarily commented lines
