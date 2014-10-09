@@ -1,3 +1,18 @@
+univention-ldap (11.0.6-1) unstable; urgency=medium
+
+  * Always load the ppolicy schema (Bug #31907)
+  * Load the ppolicy overlay by default (unless UCR ldap/ppolicy=no)
+  * Activate the ppolicy configuration only if ldap/ppolicy/enable=yes
+  * Configure a UCS standard DN for the "ppolicy_default" LDAP object
+  * Make the "ppolicy_default" DN configurable via ldap/ppolicy/default
+  * Increment joinscript version to 5
+  * Create LDAP container cn=ppolicy,cn=univention
+  * Predefine useful settings for ppolicy at LDAP object "ppolicy_default"
+  * Configure standard "rootdn" for the main ldap database, required for
+    several internal ACL checks.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Oct 2014 21:28:32 +0200
+
 univention-ldap (11.0.5-2) unstable; urgency=medium
 
   * Configure default eq index for univentionInventoryNumber (Bug #34262)

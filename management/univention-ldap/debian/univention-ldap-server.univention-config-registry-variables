@@ -167,3 +167,15 @@ Description[de]=Diese Variable konfiguriert die Häufigkeit mit der die Daten au
 Description[en]=This variable configures the frequency for checkpointing the database transaction log upon updating the database. Changes are only needed in exceptional cases and should be tested carefully. The syntax is documented at <http://www.openldap.org/faq/data/cache/1072.html>.
 Type=str
 Categories=service-ldap
+
+[ldap/ppolicy/enabled]
+Description[de]=Diese Variable legt fest, ob die Konfiguration des LDAP overlay ppolicy für das lokale System aktivert wird. Wenn die Variable auf yes gesetzt wird, dann wendet der lokale LDAP Server eim LDAP-Anmeldeversuchen die Einstellungen an, die an einem bestimmten pwdPolicy Objekt im LDAP definiert sind (siehe UCR Variable ldap/ppolicy/default).
+Description[en]=Setting this variable to yes activates the configuration of the LDAP overlay ppolicy. If enabled LDAP bind attempts are monitored by the ppolicy overlay according to the settings defined on a special pwdPolicy LDAP objekt (see UCR variable ldap/ppolicy/default).
+Type=str
+Categories=service-ldap
+
+[ldap/ppolicy/default]
+Description[de]=Diese Variable konfiguriert die LDAP-DN an der Standard-Werte für das ppolicy Overlay definiert sind. Die Voreinstellung für diese DN ist cn=default,cn=ppolicy,cn=univention,<ldap_base>. Details zu diesem Objekt liefert z.B. die Unix manual Seite zu slapo-ppolicy. Diese Variable bedarf im Regelfall keiner Anpassung.
+Description[en]=This variable configures the LDAP DN where the defaults for the ppolicy overlay are defined. If the UCR variable is not set, then cn=default,cn=ppolicy,cn=univention,<ldap_base> is assumed. Details about this object can be found in the manual page for slapo-ppolicy. This variable shouldn't need to be adjusted in most cases.
+Type=str
+Categories=service-ldap

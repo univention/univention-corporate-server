@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=4
+VERSION=5
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -256,6 +256,26 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-directory-manager container/cn create "$@" --ignore_exists \
 			--position "cn=univention,$ldap_base" \
 			--set name=ldapacl || die
+	fi
+
+	if [ $JS_LAST_EXECUTED_VERSION -lt 5 ]; then
+		univention-directory-manager container/cn create "$@" --ignore_exists \
+			--position "cn=univention,$ldap_base" \
+			--set name=ppolicy || die
+
+		ldapadd -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<-%EOR
+			dn: cn=default,cn=ppolicy,cn=univention,$ldap_base
+			objectClass: top
+			objectClass: device
+			objectClass: pwdPolicy
+			cn: default
+			pwdAttribute: userPassword
+			pwdAllowUserChange: FALSE
+			pwdLockout: TRUE
+			pwdMaxFailure: 5
+			pwdLockoutDuration: 172800
+			pwdFailureCountInterval: 3600
+			%EOR
 	fi
 fi
 
