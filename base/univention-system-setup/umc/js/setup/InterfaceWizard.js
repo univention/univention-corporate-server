@@ -57,7 +57,7 @@ define([
 		device: null,
 		creation: null,
 
-		umcpCommand: tools.umcpCommand,
+		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 		style: 'width: 650px; height: 650px;',
 
 		getDeviceName: function() {

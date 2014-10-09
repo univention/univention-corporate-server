@@ -130,9 +130,6 @@ define([
 			//this.wizard_mode = (!system_role) && (!values.joined);
 			this.wizard_mode = this.moduleFlavor === 'wizard';
 
-			// we are in local mode if the user is __systemsetup__
-			this.local_mode = tools.status('username') == '__systemsetup__';
-
 			// save current values
 			this._orgValues = lang.clone(values);
 
@@ -214,7 +211,6 @@ define([
 				headerButtons: buttons,
 				moduleFlavor: this.moduleFlavor,
 				wizard_mode: this.wizard_mode,
-				local_mode: this.local_mode,
 				onSave: lang.hitch(this, function() {
 					this.save();
 				}),
@@ -236,7 +232,9 @@ define([
 				moduleID: this.moduleID,
 				disabledPages: pageBlacklist,
 				disabledFields: fieldBlacklist,
-				local_mode: this.local_mode,
+				local_mode: tools.status('username') == '__systemsetup__',
+				umcpCommand: lang.hitch(this, 'umcpCommand'),
+				umcpProgressCommand: lang.hitch(this, 'umcpProgressCommand'),
 				values: values
 			});
 			this.wizard.watch('selectedChildWidget', lang.hitch(this, function(name, oldV, page) {
@@ -247,7 +245,7 @@ define([
 			this.wizard.on('Finished', lang.hitch(this, function(newValues) {
 				// wizard is done -> call cleanup command and redirect browser to new web address
 				topic.publish('/umc/actions', this.moduleID, 'wizard', 'done');
-				tools.umcpCommand('setup/cleanup', {}, undefined, undefined, {
+				this.umcpCommand('setup/cleanup', {}, undefined, undefined, {
 					// long polling options
 					messageInterval: 30,
 					xhrTimeout: 40
@@ -260,19 +258,19 @@ define([
 
 		_reloadWizard: function(values, pageBlacklist, fieldBlacklist, newLocale) {
 			// update internal locale settings
-			var _setLocale = function() {
+			var _setLocale = lang.hitch(this, function() {
 				dojo.locale = newLocale;
 				var locale = newLocale.replace('-', '_');
 				var deferreds = [];
-				deferreds.push(tools.umcpCommand('set', {
+				deferreds.push(this.umcpCommand('set', {
 					locale: locale
 				}, false));
-				deferreds.push(tools.umcpCommand('setup/set_locale', {
+				deferreds.push(this.umcpCommand('setup/set_locale', {
 					locale: locale
 				}, false));
 				deferreds.push(_.load());
 				return all(deferreds);
-			};
+			});
 
 			// remove wizard and render it again
 			var _cleanup = lang.hitch(this, function() {

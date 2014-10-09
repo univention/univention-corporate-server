@@ -3,8 +3,7 @@
 	<module id="setup" version="1.0">
 		<flavor priority="50" id="wizard">
 			<name>UCS setup wizard</name>
-			<description></description>
-			<keywords>system setup, wizard</keywords>
+			<description>Configuration of the UCS system</description>
 		</flavor>
 		<flavor priority="50" id="languages">
 			<name>Language settings</name>

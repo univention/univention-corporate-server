@@ -12,9 +12,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/setup.xml: 8
+#: umc/setup.xml: 5
 msgid "UCS setup wizard"
 msgstr "UCS-Einrichtungsassistent"
+
+#: umc/setup.xml: 6
+msgid "Configuration of the UCS system"
+msgstr "Konfiguration des UCS-Systems"
 
 #: umc/setup.xml: 13
 msgid "Language settings"

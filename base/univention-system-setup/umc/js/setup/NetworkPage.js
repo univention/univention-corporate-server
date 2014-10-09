@@ -53,10 +53,8 @@ define([
 		// system-setup-boot
 		wizard_mode: false,
 
-		// __systemsetup__ user is logged in at local firefox session
-		local_mode: false,
 
-		umcpCommand: tools.umcpCommand,
+		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 
 		// internal reference to the formular containing all form widgets of an UDM object
 		_form: null,

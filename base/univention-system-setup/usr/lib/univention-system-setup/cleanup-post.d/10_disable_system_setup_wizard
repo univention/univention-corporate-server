@@ -1,9 +1,8 @@
 #!/bin/sh
 #
-# Univention System Setup
-#  postinst script
+# Disable system setup wizard flavor
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,19 +29,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# create special user for univention-system-setup-boot
-adduser --system --no-create-home --disabled-password --force-badname '__systemsetup__'
-
-# set UMC ACLs for special user
-if [ dpkg --compare-versions "$2" lt "8.1.6-6" ]; then
-	/usr/sbin/univention-management-console-acls remove -u "__systemsetup__" -c "setup/*" -c "lib/server/*" -H "*"
-fi
-/usr/sbin/univention-management-console-acls allow -u "__systemsetup__" -f "wizard" -c "setup/*" -c "lib/server/*" -H "*"
-
-# For remote configuration give root the permission to see this module. Normally the
-# ACL will be defined in the UMC package and can be removed here after UCS 3.0-2
-/usr/sbin/univention-management-console-acls -u "root" -c "setup/*" -c "lib/server/*" "allow" -H "*"
-
-#DEBHELPER#
+/usr/sbin/ucr set umc/module/setup/wizard-shown=true
 
 exit 0

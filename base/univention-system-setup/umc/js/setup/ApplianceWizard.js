@@ -79,6 +79,10 @@ define([
 	});
 
 	var _CityStore = declare('umc.modules.setup.CityStore', Evented, {
+		umcpCommand: null,
+		constructor: function(props) {
+			lang.mixin(this, props);
+		},
 		lastResult: [],
 		query: function(query) {
 			this.emit('searching', {});
@@ -87,7 +91,7 @@ define([
 				pattern = pattern.substring(0, pattern.length - 1);
 			}
 			var deferred = new Deferred();
-			tools.umcpCommand('setup/find_city', {
+			this.umcpCommand('setup/find_city', {
 				pattern: pattern
 			}, false).then(lang.hitch(this, function(response) {
 				this.emit('searchFinished', {});
@@ -300,7 +304,7 @@ define([
 				}, {
 					type: LiveSearch,
 					name: '_search',
-					store: new _CityStore(),
+					store: new _CityStore({umcpCommand: lang.hitch(this, 'umcpCommand')}),
 					label: _('Enter a city nearby to preconfigure settings such as timezone, system language, keyboard layout.'),
 					inlineLabel: _('e.g., Boston...'),
 					labelConf: { style: 'margin-top: 0.75em;' }
@@ -322,21 +326,24 @@ define([
 					type: ComboBox,
 					name: 'locale/default',
 					label: _('Default system locale'),
+					umcpCommand: lang.hitch(this, 'umcpCommand'),
 					dynamicOptions: {pattern: '*'},
 					dynamicValues: 'setup/lang/locales'
 				}, {
 					type: ComboBox,
 					name: 'timezone',
 					label: _('Time zone'),
+					umcpCommand: lang.hitch(this, 'umcpCommand'),
 					dynamicValues: 'setup/lang/timezones'
 				}, {
 					type: ComboBox,
 					name: 'locale/keymap',
 					label: _('Keyboard layout'),
+					umcpCommand: lang.hitch(this, 'umcpCommand'),
 					dynamicValues: 'setup/lang/keymaps',
 					onChange: lang.hitch(this, function(value) {
 						if (this.local_mode) {
-							tools.umcpCommand('setup/keymap/save', {keymap: value});
+							this.umcpCommand('setup/keymap/save', {keymap: value});
 						}
 					})
 				}]
@@ -671,7 +678,7 @@ define([
 				headerText: _('Host settings'),
 				helpText: _('Specify the name of this system'),
 				layout: [
-					['_fqdn', 'ldap/base'],
+					['_fqdn', 'ldap/base']
 				],
 				widgets: [{
 					type: TextBox,
@@ -860,7 +867,7 @@ define([
 			array.forEach(this._getNetworkDevices(), function(idev, i) {
 				// workaround: use umcpProgressCommand() to make the setup/net/dhclient threaded
 				dev2index[idev] = i;
-				queries[idev] = tools.umcpProgressCommand(this._progressBar, 'setup/net/dhclient', {
+				queries[idev] = this.umcpProgressCommand(this._progressBar, 'setup/net/dhclient', {
 					'interface': idev
 				}, false).then(null, function(error) {
 					// catch error case to avoid dojo/promise/all canceling all bundled deferreds
@@ -1062,7 +1069,7 @@ define([
 					this._gallery._grid.selection.addToSelection(idx);
 				}));
 			}));
-			tools.umcpCommand('setup/apps/query').then(lang.hitch(this, function(response) {
+			this.umcpCommand('setup/apps/query').then(lang.hitch(this, function(response) {
 				array.forEach(response.result, function(iitem) {
 					this._apps.put(iitem);
 				}, this);
@@ -1144,15 +1151,17 @@ define([
 			// make the session not expire before the user can confirm the
 			// cleanup dialog started (and stopped) in _cleanup
 			this._keepAlive = new timing.Timer(1000 * 30);
-			this._keepAlive.onTick = function() {
+			this._keepAlive.onTick = lang.hitch(this, function() {
 				// dont do anything important here, just
 				// make sure that umc does not forget us
 				// dont even handle errors
-				tools.umcpCommand('setup/finished', {}, false);
-			};
+				this.umcpCommand('setup/finished', {}, false);
+			});
 
 			// setup the progress bar
-			this._progressBar = new ProgressBar();
+			this._progressBar = new ProgressBar({
+				umcpCommand: lang.hitch(this, 'umcpCommand')
+			});
 			this.own(this._progressBar);
 
 			this._setupCitySearch();
@@ -1163,7 +1172,6 @@ define([
 			this._setLocaleDefault();
 			this._setupFooterButtons();
 			this._updateOrganizationName('');
-
 
 			this.watch('selectedChildWidget', lang.hitch(this, function(name, old, page) {
 				if (page == this.getPage('software')) {
@@ -1519,7 +1527,7 @@ define([
 		_validateWithServer: function() {
 			var vals = this.getValues();
 			this.standby(true);
-			return tools.umcpCommand('setup/validate', { values: vals }).then(lang.hitch(this, function(response) {
+			return this.umcpCommand('setup/validate', { values: vals }).then(lang.hitch(this, function(response) {
 				this.standby(false);
 				var allValid = true;
 				var result = {};
@@ -1694,7 +1702,7 @@ define([
 				// send save command to server
 				this._progressBar.reset(_('Initialize the configuration process ...'));
 				this.standby(true, this._progressBar);
-				tools.umcpCommand('setup/join', {
+				this.umcpCommand('setup/join', {
 					values: values,
 					// make sure that the username/password are null and not undefined
 					// ... server cannot handle "undefined"
@@ -1760,7 +1768,7 @@ define([
 
 		_checkAdMember: function() {
 			var vals = this.getValues();
-			return this.standbyDuring(tools.umcpCommand('setup/check/ad/existance', {address: vals.nameserver1}, false).then(function(data) {
+			return this.standbyDuring(this.umcpCommand('setup/check/ad/existance', {address: vals.nameserver1}, false).then(function(data) {
 				return data.result;
 			}));
 		},

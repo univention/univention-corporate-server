@@ -31,6 +31,6 @@
 
 if [ -x /etc/init.d/amavis ]; then
 	invoke-rc.d amavis restart
-fi      
+fi
 
 exit 0

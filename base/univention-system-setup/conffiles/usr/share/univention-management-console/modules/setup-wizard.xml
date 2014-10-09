@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<!--
+@%@UCRWARNING=# @%@
+	-->
+@!@
+if configRegistry.is_true('umc/module/setup/wizard-shown', False):
+	print '''
+	<module id="setup">
+		<flavor id="wizard" deactivated="yes"/>
+	</module>
+	'''
+@!@
+</umc>

@@ -47,17 +47,12 @@ define([
 		// system-setup-boot
 		wizard_mode: false,
 
-		// __systemsetup__ user is logged in at local firefox session
-		local_mode: false,
-
-		umcpCommand: tools.umcpCommand,
+		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 
 		// internal reference to the formular containing all form widgets of an UDM object
 		_form: null,
 
 		_noteShowed: false,
-
-		_doShowNote: false,
 
 		_orgVals: null,
 		_old_vals: null,
@@ -143,7 +138,7 @@ define([
 		},
 
 		_showNote: function() {
-			if (!this._noteShowed && this._doShowNote) {
+			if (!this._noteShowed) {
 				this._noteShowed = true;
 				this.addWarning(_('Changes in the SSL certificate settings will result in generating new root SSL certificates. Note that this will require an update of all host certificates in the domain as the old root certificate is no longer valid. Additional information can be found in the <a href="http://sdb.univention.de/1183" target="_blank">Univention Support Database</a>.'));
 			}
@@ -175,14 +170,8 @@ define([
 			this._form.setFormValues(_vals);
 			this._orgVals = lang.clone(_vals);
 
-			this._doShowNote = !this.wizard_mode;
-
 			// this page should be only visible on domaincontroller_master
 			this.set('visible', _vals['server/role'] == 'domaincontroller_master');
-
-			// reset the flag indicating whether certificate note has been shown or not
-			// we do not need to show the note in appliance mode
-			this._noteShowed = tools.status('username') == '__systemsetup__';
 		},
 
 		getValues: function() {

@@ -49,10 +49,7 @@ define([
 		// system-setup-boot
 		wizard_mode: false,
 
-		// __systemsetup__ user is logged in at local firefox session
-		local_mode: false,
-
-		umcpCommand: tools.umcpCommand,
+		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 
 		// internal reference to the formular containing all form widgets of an UDM object
 		_form: null,
@@ -166,7 +163,7 @@ define([
 			_set('fqdn', !this.wizard_mode && role != 'basesystem', true, this.wizard_mode && this._firstSetValues);
 			_set('windows/domain', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode && this._firstSetValues, role == 'domaincontroller_master' || role == 'basesystem');
 			_set('ldap/base', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode && this._firstSetValues, role == 'domaincontroller_master' || role == 'basesystem');
-			_set('root_password', false, this.wizard_mode && this.local_mode);
+			_set('root_password', false, false);
 
 			if (role == 'domaincontroller_master' && this.wizard_mode) {
 				// add dynamic value computation from FQDN for windows domain
