@@ -1,3 +1,10 @@
+univention-directory-replication (7.0.1-10) unstable; urgency=medium
+
+  * Bug #36113: Update replication.py to filter operational ppolicy
+    overlay attribute oids from schema.conf
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Oct 2014 20:33:32 +0200
+
 univention-directory-replication (7.0.1-9) unstable; urgency=medium
 
   * Add MEMBEROF to the EXCLUDE_ATTRIBUTES list (Bug #35480)
