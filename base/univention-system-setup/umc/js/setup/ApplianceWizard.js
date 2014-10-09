@@ -1307,10 +1307,6 @@ define([
 					var idx = this._gallery._grid.getItemIndex(iitem);
 					this._gallery._grid.selection.addToSelection(idx);
 				}));
-				this._apps.query({id: 'samba4'}).forEach(lang.hitch(this, function(iitem) {
-					var idx = this._gallery._grid.getItemIndex(iitem);
-					this._gallery._grid.selection.addToSelection(idx);
-				}));
 			}
 		},
 
@@ -1765,15 +1761,17 @@ define([
 			return pageName;
 		},
 
-		_getRoleForDomainChecks: function() {
+		_getRoleForDomainChecks: function(evalStartJoin) {
 			var vals = this.getValues();
 			var role = 'master';
 			if (this._isAdMember()) {
 				role = 'ad';
 			} else if (this._isRoleNonMaster()) {
 				role = 'nonmaster';
-				if (!vals['start/join']) {
-					role = 'none';
+				if (evalStartJoin) {
+					if (!vals['start/join']) {
+						role = 'none';
+					}
 				}
 			} else if (this._isRoleBaseSystem()) {
 				role = 'basesystem';
@@ -1783,13 +1781,13 @@ define([
 
 		_checkDomain: function() {
 			var vals = this.getValues();
-			return this.standbyDuring(tools.umcpCommand('setup/check/domain', {role: this._getRoleForDomainChecks(), nameserver: vals.nameserver1}, false).then(function(data) {
+			return this.standbyDuring(tools.umcpCommand('setup/check/domain', {role: this._getRoleForDomainChecks(false), nameserver: vals.nameserver1}, false).then(function(data) {
 				return data.result;
 			}));
 		},
 
 		_checkCredentials: function() {
-			var params = {role: this._getRoleForDomainChecks()};
+			var params = {role: this._getRoleForDomainChecks(true)};
 			lang.mixin(params, this._getCredentials());
 			return this.standbyDuring(tools.umcpCommand('setup/check/credentials', params).then(function(data) {
 				return data.result;

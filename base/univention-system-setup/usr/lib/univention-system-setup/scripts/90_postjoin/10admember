@@ -39,6 +39,8 @@ class AdMemberScript(SetupScript):
 	name = _('Configuring Active Directory connection')
 
 	def inner_run(self):
+		# WARNING: this is basically services/univention-ad-connector/umc/python/adconnector/__init__.py admember_join()
+		# changes there have to be merged in here
 		ad_member = self.profile.get('ad/member')
 
 		if not self.ucr.ucr.is_true(value=ad_member):
@@ -50,12 +52,13 @@ class AdMemberScript(SetupScript):
 
 		self.steps(100)
 
-		def _progress(steps, msg):
+		def _progress(steps, msg=None):
 			self.step(steps)
-			self.message(msg)
+			if msg:
+				self.message(msg)
 
-		def _err(exc, msg):
-			self.error(msg)
+		def _err(exc, msg=None):
+			self.error(msg or str(exc))
 
 		ad_server_address = self.profile.get('ad/address')
 		ad_domain_info = admember.lookup_adds_dc(ad_server_address)
@@ -64,24 +67,37 @@ class AdMemberScript(SetupScript):
 		password = self.profile.get('ad/password')
 
 		try:
-			_progress(10, _('Configuring time synchronization...'))
+			_progress(5, _('Configuring time synchronization...'))
 			admember.time_sync(ad_server_ip)
 			admember.set_timeserver(ad_server_ip)
 
-			_progress(20, _('Configuring DNS server...'))
+			_progress(10, _('Configuring DNS server...'))
 			admember.set_nameserver([ad_server_ip])
 			admember.prepare_ucr_settings()
 
-			_progress(30, _('Configuring Kerberos settings...'))
+			_progress(15, _('Configuring Kerberos settings...'))
 			admember.disable_local_heimdal()
 			admember.disable_local_samba4()
 
-			_progress(40, _('Configuring Administrator account...'))
+			_progress(20, _('Configuring Administrator account...'))
 			admember.prepare_administrator(username, password)
 
-			_progress(50, _('Configuring reverse DNS settings...'))
+			_progress(25, _('Configuring reverse DNS settings...'))
 			admember.prepare_dns_reverse_settings(ad_server_ip, ad_domain_info)
 
+			_progress(30, _('Configuring software components...'))
+
+			_step_offset = 30.0
+			_nsteps = 35.0
+			def _step_handler(step):
+				self.step((step / 100.0) * _nsteps + _step_offset)
+
+			def _err_handler(err):
+				self.error(err)
+
+			success = admember.remove_install_univention_samba(info_handler=self.message, error_handler=self.error, step_handler=_step_handler)
+			if not success:
+				raise RuntimeError(_('An error occurred while installing necessary software components.'))
 			_progress(70, _('Configuring synchronization from AD...'))
 			admember.prepare_connector_settings(username, password, ad_domain_info)
 			admember.disable_ssl()
@@ -117,6 +133,8 @@ class AdMemberScript(SetupScript):
 			_err(exc, _('Failed to set the password of the UCS Administrator to the Active Directory Administrator password.'))
 		except admember.timeSyncronizationFailed as exc:
 			_err(exc, _('Could not synchronize the time between the UCS system and the Active Directory domain controller: %s') % exc)
+		except RuntimeError as exc:
+			_err(exc)
 		else:
 			return True
 		return False
