@@ -1,3 +1,11 @@
+univention-management-console (7.1.11-1) unstable; urgency=low
+
+  * Bug #35654: fix server crash when some category XML definition contains a
+  	syntax error
+  * Bug #35654: fix an server crash caused by false import
+
+ -- Florian Best <best@univention.de>  Fri, 10 Oct 2014 18:10:41 +0200
+
 univention-management-console (7.1.10-1) unstable; urgency=low
 
   * Bug #35654: ignore empty and invalid XML files

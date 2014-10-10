@@ -47,7 +47,9 @@ try:
 except:
 	import json
 
-from .definitions import *
+from .definitions import (command_has_arguments, command_is_known, SUCCESS_PARTIAL, UMCP_ERR_ARGS_MISSMATCH,
+	UMCP_ERR_UNKNOWN_COMMAND, UMCP_ERR_UNPARSABLE_BODY, UMCP_ERR_UNPARSABLE_HEADER
+)
 from ..log import PARSER, PROTOCOL
 
 from univention.lib.i18n import Translation

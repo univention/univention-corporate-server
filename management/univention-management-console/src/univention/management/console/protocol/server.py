@@ -55,7 +55,11 @@ _ = Translation( 'univention.management.console' ).translate
 # internal packages
 from .message import Message, Response, IncompleteMessageError, ParseError, UnknownCommandError, InvalidArgumentsError, InvalidOptionsError
 from .session import State, Processor
-from .definitions import *
+from .definitions import (BAD_REQUEST_AUTH_FAILED, BAD_REQUEST_FORBIDDEN, BAD_REQUEST_INVALID_ARGS,
+	BAD_REQUEST_INVALID_OPTS, BAD_REQUEST_NOT_FOUND, BAD_REQUEST_PASSWORD_EXPIRED,
+	BAD_REQUEST_UNAUTH, RECV_BUFFER_SIZE, SERVER_ERR, status_description,
+	SUCCESS, SUCCESS_SHUTDOWN, UMCP_ERR_UNPARSABLE_BODY
+)
 
 from ..resources import moduleManager, categoryManager
 from ..log import CORE, CRYPT, RESOURCES
@@ -181,7 +185,7 @@ class MagicBucket( object ):
 				CORE.process( 'Invalid options to UMCP command %s: %r, Exception: %s' % ( msg.command, msg.options, e, ) )
 				res.status = BAD_REQUEST_INVALID_OPTS
 			else:
-				res.status = SERVER_ERROR
+				res.status = SERVER_ERR
 			res.message = status_description(res.status)
 			self._response( res, state )
 

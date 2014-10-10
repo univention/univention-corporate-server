@@ -68,7 +68,7 @@ import sys
 import xml.parsers.expat
 import xml.etree.ElementTree as ET
 
-from .log import *
+from .log import RESOURCES
 
 class XML_Definition( ET.ElementTree ):
 	"""Represents a category definition."""
@@ -150,6 +150,6 @@ class Manager( dict ):
 					category = XML_Definition( root = category_elem, domain = i18nDomain )
 					self[ category.id ] = category
 				RESOURCES.info( 'Loaded categories from %s' % filename )
-			except xml.parsers.expat.ExpatError, e:
-				RESOURCES.warn( 'Failed to parse category file %s:' % ( filename, str( e ) ) )
+			except (xml.parsers.expat.ExpatError, ET.ParseError) as exc:
+				RESOURCES.warn('Failed to parse category file %s: %s' % (filename, exc))
 				continue

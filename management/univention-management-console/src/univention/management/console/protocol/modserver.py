@@ -54,7 +54,6 @@ import traceback
 import socket
 import locale
 import notifier
-import notifier.threads as threads
 
 class ModuleServer( Server ):
 	"""Implements an UMC module server

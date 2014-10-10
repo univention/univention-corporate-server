@@ -32,7 +32,10 @@
 
 """Provides a class :class:`.Client` that implements an UMCP client"""
 
-import errno, os, socket, sys, fcntl
+import errno
+import os
+import socket
+import fcntl
 
 from univention.lib.i18n import Translation
 
