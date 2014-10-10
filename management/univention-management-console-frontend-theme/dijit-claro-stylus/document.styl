@@ -20,7 +20,12 @@ html {
 }
 
 body.claro {
-	background: url(images/background-tile.png) repeat, unquote("linear-gradient(to right top, #cdcdcd 0%, #efefef 50%, #cccccc 100%)") ;
+	/* Chrome,Safari4+ */
+	background: url(images/background-tile.png) repeat, -webkit-gradient(linear, left bottom, right top, color-stop(0%,#cdcdcd), color-stop(50%,#efefef), color-stop(100%,#cccccc));
+	/* Chrome10+,Safari5.1+ */
+	background: url(images/background-tile.png) repeat, -webkit-linear-gradient(to right top, #cdcdcd 0%,#efefef 50%,#cccccc 100%);
+	/* W3C */
+	background: url(images/background-tile.png) repeat, unquote("linear-gradient(to right top, #cdcdcd 0%, #efefef 50%, #cccccc 100%)");
 }
 
 .dj_ie9 body.claro,
