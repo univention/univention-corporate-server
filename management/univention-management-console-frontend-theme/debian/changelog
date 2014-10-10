@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.38-1) unstable; urgency=medium
+
+  * Bug #35654: add styles for RadioButtons + CheckBoxes
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 10 Oct 2014 14:10:11 +0200
+
 univention-management-console-frontend-theme (0.0.37-1) unstable; urgency=medium
 
   * Bug #35654: split icons into different files according to size black/white

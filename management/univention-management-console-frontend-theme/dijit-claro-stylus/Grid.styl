@@ -47,6 +47,10 @@
 	.dojoxGridCellOver {
 		border: none;
 	}
+	.dijitCheckBox {
+		$_iconImage = replace("^(.*)(\.\w*)$", "$1-small-white$2", $image-icons)
+		background-image: url($_iconImage);
+	}
 }
 .umc .dojoxGrid {
 	font-family: inherit;
