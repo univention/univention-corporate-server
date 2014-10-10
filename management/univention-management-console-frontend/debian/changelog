@@ -1,5 +1,6 @@
 univention-management-console-frontend (4.1.37-1) unstable; urgency=low
 
+  * Bug #35654: fix rerendering of categories on app.reloadModules()
   * Bug #35654: order methods of umc.app in the way they are called
   * Bug #35654: fix button ordering, don't display standby animation only in
   	the module part because module buttons can the be clicked, fix some login

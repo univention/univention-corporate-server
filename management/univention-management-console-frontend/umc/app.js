@@ -1297,9 +1297,10 @@ define([
 					this._grid.set('categories', categories);
 					this._moduleStore.constructor(modules, categories);
 
-//					// FIXME: rerender the category buttons on the overview page
-//					// select the previous selected category again (assuming it still exists after reload)
-//					this._updateQuery(this.category || {id: '_favorites_'});
+					this._overviewPage.removeChild(this._categoryButtons);
+					this.renderCategories();
+					// select the previous selected category again (assuming it still exists after reload)
+					this._updateQuery(this.category || {id: '_favorites_'});
 //				}));
 			}));
 		},
@@ -1466,17 +1467,22 @@ define([
 				title: 'Overview',
 				'class': 'umcOverviewContainer container'
 			});
-			this._categoryButtons = new ContainerWidget({
-				'class': 'umcCategoryBar'
-			});
 
-			this._overviewPage.addChild(this._categoryButtons);
+			this.renderCategories();
 			this._overviewPage.addChild(this._grid);
 			this._tabContainer.addChild(this._overviewPage, 0);
 			this._tabController.hideChild(this._overviewPage);
 
-			var iconPath = require.toUrl('dijit/themes/umc/images/scalable');
+			this._overviewPage.on('show', lang.hitch(this, '_focusSearchField'));
+			this._registerGridEvents();
+			this._updateQuery({id: '_favorites_'});
+		},
 
+		renderCategories: function() {
+			this._categoryButtons = new ContainerWidget({
+				'class': 'umcCategoryBar'
+			});
+			this._overviewPage.addChild(this._categoryButtons, 0);
 			array.forEach(this.getCategories(), lang.hitch(this, function(category) {
 				var iconClass = '';
 				if (category.icon) {
@@ -1498,10 +1504,6 @@ define([
 
 			// spread category buttons over whole width
 			styles.insertCssRule('.umc .umcCategoryBar .dijitButton', lang.replace('width: {0}%', [100.0 / this.getCategories().length]));
-
-			this._overviewPage.on('show', lang.hitch(this, '_focusSearchField'));
-			this._registerGridEvents();
-			this._updateQuery({id: '_favorites_'});
 		},
 
 		_focusSearchField: function() {
