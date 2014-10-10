@@ -111,7 +111,7 @@ if __name__ == '__main__':
 	try:
 		session_timeout = int( ucr.get( 'umc/module/timeout', 300 ) )
 	except TypeError, ValueError:
-		CORE.warn( 'Failed to read module timeout from UCR variable umc/module/timeout. Using default of 300 seconds' )
+		MODULE.warn( 'Failed to read module timeout from UCR variable umc/module/timeout. Using default of 300 seconds' )
 
 	try:
 		module = umcp.ModuleServer( options.socket, options.module, check_acls = False, timeout = session_timeout )
