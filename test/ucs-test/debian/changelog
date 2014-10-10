@@ -1,3 +1,10 @@
+ucs-test (5.0.18-1) unstable; urgency=low
+
+  * Bug #35900: add some printed debug info
+  * Bug #35908: add package dependency to univention-squid
+
+ -- Ammar Najjar <najjar@univention.de>  Fri, 10 Oct 2014 10:03:24 +0200
+
 ucs-test (5.0.17-1) unstable; urgency=low
 
   * 10_ldap/60failedldif: Use stop and start instead of restart for the
