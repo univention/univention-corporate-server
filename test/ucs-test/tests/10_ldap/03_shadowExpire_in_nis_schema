@@ -14,10 +14,10 @@ import univention.testing.utils as utils
 
 def nis_schema_conatains_ordering_for_shadowExpire():
 	NIS_FILE = '/etc/ldap/schema/nis.schema'
-	pattern = re.compile(r'\(.*shadowExpire[^\(]+ORDERING integerOrderingMatch[^\)]+\)')
+	pattern = re.compile(r'(attributetype\s\(\s\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}\sNAME\s\'shadowExpire\'[^\(]+ORDERING\sintegerOrderingMatch[^\)]+\))')
 	with open(NIS_FILE) as fi:
 		search_obj = re.search(pattern, fi.read())
-		return search_obj
+		return search_obj.groups()
 
 def ldap_search(filter_):
 	lo = getMachineConnection()
@@ -42,18 +42,22 @@ def run():
 			test_list.append(create_users())
 
 		for username, passwd, date in test_list:
-			print 'Searching LDAP:\nusername=%s, expirydate=%s' % (username, date)
+			print 'Searching LDAP:\nusername=%s, expirydate=%s, filter=(shadowExpire>=%r)(shadowExpire<=%r)' % (
+					username, date, date-1, date+1)
 			ldap_found = ldap_search('(&(objectClass=posixAccount)(shadowExpire>=%r)(shadowExpire<=%r))' %
 					(date - 1, date + 1))
 			exclude_list = [(x[0], x[2]) for x in test_list]
 			exclude_list.remove((username, date))
 			if ldap_found:
+				print 'found in ldap:%r' % ldap_found
 				if ((username, str(date)) not in ldap_found or set(exclude_list).issubset(ldap_found)):
-					utils.fail("LDAP is not able to sort Objects with filter: (shadowExpire>=%r)(shadowExpire<=%r))" % 
-							(date -  int(time.time()/60/60/24), date + int(time.time()/60/60/24)))
+					utils.fail("LDAP is not able to sort Objects with filter: (shadowExpire>=%r)(shadowExpire<=%r)" % 
+							(date - 1, date + 1))
 
 def main():
-	if not nis_schema_conatains_ordering_for_shadowExpire():
+	nis = nis_schema_conatains_ordering_for_shadowExpire()
+	print 'nis.schema contains:\n%s' % nis
+	if not nis:
 		utils.fail("nis.schema does not contain ordering for shadowExpire")
 	run()
 
