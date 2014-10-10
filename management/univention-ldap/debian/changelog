@@ -1,3 +1,9 @@
+univention-ldap (11.0.6-3) unstable; urgency=low
+
+  * Bug #31907: Fix UCS standard DN for the "ppolicy_default" LDAP object
+
+ -- Arvid Requate <requate@univention.de>  Fri, 10 Oct 2014 13:33:25 +0200
+
 univention-ldap (11.0.6-2) unstable; urgency=medium
 
   * Bug #31907: Remove ACLs for cn=admin, obsoleted by "rootdn" setting

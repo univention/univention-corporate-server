@@ -28,7 +28,7 @@ if configRegistry.is_true('ldap/pwd_scheme_kinit', True):
 if configRegistry.is_true('ldap/ppolicy', True):
 	print "overlay\t\tppolicy"
 	if configRegistry.is_true('ldap/ppolicy/enabled', False):
-		ppolicy_default = 'cn=default,cn=pwpolicies,cn=univention,%(ldap/base)s' % configRegistry
+		ppolicy_default = 'cn=default,cn=ppolicy,cn=univention,%(ldap/base)s' % configRegistry
 		print 'ppolicy_default\t"%s"' % configRegistry.get('ldap/ppolicy/default', ppolicy_default)
 
 print '\n'
