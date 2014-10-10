@@ -1,3 +1,10 @@
+ucs-test (5.0.17-1) unstable; urgency=low
+
+  * 10_ldap/60failedldif: Use stop and start instead of restart for the
+    samba restart (Bug #35319)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 10 Oct 2014 08:16:32 +0200
+
 ucs-test (5.0.16-1) unstable; urgency=low
 
   * Bug #35900: add new script 03_shadowExpire_in_nis_schema

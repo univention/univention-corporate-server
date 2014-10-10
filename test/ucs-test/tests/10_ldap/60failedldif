@@ -79,7 +79,12 @@ done
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=33050
 ucr commit /etc/samba/smb.conf
 for srv in samba smaba4 winbind; do
-	test -x /etc/init.d/$srv && invoke-rc.d $srv restart
+	if [ -x /etc/init.d/$srv ]; then
+		invoke-rc.d $srv stop
+		sleep 1
+		invoke-rc.d $srv start
+	fi
+
 done
 
 exit "$RETVAL"
