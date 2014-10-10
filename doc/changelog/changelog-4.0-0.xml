@@ -461,6 +461,9 @@
 					<package>libvirt-python</package> (1.2.6)
 					(<ulink url="&ucsbug;35768">Bug 35768</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The <package>VirtIO</package> drivers for Windows have been updated to version 0.1.81 (<ulink url="&ucsbug;36122">Bug 36122</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
