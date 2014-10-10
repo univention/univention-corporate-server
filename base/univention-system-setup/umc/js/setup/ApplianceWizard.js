@@ -263,6 +263,10 @@ define([
 		// original values as return by the load command
 		values: {},
 
+	        // whether this wizard is started as part of the Debian Installer
+		// or to configure an appliance image
+		partOfInstaller: false,
+
 		// a timer used it in _cleanup
 		// to make sure the session does not expire
 		_keepAlive: null,
@@ -457,7 +461,7 @@ define([
 					name: 'nameserver1',
 					label: _('Preferred DNS server'),
 					invalidMessage: null, // dynamically set
-					onChange: lang.hitch(this, function() {
+					onKeyUp: lang.hitch(this, function() {
 						this.getWidget('network', 'nameserver1')._domainNotAccessible = false;
 					}),
 					validator: _validateIPAddressAndDomainAccess
@@ -799,16 +803,20 @@ define([
 		postCreate: function() {
 			this.inherited(arguments);
 
-			// if DHCP is pre-configured, set widgets accordingly
-			if (this._isDHCPPreConfigured()) {
-				this.getWidget('network', '_dhcp').set('value', true);
-				this.getWidget('network', 'gateway').set('value', this.values.gateway);
+			// DO NOT set the widgets in appliance mode
+			// as the pre-configured network properties do not make sense there
+			// exception: DHCP
+			var isDHCP = this._isDHCPPreConfigured();
+			if (isDHCP || this.partOfInstaller) {
+				this.getWidget('network', '_dhcp').set('value', isDHCP);
 				array.forEach(this._getNetworkDevices(), function(idev, i) {
 					var dev = this.values.interfaces[idev];
 					var old = dev.ip4[0] || dev.ip6[0] || ['', ''];
 					this.getWidget('network', '_ip' + i).set('value', old[0]);
 					this.getWidget('network', '_netmask' + i).set('value', old[1]);
 				}, this);
+				this.getWidget('network', 'gateway').set('value', this.values.gateway);
+				this.getWidget('network', 'nameserver1').set('value', this.values.nameserver1);
 			}
 		},
 
@@ -1452,7 +1460,7 @@ define([
 				var nameservers = array.filter([vals.nameserver1, vals.nameserver2], function(inameserver) {
 					return inameserver;
 				}).join(', ');
-				_append(_('UCS domain name server'), nameservers);
+				_append(_('DNS server'), nameservers);
 			}
 
 			if (isFieldShown('proxy')) {
@@ -1502,20 +1510,18 @@ define([
 		},
 
 		_updateErrorPage: function(details, critical) {
+			var helpText = '<p>' + _('The system configuration failed, the following errors occurred while applying the settings.') + '</p>';
 			var msg = '<ul>';
 			array.forEach(details, function(idetail) {
 				msg += '<li>' + idetail + '</li>';
 			});
 			msg += '</ul>';
 
-			var helpText = '';
-			if (critical) {
-				helpText = '<p>' + _('The system join process failed. The following information will give some more details on which exact problem occurred during the setup process.') + '</p>';
-				msg += '<p>' + _('You may reconfigure the settings and restart the join process. You may end the wizard and, if necessary, join the system later via the UMC module <i>Domain join</i>.') + '</p>';
-			} else {
-				helpText = '<p>' + _('The system join was successful, however, the following errors occurred while applying the configuration settings.') + '</p>';
-				msg += '<p>' + _('The settings can always be adpated in the UMC module <i>Basic settings</i>. Please confirm now to complete the process.') + '</p>';
+			msg += '<p>' + _('You may reconfigure the settings and restart the process or you continue and close the wizard. You may resolve the the problems by using the appropriate modules of the Univention Management Console');
+			if (!critical) {
+				msg += ' ' + _('The system can be joined later via the UMC module <i>Domain join</i>.')
 			}
+			msg += '</p>';
 
 			// display validation information
 			this.getPage('error').set('helpText', helpText);
@@ -1759,6 +1765,17 @@ define([
 				this._forcedPage = null;
 			}), 500);
 			return pageName;
+		},
+
+		_wantsToJoin: function() {
+			if (this._isRoleBaseSystem()) {
+				return false;
+			}
+			if (this._isRoleNonMaster()) {
+				var vals = this.getValues();
+				return vals['start/join'];
+			}
+			return true;
 		},
 
 		_getRoleForDomainChecks: function(evalStartJoin) {
@@ -2025,9 +2042,6 @@ define([
 
 		hasPrevious: function(pageName) {
 			var result = this.inherited(arguments);
-			if (pageName == 'error') {
-				return this._criticalJoinErrorOccurred;
-			}
 			if (pageName == 'done') {
 				return false;
 			}

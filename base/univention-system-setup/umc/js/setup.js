@@ -101,6 +101,7 @@ define([
 				'system/setup/boot/pages/whitelist',
 				'system/setup/boot/pages/blacklist',
 				'system/setup/boot/fields/blacklist',
+				'system/setup/boot/installer',
 				'umc/modules/setup/network/disabled/by'
 			]);
 			// load system setup values (e.g. join status)
@@ -129,7 +130,6 @@ define([
 			// set wizard mode only on unjoined DC Master
 			//this.wizard_mode = (!system_role) && (!values.joined);
 			this.wizard_mode = this.moduleFlavor === 'wizard';
-			this.wizard_mode = true; // FIXME
 
 			// save current values
 			this._orgValues = lang.clone(values);
@@ -153,7 +153,7 @@ define([
 				});
 
 				var fieldBlacklist = (ucr['system/setup/boot/fields/blacklist'] || '').split(' ');
-				this._renderWizard(values, black_list, fieldBlacklist);
+				this._renderWizard(values, black_list, fieldBlacklist, tools.isTrue(ucr['system/setup/boot/installer']));
 			}
 			else {
 				// disable network page, See Bug #33006
@@ -227,7 +227,7 @@ define([
 			ipage.setValues(values);
 		},
 
-		_renderWizard: function(values, pageBlacklist, fieldBlacklist) {
+		_renderWizard: function(values, pageBlacklist, fieldBlacklist, partOfInstaller) {
 			this.wizard = new ApplianceWizard({
 				//progressBar: progressBar
 				moduleID: this.moduleID,
@@ -236,6 +236,7 @@ define([
 				local_mode: tools.status('username') == '__systemsetup__',
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				umcpProgressCommand: lang.hitch(this, 'umcpProgressCommand'),
+				partOfInstaller: partOfInstaller,
 				values: values
 			});
 			this.wizard.watch('selectedChildWidget', lang.hitch(this, function(name, oldV, page) {
