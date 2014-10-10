@@ -1390,7 +1390,7 @@ define([
 			// system role
 			msg += '<p><b>' + _('UCS configuration') + '</b>: ';
 			var role = vals['server/role'];
-			if (role == 'domaincontroller_master') {
+			if (role == 'domaincontroller_master' && !this._isAdMember()) {
 				msg += _('A new UCS domain will be created.');
 			} else if (role == 'basesystem') {
 				msg += _('This system will be a base system without domain integration and without the capabilities to join one in the future.');
@@ -1805,8 +1805,8 @@ define([
 		},
 
 		_checkDomain: function() {
-			var vals = this.getValues();
-			return this.standbyDuring(this.umcpCommand('setup/check/domain', {role: this._getRoleForDomainChecks(false), nameserver: vals.nameserver1}, false).then(function(data) {
+			var nameserver = this.getWidget('network', 'nameserver1').get('value');
+			return this.standbyDuring(this.umcpCommand('setup/check/domain', {role: this._getRoleForDomainChecks(false), nameserver: nameserver}, false).then(function(data) {
 				return data.result;
 			}));
 		},

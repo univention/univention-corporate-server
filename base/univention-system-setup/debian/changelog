@@ -1,3 +1,9 @@
+univention-system-setup (8.1.10-3) unstable; urgency=low
+
+  * Bug #35653: Fix nameserver issues
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 10 Oct 2014 19:54:29 +0200
+
 univention-system-setup (8.1.10-2) unstable; urgency=low
 
   * Bug #35653: Fix flavor issues, further restricting app selection
