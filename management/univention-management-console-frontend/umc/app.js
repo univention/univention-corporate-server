@@ -591,7 +591,10 @@ define([
 			// show the menu bar
 			style.set(this._headerRight.domNode, 'display', 'block');
 			style.set(this._headerCenter.domNode, 'display', 'block');
+			this.setupHeader();
 			this.setupMenus();
+
+			topic.subscribe('/umc/license/activation', lang.hitch(this, '_showActivationDialog'));
 		},
 
 		buildRendering: function() {
@@ -611,14 +614,9 @@ define([
 			});
 			this.addChild(this._headerCenter);
 
-			this.setupHeader();
-
-			topic.subscribe('/umc/license/activation', lang.hitch(this, '_showActivationDialog'));
 		},
 
 		setupHeader: function() {
-			this.setupBackToOverview();
-
 			if (tools.status('overview')) {
 				// display the username
 				this._headerMenu = new Menu({});
@@ -676,6 +674,10 @@ define([
 					onClick: function() { require('umc/app').relogin(); }
 				}));
 
+			}
+
+			if (tools.status('overview') && !tools.status('singleModule')) {
+				this.setupBackToOverview();
 				this.setupSearchField();
 			}
 		},
@@ -688,9 +690,6 @@ define([
 		},
 
 		setupBackToOverview: function() {
-			if (!tools.status('overview')) {
-				return;
-			}
 			this._backToOverviewButton = new Button({
 				label: _('Back to overview'),
 				'class': 'umcBackToOverview',
@@ -987,23 +986,6 @@ define([
 				// a startup module is specified
 				tools.status('autoStartModule', props.module);
 				tools.status('autoStartFlavor', typeof props.flavor == "string" ? props.flavor : null);
-				on.once(this, 'GuiDone', lang.hitch(this, function() {
-					var hasOnlyOneModule = this._getLaunchableModules().length == 1;
-					if (hasOnlyOneModule) {
-						// this module is launched automatically anyways
-						return;
-					}
-
-					this.openModule(props.module, props.flavor);
-					//this._tabContainer.layout();
-
-					// put focus into the GalleryPane for scrolling
-					/*dijit.focus(this._categoryPane.domNode);
-					this.on(_categoryPane, 'show', function() {
-						dijit.focus(this._categoryPane.domNode);
-					});*/
-				}));
-
 			}
 
 			if (props.username && props.password && typeof props.username == "string" && typeof props.password == "string") {
@@ -1036,8 +1018,9 @@ define([
 		login: function() {
 			return dialog.login().then(lang.hitch(this, 'onLogin')).always(lang.hitch(this, function() {
 				if (dialog._loginDialog) {
+					// display the UCS logo animation some time
 					setTimeout(function() {
-					dialog._loginDialog.hide();
+						dialog._loginDialog.hide();
 					}, 1500);
 				}
 			}));
@@ -1188,9 +1171,7 @@ define([
 
 			// setup menus
 			this._header.setupGui();
-
 			this._setupOverviewPage();
-			this._checkNoModuleAvailable();
 
 			// set a flag that GUI has been build up
 			tools.status('setupGui', true);
@@ -1394,7 +1375,7 @@ define([
 					var params = lang.mixin({
 						title: module.name,
 						//iconClass: tools.getIconClass(module.icon),
-						closable: tools.status('overview'),  // closing tabs is only enabled if the overview is visible
+						closable: tools.status('overview') && !tools.status('singleModule'),  // closing tabs is only enabled if the overview is visible
 						moduleFlavor: module.flavor,
 						moduleID: module.id,
 						description: module.description
@@ -1465,13 +1446,30 @@ define([
 			tools.status('feedbackAddress', _ucr['umc/web/feedback/mail'] || tools.status('feedbackAddress'));
 			tools.status('feedbackSubject', _ucr['umc/web/feedback/description'] || tools.status('feedbackSubject'));
 
+//			on.once(this, 'GuiDone', lang.hitch(this, function() {
+//				this._tabContainer.layout();
+//
+//				// put focus into the GalleryPane for scrolling
+//				dijit.focus(this._categoryPane.domNode);
+//				this.on(_categoryPane, 'show', function() {
+//					dijit.focus(this._categoryPane.domNode);
+//				});
+//			}));
+
+			var launchableModules = this._getLaunchableModules();
+			tools.status('singleModule', launchableModules.length < 2);
+
 			this.setupGui();
 
-			// if only one module exists open it
-			var launchableModules = this._getLaunchableModules();
-			if (launchableModules.length === 1) {
+			if (!launchableModules.length) {
+				dialog.alert(_('There is no module available for the authenticated user %s.', tools.status('username')));
+			} else if (launchableModules.length === 1) {
+				// if only one module exists open it
 				var module = launchableModules[0];
 				this.openModule(module.id, module.flavor);
+			} else if (tools.status('autoStartModule')) {
+				// if module is given in the query string, open it directly
+				this.openModule(tools.status('autoStartModule'), tools.status('autoStartFlavor'));
 			}
 		},
 
@@ -1504,28 +1502,21 @@ define([
 				var modules = args[0];
 				var categories = args[1];
 
-				when(this._moduleStore.query(), lang.hitch(this, function(items) {
-					// undefine JS modules and remove modules from module store
-					array.forEach(items, function(module) {
-						this._moduleStore.remove(module.$id$);
-						require.undef('umc/modules/' + module.id);  // FIXME: everything starting with …/module.id
-					}, this);
+//				when(this._moduleStore.query(), lang.hitch(this, function(items) {
+//					// undefine JS modules and remove modules from module store
+//					array.forEach(items, function(module) {
+//						this._moduleStore.remove(module.$id$);
+//						require.undef('umc/modules/' + module.id);  // FIXME: everything starting with …/module.id
+//					}, this);
 
 					this._grid.set('categories', categories);
 					this._moduleStore.constructor(modules, categories);
 
-					// FIXME: rerender the category buttons on the overview page
-					// select the previous selected category again (assuming it still exits after reload)
-					this._updateQuery(this.category || {id: '_favorites_'});
-				}));
+//					// FIXME: rerender the category buttons on the overview page
+//					// select the previous selected category again (assuming it still exists after reload)
+//					this._updateQuery(this.category || {id: '_favorites_'});
+//				}));
 			}));
-		},
-
-		_checkNoModuleAvailable: function() {
-			var launchableModules = this._getLaunchableModules();
-			if (!launchableModules.length) {
-				dialog.alert(_('There is no module available for the authenticated user %s.', tools.status('username')));
-			}
 		},
 
 		_loadPiwik: function() {
@@ -1633,15 +1624,6 @@ define([
 			var modules = args[0];
 			var categories = args[1];
 			this._moduleStore = this._createModuleStore(modules, categories);
-
-			// make sure that we do not overwrite an explicitely stated value of 'overview'
-			var launchableModules = this._getLaunchableModules();
-			if (getQuery('overview') === undefined) {
-				// disable overview if only one or no module exists
-				tools.status('overview', launchableModules.length > 1 && tools.status('overview'));
-			} else if (launchableModules.length === 0) {
-				tools.status('overview', false);
-			}
 		},
 
 		_tryLoadingModule: function(module) {

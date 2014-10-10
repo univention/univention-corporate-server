@@ -1,3 +1,12 @@
+univention-management-console-frontend (4.1.37-1) unstable; urgency=low
+
+  * Bug #35654: fix button ordering, don't display standby animation only in
+  	the module part because module buttons can the be clicked, fix some login
+  	dialog issues, don't show the overview related widgets when no overview is
+  	visible (e.g. only one module available)
+
+ -- Florian Best <best@univention.de>  Fri, 10 Oct 2014 17:31:44 +0200
+
 univention-management-console-frontend (4.1.36-1) unstable; urgency=medium
 
   Bug #35654:

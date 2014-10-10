@@ -447,8 +447,9 @@ define([
 			}
 			this.set('open', false);
 
+			var deferred = new Deferred();
 			// hide the dialog
-			baseFx.fadeOut({node: 'umcLoginDialog', duration: 300, onEnd: lang.hitch(this, function() {
+			var hide = lang.hitch(this, function() {
 				query('#umcLoginWrapper').style('display', 'none');
 				Dialog._DialogLevelManager.hide(this);
 				this.standby(false);
@@ -458,7 +459,10 @@ define([
 					// guessed the ID
 					console.log(e);
 				}
-			})}).play();
+				deferred.resolve();
+			});
+			baseFx.fadeOut({node: 'umcLoginDialog', duration: 300, onEnd: hide}).play();
+			return deferred;
 		},
 
 		__debug: function() {
@@ -471,6 +475,12 @@ define([
 			query('#umcLoginIframe').style('width', 'inherit');
 			query('#umcLoginIframe').style('height', 'inherit');
 			query('#umcLoginDialog').style('height', 'inherit');
+		},
+
+		focus: function() {
+		},
+
+		_getFocusItems: function() {
 		},
 
 		onLogin: function(/*String*/ username) {

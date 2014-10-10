@@ -116,10 +116,6 @@ define([
 			this.containerNode = this.__container.containerNode;
 		},
 
-		standby: function() {
-			this.__container.standby.apply(this.__container, arguments);
-		},
-
 		__colorizeModuleHeader: function() {
 			var cls = this.moduleID;
 			if (this.moduleFlavor) {
@@ -161,22 +157,27 @@ define([
 				});
 			}
 
-			child.headerButtons = headerButtons.concat(child.headerButtons || []);
+			if (child.headerButtons) {
+				headerButtons = child.headerButtons.concat(headerButtons);
+			}
 
-			if (child.headerButtons && child.headerButtons.length) {
+			if (headerButtons && headerButtons.length) {
 				var container = new ContainerWidget({
-				//	'class': 'dijitHidden',
+				//	'class': this._started ? 'dijitHidden' : '',
 					style: 'display: inline-block; margin: 0; padding: 0;'
 				});
 				child.own(container);
 
-				var buttons = render.buttons(child.headerButtons, container);
-				array.forEach(buttons.$order$, function(btn) {
+				var buttons = render.buttons(headerButtons.reverse(), container);
+				array.forEach(buttons.$order$.reverse(), function(btn) {
 					container.addChild(buttons[btn.name]); // important! allow overwriting of button names (e.g close)
 				});
 
 				this._top._right.addChild(container, 0);
 				this._headerButtonsMap[child.id] = container;
+			}
+			if (this._started) {
+				this.__refreshButtonVisibility();
 			}
 		},
 
