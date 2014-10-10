@@ -29,6 +29,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-/usr/sbin/ucr set umc/module/setup/wizard-shown=true
+/usr/sbin/ucr set umc/module/setup/wizard/disabled=true
 
 exit 0

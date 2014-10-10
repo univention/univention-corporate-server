@@ -3,9 +3,5 @@ File: etc/logrotate.d/univention-system-setup
 Variables: logrotate/.*
 
 Type: file
-File: usr/share/univention-management-console/modules/setup-wizard.xml
-Variables: umc/module/setup/wizard-shown
-
-Type: file
 File: usr/share/univention-management-console/modules/setup-certificate.xml
 Variables: server/role

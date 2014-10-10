@@ -21,9 +21,3 @@ Description[de]=Ist diese Option auf einem nicht gejointen System aktiviert, wir
 Description[en]=If this option is activated on an unjoined system, a reference to the UMC appliance configuration dialogue is shown when logging in on the command line.
 Type=bool
 Categories=system-base
-
-[umc/module/setup/wizard-shown]
-Description[de]=Interne Markierung, ob der UCS Konfigurations-Assistent beendet wurde. Dadurch wird das UMC-Modul von der UMC-Übersicht entfernt.
-Description[en]=Internal flag whether the UCS configuration wizard was finished. It hides the UMC module from the UMC overview.
-Type=bool
-Categories=system-base
