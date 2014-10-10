@@ -1028,6 +1028,14 @@ define([
 				};
 			}
 
+			if (this._isAdMember()) {
+				query.admemberissuehide = {
+					test: function(val) {
+						return !val;
+					}
+				};
+			}
+
 			return query;
 		},
 
@@ -1798,7 +1806,7 @@ define([
 
 		_checkDomain: function() {
 			var vals = this.getValues();
-			return this.standbyDuring(tools.umcpCommand('setup/check/domain', {role: this._getRoleForDomainChecks(false), nameserver: vals.nameserver1}, false).then(function(data) {
+			return this.standbyDuring(this.umcpCommand('setup/check/domain', {role: this._getRoleForDomainChecks(false), nameserver: vals.nameserver1}, false).then(function(data) {
 				return data.result;
 			}));
 		},
@@ -1806,7 +1814,7 @@ define([
 		_checkCredentials: function() {
 			var params = {role: this._getRoleForDomainChecks(true)};
 			lang.mixin(params, this._getCredentials());
-			return this.standbyDuring(tools.umcpCommand('setup/check/credentials', params).then(function(data) {
+			return this.standbyDuring(this.umcpCommand('setup/check/credentials', params).then(function(data) {
 				return data.result;
 			}));
 		},

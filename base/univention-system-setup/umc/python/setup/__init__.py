@@ -433,7 +433,7 @@ class Instance(Base, ProgressMixin):
 					if guessed_domain:
 						return guessed_domain
 
-		if not util.is_system_joined() and newrole != 'domaincontroller_master':
+		if not util.is_system_joined() and newrole not in ['domaincontroller_master', 'basesystem']:
 			if all(nameserver in values and not values[nameserver] for nameserver in ('nameserver1', 'nameserver2', 'nameserver3')):
 				# 'nameserver1'-key exists → widget is displayed → = not in UCS/debian installer mode
 				if not any(interface.ip4dynamic or interface.ip6dynamic for interface in interfaces.values()):

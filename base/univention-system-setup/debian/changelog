@@ -1,3 +1,9 @@
+univention-system-setup (8.1.10-2) unstable; urgency=low
+
+  * Bug #35653: Fix flavor issues, further restricting app selection
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 10 Oct 2014 18:40:48 +0200
+
 univention-system-setup (8.1.10-1) unstable; urgency=low
 
   * Bug #36085: Prevent network restart on commit
