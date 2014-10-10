@@ -1,3 +1,10 @@
+ucs-test (4.0.169-1) unstable; urgency=low
+
+  * Bug #35900: add some printed debug info
+  * Bug #35908: add package dependency to univention-squid
+
+ -- Ammar Najjar <najjar@univention.de>  Fri, 10 Oct 2014 10:01:07 +0200
+
 ucs-test (4.0.168-1) unstable; urgency=low
 
   * Bug #35900: add new script 03_shadowExpire_in_nis_schema
