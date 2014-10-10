@@ -2,7 +2,7 @@
 #
 # Univention Xen VirtIO rules file
 #
-# Copyright 2011-2013 Univention GmbH
+# Copyright 2011-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,8 +29,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-SOURCE := virtio-win-0.1-65.iso
-TARGET := KVM_Windows_drivers_(virtio_1.1.65).iso
+SOURCE := virtio-win-0.1-81.iso
+TARGET := KVM_Windows_drivers_(virtio_1.1.81).iso
 
 empty :=
 space := $(empty) $(empty)

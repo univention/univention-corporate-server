@@ -1,4 +1,4 @@
-Copyright 2011-2013 Univention GmbH
+Copyright 2011-2014 Univention GmbH
 
 http://www.univention.de/
 
@@ -26,4 +26,4 @@ License with the Debian GNU/Linux or Univention distribution in file
 /usr/share/common-licenses/AGPL-3; if not, see
 <http://www.gnu.org/licenses/>.
 
-virtio drives/sources, see COPYING, LICENSE and source package
+VirtIO drives/sources, see COPYING, LICENSE and source package
