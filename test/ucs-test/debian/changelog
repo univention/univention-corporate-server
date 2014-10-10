@@ -1,3 +1,9 @@
+ucs-test (5.0.19-1) unstable; urgency=low
+
+  * Bug #36124: Check for APT key rings
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 10 Oct 2014 13:40:45 +0200
+
 ucs-test (5.0.18-1) unstable; urgency=low
 
   * Bug #35900: add some printed debug info

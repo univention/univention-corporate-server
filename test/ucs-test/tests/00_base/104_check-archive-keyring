@@ -1,0 +1,39 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check for APT archive keyrings
+## tags: [apptest]
+## exposure: safe
+. "$TESTLIBPATH/base.sh" || exit 137
+set -e -u
+
+found_ucs=
+found_other=false
+while read pkg status
+do
+	case "$pkg" in
+	univention-archive-key)
+		found_ucs="$status"
+		;;
+	*-archive-keyring)
+		case "$status" in
+		"install"*|*" installed")
+			fail_test "found other APT keyring: $pkg $status"
+			found_other=true
+			;;
+		esac
+		;;
+	esac
+done <<__EOF__
+$(dpkg-query -W -f '${Package} ${Status}\n' \*-archive-key\*)
+__EOF__
+
+case "$found_ucs" in
+	"install ok installed") info "GOOD: found APT keyring for UCS" ;;
+	*) fail_test "missing APT keyring for UCS: $found_ucs" ;;
+esac
+
+if ! "$found_other"
+then
+	info "GOOD: found no other APT keyrings"
+fi
+
+# vim:set ft=sh:
