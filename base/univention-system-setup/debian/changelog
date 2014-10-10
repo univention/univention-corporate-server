@@ -1,3 +1,9 @@
+univention-system-setup (8.1.10-1) unstable; urgency=low
+
+  * Bug #36085: Prevent network restart on commit
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 10 Oct 2014 12:48:12 +0200
+
 univention-system-setup (8.1.9-2) unstable; urgency=low
 
   * Bug #35653: Load network settings when in Debian installer mode

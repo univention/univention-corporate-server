@@ -39,6 +39,7 @@ db_settitle di-univention-system-setup/progress/title
 db_progress START 0 4 di-univention-system-setup/progress/text
 db_progress SET 1
 db_progress INFO di-univention-system-setup/progress/grub
+in-target /usr/sbin/ucr set --force interfaces/restart/auto=no
 apt-install univention-grub
 
 db_progress SET 2
@@ -56,7 +57,7 @@ in-target /usr/sbin/ucr commit
 
 db_progress SET 4
 db_progress INFO di-univention-system-setup/progress/done
-sleep 1
+in-target /usr/sbin/ucr unset --force interfaces/restart/auto
 db_progress STOP
 
 exit 0
