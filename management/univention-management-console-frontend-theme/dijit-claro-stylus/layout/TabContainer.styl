@@ -77,7 +77,7 @@ topBottom-selected-tab-gradient($direction) {
 	border-color: $border-color;
 }
 .claro .dijitTabCloseButton {
-	icon-image(-80, -60, "../", 12px, 12px);
+	icon-image(0, 0, "../", "-small", 12px, 12px);
 	//background: url("../" + $image-layout-tab-close) no-repeat;
 	//width: 14px;
 	//height: 14px;
@@ -90,14 +90,14 @@ topBottom-selected-tab-gradient($direction) {
 .claro .dijitTabChecked .dijitTabCloseButton,
 .claro .dijitTabHover .dijitTabCloseButton,
 .claro .dijitTabActive .dijitTabCloseButton {
-	background-position: -120px -60px;
+	icon-image(0, 0, "../", "-small-white", 12px, 12px);
 }
 .claro .dijitTab .dijitTabCloseButtonHover {
-	background-position: -140px -60px;
+	background-position: -12px 0;
 	opacity: 1;
 }
 .claro .dijitTab .dijitTabCloseButtonActive {
-	background-position: -140px -60px;
+	background-position: -12px 0;
 	opacity: 0.66;
 }
 .claro .dijitTabSpacer {
@@ -113,7 +113,7 @@ topBottom-selected-tab-gradient($direction) {
 	border-bottom: thin solid #000;
 	background-color:$unselected-background-color;
 	background-color: transparent;
-	transition-property: background-color, border, color;
+	transition-property: background-color, border, color, background-image;
 	transition-duration: .35s;
 	color:$unselected-text-color;
 	font-weight: bold;

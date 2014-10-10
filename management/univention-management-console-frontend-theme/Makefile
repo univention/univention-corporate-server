@@ -58,6 +58,9 @@ tmp: $(REPO)
 	mv $(TMP_THEME_DIR)/claro.css $(TMP_THEME_CSS)
 	# replace '.claro' selector with '.umc'
 	sed -i 's/\.claro\>/.umc/g;' $$(find $(TMP_THEME_DIR) -name '*.styl' -o -name '*.css')
+	for isvg in icons icons-small; do \
+		sed 's/\#282828/\#ffffff/g' $(TMP_THEME_DIR)/images/$$isvg.svg > $(TMP_THEME_DIR)/images/$$isvg-white.svg; \
+	done
 
 css:
 	mkdir css
@@ -90,7 +93,7 @@ $(BOOSTRAP_FILE): bootstrap.zip
 
 build: css/umc.css css/fonts
 
-build-dev: tmp css $(BOOSTRAP_FILE) css/fonts
+build-dev: tmp css $(BOOSTRAP_FILE)
 	cp -r $(TMP_THEME_DIR)/* css
 	cd css; stylus -m .
 	cd css/form; stylus -m .

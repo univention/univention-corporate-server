@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.37-1) unstable; urgency=medium
+
+  * Bug #35654: split icons into different files according to size black/white
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 10 Oct 2014 13:38:34 +0200
+
 univention-management-console-frontend-theme (0.0.36-1) unstable; urgency=medium
 
   * Bug #35654: IE9 fixes for header buttons and background pattern
