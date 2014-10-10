@@ -3,6 +3,7 @@
 ## tags: apttest
 ## exposure: safe
 ## bugs: [32429]
+## packages: [univention-squid]
 
 import univention.testing.utils as utils
 import univention.testing.ucr as ucr_test
