@@ -2,6 +2,8 @@ ucs-test (5.0.22-1) unstable; urgency=low
 
   * 00_base/26check_logfiles_general: Added some more files to the
     ignore list (Bug #35881)
+  * 00_base/27check_logfiles_univention: ignore directory-reports-
+    cleanup.log (Bug #35881)
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 12 Oct 2014 14:35:23 +0200
 
