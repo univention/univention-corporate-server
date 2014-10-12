@@ -39,6 +39,7 @@ find / \
 		-o -path /var/lib/univention-client-root/ramdisk \
 		-o -path /var/spool/postfix/private \
 		-o -path /var/spool/postfix/public \
+		-o -path /var/spool/postfix/dev \
 		-o -path /var/run/postgresql \
 		-o -path /tmp/.X11-unix \
 	\) -prune \
@@ -48,10 +49,12 @@ find / \
 		-o -path "/tmp/.gdm_socket" \
 		-o -path "/tmp/.ICE-unix" \
 		-o -path "/tmp/.winbindd/pipe" \
-		-o -path "/var/run/umc-web-server.pid.lock" \
-		-o -path "/var/run/*.MainThread-*" \
+		-o -path "/run/umc-web-server.pid.lock" \
+		-o -path "/run/*.MainThread-*" \
+		-o -path "/run/shm" \
 		-o -path "/var/lib/php5" \
-		-o -path "/var/lock" \
+		-o -path "/run/lock" \
+		-o -path "/lock" \
 		-o -path "/var/run/avahi-daemon/socket" \
 		-o -path "/var/run/clamav/clamd.ctl" \
 		-o -path "/var/run/cyrus/socket/lmtp" \
