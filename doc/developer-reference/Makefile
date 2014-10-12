@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-MAIN := developer-reference-3.2
+MAIN := developer-reference-4.0
 STYLESHEET := univention
 OPTIONS += --stringparam show.comments 0
 
