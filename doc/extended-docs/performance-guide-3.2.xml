@@ -31,14 +31,14 @@
 	</para>
 	</chapter>
 
-<chapter>
+<chapter id="slapd">
 	<title>OpenLDAP and listener/notifier domain replication</title>
 	<para>
 		As a core element in the operation and administration of a UCS domain, the
 		performance of the LDAP server plays a central role in the overall performance.
 	</para>
 
-	<section>
+	<section id="slapd:index">
 		<title>Indices</title>
 		<para>
 			Comparable with other database systems, OpenLDAP runs indices about commonly
@@ -59,7 +59,7 @@
 		</para>
 	</section>
 
-	<section>
+	<section id="slapd:bdb">
 		<title>Configuration of the database backend (BDB)</title>
 		<para>
 			The data of the LDAP server are stored in a database in the Berkeley database
@@ -127,7 +127,7 @@
 			</listitem>
 		</itemizedlist>
 
-		<section>
+		<section id="slapd:acl">
 			<title>OpenLDAP ACLs</title>
 			<para>
 				Access to the information contained in the LDAP directory is controlled by
@@ -145,7 +145,7 @@
 		</section>
 	</section>
 
-	<section>
+	<section id="listener">
 		<title>Univention Directory Listener</title>
 		<para>
 			In the default setting, the Univention Directory Listener performs safety
@@ -157,7 +157,7 @@
 	</section>
 </chapter>
 
-<chapter>
+<chapter id="nscd">
 	<title>Name Service Cache Daemon (NSCD)</title>
 	<para>
 		Name resolutions can be cached by the <emphasis>Name Service Cache
@@ -201,7 +201,7 @@
 	</para>
 </chapter>
 
-<chapter>
+<chapter id="group:cache">
 	<title>Local group cache</title>
 
 	<para>
@@ -230,7 +230,7 @@
 <chapter>
   <title>UCS management system</title>
 
-  <section>
+  <section id="umc:search:auto">
 	<title>Disabling automatic search</title>
 	<para>
 	  By default all objects are automatically searched for in the domain management
@@ -240,7 +240,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="umc:search:limit">
 	<title>Imposing a size limit for searches</title>
 	<para>
 	  The &ucsUCRV; <envar>directory/manager/web/sizelimit</envar> is used to impose an upper limit
@@ -254,7 +254,7 @@
 
 <chapter>
 	<title>Further services and components</title>
-	<section>
+	<section id="squid">
 		<title>Squid</title>
 		<para>
 			If the Squid proxy service is used with NTLM authentication, the authentication
@@ -267,7 +267,7 @@
 		</para>
 	</section>
 
-	<section>
+	<section id="bind">
 		<title>Bind</title>
 		<para>
 		  Bind can use two different backends for its configuration: OpenLDAP or the internal LDB
@@ -280,7 +280,84 @@
 		  request. With the OpenLDAP backend, a search is only performed in the directory service if
 		  the DNS data has changed. For this reason, using the OpenLDAP backend can reduce the load
 		  on a Samba 4 domain controller.
-	  </para>
+		</para>
+	</section>
+
+	<section id="kernel">
+		<title>Kernel</title>
+		<para>
+			In medium and larger environments the maximum number of open files allowed by the Linux kernel may be set too low by default.
+			As each instance requires some unswappable memory in the Linux kernel, too many objects may lead to a resource and denial-of-service problems in multi-user environments.
+			Because of that the number of allowed file objects is limited by default.
+		</para>
+		<para>
+			The maximum number of open files can be configured on a per-user or per-group basis.
+			The default for all users can set through the following &ucsUCRV;s:
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term><envar>security/limits/user/<replaceable>default</replaceable>/hard/nofile</envar></term>
+				<listitem>
+					<simpara>
+						The hard limit defines the upper limit a user can assign to a process.
+						The default is 32768.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><envar>security/limits/user/<replaceable>default</replaceable>/soft/nofile</envar></term>
+				<listitem>
+					<simpara>
+						The soft limit defines the default settings for the processes of the user.
+						The default is 32768.
+					</simpara>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		<para>
+			A similar problem exists with the <wordasword>Inotify</wordasword> sub-system of the kernel, which can be used by all users and  applications to monitor changes in file systems.
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term><envar>kernel/fs/inotify/max_user_instances</envar></term>
+				<listitem>
+					<simpara>
+						The upper limit of Inotify services per user ID.
+						The default is 511.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><envar>kernel/fs/inotify/max_user_watches</envar></term>
+				<listitem>
+					<simpara>
+						The upper limit of files per user which can be watched by the Inotify service.
+						The default is 32767.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><envar>kernel/fs/inotify/max_queued_events</envar></term>
+				<listitem>
+					<simpara>
+						The upper limit of queued events per Inotify instance.
+						The default is 16384.
+					</simpara>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</section>
+
+	<section id="samba">
+		<title>Samba</title>
+		<para>
+			Samba uses its own mechanism to specify the maximum number of open files.
+			This can be configured through the &ucsUCRV; <envar>samba/max_open_files</envar>.
+			The default is 32808.
+		</para>
+		<para>
+			If the log file <filename>/var/log/samba/log.smbd</filename> contains errors like <computeroutput>Failed to init inotify - Too many open files</computeroutput>, the kernel and Samba limits should be increased and the services should be restarted.
+		</para>
 	</section>
 
 </chapter>

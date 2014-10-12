@@ -28,7 +28,7 @@
 			of new UDM extensions it is important to understand some of the essential concepts of <acronym>LDAP</acronym> as used in UCS.
 		</para>
 		<para>
-			One essential traight of <acronym>LDAP</acronym> as used in UCS, is the strict enforcement of <acronym>LDAP</acronym> schemata.
+			One essential trait of <acronym>LDAP</acronym> as used in UCS, is the strict enforcement of <acronym>LDAP</acronym> schemata.
 			An <acronym>LDAP</acronym> server refuses to start if an unknown <acronym>LDAP</acronym> attribute is referenced either in the configuration
 			or in the backend data. This makes it critically important to install schemata on all systems. To simplify this task UCS features a builtin
 			mechanism for automatic schema replication to all UCS hosted <acronym>LDAP</acronym> servers in the UCS domain

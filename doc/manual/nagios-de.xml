@@ -971,7 +971,7 @@
   <title>Abfrage des Systemstatus über das Nagios-Webinterface</title>
   <para>
 	Die Nagios-Oberfläche ist auf der Übersichtswebseite (siehe <xref
-	linkend="central-management-umc:login"/>) unter <guimenu>Horde Webclient</guimenu> verlinkt und
+	linkend="central-management-umc:login"/>) unter <guimenu>Nagios</guimenu> verlinkt und
 	kann auch direkt unter <uri>https://SERVERNAME-OR-IP/nagios/</uri> erreicht werden.
   </para>
 

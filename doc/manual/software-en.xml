@@ -175,11 +175,10 @@
 	  If you click on one of the displayed applications, further details on it are shown (e.g.,
 	  description, manufacturer, contact information and a screenshot). The <guimenu>Notification</guimenu>
 	  field shows whether the manufacturer of the software component is
-	  notified when it is installed/uninstalled. Some applications can also be licensed directly
-	  from Univention. The <guimenu>Shop</guimenu> button is shown alongside a stylised shopping
-	  basket for these applications in the bottom toolbar. For all other applications, the
-	  manufacturer of the application must be contacted using the e-mail address shown under
-	  <guimenu>Contact</guimenu>.
+	  notified when it is installed/uninstalled. Some applications provide a
+	  <guimenu>Buy</guimenu> button in the bottom toolbar with a link to licensing
+	  information. For all other applications, the manufacturer of the application
+	  must be contacted using the e-mail address shown under <guimenu>Contact</guimenu>.
 	</para>
 
 	<figure id="appcenter-details"><title>Details for an application in the App Center</title>

@@ -957,14 +957,14 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 	<section id="uvmm::profile">
 		<title>Profile</title>
 		<para>
-			Profile werden in <acronym>UVMM</acronym> benutzt, um die anfänglichen Einstellungen für neue virtuelle Maschinen festzulegen.
+			Profile werden benutzt, um die anfänglichen Einstellungen für neue virtuelle Maschinen festzulegen.
 			Unter anderem beinhalten diese folgende Einstellungen:
 		</para>
 		<itemizedlist>
-			<listitem><simpara>Prefix für den Namen neuer virtueller Maschinen</simpara></listitem>
+			<listitem><simpara>Präfix für den Namen neuer virtueller Maschinen</simpara></listitem>
 			<listitem><simpara>Anzahl der virtuellen <acronym>CPU</acronym>s</simpara></listitem>
 			<listitem><simpara>Standard-RAM-Größe</simpara></listitem>
-			<listitem><simpara>Standardgröße für neue Festplattemabbilder</simpara></listitem>
+			<listitem><simpara>Standardgröße für neue Festplatten-Images</simpara></listitem>
 			<listitem><simpara>Standard-Boot-Reihenfolge für vollvirtualisierte virtuelle Maschinen</simpara></listitem>
 			<listitem><simpara>Benutzung der paravirtualisierten Gerätetreiber</simpara></listitem>
 			<listitem><simpara>Standardeinstellung für den Direktzugriff per <acronym>VNC</acronym></simpara></listitem>

@@ -210,7 +210,7 @@
 
 		<para>
 			If a live migration of virtual machines between different virtualization servers is planned, the storage pool must be stored on a system which can be accessed by all virtualization servers (e.g., an NFS share or an iSCSI target).
-			This is described in <biblioref linkend="uvmm-technical-details"/>.
+			This is described in <xref linkend="uvmm::storagepools"/>.
 		</para>
 		<para>
 			Image files are created as sparse files with the specified size, i.e., these files only grow when they are used and then up to the maximally specified size and thus initially require only minimal disk space.
@@ -953,7 +953,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 	<section id="uvmm::profile">
 		<title>Profiles</title>
 		<para>
-			Profiles are used in <acronym>UVMM</acronym> to store initial settings when creating new virtual machines.
+			Profiles are used to store initial settings when creating new virtual machines.
 			Amongst others this includes the following settings:
 		</para>
 		<itemizedlist>
@@ -962,7 +962,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			<listitem><simpara>default RAM size</simpara></listitem>
 			<listitem><simpara>default size for new disk images</simpara></listitem>
 			<listitem><simpara>default boot order for fully-virtualized virtual machines</simpara></listitem>
-			<listitem><simpara>use of para-virtual device drivers</simpara></listitem>
+			<listitem><simpara>use of paravirtual device drivers</simpara></listitem>
 			<listitem><simpara>default settings for direct access per <acronym>VNC</acronym></simpara></listitem>
 			<listitem><simpara>network bridge name</simpara></listitem>
 		</itemizedlist>
@@ -975,7 +975,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			<title>Changing default network</title>
 			<para>
 				The name of the bridge used as the default network interface is stored in <acronym>UVMM</acronym> profiles.
-				If the default interface <filename class="device">eth0</filename> is changed, they name should be updated.
+				If the default interface <filename class="device">eth0</filename> is changed, the name should be updated as well.
 				The following command updates all profiles currently using interface <filename class="device">eth0</filename> to use the bridge <filename class="device">br0</filename>:
 			</para>
 			<programlisting language="sh">

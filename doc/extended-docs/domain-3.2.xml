@@ -27,11 +27,18 @@
 		  configuration changes, which need to be made to integrate the Ubuntu client into the UCS
 		  domain. After successful integration users can authenticate on the Ubuntu clients with
 		  their standard UCS domain password and user name.
-		</para>
+	</para>
 
         <para>
 		  This configuration has been tested with Ubuntu 14.04 LTS as well as Kubuntu 14.04 LTS.
-		</para>
+	</para>
+
+	<caution><para>
+		  In case a command fails or does not return the expected output, 
+		  please make sure that all configuration options and files are entered and
+		  have been written as shown in this document. For example, some text editors do not
+  		  preserve the indentation which is required for some config files.
+	</para></caution>
 
         <section>
             <title>Integration into the LDAP directory and the SSL certificate authority</title>
@@ -48,8 +55,8 @@ sudo bash
 export MASTER_IP=192.168.0.3
 
 mkdir /etc/univention
-ssh root@${MASTER_IP} ucr shell |
-    grep -v ^hostname= >/etc/univention/ucr_master
+ssh root@${MASTER_IP} ucr shell | 
+ grep -v ^hostname= >/etc/univention/ucr_master
 echo "master_ip=${MASTER_IP}" >>/etc/univention/ucr_master
 chmod 660 /etc/univention/ucr_master
 . /etc/univention/ucr_master
@@ -167,31 +174,30 @@ nss_shadow=   shadow:   compat
 nss_netgroup= netgroup: nis
 
 pam_auth=
-	auth [success=3 default=ignore] pam_unix.so nullok_secure \
-		try_first_pass
-	auth requisite pam_succeed_if.so uid >= 500 quiet
-	auth [success=1 default=ignore] pam_sss.so use_first_pass
-	auth requisite pam_deny.so
-	auth required pam_permit.so
+        auth [success=3 default=ignore] pam_unix.so nullok_secure try_first_pass
+        auth requisite pam_succeed_if.so uid >= 500 quiet
+        auth [success=1 default=ignore] pam_sss.so use_first_pass
+        auth requisite pam_deny.so
+        auth required pam_permit.so
 
 pam_account=
-	account required pam_unix.so
-	account sufficient pam_localuser.so
-	account sufficient pam_succeed_if.so uid < 500 quiet
-	account [default=bad success=ok user_unknown=ignore] pam_sss.so
-	account required pam_permit.so
+        account required pam_unix.so
+        account sufficient pam_localuser.so
+        account sufficient pam_succeed_if.so uid < 500 quiet
+        account [default=bad success=ok user_unknown=ignore] pam_sss.so
+        account required pam_permit.so
 
 pam_password=
-	password sufficient pam_unix.so obscure sha512
-	password sufficient pam_sss.so use_authtok
-	password required pam_deny.so
+        password sufficient pam_unix.so obscure sha512
+        password sufficient pam_sss.so use_authtok
+        password required pam_deny.so
 
 pam_session=
-	session required pam_mkhomedir.so skel=/etc/skel/ umask=0077
-	session optional pam_keyinit.so revoke
-	session required pam_limits.so
-	session [success=1 default=ignore] pam_sss.so
-	session required pam_unix.so
+        session required pam_mkhomedir.so skel=/etc/skel/ umask=0077
+        session optional pam_keyinit.so revoke
+        session required pam_limits.so
+        session [success=1 default=ignore] pam_sss.so
+        session required pam_unix.so
 __EOF__
 auth-client-config -n -a -p sss
 
@@ -581,251 +587,163 @@ ServerName printserver.example.com
 		</section>
 	</chapter>
 
-<!--     <chapter> -->
-<!-- 	  <title>Advanced SSL certificate handling</title> -->
+    <chapter id="extdom:ssl">
+	  <title>Advanced SSL certificate handling</title>
 
-<!-- 	  <section> -->
-<!-- 		<title>Managing additional certificates with univention-certificate</title> -->
-<!--         <para> -->
-<!-- 		  Every UCS domain has its own SSL certificate authority. The SSL certificates are created -->
-<!-- 		  automatically for all UCS systems during the installation (&ucsMaster;) or during the domain join -->
-<!-- 		  (all other system roles). -->
-<!-- 		</para> -->
+	  <section>
+		<title>Managing additional certificates with univention-certificate</title>
+        <para>
+		  Every UCS domain has its own SSL certificate authority. The SSL certificates are created
+		  automatically for all UCS systems during the installation (&ucsMaster;) or during the domain join
+		  (all other system roles).
+		</para>
 
-<!--         <para> -->
-<!-- 		  The command <command>univention-certificate</command> can be used to manage these -->
-<!-- 		  certificates, e.g., if it proves necessary to create a certificate for the integration of -->
-<!-- 		  an external system. -->
-<!-- 		</para> -->
+        <para>
+		  The command <command>univention-certificate</command> can be used to manage these
+		  certificates, e.g., if it proves necessary to create a certificate for the integration of
+		  an external system.
+		</para>
 
-<!--         <section> -->
-<!--             <title>Storage of the certificates</title> -->
-<!-- 			<para> -->
-<!-- 			  The certificates are stored in the directory <filename class="directory">/etc/univention/ssl/</filename> -->
-<!-- 			  on the &ucsMaster; and synchronised on all &ucsBackup; systems. A subdirectory with -->
-<!-- 			  the name of the certificate is kept in the directory <filename class="directory">/etc/univention/ssl/</filename> -->
-<!-- 			  for every certificate, which contains the following files: -->
-<!-- 			</para> -->
+        <section id="extdom:ssl:storage">
+            <title>Storage of the certificates</title>
+			<para>
+			  The certificates are stored in the directory <filename class="directory">/etc/univention/ssl/</filename>
+			  on the &ucsMaster; and synchronised on all &ucsBackup; systems. A subdirectory with
+			  the name of the certificate is kept in the directory <filename class="directory">/etc/univention/ssl/</filename>
+			  for every certificate, which contains the following files:
+			</para>
 
-<!-- 			<variablelist> -->
-<!-- 				<varlistentry> -->
-<!-- 					<term><filename>req.pem</filename></term> -->
-<!-- 					<listitem> -->
-<!-- 						<para> -->
-<!-- 							This file contains the original request with which the certificate was created. -->
-<!-- 						</para> -->
-<!-- 					</listitem> -->
-<!-- 				</varlistentry> -->
-<!-- 				<varlistentry> -->
-<!-- 					<term><filename>openssl.cnf</filename></term> -->
-<!-- 					<listitem> -->
-<!-- 						<simpara> -->
-<!-- 							This file contains the OpenSSL configuration at the time the certificate was created. -->
-<!-- 						</simpara> -->
-<!-- 					</listitem> -->
-<!-- 				</varlistentry> -->
-<!-- 				<varlistentry> -->
-<!-- 					<term><filename>cert.pem</filename></term> -->
-<!-- 					<listitem> -->
-<!-- 						<simpara> -->
-<!-- 							The file represents the actual certificate. -->
-<!-- 						</simpara> -->
-<!-- 					</listitem> -->
-<!-- 				</varlistentry> -->
-<!-- 				<varlistentry> -->
-<!-- 					<term><filename>private.key</filename></term> -->
-<!-- 					<listitem> -->
-<!-- 						<simpara> -->
-<!-- 							The file contains the private key for the certificate. -->
-<!-- 						</simpara> -->
-<!-- 					</listitem> -->
-<!-- 				</varlistentry> -->
-<!-- 			</variablelist> -->
-<!-- 		</section> -->
+			<variablelist>
+				<varlistentry>
+					<term><filename>req.pem</filename></term>
+					<listitem>
+						<simpara>
+							This file contains the original request with which the certificate was created.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>openssl.cnf</filename></term>
+					<listitem>
+						<simpara>
+							This file contains the OpenSSL configuration at the time the certificate was created.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>cert.pem</filename></term>
+					<listitem>
+						<simpara>
+							The file represents the actual certificate.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>private.key</filename></term>
+					<listitem>
+						<simpara>
+							The file contains the private key for the certificate.
+						</simpara>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</section>
 
-<!--         <section> -->
-<!--             <title>Displaying the certificates</title> -->
-<!-- 			<para> -->
-<!-- 			  The following command is used to display a list of all the available, valid certificates: -->
-<!-- 			</para> -->
-<!-- <programlisting language="sh"><![CDATA[ -->
-<!-- univention-certificate list -->
-<!-- ]]></programlisting> -->
+        <section id="extdom:ssl:list">
+            <title>Displaying the certificates</title>
+			<para>
+			  The following command is used to display a list of all the available, valid certificates:
+			</para>
+<programlisting language="sh"><![CDATA[
+univention-certificate list
+]]></programlisting>
 
-<!-- 			<para> -->
-<!-- 			  An individual SSL certificate can be displayed with the following command: -->
-<!-- 			</para> -->
-<!-- <programlisting language="sh"><![CDATA[ -->
-<!-- univention-certificate dump -name fullyqualifiedhostname -->
-<!-- ]]></programlisting> -->
-<!-- 		</section> -->
+			<para>
+			  An individual SSL certificate can be displayed with the following command:
+			</para>
+<programlisting language="sh"><![CDATA[
+univention-certificate dump -name fullyqualifiedhostname
+]]></programlisting>
+		</section>
 
-<!--         <section> -->
-<!--             <title>Checking the validity of a certificate</title> -->
-<!-- 			<para> -->
-<!-- 			  This command checks whether a certificate is valid or invalid: -->
-<!-- 			</para> -->
-<!-- <programlisting language="sh"><![CDATA[ -->
-<!-- univention-certificate check -name fullyqualifiedhostname -->
-<!-- ]]></programlisting> -->
-<!-- 			<para> -->
-<!-- 			  A certificate may be invalid because it has either been revoked or has expired. -->
-<!-- 			</para> -->
-<!-- 		</section> -->
+        <section>
+            <title>Checking the validity of a certificate</title>
+			<para>
+			  This command checks whether a certificate is valid or invalid:
+			</para>
+<programlisting language="sh"><![CDATA[
+univention-certificate check -name fullyqualifiedhostname
+]]></programlisting>
+			<para>
+			  A certificate may be invalid because it has either been revoked or has expired.
+			</para>
+		</section>
 
-<!--         <section> -->
-<!--             <title>Revoking a certificate</title> -->
-<!-- 			<para> -->
-<!-- 			  The following command is used to revoke a certificate: -->
-<!-- 			</para> -->
-<!-- <programlisting language="sh"><![CDATA[ -->
-<!-- univention-certificate revoke -name fullyqualifiedhostname -->
-<!-- ]]></programlisting> -->
-<!-- 			<para> -->
-<!-- 				It is then no longer valid, but remains stored in the file system. -->
-<!-- 				Certificates of UMC computer objects do not need to be revoked manually. -->
-<!-- 			</para> -->
-<!-- 		</section> -->
+        <section id="extdom:ssl:revoke">
+            <title>Revoking a certificate</title>
+			<para>
+			  The following command is used to revoke a certificate:
+			</para>
+<programlisting language="sh"><![CDATA[
+univention-certificate revoke -name fullyqualifiedhostname
+]]></programlisting>
+			<para>
+				It is then no longer valid, but remains stored in the file system.
+				Certificates of UMC computer objects do not need to be revoked manually.
+			</para>
+		</section>
 
-<!--         <section> -->
-<!--             <title>Creating a certificate</title> -->
-<!-- 			<para> -->
-<!-- 			  The following command can be used to create a new certificate: -->
-<!-- 			</para> -->
-<!-- <programlisting language="sh"><![CDATA[ -->
-<!-- univention-certificate new -name fullyqualifiedhostname -->
-<!-- ]]></programlisting> -->
-<!-- 			<para> -->
-<!-- 			  The fully qualified domain name of the -->
-<!-- 			  computer should be given as the name. In the default setting the certificate is valid -->
-<!-- 			  for five years. The standard value can be changed by setting the &ucsUCRV; -->
-<!-- 			  <envar>ssl/default/days</envar>. -->
-<!-- 			</para> -->
-<!-- 		</section> -->
-<!-- 	  </section> -->
+        <section id="extdom:ssl:create">
+            <title>Creating a certificate</title>
+			<para>
+			  The following command can be used to create a new certificate:
+			</para>
+<programlisting language="sh"><![CDATA[
+univention-certificate new -name fullyqualifiedhostname
+]]></programlisting>
+			<para>
+			  The fully qualified domain name of the
+			  computer should be given as the name. In the default setting the certificate is valid
+			  for five years. The standard value can be changed by setting the &ucsUCRV;
+			  <envar>ssl/default/days</envar>.
+			</para>
+		</section>
+	  </section>
 
-<!-- 	  <section> -->
-<!-- 		<title>Signing of certificate signing requests by the UCS certificate authority</title> -->
-<!--         <para> -->
-<!-- 		  A certificate signing request (CSR) is a request submitted to a certificate authority (CA) -->
-<!-- 		  to create a digital signature. A CSR typically occurs in the form of a file. This section -->
-<!-- 		  describes how a CSR is signed by the UCS CA. -->
-<!-- 		</para> -->
+	  <section id="extdom:ssl:sign">
+		<title>Signing of certificate signing requests by the UCS certificate authority</title>
+        <para>
+		  A certificate signing request (CSR) is a request submitted to a certificate authority (CA)
+		  to create a digital signature. A CSR typically occurs in the form of a file. This section
+		  describes how a CSR is signed by the UCS CA.
+		</para>
 
-<!--         <para> -->
-<!-- 		  CERTIFICATE is the file name of the certificate to be created. -->
-<!-- 		</para> -->
+        <para>
+		  CERTIFICATE is the file name of the certificate to be created.
+		</para>
 
-<!--         <para> -->
-<!-- 			REQUEST is the file with the CSR in either PEM or DER format. -->
-<!-- 			A file in PEM format is a text file containing a Base64-encoded block enclosed between <literal>BEGIN CERTIFICATE</literal> and <literal>END CERTIFICATE</literal>. -->
-<!-- 			A request in binary DER format must be first converted to the PEM format with the following command: -->
-<!-- 		</para> -->
-<!-- <programlisting language="sh"> -->
-<!-- openssl req \ -->
-<!--   -inform  der -in  request.der \ -->
-<!--   -outform pem -out req.pem -->
-<!-- </programlisting> -->
+        <para>
+			REQUEST is the file with the CSR in either PEM or DER format.
+			A file in PEM format is a text file containing a Base64-encoded block enclosed between <literal>BEGIN CERTIFICATE</literal> and <literal>END CERTIFICATE</literal>.
+			A request in binary DER format must be first converted to the PEM format with the following command:
+		</para>
+<programlisting language="sh">
+openssl req \
+  -inform  der -in  request.der \
+  -outform pem -out req.pem
+</programlisting>
 
-<!--         <para> -->
-<!-- 		  The following command then processes the CSR and creates the certificate: -->
-<!-- 		</para> -->
-<!-- <programlisting language="sh"> -->
-<!-- openssl ca -batch -config /etc/univention/ssl/openssl.cnf \ -->
-<!--   -in REQUEST -out CERTIFICATE \ -->
-<!--   -passin file:/etc/univention/ssl/password -->
-<!-- </programlisting> -->
-<!-- 	  </section> -->
+        <para>
+		  The following command then processes the CSR and creates the certificate:
+		</para>
+<programlisting language="sh">
+openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
+  -in REQUEST -out CERTIFICATE \
+  -passin file:/etc/univention/ssl/password
+</programlisting>
+	  </section>
 
-<!-- 	  <section> -->
-<!-- 		<title>Signing of the UCS certificate authority by another superordinate CA</title> -->
-<!--         <para> -->
-<!-- 		  The certificate authority (CA) integrated in UCS can be certified by another CA. In this -->
-<!-- 		  case, the UCS CA - which is a root CA as standard - is converted a sub CA. -->
-<!-- 		</para> -->
-
-<!--         <para> -->
-<!-- 		  The following steps are necessary for this: -->
-<!-- 		</para> -->
-
-<!-- 		  <itemizedlist> -->
-<!-- 			<listitem><para> -->
-<!-- 			  Firstly, a backup copy of <filename>/etc/univention/ssl</filename> should be created. -->
-<!-- 			</para></listitem> -->
-
-<!-- 			<listitem><para> -->
-<!-- 			  The <emphasis>certificate signing request</emphasis> (CSR) can be found in the -->
-<!-- 			  <filename>/etc/univention/ssl/ucsCA/CAreq.pem</filename> directory on the &ucsMaster; -->
-<!-- 			  This file can be used to request a certificate in PEM format from the superordinate -->
-<!-- 			  CA. (PEM is a standardised format in which the certificate is saved -->
-<!-- 			  Base64-encoded). If the received certificate is not in PEM format, but is sent in DER -->
-<!-- 			  format instead, it must be converted with the following command: -->
-<!-- 			</para> -->
-<!-- <programlisting language="sh"> -->
-<!-- openssl x509 -inform der        \ -->
-<!--   -outform pem -in filename.der \ -->
-<!--   -out filename.pem -->
-<!-- </programlisting> -->
-<!-- 			</listitem> -->
-
-<!-- 			<listitem><para> -->
-<!-- 			  The new certificate must be stored at several positions in the file system. The -->
-<!-- 			  following steps copy it: -->
-<!-- 			</para> -->
-<!-- <programlisting language="sh"> -->
-<!-- cd /etc/univention/ssl -->
-<!-- cp NEWCERT.pem ucsCA/CAcert.pem -->
-<!-- cp NEWCERT.pem ucsCA/newcerts/00.pem -->
-<!-- cp NEWCERT.pem /var/www/ucs-root-ca.crt -->
-<!-- c_rehash ucsCA/certs -->
-<!-- </programlisting> -->
-<!-- 			</listitem> -->
-
-<!-- 			<listitem><para> -->
-<!-- 			  The last command transfers the certificate from the -->
-<!-- 			  <filename>/etc/univention/ssl/ucsCA/newcerts/</filename> directory to the -->
-<!-- 			  <filename>/etc/univention/ssl/ucsCA/certs/</filename> directory and creates a link to -->
-<!-- 			  the certificate there. -->
-<!-- 			</para></listitem> -->
-
-<!-- 			<listitem><para> -->
-<!-- 			  The CA certificate of the signing, superordinate CA is copied and saved in the -->
-<!-- 			  <filename>/etc/univention/ssl/mca/</filename> directory: -->
-<!-- 			</para> -->
-<!-- <programlisting language="sh"> -->
-<!-- mkdir -p /etc/univention/ssl/mca/ -->
-<!-- cp CA.pem /etc/univention/ssl/mca/ -->
-<!-- </programlisting> -->
-<!-- 			</listitem> -->
-
-<!-- 			<listitem><para> -->
-<!-- 			  The certificate chain is now generated: -->
-<!-- 			</para> -->
-<!-- <programlisting language="sh"> -->
-<!-- cd /etc/univention/ssl -->
-<!-- cat ucsCA/CAcert.pem mca/CA.pem > CAChain.pem -->
-<!-- </programlisting> -->
-<!-- 			</listitem> -->
-
-<!-- 			<listitem><para> -->
-<!-- 			  The web server must be set up in such a way that it sends the chain file to the -->
-<!-- 			  clients together with its certificate. This is done by setting the &ucsUCRV; -->
-<!-- 			  <envar>apache2/ssl/certificatechain</envar> to -->
-<!-- 			  <filename>/etc/univention/ssl/CAChain.pem</filename> and restarting the web server: -->
-<!-- 			</para> -->
-<!-- <programlisting language="sh"> -->
-<!-- ucr set apache2/ssl/certificatechain=/etc/univention/ssl/CAChain.pem -->
-<!-- /etc/init.d/apache2 restart -->
-<!-- </programlisting> -->
-<!-- 			</listitem> -->
-
-<!-- 			<listitem><para> -->
-<!-- 			  The CA certificate of the superordinate CA must be imported on all clients so that the -->
-<!-- 			  clients can verify other certificates accordingly that are overwritten by the UCS-CA. -->
-<!-- 			</para></listitem> -->
-<!-- 		  </itemizedlist> -->
-<!-- 	  </section> -->
-<!-- 	</chapter> -->
+	</chapter>
 
 
 <!--     <chapter id="ext-dom-syncrepl"> -->
@@ -866,7 +784,7 @@ ServerName printserver.example.com
 
 <!-- 	  <section> -->
 <!-- 		<title>Activation of Syncrepl on the master domain controller</title> -->
-		<!-- Can be trimmed drastically once 33709 is fixed -->
+<!-- 		Can be trimmed drastically once 33709 is fixed -->
 <!-- 		<para> -->
 <!-- 		  Now a Syncrepl proxy needs to be set up on the &ucsMaster;. The required configuration -->
 <!-- 		  files are downloaded from FIXME as a Tar archive. -->

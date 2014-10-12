@@ -176,11 +176,10 @@
 	  Komponente angezeigt (u.a. Beschreibung, Hersteller, Ansprechpartner und ein
 	  Screenshot). Im Feld <guimenu>Benachrichtigung</guimenu> wird angezeigt, ob der
 	  Hersteller der Softwarekomponente bei der Installation/Deinstallation benachrichtigt wird.
-	  Einige Applikationen können direkt über Univention lizenziert werden. Für diese
-	  Applikationen wird in der unteren Bildleiste der Button <guimenu>Shop</guimenu> neben
-	  einem stilisierten Einkaufskorb angezeigt. Für alle anderen Applikationen muss der
-	  Hersteller der Applikation über die unter <guimenu>Kontakt</guimenu> angezeigt
-	  E-Mail-Adresse kontaktiert werden.
+	  Informationen zur Lizenzierung können bei einigen Applikationen direkt über 
+	  <guimenu>Kaufen</guimenu> Button in der unteren Bildleiste bezogen werden.
+	  Für alle anderen Applikationen muss der Hersteller der Applikation über die unter
+	  <guimenu>Kontakt</guimenu> angezeigt E-Mail-Adresse kontaktiert werden.
 	</para>
 
 	<figure id="appcenter-details"><title>Details einer Applikation im App Center</title>

@@ -19,7 +19,7 @@
 
 	<section><title>Introduction</title>
 		<para>
-			The command line client <command>udm</command> provides different modi of operation.
+			The command line client <command>udm</command> provides different modes of operation.
 			<cmdsynopsis>
 				<command>udm</command>
 				<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>

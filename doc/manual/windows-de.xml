@@ -3,7 +3,12 @@
   <section id="windows:general">
 	<title>Einführung</title>
 	<para>
-	  UCS kann aus Sicht von Windows-Systemen die Aufgaben von Windows-Serversystemen übernehmen:
+	  UCS kann Active Directory (AD) Dienste anbieten, Mitglied einer Active Directory-Domäne sein,
+	  Objekte zwischen Active Directory-Domänen und einer UCS-Domäne synchronisieren oder als
+	  NT-Domänencontroller arbeiten.
+	</para>
+	<para>
+	  Aus Sicht von Windows-Systemen kann UCS die Aufgaben von Windows-Serversystemen übernehmen:
 	</para>
 
 	<itemizedlist>
@@ -21,25 +26,11 @@
 	</itemizedlist>
 
 	<para>
-	  Alle diese Dienste werden in UCS durch die Software Samba bereitgestellt. Samba kann als
-	  Domänencontroller zwei Arten von Domänendiensten anbieten:
+	  Alle diese Dienste werden in UCS durch die Software Samba bereitgestellt.
 	</para>
 
-	<itemizedlist>
-	  <listitem><simpara>
-		Samba kann auch als Active Directory-kompatibler Domänencontroller verwendet werden,
-		d.h. Samba stellt eine Active Directory-kompatible Windows-Domäne bereit. Dies ermöglicht
-		auch die Verwendung der von Microsoft bereit gestellten Werkzeuge, beispielsweise für die
-		Verwaltung von Benutzern oder Gruppenrichtlinien (GPOs).
-	  </simpara> </listitem>
-
-	  <listitem><simpara>
-		Samba kann als NT-kompatibler Domänencontroller arbeiten.
-	  </simpara></listitem>
-	</itemizedlist>
-
 	<para>
-	  UCS unterstützt die weitgehend automatische Migration einer bestehenden Microsoft Active
+	  UCS unterstützt zusätzlich die weitgehend automatische Migration einer bestehenden Microsoft Active
 	  Directory Domäne zu UCS. Dabei werden alle Benutzer, Gruppen, Rechnerobjekte und
 	  Gruppenrichtlinien übernommen ohne das die Windows-Clients erneut der Domäne beitreten
 	  müssen. Dies ist in <xref linkend="windows:adtakeover"/> beschrieben.
@@ -52,49 +43,22 @@
 	</para>
 
 	<para>
-	  UCS integriert neben Samba noch eine zusätzliche Komponente zur
-	  Anbindung an Active Directory (AD); den Univention Active Directory
-	  Connector. Der Connector synchronisiert den Inhalt einer Microsoft Active Directory-Domäne mit
-	  einer UCS-Domäne. Weitere Informationen finden sich in <xref linkend="ad-connector:general"/>.
+	  Microsoft Active Directory-Domänencontroller können aktuell nicht einer UCS-Samba-Domäne
+	  beitreten. Diese Funktionalität ist zu einem späteren Zeitpunkt geplant.
+	</para>
+
+	<para>
+	  Samba kann zum jetzigen Zeitpunkt noch nicht einem Active Directory Forest beitreten.
+	</para>
+
+	<para>
+	  Vertrauensstellungen mit anderen Domänen sind aktuell nur bei Verwendung NT-kompatibler
+	  Domänen möglich (siehe <xref linkend="vertrauensstellungen_generell"/>).
 	</para>
   </section>
 
   <section id="windows:addomain">
 	<title>Betrieb einer Samba-Domäne auf Basis von Active Directory</title>
-
-	<section id="windows:adsetup">
-	  <title>Bestandteile einer Samba-Domäne</title>
-
-	  <para>
-		Eine Active Directory-Domäne besteht aus min. einem Domänencontroller. Windows-Clients und Memberserver
-		können als Domänenmitglieder dem Vertrauenskontext der Samba-Domäne beitreten. Memberserver
-		stellen keine Anmeldedienste bereit, bieten aber beispielsweise Datei- oder Druckdienste
-		an. Neben dem Domänenbeitritt als Memberserver von Windows Server-Systemen kann auch Samba
-		als Memberserver arbeiten.
-	  </para>
-
-	  <para>
-		Der Domänenbeitritt von Windows-Clients und Microsoft Windows-Memberservern wird in
-		<xref linkend="windows-domaenenbeitritt"/> beschrieben.
-	  </para>
-
-	  <para>
-		Microsoft Active Directory-Domänencontroller können aktuell nicht einer UCS-Samba-Domäne
-		beitreten. Diese Funktionalität ist zu einem späteren Zeitpunkt geplant.
-	  </para>
-
-	  <para>
-		Samba kann zum jetzigen Zeitpunkt noch nicht einem Active Directory Forest beitreten.
-	  </para>
-
-	  <para>
-		Vertrauensstellungen mit anderen Domänen sind aktuell nur bei Verwendung NT-kompatibler
-		Domänen möglich (siehe <xref linkend="vertrauensstellungen_generell"/>).
-	  </para>
-
-	</section>
-
-
 
 	<section id="windows:setup4">
 	  <title>Installation</title>
@@ -319,42 +283,392 @@ instanceType: 4
 
 	  <section id="gruppenrichtlinien">
 		<title>Gruppenrichtlinien</title>
-		<para>
-		  <figure><title>Gruppenrichtlinien-Editor</title>
-		  <graphic scalefit="1" width="80%" fileref="illustrations/win_policy_de.png"/>
-		  </figure>
-		</para>
 
-		<para>
-		  Gruppenrichtlinien sind eine Active Directory-Funktion, die die zentrale Konfiguration von
-		  Rechner- und Benutzereinstellungen erlaubt. Sie werden nur in Samba-AD-Domänen
-		  unterstützt.
-		</para>
+		<section id="gpo:intro">
+		  <title>Einführung</title>
 
-		<para>
-		  Die Einrichtung von Gruppenrichtlinien kann mit dem <emphasis>Remote Server Administration
-		  Tools (RSAT) for Windows 7</emphasis> <footnote><para><ulink
-		  url="http://www.microsoft.com/downloads/details.aspx?FamilyID=7d2f6ad7-656b-4313-a005-4e344e43997d"/></para></footnote>
-		  oder den <emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
-		  <footnote><para><ulink
-		  url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>
-		  erfolgen. Nach der Installation muss der Gruppenrichtlinieneditor in der Windows-Systemsteuerung
-		  aktiviert werden, in dem unter <guimenu>Start -> Systemsteuerung -> Programme -> Windows-Funktionen
-		  aktivieren und deaktivieren -> Remoteserver-Verwaltungstools ->
-		  Featureverwaltungs-Tools</guimenu> die Option <guimenu>Tools für die
-		  Gruppenrichtlinienverwaltung</guimenu> aktiviert wird.
-		</para>
+		  <para>
+			Gruppenrichtlinien sind eine Active Directory-Funktion, die die zentrale Konfiguration von
+			Vorgaben für Rechner und Benutzer erlaubt. Gruppenrichtlinien werden auch von
+			Samba-AD-Domänen unterstützt. Die Richtlinien greifen nur auf Windows-Clients; Linux- oder
+			Mac OS-Systeme werten die Richtlinien nicht aus.
+		  </para>
+		
+		  <para>
+			Gruppenrichtlinien werden ausgehend von der englischen Bezeichung <emphasis>Group policy
+			objects</emphasis> auch oft als GPOs bezeichnet. Genauer gesagt kann ein
+			Gruppenrichtlinienobjekt eine Reihe von Richtlinien beinhalten. Trotz ihres Namens
+			lassen sich Gruppenrichtlinienobjekte nicht direkt bestimmten Benutzergruppen zuweisen,
+			sondern sie werden vielmehr mit bestimmten AD-Verwaltungseinheiten (Domänen, Sites oder
+			Organisationseinheiten) im Samba-Verzeichnisdienst (Samba DS/AD) verknüpft und beziehen
+			sich dadurch auf untergeordnete Objekte. Eine gruppen- oder benutzerspezifische
+			Auswertung ist nur indirekt über die <emphasis>Sicherheitseinstellungen</emphasis> eines
+			Gruppenrichtlinienobjekts möglich, in denen sich das Recht <emphasis>Gruppenrichtlinie
+			übernehmen</emphasis> gezielt auf bestimmte Gruppen, Benutzer oder Computer einschränken
+			lässt.
+		  </para>
 
-		<para>
-		  Die Gruppenrichtlinien werden in der SYSVOL-Freigabe gespeichert, siehe <xref
-		  linkend="windows:sysvolshare"/>.
-		</para>
+		  <para>
+			Grundsätzlich sind die <emphasis>Gruppenrichtlinien</emphasis> (<emphasis>Group
+			Policies</emphasis> (GPO)) von den sehr ähnlich benannten
+			<emphasis>Gruppenrichtlinieneinstellungen</emphasis> (<emphasis>Group Policy
+			Preferences</emphasis> (GPP)) zu unterscheiden:
+			<itemizedlist>
+			  <listitem><simpara>
+		        Die über <emphasis>Gruppenrichtlinien</emphasis> (GPOs) getroffenen Vorgaben sind
+				bindend, während sich über <emphasis>Gruppenrichtlinieneinstellungen</emphasis>
+				(GPPs) nur Präferenzen in die Registry von Windows-Clients eintragen lassen, die
+				aber unter Umständen am Client überschrieben werden können.
+			  </simpara></listitem>
 
-		<para>
-		  Gruppenrichtlinien werden von Mac OS X-Clients nicht unterstützt.
-		</para>
+			  <listitem><simpara>
+		        Die über <emphasis>Gruppenrichtlinien</emphasis> (GPOs) getroffenen Vorgaben werden
+				zudem dynamisch auf die Zielobjekte angewendet, wo hingegen die über
+				<emphasis>Gruppenrichtlinieneinstellungen</emphasis> (GPPs) getroffenen
+				Einstellungen statisch in die Registry von Windows-Clients eintragen werden (man
+				spricht hier auch von <emphasis>Tattooing</emphasis>).
+			  </simpara></listitem>
+			</itemizedlist>
+		    Aus diesen Gründen sind <emphasis>Gruppenrichtlinien</emphasis> (GPOs) in den meisten
+			Fällen den <emphasis>Gruppenrichtlinieneinstellungen</emphasis> (GPPs)
+			vorzuziehen. Dieses Kapitel bezieht sich im weiteren ausschließlich auf
+			<emphasis>Gruppenrichtlinien</emphasis> (GPOs).
+		  </para>
+
+		  <para>
+			Gruppenrichtlinien werden im Gegensatz zu den UCS-Richtlinien (siehe <xref
+			linkend="central:policies"/>) nicht in der &ucsUMC;, sondern mit einem  separaten Editor
+			konfiguriert, mit der <emphasis>Gruppenrichtlinienverwaltung</emphasis>, die Teil der
+			<emphasis>Remote Server Administration Tools</emphasis> (RSAT) ist. Die Einrichtung ist
+			in <xref linkend="gpo:install"/> dokumentiert.
+		  </para>
+
+		  <para>
+			Es existieren zwei Arten von Richtlinien:
+			
+			<itemizedlist>
+			  <listitem><simpara>
+				<emphasis>Benutzerrichtlinien</emphasis> konfigurieren die Einstellungen eines
+				Benutzers, z.B. die Vorkonfiguration des Desktops. Auch Anwendungen können über Gruppenrichtlinien konfiguriert
+				werden (z.B. die Startseite des Microsoft Internet Explorers oder Einstellungen in LibreOffice).
+			  </simpara></listitem>
+
+			  <listitem><simpara>
+				<emphasis>Computer-Richtlinien</emphasis> definieren die Einstellungen von
+				Windows-Clients.
+			  </simpara></listitem>
+			</itemizedlist>
+		  </para>
+
+		  <para>
+			Computerrichtlinien werden erstmalig beim Systemstart ausgewertet, Benutzerrichtlinien bei
+			der Anmeldung. Die Richtlinien werden auch für angemeldete Benutzer/laufende Systeme
+			fortlaufend ausgewertet und aktualisiert (in der Grundeinstellung alle 90-120 Minuten,
+			der Zeitraum wird zur Vermeidung von Lastspitzen nach dem Zufallsprinzip variiert).
+		  </para>
+
+		  <para>
+			Die Auswertung der Gruppenrichtlinien kann durch Aufruf des Befehls
+			<command>gpupdate /force</command> auch gezielt gestartet werden.
+		  </para>
+
+		  <para>
+			Einige Richtlinien - z.B. zur Installation von Software oder für Anmeldeskripte - werden
+			nur bei der Anmeldung (Benutzerrichtlinien) oder beim Systemstart (Rechnerrichtlinien)
+			ausgewertet.
+		  </para>
+
+		  <para>
+			Die meisten Gruppenrichtlinien setzen nur einen Wert in der Windows-Registry, der dann
+			von Windows oder einer Applikation ausgewertet wird. Da Standardbenutzer keine
+			Einstellungen in dem entsprechenden Teil der Windows Registry editieren können, können so auch eingeschränkte
+			Benutzer-Desktops konfiguriert werden, in denen z.B. Benutzer den Windows Task Manager
+			nicht aufrufen dürfen.
+		  </para>
+
+		  <para>
+			Die Gruppenrichtlinien werden in der SYSVOL-Freigabe gespeichert, siehe <xref
+			linkend="windows:sysvolshare"/>. Verknüpft mit Benutzer- und Rechnerkonten werden sie im
+			Samba-Verzeichnisdienst.
+		  </para>
+
+		</section>
+
+		<section id="gpo:install">
+		  <title>Installation der Gruppenrichtlinienverwaltung</title>
+
+		  <para>
+			Die Gruppenrichtlinienverwaltung kann als Teil der <emphasis>Remote Server
+			Administration Tools</emphasis> auf Windows Clients installiert werden. Sie können für Windows 7 unter <footnote><para><ulink
+			url="http://www.microsoft.com/downloads/details.aspx?FamilyID=7d2f6ad7-656b-4313-a005-4e344e43997d"/></para></footnote>
+			oder für Windows 8 unter <emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
+			<footnote><para><ulink
+			url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>
+			bezogen werden.
+		  </para>
+
+		  <para>
+			<figure><title>Aktivierung der Gruppenrichtlinienverwaltung</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-activate-de.png"/>
+			</figure>
+		  </para>
+
+		  <para>
+			Nach der Installation muss die Gruppenrichtlinienverwaltung in der Windows-Systemsteuerung
+			noch aktiviert werden, in dem unter <guimenu>Start -> Systemsteuerung -> Programme ->
+			Windows-Funktionen aktivieren und deaktivieren -> Remoteserver-Verwaltungstools ->
+			Featureverwaltungs-Tools</guimenu> die Option <guimenu>Tools für die
+			Gruppenrichtlinienverwaltung</guimenu> aktiviert wird.
+		  </para>
+
+		  <para>
+			Nach der Aktivierung kann die Gruppenrichtlinienverwaltung unter <guimenu>Start ->
+			Verwaltung -> Gruppenrichtlinienverwaltung</guimenu> aufgerufen werden.
+		  </para>
+
+		</section>
+
+		<section id="gpo:config">
+		  <title>Konfiguration von Richtlinien mit der Gruppenrichtlinienverwaltung</title>
+
+		  <para>
+			Gruppenrichtlinien können nur von Benutzern konfiguriert werden, die Mitglied der Gruppe
+			<emphasis>Domain Admins</emphasis> sind (z.B. der
+			<emphasis>Administrator</emphasis>). Bei der Anmeldung muss beachtet werden, dass keine
+			Anmeldung mit dem lokalen Administrator-Konto erfolgt, sondern mit dem
+			Administrator-Konto der Domäne. Die Gruppenrichtlinienverwaltung kann auf einem beliebigen
+			System der Domäne aufgerufen werden.
+		  </para>
+
+		  <para>
+			Wenn mehr als ein Samba-Domänencontroller eingesetzt wird, muss die Replikation der
+			GPO-Daten berücksichtigt werden, siehe <xref linkend="gpo:gposync"/>.
+		  </para>
+		  <para>
+			Es gibt zwei prinzipielle Möglichkeiten GPOs zu erstellen:
+
+			<itemizedlist>
+			  <listitem><simpara>
+				Sie können im <guimenu>Gruppenrichtlinienobjekte</guimenu>-Order angelegt und dann mit
+				verschiedenen Positionen im LDAP verknüpft werden. Dies ist sinnvoll, wenn eine
+				Richtlinie mit mehreren Positionen im LDAP verknüpft werden soll.
+			  </simpara></listitem>
+
+			  <listitem><simpara>
+				Die GPO kann ad hoc an einer LDAP-Position erstellt und dabei direkt verknüpft
+				werden. Für kleine und mittlere Domänen ist das der einfachere Weg. Auch ad hoc
+				erstellte Domänen werden im  <guimenu>Gruppenrichtlinienobjekte</guimenu>-Ordner angezeigt.
+			  </simpara></listitem>
+			</itemizedlist>
+		  </para>
+
+		  <para>
+			Eine Richtlinie kann drei Zustände annehmen; sie kann aktiviert,
+			deaktiviert oder nicht gesetzt sein. Die Auswirkung bezieht sich immer auf die
+			Formulierung der Richtlinie. Wenn diese beispielsweise <guimenu>Deaktiviere Feature
+			xy</guimenu> heisst, muss die Richtlinie aktiviert werden um das Feature
+			abzuschalten. Einige Richtlinien haben zusätzliche Optionen, z.B. könnte die Richtlinie
+			<guimenu>Aktiviere Mail-Quota</guimenu> eine zusätzliche Option mitbringen um die
+			Speichermenge zu verwalten.
+		  </para>
+
+		  <para>
+			<figure><title>Bearbeiten einer Richtlinie</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-edit-policy-de.png"/>
+			</figure>
+		  </para>
+
+		  <para>
+			Zwei Standard-Richtlinienobjekte sind vordefiniert:
+
+			<itemizedlist>
+			  <listitem><simpara>
+				Das <emphasis>Default Domain Policy</emphasis> Objekt kann verwendet werden, um globale
+				Richtlinien für alle Benutzer und Rechner der gesamten Domäne zu konfigurieren.
+			  </simpara></listitem>
+
+			  <listitem><simpara>
+				Das <emphasis>Default Domain Controllers Policy</emphasis> Objekt hat in einer Samba-Domäne
+				keine Verwendung (in einer Microsoft AD-Domäne würden die Richtlinien für
+				Microsoft-Domänencontroller über dieses Objekt erfolgen). Die Konfiguration der
+				Samba-Domänencontroller erfolgt in UCS weitgehend über &ucsUCR;.
+			  </simpara></listitem>
+			</itemizedlist>
+		  </para>
+
+		  <para>
+			AD-Domänen können in Sites strukturiert werden. Dies kann z.B. verwendet werden um
+			Standorte in einer Domäne zu gruppieren. Im Hauptmenü der Gruppenrichtlinienverwaltung
+			werden alle Sites aufgeführt. Dort findet sich auch eine Liste von Domänen. Die
+			aktuellen Samba-Versionen unterstützen keine Forest-Domänen, so dass hier immer nur eine
+			Domäne angezeigt wird.
+		  </para>
+
+		  <para>
+			Eine Domäne kann in verschiedene Organisations-Einheiten (OUs) strukturiert werden. Dies kann z.B. verwendet
+			werden, um die Mitarbeiter der Buchhaltung und die Benutzer der Verwaltung in
+			unterschiedlichen LDAP-Positionen zu speichern.
+		  </para>
+
+		  <para>
+			Gruppenrichtlinien können sich gegenseitig überlagern. Es gilt das Prinzip der
+			Vererbung, d.h. höherliegende Richtlinien überschreiben die untergeordneten. Die
+			effektiven Richtlinien für einen Benutzer können sowohl mit dem Modellierungsassistenten
+			der Gruppenrichtlinienverwaltung als auch an der Windows-Kommandozeile mit dem Befehl
+			<command>gpresult /user BENUTZERNAME /v </command> auf dem Windows-Client angezeigt
+			werden:
+		  </para>
+
+		  <para>
+			<figure><title>Auswertung der GPO für den Benutzer user01</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-gpresult-de.png"/>
+			</figure>
+		  </para>
+
+		  <para>
+			Die Richtlinien werden in folgender Reihenfolge ausgewertet:
+
+			<itemizedlist>
+			  <listitem><simpara>
+				Richtlinien der <emphasis>Default Domain Policy</emphasis> gelten als
+				Grundeinstellung für alle Benutzer und Rechner der gesamten Domäne.
+			  </simpara></listitem>
+
+			  <listitem><simpara>
+				Mit einer OU verknüpfte Richtlinien überschreiben Richtlinien aus der Default Domain
+				Policy. Sind OUs weiter verschachtelt, greifen im Konfliktfall die jeweils "untersten"
+				Richtlinien, d.h. die, die näher am Zielobjekt verknüpft sind. Es gilt folgende
+				Auswertungsreihenfolge:
+
+				<itemizedlist>
+				  <listitem><simpara>
+					Zuweisung einer Richtlinie zu einer Active Directory-Site
+				  </simpara></listitem>
+
+				  <listitem><simpara>
+					Vorgaben der Default Domain Policy
+				  </simpara></listitem>
+
+				  <listitem><simpara>
+					Zuweisung einer Richtlinie zu einer Organisationseinheit / OU (jede
+					unterliegende OU überstimmt wiederum Richtlinien aus übergeordneten OUs)
+				  </simpara></listitem>
+				</itemizedlist>
+			  </simpara></listitem>
+			</itemizedlist>
+		  </para>
+
+		  <para>
+			Ein Beispiel: Eine Firma verbietet allgemein den Zugriff auf den Windows Task
+			Manager. Dazu wird im <emphasis>Default Domain Policy</emphasis>-Objekt die Richtlinie
+			<guimenu>Zugriff auf Task Manager unterbinden</guimenu> aktiviert. Für einige technisch
+			versiertere Benutzer soll der Task Manager dennoch verfügbar sein. Diese Benutzer sind
+			in der OU <emphasis>Technik</emphasis> abgelegt. Nun wird ein zusätzliches
+			Gruppenrichtlinienobjekt angelegt, in dem Richtlinie <guimenu>Zugriff auf Task Manager
+			unterbinden</guimenu> auf <emphasis>deaktiviert</emphasis> gesetzt wird. Dieses neue GPO
+			wird mit der OU <emphasis>Technik</emphasis> verbunden.
+		  </para>
+
+		</section>
+
+		<section id="gpo:gposync">
+		  <title>Konfiguration von Gruppenrichtlinien in Umgebungen mit mehr als einem
+		  Samba-Domänencontroller</title>
+		  <para>
+			Eine Gruppenrichtlinie besteht technisch aus zwei Teilen: Zum einen gibt es ein
+			Verzeichnis im Dateisystem der Domänencontroller, das die eigentlichen
+			Richtlinien-Dateien enthält, die auf dem Windows-System umgesetzt werden sollen
+			(gespeichert in der SYSVOL-Freigabe (siehe <xref linkend="windows:sysvolshare"/>)).
+			Zum anderen gibt es ein gleichnamiges Objekt im LDAP-Baum des Samba-Verzeichnisdienstes
+			(Samba DS/AD), das üblicherweise unter einem LDAP-Container namens <emphasis>Group
+			Policy Objects</emphasis> abgelegt ist.
+		  </para>
+
+		  <para>
+			Während die LDAP-Replikation zwischen Domänencontrollern innerhalb weniger Sekunden
+			umgesetzt ist, werden die Dateien in der SYSVOL-Freigabe in der Grundeinstellung nur alle fünf Minuten
+			repliziert. Es ist zu beachten, dass die Anwendung von neu konfigurierten
+			Gruppenrichtlinien in diesem Zeitraum fehlschlagen kann, falls ein Client zufällig einen
+			Domänencontroller konsultiert, der noch nicht die aktuellen Dateien zu sich repliziert
+			hat.
+		  </para>
+		</section>
+
+		<section id="gpo:adm">
+		  <title>Administrative Vorlagen (ADMX/ADM)</title>
+		  <para>
+			Die in der Gruppenrichtlinienverwaltung angezeigten Richtlinien können durch sogenannte <emphasis>Administrative
+			Vorlagen</emphasis> erweitert werden. In einer solchen Vorlage wird definiert unter
+			welchem Namen die Richtlinie in der Gruppenrichtlinienverwaltung erscheinen soll und welcher
+			Wert dadurch in der Windows-Registry gesetzt wird. Administrative Vorlagen werden in
+			sogenannten <emphasis>ADMX-Dateien</emphasis> (früher <emphasis>ADM-Dateien</emphasis>)
+			gespeichert <biblioref linkend="admx-reference"/>. ADMX-Dateien bieten unter anderem
+			den Vorteil, dass sie zentral über mehrere Domänencontroller bereitgestellt werden können, damit
+			die Gruppenrichtlinienverwaltung an allen Windows-Clients die gleichen
+			Konfigurationsmöglichkeiten zeigt <biblioref linkend="admx-central"/>.
+		  </para>
+
+		  <para>
+			Das folgende Beispiel für eine ADM-Datei definiert eine Rechner-Richtlinie, in der ein
+			Registry-Key des (fiktiven) Univention RDP-Client konfiguriert wird.
+			ADM-Dateien können über Third-Party-Werkzeuge in das neuere ADMX-Format umgewandelt werden.
+			Weiterführende Informationen zum Format von ADM-Dateien sind unter <biblioref
+			linkend="microsoft-adm-templates"/> und <biblioref linkend="adm-templates-howto"/> zu
+			finden. Die administrativen Vorlagen müssen die Dateiendung <emphasis>.adm</emphasis> verwenden:
+
+			<programlisting language="sh">
+CLASS MACHINE
+CATEGORY "Univention"
+POLICY "RDP-Client"
+KEYNAME "Univention\RDP\StorageRedirect"
+EXPLAIN "Ist diese Option aktiviert, wird Soundausgabe im RDP-Client aktiviert"
+VALUENAME "Sound-Weiterleitung"
+VALUEON "Aktiviert"
+VALUEOFF "Deaktiviert"
+END POLICY
+END CATEGORY
+			</programlisting>
+		  </para>
+
+		  <para>
+			<figure><title>Die eingebundene administrative Vorlage</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-adm-template-de.png"/>
+			</figure>
+		  </para>
+
+		  <para>
+			Die ADM-Datei kann anschließend in das ADMX-Format umgewandelt oder aber direkt über die Gruppenrichtlinienverwaltung importiert
+			werden. Dazu wird im Kontextmenü der <guimenu>Administrativen Vorlagen</guimenu> die
+			Option <guimenu>Vorlagen hinzufügen/entfernen</guimenu> aufgerufen. Mit
+			<guimenu>Hinzufügen</guimenu> kann dann eine ADM-Datei importiert werden. Die
+			administrativen Vorlagen werden ebenfalls in der SYSVOL-Freigabe gespeichert und
+			repliziert, wodurch die Gruppenrichtlinienverwaltung von den Windows-Clients aus auf sie zugreifen kann.
+		  </para>
+		</section>
+
+		<section id="gpo:wmifilter">
+		  <title>Anwendung von Richtlinien auf Basis von Rechnereigenschaften (WMI-Filter)</title>
+		  <para>
+			Richtlinien können auch auf Basis von Systemeigenschaften konfiguriert werden. Diese
+			Eigenschaften werden über die Windows Management Instrumentation-Schnittstelle (WMI)
+			bereitgestellt. Der darauf aufbauende Mechanismus wird als <emphasis>WMI-Filterung</emphasis> bezeichnet.
+			Damit ist es beispielsweise möglich eine Richtlinie nur auf PCs mit einer 64
+			Bit-Prozessor-Architektur oder mit min. 8 GB RAM anzuwenden. Ändert sich eine
+			Eigenschaft eines Systems (z.B. weil mehr Speicher eingebaut wurde), wird der jeweilige
+			Filter automatisch vom Client neu ausgewertet.
+		  </para>
+
+		  <para>
+			Die WMI-Filter werden in der Domänenstruktur im Container <guimenu>WMI-Filter</guimenu>
+			angezeigt. Mit <guimenu>Neu</guimenu> kann ein weiterer Filter definiert werden. Unter
+			<guimenu>Abfragen</guimenu> werden die Filterregeln definiert. Die Regeln werden in
+			einer SQL-ähnlichen Syntax definiert. Regel-Beispiele finden sich in <biblioref
+			linkend="microsoft-wmi-filter"/> und  <biblioref linkend="add-wmi-filters"/>.
+		  </para>
+
+		</section>
+
 	  </section>
-
 
 	  <section id="netlogon-freigabe:samba4">
 		<title>Anmeldeskripte / NETLOGON-Freigabe</title>
@@ -886,104 +1200,276 @@ ucr set auth/methods="krb5 ldap unix winbind"
 
 
 <section id="ad-connector:general">
-  <title>UCS Active Directory Connector</title>
+  <title>Active Directory-Verbindung</title>
   
   <section id="ad-connector:einfuehrung">
 	<title>Einführung</title>
 
 	<para>
-	  Der UCS Active Directory Connector (kurz AD Connector) ermöglicht eine Synchronisation von
-	  Verzeichnisdienstobjekten zwischen einem Windows 2003/2008/2012 Server mit Active Directory
-	  (AD) und dem OpenLDAP-Verzeichnis aus &ucsUCS;. Der Connector kann auch mehrere AD-Domänen mit
-	  einer UCS-Domäne synchronisieren; dies ist in <xref linkend="ext-doc-win"/> dokumentiert.
+	  &ucsUCS; kann auf zwei unterschiedliche Arten mit einer bestehenden Active Directory-Domäne (AD-Domäne) zusammen
+	  betrieben werden. Beide Varianten lassen sich durch die Applikation <emphasis>Active Directory-Verbindung</emphasis> aus dem Univention App Center einrichten (siehe <xref linkend="computers::softwaremanagement::installsoftware"/>). Diese steht auf einem &ucsMaster; und &ucsBackup; zur Verfügung.
 	</para>
 
 	<para>
-	  In der Standardeinstellung werden Container, Organisationseinheiten, Benutzer und Gruppen
-	  synchronisiert. Die Benutzer nehmen eine Sonderstellung ein, da das Passwort in Active
-	  Directory nicht über das LDAP-Protokoll abgefragt werden kann. Hierfür wird ein zusätzlicher
-	  Dienst auf dem Windows-Server installiert, der diese Passwortsynchronisation ermöglicht (siehe
-	  <xref linkend="ad-connector:password-dienst"/>).
+	  Die beiden Varianten sind:
+	  <itemizedlist>
+	    <listitem><simpara>
+	      UCS als Teil (Domänen-Mitglied) einer AD-Domäne (siehe <xref linkend="ad-connector:ad-member-einrichtung"/>)
+	    </simpara></listitem>
+	    <listitem><simpara>
+	      Synchronisation von Kontendaten zwischen einer AD-Domäne und einer UCS-Domäne (siehe <xref linkend="ad-connector:ad-connector-einrichtung"/>)
+	    </simpara></listitem>
+	  </itemizedlist>
+	</para>
+	  
+	<para>
+	  In beiden Modi wird unter UCS der Active Directory-Verbindungsdienst verwendet (kurz UCS AD-Connector), der Verzeichnisdienstobjekte zwischen einem
+	  Windows 2003/2008/2012-Server mit Active Directory (AD) und dem OpenLDAP-Verzeichnis aus &ucsUCS; synchronisieren kann.
 	</para>
 
 	<para>
-	  Hinweise zu den in der Grundeinstellung konfigurierten Attributen und zu beachtende
-	  Besonderheiten finden sich in <xref
-	  linkend="ad-connector:details-zur-vorkonfigurierten-synchronisation"/>.
+	  Im ersten Fall, der Konfiguration eines UCS-Serversystems als Mitglied einer AD-Domäne, dient das AD als führender Verzeichnisdienst
+	  und das jeweilige UCS-System tritt dem Vertrauenskontext der AD-Domäne
+	  bei. Durch die Domänenmitgliedschaft hat das UCS-System limitierten Zugriff auf Kontodaten der Active
+	  Directory-Domäne. Die Einrichtung dieses Betriebsmodus ist im Detail in <xref linkend="ad-connector:ad-member-einrichtung"/> beschrieben.
 	</para>
 
 	<para>
-	  Die Rechnerkonten werden nicht synchronisiert, da Windows-Rechner nur in eine Domäne
-	  eingebunden sein können.
+	  Der zweite Modus, der sich über die App <emphasis>Active Directory-Verbindung</emphasis>
+	  konfigurieren lässt, dient dazu, die UCS Domäne parallel zu einer bestehenden AD-Domäne
+	  zu betreiben. In diesem Modus ist jedem Domänen-Benutzer sowohl in der UCS- als auch
+	  in der AD-Domäne ein gleichnamiges Benutzerkonto zugeordnet. Durch die
+	  Namensidentität und die Synchronisation der verschlüsselten Passwortdaten ermöglicht
+	  dieser Modus einen transparenten Zugriff zwischen beiden Domänen. Die Authentifikation eines
+	  Benutzers in der UCS-Domäne geschieht in diesem Modus direkt innerhalb der UCS-Domäne und ist damit
+	  nicht direkt abhängig von der AD-Domäne. Die Einrichtung diese Betriebsmodus ist im Detail in <xref linkend="ad-connector:ad-connector-einrichtung"/> beschrieben.
 	</para>
 
-	<para>
-	  Durch die in beiden Domänen gleichen Benutzereinstellungen, können Benutzer transparent auf
-	  Dienste beider Umgebungen zugreifen. Nachdem eine Domänenanmeldung an einer UCS-Domäne
-	  durchgeführt wurde, ist anschließend eine Verbindung zu einer Dateifreigabe oder einem
-	  Exchange-Server mit Active Directory ohne erneute Passwortabfrage möglich. Auf den Ressourcen
-	  der anderen Domäne finden Benutzer und Administratoren gleichnamige Benutzer und Gruppen vor
-	  und können so mit den gewohnten Rechtestrukturen arbeiten.
-	</para>
-
-	<para>
-	  Nach dem erstmaligen Start des Connectors wird die Initialisierung vorgenommen. Dabei werden
-	  alle Einträge aus dem UCS gelesen und entsprechend dem eingestellten Mapping in AD-Objekte
-	  umgewandelt und auf AD-Seite hinzugefügt, bzw., falls bereits vorhanden,
-	  modifiziert. Anschließend werden alle Objekte aus dem AD gelesen und in UCS-Objekte
-	  umgewandelt und entsprechend auf UCS-Seite hinzugefügt bzw. modifiziert. Solange noch
-	  Änderungen vorliegen, werden die Verzeichnisdienst-Server weiter abgefragt. Der AD-Connector
-	  kann auch in einem unidirektionalen Modus betrieben werden.
-	</para>
-
-	<para>
-	  Nach dem initialen Sync werden weitere Änderungen in einem festen Intervall abfragt. Dieser
-	  Wert ist auf fünf Sekunden eingestellt und kann über das &ucsUMC;-Konfigurationsmodul
-	  angepasst werden.
-	</para>
-
-	<para>
-	  Sollte ein Objekt nicht synchronisiert werden können, so wird dieses Objekt zunächst
-	  zurückgestellt ("rejected"). Nach einer konfigurierbaren Anzahl von Durchläufen - das
-	  Intervall kann im UMC-Konfigurationsmodul konfiguriert werden, siehe <xref
-	  linkend="ad-connector:basicsetup"/>  - wird erneut versucht diese Änderungen wieder
-	  einzuspielen. Der Standardwert beträgt zehn Durchläufe. Außerdem wird bei einem Neustart des
-	  UCS AD Connectors ebenfalls versucht, die zuvor zurückgewiesenen Änderungen erneut zu
-	  synchronisieren.
-	</para>
   </section>
 
-<section id="ad-connector:einrichtung">
-  <title>Einrichtung des UCS AD Connectors</title>
+  <section id="ad-connector:ad-member-einrichtung">
+  <title>UCS als Mitglied einer Active Directory-Domäne</title>
+
+	<para>
+		Bei der Konfiguration eines UCS-Serversystems als Mitglied einer AD-Domäne (<emphasis>AD member</emphasis>-Modus)
+		dient das AD als führender Verzeichnisdienst und das jeweilige UCS-System tritt dem Vertrauenskontext der AD-Domäne
+	  bei. Durch die Domänenmitgliedschaft hat das UCS-System limitierten Zugriff auf Kontodaten der Active
+		Directory-Domäne, die es über den UCS AD-Connector aus dem AD ausliest und lokal in den eigenen OpenLDAP-basierten
+		Verzeichnisdienst schreibt. In dieser Konfiguration schreibt der UCS AD-Connector keine Änderungen
+	  in das AD.
+	</para>
+
+	<para>
+	  Der <emphasis>AD member</emphasis>-Modus eignet sich,
+	  um eine AD-Domäne durch Applikationen zu erweitern, die auf der UCS-Plattform zur
+	  Verfügung stehen. Auf der UCS-Plattform installierte Apps sind dann für Benutzer der
+	  AD-Domäne nutzbar. Die Authentifikation erfolgt dabei weiter gegen native
+	  Microsoft AD-Domänencontroller.
+	</para>
 
   <para>
-	Der Connector kann mit der Applikation <emphasis>UCS Active Directory Connector</emphasis>
-	aus dem Univention App Center installiert werden. Alternativ kann das Softwarepaket
-	<package>univention-ad-connector</package> installiert werden. Weitere Informationen finden sich in
-	<xref linkend="computers::softwaremanagement::installsoftware"/>.
+		Der Einrichtungsassistent kann mit der Applikation <emphasis>Active Directory-Verbindung</emphasis>
+		aus dem Univention App Center installiert werden. Alternativ kann das Softwarepaket
+		<package>univention-ad-connector</package> installiert werden. Weitere Informationen finden sich in
+		<xref linkend="computers::softwaremanagement::installsoftware"/>.
+  </para>
+
+  <note>
+		<itemizedlist>
+			<listitem><simpara>Der <emphasis>AD member</emphasis>-Modus kann nur auf einem &ucsMaster; konfiguriert werden.</simpara></listitem>
+			<listitem><simpara>Der Name der DNS-Domäne des UCS-Systems muss mit dem der AD-Domäne übereinstimmen. Die Hostnamen selbst müssen natürlich unterschiedlich sein.</simpara></listitem>
+			<listitem><simpara>Alle AD- und UCS-Server in einer Connector-Umgebung sollten dieselbe Zeitzone verwenden.</simpara></listitem>
+		</itemizedlist>
+  </note>
+
+  <para>
+    <figure><title>Konfiguration des Betriebsmodus als Teil einer AD-Domäne</title>
+      <graphic scalefit="1" width="80%" fileref="illustrations/admember_1-de.png"/>
+    </figure>
   </para>
 
   <para>
-	Der UCS AD Connector kann nur auf einem &ucsMaster; oder &ucsBackup; installiert werden.
+	Im ersten Dialog der Einrichtungsassistenten ist der Punkt <emphasis>UCS als Teil einer
+	AD-Domäne konfigurieren</emphasis> vorausgewählt
+	und kann mit <mousebutton>Weiter</mousebutton> bestätigt werden.
   </para>
 
   <para>
-	Trotz intensiver Tests kann aufgrund der Vielfalt der Konfigurations- und Betriebsvarianten
-	einer Active Directory-Domäne nicht ausgeschlossen werden, dass die Ergebnisse des
-	Synchronisationsvorgangs den Betrieb einer produktiven Domäne beeinträchtigen. Der Connector
-	sollte daher vorab in einer getrennten Umgebung auf die jeweiligen Anforderungen geprüft werden.
+	Im nächsten Dialog wird die Adresse eines AD-Domänencontrollers
+	sowie der Name des Standard-Administrator-Kontos der AD-Domäne
+	und dessen Passwort abgefragt. Hier sollte das Standard-AD-Administratorkonto
+	verwendet werden.
+	Der angegebene AD-Domänencontroller muss auch DNS-Dienste für
+	die Domäne bereitstellen.
+    Durch Betätigen der Schaltfläche <mousebutton>AD-Domäne beitreten</mousebutton> wird der Domänenbeitritt gestartet.
   </para>
 
   <para>
-	Alle Active Directory- und UCS-Server in einer Connector-Umgebung müssen dieselbe Zeitzone verwenden.
+    <figure><title>Domänenbeitritt zu einer AD-Domäne</title>
+      <graphic scalefit="1" width="80%" fileref="illustrations/admember_2-de.png"/>
+    </figure>
+  </para>
+
+  <para>
+    Falls die Systemzeit des UCS-Systems mehr als 5 Minuten gegenüber der Systemzeit des AD-Domänencontrollers vorgeht, ist eine manuelle Angleichung der Systemzeiten notwendig. Dies ist notwendig, da die AD-Kerberos-Infrastruktur zur Authentifizierung verwendet wird.
+    Systemzeiten sollten dabei nicht zurückgestellt werden, um Inkonsistenzen zu vermeiden.
+  </para>
+
+  <para>
+    Der Domänenbeitritt läuft automatisch ab.
+    Der abschließende Dialog sollte mit <mousebutton>Fertigstellen</mousebutton> bestätigt werden. Danach sollte mit einem Klick auf <mousebutton>Neustart</mousebutton> der UMC-Server neu gestartet werden.
+  </para>
+
+  <note>
+    <para>
+			Nach Einrichtung des <emphasis>AD member</emphasis>-Modus findet die Authentifikation gegen den AD-Domänencontroller statt. <emphasis>Daher gilt für den Administrator jetzt das Passwort aus der AD-Domäne.</emphasis> Falls einer AD-Domäne mit nicht-englischsprachiger Sprachkonvention beigetreten wurde, dann wird das <emphasis>Administrator</emphasis>-Konto aus UCS während des Domänenbeitritts automatisch in die Schreibweise des AD umbenannt. Gleiches gilt für alle Benutzer- und Gruppenobjekte mit <emphasis>Well Known SID</emphasis> (z.B. <emphasis>Domain Admins</emphasis>).
+    </para>
+  </note>
+
+  <warning>
+    <para>
+    	Falls zuvor neben dem &ucsMaster; weitere UCS-Systeme schon Teil der UCS-Domäne waren, dann müssen diese der Domäne neu beitreten. Dabei erkennen sie, dass der &ucsMaster; sich im <emphasis>AD member</emphasis>-Modus befindet und treten ebenfalls der Authentifikationsstruktur der AD-Domäne bei und können dann z.B. zusätzlich Samba-Dateifreigaben bereitstellen.
+    </para>
+  </warning>
+
+  <note>
+  	<para>
+    Da in diesem Modus die AD-Kerberos-Infrastruktur zur Authentifizierung von Benutzern verwendet wird, ist es essenziell, dass die Systemzeiten von UCS und AD-Domänencontroller synchron sind (mit einer Toleranz von 5 Minuten). Zu diesem Zweck ist unter UCS der AD-Domänencontroller als NTP-Zeitserver konfiguriert.
+    
+    	Im Falle von Authentifikationsproblemen sollte immer als erstes die Systemzeit überprüft werden.
+    </para>
+  </note>
+
+  <para>
+    Nach dieser Einrichtung kann das UMC-Modul <emphasis>Active Directory-Verbindung</emphasis> zur weiteren Administration verwendet werden, z.B. um zu prüfen, ob der Dienst läuft und ihn ggf. neu zu starten (siehe <xref linkend="ad-connector:neustart"/>).
+  </para>
+
+  <para>
+    Um eine verschlüsselte Verbindung zwischen Active Directory und &ucsMaster; nicht nur für die Authentifikation, sondern auch für den Datenaustausch an sich zu verwenden, kann auf dem AD-Domänencontroller das Root-Zertifikat der Zertifizierungsstelle exportiert und über das UMC-Modul hochgeladen werden. Weitere Informationen dazu liefert <xref linkend="ad-connector:ad-zertifikat"/>.
+  </para>
+
+  <para>
+    Per Voreinstellung überträgt die so eingerichtete Active Directory-Verbindung keine Passwortdaten aus AD in den UCS-Verzeichnisdienst. In einigen Szenarien kann es dennoch sinnvoll sein, die verschlüsselten Passwortdaten zu übertragen. Manche Apps aus dem Univention App Center beispielsweise benötigen dies. Zu diesem Zweck kann der Passwortdienst auf dem AD-Server installiert werden (siehe <xref linkend="ad-connector:password-dienst"/>).
+  </para>
+
+  <para>
+  	Im <emphasis>AD member</emphasis>-Modus liest der UCS AD-Connector Objektdaten per Voreinstellung mit den Berechtigungen des Maschinenkontos des &ucsMaster;s aus dem AD. Für das Auslesen von verschlüsselten Passwortdaten sind dessen Berechtigungen nicht ausreichend. Daher muss für die Einrichtung des Passwortdienstes zusätzlich manuell die LDAP-DN eines privilegierten Replikationsbenutzers in die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> eingetragen werden. Dieser muss im AD Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Das entsprechende Kennwort muss auf dem &ucsMaster; in eine Datei gespeichert werden und ihr Dateiname muss in die &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen werden. Falls zu einem späteren Zeitpunkt das Zugriffspasswort geändet wurde, muss das neue Passwort in diese Datei eingetragen werden. Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <emphasis>root</emphasis> Zugriff hat.
+  </para>
+  <para>
+  	Die folgenden Kommandos zeigen die Schritte beispielhaft:
+  </para>
+
+  <programlisting language="sh">
+ucr set connector/ad/ldap/binddn=Administrator
+ucr set connector/ad/ldap/bindpw=/etc/univention/connector/password
+touch /etc/univention/connector/password
+chmod 600 /etc/univention/connector/password
+echo -n "Administrator password" > /etc/univention/connector/password
+  </programlisting>
+
+  <para>
+    Falls gewünscht, kann zu einem späteren Zeitpunkt der AD-Domänencontroller auch durch den &ucsMaster; abgelöst werden. Dies ist über die Applikation <emphasis>Active Directory Takeover</emphasis> möglich (siehe <xref linkend="windows:adtakeover"/>).
+  </para>
+  </section>
+
+  <para>
+    <figure><title>Administrationsdialog für die Active Directory-Verbindung</title>
+      <graphic scalefit="1" width="80%" fileref="illustrations/admember_3-de.png"/>
+    </figure>
+  </para>
+
+  <section id="ad-connector:ad-connector-einrichtung">
+  <title>Einrichtung des UCS AD-Connectors</title>
+
+  <para>
+  	Als Alternative zur Mitgliedschaft in einer AD-Domäne, die im vorherigen Abschnitt beschrieben ist, kann der UCS Active Directory-Connector dazu verwendet werden, Benutzer- und Gruppenobjekte zwischen einer UCS-Domäne und einer AD-Domäne zu synchronisieren. Diese Betriebsart erlaubt über die unidirektionale Synchronisation hinaus auch die bidirektionale Synchronisation. In dieser Betriebsart bestehen beide Domänen parallel und ihre Authentifikationssysteme funktionieren unabhängig. Voraussetzung dafür ist die Synchronisation der verschlüsselten Passwortdaten. Dafür ist die Installation eines speziellen Passwortdienstes auf dem AD-Domänencontroller notwendig.
+  </para>
+
+  <para>
+    In der Standardeinstellung werden Container, Organisationseinheiten, Benutzer und Gruppen
+    synchronisiert. Die Benutzer nehmen eine Sonderstellung ein, da das Passwort in Active
+    Directory nicht über das LDAP-Protokoll abgefragt werden kann. Hierfür wird ein zusätzlicher
+    Dienst auf dem Windows-Server installiert, der diese Passwortsynchronisation ermöglicht (siehe
+    <xref linkend="ad-connector:password-dienst"/>).
+  </para>
+  
+  <para>
+    Hinweise zu den in der Grundeinstellung konfigurierten Attributen und zu beachtende
+    Besonderheiten finden sich in <xref
+    linkend="ad-connector:details-zur-vorkonfigurierten-synchronisation"/>.
+  </para>
+  
+  <para>
+    Die Rechnerkonten werden nicht synchronisiert, da Windows-Rechner nur in eine Domäne
+    eingebunden sein können.
+  </para>
+  
+  <para>
+    Durch die in beiden Domänen gleichen Benutzereinstellungen können Benutzer transparent auf
+    Dienste beider Umgebungen zugreifen. Nachdem eine Domänenanmeldung an einer UCS-Domäne
+    durchgeführt wurde, ist anschließend eine Verbindung zu einer Dateifreigabe oder einem
+    Exchange-Server mit Active Directory ohne erneute Passwortabfrage möglich. Auf den Ressourcen
+    der anderen Domäne finden Benutzer und Administratoren gleichnamige Benutzer und Gruppen vor
+    und können so mit den gewohnten Rechtestrukturen arbeiten.
+  </para>
+  
+  <para>
+    Nach dem erstmaligen Start des Connectors wird die Initialisierung vorgenommen. Dabei werden
+    alle Einträge aus dem UCS gelesen und entsprechend dem eingestellten Mapping in AD-Objekte
+    umgewandelt und auf AD-Seite hinzugefügt, bzw., falls bereits vorhanden,
+    modifiziert. Anschließend werden alle Objekte aus dem AD gelesen und in UCS-Objekte
+    umgewandelt und entsprechend auf UCS-Seite hinzugefügt bzw. modifiziert. Solange noch
+    Änderungen vorliegen, werden die Verzeichnisdienst-Server weiter abgefragt. Der UCS AD-Connector
+    kann auch in einem unidirektionalen Modus betrieben werden.
+  </para>
+
+  <para>
+    Nach dem initialen Sync werden weitere Änderungen in einem festen Intervall abfragt. Dieser
+		Wert ist auf fünf Sekunden eingestellt und kann manuell per &ucsUCR;-Variable <envar>connector/s4/poll/sleep</envar>
+		angepasst werden.
+  </para>
+
+  <para>
+    Sollte ein Objekt nicht synchronisiert werden können, so wird dieses Objekt zunächst
+    zurückgestellt ("rejected"). Nach einer konfigurierbaren Anzahl von Durchläufen - das
+    Intervall kann im per &ucsUCR;-Variable <envar>connector/s4/retryrejected</envar> angepasst werden - wird erneut versucht diese Änderungen wieder
+    einzuspielen. Der Standardwert beträgt zehn Durchläufe. Außerdem wird bei einem Neustart des
+    UCS AD-Connectors ebenfalls versucht, die zuvor zurückgewiesenen Änderungen erneut zu
+    synchronisieren.
   </para>
 
   <section id="ad-connector:basicsetup">
-	<title>Grundkonfiguration des Connectors</title>
+	<title>Grundkonfiguration des UCS AD-Connectors</title>
 
 	<para>
-	  Der Connector wird über den Assistenten <guimenu>UCS Active Directory Connector</guimenu> der
+	  Der UCS AD-Connector wird über den Assistenten <guimenu>Active Directory-Verbindung</guimenu> der
 	  &ucsUMC; konfiguriert.
+	</para>
+
+	<para>
+	  Der Einrichtungsassistent kann mit der Applikation <emphasis>Active Directory-Verbindung</emphasis>
+	  aus dem Univention App Center installiert werden. Alternativ kann das Softwarepaket
+	  <package>univention-ad-connector</package> installiert werden. Weitere Informationen finden sich in
+	  <xref linkend="computers::softwaremanagement::installsoftware"/>.
+	</para>
+
+	<note>
+	  <para>
+	    Alle AD- und UCS-Server in einer Connector-Umgebung müssen dieselbe Zeitzone verwenden.
+	  </para>
+	</note>
+
+	<warning>
+	  <para>
+	    Trotz intensiver Tests kann aufgrund der Vielfalt der Konfigurations- und Betriebsvarianten
+	    einer AD-Domäne nicht ausgeschlossen werden, dass die Ergebnisse des
+	    Synchronisationsvorgangs den Betrieb einer produktiven Domäne beeinträchtigen. Der UCS AD-Connector
+	    sollte daher vorab in einer getrennten Umgebung auf die jeweiligen Anforderungen geprüft werden.
+	  </para>
+	</warning>
+
+	<para>
+	  Es ist zu empfehlen, die folgenden Schritte mit einem Webbrowser vom AD-Domänencontroller aus durchzuführen, da Dateien auf den AD-Domänencontroller herunter und in die &ucsUMC; hochgeladen werden müssen.
 	</para>
 
 	<para>
@@ -993,17 +1479,19 @@ ucr set auth/methods="krb5 ldap unix winbind"
 	</para>
 
 	<para>
-	  Unter <guimenu>Konfiguration</guimenu> wird der Einrichtungs-Status des Connectors
-	  angezeigt. Durch Klick auf <guimenu>UCS Active Directory Connector einrichten</guimenu> kann
-	  die Konfiguration des AD Connectors begonnen werden.
+	  Im ersten Dialog der Einrichtungsassistenten muss der Punkt <emphasis>Synchronisation von Kontendaten zwischen einer AD und dieser UCS-Domäne</emphasis> ausgewählt und mit <mousebutton>Weiter</mousebutton> bestätigt werden.
 	</para>
 
 	<para>
-	  Im Feld <guimenu>Active Directory Server</guimenu> muss der vollqualifizierte Rechnername des
-	  Active Directory Servers angegeben werden. Wenn der Rechnername des AD-Systems für das
-	  UCS-System nicht auflösbar sein sollte, muss für das AD-System ein DNS-Host-Record in der
-	  DNS-Verwaltung der &ucsUMC; angelegt werden (siehe <xref
-	  linkend="networks::dns::hostrecord"/>).
+	  <figure><title>Konfiguration des UCS AD-Connectors in UMC</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_1-de.png"/>
+	  </figure>
+	</para>
+
+	<para>
+	  Im nächsten Dialog wird die Adresse eines AD-Domänencontrollers abgefragt.
+	  Hier kann die IP-Adresse oder ein voll qualifizierter DNS-Name eingegeben werden.
+	  Wenn der Rechnername des AD-Systems für das UCS-System nicht auflösbar sein sollte, kann entweder unter UCS der AD DNS-Server als DNS-Forwarder konfiguriert werden oder es kann in der DNS-Verwaltung der &ucsUMC; ein DNS-Host-Record für das AD-System angelegt werden (siehe <xref linkend="networks::dns::hostrecord"/>).
 	</para>
 
 	<para>
@@ -1016,87 +1504,64 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	</programlisting>
 
 	<para>
-	  <figure><title>Konfiguration des AD-Connectors in UMC</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_2-de.png"/>
-	  </figure>
-	</para>
-
-	<para>
-	  Ist die Option <guimenu>Automatische Ermittlung der LDAP-Konfiguration</guimenu> aktiviert,
-	  werden Einstellungen wie die Basis-DN des Active Directory-Verzeichnis oder die
-	  Kerberos-Domäne des AD-Systems automatisch ausgelesen und müssen nicht manuell konfiguriert
-	  werden.
-	</para>
-
-	<para>
-	  Im nächsten Dialog müssen die LDAP- und Kerberos-Einstellungen geprüft,
-	  bzw. eingegeben werden.
-	</para>
-
-	<para>
-	  Im Feld <guimenu>LDAP-DN des Replikationsbenutzers</guimenu> wird die LDAP-DN des Benutzer
-	  konfiguriert, der für den Zugriff auf das Active Directory verwendet wird. Die Einstellung
-	  wird in der &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> gespeichert. Bei Verwendung der
-	  Funktion für die automatische Ermittlung der Basis-DN des Active Directory wird das
-	  Administrator-Konto für die Basis-DN als Vorgabe eingetragen. Der Replikationsbenutzer muss im
-	  Active Directory Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Synchronisiert
-	  der Connector nur lesend von Active Directory zu UCS, kann auch ein Standardbenutzerkonto
+	  Im Feld <guimenu>Active Directory-Konto</guimenu> wird der Benutzer konfiguriert, der für
+	  den Zugriff auf das AD verwendet wird. Die Einstellung wird in der
+	  &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> gespeichert. Der Replikationsbenutzer muss im
+	  AD Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Synchronisiert
+	  der Connector nur lesend von AD zu UCS, kann auch ein Standardbenutzerkonto
 	  angegeben werden.
 	</para>
 
 	<para>
-	  Das verwendete Kennwort für den Zugriff wird im Feld <guimenu>Passwort des
-	  Synchronisationsbenutzers</guimenu> eingetragen und in einer Datei gespeichert.
+	  Das verwendete Kennwort für den Zugriff muss im Feld <guimenu>Active Directory-Passwort</guimenu>
+	  eingetragen werden. Es wird auf dem UCS-System lokal in einer Datei gespeichert,
+	  die nur für den Benutzer <emphasis>root</emphasis> lesbar ist.
 	</para>
 
 	<para>
-	  Nun muss auf <guimenu>Weiter</guimenu> geklickt werden.
+	  <xref linkend="ad-connector:ad-passwort"/> beschreibt die Schritte, die notwendig sind, falls diese Zugangsdaten zu einem späteren Zeitpunkt angepasst werden müssen.
 	</para>
 
 	<para>
-	  Einige Gruppennamen werden abhängig von der Installationssprache des Servers im Active
-	  Directory anders gespeichert. Unter <guimenu>Systemsprache des Active Directory
-	  Servers</guimenu> kann die verwendete Lokalisierung ausgewählt werden. Weitere Hinweise finden
-	  sich in <xref linkend="ad-connector:gruppen"/>.
+	  Nach Klick auf <mousebutton>Weiter</mousebutton> prüft der Einrichtungsassistent die Verbindung zum AD-Domänencontroller. Falls keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann wird eine Warnung ausgegeben
+	  in der zur Installation einer Zertifizierungsstelle auf dem AD-Domänencontroller geraten wird.
+	  Es wird empfohlen diesem Rat zu folgen. Nach diesem Schritt kann die Einrichtung durch erneuten Klick auf
+	  <mousebutton>Weiter</mousebutton> fortgesetzt werden. Falls weiterhin keine SSL/TLS-verschlüsselte Verbindung aufgebaut werden kann, wird in einem Sicherheitshinweis nachgefragt, ob die Synchronisation ohne SSL-Verschlüsselung eingerichtet werden soll.
+	  Falls dies gewünscht ist, kann die Einrichtung durch Klick auf <mousebutton>Fortfahren ohne Verschlüsselung</mousebutton> fortgesetzt werden. In diesem Fall findet die Synchronisation der Verzeichnisdaten unverschlüsselt statt.
 	</para>
 
 	<para>
-	  Der Connector kann in verschiedenen Modi betrieben werden, die unter
-	  <guimenu>Synchronisationsmodus</guimenu> ausgewählt werden können. Neben einer bidirektionalen
-	  Synchronisation kann auch einseitig von Active Directory nach UCS oder einseitig von UCS in
-	  das Active Directory repliziert werden.
+	  Falls der AD-Domänencontroller SSL/TLS-verschüsselte Verbindungen unterstützt, bietet der Einrichtungsassistent im nächsten Schritt das <guimenu>Hochladen des AD-Root-Zertifikats</guimenu> an. Dieses Zertifikat muss vorher aus der AD-Zertifizierungsstelle exportiert werden (siehe <xref linkend="ad-connector:ad-zertifikat"/>). Falls dieser Schritt hingegen übersprungen wird, kann das Zertifikat auch zu einem späteren Zeitpunkt über das UMC-Modul hochgeladen und die SSL/TLS-Verschlüsselung aktiviert werden (bis dahin werden dann aber alle Verzeichnisdaten unverschlüsselt synchronisiert).
 	</para>
 
 	<para>
-	  Nun muss auf <guimenu>Weiter</guimenu> geklickt werden. Die Voreinstellungen im folgenden
-	  Dialog sind für die meisten Umgebungen sinnvoll und brauchen in der Regel nicht verändert
-	  werden.
+	  Der Connector kann in verschiedenen Modi betrieben werden, die im nächsten Dialog
+	  <guimenu>Konfiguration der Active Directory-Domänensynchronisation</guimenu> ausgewählt werden können.
+	  Neben einer bidirektionalen Synchronisation kann auch unidirektional von AD nach UCS
+	  oder unidirektional von UCS in das AD repliziert werden.
+	  Nach Auswahl des Modus muss auf <mousebutton>Weiter</mousebutton> geklickt werden.
 	</para>
 
 	<para>
-	  In <guimenu>Polling-Intervall (in Sekunden)</guimenu> kann festgelegt werden, wie lange nach
-	  einem Lauf ohne Änderungen gewartet wird, bis eine erneute Anfrage gestellt wird.
+	  Im letzten Dialog werden alle zur <guimenu>Installation des Passwortdienstes</guimenu> notwendigen Dateien zum Download auf den Windows-Server angeboten. Weitere Details dazu sind in <xref linkend="ad-connector:password-dienst"/> beschrieben.
 	</para>
 
 	<para>
-	  Unter <guimenu>Wiederholungsintervall für abgelehnte Objekte</guimenu> wird festgelegt, nach
-	  wievielen Synchronisations-Intervallen zurückgehaltene Änderungen nachträglich eingespielt
-	  werden.
+	  Nach einem Klick auf <mousebutton>Weiter</mousebutton> wird die Konfiguration übernommen und der UCS AD-Connector wird gestartet.
+	  Der abschließende Dialog muss dann durch Klick auf <mousebutton>Fertigstellen</mousebutton> geschlossen werden.
+	</para>
+	<para>
+      Nach dieser Einrichtung kann das UMC-Modul <emphasis>Active Directory-Verbindung</emphasis> zur weiteren Administration des UCS Active Directory Connectors verwendet werden, z.B. um zu prüfen, ob der Dienst läuft und ihn ggf. neu zu starten (siehe <xref linkend="ad-connector:neustart"/>).
 	</para>
 
-	<para>
-	  Der <guimenu>Debug-Level des Active Directory Connectors</guimenu> konfiguriert wieviele
-	  Debug-Informationen in die Datei <filename>/var/log/univention/connector.log</filename>
-	  protokolliert werden. Mit <guimenu>Debug-Ausgaben für Funktionen ausgeben</guimenu> kann
-	  außerdem festgelegt werden, ob für Funktionsaufrufe weiterer Debug-Output hinzugefügt wird.
-	</para>
+	<note>
+	  <para>
+			Der Connector kann auch mehrere AD-Domänen mit einer UCS-Domäne synchronisieren;
+			dies ist in <xref linkend="ext-doc-win"/> dokumentiert.
+	  </para>
+	</note>
 
-	<para>
-	  Nach einem Klick auf <guimenu>Beenden</guimenu> wird die Konfiguration übernommen. Änderungen
-	  werden erst nach einem Neustart des UCS AD Connectors übernommen, siehe <xref
-	  linkend="ad-connector:neustart"/>.
-	</para>
-  </section>
+	</section>
 
 <section id="ad-connector:ad-zertifikat">
   <title>Import des SSL-Zertifikats des Active Directory</title>
@@ -1107,7 +1572,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	stattfinden kann. Erzeugt wird das Zertifikat mit dem
 	Zertifikatsdienst des Active Directory. Die nötigen Schritte
 	sind abhängig von der eingesetzten Windows-Version und werden hier
-	beispielhaft für zwei Varianten dargestellt.
+	beispielhaft für drei Varianten dargestellt.
   </para>
 
   <para>
@@ -1241,12 +1706,12 @@ Nun muss das SSL-AD-Zertifikat über den &ucsUMC;-Assistenten in das
 UCS-System importiert werden.
 </para>
 <para>
-Dies erfolgt durch einen Klick auf <guimenu>Hochladen</guimenu> im
-Untermenü <guimenu>Active Directory Server Konfiguration</guimenu>.
+Dies erfolgt durch einen Klick auf <mousebutton>Hochladen</mousebutton> im
+Untermenü <guimenu>Active Directory-Verbindung SSL-Konfiguration</guimenu>.
 </para>
 <para>
 Hierbei öffnet sich ein Fenster, in dem eine Datei ausgewählt wird.
-Das hochgeladene Zertifikat wird dadurch für den AD Connector verfügbar gemacht.
+Das hochgeladene Zertifikat wird dadurch für den UCS AD-Connector verfügbar gemacht.
 </para>
 </section>
 </section>
@@ -1261,11 +1726,7 @@ Windows-Server erfordert.
 Die Installations-Pakete werden ebenfalls über den
 Einrichtungs-Assistenten der &ucsUMC; bereitgestellt:
 </para>
-<para>
-<figure><title>Download der Pakete für den Passwortdienst</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_6-en_de.png"/>
- </figure>
-</para>
+
 <itemizedlist>
 <listitem><simpara><filename>ucs-ad-connector.msi (for 32bit Windows)</filename></simpara></listitem>
 <listitem><simpara><filename>ucs-ad-connector-64bit.msi (for 64bit Windows)</filename></simpara></listitem>
@@ -1297,20 +1758,24 @@ Anschließend muss der Passwort-Dienst neu gestartet werden.
 </para>
 <para>
 In einer Standard-Installation unter Windows 2008 blockiert die
-Windows-Firewall die Zugriffe auf den AD Connector. Diese muss entweder
+Windows-Firewall die Zugriffe auf den UCS AD-Connector. Diese muss entweder
 in der <guimenu>Systemsteuerung</guimenu> deaktiviert werden oder Port
 6670/TCP freigegeben werden.
+</para>
+<para>
+<figure><title>Download der Pakete für den Passwortdienst</title>
+ <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_2-de.png"/>
+ </figure>
 </para>
 </section>
 
 <section id="ad-connector:neustart"><title>Start/Stop des Active Directory Connectors</title>
 <para>
-Abschließend kann der Connector über <guimenu>Active Directory
-  Connector starten</guimenu> gestartet werden und bei Bedarf über <guimenu>
-Active Directory Connector beenden</guimenu> angehalten werden. Alternativ kann
-ein Starten/Stoppen auch über Kommandozeile durch die Befehle
-<command>/etc/init.d/univention-ad-connector start</command> und
-<command>/etc/init.d/univention-ad-connector stop</command> erfolgen.
+	Abschließend kann der Connector über <mousebutton>Active Directory-Verbindungsdienst starten</mousebutton>
+	gestartet werden und bei Bedarf über <mousebutton>Active Directory-Verbindungsdienst stoppen</mousebutton>
+	angehalten werden. Alternativ kann ein Starten/Stoppen auch über Kommandozeile durch die Befehle
+	<command>/etc/init.d/univention-ad-connector start</command> und
+	<command>/etc/init.d/univention-ad-connector stop</command> erfolgen.
 </para>
 </section>
 
@@ -1328,11 +1793,26 @@ Erreichbarkeit/Konfiguration des Active Directory-Zugriffs geprüft
 werden.
 </para>
 </section>
+
+<section id="ad-connector:ad-passwort"><title>Änderung des AD-Zugriffspassworts</title>
+  <para>
+  	Die vom UCS AD-Connector benötigten Zugangsdaten zum Active Directory werden über die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> und <envar>connector/ad/ldap/bindpw</envar> konfiguriert. Falls das Passwort sich geändert hat oder ein anderes Benutzerkonto verwendet werden soll, können diese Variablen manuell andepasst werden. Über die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> wird die LDAP-DN eines privilegierten Replikationsbenutzers konfiguriert. Dieser muss im AD Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Das entsprechende Kennwort muss lokal auf dem UCS-System in eine Datei gespeichert werden, deren Dateiname in der &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen sein muss. Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <emphasis>root</emphasis> Zugriff hat. Die folgenden Kommandos zeigen dies beispielhaft:
+  </para>
+
+  <programlisting language="sh">
+eval "$(ucr shell)"
+echo "Updating ${connector_ad_ldap_bindpw?}"
+echo "for AD sync user ${connector_ad_ldap_binddn?}"
+touch "${connector_ad_ldap_bindpw?}"
+chmod 600 "${connector_ad_ldap_bindpw?}"
+echo -n "Current AD Syncuser password" > "${connector_ad_ldap_bindpw?}"
+  </programlisting>
+</section>
 </section>
 
 <section id="ad-connector:tools"><title>Werkzeuge / Fehlersuche</title>
 <para>
-Mit dem AD Connector werden einige Tools und Logdateien bereitgestellt:
+Mit dem UCS AD-Connector werden einige Tools und Logdateien bereitgestellt:
 </para>
 <section id="ad-connector:univention-adsearch"><title>univention-adsearch</title>
 <para>
@@ -1571,7 +2051,8 @@ immer in dieser Gruppe Mitglied.
 	<title>Einführung</title>
 	<para>
 	  UCS unterstützt die Übernahme von Benutzern, Gruppen, Rechnerobjekten und
-	  Gruppenrichtlinienobjekten (GPOs) aus einer bestehenden Active Directory (AD)-Domäne. Diese
+	  Gruppenrichtlinienobjekten (GPOs) aus einer bestehenden Active Directory (AD)-Domäne. Die
+	  Windows-Clients müssen dabei nicht erneut der Domäne beitreten. Diese
 	  Übernahme ist ein interaktiver Prozess, der aus drei Phasen besteht:
 
 	  <itemizedlist>
@@ -1612,11 +2093,12 @@ immer in dieser Gruppe Mitglied.
 	</para>
 
 	<para>
-	  Der Befehl <command>univention-ad-takeover</command> wird mit dem Paket
-	  <package>univention-s4-connector</package> ausgeliefert und muss als Benutzer
-	  <emphasis>root</emphasis> auf dem System ausgeführt werden, auf dem der Univention S4
-	  Connector läuft (normalerweise der &ucsMaster;).
+	  Für die Migration muss die Applikation <emphasis>Active Directory Takeover</emphasis> aus dem
+	  Univention App Center installiert werden. Sie muss auf dem System installiert werden, auf dem
+	  der Univention S4 Connector läuft (siehe <xref linkend="windows:s4connector"/>, normalerweise
+	  der &ucsMaster;).
 	</para>
+
   </section>
 
   <section id="windows:adtakeover:preparations">
@@ -1626,13 +2108,12 @@ immer in dieser Gruppe Mitglied.
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Ein Backup des/der AD-Server(s) sollte durchgeführt werden (wenn der AD-Server
-		  virtualisiert betrieben wird, kann ein Snapshot erfolgen).
+		  Ein Backup des/der AD-Server(s) sollte durchgeführt werden.
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  Sind Benutzeranmeldungen auf dem AD-Server erlaubt (durch Domänenanmeldungen oder
-		  Termimalserversitzungen) wird empfohlen diese zu deaktiviert und alle Dienste zu stoppen
+		  Terminalserversitzungen) wird empfohlen diese zu deaktiviert und alle Dienste zu stoppen
 		  die Daten verarbeiten (z.B. Mailserver). Dies stellt sicher das durch den Rollback auf ein
 		  Backup oder einen Snapshot keine Daten verloren gehen.
 		</simpara></listitem>
@@ -1665,17 +2146,18 @@ net user administrator PASSWORT
 
   </section>
 
-  <section id="windows:adtakeover:phase1">
-	<title>Übernahme-Phase 1</title>
+  <section id="windows:adtakeover:migrate">
+	<title>Domänenmigration</title>
 	<para>
-	  Die Übernahme muss auf dem UCS Domänencontroller gestartet werden, auf dem der Univention S4
+	  Die Übernahme muss auf dem UCS-Domänencontroller gestartet werden, auf dem der Univention S4
 	  Connector läuft (normalerweise der &ucsMaster;). Während der Übernahme sollte Samba nur auf
 	  diesem UCS-System laufen. Gibt es weitere Samba-Domänencontroller müssen diese angehalten
 	  werden. Dies ist wichtig um replikationsbedingte Dateninkonsistenzen zu vermeiden.
 	</para>
 
 	<para>
-	  Andere Samba-Systeme können gestoppt werden, indem auf jedem UCS-Domänencontroller als root z.B. über eine SSH-Verbindung folgender Befehl ausfgeführt wird:
+	  Andere Samba-Systeme können gestoppt werden, indem auf jedem UCS-Domänencontroller als
+	  Benutzer <emphasis>root</emphasis> folgender Befehl ausfgeführt wird:
 
 	  <programlisting language="sh">
 /etc/init.d/samba4 stop
@@ -1693,31 +2175,39 @@ ucr set connector/s4/mapping/group/grouptype=false
 	</para>
 
 	<para>
-	  Die Übernahme kann mit dem folgenden Befehl gestartet werden:
+	  Die Übernahme erfolgt mit dem &ucsUMC;-Modul <guimenu>Active Directory
+	  Takeover</guimenu>. Unter <guimenu>Name oder Adresse des Domänencontrollers</guimenu> muss die
+	  IP-Adresse des AD-Systems angegeben werden. Unter <guimenu>Active Directory
+	  Administratorkonto</guimenu> muss ein Konto der AD-Domäne angegebe werden, das Mitglied der
+	  AD-Gruppe  <emphasis>Domain Admins</emphasis> ist (z.B. der
+	  <emphasis>Administrator</emphasis>) und unter <guimenu>Active Directory
+	  Administratorpasswort</guimenu> das dazugehörige Passwort.
+	</para>
 
-	  <programlisting language="sh">
-univention-ad-takeover IP-des-AD-Servers
-	  </programlisting>
+	<figure>
+	  <title>Erste Phase der Domänenmigration</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/takeover1-de.png"/>
+	</figure>
+
+	<para>
+	  Das Modul prüft, ob der AD-Domänencontroller erreicht werden kann und zeigt die zu
+	  migrierenden Domänendaten an:
+
+	<figure>
+	  <title>Übersicht über die zu migrierenden Daten</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/takeover2-de.png"/>
+	</figure>
 	</para>
 
 	<para>
-	  Das Skript versucht auf das LDAP-Verzeichnis des angegebenen Active Directory-Servers
-	  zuzugreifen und fragt das Passwort des <emphasis>Administrator</emphasis> auf dem AD-Server
-	  ab. Mit der Option <emphasis>-U</emphasis> kann die Übernahme auch mit einem abweichenden
-	  Benutzer erfolgen (dieser muss Mitglied der AD-Gruppe  <emphasis>Domain Admins</emphasis> sein).
-	</para>
-
-	<para>
-	  Das Skript führt die folgenden Schritte durch:
+	  Nach einem Klick auf <guimenu>Weiter</guimenu> werden die folgenden Schritte automatisch
+	  durchgeführt. Zusätzliche Informationen werden nach
+	  <filename>/var/log/univention/ad-takeover.log</filename> protokolliert.
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Prüfung, ob der AD-Domänencontroller erreicht werden kann
-		</simpara></listitem>
-
-		<listitem><simpara>
 		  Anpassung der Systemzeit des UCS-Systems auf die Systemzeit der Active Directory-Domäne
-		  wenn diese um mehr als drei Minuten nachgeht
+		  (wenn diese um mehr als drei Minuten nachgeht)
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1733,32 +2223,25 @@ univention-ad-takeover IP-des-AD-Servers
 	</para>
 	
 	<para>
-	  Die Ausgabe des Skripts wird auf der Konsole angezeigt. Zusätzliche Informationen werden nach
-	  <filename>/var/log/univention/ad-takeover.log</filename> protokolliert.
-	</para>
-  </section>
-
-  <section id="windows:adtakeover:phase2">
-	<title>Übernahme-Phase 2</title>
-	<para>
-	  Nach Abschluss von Phase 1 enthält der UCS-Domänencontroller nun alle Benutzer, Gruppen und
-	  Rechner aus der Active Directory-Domäne. Dies ist nötig für die korrekte Übernahme der
-	  Berechtigungen der Dateien und Verzeichnisse, die in Phase 2 kopiert werden.
+	  Nun enthält der UCS-Domänencontroller  alle Benutzer, Gruppen und
+	  Rechner aus der Active Directory-Domäne. Im nächsten Schritt wird die SYSVOL-Freigabe kopiert,
+	  in der u.a. die Gruppenrichtlinien gespeichert werden.
 	</para>
 
 	<para>
 	  Nun muss eine Anmeldung als <emphasis>Administrator</emphasis> am Active
 	  Directory-Domänencontroller erfolgen und dort die Dateien mit den Gruppenrichtlinien aus der
-	  SYSVOL-Freigabe des AD-Servers auf den UCS-Server kopiert werden. Weitere Informationen zur
-	  SYSVOL-Freigabe finden sich in <xref linkend="windows:sysvolshare"/>.
+	  SYSVOL-Freigabe des AD-Servers auf den UCS-Server kopiert werden.
 	</para>
 
 	<para>
-	  Das aufzurufende Kommando wird am Ende der Phase 1 angezeigt:
+	  Das aufzurufende Kommando wird im UMC-Modul angezeigt. Wenn es erfolgreich aufgerufen wurde,
+	  muss mit <guimenu>Weiter</guimenu> bestätigt werden.
 
-	  <programlisting language="sh">
-robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\sysvol
-	  </programlisting>
+	  <figure>
+		<title>Kopieren der Sysvol-Freigabe</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/takeover3-de.png"/>
+	  </figure>
 	  
 	  Wenn <command>robocopy</command> nicht vorhanden ist, kann es mit den Windows Server 2003
 	  Resource Kit Tools nachinstalliert werden. Ab Windows 2008 ist es vorinstalliert.
@@ -1771,25 +2254,23 @@ robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\sysvol
 	</para>
 
 	<para>
-	  Nach erfolgreichem Abschluss dieser Schritte sollten der/die AD-Domänencontroller nun
-	  heruntergefahren werden.
-	</para>
-  </section>
+	  Nach erfolgreichem Abschluss dieser Schritte sollten der/die AD-Domänencontroller 
+	  heruntergefahren werden. Anschließend muss im UMC-Modul auf <guimenu>Weiter</guimenu> geklickt
+	  werden.
 
-  <section id="windows:adtakeover:phase3">
-	<title>Übernahme-Phase 3</title>
-	<para>
-	  Der nächste Schritt findet wieder auf dem UCS-Domänencontroller statt;
-	  <command>univention-ad-takeover</command> wartet hier auf eine Bestätigung.
+	  <figure>
+		<title>Herunterfahren des/der AD-Systeme</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/takeover4-de.png"/>
+	  </figure>
 	</para>
 
 	<para>
-	  Die folgenden Schritte werden nun durchgeführt:
+	  Die folgenden Schritte werden nun automatisch durchgeführt:
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Sicherstellung, dass der AD-Server nicht länger erreichbar ist. Dies ist wichtig, da das
-		  Skript alle FSMO-Rollen auf den UCS-Domänencontroller überträgt.
+		  Übertragung der FSMO-Rollen auf den UCS-Domänencontroller. Diese kennzeichnen verschiedene
+		  Aufgaben, die ein Server in einer AD-Domäne übernehmen kann.
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1811,13 +2292,13 @@ robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\sysvol
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
+
   </section>
 
   <section id="windows:adtakeover:finalsteps">
-	<title>Abschluß der Übernahme</title>
+	<title>Abschluss der Übernahme</title>
 	<para>
-	  Nachdem das Übernahme-Skript aufgerufen wurde müssen noch die folgenden Schritte durchgeführt
-	  werden:
+	  Abschließend  müssen noch die folgenden Schritte durchgeführt werden:
 
 	  <itemizedlist>
 		<listitem><simpara>
@@ -1829,7 +2310,7 @@ samba-tool domain level show
 		  </programlisting>
 
 		  Wenn das Kommando die Meldung <guimenu>ATTENTION: You run SAMBA 4 on a forest function
-		  level lower than Windows 2000 (Native).</guimenu> anzeigt müssen die folgenden Befehle
+		  level lower than Windows 2000 (Native)</guimenu> anzeigt müssen die folgenden Befehle
 		  aufgerufen werden:
 
 		  <programlisting language="sh">

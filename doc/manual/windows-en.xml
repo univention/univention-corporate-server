@@ -3,6 +3,10 @@
   <section id="windows:general">
 	<title>Introduction</title>
 	<para>
+	  UCS can offer Active Directory (AD) services, be a member of an Active Directory domain, synchronise objects between Active Directory domains and a UCS domain or function as an NT domain controller.
+	</para>
+
+	<para>
 	  For the purposes of Windows systems, UCS can assume the tasks of Windows server systems:
 	</para>
 
@@ -21,22 +25,8 @@
 	  </simpara></listitem>
 	</itemizedlist>
 	<para>
-	  All these services are provided by Samba in UCS. When acting as a domain controller Samba can
-	  provide two types of domain controller functionality:
+	  In UCS all these services are provided by Samba.
 	</para>
-
-	<itemizedlist>
-	  <listitem>
-		Samba can also provide an Active Directory-compatible domain
-		controller e.g. Samba provides an Active Directory compatible Windows domain. This allows
-		the use of tools provided by Microsoft, e.g. for the management of users or for managing
-		group policy objects. 
-	  </listitem>
-
-	  <listitem>
-		Samba can provide a NT-compatible domain controller.
-	  </listitem>
-	</itemizedlist>
 
 	<para>
 	  UCS supports the mostly automatic migration of an existing Active Directory domain to UCS. All
@@ -50,49 +40,22 @@
 	</para>
 
 	<para>
-	  In addition to Samba, UCS also integrates an additional component
-	  for the synchronisation with Active Directory (AD): the Univention Active
-	  Directory Connector. The connector synchronises the content of a Microsoft Active Directory
-	  domain with a UCS domain. Further information can be found in <xref
-	  linkend="ad-connector:general"/>.
+	  Microsoft Active Directory domain controllers cannot join the Samba domain. This functionality is
+	  planned at a later point in time.
+	</para>
+
+	<para>
+	  Samba can not join an Active Directory Forest yet at this point. 
+	  </para>
+
+	<para>
+	  Trust relationships to other domains are currently only possible when using NT-compatible
+	  domains (see <xref linkend="vertrauensstellungen_generell"/>).
 	</para>
   </section>
 
   <section id="windows:addomain">
 	<title>Operation of a Samba domain based on Active Directory</title>
-
-	<section id="windows:adsetup">
-	  <title>Components of a Samba domain</title>
-
-	  <para>
-		An Active Directory domain is composed of at least one domain controller. Windows clients and member
-		servers can join the trust context of the Samba domain as domain members. Member servers do
-		not provide login services, but may offer file and print services, for example. In addition to
-		a member server domain join of Windows Server systems, Samba can also act as a member server.
-	  </para>
-
-	  <para>
-		Domain joining of Windows clients and Microsoft Windows member servers is described in
-		<xref linkend="windows-domaenenbeitritt"/>.
-	  </para>
-
-	  <para>
-		Microsoft Active Directory domain controllers cannot join the Samba domain. This functionality is
-		planned at a later point in time.
-	  </para>
-
-	  <para>
-		Samba can not join an Active Directory Forest yet at this point. 
-	  </para>
-
-	  <para>
-		Trust relationships to other domains are currently only possible when using NT-compatible
-		domains (see <xref linkend="vertrauensstellungen_generell"/>).
-	  </para>
-
-	</section>
-
-
 
 	<section id="windows:setup4">
 	  <title>Installation</title>
@@ -320,37 +283,377 @@ instanceType: 4
 	  <section id="gruppenrichtlinien">
 		<title>Group policies</title>
 
-		<figure><title>Group policy editor</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/win_policy_en.png"/>
-		</figure>
+		<section id="gpo:intro">
+		  <title>Introduction</title>
 
-		<para>
-		  Group policies are an Active Directory feature which allows the central configuration of
-		  computers and user settings. They are only supported in Samba AD domains.
-		</para>
+		  <para>
+			Group policies are an Active Directory feature which allows the central configuration of
+			settings for computers and users. Group policies are also supported by Samba AD
+			domains. The policies only apply to Windows clients; Linux or Mac OS systems cannot
+			evaluate the policies.
+		  </para>
+		
+		  <para>
+			Group policies are often referred to as GPOs (<emphasis>group policy
+			objects</emphasis>). Put more precisely, a GPO can contain a series of policies. Despite
+			their name, group policy objects cannot be assigned directly to certain user groups, but
+			instead are linked with certain AD administration units (domains,
+			sites or organisational units) in the Samba directory service (Samba DS/AD) and thus
+			refer to subordinate objects. A group-specific or user-specific evaluation is only
+			indirectly possible via the <emphasis>Security Filtering</emphasis> of a group policy
+			object, in which the <emphasis>Apply group policy Allow/Deny</emphasis> privilege can be directly
+			restricted to certain groups, users or computers.
+		  </para>
 
-		<para>
-		  The setting up of group policies can be performed with the <emphasis>Remote Server
-		  Administration Tools (RSAT) for Windows 7</emphasis> <footnote><para><ulink
-		  url="http://www.microsoft.com/downloads/details.aspx?FamilyID=7d2f6ad7-656b-4313-a005-4e344e43997d"/></para></footnote>
-		  or the <emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
-		  <footnote><para><ulink
-		  url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>. After the
-		  installation has been completed, the group policy editor must be activated in the Control
-		  Panel, by enabling the option <guimenu>Group Policy Management Tools</guimenu> under
-		  <guimenu>Programs -> Turn Windows features on or off -> Remote Server Administration Tools ->
-		  Feature Administration Tools</guimenu>.
-		</para>
+		  <para>
+			As a basic rule, a distinction must be made between <emphasis>group policies</emphasis>
+			(GPOs) and the similarly named <emphasis>group policy preferences (GPPs)</emphasis>:
 
-		<para>
-		  The group policies are saved in the SYSVOL share, see <xref linkend="windows:sysvolshare"/>.
-		</para>
+			<itemizedlist>
+			  <listitem><simpara>
+				The settings made via <emphasis>GPOs</emphasis> are binding, whereas
+				<emphasis>GPPs</emphasis> are merely used to enter preferences in the registry of
+				Windows clients, which can still be overwritten on the client in certain
+				circumstances.
+			  </simpara></listitem>
 
-		<para>
-		  Windows Group Policies are not supported by Mac OS X clients.
-		</para>
+			  <listitem><simpara>
+				The settings made via <emphasis>GPOs</emphasis> are also dynamically applied to the
+				target objects, whereas, in contrast, the settings made via
+				<emphasis>GPPs</emphasis> are entered statically in the registry of Windows clients
+				(this is also referred to as <emphasis>tattooing</emphasis>).
+			  </simpara></listitem>
+			</itemizedlist>
+
+			For these reasons, <emphasis>GPOs</emphasis> are preferable to <emphasis>GPPs</emphasis>
+			in the majority of cases. This remainder of this section deals exclusively with
+			<emphasis>GPOs</emphasis>.
+		  </para>
+
+		  <para>
+			In contrast to UCS policies (see <xref linkend="central:policies"/>), group policies are
+			not configured in the &ucsUMC;, but instead are configured in a separate editor, the
+			<emphasis>Group Policy Management</emphasis> editor, which is a component of the
+			<emphasis>Remote Server Administration Tools (RSAT)</emphasis>. The installation is described
+			in <xref linkend="gpo:install"/>.
+		  </para>
+
+		  <para>
+			There are two types of policies:
+			
+			<itemizedlist>
+			  <listitem><simpara>
+				<emphasis>User policies</emphasis> configure a user's settings, e.g., the
+				preconfiguration of the desktop. It is also possible to configure applications via
+				group policies (e.g., the start page of Microsoft Internet Explorer or settings in
+				LibreOffice).
+			  </simpara></listitem>
+
+			  <listitem><simpara>
+				<emphasis>Computer policies</emphasis> define a Windows client's settings.
+			  </simpara></listitem>
+			</itemizedlist>
+		  </para>
+
+		  <para>
+			Computer policies are evaluated for the first time the computer starts up; user policies
+			during login. The policies are also continually evaluated for logged in users / running
+			systems and updated (every 90-120 minutes in the default setting. The period varies at
+			random to avoid peak loads.)
+		  </para>
+
+		  <para>
+			The command <command>gpupdate /force</command> can also be run specifically to start the
+			evaluation of group policies.
+		  </para>
+
+		  <para>
+			Some policies - e.g., for the installation of software or for login scripts - are only
+			evaluated during login (user policies) or system startup (computer policies).
+		  </para>
+
+		  <para>
+			The majority of group policies only set one value in the Windows registry, which is then
+			evaluated by Windows or an application. As standard users cannot modify any settings in
+			the corresponding section of the Windows registry, it is also possible to configure
+			restricted user desktops in which, for example, users cannot open the Windows Task
+			Manager.
+		  </para>
+
+		  <para>
+			The group policies are stored in the SYSVOL share, see <xref
+			linkend="windows:sysvolshare"/>. They are linked with user and host accounts in the
+			Samba directory service.
+		  </para>
+
+		</section>
+
+		<section id="gpo:install">
+		  <title>Installation of Group Policy Management</title>
+
+		  <para>
+			Group Policy Management can be installed as a component of the <emphasis>Remote Server
+			Administration Tools</emphasis> on Windows clients. They can be found at
+			<footnote><para><ulink
+			url="http://www.microsoft.com/downloads/details.aspx?FamilyID=7d2f6ad7-656b-4313-a005-4e344e43997d"/></para></footnote>
+			for Windows 7 or at <emphasis>Remote Server Administration Tools (RSAT) for Windows
+			8</emphasis> <footnote><para><ulink
+			url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>
+			for Windows 8.
+		  </para>
+
+		  <para>
+			<figure><title>Activating the Group Policy Management tools</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-activate-en.png"/>
+			</figure>
+		  </para>
+
+		  <para>
+			Following the installation, Group Policy Management must still be enabled in the Windows
+			Control Panel. This is done by enabling the <guimenu>Group Policy Management Tools</guimenu>
+			option under <guimenu>Start -> Control Panel -> Programs -> Turn Windows features on or off
+			->  Remote Server Administration Tools -> Feature Administration Tools</guimenu>.
+		  </para>
+
+		  <para>
+			Following the enabling, Group Policy Management can be run under <guimenu>Start ->
+			Administrative Tools -> Group Policy Management </guimenu>.
+		  </para>
+
+		</section>
+
+		<section id="gpo:config">
+		  <title>Configuration of policies with Group Policy Management</title>
+
+		  <para>
+			Group policies can only be configured by users who are members of the <emphasis>Domain
+			Admins</emphasis> group (e.g., the <emphasis>Administrator</emphasis>). When logging in,
+			attention must be paid to logging in with the domain Administrator account and not the
+			local Administrator account. Group Policy Management can be run on any system in the
+			domain.
+		  </para>
+
+		  <para>
+			If more than one Samba domain controller is in use, consideration must be given to the
+			replication of the GPO data, see <xref linkend="gpo:gposync"/>.
+		  </para>
+		  <para>
+			There are two basic possibilities for creating GPOs:
+
+			<itemizedlist>
+			  <listitem><simpara>
+				They can be created in the <guimenu>Group Policy Objects</guimenu> folder and then
+				linked to different positions in the LDAP. This is practical if a policy is to be
+				linked to several positions in the LDAP.
+			  </simpara></listitem>
+
+			  <listitem><simpara>
+				The GPO can also be created at an LDAP position ad hoc and then directly linked to
+				it. This is the simpler means for small and medium-sized domains. Domains created ad
+				hoc are also shown in the <guimenu>Group Policy Objects</guimenu> folder.
+			  </simpara></listitem>
+			</itemizedlist>
+		  </para>
+
+		  <para>
+			A policy can have one of three statuses: enabled, disabled or unset. The effect is
+			always based on the formulation of the policy. For example, if it says <guimenu>Disable
+			feature xy</guimenu>, the policy must be enabled to switch off the feature. Some
+			policies have additional options, for example the <guimenu>Enable mail quota</guimenu>
+			policy could include an additional option for managing the storage space.
+		  </para>
+
+		  <para>
+			<figure><title>Editing a policy</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-edit-policy-en.png"/>
+			</figure>
+		  </para>
+
+		  <para>
+			Two standard policy objects are predefined:
+
+			<itemizedlist>
+			  <listitem><simpara>
+				The <emphasis>Default Domain Policy</emphasis> object can be used to configure
+				global policies for all users and computers within the same domain.
+			  </simpara></listitem>
+
+			  <listitem><simpara>
+				The <emphasis>Default Domain Controllers Policy</emphasis> object has no use in a
+				Samba domain (in a Microsoft AD domain the policies for Microsoft domain controllers
+				would be performed via this object). The configuration of the Samba domain
+				controllers in UCS is largely performed via &ucsUCR;.
+			  </simpara></listitem>
+			</itemizedlist>
+		  </para>
+
+		  <para>
+			AD domains can be structured in sites. All the sites are listed in the main menu of Global Policy Management. There
+			is also a list of the domains there. The current Samba versions do not support forest
+			domains, so there is only ever one domain displayed here.
+		  </para>
+
+		  <para>
+			One domain can be structured in different organisational units (OUs). This can, for
+			example, be used to store the employees from accounting and the users in the
+			administration department in different LDAP positions.
+		  </para>
+
+		  <para>
+			Group policies can mutually overlap. In this case, the inheritance principle applies,
+			e.g., the superordinate policies overwrite the subordinate ones. The applicable policies
+			for a user can be displayed on the Windows client either with the modelling wizard in
+			Group Policy Management or by entering the command <command>gpresult /user USERNAME
+			/v </command> in the Windows command line.
+		  </para>
+
+		  <para>
+			<figure><title>Evaluating the GPO for the user user01</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-gpresult-en.png"/>
+			</figure>
+		  </para>
+
+		  <para>
+			The policies are evaluated in the following order:
+
+			<itemizedlist>
+			  <listitem><simpara>
+				In the default setting, <emphasis>Default Domain Policy</emphasis> settings apply
+				for all the users and computers within the domain.
+			  </simpara></listitem>
+
+			  <listitem><simpara>
+				Policies linked to an OU overwrite policies from the default domain policy. If the
+				OUs are nested further, in the case of conflict, the "most subordinate" policies in
+				each case, in other words the one most closely linked to the target object,
+				apply. The following evaluation order applies:
+
+				<itemizedlist>
+				  <listitem><simpara>
+					Assignment of a policy to an Active Directory site
+				  </simpara></listitem>
+
+				  <listitem><simpara>
+					Settings of the default domain policy
+				  </simpara></listitem>
+
+				  <listitem><simpara>
+					Assignment of a policy to an organisational unit (OU) (in turn, each subordinate
+					OU overrules policies from superordinate OUs).
+				  </simpara></listitem>
+				</itemizedlist>
+			  </simpara></listitem>
+			</itemizedlist>
+		  </para>
+
+		  <para>
+			Example: A company blocks access to the Windows Task Manager in general. This is done by
+			enabling the <guimenu>Remove Task Manager</guimenu> policy in the
+			<emphasis>Default Domain Policy</emphasis> object. However, the Task Manager should
+			still be available to some staff with the requisite technical expertise. These users are
+			saved in the <emphasis>IT staff</emphasis> OU. An additional group policy object is
+			now created in which the <guimenu>Remove Task Manager</guimenu> policy is set
+			to <emphasis>disabled</emphasis>. The new GPO is linked with the
+			<emphasis>IT staff</emphasis> OU.
+		  </para>
+
+		</section>
+
+		<section id="gpo:gposync">
+		  <title>Configuration of group policies in environments with more than one Samba domain controller</title>
+
+		  <para>
+			A group policy is technically composed of two parts: On the one hand there is a
+			directory in the domain controllers' file system which contains the actual policy files
+			which are to be implemented on the Window system (saved in the SYSVOL share (see <xref
+			linkend="windows:sysvolshare"/>)). On the other hand there is an object with the same
+			name in the LDAP tree of the Samba directory service (Samba DS/AD), which is usually
+			saved below an LDAP container named <emphasis>Group Policy Objects</emphasis>.
+		  </para>
+
+		  <para>
+			Although the LDAP replication between the domain controllers is performed in just a few
+			seconds, the files in the SYSVOL share are only replicated every five minutes in the
+			default setting. It must be noted that the application of newly configured group
+			policies in this period may fail if a client happens to consult a domain controller
+			which has not yet replicated the current files.
+		  </para>
+		</section>
+
+		<section id="gpo:adm">
+		  <title>Administrative templates (ADM)</title>
+		  <para>
+			The policies displayed in Group Policy Management can be expanded with so-called
+			<emphasis>administrative templates</emphasis>. This type of template defines the name
+			under which the policy should appear in Group Policy Management and which value should
+			be set in the Windows registry. Administrative templates are saved in so-called
+			<emphasis>ADMX files</emphasis> (previously <emphasis>ADM files</emphasis>) <biblioref
+			linkend="admx-reference"/>. Among other things, ADMX files offer the advantage that they
+			can be provided centrally across several domain controllers so that Group Policy
+			Management on all Windows clients displays the same configuration possibilities
+			<biblioref linkend="admx-central"/>.
+		  </para>
+
+		  <para>
+			The following example of an ADM file defines a computer policy in which a registry key
+			is configured for the (ficticious) Univention RDP client. ADM files can also be
+			converted to the newer ADMX format using third-party tools. Further information on the
+			format of ADM files can be found under <biblioref linkend="microsoft-adm-templates"/>
+			and <biblioref linkend="adm-templates-howto"/>. The administrative template must have
+			the file suffix <emphasis>.adm</emphasis>:
+
+			<programlisting language="sh">
+CLASS MACHINE
+CATEGORY "Univention"
+POLICY "RDP client"
+KEYNAME "Univention\RDP\StorageRedirect"
+EXPLAIN "If this opion it activated, sound output is enabled in the RDP client"
+VALUENAME "Sound redirection"
+VALUEON "Activated"
+VALUEOFF "Deactivated"
+END POLICY
+END CATEGORY
+			</programlisting>
+		  </para>
+
+		  <para>
+			<figure><title>The activated administrative template</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/gpo-adm-template-en.png"/>
+			</figure>
+		  </para>
+
+		  <para>
+			The ADM file can then be converted to the ADMX format or imported directly via Group
+			Policy Management. This is done by running the <guimenu>Add/Remove Templates</guimenu>
+			option in the <guimenu>Administrative templates</guimenu> context
+			menu. <guimenu>Add</guimenu> can be used to import an ADM file. The administrative
+			templates are also saved in the SYSVOL share and replicated, which allows Group Policy
+			Management to access them from the Windows clients.
+		  </para>
+		</section>
+
+		<section id="gpo:wmifilter">
+		  <title>Application of policies based on computer properties (WMI filters)</title>
+		  <para>
+			It is also possible to configure policies based on system properties. These properties
+			are provided via the Windows Management Instrumentation interface. The mechanism which
+			builds on this is known as <emphasis>WMI filtering</emphasis>. This makes it possible, for example, to apply
+			a policy only to PCS with a 64-bit processor architecture or with at least 8 GB of
+			RAM. If a system property changes (e.g., if more memory is installed), the respective
+			filter is automatically re-evaluated by the client. 
+		  </para>
+
+		  <para>
+			The WMI filters are displayed in the domain structure in the <guimenu>WMI
+			Filters</guimenu> container. <guimenu>New</guimenu> can be used to define an additional
+			filter. The filter rules are defined under <guimenu>Queries</guimenu>. The rules are
+			defined in a syntax similar to SQL. Examples rules can be found in <biblioref
+			linkend="microsoft-wmi-filter"/> and <biblioref linkend="add-wmi-filters"/>.
+		  </para>
+
+		</section>
+
 	  </section>
-
 
 	  <section id="netlogon-freigabe:samba4">
 		<title>Logon scripts / NETLOGON share</title>
@@ -865,107 +1168,224 @@ net rpc trustdom list
 
 
 <section id="ad-connector:general">
-  <title>UCS Active Directory Connector</title>
+  <title>Active Directory Connection</title>
   <section id="ad-connector:einfuehrung">
 	<title>Introduction</title>
 	<para>
-	  The UCS Active Directory Connector (AD Connector for short) makes it possible to synchronise
-	  directory service objects between a Windows 2003/2008/2012 server under Active Directory (AD)
-	  and a &ucsUCS;. The connector can also synchronise several AD domains with one UCS domain;
-	  this is documented in <xref linkend="ext-doc-win"/>.
+	  &ucsUCS; can be operated together with an existing Active Directory domain (AD domain) in two different ways. Both modes can be set up using the <emphasis>Active Directory Connection</emphasis> application from the Univention App Center (see <xref linkend="computers::softwaremanagement::installsoftware"/>). This is available on a &ucsMaster; and &ucsBackup;.
 	</para>
 
 	<para>
-	  In the default setting, containers, organisational units, users, and groups are
-	  synchronised. Users have an exceptional position since the password cannot be queried via the
-	  LDAP protocol in Active Directory. A special service is installed on the Windows server for
-	  this purpose, which enables password synchronisation (see <xref
-	  linkend="ad-connector:password-dienst"/>).
+	  The two modes are:
+	  <itemizedlist>
+	    <listitem><simpara>
+	      UCS as a part (domain member) of an AD domain (see <xref linkend="ad-connector:ad-member-einrichtung"/>)
+	    </simpara></listitem>
+	    <listitem><simpara>
+	      Synchronisation of account data between an AD domain and a UCS domain (see <xref linkend="ad-connector:ad-connector-einrichtung"/>).
+	    </simpara></listitem>
+	  </itemizedlist>
 	</para>
 
 	<para>
-	  Information on the attributes configured in the basic setting and
-	  particularities to take into account can be found in the
-	  <xref linkend="ad-connector:details-zur-vorkonfigurierten-synchronisation"/>.
+	  In both modes, the Active Directory Connection service is used in UCS (UCS AD Connector for short), which can synchronise the directory service objects between a Windows 2003/2008/2012 server with Active Directory (AD) and the OpenLDAP directory of &ucsUCS;.
 	</para>
 
 	<para>
-	  Computer accounts are not synchronised since Windows clients can only
-	  be a member in one domain.
+	  In the first case, the configuration of a UCS server system as a member of an AD domain, the AD functions as the primary directory service and the respective UCS system joins the trust context of the AD domain. The domain membership gives the UCS system restricted access to the account data of the Active Directory domain. The set-up of this operating mode is described in detail in <xref linkend="ad-connector:ad-member-einrichtung"/>.
 	</para>
 
 	<para>
-	  Users can make access to services of both environments in a
-	  transparent way; this is due to the possibility of having the same
-	  user settings in both domains. After logging into a UCS domain, a
-	  subsequent connection to a file share or to an Exchange server with
-	  Active Directory is possible without a renewed password request. Users
-	  and administrators will find users and groups of the same name on the
-	  resources of the other domain, and can thus work with their familiar
-	  permission structures.
+	  The second mode, which can be configured via the <emphasis>Active Directory Connection</emphasis> app, is used to run the UCS domain parallel to an existing AD domain. In this mode, each domain user is assigned a user account with the same name in both the UCS and the AD domain. Thanks to the use of the name identity and the synchronisation of the encrypted password data, this mode allows transparent access between the two domains. In this mode, the authentication of a user in the UCS domain occurs directly within the UCS domain and as such is not directly dependent on the AD domain. The set-up of this operating mode is described in detail in <xref linkend="ad-connector:ad-connector-einrichtung"/>.
+	</para>
+  </section>
+
+  <section id="ad-connector:ad-member-einrichtung">
+  <title>UCS as a member of an Active Directory domain</title>
+
+	<para>
+		In the configuration of a UCS server system as a member of an AD domain (<emphasis>AD member</emphasis> mode), the AD functions as the primary directory service and the respective UCS system joins the trust context of the AD domain. The domain membership gives the UCS system restricted access to the account data of the Active Directory domain, which it exports from the AD by means of the UCS AD Connector and writes locally in its own OpenLDAP-based directory service. In this configuration, the UCS AD Connector does not write any changes in the AD.
 	</para>
 
 	<para>
-	  The initialisation is performed after the first start of the
-	  connector. All the entries are read out of the UCS, converted in AD
-	  objects according to the mapping set and added (or modified if already
-	  present) on the UCS side. All objects are then read out of the AD and
-	  converted into UCS objects before being added/modified
-	  accordingly. The directory service servers are then queried further
-	  as long as no changes have been made. The AD connector can also be
-	  operated in a unidirectional mode.
+	  The <emphasis>AD member</emphasis> mode is ideal for expanding an AD domain with applications that are available on the UCS platform. Apps installed on the UCS platform can then be used by the users of the AD domain. The authentication is still performed against native Microsoft AD domain controllers.
 	</para>
 
-	<para>
-	  Following the initial sync, additional changes are requested at a set interval.
-	  This interval is initially set to five seconds and can be adapted via
-	  the &ucsUMC; configuration module.
-	</para>
+  <para>
+		The set-up wizard can be installed with the app <emphasis>Active Directory Connection</emphasis> from the Univention App Center. Alternatively, the software package <package>univention-ad-connector</package> can be installed. Further information can be found in <xref linkend="computers::softwaremanagement::installsoftware"/>.
+  </para>
 
-	<para>
-	  If an object cannot be synchronised, it is "rejected". During
-	  start-up of the UCS AD connector, an attempt is made to write
-	  this object again. In addition, a further attempt is made to input the
-	  object again after several runs. The interval can be configured in the
-	  UMC configuration module, see <xref linkend="ad-connector:basicsetup"/>.
-	  The presetting specifies ten cycles before the object is resynchronised.
-	  A restart of the UCS AD connector also triggers a resynchronisation of
-	  all previously rejected changes.
-	</para>
-</section>
+  <note>
+		<itemizedlist>
+			<listitem><simpara>The <emphasis>AD member</emphasis> mode can only be configured on a &ucsMaster;.</simpara></listitem>
+			<listitem><simpara>The name of the DNS domain of the UCS systems must match that of the AD domain. The host name must of course be different.</simpara></listitem>
+			<listitem><simpara>All the AD and UCS servers in a connector environment must use the same time zone.</simpara></listitem>
+		</itemizedlist>
+  </note>
 
-<section id="ad-connector:einrichtung">
+  <para>
+    <figure><title>Configuration of the operating mode as part of an AD domain</title>
+      <graphic scalefit="1" width="80%" fileref="illustrations/admember_1-en.png"/>
+    </figure>
+  </para>
+
+  <para>
+	In the first dialogue window of the set-up wizard, the point <emphasis>Configure UCS as part of an AD domain</emphasis> is preselected and can be confirmed with <mousebutton>Next</mousebutton>.
+  </para>
+
+  <para>
+	The next dialogue window requests the address of an AD domain controller as well as the name of the standard administrator account of the AD domain and its password. The standard AD administrator account should be used here.
+	The specified AD domain controller should also provide DNS services for the domain.
+    Pressing the <mousebutton>Join AD domain</mousebutton> button starts the domain join.
+  </para>
+
+  <para>
+    <figure><title>Domain join of an AD domain</title>
+      <graphic scalefit="1" width="80%" fileref="illustrations/admember_2-en.png"/>
+    </figure>
+  </para>
+
+  <para>
+    If the system time of the UCS system is more than 5 minutes ahead of the system time of the AD domain controller, manual adjustment of the system times is required. This is necessary because the AD Kerberos infrastructure is used for the authentication.
+    System times should not, however, be turned back, in order to avoid inconsistencies.
+  </para>
+
+  <para>
+    The domain join is performed automatically.
+    The subsequent dialogue window should be confirmed with <mousebutton>Finish</mousebutton>. Then the UMC server should be restarted by clicking <mousebutton>Restart</mousebutton>.
+  </para>
+
+  <note>
+    <para>
+			Once the <emphasis>AD member</emphasis> mode has been set up, the authentication is performed against the AD domain controller. <emphasis>Consequently, the password from the AD domain now applies for the administrator.</emphasis> If an AD domain with a non-English language convention has been joined, the <emphasis>administrator</emphasis> account from UCS is automatically changed to the spelling of the AD during the domain join. The same applies for all user and group objects with <emphasis>Well Known SID</emphasis> (e.g., <emphasis>Domain Admins</emphasis>).
+    </para>
+  </note>
+
+  <warning>
+    <para>
+    	If additional UCS systems were already part of the UCS domain in addition to the &ucsMaster;, they must also join the domain anew. At the same time they recognise that the &ucsMaster; is in <emphasis>AD member</emphasis> mode and also join the authentication structure of the AD domain and can then also provide Samba file shares, for example.
+    </para>
+  </warning>
+
+  <note>
+  	<para>
+    As the AD Kerberos infrastructure is used for the authentication of users in this mode, it is essential that the system times of UCS and the AD domain controller are synchronised (with a tolerance of 5 minutes). For this purpose, the AD domain controller is configured as the NTP time server in UCS.
+    
+    	In the case of authentication problems, the system time should always be the first thing to be checked.
+    </para>
+  </note>
+
+  <para>
+    Following this set-up, the <emphasis>Active Directory Connection</emphasis> UMC module can be used for further administration, e.g., for checking whether the service is running and to restart it if necessary (see <xref linkend="ad-connector:neustart"/>).
+  </para>
+
+  <para>
+    To use an encrypted connection between Active Directory and the &ucsMaster; not only for the authentication, but also for data exchange itself, the root certificate of the certification authority can be exported from the AD domain controller and uploaded via the UMC module. Further information on this topic is available in <xref linkend="ad-connector:ad-zertifikat"/>.
+  </para>
+
+  <para>
+    In the default setting, the Active Directory connection set up in this way does not transfer any password data from AD to the UCS directory service. In some scenarios, however, it can be practical to transfer the encrypted password data. Some apps from the Univention App Center require this, for example. For this purpose, the password service can be installed on the AD server (see <xref linkend="ad-connector:password-dienst"/>).
+  </para>
+
+  <para>
+  	In <emphasis>AD member</emphasis> mode, in the default setting, the UCS AD Connector exports object data from the AD with the authorisations of the &ucsMaster;'s machine account. These authorisations are not sufficient for exporting encrypted password data. As such, the LDAP DN of a privileged replication user can also be manually entered in the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> for the setting up of the password service. This must be a member of the <emphasis>Domain Admins</emphasis> group in the AD. The corresponding password must be saved in a file on the &ucsMaster; and the file name entered in the &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar>. If the access password is changed at a later point in time, the new password must be entered in this file. The access rights for the file should be restricted so that only the <emphasis>root</emphasis> owner has access.
+  </para>
+  <para>
+  	The following commands demonstrate the steps in an example:
+  </para>
+
+  <programlisting language="sh">
+ucr set connector/ad/ldap/binddn=Administrator
+ucr set connector/ad/ldap/bindpw=/etc/univention/connector/password
+touch /etc/univention/connector/password
+chmod 600 /etc/univention/connector/password
+echo -n "Administrator password" > /etc/univention/connector/password
+  </programlisting>
+
+  <para>
+    If desired, the AD domain controller can also be replaced by the &ucsMaster; at a later point in time. This is possible via the <emphasis>Active Directory Takeover</emphasis> application (see <xref linkend="windows:adtakeover"/>).
+  </para>
+
+  <para>
+    <figure><title>Administration dialogue for the Active Directory Connection</title>
+      <graphic scalefit="1" width="80%" fileref="illustrations/admember_3-en.png"/>
+    </figure>
+  </para>
+
+  </section>
+
+<section id="ad-connector:ad-connector-einrichtung">
   <title>Setup of the UCS AD connector</title>
 
   <para>
-	The connector can be installed from the Univention App Center with the application
-	<emphasis>UCS Active Directory Connector</emphasis>. Alternatively, the software package
-	<package>univention-ad-connector</package> can be installed. Additional information can be found in
-	<xref linkend="computers::softwaremanagement::installsoftware"/>.
+  	As an alternative to membership in an AD domain, as described in the previous section, the Active Directory Connection can be used to synchronise user and group objects between a UCS domain and an AD domain. In addition to unidirectional synchronisation, this operating mode also allows bidirectional synchronisation. In this operating mode, both domains exist in parallel and their authentication systems function independently. The prerequisite for this is the synchronisation of the encrypted password data. This requires the installation of a special password service on the AD domain controller.
+  </para>
+
+  <para>
+    In the default setting, containers, organisational units, users and groups are synchronised. Users have an exceptional position since the password cannot be queried via the LDAP protocol in Active Directory. A special service is installed on the Windows server for this purpose, which enables password synchronisation (see <xref linkend="ad-connector:password-dienst"/>).
   </para>
   
+  <para>
+    Information on the attributes configured in the basic setting and particularities to take into account can be found in <xref linkend="ad-connector:details-zur-vorkonfigurierten-synchronisation"/>.
+  </para>
+  
+  <para>
+    The computer accounts are not synchronised, as Windows computers can only be mounted in one domain.
+  </para>
+  
+  <para>
+    The identical user settings in both domains allow users to access services in both environments transparently. After logging on to a UCS domain, subsequent connection to a file share or to an Exchange server with Active Directory is possible without a renewed password request. Users and administrators will find users and groups of the same name on the resources of the other domain and can thus work with their familiar permission structures.
+  </para>
+  
+  <para>
+    The initialisation is performed after the first start of the connector. All the entries are read out of the UCS, converted to AD objects according to the mapping set and added (or modified if already present) on the AD side. All the objects are then exported from the AD and converted to UCS objects and added/modified accordingly on the UCS side. As long as there are changes, the directory service servers continue to be requested. The UCS AD connector can also be operated in a unidirectional mode.
+  </para>
+
+  <para>
+    Following the initial sync, additional changes are requested at a set interval. This value is set to five seconds and can be adjusted manually using the &ucsUCR; variable <envar>connector/s4/poll/sleep</envar>.
+  </para>
+
+  <para>
+    If an object cannot be synchronised, it is firstly reset (“rejected”). Following a configurable number of cycles – the interval can be adjusted using the &ucsUCR; variable <envar>connector/s4/retryrejected</envar> – another attempt is made to import the changes. The standard value is ten cycles. In addition, when the UCS AD Connector is restarted, an attempt is also made to synchronise the previously rejected changes again.
+  </para>
+
   <para>
 	The UCS AD connector can only be installed on a &ucsMaster; or
 	&ucsBackup; system.
   </para>
 
-  <para>
-	Despite intensive tests it is not possible to rule out that the
-	results of the synchronisation may affect the operation of a
-	productive domain. The connector should therefore be tested for the
-	respective requirements in a separate environment in advance.
-  </para>
-
-  <para>
-	All Active Directory and UCS servers in a connector environment must
-	use the same time zone.
-  </para>
-
 <section id="ad-connector:basicsetup">
-  <title>Basic configuration of the connector</title>
+  <title>Basic configuration of the UCS AD Connector</title>
   <para>
-	The connector is configured using the wizard <guimenu>UCS Active Directory Connector</guimenu>
+	The UCS AD Connector is configured using the wizard <guimenu>Active Directory Connection</guimenu>
 	of the &ucsUMC;.
+  </para>
+
+  <para>
+	The wizard can be installed from the Univention App Center with the application
+	<emphasis>Active Directory Connection</emphasis>. Alternatively, the software package
+	<package>univention-ad-connector</package> can be installed. Additional information can be found in
+	<xref linkend="computers::softwaremanagement::installsoftware"/>.
+  </para>
+
+  <note>
+	<para>
+	  All AD and UCS servers in a connector environment must
+	  use the same time zone.
+	</para>
+  </note>
+
+  <warning>
+	<para>
+	  Despite intensive tests it is not possible to rule out that the
+	  results of the synchronisation may affect the operation of a
+	  productive domain. The connector should therefore be tested for the
+	  respective requirements in a separate environment in advance.
+	</para>
+  </warning>
+
+  <para>
+	It is convenient to perform the following steps with a web browser from the AD domain controller, as the files need to be downloaded from the AD domain controller and uploaded into the &ucsUMC;.
   </para>
 
   <para>
@@ -974,15 +1394,19 @@ net rpc trustdom list
   </para>
 
   <para>
-	The connector's settings status is displayed under <guimenu>Configuration</guimenu>. The setup
-	can be begun by clicking on <guimenu>Configure UCS Active Directory Connector</guimenu>.
+	In the first dialogue window of the set-up wizard, the point <emphasis>Synchronisation of content data between an AD and this UCS domain</emphasis> must be selected and confirmed with <mousebutton>Next</mousebutton>.
+	</para>
+
+  <para>
+	<figure><title>Configuration of the UCS AD Connector in UMC</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_1-en.png"/>
+	</figure>
   </para>
 
   <para>
-	The fully qualified host name of the Active Directory server must be given in the
-	<guimenu>Active Directory Server</guimenu> field. If the hostname of the AD system is not
-	resolvable for the UCS system, it is necessary to create a DNS host record for the AD system in
-	the DNS management module of the &ucsUMC; (see <xref linkend="networks::dns::hostrecord"/>).
+	The address of an AD domain controller is requested in the next dialogue window.
+	Here you can specify the IP address of a fully qualified DNS name.
+	If the UCS system is not be able to resolve the computer name of the AD system, the AD DNS server can either be configured as the DNS forwarder under UCS or a DNS host record can be created for the AD system in the DNS management of the &ucsUMC; (see <xref linkend="networks::dns::hostrecord"/>).
   </para>
 
   <para>
@@ -996,75 +1420,50 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
   </para>
 
   <para>
-	<figure><title>Configuring the AD connector in UMC</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/adconnector_2-en.png"/>
-	</figure>
+	In the <guimenu>Active Directory account</guimenu> field, the user is configured which is used for the access on the AD. The setting is saved in the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar>. The replication user must be a member of the <emphasis>Domain Admins</emphasis> group in the AD. If the connector performs read only synchronisation from AD to UCS, a standard user account can also be specified.
   </para>
 
   <para>
-	If the <guimenu>Automatic determination of the LDAP configuration</guimenu> option is activated,
-	settings such as the base DN of the Active Directory directory or the Kerberos domain of the AD
-	system are queried automatically and do not need to be manually configured.
+	The password used for the access must be entered in the <guimenu>Active Directory password</guimenu> field. On the UCS system it is only saved locally in a file which only the <emphasis>root</emphasis> user can read.
   </para>
 
   <para>
-	The LDAP DN of the user used for access to the Active Directory is configured in the
-	<guimenu>LDAP DN of synchronisation user</guimenu> field. (The setting is saved in the &ucsUCRV;
-	<envar>connector/ad/ldap/binddn</envar>). When using the function for the automatic transfer of
-	the base DN of the Active Directory, the Administrator account is entered by default for the base DN.
-	The replication user must be a member of the <emphasis>Domain Admins</emphasis> group in the
-	Active Directory. If the connector only synchronises via read access from the Active Directory
-	to UCS, a standard user account can also be used.
+	<xref linkend="ad-connector:ad-passwort"/> describes the steps required if these access data need to be adjusted at a later point in time.
   </para>
 
   <para>
-	The password used for access is entered in the <guimenu>Password of the synchronisation
-	user</guimenu> field and saved in a text file.
+	Clicking on <mousebutton>Next</mousebutton> prompts the set-up wizard to check the connection to the AD domain controller. If it is not possible to create an SSL/TLS-encrypted connection, a warning is emitted in which you are advised to install a certification authority on the AD domain controller. It is recommended to follow this advice. Following this step, the set-up can be continued by clicking <mousebutton>Next</mousebutton> again. If it is still not possible to create an SSL/TLS-encrypted connection, a security query appears asking whether to set up the synchronisation without SSL encryption.
+	If this is desired, the set-up can be continued by clicking <mousebutton>Continue without encryption</mousebutton>. In this case, the synchronisation of the directory data is performed unencrypted.
   </para>
 
   <para>
-	Now <guimenu>Next</guimenu> needs to be clicked. The presettings in the following dialogue are
-	suitable for most environments and do not generally need to be changed.
+	If the AD domain controller supports SSL/TLS-encrypted connections, the set-up wizard offers <guimenu>Upload AD root certificate</guimenu> in the next step. This certificate must be exported from the AD certification authority in advance (see <xref linkend="ad-connector:ad-zertifikat"/>). In contrast, if this step is skipped, the certificate can also be uploaded via the UMC module at a later point in time and the SSL/TLS encryption enabled (until that point all directory data will, however, be synchronised unencrypted).
   </para>
 
   <para>
-	Some group names are saved differently in Active Directory depending on the installation
-	language of the server. The localisation used can be selected under <guimenu>System language of
-	Active Directory server</guimenu> Further information can be found in <xref
-	linkend="ad-connector:gruppen"/>.
+	The connector can be operated in different modes, which can be selected in the next dialogue window <guimenu>Configuration of Active Directory domain synchronisation</guimenu>.
+	In addition to bidirectional synchronisation, replication can also be performed in one direction from AD to UCS or from UCS to AD.
+	Once the mode has been selected, <mousebutton>Next</mousebutton> needs to be clicked.
   </para>
 
   <para>
-	The AD connector can be operated in different modes, which can be selected in
-	<guimenu>Synchronisation mode</guimenu> Alongside bidirectional synchronisation, unidirectional
-	replication towards the AD or UCS directory service is also possible.
+	In the last dialogue window, all the files required for the <guimenu>Installation of password service</guimenu> are offered for download to the Windows server. Further information on this topic can be found in <xref linkend="ad-connector:password-dienst"/>.
   </para>
 
   <para>
-	Now <guimenu>Next</guimenu> needs to be clicked.
+	Once <mousebutton>Next</mousebutton> is clicked, the configuration is taken over and the UCS AD Connector started.
+	The subsequent dialogue window needs to be closed by clicking on <mousebutton>Finish</mousebutton>.
+  </para>
+  <para>
+    Following this set-up, the <emphasis>Active Directory Connection</emphasis> UMC module can be used for further administration of the Active Directory Connection, e.g., for checking whether the service is running and restart it if necessary (see <xref linkend="ad-connector:neustart"/>).
   </para>
 
-  <para>
-	In <guimenu>Poll Interval (seconds)</guimenu> you can specify how long the system should wait
-	after a run showing no changes before sending a new request.
-  </para>
+  <note>
+	<para>
+		The connector can also synchronise several AD domains within one UCS domain; this is documented in <xref linkend="ext-doc-win"/>.
+	</para>
+  </note>
 
-  <para>
-	<guimenu>Retry interval for rejected objects</guimenu> specifies after how many synchronisation
-	intervals retained changes are imported subsequently.
-  </para>
-
-  <para>
-	The <guimenu>Debug level of Active Directory connector</guimenu> configures how much debugging
-	information is written to the <filename>/var/log/univention/connector.log</filename>
-	file. <guimenu>Add debug output for functions</guimenu> can be used to specify additionally
-	whether further debug output is added for function calls.
-  </para>
-
-  <para>
-	Clicking on <guimenu>Finish</guimenu> adopts the configuration in &ucsUCR;. Changes are only
-	adopted following a restart of the UCS AD connector, see <xref linkend="ad-connector:neustart"/>.
-  </para>
 </section>
 
 <section id="ad-connector:ad-zertifikat">
@@ -1073,7 +1472,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	An SSL certificate must be created on the Active Directory system and
 	the root certificate exported to allow encrypted communication. The
 	certificate is created by the Active Directory's certificate service.
-	The necessary steps depend on the Windows versions used. Two versions
+	The necessary steps depend on the Windows versions used. Three versions
 	are shown below as examples.
   </para>
 
@@ -1206,12 +1605,12 @@ The SSL AD certificate should now be imported into the UCS
 system using the &ucsUMC; wizard.
 </para>
 <para>
-This is done by clicking on <guimenu>Upload</guimenu> in the sub menu
-<guimenu>Active Directory Server configuration</guimenu>.
+This is done by clicking on <mousebutton>Upload</mousebutton> in the sub menu
+<guimenu>Active Directory connection SSL configuration</guimenu>.
 </para>
 <para>
 This opens a window in which a file can be selected, which is being
-uploaded and integrated into the AD connector.
+uploaded and integrated into the UCS AD Connector.
 </para>
 </section>
 </section>
@@ -1226,11 +1625,7 @@ Windows server.
 The installation packages are also provided via the setup
 wizard &ucsUMC;.
 </para>
-<para>
-<figure><title>Packages for the password service</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_6-en_de.png"/>
- </figure>
-</para>
+
 <itemizedlist>
 <listitem><simpara><filename>ucs-ad-connector.msi (for 32bit Windows)</filename></simpara></listitem>
 <listitem><simpara><filename>ucs-ad-connector-64bit.msi (for 64bit Windows)</filename></simpara></listitem>
@@ -1263,16 +1658,21 @@ The password service must then be restarted.
 </para>
 <para>
 During a standard installation in Windows 2008 the Windows firewall
-blocks the access to the AD connector. This must either be deactivated
+blocks the access to the UCS AD Connector. This must either be deactivated
 in <guimenu>System settings</guimenu> or Port 6670/TCP authorised.
+</para>
+<para>
+<figure><title>Packages for the password service</title>
+ <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_2-en.png"/>
+ </figure>
 </para>
 </section>
 
-<section id="ad-connector:neustart"><title>Starting/Stopping the Active Directory connector</title>
+<section id="ad-connector:neustart"><title>Starting/Stopping the Active Directory Connection</title>
 <para>
-The connector can be started using <guimenu>Start Active
-  Directory connector</guimenu> and stopped using
-<guimenu>Stop Active Directory connector</guimenu>. Alternatively, the
+The connector can be started using <mousebutton>Start Active
+  Directory connection service</mousebutton> and stopped using
+<mousebutton>Stop Active Directory connection service</mousebutton>. Alternatively, the
 starting/stopping can also be performed with the
 <filename>/etc/init.d/univention-ad-connector</filename> init script.
 </para>
@@ -1291,11 +1691,27 @@ in &ucsUCR;, this allows you to check the reachability/configuration
 of the Active Directory access.
 </para>
 </section>
+
+<section id="ad-connector:ad-passwort"><title>Changing the AD access password</title>
+  <para>
+  	The access data required by the UCS AD Connector for Active Directory are configured via the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> and <envar>connector/ad/ldap/bindpw</envar>. If the password has changed or you wish to use another user account, these variables must be adapted manually. The &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> is used to configure the LDAP DN of a privileged replication user. This must be a member of the <emphasis>Domain Admins</emphasis> group in the AD. The corresponding password must be saved locally in a file on the UCS system, the name of which must be entered in the &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar>. The access rights for the file should be restricted so that only the <emphasis>root</emphasis> owner has access. The following commands show this as an example:
+  </para>
+
+  <programlisting language="sh">
+eval "$(ucr shell)"
+echo "Updating ${connector_ad_ldap_bindpw?}"
+echo "for AD sync user ${connector_ad_ldap_binddn?}"
+touch "${connector_ad_ldap_bindpw?}"
+chmod 600 "${connector_ad_ldap_bindpw?}"
+echo -n "Current AD Syncuser password" > "${connector_ad_ldap_bindpw?}"
+  </programlisting>
+</section>
+
 </section>
 
 <section id="ad-connector:tools"><title>Additional tools / Debugging connector problems</title>
 <para>
-The AD connector provides the following tools and log files for diagnosis:
+The UCS AD Connector provides the following tools and log files for diagnosis:
 </para>
 
 <section id="ad-connector:univention-adsearch"><title>univention-adsearch</title>
@@ -1550,8 +1966,8 @@ The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are e
 	<title>Introduction</title>
 	<para>
 	  UCS supports the takeover of user, group and computer objects as well as Group Policy Objects
-	  (GPOs) from a Microsoft Active Directory (AD) domain. The takeover is an interactive process
-	  consisting of three distinct phases:
+	  (GPOs) from a Microsoft Active Directory (AD) domain. Windows clients do not need to rejoin
+	  the domain. The takeover is an interactive process consisting of three distinct phases:
 
 	  <itemizedlist>
 		<listitem><simpara>
@@ -1591,11 +2007,12 @@ The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are e
 	</para>
 
 	<para>
-	  The <command>univention-ad-takeover</command> script is installed as a part of the package
-	  <package>univention-s4-connector</package> and needs to be run as the
-	  <emphasis>root</emphasis> user on the domain controller that runs the Univention S4 Connector
-	  (usually the master domain controller). 
+	  The <emphasis>Active Directory Takeover</emphasis> application must be installed from the
+	  Univention App Center for the migration. It must be installed on the system where the
+	  Univention S4 Connector is running (see <xref linkend="windows:s4connector"/>, usually the
+	  &ucsMaster;).
 	</para>
+
   </section>
 
   <section id="windows:adtakeover:preparations">
@@ -1605,8 +2022,7 @@ The <emphasis>root</emphasis> and <emphasis>Administrator</emphasis> users are e
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  A backup of the AD server(s) should be performed. If the AD server is running on a
-		  virtualization solution, a snapshot should be made. 
+		  A backup of the AD server(s) should be performed.
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1645,8 +2061,8 @@ net user administrator PASSWORD
 
   </section>
 
-  <section id="windows:adtakeover:phase1">
-	<title>Takeover phase 1</title>
+  <section id="windows:adtakeover:migrate">
+	<title>Domain migration</title>
 	<para>
 	  The takeover must be initiated on the UCS domain controller that runs the Univention S4 Connector
 	  (by default the &ucsMaster;). During the takeover process Samba must only run on this UCS
@@ -1656,8 +2072,8 @@ net user administrator PASSWORD
 	</para>
 
 	<para>
-	  Other Samba systems can be stopped by logging into each of the other UCS domain controllers as
-	  root user and running
+	  Other Samba systems can be stopped by logging into each of the other UCS domain controllers as the
+	  <emphasis>root</emphasis>user and running
 
 	  <programlisting language="sh">
 /etc/init.d/samba4 stop
@@ -1675,27 +2091,35 @@ ucr set connector/s4/mapping/group/grouptype=false
 	</para>
 
 	<para>
-	  The takeover process can be started from the command line by running the following command as the root user:
+	  The takeover is performed with the <guimenu>Active Directory Takeover</guimenu> &ucsUMC;
+	  module. The IP address of the AD system must be specified under <guimenu>Name or address of
+	  the Domain Controller</guimenu>. An account in the AD domain must be specified under
+	  <guimenu>Active Directory Administrator account</guimenu> which is a member of the AD group
+	  <emphasis>Domain Admins</emphasis> (e.g., the <emphasis>Administrator</emphasis>) and the
+	  corresponding password entered under <guimenu>Active Directory Administrator
+	  password</guimenu>.
+	</para>
 
-	  <programlisting language="sh">
-univention-ad-takeover IP-of-the-AD-server
-	  </programlisting>
+	<figure>
+	  <title>First phase of domain migration</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/takeover1-en.png"/>
+	</figure>
+
+	<para>
+	  The module checks whether the AD domain controller can be accessed and displays the domain
+	  data to be migrated.
+
+	<figure>
+	  <title>Overview of the data to be migrated</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/takeover2-en.png"/>
+	</figure>
 	</para>
 
 	<para>
-	  The script will try to access the LDAP directory of the specified Active Directory server and asks for the password of the <emphasis>Administrator</emphasis>
-	  account on the AD server. By adding the <emphasis>-U</emphasis> option a different member account of the Active
-	  Directory group <emphasis>Domain Admins</emphasis> can be used.
-	</para>
-
-	<para>
-	  The script performs the following steps:
+	  When <guimenu>Next</guimenu> is clicked, the following steps are performed automatically.
+	  Additional information is logged to <filename>/var/log/univention/ad-takeover.log</filename>.
 
 	  <itemizedlist>
-		<listitem><simpara>
-		  Check that the AD domain controller can be accessed
-		</simpara></listitem>
-
 		<listitem><simpara>
 		  Adjust the system time of the UCS system to the system time of the Active Directory domain
 		  controller in case the UCS time is behind by more than three minutes.
@@ -1711,35 +2135,27 @@ univention-ad-takeover IP-of-the-AD-server
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
-	
-	<para>
-	  The script output is shown on the terminal. Additional information is logged to
-	  <filename>/var/log/univention/ad-takeover.log</filename>.
-	</para>
-  </section>
 
-  <section id="windows:adtakeover:phase2">
-	<title>Takeover phase 2</title>
 	<para>
-	  With the completion of phase I the UCS domain controller now contains all users, groups and
-	  computers of the Active Directory domain. This is required for the correct takeover of
-	  permissions of the files and directories that will be copied in phase II.
+	  The UCS domain controller now contains all users, groups and computers of the Active Directory
+	  domain. In the next step, the SYSVOL share is copied, in which among other things the group
+	  policies are stored.
 	</para>
 
 	<para>
 	  This phase requires to log onto the Active Directory domain controller as the
 	  <emphasis>Administrator</emphasis>. There a command needs to be started to copy the group
-	  policy files from the Active Directory SYSVOL share to the UCS SYSVOL share. Further
-	  information on the SYSVOL share can be found at <xref linkend="windows:sysvolshare"/>.
+	  policy files from the Active Directory SYSVOL share to the UCS SYSVOL share.
 	</para>
 
 	<para>
-	  For convenience the <command>univention-ad-takeover</command> script prints this command line
-	  to the screen at the end of phase I:
+	  The command to be run in shown in the UMC module. If it has been successfully run, it must be
+	  confirmed with <guimenu>Next</guimenu>.
 
-	  <programlisting language="sh">
-robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\sysvol
-	  </programlisting>
+	  <figure>
+		<title>Copying the sysvol share</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/takeover3-en.png"/>
+	  </figure>
 
 	  It may be necessary to install the required robocopy tool, which is part of the Windows Server
 	  2003 Resource Kit Tools. Starting with Windows 2008 the tool is already installed.
@@ -1754,25 +2170,22 @@ robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\sysvol
 
 	<para>
 	  After successful completion of this step, it is now necessary to shutdown all domain
-	  controllers of the Active Directory domain. 
-	</para>
-  </section>
+	  controllers of the Active Directory domain. Then <guimenu>Next</guimenu> must be clicked in
+	  the UMC module.
 
-  <section id="windows:adtakeover:phase3">
-	<title>Takeover phase 3</title>
-	<para>
-	  The takeover process proceeds on the command line of the UCS domain controller, where the
-	  <command>univention-ad-takeover</command> commands keeps waiting to continue with phase III.
+	  <figure>
+		<title>Shutdown of the AD server(s)</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/takeover4-en.png"/>
+	  </figure>
 	</para>
 
 	<para>
-	  The script performs the following steps:
+	  The following steps are now automatically performed:
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Ensure that the AD server is no longer accessible. This is important, because the script
-		  will claim all FSMO roles for the UCS domain controller to finalise the AD takeover
-		  process.
+		  Claiming all FSMO roles for the UCS domain controller. These describe different tasks that
+		  a server can take on in an AD domain.
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1795,12 +2208,13 @@ robocopy /mir /sec /z \\ADDCName\sysvol \\UCSDCName\sysvol
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
+
   </section>
 
   <section id="windows:adtakeover:finalsteps">
 	<title>Final steps of the takeover</title>
 	<para>
-	  After completion of the AD Takeover script the following steps are required:
+	  Finally the following steps are required:
 
 	  <itemizedlist>
 		<listitem><simpara>
