@@ -1,3 +1,10 @@
+ucs-test (5.0.22-1) unstable; urgency=low
+
+  * 00_base/26check_logfiles_general: Added some more files to the
+    ignore list (Bug #35881)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 12 Oct 2014 14:35:23 +0200
+
 ucs-test (5.0.21-1) unstable; urgency=low
 
   * 00_base/25check-permissions: adjust to UCS 4.0 (Bug #35880)

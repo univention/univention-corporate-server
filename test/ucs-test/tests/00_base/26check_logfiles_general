@@ -51,6 +51,7 @@ find /var/log \
 		-o -path "/var/log/apt/history.log" \
 		-o -path "/var/log/autoupdate.log" \
 		-o -path "/var/log/alternatives.log*" \
+		-o -path "/var/log/boot.log" \
 		-o -path "/var/log/btmp" \
 		-o -path "/var/log/clamav" \
 		-o -path "/var/log/cups/access_log*" \
@@ -62,6 +63,9 @@ find /var/log \
 		-o -path "/var/log/gdm/*log*" \
 		-o -path "/var/log/horde" \
 		-o -path "/var/log/hylafax" \
+		-o -path "/var/log/installer/hardware-summary" \
+		-o -path "/var/log/installer/lsb-release" \
+		-o -path "/var/log/installer/status" \
 		-o -path "/var/log/kern.log" \
 		-o -path "/var/log/lpr.log" \
 		-o -path "/var/log/ltsp-mounts.log" \
