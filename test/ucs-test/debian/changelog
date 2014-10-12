@@ -1,3 +1,11 @@
+ucs-test (5.0.20-1) unstable; urgency=low
+
+  * Removed 00_base/16packages_default because
+    20_appcenter/20_can_apps_be_installed does the same test
+    (Bug #35878)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 12 Oct 2014 14:19:49 +0200
+
 ucs-test (5.0.19-1) unstable; urgency=low
 
   * Bug #36124: Check for APT key rings
