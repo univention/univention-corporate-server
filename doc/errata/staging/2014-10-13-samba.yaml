@@ -1,0 +1,9 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-3
+src: samba
+fix: 2:4.1.0-1.692.201410131420
+version: [2,3]
+desc: |
+ * Fix smbd crash on filenames with non-ascii character.
+bug: [36162]
