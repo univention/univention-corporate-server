@@ -1,3 +1,10 @@
+ucs-test (4.0.170-1) unstable; urgency=low
+
+  * Bug #35900: add filter by name and more printed debug info
+  * Bug #35909: add package dependency to univention-squid
+
+ -- Ammar Najjar <najjar@univention.de>  Mon, 13 Oct 2014 11:46:34 +0200
+
 ucs-test (4.0.169-1) unstable; urgency=low
 
   * Bug #35900: add some printed debug info
