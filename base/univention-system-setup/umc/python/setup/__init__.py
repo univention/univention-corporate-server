@@ -710,7 +710,7 @@ class Instance(Base, ProgressMixin):
 				# checked: failed!
 				return False
 			else:
-				return True
+				return info['Domain']
 		elif role == 'nonmaster':
 			if dns:
 				domain = util.get_ucs_domain(nameserver)
@@ -721,7 +721,7 @@ class Instance(Base, ProgressMixin):
 				return None
 			with util._temporary_password_file(password) as password_file:
 				return_code = subprocess.call(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo', 'WORKS'])
-				return return_code == 0
+				return return_code == 0 and domain
 		# master? basesystem? no domain check necessary
 		return True
 

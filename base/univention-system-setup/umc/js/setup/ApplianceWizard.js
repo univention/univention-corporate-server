@@ -1936,12 +1936,15 @@ define([
 			}
 
 			if (pageName == 'credentials-ad' || pageName == 'credentials-nonmaster') {
-				return this._checkCredentials().then(lang.hitch(this, function(success) {
+				return this._checkCredentials().then(lang.hitch(this, function(domain) {
 					var msg = '';
-					if (success === false) {
+					this._domainName = null;
+					if (domain) {
+						this._domainName = domain;
+					} else if (domain === false) {
 						msg = _('Connection refused. Please recheck the password');
 						nextPage = pageName;
-					} else if (success === null) {
+					} else if (domain === null) {
 						msg = _('Connection failed. Please recheck the address');
 						nextPage = pageName;
 					}
@@ -2187,6 +2190,11 @@ define([
 				}
 			});
 			vals['ad/member'] = this._isAdMember();
+			if (this._isAdMember() || this._isRoleNonMaster()) {
+				if (this._domainName) {
+					vals['domainname'] = this._domainName;
+				}
+			}
 			return vals;
 		},
 

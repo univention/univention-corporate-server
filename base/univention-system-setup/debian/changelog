@@ -1,3 +1,9 @@
+univention-system-setup (8.1.10-5) unstable; urgency=low
+
+  * Bug #35653: Autoset domainname from checking credentials
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 13 Oct 2014 23:29:12 +0200
+
 univention-system-setup (8.1.10-4) unstable; urgency=low
 
   * Bug #35550: Fix localization of python setup scripts
