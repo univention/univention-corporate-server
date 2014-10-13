@@ -2,6 +2,7 @@
 ## desc: Check squid redirecor written to gonfig file
 ## tags: apttest
 ## exposure: careful
+## packages: [univention-squid]
 ## bugs: [33332, 35421]
 
 from univention.config_registry import handler_set
