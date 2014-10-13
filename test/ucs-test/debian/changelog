@@ -1,3 +1,9 @@
+ucs-test (5.0.23-1) unstable; urgency=medium
+
+  * Bug #35319: 10_ldap/60failedldif: Use restart again
+
+ -- Arvid Requate <requate@univention.de>  Mon, 13 Oct 2014 18:25:55 +0200
+
 ucs-test (5.0.22-1) unstable; urgency=low
 
   * 00_base/26check_logfiles_general: Added some more files to the

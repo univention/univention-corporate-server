@@ -78,11 +78,9 @@ done
 # Workaround for Bug #33050
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=33050
 ucr commit /etc/samba/smb.conf
-for srv in samba smaba4 winbind; do
+for srv in samba winbind; do
 	if [ -x /etc/init.d/$srv ]; then
-		invoke-rc.d $srv stop
-		sleep 1
-		invoke-rc.d $srv start
+		invoke-rc.d $srv restart
 	fi
 
 done
