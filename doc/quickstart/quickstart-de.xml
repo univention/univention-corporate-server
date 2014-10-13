@@ -94,7 +94,11 @@
 	vom Domänennamen verwendet werden).
 	Wenn also beispielsweise das Rechnersystem <emphasis>mailserver</emphasis> in der
 	DNS-Domäne <emphasis>firma.local</emphasis> in Betrieb genommen werden soll, ist als
-	vollständiger Rechnername <emphasis>mailserver.firma.local</emphasis> einzutragen. Die <guimenu>LDAP-Basis</guimenu>
+	vollständiger Rechnername <emphasis>mailserver.firma.local</emphasis> einzutragen. 
+	Wenn eine Migration einer AD-Domäne auf UCS durchgeführt werden soll oder das UCS-System einer
+	AD-Domäne beitreten soll, muss als Domänenname der AD-Domänenname verwendet werden (er wird
+	z.B. in der Windows-Systemsteuerung unter <guimenu>System und Sicherheit -> System</guimenu> im
+	Feld <guimenu>Domäne</guimenu> angezeigt. Die <guimenu>LDAP-Basis</guimenu>
 	und die <guimenu>Windows-Domäne</guimenu> werden auf Basis des vollständigen Rechnernamens
 	vorgeschlagen und müssen nur in Ausnahmefällen angepasst werden.
 	Der Root-Passwort muss min. acht Zeichen umfassen und wird bei der Installation des ersten

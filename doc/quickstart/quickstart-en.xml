@@ -90,7 +90,9 @@
 	under <guimenu>Fully qualified domain name</guimenu> (e.g., mail.example.com).
 	A non-public domain name can be chosen here, e.g. <emphasis>company.local</emphasis>.
 	(If the system is to be used as mail server the mail domains can be selected independently of
-	the domain name).
+	the domain name). If the UCS system should take over or join an existing Active Directory domain, the
+	AD domain name must be used as the domain name (it is displayed in the Windows Control Panel under
+	<guimenu>System and Security -> System</guimenu> in the <guimenu>Domain</guimenu> field.
 	The <guimenu>LDAP base</guimenu> and the <guimenu>Windows domain</guimenu> are suggested based
 	on the complete computer name and only need to be adjusted in exceptional cases.
 	The root password must be at least eight characters long and is also set as the password for the
