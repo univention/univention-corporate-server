@@ -66,7 +66,7 @@ define([
 			return value[0];
 		},
 		_update_size_info_text: function(newVal) {
-			var widget = this.getWidget('details', 'parameter').getWidget('size_info_text');
+			var widget = this.getWidget('details', 'size_info_text');
 			var size = this._get_size_id(newVal);
 			if (size) {
 				var text = '';
@@ -81,15 +81,13 @@ define([
 
 		_getWidgets: function(cloudtype, cloud) {
 			if (cloudtype == 'OpenStack') {
-				return [{
-					name: 'parameter',
-					type: Form,
-					label: '&nbsp;',
+				return {
 					layout: [
-						'keyname',
 						'image_id',
-						['size_id', 'size_info_text'],
-						'security_group_ids'
+						'size_id',
+						'size_info_text',
+						['keyname', 'security_group_ids']
+						
 					],
 					widgets: [{
 						name: 'keyname',
@@ -106,7 +104,8 @@ define([
 						dynamicValues: lang.hitch(this, function(options) {
 							return this.standbyDuring(types.getCloudListImage(options));
 						}),
-						required: true
+						required: true,
+						size: 'Two'
 					}, {
 						name: 'size_id',
 						type: ComboBox,
@@ -115,6 +114,7 @@ define([
 						dynamicOptions: {conn_name: cloud},
 						dynamicValues: types.getCloudListSize,
 						required: true,
+						size: 'Two',
 						onChange: lang.hitch(this, function(newVal) {
 							this._update_size_info_text(newVal);
 						})
@@ -131,19 +131,17 @@ define([
 						dynamicValues: types.getCloudListSecgroup,
 						required: true
 					}]
-				}];
+				};
 			}
 			if (cloudtype == 'EC2') {
 				var owner_id = 223093067001; // univention images
-				return [{
-					name: 'parameter',
-					type: Form,
-					label: '&nbsp;',
+				return {
 					layout: [
-						'keyname',
-						['image_id', 'image_univention'],
-						['size_id', 'size_info_text'],
-						'security_group_ids'
+						'image_univention',
+						'image_id',
+						'size_id',
+						'size_info_text',
+						['keyname', 'security_group_ids']
 					],
 					widgets: [{
 						name: 'keyname',
@@ -160,6 +158,7 @@ define([
 						dynamicOptions: {conn_name: cloud},
 						dynamicValues: types.getCloudListSize,
 						required: true,
+						size: 'Two',
 						onChange: lang.hitch(this, function(newVal) {
 							this._update_size_info_text(newVal);
 						})
@@ -177,7 +176,8 @@ define([
 						dynamicValues: lang.hitch(this, function(options) {
 							return this.standbyDuring(types.getCloudListImage(options));
 						}),
-						required: true
+						required: true,
+						size: 'Two'
 					}, {
 						name: 'image_univention',
 						type: CheckBox,
@@ -185,7 +185,7 @@ define([
 						label: _('Only show Univention images'),
 						description: _('Show only images which are provided by Univention.'),
 						onChange: lang.hitch(this, function(newVal) {
-							var widget = this.getWidget('details', 'parameter').getWidget('image_id');
+							var widget = this.getWidget('details', 'image_id');
 							var options = widget.get('dynamicOptions');
 							options.pattern = newVal ? owner_id : '';
 							widget.set('dynamicOptions', options);
@@ -198,13 +198,14 @@ define([
 						dynamicValues: types.getCloudListSecgroup,
 						required: true
 					}]
-				}];
+				};
 			}
-			return [{}];
+			return {};
 		},
 
 		constructor: function(props, cloudtype, cloud) {
 			// mixin the page structure
+			var widgets = this._getWidgets(cloudtype, cloud);
 			lang.mixin(this, {
 				pages: [{
 					name: 'general',
@@ -228,7 +229,8 @@ define([
 					name: 'details',
 					headerText: _('Create a new virtual machine instance.'),
 					helpText: _('Please enter the corresponding details for virtual machine instance:'),
-					widgets: this._getWidgets(cloudtype, cloud)
+					widgets: widgets.widgets,
+					layout: widgets.layout
 				}]
 			});
 		},
@@ -236,7 +238,7 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			// store umcp response of "size_id" for updating "size_info_text"
-			var widget = this.getWidget('details', 'parameter').getWidget('size_id');
+			var widget = this.getWidget('details', 'size_id');
 			widget.on('dynamicValuesLoaded', lang.hitch(this, function(value) {
 				this._size_id = value;
 				this._update_size_info_text(value[0].id);

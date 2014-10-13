@@ -775,7 +775,7 @@ define([
 				var add = tools.umcpCommand('uvmm/instance/add', {
 					conn_name: values.cloud,
 					name: values.name,
-					parameter: values.parameter
+					parameter: values
 				}).then(lang.hitch(this, function() {
 					_cleanup();
 					this.moduleStore.onChange();

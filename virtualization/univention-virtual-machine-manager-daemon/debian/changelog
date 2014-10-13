@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.3-3) unstable; urgency=low
+
+  * Adapt instance creation page layout (Bug #36142) 
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 13 Oct 2014 17:13:45 +0200
+
 univention-virtual-machine-manager-daemon (4.0.3-2) unstable; urgency=low
 
   * hide unavailable cloud connections in create instance wizard (Bug #36093)
