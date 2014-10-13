@@ -1,3 +1,9 @@
+univention-mail-postfix (9.0.0-8) unstable; urgency=low
+
+  * weekly rotate dh parameters (Bug #35923) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 13 Oct 2014 13:38:04 +0200
+
 univention-mail-postfix (9.0.0-7) unstable; urgency=low
 
   * remove old ucr templates (Bug #35264)
