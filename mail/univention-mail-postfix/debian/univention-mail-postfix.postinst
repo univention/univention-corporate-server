@@ -85,7 +85,7 @@ univention-config-registry set \
 	mail/postfix/tls/preempt/cipherlist?yes \
 	mail/postfix/smtpd/tls/loglevel?1 \
 	mail/postfix/smtp/tls/loglevel?1 \
-	mail/postfix/cron/recreate/dh/parameter?'0 4 * * *'
+	mail/postfix/cron/recreate/dh/parameter?'0 4 * * 0'
 
 eval "$(univention-config-registry shell)"
 
@@ -97,7 +97,7 @@ if [ "$1" = "configure" -a -z "$2" ] ; then
 		mail/postfix/smtpd/restrictions/recipient/50="reject_unauth_destination" \
 		mail/postfix/smtpd/restrictions/recipient/70="reject_unlisted_recipient"
 
-	/usr/share/univention-mail-postfix/create-dh-parameter-files.sh
+	/usr/share/univention-mail-postfix/create-dh-parameter-files.sh >/dev/null 2>&1
 fi
 
 for file in transport virtual canonical access relocated; do

@@ -1,3 +1,9 @@
+univention-mail-postfix (8.0.13-6) unstable; urgency=low
+
+  * weekly rotate dh parameters (Bug #35923) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 13 Oct 2014 13:34:44 +0200
+
 univention-mail-postfix (8.0.13-5) unstable; urgency=low
 
   * added cron job for re-creating dh parameter files (Bug #35923) 
