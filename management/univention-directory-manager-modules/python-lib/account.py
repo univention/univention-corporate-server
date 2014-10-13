@@ -38,12 +38,12 @@ import univention.admin.handlers.users.user
 
 univention.admin.modules.update()
 
-def lock(username, lock_scope):
+def lock(userdn, lock_scope):
 	"""
 	Lock user account
 
 	>>> import univention.lib.account
-	>>> univention.lib.account.lock('user1', 'all')
+	>>> univention.lib.account.lock('uid=user1,dc=example,dc=com', 'all')
 	>>>
 
 	"""
@@ -57,11 +57,7 @@ def lock(username, lock_scope):
 
 	univention.admin.modules.init(lo, pos, module)
 
-	filter='uid=%s' % username
-	objects = module.lookup(co, lo, filter, superordinate=None, unique=1, required=1, timeout=-1, sizelimit=0)
-
-	# search was unique and required
-	object = objects[0]
+	object = module.object(co, lo, pos, userdn)
 
 	object.open()
 	object['locked']=lock_scope
