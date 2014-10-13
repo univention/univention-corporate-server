@@ -63,6 +63,7 @@ Depends: ${misc:Depends},
  openbox,
 Recommends: firefox-en | firefox-de | firefox | iceweasel,
  xinit,
+ smbclient,
  univention-kernel-image,
 Replaces: univention-setup-boot, univention-system-setup-appliance
 Description: Starting univention-system-setup on next boot

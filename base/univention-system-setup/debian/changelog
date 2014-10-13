@@ -1,3 +1,10 @@
+univention-system-setup (8.1.10-4) unstable; urgency=low
+
+  * Bug #35550: Fix localization of python setup scripts
+  * Bug #35653: Add smbclient to list of dependencies
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 13 Oct 2014 18:24:23 +0200
+
 univention-system-setup (8.1.10-3) unstable; urgency=low
 
   * Bug #35653: Fix nameserver issues

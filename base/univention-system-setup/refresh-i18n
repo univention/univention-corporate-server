@@ -34,12 +34,15 @@ lang=de
 dir=usr/share/locale/$lang/LC_MESSAGES/
 po=$dir/univention-system-setup-scripts.po
 pot=${po}t
+potpy=${pot}-py
 pox=${po}x
 
 mkdir -p $dir
 
 echo; echo "Translation for UMC module"
 xgettext -L Shell -o $pot usr/lib/univention-system-setup/scripts/*.sh usr/lib/univention-system-setup/scripts/*/*
+xgettext -L python --omit-header -o $pot-py usr/lib/univention-system-setup/scripts/*/*
+cat $potpy >> $pot && rm $potpy
 
 if grep "Content-Type: text/plain; charset=CHARSET" $pot ; then
 	echo "Rewriting encoding information from CHARSET to UTF-8"
