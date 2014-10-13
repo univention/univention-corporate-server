@@ -35,7 +35,7 @@ class Errors(LogMessage):
 		'yes: write error',
 		'.*Update aborted by pre-update script of release.*',
 		'.*update failed. Please check /var/log/univention/.*',
-		'.*failed to convert the username listfilter to the uid.*',
+		'.*failed to convert the username .* to the uid.*',
 		'.*Can not write log, .* failed.*',
 		'.*Starting Univention Directory Policy:.*',
 		'.*LISTENER .* : failed to connect to any notifier.*',
@@ -88,4 +88,5 @@ class Warnings(LogMessage):
 		'.*Updating certificates in /etc/ssl/certs.* WARNING: Skipping duplicate certificate ca-certificates.crt.*',
 		'.*Permanently added .* to the list of known hosts.*',
 		'.*usr/sbin/grub-probe: warning: disk does not exist, so falling back to partition device.*',
-		'.*WARNING: cannot read /sys/block/vda.* (?:No such file or directory|Datei oder Verzeichnis nicht gefunden).*']
+		'.*WARNING: cannot read /sys/block/vda.* (?:No such file or directory|Datei oder Verzeichnis nicht gefunden).*',
+		'.*warning: univention-directory-notifier: unable to open supervise/ok: .*']
