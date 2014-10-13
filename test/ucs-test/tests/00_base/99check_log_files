@@ -3,6 +3,9 @@
 ## bugs: [30751]
 ## tags: [basic]
 ## exposure: safe
+## versions:
+##  3.0-0: skip
+##  4.0-0: fixed
 
 import re
 import gzip
@@ -11,7 +14,7 @@ from sys import exit
 
 from univention.management.console.modules.setup.setup_script import Profile
 import univention.testing.utils as utils
-import check_log_files_definitions as definitions
+from check_log_files_definitions import Errors, Tracebacks, Warnings
 
 
 class CheckLogFiles(object):
@@ -20,8 +23,9 @@ class CheckLogFiles(object):
         """
         Test constructor
         """
-        self.DefinitionsErrors = definitions.Errors
-        self.DefinitionsWarnings = definitions.Warnings
+        self.errors = Errors()
+        self.warnings = Warnings()
+        self.tracebacks = Tracebacks()
 
         self.log_file = ''
         self.line_counter = 0
@@ -45,8 +49,7 @@ class CheckLogFiles(object):
             self.line_counter += 1
             trace_line += 1
 
-            if (trace_line >= self.max_trace_lines or re.match('.*Error: .*',
-                                                               line)):
+            if trace_line >= self.max_trace_lines or 'Error: ' in line:
                 last_line = line.strip()
                 # break loop if the trace is too big or
                 # if last trace line with error name was found
@@ -64,10 +67,9 @@ class CheckLogFiles(object):
         Extracts the traceback message and appends it to the
         output 'errors' with a given 'msg' in the beginning.
         """
-        for pattern in definitions.Tracebacks.wanted:
-            if pattern.match(line):
-                errors.append(msg + '\n' + self.extract_traceback_message())
-                return errors
+        if self.tracebacks.wanted(line):
+            errors.append(msg + '\n' + self.extract_traceback_message())
+            return errors
 
         return errors
 
@@ -77,14 +79,12 @@ class CheckLogFiles(object):
         adds message 'msg' to list 'result' if pattern is in 'wanted'.
         Ignores the patterns matching 'ignore'. Returns 'result'.
         """
-        for pattern in definition.ignore:
-            if pattern.match(line):
-                return result
+        if definition.ignore(line):
+            return result
 
-        for pattern in definition.wanted:
-            if pattern.match(line):
-                result.append(msg)
-                return result
+        if definition.wanted(line):
+            result.append(msg)
+            return result
 
         return result
 
@@ -120,11 +120,11 @@ class CheckLogFiles(object):
                 # skip the message if it is repeated from the previous line:
                 if line != previous_line:
                     errors = self.check_line(line,
-                                             self.DefinitionsErrors,
+                                             self.errors,
                                              errors,
                                              msg)
                     warnings = self.check_line(line,
-                                               self.DefinitionsWarnings,
+                                               self.warnings,
                                                warnings,
                                                msg)
 
@@ -153,13 +153,8 @@ class CheckLogFiles(object):
 
         # adding warnings and errors caused by absence of
         # join procedure to the ignore lists
-        self.DefinitionsErrors.ignore_list.extend(join_errors)
-        self.DefinitionsWarnings.ignore_list.extend(join_warnings)
-
-        self.DefinitionsErrors.ignore = map(re.compile,
-                                            self.DefinitionsErrors.ignore_list)
-        self.DefinitionsWarnings.ignore = map(re.compile,
-                                          self.DefinitionsWarnings.ignore_list)
+        self.errors = Errors(ignore=join_errors)
+        self.warnings = Warnings(ignore=join_warnings)
 
     def check_installation_profile(self):
         """
@@ -168,12 +163,20 @@ class CheckLogFiles(object):
         related errors in case setting is 'false'.
         """
         InstallProfile = Profile()
-        InstallProfile.load(filename='/etc/univention/installation_profile')
-
-        if 'false' in InstallProfile.get_list('call_master_joinscripts')[0]:
-            print("\nThe 'call_master_joinscripts' is 'false' in "
-                  "'/etc/univention/installation_profile', "
-                  "adjusting patterns to ignore respective 'join' messages.")
+        try:
+            InstallProfile.load(filename='/etc/univention/installation_profile')
+            if bool(re.match('false',
+                             InstallProfile.get_list('call_master_joinscripts')[0],
+                             re.IGNORECASE)):
+                print("\nThe 'call_master_joinscripts' is 'false' in "
+                      "'/etc/univention/installation_profile', adjusting "
+                      "patterns to ignore respective 'join' messages.")
+                self.extend_log_ignore_definitions()
+        except (IOError, IndexError) as exc:
+            print("\nAn error occured while trying to check the installation "
+                  "profile for 'call_master_joinscripts' setting: %r "
+                  "Adjusting patterns to ignore respective 'join' messages."
+                  % exc)
             self.extend_log_ignore_definitions()
 
     def main(self, log_files):
@@ -201,7 +204,7 @@ class CheckLogFiles(object):
 
 
 if __name__ == '__main__':
-    log_files = ["/var/log/univention/installation.log",
+    log_files = ("/var/log/univention/installation.log",
                  "/var/log/univention/installation.log.gz",
                  "/var/log/univention/installer.log",
                  "/var/log/univention/installer.log.gz",
@@ -209,7 +212,7 @@ if __name__ == '__main__':
                  "/var/log/univention/actualise.log",
                  "/var/log/univention/join.log",
                  "/var/log/univention/listener.log",
-                 "/var/log/univention/setup.log"]
+                 "/var/log/univention/setup.log")
 
     LogChecker = CheckLogFiles()
     LogChecker.main(log_files)
