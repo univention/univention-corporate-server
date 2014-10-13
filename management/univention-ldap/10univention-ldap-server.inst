@@ -269,7 +269,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			objectClass: device
 			objectClass: pwdPolicy
 			cn: default
-			pwdAttribute: userPassword
+			pwdAttribute: 2.5.4.35
 			pwdAllowUserChange: FALSE
 			pwdLockout: TRUE
 			pwdMaxFailure: 5
