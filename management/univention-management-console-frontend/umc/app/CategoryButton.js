@@ -37,7 +37,7 @@ define([
 	"dojo/Deferred",
 	"dojox/gfx",
 	"dojox/gfx/fx",
-	"umc/widgets/Button"
+	"dijit/form/Button"
 ], function(declare, lang, Color, domConstruct, mouse, Deferred, gfx, fxg, Button) {
 	return declare('umc.app.CategoryButton', Button, {
 		color: '#ffffff',

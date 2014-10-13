@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.38-1) unstable; urgency=medium
+
+  * Bug #36095: let umc/app/CategoryButton depend on dijit/form/Button
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 13 Oct 2014 16:30:37 +0200
+
 univention-management-console-frontend (4.1.37-1) unstable; urgency=low
 
   * Bug #35654: fix rerendering of categories on app.reloadModules()
