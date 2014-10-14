@@ -1467,7 +1467,7 @@ define([
 				var button = new CategoryButton({
 					label: category.label,
 					'class': lang.replace('umcCategory-{id}', category),
-					callback: lang.hitch(this, '_updateQuery', category),
+					onClick: lang.hitch(this, '_updateQuery', category),
 					color: color,
 					categoryID: category.id,
 					iconClass: iconClass

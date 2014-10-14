@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.40-1) unstable; urgency=low
+
+  * Bug #35654: use onClick instead of callback for CategoryButtons as it now inherits
+  	from dijit/form/Button
+
+ -- Florian Best <best@univention.de>  Tue, 14 Oct 2014 11:59:40 +0200
+
 univention-management-console-frontend (4.1.39-1) unstable; urgency=low
 
   * Bug #35654: remove Form.scrollable, fix background of login dialog while
