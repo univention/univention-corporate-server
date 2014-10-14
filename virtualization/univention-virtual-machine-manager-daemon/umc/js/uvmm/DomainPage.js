@@ -150,8 +150,7 @@ define([
 						[ 'contact', 'email' ],
 						'description'
 					]
-				}],
-				scrollable: true
+				}]
 			});
 			this._generalForm.on('Submit', lang.hitch(this, 'save'));
 			this._generalPage.addChild(this._generalForm);

@@ -121,8 +121,7 @@ define([
 						['u_size_name', 'keypair'],
 						['image', 'securitygroup']
 					]
-				}],
-				scrollable: true
+				}]
 			});
 			this.addChild(this._generalForm);
 		},
