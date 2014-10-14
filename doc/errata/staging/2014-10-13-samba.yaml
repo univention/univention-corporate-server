@@ -2,8 +2,11 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: samba
-fix: 2:4.1.0-1.692.201410131420
+fix: 2:4.1.0-1.694.201410141852
 version: [2,3]
 desc: |
- * Fix smbd crash on filenames with non-ascii character.
-bug: [36162]
+  This update fixes the following issues:
+  * The main samba (not smbd) processes have been restricted to 1024 open files.
+    Now they use the value configured in the UCR variable samba/max_open_files.
+  * Fix smbd crash on filenames with non-ascii character.
+bug: [34514,36162]
