@@ -1,3 +1,15 @@
+ucs-ec2-tools (0.1.22-10) unstable; urgency=low
+
+  * examples/jenkins/autotest-220-ad-win2k8-master.cfg:
+     now setting gateway on windows host
+     added ~/ec2/scripts/activate-3.2-errata-test-scope.sh to file list and
+     changed upgrade_to_latest_errata to upgrade_to_latest_test_errata
+     added execution of ad-join.py
+     added execution of ucs-test
+     (Bug #35913)
+
+ -- Drees Dormann <dormann@univention.de>  Tue, 14 Oct 2014 09:03:00 +0200
+
 ucs-ec2-tools (0.1.22-9) unstable; urgency=low
 
   * added examples/jenkins/utils/ad-join.py for automatically 

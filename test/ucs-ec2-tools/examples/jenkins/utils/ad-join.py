@@ -59,7 +59,7 @@ parser.add_option('-P', '--domain_password', dest='domain_password', default='Un
 (options, args) = parser.parse_args()
 
 if not options.domain_host:
-	parse.error('Please specify a domain controller host address!')
+	parser.error('Please specify a domain controller host address!')
 
 connection = UMCConnection(options.host)
 connection.auth(options.username, options.password)
@@ -76,5 +76,7 @@ if not result:
 	print 'ERROR: Failed to join ad domain!'
 	print 'output: %s' % result
 	sys.exit(1)
+
+
 
 sys.exit(0)
