@@ -358,7 +358,7 @@ define([
 
 			// register to onShow as well as onFilterDone events in order on focus to the
 			// input widget when the tab is changed
-			this._searchPage.on('show', lang.hitch(this, '_selectInputText'));
+			this.own(aspect.after(this._searchPage, '_onShow', lang.hitch(this, '_selectInputText')));
 			this._grid.on('filterDone', lang.hitch(this, function() {
 				if (!this._newObjectDialog) {
 					// not during "wizard phase"

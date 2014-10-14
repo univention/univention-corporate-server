@@ -46,7 +46,7 @@ define([
 
 		autoSearch: true,
 
-		umcpCommand: tools.umcpCommand,
+		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 
 		queryWidgets: [],
 

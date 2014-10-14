@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.5-1) unstable; urgency=low
+
+  * Bug #35654: fix page.onShow() event, fix reference to tools.umcpCommand
+
+ -- Florian Best <best@univention.de>  Tue, 14 Oct 2014 19:34:25 +0200
+
 univention-management-console-module-udm (5.1.4-1) unstable; urgency=low
 
   * Bug #35654: display tree icons, move position/objecttype into left nav

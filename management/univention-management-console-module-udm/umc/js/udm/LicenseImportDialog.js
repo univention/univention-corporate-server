@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define,window*/
 
 define([
 	"dojo/_base/declare",
@@ -97,10 +97,6 @@ define([
 					}
 					this._handleUploaded(result);
 				})
-			}, {
-				type: Text,
-				name: 'spacer',
-				content: '&nbsp;&nbsp;'
 			}]);
 
 			var buttons = [{
@@ -117,7 +113,7 @@ define([
 				})
 			}];
 
-			this.message = render.layout(['titleImport', 'message', 'licenseUpload', 'spacer', 'licenseText', 'btnLicenseText'], this._widgets, render.buttons(buttons));
+			this.message = render.layout(['titleImport', 'message', 'licenseUpload', 'licenseText', 'btnLicenseText'], this._widgets, render.buttons(buttons));
 		},
 
 		_handleUploaded: function(result) {
