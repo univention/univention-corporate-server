@@ -38,12 +38,12 @@ import univention.admin.handlers.users.user
 
 univention.admin.modules.update()
 
-def lock(userdn, lock_scope):
+def lock(userdn, lock_timestamp, lock_scope):
 	"""
 	Lock user account
 
 	>>> import univention.lib.account
-	>>> univention.lib.account.lock('uid=user1,dc=example,dc=com', 'all')
+	>>> univention.lib.account.lock('uid=user1,dc=example,dc=com', '20141006192950Z', 'all')
 	>>>
 
 	"""
