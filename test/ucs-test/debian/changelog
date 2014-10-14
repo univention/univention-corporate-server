@@ -1,3 +1,9 @@
+ucs-test (4.0.171-1) unstable; urgency=low
+
+   * Bug #35900: use utc time instead of local time
+
+ -- Ammar Najjar <najjar@univention.de>  Tue, 14 Oct 2014 10:42:01 +0200
+
 ucs-test (4.0.170-1) unstable; urgency=low
 
   * Bug #35900: add filter by name and more printed debug info
