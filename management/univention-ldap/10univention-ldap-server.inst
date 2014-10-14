@@ -273,7 +273,6 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			pwdAllowUserChange: FALSE
 			pwdLockout: TRUE
 			pwdMaxFailure: 5
-			pwdLockoutDuration: 172800
 			pwdFailureCountInterval: 3600
 			%EOR
 	fi

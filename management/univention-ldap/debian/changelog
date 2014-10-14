@@ -1,3 +1,10 @@
+univention-ldap (11.0.6-5) unstable; urgency=medium
+
+  * Bug #31907: Don't configure pwdLockoutDuration, automatic unlocking
+    is impossible with the current udm method of account locking.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Oct 2014 12:12:48 +0200
+
 univention-ldap (11.0.6-4) unstable; urgency=medium
 
   * Bug #31907: Work around ITS#4025
