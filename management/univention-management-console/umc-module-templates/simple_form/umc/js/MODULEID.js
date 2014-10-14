@@ -126,8 +126,7 @@ define([
 				// property that defines the widget's position
 				region: 'nav',
 				widgets: widgets,
-				layout: layout,
-				scrollable: true
+				layout: layout
 			});
 
 			// turn off the standby animation as soon as all form values have been loaded

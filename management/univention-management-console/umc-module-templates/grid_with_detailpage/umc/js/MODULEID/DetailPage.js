@@ -127,9 +127,7 @@ define([
 			this._form = new Form({
 				widgets: widgets,
 				layout: layout,
-				moduleStore: this.moduleStore,
-				// alows the form to be scrollable when the window size is not large enough
-				scrollable: true
+				moduleStore: this.moduleStore
 			});
 
 			// add form to page...

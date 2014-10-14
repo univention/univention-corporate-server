@@ -128,11 +128,10 @@ import notifier
 import notifier.signals as signals
 import traceback
 
-import univention.debug as ud
 from univention.lib.i18n import Translation
 
 from ..protocol import Response, MIMETYPE_JSON
-from ..protocol.definitions import *
+from ..protocol.definitions import BAD_REQUEST, MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS, SUCCESS_MESSAGE, SUCCESS_PARTIAL, SUCCESS_SHUTDOWN
 from ..log import MODULE
 
 _ = Translation( 'univention.management.console' ).translate

@@ -399,6 +399,8 @@ class Processor( signals.Provider ):
 			if userObj:
 				favorites = dict(userObj.info.get('umcProperty', [])).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
 				favorites.split(',')
+			else:  # no LDAP user
+				favorites = ucr.get('umc/web/favorites/default', '').split(',')
 
 			modules = []
 			for id, module in self.__command_list.items():

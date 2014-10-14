@@ -1,3 +1,10 @@
+univention-management-console (7.1.12-1) unstable; urgency=low
+
+  * Bug #35654: remove Form.scrollable in module templates, fix favorites for
+  	root user
+
+ -- Florian Best <best@univention.de>  Tue, 14 Oct 2014 13:22:35 +0200
+
 univention-management-console (7.1.11-1) unstable; urgency=low
 
   * Bug #35654: fix server crash when some category XML definition contains a
