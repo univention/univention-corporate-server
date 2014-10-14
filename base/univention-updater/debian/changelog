@@ -1,3 +1,9 @@
+univention-updater (10.0.7-2) unstable; urgency=low
+
+  * Bug #35656: Block update with xen-4.1 still installed.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 14 Oct 2014 15:46:33 +0200
+
 univention-updater (10.0.7-1) unstable; urgency=low
 
   * Bug #36116: Disable online repository until after USS.

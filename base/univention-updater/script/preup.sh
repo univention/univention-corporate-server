@@ -163,7 +163,14 @@ if [ -n "$hold_packages" ]; then
 	fi
 fi
 
-##
+## Check for UCS Xen-4.1
+case "$(dpkg-query -W -f '${Status}/${Version}' xen-4.1 2>/dev/null)" in
+install\ *\ */4.1.*-*.*.????????????)
+	echo "WARNING: The Xen hypervisor is no longer supported by UCS."
+	echo "         The package 'xen-4.1' must be removed before the update can continue."
+	exit 1
+	;;
+esac
 
 #################### Bug #22093
 
