@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.42-1) unstable; urgency=low
+
+  * Bug #35654: attempt to fix placeholder in IE9
+
+ -- Florian Best <best@univention.de>  Tue, 14 Oct 2014 16:20:22 +0200
+
 univention-management-console-frontend (4.1.41-1) unstable; urgency=low
 
   * Bug #35654: adjust size of module search in relation to drop down menus

@@ -36,29 +36,24 @@ define([
 	"dojo/aspect",
 	"dojo/has",
 	"dojo/on",
-	"dojo/mouse",
 	"dojo/dom",
 	"dojo/query",
 	"dojo/dom-attr",
 	"dojo/dom-class",
-	"dojo/dom-style",
-	"dojo/dom-geometry",
 	"dojox/html/styles",
 	"dojo/fx",
 	"dojo/_base/fx",
+	"dojox/encoding/base64",
 	"dojo/Deferred",
 	"dijit/Dialog",
 	"dijit/DialogUnderlay",
 	"umc/tools",
 	"umc/widgets/Text",
-	"umc/widgets/LabelPane",
-	"umc/widgets/ComboBox",
 	"umc/widgets/StandbyMixin",
-	"umc/i18n/tools",
 	"umc/i18n!",
 	"dojo/domReady!",
 	"dojo/NodeList-dom"
-], function(declare, lang, array, win, aspect, has, on, mouse, dom, query, attr, domClass, domStyle, geometry, styles, fx, baseFx, Deferred, Dialog, DialogUnderlay, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
+], function(declare, lang, array, win, aspect, has, on, dom, query, attr, domClass, styles, fx, baseFx, base64, Deferred, Dialog, DialogUnderlay, tools, Text, StandbyMixin, _) {
 
 	_('Username');
 	_('Password');
@@ -210,19 +205,19 @@ define([
 				query('#umcNewPasswordForm').style('display', showNewPassword ? 'block' : 'none');
 				if (showNewPassword) {
 					if (this._username) {
-						dom.byId('umcLoginUsername').value = this._username;
+						attr.set(dom.byId('umcLoginUsername'), 'value', this._username);
 						tools.status('username', this._username); // already set status, otherwise _setInitialFocus may cause problems
 					}
 					if (this._password) {
-						dom.byId('umcLoginPassword').value = this._password;
+						attr.set(dom.byId('umcLoginPassword'), 'value', this._password);
 					}
-					dom.byId('umcLoginNewPassword').value = '';
-					dom.byId('umcLoginNewPasswordRetype').value = '';
+					attr.set(dom.byId('umcLoginNewPassword'), 'value', '');
+					attr.set(dom.byId('umcLoginNewPasswordRetype'), 'value', '');
 					if (!has('touch')) {
 						dom.byId('umcLoginNewPassword').focus();
 					}
 				} else {
-					dom.byId('umcLoginPassword').value = '';
+					attr.set(dom.byId('umcLoginPassword'), 'value', '');
 				}
 			//}));
 		},
@@ -231,11 +226,11 @@ define([
 			// reset all hidden values in the iframe
 			win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
 				query('input').forEach(function(node) {
-					node.value = '';
+					attr.set(node, 'value', '');
 				});
 			}));
 			query('input', this._form).forEach(function(node) {
-				node.value = '';
+				attr.set(node, 'value', '');
 			});
 		},
 
@@ -304,10 +299,32 @@ define([
 				query('input', form).forEach(lang.hitch(this, function(node) {
 					if (attr.get(node, 'placeholder')) {
 						attr.set(node, 'placeholder', _(attr.get(node, 'placeholder')));
+
+						if (!('placeholder' in node)) {
+							this.fixIEPlaceholders(node);
+						}
 					}
 				}));
 			}));
 			domClass.toggle(dom.byId('umcLoginDialog'), 'umcLoginLoading', false);
+		},
+
+		fixIEPlaceholders: function(node) {
+			var svg = lang.replace('<svg width="277px" height="20px" version="1.1" xmlns="http://www.w3.org/2000/svg">' +
+					'<text fill="#ababab" font-size="18px" y="15" x="0" text-anchor="start">{0}</text></svg>', [_(attr.get(node, "placeholder"))]);
+
+			var bits = [];
+			for (var i=0; i<svg.length; i++) {
+				bits.push(svg.charCodeAt(i));
+			}
+			styles.insertCssRule('.background-' + node.id, lang.replace("background-image: url(\"data:image/svg+xml;base64,{0}\")!important; background-repeat: no-repeat!important;", [base64.encode(bits)]));
+			styles.insertCssRule('.background-' + node.id + ':focus', "background-image: none!important");
+			domClass.toggle(node, 'background-' + node.id, !node.value);
+
+			this.own(on(node, 'change', function() {
+				domClass.toggle(node, 'background-' + node.id, !node.value);
+			}));
+			node.placeholder = '';
 		},
 
 		_authenticate: function(username, password, new_password) {
@@ -412,7 +429,7 @@ define([
 					domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBackground', true);
 				} catch (e) {
 					// guessed the ID
-					console.log(e);
+					console.log('dialogUnderlay', e);
 				}
 			}
 		},
@@ -457,7 +474,7 @@ define([
 					domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBackground', false);
 				} catch (e) {
 					// guessed the ID
-					console.log(e);
+					console.log('dialogUnderlay', e);
 				}
 				deferred.resolve();
 			});
