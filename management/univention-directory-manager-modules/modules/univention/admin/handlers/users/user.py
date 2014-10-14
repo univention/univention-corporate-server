@@ -2213,7 +2213,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_enabled))
 						pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
 						if pwdAccountLockedTime:
-							ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, password_enabled))
+							ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
 
 			if 'samba' in self.options:
 				if self['locked'] in ['all', 'windows']:
