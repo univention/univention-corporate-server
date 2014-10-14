@@ -17,27 +17,28 @@
 	}
 }
 
+/* gallery header may be outside of gallerypane */
+.umcGalleryCategoryHeader {
+	padding: 0 0 0.25em 0;
+	margin: 1em 5px 0.5em 5px;
+	font-size: $font-size-medium;
+	font-weight: bold;
+	border-bottom: solid 1px $base-border-color;
+	// on the android tablet the border would only be displayed at width ~300px
+	// this background image hack fixes the problem, see:
+	//   http://stackoverflow.com/a/13550951
+	background-image: url(../images/blank.png);
+}
+
+.umcGalleryCategoryHeader:first-child {
+	margin-top: 0;
+}
+
 .umcGalleryPane {
 	// disable selection on touch devices
 	// taken from: http://stackoverflow.com/a/11237968
 	-webkit-touch-callout:none;
 	-webkit-user-select:none;
-
-	.umcGalleryCategoryHeader {
-		padding: 0 0 0.25em 0;
-		margin: 1em 5px 0.5em 5px;
-		font-size: $font-size-medium;
-		font-weight: bold;
-		border-bottom: solid 1px $base-border-color;
-		// on the android tablet the border would only be displayed at width ~300px
-		// this background image hack fixes the problem, see:
-		//   http://stackoverflow.com/a/13550951
-		background-image: url(../images/blank.png);
-	}
-
-	.umcGalleryCategoryHeader:first-child {
-		margin-top: 0;
-	}
 
 	.umcGalleryWrapperItem {
 		padding: 5px;
