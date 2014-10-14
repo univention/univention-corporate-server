@@ -56,22 +56,25 @@
 		//padding: 15px 20px;
 		//margin: 0 12px 10px 0;
 		height: 100px;
+		overflow: hidden;
 
 		.umcGalleryName {
 			font-size: $font-size-medium;
 			color: $text-color-lighter;
 			font-weight: bold;
-			border-bottom: solid 1px $gallery-border-color;
 			line-height: 1.05em;
-			height: 55%;
+			min-height: 55%;
 			transition-duration: inherit;
 			transition-property: color, border;
+			word-break: break-word;
+			margin-right: 20px;
 		}
 
 		.umcGalleryDescription {
 			color: $text-color-lightest;
 			line-height: 1.05em;
-			margin-top: 5px;
+			padding-top: 5px;
+			border-top: solid 1px $gallery-border-color;
 			transition-duration: inherit;
 			transition-property: color;
 		}
