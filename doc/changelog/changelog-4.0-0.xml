@@ -152,6 +152,17 @@
 					to make searches case insensitive.
 					<ulink url="&ucsbug;34262">Bug 34262</ulink>)
 			</simpara></listitem>
+			<listitem><simpara>
+					The ppolicy LDAP overlay is now loaded by default and an example
+					configuration is stored in OpenLDAP. The configuration for the
+					overlay can be activated on a per-DC basis by setting the &ucsUCRV;
+					<envar>ldap/ppolicy/enabled</envar> to <emphasis>yes</emphasis> and
+					restarting the slapd daemon. The default policy is such that
+					5 repeated LDAP authentication failures within a monitoring interval
+					of 5 minutes causes the authenticating account to be locked in UDM.
+					A locked account can be unlocked via UDM by a Domain Admin.
+					<ulink url="&ucsbug;31907">Bug 31907</ulink>)
+			</simpara></listitem>
 		</itemizedlist>
 
 		<section id="changelog:domain:openldap:acl">
