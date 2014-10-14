@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define,console,setTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -390,8 +390,7 @@ define([
 				widgets: widgets,
 				layout: layout,
 				buttons: buttons,
-				moduleStore: store(null, 'updater/updates'),
-				scrollable: true
+				moduleStore: store(null, 'updater/updates')
 	//			polling:	{
 	//				interval:	5000,
 	//				query:		'updater/updates/serial',

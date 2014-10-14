@@ -52,7 +52,6 @@ define([
 ], function(declare, lang, tools, Text, ContainerWidget, _) {
 	return declare('umc.modules.updater._LogViewer', [ ContainerWidget ], {
 
-		scrollable:			true,
 		_first_call:		3,
 		_last_stamp:		0,
 		_check_interval:	0,
@@ -148,7 +147,7 @@ define([
 				var lines_exceeded = this._all_lines.length - this._max_number_of_lines;
 				this._lines_exceeded += lines_exceeded;
 				this._all_lines = this._all_lines.slice(lines_exceeded, this._all_lines.length);
-				var logfile_exceeded = '[...] ' + dojo.replace(_('The log file exceeded {max} lines by {exceeded}. Please see the full logfile.'),
+				var logfile_exceeded = '[...] ' + lang.replace(_('The log file exceeded {max} lines by {exceeded}. Please see the full logfile.'),
 					{
 						max: this._max_number_of_lines,
 						exceeded: this._lines_exceeded
