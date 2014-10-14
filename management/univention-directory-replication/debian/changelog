@@ -1,3 +1,9 @@
+univention-directory-replication (8.0.2-2) unstable; urgency=medium
+
+  * Bug #31907: Work around ITS#4025
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Oct 2014 12:05:13 +0200
+
 univention-directory-replication (8.0.2-1) unstable; urgency=medium
 
   * exclude operational ppolicy attributes from schema replication
