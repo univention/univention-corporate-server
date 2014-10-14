@@ -5,7 +5,7 @@
 		<description>Management of print jobs of local printers</description>
 		<keywords>printer</keywords>
 		<categories>
-			<category name="system"/>
+			<category name="devices"/>
 		</categories>
 
 		<command name="printers/query" function="list_printers"/>
