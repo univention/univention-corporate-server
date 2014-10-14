@@ -41,7 +41,7 @@ class AdMemberScript(SetupScript):
 	def inner_run(self):
 		# WARNING: this is basically services/univention-ad-connector/umc/python/adconnector/__init__.py admember_join()
 		# changes there have to be merged in here
-		ad_member = self.profile.get('ad/member')
+		ad_member = (self.profile.get('ad/member') or '').lower()
 
 		if not self.ucr.ucr.is_true(value=ad_member):
 			# nothing to do

@@ -41,7 +41,7 @@ mkdir -p $dir
 
 echo; echo "Translation for UMC module"
 xgettext -L Shell -o $pot usr/lib/univention-system-setup/scripts/*.sh usr/lib/univention-system-setup/scripts/*/*
-xgettext -L python --omit-header -o $pot-py usr/lib/univention-system-setup/scripts/*/*
+xgettext -L python --omit-header -o $pot-py umc/python/setup/setup_script.py usr/lib/univention-system-setup/scripts/*/*
 cat $potpy >> $pot && rm $potpy
 
 if grep "Content-Type: text/plain; charset=CHARSET" $pot ; then

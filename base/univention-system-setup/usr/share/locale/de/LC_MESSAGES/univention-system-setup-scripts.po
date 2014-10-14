@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-13 18:28+0200\n"
+"POT-Creation-Date: 2014-10-14 11:38+0200\n"
 "PO-Revision-Date: 2012-02-20 14:41+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -96,6 +96,11 @@ msgid "This might take a while depending on the number of pending updates."
 msgstr ""
 "Abhängig von der Anzahl der austehenden Updates, kann dies einige Zeit "
 "dauern."
+
+#: umc/python/setup/setup_script.py:411
+#, python-format
+msgid "Failed to get package for Role %s"
+msgstr "Kein Paket für Rolle %s gefunden"
 
 #: usr/lib/univention-system-setup/scripts/05_role/10role:40
 msgid "Configuring server role"
