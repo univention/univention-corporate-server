@@ -1,3 +1,11 @@
+univention-management-console-frontend (4.1.39-1) unstable; urgency=low
+
+  * Bug #35654: remove Form.scrollable, fix background of login dialog while
+  	UMC still renders the GUI, remove search query gallery pane header from
+  	module store (fixes displaying of links to UMC modules in app center)
+
+ -- Florian Best <best@univention.de>  Tue, 14 Oct 2014 10:53:34 +0200
+
 univention-management-console-frontend (4.1.38-1) unstable; urgency=medium
 
   * Bug #36095: let umc/app/CategoryButton depend on dijit/form/Button

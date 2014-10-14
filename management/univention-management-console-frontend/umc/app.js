@@ -54,6 +54,7 @@ define([
 	"dojo/dom-construct",
 	"dojo/date/locale",
 	"dojox/html/styles",
+	"dojox/html/entities",
 	"dojox/gfx",
 	"dijit/registry",
 	"umc/tools",
@@ -72,14 +73,15 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Page",
 	"umc/widgets/Button",
+	"umc/widgets/Text",
 	"umc/app/CategoryButton",
 	"umc/i18n!",
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseWin, win, on, aspect, has,
 		Evented, Deferred, when, all, cookie, topic, Memory, Observable,
-		dom, style, domAttr, domClass, domGeometry, domConstruct, locale, styles, gfx, registry, tools, dialog, store,
+		dom, style, domAttr, domClass, domGeometry, domConstruct, locale, styles, entities, gfx, registry, tools, dialog, store,
 		Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
-		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Button, CategoryButton, _
+		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Button, Text, CategoryButton, _
 ) {
 	// cache UCR variables
 	var _ucr = {};
@@ -164,65 +166,33 @@ define([
 
 		renderRow: function(item, options) {
 			var div = this.inherited(arguments);
-			if (item._isHeader) {
-				div = domConstruct.create('div', {
-					'class': 'umcGalleryCategoryHeader',
-					innerHTML: _('Search query ›%s‹', item.query)
-				});
-			} else {
-				var category = item.category;
-				if (category === '_favorites_' && item.categories.length > 1) {
-					category = array.filter(item.categories, function(cat) { return cat != '_favorites_'; })[0];
+			var category = item.category;
+			if (category === '_favorites_' && item.categories.length > 1) {
+				category = array.filter(item.categories, function(cat) { return cat != '_favorites_'; })[0];
+			}
+			var className = lang.replace('umcGalleryCategory-{0}', [category]);
+			domClass.add(div.firstElementChild, className);
+			if (isFavorite(item)) {
+				var cat = require('umc/app').getCategory(category);
+				var styleStr = '';
+				if (cat) {
+					styleStr += lang.replace('background-color: {0};', [cat.color]);
 				}
-				var className = lang.replace('umcGalleryCategory-{0}', [category]);
-				domClass.add(div.firstElementChild, className);
-				if (isFavorite(item)) {
-					var cat = require('umc/app').getCategory(category);
-					var styleStr = '';
-					if (cat) {
-						styleStr += lang.replace('background-color: {0};', [cat.color]);
-					}
-					//domConstruct.create('div', {'class': 'umcGalleryCategoryFavorite', style: styleStr}, div.firstElementChild);
-					this._createFavoriteIcon(cat.color, div.firstElementChild);
-
-				}
+				//domConstruct.create('div', {'class': 'umcGalleryCategoryFavorite', style: styleStr}, div.firstElementChild);
+				this._createFavoriteIcon(cat.color, div.firstElementChild);
 			}
 			return div;
 		},
 
-//		_updateCategoryHeaderVisiblity: function(items) {
-//			query('.umcGalleryCategoryHeader', this.contentNode).forEach(function(inode) {
-//				var category = domAttr.get(inode, 'categoryID');
-//				var hasItems = array.some(items, function(iitem) {
-//					return !iitem._isHeader && iitem.category == category;
-//				});
-//				style.set(inode, 'display', hasItems ? 'block' : 'none');
-//			});
-//		},
-//
-//		renderArray: function(items) {
-//			var result = this.inherited(arguments);
-//			this._updateCategoryHeaderVisiblity(items);
-//			return result;
-//		},
-
 		getItemDescription: function(item) {
 			return item.description;
-		},
-
-		_displayHeader: function(searchPattern, visible) {
-			this.store.put({
-				$id$: '_header_',
-				_isHeader: true,
-				query: searchPattern  // FIXME: html escape
-			});
 		},
 
 		updateQuery: function(searchPattern, searchQuery, category) {
 			var query = function(obj) {
 				// sub conditions
 				var allCategories = !category;
-				var matchesPattern = obj._isHeader || !searchPattern ||
+				var matchesPattern = !searchPattern ||
 					// for a given pattern, ignore 'pseudo' entries in _favorites_ category
 					(searchQuery.test(null, obj) && obj.category != '_favorites_');
 				var matchesCategory = true;
@@ -237,7 +207,6 @@ define([
 				// match separators OR modules with a valid class
 				return matchesPattern && matchesCategory;
 			};
-			this._displayHeader(searchPattern, !category);
 
 			// set query
 			this.set('query', query);
@@ -1468,7 +1437,12 @@ define([
 				'class': 'umcOverviewContainer container'
 			});
 
+			this._searchText = new Text({
+				'class': 'dijitHidden umcGalleryCategoryHeader'
+			});
+
 			this.renderCategories();
+			this._overviewPage.addChild(this._searchText);
 			this._overviewPage.addChild(this._grid);
 			this._tabContainer.addChild(this._overviewPage, 0);
 			this._tabController.hideChild(this._overviewPage);
@@ -1539,6 +1513,10 @@ define([
 				searchQuery = this._header._searchSidebar.getSearchQuery(searchPattern);
 			}
 			this._grid.updateQuery(searchPattern, searchQuery, category);
+
+			// update the search label
+			domClass.toggle(this._searchText.domNode, 'dijitHidden', !!category);
+			this._searchText.set('content', _('Search query ›%s‹', entities.encode(searchPattern)));
 		},
 
 		openModule: function(/*String|Object*/ module, /*String?*/ flavor, /*Object?*/ props) {
@@ -1660,7 +1638,7 @@ define([
 
 		_getLaunchableModules: function() {
 			return this._moduleStore.query(function(item) {
-				return !item._isHeader && item.category !== '_favorites_';
+				return item.category !== '_favorites_';
 			});
 		},
 

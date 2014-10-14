@@ -408,8 +408,8 @@ define([
 			// display the body background (hides rendering of GUI) the first time
 			if (!tools.status('setupGui')) {
 				try {
-					styles.insertCssRule('.umcBodyBackground', lang.replace('background: {0}!important;', [domStyle.get(win.body(), 'background')]));
-					domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBodyBackground', true);
+					styles.insertCssRule('#dijit_DialogUnderlay_0', 'background: inherit!important;');
+					domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBackground', true);
 				} catch (e) {
 					// guessed the ID
 					console.log(e);
@@ -454,7 +454,7 @@ define([
 				Dialog._DialogLevelManager.hide(this);
 				this.standby(false);
 				try {
-					domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBodyBackground', false);
+					domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBackground', false);
 				} catch (e) {
 					// guessed the ID
 					console.log(e);

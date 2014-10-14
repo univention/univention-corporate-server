@@ -97,11 +97,6 @@ define([
 		//		can be loaded/saved by the form itself.
 		moduleStore: null,
 
-		// scrollable: Boolean
-		//		If set to true, the container will set its width/height to 100% in order
-		//		to enable scrollbars.
-		scrollable: false,
-
 		// the widget's class name as CSS class
 		'class': 'umcForm',
 
@@ -186,12 +181,6 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
-
-			if (this.scrollable) {
-				style.set(this.containerNode, {
-					overflow: 'auto'
-				});
-			}
 
 			// render the widgets and the layout if no content is given
 			if (!this.content) {

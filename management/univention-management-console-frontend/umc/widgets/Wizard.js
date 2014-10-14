@@ -92,7 +92,6 @@ define([
 						widgets: ipage.widgets,
 						buttons: ipage.buttons,
 						layout: ipage.layout,
-						scrollable: true,
 						onSubmit: lang.hitch(this, function(e) {
 							if (e && e.preventDefault) {
 								e.preventDefault();
