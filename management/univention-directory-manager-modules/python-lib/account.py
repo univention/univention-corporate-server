@@ -38,28 +38,32 @@ import univention.admin.handlers.users.user
 
 univention.admin.modules.update()
 
-def lock(userdn, lock_timestamp, lock_scope):
+def lock(userdn, lock_timestamp):
 	"""
-	Lock user account
+	Lock user account, used by ppolicy OpenLDAP overlay
 
 	>>> import univention.lib.account
-	>>> univention.lib.account.lock('uid=user1,dc=example,dc=com', '20141006192950Z', 'all')
+	>>> univention.lib.account.lock('uid=user1,dc=example,dc=com', '20141006192950Z')
 	>>>
 
 	"""
+
+	if not lock_timestamp:	## timed unlocking via ppolicy not implemented yet, so block it.
+		return
+
 	co = None
 	try:
 		lo, pos = univention.admin.uldap.getAdminConnection()
 	except:
 		lo, pos = univention.admin.uldap.getMachineConnection()
 
-	module=univention.admin.modules.get('users/user')
+	module = univention.admin.modules.get('users/user')
 
 	univention.admin.modules.init(lo, pos, module)
 
 	object = module.object(co, lo, pos, userdn)
 
 	object.open()
-	object['locked']=lock_scope
-	dn=object.modify()
+	object['locked'] = "all"
+	dn = object.modify()
 

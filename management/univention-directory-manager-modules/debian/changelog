@@ -1,3 +1,11 @@
+univention-directory-manager-modules (10.0.15-5) unstable; urgency=medium
+
+  * Bug #31907: Make udm users/user posix/all unlock remove the ppolicy
+    attribute pwdAccountLockedTime
+  * Only pass timestamp to univention.lib.account.lock
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Oct 2014 14:04:52 +0200
+
 univention-directory-manager-modules (10.0.15-4) unstable; urgency=medium
 
   * Bug #31907: Allow passing of timestamp to univention.lib.account.lock
