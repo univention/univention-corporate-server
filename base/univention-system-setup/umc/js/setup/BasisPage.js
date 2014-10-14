@@ -54,9 +54,6 @@ define([
 		// internal reference to the formular containing all form widgets of an UDM object
 		_form: null,
 
-		// internal flag whether setValues() has been called at least once or not
-		_firstSetValues: true,
-
 		// internal flag to not show the FQDN warning twice. See Bug #33437
 		_fqdnWarningAdded: false,
 
@@ -104,8 +101,7 @@ define([
 
 			this._form = new Form({
 				widgets: widgets,
-				layout: layout,
-				scrollable: true
+				layout: layout
 			});
 			this._form.on('submit', lang.hitch(this, 'onSave'));
 
@@ -160,9 +156,9 @@ define([
 				}
 			});
 
-			_set('fqdn', !this.wizard_mode && role != 'basesystem', true, this.wizard_mode && this._firstSetValues);
-			_set('windows/domain', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode && this._firstSetValues, role == 'domaincontroller_master' || role == 'basesystem');
-			_set('ldap/base', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode && this._firstSetValues, role == 'domaincontroller_master' || role == 'basesystem');
+			_set('fqdn', role != 'basesystem', true, false);
+			_set('windows/domain', role != 'basesystem', role != 'basesystem', false, role == 'domaincontroller_master' || role == 'basesystem');
+			_set('ldap/base', role != 'basesystem', role != 'basesystem', false, role == 'domaincontroller_master' || role == 'basesystem');
 			_set('root_password', false, false);
 
 			if (role == 'domaincontroller_master' && this.wizard_mode) {
@@ -188,7 +184,6 @@ define([
 
 			this._form.setFormValues(vals);
 			this._form.getWidget('fqdn').set('blockOnChange', false);
-			this._firstSetValues = false;
 		},
 
 		getValues: function() {

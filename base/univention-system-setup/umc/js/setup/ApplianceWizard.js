@@ -1185,12 +1185,6 @@ define([
 			this._setLocaleDefault();
 			this._setupFooterButtons();
 			this._updateOrganizationName('');
-
-			this.watch('selectedChildWidget', lang.hitch(this, function(name, old, page) {
-				if (page == this.getPage('software')) {
-					this._gallery.resize();
-				}
-			}));
 		},
 
 		_randomHostName: function() {

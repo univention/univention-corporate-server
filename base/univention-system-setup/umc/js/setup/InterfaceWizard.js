@@ -52,7 +52,6 @@ define([
 		autoValidate: true,
 
 		ucsversion: null,
-		wizard_mode: null,
 		interfaces: null,
 		device: null,
 		creation: null,
@@ -106,9 +105,6 @@ define([
 						disabled: !this.creation,
 						sortDynamicValues: false,
 						dynamicValues: lang.hitch(this, function() {
-							if (this.wizard_mode) {
-								return [{id: 'Ethernet', label: 'Ethernet'}];
-							}
 							var typenames = this.interfaces.getPossibleTypes(this.getDeviceName());
 							if (this.device) {
 								typenames.push({id: this.device.interfaceType, label: this.device.interfaceType});
@@ -462,15 +458,6 @@ define([
 					}]
 				}]
 			});
-
-			if (this.wizard_mode) {
-				// remove help text about VLAN, Bond, etc. in wizard mode
-				array.forEach(this.pages, function(page) {
-					if (page.name == 'interfaceType') {
-						page.helpText = '';
-					}
-				});
-			}
 		},
 
 		buildRendering: function() {

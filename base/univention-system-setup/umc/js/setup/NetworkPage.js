@@ -50,10 +50,6 @@ define([
 		//		This class renderes a detail page containing subtabs and form elements
 		//		in order to edit network interfaces.
 
-		// system-setup-boot
-		wizard_mode: false,
-
-
 		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 
 		// internal reference to the formular containing all form widgets of an UDM object
@@ -132,8 +128,7 @@ define([
 
 			this._form = new Form({
 				widgets: widgets,
-				layout: layout,
-				scrollable: true
+				layout: layout
 			});
 			this._form.on('submit', lang.hitch(this, 'onSave'));
 
@@ -142,8 +137,6 @@ define([
 
 		postCreate: function() {
 			this.inherited(arguments);
-
-			this._form._widgets.interfaces.set('wizard_mode', this.wizard_mode);
 
 			// The grid contains changes if a DHCP request was made
 			this._form._widgets.interfaces.watch('gateway', lang.hitch(this, function(name, old, value) {
@@ -218,14 +211,11 @@ define([
 			var showForwarder = this._currentRole == 'domaincontroller_master' || this._currentRole == 'domaincontroller_backup' || this._currentRole == 'domaincontroller_slave';
 			this._form.getWidget('dns/forwarder').set('visible', showForwarder);
 
-			// hide domain nameserver on master when using system setup boot
-			this._form.getWidget('nameserver').set('visible', ! ( this.wizard_mode && this._currentRole == 'domaincontroller_master' ) );
-
 			// set values
 			this._form.setFormValues(vals);
 
 			// show a note if interfaces changes
-			if (!this.wizard_mode && !this._interfacesWatchHandler) {
+			if (!this._interfacesWatchHandler) {
 				// only show notes in an joined system in productive mode
 				this._interfacesWatchHandler = this._form._widgets.interfaces.watch('value', lang.hitch(this, function() {
 					if (this.isLoading() || !this.get('selected')) {

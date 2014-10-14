@@ -47,16 +47,10 @@ define([
 		//		This class renderes a detail page containing subtabs and form elements
 		//		in order to edit UDM objects.
 
-		// system-setup-boot
-		wizard_mode: false,
-
 		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 
 		// internal reference to the formular containing all form widgets of an UDM object
 		_form: null,
-
-		// internal flag whether setValues() has been called at least once or not
-		_firstSetValues: true,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -150,8 +144,7 @@ define([
 
 			this._form = new Form({
 				widgets: widgets,
-				layout: layout,
-				scrollable: true
+				layout: layout
 			});
 			this._form.on('submit', lang.hitch(this, 'onSave'));
 
@@ -168,36 +161,8 @@ define([
 		setValues: function(_vals) {
 			var vals = lang.mixin({}, _vals);
 			var default_locale_default;
-			if (this.wizard_mode && this._firstSetValues) {
-				var used_locale = i18nTools.defaultLang();
-				var parts = used_locale.split('-');
-				var countrycode = parts[1].toLowerCase();
-				default_locale_default = parts[0] + '_' + parts[1] + '.UTF-8:UTF-8';
-				vals['locale/default'] = default_locale_default;
-				this.umcpCommand('setup/lang/default_keymap', {
-					'countrycode': countrycode
-				}).then(lang.hitch(this, function(data) {
-					this._form.getWidget('locale/keymap').set('value', data.result);
-				}));
-				this.umcpCommand('setup/lang/default_timezone', {
-					'countrycode': countrycode
-				}).then(lang.hitch(this, function(data) {
-					this._form.getWidget('timezone').set('value', data.result);
-				}));
-			}
 			vals.locale = vals.locale.split(/\s+/);
 			this._form.setFormValues(vals);
-			if (this.wizard_mode && this._firstSetValues) {
-				this._localesDeferred.then(lang.hitch(this, function() {
-					this._firstSetValues = false;
-					var locale_widget = this._form.getWidget('locale');
-					var locales = locale_widget.get('value').concat(default_locale_default);
-					locale_widget.set('value', locales);
-				}));
-				//locale_widget._multiSelect._loadingDeferred.then(function() {
-				//	locale_widget._addElements([default_locale_default]);
-				//});
-			}
 		},
 
 		getValues: function() {

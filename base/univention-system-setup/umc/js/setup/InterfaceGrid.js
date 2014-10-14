@@ -46,7 +46,6 @@ define([
 ], function(declare, lang, array, Memory, Observable, Dialog, dialog, tools, Grid, _FormWidgetMixin, InterfaceWizard, Interfaces, types, _) {
 	return declare("umc.modules.setup.InterfaceGrid", [ Grid, _FormWidgetMixin ], {
 		moduleStore: null,
-		wizard_mode: null,
 
 		style: 'width: 100%; height: 225px;',
 		query: {},
@@ -305,9 +304,6 @@ define([
 
 		_addInterface: function() {
 			var possibleTypes = this.moduleStore.getPossibleTypes(null);
-			if (this.wizard_mode) {
-				possibleTypes = array.filter(possibleTypes, function(type) { return type.id == 'Ethernet'; });
-			}
 			if (!possibleTypes.length) {
 				dialog.alert(_('There are no more physical interfaces to create.'));
 				return;
@@ -348,7 +344,6 @@ define([
 			var wizard = new InterfaceWizard({
 				interfaces: this.moduleStore,
 				ucsversion: this.ucsversion,
-				wizard_mode: this.wizard_mode,
 				device: device,
 				onCancel: _cleanup,
 				onFinished: _finished

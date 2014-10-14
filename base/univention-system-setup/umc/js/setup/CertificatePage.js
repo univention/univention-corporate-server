@@ -44,9 +44,6 @@ define([
 		//		This class renderes a detail page containing subtabs and form elements
 		//		in order to edit UDM objects.
 
-		// system-setup-boot
-		wizard_mode: false,
-
 		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 
 		// internal reference to the formular containing all form widgets of an UDM object
@@ -116,8 +113,7 @@ define([
 
 			this._form = new Form({
 				widgets: widgets,
-				layout: layout,
-				scrollable: true
+				layout: layout
 			});
 			this._form.on('submit', lang.hitch(this, 'onSave'));
 
@@ -145,33 +141,8 @@ define([
 		},
 
 		setValues: function(_vals) {
-			if (this.wizard_mode) {
-				this._form.ready().then(lang.hitch(this, function() {
-					// update some values if not manually changed and not initial values
-					tools.forIn({
-						'ssl/email': _vals.domainname ? 'ssl@'+_vals.domainname : _vals['ssl/email'],
-						'ssl/country': (_vals['locale/default'].match(/^.._(..)/) || [0, ''])[1].toUpperCase() || _vals['ssl/country'],
-						'ssl/state': (_vals['locale/default'].match(/^.._(..)/) || [0, ''])[1].toUpperCase() || _vals['ssl/state'],
-						'ssl/locality': (_vals['locale/default'].match(/^.._(..)/) || [0, ''])[1].toUpperCase() || _vals['ssl/locality']
-					}, lang.hitch(this, function(key, val) {
-						if (!this._old_vals) {
-							this._old_vals = {};
-						}
-						if (!this._old_vals[key]) {
-							this._old_vals[key] = this._orgVals[key];
-						}
-						if (_vals[key] === this._old_vals[key]) {
-							_vals[key] = this._old_vals[key] = val;
-						}
-					}));
-				}));
-			}
-
 			this._form.setFormValues(_vals);
 			this._orgVals = lang.clone(_vals);
-
-			// this page should be only visible on domaincontroller_master
-			this.set('visible', _vals['server/role'] == 'domaincontroller_master');
 		},
 
 		getValues: function() {

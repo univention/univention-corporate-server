@@ -239,11 +239,7 @@ define([
 				partOfInstaller: partOfInstaller,
 				values: values
 			});
-			this.wizard.watch('selectedChildWidget', lang.hitch(this, function(name, oldV, page) {
-				this.set('title', page.get('headerText'));
-			}));
 			this.addChild(this.wizard);
-			this.set('title', this.wizard.selectedChildWidget.get('headerText'));
 			this.wizard.on('Finished', lang.hitch(this, function(newValues) {
 				// wizard is done -> call cleanup command and redirect browser to new web address
 				topic.publish('/umc/actions', this.moduleID, 'wizard', 'done');
