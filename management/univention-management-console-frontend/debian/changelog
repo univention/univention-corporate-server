@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.41-1) unstable; urgency=low
+
+  * Bug #35654: adjust size of module search in relation to drop down menus
+
+ -- Florian Best <best@univention.de>  Tue, 14 Oct 2014 13:06:39 +0200
+
 univention-management-console-frontend (4.1.40-1) unstable; urgency=low
 
   * Bug #35654: use onClick instead of callback for CategoryButtons as it now inherits

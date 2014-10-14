@@ -578,6 +578,11 @@ define([
 			});
 			this.addChild(this._headerRight);
 
+			this._headerRightTop = new ContainerWidget({
+				'class': 'umcHeaderRightTop'
+			});
+			this._headerRight.addChild(this._headerRightTop);
+
 			this._headerCenter = new ContainerWidget({
 				'class': 'umcHeaderCenter col-xs-12 col-sm-4 col-sm-pull-4 col-md-2 col-md-pull-5 col-xxs-12'
 			});
@@ -597,7 +602,7 @@ define([
 					}),
 					dropDown: this._headerMenu
 				});
-				this._headerRight.addChild(this._usernameButton);
+				this._headerRightTop.addChild(this._usernameButton);
 
 				// the host info and menu
 				this._hostMenu = new Menu({});
@@ -655,7 +660,7 @@ define([
 			this._searchSidebar = new LiveSearchSidebar({
 				searchLabel: _('Module search')
 			});
-			this._headerRight.addChild(this._searchSidebar);
+			this._headerRightTop.addChild(this._searchSidebar);
 		},
 
 		setupBackToOverview: function() {
