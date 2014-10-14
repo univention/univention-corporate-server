@@ -1,3 +1,9 @@
+ucs-test (5.0.25-1) unstable; urgency=medium
+
+  * Test for Bug #31907
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Oct 2014 17:37:27 +0200
+
 ucs-test (5.0.24-1) unstable; urgency=low
 
   * Bug #35900: use utc time instead of local time
