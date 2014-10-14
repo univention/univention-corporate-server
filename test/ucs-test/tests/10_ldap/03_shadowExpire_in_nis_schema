@@ -35,7 +35,6 @@ def run():
 
 			expiry_date = chosen_time.strftime("%Y-%m-%d")
 			passwd =  uts.random_string()
-			username =  uts.random_name()
 			userdn, username = udm.create_user(password=passwd, userexpiry=expiry_date)
 			return username, passwd, epoch_date
 
