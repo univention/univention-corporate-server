@@ -1,3 +1,9 @@
+univention-ldap (11.0.6-6) unstable; urgency=medium
+
+  * Bug #31907: Reduce pwdFailureCountInterval to 15 minutes
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Oct 2014 15:29:59 +0200
+
 univention-ldap (11.0.6-5) unstable; urgency=medium
 
   * Bug #31907: Don't configure pwdLockoutDuration, automatic unlocking
