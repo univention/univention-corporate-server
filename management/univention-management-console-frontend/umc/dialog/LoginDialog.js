@@ -324,7 +324,6 @@ define([
 			this.own(on(node, 'change', function() {
 				domClass.toggle(node, 'background-' + node.id, !node.value);
 			}));
-			node.placeholder = '';
 		},
 
 		_authenticate: function(username, password, new_password) {
