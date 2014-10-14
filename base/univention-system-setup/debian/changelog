@@ -1,3 +1,9 @@
+univention-system-setup (8.1.11-1) unstable; urgency=low
+
+  * Bug #36086: Generate UCR configuration before USS.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 14 Oct 2014 07:29:58 +0200
+
 univention-system-setup (8.1.10-6) unstable; urgency=low
 
   * Bug #35653: Fix translations
