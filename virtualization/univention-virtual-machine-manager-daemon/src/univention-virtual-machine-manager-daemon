@@ -301,9 +301,9 @@ if __name__ == '__main__':
 
 		for connection in ldap_cloud_connections():
 			try:
-				cloudconnections.add_connection(connection)
-			except TranslatableException as e:
-				logger.error("Could not add connection %s (from ldap): %s" % (connection["name"], e))
+				cloudconnections.add_connection(connection, testconnection=False)
+			except:
+				logger.error("Could not add connection %s (from ldap)" % (connection["name"]))
 
 	except LdapError, msg:
 		logger.warning(msg)

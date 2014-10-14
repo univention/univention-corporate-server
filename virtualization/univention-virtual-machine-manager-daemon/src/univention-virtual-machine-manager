@@ -601,13 +601,14 @@ class Client(object):
 		p = protocol.Request_DOMAIN_CLONE(uri=uri, domain=domain, name=name, subst=_subst)
 		return p
 
-	def cloud_add(self, json_options):
+	def cloud_add(self, json_options, testconnection=True):
 		"""
-		%prog cloud_add <json_options>
+		%prog cloud_add <json_options> [<testconnection>]
 
 		Define new cloud connection
 		<json_options> defines connection name, credentials, URL, etc. Example:
 		%prog cloud_add "{"name":"myCloud", "type":"OpenStack", "username":"demo", "password":"univention", "auth_url":"http://192.168.0.79:5000", "auth_version":"2.0_password", "tenant":"demo", "service_type":"compute", "service_name":"nova", "service_region":"regionOne"}"
+		<testconnection> by default, the connection is only added if an initial test connection is successful. If this parameter is 'false', the connection is added in any case
 		"""
 		try:
 			if json_options.startswith('"'):  # json string
@@ -621,7 +622,10 @@ class Client(object):
 		except (TypeError, ValueError) as e:
 			raise ValueError("Could not decode information: %s" % e)
 
-		return protocol.Request_L_CLOUD_ADD(args=args)
+		if isinstance(testconnection, str) and testconnection == "false":
+			testconnection = False
+
+		return protocol.Request_L_CLOUD_ADD(args=args, testconnection=testconnection)
 
 	def cloud_remove(self, name):
 		"""

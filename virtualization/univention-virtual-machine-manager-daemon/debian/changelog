@@ -1,3 +1,13 @@
+univention-virtual-machine-manager-daemon (4.0.3-5) unstable; urgency=low
+
+  * Added functionality to test a new connection before adding it to the
+    connection pool (Bug #36134)
+    LDAP connections are always added without testing. Expanded the cloud_add
+    interface to support the testconnection=False parameter, which will add
+    a connection without testing.
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 14 Oct 2014 16:11:28 +0200
+
 univention-virtual-machine-manager-daemon (4.0.3-4) unstable; urgency=low
 
   * Log traceback in case an error occurs (Bug #36136)

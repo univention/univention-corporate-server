@@ -60,9 +60,12 @@ class _Commands:
 		if not isinstance(request.args, dict):
 			raise CommandError('L_CLOUD_ADD', _('args != dict: %(args)s'), args=request.args)
 
-		logger.debug('L_CLOUD_ADD %s' % (request.args))
+		if not isinstance(request.testconnection, bool):
+			raise CommandError('L_CLOUD_ADD', _('testconnection is not a bool %(testconnection)s'), testconnection=request.testconnection)
+
+		logger.debug('L_CLOUD_ADD %s, testconnection: %s' % (request.args, request.testconnection))
 		try:
-			cloudnode.cloudconnections.add_connection(request.args)
+			cloudnode.cloudconnections.add_connection(request.args, request.testconnection)
 		except cloudnode.CloudConnectionError, e:
 			raise CommandError('L_CLOUD_ADD', e)
 

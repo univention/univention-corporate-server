@@ -107,7 +107,7 @@ class CloudConnectionMananger(dict):
 			for connection in self.values():
 				connection.set_frequency(freq)
 
-	def add_connection(self, cloud):
+	def add_connection(self, cloud, testconnection=True):
 		"""
 		Add a new cloud connection
 		cloud: dict with cloud name, type, credentials, urls, ...
@@ -117,7 +117,17 @@ class CloudConnectionMananger(dict):
 		if cloud["name"] in self:
 			raise CloudConnectionError("Connection to %s already established" % cloud["name"])
 
-		self[cloud["name"]] = create_cloud_connection(cloud, self.cache_dir)
+		newconnection = None
+		try:
+			newconnection = create_cloud_connection(cloud, self.cache_dir)
+			newconnection.connect(cloud, testconnection)
+		except:
+			logger.error("Error while establishing connection %s" % cloud["name"])
+			if newconnection:
+				newconnection.unregister(wait=True)
+			raise
+
+		self[cloud["name"]] = newconnection
 		logger.info("Added connection to %s" % cloud["name"])
 
 	def remove_connection(self, cloudname):

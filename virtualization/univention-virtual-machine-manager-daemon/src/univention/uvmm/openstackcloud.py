@@ -139,10 +139,6 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		self._locations = []
 		self._security_groups = []
 
-		# Start thread for periodic updates
-		self.updatethread = threading.Thread(group=None, target=self.run, name="%s-%s" % (self.publicdata.name, self.publicdata.url), args=(), kwargs={})
-		self.updatethread.start()
-
 	def _check_connection_attributes(self, cloud):
 		if "username" not in cloud:
 			raise OpenStackCloudConnectionError("username attribute is required")
@@ -151,7 +147,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		if "auth_url" not in cloud:
 			raise OpenStackCloudConnectionError("auth_url attribute is required")
 
-	def _create_connection(self, cloud):
+	def _create_connection(self, cloud, testconnection=True):
 		logger.debug("Creating connection to %s" % cloud["auth_url"])
 		params = {}
 		for param in cloud:
@@ -163,6 +159,14 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		p["secret"] = "******"
 		logger.debug("params passed to driver: %s" % p)
 		self.driver = os(**params)
+
+		# try the driver before starting the update thread
+		if testconnection:
+			self._instances = self._exec_libcloud(lambda: self.driver.list_nodes())
+
+		# Start thread for periodic updates
+		self.updatethread = threading.Thread(group=None, target=self.run, name="%s-%s" % (self.publicdata.name, self.publicdata.url), args=(), kwargs={})
+		self.updatethread.start()
 
 	def update_expensive(self):
 		logger.debug("Expensive update for %s: %s" % (self.publicdata.name, self.publicdata.url))
@@ -468,7 +472,6 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			return func()
 		except InvalidCredsError as e:
 			self.logerror(logger, "Invalid credentials provided for connection %s: %s" % (self.publicdata.name, self.publicdata.url))
-			self.logerror(logger, "hey, publicdata is: %s" % self.publicdata.last_error_message)
 			raise
 		except MalformedResponseError as e:
 			self.logerror(logger, "Malformed response from connection, correct endpoint specified? %s: %s; %s" % (self.publicdata.name, self.publicdata.url, str(e)))

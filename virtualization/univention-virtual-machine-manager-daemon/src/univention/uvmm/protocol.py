@@ -276,6 +276,7 @@ class Request_L_CLOUD_ADD(Request):
 	def _default(self):
 		self.command = 'L_CLOUD_ADD'
 		self.args = None
+		self.testconnection = True
 
 class Request_L_CLOUD_REMOVE(Request):
 	"""Remove libcloud cloud connection"""

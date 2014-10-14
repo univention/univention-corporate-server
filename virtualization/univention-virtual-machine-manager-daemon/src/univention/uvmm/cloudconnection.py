@@ -64,6 +64,7 @@ class CloudConnection(object):
 		self._cache_dir = cache_dir
 		self._cache_hash = ""
 
+		self.updatethread = None
 		self.config_default_frequency = self.DEFAULT_FREQUENCY
 		self.current_frequency = self.DEFAULT_FREQUENCY
 		self.timerEvent = threading.Event()
@@ -83,14 +84,15 @@ class CloudConnection(object):
 		self._sizes = []
 		self._networks = []
 
-		self.cache_restore()
-
-		self._create_connection(cloud)
-
-	def _create_connection(self, cloud):
+	def _create_connection(self, cloud, testconnection=True):
 		pass
 
+	def connect(self, cloud, testconnection=True):
+		self.cache_restore()
+		self._create_connection(cloud, testconnection)
+
 	def unregister(self, wait=False):
+		logger.debug("in unregister %s" % self.publicdata.name)
 		"""
 		Remove connection to this service
 		"""

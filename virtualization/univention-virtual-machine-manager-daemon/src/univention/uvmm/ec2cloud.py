@@ -111,17 +111,13 @@ class EC2CloudConnectionError(TranslatableException):
 
 class EC2CloudConnection(CloudConnection, PersistentCached):
 	def __init__(self, cloud, cache_dir):
-		super(EC2CloudConnection, self).__init__(cloud, cache_dir)
 		self._check_connection_attributes(cloud)
+		super(EC2CloudConnection, self).__init__(cloud, cache_dir)
 
 		self.publicdata.url = cloud["region"]
 
 		self._locations = []
 		self._security_groups = []
-
-		# Start thread for periodic updates
-		self.updatethread = threading.Thread(group=None, target=self.run, name="%s-%s" % (self.publicdata.name, self.publicdata.url), args=(), kwargs={})
-		self.updatethread.start()
 
 	def _check_connection_attributes(self, cloud):
 		if "access_id" not in cloud:
@@ -131,7 +127,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		if "region" not in cloud:
 			raise EC2CloudConnectionError("region attribute is required")
 
-	def _create_connection(self, cloud):
+	def _create_connection(self, cloud, testconnection=True):
 		logger.debug("Creating connection to %s" % cloud["region"])
 		params = {}
 		for param in cloud:
@@ -144,6 +140,14 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		p["secret"] = "******"
 		logger.debug("params passed to driver: %s" % p)
 		self.driver = os(**params)
+
+		# try the driver before starting the update thread
+		if testconnection:
+			self._instances = self._exec_libcloud(lambda: self.driver.list_nodes())
+
+		# Start thread for periodic updates
+		self.updatethread = threading.Thread(group=None, target=self.run, name="%s-%s" % (self.publicdata.name, self.publicdata.url), args=(), kwargs={})
+		self.updatethread.start()
 
 	def update_expensive(self):
 		logger.debug("Expensive update for %s: %s" % (self.publicdata.name, self.publicdata.url))
