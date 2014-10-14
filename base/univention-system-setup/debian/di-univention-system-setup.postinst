@@ -57,6 +57,7 @@ fi
 
 db_progress SET 4
 db_progress INFO di-univention-system-setup/progress/done
+in-target /usr/sbin/ucr set repository/online=yes
 in-target /usr/sbin/ucr unset --force interfaces/restart/auto
 db_progress STOP
 

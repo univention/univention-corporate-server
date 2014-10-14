@@ -1,6 +1,7 @@
 univention-system-setup (8.1.11-1) unstable; urgency=low
 
   * Bug #36086: Generate UCR configuration before USS.
+  * Bug #36116: Disable online repository until after USS.
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 14 Oct 2014 07:29:58 +0200
 

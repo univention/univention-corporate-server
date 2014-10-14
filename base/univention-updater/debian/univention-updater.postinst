@@ -56,7 +56,7 @@ if [ "$1" = "configure" ]; then
 		update/umc/nextversion?true \
 		update/doc/releasenotes/url"?http://download.univention.de/doc/" \
 		update/doc/releasenotes/description"?http://download.univention.de/doc/"\
-		repository/online?yes \
+		repository/online?no \
 		repository/online/server?"${REPOSITORY}" \
 		repository/online/port?80 \
 		repository/online/unmaintained?no \

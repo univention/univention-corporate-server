@@ -1,3 +1,9 @@
+univention-updater (10.0.7-1) unstable; urgency=low
+
+  * Bug #36116: Disable online repository until after USS.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 14 Oct 2014 12:34:39 +0200
+
 univention-updater (10.0.6-1) unstable; urgency=medium
 
   * preup univention-ldap-config to change LDAP schema matching rule before
