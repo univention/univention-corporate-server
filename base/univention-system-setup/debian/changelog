@@ -1,3 +1,9 @@
+univention-system-setup (8.1.12-1) unstable; urgency=low
+
+  * Bug #35727: Remove USS-boot after successful run.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 14 Oct 2014 16:02:40 +0200
+
 univention-system-setup (8.1.11-2) unstable; urgency=low
 
   * Bug #35653: Fix network page's values not being considered in debian
