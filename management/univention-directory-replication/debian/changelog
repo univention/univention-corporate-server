@@ -1,3 +1,9 @@
+univention-directory-replication (7.0.1-11) unstable; urgency=medium
+
+  * Bug #36113: Work around ITS#4025
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Oct 2014 12:09:35 +0200
+
 univention-directory-replication (7.0.1-10) unstable; urgency=medium
 
   * Bug #36113: Update replication.py to filter operational ppolicy

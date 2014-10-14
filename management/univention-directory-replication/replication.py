@@ -924,6 +924,10 @@ def handler(dn, new, listener_old, operation):
 		else:
 			connected=1
 
+	if 'pwdAttribute' in new.keys():
+		if new['pwdAttribute'][0] == 'userPassword':
+			new['pwdAttribute'] = ['2.5.4.35']
+
 	if flatmode:
 		dn = handlerFlatmode( l, dn, new, listener_old )
 
