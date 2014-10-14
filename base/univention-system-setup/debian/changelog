@@ -1,3 +1,10 @@
+univention-system-setup (8.1.11-2) unstable; urgency=low
+
+  * Bug #35653: Fix network page's values not being considered in debian
+    installer mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 14 Oct 2014 15:35:33 +0200
+
 univention-system-setup (8.1.11-1) unstable; urgency=low
 
   * Bug #36086: Generate UCR configuration before USS.

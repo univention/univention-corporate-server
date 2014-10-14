@@ -41,6 +41,7 @@ from util import PATH_SETUP_SCRIPTS, PATH_PROFILE
 
 def setup_i18n():
 	import locale
+	locale.setlocale(locale.LC_ALL, locale.getdefaultlocale())
 	language = locale.getdefaultlocale()[0]
 	from univention.lib.i18n import Translation
 	translation = Translation('univention-system-setup-scripts')

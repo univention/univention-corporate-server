@@ -1767,6 +1767,11 @@ define([
 		},
 
 		_forcePageTemporarily: function(pageName) {
+			// if it was hidden but now is forced to be shown, whitelist it
+			// for the future with back/next buttons (as well as add its values in getValues())
+			this.disabledPages = array.filter(this.disabledPages, function(disabledPage) {
+				return disabledPage != pageName;
+			});
 			this._forcedPage = pageName;
 			tools.defer(lang.hitch(this, function() {
 				// reset the _forcedPage variable to allow a page change again
