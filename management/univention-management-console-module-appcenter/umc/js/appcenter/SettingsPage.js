@@ -107,7 +107,6 @@ define([
 				buttons: formButtons,
 				style: 'margin-bottom:0;',
 				moduleStore: store('server', 'appcenter/settings'),
-				scrollable: true,
 				onSaved: lang.hitch(this, '_onSavedRepositorySettings')
 			});
 			this._form.load({}); // ID does not matter here but must be dict
