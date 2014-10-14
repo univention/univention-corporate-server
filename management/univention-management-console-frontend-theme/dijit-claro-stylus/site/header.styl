@@ -25,6 +25,13 @@
 	}
 
 	.umcHeaderRight {
+		.umcHeaderRightTop {
+			display: inline-block;
+			float: right;
+		}
+		.umcHeaderRightTop > * {
+			width: 100%;
+		}
 		/* style for user and host information */
 		.umcHeaderText {
 			display: block;
@@ -61,10 +68,6 @@
 			border: none;
 			background: none;
 			filter: none;
-
-			.dijitButtonNode {
-				padding: 0 4px;
-			}
 		}
 	}
 
@@ -82,8 +85,9 @@
 		box-shadow: none;
 	}
 
-	span[widgetid=umcMenuUsername].dijitDropDownButton,
-	span[widgetid=umcMenuHost].dijitDropDownButton {
+	.umcHeaderRightTop {//,
+	//span[widgetid=umcMenuUsername].dijitDropDownButton,
+	//span[widgetid=umcMenuHost].dijitDropDownButton {
 		/* alignment with other elements */
 		margin-right: -10px;
 		//margin-bottom: 0.5em;
@@ -103,6 +107,9 @@
 			.umcInlineLabel {
 				color: $text-color;
 			}
+		}
+		.umcLiveSearchSidebarRadioButtonGroup {
+			display: none;
 		}
 	}
 

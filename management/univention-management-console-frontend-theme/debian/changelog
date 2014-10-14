@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.42-1) unstable; urgency=low
+
+  * Bug #35654: adjust size of module search in relation to drop down menus
+
+ -- Florian Best <best@univention.de>  Tue, 14 Oct 2014 13:08:39 +0200
+
 univention-management-console-frontend-theme (0.0.41-1) unstable; urgency=low
 
   * Bug #35654: don't overlap the context menu icon in gallery panes
