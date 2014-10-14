@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/aspect",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dijit/form/MappedTextBox",
@@ -47,7 +48,7 @@ define([
 	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Memory, Observable, MappedTextBox, tools, TitlePane, TextArea, TextBox, ComboBox, CheckBox, HiddenInput, Wizard, ContainerWidget, DriveGrid, types, _) {
+], function(declare, lang, array, aspect, Memory, Observable, MappedTextBox, tools, TitlePane, TextArea, TextBox, ComboBox, CheckBox, HiddenInput, Wizard, ContainerWidget, DriveGrid, types, _) {
 
 	return declare("umc.modules.uvmm.DomainWizard", [ Wizard ], {
 		_profile: null,
@@ -214,9 +215,9 @@ define([
 			this._pages.drives.addChild(this._driveContainer);
 
 			// connect to the onShow method of the drives page to adjust the size of the grid
-			this._pages.drives.on('show', lang.hitch(this, function() {
+			this.own(aspect.after(this._pages.drives, '_onShow', lang.hitch(this, function() {
 				this._driveGrid.resize();
-			}));
+			})));
 		},
 
 		next: function(pageName) {

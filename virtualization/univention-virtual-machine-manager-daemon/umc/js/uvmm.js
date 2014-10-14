@@ -36,6 +36,7 @@ define([
 	"dojo/query",
 	"dojo/Deferred",
 	"dojo/on",
+	"dojo/aspect",
 	"dojox/html/entities",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -67,7 +68,7 @@ define([
 	"umc/modules/uvmm/CloudConnectionWizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, string, query, Deferred, on, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
+], function(declare, lang, array, string, query, Deferred, on, aspect, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
 	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, CloudConnectionWizard, types, _) {
 
@@ -323,10 +324,10 @@ define([
 						this.filter();
 					}
 				})));
-				this._searchPage.on('show', lang.hitch(this, function() {
+				this.own(aspect.after(this._searchPage, '_onShow', lang.hitch(this, function() {
 					this._selectInputText();
 					this.filter();
-				}));
+				})));
 				this._selectInputText();
 				this._finishedDeferred.then(lang.hitch(this, function(ucr) {
 					if (tools.isTrue(ucr['uvmm/umc/autosearch'])) {
