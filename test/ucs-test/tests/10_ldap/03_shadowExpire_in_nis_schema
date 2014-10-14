@@ -5,9 +5,9 @@
 ## packages: [univention-ldap-server]
 ## bugs: [35329, 35088]
 
+from datetime import datetime, timedelta
 from univention.uldap import getMachineConnection
 import re
-import time
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
@@ -28,34 +28,29 @@ def ldap_search(filter_):
 def run():
 	with udm_test.UCSTestUDM() as udm:
 		def create_users(date_diff):
-			current_time = time.time()
-			local = list(time.localtime(current_time + date_diff *60*60*24))
-			expiry_date = time.strftime('%Y-%m-%d', local)
-			passwd =  uts.random_string()
-			userdn, username = udm.create_user(password=passwd, userexpiry=expiry_date)
+			current_time = datetime.utcnow()
+			chosen_time = current_time + timedelta(days=date_diff)
+			epoch = datetime.utcfromtimestamp(0)
+			epoch_date = (chosen_time - epoch).days
 
-			current_epoch = int(current_time/60/60/24)
-			date = current_epoch + date_diff
-			return username, passwd, date
+			expiry_date = chosen_time.strftime("%Y-%m-%d")
+			passwd =  uts.random_string()
+			username =  uts.random_name()
+			userdn, username = udm.create_user(password=passwd, userexpiry=expiry_date)
+			return username, passwd, epoch_date
 
 		test_list = []
 		for date_diff in [-2, 0, 2]: # Numbers represent days, - in the past, + in the future, 0 = today
 			test_list.append(create_users(date_diff))
 
 		for username, passwd, date in test_list:
-			print 40 * '-', '\nSearching LDAP', 'filter=(&(objectClass=posixAccount)(uid=%s))' % username
-			print 'should be found: username=%s, expirydate=%s' % (username, date)
-			ldap_found = ldap_search('(&(objectClass=posixAccount)(uid=%s))' % username)
-			print 'user found in ldap(search by name):', ldap_found
-
 			print '\nSearching LDAP filter=(&(objectClass=posixAccount)(shadowExpire>=%r)(shadowExpire<=%r))' % (date - 1, date + 1)
-			print 'should be found: username=%s, expirydate=%s' % (username, date)
 			ldap_found = ldap_search('(&(objectClass=posixAccount)(shadowExpire>=%r)(shadowExpire<=%r))' % (date - 1, date + 1))
 			exclude_list = [(x[0], x[2]) for x in test_list]
 			exclude_list.remove((username, date))
 			if ldap_found:
-				print 'found in ldap (search by filter):%r' % ldap_found
-				print 'username, str(date)=%r, %r' % (username, str(date))
+				print 'Should be found: [(username, expirydate)] = [(\'%s\', \'%s\')]' % (username, date)
+				print 'Found in LDAP:   [(username, expirydate)] = %r' % ldap_found
 				if ((username, str(date)) not in ldap_found or set(exclude_list).issubset(ldap_found)):
 					utils.fail("LDAP is not able to sort Objects with filter: (shadowExpire>=%r)(shadowExpire<=%r)" % 
 							(date - 1, date + 1))
