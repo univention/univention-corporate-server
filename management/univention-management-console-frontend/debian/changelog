@@ -1,3 +1,11 @@
+univention-management-console-frontend (4.1.43-1) unstable; urgency=low
+
+  * Bug #35654: first attempt to fix displaying of Grid when they are not
+  	actively rendered
+  * fix focus of module search textbox
+
+ -- Florian Best <best@univention.de>  Tue, 14 Oct 2014 19:05:39 +0200
+
 univention-management-console-frontend (4.1.42-1) unstable; urgency=low
 
   * Bug #35654: attempt to fix placeholder in IE9

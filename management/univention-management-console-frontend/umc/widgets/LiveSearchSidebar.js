@@ -165,7 +165,7 @@ define([
 			// add one node elements for each category
 			this._radioButtons = array.map(categories, lang.hitch(this, function(_category, idx) {
 				var category = this._getUniformCategory(_category);
-				console.log(category);
+				console.log('### category', category);
 				var radioButton = new RadioButton({
 					label: category.label,
 					value: category.label,

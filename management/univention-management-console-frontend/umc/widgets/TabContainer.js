@@ -32,13 +32,15 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/aspect",
 	"dojo/dom-class",
 	"dojo/on",
 	"dojo/topic",
 	"dijit/layout/TabContainer",
+	"dojox/grid/_Grid",
 	"umc/tools",
 	"umc/i18n!"
-], function(declare, lang, array, domClass, on, topic, TabContainer, tools, _) {
+], function(declare, lang, array, aspect, domClass, on, topic, TabContainer, _Grid, tools, _) {
 	return declare("umc.widgets.TabContainer", TabContainer, {
 		// summary:
 		//		An extended version of the dijit TabContainer that can hide/show tabs.
@@ -93,11 +95,11 @@ define([
 			array.forEach(this.getChildren(), function(ipage) {
 				// find all widgets that inherit from dojox/grid/_Grid on the tab
 				array.forEach(ipage.getChildren(), function(iwidget) {
-					if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
+					if (iwidget.isInstanceOf(_Grid)) {
 						// hook to onShow event
-						ipage.on('show', function() {
+						this.own(aspect.after(ipage, '_onShow', function() {
 							iwidget.startup();
-						});
+						}));
 					}
 				}, this);
 			}, this);

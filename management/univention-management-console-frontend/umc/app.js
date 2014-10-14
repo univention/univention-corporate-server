@@ -1319,7 +1319,7 @@ define([
 			require.on('error', function(err) {
 				if (err.message == 'scriptError') {
 					dialog.warn(_('Could not load module "%s".', err.info[0]));
-					console.log(err);
+					console.log('scriptError:', err);
 				}
 			});
 
@@ -1452,7 +1452,7 @@ define([
 			this._tabContainer.addChild(this._overviewPage, 0);
 			this._tabController.hideChild(this._overviewPage);
 
-			this._overviewPage.on('show', lang.hitch(this, '_focusSearchField'));
+			aspect.after(this._overviewPage, '_onShow', lang.hitch(this, '_focusSearchField'));
 			this._registerGridEvents();
 			this._updateQuery({id: '_favorites_'});
 		},
@@ -1486,6 +1486,9 @@ define([
 		},
 
 		_focusSearchField: function() {
+			if (!this._header._searchSidebar) {
+				return;
+			}
 			if (!has('touch')) {
 				setTimeout(lang.hitch(this, function() {
 					this._header._searchSidebar.focus();

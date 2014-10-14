@@ -35,22 +35,19 @@ define([
 	"dojo/query",
 	"dojo/dom-class",
 	"dijit/Dialog",
+	"dijit/TitlePane",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
 	"umc/widgets/Text"
-], function(declare, lang, array, query, domClass, Dialog, ContainerWidget, Button, Text) {
+], function(declare, lang, array, query, domClass, Dialog, TitlePane, ContainerWidget, Button, Text) {
 	// in order to break circular dependencies
-	// we define umc/tools and dijit/registry an empty object and
+	// we define dijit/registry as empty object and
 	// require it explicitely
-	var tools = {
-		inheritsFrom: function() { return false; }
-	};
 	var registry = {
 		byNode: function() {}
 	};
-	require(["dijit/registry", "umc/tools"], function(_registry, _tools) {
+	require(["dijit/registry"], function(_registry) {
 		registry = _registry;
-		tools = _tools;
 	});
 
 	return declare("umc.widgets.ConfirmDialog", [ Dialog ], {
@@ -142,7 +139,7 @@ define([
 					widgets = query("[widgetId]", this.message.containerNode).map(registry.byNode);
 				}
 				array.forEach(widgets, lang.hitch(this, function(widget) {
-					if (tools.inheritsFrom(widget, 'dijit.TitlePane')) {
+					if (widget.isInstanceOf(TitlePane)) {
 						this.own(widget._wipeIn.on('End', lang.hitch(this, function() {
 							this._relativePosition = null;
 							this._size();

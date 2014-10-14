@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/event",
 	"dojo/dom-class",
+	"dojo/aspect",
 	"dojo/when",
 	"dojo/json",
 	"dijit/layout/StackContainer",
@@ -42,7 +43,7 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
 	"umc/i18n!"
-], function(declare, lang, array, event, domClass, when, json, StackContainer, tools, Form, Page, StandbyMixin, _) {
+], function(declare, lang, array, event, domClass, aspect, when, json, StackContainer, tools, Form, Page, StandbyMixin, _) {
 	return declare("umc.widgets.Wizard", [ StackContainer, StandbyMixin ], {
 		// summary:
 		//		This wizard class allows to specify a list of pages which will be
@@ -112,7 +113,7 @@ define([
 				// add page and remember it internally
 				this.addChild(page);
 				if (this.autoFocus) {
-					page.on('show', lang.hitch(this, function() {
+					aspect.after(page, '_onShow', lang.hitch(this, function() {
 						this.focusFirstWidget(ipage.name);
 					}));
 				}
@@ -380,6 +381,3 @@ define([
 		}
 	});
 });
-
-
-

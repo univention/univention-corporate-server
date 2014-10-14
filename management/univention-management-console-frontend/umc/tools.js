@@ -1297,7 +1297,7 @@ define([
 			return matched;
 		},
 
-		getParentModule: function(/*_Widget*/ widget) {
+		getParentModule: function(/*_WidgetBase*/ widget) {
 			// summary:
 			//		Return the enclosing module of the widget.
 

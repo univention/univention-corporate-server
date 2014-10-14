@@ -251,7 +251,7 @@ define([
 			this._alertDialog._position();
 		},
 
-		confirm: function(/*String|_Widget*/ message, /*Object[]*/ options, /*String?*/ title) {
+		confirm: function(/*String|_WidgetBase*/ message, /*Object[]*/ options, /*String?*/ title) {
 			// summary:
 			//		Popup a confirmation dialog with a given message string and a
 			//		list of options to choose from.
@@ -263,7 +263,7 @@ define([
 			//		The function returns a Deferred object. Registered callback
 			//		methods are called with the corresponding choice name as parameter.
 			// message:
-			//		The message that is displayed in the dialog, can also be a _Widget.
+			//		The message that is displayed in the dialog, can also be a _WidgetBase.
 			// options:
 			//		Array of objects describing the possible choices. Array is passed to
 			//		ConfirmDialog as 'options' parameter. The property 'label' needs

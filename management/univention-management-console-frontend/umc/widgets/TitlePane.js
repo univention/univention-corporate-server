@@ -33,8 +33,9 @@ define([
 	"dojo/_base/array",
 	"dijit/TitlePane",
 	"dijit/_Container",
+	"dojox/grid/_Grid",
 	"umc/tools"
-], function(declare, array, TitlePane, _Container, tools) {
+], function(declare, array, TitlePane, _Container, _Grid, tools) {
 	return declare("umc.widgets.TitlePane", [ TitlePane, _Container ], {
 		// summary:
 		//		Widget that extends dijit.TitlePane with methods of a container widget.
@@ -57,7 +58,7 @@ define([
 
 			// iterate over all tabs
 			array.forEach(this.getChildren(), function(iwidget) {
-				if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
+				if (iwidget.isInstanceOf(_Grid)) {
 					// hook to changes for 'open'
 					this.own(this.watch('open', function(attr, oldVal, newVal) {
 						if (newVal) {

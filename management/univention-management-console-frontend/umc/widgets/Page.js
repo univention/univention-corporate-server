@@ -33,16 +33,19 @@ define([
 	"dojo/_base/kernel",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/aspect",
 	"dojo/dom-style",
 	"dojo/dom-class",
+	"dojox/grid/_Grid",
 	"umc/tools",
 	"umc/dialog",
 	"umc/render",
 	"umc/widgets/Text",
+	"umc/widgets/Grid",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!"
-], function(declare, kernel, lang, array, style, domClass, tools, dialog, render, Text, ContainerWidget, _) {
-	return declare("umc.widgets.Page", ContainerWidget, {
+], function(declare, kernel, lang, array, aspect, style, domClass, _Grid, tools, dialog, render, Text, Grid, ContainerWidget, _) {
+	return declare("umc.widgets.Page", [ContainerWidget], {
 		// summary:
 		//		Class that abstracts a displayable page for a module.
 		//		The widget itself is also a container such that children widgets
@@ -242,15 +245,17 @@ define([
 			//        on an inactive tab.
 
 			// iterate over all widgets
-			array.forEach(this.getChildren(), function(iwidget) {
-				if (tools.inheritsFrom(iwidget, 'dojox.grid._Grid')) {
-					// hook to onShow event
-					this.on('show', lang.hitch(this, function() {
-						iwidget.startup();
-					}));
-				}
+			array.forEach(this.getChildren(), function(ichild) {
+				array.forEach(ichild.getChildren(), function(iwidget) {
+					if (iwidget.isInstanceOf(_Grid) || iwidget.isInstanceOf(Grid)) {
+						// hook to onShow event
+						this.own(aspect.after(this, '_onShow', lang.hitch(this, function() {
+							iwidget.startup();
+							iwidget.layout();
+						})));
+					}
+				}, this);
 			}, this);
 		}
 	});
 });
-

@@ -39,10 +39,11 @@ define([
 	"dijit/form/Button",
 	"umc/tools",
 	"umc/render",
+	"umc/widgets/Button",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/widgets/LabelPane"
-], function(declare, lang, array, Deferred, all, query, domConstruct, Button, tools, render, ContainerWidget, _FormWidgetMixin, LabelPane) {
+], function(declare, lang, array, Deferred, all, query, domConstruct, dijitButton, tools, render, Button, ContainerWidget, _FormWidgetMixin, LabelPane) {
 	return declare("umc.widgets.MultiInput", [ ContainerWidget, _FormWidgetMixin ], {
 		// summary:
 		//		Widget for a small list of simple and complex entries. An entry can be one or
@@ -293,7 +294,7 @@ define([
 					}
 					val = jwidget.get('value');
 					isSet = isSet || ('' !== val);
-					if (!tools.inheritsFrom(this._widgets[i][j], 'umc.widgets.Button')) {
+					if (!this._widgets[i][j].isInstanceOf(Button)) {
 						rowVals.push(val);
 					}
 				}
@@ -338,7 +339,7 @@ define([
 			}
 
 			// create 'new' button
-			var btn = new Button({
+			var btn = new dijitButton({
 				disabled: this.disabled,
 				iconClass: 'umcIconAdd',
 				onClick: lang.hitch(this, '_appendRows', 1),
@@ -464,7 +465,7 @@ define([
 			// current element
 			tools.forIn(widgets, function(ikey, iwidget) {
 				var myrow = irow;
-				if (tools.inheritsFrom(iwidget, 'umc.widgets.Button') && typeof iwidget.callback == "function") {
+				if (iwidget.isInstanceOf(Button) && typeof iwidget.callback == "function") {
 					var callbackOrg = iwidget.callback;
 					iwidget.callback = lang.hitch(this, function() {
 						callbackOrg(this.get('value')[myrow], myrow);
@@ -482,7 +483,7 @@ define([
 				// only keep the label for the first row
 				var iwidget = widgets[iname];
 				var label = irow !== 0 ? '' : iwidget.label;
-				if (tools.inheritsFrom(iwidget, 'umc.widgets.Button')) {
+				if (iwidget.isInstanceOf(Button)) {
 					label = irow !== 0 ? '' : '&nbsp;';
 				}
 				if (noWrapper) {
@@ -504,7 +505,7 @@ define([
 			}, this);
 
 			// add a 'remove' button at the end of the row
-			var button = new Button({
+			var button = new dijitButton({
 				disabled: this.disabled,
 				iconClass: 'umcIconDelete',
 				onClick: lang.hitch(this, '_removeElement', irow),

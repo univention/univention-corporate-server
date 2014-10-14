@@ -26,15 +26,19 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console */
+/*global define,console,require*/
 
 define([
 	"dojo/_base/declare",
-	"dojo/dom-style",
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojo/aspect",
 	"dojo/dom-class",
+	"dojox/grid/_Grid",
 	"dijit/_WidgetBase",
 	"dijit/_Container"
-], function(declare, style, domClass, _WidgetBase, _Container) {
+], function(declare, lang, array, aspect, domClass, _Grid, _WidgetBase, _Container) {
+	require(['umc/widgets/Grid']);
 	return declare("umc.widgets.ContainerWidget", [_WidgetBase, _Container], {
 		// description:
 		//		Combination of Widget and Container class.
@@ -42,9 +46,31 @@ define([
 
 		'class': 'umcContainerWidget',
 
+		_onShow: function() {
+			console.log(this.declaredClass, 'CW._onShow:', arguments);
+		},
+
 		_setVisibleAttr: function(visible) {
 			this._set('visible', visible);
 			domClass.toggle(this.domNode, 'dijitHidden', !visible);
+		},
+
+		startup: function() {
+			this.inherited(arguments);
+
+			// FIXME: Workaround for refreshing problems with datagrids when they are rendered
+			//        on an inactive tab.
+
+			// iterate over all widgets
+			array.forEach(this.getChildren(), function(iwidget) {
+				if (iwidget.isInstanceOf(_Grid) || iwidget.isInstanceOf(require('umc/widgets/Grid'))) {
+					// hook to onShow event
+					this.own(aspect.after(this, '_onShow', lang.hitch(this, function() {
+						iwidget.startup();
+						iwidget.layout();
+					})));
+				}
+			}, this);
 		}
 	});
 });

@@ -36,10 +36,12 @@ define([
 	"umc/widgets/LabelPane",
 	"umc/widgets/TitlePane",
 	"umc/widgets/Tooltip",
+	"umc/widgets/HiddenInput",
+	"umc/widgets/CheckBox",
 	"umc/widgets/Button",
 	"umc/widgets/SubmitButton",
 	"umc/widgets/ResetButton"
-], function(lang, array, tools, ContainerWidget, LabelPane, TitlePane, Tooltip, Button, SubmitButton, ResetButton) {
+], function(lang, array, tools, ContainerWidget, LabelPane, TitlePane, Tooltip, HiddenInput, CheckBox, Button, SubmitButton, ResetButton) {
 	var render = {};
 	lang.mixin(render, {
 		widgets: function(/*Object[]*/ widgetsConf, owner) {
@@ -144,7 +146,7 @@ define([
 				tooltip.connect(widget, 'destroy', 'destroy');
 			}
 
-			return widget; // dijit._Widget
+			return widget; // dijit._WidgetBase
 		},
 
 		buttons: function(/*Object[]*/ buttonsConf, owner) {
@@ -231,7 +233,7 @@ define([
 				var betweenNonCheckBoxes = array.some(elList, function(el) {
 					var widget = widgets[el];
 					if (widget) {
-						return !tools.inheritsFrom(widget, 'umc.widgets.CheckBox');
+						return !widget.isInstanceOf(CheckBox);
 					}
 				});
 				// for single String / Array
@@ -260,7 +262,7 @@ define([
 							return;
 						}
 
-						if (widget && tools.inheritsFrom(widget, 'umc.widgets.HiddenInput')) {
+						if (widget && widget.isInstanceOf(HiddenInput)) {
 							// do wrap HiddenInput field with LabelPane
 							elContainer.addChild(widget);
 							widget.$isRendered$ = true;
