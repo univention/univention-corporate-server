@@ -43,7 +43,7 @@ try:
 except ImportError:
 	import pickle
 
-from protocol import Cloud_Data_Connection, Cloud_Data_Image, Cloud_Data_Size, Cloud_Data_Keypair, Cloud_Data_Network
+from protocol import Cloud_Data_Connection, Cloud_Data_Image, Cloud_Data_Keypair
 from helpers import TranslatableException, ms, uri_encode
 
 logger = logging.getLogger('uvmmd.cloudconnection')
@@ -74,6 +74,7 @@ class CloudConnection(object):
 		self.publicdata.last_update = -1
 		self.publicdata.last_update_try = -1
 		self.publicdata.available = False
+		self.publicdata.last_error_message = ""
 		self._last_expensive_update = -1000000
 
 		self._instances = []
@@ -144,8 +145,9 @@ class CloudConnection(object):
 			self.publicdata.last_update_try = self.publicdata.last_update
 			self.cache_save()
 			self.current_frequency = self.config_default_frequency
+			self.publicdata.last_error_message = ""
 		except Exception:
-			logger.error("Exception in update() in thread %s: %s" % (self.publicdata.name, self.publicdata.url), exc_info=False)
+			logger.error("Exception in update() for connection %s; Endpoint: %s" % (self.publicdata.name, self.publicdata.url), exc_info=False)
 
 		logger.debug("Next update for %s: %s" % (self.publicdata.name, ms(self.current_frequency)))
 		self.publicdata.available = self.publicdata.last_update == self.publicdata.last_update_try
@@ -234,6 +236,15 @@ class CloudConnection(object):
 				images.append(i)
 
 		return images
+
+	def logerror(self, logger, msg):
+		'''
+		Log the error with the traceback.
+		Set self.publicdata.last_error_message to the error message in order to
+		give the frontend the possibility to show it to the user
+		'''
+		logger.error(msg, exc_info=True)
+		self.publicdata.last_error_message = msg
 
 
 if __name__ == '__main__':

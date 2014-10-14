@@ -467,31 +467,32 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		try:
 			return func()
 		except InvalidCredsError as e:
-			logger.error("Invalid credentials provided for connection %s: %s" % (self.publicdata.name, self.publicdata.url))
+			self.logerror(logger, "Invalid credentials provided for connection %s: %s" % (self.publicdata.name, self.publicdata.url))
+			self.logerror(logger, "hey, publicdata is: %s" % self.publicdata.last_error_message)
 			raise
 		except MalformedResponseError as e:
-			logger.error("Malformed response from connection, correct endpoint specified? %s: %s; %s" % (self.publicdata.name, self.publicdata.url, str(e)))
+			self.logerror(logger, "Malformed response from connection, correct endpoint specified? %s: %s; %s" % (self.publicdata.name, self.publicdata.url, str(e)))
 			raise
 		except ProviderError as e:
-			logger.error("Connection %s: %s: httpcode: %s, %s" % (self.publicdata.name, self.publicdata.url, e.http_code, e))
+			self.logerror(logger, "Connection %s: %s: httpcode: %s, %s" % (self.publicdata.name, self.publicdata.url, e.http_code, e))
 			raise
 		except LibcloudError as e:
-			logger.error("Connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, e))
+			self.logerror(logger, "Connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, e))
 			raise
 		except ssl.SSLError as e:
-			logger.error("Error with SSL connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, e))
+			self.logerror(logger, "Error with SSL connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, e))
 			raise
 		except Exception as e:
 			if hasattr(e, 'errno'):
 				if e.errno == errno.ECONNREFUSED:
-					logger.error("Connection %s: %s refused (ECONNREFUSED)" % (self.publicdata.name, self.publicdata.url))
+					self.logerror(logger, "Connection %s: %s refused (ECONNREFUSED)" % (self.publicdata.name, self.publicdata.url))
 				elif e.errno == errno.EHOSTUNREACH:
-					logger.error("Connection %s: %s no route to host (EHOSTUNREACH)" % (self.publicdata.name, self.publicdata.url))
+					self.logerror(logger, "Connection %s: %s no route to host (EHOSTUNREACH)" % (self.publicdata.name, self.publicdata.url))
 
 				else:
-					logger.error("Unknown exception %s with unknown errno %s: %s" % (self.publicdata.name, e.errno, self.publicdata.url), exc_info=True)
+					self.logerror(logger, "Unknown exception %s with unknown errno %s: %s" % (self.publicdata.name, e.errno, self.publicdata.url))
 			else:
-				logger.error("Unknown exception  %s: %s" % (self.publicdata.name, self.publicdata.url), exc_info=True)
+				self.logerror(logger, "Unknown exception  %s: %s" % (self.publicdata.name, self.publicdata.url))
 			raise
 
 if __name__ == '__main__':
