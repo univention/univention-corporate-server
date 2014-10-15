@@ -1,3 +1,9 @@
+univention-java (7.0.1-1) unstable; urgency=medium
+
+  * Switch to OpenJDK 7 (Bug #35382)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Oct 2014 20:33:39 +0200
+
 univention-java (7.0.0-2) unstable; urgency=low
 
   * Removed dependency ia32-libs-gtk [amd64] (Bug #35266)
