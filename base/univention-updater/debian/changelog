@@ -1,3 +1,9 @@
+univention-updater (10.0.10-1) unstable; urgency=medium
+
+  * postup.sh: Switch from OpenJDK 6 to OpenJDK 7 (Bug #35382)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Oct 2014 21:27:54 +0200
+
 univention-updater (10.0.9-1) unstable; urgency=low
 
   * Bug #35656: Block update with xen-4.1 still installed.
