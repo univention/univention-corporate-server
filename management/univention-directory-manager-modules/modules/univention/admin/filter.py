@@ -44,7 +44,7 @@ def escapeForLdapFilter(txt):
 	'description=Number \\\\281\\\\29'
 	"""
 	# parenthesis mess up ldap filters - they should be escaped
-	return txt.replace('(', '\(').replace(')', '\)')
+	return txt.replace('(', '\(').replace(')', '\)').replace('\\', '\\\\')
 
 class conjunction:
 	"""LDAP filter conjunction (&) or disjunction (|)."""
