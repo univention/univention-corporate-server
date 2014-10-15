@@ -36,14 +36,6 @@ msgstr "Netzwerk-Einstellungen"
 msgid "Specify IP addresses, name servers, gateways and HTTP proxies"
 msgstr "Setzen der IP Adressen, Gateways, HTTP Proxies und DNS-Server"
 
-#: umc/setup.xml: 23
-msgid "Basic settings"
-msgstr "Basis-Einstellungen"
-
-#: umc/setup.xml: 24
-msgid "Define hostname, domainname and set the root password"
-msgstr "Setzen von Rechner- und Domänennamen und des root Passworts"
-
 #: umc/setup.xml: 28
 msgid "Certificate settings"
 msgstr "Zertifikats-Einstellungen"

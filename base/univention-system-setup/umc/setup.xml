@@ -15,11 +15,6 @@
 			<description>Specify IP addresses, name servers, gateways and HTTP proxies</description>
 			<keywords>ip,dhcp,dns,nameserver,forwarder,gateway,interface</keywords>
 		</flavor>
-		<flavor priority="50" id="general">
-			<name>Basic settings</name>
-			<description>Define hostname, domainname and set the root password</description>
-			<keywords>hostname,password,domainname,fqdn</keywords>
-		</flavor>
 		<flavor priority="50" id="certificate">
 			<name>Certificate settings</name>
 			<description>Create a new root certificate</description>

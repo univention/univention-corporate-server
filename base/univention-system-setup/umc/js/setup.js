@@ -46,7 +46,6 @@ define([
 	"xstyle/css!./setup.css",
 // Pages:
 	"./setup/LanguagePage",
-	"./setup/BasisPage",
 	"./setup/NetworkPage",
 	"./setup/CertificatePage"
 ], function(dojo, declare, lang, array, all, topic, Deferred,
@@ -62,10 +61,6 @@ define([
 
 	return declare("umc.modules.setup", [ Module ], {
 
-		// pages: String[]
-		//		List of all setup-pages that are visible.
-		pages: [ 'LanguagePage', 'BasisPage', 'NetworkPage', 'CertificatePage' ],
-
 		wizard: null,
 
 		// this module can only be opened once
@@ -78,15 +73,7 @@ define([
 
 		_orgValues: null,
 
-		_currentPage: -1,
-
 		_progressBar: null,
-
-		// internal dict to save error messages while polling
-		_saveErrors: null,
-
-		// Date when page was last changed
-		_timePageChanges: new Date(),
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -109,68 +96,37 @@ define([
 			// wait for deferred objects to be completed
 			var deferredlist = new all([deferred_ucr, deferred_variables]);
 			deferredlist.then(lang.hitch(this, function(data) {
-				// pass ucr and values to renderPages()
-				this.renderPages(data[0], data[1].result);
+				this._progressBar = new ProgressBar();
+				this.own(this._progressBar);
+				this.standby(true);
+
+				var ucr = data[0];
+				var values = data[1].result;
+
+				// save current values
+				this._orgValues = lang.clone(values);
+
+				if (this.moduleFlavor === 'wizard') {
+					this._renderWizard(values, ucr);
+				} else {
+					this._renderTabs(values, ucr);
+				}
+
+				this.startup();
+				this.standby(false);
 				this.standbyOpacity = 0.75;  // set back the opacity to 75%
 			}));
 		},
 
-		renderPages: function(ucr, values) {
-			this._progressBar = new ProgressBar();
-			this.own(this._progressBar);
-			this.standby(true);
+		_renderTabs: function(values, ucr) {
 
-			// console.log('joined=' + values.joined);
-			// console.log('select_role=' + ucr['system/setup/boot/select/role']);
-
-			var allPages = lang.clone(this.pages);
-
-			var system_role = ucr['server/role'];
-
-			// set wizard mode only on unjoined DC Master
-			//this.wizard_mode = (!system_role) && (!values.joined);
-			this.wizard_mode = this.moduleFlavor === 'wizard';
-
-			// save current values
-			this._orgValues = lang.clone(values);
-
-			// add the SoftwarePage and SystemRolePage to the list of pages for the wizard mode
-			if (this.wizard_mode) {
-				// add blacklist for pages. The pages will be removed without any replacement.
-				// empty lists are treated as if they were not defined at all (show all pages). list names should
-				// match the names in this.pages and can be separated by a ' '.
-				var black_list = (ucr['system/setup/boot/pages/blacklist'] || '').split(' ');
-				if (!tools.isTrue(ucr['system/setup/boot/select/role'])) {
-					black_list.push('SystemRolePage');
-				}
-
-				black_list = array.map(black_list, function(page) {
-					var replacements = {
-						'SoftwarePage': 'software',
-						'SystemRolePage': 'role'
-					};
-					return replacements[page] || page;
-				});
-
-				var fieldBlacklist = (ucr['system/setup/boot/fields/blacklist'] || '').split(' ');
-				this._renderWizard(values, black_list, fieldBlacklist, tools.isTrue(ucr['system/setup/boot/installer']));
+			// disable network page, See Bug #33006
+			var networkDisabledBy = ucr['umc/modules/setup/network/disabled/by'];
+			if (networkDisabledBy && this.moduleFlavor == 'network') {
+				this._displayNetworkPageWarning(networkDisabledBy);
+				this.closeModule();
+				return;
 			}
-			else {
-				// disable network page, See Bug #33006
-				var networkDisabledBy = ucr['umc/modules/setup/network/disabled/by'];
-				if (networkDisabledBy) {
-					this._displayNetworkPageWarning(networkDisabledBy);
-					allPages.splice(allPages.indexOf('NetworkPage'), 1);
-				}
-
-				this._renderTabs(allPages, values);
-			}
-
-			this.startup();
-			this.standby(false);
-		},
-
-		_renderTabs: function(allPages, values) {
 
 			// each page has the same buttons for saving/resetting
 			var buttons = [/* {
@@ -201,8 +157,7 @@ define([
 			var iclass = {
 				languages: 'LanguagePage',
 				network: 'NetworkPage',
-				certificate: 'CertificatePage',
-				general: 'BasisPage'
+				certificate: 'CertificatePage'
 			}[this.moduleFlavor];
 
 			var ipath = 'umc/modules/setup/' + iclass;
@@ -211,7 +166,7 @@ define([
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				headerButtons: buttons,
 				moduleFlavor: this.moduleFlavor,
-				wizard_mode: this.wizard_mode,
+				wizard_mode: false,
 				onSave: lang.hitch(this, function() {
 					this.save();
 				}),
@@ -227,7 +182,26 @@ define([
 			ipage.setValues(values);
 		},
 
-		_renderWizard: function(values, pageBlacklist, fieldBlacklist, partOfInstaller) {
+		_renderWizard: function(values, ucr) {
+			var partOfInstaller = tools.isTrue(ucr['system/setup/boot/installer']);
+
+			// add blacklist for pages. The pages will be removed without any replacement.
+			// empty lists are treated as if they were not defined at all (show all pages). list names should
+			// match the names in this.pages and can be separated by a ' '.
+			var fieldBlacklist = (ucr['system/setup/boot/fields/blacklist'] || '').split(' ');
+			var pageBlacklist = (ucr['system/setup/boot/pages/blacklist'] || '').split(' ');
+			if (!tools.isTrue(ucr['system/setup/boot/select/role'])) {
+				pageBlacklist.push('SystemRolePage');
+			}
+
+			pageBlacklist = array.map(pageBlacklist, function(page) {
+				var replacements = {
+					'SoftwarePage': 'software',
+					'SystemRolePage': 'role'
+				};
+				return replacements[page] || page;
+			});
+
 			this.wizard = new ApplianceWizard({
 				//progressBar: progressBar
 				moduleID: this.moduleID,
@@ -251,10 +225,10 @@ define([
 					this._redirectBrowser(newValues.interfaces, newValues['interfaces/primary']);
 				}));
 			}));
-			this.wizard.on('Reload', lang.hitch(this, '_reloadWizard', values, pageBlacklist, fieldBlacklist));
+			this.wizard.on('Reload', lang.hitch(this, '_reloadWizard', values, ucr));
 		},
 
-		_reloadWizard: function(values, pageBlacklist, fieldBlacklist, newLocale) {
+		_reloadWizard: function(values, ucr, newLocale) {
 			// update internal locale settings
 			var _setLocale = lang.hitch(this, function() {
 				dojo.locale = newLocale;
@@ -274,7 +248,7 @@ define([
 			var _cleanup = lang.hitch(this, function() {
 				this.removeChild(this.wizard);
 				this.wizard.destroy();
-				this._renderWizard(values, pageBlacklist, fieldBlacklist);
+				this._renderWizard(values, ucr);
 			});
 
 			// chain tasks with some time in between to allow a smooth standby animation

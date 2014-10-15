@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-10 12:32+0200\n"
+"POT-Creation-Date: 2014-10-15 12:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,7 +36,7 @@ msgstr "Bond-primary muss in bond-slaves enthalten sein"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/python/setup/util.py:170 umc/python/setup/__init__.py:457
+#: umc/python/setup/__init__.py:457 umc/python/setup/util.py:170
 msgid ""
 "Cannot automatically determine the domain. Please specify the server's fully "
 "qualified domain name."
@@ -93,7 +93,7 @@ msgstr "Ein unerwarteter Fehler trat während des Einrichtungsprozesses auf: %s"
 msgid "External name server"
 msgstr "Externer DNS-Server"
 
-#: umc/python/setup/setup_script.py:411
+#: umc/python/setup/setup_script.py:414
 #, python-format
 msgid "Failed to get package for Role %s"
 msgstr "Es konnte kein Paket für die Rolle %s gefunden werden"
