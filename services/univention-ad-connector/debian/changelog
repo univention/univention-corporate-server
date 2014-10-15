@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-74) unstable; urgency=medium
+
+  * Catch ADNotAvailable in connection testing (Bug #35701)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Oct 2014 07:30:16 +0200
+
 univention-ad-connector (8.0.17-73) unstable; urgency=medium
 
   * Added a new UCR variable connector/ad/mapping/user/password/disabled

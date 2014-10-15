@@ -536,7 +536,10 @@ class Instance(Base, ProgressMixin):
 				success = False
 				if admember.server_supports_ssl(server):
 					admember.enable_ssl()
-					success = test_connection()
+					try:
+						success = test_connection()
+					except ADNotAvailable:
+						success = False
 				if not success:
 					raise UMC_CommandError(_('Could not establish an encrypted connection. Either "%r" is not reachable or does not support encryption.') % server)
 			else:
