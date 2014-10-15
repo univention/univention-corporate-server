@@ -32,15 +32,11 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dijit/layout/ContentPane",
-	"umc/widgets/ContainerWidget",
 	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/TabbedModule",
-	"dojox/layout/TableContainer",
-	"dojox/string/sprintf",
 	"umc/i18n!umc/modules/mrtg"
-], function(declare, lang, array, DijitContentPane, ContainerWidget, Page, Text, TabbedModule, TableContainer, sprintf, _) {
+], function(declare, lang, array, Page, Text, TabbedModule, _) {
 	return declare("umc.modules.mrtg", TabbedModule, {
 
 		_page: null,
@@ -53,69 +49,52 @@ define([
 			// title... the title of the tab itself
 			// desc ..... help text (switchable)
 			var page_setup = [{
-				key:		"0load",
-				title:	_("System load"),
-				desc:		_("System load in percent")
+				key: "0load",
+				title: _("System load"),
+				desc: _("System load in percent")
 			}, {
-				key:		"1sessions",
-				title:	_("Terminal server sessions"),
-				desc:		_("Number of active terminal server sessions")
+				key: "1sessions",
+				title: _("Terminal server sessions"),
+				desc: _("Number of active terminal server sessions")
 			}, {
-				key:		"2mem",
-				title:	_("Memory usage"),
-				desc:		_("Utilization of system memory in percent")
+				key: "2mem",
+				title: _("Memory usage"),
+				desc: _("Utilization of system memory in percent")
 			}, {
-				key:		"3swap",
-				title:	_("Swap space"),
-				desc:		_("Utilization of swap space in percent")
+				key: "3swap",
+				title: _("Swap space"),
+				desc: _("Utilization of swap space in percent")
 			}];
 			
 			// key ...... file name stub (2nd part) for the corresponding PNG image
 			// label .... how to label this image
 			var tab_setup = [ {
-				key:		"day",
-				label:		_("Previous day")
+				key: "day",
+				label: _("Previous day")
 			}, {
-				key:		"week",
-				label:		_("Previous week")
+				key: "week",
+				label: _("Previous week")
 			}, {
-				key:		"month",
-				label:		_("Previous month")
+				key: "month",
+				label: _("Previous month")
 			}, {
-				key:		"year",
-				label:		_("Previous year")
+				key: "year",
+				label: _("Previous year")
 			}];
 
 			// Build tabs and attach them to page
 			array.forEach(page_setup, lang.hitch(this, function(page) {
-				var tab = new Page({
+				var child= new Page({
 					title: page.title,
+					headerText: page.desc,
+					headerTextRegion: 'main',
 					closable: false
 				});
-				this.addTab(tab);
-
-				tab.addChild(new Text({
-					content: lang.replace('<h1>{0}</h1>', [page.desc]),
-					'class': 'umcPageHeader',
-					style: 'text-align: center'
-				}));
-
-				// three-column grid layout
-				var grid = new TableContainer({
-					cols: 3
-				});
-				tab.addChild(grid);
+				this.addTab(child);
 
 				array.forEach(tab_setup, function(tab) {
-					grid.addChild(new DijitContentPane({
-						content: sprintf("<span style='white-space:nowrap;'>%s</span>", tab.label)
-					}));
-					grid.addChild(new DijitContentPane({
-						content: sprintf("<img src='/statistik/ucs_%s-%s.png'>", page.key, tab.key)
-					}));
-					// third column used as spacer
-					grid.addChild(new DijitContentPane({
-						content: '&nbsp;'
+					child.addChild(new Text({
+						content: lang.replace('<h3>{0}</h3><img src="/statistik/ucs_{1}-{2}.png">', [tab.label, page.key, tab.key])
 					}));
 				});
 			}));
