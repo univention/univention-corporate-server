@@ -1,3 +1,9 @@
+univention-check-printers (8.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #36114) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 15 Oct 2014 16:26:15 +0200
+
 univention-check-printers (7.0.1-4) unstable; urgency=low
 
   * fixed common spelling mistakes (Bug #32662)
