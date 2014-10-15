@@ -3,7 +3,7 @@
 # Univention LDAP Server
 #  postinst script for the debian package
 #
-# Copyright 2008-2013 Univention GmbH
+# Copyright 2008-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -42,41 +42,6 @@ univention-config-registry set \
 	ldap/overlay/memberof/refint?false \
 	ldap/overlay/memberof/modifiersname?"cn=admin,$ldap_base"
 
-# START - remove old template in 3.0-2 Bug #24433
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-1; then
-	univention-config-registry update
-fi
-# END - remove old template in 3.0-2 Bug #24433
-
-# read perm for the ldap master (ipv4 read permissions)
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	. /usr/share/univention-lib/all.sh 
-	ip=$(get_default_ipv4_address)
-	if [ -n "$ip" ]; then
-		readIps=$(ucr get ldap/acl/read/ips)
-		if [ -z "$readIps" ]; then
-			# set read permissions
-			ucr set ldap/acl/read/ips?"$ip"
-		else
-			# append ip
-			found=false
-			IFS=$','
-			for i in $readIps; do
-				if [ "$ip" = "$i" ]; then
-					found=true
-					break
-				fi
-			done
-			unset IFS
-			if [ "$found" = "false" ]; then
-				ucr set ldap/acl/read/ips="$readIps,$ip"
-			fi
-		fi
-	fi
-fi
-
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" -o  "$server_role" = "domaincontroller_slave" ] ; then
-	/etc/init.d/slapd crestart
-fi
+test -x /etc/init.d/slapd && invoke-rc.d slapd crestart
 
 exit 0

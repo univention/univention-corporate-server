@@ -1,3 +1,11 @@
+univention-ldap-overlay-memberof (7.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #36114) 
+  * removed ldap/acl/read/ips as slapd.conf now always
+    set rootdn
+
+ -- Felix Botner <botner@univention.de>  Wed, 15 Oct 2014 15:25:43 +0200
+
 univention-ldap-overlay-memberof (6.0.0-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30946)
