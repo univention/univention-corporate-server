@@ -1,3 +1,9 @@
+univention-apache (7.0.2-1) unstable; urgency=medium
+
+  * [WIP] Bug #36095: add background image with translucent pattern
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 15 Oct 2014 18:38:56 +0200
+
 univention-apache (7.0.1-1) unstable; urgency=medium
 
   * [WIP] Bug #36095: fix footer and include rules for category buttons
