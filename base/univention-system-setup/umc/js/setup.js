@@ -91,25 +91,24 @@ define([
 				'system/setup/boot/installer',
 				'umc/modules/setup/network/disabled/by'
 			]);
-			// load system setup values (e.g. join status)
-			var deferred_variables = this.umcpCommand('setup/load');
-			// wait for deferred objects to be completed
-			var deferredlist = new all([deferred_ucr, deferred_variables]);
-			deferredlist.then(lang.hitch(this, function(data) {
+
+			all({
+				ucr: deferred_ucr,
+				values: this.umcpCommand('setup/load')
+			}).then(lang.hitch(this, function(data) {
 				this._progressBar = new ProgressBar();
 				this.own(this._progressBar);
 				this.standby(true);
 
-				var ucr = data[0];
-				var values = data[1].result;
+				var values = data.values.result;
 
 				// save current values
 				this._orgValues = lang.clone(values);
 
 				if (this.moduleFlavor === 'wizard') {
-					this._renderWizard(values, ucr);
+					this._renderWizard(values, data.ucr);
 				} else {
-					this._renderTabs(values, ucr);
+					this._renderTabs(values, data.ucr);
 				}
 
 				this.startup();
