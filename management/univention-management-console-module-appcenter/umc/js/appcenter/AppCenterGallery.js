@@ -30,11 +30,12 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/array",
 	"put-selector/put",
 	"dojo/dom-class",
 	"umc/tools",
 	"umc/widgets/GalleryPane"
-], function(declare, put, domClass, tools, GalleryPane) {
+], function(declare, array, put, domClass, tools, GalleryPane) {
 	return declare("umc.modules.appcenter.AppCenterGallery", [ GalleryPane ], {
 		region: 'main',
 
@@ -45,6 +46,10 @@ define([
 		bootstrapClasses: "col-xs-12.col-sm-6.col-md-6.col-lg-6",
 
 		getIconClass: function(item) {
+			if (array.indexOf(item.unlocalised_categories, 'UCS components') >= 0) {
+				// don't display icon of UCS components
+				return null;
+			}
 			return tools.getIconClass(item.icon, 50, 'umcAppCenter');
 		},
 

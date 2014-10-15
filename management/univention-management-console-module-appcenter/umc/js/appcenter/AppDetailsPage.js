@@ -263,13 +263,15 @@ define([
 			});
 			this._container.addChild(detailsPane);
 			var galleryPane = put(this._detailsTable, '-div.umcGalleryPane');
-			var appIcon = this._grid.renderRow(lang.mixin({}, this.app, {description: null, name: null})); // just logo and status
-			domStyle.set(appIcon, {
-				cursor: 'default', // without hover effects (as clicking on it does not open any dialog)
-				backgroundColor: 'inherit',
-				width: '90px'
-			});
-			domConstruct.place(appIcon, galleryPane, 'only');
+			if (this._grid.getIconClass(this.app)) {  // UCS components doesn't have an icon
+				var appIcon = this._grid.renderRow(lang.mixin({}, this.app, {description: null, name: null})); // just logo and status
+				domStyle.set(appIcon, {
+					cursor: 'default', // without hover effects (as clicking on it does not open any dialog)
+					backgroundColor: 'inherit',
+					width: '90px'
+				});
+				domConstruct.place(appIcon, galleryPane, 'only');
+			}
 
 			this.addToDetails(_('Vendor'), 'Vendor');
 			this.addToDetails(_('Maintainer'), 'Maintainer');

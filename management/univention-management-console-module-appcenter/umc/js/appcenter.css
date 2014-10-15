@@ -30,3 +30,7 @@
 .umcAppCenterGallery .umcGalleryItem {
 	background-color: #eaeaea;
 }
+.umcAppCenterGallery .umcGalleryItem .umcGalleryName {
+	/* there is no context menu icon */
+	margin-right: 0;
+}

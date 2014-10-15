@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (4.1.7-1) unstable; urgency=low
+
+  * Bug #35654: don't display icons of UCS compontents
+  * remove right margin of gallerypane as there are no context menus
+
+ -- Florian Best <best@univention.de>  Wed, 15 Oct 2014 11:58:08 +0200
+
 univention-management-console-module-appcenter (4.1.6-2) unstable; urgency=low
 
   * Bug #35781: Enable install on "Installed apps" modules
