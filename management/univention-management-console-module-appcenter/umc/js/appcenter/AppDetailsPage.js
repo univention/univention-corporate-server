@@ -233,8 +233,20 @@ define([
 			return buttons;
 		},
 
-
 		buildInnerPage: function() {
+			if (this._container) {
+				this.removeChild(this._container);
+				this._container.destroyRecursive();
+				this._container = null;
+			}
+			if (this._icon) {
+				this.removeChild(this._icon);
+				this._icon.destroyRecursive()
+				this._icon = null;
+			}
+			this._container = new ContainerWidget({});
+			this.addChild(this._container);
+			this.own(this._container);
 			this.set('navButtons', this.getButtons());
 			this._detailsTable = domConstruct.create('table', {
 				style: {borderSpacing: '1em 0.1em'}
@@ -243,14 +255,15 @@ define([
 				title: _('Details'),
 				content: this._detailsTable
 			});
-			this.addChild(detailsPane);
+			this._container.addChild(detailsPane);
 			var iconClass = this._grid.getIconClass(this.app);
 			if (iconClass) {
-				this.addChild(new ContainerWidget({
+				this._icon = new ContainerWidget({
 					region: 'nav',
 					'class': iconClass,
 					'style': 'margin-bottom: 1em;'
-				}), 1);
+				});
+				this.addChild(this._icon, 1);
 			}
 
 			this.addToDetails(_('Vendor'), 'Vendor');
@@ -279,7 +292,7 @@ define([
 					title: _('Notes on using'),
 					content: usage
 				});
-				this.addChild(usagePane);
+				this._container.addChild(usagePane);
 			}
 
 			if (this._appIsInstalledInDomain()) {
@@ -351,7 +364,7 @@ define([
 					open: false,
 					content: installationTable
 				});
-				this.addChild(installationPane);
+				this._container.addChild(installationPane);
 			}
 		},
 
