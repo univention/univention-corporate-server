@@ -1,3 +1,9 @@
+univention-dansguardian (8.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #36114)
+
+ -- Felix Botner <botner@univention.de>  Wed, 15 Oct 2014 16:48:29 +0200
+
 univention-dansguardian (7.0.0-3) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)
