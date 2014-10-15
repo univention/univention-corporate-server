@@ -1,3 +1,11 @@
+univention-ad-connector (8.0.17-73) unstable; urgency=medium
+
+  * Added a new UCR variable connector/ad/mapping/user/password/disabled
+    which allows the deactivation of the password synchronization
+    (Bug #35895)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Oct 2014 06:45:20 +0200
+
 univention-ad-connector (8.0.17-72) unstable; urgency=medium
 
   * Feedback from QA (Bug #35602)

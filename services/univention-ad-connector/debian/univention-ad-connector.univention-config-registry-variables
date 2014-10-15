@@ -172,6 +172,12 @@ Description[en]=If the user password was reset in Active Directory the password 
 Type=bool
 Categories=service-adcon
 
+[con.*/ad/mapping/user/password/disabled]
+Description[de]=Wenn das Passwort zwischen dem UCS LDAP-Server und dem Active Directory nicht synchronisiert werden soll, so kann diese Variable auf true gesetzt werden. Ist die Variable nicht gesetzt, so wird das Passwort synchronisiert.
+Description[en]=If the password should not be synced between the UCS LDAP server and Active Directory, this variable can be set to true. If the variable is not set, the password will be synchronized.
+Type=bool
+Categories=service-adcon
+
 [con.*/ldap/server]
 Description[de]=Der Fully Qualified Domain Name des UCS LDAP-Servers, den der Connector verwendet. Ist die Variable nicht gesetzt, wird der Domänencontroller Master verwendet. Der Wert sollte nur angepasst werden, wenn 'con*/ad/mapping/syncmode' auf 'write' gesetzt ist.
 Description[en]=The fully qualified domain name of the UCS LDAP server used by the connector. If the variable is not set, the master domain controller will be used. This value should only by changed if 'con*/ad/mapping/syncmode' is set to 'write'.
