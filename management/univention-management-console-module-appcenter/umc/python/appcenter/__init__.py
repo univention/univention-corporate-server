@@ -138,7 +138,7 @@ class Instance(umcm.Base):
 						return version.to_dict(self.package_manager)
 		except (urllib2.HTTPError, urllib2.URLError) as e:
 			raise umcm.UMC_CommandError(_('Could not query App Center: %s') % e)
-		raise umcm.UMC_CommandError(_('Could not find an application for %s' % component_id))
+		raise umcm.UMC_CommandError(_('Could not find an application for %s') % component_id)
 
 	# used in updater-umc
 	@simple_response
