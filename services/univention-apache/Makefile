@@ -1,8 +1,5 @@
 #!/usr/bin/make -f
 #
-# ucs-school-lib
-#  makefile
-#
 # Copyright 2012-2014 Univention GmbH
 #
 # http://www.univention.de/
@@ -30,19 +27,67 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-.PHONY: build
-build: l10n
+dojoDir:=/usr/share/univention-dojo
+timestamp:=$$$(shell date +'%Y%d%m%H%M%S')$$
+version:=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
+buildDir:=$(CURDIR)/build
+buildJsDir:=$(buildDir)/www/ucs-overview/js
+buildCssDir:=$(buildDir)/www/ucs-overview/css
+buildBootstrap:=$(buildCssDir)/bootstrap.css
 
-.PHONY: l10n
-l10n: www/ucs-overview/js/de.json
+.PHONY: build build-dev
+
+build: l10n $(buildDir)
+
+build-dev: $(buildCssDir) $(buildBootstrap)
+	mkdir -p build
+	cp -r www build
+	# symlink UCS javascript code
+	[ -e $(buildJsDir)/ucs ] || cp -frsn $(CURDIR)/js/ucs $(buildJsDir)/ucs
+	# symlinks for dojo packages
+	for idir in dojo dijit dojox; do \
+		[ -e $(buildJsDir)/$$idir ] || ln -s /usr/share/univention-dojo/$$idir $(buildJsDir); \
+	done
+
+i18n:
+	/usr/bin/dh-umc-translate -p univention-management-console-frontend -l en -l de -o umc $(jsFiles)
+
+l10n: js/ucs/de.json
 
 %.json: %.po
 	dh-umc-po2json "$<"
 
-.PRECIOUS: %.po
-%.po: www/ucs-overview/js/startsite.js
-	dh-umc-translate --package univention-apache --outdir "$(dir $@)" "$<"
+$(buildDir): $(buildJsDir) $(buildCssDir) $(buildBootstrap)
+	mkdir -p $@
+	cp -r www $@
 
-.PHONY: clean
+# rule for the main dojo build process
+$(buildJsDir): 
+	/usr/share/univention-dojo/util/buildscripts/build.sh profile=build_profile.js version="$(version)"
+
+# rule for converting stylus CSS files into one final CSS file
+$(buildCssDir):
+	mkdir -p $@
+	stylus -o $@ css
+	cp css/ucs.css $@
+	# Workaround: mark several commands as comments (/*TMP ... */) 
+	# to avoid parse errors with stylus
+	sed -i 's/.*\(^\s\+#\|filter: alpha\|filter:\|top: expression\).*/\/\*TMP\0\*\//; /\/\*TMP/ { s|/\*[^*]*\*/\*/|*/| }' $$(find $@ -name "*.css")
+	# compile all .css files into one big file
+	stylus --resolve-url --include-css $@/ucs.css
+	# Workaround: remove the temporarily commented lines
+	sed -i 's|/\*TMP\(.*\)\*/|\1|' $@/ucs.css
+
+$(buildBootstrap): bootstrap.zip
+	unzip -o -j $< "*bootstrap.css" -d $(buildCssDir)
+	sed -i '/font-size: 10px/d' $@;
+
+install: build
+	# copy all files from the build directory .. exclude file of the tmp directory
+	mkdir -p "$(DESTDIR)$(pkgDir)"
+	cp -r $(buildDir) "$(DESTDIR)$(pkgDir)/var"
+
 clean:
-	rm -f www/ucs-overview/js/de.json
+	rm -rf $(buildDir)
+	rm -f js/ucs/de.json
+

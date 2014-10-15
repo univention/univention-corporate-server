@@ -1,0 +1,97 @@
+/* copied and modified from univention-management-console-frontend-theme package */
+
+html {
+	height: 100%;
+}
+
+body {
+	font-family: Clear Sans, Arial, Helvetica, sans-serif;
+	font-size: .75em;
+	color: $document-text-color;
+	min-height: 100%;
+	/* Chrome,Safari4+ */
+	background: url(images/background-tile.png) repeat, -webkit-gradient(linear, left bottom, right top, color-stop(0%,#cdcdcd), color-stop(50%,#efefef), color-stop(100%,#cccccc));
+	/* Chrome10+,Safari5.1+ */
+	background: url(images/background-tile.png) repeat, -webkit-linear-gradient(to right top, #cdcdcd 0%,#efefef 50%,#cccccc 100%);
+	/* W3C */
+	background: url(images/background-tile.png) repeat, unquote("linear-gradient(to right top, #cdcdcd 0%, #efefef 50%, #cccccc 100%)");
+}
+
+.dj_ie9 body,
+.dj_ie8 body {
+	/* fallback on horizontal gradient for IE8/9 */
+	filter: unquote("progid:DXImageTransform.Microsoft.gradient(startColorstr='#efefef', endColorstr='#cccccc',GradientType=1)");
+	background: #cdcdcd;
+}
+
+.dj_ie9 body:before,
+.dj_ie8 body:before {
+	/* add the repeating background for IE9 additionally */
+	content: "";
+	background: url(images/background-tile.png) repeat;
+	position: absolute;
+	width: 100%;
+	height: 210px;
+}
+
+/* Headings */
+h1 {
+	font-size: $font-size-medium;
+	font-weight: bold
+	margin-bottom:0.727em;
+}
+h2 { 
+	font-size: $font-size-medium;
+	//line-height: 1.455em; 
+	margin-top:1em; 
+	margin-bottom:0.60em;
+	font-weight: normal;
+}
+h3, h4, h5, h6 {
+	font-size:1em; 
+	font-weight: bold; 
+}
+
+.umc .umcOverviewContainer {
+	padding: 0;
+}
+
+/* Category tabs */
+.umc .umcCategoryBar {
+	text-align: center;
+	margin-bottom: 35px;
+}
+
+.umc .umcCategoryBar .dijitButton {
+	min-width: 95px;
+	max-width: 160px;
+	margin: 5px 0;
+	position: relative;
+
+	.dijitButtonNode {
+		margin: auto;
+		padding: 0;
+		border: 0 none;
+		background: none;
+		filter: none;
+		box-shadow: none;
+		display: block;
+	}
+
+	.dijitButtonText {
+		display: block;
+		font-size: 1em;
+		margin-top: 0.5em;
+	}
+
+	.dijitIcon {
+		display: block;
+		position: absolute;
+		width: 100%;
+		background-position: center top;
+	}
+}
+
+#footer li {
+	display: inline;
+}

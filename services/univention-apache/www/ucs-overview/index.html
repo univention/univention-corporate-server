@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title data-i18n="header"></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Welcome to the Univention Corporate Server</title>
 		<link rel="shortcut icon" href="/favicon.ico" />
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/sticky-footer.css">
-		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/bootstrap.css"/>
+		<link rel="stylesheet" href="css/ucs.css">
 
 		<script type="text/javascript">
 			//<!--
@@ -24,51 +24,64 @@
 						return tuple[1];
 					}
 				}
+			}
+
+			function getCookie(/*String*/ param, /*mixed*/ defaultVal) {
+				// find the given parameter in the cookie string
+				var reg = new RegExp(param + '=([a-zA-Z_-]*)');
+				var m = reg.exec(document.cookie);
+				if (m && m[1]) {
+					return m[1];
+				}
 
 				// otherwise return the specified default value
 				return defaultVal;
 			}
 
-			var locale = getQuery('lang');
+			var locale = getQuery('lang') || getCookie('UMCLang');
 			if (locale) {
 				locale = locale.replace('_', '-');
 			}
 			var dojoConfig = {
 				isDebug: false,
 				locale: locale,
-				async: true
+				async: true,
+				callback: function() {
+					require(["ucs/startsite", "dojo/domReady!"], function(startsite) {
+						startsite.start();
+					});
+				}
 			};
-
-			//-->
 		</script>
-		<script type="text/javascript" src="js/dojo.js"></script>
-		<script type="text/javascript">
-			require(["js/startsite", "dojo/domReady!"], function(startsite) {
-				startsite.start();
-			});
-		</script>
+		<script type="text/javascript" src="js/dojo/dojo.js"></script>
 	</head>
 	<body>
-		<div id="wrap">
+		<div id="wrapper">
 			<div id="site-header">
 				<div class="container">
-					<h1 id="site-title"></h1>
+					<h1 id="site-title">Welcome to the Univention Corporate Server</h1>
 					<h2 id="header-claim" data-i18n="claim"></h2>
-					<ul class="nav nav-tabs">
+
+					<div id="categoryButton">
+					</div>
+
+					<!--ul class="nav nav-tabs">
 						<li class="active col-md-6"><a href="#service" data-i18n="services"></a></li>
 						<li class="col-md-6"><a href="#admin" data-i18n="admin"></a></li>
-					</ul>
+					</ul-->
 					<div id="header-right">
-						<div class="dropdown">
+						<!--div class="dropdown">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 								<span class="button-text"></span><span class="arrow"></span>
 							</button>
 							<ul id="language-switcher" class="dropdown-menu" role="menu"></ul>
-						</div>
+						</div-->
 					</div>
 				</div>
 			</div>
-			<div id="content" class="tab-content">
+			<!--div id="categoryButton">
+			</div-->
+			<!--div id="content" class="tab-content">
 				<noscript>
 					<div class="container tab-pane">
 						<ul class="items">
@@ -78,10 +91,6 @@
 									<span class="title">JavaScript required</span>
 									<span class="text">
 										A browser with JavaScript enabled is required in order to use this service.
-										<!--[if IE]>
-										<br /><br />
-										Please check your security settings and add this address to your trusted sites.
-										<![endif]-->
 									</span>
 								</span>
 							</li>
@@ -103,25 +112,20 @@
 					<ul class="items">
 					</ul>
 				</div>
-			</div>
+			</div> -->
 		</div>
-		<div class="bs-footer" id="footer" role="contentinfo">
-			<div class="container">
-				<ul>
-					<li><a href="http://www.univention.com/products/ucs/univention-app-center/" data-i18n="apps">App Catalogue</a></li>
-					<li><a href="http://www.univention.de/en/products/" data-i18n="products">Further Products</a></li>
-					<li><a href="http://www.univention.de/en/" data-i18n="univention_website">Univention Website</a></li>
-				</ul>
-				<ul>
-					<li><a href="http://docs.univention.de/en.html" data-i18n="manual">Manual for Univention Corporate Server</a></li>
-					<li><a href="http://sdb.univention.de/" data-i18n="sdb">Univention Support Database</a></li>
-					<li><a href="http://wiki.univention.de/index.php?title=Hauptseite" data-i18n="wiki">Univention Wiki</a></li>
-					<li><a href="http://forum.univention.de/" data-i18n="forum">Univention Forum</a></li>
-				</ul>
-			</div>
+		<div class="footer" id="footer" role="contentinfo">
+			<ul>
+				<li><a href="http://www.univention.com/products/ucs/univention-app-center/" data-i18n="apps">App Catalogue</a></li>
+				<li><a href="http://www.univention.de/en/products/" data-i18n="products">Further Products</a></li>
+				<li><a href="http://www.univention.de/en/" data-i18n="univention_website">Univention Website</a></li>
+			</ul>
+			<ul>
+				<li><a href="http://docs.univention.de/en.html" data-i18n="manual">Manual for Univention Corporate Server</a></li>
+				<li><a href="http://sdb.univention.de/" data-i18n="sdb">Univention Support Database</a></li>
+				<li><a href="http://wiki.univention.de/index.php?title=Hauptseite" data-i18n="wiki">Univention Wiki</a></li>
+				<li><a href="http://forum.univention.de/" data-i18n="forum">Univention Forum</a></li>
+			</ul>
     	</div>
-		<script type="text/javascript" src="js/jquery.min.js"></script>
-		<script type="text/javascript" src="js/bootstrap.min.js" charset="utf-8" async defer></script>
-		<script type="text/javascript" src="js/tab.js"></script>
 	</body>
 </html>

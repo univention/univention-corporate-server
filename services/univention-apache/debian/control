@@ -11,6 +11,7 @@ Standards-Version: 3.8.2
 Package: univention-apache
 Architecture: all
 Depends: ${misc:Depends},
+ univention-management-console-frontend-theme
  univention-config (>= 8.0.2),
  univention-ssl,
  apache2-mpm-prefork,

@@ -40,10 +40,13 @@ define([
 	"dojo/dom-class",
 	"dojo/on",
 	"dojo/json",
-	"dojo/text!entries.json",
-	"dojo/text!languages.json",
-	"/ucs-overview/js/i18n!js"
-], function(ioQuery, lang, kernel, array, query, domConstruct, domAttr, domStyle, domClass, on, json, entriesStr, languagesStr, _) {
+	"./CategoryButton",
+	//"dojo/text!entries.json",
+	//"dojo/text!languages.json",
+	"./i18n!../ucs"
+], function(ioQuery, lang, kernel, array, query, domConstruct, domAttr, domStyle, domClass, on, json, CategoryButton, /*entriesStr, languagesStr, */ _) {
+	var entriesStr = "[]";
+	var languagesStr = "[]";
 	var entries = json.parse(entriesStr);
 	var ucr = entries.ucr;
 
@@ -153,7 +156,7 @@ define([
 
 		_focusTab: function(category) {
 			// bootstrap specific command tab()...
-			$(lang.replace('#site-header .nav-tabs a[href=#{0}]', [category])).tab('show');
+			//$(lang.replace('#site-header .nav-tabs a[href=#{0}]', [category])).tab('show');
 		},
 
 		_focusAdminTab: function() {
@@ -173,7 +176,30 @@ define([
 				return;
 			}
 			var category = hash.replace('#', '');
-			this._focusTab(category);
+			this._focusTab(category); 
+			
+		},
+
+		_placeCategoryButtons: function(){
+			var admin = new CategoryButton({
+			label: 'Administration',
+					//'class': 'Test',
+					//callback: lang.hitch(this, '_updateQuery', category),
+					color: 'green',
+					categoryID: 'administration',
+					iconClass: 'category-admin'
+			});
+			var web = new CategoryButton({
+				label: 'Web-Services',
+					//'class': 'Test',
+					//callback: lang.hitch(this, '_updateQuery', category),
+					color: 'blue',
+					categoryID: 'webservices',
+					iconClass: 'category-services'
+			});
+			web.placeAt("categoryButton");
+			admin.placeAt("categoryButton");
+
 		},
 
 		_updateNoServiceHint: function() {
@@ -258,12 +284,13 @@ define([
 		},
 
 		start: function() {
-			this._updateNoScriptElements();
+			this._placeCategoryButtons();
+			//this._updateNoScriptElements();
 			this._updateLinkEntries();
 			this._updateLocales();
-			this._updateTranslations();
-			this._registerHashChangeEvent();
-			this._updateActiveTab();
+			//this._updateTranslations();
+			//this._registerHashChangeEvent();
+			//this._updateActiveTab();
 		}
 	};
 });

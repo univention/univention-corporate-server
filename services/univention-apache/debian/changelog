@@ -1,3 +1,9 @@
+univention-apache (7.0.0-2) unstable; urgency=low
+
+  * [WIP] adaption of design (Bug #36095)
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 15 Oct 2014 17:37:50 +0200
+
 univention-apache (7.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35147) 
