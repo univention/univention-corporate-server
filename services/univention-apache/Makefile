@@ -70,7 +70,8 @@ $(buildCssDir):
 	mkdir -p $@
 	stylus -o $@ css
 	cp css/ucs.css $@
-	# Workaround: mark several commands as comments (/*TMP ... */) 
+	cp -r css/images $@
+	# Workaround: mark several commands as comments (/*TMP ... */)
 	# to avoid parse errors with stylus
 	sed -i 's/.*\(^\s\+#\|filter: alpha\|filter:\|top: expression\).*/\/\*TMP\0\*\//; /\/\*TMP/ { s|/\*[^*]*\*/\*/|*/| }' $$(find $@ -name "*.css")
 	# compile all .css files into one big file
