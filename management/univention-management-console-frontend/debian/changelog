@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.44-1) unstable; urgency=low
+
+  * Bug #35654: fix placeholder in IE9
+
+ -- Florian Best <best@univention.de>  Wed, 15 Oct 2014 10:37:23 +0200
+
 univention-management-console-frontend (4.1.43-1) unstable; urgency=low
 
   * Bug #35654: first attempt to fix displaying of Grid when they are not

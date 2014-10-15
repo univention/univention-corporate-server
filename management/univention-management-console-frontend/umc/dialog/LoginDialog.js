@@ -423,6 +423,10 @@ define([
 			}
 			// display the body background (hides rendering of GUI) the first time
 			if (!tools.status('setupGui')) {
+				if (has('ie')) {
+					// a saved password/username contains a placeholder if we don't run this again
+					this._replaceLabels();
+				}
 				try {
 					styles.insertCssRule('#dijit_DialogUnderlay_0', 'background: inherit!important;');
 					domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBackground', true);
