@@ -622,7 +622,7 @@ class Client(object):
 		except (TypeError, ValueError) as e:
 			raise ValueError("Could not decode information: %s" % e)
 
-		if isinstance(testconnection, str) and testconnection == "false":
+		if isinstance(testconnection, basestring) and testconnection == "false":
 			testconnection = False
 
 		return protocol.Request_L_CLOUD_ADD(args=args, testconnection=testconnection)

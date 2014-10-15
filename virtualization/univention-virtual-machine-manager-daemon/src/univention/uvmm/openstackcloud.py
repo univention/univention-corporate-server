@@ -32,7 +32,7 @@
 """UVMM cloud openstack handler"""
 
 from libcloud.common.types import LibcloudError, MalformedResponseError, ProviderError, InvalidCredsError
-from libcloud.compute.types import Provider  # , NodeState
+from libcloud.compute.types import Provider, NodeState
 from libcloud.compute.providers import get_driver
 
 import time
@@ -83,32 +83,6 @@ OPENSTACK_CREATE_ATTRIBUTES = {
 		"admin_pass": "ex_admin_pass",
 		"availability_zone": "ex_availability_zone",
 	}
-
-
-class NodeState(object):
-	"""
-	LIBCLOUD Standard states for a node
-	:cvar RUNNING: Node is running.
-	:cvar REBOOTING: Node is rebooting.
-	:cvar TERMINATED: Node is terminated. This node can't be started later on.
-	:cvar STOPPED: Node is stopped. This node can be started later on.
-	:cvar PENDING: Node is pending.
-	:cvar UNKNOWN: Node state is unknown.
-	:cvar SUSPENDED: Node is suspended.
-	:cvar ERROR: Node is an error state. Usually no operations can be performed
-		on the node once it ends up in the error state.
-	:cvar PAUSED: Node is paused.
-	:cvar UNKNOWN: Node state is unknown.
-	"""
-	RUNNING = 0
-	REBOOTING = 1
-	TERMINATED = 2
-	PENDING = 3
-	UNKNOWN = 4
-	STOPPED = 5
-	SUSPENDED = 6
-	ERROR = 7
-	PAUSED = 8
 
 
 LIBCLOUD_UVMM_STATE_MAPPING = {
