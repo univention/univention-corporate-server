@@ -40,7 +40,7 @@ buildBootstrap:=$(buildCssDir)/bootstrap.css
 build: l10n $(buildDir)
 
 build-dev: $(buildCssDir) $(buildBootstrap)
-	mkdir -p build
+	mkdir -p build $(buildJsDir)
 	cp -r www build
 	# symlink UCS javascript code
 	[ -e $(buildJsDir)/ucs ] || cp -frsn $(CURDIR)/js/ucs $(buildJsDir)/ucs

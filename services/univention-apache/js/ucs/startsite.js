@@ -197,8 +197,8 @@ define([
 					categoryID: 'webservices',
 					iconClass: 'category-services'
 			});
-			web.placeAt("categoryButton");
-			admin.placeAt("categoryButton");
+			web.placeAt("category-bar");
+			admin.placeAt("category-bar");
 
 		},
 

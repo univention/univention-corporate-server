@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Welcome to the Univention Corporate Server</title>
 		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="stylesheet" href="js/dijit/themes/dijit.css">
 		<link rel="stylesheet" href="css/bootstrap.css"/>
 		<link rel="stylesheet" href="css/ucs.css">
 
@@ -57,13 +58,11 @@
 	</head>
 	<body>
 		<div id="wrapper">
-			<div id="site-header">
-				<div class="container">
+			<div class="container">
+				<div id="site-header">
+					<div id="header-left"></div>
 					<h1 id="site-title">Welcome to the Univention Corporate Server</h1>
 					<h2 id="header-claim" data-i18n="claim"></h2>
-
-					<div id="categoryButton">
-					</div>
 
 					<!--ul class="nav nav-tabs">
 						<li class="active col-md-6"><a href="#service" data-i18n="services"></a></li>
@@ -77,10 +76,10 @@
 							<ul id="language-switcher" class="dropdown-menu" role="menu"></ul>
 						</div-->
 					</div>
+					<div id="category-bar">
+					</div>
 				</div>
 			</div>
-			<!--div id="categoryButton">
-			</div-->
 			<!--div id="content" class="tab-content">
 				<noscript>
 					<div class="container tab-pane">
@@ -126,6 +125,6 @@
 				<li><a href="http://wiki.univention.de/index.php?title=Hauptseite" data-i18n="wiki">Univention Wiki</a></li>
 				<li><a href="http://forum.univention.de/" data-i18n="forum">Univention Forum</a></li>
 			</ul>
-    	</div>
+		</div>
 	</body>
 </html>

@@ -1,3 +1,9 @@
+univention-apache (7.0.1-1) unstable; urgency=medium
+
+  * [WIP] Bug #36095: fix footer and include rules for category buttons
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 15 Oct 2014 18:36:47 +0200
+
 univention-apache (7.0.0-2) unstable; urgency=low
 
   * [WIP] adaption of design (Bug #36095)
