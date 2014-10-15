@@ -41,13 +41,17 @@ else
 fi
 
 CA=ucsCA
-DEFAULT_DAYS=$(/usr/sbin/univention-config-registry get ssl/default/days)
+DEFAULT_DAYS="$(/usr/sbin/univention-config-registry get ssl/default/days)"
 if [ -z "$DEFAULT_DAYS" ]; then
 	DEFAULT_DAYS=1825
 fi
-DEFAULT_MD=$(/usr/sbin/univention-config-registry get ssl/default/hashfunction)
+DEFAULT_MD="$(/usr/sbin/univention-config-registry get ssl/default/hashfunction)"
 if [ -z "$DEFAULT_MD" ]; then
-	DEFAULT_MD=sha1
+	DEFAULT_MD=sha384
+fi
+DEFAULT_BITS="$(/usr/sbin/univention-config-registry get ssl/default/bits)"
+if [ -z "$DEFAULT_BITS" ]; then
+	DEFAULT_BITS="2048"
 fi
 
 if test -e "$SSLBASE/password"; then
@@ -128,7 +132,7 @@ emailAddress		= optional
 
 [ req ]
 
-default_bits		= 1024
+default_bits		= $DEFAULT_BITS
 default_keyfile 	= privkey.pem
 distinguished_name	= req_distinguished_name
 attributes		= req_attributes
@@ -425,7 +429,7 @@ gencert () {
 	# generate a key pair
 	mkdir -pm 700 "$name"
 	mk_config "$name/openssl.cnf" "" "$days" "$cn"
-	openssl genrsa -out "$name/private.key" 1024
+	openssl genrsa -out "$name/private.key" "$DEFAULT_BITS"
 	yes '' | openssl req -config "$name/openssl.cnf" -new -key "$name/private.key" -out "$name/req.pem"
 
 	# get host extension file

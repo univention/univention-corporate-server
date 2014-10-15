@@ -52,6 +52,12 @@ Description[en]=This hash function (message digest) is used in newly created SSL
 Type=str
 Categories=system-ssl
 
+[ssl/default/bits]
+Description[de]=Default Schlüssellänge in Bits.
+Description[en]=Default key size in bits.
+Type=int
+Categories=system-ssl
+
 [ssl/validity/check]
 Description[de]=Ist diese Option aktiviert, wird durch einen täglichen Cron-Job die Gültigkeit der SSL-Zertifikate geprüft.
 Description[en]=If this option is activated, the validity of the SSL certificates is checked through a daily cron job.
