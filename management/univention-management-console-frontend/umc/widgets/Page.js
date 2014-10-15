@@ -66,6 +66,8 @@ define([
 		//		to the footer. The default button will be displayed on the right
 		footerButtons: null,
 
+		navButtons: null,
+
 		// title: String
 		//		Title of the page. This option is necessary for tab pages.
 		title: '',
@@ -85,6 +87,7 @@ define([
 		_headerTextPane: null,
 		_footer: null,
 		_footerButtons: null,
+		_navButtons: null,
 
 		_setTitleAttr: function(title) {
 			// dont set html attribute title
@@ -125,6 +128,24 @@ define([
 			});
 			this._headerTextPane.set('content', '<h1>' + newVal + '</h1>');
 			this._set('headerText', newVal);
+		},
+
+		_setNavButtonsAttr: function(navButtons) {
+			this._set('navButtons', navButtons);
+			if (this._navButtons) {
+				this.removeChild(this._navButtons);
+				this._navButtons.destroyRecursive();
+				this._navButtons = null;
+			}
+			if (this.navButtons) {
+				this._navButtons = new ContainerWidget({
+					region: 'nav'
+				});
+				var buttons = render.buttons(this.navButtons);
+				array.forEach(buttons.$order$, lang.hitch(this._navButtons, 'addChild'));
+				this.own(this._navButtons);
+				this.addChild(this._navButtons);
+			}
 		},
 
 		postMixInProperties: function() {
@@ -174,8 +195,8 @@ define([
 
 				// render all buttons and add them to the footer
 				if (this.footerButtons && this.footerButtons instanceof Array && this.footerButtons.length) {
-					var buttons = render.buttons(this.footerButtons);
-					array.forEach(buttons.$order$, function(ibutton) {
+					this._footerButtons = render.buttons(this.footerButtons);
+					array.forEach(this._footerButtons.$order$, function(ibutton) {
 						if ('submit' == ibutton.type || ibutton.defaultButton || 'right' == ibutton.align) {
 							footerRight.addChild(ibutton);
 						}
@@ -183,9 +204,9 @@ define([
 							footerLeft.addChild(ibutton);
 						}
 					}, this);
-					this._footerButtons = buttons;
 				}
 			}
+
 		},
 
 		addChild: function(widget, position) {

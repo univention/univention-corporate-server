@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.45-1) unstable; urgency=low
+
+  * Bug #35654: Add Page.navButtons
+
+ -- Florian Best <best@univention.de>  Wed, 15 Oct 2014 16:57:57 +0200
+
 univention-management-console-frontend (4.1.44-1) unstable; urgency=low
 
   * Bug #35654: fix placeholder in IE9
