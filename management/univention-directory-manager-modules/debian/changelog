@@ -1,3 +1,10 @@
+univention-directory-manager-modules (10.0.16-1) unstable; urgency=medium
+
+  * users/user: escape the share path filter (Bug #35953)
+  * univention.admin.filter: escape \ with \\
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Oct 2014 14:07:31 +0200
+
 univention-directory-manager-modules (10.0.15-6) unstable; urgency=medium
 
   * Bug #31907: Make udm users/user posix/all unlock remove the ppolicy
