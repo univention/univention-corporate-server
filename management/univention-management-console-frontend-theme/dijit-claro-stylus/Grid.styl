@@ -1,7 +1,21 @@
 @import "variables";
 
-.umc .dojoxGrid {
-	height: 300px !important;
+/* define different media query breakpoints to optimize the grid height to various screen sizes */
+gridHeight($gridHeight, $viewportWidth=0, $viewportHeight=0) {
+	@media (min-width: unit($viewportWidth, px)) and (min-height: unit($viewportHeight, px)) {
+		.umc .dojoxGrid {
+			height: unit($gridHeight, px) !important;
+		}
+	}
+}
+
+gridHeight(250)  // default + minimum grid height
+$heights = 300 350 400 450 500 550 600 700 800 900 1000 1200 1400
+for $height in $heights {
+	gridHeight($height, 0, $height + 450)
+}
+for $height in $heights {
+	gridHeight($height, $md-min, $height + 300)
 }
 
 .umcGrid .dojoxGridScrollbox {
@@ -12,26 +26,6 @@
   padding-bottom: 0.5em;
   height: 45px;
 }
-//.umc .umcGridHeader .dijitToggleButton,
-//.umc .umcGridHeader .dijitButton,
-//.umc .umcGridHeader .dijitDropDownButton,
-//.umc .umcGridHeader .dijitComboButton {
-//  font-size: 1em;
-//  padding: 0.0em 0.15em 0.05em 0.15em;
-//  margin-right: 0.5em;
-//}
-//.umc .umcGridHeader {
-//	.dijitButton,
-//	.dijitDropDownButton {
-//		.dijitButtonNode {
-//			padding: 0;
-//		}
-//		.dijitButtonText {
-//			padding: 0 0.2em;
-//			font-size: 1em;
-//		}
-//	}
-//}
 
 .umc .dojoxGridHeader {
 	background-color: $text-color;
