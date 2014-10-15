@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.46-1) unstable; urgency=low
+
+  * Bug #36177: fix file uploads due to cherrypy API change
+
+ -- Florian Best <best@univention.de>  Wed, 15 Oct 2014 17:33:46 +0200
+
 univention-management-console-frontend (4.1.45-1) unstable; urgency=low
 
   * Bug #35654: Add Page.navButtons

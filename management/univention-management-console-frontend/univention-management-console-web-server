@@ -606,7 +606,7 @@ class CPUpload( CPgeneric ):
 		options = []
 		body = {}
 		for iid, ifield in args.iteritems():
-			if isinstance(ifield, cherrypy._cpcgifs.FieldStorage):
+			if isinstance(ifield, cherrypy._cpreqbody.Part):
 				# field is a FieldStorage object
 				store = ifield
 				tmpfile = _upload_manager.add( req.id, store )
