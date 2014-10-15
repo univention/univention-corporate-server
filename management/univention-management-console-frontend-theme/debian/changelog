@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.43-1) unstable; urgency=low
+
+  * Bug #35654: show a shadow arround the login messages
+
+ -- Florian Best <best@univention.de>  Wed, 15 Oct 2014 10:36:54 +0200
+
 univention-management-console-frontend-theme (0.0.42-1) unstable; urgency=low
 
   * Bug #35654: adjust size of module search in relation to drop down menus
