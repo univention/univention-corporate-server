@@ -176,7 +176,7 @@
 	  Komponente angezeigt (u.a. Beschreibung, Hersteller, Ansprechpartner und ein
 	  Screenshot). Im Feld <guimenu>Benachrichtigung</guimenu> wird angezeigt, ob der
 	  Hersteller der Softwarekomponente bei der Installation/Deinstallation benachrichtigt wird.
-	  Informationen zur Lizenzierung können bei einigen Applikationen direkt über 
+	  Informationen zur Lizenzierung können bei einigen Applikationen direkt über einen
 	  <guimenu>Kaufen</guimenu> Button in der unteren Bildleiste bezogen werden.
 	  Für alle anderen Applikationen muss der Hersteller der Applikation über die unter
 	  <guimenu>Kontakt</guimenu> angezeigt E-Mail-Adresse kontaktiert werden.
