@@ -58,6 +58,7 @@ define([
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
 			this._page = new AppDetailsPage({
+				app: {id: this.moduleFlavor},
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
 				backLabel: _('Close'),
@@ -70,7 +71,6 @@ define([
 			this._page.on('back', lang.hitch(this, function() {
 				topic.publish('/umc/tabs/close', this);
 			}));
-			this._page.set('app', {id: this.moduleFlavor});
 			this.standbyDuring(this._page.appLoadingDeferred);
 			this.addChild(this._dialog);
 			this.addChild(this._choose);

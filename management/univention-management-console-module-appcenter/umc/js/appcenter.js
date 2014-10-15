@@ -64,7 +64,7 @@ define([
 			}
 		},
 
-		_renderAppcenter: function() {
+		udmAccessible: function() {
 			// FIXME: this is a synchronous call and can
 			// potentially fail although the module would
 			// be loaded later on. this may not be of any
@@ -78,6 +78,10 @@ define([
 				udmAccessible = true;
 			} catch(e) {
 			}
+			return udmAccessible;
+		},
+
+		_renderAppcenter: function() {
 
 			this._componentsStore = store('name', 'appcenter/components');
 			this._packagesStore = store('package', 'appcenter/packages');
@@ -88,62 +92,76 @@ define([
 				addWarning: lang.hitch(this, 'addWarning'),
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
-			this._appDetailsDialog = new AppDetailsDialog({
-				moduleID: this.moduleID,
-				moduleFlavor: this.moduleFlavor,
-				standbyDuring: lang.hitch(this, 'standbyDuring')
-			});
-			this._appChooseHostDialog = new AppChooseHostDialog({
-				moduleID: this.moduleID,
-				moduleFlavor: this.moduleFlavor,
-				standbyDuring: lang.hitch(this, 'standbyDuring')
-			});
-			this._appDetailsPage = new AppDetailsPage({
-				moduleID: this.moduleID,
-				moduleFlavor: this.moduleFlavor,
-				updateApplications: lang.hitch(this._appCenterPage, 'updateApplications'),
-				detailsDialog: this._appDetailsDialog,
-				hostDialog: this._appChooseHostDialog,
-				udmAccessible: udmAccessible,
-				standbyDuring: lang.hitch(this, 'standbyDuring')
-			});
+			// switched from app center to app details and back
+			this._appCenterPage.on('showApp', lang.hitch(this, '_showApp'));
+
 			this.addChild(this._appCenterPage);
-			this.addChild(this._appDetailsDialog);
-			this.addChild(this._appChooseHostDialog);
-			this.addChild(this._appDetailsPage);
 			this.selectChild(this._appCenterPage);
 
 			// share appCenterInformation among AppCenter and DetailPage
 			//   needs to be specified in AppDetailsPage for apps.js
-			this._appCenterPage.appCenterInformation = this._appDetailsPage.appCenterInformation;
-			// switched from app center to app details and back
-			this._appCenterPage.on('showApp', lang.hitch(this, function(app) {
-				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
-				this._appDetailsPage.set('app', app);
-				this.standbyDuring(this._appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
-					this.selectChild(this._appDetailsPage);
-				}));
-			}));
-			this._appDetailsPage.on('back', lang.hitch(this, function() {
+			AppCenterPage.prototype.appCenterInformation = AppDetailsPage.prototype.appCenterInformation;
+		},
+
+		_showApp: function(app) {
+			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
+			//this.standby(true);
+			var appDetailsDialog = new AppDetailsDialog({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				standbyDuring: lang.hitch(this, 'standbyDuring')
+			});
+			this.addChild(appDetailsDialog);
+
+			var appChooseHostDialog = new AppChooseHostDialog({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				standbyDuring: lang.hitch(this, 'standbyDuring')
+			});
+			this.addChild(appChooseHostDialog);
+
+			var appDetailsPage = new AppDetailsPage({
+				app: app,
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				updateApplications: lang.hitch(this._appCenterPage, 'updateApplications'),
+				detailsDialog: appDetailsDialog,
+				hostDialog: appChooseHostDialog,
+				udmAccessible: this.udmAccessible(),
+				standbyDuring: lang.hitch(this, 'standbyDuring')
+			});
+			appDetailsPage.own(appChooseHostDialog);
+			appDetailsPage.own(appDetailsDialog);
+			appDetailsPage.on('back', lang.hitch(this, function() {
 				this.selectChild(this._appCenterPage);
+				this.removeChild(appDetailsDialog);
+				this.removeChild(appChooseHostDialog);
+				this.removeChild(appDetailsPage);
+				appDetailsPage.destroyRecursive();
 			}));
-			this._appDetailsDialog.on('showUp', lang.hitch(this, function() {
-				this.selectChild(this._appDetailsDialog);
+			this.addChild(appDetailsPage);
+
+			this.standbyDuring(appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
+				this.selectChild(appDetailsPage);
 			}));
-			this._appChooseHostDialog.on('showUp', lang.hitch(this, function() {
-				this.selectChild(this._appChooseHostDialog);
+
+			appDetailsDialog.on('showUp', lang.hitch(this, function() {
+				this.selectChild(appDetailsDialog);
 			}));
-			this._appChooseHostDialog.on('back', lang.hitch(this, function() {
-				this.selectChild(this._appDetailsPage);
+			appChooseHostDialog.on('showUp', lang.hitch(this, function() {
+				this.selectChild(appChooseHostDialog);
 			}));
-			this._appDetailsDialog.on('back', lang.hitch(this, function(continued) {
+			appChooseHostDialog.on('back', lang.hitch(this, function() {
+				this.selectChild(appDetailsPage);
+			}));
+			appDetailsDialog.on('back', lang.hitch(this, function(continued) {
 				var loadPage = true;
 				if (!continued) {
-					loadPage = this._appDetailsPage.reloadPage();
+					loadPage = appDetailsPage.reloadPage();
 					this.standbyDuring(loadPage);
 				}
 				when(loadPage).then(lang.hitch(this, function() {
-					this.selectChild(this._appDetailsPage);
+					this.selectChild(appDetailsPage);
 				}));
 			}));
 		},

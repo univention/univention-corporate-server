@@ -40,9 +40,7 @@ define([
 	"dojo/topic",
 	"dojo/Deferred",
 	"dojo/dom-construct",
-	"dojo/dom-style",
 	"dojox/image/LightboxNano",
-	"put-selector/put",
 	"umc/app",
 	"umc/tools",
 	"umc/dialog",
@@ -51,11 +49,10 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/ProgressBar",
 	"umc/widgets/Page",
-	"umc/widgets/Text",
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/modules/appcenter/AppInstallationsItem",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, domStyle, Lightbox, put, UMCApplication, tools, dialog, TitlePane, ContainerWidget, Button, ProgressBar, Page, Text, AppCenterGallery, AppInstallationsItem, _) {
+], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, Button, ProgressBar, Page, AppCenterGallery, AppInstallationsItem, _) {
 	return declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
 		appLoadingDeferred: null,
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
@@ -81,6 +78,13 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+
+			this.appLoadingDeferred = new Deferred();
+			this._progressBar = new ProgressBar({});
+			this.own(this._progressBar);
+			this._grid = new AppCenterGallery({});
+			this.own(this._grid);
+
 			this.headerButtons = [{
 				name: 'close',
 				iconClass: 'umcCloseIconWhite',
@@ -114,14 +118,7 @@ define([
 				this.hostDialog.set('app', app);
 				this.detailsDialog.set('app', loadedApp);
 				this.set('headerText', loadedApp.name);
-				if (this._appDescription) {
-					this._appDescription.destroyRecursive();
-				}
-				this._appDescription = new Text({
-					content: this.app.longdescription,
-					region: 'nav'
-				});
-				this.addChild(this._appDescription);
+				this.set('helpText', this.app.longdescription);
 				this._installationData = null;
 				if (this.app.installations) {
 					this._installationData = [];
@@ -167,20 +164,7 @@ define([
 			return this.appLoadingDeferred;
 		},
 
-		buildRendering: function() {
-			this.inherited(arguments);
-			this.appLoadingDeferred = new Deferred();
-			this._progressBar = new ProgressBar({});
-			this.own(this._progressBar);
-			this._grid = new AppCenterGallery({});
-			this.own(this._grid);
-		},
-
-		buildInnerPage: function() {
-			if (this._page) {
-				this.removeChild(this._page);
-				this._page.destroyRecursive();
-			}
+		getButtons: function() {
 			var buttons = [];
 			if (this.app.useshop) {
 				buttons.push({
@@ -246,14 +230,12 @@ define([
 					callback: lang.hitch(this, 'installAppDialog')
 				});
 			}
-			this._page = new Page({
-				footerButtons: buttons
-			});
-			this.addChild(this._page);
-			this._container = new ContainerWidget({
-			});
-			this._page.addChild(this._container);
+			return buttons;
+		},
 
+
+		buildInnerPage: function() {
+			this.set('navButtons', this.getButtons());
 			this._detailsTable = domConstruct.create('table', {
 				style: {borderSpacing: '1em 0.1em'}
 			});
@@ -261,16 +243,14 @@ define([
 				title: _('Details'),
 				content: this._detailsTable
 			});
-			this._container.addChild(detailsPane);
-			var galleryPane = put(this._detailsTable, '-div.umcGalleryPane');
-			if (this._grid.getIconClass(this.app)) {  // UCS components doesn't have an icon
-				var appIcon = this._grid.renderRow(lang.mixin({}, this.app, {description: null, name: null})); // just logo and status
-				domStyle.set(appIcon, {
-					cursor: 'default', // without hover effects (as clicking on it does not open any dialog)
-					backgroundColor: 'inherit',
-					width: '90px'
-				});
-				domConstruct.place(appIcon, galleryPane, 'only');
+			this.addChild(detailsPane);
+			var iconClass = this._grid.getIconClass(this.app);
+			if (iconClass) {
+				this.addChild(new ContainerWidget({
+					region: 'nav',
+					'class': iconClass,
+					'style': 'margin-bottom: 1em;'
+				}), 1);
 			}
 
 			this.addToDetails(_('Vendor'), 'Vendor');
@@ -284,7 +264,7 @@ define([
 			this.addToDetails(_('Notification'), 'NotifyVendor');
 			this.addToDetails(_('End of life'), 'EndOfLife');
 
-			query('.umcScreenshot', this._detailsTable.domNode).forEach(function(imgNode) {
+			query('.umcScreenshot', this._detailsTable).forEach(function(imgNode) {
 				new Lightbox({ href: imgNode.src }, imgNode);
 			});
 
@@ -299,7 +279,7 @@ define([
 					title: _('Notes on using'),
 					content: usage
 				});
-				this._container.addChild(usagePane);
+				this.addChild(usagePane);
 			}
 
 			if (this._appIsInstalledInDomain()) {
@@ -371,7 +351,7 @@ define([
 					open: false,
 					content: installationTable
 				});
-				this._container.addChild(installationPane);
+				this.addChild(installationPane);
 			}
 		},
 
