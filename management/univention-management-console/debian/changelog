@@ -1,3 +1,9 @@
+univention-management-console (7.1.12-2) unstable; urgency=low
+
+  * Bug #33241: Do not use umask 0077 for UMC
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 Oct 2014 14:10:25 +0200
+
 univention-management-console (7.1.12-1) unstable; urgency=low
 
   * Bug #35654: remove Form.scrollable in module templates, fix favorites for
