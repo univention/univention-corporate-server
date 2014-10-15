@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.47-1) unstable; urgency=low
+
+  * Bug #35654: small fixes
+
+ -- Florian Best <best@univention.de>  Wed, 15 Oct 2014 20:56:39 +0200
+
 univention-management-console-frontend (4.1.46-1) unstable; urgency=low
 
   * Bug #36177: fix file uploads due to cherrypy API change

@@ -129,7 +129,10 @@ define([
 		},
 
 		onClose: function() {
-			return this.__container.onClose && this.__container.onClose() || true;
+			if (this.__container && this.__container.onClose) {
+				/*return*/ this.__container.onClose();
+			}
+			return true;
 		},
 
 		addChild: function(child, idx) {

@@ -428,7 +428,7 @@ define([
 					this._replaceLabels();
 				}
 				try {
-					styles.insertCssRule('#dijit_DialogUnderlay_0', 'background: inherit!important;');
+					styles.insertCssRule('.umcBackground', 'background: inherit!important;');
 					domClass.toggle(dom.byId('dijit_DialogUnderlay_0'), 'umcBackground', true);
 				} catch (e) {
 					// guessed the ID
