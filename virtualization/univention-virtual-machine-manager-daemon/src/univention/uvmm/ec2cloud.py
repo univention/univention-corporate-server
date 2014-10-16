@@ -153,6 +153,9 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		logger.debug("Expensive update for %s: %s" % (self.publicdata.name, self.publicdata.url))
 		# self._images = self._exec_libcloud(lambda: self.driver.list_images(ex_owner="aws-marketplace"))
 		self._images = self._exec_libcloud(lambda: self.driver.list_images())
+		# images are not sorted
+		self._images.sort(key=lambda image: unicode(image.name).lower())
+
 		self._sizes = self._exec_libcloud(lambda: self.driver.list_sizes())
 		self._locations = self._exec_libcloud(lambda: self.driver.list_locations())
 		self._keypairs = self._exec_libcloud(lambda: self.driver.list_key_pairs())
