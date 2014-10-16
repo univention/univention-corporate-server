@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.3-8) unstable; urgency=low
+
+  * Fixed EC2 instance-image name not shown (Bug #36145)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 16 Oct 2014 13:46:54 +0200
+
 univention-virtual-machine-manager-daemon (4.0.3-7) unstable; urgency=low
 
   * Added a context menu entry to edit a cloud connection (Bug #36139) 

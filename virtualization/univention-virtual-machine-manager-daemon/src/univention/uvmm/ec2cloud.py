@@ -182,7 +182,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 				i.available = self.publicdata.available
 
 				# information not directly provided by libcloud:
-				image_name = [im for im in self._images if im.id == instance.image]
+				image_name = [im for im in self._images if im.id == i.image]
 				i.u_image_name = '<Unknown>'
 				if image_name:
 					i.u_image_name = image_name[0].name

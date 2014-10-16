@@ -183,7 +183,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 					i.u_image_name = image_name[0].name
 
 				# TODO: no libcloud support for querying instance security groups
-				i.secgroups = '<Unknown>'
+				i.secgroups = '<query not supported>'
 
 				instances.append(i)
 

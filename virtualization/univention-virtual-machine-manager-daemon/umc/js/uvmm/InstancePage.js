@@ -106,6 +106,7 @@ define([
 					name: 'image',
 					type: TextBox,
 					label: _('Image'),
+					size: 'Two',
 					readonly: true
 				}, {
 					name: 'securitygroup',
@@ -117,9 +118,10 @@ define([
 					label: _('Settings'),
 					layout: [
 						['label'],
+						['image'],
 						['public_ips', 'private_ips'],
 						['u_size_name', 'keypair'],
-						['image', 'securitygroup']
+						['securitygroup']
 					]
 				}]
 			});
