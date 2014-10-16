@@ -83,6 +83,7 @@ define([
 			if (cloudtype == 'OpenStack') {
 				return {
 					layout: [
+						'name',
 						'image_id',
 						'size_id',
 						'size_info_text',
@@ -90,6 +91,19 @@ define([
 						
 					],
 					widgets: [{
+						name: 'cloudtype',
+						type: HiddenInput,
+						value: cloudtype
+					}, {
+						name: 'cloud',
+						type: HiddenInput,
+						value: cloud
+					}, {
+						name: 'name',
+						type: TextBox,
+						label: _('Instance Name'),
+						required: true
+					}, {
 						name: 'keyname',
 						type: ComboBox,
 						label: _('Select a key pair'),
@@ -137,6 +151,7 @@ define([
 				var owner_id = 223093067001; // univention images
 				return {
 					layout: [
+						'name',
 						'image_univention',
 						'image_id',
 						'size_id',
@@ -144,6 +159,19 @@ define([
 						['keyname', 'security_group_ids']
 					],
 					widgets: [{
+						name: 'cloudtype',
+						type: HiddenInput,
+						value: cloudtype
+					}, {
+						name: 'cloud',
+						type: HiddenInput,
+						value: cloud
+					}, {
+						name: 'name',
+						type: TextBox,
+						label: _('Instance Name'),
+						required: true
+					}, {
 						name: 'keyname',
 						type: ComboBox,
 						label: _('Select a key pair'),
@@ -208,24 +236,6 @@ define([
 			var widgets = this._getWidgets(cloudtype, cloud);
 			lang.mixin(this, {
 				pages: [{
-					name: 'general',
-					headerText: _('Create a new virtual machine instance.'),
-					helpText: _('Please specify name for the instance:'),
-					widgets: [{
-						name: 'cloudtype',
-						type: HiddenInput,
-						value: cloudtype
-					}, {
-						name: 'cloud',
-						type: HiddenInput,
-						value: cloud
-					}, {
-						name: 'name',
-						type: TextBox,
-						label: _('Instance Name'),
-						required: true
-					}]
-				}, {
 					name: 'details',
 					headerText: _('Create a new virtual machine instance.'),
 					helpText: _('Please enter the corresponding details for virtual machine instance:'),
