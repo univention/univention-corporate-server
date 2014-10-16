@@ -83,9 +83,9 @@ define([
 						],
 						onChange: lang.hitch(this, function(value){
 							var password = this.getWidget('password');
-							password.set('disabled', value.indexOf('2.0_password') < 0);
+							password.set('visible', value.indexOf('2.0_apikey') < 0);
 							var auth_token = this.getWidget('auth_token');
-							auth_token.set('disabled', value.indexOf('2.0_apikey') < 0);
+							auth_token.set('visible', value.indexOf('2.0_password') < 0);
 						}),
 						required: true
 					}, {
