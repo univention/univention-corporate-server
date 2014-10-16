@@ -1,3 +1,10 @@
+univention-ldap (11.0.6-8) unstable; urgency=medium
+
+  * Bug #31907: Revert change of version 11.0.6-2:
+    Keep ACLs for cn=admin, still required by smb.conf on backup+slaves
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Oct 2014 16:10:54 +0200
+
 univention-ldap (11.0.6-7) unstable; urgency=medium
 
   * Bug #31907: Don't load the ppolicy overlay by default.
