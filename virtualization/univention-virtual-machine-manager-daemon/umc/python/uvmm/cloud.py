@@ -86,6 +86,8 @@ class Cloud(object):
 						'type': 'cloud',
 						'cloudtype': d.cloudtype,
 						'available': d.available,
+						'last_error_message': d.last_error_message,
+						'dn': d.dn,
 						})
 
 				MODULE.info('success: %s, data: %s' % (success, clouds))

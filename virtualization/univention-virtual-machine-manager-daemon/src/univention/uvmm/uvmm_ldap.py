@@ -216,6 +216,7 @@ def ldap_cloud_connections():
 		for dn, data in res:
 			if 'univentionVirtualMachineCloudConnectionParameter' in data:
 				c = {}
+				c['dn'] = dn
 				c['name'] = data['cn'][0]
 				# Search cloudtype parameter
 				typebase = data['univentionVirtualMachineCloudConnectionTypeRef'][0]

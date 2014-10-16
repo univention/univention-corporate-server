@@ -70,6 +70,9 @@ class CloudConnection(object):
 		self.timerEvent = threading.Event()
 
 		self.publicdata = Cloud_Data_Connection()
+		self.publicdata.dn = ""
+		if 'dn' in cloud:
+			self.publicdata.dn = cloud['dn']
 		self.publicdata.name = cloud["name"]
 		self.publicdata.cloudtype = cloud["type"]
 		self.publicdata.last_update = -1

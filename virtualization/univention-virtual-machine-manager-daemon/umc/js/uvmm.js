@@ -241,14 +241,19 @@ define([
 
 			// add a context menu to edit/delete items
 			var menu = new Menu({});
-	/*		menu.addChild(new MenuItem({
+			menu.addChild(new MenuItem({
 				label: _( 'Edit' ),
 				iconClass: 'umcIconEdit',
 				onClick: lang.hitch(this, function(e) {
-					this.createDomainPage(this._navContextItem.objectType, this._navContextItem.id);
-				})
-			}));
-			menu.addChild(new MenuItem({
+					if(this._navContextItem) {
+						if(this._navContextItem.type == 'cloud' && this._navContextItem.dn) {
+							require('umc/app').openModule('udm', 'uvmm/cloudconnection',{'openObject': {'objectDN': this._navContextItem.dn, 'objectType': 'uvmm/cloudconnection'}});
+						} else if(this._navContextItem.type == 'cloud' || (this._navContextItem.type == 'group' && this._navContextItem.id == 'cloudconnections')) {
+							require('umc/app').openModule('udm', 'uvmm/cloudconnection');
+						}
+					}
+				})}));
+	/*		menu.addChild(new MenuItem({
 				label: _( 'Delete' ),
 				iconClass: 'umcIconDelete',
 				onClick: lang.hitch(this, function() {
@@ -262,6 +267,13 @@ define([
 					this._tree.reload();
 				})
 			}));
+
+			this.own(aspect.after(this._tree, '_onNodeMouseEnter', lang.hitch(this, function(node) {
+				this._navContextItemFocused = node.item;
+			}), true));
+			this.own(aspect.before(menu, '_openMyself', lang.hitch(this, function() {
+				this._navContextItem = this._navContextItemFocused;
+			})));
 
 			// when we right-click anywhere on the tree, make sure we open the menu
 			menu.bindDomNode(this._tree.domNode);
