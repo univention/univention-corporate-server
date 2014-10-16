@@ -32,15 +32,18 @@
 @import "variables";
 
 .claro .dijitDialog {
-	border: 1px solid $popup-border-color;
+	//border: 1px solid $popup-border-color;
+	border: none;
 	box-shadow: 0 0px 25px rgba(0,0,0,0.15);
 } 
 
 .claro .dijitDialogPaneContent {
 	background: $pane-background-color repeat-x top left;
 	border-top: 1px solid $popup-border-color;
-	padding:10px 8px;
+	padding: 1.2em;
 	position: relative;
+	box-sizing: content-box;
+	max-width: 650px;
 }
 
 .claro .dijitDialogPaneContentArea {
@@ -74,38 +77,44 @@
 
 .claro .dijitDialogTitleBar {
 	/* outer container for the titlebar of the dialog */
-	border: 1px solid $dialog-titlebar-border-color;
+	//border: 1px solid $dialog-titlebar-border-color;
+	border: none;
 	border-top:none;
-	//background-color: $dialog-titlebar-background-color;
-	vertical-gradient-and-filter($tab-gradient-top-color, $tab-gradient-bottom-color);
+	background-color: $dialog-titlebar-background-color;
 	standard-gradient();
-	padding: 5px 7px 4px 7px;
+	padding: 0.9em 3em 0.9em 1.2em;
+	box-sizing: content-box;
 }
 
 .claro .dijitDialogTitle {
 	/* typography and styling of the dialog title */
 	padding: 0 1px;
-	font-size:1.091em;
-	color: $text-color;
+	font-size: $font-size-medium;
+	color: $text-color-dark-background;
 }
 
 .claro .dijitDialogCloseIcon {
 	/* the default close icon for the dialog */
-	background: url($image-dialog-close);
-	background-repeat:no-repeat;
+	//background: url($image-dialog-close);
+	//background-repeat:no-repeat;
 	position: absolute;
-	right: 5px;
-	height: 15px;
-	width: 21px;
+	right: 0;
+	top: 0;
+	margin: 0.75em 1.2em;
+	//height: 15px;
+	//width: 21px;
+	icon-image(0, -60, "", "-white");
 }
 .dj_ie6 .claro .dijitDialogCloseIcon {
-	background-image: url($image-dialog-close-ie6);
+	//background-image: url($image-dialog-close-ie6);
 }
 .claro .dijitDialogCloseIconHover {
-	background-position:-21px;
+	background-position:-20px -60px;
+	opacity: 1;
 }
 .claro .dijitDialogCloseIconActive {
-	background-position:-42px;
+	background-position:-20px -60px;
+	opacity: 0.66;
 }
 
 /* Tooltip and TooltipDialog */

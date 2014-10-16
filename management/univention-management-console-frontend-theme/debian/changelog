@@ -1,3 +1,13 @@
+univention-management-console-frontend-theme (0.0.46-1) unstable; urgency=medium
+
+  Bug #35654:
+  * adjust dialog styling
+  * fix font sizes for browsers
+  * adjust background gradient
+  * fix padding for radio buttons
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 16 Oct 2014 17:24:08 +0200
+
 univention-management-console-frontend-theme (0.0.45-1) unstable; urgency=low
 
   * Bug #35654: move some CSS from frontend into theme

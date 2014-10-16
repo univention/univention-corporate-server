@@ -93,7 +93,7 @@ $(BOOSTRAP_FILE): bootstrap.zip
 
 build: css/umc.css css/fonts
 
-build-dev: tmp css $(BOOSTRAP_FILE)
+build-dev: tmp css $(BOOSTRAP_FILE) css/fonts
 	cp -r $(TMP_THEME_DIR)/* css
 	cd css; stylus -m .
 	cd css/form; stylus -m .

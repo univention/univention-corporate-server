@@ -7,15 +7,16 @@ $text-color-lighter ?= #5a5a5a;
 $text-color-lightest ?= #787878;
 $grey-lightest ?= #f0f0f0;
 $grey-medium ?= #c8c8c8;
+$grey-dark ?= #6e6e6e;
 $disabled-color ?= #d3d3d3;												// Base for disabled backgrounds and borders
 $error-color ?= #be0000;
 $text-color-dark-background ?= #fff;
 
 $font-size-buttons ?= 1.3em;
-$font-size-medium ?= 1.667em;
+$font-size-medium ?= 1.6em;
 $font-size-large ?= 2.5em;
 
-// bootstrap media queries breakpoints
+// bootstrap media query breakpoints
 $xxs-max = 549px
 $xs-min = 550px
 $xs-max = 767px
@@ -159,9 +160,9 @@ $swatch-hovered-border-color ?= #000;
 $swatch-selected-border-color ?= #000;
 
 // Dialog
-$dialog-underlay-color ?= $container-background-color;			// the thing that grays out the screen when a dialog is shown
+$dialog-underlay-color ?= $primary-color;			// the thing that grays out the screen when a dialog is shown
 $dialog-titlebar-border-color ?= $container-background-color;	// Inner border around the title sectionof a Dialog, inside the main border of the Dialog and the border between title and content
-$dialog-titlebar-background-color ?= $minor-selected-color;
+$dialog-titlebar-background-color ?= $grey-dark;
 
 // Tooltip
 $tooltip-gradient-color ?= rgba($primary-color, 0.1);		// a little swath of color at the bottom of tooltips
