@@ -50,6 +50,7 @@ find / \
 		-o -path "/tmp/.ICE-unix" \
 		-o -path "/tmp/.winbindd/pipe" \
 		-o -path "/run/umc-web-server.pid.lock" \
+		-o -path "/run/umc-server.pid.lock" \
 		-o -path "/run/*.MainThread-*" \
 		-o -path "/run/shm" \
 		-o -path "/var/lib/php5" \

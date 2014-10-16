@@ -1,3 +1,10 @@
+ucs-test (5.0.26-1) unstable; urgency=medium
+
+  * 00_base/25check-permissions: Also add /run/umc-server.pid.lock to
+    the ignore list (Bug #35880)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 16 Oct 2014 06:43:20 +0200
+
 ucs-test (5.0.25-1) unstable; urgency=medium
 
   * Test for Bug #31907
