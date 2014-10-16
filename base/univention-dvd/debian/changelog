@@ -1,6 +1,12 @@
+univention-dvd (0.2.2-1) unstable; urgency=medium
+
+  * The package console-tools is needed for the update (Bug #36206)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 16 Oct 2014 08:47:14 +0200
+
 univention-dvd (0.2.1-1) unstable; urgency=medium
 
-  * Added several packages to maintained for a smooth updat from UCS 3
+  * Added several packages to maintained for a smooth update from UCS 3
     to UCS 4 (Bug #36206)
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 16 Oct 2014 06:38:05 +0200
