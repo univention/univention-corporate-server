@@ -50,6 +50,13 @@ univention-config-registry set cups/server?"localhost" \
 
 #DEBHELPER#
 
+# debian stores ppd's in /usr/share/ppd but
+# cups looks in /usr/share/cups/model
+if [ -d "/usr/share/cups/model" ]; then
+	mv /usr/share/cups/model /usr/share/cups/model.orig
+	ln -s /usr/share/ppd /usr/share/cups/model
+fi
+
 # configure firewall
 ucr set security/packetfilter/package/univention-printserver/tcp/631/all="ACCEPT" \
 		security/packetfilter/package/univention-printserver/tcp/631/all/en="IPP" \

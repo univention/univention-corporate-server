@@ -78,10 +78,9 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists \
 # create cups pdf samba share
 univention-directory-manager shares/share create "$@" --ignore_exist \
 	--position="cn=shares,$ldap_base" \
-	--option samba --set "name=pdfPrinterShare" \
+	--option samba \
 	--set "host=${hostname}.${domainname}" \
 	--set "path=${cups_cups_pdf_directory:-/var/spool/cups-pdf/%U}" \
-	--set "webaccessName=pdfPrinterShare" \
 	--set "name=pdfPrinterShare" || die
 
 joinscript_save_current_version

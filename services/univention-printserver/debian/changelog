@@ -1,3 +1,9 @@
+univention-printserver (8.0.4-1) unstable; urgency=low
+
+  * updated config files (Bug #33278) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Oct 2014 10:46:36 +0200
+
 univention-printserver (8.0.3-1) unstable; urgency=low
 
   * Bug #35654: UMC design adaptions

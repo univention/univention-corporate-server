@@ -4,8 +4,6 @@ Variables: interfaces/eth.*/network
 Variables: interfaces/eth.*/netmask
 Variables: cups/admin
 Variables: cups/errorpolicy
-Variables: cups/systemgroup
-Variables: cups/filedevice
 Variables: cups/location/base
 Variables: cups/location/admin
 Variables: cups/debug/level
@@ -26,3 +24,8 @@ Type: file
 File: etc/cups/cups-access-limit.conf
 Variables: cups/printmode/hosts/all
 Variables: cups/printmode/hosts/none
+
+Type: file
+File: etc/cups/cups-files.conf
+Variables: cups/systemgroup
+Variables: cups/filedevice
