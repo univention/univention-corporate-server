@@ -1,3 +1,9 @@
+univention-grub (8.0.3-6) unstable; urgency=low
+
+  * new menu colors (Bug #35934) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Oct 2014 14:23:43 +0200
+
 univention-grub (8.0.3-5) unstable; urgency=low
 
   * new menu colors (Bug #35934) 
