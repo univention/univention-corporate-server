@@ -336,6 +336,7 @@ class Instance(Base, ProgressMixin):
 
 		# determine new system role
 		newrole = values.get('server/role', orgValues.get('server/role', ''))
+		ad_member = values.get('ad/member', orgValues.get('ad/member', ''))
 
 		# mix original and new values
 		allValues = copy.copy(values)
@@ -429,11 +430,19 @@ class Instance(Base, ProgressMixin):
 			for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):
 				nameserver = obj.get(nameserver)
 				if nameserver:
-					guessed_domain = util.get_ucs_domain(nameserver)
+					if obj.get('ad/member') and obj.get('ad/address'):
+						try:
+							info = lookup_adds_dc(obj.get('ad/address'), ucr={'nameserver1' : nameserver})
+						except failedADConnect:
+							pass
+						else:
+							guessed_domain = info['Domain']
+					else:
+						guessed_domain = util.get_ucs_domain(nameserver)
 					if guessed_domain:
 						return guessed_domain
 
-		if not util.is_system_joined() and newrole not in ['domaincontroller_master', 'basesystem']:
+		if not util.is_system_joined() and (newrole not in ['domaincontroller_master', 'basesystem'] or ad_member):
 			if all(nameserver in values and not values[nameserver] for nameserver in ('nameserver1', 'nameserver2', 'nameserver3')):
 				# 'nameserver1'-key exists → widget is displayed → = not in UCS/debian installer mode
 				if not any(interface.ip4dynamic or interface.ip6dynamic for interface in interfaces.values()):

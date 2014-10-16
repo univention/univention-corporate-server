@@ -82,7 +82,7 @@ class Profile(dict):
 		if value:
 			value = value.lower()
 		ucr = ConfigRegistry()
-		return ucr.is_true(value=key)
+		return ucr.is_true(value=value)
 
 	def get_list(self, key, split_by=' '):
 		'''
