@@ -1,3 +1,9 @@
+univention-remote-backup (6.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #36114) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Oct 2014 11:44:28 +0200
+
 univention-remote-backup (5.0.2-1) unstable; urgency=low
 
   * Use ssh BatchMode=yes (Bug #5318)
