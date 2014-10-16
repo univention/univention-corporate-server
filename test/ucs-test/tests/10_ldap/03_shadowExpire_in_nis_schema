@@ -3,7 +3,7 @@
 ## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave]
 ## exposure: dangerous
 ## packages: [univention-ldap-server]
-## bugs: [35329, 35088]
+## bugs: [35329, 35088, 36210]
 
 from datetime import datetime, timedelta
 from univention.uldap import getMachineConnection
@@ -51,7 +51,7 @@ def run():
 				print 'Should be found: [(username, expirydate)] = [(\'%s\', \'%s\')]' % (username, date)
 				print 'Found in LDAP:   [(username, expirydate)] = %r' % ldap_found
 				if ((username, str(date)) not in ldap_found or set(exclude_list).issubset(ldap_found)):
-					utils.fail("LDAP is not able to sort Objects with filter: (shadowExpire>=%r)(shadowExpire<=%r)" % 
+					utils.fail("LDAP is not able to sort Objects with filter: (shadowExpire>=%r)(shadowExpire<=%r)" %
 							(date - 1, date + 1))
 
 def main():
