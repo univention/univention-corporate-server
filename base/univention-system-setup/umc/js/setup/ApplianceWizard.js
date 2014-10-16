@@ -139,16 +139,6 @@ define([
 		var acceptEmtpy = !ip && !this.required;
 		return acceptEmtpy || isIPv4Address || isIPv6Address;
 	};
-	var _domainNotAccessibleMessage = _('No domain controller was found at the address of the name server.');
-	var _validateIPAddressAndDomainAccess = function(ip) {
-		var valid = _validateIPAddress(ip);
-		this.set('invalidMessage', _invalidIPAddressMessage);
-		if (this._domainNotAccessible) {
-			valid = false;
-			this.set('invalidMessage', _domainNotAccessibleMessage);
-		}
-		return valid;
-	};
 
 	var _invalidNetmaskAndPrefixMessage = _('Invalid IPv4 net mask or IPv6 prefix!<br/>Expected for IPv4 is a number between 0 and 32 or a format similar to <i>255.255.255.0</i>.<br/>Expected format for IPv6 is a number between 0 and 128.');
 	var _validateNetmaskAndPrefix = function(mask) {
@@ -362,6 +352,7 @@ define([
 					['_ip3', '_netmask3'],
 					'gateway',
 					['nameserver1', 'nameserver2'],
+					'_nameserver_error',
 					'proxy/http',
 					'configureProxySettings'
 				],
@@ -460,17 +451,19 @@ define([
 					type: TextBox,
 					name: 'nameserver1',
 					label: _('Preferred DNS server'),
-					invalidMessage: null, // dynamically set
-					onKeyUp: lang.hitch(this, function() {
-						this.getWidget('network', 'nameserver1')._domainNotAccessible = false;
-					}),
-					validator: _validateIPAddressAndDomainAccess
+					invalidMessage: _invalidIPAddressMessage,
+					validator: _validateIPAddress
 				}, {
 					type: TextBox,
 					name: 'nameserver2',
 					label: _('Alternate DNS server'),
 					invalidMessage: _invalidIPAddressMessage,
 					validator: _validateIPAddress
+				}, {
+					type: Text,
+					name: '_nameserver_error',
+					content: '<strong>' + _('No domain controller was found at the address of the name server.') + '</strong>',
+					visible: false
 				}, {
 					type: Text,
 					name: 'configureProxySettings',
@@ -1521,7 +1514,7 @@ define([
 
 			msg += '<p>' + _('You may reconfigure the settings and restart the process or you continue and close the wizard. You may resolve the the problems by using the appropriate modules of the Univention Management Console');
 			if (!critical) {
-				msg += ' ' + _('The system can be joined later via the UMC module <i>Domain join</i>.')
+				msg += ' ' + _('The system can be joined later via the UMC module <i>Domain join</i>.');
 			}
 			msg += '</p>';
 
@@ -1906,6 +1899,7 @@ define([
 			if (pageName == 'role') {
 				return this._checkDomain().then(
 					lang.hitch(this, function(info) {
+						this.getWidget('network', '_nameserver_error').set('visible', false);
 						if (!info) {
 							return this._forcePageTemporarily('role-nonmaster-ad');
 						}
@@ -1923,8 +1917,7 @@ define([
 					}),
 					lang.hitch(this, function() {
 						if (this._isAdMember() || this._isRoleNonMaster()) {
-							this.getWidget('network', 'nameserver1')._domainNotAccessible = true;
-							this.getWidget('network', 'nameserver1').validate();
+							this.getWidget('network', '_nameserver_error').set('visible', true);
 							return this._forcePageTemporarily('network');
 						} else {
 							// alright, _checkDomain was not supposed to do anything meaningful
@@ -1938,7 +1931,7 @@ define([
 				return this._checkCredentials().then(lang.hitch(this, function(domain) {
 					var msg = '';
 					this._domainName = null;
-					if (domain) {
+					if (typeof domain == 'string') {
 						this._domainName = domain;
 					} else if (domain === false) {
 						msg = _('Connection refused. Please recheck the password');

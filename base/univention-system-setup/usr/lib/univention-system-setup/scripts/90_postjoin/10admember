@@ -41,9 +41,7 @@ class AdMemberScript(SetupScript):
 	def inner_run(self):
 		# WARNING: this is basically services/univention-ad-connector/umc/python/adconnector/__init__.py admember_join()
 		# changes there have to be merged in here
-		ad_member = (self.profile.get('ad/member') or '').lower()
-
-		if not self.ucr.ucr.is_true(value=ad_member):
+		if not self.profile.is_true('ad/member'):
 			# nothing to do
 			return True
 		if self.profile.get('server/role') != 'domaincontroller_master':
@@ -65,6 +63,7 @@ class AdMemberScript(SetupScript):
 		ad_server_ip = ad_domain_info['DC IP']
 		username = self.profile.get('ad/username')
 		password = self.profile.get('ad/password')
+		self.profile.hide('ad/password')
 
 		try:
 			_progress(5, _('Configuring time synchronization...'))

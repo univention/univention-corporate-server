@@ -65,6 +65,24 @@ class Profile(dict):
 						value = value[1:-1]
 						break
 				self[key] = value
+		self._filename = filename
+
+	def hide(self, key):
+		filename = self._filename
+		with open(filename, 'r') as profile:
+			all_lines = profile.readlines()
+		with open(filename, 'w') as profile:
+			for line in all_lines:
+				if line.startswith('%s=' % key):
+					line = '#%s="********"\n' % key
+				profile.write(line)
+
+	def is_true(self, key):
+		value = self.get(key)
+		if value:
+			value = value.lower()
+		ucr = ConfigRegistry()
+		return ucr.is_true(value=key)
 
 	def get_list(self, key, split_by=' '):
 		'''

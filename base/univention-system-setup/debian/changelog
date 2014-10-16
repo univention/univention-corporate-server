@@ -1,3 +1,9 @@
+univention-system-setup (8.1.14-2) unstable; urgency=low
+
+  * Bug #35653: Fix domainname for systems that do not want to join
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 16 Oct 2014 13:46:45 +0200
+
 univention-system-setup (8.1.14-1) unstable; urgency=low
 
   * Bug #35654: remove BasisPage
