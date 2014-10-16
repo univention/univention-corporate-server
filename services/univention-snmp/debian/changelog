@@ -1,3 +1,9 @@
+univention-snmp (5.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #36114) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Oct 2014 11:55:49 +0200
+
 univention-snmp (4.0.1-3) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
