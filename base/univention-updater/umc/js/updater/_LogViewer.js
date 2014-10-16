@@ -52,16 +52,16 @@ define([
 ], function(declare, lang, tools, Text, ContainerWidget, _) {
 	return declare('umc.modules.updater._LogViewer', [ ContainerWidget ], {
 
-		_first_call:		3,
-		_last_stamp:		0,
-		_check_interval:	0,
-		_current_job:		'',
-		_log_position:		0,
-		_max_number_of_lines:	2500, // ~ 200kB if one line ^= 80 chars
-		_all_lines:		[], // hold all past _max_number_of_lines lines
+		_first_call: 3,
+		_last_stamp: 0,
+		_check_interval: 0,
+		_current_job: '',
+		_log_position: 0,
+		_max_number_of_lines: 2500, // ~ 200kB if one line ^= 80 chars
+		_all_lines: [], // hold all past _max_number_of_lines lines
 
 		// FIXME which class should I take here?
-		style:		'border:1px solid #d0d0d0;background-color:#f8f8f8;padding:.3em;',
+		style: 'border: 1px solid #d0d0d0; background-color: #f8f8f8; padding: 0.3em;',
 
 	//	postMixinProperties: function() {
 	//
@@ -70,11 +70,11 @@ define([
 	//		// mix in the polling capability
 	//		lang.mixin(this,umc.modules._updater._PollingMixin({
 	//			polling: {
-	//				interval:	1000,
-	//				'function':	lang.hitch(this, function() {
+	//				interval: 1000,
+	//				'function': lang.hitch(this, function() {
 	//					this._fetch_log();
 	//				}),
-	//				query:		this.query
+	//				query: this.query
 	//			}
 	//		}));
 	//	},
@@ -84,8 +84,8 @@ define([
 			this.inherited(arguments);
 
 			this._text = new Text({
-				style:		'font-family:monospace;',
-				content:	_("... loading log file ...")
+				style: 'font-family: monospace; max-height: 700px; overflow: auto;',
+				content: _("... loading log file ...")
 			});
 			this.addChild(this._text);
 		},
@@ -269,14 +269,12 @@ define([
 
 			this._check_interval = 0;
 
-			if ((typeof(clean) != 'undefined') && (clean))
-			{
+			if ((typeof(clean) != 'undefined') && (clean)) {
 				this.set('content',_("... loading log file ..."));
 			}
 		},
 
 		uninitialize: function() {
-
 			this.inherited(arguments);
 			this.onStopWatching();
 		},

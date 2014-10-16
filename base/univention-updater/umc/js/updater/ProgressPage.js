@@ -94,6 +94,7 @@ define([
 
 			// returns to the calling page
 			this._close = new Button({
+				region: 'nav',
 				label: _("Back"),
 				onClick: lang.hitch(this, function() {
 					// local function to close the log view
@@ -118,11 +119,7 @@ define([
 
 				})
 			});
-			var container = new ContainerWidget({
-				region: 'bottom'
-			});
-			container.addChild(this._close);
-			this.addChild(container);
+			this.addChild(this._close);
 			this._allow_close(false);
 		},
 
