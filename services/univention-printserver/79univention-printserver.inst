@@ -5827,7 +5827,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Compaq-IJ1200-gutenprint-ijs-simplified.5.2.ppd\" \"Compaq IJ1200 Foomatic/gutenprint-ijs-simplified.5.2\""
 
 # Manufacturer: KONICA MINOLTA Printers: 3
-univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=KONICA MINOLTA \
+univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name="KONICA MINOLTA" \
 	--append printmodel="\"foomatic-rip/KONICA_MINOLTA-PagePro_1350W-min12xxw.ppd\" \"KONICA MINOLTA PagePro 1350W Foomatic/min12xxw (recommended)\"" \
 	--append printmodel="\"foomatic-rip/KONICA_MINOLTA-PagePro_1300W-min12xxw.ppd\" \"KONICA MINOLTA PagePro 1300W Foomatic/min12xxw (recommended)\"" \
 	--append printmodel="\"foomatic-rip/KONICA_MINOLTA-PagePro_1400W-min12xxw.ppd\" \"KONICA MINOLTA PagePro 1400W Foomatic/min12xxw (recommended)\""
@@ -6185,7 +6185,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Oce-8465PS-ljet3.ppd\" \"Oce 8465 Foomatic/ljet3\""
 
 # Manufacturer: Texas Instruments Printers: 8
-univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Texas Instruments \
+univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name="Texas Instruments" \
 	--append printmodel="\"foomatic-rip/Texas_Instruments-microLaser_Pro_8-Postscript.ppd\" \"Texas Instruments microLaser Pro 8 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Texas_Instruments-microLaser_XL_PS35-Postscript.ppd\" \"Texas Instruments microLaser XL PS35 Foomatic/Postscript (recommended)\"" \
 	--append printmodel="\"foomatic-rip/Texas_Instruments-microLaser_Pro_E-Postscript.ppd\" \"Texas Instruments microLaser Pro E Foomatic/Postscript (recommended)\"" \
@@ -6635,7 +6635,7 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists -
 	--append printmodel="\"foomatic-rip/Kodak-PD-6000-gutenprint-ijs.5.2.ppd\" \"Kodak PD-6000 Foomatic/gutenprint-ijs.5.2\""
 
 # Manufacturer: Minolta QMS Printers: 1
-univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Minolta QMS \
+univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name="Minolta QMS" \
 	--append printmodel="\"foomatic-rip/Minolta_QMS-PagePro_9100N-Postscript.ppd\" \"Minolta QMS PagePro 9100N Foomatic/Postscript (recommended)\""
 
 # Manufacturer: Fujitsu Printers: 26
