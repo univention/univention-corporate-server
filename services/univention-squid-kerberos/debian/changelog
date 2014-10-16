@@ -1,3 +1,9 @@
+univention-squid-kerberos (4.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #36114) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Oct 2014 11:58:18 +0200
+
 univention-squid-kerberos (3.0.2-8) unstable; urgency=low
 
   * check if spn exists in secrects.ldb (Bug #33779) 
