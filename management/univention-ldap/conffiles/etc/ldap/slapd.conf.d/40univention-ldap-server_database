@@ -15,7 +15,6 @@ if configRegistry.is_true('ldap/ppolicy', False):
 print '\n'
 print 'database\t%(ldap/database/type)s' % configRegistry
 print 'suffix\t\t"%(ldap/base)s"' % configRegistry
-print 'rootdn\t\t"cn=admin,%(ldap/base)s"' % configRegistry
 
 print ''
 if configRegistry.has_key('ldap/translogfile') and configRegistry['ldap/translogfile']:
@@ -94,10 +93,12 @@ print ''
 print "limits users time.soft=-1 time.hard=-1"
 print ''
 
-if configRegistry['ldap/server/type'] == "slave":
+if configRegistry['ldap/server/type'] == "master":
+	print 'rootdn\t\t"cn=admin,%(ldap/base)s"' % configRegistry
+elif configRegistry['ldap/server/type'] == "slave":
 	if configRegistry.is_true("ldap/online/master", True):
-		print 'rootdn\t"cn=update,%s"'%configRegistry['ldap/base']
-		print 'include\t/etc/ldap/rootpw.conf'
+		print 'rootdn\t\t"cn=update,%s"'%configRegistry['ldap/base']
+		print 'include\t\t/etc/ldap/rootpw.conf'
 		print 'updatedn\t"cn=update,%s"'%configRegistry["ldap/base"]
 		print 'updateref\tldap://%s:%s'% (configRegistry["ldap/master"], configRegistry.get("ldap/master/port", 7389))
 @!@
