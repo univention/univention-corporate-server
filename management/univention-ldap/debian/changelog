@@ -1,3 +1,10 @@
+univention-ldap (11.0.6-10) unstable; urgency=medium
+
+  * Bug #31907: We need *some* rootdn to be set for ppolicy,
+    also in case of ldap/server/type=slave and ldap/online/master=no
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Oct 2014 16:17:10 +0200
+
 univention-ldap (11.0.6-9) unstable; urgency=medium
 
   * Bug #31907: Improve readability of rootdn configuration in slapd.conf
