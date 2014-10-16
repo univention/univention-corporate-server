@@ -1,3 +1,9 @@
+univention-dansguardian (8.0.0-2) unstable; urgency=low
+
+  * Updated config files (Bug #36114) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Oct 2014 11:31:21 +0200
+
 univention-dansguardian (8.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #36114)
