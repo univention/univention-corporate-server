@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-uvmm 2.0.40-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-09-10 17:16+0200\n"
+"POT-Creation-Date: 2014-10-16 17:49+0200\n"
 "PO-Revision-Date: 2013-05-23 09:17+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -47,23 +47,18 @@ msgstr ""
 msgid "Cloud connection"
 msgstr "Cloud-Verbindung"
 
-#: umc/python/uvmm/domains.py:436
+#: umc/python/uvmm/domains.py:404
 msgid "Could not determine architecture for domain"
 msgstr "Die Architektur der Instanz konnte nicht ermittelt werden"
 
-#: umc/python/uvmm/domains.py:515
+#: umc/python/uvmm/domains.py:461
 msgid "Could not determine the keyboard layout for the VNC access"
 msgstr ""
 "Das Tastaturlayout für den VNC Direktzugriff konnte nicht ermittelt werden"
 
-#: umc/python/uvmm/domains.py:499
+#: umc/python/uvmm/domains.py:445
 msgid "Could not determine the list of boot devices for domain"
 msgstr "Die Liste der Boot-Devices der Instanz konnte nicht ermittelt werden"
-
-#: umc/python/uvmm/domains.py:471
-msgid "Could not determine virtualization technology for domain"
-msgstr ""
-"Die Virtualisierungstechnologie der Instanz konnte nicht ermittelt werden"
 
 #: umc/python/uvmm/storages.py:256
 #, python-format
@@ -76,7 +71,7 @@ msgstr ""
 "Die Prüfung ob das Laufwerk von einer anderen virtuellen Instanz verwendet "
 "wird ist fehlgeschlagen."
 
-#: umc/python/uvmm/domains.py:448
+#: umc/python/uvmm/domains.py:416
 #, python-format
 msgid "Failed to retrieve details for the server %(nodeURI)s"
 msgstr ""
@@ -87,7 +82,7 @@ msgstr ""
 msgid "Full virtualization (KVM)"
 msgstr "Voll-Virtualisierung (KVM)"
 
-#: umc/python/uvmm/domains.py:611
+#: umc/python/uvmm/domains.py:543
 #, python-format
 msgid "Invalid domain state: %s"
 msgstr "Ungültiger Domain Status: %s"
@@ -100,16 +95,16 @@ msgstr "Physikalische Server"
 msgid "The given UVMM command is not known"
 msgstr "Der gegebene UVMM Befehl ist unbekannt"
 
-#: umc/python/uvmm/domains.py:452
+#: umc/python/uvmm/domains.py:420
 #, python-format
 msgid "Unknown physical server %(nodeURI)s"
 msgstr "Unbekannter physikalischer Server %(nodeURI)s"
 
-#: umc/python/uvmm/profiles.py:170
+#: umc/python/uvmm/profiles.py:157
 msgid "Unknown profile"
 msgstr "Unbekanntes Profil"
 
-#: umc/python/uvmm/domains.py:420
+#: umc/python/uvmm/domains.py:388
 msgid "Unknown profile given"
 msgstr "Unbekanntes Profil wurde angegeben"
 
@@ -117,9 +112,13 @@ msgstr "Unbekanntes Profil wurde angegeben"
 msgid "Unknown query type"
 msgstr "Unbekannter Anfragetyp"
 
-#: umc/python/uvmm/domains.py:490
+#: umc/python/uvmm/domains.py:436
 msgid "vcpus must be a number"
 msgstr "vcpus muß numerisch sein"
+
+#~ msgid "Could not determine virtualization technology for domain"
+#~ msgstr ""
+#~ "Die Virtualisierungstechnologie der Instanz konnte nicht ermittelt werden"
 
 #~ msgid "Could not find the drive"
 #~ msgstr "Das Laufwerk konnte nicht gefunden werden"

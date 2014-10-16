@@ -346,6 +346,9 @@ define([
 						this.filter();
 					}
 				}));
+				if (this._tree._getLast().item.type == 'root') {
+					dialog.alert(_("A connection to a virtualization infrastructure could not be established. You can either connect to a public or private cloud via OpenStack or EC2. Alternatively you can install a hypervisor on this or on any other UCS server in this domain."));
+				}
 			}));
 		},
 
