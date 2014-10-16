@@ -1,3 +1,9 @@
+univention-tftp (6.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #36114) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Oct 2014 12:11:17 +0200
+
 univention-tftp (5.0.2-1) unstable; urgency=low
 
   * added pxelinux configs (Bug #20014) 
