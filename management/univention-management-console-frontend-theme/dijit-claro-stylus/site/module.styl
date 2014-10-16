@@ -9,11 +9,29 @@
 		margin: auto;
 	}
 
+	.umcModuleHeaderOuterContainer {
+		background: inherit;
+		width: 100%;
+	}
+
+	.umcModuleHeaderLeft {
+		float: left;
+		padding-bottom: 20px;
+		max-width: 80%;
+	}
+
+	.umcModuleHeaderRight {
+		float: right;
+	}
+
 	.umcModuleHeaderSticky {
 		position: fixed;
 		top: 0;
 		font-size: 0.7em;
 		z-index: 900;
+		.umcModuleHeaderLeft {
+			padding-bottom: 0;
+		}
 	}
 
 	.dijitButton {
