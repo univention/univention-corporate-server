@@ -1,4 +1,8 @@
 
 ; -----------------------------------------------------------------------------------------------------------
-	include = /etc/samba/base.conf
-	include = /etc/samba/installs.conf
+@!@
+import os
+for includefilepath in ('/etc/samba/base.conf', '/etc/samba/installs.conf'):
+	if os.path.exists(includefilepath):
+		print "\tinclude =", includefilepath
+@!@

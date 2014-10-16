@@ -1,3 +1,10 @@
+univention-samba (9.0.1-1) unstable; urgency=medium
+
+  * The new loadparm code doesn't accept missing includes in smb.conf
+    (Bug #35319)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Oct 2014 14:34:29 +0200
+
 univention-samba (9.0.0-7) unstable; urgency=medium
 
   * Fix for python-support and python2.7 (Bug #35828)
