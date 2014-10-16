@@ -1163,6 +1163,10 @@ define([
 				domClass.toggle(baseWin.body(), 'umcOverviewShown', overviewShown);
 				domClass.toggle(baseWin.body(), 'umcOverviewNotShown', !overviewShown);
 				domClass.toggle(this._tabController.domNode, 'dijitHidden', (this._tabContainer.getChildren().length <= 1)); // hide/show tabbar
+				if (newModule.selectedChildWidget && newModule.selectedChildWidget._onShow) {
+					newModule.selectedChildWidget._onShow();
+					console.log('onShow;)');
+				}
 			}));
 			aspect.before(this._tabContainer, 'removeChild', lang.hitch(this, function(module) {
 				topic.publish('/umc/actions', module.moduleID, module.moduleFlavor, 'close');
@@ -1519,6 +1523,10 @@ define([
 			if (!category) {
 				searchPattern = lang.trim(this._header._searchSidebar.get('value'));
 				searchQuery = this._header._searchSidebar.getSearchQuery(searchPattern);
+			} else {
+				if (this._header._searchSidebar) {
+					this._header._searchSidebar.set('value', null);
+				}
 			}
 			this._grid.updateQuery(searchPattern, searchQuery, category);
 

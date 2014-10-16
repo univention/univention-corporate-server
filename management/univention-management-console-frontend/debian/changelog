@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.48-1) unstable; urgency=low
+
+  * Bug #35654: fix _onShow when switching from overview to module
+  * remove value from module search bar when selecting a category
+
+ -- Florian Best <best@univention.de>  Thu, 16 Oct 2014 15:56:37 +0200
+
 univention-management-console-frontend (4.1.47-1) unstable; urgency=low
 
   * Bug #35654: small fixes

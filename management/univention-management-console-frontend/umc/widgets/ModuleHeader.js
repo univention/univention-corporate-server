@@ -59,13 +59,13 @@ define([
 			this.inherited(arguments);
 
 			this._left = new ContainerWidget({
-				style: 'float: left;'
+				'class': 'umcModuleHeaderLeft'
 			});
 			this._right = new ContainerWidget({
-				style: 'float: right;'
+				'class': 'umcModuleHeaderRight'
 			});
 			var outerContainer = new ContainerWidget({
-				'style': 'background: inherit; width: 100%;'
+				'class': 'umcModuleHeaderOuterContainer'
 			});
 			var container = new ContainerWidget({
 				'class': 'umcModuleHeaderWrapper container'

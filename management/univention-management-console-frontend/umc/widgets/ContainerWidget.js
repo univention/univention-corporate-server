@@ -47,7 +47,6 @@ define([
 		'class': 'umcContainerWidget',
 
 		_onShow: function() {
-			console.log(this.declaredClass, 'CW._onShow:', arguments);
 		},
 
 		_setVisibleAttr: function(visible) {
