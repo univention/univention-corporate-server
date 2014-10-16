@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.6-1) unstable; urgency=low
+
+  * Bug #35654: convert svgz → svg
+
+ -- Florian Best <best@univention.de>  Thu, 16 Oct 2014 16:23:03 +0200
+
 univention-management-console-module-udm (5.1.5-1) unstable; urgency=low
 
   * Bug #35654: fix page.onShow() event, fix reference to tools.umcpCommand

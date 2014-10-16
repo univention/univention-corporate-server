@@ -55,8 +55,8 @@ define([
 			this.umcpCommand('udm/nav/container/query').then(lang.hitch(this, function(data) {
 				var results = data.result instanceof Array ? data.result : [];
 				if (results.length) {
-					onItem(results[0]);
 					this.root = results[0];
+					onItem(results[0]);
 				}
 				else {
 					console.log('WARNING: No top container could be queried for LDAP navigation! Ignoring error.');
@@ -83,15 +83,13 @@ define([
 				results.sort(tools.cmpObjects('label'));
 				try {
 					onComplete(results);
-				}
-				catch (error) {
+				} catch (error) {
 					// don't do anything
 				}
 			}), lang.hitch(this, function() {
 				try {
 					onComplete([]);
-				}
-				catch (error) {
+				} catch (error) {
 					// don't do anything
 				}
 			}));
