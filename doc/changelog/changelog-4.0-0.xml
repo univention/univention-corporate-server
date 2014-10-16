@@ -603,6 +603,10 @@
 				in the default profile
 				(<ulink url="&ucsbug;32628">Bug 32628</ulink>).
 		</simpara></listitem>
+		<listitem><simpara>
+				The deprecated package <package>php5-suhosin</package> will be purged during the update.
+				(<ulink url="&ucsbug;35203">Bug 35203</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 </section>
 
