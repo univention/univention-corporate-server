@@ -48,47 +48,30 @@ define([
 		//		Class that provides the license import Dialog for UCS. It support importing a new license.
 
 		// umcPopup for content styling; umcConfirmDialog for max-width
-		'class': 'umcPopup umcConfirmDialog',
+		'class': 'umcPopup umcConfirmDialog umcUdmLicenseImportDialog',
 
 		closable: true,
+		options: [],
 
 		_widgets: null,
 
-		title: _('Import of new UCS license'),
+		title: _('UCS license import'),
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			this.options = [{
-				name: 'close',
-				label: _('Close'),
-				'default': true,
-				callback: lang.hitch(this, function() {
-					this.close();
-				})
-			}];
-
 			this._widgets = render.widgets([{
-				type : Text,
-				name : 'titleImport',
-				style : 'width: 100%',
-				content : lang.replace('<h1>{title}</h1>', { title: _('Import new license') })
-			}, {
 				type: Text,
 				name: 'message',
-				content: _('New licenses that have been received after the activation of UCS or after a license purchase can be imported below. The license information can either be uploaded directly as file or it can be imported via copy and paste into the text field.') + '<br><br>'
+				content: '<p>' + _('New licenses that have been received after the activation of UCS or after a license purchase can be imported below. The license information can either be uploaded directly as file or it can be imported via copy and paste into the text field.') + '</p>'
 			}, {
 				type : TextArea,
 				name : 'licenseText',
-				label : _('Import license as text'),
-				rows: 9,
-				cols: 25,
-				style: 'width: 620px'
+				style: 'width: 100%'
 			}, {
 				type : Uploader,
 				name : 'licenseUpload',
-				label : _('Import license file'),
-				buttonLabel: _('Choose file...'),
+				buttonLabel: _('Import from file...'),
 				command: 'udm/license/import',
 				onUploaded: lang.hitch(this, function(result) {
 					if (typeof result == "string") {
@@ -100,9 +83,8 @@ define([
 			}]);
 
 			var buttons = [{
-				type : Button,
 				name : 'btnLicenseText',
-				label : _('Import'),
+				label : _('Import from text field'),
 				callback: lang.hitch(this, function() {
 					var license = this._widgets.licenseText.get('value');
 					this.standbyDuring(tools.umcpCommand('udm/license/import', { 'license': license }).then(
@@ -111,9 +93,22 @@ define([
 						})
 					));
 				})
+			}, {
+				name: 'submit', // workaround for a style as default button
+				style: 'float: right',
+				label: _('Close'),
+				callback: lang.hitch(this, function() {
+					this.close();
+				})
 			}];
 
-			this.message = render.layout(['titleImport', 'message', 'licenseUpload', 'licenseText', 'btnLicenseText'], this._widgets, render.buttons(buttons));
+			this.message = render.layout([
+				'titleImport',
+				'message',
+				'licenseUpload',
+				'licenseText',
+				['btnLicenseText', 'submit']
+			], this._widgets, render.buttons(buttons));
 		},
 
 		_handleUploaded: function(result) {

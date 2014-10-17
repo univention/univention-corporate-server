@@ -1,0 +1,22 @@
+.umc .umcUDMLicenseIcon {
+	background: url(udm/license.svg) no-repeat;
+	background-position: 32px 15px;
+	padding-left: 200px;
+	min-height: 140px;
+}
+
+.umc .umcUDMLicenseTitlePane {
+	margin-top: 2em;
+}
+
+.umc .umcUdmLicenseImportDialog .dijitDialogPaneContent > .umcContainerWidget{
+	background: url(udm/license-import.svg) no-repeat;
+	background-position: 45px 60px;
+	padding-left: 200px;
+	min-height: 140px;
+}
+
+.umc .umcUdmLicenseImportDialog textarea {
+	height: 150px;
+	font-size: 1em;
+}

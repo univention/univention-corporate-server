@@ -70,7 +70,8 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"umc/modules/udm/MultiObjectSelect",
 	"umc/modules/udm/ComboBox",
-	"umc/modules/udm/CertificateUploader"
+	"umc/modules/udm/CertificateUploader",
+	"xstyle/css!./udm.css"
 ], function(declare, lang, array, has, Deferred, when, all, on, topic, aspect, json,
 	domStyle, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog,
 	store, ContainerWidget, Text, CheckBox, ComboBox, Module, Page, Grid,

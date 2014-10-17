@@ -34,16 +34,16 @@ define([
 	"dojo/dom-style",
 	"umc/tools",
 	"umc/dialog",
-	"umc/render",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/Text",
 	"umc/widgets/TitlePane",
+	"umc/widgets/ContainerWidget",
 	"dojo/text!umc/modules/udm/license.html",
 	"dojo/text!umc/modules/udm/license_v2.html",
 	"dojo/text!umc/modules/udm/license_gpl.html",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, style, tools, dialog, render, ConfirmDialog, StandbyMixin, Text, TitlePane, licenseHtml, license_v2Html, license_gplHtml, _) {
+], function(declare, lang, style, tools, dialog, ConfirmDialog, StandbyMixin, Text, TitlePane, ContainerWidget, licenseHtml, license_v2Html, license_gplHtml, _) {
 
 	var ffpu_license_info = _('<p>The "free for personal use" edition of Univention Corporate Server is a special software license which allows users free use of the Univention Corporate Server and software products based on it for private purposes acc. to § 13 BGB (German Civil Code).</p><p>In the scope of this license, UCS can be downloaded, installed and used from our servers. It is, however, not permitted to make the software available to third parties to download or use it in the scope of a predominantly professional or commercial usage.</p><p>The license of the "free for personal use" edition of UCS occurs in the scope of a gift contract. We thus exclude all warranty and liability claims, except in the case of deliberate intention or gross negligence. We emphasise that the liability, warranty, support and maintance claims arising from our commercial software contracts do not apply to the "free for personal use" edition.</p><p>We wish you a lot of happiness using the "free for personal use" edition of Univention Corporate Server and look forward to receiving your feedback. If you have any questions, please consult our forum, which can be found on the Internet at http://forum.univention.de/.</p>');
 
@@ -52,9 +52,11 @@ define([
 		//		Class that provides the license Dialog for UCS. It shows details about the current license.
 
 		// umcPopup for content styling; umcConfirmDialog for max-width
-		'class': 'umcPopup umcConfirmDialog',
+		'class': 'umcPopup umcConfirmDialog umcUdmLicenseDialog',
 
-		_widgets: null,
+		_messageWidget: null,
+		_ffpuTextWidget: null,
+		_ffpuTitlePane: null,
 
 		licenseInfo: null,
 
@@ -75,28 +77,30 @@ define([
 				})
 			}];
 
-			this._widgets = render.widgets([{
-				type : Text,
-				name : 'message',
-				style : 'width: 100%',
+			this._messageWidget = new Text({
+				'class': 'umcUDMLicenseIcon',
 				content : ''
-			}, {
-				type : TitlePane,
-				name : 'ffpu',
+			});
+			this._ffpuTitlePane = new TitlePane({
+				'class': 'umcUDMLicenseTitlePane',
 				open: false,
 				title: _('Information about the "free for personal use" license'),
 				_setVisibleAttr: lang.hitch(this, function(visible) {
-					if (this._widgets && this._widgets.ffpu) {
+					if (this._ffpuTitlePane) {
 						var display = visible ? 'block' : 'none';
-						style.set(this._widgets.ffpu.domNode, 'display', display);
+						style.set(this._ffpuTitlePane.domNode, 'display', display);
 					}
 				})
-			}]);
+			});
 
-			this.message = render.layout(['message', 'ffpu'], this._widgets);
+			this._ffpuTitlePane.$label
 
-			this._ffpuText = new Text({'content': ''});
-			this._widgets.ffpu.addChild(this._ffpuText);
+			this.message = new ContainerWidget({});
+			this.message.addChild(this._messageWidget);
+			this.message.addChild(this._ffpuTitlePane);
+
+			this._ffpuTextWidget = new Text({'content': ''});
+			this._ffpuTitlePane.addChild(this._ffpuTextWidget);
 
 			this.updateLicense();
 		},
@@ -116,7 +120,7 @@ define([
 			}
 
 			var isFFPU = this.licenseInfo.ffpu;
-			this._widgets.ffpu.set('visible', false);
+			this._ffpuTitlePane.set('visible', false);
 
 			var keys, message;
 			if (this.licenseInfo.licenseVersion === 'gpl') {
@@ -203,11 +207,11 @@ define([
 					message = license_v2Html;
 				}
 
-				this._ffpuText.set('content', isFFPU ? ffpu_license_info : '');
-				this._widgets.ffpu.set('visible', isFFPU);
+				this._ffpuTextWidget.set('content', isFFPU ? ffpu_license_info : '');
+				this._ffpuTitlePane.set('visible', isFFPU);
 			}
 
-			this._widgets.message.set('content', lang.replace(message, keys));
+			this._messageWidget.set('content', lang.replace(message, keys));
 
 			// recenter dialog
 			this._size();

@@ -1,1 +1,3 @@
 univention-directory-reports-cleanup usr/sbin/
+umc/js/udm.css usr/share/univention-management-console-frontend/js/umc/modules
+umc/js/udm/*svg usr/share/univention-management-console-frontend/js/umc/modules/udm

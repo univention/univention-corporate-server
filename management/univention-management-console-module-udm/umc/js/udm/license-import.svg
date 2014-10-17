@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="82.332001"
+   height="141.14101"
+   id="svg3681">
+  <defs
+     id="defs3683">
+    <clipPath
+       id="clipPath562">
+      <path
+         d="m 0,0 1600,0 0,1200 L 0,1200 0,0 z"
+         id="path564" />
+    </clipPath>
+    <mask
+       id="mask580">
+      <g
+         id="g582">
+        <g
+           clip-path="url(#clipPath570)"
+           id="g584">
+          <g
+             id="g586">
+            <g
+               id="g588">
+              <path
+                 d="m -32560.3,32767 65327.3,0 0,-64502.2 -65327.3,0 0,64502.2 z"
+                 id="path590"
+                 style="fill:url(#linearGradient574);stroke:none" />
+            </g>
+          </g>
+        </g>
+      </g>
+    </mask>
+    <clipPath
+       id="clipPath570">
+      <path
+         d="m -32560.3,32767 65327.3,0 0,-64502.2 -65327.3,0 0,64502.2 z"
+         id="path572" />
+    </clipPath>
+    <linearGradient
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="0"
+       id="linearGradient574"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0,141.1405,141.1405,0,564.87585,460)"
+       spreadMethod="pad">
+      <stop
+         id="stop576"
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="0" />
+      <stop
+         id="stop578"
+         style="stop-color:#ffffff;stop-opacity:0.80000001"
+         offset="1" />
+    </linearGradient>
+    <clipPath
+       id="clipPath596">
+      <path
+         d="m 581.518,513.928 49.047,0 0,-54.928 -49.047,0 0,54.928 z"
+         id="path598" />
+    </clipPath>
+    <mask
+       id="mask622">
+      <g
+         id="g624">
+        <g
+           clip-path="url(#clipPath612)"
+           id="g626">
+          <g
+             id="g628">
+            <g
+               id="g630">
+              <path
+                 d="m -32560.3,32767 65327.3,0 0,-64502.2 -65327.3,0 0,64502.2 z"
+                 id="path632"
+                 style="fill:url(#linearGradient616);stroke:none" />
+            </g>
+          </g>
+        </g>
+      </g>
+    </mask>
+    <clipPath
+       id="clipPath612">
+      <path
+         d="m -32560.3,32767 65327.3,0 0,-64502.2 -65327.3,0 0,64502.2 z"
+         id="path614" />
+    </clipPath>
+    <linearGradient
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="0"
+       id="linearGradient616"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0,141.1405,141.1405,0,564.87585,460)"
+       spreadMethod="pad">
+      <stop
+         id="stop618"
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="0" />
+      <stop
+         id="stop620"
+         style="stop-color:#ffffff;stop-opacity:0.80000001"
+         offset="1" />
+    </linearGradient>
+    <clipPath
+       id="clipPath638">
+      <path
+         d="m 563.876,602.141 84.331,0 0,-84.333 -84.331,0 0,84.333 z"
+         id="path640" />
+    </clipPath>
+  </defs>
+  <metadata
+     id="metadata3686">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-323.5425,-479.4343)"
+     id="layer1">
+    <g
+       transform="matrix(1,0,0,-1,-241.3334,1080.5752)"
+       id="g558">
+      <g
+         clip-path="url(#clipPath562)"
+         id="g560">
+        <g
+           id="g566">
+          <g
+             id="g568" />
+          <g
+             mask="url(#mask580)"
+             id="g592">
+            <g
+               id="g594" />
+            <g
+               id="g600">
+              <g
+                 clip-path="url(#clipPath596)"
+                 id="g602">
+                <g
+                   transform="translate(620.7438,512.9279)"
+                   id="g604">
+                  <path
+                     d="m 0,0 8.821,0 0,-52.928 -23.277,17.643 -23.77,-17.643 0,52.928 8.603,0 c 4.882,-3.417 8.121,-5.881 14.921,-5.881 5.731,0 11.055,2.435 14.702,5.881"
+                     id="path606"
+                     style="fill:#787878;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g
+           id="g608">
+          <g
+             id="g610" />
+          <g
+             mask="url(#mask622)"
+             id="g634">
+            <g
+               id="g636" />
+            <g
+               id="g642">
+              <g
+                 clip-path="url(#clipPath638)"
+                 id="g644">
+                <g
+                   transform="translate(646.7709,552.4629)"
+                   id="g646">
+                  <path
+                     d="m 0,0 c 0.299,-0.862 0.437,-1.743 0.437,-2.616 0,-2.642 -1.304,-5.195 -3.618,-6.8 -7.386,-5.117 -6.41,-3.831 -9.19,-12.155 -1.165,-3.474 -4.525,-5.823 -8.316,-5.823 l -0.022,0 c -9.109,0.031 -7.523,0.52 -14.869,-4.641 -1.533,-1.079 -3.342,-1.619 -5.151,-1.619 -1.809,0 -3.618,0.54 -5.152,1.619 -7.345,5.163 -5.766,4.672 -14.868,4.641 l -0.023,0 c -3.79,0 -7.15,2.349 -8.311,5.823 -2.779,8.336 -1.826,7.044 -9.188,12.155 -2.32,1.608 -3.624,4.161 -3.624,6.802 0,0.874 0.143,1.752 0.436,2.614 2.843,8.296 2.848,6.696 0,15.026 -0.293,0.862 -0.436,1.743 -0.436,2.613 0,2.645 1.304,5.195 3.624,6.803 7.357,5.106 6.403,3.813 9.188,12.155 1.161,3.475 4.52,5.824 8.311,5.824 l 0.023,0 c 9.085,-0.032 7.471,-0.558 14.868,4.643 1.534,1.077 3.343,1.614 5.152,1.614 1.809,0 3.618,-0.537 5.151,-1.614 7.346,-5.163 5.766,-4.675 14.869,-4.643 l 0.022,0 c 3.791,0 7.151,-2.349 8.316,-5.824 2.78,-8.325 1.804,-7.038 9.19,-12.155 2.314,-1.605 3.618,-4.155 3.618,-6.797 C 0.437,16.772 0.299,15.888 0,15.026 -2.837,6.734 -2.848,8.331 0,0 m -20.147,16.454 -6.374,6.372 -19.354,-19.839 -9.066,8.594 -6.372,-6.372 15.437,-14.969 25.729,26.214 z"
+                     id="path648"
+                     style="fill:#7ab51d;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
