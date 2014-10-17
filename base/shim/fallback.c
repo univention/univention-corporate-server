@@ -15,7 +15,28 @@
 EFI_LOADED_IMAGE *this_image = NULL;
 
 static EFI_STATUS
-get_file_size(EFI_FILE_HANDLE fh, UINT64 *retsize)
+FindSubDevicePath(EFI_DEVICE_PATH *In, UINT8 Type, UINT8 SubType,
+		  EFI_DEVICE_PATH **Out)
+{
+	EFI_DEVICE_PATH *dp = In;
+	if (!In || !Out)
+		return EFI_INVALID_PARAMETER;
+
+	for (dp = In; !IsDevicePathEnd(dp); dp = NextDevicePathNode(dp)) {
+		if (DevicePathType(dp) == Type &&
+				DevicePathSubType(dp) == SubType) {
+			*Out = DuplicateDevicePath(dp);
+			if (!*Out)
+				return EFI_OUT_OF_RESOURCES;
+			return EFI_SUCCESS;
+		}
+	}
+	*Out = NULL;
+	return EFI_NOT_FOUND;
+}
+
+static EFI_STATUS
+get_file_size(EFI_FILE_HANDLE fh, UINTN *retsize)
 {
 	EFI_STATUS rc;
 	void *buffer = NULL;
@@ -60,7 +81,7 @@ read_file(EFI_FILE_HANDLE fh, CHAR16 *fullpath, CHAR16 **buffer, UINT64 *bs)
 		return rc;
 	}
 
-	UINT64 len = 0;
+	UINTN len = 0;
 	CHAR16 *b = NULL;
 	rc = get_file_size(fh2, &len);
 	if (EFI_ERROR(rc)) {
@@ -93,7 +114,9 @@ make_full_path(CHAR16 *dirname, CHAR16 *filename, CHAR16 **out, UINT64 *outlen)
 {
 	UINT64 len;
 	
-	len = StrLen(dirname) + StrLen(filename) + StrLen(L"\\EFI\\\\") + 2;
+	len = StrLen(L"\\EFI\\") + StrLen(dirname)
+	    + StrLen(L"\\") + StrLen(filename)
+	    + 2;
 
 	CHAR16 *fullpath = AllocateZeroPool(len*sizeof(CHAR16));
 	if (!fullpath) {
@@ -119,7 +142,8 @@ VOID *first_new_option_args = NULL;
 UINTN first_new_option_size = 0;
 
 EFI_STATUS
-add_boot_option(EFI_DEVICE_PATH *dp, CHAR16 *filename, CHAR16 *label, CHAR16 *arguments)
+add_boot_option(EFI_DEVICE_PATH *hddp, EFI_DEVICE_PATH *fulldp,
+		CHAR16 *filename, CHAR16 *label, CHAR16 *arguments)
 {
 	static int i = 0;
 	CHAR16 varname[] = L"Boot0000";
@@ -136,24 +160,31 @@ add_boot_option(EFI_DEVICE_PATH *dp, CHAR16 *filename, CHAR16 *label, CHAR16 *ar
 		void *var = LibGetVariable(varname, &global);
 		if (!var) {
 			int size = sizeof(UINT32) + sizeof (UINT16) +
-				StrLen(label)*2 + 2 + DevicePathSize(dp) +
-				StrLen(arguments) * 2 + 2;
+				StrLen(label)*2 + 2 + DevicePathSize(hddp) +
+				StrLen(arguments) * 2;
 
 			CHAR8 *data = AllocateZeroPool(size);
 			CHAR8 *cursor = data;
 			*(UINT32 *)cursor = LOAD_OPTION_ACTIVE;
 			cursor += sizeof (UINT32);
-			*(UINT16 *)cursor = DevicePathSize(dp);
+			*(UINT16 *)cursor = DevicePathSize(hddp);
 			cursor += sizeof (UINT16);
 			StrCpy((CHAR16 *)cursor, label);
 			cursor += StrLen(label)*2 + 2;
-			CopyMem(cursor, dp, DevicePathSize(dp));
-			cursor += DevicePathSize(dp);
+			CopyMem(cursor, hddp, DevicePathSize(hddp));
+			cursor += DevicePathSize(hddp);
 			StrCpy((CHAR16 *)cursor, arguments);
 
 			Print(L"Creating boot entry \"%s\" with label \"%s\" "
 					L"for file \"%s\"\n",
 				varname, label, filename);
+
+			if (!first_new_option) {
+				first_new_option = DuplicateDevicePath(fulldp);
+				first_new_option_args = arguments;
+				first_new_option_size = StrLen(arguments) * sizeof (CHAR16);
+			}
+
 			rc = uefi_call_wrapper(RT->SetVariable, 5, varname,
 				&global, EFI_VARIABLE_NON_VOLATILE |
 					 EFI_VARIABLE_BOOTSERVICE_ACCESS |
@@ -173,12 +204,12 @@ add_boot_option(EFI_DEVICE_PATH *dp, CHAR16 *filename, CHAR16 *label, CHAR16 *ar
 				return EFI_OUT_OF_RESOURCES;
 
 			int j = 0;
+			newbootorder[0] = i & 0xffff;
 			if (nbootorder) {
 				for (j = 0; j < nbootorder; j++)
-					newbootorder[j] = bootorder[j];
+					newbootorder[j+1] = bootorder[j];
 				FreePool(bootorder);
 			}
-			newbootorder[j] = i & 0xffff;
 			bootorder = newbootorder;
 			nbootorder += 1;
 #ifdef DEBUG_FALLBACK
@@ -195,30 +226,105 @@ add_boot_option(EFI_DEVICE_PATH *dp, CHAR16 *filename, CHAR16 *label, CHAR16 *ar
 }
 
 EFI_STATUS
-update_boot_order(void)
+find_boot_option(EFI_DEVICE_PATH *dp, EFI_DEVICE_PATH *fulldp,
+                 CHAR16 *filename, CHAR16 *label, CHAR16 *arguments,
+                 UINT16 *optnum)
+{
+	unsigned int size = sizeof(UINT32) + sizeof (UINT16) +
+		StrLen(label)*2 + 2 + DevicePathSize(dp) +
+		StrLen(arguments) * 2;
+
+	CHAR8 *data = AllocateZeroPool(size);
+	if (!data)
+		return EFI_OUT_OF_RESOURCES;
+	CHAR8 *cursor = data;
+	*(UINT32 *)cursor = LOAD_OPTION_ACTIVE;
+	cursor += sizeof (UINT32);
+	*(UINT16 *)cursor = DevicePathSize(dp);
+	cursor += sizeof (UINT16);
+	StrCpy((CHAR16 *)cursor, label);
+	cursor += StrLen(label)*2 + 2;
+	CopyMem(cursor, dp, DevicePathSize(dp));
+	cursor += DevicePathSize(dp);
+	StrCpy((CHAR16 *)cursor, arguments);
+
+	int i = 0;
+	CHAR16 varname[] = L"Boot0000";
+	CHAR16 hexmap[] = L"0123456789ABCDEF";
+	EFI_GUID global = EFI_GLOBAL_VARIABLE;
+	EFI_STATUS rc;
+
+	CHAR8 *candidate = AllocateZeroPool(size);
+	if (!candidate) {
+		FreePool(data);
+		return EFI_OUT_OF_RESOURCES;
+	}
+
+	for(i = 0; i < nbootorder && i < 0x10000; i++) {
+		varname[4] = hexmap[(bootorder[i] & 0xf000) >> 12];
+		varname[5] = hexmap[(bootorder[i] & 0x0f00) >> 8];
+		varname[6] = hexmap[(bootorder[i] & 0x00f0) >> 4];
+		varname[7] = hexmap[(bootorder[i] & 0x000f) >> 0];
+
+		UINTN candidate_size = size;
+		rc = uefi_call_wrapper(RT->GetVariable, 5, varname, &global,
+					NULL, &candidate_size, candidate);
+		if (EFI_ERROR(rc))
+			continue;
+
+		if (candidate_size != size)
+			continue;
+
+		if (CompareMem(candidate, data, size))
+			continue;
+
+		/* at this point, we have duplicate data. */
+		if (!first_new_option) {
+			first_new_option = DuplicateDevicePath(fulldp);
+			first_new_option_args = arguments;
+			first_new_option_size = StrLen(arguments) * sizeof (CHAR16);
+		}
+
+		*optnum = i;
+		FreePool(candidate);
+		FreePool(data);
+		return EFI_SUCCESS;
+	}
+	FreePool(candidate);
+	FreePool(data);
+	return EFI_NOT_FOUND;
+}
+
+EFI_STATUS
+set_boot_order(void)
 {
 	CHAR16 *oldbootorder;
 	UINTN size;
 	EFI_GUID global = EFI_GLOBAL_VARIABLE;
-	CHAR16 *newbootorder = NULL;
 
 	oldbootorder = LibGetVariableAndSize(L"BootOrder", &global, &size);
 	if (oldbootorder) {
-		int n = size / sizeof (CHAR16) + nbootorder;
-
-		newbootorder = AllocateZeroPool(n * sizeof (CHAR16));
-		if (!newbootorder)
-			return EFI_OUT_OF_RESOURCES;
-		CopyMem(newbootorder, bootorder, nbootorder * sizeof (CHAR16));
-		CopyMem(newbootorder + nbootorder, oldbootorder, size);
-		size = n * sizeof (CHAR16);
-	} else {
-		size = nbootorder * sizeof(CHAR16);
-		newbootorder = AllocateZeroPool(size);
-		if (!newbootorder)
-			return EFI_OUT_OF_RESOURCES;
-		CopyMem(newbootorder, bootorder, size);
+		nbootorder = size / sizeof (CHAR16);
+		bootorder = oldbootorder;
 	}
+	return EFI_SUCCESS;
+
+}
+
+EFI_STATUS
+update_boot_order(void)
+{
+	UINTN size;
+	UINTN len = 0;
+	EFI_GUID global = EFI_GLOBAL_VARIABLE;
+	CHAR16 *newbootorder = NULL;
+	EFI_STATUS rc;
+
+	size = nbootorder * sizeof(CHAR16);
+	newbootorder = AllocateZeroPool(size);
+	if (!newbootorder)
+		return EFI_OUT_OF_RESOURCES;
+	CopyMem(newbootorder, bootorder, size);
 
 #ifdef DEBUG_FALLBACK
 	Print(L"nbootorder: %d\nBootOrder: ", size / sizeof (CHAR16));
@@ -227,13 +333,11 @@ update_boot_order(void)
 		Print(L"%04x ", newbootorder[j]);
 	Print(L"\n");
 #endif
-
-	if (oldbootorder) {
+	rc = uefi_call_wrapper(RT->GetVariable, 5, L"BootOrder", &global,
+			       NULL, &len, NULL);
+	if (rc == EFI_BUFFER_TOO_SMALL)
 		LibDeleteVariable(L"BootOrder", &global);
-		FreePool(oldbootorder);
-	}
 
-	EFI_STATUS rc;
 	rc = uefi_call_wrapper(RT->SetVariable, 5, L"BootOrder", &global,
 					EFI_VARIABLE_NON_VOLATILE |
 					 EFI_VARIABLE_BOOTSERVICE_ACCESS |
@@ -254,7 +358,10 @@ add_to_boot_list(EFI_FILE_HANDLE fh, CHAR16 *dirname, CHAR16 *filename, CHAR16 *
 	if (EFI_ERROR(rc))
 		return rc;
 	
-	EFI_DEVICE_PATH *dph = NULL, *dpf = NULL, *dp = NULL;
+	EFI_DEVICE_PATH *dph = NULL;
+	EFI_DEVICE_PATH *file = NULL;
+	EFI_DEVICE_PATH *full_device_path = NULL;
+	EFI_DEVICE_PATH *dp = NULL;
 	
 	dph = DevicePathFromHandle(this_image->DeviceHandle);
 	if (!dph) {
@@ -262,19 +369,31 @@ add_to_boot_list(EFI_FILE_HANDLE fh, CHAR16 *dirname, CHAR16 *filename, CHAR16 *
 		goto err;
 	}
 
-	dpf = FileDevicePath(fh, fullpath);
-	if (!dpf) {
+	file = FileDevicePath(fh, fullpath);
+	if (!file) {
 		rc = EFI_OUT_OF_RESOURCES;
 		goto err;
 	}
 
-	dp = AppendDevicePath(dph, dpf);
-	if (!dp) {
+	full_device_path = AppendDevicePath(dph, file);
+	if (!full_device_path) {
 		rc = EFI_OUT_OF_RESOURCES;
 		goto err;
+	}
+
+	rc = FindSubDevicePath(full_device_path,
+				MEDIA_DEVICE_PATH, MEDIA_HARDDRIVE_DP, &dp);
+	if (EFI_ERROR(rc)) {
+		if (rc == EFI_NOT_FOUND) {
+			dp = full_device_path;
+		} else {
+			rc = EFI_OUT_OF_RESOURCES;
+			goto err;
+		}
 	}
 
 #ifdef DEBUG_FALLBACK
+	{
 	UINTN s = DevicePathSize(dp);
 	int i;
 	UINT8 *dpv = (void *)dp;
@@ -287,20 +406,32 @@ add_to_boot_list(EFI_FILE_HANDLE fh, CHAR16 *dirname, CHAR16 *filename, CHAR16 *
 
 	CHAR16 *dps = DevicePathToStr(dp);
 	Print(L"device path: \"%s\"\n", dps);
+	}
 #endif
-	if (!first_new_option) {
-		CHAR16 *dps = DevicePathToStr(dp);
-		Print(L"device path: \"%s\"\n", dps);
-		first_new_option = DuplicateDevicePath(dp);
-		first_new_option_args = arguments;
-		first_new_option_size = StrLen(arguments) * sizeof (CHAR16);
+
+	UINT16 option;
+	rc = find_boot_option(dp, full_device_path, fullpath, label, arguments, &option);
+	if (EFI_ERROR(rc)) {
+		add_boot_option(dp, full_device_path, fullpath, label, arguments);
+	} else if (option != 0) {
+		CHAR16 *newbootorder;
+		newbootorder = AllocateZeroPool(sizeof (CHAR16) * nbootorder);
+		if (!newbootorder)
+			return EFI_OUT_OF_RESOURCES;
+
+		newbootorder[0] = bootorder[option];
+		CopyMem(newbootorder + 1, bootorder, sizeof (CHAR16) * option);
+		CopyMem(newbootorder + option + 1, bootorder + option + 1,
+			sizeof (CHAR16) * (nbootorder - option - 1));
+		FreePool(bootorder);
+		bootorder = newbootorder;
 	}
 
-	add_boot_option(dp, fullpath, label, arguments);
-
 err:
-	if (dpf)
-		FreePool(dpf);
+	if (file)
+		FreePool(file);
+	if (full_device_path)
+		FreePool(full_device_path);
 	if (dp)
 		FreePool(dp);
 	if (fullpath)
@@ -445,25 +576,32 @@ find_boot_csv(EFI_FILE_HANDLE fh, CHAR16 *dirname)
 		return EFI_SUCCESS;
 	}
 	FreePool(buffer);
+	buffer = NULL;
 
 	bs = 0;
 	do {
 		bs = 0;
 		rc = uefi_call_wrapper(fh->Read, 3, fh, &bs, NULL);
-		if (rc == EFI_BUFFER_TOO_SMALL) {
-			buffer = AllocateZeroPool(bs);
-			if (!buffer) {
-				Print(L"Could not allocate memory\n");
-				return EFI_OUT_OF_RESOURCES;
-			}
-
-			rc = uefi_call_wrapper(fh->Read, 3, fh, &bs, buffer);
+		if (EFI_ERROR(rc) && rc != EFI_BUFFER_TOO_SMALL) {
+			Print(L"Could not read \\EFI\\%s\\: %d\n", dirname, rc);
+			if (buffer)
+				FreePool(buffer);
+			return rc;
 		}
+
+		buffer = AllocateZeroPool(bs);
+		if (!buffer) {
+			Print(L"Could not allocate memory\n");
+			return EFI_OUT_OF_RESOURCES;
+		}
+
+		rc = uefi_call_wrapper(fh->Read, 3, fh, &bs, buffer);
 		if (EFI_ERROR(rc)) {
 			Print(L"Could not read \\EFI\\%s\\: %d\n", dirname, rc);
 			FreePool(buffer);
 			return rc;
 		}
+
 		if (bs == 0)
 			break;
 
@@ -622,8 +760,19 @@ try_start_first_option(EFI_HANDLE parent_image_handle)
 			       first_new_option, NULL, 0,
 			       &image_handle);
 	if (EFI_ERROR(rc)) {
-		Print(L"LoadImage failed: %d\n", rc);
-		uefi_call_wrapper(BS->Stall, 1, 2000000);
+		CHAR16 *dps = DevicePathToStr(first_new_option);
+		UINTN s = DevicePathSize(first_new_option);
+		unsigned int i;
+		UINT8 *dpv = (void *)first_new_option;
+		Print(L"LoadImage failed: %d\nDevice path: \"%s\"\n", rc, dps);
+		for (i = 0; i < s; i++) {
+			if (i > 0 && i % 16 == 0)
+				Print(L"\n");
+			Print(L"%02x ", dpv[i]);
+		}
+		Print(L"\n");
+
+		uefi_call_wrapper(BS->Stall, 1, 500000000);
 		return rc;
 	}
 
@@ -637,7 +786,7 @@ try_start_first_option(EFI_HANDLE parent_image_handle)
 	rc = uefi_call_wrapper(BS->StartImage, 3, image_handle, NULL, NULL);
 	if (EFI_ERROR(rc)) {
 		Print(L"StartImage failed: %d\n", rc);
-		uefi_call_wrapper(BS->Stall, 1, 2000000);
+		uefi_call_wrapper(BS->Stall, 1, 500000000);
 	}
 	return rc;
 }
@@ -656,6 +805,8 @@ efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 	}
 
 	Print(L"System BootOrder not found.  Initializing defaults.\n");
+
+	set_boot_order();
 
 	rc = find_boot_options(this_image->DeviceHandle);
 	if (EFI_ERROR(rc)) {

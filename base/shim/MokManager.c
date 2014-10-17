@@ -100,8 +100,18 @@ static UINT32 count_keys(void *Data, UINTN DataSize)
 	EFI_GUID HashType = EFI_CERT_SHA256_GUID;
 	UINTN dbsize = DataSize;
 	UINT32 MokNum = 0;
+	void *end = Data + DataSize;
 
 	while ((dbsize > 0) && (dbsize >= CertList->SignatureListSize)) {
+
+		/* Use ptr arithmetics to ensure bounded access. Do not allow 0
+		 * SignatureListSize that will cause endless loop.
+		 */
+		if ((void *)(CertList + 1) > end || CertList->SignatureListSize == 0) {
+			console_notify(L"Invalid MOK detected! Ignoring MOK List.");
+			return 0;
+		}
+
 		if ((CompareGuid (&CertList->SignatureType, &CertType) != 0) &&
 		    (CompareGuid (&CertList->SignatureType, &HashType) != 0)) {
 			console_notify(L"Doesn't look like a key or hash");
@@ -137,6 +147,7 @@ static MokListNode *build_mok_list(UINT32 num, void *Data, UINTN DataSize) {
 	EFI_GUID HashType = EFI_CERT_SHA256_GUID;
 	UINTN dbsize = DataSize;
 	UINTN count = 0;
+	void *end = Data + DataSize;
 
 	list = AllocatePool(sizeof(MokListNode) * num);
 
@@ -146,6 +157,11 @@ static MokListNode *build_mok_list(UINT32 num, void *Data, UINTN DataSize) {
 	}
 
 	while ((dbsize > 0) && (dbsize >= CertList->SignatureListSize)) {
+		/* CertList out of bounds? */
+		if ((void *)(CertList + 1) > end || CertList->SignatureListSize == 0) {
+			FreePool(list);
+			return NULL;
+		}
 		if ((CompareGuid (&CertList->SignatureType, &CertType) != 0) &&
 		    (CompareGuid (&CertList->SignatureType, &HashType) != 0)) {
 			dbsize -= CertList->SignatureListSize;
@@ -165,9 +181,22 @@ static MokListNode *build_mok_list(UINT32 num, void *Data, UINTN DataSize) {
 		Cert = (EFI_SIGNATURE_DATA *) (((UINT8 *) CertList) +
 		  sizeof (EFI_SIGNATURE_LIST) + CertList->SignatureHeaderSize);
 
+		/* Cert out of bounds? */
+		if ((void *)(Cert + 1) > end || CertList->SignatureSize <= sizeof(EFI_GUID)) {
+			FreePool(list);
+			return NULL;
+		}
+
 		list[count].MokSize = CertList->SignatureSize - sizeof(EFI_GUID);
 		list[count].Mok = (void *)Cert->SignatureData;
 		list[count].Type = CertList->SignatureType;
+
+		/* MOK out of bounds? */
+		if (list[count].MokSize > (unsigned long)end -
+					  (unsigned long)list[count].Mok) {
+			FreePool(list);
+			return NULL;
+		}
 
 		count++;
 		dbsize -= CertList->SignatureListSize;
@@ -436,7 +465,7 @@ static void show_mok_info (void *Mok, UINTN MokSize)
 
 static EFI_STATUS list_keys (void *KeyList, UINTN KeyListSize, CHAR16 *title)
 {
-	UINT32 MokNum = 0;
+	INTN MokNum = 0;
 	MokListNode *keys = NULL;
 	INTN key_num = 0;
 	CHAR16 **menu_strings;
@@ -449,6 +478,8 @@ static EFI_STATUS list_keys (void *KeyList, UINTN KeyListSize, CHAR16 *title)
 	}
 
 	MokNum = count_keys(KeyList, KeyListSize);
+	if (MokNum == 0)
+		return 0;
 	keys = build_mok_list(MokNum, KeyList, KeyListSize);
 
 	if (!keys) {
@@ -488,13 +519,19 @@ static EFI_STATUS list_keys (void *KeyList, UINTN KeyListSize, CHAR16 *title)
 	return EFI_SUCCESS;
 }
 
-static UINT8 get_line (UINT32 *length, CHAR16 *line, UINT32 line_max, UINT8 show)
+static EFI_STATUS get_line (UINT32 *length, CHAR16 *line, UINT32 line_max, UINT8 show)
 {
 	EFI_INPUT_KEY key;
-	int count = 0;
+	EFI_STATUS status;
+	unsigned int count = 0;
 
 	do {
-		key = console_get_keystroke();
+		status = console_get_keystroke(&key);
+		if (EFI_ERROR (status)) {
+			console_error(L"Failed to read the keystroke", status);
+			*length = 0;
+			return status;
+		}
 
 		if ((count >= line_max &&
 		     key.UnicodeChar != CHAR_BACKSPACE) ||
@@ -525,7 +562,7 @@ static UINT8 get_line (UINT32 *length, CHAR16 *line, UINT32 line_max, UINT8 show
 
 	*length = count;
 
-	return 1;
+	return EFI_SUCCESS;
 }
 
 static EFI_STATUS compute_pw_hash (void *Data, UINTN DataSize, UINT8 *password,
@@ -640,7 +677,7 @@ static EFI_STATUS match_password (PASSWORD_CRYPT *pw_crypt,
 	CHAR16 password[PASSWORD_MAX];
 	UINT32 pw_length;
 	UINT8 fail_count = 0;
-	int i;
+	unsigned int i;
 
 	if (pw_crypt) {
 		auth_hash = pw_crypt->hash;
@@ -989,6 +1026,7 @@ static INTN mok_deletion_prompt (void *MokDel, UINTN MokDelSize)
 static CHAR16 get_password_charater (CHAR16 *prompt)
 {
 	SIMPLE_TEXT_OUTPUT_MODE SavedMode;
+	EFI_STATUS status;
 	CHAR16 *message[2];
 	CHAR16 character;
 	UINTN length;
@@ -1003,7 +1041,9 @@ static CHAR16 get_password_charater (CHAR16 *prompt)
 	message[1] = NULL;
 	length = StrLen(message[0]);
 	console_print_box_at(message, -1, -length-4, -5, length+4, 3, 0, 1);
-	get_line(&pw_length, &character, 1, 0);
+	status = get_line(&pw_length, &character, 1, 0);
+	if (EFI_ERROR(status))
+		character = 0;
 
 	console_restore_mode(&SavedMode);
 
@@ -1112,7 +1152,16 @@ static INTN mok_sb_prompt (void *MokSB, UINTN MokSBSize) {
 			return -1;
 		}
 	} else {
-		LibDeleteVariable(L"MokSBState", &shim_lock_guid);
+		efi_status = uefi_call_wrapper(RT->SetVariable,
+					       5, L"MokSBState",
+					       &shim_lock_guid,
+					       EFI_VARIABLE_NON_VOLATILE |
+					       EFI_VARIABLE_BOOTSERVICE_ACCESS,
+					       0, NULL);
+		if (efi_status != EFI_SUCCESS) {
+			console_notify(L"Failed to delete Secure Boot state");
+			return -1;
+		}
 	}
 
 	console_notify(L"The system must now be rebooted");
@@ -1224,7 +1273,16 @@ static INTN mok_db_prompt (void *MokDB, UINTN MokDBSize) {
 			return -1;
 		}
 	} else {
-		LibDeleteVariable(L"MokDBState", &shim_lock_guid);
+		efi_status = uefi_call_wrapper(RT->SetVariable, 5,
+					       L"MokDBState",
+					       &shim_lock_guid,
+					       EFI_VARIABLE_NON_VOLATILE |
+					       EFI_VARIABLE_BOOTSERVICE_ACCESS,
+					       0, NULL);
+		if (efi_status != EFI_SUCCESS) {
+			console_notify(L"Failed to delete DB state");
+			return -1;
+		}
 	}
 
 	console_notify(L"The system must now be rebooted");
@@ -1261,7 +1319,11 @@ static INTN mok_pw_prompt (void *MokPW, UINTN MokPWSize) {
 		if (console_yes_no((CHAR16 *[]){L"Clear MOK password?", NULL}) == 0)
 			return 0;
 
-		LibDeleteVariable(L"MokPWStore", &shim_lock_guid);
+		uefi_call_wrapper(RT->SetVariable, 5, L"MokPWStore",
+				  &shim_lock_guid,
+				  EFI_VARIABLE_NON_VOLATILE
+				  | EFI_VARIABLE_BOOTSERVICE_ACCESS,
+				  0, NULL);
 		LibDeleteVariable(L"MokPW", &shim_lock_guid);
 		console_notify(L"The system must now be rebooted");
 		uefi_call_wrapper(RT->ResetSystem, 4, EfiResetWarm, EFI_SUCCESS, 0,
@@ -1306,11 +1368,30 @@ static INTN mok_pw_prompt (void *MokPW, UINTN MokPWSize) {
 	return -1;
 }
 
-static BOOLEAN verify_certificate(void *cert, UINTN size)
+static BOOLEAN verify_certificate(UINT8 *cert, UINTN size)
 {
 	X509 *X509Cert;
-	if (!cert || size == 0)
+	UINTN length;
+	if (!cert || size < 0)
 		return FALSE;
+
+	/*
+	 * A DER encoding x509 certificate starts with SEQUENCE(0x30),
+	 * the number of length bytes, and the number of value bytes.
+	 * The size of a x509 certificate is usually between 127 bytes
+	 * and 64KB. For convenience, assume the number of value bytes
+	 * is 2, i.e. the second byte is 0x82.
+	 */
+	if (cert[0] != 0x30 || cert[1] != 0x82) {
+		console_notify(L"Not a DER encoding X509 certificate");
+		return FALSE;
+	}
+
+	length = (cert[2]<<8 | cert[3]);
+	if (length != (size - 4)) {
+		console_notify(L"Invalid X509 certificate: Inconsistent size");
+		return FALSE;
+	}
 
 	if (!(X509ConstructCertificate(cert, size, (UINT8 **) &X509Cert)) ||
 	    X509Cert == NULL) {

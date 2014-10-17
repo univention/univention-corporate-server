@@ -139,7 +139,7 @@ SetSecureVariable(CHAR16 *var, UINT8 *Data, UINTN len, EFI_GUID owner,
 	/* Microsoft request: Bugs in some UEFI platforms mean that PK or any
 	 * other secure variable can be updated or deleted programmatically,
 	 * so prevent */
-	if (!variable_is_setupmode())
+	if (!variable_is_setupmode(1))
 		return EFI_SECURITY_VIOLATION;
 
 	if (createtimebased) {
@@ -224,7 +224,7 @@ get_variable_attr(CHAR16 *var, UINT8 **data, UINTN *len, EFI_GUID owner,
 		return efi_status;
 
 	*data = AllocateZeroPool(*len);
-	if (!data)
+	if (!*data)
 		return EFI_OUT_OF_RESOURCES;
 	
 	efi_status = uefi_call_wrapper(RT->GetVariable, 5, var, &owner,
@@ -279,14 +279,17 @@ find_in_variable_esl(CHAR16* var, EFI_GUID owner, UINT8 *key, UINTN keylen)
 }
 
 int
-variable_is_setupmode(void)
+variable_is_setupmode(int default_return)
 {
 	/* set to 1 because we return true if SetupMode doesn't exist */
-	UINT8 SetupMode = 1;
+	UINT8 SetupMode = default_return;
 	UINTN DataSize = sizeof(SetupMode);
+	EFI_STATUS status;
 
-	uefi_call_wrapper(RT->GetVariable, 5, L"SetupMode", &GV_GUID, NULL,
-			  &DataSize, &SetupMode);
+	status = uefi_call_wrapper(RT->GetVariable, 5, L"SetupMode", &GV_GUID, NULL,
+				   &DataSize, &SetupMode);
+	if (EFI_ERROR(status))
+		return default_return;
 
 	return SetupMode;
 }
@@ -297,10 +300,13 @@ variable_is_secureboot(void)
 	/* return false if variable doesn't exist */
 	UINT8 SecureBoot = 0;
 	UINTN DataSize;
+	EFI_STATUS status;
 
 	DataSize = sizeof(SecureBoot);
-	uefi_call_wrapper(RT->GetVariable, 5, L"SecureBoot", &GV_GUID, NULL,
-			  &DataSize, &SecureBoot);
+	status = uefi_call_wrapper(RT->GetVariable, 5, L"SecureBoot", &GV_GUID, NULL,
+				   &DataSize, &SecureBoot);
+	if (EFI_ERROR(status))
+		return 0;
 
 	return SecureBoot;
 }
