@@ -1,3 +1,9 @@
+ucs-test (4.0.171-2) unstable; urgency=medium
+
+  * 00_base/45license_v2: Added more debug (Bug #35221)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Oct 2014 12:28:26 +0200
+
 ucs-test (4.0.171-1) unstable; urgency=low
 
    * Bug #35900: use utc time instead of local time
