@@ -183,7 +183,7 @@ define([
 			// ... hide unused label node
 			var isCheckBox = this._isContentInstanceOf(DijitCheckBox);
 			var isHiddenInput = this._isContentInstanceOf(HiddenInput);
-			if (isHiddenInput) {
+			if (!label || isHiddenInput) {
 				domClass.add(this.labelNodeRight, 'dijitHidden');
 				domClass.add(this.labelNodeBottom, 'dijitHidden');
 			}

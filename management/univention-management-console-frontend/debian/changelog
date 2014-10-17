@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.50-1) unstable; urgency=medium
+
+  * Bug #35654: hide label nodes in LabelPane if an empty label is given
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Oct 2014 17:19:40 +0200
+
 univention-management-console-frontend (4.1.49-1) unstable; urgency=medium
 
   * Bug #35654: adapt startup wizard graphics
