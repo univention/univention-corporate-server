@@ -34,6 +34,12 @@
 				The codename for UCS 4.0 has been set to <emphasis>Walle</emphasis>
 				(<ulink url="&ucsbug;35312">Bug 35312</ulink>).
 		</simpara></listitem>
+		<listitem><simpara>
+				The maintained Java version in UCS 4.0 is OpenJDK 7. If OpenJDK 6 is installed,
+				the upgrade process replaces it with OpenJDK 7. The migration can be skipped
+				by setting the &ucsUCRV; <envar>update40/skip/openjdk7</envar> to 
+				<emphasis>true</emphasis> (<ulink url="&ucsbug;35382">Bug 35382</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 </section>
 
