@@ -40,13 +40,13 @@ define([
 	"dojo/dom-class",
 	"dojo/on",
 	"dojo/json",
+	"dojo/router",
+	"dojo/hash",
 	"./CategoryButton",
-	//"dojo/text!entries.json",
-	//"dojo/text!languages.json",
+	"dojo/text!/ucs-overview/entries.json",
+	"dojo/text!/ucs-overview/languages.json",
 	"./i18n!../ucs"
-], function(ioQuery, lang, kernel, array, query, domConstruct, domAttr, domStyle, domClass, on, json, CategoryButton, /*entriesStr, languagesStr, */ _) {
-	var entriesStr = "[]";
-	var languagesStr = "[]";
+], function(ioQuery, lang, kernel, array, query, domConstruct, domAttr, domStyle, domClass, on, json, router, hash, CategoryButton, entriesStr, languagesStr, _) {
 	var entries = json.parse(entriesStr);
 	var ucr = entries.ucr;
 
@@ -63,6 +63,8 @@ define([
 	}
 
 	return {
+		servicesButton: null,
+		adminButton: null,
 		_entries: entries,
 		_ucr: ucr,
 		_availableLocales: availableLocales,
@@ -72,7 +74,8 @@ define([
 		// matching data-i18n attribute in HTML code
 		_translations: {
 			header: _('UCS - {hostname}.{domainname}', ucr),
-			claim: _('Welcome to Univention Corporate Server <b>{hostname}.{domainname}</b>', ucr),
+			claimHead: _('Welcome to Univention Corporate Server'),
+			claim: _('<b>{hostname}.{domainname}</b>', ucr),
 			services: _('Installed web services'),
 			admin: _('Administration'),
 			noServiceTitle: _('There are currently no user web services installed.'),
@@ -124,15 +127,15 @@ define([
 				localizedProps[ikey] = this._localizeString(props[ikey]);
 			}));
 			var node = domConstruct.toDom(lang.replace(
-				'<li class="item col-md-6">\n'
+				'<div class="umcGalleryWrapperItem col-xs-12 col-sm-6 col-md-4 col-lg-3">\n'
 				+ '	<a href="{link}">\n'
-				+ '		<span class="wrapper">\n'
-				+ '			<span class="icon" style="background-image:url({icon})"></span>\n'
-				+ '			<span class="title">{label}</span>\n'
-				+ '			<span class="text">{description}</span>\n'
-				+ '		</span>\n'
+				+ '		<div class="umcGalleryItem umcGalleryCategory-admin">\n'
+				+ '			<div class="umcGalleryIcon" style="background-image:url({icon})"></div>\n'
+				+ '			<div class="umcGalleryName">{label}</div>\n'
+				+ '			<div class="umcGalleryDescription">{description}</div>\n'
+				+ '		</div>\n'
 				+ '	</a>\n'
-				+ '</li>\n',
+				+ '</div>\n',
 				localizedProps
 			));
 			return node;
@@ -148,15 +151,18 @@ define([
 		},
 
 		_placeLinkEntriesInDom: function(category) {
-			var listNode = query(lang.replace('#{0} .items', [category]))[0];
+			var listNode = query(lang.replace('#{0}-tab', [category]))[0];
 			array.forEach(this._getLinkEntries(category), lang.hitch(this, function(ientryNode) {
 				domConstruct.place(ientryNode, listNode);
 			}));
 		},
 
 		_focusTab: function(category) {
-			// bootstrap specific command tab()...
-			//$(lang.replace('#site-header .nav-tabs a[href=#{0}]', [category])).tab('show');
+			// set visibility of tabs through css and also set 'selectd' of category buttons
+			domClass.toggle("service-tab", "galleryTabInvisible", category != "service");
+			this.servicesButton.set('selected', category == "service");
+			domClass.toggle("admin-tab", "galleryTabInvisible", category == "service");
+			this.adminButton.set('selected', category != "service");
 		},
 
 		_focusAdminTab: function() {
@@ -180,30 +186,34 @@ define([
 			
 		},
 
-		_placeCategoryButtons: function(){
-			var admin = new CategoryButton({
-			label: 'Administration',
-					//'class': 'Test',
-					//callback: lang.hitch(this, '_updateQuery', category),
-					color: 'green',
-					categoryID: 'administration',
-					iconClass: 'category-admin'
-			});
-			var web = new CategoryButton({
-				label: 'Web-Services',
-					//'class': 'Test',
-					//callback: lang.hitch(this, '_updateQuery', category),
-					color: 'blue',
-					categoryID: 'webservices',
-					iconClass: 'category-services'
-			});
-			web.placeAt("category-bar");
-			admin.placeAt("category-bar");
 
+		_placeCategoryButtons: function(){
+			this.adminButton = new CategoryButton({
+				label: 'Administration',
+				'class': 'category-admin',
+				onClick: lang.hitch(this, function() {
+					router.go('/admin');
+				}),
+				color: '#80b828',
+				categoryID: 'admin',
+				iconClass: 'category-admin'
+			});
+			this.servicesButton = new CategoryButton({
+				label: 'Web-Services',
+				'class': 'category-services',
+				onClick: lang.hitch(this, function() {
+					router.go('/service');
+				}),
+				color: '#4bbfef',
+				categoryID: 'web',
+				iconClass: 'category-services'
+			});
+			this.servicesButton.placeAt("category-bar");
+			this.adminButton.placeAt("category-bar");
 		},
 
 		_updateNoServiceHint: function() {
-			domStyle.set('no-service', 'display', this._entries.service.length ? 'none' : 'block');
+			//domStyle.set('no-service', 'display', this._entries.service.length ? 'none' : 'block');
 		},
 
 		_updateLinkEntries: function() {
@@ -283,12 +293,21 @@ define([
 			on(window, 'hashchange', lang.hitch(this, '_updateActiveTab'));
 		},
 
+
+		_registerRouter: function(){
+			router.register("/:category", lang.hitch(this, function(data){
+				this._focusTab(data.params.category);
+			}));
+			router.startup("/admin");
+		},
+
 		start: function() {
 			this._placeCategoryButtons();
+			this._registerRouter();
 			//this._updateNoScriptElements();
 			this._updateLinkEntries();
 			this._updateLocales();
-			//this._updateTranslations();
+			this._updateTranslations();
 			//this._registerHashChangeEvent();
 			//this._updateActiveTab();
 		}

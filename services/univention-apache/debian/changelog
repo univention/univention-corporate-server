@@ -1,3 +1,9 @@
+univention-apache (7.0.2-2) unstable; urgency=low
+
+  * [WIP] continued working on redesign of ucs-overview (Bug #36095)
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 17 Oct 2014 15:01:08 +0200
+
 univention-apache (7.0.2-1) unstable; urgency=medium
 
   * [WIP] Bug #36095: add background image with translucent pattern

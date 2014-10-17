@@ -48,6 +48,10 @@ build-dev: $(buildCssDir) $(buildBootstrap)
 	for idir in dojo dijit dojox; do \
 		[ -e $(buildJsDir)/$$idir ] || ln -s /usr/share/univention-dojo/$$idir $(buildJsDir); \
 	done
+	# symlinks for entries.json and languages.json
+	for ijson in entries languages; do \
+		ln -s /var/www/ucs-overview/$$ijson.json $(buildDir)/www/ucs-overview; \
+	done
 
 i18n:
 	/usr/bin/dh-umc-translate -p univention-management-console-frontend -l en -l de -o umc $(jsFiles)
@@ -71,6 +75,7 @@ $(buildCssDir):
 	stylus -o $@ css
 	cp css/ucs.css $@
 	cp -r css/images $@
+	cp -r css/icons $@
 	# Workaround: mark several commands as comments (/*TMP ... */)
 	# to avoid parse errors with stylus
 	sed -i 's/.*\(^\s\+#\|filter: alpha\|filter:\|top: expression\).*/\/\*TMP\0\*\//; /\/\*TMP/ { s|/\*[^*]*\*/\*/|*/| }' $$(find $@ -name "*.css")

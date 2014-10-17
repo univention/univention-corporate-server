@@ -56,20 +56,23 @@ msgstr ""
 msgid "Univention Support Database"
 msgstr "Univention Support Datenbank"
 
-#: www/ucs-overview/js/startsite.js:83
+#: www/ucs-overview/js/startsite.js:89
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
-#: www/ucs-overview/js/startsite.js:77
+#: www/ucs-overview/js/startsite.js:83
 msgid "Univention Wiki"
 msgstr ""
 
-#: www/ucs-overview/js/startsite.js:72
-msgid "Welcome to Univention Corporate Server <b>{hostname}.{domainname}</b>"
-msgstr ""
-"Willkommen auf Univention Corporate Server <b>{hostname}.{domainname}</b>"
+#: www/ucs-overview/js/startsite.js:77
+msgid "Welcome to Univention Corporate Server"
+msgstr "Willkommen auf Univention Corporate Server"
 
-#: www/ucs-overview/js/startsite.js:87
+#: www/ucs-overview/js/startsite.js:78
+msgid "<b>{hostname}.{domainname}</b>"
+msgstr ""
+
+#: www/ucs-overview/js/startsite.js:93
 msgid "http://docs.univention.de/en.html"
 msgstr "http://docs.univention.de/de.html"
 

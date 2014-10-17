@@ -58,60 +58,56 @@
 	</head>
 	<body>
 		<div id="wrapper">
-			<div class="container">
-				<div id="site-header">
-					<div id="header-left"></div>
-					<h1 id="site-title">Welcome to the Univention Corporate Server</h1>
-					<h2 id="header-claim" data-i18n="claim"></h2>
-
-					<!--ul class="nav nav-tabs">
-						<li class="active col-md-6"><a href="#service" data-i18n="services"></a></li>
-						<li class="col-md-6"><a href="#admin" data-i18n="admin"></a></li>
-					</ul-->
+			<div id="site-header">
+				<div id="header-top">
+					<div id="header-left">
+					</div>
 					<div id="header-right">
-						<!--div class="dropdown">
+						<div class="dropdown">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 								<span class="button-text"></span><span class="arrow"></span>
 							</button>
 							<ul id="language-switcher" class="dropdown-menu" role="menu"></ul>
-						</div-->
-					</div>
-					<div id="category-bar">
+						</div>
 					</div>
 				</div>
 			</div>
-			<!--div id="content" class="tab-content">
-				<noscript>
-					<div class="container tab-pane">
-						<ul class="items">
-							<li class="item col-md-6 warning">
-								<span class="wrapper">
-									<span class="icon"></span>
-									<span class="title">JavaScript required</span>
-									<span class="text">
-										A browser with JavaScript enabled is required in order to use this service.
+			<div class="container">
+				<div id="title">
+					<h1 id="site-title" data-i18n="claimHead"></h1>
+					<h2 id="header-claim" data-i18n="claim"></h2>
+				</div>
+				<div id="category-bar">
+				</div>
+				<div id="content" class="tab-content">
+					<!--<noscript>
+						<div class="container tab-pane">
+							<ul class="items">
+								<li class="item col-md-6 warning">
+									<span class="wrapper">
+										<span class="icon"></span>
+										<span class="title">JavaScript required</span>
+										<span class="text">
+											A browser with JavaScript enabled is required in order to use this service.
+										</span>
 									</span>
-								</span>
-							</li>
-						</ul>
-					</div>
-				</noscript>
-				<div class="container tab-pane active" id="service">
-					<ul class="items">
-						<li class="item col-md-6 warning" id="no-service">
+								</li>
+							</ul>
+						</div>
+					</noscript>-->
+					<div class="galleryTab" id="service-tab">
+						<div class="item col-md-6 warning" id="no-service">
 							<span class="wrapper">
 								<span class="icon"></span>
 								<span class="title" data-i18n="noServiceTitle"></span>
 								<span class="text" data-i18n="noServiceDescription"></span>
 							</span>
-						</li>
-					</ul>
+						</div>
+					</div>
+					<div class="galleryTab" id="admin-tab">
+					</div>
 				</div>
-				<div class="container tab-pane" id="admin">
-					<ul class="items">
-					</ul>
-				</div>
-			</div> -->
+			</div>
 		</div>
 		<div class="footer" id="footer" role="contentinfo">
 			<ul>
