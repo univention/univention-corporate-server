@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 #
-# Univention Xen VirtIO rules file
+# Univention VirtIO rules file
 #
 # Copyright 2011-2014 Univention GmbH
 #
