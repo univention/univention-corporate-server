@@ -1,3 +1,13 @@
+univention-management-console-frontend-theme (0.0.47-1) unstable; urgency=low
+
+  Bug #35654:
+  * added padding for tables
+  * fixed nested TitlePanes
+  * link styling
+  * adapted form element borders
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 17 Oct 2014 14:47:59 +0200
+
 univention-management-console-frontend-theme (0.0.46-1) unstable; urgency=medium
 
   Bug #35654:

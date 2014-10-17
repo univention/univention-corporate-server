@@ -44,32 +44,35 @@
 	padding: $textbox-padding;
 }
 
-.claro .dijitSelect .dijitInputField,
-.claro .dijitTextBox .dijitInputField {
+.claro .dijitSelect,
+.claro .dijitTextBox {
 	// Subtract 1px from top/bottom because we add 1px to other nodes, see rules below.
 	// Although we are theoretically only adding 1px to top/bottom browsers seem to pad inputs by 1px on left/right,
 	// although that varies by so compensate for that too.
 	padding: $textbox-padding;
+	position: relative;
 }
 
-.claro .dijitSelect .dijitInputField:before,
-.claro .dijitTextBox .dijitInputField:before {
+.claro .dijitSelect:before,
+.claro .dijitTextBox:before {
 	content: "";
 	position: absolute;
 	height: 5px;
 	bottom: 0;
 	left: 0;
 	border-left: thin solid $border-color;
+	transition-duration: 0.25s;
 }
 
-.claro .dijitSelect .dijitInputField:after,
-.claro .dijitTextBox .dijitInputField:after {
+.claro .dijitSelect:after,
+.claro .dijitTextBox:after {
 	content: "";
 	position: absolute;
 	height: 5px;
 	bottom: 0;
 	right: 0;
 	border-right: thin solid $border-color;
+	transition-duration: 0.25s;
 }
 
 .dj_gecko .claro .dijitTextBox .dijitInputInner,
@@ -88,7 +91,7 @@
 	border: 0 none;
 	border-bottom: thin solid;
 	transition-property: background-color, border;
- 	transition-duration: .35s;
+ 	transition-duration: .25s;
 	//width: 100%;
 }
 .claro .dijitTextArea {
@@ -105,7 +108,11 @@
 .claro .dijitSelectHover,
 .claro .dijitSelectHover .dijitButtonContents,
 .claro .dijitTextBoxHover,
-.claro .dijitTextBoxHover .dijitButtonNode {
+.claro .dijitTextBoxHover .dijitButtonNode,
+.claro .dijitSelectHover:before,
+.claro .dijitTextBoxHover:before,
+.claro .dijitSelectHover:after,
+.claro .dijitTextBoxHover:after {
 	border-color: $hovered-border-color;
 	transition-duration: .25s;
 }
@@ -119,7 +126,11 @@
 .claro .dijitSelectError,
 .claro .dijitSelectError .dijitButtonContents,
 .claro .dijitTextBoxError,
-.claro .dijitTextBoxError .dijitButtonNode {
+.claro .dijitTextBoxError .dijitButtonNode,
+.claro .dijitSelectError:before,
+.claro .dijitTextBoxError:before,
+.claro .dijitSelectError:after,
+.claro .dijitTextBoxError:after {
 	border-color: $error-border-color;
 }
 
@@ -127,8 +138,12 @@
 .claro .dijitSelectFocused,
 .claro .dijitSelectFocused .dijitButtonContents,
 .claro .dijitTextBoxFocused,
-.claro .dijitTextBoxFocused .dijitButtonNode {
-	border-color:$focused-border-color;
+.claro .dijitTextBoxFocused .dijitButtonNode,
+.claro .dijitSelectFocused:before, 
+.claro .dijitTextBoxFocused:before,
+.claro .dijitSelectFocused:after,
+.claro .dijitTextBoxFocused:after {
+	border-color: $focused-border-color;
 	transition-duration: .1s;
 }
 
@@ -143,7 +158,11 @@
 .claro .dijitSelectErrorFocused,
 .claro .dijitSelectErrorFocused .dijitButtonContents,
 .claro .dijitTextBoxErrorFocused,
-.claro .dijitTextBoxErrorFocused .dijitButtonNode {
+.claro .dijitTextBoxErrorFocused .dijitButtonNode,
+.claro .dijitSelectErrorFocused:before,
+.claro .dijitTextBoxErrorFocused:before,
+.claro .dijitSelectErrorFocused:after,
+.claro .dijitTextBoxErrorFocused:after {
 	border-color: $error-focused-border-color;
 }
 
