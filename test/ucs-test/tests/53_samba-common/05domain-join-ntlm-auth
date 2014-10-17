@@ -72,22 +72,35 @@ else
         NAME="$username"
 fi
 
+dump_debug ()
+{
+	echo "************* ps auwx ********************"
+	ps auwx
+	echo "******************************************"
+	echo "************* /etc/samba/smb.conf ********************"
+	cat /etc/samba/smb.conf
+	echo "******************************************************"
+}
+
 ## ntml auth
 echo "----ntml auth with a wrong password (should fail)"
 ntlm_auth --domain="$windows_domain" --username="$NAME" --password="${password}2"
 if [ "$?" = 0 ];then
+	dump_debug
 	fail_fast 1 "ntlm_auth was sucessful with an wrong password"
 fi
 
 echo "----ntml auth with a wrong username (should fail)"
 ntlm_auth --domain="$windows_domain" --username="${NAME}2" --password="${password}"
 if [ "$?" = 0 ];then
+	dump_debug
 	fail_fast 1 "ntlm_auth was sucessful with an wrong username"
 fi
 
 echo "----ntml auth with correct credentials"
 ntlm_auth --domain="$windows_domain" --username="$NAME" --password="$password"
 if [ "$?" != 0 ];then
+	dump_debug
 	fail_fast 1 "ntlm_auth failed"
 fi
 
