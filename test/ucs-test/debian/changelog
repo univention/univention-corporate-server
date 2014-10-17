@@ -1,3 +1,9 @@
+ucs-test (5.0.32-1) unstable; urgency=medium
+
+  * 53_samba-common/05domain-join-ntlm-auth: added debug (Bug #35335)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Oct 2014 20:59:19 +0200
+
 ucs-test (5.0.31-1) unstable; urgency=medium
 
   * 00_base/45license_v2: Added more debug (Bug #35221)
