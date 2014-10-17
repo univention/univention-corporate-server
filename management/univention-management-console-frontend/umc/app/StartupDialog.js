@@ -100,6 +100,16 @@ define([
 		});
 	};
 
+	var _extractTitleFromDocument = function(doc) {
+		var reH1 = /<h1>([^<]*)<\/h1>/;
+		var title = doc.match(reH1)[1] || '';
+		var doc = doc.replace(reH1, '');
+		return {
+			doc: doc,
+			title: title
+		};
+	};
+
 	return declare(Dialog, {
 		// summary:
 		//		The dialog which is shown during the first login of Administrator.
@@ -109,6 +119,8 @@ define([
 		_stackContainer: null,
 
 		_pages: null,
+
+		_pageTitle: null,
 
 		_wizardCompleted: false,
 
@@ -124,11 +136,18 @@ define([
 				// note that way can only access 'piwikDisabled' here, as we cannot
 				// be sure that the variable has been set before (in umc/app)
 				var docs = array.map(_docs, lang.hitch(this, _replaceVariablesInDocument, tools.status('piwikDisabled')));
+				this._pageTitle = [];
+				var docs = array.map(docs, function(idoc) {
+					var result = _extractTitleFromDocument(idoc);
+					this._pageTitle.push(result.title);
+					return result.doc;
+				}, this);
+
 				array.forEach(docs, function(idoc, idx) {
 					// build footer
 					var footer = new ContainerWidget({
-						'class': 'umcPageFooter',
-						style: 'overflow:auto;'
+						'class': 'umcPageFooter'
+						//style: 'overflow:auto;'
 					});
 
 					var footerRight = new ContainerWidget({
@@ -175,7 +194,7 @@ define([
 					var page = new ContainerWidget({});
 					var html = new Text({
 						content: idoc,
-						style: 'width:600px; max-height:280px; overflow-y:auto; overflow-x:hidden;'
+						style: 'max-width:600px; max-height:280px; overflow:hidden;'
 					});
 					parser.parse(html.domNode);
 					page.addChild(html);
@@ -185,6 +204,7 @@ define([
 				}, this);
 
 				this._adjustWizardHeight();
+				this.set('title', this._pageTitle[0]);
 			}));
 
 			this.on('hide', lang.hitch(this, function() {
@@ -234,6 +254,7 @@ define([
 				}
 			}
 			this._stackContainer.selectChild(this._pages[idx]);
+			this.set('title', this._pageTitle[idx]);
 		},
 
 		_evaluate: function() {

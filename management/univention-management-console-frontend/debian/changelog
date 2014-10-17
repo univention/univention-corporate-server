@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.49-1) unstable; urgency=medium
+
+  * Bug #35654: adapt startup wizard graphics
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Oct 2014 14:28:19 +0200
+
 univention-management-console-frontend (4.1.48-1) unstable; urgency=low
 
   * Bug #35654: fix _onShow when switching from overview to module

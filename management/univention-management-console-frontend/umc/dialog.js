@@ -429,7 +429,7 @@ define([
 		templateDialog: function( /*String*/ templateModule, /*String*/ templateFile, /*String*/ keys, /* String? */ title, /* String|Object[]? */ button ) {
 			// summary:
 			//		Popup an alert dialog with a text message based on the given template file. The users needs to
-			//		confirm the dialog by clicking on the 'OK' button.
+			//		confirm the dialog by clicking on the 'OK' button. The h1-tag is placed is dialog title.
 			// templateModule:
 			//		The module name where to find the template
 			// templateFile:
@@ -443,6 +443,9 @@ define([
 			var deferred = new Deferred();
 			require([lang.replace('dojo/text!{0}/{1}', [templateModule, templateFile])], function(message) {
 				message = lang.replace( message, keys );
+				var reH1 = /<h1>([^<]*)<\/h1>/;
+				title = message.match(reH1)[1] || title || '';
+				var message = message.replace(reH1, '');
 				var widget = new Text( {  content : message } );
 				if (message.indexOf('data-dojo-type=') >= 0) {
 					// we need to parse the html code with the dojo parser
