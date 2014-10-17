@@ -1,3 +1,13 @@
+univention-virtual-machine-manager-daemon (4.0.3-10) unstable; urgency=low
+
+  * Add dialog alert if no virtualization infrastructure is configured (Bug
+    #36132)
+  * Merge name and details into one page for instance wizard (Bug #36149)
+  * Show only password or API key field in OpenStack cloud connection wizard
+    instead of disabling it (Bug #36153) 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 17 Oct 2014 10:10:16 +0200
+
 univention-virtual-machine-manager-daemon (4.0.3-9) unstable; urgency=low
 
   * Sort AMI list (Bug #32842) 
