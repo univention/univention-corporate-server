@@ -1,3 +1,9 @@
+univention-updater (10.0.13-1) unstable; urgency=medium
+
+  * Adding univention-samba to the preup package list (Bug #36218)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Oct 2014 08:45:00 +0200
+
 univention-updater (10.0.12-1) unstable; urgency=low
 
   * remove php5-suhosin during update to UCS 4.0-0 (Bug #35203) 
