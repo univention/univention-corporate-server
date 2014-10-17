@@ -165,11 +165,26 @@ fi
 
 ## Check for UCS Xen-4.1 (Bug #35656)
 check_for_xen () {
-	case "$(dpkg-query -W -f '${Status}/${Version}' xen-4.1 2>/dev/null)" in
-	install\ *\ */4.1.*-*.*.????????????) ;;
-	*) return 0 ;;
-	esac
+	local IFS='
+'
+	declare -a hosts=($(univention-ldapsearch -LLLo ldif-wrap=no univentionService='XEN Host' cn | sed -ne 's/^cn: //p')) # IFS
+	if [ -z "$hosts" ]
+	then
+		case "$(dpkg-query -W -f '${Status}/${Version}' xen-4.1 2>/dev/null)" in
+		install\ *\ */4.1.*-*.*.????????????) ;;
+		*) return 0 ;;
+		esac
+	fi
 	echo "WARNING: The Xen hypervisor is no longer supported by UCS."
+	if [ -n "$hosts" ]
+	then
+		IFS=' '
+		echo "         It seems to be used on the following host of this domain:"
+		echo "           ${hosts[*]}"
+		echo "         Updating UVMM to UCS-4 will remove the capability to manage "
+		echo "         virtual machines on those hosts."
+		echo ""
+	fi
 	echo "         The package 'xen-4.1' must be removed before the update can continue."
 	if is_ucr_true update40/ignore_xen
 	then
