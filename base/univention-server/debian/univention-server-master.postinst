@@ -36,7 +36,8 @@ univention-config-registry set ldap/server/name=$hostname.$domainname \
 					ldap/server/port?7389 \
 					ldap/server/type=master \
 					server/password/interval?21 \
-					bootsplash/theme?domaincontroller_master
+					bootsplash/theme?domaincontroller_master \
+					"directory/manager/user/lock_expired_accounts/cron/enabled?yes"
 
 mkdir -p /var/lib/samba/netlogon/scripts/
 
