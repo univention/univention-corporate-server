@@ -27,10 +27,7 @@ Depends: ${misc:Depends},
  bzip2,
  psmisc,
  lsb-base,
- lsb-release,
- kbd
-Conflicts:
- console-tools
+ lsb-release
 Recommends: vim,
  emacs23,
  less,

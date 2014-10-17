@@ -1,3 +1,9 @@
+univention-base-files (4.0.4-4) unstable; urgency=low
+
+  * removed last commit (Bug #36224) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 17 Oct 2014 15:01:07 +0200
+
 univention-base-files (4.0.4-3) unstable; urgency=low
 
   * add conflict to console-tools (Bug #36224) 
