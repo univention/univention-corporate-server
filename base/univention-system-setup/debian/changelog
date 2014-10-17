@@ -1,3 +1,9 @@
+univention-system-setup (8.1.14-4) unstable; urgency=low
+
+  * add conflict to console-tools (Bug #36224)
+
+ -- Felix Botner <botner@univention.de>  Fri, 17 Oct 2014 13:38:49 +0200
+
 univention-system-setup (8.1.14-3) unstable; urgency=low
 
   * Bug #35653: Fix ad setup script
