@@ -31,10 +31,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention-lib (>= 1.0.25-1),
  shell-univention-lib (>= 3.0.1-1),
  python-univention-lib (>= 3.0.1-1),
- univention-ipcalc (>= 5),
- kbd
-Conflicts:
- console-tools
+ univention-ipcalc (>= 5)
 Recommends: univention-management-console-module-setup
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
