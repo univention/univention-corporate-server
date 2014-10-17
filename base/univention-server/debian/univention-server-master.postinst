@@ -3,7 +3,7 @@
 # Univention Server Master
 #  postinst script for the debian package
 #
-# Copyright 2003-2013 Univention GmbH
+# Copyright 2003-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -37,6 +37,7 @@ univention-config-registry set ldap/server/name=$hostname.$domainname \
 					ldap/server/type=master \
 					server/password/interval?21 \
 					bootsplash/theme?domaincontroller_master \
+					"directory/manager/user/lock_expired_passwords/cron/enabled?no" \
 					"directory/manager/user/lock_expired_accounts/cron/enabled?yes"
 
 mkdir -p /var/lib/samba/netlogon/scripts/
