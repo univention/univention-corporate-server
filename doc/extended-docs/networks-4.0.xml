@@ -6,15 +6,15 @@
 
   %entities;
 ]>
-<book lang="en" id="networks-3.2">
+<book lang="en" id="networks-4.0">
     <bookinfo>
       <title>Univention Corporate Server</title>
       <subtitle>Extended IP and network management documentation</subtitle>
 
         <revhistory>
             <revision>
-                <revnumber>3.2-0</revnumber>
-                <date>19 Nov 2013</date>
+                <revnumber>4.0-0</revnumber>
+                <date>16 Oct 2014</date>
             </revision>
         </revhistory>
     </bookinfo>

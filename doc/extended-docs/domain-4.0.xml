@@ -6,15 +6,15 @@
 
   %entities;
 ]>
-<book lang="en" id="domain-3.2">
+<book lang="en" id="domain-4.0">
     <bookinfo>
       <title>Univention Corporate Server</title>
       <subtitle>Extended domain services documentation</subtitle>
 
         <revhistory>
             <revision>
-                <revnumber>3.2-2</revnumber>
-                <date>16 Jun 2014</date>
+                <revnumber>4.0-0</revnumber>
+                <date>16 Oct 2014</date>
             </revision>
         </revhistory>
     </bookinfo>

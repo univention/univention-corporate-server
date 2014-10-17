@@ -6,14 +6,14 @@
 
   %entities;
 ]>
-<book lang="en" id="installation-3.2">
+<book lang="en" id="installation-4.0">
 <bookinfo>
   <title>Univention Corporate Server</title>
   <subtitle>Extended installation documentation</subtitle>
   <revhistory>
      <revision>
-        <revnumber>3.2-0</revnumber>
-        <date>13 Dec 2013</date>
+        <revnumber>4.0-0</revnumber>
+        <date>16 Oct 2014</date>
      </revision>
   </revhistory>
 </bookinfo>
