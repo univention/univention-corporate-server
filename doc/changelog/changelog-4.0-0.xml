@@ -607,6 +607,10 @@
 				The deprecated package <package>php5-suhosin</package> will be purged during the update.
 				(<ulink url="&ucsbug;35203">Bug 35203</ulink>).
 		</simpara></listitem>
+		<listitem><simpara>
+				Support for LanMan hashes has been removed &ucsUDM; Users module
+				(<ulink url="&ucsbug;32584">Bug 32584</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 </section>
 
