@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.48-1) unstable; urgency=medium
+
+  * Bug #35654: minor adjustments for margins and padding
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 17 Oct 2014 17:27:38 +0200
+
 univention-management-console-frontend-theme (0.0.47-1) unstable; urgency=low
 
   Bug #35654:
