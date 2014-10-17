@@ -321,6 +321,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 					<para>
 						For each network interface <literal>/domain/devices/interfaces</literal> change <literal>model/@type</literal> to <literal>virtio</literal> or any other type supported by <application>QEMU</application> like <literal>e1000</literal> or <literal>rtl8139</literal>.
 						Remove any element <literal>/domain/devices/interfaces/script</literal>.
+						Check that the attribute <literal>source/@bridge</literal> references a valid bridge interface on the target host system.
 					</para>
 				</listitem>
 				<listitem>
@@ -344,6 +345,40 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 			</para>
 		</section>
 
+	</chapter>
+
+	<chapter id="uvmmext:kvm">
+		<title>Network setup for virtual machines</title>
+		<para>
+			With UCS-3 a script renamed the physical interface <filename class="devicefile">eth<replaceable>X</replaceable></filename> into <filename class="devicefile">peth<replaceable>X</replaceable></filename> and created a bridge interface with the old name as a replacement.
+			This is no longer recommended as this script only supports a very basic setup and is confusing to most users.
+			As such UCS was changed to support bridging, bonding and VLANs, which is described fully in the UCS manual.
+		</para>
+		<para>
+			Unfortunately this leads to a user visible change of the network interface, as <filename class="devicefile">eth<replaceable>X</replaceable></filename> now no longer is the name of the bridge interface but of the physical interface again.
+			As this interface name is referenced in the domain configurations of all existing virtual machines, they will no longer start.
+			This is further complicated by the fact, that each snapshot and saved virtual machine also contains the old information, which should be updated.
+		</para>
+		<procedure>
+			<title>Convert virtual machines to new network bridge setup</title>
+			<step>
+				<para>For each virtual machine run the command <command>virsh edit "$vm"</command>, where <replaceable>$vm</replaceable> is the name of a virtual machine.</para>
+			</step>
+			<step>
+				<para>
+					In the XML file lookup all network interfaces below <literal>/domain/devices/interfaces/source</literal> and change the attribute <literal>bridge</literal> from <literal>eth0</literal> to <literal>br0</literal> (or whatever).
+				</para>
+			</step>
+			<step>
+				<para>
+					Quit the editor to save the file.
+				</para>
+			</step>
+		</procedure>
+		<para>
+			In addition to that the profiles should be updated as well.
+			This is described in the main UCS manual in <emphasis>UVMM chapter</emphasis> in the section <emphasis>Changing default network</emphasis>.
+		</para>
 	</chapter>
 
 	<?dbhtml-include href="../stylesheets/piwik.html"?>
