@@ -22,12 +22,6 @@ Description[en]=Selects the hash algorithm to use for saving passwords in the LD
 Type=str
 Categories=system-password
 
-[password/samba/lmhash]
-Description[de]=Ist diese Option aktiviert, werden NT-LANMAN-Hashes an Benutzerobjekten gespeichert. Diese Hashes sind veraltet und kryptographisch unsicher! Die Option ist nur in Ausnahmefällen relevant. Ist die Option nicht gesetzt, werden keine NTLM-Hashes generiert.
-Description[en]=If this option is activated, NT LANMAN hashes are stored at user objects. Such hashes are obsolete and cryptographically insecure! This option is only relevant in exceptional cases. If the option is unset, no NTLM hashes are created.
-Type=bool
-Categories=system-password
-
 [directory/manager/child/cn/ou]
 Description[de]=Definiert ob es gestattet ist einen OU als untergeordnetes Objekt eines Containers zu erstellen.
 Description[en]=Defines whether it is allowed to create an organizational unit as a child object of a container.

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.17-1) unstable; urgency=low
+
+  * removed lmhash ucr var description and default (Bug #32584) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 17 Oct 2014 09:21:42 +0200
+
 univention-directory-manager-modules (10.0.16-1) unstable; urgency=medium
 
   * users/user: escape the share path filter (Bug #35953)
