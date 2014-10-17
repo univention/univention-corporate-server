@@ -312,7 +312,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 				</listitem>
 				<listitem>
 					<para>
-						For each block device <literal>/domain/devices/disk</literal> change <literal>disc/@type='tap2'</literal> to <literal>qemu</literal>.
+						For each block device <literal>/domain/devices/disk</literal> change <literal>driver/@type='tap2'</literal> to <literal>qemu</literal> and <literal>driver/@name='aio'</literal> to <literal>raw</literal>.
 						In the element <literal>target</literal> replace any <literal>@bus='xen'</literal> with <literal>virtio</literal> and convert the attribute <literal>@dev</literal> from <literal>xvd<replaceable>X</replaceable></literal> to <literal>vd<replaceable>X</replaceable></literal>.
 						You can also use <literal>@bus='ide'</literal> and <literal>@dev='hd<replaceable>X</replaceable>'</literal> if an emulated <abbrev>IDE</abbrev> device is preferred to the more efficient <abbrev>VirtIO</abbrev>.
 					</para>
@@ -320,6 +320,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 				<listitem>
 					<para>
 						For each network interface <literal>/domain/devices/interfaces</literal> change <literal>model/@type</literal> to <literal>virtio</literal> or any other type supported by <application>QEMU</application> like <literal>e1000</literal> or <literal>rtl8139</literal>.
+						Remove any element <literal>/domain/devices/interfaces/script</literal>.
 					</para>
 				</listitem>
 				<listitem>
@@ -333,6 +334,10 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 					</para>
 				</listitem>
 			</itemizedlist>
+			<para>
+				The following <abbrev>XSLT</abbrev> style sheet can be used to transform a <application>Xen</application> domain definition into a <application>QEMU</application> definition as a first step using a command like <command>xsltproc</command>:
+			</para>
+			<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="uvmm-4.0-xen2qemu.xsl" parse="text"/></programlisting>
 			<para>
 				The XML file should then be copied to the <application>QEMU/KVM</application> server.
 				The virtual machine can be re-defined using the command <command>virsh define "$FILENAME"</command>.
