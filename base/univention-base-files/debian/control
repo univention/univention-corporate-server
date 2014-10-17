@@ -28,6 +28,7 @@ Depends: ${misc:Depends},
  psmisc,
  lsb-base,
  lsb-release,
+ kbd
 Recommends: vim,
  emacs23,
  less,
