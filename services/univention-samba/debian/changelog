@@ -1,3 +1,10 @@
+univention-samba (9.0.2-1) unstable; urgency=medium
+
+  * Temporary test: Don't let the join script fail if the net rpc join
+    command fails on a DC (Bug #36208)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 18 Oct 2014 20:50:00 +0200
+
 univention-samba (9.0.1-1) unstable; urgency=medium
 
   * The new loadparm code doesn't accept missing includes in smb.conf
