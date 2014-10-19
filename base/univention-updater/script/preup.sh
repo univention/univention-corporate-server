@@ -333,7 +333,7 @@ then
 fi
 
 # Pre-upgrade
-preups="univention-ldap-config univention-samba python-support"
+preups="univention-ldap-config univention-samba python-support univention-config"
 $update_commands_update >&3 2>&3
 for pkg in $preups; do
 	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then
