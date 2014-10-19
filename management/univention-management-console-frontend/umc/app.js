@@ -1089,7 +1089,7 @@ define([
 			// put everything together
 			this._topContainer.addChild(this._tabController, 0);
 			this._topContainer.addChild(this._header);
-			this._topContainer.addChild(new ContainerWidget({'class': 'umcNotificationTopWrapper'}));
+			this._topContainer.addChild(dialog.createNotificationMaster());
 			this._topContainer.addChild(this._tabContainer);
 			this._topContainer.startup();
 			//this._updateScrolling();

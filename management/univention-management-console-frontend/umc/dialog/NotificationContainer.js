@@ -44,43 +44,32 @@ define([
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
 	"dojox/string/sprintf",
-	"umc/widgets/Button",
-	"umc/widgets/Text",
+	"umc/widgets/ContainerWidget",
 	"umc/tools",
 	"umc/i18n!"
-], function(declare, lang, query, win, on, topic, fx, domStyle, domClass, domConstruct, domGeometry, Memory, _WidgetBase, _TemplatedMixin, sprintf, Button, Text, tools, _) {
-	var _getWrapper = function() {
-		return query('.umcNotificationTopWrapper')[0];
-	};
+], function(declare, lang, query, win, on, topic, fx, domStyle, domClass, domConstruct, domGeometry, Memory, _WidgetBase, _TemplatedMixin, sprintf, ContainerWidget, tools, _) {
+	var _Notification = declare([_WidgetBase, _TemplatedMixin], {
+		templateString: '' +
+			'<div class="umcNotification" data-dojo-attach-point="domNode">' +
+				'<div class="umcNotificationTitle" data-dojo-attach-point="titleNode">${title}</div>' +
+				'<div class="umcNotificationMessage" data-dojo-attach-point="messageNode"></div>' +
+				'<div class="umcNotificationCloseIcon" data-dojo-attach-point="closeNode"></div>' +
+			'</div>',
+		title: _('Notification'),
+		message: _('No message'),
 
-	var _NotificationBubble = declare([Text], {
-		'class': 'umcNotificationBubble',
-
-		postCreate: function() {
-			this.inherited(arguments);
-			this.placeAt(_getWrapper());
-			this.setNumOfNotifications(0);
-		},
-
-		setNumOfNotifications: function(num) {
-			this.set('content', '' + num);
-			var displayValue = num > 0 ? 'block' : 'none';
-			domStyle.set(this.domNode, 'display', displayValue);
+		_setMessageAttr: function(value) {
+			this.messageNode.innerHTML = value;
+			this._set('message', value);
 		}
 	});
 
-	return declare([_WidgetBase, _TemplatedMixin], {
-		// description:
-		//		Combination of Widget and Container class.
-		templateString: '' +
-			'<div class="umcNotification" data-dojo-attach-point="domNode" style="height:0;">' +
-				'<div class="umcNotificationWrapper" data-dojo-attach-point="wrapperNode">' +
-					'<div class="umcNotificationScroller" data-dojo-attach-point="scrollerNode"></div>' +
-					'<div style="text-align: right;" data-dojo-attach-point="footerNode"></div>' +
-				'</div>' +
-			'</div>',
+	return declare(ContainerWidget, {
+		'class': 'umcNotificationContainer',
 
 		query: {},
+
+		_nextID: 0,
 
 		queryOptions: {
 			sort: [{
@@ -89,177 +78,31 @@ define([
 			}]
 		},
 
-		visible: false,
-
 		_wipedInTimestamp: 0,
 
 		// timeout: Number
 		//		Timeout in seconds after which the notification is hidden again.
 		timeout: 4,
 
-		// view: String
-		//		Can have the values 'all' (default) or 'new'.
-		view: 'all',
-
-		animation: null,
-
 		store: null,
-
-		_closeButton: null,
-		_buttonContainer: null,
-		_nNewNotifications: 0,
-		_nextID: 1,
-		_timeoutID: null,
 
 		_setQueryAttr: function(value) {
 			this.query = value;
-			this.render();
 			this._set('query', value);
-		},
-
-		_setViewAttr: function(value) {
-			this.view = value;
-			var newQuery = {};
-			if (value == 'new') {
-				newQuery = {
-					seen: false
-				};
-			}
-			this.set('query', newQuery);
-			this._set('view', value);
-		},
-
-		_setVisibleAttr: function(visible) {
-			this._set('visible', visible);
-			domClass.toggle(this.domNode, 'dijitHidden', !visible);
-		},
-
-		_stopActiveAnimation: function() {
-			var anim = this.get('animation');
-			if (anim) {
-				anim.stop();
-				this.set('animation', null);
-			}
 		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
-
 			this.store = new Memory();
-
-			this._closeButton = new Button({
-				label: _('Close'),
-				iconClass: 'icon-umc-notifications-close',
-				'class': 'umcNotificationCloseButton',
-				callback: lang.hitch(this, 'confirm')
-			});
-			this._closeButton.placeAt(this.footerNode);
-
-			this._notificationBubble = new _NotificationBubble({});
-			if (!tools.status('overview')) {
-				// hide red notification bubble
-				domStyle.set(this._notificationBubble.domNode, 'visibility', 'hidden');
-			}
-			this.own(this._notificationBubble);
 		},
 
-		postCreate: function() {
-			this.inherited(arguments);
-			domConstruct.place(this.domNode, _getWrapper());
-
-			on(this.domNode, 'mouseover,touch', lang.hitch(this, '_clearTimeout'));
-			on(this.domNode, 'mouseout', lang.hitch(this, function(e) {
-				if (this.get('view') != 'all') {
-					this._addTimeout();
-				}
-			}));
-			on(this.domNode, 'a:click', lang.hitch(this, 'confirm'));
-
-			topic.subscribe('/umc/actions', lang.hitch(this, function(actionRootName) {
-				if (actionRootName == 'startup-wizard') {
-					return;
-				}
-
-				var notificationVisibleTime = (new Date()).getTime() - this._wipedInTimestamp;
-				if (this.get('visible') && !this.get('animation') && notificationVisibleTime > 500) {
-					this.wipeOut();
-				}
-			}));
-		},
 
 		startup: function() {
 			this.inherited(arguments);
-			if (this.store) {
-				this.render();
-			}
-		},
-
-		_resetAnimation: function() {
-			this.set('animation', null);
-		},
-
-		_renderRow: function(item, options) {
-			// create gallery item
-			var cssClass = 'umcNotificationMessage';
-			if (this.get('view') == 'all' && !item.confirmed) {
-				cssClass += ' umcNewNotification';
-			}
-			var div = domConstruct.create('div', {
-				'class': cssClass,
-				innerHTML: item.message
-			});
-
-			var infoStr = sprintf('%(h)02d:%(m)02d', {
-				h: item.time.getHours(),
-				m: item.time.getMinutes()
-			});
-			if (item.component) {
-				infoStr = item.component + ' - ' + infoStr;
-			}
-			domConstruct.create('span', {
-				'class': 'umcNotificationMessageInfo',
-				innerHTML: lang.replace("[ {0} ]", [infoStr])
-			}, div);
-
-			return div;
-		},
-
-		render: function() {
-			domConstruct.empty(this.scrollerNode);
-			this.store.query(this.query, this.queryOptions).forEach(lang.hitch(this, function(iitem, idx) {
-				if (idx >= 50) {
-					// render at maximum the last 50 messages
-					return;
-				}
-				var node = this._renderRow(iitem);
-				domConstruct.place(node, this.scrollerNode);
-			}));
-		},
-
-		_updateMaxHeight: function() {
-			var viewportHeight = win.getBox().h;
-			domStyle.set(this.scrollerNode, 'max-height', viewportHeight / 2);
-		},
-
-		_getNeededHeight: function() {
-			this._updateMaxHeight();
-			var height = domGeometry.getMarginSize(this.wrapperNode).h;
-			return height;
-		},
-
-		_getCurrentHeight: function() {
-			return domGeometry.getMarginSize(this.domNode).h;
-		},
-
-		_updateBubble: function() {
-			var nMessages = this.store.query({
-				confirmed: false
-			}).length;
-			this._notificationBubble.setNumOfNotifications(nMessages);
 		},
 
 		addMessage: function(message, component, autoClose) {
-			this.store.add({
+			var messageObj = this.store.add({
 				id: this._nextID,
 				message: message,
 				component: component,
@@ -269,114 +112,24 @@ define([
 				autoClose: Boolean(autoClose)
 			});
 			++this._nextID;
-			this.render();
-			this.wipeIn();
 
-			++this._nNewNotifications;
-			this._updateBubble();
-		},
-
-		_clearTimeout: function() {
-			if (this._timeoutID) {
-				clearTimeout(this._timeoutID);
-				this._timeoutID = null;
-			}
-		},
-
-		_addTimeout: function() {
-			this._clearTimeout();
-			this._timeoutID = setTimeout(lang.hitch(this, function() {
-				this._timeoutID = null;
-				this.wipeOut();
-			}), this.timeout * 1000);
-		},
-
-		_addTimeoutIfOnlyAutoCloseMessages: function() {
-			var nManualCloseMessages = this.store.query({
-				seen: false,
-				autoClose: false
-			}).length;
-			if (!nManualCloseMessages && this.get('view') != 'all') {
-				this._addTimeout();
-			}
-		},
-
-		wipeIn: function(viewAll) {
-			this._stopActiveAnimation();
-			this._clearTimeout();
-
-			var viewMode = viewAll ? 'all' : 'new';
-			this.set('view', viewMode);
-
-			this.set('visible', true);
-
-			var anim = fx.animateProperty({
-				node: this.domNode,
-				properties: {
-					height: {
-						start: this._getCurrentHeight(),
-						end: this._getNeededHeight()
-					}
-				}
+			var notification = new _Notification({
+				title: component || _('Notification'),
+				message: message
 			});
-			this.set('animation', anim);
+			this.addChild(notification);
 
-			on(anim, 'End', lang.hitch(this, function() {
-				this._resetAnimation();
-				this._wipedInTimestamp = (new Date()).getTime();
+			notification.on('click', lang.hitch(this, function() {
+				this.removeChild(notification);
 			}));
 
-			this._addTimeoutIfOnlyAutoCloseMessages();
-
-			anim.play();
-		},
-
-		wipeOut: function() {
-			this._stopActiveAnimation();
-			this._clearTimeout();
-			var anim = fx.animateProperty({
-				node: this.domNode,
-				properties: {
-					height: 0
-				}
-			});
-
-			on(anim, 'End', lang.hitch(this, function() {
-				this.set('visible', false);
-				this._markMessagesAsSeen();
-			}));
-			on(anim, 'End', lang.hitch(this, '_resetAnimation'));
-
-			anim.play();
-		},
-
-		_markMessages: function(property, currentValue, newValue) {
-			var query = {};
-			query[property] = currentValue;
-			var newProperty = {};
-			newProperty[property] = newValue;
-
-			this.store.query(query).forEach(lang.hitch(this, function(imessage) {
-				var newMessage = lang.mixin(imessage, newProperty);
-				this.store.put(newMessage);
-			}));
-		},
-
-		_markMessagesAsConfirmed: function() {
-			this._markMessagesAsSeen();
-			this._markMessages('confirmed', false, true);
-		},
-
-		_markMessagesAsSeen: function() {
-			this._markMessages('seen', false, true);
-		},
-
-		confirm: function() {
-			this.wipeOut();
-			this._markMessagesAsConfirmed();
-			this._updateBubble();
+			// hide notification automatically after timeout
+			if (autoClose) {
+				tools.defer(lang.hitch(this, function() {
+					domClass.add(notification.domNode, 'umcNotificationHidden');
+				}), this.timeout * 1000);
+			}
 		}
 	});
-
 });
 

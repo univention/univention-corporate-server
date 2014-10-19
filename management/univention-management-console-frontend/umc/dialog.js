@@ -146,24 +146,25 @@ define([
 
 		_notificationMaster: null,
 
-		_createNotificationMaster: function() {
+		createNotificationMaster: function() {
 			if (!this._notificationMaster) {
 				this._notificationMaster = new NotificationContainer({});
 			}
+			return this._notificationMaster;
 		},
 
 		showNotifications: function() {
-			this._createNotificationMaster();
+			this.createNotificationMaster();
 			this._notificationMaster.wipeIn(true);
 		},
 
 		hideNotifications: function() {
-			this._createNotificationMaster();
+			this.createNotificationMaster();
 			this._notificationMaster.wipeOut();
 		},
 
 		toggleNotifications: function() {
-			this._createNotificationMaster();
+			this.createNotificationMaster();
 
 			var isVisible = this._notificationMaster.get('visible');
 			var allMessagesAreShown = this._notificationMaster.get('view') != 'new';
@@ -186,8 +187,8 @@ define([
 			// message:
 			//		The message that is displayed in the notification.
 
-			this._createNotificationMaster();
-			this._notificationMaster.addMessage(message, component, true);
+			this.createNotificationMaster();
+			this._notificationMaster.addMessage(message, component || _('Notification'), true);
 		},
 
 		warn: function(/*String*/ message, /*String?*/ component) {
@@ -196,8 +197,8 @@ define([
 			// message:
 			//		The message that is displayed in the notification.
 
-			this._createNotificationMaster();
-			this._notificationMaster.addMessage(message, component, false);
+			this.createNotificationMaster();
+			this._notificationMaster.addMessage(message, component || _('Warning'), false);
 		},
 
 		_alertDialog: null, // internal reference for the alert dialog
