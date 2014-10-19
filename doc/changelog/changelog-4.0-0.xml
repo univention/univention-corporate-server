@@ -397,6 +397,15 @@
 		<listitem><simpara>
 				Signature verification for package files is now already enabled during UCS installation (<ulink url="&ucsbug;35708">Bug 35708</ulink>).
 		</simpara></listitem>
+		<listitem><simpara>
+				The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename>
+				have been adapted to the needs of UCS 4.0 (
+				<ulink url="&ucsbug;36205">Bug 36205</ulink>,
+				<ulink url="&ucsbug;36218">Bug 36218</ulink>,
+				<ulink url="&ucsbug;36228">Bug 36228</ulink>,
+				<ulink url="&ucsbug;36229">Bug 36229</ulink>,
+				).
+		</simpara></listitem>
 	</itemizedlist>
 
 	<section id="changelog:deployment:cli">
