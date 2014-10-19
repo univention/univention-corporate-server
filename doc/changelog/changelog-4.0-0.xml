@@ -661,6 +661,10 @@
 				Support for LanMan hashes has been removed &ucsUDM; Users module
 				(<ulink url="&ucsbug;32584">Bug 32584</ulink>).
 		</simpara></listitem>
+		<listitem><simpara>
+				The freshclam postinst does not abort if the freshclam daemon start failed
+				(<ulink url="&ucsbug;36230">Bug 36230</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 </section>
 
