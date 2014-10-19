@@ -1,175 +1,81 @@
-.umc .umcNotificationTopWrapper {
+@import "variables";
+
+.umc .umcNotificationContainer {
 	position: relative;
-	margin: 0 auto;
+	margin: 0;
+	padding: 0;
 	height: 0;
 	overflow: visible;
 	z-index: 20;
-	width: 960px;
-	width: 100%;
 }
 
 .umc .umcNotification {
-	position: absolute;
-	display: block;
-	box-sizing: border-box;
-	top: 70px;
-	top: 0;
-	left: 0;
-	overflow: hidden;
-	background-color: rgba(65, 65, 66, 0.8);
-	max-width: 100%;
-	width: 100%;
-
-	.umcNotificationWrapper {
-		padding: 0.5em 20px 0.5em 26px;
-
-		.umcNotificationScroller {
-			max-height: 300px;
-			overflow-y: auto;
-			padding-right: 6px;
-
-			.umcNotificationMessage {
-				padding: 0.5em 0;
-				border-bottom: solid 1px white;
-				width: 100%;
-				display: inline-block;
-			}
-
-			.umcNotificationMessageInfo {
-				float: right;
-
-			}
-
-			.umcNotificationMessage.umcNewNotification {
-				font-style:italic;
-			}
-		}
-
-		.umcNotificationCloseButton {
-			background: none;
-			border: none;
-			font-size: 100%;
-
-			/* account for right alignment with the message time stamp */
-			padding-right: 0;
-			margin-right: 6px;
-
-			.dijitButtonNode {
-				padding-right: 0;
-
-				.dijitButtonText {
-					padding-left: 0;
-					padding-right: 0;
-				}
-			}
-		}
-
-		.umcNotificationCloseButton.dijitButtonHover .dijitButtonText {
-			text-decoration: underline;
-		}
-	}
-}
-
-.umc .umcNotificationBubble {
-	position: absolute;
-	right: 55px;
-	top: 7px;
-	background-image: url("images/red_circle.png");
-	width: 17px;
-	height: 17px;
-	color: white;
-	font-size: 9px;
-	line-height: 17px;
-	text-align: center;
-	font-weight: bold;
-}
-
-
-.umc .umcNotificationTopWrapper {
 	position: relative;
-	margin: 0 auto;
-	height: 0;
-	overflow: visible;
-	z-index: 20;
-	width: 960px;
-	width: 100%;
-}
-
-.umc .umcNotification {
-	position: absolute;
 	display: block;
-	box-sizing: border-box;
-	top: 70px;
-	top: 0;
-	left: 0;
+	margin: 0 5px 5px auto; // right align
 	overflow: hidden;
 	background-color: rgba(65, 65, 66, 0.8);
-	max-width: 100%;
-	width: 100%;
+	width: 200px;
+	color: $text-color-dark-background;
+	border-radius: 4px;
+	box-shadow: 0 0px 10px rgba(0,0,0,0.25)
+	padding: 6px 10px;
+	left: 0;
 
-	.umcNotificationWrapper {
-		padding: 0.5em 20px 0.5em 26px;
+	a {
+		color: $grey-medium;
+	}
 
-		.umcNotificationScroller {
-			max-height: 300px;
-			overflow-y: auto;
-			padding-right: 6px;
+	a:hover {
+		color: white;
+	}
 
-			.umcNotificationMessage {
-				padding: 0.5em 0;
-				border-bottom: solid 1px white;
-				width: 100%;
-				display: inline-block;
-			}
+	.umcNotificationTitle {
+		font-weight: bold;
+		border-bottom: solid 1px white;
+		padding-bottom: 0.4em;
+		margin-bottom: 0.4em;
+	}
 
-			.umcNotificationMessageInfo {
-				float: right;
+	.umcNotificationMessage {
+		max-height: 500px;
+	}
 
-			}
+//	.umcNotificationCloseButton {
+//		background: none;
+//		border: none;
+//		font-size: 100%;
+//
+//		/* account for right alignment with the message time stamp */
+//		padding-right: 0;
+//		margin-right: 6px;
+//
+//		.dijitButtonNode {
+//			padding-right: 0;
+//
+//			.dijitButtonText {
+//				padding-left: 0;
+//				padding-right: 0;
+//			}
+//		}
+//	}
+}
 
-			.umcNotificationMessage.umcNewNotification {
-				font-style:italic;
-			}
-		}
+.umc .umcNotificationHidden {
+	left: 195px;
+	transition-duration: .75s;
+	transition-property: left;
 
-		.umcNotificationCloseButton {
-			background: none;
-			border: none;
-			font-size: 100%;
-
-			/* account for right alignment with the message time stamp */
-			padding-right: 0;
-			margin-right: 6px;
-
-			.dijitButtonNode {
-				padding-right: 0;
-
-				.dijitButtonText {
-					padding-left: 0;
-					padding-right: 0;
-				}
-			}
-		}
-
-		.umcNotificationCloseButton.dijitButtonHover .dijitButtonText {
-			text-decoration: underline;
-		}
+	.umcNotificationMessage {
+		max-height: 0;
+		transition-duration: .75s;
+		transition-property: max-height;
 	}
 }
 
-.umc .umcNotificationBubble {
-	position: absolute;
-	right: 55px;
-	top: 7px;
-	background-image: url("images/red_circle.png");
-	width: 17px;
-	height: 17px;
-	color: white;
-	font-size: 9px;
-	line-height: 17px;
-	text-align: center;
-	font-weight: bold;
+.umc .umcNotification:hover {
+	left: 0;
+	.umcNotificationMessage {
+		max-height: 500px;
+	}
 }
-
-
-
