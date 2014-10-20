@@ -557,6 +557,7 @@ php-net-url
 php-services-weather
 php-xml-parser
 php-xml-serializer
+php5-imagick
 
 /* SugarCRM */
 php5-curl
