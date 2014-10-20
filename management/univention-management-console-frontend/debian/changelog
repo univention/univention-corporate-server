@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.56-1) unstable; urgency=medium
+
+  * Bug #35654: adjust UCS activiation icon in StartupWizard
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Oct 2014 17:44:38 +0200
+
 univention-management-console-frontend (4.1.55-1) unstable; urgency=medium
 
   * Bug #35654: adapt LiveSearchSidebar to responsive design
