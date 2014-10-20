@@ -3,3 +3,4 @@
 . /usr/share/univention-lib/ldap.sh
 . /usr/share/univention-lib/umc.sh
 . /usr/share/univention-lib/admember.sh
+. /usr/share/univention-lib/samba.sh

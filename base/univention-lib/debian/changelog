@@ -1,3 +1,9 @@
+univention-lib (4.0.3-5) unstable; urgency=medium
+
+  * Add shell/samba.sh (Bug #35319)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 20 Oct 2014 13:26:19 +0200
+
 univention-lib (4.0.3-4) unstable; urgency=low
 
   * Bug #35716: Allow finer grained log control in PackageManager
