@@ -1,23 +1,5 @@
 @import "variables";
 
-/* define different media query breakpoints to optimize the grid height to various screen sizes */
-gridHeight($gridHeight, $viewportWidth=0, $viewportHeight=0) {
-	@media (min-width: unit($viewportWidth, px)) and (min-height: unit($viewportHeight, px)) {
-		.umc .dojoxGrid {
-			height: unit($gridHeight, px) !important;
-		}
-	}
-}
-
-gridHeight(250)  // default + minimum grid height
-$heights = 300 350 400 450 500 550 600 700 800 900 1000 1200 1400
-for $height in $heights {
-	gridHeight($height, 0, $height + 450)
-}
-for $height in $heights {
-	gridHeight($height, $md-min, $height + 300)
-}
-
 .umcGrid .dojoxGridScrollbox {
   overflow-y: scroll;
   overflow-x: hidden;
