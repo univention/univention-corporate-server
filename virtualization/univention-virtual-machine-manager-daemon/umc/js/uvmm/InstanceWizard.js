@@ -56,6 +56,42 @@ define([
 		autoValidate: true,
 
 		_size_id: null,
+
+		constructor: function(props, cloudtype, cloud) {
+			this.inherited(arguments);
+			// mixin the page structure
+			this._pageContent = this._getWidgets(cloudtype, cloud);
+			lang.mixin(this, {
+				pages: this.getPages(),
+				headerButtons: [{
+					name: 'close',
+					iconClass: 'umcCloseIconWhite',
+					label: _('Back to overview'),
+					callback: lang.hitch(this, 'onCancel')
+				}]
+			});
+		},
+
+		getPages: function() {
+			return [{
+				name: 'details',
+				headerText: _('Create a new virtual machine instance.'),
+				helpText: _('Please enter the corresponding details for virtual machine instance:'),
+				widgets: this._pageContent.widgets,
+				layout: this._pageContent.layout
+			}];
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			// store umcp response of "size_id" for updating "size_info_text"
+			var widget = this.getWidget('details', 'size_id');
+			widget.on('dynamicValuesLoaded', lang.hitch(this, function(value) {
+				this._size_id = value;
+				this._update_size_info_text(value[0].id);
+			}));
+		},
+
 		_get_size_id: function(newVal) {
 			var value = array.filter(this._size_id, function(item) {
 				return item.id == newVal;
@@ -229,30 +265,6 @@ define([
 				};
 			}
 			return {};
-		},
-
-		constructor: function(props, cloudtype, cloud) {
-			// mixin the page structure
-			var widgets = this._getWidgets(cloudtype, cloud);
-			lang.mixin(this, {
-				pages: [{
-					name: 'details',
-					headerText: _('Create a new virtual machine instance.'),
-					helpText: _('Please enter the corresponding details for virtual machine instance:'),
-					widgets: widgets.widgets,
-					layout: widgets.layout
-				}]
-			});
-		},
-
-		buildRendering: function() {
-			this.inherited(arguments);
-			// store umcp response of "size_id" for updating "size_info_text"
-			var widget = this.getWidget('details', 'size_id');
-			widget.on('dynamicValuesLoaded', lang.hitch(this, function(value) {
-				this._size_id = value;
-				this._update_size_info_text(value[0].id);
-			}));
 		},
 
 		_finish: function(pageName) {

@@ -771,12 +771,23 @@ define([
 				tools.defer(wait, 1000);
 			});
 
-			wizard = new CloudConnectionWizard({
+			this.standbyDuring(this.loadWizardPages(values.cloudtype)).then(lang.hitch(this, function(pages) {
+				wizard = new CloudConnectionWizard({
 				onFinished: _finished,
-				onCancel: _cleanup
+				onCancel: _cleanup,
+				pages: pages
 			}, values.cloudtype);
 			this.addChild(wizard);
 			this.selectChild(wizard);
+			}));
+		},
+
+		loadWizardPages: function(cloud) {
+			var deferred = new Deferred();
+			require(['umc/modules/uvmm/' + cloud], function(pages) {
+				deferred.resolve(pages);
+			});
+			return deferred;
 		},
 
 		_addInstance: function(values) {

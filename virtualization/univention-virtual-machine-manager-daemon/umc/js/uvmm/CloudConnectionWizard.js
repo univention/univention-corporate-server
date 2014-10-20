@@ -45,6 +45,11 @@ define([
 	return declare("umc.modules.uvmm.CloudConnectionWizard", [ Wizard ], {
 		autoValidate: true,
 
+		constructor: function(props, cloudtype) {
+			this.inherited(arguments);
+			this.cloudtype = cloudtype;
+		},
+
 		_invalidUrlMessage: _('The url is invalid!<br/>Expected format is: <i>http(s)://</i>'),
 		_validateUrl: function(url) {
 			url = url || '';
@@ -55,90 +60,6 @@ define([
 		},
 
 		_getWidgets: function(cloudtype) {
-			if (cloudtype == 'OpenStack') {
-				return {
-					layout: [
-						'username',
-						'auth_version',
-						[ 'password', 'auth_token' ],
-						'auth_url',
-						'tenant',
-						'service_region',
-						'service_type',
-						'service_name',
-						'base_url'
-					],
-					widgets: [{
-						name: 'username',
-						type: TextBox,
-						label: _('Username'),
-						required: true
-					}, {
-						name: 'auth_version',
-						type: ComboBox,
-						label: _('Use the following authentication type'),
-						staticValues: [
-							{ id: '2.0_password', label: _('Password') },
-							{ id: '2.0_apikey', label: _('API Key') }
-						],
-						onChange: lang.hitch(this, function(value){
-							var password = this.getWidget('password');
-							password.set('visible', value.indexOf('2.0_apikey') < 0);
-							var auth_token = this.getWidget('auth_token');
-							auth_token.set('visible', value.indexOf('2.0_password') < 0);
-						}),
-						required: true
-					}, {
-						name: 'password',
-						type: PasswordBox,
-						label: _('Password'),
-						depends: 'auth_version',
-						required: true
-					}, {
-						name: 'auth_token',
-						type: PasswordBox,
-						label: _('API Key'),
-						depends: 'auth_version',
-						required: true
-					}, {
-						name: 'auth_url',
-						type: TextBox,
-						label: _('Authentication URL endpoint'),
-						required: true,
-						validator: this._validateUrl,
-						invalidMessage: this._invalidUrlMessage
-					}, {
-						name: 'tenant',
-						type: TextBox,
-						label: _('Tenant'),
-						required: false
-					}, {
-						name: 'service_region',
-						type: TextBox,
-						label: _('Service region'),
-						required: false
-					}, {
-						name: 'service_type',
-						type: TextBox,
-						label: _('Service type'),
-						value: 'compute',
-						required: false
-					}, {
-						name: 'service_name',
-						type: TextBox,
-						label: _('Service name'),
-						value: 'nova',
-						required: false
-					}, {
-						name: 'base_url',
-						type: TextBox,
-						label: _('Service URL endpoint'),
-						required: false,
-						validator: this._validateUrl,
-						invalidMessage: this._invalidUrlMessage
-					}]
-				};
-			}
 			if (cloudtype == 'EC2') {
 				return {
 					layout: [
@@ -182,34 +103,6 @@ define([
 				};
 			}
 			return {};
-		},
-
-		constructor: function(props, cloudtype) {
-			// mixin the page structure
-			var conf = this._getWidgets(cloudtype);
-			lang.mixin(this, {
-				pages: [{
-					name: 'general',
-					headerText: _('Create a new cloud connection.'),
-					helpText: _('Please specify name for the cloud connection:'),
-					widgets: [{
-						name: 'cloudtype',
-						type: HiddenInput,
-						value: cloudtype
-					}, {
-						name: 'name',
-						type: TextBox,
-						label: _('Name'),
-						required: true
-					}]
-				}, {
-					name: 'credentials',
-					headerText: _('Create a new cloud connection.'),
-					helpText: _('Please enter the corresponding credentials for the cloud connection:'),
-					widgets: conf.widgets,
-					layout: conf.layout
-				}]
-			});
 		},
 
 		_finish: function(pageName) {
