@@ -341,6 +341,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 			<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="uvmm-4.0-xen2qemu.xsl" parse="text"/></programlisting>
 			<para>
 				The XML file should then be copied to the <application>QEMU/KVM</application> server.
+				It uses the <command>xsltproc</command> <abbrev>XSLT</abbrev> command line processor, which is provided by the package <package>xsltproc</package>.
 				The virtual machine can be re-defined using the command <command>virsh define "$FILENAME"</command>.
 			</para>
 		</section>
@@ -362,23 +363,122 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 		<procedure>
 			<title>Convert virtual machines to new network bridge setup</title>
 			<step>
-				<para>For each virtual machine run the command <command>virsh edit "$vm"</command>, where <replaceable>$vm</replaceable> is the name of a virtual machine.</para>
-			</step>
-			<step>
 				<para>
-					In the XML file lookup all network interfaces below <literal>/domain/devices/interfaces/source</literal> and change the attribute <literal>bridge</literal> from <literal>eth0</literal> to <literal>br0</literal> (or whatever).
+					Repeat the following steps on each host and for each virtual machine to be updated.
+					Use the command <command>virsh list --all</command> to get a list of all defined domains.
 				</para>
 			</step>
 			<step>
 				<para>
-					Quit the editor to save the file.
+					For each virtual machine named <replaceable>$vm</replaceable> update the persistent domain configuration using the following steps:
 				</para>
+				<substeps>
+					<step>
+						<para>
+							Run the command <command>virsh edit "$vm"</command> to get the configuration opened in an editor.
+						</para>
+					</step>
+					<step>
+						<para>
+							In the XML file lookup all network interfaces below <literal>/domain/devices/interfaces/source</literal> and change the attribute <literal>bridge</literal> from <literal>eth0</literal> to <literal>br0</literal> (or whatever).
+						</para>
+					</step>
+					<step>
+						<para>
+							Quit the editor to save the file.
+						</para>
+					</step>
+				</substeps>
+			</step>
+			<step performance="optional">
+				<para>
+					If the virtual machine has snapshots, they need to be updated as well.
+					Use the command <command>virsh snapshot-list "$vm"</command> to get a list of all snapshots.
+				</para>
+				<para>
+					For each snapshot named <replaceable>$snap</replaceable> update the domain configuration of that snapshot using the following steps:
+				</para>
+				<substeps>
+					<step>
+						<para>
+							Run the command <command>virsh snapshot-edit "$vm" "$snap"</command> to get the configuration opened in an editor.
+						</para>
+					</step>
+					<step>
+						<para>
+							In the XML file lookup all network interfaces below <literal>/domainsnapshot/domain/devices/interfaces/source</literal> and change the attribute <literal>bridge</literal> from <literal>eth0</literal> to <literal>br0</literal> (or whatever).
+						</para>
+					</step>
+					<step>
+						<para>
+							Quit the editor to save the file.
+						</para>
+					</step>
+				</substeps>
+			</step>
+			<step performance="optional">
+				<para>
+					If the domain is suspend to disk, the suspend image also contains a copy of the domain configuration.
+					Use the command <command>virsh dominfo "$vm"</command> to check <literal>Managed save</literal>.
+					If it is <literal>yes</literal>, the image must be either updates or discarded.
+				</para>
+				<stepalternatives>
+					<step>
+						<para>
+							Run the command <command>virsh managedsave-remove "$vm"</command> to discard the saved data.
+							This will remove the runtime state of the virtual machine, but the persistent date stored in the image files is not discarded.
+							Normally the operating system will then perform a file system check as it looks like the virtual machine has crashed 
+						</para>
+					</step>
+					<step>
+						<para>
+							To update the image, run the following sequence of commands
+							command <command>virsh save-image-edit "/var/lib/libvirt/qemu/save/$vm.save"</command>.
+						</para>
+					</step>
+				</stepalternatives>
 			</step>
 		</procedure>
-		<para>
-			In addition to that the profiles should be updated as well.
-			This is described in the main UCS manual in <emphasis>UVMM chapter</emphasis> in the section <emphasis>Changing default network</emphasis>.
-		</para>
+
+		<section id="uvmmext:kvm:migrate">
+			<title>Migrating virtual machines between hosts</title>
+			<para>
+				(Live-)migration also transfers the domain configuration.
+				This breaks when the network interface names differ between the source and destination host.
+				Because of that it is strongly advised to shut down any virtual machine cleanly and to transfer them as described above.
+			</para>
+			<para>
+				There is a second option available which allows updating virtual machines while they are migrated from a UCS-3 to a UCS-4 host.
+				<application>libvirt</application> provides a hook mechanism, which can be used to rewrite the virtual machine configuration on-the-fly for incoming migrations.
+				This is fully described in the <ulink url="http://libvirt.org/hooks.html">libvirt hook documentation</ulink>.
+			</para>
+			<para>
+				The following example can be used to convert the network interface name <filename class="devicefile">eth0</filename> to <filename class="devicefile">br0</filename>.
+				The following script must be copied to <filename>/etc/libvirt/hooks/qemu</filename> and be marked as executable using <command>chmod +x</command>:
+			</para>
+			<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="uvmm-4.0-qemu_hook.sh" parse="text"/></programlisting>
+			<para>
+				The script uses the <command>xsltproc</command> <abbrev>XSLT</abbrev> command line processor, which is provided by the package <package>xsltproc</package>.
+				The corresponding style sheet file must be copies to <filename>/etc/libvirt/hooks/qemu.xsl</filename>, which looks like this:
+			</para>
+			<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="uvmm-4.0-qemu_hook.xsl" parse="text"/></programlisting>
+			<warning>
+				<para>
+					Migration can only be done in the direction UCS-3 to UCS-4, not the reverse.
+					As UCS-4 is using a newer version of <application>libvirt</application>, additional settings are added to the virtual machine configuration, which older versions can't process.
+					Make sure to backup the pre-migration configuration using <command>virsh dumpxml "$vm"</command>.
+				</para>
+			</warning>
+		</section>
+
+		<section id="uvmmext:kvm:profile">
+			<title>UVMM profiles</title>
+			<para>
+				In addition to that the UVMM profiles should be updated as well, as they name the network interface which is used to connect newly created virtual machines.
+				This is described in the main UCS manual in <emphasis>UVMM chapter</emphasis> in the section <emphasis>Changing default network</emphasis>.
+			</para>
+		</section>
+
 	</chapter>
 
 	<?dbhtml-include href="../stylesheets/piwik.html"?>
