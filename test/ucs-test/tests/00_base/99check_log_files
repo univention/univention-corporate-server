@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check installation log files for errors, warnings and tracebacks
-## bugs: [30751]
+## bugs: [30751, 36160]
 ## tags: [basic]
 ## exposure: safe
 ## versions:
@@ -73,16 +73,33 @@ class CheckLogFiles(object):
 
         return errors
 
-    def check_line(self, line, definition, result, msg):
+    def check_extra_lines(self, previous_line, pre_previous_line, definition):
+        """
+        Looks through the given previous and pre_previous lines to check if
+        a 'failed.' message can be ignored. Returns True if so.
+        """
+        if (definition.ignore_extra(previous_line) and
+            definition.ignore_extra(pre_previous_line)):
+            return True
+
+    def check_line(self, line, previous_line, pre_previous_line,
+                         definition, result, msg):
         """
         Checks a single 'line' against patterns from 'definition' and
         adds message 'msg' to list 'result' if pattern is in 'wanted'.
         Ignores the patterns matching 'ignore'. Returns 'result'.
+        Checks an extra case if line == 'failed.'
         """
         if definition.ignore(line):
             return result
 
         if definition.wanted(line):
+            if line == 'failed.':  # special case, Bug #36160
+                if self.check_extra_lines(previous_line,
+                                          pre_previous_line,
+                                          definition):
+                    return result  # ignore the 'failed.' message
+
             result.append(msg)
             return result
 
@@ -96,6 +113,7 @@ class CheckLogFiles(object):
         errors = []
         warnings = []
         self.line_counter = 0
+        pre_previous_line = ''  # the line before the 'previous_line'
         previous_line = ''
 
         if not path.isfile(filename):
@@ -120,15 +138,21 @@ class CheckLogFiles(object):
                 # skip the message if it is repeated from the previous line:
                 if line != previous_line:
                     errors = self.check_line(line,
+                                             previous_line,
+                                             pre_previous_line,
                                              self.errors,
                                              errors,
                                              msg)
                     warnings = self.check_line(line,
+                                               previous_line,
+                                               pre_previous_line,
                                                self.warnings,
                                                warnings,
                                                msg)
 
+                pre_previous_line = previous_line
                 previous_line = line
+
             self.log_file.close()
         except (IOError, ValueError) as exc:
             utils.fail("An exception while working with a log file '%s': '%s'"

@@ -6,6 +6,7 @@ class LogMessage(object):
 	def __init__(self, wanted=None, ignore=None):
 		self.wanted = self.recomp(self.wanted_list + (wanted or [])).match
 		self.ignore = self.recomp(self.ignore_list + (ignore or [])).match
+		self.ignore_extra = self.recomp(self.extra_ignore_list).match  # Bug #36160
 
 	@staticmethod
 	def recomp(patterns, ignore_case=True):
@@ -46,6 +47,12 @@ class Errors(LogMessage):
 		'.*/etc/ca-certificates/update.d/.* exited with code 1',
 	]
 
+	# extra ignore patterns for case when line == 'failed.'
+	extra_ignore_list = (
+		'Starting Univention Directory Notifier daemon.*',
+		'warning: univention-directory-notifier: unable to open supervise/ok: file does not exist.*'
+	)
+
 
 class Tracebacks(LogMessage):
 	wanted_list = [
@@ -53,6 +60,7 @@ class Tracebacks(LogMessage):
 	]
 
 	ignore_list = []
+	extra_ignore_list = []
 
 
 class Warnings(LogMessage):
@@ -90,3 +98,5 @@ class Warnings(LogMessage):
 		'.*usr/sbin/grub-probe: warning: disk does not exist, so falling back to partition device.*',
 		'.*WARNING: cannot read /sys/block/vda.* (?:No such file or directory|Datei oder Verzeichnis nicht gefunden).*',
 		'.*warning: univention-directory-notifier: unable to open supervise/ok: .*']
+
+	extra_ignore_list = []
