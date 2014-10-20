@@ -1,3 +1,10 @@
+univention-directory-manager-modules (10.0.18-2) unstable; urgency=low
+
+  * fixed python hash for lock_expired_accounts and lock_expired_passwords
+    (Bug #35088, #36215)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 20 Oct 2014 14:09:00 +0200
+
 univention-directory-manager-modules (10.0.18-1) unstable; urgency=low
 
   * added script for automatic deactivation of expired user accounts
