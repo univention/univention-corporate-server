@@ -1,0 +1,10 @@
+@import "variables";
+
+$twelve = 1 2 3 4 5 6 7 8 9 10 11 12
+@media (max-width: $xxs-max) {
+	for $i in $twelve {
+		.col-xxs-{$i} {
+			width: (100*$i/12.0)%;
+		}
+	}
+}
