@@ -537,6 +537,27 @@ imapsync
 attr
 lsb-core
 
+/* Horde App */
+libssh2-php
+pear-horde-channel
+php5-geoip
+php5-memcache
+php5-mysql
+php-auth-sasl
+php-cache
+php-date
+php-http-request
+php-http-webdav-server
+php-mdb2
+php-net-ldap
+php-net-sieve
+php-net-smtp
+php-net-socket
+php-net-url
+php-services-weather
+php-xml-parser
+php-xml-serializer
+
 /* SugarCRM */
 php5-curl
 

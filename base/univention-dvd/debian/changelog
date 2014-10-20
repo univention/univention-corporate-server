@@ -1,3 +1,9 @@
+univention-dvd (0.2.5-1) unstable; urgency=low
+
+  * Added several packages for horde App (Bug #36237) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 20 Oct 2014 17:14:27 +0200
+
 univention-dvd (0.2.4-1) unstable; urgency=low
 
   * Bug #36238: Depends on univention-archive-key
