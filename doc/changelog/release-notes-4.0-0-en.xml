@@ -93,6 +93,15 @@
 		<title>Further notes on selected packages</title>
 
 		<para>FIXME</para>
+
+		<section id="relnotes:kvm">
+			<title>Network connection for virtual machines</title>
+			<para>
+				Newly installed host servers using <application>QEMU/KVM</application> no longer automatically create a bridge network interface by default.
+				This must be setup manually.
+				Further information can be found in Chapter 8 of the UCS manual <citation>UCS-Handbuch</citation> and in <citation>ext-doc-uvmm</citation>.
+			</para>
+		</section>
 	</chapter>
 
 	<chapter id="relnotes:changelog">
