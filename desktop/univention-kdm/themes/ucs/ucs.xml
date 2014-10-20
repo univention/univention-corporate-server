@@ -32,14 +32,14 @@
 	<!-- login -->
 	<item type="pixmap" id="greeter">
 		<normal file="rectangle.png"/>
-		<pos anchor="c" x="50%" y="50%" width="308" height="308"/>
+		<pos anchor="c" x="50%" y="50%" width="400" height="400"/>
 		<fixed>
 			<item type="pixmap">
 				<normal file="ucs-logo.png"/>
-				<pos anchor="c" x="50%" y="30%"/>
+				<pos anchor="c" x="50%" y="35%"/>
 			</item>
 			<item type="rect" id="user-field">
-				<pos anchor="c" x="50%" y="65%" width="89%"/>
+				<pos anchor="c" x="50%" y="61%" width="69%"/>
 				<fixed>
 					<item type="pixmap">
 						<pos anchor="w" x="0" y="50%"/>
@@ -56,7 +56,7 @@
 				</fixed>
 			</item>
 			<item type="rect" id="user-field2">
-				<pos anchor="c" x="50%" y="85%" width="89%"/>
+				<pos anchor="c" x="50%" y="76%" width="69%"/>
 				<fixed>
 					<item type="pixmap">
 						<pos anchor="w" x="0" y="50%"/>
@@ -73,7 +73,7 @@
 				</fixed>
 			</item>
 			<item type="rect" id="system-session">
-				<pos anchor="c" x="90%" y="85%"/>
+				<pos anchor="c" x="81%" y="77%"/>
 				<fixed>
 					<item type="pixmap" id="login_button" button="true">
 						<normal file="login_normal.png"/>
@@ -119,7 +119,7 @@
 
 	<!-- caps lock warning -->
 	<item type="rect" id="caps-lock-warning">
-		<pos anchor="c" x="50%" y="50%" width="308" height="308"/>
+		<pos anchor="c" x="50%" y="50%" width="400" height="400"/>
 		<fixed>
 			<item type="label" id="mesage">
 				<normal font="Sans Bold 10"/>
@@ -131,7 +131,7 @@
 
 	<!-- pam message -->
 	<item type="rect" id="pam-error-paceholder">
-		<pos anchor="c" x="50%" y="50%" widht="308" height="308"/>
+		<pos anchor="c" x="50%" y="50%" widht="400" height="400"/>
 		<fixed>
 			<item type="label" id="pam-error">
 				<pos x="50%" y="105%" anchor="c"/>

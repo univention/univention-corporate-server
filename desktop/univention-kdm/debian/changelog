@@ -1,3 +1,9 @@
+univention-kdm (1.0.0-5) unstable; urgency=low
+
+  * theme update (Bug #35936) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 20 Oct 2014 11:59:48 +0200
+
 univention-kdm (1.0.0-4) unstable; urgency=low
 
   * theme update (Bug #35936) 
