@@ -43,7 +43,7 @@ eval "$(ucr shell)"
 
 var_lib_samba_is_s4 ()
 {
-	test -e /var/lib/samba/private/sam.ldb
+	test -e /var/lib/samba/private/secrets.ldb
 }
 
 if ! is_ucr_true samba4/ignore/mixsetup; then

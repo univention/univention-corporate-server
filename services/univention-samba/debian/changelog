@@ -1,3 +1,9 @@
+univention-samba (9.0.3-1) unstable; urgency=medium
+
+  * Adjust samba4 detection criterion to Samba 4.2 (Bug #35319)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 20 Oct 2014 13:11:34 +0200
+
 univention-samba (9.0.2-1) unstable; urgency=medium
 
   * Temporary test: Don't let the join script fail if the net rpc join
