@@ -266,7 +266,7 @@ define([
 				store: this._dataStore,
 				query: this.query,
 				queryOptions: { ignoreCase: true },
-				'class': 'umcGrid',
+				'class': 'umcGrid umcDynamicHeight',
 				rowsPerPage: 30,
 				plugins : {
 					indirectSelection: {

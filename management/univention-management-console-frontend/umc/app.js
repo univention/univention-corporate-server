@@ -133,6 +133,20 @@ define([
 			};
 		},
 
+		getIconClass: function(item) {
+			if (item.icon) {
+				var icon;
+				if (/\.svg$/.test(item.icon)) {
+					icon = item.icon.replace(/\.svg$/, '');
+				} else {
+					// for backwards compatibility we need to support png
+					icon = lang.replace('{icon}.png', item);
+				}
+				return tools.getIconClass(icon, 50);
+			}
+			return '';
+		},
+
 //		_onNotification: function() {
 //			this._updateCategoryHeaderVisiblity(this._lastCollection);
 //		},
