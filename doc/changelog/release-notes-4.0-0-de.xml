@@ -54,7 +54,6 @@
 		<para>
 			Mit &ucsUCS; 4.0-0 
 		</para>
-
 	</chapter>
 
 	<chapter id="relnotes:order">
@@ -67,6 +66,21 @@
 		<title>Vorbereitung des Updates</title>
 
 		<para>FIXME</para>
+
+		<section id="relnotes:removed">
+			<title>Entfernte/nicht mehr unterstützte Komponenten</title>
+			<para>
+				Einige Komponenten sind entfernt worden und werden mit UCS 4.0 nicht mehr ausgeliefert:
+			</para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Der <application>Xen</application> Hypervisor wurde entfernt und wird nicht länger von UCS unterstützt.
+						Details zur Migration zu <application>QEMU/KVM</application> befinden sich in <xref linkend="ext-doc-uvmm"/>.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</section>
 	</chapter>
 
 	<chapter id="relnotes:post">
@@ -93,6 +107,7 @@
 
 	<bibliography id="relnotes:bibliography">
 		<bibliomixed id="ucs-handbuch"/>
+		<bibliomixed id="ext-doc-uvmm"/>
 	</bibliography>
 
 	<?dbhtml-include href="../stylesheets/piwik.html"?>
