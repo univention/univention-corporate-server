@@ -1,4 +1,4 @@
-univention-management-console-frontend (4.1.51-2) unstable; urgency=medium
+univention-management-console-frontend (4.1.52-1) unstable; urgency=medium
 
   * Bug #35654: add more sophisticated handling for notifications
 
