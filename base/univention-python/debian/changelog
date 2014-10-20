@@ -1,3 +1,10 @@
+univention-python (8.0.2-1) unstable; urgency=medium
+
+  * The MDB backend returns the ldap base if scope one is used. Remove
+    the base in this case from the search result (Bug #36169)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 20 Oct 2014 21:32:35 +0200
+
 univention-python (8.0.1-1) unstable; urgency=low
 
   * Bug #35852: Fix LDAP reconnect count

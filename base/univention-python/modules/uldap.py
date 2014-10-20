@@ -330,6 +330,13 @@ class access:
 			raise ldap.INAPPROPRIATE_MATCHING, {'desc': 'more than one object'}
 		if required and len(res) < 1:
 			raise ldap.NO_SUCH_OBJECT, {'desc': 'no object'}
+
+		# The MDB backend returns the ldap base if scope one is used.
+		# Remove the base in this case from the search result.
+		#  https://forge.univention.org/bugzilla/show_bug.cgi?id=36169
+		if scope == 'one':
+			return [item for item in res if item[0] != base]
+
 		return res
 
 	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None):
