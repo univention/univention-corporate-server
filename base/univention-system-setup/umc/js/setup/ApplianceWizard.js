@@ -276,8 +276,12 @@ define([
 
 		constructor: function(props) {
 			lang.mixin(this, props);
+			var pageConf = {
+				navBootstrapClasses: 'col-xs-12 col-sm-6 col-md-4 col-lg-4',
+				mainBootstrapClasses: 'col-xs-12 col-sm-6 col-md-8 col-lg-8'
+			};
 
-			this.pages = [{
+			this.pages = [lang.mixin({}, pageConf, {
 				'class': 'umc-setup-page umc-setup-page-welcome',
 				name: 'welcome',
 				headerText: _('UCS setup'),
@@ -315,7 +319,7 @@ define([
 					toggleable: false,
 					style: 'min-width: 25em;'
 				}]
-			}, {
+			}), lang.mixin({}, pageConf, {
 				'class': 'umc-setup-page umc-setup-page-locale',
 				name: 'locale',
 				headerText: _('Localization settings'),
@@ -345,7 +349,7 @@ define([
 						}
 					})
 				}]
-			}, {
+			}), lang.mixin({}, pageConf, {
 				'class': 'umc-setup-page umc-setup-page-network',
 				name: 'network',
 				headerText: _('Domain and network configuration'),
@@ -486,7 +490,7 @@ define([
 						'</a>)',
 					visible: false
 				}]
-			}, {
+			}), lang.mixin({}, pageConf, {
 				'class': 'umc-setup-page umc-setup-page-domain',
 				name: 'role',
 				headerText: _('Domain setup'),
@@ -542,7 +546,7 @@ define([
 					content: _('If unsure, select <i>Create a new UCS domain</i>.'),
 					labelConf: {style: 'margin-top: 0.75em;'}
 				}]
-			}, {
+			}), lang.mixin({}, pageConf, {
 				'class': 'umc-setup-page umc-setup-page-domain',
 				name: 'role-nonmaster-ad',
 				headerText: _('System role'),
@@ -582,7 +586,7 @@ define([
 					content: _('Member servers should be used for services which do not need a local authentication database, for example for file or print servers.'),
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}]
-			}, {
+			}), lang.mixin({}, pageConf, {
 				'class': 'umc-setup-page umc-setup-page-user',
 				name: 'credentials-master',
 				headerText: _('Administrator account information'),
@@ -612,7 +616,7 @@ define([
 					name: 'root_password',
 					label: _('Password')
 				}]
-			}, {
+			}), lang.mixin({}, pageConf, {
 				name: 'credentials-ad',
 				'class': 'umc-setup-page-credentials-ad',
 				headerText: _('Active Directory join information'),
@@ -638,7 +642,7 @@ define([
 					name: '_error',
 					content: ''
 				}]
-			}, {
+			}), lang.mixin({}, pageConf, {
 				name: 'credentials-nonmaster',
 				'class': 'umc-setup-page umc-setup-page-credentials-nonmaster',
 				headerText: _('Domain join information'),
@@ -684,12 +688,12 @@ define([
 					name: '_error',
 					content: ''
 				}]
-			}, {
+			}), lang.mixin({}, pageConf, {
 				name: 'warning-basesystem',
 				'class': 'umc-setup-page umc-setup-page-warning',
 				headerText: _('No domain warning'),
 				helpText: _('The installed UCS system will not offer any web-based domain management functions and will not be able to be a domain member. Such an UCS system should only be used in some rare use cases, for example as firewall system.')
-			}, {
+			}), lang.mixin({}, pageConf, {
 				name: 'fqdn-master',
 				'class': 'umc-setup-page umc-setup-page-fqdn',
 				headerText: _('Host settings'),
@@ -713,7 +717,7 @@ define([
 					validator: _validateLDAPBase,
 					invalidMessage: _invalidLDAPBase
 				}]
-			}, {
+			}), lang.mixin({}, pageConf, {
 				name: 'fqdn-nonmaster-all',
 				'class': 'umc-setup-page umc-setup-page-fqdn',
 				headerText: _('Host settings'),
@@ -738,12 +742,12 @@ define([
 					label: _('Local root password'),
 					required: this.local_mode
 				}]
-			}, {
+			}), lang.mixin({}, pageConf, {
 				name: 'software',
 				'class': 'umc-setup-page umc-setup-page-software',
 				headerText: _('Software configuration'),
 				helpText: _('<p>Select UCS software components for installation on this system. This step can be skipped; the components are also available in the Univention App Center in the category <i>UCS components</i>.</p><p>Third-party software (e.g., groupware) is also available through the Univention App Center.</p>')
-			}, {
+			}), lang.mixin({}, pageConf, {
 				name: 'validation',
 				'class': 'umc-setup-page-validation',
 				headerText: _('Validation failed'),
@@ -753,7 +757,7 @@ define([
 					name: 'info',
 					content: ''
 				}]
-			}, {
+			}), lang.mixin({}, pageConf, {
 				name: 'summary',
 				'class': 'umc-setup-page-summary',
 				headerText: _('Confirm configuration settings'),
@@ -768,7 +772,7 @@ define([
 					value: true,
 					label: _('Update system after setup')
 				}]
-			}, {
+			}), lang.mixin({}, pageConf, {
 				name: 'error',
 				'class': 'umc-setup-page-error',
 				headerText: _('UCS setup - An error ocurred'),
@@ -779,14 +783,14 @@ define([
 					style: 'font-style:italic;',
 					content: ''
 				}]
-			}, {
+			}), lang.mixin({}, pageConf, {
 				name: 'done',
 				'class': 'umc-setup-page umc-setup-page-welcome',
 				headerText: _('UCS has been set up successfully'),
 				helpTextRegion: 'main',
 				helpText: _('<p>UCS has been successfully set up with the specified settings.</p>') + _('<p>Click on the button <i>Finish</i> to complete the setup process.</p>'),
 				widgets: []
-			}];
+			})];
 		},
 
 		_isDHCPPreConfigured: function() {
@@ -962,17 +966,6 @@ define([
 				widget.region = 'main';
 			}
 			page.addChild(widget);
-		},
-
-		_setupPasswordBoxes: function() {
-			// change width to 1/2
-			array.forEach(['credentials-master', 'fqdn-nonmaster-all'], function(ipage) {
-				var passwordWidget = this.getWidget(ipage, 'root_password');
-				array.forEach([passwordWidget._firstWidget, passwordWidget._secondWidget], function(iwidget) {
-					domClass.remove(iwidget.domNode, 'umcSize-One');
-					domClass.add(iwidget.domNode, 'umcSize-Half');
-				}, this);
-			}, this);
 		},
 
 		_setupCitySearch: function() {
@@ -1166,7 +1159,6 @@ define([
 
 			this._setupCitySearch();
 			this._setupJavaScriptLinks();
-			this._setupPasswordBoxes();
 			this._setupNetworkDevices();
 			this._setupAppGallery();
 			this._setLocaleDefault();
