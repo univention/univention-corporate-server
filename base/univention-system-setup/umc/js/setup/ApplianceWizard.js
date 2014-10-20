@@ -302,7 +302,8 @@ define([
 						if (locale != i18nTools.defaultLang()) {
 							this.onReload(locale);
 						}
-					})
+					}),
+					size: 'One'
 				}, {
 					type: LiveSearch,
 					name: '_search',
@@ -317,7 +318,7 @@ define([
 					title: _('Localization settings'),
 					visible: false,
 					toggleable: false,
-					style: 'min-width: 25em;'
+					style: 'min-width: 50%'
 				}]
 			}), lang.mixin({}, pageConf, {
 				'class': 'umc-setup-page umc-setup-page-locale',
