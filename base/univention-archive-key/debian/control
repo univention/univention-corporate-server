@@ -15,3 +15,19 @@ Description: UCS - Archive signature key
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-archive-key-udeb
+Architecture: all
+Section: debian-installer
+XB-Subarchitecture: ${subarch}
+Package-Type: udeb
+Depends: ${misc:Depends}
+Recommends: gpgv-udeb
+Description: UCS - Archive signature key
+ This package contains the archive signing key for Univention
+ Corporate Server 4.x, in a minimal form for use in the installer.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

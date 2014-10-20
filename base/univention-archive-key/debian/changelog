@@ -1,3 +1,9 @@
+univention-archive-key (5.0.1-1) unstable; urgency=low
+
+  * Bug #36238: Add univention-archive-key-udeb
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 20 Oct 2014 14:37:51 +0200
+
 univention-archive-key (5.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35138)
@@ -25,7 +31,7 @@ univention-archive-key (4.0.0-2) unstable; urgency=low
 univention-archive-key (4.0.0-1) unstable; urgency=low
 
   * Update for UCS 3.0 (Bug #23926)
-  * Convert to dh	
+  * Convert to dh
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 04 Oct 2011 16:51:19 +0200
 
