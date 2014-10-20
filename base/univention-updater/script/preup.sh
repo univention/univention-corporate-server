@@ -113,6 +113,35 @@ if [ "$TERM" = "xterm" ]; then
 	fi
 fi
 
+check_scalix_schema_present() {
+
+	attributes=( scalixScalixObject scalixMailnode scalixAdministrator scalixMailboxAdministrator scalixServerLanguage scalixEmailAddress scalixLimitMailboxSize scalixLimitOutboundMail scalixLimitInboundMail scalixLimitNotifyUser scalixHideUserEntry scalixMailboxClass )
+
+	objectclasses=( scalixUserClass scalixGroupClass )
+
+	for oc in "${objectclasses[@]}"; do
+		output=$(univention-ldapsearch -xLLL objectClass="$oc" dn "${attributes[@]}")
+		if [ -n "$output" ]; then
+			echo "ERROR: There are Scalix objectclasses present:"
+			echo "$output"
+			echo "ERROR: The remaining scalix attributes need to be removed before update"
+			exit 1
+		fi
+	done
+
+	for at in "${attributes[@]}"; do ## better safe than sorry..
+		output=$(univention-ldapsearch -xLLL "$at=*" dn "${attributes[@]}")
+		if [ -n "$output" ]; then
+			echo "ERROR: There are Scalix attributes present:"
+			echo "$output"
+			echo "ERROR: The remaining scalix attributes need to be removed before update"
+			exit 1
+		fi
+	done
+}
+
+check_scalix_schema_present
+
 # save ucr settings
 updateLogDir="/var/univention-backup/update-to-$UPDATE_NEXT_VERSION"
 if [ ! -d "$updateLogDir" ]; then
