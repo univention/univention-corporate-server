@@ -49,7 +49,7 @@
 	// Subtract 1px from top/bottom because we add 1px to other nodes, see rules below.
 	// Although we are theoretically only adding 1px to top/bottom browsers seem to pad inputs by 1px on left/right,
 	// although that varies by so compensate for that too.
-	padding: $textbox-padding;
+	padding: $textbox-padding !important;
 	position: relative;
 }
 
@@ -89,7 +89,7 @@
 	/* color for (outer) border on *TextBox widgets, and border between input and buttons on ComboBox and Spinner */
 	border-color: $border-color;
 	border: 0 none;
-	border-bottom: thin solid;
+	border-bottom: 1px solid;
 	transition-property: background-color, border;
  	transition-duration: .25s;
 	//width: 100%;
@@ -309,7 +309,6 @@ label {
 	.dijitTextBox .umcInlineLabel {
 		visibility: hidden;
 		position: absolute;
-		left: 5px;
 		color: $text-color-lightest;
 	}
 	.dijitTextBox .umcInlineLabel.umcEmptyValue {

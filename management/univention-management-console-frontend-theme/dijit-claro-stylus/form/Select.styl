@@ -19,49 +19,68 @@
 
 @import "../variables";
 
+.umc .dijitSelect {
+	width: 100%;
+
+	.dijitButtonText {
+		font-size: $font-size-medium;
+		color: $text-color;
+		padding: 0;
+	}
+
+	.dijitButtonContents {
+		border: none;
+	}
+}
+
 /* normal status */
 .claro .dijitSelect .dijitArrowButtonContainer {
-	border: 1px solid $arrowbutton-inner-border-color;
+	//border: 1px solid $arrowbutton-inner-border-color;
+	border: none;
+	width: $width-icon;
 }
 
 .claro .dijitSelect .dijitArrowButton {
 	padding: 0;
-	background-color: $arrowbutton-background-color;
-	standard-gradient("../");
+	//background-color: $arrowbutton-background-color;
+	//standard-gradient("../");
 }
 
 .claro .dijitSelect .dijitArrowButton .dijitArrowButtonInner {
-	height:16px;
+	//height:16px;
+	opacity: 1;
 }
 
 /* hover status */
 .claro .dijitSelectHover {
-	background-color: $textbox-hovered-background-color;
-	textbox-background-image();
-	background-repeat: repeat-x;
+	//background-color: $textbox-hovered-background-color;
+	//textbox-background-image();
+	//background-repeat: repeat-x;
 }
 
 .claro .dijitSelectHover .dijitArrowButton {
-	background-color:$arrowbutton-hovered-background-color;
+	//background-color:$arrowbutton-hovered-background-color;
 }
 
 .claro .dijitSelectHover .dijitArrowButton .dijitArrowButtonInner {
-	background-position:-70px 53%;
+	background-position: -20px 0;
+	opacity: 0.66;
 }
 
 /* focused status */
 .claro .dijitSelectFocused .dijitArrowButton {
-	background-color:#7dbefa;		// TODO.  Mailed Jason about inconsistent ComboBox/Spinner behavior.
-	active-gradient("../");
+	//background-color:#7dbefa;		// TODO.  Mailed Jason about inconsistent ComboBox/Spinner behavior.
+	//active-gradient("../");
 }
 
 .claro .dijitSelectFocused .dijitArrowButton {
 	border: none;
-	padding: 1px;
+	//padding: 1px;
 }
 
 .claro .dijitSelectFocused .dijitArrowButton .dijitArrowButtonInner {
-	background-position:-70px 53%;
+	background-position: -20px 0;
+	opacity: 1;
 }
 
 /* disable status */
@@ -73,7 +92,8 @@
 }
 
 .claro .dijitSelectDisabled .dijitArrowButton .dijitArrowButtonInner {
-	background-position:0 53%
+	background-position: 0 0;
+	opacity: 0.5;
 }
 
 /* Dropdown menu style for select */

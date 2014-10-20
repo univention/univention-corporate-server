@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.56-1) unstable; urgency=medium
+
+  * Bug #35654: adjust styling of dijit/form/Select widget
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 21 Oct 2014 01:47:19 +0200
+
 univention-management-console-frontend-theme (0.0.55-1) unstable; urgency=medium
 
   Bug #35654:
