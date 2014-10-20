@@ -142,6 +142,20 @@ check_scalix_schema_present() {
 
 check_scalix_schema_present
 
+## Check for univention-horde4 (UCS version), univention-horde4 has been
+## moved to the appcenter, block update here if UCS version of univention-horde4 
+## is installed (should be updated to appcenter version)
+if ! is_ucr_true update40/ignore_horde4; then
+	horde4="$(dpkg-query -W -f '${Version}' univention-horde4 2>/dev/null)"
+	if [ -n "$horde4" ] && dpkg --compare-versions "$horde4" lt "3.0.0" ; then
+		echo "ERROR: An old version of univention-horde4 is installed."
+		echo "       Please upgrade to the latest version of the horde app"
+		echo "       in order to continue the update to UCS 4.0."
+		echo "       The horde app can be installed/updated via the UMC AppCenter module."
+		exit 1
+	fi
+fi
+
 # save ucr settings
 updateLogDir="/var/univention-backup/update-to-$UPDATE_NEXT_VERSION"
 if [ ! -d "$updateLogDir" ]; then
