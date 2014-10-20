@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.55-1) unstable; urgency=medium
+
+  * Bug #35654: adapt LiveSearchSidebar to responsive design
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Oct 2014 17:21:01 +0200
+
 univention-management-console-frontend (4.1.54-1) unstable; urgency=medium
 
   * Bug #35654: render overview site with two columns down to a width of 550px

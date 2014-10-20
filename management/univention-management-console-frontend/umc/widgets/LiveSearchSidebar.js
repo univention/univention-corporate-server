@@ -165,7 +165,6 @@ define([
 			// add one node elements for each category
 			this._radioButtons = array.map(categories, lang.hitch(this, function(_category, idx) {
 				var category = this._getUniformCategory(_category);
-				console.log('### category', category);
 				var radioButton = new RadioButton({
 					label: category.label,
 					value: category.label,
@@ -185,7 +184,9 @@ define([
 				}));
 				var labelPane = new LabelPane({
 					content: radioButton,
-					style: 'width: 100%'
+					// on small screens the navigation is displayed on top
+					// of the main content
+					'class': 'col-xs-6 col-md-12'
 				});
 				this._categoryContainer.addChild(labelPane);
 
