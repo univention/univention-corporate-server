@@ -1,3 +1,9 @@
+univention-samba (9.0.3-2) unstable; urgency=medium
+
+  * Use shell-univention-lib (Bug #35319)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 20 Oct 2014 13:27:21 +0200
+
 univention-samba (9.0.3-1) unstable; urgency=medium
 
   * Adjust samba4 detection criterion to Samba 4.2 (Bug #35319)

@@ -26,7 +26,7 @@ Depends: ${misc:Depends},
  univention-samba-local-config,
  python-tdb,
  samba-common-bin,
- shell-univention-lib (>= 3.0.26-25),
+ shell-univention-lib (>= 4.0.3-5),
  python-univention-lib (>= 3.0.26-45)
 Conflicts: samba-ad-dc
 Description: UCS - Samba domain controller

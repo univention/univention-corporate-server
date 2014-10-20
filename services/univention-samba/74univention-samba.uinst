@@ -41,11 +41,6 @@ eval "$(ucr shell)"
 
 . /usr/share/univention-lib/all.sh
 
-var_lib_samba_is_s4 ()
-{
-	test -e /var/lib/samba/private/secrets.ldb
-}
-
 if ! is_ucr_true samba4/ignore/mixsetup; then
 	# samba4/ignore/mixsetup is set during the S3 to S4 migration
 	# in this case the directory is used during the migration
