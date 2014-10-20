@@ -272,7 +272,7 @@ define([
 			return item.name || '';
 		},
 
-		bootstrapClasses: "col-xs-12.col-sm-6.col-md-4.col-lg-3",
+		bootstrapClasses: "col-xxs-12.col-xs-6.col-sm-6.col-md-4.col-lg-3",
 
 		renderRow: function(item) {
 			// create gallery item with bootstrap size classes
