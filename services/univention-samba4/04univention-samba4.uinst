@@ -57,12 +57,6 @@ if [ "$kerberos_kpasswdserver" = "127.0.0.1" ]; then
 	ucr unset kerberos/kpasswdserver
 fi
 
-# Move the old Samba 4 private directory
-var_lib_samba_is_s4 ()
-{
-	test -e /var/lib/samba/private/sam.ldb
-}
-
 if var_lib_samba_is_s4; then
 	mv /var/lib/samba "/var/lib/samba_backup_$(date +%Y%m%d%H%M%S)"
 	mkdir -p /var/lib/samba/private

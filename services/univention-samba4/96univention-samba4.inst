@@ -590,12 +590,6 @@ restore_rIDNextRID() {
 	fi
 }
 
-
-var_lib_samba_is_s4 ()
-{
-	test -e /var/lib/samba/private/sam.ldb
-}
-
 cleanup_var_lib_samba ()
 {
 	local backup_folder

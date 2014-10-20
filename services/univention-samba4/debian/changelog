@@ -1,3 +1,10 @@
+univention-samba4 (4.0.0-7) unstable; urgency=medium
+
+  * Adjust samba4 detection criterion to Samba 4.2 (Bug #35319)
+  * Use shell-univention-lib
+
+ -- Arvid Requate <requate@univention.de>  Mon, 20 Oct 2014 13:28:42 +0200
+
 univention-samba4 (4.0.0-6) unstable; urgency=medium
 
   * Add support for repsTo, replUpToDateVector and dNSProperty to
