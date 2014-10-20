@@ -52,7 +52,7 @@ define([
 
 		disabled: false,
 
-		sizeClass: '',
+		sizeClass: 'Two',
 
 		// the widget's class name as CSS class
 		'class': 'umcPasswordInputBox',
@@ -99,7 +99,7 @@ define([
 
 			// create password fields
 			this._firstWidget = this.own(new PasswordBox({
-				sizeClass: this.sizeClass,
+				sizeClass: 'One',
 				required: this.required,
 				disabled: this.disabled,
 				name: this.name + '_1',
@@ -110,7 +110,7 @@ define([
 
 			}))[0];
 			this._secondWidget = this.own(new PasswordBox({
-				sizeClass: this.sizeClass,
+				sizeClass: 'One',
 				required: this.required,
 				disabled: this.disabled,
 				name: this.name + '_2',

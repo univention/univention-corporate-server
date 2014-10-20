@@ -78,6 +78,9 @@ define([
 
 		addNotification: lang.hitch(dialog, 'notify'),
 
+		navBootstrapClasses: 'col-xs-12 col-sm-12 col-md-4 col-lg-4',
+		mainBootstrapClasses: 'col-xs-12 col-sm-12 col-md-8 col-lg-8',
+
 		// the widget's class name as CSS class
 		'class': 'umcPage',
 
@@ -150,6 +153,10 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+
+			if (typeof this['class'] == 'string' && this['class'].indexOf('umcPage') == -1) {
+				this['class'] += ' umcPage';
+			}
 
 			// remove title from the attributeMap
 			delete this.attributeMap.title;
@@ -252,9 +259,9 @@ define([
 
 			var hasNav = this._nav.getChildren().length;
 			if (hasNav) {
-				domClass.toggle(this._nav.domNode, "dijitHidden", false);
-				domClass.add(this._nav.domNode, "col-xs-12 col-md-4");
-				domClass.add(this._main.domNode, "col-sm-12 col-md-8");
+				domClass.toggle(this._nav.domNode, 'dijitHidden', false);
+				domClass.add(this._nav.domNode, this.navBootstrapClasses);
+				domClass.add(this._main.domNode, this.mainBootstrapClasses);
 			}
 		},
 
