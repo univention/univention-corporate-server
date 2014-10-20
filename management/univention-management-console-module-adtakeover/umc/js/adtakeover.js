@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define,require,setTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -48,7 +48,7 @@ define([
 ], function(declare, lang, array, topic, Deferred, when, styles, tools, dialog, ProgressBar, Text, TextBox, PasswordBox, Module, Wizard, _) {
 	// prepare CSS rules for module
 	var modulePath = require.toUrl('umc/modules/adtakeover');
-	styles.insertCssRule('.umc-adtakeover-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;')
+	styles.insertCssRule('.umc-adtakeover-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;');
 	array.forEach(['restart', 'start', 'copy', 'sysvol', 'takeover', 'finished'], function(ipage) {
 		var conf = {
 			name: ipage,
@@ -78,12 +78,8 @@ define([
 				'class': 'umc-adtakeover-page-start umc-adtakeover-page',
 				name: 'start',
 				headerText: _('Windows domain authentication'),
+				helpText: _('This module guides the migration from a Windows Active Directory domain to Univention Corporate Server. All user, group and computer accounts along with their passwords and group policies are transfered. After the migration, the Windows clients are directly operable without the need of a domain rejoin.'),
 				widgets: [{
-					type: Text,
-					'class': 'umcPageHelpText',
-					name: 'help',
-					content: _('This module guides the migration from a Windows Active Directory domain to Univention Corporate Server. All user, group and computer accounts along with their passwords and group policies are transfered. After the migration, the Windows clients are directly operable without the need of a domain rejoin.')
-				}, {
 					type: TextBox,
 					name: 'ip',
 					required: true,
@@ -332,6 +328,5 @@ define([
 				topic.publish('/umc/tabs/close', this);
 			}));
 		}
-
 	});
 });
