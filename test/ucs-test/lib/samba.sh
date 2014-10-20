@@ -19,7 +19,7 @@ wait_for_LDAP_replication_of_domain_sambaSid () {
 		done
 		echo
 	fi
-	if [ -e "/var/lib/samba/private/sam.ldb" ]; then
+	if [ -e "/var/lib/samba/private/secrets.ldb" ]; then
 		sambaSID=$(univention-s4search --controls=domain_scope:1  samaccountname="$username" objectSid | sed -n 's/^objectSid: //p')
 		if [ -z "$sambaSID" ]; then
 			echo -n "Waiting for DRS replication of domain sambaSID for user $username."
