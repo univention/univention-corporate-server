@@ -1,3 +1,11 @@
+univention-management-console-frontend-theme (0.0.55-1) unstable; urgency=medium
+
+  Bug #35654:
+  * Generic rules for form fields in Page containers
+  * Added copyrights
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 21 Oct 2014 00:31:28 +0200
+
 univention-management-console-frontend-theme (0.0.54-1) unstable; urgency=low
 
   * Bug #35654: add more generic umcDynamicHeight

@@ -27,14 +27,58 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-
 @import "../variables";
+
+$twoColumnLayoutRules($minWidth, $maxWidth, $deviceClass, $nMinCols) {
+	$_rules = '';
+	for $icol in 1 2 3 4 5 6 7 8 9 10 11 12 {
+		if ($icol >= $nMinCols) {
+			if ($_rules) {
+				$_rules += ',\n'
+			}
+			$_rules += '.umcPage > .col-' + $deviceClass + '-' + $icol
+		}
+	}
+
+	$_mediaQuery = '';
+	if ($minWidth) {
+		$_mediaQuery = 'min-width: ' + $minWidth
+	}
+	if ($maxWidth) {
+		if ($_mediaQuery) {
+			$_mediaQuery += ') and (';
+		}
+		$_mediaQuery += 'max-width: ' + $maxWidth ;
+	}
+
+	@media ({$_mediaQuery}) {
+		{$_rules} {
+			.umcSize-OneThird { width: (100% / 6);}
+			.umcSize-Half { width: (100% / 4);}
+			.umcSize-TwoThirds { width: (100% / 3);}
+			.umcSize-One { width: (100% / 2);}
+			.umcSize-FourThirds,
+			.umcSize-OneAndAHalf,
+			.umcSize-FiveThirds,
+			.umcSize-Two { width: 100%;}
+
+			/* overwriting mobile padding-left */
+			.umcLabelPane {
+				padding-left: 0;
+				padding-right: 1em;
+			}
+			.umcLabelPane:last-child {
+				padding-right: 0;
+			}
+		}
+	}
+}
 
 .umc .umcLabelPane {
 	padding-bottom: 1em;
 }
 
-/* mobile first: $xxs-max */
+/* mobile first (width=$xxs-max): default is a one-column layout */
 .umcSize-OneThird { width: (100% / 3);}
 .umcSize-Half { width: (100% / 2); }
 .umcSize-TwoThirds { width: (100% / 1.5);}
@@ -54,47 +98,8 @@
 	padding-left: 1em;
 }
 
-@media (min-width: $xs-min){
-	.umcSize-OneThird { width: (100% / 6);}
-	.umcSize-Half { width: (100% / 4);}
-	.umcSize-TwoThirds { width: (100% / 3);}
-	.umcSize-One { width: (100% / 2);}
-	.umcSize-FourThirds,
-	.umcSize-OneAndAHalf,
-	.umcSize-FiveThirds,
-	.umcSize-Two { width: 100%;}
+$twoColumnLayoutRules($xs-min, $xs-max, 'xs', 9)
+$twoColumnLayoutRules($sm-min, $sm-max, 'sm', 9)
+$twoColumnLayoutRules($md-min, $md-max, 'md', 5)
+$twoColumnLayoutRules($lg-min, '', 'lg', 5)
 
-	/* overwriting mobile padding-left */
-	.umc {
-		.umcLabelPane {
-			padding-left: 0;
-			padding-right: 1em;
-		}
-		.umcLabelPane:last-child {
-			padding-right: 0;
-		}
-	}
-}
-
-/* going back to mobile sizes for .umcPageNav if $md-min */
-@media (min-width: $md-min) {
-	.umcPageNav {
-		.umcSize-OneThird { width: (100% / 3);}
-		.umcSize-Half { width: (100% / 2); }
-		.umcSize-TwoThirds { width: (100% / 1.5);}
-		.umcSize-One,
-		.umcSize-FourThirds,
-		.umcSize-OneAndAHalf,
-		.umcSize-FiveThirds,
-		.umcSize-Two { width: 100%;}
-		/* possible permutation */
-		.umcSize-OneThird:first-child + .umcSize-OneThird + .umcSize-OneThird,
-		.umcSize-OneThird:first-child + .umcSize-OneThird,
-		.umcSize-OneThird:first-child + .umcSize-Half,
-		.umcSize-OneThird:first-child + .umcSize-TwoThirds,
-		.umcSize-Half:first-child + .umcSize-Half,
-		.umcSize-TwoThirds:first-child + .umcSize-OneThird {
-			padding-left: 1em;
-		}
-	}
-}
