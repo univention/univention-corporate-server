@@ -40,6 +40,10 @@
 				by setting the &ucsUCRV; <envar>update40/skip/openjdk7</envar> to 
 				<emphasis>true</emphasis> (<ulink url="&ucsbug;35382">Bug 35382</ulink>).
 		</simpara></listitem>
+		<listitem><simpara>
+				The packages <package>mingetty</package> and <package>parted</package> have been
+				copied to maintained (<ulink url="&ucsbug;36231">Bug 36231</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 </section>
 
