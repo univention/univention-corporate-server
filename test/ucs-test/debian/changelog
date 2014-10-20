@@ -1,3 +1,11 @@
+ucs-test (5.0.33-4) unstable; urgency=medium
+
+  * Adjust python implementation wait_for_drs_replication to skip
+    if the local system is not a DC (Bug #35319)
+  * Use Administrator in case tests/domainadmin/account is unset
+
+ -- Arvid Requate <requate@univention.de>  Mon, 20 Oct 2014 16:29:55 +0200
+
 ucs-test (5.0.33-2) unstable; urgency=medium
 
   * Bug #31907: Add some debug

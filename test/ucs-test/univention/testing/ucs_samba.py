@@ -7,6 +7,7 @@ import ldb
 import time
 import socket
 import re
+import os
 
 
 def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1):
@@ -17,6 +18,10 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 		attrs = ['dn']
 	elif type(attrs) != type([]):
 		attrs = [attrs]
+
+	if not lp.get("server role") != "active directory domain controller":
+		print "No Samba4 DC, no need to wait for DRS replication"
+		return
 
 	samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp)
 	controls = ["domain_scope:0"]
