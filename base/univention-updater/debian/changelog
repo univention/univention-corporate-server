@@ -1,3 +1,9 @@
+univention-updater (10.0.19-1) unstable; urgency=low
+
+  * Bug #35654: move close button into head area, make log view scrollable
+
+ -- Florian Best <best@univention.de>  Mon, 20 Oct 2014 22:17:18 +0200
+
 univention-updater (10.0.18-1) unstable; urgency=low
 
   * Block update if old univention-horde4 is installed (Bug #36237) 

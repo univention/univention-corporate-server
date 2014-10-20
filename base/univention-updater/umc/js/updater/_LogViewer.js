@@ -84,7 +84,8 @@ define([
 			this.inherited(arguments);
 
 			this._text = new Text({
-				style: 'font-family: monospace; max-height: 700px; overflow: auto;',
+				style: 'font-family: monospace; overflow: auto;',
+				'class': 'umcDynamicMaxHeight',
 				content: _("... loading log file ...")
 			});
 			this.addChild(this._text);

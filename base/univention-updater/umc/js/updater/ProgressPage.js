@@ -64,12 +64,17 @@ define([
 		_reboot_required: null,
 
 		postMixInProperties: function() {
-
 			this.inherited(arguments);
 
 			// If I don't do that -> the page will switch 'show module help description' off
 			lang.mixin(this, {
 				helpText: ' ',
+				headerButtons: [{
+					name: 'close',
+					iconClass: 'umcCloseIconWhite',
+					label: _('Back'),
+					callback: lang.hitch(this, '_closeLogView')
+				}],
 				title: _("Update progress")
 			});
 		},
@@ -91,36 +96,29 @@ define([
 
 			this._log.on('queryerror', lang.hitch(this, 'onQueryError'));
 			this._log.on('querysuccess', lang.hitch(this, 'onQuerySuccess'));
-
-			// returns to the calling page
-			this._close = new Button({
-				region: 'nav',
-				label: _("Back"),
-				onClick: lang.hitch(this, function() {
-					// local function to close the log view
-					var _closeLogView = lang.hitch(this, function() {
-						this.onStopWatching();
-					});
-
-					if (this._reboot_required) {
-						// show an alert
-						dialog.alert(_('In order to complete the recently executed action, it is required to reboot the system.'));
-						_closeLogView();
-					} else {
-						// ask user to restart
-						libServer.askRestart(_('For the changes to take effect, it is recommended to perform a restart of the UMC server components.')).then(
-							function() { /* nothing to do */ },
-							function() {
-								// user canceled -> change current view
-								_closeLogView();
-							}
-						);
-					}
-
-				})
-			});
-			this.addChild(this._close);
 			this._allow_close(false);
+		},
+
+		_closeLogView: function() {
+			if (!this._allow_closing) {
+				dialog.alert(_('Closing not possible while running a update.'));
+				return;
+			}
+
+			if (this._reboot_required) {
+				// show an alert
+				dialog.alert(_('In order to complete the recently executed action, it is required to reboot the system.'));
+				this.onStopWatching();
+			} else {
+				// ask user to restart
+				libServer.askRestart(_('For the changes to take effect, it is recommended to perform a restart of the UMC server components.')).then(
+					function() { /* nothing to do */ },
+					lang.hitch(this, function() {
+						// user canceled -> change current view
+						this.onStopWatching();
+					})
+				);
+			}
 		},
 
 		// starts the polling timer as late as possible.
@@ -237,7 +235,7 @@ define([
 		// switches visibility of our 'close' button on or off.
 		// Additionally, changes some labels to reflect the current situation.
 		_allow_close: function(yes) {
-			domClass.toggle(this._close.domNode, 'dijitHidden', ! yes);
+			this._allow_closing = yes;
 			// While the button is hidden, the polling callback maintains the content
 			// of this._head. Only if Close is enabled -> set to a different text.
 			if (yes)
