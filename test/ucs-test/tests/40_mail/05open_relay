@@ -1,0 +1,151 @@
+#!/usr/share/ucs-test/runner python
+## desc: Basic email functions
+## tags: apttest
+## exposure: dangerous
+## packages: [univention-mail-server]
+## bugs: []
+
+from univention.config_registry import handler_set, handler_unset
+import socket
+import subprocess
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+def set_postfix_networks(networks='127.0.0.0/8'):
+	handler_set(['main/postfix/mynetworks=%s' % networks])
+
+def restart_postfix():
+	subprocess.call(['/etc/init.d/postfix', 'restart'])
+
+# ACTUAL_MYNETWORKS="$(postconf -nh mynetworks)"
+# def networks_set():
+# 	return True
+
+def get_eth0_ip():
+	ucr = ucr_test.UCSTestConfigRegistry()
+	ucr.load()
+	ip = ucr.get('interfaces/eth0/address')
+	if ip:
+		return ip
+	else:
+		utils.fail('IP address is not set for eth0')
+
+def reverse_dns_name(ip):
+	reverse=ip.split('.')
+	reverse.reverse()
+	return '%s.in-addr.arpa' % '.'.join(reverse)
+
+def print_header(section_string):
+	print 'info', 40 * '+', '\n%s\ninfo' % section_string, 40 * '+'
+
+def create_bad_mailheader(mailfrom, rcptto):
+	ucr = ucr_test.UCSTestConfigRegistry()
+	ucr.load()
+	hostname = ucr.get('hostname')
+	sender_ip = get_eth0_ip()
+	smtp_port = 25
+
+	def get_return_code(s):
+		try:
+			return int(s.recv(4, socket.MSG_PEEK))
+		except:
+			return -1
+
+	def get_reply(s):
+		try:
+			buff_size=1024
+			reply = ''
+			while (True):
+				part = s.recv(buff_size)
+				reply += part
+				if len(part) < buff_size:
+					break
+			return reply
+		except:
+			return reply
+
+	def send_message(s, message):
+		print message,
+		s.send(message)
+
+	def send_and_receive(s, message):
+		send_message(s, message)
+		r = get_return_code(s)
+		print get_reply(s)
+		return r
+
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	s.connect((sender_ip, smtp_port))
+	s.settimeout(0.2)
+	send_and_receive(s, 'HELLO %s' % hostname)
+	if (mailfrom):
+		send_and_receive(s, 'MAIL FROM: %s' % mailfrom)
+	send_and_receive(s, 'RCPT TO: %s' % rcptto)
+	send_and_receive(s, 'DATA')
+	send_and_receive(s, 'SPAMBODY')
+	retval = send_and_receive(s, '.')
+	send_and_receive(s, 'QUIT')
+	s.close()
+
+	if (retval == 250):
+		return 0
+	else:
+		return 1
+
+def main():
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		with udm_test.UCSTestUDM() as udm:
+
+			header0 = "The classic open-relay test:"
+			header1 = "The classic open-relay test with the \"\" (Sendmail 8.8 and others MTAs, much used by the spammers):"
+			header2 = "The non-RFC821 compliant test (MS Exchange and SLmail betas):"
+			header3 = "No sender-domain vulnerability (Post.Office, Intermail and Sendmail 8.8 misconfigurated):"
+			header4 = "A heavily exploited vulnerability (Lotus Notes/Domino, Novell Groupwise, badly secured Sendmails and others):"
+			header5 = "A variation of the vulnerability above (using @ instead %, but less popular among spammers):"
+			header6 = "Mixed UUCP and Internet addressing (common with Sendmails with FEATURE(nouucp) set):"
+			header7 = "A heavily exploited vulnerability using the ':' character:"
+			header8 = "An old UUCP style vulnerability:"
+			header9 = "NULL sender vulnerability:"
+
+			test_cases = [
+					('%s@%s' % ('spambag', get_eth0_ip()), 'victim@mailinator.com', header0),
+					('%s@[%s]' % ('spambag', get_eth0_ip()), 'victim@mailinator.com', header0),
+					('%s@%s' % ('spambag', reverse_dns_name(get_eth0_ip())), 'victim@mailinator.com', header0),
+
+					("spambag@mailinator.com", "victim@mailinator.com", header1),
+
+					("spambag@mailinator.com", "victim@mailinator.com", header2),
+
+					("spambag", "victim@mailinator.com", header3),
+
+					("spambag@mailinator.com", "victim%mailinator.com@$SENDERIP", header4),
+					("spambag@mailinator.com", "victim%mailinator.com@[$SENDERIP]", header4),
+					("spambag@mailinator.com", "victim%mailinator.com@$REVERSENAME", header4),
+
+					("spambag@mailinator.com", "victim@mailinator.com@$SENDERIP", header5),
+					("spambag@mailinator.com", "victim@mailinator.com@[$SENDERIP]", header5),
+					("spambag@mailinator.com", "victim@mailinator.com@$REVERSENAME", header5),
+
+					("spambag@mailinator.com", "mailinator.com!victim@$SENDERIP", header6),
+					("spambag@mailinator.com", "mailinator.com!victim@[$SENDERIP]", header6),
+					("spambag@mailinator.com", "mailinator.com!victim@$REVERSENAME", header6),
+
+					("spambag@mailinator.com", "@$SENDERIP:victim@mailinator.com", header7),
+					("spambag@mailinator.com", "@[$SENDERIP]:victim@mailinator.com", header7),
+					("spambag@mailinator.com", "@$REVERSENAME:victim@mailinator.com", header7),
+
+					("spambag@mailinator.com", "mailinator.com!victim", header8),
+
+					("", "victim@mailinator.com", header9),
+					("<>", "victim@mailinator.com", header9),
+					]
+
+			for (mailfrom, rcpt, header) in test_cases:
+				print_header(header)
+				if create_bad_mailheader(mailfrom, rcpt) != 1:
+					utils.fail('*** Open relay found ***')
+
+if __name__ == '__main__':
+	main()
