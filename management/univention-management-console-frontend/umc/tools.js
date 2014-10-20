@@ -1479,7 +1479,9 @@ define([
 			waitingTime = waitingTime || 0;
 			var deferred = new Deferred();
 			setTimeout(function() {
-				deferred.resolve(func());
+				if (!deferred.isCanceled()) {
+					deferred.resolve(func());
+				}
 			}, waitingTime);
 			return deferred.promise;
 		},

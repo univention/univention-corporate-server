@@ -26,41 +26,124 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console window setTimeout clearTimeout */
+/*global define console */
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/query",
-	"dojo/window",
-	"dojo/on",
-	"dojo/topic",
-	"dojo/_base/fx",
+	"dojo/has",
+	"dojo/Deferred",
 	"dojo/dom-style",
 	"dojo/dom-class",
-	"dojo/dom-construct",
 	"dojo/dom-geometry",
+	"dojo/mouse",
 	"dojo/store/Memory",
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
-	"dojox/string/sprintf",
 	"umc/widgets/ContainerWidget",
 	"umc/tools",
 	"umc/i18n!"
-], function(declare, lang, query, win, on, topic, fx, domStyle, domClass, domConstruct, domGeometry, Memory, _WidgetBase, _TemplatedMixin, sprintf, ContainerWidget, tools, _) {
+], function(declare, lang, has, Deferred, domStyle, domClass, domGeometry, mouse, Memory, _WidgetBase, _TemplatedMixin, ContainerWidget, tools, _) {
 	var _Notification = declare([_WidgetBase, _TemplatedMixin], {
 		templateString: '' +
-			'<div class="umcNotification" data-dojo-attach-point="domNode">' +
+			'<div class="umcNotification umcNotificationTransparent" data-dojo-attach-point="domNode">' +
 				'<div class="umcNotificationTitle" data-dojo-attach-point="titleNode">${title}</div>' +
 				'<div class="umcNotificationMessage" data-dojo-attach-point="messageNode"></div>' +
 				'<div class="umcNotificationCloseIcon" data-dojo-attach-point="closeNode"></div>' +
 			'</div>',
 		title: _('Notification'),
 		message: _('No message'),
+		autoClose: true,
+		_hideDeferred: null,
+		_lastShowed: 0,
 
 		_setMessageAttr: function(value) {
 			this.messageNode.innerHTML = value;
 			this._set('message', value);
+		},
+
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this._lastShowed = new Date();
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+
+			this._hideDeferred = new Deferred();
+			this._hideDeferred.resolve();
+
+			this.on('click', lang.hitch(this, function() {
+				if (this.isHidden()) {
+					this.show();
+					if (has('touch')) {
+						this._hideAfterTimeout();
+					}
+				} else {
+					this.remove();
+				}
+			}));
+
+			if (!has('touch')) {
+				this.on(mouse.enter, lang.hitch(this, 'show'));
+				this.on(mouse.leave, lang.hitch(this, '_hideAfterTimeout'));
+			}
+
+			// hide notification automatically after timeout
+			if (this.autoClose) {
+				this._hideAfterTimeout();
+			}
+		},
+
+		isHidden: function() {
+			return domClass.contains(this.domNode, 'umcNotificationHidden');
+		},
+
+		_hideAfterTimeout: function() {
+			if (!this._hideDeferred.isFulfilled()) {
+				// cancel running deferred task
+				this._hideDeferred.cancel();
+			}
+			this._hideDeferred = tools.defer(lang.hitch(this, 'hide'), this.timeout * 1000);
+		},
+
+		show: function() {
+			if (this.isHidden()) {
+				this._lastShowed = new Date();
+				domClass.remove(this.domNode, 'umcNotificationHidden');
+			}
+		},
+
+		hide: function() {
+			domClass.add(this.domNode, 'umcNotificationHidden');
+		},
+
+		remove: function() {
+			// only allow a removal after the notification has been visible
+			// for a minimum amount of time
+			var showedTime = new Date() - this._lastShowed;
+			if (showedTime < 500) {
+				return;
+			}
+			domClass.add(this.domNode, 'umcNotificationRemove');
+			tools.defer(lang.hitch(this, 'onRemove'), 1000); // remove after CSS animation
+		},
+
+		startup: function() {
+			this.inherited(arguments);
+
+			// set the max-height property to allow to animate the height nicely
+			var heightMessage = domGeometry.position(this.messageNode).h;
+			domStyle.set(this.messageNode, 'maxHeight', heightMessage + 'px');
+			var heightTotal = domGeometry.position(this.domNode).h;
+			domStyle.set(this.domNode, 'maxHeight', heightTotal + 'px');
+
+			// fade in notification
+			domClass.remove(this.domNode, 'umcNotificationTransparent');
+		},
+
+		onRemove: function() {
+			// event stub
 		}
 	});
 
@@ -102,33 +185,24 @@ define([
 		},
 
 		addMessage: function(message, component, autoClose) {
-			var messageObj = this.store.add({
+			this.store.add({
 				id: this._nextID,
 				message: message,
 				component: component,
 				time: new Date(),
-				seen: false,
-				confirmed: false,
 				autoClose: Boolean(autoClose)
 			});
 			++this._nextID;
 
 			var notification = new _Notification({
 				title: component || _('Notification'),
-				message: message
+				message: message,
+				autoClose: autoClose,
+				timeout: this.timeout
 			});
 			this.addChild(notification);
 
-			notification.on('click', lang.hitch(this, function() {
-				this.removeChild(notification);
-			}));
-
-			// hide notification automatically after timeout
-			if (autoClose) {
-				tools.defer(lang.hitch(this, function() {
-					domClass.add(notification.domNode, 'umcNotificationHidden');
-				}), this.timeout * 1000);
-			}
+			notification.on('Remove', lang.hitch(this, 'removeChild', notification));
 		}
 	});
 });
