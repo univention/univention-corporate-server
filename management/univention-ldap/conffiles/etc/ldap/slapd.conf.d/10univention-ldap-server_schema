@@ -28,7 +28,6 @@ if baseConfig['ldap/server/type']=="master":
 	print 'include         /usr/share/univention-ldap/schema/network.schema'
 	print 'include         /usr/share/univention-ldap/schema/solaris.schema'
 	print 'include         /usr/share/univention-ldap/schema/courier.schema'
-	print 'include         /usr/share/univention-ldap/schema/scalix.schema'
 	print 'include         /usr/share/univention-ldap/schema/univention-scalix.schema'
 	print 'include         /usr/share/univention-ldap/schema/univention-syntax.schema'
 	print 'include         /usr/share/univention-ldap/schema/admin-settings.schema'
