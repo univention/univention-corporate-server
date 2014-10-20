@@ -1,3 +1,9 @@
+ucs-test (5.0.33-2) unstable; urgency=medium
+
+  * Bug #31907: Add some debug
+
+ -- Arvid Requate <requate@univention.de>  Mon, 20 Oct 2014 14:03:07 +0200
+
 ucs-test (5.0.33-1) unstable; urgency=medium
 
   * Adjust samba4 detection criterion to Samba 4.2 (Bug #35319)
