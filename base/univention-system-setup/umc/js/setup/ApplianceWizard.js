@@ -283,6 +283,12 @@ define([
 				headerText: _('UCS setup'),
 				helpText: _('<p>Welcome to Univention Corporate Server (UCS).</p><p>A few questions are needed to complete the configuration process.</p>'),
 				widgets: [{
+					type: Text,
+					name: 'image',
+					content: '',
+					'class': 'umc-setup-page-welcome',
+					region: 'nav'
+				}, {
 					type: Select,
 					name: '_language',
 					label: _('Choose your language'),
@@ -777,12 +783,9 @@ define([
 				name: 'done',
 				'class': 'umc-setup-page umc-setup-page-welcome',
 				headerText: _('UCS has been set up successfully'),
-				widgets: [{
-					type: Text,
-					'class': 'umcPageHelpText',
-					name: 'help',
-					content: _('<p>UCS has been successfully set up with the specified settings.</p>') + _('<p>Click on the button <i>Finish</i> to complete the setup process.</p>')
-				}]
+				helpTextRegion: 'main',
+				helpText: _('<p>UCS has been successfully set up with the specified settings.</p>') + _('<p>Click on the button <i>Finish</i> to complete the setup process.</p>'),
+				widgets: []
 			}];
 		},
 
@@ -815,7 +818,6 @@ define([
 
 		evaluateBlacklist: function() {
 			var disable = [];
-			var helpTexts = {};
 			array.forEach(this.disabledFields, lang.hitch(this, function(field) {
 				if (field == 'password') {
 					disable.push(['fqdn-nonmaster-all', 'root_password']);
@@ -844,9 +846,7 @@ define([
 					disable.push(['locale', 'locale/keymap']);
 					disable.push(['locale', 'timezone']);
 				} else if (field == 'reboot') {
-					helpTexts.done = {
-						help: _('<p>UCS has been successfully set up with the specified settings.</p>') + _('<p>After clicking on the button <i>Finish</i> the system will be prepared for the first boot procedure and will be rebooted.</p>')
-					};
+					this.getPage('done').set('helpText', _('<p>UCS has been successfully set up with the specified settings.</p>') + _('<p>After clicking on the button <i>Finish</i> the system will be prepared for the first boot procedure and will be rebooted.</p>'));
 				}
 			}));
 
@@ -856,12 +856,6 @@ define([
 					widget.set('visible', false);
 					widget.set('disabled', true);
 				}
-			}));
-
-			tools.forIn(helpTexts, lang.hitch(this, function(page, value) {
-				tools.forIn(value, lang.hitch(this, function(widget, text) {
-					this.getWidget(page, widget).set('content', text);
-				}));
 			}));
 		},
 

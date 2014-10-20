@@ -1,3 +1,9 @@
+univention-system-setup (8.1.15-1) unstable; urgency=low
+
+  * Bug #35654: fix wizard images, adapt header title in wizard mode
+
+ -- Florian Best <best@univention.de>  Mon, 20 Oct 2014 18:56:49 +0200
+
 univention-system-setup (8.1.14-5) unstable; urgency=low
 
   * removed last commit (Bug #36224) 

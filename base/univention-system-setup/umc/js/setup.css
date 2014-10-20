@@ -72,38 +72,36 @@
 	padding-bottom: 0.25em;
 }
 
-.umc-setup-page/* > form > div*/ {
+.umc-setup-page .umcPageHelpText {
 	background-repeat: no-repeat;
 	background-position: 10px 10px;
-	padding-left: 200px;
+	padding-top: 200px;
 	min-height: 250px;
 }
 
-.umc-setup-page-software {
-/*	background-position: -100px 10px;
-	background-position: -10px 65px;*/
+.umc-setup-page-software .umcPageHelpText {
 	background-image: url(setup/software.png);
 }
 
-.umc-setup-page-welcome/* > form > div*/ {
+.umc-setup-page-welcome .umcPageHelpText {
 	background-image: url(setup/welcome.png);
 }
 
-.umc-setup-page-locale/* > form > div*/ {
+.umc-setup-page-locale .umcPageHelpText {
 	background-image: url(setup/locale.png);
 }
 
-.umc-setup-page-fqdn/* > form > div*/,
-.umc-setup-page-credentials-nonmaster/* > form > div*/,
-.umc-setup-page-warning/* > form > div*/,
-.umc-setup-page-domain/* > form > div*/ {
+.umc-setup-page-fqdn .umcPageHelpText,
+.umc-setup-page-credentials-nonmaster .umcPageHelpText,
+.umc-setup-page-warning .umcPageHelpText,
+.umc-setup-page-domain .umcPageHelpText {
 	background-image: url(setup/domain.png);
 }
 
-.umc-setup-page-user/* > form > div*/ {
+.umc-setup-page-user .umcPageHelpText {
 	background-image: url(setup/user.png);
 }
 
-.umc-setup-page-network/* > form > div*/ {
+.umc-setup-page-network .umcPageHelpText {
 	background-image: url(setup/network.png);
 }

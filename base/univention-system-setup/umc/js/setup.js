@@ -36,6 +36,7 @@ define([
 	"dojo/promise/all",
 	"dojo/topic",
 	"dojo/Deferred",
+	"dojox/html/styles",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/Module",
@@ -48,7 +49,7 @@ define([
 	"./setup/LanguagePage",
 	"./setup/NetworkPage",
 	"./setup/CertificatePage"
-], function(dojo, declare, lang, array, all, topic, Deferred,
+], function(dojo, declare, lang, array, all, topic, Deferred, styles,
 	tools, dialog, Module, ProgressBar, libServer, ApplianceWizard, _) {
 
 	var CancelDialogException = declare("umc.modules.setup.CancelDialogException", null, {
@@ -213,6 +214,13 @@ define([
 				values: values
 			});
 			this.addChild(this.wizard);
+			if (!tools.status('overview')) {
+				this.wizard.watch('selectedChildWidget', lang.hitch(this, function(name, old, child) {
+					this.set('title', child.get('headerText'));
+				}));
+				this.set('title', this.wizard.get('selectedChildWidget').get('headerText'));
+				styles.insertCssRule(lang.replace('#{id} .umcPageHeader', this.wizard), 'display: none!important;');
+			}
 			this.wizard.on('Finished', lang.hitch(this, function(newValues) {
 				// wizard is done -> call cleanup command and redirect browser to new web address
 				topic.publish('/umc/actions', this.moduleID, 'wizard', 'done');
