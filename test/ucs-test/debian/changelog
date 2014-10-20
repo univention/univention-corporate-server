@@ -1,3 +1,9 @@
+ucs-test (5.0.33-5) unstable; urgency=medium
+
+  * Fix typo (Bug #35319)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 20 Oct 2014 16:54:12 +0200
+
 ucs-test (5.0.33-4) unstable; urgency=medium
 
   * Adjust python implementation wait_for_drs_replication to skip

@@ -19,7 +19,7 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 	elif type(attrs) != type([]):
 		attrs = [attrs]
 
-	if not lp.get("server role") != "active directory domain controller":
+	if not lp.get("server role") == "active directory domain controller":
 		print "No Samba4 DC, no need to wait for DRS replication"
 		return
 
