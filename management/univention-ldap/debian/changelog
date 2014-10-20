@@ -1,4 +1,4 @@
-univention-ldap (11.0.7-1.1) unstable; urgency=medium
+univention-ldap (11.0.7-2) unstable; urgency=medium
 
   * Remove scalix.schema (Bug #28693)
 
