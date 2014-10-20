@@ -80,18 +80,18 @@ body.claro.umcOverviewNotShown {
 }
 
 body.claro.umcHeadless {
-
 	#umcHeader,
 	#umcHeader .umcHeaderLeft {
 		height: 42px;
 	}
-	.umcModuleHeader {
-		height: 2px!important;
-		min-height: 2px!important;
-		padding-top: 0!important;
+	#umcHeader {
+		border-bottom: 2px solid $ucs-green;
 	}
-	.umcModuleHeader > div {
-		display: none;
+	.umcModuleHeader {
+		background-color: transparent!important;
+		.umcModuleTitle {
+			color: black;
+		}
 	}
 }
 

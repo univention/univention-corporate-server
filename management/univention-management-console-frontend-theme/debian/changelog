@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.53-1) unstable; urgency=low
+
+  * Bug #35654: appliance mode / headless styling
+
+ -- Florian Best <best@univention.de>  Mon, 20 Oct 2014 20:05:56 +0200
+
 univention-management-console-frontend-theme (0.0.52-1) unstable; urgency=medium
 
   * Bug #35654: add margin to umcPageNav container
