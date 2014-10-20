@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.53-1) unstable; urgency=medium
+
+  * Bug #35654: redraw Grid when window resizes
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Oct 2014 15:50:51 +0200
+
 univention-management-console-frontend (4.1.52-1) unstable; urgency=medium
 
   * Bug #35654: add more sophisticated handling for notifications

@@ -32,7 +32,9 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/_base/kernel",
 	"dojo/_base/window",
+	"dojo/on",
 	"dojo/dom-construct",
 	"dojo/dom-attr",
 	"dojo/dom-geometry",
@@ -56,7 +58,7 @@ define([
 	"umc/i18n!",
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
-], function(declare, lang, array, win, construct, attr, geometry, style,
+], function(declare, lang, array, kernel, win, on, construct, attr, geometry, style,
 		topic, aspect, on, Menu, MenuItem, DropDownButton,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
@@ -194,6 +196,8 @@ define([
 
 		_selectionChangeTimeout: null,
 
+		_resizeDeferred: null,
+
 		_iconFormatter: function(valueField, iconField) {
 			// summary:
 			//		Generates a formatter functor for a given value and icon field.
@@ -318,6 +322,22 @@ define([
 
 			// make sure that we update the disabled items after sorting etc.
 			this.own(aspect.after(this._grid, '_refresh', lang.hitch(this, '_updateDisabledItems')));
+		},
+
+		startup: function() {
+			this.inherited(arguments);
+
+			this.own(on(win.doc, 'resize', lang.hitch(this, '_handleResize')));
+			this.own(on(kernel.global, 'resize', lang.hitch(this, '_handleResize')));
+		},
+
+		_handleResize: function() {
+			if (this._resizeDeferred && !this._resizeDeferred.isFulfilled()) {
+				this._resizeDeferred.cancel();
+			}
+			this._resizeDeferred = tools.defer(lang.hitch(this, function() {
+				this._grid.resize();
+			}), 200);
 		},
 
 		setColumnsAndActions: function(columns, actions) {
