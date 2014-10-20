@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-node (3.0.2-1) unstable; urgency=low
+
+  * Bug #33694: Disable bridge creation by default
+  * Update to rename from libvirt-bin to libvirtd.
+  * Update template file from Debian-Wheezy.
+  * debian/control: Remove Andreas Büsching.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 20 Oct 2014 16:03:49 +0200
+
 univention-virtual-machine-manager-node (3.0.1-1) unstable; urgency=low
 
   * Bug #35656 UVMM: Drop Xen support

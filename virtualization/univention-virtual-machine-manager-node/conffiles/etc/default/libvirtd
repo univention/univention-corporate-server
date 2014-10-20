@@ -1,6 +1,6 @@
 @%@UCRWARNING=# @%@
 
-# Defaults for libvirt-bin initscript (/etc/init.d/libvirt-bin)
+# Defaults for libvirtd initscript (/etc/init.d/libvirtd)
 # This is a POSIX shell fragment
 
 # Start libvirtd to handle qemu/kvm:
@@ -11,3 +11,9 @@ libvirtd_opts="-d -l"
 
 # pass in location of kerberos keytab
 #export KRB5_KTNAME=/etc/libvirt/libvirt.keytab
+
+# Whether to mount a systemd like cgroup layout (only
+# useful when not running systemd)
+#mount_cgroups=yes
+# Which cgroups to mount
+#cgroups="memory devices"

@@ -3,7 +3,6 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Uploaders: Philipp Hahn <hahn@univention.de>,
- Andreas Büsching <buesching@univention.de>,
 Build-Depends: debhelper (>= 9),
  ucslint-univention,
  univention-config-dev
@@ -40,6 +39,6 @@ Depends: ${misc:Depends},
  python-libvirt,
  python-libxml2
 Recommends: univention-nagios-libvirtd-kvm, univention-kvm-virtio
-Description: UCS Virtual Machine Manager node using kvm
+Description: UCS Virtual Machine Manager node using QEMU/KVM
  This meta-package provides basic configuration for virtualization nodes using
- kvm.
+ QEMU/KVM.

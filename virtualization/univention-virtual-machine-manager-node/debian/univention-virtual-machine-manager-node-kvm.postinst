@@ -32,7 +32,7 @@
 
 eval "$(univention-config-registry shell server/role)"
 
-univention-config-registry set uvmm/kvm/bridge/autostart?yes \
+univention-config-registry set uvmm/kvm/bridge/autostart?no \
 	uvmm/libvirt/action/uris?qemu:///system \
 	uvmm/libvirt/action/boot?start \
 	uvmm/libvirt/action/shutdown?suspend

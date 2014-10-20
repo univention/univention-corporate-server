@@ -101,7 +101,7 @@ def postrun():
 		listener.setuid(0)
 		try:
 			# "libvirtd reload" only reloads the driver state, not the config file!
-			ret = subprocess.call(['invoke-rc.d', 'libvirt-bin', 'restart'])
+			ret = subprocess.call(['invoke-rc.d', 'libvirtd', 'restart'])
 			need_restart = False
 		finally:
 			listener.unsetuid()

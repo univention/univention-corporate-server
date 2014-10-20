@@ -34,8 +34,15 @@ eval "$(univention-config-registry shell server/role)"
 
 #DEBHELPER#
 
+dpkg-maintscript-helper mv_conffile /etc/univention/templates/files/etc/default/libvirt-bin /etc/univention/templates/files/etc/default/libvirtd 3.0.2-2~ -- "$@"
+dpkg-maintscript-helper mv_conffile /etc/univention/templates/files/etc/init.d/libvirt-bin /etc/univention/templates/files/etc/init.d/libvirtd 3.0.2-2~ -- "$@"
+
 case "$1" in
 configure)
+	if dpkg --compare-versions "$2" lt 3.0.2-2~
+	then
+		univention-config-registry update
+	fi
 	# Setup firewall and backup directory
 	univention-config-registry set \
 		security/packetfilter/package/univention-virtual-machine-manager-node-common/tcp/16514/all="ACCEPT" \
@@ -58,7 +65,7 @@ configure)
 	test -e /etc/runit/univention/univention-libvirt ||
 		ln -s ../univention-libvirt /etc/runit/univention/univention-libvirt
 
-	invoke-rc.d libvirt-bin restart
+	invoke-rc.d libvirtd restart
 	;;
 
 abort-upgrade|abort-remove|abort-deconfigure)

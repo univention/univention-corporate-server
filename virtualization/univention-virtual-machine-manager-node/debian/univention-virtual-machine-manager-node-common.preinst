@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 #
 # UCS Virtual Machine Manager Node
-#  libvirtd check script
+#  preinst script
 #
-# Copyright 2014-2014 Univention GmbH
+# Copyright 2012-2014 Univention GmbH
 #
-# http://www.univention.de/
+# <http://www.univention.de/>
 #
 # All rights reserved.
 #
@@ -30,31 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-logfile="/var/log/univention/virtual-machine-manager-node-errors.log"
+#DEBHELPER#
 
-if [ -c /dev/kvm ]; then
-	uri="qemu:///system"
-else
-	exit 0
-fi
-
-if sv status /etc/runit/univention-libvirt | grep ^run: > /dev/null 2>&1; then
-	tempfile="$(mktemp)"
-	trap "rm -f '$tempfile'" EXIT
-
-	virsh -c "$uri" list >"$tempfile" &
-	pid=$!
-
-	eval "$(univention-config-registry shell libvirt/check/timeout)"
-	sleep ${libvirt_check_timeout:-5}s
-
-	if [ ! -s "$tempfile" ]; then
-		kill $pid >/dev/null 2>&1
-		wait $pid >/dev/null 2>&1
-
-		echo "libvirt-check.sh: libvirt does not response like expected. Restarting libvirt now." >>"$logfile"
-		invoke-rc.d libvirtd restart >>"$logfile" 2>&1
-	fi
-fi
+dpkg-maintscript-helper mv_conffile /etc/univention/templates/files/etc/default/libvirt-bin /etc/univention/templates/files/etc/default/libvirtd 3.0.2-2~ -- "$@"
+dpkg-maintscript-helper mv_conffile /etc/univention/templates/files/etc/init.d/libvirt-bin /etc/univention/templates/files/etc/init.d/libvirtd 3.0.2-2~ -- "$@"
 
 exit 0

@@ -2,6 +2,6 @@
 # Just divert
 0004-14: conffiles/etc/runit/univention-libvirt/run
 0004-14: conffiles/etc/modprobe.d/loop.conf
-0004-16: conffiles/etc/init.d/libvirt-bin
-0004-56: conffiles/etc/default/libvirt-bin
-0004-56: conffiles/etc/init.d/libvirt-bin
+0004-16: conffiles/etc/init.d/libvirtd
+0004-56: conffiles/etc/default/libvirtd
+0004-56: conffiles/etc/init.d/libvirtd
