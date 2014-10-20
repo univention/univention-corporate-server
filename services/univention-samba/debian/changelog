@@ -1,3 +1,10 @@
+univention-samba (9.0.3-3) unstable; urgency=medium
+
+  * Handle smb.conf and shares.conf 4.2 changes in samba-shares listener
+    (Bug #35319)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 20 Oct 2014 17:26:57 +0200
+
 univention-samba (9.0.3-2) unstable; urgency=medium
 
   * Use shell-univention-lib (Bug #35319)

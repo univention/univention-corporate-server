@@ -35,9 +35,12 @@ import listener
 import os
 import univention.debug
 import univention.lib.listenerSharePath
-from univention.config_registry import ConfigRegistry
-from univention.config_registry.interfaces import Interfaces
 import cPickle
+## for the ucr commit below in postrun we need ucr configHandlers
+from univention.config_registry import configHandlers, ConfigRegistry
+from univention.config_registry.interfaces import Interfaces
+ucr_handlers = configHandlers()
+ucr_handlers.load()
 
 domainname=listener.baseConfig['domainname']
 
@@ -88,6 +91,8 @@ def handler(dn, new, old, command):
 	# 'r'+'a' -> renamed
 	# command='r' and "not new and old"
 	# command='a' and "new and not old"
+
+	# write old object to pickle file
 	oldObject = {}
 	oldDn = ""
 	listener.setuid(0)
@@ -220,8 +225,12 @@ def handler(dn, new, old, command):
 			listener.unsetuid()
 
 	if ( not (new and old) ) or (new['univentionShareSambaName'][0] != old['univentionShareSambaName'][0]):
+		global ucr_handlers
 		listener.setuid(0)
 		try:
+			run_ucs_commit = False
+			if not os.path.exists('/etc/samba/shares.conf'):
+				run_ucs_commit = True
 			fp = open('/etc/samba/shares.conf.temp', 'w')
 			print >>fp, '# Warning: This file is auto-generated and will be overwritten by \n#          univention-directory-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-directory-listener Modul überschrieben werden. \n#          Ergänzungen können an folgender Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#'
 
@@ -229,6 +238,8 @@ def handler(dn, new, old, command):
 				print >>fp, 'include = %s' % os.path.join('/etc/samba/shares.conf.d', f)
 			fp.close()
 			os.rename('/etc/samba/shares.conf.temp', '/etc/samba/shares.conf')
+			if run_ucs_commit:
+				ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
 		finally:
 			listener.unsetuid()
 
@@ -240,7 +251,16 @@ def initialize():
 		finally:
 			listener.unsetuid()
 
+def prerun():
+	if not os.path.exists('/etc/samba/shares.conf.d'):
+		listener.setuid(0)
+		try:
+			os.mkdir('/etc/samba/shares.conf.d')
+		finally:
+			listener.unsetuid()
+
 def clean():
+	global ucr_handlers
 	listener.setuid(0)
 	try:
 		if os.path.exists('/etc/samba/shares.conf.d'):
@@ -248,6 +268,7 @@ def clean():
 				os.unlink(os.path.join('/etc/samba/shares.conf.d', f))
 			if os.path.exists('/etc/samba/shares.conf'):
 				os.unlink('/etc/samba/shares.conf')
+				ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
 			os.rmdir('/etc/samba/shares.conf.d')
 	finally:
 		listener.unsetuid()
