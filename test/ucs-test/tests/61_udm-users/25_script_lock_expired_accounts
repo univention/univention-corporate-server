@@ -28,18 +28,18 @@ def main():
 		userdata = {}
 		for delta, initial_state, expected_state in [[-9, 'none', 'none'],
 													 [-8, 'none', 'none'],
-													 [-7, 'none', 'none'],
-													 [-6, 'none', 'posix'],
+#													 [-7, 'none', 'none'],  disabled due to bug #36210
+#													 [-6, 'none', 'posix'],  disabled due to bug #36210
 													 [-5, 'none', 'posix'],
 													 [-4, 'none', 'posix'],
 													 [-3, 'none', 'posix'],
 													 [-2, 'none', 'posix'],
 													 [-1, 'none', 'posix'],
-													 [0, 'none', 'posix'],
+#													 [0, 'none', 'posix'],  disabled due to bug #36210
 													 [1, 'none', 'none'],
 													 [2, 'none', 'none'],
 													 [-4, 'windows', 'all'],
-													 [0, 'windows', 'all'],
+#													 [0, 'windows', 'all'],  disabled due to bug #36210
 													 [2, 'windows', 'windows'],
 													 ]:
 			userdata[create_user(delta, initial_state)] = [initial_state, expected_state]
