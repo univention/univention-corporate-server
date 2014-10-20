@@ -1,0 +1,51 @@
+#!/usr/share/ucs-test/runner python
+## desc: Pop mail login
+## tags: apttest
+## exposure: dangerous
+## packages: [univention-mail-server]
+## bugs: []
+
+from essential.mail import disable_mail_quota, enable_mail_quota, PopMail
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+	
+def main():
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		with udm_test.UCSTestUDM() as udm:
+			username = uts.random_name()
+			password = uts.random_string()
+			userdn, username = udm.create_user(
+					username=username,
+					password=password,
+					mailPrimaryAddress='%s@%s' % (username, ucr.get('mail/hosteddomains')),
+					option=['mail', 'person', 'posix', 'samba', 'pki']
+					)
+
+			pop = PopMail()
+
+			disable_mail_quota()
+			
+			print '* Test pop login with the correct password:'
+			if pop.login_OK(username, password):
+				utils.fail('pop login failed with the correct password')
+
+			print '* Test pop login with the wrong password:'
+			if pop.login_OK(username, '_'):
+				utils.fail('pop login succeeded with the wrong password')
+
+			enable_mail_quota()
+
+			print '* Test pop login with the correct password:'
+			if pop.login_OK(username, password):
+				utils.fail('pop login failed with the correct password')
+
+			print '* Test pop login with the wrong password:'
+			if pop.login_OK(username, '_'):
+				utils.fail('pop login succeeded with the wrong password')
+
+
+if __name__ == '__main__':
+	main()
+
