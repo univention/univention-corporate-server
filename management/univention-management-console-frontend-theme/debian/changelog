@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.50-1) unstable; urgency=medium
+
+  * Bug #35654: add final styling for notifications
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Oct 2014 14:39:17 +0200
+
 univention-management-console-frontend-theme (0.0.49-1) unstable; urgency=medium
 
   * Bug #35654: add styling for notifications

@@ -1,26 +1,29 @@
 @import "variables";
 
 .umc .umcNotificationContainer {
-	position: relative;
-	margin: 0;
-	padding: 0;
-	height: 0;
-	overflow: visible;
+	position: absolute;
+	width: 210px;
+	right: 0;
+	top: 110px;
+	height: auto;
+	overflow: hidden;
 	z-index: 20;
+	display: inline-block;
 }
 
 .umc .umcNotification {
 	position: relative;
 	display: block;
-	margin: 0 5px 5px auto; // right align
-	overflow: hidden;
-	background-color: rgba(65, 65, 66, 0.8);
+	margin-bottom: 5px;
 	width: 200px;
 	color: $text-color-dark-background;
-	border-radius: 4px;
-	box-shadow: 0 0px 10px rgba(0,0,0,0.25)
 	padding: 6px 10px;
-	left: 0;
+	left: 5px;
+	opacity: 1;
+
+
+	transition-duration: .75s;
+	transition-property: left, opacity;
 
 	a {
 		color: $grey-medium;
@@ -39,6 +42,9 @@
 
 	.umcNotificationMessage {
 		max-height: 500px;
+		transition-duration: .75s;
+		transition-property: max-height;
+		overflow: hidden;
 	}
 
 //	.umcNotificationCloseButton {
@@ -61,21 +67,44 @@
 //	}
 }
 
+/* semi transparent background gradient via pseudo element 'after' */
+.umc .umcNotification:after {
+	border-radius: 4px;
+	box-shadow: 0 0px 10px rgba(0,0,0,0.3)
+	content: "";
+	opacity: 0.8;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	vertical-gradient-and-filter($text-color-lighter, $text-color);
+	z-index: -1;
+}
+
 .umc .umcNotificationHidden {
 	left: 195px;
+	opacity: 0.66;
 	transition-duration: .75s;
-	transition-property: left;
+	transition-property: left, opacity;
 
 	.umcNotificationMessage {
-		max-height: 0;
+		max-height: 0 !important;
 		transition-duration: .75s;
 		transition-property: max-height;
 	}
 }
 
-.umc .umcNotification:hover {
-	left: 0;
-	.umcNotificationMessage {
-		max-height: 500px;
-	}
+.umc .umcNotificationRemove {
+	opacity: 0;
+	max-height: 0 !important;
+	margin: 0;
+	padding-bottom: 0;
+	padding-top: 0;
+	transition-duration: .75s;
+	transition-property: opacity, max-height, margin, padding-top, padding-bottom;
+}
+
+.umc .umcNotificationTransparent {
+	opacity: 0;
 }
