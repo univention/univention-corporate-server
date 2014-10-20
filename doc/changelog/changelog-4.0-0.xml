@@ -176,6 +176,12 @@
 					A locked account can be unlocked via UDM by a Domain Admin.
 					<ulink url="&ucsbug;31907">Bug 31907</ulink>)
 			</simpara></listitem>
+			<listitem><simpara>
+					The python library <envar>univention.uldap</envar> removes the base 
+					object from the search result if the search scope one was used. Thus
+					the behavior is identical between BDB and MDB
+					<ulink url="&ucsbug;36169">Bug 36169</ulink>)
+			</simpara></listitem>
 		</itemizedlist>
 
 		<section id="changelog:domain:openldap:acl">
