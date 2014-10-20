@@ -616,6 +616,10 @@ libbsd-resource-perl
 /* Bug 35388 */
 mt-st
 
+/* Bug #36231 */
+mingetty
+parted
+
 /* Bug 36206 - Update from UCS 3.2 to UCS 4.0 */
 odbcinst
 odbcinst1debian2

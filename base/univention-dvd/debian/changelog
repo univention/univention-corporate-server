@@ -1,3 +1,9 @@
+univention-dvd (0.2.3-1) unstable; urgency=medium
+
+  * Added mingetty and parted to maintained (Bug #36231)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 20 Oct 2014 06:59:58 +0200
+
 univention-dvd (0.2.2-1) unstable; urgency=medium
 
   * The package console-tools is needed for the update (Bug #36206)
