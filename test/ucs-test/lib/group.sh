@@ -2,13 +2,13 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
 
-group_randomnameme () { #Generates a random string as groupname and echoe it. Usage: GROUPNAME=$(group_randomnameme)
+group_randomname () { #Generates a random string as groupname and echo it. Usage: GROUPNAME=$(group_randomname)
 	random_chars
 }
 
 group_create () { #Creates a group named like supplied in the first argument of the function
 	#usage:
-	#GROUPNAME=$(group_randomnameme)
+	#GROUPNAME=$(group_randomname)
 	#group_create "$GROUPNAME"
 
 	if [ -n "${1:-}" ]

@@ -38,7 +38,7 @@ user_create "$USERNAME" &&
 		fail_test 1
 
 echo -e "\n\n***Create a test group with UDM CLI and add the specified user"
-GROUPNAME="$(group_randomnameme)"
+GROUPNAME="$(group_randomname)"
 group_create "$GROUPNAME" &&
 	undo group_remove "$GROUPNAME" ||
 	fail_test 1

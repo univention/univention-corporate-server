@@ -14,7 +14,7 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 . "$TESTLIBPATH/group.sh" || exit 137
 
-GROUPNAME=$(group_randomnameme)
+GROUPNAME=$(group_randomname)
 
 udm-test groups/group modify --dn "cn=Domain Users,cn=groups,$ldap_base" --set name="$GROUPNAME"
 

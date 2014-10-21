@@ -21,7 +21,7 @@ USERNAME=$(user_randomname)
 if [ "$USERNAME" == "Administrator" ]; then
 	fail_fast 1 "Can not be an Administrator as user."
 fi
-GROUPNAME="$(group_randomnameme)"
+GROUPNAME="$(group_randomname)"
 
 ucr set nss/group/cachefile="yes"
 undo /etc/init.d/univention-directory-listener crestart # reversed order

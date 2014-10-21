@@ -47,7 +47,7 @@ done
 groups=()
 for ((g=0; g<gcount; g++))
 do
-	groupname="$(group_randomnameme)"
+	groupname="$(group_randomname)"
 	group_create "$groupname" --set description="$unique" &&
 		undo group_remove "$groupname" ||
 		fail_fast 1 "Failed to create group $groupname"
