@@ -34,7 +34,6 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/kernel",
 	"dojo/_base/window",
-	"dojo/on",
 	"dojo/dom-construct",
 	"dojo/dom-attr",
 	"dojo/dom-geometry",
@@ -58,7 +57,7 @@ define([
 	"umc/i18n!",
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
-], function(declare, lang, array, kernel, win, on, construct, attr, geometry, style,
+], function(declare, lang, array, kernel, win, construct, attr, geometry, style,
 		topic, aspect, on, Menu, MenuItem, DropDownButton,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
