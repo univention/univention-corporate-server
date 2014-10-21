@@ -1,3 +1,11 @@
+univention-s4-connector (9.0.15-1) unstable; urgency=medium
+
+  * Don't use the auto reconnect feature of python-ldap/univention.uldap
+    for the S4 connection, reestablished connection is invalid in case
+    samba has been restartet (Bug #36227).
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Oct 2014 13:10:01 +0200
+
 univention-s4-connector (9.0.14-1) unstable; urgency=low
 
   * fixed sync_mode check in post_con_modify_functions (Bug #35251) 
