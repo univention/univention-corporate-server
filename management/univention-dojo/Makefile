@@ -60,7 +60,8 @@ dojo: dojo-*.tar.gz
 	patch -p1 < ../fix_standbyOpacity.patch && \
 	patch -p1 < ../fix_dojo_iframe_textarea.patch && \
 	patch -p1 < ../fix_Dialog_autofocus.patch && \
-	patch -p1 < ../fix_dojox_widget_Standby_scrollbar_offset.patch
+	patch -p1 < ../fix_dojox_widget_Standby_scrollbar_offset.patch && \
+	patch -p1 < ../fix_dijit_ProgressBar_additional_css_classes.patch
 
 # all other JS packages
 libs/%: %-*.tar.gz
