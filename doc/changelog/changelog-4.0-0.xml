@@ -436,6 +436,12 @@
 				This has been fixed (<ulink url="&ucsbug;35841">Bug 35841</ulink>, <ulink url="&ucsbug;35852">Bug 35852</ulink>).
 		</simpara></listitem>
 		<listitem><simpara>
+				The reconnect feature of <classname>univention.uldap</classname> resulted in
+				invalid access errors in the S4 Connector after a samba restart.
+				To avoid this, the S4 Connector turns off the reconnect feature for the access
+				to the samba directory service (<ulink url="&ucsbug;36227">Bug 36227</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
 				The package <package>python-univention-lib</package> now depends on the package <package>python-imaging</package>
 				(<ulink url="&ucsbug;36037">Bug 36037</ulink>).
 		</simpara></listitem>
