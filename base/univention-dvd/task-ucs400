@@ -575,6 +575,17 @@ php-xml-parser
 php-xml-serializer
 php5-imagick
 
+/* zarafa App */
+libboost-system1.49.0
+libboost-filesystem1.49.0
+
+/* z-push App */
+php-mail
+php-mail-mimedecode
+php-mail-mime 
+php-net-dime
+php-soap
+
 /* SugarCRM */
 php5-curl
 
