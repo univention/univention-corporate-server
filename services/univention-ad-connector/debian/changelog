@@ -1,3 +1,9 @@
+univention-ad-connector (9.0.7-1) unstable; urgency=medium
+
+  * Bug #35654: fix wizard images
+
+ -- Florian Best <best@univention.de>  Tue, 21 Oct 2014 18:25:07 +0200
+
 univention-ad-connector (9.0.6-1) unstable; urgency=medium
 
   * Catch ADNotAvailable in connection testing (Bug #35701)
