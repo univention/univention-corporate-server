@@ -1,3 +1,10 @@
+univention-antivir-mail (6.0.0-3) unstable; urgency=low
+
+  * removed retired variables $sa_spam_modifies_subj and
+    $sa_timeout (Bug #35264) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 21 Oct 2014 17:47:38 +0200
+
 univention-antivir-mail (6.0.0-2) unstable; urgency=low
 
   * added PidFile to freshclam.conf (Bug #35264)

@@ -1144,10 +1144,6 @@ $cpio   = 'cpio';   # comment out if cpio does not support GNU options
 
 # SpamAssassin settings
 
-# Timout for SpamAssassin. This is only used if spamassassin does NOT
-# override it (which it often does if sa_local_tests_only is not true)
-$sa_timeout = 300;         # default is 120 seconds
-
 # $sa_local_tests_only = 1; # defaults to false
 
 # AWL (auto whitelisting), requires spamassassin 2.44 or better
@@ -1179,10 +1175,6 @@ $sa_kill_level_deflt = $sa_tag2_level_deflt; # triggers spam evasive actions
 #$sa_spam_subject_tag = '***SPAM*** ';   # (defaults to undef, disables)
                                 # (only seen when spam is not to be rejected
                                 # and recipient is in local_domains*)
-
-$sa_spam_modifies_subj = 0; # may be a ref to a lookup table, default is true
-# Example: modify Subject for all local recipients except user@example.com
-#$sa_spam_modifies_subj = [qw( !user@example.com . )];
 
 # don't add ***UNCHECKED*** to the subject
 $undecipherable_subject_tag = undef;
