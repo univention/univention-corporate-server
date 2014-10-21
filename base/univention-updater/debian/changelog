@@ -1,3 +1,10 @@
+univention-updater (10.0.21-1) unstable; urgency=medium
+
+  * Added python-univention to the pre depends package list and
+    add python2.7 to the supported debian version (Bug #36229)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Oct 2014 17:27:50 +0200
+
 univention-updater (10.0.20-1) unstable; urgency=low
 
   * fixed preup (Bug #36237) 

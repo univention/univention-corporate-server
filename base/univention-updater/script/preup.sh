@@ -375,8 +375,11 @@ then
 	fi
 fi
 
+# Added python2.7 to the supported versions
+egrep -q '^supported-versions.*python2.7' /usr/share/python/debian_defaults ||\
+	sed -i 's|\(^supported-versions.*\)|\1, python2.7|' /usr/share/python/debian_defaults
 # Pre-upgrade
-preups="univention-ldap-config univention-samba python-support univention-config"
+preups="univention-ldap-config univention-samba python-support python-univention univention-config"
 $update_commands_update >&3 2>&3
 for pkg in $preups; do
 	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then
