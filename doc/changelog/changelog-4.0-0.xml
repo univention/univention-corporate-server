@@ -157,13 +157,13 @@
 			<listitem><simpara>
 					MDB is the new default backend database for OpenLDAP (see &ucsUCRV;
 					<envar>ldap/database/type</envar> for OpenLDAP database settings,
-					<ulink url="&ucsbug;34994">Bug 34994</ulink>)
+					(<ulink url="&ucsbug;34994">Bug 34994</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 					The default search rule for the LDAP attribute
 					<emphasis>univentionInventoryNumber</emphasis> has been adjusted
 					to make searches case insensitive.
-					<ulink url="&ucsbug;34262">Bug 34262</ulink>)
+					(<ulink url="&ucsbug;34262">Bug 34262</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 					The ppolicy LDAP overlay is now loaded by default and an example
@@ -174,13 +174,18 @@
 					5 repeated LDAP authentication failures within a monitoring interval
 					of 5 minutes causes the authenticating account to be locked in UDM.
 					A locked account can be unlocked via UDM by a Domain Admin.
-					<ulink url="&ucsbug;31907">Bug 31907</ulink>)
+					(<ulink url="&ucsbug;31907">Bug 31907</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 					The python library <envar>univention.uldap</envar> removes the base 
 					object from the search result if the search scope one was used. Thus
 					the behavior is identical between BDB and MDB
-					<ulink url="&ucsbug;36169">Bug 36169</ulink>)
+					(<ulink url="&ucsbug;36169">Bug 36169</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+					The Scalix schema has been removed. The update will be blocked until
+					all Scalix related attributes have been removed from the LDAP server
+					of the UCS domain (<ulink url="&ucsbug;28693">Bug 28693</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 
