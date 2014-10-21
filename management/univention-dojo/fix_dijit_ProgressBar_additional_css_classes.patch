@@ -4,8 +4,8 @@
  
  			domClass.toggle(this.domNode, "dijitProgressBarIndeterminate", this.indeterminate);
  			domClass.toggle(this.domNode, "dijitProgressBarIndeterminateRtl", this.indeterminate && !this.isLeftToRight());
-+			domClass.toggle(this.domNode, "dijitProgressBarGreaterThan50Percent", !this.indeterminate && percent > 0.5);
-+			domClass.toggle(this.domNode, "dijitProgressBarLowerThan50Percent", !this.indeterminate && percent <= 0.5);
++			domClass.toggle(this.domNode, "dijitProgressBarGreaterThan50Percent", !this.indeterminate && percent >= 0.49);
++			domClass.toggle(this.domNode, "dijitProgressBarLowerThan50Percent", !this.indeterminate && percent < 0.49);
  
  			tip.style.width = (percent * 100) + "%";
  			this.onChange();
