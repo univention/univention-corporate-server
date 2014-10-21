@@ -122,7 +122,7 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True, 
 
 class access:
 
-	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False, uri=None, follow_referral=False):
+	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False, uri=None, follow_referral=False, reconnect=True):
 		"""start_tls = 0 (no); 1 (try); 2 (must)"""
 		ucr = None
 		self.host = host
@@ -131,6 +131,7 @@ class access:
 		self.bindpw = bindpw
 		self.start_tls = start_tls
 		self.ca_certfile = ca_certfile
+		self.reconnect = reconnect
 
 		self.port = port
 
@@ -194,8 +195,12 @@ class access:
 		if not hasattr(self, 'protocol'):
 			self.protocol = 'ldap'
 
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
-		self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1)
+		if self.reconnect:
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection with retry_max=%d' % self. client_connection_attempt)
+			self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1)
+		else:
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
+			self.lo = ldap.initialize(self.uri, trace_stack_limit=None)
 
 		if ca_certfile:
 			self.lo.set_option( ldap.OPT_X_TLS_CACERTFILE, ca_certfile )

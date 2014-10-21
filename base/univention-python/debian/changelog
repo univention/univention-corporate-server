@@ -1,3 +1,9 @@
+univention-python (8.0.3-1) unstable; urgency=medium
+
+  * Make reconnect optional in univention.uldap.access (Bug #36227)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Oct 2014 13:05:07 +0200
+
 univention-python (8.0.2-1) unstable; urgency=medium
 
   * The MDB backend returns the ldap base if scope one is used. Remove
