@@ -1,3 +1,10 @@
+univention-system-setup (8.1.18-1) unstable; urgency=medium
+
+  * Download packages for Appliance mode if system setup wasn't
+    successful (Bug #36038)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Oct 2014 09:33:28 +0200
+
 univention-system-setup (8.1.17-1) unstable; urgency=medium
 
   * Bug #35654: some style adaptations

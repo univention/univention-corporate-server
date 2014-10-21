@@ -56,28 +56,9 @@ if [ ! -e /var/univention-join/joined ] && [ -z "$server_role" ]; then
 fi
 
 # prepare the server role selection
-if [ "$1" = "configure" ] && [ ! -e /var/univention-join/joined ]; then
-	mkdir -p /var/cache/univention-system-setup/packages/
-	install_cmd="$(univention-config-registry get update/commands/install)"
-# 	for package in server-master server-backup server-slave server-member basesystem; do
-# 		$install_cmd --reinstall -d -o Debug::NoLocking=1 -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages univention-${package}
-# 		check_returnvalue $? "Failed to download required packages for univention-${package}"
-
-# 		# Get all dependencies
-# 		dependencies="$(LC_ALL=C apt-cache show univention-${package} | grep Depends | head -n 1 | sed -e 's| \| [^,]*||g;s|,||g;s|([^(]*)||g;s|^Depends: ||')"
-# 		$install_cmd --reinstall -d -o Debug::NoLocking=1 -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages ${dependencies}
-# 		check_returnvalue $? "Failed to download required dependency packages for univention-${package}"
-# 	done
-
-# 	(
-# 		cd /var/cache/univention-system-setup/packages/
-# 		apt-ftparchive packages . >Packages
-# 		check_returnvalue $? "Failed to create ftparchive directory"
-# 	)
-
-# 	if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
-# 		echo "deb file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
-# 	fi
+if [ "$1" = "configure" ] && [ -n "$2" ]; then
+	# download packages in update mode only
+	/usr/share/univention-system-setup/download-packages
 
 	initialsetup_startsite="ucs-overview/initialsetup.html"
 	system_setup_boot_startsite='univention-management-console/?module=setup\&overview=false\&username=root'
