@@ -1,3 +1,9 @@
+ucs-test (4.0.172-4) unstable; urgency=low
+
+  * Bug #36215: disabled some checks due to bug #36210
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 21 Oct 2014 09:08:30 +0200
+
 ucs-test (4.0.172-3) unstable; urgency=low
 
   * Bug #36108: added missing dependencies
