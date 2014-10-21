@@ -113,6 +113,17 @@ if [ "$TERM" = "xterm" ]; then
 	fi
 fi
 
+# shell-univention-lib is proberly not installed, so use a local function
+is_ucr_true () {
+    local value
+    value="$(/usr/sbin/univention-config-registry get "$1")"
+    case "$(echo -n "$value" | tr [:upper:] [:lower:])" in
+        1|yes|on|true|enable|enabled) return 0 ;;
+        0|no|off|false|disable|disabled) return 1 ;;
+        *) return 2 ;;
+    esac
+}
+
 check_scalix_schema_present() {
 
 	attributes=( scalixScalixObject scalixMailnode scalixAdministrator scalixMailboxAdministrator scalixServerLanguage scalixEmailAddress scalixLimitMailboxSize scalixLimitOutboundMail scalixLimitInboundMail scalixLimitNotifyUser scalixHideUserEntry scalixMailboxClass )
@@ -178,17 +189,6 @@ if [ ! -z "$update_custom_preup" ]; then
 		echo "Custom preupdate script $update_custom_preup not found" >&3
 	fi
 fi
-
-# shell-univention-lib is proberly not installed, so use a local function
-is_ucr_true () {
-    local value
-    value="$(/usr/sbin/univention-config-registry get "$1")"
-    case "$(echo -n "$value" | tr [:upper:] [:lower:])" in
-        1|yes|on|true|enable|enabled) return 0 ;;
-        0|no|off|false|disable|disabled) return 1 ;;
-        *) return 2 ;;
-    esac
-}
 
 ## check for hold packages
 hold_packages=$(LC_ALL=C dpkg -l | grep ^h | awk '{print $2}')

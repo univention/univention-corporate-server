@@ -1,3 +1,9 @@
+univention-updater (10.0.20-1) unstable; urgency=low
+
+  * fixed preup (Bug #36237) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 21 Oct 2014 09:37:59 +0200
+
 univention-updater (10.0.19-1) unstable; urgency=low
 
   * Bug #35654: move close button into head area, make log view scrollable
