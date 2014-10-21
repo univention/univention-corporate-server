@@ -10,7 +10,7 @@ XS-Python-Version: 2.6,2.7
 Package: python-univention
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
- python-ldap (>= 2.4.15),
+ python-ldap,
  python-dns,
  python-univention-debug,
  python-cracklib

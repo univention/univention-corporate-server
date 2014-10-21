@@ -1,3 +1,10 @@
+univention-python (8.0.3-2) unstable; urgency=medium
+
+  * Remove the explicit dependency to python-ldap >= 2.4.15.
+    python-univention needs to be pre-updated (Bug #36229)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Oct 2014 17:20:50 +0200
+
 univention-python (8.0.3-1) unstable; urgency=medium
 
   * Make reconnect optional in univention.uldap.access (Bug #36227)
