@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.58-1) precise; urgency=low
+
+  * Bug #35654: styling progressbar, calendar
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 21 Oct 2014 18:25:37 +0200
+
 univention-management-console-frontend-theme (0.0.57-1) unstable; urgency=medium
 
   * Bug #35654: adjust gallery pane icon margins

@@ -29,20 +29,23 @@
 
 .claro .dijitProgressBar {
 	margin:2px 0 2px 0;
+	border-radius: 18px;
 }
 .claro .dijitProgressBarEmpty {
 	/* outer container and background of the bar that's not finished yet*/
-	background-color: $progressbar-empty-background-color;
+	//background-color: $progressbar-empty-background-color;
 	border-color: $progressbar-border-color;
+	//background: $progressbar-empty-background-color;
+	vertical-gradient-and-filter($secondary-color, $grey-medium);
 }
 .claro .dijitProgressBarTile {
 	/* inner container for finished portion when in 'tile' (image) mode */
 	background-color: $progressbar-full-background-color;
 
 	// gradient background using CSS gradient, with fallback to image for IE
-	background-image: url("images/progressBarFull.png");
-	background-repeat: repeat-x;
-	alpha-white-gradient((0.93 0px), (0.41 1px), (0.7 2px), (0 100%));
+	//background-image: url("images/progressBarFull.png");
+	//background-repeat: repeat-x;
+	//alpha-white-gradient((0.93 0px), (0.41 1px), (0.7 2px), (0 100%));
 	background-attachment: scroll;	// override strange "fixed" setting from dijit.css
 }
 .dj_ie6 .claro .dijitProgressBarTile {
@@ -53,10 +56,16 @@
 	border-right-width: 1px;
 	transition-property: width;
 	transition-duration: .25s;
+	height: 20px;
+	box-sizing: content-box;
 }
 .claro .dijitProgressBarLabel {
-	/* Set to a color that contrasts with both the "Empty" and "Full" parts. */
 	color: $progressbar-text-color;
+	padding: 2px 0;
+}
+.umc .dijitProgressBarGreaterThan50Percent .dijitProgressBarLabel {
+	color: $text-color-dark-background;
+	padding: 2px 0;
 }
 .claro .dijitProgressBarIndeterminate .dijitProgressBarTile {
 	/* use an animated gif for the progress bar in 'indeterminate' mode;

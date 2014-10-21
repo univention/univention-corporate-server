@@ -133,7 +133,7 @@ $calendar-adjacentmonth-text-color ?= $base-border-color;						// Text color use
 $calendar-date-pressed-border-color ?= $container-background-color;			// For some reason pressing a day of the month (as opposed to hovering it) makes the border go away, is this intentional?
 $calendar-date-pressed-background-color ?= $pressed-background-color;
 $calendar-date-selected-border-color ?= $selected-border-color;
-$calendar-date-selected-background-color ?= $minor-selected-color;
+$calendar-date-selected-background-color ?= ($grey-medium + $primary-color)/2;
 $calendar-button-hovered-background-color ?= $unfocused-clickable-color;		// for hover or next/previous year, and month drop down (TODO: border and background are built in to calendarArrows.png, can't control from here)
 $calendar-button-hovered-border-color ?= $container-background-color;			// for hover or next/previous year, and month drop down
 $calendar-button-pressed-background-color ?= $pressed-background-color;
@@ -142,8 +142,8 @@ $calendar-button-pressed-border-color ?= $pressed-border-color;
 
 // ProgressBar
 $progressbar-border-color ?= $popup-border-color;								// Border color of progress bar
-$progressbar-full-background-color ?=$minor-selected-color;					// Background color for part of progress bar indicating amount completed
-$progressbar-empty-background-color ?= $container-background-color;			// Background color for part of progress bar indicating amount remaining
+$progressbar-full-background-color ?=  $text-color    			// Background color for part of progress bar indicating amount completed
+$progressbar-empty-background-color ?=  vertical-gradient-and-filter(#e6e6e6, #c8c8c8); /*$container-background-color;*/			// Background color for part of progress bar indicating amount remaining
 $progressbar-text-color ?= $text-color;										// Color of progress bar text (ex: "35%").  Must contrast with both empty and full background colors.
 
 // TimePicker
@@ -193,7 +193,7 @@ $image-icons ?= "images/icons.svg";
 $width-icon ?= 20px;
 $image-arrow-sprite ?= $image-icons;
 $width-arrow-sprite ?= $width-icon;
-$image-calendar-arrows ?= "images/calendarArrows.png";
+$image-calendar-arrows ?= "images/icons-small.svg";
 $image-calendar-arrows-ie6 ?= "images/calendarArrows8bit.png";
 $image-checkmark ?= "images/checkmarkNoBorder.png";
 $image-checkmark-ie6 ?= "images/checkmarkNoBorder.gif";
@@ -213,7 +213,7 @@ $image-tooltip ?= "images/tooltip.png";	// arrow connectors
 $image-tooltip-ie6 ?= "images/tooltip8bit.png";	// arrow connectors (8 bit)
 $image-tree-expand ?= "images/treeExpandImages.png";
 $image-tree-expand-ie6 ?= "images/treeExpandImages8bit.png";
-$image-progressbar-anim ?= "images/progressBarAnim.gif";
+$image-progressbar-anim ?= "images/progressBarAnim*.gif";
 
 // Mixins
 
