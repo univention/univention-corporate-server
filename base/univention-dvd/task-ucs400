@@ -378,6 +378,21 @@ multipath-tools
 multipath-tools-boot
 aspell-en
 graphviz
+dump
+strace
+fakeroot
+gnupg2
+mtools
+ntfs-3g
+ntfsprogs
+openvpn
+procinfo
+sqlite
+sshfs
+sshpass
+ssmtp
+ure
+xfsdump
 
 /* raid */
 cpqarrayd
