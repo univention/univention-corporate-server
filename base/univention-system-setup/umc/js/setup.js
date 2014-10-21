@@ -170,10 +170,15 @@ define([
 				onSave: lang.hitch(this, function() {
 					this.save();
 				}),
+				addPage: lang.hitch(this, 'addChild'),
+				removePage: lang.hitch(this, 'removeChild'),
 				addNotification: lang.hitch(this, 'addNotification'),
 				addWarning: lang.hitch(this, 'addWarning'),
 				isLoading: lang.hitch(this, 'isLoading')
 			});
+			ipage.on('selectPage', lang.hitch(this, function(page) {
+				this.selectChild(page || ipage);
+			}));
 			this._pages = [ipage];
 			this.addChild(ipage);
 			ipage.on('valuesChanged', lang.hitch(this, function() {

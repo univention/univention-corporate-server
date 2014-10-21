@@ -51,6 +51,8 @@ define([
 		//		in order to edit network interfaces.
 
 		umcpCommand: lang.hitch(tools, 'umcpCommand'),
+		addPage: null,
+		removePage: null,
 
 		// internal reference to the formular containing all form widgets of an UDM object
 		_form: null,
@@ -79,6 +81,9 @@ define([
 			var widgets = [{
 				type: InterfaceGrid,
 				name: 'interfaces',
+				addPage: lang.hitch(this, 'addPage'),
+				removePage: lang.hitch(this, 'removePage'),
+				selectPage: lang.hitch(this, 'onSelectPage'),
 				label: ''
 			}, {
 				type: ComboBox,
@@ -160,12 +165,13 @@ define([
 
 		destroy: function() {
 			this.inherited(arguments);
-			this._interfacesWatchHandler.unwatch();
-			this._interfacesWatchHandler = null;
+			if (this._interfacesWatchHandler) {
+				this._interfacesWatchHandler.unwatch();
+				this._interfacesWatchHandler = null;
+			}
 		},
 
 		setValues: function(_vals) {
-
 			// save a copy of all original values that may be lists
 			var r = /^(interfaces\/.*|nameserver[1-3]|dns\/forwarder[1-3])$/;
 			this._orgValues = {};
@@ -366,6 +372,10 @@ define([
 			}, this);
 			orgInterfaces.setData(data);
 			return orgInterfaces;
+		},
+
+		onSelectPage: function() {
+			// event stub
 		},
 
 		onSave: function() {

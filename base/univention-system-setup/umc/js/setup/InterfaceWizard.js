@@ -57,7 +57,6 @@ define([
 		creation: null,
 
 		umcpCommand: lang.hitch(tools, 'umcpCommand'),
-		style: 'width: 650px; height: 650px;',
 
 		getDeviceName: function() {
 			try {
@@ -136,9 +135,11 @@ define([
 								'Bond': 'name_b',
 								'VLAN': 'vlan_id'
 							}[interfaceType]);
-							var value = name.get('value');
-							name.set('value', null);
-							name.set('value', value);
+							if (name) {
+								var value = name.get('value');
+								name.set('value', null);
+								name.set('value', value);
+							}
 
 //							var descriptions = {
 //								'Ethernet': '',

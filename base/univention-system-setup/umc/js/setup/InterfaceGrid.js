@@ -324,11 +324,12 @@ define([
 		_showWizard: function(device) {
 			// show an InterfaceWizard for the given device
 			// and insert data into the grid when saving the new values
-			var _dialog = null;
-
-			var _cleanup = function() {
-				_dialog.hide().then(lang.hitch(_dialog, 'destroyRecursive'));
-			};
+			var wizard;
+			var _cleanup = lang.hitch(this, function() {
+				this.selectPage(null);
+				this.removePage(wizard);
+				wizard.destroyRecursive();
+			});
 
 			var _finished = lang.hitch(this, function(values) {
 				var data = {};
@@ -341,21 +342,25 @@ define([
 				_cleanup();
 			});
 
-			var wizard = new InterfaceWizard({
+			wizard = new InterfaceWizard({
 				interfaces: this.moduleStore,
 				ucsversion: this.ucsversion,
 				device: device,
 				onCancel: _cleanup,
+				headerButtons: [{
+					name: 'close',
+					label: _('Back to overview'),
+					iconClass: 'umcCloseIconWhite',
+					callback: _cleanup
+				}],
 				onFinished: _finished
 			});
 
-			_dialog = new Dialog({
-				title: device ? _('Edit a network interface') : _('Add a network interface'),
-				content: wizard
-			});
-			_dialog.own(wizard);
-			this.own(_dialog);
-			_dialog.show();
+			this.own(wizard);
+			this.addPage(wizard);
+			this.selectPage(wizard);
+
+			//	device ? _('Edit a network interface') : _('Add a network interface'),
 		},
 
 		onChange: function() {
