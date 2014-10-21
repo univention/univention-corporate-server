@@ -6,7 +6,15 @@
 }
 .umc .umcGridHeader {
   padding-bottom: 0.5em;
-  height: 45px;
+  display: inline-block;
+}
+
+.umc .umcGridHeader > *:after {
+	content: " ";
+	display: block;
+	clear: both;
+	height: 0px;
+	visibility: hidden;
 }
 
 .umc .dojoxGridHeader {

@@ -981,14 +981,6 @@ define([
 			}
 
 			return [{
-				name: 'close',
-				label: closeLabel,
-				iconClass: 'umcCloseIconWhite',
-				callback: lang.hitch(this, function() {
-					topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'cancel');
-					this.onCloseTab();
-				})
-			}, {
 				name: 'submit',
 				id: this.id + '_SubmitButton',
 				iconClass: 'umcSaveIconWhite',
@@ -996,7 +988,15 @@ define([
 				callback: lang.hitch(this, function() {
 					this._form.onSubmit();
 				})
-			}].reverse();
+			}, {
+				name: 'close',
+				label: closeLabel,
+				iconClass: 'umcCloseIconWhite',
+				callback: lang.hitch(this, function() {
+					topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'cancel');
+					this.onCloseTab();
+				})
+			}];
 		},
 
 		getValues: function() {

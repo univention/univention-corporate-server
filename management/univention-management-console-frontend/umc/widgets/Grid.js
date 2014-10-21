@@ -38,6 +38,7 @@ define([
 	"dojo/dom-attr",
 	"dojo/dom-geometry",
 	"dojo/dom-style",
+	"dojo/dom-class",
 	"dojo/topic",
 	"dojo/aspect",
 	"dojo/on",
@@ -57,7 +58,7 @@ define([
 	"umc/i18n!",
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
-], function(declare, lang, array, kernel, win, construct, attr, geometry, style,
+], function(declare, lang, array, kernel, win, construct, attr, geometry, style, domClass,
 		topic, aspect, on, Menu, MenuItem, DropDownButton,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
@@ -468,7 +469,7 @@ define([
 			this._setGlobalActions();
 			this._setContextActions();
 
-			style.set(this._header.domNode, 'display', (this.actions.length) ? 'block': 'none');
+			domClass.toggle(this._header.domNode, 'dijitHidden', !this.actions.length);
 			if (this._toolbar.getChildren().length) {
 				this._header.addChild(this._toolbar);
 			}
