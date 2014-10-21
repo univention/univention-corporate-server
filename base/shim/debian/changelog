@@ -1,8 +1,8 @@
-shim (0.7-3) unstable; urgency=medium
+shim (0.7-4) unstable; urgency=medium
 
   * update to 0.7 (Bug #35914)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 07 Oct 2014 16:08:25 +0200
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 21 Oct 2014 12:02:46 +0200
 
 shim (0.2-1) unstable; urgency=low
 
