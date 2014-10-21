@@ -43,24 +43,8 @@ define([
 ], function(declare, lang, array, TextBox, PasswordBox, ComboBox, CheckBox, HiddenInput, Wizard, Form, _) {
 
 	return declare("umc.modules.uvmm.CloudConnectionWizard", [ Wizard ], {
-		autoValidate: true,
 
-		constructor: function(props, cloudtype) {
-			this.inherited(arguments);
-			lang.mixin(this, props);
-			this.cloudtype = cloudtype;
-		},
-
-		_invalidUrlMessage: _('The url is invalid!<br/>Expected format is: <i>http(s)://</i>'),
-		_validateUrl: function(url) {
-			url = url || '';
-			var _regUrl = /^(http|https)+:\/\//;
-			var isUrl = _regUrl.test(url);
-			var acceptEmtpy = !url && !this.required;
-			return acceptEmtpy || isUrl;
-		},
-
-		_getWidgets: function(cloudtype) {
+		___getWidgets: function(cloudtype) {
 			if (cloudtype == 'EC2') {
 				return {
 					layout: [
@@ -97,14 +81,6 @@ define([
 				};
 			}
 			return {};
-		},
-
-		_finish: function(pageName) {
-			this.inherited(arguments);
-		},
-		
-		onFinished: function() {
-			// event stub
 		}
 	});
 });

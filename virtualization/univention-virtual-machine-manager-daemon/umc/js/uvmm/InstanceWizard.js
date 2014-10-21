@@ -138,7 +138,8 @@ define([
 						name: 'name',
 						type: TextBox,
 						label: _('Instance Name'),
-						required: true
+						required: true,
+						size: 'Two'
 					}, {
 						name: 'keyname',
 						type: ComboBox,
@@ -206,7 +207,8 @@ define([
 						name: 'name',
 						type: TextBox,
 						label: _('Instance Name'),
-						required: true
+						required: true,
+						size: 'Two'
 					}, {
 						name: 'keyname',
 						type: ComboBox,

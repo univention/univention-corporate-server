@@ -771,21 +771,23 @@ define([
 				tools.defer(wait, 1000);
 			});
 
-			this.standbyDuring(this.loadWizardPages(values.cloudtype)).then(lang.hitch(this, function(pages) {
-				wizard = new CloudConnectionWizard({
-				onFinished: _finished,
-				onCancel: _cleanup,
-				pages: pages
-			}, values.cloudtype);
-			this.addChild(wizard);
-			this.selectChild(wizard);
+			//this.standbyDuring(this.loadWizardPages(values.cloudtype)).then(lang.hitch(this, function(pages) {
+			this.loadWizardPages(values.cloudtype).then(lang.hitch(this, function(Wizard) {
+				wizard = new Wizard({
+					autoValidate: true,
+					onFinished: _finished,
+					onCancel: _cleanup,
+					cloudtype: values.cloudtype
+				});
+				this.addChild(wizard);
+				this.selectChild(wizard);
 			}));
 		},
 
 		loadWizardPages: function(cloud) {
 			var deferred = new Deferred();
-			require(['umc/modules/uvmm/' + cloud], function(pages) {
-				deferred.resolve(pages);
+			require(['umc/modules/uvmm/' + cloud], function(wizard) {
+				deferred.resolve(wizard);
 			});
 			return deferred;
 		},

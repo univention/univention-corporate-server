@@ -189,6 +189,16 @@ define([
 			return values;
 		},
 
+		getFooterButtons: function() {
+			var buttons = this.inherited(arguments);
+			return array.map(buttons, function(button) {
+				if (button.name == 'finish') {
+					button.label = _('Next');
+				}
+				return button;
+			});
+		},
+
 		_finish: function() {
 			// trigger finished event
 			this.onFinished(this.getValues());
