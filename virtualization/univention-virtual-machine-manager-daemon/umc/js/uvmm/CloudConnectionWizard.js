@@ -47,6 +47,7 @@ define([
 
 		constructor: function(props, cloudtype) {
 			this.inherited(arguments);
+			lang.mixin(this, props);
 			this.cloudtype = cloudtype;
 		},
 
@@ -66,7 +67,6 @@ define([
 						'region',
 						'access_id',
 						'password',
-						'secure'
 					],
 					widgets: [{
 						name: 'access_id',
@@ -93,13 +93,7 @@ define([
 						],
 						label: _('EC2 Region'),
 						required: true
-					}, {
-						name: 'secure',
-						type: CheckBox,
-						label: _('Secure connection'),
-						value: true,
-						required: false
-					} ]
+					}]
 				};
 			}
 			return {};
