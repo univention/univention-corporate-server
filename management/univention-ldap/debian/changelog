@@ -1,3 +1,10 @@
+univention-ldap (11.0.7-4) unstable; urgency=medium
+
+  * Get rid of 'rootdn is always granted unlimited privileges' messages
+    on DC Master (Bug #31907)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Oct 2014 17:32:42 +0200
+
 univention-ldap (11.0.7-3) unstable; urgency=medium
 
   * Only allow activation of the ppolicy overlay in case backend is mdb
