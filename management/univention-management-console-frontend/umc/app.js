@@ -640,14 +640,6 @@ define([
 					popup: this._helpMenu
 				}));
 
-				// the notification button
-				this._headerMenu.addChild(new MenuItem({
-					label: _('Notifications'),
-					id: 'umcMenuNotifications',
-					iconClass: 'icon24-umc-menu-notifications',
-					onClick: lang.hitch(dialog, 'toggleNotifications')
-				}));
-
 				// the logout button
 				this._headerMenu.addChild(new MenuItem({
 					id: 'umcMenuLogout',

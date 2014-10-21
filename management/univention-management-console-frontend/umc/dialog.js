@@ -153,34 +153,6 @@ define([
 			return this._notificationMaster;
 		},
 
-		showNotifications: function() {
-			this.createNotificationMaster();
-			this._notificationMaster.wipeIn(true);
-		},
-
-		hideNotifications: function() {
-			this.createNotificationMaster();
-			this._notificationMaster.wipeOut();
-		},
-
-		toggleNotifications: function() {
-			this.createNotificationMaster();
-
-			var isVisible = this._notificationMaster.get('visible');
-			var allMessagesAreShown = this._notificationMaster.get('view') != 'new';
-			var hasOldMessages = this._notificationMaster.store.query({ seen: true }).length > 0;
-
-			if (isVisible && !allMessagesAreShown && hasOldMessages) {
-				this._notificationMaster.wipeIn(true);
-			}
-			else if (isVisible) {
-				this._notificationMaster.confirm();
-			}
-			else {
-				this._notificationMaster.wipeIn(true);
-			}
-		},
-
 		notify: function(/*String*/ message, /*String?*/ component) {
 			// summary:
 			//		Show a toaster notification with the given message string.
