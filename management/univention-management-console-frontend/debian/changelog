@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.59-1) unstable; urgency=medium
+
+  * Bug #35654: fix sticky module header
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 21 Oct 2014 02:44:57 +0200
+
 univention-management-console-frontend (4.1.58-1) unstable; urgency=medium
 
   Bug #35654:

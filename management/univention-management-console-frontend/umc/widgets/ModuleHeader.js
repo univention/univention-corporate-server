@@ -50,9 +50,18 @@ define([
 		'class': 'umcModuleHeader',
 		_title: null,
 //		buttons: null,
+		_outerContainer: null,
 
 		_setTitleAttr: function(title) {
 			this._title.set('content', title);
+		},
+
+		_updateStickyHeader: function() {
+			var scroll = geometry.docScroll();
+			var bboxHeader = geometry.getMarginBox('umcHeader');
+			var moduleHeaderHeight = geometry.getMarginBox(this.domNode).h;
+			var sticky = scroll.y >= bboxHeader.h + bboxHeader.t + moduleHeaderHeight;
+			domClass.toggle(this._outerContainer.domNode, 'umcModuleHeaderSticky', sticky);
 		},
 
 		buildRendering: function() {
@@ -64,22 +73,18 @@ define([
 			this._right = new ContainerWidget({
 				'class': 'umcModuleHeaderRight'
 			});
-			var outerContainer = new ContainerWidget({
+			this._outerContainer = new ContainerWidget({
 				'class': 'umcModuleHeaderOuterContainer'
 			});
 			var container = new ContainerWidget({
 				'class': 'umcModuleHeaderWrapper container'
 			});
-			this.addChild(outerContainer);
-			outerContainer.addChild(container);
+			this.addChild(this._outerContainer);
+			this._outerContainer.addChild(container);
 			container.addChild(this._left);
 			container.addChild(this._right);
 
-			this.own(on(baseWin.doc, 'scroll', lang.hitch(this, function() {
-				// stick the header to the top of the window
-				var sticky = document.body.scrollTop >= geometry.getMarginBox('umcHeader').h + geometry.getMarginBox('umcHeader').t + geometry.getMarginBox(this.domNode).h;
-				domClass.toggle(outerContainer.domNode, 'umcModuleHeaderSticky', sticky);
-			})));
+			this.own(on(baseWin.doc, 'scroll', lang.hitch(this, '_updateStickyHeader')));
 
 			this._title = new Text({
 				content: this.get('title'),
