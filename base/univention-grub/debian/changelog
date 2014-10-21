@@ -1,3 +1,9 @@
+univention-grub (8.0.3-7) unstable; urgency=low
+
+  * added grub/gfxmode=text for xen HVM installations (Bug #30978) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 21 Oct 2014 15:32:12 +0200
+
 univention-grub (8.0.3-6) unstable; urgency=low
 
   * new menu colors (Bug #35934) 

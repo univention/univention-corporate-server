@@ -46,12 +46,18 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.2-1; t
 		grub/menu/color/highlight="white/green"
 fi
 
+gfxmode="800x600@16"
+# grub menu is invisibal in xen HVM unless text mode is used
+if dmesg | grep -q "Hypervisor detected: Xen HVM"; then
+	gfxmode="text"
+fi
+
 # Bug #24858: xen-4.1 needs 800x600
 univention-config-registry set grub/timeout?5 \
 	kernel/postinst_hook?"/usr/sbin/update-grub" \
 	grub/quiet?"yes"  \
 	grub/loglevel?"0" \
-	grub/gfxmode?"800x600@16" \
+	grub/gfxmode?"$gfxmode" \
 	grub/gfxpayload?"800x600@24,800x600@16,800x600" \
 	grub/backgroundimage?"/boot/grub/uniboot.png" \
 	grub/color/normal?"black/black" \
