@@ -50,7 +50,7 @@ define([
 	"umc/i18n!umc/modules/adconnector"
 ], function(declare, lang, array, domClass, topic, styles, timing, dialog, ProgressBar, tools, server, Text, TextBox, Uploader, PasswordBox, Wizard, RadioButtons, DownloadInfo, _) {
 	var modulePath = require.toUrl('umc/modules/adconnector');
-	styles.insertCssRule('.umc-adconnector-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;');
+	styles.insertCssRule('.umc-adconnector-page .umcPageNav > .umcPageHelpText', 'background-repeat: no-repeat; background-position: 10px 0px; padding-top: 180px; min-height: 180px;');
 	styles.insertCssRule('.umc-adconnector-page .umcLabelPaneCheckBox', 'display: block !important;');
 	array.forEach(['start', 'credentials', 'config', 'security', 'certificate', 'syncconfig', 'syncconfig-left', 'syncconfig-right', 'syncconfig-left-right', 'msi', 'finished'], function(ipage) {
 		var conf = {
@@ -58,7 +58,7 @@ define([
 			path: modulePath
 		};
 		styles.insertCssRule(
-			lang.replace('.umc-adconnector-page-{name} > form > div', conf),
+			lang.replace('.umc-adconnector-page-{name} .umcPageNav > .umcPageHelpText', conf),
 			lang.replace('background-image: url({path}/{name}.png)', conf)
 		);
 	});
@@ -83,6 +83,7 @@ define([
 				'class': 'umc-adconnector-page-start umc-adconnector-page',
 				name: 'start',
 				headerText: _('Active Directory Connection'),
+				helpText: ' ',
 				widgets: [{
 					type: Text,
 					name: 'help',
@@ -109,6 +110,7 @@ define([
 				'class': 'umc-adconnector-page-credentials umc-adconnector-page',
 				name: 'credentials-admember',
 				headerText: _('Active Directory domain credentials'),
+				helpText: ' ',
 				widgets: [{
 					type: Text,
 					'class': 'umcPageHelpText',
@@ -146,6 +148,7 @@ define([
 				'class': 'umc-adconnector-page-finished umc-adconnector-page',
 				name: 'finished-admember',
 				headerText: _('Completion of Active Directory Connection'),
+				helpText: ' ',
 				widgets: [{
 					type: Text,
 					name: 'help',
@@ -158,6 +161,7 @@ define([
 				'class': 'umc-adconnector-page-credentials umc-adconnector-page',
 				name: 'credentials-adconnector',
 				headerText: _('Active Directory domain credentials'),
+				helpText: ' ',
 				widgets: [{
 					type: Text,
 					'class': 'umcPageHelpText',
@@ -184,6 +188,7 @@ define([
 				'class': 'umc-adconnector-page-security umc-adconnector-page',
 				name: 'ssl-adconnector',
 				headerText: _('Security settings'),
+				helpText: ' ',
 				widgets: [{
 					type: Text,
 					'class': 'umcPageHelpText',
@@ -198,6 +203,7 @@ define([
 				'class': 'umc-adconnector-page-certificate umc-adconnector-page',
 				name: 'certificate-adconnector',
 				headerText: _('Upload AD root certificate'),
+				helpText: ' ',
 				widgets: [{
 					type: Text,
 					'class': 'umcPageHelpText',
@@ -228,6 +234,7 @@ define([
 				'class': 'umc-adconnector-page-syncconfig umc-adconnector-page',
 				name: 'config-adconnector',
 				headerText: _('Configuration of Active Directory domain synchronisation'),
+				helpText: ' ',
 				widgets: [{
 					type: Text,
 					name: 'info',
@@ -270,6 +277,7 @@ define([
 				'class': 'umc-adconnector-page-msi umc-adconnector-page',
 				name: 'msi-adconnector',
 				headerText: _('Installation of password service'),
+				helpText: ' ',
 				widgets: [{
 					type: DownloadInfo,
 					name: 'download',
@@ -280,6 +288,7 @@ define([
 				'class': 'umc-adconnector-page-finished umc-adconnector-page',
 				name: 'finished-adconnector',
 				headerText: _('Completion of Active Directory Connection'),
+				helpText: ' ',
 				widgets: [{
 					type: Text,
 					name: 'help',
