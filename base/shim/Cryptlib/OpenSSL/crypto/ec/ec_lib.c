@@ -480,10 +480,10 @@ int EC_GROUP_cmp(const EC_GROUP *a, const EC_GROUP *b, BN_CTX *ctx)
 	if (EC_METHOD_get_field_type(EC_GROUP_method_of(a)) !=
 	    EC_METHOD_get_field_type(EC_GROUP_method_of(b)))
 		return 1;
-	/* compare the curve name (if present in both) */
+	/* compare the curve name (if present) */
 	if (EC_GROUP_get_curve_name(a) && EC_GROUP_get_curve_name(b) &&
-	    EC_GROUP_get_curve_name(a) != EC_GROUP_get_curve_name(b))
-		return 1;
+	    EC_GROUP_get_curve_name(a) == EC_GROUP_get_curve_name(b))
+		return 0;
 
 	if (!ctx)
 		ctx_new = ctx = BN_CTX_new();
@@ -1010,7 +1010,7 @@ int EC_POINT_dbl(const EC_GROUP *group, EC_POINT *r, const EC_POINT *a, BN_CTX *
 
 int EC_POINT_invert(const EC_GROUP *group, EC_POINT *a, BN_CTX *ctx)
 	{
-	if (group->meth->invert == 0)
+	if (group->meth->dbl == 0)
 		{
 		ECerr(EC_F_EC_POINT_INVERT, ERR_R_SHOULD_NOT_HAVE_BEEN_CALLED);
 		return 0;
@@ -1061,12 +1061,12 @@ int EC_POINT_cmp(const EC_GROUP *group, const EC_POINT *a, const EC_POINT *b, BN
 	if (group->meth->point_cmp == 0)
 		{
 		ECerr(EC_F_EC_POINT_CMP, ERR_R_SHOULD_NOT_HAVE_BEEN_CALLED);
-		return -1;
+		return 0;
 		}
 	if ((group->meth != a->meth) || (a->meth != b->meth))
 		{
 		ECerr(EC_F_EC_POINT_CMP, EC_R_INCOMPATIBLE_OBJECTS);
-		return -1;
+		return 0;
 		}
 	return group->meth->point_cmp(group, a, b, ctx);
 	}

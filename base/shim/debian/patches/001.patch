@@ -6,9 +6,9 @@ use debian library path for gnu-efi
 
 --- shim-0.2.ORIG/Makefile
 +++ shim-0.2/Makefile
-@@ -10,7 +10,7 @@ LIB_PATH	= /usr/lib64
+@@ -6,7 +6,7 @@ LIB_PATH	= /usr/lib64
  
- EFI_INCLUDE	:= /usr/include/efi
+ EFI_INCLUDE	= /usr/include/efi
  EFI_INCLUDES	= -nostdinc -ICryptlib -ICryptlib/Include -I$(EFI_INCLUDE) -I$(EFI_INCLUDE)/$(ARCH) -I$(EFI_INCLUDE)/protocol -Iinclude
 -EFI_PATH	:= /usr/lib64/gnuefi
 +EFI_PATH	:= /usr/lib

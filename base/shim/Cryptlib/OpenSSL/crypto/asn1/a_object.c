@@ -285,28 +285,16 @@ err:
 		ASN1_OBJECT_free(ret);
 	return(NULL);
 }
-
 ASN1_OBJECT *c2i_ASN1_OBJECT(ASN1_OBJECT **a, const unsigned char **pp,
 	     long len)
 	{
 	ASN1_OBJECT *ret=NULL;
 	const unsigned char *p;
-	int i, length;
-
-	/* Sanity check OID encoding.
-	 * Need at least one content octet.
-	 * MSB must be clear in the last octet.
-	 * can't have leading 0x80 in subidentifiers, see: X.690 8.19.2
+	int i;
+	/* Sanity check OID encoding: can't have leading 0x80 in
+	 * subidentifiers, see: X.690 8.19.2
 	 */
-	if (len <= 0 || len > INT_MAX || pp == NULL || (p = *pp) == NULL ||
-	    p[len - 1] & 0x80)
-		{
-		ASN1err(ASN1_F_C2I_ASN1_OBJECT,ASN1_R_INVALID_OBJECT_ENCODING);
-		return NULL;
-		}
-	/* Now 0 < len <= INT_MAX, so the cast is safe. */
-	length = (int)len;
-	for (i = 0; i < length; i++, p++)
+	for (i = 0, p = *pp; i < len; i++, p++)
 		{
 		if (*p == 0x80 && (!i || !(p[-1] & 0x80)))
 			{
@@ -325,20 +313,20 @@ ASN1_OBJECT *c2i_ASN1_OBJECT(ASN1_OBJECT **a, const unsigned char **pp,
 	else	ret=(*a);
 
 	p= *pp;
-	if ((ret->data == NULL) || (ret->length < length))
+	if ((ret->data == NULL) || (ret->length < len))
 		{
 		if (ret->data != NULL) OPENSSL_free(ret->data);
-		ret->data=(unsigned char *)OPENSSL_malloc(length);
+		ret->data=(unsigned char *)OPENSSL_malloc(len ? (int)len : 1);
 		ret->flags|=ASN1_OBJECT_FLAG_DYNAMIC_DATA;
 		if (ret->data == NULL)
 			{ i=ERR_R_MALLOC_FAILURE; goto err; }
 		}
-	memcpy(ret->data,p,length);
-	ret->length=length;
+	memcpy(ret->data,p,(int)len);
+	ret->length=(int)len;
 	ret->sn=NULL;
 	ret->ln=NULL;
 	/* ret->flags=ASN1_OBJECT_FLAG_DYNAMIC; we know it is dynamic */
-	p+=length;
+	p+=len;
 
 	if (a != NULL) (*a)=ret;
 	*pp=p;

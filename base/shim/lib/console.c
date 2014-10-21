@@ -40,18 +40,16 @@ SetMem16(CHAR16 *dst, UINT32 n, CHAR16 c)
 	}
 }
 
-EFI_STATUS
-console_get_keystroke(EFI_INPUT_KEY *key)
+EFI_INPUT_KEY
+console_get_keystroke(void)
 {
+	EFI_INPUT_KEY key;
 	UINTN EventIndex;
-	EFI_STATUS status;
 
-	do {
-		uefi_call_wrapper(BS->WaitForEvent, 3, 1, &ST->ConIn->WaitForKey, &EventIndex);
-		status = uefi_call_wrapper(ST->ConIn->ReadKeyStroke, 2, ST->ConIn, key);
-	} while (status == EFI_NOT_READY);
+	uefi_call_wrapper(BS->WaitForEvent, 3, 1, &ST->ConIn->WaitForKey, &EventIndex);
+	uefi_call_wrapper(ST->ConIn->ReadKeyStroke, 2, ST->ConIn, &key);
 
-	return status;
+	return key;
 }
 
 void
@@ -164,8 +162,6 @@ console_print_box(CHAR16 *str_arr[], int highlight)
 {
 	SIMPLE_TEXT_OUTPUT_MODE SavedConsoleMode;
 	SIMPLE_TEXT_OUTPUT_INTERFACE *co = ST->ConOut;
-	EFI_INPUT_KEY key;
-
 	CopyMem(&SavedConsoleMode, co->Mode, sizeof(SavedConsoleMode));
 	uefi_call_wrapper(co->EnableCursor, 2, co, FALSE);
 	uefi_call_wrapper(co->SetAttribute, 2, co, EFI_LIGHTGRAY | EFI_BACKGROUND_BLUE);
@@ -173,7 +169,9 @@ console_print_box(CHAR16 *str_arr[], int highlight)
 	console_print_box_at(str_arr, highlight, 0, 0, -1, -1, 0,
 			     count_lines(str_arr));
 
-	console_get_keystroke(&key);
+	console_get_keystroke();
+
+	uefi_call_wrapper(co->EnableCursor, 2, co, SavedConsoleMode.CursorVisible);
 
 	uefi_call_wrapper(co->EnableCursor, 2, co, SavedConsoleMode.CursorVisible);
 	uefi_call_wrapper(co->SetCursorPosition, 3, co, SavedConsoleMode.CursorColumn, SavedConsoleMode.CursorRow);
@@ -186,7 +184,6 @@ console_select(CHAR16 *title[], CHAR16* selectors[], int start)
 	SIMPLE_TEXT_OUTPUT_MODE SavedConsoleMode;
 	SIMPLE_TEXT_OUTPUT_INTERFACE *co = ST->ConOut;
 	EFI_INPUT_KEY k;
-	EFI_STATUS status;
 	int selector;
 	int selector_lines = count_lines(selectors);
 	int selector_max_cols = 0;
@@ -240,12 +237,7 @@ console_select(CHAR16 *title[], CHAR16* selectors[], int start)
 			     size_cols, size_rows, 0, lines);
 
 	do {
-		status = console_get_keystroke(&k);
-		if (EFI_ERROR (status)) {
-			Print(L"Failed to read the keystroke: %r", status);
-			selector = -1;
-			break;
-		}
+		k = console_get_keystroke();
 
 		if (k.ScanCode == SCAN_ESC) {
 			selector = -1;
@@ -269,6 +261,8 @@ console_select(CHAR16 *title[], CHAR16* selectors[], int start)
 				     size_cols, size_rows, 0, lines);
 	} while (!(k.ScanCode == SCAN_NULL
 		   && k.UnicodeChar == CHAR_CARRIAGE_RETURN));
+
+	uefi_call_wrapper(co->EnableCursor, 2, co, SavedConsoleMode.CursorVisible);
 
 	uefi_call_wrapper(co->EnableCursor, 2, co, SavedConsoleMode.CursorVisible);
 	uefi_call_wrapper(co->SetCursorPosition, 3, co, SavedConsoleMode.CursorColumn, SavedConsoleMode.CursorRow);

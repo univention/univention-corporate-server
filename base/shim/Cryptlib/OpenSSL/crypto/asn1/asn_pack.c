@@ -134,23 +134,15 @@ ASN1_STRING *ASN1_pack_string(void *obj, i2d_of_void *i2d, ASN1_STRING **oct)
 		
 	if (!(octmp->length = i2d(obj, NULL))) {
 		ASN1err(ASN1_F_ASN1_PACK_STRING,ASN1_R_ENCODE_ERROR);
-		goto err;
+		return NULL;
 	}
 	if (!(p = OPENSSL_malloc (octmp->length))) {
 		ASN1err(ASN1_F_ASN1_PACK_STRING,ERR_R_MALLOC_FAILURE);
-		goto err;
+		return NULL;
 	}
 	octmp->data = p;
 	i2d (obj, &p);
 	return octmp;
-	err:
-	if (!oct || !*oct)
-		{
-		ASN1_STRING_free(octmp);
-		if (oct)
-			*oct = NULL;
-		}
-	return NULL;
 }
 
 #endif
