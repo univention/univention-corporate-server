@@ -301,6 +301,10 @@
 					An option to upgrade the system right after the configuration has been added
 					(<ulink url="&ucsbug;33839">Bug 33839</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+					The SSH host key and the DH parameter files for postfix are re-created during the appliance setup
+					(<ulink url="&ucsbug;36033">Bug 36033</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
