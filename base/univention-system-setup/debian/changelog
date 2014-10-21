@@ -1,3 +1,11 @@
+univention-system-setup (8.1.20-1) unstable; urgency=medium
+
+  * Re-create host keys and postfix DH keys (Bug #36033)
+  * Only download packages in startxwithfirefox if no packages are
+    available (Bug #36038)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Oct 2014 14:35:10 +0200
+
 univention-system-setup (8.1.19-1) unstable; urgency=medium
 
   * Download packages before deleting sources.list (Bug #36038)
