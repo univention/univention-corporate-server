@@ -31,16 +31,23 @@
 	margin-left: 27px;
 }
 
-.umcIconInfo {
+.umc .umcUCSSetupSoftwareGrid .dojoxGrid {
+	min-height: 350px;
+}
+
+.umc-setup-page .umcIconInfo {
 	background-image: url(setup/info-icon.png);
 	width: 16px;
 	height: 16px;
 }
 
-.umc-setup-page-validation li {
-	padding-bottom: 0.75em;
+@media (max-width: 768px) {
+	.umcPageIcon {
+		display: none;
+	}
 }
 
+.umc-setup-page-validation li,
 .umc-setup-page-error li {
 	padding-bottom: 0.75em;
 }
@@ -57,7 +64,8 @@
 	display: none;
 }
 
-.umc-setup-page-domain .umcLabelPane,
+.umc-setup-page-role .umcLabelPane,
+.umc-setup-page-role-nonmaster-ad .umcLabelPane,
 .umc-setup-page-summary .umcLabelPane {
 	padding-bottom: 0;
 }
@@ -67,36 +75,58 @@
 	padding-bottom: 0.25em;
 }
 
-.umc-setup-page .umcPageHelpText {
+.umc-setup-page .umcPageIcon {
 	background-repeat: no-repeat;
-	background-position: 10px 10px;
-	padding-top: 200px;
-	min-height: 250px;
+	height: 120px;
+	background-size: contain;
 }
 
-.umc-setup-page-software .umcPageHelpText {
-	background-image: url(setup/software.png);
+.umc-setup-page-welcome .umcPageIcon {
+	background-image: url(setup/welcome.svg);
 }
 
-.umc-setup-page-welcome .umcPageHelpText {
-	background-image: url(setup/welcome.png);
+.umc-setup-page-locale .umcPageIcon {
+	background-image: url(setup/locale.svg);
 }
 
-.umc-setup-page-locale .umcPageHelpText {
-	background-image: url(setup/locale.png);
+.umc-setup-page-role .umcPageIcon,
+.umc-setup-page-role-nonmaster-ad .umcPageIcon,
+.umc-setup-page-warning-basesystem .umcPageIcon {
+	background-image: url(setup/domain.svg);
 }
 
-.umc-setup-page-fqdn .umcPageHelpText,
-.umc-setup-page-credentials-nonmaster .umcPageHelpText,
-.umc-setup-page-warning .umcPageHelpText,
-.umc-setup-page-domain .umcPageHelpText {
-	background-image: url(setup/domain.png);
+.umc-setup-page-network .umcPageIcon {
+	background-image: url(setup/network.svg);
 }
 
-.umc-setup-page-user .umcPageHelpText {
-	background-image: url(setup/user.png);
+.umc-setup-page-credentials-master .umcPageIcon {
+	background-image: url(setup/account.svg);
 }
 
-.umc-setup-page-network .umcPageHelpText {
-	background-image: url(setup/network.png);
+.umc-setup-page-credentials-nonmaster .umcPageIcon,
+.umc-setup-page-credentials-ad .umcPageIcon {
+	background-image: url(setup/credentials.svg);
 }
+
+.umc-setup-page-fqdn-master .umcPageIcon,
+.umc-setup-page-fqdn-nonmaster-all .umcPageIcon {
+	background-image: url(setup/fqdn.svg);
+}
+
+.umc-setup-page-software .umcPageIcon {
+	background-image: url(setup/software.svg);
+}
+
+.umc-setup-page-validation .umcPageIcon,
+.umc-setup-page-error .umcPageIcon {
+	background-image: url(setup/error.svg);
+}
+
+.umc-setup-page-summary .umcPageIcon {
+	background-image: url(setup/summary.svg);
+}
+
+.umc-setup-page-done .umcPageIcon {
+	background-image: url(setup/done.svg);
+}
+

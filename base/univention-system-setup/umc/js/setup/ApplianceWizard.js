@@ -277,22 +277,15 @@ define([
 		constructor: function(props) {
 			lang.mixin(this, props);
 			var pageConf = {
-				navBootstrapClasses: 'col-xs-12 col-sm-6 col-md-4 col-lg-4',
-				mainBootstrapClasses: 'col-xs-12 col-sm-6 col-md-8 col-lg-8'
+				navBootstrapClasses: 'col-xs-12 col-sm-4 col-md-4 col-lg-4',
+				mainBootstrapClasses: 'col-xs-12 col-sm-8 col-md-8 col-lg-8'
 			};
 
 			this.pages = [lang.mixin({}, pageConf, {
-				'class': 'umc-setup-page umc-setup-page-welcome',
 				name: 'welcome',
 				headerText: _('UCS setup'),
 				helpText: _('<p>Welcome to Univention Corporate Server (UCS).</p><p>A few questions are needed to complete the configuration process.</p>'),
 				widgets: [{
-					type: Text,
-					name: 'image',
-					content: '',
-					'class': 'umc-setup-page-welcome',
-					region: 'nav'
-				}, {
 					type: Select,
 					name: '_language',
 					label: _('Choose your language'),
@@ -321,7 +314,6 @@ define([
 					style: 'min-width: 50%'
 				}]
 			}), lang.mixin({}, pageConf, {
-				'class': 'umc-setup-page umc-setup-page-locale',
 				name: 'locale',
 				headerText: _('Localization settings'),
 				helpText: _('Choose your system\'s localization settings.'),
@@ -351,7 +343,6 @@ define([
 					})
 				}]
 			}), lang.mixin({}, pageConf, {
-				'class': 'umc-setup-page umc-setup-page-network',
 				name: 'network',
 				headerText: _('Domain and network configuration'),
 				helpText: _('Specify the network settings for this system.'),
@@ -492,7 +483,6 @@ define([
 					visible: false
 				}]
 			}), lang.mixin({}, pageConf, {
-				'class': 'umc-setup-page umc-setup-page-domain',
 				name: 'role',
 				headerText: _('Domain setup'),
 				helpText: _('Please select your domain settings.'),
@@ -548,7 +538,6 @@ define([
 					labelConf: {style: 'margin-top: 0.75em;'}
 				}]
 			}), lang.mixin({}, pageConf, {
-				'class': 'umc-setup-page umc-setup-page-domain',
 				name: 'role-nonmaster-ad',
 				headerText: _('System role'),
 				helpText: _('Specify the type of this system.'),
@@ -588,7 +577,6 @@ define([
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}]
 			}), lang.mixin({}, pageConf, {
-				'class': 'umc-setup-page umc-setup-page-user',
 				name: 'credentials-master',
 				headerText: _('Administrator account information'),
 				helpText: _('<p>Enter the name of your organization, an e-mail address to activate UCS and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>'),
@@ -619,7 +607,6 @@ define([
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'credentials-ad',
-				'class': 'umc-setup-page-credentials-ad',
 				headerText: _('Active Directory join information'),
 				helpText: _('Specify credentials to join into the Active Directory.'),
 				widgets: [{
@@ -645,7 +632,6 @@ define([
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'credentials-nonmaster',
-				'class': 'umc-setup-page umc-setup-page-credentials-nonmaster',
 				headerText: _('Domain join information'),
 				helpText: _('Specify credentials to join into the UCS Domain.'),
 				widgets: [{
@@ -691,12 +677,10 @@ define([
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'warning-basesystem',
-				'class': 'umc-setup-page umc-setup-page-warning',
 				headerText: _('No domain warning'),
 				helpText: _('The installed UCS system will not offer any web-based domain management functions and will not be able to be a domain member. Such an UCS system should only be used in some rare use cases, for example as firewall system.')
 			}), lang.mixin({}, pageConf, {
 				name: 'fqdn-master',
-				'class': 'umc-setup-page umc-setup-page-fqdn',
 				headerText: _('Host settings'),
 				helpText: _('Specify the name of this system.'),
 				layout: [
@@ -720,7 +704,6 @@ define([
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'fqdn-nonmaster-all',
-				'class': 'umc-setup-page umc-setup-page-fqdn',
 				headerText: _('Host settings'),
 				helpText: _('Specify the name of this system.'),
 				layout: [
@@ -745,12 +728,10 @@ define([
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'software',
-				'class': 'umc-setup-page umc-setup-page-software',
 				headerText: _('Software configuration'),
 				helpText: _('<p>Select UCS software components for installation on this system. This step can be skipped; the components are also available in the Univention App Center in the category <i>UCS components</i>.</p><p>Third-party software (e.g., groupware) is also available through the Univention App Center.</p>')
 			}), lang.mixin({}, pageConf, {
 				name: 'validation',
-				'class': 'umc-setup-page-validation',
 				headerText: _('Validation failed'),
 				helpText: _('The following entries could not be validated:'),
 				widgets: [{
@@ -760,7 +741,6 @@ define([
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'summary',
-				'class': 'umc-setup-page-summary',
 				headerText: _('Confirm configuration settings'),
 				helpText: _('Please confirm the chosen configuration settings which are summarized below.'),
 				widgets: [{
@@ -775,7 +755,6 @@ define([
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'error',
-				'class': 'umc-setup-page-error',
 				headerText: _('UCS setup - An error ocurred'),
 				helpText: '_',
 				widgets: [{
@@ -786,12 +765,14 @@ define([
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'done',
-				'class': 'umc-setup-page umc-setup-page-welcome',
 				headerText: _('UCS has been set up successfully'),
 				helpTextRegion: 'main',
 				helpText: _('<p>UCS has been successfully set up with the specified settings.</p>') + _('<p>Click on the button <i>Finish</i> to complete the setup process.</p>'),
 				widgets: []
 			})];
+			array.forEach(this.pages, function(page) {
+				page['class'] = 'umc-setup-page umc-setup-page-' + page.name;
+			});
 		},
 
 		_isDHCPPreConfigured: function() {
@@ -804,6 +785,12 @@ define([
 		postCreate: function() {
 			this.inherited(arguments);
 
+			tools.forIn(this._pages, function(name, page) {
+				page.addChild(new Text({
+					'class': 'umcPageIcon',
+					region: 'nav'
+				}));
+			});
 			// DO NOT set the widgets in appliance mode
 			// as the pre-configured network properties do not make sense there
 			// exception: DHCP
@@ -2170,8 +2157,9 @@ define([
 			});
 			vals['ad/member'] = this._isAdMember();
 			if (this._isAdMember() || this._isRoleNonMaster()) {
+				vals.nameserver1 = this.getWidget('network', 'nameserver1').get('value');
 				if (this._domainName) {
-					vals['domainname'] = this._domainName;
+					vals.domainname = this._domainName;
 				}
 			}
 			return vals;
