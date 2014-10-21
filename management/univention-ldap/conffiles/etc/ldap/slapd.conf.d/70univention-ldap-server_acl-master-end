@@ -122,7 +122,7 @@ print '   by dn.children="cn=memberserver,cn=computers,%s" read' % ( ldap_base )
 print '   by * none'
 
 if configRegistry['ldap/server/type'] == "master":
-	print 'access to attrs=sambaAcctFlags
+	print 'access to attrs=sambaAcctFlags'
 	if nestedGroups:
 		print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % ( groups_default_domainadmins, ldap_base, usr )
 	else:
