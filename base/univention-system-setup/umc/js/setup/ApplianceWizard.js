@@ -1931,26 +1931,7 @@ define([
 				return this._forcePageTemporarily('locale');
 			}
 
-			// confirm empty passwords (if not required)
-			if (pageName == 'credentials-master' || pageName == 'fqdn-nonmaster-all') {
-				var passwordWidget = this.getWidget(pageName, 'root_password');
-				var password = passwordWidget.get('value');
-				if (passwordWidget.get('visible') && !password) {
-					return dialog.confirm(_('Root password empty. Continue?'), [{
-						label: _('Cancel'),
-						name: pageName
-					}, {
-						label: _('Continue'),
-						'default': true,
-						name: nextPage
-					}], _('Warning')).then(lang.hitch(this, function(response) {
-						return this._forcePageTemporarily(response);
-					}));
-				}
-			}
-
-			// update summary page
-			if (nextPage == 'validation') {
+			var _validationFunction = lang.hitch(this, function() {
 				return this._validateWithServer().then(lang.hitch(this, function(response) {
 					// jump to summary page if everything is fine...
 					// else display validation errors
@@ -1964,6 +1945,33 @@ define([
 					// stay on the current page
 					return pageName;
 				});
+			});
+
+			// confirm empty passwords (if not required)
+			if (pageName == 'credentials-master' || pageName == 'fqdn-nonmaster-all') {
+				var passwordWidget = this.getWidget(pageName, 'root_password');
+				var password = passwordWidget.get('value');
+				if (passwordWidget.get('visible') && !password) {
+					return dialog.confirm(_('Root password empty. Continue?'), [{
+						label: _('Cancel'),
+						name: pageName
+					}, {
+						label: _('Continue'),
+						'default': true,
+						name: nextPage
+					}], _('Warning')).then(lang.hitch(this, function(response) {
+						if (response == 'validation') {
+							return _validationFunction();
+						} else {
+							return this._forcePageTemporarily(response);
+						}
+					}));
+				}
+			}
+
+			// update summary page
+			if (nextPage == 'validation') {
+				return _validationFunction();
 			}
 			if (pageName == 'summary') {
 				return this.join().then(function(success) {

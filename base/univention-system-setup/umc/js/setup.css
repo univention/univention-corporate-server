@@ -28,7 +28,7 @@
  */
 
 .umc-ucssetup-wizard-indent {
-	margin-left: 27px;
+	margin-left: 16px;
 }
 
 .umc .umcUCSSetupSoftwareGrid .dojoxGrid {
@@ -39,12 +39,6 @@
 	background-image: url(setup/info-icon.png);
 	width: 16px;
 	height: 16px;
-}
-
-@media (max-width: 768px) {
-	.umcPageIcon {
-		display: none;
-	}
 }
 
 .umc-setup-page-validation li,
@@ -78,7 +72,14 @@
 .umc-setup-page .umcPageIcon {
 	background-repeat: no-repeat;
 	height: 120px;
+	margin-left: 25%;
 	background-size: contain;
+}
+
+@media (max-width: 768px) {
+	.umcPageIcon {
+		display: none;
+	}
 }
 
 .umc-setup-page-welcome .umcPageIcon {
@@ -114,6 +115,7 @@
 }
 
 .umc-setup-page-software .umcPageIcon {
+	height: 180px;
 	background-image: url(setup/software.svg);
 }
 

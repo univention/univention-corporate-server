@@ -1,6 +1,12 @@
+univention-system-setup (8.1.21-2) unstable; urgency=low
+
+  * Bug #35499: Adapt icons, layout
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 21 Oct 2014 17:41:43 +0200
+
 univention-system-setup (8.1.21-1) unstable; urgency=medium
 
-  * Re-adde accidentally removed part from the system-setup-boot
+  * Re-added accidentally removed part from the system-setup-boot
     postinst (Bug #36038)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Oct 2014 16:18:33 +0200
