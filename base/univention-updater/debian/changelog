@@ -1,3 +1,9 @@
+univention-updater (10.0.22-1) unstable; urgency=low
+
+  * Replace console-tools with kbd in postup (Bug #36224)
+
+ -- Felix Botner <botner@univention.de>  Tue, 21 Oct 2014 18:07:12 +0200
+
 univention-updater (10.0.21-1) unstable; urgency=medium
 
   * Added python-univention to the pre depends package list and

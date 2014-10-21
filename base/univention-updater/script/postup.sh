@@ -133,9 +133,13 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	install univention-managed-client
 fi
 
-# Update to UCS 4.0-0 remove php5-suhosin
+# Update to UCS 4.0-0 remove php5-suhosin Bug #35203
 dpkg --purge php5-suhosin >>"$UPDATER_LOG" 2>&1
-# End Update to UCS 4.0-0 remove php5-suhosin
+# End Update to UCS 4.0-0 remove php5-suhosin, can be removed after 4.0.0
+
+# Update to UCS 4.0-0 replace console-tools with kbd Bug #36224
+install kbd
+# End Update to UCS 4.0-0 replace console-tools with kbd, can be removed after 4.0.0
 
 # removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
