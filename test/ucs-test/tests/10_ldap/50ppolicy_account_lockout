@@ -81,10 +81,19 @@ locked_state=$(udm-test users/user list --filter "username=$test_username" | sed
 if [ "$locked_state" != 'all' ]; then
 	fail_test 1 "Account not locked: $locked_state"
 	univention-ldapsearch -xLLL -b "$test_userdn" -s base +
+
+	echo "DEBUG: attempting to lock manually"
+	udm-test users/user modify --dn "$test_userdn" --set locked=all
+	locked_state=$(udm-test users/user list --filter "username=$test_username" | sed -n 's/^  locked: //p')
+	echo "DEBUG: result: $locked_state"
+	sleep 1
+	univention-ldapsearch -xLLL -b "$test_userdn" -s base +
 fi
 
 
 udm-test users/user modify --dn "$test_userdn" --set locked=none
+
+wait_for_replication_and_postrun
 
 if ! ldapsearch -xLLL -D "$test_userdn" -w univention "uid=$test_username" dn >/dev/null; then
 	fail_test 1 "Authentication failure after unlock"

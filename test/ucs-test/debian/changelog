@@ -1,3 +1,9 @@
+ucs-test (5.0.36-3) unstable; urgency=medium
+
+  * Adjust test for Bug #31907
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Oct 2014 14:58:34 +0200
+
 ucs-test (5.0.36-2) unstable; urgency=medium
 
   * New test 52_s4connector/006reconnect_after_samba_restart (Bug #36227)
