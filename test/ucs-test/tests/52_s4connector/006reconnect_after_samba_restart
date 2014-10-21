@@ -1,0 +1,63 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check if the S4 Connector reconnects propperly after a samba restart"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## bugs:
+##  - 36227
+## tags:
+##  - basic
+##  - apptest
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137 
+. "$TESTLIBPATH/group.sh" || exit 137 
+. "$TESTLIBPATH/undo.sh" || exit 137 
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "sync"
+
+# create test group1
+group_dns=()
+test_groupname=$(group_randomname)
+info "create group $test_groupname"
+udm-test groups/group create \
+	--position="cn=groups,$ldap_base" \
+	--set name="$test_groupname" &&
+	undo group_remove "$test_groupname" ||
+	fail_fast 140 "cannot create group $test_groupname"
+test_groupdn=$(group_dn "$test_groupname")
+group_dns+=("$test_groupdn")
+
+sleep 1
+invoke-rc.d samba stop
+
+# create test group2 while samba is stopped
+test_groupname=$(group_randomname)
+info "create group $test_groupname"
+udm-test groups/group create \
+	--position="cn=groups,$ldap_base" \
+	--set name="$test_groupname" &&
+	undo group_remove "$test_groupname" ||
+	fail_fast 140 "cannot create group $test_groupname"
+test_groupdn=$(group_dn "$test_groupname")
+group_dns+=("$test_groupdn")
+
+sleep 1
+invoke-rc.d samba start
+ad_wait_for_synchronization; fail_bool 0 110
+
+for group_dn in "${group_dns[@]}"; do
+	ad_exists "$group_dn"; fail_bool 0 110
+done
+
+ad_set_sync_mode "$SYNCMODE"
+exit "$RETVAL"
+
