@@ -25,17 +25,10 @@
 	}
 
 	.umcHeaderRight {
-		.umcHeaderRightTop {
-			display: inline-block;
-			float: right;
-		}
-		.umcHeaderRightTop > * {
-			width: 100%;
-		}
+		text-align: right;
+
 		/* style for user and host information */
 		.umcHeaderText {
-			display: block;
-			float: left;
 			background: none;
 			filter: none;
 			box-shadow: none;
@@ -62,7 +55,6 @@
 		.dijitButton {
 			margin: 0;
 			display: block;
-			float: right;
 			//height: 24px;
 			padding: 0 0 5px 0;
 			border: none;
@@ -85,19 +77,15 @@
 		box-shadow: none;
 	}
 
-	.umcHeaderRightTop {//,
-	//span[widgetid=umcMenuUsername].dijitDropDownButton,
-	//span[widgetid=umcMenuHost].dijitDropDownButton {
-		/* alignment with other elements */
-		margin-right: -10px;
-		//margin-bottom: 0.5em;
+	.dijitDropDownButton[widgetid=umcMenuHost],
+	.dijitDropDownButton[widgetid=umcMenuUsername] {
+		display: inline-block;
 	}
 
 	.umcLiveSearchSidebar {
 		float: right;
 		margin-bottom: 1em;
 		//marign-top: 0.25em;
-		clear: both;
 		.dijitTextBox {
 			//TODO: can later be removed
 			width: 100%;
@@ -170,6 +158,18 @@
 @media (max-width: 500px) {
 	.col-xxs-12 {
 		width: 100%;
+	}
+}
+
+@media (min-width: 1755px) {
+	.col-xlg-4 {
+		width: 33.33333333%;
+	}
+	.col-xlg-push-3 {
+		left: 25%;
+	}
+	.col-xlg-pull-4 {
+		right: 33.33333333%;
 	}
 }
 

@@ -583,29 +583,33 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			this._headerLeft = new ContainerWidget({
-				'class': 'umcHeaderLeft col-xs-6 col-sm-4 col-md-5 col-xxs-12'
+				'class': 'umcHeaderLeft col-xxs-12 col-xs-6 col-sm-4 col-md-5'
 			});
 			this.addChild(this._headerLeft);
 
 			this._headerRight = new ContainerWidget({
-				'class': 'umcHeaderRight col-xs-6 col-sm-4 col-sm-push-4 col-md-5 col-md-push-2 col-xxs-12'
+				'class': 'umcHeaderRight col-xxs-12 col-xs-6 col-sm-4 col-sm-push-4 col-md-5 col-md-push-2 col-lg-5 col-lg-push-2 col-xlg-4 col-xlg-push-3'
 			});
 			this.addChild(this._headerRight);
 
-			this._headerRightTop = new ContainerWidget({
-				'class': 'umcHeaderRightTop'
-			});
-			this._headerRight.addChild(this._headerRightTop);
-
 			this._headerCenter = new ContainerWidget({
-				'class': 'umcHeaderCenter col-xs-12 col-sm-4 col-sm-pull-4 col-md-2 col-md-pull-5 col-xxs-12'
+				'class': 'umcHeaderCenter col-xxs-12 col-xs-12 col-sm-4 col-sm-pull-4 col-md-2 col-md-pull-5 col-lg-pull-5 col-xlg-pull-4'
 			});
 			this.addChild(this._headerCenter);
-
 		},
 
 		setupHeader: function() {
 			if (tools.status('overview')) {
+				// the host info and menu
+				this._hostMenu = new Menu({});
+				this._hostInfo = new DropDownButton({
+					id: 'umcMenuHost',
+					label: '',
+					disabled: true,
+					dropDown: this._hostMenu
+				});
+				this._headerRight.addChild(this._hostInfo);
+
 				// display the username
 				this._headerMenu = new Menu({});
 				this._usernameButton = new DropDownButton({
@@ -616,17 +620,7 @@ define([
 					}),
 					dropDown: this._headerMenu
 				});
-				this._headerRightTop.addChild(this._usernameButton);
-
-				// the host info and menu
-				this._hostMenu = new Menu({});
-				this._hostInfo = new DropDownButton({
-					id: 'umcMenuHost',
-					label: '',
-					disabled: true,
-					dropDown: this._hostMenu
-				});
-				this._headerRight.addChild(this._hostInfo);
+				this._headerRight.addChild(this._usernameButton);
 
 				// the settings context menu
 				this._settingsMenu = new Menu({});
@@ -674,7 +668,14 @@ define([
 			this._searchSidebar = new LiveSearchSidebar({
 				searchLabel: _('Module search')
 			});
-			this._headerRightTop.addChild(this._searchSidebar);
+			this._headerRight.addChild(this._searchSidebar);
+			this._alignSearchField();
+		},
+
+		_alignSearchField: function() {
+			var w = domGeometry.getMarginBox(this._usernameButton.domNode).w;
+			//FIXME: style.set(this._searchSidebar.domNode, 'width', lang.replace('{0}px;', [w]));
+			styles.insertCssRule('#'+ this._searchSidebar.id, lang.replace('width: {0}px;', [w]));
 		},
 
 		setupBackToOverview: function() {
