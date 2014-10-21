@@ -48,14 +48,14 @@ define([
 ], function(declare, lang, array, topic, Deferred, when, styles, tools, dialog, ProgressBar, Text, TextBox, PasswordBox, Module, Wizard, _) {
 	// prepare CSS rules for module
 	var modulePath = require.toUrl('umc/modules/adtakeover');
-	styles.insertCssRule('.umc-adtakeover-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;');
+	styles.insertCssRule('.umc-adtakeover-page .umcPageHeader', 'background-repeat: no-repeat; background-position: 10px 20px; padding-bottom: 160px; min-height: 160px;');
 	array.forEach(['restart', 'start', 'copy', 'sysvol', 'takeover', 'finished'], function(ipage) {
 		var conf = {
 			name: ipage,
 			path: modulePath
 		};
 		styles.insertCssRule(
-			lang.replace('.umc-adtakeover-page-{name} > form > div', conf),
+			lang.replace('.umc-adtakeover-page-{name} .umcPageHeader', conf),
 			lang.replace('background-image: url({path}/{name}.png)', conf)
 		);
 	});
@@ -300,7 +300,7 @@ define([
 		},
 
 		hasPrevious: function(pageName) {
-			return ['copy'].indexOf(pageName) !== -1;
+			return array.indexOf(['copy'], pageName) !== -1;
 		},
 
 		canCancel: function(pageName) {
