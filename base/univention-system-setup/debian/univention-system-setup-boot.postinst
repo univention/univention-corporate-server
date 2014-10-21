@@ -59,7 +59,9 @@ fi
 if [ "$1" = "configure" ] && [ -n "$2" ]; then
 	# download packages in update mode only
 	/usr/share/univention-system-setup/download-packages
+fi
 
+if [ "$1" = "configure" ] && [ ! -e /var/univention-join/joined ]; then
 	initialsetup_startsite="ucs-overview/initialsetup.html"
 	system_setup_boot_startsite='univention-management-console/?module=setup\&overview=false\&username=root'
 	if [ "$apache2_startsite" != "$system_setup_boot_startsite" -a "$apache2_startsite" != "$initialsetup_startsite" ]; then
