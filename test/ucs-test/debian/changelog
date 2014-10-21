@@ -1,8 +1,14 @@
+ucs-test (5.0.34-3) unstable; urgency=low
+
+  * Bug #36215: disabled some checks due to bug #36210
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 21 Oct 2014 09:08:30 +0200
+
 ucs-test (5.0.34-2) unstable; urgency=low
 
   * Bug #35088: disabled some checks due to bug #36210
 
- -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 21 Oct 2014 09:37:41 +0200
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 21 Oct 2014 09:07:41 +0200
 
 ucs-test (5.0.34-1) unstable; urgency=low
 
