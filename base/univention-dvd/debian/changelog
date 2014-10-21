@@ -1,3 +1,9 @@
+univention-dvd (0.2.7-1) unstable; urgency=low
+
+  * Added phonon-backend-xine to maintained (Bug #36224) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 21 Oct 2014 12:22:04 +0200
+
 univention-dvd (0.2.6-1) unstable; urgency=medium
 
   * Added some more tools to the UCS 4.0 DVD (Bug #36050)

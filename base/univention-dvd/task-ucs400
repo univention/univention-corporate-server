@@ -193,6 +193,7 @@ okular
 xserver-xorg-input-vmmouse
 ttf-liberation
 xterm
+phonon-backend-xine
 
 /* Development + Packaging Tools */
 univention-directory-manager-module-example
