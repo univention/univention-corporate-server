@@ -697,6 +697,11 @@
 				The freshclam postinst does not abort if the freshclam daemon start failed
 				(<ulink url="&ucsbug;36230">Bug 36230</ulink>).
 		</simpara></listitem>
+		<listitem><simpara>
+				During the update the package <package>console-tools</package> is replaced with
+				<package>kbd</package> 
+				(<ulink url="&ucsbug;36224">Bug 36224</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 </section>
 
