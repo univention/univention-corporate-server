@@ -1874,9 +1874,6 @@ define([
 				return this._checkDomain().then(
 					lang.hitch(this, function(info) {
 						this.getWidget('network', '_nameserver_error').set('visible', false);
-						if (!info) {
-							return this._forcePageTemporarily('role-nonmaster-ad');
-						}
 						var dcName = info.dc_name;
 						this.getWidget('credentials-ad', 'ad/address').set('value', dcName);
 						this.getWidget('credentials-nonmaster', '_ucs_address').set('value', dcName);

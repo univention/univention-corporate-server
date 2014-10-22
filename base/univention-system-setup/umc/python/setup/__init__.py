@@ -701,8 +701,6 @@ class Instance(Base, ProgressMixin):
 				raise Exception('No UCS master found at %s' % nameserver)
 			has_ucs_master = True
 		else:
-			if not nameserver:
-				return
 			raise Exception('Not checking existing domain for role %s' % role)
 		return {'dc_name' : dc, 'ucs_master' : has_ucs_master}
 
