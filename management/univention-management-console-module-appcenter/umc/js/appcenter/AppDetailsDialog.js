@@ -47,7 +47,6 @@ define([
 	return declare("umc.modules.appcenter.AppDetailsDialog", [ Page ], {
 		app: null,
 		_container: null,
-		_page: null,
 		_continueDeferred: null,
 		noFooter: true,
 
@@ -58,18 +57,28 @@ define([
 				this._continueDeferred.reject();
 			}
 			this._continueDeferred = new Deferred();
+
 			this.set('headerText', title);
 			this.actionLabel = actionLabel;
+			var close = lang.hitch(this, function() {
+				if (mayContinue) {
+					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'user-cancel');
+				}
+				this._continueDeferred.reject();
+			});
+
+			this.set('headerButtons', [{
+				name: 'close',
+				iconClass: 'umcCloseIconWhite',
+				label: _('Cancel'),
+				callback: close
+			}]);
+
 			var buttons = [{
 				name: 'cancel',
 				'default': true,
 				label: _('Cancel'),
-				callback: lang.hitch(this, function() {
-					if (mayContinue) {
-						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'user-cancel');
-					}
-					this._continueDeferred.reject();
-				})
+				callback: close
 			}];
 			if (mayContinue) {
 				buttons.push({
@@ -81,17 +90,14 @@ define([
 				});
 			}
 			this._continueDeferred.then(lang.hitch(this, 'onBack', true), lang.hitch(this, 'onBack', false));
-			if (this._page) {
-				this.removeChild(this._page);
-				this._page.destroyRecursive();
+			if (this._container) {
+				this.removeChild(this._container);
+				this._container.destroyRecursive();
 			}
-			this._page = new Page({
-				footerButtons: buttons
-			});
-			this.addChild(this._page);
+			this.set('navButtons', buttons);
 			this._container = new ContainerWidget({
 			});
-			this._page.addChild(this._container);
+			this.addChild(this._container);
 		},
 
 		showRequirements: function(label, stressedRequirements, appDetailsPage) {

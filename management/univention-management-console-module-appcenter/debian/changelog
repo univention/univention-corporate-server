@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.11-1) unstable; urgency=medium
+
+  * Bug #35654: move install button to the left
+
+ -- Florian Best <best@univention.de>  Wed, 22 Oct 2014 12:32:09 +0200
+
 univention-management-console-module-appcenter (4.1.10-1) unstable; urgency=low
 
   * Bug #35654: convert svgz → svg
