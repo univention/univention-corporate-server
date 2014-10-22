@@ -392,6 +392,8 @@
 		<title>Other modules</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The terminal server sessions have been removed from the statistic module
+				(<ulink url="&ucsbug;34029">Bug 34029</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
