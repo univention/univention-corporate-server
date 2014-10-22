@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.64-1) unstable; urgency=medium
+
+  * Bug #35654: ensure correct positioning of header elements
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Oct 2014 15:58:53 +0200
+
 univention-management-console-frontend (4.1.63-1) unstable; urgency=medium
 
   * Bug #36266: fix firefox issues after logoff

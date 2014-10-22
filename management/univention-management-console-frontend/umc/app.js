@@ -656,6 +656,11 @@ define([
 		},
 
 		setupSearchField: function() {
+			// add an empty element to force a line break
+			this._headerRight.addChild(new Text({
+				'class': 'clearfix'
+			}));
+
 			// enforce same width as username button
 			var usernameButtonPos = domGeometry.position(this._usernameButton.domNode);
 			this._searchSidebar = new LiveSearchSidebar({
