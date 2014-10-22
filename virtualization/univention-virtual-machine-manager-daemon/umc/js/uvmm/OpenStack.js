@@ -88,8 +88,10 @@ define([
 					onChange: lang.hitch(this, function(value){
 						var password = this.getWidget('password');
 						password.set('visible', value.indexOf('2.0_apikey') < 0);
+						password.set('value', '');
 						var auth_token = this.getWidget('auth_token');
 						auth_token.set('visible', value.indexOf('2.0_password') < 0);
+						auth_token.set('value', '');
 					}),
 					required: true
 				}, {
@@ -97,12 +99,14 @@ define([
 					type: PasswordBox,
 					label: _('Password'),
 					depends: 'auth_version',
+					labelConf: {'style': 'padding-right: 0px;'},
 					required: true
 				}, {
 					name: 'auth_token',
 					type: PasswordBox,
 					label: _('API Key'),
 					depends: 'auth_version',
+					labelConf: {'style': 'padding-right: 0px;'},
 					required: true
 				}, {
 					name: 'auth_url',

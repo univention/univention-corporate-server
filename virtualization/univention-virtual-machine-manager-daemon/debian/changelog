@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.3-13) unstable; urgency=low
+
+  * Fix password and api key field handling in UMC wizard (Bug #36153) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 22 Oct 2014 13:30:35 +0200
+
 univention-virtual-machine-manager-daemon (4.0.3-12) unstable; urgency=low
 
   * Create Wizard: Hide option to create a new instance if no connection
