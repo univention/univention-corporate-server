@@ -200,14 +200,14 @@ define([
 			return button; // umc.widgets.Button
 		},
 
-		layout: function(/*Array*/ layout, /*Object*/ widgets, /*Object?*/ buttons, /*Integer?*/ _iLevel) {
+		layout: function(/*Array*/ layout, /*Object*/ widgets, /*Object?*/ buttons, /*Integer?*/ _iLevel, /*ContainerWidget?*/ container) {
 			// summary:
 			//		Render a widget containing a set of widgets as specified by the layout.
 
 			var iLevel = 'number' == typeof(_iLevel) ? _iLevel : 0;
 
 			// create a container
-			var globalContainer = new ContainerWidget({});
+			var globalContainer = container || new ContainerWidget({});
 
 			// check whether the parameters are correct
 			tools.assert(layout instanceof Array,
@@ -335,7 +335,7 @@ define([
 			}
 
 			// return the container
-			return globalContainer; // dojox.layout.TableContainer
+			return globalContainer;
 		}
 	});
 

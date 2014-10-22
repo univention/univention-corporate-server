@@ -1,3 +1,11 @@
+univention-management-console-frontend (4.1.65-1) unstable; urgency=medium
+
+  * Bug #35654: initiate host menu with fqdn
+  * Bug #35654: width parameter is obsolete
+  * Bug #35654: allow to give a container to render.layout
+
+ -- Florian Best <best@univention.de>  Wed, 22 Oct 2014 21:42:08 +0200
+
 univention-management-console-frontend (4.1.64-1) unstable; urgency=medium
 
   Bug #35654:

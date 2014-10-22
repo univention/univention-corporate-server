@@ -75,7 +75,6 @@ define([
 			hostname: '',
 			domainname: '',
 			overview: true,
-			width: null,
 			setupGui: false,
 			loggingIn: false,
 			feedbackSubject: '[UMC-Feedback] Traceback',
@@ -101,7 +100,6 @@ define([
 			//		* hostname (String): The hostname on which the UMC is running.
 			//		* domainname (String): The domainname on which the UMC is running.
 			//		* overview (Boolean): Specifies whether or not the overview is visible and the header is displayed or not.
-			//		* width (Integer): Forces a width for the frontend.
 			// key: String?
 			//		If given, only the value for the specified property is returned.
 

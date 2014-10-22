@@ -604,7 +604,7 @@ define([
 				this._hostMenu = new Menu({});
 				this._hostInfo = new DropDownButton({
 					id: 'umcMenuHost',
-					label: '',
+					label:  _('<b>Host</b> ') + tools.status('fqdn'),
 					disabled: true,
 					dropDown: this._hostMenu
 				});
@@ -889,7 +889,6 @@ define([
 					}));
 				}, this);
 			}));
-			this._hostInfo.set('label', _('<b>Host</b> ') + fqdn);
 		},
 
 		_switchUMC: function(hostname) {
@@ -953,10 +952,8 @@ define([
 			//		  flavor is optional.
 			//		* overview: if false and a module is given for autostart, the overview and module header will
 			//		  not been shown and the module cannot be closed
-			//		* width: forces the width of the GUI to a specific value
 
 			// save some config properties
-			tools.status('width', props.width);
 			tools.status('overview', tools.isTrue(props.overview));
 			// username will be overriden by final authenticated username
 			tools.status('username', props.username || cookie('UMCUsername'));
