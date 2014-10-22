@@ -72,8 +72,12 @@
 .umc-setup-page .umcPageIcon {
 	background-repeat: no-repeat;
 	height: 120px;
-	margin-left: 25%;
 	background-size: contain;
+	background-position: center bottom;
+}
+
+.umc .umc-setup-page .umcPageHelpText {
+	min-height: 50px;
 }
 
 @media (max-width: 768px) {
