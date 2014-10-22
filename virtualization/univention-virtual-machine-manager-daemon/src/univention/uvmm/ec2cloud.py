@@ -274,7 +274,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 				(image.id and regex.match(image.id)) or
 				(image.extra['owner_id'] and regex.match(image.extra['owner_id']))):
 				i = Cloud_Data_Image()
-				i.name = image.name
+				i.name = "%s (%s)" % (image.name, image.id)
 				i.extra = image.extra
 				i.id = image.id
 				i.driver = image.driver.name

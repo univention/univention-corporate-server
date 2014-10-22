@@ -118,16 +118,21 @@ define([
 						name: 'vm',
 						checked: true,
 						label: _('Create a new virtual machine instance.'),
-						onChange: lang.hitch(this, function(checked, widgets) {
-							widgets.server.set('disabled', !checked);
-						})
 					}, {
 						type: ComboBox,
 						name: 'server',
 						dynamicValues: _getNodes,
-						//depends: ['vm'],
+						onDynamicValuesLoaded: lang.hitch(this, function(values) {
+							if(values.length == 0) {
+								this.getWidget('general', 'server').set('visible', false);
+								this.getWidget('general', 'vm').set('visible', false);
+								this.getWidget('general', 'cloud').set('checked', true);
+							} else {
+								this.getWidget('general', 'vm').set('checked', true);
+							}
+						}),
 						label: _('Where should the virtual machine instance be created'),
-						labelConf: {'class': 'umc-ucssetup-wizard-indent'}
+						labelConf: {'style': 'margin-left: 27px;'}
 					}, {
 						type: RadioButton,
 						radioButtonGroup: 'type',
@@ -137,11 +142,24 @@ define([
 						type: ComboBox,
 						name: 'cloudtype',
 						dynamicValues: _getCloudTypes,
+						disabled: true,
 						label: _('Which type of connection should be created'),
-						labelConf: {'class': 'umc-ucssetup-wizard-indent'}
+						labelConf: {'style': 'margin-left: 27px;'}
 					}],
 				}],
 			});
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+			this.getWidget('vm').watch('checked', lang.hitch(this, function(attr) {
+				this.getWidget('server').set('disabled', true);
+				this.getWidget('cloudtype').set('disabled', false);
+			}));
+			this.getWidget('cloud').watch('checked', lang.hitch(this, function(attr) {
+				this.getWidget('server').set('disabled', false);
+				this.getWidget('cloudtype').set('disabled', true);
+			}));
 		},
 
 		_getSelectedServer: function() {

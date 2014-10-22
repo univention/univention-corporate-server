@@ -44,43 +44,5 @@ define([
 
 	return declare("umc.modules.uvmm.CloudConnectionWizard", [ Wizard ], {
 
-		___getWidgets: function(cloudtype) {
-			if (cloudtype == 'EC2') {
-				return {
-					layout: [
-						'region',
-						'access_id',
-						'password',
-					],
-					widgets: [{
-						name: 'access_id',
-						type: TextBox,
-						label: _('Access Key ID'),
-						required: true
-					}, {
-						name: 'password',
-						type: PasswordBox,
-						label: _('Secret Access Key'),
-						required: true
-					}, {
-						name: 'region',
-						type: ComboBox,
-						staticValues: [
-							{ id: 'EC2_EU_WEST', label: 'EU (Ireland)' },
-							{ id: 'EC2_US_EAST', label: 'US East (N. Virginia)' },
-							{ id: 'EC2_US_WEST', label: 'US West (N. California)' },
-							{ id: 'EC2_US_WEST_OREGON', label: 'US West (Oregon)' },
-							{ id: 'EC2_AP_SOUTHEAST', label: 'Asia Pacific (Sydney)' },
-							{ id: 'EC2_AP_NORTHEAST', label: 'Asia Pacific (Tokyo)' },
-							{ id: 'EC2_AP_SOUTHEAST2', label: 'Asia Pacific (Singapore)' },
-							{ id: 'EC2_SA_EAST', label: 'South America (São Paulo)' }
-						],
-						label: _('EC2 Region'),
-						required: true
-					}]
-				};
-			}
-			return {};
-		}
 	});
 });

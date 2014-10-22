@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (4.0.3-12) unstable; urgency=low
+
+  * Create Wizard: Hide option to create a new instance if no connection
+    is present, preselect 'Create new connection' option (Bug #36133)
+  * Restructured Wizards: Do not close module when closing the wizard (Bug
+    #36151) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 22 Oct 2014 12:16:42 +0200
+
 univention-virtual-machine-manager-daemon (4.0.3-11) unstable; urgency=low
 
   * Always create secure EC2 connection if not specified, removed option
