@@ -1,11 +1,38 @@
-univention-multiarch-links (2.0.0-1) unstable; urgency=low
+univention-package-template (3.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #36115) 
 
- -- Felix Botner <botner@univention.de>  Wed, 22 Oct 2014 13:09:55 +0200
+ -- Felix Botner <botner@univention.de>  Wed, 22 Oct 2014 13:50:13 +0200
 
-univention-multiarch-links (1.0.0-1) unstable; urgency=low
+univention-package-template (2.0.0-1) unstable; urgency=low
 
-  * Initial Release (Bug #33835)
+  * abort join script on failing udm call (Bug #27753)
+  * version bump for UCS 3.1 (Bug #27966)
 
- -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 27 Feb 2014 09:25:44 +0100
+ -- Lukas Walter <walter@univention.de>  Wed, 10 Oct 2012 13:01:15 +0200
+
+univention-package-template (1.0.3-1) unstable; urgency=low
+
+  * fixed bashisms (Bug #23005)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 12 Jul 2011 18:36:52 +0200
+
+univention-package-template (1.0.2-1) unstable; urgency=low
+
+  * debian/rules: Fix ucslint invocation (Bug #21476)
+  * debian/control: Add misc:Depends.
+  * debian/source/format: Switch to 3.0 (native)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 10 May 2011 15:56:43 +0200
+
+univention-package-template (1.0.1-1) unstable; urgency=low
+
+  * Added an example to overwrite file permissions (Bug #21476)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 May 2011 10:41:36 +0200
+
+univention-package-template (1.0.0-1) unstable; urgency=low
+
+  * Initial Release (Bug #21476)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 05 Feb 2011 09:39:45 +0100
