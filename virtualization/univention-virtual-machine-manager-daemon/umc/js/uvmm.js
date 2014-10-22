@@ -567,7 +567,7 @@ define([
 					widgets: widgets,
 					buttons: [{
 						name: 'submit',
-						label: _( 'delete' ),
+						label: _( 'Delete' ),
 						style: 'float: right;',
 						callback: function() {
 							_cleanup();
@@ -582,7 +582,7 @@ define([
 				});
 
 				_dialog = new Dialog({
-					title: _( 'Remove a virtual machine' ),
+					title: _( 'Delete a virtual machine' ),
 					content: form,
 					'class' : 'umcPopup'
 				});
@@ -600,7 +600,7 @@ define([
 				{
 					type: Text,
 					name: 'question',
-					content: '<p>' + lang.replace( _( 'Should the selected instance {label} be removed?' ), {
+					content: '<p>' + lang.replace( _( 'Should the selected instance {label} be deleted?' ), {
 						label: entities.encode(domain.label)
 					} ) + '</p>',
 					label: ''
@@ -629,7 +629,7 @@ define([
 				widgets: widgets,
 				buttons: [{
 					name: 'submit',
-					label: _( 'delete' ),
+					label: _( 'Delete' ),
 					style: 'float: right;',
 					callback: function() {
 						_cleanup();
@@ -644,7 +644,7 @@ define([
 			});
 
 			_dialog = new Dialog({
-				title: _( 'Remove a instance' ),
+				title: _( 'Delete an instance' ),
 				content: form,
 				'class' : 'umcPopup'
 			});

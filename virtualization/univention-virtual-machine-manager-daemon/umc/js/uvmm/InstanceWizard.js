@@ -76,7 +76,7 @@ define([
 			return [{
 				name: 'details',
 				headerText: _('Create a new virtual machine instance.'),
-				helpText: _('Please enter the corresponding details for virtual machine instance:'),
+				helpText: _('Please enter the corresponding details for virtual machine instance. <a href="https://aws.amazon.com/documentation/ec2/" target=_blank>Use this link for more information about Amazon EC2</a>'),
 				widgets: this._pageContent.widgets,
 				layout: this._pageContent.layout
 			}];
@@ -236,7 +236,7 @@ define([
 					}, {
 						name: 'image_id',
 						type: ComboBox,
-						label: _('Choose AMI'),
+						label: _('Search for and choose an AMI'),
 						sortDynamicValues: false,
 						dynamicOptions: {conn_name: cloud, pattern: owner_id},
 						dynamicValues: lang.hitch(this, function(options) {
@@ -248,8 +248,8 @@ define([
 						name: 'image_univention',
 						type: CheckBox,
 						value: true,
-						label: _('Only show Univention images'),
-						description: _('Show only images which are provided by Univention.'),
+						label: _('Only show Univention AMIs'),
+						description: _('Show only AMIs which are provided by Univention.'),
 						onChange: lang.hitch(this, function(newVal) {
 							var widget = this.getWidget('details', 'image_id');
 							var options = widget.get('dynamicOptions');

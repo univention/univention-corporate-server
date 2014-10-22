@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (4.0.3-15) unstable; urgency=low
+
+  * Improve texts regarding EC2 connections (Bug #36143)
+  * Added link to EC2 documentation to connection and instance wizard
+    (Bug #36155, #36053) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 22 Oct 2014 17:18:04 +0200
+
 univention-virtual-machine-manager-daemon (4.0.3-14) unstable; urgency=low
 
   * Remove useless filter option "cloud connection" (Bug #36148)

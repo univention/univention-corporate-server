@@ -41,7 +41,7 @@ define([
 			this.pages = [{
 				name: 'credentials',
 				headerText: _('Create a new cloud connection.'),
-				helpText: _('Please enter the corresponding credentials for the cloud connection:'),
+				helpText: _('Please enter the corresponding credentials for the cloud connection. <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html" target=_blank>Use this link to get information about AWS credentials</a>'),
 				layout: [
 					'name',
 					'region',
