@@ -1,6 +1,18 @@
+univention-management-console-frontend-theme (0.0.61-1) unstable; urgency=medium
+
+  Bug #35654:
+  * add replacements for UCS 3.x icons
+  * adjust styling of module title
+  * adjust tooltip styling
+  * use smaller buttons in the grid header
+  * use grey colors for loading animation
+  * minor styling adjustments for the calendar
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Oct 2014 16:32:13 +0200
+
 univention-management-console-frontend-theme (0.0.60-2) unstable; urgency=medium
 
-  * Bug #35654: fixed typo 
+  * Bug #35654: fixed typo
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Oct 2014 09:12:28 +0200
 

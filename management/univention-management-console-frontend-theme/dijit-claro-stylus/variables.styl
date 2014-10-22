@@ -34,7 +34,7 @@ $base-border-color ?= #b4b4b4;		// Augmented and used directly by variables to c
 $unfocused-clickable-color ?= spin(saturate(lighten($primary-color, 5), 10), 0);				// Background color for enabled buttons, text inputs
 $border-color ?= $text-color;
 $minor-border-color ?= $disabled-color;									// Color of borders inside widgets: horizontal line in Calendar between weeks, around color swatches in ColorPalette, above Dialog action bar
-$popup-border-color ?= $base-border-color;								// Border for Dialog, Menu, Tooltip.   Must also update tooltip.png (the arrow image file) to match
+$popup-border-color ?= $secondary-color;								// Border for Dialog, Menu, Tooltip.   Must also update tooltip.png (the arrow image file) to match
 $gallery-border-color ?= #dcdcdc;
 
 
@@ -403,4 +403,13 @@ active-gradient($pathToRoot = "") {
 
 	// IE6 can't handle a background-image with transparency and a background-color; the color is blocked out
 	//_background-image: none;
+}
+
+clearfix(when=after) {
+	&:{when} {
+		content: " ";
+		clear: both;
+		display: block;
+		height: 0px;
+	}
 }

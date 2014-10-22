@@ -13,8 +13,8 @@ icon-rule(iconName, xoffset, yoffset, height=20px, width=20px, expandRule=true, 
 		}
 		ruleName = '.umc%sIcon%s' % (iconName unquote(suffix))
 		rulesStr = ruleName
-		if (alternativeName) {
-			rulesStr += ', .' + alternativeName
+		if (alternativeName && !suffix) {
+			rulesStr = rulesStr + ', .' + alternativeName
 		}
 		{rulesStr} {
 			icon-image(xoffset, yoffset, '', iconImageSuffix, width, height);
@@ -43,12 +43,21 @@ icon-rule(ArrowLeft, -80, -20);
 icon-rule(ArrowRight, -120, -20);
 
 icon-rule(SimpleDown, -160, -20, expandRule: false);
-icon-rule(SimpleUp, -180, -20, expandRule: false);
+icon-rule(SimpleUp, -180, -20, expandRule: false, alternativeName: umcIconUp);
 icon-rule(SimpleLeft, -200, -20, expandRule: false);
 icon-rule(SimpleRight, -220, -20, expandRule: false);
 
-icon-rule(Plus, -160, -40, expandRule: false);
-icon-rule(Minus, -180, -40, expandRule: false);
+icon-rule(Plus, -160, -40, expandRule: false, alternativeName: umcIconAdd);
+icon-rule(Minus, -180, -40, expandRule: false, alternativeName: umcIconDelete);
+icon-rule(Edit, -200, -40, expandRule: false, alternativeName: umcIconEdit);
+icon-rule(Report, -220, -40, expandRule: false, alternativeName: umcIconReport);
+icon-rule(Document, -220, -40, expandRule: false);
+icon-rule(Refresh, -240, -40, expandRule: false, alternativeName: umcIconRefresh);
+
+icon-rule(Play, -160, -60, expandRule: false, alternativeName: umcIconPlay);
+icon-rule(Pause, -180, -60, expandRule: false, alternativeName: umcIconPause);
+icon-rule(Stop, -200, -60, expandRule: false, alternativeName: umcIconStop);
+icon-rule(View, -220, -60, expandRule: false, alternativeName: umcIconView);
 
 icon-rule(ContextMenu, 0, -40);
 icon-rule(Close, 0, -60);
@@ -64,4 +73,16 @@ icon-rule(LargeClose, 0, -180);
 icon-rule(Save, 0, -200);
 icon-rule(Help, -40, -200);
 icon-rule(Lang, 0, -220, height=25px);
+
+.umcIconLoading,  // old name
+.umcLoadingIcon {
+    background-image: url(images/loadingAnimation.gif);
+    width: 20px;
+    height: 20px;
+}
+
+.umcIconNoIcon {
+    width: 0px;
+    height: 20px;
+}
 
