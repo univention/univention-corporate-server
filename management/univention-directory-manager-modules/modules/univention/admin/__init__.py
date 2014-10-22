@@ -172,7 +172,7 @@ class property:
 			license=[], required=0, may_change=1, identifies=0, unique=0, default=None,
 			dontsearch=0, show_in_lists=0, editable=1, configObjectPosition=None,
 			configAttributeName=None, include_in_default_search=0, nonempty_is_default=False,
-			readonly_when_synced=False):
+			readonly_when_synced=False, size=None):
 		self.short_description=short_description
 		self.long_description=long_description
 		if type(syntax) == types.ClassType:
@@ -200,6 +200,7 @@ class property:
 		self.threshold = int(configRegistry.get('directory/manager/web/sizelimit', '2000'))
 		self.nonempty_is_default = nonempty_is_default
 		self.readonly_when_synced = readonly_when_synced
+		self.size = size
 
 	def new(self):
 		if self.multivalue:

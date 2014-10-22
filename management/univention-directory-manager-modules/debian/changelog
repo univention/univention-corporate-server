@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.19-1) unstable; urgency=medium
+
+  * Bug #35654: add attribute 'size' to admin.property, fix syntax sizes
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Oct 2014 02:03:46 +0200
+
 univention-directory-manager-modules (10.0.18-2) unstable; urgency=low
 
   * fixed python hash for lock_expired_accounts and lock_expired_passwords

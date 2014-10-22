@@ -378,7 +378,7 @@ property_descriptions={
 	'employeeNumber': univention.admin.property(
 			short_description=_('Employee number'),
 			long_description='',
-			syntax=univention.admin.syntax.TwoThirdsString,
+			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			include_in_default_search=1,
 			options=['person'],
@@ -1166,7 +1166,7 @@ def load_certificate(user_certificate):
 	except (X509.X509Error, AttributeError), ex:
 		return {}
 
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'value=%s' % values)
+	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'value=%s' % values)
 	return values
 load_certificate.ATTR = {
 			"C": "Country",

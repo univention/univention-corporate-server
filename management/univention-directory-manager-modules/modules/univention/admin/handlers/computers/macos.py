@@ -294,7 +294,8 @@ layout = [
 		] ),
 		Group( _( 'Network settings ' ), layout = [
 			'network',
-			[ 'mac', 'ip', ],
+			'mac',
+			'ip',
 		] ),
 		Group( _( 'DNS Forward and Reverse Lookup Zone' ), layout = [
 			'dnsEntryZoneForward',

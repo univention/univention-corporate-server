@@ -1288,7 +1288,6 @@ class MAC_Address( simple ):
 	regexRawFormat = re.compile( r'^[0-9a-fA-F]{12}$' )
 	regexCiscoFormat = re.compile( r'^([0-9a-fA-F]{4}\.){2}[0-9a-fA-F]{4}$' )
 	error_message = _( 'This is not a valid MAC address (valid examples are 86:f5:d1:f5:6b:3e, 86-f5-d1-f5-6b-3e, 86f5d1f56b3e, 86f5.d1f5.6b3e)' )
-	size = 'TwoThirds'
 
 	@classmethod
 	def parse( self, text ):
@@ -1312,6 +1311,7 @@ class MAC_Address( simple ):
 
 class DHCP_HardwareAddress( complex ):
 	subsyntaxes = ( ( _( 'Type' ), NetworkType ), ( _( 'Address' ), MAC_Address ) )
+	size = ( 'One', 'One' )
 	all_required=1
 
 class Packages( UDM_Attribute ):
@@ -1813,12 +1813,10 @@ class network( UDM_Objects ):
 	description=_('Network')
 	label = '%(name)s'
 	empty_value = True
-	size = 'TwoThirds'
 
 class IP_AddressList( select ):
 	choices = ()
 	depends = 'ip'
-	size = 'One'
 
 	@classmethod
 	def parse( cls, text ):
@@ -1827,7 +1825,6 @@ class IP_AddressList( select ):
 class MAC_AddressList( select ):
 	choices = ()
 	depends = 'mac'
-	size = 'TwoThirds'
 
 	@classmethod
 	def parse( cls, text ):
@@ -1837,7 +1834,6 @@ class DNS_ForwardZone( UDM_Objects ):
 	description=_('DNS forward zone')
 	udm_modules = ( 'dns/forward_zone', )
 	empty_value = True
-	size = 'TwoThirds'
 	use_objects = False
 
 class DNS_ReverseZone( UDM_Objects ):
@@ -1845,37 +1841,38 @@ class DNS_ReverseZone( UDM_Objects ):
 	udm_modules = ( 'dns/reverse_zone', )
 	label = '%(subnet)s'
 	empty_value = True
-	size = 'TwoThirds'
 	use_objects = False
 
 class dnsEntry( complex ):
 	description=_('DNS Entry')
 	subsyntaxes = ( ( _( 'DNS forward zone' ), DNS_ForwardZone ), ( _( 'IP address' ), IP_AddressList ) )
+	size = ( 'One', 'One' )
 	min_elements = 1
 
 class dnsEntryReverse( complex ):
 	description=_('DNS Entry Reverse')
 	subsyntaxes = ( ( _( 'DNS reverse zone' ), DNS_ReverseZone ), ( _( 'IP address' ), IP_AddressList ) )
+	size = ( 'One', 'One' )
 	min_elements = 1
 
 class DNS_ForwardZoneList( select ):
 	depends = 'dnsEntryZoneForward'
-	size = 'TwoThirds'
 
 class dnsEntryAlias( complex ):
 	description=_('DNS Entry Alias')
 	subsyntaxes = ( ( _( 'Zone of existing host record' ), DNS_ForwardZoneList ), ( _( 'DNS forward zone' ), DNS_ForwardZone ), ( _( 'Alias' ), DNS_Name ) )
+	size = ( 'TwoThirds', 'TwoThirds', 'TwoThirds' )
 
 class dhcpService( UDM_Objects ):
 	udm_modules = ( 'dhcp/service', )
 	description=_('DHCP service')
 	label = '%(name)s'
 	empty_value = True
-	size = 'TwoThirds'
 
 class dhcpEntry( complex ):
 	subsyntaxes= ( ( _( 'DHCP service' ), dhcpService ), ( _( 'IP address' ), IP_AddressList ), ( _( 'MAC address' ), MAC_AddressList ) )
 	description=_( 'DHCP Entry' )
+	size = ( 'TwoThirds', 'TwoThirds', 'TwoThirds' )
 
 	@classmethod
 	def parse( self, value ):
@@ -1884,6 +1881,7 @@ class dhcpEntry( complex ):
 class DHCP_Option( complex ):
 	subsyntaxes = ( ( _( 'Name' ), string ), ( _( 'Value' ), string ) )
 	description = _( 'DHCP option' )
+	size = ( 'One', 'One' )
 
 class WritableShare( UDM_Objects ):
 	udm_modules = ( 'shares/share', )
