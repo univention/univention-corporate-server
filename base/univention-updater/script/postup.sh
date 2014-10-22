@@ -141,6 +141,13 @@ dpkg --purge php5-suhosin >>"$UPDATER_LOG" 2>&1
 install kbd
 # End Update to UCS 4.0-0 replace console-tools with kbd, can be removed after 4.0.0
 
+# Update to UCS 4.0-0 remove gdm packages and favour kdm Bug #35936
+dpkg --purge univention-gdm-sessions univention-gdm gdm >>"$UPDATER_LOG" 2>&1
+if [ "$(dpkg-query -W -f '${Status}' kdm 2>/dev/null)" = "install ok installed" ]; then 
+	dpkg-reconfigure kdm
+fi
+# End Update to UCS 4.0-0 remove gdm packages and favour kdm, can be removed after 4.0.0
+
 # removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list

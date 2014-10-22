@@ -1,4 +1,10 @@
-univention-updater (10.0.23.1) unstable; urgency=medium
+univention-updater (10.0.24-1) unstable; urgency=low
+
+  * Remove gdm packages and favour kdm in postup (Bug #35936)
+
+ -- Felix Botner <botner@univention.de>  Wed, 22 Oct 2014 11:07:03 +0200
+
+univention-updater (10.0.23-1) unstable; urgency=medium
 
   * Change preup package order (Bug #36229)
 
