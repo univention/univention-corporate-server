@@ -38,6 +38,10 @@
 		}
 
 		.dijitDropDownButton {
+			.dijitArrowButtonInner {
+				icon-image(0, 0, "../");
+			}
+
 			#umcMenuHelp, #umcMenuSettings {
 				.dijitArrowButtonInner {
 					display: none;
@@ -60,6 +64,16 @@
 			border: none;
 			background: none;
 			filter: none;
+		}
+
+		.dijitDropDownButtonHover .dijitArrowButtonInner {
+			background-position: -20px 0;
+			opacity: 0.66;
+		}
+
+		.dijitDropDownButtonActive .dijitArrowButtonInner {
+			background-position: -20px 0;
+			opacity: 1;
 		}
 	}
 
@@ -87,13 +101,10 @@
 		float: right;
 		text-align: left;
 		margin-bottom: 1em;
-		//marign-top: 0.25em;
 		.dijitTextBox {
 			//TODO: can later be removed
 			width: 100%;
 			margin-right: 0;
-			//font-size: $font-size-buttons;
-			//font-size: $font-size-medium;
 
 			.umcInlineLabel {
 				color: $text-color;

@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.60-1) unstable; urgency=medium
+
+  * Bug #35654: adapt drop down button icon
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Oct 2014 04:05:05 +0200
+
 univention-management-console-frontend-theme (0.0.59-1) unstable; urgency=medium
 
   Bug #35654:
