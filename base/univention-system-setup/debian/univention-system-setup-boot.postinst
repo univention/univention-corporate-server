@@ -56,7 +56,7 @@ if [ ! -e /var/univention-join/joined ] && [ -z "$server_role" ]; then
 fi
 
 # prepare the server role selection
-if [ "$1" = "configure" ] && [ -n "$2" ]; then
+if [ "$1" = "configure" ] && [ -n "$2" ] && [ ! -e /var/univention-join/joined ]; then
 	# download packages in update mode only
 	/usr/share/univention-system-setup/download-packages
 fi
