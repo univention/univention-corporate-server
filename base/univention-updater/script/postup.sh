@@ -138,15 +138,19 @@ dpkg --purge php5-suhosin >>"$UPDATER_LOG" 2>&1
 # End Update to UCS 4.0-0 remove php5-suhosin, can be removed after 4.0.0
 
 # Update to UCS 4.0-0 replace console-tools with kbd Bug #36224
-install kbd
+install kbd >>"$UPDATER_LOG" 2>&1
 # End Update to UCS 4.0-0 replace console-tools with kbd, can be removed after 4.0.0
 
 # Update to UCS 4.0-0 remove gdm packages and favour kdm Bug #35936
 dpkg --purge univention-gdm-sessions univention-gdm gdm >>"$UPDATER_LOG" 2>&1
 if [ "$(dpkg-query -W -f '${Status}' kdm 2>/dev/null)" = "install ok installed" ]; then 
-	dpkg-reconfigure kdm
+	dpkg-reconfigure kdm >>"$UPDATER_LOG" 2>&1
 fi
 # End Update to UCS 4.0-0 remove gdm packages and favour kdm, can be removed after 4.0.0
+
+# Update to UCS 4.0-0 autoremove Bug #36265
+DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
+# End Update to UCS 4.0-0 autoremove, can be removed after 4.0.0
 
 # removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then

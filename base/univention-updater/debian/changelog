@@ -1,3 +1,9 @@
+univention-updater (10.0.25-1) unstable; urgency=low
+
+  * Autoremove packages in postup (Bug #36265) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 22 Oct 2014 15:02:53 +0200
+
 univention-updater (10.0.24-1) unstable; urgency=low
 
   * Remove gdm packages and favour kdm in postup (Bug #35936)
