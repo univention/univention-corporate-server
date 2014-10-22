@@ -1662,7 +1662,7 @@ define([
 					topic.publish('/umc/actions', 'session', 'logout');
 					tools.closeSession();
 					if (username === undefined) {
-						window.location.reload();
+						window.location.reload(true);
 					} else {
 						window.location.search = 'username=' + username;
 					}

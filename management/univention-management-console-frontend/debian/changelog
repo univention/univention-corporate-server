@@ -1,3 +1,12 @@
+univention-management-console-frontend (4.1.63-1) unstable; urgency=medium
+
+  * Bug #36266: fix firefox issues after logoff
+   → reload page as GET without using the cache to prevent pop up asking for
+   POST resend
+   → don't disable password field
+
+ -- Florian Best <best@univention.de>  Wed, 22 Oct 2014 13:55:26 +0200
+
 univention-management-console-frontend (4.1.62-1) unstable; urgency=medium
 
   * Bug #35654: refresh headerButtons on update

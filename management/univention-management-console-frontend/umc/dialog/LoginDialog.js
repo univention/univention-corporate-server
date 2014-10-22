@@ -448,9 +448,7 @@ define([
 					}
 
 					// disable the username field during relogin, i.e., when the GUI has been previously set up
-					if (tools.status('setupGui')) {
-						attr.set('umcLoginUsername', 'disabled', true);
-					}
+					attr.set('umcLoginUsername', 'disabled', tools.status('setupGui'));
 				} else {
 					// initial focus on username input
 					if (!has('touch')) {
@@ -508,4 +506,3 @@ define([
 		}
 	});
 });
-
