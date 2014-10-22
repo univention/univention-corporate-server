@@ -1,3 +1,9 @@
+univention-ucs-translation-template (2.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #36115) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 22 Oct 2014 13:13:47 +0200
+
 univention-ucs-translation-template (1.0.0-2) unstable; urgency=low
 
   * Small code improvements (Bug #31559) 

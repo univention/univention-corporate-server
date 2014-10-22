@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2013 Univention GmbH
+# Copyright 2013-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -226,7 +226,7 @@ def create_new_package(new_package_dir, target_language, target_locale, language
 	translation_creator = getpass.getuser()
 	translation_host = socket.getfqdn()
 	with open(os.path.join(new_package_dir_debian, 'copyright'), 'w') as f:
-		f.write("""Copyright 2013 Univention GmbH
+		f.write("""Copyright 2013-2014 Univention GmbH
 
 http://www.univention.de/
 
@@ -264,7 +264,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 	with open(os.path.join(new_package_dir_debian, 'rules'), 'w') as f:
 		f.write("""#!/usr/bin/make -f
 #
-# Copyright 2013 Univention GmbH
+# Copyright 2013-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
