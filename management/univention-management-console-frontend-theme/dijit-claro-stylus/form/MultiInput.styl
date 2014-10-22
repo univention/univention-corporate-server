@@ -1,0 +1,40 @@
+@import "../variables";
+
+.umc .umcMultiInput {
+	margin-bottom: 1.5em;
+
+	.umcMultiInputContainer {
+		position: relative;
+	}
+
+	/* add a padding to the last element of a row */
+	.umcMultiInputContainer .umcMultiInputLastRowEntry {
+		padding-right: 35px;
+	}
+
+	/* move the removal button over the last element of the row */
+	.umcMultiInputRemoveButton {
+		position: relative;
+		top: -2.3em;
+		margin: 0 0 0 -26px;
+
+		.dijitButtonNode {
+			/* make sure the button width matches the margin to avoid a line break */
+			width: 26px;
+			padding-left: 2px;
+			padding-right: @padding-left;
+		}
+	}
+}
+
+.umc .umcContainerWidget:last-child > .umcLabelPane .umcMultiInput {
+	margin-bottom: 0;
+}
+
+.umc .umcMultiInputDisabled .umcMultiInputContainer .umcMultiInputLastRowEntry {
+	padding-right: 0;
+}
+
+.umc umcMultiSelect {
+	border: 1px solid $border-color;
+}

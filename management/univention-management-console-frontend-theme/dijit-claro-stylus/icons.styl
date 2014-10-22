@@ -1,52 +1,67 @@
 @import "variables";
 
 // helper function to generate rules for hover and active states
-icon-rule($iconName, $xoffset, $yoffset, $height=20px, $width=20px) {
-	for $suffix in "" White {
-		$iconImageSuffix=""
-		$opacityHover = 0.66
-		$opacityActive = 1
-		if ($suffix == "White") {
-			$iconImageSuffix += "-white"
-			$opacityHover = 1
-			$opacityActive = 0.66
+icon-rule(iconName, xoffset, yoffset, height=20px, width=20px, expandRule=true, alternativeName='') {
+	for suffix in '' White {
+		iconImageSuffix=''
+		opacityHover = 0.66
+		opacityActive = 1
+		if (suffix == 'White') {
+			iconImageSuffix += '-white'
+			opacityHover = 1
+			opacityActive = 0.66
 		}
-		.umc{$iconName}Icon{$suffix} {
-			icon-image($xoffset, $yoffset, "", $iconImageSuffix, $width, $height);
+		ruleName = '.umc%sIcon%s' % (iconName unquote(suffix))
+		rulesStr = ruleName
+		if (alternativeName) {
+			rulesStr += ', .' + alternativeName
 		}
-		.dijitHover .umc{$iconName}Icon{$suffix} {
-			background-position: ($xoffset - 20px) unit($yoffset, px);
-			opacity: $opacityHover;
+		{rulesStr} {
+			icon-image(xoffset, yoffset, '', iconImageSuffix, width, height);
 		}
-		.dijitActive .umc{$iconName}Icon{$suffix} {
-			background-position: ($xoffset - 20px) unit($yoffset, px);
-			opacity: $opacityActive;
+		if (expandRule) {
+			.dijitHover {ruleName} {
+				background-position: (xoffset - 20px) unit(yoffset, px);
+				opacity: opacityHover;
+			}
+			.dijitActive {ruleName} {
+				background-position: (xoffset - 20px) unit(yoffset, px);
+				opacity: opacityActive;
+			}
 		}
 	}
 }
 
-icon-rule("Down", 0, 0);
-icon-rule("Up", -40, 0);
-icon-rule("Left", -80, 0);
-icon-rule("Right", -120, 0);
+icon-rule(Down, 0, 0);
+icon-rule(Up, -40, 0);
+icon-rule(Left, -80, 0);
+icon-rule(Right, -120, 0);
 
-icon-rule("ArrowDown", 0, -20);
-icon-rule("ArrowUp", -40, -20);
-icon-rule("ArrowLeft", -80, -20);
-icon-rule("ArrowRight", -120, -20);
+icon-rule(ArrowDown, 0, -20);
+icon-rule(ArrowUp, -40, -20);
+icon-rule(ArrowLeft, -80, -20);
+icon-rule(ArrowRight, -120, -20);
 
-icon-rule("ContextMenu", 0, -40);
-icon-rule("Close", 0, -60);
-icon-rule("Minimize", 0, -80);
-icon-rule("Empty", 0, -100);
-icon-rule("EmptyDisabled", 40, -100);
-icon-rule("Checked", 0, -120);
-icon-rule("CheckedDisabled", 40, -120);
-icon-rule("Selected", 0, -140);
-icon-rule("SelectedDisabled", 40, -140);
-icon-rule("LargeRight", 0, -160);
-icon-rule("LargeClose", 0, -180);
-icon-rule("Save", 0, -200);
-icon-rule("Help", -40, -200);
-icon-rule("Lang", 0, -220, 25px);
+icon-rule(SimpleDown, -160, -20, expandRule: false);
+icon-rule(SimpleUp, -180, -20, expandRule: false);
+icon-rule(SimpleLeft, -200, -20, expandRule: false);
+icon-rule(SimpleRight, -220, -20, expandRule: false);
+
+icon-rule(Plus, -160, -40, expandRule: false);
+icon-rule(Minus, -180, -40, expandRule: false);
+
+icon-rule(ContextMenu, 0, -40);
+icon-rule(Close, 0, -60);
+icon-rule(Minimize, 0, -80);
+icon-rule(Empty, 0, -100);
+icon-rule(EmptyDisabled, 40, -100);
+icon-rule(Checked, 0, -120);
+icon-rule(CheckedDisabled, 40, -120);
+icon-rule(Selected, 0, -140);
+icon-rule(SelectedDisabled, 40, -140);
+icon-rule(LargeRight, 0, -160);
+icon-rule(LargeClose, 0, -180);
+icon-rule(Save, 0, -200);
+icon-rule(Help, -40, -200);
+icon-rule(Lang, 0, -220, height=25px);
 

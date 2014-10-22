@@ -1,3 +1,17 @@
+univention-management-console-frontend-theme (0.0.59-1) unstable; urgency=medium
+
+  Bug #35654:
+  * add a few icons and clean up icon function
+  * add styles for MultiInput widget
+  * adjustments for the module header
+  * fix typo for progress bar animation
+  * fix notification word wrap and z-index
+  * adjust shadow style for hovered button
+  * adjust TitlePane heading padding
+  * automatically resize grid header to content
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Oct 2014 02:57:51 +0200
+
 univention-management-console-frontend-theme (0.0.58-1) precise; urgency=low
 
   * Bug #35654: styling progressbar, calendar
