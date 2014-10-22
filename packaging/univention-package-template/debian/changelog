@@ -1,3 +1,9 @@
+univention-multiarch-links (2.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #36115) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 22 Oct 2014 13:09:55 +0200
+
 univention-multiarch-links (1.0.0-1) unstable; urgency=low
 
   * Initial Release (Bug #33835)
