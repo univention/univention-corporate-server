@@ -147,26 +147,6 @@ mrtg "$mrtg_config" 2>/dev/null
 rm -f $mrtg_config $wwwdir/ucs_*.htm*
 echo "Systemlast: $loadavg%" >$wwwdir/$mrtgname.txt
 
-# Session count
-nrsessions="`ps -C univention-sess | grep -ic univention-sess`"
-mrtgname="ucs_1sessions"
-echo "WorkDir: $wwwdir" > $mrtg_config
-echo "Language: german" >> $mrtg_config
-echo "Interval: 15" >> $mrtg_config
-echo "Target[$mrtgname]: \`echo -e \"$nrsessions\n0\nunused\nunused\"\`" >> $mrtg_config
-echo "Options[$mrtgname]: growright,noo,gauge,nobanner,noborder,nolegend,noinfo" >> $mrtg_config
-echo "Unscaled[$mrtgname]: dwmy" >> $mrtg_config
-echo "MaxBytes[$mrtgname]: 10" >> $mrtg_config
-echo "AbsMax[$mrtgname]: 99999" >> $mrtg_config
-echo "Title[$mrtgname]: " >> $mrtg_config
-echo "Ylegend[$mrtgname]: Total" >> $mrtg_config
-echo "Colours[$mrtgname]: blau#6666ff,unused#000000,unused#000000,unused#000000" >> $mrtg_config
-echo "Background[$mrtgname]: #ffffff" >> $mrtg_config
-echo "PageTop[$mrtgname]: <H1>Sessions</H1>" >> $mrtg_config
-mrtg "$mrtg_config" 2>/dev/null
-rm -f $mrtg_config $wwwdir/ucs_*.htm*
-echo "Session(s): $nrsessions" >$wwwdir/$mrtgname.txt
-
 # Write HTML file
 cat <<__EOT__ >$wwwdir/$indexhtm
 <HTML>
