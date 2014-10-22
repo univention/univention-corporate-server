@@ -1,3 +1,9 @@
+univention-system-setup (8.1.25-1) unstable; urgency=medium
+
+  * Bug #35499: move styling from JavaScript into CSS file + cleanups
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Oct 2014 12:06:58 +0200
+
 univention-system-setup (8.1.24-3) unstable; urgency=low
 
   * Bug #35653: Fix checking existing domain
@@ -18,7 +24,7 @@ univention-system-setup (8.1.24-1) unstable; urgency=low
 
 univention-system-setup (8.1.23-1) unstable; urgency=medium
 
-  * Bug #35499: minor adjustment of page image positioning 
+  * Bug #35499: minor adjustment of page image positioning
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Oct 2014 04:29:29 +0200
 

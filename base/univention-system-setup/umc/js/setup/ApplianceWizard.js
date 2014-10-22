@@ -303,15 +303,15 @@ define([
 					store: new _CityStore({umcpCommand: lang.hitch(this, 'umcpCommand')}),
 					label: _('Enter a city nearby to preconfigure settings such as timezone, system language, keyboard layout.'),
 					inlineLabel: _('e.g., Boston...'),
-					labelConf: { style: 'margin-top: 0.75em;' }
+					labelConf: {'class': 'umc-ucssetup-wizard-livesearch'}
 				}, {
 					type: TitlePane,
+					'class': 'umc-ucssetup-wizard-city-details',
 					name: 'result',
 					content: '',
 					title: _('Localization settings'),
 					visible: false,
-					toggleable: false,
-					style: 'min-width: 50%'
+					toggleable: false
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'locale',
@@ -362,7 +362,6 @@ define([
 					type: CheckBox,
 					name: '_dhcp',
 					label: _('Obtain IP address automatically (DHCP)'),
-					labelConf: { style: 'margin-top: 2em;' },
 					onChange: lang.hitch(this, function(value) {
 						this._disableNetworkAddressWidgets(value);
 						var focused = this.getWidget('network', '_dhcp').focused;
@@ -447,8 +446,7 @@ define([
 					label: _('Gateway'),
 					required: true,
 					invalidMessage: _invalidIPAddressMessage,
-					validator: _validateIPAddress,
-					labelConf: { style: 'margin-bottom: 2em;' }
+					validator: _validateIPAddress
 				}, {
 					type: TextBox,
 					name: 'nameserver1',
@@ -492,7 +490,7 @@ define([
 					name: '_createDomain',
 					label: '<strong>' + _('Create a new UCS domain') + '</strong>',
 					checked: true,
-					labelConf: {style: 'margin-top: 0; margin-bottom: 0;'}
+					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
 					name: 'newDomainHelpText',
@@ -503,7 +501,7 @@ define([
 					radioButtonGroup: 'role',
 					name: '_adDomain',
 					label: '<strong>' + _('Join into an existing Active Directory domain') + '</strong>',
-					labelConf: {style: 'margin-top: .75em; margin-bottom: 0;'}
+					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
 					name: 'adDomainHelpText',
@@ -514,7 +512,7 @@ define([
 					radioButtonGroup: 'role',
 					name: '_joinDomain',
 					label: '<strong>' + _('Join into an existing UCS domain') + '</strong>',
-					labelConf: {style: 'margin-top: 0.75em; margin-bottom: 0;'}
+					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
 					name: 'joinDomainHelpText',
@@ -525,7 +523,7 @@ define([
 					radioButtonGroup: 'role',
 					name: '_noDomain',
 					label: '<strong>' + _('Do not use any domain') + '</strong>',
-					labelConf: {style: 'margin-top: 0.75em; margin-bottom: 0;'}
+					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
 					name: 'noDomainHelpText',
@@ -535,7 +533,7 @@ define([
 					type: Text,
 					name: 'ifUnsureHelpText',
 					content: _('If unsure, select <i>Create a new UCS domain</i>.'),
-					labelConf: {style: 'margin-top: 0.75em;'}
+					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'role-nonmaster-ad',
@@ -547,7 +545,7 @@ define([
 					name: '_roleBackup',
 					label: '<strong>' + _('Domain controller backup') + '</strong>',
 					checked: true,
-					labelConf: {style: 'margin-top: 0em; margin-bottom: 0'}
+					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
 					name: 'helpBackup',
@@ -558,7 +556,7 @@ define([
 					radioButtonGroup: 'role',
 					name: '_roleSlave',
 					label: '<strong>' + _('Domain controller slave') + '</strong>',
-					labelConf: {style: 'margin-top: 1.5em; margin-bottom: 0'}
+					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
 					name: 'helpSlave',
@@ -569,7 +567,7 @@ define([
 					radioButtonGroup: 'role',
 					name: '_roleMember',
 					label: '<strong>' + _('Member server') + '</strong>',
-					labelConf: {style: 'margin-top: 1.5em; margin-bottom: 0'}
+					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
 					name: 'helpMember',
@@ -1017,12 +1015,12 @@ define([
 					label: _('Software component'),
 					formatter: lang.hitch(this, function(value, idx) {
 						var item = this._gallery._grid.getItem(idx);
-						return lang.replace('<div>{name}</div><div style="color:#818181;">{description}</div>', item);
+						return lang.replace('<div>{name}</div><div class="umcAppDescription">{description}</div>', item);
 					})
 				}, {
 					name: 'longdescription',
 					label: ' ',
-					width: '50px',
+					width: '45px',
 					formatter: function(description) {
 						var button = null;
 						button = new Button({
@@ -1242,7 +1240,7 @@ define([
 
 			// append button to change locale settings
 			var changeSettingsButton = new Button({
-				style: 'margin-top: 0.5em; float: right;',
+				'class': 'umc-ucssetup-wizard-change-locale-button',
 				label: _('Adapt settings'),
 				onClick: lang.hitch(this, '_next', 'welcome-adapt-locale-settings')
 			});

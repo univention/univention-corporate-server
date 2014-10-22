@@ -27,12 +27,41 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+.umc-ucssetup-wizard-radio-button-label {
+	margin-top: 1.5em;
+	margin-bottom: 0
+}
+.umcContainerWidget:first-child > .umc-ucssetup-wizard-radio-button-label {
+	margin-top: 0;
+}
+
 .umc-ucssetup-wizard-indent {
 	margin-left: 16px;
 }
 
+.umc-ucssetup-wizard-livesearch {
+	margin-top: 0.75em;
+}
+
+.umc-ucssetup-wizard-city-details {
+	min-width: 50%;
+}
+
+.umc-ucssetup-wizard-change-locale-button {
+	margin-top: 0.5em;
+	float: right;
+}
+
 .umc .umcUCSSetupSoftwareGrid .dojoxGrid {
 	min-height: 350px;
+}
+
+.umc .umcUCSSetupSoftwareGrid .dojoxGridCell .umcAppDescription {
+	color: #818181;
+}
+
+.umc .umcUCSSetupSoftwareGrid .dojoxGridCell .dijitButtonContents {
+	width: 17px;
 }
 
 .umc-setup-page .umcIconInfo {
@@ -84,6 +113,10 @@
 	.umcPageIcon {
 		display: none;
 	}
+}
+
+.umc-setup-page-welcome .umcPageIcon {
+	background-image: url(setup/welcome.svg);
 }
 
 .umc-setup-page-welcome .umcPageIcon {
