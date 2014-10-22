@@ -2,3 +2,4 @@ task-ucs* usr/share/debian-cd/tasks/wheezy/
 ucs_exclude	usr/share/debian-cd/data/wheezy/
 ucs*.conf usr/share/debian-cd/
 debian-cd/make_disc_trees.pl usr/share/debian-cd/tools/
+debian-cd/ucs_version	usr/share/debian-cd/tools/
