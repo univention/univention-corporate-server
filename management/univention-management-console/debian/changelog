@@ -1,3 +1,9 @@
+univention-management-console (7.1.12-4) unstable; urgency=low
+
+  * Bug #33241: Revert
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 Oct 2014 15:05:30 +0200
+
 univention-management-console (7.1.12-3) unstable; urgency=low
 
   * Bug #33241: Fix permissions on pidlock file

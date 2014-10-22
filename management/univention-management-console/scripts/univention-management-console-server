@@ -106,6 +106,7 @@ class UMC_Daemon( DaemonRunner ):
 		# init daemon runner
 		DaemonRunner.__init__( self, self )
 		self.daemon_context.detach_process = self.options.daemon_mode
+		self.daemon_context.umask = 0077
 		self.daemon_context.files_preserve = [ debug_fd ]
 		self.daemon_context.signal_map = {
 			signal.SIGHUP : self.signal_hang_up,
@@ -184,9 +185,6 @@ class UMC_Daemon( DaemonRunner ):
 		from univention.management.console.protocol.server import Server
 
 		notifier.init( notifier.GENERIC )
-
-		# protect sensitive files
-		os.chmod( self.pidfile.lock_file, 0644 )
 
 		self.server = Server( port = self.options.port )
 
