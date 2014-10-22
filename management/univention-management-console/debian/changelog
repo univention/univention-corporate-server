@@ -1,3 +1,9 @@
+univention-management-console (7.1.12-3) unstable; urgency=low
+
+  * Bug #33241: Fix permissions on pidlock file
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 Oct 2014 15:02:42 +0200
+
 univention-management-console (7.1.12-2) unstable; urgency=low
 
   * Bug #33241: Do not use umask 0077 for UMC

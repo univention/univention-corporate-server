@@ -185,6 +185,9 @@ class UMC_Daemon( DaemonRunner ):
 
 		notifier.init( notifier.GENERIC )
 
+		# protect sensitive files
+		os.chmod( self.pidfile.lock_file, 0644 )
+
 		self.server = Server( port = self.options.port )
 
 		CORE.process( 'Server started' )
