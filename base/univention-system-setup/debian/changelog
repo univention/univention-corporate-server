@@ -1,3 +1,9 @@
+univention-system-setup (8.1.24-1) unstable; urgency=low
+
+  * Bug #35654: fix dpkg --compare-versions
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 22 Oct 2014 09:21:51 +0200
+
 univention-system-setup (8.1.23-1) unstable; urgency=medium
 
   * Bug #35499: minor adjustment of page image positioning 
@@ -79,7 +85,7 @@ univention-system-setup (8.1.15-1) unstable; urgency=low
 
 univention-system-setup (8.1.14-5) unstable; urgency=low
 
-  * removed last commit (Bug #36224) 
+  * removed last commit (Bug #36224)
 
  -- Felix Botner <botner@univention.de>  Fri, 17 Oct 2014 14:55:27 +0200
 
