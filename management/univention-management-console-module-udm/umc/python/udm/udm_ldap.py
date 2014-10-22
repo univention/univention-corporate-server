@@ -690,7 +690,7 @@ class UDM_Module( object ):
 				'label' : prop.short_description,
 				'description' : prop.long_description,
 				'syntax' : prop.syntax.name,
-				'size' : prop.syntax.size,
+				'size' : prop.size or prop.syntax.size,
 				'required' : bool( prop.required ),
 				'editable' : bool( prop.may_change ),
 				'options' : prop.options,

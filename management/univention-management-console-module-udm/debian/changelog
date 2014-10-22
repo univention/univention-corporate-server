@@ -1,3 +1,11 @@
+univention-management-console-module-udm (5.1.8-1) unstable; urgency=medium
+
+  Bug #35654:
+  * Handle additional size property for syntax classes
+  * Replace umc.tools.inheritsFrom() with widget.isInstanceOf()
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Oct 2014 02:25:03 +0200
+
 univention-management-console-module-udm (5.1.7-1) unstable; urgency=medium
 
   * Bug #35654: adjust styling of license dialogs

@@ -45,6 +45,8 @@ define([
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/MultiInput",
+	"umc/widgets/ComboBox",
 	"umc/widgets/Form",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
@@ -61,7 +63,7 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/widgets"
-], function(declare, lang, array, on, Deferred, all, style, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
+], function(declare, lang, array, on, Deferred, all, style, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
 
 	var _StandbyPage = declare([Page, StandbyMixin], {});
 
@@ -324,7 +326,7 @@ define([
 				$policies$: this._receivedObjOrigData.$policies$
 			};
 			tools.forIn(this._form._widgets, lang.hitch(this, function(iname, iwidget) {
-				if (!(iname in this._receivedObjOrigData) && tools.inheritsFrom(iwidget, 'umc.widgets.ComboBox')) {
+				if (!(iname in this._receivedObjOrigData) && iwidget.isInstanceOf(ComboBox)) {
 					// iname was not received from server and it is a ComboBox
 					// => the value may very well be set because there is
 					// no empty choice (in this case the first choice is selected).
@@ -558,6 +560,14 @@ define([
 						depends: iprop.depends
 					}];
 					iprop.type = 'MultiInput';
+				}
+
+				// handle size classes for MultiInputs that are defined at the
+				// object property and that overwrite the syntax default
+				if (iprop.size instanceof Array && iprop.subtypes instanceof Array && iprop.size.length == iprop.subtypes.length) {
+					array.forEach(iprop.size, function(isize, idx) {
+						iprop.subtypes[idx].size = isize;
+					});
 				}
 
 				// handle editable items
@@ -1093,7 +1103,7 @@ define([
 							edit: _('edit')
 						});
 						iwidget.set('label', label);
-					} else if (iinfo instanceof Array && tools.inheritsFrom(iwidget, 'umc.widgets.MultiInput')) {
+					} else if (iinfo instanceof Array && iwidget.isInstanceOf(MultiInput)) {
 						// we got probably a UCR-Policy, this is a special case:
 						// -> a list of values where each value might have been inherited
 						//    by different policies
