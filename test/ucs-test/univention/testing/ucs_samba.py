@@ -7,8 +7,11 @@ import ldb
 import time
 import socket
 import re
-import os
+import sqlite3
 
+CONNECTOR_WAIT_INTERVAL=12
+CONNECTOR_WAIT_SLEEP=5
+CONNECTOR_WAIT_TIME=CONNECTOR_WAIT_SLEEP*CONNECTOR_WAIT_INTERVAL
 
 def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1):
 	if not lp:
@@ -18,10 +21,6 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 		attrs = ['dn']
 	elif type(attrs) != type([]):
 		attrs = [attrs]
-
-	if not lp.get("server role") == "active directory domain controller":
-		print "No Samba4 DC, no need to wait for DRS replication"
-		return
 
 	samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp)
 	controls = ["domain_scope:0"]
@@ -71,3 +70,56 @@ def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None
 		cmd = ("/usr/bin/samba-tool", "drs", "replicate", source_dc, destination_dc, partition_dn)
 	return subprocess.call(cmd)
 
+def _ldap_replication_complete():
+	return subprocess.call('/usr/lib/nagios/plugins/check_univention_replication') == 0
+
+def wait_for_s4connector():
+	conn = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
+	c = conn.cursor()
+
+	static_count = 0
+	cache_S4_rejects = None
+	t_last_feedback = t_1 = t_0 = time.time()
+
+	highestCommittedUSN = -1
+	lastUSN = -1
+	while static_count < CONNECTOR_WAIT_INTERVAL:
+		time.sleep(CONNECTOR_WAIT_SLEEP)
+
+		if not _ldap_replication_complete():
+			continue
+
+		previous_highestCommittedUSN = highestCommittedUSN
+
+		highestCommittedUSN = -1
+		ldbsearch = subprocess.Popen("ldbsearch -H /var/lib/samba/private/sam.ldb -s base -b '' highestCommittedUSN", shell=True, stdout=subprocess.PIPE)
+		ldbresult = ldbsearch.communicate()
+		for line in ldbresult[0].split('\n'):
+			line = line.strip()
+			if line.startswith('highestCommittedUSN: '):
+				highestCommittedUSN = line.replace('highestCommittedUSN: ', '')
+				break
+
+		print highestCommittedUSN
+
+		previous_lastUSN = lastUSN
+		try:
+			c.execute('select value from S4 where key=="lastUSN"')
+		except sqlite3.OperationalError as e:
+			static_count = 0
+			print 'Reset counter: sqlite3.OperationalError: %s' % e
+			print 'Counter: %d' % static_count
+			continue
+
+		conn.commit()
+		lastUSN = c.fetchone()[0]
+
+		if not ( lastUSN == highestCommittedUSN and lastUSN == previous_lastUSN and highestCommittedUSN == previous_highestCommittedUSN ):
+			static_count = 0
+			print 'Reset counter'
+		else:
+			static_count = static_count + 1
+		print 'Counter: %d' % static_count
+
+	conn.close()
+	return 0
