@@ -1086,6 +1086,13 @@ define([
 			topic.subscribe('/umc/tabs/close', lang.hitch(this, 'closeTab'));
 			topic.subscribe('/umc/tabs/focus', lang.hitch(this, 'focusTab'));
 
+			on.once(this, 'ModulesLoaded', lang.hitch(this, function() {
+				// run some checks (only if a overview page is available)
+				if (tools.status('overview')) {
+					topic.publish('/umc/startup/checks');
+				}
+			}));
+
 			this._setupStaticGui = true;
 		},
 
@@ -1272,15 +1279,12 @@ define([
 				}
 			});
 
-			tools.forEachAsync(modules, lang.hitch(this, function(imod) {
-				return this._tryLoadingModule(imod);
-			})).then(lang.hitch(this, function() {
-				// all javascript modules are loaded
+			var loadedCount = [];
 
-				// run some checks (only if a overview page is available)
-				if (tools.status('overview')) {
-					topic.publish('/umc/startup/checks');
-				}
+			tools.forEachAsync(modules, lang.hitch(this, function(imod) {
+				loadedCount.push(this._tryLoadingModule(imod));
+			})).then(lang.hitch(this, function() {
+				all(loadedCount).always(lang.hitch(this, 'onModulesLoaded'));
 			}));
 		},
 
@@ -1690,6 +1694,10 @@ define([
 			}).forEach(function(m) {
 				umc.app.openModule(m.id, m.flavor);
 			});
+		},
+
+		onModulesLoaded: function() {
+			// event stub when all modules are loaded as Javascript files
 		},
 
 		onGuiDone: function() {
