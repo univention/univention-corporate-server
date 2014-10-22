@@ -1,6 +1,8 @@
 univention-management-console-frontend (4.1.64-1) unstable; urgency=medium
 
-  * Bug #35654: ensure correct positioning of header elements
+  Bug #35654:
+  * ensure correct positioning of header elements
+  * remove obsolete css directory
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Oct 2014 15:58:53 +0200
 
