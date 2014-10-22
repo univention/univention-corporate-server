@@ -1,3 +1,9 @@
+ucs-test (4.0.174-1) unstable; urgency=low
+
+  * Bug #36214: copy wait_for_s4connector() to univention/testing/ucs_samba.py
+
+ -- Ammar Najjar <najjar@univention.de>  Wed, 22 Oct 2014 11:04:27 +0200
+
 ucs-test (4.0.173-1) unstable; urgency=low
 
   * Bug #35900: using expiry date from ldap after object creation instead of using the value sent with create
