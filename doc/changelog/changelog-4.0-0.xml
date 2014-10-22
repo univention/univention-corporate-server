@@ -626,6 +626,11 @@
 		<title>Samba AD domain support</title>
 		<itemizedlist>
 			<listitem><simpara>
+					When installing the app Active Directory-compatible Domain Controller on a DC Slave
+					the joinscript aborts now if an S4 Connector has already been installed on
+					the DC Master or on a DC Backup. Additionally the S4 Connector package is installed
+					in this case for purely technical reasons but it is not activated.
+					(<ulink url="&ucsbug;35983">Bug 35983</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
