@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (4.0.3-14) unstable; urgency=low
+
+  * Remove useless filter option "cloud connection" (Bug #36148)
+  * Use "cloud instances" as default filter if only cloud connections
+    are configured (Bug #36138)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 22 Oct 2014 15:58:20 +0200
+
 univention-virtual-machine-manager-daemon (4.0.3-13) unstable; urgency=low
 
   * Fix password and api key field handling in UMC wizard (Bug #36153) 

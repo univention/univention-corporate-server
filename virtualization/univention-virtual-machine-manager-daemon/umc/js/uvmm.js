@@ -153,7 +153,7 @@ define([
 					{ id: 'domain', label: _('Virtual machine') },
 					{ id: 'node', label: _('Physical server') },
 					{ id: 'instance', label: _('Cloud instance') },
-					{ id: 'cloud', label: _('Cloud connection') }
+					//{ id: 'cloud', label: _('Cloud connection') }
 				],
 				size: 'One'
 			}, {
@@ -330,6 +330,9 @@ define([
 			this.inherited(arguments);
 
 			on.once(this._tree, 'load', lang.hitch(this, function() {
+				if (this._tree._getFirst().item.id == 'cloudconnections') {
+					this._searchForm.getWidget('type').set('value', 'instance');
+				}
 				this.own(this._tree.watch('path', lang.hitch(this, function() {
 					var searchType = this._searchForm.getWidget('type').get('value');
 					if (searchType == 'domain' || searchType == 'instance') {
