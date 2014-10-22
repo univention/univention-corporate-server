@@ -53,10 +53,6 @@ define([
 				title: _("System load"),
 				desc: _("System load in percent")
 			}, {
-				key: "1sessions",
-				title: _("Terminal server sessions"),
-				desc: _("Number of active terminal server sessions")
-			}, {
 				key: "2mem",
 				title: _("Memory usage"),
 				desc: _("Utilization of system memory in percent")
