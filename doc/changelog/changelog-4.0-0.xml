@@ -2,6 +2,13 @@
 	<title>General</title>
 	<itemizedlist>
 		<listitem><simpara>
+				The underlying Debian version has been updated to Debian Wheezy 7.7
+				(<ulink url="&ucsbug;33835">Bug 33835</ulink>,
+				 <ulink url="&ucsbug;33836">Bug 33836</ulink>.
+				 <ulink url="&ucsbug;35669">Bug 35688</ulink>,
+				 <ulink url="&ucsbug;36241">Bug 36241</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
 				All Univention packages have been adapted to Dephelper 9 and to Python
 				2.7. In addition the UCR templates have been adapted to the new upstream
 				packages (
