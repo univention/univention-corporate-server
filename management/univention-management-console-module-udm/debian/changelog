@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.9-1) unstable; urgency=medium
+
+  * Bug #23665: show user picture more prominently
+
+ -- Florian Best <best@univention.de>  Wed, 22 Oct 2014 21:36:03 +0200
+
 univention-management-console-module-udm (5.1.8-1) unstable; urgency=medium
 
   Bug #35654:

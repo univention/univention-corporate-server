@@ -794,11 +794,21 @@ define([
 					helpText: ''
 				});
 
+				// add user photo into 'nav' area
+				if (widgets.jpegPhoto && array.some(ilayout.layout, function(l) {
+					var hasPhoto = array.indexOf(l.layout, 'jpegPhoto') !== -1;
+					if (hasPhoto) {
+						l.layout.pop('jpegPhoto');
+					}
+					return hasPhoto;
+				})) {
+					widgets.jpegPhoto.region = 'nav';
+					subTab.addChild(widgets.jpegPhoto);
+				}
+
 				// add rendered layout to subtab and register subtab
-				var subTabWidgets = render.layout(ilayout.layout, widgets);
+				render.layout(ilayout.layout, widgets, undefined, undefined, subTab);
 				ilayout.$refSubTab$ = subTab;
-				style.set(subTabWidgets.domNode, 'overflow', 'auto');
-				subTab.addChild(subTabWidgets);
 				this._addSubTab(subTab);
 
 				// update _propertySubTabMap

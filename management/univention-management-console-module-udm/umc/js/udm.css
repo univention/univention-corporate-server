@@ -20,3 +20,7 @@
 	height: 150px;
 	font-size: 1em;
 }
+
+.umc .umcPage .umcPageNav .umcImageUploader img {
+	max-height: 250px;
+}
