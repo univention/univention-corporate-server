@@ -70,7 +70,12 @@ define([
 
 			this._headerButtonsMap = {};
 			this.__container.watch('selectedChildWidget', lang.hitch(this, '__refreshButtonVisibility'));
-			this.own(aspect.after(this.__container, 'addChild', lang.hitch(this, '_addHeaderButtonsToChild'), true));
+			this.own(aspect.after(this.__container, 'addChild', lang.hitch(this, function(child) {
+				this._addHeaderButtonsToChild(child);
+				child.own(child.watch('headerButtons', lang.hitch(this, function() {
+					this._addHeaderButtonsToChild(child);
+				})));
+			}), true));
 		},
 
 		resetTitle: function() {
@@ -162,6 +167,12 @@ define([
 
 			if (child.headerButtons) {
 				headerButtons = child.headerButtons.concat(headerButtons);
+			}
+
+			if (this._headerButtonsMap[child.id]) {
+				this._top._right.removeChild(this._headerButtonsMap[child.id]);
+				this._headerButtonsMap[child.id].destroyRecursive();
+				delete this._headerButtonsMap[child.id];
 			}
 
 			if (headerButtons && headerButtons.length) {
