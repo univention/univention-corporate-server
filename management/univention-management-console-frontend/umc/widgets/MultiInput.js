@@ -34,16 +34,15 @@ define([
 	"dojo/_base/array",
 	"dojo/Deferred",
 	"dojo/promise/all",
-	"dojo/query",
-	"dojo/dom-construct",
-	"dijit/form/Button",
+	"dojo/dom-class",
 	"umc/tools",
 	"umc/render",
 	"umc/widgets/Button",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_FormWidgetMixin",
-	"umc/widgets/LabelPane"
-], function(declare, lang, array, Deferred, all, query, domConstruct, dijitButton, tools, render, Button, ContainerWidget, _FormWidgetMixin, LabelPane) {
+	"umc/widgets/LabelPane",
+	"umc/i18n!"
+], function(declare, lang, array, Deferred, all, domClass, tools, render, Button, ContainerWidget, _FormWidgetMixin, LabelPane, _) {
 	return declare("umc.widgets.MultiInput", [ ContainerWidget, _FormWidgetMixin ], {
 		// summary:
 		//		Widget for a small list of simple and complex entries. An entry can be one or
@@ -72,17 +71,23 @@ define([
 
 		disabled: false,
 
+		labelConf: {
+			style: 'display: block; padding-right: 0;'
+		},
+
 		_widgets: null,
 
 		_nRenderedElements: 0,
 
 		_rowContainers: null,
 
-		_newButton: null,
+		_newEntryButton: null,
 
 		_lastDepends: null,
 
 		_valuesLoaded: false,
+
+		_orgLabel: '',
 
 		// deferred for overall process (built + loaded dependencies)
 		_readyDeferred: null,
@@ -132,6 +137,10 @@ define([
 
 			// delete the size class
 			this.sizeClass = null;
+
+			// remove label
+			this._orgLabel = this.label;
+			this.label = '';
 
 			// the _readyDeferred is being resolved as soon as everything has been set up
 			this._readyDeferred = new Deferred();
@@ -186,6 +195,9 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+
+			// add the 'new entry' button
+			this._renderNewEntryButton();
 
 			// add empty element
 			this._appendRows();
@@ -262,14 +274,17 @@ define([
 				return (typeof ival == "string" && '' !== ival) || (ival instanceof Array && ival.length);
 			});
 
-			// append an empty element
-			vals.push([]);
+			if (!this.disabled || !vals.length) {
+				// append an empty element
+				vals.push([]);
+			}
 
 			// set the values
 			this._setAllValues(vals);
 		},
 
 		_setDisabledAttr: function ( value ) {
+			domClass.toggle(this.domNode, 'umcMultiInputDisabled', value);
 			this._allWidgetsBuiltDeferred.then(lang.hitch(this, function() {
 				var i;
 				for ( i = 0; i < this._rowContainers.length; ++i) {
@@ -327,44 +342,25 @@ define([
 			return vals;
 		},
 
-		_renderNewButton: function() {
-			if (this._newButton) {
-				this._newButton.destroy();
-				this._newButton = null;
-			}
+		_updateNewEntryButton: function() {
+			var isActive = this._nRenderedElements < this.max && !this.disabled;
+			this._newEntryButton.set('visible', isActive);
+			this._newEntryButton.set('disabled', !isActive);
+		},
 
-			// add the 'new' button to the last row
-			if (this._nRenderedElements < 1 || this._nRenderedElements >= this.max) {
-				return;
-			}
-
-			// create 'new' button
-			var btn = new dijitButton({
+		_renderNewEntryButton: function() {
+			this._newEntryButton = new Button({
+				label: _('New entry'),
 				disabled: this.disabled,
-				iconClass: 'umcIconAdd',
+				visible: !this.disabled,
+				iconClass: 'umcPlusIcon',
 				onClick: lang.hitch(this, '_appendRows', 1),
 				'class': 'umcMultiInputAddButton'
 			});
-			this.own(btn);
+			this.addChild(this._newEntryButton);
 
-			// wrap a button with a LabelPane
-			this._newButton = new LabelPane({
-				content: btn,
-				disabled: this.disabled,
-				label: this._nRenderedElements === 1 && this._hasSubtypeLabel ? '&nbsp;' : '' // only keep the label for the first row
-			});
-
-			// add button to last row
-			this._allWidgetsBuiltDeferred.then(lang.hitch(this, function() {
-				this._rowContainers[this._rowContainers.length - 1].addChild(this._newButton);
-				var noWrapper = this._nRenderedElements === 1 && !this._hasSubtypeLabel;
-				if (noWrapper) {
-					// hack the empty umcLabelPaneLabeNodeTop out of the dom tree. It consumes space although it is empty
-					query('.umcLabelPaneLabeNodeTop', this._newButton.domNode).forEach(domConstruct.destroy);
-					query('.umcLabelPaneLabeNodeRight', this._newButton.domNode).forEach(domConstruct.destroy);
-					query('.umcLabelPaneLabeNodeBottom', this._newButton.domNode).forEach(domConstruct.destroy);
-				}
-			}));
+			// hide the button when the MultiInput widget is being deactivated
+			this.watch('disabled', lang.hitch(this, '_updateNewEntryButton'));
 		},
 
 		_updateReadyDeferred: function() {
@@ -437,7 +433,6 @@ define([
 			// if the subwidgets have no label on their own,
 			//   remove the LabelPane wrapper to horizontally align with other
 			//   non-MultiInput widgets. See Bug #25389
-			var noWrapper = irow === 0 && !this._hasSubtypeLabel;
 			array.forEach(this.subtypes, function(iwidget, i) {
 				// add the widget configuration dict to the list of widgets
 				var iname = '__' + this.name + '-' + irow + '-' + i;
@@ -448,6 +443,13 @@ define([
 					value: '',
 					dynamicValues: lang.partial(iwidget.dynamicValues, iname)
 				});
+
+				// if no label is given, set the main label as label
+				// of the first subwidget
+				if (i == 0) {
+					iconf.label = iconf.label || this._orgLabel;
+				}
+
 				if (iwidget.dynamicValuesInfo) {
 					iconf.dynamicValuesInfo = lang.partial(iwidget.dynamicValuesInfo, iname);
 				}
@@ -456,7 +458,6 @@ define([
 				// add the name of the widget to the list of widget names
 				order.push(iname);
 			}, this);
-
 
 			// render the widgets
 			var widgets = render.widgets(widgetConfs, this);
@@ -477,24 +478,19 @@ define([
 			var visibleWidgets = array.map(order, function(iname) {
 				return widgets[iname];
 			});
-			var rowContainer = new ContainerWidget({});
-			array.forEach(order, function(iname) {
+			var rowContainer = new ContainerWidget({
+				'class': 'umcMultiInputContainer'
+			});
+			array.forEach(order, function(iname, idx) {
 				// add widget to row container (wrapped by a LabelPane)
 				// only keep the label for the first row
 				var iwidget = widgets[iname];
-				var label = irow !== 0 ? '' : iwidget.label;
-				if (iwidget.isInstanceOf(Button)) {
-					label = irow !== 0 ? '' : '&nbsp;';
-				}
-				if (noWrapper) {
-					rowContainer.addChild(iwidget);
-				} else {
-					rowContainer.addChild(new LabelPane({
-						disabled: this.disabled,
-						content: iwidget,
-						label: label
-					}));
-				}
+				rowContainer.addChild(new LabelPane({
+					disabled: this.disabled,
+					content: iwidget,
+					// mark last element in a row
+					'class': idx == order.length - 1 ? 'umcMultiInputLastRowEntry' : null
+				}));
 
 				// register to value changes
 				this.own(iwidget.watch('value', lang.hitch(this, function() {
@@ -504,31 +500,27 @@ define([
 				})));
 			}, this);
 
-			// add a 'remove' button at the end of the row
-			var button = new dijitButton({
+			// add a 'remove' button
+			var button = new Button({
 				disabled: this.disabled,
-				iconClass: 'umcIconDelete',
+				visible: !this.disabled,
+				iconClass: 'umcMinusIcon',
 				onClick: lang.hitch(this, '_removeElement', irow),
 				'class': 'umcMultiInputRemoveButton'
 			});
-			var labelPane = new LabelPane({
-				disabled: this.disabled,
-				content: button,
-				label: irow === 0 && this._hasSubtypeLabel ? '&nbsp;' : '' // only keep the label for the first row
-			});
-			rowContainer.addChild(labelPane);
-			if (noWrapper) {
-				// hack the empty umcLabelPaneLabeNodeTop out of the dom tree. It consumes space although it is empty
-				query('.umcLabelPaneLabeNodeTop', labelPane.domNode).forEach(domConstruct.destroy);
-				query('.umcLabelPaneLabeNodeRight', labelPane.domNode).forEach(domConstruct.destroy);
-				query('.umcLabelPaneLabeNodeBottom', labelPane.domNode).forEach(domConstruct.destroy);
-			}
+			rowContainer.addChild(button);
+
+			// hide the button when the MultiInput widget is being deactivated
+			button.own(this.watch('disabled', function(attr, oldVal, disabled) {
+				button.set('visible', !disabled);
+				button.set('disabled', disabled);
+			}));
 
 			// add row
 			this._widgets[irow] = visibleWidgets;
 			this._rowContainers[irow] = rowContainer;
 			this._startupDeferred.then(lang.hitch(rowContainer, 'startup'));
-			this.addChild(rowContainer);
+			this.addChild(rowContainer, irow);
 
 			// call the _loadValues method by hand
 			array.forEach(order, function(iname) {
@@ -574,7 +566,7 @@ define([
 			tools.forEachAsync(newRows, this.__appendRow, this, 5, 50).then(lang.hitch(this, function() {
 				// all elements have been added to the DOM
 				// add the new button
-				this._renderNewButton();
+				this._updateNewEntryButton();
 				this._updateReadyDeferred();
 			}));
 		},
@@ -598,7 +590,7 @@ define([
 
 
 			// add the new button
-			this._renderNewButton();
+			this._updateNewEntryButton();
 		},
 
 		_removeElement: function(idx) {

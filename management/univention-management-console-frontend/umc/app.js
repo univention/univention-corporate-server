@@ -647,7 +647,6 @@ define([
 					label: _('Logout'),
 					onClick: function() { require('umc/app').relogin(); }
 				}));
-
 			}
 
 			if (tools.status('overview') && !tools.status('singleModule')) {
@@ -657,17 +656,13 @@ define([
 		},
 
 		setupSearchField: function() {
+			// enforce same width as username button
+			var usernameButtonPos = domGeometry.position(this._usernameButton.domNode);
 			this._searchSidebar = new LiveSearchSidebar({
-				searchLabel: _('Module search')
+				searchLabel: _('Module search'),
+				style: lang.replace('width: {w}px', usernameButtonPos)
 			});
 			this._headerRight.addChild(this._searchSidebar);
-			this._alignSearchField();
-		},
-
-		_alignSearchField: function() {
-			var w = domGeometry.getMarginBox(this._usernameButton.domNode).w;
-			//FIXME: style.set(this._searchSidebar.domNode, 'width', lang.replace('{0}px;', [w]));
-			styles.insertCssRule('#'+ this._searchSidebar.id, lang.replace('width: {0}px;', [w]));
 		},
 
 		setupBackToOverview: function() {
@@ -1039,12 +1034,6 @@ define([
 				return;
 			}
 
-			// show vertical scrollbars only if the viewport size is smaller
-			// than 550px (which is our minimal height)
-			// this is to avoid having vertical scrollbars when long ComboBoxes open up
-			//on(baseWin.doc, 'resize', lang.hitch(this, '_updateScrolling'));
-			//on(kernel.global, 'resize', lang.hitch(this, '_updateScrolling'));
-
 			if (has('touch')) {
 				this.setupTouchDevices();
 			}
@@ -1055,17 +1044,6 @@ define([
 
 			// set up fundamental layout parts...
 
-//TODO: can probably removed
-//			// enforce a minimal height of 550px on normal devices
-//			// and take the viewport height as fixed height on touch devices
-//			var styleStr = lang.replace('min-height: {0}px;', [550]);
-//			if (has('touch')) {
-//				styleStr = lang.replace('height: {0}px;', [Math.max(win.getBox().h, 500)]);
-//			}
-//			if (tools.status('width')) {
-//				// force a displayed width if specified
-//				styleStr += 'width: ' + tools.status('width') + 'px;';
-//			}
 			this._topContainer = new ContainerWidget({
 				id: 'umcTopContainer',
 				domNode: dom.byId('umcTopContainer'),
@@ -1110,50 +1088,8 @@ define([
 		},
 
 		setupTouchDevices: function() {
-			// listen to some more events for updating the scrolling behaviour
-			//on(kernel.global, 'scroll', lang.hitch(this, '_updateScrolling'));
-
-			// We use specific CSS classes on touch devices (e.g. tablets)
+			// add specific CSS class for touch devices (e.g., tablets)
 			domClass.add(baseWin.body(), 'umcTouchDevices');
-
-//TODO: can probably removed
-//			// make sure that the background cannot be moved unless
-//			// a virtual keyboard appeared (-> iPad)
-//			var ignoreTouch = false;
-//			on(baseWin.doc, 'touchmove', function(evt) {
-//				if (ignoreTouch) {
-//					// ignore event
-//					evt.preventDefault();
-//				}
-//			});
-//			on(baseWin.doc, 'touchend', function(evt) {
-//				// back to default
-//				ignoreTouch = false;
-//			});
-//			on(baseWin.doc, 'touchstart', function(evt) {
-//				if (evt.touches.length > 1) {
-//					// ignore touches with more than 1 finger -> zoom gesture
-//					ignoreTouch = false;
-//					return;
-//				}
-//
-//				// by default ignore touch unless it happens somewhere in a
-//				// DOM element that can be scrolled
-//				ignoreTouch = true;
-//				var scrollStyle = '';
-//				for (var node = evt.target; node; node = node.parentNode) {
-//					try {
-//						scrollStyle = style.get(node, 'overflowY');
-//						if (scrollStyle == 'auto' || scrollStyle == 'scroll') {
-//							ignoreTouch = false;
-//							break;
-//						}
-//					}
-//					catch (err) {
-//						// ignore error
-//					}
-//				}
-//			});
 		},
 
 		registerTabSwitchHandling: function() {
@@ -1710,19 +1646,6 @@ define([
 				topic.publish('/umc/actions', 'overview', 'favorites', module.id, module.flavor, 'add');
 			}
 		},
-
-//TODO: can probably removed
-//		_updateScrolling: function() {
-//			var viewportHeight = win.getBox().h;
-//			var docHeight = this._topContainer ? domGeometry.getMarginBox(this._topContainer.domNode).h : viewportHeight;
-//			var scrollStyle = style.get(baseWin.body(), 'overflowY');
-//			var needsScrolling = Math.abs(viewportHeight - docHeight) > 10;
-//			var hasScrollbars = (scrollStyle == 'auto' || scrollStyle == 'scroll');
-//			if (needsScrolling != hasScrollbars) {
-//				// disable/enable scrollbars
-//				style.set(baseWin.body(), 'overflowY', needsScrolling ? 'scroll' : 'hidden');
-//			}
-//		},
 
 		_disablePiwik: function(disable) {
 			// FIXME: where is it used

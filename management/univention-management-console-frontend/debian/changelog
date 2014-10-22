@@ -1,3 +1,11 @@
+univention-management-console-frontend (4.1.61-1) unstable; urgency=medium
+
+  Bug #35654:
+  * adjust MultiInput to work correctly w.r.t. responsive design
+  * remove obsolete code
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Oct 2014 03:57:47 +0200
+
 univention-management-console-frontend (4.1.60-2) unstable; urgency=medium
 
   * Bug #35654: adapt module header styling

@@ -65,8 +65,6 @@ define([
 
 		baseClass: 'umcLiveSearchSidebar',
 
-		style: 'overflow: auto;',
-
 		_radioButtons: null,
 
 		// searchableAttributes: String[]
