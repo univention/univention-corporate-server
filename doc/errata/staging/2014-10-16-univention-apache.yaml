@@ -1,6 +1,6 @@
 product: ucs
 release: "3.2"
-version: [2, 3]
+version: [3]
 scope: ucs_3.2-0-errata3.2-3
 src: univention-apache
 fix: 6.0.16-9.201.201410171308
