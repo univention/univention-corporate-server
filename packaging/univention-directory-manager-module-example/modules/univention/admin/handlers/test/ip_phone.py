@@ -1,7 +1,7 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #

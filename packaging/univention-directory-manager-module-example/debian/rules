@@ -4,7 +4,7 @@
 # Univention Directory Manager Example Module
 #  rules file for creating the deb package
 #
-# Copyright 2010-2012 Univention GmbH
+# Copyright 2010-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -68,4 +68,4 @@ override_dh_auto_test:
 	ucslint
 
 %:
-	dh $@
+	dh $@ --with python_support

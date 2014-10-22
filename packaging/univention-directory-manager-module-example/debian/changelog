@@ -1,3 +1,9 @@
+univention-directory-manager-module-example (4.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #36115) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 22 Oct 2014 13:05:31 +0200
+
 univention-directory-manager-module-example (3.0.1-2) unstable; urgency=low
 
   * Modify refresh-i18n to use bash, fixes build since ucslint detects a
