@@ -735,7 +735,29 @@ update_pseudo_groups ()
 	_update_pseudo_group "Enterprise Domain Controllers" "$@" || die
 }
 
+exit_on_slave_if_no_s4_connector_on_master_or_backup()
+{
+	local s4connectorservicedcs
+	is_ucr_true samba4/provision/secondary
+	if [ $? -eq 0 ]; then
+		## secondary provision for selective replication
+		return
+	fi
+	if [ "$server_role" != "domaincontroller_slave" ]; then
+		return
+	fi
+	s4connectorservicedcs=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret \
+		"(&(univentionService=S4 Connector)(|(univentionServerRole=master)(univentionServerRole=backup)))" cn \
+		| ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')
+	if [ -z "$s4connectorservicedcs" ]; then
+		echo "ERROR: No S4 Connector installed yet on DC Master or DC Backup."
+		exit 1
+	fi
+}
+
 ### --- END helper functions ---
+
+exit_on_slave_if_no_s4_connector_on_master_or_backup
 
 extract_binddn_and_bindpwd_from_args "$@"
 if [ -n "$binddn" ]; then

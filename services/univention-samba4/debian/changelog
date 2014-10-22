@@ -1,3 +1,11 @@
+univention-samba4 (4.0.0-8) unstable; urgency=medium
+
+  * Make the joinscript fail on a DC Slave if no S4 Connector service
+    is registered by a DC Master or DC Backup. This can be overridden
+    by setting samba4/provision/secondary=yes (Bug #35983).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 22 Oct 2014 18:25:07 +0200
+
 univention-samba4 (4.0.0-7) unstable; urgency=medium
 
   * Adjust samba4 detection criterion to Samba 4.2 (Bug #35319)
