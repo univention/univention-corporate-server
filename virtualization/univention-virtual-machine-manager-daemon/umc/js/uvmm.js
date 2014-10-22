@@ -732,7 +732,7 @@ define([
 
 			var _finished = lang.hitch(this, function(values) {
 				// add cloud connection
-				var max = 30;
+				var max = 60;
 				this.updateProgress(0, max);
 				tools.umcpCommand('uvmm/cloud/add', {
 					cloudtype: values.cloudtype,
@@ -774,7 +774,6 @@ define([
 				tools.defer(wait, 1000);
 			});
 
-			//this.standbyDuring(this.loadWizardPages(values.cloudtype)).then(lang.hitch(this, function(pages) {
 			this.loadWizardPages(values.cloudtype).then(lang.hitch(this, function(Wizard) {
 				wizard = new Wizard({
 					autoValidate: true,

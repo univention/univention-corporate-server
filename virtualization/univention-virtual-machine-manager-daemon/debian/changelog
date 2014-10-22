@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (4.0.3-16) unstable; urgency=low
+
+  * Increase timeout while waiting for new cloud connection to become
+    available to 60 seconds (Bug #36140)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 22 Oct 2014 17:36:45 +0200
+
 univention-virtual-machine-manager-daemon (4.0.3-15) unstable; urgency=low
 
   * Improve texts regarding EC2 connections (Bug #36143)
