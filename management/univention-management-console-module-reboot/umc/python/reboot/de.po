@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-06-11 13:32+0200\n"
+"POT-Creation-Date: 2014-10-23 14:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,15 +11,3 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: umc/python/reboot/__init__.py:70
-msgid "System could not reboot/shutdown"
-msgstr "System konnte nicht neugestartet/heruntergefahren werden"
-
-#: umc/python/reboot/__init__.py:56
-msgid "The system will now be restarted"
-msgstr "Das System wird nun neu gestartet"
-
-#: umc/python/reboot/__init__.py:54
-msgid "The system will now be shut down"
-msgstr "Das System wird nun heruntergefahren"

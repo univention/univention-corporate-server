@@ -32,76 +32,105 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/on",
+	"umc/app",
+	"umc/modules/lib/server",
+	"dijit/MenuItem",
 	"umc/dialog",
 	"umc/widgets/Form",
 	"umc/widgets/Module",
 	"umc/widgets/Page",
 	"umc/widgets/TextArea",
 	"umc/i18n!umc/modules/reboot"
-], function(declare, lang, array, dialog, Form, Module, Page, TextArea, _) {
+], function(declare, lang, array, on, app, libServer, MenuItem, dialog, Form, Module, Page, TextArea, _) {
 
-	return declare("umc.modules.reboot", Module, {
+//	var RebootPage = declare([Page], {
+//		_form: null,
+//		helpText: _("This module can be used to restart or shut down the system remotely. The optionally given message will be displayed on the console and written to the syslog."),
+//		headerText: _("Reboot or shutdown the system"),
+//
+//		buildRendering: function() {
+//			this.inherited(arguments);
+//			var buttons = [{
+//				name: 'halt',
+//				label: _('Stop'),
+//				'default': true,
+//				callback: lang.hitch(this, 'shutdown', false)
+//			}, {
+//				name: 'reboot',
+//				label: _('Reboot'),
+//				'default': true,
+//				callback: lang.hitch(this, 'shutdown', true)
+//			}];
+//
+//			this._form = new Form({
+//				region: 'main',
+//				widgets: [{
+//					type: TextArea,
+//					rows: 4,
+//					name: 'message',
+//					label: _('Reason for this reboot/shutdown')
+//				}],
+//				buttons: buttons
+//			});
+//			this.addChild(this._form);
+//		},
+//
+//		shutdown: function(reboot) {
+//			var msg = this._form.getWidget('message').get('value');
+//
+//			var message;
+//			if (reboot) {
+//				message = _('Please confirm to reboot the computer');
+//			} else {
+//				message = _('Please confirm to shutdown the computer');
+//			}
+//
+//			dialog.confirm(message, [{
+//				label: _('OK'),
+//				callback: lang.hitch(this, function() {
+//					this.umcpCommand('reboot/reboot', {
+//						action: reboot ? 'reboot' : 'halt',
+//						message: msg
+//					});
+//				})
+//			}, {
+//				'default': true,
+//				label: _('Cancel')
+//			}]);
+//		}
+//	});
 
-		_page: null,
-		_form: null,
+	//	once there was a module
+//	var Reboot = declare("umc.modules.reboot", Module, {
+//		buildRendering: function() {
+//			this.inherited(arguments);
+//			this.addChild(new RebootPage({}));
+//		}
+//	});
 
-		buildRendering: function() {
-			this.inherited(arguments);
-
-			this._page = new Page({
-				helpText: _("This module can be used to restart or shut down the system remotely. The optionally given message will be displayed on the console and written to the syslog."),
-				headerText: _("Reboot or shutdown the system")
-			});
-			this.addChild(this._page);
-
-			var buttons = [{
-				name: 'halt',
-				label: _('Stop'),
-				'default': true,
-				callback: lang.hitch(this, 'shutdown', false)
-			}, {
-				name: 'reboot',
-				label: _('Reboot'),
-				'default': true,
-				callback: lang.hitch(this, 'shutdown', true)
-			}];
-
-			this._form = new Form({
-				region: 'main',
-				widgets: [{
-					type: TextArea,
-					rows: 4,
-					name: 'message',
-					label: _('Reason for this reboot/shutdown')
-				}],
-				buttons: buttons
-			});
-			this._page.addChild(this._form);
-
-		},
-
-		shutdown: function(reboot) {
-			var msg = this._form.getWidget('message').get('value');
-
-			var message;
-			if (reboot) {
-				message = _('Please confirm to reboot the computer');
-			} else {
-				message = _('Please confirm to shutdown the computer');
+	var addRebootMenu = function() {
+		app._header._headerMenu.addChild(new MenuItem({
+			id: 'umcMenuShutdown',
+			iconClass: 'icon24-umc-menu-shutdown',
+			label: _('Shutdown server'),
+			onClick: function() {
+				libServer.askShutdown();
 			}
+		}));
+		app._header._headerMenu.addChild(new MenuItem({
+			id: 'umcMenuReboot',
+			iconClass: 'icon24-umc-menu-reboot',
+			label: _('Reboot server'),
+			onClick: function() {
+				libServer.askReboot();
+			}
+		}));
+	};
 
-			dialog.confirm(message, [{
-				label: _('OK'),
-				callback: lang.hitch(this, function() {
-					this.umcpCommand('reboot/reboot', {
-						action: reboot ? 'reboot' : 'halt',
-						message: msg
-					});
-				})
-			}, {
-				'default': true,
-				label: _('Cancel')
-			}]);
-		}
+	on.once(app, 'ModulesLoaded', function() {
+		addRebootMenu();
 	});
+
+	return null;
 });

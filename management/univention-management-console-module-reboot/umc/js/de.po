@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-16 00:48+0100\n"
+"POT-Creation-Date: 2014-10-23 14:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,56 +12,52 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/reboot.js:62
-msgid "Action"
-msgstr "Aktion"
-
-#: umc/js/reboot.js:96
-msgid "Actions"
-msgstr "Aktionen"
-
-#: umc/js/reboot.js:116
+#: umc/js/reboot.js:99
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/reboot.js:75
-msgid "Execute"
-msgstr "Ausführen"
-
-#: umc/js/reboot.js:111
+#: umc/js/reboot.js:90
 msgid "OK"
 msgstr "OK"
 
-#: umc/js/reboot.js:105
+#: umc/js/reboot.js:84
 msgid "Please confirm to reboot the computer"
 msgstr "Bitte bestätigen Sie den Neustart dieses Computers"
 
-#: umc/js/reboot.js:107
+#: umc/js/reboot.js:86
 msgid "Please confirm to shutdown the computer"
 msgstr "Bitte bestätigen Sie, dass dieser Computer heruntergefahren wird"
 
-#: umc/js/reboot.js:70
+#: umc/js/reboot.js:72
 msgid "Reason for this reboot/shutdown"
 msgstr "Grund für dieses Neustarten/Herunterfahren"
 
-#: umc/js/reboot.js:64
+#: umc/js/reboot.js:61
 msgid "Reboot"
 msgstr "Neustarten"
 
-#: umc/js/reboot.js:54
+#: umc/js/reboot.js:50
 msgid "Reboot or shutdown the system"
 msgstr "System neustarten oder herunterfahren"
 
-#: umc/js/reboot.js:65
+#: umc/js/reboot.js:124
+msgid "Reboot server"
+msgstr "Server neustarten"
+
+#: umc/js/reboot.js:116
+msgid "Shutdown server"
+msgstr "Server herunterfahren"
+
+#: umc/js/reboot.js:56
 msgid "Stop"
 msgstr "Herunterfahren"
 
-#: umc/js/reboot.js:53
+#: umc/js/reboot.js:49
 msgid ""
 "This module can be used to restart or shut down the system remotely. The "
 "optionally given message will be displayed on the console and written to the "
 "syslog."
 msgstr ""
-"Mit diesem Modul kann das System neugestartet oder heruntergefahren "
-"werden. Die optional angegebene Nachricht wird auf der Konsole angezeigt "
-"und in das Syslog geschrieben."
+"Mit diesem Modul kann das System neugestartet oder heruntergefahren werden. "
+"Die optional angegebene Nachricht wird auf der Konsole angezeigt und in das "
+"Syslog geschrieben."

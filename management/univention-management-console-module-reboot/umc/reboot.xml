@@ -5,7 +5,6 @@
 		<description>Shut down or reboot of the local system</description>
 		<keywords>reboot,shutdown,halt</keywords>
 		<categories>
-			<category name="system"/>
 		</categories>
 		<command name="reboot/reboot" function="reboot" />
 	</module>

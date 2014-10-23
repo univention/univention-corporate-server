@@ -1,3 +1,10 @@
+univention-management-console-module-reboot (4.1.2-1) unstable; urgency=medium
+
+  * Bug #36281: remove this module, show the options to reboot/shutdown the
+  	server in the UMC menu
+
+ -- Florian Best <best@univention.de>  Thu, 23 Oct 2014 14:23:18 +0200
+
 univention-management-console-module-reboot (4.1.1-2) unstable; urgency=low
 
   * Bug #35654: UMC design adaptions

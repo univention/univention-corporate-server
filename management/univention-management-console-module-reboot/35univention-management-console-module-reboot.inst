@@ -31,19 +31,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
 
 joinscript_init
-
 umc_init
-umc_operation_create "reboot-all" "Reboot" "" "reboot/*"
+
+if [ $JS_LAST_EXECUTED_VERSION -lt 3 && $JS_LAST_EXECUTED_VERSION != 0]; then
+	udm settings/umc_operationset remove "$@" --dn "cn=reboot-all,cn=operations,cn=UMC,cn=univention,$ldap_base" || exit 1
+fi
+
+umc_operation_create "reboot-all" "Reboot" "" "reboot/*" "lib/server/reboot" "lib/server/shutdown"
 umc_policy_append "default-umc-all" "reboot-all"
 
 joinscript_save_current_version
 
 exit 0
-
-
