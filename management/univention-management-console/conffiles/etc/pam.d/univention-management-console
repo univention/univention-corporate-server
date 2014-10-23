@@ -35,5 +35,5 @@ if 'krb5' in methods:
 session    required   pam_unix.so
 
 password requisite  pam_cracklib.so
-password sufficient pam_unix.so nullok obscure md5 min=4 max=32 use_first_pass use_authtok
+password sufficient pam_unix.so nullok obscure md5 minlen=4 use_first_pass use_authtok
 password required pam_krb5.so use_first_pass use_authtok

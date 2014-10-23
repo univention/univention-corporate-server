@@ -1,3 +1,10 @@
+univention-management-console (7.1.13-1) unstable; urgency=medium
+
+  * Bug #35985: rename pam_unix option min to minlen, remove pam option max as
+  	it does not exists
+
+ -- Florian Best <best@univention.de>  Thu, 23 Oct 2014 02:55:54 +0200
+
 univention-management-console (7.1.12-4) unstable; urgency=low
 
   * Bug #33241: Revert
