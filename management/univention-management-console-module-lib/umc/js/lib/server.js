@@ -172,7 +172,7 @@ define([
 				// throw error to break the deferred chain
 				throw new Error('restart canceled');
 			})).then(function() {
-				window.location.reload();
+				window.location.reload(true);
 			});
 		},
 
@@ -212,6 +212,53 @@ define([
 			});
 
 			return deferred;
+		},
+
+		askShutdown: function(_msg) {
+			topic.publish('/umc/actions', 'lib', 'server', 'askShutdown');
+
+			var msg = _msg ? '<p>' + _msg + '</p>' : '';
+			msg += '<p>' + _('Please confirm to shutdown this server. This may take a few minutes.') + '</p>';
+			return dialog.confirm(msg, [{
+				name: 'cancel',
+				label: _('Cancel')
+			}, {
+				name: 'shutdown',
+				'default': true,
+				label: _('Shutdown')
+			}]).then(lang.hitch(this, function(response) {
+				if (response == 'shutdown') {
+					return this.shutdown();
+				}
+				// throw error to break the deferred chain
+				throw new Error('shutdown canceled');
+			}));
+		},
+
+		shutdown: function() {
+			topic.publish('/umc/actions', 'lib', 'server', 'shutdown');
+
+			var progress = new _ProgressDialog({
+				title: _('Shutting down server'),
+				closable: false
+			});
+			progress.update(_('The server is shutting down.'));
+			progress.show();
+
+			var timer = null;
+			var milliseconds = 5000;
+
+			var start_pinging = function() {
+				basexhr("HEAD", {url: require.toUrl("umc/").replace(/js_\$.*?\$/, 'js'), timeout: 3000}).then(function() {
+					timer = window.setTimeout(start_pinging, milliseconds);
+				}, function() {
+					progress.close();
+					tools.closeSession();
+					window.clearTimeout(timer);
+				});
+			};
+
+			tools.umcpCommand('lib/server/shutdown').then(start_pinging);
 		},
 
 		ping: function() {

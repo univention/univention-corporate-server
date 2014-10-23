@@ -1,3 +1,9 @@
+univention-management-console-module-lib (4.0.1-1) unstable; urgency=medium
+
+  * Bug #36281: add libServer.askShutdown()
+
+ -- Florian Best <best@univention.de>  Thu, 23 Oct 2014 15:13:00 +0200
+
 univention-management-console-module-lib (4.0.0-2) unstable; urgency=low
 
   * Bug #35145: update copyrights
