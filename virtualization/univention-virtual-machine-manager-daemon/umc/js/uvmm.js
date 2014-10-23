@@ -350,8 +350,7 @@ define([
 					}
 				}));
 				if (this._tree._getLast().item.type == 'root') {
-					dialog.alert(_('A connection to a virtualization infrastructure could not be established. You can either connect to a public or private cloud. Alternatively you can install a hypervisor on this or on any other UCS server in this domain. Further details about the virtualization can be found in <a target="_blank" href="http://docs.univention.de/manual-4.0.html#uvmm:chapter">the manual</a>.'
-					));
+					dialog.alert(_('A connection to a virtualization infrastructure could not be established. You can either connect to a public or private cloud. Alternatively you can install a hypervisor on this or on any other UCS server in this domain. Further details about the virtualization can be found in <a target="_blank" href="http://docs.univention.de/manual-4.0.html#uvmm:chapter">the manual</a>.'));
 				}
 			}));
 		},
