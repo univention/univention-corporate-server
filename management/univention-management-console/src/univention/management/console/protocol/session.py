@@ -99,6 +99,7 @@ class State( signals.Provider ):
 		self.socket = socket
 		self.processor = None
 		self.authenticated = False
+		self.__credentials = (None, None)
 		self.buffer = ''
 		self.requests = {}
 		self.authResponse = None
@@ -111,8 +112,9 @@ class State( signals.Provider ):
 		CORE.info( 'The session is shutting down' )
 		del self.processor
 
-	def _authenticated( self, success ):
-		self.signal_emit( 'authenticated', success, self )
+	def _authenticated( self, result):
+		self.__credentials = result.credentials
+		self.signal_emit( 'authenticated', result, self )
 
 	def authenticate( self, username, password, new_password=None ):
 		"""Initiates an authentication process"""
@@ -121,7 +123,7 @@ class State( signals.Provider ):
 
 	def credentials( self ):
 		"""Returns the credentials"""
-		return self.__auth.credentials()
+		return self.__credentials
 
 
 class ModuleProcess( Client ):

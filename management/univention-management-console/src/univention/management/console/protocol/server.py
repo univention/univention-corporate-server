@@ -55,8 +55,8 @@ _ = Translation( 'univention.management.console' ).translate
 # internal packages
 from .message import Message, Response, IncompleteMessageError, ParseError, UnknownCommandError, InvalidArgumentsError, InvalidOptionsError
 from .session import State, Processor
-from .definitions import (BAD_REQUEST_AUTH_FAILED, BAD_REQUEST_FORBIDDEN, BAD_REQUEST_INVALID_ARGS,
-	BAD_REQUEST_INVALID_OPTS, BAD_REQUEST_NOT_FOUND, BAD_REQUEST_PASSWORD_EXPIRED,
+from .definitions import (BAD_REQUEST_FORBIDDEN, BAD_REQUEST_INVALID_ARGS,
+	BAD_REQUEST_INVALID_OPTS, BAD_REQUEST_NOT_FOUND,
 	BAD_REQUEST_UNAUTH, RECV_BUFFER_SIZE, SERVER_ERR, status_description,
 	SUCCESS, SUCCESS_SHUTDOWN, UMCP_ERR_UNPARSABLE_BODY
 )
@@ -105,24 +105,19 @@ class MagicBucket( object ):
 			del state
 		self.__states = {}
 
-	def _authenticated( self, success, state ):
+	def _authenticated( self, result, state ):
 		"""Signal callback: Invoked when a authentication has been
 		tried. This function generates the UMCP response.
 
-		:param bool success: True if the authentication was successful
+		:param bool result: True if the authentication was successful
 		:param State state: the state object for the connection (see also :class:`~univention.management.console.protocol.session.State`)
 		"""
-		if success:
+		state.authResponse.status = result.status
+		if result.message:
+			state.authResponse.message = result.message
+		if result:
 			statistics.users.add( state.username )
-			state.authResponse.status = SUCCESS
-		else:
-			if hasattr(success, 'password_is_expired') and success.password_is_expired():
-				state.authResponse.status = BAD_REQUEST_PASSWORD_EXPIRED
-			else:
-				state.authResponse.status = BAD_REQUEST_AUTH_FAILED
-			if hasattr(success, 'error_message'):
-				state.authResponse.message = success.error_message
-		state.authenticated = bool(success)
+		state.authenticated = bool(result)
 		self._response( state.authResponse, state )
 		state.authResponse = None
 
@@ -218,7 +213,7 @@ class MagicBucket( object ):
 			state.authResponse = Response( msg )
 			try:
 				state.authenticate( msg.body[ 'username' ], msg.body[ 'password' ], msg.body.get( 'new_password' ) )
-			except ( TypeError, KeyError ), e:
+			except ( TypeError, KeyError ):
 				state.authResponse.status = BAD_REQUEST_INVALID_OPTS
 				state.authResponse.message = 'insufficient authentification information'
 		elif msg.command == 'GET' and ( 'ucr' in msg.arguments or 'info' in msg.arguments ):
@@ -241,7 +236,7 @@ class MagicBucket( object ):
 								response.result[ var ] = ucr.get( var )
 						else:
 							response.result[ value ] = ucr.get( value )
-					except ( TypeError, IndexError, AttributeError ), e:
+					except ( TypeError, IndexError, AttributeError ):
 						CORE.warn('Invalid UCR variable requested: %s' % (value,))
 						response.status = BAD_REQUEST_INVALID_OPTS
 						response.message = _('Invalid UCR variable requested: %s') % (value,)

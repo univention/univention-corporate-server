@@ -4,7 +4,7 @@
 # Univention Management Console
 #  authentication mechanisms
 #
-# Copyright 2006-2014 Univention GmbH
+# Copyright 2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,266 +31,77 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-"""
-Authentication mechanisms
-=========================
-
-This module defines a :class:`.AuthHandler` that provides access to
-authentication modules for the UMC core. Currently it implements a
-module using PAM.
-"""
-
+import notifier
 import notifier.signals as signals
 import notifier.threads as threads
 
-import PAM
-import functools
+from univention.management.console.log import AUTH
+from univention.management.console.pam import PamAuth, AuthenticationFailed, PasswordExpired, PasswordChangeFailed
+from univention.management.console.protocol.definitions import status_description, SUCCESS, BAD_REQUEST_AUTH_FAILED, BAD_REQUEST_PASSWORD_EXPIRED
 
-from .log import AUTH
 
 class AuthenticationResult(object):
-	def __init__(self, success, password_valid=None, password_expired=False, error_message=None):
-		from univention.management.console.protocol.definitions import status_description, BAD_REQUEST_AUTH_FAILED, BAD_REQUEST_PASSWORD_EXPIRED
-		self.success = success
-		if password_valid is None:
-			password_valid = success
-		if not success and error_message is None:
-			if password_expired is True:
-				self.error_message = status_description(BAD_REQUEST_PASSWORD_EXPIRED)
-			else:
-				self.error_message = status_description(BAD_REQUEST_AUTH_FAILED)
-		else:
-			self.error_message = error_message
-		self.password_valid = password_valid
-		self.password_expired = password_expired
-
-	def password_is_expired(self):
-		return bool(self.password_expired)
+	def __init__(self, result):
+		self.credentials = (None, None)
+		self.authenticated = not isinstance(result, BaseException)
+		if self.authenticated:
+			self.credentials = result
+		self.message = None
+		self.password_expired = False
+		self.status = SUCCESS if self.authenticated else BAD_REQUEST_AUTH_FAILED
+		if isinstance(result, PasswordChangeFailed):
+			self.message = str(result)
+		elif isinstance(result, PasswordExpired):
+			self.message = status_description(BAD_REQUEST_PASSWORD_EXPIRED)
+			self.status = BAD_REQUEST_PASSWORD_EXPIRED
+			self.password_expired = True
+		elif isinstance(result, AuthenticationFailed):
+			self.message = status_description(BAD_REQUEST_AUTH_FAILED)  # FIXME: this is a HTTP violation
+		elif isinstance(result, BaseException):
+			self.status = 500
+			self.message = str(result)
 
 	def __nonzero__(self):
-		return self.success
+		return self.authenticated
 
-class Auth( signals.Provider ):
-	"""
-	This is the base class for authentication modules.
 
-	**Signals:**
+class AuthHandler(signals.Provider):
+	def __init__(self):
+		signals.Provider.__init__(self)
+		self.signal_new('authenticated')
 
-	* *auth_return* -- is emitted when the authentication process has finished. As argument a boolean is passed defining if the authentication was successful. This signal is used internally only by the :class:`AuthHandler`.
-	* *password_changed* -- is emitted when the authentication process changed an expired password. As argument the new password is passed. This signal is used internally only by the :class:`AuthHandler`.
-	"""
-	def __init__( self, username, password ):
-		"""This class is not meant to be instanciated directly. It is
-		just a base class to define the interface for authentication
-		modules.
+	def authenticate(self, username, password, new_password=None):
+		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, username, password, new_password), self.__authentication_result)
+		thread.run()
 
-		:param username: username to authenticate
-		:param password: the secret to use for authentcation. Normally this will be a cleartext password.
-		"""
-		signals.Provider.__init__( self )
-		self._username = username
-		self._password = password
-
-		self.signal_new( 'auth_return' )
-		self.signal_new( 'password_changed' )
-
-	def authenticate( self ):
-		"""This method should be overwritten when implementing an
-		authentication module. It is invoked by the UMC core when
-		verifiying the credentials of a user."""
-		return True
-
-	def may_change_password( self ):
-		"""This method may be overwritten when implementing an
-		authentication module. It is invoked by the UMC core when
-		checking if an unsuccessful authentication may be retried with
-		a new password, e.g. in case of an expired password."""
-		return False
-
-	def change_expired_password( self, new_password ):
-		"""This method may be overwritten when implementing an
-		authentication module. It is invoked by the UMC core when
-		changing an expired password to a new one."""
-		return False
-
-class PAM_Auth( Auth ):
-	"""This class implements the interface :class:`Auth` to provide
-	authentcation using PAM. It uses the PAM service
-	*univention-management-console*.
-
-	:param username: username to authenticate
-	:param password: the secret to use for authentcation. Normally this will be a cleartext password.
-	"""
-
-	def __init__( self, username = None, password = None ):
-		Auth.__init__( self, username, password )
-		self._pam = PAM.pam()
-		self._pam.start( 'univention-management-console' )
-		self._pam.set_item( PAM.PAM_CONV, self._conv )
-		self._may_change_password = False
-
-	def may_change_password( self ):
-		return self._may_change_password
-
-	def _talk_to_pam( self, answers, save_prompts_to=None ):
-		def _conv( auth, query_list, data ):
-			resp = []
-			for query, qt in query_list:
-				try:
-					if save_prompts_to is not None:
-						save_prompts_to.append(query)
-					answer = answers[qt]
-					if isinstance(answer, (list, tuple)):
-						answer, others = answer[0], answer[1:]
-						if len(others) == 1:
-							others = others[0]
-						answers[qt] = others
-					resp.append( ( answer, 0 ) )
-				except KeyError:
-					return None
-			return resp
-		return _conv
-
-	@property
-	def _conv( self ):
-		return self._talk_to_pam( {
-			PAM.PAM_PROMPT_ECHO_ON : self._password,
-			PAM.PAM_PROMPT_ECHO_OFF : self._password,
-		} )
-
-	def authenticate( self ):
-		self._pam.set_item( PAM.PAM_USER, self._username )
-		ask = threads.Simple( 'pam', self._ask_pam, self._auth_result )
-		ask.run()
-
-	def _auth_result( self, thread, success ):
-		self.signal_emit( 'auth_return', success )
-
-	def _ask_pam( self, new_password=None ):
-		self._may_change_password = False
+	def __authenticate_thread(self, username, password, new_password):
+		AUTH.info('Trying to authenticate user %r' % (username,))
+		pam = PamAuth()
 		try:
-			AUTH.info( 'PAM: trying to authenticate %s' % self._username )
-			self._pam.authenticate()
-			try:
-				self._pam.acct_mgmt()
-			except PAM.error as e:
-				if e[1] == PAM.PAM_NEW_AUTHTOK_REQD: # error: ('Authentication token is no longer valid; new one required', 12)
-					if new_password is not None:
-						prompts = []
-						new_pam = PAM.pam()
-						new_pam.start( 'univention-management-console' )
-						new_pam.set_item( PAM.PAM_CONV, self._talk_to_pam( {
-							PAM.PAM_PROMPT_ECHO_ON : self._username,
-							PAM.PAM_PROMPT_ECHO_OFF : [self._password, new_password, new_password], # old, new, retype
-						}, save_prompts_to=prompts ) )
-						try:
-							new_pam.chauthtok()
-						except PAM.error, e:
-							AUTH.warn('Change password failed (%s). Prompts: %r' % (e, prompts))
-							# okay, check prompts, maybe they have a hint why it failed?
-							# prompts are localised, i.e. if the operating system uses German, the prompts are German!
-							# try to be exhaustive. otherwise the errors will not be presented to the user.
-							known_errors = [
-								([': Es ist zu kurz', ': Es ist VIEL zu kurz', ': it is WAY too short', ': Password is too short'], 'The password is too short'),
-								([': Es ist zu einfach/systematisch', ': it is too simplistic/systematic', ': Password does not meet complexity requirements'], 'The password is too simple'),
-								([': is a palindrome'], 'The password is a palindrome'),
-								([': Es basiert auf einem Wörterbucheintrag', ': it is based on a dictionary word'], 'The password is based on a dictionary word'),
-								([': Password already used'], 'The password was already used'),
-								([': Es enthält nicht genug unterschiedliche Zeichen', ': it does not contain enough DIFFERENT characters'], 'The password does not contain enough different characters'),
-							]
-							important_prompt = prompts[-1] # last prompt is some kind of internal error message
-							for possible_responses, user_friendly_response in known_errors:
-								if any(resp == important_prompt for resp in possible_responses):
-									message = user_friendly_response
-									break
-							else:
-								message = important_prompt # best guess: just show the prompt
-							return AuthenticationResult(False, error_message=message)
-						AUTH.info('Password changed successfully for %s' % self._username)
-						self.signal_emit('password_changed', new_password)
-						return AuthenticationResult(True)
-					else:
-						AUTH.error( "PAM: password expired" )
-						self._may_change_password = True
-						return AuthenticationResult(False, password_valid=True, password_expired=True)
+			pam.authenticate(username, password)
+		except AuthenticationFailed as auth_failed:
+			AUTH.error(str(auth_failed))
+			raise
+		except PasswordExpired as pass_expired:
+			AUTH.info(str(pass_expired))
+			if new_password is None:
 				raise
-		except PAM.error, e:
-			AUTH.error( "PAM: authentication error: %s" % str( e ) )
-			return AuthenticationResult(False)
-		except Exception, e: # internal error
-			AUTH.warn( "PAM: global error: %s" % str( e ) )
-			return AuthenticationResult(False)
 
-		AUTH.info( 'Authentication for %s was successful' % self._username )
-		return AuthenticationResult(True)
-
-	def change_expired_password( self, new_password ):
-		function = functools.partial( self._ask_pam, new_password )
-		ask = threads.Simple( 'pam', function, self._auth_result )
-		ask.run()
-
-_all_modules = ( PAM_Auth, )
-
-class AuthHandler( signals.Provider ):
-	"""
-	This class is instanciated by the UMC core to access the
-	authentication modules.
-
-	**Signals:**
-
-	* *authenticated* -- is emitted when the authentication process has finished. As argument a boolean is passed defining if the authentication was successful.
-	"""
-	def __init__( self ):
-		signals.Provider.__init__( self )
-		self._modules = []
-		self._current = None
-		self.signal_new( 'authenticated' )
-		self.__credentials = None
-
-	def _create_modules( self, username, password ):
-		global _all_modules
-		self._modules = []
-		for mod in _all_modules:
-			instance = mod( username, password )
-			instance.signal_connect( 'auth_return', self._auth_return )
-			instance.signal_connect( 'password_changed', self._password_changed )
-			self._modules.append( instance )
-		self._modules.reverse()
-
-	def authenticate( self, username, password, new_password=None ):
-		self._create_modules( username, password )
-		self._current = self._modules.pop()
-		self.__new_password = new_password
-		self._current.authenticate()
-		self.__credentials = ( username, password )
-
-	def credentials( self ):
-		return self.__credentials
-
-	def _password_changed( self, new_password ):
-		credentials = self.__credentials
-		if credentials is None:
-			AUTH.warn('Password changed without credentials set!')
-		else:
-			self.__credentials = ( credentials[0], new_password )
-
-	def _auth_return( self, success ):
-		if success:
-			self._modules = []
-		else:
-			current_auth_module = self._current
-			if self.__new_password is not None and current_auth_module.may_change_password():
-				try:
-					current_auth_module.change_expired_password(self.__new_password)
-					return # dont emit here. change_expired_password will emit
-				except:
-					pass
+			try:
+				pam.change_expired_password(username, password, new_password)
+			except PasswordChangeFailed as change_failed:
+				AUTH.error(str(change_failed))
+				raise
 			else:
-				try:
-					self._current = self._modules.pop()
-					self._current.authenticate()
-					return # dont emit here. the next authenticate will emit
-				except:
-					pass
-		self.signal_emit( 'authenticated', success )
+				AUTH.info('Password change for %r was successful' % (username,))
+				return (username, new_password)
+		else:
+			AUTH.info('Authentication for %r was successful' % (username,))
+			return (username, password)
 
+	def __authentication_result(self, thread, result):
+		if isinstance(result, BaseException) and not isinstance(result, (AuthenticationFailed, PasswordExpired, PasswordChangeFailed)):
+			import traceback
+			AUTH.error(''.join(traceback.format_exception(*thread.exc_info)))
+		auth_result = AuthenticationResult(result)
+		self.signal_emit('authenticated', auth_result)
