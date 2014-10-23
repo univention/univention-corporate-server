@@ -34,7 +34,6 @@ import ldb
 import ldap
 import os
 import subprocess
-import apt_pkg
 import locale
 import socket
 import tempfile
@@ -47,8 +46,6 @@ import univention.config_registry
 import univention.uldap
 import univention.lib.package_manager
 import univention.debug as ud
-
-UNIVENTION_SAMBA_MIN_PACKAGE_VERSION = "8.0.19-6.472.201407231046"
 
 class failedToSetService(Exception):
 	'''ucs_addServiceToLocalhost failed'''
@@ -221,14 +218,6 @@ def remove_install_univention_samba(info_handler=info_handler, step_handler=None
 	if not pm.update():
 		return False
 	pm.noninteractive()
-
-	# check version
-	us = pm.get_package('univention-samba')
-	if not apt_pkg.version_compare(us.candidate.version, UNIVENTION_SAMBA_MIN_PACKAGE_VERSION) >= 0:
-		ud.debug(ud.MODULE, ud.ERROR, "univention-samba (%s) < %s" % (us.candidate.version, UNIVENTION_SAMBA_MIN_PACKAGE_VERSION))
-		raise univentionSambaWrongVersion(
-			"The package univention-samba in this version (%s) does not support AD member mode. Please upgrade to version %s"
-			% (us.candidate.version, UNIVENTION_SAMBA_MIN_PACKAGE_VERSION))
 
 	# uninstall first to get rid of the configured samba/* ucr vars
 	if uninstall and pm.is_installed('univention-samba'):
