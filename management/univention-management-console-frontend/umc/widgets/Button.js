@@ -47,6 +47,9 @@ define([
 
 		type: 'button',
 
+		// do not display button labels via the LabelPane
+		displayLabel: false,
+
 		constructor: function(props) {
 			lang.mixin(this, props);
 			if (this.defaultButton) {

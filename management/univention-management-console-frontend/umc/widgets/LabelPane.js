@@ -31,23 +31,23 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/array",
 	"dojo/Deferred",
 	"dojo/dom-class",
 	"dojo/dom-attr",
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
 	"dijit/_Container",
-	"dijit/form/CheckBox",
-	"dijit/form/Button",
-	"umc/tools",
-	"umc/widgets/HiddenInput"
-], function(declare, lang, Deferred, domClass, attr, _WidgetBase, _TemplatedMixin, _Container, DijitCheckBox, DijitButton, tools, HiddenInput) {
+	"umc/tools"
+], function(declare, lang, array, Deferred, domClass, attr, _WidgetBase, _TemplatedMixin, _Container, tools) {
 	lang.extend(_WidgetBase, {
-		// isLabelDisplayed: Boolean?
-		//		If specified as true, LabelPane assumes that the widget itself will take
-		//		care of displaying the label correctly.
+		// displayLabel: Boolean?
+		//		If specified as false, LabelPane will not display the label value.
 		//		This property is specified by `umc/widgets/LabelPane`.
-		isLabelDisplayed: false,
+		displayLabel: true,
+
+		// labelPosition: String?
+		labelPosition: '',
 
 		// visible: Boolean?
 		//		If set to false, the label and widget will be hidden.
@@ -59,6 +59,7 @@ define([
 		//		Simple widget that displays a widget/HTML code with a label above.
 
 		templateString: '<div class="umcLabelPane">' +
+			'<span class="umcLabelPaneLabelNode umcLabelPaneLabeNodeTop"><label dojoAttachPoint="labelNodeTop" for=""></label></span>' +
 			'<span dojoAttachPoint="containerNode,contentNode"></span>' +
 			'<span class="umcLabelPaneLabelNode umcLabelPaneLabeNodeRight"><label dojoAttachPoint="labelNodeRight" for=""></label></span>' +
 			'<div class="umcLabelPaneLabelNode umcLabelPaneLabeNodeBottom"><label dojoAttachPoint="labelNodeBottom" for=""></label></div>' +
@@ -84,6 +85,8 @@ define([
 
 		// label: String
 		label: null,
+
+		labelNodeTop: null,
 
 		labelNodeBottom: null,
 
@@ -116,17 +119,60 @@ define([
 			}
 		},
 
-		_isContentInstanceOf: function(Class) {
-			return lang.getObject('isInstanceOf', false, this.content) && this.content.isInstanceOf(Class);
+		_isContentAWidget: function() {
+			return lang.getObject('content.domNode', false, this) &&
+				lang.getObject('content.declaredClass', false, this) &&
+				lang.getObject('content.watch', false, this);
+		},
+
+		_isContentRequired: function() {
+			return lang.getObject('content.required', false, this) === true;
+		},
+
+		_isContentVisible: function() {
+			return lang.getObject('content.visible', false, this) !== false;
+		},
+
+		_isLabelDisplayed: function () {
+			return lang.getObject('content.displayLabel', false, this) !== false;
+		},
+
+		_getContentID: function() {
+			return lang.getObject('content.id', false, this);
+		},
+
+		_getContentSizeClass: function() {
+			return lang.getObject('content.sizeClass', false, this);
+		},
+
+		_getLabelPosition: function() {
+			return lang.getObject('content.labelPosition', false, this) || 'bottom';
+		},
+
+		_getLabelNode: function() {
+			// determine the position of the label
+			var labelPosition = this._getLabelPosition();
+			if (labelPosition === 'top') {
+				return this.labelNodeTop;
+			} else if (labelPosition === 'right') {
+				return this.labelNodeRight;
+			}
+
+			// default label node is below widget
+			return this.labelNodeBottom;
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			domClass.toggle(this.domNode, 'dijitHidden', !this._isContentVisible());
 		},
 
 		postCreate: function() {
 			this.inherited(arguments);
 
 			// register watch handler for label and visibility changes
-			if (lang.getObject('content.watch', false, this)) {
-				var isButton = this._isContentInstanceOf(DijitButton);
-				if (!isButton) {
+			if (this._isContentAWidget()) {
+				if (this._isLabelDisplayed()) {
 					// only watch the label and required property if widget is not a button
 					this.own(this.content.watch('label', lang.hitch(this, function(attr, oldVal, newVal) {
 						this.set('label', this.content.get('label') || '');
@@ -144,61 +190,56 @@ define([
 			}
 		},
 
-		buildRendering: function() {
-			this.inherited(arguments);
-
-			var isHidden = lang.getObject('visible', false, this.content) === false;
-			domClass.toggle(this.domNode, 'dijitHidden', isHidden);
-		},
-
 		startup: function() {
 			this.inherited(arguments);
 
 			this._startupDeferred.resolve();
 		},
 
+		_forEachLabeNode: function(callback) {
+			array.forEach([this.labelNodeTop, this.labelNodeRight, this.labelNodeBottom], callback, this);
+		},
+
+		_hideNodes: function(exceptOfThisNode) {
+			this._forEachLabeNode(function(inode) {
+				domClass.toggle(inode, 'dijitHidden', exceptOfThisNode != inode);
+			});
+		},
+
 		_setLabelAttr: function(label) {
-			if (lang.getObject('content.isLabelDisplayed', false, this)) {
+			if (!this._isLabelDisplayed()) {
 				// the widget displays the label itself
-				domClass.add(this.labelNodeRight, 'dijitHidden');
-				domClass.add(this.labelNodeBottom, 'dijitHidden');
+				this._hideNodes();
 				return;
 			}
 
 			// if we have a widget which is required, add the string ' (*)' to the label
-			if (lang.getObject('domNode', false, this.content) &&
-					lang.getObject('declaredClass', false, this.content) &&
-					lang.getObject('required', false, this.content)) {
+			if (this._isContentAWidget() && this._isContentRequired()) {
 				label = label + ' *';
 			}
 			this.label = label;
 
+			// set the label itself and show the corresponding label node
+			var labelNode = null;
+			if (label) {
+				labelNode = this._getLabelNode();
+				attr.set(labelNode, 'innerHTML', label);
+			}
+			this._hideNodes(labelNode);
+
 			// set the labels' 'for' attribute
-			if (lang.getObject('id', false, this.content) && lang.getObject('declaredClass', false, this.content)) {
-				attr.set(this.labelNodeRight, 'for', this.content.id);
-				attr.set(this.labelNodeBottom, 'for', this.content.id);
-			}
-
-			// for checkboxes -> place the label right of the widget
-			// ... hide unused label node
-			var isCheckBox = this._isContentInstanceOf(DijitCheckBox);
-			var isHiddenInput = this._isContentInstanceOf(HiddenInput);
-			if (!label || isHiddenInput) {
-				domClass.add(this.labelNodeRight, 'dijitHidden');
-				domClass.add(this.labelNodeBottom, 'dijitHidden');
-			}
-			else {
-				attr.set(isCheckBox ? this.labelNodeRight : this.labelNodeBottom, 'innerHTML', label);
-				domClass.toggle(this.labelNodeRight, 'dijitHidden', !isCheckBox);
-				domClass.toggle(this.labelNodeBottom, 'dijitHidden', isCheckBox);
+			var id = this._getContentID();
+			if (labelNode && this._isContentAWidget() && id) {
+				attr.set(labelNode, 'for', id);
 			}
 		},
 
-		_setBetweenNonCheckBoxesAttr: function(betweenNonCheckBoxes) {
-			if (betweenNonCheckBoxes && this.content.isInstanceOf(DijitCheckBox)) {
-				domClass.add(this.domNode, 'umcLabelPaneCheckBoxBetweenNonCheckBoxes');
-			}
-		},
+//TODO: this seems to be obsolete and can be removed
+//		_setBetweenNonCheckBoxesAttr: function(betweenNonCheckBoxes) {
+//			if (betweenNonCheckBoxes && this.content.isInstanceOf(DijitCheckBox)) {
+//				domClass.add(this.domNode, 'umcLabelPaneCheckBoxBetweenNonCheckBoxes');
+//			}
+//		},
 
 		_setContentAttr: function(content) {
 			this.content = content;
@@ -208,19 +249,23 @@ define([
 				this.contentNode.innerHTML = content;
 			}
 			// if we have a widget, clear the content and hook in the domNode directly
-			else if (lang.getObject('domNode', false, content) && lang.getObject('declaredClass', false, content)) {
+			else if (this._isContentAWidget()) {
 				this.contentNode.innerHTML = '';
 				this.addChild(content);
 			}
-			if (lang.getObject('sizeClass', false, content)) {
-				domClass.add(this.domNode, 'umcSize-' + this.content.sizeClass);
+
+			// set the content's size class
+			var sizeClass = this._getContentSizeClass();
+			if (sizeClass) {
+				domClass.add(this.domNode, 'umcSize-' + sizeClass);
 			}
-			this.set( 'disabled', this.disabled );
+
+			this.set('disabled', this.disabled);
 		},
 
-		_setDisabledAttr: function( value ) {
-			if ( this.content ) {
-				this.content.set( 'disabled', value );
+		_setDisabledAttr: function(value) {
+			if (this._isContentAWidget()) {
+				this.content.set('disabled', value);
 			}
 		}
 	});

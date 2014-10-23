@@ -42,7 +42,7 @@ define([
 		// summary:
 		//		Simple widget that displays a widget/HTML code with a label above.
 
-		isLabelDisplayed: true,
+		displayLabel: false,
 
 		name: '',
 

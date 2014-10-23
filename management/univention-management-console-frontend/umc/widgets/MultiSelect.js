@@ -56,6 +56,9 @@ define([
 
 		_loadingDeferred: null,
 
+		// display the labe above the widget
+		labelPosition: 'top',
+
 		// we need the plugin for selection via checkboxes
 		plugins : {
 			indirectSelection: {

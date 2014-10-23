@@ -37,7 +37,11 @@ define([
 		type: 'hidden',
 
 		// the widget's class name as CSS class
-		'class': 'umcHiddenInput'
+		'class': 'umcHiddenInput',
+
+		// do not display labels via the LabelPane
+		displayLabel: false
+
 	});
 });
 

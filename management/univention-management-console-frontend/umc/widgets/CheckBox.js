@@ -45,6 +45,9 @@ define([
 		// a checkbox is always true
 		valid: true,
 
+		// display the label on the right
+		labelPosition: 'right',
+
 		// internal cache of the initial value
 		_initialValue: null,
 

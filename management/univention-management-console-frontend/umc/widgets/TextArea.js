@@ -57,6 +57,9 @@ define([
 		//		method.
 		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 
+		// display the labe above the widget
+		labelPosition: 'top',
+
 		//FIXME: the name should be different from _loadValues, e.g., _dependencyUpdate,
 		//       and the check for all met dependencies should be done in the Form
 		_loadValues: function(/*Object?*/ params) {
