@@ -1,3 +1,9 @@
+univention-kernel-image (8.0.4-1) unstable; urgency=low
+
+  * Bug #36279: Update linux kernel
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 24 Oct 2014 00:58:16 +0200
+
 univention-kernel-image (8.0.3-1) unstable; urgency=low
 
   * Bug #34437: Recommend CPU microcode updates.
