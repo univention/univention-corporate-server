@@ -67,6 +67,7 @@ find /var/log \
 		-o -path "/var/log/installer/lsb-release" \
 		-o -path "/var/log/installer/status" \
 		-o -path "/var/log/kern.log" \
+		-o -path "/var/log/kdm.log" \
 		-o -path "/var/log/lpr.log" \
 		-o -path "/var/log/ltsp-mounts.log" \
 		-o -path "/var/log/mgetty" \

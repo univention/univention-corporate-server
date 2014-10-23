@@ -1,3 +1,10 @@
+ucs-test (5.0.37-1) unstable; urgency=medium
+
+  * 00_base/26check_logfiles_general: Ignore kdm.log permissions
+    (Bug #35881)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 23 Oct 2014 19:56:41 +0200
+
 ucs-test (5.0.36-5) unstable; urgency=medium
 
   * run net rpc info against localhost (Bug #36208)
