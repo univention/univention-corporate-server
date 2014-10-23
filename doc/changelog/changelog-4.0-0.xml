@@ -617,9 +617,13 @@
 					(<ulink url="&ucsbug;35765">Bug 35765</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
-					The univention-samba joinscript has been adjusted to allow a self join to fail on a DC master.
-					Samba currently does not support this
+					Joining BDCs with Samba 4.2 has been made possible
 					(<ulink url="&ucsbug;35766">Bug 35766</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+					Installation of univention-samba now doesn't any longer automatically run the joinscript.
+					This is because the join process requiresadministrative credentials
+					(<ulink url="&ucsbug;36284">Bug 36284</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
