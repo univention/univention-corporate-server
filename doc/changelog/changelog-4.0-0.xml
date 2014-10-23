@@ -654,6 +654,9 @@
 		<title>Univention Active Directory Connector</title>
 		<itemizedlist>
 			<listitem><simpara>
+					The underlying library for AD-Member mode has been updated, fixing a
+					locale issue (<ulink url="&ucsbug;36280">Bug 36280</ulink>, <ulink
+						url="&ucsbug;36278">Bug 36278</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
