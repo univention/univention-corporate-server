@@ -1,3 +1,15 @@
+univention-cloud-init (2.0.0-5) unstable; urgency=low
+
+  * Adapted package to UCS 4 (Bug #36092) 
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 23 Oct 2014 16:16:10 +0200
+
+univention-cloud-init (2.0.0-4) unstable; urgency=low
+
+  * Copy from UCS 3.2 (Bug #36092)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 23 Oct 2014 14:35:13 +0200
+
 univention-cloud-init (1.0.0-3) unstable; urgency=low
 
   * Bug #35236: Add build dependency on univention-management-console-dev 

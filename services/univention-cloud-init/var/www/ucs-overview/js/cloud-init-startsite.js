@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Univention GmbH
+ * Copyright 2013-2014 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -43,7 +43,7 @@ define([
 	"dojo/json",
 	"dojo/text!entries.json",
 	"dojo/text!languages.json",
-	"/ucs-overview/js/i18n!js/appliance,js"
+	"/ucs-overview/js/i18n!js/ci-appliance,js"
 ], function(startsite, ioQuery, lang, kernel, array, query, domConstruct, domAttr, domStyle, domClass, on, json, entriesStr, languagesStr, _) {
 	var module = lang.mixin({}, startsite, {
 		_updateNoScriptElements: function() {
