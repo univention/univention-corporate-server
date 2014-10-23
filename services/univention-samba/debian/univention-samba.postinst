@@ -129,7 +129,7 @@ if [ "$1" = "configure" ]; then
 	[ -e "$uinst" ] && rm "$uinst"
 fi
 
-call_joinscript 26univention-samba.inst
+call_joinscript_on_dcmaster 26univention-samba.inst
 
 if [ "$1" = "configure" ]; then
 

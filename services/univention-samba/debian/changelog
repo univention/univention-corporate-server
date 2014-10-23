@@ -1,3 +1,10 @@
+univention-samba (9.0.4-1) unstable; urgency=medium
+
+  * On a DC Backup the joinscript also needs to be called with admin
+    credentials, so don't call it in postinst (Bug #36284)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Oct 2014 16:06:51 +0200
+
 univention-samba (9.0.3-3) unstable; urgency=medium
 
   * Handle smb.conf and shares.conf 4.2 changes in samba-shares listener
