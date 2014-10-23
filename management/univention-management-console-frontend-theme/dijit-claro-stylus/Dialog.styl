@@ -123,21 +123,25 @@
 .claro .dijitTooltipDialog {
 	/* the outermost dom node, holding the connector and container */
 	background: transparent;	/* make the area on the sides of the arrow transparent */
+	padding: 4px;
+	box-sizing: content-box;
 }
-.dijitTooltipBelow {
+.umc .dijitTooltip.dijitTooltipBelow {
 	/* leave room for arrow above content */
-	padding-top: 13px;
-	padding-left:3px;
-	padding-right:3px;
+	padding-top: 11px;
 }
 
-.dijitTooltipAbove {
+.umc .dijitTooltip.dijitTooltipAbove {
 	/* leave room for arrow below content */
-	padding-bottom: 13px;
-	padding-left:3px;
-	padding-right:3px;
+	padding-bottom: 11px;
 }
-
+.umc .dijitTooltip.dijitTooltipLeft {
+	/* leave room for arrow before content */
+	padding-right: 13px;
+}
+.umc .dijitTooltip.dijitTooltipRight {
+	padding-left: 13px;
+}
 .claro .dijitTooltipContainer {
 	/* the part with the text */
 	background-color:$popup-background-color;
@@ -157,8 +161,8 @@
 	z-index: 2;
 	background-image:url($image-tooltip);
 	background-repeat:no-repeat;
-	width:16px;
-	height:14px;
+	width:20px;
+	height:18px;
 }
 .dj_ie6 .claro .dijitTooltipConnector {
 	background-image:url($image-tooltip-ie6);
@@ -166,55 +170,48 @@
 
 .claro .dijitTooltipBelow .dijitTooltipConnector {
 	/* the arrow piece for tooltips below an element */
-	top: 0;
-	left: 3px;
-	background-position:-31px 0;
-	width:16px;
-	height:14px;
+	top: -6px;
+	//left: 3px;
+	background-position:-41px -1px;
+
 }
 
 .claro .dijitTooltipAbove .dijitTooltipConnector {
 	/* the arrow piece for tooltips above an element */
-	bottom: 0;
-	left: 3px;
-	background-position:-15px 0;
-	width:16px;
-	height:14px;
+	bottom: -6px;
+	//left: 3px;
+	background-position:-21px -1px;
 }
 .dj_ie7 .claro .dijitTooltipAbove .dijitTooltipConnector,
 .dj_ie6 .claro .dijitTooltipAbove .dijitTooltipConnector {
-	bottom: -1px;
+	//bottom: -1px;
 }
 
 .claro .dijitTooltipABRight .dijitTooltipConnector {
 	/* above or below tooltip, but the arrow appears on the right,
 		and the right edges of target and tooltip are aligned rather than the left.
 		Override above rules for .dijitTooltipBelow, .dijitTooltipAbove */
-	left: auto;
-	right: 3px;
+	//left: auto;
+	//right: 3px;
 }
 
 
 .claro .dijitTooltipLeft {
-	padding-right: 14px;
+	//padding-right: 14px;
 }
 .claro .dijitTooltipLeft .dijitTooltipConnector {
 	/* the arrow piece for tooltips to the left of an element, bottom borders aligned */
-	right: 0;
-	background-position:0 0;
-	width:16px;
-	height:14px;
+	right: -6px;
+	background-position:-1px -1px;
 }
 
 .claro .dijitTooltipRight {
-	padding-left: 14px;
+	//padding-left: 14px;
 }
 .claro .dijitTooltipRight .dijitTooltipConnector {
 	/* the arrow piece for tooltips to the right of an element, bottom borders aligned */
-	left: 0;
-	background-position:-48px 0;
-	width:16px;
-	height:14px;
+	left: -6px;
+	background-position:-61px -1px;
 }
 
 .claro .dijitDialogUnderlay {
