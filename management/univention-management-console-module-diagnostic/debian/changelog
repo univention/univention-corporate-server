@@ -1,6 +1,12 @@
+univention-management-console-module-diagnostic (1.0.7-2) unstable; urgency=medium
+
+  * Bug #35654: version bump
+
+ -- Florian Best <best@univention.de>  Thu, 23 Oct 2014 11:32:03 +0200
+
 univention-management-console-module-diagnostic (1.0.7-1) unstable; urgency=low
 
-  * Bug #35864: Add PLugin docstring, inherit from dgrid instead of
+  * Bug #35864: Add Plugin docstring, inherit from dgrid instead of
   	GalleryPane, add some misssing translations, outsource CSS into external
   	file
 
