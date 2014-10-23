@@ -66,6 +66,23 @@
 		<title>Preparation of update</title>
 
 		<para>FIXME</para>
+
+		<section id="relnotes:removed">
+			<title>Removed/unspported Components</title>
+			<para>
+				Some components have been removed and are not shipped any longer with UCS 4.0:
+			</para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						The Scalix LDAP schema has been removed in UCS 4.0.
+						It is required to remove all Scalix related attributes
+						from LDAP prior to the update.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</section>
+
 	</chapter>
 
 	<chapter id="relnotes:post">
@@ -100,6 +117,16 @@
 				Newly installed host servers using <application>QEMU/KVM</application> no longer automatically create a bridge network interface by default.
 				This must be setup manually.
 				Further information can be found in Chapter 8 of the UCS manual <citation>UCS-Handbuch</citation> and in <citation>ext-doc-uvmm</citation>.
+			</para>
+		</section>
+
+		<section id="relnotes:samba">
+			<title>Windows NT DC functionality is deprecated with UCS 4.0</title>
+			<para>
+				The Windows NT domain services provided classically by Samba 3
+				have been superceeded by the Windows AD domain services provided
+				by Samba 4. It is recommended to choose Windows AD domain services
+				for the setup of new UCS domains.
 			</para>
 		</section>
 	</chapter>

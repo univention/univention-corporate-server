@@ -79,6 +79,13 @@
 						Details zur Migration zu <application>QEMU/KVM</application> befinden sich in <xref linkend="ext-doc-uvmm"/>.
 					</para>
 				</listitem>
+				<listitem>
+					<para>
+						Das Scalix LDAP Schema wurde in UCS 4.0 entfernt.
+						Alle Scalix spezifischen Attribute müssen vor dem Update
+						aus dem LDAP-Verzeichnis entfernt werden.
+					</para>
+				</listitem>
 			</itemizedlist>
 		</section>
 	</chapter>
@@ -100,6 +107,17 @@
 				Auf neu installierten Servern, die <application>QEMU/KVM</application> verwenden, wird standardmäßig keine Netwerk-Bridge mehr eingerichtet.
 				Diese muß nun selbständig eingerichtet werden.
 				Weitere Hinweise finden sich in Kapitel 8 des UCS-Handbuchs <citation>UCS-Handbuch</citation> und in <citation>ext-doc-uvmm</citation>.
+			</para>
+		</section>
+
+		<section id="relnotes:samba">
+			<title>Ablösung von Windows NT DC Funktionalität mit UCS 4.0</title>
+			<para>
+				Die Verwendung von Windows NT Domänendiensten, die klassisch
+				durch Samba 3 bereitgestellt wurden, sind nicht mehr empfohlen,
+				da ihnen Windows AD Domänendienste sind ihnen weitgehend überlegen sind.
+				Für die Installation neuer UCS Domänen werden daher
+				Windows AD Domänendienste empfohlen.
 			</para>
 		</section>
 	</chapter>
