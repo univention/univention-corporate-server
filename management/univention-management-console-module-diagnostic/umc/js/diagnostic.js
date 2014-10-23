@@ -276,18 +276,7 @@ define([
 						percentage: percentage
 					});
 				}));
-			}))), this._progressBar).then(lang.hitch(this, function() {
-				if (!this._store.query(this._grid.query).length) {
-					this._store.add({
-						plugin: '_success_',
-						success: false,
-						type: 'success',
-						title: _('No problems could be detected.'),
-						description: ''
-					});
-					this.refreshGrid();
-				}
-			}));
+			}))), this._progressBar).then(lang.hitch(this, 'fixNoDataMessage'));
 		},
 
 		_runSingleDiagnose: function(plugin, opts) {
@@ -297,7 +286,7 @@ define([
 			this.refreshGrid();
 			this.standbyDuring(this._runDiagnose(plugin, opts)).then(lang.hitch(this, function() {
 				this.addNotification(_('Finished running diagnose of "%s" again.', plugin.title));
-			}));
+			})).then(lang.hitch(this, 'fixNoDataMessage'));
 		},
 
 		_runDiagnose: function(plugin, opts) {
@@ -307,6 +296,19 @@ define([
 				this.refreshGrid();
 			}));
 			return run;
+		},
+
+		fixNoDataMessage: function() {
+			if (!this._store.query(this._grid.query).length) {
+				this._store.add({
+					plugin: '_success_',
+					success: false,
+					type: 'success',
+					title: _('No problems could be detected.'),
+					description: ''
+				});
+				this.refreshGrid();
+			}
 		}
 
 	});

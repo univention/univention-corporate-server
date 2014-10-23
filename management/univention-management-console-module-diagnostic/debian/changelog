@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (1.0.8-1) unstable; urgency=medium
+
+  * Bug #34765: fix noDataMessage
+
+ -- Florian Best <best@univention.de>  Thu, 23 Oct 2014 11:53:35 +0200
+
 univention-management-console-module-diagnostic (1.0.7-2) unstable; urgency=medium
 
   * Bug #35654: version bump
