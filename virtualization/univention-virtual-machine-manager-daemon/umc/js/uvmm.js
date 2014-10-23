@@ -330,7 +330,7 @@ define([
 			this.inherited(arguments);
 
 			on.once(this._tree, 'load', lang.hitch(this, function() {
-				if (this._tree._getFirst().item.id == 'cloudconnections') {
+				if (this._tree._getFirst() && this._tree._getFirst().item.id == 'cloudconnections') {
 					this._searchForm.getWidget('type').set('value', 'instance');
 				}
 				this.own(this._tree.watch('path', lang.hitch(this, function() {
@@ -350,7 +350,8 @@ define([
 					}
 				}));
 				if (this._tree._getLast().item.type == 'root') {
-					dialog.alert(_("A connection to a virtualization infrastructure could not be established. You can either connect to a public or private cloud via OpenStack or EC2. Alternatively you can install a hypervisor on this or on any other UCS server in this domain."));
+					dialog.alert(_('A connection to a virtualization infrastructure could not be established. You can either connect to a public or private cloud. Alternatively you can install a hypervisor on this or on any other UCS server in this domain. Further details about the virtualization can be found in <a target="_blank" href="http://docs.univention.de/manual-4.0.html#uvmm:chapter">the manual</a>.'
+					));
 				}
 			}));
 		},

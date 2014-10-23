@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (4.0.3-17) unstable; urgency=low
+
+  * Add URL to manual for no virtualization infrastructure alert (Bug #36132)
+  * Update URL for network configuration interface wizard
+  * Fix "cloud instances" default filter for no virtualization found (Bug #36138)
+
+ -- Andreas Peichert <peichert@univention.de>  Thu, 23 Oct 2014 11:25:40 +0200
+
 univention-virtual-machine-manager-daemon (4.0.3-16) unstable; urgency=low
 
   * Increase timeout while waiting for new cloud connection to become
