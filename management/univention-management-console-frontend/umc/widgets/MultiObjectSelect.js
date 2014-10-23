@@ -179,8 +179,8 @@ define([
 	});
 
 	return declare("umc.widgets.MultiObjectSelect", [ ContainerWidget, _FormWidgetMixin ], {
-		// summary:
-		//		???
+		// display the labe above the widget
+		labelPosition: 'top',
 
 		queryWidgets: [],
 
