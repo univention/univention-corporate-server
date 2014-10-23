@@ -39,7 +39,7 @@ VERSION=3
 joinscript_init
 umc_init
 
-if [ $JS_LAST_EXECUTED_VERSION -lt 3 && $JS_LAST_EXECUTED_VERSION != 0]; then
+if joinscript_check_version_in_range_executed 1 2; then
 	udm settings/umc_operationset remove "$@" --dn "cn=reboot-all,cn=operations,cn=UMC,cn=univention,$ldap_base" || exit 1
 fi
 

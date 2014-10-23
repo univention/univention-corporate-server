@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-23 14:24+0200\n"
+"POT-Creation-Date: 2014-10-23 14:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,52 +12,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/reboot.js:99
-msgid "Cancel"
-msgstr "Abbrechen"
-
-#: umc/js/reboot.js:90
-msgid "OK"
-msgstr "OK"
-
-#: umc/js/reboot.js:84
-msgid "Please confirm to reboot the computer"
-msgstr "Bitte bestätigen Sie den Neustart dieses Computers"
-
-#: umc/js/reboot.js:86
-msgid "Please confirm to shutdown the computer"
-msgstr "Bitte bestätigen Sie, dass dieser Computer heruntergefahren wird"
-
-#: umc/js/reboot.js:72
-msgid "Reason for this reboot/shutdown"
-msgstr "Grund für dieses Neustarten/Herunterfahren"
-
-#: umc/js/reboot.js:61
-msgid "Reboot"
-msgstr "Neustarten"
-
-#: umc/js/reboot.js:50
-msgid "Reboot or shutdown the system"
-msgstr "System neustarten oder herunterfahren"
-
-#: umc/js/reboot.js:124
+#: umc/js/reboot.js:51
 msgid "Reboot server"
 msgstr "Server neustarten"
 
-#: umc/js/reboot.js:116
+#: umc/js/reboot.js:43
 msgid "Shutdown server"
 msgstr "Server herunterfahren"
-
-#: umc/js/reboot.js:56
-msgid "Stop"
-msgstr "Herunterfahren"
-
-#: umc/js/reboot.js:49
-msgid ""
-"This module can be used to restart or shut down the system remotely. The "
-"optionally given message will be displayed on the console and written to the "
-"syslog."
-msgstr ""
-"Mit diesem Modul kann das System neugestartet oder heruntergefahren werden. "
-"Die optional angegebene Nachricht wird auf der Konsole angezeigt und in das "
-"Syslog geschrieben."
