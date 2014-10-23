@@ -1,3 +1,10 @@
+univention-system-setup (8.1.27-1) unstable; urgency=medium
+
+  * Also remove 05univention-system-setup.list while removing
+    univention-system-setup-boot (Bug #36038)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 23 Oct 2014 06:25:32 +0200
+
 univention-system-setup (8.1.26-1) unstable; urgency=medium
 
   * Download packages only if the system has not yet joined (Bug #36038)
