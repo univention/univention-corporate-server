@@ -283,7 +283,7 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 			univention-config-registry set windows/wins-support=no windows/wins-server?"$samba_dc"
 		else
 			echo "ERROR: Failed to join to $samba_dc via $JOIN_CMD. Please check your Samba DCs and your DNS and WINS configuration."
-			test "$security" = "ads" -o "$server_role" = "memberserver" && exit 1
+			exit 1
 		fi
 	else
 		# Join against the global workgroup
@@ -313,13 +313,8 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 		elif $JOIN_CMD -U"$samba_account"%"$samba_pwd" -Slocalhost machinepass="$machine_secret"; then
 			configure_localhost_as_winsserver
 		else
-			if [ "${server_role}" = "domaincontroller_master" ]; then
-				echo "WARNING: Failed to join via $JOIN_CMD, continuing anyway."
-				configure_localhost_as_winsserver
-			else
-				echo "ERROR: Failed to join via $JOIN_CMD. Please check your Samba DCs and your DNS and WINS configuration."
-				test "$security" = "ads" -o "$server_role" = "memberserver" && exit 1
-			fi
+			echo "ERROR: Failed to join via $JOIN_CMD. Please check your Samba DCs and your DNS and WINS configuration."
+			exit 1
 		fi
 	fi
 

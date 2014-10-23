@@ -1,3 +1,9 @@
+univention-samba (9.0.4-2) unstable; urgency=medium
+
+  * Revert workarounds for Bug #35766 and Bug #36208
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Oct 2014 16:28:55 +0200
+
 univention-samba (9.0.4-1) unstable; urgency=medium
 
   * On a DC Backup the joinscript also needs to be called with admin
