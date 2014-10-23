@@ -1658,6 +1658,12 @@ define([
 			topic.publish('/umc/piwik/disable', disable);
 		},
 
+		addMenuEntry: function(item) {
+			if (this._header && this._header._headerMenu) {
+				this._header._headerMenu.addChild(item);
+			}
+		},
+
 		relogin: function(username) {
 			dialog.confirm(_('Do you really want to logout?'), [{
 				label: _('Cancel')
