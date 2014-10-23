@@ -126,6 +126,8 @@
 	padding: 4px;
 	box-sizing: content-box;
 }
+
+.umc .dijitTooltipDialog,
 .umc .dijitTooltip.dijitTooltipBelow {
 	/* leave room for arrow above content */
 	padding-top: 11px;
@@ -168,12 +170,16 @@
 	background-image:url($image-tooltip-ie6);
 }
 
+.umc .dijitTooltipDialog .dijitTooltipConnector,
 .claro .dijitTooltipBelow .dijitTooltipConnector {
 	/* the arrow piece for tooltips below an element */
 	top: -6px;
 	//left: 3px;
 	background-position:-41px -1px;
 
+}
+.umc .dijitTooltipDialog .dijitTooltipConnector {
+	left: 12px;
 }
 
 .claro .dijitTooltipAbove .dijitTooltipConnector {

@@ -20,9 +20,9 @@
 	background-repeat: no-repeat;
 	background-size: contain;
 	//border: solid $erroricon-background-color 0;
-	width: 0.5em;
-	height: 100%;
-
+	width: 20px;
+	height: 20px;
+	margin: 2px 2px 0 0;
 }
 
 //.claro .dijitTextBoxError .dijitValidationContainer {
@@ -42,6 +42,7 @@
 .claro .dijitTextArea,
 .claro .dijitInputField .dijitPlaceHolder {
 	padding: $textbox-padding;
+	font-size: 1em;
 }
 
 .claro .dijitSelect,
@@ -54,25 +55,26 @@
 }
 
 .claro .dijitSelect:before,
-.claro .dijitTextBox:before {
-	content: "";
-	position: absolute;
-	height: 5px;
-	bottom: 0;
-	left: 0;
-	border-left: thin solid $border-color;
-	transition-duration: 0.25s;
-}
-
+.claro .dijitTextBox:before,
 .claro .dijitSelect:after,
 .claro .dijitTextBox:after {
 	content: "";
 	position: absolute;
 	height: 5px;
 	bottom: 0;
+	transition-duration: 0.25s;
+}
+
+.claro .dijitSelect:before,
+.claro .dijitTextBox:before {
+	border-left: thin solid $border-color;
+	left: 0;
+}
+
+.claro .dijitSelect:after,
+.claro .dijitTextBox:after {
 	right: 0;
 	border-right: thin solid $border-color;
-	transition-duration: 0.25s;
 }
 
 .dj_gecko .claro .dijitTextBox .dijitInputInner,
@@ -167,6 +169,10 @@
 }
 
 /* disabled state */
+.claro .dijitSelectDisabled:before,
+.claro .dijitTextBoxDisabled:before,
+.claro .dijitSelectDisabled:after,
+.claro .dijitTextBoxDisabled:after,
 .claro .dijitSelectDisabled,
 .claro .dijitSelectDisabled .dijitButtonContents,
 .claro .dijitTextBoxDisabled,
@@ -178,7 +184,7 @@
 .claro .dijitTextBoxDisabled,
 .claro .dijitTextBoxDisabled .dijitInputContainer {
 	background-color: $textbox-disabled-background-color;
-	background-image: none;
+	//background-image: none;
 }
 
 .claro .dijitSelectDisabled,
@@ -189,24 +195,26 @@
 
 .dj_webkit .claro .dijitDisabled input {
 	/* because WebKit lightens disabled input/textarea no matter what color you specify */
-	color: darken($disabled-text-color, 10%)
+	//color: darken($disabled-text-color, 10%)
 }
 
 .dj_webkit .claro textarea.dijitTextAreaDisabled {
 	/* because WebKit lightens disabled input/textarea no matter what color you specify */
-	color: darken($disabled-text-color, 80%)
+	//color: darken($disabled-text-color, 80%)
 }
 
 /*========================= for special widgets =========================*/
 
 /* Input boxes with an arrow (for a drop down) */
 
+.claro .dijitSelect.dijitSelectDisabled .dijitArrowButtonInner,
+.claro .dijitComboBox.dijitComboBoxDisabled .dijitArrowButtonInner,
 .claro .dijitSelect .dijitArrowButtonInner,
 .claro .dijitComboBox .dijitArrowButtonInner {
 	//background-image: url("../" + $image-form-common-arrows);
 	//background-position:-35px 53%;
 	//background-repeat: no-repeat;
-	margin: 0;
+	margin: 2px 0 0 0;
 	//width:16px;
 	icon-image(0, 0, "../");
 	height: 20px !important;  // override dijit.css CSS rule
@@ -246,9 +254,15 @@
 .claro .dijitComboBox .dijitDownArrowButtonHover,
 .claro .dijitComboBoxFocused .dijitArrowButton {
 	//background-color:$arrowbutton-hovered-background-color;
-	.dijitArrowButtonInner {
-		background-position: -20px 0;
-		opacity: 0.66;
+}
+
+.umc {
+	.dijitComboBoxOpenOnClickHover,
+	.dijitComboBox .dijitDownArrowButtonHover {
+		.dijitArrowButtonInner {
+			background-position: -20px 0;
+			opacity: 0.66;
+		}
 	}
 }
 
@@ -282,8 +296,8 @@
 .claro div.dijitComboBoxDisabled .dijitArrowButtonInner {
 	/* specific selector set to override background-position setting from Button.js
 	 * (.claro .dijitComboBoxDisabled .dijitArrowButtonInner) */
-	background-position:0 50%;
-	background-color:$disabled-background-color;
+	//background-position:0 50%;
+	//background-color:$disabled-background-color;
 }
 
 

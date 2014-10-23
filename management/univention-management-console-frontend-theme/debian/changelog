@@ -1,3 +1,13 @@
+univention-management-console-frontend-theme (0.0.64-1) unstable; urgency=medium
+
+  Bug #35654:
+  * adjust styling for disabled widgets
+  * adjust error icon
+  * adjust styling for NumberSpinner
+  * adjust paddings for TooltipDialog
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Oct 2014 15:15:05 +0200
+
 univention-management-console-frontend-theme (0.0.63-1) unstable; urgency=low
 
   * Bug #35654: adjusted styling of tooltips

@@ -1498,4 +1498,56 @@
        id="rect10620"
        style="color:#000000;fill:none;stroke:#282828;stroke-width:1.03133953;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
   </g>
+  <g
+     transform="translate(48,-12)"
+     id="g3320">
+    <g
+       transform="matrix(-0.54473684,0,0,0.54466382,3.6576342,17.133983)"
+       id="g3324"
+       style="fill:none;stroke:#282828;stroke-width:2.11125278;stroke-miterlimit:4;stroke-dasharray:none">
+      <path
+         d="M 0,0 -4.255,4.258 -8.51,0"
+         id="path3326"
+         style="fill:none;stroke:#282828;stroke-width:2.11125278;stroke-miterlimit:4;stroke-dasharray:none" />
+    </g>
+  </g>
+  <g
+     transform="matrix(1,0,0,-1,60,23.999998)"
+     id="g3328">
+    <g
+       transform="matrix(-0.54473684,0,0,0.54466382,3.6576342,17.133983)"
+       id="g3332"
+       style="fill:none;stroke:#282828;stroke-width:2.11125278;stroke-miterlimit:4;stroke-dasharray:none">
+      <path
+         d="M 0,0 -4.255,4.258 -8.51,0"
+         id="path3334"
+         style="fill:none;stroke:#282828;stroke-width:2.11125278;stroke-miterlimit:4;stroke-dasharray:none" />
+    </g>
+  </g>
+  <g
+     transform="matrix(0,-1,-1,0,96.000002,12.000002)"
+     id="g3336">
+    <g
+       transform="matrix(-0.54473684,0,0,0.54466382,3.6576342,17.133983)"
+       id="g3340"
+       style="fill:none;stroke:#282828;stroke-width:2.11125278;stroke-miterlimit:4;stroke-dasharray:none">
+      <path
+         d="M 0,0 -4.255,4.258 -8.51,0"
+         id="path3342"
+         style="fill:none;stroke:#282828;stroke-width:2.11125278;stroke-miterlimit:4;stroke-dasharray:none" />
+    </g>
+  </g>
+  <g
+     transform="matrix(0,-1,1,0,72.000004,12.000002)"
+     id="g3344">
+    <g
+       transform="matrix(-0.54473684,0,0,0.54466382,3.6576342,17.133983)"
+       id="g3348"
+       style="fill:none;stroke:#282828;stroke-width:2.11125278;stroke-miterlimit:4;stroke-dasharray:none">
+      <path
+         d="M 0,0 -4.255,4.258 -8.51,0"
+         id="path3350"
+         style="fill:none;stroke:#282828;stroke-width:2.11125278;stroke-miterlimit:4;stroke-dasharray:none" />
+    </g>
+  </g>
 </svg>
