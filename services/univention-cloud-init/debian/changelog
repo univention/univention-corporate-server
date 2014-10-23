@@ -1,0 +1,17 @@
+univention-cloud-init (1.0.0-3) unstable; urgency=low
+
+  * Bug #35236: Add build dependency on univention-management-console-dev 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 22 Oct 2014 17:24:51 +0200
+
+univention-cloud-init (1.0.0-2) unstable; urgency=low
+
+  * Bug #35236: Add improvements based on feedback / testing 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 22 Oct 2014 17:13:31 +0200
+
+univention-cloud-init (1.0.0-1) unstable; urgency=low
+
+  * Bug #35236: Add cloud-init support
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 15 Aug 2014 16:22:46 +0200

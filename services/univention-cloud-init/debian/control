@@ -1,0 +1,28 @@
+Source: univention-cloud-init
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.8.2
+Build-Depends: debhelper (>= 7.0.50~),
+ ucslint-univention,
+ python-support,
+ python-all,
+ univention-config-dev,
+ univention-management-console-dev
+XS-Python-Version: 2.6
+
+Package: univention-cloud-init
+Architecture: all
+Depends: ${misc:Depends},
+ univention-system-setup,
+ cloud-init,
+ cloud-initramfs-growroot
+Provides: ${python:Provides}
+Description: Univention cloud-init configuration
+ This package contains cloud-init modules and configuration options
+ for the UCS System Setup.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

@@ -1,0 +1,3 @@
+Type: file
+File: etc/cloud/cloud.cfg.d/91-univention-cloud-init.cfg
+Variables: system/setup/cloud-init/datasources
