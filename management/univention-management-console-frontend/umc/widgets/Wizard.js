@@ -109,7 +109,7 @@ define([
 					});
 					page.addChild(page._form);
 				}
-				
+
 				// add page and remember it internally
 				this.addChild(page);
 				if (this.autoFocus) {

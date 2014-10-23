@@ -83,26 +83,6 @@ define([
 
 		showChild: function( child ) {
 			this._setVisibilityOfChild( child, true );
-		},
-
-		startup: function() {
-			this.inherited(arguments);
-
-			// FIXME: Workaround for refreshing problems with datagrids when they are rendered
-			//        on an inactive tab.
-
-			// iterate over all tabs
-			array.forEach(this.getChildren(), function(ipage) {
-				// find all widgets that inherit from dojox/grid/_Grid on the tab
-				array.forEach(ipage.getChildren(), function(iwidget) {
-					if (iwidget.isInstanceOf(_Grid)) {
-						// hook to onShow event
-						this.own(aspect.after(ipage, '_onShow', function() {
-							iwidget.startup();
-						}));
-					}
-				}, this);
-			}, this);
 		}
 	});
 });

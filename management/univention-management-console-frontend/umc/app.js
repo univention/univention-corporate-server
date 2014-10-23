@@ -1117,7 +1117,6 @@ define([
 				domClass.toggle(this._tabController.domNode, 'dijitHidden', (this._tabContainer.getChildren().length <= 1)); // hide/show tabbar
 				if (newModule.selectedChildWidget && newModule.selectedChildWidget._onShow) {
 					newModule.selectedChildWidget._onShow();
-					console.log('onShow;)');
 				}
 			}));
 			aspect.before(this._tabContainer, 'removeChild', lang.hitch(this, function(module) {

@@ -92,6 +92,10 @@ define([
 		_footerButtons: null,
 		_navButtons: null,
 
+		_onShow: function() {
+			// empty method
+		},
+
 		_setTitleAttr: function(title) {
 			// dont set html attribute title
 			// (looks weird)
@@ -268,22 +272,6 @@ define([
 		startup: function() {
 			this.inherited(arguments);
 			this._adjustSizes();
-
-			// FIXME: Workaround for refreshing problems with datagrids when they are rendered
-			//        on an inactive tab.
-
-			// iterate over all widgets
-			array.forEach(this.getChildren(), function(ichild) {
-				array.forEach(ichild.getChildren(), function(iwidget) {
-					if (iwidget.isInstanceOf(_Grid) || iwidget.isInstanceOf(Grid)) {
-						// hook to onShow event
-						this.own(aspect.after(this, '_onShow', lang.hitch(this, function() {
-							iwidget.startup();
-							iwidget.layout();
-						})));
-					}
-				}, this);
-			}, this);
 		}
 	});
 });
