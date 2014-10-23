@@ -555,24 +555,10 @@
 				Univention Virtual Machine Manager now supports connections to Cloud Service Providers.
 				Create and manage Amazon EC2 or Openstack connections and virtual machines 
 				(<ulink url="&ucsbug;32842">Bug 32842</ulink>).
-				The following additional Bugs were discovered and fixed during UCS 4 UVMM development:
-				<itemizedlist>
-					<listitem><simpara><ulink url="&ucsbug;36132">Bug 36132</ulink> First start of UVMM without any domain virtualization server</simpara></listitem>
-					<listitem><simpara><ulink url="&ucsbug;36133">Bug 36133</ulink> Make new cloud to the default if no connection is available</simpara></listitem>
-					<listitem><simpara><ulink url="&ucsbug;36134">Bug 36134</ulink> Test cloud connection before creating</simpara></listitem>
-					<listitem><simpara><ulink url="&ucsbug;36135">Bug 36135</ulink> No feedback if connection failed</simpara></listitem>
-					<listitem><simpara><ulink url="&ucsbug;36136">Bug 36136</ulink> Debug / support via log file</simpara></listitem>
-					<listitem><simpara><ulink url="&ucsbug;36137">Bug 36137</ulink> Adjust the ini file for UVMM</simpara></listitem>
-					<listitem><simpara><ulink url="&ucsbug;36138">Bug 36138</ulink> Default displayed type</simpara></listitem>
-					<listitem><simpara><ulink url="&ucsbug;36139">Bug 36139</ulink> Modify cloud connection through UVMM</simpara></listitem>
-					<listitem><simpara><ulink url="&ucsbug;36140">Bug 36140</ulink> Feedback during the first cloud connection</simpara></listitem>
-					<listitem><simpara><ulink url="&ucsbug;36141">Bug 36141</ulink> VPC support for EC2</simpara></listitem>
-					<listitem><simpara><ulink url="&ucsbug;36142">Bug 36142</ulink> 'Only show Univention images' position</simpara></listitem>
-					<listitem><simpara><ulink url="&ucsbug;36143">Bug 36143</ulink> UVMM EC2 text adjustments</simpara></listitem>
-					<listitem><simpara><ulink url="&ucsbug;36144">Bug 36144</ulink> Instance not available after creation</simpara></listitem>
-					<listitem><simpara><ulink url="&ucsbug;36145">Bug 36145</ulink> Unknown image</simpara></listitem>
-					<listitem><simpara><ulink url="&ucsbug;36146">Bug 36146</ulink> UVMM icons</simpara></listitem>
-				</itemizedlist>
+				The following additional Bugs were discovered and fixed during UCS 4 UVMM development: (
+					<ulink url="&ucsbug;36139">Bug 36139</ulink>,
+					<ulink url="&ucsbug;36145">Bug 36145</ulink>,
+					<ulink url="&ucsbug;36146">Bug 36146</ulink>)
 		</simpara></listitem>
 			<listitem><simpara>
 					Several packages related to virtualization have been updated to newer versions:
