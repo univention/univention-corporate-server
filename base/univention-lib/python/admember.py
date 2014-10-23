@@ -34,9 +34,9 @@ import ldb
 import ldap
 import os
 import subprocess
-import apt
+import apt_pkg
+import locale
 import socket
-import sys
 import tempfile
 import ipaddr
 from datetime import datetime, timedelta
@@ -224,7 +224,7 @@ def remove_install_univention_samba(info_handler=info_handler, step_handler=None
 
 	# check version
 	us = pm.get_package('univention-samba')
-	if not apt.VersionCompare(us.candidate.version, UNIVENTION_SAMBA_MIN_PACKAGE_VERSION) >= 0:
+	if not apt_pkg.version_compare(us.candidate.version, UNIVENTION_SAMBA_MIN_PACKAGE_VERSION) >= 0:
 		ud.debug(ud.MODULE, ud.ERROR, "univention-samba (%s) < %s" % (us.candidate.version, UNIVENTION_SAMBA_MIN_PACKAGE_VERSION))
 		raise univentionSambaWrongVersion(
 			"The package univention-samba in this version (%s) does not support AD member mode. Please upgrade to version %s"
@@ -397,10 +397,15 @@ def time_sync(ad_ip, tolerance=180, critical_difference=360):
 		return False
 
 	TIME_FORMAT = "%a %b %d %H:%M:%S %Z %Y"
+	time_string = stdout.strip()
+	old_locale = locale.getlocale(locale.LC_TIME)
 	try:
-		remote_datetime = datetime.strptime(stdout.strip(), TIME_FORMAT)
+		locale.setlocale(locale.LC_TIME, (None, None)) # 'C' as env['LC_ALL'] some lines earlier
+		remote_datetime = datetime.strptime(time_string, TIME_FORMAT)
 	except ValueError as ex:
-		raise timeSyncronizationFailed("AD Server did not return proper time string: %s" % (stdout.strip(),))
+		raise timeSyncronizationFailed("AD Server did not return proper time string: %s" % time_string)
+	finally:
+		locale.setlocale(locale.LC_TIME, old_locale)
 
 	local_datetime = datetime.today()
 	delta_t = local_datetime - remote_datetime

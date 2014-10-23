@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import gettext
-from locale import getlocale, getdefaultlocale, Error, LC_MESSAGES
+from locale import getlocale, Error, LC_MESSAGES
 import re
 
 class I18N_Error( Exception ):
@@ -109,10 +109,7 @@ class NullTranslation( object ):
 	def _set_locale( self, locale_spec = None ):
 		if locale_spec is None:
 			return
-		try:
-			self._localespec = Locale( locale_spec )
-		except (AttributeError, TypeError ), e:
-			raise
+		self._localespec = Locale( locale_spec )
 
 	locale = property( fget = _get_locale, fset = _set_locale )
 
@@ -138,7 +135,7 @@ class Translation( NullTranslation ):
 				else:
 					language = lang[ 0 ]
 				Translation.locale.parse( language )
-			except Error:
+			except Error as e:
 				raise I18N_Error( 'The given locale is not vaild: %s' % str( e ) )
 
 		if not self._domain:
