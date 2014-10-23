@@ -800,18 +800,57 @@ define([
 				this.selectChild(this._searchPage);
 				this.removeChild(wizard);
 				wizard.destroyRecursive();
+				this.filter();
 			});
 
 			var _finished = lang.hitch(this, function(values) {
-				var add = tools.umcpCommand('uvmm/instance/add', {
+				// add cloud instance
+				var addFailed = false;
+				var max = 60;
+				this.updateProgress(0, max);
+				tools.umcpCommand('uvmm/instance/add', {
 					conn_name: values.cloud,
 					name: values.name,
 					parameter: values
-				}).then(lang.hitch(this, function() {
-					_cleanup();
+				}).then( lang.hitch( this, function( response ) {
+					this.updateProgress(1, max);
 					this.moduleStore.onChange();
+				}), lang.hitch( this, function() {
+					this.updateProgress(1, max);
+					addFailed = true; // failed umcp will display an error message, but the wizard should still be open.
 				}));
-				this.standbyDuring(add);
+				// wait for running instance
+				var counter = 1;
+				var deferred = new Deferred();
+				var wait = lang.hitch(this, function() {
+					tools.umcpCommand('uvmm/instance/query', {"nodePattern": values.cloud, "domainPattern": values.name}, false).then(lang.hitch(this, function(result) {
+						var connection = array.filter(result.result, function(item) {
+							return item.label == values.name;
+						});
+						counter += 1;
+						if (connection[0] && connection[0].state == "RUNNING") {
+							this.updateProgress(max, max);
+							deferred.resolve();
+							_cleanup();
+						}
+						if (addFailed) {
+							this.updateProgress(max, max);
+							deferred.resolve();
+						}
+						if (counter >= max) {
+							this.updateProgress(max, max);
+							deferred.resolve();
+							_cleanup();
+							this.addNotification(lang.replace( _( 'The instance {label} is still not running. Please wait and to update the view, click on "Search".' ), {label: entities.encode(values.name)} ));
+						}
+						if (!deferred.isResolved()) {
+							tools.defer(wait, 1000);
+						}
+						this.updateProgress(counter, max);
+						this.filter();
+					}));
+				});
+				tools.defer(wait, 1000);
 			});
 
 			wizard = new InstanceWizard({
