@@ -407,6 +407,11 @@
 				The terminal server sessions have been removed from the statistic module
 				(<ulink url="&ucsbug;34029">Bug 34029</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The reboot module have been removed from the UMC overview.
+				The UMC menu now contains buttons for rebooting and shutting down the server.
+				(<ulink url="&ucsbug;36281">Bug 36281</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
