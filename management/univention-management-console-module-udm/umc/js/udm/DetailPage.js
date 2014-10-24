@@ -153,6 +153,9 @@ define([
 		// reference to the parent UMC module instance
 		_parentModule: null,
 
+		// reference to TabControllers of each subtab
+		_tabControllers: null,
+
 		// LDAP object type name in singular and plural
 		objectNameSingular: '',
 		objectNamePlural: '',
@@ -165,6 +168,7 @@ define([
 			this.inherited(arguments);
 
 			this._multiEdit = this.ldapName instanceof Array;
+			this._tabControllers = [];
 		},
 
 		buildRendering: function() {
@@ -829,16 +833,23 @@ define([
 			}));
 		},
 
+		_setTabVisibility: function(page, visible) {
+			array.forEach(this._tabControllers, lang.hitch(this, function(itabController) {
+				itabController.setVisibilityOfChild(page, visible);
+			}));
+		},
+
 		_addSubTab: function(page) {
-			page.tabs = new TabController({
+			var tabController = new TabController({
 				region: 'nav',
 				containerId: this._tabs.id,
 				nested: true
 			});
+			this._tabControllers.push(tabController);
 			page.position_text = new Text({region: 'nav', content: ''});
 
-			page.addChild(page.tabs, 0);
-			page.own(page.tabs);
+			page.addChild(tabController, 0);
+			page.own(tabController);
 
 			page.addChild(page.position_text);
 			page.own(page.position_text);
@@ -1315,13 +1326,7 @@ define([
 							domClass.toggle( element.$refTitlePane$.domNode, 'dijitHidden', true );
 						}
 					} ) );
-					array.forEach(this._tabs.getChildren(), lang.hitch(this, function(page) {
-						if (!visible) {
-							page.tabs.hideChild(tab.$refSubTab$);
-						} else {
-							page.tabs.showChild(tab.$refSubTab$);
-						}
-					}));
+					this._setTabVisibility(tab.$refSubTab$, visible);
 				}
 			} ) );
 		},
