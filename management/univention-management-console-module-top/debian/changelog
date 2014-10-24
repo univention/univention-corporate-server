@@ -1,3 +1,9 @@
+univention-management-console-module-top (4.1.0-3) unstable; urgency=low
+
+  * Bug #36161: Adaptions for new psutil API
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 24 Oct 2014 16:09:55 +0200
+
 univention-management-console-module-top (4.1.0-2) unstable; urgency=low
 
   * Bug #35654: UMC design adaptions

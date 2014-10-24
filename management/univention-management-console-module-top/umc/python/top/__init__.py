@@ -34,11 +34,10 @@
 import time
 import psutil
 
-import univention.info_tools as uit
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import *
+from univention.management.console.protocol.definitions import SUCCESS, MODULE_ERR
 
 from univention.management.console.modules.decorators import sanitize
 from univention.management.console.modules.sanitizers import PatternSanitizer
@@ -108,9 +107,9 @@ class Instance(umcm.Base):
 			try:
 				process = psutil.Process(int(pid))
 				if signal == 'SIGTERM':
-					process.kill(15)
+					process.terminate()
 				elif signal == 'SIGKILL':
-					process.kill(9)
+					process.kill()
 			except psutil.NoSuchProcess, error:
 				failed.append(pid)
 				MODULE.error(str(error))
