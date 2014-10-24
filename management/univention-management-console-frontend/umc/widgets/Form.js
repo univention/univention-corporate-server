@@ -97,9 +97,6 @@ define([
 		//		can be loaded/saved by the form itself.
 		moduleStore: null,
 
-		// the widget's class name as CSS class
-		'class': 'umcForm',
-
 		_widgets: null,
 
 		_buttons: null,
@@ -562,16 +559,8 @@ define([
 					// except for our checkBox
 					// or (better) implement setValid for checkBox
 					var widget = this.getWidget(iwidget);
-					if (widget && widget['class'] != 'umcCheckBox') {
-						widget.setValid(false, error_msg);
-						//if (!focus_set) {
-						//	widget.focus();
-						//	focus_set = true;
-						//}
-						//on.once('keyup', function() {
-						//	widget.setValid(true);
-						//});
-						worked = true;
+					if (widget && widget.setValid) {
+						worked = widget.setValid(false, error_msg) !== false;
 					}
 				} catch(e) {
 					console.log(iwidget, e);

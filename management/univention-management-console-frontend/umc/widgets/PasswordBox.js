@@ -34,10 +34,7 @@ define([
 	"umc/widgets/_FormWidgetMixin"
 ], function(declare, TextBox, _FormWidgetMixin) {
 	return declare("umc.widgets.PasswordBox", [ TextBox, _FormWidgetMixin ], {
-		type: 'password',
-
-		// the widget's class name as CSS class
-		'class': 'umcPasswordBox'
+		type: 'password'
 	});
 });
 

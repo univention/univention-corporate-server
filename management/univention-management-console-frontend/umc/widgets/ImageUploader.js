@@ -35,8 +35,6 @@ define([
 	"umc/i18n!"
 ], function(declare, Uploader, Image, _) {
 	return declare("umc.widgets.ImageUploader", Uploader, {
-		'class': 'umcImageUploader',
-
 		// imageType: String
 		//		Image type: 'jpeg', 'png'
 		imageType: 'jpeg',

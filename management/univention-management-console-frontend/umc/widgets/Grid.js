@@ -172,6 +172,8 @@ define([
 		//
 		defaultActionColumn: '',
 
+		baseClass: 'umcGrid',
+
 		disabled: false,
 
 		_contextMenu: null,
@@ -258,7 +260,7 @@ define([
 
 			// add a header for the grid
 			this._header = new ContainerWidget({
-				'class': 'umcGridHeader'
+				baseClass: 'umcGridHeader'
 			});
 			this.addChild(this._header);
 
@@ -267,7 +269,7 @@ define([
 				store: this._dataStore,
 				query: this.query,
 				queryOptions: { ignoreCase: true },
-				'class': 'umcGrid umcDynamicHeight',
+				'class': 'umcDynamicHeight',
 				rowsPerPage: 30,
 				plugins : {
 					indirectSelection: {
@@ -288,7 +290,7 @@ define([
 
 			// add a footer for the grid
 			this._footer = new ContainerWidget({
-				'class': 'umcGridFooter'
+				baseClass: 'umcGridFooter'
 			});
 			this._createFooter();
 
@@ -390,7 +392,7 @@ define([
 
 						if (value && value.domNode) {
 							var container = new ContainerWidget({
-								'class': 'umcGridDefaultAction',
+								baseClass: 'umcGridDefaultAction',
 								'style': 'display: inline!important;'
 							});
 							container.addChild(value);
@@ -399,7 +401,7 @@ define([
 						} else {
 							return this.own(new Text({
 								content: value,
-								'class': 'umcGridDefaultAction',
+								baseClass: 'umcGridDefaultAction',
 								'style': 'display: inline!important;'
 							}))[0];
 						}
@@ -554,7 +556,7 @@ define([
 			// add more menu to toolbar
 			if (this._contextActionsMenu.getChildren().length) {
 				this._contextActionsToolbar.addChild(new _DropDownButton({
-					'class': 'umcGridMoreMenu',
+					baseClass: _DropDownButton.prototype.baseClass + ' umcGridMoreMenu',
 					iconClass: 'umcIconNoIcon',
 					label: _('more'),
 					dropDown: this._contextActionsMenu
@@ -574,7 +576,7 @@ define([
 			// add a toolbar which contains all non-context actions
 			this._toolbar = new ContainerWidget({
 				style: 'float: left',
-				'class': 'umcGridToolBar'
+				baseClass: 'umcGridToolBar'
 			});
 			this.own(this._toolbar);
 

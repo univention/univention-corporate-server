@@ -71,11 +71,10 @@ define([
 		//		(Is specified automatically.)
 		title: '',
 
-		'class': 'umcModule',
-
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
+			this.baseClass += ' umcModule';
 			if (this.idProperty && !this.moduleStore) {
 				this.moduleStore = store(this.idProperty, this.moduleID, this.moduleFlavor);
 			}

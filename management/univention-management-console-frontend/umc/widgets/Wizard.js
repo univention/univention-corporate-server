@@ -53,6 +53,8 @@ define([
 		//		This wizard class allows to specify a list of pages which will be
 		//		shown in a controlable manner.
 
+		baseClass: StackContainer.prototype.baseClass + ' umcWizard',
+
 		// pages: Object[]
 		//		Array of page configuration objects. Each object consists of the following
 		//		properties:

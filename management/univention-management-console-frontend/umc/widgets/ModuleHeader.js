@@ -47,7 +47,7 @@ define([
 ], function(declare, lang, array, on, domClass, geometry, baseWin, tools, dialog, store, ContainerWidget, Text, Button, topic, _) {
 	return declare('umc.widgets.ModuleHeader', [ContainerWidget], {
 
-		'class': 'umcModuleHeader',
+		baseClass: 'umcModuleHeader',
 		_title: null,
 //		buttons: null,
 		_outerContainer: null,
@@ -68,16 +68,16 @@ define([
 			this.inherited(arguments);
 
 			this._left = new ContainerWidget({
-				'class': 'umcModuleHeaderLeft'
+				baseClass: 'umcModuleHeaderLeft'
 			});
 			this._right = new ContainerWidget({
-				'class': 'umcModuleHeaderRight'
+				baseClass: 'umcModuleHeaderRight'
 			});
 			this._outerContainer = new ContainerWidget({
-				'class': 'umcModuleHeaderOuterContainer'
+				baseClass: 'umcModuleHeaderOuterContainer'
 			});
 			var container = new ContainerWidget({
-				'class': 'umcModuleHeaderWrapper container'
+				baseClass: 'umcModuleHeaderWrapper container'
 			});
 			this.addChild(this._outerContainer);
 			this._outerContainer.addChild(container);
@@ -88,7 +88,7 @@ define([
 
 			this._title = new Text({
 				content: this.get('title'),
-				'class': 'umcModuleTitle'
+				baseClass: 'umcModuleTitle'
 			});
 			this._left.addChild(this._title);
 

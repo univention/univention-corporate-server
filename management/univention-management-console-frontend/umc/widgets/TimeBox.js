@@ -39,7 +39,7 @@ define([
 ], function(declare, lang, TimeTextBox, sprintf, ContainerWidget, _FormWidgetMixin, tools) {
 	return declare("umc.widgets.TimeBox", [ ContainerWidget, _FormWidgetMixin ], {
 		// the widget's class name as CSS class
-		'class': 'umcTimeBox',
+		baseClass: 'umcTimeBox',
 
 		_timeBox: null,
 

@@ -1,3 +1,12 @@
+univention-management-console-frontend (4.1.72-1) unstable; urgency=medium
+
+  Bug #35654:
+  * fix CSS class handling, remove unnecessary CSS classes
+  * add prefixed baseClasses of enclosed widgets to LabelPane domNode
+  * remove obsolete class umc/widgets/Toaster
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Oct 2014 15:43:09 +0200
+
 univention-management-console-frontend (4.1.71-1) unstable; urgency=medium
 
   * Bug #35654: fixed logic for hiding subtabs in TabController

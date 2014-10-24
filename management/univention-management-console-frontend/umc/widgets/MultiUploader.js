@@ -44,7 +44,7 @@ define([
 	"umc/i18n!"
 ], function(declare, lang, array, when, on, domStyle, ContainerWidget, _FormWidgetMixin, Button, Uploader, MultiSelect, ProgressInfo, _) {
 	return declare("umc.widgets.MultiUploader", [ ContainerWidget, _FormWidgetMixin ], {
-		'class': 'umcMultiUploader',
+		baseClass: 'umcMultiUploader',
 
 		// command: String
 		//		The UMCP command to which the data shall be uploaded.

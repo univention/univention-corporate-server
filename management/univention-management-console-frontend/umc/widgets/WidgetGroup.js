@@ -39,6 +39,8 @@ define([
 		// summary:
 		//		Groups a set of widgets and returns the value of all widgets as a dictionary
 
+		baseClass: 'umcWidgetGroup',
+
 		// widgets: Object[]|dijit.form._FormWidget[]|Object
 		//		Array of config objects that specify the widgets that are going to
 		//		be used in the form. Can also be a list of dijit.form._FormWidget

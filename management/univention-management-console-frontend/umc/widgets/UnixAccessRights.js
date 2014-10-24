@@ -43,6 +43,8 @@ define([
 		// summary:
 		//		Displays a matrix of UNIX access rights
 
+		baseClass: 'umcUnixAccessRights',
+
 		// widgets: Object[]|dijit.form._FormWidget[]|Object
 		//		Array of config objects that specify the widgets that are going to
 		//		be used in the form. Can also be a list of dijit.form._FormWidget

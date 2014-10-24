@@ -82,7 +82,7 @@ define([
 		mainBootstrapClasses: 'col-xs-12 col-sm-12 col-md-8 col-lg-8',
 
 		// the widget's class name as CSS class
-		'class': 'umcPage',
+		baseClass: 'umcPage',
 
 		i18nClass: 'umc.app',
 
@@ -105,13 +105,13 @@ define([
 		},
 
 		_setHelpTextAttr: function(newVal) {
-			if (!newVal) {
+			if (!newVal && !this._helpTextPane) {
 				return;
 			}
 			if (!this._helpTextPane) {
 				this._helpTextPane = new Text({
 					region: this.helpTextRegion,
-					'class': 'umcPageHelpText'
+					baseClass: 'umcPageHelpText'
 				});
 				try {
 					this.addChild(this._helpTextPane, 1);  // insert underneath of headerText
@@ -127,13 +127,13 @@ define([
 		},
 
 		_setHeaderTextAttr: function(newVal) {
-			if (!newVal) {
+			if (!newVal && !this._headerTextPane) {
 				return;
 			}
 			if (!this._headerTextPane) {
 				this._headerTextPane = new Text({
 					region: this.headerTextRegion,
-					'class': 'umcPageHeader'
+					baseClass: 'umcPageHeader'
 				});
 				this.addChild(this._headerTextPane, 0);
 			}
@@ -166,10 +166,6 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			if (typeof this['class'] == 'string' && this['class'].indexOf('umcPage') == -1) {
-				this['class'] += ' umcPage';
-			}
-
 			// remove title from the attributeMap
 			delete this.attributeMap.title;
 		},
@@ -178,17 +174,20 @@ define([
 			this.inherited(arguments);
 
 			this._nav = new ContainerWidget({
-				'class': 'umcPageNav dijitHidden'
+				baseClass: 'umcPageNav',
+				'class': 'dijitHidden'
 			});
 			this._main = new ContainerWidget({
-				'class': 'umcPageMain col-xs-12 col-sm-12 col-md-12 col-lg-12'
+				baseClass: 'umcPageMain',
+				'class': 'col-xs-12 col-sm-12 col-md-12 col-lg-12'
 			});
 			ContainerWidget.prototype.addChild.apply(this, [this._nav]);
 			ContainerWidget.prototype.addChild.apply(this, [this._main]);
 
 			this._footer = new ContainerWidget({
 				region: 'footer',
-				'class': 'umcPageFooter col-xs-12 col-sm-12 col-md-12 col-lg-12'
+				baseClass: 'umcPageFooter',
+				'class': 'col-xs-12 col-sm-12 col-md-12 col-lg-12'
 			});
 			ContainerWidget.prototype.addChild.apply(this, [this._footer]);
 
@@ -266,8 +265,8 @@ define([
 		_adjustSizes: function() {
 			domClass.remove(this._nav.domNode);
 			domClass.remove(this._main.domNode);
-			domClass.add(this._nav.domNode, this._nav['class']);
-			domClass.add(this._main.domNode, this._main['class']);
+			domClass.add(this._nav.domNode, this._nav['class'] + ' ' + this._nav.baseClass);
+			domClass.add(this._main.domNode, this._main['class'] + ' ' + this._main.baseClass);
 
 			var hasNav = this._nav.getChildren().length;
 			if (hasNav) {

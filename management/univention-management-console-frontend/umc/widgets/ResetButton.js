@@ -33,10 +33,7 @@ define([
 	"umc/widgets/Button"
 ], function(declare, Button) {
 	return declare(Button, {
-		type: 'reset',
-
-		// the widget's class name as CSS class
-		'class': 'umcResetButton'
+		type: 'reset'
 	});
 });
 

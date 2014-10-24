@@ -38,9 +38,6 @@ define([
 	"umc/tools"
 ], function(declare, lang, sprintf, DateTextBox, ContainerWidget, _FormWidgetMixin, tools) {
 	return declare("umc.widgets.DateBox", [ ContainerWidget, _FormWidgetMixin ], {
-		// the widget's class name as CSS class
-		'class': 'umcDateBox',
-
 		_dateBox: null,
 
 		disabled: false,

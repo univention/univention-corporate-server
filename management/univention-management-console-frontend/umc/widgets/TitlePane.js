@@ -40,9 +40,6 @@ define([
 		// summary:
 		//		Widget that extends dijit.TitlePane with methods of a container widget.
 
-		// the widget's class name as CSS class
-		'class': 'umcTitlePane',
-
 		startup: function() {
 			this.inherited(arguments);
 

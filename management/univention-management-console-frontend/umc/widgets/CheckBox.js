@@ -39,9 +39,6 @@ define([
 		// by default, the checkbox is turned off
 		value: false,
 
-		// the widget's class name as CSS class
-		'class': 'umcCheckBox',
-
 		// a checkbox is always true
 		valid: true,
 

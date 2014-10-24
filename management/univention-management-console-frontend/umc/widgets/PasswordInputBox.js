@@ -55,7 +55,7 @@ define([
 		sizeClass: 'Two',
 
 		// the widget's class name as CSS class
-		'class': 'umcPasswordInputBox',
+		baseClass: 'umcPasswordInputBox',
 
 		_firstWidget: null,
 

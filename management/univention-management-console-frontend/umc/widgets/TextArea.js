@@ -37,9 +37,6 @@ define([
 	"umc/widgets/_FormWidgetMixin"
 ], function(declare, lang, when, SimpleTextarea, tools, _FormWidgetMixin) {
 	return declare("umc.widgets.TextArea", [ SimpleTextarea, _FormWidgetMixin ], {
-		// the widget's class name as CSS class
-		'class': 'umcTextArea',
-
 		// dynamicValue: String|Function
 		//		Either an UMCP command to query a value from or a javascript function.
 		//		The javascript function may return a String or a dojo/Deferred object.

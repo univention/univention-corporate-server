@@ -40,9 +40,7 @@ define([
 	return declare("umc.widgets.TouchScrollContainerWidget", [_WidgetBase, _Container, TouchScroll], {
 		// description:
 		//		Combination of Widget and Container class.
-		style: '',
-
-		'class': 'umcTouchScrollContainerWidget',
+		baseClass: 'umcTouchScrollContainerWidget',
 
 		buildRendering: function() {
 			this.inherited(arguments);

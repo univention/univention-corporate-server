@@ -33,10 +33,7 @@ define([
 	"dijit/form/NumberSpinner",
 	"umc/widgets/_FormWidgetMixin"
 ], function(declare, NumberSpinner, _FormWidgetMixin) {
-	return declare("umc.widgets.NumberSpinner", [ NumberSpinner, _FormWidgetMixin ], {
-		// the widget's class name as CSS class
-		'class': 'umcNumberSpinner'
-	});
+	return declare("umc.widgets.NumberSpinner", [ NumberSpinner, _FormWidgetMixin ], {});
 });
 
 

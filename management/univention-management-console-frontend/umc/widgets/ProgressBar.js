@@ -43,7 +43,7 @@ define([
 	return declare("umc.widgets.ProgressBar", ContainerWidget, {
 		// summary:
 		//		This class provides a widget providing detailed progress information
-		style: 'width: 400px',
+		baseClass: 'umcProgressBar',
 
 		_component: null,
 		_message: null,
@@ -57,11 +57,11 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._component = new Text({ content : '' , style : 'width: 100%' });
+			this._component = new Text({content : ''});
 			this.addChild(this._component);
-			this._progressBar = new ProgressBar({ style : 'width: 100%' });
+			this._progressBar = new ProgressBar({});
 			this.addChild(this._progressBar);
-			this._message = new Text({ content : '&nbsp;', style : 'width: 100%' });
+			this._message = new Text({content : '&nbsp;'});
 			this.addChild(this._message);
 
 			this._progressBar.set('value', 0);

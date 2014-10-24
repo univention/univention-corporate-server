@@ -39,9 +39,6 @@ define([
 	"umc/tools"
 ], function(declare, lang, put, on, when, ValidationTextBox, _FormWidgetMixin, tools) {
 	return declare("umc.widgets.TextBox", [ ValidationTextBox, _FormWidgetMixin ], {
-		// the widget's class name as CSS class
-		'class': 'umcTextBox',
-
 		// dynamicValue: String|Function
 		//		Either an UMCP command to query a value from or a javascript function.
 		//		The javascript function may return a String or a dojo/Deferred object.

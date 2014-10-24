@@ -51,12 +51,12 @@ define([
 			this.inherited(arguments);
 
 			this._tabs = new StackContainer({
-				'class': 'umcTabbedModuleTabs',
+				baseClass: StackContainer.prototype.baseClass + ' umcTabbedModuleTabs',
 				nested: this._nested,
 				doLayout: false
 			});
 			this._tabController = new TabController({
-				'class': 'umcTabbedModuleTabController',
+				baseClass: TabController.prototype.baseClass + ' umcTabbedModuleTabController',
 				region: 'nav',
 				containerId: this._tabs.id
 			});

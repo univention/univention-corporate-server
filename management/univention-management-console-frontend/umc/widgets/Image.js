@@ -36,7 +36,7 @@ define([
 ], function(declare, lang, ContentPane, _FormWidgetMixin) {
 	return declare("umc.widgets.Image", [ ContentPane, _FormWidgetMixin ], {
 		// the widget's class name as CSS class
-		'class': 'umcImage',
+		baseClass: 'umcImage',
 
 		// imageType: String
 		//		Image type: 'jpeg', 'png'

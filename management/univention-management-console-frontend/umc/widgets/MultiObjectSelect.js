@@ -60,8 +60,6 @@ define([
 
 			autoSearch: true,
 
-			'class': 'umcMultiObjectSelectDetailDialog',
-
 			_form: null,
 
 			_multiSelect: null,
@@ -214,7 +212,7 @@ define([
 		value: null,
 
 		// the widget's class name as CSS class
-		'class': 'umcMultiObjectSelect',
+		baseClass: 'umcMultiObjectSelect',
 
 		// internal reference to the parsed formatter function
 		_formatter: function(ids) { return ids; },

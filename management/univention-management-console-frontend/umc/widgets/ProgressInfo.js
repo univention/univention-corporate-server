@@ -37,6 +37,7 @@ define([
 	return declare("umc.widgets.ProgressInfo", ContainerWidget, {
 		// summary:
 		//		widget used displaying progress information
+		baseClass: 'umcProgressInfo',
 
 		_titleWidget: null,
 
@@ -58,9 +59,7 @@ define([
 			this._infoWidget = new Text( {
 				content: ''
 			} );
-			this._progressBar = new ProgressBar({
-				'class' : 'umcProgressInfo'
-			});
+			this._progressBar = new ProgressBar({});
 			this.addChild( this._titleWidget );
 			this.addChild( this._progressBar );
 			this.addChild( this._infoWidget );

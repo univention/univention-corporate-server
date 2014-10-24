@@ -207,7 +207,9 @@ define([
 			var iLevel = 'number' == typeof(_iLevel) ? _iLevel : 0;
 
 			// create a container
-			var globalContainer = container || new ContainerWidget({});
+			var globalContainer = container || new ContainerWidget({
+				'class': 'umcLayoutContainer'
+			});
 
 			// check whether the parameters are correct
 			tools.assert(layout instanceof Array,
@@ -245,7 +247,9 @@ define([
 					});
 
 					// add current form widgets to layout
-					var elContainer = new ContainerWidget({});
+					var elContainer = new ContainerWidget({
+						'class': 'umcLayoutRow'
+					});
 					var label = null;
 					array.forEach(elList, function(jel) {
 						// make sure the reference to the widget/button exists
@@ -324,7 +328,9 @@ define([
 			if (buttons && 0 === iLevel) {
 				// add all buttons that have not been rendered so far to a separate container
 				// and respect their correct order (i.e., using the interal array field $order$)
-				var buttonContainer = new ContainerWidget({});
+				var buttonContainer = new ContainerWidget({
+					'class': 'umcLayoutRow'
+				});
 				array.forEach(buttons.$order$, function(ibutton) {
 					if (!ibutton.$isRendered$) {
 						buttonContainer.addChild(ibutton);

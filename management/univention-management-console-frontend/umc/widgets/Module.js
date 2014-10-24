@@ -61,7 +61,7 @@ define([
 			this.defaultTitle = this.title;
 
 			this.__container = new declare([StackContainer, StandbyMixin])({
-				'class': 'umcModuleContent',
+				baseClass: StackContainer.prototype.baseClass + ' umcModuleContent',
 				doLayout: false
 			});
 			this.__container.watch('selectedChildWidget', lang.hitch(this, function(name, oldV, newV) {
@@ -104,7 +104,8 @@ define([
 			this.inherited(arguments);
 
 			this._bottom = new ContainerWidget({
-				'class': 'umcModuleWrapper container'
+				baseClass: 'umcModuleWrapper',
+				'class': 'container'
 			});
 			this._bottom.addChild(this.__container);
 
@@ -160,7 +161,6 @@ define([
 					name: 'close',
 					label: _('Close'),
 					iconClass: 'umcCloseIconWhite',
-					'class': 'umcCloseButton',
 					callback: lang.hitch(this, 'closeModule')
 				});
 			}
@@ -177,7 +177,6 @@ define([
 
 			if (headerButtons && headerButtons.length) {
 				var container = new ContainerWidget({
-				//	'class': this._started ? 'dijitHidden' : '',
 					style: 'display: inline-block; margin: 0; padding: 0;'
 				});
 				child.own(container);

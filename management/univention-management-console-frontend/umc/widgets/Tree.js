@@ -40,8 +40,7 @@ define([
 		// description:
 		//		This code has been imported from: http://bugs.dojotoolkit.org/ticket/11065
 
-		// the widget's class name as CSS class
-		'class': 'umcTree',
+		'class': 'umcDynamicHeight',
 
 		/**
 		 * Unset tree's attributes but leave the widget untouched.

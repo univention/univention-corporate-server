@@ -56,10 +56,7 @@ define([
 		hdl.remove();
 	});
 
-	return declare("umc.widgets.Tooltip", Tooltip, {
-		// the widget's class name as CSS class
-		'class': 'umcTooltip'
-	});
+	return declare("umc.widgets.Tooltip", Tooltip, {});
 });
 
 

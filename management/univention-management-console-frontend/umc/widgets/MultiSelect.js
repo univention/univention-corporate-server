@@ -79,7 +79,7 @@ define([
 		}],
 
 		// the widget's class name as CSS class
-		'class': 'umcMultiSelect',
+		baseClass: EnhancedGrid.prototype.baseClass + ' umcMultiSelect',
 
 		// force the height of the widget
 		height: '110px',

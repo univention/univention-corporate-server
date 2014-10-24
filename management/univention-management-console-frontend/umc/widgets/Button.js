@@ -53,7 +53,7 @@ define([
 		constructor: function(props) {
 			lang.mixin(this, props);
 			if (this.defaultButton) {
-				this['class'] = 'dijitDefaultButton';
+				this.baseClass += ' dijitDefaultButton';
 			}
 		},
 

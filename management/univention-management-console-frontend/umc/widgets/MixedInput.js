@@ -66,15 +66,13 @@ define([
 		disabled: false,
 
 		// the widget's class name as CSS class
-		'class': 'umcMixedInput',
+		baseClass: 'umcMixedInput',
 
 		// store the original properties as specified by the user
 		_userProperties: null,
 
 		// store the currently displayed widget
 		_widget: null,
-
-		style: 'padding: 0',
 
 		_readyDeferred: null,
 

@@ -59,7 +59,7 @@ define([
 		max: Infinity,
 
 		// the widget's class name as CSS class
-		'class': 'umcMultiInput',
+		baseClass: 'umcMultiInput',
 
 		depends: null,
 
@@ -480,7 +480,7 @@ define([
 				return widgets[iname];
 			});
 			var rowContainer = new ContainerWidget({
-				'class': 'umcMultiInputContainer'
+				baseClass: 'umcMultiInputContainer'
 			});
 			array.forEach(order, function(iname, idx) {
 				// add widget to row container (wrapped by a LabelPane)

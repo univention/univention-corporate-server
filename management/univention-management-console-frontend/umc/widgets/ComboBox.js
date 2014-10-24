@@ -41,9 +41,6 @@ define([
 	"umc/widgets/_FormWidgetMixin"
 ], function(declare, lang, on, aspect, has, dom, focusUtil, FilteringSelect, _SelectMixin, _FormWidgetMixin) {
 	return declare("umc.widgets.ComboBox", [ FilteringSelect , _SelectMixin, _FormWidgetMixin ], {
-		// the widget's class name as CSS class
-		'class': 'umcComboBox',
-
 		// search for the substring when typing
 		queryExpr: '*${0}*',
 

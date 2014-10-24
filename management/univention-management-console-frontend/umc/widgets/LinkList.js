@@ -50,7 +50,7 @@ define([
 		disabled: false,
 
 		// the widget's class name as CSS class
-		'class': 'umcLinkList',
+		baseClass: 'umcLinkList',
 
 		postCreate: function() {
 			this.inherited(arguments);

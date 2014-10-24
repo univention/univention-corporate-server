@@ -43,7 +43,7 @@ define([
 		//		buttons. This builds on top of umc/widgets/Form.
 
 		// the widget's class name as CSS class
-		'class': 'umcSearchForm',
+		baseClass: 'umcSearchForm',
 
 		_parentModule: undefined,
 

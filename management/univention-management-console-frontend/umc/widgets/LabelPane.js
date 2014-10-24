@@ -76,7 +76,7 @@ define([
 		disabled: false,
 
 		// the widget's class name as CSS class
-		'class': 'umcLabelPane',
+		baseClass: 'umcLabelPane',
 
 		// labelConf: Object
 		//		Dictionary with properties (e.g., "style") that will mixed
@@ -93,6 +93,8 @@ define([
 		labelNodeRight: null,
 
 		_startupDeferred: null,
+
+		_orgClass: '',
 
 		constructor: function(params) {
 			this._startupDeferred = new Deferred();
@@ -117,6 +119,9 @@ define([
 			if (this.content && 'labelConf' in this.content && this.content.labelConf) {
 				lang.mixin(this, this.content.labelConf);
 			}
+
+			// save the initial value for class
+			this._orgClass = this['class'];
 		},
 
 		_isContentAWidget: function() {
@@ -258,6 +263,16 @@ define([
 			var sizeClass = this._getContentSizeClass();
 			if (sizeClass) {
 				domClass.add(this.domNode, 'umcSize-' + sizeClass);
+			}
+
+			if (this._isContentAWidget()) {
+				// add extra CSS classes based on the content type
+				var contentClasses = this.content.baseClass.split(/\s+/);
+				var labelClasses = array.map(contentClasses, function(iclass) {
+					return this.baseClass + '-' + iclass;
+				}, this);
+				labelClasses.push(this._orgClass);
+				this.set('class', labelClasses);
 			}
 
 			this.set('disabled', this.disabled);

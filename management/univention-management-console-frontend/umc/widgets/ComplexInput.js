@@ -47,9 +47,6 @@ define([
 		//		property is passed to render.widgets().
 		subtypes: null,
 
-		// the widget's class name as CSS class
-		'class': 'umcComplexInput',
-
 		_widgets: null,
 
 		_container: null,

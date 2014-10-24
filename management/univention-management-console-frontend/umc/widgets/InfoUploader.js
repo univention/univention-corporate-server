@@ -35,8 +35,6 @@ define([
 	"umc/i18n!"
 ], function(declare, Uploader, Text, _) {
 	return declare("umc.widgets.InfoUploader", Uploader, {
-		'class': 'umcInfoUploader',
-
 		maxSize: 512000,
 
 		_text: null,

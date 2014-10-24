@@ -44,7 +44,7 @@ define([
 		//		Combination of Widget and Container class.
 		style: '',
 
-		'class': 'umcContainerWidget',
+		baseClass: 'umcContainerWidget',
 
 		_setVisibleAttr: function(visible) {
 			this._set('visible', visible);

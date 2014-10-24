@@ -109,9 +109,6 @@ define([
 
 		closable: false,
 
-		// the widget's class name as CSS class
-		'class': 'umcConfirmDialog',
-
 		_container: null,
 
 		_setMessageAttr: function(message) {
@@ -126,7 +123,6 @@ define([
 			// add the new message
 			if (typeof this.message == "string") {
 				var widget = new Text({
-					'class': 'umcConfirmDialogText',
 					content: message
 				});
 				this._container.addChild(widget, 0);

@@ -50,7 +50,7 @@ define([
 		_tmpContent: null,
 
 		// the widget's class name as CSS class
-		'class': 'umcText',
+		baseClass: 'umcText',
 
 		postMixInProperties: function() {
 			this.inherited(arguments);

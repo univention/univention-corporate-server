@@ -55,9 +55,6 @@ define([
 		// display the label on the right
 		labelPosition: 'right',
 
-		// the widget's class name as CSS class
-		'class': 'umcRadioButton',
-
 		postMixInProperties: function() {
 			if (!this.value) {
 				this.value = this.name;
@@ -90,6 +87,12 @@ define([
 				return iwidget.get('checked');
 			});
 			return checkButtons.length == 1;
+		},
+
+		setValid: function(isValid, message) {
+			// a checkbox cannot be invalid
+			// (for now, we should consider implementing it!)
+			return false;
 		}
 	});
 });
