@@ -755,138 +755,138 @@ define([
 
 		renderTree: function() {
 			// generate the navigation pane for the navigation module
+			if ('navigation' == this.moduleFlavor) {
+				this._navUpButton = this.own(new Button({
+					label: _( 'Parent container' ),
+					iconClass: 'umcIconUp',
+					callback: lang.hitch(this, function() {
+						var path = this._tree.get( 'path' );
+						var ldapDN = path[ path.length - 2 ].id;
+						this._tree.set( 'path', this._ldapDN2TreePath( ldapDN ) );
+						// we can relaunch the search after all search form values
+						// have been updated
+						on.once(this._searchForm.getWidget('objectPropertyValue'), 'valuesLoaded', lang.hitch(this, function() {
+							this.filter();
+						}));
+					})
+				}))[0];
+			}
+
+			var superordinateName = this.objectNamePlural;
+			if ('dhcp/dhcp' == this.moduleFlavor) {
+				superordinateName = _('DHCP services');
+			} else if ('dns/dns' == this.moduleFlavor) {
+				superordinateName = _('DNS zones');
+			}
+
+			var ModelClass = ('navigation' == this.moduleFlavor) ? TreeModel : TreeModelSuperordinate;
+			var model = new ModelClass({
+				umcpCommand: lang.hitch(this, 'umcpCommand'),
+				moduleFlavor: this.moduleFlavor,
+				rootName: _('All %s', superordinateName)
+			});
+
+			this._tree = new Tree({
+				//style: 'width: auto; height: auto;',
+				model: model,
+				persist: false,
+				region: 'nav',
+				// customize the method getIconClass()
+				getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
+					return tools.getIconClass((item.icon || 'udm-container-cn') + '.png');
+				}
+			});
+			if ('navigation' !== this.moduleFlavor) {
+				// don't indent superordinates
+				domStyle.set(this._tree.indentDetector, 'width', '1px');
+			}
+			// at the first onLoad event, select the LDAP base (i.e., root) as current node
+			on.once(this._tree, 'load', lang.hitch(this, function() {
+				// if the tree has been loaded successfully, model.root
+				// is set and we can select the root as active node
+				if (this._tree.model.root) {
+					this._tree.set('path', [ this._tree.model.root ]);
+				}
+			}));
+			this.own(this._tree.watch('path', lang.hitch(this, function(attr, oldVal, newVal) {
+				// register for changes of the selected item (= path)
+				// only take them into account in case the tree is not reloading
+				if (this.moduleFlavor !== 'navigation' && newVal.length) {
+					this._setSuperordinateAndFilter(newVal[newVal.length-1].id);
+				}
+				if (!this._reloadingPath) {
+					this._searchForm.ready().then(lang.hitch(this, 'filter'));
+				} else if (this._reloadingPath == this._path2str(this._tree.get('path'))) {
+					// tree has been reloaded to its last position
+					this._reloadingPath = '';
+				}
 				if ('navigation' == this.moduleFlavor) {
-					this._navUpButton = this.own(new Button({
-						label: _( 'Parent container' ),
-						iconClass: 'umcIconUp',
-						callback: lang.hitch(this, function() {
-							var path = this._tree.get( 'path' );
-							var ldapDN = path[ path.length - 2 ].id;
-							this._tree.set( 'path', this._ldapDN2TreePath( ldapDN ) );
-							// we can relaunch the search after all search form values
-							// have been updated
-							on.once(this._searchForm.getWidget('objectPropertyValue'), 'valuesLoaded', lang.hitch(this, function() {
-								this.filter();
-							}));
-						})
-					}))[0];
+					if ( this._tree.get('path').length > 1 ) {
+						this._grid._toolbar.addChild( this._navUpButton, 0 );
+					} else {
+						this._grid._toolbar.removeChild( this._navUpButton );
+					}
+					this._navUpButton.set( 'visible', this._tree.get('path').length > 1 );
 				}
 
-				var superordinateName = this.objectNamePlural;
-				if ('dhcp/dhcp' == this.moduleFlavor) {
-					superordinateName = _('DHCP services');
-				} else if ('dns/dns' == this.moduleFlavor) {
-					superordinateName = _('DNS zones');
+			})));
+
+			// add a context menu to edit/delete items
+			var menu = new Menu({});
+			menu.addChild(this._menuEdit = new MenuItem({
+				label: _( 'Edit' ),
+				iconClass: 'umcIconEdit',
+				onClick: lang.hitch(this, function() {
+					this.createDetailPage(this._navContextItem.objectType, this._navContextItem.id);
+				})
+			}));
+			menu.addChild(this._menuDelete = new MenuItem({
+				label: _( 'Delete' ),
+				iconClass: 'umcIconDelete',
+				onClick: lang.hitch(this, function() {
+					this.removeObjects([this._navContextItem]);
+				})
+			}));
+			menu.addChild(this._menuMove = new MenuItem({
+				label: _('Move to...'),
+				onClick: lang.hitch(this, function() {
+					this.moveObjects([this._navContextItem]);
+				})
+			}));
+			menu.addChild(new MenuItem({
+				label: _( 'Reload' ),
+				iconClass: 'umcIconRefresh',
+				onClick: lang.hitch(this, 'reloadTree')
+			}));
+
+			// when we right-click anywhere on the tree, make sure we open the menu
+			menu.bindDomNode(this._tree.domNode);
+			this.own(menu);
+
+			// disables items in the menu if the LDAP base is selected
+			this.own(aspect.before(menu, '_openMyself', lang.hitch(this, function() {
+				this._updateMenuAvailability();
+			})));
+
+			// remember on which item the context menu has been opened
+			this.own(aspect.after(this._tree, '_onNodeMouseEnter', lang.hitch(this, function(node) {
+				this._navContextItemFocused = node.item;
+			}), true));
+			this.own(aspect.before(menu, '_openMyself', lang.hitch(this, function() {
+				this._navContextItem = this._navContextItemFocused;
+			})));
+			// in the case of changes, reload the navigation, as well (could have
+			// changes referring to container objects)
+			this.on('objectsaved', lang.hitch(this, function(dn, objectType) {
+				this.resetPathAndReloadTreeAndFilter([dn]);
+			}));
+
+			// keep superordinate widget in sync with the tree for DHCP / DNS
+			this.own(aspect.after(this._tree, 'reload', lang.hitch(this, function() {
+				if (this.moduleFlavor !== 'navigation') {
+					this._reloadSuperordinates();
 				}
-
-				var ModelClass = ('navigation' == this.moduleFlavor) ? TreeModel : TreeModelSuperordinate;
-				var model = new ModelClass({
-					umcpCommand: lang.hitch(this, 'umcpCommand'),
-					moduleFlavor: this.moduleFlavor,
-					rootName: _('All %s', superordinateName)
-				});
-
-				this._tree = new Tree({
-					//style: 'width: auto; height: auto;',
-					model: model,
-					persist: false,
-					region: 'nav',
-					// customize the method getIconClass()
-					getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
-						return tools.getIconClass((item.icon || 'udm-container-cn') + '.png');
-					}
-				});
-				if ('navigation' !== this.moduleFlavor) {
-					// don't indent superordinates
-					domStyle.set(this._tree.indentDetector, 'width', '1px');
-				}
-				// at the first onLoad event, select the LDAP base (i.e., root) as current node
-				on.once(this._tree, 'load', lang.hitch(this, function() {
-					// if the tree has been loaded successfully, model.root
-					// is set and we can select the root as active node
-					if (this._tree.model.root) {
-						this._tree.set('path', [ this._tree.model.root ]);
-					}
-				}));
-				this.own(this._tree.watch('path', lang.hitch(this, function(attr, oldVal, newVal) {
-					// register for changes of the selected item (= path)
-					// only take them into account in case the tree is not reloading
-					if (this.moduleFlavor !== 'navigation' && newVal.length) {
-						this._setSuperordinateAndFilter(newVal[newVal.length-1].id);
-					}
-					if (!this._reloadingPath) {
-						this._searchForm.ready().then(lang.hitch(this, 'filter'));
-					} else if (this._reloadingPath == this._path2str(this._tree.get('path'))) {
-						// tree has been reloaded to its last position
-						this._reloadingPath = '';
-					}
-					if ('navigation' == this.moduleFlavor) {
-						if ( this._tree.get('path').length > 1 ) {
-							this._grid._toolbar.addChild( this._navUpButton, 0 );
-						} else {
-							this._grid._toolbar.removeChild( this._navUpButton );
-						}
-						this._navUpButton.set( 'visible', this._tree.get('path').length > 1 );
-					}
-
-				})));
-
-				// add a context menu to edit/delete items
-				var menu = new Menu({});
-				menu.addChild(this._menuEdit = new MenuItem({
-					label: _( 'Edit' ),
-					iconClass: 'umcIconEdit',
-					onClick: lang.hitch(this, function() {
-						this.createDetailPage(this._navContextItem.objectType, this._navContextItem.id);
-					})
-				}));
-				menu.addChild(this._menuDelete = new MenuItem({
-					label: _( 'Delete' ),
-					iconClass: 'umcIconDelete',
-					onClick: lang.hitch(this, function() {
-						this.removeObjects([this._navContextItem]);
-					})
-				}));
-				menu.addChild(this._menuMove = new MenuItem({
-					label: _('Move to...'),
-					onClick: lang.hitch(this, function() {
-						this.moveObjects([this._navContextItem]);
-					})
-				}));
-				menu.addChild(new MenuItem({
-					label: _( 'Reload' ),
-					iconClass: 'umcIconRefresh',
-					onClick: lang.hitch(this, 'reloadTree')
-				}));
-
-				// when we right-click anywhere on the tree, make sure we open the menu
-				menu.bindDomNode(this._tree.domNode);
-				this.own(menu);
-
-				// disables items in the menu if the LDAP base is selected
-				this.own(aspect.before(menu, '_openMyself', lang.hitch(this, function() {
-					this._updateMenuAvailability();
-				})));
-
-				// remember on which item the context menu has been opened
-				this.own(aspect.after(this._tree, '_onNodeMouseEnter', lang.hitch(this, function(node) {
-					this._navContextItemFocused = node.item;
-				}), true));
-				this.own(aspect.before(menu, '_openMyself', lang.hitch(this, function() {
-					this._navContextItem = this._navContextItemFocused;
-				})));
-				// in the case of changes, reload the navigation, as well (could have
-				// changes referring to container objects)
-				this.on('objectsaved', lang.hitch(this, function(dn, objectType) {
-					this.resetPathAndReloadTreeAndFilter([dn]);
-				}));
-
-				// keep superordinate widget in sync with the tree for DHCP / DNS
-				this.own(aspect.after(this._tree, 'reload', lang.hitch(this, function() {
-					if (this.moduleFlavor !== 'navigation') {
-						this._reloadSuperordinates();
-					}
-				})));
+			})));
 		},
 
 		_canMove: function(item) {
