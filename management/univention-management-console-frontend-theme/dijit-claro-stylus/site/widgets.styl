@@ -1,4 +1,68 @@
+/*
+ * Copyright 2014 Univention GmbH
+ *
+ * http://www.univention.de/
+ *
+ * All rights reserved.
+ *
+ * The source code of this program is made available
+ * under the terms of the GNU Affero General Public License version 3
+ * (GNU AGPL V3) as published by the Free Software Foundation.
+ *
+ * Binary versions of this program provided by Univention to you as
+ * well as other copyrighted, protected or trademarked materials like
+ * Logos, graphics, fonts, specific documentations and configurations,
+ * cryptographic keys etc. are subject to a license agreement between
+ * you and Univention and not subject to the GNU AGPL V3
+ *
+ * In the case you use this program under the terms of the GNU AGPL V3,
+ * the program is provided in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Publi
+ * License with the Debian GNU/Linux or Univention distribution in file
+ * /usr/share/common-licenses/AGPL-3; if not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
 @import "../variables";
+
+.umc .umcMultiInput {
+	margin-bottom: 1.5em;
+
+	.umcMultiInputContainer {
+		position: relative;
+	}
+
+	/* add a padding to the last element of a row */
+	.umcMultiInputContainer .umcMultiInputLastRowEntry {
+		padding-right: 45px;
+	}
+
+	/* move the removal button over the last element of the row */
+	.umcMultiInputRemoveButton {
+		position: relative;
+		top: -2.3em;
+		margin: 0 0 0 -35px;
+
+		.dijitButtonNode {
+			/* make sure the button width matches the margin to avoid a line break */
+			width: 26px;
+			padding-left: 2px;
+			padding-right: @padding-left;
+		}
+	}
+}
+
+.umc .umcContainerWidget:last-child > .umcLabelPane .umcMultiInput {
+	margin-bottom: 0;
+}
+
+.umc .umcMultiInputDisabled .umcMultiInputContainer .umcMultiInputLastRowEntry {
+	padding-right: 0;
+}
 
 .umc .umcLiveSearchSidebarRadioButtonGroup {
 	margin-top: 1.5em;
@@ -7,3 +71,12 @@
 .umc .umcMultiSelect {
 	border: 1px solid $border-color
 }
+
+.umc .umcProgressBar,
+.umc .umcProgressInfo {
+	width: 400px;
+	> * {
+		width: 100%;
+	}
+}
+

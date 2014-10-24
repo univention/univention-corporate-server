@@ -61,21 +61,24 @@ $twoColumnLayoutRules($minWidth, $maxWidth, $deviceClass, $nMinCols) {
 			.umcSize-OneAndAHalf,
 			.umcSize-FiveThirds,
 			.umcSize-Two { width: 100%;}
-
-			/* overwriting mobile padding-left */
-			.umcLabelPane {
-				padding-left: 0;
-				padding-right: 1em;
-			}
-			.umcLabelPane:last-child {
-				padding-right: 0;
-			}
 		}
 	}
 }
 
-.umc .umcLabelPane {
-	padding-bottom: 1em;
+.umc .umcLayoutRow .umcLabelPane {
+	padding: 0 0.5em 1em 0.5em;
+}
+
+.umc .umcLayoutRow {
+	.umcLabelPane-umcMultiInput,
+	.umcLabelPane-umcPasswordInputBox {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+.umc .umcLayoutRow {
+	margin: 0 -0.5em 0 -0.5em;
 }
 
 /* mobile first (width=$xxs-max): default is a one-column layout */
@@ -87,16 +90,6 @@ $twoColumnLayoutRules($minWidth, $maxWidth, $deviceClass, $nMinCols) {
 .umcSize-OneAndAHalf,
 .umcSize-FiveThirds,
 .umcSize-Two { width: 100%;}
-
-/* possible permutation of elements for mobile */
-.umcSize-OneThird:first-child + .umcSize-OneThird + .umcSize-OneThird,
-.umcSize-OneThird:first-child + .umcSize-OneThird,
-.umcSize-OneThird:first-child + .umcSize-Half,
-.umcSize-OneThird:first-child + .umcSize-TwoThirds,
-.umcSize-Half:first-child + .umcSize-Half,
-.umcSize-TwoThirds:first-child + .umcSize-OneThird {
-	padding-left: 1em;
-}
 
 $twoColumnLayoutRules($xs-min, $xs-max, 'xs', 9)
 $twoColumnLayoutRules($sm-min, $sm-max, 'sm', 9)

@@ -28,7 +28,6 @@
 @import url("../../icons/editorIcons.css"); /*sprite for editor icons to be used by all themes*/
 @import url("TitlePane.css");
 @import url("form/NumberSpinner.css");
-@import url("form/MultiInput.css");
 @import url("Grid.css");
 @import url("../../../dojox/grid/resources/Grid.css");
 @import url("../../../dojox/grid/enhanced/resources/Common.css");
