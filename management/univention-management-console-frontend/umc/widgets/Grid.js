@@ -48,20 +48,21 @@ define([
 	"dojo/data/ObjectStore",
 	"dojox/grid/EnhancedGrid",
 	"dojox/grid/cells",
-	"umc/widgets/Button",
-	"umc/widgets/Text",
-	"umc/widgets/ContainerWidget",
-	"umc/widgets/StandbyMixin",
-	"umc/widgets/Tooltip",
-	"umc/tools",
-	"umc/render",
-	"umc/i18n!",
+	"./Button",
+	"./Text",
+	"./ContainerWidget",
+	"./StandbyMixin",
+	"./Tooltip",
+	"./_RegisterOnShowMixin",
+	"../tools",
+	"../render",
+	"../i18n!",
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
 ], function(declare, lang, array, kernel, win, construct, attr, geometry, style, domClass,
 		topic, aspect, on, Menu, MenuItem, DropDownButton,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
-		StandbyMixin, Tooltip, tools, render, _) {
+		StandbyMixin, Tooltip, _RegisterOnShowMixin, tools, render, _) {
 
 	// disable Grid search with different starting points, as the results are loaded
 	// only once entirely (see Bug #25476)
@@ -99,7 +100,7 @@ define([
 		}
 	});
 
-	return declare("umc.widgets.Grid", [ContainerWidget, StandbyMixin], {
+	return declare("umc.widgets.Grid", [ContainerWidget, StandbyMixin, _RegisterOnShowMixin], {
 		// summary:
 		//		Encapsulates a complex grid with store, UMCP commands and action buttons;
 		//		offers easy access to select items etc.
@@ -327,6 +328,7 @@ define([
 		startup: function() {
 			this.inherited(arguments);
 
+			this._registerAtParentOnShowEvents(lang.hitch(this._grid, 'resize'));
 			this.own(on(win.doc, 'resize', lang.hitch(this, '_handleResize')));
 			this.own(on(kernel.global, 'resize', lang.hitch(this, '_handleResize')));
 		},

@@ -52,6 +52,9 @@ define([
 		//		Specifies the group of radio buttons that shares one value.
 		radioButtonGroup: null,
 
+		// display the label on the right
+		labelPosition: 'right',
+
 		// the widget's class name as CSS class
 		'class': 'umcRadioButton',
 

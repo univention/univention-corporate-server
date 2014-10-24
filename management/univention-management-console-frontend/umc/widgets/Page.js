@@ -37,13 +37,13 @@ define([
 	"dojo/dom-style",
 	"dojo/dom-class",
 	"dojox/grid/_Grid",
-	"umc/tools",
-	"umc/dialog",
-	"umc/render",
-	"umc/widgets/Text",
-	"umc/widgets/Grid",
-	"umc/widgets/ContainerWidget",
-	"umc/i18n!"
+	"../tools",
+	"../dialog",
+	"../render",
+	"./Text",
+	"./Grid",
+	"./ContainerWidget",
+	"../i18n!"
 ], function(declare, kernel, lang, array, aspect, style, domClass, _Grid, tools, dialog, render, Text, Grid, ContainerWidget, _) {
 	return declare("umc.widgets.Page", [ContainerWidget], {
 		// summary:
@@ -86,9 +86,11 @@ define([
 
 		i18nClass: 'umc.app',
 
+		_nav: null,
+		_main: null,
+		_footer: null,
 		_helpTextPane: null,
 		_headerTextPane: null,
-		_footer: null,
 		_footerButtons: null,
 		_navButtons: null,
 
@@ -103,6 +105,9 @@ define([
 		},
 
 		_setHelpTextAttr: function(newVal) {
+			if (!newVal) {
+				return;
+			}
 			if (!this._helpTextPane) {
 				this._helpTextPane = new Text({
 					region: this.helpTextRegion,
@@ -122,6 +127,9 @@ define([
 		},
 
 		_setHeaderTextAttr: function(newVal) {
+			if (!newVal) {
+				return;
+			}
 			if (!this._headerTextPane) {
 				this._headerTextPane = new Text({
 					region: this.headerTextRegion,
@@ -173,14 +181,14 @@ define([
 				'class': 'umcPageNav dijitHidden'
 			});
 			this._main = new ContainerWidget({
-				'class': 'umcPageMain col-xs-12'
+				'class': 'umcPageMain col-xs-12 col-sm-12 col-md-12 col-lg-12'
 			});
 			ContainerWidget.prototype.addChild.apply(this, [this._nav]);
 			ContainerWidget.prototype.addChild.apply(this, [this._main]);
 
 			this._footer = new ContainerWidget({
 				region: 'footer',
-				'class': 'umcPageFooter col-xs-12'
+				'class': 'umcPageFooter col-xs-12 col-sm-12 col-md-12 col-lg-12'
 			});
 			ContainerWidget.prototype.addChild.apply(this, [this._footer]);
 

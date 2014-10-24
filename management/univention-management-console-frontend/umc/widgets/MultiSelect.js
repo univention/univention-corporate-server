@@ -32,20 +32,19 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/aspect",
 	"dojo/Deferred",
 	"dojo/query",
 	"dojo/dom-class",
-	"dijit/registry",
 	"dojox/grid/EnhancedGrid",
 	"../tools",
 	"./_SelectMixin",
 	"./_FormWidgetMixin",
 	"./StandbyMixin",
+	"./_RegisterOnShowMixin",
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/cells"
-], function(declare, lang, array, aspect, Deferred, query, domClass, registry, EnhancedGrid, tools, _SelectMixin, _FormWidgetMixin, StandbyMixin) {
-	return declare("umc.widgets.MultiSelect", [ EnhancedGrid, _FormWidgetMixin, _SelectMixin, StandbyMixin ], {
+], function(declare, lang, array, Deferred, query, domClass, EnhancedGrid, tools, _SelectMixin, _FormWidgetMixin, StandbyMixin, _RegisterOnShowMixin) {
+	return declare("umc.widgets.MultiSelect", [ EnhancedGrid, _FormWidgetMixin, _SelectMixin, StandbyMixin, _RegisterOnShowMixin ], {
 		// summary:
 		//		This class represents a MultiSelect widget. Essentially, it adapts a DataGrid
 		//		to the behaviour expected from a MultiSelect widget.
@@ -113,25 +112,10 @@ define([
 			}));
 		},
 
-		_registerResizeAtParentOnShowEvents: function() {
-			var node = this.domNode;
-			while (node) {
-				var widget = registry.getEnclosingWidget(node.parentNode);
-				if (!widget) {
-					node = null;
-					continue;
-				}
-				if (domClass.contains(widget.domNode, 'dijitStackContainer-child') && widget._onShow) {
-					this.own(aspect.after(widget, '_onShow', lang.hitch(this, 'resize')));
-				}
-				node = widget.domNode;
-			}
-		},
-
 		startup: function() {
 			this.inherited(arguments);
 			this.resize();
-			this._registerResizeAtParentOnShowEvents();
+			this._registerAtParentOnShowEvents(lang.hitch(this, 'resize'));
 		},
 
 		_getSizeAttr: function() {

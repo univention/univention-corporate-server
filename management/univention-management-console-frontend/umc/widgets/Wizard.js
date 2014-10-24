@@ -34,17 +34,21 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/event",
 	"dojo/dom-class",
+	"dojo/dom-geometry",
 	"dojo/aspect",
 	"dojo/when",
 	"dojo/json",
+	"dojox/html/styles",
+	"dijit/registry",
 	"dijit/layout/StackContainer",
-	"umc/tools",
-	"umc/widgets/Form",
-	"umc/widgets/Page",
-	"umc/widgets/StandbyMixin",
-	"umc/i18n!"
-], function(declare, lang, array, event, domClass, aspect, when, json, StackContainer, tools, Form, Page, StandbyMixin, _) {
-	return declare("umc.widgets.Wizard", [ StackContainer, StandbyMixin ], {
+	"../tools",
+	"./Form",
+	"./Page",
+	"./StandbyMixin",
+	"./_RegisterOnShowMixin",
+	"../i18n!"
+], function(declare, lang, array, event, domClass, geometry, aspect, when, json, styles, registry, StackContainer, tools, Form, Page, StandbyMixin, _RegisterOnShowMixin, _) {
+	return declare("umc.widgets.Wizard", [ StackContainer, StandbyMixin, _RegisterOnShowMixin ], {
 		// summary:
 		//		This wizard class allows to specify a list of pages which will be
 		//		shown in a controlable manner.
@@ -68,7 +72,14 @@ define([
 		//		Whether the first widget of the form should be focused upon show()
 		autoFocus: false,
 
+		// autoHeight: Boolean
+		//		If set, a min height is computed across all wizard pages in order
+		//		to leave the footer with buttons fixed.
+		autoHeight: false,
+
 		_pages: null,
+
+		_cssRule: null,
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -144,9 +155,58 @@ define([
 			}];
 		},
 
+		_getMaxHeight: function() {
+			if (!this.pages.length) {
+				return 0;
+			}
+
+			var pageHeights = array.map(this.pages, lang.hitch(this, function(ipageConf) {
+				var ipage = this._pages[ipageConf.name];
+				var iwrapper = ipage.domNode.parentNode;  // each child is wrapped into a wrapper node
+				var isVisible = ipage == this.selectedChildWidget;
+				if (!isVisible) {
+					// display page offscreen to determine the height
+					domClass.add(iwrapper, 'dijitOffScreen');
+					domClass.remove(iwrapper, 'dijitHidden');
+				}
+				var iheight = geometry.position(ipage._main.domNode).h;
+				if (!isVisible) {
+					// restore original state
+					domClass.add(iwrapper, 'dijitHidden');
+					domClass.remove(iwrapper, 'dijitOffScreen');
+				}
+				return iheight;
+			}));
+
+			var maxHeight = Math.max.apply(null, pageHeights);
+			return maxHeight;
+		},
+
+		_removeCssRule: function() {
+			if (this._cssRule) {
+				styles.removeCssRule.apply(styles, this._cssRule);
+				this._cssRule = null;
+			}
+		},
+
+		_adjustWizardHeight: function() {
+			this._removeCssRule();
+			this._cssRule = [lang.replace('.umc #{id} .umcPageMain', this), lang.replace('min-height: {0}px; ', [this._getMaxHeight()])];
+			styles.insertCssRule.apply(styles, this._cssRule);
+		},
+
 		startup: function() {
 			this.inherited(arguments);
 			this._next(null);
+			if (this.autoHeight) {
+				this._adjustWizardHeight();
+				this._registerAtParentOnShowEvents(lang.hitch(this, '_adjustWizardHeight'));
+			}
+		},
+
+		destroy: function() {
+			this._removeCssRule();
+			this.inherited(arguments);
 		},
 
 		_getPageIndex: function(/*String*/ pageName) {

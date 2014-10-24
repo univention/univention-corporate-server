@@ -1,3 +1,13 @@
+univention-management-console-frontend (4.1.69-1) unstable; urgency=medium
+
+  Bug #35654:
+  * fix problems with offscreen rendering of dojo grids via generic mixin
+  * adjust label position of RadioButton
+  * fix default bootstrap classes and visibility for Page containers
+  * add autoHeight property to Wizard to determine an overall minimum height
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Oct 2014 02:11:36 +0200
+
 univention-management-console-frontend (4.1.68-1) unstable; urgency=medium
 
   * Bug #35654: fix problems with rendering of dojo grids on hidden tabs
