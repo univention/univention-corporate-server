@@ -46,6 +46,8 @@ define([
 		// summary:
 		//		Dialog class for creating a new LDAP object.
 
+		'class': 'umcUdmNewObjectDialog',
+
 		// umcpCommand: Function
 		//		Reference to the module specific umcpCommand function.
 		ucmpCommand: null,
@@ -74,9 +76,6 @@ define([
 		objectNameSingular: '',
 		objectNamePlural: '',
 
-		// force max-width
-		//style: 'max-width: 300px;',
-
 		autofocus: false, // interferes with Wizard.autoFocus
 
 		postMixInProperties: function() {
@@ -87,7 +86,6 @@ define([
 
 			// mixin the dialog title
 			lang.mixin(this, {
-				//style: 'max-width: 450px'
 				title: _( 'Add a new %s', this.objectNameSingular )
 			});
 		},
@@ -132,9 +130,7 @@ define([
 				iarray.sort(tools.cmpObjects('label'));
 			});
 
-			this._wizardContainer = new StackContainer({
-				style: 'width: 630px; height: 310px;'
-			});
+			this._wizardContainer = new StackContainer({});
 			this._preWizard = new FirstPageWizard({
 				types: types,
 				containers: containers,
@@ -201,7 +197,8 @@ define([
 							detailPage: detailsValues.detailPage,
 							template: detailsValues.template,
 							preWizardAvailable: this.canContinue.isRejected(),
-							properties: detailsValues.properties
+							properties: detailsValues.properties,
+							autoHeight: true
 						});
 						// insert at position 1. If another createWizard is added
 						//   (after successfully saving the object) that

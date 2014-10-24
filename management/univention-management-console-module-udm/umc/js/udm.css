@@ -24,3 +24,8 @@
 .umc .umcPage .umcPageNav .umcImageUploader img {
 	max-height: 250px;
 }
+
+.umc .umcUdmNewObjectDialog .dijitStackContainer {
+	height: auto !important;
+	width: 500px;
+}

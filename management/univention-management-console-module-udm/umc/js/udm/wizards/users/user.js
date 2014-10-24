@@ -37,7 +37,6 @@ define([
 	return declare("umc.modules.udm.wizards.users.user", [ CreateWizard ], {
 		widgetPages: [
 			{ // page one
-				title: _('User information'),
 				widgets: [
 					['title', 'firstname', 'lastname'], // row one
 					['username'] // row two
@@ -45,11 +44,11 @@ define([
 					// ['mailPrimaryAddress'] // row three
 				]
 			}, { // page two
-				title: _('Password'),
 				widgets: [
-					['password'],
-					['pwdChangeNextLogin', 'overridePWLength'],
-					['disabled']
+					'password',
+					'pwdChangeNextLogin',
+					'overridePWLength',
+					'disabled'
 				]
 			}
 		],

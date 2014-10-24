@@ -40,7 +40,6 @@ define([
 	return declare("umc.modules.udm.wizards.computers.computer", [ CreateWizard ], {
 		widgetPages: [
 			{
-				title: _('Computer information'),
 				widgets: [
 					['name'],
 					['network'],

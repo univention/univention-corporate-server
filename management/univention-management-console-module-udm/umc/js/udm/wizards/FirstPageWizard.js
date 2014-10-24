@@ -107,7 +107,6 @@ define([
 					}
 					this._updateButtons('firstPage');
 					this._updateButtons('activeDirectoryPage');
-					this.set('title', this.getObjectTypeName());
 				}));
 			}
 		},
@@ -396,7 +395,6 @@ define([
 
 			return {
 				name: 'firstPage',
-				headerText: this.get('title'),
 				widgets: widgets,
 				layout: layout
 			};
