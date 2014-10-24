@@ -54,7 +54,7 @@ terminal-font: "Sans Regular 12"
   top = 200
   height = 200
   item_font = "Sans Regular 12"
-  item_color = #3c3c3c
+  item_color = "#3c3c3c"
   selected_item_color = "black"
   item_height = 20
   item_padding = 15
