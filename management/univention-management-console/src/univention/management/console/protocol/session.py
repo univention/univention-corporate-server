@@ -80,21 +80,24 @@ except AttributeError as e:
 	#   This is a problem as users_module is not initialized but should happen
 	#   only outside real UMC usage (e.g. when using a script which imports
 	#   univention.management.console.log.MODULE or something)
-	#   See Bug #32565
+	# See Bug #32565
 	CORE.warn('An error occurred loading UDM handlers. Probably an unknown syntax. This error message is only a problem when not executed in helper scripts like postinst or similar. %s' % e)
 
 TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
 
-class State( signals.Provider ):
+
+class State(signals.Provider):
+
 	"""Holds information about the state of an active session
 
 	:param str client: IP address + port
 	:param fd socket: file descriptor or socket obbject
 	"""
-	def __init__( self, client, socket ):
-		signals.Provider.__init__( self )
+
+	def __init__(self, client, socket):
+		signals.Provider.__init__(self)
 		self.__auth = AuthHandler()
-		self.__auth.signal_connect( 'authenticated', self._authenticated )
+		self.__auth.signal_connect('authenticated', self._authenticated)
 		self.client = client
 		self.socket = socket
 		self.processor = None
@@ -103,30 +106,31 @@ class State( signals.Provider ):
 		self.buffer = ''
 		self.requests = {}
 		self.authResponse = None
-		self.signal_new( 'authenticated' )
+		self.signal_new('authenticated')
 		self.resend_queue = []
 		self.running = False
 		self.username = None
 
-	def __del__( self ):
-		CORE.info( 'The session is shutting down' )
+	def __del__(self):
+		CORE.info('The session is shutting down')
 		del self.processor
 
-	def _authenticated( self, result):
+	def _authenticated(self, result):
 		self.__credentials = result.credentials
-		self.signal_emit( 'authenticated', result, self )
+		self.signal_emit('authenticated', result, self)
 
-	def authenticate( self, username, password, new_password=None ):
+	def authenticate(self, username, password, new_password=None):
 		"""Initiates an authentication process"""
 		self.username = username
-		self.__auth.authenticate( username, password, new_password )
+		self.__auth.authenticate(username, password, new_password)
 
-	def credentials( self ):
+	def credentials(self):
 		"""Returns the credentials"""
 		return self.__credentials
 
 
-class ModuleProcess( Client ):
+class ModuleProcess(Client):
+
 	"""handles the communication with a UMC module process
 
 	:param str module: name of the module to start
@@ -134,47 +138,47 @@ class ModuleProcess( Client ):
 	:param str locale: locale to use for the module process
 	"""
 
-	def __init__( self, module, debug = '0', locale = None ):
-		socket = '/var/run/univention-management-console/%u-%lu.socket' % ( os.getpid(), long( time.time() * 1000 ) )
+	def __init__(self, module, debug='0', locale=None):
+		socket = '/var/run/univention-management-console/%u-%lu.socket' % (os.getpid(), long(time.time() * 1000))
 		# determine locale settings
-		modxmllist = moduleManager[ module ]
-		args = [ MODULE_COMMAND, '-m', module, '-s', socket, '-d', str( debug ) ]
+		modxmllist = moduleManager[module]
+		args = [MODULE_COMMAND, '-m', module, '-s', socket, '-d', str(debug)]
 		for modxml in modxmllist:
 			if modxml.notifier:
-				args.extend( [ '-n', modxml.notifier ] )
+				args.extend(['-n', modxml.notifier])
 				break
 		if locale:
-			args.extend( ( '-l', '%s' % locale ) )
+			args.extend(('-l', '%s' % locale))
 			self.__locale = locale
 		else:
 			self.__locale = None
-		Client.__init__( self, unix = socket, ssl = False, auth = False )
-		self.signal_connect( 'response', self._response )
-		CORE.process( 'running: %s' % args )
-		self.__process = popen.RunIt( args, stdout = False )
-		self.__process.signal_connect( 'killed', self._died )
+		Client.__init__(self, unix=socket, ssl=False, auth=False)
+		self.signal_connect('response', self._response)
+		CORE.process('running: %s' % args)
+		self.__process = popen.RunIt(args, stdout=False)
+		self.__process.signal_connect('killed', self._died)
 		self.__pid = self.__process.start()
 		self._connect_retries = 1
-		self.signal_new( 'result' )
-		self.signal_new( 'finished' )
+		self.signal_new('result')
+		self.signal_new('finished')
 		self.name = module
 		self.running = False
 		self._queued_requests = []
 		self._inactivity_timer = None
 		self._inactivity_counter = 0
 
-	def __del__( self ):
-		CORE.process( 'ModuleProcess: dying' )
+	def __del__(self):
+		CORE.process('ModuleProcess: dying')
 		self.disconnect()
-		self.__process.signal_disconnect( 'killed', self._died )
+		self.__process.signal_disconnect('killed', self._died)
 		self.__process.stop()
-		CORE.process( 'ModuleProcess: child stopped' )
+		CORE.process('ModuleProcess: child stopped')
 
-	def _died( self, pid, status ):
-		CORE.process( 'ModuleProcess: child died' )
-		self.signal_emit( 'finished', pid, status )
+	def _died(self, pid, status):
+		CORE.process('ModuleProcess: child died')
+		self.signal_emit('finished', pid, status)
 
-	def _response( self, msg ):
+	def _response(self, msg):
 		# these responses must not be send to the external client as
 		# this commands were generated within the server
 		if msg.command == 'SET' and 'commands/permitted' in msg.arguments:
@@ -182,13 +186,15 @@ class ModuleProcess( Client ):
 		if msg.command == 'EXIT' and 'internal' in msg.arguments:
 			return
 
-		self.signal_emit( 'result', msg )
+		self.signal_emit('result', msg)
 
-	def pid( self ):
+	def pid(self):
 		"""Returns process ID of module process"""
 		return self.__pid
 
-class Processor( signals.Provider ):
+
+class Processor(signals.Provider):
+
 	"""Implements a proxy and command handler. It handles all internal
 	UMCP commands and passes the commands for a module to the
 	subprocess.
@@ -197,17 +203,17 @@ class Processor( signals.Provider ):
 	:param str password: password of the user
 	"""
 
-	def __init__( self, username, password ):
+	def __init__(self, username, password):
 		self.__username = username
 		self.__password = password
 		self.__user_dn = None
 		self.__udm_users_module_initialised = False
 		self.__command_list = None
 		self.acls = None
-		signals.Provider.__init__( self )
-		self.core_i18n = Translation( 'univention-management-console' )
+		signals.Provider.__init__(self)
+		self.core_i18n = Translation('univention-management-console')
 		self.i18n = I18N_Manager()
-		self.i18n[ 'umc-core' ] = I18N()
+		self.i18n['umc-core'] = I18N()
 
 		# stores the module processes [ modulename ] = <>
 		self.__processes = {}
@@ -217,17 +223,17 @@ class Processor( signals.Provider ):
 		self._init_ldap_connection()
 		if self.lo is not None:
 			# get the LDAP DN of the authorized user
-			ldap_dn = self.lo.searchDn( '(&(uid=%s)(objectClass=posixAccount))' % self.__username )
+			ldap_dn = self.lo.searchDn('(&(uid=%s)(objectClass=posixAccount))' % self.__username)
 			if ldap_dn:
-				self.__user_dn = ldap_dn[ 0 ]
-				CORE.info( 'The LDAP DN for user %s is %s' % ( self.__username, self.__user_dn ) )
+				self.__user_dn = ldap_dn[0]
+				CORE.info('The LDAP DN for user %s is %s' % (self.__username, self.__user_dn))
 			else:
-				CORE.info( 'The LDAP DN for user %s could not be found' % self.__username )
+				CORE.info('The LDAP DN for user %s could not be found' % self.__username)
 
 		# read the ACLs
 		self._reload_acls_and_permitted_commands()
 
-		self.signal_new( 'response' )
+		self.signal_new('response')
 
 	def _reload_acls_and_permitted_commands(self):
 		self.acls = LDAP_ACLs(self.lo, self.__username, ucr['ldap/base'])
@@ -239,63 +245,63 @@ class Processor( signals.Provider ):
 	def _init_ldap_connection(self):
 		try:
 			# get LDAP connection with machine account
-			self.lo, self.po = udm_uldap.getMachineConnection( ldap_master = False )
-		except ( ldap.LDAPError, IOError ) as e:
+			self.lo, self.po = udm_uldap.getMachineConnection(ldap_master=False)
+		except (ldap.LDAPError, IOError) as e:
 			# problems connection to LDAP server or the server is not joined (machine.secret is missing)
 			CORE.warn('An error occurred connecting to the LDAP server: %s' % e)
 			self.lo = None
 
-	def shutdown( self ):
+	def shutdown(self):
 		"""Instructs the module process to shutdown"""
-		CORE.info( 'The session is shutting down. Sending UMC modules an EXIT request (%d processes)' % len( self.__processes ) )
+		CORE.info('The session is shutting down. Sending UMC modules an EXIT request (%d processes)' % len(self.__processes))
 		for module_name in self.__processes:
-			CORE.info( 'Ask module %s to shutdown gracefully' % module_name )
-			req = Request( 'EXIT', arguments = [ module_name, 'internal' ] )
-			self.__processes[ module_name ].request( req )
+			CORE.info('Ask module %s to shutdown gracefully' % module_name)
+			req = Request('EXIT', arguments=[module_name, 'internal'])
+			self.__processes[module_name].request(req)
 
-	def __del__( self ):
-		CORE.process( 'Processor: dying' )
+	def __del__(self):
+		CORE.process('Processor: dying')
 		for process in self.__processes.values():
 			del process
 
-	def get_module_name( self, command ):
+	def get_module_name(self, command):
 		"""Returns the name of the module that provides the given command
 
 		:param str command: the command name
 		"""
-		return moduleManager.module_providing( self.__command_list, command )
+		return moduleManager.module_providing(self.__command_list, command)
 
-	def request( self, msg ):
+	def request(self, msg):
 		"""Handles an incoming UMCP request and passes the requests to
 		specific handler functions.
 
 		:param Request msg: UMCP request
 		"""
 		if msg.command == 'EXIT':
-			self.handle_request_exit( msg )
+			self.handle_request_exit(msg)
 		elif msg.command == 'GET':
-			self.handle_request_get( msg )
+			self.handle_request_get(msg)
 		elif msg.command == 'SET':
-			self.handle_request_set( msg )
+			self.handle_request_set(msg)
 		elif msg.command == 'VERSION':
-			self.handle_request_version( msg )
+			self.handle_request_version(msg)
 		elif msg.command == 'COMMAND':
-			self.handle_request_command( msg )
+			self.handle_request_command(msg)
 		elif msg.command == 'UPLOAD':
-			self.handle_request_upload( msg )
-		elif msg.command in ( 'STATUS', 'CANCEL', 'CLOSE' ):
-			self.handle_request_unknown( msg )
+			self.handle_request_upload(msg)
+		elif msg.command in ('STATUS', 'CANCEL', 'CLOSE'):
+			self.handle_request_unknown(msg)
 		else:
-			self.handle_request_unknown( msg )
+			self.handle_request_unknown(msg)
 
 	def _purge_child(self, module_name):
 		if module_name in self.__processes:
-			CORE.process( 'module %s is still running - purging module out of memory' % module_name)
-			pid = self.__processes[ module_name ].pid()
+			CORE.process('module %s is still running - purging module out of memory' % module_name)
+			pid = self.__processes[module_name].pid()
 			os.kill(pid, 9)
 		return False
 
-	def handle_request_exit( self, msg ):
+	def handle_request_exit(self, msg):
 		"""Handles an EXIT request. If the request does not have an
 		argument that contains a valid name of a running UMC module
 		instance the request is returned as a bad request.
@@ -308,31 +314,31 @@ class Processor( signals.Provider ):
 
 		:param Request msg: UMCP request
 		"""
-		if len( msg.arguments ) < 1:
-			return self.handle_request_unknown( msg )
+		if len(msg.arguments) < 1:
+			return self.handle_request_unknown(msg)
 
-		module_name = msg.arguments[ 0 ]
+		module_name = msg.arguments[0]
 		if module_name:
 			if module_name in self.__processes:
-				self.__processes[ module_name ].request( msg )
-				CORE.info( 'Ask module %s to shutdown gracefully' % module_name )
+				self.__processes[module_name].request(msg)
+				CORE.info('Ask module %s to shutdown gracefully' % module_name)
 				# added timer to kill away module after 3000ms
-				cb = notifier.Callback( self._purge_child, module_name )
-				self.__killtimer[ module_name ] = notifier.timer_add( 3000, cb )
+				cb = notifier.Callback(self._purge_child, module_name)
+				self.__killtimer[module_name] = notifier.timer_add(3000, cb)
 			else:
-				CORE.info( 'Got EXIT request for a non-existing module %s' % module_name )
+				CORE.info('Got EXIT request for a non-existing module %s' % module_name)
 
-	def handle_request_version( self, msg ):
+	def handle_request_version(self, msg):
 		"""Handles a VERSION request by returning the version of the UMC
 		server's protocol version.
 
 		:param Request msg: UMCP request
 		"""
-		res = Response( msg )
-		res.status = SUCCESS # Ok
-		res.body[ 'version' ] = VERSION
+		res = Response(msg)
+		res.status = SUCCESS  # Ok
+		res.body['version'] = VERSION
 
-		self.signal_emit( 'response', res )
+		self.signal_emit('response', res)
 
 	def _get_user_obj(self):
 		if not self.__user_dn:
@@ -370,7 +376,7 @@ class Processor( signals.Provider ):
 			CORE.warn('Failed to open UDM user object %s: %s' % (self.__user_dn, e))
 		return None
 
-	def handle_request_get( self, msg ):
+	def handle_request_get(self, msg):
 		"""Handles a GET request. The following possible variants are supported:
 
 		modules/list
@@ -385,7 +391,7 @@ class Processor( signals.Provider ):
 		:param Request msg: UMCP request
 		"""
 
-		res = Response( msg )
+		res = Response(msg)
 		res.status = SUCCESS
 
 		if 'modules/list' in msg.arguments:
@@ -417,13 +423,13 @@ class Processor( signals.Provider ):
 						if not translationId:
 							translationId = id
 						modules.append({
-							'id' : id,
-							'flavor' : flavor.id,
-							'name' : self.i18n._( flavor.name, translationId ),
-							'description' : self.i18n._( flavor.description, translationId ),
-							'icon' : flavor.icon,
-							'categories' : (flavor.categories or module.categories) + favcat,
-							'priority' : flavor.priority,
+							'id': id,
+							'flavor': flavor.id,
+							'name': self.i18n._(flavor.name, translationId),
+							'description': self.i18n._(flavor.description, translationId),
+							'icon': flavor.icon,
+							'categories': (flavor.categories or module.categories) + favcat,
+							'priority': flavor.priority,
 							'keywords': list(set(flavor.keywords + [self.i18n._(keyword, translationId) for keyword in flavor.keywords]))
 						})
 				else:
@@ -431,12 +437,12 @@ class Processor( signals.Provider ):
 					if id in favorites:
 						favcat.append('_favorites_')
 					modules.append({
-						'id' : id,
-						'name' : self.i18n._( module.name, id ),
-						'description' : self.i18n._( module.description, id ),
-						'icon' : module.icon,
-						'categories' : module.categories + favcat,
-						'priority' : module.priority,
+						'id': id,
+						'name': self.i18n._(module.name, id),
+						'description': self.i18n._(module.description, id),
+						'icon': module.icon,
+						'categories': module.categories + favcat,
+						'priority': module.priority,
 						'keywords': list(set(module.keywords + [self.i18n._(keyword, id) for keyword in module.keywords]))
 					})
 			res.body['modules'] = modules
@@ -482,9 +488,9 @@ class Processor( signals.Provider ):
 		else:
 			res.status = BAD_REQUEST_INVALID_ARGS
 
-		self.signal_emit( 'response', res )
+		self.signal_emit('response', res)
 
-	def handle_request_set( self, msg ):
+	def handle_request_set(self, msg):
 		"""Handles a SET request. No argument may be given. The
 		variables that should be set are passed via the request
 		options. Currently the only variable that may be set is the
@@ -493,12 +499,12 @@ class Processor( signals.Provider ):
 
 		:param Request msg: UMCP request
 		"""
-		res = Response( msg )
-		if len( msg.arguments ):
+		res = Response(msg)
+		if len(msg.arguments):
 			res.status = BAD_REQUEST_INVALID_ARGS
-			res.message = status_description( res.status )
+			res.message = status_description(res.status)
 
-			self.signal_emit( 'response', res )
+			self.signal_emit('response', res)
 			return
 
 		res.status = SUCCESS
@@ -507,23 +513,23 @@ class Processor( signals.Provider ):
 		for key, value in msg.options.items():
 			if key == 'locale':
 				try:
-					self.core_i18n.set_language( value )
-					CORE.info( 'Setting locale: %s' % value )
-					self.i18n.set_locale( value )
-				except (I18N_Error, AttributeError, TypeError), e:
+					self.core_i18n.set_language(value)
+					CORE.info('Setting locale: %s' % value)
+					self.i18n.set_locale(value)
+				except (I18N_Error, AttributeError, TypeError) as e:
 					res.status = BAD_REQUEST_UNAVAILABLE_LOCALE
-					res.message = status_description( res.status )
-					CORE.warn( 'Setting locale to specified locale failed (%s)' % value )
-					CORE.warn( 'Falling back to C' )
-					self.core_i18n.set_language( 'C' )
-					self.i18n.set_locale( 'C' )
+					res.message = status_description(res.status)
+					CORE.warn('Setting locale to specified locale failed (%s)' % value)
+					CORE.warn('Falling back to C')
+					self.core_i18n.set_language('C')
+					self.i18n.set_locale('C')
 					break
 			elif key == 'user' and isinstance(value, dict) and 'preferences' in value:
 				# try to open the user object
 				userObj = self._get_user_obj()
 				if not userObj:
 					res.status = BAD_REQUEST_INVALID_OPTS
-					res.message = status_description( res.status )
+					res.message = status_description(res.status)
 					break
 				try:
 					# make sure we got a dict
@@ -554,20 +560,20 @@ class Processor( signals.Provider ):
 				except (ValueError, udm_errors.base) as e:
 					CORE.warn('Could not set given option: %s' % e)
 					res.status = BAD_REQUEST_INVALID_OPTS
-					res.message = status_description( res.status )
+					res.message = status_description(res.status)
 					break
 			else:
 				res.status = BAD_REQUEST_INVALID_OPTS
-				res.message = status_description( res.status )
+				res.message = status_description(res.status)
 				break
 
-		self.signal_emit( 'response', res )
+		self.signal_emit('response', res)
 
-	def _inactivitiy_tick( self, module ):
+	def _inactivitiy_tick(self, module):
 		if module._inactivity_counter > 0:
 			module._inactivity_counter -= 1000
 			return True
-		if self._mod_inactive( module ): # open requests -> waiting
+		if self._mod_inactive(module):  # open requests -> waiting
 			module._inactivity_counter = MODULE_INACTIVITY_TIMER
 			return True
 
@@ -576,21 +582,21 @@ class Processor( signals.Provider ):
 
 		return False
 
-	def reset_inactivity_timer( self, module ):
+	def reset_inactivity_timer(self, module):
 		"""Resets the inactivity timer. This timer watches the
 		inactivity of the module process. If the module did not receive
 		a request for MODULE_INACTIVITY_TIMER seconds the module process
 		is shut down to save resources. The timer ticks each seconds to
 		handle glitches of the system clock.
 
-		:param Module module: a module 
+		:param Module module: a module
 		"""
 		if module._inactivity_timer is None:
-			module._inactivity_timer = notifier.timer_add( 1000, notifier.Callback( self._inactivitiy_tick, module ) )
+			module._inactivity_timer = notifier.timer_add(1000, notifier.Callback(self._inactivitiy_tick, module))
 
 		module._inactivity_counter = MODULE_INACTIVITY_TIMER
 
-	def handle_request_upload( self, msg ):
+	def handle_request_upload(self, msg):
 		"""Handles an UPLOAD request. The command is used for the HTTP
 		access to the UMC server. Incoming HTTP requests that send a
 		list of files are passed on to the UMC server by storing the
@@ -607,7 +613,7 @@ class Processor( signals.Provider ):
 		"""
 		# request.options = ( { 'filename' : store.filename, 'name' : store.name, 'tmpfile' : tmpfile } )
 
-		if not isinstance( msg.options, ( list, tuple ) ):
+		if not isinstance(msg.options, (list, tuple)):
 			raise InvalidOptionsError
 
 		for file_obj in msg.options:
@@ -622,12 +628,12 @@ class Processor( signals.Provider ):
 				raise InvalidOptionsError('invalid file: invalid path')
 
 			# check if file exists
-			if not os.path.isfile( tmpfilename ):
+			if not os.path.isfile(tmpfilename):
 				raise InvalidOptionsError('invalid file: file does not exists')
 
 			# don't accept files bigger than umc/server/upload/max
-			st = os.stat( tmpfilename )
-			max_size = int( ucr.get( 'umc/server/upload/max', 64 ) ) * 1024
+			st = os.stat(tmpfilename)
+			max_size = int(ucr.get('umc/server/upload/max', 64)) * 1024
 			if st.st_size > max_size:
 				raise InvalidOptionsError('filesize is too large, maximum allowed filesize is %d' % (max_size,))
 
@@ -641,17 +647,17 @@ class Processor( signals.Provider ):
 		for file_obj in msg.options:
 			# read tmpfile and convert to base64
 			tmpfilename, filename, name = file_obj['tmpfile'], file_obj['filename'], file_obj['name']
-			with open( tmpfilename ) as buf:
-				b64buf = base64.b64encode( buf.read() )
-			result.append( { 'filename' : filename, 'name' : name, 'content' : b64buf } )
+			with open(tmpfilename) as buf:
+				b64buf = base64.b64encode(buf.read())
+			result.append({'filename': filename, 'name': name, 'content': b64buf})
 
-		response = Response( msg )
+		response = Response(msg)
 		response.result = result
 		response.status = SUCCESS
 
-		self.signal_emit( 'response', response )
+		self.signal_emit('response', response)
 
-	def handle_request_command( self, msg ):
+	def handle_request_command(self, msg):
 		"""Handles a COMMAND request. The request must contain a valid
 		and known command that can be accessed by the current user. If
 		access to the command is prohibited the request is answered as a
@@ -685,171 +691,171 @@ class Processor( signals.Provider ):
 			module_name = None
 
 		if not module_name:
-			res = Response( msg )
+			res = Response(msg)
 			res.status = BAD_REQUEST_FORBIDDEN
-			res.message = status_description( res.status )
-			self.signal_emit( 'response', res )
+			res.message = status_description(res.status)
+			self.signal_emit('response', res)
 			return
 
 		if msg.arguments:
 			if msg.mimetype == MIMETYPE_JSON:
-				is_allowed = self.acls.is_command_allowed( msg.arguments[ 0 ], options = msg.options, flavor = msg.flavor )
+				is_allowed = self.acls.is_command_allowed(msg.arguments[0], options=msg.options, flavor=msg.flavor)
 			else:
-				is_allowed = self.acls.is_command_allowed( msg.arguments[ 0 ] )
+				is_allowed = self.acls.is_command_allowed(msg.arguments[0])
 			if not is_allowed:
-				response = Response( msg )
+				response = Response(msg)
 				response.status = BAD_REQUEST_FORBIDDEN
-				response.message = status_description( response.status )
-				self.signal_emit( 'response', response )
+				response.message = status_description(response.status)
+				self.signal_emit('response', response)
 				return
 			if module_name not in self.__processes:
-				CORE.info( 'Starting new module process and passing new request to module %s: %s' % (module_name, str(msg._id)) )
-				mod_proc = ModuleProcess( module_name, debug = MODULE_DEBUG_LEVEL, locale = self.i18n.locale )
-				mod_proc.signal_connect( 'result', self._mod_result )
+				CORE.info('Starting new module process and passing new request to module %s: %s' % (module_name, str(msg._id)))
+				mod_proc = ModuleProcess(module_name, debug=MODULE_DEBUG_LEVEL, locale=self.i18n.locale)
+				mod_proc.signal_connect('result', self._mod_result)
 
-				cb = notifier.Callback( self._socket_died, module_name )
-				mod_proc.signal_connect( 'closed', cb )
+				cb = notifier.Callback(self._socket_died, module_name)
+				mod_proc.signal_connect('closed', cb)
 
-				cb = notifier.Callback( self._mod_died, module_name )
-				mod_proc.signal_connect( 'finished', cb )
+				cb = notifier.Callback(self._mod_died, module_name)
+				mod_proc.signal_connect('finished', cb)
 
-				self.__processes[ module_name ] = mod_proc
+				self.__processes[module_name] = mod_proc
 
-				cb = notifier.Callback( self._mod_connect, mod_proc, msg )
-				notifier.timer_add( 50, cb )
+				cb = notifier.Callback(self._mod_connect, mod_proc, msg)
+				notifier.timer_add(50, cb)
 			else:
-				proc = self.__processes[ module_name ]
+				proc = self.__processes[module_name]
 				if proc.running:
-					CORE.info( 'Passing new request to running module %s' % module_name )
-					proc.request( msg )
-					self.reset_inactivity_timer( proc )
+					CORE.info('Passing new request to running module %s' % module_name)
+					proc.request(msg)
+					self.reset_inactivity_timer(proc)
 				else:
-					CORE.info( 'Queuing incoming request for module %s that is not yet ready to receive' % module_name )
-					proc._queued_requests.append( msg )
+					CORE.info('Queuing incoming request for module %s that is not yet ready to receive' % module_name)
+					proc._queued_requests.append(msg)
 
-	def _mod_connect( self, mod, msg ):
+	def _mod_connect(self, mod, msg):
 		"""Callback for a timer event: Trying to connect to newly started module process"""
 		def _send_error():
 			# inform client
-			res = Response( msg )
-			res.status = SERVER_ERR_MODULE_FAILED # error connecting to module process
-			res.message = status_description( res.status )
-			self.signal_emit( 'response', res )
+			res = Response(msg)
+			res.status = SERVER_ERR_MODULE_FAILED  # error connecting to module process
+			res.message = status_description(res.status)
+			self.signal_emit('response', res)
 			# cleanup module
-			mod.signal_disconnect( 'closed', notifier.Callback( self._socket_died ) )
-			mod.signal_disconnect( 'result', notifier.Callback( self._mod_result ) )
-			mod.signal_disconnect( 'finished', notifier.Callback( self._mod_died ) )
+			mod.signal_disconnect('closed', notifier.Callback(self._socket_died))
+			mod.signal_disconnect('result', notifier.Callback(self._mod_result))
+			mod.signal_disconnect('finished', notifier.Callback(self._mod_died))
 			if mod.name in self.__processes:
-				del self.__processes[ mod.name ]
+				del self.__processes[mod.name]
 
 		try:
 			mod.connect()
 		except NoSocketError:
 			if mod._connect_retries > 200:
-				CORE.info( 'Connection to module %s process failed' % mod.name )
+				CORE.info('Connection to module %s process failed' % mod.name)
 				_send_error()
 				return False
 			if not mod._connect_retries % 50:
-				CORE.info( 'No connection to module process yet' )
+				CORE.info('No connection to module process yet')
 			mod._connect_retries += 1
 			return True
-		except Exception, e:
+		except Exception as e:
 			CORE.error('Unknown error while trying to connect to module process: %s\n%s' % (e, traceback.format_exc()))
 			_send_error()
 			return False
 		else:
-			CORE.info( 'Connected to new module process' )
+			CORE.info('Connected to new module process')
 			mod.running = True
 
 			# send acls, commands, credentials, locale
 			options = {
-				'acls' : self.acls.json(),
-				'commands' : self.__command_list[ mod.name ].json(),
-				'credentials' : { 'username' : self.__username, 'password' : self.__password, 'user_dn' : self.__user_dn },
-				}
-			if str( self.i18n.locale ):
-				options[ 'locale' ] = str( self.i18n.locale )
+				'acls': self.acls.json(),
+				'commands': self.__command_list[mod.name].json(),
+				'credentials': {'username': self.__username, 'password': self.__password, 'user_dn': self.__user_dn},
+			}
+			if str(self.i18n.locale):
+				options['locale'] = str(self.i18n.locale)
 
 			# WARNING! This debug message contains credentials!!!
 			# CORE.info( 'Initialize module process: %s' % options )
 
-			req = Request( 'SET', options = options )
-			mod.request( req )
+			req = Request('SET', options=options)
+			mod.request(req)
 
 			# send first command
-			mod.request( msg )
+			mod.request(msg)
 
 			# send queued request that were received during start procedure
 			for req in mod._queued_requests:
-				mod.request( req )
+				mod.request(req)
 			mod._queued_requests = []
 
 			# watch the module's activity and kill it after X seconds inactivity
-			self.reset_inactivity_timer( mod )
+			self.reset_inactivity_timer(mod)
 
 		return False
 
-	def _mod_inactive( self, module ):
-		CORE.info( 'The module %s is inactive for too long. Sending EXIT request to module' % module.name )
+	def _mod_inactive(self, module):
+		CORE.info('The module %s is inactive for too long. Sending EXIT request to module' % module.name)
 		if module.openRequests:
-			CORE.info( 'There are unfinished requests. Waiting for %s' % ', '.join( module.openRequests ) )
+			CORE.info('There are unfinished requests. Waiting for %s' % ', '.join(module.openRequests))
 			return True
 
 		# mark as internal so the response will not be forwarded to the client
-		req = Request( 'EXIT', arguments = [ module.name, 'internal' ] )
-		self.handle_request_exit( req )
+		req = Request('EXIT', arguments=[module.name, 'internal'])
+		self.handle_request_exit(req)
 
 		return False
 
-	def _mod_result( self, msg ):
-		self.signal_emit( 'response', msg )
+	def _mod_result(self, msg):
+		self.signal_emit('response', msg)
 
-	def _socket_died( self, module_name ):
-		CORE.warn( 'Socket died (module=%s)' % module_name )
+	def _socket_died(self, module_name):
+		CORE.warn('Socket died (module=%s)' % module_name)
 		if module_name in self.__processes:
-			self._mod_died( self.__processes[ module_name ].pid(), -1, module_name )
+			self._mod_died(self.__processes[module_name].pid(), -1, module_name)
 
-	def _mod_died( self, pid, status, module_name ):
+	def _mod_died(self, pid, status, module_name):
 		if status:
-			if os.WIFSIGNALED( status ):
-				signal = os.WTERMSIG( status )
+			if os.WIFSIGNALED(status):
+				signal = os.WTERMSIG(status)
 				exitcode = -1
-			elif os.WIFEXITED( status ):
+			elif os.WIFEXITED(status):
 				signal = -1
-				exitcode = os.WEXITSTATUS( status )
+				exitcode = os.WEXITSTATUS(status)
 			else:
 				signal = -1
 				exitcode = -1
-			CORE.warn( 'Module process %s died (pid: %d, exit status: %d, signal: %d)' % ( module_name, pid, exitcode, signal ) )
+			CORE.warn('Module process %s died (pid: %d, exit status: %d, signal: %d)' % (module_name, pid, exitcode, signal))
 		else:
-			CORE.info( 'Module process %s died on purpose' % module_name )
+			CORE.info('Module process %s died on purpose' % module_name)
 
 		# if killtimer has been set then remove it
-		CORE.info( 'Checking for kill timer (%s)' % ', '.join( self.__killtimer.keys() ) )
+		CORE.info('Checking for kill timer (%s)' % ', '.join(self.__killtimer.keys()))
 		if module_name in self.__killtimer:
-			CORE.info( 'Stopping kill timer)' )
-			notifier.timer_remove( self.__killtimer[ module_name ] )
-			del self.__killtimer[ module_name ]
+			CORE.info('Stopping kill timer)')
+			notifier.timer_remove(self.__killtimer[module_name])
+			del self.__killtimer[module_name]
 		if module_name in self.__processes:
-			CORE.warn( 'Cleaning up requests' )
-			self.__processes[ module_name ].invalidate_all_requests()
-			if self.__processes[ module_name ]._inactivity_timer is not None:
-				CORE.warn( 'Remove inactivity timer' )
-				notifier.timer_remove( self.__processes[ module_name ]._inactivity_timer )
-			del self.__processes[ module_name ]
+			CORE.warn('Cleaning up requests')
+			self.__processes[module_name].invalidate_all_requests()
+			if self.__processes[module_name]._inactivity_timer is not None:
+				CORE.warn('Remove inactivity timer')
+				notifier.timer_remove(self.__processes[module_name]._inactivity_timer)
+			del self.__processes[module_name]
 
-	def handle_request_unknown( self, msg ):
+	def handle_request_unknown(self, msg):
 		"""Handles an unknown or invalid request that is answered with a
 		status code BAD_REQUEST_NOT_FOUND.
 
 		:param Request msg: UMCP request
 		"""
-		res = Response( msg )
+		res = Response(msg)
 		res.status = BAD_REQUEST_NOT_FOUND
-		res.message = status_description( res.status )
+		res.message = status_description(res.status)
 
-		self.signal_emit( 'response', res )
+		self.signal_emit('response', res)
 
 if __name__ == '__main__':
-	processor = Processor( 'Administrator', 'univention' )
-	processor.handle_request_get ( None )
+	processor = Processor('Administrator', 'univention')
+	processor.handle_request_get(None)

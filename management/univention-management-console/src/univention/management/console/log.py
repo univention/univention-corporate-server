@@ -48,50 +48,55 @@ from univention.config_registry import ConfigRegistry
 logging.raiseExceptions = 0
 
 #: list of available debugging components
-COMPONENTS = ( ud.MAIN, ud.NETWORK, ud.SSL, ud.ADMIN, ud.MODULE, ud.AUTH, ud.PARSER, ud.LOCALE, ud.ACL, ud.RESOURCES, ud.PROTOCOL )
+COMPONENTS = (ud.MAIN, ud.NETWORK, ud.SSL, ud.ADMIN, ud.MODULE, ud.AUTH, ud.PARSER, ud.LOCALE, ud.ACL, ud.RESOURCES, ud.PROTOCOL)
 
 _ucr = ConfigRegistry()
 _ucr.load()
 _debug_ready = False
 _debug_loglevel = max(int(_ucr.get('umc/server/debug/level', 2)), int(_ucr.get('umc/module/debug/level', 2)))
 
-def log_init( filename, log_level = 2 ):
+
+def log_init(filename, log_level=2):
 	"""Initializes Univention debug.
 
 	:param str filename: The filename just needs to be a relative name. The directory /var/log/univention/ is prepended and the suffix '.log' is appended.
 	:param int log_level: log level to use (1-4)
 	"""
 
-	if filename[ 0 ] != '/':
+	if filename[0] != '/':
 		filename = '/var/log/univention/%s.log' % filename
-	fd = ud.init( filename, ud.FLUSH, ud.NO_FUNCTION )
-	adm = grp.getgrnam( 'adm' )
-	os.chown( filename, 0, adm.gr_gid )
-	os.chmod( filename, 0640 )
-	log_set_level( log_level )
+	fd = ud.init(filename, ud.FLUSH, ud.NO_FUNCTION)
+	adm = grp.getgrnam('adm')
+	os.chown(filename, 0, adm.gr_gid)
+	os.chmod(filename, 0o640)
+	log_set_level(log_level)
 
 	global _debug_ready
 	_debug_ready = True
 
 	return fd
 
-def log_set_level( level = 0 ):
+
+def log_set_level(level=0):
 	"""Sets the log level for all components.
 
 	:param int level: log level to set
 	"""
 	for component in COMPONENTS:
-		ud.set_level( component, level )
+		ud.set_level(component, level)
 
-class ILogger( object ):
+
+class ILogger(object):
+
 	"""This class provides a simple interface to access the univention
 	debug function for the given component.
 
 	:param int id: id of the component to use
 	"""
-	def __init__( self, id ):
+
+	def __init__(self, id):
 		self._id = getattr(ud, id)
-		fallbackLoggingFormatter = logging.Formatter('%%(asctime)s.%%(msecs)03d  %(component)-11s ( %%(level)-7s ) : %%(message)s' % {'component' : id}, '%d.%m.%y %H:%M:%S')
+		fallbackLoggingFormatter = logging.Formatter('%%(asctime)s.%%(msecs)03d %(component)-11s ( %%(level)-7s ) : %%(message)s' % {'component': id}, '%d.%m.%y %H:%M:%S')
 		fallbackLoggingHandler = logging.StreamHandler()
 		fallbackLoggingHandler.setFormatter(fallbackLoggingFormatter)
 		self._fallbackLogger = logging.Logger(logging.DEBUG)
@@ -103,42 +108,42 @@ class ILogger( object ):
 			{'level': 'INFO'},
 		]
 
-	def error( self, message ):
+	def error(self, message):
 		"""Write a debug message with level ERROR"""
 		if _debug_ready:
-			ud.debug( self._id, ud.ERROR, message )
+			ud.debug(self._id, ud.ERROR, message)
 		elif _debug_loglevel >= ud.ERROR:
 			self._fallbackLogger.error(message, extra=self._extras[ud.ERROR])
 
-	def warn( self, message ):
+	def warn(self, message):
 		"""Write a debug message with level WARN"""
 		if _debug_ready:
-			ud.debug( self._id, ud.WARN, message )
+			ud.debug(self._id, ud.WARN, message)
 		elif _debug_loglevel >= ud.WARN:
 			self._fallbackLogger.warning(message, extra=self._extras[ud.WARN])
 
-	def process( self, message ):
+	def process(self, message):
 		"""Write a debug message with level PROCESS"""
 		if _debug_ready:
-			ud.debug( self._id, ud.PROCESS, message )
+			ud.debug(self._id, ud.PROCESS, message)
 		elif _debug_loglevel >= ud.PROCESS:
 			self._fallbackLogger.info(message, extra=self._extras[ud.PROCESS])
 
-	def info( self, message ):
+	def info(self, message):
 		"""Write a debug message with level INFO"""
 		if _debug_ready:
-			ud.debug( self._id, ud.INFO, message )
+			ud.debug(self._id, ud.INFO, message)
 		elif _debug_loglevel >= ud.INFO:
 			self._fallbackLogger.debug(message, extra=self._extras[ud.INFO])
 
-CORE = ILogger( 'MAIN' )
-NETWORK = ILogger( 'NETWORK' )
-CRYPT = ILogger( 'SSL' )
-UDM = ILogger( 'ADMIN' )
-MODULE = ILogger( 'MODULE' )
-AUTH = ILogger( 'AUTH' )
-PARSER = ILogger( 'PARSER' )
-LOCALE = ILogger( 'LOCALE' )
-ACL = ILogger( 'ACL' )
-RESOURCES = ILogger( 'RESOURCES' )
-PROTOCOL = ILogger( 'PROTOCOL' )
+CORE = ILogger('MAIN')
+NETWORK = ILogger('NETWORK')
+CRYPT = ILogger('SSL')
+UDM = ILogger('ADMIN')
+MODULE = ILogger('MODULE')
+AUTH = ILogger('AUTH')
+PARSER = ILogger('PARSER')
+LOCALE = ILogger('LOCALE')
+ACL = ILogger('ACL')
+RESOURCES = ILogger('RESOURCES')
+PROTOCOL = ILogger('PROTOCOL')

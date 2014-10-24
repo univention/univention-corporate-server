@@ -39,24 +39,28 @@ import fcntl
 
 from univention.lib.i18n import Translation
 
-from .message import *
-from .definitions import *
+from .message import Request, Response, IncompleteMessageError, UnknownCommandError, ParseError
+from .definitions import RECV_BUFFER_SIZE, BAD_REQUEST_AUTH_FAILED, SERVER_ERR_MODULE_DIED, SUCCESS, status_get, status_description
 from ..log import CORE, PROTOCOL
-from OpenSSL import *
+from OpenSSL import SSL
 
 import notifier
 import notifier.signals as signals
 
-class UnknownRequestError( Exception ):
+
+class UnknownRequestError(Exception):
 	pass
 
-class NotAuthenticatedError( Exception ):
+
+class NotAuthenticatedError(Exception):
 	pass
 
-class NoSocketError( Exception ):
+
+class NoSocketError(Exception):
 	pass
 
-class ConnectionError( Exception ):
+
+class ConnectionError(Exception):
 	pass
 
 '''
@@ -65,7 +69,9 @@ Provides basic functionality for session-handling, authentication and
 request handling.
 '''
 
-class Client( signals.Provider, Translation ):
+
+class Client(signals.Provider, Translation):
+
 	"""Implememts an UMCP client
 
 	:param str servername: hostname of the UMC server to connect to
@@ -75,32 +81,32 @@ class Client( signals.Provider, Translation ):
 	:param bool auth: if False no authentication is required for the connection
 	"""
 
-	def __verify_cert_cb( self, conn, cert, errnum, depth, ok ):
-		CORE.info( '__verify_cert_cb: Got certificate subject: %s' % cert.get_subject() )
-		CORE.info( '__verify_cert_cb: Got certificate issuer: %s' % cert.get_issuer() )
-		CORE.info( '__verify_cert_cb: errnum=%d  depth=%d	 ok=%d' % (errnum, depth, ok) )
+	def __verify_cert_cb(self, conn, cert, errnum, depth, ok):
+		CORE.info('__verify_cert_cb: Got certificate subject: %s' % cert.get_subject())
+		CORE.info('__verify_cert_cb: Got certificate issuer: %s' % cert.get_issuer())
+		CORE.info('__verify_cert_cb: errnum=%d depth=%d ok=%d' % (errnum, depth, ok))
 		if depth == 0 and ok == 0:
-			status = status_get( BAD_REQUEST_AUTH_FAILED )
-			self.signal_emit( 'authenticated', False, status.code, status.description )
+			status = status_get(BAD_REQUEST_AUTH_FAILED)
+			self.signal_emit('authenticated', False, status.code, status.description)
 		return ok
 
-	def __init__( self, servername = 'localhost', port = 6670, unix = None, ssl = True, auth = True ):
+	def __init__(self, servername='localhost', port=6670, unix=None, ssl=True, auth=True):
 		'''Initialize a socket-connection to the server.'''
-		signals.Provider.__init__( self )
-		self.__authenticated = ( not auth )
+		signals.Provider.__init__(self)
+		self.__authenticated = (not auth)
 		self.__auth_id = None
 		self.__ssl = ssl
 		self.__unix = unix
 		if self.__ssl and not self.__unix:
 			self.__crypto_context = SSL.Context(SSL.SSLv23_METHOD)
 			self.__crypto_context.set_cipher_list('DEFAULT')
-			self.__crypto_context.set_verify( SSL.VERIFY_PEER | SSL.VERIFY_FAIL_IF_NO_PEER_CERT, self.__verify_cert_cb )
+			self.__crypto_context.set_verify(SSL.VERIFY_PEER | SSL.VERIFY_FAIL_IF_NO_PEER_CERT, self.__verify_cert_cb)
 			try:
-				self.__crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/ucsCA', 'CAcert.pem' ) )
-			except SSL.Error, e:
+				self.__crypto_context.load_verify_locations(os.path.join(dir, '/etc/univention/ssl/ucsCA', 'CAcert.pem'))
+			except SSL.Error as e:
 				# SSL is not possible
-				CORE.process( 'Client: Setting up SSL configuration failed: %s' % str( e ) )
-				CORE.process( 'Client: Communication will not be encrypted!' )
+				CORE.process('Client: Setting up SSL configuration failed: %s' % str(e))
+				CORE.process('Client: Communication will not be encrypted!')
 				self.__crypto_context = None
 				self.__ssl = False
 		self.__port = port
@@ -112,35 +118,35 @@ class Client( signals.Provider, Translation ):
 
 		self.__buffer = ''
 		self.__unfinishedRequests = []
-		self.signal_new( 'response' )
-		self.signal_new( 'authenticated' )
-		self.signal_new( 'error' )
-		self.signal_new( 'closed' )
+		self.signal_new('response')
+		self.signal_new('authenticated')
+		self.signal_new('error')
+		self.signal_new('closed')
 
 	@property
-	def openRequests( self ):
+	def openRequests(self):
 		"""Returns a list of open UMCP requests"""
 		return self.__unfinishedRequests
 
-	def __nonzero__( self ):
+	def __nonzero__(self):
 		if self.__ssl and not self.__crypto_context:
 			return False
 		return True
 
-	def _init_socket( self ):
+	def _init_socket(self):
 		if self.__unix:
-			self.__realsocket = socket.socket( socket.AF_UNIX, socket.SOCK_STREAM )
+			self.__realsocket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 		else:
-			self.__realsocket = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
-		self.__realsocket.setsockopt( socket.SOL_SOCKET, socket.SO_REUSEADDR, 1 )
+			self.__realsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self.__realsocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		fcntl.fcntl(self.__realsocket.fileno(), fcntl.F_SETFD, 1)
 
 		if self.__ssl and not self.__unix:
-			self.__socket = SSL.Connection( self.__crypto_context, self.__realsocket )
+			self.__socket = SSL.Connection(self.__crypto_context, self.__realsocket)
 		else:
 			self.__socket = None
 
-	def disconnect( self, force = True ):
+	def disconnect(self, force=True):
 		"""Shutdown the connection. If there are still open requests and
 		*force* is False the connection is kept."""
 		if not force and self.__unfinishedRequests:
@@ -150,91 +156,91 @@ class Client( signals.Provider, Translation ):
 		self.__realsocket.close()
 		self.__socket = None
 		self.__realsocket = None
-		self.signal_emit( 'closed' )
+		self.signal_emit('closed')
 		return True
 
-	def connect( self ):
+	def connect(self):
 		"""Connects to the UMC server"""
 		if not self.__realsocket and not self.__socket:
 			self._init_socket()
 		try:
 			if self.__ssl and not self.__unix:
-				self.__socket.connect( ( self.__server, self.__port ) )
-				self.__socket.setblocking( 0 )
+				self.__socket.connect((self.__server, self.__port))
+				self.__socket.setblocking(0)
 				try:
 					self.__socket.set_connect_state()
-					notifier.socket_add( self.__socket, self._recv )
-					CORE.info( 'Client.connect: SSL connection established' )
-				except SSL.Error, e:
-					CORE.process( 'Client: Setting up SSL configuration failed: %s' % str( e ) )
-					CORE.process( 'Client: Communication will not be encrypted!' )
-					self.__realsocket.shutdown( socket.SHUT_RDWR )
+					notifier.socket_add(self.__socket, self._recv)
+					CORE.info('Client.connect: SSL connection established')
+				except SSL.Error as e:
+					CORE.process('Client: Setting up SSL configuration failed: %s' % str(e))
+					CORE.process('Client: Communication will not be encrypted!')
+					self.__realsocket.shutdown(socket.SHUT_RDWR)
 					self.__ssl = False
 					self._init_socket()
- 					self.__realsocket.connect( ( self.__server, self.__port ) )
-					self.__realsocket.setblocking( 0 )
-					notifier.socket_add( self.__realsocket, self._recv )
-					CORE.info( 'Client.connect: connection established' )
+					self.__realsocket.connect((self.__server, self.__port))
+					self.__realsocket.setblocking(0)
+					notifier.socket_add(self.__realsocket, self._recv)
+					CORE.info('Client.connect: connection established')
 			else:
 				if self.__unix:
-					self.__realsocket.connect( self.__unix )
+					self.__realsocket.connect(self.__unix)
 				else:
-					self.__realsocket.connect( ( self.__server, self.__port ) )
-				self.__realsocket.setblocking( 0 )
-				notifier.socket_add( self.__realsocket, self._recv )
-		except socket.error, e:
+					self.__realsocket.connect((self.__server, self.__port))
+				self.__realsocket.setblocking(0)
+				notifier.socket_add(self.__realsocket, self._recv)
+		except socket.error as e:
 			# ENOENT: file not found, ECONNREFUSED: connection refused
-			if e.errno in ( errno.ENOENT, errno.ECONNREFUSED ):
+			if e.errno in (errno.ENOENT, errno.ECONNREFUSED):
 				raise NoSocketError()
 			raise e
 
-	def _resend( self, sock ):
+	def _resend(self, sock):
 		if sock in self.__resend_queue:
 			while len(self.__resend_queue[sock]) > 0:
 				data = str(self.__resend_queue[sock][0])
 				try:
-					bytessent = sock.send( data )
+					bytessent = sock.send(data)
 					if bytessent < len(data):
 						# only sent part of message
-						self.__resend_queue[sock][0] = data[ bytessent : ]
+						self.__resend_queue[sock][0] = data[bytessent:]
 						return True
 					else:
 						del self.__resend_queue[sock][0]
-				except socket.error, e:
-					if e.errno in ( errno.ECONNABORTED, errno.EISCONN, errno.ENOEXEC ):
+				except socket.error as e:
+					if e.errno in (errno.ECONNABORTED, errno.EISCONN, errno.ENOEXEC):
 						# Error may happen if module process died and server tries to send request at the same time
 						# ECONNABORTED: connection reset by peer
 						# EISCONN: socket not connected
 						# ENOEXEC: bad file descriptor
-						CORE.info( 'Client: _resend: socket is damaged: %s' % str( e ) )
-						self.signal_emit( 'closed' )
+						CORE.info('Client: _resend: socket is damaged: %s' % str(e))
+						self.signal_emit('closed')
 						return False
 					if e.errno in (errno.ENOTCONN, errno.EAGAIN):
 						# EAGAIN: Resource temporarily unavailable
 						# ENOTCONN: socket not connected
 						return True
 					raise
-				except ( SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError ), e:
+				except (SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError) as e:
 					return True
-				except SSL.Error, e:
-					CORE.process( 'Client: Setting up SSL configuration failed: %s' % str( e ) )
-					CORE.process( 'Client: Communication will not be encrypted!' )
-					save = self.__resend_queue[ self.__socket ]
-					del self.__resend_queue[ self.__socket ]
-					self.__realsocket.shutdown( socket.SHUT_RDWR )
+				except SSL.Error as e:
+					CORE.process('Client: Setting up SSL configuration failed: %s' % str(e))
+					CORE.process('Client: Communication will not be encrypted!')
+					save = self.__resend_queue[self.__socket]
+					del self.__resend_queue[self.__socket]
+					self.__realsocket.shutdown(socket.SHUT_RDWR)
 					self.__ssl = False
 					self._init_socket()
-					self.__realsocket.connect( ( self.__server, self.__port ) )
-					self.__realsocket.setblocking( 0 )
-					self.__resend_queue[ self.__realsocket ] = save
-					notifier.socket_add( self.__realsocket, self._recv )
-					notifier.socket_add( self.__realsocket, self._resend, notifier.IO_WRITE )
+					self.__realsocket.connect((self.__server, self.__port))
+					self.__realsocket.setblocking(0)
+					self.__resend_queue[self.__realsocket] = save
+					notifier.socket_add(self.__realsocket, self._recv)
+					notifier.socket_add(self.__realsocket, self._resend, notifier.IO_WRITE)
 					return False
 			if len(self.__resend_queue[sock]) == 0:
 				del self.__resend_queue[sock]
 		return False
 
-	def request( self, msg ):
+	def request(self, msg):
 		"""Sends an UMCP request to the UMC server
 
 		:param Request msg: the UMCP request to send
@@ -243,7 +249,7 @@ class Client( signals.Provider, Translation ):
 		if not self.__authenticated and msg.command != 'AUTH':
 			raise NotAuthenticatedError()
 
-		PROTOCOL.info( 'Sending UMCP %s REQUEST %s' % ( msg.command, msg.id ) )
+		PROTOCOL.info('Sending UMCP %s REQUEST %s' % (msg.command, msg.id))
 		if self.__ssl and not self.__unix:
 			sock = self.__socket
 		else:
@@ -252,49 +258,49 @@ class Client( signals.Provider, Translation ):
 		data = str(msg)
 
 		if sock in self.__resend_queue:
-			self.__resend_queue[ sock ].append( data )
+			self.__resend_queue[sock].append(data)
 		else:
-			self.__resend_queue[ sock ] = [ data ]
+			self.__resend_queue[sock] = [data]
 
-		if self._resend( sock ):
-			notifier.socket_add( sock, self._resend, notifier.IO_WRITE )
+		if self._resend(sock):
+			notifier.socket_add(sock, self._resend, notifier.IO_WRITE)
 
-		self.__unfinishedRequests.append( msg.id )
+		self.__unfinishedRequests.append(msg.id)
 
 	def invalidate_all_requests(self):
 		"""Checks for open UMCP requests and invalidates these by faking
 		a response with status code SERVER_ERR_MODULE_DIED"""
 
 		if self.__unfinishedRequests:
-			CORE.warn( 'Invalidating all pending requests %s' % ', '.join( self.__unfinishedRequests ) )
+			CORE.warn('Invalidating all pending requests %s' % ', '.join(self.__unfinishedRequests))
 		else:
-			CORE.info( 'No pending requests found' )
+			CORE.info('No pending requests found')
 		for reqid in self.__unfinishedRequests:
 			response = Response()
 			response._id = reqid
 			response._command = 'COMMAND'
 			response.status = SERVER_ERR_MODULE_DIED
-			self.signal_emit( 'response', response )
+			self.signal_emit('response', response)
 		self._unfinishedRequests = []
 
-	def _recv( self, sock ):
+	def _recv(self, sock):
 		try:
 			recv = ''
 			while True:
-				recv += sock.recv( RECV_BUFFER_SIZE )
+				recv += sock.recv(RECV_BUFFER_SIZE)
 				if self.__ssl and not self.__unix:
 					if not sock.pending():
 						break
 				else:
 					break
-		except socket.error, e:
-			CORE.warn( 'Client: _recv: error on socket: %s' % str( e ) )
+		except socket.error as e:
+			CORE.warn('Client: _recv: error on socket: %s' % str(e))
 			recv = None
-		except SSL.SysCallError, e:
+		except SSL.SysCallError as e:
 			# lost connection or any other unfixable error
 			recv = None
 		except SSL.Error:
-			error = sock.getsockopt( socket.SOL_SOCKET, socket.SO_ERROR )
+			error = sock.getsockopt(socket.SOL_SOCKET, socket.SO_ERROR)
 			# lost connection: UMC daemon died probably
 			if error == errno.EPIPE:
 				recv = None
@@ -302,12 +308,12 @@ class Client( signals.Provider, Translation ):
 				return True
 
 		if not recv:
-			self.signal_emit( 'closed' )
+			self.signal_emit('closed')
 			try:
 				sock.close()
 			except:
 				pass
-			notifier.socket_remove( sock )
+			notifier.socket_remove(sock)
 			return False
 
 		if self.__buffer:
@@ -316,60 +322,58 @@ class Client( signals.Provider, Translation ):
 		try:
 			while recv:
 				response = Response()
-				recv = response.parse( recv )
-				self._handle( response )
+				recv = response.parse(recv)
+				self._handle(response)
 		except IncompleteMessageError:
 			self.__buffer = recv
 			# waiting for the rest
-		except ( ParseError, UnknownCommandError ), e:
-			self.signal_emit( 'error', e )
+		except (ParseError, UnknownCommandError) as e:
+			self.signal_emit('error', e)
 
 		return True
 
-	def _handle( self, response ):
-		PROTOCOL.info( 'Received UMCP RESPONSE %s' % response.id )
+	def _handle(self, response):
+		PROTOCOL.info('Received UMCP RESPONSE %s' % response.id)
 		if response.command == 'AUTH' and response.id == self.__auth_id:
 			if response.status == SUCCESS:
 				self.__authenticated = True
-				self.__unfinishedRequests.remove( response.id )
-			message = response.message or status_description( response.status )
-			self.signal_emit( 'authenticated', self.__authenticated,
-							  response.status,
-							  message )
+				self.__unfinishedRequests.remove(response.id)
+			message = response.message or status_description(response.status)
+			self.signal_emit('authenticated', self.__authenticated, response.status, message)
 		elif response.id in self.__unfinishedRequests:
-			self.signal_emit( 'response', response )
+			self.signal_emit('response', response)
 			if response.is_final():
-				self.__unfinishedRequests.remove( response.id )
+				self.__unfinishedRequests.remove(response.id)
 		else:
-			self.signal_emit( 'error', UnknownRequestError() )
+			self.signal_emit('error', UnknownRequestError())
 
-	def authenticate( self, username, password, new_password=None ):
+	def authenticate(self, username, password, new_password=None):
 		"""Authenticate against the UMC server"""
-		authRequest = Request ('AUTH' )
+		authRequest = Request('AUTH')
 		authRequest.body['username'] = username
 		authRequest.body['password'] = password
 		authRequest.body['new_password'] = new_password
 
-		self.request( authRequest )
+		self.request(authRequest)
 
 		self.__auth_id = authRequest.id
 
 if __name__ == '__main__':
 	from getpass import getpass
 
-	notifier.init( notifier.GENERIC )
+	notifier.init(notifier.GENERIC)
 
-	def auth( success, status, text ):
+	def auth(success, status, text):
 		print 'authentication', success, status, text
 
 	client = Client()
-	client.signal_connect( 'authenticated', auth )
+	client.signal_connect('authenticated', auth)
 	if client.connect():
 		print 'connected successfully'
 	else:
 		print 'ERROR connecting to daemon'
-	username = raw_input( 'Username: ' )
+	username = raw_input('Username: ')
 	password = getpass()
-	client.authenticate( username, password )
+	client.authenticate(username, password)
 
 	notifier.loop()

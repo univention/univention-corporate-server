@@ -45,16 +45,17 @@ import univention.config_registry
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
-def get_int( variable, default ):
+
+def get_int(variable, default):
 	try:
-		return int( ucr.get( variable ) )
-	except ( ValueError, TypeError ):
+		return int(ucr.get(variable))
+	except (ValueError, TypeError):
 		return default
 
-SERVER_DEBUG_LEVEL = get_int( 'umc/server/debug/level', 2 )
+SERVER_DEBUG_LEVEL = get_int('umc/server/debug/level', 2)
 SERVER_MAX_CONNECTIONS = 100
 
 MODULE_COMMAND = '/usr/sbin/univention-management-console-module'
 
-MODULE_DEBUG_LEVEL = get_int( 'umc/module/debug/level', 2 )
-MODULE_INACTIVITY_TIMER = get_int( 'umc/module/timeout', 120 ) * 1000
+MODULE_DEBUG_LEVEL = get_int('umc/module/debug/level', 2)
+MODULE_INACTIVITY_TIMER = get_int('umc/module/timeout', 120) * 1000

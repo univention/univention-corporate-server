@@ -43,6 +43,7 @@ from PAM import (
 
 from univention.management.console.log import AUTH
 
+
 class AuthenticationFailed(Exception):
 	pass
 
@@ -72,7 +73,7 @@ class PamAuth(object):
 
 	def authenticate(self, username, password):
 		answers = {
-#			PAM_PROMPT_ECHO_ON: [password],
+			#PAM_PROMPT_ECHO_ON: [password],
 			PAM_PROMPT_ECHO_OFF: [password],
 		}
 		conversation = self._get_conversation(answers)

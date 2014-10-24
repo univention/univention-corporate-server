@@ -41,6 +41,7 @@ from univention.management.console.protocol.definitions import status_descriptio
 
 
 class AuthenticationResult(object):
+
 	def __init__(self, result):
 		self.credentials = (None, None)
 		self.authenticated = not isinstance(result, BaseException)
@@ -66,6 +67,7 @@ class AuthenticationResult(object):
 
 
 class AuthHandler(signals.Provider):
+
 	def __init__(self):
 		signals.Provider.__init__(self)
 		self.signal_new('authenticated')

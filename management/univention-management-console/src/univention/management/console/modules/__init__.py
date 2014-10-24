@@ -54,22 +54,22 @@ The following python code example matches the definition in the previous section
  from univention.management.console.config import ucr
  from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
  from univention.management.console.log import MODULE
- 
+
  _ = Translation( 'univention-management-console-modules-udm' ).translate
- 
- class Instance( Base ):
-   def query( self, request ):
+
+ class Instance(Base):
+   def query(self, request):
      ...
- 
-   def containers( self, request ):
-     module_name = request.options.get( 'objectType' )
+
+   def containers(self, request):
+     module_name = request.options.get('objectType')
      if not module_name or 'all' == module_name:
        module_name = request.flavor
      if not module_name:
-      raise UMC_OptionMissing( 'No valid module name found' )
- 
-     module = UDM_Module( module_name )
-     self.finished( request.id, module.containers + self.settings.containers( request.flavor ) )
+      raise UMC_OptionMissing('No valid module name found')
+
+     module = UDM_Module(module_name)
+     self.finished(request.id, module.containers + self.settings.containers(request.flavor))
 
 Each command methods has one parameter that contains the UMCP request of
 type
@@ -124,8 +124,7 @@ Methods
 
 """
 
-import notifier
-import notifier.signals as signals
+from notifier import signals
 import traceback
 
 from univention.lib.i18n import Translation
@@ -134,7 +133,7 @@ from ..protocol import Response, MIMETYPE_JSON
 from ..protocol.definitions import BAD_REQUEST, MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS, SUCCESS_MESSAGE, SUCCESS_PARTIAL, SUCCESS_SHUTDOWN
 from ..log import MODULE
 
-_ = Translation( 'univention.management.console' ).translate
+_ = Translation('univention.management.console').translate
 
 
 class UMC_Error(Exception):
@@ -169,6 +168,7 @@ class UMC_OptionSanitizeError(UMC_OptionTypeError):
 
 def error_handling(function, method=None):
 	method = method or function.__name__
+
 	def _decorated(self, request, *args, **kwargs):
 		message = ''
 		result = None
@@ -188,54 +188,56 @@ def error_handling(function, method=None):
 		except:
 			status = MODULE_ERR_COMMAND_FAILED
 			message = _("Execution of command '%(command)s' has failed:\n\n%(text)s")
-			message = message % {'command' : request.arguments[0], 'text' : unicode(traceback.format_exc())}
+			message = message % {'command': request.arguments[0], 'text': unicode(traceback.format_exc())}
 		MODULE.process(str(message))
 		self.finished(request.id, result, message, status=status)
 	return _decorated
 
 
-class Base( signals.Provider, Translation ):
+class Base(signals.Provider, Translation):
+
 	'''The base class for UMC modules of version 2 or higher'''
-	def __init__( self ):
-		signals.Provider.__init__( self )
-		self.signal_new( 'success' )
-		self.signal_new( 'failure' )
+
+	def __init__(self):
+		signals.Provider.__init__(self)
+		self.signal_new('success')
+		self.signal_new('failure')
 		self._username = None
 		self._user_dn = None
 		self._password = None
 		self.__acls = None
 		self.__requests = {}
-		Translation.__init__( self )
+		Translation.__init__(self)
 
-	def _set_username( self, username ):
+	def _set_username(self, username):
 		self._username = username
-	username = property( fset = _set_username )
+	username = property(fset=_set_username)
 
-	def _set_user_dn( self, user_dn ):
+	def _set_user_dn(self, user_dn):
 		self._user_dn = user_dn
-		MODULE.info( 'Setting user LDAP DN %s' % self._user_dn )
-	user_dn = property( fset = _set_user_dn )
+		MODULE.info('Setting user LDAP DN %s' % self._user_dn)
+	user_dn = property(fset=_set_user_dn)
 
-	def _set_password( self, password ):
+	def _set_password(self, password):
 		self._password = password
-	password = property( fset = _set_password )
+	password = property(fset=_set_password)
 
-	def _set_acls( self, acls ):
+	def _set_acls(self, acls):
 		self.__acls = acls
-	acls = property( fset = _set_acls )
+	acls = property(fset=_set_acls)
 
-	def init( self ):
+	def init(self):
 		'''this function is invoked after the initial UMCP SET command
 		that passes the base configuration to the module process'''
 		pass
 
-	def destroy( self ):
+	def destroy(self):
 		'''this function is invoked before the module process is
 		exiting.'''
 		pass
 
-	def execute( self, method, request ):
-		self.__requests[ request.id ] = ( request, method )
+	def execute(self, method, request):
+		self.__requests[request.id] = (request, method)
 
 		try:
 			function = getattr(self, method).im_func
@@ -248,19 +250,19 @@ class Base( signals.Provider, Translation ):
 		MODULE.info('Executing %s' % (request.arguments,))
 		function(self, request)
 
-	def required_options( self, request, *options ):
+	def required_options(self, request, *options):
 		"""Raises an UMC_OptionMissing exception if any of the given
 		options is not found in request.options"""
-		missing = filter( lambda o: o not in request.options, options )
+		missing = filter(lambda o: o not in request.options, options)
 		if missing:
-			raise UMC_OptionMissing( ', '.join( missing ) )
+			raise UMC_OptionMissing(', '.join(missing))
 
-	def permitted( self, command, options, flavor = None ):
+	def permitted(self, command, options, flavor=None):
 		if not self.__acls:
 			return False
-		return self.__acls.is_command_allowed( command, options = options, flavor = flavor )
+		return self.__acls.is_command_allowed(command, options=options, flavor=flavor)
 
-	def finished(self, id, response, message = None, success = True, status = None, mimetype=None):
+	def finished(self, id, response, message=None, success=True, status=None, mimetype=None):
 		"""Should be invoked by module to finish the processing of a
 		request. 'id' is the request command identifier, 'dialog' should
 		contain the result as UMC dialog and 'success' defines if the
@@ -271,7 +273,7 @@ class Base( signals.Provider, Translation ):
 			return
 		request, method = self.__requests[id]
 
-		if not isinstance( response, Response ):
+		if not isinstance(response, Response):
 			res = Response(request)
 
 			if mimetype and mimetype != MIMETYPE_JSON:
@@ -291,15 +293,15 @@ class Base( signals.Provider, Translation ):
 			else:
 				res.status = MODULE_ERR
 
-		self.result( res )
+		self.result(res)
 
-	def result( self, response ):
+	def result(self, response):
 		if response.id in self.__requests:
-			object, method = self.__requests[ response.id ]
-			if response.status in ( SUCCESS, SUCCESS_MESSAGE, SUCCESS_PARTIAL, SUCCESS_SHUTDOWN ):
-				response.module = [ 'ready' ]
-				self.signal_emit( 'success', response )
+			object, method = self.__requests[response.id]
+			if response.status in (SUCCESS, SUCCESS_MESSAGE, SUCCESS_PARTIAL, SUCCESS_SHUTDOWN):
+				response.module = ['ready']
+				self.signal_emit('success', response)
 			else:
-				response.module = [ 'failure' ]
-				self.signal_emit( 'failure', response )
-			del self.__requests[ response.id ]
+				response.module = ['failure']
+				self.signal_emit('failure', response)
+			del self.__requests[response.id]

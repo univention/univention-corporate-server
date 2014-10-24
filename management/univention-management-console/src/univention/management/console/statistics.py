@@ -30,27 +30,32 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-class Counter( object ):
+
+class Counter(object):
+
 	"""Implements a counter that counts available elements of
 	any type that can be inactive."""
-	def __init__( self ):
+
+	def __init__(self):
 		self._all = 0l
 		self._active = 0l
 
-	def new( self ):
+	def new(self):
 		"""Increase counter by one active element"""
 		self._all += 1
 		self._active += 1
 
-	def inactive( self ):
+	def inactive(self):
 		"""Decrease counter of active elements by one"""
 		self._active -= 1
 
-	def json( self ):
+	def json(self):
 		"""Returns counter information in JSON compatible form"""
-		return { 'all' : self._all, 'active' : self._active }
+		return {'all': self._all, 'active': self._active}
 
-class Statistics( object ):
+
+class Statistics(object):
+
 	"""Collects information about the connections, modules, requests and
 	users processed and seen by the running UMC server instance"""
 	connections = Counter()
@@ -61,10 +66,12 @@ class Statistics( object ):
 	@staticmethod
 	def json():
 		"""Returns the statistics ina JSON compatible form"""
-		return { 'connections' : Statistics.connections.json(),
-				 'modules' : Statistics.modules.json(),
-				 'requests' : Statistics.requests.json(),
-				 'users' : list( Statistics.users ) }
+		return {
+			'connections': Statistics.connections.json(),
+			'modules': Statistics.modules.json(),
+			'requests': Statistics.requests.json(),
+			'users': list(Statistics.users)
+		}
 
 #: global :class:`Statistics` object
 statistics = Statistics()

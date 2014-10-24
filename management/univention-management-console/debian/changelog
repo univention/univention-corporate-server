@@ -1,3 +1,9 @@
+univention-management-console (7.1.14-1) unstable; urgency=medium
+
+  * Bug #35654: auto pep8
+
+ -- Florian Best <best@univention.de>  Fri, 24 Oct 2014 11:41:09 +0200
+
 univention-management-console (7.1.13-1) unstable; urgency=medium
 
   * Bug #35985: rename pam_unix option min to minlen, remove pam option max as

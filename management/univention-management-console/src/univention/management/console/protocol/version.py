@@ -31,11 +31,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-major_number    = 2
-minor_number    = 0
+major_number = 2
+minor_number = 0
 revision_number = 0
-extension       = ''
+extension = ''
 
 #: Defines the protocol version
-VERSION = "%d.%d.%d%s" % ( major_number, minor_number,
-						   revision_number, extension )
+VERSION = "%d.%d.%d%s" % (major_number, minor_number, revision_number, extension)

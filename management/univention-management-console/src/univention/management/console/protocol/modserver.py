@@ -38,16 +38,18 @@ the UMC server class
 
 from .server import Server
 from .message import Response, Message, IncompleteMessageError, ParseError, UnknownCommandError
-from .definitions import (BAD_REQUEST_NOT_FOUND, BAD_REQUEST_INVALID_OPTS,
-	MODULE_ERR_INIT_FAILED, SUCCESS, RECV_BUFFER_SIZE, status_description)
+from .definitions import (
+	BAD_REQUEST_NOT_FOUND, BAD_REQUEST_INVALID_OPTS,
+	MODULE_ERR_INIT_FAILED, SUCCESS, RECV_BUFFER_SIZE, status_description
+)
 
-from ..acl import ACLs
-from ..module import Module
-from ..log import MODULE, PROTOCOL
+from univention.management.console.acl import ACLs
+from univention.management.console.module import Module
+from univention.management.console.log import MODULE, PROTOCOL
 
 from univention.lib.i18n import Locale, Translation
 
-_ = Translation( 'univention.management.console' ).translate
+_ = Translation('univention.management.console').translate
 
 import sys
 import traceback
@@ -55,7 +57,9 @@ import socket
 import locale
 import notifier
 
-class ModuleServer( Server ):
+
+class ModuleServer(Server):
+
 	"""Implements an UMC module server
 
 	:param str socket: UNIX socket filename
@@ -63,7 +67,8 @@ class ModuleServer( Server ):
 	:param int timeout: If there are no incoming requests for *timeout* seconds the module server shuts down
 	:param bool check_acls: if False the module server does not check the permissions (**dangerous!**)
 	"""
-	def __init__( self, socket, module, timeout = 300, check_acls = True ):
+
+	def __init__(self, socket, module, timeout=300, check_acls=True):
 		self.__name = module
 		self.__module = module
 		self.__commands = Module()
@@ -83,8 +88,8 @@ class ModuleServer( Server ):
 		self.__init_error_message = None
 		self.__handler = None
 		self._load_module()
-		Server.__init__( self, ssl = False, unix = socket, magic = False, load_ressources = False )
-		self.signal_connect( 'session_new', self._client )
+		Server.__init__(self, ssl=False, unix=socket, magic=False, load_ressources=False)
+		self.signal_connect('session_new', self._client)
 
 	def _load_module(self):
 		modname = self.__module
@@ -106,12 +111,12 @@ class ModuleServer( Server ):
 			self.__handler.signal_connect('success', notifier.Callback(self._reply, True))
 			self.__handler.signal_connect('failure', notifier.Callback(self._reply, True))
 
-	def _reply( self, msg, final ):
+	def _reply(self, msg, final):
 		if final:
 			self.__active_requests -= 1
-		self.response( msg )
+		self.response(msg)
 
-	def _timer( self ):
+	def _timer(self):
 		"""In order to avoid problems when the system time is changed (e.g.,
 		via rdate), we register a timer event that counts down the session
 		timeout second-wise."""
@@ -125,25 +130,25 @@ class ModuleServer( Server ):
 		else:
 			# count down the timer second-wise (in order to avoid problems when
 			# changing the system time, e.g. via rdate)
-			notifier.timer_add( 1000 , self._timer )
+			notifier.timer_add(1000, self._timer)
 
-	def _timed_out( self ):
-		MODULE.info( 'Committing suicide' )
+	def _timed_out(self):
+		MODULE.info('Committing suicide')
 		if self.__handler:
 			self.__handler.destroy()
 		self.exit()
-		sys.exit( 0 )
+		sys.exit(0)
 
-	def _client( self, client, socket ):
+	def _client(self, client, socket):
 		self.__comm = socket
 		self.__client = client
-		notifier.socket_add( self.__comm, self._recv )
+		notifier.socket_add(self.__comm, self._recv)
 
-	def _recv( self, socket ):
-		data = socket.recv( RECV_BUFFER_SIZE )
+	def _recv(self, socket):
+		data = socket.recv(RECV_BUFFER_SIZE)
 
 		# connection closed?
-		if not len( data ):
+		if not len(data):
 			socket.close()
 			# remove socket from notifier
 			return False
@@ -154,21 +159,21 @@ class ModuleServer( Server ):
 		try:
 			while self.__buffer:
 				msg = Message()
-				self.__buffer = msg.parse( self.__buffer )
-				MODULE.info( "Received request %s" % msg.id )
-				self.handle( msg )
-		except IncompleteMessageError, e:
-			MODULE.info( 'Failed to parse incomplete message' )
-		except ( ParseError, UnknownCommandError ), e:
-			MODULE.error( 'Failed to parse message: %s' % str( e ) )
-			res = Response( msg )
+				self.__buffer = msg.parse(self.__buffer)
+				MODULE.info("Received request %s" % msg.id)
+				self.handle(msg)
+		except IncompleteMessageError as e:
+			MODULE.info('Failed to parse incomplete message')
+		except (ParseError, UnknownCommandError) as e:
+			MODULE.error('Failed to parse message: %s' % str(e))
+			res = Response(msg)
 			res.id = -1
-			res.status = e.args[ 0 ]
-			self.response( res )
+			res.status = e.args[0]
+			self.response(res)
 
 		return True
 
-	def handle( self, msg ):
+	def handle(self, msg):
 		"""Handles incoming UMCP requests. This function is called only
 		when it is a valid UMCP request.
 
@@ -181,16 +186,16 @@ class ModuleServer( Server ):
 		* EXIT
 		"""
 		self.__time_remaining = self.__timeout
-		PROTOCOL.info( 'Received UMCP %s REQUEST %s' % ( msg.command, msg.id ) )
+		PROTOCOL.info('Received UMCP %s REQUEST %s' % (msg.command, msg.id))
 		if msg.command == 'EXIT':
 			shutdown_timeout = 100
-			MODULE.info( "EXIT: module shutdown in %dms" % shutdown_timeout )
+			MODULE.info("EXIT: module shutdown in %dms" % shutdown_timeout)
 			# shutdown module after one second
-			resp = Response( msg )
-			resp.body = { 'status': 'module %s will shutdown in %dms' % (str(msg.arguments[0]), shutdown_timeout) }
+			resp = Response(msg)
+			resp.body = {'status': 'module %s will shutdown in %dms' % (str(msg.arguments[0]), shutdown_timeout)}
 			resp.status = SUCCESS
-			self.response( resp )
-			notifier.timer_add( shutdown_timeout, self._timed_out )
+			self.response(resp)
+			notifier.timer_add(shutdown_timeout, self._timed_out)
 			return
 
 		if not self.__handler:
@@ -202,37 +207,37 @@ class ModuleServer( Server ):
 			return
 
 		if msg.command == 'SET':
-			resp = Response( msg )
+			resp = Response(msg)
 			resp.status = SUCCESS
 			for key, value in msg.options.items():
 				if key == 'acls':
-					self.__acls = ACLs( acls = value )
+					self.__acls = ACLs(acls=value)
 					self.__handler.acls = self.__acls
 				elif key == 'commands':
-					self.__commands.fromJSON( value[ 'commands' ] )
+					self.__commands.fromJSON(value['commands'])
 				elif key == 'username':
 					self.__username = value
 					self.__handler.username = self.__username
 				elif key == 'credentials':
-					self.__username = value[ 'username' ]
-					self.__user_dn = value[ 'user_dn' ]
-					self.__password = value[ 'password' ]
+					self.__username = value['username']
+					self.__user_dn = value['user_dn']
+					self.__password = value['password']
 					self.__handler.username = self.__username
 					self.__handler.user_dn = self.__user_dn
 					self.__handler.password = self.__password
 				elif key == 'locale' and value is not None:
 					self.__locale = value
 					try:
-						locale_obj = Locale( value )
-						locale.setlocale( locale.LC_MESSAGES, str( locale_obj ) )
-						MODULE.info( "Setting specified locale (%s)" % str( locale_obj ) )
+						locale_obj = Locale(value)
+						locale.setlocale(locale.LC_MESSAGES, str(locale_obj))
+						MODULE.info("Setting specified locale (%s)" % str(locale_obj))
 					except locale.Error:
-						MODULE.warn( "Specified locale is not available (%s)" % str( locale_obj ) )
-						MODULE.warn( "Falling back to C" )
+						MODULE.warn("Specified locale is not available (%s)" % str(locale_obj))
+						MODULE.warn("Falling back to C")
 						# specified locale is not available -> falling back to C
-						locale.setlocale( locale.LC_MESSAGES, 'C' )
+						locale.setlocale(locale.LC_MESSAGES, 'C')
 						self.__locale = 'C'
-					self.__handler.set_language( self.__locale )
+					self.__handler.set_language(self.__locale)
 				else:
 					resp.status = BAD_REQUEST_INVALID_OPTS
 					break
@@ -258,31 +263,31 @@ class ModuleServer( Server ):
 					self.__init_error_message = error
 					resp.message = error
 
-			self.response( resp )
+			self.response(resp)
 			return
 
 		if msg.arguments:
-			cmd = msg.arguments[ 0 ]
-			cmd_obj = self.command_get( cmd )
-			if cmd_obj and ( not self.__check_acls or self.__acls.is_command_allowed( cmd, options = msg.options, flavor = msg.flavor ) ):
+			cmd = msg.arguments[0]
+			cmd_obj = self.command_get(cmd)
+			if cmd_obj and (not self.__check_acls or self.__acls.is_command_allowed(cmd, options=msg.options, flavor=msg.flavor)):
 				self.__active_requests += 1
-				self.__handler.execute( cmd_obj.method, msg )
+				self.__handler.execute(cmd_obj.method, msg)
 				return
 			else:
-				resp = Response( msg )
+				resp = Response(msg)
 				# status 415 (command not allowed) should be checked by the server
 				resp.status = BAD_REQUEST_NOT_FOUND
-				resp.message = status_description( resp.status )
-				self.response( resp )
+				resp.message = status_description(resp.status)
+				self.response(resp)
 
-	def command_get( self, command_name ):
+	def command_get(self, command_name):
 		"""Returns the command object that matches the given command name"""
 		for cmd in self.__commands.commands:
 			if cmd.name == command_name:
 				return cmd
 		return None
 
-	def command_is_known( self, command_name ):
+	def command_is_known(self, command_name):
 		"""Checks if a command with the given command name is known
 
 		:rtype: bool
@@ -292,18 +297,18 @@ class ModuleServer( Server ):
 				return True
 		return False
 
-	def _do_send( self, sock ):
+	def _do_send(self, sock):
 		if len(self.__queue) > 0:
-			length = len( self.__queue )
+			length = len(self.__queue)
 			try:
-				ret = self.__comm.send( self.__queue )
-			except socket.error, e:
+				ret = self.__comm.send(self.__queue)
+			except socket.error as e:
 				if e[0] == 11:
 					return True
 				raise
 
 			if ret < length:
-				self.__queue = self.__queue[ ret : ]
+				self.__queue = self.__queue[ret:]
 				return True
 			else:
 				self.__queue = ''
@@ -311,10 +316,10 @@ class ModuleServer( Server ):
 		else:
 			return False
 
-	def response( self, msg ):
+	def response(self, msg):
 		"""Sends an UMCP response to the client"""
-		PROTOCOL.info( 'Sending UMCP RESPONSE %s' % msg.id )
+		PROTOCOL.info('Sending UMCP RESPONSE %s' % msg.id)
 		self.__queue += str(msg)
 
-		if self._do_send( self.__comm ):
-			notifier.socket_add( self.__comm, self._do_send, notifier.IO_WRITE )
+		if self._do_send(self.__comm):
+			notifier.socket_add(self.__comm, self._do_send, notifier.IO_WRITE)

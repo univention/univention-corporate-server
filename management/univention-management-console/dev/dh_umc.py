@@ -204,8 +204,7 @@ def read_modules(package, core=False):
 		if not core:
 			for required in (MODULE, PYTHON, DEFINITION, JAVASCRIPT):
 				if not required in item or not item[required]:
-					raise AttributeError(
-						'UMC module definition incomplete. key %s missing' % required)
+					raise AttributeError('UMC module definition incomplete. key %s missing' % required)
 
 		# single values
 		item['package'] = package
@@ -251,8 +250,7 @@ def module_xml2po(module, po_file, language):
 
 	po.save(message_po)
 	if os.path.isfile(po_file):
-		dh_ucs.doIt('msgmerge', '--update',
-					'--sort-output', po_file, message_po)
+		dh_ucs.doIt('msgmerge', '--update', '--sort-output', po_file, message_po)
 		if os.path.isfile(message_po):
 			os.unlink(message_po)
 	else:

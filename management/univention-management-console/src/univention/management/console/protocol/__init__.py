@@ -114,7 +114,7 @@ GET
 	all UMC modules available in this session.
 
 SET
-	 is used to define settings for the session, e.g. the language.
+	is used to define settings for the session, e.g. the language.
 
 COMMAND
 	This command is used to pass requests to UMC modules. Each
@@ -122,9 +122,9 @@ COMMAND
 	command is defined by the first argument in the UMCP header, e.g. a
 	request like ::
 
-	 	REQUEST/123423423-01/42/application/json: COMMAND ucr/query
+		REQUEST/123423423-01/42/application/json: COMMAND ucr/query
 
-    passes on the module command ucr/query to a UMC module.
+	passes on the module command ucr/query to a UMC module.
 
 
 Message body

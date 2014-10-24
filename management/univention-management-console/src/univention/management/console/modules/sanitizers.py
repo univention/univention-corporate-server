@@ -51,14 +51,17 @@ import copy
 import ldap.filter
 
 from univention.lib.i18n import Translation
-_ = Translation( 'univention.management.console' ).translate
+_ = Translation('univention.management.console').translate
+
 
 class UnformattedValidationError(Exception):
+
 	"""
 	Unformatted error raised when the sanitizer finds a value he
 	cannot use at all (e.g. letters when an int is expected).
 	Should be "enhanced" to a ValidationError.
 	"""
+
 	def __init__(self, msg, kwargs):
 		self.msg = msg
 		self.kwargs = kwargs
@@ -66,11 +69,14 @@ class UnformattedValidationError(Exception):
 	def __str__(self):
 		return self.msg
 
+
 class ValidationError(Exception):
+
 	"""
 	Error raised when the sanitizer finds a value he cannot use at all
 	(e.g. letters when an int is expected).
 	"""
+
 	def __init__(self, msg, name, value):
 		self.msg = msg
 		self.name = name
@@ -88,11 +94,14 @@ class ValidationError(Exception):
 		# return {'name' : self.name, 'value' : self.value, 'msg' : self.msg}
 		return self.msg
 
+
 class MultiValidationError(ValidationError):
+
 	"""
 	Error used for validation of an arbitrary number of sanitizers.
 	Used by :class:`~DictSanitizer` and :class:`~ListSanitizer`.
 	"""
+
 	def __init__(self):
 		self.validation_errors = {}
 
@@ -102,7 +111,7 @@ class MultiValidationError(ValidationError):
 
 	def number_of_errors(self):
 		'''Cumulative number of errors found'''
-		num = 0 
+		num = 0
 		for k, v in self.validation_errors.iteritems():
 			num += v.number_of_errors()
 		return num
@@ -119,7 +128,9 @@ class MultiValidationError(ValidationError):
 		to the sanitizers.'''
 		return dict([(name, e.result()) for name, e in self.validation_errors.iteritems()])
 
+
 class Sanitizer(object):
+
 	'''
 	Base class of all sanitizers.
 
@@ -127,18 +138,19 @@ class Sanitizer(object):
 	parameters are \**kwargs. But only the following are meaningful:
 
 	:param [string] further_arguments: names of arguments that should be
-	  passed along with the actual argument in order to return something
-	  reasonable. Default: *None*
+		passed along with the actual argument in order to return something
+		reasonable. Default: *None*
 	:param bool required: if the argument is required. Default: *False*
 	:param object default: if argument is not given and not
-	  :attr:`~Sanitizer.required`, default is returned - even when not
-	  :attr:`~Sanitizer.may_change_value`. Note that this value is not
-	  passing the sanitizing procedure, so make sure to be able to handle
-	  it. Default: *None*
+		:attr:`~Sanitizer.required`, default is returned - even when not
+		:attr:`~Sanitizer.may_change_value`. Note that this value is not
+		passing the sanitizing procedure, so make sure to be able to handle
+		it. Default: *None*
 	:param bool may_change_value: if the process of sanitizing is allowed
-	  to alter *request.options*. If not, the sanitizer can still be used
-	  for validation. Default: *True*
+		to alter *request.options*. If not, the sanitizer can still be used
+		for validation. Default: *True*
 	'''
+
 	def __init__(self, **kwargs):
 		self.further_arguments = kwargs.get('further_arguments', None)
 		self.required = kwargs.get('required', False)
@@ -182,13 +194,13 @@ class Sanitizer(object):
 
 		:param object value: the value as found in *request.options*.
 		:param string name: the name of the argument currently
-		  sanitized.
+			sanitized.
 		:param further_arguments: dictionary
-		  holding the values of those additional arguments 
-		  in *request.options* that are needed for sanitizing.
-		  the arguments come straight from the not altered
-		  options dict (i.e. before potentially changing
-		  sanitizing happened).
+			holding the values of those additional arguments
+			in *request.options* that are needed for sanitizing.
+			the arguments come straight from the not altered
+			options dict (i.e. before potentially changing
+			sanitizing happened).
 		:type further_arguments: {string : object}
 		'''
 		return value
@@ -215,13 +227,15 @@ class Sanitizer(object):
 		:param object value: the argument which caused the error
 		:param dict \**kwargs: additional arguments for formatting
 		'''
-		format_dict = {'value' : value, 'name' : name}
+		format_dict = {'value': value, 'name': name}
 		format_dict.update(kwargs)
 		format_dict.update(self.__dict__)
 		# msg = '%(name)s (%(value)r): ' + msg
 		raise ValidationError(msg % format_dict, name, value)
 
+
 class DictSanitizer(Sanitizer):
+
 	''' DictSanitizer makes sure that the value is a dict and sanitizes its fields.
 
 	You can give the same parameters as the base class.
@@ -229,9 +243,10 @@ class DictSanitizer(Sanitizer):
 
 	:param sanitizers: will be applied to the content of the sanitized dict
 	:param bool allow_other_keys: if other keys than those in
-	  :attr:`~DictSanitizer.sanitizers` are allowed.
+		:attr:`~DictSanitizer.sanitizers` are allowed.
 	:type sanitizers: {string : :class:`~Sanitizer`}
 	'''
+
 	def __init__(self, sanitizers, allow_other_keys=True, **kwargs):
 		super(DictSanitizer, self).__init__(**kwargs)
 		self.sanitizers = sanitizers
@@ -262,18 +277,21 @@ class DictSanitizer(Sanitizer):
 		new.sanitizers.update(other.sanitizers)
 		return new
 
+
 class ListSanitizer(Sanitizer):
+
 	''' ListSanitizer makes sure that the value is a list and sanitizes its elements.
 
 	You can give the same parameters as the base class.
 	Plus:
 
 	:param sanitizer: sanitizes each of the sanitized list's elements.
-	  If *None*, no sanitizing of elements takes place.
+		If *None*, no sanitizing of elements takes place.
 	:param int min_elements: must have at least this number of elements
 	:param int max_elements: must have at most this number of elements
 	:type sanitizer: :class:`~Sanitizer`
 	'''
+
 	def __init__(self, sanitizer=None, min_elements=None, max_elements=None, **kwargs):
 		super(ListSanitizer, self).__init__(**kwargs)
 		self.sanitizer = sanitizer
@@ -299,24 +317,29 @@ class ListSanitizer(Sanitizer):
 		for i, item in enumerate(value):
 			name = 'Element #%d' % i
 			try:
-				altered_value.append(self.sanitizer.sanitize(name, {name : item}))
+				altered_value.append(self.sanitizer.sanitize(name, {name: item}))
 			except ValidationError as e:
 				multi_error.add_error(e, i)
 		if multi_error.has_errors():
 			raise multi_error
 		return altered_value
 
+
 class BooleanSanitizer(Sanitizer):
+
 	'''BooleanSanitizer makes sure that the value is a bool.
 	It converts other data types if possible.
 	'''
+
 	def _sanitize(self, value, name, further_arguments):
 		try:
 			return bool(value)
 		except:
 			self.raise_validation_error(_('Cannot be converted to a boolean'))
 
+
 class IntegerSanitizer(Sanitizer):
+
 	'''IntegerSanitizer makes sure that the value is an int.
 	It converts other data types if possible and is able
 	to validate boundaries.
@@ -326,11 +349,12 @@ class IntegerSanitizer(Sanitizer):
 
 	:param int minimum: minimal value allowed
 	:param bool minimum_strict: if the value must be > minimum
-	  (>= otherwise)
+		(>= otherwise)
 	:param int maximum: maximal value allowed
 	:param bool maximum_strict: if the value must be < maximum
-	  (<= otherwise)
+		(<= otherwise)
 	'''
+
 	def __init__(self, minimum=None, maximum=None, minimum_strict=None, maximum_strict=None, **kwargs):
 		super(IntegerSanitizer, self).__init__(**kwargs)
 		self.minimum = minimum
@@ -363,7 +387,9 @@ class IntegerSanitizer(Sanitizer):
 						self.raise_validation_error(_('Should stay %s') % '<= %(maximum)d')
 			return value
 
+
 class SearchSanitizer(Sanitizer):
+
 	''' Baseclass for other Sanitizers that are used for a simple search.
 	That means that everything is escaped except for asterisks that are
 	considered as wildcards for any number of characters. (If
@@ -381,28 +407,29 @@ class SearchSanitizer(Sanitizer):
 	plus:
 
 	:param bool add_asterisks: add asterisks at the beginning and the end
-	  of the value if needed. Examples:
-	  
-	    * "string" -> "\*string*"
-	    * "" -> "*"
-	    * "string*" -> "string*"
+		of the value if needed. Examples:
 
-	  Default: True
+		* "string" -> "\*string*"
+		* "" -> "*"
+		* "string*" -> "string*"
+
+		Default: True
 	:param int max_number_of_asterisks: An error will be raised if
-	  the number of * in the string exceeds this limit. Useful because
-	  searching with too many of these patterns in a search query
-	  can be very expensive. Note that * from
-	  :attr:`~SearchSanitizer.add_asterisks` do count. *None* means an
-	  arbitrary number is allowed. Default: 5
+		the number of * in the string exceeds this limit. Useful because
+		searching with too many of these patterns in a search query
+		can be very expensive. Note that * from
+		:attr:`~SearchSanitizer.add_asterisks` do count. *None* means an
+		arbitrary number is allowed. Default: 5
 	:param bool use_asterisks: treat asterisks special, i.e. as a
-	  substring of arbitrary length. If *False*, it will be escaped as
-	  any other character. If *False* the defaults change:
+		substring of arbitrary length. If *False*, it will be escaped as
+		any other character. If *False* the defaults change:
 
-	    * :attr:`~SearchSanitizer.add_asterisks` to *False*
-	    * :attr:`~SearchSanitizer.max_number_of_asterisks` to *None*.
-	  
-	  Default: True
+		* :attr:`~SearchSanitizer.add_asterisks` to *False*
+		* :attr:`~SearchSanitizer.max_number_of_asterisks` to *None*.
+
+		Default: True
 	'''
+
 	def __init__(self, **kwargs):
 		self.use_asterisks = kwargs.get('use_asterisks', True)
 		if self.use_asterisks:
@@ -433,18 +460,23 @@ class SearchSanitizer(Sanitizer):
 				self.raise_formatted_validation_error(_('The maximum number of asterisks (*) in the search string is %(max_number_of_asterisks)d'), name, value)
 		return self._escape_and_return(value)
 
+
 class LDAPSearchSanitizer(SearchSanitizer):
+
 	'''Sanitizer for LDAP-Searches. Everything that
 	could possibly confuse an LDAP-Search is escaped
 	except for \*.
 	'''
+
 	def _escape_and_return(self, value):
 		value = ldap.filter.escape_filter_chars(value)
 		if self.use_asterisks:
 			value = value.replace(r'\2a', '*')
 		return value
 
+
 class PatternSanitizer(SearchSanitizer):
+
 	'''PatternSanitizer converts the input into a regular expression.
 	It can handle anything (through the inputs __str__ method), but
 	only strings seem to make sense.
@@ -465,10 +497,11 @@ class PatternSanitizer(SearchSanitizer):
 	Plus:
 
 	:param bool ignore_case: pattern is compiled with re.IGNORECASE flag
-	  to search case insensitive.
+		to search case insensitive.
 	:param bool multiline: pattern is compiled with re.MULTILINE flag
-	  to search across multiple lines.
+		to search across multiple lines.
 	'''
+
 	def __init__(self, ignore_case=True, multiline=True, **kwargs):
 		default = kwargs.get('default')
 		if isinstance(default, basestring):
@@ -485,9 +518,9 @@ class PatternSanitizer(SearchSanitizer):
 			use_asterisks=self.use_asterisks,
 			add_asterisks=self.add_asterisks,
 			max_number_of_asterisks=self.max_number_of_asterisks,
-			further_arguments=copy.copy(self.further_arguments), # string...
+			further_arguments=copy.copy(self.further_arguments),  # string...
 			required=self.required,
-			default=self.default, # None or non-copyable pattern
+			default=self.default,  # None or non-copyable pattern
 			may_change_value=self.may_change_value,
 		)
 		return new
@@ -503,19 +536,22 @@ class PatternSanitizer(SearchSanitizer):
 			flags = flags | re.MULTILINE
 		return re.compile('^%s$' % value, flags)
 
+
 class StringSanitizer(Sanitizer):
+
 	''' StringSanitizer makes sure that the input is a string.
 	The input can be validated by a regular expression and by string length
 
 	:param regex_pattern: a regex pattern or a string which will be
-	  compiled into a regex pattern
+		compiled into a regex pattern
 	:param int re_flags: additional regex flags for the regex_pattern
-	  which will be compiled if :attr:`~StringSanitizer.regex_pattern`
-	  is a string
+		which will be compiled if :attr:`~StringSanitizer.regex_pattern`
+		is a string
 	:param int minimum: the minimum length of the string
 	:param int maximum: the maximum length of the string
 	:type regex_pattern: basestring or re._pattern_type
 	'''
+
 	def __init__(self, regex_pattern=None, re_flags=0, minimum=None, maximum=None, **kwargs):
 		super(StringSanitizer, self).__init__(**kwargs)
 		if isinstance(regex_pattern, basestring):
@@ -526,11 +562,11 @@ class StringSanitizer(Sanitizer):
 
 	def __deepcopy__(self, memo):
 		new = StringSanitizer(
-			self.regex_pattern, # None or non-copyable pattern
+			self.regex_pattern,  # None or non-copyable pattern
 			0,
 			self.minimum,
 			self.maximum,
-			further_arguments=copy.copy(self.further_arguments), # strings
+			further_arguments=copy.copy(self.further_arguments),  # strings
 			required=self.required,
 			default=self.default,
 			may_change_value=self.may_change_value,
@@ -552,19 +588,25 @@ class StringSanitizer(Sanitizer):
 
 		return value
 
+
 class EmailSanitizer(StringSanitizer):
+
 	''' EmailSanitizer is a very simple sanitizer that checks
 	the very basics of an email address: At least 3 characters and
 	somewhere in the middle has to be an @-sign '''
+
 	def __init__(self, **kwargs):
 		super(EmailSanitizer, self).__init__(r'.@.', **kwargs)
 
+
 class ChoicesSanitizer(Sanitizer):
+
 	''' ChoicesSanitizer makes sure that the input is in a given set of
 	choices.
-	
+
 	:param [object] choices: the allowed choices used.
 	'''
+
 	def __init__(self, choices, **kwargs):
 		super(ChoicesSanitizer, self).__init__(**kwargs)
 		# makes sure to have an iterable and unifies errors msg
@@ -580,13 +622,16 @@ class ChoicesSanitizer(Sanitizer):
 		else:
 			self.raise_validation_error(_('Value has to be one of %(choices)r'))
 
+
 class MappingSanitizer(ChoicesSanitizer):
+
 	''' MappingSanitizer makes sure that the input is in a key in a
 	dictionary and returns the corresponding value.
-	
+
 	:param mapping: the dictionary that is used for sanitizing
 	:type mapping: {object : object}
 	'''
+
 	def __init__(self, mapping, **kwargs):
 		try:
 			# sort allowed values to have reproducable error messages
@@ -603,4 +648,3 @@ class MappingSanitizer(ChoicesSanitizer):
 		return self.mapping[value]
 
 __all__ = ['UnformattedValidationError', 'ValidationError', 'MultiValidationError', 'Sanitizer', 'DictSanitizer', 'ListSanitizer', 'BooleanSanitizer', 'IntegerSanitizer', 'SearchSanitizer', 'LDAPSearchSanitizer', 'PatternSanitizer', 'StringSanitizer', 'EmailSanitizer', 'ChoicesSanitizer', 'MappingSanitizer']
-

@@ -70,22 +70,24 @@ import xml.etree.ElementTree as ET
 
 from .log import RESOURCES
 
-class XML_Definition( ET.ElementTree ):
+
+class XML_Definition(ET.ElementTree):
+
 	"""Represents a category definition."""
 
-	def __init__( self, root = None, filename = None, domain = None ):
-		ET.ElementTree.__init__( self, element = root, file = filename )
+	def __init__(self, root=None, filename=None, domain=None):
+		ET.ElementTree.__init__(self, element=root, file=filename)
 		self.domain = domain
 
 	@property
-	def name( self ):
+	def name(self):
 		"""Returns the descriptive name of the category"""
-		return self.find( 'name' ).text
+		return self.find('name').text
 
 	@property
-	def id( self ):
+	def id(self):
 		"""Returns the unique identifier of the category"""
-		return self._root.get( 'id' )
+		return self._root.get('id')
 
 	@property
 	def icon(self):
@@ -96,7 +98,7 @@ class XML_Definition( ET.ElementTree ):
 		return self._root.get('color')
 
 	@property
-	def priority( self ):
+	def priority(self):
 		"""Returns the priority of the category. If no priority is
 		defined the default priority of -1 is returned. None is returned
 		if the specified priority is not a valid float
@@ -104,12 +106,12 @@ class XML_Definition( ET.ElementTree ):
 		:rtype: float or None
 		"""
 		try:
-			return float(self._root.get( 'priority', -1 ))
+			return float(self._root.get('priority', -1))
 		except ValueError:
-			RESOURCES.warn( 'No valid number type for property "priority": %s' % self._root.get('priority') )
+			RESOURCES.warn('No valid number type for property "priority": %s' % self._root.get('priority'))
 		return None
 
-	def json( self ):
+	def json(self):
 		"""Returns a JSON compatible representation of the category
 
 		:rtype: dict
@@ -123,33 +125,36 @@ class XML_Definition( ET.ElementTree ):
 			'priority': self.priority
 		}
 
-class Manager( dict ):
+
+class Manager(dict):
+
 	'''This class manages all available categories.'''
 
-	DIRECTORY = os.path.join( sys.prefix, 'share/univention-management-console/categories' )
-	def __init__( self ):
-		dict.__init__( self )
+	DIRECTORY = os.path.join(sys.prefix, 'share/univention-management-console/categories')
 
-	def all( self ):
-		return map( lambda x: x.json(), self.values() )
+	def __init__(self):
+		dict.__init__(self)
 
-	def load( self ):
+	def all(self):
+		return map(lambda x: x.json(), self.values())
+
+	def load(self):
 		self.clear()
-		RESOURCES.info( 'Loading categories ...' )
-		for filename in os.listdir( Manager.DIRECTORY ):
-			if not filename.endswith( '.xml' ):
-				RESOURCES.info( 'Found file %s with wrong suffix' % filename )
+		RESOURCES.info('Loading categories ...')
+		for filename in os.listdir(Manager.DIRECTORY):
+			if not filename.endswith('.xml'):
+				RESOURCES.info('Found file %s with wrong suffix' % filename)
 				continue
 			try:
-				definitions = ET.ElementTree( file = os.path.join( Manager.DIRECTORY, filename ) )
+				definitions = ET.ElementTree(file=os.path.join(Manager.DIRECTORY, filename))
 				categories = definitions.find('categories')
 				if categories is None:
 					continue
 				i18nDomain = categories.get('domain')
-				for category_elem in definitions.findall( 'categories/category' ):
-					category = XML_Definition( root = category_elem, domain = i18nDomain )
-					self[ category.id ] = category
-				RESOURCES.info( 'Loaded categories from %s' % filename )
+				for category_elem in definitions.findall('categories/category'):
+					category = XML_Definition(root=category_elem, domain=i18nDomain)
+					self[category.id] = category
+				RESOURCES.info('Loaded categories from %s' % filename)
 			except (xml.parsers.expat.ExpatError, ET.ParseError) as exc:
 				RESOURCES.warn('Failed to parse category file %s: %s' % (filename, exc))
 				continue

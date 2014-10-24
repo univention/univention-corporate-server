@@ -134,24 +134,29 @@ from .config import ucr
 
 KEYWORD_PATTERN = re.compile(r'\s*,\s*')
 
-class Command( JSON_Object ):
+
+class Command(JSON_Object):
+
 	'''Represents a UMCP command handled by a module'''
 	SEPARATOR = '/'
 
-	def __init__( self, name = '', method = None ):
+	def __init__(self, name='', method=None):
 		self.name = name
 		if method:
 			self.method = method
 		else:
-			self.method = self.name.replace( Command.SEPARATOR, '_' )
+			self.method = self.name.replace(Command.SEPARATOR, '_')
 
-	def fromJSON( self, json ):
-		for attr in ( 'name' , 'method' ):
-			setattr( self, attr, json[ attr ] )
+	def fromJSON(self, json):
+		for attr in ('name', 'method'):
+			setattr(self, attr, json[attr])
 
-class Flavor( JSON_Object ):
+
+class Flavor(JSON_Object):
+
 	'''Defines a flavor of a module. This provides another name and icon
 	in the overview and may influence the behaviour of the module.'''
+
 	def __init__(self, id='', icon='', name='', description='', overwrites=None, deactivated=False, priority=-1, translationId=None, keywords=None, categories=None):
 		self.id = id
 		self.name = name
@@ -164,8 +169,11 @@ class Flavor( JSON_Object ):
 		self.translationId = translationId
 		self.categories = categories or []
 
-class Module( JSON_Object ):
+
+class Module(JSON_Object):
+
 	'''Represents a command attribute'''
+
 	def __init__(self, id='', name='', description='', icon='', categories=None, flavors=None, commands=None, priority=-1, keywords=None):
 		self.id = id
 		self.name = name
@@ -186,17 +194,17 @@ class Module( JSON_Object ):
 		else:
 			self.commands = commands
 
-	def fromJSON( self, json ):
-		if isinstance( json, dict ):
-			for attr in ( 'id', 'name' , 'description', 'icon', 'categories', 'keywords' ):
-				setattr( self, attr, json[ attr ] )
-			commands = json[ 'commands' ]
+	def fromJSON(self, json):
+		if isinstance(json, dict):
+			for attr in ('id', 'name', 'description', 'icon', 'categories', 'keywords'):
+				setattr(self, attr, json[attr])
+			commands = json['commands']
 		else:
 			commands = json
 		for cmd in commands:
 			command = Command()
-			command.fromJSON( cmd )
-			self.commands.append( command )
+			command.fromJSON(cmd)
+			self.commands.append(command)
 
 	def append_flavors(self, flavors):
 		for flavor in flavors:
@@ -206,7 +214,7 @@ class Module( JSON_Object ):
 			else:
 				RESOURCES.warn('Duplicated flavor for module %s: %s' % (self.id, flavor.id))
 
-	def merge( self, other ):
+	def merge(self, other):
 		''' merge another Module object into current one '''
 		if not self.name:
 			self.name = other.name
@@ -230,67 +238,69 @@ class Module( JSON_Object ):
 				self.commands.append(command)
 
 
-class XML_Definition( ET.ElementTree ):
+class XML_Definition(ET.ElementTree):
+
 	'''container for the interface description of a module'''
-	def __init__( self, root = None, filename = None ):
-		ET.ElementTree.__init__( self, element = root, file = filename )
+
+	def __init__(self, root=None, filename=None):
+		ET.ElementTree.__init__(self, element=root, file=filename)
 
 	@property
-	def name( self ):
-		return self.findtext( 'module/name' )
+	def name(self):
+		return self.findtext('module/name')
 
 	@property
-	def description( self ):
-		return self.findtext( 'module/description' )
+	def description(self):
+		return self.findtext('module/description')
 
 	@property
-	def keywords( self ):
-		return KEYWORD_PATTERN.split(self.findtext( 'module/keywords', '')) + [self.name]
+	def keywords(self):
+		return KEYWORD_PATTERN.split(self.findtext('module/keywords', '')) + [self.name]
 
 	@property
-	def id( self ):
-		return self.find( 'module' ).get( 'id' )
+	def id(self):
+		return self.find('module').get('id')
 
 	@property
-	def priority( self ):
+	def priority(self):
 		try:
-			return float(self.find( 'module' ).get( 'priority', -1 ))
+			return float(self.find('module').get('priority', -1))
 		except ValueError:
-			RESOURCES.warn( 'No valid number type for property "priority": %s' % self.find( 'module' ).get('priority') )
+			RESOURCES.warn('No valid number type for property "priority": %s' % self.find('module').get('priority'))
 		return None
 
 	@property
-	def translationId( self ):
-		return self.find( 'module' ).get( 'translationId', '' )
+	def translationId(self):
+		return self.find('module').get('translationId', '')
 
 	@property
-	def notifier( self ):
-		return self.find( 'module' ).get( 'notifier' )
+	def notifier(self):
+		return self.find('module').get('notifier')
 
 	@property
-	def icon( self ):
-		return self.find( 'module' ).get( 'icon' )
+	def icon(self):
+		return self.find('module').get('icon')
 
 	@property
 	def deactivated(self):
-		return self.find('module').get('deactivated', 'no').lower() in ('yes','true','1')
+		return self.find('module').get('deactivated', 'no').lower() in ('yes', 'true', '1')
 
 	@property
-	def flavors( self ):
+	def flavors(self):
 		'''Retrieve list of flavor objects'''
-		for elem in self.findall( 'module/flavor' ):
+		for elem in self.findall('module/flavor'):
 			name = elem.findtext('name')
 			priority = None
 			try:
 				priority = float(elem.get('priority', -1))
 			except ValueError:
-				RESOURCES.warn( 'No valid number type for property "priority": %s' % elem.get('priority') )
+				RESOURCES.warn('No valid number type for property "priority": %s' % elem.get('priority'))
 			yield Flavor(
 				id=elem.get('id'),
 				icon=elem.get('icon'),
 				name=name,
 				overwrites=elem.get('overwrites', '').split(','),
-				deactivated=(elem.get('deactivated', 'no').lower() in ('yes','true','1')),
+				deactivated=(elem.get('deactivated', 'no').lower() in ('yes', 'true', '1')),
 				translationId=self.translationId,
 				description=elem.findtext('description'),
 				keywords=re.split(KEYWORD_PATTERN, elem.findtext('keywords', '')) + [name],
@@ -299,31 +309,31 @@ class XML_Definition( ET.ElementTree ):
 			)
 
 	@property
-	def categories( self ):
-		return [ elem.get( 'name' ) for elem in self.findall( 'module/categories/category' ) ]
+	def categories(self):
+		return [elem.get('name') for elem in self.findall('module/categories/category')]
 
-	def commands( self ):
+	def commands(self):
 		'''Generator to iterate over the commands'''
-		for command in self.findall( 'module/command' ):
-			yield command.get( 'name' )
+		for command in self.findall('module/command'):
+			yield command.get('name')
 
-	def get_module( self ):
-		return Module( self.id, self.name, self.description, self.icon, self.categories, self.flavors, priority = self.priority, keywords=self.keywords )
+	def get_module(self):
+		return Module(self.id, self.name, self.description, self.icon, self.categories, self.flavors, priority=self.priority, keywords=self.keywords)
 
-	def get_flavor( self, name ):
+	def get_flavor(self, name):
 		'''Retrieves details of a flavor'''
 		for flavor in self.flavors:
 			if flavor.name == name:
-				cmd = Flavor( name, flavor.get( 'function' ) )
+				cmd = Flavor(name, flavor.get('function'))
 				return cmd
 
 		return None
 
-	def get_command( self, name ):
+	def get_command(self, name):
 		'''Retrieves details of a command'''
-		for command in self.findall( 'module/command' ):
-			if command.get( 'name' ) == name:
-				cmd = Command( name, command.get( 'function' ) )
+		for command in self.findall('module/command'):
+			if command.get('name') == name:
+				cmd = Command(name, command.get('function'))
 				return cmd
 		return None
 
@@ -332,55 +342,58 @@ class XML_Definition( ET.ElementTree ):
 
 _manager = None
 
-class Manager( dict ):
+
+class Manager(dict):
+
 	'''Manager of all available modules'''
 
-	DIRECTORY = os.path.join( sys.prefix, 'share/univention-management-console/modules' )
-	def __init__( self ):
-		dict.__init__( self )
+	DIRECTORY = os.path.join(sys.prefix, 'share/univention-management-console/modules')
 
-	def modules( self ):
+	def __init__(self):
+		dict.__init__(self)
+
+	def modules(self):
 		'''Returns list of module names'''
 		return self.keys()
 
-	def load( self ):
+	def load(self):
 		'''Loads the list of available modules. As the list is cleared
 		before, the method can also be used for reloading'''
-		RESOURCES.info( 'Loading modules ...' )
+		RESOURCES.info('Loading modules ...')
 		self.clear()
-		for filename in os.listdir( Manager.DIRECTORY ):
-			if not filename.endswith( '.xml' ):
+		for filename in os.listdir(Manager.DIRECTORY):
+			if not filename.endswith('.xml'):
 				continue
 			try:
-				mod = XML_Definition( filename = os.path.join( Manager.DIRECTORY, filename ) )
+				mod = XML_Definition(filename=os.path.join(Manager.DIRECTORY, filename))
 				if not mod:
 					RESOURCES.info('Empty XML file: %s' % (filename,))
 					continue
 				if mod.deactivated:
-					RESOURCES.info( 'Module is deactivated: %s' % filename )
+					RESOURCES.info('Module is deactivated: %s' % filename)
 					continue
-				RESOURCES.info( 'Loaded module %s' % filename )
+				RESOURCES.info('Loaded module %s' % filename)
 			except (xml.parsers.expat.ExpatError, ET.ParseError) as e:
-				RESOURCES.warn( 'Failed to load module %s: %s' % ( filename, str( e ) ) )
+				RESOURCES.warn('Failed to load module %s: %s' % (filename, str(e)))
 				continue
 			# save list of definitions in self
-			self.setdefault( mod.id, [] ).append(mod)
+			self.setdefault(mod.id, []).append(mod)
 
-	def permitted_commands( self, hostname, acls ):
+	def permitted_commands(self, hostname, acls):
 		'''Retrieves a list of all modules and commands available
 		according to the ACLs (instance of LDAP_ACLs)
 
 		{ id : Module, ... }
 		'''
-		RESOURCES.info( 'Retrieving list of permitted commands' )
+		RESOURCES.info('Retrieving list of permitted commands')
 		modules = {}
 		for module_id in self:
 			# get first Module and merge all subsequent Module objects into it
 			mod = None
-			for module_xml in self[ module_id ]:
+			for module_xml in self[module_id]:
 				nextmod = module_xml.get_module()
 				if mod:
-					mod.merge( nextmod )
+					mod.merge(nextmod)
 				else:
 					mod = nextmod
 
@@ -389,9 +402,9 @@ class Manager( dict ):
 				continue
 
 			if not mod.flavors:
-				flavors = [ Flavor( id = None ) ]
+				flavors = [Flavor(id=None)]
 			else:
-				flavors = copy.copy( mod.flavors )
+				flavors = copy.copy(mod.flavors)
 
 			deactivated_flavors = set()
 			for flavor in flavors:
@@ -407,43 +420,43 @@ class Manager( dict ):
 
 				at_least_one_command = False
 				# iterate over all commands in all XML descriptions
-				for module_xml in self[ module_id ]:
+				for module_xml in self[module_id]:
 					for command in module_xml.commands():
-						if acls.is_command_allowed( command, hostname, flavor = flavor.id ):
+						if acls.is_command_allowed(command, hostname, flavor=flavor.id):
 							if not module_id in modules:
-								modules[ module_id ] = mod
-							cmd = module_xml.get_command( command )
-							if not cmd in modules[ module_id ].commands:
-								modules[ module_id ].commands.append( cmd )
+								modules[module_id] = mod
+							cmd = module_xml.get_command(command)
+							if not cmd in modules[module_id].commands:
+								modules[module_id].commands.append(cmd)
 							at_least_one_command = True
 
 				# if there is not one command allowed with this flavor
 				# it should not be shown in the overview
 				if not at_least_one_command and mod.flavors:
-					mod.flavors.remove( flavor )
+					mod.flavors.remove(flavor)
 
-			mod.flavors = JSON_List( filter( lambda f: f.id not in deactivated_flavors, mod.flavors ) )
+			mod.flavors = JSON_List(filter(lambda f: f.id not in deactivated_flavors, mod.flavors))
 
 			overwrites = set()
 			for flavor in mod.flavors:
-				overwrites.update( flavor.overwrites )
+				overwrites.update(flavor.overwrites)
 
-			mod.flavors = JSON_List( filter( lambda f: f.id not in overwrites, mod.flavors ) )
+			mod.flavors = JSON_List(filter(lambda f: f.id not in overwrites, mod.flavors))
 
 		return modules
 
-	def module_providing( self, modules, command ):
+	def module_providing(self, modules, command):
 		'''Searches a dictionary of modules (as returned by
 		permitted_commands) for the given command. If found, the id of
 		the module is returned, otherwise None'''
-		RESOURCES.info( 'Searching for module providing command %s' % command )
+		RESOURCES.info('Searching for module providing command %s' % command)
 		for module_id in modules:
-			for cmd in modules[ module_id ].commands:
+			for cmd in modules[module_id].commands:
 				if cmd.name == command:
-					RESOURCES.info( 'Found module %s' % module_id )
+					RESOURCES.info('Found module %s' % module_id)
 					return module_id
 
-		RESOURCES.info( 'No module provides %s' % command )
+		RESOURCES.info('No module provides %s' % command)
 		return None
 
 if __name__ == '__main__':

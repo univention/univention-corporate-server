@@ -38,58 +38,62 @@ from distutils import cmd
 import os
 import subprocess
 
-class BuildI18N( cmd.Command ):
+
+class BuildI18N(cmd.Command):
 	description = 'Compile .po files into .mo files'
-	def initialize_options( self ):
-		pass
-	def finalize_options( self ):
+
+	def initialize_options(self):
 		pass
 
-	def run( self ):
+	def finalize_options(self):
+		pass
+
+	def run(self):
 		data_files = self.distribution.data_files
 
-		po_dir = os.path.join( os.path.dirname( os.curdir ), 'src/' )
-		for path, names, filenames in os.walk( po_dir ):
-			rel_path = path[ len( po_dir ) : ]
+		po_dir = os.path.join(os.path.dirname(os.curdir), 'src/')
+		for path, names, filenames in os.walk(po_dir):
+			rel_path = path[len(po_dir):]
 			for f in filenames:
-				if not f.endswith( '.po' ):
+				if not f.endswith('.po'):
 					continue
-				lang = f[ : -3 ]
-				src = os.path.join( path, f )
-				dest_path = os.path.join( 'build', 'locale', lang, 'LC_MESSAGES' )
-				dest_file = '%s.mo' % rel_path.replace( '/', '-' )
-				dest = os.path.join( dest_path, dest_file )
-				if not os.path.exists( dest_path ):
-					os.makedirs( dest_path )
-				if not os.path.exists( dest ):
+				lang = f[: -3]
+				src = os.path.join(path, f)
+				dest_path = os.path.join('build', 'locale', lang, 'LC_MESSAGES')
+				dest_file = '%s.mo' % rel_path.replace('/', '-')
+				dest = os.path.join(dest_path, dest_file)
+				if not os.path.exists(dest_path):
+					os.makedirs(dest_path)
+				if not os.path.exists(dest):
 					print 'Compiling %s' % src
-					subprocess.call( [ 'msgfmt', src, '-o', dest ] )
+					subprocess.call(['msgfmt', src, '-o', dest])
 				else:
 					src_mtime = os.stat(src)[8]
 					dest_mtime = os.stat(dest)[8]
 					if src_mtime > dest_mtime:
 						print 'Compiling %s' % src
-						subprocess.call( [ 'msgfmt', src, '-o', dest ] )
-				data_files.append( ( 'share/locale/%s/LC_MESSAGES' % lang, ( dest, ) ) )
+						subprocess.call(['msgfmt', src, '-o', dest])
+				data_files.append(('share/locale/%s/LC_MESSAGES' % lang, (dest, )))
 
-class Build( build ):
-	sub_commands = build.sub_commands + [ ( 'build_i18n', None ) ]
-	def run( self ):
-		build.run( self )
 
-def all_xml_files_in( dir ):
-	return filter( lambda x: os.path.isfile( x ) and x.endswith( '.xml' ), map( lambda x: os.path.join( dir, x ), os.listdir( dir ) ) )
+class Build(build):
+	sub_commands = build.sub_commands + [('build_i18n', None)]
 
-setup( name = 'univention-management-console',
-	   description = 'Univention Management Console',
-	   author = 'Univention GmbH',
-	   author_email = 'packages@univention.de',
-	   version = '1.0',
-	   package_dir = { '' : 'src' },
-	   packages = [ 'univention', 'univention.management', 'univention.management.console',	'univention.management.console.protocol', 'univention.management.console.modules' ],
-	   scripts = [ 'scripts/univention-management-console-server', 'scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/univention-management-console-acls' ],
-	   data_files = [ ( 'share/univention-management-console/categories', all_xml_files_in( 'data/categories' ) ), ],
-	   cmdclass = { 'build' : Build,
-	   				'build_i18n' : BuildI18N }
-      )
+	def run(self):
+		build.run(self)
 
+
+def all_xml_files_in(dir):
+	return filter(lambda x: os.path.isfile(x) and x.endswith('.xml'), map(lambda x: os.path.join(dir, x), os.listdir(dir)))
+
+setup(name='univention-management-console',
+	description='Univention Management Console',
+	author='Univention GmbH',
+	author_email='packages@univention.de',
+	version='1.0',
+	package_dir={'': 'src'},
+	packages=['univention', 'univention.management', 'univention.management.console', 'univention.management.console.protocol', 'univention.management.console.modules'],
+	scripts=['scripts/univention-management-console-server', 'scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/univention-management-console-acls'],
+	data_files=[('share/univention-management-console/categories', all_xml_files_in('data/categories')), ],
+	cmdclass={'build': Build, 'build_i18n': BuildI18N}
+)

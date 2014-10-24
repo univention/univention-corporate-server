@@ -32,13 +32,11 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.management.console.modules import Base
-from univention.management.console.protocol.definitions import *
 
 from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
-from univention.management.console.log import MODULE
 
-from univention.management.console.modules.decorators import *
+from univention.management.console.modules.decorators import simple_response, log, file_upload, multi_response, sanitize
 import univention.management.console.modules.sanitizers as s
 
 class Instance( Base ):
@@ -73,7 +71,7 @@ class Instance( Base ):
 	@simple_response
 	@log
 	def dict_a(self, value):
-		assert set(value) == set(['foo', 'bar']), 'There are invalid keys: %r' % (list(values))
+		assert set(value) == set(['foo', 'bar']), 'There are invalid keys: %r' % (list(value))
 		return '%r' % (value,)
 
 	@sanitize(value=s.EmailSanitizer(required=True))

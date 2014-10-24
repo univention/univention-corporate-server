@@ -45,13 +45,16 @@ from univention.lib.i18n import Translation
 from univention.management.console.modules import UMC_OptionTypeError
 from univention.management.console.modules.decorators import simple_response
 
-_ = Translation( 'univention-management-console' ).translate
+_ = Translation('univention-management-console').translate
+
 
 class Progress(object):
+
 	"""
 	Class to keep track of the progress during execution of a function.
 	Used internally.
 	"""
+
 	def __init__(self, progress_id, title, total):
 		self.id = progress_id
 		self.title = title
@@ -82,7 +85,7 @@ class Progress(object):
 			self.result = result
 
 	def initialised(self):
-		return {'id' : self.id, 'title' : self.title}
+		return {'id': self.id, 'title': self.title}
 
 	def exception(self, exc_info):
 		self.exc_info = exc_info
@@ -92,10 +95,10 @@ class Progress(object):
 			self.finish()
 			raise self.exc_info[1], None, self.exc_info[2]
 		ret = {
-			'title' : self.title,
-			'finished' : self.finished,
-			'intermediate' : self.intermediate[:],
-			'message' : self.message,
+			'title': self.title,
+			'finished': self.finished,
+			'intermediate': self.intermediate[:],
+			'message': self.message,
 		}
 		try:
 			ret['percentage'] = self.current / self.total * 100
@@ -107,19 +110,22 @@ class Progress(object):
 		del self.intermediate[:]
 		return ret
 
+
 class ProgressMixin(object):
+
 	"""
 	Mixin to provide two new functions:
 
-	 * *new_progress* to create a new :class:`~univention.management.console.modules.mixins.Progress`.
-	 * *progress* to let the client fetch the progress made up to this moment.
+	* *new_progress* to create a new :class:`~univention.management.console.modules.mixins.Progress`.
+	* *progress* to let the client fetch the progress made up to this moment.
 
 	The *progress* function needs to be made public by the XML definition of the module. To use this mixin, just do::
 
-	 class Instance( Base, ProgressMixin ):
-	 	pass
+		class Instance(Base, ProgressMixin):
+			pass
 
 	"""
+
 	def new_progress(self, title=None, total=0):
 		if not hasattr(self, '_progress_id'):
 			self._progress_id = 0
@@ -138,10 +144,9 @@ class ProgressMixin(object):
 		try:
 			progress_obj = self._progress_objs[progress_id]
 		except KeyError:
-			raise UMC_OptionTypeError( _( 'Invalid progress ID' ) )
+			raise UMC_OptionTypeError(_('Invalid progress ID'))
 		else:
 			ret = progress_obj.poll()
 			if ret['finished']:
 				del self._progress_objs[progress_id]
 			return ret
-
