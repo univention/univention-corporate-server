@@ -40,24 +40,21 @@ define([
 	"umc/i18n!"
 ], function(declare, lang, array, domClass, on, topic, TabController, tools, _) {
 	return declare("umc.widgets.TabController", [TabController], {
-	
-		_setVisibilityOfChild: function(child, visible) {
-			tools.assert(child.controlButton !== undefined, 'The widget is not attached to a TabContainer');
-			// we iterate over the children of the container to ensure the given widget is attached to THIS TabController
-			array.forEach(this.getChildren(), function(item) {
-				if (child.controlButton === item || child === item) {
-					domClass.toggle(child.controlButton.domNode, 'dijitHidden', !visible);
-					return false;
+		setVisibilityOfChild: function(child, visible) {
+			array.forEach(this.getChildren(), lang.hitch(this, function(ibutton) {
+				if (ibutton.page == child) {
+					ibutton.set('disabled', !visible);
+					domClass.toggle(ibutton.domNode, 'dijitHidden', !visible);
 				}
-			});
+			}));
 		},
 
 		hideChild: function(child) {
-			this._setVisibilityOfChild(child, false);
+			this.setVisibilityOfChild(child, false);
 		},
 
 		showChild: function(child) {
-			this._setVisibilityOfChild(child, true);
+			this.setVisibilityOfChild(child, true);
 		}
 	});
 });
