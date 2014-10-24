@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.70-1) unstable; urgency=medium
+
+  * Bug #35654: fix size class for MixedInput
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Oct 2014 03:00:49 +0200
+
 univention-management-console-frontend (4.1.69-1) unstable; urgency=medium
 
   Bug #35654:

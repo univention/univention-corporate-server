@@ -95,10 +95,6 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-
-			this._userProperties.sizeClass = this.sizeClass;
-			this.sizeClass = null;
-
 			this._readyDeferred = new Deferred();
 		},
 
