@@ -1172,13 +1172,19 @@ define([
 			this.getWidget('fqdn-nonmaster-all', 'hostname').set('value', hostname);
 		},
 
-		_updateLDAPBase: function(fqdn) {
-			fqdn = fqdn.replace(/ /g, '');  // remove all spaces from fqdn
-			var fqdnParts = fqdn.split('.').slice(1);
+		_computeLDAPBase: function(domain) {
+			var fqdnParts = domain.split('.');
 			var ldapBaseParts = array.map(fqdnParts, function(ipart) {
 				return 'dc=' + ipart;
 			});
-			var ldapBase = ldapBaseParts.join(',');
+			return ldapBaseParts.join(',');
+		},
+
+		_updateLDAPBase: function(fqdn) {
+			fqdn = fqdn.replace(/ /g, '');  // remove all spaces from fqdn
+			var fqdnParts = fqdn.split('.').slice(1);
+			var domain = fqdnParts.join('.');
+			var ldapBase = this._computeLDAPBase(domain);
 			var ldapBaseWidget = this.getWidget('fqdn-master', 'ldap/base');
 			ldapBaseWidget.set('value', ldapBase);
 		},
@@ -1279,7 +1285,7 @@ define([
 		},
 
 		_autoAddAdConnectorToAppSelection: function() {
-			if (this._isAdMember() && !this._domainHasMaster) {
+			if (this._isAdMemberMaster()) {
 				this._apps.query({id: 'adconnector'}).forEach(lang.hitch(this, function(iitem) {
 					var idx = this._gallery._grid.getItemIndex(iitem);
 					this._gallery._grid.selection.addToSelection(idx);
@@ -1539,6 +1545,10 @@ define([
 
 		_isAdMember: function() {
 			return this.getWidget('role', '_adDomain').get('value');
+		},
+
+		_isAdMemberMaster: function() {
+			return this._isAdMember() && !this._domainHasMaster;
 		},
 
 		_isRoleBaseSystem: function() {
@@ -2057,7 +2067,7 @@ define([
 		_getRole: function() {
 			var _vals = this._gatherVisibleValues();
 			var showRoleSelection = array.indexOf(this.disabledPages, 'role') === -1;
-			var implicitMaster = this._isAdMember() && !this._domainHasMaster;
+			var implicitMaster = this._isAdMemberMaster();
 			if (_vals._createDomain || !showRoleSelection || implicitMaster) {
 				return 'domaincontroller_master';
 			} else if (_vals._roleBackup) {
@@ -2165,6 +2175,9 @@ define([
 				vals.nameserver1 = this.getWidget('network', 'nameserver1').get('value');
 				if (this._domainName) {
 					vals.domainname = this._domainName;
+					if (this._isAdMemberMaster()) {
+						vals['ldap/base'] = this._computeLDAPBase(this._domainName);
+					}
 				}
 			}
 			return vals;

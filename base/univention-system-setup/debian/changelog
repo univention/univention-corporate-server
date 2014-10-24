@@ -1,3 +1,9 @@
+univention-system-setup (8.1.28-2) unstable; urgency=low
+
+  * Bug #35653: Fix ldap/base when being UCS Master as AD Member
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 24 Oct 2014 11:08:21 +0200
+
 univention-system-setup (8.1.28-1) unstable; urgency=medium
 
   * Bug #35654: adjust wizard height automatically
