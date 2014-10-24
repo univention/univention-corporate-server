@@ -1,3 +1,9 @@
+univention-apache (7.0.3-1) unstable; urgency=low
+
+  * [WIP] css adaptations on ucs startsite (Bug #36095)
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 24 Oct 2014 18:48:54 +0200
+
 univention-apache (7.0.2-2) unstable; urgency=low
 
   * [WIP] continued working on redesign of ucs-overview (Bug #36095)

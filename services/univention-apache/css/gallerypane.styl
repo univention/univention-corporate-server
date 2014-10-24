@@ -43,8 +43,44 @@
 	.umcGalleryWrapperItem {
 		padding: 5px;
 		display:inline;
-	}
 
+		a {
+			text-decoration: none;
+		}
+	}
+	.warning {
+		.wrapper {
+			margin: 20px auto 20px auto;
+			max-width: 500px;
+			height: 150px;
+			vertical-gradient-and-filter(#606060, #505050);
+			padding: 10px;
+
+			@media (min-width: $xs-min) {
+				margin-top: 30px;
+				margin-bottom: @margin-top;
+			}
+
+			@media (min-width: $sm-min) {
+				margin-top: 50px;
+				margin-bottom: @margin-top;
+			}
+
+			@media (min-width: $md-min) {
+				margin-top: 75px;
+				margin-bottom: @margin-top;
+			}
+
+		}	
+		.icon {
+			background-image: url(../css/icons/info.svg);
+			background-repeat: no-repeat;
+			width: 110px;
+			height: 140px;
+			//margin: 5px;
+			float: left;
+		}
+	}
 	.umcGalleryItem {
 		position: relative;
 		outline: none;
@@ -58,7 +94,7 @@
 		//margin: 0 12px 10px 0;
 		height: 100px;
 		overflow: hidden;
-
+		
 		.umcGalleryName {
 			font-size: $font-size-medium;
 			color: $text-color-lighter;
@@ -81,19 +117,18 @@
 		}
 
 		.umcGalleryIcon {
-			margin: 5px 0 0 5px;
 			padding-bottom: 0;
-//			position: absolute;
-//			visibility: hidden;
-//			display: none;
-			height: 70px;
 			float: left;
+			height: 90px;
+			width: 80px;
+			background-position: center center;
+			background-repeat: no-repeat;
 		}
 
 		/* if an icon is present, set a margin to the text elements */
 		.umcGalleryIcon + .umcGalleryName,
 		.umcGalleryIcon + .umcGalleryName + .umcGalleryDescription {
-			margin-left: 65px;
+			margin-left: 85px;
 		}
 
 		.umcGalleryStatusIcon {
@@ -135,6 +170,7 @@
 		.umcGalleryDescription {
 			color: white;
 			border-color: white;
+			text-decoration: initial;
 		}
 		.umcFavoriteIconDefault {
 			display: none;
@@ -150,6 +186,13 @@
 			opacity: 0.67;
 		}
 	}
+}
+.umcGalleryItem.umcGalleryCategory-admin:hover {
+	background-color: #80b828;
+}
+
+.umcGalleryItem.umcGalleryCategory-service:hover {
+	background-color: #4bbfef;
 }
 
 // no left/right padding for full size item

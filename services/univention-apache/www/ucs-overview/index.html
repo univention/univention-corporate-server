@@ -73,7 +73,7 @@
 				</div>
 			</div>
 			<div class="container">
-				<div id="title">
+				<div id="title" class="dijitHidden">
 					<h1 id="site-title" data-i18n="claimHead"></h1>
 					<h2 id="header-claim" data-i18n="claim"></h2>
 				</div>
@@ -83,7 +83,7 @@
 					<!--<noscript>
 						<div class="container tab-pane">
 							<ul class="items">
-								<li class="item col-md-6 warning">
+								<li class="warning">
 									<span class="wrapper">
 										<span class="icon"></span>
 										<span class="title">JavaScript required</span>
@@ -96,12 +96,12 @@
 						</div>
 					</noscript>-->
 					<div class="galleryTab" id="service-tab">
-						<div class="item col-md-6 warning" id="no-service">
-							<span class="wrapper">
-								<span class="icon"></span>
-								<span class="title" data-i18n="noServiceTitle"></span>
-								<span class="text" data-i18n="noServiceDescription"></span>
-							</span>
+						<div class="warning dijitHidden" id="no-service">
+							<div class="wrapper">
+								<div class="icon"></div>
+								<div class="title" data-i18n="noServiceTitle"></div>
+								<div class="text" data-i18n="noServiceDescription"></div>
+							</div>
 						</div>
 					</div>
 					<div class="galleryTab" id="admin-tab">
@@ -114,8 +114,8 @@
 				<li><a href="http://www.univention.com/products/ucs/univention-app-center/" data-i18n="apps">App Catalogue</a></li>
 				<li><a href="http://www.univention.de/en/products/" data-i18n="products">Further Products</a></li>
 				<li><a href="http://www.univention.de/en/" data-i18n="univention_website">Univention Website</a></li>
-			</ul>
-			<ul>
+			<!-- </ul>
+				 <ul> //-->
 				<li><a href="http://docs.univention.de/en.html" data-i18n="manual">Manual for Univention Corporate Server</a></li>
 				<li><a href="http://sdb.univention.de/" data-i18n="sdb">Univention Support Database</a></li>
 				<li><a href="http://wiki.univention.de/index.php?title=Hauptseite" data-i18n="wiki">Univention Wiki</a></li>

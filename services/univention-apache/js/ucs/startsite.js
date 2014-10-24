@@ -42,11 +42,14 @@ define([
 	"dojo/json",
 	"dojo/router",
 	"dojo/hash",
+	"dijit/Menu",
+	"dijit/MenuItem",
+	"dijit/form/DropDownButton",
 	"./CategoryButton",
 	"dojo/text!/ucs-overview/entries.json",
 	"dojo/text!/ucs-overview/languages.json",
 	"./i18n!../ucs"
-], function(ioQuery, lang, kernel, array, query, domConstruct, domAttr, domStyle, domClass, on, json, router, hash, CategoryButton, entriesStr, languagesStr, _) {
+], function(ioQuery, lang, kernel, array, query, domConstruct, domAttr, domStyle, domClass, on, json, router, hash, Menu, MenuItem, DropDownButton, CategoryButton, entriesStr, languagesStr, _) {
 	var entries = json.parse(entriesStr);
 	var ucr = entries.ucr;
 
@@ -75,7 +78,7 @@ define([
 		_translations: {
 			header: _('UCS - {hostname}.{domainname}', ucr),
 			claimHead: _('Welcome to Univention Corporate Server'),
-			claim: _('<b>{hostname}.{domainname}</b>', ucr),
+			claim: _('{hostname}.{domainname}', ucr),
 			services: _('Installed web services'),
 			admin: _('Administration'),
 			noServiceTitle: _('There are currently no user web services installed.'),
@@ -121,16 +124,19 @@ define([
 			return result;
 		},
 
-		_getLinkEntry: function(props) {
-			var localizedProps = {};
+		_getLinkEntry: function(props, category) {
+			var localizedProps = {
+				category: category
+			};
 			array.forEach(['link', 'icon', 'label', 'description'], lang.hitch(this, function(ikey) {
 				localizedProps[ikey] = this._localizeString(props[ikey]);
 			}));
+			//console.log(localizedProps);
 			var node = domConstruct.toDom(lang.replace(
-				'<div class="umcGalleryWrapperItem col-xs-12 col-sm-6 col-md-4 col-lg-3">\n'
+				'<div class="umcGalleryWrapperItem col-xs-12 col-sm-6 col-md-4">\n'
 				+ '	<a href="{link}">\n'
-				+ '		<div class="umcGalleryItem umcGalleryCategory-admin">\n'
-				+ '			<div class="umcGalleryIcon" style="background-image:url({icon})"></div>\n'
+				+ '		<div class="umcGalleryItem umcGalleryCategory-{category}">\n'
+				+ (localizedProps.icon ? '			<div class="umcGalleryIcon" style="background-image:url({icon})"></div>\n' : '')
 				+ '			<div class="umcGalleryName">{label}</div>\n'
 				+ '			<div class="umcGalleryDescription">{description}</div>\n'
 				+ '		</div>\n'
@@ -146,7 +152,7 @@ define([
 				return [];
 			}
 			return array.map(this._entries[category], lang.hitch(this, function(ientry) {
-				return this._getLinkEntry(ientry);
+				return this._getLinkEntry(ientry, category);
 			}));
 		},
 
@@ -171,28 +177,27 @@ define([
 			}
 		},
 
-		_updateActiveTab: function() {
-			var hash = window.location.hash;
-			if (!hash || hash == '#') {
-				return;
-			}
-			var activeNode = query(lang.replace('#site-header .nav-tabs a[href={0}]', [hash]));
-			var nodeExists = activeNode.length > 0;
-			if (!nodeExists) {
-				return;
-			}
-			var category = hash.replace('#', '');
-			this._focusTab(category); 
-			
-		},
-
+//		_updateActiveTab: function() {
+//			var hash = window.location.hash;
+//			if (!hash || hash == '#') {
+//				return;
+//			}
+//			var activeNode = query(lang.replace('#site-header .nav-tabs a[href={0}]', [hash]));
+//			var nodeExists = activeNode.length > 0;
+//			if (!nodeExists) {
+//				return;
+//			}
+//			var category = hash.replace('#', '');
+//			this._focusTab(category); 
+//			
+//		},
 
 		_placeCategoryButtons: function(){
 			this.adminButton = new CategoryButton({
 				label: 'Administration',
 				'class': 'category-admin',
 				onClick: lang.hitch(this, function() {
-					router.go('/admin');
+					router.go('admin');
 				}),
 				color: '#80b828',
 				categoryID: 'admin',
@@ -202,7 +207,7 @@ define([
 				label: 'Web-Services',
 				'class': 'category-services',
 				onClick: lang.hitch(this, function() {
-					router.go('/service');
+					router.go('service');
 				}),
 				color: '#4bbfef',
 				categoryID: 'web',
@@ -212,8 +217,16 @@ define([
 			this.adminButton.placeAt("category-bar");
 		},
 
+		_hasServiceEntries: function() {
+			return this._getLinkEntries().length;
+		},
+
 		_updateNoServiceHint: function() {
-			//domStyle.set('no-service', 'display', this._entries.service.length ? 'none' : 'block');
+			domClass.toggle('no-service', 'dijitHidden', this._hasServiceEntries());
+		},
+
+		_updateHeader: function() {
+			domClass.remove('title', 'dijitHidden');
 		},
 
 		_updateLinkEntries: function() {
@@ -289,27 +302,26 @@ define([
 			}));
 		},
 
-		_registerHashChangeEvent: function() {
-			on(window, 'hashchange', lang.hitch(this, '_updateActiveTab'));
-		},
-
-
 		_registerRouter: function(){
-			router.register("/:category", lang.hitch(this, function(data){
+			router.register(":category", lang.hitch(this, function(data){
+				console.log('### ', data.params.category);
 				this._focusTab(data.params.category);
 			}));
-			router.startup("/admin");
 		},
 
 		start: function() {
 			this._placeCategoryButtons();
 			this._registerRouter();
 			//this._updateNoScriptElements();
+			this._updateHeader();
 			this._updateLinkEntries();
 			this._updateLocales();
 			this._updateTranslations();
-			//this._registerHashChangeEvent();
-			//this._updateActiveTab();
+			if (!this._hasServiceEntries()) {
+				router.startup("admin");
+			} else {
+				router.startup("service");
+			}
 		}
 	};
 });

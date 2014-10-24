@@ -1,14 +1,20 @@
 /* copied and modified from univention-management-console-frontend-theme package */
 
+@import ("variables")
+
+*:focus {
+	outline: 0;
+}
+
 html {
-	height: 100%;
+	min-height: 100%;
 }
 
 body {
 	font-family: Clear Sans, Arial, Helvetica, sans-serif;
 	font-size: .75em;
 	color: $document-text-color;
-	height: 100%;
+	min-height: 100%;
 	/* Chrome,Safari4+ */
 	background: url(images/background-tile.png) repeat, -webkit-gradient(linear, left bottom, right top, color-stop(0%,#cdcdcd), color-stop(50%,#efefef), color-stop(100%,#cccccc));
 	/* Chrome10+,Safari5.1+ */
@@ -37,15 +43,16 @@ body {
 /* Headings */
 h1 {
 	font-size: $font-size-medium;
-	font-weight: bold
-	margin-bottom:0.727em;
+	//font-weight: bold;
+	margin-bottom: 0px;
+	//margin-top: 5px;
 }
 h2 { 
 	font-size: $font-size-medium;
 	//line-height: 1.455em; 
-	margin-top:1em; 
+	//margin-top:1em; 
 	margin-bottom:0.60em;
-	font-weight: normal;
+	font-weight: bold;
 }
 h3, h4, h5, h6 {
 	font-size:1em; 
@@ -62,3 +69,27 @@ h3, h4, h5, h6 {
 	margin-bottom: 35px;
 }
 
+.container {
+	margin-top: 60px;
+	max-width: 900px;
+
+	@media (min-width: $lg-min) {
+		margin-top: 0;
+	}
+//	@media (min-width: $sm-min) {
+//		width: 400px;
+//	}
+//
+//	@media (min-width: 900px) {
+//		margin-top: 0;
+//		width: 600px;
+//	}
+//
+//	@media (min-width: 1200px) {
+//		width: 900px;
+//	}
+//
+//	@media (min-width: 1500px) {
+//		width: 1200px;
+//	}
+}
