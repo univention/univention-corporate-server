@@ -104,7 +104,7 @@
 		<title>Linux kernel and firmware packages</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The Linux kernel was updated to 3.16.3 (<ulink url="&ucsbug;33844">Bug 33844</ulink>).
+				The Linux kernel was updated to 3.16.5 (<ulink url="&ucsbug;33844">Bug 33844</ulink>, <ulink url="&ucsbug;36279">Bug 36279</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The packages <package>amd64-microcode</package> and <package>intel-microcode</package> were added and are installed by default to provide micro-code updates for AMD and Intel CPUs (<ulink url="&ucsbug;34437">Bug 34437</ulink>).
