@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.73-1) unstable; urgency=medium
+
+  * Bug #36291: fixed handling of sizing + labels for ComplexInput/MultiInput
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Oct 2014 17:42:29 +0200
+
 univention-management-console-frontend (4.1.72-1) unstable; urgency=medium
 
   Bug #35654:

@@ -71,10 +71,7 @@ define([
 
 		disabled: false,
 
-		labelConf: {
-			style: 'display: block; padding-right: 0;'
-		},
-		labelPosition: 'top',
+		displayLabel: false,
 
 		_widgets: null,
 
@@ -87,8 +84,6 @@ define([
 		_lastDepends: null,
 
 		_valuesLoaded: false,
-
-		_orgLabel: '',
 
 		// deferred for overall process (built + loaded dependencies)
 		_readyDeferred: null,
@@ -138,10 +133,6 @@ define([
 
 			// delete the size class
 			this.sizeClass = null;
-
-			// remove label
-			this._orgLabel = this.label;
-			this.label = '';
 
 			// the _readyDeferred is being resolved as soon as everything has been set up
 			this._readyDeferred = new Deferred();
@@ -447,9 +438,7 @@ define([
 
 				// if no label is given, set the main label as label
 				// of the first subwidget
-				if (i == 0) {
-					iconf.label = iconf.label || this._orgLabel;
-				}
+				iconf.label = iconf.label || (i == 0 && this.label ? this.label : '&nbpsp;');
 
 				if (iwidget.dynamicValuesInfo) {
 					iconf.dynamicValuesInfo = lang.partial(iwidget.dynamicValuesInfo, iname);

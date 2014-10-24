@@ -41,11 +41,15 @@ define([
 		// summary:
 		//		Groups a set of widgets and returns the value of all widgets as a list
 
+		baseClass: 'umcComplexInput',
+
 		// subtypes: Object[]
 		//		Essentially an array of object that describe the widgets for one element
 		//		of the MultiInput widget, the 'name' needs not to be specified, this
 		//		property is passed to render.widgets().
 		subtypes: null,
+
+		displayLabel: false,
 
 		_widgets: null,
 
@@ -68,16 +72,22 @@ define([
 			var widgetConfs = [];
 			this._order = [];
 
-			array.forEach( this.subtypes, function( widget, i ) {
+			array.forEach( this.subtypes, function(widget, i) {
 				// add the widget configuration dict to the list of widgets
 				var iname = '__' + this.name + '-' + i;
-				widgetConfs.push( lang.mixin( {}, widget, {
+				var iconf = lang.mixin({}, widget, {
 					disabled: this.disabled,
 					threshold: this.threshold, // for UDM-threshold
 					name: iname,
 					dynamicValues: widget.dynamicValues,
 					umcpCommand: this.umcpCommand
-				}));
+				});
+
+				// if no label is given, set the main label as label
+				// of the first subwidget
+				iconf.label = iconf.label || (i === 0 && this.label ? this.label : '&nbsp;');
+
+				widgetConfs.push(iconf);
 
 				// add the name of the widget to the list of widget names
 				this._order.push(iname);
