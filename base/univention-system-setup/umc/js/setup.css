@@ -27,8 +27,8 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-.umc-ucssetup-wizard-radio-button-label {
-	margin-top: 1.5em;
+.umc .umcLayoutRow .umcLabelPane.umc-ucssetup-wizard-radio-button-label {
+	padding-bottom: 0;
 	margin-bottom: 0
 }
 .umcContainerWidget:first-child > .umc-ucssetup-wizard-radio-button-label {
@@ -110,8 +110,26 @@
 }
 
 @media (max-width: 768px) {
-	.umcPageIcon {
-		display: none;
+	.umc .umc-setup-page .umcPageIcon {
+		position: absolute;
+		top: 0;
+		height: 100%;
+		width: 50%;
+		margin-left: 50%;
+	}
+
+	.umc .umc-setup-page .umcPageHelpText {
+		min-height: 100px;
+		width: 50%;
+	}
+
+	.umc .umc-setup-page .umcPageMain {
+		/* overwrite autoHeight property for small devices */
+		min-height: 0px !important;
+	}
+
+	.umc .umc-setup-page-summary .umcPageNav {
+		margin-bottom: -4em;
 	}
 }
 
