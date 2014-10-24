@@ -41,7 +41,9 @@ define([
 
 		templateString: '<div dojoAttachPoint="contentNode">${content}</div>',
 
-		// label: String
+		labelPosition: 'top',
+
+		// content: String
 		//		String which contains the text (or HTML code) to be rendered.
 		content: '',
 

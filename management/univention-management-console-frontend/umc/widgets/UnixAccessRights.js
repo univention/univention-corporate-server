@@ -63,6 +63,8 @@ define([
 
 		_container: null,
 
+		labelPosition: 'top',
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -78,28 +80,23 @@ define([
 				this.widgets.push( { type: 'CheckBox', name: item + 'Execute', disabled: this.disabled } );
 			} ) );
 
-			this.widgets = this.widgets.concat( [
-				{
-					type: 'Text',
-					name: 'read',
-					content: _( 'Read' )
-				},
-				{
-					type: 'Text',
-					name: 'write',
-					content: _( 'Write' )
-				},
-				{
-					type: 'Text',
-					name: 'access',
-					content: _( 'Access' )
-				},
-				{
-					type: 'Text',
-					name: 'empty',
-					content: ''
-				}
-			] );
+			this.widgets = this.widgets.concat([{
+				type: 'Text',
+				name: 'read',
+				content: _( 'Read' )
+			}, {
+				type: 'Text',
+				name: 'write',
+				content: _( 'Write' )
+			}, {
+				type: 'Text',
+				name: 'access',
+				content: _( 'Access' )
+			}, {
+				type: 'Text',
+				name: 'empty',
+				content: ''
+			}]);
 			this._widgets = render.widgets( this.widgets );
 
 			this._container = new TableContainer( { cols : 4, customClass: 'umcUNIXAccessRights', showLabels: false } );

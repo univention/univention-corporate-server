@@ -63,6 +63,8 @@ define([
 
 		_container: null,
 
+		labelPosition: 'top',
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -78,34 +80,30 @@ define([
 				this.widgets.push( { type: 'CheckBox', name: item + 'Execute', disabled: this.disabled } );
 			} ) );
 
-			this.widgets = this.widgets.concat( [
-				{
-					type: 'Text',
-					name: 'read',
-					content: _( 'Read' )
-				},
-				{
-					type: 'Text',
-					name: 'write',
-					content: _( 'Write' )
-				},
-				{
-					type: 'Text',
-					name: 'access',
-					content: _( 'Access' )
-				},
-				{
-					type: 'Text',
-					name: 'empty',
-					content: ''
-				},
-				{ type: 'Text', name: 'setgid', content: _( 'Setgid' ) },
-				{ type: 'Text', name: 'stickybit', content: _( 'Sticky bit' ) },
-				{ type: 'Text', name: 'empty1', content: '' },
-				{ type: 'Text', name: 'empty2', content: '' },
-				{ type: 'Text', name: 'empty3', content: '' },
-				{ type: 'Text', name: 'empty4', content: '' }
-			] );
+			this.widgets = this.widgets.concat([{
+				type: 'Text',
+				name: 'read',
+				content: _( 'Read' )
+			}, {
+				type: 'Text',
+				name: 'write',
+				content: _( 'Write' )
+			}, {
+				type: 'Text',
+				name: 'access',
+				content: _( 'Access' )
+			}, {
+				type: 'Text',
+				name: 'empty',
+				content: ''
+			},
+			{ type: 'Text', name: 'setgid', content: _( 'Setgid' ) },
+			{ type: 'Text', name: 'stickybit', content: _( 'Sticky bit' ) },
+			{ type: 'Text', name: 'empty1', content: '' },
+			{ type: 'Text', name: 'empty2', content: '' },
+			{ type: 'Text', name: 'empty3', content: '' },
+			{ type: 'Text', name: 'empty4', content: '' }
+			]);
 			
 			array.forEach( [ 'Setgid', 'Stickybit' ], lang.hitch( this, function( item ) {
 				this.widgets.push( { type: 'CheckBox', name: item + 'CheckBox', disabled: this.disabled } ); 

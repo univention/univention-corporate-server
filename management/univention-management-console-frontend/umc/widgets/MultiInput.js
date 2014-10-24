@@ -74,6 +74,7 @@ define([
 		labelConf: {
 			style: 'display: block; padding-right: 0;'
 		},
+		labelPosition: 'top',
 
 		_widgets: null,
 
