@@ -1038,7 +1038,7 @@ class ipnetwork(simple):
 class IPv4_AddressRange( complex ):
 	subsyntaxes = (
 		(_('First address'), ipv4Address),
-		(_( 'Last address'), TwoThirdsString),
+		(_( 'Last address'), string),
 		)
 
 class IP_AddressRange( complex ):
@@ -1247,7 +1247,8 @@ class dnsSRVName(complex):
 	"""
 	min_elements = 2
 	all_required = False
-	subsyntaxes = ( ( _( 'Service' ), TwoThirdsString ), ( _( 'Protocol' ), ipProtocolSRV ), ( _( 'Extension' ), string ) )
+	subsyntaxes = ( ( _( 'Service' ), string ), ( _( 'Protocol' ), ipProtocolSRV ), ( _( 'Extension' ), string ) )
+	size = ( 'TwoThirds', 'TwoThirds', 'TwoThirds' )
 
 class postalAddress( complex ):
 	delimiter = ', '
@@ -1256,6 +1257,7 @@ class postalAddress( complex ):
 
 class dnsSRVLocation(complex):
 	subsyntaxes=[(_('Priority'), integer), (_('Weighting'), integer), (_('Port'), integer), (_('Server'), dnsName)]
+	size = ( 'Half', 'Half', 'Half', 'Half' )
 	all_required=1
 
 class unixTime(simple):
@@ -1278,6 +1280,7 @@ class TimeString( simple ):
 class UNIX_TimeInterval( complex ):
 	min_elements = 1
 	subsyntaxes = ( ( '', integer ), ( '', TimeUnits ) )
+	size = ( 'Half', 'Half' )
 
 class NetworkType( select ):
 	choices = ( ( 'ethernet', _( 'Ethernet' ) ), ( 'fddi', _( 'FDDI' ) ), ( 'token-ring', _( 'Token-Ring' ) ) )
@@ -1343,6 +1346,7 @@ class UMC_CommandPattern( complex ):
 	subsyntaxes = ( ( _( 'Command pattern' ), string ), ( _( 'Option Pattern' ), string ) )
 	min_elements = 1
 	all_required = False # empty values are allowed
+	size = ( 'One', 'One' )
 
 class LDAP_Server( UDM_Objects ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave' )

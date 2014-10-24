@@ -1,3 +1,11 @@
+univention-directory-manager-modules (10.0.20-1) unstable; urgency=medium
+
+  Bug #36291
+  * adjust sizes of complex syntaxes
+  * adjust layout of nagios/service UDM object
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Oct 2014 17:46:58 +0200
+
 univention-directory-manager-modules (10.0.19-1) unstable; urgency=medium
 
   * Bug #35654: add attribute 'size' to admin.property, fix syntax sizes

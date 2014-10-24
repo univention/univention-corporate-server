@@ -128,7 +128,8 @@ property_descriptions={
 			required=1,
 			may_change=1,
 			default='10',
-			identifies=0
+			identifies=0,
+			size='One',
 		),
 	'normalCheckInterval': univention.admin.property(
 			short_description = _('Check interval'),
@@ -139,7 +140,8 @@ property_descriptions={
 			required=1,
 			may_change=1,
 			default='10',
-			identifies=0
+			identifies=0,
+			size='One',
 		),
 	'retryCheckInterval': univention.admin.property(
 			short_description = _('Retry check interval'),
@@ -150,7 +152,8 @@ property_descriptions={
 			required=1,
 			may_change=1,
 			default='1',
-			identifies=0
+			identifies=0,
+			size='One',
 		),
 	'notificationInterval': univention.admin.property(
 			short_description = _('Notification interval'),
@@ -161,7 +164,8 @@ property_descriptions={
 			required=1,
 			may_change=1,
 			default='180',
-			identifies=0
+			identifies=0,
+			size='One',
 		),
 	'notificationPeriod': univention.admin.property(
 			short_description = _('Notification period'),
@@ -240,8 +244,10 @@ layout = [
 	] ),
 	Tab( _('Notification'), _('Notification settings'), advanced = True, layout = [
 		[ "notificationInterval", "notificationPeriod" ],
-		[ "notificationOptionWarning", "notificationOptionCritical" ],
-		[ "notificationOptionUnreachable", "notificationOptionRecovered" ]
+		"notificationOptionWarning",
+		"notificationOptionCritical",
+		"notificationOptionUnreachable",
+		"notificationOptionRecovered"
 	] ),
 	Tab( _('Hosts'), _('Assigned hosts'), layout = [
 		Group( _( 'Assigned hosts' ), layout = [
