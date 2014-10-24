@@ -358,13 +358,9 @@
         </g>
       </g>
     </g>
-    <g
-       transform="matrix(1.2051196,0,0,1.2051196,1291.1964,633.1733)"
-       id="g742-5">
-      <path
-         d="m 0,0 -1.638,0 0.239,-8.107 1.193,0 L 0,0 z m -0.045,-9.872 c -0.151,0.145 -0.413,0.218 -0.786,0.218 -0.357,0 -0.611,-0.073 -0.762,-0.218 -0.151,-0.146 -0.226,-0.383 -0.226,-0.712 0,-0.291 0.067,-0.518 0.202,-0.679 0.134,-0.162 0.396,-0.243 0.786,-0.243 0.351,0 0.607,0.067 0.769,0.201 0.162,0.135 0.243,0.375 0.243,0.721 0,0.329 -0.075,0.566 -0.226,0.712"
-         id="path744-9"
-         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" />
-    </g>
+    <path
+       d="m 1290.1796,618.93782 c -0.5216,0 -0.9304,0.0822 -1.2051,0.41426 -0.2346,0.2797 -0.339,0.64657 -0.339,1.05448 0,0.45315 0.094,0.85659 0.3766,1.1298 0.2876,0.27612 0.6864,0.3766 1.1675,0.3766 0.4981,0 0.9128,-0.0959 1.2051,-0.3766 0.2826,-0.27321 0.4143,-0.67665 0.4143,-1.1298 0,-0.47515 -0.1367,-0.86712 -0.452,-1.1298 -0.2968,-0.24553 -0.697,-0.33894 -1.1674,-0.33894 z m -1.0168,4.10494 -0.038,0.33894 -0.2636,9.7916 -0.038,0.3766 0.4143,0 1.9583,0 0.3766,0 0,-0.3766 -0.2636,-9.7916 0,-0.33894 -0.3766,0 -1.4311,0 z"
+       id="path744-9"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.6187163;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
   </g>
 </svg>

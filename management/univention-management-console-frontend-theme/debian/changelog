@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.66-1) unstable; urgency=medium
+
+  * Bug #35654: adjust error icon, add search icon
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Oct 2014 03:04:33 +0200
+
 univention-management-console-frontend-theme (0.0.65-1) unstable; urgency=medium
 
   Bug #35654:
