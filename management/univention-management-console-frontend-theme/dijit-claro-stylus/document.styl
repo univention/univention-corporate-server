@@ -138,17 +138,23 @@ body.umc,
 /* define different media query breakpoints to optimize the height to various screen sizes */
 dynamicHeight($dynamicHeight, $viewportWidth=0, $viewportHeight=0) {
 	@media (min-width: unit($viewportWidth, px)) and (min-height: unit($viewportHeight, px)) {
-		.umcDynamicHeight {
-			height: unit($dynamicHeight, px) !important;
-		}
-		.umcDynamicMaxHeight {
-			max-height: unit($dynamicHeight, px) !important;
+		for $ioffset in 0 55 105 {
+			$iruleSuffix = ''
+			if ($ioffset) {
+				$iruleSuffix = '-' + $ioffset
+			}
+			.umcDynamicHeight{$iruleSuffix} {
+				height: unit($dynamicHeight - $ioffset, px) !important;
+			}
+			.umcDynamicMaxHeight{$iruleSuffix} {
+				max-height: unit($dynamicHeight - $ioffset, px) !important;
+			}
 		}
 	}
 }
 
-dynamicHeight(250)  // default + minimum grid height
-$heights = 300 350 400 450 500 550 600 700 800 900 1000 1200 1400
+dynamicHeight(300)  // default + minimum grid height
+$heights = 350 400 450 500 550 600 700 800 900 1000 1200 1400
 for $height in $heights {
 	dynamicHeight($height, 0, $height + 450)
 }
