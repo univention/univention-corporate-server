@@ -43,3 +43,20 @@ Description: UCS Virtual Machine Manager UDM extensions
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-virtual-machine-manager-cloud-ec2
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends},
+ univention-virtual-machine-manager-schema,
+ shell-univention-lib (>= 1.0.39),
+ univention-directory-manager-tools (>> 7.0.147),
+ python-univention-directory-manager-uvmm (>> 5.0.1-3)
+Description: UCS Virtual Machine Manager cloud connection to Amazon EC2
+ This package contains the OpenLDAP schema definitions for
+ the UVMM (UCS Virtual Machine Manager). It provides connections
+ to Amazon EC2.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

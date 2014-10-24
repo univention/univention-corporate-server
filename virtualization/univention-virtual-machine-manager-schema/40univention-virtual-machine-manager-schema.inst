@@ -137,10 +137,6 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 
 univention-directory-manager uvmm/cloudtype create "$@" --ignore_exists \
 	--position "cn=CloudType,cn=Virtual Machine Manager,$ldap_base" \
-	--set name="EC2" || die
-
-univention-directory-manager uvmm/cloudtype create "$@" --ignore_exists \
-	--position "cn=CloudType,cn=Virtual Machine Manager,$ldap_base" \
 	--set name="OpenStack" || die
 
 . /usr/share/univention-lib/base.sh || exit 1
