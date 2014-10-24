@@ -701,11 +701,11 @@
 				(<ulink url="&ucsbug;32628">Bug 32628</ulink>).
 		</simpara></listitem>
 		<listitem><simpara>
-				The deprecated package <package>php5-suhosin</package> will be purged during the update.
+				The deprecated package <package>php5-suhosin</package> will be purged during the update
 				(<ulink url="&ucsbug;35203">Bug 35203</ulink>).
 		</simpara></listitem>
 		<listitem><simpara>
-				Support for LanMan hashes has been removed &ucsUDM; Users module
+				Support for LanMan hashes has been removed in the &ucsUDM; Users module
 				(<ulink url="&ucsbug;32584">Bug 32584</ulink>).
 		</simpara></listitem>
 		<listitem><simpara>
@@ -716,6 +716,11 @@
 				During the update the package <package>console-tools</package> is replaced with
 				<package>kbd</package> 
 				(<ulink url="&ucsbug;36224">Bug 36224</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+				During the join of DC backup and slave systems all <envar>dns/forwarder*</envar>
+				&ucsUCR; settings from the DC master will be copied to the joining system
+				(<ulink url="&ucsbug;36245">Bug 36245</ulink>).
 		</simpara></listitem>
 	</itemizedlist>
 </section>
