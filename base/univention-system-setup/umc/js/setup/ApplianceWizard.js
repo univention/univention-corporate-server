@@ -253,9 +253,11 @@ define([
 		// original values as return by the load command
 		values: {},
 
-	        // whether this wizard is started as part of the Debian Installer
+		// whether this wizard is started as part of the Debian Installer
 		// or to configure an appliance image
 		partOfInstaller: false,
+
+		autoHeight: true,
 
 		// a timer used it in _cleanup
 		// to make sure the session does not expire
