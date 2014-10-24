@@ -645,6 +645,26 @@ set_windows_domain () {
 	univention-config-registry set windows/domain="$windom" >>/var/log/univention/join.log 2>&1
 }
 
+# get forwarder from master
+set_dns_forwarder () {
+
+	local dcpwd="$1"
+	local dcaccount="$2"
+	local dcname="$3"
+
+	forwarder="$(univention-ssh "$dcpwd" "${dcaccount}@${dcname}" /usr/sbin/univention-config-registry search --brief ^dns/forwarder)"
+	OLDIFS=$IFS
+	IFS=$'\n'
+	for i in $forwarder; do
+		key=${i%%: *}
+		value=${i#*: }
+		if [ -n "$value" -a -n "$key" -a ! "$value" = "<empty>" ]; then
+			univention-config-registry set "$key"="$value" >>/var/log/univention/join.log 2>&1
+		fi
+	done
+	IFS=$OLDIFS
+}
+
 if [ "$server_role" = "domaincontroller_backup" ]; then
 
 	if [ -e "/etc/ldap.secret" ]; then cat /etc/ldap.secret >>/etc/ldap.secret.SAVE; fi
@@ -728,6 +748,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 	set_windows_domain "$DCPWD" "$DCACCOUNT" "$DCNAME" "$WINDOM"
+	set_dns_forwarder "$DCPWD" "$DCACCOUNT" "$DCNAME"
 	eval "$(univention-config-registry shell)"
 
 	mkdir -p /var/lib/univention-ldap/notify/
@@ -803,6 +824,9 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 	set_windows_domain "$DCPWD" "$DCACCOUNT" "$DCNAME" "$WINDOM"
+	set_dns_forwarder "$DCPWD" "$DCACCOUNT" "$DCNAME"
+	eval "$(univention-config-registry shell)"
+
 	echo -n "0" >/var/lib/univention-ldap/schema/id/id
 	chown listener /var/lib/univention-ldap/schema/id/id
 

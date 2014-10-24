@@ -1,3 +1,10 @@
+univention-join (7.1.0-4) unstable; urgency=low
+
+  * Copy dns/forwarder settings from master
+    while joining backup/slave (Bug #36245) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 24 Oct 2014 10:33:38 +0200
+
 univention-join (7.1.0-3) unstable; urgency=low
 
   * Bug #35654: move footer buttons into header buttons
