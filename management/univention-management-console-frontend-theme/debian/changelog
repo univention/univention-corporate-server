@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.69-1) unstable; urgency=medium
+
+  * Bug #36291: fixed handling of sizing for ComplexInput/MultiInput
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Oct 2014 17:44:06 +0200
+
 univention-management-console-frontend-theme (0.0.68-1) unstable; urgency=medium
 
   * Bug #36263: add additional umcDynamicHeight classes
