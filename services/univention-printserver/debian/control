@@ -40,7 +40,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  printer-driver-ptouch,
  printer-driver-pxljr,
  printer-driver-sag-gdi,
- printer-driver-splix
+ printer-driver-splix,
  hpijs-ppds,
  python-pexpect,
  shell-univention-lib,

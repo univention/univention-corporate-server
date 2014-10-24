@@ -1,3 +1,9 @@
+univention-printserver (8.0.4-4) unstable; urgency=low
+
+  * Fixed last commit (Bug #36178) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 24 Oct 2014 09:37:22 +0200
+
 univention-printserver (8.0.4-3) unstable; urgency=low
 
   * Added dependencies to printer-driver packages (Bug #36178) 
