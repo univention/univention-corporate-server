@@ -192,7 +192,7 @@ msgstr "Access Key ID"
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: umc/js/uvmm/DriveGrid.js:425 umc/js/uvmm/DriveWizard.js:71
+#: umc/js/uvmm/DriveWizard.js:71 umc/js/uvmm/DriveGrid.js:425
 msgid "Add a new drive"
 msgstr "Ein neues Laufwerk hinzufügen"
 
@@ -257,10 +257,10 @@ msgstr ""
 msgid "Authentication URL endpoint"
 msgstr "URL des Authentifizierungs-Endpunktes"
 
-#: umc/js/uvmm/InstancePage.js:64 umc/js/uvmm/InstanceWizard.js:69
-#: umc/js/uvmm/CreatePage.js:102 umc/js/uvmm/DomainPage.js:96
-#: umc/js/uvmm/DomainPage.js:167 umc/js/uvmm/DomainPage.js:283
-#: umc/js/uvmm/DomainPage.js:342
+#: umc/js/uvmm/DomainPage.js:96 umc/js/uvmm/DomainPage.js:167
+#: umc/js/uvmm/DomainPage.js:283 umc/js/uvmm/DomainPage.js:342
+#: umc/js/uvmm/CreatePage.js:102 umc/js/uvmm/InstancePage.js:64
+#: umc/js/uvmm/InstanceWizard.js:69
 msgid "Back to overview"
 msgstr "Zurück zur Übersicht"
 
@@ -305,7 +305,9 @@ msgstr "CPU-Auslastung"
 msgid "Caching"
 msgstr "Caching"
 
-#: umc/js/uvmm/DriveGrid.js:295 umc/js/uvmm/DriveGrid.js:325
+#: umc/js/uvmm.js:457 umc/js/uvmm.js:578 umc/js/uvmm.js:640 umc/js/uvmm.js:875
+#: umc/js/uvmm.js:1001 umc/js/uvmm/DriveGrid.js:295
+#: umc/js/uvmm/DriveGrid.js:325 umc/js/uvmm/InterfaceGrid.js:133
 #: umc/js/uvmm/SnapshotGrid.js:180 umc/js/uvmm/SnapshotGrid.js:206
 #: umc/js/uvmm/SnapshotGrid.js:243 umc/js/uvmm/InterfaceGrid.js:133
 #: umc/js/uvmm.js:457 umc/js/uvmm.js:578 umc/js/uvmm.js:640 umc/js/uvmm.js:923
@@ -313,8 +315,8 @@ msgstr "Caching"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/uvmm/DriveGrid.js:107 umc/js/uvmm/DriveGrid.js:196
-#: umc/js/uvmm/DriveWizard.js:338
+#: umc/js/uvmm/DriveWizard.js:338 umc/js/uvmm/DriveGrid.js:107
+#: umc/js/uvmm/DriveGrid.js:196
 msgid "Change medium"
 msgstr "Medium wechseln"
 
@@ -375,7 +377,7 @@ msgstr "Erstellen eines Klons"
 msgid "Create a new cloud connection service account."
 msgstr "Erstellen einer neuen Cloud-Verbindung."
 
-#: umc/js/uvmm/EC2.js:43 umc/js/uvmm/OpenStack.js:52
+#: umc/js/uvmm/OpenStack.js:52 umc/js/uvmm/EC2.js:43
 msgid "Create a new cloud connection."
 msgstr "Erstellen einer neuen Cloud-Verbindung."
 
@@ -383,7 +385,7 @@ msgstr "Erstellen einer neuen Cloud-Verbindung."
 msgid "Create a new image"
 msgstr "Erstellen einer neuen Image-Datei"
 
-#: umc/js/uvmm/InstanceWizard.js:78 umc/js/uvmm/CreatePage.js:120
+#: umc/js/uvmm/CreatePage.js:120 umc/js/uvmm/InstanceWizard.js:78
 msgid "Create a new virtual machine instance."
 msgstr "Erstellen einer neuen virtuellen Instanz."
 
@@ -445,6 +447,7 @@ msgstr "Datum"
 msgid "Default (RealTek RTL-8139)"
 msgstr "Voreinstellung (RealTek RTL-8139)"
 
+#: umc/js/uvmm.js:257 umc/js/uvmm.js:570 umc/js/uvmm.js:632
 #: umc/js/uvmm/DriveGrid.js:97 umc/js/uvmm/DriveGrid.js:321
 #: umc/js/uvmm/SnapshotGrid.js:64 umc/js/uvmm/SnapshotGrid.js:239
 #: umc/js/uvmm.js:257 umc/js/uvmm.js:570 umc/js/uvmm.js:632
@@ -511,7 +514,7 @@ msgstr "Niederländisch-Belgien"
 msgid "EC2 Region"
 msgstr "EC2 Region"
 
-#: umc/js/uvmm/DriveGrid.js:253 umc/js/uvmm/DriveWizard.js:98
+#: umc/js/uvmm/DriveWizard.js:98 umc/js/uvmm/DriveGrid.js:253
 msgid ""
 "Each image is located within a so called storage pool, which might be a "
 "local directory, a device, an LVM volume or any type of share (e.g. mounted "
@@ -534,6 +537,7 @@ msgstr ""
 "Speicherbereich ausgewählt, wird die Liste der verfügbaren ISO-Images "
 "aktualisiert."
 
+#: umc/js/uvmm.js:245 umc/js/uvmm.js:1174 umc/js/uvmm.js:1227
 #: umc/js/uvmm/DriveGrid.js:86 umc/js/uvmm/InterfaceGrid.js:91
 #: umc/js/uvmm.js:245 umc/js/uvmm.js:1222 umc/js/uvmm.js:1275
 msgid "Edit"
@@ -571,9 +575,14 @@ msgstr "Erweitertes Format (qcow2)"
 msgid "Faroese"
 msgstr "Färöisch"
 
-#: umc/js/uvmm/DriveGrid.js:265 umc/js/uvmm/DriveWizard.js:123
+#: umc/js/uvmm/DriveWizard.js:123 umc/js/uvmm/DriveGrid.js:265
 msgid "Filename"
 msgstr "Dateiname"
+
+#: umc/js/uvmm/CloudConnectionWizard.js:60
+#: umc/js/uvmm/CloudConnectionWizard.js:64
+msgid "Finish"
+msgstr "Finnisch"
 
 #: umc/js/uvmm/types.js:143
 msgid "Finnish"
@@ -612,7 +621,7 @@ msgstr "Französisch-Schweiz"
 msgid "General"
 msgstr "Allgemein"
 
-#: umc/js/uvmm/InstancePage.js:56 umc/js/uvmm/DomainPage.js:91
+#: umc/js/uvmm/DomainPage.js:91 umc/js/uvmm/InstancePage.js:56
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
@@ -636,8 +645,8 @@ msgstr "Global verfügbar"
 msgid "Guest controlled"
 msgstr "Gast-gesteuert"
 
-#: umc/js/uvmm/InstanceWizard.js:113 umc/js/uvmm/types.js:54
-#: umc/js/uvmm/types.js:201
+#: umc/js/uvmm/types.js:54 umc/js/uvmm/types.js:201
+#: umc/js/uvmm/InstanceWizard.js:113
 msgid "Hard drive"
 msgstr "Festplatte"
 
@@ -776,7 +785,7 @@ msgstr "Mazedonisch"
 msgid "Machine"
 msgstr "Maschine"
 
-#: umc/js/uvmm/InstanceWizard.js:112 umc/js/uvmm/DomainPage.js:214
+#: umc/js/uvmm/DomainPage.js:214 umc/js/uvmm/InstanceWizard.js:112
 msgid "Memory"
 msgstr "Speicher"
 
@@ -848,8 +857,8 @@ msgstr "Norwegisch"
 msgid "Not removable"
 msgstr "Nicht löschbar"
 
-#: umc/js/uvmm/DomainWizard.js:195 umc/js/uvmm/InstanceWizard.js:110
-#: umc/js/uvmm/DomainPage.js:190
+#: umc/js/uvmm/DomainWizard.js:195 umc/js/uvmm/DomainPage.js:190
+#: umc/js/uvmm/InstanceWizard.js:110
 msgid "Number of CPUs"
 msgstr "Anzahl der CPUs"
 
@@ -899,7 +908,7 @@ msgstr "Passwort"
 msgid "Pause"
 msgstr "Pausieren"
 
-#: umc/js/uvmm/DomainWizard.js:128 umc/js/uvmm.js:154
+#: umc/js/uvmm.js:154 umc/js/uvmm/DomainWizard.js:128
 msgid "Physical server"
 msgstr "Physikalischer Server"
 
@@ -951,8 +960,8 @@ msgstr "Bitte warten Sie, Ihre Anfrage wird bearbeitet..."
 msgid "Polish"
 msgstr "Polnisch"
 
-#: umc/js/uvmm/DriveGrid.js:82 umc/js/uvmm/DriveGrid.js:252
 #: umc/js/uvmm/DriveWizard.js:97 umc/js/uvmm/DriveWizard.js:202
+#: umc/js/uvmm/DriveGrid.js:82 umc/js/uvmm/DriveGrid.js:252
 msgid "Pool"
 msgstr "Speicherbereich"
 
@@ -1086,7 +1095,7 @@ msgstr "Serviceregion"
 msgid "Service type"
 msgstr "Servicetyp"
 
-#: umc/js/uvmm/InstancePage.js:118 umc/js/uvmm/DomainPage.js:146
+#: umc/js/uvmm/DomainPage.js:146 umc/js/uvmm/InstancePage.js:118
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -1241,8 +1250,8 @@ msgstr ""
 msgid "The device cannot be modified by the guest."
 msgstr "Das Gerät kann nicht vom Gast modifiziert werden."
 
-#: umc/js/uvmm/InstancePage.js:144 umc/js/uvmm/DomainPage.js:381
-#: umc/js/uvmm/DriveWizard.js:327
+#: umc/js/uvmm/DriveWizard.js:327 umc/js/uvmm/DomainPage.js:381
+#: umc/js/uvmm/InstancePage.js:144
 msgid "The entered data is not valid. Please correct your input."
 msgstr ""
 "Die eingegebenen Daten sind nicht gültig. Bitte korrigieren Sie ihre Eingabe."
@@ -1450,7 +1459,7 @@ msgstr "Wo soll die virtuelle Instanz angelegt werden?"
 msgid "Which type of connection should be created"
 msgstr "Welche Cloud-Verbindung soll erstellt werden?"
 
-#: umc/js/uvmm/InstancePage.js:182 umc/js/uvmm/DomainPage.js:467
+#: umc/js/uvmm/DomainPage.js:467 umc/js/uvmm/InstancePage.js:182
 msgid ""
 "While the virtual machine is running most of the settings can not be changed."
 msgstr ""

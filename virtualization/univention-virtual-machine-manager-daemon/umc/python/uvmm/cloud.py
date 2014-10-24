@@ -113,17 +113,36 @@ class Cloud(object):
 			['cloudtype': <uvmm/cloudtype>,]
 			['name': <new cloud name>,]
 			['parameter': <key/value parameter>,]
+			['testconnection': true (default) / false,]
 			}
 
 		return: []
 		"""
-		self.required_options(request, 'cloudtype', 'name', 'parameter')
+		def _finished(thread, result, request):
+			if self._check_thread_error(thread, result, request):
+				return
+
+			success, data = result
+
+			if success:
+				# add cloud to ldap
+				ldap_cloud_connection_add(cloudtype, name, parameter)
+
+				self.finished(request.id, data)
+			else:
+				self.finished(
+						request.id,
+						None,
+						message=str(data),
+						status=MODULE_ERR_COMMAND_FAILED
+						)
+
+
+		self.required_options(request, 'cloudtype', 'name', 'parameter', 'testconnection')
 		cloudtype = request.options.get('cloudtype')
 		name = request.options.get('name')
+		testconnection = request.options.get('testconnection')
 		parameter = request.options.get('parameter')
-
-		# add cloud to ldap
-		ldap_cloud_connection_add(cloudtype, name, parameter)
 
 		# add cloud to uvmm
 		args = parameter
@@ -132,9 +151,11 @@ class Cloud(object):
 
 		self.uvmm.send(
 				'L_CLOUD_ADD',
-				Callback(self._thread_finish, request),
-				args=args
+				Callback(_finished, request),
+				args=args,
+				testconnection=testconnection
 				)
+
 
 	def cloud_list_keypair(self, request):
 		"""

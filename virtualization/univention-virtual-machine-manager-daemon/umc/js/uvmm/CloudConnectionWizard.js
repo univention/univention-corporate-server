@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"umc/tools",
 	"umc/widgets/TextBox",
 	"umc/widgets/PasswordBox",
 	"umc/widgets/ComboBox",
@@ -40,9 +41,58 @@ define([
 	"umc/widgets/Wizard",
 	"umc/widgets/Form",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, TextBox, PasswordBox, ComboBox, CheckBox, HiddenInput, Wizard, Form, _) {
+], function(declare, lang, array, tools, TextBox, PasswordBox, ComboBox, CheckBox, HiddenInput, Wizard, Form, _) {
 
 	return declare("umc.modules.uvmm.CloudConnectionWizard", [ Wizard ], {
+
+		buildRendering: function() {
+			this.pages.push({
+				name: 'pre_finish',
+				widgets: []
+			});
+			this.inherited(arguments);
+		},
+
+		getFooterButtons: function(pageName) {
+			var buttons = this.inherited(arguments);
+			var pages = this.pages;
+			//if (pageName === pages[pages.length - 2].name) {
+			//	buttons.next.label = _('Finish');
+			//}
+			return array.map(buttons, function(button) {
+				if (pageName === pages[pages.length - 2].name && button.name == 'next') {
+					button.label = _('Finish');
+				}
+				return button;
+			});
+		},
+
+		_testConnection: function(values) {
+			this.standby(true);
+			return tools.umcpCommand('uvmm/cloud/add', {
+				cloudtype: values.cloudtype,
+				name: values.name,
+				testconnection: true,
+				parameter: values
+			}).then(lang.hitch(this, function(response) {
+				this.moduleStore.onChange();
+				this.standby(false);
+				this.onFinished(response, values);
+			}), lang.hitch(this, function(errormsg) {
+				this.standby(false);
+				// show error message
+				dialog.alert('Error: ' + errormsg);
+				return 'general';
+			}));
+		},
+
+		next: function(currentPage) {
+			var nextPage = this.inherited(arguments);
+			if (nextPage === 'pre_finish') {
+				return this._testConnection(this.getValues());
+			}
+			return nextPage;
+		}
 
 	});
 });

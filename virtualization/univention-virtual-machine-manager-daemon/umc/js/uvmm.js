@@ -730,20 +730,10 @@ define([
 				wizard.destroyRecursive();
 			});
 
-			var _finished = lang.hitch(this, function(values) {
+			var _finished = lang.hitch(this, function(response, values) {
 				// add cloud connection
 				var max = 60;
 				this.updateProgress(0, max);
-				tools.umcpCommand('uvmm/cloud/add', {
-					cloudtype: values.cloudtype,
-					name: values.name,
-					parameter: values
-				}).then( lang.hitch( this, function( response ) {
-					this.updateProgress(1, max);
-					this.moduleStore.onChange();
-				}), lang.hitch( this, function() {
-					this.updateProgress(1, max);
-				}));
 				// wait for available connection
 				var counter = 1;
 				var deferred = new Deferred();
@@ -779,7 +769,9 @@ define([
 					autoValidate: true,
 					onFinished: _finished,
 					onCancel: _cleanup,
-					cloudtype: values.cloudtype
+					moduleStore: this.moduleStore,
+					cloudtype: values.cloudtype,
+					standby: this.standby
 				});
 				this.addChild(wizard);
 				this.selectChild(wizard);
