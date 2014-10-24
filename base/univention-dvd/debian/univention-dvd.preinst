@@ -38,7 +38,7 @@ dpkg-divert --rename --quiet \
    --add /usr/share/debian-cd/data/wheezy/grub-theme.in
 dpkg-divert --rename --quiet \
    --divert /usr/share/debian-cd/tools/boot/wheezy/parse_isolinux.ORIG \
-   --remove /usr/share/debian-cd/tools/boot/wheezy/parse_isolinux
+   --add /usr/share/debian-cd/tools/boot/wheezy/parse_isolinux
 
 #DEBHELPER#
 
