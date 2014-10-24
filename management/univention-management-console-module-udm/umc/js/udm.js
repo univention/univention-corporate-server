@@ -41,6 +41,7 @@ define([
 	"dojo/aspect",
 	"dojo/json",
 	"dojo/dom-style",
+	"dojo/dom-class",
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/form/_TextBoxMixin",
@@ -73,7 +74,7 @@ define([
 	"umc/modules/udm/CertificateUploader",
 	"xstyle/css!./udm.css"
 ], function(declare, lang, array, has, Deferred, when, all, on, topic, aspect, json,
-	domStyle, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog,
+	domStyle, domClass, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog,
 	store, ContainerWidget, Text, CheckBox, ComboBox, Module, Page, Grid,
 	Form, SearchForm, Button, Tree, MixedInput, ProgressBar, TreeModel,
 	TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, cache, _)
@@ -887,6 +888,12 @@ define([
 					this._reloadSuperordinates();
 				}
 			})));
+
+			// as the menu is displayed above the grid with the tree,
+			// we need to adjust the dynamic size class of the grid
+			// to account for this via an offset
+			domClass.remove(this._grid._grid.domNode, 'umcDynamicHeight');
+			domClass.add(this._grid._grid.domNode, 'umcDynamicHeight-55');
 		},
 
 		_canMove: function(item) {
