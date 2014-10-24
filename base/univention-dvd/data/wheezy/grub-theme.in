@@ -1,10 +1,10 @@
 title-color: "black"
 title-text: TITLE
 title-font: "Sans Regular 16"
-desktop-color: "light-gray"
+desktop-color: "lightgrey"
 desktop-image: "/isolinux/splash.png"
 message-color: "black"
-message-bg-color: "light-gray"
+message-bg-color: "lightgrey"
 terminal-font: "Sans Regular 12"
 
 + vbox {

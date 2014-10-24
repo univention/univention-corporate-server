@@ -1,3 +1,9 @@
+univention-dvd (0.2.8-3) unstable; urgency=low
+
+  * Bug #35974: Change GRUB colors
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 24 Oct 2014 12:43:35 +0200
+
 univention-dvd (0.2.8-2) unstable; urgency=low
 
   * Bug #35974: Change GRUB colors
