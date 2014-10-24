@@ -85,7 +85,7 @@ define([
 						type: TextBox,
 						regExp: '^([0-9A-Fa-f]?[02468AaCcEe])([:-]?[0-9A-Fa-f]{1,2}){5}$',
 						invalidMessage: _('Invalid MAC address: The address must be unicast and should have the form "02:23:45:67:89:AB".'),
-						label: _('MAC addresss'),
+						label: _('MAC address'),
 						value: values.mac_address || ''
 					}],
 					layout: [

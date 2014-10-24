@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.3-20) unstable; urgency=low
+
+  * Update translations (Bug #32842) 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 24 Oct 2014 14:13:40 +0200
+
 univention-virtual-machine-manager-daemon (4.0.3-19) unstable; urgency=low
 
   * Add frontend checks to test a new cloud connection before adding it
