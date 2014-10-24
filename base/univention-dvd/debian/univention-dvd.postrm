@@ -33,6 +33,9 @@
 dpkg-divert --rename --quiet \
    --divert /usr/share/debian-cd/tools/make_disc_trees.pl.ORIG \
    --remove /usr/share/debian-cd/tools/make_disc_trees.pl
+dpkg-divert --rename --quiet \
+   --divert /usr/share/debian-cd/data/wheezy/grub-theme.in.ORIG \
+   --remove /usr/share/debian-cd/data/wheezy/grub-theme.in
 
 #DEBHELPER#
 
