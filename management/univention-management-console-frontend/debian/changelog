@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.74-1) unstable; urgency=medium
+
+  * Bug #36128: resize title of GalleryItems dynamically if too large
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 24 Oct 2014 19:38:33 +0200
+
 univention-management-console-frontend (4.1.73-1) unstable; urgency=medium
 
   * Bug #36291: fixed handling of sizing + labels for ComplexInput/MultiInput

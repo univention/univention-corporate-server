@@ -32,20 +32,24 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/_base/kernel",
+	"dojo/_base/window",
 	"dojo/on",
 	"dojo/has",
+	"dojo/query",
 	"dojo/dom-class",
 	"dojo/dom-style",
 	"dojo/dom-construct",
+	"dojo/dom-geometry",
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/Destroyable",
-	"umc/tools",
-	"umc/widgets/Tooltip",
+	"../tools",
+	"./Tooltip",
 	"dgrid/List",
 	"dgrid/extensions/DijitRegistry",
 	"put-selector/put"
-], function(declare, lang, array, on, has, domClass, domStyle, domConstruct, Menu, MenuItem, Destroyable, tools, Tooltip, List, DijitRegistry, put) {
+], function(declare, lang, array, kernel, win, on, has, query, domClass, domStyle, domConstruct, domGeometry, Menu, MenuItem, Destroyable, tools, Tooltip, List, DijitRegistry, put) {
 	return declare("umc.widgets.GalleryPane", [ List, DijitRegistry, Destroyable ], {
 		style: "",
 
@@ -58,6 +62,8 @@ define([
 		queryOptions: {},
 
 		_defaultActionHandle: null,
+
+		_resizeDeferred: null,
 
 		_setStore: function(value) {
 			this.store = value;
@@ -77,6 +83,7 @@ define([
 		_renderQuery: function() {
 			this.refresh();
 			this.renderArray(this.store.query(this.query, this.queryOptions));
+			this._resizeItemNames();
 		},
 
 		_setActions: function(actions) {
@@ -257,6 +264,47 @@ define([
 			if (this.store) {
 				this._renderQuery();
 			}
+			this.own(on(kernel.global, 'resize', lang.hitch(this, '_handleResize')));
+			this.own(on(win.doc, 'resize', lang.hitch(this, '_handleResize')));
+		},
+
+		_getItemNameHeight: function(node) {
+			var nameNode = query('.umcGalleryName', node)[0];
+			return domGeometry.position(nameNode).h;
+		},
+
+		_getDefaultItemNameHeight: function() {
+			// render empty gallery item
+			var node = this.renderRow({
+				name: '*',
+				description: '*'
+			});
+			domClass.add(node, 'dijitOffScreen');
+			domConstruct.place(node, this.contentNode);
+			var height = this._getItemNameHeight(node);
+			domConstruct.destroy(node);
+			return height;
+		},
+
+		_resizeItemNames: function() {
+			var defaultHeight = this._getDefaultItemNameHeight();
+			query('.umcGalleryName', this.contentNode).forEach(lang.hitch(this, function(inode) {
+				domStyle.set(inode, 'fontSize', '');
+				var iheight = domGeometry.position(inode).h;
+				var fontSize = 1.5;
+				while (iheight > defaultHeight + 0.5 && fontSize > 0.5) {
+					domStyle.set(inode, 'fontSize', fontSize + 'em');
+					iheight = domGeometry.position(inode).h;
+					fontSize *= 0.9;
+				}
+			}));
+		},
+
+		_handleResize: function() {
+			if (this._resizeDeferred && !this._resizeDeferred.isFulfilled()) {
+				this._resizeDeferred.cancel();
+			}
+			this._resizeDeferred = tools.defer(lang.hitch(this, '_resizeItemNames'), 200);
 		},
 
 		isLeftToRight: function() {
