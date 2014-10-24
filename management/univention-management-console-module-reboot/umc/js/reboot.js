@@ -29,12 +29,14 @@
 /*global define*/
 
 define([
-	"dojo/on",
+	"dojo/topic",
 	"umc/app",
+	"umc/tools",
+	"umc/dialog",
 	"umc/modules/lib/server",
 	"dijit/MenuItem",
 	"umc/i18n!umc/modules/reboot"
-], function(on, app, libServer, MenuItem, _) {
+], function(topic, app, tools, dialog, libServer, MenuItem, _) {
 
 	var addRebootMenu = function() {
 		app.addMenuEntry(new MenuItem({
@@ -55,8 +57,18 @@ define([
 		}));
 	};
 
-	on.once(app, 'ModulesLoaded', function() {
+	var checkRebootRequired = function() {
+		tools.ucr(['update/reboot/required']).then(function(_ucr) {
+			if (tools.isTrue(_ucr['update/reboot/required'])) {
+				dialog.notify(_('This system has been updated recently. Please reboot this system to finish the update.'));
+				libServer.askReboot(_('This system has been updated recently. Please reboot this system to finish the update.'));
+			}
+		});
+	};
+
+	topic.subscribe('/umc/started', function() {
 		addRebootMenu();
+		checkRebootRequired();
 	});
 
 	return null;

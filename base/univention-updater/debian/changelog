@@ -1,3 +1,9 @@
+univention-updater (10.0.26-2) unstable; urgency=medium
+
+  * Bug #35654: implement startup checks
+
+ -- Florian Best <best@univention.de>  Fri, 24 Oct 2014 13:17:33 +0200
+
 univention-updater (10.0.25-1) unstable; urgency=low
 
   * Autoremove packages in postup (Bug #36265) 

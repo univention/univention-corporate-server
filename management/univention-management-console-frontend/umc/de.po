@@ -123,32 +123,6 @@ msgstr ""
 "Ein unbekannter Fehler mit Status-Code %s trat während des "
 "Verbindungsaufbaus zum Server auf. Bitte versuchen Sie es später noch einmal."
 
-#: umc/app.js:467
-#, python-format
-msgid ""
-"An update for UCS is available. Please visit the %s to install the updates."
-msgstr ""
-"Ein Update für UCS ist verfügbar. Es kann über das %s im System eingespielt "
-"werden."
-
-#: umc/app.js:527
-#, python-format
-msgid ""
-"As %s you do not have access to the App Center. For this you need to log in "
-"as %s."
-msgstr ""
-"Als %s haben Sie keinen Zugriff auf das App Center. Dafür müssen Sie sich "
-"als %s anmelden."
-
-#: umc/app.js:529
-#, python-format
-msgid ""
-"As %s you have neither access to the domain administration nor to the App "
-"Center. For this you need to log in as %s."
-msgstr ""
-"Als %s haben Sie weder Zugriff auf die Domänenadministration noch auf das "
-"App Center. Dafür müssen Sie sich als %s anmelden."
-
 #: umc/tools.js:555
 msgid "Authentication failed, please login again."
 msgstr "Die Authentisierung schlug fehl. Bitte melden Sie sich erneut an."
@@ -616,15 +590,6 @@ msgstr ""
 "Die Netzwerkverbindung ist nicht verschlüsselt. Alle persönlichen und "
 "sensiblen Daten werden im Klartext übertragen. Bitte verwenden Sie %s diesen "
 "Link</a> für eine verschlüsselte SSL-Verbindung."
-
-#: umc/app.js:487
-#, python-format
-msgid ""
-"This system has been updated recently. Please visit the %s and reboot this "
-"system to finish the update."
-msgstr ""
-"Dieses System wurde kürzlich aktualisiert. Ein Neustart des Systems über das "
-"%s ist erforderlich, um das Update abzuschließen."
 
 #: umc/i18n.js:124
 msgid "Translate me!"

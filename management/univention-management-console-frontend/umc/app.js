@@ -416,21 +416,9 @@ define([
 		}
 	});
 
-	var StartupChecks = declare([], {
+	topic.subscribe('/umc/started', function() {
 
-		constructor: function() {
-			this.inherited(arguments);
-			// run several checks
-			this._checkCertificateValidity();
-			this._checkLicense();
-			this._checkUpdateAvailable();
-			this._checkBrowser();
-			this._checkRebootRequired();
-			this._checkJoinStatus();
-			this._checkShowStartupDialog();
-		},
-
-		_checkCertificateValidity: function() {
+		var checkCertificateValidity = function() {
 			var hostCert = parseInt(_ucr['ssl/validity/host'], 10);
 			var rootCert = parseInt(_ucr['ssl/validity/root'], 10);
 			var warning = parseInt(_ucr['ssl/validity/warning'], 10);
@@ -445,30 +433,9 @@ define([
 			if (days <= warning) {
 				dialog.warn(_('The %s will expire in %d days and should be renewed!', certType, days));
 			}
-		},
+		};
 
-		_checkLicense: function() {
-			if (require('umc/app').getModule('udm')) {
-				// taken from udm.js
-				tools.umcpCommand('udm/license', {}, false).then(lang.hitch(this, function(data) {
-					var msg = data.result.message;
-					if (msg) {
-						dialog.warn(msg);
-					}
-				}), function() {
-					console.warn('WARNING: An error occurred while verifying the license. Ignoring error.');
-				});
-			}
-		},
-
-		_checkUpdateAvailable: function() {
-			if (require('umc/app').getModule('updater') && tools.isTrue(_ucr['update/available'])) {
-				var link = require('umc/app').linkToModule('updater');
-				dialog.notify(_('An update for UCS is available. Please visit the %s to install the updates.', link));
-			}
-		},
-
-		_checkBrowser: function() {
+		var checkBrowser = function() {
 			if (has('ie') < 9 || has('ff') < 24) {
 				// supported browsers are Chrome >= 33, FF >= 24, IE >=9 and Safari >= 7
 				// they should work with UMC. albeit, they are
@@ -479,59 +446,9 @@ define([
 				// during UDM-Form loading)
 				dialog.warn(_('Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.'));
 			}
-		},
+		};
 
-		_checkRebootRequired: function() {
-			if (require('umc/app').getModule('reboot') && tools.isTrue(_ucr['update/reboot/required'])) {
-				var link = require('umc/app').linkToModule('reboot');
-				dialog.notify(_('This system has been updated recently. Please visit the %s and reboot this system to finish the update.', link));
-			}
-		},
-
-		_checkJoinStatus: function() {
-			if (require('umc/app').getModule('join')) {
-				all([
-					tools.umcpCommand('join/joined', null, false),
-					tools.umcpCommand('join/scripts/query', null, false)
-				]).then(
-					lang.hitch(this, function(data) {
-						var systemJoined = data[0].result;
-						var allScriptsConfigured = array.every(data[1].result, function(item) {
-							return item.configured;
-						});
-						var joinModuleLink = require('umc/app').linkToModule('join');
-						if (!systemJoined) {
-							// Bug #33389: do not prompt any hint if the system is not joined
-							// otherwise we might display this hint if a user runs the appliance
-							// setup from an external client.
-							//dialog.warn(_('The system has not been joined into a domain so far. Please visit the %s to join the system.', joinModuleLink));
-						} else if (!allScriptsConfigured) {
-							dialog.notify(_('Not all installed components have been registered. Please visit the %s to register the remaining components.', joinModuleLink));
-						}
-
-						if (systemJoined) {
-							// Bug #33333: only show the hint for root login if system is joined
-							this._checkForUserRoot();
-						}
-					}), function() {
-						console.warn('WARNING: An error occurred while verifying the join state. Ignoring error.');
-					}
-				);
-			}
-		},
-
-		_checkForUserRoot: function() {
-			if (tools.status('username') == 'root' && tools.isFalse(_ucr['system/setup/showloginmessage'])) {
-				var login_as_admin_tag = '<a href="javascript:void(0)" onclick="require(\'umc/app\').relogin(\'Administrator\')">Administrator</a>';
-				if (_ucr['server/role'] == 'domaincontroller_slave') {
-					dialog.notify(_('As %s you do not have access to the App Center. For this you need to log in as %s.', '<strong>root</strong>', login_as_admin_tag));
-				} else { // master, backup
-					dialog.notify(_('As %s you have neither access to the domain administration nor to the App Center. For this you need to log in as %s.', '<strong>root</strong>', login_as_admin_tag));
-				}
-			}
-		},
-
-		_checkShowStartupDialog: function() {
+		var checkShowStartupDialog = function() {
 			var isUserAdmin = tools.status('username').toLowerCase() == 'administrator';
 			var isUCRVariableEmpty = !Boolean(_ucr['umc/web/startupdialog']);
 			var showStartupDialog = tools.isTrue(_ucr['umc/web/startupdialog']);
@@ -553,11 +470,12 @@ define([
 					startupDialog.destroyRecursive();
 				});
 			}));
-		}
-	});
+		};
 
-	topic.subscribe('/umc/startup/checks', function() {
-		new StartupChecks();
+		// run several checks
+		checkCertificateValidity();
+		checkBrowser();
+		checkShowStartupDialog();
 	});
 
 	var UmcHeader = declare([ContainerWidget], {
@@ -1089,7 +1007,7 @@ define([
 			on.once(this, 'ModulesLoaded', lang.hitch(this, function() {
 				// run some checks (only if a overview page is available)
 				if (tools.status('overview')) {
-					topic.publish('/umc/startup/checks');
+					topic.publish('/umc/started');
 				}
 			}));
 

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.10-2) unstable; urgency=medium
+
+  * Bug #35654: implement startup checks
+
+ -- Florian Best <best@univention.de>  Fri, 24 Oct 2014 13:19:41 +0200
+
 univention-management-console-module-udm (5.1.10-1) unstable; urgency=medium
 
   * Bug #35654: remove header from NewObjectDialog and adjust height

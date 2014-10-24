@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/topic",
 	"dijit/Dialog",
 	"umc/dialog",
 	"umc/tools",
@@ -40,7 +41,20 @@ define([
 	"umc/modules/updater/UpdatesPage",
 	"umc/modules/updater/ProgressPage",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, Dialog, dialog, tools, ConfirmDialog, Module, UpdatesPage, ProgressPage, _) {
+], function(declare, lang, array, topic, Dialog, dialog, tools, ConfirmDialog, Module, UpdatesPage, ProgressPage, _) {
+
+	topic.subscribe('/umc/started', function() {
+		var checkUpdateAvailable = function() {
+			tools.ucr(['update/available']).then(function(_ucr) {
+				if (tools.isTrue(_ucr['update/available'])) {
+					var link = tools.linkToModule({module: 'updater'});
+					dialog.notify(_('An update for UCS is available. Please visit the %s to install the updates.', link));
+				}
+			});
+		};
+		checkUpdateAvailable();
+	});
+
 	return declare("umc.modules.updater", Module, {
 
 		// some variables related to error handling

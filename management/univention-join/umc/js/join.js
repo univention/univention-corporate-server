@@ -31,6 +31,7 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/array",
 	"dojo/topic",
 	"dojo/promise/all",
 	"dojox/html/entities",
@@ -48,8 +49,54 @@ define([
 	"umc/modules/join/Grid",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/join"
-], function(declare, lang, topic, all, entities, dialog, tools, app, ConfirmDialog,
+], function(declare, lang, array, topic, all, entities, dialog, tools, app, ConfirmDialog,
 			Module, Page, Text, TextBox, PasswordBox, ProgressBar, JoinForm, JoinGrid, Lib_Server, _) {
+
+	topic.subscribe('/umc/started', function() {
+		var checkForUserRoot = function() {
+			tools.ucr(['system/setup/showloginmessage', 'server/role']).then(function(_ucr) {
+				if (tools.status('username') == 'root' && tools.isFalse(_ucr['system/setup/showloginmessage'])) {
+					var login_as_admin_tag = '<a href="javascript:void(0)" onclick="require(\'umc/app\').relogin(\'Administrator\')">Administrator</a>';
+					if (_ucr['server/role'] == 'domaincontroller_slave') {
+						dialog.notify(_('As %s you do not have access to the App Center. For this you need to log in as %s.', '<strong>root</strong>', login_as_admin_tag));
+					} else { // master, backup
+						dialog.notify(_('As %s you have neither access to the domain administration nor to the App Center. For this you need to log in as %s.', '<strong>root</strong>', login_as_admin_tag));
+					}
+				}
+			});
+		};
+
+		var checkJoinStatus = function() {
+			all([
+				tools.umcpCommand('join/joined', null, false),
+				tools.umcpCommand('join/scripts/query', null, false)
+			]).then(
+				lang.hitch(this, function(data) {
+					var systemJoined = data[0].result;
+					var allScriptsConfigured = array.every(data[1].result, function(item) {
+						return item.configured;
+					});
+					var joinModuleLink = tools.linkToModule({module: 'join'});
+					if (!systemJoined) {
+						// Bug #33389: do not prompt any hint if the system is not joined
+						// otherwise we might display this hint if a user runs the appliance
+						// setup from an external client.
+						//dialog.warn(_('The system has not been joined into a domain so far. Please visit the %s to join the system.', joinModuleLink));
+					} else if (!allScriptsConfigured) {
+						dialog.notify(_('Not all installed components have been registered. Please visit the %s to register the remaining components.', joinModuleLink));
+					}
+
+					if (systemJoined) {
+						// Bug #33333: only show the hint for root login if system is joined
+						checkForUserRoot();
+					}
+				}), function() {
+					console.warn('WARNING: An error occurred while verifying the join state. Ignoring error.');
+				}
+			);
+		};
+		checkJoinStatus();
+	});
 
 	var JoinPage = declare("umc.modules.join.JoinPage", [Page], {
 		_form: null,
