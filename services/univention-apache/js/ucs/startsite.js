@@ -136,7 +136,7 @@ define([
 			}));
 			//console.log(localizedProps);
 			var node = domConstruct.toDom(lang.replace(
-				'<div class="umcGalleryWrapperItem col-xs-12 col-sm-6 col-md-4">\n'
+				'<div class="umcGalleryWrapperItem col-xxs-12 col-xs-6 col-sm-6 col-md-4">\n'
 				+ '	<a href="{link}">\n'
 				+ '		<div class="umcGalleryItem umcGalleryCategory-{category}">\n'
 				+ (localizedProps.icon ? '			<div class="umcGalleryIcon" style="background-image:url({icon})"></div>\n' : '')

@@ -50,11 +50,15 @@
 	}
 	.warning {
 		.wrapper {
+			
+			color: white;
 			margin: 20px auto 20px auto;
 			max-width: 500px;
-			height: 150px;
-			vertical-gradient-and-filter(#606060, #505050);
-			padding: 10px;
+			height: 165px;
+			vertical-gradient-and-filter($text-color-lighter, $text-color);
+			opacity: 0.8;
+			box-shadow: 0 0px 10px rgba(0,0,0,0.3)
+			padding: 20px;
 
 			@media (min-width: $xs-min) {
 				margin-top: 30px;
@@ -72,12 +76,29 @@
 			}
 
 		}	
+		.title {
+			font-size: $font-size-medium;
+			line-height: 1em;
+			min-height: 40%;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+		.text {
+			a {
+				color: white;
+				text-decoration: underline;
+				opacity: 0.8;
+			}
+			a:hover {
+				opacity: 1;
+			}
+		}
 		.icon {
 			background-image: url(../css/icons/info.svg);
 			background-repeat: no-repeat;
 			width: 110px;
 			height: 140px;
-			//margin: 5px;
+			margin-right: 15px;
 			float: left;
 		}
 	}
@@ -196,13 +217,17 @@
 }
 
 // no left/right padding for full size item
-@media (max-width: 767px) {
+@media (max-width: 549px) {
 	.galleryTab .umcGalleryWrapperItem {
 		padding-left: 0;
 		padding-right: 0;
 	}
 }
-
+@media (max-width: 549px) {
+	.col-xxs-12 {
+		width: 100%
+	}
+}
 
 /* UMC overview page icons */
 .galleryTab {

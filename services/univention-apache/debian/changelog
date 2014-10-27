@@ -1,3 +1,12 @@
+univention-apache (7.0.4-1) unstable; urgency=low
+
+  Bug #36095:
+  * adjusted sticky footer
+  * adjusted background styling
+  * adjusted media queries for entries
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 27 Oct 2014 17:38:58 +0100
+
 univention-apache (7.0.3-3) unstable; urgency=low
 
   * [WIP] adaption of ucs-overview : changed style of dropdown menu
