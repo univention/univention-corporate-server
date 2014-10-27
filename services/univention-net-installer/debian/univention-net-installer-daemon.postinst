@@ -3,7 +3,7 @@
 # Univention Net Installer Daemon
 #  postinst script
 #
-# Copyright 2013 Univention GmbH
+# Copyright 2013-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,8 +29,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
-set -e
 
 #DEBHELPER#
 

@@ -3,7 +3,7 @@
 # univention-net-installer
 #  rules file for the meta package
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,9 +29,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
-override_dh_fixperms:
-	dh_fixperms 
 
 override_dh_auto_install:
 	dh_auto_install

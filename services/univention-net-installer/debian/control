@@ -12,7 +12,8 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-tftp,
- univention-config-registry
+ univention-config-registry,
+ shell-univention-lib
 Description: UCS - automatic profile-based installation services
  This package contains the packages for the profile-based installation
  of UCS systems.
@@ -24,7 +25,10 @@ Description: UCS - automatic profile-based installation services
 
 Package: univention-net-installer-daemon
 Architecture: all
-Depends: python-univention
+Depends: 
+ python-univention,
+ univention-config,
+ ${misc:Depends},
 Description: UCS - automatic profile server installation
  This package contains a net installer daemon which removes the reinstallation
  flag in the ldap directory.
