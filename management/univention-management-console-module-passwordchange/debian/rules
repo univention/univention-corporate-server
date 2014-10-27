@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/make -f
 #
-# Univention Admin Modules
-#  admin module for the user himself
+# Univention Management Console Module
+#  rules file for the debian package
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,33 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.admin.layout import Tab
-import univention.admin.handlers
-import univention.admin.localization
+%:
+	dh $@ --with 'python_support'
 
-import univention.admin.handlers.users.user as udm_user
+override_dh_auto_test:
+	ucslint
 
-translation=univention.admin.localization.translation('univention.admin.handlers.users')
-_ = translation.translate
+override_dh_auto_build:
+	dh-umc-module-build
+	dh_auto_build
 
-module = 'users/self'
-operations = ['edit','search']
-options = {}
-
-mapping = udm_user.mapping
-
-property_descriptions = {
-}
-
-layout = [Tab(_('General'), layout=[])]
-
-uid_umlauts = 0
-childs = 0
-short_description = _('User: Self')
-long_description = ''
-
-class object(univention.admin.handlers.users.user.object):
-	module=module
-
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-		univention.admin.handlers.users.user.object.__init__(self, co, lo, position, dn, superordinate, attributes)
+override_dh_auto_install:
+	dh-umc-module-install
+	dh_auto_install

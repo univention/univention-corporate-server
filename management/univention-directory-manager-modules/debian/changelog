@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.24-1) unstable; urgency=medium
+
+  * Bug #35847: remove password from users/self
+
+ -- Florian Best <best@univention.de>  Mon, 27 Oct 2014 20:52:37 +0100
+
 univention-directory-manager-modules (10.0.23-1) unstable; urgency=low
 
   * Bug #36301: adapted some labels in the mail domain module

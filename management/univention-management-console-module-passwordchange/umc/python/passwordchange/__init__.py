@@ -1,9 +1,10 @@
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
-# Univention Admin Modules
-#  admin module for the user himself
+# Univention Management Console module:
+#   Password change for the user currently logged in
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,33 +31,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.admin.layout import Tab
-import univention.admin.handlers
-import univention.admin.localization
+from univention.lib.i18n import Translation
+from univention.management.console.modules import Base
 
-import univention.admin.handlers.users.user as udm_user
+_ = Translation('univention-management-console-module-passwordchange').translate
 
-translation=univention.admin.localization.translation('univention.admin.handlers.users')
-_ = translation.translate
 
-module = 'users/self'
-operations = ['edit','search']
-options = {}
-
-mapping = udm_user.mapping
-
-property_descriptions = {
-}
-
-layout = [Tab(_('General'), layout=[])]
-
-uid_umlauts = 0
-childs = 0
-short_description = _('User: Self')
-long_description = ''
-
-class object(univention.admin.handlers.users.user.object):
-	module=module
-
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-		univention.admin.handlers.users.user.object.__init__(self, co, lo, position, dn, superordinate, attributes)
+class Instance(Base):
+	pass

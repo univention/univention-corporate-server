@@ -44,6 +44,7 @@ import traceback
 import notifier
 import notifier.signals as signals
 import notifier.popen as popen
+from notifier import threads
 
 import univention.admin.uldap as udm_uldap
 import univention.admin.objects as udm_objects
@@ -61,10 +62,12 @@ from .definitions import (SUCCESS, BAD_REQUEST_INVALID_OPTS, BAD_REQUEST_INVALID
 
 from ..resources import moduleManager, categoryManager
 from ..auth import AuthHandler
+from ..pam import PamAuth, PasswordChangeFailed
 from ..acl import LDAP_ACLs
 from ..log import CORE
 from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND, ucr
 from ..locales import I18N, I18N_Manager
+from ..modules.sanitizers import StringSanitizer, DictSanitizer, ValidationError
 
 users_module = None
 try:
@@ -511,6 +514,9 @@ class Processor(signals.Provider):
 		if not isinstance(msg.options, dict):
 			raise InvalidOptionsError
 		for key, value in msg.options.items():
+			if key == 'password':
+				self._change_user_password(msg)
+				return
 			if key == 'locale':
 				try:
 					self.core_i18n.set_language(value)
@@ -568,6 +574,75 @@ class Processor(signals.Provider):
 				break
 
 		self.signal_emit('response', res)
+
+	def _change_user_password(self, request):
+		CORE.info('Got password changing request')
+		sanitizer = DictSanitizer(dict(
+			password=DictSanitizer(dict(
+				password=StringSanitizer(required=True),
+				new_password=StringSanitizer(required=True),
+			))
+		))
+		try:
+			sanitizer.sanitize('request.options', {'request.options': request.options})
+		except ValidationError as exc:
+			CORE.info('Malformed request %s (%r)' % (exc, exc))
+			res = Response(request)
+			res.status = 409
+			res.message = '%s' % (exc,)
+			res.result = exc.result()
+			self.signal_emit('response', res)
+			return
+
+		username = self.__username
+		password = request.options['password']['password']
+		new_password = request.options['password']['new_password']
+
+		CORE.info('Changing password of user %r' % (username,))
+		pam = PamAuth()
+		change_password = notifier.Callback(pam.change_password, username, password, new_password)
+		password_changed = notifier.Callback(self._password_changed, request, new_password)
+		thread = threads.Simple('change_password', change_password, password_changed)
+		thread.run()
+
+	def _password_changed(self, thread, result, request, new_password):
+		res = Response(request)
+		if isinstance(result, PasswordChangeFailed):
+			res.status = 400#409
+			res.message = '%s' % (result,)
+			res.result = {'new_password': '%s' % (result,)}
+		elif isinstance(result, BaseException):
+			tb = ''.join(traceback.format_exception(*thread.exc_info))
+			CORE.error('Changing password failed: %s' % (tb,))
+			res.status = 500
+			res.message = '%s%s' % (result, tb)
+		else:
+			CORE.info('Successfully changed password')
+			res.status = 200
+			res.message = self.i18n._('Password successfully changed.')
+
+			self.__password = new_password
+
+			try:
+				self._update_module_passwords()
+			except:
+				res.status = 500
+				error_msg = self.i18n._('Nevertheless an error occured while updating the password for running modules. Please relogin to UMC to solve this problem.')
+				res.message = ('%s %s%s' % (res.message, error_msg, traceback.format_exc()))
+
+		self.signal_emit('response', res)
+
+	def _update_module_passwords(self):
+		exc_info = None
+		for module_name, proc in self.__processes.items():
+			CORE.info('Changing password on running module %s' % (module_name,))
+			req = Request('SET', arguments=[module_name], options={'password': self.__password})
+			try:
+				proc.request(req)
+			except:
+				exc_info = sys.exc_info()
+		if exc_info:
+			raise exc_info[0], exc_info[1], exc_info[2]
 
 	def _inactivitiy_tick(self, module):
 		if module._inactivity_counter > 0:

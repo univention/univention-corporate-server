@@ -1,3 +1,11 @@
+univention-management-console-module-udm (5.1.13-1) unstable; urgency=medium
+
+  * Bug #35847: Add functionality to change user passwords in the UMC server core
+  * update the cached LDAP password in UDM on password change
+  * hide the UDM users/self module by default, rename it into 'User settings'
+
+ -- Florian Best <best@univention.de>  Mon, 27 Oct 2014 21:03:07 +0100
+
 univention-management-console-module-udm (5.1.12-3) unstable; urgency=medium
 
   * Bug #23665: fix image max-height

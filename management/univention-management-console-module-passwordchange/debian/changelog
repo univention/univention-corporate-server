@@ -1,0 +1,5 @@
+univention-management-console-module-passwordchange (0.1.0-1) unstable; urgency=low
+
+  * Bug #35847: Initial release
+
+ -- Florian Best <best@univention.de>  Mon, 27 Oct 2014 15:23:29 +0100

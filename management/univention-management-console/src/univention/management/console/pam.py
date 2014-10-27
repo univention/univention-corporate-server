@@ -99,7 +99,7 @@ class PamAuth(object):
 				raise AuthenticationFailed(str(pam_err[0]))
 			raise
 
-	def change_expired_password(self, username, old_password, new_password):
+	def change_password(self, username, old_password, new_password):
 		prompts = []
 		answers = {
 			PAM_PROMPT_ECHO_ON: [username],
@@ -113,7 +113,7 @@ class PamAuth(object):
 			pam.chauthtok()
 		except PAMError as pam_err:
 			AUTH.warn('Changing password failed (%s). Prompts: %r' % (pam_err, prompts))
-			message = self.parse_error_message_from(prompts)
+			message = self._parse_error_message_from(pam_err, prompts)
 			raise PasswordChangeFailed(message)
 
 	def start(self, conversation):
@@ -129,11 +129,13 @@ class PamAuth(object):
 			return [(answers.get(qt, ['']).pop(0), 0) for query, qt in query_list]
 		return conversation
 
-	def parse_error_message_from(self, prompts):
+	def _parse_error_message_from(self, pam_err, prompts):
 		# okay, check prompts, maybe they have a hint why it failed?
 		# prompts are localised, i.e. if the operating system uses German, the prompts are German!
 		# try to be exhaustive. otherwise the errors will not be presented to the user.
 		if not prompts:
-			return 'no-prompts, please see /var/log/auth.log'
-		important_prompt = prompts[-1]  # last prompt is some kind of internal error message
+			important_prompt = str(pam_err[0])
+		else:
+			# FIXME / TODO: check if this still can occur in UCS4?!
+			important_prompt = prompts[-1]  # last prompt is some kind of internal error message
 		return self.known_errors.get(important_prompt, important_prompt)

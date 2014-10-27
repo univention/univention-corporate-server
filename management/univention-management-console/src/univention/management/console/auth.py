@@ -90,7 +90,7 @@ class AuthHandler(signals.Provider):
 				raise
 
 			try:
-				pam.change_expired_password(username, password, new_password)
+				pam.change_password(username, password, new_password)
 			except PasswordChangeFailed as change_failed:
 				AUTH.error(str(change_failed))
 				raise

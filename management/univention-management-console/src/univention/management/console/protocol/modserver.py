@@ -218,6 +218,9 @@ class ModuleServer(Server):
 				elif key == 'username':
 					self.__username = value
 					self.__handler.username = self.__username
+				elif key == 'password':
+					self.__password = value
+					self.__handler.password = self.__password
 				elif key == 'credentials':
 					self.__username = value['username']
 					self.__user_dn = value['user_dn']

@@ -101,6 +101,11 @@ class Instance( Base, ProgressMixin ):
 		self.modules_with_childs = []
 		install_opener(ucr)
 
+	@Base.password.setter
+	def password(self, password):
+		super(Instance, Instance).password.fset(self, password)
+		set_credentials(self._user_dn, self._password)
+
 	def init( self ):
 		'''Initialize the module. Invoked when ACLs, commands and
 		credentials are available'''

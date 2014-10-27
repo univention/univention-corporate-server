@@ -15,8 +15,8 @@ msgstr ""
 msgid "Browsing and managing the LDAP tree"
 msgstr "Durchsuchen und Verwalten des LDAP-Verzeichnisbaums"
 
-msgid "Change Password"
-msgstr "Passwort ändern"
+msgid "User settings"
+msgstr "Benutzereinstellungen"
 
 msgid "Computers"
 msgstr "Rechner"
@@ -78,8 +78,8 @@ msgstr "Nagios"
 msgid "Networks"
 msgstr "Netzwerke"
 
-msgid "Password change for the user currently logged in"
-msgstr "Änderung des Passworts des angemeldeten Benutzers"
+msgid "Change settings for the user currently logged in"
+msgstr "Änderung der Benutzereinstellungen des angemeldeten Benutzers"
 
 msgid "Policies"
 msgstr "Richtlinien"

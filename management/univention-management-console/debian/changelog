@@ -1,3 +1,9 @@
+univention-management-console (7.1.15-1) unstable; urgency=medium
+
+  * Bug #35847: add functionality for password changes
+
+ -- Florian Best <best@univention.de>  Mon, 27 Oct 2014 14:15:42 +0100
+
 univention-management-console (7.1.14-1) unstable; urgency=medium
 
   * Bug #35654: auto pep8
