@@ -464,16 +464,6 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
-
-	<section>
-		<title>Software monitor (univention-pkgdb)</title>
-		<itemizedlist>
-			<listitem><simpara>
-				A traceback in the pkgdb listener has been fixed
-				(<ulink url="&ucsbug;35367">Bug 35367</ulink>).
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
 </section>
 
 
