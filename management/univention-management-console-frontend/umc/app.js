@@ -545,7 +545,6 @@ define([
 				this._headerMenu.addChild(new PopupMenuItem({
 					label: _('Settings'),
 					id: 'umcMenuSettings',
-					iconClass: 'icon24-umc-menu-settings',
 					popup: this._settingsMenu
 				}));
 
@@ -554,14 +553,12 @@ define([
 				this._headerMenu.addChild(new PopupMenuItem({
 					label: _('Help'),
 					id: 'umcMenuHelp',
-					iconClass: 'icon24-umc-menu-help',
 					popup: this._helpMenu
 				}));
 
 				// the logout button
 				this._headerMenu.addChild(new MenuItem({
 					id: 'umcMenuLogout',
-					iconClass: 'icon24-umc-menu-logout',
 					label: _('Logout'),
 					onClick: function() { require('umc/app').relogin(); }
 				}));

@@ -45,6 +45,8 @@ define([
 	"umc/i18n!"
 ], function(declare, lang, array, when, domClass, style, Uploader, tools, dialog, ContainerWidget, Button, _FormWidgetMixin, _) {
 	return declare("umc.widgets.Uploader", [ ContainerWidget, _FormWidgetMixin ], {
+		baseClass: 'umcUploader',
+
 		// command: String
 		//		The UMCP command to which the data shall be uploaded.
 		//		If not given, the data is sent to umcp/upload which will return the

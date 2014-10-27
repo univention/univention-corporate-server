@@ -438,7 +438,7 @@ define([
 
 				// if no label is given, set the main label as label
 				// of the first subwidget
-				iconf.label = iconf.label || (i == 0 && this.label ? this.label : '&nbpsp;');
+				iconf.label = iconf.label || (i === 0 && this.label ? this.label : '&nbsp;');
 
 				if (iwidget.dynamicValuesInfo) {
 					iconf.dynamicValuesInfo = lang.partial(iwidget.dynamicValuesInfo, iname);
