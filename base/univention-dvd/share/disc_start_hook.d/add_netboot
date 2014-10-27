@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+set -e
+
+TDIR=$1
+MIRROR=$2
+DISKNUM=$3
+CDDIR=$4
+ARCHES=$5
+
+[ ! -d "$CDDIR" ] && echo "CDDIR '$CDDIR' does not exist!" >&2 && exit 1
+
+mkdir -p "$CDDIR/netboot"
+for fn in linux initrd.gz ; do
+	cp "$MIRROR/dists/ucs400/main/installer-amd64/current/images/netboot/gtk/debian-installer/amd64/$fn" "$CDDIR/netboot"
+done

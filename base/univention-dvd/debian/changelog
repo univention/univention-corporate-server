@@ -1,3 +1,9 @@
+univention-dvd (0.2.9-1) unstable; urgency=low
+
+  * Bug #35537: net netboot installer to DVD
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 27 Oct 2014 14:30:58 +0100
+
 univention-dvd (0.2.8-7) unstable; urgency=low
 
   * Bug #35974: Change GRUB colors
