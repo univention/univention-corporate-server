@@ -126,23 +126,26 @@ def copy_repository( options ):
 		print 'done.'
 
 	# copy profiles
-	print '  copying profiles ...',
-	profiles_dest = os.path.join( _mirror_base, 'profiles' )
-	if os.path.isdir( profiles_dest ):
-		shutil.rmtree( profiles_dest )
-	try:
-		shutil.copytree( os.path.join( options.mount_point, 'profiles' ), profiles_dest )
-	except shutil.Error, ex:
-		print "failed (%s)." % (ex,)
-	else:
-		# everyone should be able to read the profiles
-		os.chmod( profiles_dest, 0555 )
-		print 'done.'
+	if os.path.exists(os.path.join(options.mount_point, 'profiles')):
+		print '  copying profiles ...',
+		profiles_dest = os.path.join( _mirror_base, 'profiles' )
+		if os.path.isdir( profiles_dest ):
+			shutil.rmtree( profiles_dest )
+		try:
+			shutil.copytree(os.path.join(options.mount_point, 'profiles'), profiles_dest)
+		except shutil.Error, ex:
+			print "failed (%s)." % (ex,)
+		else:
+			# everyone should be able to read the profiles
+			os.chmod( profiles_dest, 0555 )
+			print 'done.'
 
 	# copy packages to new directory structure
 	print '  copying packages ...',
 	sys.stdout.flush()
-	urepo.copy_package_files( os.path.join( options.mount_point, 'packages' ), _repo_base )
+	for subdir in ('packages', 'all', 'amd64', 'i386'):
+		if os.path.exists(os.path.join(options.mount_point, subdir)):
+			urepo.copy_package_files( os.path.join( options.mount_point, subdir), _repo_base )
 	print "done."
 
 	# copy dists directory structure
@@ -151,7 +154,10 @@ def copy_repository( options ):
 	if os.path.isdir( dists_dest ):
 		shutil.rmtree( dists_dest )
 	try:
-		shutil.copytree( os.path.join( options.mount_point, 'packages', 'dists' ), dists_dest )
+		# handle the different dists directories (UCS installer or d-i)
+		for dists_src in (os.path.join(options.mount_point, 'packages', 'dists'), os.path.join(options.mount_point, 'dists')):
+			if os.path.isdir(dists_src):
+				shutil.copytree(dists_src, dists_dest)
 	except shutil.Error, ex:
 		print "failed (%s)." % (ex,)
 	else:
@@ -182,7 +188,15 @@ def mount( options ):
 			return False
 
 	print "Checking medium in %s ..." % options.mount_point,
-	if not os.path.isdir( os.path.join( options.mount_point, 'packages' ) ) or not os.path.isdir( os.path.join( options.mount_point, 'profiles' ) ):
+	iso_version = None
+	if os.path.isdir(os.path.join(options.mount_point, 'packages')) and os.path.isdir(os.path.join(options.mount_point, 'profiles')):
+		iso_version = 3
+	elif os.path.exists(os.path.join(options.mount_point, '.univention_install')) and \
+			os.path.isdir(os.path.join(options.mount_point, 'all')) and \
+			(os.path.isdir(os.path.join(options.mount_point, 'amd64')) or \
+				 os.path.isdir(os.path.join(options.mount_point, 'i386'))):
+		iso_version = 4
+	if not iso_version:
 		print 'failed.'
 		print >> sys.stderr, 'Error: This is not an UCS installation medium.'
 		return False
@@ -234,6 +248,9 @@ def setup_pxe( options ):
 		os.symlink(cdinitrd, pxeinitrd)
 
 if __name__ == '__main__':
+	for mount_point_default in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
+		if os.path.isdir(mount_point_default):
+			break
 	parser = OptionParser( usage = "usage: %prog [options]" )
 	parser.add_option( '-n', '--non-interactive', action = 'store_false',
 					   dest = 'interactive', default = True,
@@ -245,7 +262,7 @@ if __name__ == '__main__':
 					   dest = 'silent', default = False,
 					   help = 'do not print any information, just errors and warnings' )
 	parser.add_option( '-m', '--mount-point', action = 'store',
-					   dest = 'mount_point', default = '/cdrom',
+					   dest = 'mount_point', default = mount_point_default,
 					   help = 'devices mount point for CD-ROM drive' )
 	parser.add_option('-i', '--iso', action='store', dest='iso',
 	                  default=None, help='define filename of an ISO image')

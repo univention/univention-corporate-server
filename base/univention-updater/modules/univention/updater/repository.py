@@ -69,9 +69,9 @@ def gzip_file( filename ):
 def copy_package_files( source_dir, dest_dir ):
 	# copy package files
 	for filename in os.listdir( source_dir ):
-		if os.path.isfile( os.path.join( source_dir, filename ) ) and filename.endswith( '.deb' ):
+		if os.path.isfile(os.path.join(source_dir, filename)) and (filename.endswith('.deb') or filename.endswith('.udeb')):
 			try:
-				arch = filename[ filename.rfind( '_' ) + 1 : -4 ]
+				arch = filename.rsplit('_', 1)[-1].split('.', 1)[0]  # partman-btrfs_10.3.201403242318_all.udeb
 			except:
 				print >> sys.stderr, "Warning: Could not determine architecture of package '%s'" % filename
 				continue
