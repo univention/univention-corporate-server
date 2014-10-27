@@ -1,3 +1,9 @@
+univention-pkgdb (7.0.11-8) unstable; urgency=medium
+
+  * Bug #35367: Fix import error
+
+ -- Arvid Requate <requate@univention.de>  Mon, 27 Oct 2014 16:19:06 +0100
+
 univention-pkgdb (7.0.11-7) unstable; urgency=low
 
   * version bump (Bug #34723)

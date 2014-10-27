@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 __package__='' 	# workaround for PEP 366
+import os
 import listener
 import subprocess
 import univention.debug
