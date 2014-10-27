@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.72-1) unstable; urgency=medium
+
+  * Bug #36261: adjusted textarea default size
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 27 Oct 2014 12:19:14 +0100
+
 univention-management-console-frontend-theme (0.0.71-1) unstable; urgency=medium
 
   * Bug #36263: remove height rules for dijitTree
