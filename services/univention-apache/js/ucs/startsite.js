@@ -34,6 +34,7 @@ define([
 	"dojo/_base/kernel",
 	"dojo/_base/array",
 	"dojo/query",
+	"dojo/dom",
 	"dojo/dom-construct",
 	"dojo/dom-attr",
 	"dojo/dom-style",
@@ -45,11 +46,12 @@ define([
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/form/DropDownButton",
+	"dijit/DropDownMenu",
 	"./CategoryButton",
 	"dojo/text!/ucs-overview/entries.json",
 	"dojo/text!/ucs-overview/languages.json",
 	"./i18n!../ucs"
-], function(ioQuery, lang, kernel, array, query, domConstruct, domAttr, domStyle, domClass, on, json, router, hash, Menu, MenuItem, DropDownButton, CategoryButton, entriesStr, languagesStr, _) {
+], function(ioQuery, lang, kernel, array, query, dom, domConstruct, domAttr, domStyle, domClass, on, json, router, hash, Menu, MenuItem, DropDownButton, DropDownMenu, CategoryButton, entriesStr, languagesStr, _) {
 	var entries = json.parse(entriesStr);
 	var ucr = entries.ucr;
 
@@ -73,6 +75,7 @@ define([
 		_availableLocales: availableLocales,
 		_localeLang: kernel.locale.split('-')[0],
 		_localeWithUnderscore: kernel.locale.replace('-', '_'),
+
 
 		// matching data-i18n attribute in HTML code
 		_translations: {
@@ -272,16 +275,6 @@ define([
 			}, this);
 		},
 
-		_updateAvailableLocales: function() {
-			var queryParams = window.location.search.substring(1, window.location.search.length);
-			var queryObject = ioQuery.queryToObject(queryParams);
-			var menuNode = query('#header-right #language-switcher')[0];
-			array.forEach(this._availableLocales, function(ilocale) {
-				queryObject.lang = ilocale.id;
-				domConstruct.place(lang.replace('<li role="presentation"><a role="menuitem" tabindex="-1" href="{0}?{1}">{2}</a></li>', [window.location.pathname, ioQuery.objectToQuery(queryObject), ilocale.label]), menuNode);
-			});
-		},
-
 		_updateLocales: function() {
 			this._updateCurrentLocale();
 			this._updateAvailableLocales();
@@ -304,9 +297,31 @@ define([
 
 		_registerRouter: function(){
 			router.register(":category", lang.hitch(this, function(data){
-				console.log('### ', data.params.category);
 				this._focusTab(data.params.category);
 			}));
+		},
+
+		_createLanguagesDropDown: function(){
+			var _languagesMenu = new DropDownMenu({ style: "display: none;"});
+			array.forEach(this._availableLocales, function(ilocale) {
+				var newMenuItem = new MenuItem ({
+					label: ilocale.label,
+					id: ilocale.id,
+					onClick: function(){
+						if (locale.id != dojo.locale){
+							window.location.search = '?lang=' + ilocale.id;
+						}
+					}
+				});
+				_languagesMenu.addChild(newMenuItem);
+			});
+			var _toggleButton = new DropDownButton({
+				label: _("Language"),
+				name: "languages",
+				dropDown: _languagesMenu,
+				id: "languagesDropDown"
+			});
+			dom.byId("dropDownButton").appendChild(_toggleButton.domNode);
 		},
 
 		start: function() {
@@ -315,8 +330,8 @@ define([
 			//this._updateNoScriptElements();
 			this._updateHeader();
 			this._updateLinkEntries();
-			this._updateLocales();
 			this._updateTranslations();
+			this._createLanguagesDropDown();
 			if (!this._hasServiceEntries()) {
 				router.startup("admin");
 			} else {
