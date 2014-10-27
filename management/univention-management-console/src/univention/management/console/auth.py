@@ -171,6 +171,7 @@ class PAM_Auth( Auth ):
 		try:
 			AUTH.info( 'PAM: trying to authenticate %s' % self._username )
 			self._pam.authenticate()
+		except PAM.error, e:
 			try:
 				self._pam.acct_mgmt()
 			except PAM.error as e:
@@ -213,13 +214,15 @@ class PAM_Auth( Auth ):
 						AUTH.error( "PAM: password expired" )
 						self._may_change_password = True
 						return AuthenticationResult(False, password_valid=True, password_expired=True)
-				raise
-		except PAM.error, e:
+				AUTH.error( "PAM: authentication error: %s" % str( e ) )
+				return AuthenticationResult(False)
 			AUTH.error( "PAM: authentication error: %s" % str( e ) )
 			return AuthenticationResult(False)
 		except Exception, e: # internal error
 			AUTH.warn( "PAM: global error: %s" % str( e ) )
 			return AuthenticationResult(False)
+		else:
+			self._pam.acct_mgmt()
 
 		AUTH.info( 'Authentication for %s was successful' % self._username )
 		return AuthenticationResult(True)

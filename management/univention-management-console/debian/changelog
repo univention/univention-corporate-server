@@ -1,3 +1,14 @@
+univention-management-console (6.0.24-22) unstable; urgency=medium
+
+  * Bug #36319: Workaround for libpam-krb5/heimdal behaviour in case
+    krb5_get_init_creds_password detects KRB5KDC_ERR_KEY_EXPIRED. This
+    causes krb5_get_init_creds_password to call change_password, which
+    in turn calls a prompter, which is not yet configured by UMC.
+    As a result KRB5KRB_ERR_GENERIC is returned and even the "defer_pwchange"
+    option of pam_krb5 cannot have any effect, even if it would be set.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 27 Oct 2014 20:11:45 +0100
+
 univention-management-console (6.0.24-21) unstable; urgency=low
 
   * Bug #34243: fix typo
