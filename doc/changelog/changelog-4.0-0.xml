@@ -329,10 +329,13 @@
 	</section>
 
 	<section id="changelog:umc:computers">
-		<title>Users module</title>
+		<title>Computers module</title>
 		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
+		  <listitem><simpara>
+			Due to the new UCS installer the property <emphasis>interactive
+			installation</emphasis> is no longer required at the computer objects for UCS domaincontrollers and
+			memberservers and has been removed (<ulink url="&ucsbug;35537">Bug 35537</ulink>)
+		  </simpara></listitem>
 		</itemizedlist>
 	</section>
 
