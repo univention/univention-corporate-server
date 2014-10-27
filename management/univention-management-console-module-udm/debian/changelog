@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.12-3) unstable; urgency=medium
+
+  * Bug #23665: fix image max-height
+
+ -- Florian Best <best@univention.de>  Mon, 27 Oct 2014 09:15:42 +0100
+
 univention-management-console-module-udm (5.1.12-2) unstable; urgency=medium
 
   * Bug #36263: adjust grid height with displayed tree

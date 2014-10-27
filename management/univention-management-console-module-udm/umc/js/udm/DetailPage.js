@@ -162,6 +162,7 @@ define([
 
 		isSyncedObject: null, // object which is modified (or one of multiedited) has univentionObjectFlag == synced
 
+		'class': 'udmDetailPage',
 		standbyOpacity: 1,
 
 		postMixInProperties: function() {
