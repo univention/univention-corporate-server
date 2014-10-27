@@ -118,14 +118,27 @@ There are three areas of styling for the Menu:
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
-.claro .dijitMenuExpand {
-	width: 7px;
-	height: 7px;
-	background-image: url($image-arrow-sprite);
-	background-position: -14px 0;
-	margin-right:3px;
-	margin-bottom: 4px;
+
+.umc .dijitMenuArrowCell {
+	text-align: right;
+	vertical-align: middle;
 }
+
+.claro .dijitMenuExpand {
+	//width: 7px;
+	//height: 7px;
+	//background-image: url($image-arrow-sprite);
+	//background-position: -14px 0;
+	margin-right:3px;
+	//margin-bottom: 4px;
+	margin: -2px 3px 3px 0;
+	icon-image(-84, 0, '', '-small', width: 12px, height: 12px);
+}
+
+.umc .dijitMenuItemHover .dijitMenuExpand {
+	icon-image(-84, 0, '', '-small-white', width: 12px, height: 12px);
+}
+
 .claro .dijitMenuItemDisabled .dijitMenuItemIconCell {
 	opacity:1;
 }
