@@ -1,3 +1,10 @@
+univention-apache (7.0.3-3) unstable; urgency=low
+
+  * [WIP] adaption of ucs-overview : changed style of dropdown menu
+    (Bug #36095)
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 27 Oct 2014 16:01:11 +0100
+
 univention-apache (7.0.3-2) unstable; urgency=low
 
   * [WIP] adaption of ucs-overview : adapted language selection box

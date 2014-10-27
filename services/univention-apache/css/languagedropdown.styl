@@ -1,4 +1,6 @@
-#dropDownButton {
+@import "variables";
+
+.dijitDropDownButton {
 	padding: 3px 6px 5px 6px;
 	cursor: pointer;
 
@@ -11,10 +13,8 @@
 	.dijitButtonNode {
 		border: none;
 	}
-}
 
-#dropDownButton:hover {
-	.dijitArrowButtonInner {
+	&:hover .dijitArrowButtonInner {
 		background: url(icons/icons.svg) -20px -220px no-repeat;
 		width: 20px;
 		height: 25px;
@@ -28,5 +28,5 @@
 	padding-bottom: 0px;
 	padding-left: 0.3em;
 	text-align: center;
-	font-size: 1.3em;
+	font-size: $font-size-medium;
 }
