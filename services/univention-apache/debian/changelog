@@ -1,3 +1,10 @@
+univention-apache (7.0.3-2) unstable; urgency=low
+
+  * [WIP] adaption of ucs-overview : adapted language selection box
+    (Bug #36095)
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 27 Oct 2014 15:46:48 +0100
+
 univention-apache (7.0.3-1) unstable; urgency=low
 
   * [WIP] css adaptations on ucs startsite (Bug #36095)
