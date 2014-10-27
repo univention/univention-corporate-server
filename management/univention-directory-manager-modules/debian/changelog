@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.23-1) unstable; urgency=low
+
+  * Bug #36301: adapted some labels in the mail domain module
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 27 Oct 2014 16:49:06 +0100
+
 univention-directory-manager-modules (10.0.22-1) unstable; urgency=medium
 
   * Bug #36286: reload udm_modules listener to update the python-support

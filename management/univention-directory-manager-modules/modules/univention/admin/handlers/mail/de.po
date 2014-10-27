@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-13 17:40+0200\n"
+"POT-Creation-Date: 2014-10-27 16:40+0100\n"
 "PO-Revision-Date: 2008-07-09 14:20+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,22 +42,30 @@ msgstr ""
 msgid "Mail domain"
 msgstr "Mail-Domäne"
 
-#: domain.py:56 folder.py:67 lists.py:54 mail.py:65
-msgid "Name"
-msgstr "Name"
+#: domain.py:56
+msgid "Mail domain name"
+msgstr "Name der Mail-Domäne"
 
-#: domain.py:68 domain.py:69 folder.py:136 folder.py:137 lists.py:117
-#: lists.py:118 mail.py:76
+#: domain.py:68 folder.py:137 folder.py:138 lists.py:117 lists.py:118
+#: mail.py:76
 msgid "General"
 msgstr "Allgemein"
 
-#: domain.py:68 folder.py:136 lists.py:117 mail.py:76
+#: domain.py:68 folder.py:137 lists.py:117 mail.py:76
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
+
+#: domain.py:69
+msgid "Mail domain settings"
+msgstr "Mail-Domäne-Einstellungen"
 
 #: folder.py:51
 msgid "Mail folder (IMAP)"
 msgstr "Mail-Ordner (IMAP)"
+
+#: folder.py:67 lists.py:54 mail.py:65
+msgid "Name"
+msgstr "Name"
 
 #: folder.py:87
 msgid "User ACL"
@@ -75,15 +83,15 @@ msgstr "Maximale Quota in MB"
 msgid "Mail home server"
 msgstr "Mail-Home-Server"
 
-#: folder.py:123
+#: folder.py:124
 msgid "E-Mail address"
 msgstr "E-Mail-Adresse"
 
-#: folder.py:144 folder.py:145
+#: folder.py:145 folder.py:146
 msgid "Access Rights"
 msgstr "Zugriffsrechte"
 
-#: folder.py:144
+#: folder.py:145
 msgid "Access rights for shared folder"
 msgstr "Zugriffsrechte für gemeinsamen Ordner"
 

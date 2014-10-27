@@ -53,7 +53,7 @@ module_search_filter=univention.admin.filter.conjunction('&', [
 
 property_descriptions={
 	'name': univention.admin.property(
-			short_description=_('Name'),
+			short_description=_('Mail domain name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -66,7 +66,7 @@ property_descriptions={
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'General' ), layout = [
+		Group( _( 'Mail domain settings' ), layout = [
 			"name",
 		] ),
 	] ),
