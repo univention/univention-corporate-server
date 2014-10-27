@@ -1,3 +1,10 @@
+ucs-test (5.0.38-1) unstable; urgency=low
+
+  * 20_appcenter/17_app_status: perform 'non-strict' check of the servers
+    list where apps are installed. (Bug #35652)
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 27 Oct 2014 17:11:42 +0100
+
 ucs-test (5.0.37-1) unstable; urgency=medium
 
   * 00_base/26check_logfiles_general: Ignore kdm.log permissions

@@ -1,11 +1,11 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Checks if the apps are installed
 ## tags: [basic,apptest]
+## bugs: [35652]
 ## roles-not: [basesystem]
 ## exposure: safe
 ## packages:
 ##   - univention-directory-manager-tools
-
 
 import os.path
 import sys
@@ -16,6 +16,7 @@ from univention.config_registry import ConfigRegistry
 
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+
 
 if not os.path.exists('/var/cache/appcenter-installed.txt'):
 	print '/var/cache/appcenter-installed.txt does not exist'
@@ -67,8 +68,11 @@ for appID in fd:
 							'univentionAppName': ['[en] %s' % app.get('unlocalised_name')],
 							'univentionAppID': [app.ldap_id],
 							'univentionAppVersion': [app.version],
-							'univentionAppInstalledOnServer' : ['%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))],
 						})
+		utils.verify_ldap_object(app_dn(app), {
+							'univentionAppInstalledOnServer' : ['%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))],
+						}, False)  # non-strict check for the UCS@School, as there app can be installed on all servers, bug #35652
+
 		for version in app.versions:
 			if version.version == app.version:
 				continue
