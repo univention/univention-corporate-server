@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.70-1) unstable; urgency=medium
+
+  * Bug #36296: added shop icon
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 27 Oct 2014 11:37:33 +0100
+
 univention-management-console-frontend-theme (0.0.69-1) unstable; urgency=medium
 
   * Bug #36291: fixed handling of sizing for ComplexInput/MultiInput
