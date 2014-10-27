@@ -84,6 +84,7 @@ define([
 				addPage: lang.hitch(this, 'addPage'),
 				removePage: lang.hitch(this, 'removePage'),
 				selectPage: lang.hitch(this, 'onSelectPage'),
+				displayLabel: false,
 				label: ''
 			}, {
 				type: ComboBox,

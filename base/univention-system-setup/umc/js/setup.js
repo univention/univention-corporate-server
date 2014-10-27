@@ -179,7 +179,7 @@ define([
 			ipage.on('selectPage', lang.hitch(this, function(page) {
 				this.selectChild(page || ipage);
 			}));
-			this._pages = [ipage];
+			this._page = ipage;
 			this.addChild(ipage);
 			ipage.on('valuesChanged', lang.hitch(this, function() {
 				this.ready().then(lang.hitch(this, 'updateAllValues'));
@@ -286,33 +286,23 @@ define([
 		},
 
 		ready: function() {
-			return all(array.map(array.filter(this._pages, function(ipage) {
-				return !!ipage._form;
-			}), function(ipage) { return ipage._form.ready(); }));
+			return this._page._form.ready();
 		},
 
 		updateAllValues: function(name, old, values) {
 			var vals = lang.clone(this._orgValues);
 			lang.mixin(vals, this.getValues());
-			array.forEach(this._pages, function(ipage) {
-				ipage.setValues(vals);
-			}, this);
+			this._page.setValues(vals);
 		},
 
 		setValues: function(values) {
 			// update all pages with the given values
 			this._orgValues = lang.clone(values); //FIXME: wrong place
-			array.forEach(this._pages, function(ipage) {
-				ipage.setValues(this._orgValues);
-			}, this);
+			this._page.setValues(this._orgValues);
 		},
 
 		getValues: function() {
-			var values = {};
-			array.forEach(this._pages, function(ipage) {
-				lang.mixin(values, ipage.getValues());
-			}, this);
-			return values;
+			return this._page.getValues();
 		},
 
 		load: function() {
@@ -393,40 +383,38 @@ define([
 			var summaries = [];
 			var umc_url = null;
 
-			array.forEach(this._pages, function(ipage) {
-				var pageVals = ipage.getValues();
-				var summary = ipage.getSummary();
-				summaries = summaries.concat(summary);
+			var pageVals = this._page.getValues();
+			var summary = this._page.getSummary();
+			summaries = summaries.concat(summary);
 
-				// get altered values from page
-				tools.forIn(pageVals, function(ikey, ival) {
-					inverseKey2Page[ikey] = ipage;
-					var orgVal = this._orgValues[ikey];
-					orgVal = (undefined === orgVal || null === orgVal) ? '' : orgVal;
-					var newVal = (undefined === ival || null) === ival ? '' : ival;
-					// some variables (notably locale)
-					// were sent as [{id:id, label:label}, ...]
-					// but will be returned as [id, ...]
-					if (orgVal instanceof Array) {
-						var tmpOrgVal = array.filter(orgVal, function(iOrgVal) {
-							return (iOrgVal && iOrgVal.id !== undefined && iOrgVal.label !== undefined);
-						});
-						if (tmpOrgVal.length) {
-							orgVal = tmpOrgVal;
+			// get altered values from page
+			tools.forIn(pageVals, function(ikey, ival) {
+				inverseKey2Page[ikey] = this._page;
+				var orgVal = this._orgValues[ikey];
+				orgVal = (undefined === orgVal || null === orgVal) ? '' : orgVal;
+				var newVal = (undefined === ival || null) === ival ? '' : ival;
+				// some variables (notably locale)
+				// were sent as [{id:id, label:label}, ...]
+				// but will be returned as [id, ...]
+				if (orgVal instanceof Array) {
+					var tmpOrgVal = array.filter(orgVal, function(iOrgVal) {
+						return (iOrgVal && iOrgVal.id !== undefined && iOrgVal.label !== undefined);
+					});
+					if (tmpOrgVal.length) {
+						orgVal = tmpOrgVal;
+					}
+				}
+				if (!tools.isEqual(orgVal, newVal)) {
+					values[ikey] = newVal;
+					++nchanges;
+
+					if (ikey === 'interfaces' && umc_url === null) {
+						var newIp = this._getNewIpAddress(ival, pageVals['interfaces/primary'] || 'eth0');
+						if (newIp) {
+							umc_url = 'https://' + newIp + '/umc/';
 						}
 					}
-					if (!tools.isEqual(orgVal, newVal)) {
-						values[ikey] = newVal;
-						++nchanges;
-
-						if (ikey === 'interfaces' && umc_url === null) {
-							var newIp = this._getNewIpAddress(ival, pageVals['interfaces/primary'] || 'eth0');
-							if (newIp) {
-								umc_url = 'https://' + newIp + '/umc/';
-							}
-						}
-					}
-				}, this);
+				}
 			}, this);
 
 			// only submit data to server if there are changes and the system is joined
@@ -454,21 +442,12 @@ define([
 			var _localValidation = lang.hitch(this, function() {
 				var allValid = true;
 				var validationMessage = '<p>' + _('The following entries could not be validated:') + '</p><ul style="max-height:200px; overflow:auto;">';
-				array.forEach(this._pages, function(ipage) {
-					if (!ipage._form) {
-						return true;
+				tools.forIn(this._page._form._widgets, lang.hitch(this, function(ikey, iwidget) {
+					if (iwidget.isValid && false === iwidget.isValid()) {
+						allValid = false;
+						validationMessage += '<li>' + this._page.get('title') + '/' + iwidget.get('label') + '</li>';
 					}
-					tools.forIn(ipage._form._widgets, lang.hitch(this, function(ikey, iwidget) {
-						if (iwidget.isValid && false === iwidget.isValid()) {
-							if (allValid) {
-								// jump to the first invalid widget
-								this.selectPage(ipage);
-							}
-							allValid = false;
-							validationMessage += '<li>' + ipage.get('title') + '/' + iwidget.get('label') + '</li>';
-						}
-					}));
-				}, this);
+				}));
 				validationMessage += '</ul>';
 
 				if (!allValid) {
@@ -519,14 +498,6 @@ define([
 					var allValid = true;
 					array.forEach(data.result, function(ivalidation) {
 						if (!ivalidation.valid) {
-							if (allValid) {
-								// focus the first invalid page
-								array.forEach(this._pages, function(ipage) {
-									if (ipage._form && ipage._form.getWidget(ivalidation.key)) {
-										this.selectPage(ipage);
-									}
-								}, this);
-							}
 							allValid = false;
 						}
 						if (ivalidation.message) {
