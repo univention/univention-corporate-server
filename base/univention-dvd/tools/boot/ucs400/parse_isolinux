@@ -82,11 +82,11 @@ sub print_kernel {
 	print_indent "    linux    " . $k{"kernel"} . " " . $k{"append"} . "\n";
 	print_indent "    initrd   $initrd\n";
 	print_indent "}\n";
-    } 
+    }
 }
 
 sub debug {
-#    print_indent $menudepth . " " . $menu{"number"} . ": " . $menu{"label"} . 
+#    print_indent $menudepth . " " . $menu{"number"} . ": " . $menu{"label"} .
 #	" '" . $menu{"title"} . "'\n";
 }
 
@@ -162,7 +162,7 @@ foreach my $line(@lines) {
 	    $pre = "... ";
 	} else {
 	    $pre = "";
-	}	    
+	}
     } elsif ($line =~ /^\s*menu title (.*$)/) {
 	if ($in_kernel) {
 	    print_kernel(\%kernel);
@@ -178,7 +178,7 @@ foreach my $line(@lines) {
 		$pre = "... ";
 	    } else {
 		$pre = "";
-	    }	    
+	    }
 	    debug();
 	    print_indent "set menu_color_normal=black/white\n";
 	    print_indent "set menu_color_highlight=green/white\n";

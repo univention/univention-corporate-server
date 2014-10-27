@@ -1,3 +1,9 @@
+univention-dvd (0.2.10-1) unstable; urgency=low
+
+  * Bug #36268: Remove Debian specific files
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Oct 2014 14:33:06 +0100
+
 univention-dvd (0.2.9-1) unstable; urgency=low
 
   * Bug #35537: net netboot installer to DVD

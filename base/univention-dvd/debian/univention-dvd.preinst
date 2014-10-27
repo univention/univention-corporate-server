@@ -32,13 +32,13 @@
 
 dpkg-divert --rename --quiet \
    --divert /usr/share/debian-cd/tools/make_disc_trees.pl.ORIG \
-   --add /usr/share/debian-cd/tools/make_disc_trees.pl
+   --add    /usr/share/debian-cd/tools/make_disc_trees.pl
 dpkg-divert --rename --quiet \
-   --divert /usr/share/debian-cd/data/wheezy/grub-theme.in.ORIG \
-   --add /usr/share/debian-cd/data/wheezy/grub-theme.in
+   --divert /usr/share/debian-cd/tools/add-bin-doc.ORIG \
+   --add    /usr/share/debian-cd/tools/add-bin-doc
 dpkg-divert --rename --quiet \
-   --divert /usr/share/debian-cd/tools/boot/wheezy/parse_isolinux.ORIG \
-   --add /usr/share/debian-cd/tools/boot/wheezy/parse_isolinux
+   --divert /usr/share/debian-cd/tools/make_image.ORIG \
+   --add    /usr/share/debian-cd/tools/make_image
 
 #DEBHELPER#
 

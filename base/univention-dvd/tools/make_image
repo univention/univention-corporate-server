@@ -1,0 +1,124 @@
+#!/bin/sh
+#
+# Debian-cd helper script for making ISO / jigdo images
+#
+
+set -e
+
+DIR=$1
+ARCHES="$2"
+OUT=$3
+DEBVERSION=$4
+MIRROR=$5
+MKISOFS=$6
+MKISOFS_OPTS=$7
+JIGDO_OPTS=$8
+JIGDO_CLEANUP=$9
+
+if [ "$CD"x = ""x ] ; then
+    echo "Generating the $ARCHES iso/jigdo images ..."
+    FILES=$DIR/*.volid
+else
+    echo "Generating $ARCHES iso/jigdo image number $CD ..."
+    FILES=$DIR/$CD.volid
+fi
+
+for file in $FILES
+do
+    dir=${file%%.volid}
+    n=${dir##$DIR/}
+    dir=$DIR/CD$n
+
+    cd $dir/..
+
+    opts=`cat $DIR/$n.mkisofs_opts` || true
+    dirs=`cat $DIR/$n.mkisofs_dirs` || true
+    volid=`cat $DIR/$n.volid`
+    relname=`echo $DEBVERSION | sed -e 's/ //g'`
+    DISKINFO=`cat $DIR/$n.diskinfo`
+
+    ARCHLIST=`echo "$ARCHES" | tr ' ' '-'`
+    OUTFILE="${CDNAME:-debian}-$relname-$ARCHLIST-$DISKTYPE-$n"
+
+    # Clean up any old files
+    rm -f $OUT/$OUTFILE.iso $OUT/$OUTFILE.jigdo $OUT/$OUTFILE.template
+
+    date
+
+    # Work out whether we want ISO, jigdo or both
+    if [ "$MAXISOS"x = ""x ] || [ "$MAXISOS" = "all" ] || \
+        [ "$MAXISOS" = "ALL" ] || [ "$n" -le "$MAXISOS" ] ; then
+        ISO_WANTED=1
+    else
+        ISO_WANTED=0
+    fi
+    if [ "$MAXJIGDOS"x = ""x ] || [ "$MAXJIGDOS" = "all" ] || \
+        [ "$MAXJIGDOS" = "ALL" ] || [ "$n" -le "$MAXJIGDOS" ] ; then
+        JIGDO_WANTED=1
+    else
+        JIGDO_WANTED=0
+    fi
+
+    # Actually make the ISO/jigdo images. Long command lines
+    # here... :-(
+    CMD=
+    if [ $JIGDO_WANTED = 0 ] && [ $ISO_WANTED = 1 ] ; then
+
+        CMD="$MKISOFS $MKISOFS_OPTS -V '$volid' \
+            -o $OUT/$OUTFILE.iso $opts $dirs CD$n"
+
+    elif [ $JIGDO_WANTED = 1 ] && [ $ISO_WANTED = 1 ] ; then
+
+        CMD="$MKISOFS $MKISOFS_OPTS -V '$volid' \
+            -o $OUT/$OUTFILE.iso \
+            -jigdo-jigdo $OUT/$OUTFILE.jigdo \
+            -jigdo-template $OUT/$OUTFILE.template \
+            -jigdo-map Debian=$MIRROR/ \
+            -jigdo-exclude boot$n \
+            -md5-list $DIR/md5-check \
+            $JIGDO_OPTS $opts $dirs CD$n"
+
+    elif [ $JIGDO_WANTED = 1 ] && [ $ISO_WANTED = 0 ] ; then
+
+        CMD="$MKISOFS $MKISOFS_OPTS -V '$volid' \
+            -o /dev/null \
+            -jigdo-jigdo $OUT/$OUTFILE.jigdo \
+            -jigdo-template $OUT/$OUTFILE.template \
+            -jigdo-map Debian=$MIRROR/ \
+            -jigdo-exclude boot$n \
+            -md5-list $DIR/md5-check \
+            $JIGDO_OPTS $opts $dirs CD$n"
+
+    else
+        echo "Neither jigdo nor iso wanted for CD$n"
+    fi
+    if [ "$CMD" ]; then
+        echo $CMD
+        echo $CMD > CD$n/.disk/mkisofs
+        eval "$CMD"
+	    if [ $ISO_WANTED = 1 ] ; then
+	        chmod +r $OUT/$OUTFILE.iso
+	    fi
+
+        # Generate our listfile while we have the information to hand easily
+        find CD$n/pool -type f | sed 's?^.*/??g' | gzip -9 > $OUT/$OUTFILE.list.gz
+    fi
+
+    # If we've made jigdo files, tweak them with extra info now
+    if [ "$JIGDO_WANTED" = 1 ] ; then
+        SNAPSHOT_DATE=`cat $DIR/DATE-zulu`
+        if [ "$SNAPURL"x != ""x ] ; then
+            SNAPSHOTURL=`echo "$SNAPURL" | sed "s/SNAPDATETIME/$SNAPSHOT_DATE/g"`
+        fi
+        $JIGDO_CLEANUP $OUT/$OUTFILE.jigdo \
+            $OUTFILE.iso $DIR/CD$n \
+            "`echo "$JIGDOTEMPLATEURL" | sed -e 's|%ARCH%|$ARCH|g'`$OUTFILE.template" \
+            "$DISKINFO" \
+            "$SNAPSHOTURL" \
+            $JIGDOFALLBACKURLS
+        if [ "$ISO_WANTED" = 1 ] ; then
+            # Make sure that the ISO is as new/newer than the jigdo file; #587774
+            touch $OUT/$OUTFILE.iso
+        fi
+    fi
+done
