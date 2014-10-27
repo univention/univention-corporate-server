@@ -10,10 +10,10 @@ Description[en]=This variable configures the name of the initial ramdisk to be u
 Type=str
 Categories=system-base
 
-[pxe/installer/ramdisksize]
-Description[de]=Diese Variable konfiguriert wieviel Arbeitsspeicher in Byte für das Laden der Initial Ramdisk reserviert werden soll. Ist die Variable nicht gesetzt, werden 230 KB reserviert.
-Description[en]=This variable configures how much memory in bytes is reserved for loading the initial ramdisk. If the variable is unset, 230 KB are used.
-Type=int
+[pxe/installer/kernel]
+Description[de]=Diese Variable konfiguriert den Kernel der bei der PXE-Installation verwendet wird. Ist die Variable nicht gesetzt, wird 'debian-installer/amd64/linux' verwendet.
+Description[en]=This variable configures the name of the kernel to be used during PXE installation. If the variable is unset, 'debian-installer/amd64/linux' is used.
+Type=str
 Categories=system-base
 
 [pxe/installer/vga]
@@ -25,11 +25,5 @@ Categories=system-base
 [pxe/installer/loglevel]
 Description[de]=Der Kernel-Loglevel während der PXE-Installation. Nur Meldungen mit einem Loglevel niedriger in der Variable konfiguriert werden ausgegeben. Gültige Werte reichen von 0 (KERN_EMERG) bis 7 (KERN_DEBUG).
 Description[en]=The kernel loglevel during PXE installation. Only messages with a loglevel lower than the one specified here are printed. Valid values range from 0 (KERN_EMERG) to 7 (KERN_DEBUG).
-Type=int
-Categories=system-base
-
-[pxe/installer/ipappend]
-Description[de]=Diese Variable konfiguriert die IPAPPEND-Option. Weitere Informationen finden sich unter <http://www.syslinux.org/wiki/index.php/SYSLINUX#IPAPPEND_flag_val_.5BPXELINUX_only.5D>.
-Description[en]=This variable configures the IPAPPEND option. Additional information can be found at <http://www.syslinux.org/wiki/index.php/SYSLINUX#IPAPPEND_flag_val_.5BPXELINUX_only.5D>.
 Type=int
 Categories=system-base

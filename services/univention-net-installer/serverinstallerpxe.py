@@ -32,15 +32,15 @@
 __package__='' 	# workaround for PEP 366
 import univention.config_registry
 
-baseConfig=univention.config_registry.ConfigRegistry()
-
 name='serverinstallerpxe'
 description='PXE configuration for the Server installer'
 filter='(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)(objectClass=univentionClient)(objectClass=univentionMobileClient))'
-attributes=['univentionServerReinstall', 'aRecord', 'univentionServerInstallationProfile', 'univentionServerInstallationText', 'univentionServerInstallationOption']
+attributes=['univentionServerReinstall', 'aRecord', 'univentionServerInstallationProfile', 'univentionServerInstallationOption']
 
 import listener
 import os, univention.debug
+
+ucr = listener.configRegistry
 
 pxebase = '/var/lib/univention-client-boot/pxelinux.cfg'
 
@@ -51,79 +51,62 @@ def ip_to_hex(ip):
 	return '%02X%02X%02X%02X' % (int(o[0]), int(o[1]), int(o[2]), int(o[3]))
 
 def handler(dn, new, old):
+	ucr.load()
 
-	baseConfig.load()
-
-
-	if baseConfig.has_key('pxe/installer/append'):
-		append = baseConfig['pxe/installer/append']
+	if 'pxe/installer/append' in ucr:
+		append = ucr.get('pxe/installer/append')
 	else:
+		append = 'auto=true priority=critical video=vesa:ywrap,mtrr '
+		append += 'vga=%s ' % ucr.get("pxe/installer/vga", "788")
+		append += 'initrd=%s ' % (ucr.get('pxe/installer/initrd', 'linux.bin'),)
+		if ucr.is_true('pxe/installer/quiet', False):
+			append += 'quiet '
+		append += 'loglevel=%s ' % ucr.get('pxe/installer/loglevel', '0')
+		if new.get('univentionServerInstallationProfile'):
+			append += 'url=http://%s.%s/installer/./%s ' % (ucr.get('hostname'), ucr.get('domainname'), new.get('univentionServerInstallationProfile'))
 
-		append  = "root=/dev/ram rw nomodeset "
-		append += "initrd=%s " % baseConfig.get("pxe/installer/initrd", "linux.bin")
-		append += "ramdisk_size=%s " % baseConfig.get("pxe/installer/ramdisksize", "230000")
-		if baseConfig.is_true("pxe/installer/quiet", False):
-			append += "quiet "
-		append += "vga=%s " % baseConfig.get("pxe/installer/vga", "788")
-		append += "loglevel=%s " % baseConfig.get("pxe/installer/loglevel", "0")
-		append += "flavor=linux nfs"
-  
-	ipappend = baseConfig.get('pxe/installer/ipappend', "3")
-
-	pxeconfig_start = \
-	'''# Perform an profile installation by default
+	pxeconfig = '''# Perform a profile installation by default
 PROMPT 0
+TIMEOUT 100
 DEFAULT linux
-IPAPPEND %s
-
-APPEND %s ''' % (ipappend, append)
-	pxeconfig_end = \
-	'''
+%(additional_options)s
 LABEL linux
-  KERNEL linux-server
-
-'''
+        kernel %(kernel)s
+        append %(append)s
+''' % { 'kernel': ucr.get('pxe/installer/kernel', 'linux-server'),
+		'append': append,
+		'additional_options': new.get('univentionServerInstallationOption', '')
+		}
 
 	# remove pxe host file
-	if old and old.has_key('aRecord'):
+	if old and old.get('aRecord'):
 		basename = ip_to_hex(old['aRecord'][0])
 		if not basename:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'PXE: invalid IP address %s' % old['aRecord'][0])
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'PXE: invalid old IP address %s' % old['aRecord'][0])
 			return
 		filename = os.path.join(pxebase, basename)
-		if os.path.exists(filename):
-			listener.setuid(0)
-			try:
+		listener.setuid(0)
+		try:
+			if os.path.exists(filename):
 				os.unlink(filename)
-			finally:
-				listener.unsetuid()
+		finally:
+			listener.unsetuid()
 
 	# create pxe host file(s)
-	if new and new.has_key('aRecord'):
-
+	if new and new.get('aRecord'):
 		cn = new['cn'][0]
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'PXE: writing configuration for host %s' % cn)
 
 		basename = ip_to_hex(new['aRecord'][0])
 		if not basename:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'PXE: invalid IP address %s' % new['aRecord'][0])
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'PXE: invalid new IP address %s' % new['aRecord'][0])
 			return
 		filename = os.path.join(pxebase, basename)
 
-		if new.has_key('univentionServerReinstall') and new['univentionServerReinstall'][0] == '1':
+		if new.get('univentionServerReinstall', ['']) == '1':
 			listener.setuid(0)
 			try:
-				f=open(filename, 'w')
-				f.write(pxeconfig_start)
-				if new.has_key('univentionServerInstallationText') and new['univentionServerInstallationText'][0] == '1':
-					f.write(' use_text ')
-				if new.has_key('univentionServerInstallationOption') and new['univentionServerInstallationOption'][0]:
-					f.write(new['univentionServerInstallationOption'][0])
-				if new.has_key('univentionServerInstallationProfile') and new['univentionServerInstallationProfile'][0]:
-					f.write(' profile=%s \n' % new['univentionServerInstallationProfile'][0])
-				else:
-					f.write('\n')
-				f.write(pxeconfig_end)
-				f.close()
+				with open(filename, 'w') as fd:
+					fd.write(pxeconfig)
 			finally:
 				listener.unsetuid()
