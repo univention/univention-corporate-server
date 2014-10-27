@@ -1,3 +1,9 @@
+univention-dvd (0.2.10-4) unstable; urgency=low
+
+  * Bug #35537: Fix hook script directory
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Oct 2014 17:35:55 +0100
+
 univention-dvd (0.2.10-3) unstable; urgency=low
 
   * Bug #35537: Fix hook script directory
