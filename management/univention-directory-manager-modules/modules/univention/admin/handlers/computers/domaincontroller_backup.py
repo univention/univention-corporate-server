@@ -261,16 +261,6 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'reinstalltext': univention.admin.property(
-			short_description=_('Interactive installation'),
-			long_description='',
-			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
 	'reinstalloption': univention.admin.property(
 			short_description=_('additional start options'),
 			long_description='',

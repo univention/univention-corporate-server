@@ -1,3 +1,10 @@
+univention-directory-manager-modules (10.0.21-1) unstable; urgency=low
+
+  * Bug #35537: removed property "reinstalltext" from
+    computers/domaincontroller_* and computers/memberserver
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 23 Oct 2014 18:10:20 +0200
+
 univention-directory-manager-modules (10.0.20-1) unstable; urgency=medium
 
   Bug #36291
