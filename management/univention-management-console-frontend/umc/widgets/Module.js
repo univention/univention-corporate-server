@@ -68,7 +68,6 @@ define([
 				this.set(name, newV);
 			}));
 
-			this._headerButtonsMap = {};
 			this.__container.watch('selectedChildWidget', lang.hitch(this, '__refreshButtonVisibility'));
 			this.own(aspect.after(this.__container, 'addChild', lang.hitch(this, function(child) {
 				this._addHeaderButtonsToChild(child);
@@ -169,10 +168,10 @@ define([
 				headerButtons = child.headerButtons.concat(headerButtons);
 			}
 
-			if (this._headerButtonsMap[child.id]) {
-				this._top._right.removeChild(this._headerButtonsMap[child.id]);
-				this._headerButtonsMap[child.id].destroyRecursive();
-				delete this._headerButtonsMap[child.id];
+			if (child.$headerButtons$) {
+				this._top._right.removeChild(child.$headerButtons$);
+				child.$headerButtons$.destroyRecursive();
+				delete child.$headerButtons$;
 			}
 
 			if (headerButtons && headerButtons.length) {
@@ -187,7 +186,8 @@ define([
 				});
 
 				this._top._right.addChild(container, 0);
-				this._headerButtonsMap[child.id] = container;
+				child.$headerButtons$ = container;
+				container.$child$ = child;
 			}
 			if (this._started) {
 				this.__refreshButtonVisibility();
@@ -196,13 +196,10 @@ define([
 
 		__refreshButtonVisibility: function() {
 			var child = this.__container.get('selectedChildWidget');
-			tools.forIn(this._headerButtonsMap, lang.hitch(this, function(id, ctn) {
-				if (!ctn.domNode) {
-					// child has been removed
-					delete this._headerButtonsMap[id];
-					return;
+			array.forEach(this._top._right.getChildren(), lang.hitch(this, function(ctn) {
+				if (ctn.$child$) {
+					domClass.toggle(ctn.domNode, 'dijitHidden', ctn.$child$ !== child);
 				}
-				domClass.toggle(ctn.domNode, 'dijitHidden', id !== child.id);
 			}));
 		},
 
@@ -211,7 +208,9 @@ define([
 		},
 
 		closeModule: function() {
-			topic.publish('/umc/tabs/close', this);
+			if (this.closable) {
+				topic.publish('/umc/tabs/close', this);
+			}
 		},
 
 		startup: function() {

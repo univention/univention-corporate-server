@@ -52,6 +52,9 @@ define([
 
 		disabled: false,
 
+		// display the password boxes among each other
+		twoRows: false,
+
 		sizeClass: 'Two',
 
 		// the widget's class name as CSS class
@@ -107,7 +110,6 @@ define([
 				validator: lang.hitch(this, '_checkValidity', 1),
 				invalidMessage: this.invalidMessage,
 				pattern: this.pattern
-
 			}))[0];
 			this._secondWidget = this.own(new PasswordBox({
 				sizeClass: 'One',
@@ -131,6 +133,10 @@ define([
 			this.addChild(container);
 			container.addChild(new LabelPane({
 				content: this._firstWidget
+			}));
+			container.addChild(new ContainerWidget({
+				style: 'height: 0;',
+				'class': this.twoRows ? 'umcSize-One' : 'umcSize-One dijitHidden'
 			}));
 			container.addChild(new LabelPane({
 				content: this._secondWidget
