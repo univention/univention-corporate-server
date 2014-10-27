@@ -36,21 +36,27 @@ eval "$(univention-config-registry shell)"
 
 #DEBHELPER#
 
-if [ "$1" = configure -a -z "$2" ]; then
-	# only set this for new installations
-	univention-config-registry set \
-		directory/manager/web/modules/users/user/properties/homePostalAddress/syntax=postalAddress \
-		password/hashing/method?SHA-512
-fi
-
 if [ "$1" = "configure" ]; then
+	if [ -z "$2" ]; then
+		# only set this for new installations
+		univention-config-registry set \
+			directory/manager/web/modules/users/user/properties/homePostalAddress/syntax=postalAddress \
+			password/hashing/method?SHA-512
+	fi
+
 	univention-config-registry set \
 		directory/manager/web/modules/groups/group/caching/uniqueMember/timeout?300 \
 		directory/manager/user_group/uniqueness=true \
 		password/hashing/method?MD5 # for update keep old behaviour
 
-	## load the listener module
-	/etc/init.d/univention-directory-listener crestart
+	if [ -n "$2" ]; then
+		if dpkg --compare-versions "$2" lt-nl 9.0.22-10; then
+			## load the listener module
+			/etc/init.d/univention-directory-listener crestart
+		elif dpkg --compare-versions "$2" lt-nl 10.0.21-1; then
+			univention-directory-listener-ctrl resync udm_extension
+		fi
+	fi
 fi
 
 stop_udm_cli_server

@@ -14,6 +14,7 @@ XS-Python-Version: 2.6, 2.7
 Package: python-univention-directory-manager
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
+ python (>= 2.7),
  python-univention (>> 6.0.21),
  python-univention-heimdal (>= 4.0.1-1),
  makepasswd,

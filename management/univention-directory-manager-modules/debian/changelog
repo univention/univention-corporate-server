@@ -1,3 +1,10 @@
+univention-directory-manager-modules (10.0.22-1) unstable; urgency=medium
+
+  * Bug #36286: reload udm_modules listener to update the python-support
+    .public files to python2.7
+
+ -- Arvid Requate <requate@univention.de>  Mon, 27 Oct 2014 15:08:16 +0100
+
 univention-directory-manager-modules (10.0.21-1) unstable; urgency=low
 
   * Bug #35537: removed property "reinstalltext" from
