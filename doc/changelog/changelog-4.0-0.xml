@@ -5,7 +5,7 @@
 				The underlying Debian version has been updated to Debian Wheezy 7.7
 				(<ulink url="&ucsbug;33835">Bug 33835</ulink>,
 				 <ulink url="&ucsbug;33836">Bug 33836</ulink>.
-				 <ulink url="&ucsbug;35669">Bug 35688</ulink>,
+				 <ulink url="&ucsbug;35688">Bug 35688</ulink>,
 				 <ulink url="&ucsbug;36241">Bug 36241</ulink>).
 		</simpara></listitem>
 		<listitem><simpara>
@@ -108,6 +108,10 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				The packages <package>amd64-microcode</package> and <package>intel-microcode</package> were added and are installed by default to provide micro-code updates for AMD and Intel CPUs (<ulink url="&ucsbug;34437">Bug 34437</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The packages <package>virtualbox</package>, <package>open-vm-tools</package>, <package>iscsitarget</package>, <package>openafs</package>, <package>xtables-addons</package>, <package>ndiswrapper</package>, <package>blktap</package> have been updates to newer versions from Debian to support the newer Linux kernel 3.16.
+				The package <package>openswan</package> has been removed as it's incompatible with said kernel and is unmaintained (<ulink url="&ucsbug;35875">Bug #35875</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>

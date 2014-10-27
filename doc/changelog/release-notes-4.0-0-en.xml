@@ -75,6 +75,12 @@
 			<itemizedlist>
 				<listitem>
 					<para>
+						The <application>Xen</application> hypervisor has been removed and is no longer supported by UCS.
+						Details on migrating to <application>QEMU/KVM</application> is provided in <xref linkend="ext-doc-uvmm"/>.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
 						The Scalix LDAP schema has been removed in UCS 4.0.
 						It is required to remove all Scalix related attributes
 						from LDAP prior to the update.
@@ -89,21 +95,6 @@
 		<title>Postprocessing of the update</title>
 
 		<para>FIXME</para>
-
-		<section id="relnotes:removed">
-			<title>Removed/no longer supported components</title>
-			<para>
-				Some components have been removed and are no longer provided with UCS 4.0:
-			</para>
-			<itemizedlist>
-				<listitem>
-					<para>
-						The <application>Xen</application> hypervisor has been removed and is no longer supported by UCS.
-						Details on migrating to <application>QEMU/KVM</application> is provided in <xref linkend="ext-doc-uvmm"/>.
-					</para>
-				</listitem>
-			</itemizedlist>
-		</section>
 	</chapter>
 
 	<chapter id="relnotes:packages">
