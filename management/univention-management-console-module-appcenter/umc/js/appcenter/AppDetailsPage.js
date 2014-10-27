@@ -170,7 +170,7 @@ define([
 				buttons.push({
 					name: 'shop',
 					label: _('Buy'),
-					iconClass: tools.getIconClass('appcenter-shop', 16),
+					iconClass: 'umcShopIcon',
 					align: 'right',
 					callback: lang.hitch(this, 'openShop')
 				});
