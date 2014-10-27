@@ -91,7 +91,6 @@ define([
 				type: TextBox,
 				name: 'filter',
 				value: '*',
-				label: _('User:')
 			}];
 
 			this._searchForm = new SearchForm({

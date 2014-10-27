@@ -244,8 +244,6 @@ define([
 		renderDetailPage: function(partitionDevice) {
 			this._detailPage = new DetailPage({
 				partitionDevice: partitionDevice,
-				headerText: _('Add quota setting for a user on partition'),
-				helpText: _('Add quota setting for a user on partition')
 			});
 			this.addChild(this._detailPage);
 			this._detailPage.on('ClosePage', lang.hitch(this, function() {

@@ -1,3 +1,9 @@
+univention-quota (9.1.2-1) unstable; urgency=low
+
+  * Bug #36300: change text fields in quota module
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 27 Oct 2014 12:39:39 +0100
+
 univention-quota (9.1.1-1) unstable; urgency=low
 
   * Bug #35654: show buttons in the module header

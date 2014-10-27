@@ -154,10 +154,14 @@ define([
 			if (userQuota === undefined) {
 				this._form.clearFormValues();
 				this._form.getWidget('user').set('disabled', false);
+				this.set('headerText', _('Add quota'));
+				this.set('helpText', _('Add quota settings for a new user on partition <i>%s</i>.', this.partitionDevice));
 			}
 			else {
 				this._form.setFormValues(userQuota);
 				this._form.getWidget('user').set('disabled', true);
+				this.set('headerText', _('Modify quota'));
+				this.set('helpText', _('Modify the quota settings for user <i>%s</i> on partition <i>%s</i>.', userQuota.user, userQuota.partitionDevice));
 			}
 			this._form.getWidget('partitionDevice').setValue(this.partitionDevice);
 		},
