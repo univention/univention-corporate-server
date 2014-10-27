@@ -40,7 +40,6 @@ define([
 	"dojo/dom-style",
 	"dojo/dom-class",
 	"dojo/on",
-	"dojo/json",
 	"dojo/router",
 	"dojo/hash",
 	"dijit/Menu",
@@ -48,15 +47,14 @@ define([
 	"dijit/form/DropDownButton",
 	"dijit/DropDownMenu",
 	"./CategoryButton",
-	"dojo/text!/ucs-overview/entries.json",
-	"dojo/text!/ucs-overview/languages.json",
+	"./text!/ucs-overview/entries.json",
+	"./text!/ucs-overview/languages.json",
 	"./i18n!../ucs"
-], function(ioQuery, lang, kernel, array, query, dom, domConstruct, domAttr, domStyle, domClass, on, json, router, hash, Menu, MenuItem, DropDownButton, DropDownMenu, CategoryButton, entriesStr, languagesStr, _) {
-	var entries = json.parse(entriesStr);
+], function(ioQuery, lang, kernel, array, query, dom, domConstruct, domAttr, domStyle, domClass, on, router, hash, Menu, MenuItem, DropDownButton, DropDownMenu, CategoryButton, entries, availableLocales, _) {
+	// short cut
 	var ucr = entries.ucr;
 
 	// make sure that en-US exists
-	var availableLocales = json.parse(languagesStr);
 	var existsEnUsLocale = array.some(availableLocales, function(ilocale) {
 		return ilocale.id == 'en-US';
 	});

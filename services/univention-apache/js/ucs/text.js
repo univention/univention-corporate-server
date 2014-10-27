@@ -26,40 +26,20 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-// Dojo build documentation:
-//   http://dojotoolkit.org/reference-guide/build/index.html
-//   http://dojotoolkit.org/reference-guide/build/buildScript.html
-//   http://dojotoolkit.org/documentation/tutorials/1.6/build/
 
-var profile = {
-	stripConsole : "normal",
-	basePath : "./js",
-	releaseDir : "../build/www/ucs-overview/js",
-	action : "release",
-	layerOptimize : "closure.keepLines",
-	cssOptimize: "comments.keepLines",
-	copyTests: false,
+/*global define require */
 
-	packages: [{
-		name: 'dojo',
-		location: '/usr/share/univention-dojo/dojo'
-	}, {
-		name: 'dojox',
-		location: '/usr/share/univention-dojo/dojox'
-	}, {
-		name: 'dijit',
-		location: '/usr/share/univention-dojo/dijit'
-	},
-		'ucs'
-	],
-
-	layers: {
-		"dojo/dojo": {
-			customBase: true,
-			include: [
-				"ucs/startsite",
-				"dojox/gfx/svg"
-			]
+// idea taken from: http://stackoverflow.com/a/16650916/3116268
+define([
+	"dojo/text",
+	"dojo/_base/lang",
+	"dojo/json"
+], function(text,lang,json) {
+	return lang.delegate(text, {
+		load: function(id, require, load){
+			text.load(id, require, function(data){
+				load(json.parse(data));
+			});
 		}
-	}
-};
+	});
+});

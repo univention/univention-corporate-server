@@ -1,3 +1,12 @@
+univention-apache (7.0.5-1) unstable; urgency=medium
+
+  Bug #36095:
+  * adjust build dependencies
+  * overload dojo/text plugin to avoid template inclusion during build time
+  * add ucslint overwrites file
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 27 Oct 2014 17:54:09 +0100
+
 univention-apache (7.0.4-1) unstable; urgency=low
 
   Bug #36095:
