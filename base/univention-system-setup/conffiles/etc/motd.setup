@@ -62,10 +62,10 @@ password change.
 UMC uses numerous Javascript and CSS functions to display the web
 interface. Some of these features are unavailable in older browsers. The
 following web browsers are supported:
- - Chrome as of version 14 or later
- - Firefox as of version 3.6 (Firefox 10 or later is recommended)
- - Internet Explorer as of version 8 (IE 9 or later is recommended)
- - Safari (on the iPad 2)
+ - Chrome as of version 33 or later
+ - Firefox as of version 24
+ - Internet Explorer as of version 9
+ - Safari as of version 7
 
 ########################################################################
 
