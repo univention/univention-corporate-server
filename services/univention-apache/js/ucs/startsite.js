@@ -26,7 +26,12 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console window $*/
+/*global define require console window */
+
+var _l10nResources = ['../ucs'];
+if ('l10nResources' in window) {
+	_l10nResources = l10nResources.concat(_l10nResources);
+}
 
 define([
 	"dojo/io-query",
@@ -50,7 +55,7 @@ define([
 	"./CategoryButton",
 	"./text!/ucs-overview/entries.json",
 	"./text!/ucs-overview/languages.json",
-	"./i18n!../ucs"
+	"./i18n!" + _l10nResources.join(',')
 ], function(ioQuery, lang, kernel, array, query, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Menu, MenuItem, DropDownButton, DropDownMenu, CategoryButton, entries, availableLocales, _) {
 	// short cut
 	var ucr = entries.ucr;
@@ -101,6 +106,85 @@ define([
 			return result;
 		},
 
+		_registerRouter: function() {
+			if (!this._hasTabs()) {
+				return;
+			}
+			router.register(":category", lang.hitch(this, function(data){
+				this._focusTab(data.params.category);
+			}));
+		},
+
+		_translateDomElements: function() {
+			query('*[data-i18n]').forEach(lang.hitch(this, function(inode) {
+				var value = domAttr.get(inode, 'data-i18n');
+				var translation = _(value, ucr);
+				domAttr.set(inode, 'innerHTML', translation);
+			}));
+			query('a[href]').forEach(lang.hitch(this, function(inode) {
+				var href = domAttr.get(inode, 'href');
+				var translation = _(href);
+				domAttr.set(inode, 'href', translation);
+			}));
+		},
+
+		_showHeader: function() {
+			domClass.remove('title', 'dijitHidden');
+		},
+
+		_hasCategoryBar: function() {
+			var nodes = query('#category-bar');
+			return nodes.length;
+		},
+
+		_createCategoryButtons: function() {
+			if (!this._hasCategoryBar()) {
+				return;
+			}
+			this.adminButton = new CategoryButton({
+				label: 'Administration',
+				'class': 'category-admin',
+				onClick: lang.hitch(this, function() {
+					router.go('admin');
+				}),
+				color: '#80b828',
+				categoryID: 'admin',
+				iconClass: 'category-admin'
+			});
+			this.servicesButton = new CategoryButton({
+				label: 'Web-Services',
+				'class': 'category-services',
+				onClick: lang.hitch(this, function() {
+					router.go('service');
+				}),
+				color: '#4bbfef',
+				categoryID: 'web',
+				iconClass: 'category-services'
+			});
+			this.servicesButton.placeAt("category-bar");
+			this.adminButton.placeAt("category-bar");
+		},
+
+		_getTab: function(id) {
+			var nodes = query(lang.replace('#{0}-tab', [id]));
+			if (!nodes.length) {
+				return;
+			}
+			return nodes[0];
+		},
+
+		_hasTabs: function() {
+			return this._getTab('service') && this._getTab('admin');
+		},
+
+		_focusTab: function(category) {
+			// set visibility of tabs through css and also set 'selectd' of category buttons
+			domClass.toggle("service-tab", "galleryTabInvisible", category != "service");
+			this.servicesButton.set('selected', category == "service");
+			domClass.toggle("admin-tab", "galleryTabInvisible", category == "service");
+			this.adminButton.set('selected', category != "service");
+		},
+
 		_getLinkEntry: function(props, category, id) {
 			id = id || '';
 			var localizedProps = {
@@ -136,49 +220,10 @@ define([
 		},
 
 		_placeLinkEntriesInDom: function(category) {
-			var listNode = query(lang.replace('#{0}-tab', [category]))[0];
+			var listNode = this._getTab(category);
 			array.forEach(this._getLinkEntries(category), lang.hitch(this, function(ientryNode) {
 				domConstruct.place(ientryNode, listNode);
 			}));
-		},
-
-		_focusTab: function(category) {
-			// set visibility of tabs through css and also set 'selectd' of category buttons
-			domClass.toggle("service-tab", "galleryTabInvisible", category != "service");
-			this.servicesButton.set('selected', category == "service");
-			domClass.toggle("admin-tab", "galleryTabInvisible", category == "service");
-			this.adminButton.set('selected', category != "service");
-		},
-
-		_focusAdminTab: function() {
-			if (!this._entries.service.length) {
-				this._focusTab('admin');
-			}
-		},
-
-		_placeCategoryButtons: function(){
-			this.adminButton = new CategoryButton({
-				label: 'Administration',
-				'class': 'category-admin',
-				onClick: lang.hitch(this, function() {
-					router.go('admin');
-				}),
-				color: '#80b828',
-				categoryID: 'admin',
-				iconClass: 'category-admin'
-			});
-			this.servicesButton = new CategoryButton({
-				label: 'Web-Services',
-				'class': 'category-services',
-				onClick: lang.hitch(this, function() {
-					router.go('service');
-				}),
-				color: '#4bbfef',
-				categoryID: 'web',
-				iconClass: 'category-services'
-			});
-			this.servicesButton.placeAt("category-bar");
-			this.adminButton.placeAt("category-bar");
 		},
 
 		_hasServiceEntries: function() {
@@ -189,78 +234,35 @@ define([
 			domClass.toggle('no-service', 'dijitHidden', this._hasServiceEntries());
 		},
 
-		_updateHeader: function() {
-			domClass.remove('title', 'dijitHidden');
-		},
-
-		_updateLinkEntries: function() {
+		_createLinkEntries: function() {
+			if (!this._hasTabs()) {
+				return;
+			}
 			this._placeLinkEntriesInDom('admin');
 			this._placeLinkEntriesInDom('service');
-			this._focusAdminTab();
 			this._updateNoServiceHint();
 		},
 
-		_updateNoScriptElements: function() {
-			var dropdown = query('#header-right .dropdown')[0];
-			var navtabs = query('#site-header .nav-tabs')[0];
-			domStyle.set(dropdown, 'display', 'inherit');
-			domStyle.set(navtabs, 'display', 'inherit');
+//		_matchLocale: function(locale, /* Function? */ mapper) {
+//			mapper = mapper || function(i) { return i; };
+//			var result = null;
+//			array.some(this._availableLocales, function(ilocale) {
+//				if (mapper(locale) == mapper(ilocale.id)) {
+//					result = ilocale;
+//					return true;
+//				}
+//			});
+//			return result;
+//		},
+
+		_hasLanguagesDropDown: function() {
+			return dom.byId('dropDownButton');
 		},
 
-		_matchLocale: function(locale, /* Function? */ mapper) {
-			mapper = mapper || function(i) { return i; };
-			var result = null;
-			array.some(this._availableLocales, function(ilocale) {
-				if (mapper(locale) == mapper(ilocale.id)) {
-					result = ilocale;
-					return true;
-				}
-			});
-			return result;
-		},
-
-		_updateCurrentLocale: function() {
-			var buttonCurrentLocale = query('#header-right .btn-default .button-text')[0];
-			// mapper function -> translate locale (e.g, en-US) to lang (e.g., en)
-			var _localeLang = function(locale) {
-				return locale.split('-')[0];
-			};
-
-			// find the correct locale
-			array.some([null, _localeLang], function(ifunc) {
-				var locale = this._matchLocale(kernel.locale, ifunc);
-				if (locale) {
-					domAttr.set(buttonCurrentLocale, 'innerHTML', locale.label);
-					return true; // break
-				}
-			}, this);
-		},
-
-		_updateLocales: function() {
-			this._updateCurrentLocale();
-			this._updateAvailableLocales();
-		},
-
-		_updateTranslations: function() {
-			query('*[data-i18n]').forEach(lang.hitch(this, function(inode) {
-				var value = domAttr.get(inode, 'data-i18n');
-				var translation = _(value, ucr);
-				domAttr.set(inode, 'innerHTML', translation);
-			}));
-			query('a[href]').forEach(lang.hitch(this, function(inode) {
-				var href = domAttr.get(inode, 'href');
-				var translation = _(href);
-				domAttr.set(inode, 'href', translation);
-			}));
-		},
-
-		_registerRouter: function(){
-			router.register(":category", lang.hitch(this, function(data){
-				this._focusTab(data.params.category);
-			}));
-		},
-
-		_createLanguagesDropDown: function(){
+		_createLanguagesDropDown: function() {
+			if (!this._hasLanguagesDropDown()) {
+				return;
+			}
 			var _languagesMenu = new DropDownMenu({ style: "display: none;"});
 			array.forEach(this._availableLocales, function(ilocale) {
 				var newMenuItem = new MenuItem ({
@@ -280,7 +282,7 @@ define([
 				dropDown: _languagesMenu,
 				id: "languagesDropDown"
 			});
-			dom.byId("dropDownButton").appendChild(_toggleButton.domNode);
+			domConstruct.place(_toggleButton.domNode, 'dropDownButton');
 		},
 
 		_resizeItemNames: function() {
@@ -317,27 +319,29 @@ define([
 		},
 
 		_handleResize: function() {
-			if ( this._resizeTimeout != null ) {
+			if (this._resizeTimeout != null) {
 				window.clearTimeout(this._resizeTimeout);
 				this._resizeTimout = null;
 			}
 			this._resizeTimeout = window.setTimeout(lang.hitch(this, '_resizeItemNames'), 200);
 		},
 
-		_implementResize: function() {
-				on(window, 'resize', lang.hitch(this, '_handleResize'));
+		_registerResizeHandling: function() {
+			if (!this._hasTabs()) {
+				return;
+			}
+			on(window, 'resize', lang.hitch(this, '_handleResize'));
+			this._resizeItemNames();
 		},
 
 		start: function() {
-			this._placeCategoryButtons();
 			this._registerRouter();
-			//this._updateNoScriptElements();
-			this._updateHeader();
-			this._updateLinkEntries();
-			this._updateTranslations();
+			this._translateDomElements();
+			this._createCategoryButtons();
+			this._showHeader();
+			this._createLinkEntries();
 			this._createLanguagesDropDown();
-			this._implementResize();
-			this._resizeItemNames();
+			this._registerResizeHandling();
 			if (!this._hasServiceEntries()) {
 				router.startup("admin");
 			} else {
