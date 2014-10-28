@@ -463,9 +463,7 @@ define([
 
 					// deactivate most input field when domain is running
 					var domainActive = types.isActive(this._domain);
-					if (domainActive) {
-						this.addNotification( _( 'While the virtual machine is running most of the settings can not be changed.' ) );
-					}
+
 					// name should not be editable
 					this._generalForm._widgets.name.set( 'disabled', true );
 

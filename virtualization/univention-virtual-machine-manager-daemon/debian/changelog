@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (4.0.5-1) unstable; urgency=medium
+
+  * Don't show a notification message that the settings are not
+    changeable (Bug #36307)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Oct 2014 16:52:38 +0100
+
 univention-virtual-machine-manager-daemon (4.0.4-3) unstable; urgency=low
 
   * Bug #35982: Show pending state with a distinct icon 

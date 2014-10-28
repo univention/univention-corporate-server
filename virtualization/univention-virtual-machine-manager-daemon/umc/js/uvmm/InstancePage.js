@@ -176,12 +176,6 @@ define([
 					// set values to form
 					this._generalForm.setFormValues(this._instance);
 
-					// deactivate most input field when instance is running
-					var active = types.isActive(this._instance);
-					if (active) {
-						this.addNotification( _( 'While the virtual machine is running most of the settings can not be changed.' ) );
-					}
-
 					this.selectChild(this._generalPage, true);
 				}
 			}));
