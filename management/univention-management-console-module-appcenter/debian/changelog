@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.13-2) unstable; urgency=low
+
+  * Bug #36260: Expose whether the app is installed somewhere in the domain
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 28 Oct 2014 17:10:43 +0100
+
 univention-management-console-module-appcenter (4.1.13-1) unstable; urgency=medium
 
   * Bug #35654: outsource UMC startup checks into the modules

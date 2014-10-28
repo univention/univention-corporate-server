@@ -915,6 +915,11 @@ class Application(object):
 		res['host_master'] = ucr.get('ldap/master')
 		res['umc_module'] = 'apps'
 		res['umc_flavor'] = self.id
+		ldap_object = self.get_ldap_object()
+		if ldap_object is None:
+			res['is_installed_anywhere'] = False
+		else:
+			res['is_installed_anywhere'] = ldap_object.anywhere_installed()
 		if self.candidate:
 			# too expensive
 			# res['candidate'] = self.candidate.to_dict(package_manager)

@@ -103,7 +103,7 @@ define([
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
 			// switched from app center to app details and back
-			this._appCenterPage.on('showApp', lang.hitch(this, '_showApp'));
+			this._appCenterPage.on('showApp', lang.hitch(this, 'showApp'));
 
 			this.addChild(this._appCenterPage);
 			this.selectChild(this._appCenterPage);
@@ -113,7 +113,7 @@ define([
 			AppCenterPage.prototype.appCenterInformation = AppDetailsPage.prototype.appCenterInformation;
 		},
 
-		_showApp: function(app) {
+		showApp: function(app) {
 			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
 			//this.standby(true);
 			var appDetailsDialog = new AppDetailsDialog({
