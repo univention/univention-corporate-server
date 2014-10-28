@@ -79,6 +79,10 @@ define([
 		//		to leave the footer with buttons fixed.
 		autoHeight: false,
 
+		pageNavBootstrapClasses: null,
+
+		pageMainBootstrapClasses: null,
+
 		_pages: null,
 
 		_cssRule: null,
@@ -97,7 +101,11 @@ define([
 				delete pageConf.widgets;
 				delete pageConf.buttons;
 				delete pageConf.layout;
-				pageConf.footerButtons = footerButtons;
+				lang.mixin(pageConf, {
+					footerButtons: footerButtons,
+					navBootstrapClasses: this.pageNavBootstrapClasses || Page.prototype.navBootstrapClasses,
+					mainBootstrapClasses: this.pageMainBootstrapClasses || Page.prototype.mainBootstrapClasses
+				});
 				var page = new Page(pageConf);
 
 				// create the page form

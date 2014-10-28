@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.78-1) unstable; urgency=low
+
+  * Bug #36315: Adapted Wizard widget to set the bootstrap classes
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 28 Oct 2014 15:33:40 +0100
+
 univention-management-console-frontend (4.1.77-1) unstable; urgency=medium
 
   * Bug #36095: adjust UMC icon for UCS start site
