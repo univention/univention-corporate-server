@@ -46,6 +46,7 @@ define([
 	"dijit/MenuItem",
 	"dijit/form/_TextBoxMixin",
 	"dijit/Dialog",
+	"dojox/string/sprintf",
 	"umc/tools",
 	"umc/dialog",
 	"umc/store",
@@ -75,7 +76,7 @@ define([
 	"umc/modules/udm/startup",
 	"xstyle/css!./udm.css"
 ], function(declare, lang, array, has, Deferred, when, all, on, topic, aspect, json,
-	domStyle, domClass, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog,
+	domStyle, domClass, Menu, MenuItem, _TextBoxMixin, Dialog, sprintf, tools, dialog,
 	store, ContainerWidget, Text, CheckBox, ComboBox, Module, Page, Grid,
 	Form, SearchForm, Button, Tree, MixedInput, ProgressBar, TreeModel,
 	TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, cache, _)
@@ -322,6 +323,34 @@ define([
 			return path;
 		},
 
+		_checkMissingApp: function() {
+			// shows a warning if the UDM module is there, but a app that
+			// would utilize the data in LDAP is missing
+			// currently configured hard coded because otherwise one would
+			// have to mix apps and udm in the backend which feels less right
+			var allRequired = {
+				'shares/print': 'cups'
+			};
+			var required = allRequired[this.moduleFlavor];
+			if (required) {
+				tools.umcpCommand('appcenter/get', {application: required}, false).then(lang.hitch(this, function(data) {
+					var app = data.result;
+					if (!app.is_installed_anywhere) {
+						var link = sprintf('<a href="javascript:void(0)" onclick=\'require("umc/app").openModule(%s).then(function(mod) { mod.showApp(%s) })\'>%s</a>',
+							json.stringify('appcenter'),
+							json.stringify(app),
+							'Univention App Center'
+						);
+						this.addWarning(_('%(objectNamePlural)s managed here are used by the application "%(name)s" which is currently not installed. You can install the application using the %(link)s.', {
+							objectNamePlural: this.objectNamePlural,
+							name: app.name,
+							link: link
+						}));
+					}
+				}));
+			}
+		},
+
 		renderSearchPage: function(containers, superordinates) {
 			// summary:
 			//		Render all GUI elements for the search formular, the grid, and the side-bar
@@ -416,6 +445,7 @@ define([
 
 			this._searchPage.startup();
 			this.addChild(this._searchPage);
+			this._checkMissingApp();
 		},
 
 		renderGrid: function() {
