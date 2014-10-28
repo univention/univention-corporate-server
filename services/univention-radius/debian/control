@@ -3,6 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper, univention-config-dev, ucslint
+XS-Python-Version: 2.6, 2.7
 
 Package: univention-radius
 Architecture: any

@@ -1,3 +1,9 @@
+univention-radius (2.0.0-1) unstable; urgency=medium
+
+  * Package update for UCS 4.0 (Bug #35889)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 28 Oct 2014 18:55:10 +0100
+
 univention-radius (1.0.0-5) unstable; urgency=low
 
   * allow configuration via LDAP (Bug #29465)
