@@ -174,6 +174,7 @@ class PAM_Auth( Auth ):
 		except PAM.error, e:
 			if e[1] != PAM.PAM_AUTH_ERR:
 				return AuthenticationResult(False)
+			## Start workaround for broken "defer_pwchange" implementation in pam_krb5
 			try:
 				self._pam.acct_mgmt()
 			except PAM.error as e:
@@ -184,11 +185,10 @@ class PAM_Auth( Auth ):
 						new_pam.start( 'univention-management-console' )
 						new_pam.set_item( PAM.PAM_CONV, self._talk_to_pam( {
 							PAM.PAM_PROMPT_ECHO_ON : self._username,
-							PAM.PAM_TEXT_INFO : '',
 							PAM.PAM_PROMPT_ECHO_OFF : [self._password, new_password, new_password], # old, new, retype
 						}, save_prompts_to=prompts ) )
 						try:
-							new_pam.authenticate()
+							new_pam.chauthtok()
 						except PAM.error, e:
 							AUTH.warn('Change password failed (%s). Prompts: %r' % (e, prompts))
 							# okay, check prompts, maybe they have a hint why it failed?

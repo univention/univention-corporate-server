@@ -1,3 +1,10 @@
+univention-management-console (6.0.24-25) unstable; urgency=medium
+
+  * Bug #36319: Error codes returned by pam.authenticate() differ
+    from the ones returned by pam.chauthtok(), so just use chauthtok.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 28 Oct 2014 15:49:50 +0100
+
 univention-management-console (6.0.24-24) unstable; urgency=medium
 
   * Bug #36319: Replace workaround by propper conversation of pwchange
