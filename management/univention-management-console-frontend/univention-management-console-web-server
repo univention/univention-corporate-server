@@ -61,9 +61,9 @@ configRegistry.load()
 
 # global objects
 try:
-	_session_timeout = int( configRegistry.get( 'umc/http/session/timeout', 300 ) )
+	_session_timeout = int(configRegistry.get('umc/http/session/timeout', 300))
 except (TypeError, ValueError):
-	CORE.process( 'Failed to read session timeout from UCR variable umc/http/session/timeout. Using default of 300 seconds' )
+	CORE.process('Failed to read session timeout from UCR variable umc/http/session/timeout. Using default of 300 seconds')
 	_session_timeout = 300
 _thread_http = None
 
@@ -86,17 +86,18 @@ def logExceptions(f):
 
 
 class SessionClient(object):
-	def __init__( self, timeout = 300, ip = None, cookie = False ):
+
+	def __init__(self, timeout=300, ip=None, cookie=False):
 		CORE.info('SessionClient(0x%x): creating new session' % (id(self),))
 		self.client = umcp.Client()
-		self.client.signal_connect( 'authenticated', self._authenticated )
-		self.client.signal_connect( 'response', self._response )
+		self.client.signal_connect('authenticated', self._authenticated)
+		self.client.signal_connect('response', self._response)
 		try:
 			self.client.connect()
 			CORE.info('SessionClient(0x%x): connected to UMC server' % (id(self),))
 		except umcp.NoSocketError:
 			CORE.warn('SessionClient(0x%x): connection to UMC server failed' % (id(self),))
-			raise umcp.NoSocketError( 'Connection failed' )
+			raise umcp.NoSocketError('Connection failed')
 		self._auth_response = None
 		self._auth_response_queue = None
 		self._requestid2response_queue = {}
@@ -107,11 +108,11 @@ class SessionClient(object):
 		self.ip = ip
 		self.cookie = cookie
 
-	def renew_timer( self ):
+	def renew_timer(self):
 		"""Refresh the remaining time the session is will be held open."""
 		self._time_remaining = self._timeout
 
-	def _timer( self ):
+	def _timer(self):
 		"""In order to avoid problems when the system time is changed (e.g.,
 		via rdate), we register a timer event that counts down the session
 		timeout second-wise."""
@@ -124,16 +125,16 @@ class SessionClient(object):
 		else:
 			# count down the timer second-wise (in order to avoid problems when
 			# changing the system time, e.g. via rdate)
-			notifier.timer_add( 1000 , self._timer )
+			notifier.timer_add(1000, self._timer)
 
-	def _timed_out( self ):
+	def _timed_out(self):
 		"""Timer event: the session has expired and therefor the
 		connection to the UMC server is closed as long as there are no
 		open requests."""
 		CORE.info('SessionClient(0x%x): timed out!' % (id(self),))
 		if self._requestid2response_queue:
-			CORE.info('SessionClient(0x%x): There are open requests (%s). Postpone session shutdown' % (id(self), ','.join( self._requestid2response_queue.keys())))
-			self._timeout = 0 # wait until all requests are answered
+			CORE.info('SessionClient(0x%x): There are open requests (%s). Postpone session shutdown' % (id(self), ','.join(self._requestid2response_queue.keys())))
+			self._timeout = 0  # wait until all requests are answered
 		else:
 			CORE.info('SessionClient(0x%x): Closing connection to UMC server' % (id(self),))
 			self.client.disconnect()
@@ -144,15 +145,15 @@ class SessionClient(object):
 		CORE.process('SessionClient(0x%x): _authenticated: success=%s  status=%s  message=%s' % (id(self), success, status, message))
 		self._auth_response.status = status
 		self._auth_response.message = message
-		self._auth_response_queue.put( self._auth_response )
+		self._auth_response_queue.put(self._auth_response)
 		# release queue object
 		self._auth_response_queue = None
 
 	def authenticate_user(self, request, response_queue):
 		"""Send authentication request to UMC server."""
 		CORE.info('SessionClient(0x%x): authenticate_user: sending authentication request for user %s' % (id(self), request.body['username']))
-		self._auth_response = umcp.Response( request )
-		self._auth_response.body['sessionid'] = request.body.get('sessionid','')
+		self._auth_response = umcp.Response(request)
+		self._auth_response.body['sessionid'] = request.body.get('sessionid', '')
 		self._auth_response_queue = response_queue
 		self.client.authenticate(request.body['username'], request.body['password'], request.body['new_password'], request.body['locale'])
 
@@ -183,7 +184,7 @@ class SessionClient(object):
 			self._requestid2response_queue[request.id] = response_queue
 		finally:
 			self._lock.release()
-		self.client.request( request )
+		self.client.request(request)
 		self.renew_timer()
 
 	def cleanup_request(self, request):
@@ -195,14 +196,15 @@ class SessionClient(object):
 			self._lock.release()
 
 
-class LoginToken( object ):
+class LoginToken(object):
+
 	def __init__(self, sessionid, username, timeout=None):
 		self.sessionid = sessionid
 		self.username = username
 		if timeout is not None:
 			self.timeout = timeout
 		else:
-			self.timeout = time.time() + int(configRegistry.get( 'umc/web/sso/timeout', 15 ))
+			self.timeout = time.time() + int(configRegistry.get('umc/web/sso/timeout', 15))
 
 	def repr(self):
 		return '<LoginToken(username=%s, sessionid=%s, timeout=%d)>' % (self.username, self.sessionid, self.timeout)
@@ -211,7 +213,8 @@ class LoginToken( object ):
 		return self.timeout > time.time()
 
 
-class LoginTokenDict( dict ):
+class LoginTokenDict(dict):
+
 	def add_session(self, sessionid, username, timeout=None):
 		""" adds a new session to dictionary """
 		login_token = hashlib.sha256(sessionid).hexdigest()
@@ -220,12 +223,13 @@ class LoginTokenDict( dict ):
 	def remove_session(self, sessionid):
 		""" remove specific session and all timed out sessions from dictionary """
 		now = time.time()
-		remove_list = [ key for (key, value) in self.items() if value.sessionid == sessionid or value.timeout < now  ]
+		remove_list = [key for (key, value) in self.items() if value.sessionid == sessionid or value.timeout < now]
 		for key in remove_list:
 			del self[key]
 
 
-class UMCP_Dispatcher( object ):
+class UMCP_Dispatcher(object):
+
 	"""Dispatcher used to exchange the requests between CherryPy and UMC"""
 	# sessionid ==> SessionClient
 	sessions = {}
@@ -255,15 +259,15 @@ class UMCP_Dispatcher( object ):
 			try:
 				client = cls.sessions[queuerequest.sessionid]
 				if queuerequest.ip != client.ip and not (queuerequest.ip in ('127.0.0.1', '::1') and client.ip in ('127.0.0.1', '::1')):
-					CORE.process('The sessionid (ip=%s) is not valid for this IP address (%s)' % (client.ip, queuerequest.ip) )
+					CORE.process('The sessionid (ip=%s) is not valid for this IP address (%s)' % (client.ip, queuerequest.ip))
 					raise ValueError()
 			except (KeyError, ValueError):
 				if queuerequest.request.command != 'AUTH':
 					CORE.process('UMCP_Dispatcher: check_queue: invalid session: sessionid=%r' % (queuerequest.sessionid))
-					response = umcp.Response( queuerequest.request )
-					response.status = httplib.UNAUTHORIZED # set status to unauthorized
-					queuerequest.response_queue.put( response )
-					continue # with next request
+					response = umcp.Response(queuerequest.request)
+					response.status = httplib.UNAUTHORIZED  # set status to unauthorized
+					queuerequest.response_queue.put(response)
+					continue  # with next request
 
 			if queuerequest.request.command == 'AUTH':
 				# AUTH request
@@ -271,36 +275,36 @@ class UMCP_Dispatcher( object ):
 				if not queuerequest.sessionid:
 					CORE.info('UMCP_Dispatcher: check_queue: creating new sessionid')
 					# FIXME: create nice session id via uuid or something else
-					queuerequest.sessionid = str( uuid.uuid4() )
+					queuerequest.sessionid = str(uuid.uuid4())
 				# create new session / umcp client
 				# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
 				try:
-					client = SessionClient(timeout = _session_timeout + 5, ip = queuerequest.ip, cookie = queuerequest.cookie)
-				except Exception, e:
-					CORE.process( 'Failed to create UMC connection: %s' % str(e))
-					response = umcp.Response( queuerequest.request )
-					response.status = httplib.UNAUTHORIZED # set status to unauthorized
-					queuerequest.response_queue.put( response )
+					client = SessionClient(timeout=_session_timeout + 5, ip=queuerequest.ip, cookie=queuerequest.cookie)
+				except Exception as e:
+					CORE.process('Failed to create UMC connection: %s' % str(e))
+					response = umcp.Response(queuerequest.request)
+					response.status = httplib.UNAUTHORIZED  # set status to unauthorized
+					queuerequest.response_queue.put(response)
 					continue
 
 				cls.sessions[queuerequest.sessionid] = client
 				callback = notifier.Callback(cls.cleanup_session, queuerequest.sessionid)
-				client.client.signal_connect( 'closed', callback )
+				client.client.signal_connect('closed', callback)
 
 				# save new sessionid in UMCP request so it can be returned after authentication
 				queuerequest.request.body['sessionid'] = queuerequest.sessionid
-				client.authenticate_user( queuerequest.request, queuerequest.response_queue )
+				client.authenticate_user(queuerequest.request, queuerequest.response_queue)
 			else:
 				# COMMAND / GET / SET request
 				CORE.info('UMCP_Dispatcher: check_queue: normal request')
 				try:
-					client.send_request( queuerequest.request, queuerequest.response_queue )
+					client.send_request(queuerequest.request, queuerequest.response_queue)
 				except umcp.client.NotAuthenticatedError:
-					response = umcp.Response( queuerequest.request )
-					response.status = httplib.UNAUTHORIZED # set status to unauthorized
-					queuerequest.response_queue.put( response )
+					response = umcp.Response(queuerequest.request)
+					response.status = httplib.UNAUTHORIZED  # set status to unauthorized
+					queuerequest.response_queue.put(response)
 					# remove response_queue from internal mapping
-					client.cleanup_request( queuerequest.request )
+					client.cleanup_request(queuerequest.request)
 
 	@classmethod
 	def cleanup_session(cls, sessionid):
@@ -309,35 +313,35 @@ class UMCP_Dispatcher( object ):
 		try:
 			del cls.sessions[sessionid]
 			CORE.info('Cleaning up session %s' % sessionid)
-		except KeyError, e:
-			CORE.info( 'Session %s not found' % sessionid )
+		except KeyError as e:
+			CORE.info('Session %s not found' % sessionid)
 		# remove onetime session keys
 		cls.logintokens.remove_session(sessionid)
 
 
-class UploadManager( dict ):
+class UploadManager(dict):
 
-	def add( self, request_id, store ):
-		tmpfile = tempfile.NamedTemporaryFile( prefix = request_id, dir = umcp.TEMPUPLOADDIR, delete = False )
+	def add(self, request_id, store):
+		tmpfile = tempfile.NamedTemporaryFile(prefix=request_id, dir=umcp.TEMPUPLOADDIR, delete=False)
 		if hasattr(store, 'file') and store.file is None:
-			tmpfile.write( store.value )
+			tmpfile.write(store.value)
 		else:
-			tmpfile.write( store.file.read() )
+			tmpfile.write(store.file.read())
 		tmpfile.close()
 		if request_id in self:
-			self[ request_id ].append( tmpfile.name )
+			self[request_id].append(tmpfile.name)
 		else:
-			self[ request_id ] = [ tmpfile.name ]
+			self[request_id] = [tmpfile.name]
 
 		return tmpfile.name
 
-	def cleanup( self, request_id ):
+	def cleanup(self, request_id):
 		if request_id in self:
-			filenames = self[ request_id ]
+			filenames = self[request_id]
 			for filename in filenames:
-				if os.path.isfile( filename ):
-					os.unlink( filename )
-			del self[ request_id ]
+				if os.path.isfile(filename):
+					os.unlink(filename)
+			del self[request_id]
 			return True
 
 		return False
@@ -346,9 +350,11 @@ _upload_manager = UploadManager()
 
 
 class QueueRequest(object):
+
 	"""Element for the request queue containing the assoziated session
 	ID, the request object, a response queue and the request ip address."""
-	def __init__(self, sessionid, request, response_queue, ip, cookie = False):
+
+	def __init__(self, sessionid, request, response_queue, ip, cookie=False):
 		self.sessionid = sessionid
 		self.request = request
 		self.response_queue = response_queue
@@ -356,12 +362,12 @@ class QueueRequest(object):
 		self.cookie = cookie
 
 
-def default_error_page(status, message, traceback, version, result = None):
+def default_error_page(status, message, traceback, version, result=None):
 	""" The default error page for UMCP responses """
 	cherrypy.response.headers['Content-type'] = umcp.MIMETYPE_JSON
 	response = {
 		'status': status,
-		'message': cherrypy._cperror._escape(str(message), True) # html escaped
+		'message': cherrypy._cperror._escape(str(message), True)  # html escaped
 	}
 	if result:
 		response['result'] = result
@@ -369,10 +375,13 @@ def default_error_page(status, message, traceback, version, result = None):
 
 
 class UMC_HTTPError(cherrypy.HTTPError):
+
 	""" HTTPError which sets a error result """
+
 	def __init__(self, status=500, message=None, body=None):
 		cherrypy.HTTPError.__init__(self, status, message)
 		self.body = body
+
 	def set_response(self):
 		cherrypy._cperror.clean_headers(self.status)
 
@@ -388,8 +397,8 @@ class UMC_HTTPError(cherrypy.HTTPError):
 class CPgeneric(object):
 
 	# NOTE: only use CORE.process, _not_ CORE.error; since CORE.error writes as
-	#       well to /var/log/syslog, this seems to cause problems with cherrypy.
-	#       (Bug #22634)
+	#	   well to /var/log/syslog, this seems to cause problems with cherrypy.
+	# (Bug #22634)
 	_logOptions = {
 		'error': CORE.process,
 		'warn': CORE.warn,
@@ -397,17 +406,17 @@ class CPgeneric(object):
 	}
 
 	@property
-	def name( self ):
+	def name(self):
 		"""returns class name"""
 		return self.__class__.__name__
 
 	def _log(self, loglevel, _msg):
 		remote = cherrypy.request.remote
-		msg = '%s (%s:%s) %s' % (self.name,  get_ip_address(), remote.port, _msg)
+		msg = '%s (%s:%s) %s' % (self.name, get_ip_address(), remote.port, _msg)
 		self._logOptions.get(loglevel, CORE.info)(msg)
 
 	def get_request(self, path, args):
-		return umcp.Request( [ 'generic' ], opts = {} )
+		return umcp.Request(['generic'], opts={})
 
 	@logExceptions
 	def get_session_id(self):
@@ -456,13 +465,13 @@ class CPgeneric(object):
 
 	@cherrypy.expose
 	@logExceptions
-	def default( self, *path, **kwargs ):
+	def default(self, *path, **kwargs):
 		self._log('info', 'got new request')
 
 		# get the session id from the request
 		sessionid = self.get_session_id()
 
-		if cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'application/json' ): # normal (json) request
+		if cherrypy.request.headers.get('Content-Type', '').startswith('application/json'):  # normal (json) request
 			# get body and parse json
 			body = '{}'
 			if cherrypy.request.method in cherrypy.request.methods_with_bodies:
@@ -483,7 +492,7 @@ class CPgeneric(object):
 	@logExceptions
 	def get_response(self, sessionid, path, args):
 		# create new UMCP request
-		req = self.get_request( '/'.join(path), args )
+		req = self.get_request('/'.join(path), args)
 
 		# create new response queue
 		response_queue = Queue.Queue()
@@ -508,7 +517,7 @@ class CPgeneric(object):
 				body = simplejson.dumps(response.body)
 
 			# return response
-			cherrypy.response.headers[ 'Content-Type' ] = response.mimetype
+			cherrypy.response.headers['Content-Type'] = response.mimetype
 			cherrypy.response.status = status
 			return body
 
@@ -522,9 +531,10 @@ class CPgeneric(object):
 
 
 class CPSingleSignOn(CPgeneric):
+
 	@cherrypy.expose
 	@logExceptions
-	def default( self, *path, **kwargs ):
+	def default(self, *path, **kwargs):
 		self._log('info', 'got SSO request %r %r' % (path, kwargs))
 		login_token = UMCP_Dispatcher.logintokens.get(kwargs.get('loginToken'))
 		if login_token and not login_token.is_valid():
@@ -541,7 +551,6 @@ class CPSingleSignOn(CPgeneric):
 			UMCP_Dispatcher.logintokens.remove_session(login_token.sessionid)
 		else:
 			self._log('error', 'Unknown SSO token: %r' % kwargs)
-
 
 		# Redirect in any case to UMC start page
 		targeturl = '/univention-management-console/'
@@ -561,16 +570,18 @@ class CPSingleSignOn(CPgeneric):
 
 
 class CPGet(CPgeneric):
+
 	@logExceptions
 	def get_request(self, path, args):
 		if not path:
 			self._log('error', 'get_request: path is empty')
 			raise cherrypy.HTTPError(httplib.NOT_FOUND)
 
-		return umcp.Request( 'GET', arguments = [ path ], options = args.get( 'options', {} ) )
+		return umcp.Request('GET', arguments=[path], options=args.get('options', {}))
 
 
 class IPAddresses(object):
+
 	@cherrypy.expose
 	@logExceptions
 	def default(self, *a, **kw):
@@ -591,17 +602,19 @@ class IPAddresses(object):
 
 
 class CPSet(CPgeneric):
+
 	@logExceptions
 	def get_request(self, path, args):
-		return umcp.Request( 'SET', options = args.get( 'options', {} ) )
+		return umcp.Request('SET', options=args.get('options', {}))
 
 
-class CPUpload( CPgeneric ):
+class CPUpload(CPgeneric):
+
 	@logExceptions
-	def get_request(self, path, args ):
-		self._log( 'info', 'Handle upload command' )
+	def get_request(self, path, args):
+		self._log('info', 'Handle upload command')
 		global _upload_manager
-		req = umcp.Request( 'UPLOAD', arguments = [ path ] )
+		req = umcp.Request('UPLOAD', arguments=[path])
 
 		options = []
 		body = {}
@@ -609,19 +622,19 @@ class CPUpload( CPgeneric ):
 			if isinstance(ifield, cherrypy._cpreqbody.Part):
 				# field is a FieldStorage object
 				store = ifield
-				tmpfile = _upload_manager.add( req.id, store )
+				tmpfile = _upload_manager.add(req.id, store)
 
 				# check if filesize is allowed
-				st = os.stat( tmpfile )
-				max_size = int( configRegistry.get( 'umc/server/upload/max', 64 ) ) * 1024
+				st = os.stat(tmpfile)
+				max_size = int(configRegistry.get('umc/server/upload/max', 64)) * 1024
 				if st.st_size > max_size:
 					self._log('warn', 'file of size %d could not be uploaded' % (st.st_size))
 					raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'The size of the uploaded file is too large')
 
 				# check if enough free space is available
-				min_size = int( configRegistry.get( 'umc/server/upload/min_free_space', 51200 ) ) # kilobyte
+				min_size = int(configRegistry.get('umc/server/upload/min_free_space', 51200))  # kilobyte
 				s = os.statvfs(tmpfile)
-				free_disk_space = s.f_bavail * s.f_frsize / 1024 # kilobyte
+				free_disk_space = s.f_bavail * s.f_frsize / 1024  # kilobyte
 				if free_disk_space < min_size:
 					self._log('error', 'there is not enough free space to upload files')
 					raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'There is not enough free space on disk')
@@ -631,13 +644,13 @@ class CPUpload( CPgeneric ):
 				for c in ('<>/'):
 					filename = filename.replace(c, '_')
 
-				options.append( { 'filename' : filename, 'name' : store.name, 'tmpfile' : tmpfile } )
+				options.append({'filename': filename, 'name': store.name, 'tmpfile': tmpfile})
 			elif isinstance(ifield, basestring):
 				# field is a string :)
 				body[iid] = ifield
 			else:
 				# we cannot handle any other type
-				CORE.warn( 'Unknown type of multipart/form entry: %s=%s' % (iid, ifield) )
+				CORE.warn('Unknown type of multipart/form entry: %s=%s' % (iid, ifield))
 
 		req.body = body
 		req.body['options'] = options
@@ -645,13 +658,13 @@ class CPUpload( CPgeneric ):
 
 	@cherrypy.expose
 	@logExceptions
-	def default( self, *path, **kwargs ):
+	def default(self, *path, **kwargs):
 		self._log('info', 'got new request')
 
 		# get the session id from the request
 		sessionid = self.get_session_id()
 
-		if not cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'multipart/form-data' ):
+		if not cherrypy.request.headers.get('Content-Type', '').startswith('multipart/form-data'):
 			raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Content type and URL do not match')
 
 		response = self.get_response(sessionid, path, kwargs)
@@ -659,27 +672,29 @@ class CPUpload( CPgeneric ):
 		# check if the request is a iframe upload
 		if 'iframe' in kwargs and (kwargs['iframe'] not in ('false', False, 0, '0')):
 			# this is a workaround to make iframe uploads work, they need the textarea field
-			cherrypy.response.headers[ 'Content-Type' ] = umcp.MIMETYPE_HTML
+			cherrypy.response.headers['Content-Type'] = umcp.MIMETYPE_HTML
 			return '<html><body><textarea>%s</textarea></body></html>' % (response)
 
 		return response
 
 
 class CPCommand(CPgeneric):
+
 	@logExceptions
 	def get_request(self, path, args):
 		if not path:
 			self._log('error', 'get_request: path is empty')
 			raise cherrypy.HTTPError(httplib.NOT_FOUND)
 
-		req = umcp.Command( [ path ], options = args.get( 'options', {} ) )
+		req = umcp.Command([path], options=args.get('options', {}))
 		if 'flavor' in args:
-			req.flavor = args[ 'flavor' ]
+			req.flavor = args['flavor']
 
 		return req
 
 
 class CPAuth(CPgeneric):
+
 	@cherrypy.expose
 	@logExceptions
 	def default(self, **kw):
@@ -701,20 +716,20 @@ class CPAuth(CPgeneric):
 
 		json = self.load_json(body)
 
-		CORE.info('CPRoot/command: request: command=%s' % cherrypy.request.path_info )
+		CORE.info('CPRoot/command: request: command=%s' % cherrypy.request.path_info)
 
 		# create new UMCP request
-		req = umcp.Request( 'AUTH' )
-		req.body[ 'username' ] = json[ 'options' ].get('username','')
-		req.body[ 'password' ] = json[ 'options' ].get('password','')
-		req.body[ 'new_password' ] = json[ 'options' ].get('new_password')
-		req.body[ 'locale' ] = (cherrypy.request.headers.values('Accept-Language') or ['C'])[0].replace('-', '_')
+		req = umcp.Request('AUTH')
+		req.body['username'] = json['options'].get('username', '')
+		req.body['password'] = json['options'].get('password', '')
+		req.body['new_password'] = json['options'].get('new_password')
+		req.body['locale'] = (cherrypy.request.headers.values('Accept-Language') or ['C'])[0].replace('-', '_')
 
 		# create new response queue
 		response_queue = Queue.Queue()
 
 		# send request to UMC server
-		cookie = not bool(json[ 'options' ].get('version',''))
+		cookie = not bool(json['options'].get('version', ''))
 		request = QueueRequest(None, req, response_queue, get_ip_address(), cookie=cookie)
 		UMCP_Dispatcher._queue_send.put(request)
 
@@ -726,7 +741,7 @@ class CPAuth(CPgeneric):
 			CORE.info('CPRoot/auth: creating session with sessionid=%s' % response.body.get('sessionid'))
 
 			# add new one time session
-			UMCP_Dispatcher.logintokens.add_session(response.body.get('sessionid'), json[ 'options' ].get('username',''))
+			UMCP_Dispatcher.logintokens.add_session(response.body.get('sessionid'), json['options'].get('username', ''))
 
 			self.set_cookies(sessionid=response.body.get('sessionid'))
 
@@ -737,6 +752,7 @@ class CPAuth(CPgeneric):
 
 
 class CPRoot(object):
+
 	@cherrypy.expose
 	@logExceptions
 	def index(self, **kw):
@@ -755,18 +771,18 @@ def get_ip_address():
 def run_cherrypy():
 	# TODO FIXME Folgenden Configeintrag einbauen, wenn loglevel in (0,1,2)
 	# 'server.environment': 'production',
-	cherrypy.config.update( {
-		'server.socket_port': int( configRegistry.get( 'umc/http/port', 8090 ) ),
-		'server.socket_host': configRegistry.get( 'umc/http/interface', '127.0.0.1' ),
-		'server.request_queue_size' : 100,
-		'response.timeout' : _session_timeout,
+	cherrypy.config.update({
+		'server.socket_port': int(configRegistry.get('umc/http/port', 8090)),
+		'server.socket_host': configRegistry.get('umc/http/interface', '127.0.0.1'),
+		'server.request_queue_size': 100,
+		'response.timeout': _session_timeout,
 		'engine.autoreload_on': False,
 		'tools.response_headers.on': True,
 		'tools.response_headers.headers': [
 			('Content-Type', umcp.MIMETYPE_JSON)
 		],
 		'error_page.default': default_error_page
-	} )
+	})
 	cherrypy.tools.proxy(base=None, local='X-Forwarded-Host', remote='X-Forwarded-For', scheme='X-Forwarded-Proto')
 
 	root = CPRoot()
@@ -782,30 +798,34 @@ def run_cherrypy():
 
 
 class UMC_HTTP_Daemon(DaemonRunner):
-	def __init__( self ):
+
+	def __init__(self):
 		self.parser = OptionParser()
-		self.parser.add_option( '-n', '--no-daemon', action = 'store_false',
-						   dest = 'daemon_mode', default = True,
-						   help = 'if set the process will not fork into the background' )
+		self.parser.add_option('-n', '--no-daemon', action='store_false',
+			dest='daemon_mode', default=True,
+			help='if set the process will not fork into the background'
+		)
 		try:
-			default_debug = int( configRegistry.get( 'umc/server/debug/level', '1' ) )
+			default_debug = int(configRegistry.get('umc/server/debug/level', '1'))
 		except:
 			default_debug = 1
-		self.parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = default_debug,
-						   help = 'if given than debugging is activated and set to the specified level [default: %default]' )
-		self.parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-web-server',
-						   help = 'specifies an alternative log file [default: %default]' )
-		( self.options, self.arguments ) = self.parser.parse_args()
+		self.parser.add_option('-d', '--debug', action='store', type='int', dest='debug', default=default_debug,
+			help='if given than debugging is activated and set to the specified level [default: %default]'
+		)
+		self.parser.add_option('-L', '--log-file', action='store', dest='logfile', default='management-console-web-server',
+			help='specifies an alternative log file [default: %default]'
+		)
+		(self.options, self.arguments) = self.parser.parse_args()
 
 		# cleanup environment
-		os.environ.clear() # supported since python 2.6
-		os.environ[ 'PATH' ] = '/bin:/sbin:/usr/bin:/usr/sbin'
+		os.environ.clear()  # supported since python 2.6
+		os.environ['PATH'] = '/bin:/sbin:/usr/bin:/usr/sbin'
 
 		# init logging
 		if not self.options.daemon_mode:
-			debug_fd = log_init( '/dev/stderr', self.options.debug )
+			debug_fd = log_init('/dev/stderr', self.options.debug)
 		else:
-			debug_fd = log_init( self.options.logfile, self.options.debug )
+			debug_fd = log_init(self.options.logfile, self.options.debug)
 
 		# default action: start
 		if not self.arguments:
@@ -826,71 +846,71 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		self.pidfile_timeout = 10
 
 		# init daemon runner
-		DaemonRunner.__init__( self, self )
+		DaemonRunner.__init__(self, self)
 		self.daemon_context.detach_process = self.options.daemon_mode
-		self.daemon_context.files_preserve = [ debug_fd ]
+		self.daemon_context.files_preserve = [debug_fd]
 
-	def _restart( self ):
+	def _restart(self):
 		"""Handler for the restart action. """
 		if self.pidfile.is_locked():
-			CORE.process( 'Stopping UMC web server ...' )
+			CORE.process('Stopping UMC web server ...')
 			self._stop()
 
-		CORE.process( 'Starting UMC web server ...' )
+		CORE.process('Starting UMC web server ...')
 		self._start()
 
-	def _crestart( self ):
+	def _crestart(self):
 		"""Handler for the crestart action. """
 		if not self.pidfile.is_locked():
-			CORE.process( 'The UMC web server will not be restarted as it is not running currently' )
+			CORE.process('The UMC web server will not be restarted as it is not running currently')
 			return
 
-		CORE.process( 'Stopping UMC web server ...' )
+		CORE.process('Stopping UMC web server ...')
 		self._stop()
-		CORE.process( 'Starting UMC web server ...' )
+		CORE.process('Starting UMC web server ...')
 		self._start()
 
-	DaemonRunner.action_funcs[ 'restart' ] = _restart
-	DaemonRunner.action_funcs[ 'crestart' ] = _crestart
+	DaemonRunner.action_funcs['restart'] = _restart
+	DaemonRunner.action_funcs['crestart'] = _crestart
 
-	def _terminate_daemon_process( self ):
+	def _terminate_daemon_process(self):
 		""" Terminate the daemon process specified in the current PID file.
-			"""
+				"""
 		pid = self.pidfile.read_pid()
 		try:
-			os.kill( pid, signal.SIGTERM )
-		except OSError, exc:
-			raise DaemonRunnerStopFailureError(	"Failed to terminate %(pid)d: %(exc)s" % vars() )
+			os.kill(pid, signal.SIGTERM)
+		except OSError as exc:
+			raise DaemonRunnerStopFailureError(	"Failed to terminate %(pid)d: %(exc)s" % vars())
 
 		if self.pidfile.is_locked():
-			CORE.process( 'The UMC web server is still running. Will wait for 5 seconds' )
+			CORE.process('The UMC web server is still running. Will wait for 5 seconds')
 			count = 10
 			while count:
-				time.sleep( 0.5 )
+				time.sleep(0.5)
 				if not self.pidfile.is_locked():
 					break
 				count -= 1
 			if self.pidfile.is_locked():
-				CORE.process( 'The UMC web server is still running. Kill it!' )
-				os.kill( pid, signal.SIGKILL )
+				CORE.process('The UMC web server is still running. Kill it!')
+				os.kill(pid, signal.SIGKILL)
 				self.pidfile.break_lock()
 
-	def _usage_exit( self, argv ):
-		self.parser.error( 'invalid action' )
-		sys.exit( 1 )
+	def _usage_exit(self, argv):
+		self.parser.error('invalid action')
+		sys.exit(1)
 
 	def run(self):
 		# start webserver as separate thread
-		_thread_http = threading.Thread( target = run_cherrypy )
+		_thread_http = threading.Thread(target=run_cherrypy)
 		_thread_http.deamon = True
 		_thread_http.start()
 
 		try:
 			# start notifier loop
-			notifier.init( notifier.GENERIC )
-			notifier.dispatcher_add( UMCP_Dispatcher.check_queue )
+			notifier.init(notifier.GENERIC)
+			notifier.dispatcher_add(UMCP_Dispatcher.check_queue)
 			notifier.loop()
-		except (SystemExit, KeyboardInterrupt), e:
+		except (SystemExit, KeyboardInterrupt) as e:
 			# stop the web server
 			CORE.info('stopping cherrypy: %s' % str(e))
 			cherrypy.engine.exit()
@@ -900,7 +920,7 @@ if __name__ == '__main__':
 	http_daemon = UMC_HTTP_Daemon()
 	try:
 		http_daemon.do_action()
-	except DaemonRunnerStopFailureError, e:
-		CORE.process( 'Failed to shutdown server gracefully (may be its already dead): %s' % str( e ) )
-	except DaemonRunnerStartFailureError, e:
-		CORE.process( 'Failed to start server: %s' % str( e ) )
+	except DaemonRunnerStopFailureError as e:
+		CORE.process('Failed to shutdown server gracefully (may be its already dead): %s' % str(e))
+	except DaemonRunnerStartFailureError as e:
+		CORE.process('Failed to start server: %s' % str(e))
