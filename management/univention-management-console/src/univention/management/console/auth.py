@@ -128,6 +128,7 @@ class PAM_Auth( Auth ):
 		self._pam.start( 'univention-management-console' )
 		self._pam.set_item( PAM.PAM_CONV, self._conv )
 		self._may_change_password = False
+		self.__workaround_pw_expired = False
 
 	def may_change_password( self ):
 		return self._may_change_password
@@ -135,6 +136,9 @@ class PAM_Auth( Auth ):
 	def _talk_to_pam( self, answers, save_prompts_to=None ):
 		def _conv( auth, query_list, data ):
 			resp = []
+			if any(b == PAM.PAM_TEXT_INFO or b == PAM.PAM_ERROR_MSG for a, b in query_list):
+				self.__workaround_pw_expired = True
+
 			for query, qt in query_list:
 				try:
 					if save_prompts_to is not None:
@@ -156,6 +160,10 @@ class PAM_Auth( Auth ):
 		return self._talk_to_pam( {
 			PAM.PAM_PROMPT_ECHO_ON : self._password,
 			PAM.PAM_PROMPT_ECHO_OFF : self._password,
+			# 'Your password will expire at ...\n' 'Changing password' 'Error: Password does not meet complexity requirements\n'
+			PAM.PAM_TEXT_INFO: ['', '', ''],
+			# 'You are required to change your password immediately (password aged)'
+			PAM.PAM_ERROR_MSG: ['']
 		} )
 
 	def authenticate( self ):
@@ -172,8 +180,10 @@ class PAM_Auth( Auth ):
 			AUTH.info( 'PAM: trying to authenticate %s' % self._username )
 			self._pam.authenticate()
 		except PAM.error, e:
-			if e[1] != PAM.PAM_AUTH_ERR:
+			if not self.__workaround_pw_expired:
+				AUTH.error( "PAM: authentication error: %s" % str( e ) )
 				return AuthenticationResult(False)
+
 			## Start workaround for broken "defer_pwchange" implementation in pam_krb5
 			try:
 				self._pam.acct_mgmt()
@@ -183,6 +193,7 @@ class PAM_Auth( Auth ):
 						prompts = []
 						new_pam = PAM.pam()
 						new_pam.start( 'univention-management-console' )
+						new_pam.set_item( PAM.PAM_USER, self._username )
 						new_pam.set_item( PAM.PAM_CONV, self._talk_to_pam( {
 							PAM.PAM_PROMPT_ECHO_ON : self._username,
 							PAM.PAM_PROMPT_ECHO_OFF : [self._password, new_password, new_password], # old, new, retype
@@ -235,6 +246,7 @@ class PAM_Auth( Auth ):
 			AUTH.warn( "PAM: global error: %s" % str( e ) )
 			return AuthenticationResult(False)
 		else:
+			self.__workaround_pw_expired = False
 			try:
 				self._pam.acct_mgmt()
 			## except PAM.error as e: ## or better:
