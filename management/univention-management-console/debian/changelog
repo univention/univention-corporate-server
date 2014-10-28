@@ -1,3 +1,12 @@
+univention-management-console (6.0.24-27) unstable; urgency=medium
+
+  * Bug #36319: Avoid calling self._pam.acct_mgmt directly after
+    pasword change. On Samba4 DCs the shadowLastSet attributes are
+    not updated immediately (see also Bug #36317). This restores
+    the original behaviour of Version 6.0.24-21.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 28 Oct 2014 18:14:11 +0100
+
 univention-management-console (6.0.24-26) unstable; urgency=medium
 
   * Bug #36319: Improved password expiry detection: Check conversation

@@ -224,13 +224,6 @@ class PAM_Auth( Auth ):
 
 						AUTH.info('Password changed successfully for %s' % self._username)
 
-						try:
-							self._pam.acct_mgmt()
-						## except PAM.error as e: ## or better:
-						except BaseException, e:
-							AUTH.error( "PAM: acct_mgmt error: %s" % str( e ) )
-							return AuthenticationResult(False)
-
 						self.signal_emit('password_changed', new_password)
 						return AuthenticationResult(True)
 					else:
