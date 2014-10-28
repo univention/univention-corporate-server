@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (4.0.4-1) unstable; urgency=medium
+
+  * Use getMachineConnection() for creating new cloud connections
+    (Bug #36323)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Oct 2014 08:29:39 +0100
+
 univention-virtual-machine-manager-daemon (4.0.3-20) unstable; urgency=low
 
   * Update translations (Bug #32842) 

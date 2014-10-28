@@ -239,7 +239,7 @@ def ldap_cloud_connections():
 def ldap_cloud_connection_add(cloudtype, name, parameter):
 	""" Add a new cloud connection."""
 	try:
-		lo, position = univention.admin.uldap.getAdminConnection()
+		lo, position = univention.admin.uldap.getMachineConnection()
 		dn = 'cn=%s,%s,%s' % (name, LDAP_CLOUD_CONNECTION_RDN, position.getDn())
 		dn_typeref = 'cn=%s,%s,%s' % (cloudtype, LDAP_CLOUD_TYPE_RDN, position.getDn())
 		parameter_lst = []
