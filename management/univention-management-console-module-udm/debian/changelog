@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.14-1) unstable; urgency=low
+
+  * Bug #36258: Added symlinks for the missing icons
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 28 Oct 2014 10:44:26 +0100
+
 univention-management-console-module-udm (5.1.13-1) unstable; urgency=medium
 
   * Bug #35847: Add functionality to change user passwords in the UMC server core
