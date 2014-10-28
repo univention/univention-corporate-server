@@ -77,7 +77,7 @@ define([
 			});
 
 			this._page = new Page({
-				headerText: _('Change the password of user %s', tools.status('username')),
+				headerText: _('Change the password of user "%s"', tools.status('username')),
 				headerButtons: [{
 					name: 'submit',
 					iconClass: 'umcSaveIconWhite',

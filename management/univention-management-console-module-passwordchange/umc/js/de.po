@@ -18,8 +18,8 @@ msgstr "Password ändern"
 
 #: umc/js/passwordchange.js:61
 #, python-format
-msgid "Change the password of user %s"
-msgstr "Password des Benutzers %s ändern"
+msgid "Change the password of user \"%s\""
+msgstr "Passwort des Benutzers \"%s\" ändern"
 
 #: umc/js/passwordchange.js:80
 msgid "New password"
