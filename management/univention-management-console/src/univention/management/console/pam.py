@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import traceback
+
 from PAM import (
 	pam as PAM,
 	error as PAMError,
@@ -39,6 +41,7 @@ from PAM import (
 	PAM_NEW_AUTHTOK_REQD,
 	PAM_ACCT_EXPIRED,
 	PAM_TEXT_INFO,
+	PAM_ERROR_MSG,
 	PAM_USER
 )
 
@@ -72,21 +75,34 @@ class PamAuth(object):
 		for response_message in possible_responses
 	)
 
+	def __init__(self):
+		self.__workaround_pw_expired = False
+
 	def authenticate(self, username, password):
 		answers = {
-			PAM_TEXT_INFO: [''],
+			# 'Your password will expire at ...\n', 'Changing password', 'Error: Password does not meet complexity requirements\n'
+			PAM_TEXT_INFO: ['', '', ''],
+
+			# 'Password: ', 'New password: ', 'Repeat new password: '
 			PAM_PROMPT_ECHO_OFF: [password],
+
+			# 'You are required to change your password immediately (password aged)'
+			PAM_ERROR_MSG: ['']
 		}
 		conversation = self._get_conversation(answers)
 
-		pam = self.start(conversation)
-		pam.set_item(PAM_USER, username)
+		pam = self.start(conversation, username)
 
 		try:
 			pam.authenticate()
 		except PAMError as autherr:
 			AUTH.error("PAM: authentication error: %s" % (autherr,))
+
+			if self.__workaround_pw_expired:
+				self._validate_account(pam)
+
 			raise AuthenticationFailed(str(autherr[0]))
+		self.__workaround_pw_expired = False
 
 		self._validate_account(pam)
 
@@ -105,11 +121,12 @@ class PamAuth(object):
 		answers = {
 			PAM_PROMPT_ECHO_ON: [username],  # 'login:'
 			PAM_TEXT_INFO: [''],  # 'Your password will expire at Thu Jan  1 01:00:00 1970\n'
-			PAM_PROMPT_ECHO_OFF: [old_password, new_password, new_password],  # 'Current Kerberos password: ', 'New password: ', 'Retype new password: '
+			# 'Current Kerberos password: ', 'New password: ', 'Retype new password: '
+			PAM_PROMPT_ECHO_OFF: [old_password, new_password, new_password],
 		}
 		conversation = self._get_conversation(answers, prompts)
 
-		pam = self.start(conversation)
+		pam = self.start(conversation, username)
 
 		try:
 			pam.chauthtok()
@@ -118,24 +135,27 @@ class PamAuth(object):
 			message = self._parse_error_message_from(pam_err, prompts)
 			raise PasswordChangeFailed(message)
 
-	def start(self, conversation):
+	def start(self, conversation, username):
 		pam = PAM()
 		pam.start('univention-management-console')
 		pam.set_item(PAM_CONV, conversation)
+		pam.set_item(PAM_USER, username)
 		return pam
 
 	def _get_conversation(self, answers, prompts=None):
 		def conversation(auth, query_list, data):
 			try:
-				if prompts:
+				if any(b == PAM_TEXT_INFO or b == PAM_ERROR_MSG for a, b in query_list):
+					self.__workaround_pw_expired = True
+				if prompts is not None:
 					prompts.extend([query for query, qt in query_list])
+					#AUTH.error('### prompts = %r' % (prompts,))
 				answer = [(answers.get(qt, ['']).pop(0), 0) for query, qt in query_list]
 			except:
-				#import traceback
 				#AUTH.error('## query_list=%r, auth=%r, data=%r' % (query_list, auth, data))
-				#AUTH.error(traceback.format_exc())
+				AUTH.error(traceback.format_exc())
 				raise
-			#AUTH.error('### query_list=%r, auth=%r, data=%r, answer=%r' % (query_list, auth, data, answer))
+			AUTH.error('### query_list=%r, auth=%r, data=%r, answer=%r' % (query_list, auth, data, answer))
 			return answer
 		return conversation
 
