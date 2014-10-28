@@ -13,7 +13,12 @@ access to dn.regex="^univentionVirtualMachineUUID=([^,]+),cn=Information,cn=Virt
 	by dn.onelevel="cn=memberserver,cn=computers,%(base)s" %(right)s
 	by * read break
 
-access to dn.regex="^cn=Information,cn=Virtual Machine Manager,%(base)s$" attrs=children,entry
+access to dn.regex="^cn=([^,]+),cn=CloudConnection,cn=Virtual Machine Manager,%(base)s$" filter="(objectClass=univentionVirtualMachineCloudConnection)"
+	by dn.onelevel="cn=dc,cn=computers,%(base)s" %(right)s
+	by dn.onelevel="cn=memberserver,cn=computers,%(base)s" %(right)s
+	by * read break
+
+access to dn.regex="^cn=(Information|CloudConnection),cn=Virtual Machine Manager,%(base)s$" attrs=children,entry
 	by dn.onelevel="cn=dc,cn=computers,%(base)s" %(right)s
 	by dn.onelevel="cn=memberserver,cn=computers,%(base)s" %(right)s
 	by * read break
