@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.77-1) unstable; urgency=medium
+
+  * Bug #36095: adjust UMC icon for UCS start site
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Oct 2014 12:44:27 +0100
+
 univention-management-console-frontend (4.1.76-1) unstable; urgency=medium
 
   * Bug #35654: outsource UMC startup checks into the modules

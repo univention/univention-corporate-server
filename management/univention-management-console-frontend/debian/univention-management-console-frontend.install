@@ -1,1 +1,2 @@
 usr/share/univention-management-console-frontend/* usr/share/univention-management-console-frontend/
+icons/univention-management-console.svg	usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/

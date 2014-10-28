@@ -55,7 +55,7 @@ fi
 # set ucs-overview variables - only if they aren't set, so the user can also login even the system has not joined the domain yet
 # instead of the normal text the user will see: 'Please login as root to join the domain'
 # this text will be overwritten if the system joins the master - see: 34univention-management-console-web-server.inst
-ucr set ucs/web/overview/entries/admin/umc/icon?"/univention-management-console/js/dijit/themes/umc/icons/50x50/univention-management-console.png" \
+ucr set ucs/web/overview/entries/admin/umc/icon?"/univention-management-console/js/dijit/themes/umc/icons/scalable/univention-management-console.svg" \
     ucs/web/overview/entries/admin/umc/label?"System and domain settings" \
     ucs/web/overview/entries/admin/umc/label/de?"System- und Domäneneinstellungen" \
     ucs/web/overview/entries/admin/umc/description?"Please login as <i>root</i> to join the domain" \
@@ -63,6 +63,10 @@ ucr set ucs/web/overview/entries/admin/umc/icon?"/univention-management-console/
     ucs/web/overview/entries/admin/umc/link?"/univention-management-console?username=root" \
     ucs/web/overview/entries/admin/umc/priority?"10"
 
+# for the update to 4.0 the icon for UMC on the UCS start site has changed
+if [ "$ucs_web_overview_entries_admin_umc_icon" = "/univention-management-console/js/dijit/themes/umc/icons/50x50/univention-management-console.png" ]; then
+	ucr set ucs/web/overview/entries/admin/umc/icon="/univention-management-console/js/dijit/themes/umc/icons/scalable/univention-management-console.svg"
+fi
 
 dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/usr/share/univention-management-console-frontend/languages.json 3.0.129-1~ -- "$@"
 dpkg-maintscript-helper rm_conffile /etc/univention/templates/info/univention-management-console-frontend.info 3.0.129-1~ -- "$@"
