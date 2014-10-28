@@ -61,7 +61,7 @@ univention-config-registry set ssl/country?"${country:-DE}" \
 	ssl/default/days?1825 \
 	ssl/validity/warning?30 \
 	ssl/validity/check?yes \
-	ssl/default/hashfunction?sha384 \
+	ssl/default/hashfunction?sha1 \
 	ssl/default/bits?2048
 
 eval "$(univention-config-registry shell)"

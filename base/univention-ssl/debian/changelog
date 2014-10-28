@@ -1,3 +1,10 @@
+univention-ssl (9.0.1-1) unstable; urgency=medium
+
+  * Set the default ssl hash function back to sha1
+    (Bug #35836 and Bug #36324)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Oct 2014 21:06:20 +0100
+
 univention-ssl (9.0.0-5) unstable; urgency=low
 
   * new defaults for ssl/default/hashfunction (sha384)
