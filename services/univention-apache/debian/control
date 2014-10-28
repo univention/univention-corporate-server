@@ -7,7 +7,9 @@ Build-Depends: debhelper (>= 7.0.50~),
  ucslint-univention,
  univention-dojo-dev,
  univention-management-console-dev,
- stylus
+ stylus,
+ unzip,
+ sed
 Standards-Version: 3.8.2
 
 Package: univention-apache
