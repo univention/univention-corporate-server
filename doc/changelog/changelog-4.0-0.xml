@@ -599,6 +599,10 @@
 				Domain controllers and member servers have now the permission to create LDAP
 				objects for cloud connections (<ulink url="&ucsbug;36323">Bug 36323</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The notification message about the changeability of instance settings has been 
+				removed (<ulink url="&ucsbug;36307">Bug 36307</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
