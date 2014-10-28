@@ -300,7 +300,8 @@ define([
 					label: _('Container'),
 					description: _('The container in which the LDAP object shall be created.'),
 					visible: containers.length > 1,
-					staticValues: containers
+					staticValues: containers,
+					size: 'Two'
 				});
 				layout.push('container');
 
@@ -315,7 +316,8 @@ define([
 							return superordinate.title ? {id: superordinate.id, label: superordinate.title + ': ' + superordinate.label } : superordinate;
 						}),
 						visible: superordinates.length > 1,
-						value: this.selectedSuperordinate
+						value: this.selectedSuperordinate,
+						size: 'Two'
 					}, {
 						type: 'ComboBox',
 						name: 'objectType',
@@ -326,7 +328,8 @@ define([
 						dynamicValues: lang.hitch(this, function(options) {
 							return this.moduleCache.getChildModules(options.superordinate, null, true);
 						}),
-						depends: 'superordinate'
+						depends: 'superordinate',
+						size: 'Two'
 					});
 					layout.push('superordinate', 'objectType');
 				} else {
@@ -340,7 +343,8 @@ define([
 							label: _('Type'),
 							description: _('The exact object type of the new LDAP object.'),
 							visible: types.length > 1,
-							staticValues: types
+							staticValues: types,
+							size: 'Two'
 						});
 						layout.push('objectType');
 					}
@@ -355,7 +359,8 @@ define([
 							label: _('%s template', tools.capitalize(this.objectNameSingular)),
 							description: _('A template defines rules for default object properties.'),
 							autoHide: true,
-							staticValues: templates
+							staticValues: templates,
+							size: 'Two'
 						});
 						layout.push('objectTemplate');
 					}
@@ -376,7 +381,8 @@ define([
 					label: _('Type'),
 					description: _('The exact object type of the new LDAP object.'),
 					visible: types.length > 1,
-					staticValues: types
+					staticValues: types,
+					size: 'Two'
 				}, {
 					type: 'ComboBox',
 					name: 'objectTemplate',
@@ -388,7 +394,8 @@ define([
 						return this.moduleCache.getTemplates(options.objectType);
 					}),
 					staticValues: [ { id: 'None', label: _('None') } ],
-					autoHide: true
+					autoHide: true,
+					size: 'Two'
 				}];
 				layout = [ 'container', 'container_help', 'objectType', 'objectTemplate' ];
 			}

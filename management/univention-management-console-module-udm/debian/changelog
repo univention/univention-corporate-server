@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.17-1) unstable; urgency=medium
+
+  * Bug #36299: adjust size of form fields in the dialogue for new objects
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Oct 2014 17:34:52 +0100
+
 univention-management-console-module-udm (5.1.16-2) unstable; urgency=low
 
   * Bug #36260: Show hint for printer module if no printserver is configured
