@@ -218,11 +218,16 @@ class PAM_Auth( Auth ):
 				return AuthenticationResult(False)
 			AUTH.error( "PAM: authentication error: %s" % str( e ) )
 			return AuthenticationResult(False)
-		except Exception, e: # internal error
+		except BaseException, e: # internal error
 			AUTH.warn( "PAM: global error: %s" % str( e ) )
 			return AuthenticationResult(False)
 		else:
-			self._pam.acct_mgmt()
+			try:
+				self._pam.acct_mgmt()
+			## except PAM.error as e:  ## or better:
+			except BaseException, e:
+				AUTH.warn( "PAM: acct_mgmt error: %s" % str( e ) )
+				return AuthenticationResult(False)
 
 		AUTH.info( 'Authentication for %s was successful' % self._username )
 		return AuthenticationResult(True)
