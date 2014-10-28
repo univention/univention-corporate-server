@@ -96,9 +96,9 @@ define([
 			'http://forum.univention.de/': _('http://forum.univention.de/'),
 			'http://sdb.univention.de/': _('http://sdb.univention.de/'),
 			'http://docs.univention.de/en.html': _('http://docs.univention.de/en.html'),
-			'http://www.univention.com/products/ucs/univention-app-center/': _('http://www.univention.com/products/ucs/univention-app-center/'),
-			'http://www.univention.de/en/products/': _('http://www.univention.de/en/products/'),
-			'http://www.univention.de/en/': _('http://www.univention.de/en/')
+			'https://www.univention.com/products/univention-app-center/': _('https://www.univention.com/products/univention-app-center/'),
+			'https://www.univention.com/products/': _('https://www.univention.com/products/'),
+			'https://www.univention.com': _('https://www.univention.com/')
 		},
 
 		_localizeString: function(str) {
@@ -307,7 +307,7 @@ define([
 					label: ilocale.label,
 					id: ilocale.id,
 					onClick: function(){
-						if (locale.id != dojo.locale){
+						if (ilocale.id != dojo.locale){
 							window.location.search = '?lang=' + ilocale.id;
 						}
 					}

@@ -89,16 +89,16 @@ msgid "http://wiki.univention.de/index.php?title=Hauptseite"
 msgstr "http://wiki.univention.de/index.php?title=Main_Page"
 
 #: startsite.js:100
-msgid "http://www.univention.com/products/ucs/univention-app-center/"
-msgstr "http://www.univention.de/produkte/ucs/univention-app-center/"
+msgid "https://www.univention.com/products/univention-app-center/"
+msgstr "https://www.univention.de/produkte/univention-app-center/"
 
 #: startsite.js:102
-msgid "http://www.univention.de/en/"
-msgstr "http://www.univention.de/"
+msgid "https://www.univention.com/"
+msgstr "https://www.univention.de/"
 
 #: startsite.js:101
-msgid "http://www.univention.de/en/products/"
-msgstr "http://www.univention.de/produkte/"
+msgid "https://www.univention.com/products/"
+msgstr "https://www.univention.de/produkte/"
 
 #: startsite.js:84
 msgid "{hostname}.{domainname}"
