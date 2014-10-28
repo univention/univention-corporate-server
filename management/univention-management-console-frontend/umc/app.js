@@ -494,8 +494,6 @@ define([
 			style.set(this._headerCenter.domNode, 'display', 'block');
 			this.setupHeader();
 			this.setupMenus();
-
-			topic.subscribe('/umc/license/activation', lang.hitch(this, '_showActivationDialog'));
 		},
 
 		buildRendering: function() {
@@ -604,114 +602,8 @@ define([
 		},
 
 		setupMenus: function() {
-			this._setupSettingsMenu();
 			this._setupHelpMenu();
 			this._setupHostInfoMenu();
-		},
-
-		_setupSettingsMenu: function() {
-			if (!this._settingsMenu) {
-				return;
-			}
-
-			// try to insert license dialog
-			if (require('umc/app').getModule('udm')) {
-				this._insertActivationMenuItem();
-				this._settingsMenu.addChild(new MenuItem({
-					label: _('Import new license'),
-					onClick : lang.hitch(this, '_showLicenseImportDialog')
-				}), 0);
-				this._settingsMenu.addChild(new MenuItem({
-					label: _('License information'),
-					onClick : lang.hitch(this, '_showLicenseInformationDialog')
-				}), 0);
-			}
-		},
-
-		_insertActivationMenuItem: function() {
-			if (_ucr['uuid/license']) {
-				// license has already been activated
-				return;
-			}
-
-			this._settingsMenu.addChild(new MenuItem({
-				label: _('Activation of UCS'),
-				onClick: lang.hitch(this, '_showActivationDialog')
-			}), 0);
-		},
-
-		_showActivationDialog: function() {
-			topic.publish('/umc/actions', 'menu-settings', 'activation');
-
-			/** The following two checks are only for if this dialogue is opened via topic.publish() **/
-			if (_ucr['uuid/license']) {
-				dialog.alert(_('The license has already been activated.'));
-				return;
-			}
-			if (!require('umc/app').getModule('udm')) {
-				dialog.alert(_('Activation is not possible. Please login as Administrator on the DC master.'));
-				return;
-			}
-
-			var _reopenActivationDialog = lang.hitch(this, function(_deferred) {
-				if (!_deferred) {
-					_deferred = new Deferred();
-				}
-				var _emailWidget = registry.byId('umc_app_activation_email');
-				if (!_emailWidget) {
-					this._showActivationDialog();
-					_deferred.resolve();
-				} else {
-					// the previous dialog has not been destroyed completely...
-					// try again after a small timeout
-					setTimeout(lang.hitch(this, _reopenActivationDialog, _deferred), 200);
-				}
-				return _deferred;
-			});
-
-			var confirmDeferred = dialog.templateDialog('umc/app', 'activation.' + _getLang()  + '.html', {
-				path: require.toUrl('umc/app'),
-				leaveFieldFreeDisplay: 'none',
-				version: tools.status('ucsVersion').split('-')[0]
-			}, _('Activation of UCS'), [{
-				name: 'cancel',
-				label: _('Cancel')
-			}, {
-				name: 'activate',
-				label: _('Activate'),
-				'default': true
-			}]);
-
-			confirmDeferred.then(lang.hitch(this, function(response) {
-				if (response != 'activate') {
-					return;
-				}
-
-				var emailWidget = registry.byId('umc_app_activation_email');
-				if (!emailWidget.isValid()) {
-					_reopenActivationDialog().then(function() {
-						dialog.alert(_('Please enter a valid email address!'));
-					});
-				} else {
-					tools.umcpCommand('udm/request_new_license', {
-						email: emailWidget.get('value')
-					}, false).then(lang.hitch(this, function() {
-						this._showLicenseImportDialog();
-					}), lang.hitch(this, function(error) {
-						_reopenActivationDialog().then(function() {
-							tools.handleErrorStatus(error.response);
-						});
-					}));
-				}
-			}));
-		},
-
-		_showLicenseImportDialog: function() {
-			topic.publish('/umc/actions', 'menu-settings', 'license-import');
-			require(['umc/modules/udm/LicenseImportDialog'], function(LicenseImportDialog) {
-				var dlg = new LicenseImportDialog();
-				dlg.show();
-			});
 		},
 
 		_setupHelpMenu: function() {
@@ -809,14 +701,6 @@ define([
 		_switchUMC: function(hostname) {
 			topic.publish('/umc/actions', 'host-switch');
 			tools.openRemoteSession(hostname);
-		},
-
-		_showLicenseInformationDialog: function() {
-			topic.publish('/umc/actions', 'menu-settings', 'license');
-			require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
-				var dlg = new LicenseDialog();
-				dlg.show();
-			});
 		},
 
 		_showAboutDialog: function() {

@@ -35,6 +35,8 @@ define([
 	"dojo/when",
 	"dojo/Deferred",
 	"dojo/topic",
+	"umc/app",
+	"umc/dialog",
 	"umc/store",
 	"umc/widgets/Module",
 	"umc/modules/appcenter/AppCenterPage",
@@ -46,7 +48,15 @@ define([
 	"umc/modules/appcenter/DetailsPage",
 	"umc/i18n!umc/modules/appcenter", // not needed atm
 	"xstyle/css!umc/modules/appcenter.css"
-], function(declare, lang, array, when, Deferred, topic, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppChooseHostDialog, PackagesPage, SettingsPage, DetailsPage, _) {
+], function(declare, lang, array, when, Deferred, topic, app, dialog, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppChooseHostDialog, PackagesPage, SettingsPage, DetailsPage, _) {
+
+	topic.subscribe('/umc/license/activation', function() {
+		if (!app.getModule('udm')) {
+			dialog.alert(_('Activation is not possible. Please login as Administrator on the DC master.'));
+			return;
+		}
+	});
+
 	return declare("umc.modules.appcenter", [ Module ], {
 
 		unique: true, // only one appcenter may be open at once

@@ -72,6 +72,7 @@ define([
 	"umc/modules/udm/MultiObjectSelect",
 	"umc/modules/udm/ComboBox",
 	"umc/modules/udm/CertificateUploader",
+	"umc/modules/udm/startup",
 	"xstyle/css!./udm.css"
 ], function(declare, lang, array, has, Deferred, when, all, on, topic, aspect, json,
 	domStyle, domClass, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog,
@@ -79,20 +80,6 @@ define([
 	Form, SearchForm, Button, Tree, MixedInput, ProgressBar, TreeModel,
 	TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, cache, _)
 {
-
-	topic.subscribe('/umc/started', function() {
-		var checkLicense = function() {
-			tools.umcpCommand('udm/license', {}, false).then(lang.hitch(this, function(data) {
-				var msg = data.result.message;
-				if (msg) {
-					dialog.warn(msg);
-				}
-			}), function() {
-				console.warn('WARNING: An error occurred while verifying the license. Ignoring error.');
-			});
-		};
-		checkLicense();
-	});
 
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:

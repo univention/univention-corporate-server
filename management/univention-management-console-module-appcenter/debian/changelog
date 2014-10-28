@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.13-1) unstable; urgency=medium
+
+  * Bug #35654: outsource UMC startup checks into the modules
+
+ -- Florian Best <best@univention.de>  Tue, 28 Oct 2014 11:10:22 +0100
+
 univention-management-console-module-appcenter (4.1.12-1) unstable; urgency=medium
 
   * Bug #36296: added shop icon
