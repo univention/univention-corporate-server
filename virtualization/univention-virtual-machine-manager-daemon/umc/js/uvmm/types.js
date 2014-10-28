@@ -64,8 +64,11 @@ define([
 			RUNNING : _( 'running' ),
 			SHUTOFF : _( 'shut off' ),
 			PAUSED : _( 'paused' ),
+			SUSPENDED : _( 'suspended' ),
 			IDLE : _( 'running (idle)' ),
-			CRASHED : _( 'shut off (crashed)' )
+			CRASHED : _( 'shut off (crashed)' ),
+			TERMINATED : _( 'terminated' ),
+			PENDING : _( 'pending' )
 		},
 		getDomainStateDescription: function( domain ) {
 			var text = self.domainStates[ domain.state ];

@@ -73,15 +73,32 @@ define([
 	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, CloudConnectionWizard, types, _) {
 
 	var isRunning = function(item) {
+		// isRunning contains state==PAUSED to enable VNC Connections to pause instances
 		return (item.state == 'RUNNING' || item.state == 'IDLE' || item.state == 'PAUSED') && item.node_available;
 	};
 
+	var isPaused = function(item) {
+		return (item.state == 'PAUSED') && item.node_available;
+	};
+
 	var canStart = function(item) {
-		return item.node_available && (item.state != 'RUNNING' && item.state != 'IDLE');
+		return item.node_available && (item.state != 'RUNNING' && item.state != 'IDLE' && !isTerminated(item));
 	};
 
 	var canVNC = function(item) {
 		return isRunning(item) && item.vnc_port;
+	};
+
+	var isTerminated = function(item) {
+		return item.state == 'TERMINATED';
+	};
+
+	var isEC2 = function(item) {
+		return item.u_connection_type == 'EC2';
+	};
+
+	var isOpenStack = function(item) {
+		return item.u_connection_type == 'OpenStack';
 	};
 
 	return declare("umc.modules.uvmm", [ Module ], {
@@ -1216,7 +1233,10 @@ define([
 					isMultiAction: false,
 					iconClass: 'umcIconEdit',
 					description: _( 'Edit the configuration of the virtual machine' ),
-					callback: lang.hitch(this, 'openInstancePage')
+					callback: lang.hitch(this, 'openInstancePage'),
+					canExecute: function(item) {
+						return !isTerminated(item);
+					}
 				}, {
 					name: 'start',
 					label: _( 'Start' ),
@@ -1228,27 +1248,58 @@ define([
 					canExecute: canStart
 				}, {
 					name: 'restart',
-					label: _( 'Restart' ),
+					label: _( 'Restart (hard)' ),
 					isStandardAction: false,
 					isMultiAction: true,
 					callback: lang.hitch(this, '_changeStateInstance', 'RESTART', 'restart' ),
-					canExecute: isRunning
+					canExecute: function(item) {
+						return isRunning(item) && isOpenStack(item);
+					}
 				}, {
 					name: 'softrestart',
-					label: _( 'Shutdown & Restart' ),
+					label: _( 'Restart (soft)' ),
 					isStandardAction: false,
 					isMultiAction: true,
 					callback: lang.hitch(this, '_changeStateInstance', 'SOFTRESTART', 'softrestart' ),
-					canExecute: isRunning
+					canExecute: function(item) {
+						return isRunning(item) && isEC2(item);
+					}
+				}, {
+					name: 'shutdown',
+					label: _( 'Shutdown (soft)' ),
+					isStandardAction: false,
+					isMultiAction: true,
+					callback: lang.hitch(this, '_changeStateInstance', 'SHUTDOWN', 'shutdown' ),
+					canExecute: function(item) {
+						return isRunning(item) && isEC2(item);
+					}
+				}, {
+					name: 'pause',
+					label: _( 'Pause' ),
+					isStandardAction: false,
+					isMultiAction: true,
+					callback: lang.hitch(this, '_changeStateInstance', 'PAUSE', 'pause' ),
+					canExecute: function(item) {
+						return isRunning(item) && !isPaused(item) && isOpenStack(item);
+					}
+				}, {
+					name: 'Suspend',
+					label: _( 'Suspend' ),
+					isStandardAction: false,
+					isMultiAction: true,
+					callback: lang.hitch(this, '_changeStateInstance', 'SUSPEND', 'suspend' ),
+					canExecute: function(item) {
+						return isRunning(item) && !isPaused(item) && isOpenStack(item);
+					}
 				}, {
 					name: 'remove',
-					label: _( 'Remove' ),
+					label: _( 'Delete' ),
 					isStandardAction: false,
 					isMultiAction: false,
 					iconClass: 'umcIconDelete',
 					callback: lang.hitch(this, '_removeInstance' ),
 					canExecute: function(item) {
-						return item.node_available;
+						return item.node_available && !isTerminated(item);
 					}
 				}, {
 					name: 'add',
@@ -1432,10 +1483,12 @@ define([
 					iconName += '-off';
 				} else if (item.state == 'RUNNING' || item.state == 'IDLE') {
 					iconName += '-on';
-				}
-				else if ( item.state == 'PAUSED' || ( item.state == 'SHUTOFF' && item.suspended ) ) {
+				} else if ( item.state == 'PAUSED' || ( item.state == 'SHUTOFF' && item.suspended ) || (item.state == 'SUSPENDED')) {
 					iconName += '-paused';
+				} else if (item.state == 'TERMINATED') {
+					iconName += '-terminated';
 				}
+
 			}
 			return iconName + '.png';
 		},

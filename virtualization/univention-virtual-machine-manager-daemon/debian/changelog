@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (4.0.4-2) unstable; urgency=low
+
+  * Bug #36305: Cloud instance detailpage fields are now readonly
+  * Bug #36306: Terminated EC2 instances have the correct state
+  * Bug #35946: Updated instance state changes, added icon for terminated
+    instances 
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 28 Oct 2014 11:43:51 +0100
+
 univention-virtual-machine-manager-daemon (4.0.4-1) unstable; urgency=medium
 
   * Use getMachineConnection() for creating new cloud connections

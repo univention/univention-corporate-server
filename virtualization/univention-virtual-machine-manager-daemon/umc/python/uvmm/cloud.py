@@ -367,6 +367,7 @@ class Cloud(object):
 							'public_ips': inst.public_ips,
 							'private_ips': inst.private_ips,
 							'u_size_name': inst.u_size_name,
+							'u_connection_type': inst.u_connection_type,
 							'keypair': inst.key_name,
 							'image': inst.u_image_name,
 							'securitygroup': inst.secgroups,
@@ -388,14 +389,14 @@ class Cloud(object):
 				pattern=request.options['domainPattern']
 				)
 
-	@sanitize(state=ChoicesSanitizer(choices=('RUN', 'RESTART', 'SOFTRESTART')))
+	@sanitize(state=ChoicesSanitizer(choices=('RUN', 'RESTART', 'SOFTRESTART', 'SHUTOFF', 'SHUTDOWN', 'SUSPEND', 'PAUSE', 'RESUME', 'UNPAUSE')))
 	def instance_state(self, request):
 		"""
 		Set the state a instance instance_id on cloud conn_name.
 
 		options: {
 			'uri': <conn_name#instance_id>,
-			'state': (RUN|RESTART|SOFTRESTART),
+			'state': (RUN|RESTART|SOFTRESTART|SHUTOFF|SHUTDOWN|SUSPEND|RESUME|UNPAUSE),
 			}
 
 		return:

@@ -91,7 +91,7 @@ LIBCLOUD_UVMM_STATE_MAPPING = {
 		NodeState.TERMINATED: "NOSTATE",
 		NodeState.PENDING: "PENDING",
 		NodeState.UNKNOWN: "NOSTATE",
-		NodeState.STOPPED: "SHUTDOWN",
+		NodeState.STOPPED: "SHUTOFF",
 		NodeState.SUSPENDED: "SUSPENDED",
 		NodeState.ERROR: "CRASHED",
 		NodeState.PAUSED: "PAUSED",
@@ -158,6 +158,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		for instance in self._instances:
 			if regex.match(instance.name) is not None or regex.match(instance.id) is not None:
 				i = Cloud_Data_Instance()
+				i.u_connection_type = "OpenStack"
 				i.name = instance.name
 				i.extra = instance.extra
 				i.id = instance.id

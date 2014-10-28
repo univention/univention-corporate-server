@@ -81,38 +81,38 @@ define([
 					type: TextBox,
 					label: _('Name'),
 					size: 'Two',
-					readonly: true
+					disabled: true
 				}, {
 					name: 'public_ips',
 					type: TextBox,
 					label: _('Public IP address'),
-					readonly: true
+					disabled: true
 				}, {
 					name: 'private_ips',
 					type: TextBox,
 					label: _('Private IP address'),
-					readonly: true
+					disabled: true
 				}, {
 					name: 'u_size_name',
 					type: TextBox,
 					label: _('Instance size'),
-					readonly: true
+					disabled: true
 				}, {
 					name: 'keypair',
 					type: TextBox,
 					label: _('Keypair'),
-					readonly: true
+					disabled: true
 				}, {
 					name: 'image',
 					type: TextBox,
 					label: _('Image'),
 					size: 'Two',
-					readonly: true
+					disabled: true
 				}, {
 					name: 'securitygroup',
 					type: TextBox,
 					label: _('Security group'),
-					readonly: true
+					disabled: true
 				}],
 				layout: [{
 					label: _('Settings'),

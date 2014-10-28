@@ -87,9 +87,9 @@ EC2_CREATE_ATTRIBUTES = {
 LIBCLOUD_EC2_UVMM_STATE_MAPPING = {
 		NodeState.RUNNING: "RUNNING",
 		NodeState.PENDING: "PENDING",
-		NodeState.TERMINATED: "NOSTATE",
+		NodeState.TERMINATED: "TERMINATED",
 		NodeState.UNKNOWN: "NOSTATE",
-		NodeState.STOPPED: "SHUTDOWN",
+		NodeState.STOPPED: "SHUTOFF",
 		}
 
 
@@ -173,6 +173,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		for instance in self._instances:
 			if regex.match(instance.name) is not None or regex.match(instance.id) is not None:
 				i = Cloud_Data_Instance()
+				i.u_connection_type = "EC2"
 				i.name = instance.name
 				# filter detailed network information
 				extra = instance.extra
@@ -300,10 +301,10 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		raise EC2CloudConnectionError("RESUME: Not yet implemented")
 
 	def _shutdown_instance(self, instance):
-		raise EC2CloudConnectionError("SHUTDOWN: Not yet implemented")
+		self._exec_libcloud(lambda: self.driver.ex_stop_node(instance))
 
 	def _shutoff_instance(self, instance):
-		self._exec_libcloud(lambda: self.driver.ex_stop_node(instance))
+		raise EC2CloudConnectionError("SHUTOFF: Not yet implemented")
 
 	def _suspend_instance(self, instance):
 		raise EC2CloudConnectionError("SUSPEND: Not yet implemented")
