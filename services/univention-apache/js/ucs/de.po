@@ -14,10 +14,9 @@ msgstr ""
 
 #: startsite.js:88
 msgid ""
-"Additional services may be installed in the category <a href=\"#admin"
-"\">Administration</a> via Univention Management Console."
+"Additional services may be installed in the category <a href='#admin'>Administration</a> via Univention Management Console."
 msgstr ""
-"Zusätzliche Dienste können in der Rubrik <a href=\"#admin\">Administration</"
+"Zusätzliche Dienste können in der Rubrik <a href='#admin'>Administration</"
 "a> über Univention Management Console installiert werden."
 
 #: startsite.js:86

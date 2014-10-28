@@ -9,51 +9,7 @@
 		<link rel="stylesheet" href="js/dijit/themes/dijit.css">
 		<link rel="stylesheet" href="css/bootstrap.css"/>
 		<link rel="stylesheet" href="css/ucs.css">
-
-		<script type="text/javascript">
-			//<!--
-			function getQuery(/*String*/ param, /*mixed*/ defaultVal) {
-				// parse the URI query string
-				var query = window.location.search.substring(1);
-				var vars = query.split('&');
-				for (var i = 0; i < vars.length; i++) {
-					// parse the tuple
-					var tuple = vars[i].split('=');
-
-					// check whether we found the particular parameter we are interested in
-					if (2 == tuple.length && param == tuple[0]) {
-						return tuple[1];
-					}
-				}
-			}
-
-			function getCookie(/*String*/ param, /*mixed*/ defaultVal) {
-				// find the given parameter in the cookie string
-				var reg = new RegExp(param + '=([a-zA-Z_-]*)');
-				var m = reg.exec(document.cookie);
-				if (m && m[1]) {
-					return m[1];
-				}
-
-				// otherwise return the specified default value
-				return defaultVal;
-			}
-
-			var locale = getQuery('lang') || getCookie('UMCLang');
-			if (locale) {
-				locale = locale.replace('_', '-');
-			}
-			var dojoConfig = {
-				isDebug: false,
-				locale: locale,
-				async: true,
-				callback: function() {
-					require(["ucs/startsite", "dojo/domReady!"], function(startsite) {
-						startsite.start();
-					});
-				}
-			};
-		</script>
+		<script type="text/javascript" src="js/ucs/query.js"></script>
 		<script type="text/javascript" src="js/dojo/dojo.js"></script>
 	</head>
 	<body>
@@ -69,11 +25,12 @@
 			</div>
 			<div class="container">
 				<div id="title" class="dijitHidden">
-					<h1 id="site-title" data-i18n="Welcome to Univention Corporate Server"></h1>
-					<h2 id="header-claim" data-i18n="{hostname}.{domainname}"></h2>
+					<h1 data-i18n="Welcome to Univention Corporate Server"></h1>
+					<h2 data-i18n="{hostname}.{domainname}"></h2>
 				</div>
 				<div id="category-bar"></div>
 				<div id="content" class="tab-content">
+					<!--
 					<noscript>
 						<div class="container tab-pane">
 							<ul class="items">
@@ -89,12 +46,29 @@
 							</ul>
 						</div>
 					</noscript>
+					//-->
+					<noscript>
+						<div>
+							<h1 class="no-js">Welcome to Univention Corporate Server</h1>
+						</div>
+						<div class="galleryTab">
+							<div class="warning" id="no-js">
+								<div class="wrapper">
+									<div class="icon"></div>
+									<div class="title">JavaScript required</div>
+									<div class="text">
+										A browser with JavaScript enabled is required in order to use this service.
+									</div>
+								</div>
+							</div>
+						</div>
+					</noscript>
 					<div class="galleryTab" id="service-tab">
 						<div class="warning dijitHidden" id="no-service">
 							<div class="wrapper">
 								<div class="icon"></div>
 								<div class="title" data-i18n="There are currently no user web services installed."></div>
-								<div class="text" data-i18n="Additional services may be installed in the category <a href="#admin">Administration</a> via Univention Management Console."></div>
+								<div class="text" data-i18n="Additional services may be installed in the category <a href='#admin'>Administration</a> via Univention Management Console."></div>
 							</div>
 						</div>
 					</div>
