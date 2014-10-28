@@ -1,3 +1,10 @@
+univention-apache (7.0.6-2) unstable; urgency=low
+
+  Bug #36095:
+  * added automatic resize of entry button captions
+
+ -- Drees Dormann <dormann@univention.de>  Tue, 28 Oct 2014 14:45:04 +0100
+
 univention-apache (7.0.6-1) unstable; urgency=low
 
   Bug #36095: 

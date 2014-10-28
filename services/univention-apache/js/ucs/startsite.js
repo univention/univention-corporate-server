@@ -39,6 +39,7 @@ define([
 	"dojo/dom-attr",
 	"dojo/dom-style",
 	"dojo/dom-class",
+	"dojo/dom-geometry",
 	"dojo/on",
 	"dojo/router",
 	"dojo/hash",
@@ -50,7 +51,7 @@ define([
 	"./text!/ucs-overview/entries.json",
 	"./text!/ucs-overview/languages.json",
 	"./i18n!../ucs"
-], function(ioQuery, lang, kernel, array, query, dom, domConstruct, domAttr, domStyle, domClass, on, router, hash, Menu, MenuItem, DropDownButton, DropDownMenu, CategoryButton, entries, availableLocales, _) {
+], function(ioQuery, lang, kernel, array, query, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Menu, MenuItem, DropDownButton, DropDownMenu, CategoryButton, entries, availableLocales, _) {
 	// short cut
 	var ucr = entries.ucr;
 
@@ -73,6 +74,7 @@ define([
 		_availableLocales: availableLocales,
 		_localeLang: kernel.locale.split('-')[0],
 		_localeWithUnderscore: kernel.locale.replace('-', '_'),
+		_resizeTimeout: null,
 
 		_localizeString: function(str) {
 			if (typeof str == 'string') {
@@ -99,16 +101,18 @@ define([
 			return result;
 		},
 
-		_getLinkEntry: function(props, category) {
+		_getLinkEntry: function(props, category, id) {
+			id = id || '';
 			var localizedProps = {
-				category: category
+				category: category,
+				id: id
 			};
 			array.forEach(['link', 'icon', 'label', 'description'], lang.hitch(this, function(ikey) {
 				localizedProps[ikey] = this._localizeString(props[ikey]);
 			}));
 			//console.log(localizedProps);
 			var node = domConstruct.toDom(lang.replace(
-				'<div class="umcGalleryWrapperItem col-xxs-12 col-xs-6 col-sm-6 col-md-4">\n'
+				'<div class="umcGalleryWrapperItem col-xxs-12 col-xs-6 col-sm-6 col-md-4" id="{id}">\n'
 				+ '	<a href="{link}">\n'
 				+ '		<div class="umcGalleryItem umcGalleryCategory-{category}">\n'
 				+ (localizedProps.icon ? '			<div class="umcGalleryIcon" style="background-image:url({icon})"></div>\n' : '')
@@ -151,21 +155,6 @@ define([
 				this._focusTab('admin');
 			}
 		},
-
-//		_updateActiveTab: function() {
-//			var hash = window.location.hash;
-//			if (!hash || hash == '#') {
-//				return;
-//			}
-//			var activeNode = query(lang.replace('#site-header .nav-tabs a[href={0}]', [hash]));
-//			var nodeExists = activeNode.length > 0;
-//			if (!nodeExists) {
-//				return;
-//			}
-//			var category = hash.replace('#', '');
-//			this._focusTab(category); 
-//			
-//		},
 
 		_placeCategoryButtons: function(){
 			this.adminButton = new CategoryButton({
@@ -294,6 +283,51 @@ define([
 			dom.byId("dropDownButton").appendChild(_toggleButton.domNode);
 		},
 
+		_resizeItemNames: function() {
+			this._resizeTimeout = null;
+			var defaultHeight = this._getDefaultItemNameHeight();
+			query('.umcGalleryName', this.contentNode).forEach(lang.hitch(this, function(inode) {
+				domStyle.set(inode, 'fontSize', '');
+				var iheight = domGeometry.position(inode).h;
+				var fontSize = 1.5;
+				while (iheight > defaultHeight + 0.5 && fontSize > 0.5) {
+					domStyle.set(inode, 'fontSize', fontSize + 'em');
+					iheight = domGeometry.position(inode).h;
+					fontSize *= 0.9;
+				}
+			}));
+		},
+
+		_getDefaultItemNameHeight: function() {
+			// render empty gallery item
+			var node = this._getLinkEntry({
+				name: '*',
+				description: '*'
+			}, null, '_dummyEntry');
+			domClass.add(node, 'dijitOffScreen');
+			domConstruct.place(node, 'admin-tab');
+			var height = this._getItemNameHeight('_dummyEntry');
+			domConstruct.destroy('_dummyEntry');
+			return height;
+		},
+
+		_getItemNameHeight: function(node) {
+			var nameNode = query('.umcGalleryName', node)[0];
+			return domGeometry.position(nameNode).h;
+		},
+
+		_handleResize: function() {
+			if ( this._resizeTimeout != null ) {
+				window.clearTimeout(this._resizeTimeout);
+				this._resizeTimout = null;
+			}
+			this._resizeTimeout = window.setTimeout(lang.hitch(this, '_resizeItemNames'), 200);
+		},
+
+		_implementResize: function() {
+				on(window, 'resize', lang.hitch(this, '_handleResize'));
+		},
+
 		start: function() {
 			this._placeCategoryButtons();
 			this._registerRouter();
@@ -302,6 +336,8 @@ define([
 			this._updateLinkEntries();
 			this._updateTranslations();
 			this._createLanguagesDropDown();
+			this._implementResize();
+			this._resizeItemNames();
 			if (!this._hasServiceEntries()) {
 				router.startup("admin");
 			} else {
