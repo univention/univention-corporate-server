@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.15-1) unstable; urgency=low
+
+  * Bug #36258: Added the symlinks to svn
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 28 Oct 2014 11:13:42 +0100
+
 univention-management-console-module-udm (5.1.14-1) unstable; urgency=low
 
   * Bug #36258: Added symlinks for the missing icons
