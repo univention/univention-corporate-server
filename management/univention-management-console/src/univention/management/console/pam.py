@@ -38,6 +38,7 @@ from PAM import (
 	PAM_CONV,
 	PAM_NEW_AUTHTOK_REQD,
 	PAM_ACCT_EXPIRED,
+	PAM_TEXT_INFO,
 	PAM_USER
 )
 
@@ -73,7 +74,7 @@ class PamAuth(object):
 
 	def authenticate(self, username, password):
 		answers = {
-			#PAM_PROMPT_ECHO_ON: [password],
+			PAM_TEXT_INFO: [''],
 			PAM_PROMPT_ECHO_OFF: [password],
 		}
 		conversation = self._get_conversation(answers)
@@ -102,8 +103,9 @@ class PamAuth(object):
 	def change_password(self, username, old_password, new_password):
 		prompts = []
 		answers = {
-			PAM_PROMPT_ECHO_ON: [username],
-			PAM_PROMPT_ECHO_OFF: [old_password, new_password, new_password],  # old, new, retype
+			PAM_PROMPT_ECHO_ON: [username],  # 'login:'
+			PAM_TEXT_INFO: [''],  # 'Your password will expire at Thu Jan  1 01:00:00 1970\n'
+			PAM_PROMPT_ECHO_OFF: [old_password, new_password, new_password],  # 'Current Kerberos password: ', 'New password: ', 'Retype new password: '
 		}
 		conversation = self._get_conversation(answers, prompts)
 
@@ -124,9 +126,17 @@ class PamAuth(object):
 
 	def _get_conversation(self, answers, prompts=None):
 		def conversation(auth, query_list, data):
-			if prompts:
-				prompts.extend([query for query, qt in query_list])
-			return [(answers.get(qt, ['']).pop(0), 0) for query, qt in query_list]
+			try:
+				if prompts:
+					prompts.extend([query for query, qt in query_list])
+				answer = [(answers.get(qt, ['']).pop(0), 0) for query, qt in query_list]
+			except:
+				#import traceback
+				#AUTH.error('## query_list=%r, auth=%r, data=%r' % (query_list, auth, data))
+				#AUTH.error(traceback.format_exc())
+				raise
+			#AUTH.error('### query_list=%r, auth=%r, data=%r, answer=%r' % (query_list, auth, data, answer))
+			return answer
 		return conversation
 
 	def _parse_error_message_from(self, pam_err, prompts):

@@ -1,3 +1,9 @@
+univention-management-console (7.1.56-1) unstable; urgency=medium
+
+  * Bug #35985: fix changing of expired password
+
+ -- Florian Best <best@univention.de>  Tue, 28 Oct 2014 13:08:45 +0100
+
 univention-management-console (7.1.55-2) unstable; urgency=low
 
   * Bug #35396: Fix some annoying error messages when reloading the server
