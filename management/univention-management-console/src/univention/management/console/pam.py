@@ -166,6 +166,5 @@ class PamAuth(object):
 		if not prompts:
 			important_prompt = str(pam_err[0])
 		else:
-			# FIXME / TODO: check if this still can occur in UCS4?!
 			important_prompt = prompts[-1]  # last prompt is some kind of internal error message
 		return self.known_errors.get(important_prompt, important_prompt)
