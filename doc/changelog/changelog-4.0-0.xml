@@ -595,6 +595,10 @@
 			<listitem><simpara>
 				Support for <application>Xen</application> was removed from &ucsUVMM; (<ulink url="&ucsbug;35656">Bug 35656</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				Domain controllers and member servers have now the permission to create LDAP
+				objects for cloud connections (<ulink url="&ucsbug;36323">Bug 36323</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
