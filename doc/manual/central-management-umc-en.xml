@@ -51,11 +51,10 @@
 		The following browsers are supported.
 		</para>
 		<itemizedlist>
-			<listitem><simpara>Chrome as of version 14</simpara></listitem>
-			<listitem><simpara>Firefox as of version 3.6 (version 10 or above is recommended due to performance reasons)</simpara></listitem>
-			<listitem><simpara>Internet Explorer as of version 8 (version 9 or above is recommended due to performance reasons)</simpara></listitem>
-			<listitem><simpara>Safari (on the iPad 2, iOS version 6.1.2)</simpara></listitem>
-			<listitem><simpara>Android browser (version 4.1 or above)</simpara></listitem>
+			<listitem><simpara>Chrome as of version 33</simpara></listitem>
+			<listitem><simpara>Firefox as of version 24</simpara></listitem>
+			<listitem><simpara>Internet Explorer as of version 9</simpara></listitem>
+			<listitem><simpara>Safari and Safari Mobile as of version 7</simpara></listitem>
 		</itemizedlist>
 		<para>
 			Users with older browsers may experience display problems.
