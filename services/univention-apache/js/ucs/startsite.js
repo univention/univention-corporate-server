@@ -28,7 +28,7 @@
  */
 /*global define require console window */
 
-var _l10nResources = ['../ucs'];
+var _l10nResources = ['ucs'];
 if ('l10nResources' in window) {
 	_l10nResources = l10nResources.concat(_l10nResources);
 }
@@ -194,7 +194,6 @@ define([
 			array.forEach(['link', 'icon', 'label', 'description'], lang.hitch(this, function(ikey) {
 				localizedProps[ikey] = this._localizeString(props[ikey]);
 			}));
-			//console.log(localizedProps);
 			var node = domConstruct.toDom(lang.replace(
 				'<div class="umcGalleryWrapperItem col-xxs-12 col-xs-6 col-sm-6 col-md-4" id="{id}">\n'
 				+ '	<a href="{link}">\n'

@@ -40,7 +40,7 @@ jsFiles:=$(shell find umc -name "*.js")
 
 build: l10n $(buildDir) i18n
 
-build-dev: $(buildCssDir) $(buildBootstrap) i18n
+build-dev: l10n $(buildCssDir) $(buildBootstrap) i18n
 	mkdir -p build $(buildJsDir)
 	cp -r www build
 	# symlink UCS javascript code

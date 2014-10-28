@@ -1,3 +1,9 @@
+univention-apache (7.0.8-1) unstable; urgency=medium
+
+  * Bug #36095: adjust handling of translation resources
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Oct 2014 16:53:15 +0100
+
 univention-apache (7.0.7-1) unstable; urgency=low
 
   Bug #36095:
