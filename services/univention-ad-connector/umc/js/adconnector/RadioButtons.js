@@ -66,7 +66,8 @@ define([
 			array.forEach(this.staticValues, function(ientry, i) {
 				var radioButton = new RadioButton({
 					name: this.name,
-					value: ientry.id
+					value: ientry.id,
+					labelPosition: 'right'
 				});
 				this._radioButtons[i] = radioButton;
 				var labelPane = new LabelPane({
