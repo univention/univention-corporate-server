@@ -34,12 +34,13 @@ buildDir:=$(CURDIR)/build
 buildJsDir:=$(buildDir)/www/ucs-overview/js
 buildCssDir:=$(buildDir)/www/ucs-overview/css
 buildBootstrap:=$(buildCssDir)/bootstrap.css
+jsFiles:=$(shell find umc -name "*.js")
 
 .PHONY: build build-dev
 
-build: l10n $(buildDir)
+build: l10n $(buildDir) i18n
 
-build-dev: $(buildCssDir) $(buildBootstrap)
+build-dev: $(buildCssDir) $(buildBootstrap) i18n
 	mkdir -p build $(buildJsDir)
 	cp -r www build
 	# symlink UCS javascript code
@@ -54,7 +55,7 @@ build-dev: $(buildCssDir) $(buildBootstrap)
 	done
 
 i18n:
-	/usr/bin/dh-umc-translate -p univention-management-console-frontend -l en -l de -o umc $(jsFiles)
+	/usr/bin/dh-umc-translate -p univention-apache -l de -o js/ucs $(jsFiles)
 
 l10n: js/ucs/de.json
 

@@ -74,12 +74,13 @@ define([
 		_localeLang: kernel.locale.split('-')[0],
 		_localeWithUnderscore: kernel.locale.replace('-', '_'),
 
-
+		//TODO
 		// matching data-i18n attribute in HTML code
+		//_('fefwefwef %(foo)s: %(b)s', {foo: 'sdsdfg', b: 'sdfgsdfg'})
 		_translations: {
 			header: _('UCS - {hostname}.{domainname}', ucr),
 			claimHead: _('Welcome to Univention Corporate Server'),
-			claim: _('{hostname}.{domainname}', ucr),
+			claim: _('%(hostname)s.%(domainname)s', ucr),
 			services: _('Installed web services'),
 			admin: _('Administration'),
 			noServiceTitle: _('There are currently no user web services installed.'),
@@ -278,12 +279,12 @@ define([
 			this._updateAvailableLocales();
 		},
 
+		//TODO
 		_updateTranslations: function() {
 			query('*[data-i18n]').forEach(lang.hitch(this, function(inode) {
 				var value = domAttr.get(inode, 'data-i18n');
-				if (value in this._translations) {
-					domAttr.set(inode, 'innerHTML', this._translations[value]);
-				}
+				var translation = _(value, ucr);
+				domAttr.set(inode, 'innerHTML', translation);
 			}));
 			query('a[href]').forEach(lang.hitch(this, function(inode) {
 				var href = domAttr.get(inode, 'href');

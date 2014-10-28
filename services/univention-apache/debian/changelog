@@ -1,3 +1,10 @@
+univention-apache (7.0.5-2) unstable; urgency=low
+
+  Bug #36095:
+  * replaced tags with actual english text in index.html
+
+ -- Drees Dormann <dormann@univention.de>  Tue, 28 Oct 2014 08:38:36 +0100
+
 univention-apache (7.0.5-1) unstable; urgency=medium
 
   Bug #36095:

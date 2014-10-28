@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-10-26 11:32+0200\n"
+"POT-Creation-Date: 2014-10-27 16:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: www/ucs-overview/js/startsite.js:76
+#: startsite.js:88
 msgid ""
 "Additional services may be installed in the category <a href=\"#admin"
 "\">Administration</a> via Univention Management Console."
@@ -20,82 +20,86 @@ msgstr ""
 "Zusätzliche Dienste können in der Rubrik <a href=\"#admin\">Administration</"
 "a> über Univention Management Console installiert werden."
 
-#: www/ucs-overview/js/startsite.js:74
+#: startsite.js:86
 msgid "Administration"
 msgstr "Administration"
 
-#: www/ucs-overview/js/startsite.js:81
+#: startsite.js:93
 msgid "App Catalogue"
 msgstr "App Katalog"
 
-#: www/ucs-overview/js/startsite.js:82
+#: startsite.js:94
 msgid "Further Products"
 msgstr "Ergänzende Produkte"
 
-#: www/ucs-overview/js/startsite.js:73
+#: startsite.js:85
 msgid "Installed web services"
 msgstr "Installierte Web-Dienste"
 
-#: www/ucs-overview/js/startsite.js:80
+#: startsite.js:319
+msgid "Language"
+msgstr "Sprache"
+
+#: startsite.js:92
 msgid "Manual for Univention Corporate Server"
 msgstr "Handbuch zu Univention Corporate Server"
 
-#: www/ucs-overview/js/startsite.js:75
+#: startsite.js:87
 msgid "There are currently no user web services installed."
 msgstr "Es sind derzeit keine Web-Dienste für Benutzer installiert."
 
-#: www/ucs-overview/js/startsite.js:71
+#: startsite.js:82
 msgid "UCS - {hostname}.{domainname}"
-msgstr ""
+msgstr "UCS - {hostname}.{domainname}"
 
-#: www/ucs-overview/js/startsite.js:78
+#: startsite.js:90
 msgid "Univention Forum"
-msgstr ""
+msgstr "Univention Forum"
 
-#: www/ucs-overview/js/startsite.js:79
+#: startsite.js:91
 msgid "Univention Support Database"
 msgstr "Univention Support Datenbank"
 
-#: www/ucs-overview/js/startsite.js:89
+#: startsite.js:95
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
-#: www/ucs-overview/js/startsite.js:83
+#: startsite.js:89
 msgid "Univention Wiki"
-msgstr ""
+msgstr "Univention Wiki"
 
-#: www/ucs-overview/js/startsite.js:77
+#: startsite.js:83
 msgid "Welcome to Univention Corporate Server"
 msgstr "Willkommen auf Univention Corporate Server"
 
-#: www/ucs-overview/js/startsite.js:78
-msgid "<b>{hostname}.{domainname}</b>"
-msgstr ""
-
-#: www/ucs-overview/js/startsite.js:93
+#: startsite.js:99
 msgid "http://docs.univention.de/en.html"
 msgstr "http://docs.univention.de/de.html"
 
-#: www/ucs-overview/js/startsite.js:85
+#: startsite.js:97
 msgid "http://forum.univention.de/"
-msgstr ""
+msgstr "http://forum.univention.de/"
 
-#: www/ucs-overview/js/startsite.js:86
+#: startsite.js:98
 msgid "http://sdb.univention.de/"
-msgstr ""
+msgstr "http://sdb.univention.de/"
 
-#: www/ucs-overview/js/startsite.js:84
+#: startsite.js:96
 msgid "http://wiki.univention.de/index.php?title=Hauptseite"
 msgstr "http://wiki.univention.de/index.php?title=Main_Page"
 
-#: www/ucs-overview/js/startsite.js:90
+#: startsite.js:100
+msgid "http://www.univention.com/products/ucs/univention-app-center/"
+msgstr "http://www.univention.de/produkte/ucs/univention-app-center/"
+
+#: startsite.js:102
 msgid "http://www.univention.de/en/"
 msgstr "http://www.univention.de/"
 
-#: www/ucs-overview/js/startsite.js:89
+#: startsite.js:101
 msgid "http://www.univention.de/en/products/"
 msgstr "http://www.univention.de/produkte/"
 
-#: www/ucs-overview/js/startsite.js:88
-msgid "http://www.univention.com/products/ucs/univention-app-center/"
-msgstr "http://www.univention.de/produkte/ucs/univention-app-center/"
+#: startsite.js:84
+msgid "{hostname}.{domainname}"
+msgstr "{hostname}.{domainname}"
