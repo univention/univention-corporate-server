@@ -903,6 +903,7 @@ define([
 		registerTabSwitchHandling: function() {
 			// register events for closing and focusing
 			this._tabContainer.watch('selectedChildWidget', lang.hitch(this, function(name, oldModule, newModule) {
+				this._lastSelectedChild = oldModule;
 				if (!newModule.moduleID) {
 					// this is the overview page, not a module
 					topic.publish('/umc/actions', 'overview');
@@ -921,7 +922,11 @@ define([
 			aspect.before(this._tabContainer, 'removeChild', lang.hitch(this, function(module) {
 				topic.publish('/umc/actions', module.moduleID, module.moduleFlavor, 'close');
 				if (module == this._tabContainer.get('selectedChildWidget')) {
-					this.switchToOverview();
+					if (array.indexOf(this._tabContainer.getChildren(), this._lastSelectedChild) !== -1) {
+						this._tabContainer.selectChild(this._lastSelectedChild);
+					} else {
+						this.switchToOverview();
+					}
 				}
 			}));
 		},
