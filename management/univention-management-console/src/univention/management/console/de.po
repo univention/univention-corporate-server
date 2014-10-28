@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-28 22:51+0100\n"
+"POT-Creation-Date: 2014-10-28 23:51+0100\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,6 +56,10 @@ msgstr "Kann nicht in einen Wahrheitswert umgewandelt werden"
 #: univention/management/console/modules/sanitizers.py:372
 msgid "Cannot be converted to a number"
 msgstr "Kann nicht in eine Zahl umgewandelt werden"
+
+#: univention/management/console/pam.py:163
+msgid "Changing password failed."
+msgstr "Passwort ändern fehlgeschlagen."
 
 #: univention/management/console/protocol/definitions.py:129
 msgid "Connection to module process failed"
@@ -238,9 +242,12 @@ msgstr "Das Konto ist abgelaufen und kann nicht mehr verwendet werden"
 
 #: univention/management/console/protocol/definitions.py:120
 #: univention/management/console/pam.py:61
-#: univention/management/console/pam.py:208
 msgid "The authentication has failed"
 msgstr "Authentisierung ist fehlgeschlagen"
+
+#: univention/management/console/pam.py:208
+msgid "The authentication has failed, please login again"
+msgstr "Authentisierung ist fehlgeschlagen. Bitte melden Sie sich erneut an"
 
 #: univention/management/console/protocol/message.py:237
 #, python-format

@@ -83,8 +83,8 @@ class PasswordChangeFailed(AuthenticationError):
 
 class PamAuth(object):
 	known_errors = [
-		([': Es ist zu kurz', ': Es ist VIEL zu kurz', ': it is WAY too short', ': Password is too short', 'Password too short, password must be at least 8 characters long.'], 'The password is too short'),
-		([': Es ist zu einfach/systematisch', ': it is too simplistic/systematic', ': Password does not meet complexity requirements'], 'The password is too simple'),
+		([': Es ist zu kurz', ': Es ist VIEL zu kurz', ': it is WAY too short', ': Password is too short', 'BAD PASSWORD: it is WAY too short', ': Password too short, password must be at least 8 characters long.'], 'The password is too short'),
+		([': Es ist zu einfach/systematisch', ': it is too simplistic/systematic', 'BAD PASSWORD: is too simple', ': Password does not meet complexity requirements'], 'The password is too simple'),
 		([': is a palindrome'], 'The password is a palindrome'),
 		([': Es basiert auf einem Wörterbucheintrag', ': it is based on a dictionary word'], 'The password is based on a dictionary word'),
 		([': Password already used'], 'The password was already used'),
@@ -160,7 +160,7 @@ class PamAuth(object):
 		except PAMError as pam_err:
 			AUTH.warn('Changing password failed (%s). Prompts: %r' % (pam_err, prompts))
 			message = self._parse_error_message_from(pam_err, prompts)
-			raise PasswordChangeFailed(message)
+			raise PasswordChangeFailed('%s %s' % (self._('Changing password failed.'), message))
 
 	def start(self, conversation, username):
 		pam = PAM()
@@ -205,6 +205,6 @@ class PamAuth(object):
 		errors = {
 			PAM_NEW_AUTHTOK_REQD: self._('The password has expired and must be renewed'),
 			PAM_ACCT_EXPIRED: self._('The account is expired and can not be used anymore'),
-			PAM_AUTH_ERR: self._('The authentication has failed'),
+			PAM_AUTH_ERR: self._('The authentication has failed, please login again'),
 		}
 		return errors.get(pam_err[1], self._(str(pam_err[0])))

@@ -118,10 +118,13 @@ define([
 			})));
 		},
 
-		updateForm: function(passwordExpired, statusMessage, detail) {
+		updateForm: function(passwordExpired, message) {
 			this._passwordExpired = passwordExpired;
 			this._updateFormDeferred.resolve(this._passwordExpired);
-			this.set('LoginMessage', localisedMessage);
+			if (message.slice(-1) !== '.') {
+				message += '.';
+			}
+			this.set('LoginMessage', message);
 		},
 
 		_setLoginMessageAttr: function(message) {

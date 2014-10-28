@@ -309,7 +309,7 @@ define([
 							if (411 == result.status) {
 								// login failed... continue to poll after successful login
 								dialog.login().then(lang.hitch(this, 'sendRequest'));
-								dialog._loginDialog.updateForm(false, tools._statusMessages[result.status], null);
+								dialog._loginDialog.updateForm(false, tools._statusMessages[result.status]);
 								return;
 							}
 						}
@@ -647,14 +647,14 @@ define([
 				if (411 == status || 415 == status) {
 					// authentification failed, show a notification
 					dialog.login();
-					dialog._loginDialog.updateForm(415 === status, statusMessage, message);
+					dialog._loginDialog.updateForm(415 === status, message);
 				} else if(401 == status) {
 					// session has expired
 					topic.publish('/umc/actions', 'session', 'expired');
 					dialog.login();
 					if (tools.status('setupGui')) {
 						// do not show on intial start
-						dialog._loginDialog.updateForm(false, statusMessage, null);
+						dialog._loginDialog.updateForm(false, statusMessage);
 					}
 				} else if (409 == status && handleErrors && handleErrors.onValidationError) {
 					// validation error

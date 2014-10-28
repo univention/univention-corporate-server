@@ -1087,6 +1087,7 @@ define([
 			tools.forEachAsync(modules, lang.hitch(this, function(imod) {
 				loadedCount.push(this._tryLoadingModule(imod));
 			})).then(lang.hitch(this, function() {
+				// FIXME: declare() of modules is not called yet
 				all(loadedCount).always(lang.hitch(this, 'onModulesLoaded'));
 			}));
 		},
