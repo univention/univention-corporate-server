@@ -1256,7 +1256,10 @@ class Application(object):
 	def get_ldap_object(self, ldap_id=None, or_create=False):
 		if ldap_id is None:
 			ldap_id = self.ldap_id
-		lo, pos = admin_uldap.getMachineConnection()
+		try:
+			lo, pos = admin_uldap.getMachineConnection()
+		except IOError: # /etc/machine.secret => No LDAP set up yet (e.g. system-setup)
+			return None
 		co = None #univention.admin.config.config(ucr.get('ldap/server/name'))
 		try:
 			return ApplicationLDAPObject(ldap_id, lo, co)
