@@ -1,3 +1,10 @@
+univention-management-console (6.0.24-24) unstable; urgency=medium
+
+  * Bug #36319: Replace workaround by propper conversation of pwchange
+    triggered during pam.authenticate().
+
+ -- Arvid Requate <requate@univention.de>  Tue, 28 Oct 2014 13:51:49 +0100
+
 univention-management-console (6.0.24-23) unstable; urgency=medium
 
   * Bug #36319: Improved exception handling

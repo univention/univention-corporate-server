@@ -172,6 +172,8 @@ class PAM_Auth( Auth ):
 			AUTH.info( 'PAM: trying to authenticate %s' % self._username )
 			self._pam.authenticate()
 		except PAM.error, e:
+			if e[1] != PAM.PAM_AUTH_ERR:
+				return AuthenticationResult(False)
 			try:
 				self._pam.acct_mgmt()
 			except PAM.error as e:
@@ -182,10 +184,11 @@ class PAM_Auth( Auth ):
 						new_pam.start( 'univention-management-console' )
 						new_pam.set_item( PAM.PAM_CONV, self._talk_to_pam( {
 							PAM.PAM_PROMPT_ECHO_ON : self._username,
+							PAM.PAM_TEXT_INFO : '',
 							PAM.PAM_PROMPT_ECHO_OFF : [self._password, new_password, new_password], # old, new, retype
 						}, save_prompts_to=prompts ) )
 						try:
-							new_pam.chauthtok()
+							new_pam.authenticate()
 						except PAM.error, e:
 							AUTH.warn('Change password failed (%s). Prompts: %r' % (e, prompts))
 							# okay, check prompts, maybe they have a hint why it failed?
@@ -207,16 +210,26 @@ class PAM_Auth( Auth ):
 							else:
 								message = important_prompt # best guess: just show the prompt
 							return AuthenticationResult(False, error_message=message)
+
 						AUTH.info('Password changed successfully for %s' % self._username)
+
+						try:
+							self._pam.acct_mgmt()
+						## except PAM.error as e: ## or better:
+						except BaseException, e:
+							AUTH.error( "PAM: acct_mgmt error: %s" % str( e ) )
+							return AuthenticationResult(False)
+
 						self.signal_emit('password_changed', new_password)
 						return AuthenticationResult(True)
 					else:
 						AUTH.error( "PAM: password expired" )
 						self._may_change_password = True
 						return AuthenticationResult(False, password_valid=True, password_expired=True)
-				AUTH.error( "PAM: authentication error: %s" % str( e ) )
+
+				AUTH.error( "PAM: error in acct_mgmt check for expired password: %s" % str( e ) )
 				return AuthenticationResult(False)
-			AUTH.error( "PAM: authentication error: %s" % str( e ) )
+
 			return AuthenticationResult(False)
 		except BaseException, e: # internal error
 			AUTH.warn( "PAM: global error: %s" % str( e ) )
@@ -224,9 +237,9 @@ class PAM_Auth( Auth ):
 		else:
 			try:
 				self._pam.acct_mgmt()
-			## except PAM.error as e:  ## or better:
+			## except PAM.error as e: ## or better:
 			except BaseException, e:
-				AUTH.warn( "PAM: acct_mgmt error: %s" % str( e ) )
+				AUTH.error( "PAM: acct_mgmt error: %s" % str( e ) )
 				return AuthenticationResult(False)
 
 		AUTH.info( 'Authentication for %s was successful' % self._username )
