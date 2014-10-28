@@ -35,34 +35,55 @@ import traceback
 from PAM import (
 	pam as PAM,
 	error as PAMError,
+	PAM_CONV,
+	PAM_USER,
 	PAM_PROMPT_ECHO_OFF,
 	PAM_PROMPT_ECHO_ON,
-	PAM_CONV,
+	PAM_ERROR_MSG,
+	PAM_TEXT_INFO,
 	PAM_NEW_AUTHTOK_REQD,
 	PAM_ACCT_EXPIRED,
-	PAM_TEXT_INFO,
-	PAM_ERROR_MSG,
-	PAM_USER
+	PAM_AUTH_ERR,
 )
 
 from univention.management.console.log import AUTH
 
+from univention.lib.i18n import Translation, I18N_Error
+_ = Translation('univention.management.console').translate
 
-class AuthenticationFailed(Exception):
+_('The password is too short')
+_('The password is too simple')
+_('The password is a palindrome')
+_('The password is based on a dictionary word')
+_('The password was already used')
+_('The password does not contain enough different characters')
+_('The password has expired and must be renewed')
+_('The authentication has failed')
+
+
+class AuthenticationError(Exception):  # abstract base class
 	pass
 
 
-class PasswordExpired(Exception):
+class AuthenticationFailed(AuthenticationError):
 	pass
 
 
-class PasswordChangeFailed(Exception):
+class AccountExpired(AuthenticationError):
+	pass
+
+
+class PasswordExpired(AuthenticationError):
+	pass
+
+
+class PasswordChangeFailed(AuthenticationError):
 	pass
 
 
 class PamAuth(object):
 	known_errors = [
-		([': Es ist zu kurz', ': Es ist VIEL zu kurz', ': it is WAY too short', ': Password is too short'], 'The password is too short'),
+		([': Es ist zu kurz', ': Es ist VIEL zu kurz', ': it is WAY too short', ': Password is too short', 'Password too short, password must be at least 8 characters long.'], 'The password is too short'),
 		([': Es ist zu einfach/systematisch', ': it is too simplistic/systematic', ': Password does not meet complexity requirements'], 'The password is too simple'),
 		([': is a palindrome'], 'The password is a palindrome'),
 		([': Es basiert auf einem Wörterbucheintrag', ': it is based on a dictionary word'], 'The password is based on a dictionary word'),
@@ -75,7 +96,13 @@ class PamAuth(object):
 		for response_message in possible_responses
 	)
 
-	def __init__(self):
+	def __init__(self, locale=None):
+		i18n = Translation('univention-management-console')
+		try:
+			i18n.set_language(locale or 'C')
+		except (I18N_Error, AttributeError, TypeError):
+			i18n.set_language('C')
+		self._ = i18n.translate
 		self.__workaround_pw_expired = False
 
 	def authenticate(self, username, password):
@@ -95,13 +122,13 @@ class PamAuth(object):
 
 		try:
 			pam.authenticate()
-		except PAMError as autherr:
-			AUTH.error("PAM: authentication error: %s" % (autherr,))
+		except PAMError as pam_err:
+			AUTH.error("PAM: authentication error: %s" % (pam_err,))
 
 			if self.__workaround_pw_expired:
 				self._validate_account(pam)
 
-			raise AuthenticationFailed(str(autherr[0]))
+			raise AuthenticationFailed(self.error_message(pam_err))
 		self.__workaround_pw_expired = False
 
 		self._validate_account(pam)
@@ -111,9 +138,9 @@ class PamAuth(object):
 			pam.acct_mgmt()
 		except PAMError as pam_err:
 			if pam_err[1] == PAM_NEW_AUTHTOK_REQD:  # error: ('Authentication token is no longer valid; new one required', 12)
-				raise PasswordExpired(str(pam_err[0]))
+				raise PasswordExpired(self.error_message(pam_err))
 			if pam_err[1] == PAM_ACCT_EXPIRED:  # error: ('User account has expired', 13)
-				raise AuthenticationFailed(str(pam_err[0]))
+				raise AccountExpired(self.error_message(pam_err))
 			raise
 
 	def change_password(self, username, old_password, new_password):
@@ -149,22 +176,35 @@ class PamAuth(object):
 					self.__workaround_pw_expired = True
 				if prompts is not None:
 					prompts.extend([query for query, qt in query_list])
-					#AUTH.error('### prompts = %r' % (prompts,))
 				answer = [(answers.get(qt, ['']).pop(0), 0) for query, qt in query_list]
 			except:
-				#AUTH.error('## query_list=%r, auth=%r, data=%r' % (query_list, auth, data))
+				#AUTH.error('## query_list=%r, auth=%r, data=%r, prompts=%r' % (query_list, auth, data, prompts))
 				AUTH.error(traceback.format_exc())
 				raise
-			AUTH.error('### query_list=%r, auth=%r, data=%r, answer=%r' % (query_list, auth, data, answer))
+			#AUTH.error('### query_list=%r, auth=%r, data=%r, answer=%r, prompts=%r' % (query_list, auth, data, answer, prompts))
 			return answer
 		return conversation
 
 	def _parse_error_message_from(self, pam_err, prompts):
 		# okay, check prompts, maybe they have a hint why it failed?
+		# most often the last prompt contains a error message
 		# prompts are localised, i.e. if the operating system uses German, the prompts are German!
 		# try to be exhaustive. otherwise the errors will not be presented to the user.
 		if not prompts:
-			important_prompt = str(pam_err[0])
-		else:
-			important_prompt = prompts[-1]  # last prompt is some kind of internal error message
-		return self.known_errors.get(important_prompt, important_prompt)
+			prompts = [str(pam_err[0])]
+		for prompt in prompts[::-1]:
+			if prompt in self.known_errors:
+				return self._(self.known_errors[prompt])
+		return '%s. %s: %s' % (
+			self._('The reason could not be determined'),
+			self._('In case it helps, the raw error message will be displayed'),
+			self._(prompts[-1]).strip(': ')
+		)
+
+	def error_message(self, pam_err):
+		errors = {
+			PAM_NEW_AUTHTOK_REQD: self._('The password has expired and must be renewed'),
+			PAM_ACCT_EXPIRED: self._('The account is expired and can not be used anymore'),
+			PAM_AUTH_ERR: self._('The authentication has failed'),
+		}
+		return errors.get(pam_err[1], self._(str(pam_err[0])))

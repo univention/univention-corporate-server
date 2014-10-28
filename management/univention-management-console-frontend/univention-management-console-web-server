@@ -154,7 +154,7 @@ class SessionClient(object):
 		self._auth_response = umcp.Response( request )
 		self._auth_response.body['sessionid'] = request.body.get('sessionid','')
 		self._auth_response_queue = response_queue
-		self.client.authenticate( request.body[ 'username' ], request.body[ 'password' ], request.body[ 'new_password' ] )
+		self.client.authenticate(request.body['username'], request.body['password'], request.body['new_password'], request.body['locale'])
 
 	def _response(self, response):
 		"""Queue response from UMC server."""
@@ -708,6 +708,7 @@ class CPAuth(CPgeneric):
 		req.body[ 'username' ] = json[ 'options' ].get('username','')
 		req.body[ 'password' ] = json[ 'options' ].get('password','')
 		req.body[ 'new_password' ] = json[ 'options' ].get('new_password')
+		req.body[ 'locale' ] = (cherrypy.request.headers.values('Accept-Language') or ['C'])[0].replace('-', '_')
 
 		# create new response queue
 		response_queue = Queue.Queue()

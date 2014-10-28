@@ -37,6 +37,7 @@ and the communication with the module processes"""
 import base64
 import ldap
 import os
+import sys
 import time
 import json
 import traceback
@@ -122,10 +123,10 @@ class State(signals.Provider):
 		self.__credentials = result.credentials
 		self.signal_emit('authenticated', result, self)
 
-	def authenticate(self, username, password, new_password=None):
+	def authenticate(self, username, password, new_password=None, locale=None):
 		"""Initiates an authentication process"""
 		self.username = username
-		self.__auth.authenticate(username, password, new_password)
+		self.__auth.authenticate(username, password, new_password, locale)
 
 	def credentials(self):
 		"""Returns the credentials"""
@@ -599,7 +600,7 @@ class Processor(signals.Provider):
 		new_password = request.options['password']['new_password']
 
 		CORE.info('Changing password of user %r' % (username,))
-		pam = PamAuth()
+		pam = PamAuth(str(self.i18n.locale))
 		change_password = notifier.Callback(pam.change_password, username, password, new_password)
 		password_changed = notifier.Callback(self._password_changed, request, new_password)
 		thread = threads.Simple('change_password', change_password, password_changed)

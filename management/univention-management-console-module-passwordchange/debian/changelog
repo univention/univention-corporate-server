@@ -1,3 +1,9 @@
+univention-management-console-module-passwordchange (0.1.0-2) unstable; urgency=medium
+
+  * Bug #35847: add  "passwordchange-all" to "default-umc-users"
+
+ -- Florian Best <best@univention.de>  Tue, 28 Oct 2014 23:03:56 +0100
+
 univention-management-console-module-passwordchange (0.1.0-1) unstable; urgency=low
 
   * Bug #35847: Initial release

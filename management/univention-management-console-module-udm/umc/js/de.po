@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-28 17:22+0100\n"
+"POT-Creation-Date: 2014-10-28 21:12+0100\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,8 +57,8 @@ msgstr ""
 "%s Teil der Active Directory-Domäne. UCS kann nur bestimmte Attribute "
 "verändern."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:355
-#: umc/js/udm/wizards/FirstPageWizard.js:383
+#: umc/js/udm/wizards/FirstPageWizard.js:359
+#: umc/js/udm/wizards/FirstPageWizard.js:389
 #, python-format
 msgid "%s template"
 msgstr "%s-Vorlage"
@@ -122,7 +122,7 @@ msgstr ""
 "Gewährleistungs-, Support- und Pflegeansprüche, die sich aus unseren "
 "kommerziellen Softwareverträgen ergeben, nicht gelten.</p>"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:372
+#: umc/js/udm/wizards/FirstPageWizard.js:377
 #, python-format
 msgid ""
 "<p>The LDAP object will be created in the container:</p><p><i>%s</i></p>"
@@ -130,8 +130,8 @@ msgstr ""
 "<p>Das LDAP-Objekt wird in dem folgenden Container angelegt:</p><p><i>%s</"
 "i></p>"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:356
-#: umc/js/udm/wizards/FirstPageWizard.js:384
+#: umc/js/udm/wizards/FirstPageWizard.js:360
+#: umc/js/udm/wizards/FirstPageWizard.js:390
 msgid "A template defines rules for default object properties."
 msgstr "Eine Vorlage definiert Regeln für Vorgabewerte eines neuen Objektes."
 
@@ -217,7 +217,7 @@ msgstr "Zurück zur Suche"
 msgid "Boot"
 msgstr "Boot"
 
-#: umc/js/udm/LicenseImportDialog.js:126 umc/js/udm/CreateReportDialog.js:114
+#: umc/js/udm/CreateReportDialog.js:114 umc/js/udm/LicenseImportDialog.js:126
 #: umc/js/udm/DetailPage.js:1012 umc/js/udm/startup.js:112 umc/js/udm.js:1107
 #: umc/js/udm.js:1398
 msgid "Cancel"
@@ -235,8 +235,8 @@ msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 msgid "Clients"
 msgstr "Clients"
 
-#: umc/js/udm/LicenseImportDialog.js:99 umc/js/udm/CreateReportDialog.js:165
-#: umc/js/udm/LicenseDialog.js:73
+#: umc/js/udm/CreateReportDialog.js:165 umc/js/udm/LicenseDialog.js:73
+#: umc/js/udm/LicenseImportDialog.js:99
 msgid "Close"
 msgstr "Schließen"
 
@@ -567,7 +567,7 @@ msgstr ""
 "Neu erzeugte LDAP-Objekte dieses Typs werden nur auf UCS-Systemen und nicht "
 "in der Active Directory Domäne vorhanden sein."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:439
+#: umc/js/udm/wizards/FirstPageWizard.js:446
 msgid "Next"
 msgstr "Weiter"
 
@@ -584,8 +584,8 @@ msgstr "Kein LDAP-Position wurde ausgewählt."
 msgid "No changes have been made."
 msgstr "Keine Änderungen wurden vorgenommen."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:350
-#: umc/js/udm/wizards/FirstPageWizard.js:390
+#: umc/js/udm/wizards/FirstPageWizard.js:354
+#: umc/js/udm/wizards/FirstPageWizard.js:396
 msgid "None"
 msgstr "Kein"
 
@@ -792,7 +792,7 @@ msgstr "Vereinfachte Optionen"
 msgid "Start of authority"
 msgstr "Start of Authority Eintrag"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:312 umc/js/udm.js:618
+#: umc/js/udm/wizards/FirstPageWizard.js:313 umc/js/udm.js:618
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
@@ -836,13 +836,13 @@ msgstr "Der Container, in dem das LDAP-Objekt erzeugt wird."
 msgid "The container in which the query is executed."
 msgstr "Der Container, in dem die Suche ausgeführt wird."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:313
+#: umc/js/udm/wizards/FirstPageWizard.js:314
 msgid "The corresponding superordinate for the LDAP object."
 msgstr "Das dem neuen LDAP-Objekt zugewiesene übergeordnete Objekt."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:324
-#: umc/js/udm/wizards/FirstPageWizard.js:341
-#: umc/js/udm/wizards/FirstPageWizard.js:377
+#: umc/js/udm/wizards/FirstPageWizard.js:326
+#: umc/js/udm/wizards/FirstPageWizard.js:344
+#: umc/js/udm/wizards/FirstPageWizard.js:382
 msgid "The exact object type of the new LDAP object."
 msgstr "Der genaue Objekttyp des neuen LDAP-Objekts."
 
@@ -909,9 +909,9 @@ msgstr "Der Typ des LDAP-Objekts."
 msgid "This UCS system is part of an Active Directory domain"
 msgstr "Dieses UCS-System ist Teil einer Active Directory-Domäne"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:322
-#: umc/js/udm/wizards/FirstPageWizard.js:340
-#: umc/js/udm/wizards/FirstPageWizard.js:376 umc/js/udm.js:655
+#: umc/js/udm/wizards/FirstPageWizard.js:324
+#: umc/js/udm/wizards/FirstPageWizard.js:343
+#: umc/js/udm/wizards/FirstPageWizard.js:381 umc/js/udm.js:655
 #: umc/js/udm.js:1266 umc/js/udm.js:1279
 msgid "Type"
 msgstr "Typ"
@@ -1015,6 +1015,7 @@ msgid "groups"
 msgstr "Gruppen"
 
 #: umc/js/udm/ComboBox.js:336
+#, python-brace-format
 msgid "in {size} objects"
 msgstr "insgesamt {size} Objekte"
 

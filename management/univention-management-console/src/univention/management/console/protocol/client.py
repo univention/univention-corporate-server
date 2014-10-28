@@ -347,12 +347,14 @@ class Client(signals.Provider, Translation):
 		else:
 			self.signal_emit('error', UnknownRequestError())
 
-	def authenticate(self, username, password, new_password=None):
+	def authenticate(self, username, password, new_password=None, locale=None):
 		"""Authenticate against the UMC server"""
 		authRequest = Request('AUTH')
 		authRequest.body['username'] = username
 		authRequest.body['password'] = password
 		authRequest.body['new_password'] = new_password
+		if locale:
+			authRequest.body['locale'] = locale
 
 		self.request(authRequest)
 

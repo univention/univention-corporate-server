@@ -120,52 +120,6 @@ define([
 
 		updateForm: function(passwordExpired, statusMessage, detail) {
 			this._passwordExpired = passwordExpired;
-			var localisedMessage = statusMessage;
-			if (detail) {
-				// details are not localised. they are sent in English (if recognized in UMC-Server.Auth) or as the raw string returned from Kerberos!
-				var newPasswordFailed;
-				switch (detail) {
-					// setting new password failed!
-					case 'The password is too short':
-						newPasswordFailed = _('The password is too short');
-						break;
-					case 'The password is too simple':
-						newPasswordFailed = _('The password is too simple');
-						break;
-					case 'The password is a palindrome':
-						newPasswordFailed = _('The password is a palindrome');
-						break;
-					case 'The password is based on a dictionary word':
-						newPasswordFailed = _('The password is based on a dictionary word');
-						break;
-					case 'The password was already used':
-						newPasswordFailed = _('The password was already used');
-						break;
-					case 'The password does not contain enough different characters':
-						newPasswordFailed = _('The password does not contain enough different characters');
-						break;
-					case 'The authentication has failed':
-						break;
-					default:
-						if (detail.slice(0, 2) === ': ') { // Kerberos error message starts with :
-							newPasswordFailed = _('The reason could not be determined') + '. ' + _('In case it helps, the raw error message will be displayed') + detail;
-						} else {
-							//console.warn('Unknown error message', detail);
-							if (this._newPassword) {
-								// obviously we wanted to change the password
-								newPasswordFailed = _('The reason could not be determined');
-							}
-						}
-						break;
-				}
-				if (newPasswordFailed) {
-					localisedMessage = _('The system does not allow changing the password') + '. ' + newPasswordFailed;
-					this._passwordExpired = true;
-				}
-			}
-			if (localisedMessage.slice(-1) !== '.') {
-				localisedMessage += '.';
-			}
 			this._updateFormDeferred.resolve(this._passwordExpired);
 			this.set('LoginMessage', localisedMessage);
 		},

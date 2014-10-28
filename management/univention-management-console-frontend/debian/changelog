@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.80-1) unstable; urgency=medium
+
+  * Bug #35847: translate error messages of PAM
+
+ -- Florian Best <best@univention.de>  Tue, 28 Oct 2014 23:01:42 +0100
+
 univention-management-console-frontend (4.1.79-3) unstable; urgency=medium
 
   * Bug #36415: fixed typo in Wizard (again)

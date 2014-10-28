@@ -1,3 +1,9 @@
+univention-management-console (7.1.58-1) unstable; urgency=medium
+
+  * Bug #35847: translate error messages of PAM
+
+ -- Florian Best <best@univention.de>  Tue, 28 Oct 2014 23:01:59 +0100
+
 univention-management-console (7.1.57-1) unstable; urgency=medium
 
   * Bug #35985: implement workaround for changing of expired password on disabled accounts

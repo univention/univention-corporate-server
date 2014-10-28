@@ -36,7 +36,7 @@ import notifier.signals as signals
 import notifier.threads as threads
 
 from univention.management.console.log import AUTH
-from univention.management.console.pam import PamAuth, AuthenticationFailed, PasswordExpired, PasswordChangeFailed
+from univention.management.console.pam import PamAuth, AuthenticationError, AuthenticationFailed, PasswordExpired, PasswordChangeFailed
 from univention.management.console.protocol.definitions import status_description, SUCCESS, BAD_REQUEST_AUTH_FAILED, BAD_REQUEST_PASSWORD_EXPIRED
 
 
@@ -44,20 +44,18 @@ class AuthenticationResult(object):
 
 	def __init__(self, result):
 		self.credentials = (None, None)
+		self.status = SUCCESS
 		self.authenticated = not isinstance(result, BaseException)
 		if self.authenticated:
 			self.credentials = result
 		self.message = None
 		self.password_expired = False
-		self.status = SUCCESS if self.authenticated else BAD_REQUEST_AUTH_FAILED
-		if isinstance(result, PasswordChangeFailed):
+		if isinstance(result, AuthenticationError):
+			self.status = BAD_REQUEST_AUTH_FAILED
 			self.message = str(result)
-		elif isinstance(result, PasswordExpired):
-			self.message = status_description(BAD_REQUEST_PASSWORD_EXPIRED)
-			self.status = BAD_REQUEST_PASSWORD_EXPIRED
-			self.password_expired = True
-		elif isinstance(result, AuthenticationFailed):
-			self.message = status_description(BAD_REQUEST_AUTH_FAILED)  # FIXME: this is a HTTP violation
+			if isinstance(result, PasswordExpired):
+				self.status = BAD_REQUEST_PASSWORD_EXPIRED
+				self.password_expired = True
 		elif isinstance(result, BaseException):
 			self.status = 500
 			self.message = str(result)
@@ -72,13 +70,13 @@ class AuthHandler(signals.Provider):
 		signals.Provider.__init__(self)
 		self.signal_new('authenticated')
 
-	def authenticate(self, username, password, new_password=None):
-		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, username, password, new_password), self.__authentication_result)
+	def authenticate(self, username, password, new_password=None, locale=None):
+		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, username, password, new_password, locale), self.__authentication_result)
 		thread.run()
 
-	def __authenticate_thread(self, username, password, new_password):
+	def __authenticate_thread(self, username, password, new_password, locale):
 		AUTH.info('Trying to authenticate user %r' % (username,))
-		pam = PamAuth()
+		pam = PamAuth(locale)
 		try:
 			pam.authenticate(username, password)
 		except AuthenticationFailed as auth_failed:
