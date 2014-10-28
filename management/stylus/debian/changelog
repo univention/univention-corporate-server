@@ -1,3 +1,9 @@
+stylus (0.48.1-2) unstable; urgency=low
+
+  * Bug #35823: replaced .postint with .links
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 28 Oct 2014 08:09:20 +0100
+
 stylus (0.48.1-1) unstable; urgency=medium
 
   * Bug #35823: version bump to corresponding upstream version
