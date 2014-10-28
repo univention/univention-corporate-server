@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.79-3) unstable; urgency=medium
+
+  * Bug #36415: fixed typo in Wizard (again)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 28 Oct 2014 18:06:07 +0100
+
 univention-management-console-frontend (4.1.79-2) unstable; urgency=medium
 
   * Bug #36415: fixed typo in Wizard
