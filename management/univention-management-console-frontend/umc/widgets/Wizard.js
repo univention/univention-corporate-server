@@ -101,11 +101,11 @@ define([
 				delete pageConf.widgets;
 				delete pageConf.buttons;
 				delete pageConf.layout;
-				lang.mixin(pageConf, {
+				lang.mixin({
 					footerButtons: footerButtons,
 					navBootstrapClasses: this.pageNavBootstrapClasses || Page.prototype.navBootstrapClasses,
 					mainBootstrapClasses: this.pageMainBootstrapClasses || Page.prototype.mainBootstrapClasses
-				});
+				}, pageConf);
 				var page = new Page(pageConf);
 
 				// create the page form
