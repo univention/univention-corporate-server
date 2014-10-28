@@ -1,3 +1,9 @@
+univention-management-console (7.1.55-2) unstable; urgency=low
+
+  * Bug #35396: Fix some annoying error messages when reloading the server
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 28 Oct 2014 10:07:06 +0100
+
 univention-management-console (7.1.15-1) unstable; urgency=medium
 
   * Bug #35847: add functionality for password changes

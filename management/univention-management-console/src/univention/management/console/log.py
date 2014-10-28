@@ -99,7 +99,8 @@ class ILogger(object):
 		fallbackLoggingFormatter = logging.Formatter('%%(asctime)s.%%(msecs)03d %(component)-11s ( %%(level)-7s ) : %%(message)s' % {'component': id}, '%d.%m.%y %H:%M:%S')
 		fallbackLoggingHandler = logging.StreamHandler()
 		fallbackLoggingHandler.setFormatter(fallbackLoggingFormatter)
-		self._fallbackLogger = logging.Logger(logging.DEBUG)
+		self._fallbackLogger = logging.getLogger('UMC.%s' % id)
+		self._fallbackLogger.setLevel(logging.DEBUG)
 		self._fallbackLogger.addHandler(fallbackLoggingHandler)
 		self._extras = [
 			{'level': 'ERROR'},
