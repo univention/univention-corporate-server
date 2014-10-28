@@ -1487,8 +1487,9 @@ define([
 					iconName += '-paused';
 				} else if (item.state == 'TERMINATED') {
 					iconName += '-terminated';
+				} else if (item.state == 'PENDING') {
+					iconName += '-pending';
 				}
-
 			}
 			return iconName + '.png';
 		},

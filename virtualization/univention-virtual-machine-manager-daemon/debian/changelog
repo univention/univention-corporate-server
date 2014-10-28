@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.4-3) unstable; urgency=low
+
+  * Bug #35982: Show pending state with a distinct icon 
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 28 Oct 2014 12:58:19 +0100
+
 univention-virtual-machine-manager-daemon (4.0.4-2) unstable; urgency=low
 
   * Bug #36305: Cloud instance detailpage fields are now readonly
