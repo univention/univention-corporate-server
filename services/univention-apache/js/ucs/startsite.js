@@ -74,33 +74,6 @@ define([
 		_localeLang: kernel.locale.split('-')[0],
 		_localeWithUnderscore: kernel.locale.replace('-', '_'),
 
-		//TODO
-		// matching data-i18n attribute in HTML code
-		//_('fefwefwef %(foo)s: %(b)s', {foo: 'sdsdfg', b: 'sdfgsdfg'})
-		_translations: {
-			header: _('UCS - {hostname}.{domainname}', ucr),
-			claimHead: _('Welcome to Univention Corporate Server'),
-			claim: _('%(hostname)s.%(domainname)s', ucr),
-			services: _('Installed web services'),
-			admin: _('Administration'),
-			noServiceTitle: _('There are currently no user web services installed.'),
-			noServiceDescription: _('Additional services may be installed in the category <a href="#admin">Administration</a> via Univention Management Console.'),
-			wiki: _('Univention Wiki'),
-			forum: _('Univention Forum'),
-			sdb: _('Univention Support Database'),
-			manual: _('Manual for Univention Corporate Server'),
-			apps: _('App Catalogue'),
-			products: _('Further Products'),
-			univention_website: _('Univention Website'),
-			'http://wiki.univention.de/index.php?title=Hauptseite': _('http://wiki.univention.de/index.php?title=Hauptseite'),
-			'http://forum.univention.de/': _('http://forum.univention.de/'),
-			'http://sdb.univention.de/': _('http://sdb.univention.de/'),
-			'http://docs.univention.de/en.html': _('http://docs.univention.de/en.html'),
-			'https://www.univention.com/products/univention-app-center/': _('https://www.univention.com/products/univention-app-center/'),
-			'https://www.univention.com/products/': _('https://www.univention.com/products/'),
-			'https://www.univention.com': _('https://www.univention.com/')
-		},
-
 		_localizeString: function(str) {
 			if (typeof str == 'string') {
 				return str;
@@ -279,7 +252,6 @@ define([
 			this._updateAvailableLocales();
 		},
 
-		//TODO
 		_updateTranslations: function() {
 			query('*[data-i18n]').forEach(lang.hitch(this, function(inode) {
 				var value = domAttr.get(inode, 'data-i18n');
@@ -288,9 +260,8 @@ define([
 			}));
 			query('a[href]').forEach(lang.hitch(this, function(inode) {
 				var href = domAttr.get(inode, 'href');
-				if (href in this._translations) {
-					domAttr.set(inode, 'href', this._translations[href]);
-				}
+				var translation = _(href);
+				domAttr.set(inode, 'href', translation);
 			}));
 		},
 
