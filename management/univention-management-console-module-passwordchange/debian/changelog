@@ -1,3 +1,9 @@
+univention-management-console-module-passwordchange (0.1.0-4) unstable; urgency=medium
+
+  * Bug #35847: fix translation
+
+ -- Florian Best <best@univention.de>  Wed, 29 Oct 2014 14:44:23 +0100
+
 univention-management-console-module-passwordchange (0.1.0-3) unstable; urgency=medium
 
   * Bug #35654: use app.registerOnStartup instead of topic

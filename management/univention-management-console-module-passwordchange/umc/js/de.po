@@ -14,7 +14,7 @@ msgstr ""
 
 #: umc/js/passwordchange.js:51 umc/js/passwordchange.js:65
 msgid "Change password"
-msgstr "Password ändern"
+msgstr "Passwort ändern"
 
 #: umc/js/passwordchange.js:61
 #, python-format
