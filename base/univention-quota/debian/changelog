@@ -1,3 +1,14 @@
+univention-quota (9.1.3-1) unstable; urgency=medium
+
+  * Bug #36207: Fix quota de/activation code in umc module:
+  * Turn quota off before attempting to remount with usrquota disabled
+  * mount -o remount doesn't automatically disable the usrmount option
+  * Avoid turning quota on/off for all, only do it for the target partition
+  * Fix the quotacheck call: Stop quota before running it
+  * Fix the quotacheck call: Only run if quota gets activated
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Oct 2014 20:40:54 +0100
+
 univention-quota (9.1.2-1) unstable; urgency=low
 
   * Bug #36300: change text fields in quota module

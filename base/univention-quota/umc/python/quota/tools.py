@@ -41,6 +41,7 @@ from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
 from univention.config_registry import handler_set
 
+import mtab
 from univention.lib import fstab
 
 _ = umc.Translation('univention-management-console-module-quota').translate
@@ -136,58 +137,70 @@ def activate_quota(partition, activate, callback):
 
 
 def _do_activate_quota(partitions, activate):
-	fs = fstab.File()
+	try:
+		fs = fstab.File()
+		mt = mtab.File()
+	except IOError as error:
+		result.append({'partitionDevice': device, 'success': False, 'message': _('Could not open %s') % error.filename})
+
 	result = []
 	for device in partitions:
-		part = fs.find(spec=device)
-		if not part:
+		fstab_entry = fs.find(spec=device)
+		if not fstab_entry:
 			result.append({'partitionDevice': device, 'success': False, 'message': _('Device could not be found')})
 			continue
 
-		status = _do_activate_quota_partition(fs, part, activate)
-		if part.mount_point == '/' and part.type == 'xfs':
+		mtab_entry = mt.get(device)
+		if not mtab_entry:
+			result.append({'partitionDevice': device, 'success': False, 'message': _('Device is not mounted')})
+
+		status = _do_activate_quota_partition(fs, fstab_entry, mtab_entry, activate)
+
+		if fstab_entry.mount_point == '/' and fstab_entry.type == 'xfs':
 			try:
 				enable_quota_in_kernel(activate)
 			except QuotaActivationError as exc:
-				result.append({'partitionDevice': part.spec, 'success': False, 'message': str(exc)})
+				result.append({'partitionDevice': fstab_entry.spec, 'success': False, 'message': str(exc)})
 				continue
 		result.append(status)
 	return result
 
 
-def _do_activate_quota_partition(fs, part, activate):
-	quota_enabled = 'usrquota' in part.options
+def _do_activate_quota_partition(fs, fstab_entry, mtab_entry, activate):
+	quota_enabled = 'usrquota' in mtab_entry.options
 	if not (activate ^ quota_enabled):
-		return {'partitionDevice': part.spec, 'success': True, 'message': _('Quota already en/disabled')}
+		return {'partitionDevice': fstab_entry.spec, 'success': True, 'message': _('Quota already en/disabled')}
 
+	## persistently change the option in /etc/fstab:
 	if activate:
-		part.options.append('usrquota')
+		if not 'usrquota' in fstab_entry.options:
+			fstab_entry.options.append('usrquota')
 	else:
-		part.options.remove('usrquota')
-
+		if 'usrquota' in fstab_entry.options:
+			fstab_entry.options.remove('usrquota')
 	fs.save()
 
-	if part.type == 'xfs':
+	if fstab_entry.type == 'xfs':
 		activation_function = _activate_quota_xfs
-	elif part.type in ('ext2', 'ext3', 'ext4'):
+	elif fstab_entry.type in ('ext2', 'ext3', 'ext4'):
 		activation_function = _activate_quota_ext
 	else:
-		return {'partitionDevice': part.spec, 'success': True, 'message': _('Unknown filesystem')}
+		return {'partitionDevice': fstab_entry.spec, 'success': True, 'message': _('Unknown filesystem')}
 
 	try:
-		activation_function(part, activate)
+		activation_function(fstab_entry, mtab_entry, activate)
 	except QuotaActivationError as exc:
-		return {'partitionDevice': part.spec, 'success': False, 'message': str(exc)}
+		return {'partitionDevice': fstab_entry.spec, 'success': False, 'message': str(exc)}
 
-	return {'partitionDevice': part.spec, 'success': True, 'message': _('Operation was successful')}
+	return {'partitionDevice': fstab_entry.spec, 'success': True, 'message': _('Operation was successful')}
 
 
-def _activate_quota_xfs(partition, activate=True):
-	if partition.mount_point != '/':
-		if subprocess.call(('/bin/umount', partition.spec)):
+def _activate_quota_xfs(fstab_entry, mtab_entry, activate=True):
+	if fstab_entry.mount_point != '/':
+		if subprocess.call(('/bin/umount', fstab_entry.spec)):
 			raise QuotaActivationError(_('Unmounting the partition has failed'))
 
-		if subprocess.call(('/bin/mount', partition.spec)):
+		if subprocess.call(('/bin/mount', fstab_entry.spec)):
 			raise QuotaActivationError(_('Mounting the partition has failed'))
 
 	if subprocess.call(('/usr/sbin/invoke-rc.d', 'quota', 'restart')):
@@ -225,22 +238,42 @@ def enable_quota_in_kernel(activate):
 		raise QuotaActivationError(_('To %s quota support for the root filesystem the system has to be rebooted.') % (status,))
 
 
-def _activate_quota_ext(partition, activate=True):
-	if subprocess.call(('/bin/mount', '-o', 'remount', partition.spec)):
-		raise QuotaActivationError(_('Remounting the partition has failed'))
+def _activate_quota_ext(fstab_entry, mtab_entry, activate=True):
+	if activate:
+		### First remount the partition with option "usrquota" if it isn't already
+		if not 'usrquota' in mtab_entry.options:
+			## If the usrquota option is set in fstab remount picks it up automatically
+			if subprocess.call(('/bin/mount', '-o', 'remount', fstab_entry.spec)):
+				raise QuotaActivationError(_('Remounting the partition has failed'))
 
-	args = ['/sbin/quotacheck']
-	if partition.mount_point == '/':
-		args.append('-m')
-	args.extend(['-u', partition.mount_point])
+		### Then make sure that quotacheck can run on the partition by running quotaoff on this partition.
+		if subprocess.call(('/sbin/quotaoff', '-u', fstab_entry.spec)):	## exit status should always be zero, even if off already
+			raise QuotaActivationError(_('Restarting the quota services has failed'))
 
-	result = subprocess.call(args)
-	if result not in (0, 6):
-		raise QuotaActivationError(_('Generating the quota information file failed'))
+		### Run quotacheck to create the aquota.user quota file on the partition
+		args = ['/sbin/quotacheck']
+		if fstab_entry.mount_point == '/':
+			args.append('-m')
+		args.extend(['-uc', fstab_entry.mount_point])
+		if subprocess.call(args):
+			raise QuotaActivationError(_('Generating the quota information file failed'))
 
-	if subprocess.call(('/usr/sbin/invoke-rc.d', 'quota', 'restart')):
-		raise QuotaActivationError(_('Restarting the quota services has failed'))
+		### Finally turn on the quota for the partition.
+		if subprocess.call(('/sbin/quotaon', '-u', fstab_entry.spec)):	## exit status should be zero
+			raise QuotaActivationError(_('Restarting the quota services has failed'))
+	else:
+		### First turn the userquota off as requested, otherwise "mount -o remount,noquota" fails.
+		if subprocess.call(('/sbin/quotaoff', '-u', fstab_entry.spec)):	## exit status should always be zero, even if off already
+			raise QuotaActivationError(_('Restarting the quota services has failed'))
 
+		### Then we turn of the usrquota option.
+		## Note that this is not strictly required technically.
+		## It's only required currently because this module determines quota activation state by checking /etc/mtab
+		## It would be better to check the output of    LC_MESSAGES=C /sbin/quotaon -pu /
+		##
+		## Note2: If the usrquota option is set in mtab but removed in fstab, then remount doesn't automatically pick it up.
+		if subprocess.call(('/bin/mount', '-o', 'remount,noquota', fstab_entry.spec)):
+			raise QuotaActivationError(_('Remounting the partition has failed'))
 
 _units = ('B', 'KB', 'MB', 'GB', 'TB')
 _size_regex = re.compile('(?P<size>[0-9.]+)(?P<unit>(B|KB|MB|GB|TB))?')
