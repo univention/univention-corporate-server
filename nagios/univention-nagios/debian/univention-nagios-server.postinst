@@ -51,11 +51,13 @@ univention-config-registry set \
 univention-config-registry set \
 	ucs/web/overview/entries/admin/nagios/description/de?'Netzwerk-, Host- und Serviceüberwachung' \
 	ucs/web/overview/entries/admin/nagios/description?'Network, host and service monitoring system' \
-	ucs/web/overview/entries/admin/nagios/icon?'/icon/50x50/nagios.png' \
 	ucs/web/overview/entries/admin/nagios/label?'Univention Nagios' \
 	ucs/web/overview/entries/admin/nagios/label/de?'Univention Nagios' \
 	ucs/web/overview/entries/admin/nagios/link?'/nagios/' \
 	ucs/web/overview/entries/admin/nagios/priority?'50'
+
+univention-config-registry unset \
+	ucs/web/overview/entries/admin/nagios/icon
 
 if  [ "$1" = 'configure' -a -n "$2" ] && dpkg --compare-versions "$2" lt '7.0.0-0'; then
 	mkdir -p /etc/univention/templates/removed/	

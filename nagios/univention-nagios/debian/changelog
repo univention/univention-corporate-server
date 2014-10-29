@@ -1,3 +1,10 @@
+univention-nagios (8.0.0-4) unstable; urgency=low
+
+  * removed ucr entry for umc-overview icon / added unset of ucr entry
+    (Bug #36316)
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 29 Oct 2014 11:01:34 +0100
+
 univention-nagios (8.0.0-3) unstable; urgency=low
 
   * added a missing / to the symlink (Bug #35078)
