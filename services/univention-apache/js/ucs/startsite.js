@@ -229,11 +229,11 @@ define([
 		},
 
 		_hasServiceEntries: function() {
-			return this._getLinkEntries().length;
+			return this._getLinkEntries('service').length;
 		},
 
 		_updateNoServiceHint: function() {
-			domClass.toggle('no-service', 'dijitHidden', this._hasServiceEntries());
+			domClass.toggle('no-service', 'hidden', this._hasServiceEntries());
 		},
 
 		_createLinkEntries: function() {
