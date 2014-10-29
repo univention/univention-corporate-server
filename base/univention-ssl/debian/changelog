@@ -1,3 +1,9 @@
+univention-ssl (8.0.0-8) unstable; urgency=low
+
+  * new default sha256 for ssl/default/hashfunction (Bug #30545)
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Oct 2014 14:21:44 +0100
+
 univention-ssl (8.0.0-7) unstable; urgency=low
 
   * added default_md to req section and 
