@@ -79,7 +79,7 @@ property_descriptions={
 			identifies=0
 		),
 	'sambaName': univention.admin.property(
-			short_description=_('Samba name'),
+			short_description=_('Windows name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,

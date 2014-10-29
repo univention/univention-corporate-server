@@ -57,8 +57,8 @@ msgid "Group members"
 msgstr "Gruppenmitglieder"
 
 #: printergroup.py:86 printer.py:144 print.py:82 share.py:223
-msgid "Samba name"
-msgstr "Samba-Name"
+msgid "Windows name"
+msgstr "Windows-Name"
 
 #: printergroup.py:97 printer.py:155 print.py:94
 msgid "Enable quota support"

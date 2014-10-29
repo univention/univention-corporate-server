@@ -220,7 +220,7 @@ property_descriptions={
 			default='1'
 		),
 	'sambaName': univention.admin.property(
-			short_description=_('Samba name'),
+			short_description=_('Windows name'),
 			long_description=_('This is the NetBIOS name. Among other places, it appears in the Windows Network Neighborhood.'),
 			syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
 			multivalue=0,

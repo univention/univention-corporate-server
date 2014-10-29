@@ -1,3 +1,10 @@
+univention-directory-manager-modules (10.0.26-1) unstable; urgency=low
+
+  * Changed UMC description for sambaName from Samba name to 
+    Windows name in share handlers (Bug #36311)
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Oct 2014 15:12:13 +0100
+
 univention-directory-manager-modules (10.0.25-1) unstable; urgency=medium
 
   * Bug #36304: Workaround for restrictive imghdr.test_jpeg
