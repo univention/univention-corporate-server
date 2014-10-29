@@ -37,6 +37,7 @@
 				<ulink url="&ucsbug;36178">Bug 36178</ulink>,
 				<ulink url="&ucsbug;33278">Bug 33278</ulink>,
 				<ulink url="&ucsbug;36115">Bug 36115</ulink>,
+				<ulink url="&ucsbug;36177">Bug 36177</ulink>,
 				<ulink url="&ucsbug;36286">Bug 36286</ulink>).
 		</simpara></listitem>
 		<listitem><simpara>
@@ -333,6 +334,8 @@
 		<title>Users module</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The user picture is now shown on the left side of the detail page
+				(<ulink url="&ucsbug;23665">Bug 23665</ulink>)
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -447,6 +450,23 @@
 		<title>Development of modules for &ucsUMC;</title>
 		<itemizedlist>
 			<listitem><simpara>
+				UMC modules now may contain a help button which links to related article in the online documentation of UCS.
+				(<ulink url="&ucsbug;32026">Bug 32026</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The users/self module is no longer used for password changes. The module has been renamed into "User settings" and is deactivated by default.
+				Instead a new module "Change Password" has been added which uses the PAM stack to change user password.
+				Every UMC user is able to use this new module.
+				(<ulink url="&ucsbug;35847">Bug 35847</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				A module <emphasis>System diagnostic</emphasis> has been added to UMC which is able to analyze the system for known problems and helps to resolve them.
+				(<ulink url="&ucsbug;34765">Bug 34765</ulink>).
+			</simpara></listitem>
+
+			<listitem><simpara>
+				The functionality to reboot or shutdown the server has been added to the UMC menu
+				(<ulink url="&ucsbug;36281">Bug 36281</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
