@@ -47,7 +47,7 @@ if [ -z "$DEFAULT_DAYS" ]; then
 fi
 DEFAULT_MD="$(/usr/sbin/univention-config-registry get ssl/default/hashfunction)"
 if [ -z "$DEFAULT_MD" ]; then
-	DEFAULT_MD=sha384
+	DEFAULT_MD=sha1
 fi
 DEFAULT_BITS="$(/usr/sbin/univention-config-registry get ssl/default/bits)"
 if [ -z "$DEFAULT_BITS" ]; then
@@ -134,6 +134,7 @@ emailAddress		= optional
 
 default_bits		= $DEFAULT_BITS
 default_keyfile 	= privkey.pem
+default_md          = ${DEFAULT_MD}
 distinguished_name	= req_distinguished_name
 attributes		= req_attributes
 x509_extensions		= v3_ca

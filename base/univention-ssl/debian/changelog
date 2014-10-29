@@ -1,3 +1,10 @@
+univention-ssl (8.0.0-7) unstable; urgency=low
+
+  * added default_md to req section and 
+    switched back to sha1 (Bug #30545) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Oct 2014 14:07:54 +0100
+
 univention-ssl (8.0.0-6) unstable; urgency=low
 
   * removed unused openssl.conf (Bug #30545) 
