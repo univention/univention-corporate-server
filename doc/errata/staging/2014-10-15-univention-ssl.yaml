@@ -2,11 +2,11 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-ssl
-fix: 8.0.0-5.143.201410151415
+fix: 8.0.0-8.148.201410291422
 version: [2,3]
 desc: |
-  * The default hash function has been changed to sha384 
-    (configurable via ssl/default/hashfunction)
-  * The default key size has been changed to 2048 
-    (configurable via ssl/default/bits)
+  * The default hash function has been changed to sha256
+    (configurable via the UCR variable ssl/default/hashfunction).
+  * The default key size has been changed to 2048 bits
+    (configurable via the UCR variable ssl/default/bits).
 bug: [35836,30545]
