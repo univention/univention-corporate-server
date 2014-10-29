@@ -859,7 +859,7 @@ define([
 				nested: true
 			});
 			this._tabControllers.push(tabController);
-			page.position_text = new Text({region: 'nav', content: ''});
+			page.position_text = new Text({region: 'nav', content: '', style: 'margin: 1em 0;'});
 
 			page.addChild(tabController, 0);
 			page.own(tabController);
