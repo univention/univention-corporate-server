@@ -435,6 +435,12 @@ class Instance( Base, ProgressMixin ):
 										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
+	@simple_response
+	def help_link(self, module):
+		module = UDM_Module(module)
+		if module:
+			return module.help_link
+
 	def get( self, request ):
 		"""Retrieves the given list of LDAP objects. Password property will be removed.
 
@@ -469,7 +475,6 @@ class Instance( Base, ProgressMixin ):
 							props[ '$policies$' ][ pol_mod.name ] = policy
 					props[ '$labelObjectType$' ] = module.title;
 					props['$flags$'] = obj.oldattr.get('univentionObjectFlag', []),
-					props['$helpLink$'] = module.help_link
 					result.append( props )
 				else:
 					MODULE.process( 'The LDAP object for the LDAP DN %s could not be found' % ldap_dn )

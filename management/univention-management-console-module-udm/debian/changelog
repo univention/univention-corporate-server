@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.18-1) unstable; urgency=medium
+
+  * Bug #32026: display help link also for new objects
+
+ -- Florian Best <best@univention.de>  Wed, 29 Oct 2014 22:08:07 +0100
+
 univention-management-console-module-udm (5.1.17-2) unstable; urgency=medium
 
   * Bug #32026: display a help link in modules

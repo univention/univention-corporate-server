@@ -188,6 +188,10 @@ define([
 
 			this.loadedDeferred = new Deferred();
 
+			this.umcpCommand('udm/help_link', {module: this.objectType}).then(lang.hitch(this, function(data) {
+				this.set('helpLink', data.result);
+			}));
+
 			// remember the objectType of the object we are going to edit
 			this._editedObjType = this.objectType;
 
@@ -248,6 +252,13 @@ define([
 			this._parentModule = tools.getParentModule(this);
 		},
 
+		_setHelpLinkAttr: function(helpLink) {
+			this._set('helpLink', helpLink);
+			query('[widgetid=' + this.id + '_HelpButton' + ']').forEach(function(node) {
+				domClass.toggle(node, 'dijitHidden', !helpLink);
+			});
+		},
+
 		_loadObject: function(formBuiltDeferred, policyDeferred) {
 			formBuiltDeferred.then(lang.hitch(this, function() {
 				this._displayProgressOnSubmitButton();
@@ -279,14 +290,6 @@ define([
 				this._receivedObjOrigData = vals;
 				this._form.setFormValues(vals);
 				this._getInitialFormValues();
-
-				// make help button visible
-				this.helpLink = vals.$helpLink$;
-				if (this.helpLink) {
-					query('[widgetid=' + this.id + '_HelpButton' + ']').forEach(function(node) {
-						domClass.toggle(node, 'dijitHidden', false);
-					});
-				}
 
 				// as soon as the policy widgets are rendered, update the policy values
 				policyDeferred.then(lang.hitch(this, function() {

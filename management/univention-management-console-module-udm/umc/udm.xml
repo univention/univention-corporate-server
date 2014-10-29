@@ -124,5 +124,6 @@
 		<command name="udm/reports/query" function="reports_query" />
 		<command name="udm/reports/create" function="reports_create" />
 		<command name="udm/request_new_license" function="request_new_license" />
+		<command name="udm/help_link" function="help_link" />
 	</module>
 </umc>
