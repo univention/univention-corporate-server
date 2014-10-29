@@ -1,3 +1,9 @@
+univention-ssl (9.0.2-1) unstable; urgency=low
+
+  * removed unused openssl.conf (Bug #30545) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Oct 2014 13:24:26 +0100
+
 univention-ssl (9.0.1-1) unstable; urgency=medium
 
   * Set the default ssl hash function back to sha1
