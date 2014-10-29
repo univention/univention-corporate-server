@@ -29,9 +29,12 @@
 /*global define require console window */
 
 var _l10nResources = ['ucs'];
-if ('l10nResources' in window) {
-	_l10nResources = l10nResources.concat(_l10nResources);
+try {
+	if ('l10nResources' in window) {
+		_l10nResources = l10nResources.concat(_l10nResources);
+	}
 }
+catch(e) {}
 
 define([
 	"dojo/io-query",

@@ -30,7 +30,8 @@
 var profile = {
 	resourceTags: {
 		amd: function(filename, mid) {
-			return (/\.js$/).test(filename);
+			// query.js is not an AMD module
+			return (/\.js$/).test(filename) && filename.indexOf('query.js') < 0;
 		}
 	}
 };

@@ -1,3 +1,11 @@
+univention-apache (7.0.8-1.1) unstable; urgency=low
+
+  Bug #36316:
+    * removed ucr entries for icons / added unset of icons
+    * removed icons
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 29 Oct 2014 10:35:41 +0100
+
 univention-apache (7.0.8-1) unstable; urgency=medium
 
   * Bug #36095: adjust handling of translation resources
