@@ -40,7 +40,7 @@ univention-config-registry set \
 	ucs/web/overview/entries/admin/univention-doc/priority?'80'
 
 univention-config-registry unset \
-	ucs/web/overview/entries/admin/univention-doc/icon?'/icon/50x50/univention_dev_logo.png'
+	ucs/web/overview/entries/admin/univention-doc/icon
 
 if  [ "$1" = 'configure' -a -n "$2" ] && dpkg --compare-versions "$2" lt '1.0.0-1'; then
 	mkdir -p /etc/univention/templates/removed/

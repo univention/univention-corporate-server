@@ -1,3 +1,9 @@
+univention-doc (2.0.0-3) unstable; urgency=low
+
+  * fixed typo in postinst (Bug #36316)
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 29 Oct 2014 11:04:24 +0100
+
 univention-doc (2.0.0-2) unstable; urgency=low
 
   * removed ucr entry for umc-overview icon / added unset of ucr entry
