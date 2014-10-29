@@ -1,3 +1,10 @@
+univention-doc (2.0.0-2) unstable; urgency=low
+
+  * removed ucr entry for umc-overview icon / added unset of ucr entry
+    (Bug #36316)
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 29 Oct 2014 10:52:18 +0100
+
 univention-doc (2.0.0-1) unstable; urgency=medium
 
   * Update to UCS 4.0 (Bug #35267)
