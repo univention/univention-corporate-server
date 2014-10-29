@@ -1,3 +1,10 @@
+univention-demo-configuration (3.0.0-2) unstable; urgency=low
+
+  * removed ucr entry for umc-overview icon / added unset of ucr entry
+   (Bug #36316)
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 29 Oct 2014 11:13:15 +0100
+
 univention-demo-configuration (3.0.0-1) unstable; urgency=low
 
   * Migrated univention-demo-configuration to UCS-4.0-0 (Bug #35664)

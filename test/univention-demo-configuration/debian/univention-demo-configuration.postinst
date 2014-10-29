@@ -48,11 +48,13 @@ case "$1" in
 		univention-config-registry set \
 			ucs/web/overview/entries/admin/demo-configuration/description/de?'Die Univention-Support-Datenbank' \
 			ucs/web/overview/entries/admin/demo-configuration/description?'The Univention support database' \
-			ucs/web/overview/entries/admin/demo-configuration/icon?'/icon/50x50/univention-logo.png' \
 			ucs/web/overview/entries/admin/demo-configuration/label?'Univention SDB' \
 			ucs/web/overview/entries/admin/demo-configuration/label/de?'Univention SDB' \
 			ucs/web/overview/entries/admin/demo-configuration/link?'http://sdb.univention.de' \
 			ucs/web/overview/entries/admin/demo-configuration/priority?'80'
+
+		univention-config-registry unset \
+			ucs/web/overview/entries/admin/demo-configuration/icon
 
 		# disable update checks and hints for available updates
 		ucr set update/check/cron/enabled=no
