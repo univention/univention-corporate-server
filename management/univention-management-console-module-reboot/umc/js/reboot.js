@@ -40,8 +40,14 @@ define([
 ], function(app, tools, dialog, libServer, MenuItem, Menu, PopupMenuItem, _) {
 
 	var addRebootMenu = function() {
-		var serverMenu = new Menu({});
-		serverMenu.addChild(new MenuItem({
+		app.addMenuEntry(new PopupMenuItem({
+			$priority$: 70,
+			label: _('Server'),
+			id: 'umcMenuServer',
+			popup: new Menu({})
+		}));
+		app.addMenuEntry(new MenuItem({
+			$parentMenu$: 'umcMenuServer',
 			id: 'umcMenuShutdown',
 			iconClass: 'icon24-umc-menu-shutdown',
 			label: _('Shutdown server'),
@@ -49,7 +55,8 @@ define([
 				libServer.askShutdown();
 			}
 		}));
-		serverMenu(new MenuItem({
+		app.addMenuEntry(new MenuItem({
+			$parentMenu$: 'umcMenuServer',
 			id: 'umcMenuReboot',
 			iconClass: 'icon24-umc-menu-reboot',
 			label: _('Reboot server'),
@@ -57,24 +64,18 @@ define([
 				libServer.askReboot();
 			}
 		}));
-		app.addMenuEntry(new PopupMenuItem({
-			$priority$: 70,
-			label: _('Server'),
-			id: 'umcMenuServer',
-			popup: serverMenu
-		}));
 	};
 
 	var checkRebootRequired = function() {
 		tools.ucr(['update/reboot/required']).then(function(_ucr) {
 			if (tools.isTrue(_ucr['update/reboot/required'])) {
 				dialog.notify(_('This system has been updated recently. Please reboot this system to finish the update.'));
-				libServer.askReboot(_('This system has been updated recently. Please reboot this system to finish the update.'));
+			//	libServer.askReboot(_('This system has been updated recently. Please reboot this system to finish the update.'));
 			}
 		});
 	};
 
-	app.registerOnStartup('/umc/started', function() {
+	app.registerOnStartup(function() {
 		addRebootMenu();
 		checkRebootRequired();
 	});
