@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/on",
+	"dojo/query",
 	"dojo/Deferred",
 	"dojo/promise/all",
 	"dojo/dom-style",
@@ -63,7 +64,7 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/widgets"
-], function(declare, lang, array, on, Deferred, all, style, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
+], function(declare, lang, array, on, query, Deferred, all, style, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
 
 	var _StandbyPage = declare([Page, StandbyMixin], {});
 
@@ -110,6 +111,9 @@ define([
 		// note: String?
 		//		If given, this string is displayed as note on the first page.
 		note: null,
+
+		// reference to the URI which is opened when clicking on the help button
+		helpLink: null,
 
 		// internal reference to the formular containing all form widgets of an LDAP object
 		_form: null,
@@ -178,7 +182,8 @@ define([
 			//		and initiate the rendering process.
 			this.inherited(arguments);
 
-			this.headerButtons = this.getButtonDefinitions();
+			var buttons = this.getButtonDefinitions();
+			this.headerButtons = [buttons.submit, buttons.help, buttons.close]
 
 			this.standby(true);
 
@@ -275,6 +280,14 @@ define([
 				this._receivedObjOrigData = vals;
 				this._form.setFormValues(vals);
 				this._getInitialFormValues();
+
+				// make help button visible
+				this.helpLink = vals.$helpLink$;
+				if (this.helpLink) {
+					query('[widgetid=' + this.id + '_HelpButton' + ']').forEach(function(node) {
+						domClass.toggle(node, 'dijitHidden', false);
+					});
+				}
 
 				// as soon as the policy widgets are rendered, update the policy values
 				policyDeferred.then(lang.hitch(this, function() {
@@ -855,6 +868,9 @@ define([
 			page.addChild(page.position_text);
 			page.own(page.position_text);
 
+			var buttons = this.getButtonDefinitions();
+			page.set('navButtons', [lang.mixin({}, buttons.submit, {id: '' + page.id +  buttons.submit.id})]);
+
 			this._tabs.addChild(page);
 			this.own(page);
 		},
@@ -1012,23 +1028,36 @@ define([
 				closeLabel = _('Cancel');
 			}
 
-			return [{
-				name: 'submit',
-				id: this.id + '_SubmitButton',
-				iconClass: 'umcSaveIconWhite',
-				label: createLabel,
-				callback: lang.hitch(this, function() {
-					this._form.onSubmit();
-				})
-			}, {
-				name: 'close',
-				label: closeLabel,
-				iconClass: 'umcCloseIconWhite',
-				callback: lang.hitch(this, function() {
-					topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'cancel');
-					this.onCloseTab();
-				})
-			}];
+			return {
+				submit: {
+					name: 'submit',
+					id: this.id + '_SubmitButton',
+					iconClass: 'umcSaveIconWhite',
+					label: createLabel,
+					callback: lang.hitch(this, function() {
+						this._form.onSubmit();
+					})
+				},
+				help: {
+					name: 'help',
+					id: this.id + '_HelpButton',
+					iconClass: 'umcHelpIconWhite',
+					label: _('Help'),
+					'class': 'dijitHidden',
+					callback: lang.hitch(this, function() {
+						window.open(this.helpLink);
+					})
+				},
+				close: {
+					name: 'close',
+					label: closeLabel,
+					iconClass: 'umcCloseIconWhite',
+					callback: lang.hitch(this, function() {
+						topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'cancel');
+						this.onCloseTab();
+					})
+				}
+			};
 		},
 
 		getValues: function() {

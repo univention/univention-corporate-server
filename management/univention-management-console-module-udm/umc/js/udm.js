@@ -47,6 +47,7 @@ define([
 	"dijit/form/_TextBoxMixin",
 	"dijit/Dialog",
 	"dojox/string/sprintf",
+	"umc/app",
 	"umc/tools",
 	"umc/dialog",
 	"umc/store",
@@ -69,18 +70,19 @@ define([
 	"umc/modules/udm/NewObjectDialog",
 	"umc/modules/udm/DetailPage",
 	"umc/modules/udm/cache",
+	"umc/modules/udm/startup",
 	"umc/i18n!umc/modules/udm",
 	"umc/modules/udm/MultiObjectSelect",
 	"umc/modules/udm/ComboBox",
 	"umc/modules/udm/CertificateUploader",
-	"umc/modules/udm/startup",
 	"xstyle/css!./udm.css"
 ], function(declare, lang, array, has, Deferred, when, all, on, topic, aspect, json,
-	domStyle, domClass, Menu, MenuItem, _TextBoxMixin, Dialog, sprintf, tools, dialog,
+	domStyle, domClass, Menu, MenuItem, _TextBoxMixin, Dialog, sprintf, app, tools, dialog,
 	store, ContainerWidget, Text, CheckBox, ComboBox, Module, Page, Grid,
 	Form, SearchForm, Button, Tree, MixedInput, ProgressBar, TreeModel,
-	TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, cache, _)
+	TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, cache, udmStartup, _)
 {
+	app.registerOnStartup(udmStartup);
 
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:

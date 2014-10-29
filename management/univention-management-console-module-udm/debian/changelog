@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.17-2) unstable; urgency=medium
+
+  * Bug #32026: display a help link in modules
+
+ -- Florian Best <best@univention.de>  Wed, 29 Oct 2014 11:00:25 +0100
+
 univention-management-console-module-udm (5.1.17-1) unstable; urgency=medium
 
   * Bug #36299: adjust size of form fields in the dialogue for new objects

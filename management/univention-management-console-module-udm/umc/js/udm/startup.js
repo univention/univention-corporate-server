@@ -160,7 +160,7 @@ define([
 		}), 0);
 
 		app.addMenuEntry(new PopupMenuItem({
-			$priority$: 100,
+			$priority$: 80,
 			label: _('License'),
 			id: 'umcMenuLicense',
 			popup: licenseMenu
@@ -169,11 +169,11 @@ define([
 
 	topic.subscribe('/umc/license/activation', _showActivationDialog);
 
-	topic.subscribe('/umc/started', function() {
+	return function() {
 		checkLicense();
 		tools.ucr(['uuid/license']).then(function(_ucr) {
 			lang.mixin(ucr, _ucr);
 			addLicenseMenu();
 		});
-	});
+	};
 });

@@ -511,6 +511,15 @@ class UDM_Module( object ):
 		return getattr( self.module, 'property_descriptions', {} ).get( property_name, None )
 
 	@property
+	def help_link(self):
+		help_link = getattr(self.module, 'help_link', None)
+		if isinstance(help_link, dict):
+			defaults = {'lang': _('manual'), 'version': ucr.get('version/version', ''), 'section': ''}
+			defaults.update(help_link)
+			help_link = 'http://docs.univention.de/%(lang)s-%(version).html#%(section)s' % defaults
+		return help_link
+
+	@property
 	def name( self ):
 		"""Internal name of the UDM module"""
 		return self.module is not None and self.module.module
