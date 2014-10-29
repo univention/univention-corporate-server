@@ -576,6 +576,24 @@
 				The following additional Bugs were discovered and fixed during UCS 4 UVMM development: (
 					<ulink url="&ucsbug;36139">Bug 36139</ulink>,
 					<ulink url="&ucsbug;36145">Bug 36145</ulink>,
+					<ulink url="&ucsbug;35824">Bug 35824</ulink>,
+					<ulink url="&ucsbug;35946">Bug 35946</ulink>,
+					<ulink url="&ucsbug;35982">Bug 35982</ulink>,
+					<ulink url="&ucsbug;36053">Bug 36053</ulink>,
+					<ulink url="&ucsbug;36133">Bug 36133</ulink>,
+					<ulink url="&ucsbug;36136">Bug 36136</ulink>,
+					<ulink url="&ucsbug;36138">Bug 36138</ulink>,
+					<ulink url="&ucsbug;36140">Bug 36140</ulink>,
+					<ulink url="&ucsbug;36093">Bug 36093</ulink>,
+					<ulink url="&ucsbug;36142">Bug 36142</ulink>,
+					<ulink url="&ucsbug;36143">Bug 36143</ulink>,
+					<ulink url="&ucsbug;36147">Bug 36147</ulink>,
+					<ulink url="&ucsbug;36148">Bug 36148</ulink>,
+					<ulink url="&ucsbug;36151">Bug 36151</ulink>,
+					<ulink url="&ucsbug;36152">Bug 36152</ulink>,
+					<ulink url="&ucsbug;36155">Bug 36155</ulink>,
+					<ulink url="&ucsbug;36305">Bug 36306</ulink>,
+					<ulink url="&ucsbug;36306">Bug 36306</ulink>,
 					<ulink url="&ucsbug;36146">Bug 36146</ulink>)
 		</simpara></listitem>
 			<listitem><simpara>
