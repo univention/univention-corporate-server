@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-24 10:20+0200\n"
+"POT-Creation-Date: 2014-10-29 20:36+0100\n"
 "PO-Revision-Date: 2011-09-21 20:05+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,11 +44,11 @@ msgstr ""
 msgid "Printer share: Printer group"
 msgstr "Druckerfreigabe: Druckergruppe"
 
-#: printergroup.py:55 printer.py:69 print.py:61 share.py:81
+#: printergroup.py:55 printer.py:71 print.py:61 share.py:81
 msgid "Name"
 msgstr "Name"
 
-#: printergroup.py:66 printer.py:102 print.py:72
+#: printergroup.py:66 printer.py:104 print.py:72
 msgid "Spool host"
 msgstr "Server"
 
@@ -56,32 +56,32 @@ msgstr "Server"
 msgid "Group members"
 msgstr "Gruppenmitglieder"
 
-#: printergroup.py:86 printer.py:144 print.py:82 share.py:223
+#: printergroup.py:86 printer.py:146 print.py:82 share.py:223
 msgid "Windows name"
 msgstr "Windows-Name"
 
-#: printergroup.py:97 printer.py:155 print.py:94
+#: printergroup.py:97 printer.py:157 print.py:94
 msgid "Enable quota support"
 msgstr "Quota aktivieren"
 
-#: printergroup.py:107 printer.py:165 print.py:104
+#: printergroup.py:107 printer.py:167 print.py:104
 msgid "Price per page"
 msgstr "Preis pro Seite"
 
-#: printergroup.py:117 printer.py:175 print.py:114
+#: printergroup.py:117 printer.py:177 print.py:114
 msgid "Price per print job"
 msgstr "Preis pro Druckauftrag"
 
-#: printergroup.py:129 printergroup.py:130 printer.py:218 printer.py:219
+#: printergroup.py:129 printergroup.py:130 printer.py:220 printer.py:221
 #: share.py:649 share.py:650
 msgid "General"
 msgstr "Allgemein"
 
-#: printergroup.py:129 printer.py:218 share.py:649
+#: printergroup.py:129 printer.py:220 share.py:649
 msgid "General settings"
 msgstr "Grundeinstellungen"
 
-#: printergroup.py:194 printer.py:336
+#: printergroup.py:194 printer.py:338
 #, python-format
 msgid "%s is member of following quota printer groups %s"
 msgstr "%s ist Mitglied der folgenden Quota-Druckergruppen %s"
@@ -91,7 +91,7 @@ msgstr "%s ist Mitglied der folgenden Quota-Druckergruppen %s"
 msgid "%s is disabled for quota support. "
 msgstr "Quota an %s ist deaktiviert. "
 
-#: printergroup.py:213 printer.py:348
+#: printergroup.py:213 printer.py:350
 #, python-format
 msgid "%s is the last member of the printer group %s. "
 msgstr "%s ist das letzte Mitglied in der Druckergruppe %s."
@@ -113,56 +113,60 @@ msgstr "Zugriff nur für ausgewählte Benutzer/Gruppen zulassen."
 msgid "Deny choosen users/groups."
 msgstr "Zugriff für ausgewählte Benutzer/Gruppen verweigern."
 
-#: printer.py:63
+#: printer.py:59
+msgid "http://docs.univention.de/manual.html#print::shares"
+msgstr "http://docs.univention.de/handbuch.html#print::shares"
+
+#: printer.py:65
 msgid "Printer share: Printer"
 msgstr "Druckerfreigabe: Drucker"
 
-#: printer.py:80
+#: printer.py:82
 msgid "Location"
 msgstr "Standort"
 
-#: printer.py:91
+#: printer.py:93
 msgid "Description"
 msgstr "Beschreibung"
 
-#: printer.py:112
+#: printer.py:114
 msgid "Connection"
 msgstr "Verbindung"
 
-#: printer.py:123
+#: printer.py:125
 msgid "Printer model"
 msgstr "Drucker-Modell"
 
-#: printer.py:134
+#: printer.py:136
 msgid "Printer producer"
 msgstr "Drucker-Hersteller"
 
-#: printer.py:185 printer.py:229 printer.py:230
+#: printer.py:187 printer.py:231 printer.py:232
 msgid "Access control"
 msgstr "Zugriffskontrolle"
 
-#: printer.py:186
+#: printer.py:188
 msgid "Access list can allow or deny listed users and groups."
 msgstr ""
 "Zugriffslisten können Benutzer oder Gruppen freischalten oder zurückweisen."
 
-#: printer.py:196
+#: printer.py:198
 msgid "Allowed/denied users"
 msgstr "Zugelassene/abgewiesene Benutzer"
 
-#: printer.py:197
+#: printer.py:199
 msgid "For the given users printing is explicitly allowed or denied."
 msgstr "Für die angegebenen Benutzer wird der Zugriff erlaubt oder abgewiesen."
 
-#: printer.py:206
+#: printer.py:208
 msgid "Allowed/denied groups"
 msgstr "Zugelassene/abgewiesene Gruppen"
 
-#: printer.py:207
+#: printer.py:209
 msgid "For the given groups printing is explicitly allowed or denied."
 msgstr "Für die angegebenen Gruppen wird der Zugriff erlaubt oder abgewiesen."
 
-#: printer.py:229
+#: printer.py:231
 msgid "Access control for users and groups"
 msgstr "Zugriffskontrolle für Benutzer und Gruppen"
 
@@ -896,8 +900,9 @@ msgstr "Optionsname aus smb.conf und ihr Wert"
 msgid ""
 "Configure additional smb.conf settings for this share, which are added in "
 "the form key = value"
-msgstr "Konfigurieren von zusätzlichen smb.conf Einstellungen für diese "
-"Freigabe. Diese werden in der Form Schlüssel = Wert der Freigabendefinition "
+msgstr ""
+"Konfigurieren von zusätzlichen smb.conf Einstellungen für diese Freigabe. "
+"Diese werden in der Form Schlüssel = Wert der Freigabendefinition "
 "hinzugefügt."
 
 #: share.py:637
@@ -908,8 +913,9 @@ msgstr "Optionsname aus exports Datei"
 msgid ""
 "Configure additional settings for this share which are added to the /etc/"
 "exports file."
-msgstr "Konfigurieren von zusätzlichen Einstellungen für diese Freigabe, die "
-"der Datei /etc/exports hinzugefügt werden."
+msgstr ""
+"Konfigurieren von zusätzlichen Einstellungen für diese Freigabe, die der "
+"Datei /etc/exports hinzugefügt werden."
 
 #: share.py:657 share.py:658
 msgid "NFS"
@@ -998,4 +1004,3 @@ msgstr "Die/Der %s %s%s %s diese Freigabe als Heimatverzeichnisfreigabe"
 #, python-format
 msgid "%s (%s on %s)"
 msgstr "%s (%s auf %s)"
-

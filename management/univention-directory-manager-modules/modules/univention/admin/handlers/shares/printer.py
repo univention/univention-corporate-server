@@ -56,6 +56,8 @@ class printerACLTypes(univention.admin.syntax.select):
 			('deny',_('Deny choosen users/groups.')),
 			]
 
+help_link = _('http://docs.univention.de/manual.html#print::shares')
+
 module='shares/printer'
 operations=['add','edit','remove','search','move']
 

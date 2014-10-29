@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.27-1) unstable; urgency=medium
+
+  * Added help link to shares/printer module (Bug #32026)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 29 Oct 2014 20:40:48 +0100
+
 univention-directory-manager-modules (10.0.26-1) unstable; urgency=low
 
   * Changed UMC description for sambaName from Samba name to 
