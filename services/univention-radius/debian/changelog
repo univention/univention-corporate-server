@@ -1,3 +1,9 @@
+univention-radius (1.0.0-6) unstable; urgency=medium
+
+  * Bug #35516: Support Samba ADDS kerberos principal style client names
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Oct 2014 14:03:57 +0100
+
 univention-radius (1.0.0-5) unstable; urgency=low
 
   * allow configuration via LDAP (Bug #29465)
