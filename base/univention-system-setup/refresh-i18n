@@ -71,32 +71,3 @@ fi
 
 rm -rf ${po}?
 
-
-## Second translation: HTML/JS to json
-jsfile=var/www/ucs-overview/js-initialsetup/initialstartsite.js
-po=var/www/ucs-overview/js-initialsetup/de.po
-pot=var/www/ucs-overview/js-initialsetup/de.pot
-pox=var/www/ucs-overview/js-initialsetup/de.pox
-
-echo; echo "Translation for html page"
-xgettext -L Python -o ${pot} ${jsfile}
-echo "Merging old gettext data with newly introduced strings"
-msgmerge ${po} ${pot} > ${pox}
-echo "Now you need to fix up all 'fuzzy' entries in your editor..."
-read answ
-
-if [ -n "$EDITOR" ]; then
-	${EDITOR} ${pox}
-else
-	vim ${pox}
-fi
-
-echo "Use this entry? (Y/n)"
-read yn 
-
-if [ -z "$yn" -o "$yn" = "y" ]; then
-	echo "Copying po file"
-	cp ${pox} ${po}
-fi
-
-rm -rf ${po}?

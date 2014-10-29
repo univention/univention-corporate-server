@@ -32,17 +32,22 @@
 # extend the list LANGUAGES to support l10n for other languages
 LANGUAGES := de en
 JSON_FILES := city-data/country_data.json city-data/city_data.json
+INITIALSETUP_DE_JSON := var/www/ucs-overview/js/initialsetup/de.json
 
-build: $(JSON_FILES)
+build: $(JSON_FILES) $(INITIALSETUP_DE_JSON)
 
 clean:
 	rm -f city-data/alternateNames.txt city-data/cities15000.txt $(JSON_FILES)
+	rm -f $(INITIALSETUP_DE_JSON)
 
 install: build
 	@echo "Nothing to install"
 
 %.txt: %.zip
 	unzip -u -d "$(*D)" $<
+
+%.json: %.po
+	dh-umc-po2json "$<"
 
 %/country_data.json: city-data/countryInfo.txt city-data/alternateNames.txt
 	city-data/create_country_data.py "$@" $(LANGUAGES)

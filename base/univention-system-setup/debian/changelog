@@ -1,3 +1,12 @@
+univention-system-setup (8.1.33-1) unstable; urgency=low
+
+  Bug #35654:
+  * adjusted initialsetup.html to fit new design
+  * removed obsolete css and js files
+  * added translation for the initialsetup message   
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 29 Oct 2014 11:30:51 +0100
+
 univention-system-setup (8.1.32-1) unstable; urgency=medium
 
   * Always remove /var/lib/univention-ldap/root.secret (Bug #36331)
