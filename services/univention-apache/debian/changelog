@@ -1,3 +1,9 @@
+univention-apache (7.0.10-1) unstable; urgency=medium
+
+  * Bug #36316: fix font styling
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 29 Oct 2014 17:52:31 +0100
+
 univention-apache (7.0.9-3) unstable; urgency=low
 
   Bug #36316:
