@@ -376,6 +376,8 @@
 		<title>Shares module</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The UMC description for the samba share name has been changed to Windows name
+				(<ulink url="&ucsbug;36311">Bug 36311</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -392,7 +394,12 @@
 		<title>Printers module</title>
 		<itemizedlist>
 			<listitem><simpara>
-					A hint is shown when using this module while no printer server (CUPS) is installed in the domain (<ulink url="&ucsbug;36260">Bug 36260</ulink>).
+				A hint is shown when using this module while no printer server (CUPS) is installed
+				in the domain (<ulink url="&ucsbug;36260">Bug 36260</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The UMC description for the samba share name has been changed to Windows name
+				(<ulink url="&ucsbug;36311">Bug 36311</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
