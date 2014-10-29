@@ -885,8 +885,13 @@ define([
 			topic.subscribe('/umc/tabs/close', lang.hitch(this, 'closeTab'));
 			topic.subscribe('/umc/tabs/focus', lang.hitch(this, 'focusTab'));
 
+			var deferred = new Deferred();
+			topic.subscribe('/umc/module/startup', function(callback) {
+				deferred.then(callback);
+			});
 			on.once(this, 'ModulesLoaded', lang.hitch(this, function() {
 				// run some checks (only if a overview page is available)
+				deferred.resolve(tools.status('overview'));
 				if (tools.status('overview')) {
 					topic.publish('/umc/started');
 				}
@@ -1087,7 +1092,6 @@ define([
 			tools.forEachAsync(modules, lang.hitch(this, function(imod) {
 				loadedCount.push(this._tryLoadingModule(imod));
 			})).then(lang.hitch(this, function() {
-				// FIXME: declare() of modules is not called yet
 				all(loadedCount).always(lang.hitch(this, 'onModulesLoaded'));
 			}));
 		},
@@ -1466,6 +1470,10 @@ define([
 			if (this._header && this._header._headerMenu) {
 				this._header._headerMenu.addChild(item);
 			}
+		},
+
+		registerOnStartup: function(/*Function*/ callback) {
+			topic.publish('/umc/module/startup', callback);
 		},
 
 		relogin: function(username) {

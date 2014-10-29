@@ -1,3 +1,9 @@
+univention-updater (10.0.29-1) unstable; urgency=medium
+
+  * Bug #35654: use app.registerOnStartup instead of topic
+
+ -- Florian Best <best@univention.de>  Wed, 29 Oct 2014 10:56:33 +0100
+
 univention-updater (10.0.28-1) unstable; urgency=low
 
   * Bug #36322: Added Back button in software module

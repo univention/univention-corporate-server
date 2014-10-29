@@ -29,17 +29,19 @@
 /*global define*/
 
 define([
-	"dojo/topic",
 	"umc/app",
 	"umc/tools",
 	"umc/dialog",
 	"umc/modules/lib/server",
 	"dijit/MenuItem",
+	"dijit/Menu",
+	"dijit/PopupMenuItem",
 	"umc/i18n!umc/modules/reboot"
-], function(topic, app, tools, dialog, libServer, MenuItem, _) {
+], function(app, tools, dialog, libServer, MenuItem, Menu, PopupMenuItem, _) {
 
 	var addRebootMenu = function() {
-		app.addMenuEntry(new MenuItem({
+		var serverMenu = new Menu({});
+		serverMenu.addChild(new MenuItem({
 			id: 'umcMenuShutdown',
 			iconClass: 'icon24-umc-menu-shutdown',
 			label: _('Shutdown server'),
@@ -47,13 +49,19 @@ define([
 				libServer.askShutdown();
 			}
 		}));
-		app.addMenuEntry(new MenuItem({
+		serverMenu(new MenuItem({
 			id: 'umcMenuReboot',
 			iconClass: 'icon24-umc-menu-reboot',
 			label: _('Reboot server'),
 			onClick: function() {
 				libServer.askReboot();
 			}
+		}));
+		app.addMenuEntry(new PopupMenuItem({
+			$priority$: 70,
+			label: _('Server'),
+			id: 'umcMenuServer',
+			popup: serverMenu
 		}));
 	};
 
@@ -66,7 +74,7 @@ define([
 		});
 	};
 
-	topic.subscribe('/umc/started', function() {
+	app.registerOnStartup('/umc/started', function() {
 		addRebootMenu();
 		checkRebootRequired();
 	});

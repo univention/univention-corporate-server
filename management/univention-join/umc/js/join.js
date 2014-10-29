@@ -52,7 +52,7 @@ define([
 ], function(declare, lang, array, topic, all, entities, dialog, tools, app, ConfirmDialog,
 			Module, Page, Text, TextBox, PasswordBox, ProgressBar, JoinForm, JoinGrid, Lib_Server, _) {
 
-	topic.subscribe('/umc/started', function() {
+	app.registerOnStartup(function() {
 		var checkForUserRoot = function() {
 			tools.ucr(['system/setup/showloginmessage', 'server/role']).then(function(_ucr) {
 				if (tools.status('username') == 'root' && tools.isFalse(_ucr['system/setup/showloginmessage'])) {

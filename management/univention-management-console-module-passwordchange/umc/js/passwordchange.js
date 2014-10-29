@@ -31,7 +31,6 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/topic",
 	"umc/app",
 	"umc/tools",
 	"umc/dialog",
@@ -42,11 +41,12 @@ define([
 	"umc/widgets/PasswordBox",
 	"umc/widgets/PasswordInputBox",
 	"umc/i18n!umc/modules/passwordchange"
-], function(declare, lang, topic, app, tools, dialog, MenuItem, Module, Page, Form, PasswordBox, PasswordInputBox, _) {
+], function(declare, lang, app, tools, dialog, MenuItem, Module, Page, Form, PasswordBox, PasswordInputBox, _) {
 
-	topic.subscribe('/umc/started', function() {
+	app.registerOnStartup(function() {
 		app.addMenuEntry(new MenuItem({
 			id: 'umcMenuChangePassword',
+			$parentMenu$: 'umcMenuSettings',
 			iconClass: 'icon24-umc-menu-pwchange',
 			label: _('Change password'),
 			onClick: function() {

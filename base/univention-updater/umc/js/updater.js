@@ -32,18 +32,18 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/topic",
 	"dijit/Dialog",
 	"umc/dialog",
+	"umc/app",
 	"umc/tools",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Module",
 	"umc/modules/updater/UpdatesPage",
 	"umc/modules/updater/ProgressPage",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, topic, Dialog, dialog, tools, ConfirmDialog, Module, UpdatesPage, ProgressPage, _) {
+], function(declare, lang, array, Dialog, dialog, app, tools, ConfirmDialog, Module, UpdatesPage, ProgressPage, _) {
 
-	topic.subscribe('/umc/started', function() {
+	app.registerOnStartup(function() {
 		var checkUpdateAvailable = function() {
 			tools.ucr(['update/available']).then(function(_ucr) {
 				if (tools.isTrue(_ucr['update/available'])) {
