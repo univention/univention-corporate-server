@@ -1,3 +1,9 @@
+univention-system-setup (8.1.33-2) unstable; urgency=medium
+
+  * Bug #36328: removed obsolete translation command from debian/rules
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 29 Oct 2014 12:43:05 +0100
+
 univention-system-setup (8.1.33-1) unstable; urgency=low
 
   Bug #35654:
