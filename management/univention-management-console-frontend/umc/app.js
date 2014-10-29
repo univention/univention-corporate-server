@@ -530,7 +530,7 @@ define([
 				});
 				this._headerRight.addChild(this._usernameButton);
 
-				array.forEach([this._hostInfo, this._usernameButton,], lang.hitch(this, function(menu) {
+				array.forEach([this._hostInfo, this._usernameButton], lang.hitch(this, function(menu) {
 					this._menuMap[menu.id] = menu.dropDown;
 				}));
 

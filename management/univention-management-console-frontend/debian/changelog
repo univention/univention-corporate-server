@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.80-5) unstable; urgency=medium
+
+  * Bug #35654: removed trailing comma which caused an error in the dojo build
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 29 Oct 2014 13:49:26 +0100
+
 univention-management-console-frontend (4.1.80-4) unstable; urgency=medium
 
   * Bug #35654: add minimize button to modules instead of above, fix order of header menu entries
