@@ -482,6 +482,7 @@ define([
 
 		_headerLeft: null,
 		_headerRight: null,
+		_headerCenter: null,
 		_hostInfo: null,
 		_hostMenu: null,
 		_menuMap: null,
@@ -489,6 +490,7 @@ define([
 		setupGui: function() {
 			// show the menu bar
 			style.set(this._headerRight.domNode, 'display', 'block');
+			style.set(this._headerCenter.domNode, 'display', 'block');
 			this.setupHeader();
 			this.setupMenus();
 		},
@@ -496,14 +498,19 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			this._headerLeft = new ContainerWidget({
-				'class': 'umcHeaderLeft col-xxs-12 col-xs-4'
+				'class': 'umcHeaderLeft col-xxs-12 col-xs-6 col-sm-4 col-md-5'
 			});
 			this.addChild(this._headerLeft);
 
 			this._headerRight = new ContainerWidget({
-				'class': 'umcHeaderRight col-xxs-12 col-xs-8'
+				'class': 'umcHeaderRight col-xxs-12 col-xs-6 col-sm-4 col-sm-push-4 col-md-5 col-md-push-2 col-lg-5 col-lg-push-2 col-xlg-4 col-xlg-push-3'
 			});
 			this.addChild(this._headerRight);
+
+			this._headerCenter = new ContainerWidget({
+				'class': 'umcHeaderCenter col-xxs-12 col-xs-12 col-sm-4 col-sm-pull-4 col-md-2 col-md-pull-5 col-lg-pull-5 col-xlg-pull-4'
+			});
+			this.addChild(this._headerCenter);
 		},
 
 		setupHeader: function() {
@@ -563,6 +570,7 @@ define([
 			}
 
 			if (tools.status('overview') && !tools.status('singleModule')) {
+				this.setupBackToOverview();
 				this.setupSearchField();
 			}
 		},
@@ -600,6 +608,24 @@ define([
 				style: lang.replace('width: {w}px', usernameButtonPos)
 			});
 			this._headerRight.addChild(this._searchSidebar);
+		},
+
+		setupBackToOverview: function() {
+			this._backToOverviewButton = new Button({
+				label: _('Back to overview'),
+				'class': 'umcBackToOverview',
+				iconClass: 'umcArrowUpIcon',
+				onClick: function() {
+					require('umc/app').switchToOverview();
+				}
+			});
+			this._headerCenter.addChild(this._backToOverviewButton);
+		},
+
+		toggleBackToOverviewVisibility: function(visible) {
+			if (this._backToOverviewButton) {
+				this._backToOverviewButton.set('visible', visible);
+			}
 		},
 
 		setupMenus: function() {
@@ -922,6 +948,7 @@ define([
 					topic.publish('/umc/actions', newModule.moduleID, newModule.moduleFlavor, 'focus');
 				}
 				var overviewShown = (newModule === this._overviewPage);
+				this._header.toggleBackToOverviewVisibility(!overviewShown);
 				domClass.toggle(baseWin.body(), 'umcOverviewShown', overviewShown);
 				domClass.toggle(baseWin.body(), 'umcOverviewNotShown', !overviewShown);
 				domClass.toggle(this._tabController.domNode, 'dijitHidden', (this._tabContainer.getChildren().length <= 1)); // hide/show tabbar

@@ -38,14 +38,13 @@ define([
 	"dijit/layout/StackContainer",
 	"dojox/html/entities",
 	"umc/tools",
-	"umc/app",
 	"umc/render",
 	"umc/widgets/_ModuleMixin",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ModuleHeader",
 	"umc/widgets/StandbyMixin",
 	"umc/i18n!"
-], function(declare, lang, array, topic, aspect, domClass, StackContainer, entities, tools, app, render, _ModuleMixin, ContainerWidget, ModuleHeader, StandbyMixin, _) {
+], function(declare, lang, array, topic, aspect, domClass, StackContainer, entities, tools, render, _ModuleMixin, ContainerWidget, ModuleHeader, StandbyMixin, _) {
 	return declare("umc.widgets.Module", [ContainerWidget, _ModuleMixin, StandbyMixin], {
 		// summary:
 		//		Basis class for module classes.
@@ -156,17 +155,6 @@ define([
 					topic.publish('/umc/tabs/help', this);
 				})
 			}*/];
-			if (tools.status('overview') && !tools.status('singleModule')) {
-				headerButtons.push({
-					name: 'minimize',
-					label: _('Minimize'),
-					'class': 'umcBackToOverview',
-					iconClass: 'umcMinimizeIconWhite',
-					callback: function() {
-						app.switchToOverview();
-					}
-				});
-			}
 			if (this.closable) {
 				headerButtons.push({
 					name: 'close',

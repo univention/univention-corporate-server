@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.80-6) unstable; urgency=medium
+
+  * Revert "Bug #35654: Add Minimize button in module header instead of Back
+  	to Overview button"
+
+ -- Florian Best <best@univention.de>  Wed, 29 Oct 2014 21:09:18 +0100
+
 univention-management-console-frontend (4.1.80-5) unstable; urgency=medium
 
   * Bug #35654: removed trailing comma which caused an error in the dojo build

@@ -657,9 +657,6 @@ msgstr "<b>Benutzer</b> %(username)s"
 msgid "{number} errors occurred: "
 msgstr "{number} Fehler sind aufgetreten: "
 
-msgid "Minimize"
-msgstr "Minimieren"
-
 #~ msgid "Activate"
 #~ msgstr "Aktivieren"
 
