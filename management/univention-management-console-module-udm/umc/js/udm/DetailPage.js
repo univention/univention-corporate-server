@@ -182,8 +182,7 @@ define([
 			//		and initiate the rendering process.
 			this.inherited(arguments);
 
-			var buttons = this.getButtonDefinitions();
-			this.headerButtons = [buttons.submit, buttons.help, buttons.close]
+			this.headerButtons = this.getButtonDefinitions();
 
 			this.standby(true);
 
@@ -868,9 +867,6 @@ define([
 			page.addChild(page.position_text);
 			page.own(page.position_text);
 
-			var buttons = this.getButtonDefinitions();
-			page.set('navButtons', [lang.mixin({}, buttons.submit, {id: '' + page.id +  buttons.submit.id})]);
-
 			this._tabs.addChild(page);
 			this.own(page);
 		},
@@ -1028,36 +1024,32 @@ define([
 				closeLabel = _('Cancel');
 			}
 
-			return {
-				submit: {
-					name: 'submit',
-					id: this.id + '_SubmitButton',
-					iconClass: 'umcSaveIconWhite',
-					label: createLabel,
-					callback: lang.hitch(this, function() {
-						this._form.onSubmit();
-					})
-				},
-				help: {
-					name: 'help',
-					id: this.id + '_HelpButton',
-					iconClass: 'umcHelpIconWhite',
-					label: _('Help'),
-					'class': 'dijitHidden',
-					callback: lang.hitch(this, function() {
-						window.open(this.helpLink);
-					})
-				},
-				close: {
-					name: 'close',
-					label: closeLabel,
-					iconClass: 'umcCloseIconWhite',
-					callback: lang.hitch(this, function() {
-						topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'cancel');
-						this.onCloseTab();
-					})
-				}
-			};
+			return [{
+				name: 'submit',
+				id: this.id + '_SubmitButton',
+				iconClass: 'umcSaveIconWhite',
+				label: createLabel,
+				callback: lang.hitch(this, function() {
+					this._form.onSubmit();
+				})
+			}, {
+				name: 'help',
+				id: this.id + '_HelpButton',
+				iconClass: 'umcHelpIconWhite',
+				label: _('Help'),
+				'class': 'dijitHidden',
+				callback: lang.hitch(this, function() {
+					window.open(this.helpLink);
+				})
+			}, {
+				name: 'close',
+				label: closeLabel,
+				iconClass: 'umcCloseIconWhite',
+				callback: lang.hitch(this, function() {
+					topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'cancel');
+					this.onCloseTab();
+				})
+			}];
 		},
 
 		getValues: function() {
