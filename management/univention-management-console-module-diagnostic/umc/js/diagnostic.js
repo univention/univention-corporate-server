@@ -285,7 +285,7 @@ define([
 			}));
 			this.refreshGrid();
 			this.standbyDuring(this._runDiagnose(plugin, opts)).then(lang.hitch(this, function() {
-				this.addNotification(_('Finished running diagnose of "%s" again.', plugin.title));
+				//this.addNotification(_('Finished running diagnose of "%s" again.', plugin.title));
 			})).then(lang.hitch(this, 'fixNoDataMessage'));
 		},
 
