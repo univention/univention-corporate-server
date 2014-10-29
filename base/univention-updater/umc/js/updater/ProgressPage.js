@@ -97,6 +97,13 @@ define([
 			this._log.on('queryerror', lang.hitch(this, 'onQueryError'));
 			this._log.on('querysuccess', lang.hitch(this, 'onQuerySuccess'));
 			this._allow_close(false);
+
+			// return to the calling page
+			this._close = new Button({
+				label: _("Back"),
+				onClick: lang.hitch(this, '_closeLogView')
+			});
+			this._nav.addChild(this._close);
 		},
 
 		_closeLogView: function() {
