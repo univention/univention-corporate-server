@@ -404,6 +404,10 @@
 				The UMC description for the samba share name has been changed to Windows name
 				(<ulink url="&ucsbug;36311">Bug 36311</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				A documentation link has been added to the printers module
+				(<ulink url="&ucsbug;32026">Bug 32026</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
