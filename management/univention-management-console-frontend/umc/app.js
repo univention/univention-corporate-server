@@ -482,10 +482,9 @@ define([
 
 		_headerLeft: null,
 		_headerRight: null,
-		_helpMenu: null,
-		_settingsMenu: null,
 		_hostInfo: null,
 		_hostMenu: null,
+		_menuMap: null,
 
 		setupGui: function() {
 			// show the menu bar
@@ -508,6 +507,7 @@ define([
 		},
 
 		setupHeader: function() {
+			this._menuMap = {};
 			if (tools.status('overview')) {
 				// the host info and menu
 				this._hostMenu = new Menu({});
@@ -520,35 +520,42 @@ define([
 				this._headerRight.addChild(this._hostInfo);
 
 				// display the username
-				this._headerMenu = new Menu({});
 				this._usernameButton = new DropDownButton({
 					id: 'umcMenuUsername',
 					'class': 'umcHeaderText',
 					label: _('umcUserInfo', {
 						username: tools.status('username')
 					}),
-					dropDown: this._headerMenu
+					dropDown: new Menu({})
 				});
 				this._headerRight.addChild(this._usernameButton);
 
+				array.forEach([this._hostInfo, this._usernameButton,], lang.hitch(this, function(menu) {
+					this._menuMap[menu.id] = menu.dropDown;
+				}));
+
 				// the settings context menu
-				this._settingsMenu = new Menu({});
-				this._headerMenu.addChild(new PopupMenuItem({
+				this.addMenuEntry(new PopupMenuItem({
+					$parentMenu$: 'umcMenuUsername',
+					$priority$: 60,
 					label: _('Settings'),
 					id: 'umcMenuSettings',
-					popup: this._settingsMenu
+					popup: new Menu({})
 				}));
 
 				// the help context menu
-				this._helpMenu = new Menu({});
-				this._headerMenu.addChild(new PopupMenuItem({
+				this.addMenuEntry(new PopupMenuItem({
+					$parentMenu$: 'umcMenuUsername',
+					$priority$: 50,
 					label: _('Help'),
 					id: 'umcMenuHelp',
-					popup: this._helpMenu
+					popup: new Menu({})
 				}));
 
 				// the logout button
-				this._headerMenu.addChild(new MenuItem({
+				this.addMenuEntry(new MenuItem({
+					$parentMenu$: 'umcMenuUsername',
+					$priority$: -1,
 					id: 'umcMenuLogout',
 					label: _('Logout'),
 					onClick: function() { require('umc/app').relogin(); }
@@ -557,6 +564,26 @@ define([
 
 			if (tools.status('overview') && !tools.status('singleModule')) {
 				this.setupSearchField();
+			}
+		},
+
+		addMenuEntry: function(item) {
+			if (tools.status('overview')) {
+				var menu = this._menuMap[item.$parentMenu$ || 'umcMenuUsername'];
+				if (item.isInstanceOf(Menu)) {
+					this._menuMap[item.id] = item;
+				} else if (item.isInstanceOf(PopupMenuItem)) {
+					this._menuMap[item.id] = item.popup;
+				} else if (item.isInstanceOf(DropDownButton)) {
+					this._menuMap[item.id] = item.dropDown;
+				}
+				var position = menu.getChildren().length;
+				array.forEach(menu.getChildren().reverse(), function(child, pos) {
+					if ((child.$priority$ || 0)	<= (menu.$priority$ || 0)) {
+						position = pos;
+					}
+				}, this);
+				menu.addChild(item, position);
 			}
 		},
 
@@ -581,29 +608,32 @@ define([
 		},
 
 		_setupHelpMenu: function() {
-			if (!this._helpMenu) {
-				return;
-			}
-			this._helpMenu.addChild(new MenuItem({
+			this.addMenuEntry(new MenuItem({
+				$parentMenu$: 'umcMenuHelp',
 				label: _('Help'),
 				onClick : lang.hitch(this, '_showHelpDialog')
 			}));
 
-			this._helpMenu.addChild(new MenuItem({
+			this.addMenuEntry(new MenuItem({
+				$parentMenu$: 'umcMenuHelp',
 				label: _('Feedback'),
 				onClick : lang.hitch(this, '_showFeedbackPage')
 			}));
 
 			this._insertPiwikMenuItem();
 
-			this._helpMenu.addChild(new MenuItem({
+			this.addMenuEntry(new MenuItem({
+				$parentMenu$: 'umcMenuHelp',
 				label: _('About UMC'),
 				onClick : lang.hitch(this, '_showAboutDialog')
 			}));
 
-			this._helpMenu.addChild(new MenuSeparator({}));
+			this.addMenuEntry(new MenuSeparator({
+				$parentMenu$: 'umcMenuHelp'
+			}));
 
-			this._helpMenu.addChild(new MenuItem({
+			this.addMenuEntry(new MenuItem({
+				$parentMenu$: 'umcMenuHelp',
 				label: _('UCS start site'),
 				onClick: function() {
 					topic.publish('/umc/actions', 'menu-help', 'ucs-start-site');
@@ -612,7 +642,8 @@ define([
 				}
 			}));
 
-			this._helpMenu.addChild(new MenuItem({
+			this.addMenuEntry(new MenuItem({
+				$parentMenu$: 'umcMenuHelp',
 				label: _('Univention Website'),
 				onClick: function() {
 					topic.publish('/umc/actions', 'menu-help', 'website');
@@ -627,7 +658,8 @@ define([
 			if (!(_hasFFPULicense() && isUserAdmin)) {
 				return;
 			}
-			this._helpMenu.addChild(new MenuItem({
+			this.addMenuEntry(new MenuItem({
+				$parentMenu$: 'umcMenuHelp',
 				label: _('Usage statistics'),
 				onClick: lang.hitch(this, '_showPiwikDialog')
 			}));
@@ -1440,8 +1472,8 @@ define([
 		},
 
 		addMenuEntry: function(item) {
-			if (this._header && this._header._headerMenu) {
-				this._header._headerMenu.addChild(item);
+			if (this._header) {
+				this._header.addMenuEntry(item);
 			}
 		},
 
