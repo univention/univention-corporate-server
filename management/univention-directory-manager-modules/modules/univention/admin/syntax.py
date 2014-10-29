@@ -48,7 +48,6 @@ import bz2
 import copy
 import sys, os
 import shlex
-import imghdr
 
 translation=univention.admin.localization.translation('univention/admin')
 _=translation.translate
@@ -445,7 +444,7 @@ class jpegPhoto( Upload ):
 	@classmethod
 	def parse(self, text):
 		try:
-			assert imghdr.what(None, base64.b64decode(text)) == 'jpeg'
+			assert base64.b64decode(text)[0:2] == b'\xff\xd8' ## this is what imghdr.py probably does in the future.
 			return text
 		except:
 			raise univention.admin.uexceptions.valueError(_('Value must be Base64 encoded jpeg'))

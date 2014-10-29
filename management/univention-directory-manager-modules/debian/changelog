@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.25-1) unstable; urgency=medium
+
+  * Bug #36304: Workaround for restrictive imghdr.test_jpeg
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Oct 2014 13:37:03 +0100
+
 univention-directory-manager-modules (10.0.24-1) unstable; urgency=medium
 
   * Bug #35847: remove password from users/self
