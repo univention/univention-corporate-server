@@ -1,3 +1,9 @@
+univention-radius (2.0.1-1) unstable; urgency=medium
+
+  * Bug #35516: Support Samba ADDS kerberos principal style client names
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Oct 2014 14:03:09 +0100
+
 univention-radius (2.0.0-1) unstable; urgency=medium
 
   * Package update for UCS 4.0 (Bug #35889)

@@ -238,8 +238,17 @@ SAMBA_ACCOUNT_FLAG_DISABLED = 'D'
 SAMBA_ACCOUNT_FLAG_LOCKED = 'L'
 DISALLOWED_SAMBA_ACCOUNT_FLAGS = frozenset((SAMBA_ACCOUNT_FLAG_DISABLED, SAMBA_ACCOUNT_FLAG_LOCKED, ))
 
+def parseUsername(username):
+	'''convert username from host/-format to $-format if required'''
+	if not username.startswith('host/'):
+		return username
+	username = username.split('/', 1)[1] # remove host/
+	username = username.split('.', 1)[0] # remove right of '.'
+	return username + '$'
+
 def getNTPasswordHash(ldapConnection, username, stationId):
 	'stationId may be None if it was not supplied to the program'
+	username = parseUsername(username)
 	if userToGroup or groupInfo: # proxy UCRV set, UCS@school mode
 		if not (checkProxyFilterPolicy(username) or checkNetworkAccess(ldapConnection, username)):
 			return None
