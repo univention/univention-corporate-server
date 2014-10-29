@@ -37,12 +37,12 @@ import notifier.threads as threads
 
 from univention.management.console.log import AUTH
 from univention.management.console.pam import PamAuth, AuthenticationError, AuthenticationFailed, PasswordExpired, PasswordChangeFailed
-from univention.management.console.protocol.definitions import status_description, SUCCESS, BAD_REQUEST_AUTH_FAILED, BAD_REQUEST_PASSWORD_EXPIRED
 
 
 class AuthenticationResult(object):
 
 	def __init__(self, result):
+		from univention.management.console.protocol.definitions import SUCCESS, BAD_REQUEST_AUTH_FAILED, BAD_REQUEST_PASSWORD_EXPIRED
 		self.credentials = (None, None)
 		self.status = SUCCESS
 		self.authenticated = not isinstance(result, BaseException)

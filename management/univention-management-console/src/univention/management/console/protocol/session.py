@@ -486,6 +486,7 @@ class Processor(signals.Provider):
 					CORE.warn('Could not search for domaincontrollers: %s' % (e))
 					domaincontrollers = []
 				res.result = ['%s.%s' % (computer['cn'][0], computer['associatedDomain'][0]) for dn, computer in domaincontrollers if computer.get('associatedDomain')]
+				res.result.sort()
 			else:
 				# unjoined / no LDAP connection
 				res.result = []

@@ -1,3 +1,10 @@
+univention-management-console (7.1.58-3) unstable; urgency=medium
+
+  * Bug #35847: fix error when umc-doc imports modules
+  * Bug #33127: sort host dropdown
+
+ -- Florian Best <best@univention.de>  Wed, 29 Oct 2014 14:07:49 +0100
+
 univention-management-console (7.1.58-2) unstable; urgency=medium
 
   * Bug #35847: some details
