@@ -1,3 +1,9 @@
+univention-ssl (8.0.0-6) unstable; urgency=low
+
+  * removed unused openssl.conf (Bug #30545) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Oct 2014 13:19:25 +0100
+
 univention-ssl (8.0.0-5) unstable; urgency=low
 
   * new defaults for ssl/default/hashfunction (sha384)
