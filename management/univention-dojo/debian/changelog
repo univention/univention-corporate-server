@@ -1,3 +1,11 @@
+univention-dojo (8.0.3-1) unstable; urgency=medium
+
+  Bug #35654:
+  * patch dijit/Dialog for optimized handling w.r.t. responsive design
+  * update all packages to their latest versions
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 30 Oct 2014 11:25:12 +0100
+
 univention-dojo (8.0.2-1) unstable; urgency=medium
 
   * Bug #35654: adjust handling of CSS classes for dijit/ProgressBar

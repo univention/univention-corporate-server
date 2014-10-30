@@ -1,0 +1,49 @@
+--- dojo/dijit/Dialog.js.orig	2014-10-24 21:05:07.596000000 +0200
++++ dojo/dijit/Dialog.js	2014-10-30 10:48:37.512000000 +0100
+@@ -161,8 +161,8 @@
+ 			//		and also adjust position to be fully within the viewport, so user doesn't lose access to handle
+ 			var nodePosition = domGeometry.position(this.domNode),
+ 				viewport = winUtils.getBox(this.ownerDocument);
+-			nodePosition.y = Math.min(Math.max(nodePosition.y, 0), (viewport.h - nodePosition.h));
+-			nodePosition.x = Math.min(Math.max(nodePosition.x, 0), (viewport.w - nodePosition.w));
++			//nodePosition.y = Math.min(Math.max(nodePosition.y, 0), (viewport.h - nodePosition.h));
++			//nodePosition.x = Math.min(Math.max(nodePosition.x, 0), (viewport.w - nodePosition.w));
+ 			this._relativePosition = nodePosition;
+ 			this._position();
+ 		},
+@@ -210,14 +210,15 @@
+ 				var node = this.domNode,
+ 					viewport = winUtils.getBox(this.ownerDocument),
+ 					p = this._relativePosition,
+-					bb = p ? null : domGeometry.position(node),
++					bb = domGeometry.position(node),
+ 					l = Math.floor(viewport.l + (p ? p.x : (viewport.w - bb.w) / 2)),
+-					t = Math.floor(viewport.t + (p ? p.y : (viewport.h - bb.h) / 2))
++					t = Math.floor(viewport.t + (p ? p.y : Math.max(0, (viewport.h - bb.h) / 2)))
+ 					;
+ 				domStyle.set(node, {
+ 					left: l + "px",
+ 					top: t + "px"
+ 				});
++				winUtils.scrollIntoView(this.titleNode);
+ 			}
+ 		},
+ 
+@@ -284,6 +285,7 @@
+ 			// {w: ..., h:...} arg.
+ 			var win = winUtils.get(this.ownerDocument);
+ 			this._modalconnects.push(on(win, "scroll", lang.hitch(this, "resize", null)));
++			this._modalconnects.push(on(win, "resize", lang.hitch(this, "_position", null)));
+ 
+ 			this._modalconnects.push(on(this.domNode, "keydown", lang.hitch(this, "_onKey")));
+ 
+@@ -396,6 +398,9 @@
+ 			// dim: Object?
+ 			//		Optional dimension object like {w: 200, h: 300}
+ 
++			// skip resize handling, this is now all handled via CSS directly
++			return;
++
+ 			if(this.domNode.style.display != "none"){
+ 
+ 				this._checkIfSingleChild();

@@ -54,12 +54,12 @@ dojo: dojo-*.tar.gz
 	tar -xzf $<
 	[ ! -d $@ ] && mv $@*/ $@ || true
 	cd dojo; \
-	patch -p1 < ../fix_domReady_console_error.patch && \
 	patch -p1 < ../fix_bashism.patch && \
 	patch -p1 < ../fix_grid_focus.patch && \
 	patch -p1 < ../fix_standbyOpacity.patch && \
 	patch -p1 < ../fix_dojo_iframe_textarea.patch && \
 	patch -p1 < ../fix_Dialog_autofocus.patch && \
+	patch -p1 < ../fix_Dialog_resize_handling.patch && \
 	patch -p1 < ../fix_dojox_widget_Standby_scrollbar_offset.patch && \
 	patch -p1 < ../fix_dijit_ProgressBar_additional_css_classes.patch
 
