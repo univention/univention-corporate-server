@@ -1176,7 +1176,7 @@ msgid ""
 "should only be used in some rare use cases, for example as firewall system."
 msgstr ""
 "Das installierte UCS-System wird keinerlei webbasierte Verwaltungsfunktionen "
-"anbieten und kein Mitglied einer Domäne werden. Solche ein UCS-System sollte "
+"anbieten und kein Mitglied einer Domäne werden. Solch ein UCS-System sollte "
 "nur in seltenen Fällen aufgesetzt werden, etwa als Firewall-System."
 
 #: umc/js/setup/ApplianceWizard.js:1684
