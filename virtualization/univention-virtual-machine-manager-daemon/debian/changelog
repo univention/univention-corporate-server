@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.7-1) unstable; urgency=low
+
+  * Bug #35977: Switch to more efficient python-lxml
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 30 Oct 2014 14:56:51 +0100
+
 univention-virtual-machine-manager-daemon (4.0.6-2) unstable; urgency=low
 
   * Preselect server in create wizard from selected treeview item (Bug #36308)
