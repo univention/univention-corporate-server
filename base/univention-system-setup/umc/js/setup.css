@@ -27,6 +27,11 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+.umc .umcSetupNetworkPage .dojoxGrid {
+	height: 200px !important;
+	max-height: 200px !important;
+}
+
 .umc .umcLayoutRow .umcLabelPane.umc-ucssetup-wizard-radio-button-label {
 	padding-bottom: 0;
 	margin-bottom: 0

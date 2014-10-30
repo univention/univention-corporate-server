@@ -50,6 +50,7 @@ define([
 		//		This class renderes a detail page containing subtabs and form elements
 		//		in order to edit network interfaces.
 
+		'class' : 'umcSetupNetworkPage',
 		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 		addPage: null,
 		removePage: null,
