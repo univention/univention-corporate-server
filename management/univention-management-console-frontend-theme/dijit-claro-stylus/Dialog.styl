@@ -35,15 +35,35 @@
 	//border: 1px solid $popup-border-color;
 	border: none;
 	box-shadow: 0 0px 25px rgba(0,0,0,0.15);
-} 
+	max-width: $dialog-max-width;
+
+	@media (max-width: $dialog-max-width) {
+		max-width: 100%;
+	}
+
+	&.umcLargeDialog {
+		width: 100%;
+		@media (min-width: ($dialog-max-width + 1)) {
+			width: $dialog-max-width;
+		}
+		@media (min-width: ($dialog-max-width / $dialog-large-width)) {
+			width: (100%*$dialog-large-width);
+		}
+	}
+}
 
 .claro .dijitDialogPaneContent {
 	background: $pane-background-color repeat-x top left;
 	border-top: 1px solid $popup-border-color;
 	padding: 1.6em 1.2em 1.2em 1.2em;
 	position: relative;
-	box-sizing: content-box;
-	max-width: 650px;
+	//box-sizing: content-box;
+}
+
+.umc .dijitDialogPaneContent,
+.umc .dijitDialogTitleBar {
+	width: 100%;
+	max-width: none;
 }
 
 .claro .dijitDialogPaneContentArea {
@@ -83,7 +103,7 @@
 	background-color: $dialog-titlebar-background-color;
 	standard-gradient();
 	padding: 0.9em 3em 0.9em 1.2em;
-	box-sizing: content-box;
+	//box-sizing: content-box;
 }
 
 .claro .dijitDialogTitle {
@@ -124,7 +144,7 @@
 	/* the outermost dom node, holding the connector and container */
 	background: transparent;	/* make the area on the sides of the arrow transparent */
 	padding: 4px;
-	box-sizing: content-box;
+	//box-sizing: content-box;
 }
 
 .umc .dijitTooltipDialog,

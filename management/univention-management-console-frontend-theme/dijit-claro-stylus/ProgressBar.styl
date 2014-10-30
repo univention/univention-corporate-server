@@ -55,13 +55,21 @@
 	border: 0px solid $progressbar-border-color;
 	border-right-width: 1px;
 	transition-property: width;
-	transition-duration: .25s;
+	transition-duration: .5s;
 	height: 20px;
 	box-sizing: content-box;
+}
+.umc .dijitProgressBarIndeterminate .dijitProgressBarFull {
+	transition: none;
+}
+.umc .dijitProgressBar[aria-valuenow="0"] .dijitProgressBarFull {
+	transition: none;
 }
 .claro .dijitProgressBarLabel {
 	color: $progressbar-text-color;
 	padding: 2px 0;
+	transition-property: color;
+	transition-duration: .5s;
 }
 .umc .dijitProgressBarGreaterThan50Percent .dijitProgressBarLabel {
 	color: $text-color-dark-background;

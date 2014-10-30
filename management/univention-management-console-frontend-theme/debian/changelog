@@ -1,3 +1,12 @@
+univention-management-console-frontend-theme (0.0.75-1) unstable; urgency=medium
+
+  Bug #35654:
+  * adjust styling of Dialog for optimized handling w.r.t responsive design
+  * fix displaying problems with icons.svg on Firefox
+  * add SVG file for standby animation
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 30 Oct 2014 11:27:10 +0100
+
 univention-management-console-frontend-theme (0.0.74-1) unstable; urgency=medium
 
   * Bug #36310: underline button label when button is focussed
