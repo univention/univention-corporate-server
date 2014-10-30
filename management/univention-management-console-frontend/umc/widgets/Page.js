@@ -33,18 +33,12 @@ define([
 	"dojo/_base/kernel",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/aspect",
-	"dojo/dom-style",
 	"dojo/dom-class",
-	"dojox/grid/_Grid",
-	"../tools",
 	"../dialog",
 	"../render",
 	"./Text",
-	"./Grid",
-	"./ContainerWidget",
-	"../i18n!"
-], function(declare, kernel, lang, array, aspect, style, domClass, _Grid, tools, dialog, render, Text, Grid, ContainerWidget, _) {
+	"./ContainerWidget"
+], function(declare, kernel, lang, array, domClass, dialog, render, Text, ContainerWidget) {
 	return declare("umc.widgets.Page", [ContainerWidget], {
 		// summary:
 		//		Class that abstracts a displayable page for a module.
@@ -80,6 +74,7 @@ define([
 
 		navBootstrapClasses: 'col-xs-12 col-sm-12 col-md-4 col-lg-4',
 		mainBootstrapClasses: 'col-xs-12 col-sm-12 col-md-8 col-lg-8',
+		_initialBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
 
 		// the widget's class name as CSS class
 		baseClass: 'umcPage',
@@ -119,9 +114,7 @@ define([
 					this.addChild(this._helpTextPane);
 				}
 			}
-			style.set(this._helpTextPane.domNode, {
-				display: newVal ? 'block' : 'none'
-			});
+			domClass.toggle(this._helpTextPane.domNode, 'dijitHidden', !newVal);
 			this._helpTextPane.set('content', newVal);
 			this._set('helpText', newVal);
 		},
@@ -138,9 +131,7 @@ define([
 				this.addChild(this._headerTextPane, 0);
 			}
 			// hide header if empty string
-			style.set(this._headerTextPane.domNode, {
-				display: newVal ? 'block' : 'none'
-			});
+			domClass.toggle(this._headerTextPane.domNode, 'dijitHidden', !newVal);
 			this._headerTextPane.set('content', '<h1>' + newVal + '</h1>');
 			this._set('headerText', newVal);
 		},
@@ -179,7 +170,7 @@ define([
 			});
 			this._main = new ContainerWidget({
 				baseClass: 'umcPageMain',
-				'class': 'col-xs-12 col-sm-12 col-md-12 col-lg-12'
+				'class': this._initialBootstrapClasses
 			});
 			ContainerWidget.prototype.addChild.apply(this, [this._nav]);
 			ContainerWidget.prototype.addChild.apply(this, [this._main]);
@@ -187,7 +178,7 @@ define([
 			this._footer = new ContainerWidget({
 				region: 'footer',
 				baseClass: 'umcPageFooter',
-				'class': 'col-xs-12 col-sm-12 col-md-12 col-lg-12'
+				'class': this._initialBootstrapClasses
 			});
 			ContainerWidget.prototype.addChild.apply(this, [this._footer]);
 
@@ -271,7 +262,9 @@ define([
 			var hasNav = this._nav.getChildren().length;
 			if (hasNav) {
 				domClass.toggle(this._nav.domNode, 'dijitHidden', false);
+				domClass.remove(this._nav.domNode, this._initialBootstrapClasses);
 				domClass.add(this._nav.domNode, this.navBootstrapClasses);
+				domClass.remove(this._main.domNode, this._initialBootstrapClasses);
 				domClass.add(this._main.domNode, this.mainBootstrapClasses);
 			}
 		},
