@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-3
+src: univention-directory-replication
+fix: 7.0.1-12.89.201410301433
+version: [3]
+desc: |
+  This update fixes the following issue:
+  * object replication needs to filter out operational ppolicy
+    LDAP attributes which may be found on a UCS 4.0 master.
+bug: [36353]
