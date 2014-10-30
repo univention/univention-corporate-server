@@ -160,10 +160,11 @@ class UMC_Module(dict):
 
 	@property
 	def python_files(self):
-		for filename in os.listdir(self.python_path):
-			if not filename.endswith('.py'):
-				continue
-			yield os.path.join(self.python_path, filename)
+		for (path, dirs, filenames) in os.walk(self.python_path):
+			for filename in filenames:
+				if not filename.endswith('.py'):
+					continue
+				yield os.path.join(path, filename)
 
 	@property
 	def python_po_files(self):
