@@ -1,3 +1,9 @@
+univention-ldap (11.0.7-7) unstable; urgency=medium
+
+  * Add UCR description for ldap/ppolicy (Bug #31907)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Oct 2014 17:30:14 +0100
+
 univention-ldap (11.0.7-6) unstable; urgency=medium
 
   * Fix typo (Bug #31907)
