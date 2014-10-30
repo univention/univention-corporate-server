@@ -39,7 +39,7 @@ joinscript_init
 
 eval "$(ucr shell)"
 
-ucr set	ucs/web/overview/entries/admin/umc/icon="/univention-management-console/js/dijit/themes/umc/icons/50x50/univention-management-console.png" \
+ucr set	ucs/web/overview/entries/admin/umc/icon="/univention-management-console/js/dijit/themes/umc/icons/scalable/univention-management-console.svg" \
 	ucs/web/overview/entries/admin/umc/link="/univention-management-console" \
 	ucs/web/overview/entries/admin/umc/priority="10" \
 

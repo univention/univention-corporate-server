@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.80-7) unstable; urgency=low
+
+  * changed icon in install script (Bug #36316)
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 30 Oct 2014 08:50:42 +0100
+
 univention-management-console-frontend (4.1.80-6) unstable; urgency=medium
 
   * Revert "Bug #35654: Add Minimize button in module header instead of Back
