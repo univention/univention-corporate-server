@@ -1,3 +1,10 @@
+univention-system-setup (8.1.34-2) unstable; urgency=low
+
+  * Bug #35499: Improved layout
+  * Bug #36110: Hide root password for UCS Master in Debian Installer mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Oct 2014 00:08:54 +0100
+
 univention-system-setup (8.1.34-1) unstable; urgency=low
 
   * Bug #36350: Adapted the network interface grid
