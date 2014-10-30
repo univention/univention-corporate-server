@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.6-2) unstable; urgency=low
+
+  * Preselect server in create wizard from selected treeview item (Bug #36308)
+
+ -- Andreas Peichert <peichert@univention.de>  Thu, 30 Oct 2014 13:44:26 +0100
+
 univention-virtual-machine-manager-daemon (4.0.6-1) unstable; urgency=low
 
   * Bug #36144: Added infinite progress bar. It is shown in case the duration

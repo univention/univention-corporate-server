@@ -52,8 +52,7 @@ define([
 
 	return declare("umc.modules.uvmm.CreatePage", [ Wizard ], {
 		umcpCommand: null,
-		_generalForm: null,
-		_tree: null,
+		_navContextItem: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -66,13 +65,16 @@ define([
 
 				return all(deferreds).then(lang.hitch(this, function(results) {
 					var servers = [];
-					array.forEach(results, function(iresult) {
-						array.forEach(iresult.result, function(iserver) {
+					array.forEach(results, lang.hitch(this, function(iresult) {
+						array.forEach(iresult.result, lang.hitch(this, function(iserver) {
 							if (tools.isTrue(iserver.available)) {
+								if (this._navContextItem && this._navContextItem.label == iserver.label) {
+									iserver.preselected = true;
+								}
 								servers.push(iserver);
 							}
-						});
-					});
+						}));
+					}));
 					return servers;
 				}));
 			});

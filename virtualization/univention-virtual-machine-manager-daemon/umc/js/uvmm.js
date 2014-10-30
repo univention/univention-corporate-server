@@ -285,6 +285,11 @@ define([
 				})
 			}));
 
+			// tree left-click
+			this.own(aspect.after(this._tree, '_onClick', lang.hitch(this, function(node) {
+				this._navContextItem = node.item;
+			}), true));
+			// tree right-click for edit menu
 			this.own(aspect.after(this._tree, '_onNodeMouseEnter', lang.hitch(this, function(node) {
 				this._navContextItemFocused = node.item;
 			}), true));
@@ -691,6 +696,7 @@ define([
 			});
 
 			page = new CreatePage({
+				_navContextItem: this._navContextItem,
 				onCancel: _cleanup,
 				onFinished: _finished,
 				umcpCommand: lang.hitch(this, 'umcpCommand')
