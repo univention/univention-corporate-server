@@ -59,7 +59,7 @@ define([
 		// set to zero it effectively stops the timer.
 		_interval: 1000,
 
-		_job_key: '', 			// the key of the currently running job
+		_job_key: '', // the key of the currently running job
 
 		_reboot_required: null,
 

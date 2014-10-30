@@ -167,7 +167,6 @@ define([
 			var view_height = domGeometry.position(text_node).h; // height of the box which display the text
 			var content_height = text_node.scrollHeight; // the overall height of the text inside the view
 			var scroll_position = text_node.scrollTop; //  current position auf the scrollbar
-			console.log('### scrollToBottom, vh, ch, sp: ' + view_height + ' ' + content_height + ' ' + scroll_position);
 			// check if we got an parameter
 			force_goto_bottom = typeof force_goto_bottom !== 'undefined' ? force_goto_bottom : false;
 			if(force_goto_bottom || this._initialise_scrollbar || this.isAtBottom(scroll_position, content_height, view_height)){
@@ -176,8 +175,6 @@ define([
 				if(this._initialise_scrollbar) {
 					this._initialise_scrollbar = this.hasToBeInitialised(content_height, view_height);
 				}
-				console.log('### scrollToBottom, success, text_node.scrollTop: ' + text_node.scrollTop);
-				console.log('### scrollToBottom, this._initialise_scrollbar: ' + this._initialise_scrollbar);
 			}
 		},
 
@@ -188,10 +185,8 @@ define([
 			var ratio = scroll_position / (content_height - view_height); 
 			// if the ratio is greater than 0.75 we will say that we have reached the bottom and return true
 			if(ratio >= 0.75){
-				console.log('### isAtBottom true, ratio: ' + ratio);
 				return true;
 			} else { // otherwise we wouldn't say that we have reached the bottom
-				console.log('### isAtBottom false, ratio: ' + ratio);
 				return false;
 			}
 		},
@@ -200,10 +195,8 @@ define([
 		// at the bottom of the view
 		hasToBeInitialised: function(content_height, view_height){
 			if(content_height <= view_height + 50) { 
-				console.log('### foobar true');
 				return true;
 			} else {
-				console.log('### foobar false');
 				return false;
 			}
 		},

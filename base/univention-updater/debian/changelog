@@ -1,3 +1,9 @@
+univention-updater (10.0.31-1) unstable; urgency=low
+
+  * Bug #36287: Removed the debug statements
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 30 Oct 2014 09:49:43 +0100
+
 univention-updater (10.0.30-1) unstable; urgency=low
 
   * Bug #36287: Adapted auto scrolling in software update module
