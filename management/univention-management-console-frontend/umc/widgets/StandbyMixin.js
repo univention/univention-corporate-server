@@ -31,11 +31,18 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/has",
 	"dojo/Deferred",
 	"dojo/dom-construct",
 	"dijit/_WidgetBase",
 	"dojox/widget/Standby"
-], function(declare, lang, Deferred, construct, _WidgetBase, Standby) {
+], function(declare, lang, has, Deferred, construct, _WidgetBase, Standby) {
+	var animImage = Standby.prototype.image;
+	if (!has('ie')) {
+		// for browser != Internet Explorer, we can use an SVG animation
+		animImage = require.toUrl("dijit/themes/umc/images/standbyAnimation.svg").toString();
+	}
+
 	return declare("umc.widgets.StandbyMixin", _WidgetBase, {
 		// summary:
 		//		Mixin class to make a widget "standby-able"
@@ -64,7 +71,8 @@ define([
 				target: this.domNode,
 				duration: 200,
 				opacity: this.standbyOpacity,
-				color: '#FFF'
+				color: '#FFF',
+				image: animImage
 			}))[0];
 			this.domNode.appendChild(this._standbyWidget.domNode);
 			this._standbyWidget.startup();

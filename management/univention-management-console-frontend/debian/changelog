@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.81-1) unstable; urgency=medium
+
+  * Bug #35654: use SVG file for standby animation except on IE
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 30 Oct 2014 11:28:44 +0100
+
 univention-management-console-frontend (4.1.80-7) unstable; urgency=low
 
   * changed icon in install script (Bug #36316)
