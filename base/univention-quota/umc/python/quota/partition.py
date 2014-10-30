@@ -63,16 +63,12 @@ class Commands(object):
 				list_entry['mountPoint'] = partition.mount_point
 				list_entry['partitionSize'] = None
 				list_entry['freeSpace'] = None
-				list_entry['inUse'] = None
+				list_entry['inUse'] = tools.quota_is_enabled(partition)
 				mounted_partition = mt.get(partition.spec)
 				if mounted_partition:
 					partition_info = df.DeviceInfo(partition.mount_point)
 					list_entry['partitionSize'] = tools.block2byte(partition_info.size(), 'GB', 1)
 					list_entry['freeSpace'] = tools.block2byte(partition_info.free(), 'GB', 1)
-					if 'usrquota' in mounted_partition.options:
-						list_entry['inUse'] = True
-					else:
-						list_entry['inUse'] = False
 				result.append(list_entry)
 			request.status = SUCCESS
 		self.finished(request.id, result, message)
