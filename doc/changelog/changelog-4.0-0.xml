@@ -190,14 +190,15 @@
 					(e.g. systems installed with UCS 4.0)
 					the ppolicy LDAP overlay can now optionally be activated
 					to implement account lockout in cases of repeated LDAP authentication failures.
-					An example configuration for this is stored in OpenLDAP. The overlay
+					All domaincontrollers need to be updated to UCS 4.0 before activating this.
+					An default configuration for this is stored in OpenLDAP. The overlay
 					and this default configuration can be activated on a per-DC basis
 					by setting both &ucsUCRV;s <envar>ldap/ppolicy</envar>
 					and <envar>ldap/ppolicy/enabled</envar> to <emphasis>yes</emphasis> and
 					restarting the slapd daemon. The default policy is such that
 					5 repeated LDAP authentication failures within a monitoring interval
 					of 5 minutes causes the authenticating account to be locked in UDM.
-					A locked account can be unlocked via UDM by a Domain Admin.
+					A locked account can only be unlocked via UDM by a Domain Admin.
 					(<ulink url="&ucsbug;31907">Bug 31907</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
