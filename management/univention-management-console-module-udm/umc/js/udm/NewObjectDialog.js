@@ -46,7 +46,7 @@ define([
 		// summary:
 		//		Dialog class for creating a new LDAP object.
 
-		'class': 'umcUdmNewObjectDialog',
+		'class': 'umcUdmNewObjectDialog umcLargeDialog',
 
 		// umcpCommand: Function
 		//		Reference to the module specific umcpCommand function.

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.19-1) unstable; urgency=medium
+
+  * Bug #36303: adjust new object wizard width
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 30 Oct 2014 12:18:31 +0100
+
 univention-management-console-module-udm (5.1.18-1) unstable; urgency=medium
 
   * Bug #32026: display help link also for new objects
