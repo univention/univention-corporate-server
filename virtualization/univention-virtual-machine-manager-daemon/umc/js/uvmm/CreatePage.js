@@ -68,7 +68,7 @@ define([
 					array.forEach(results, lang.hitch(this, function(iresult) {
 						array.forEach(iresult.result, lang.hitch(this, function(iserver) {
 							if (tools.isTrue(iserver.available)) {
-								if (this._navContextItem && this._navContextItem.label == iserver.label) {
+								if (this._navContextItem && iserver.label.indexOf(this._navContextItem.label) == 0) {
 									iserver.preselected = true;
 								}
 								servers.push(iserver);
