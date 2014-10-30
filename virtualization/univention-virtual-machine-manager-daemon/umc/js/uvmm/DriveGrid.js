@@ -185,7 +185,6 @@ define([
 			} );
 
 			wizard = new DriveWizard({
-				autoHeight: true,
 				domain: this.domain,
 				onFinished: _finished,
 				onCancel: _cleanup,
@@ -312,8 +311,7 @@ define([
 			_dialog = new Dialog({
 				title: _('Edit drive'),
 				content: form,
-				'class' : 'umcPopup',
-				style: 'max-width: 400px;'
+				'class' : 'umcLargeDialog'
 			});
 			_dialog.show();
 		},
@@ -373,7 +371,7 @@ define([
 					if ( action == 'delete' ) {
 						tools.umcpCommand('uvmm/storage/volume/remove', {
 							nodeURI: this.domain.nodeURI,
-							volumes: [{source: disk.source}],
+							volumes: [{source: disk.source}]
 						} ).then( lang.hitch( this, function( response ) {
 							this.onUpdateProgress( 1, 1 );
 						} ) );
@@ -423,7 +421,6 @@ define([
 			});
 
 			wizard = new DriveWizard({
-				autoHeight: true,
 				domain: this.domain,
 				onFinished: _finished,
 				onCancel: _cleanup

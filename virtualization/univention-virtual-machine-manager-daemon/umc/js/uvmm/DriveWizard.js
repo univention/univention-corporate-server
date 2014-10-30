@@ -53,6 +53,8 @@ define([
 
 		driveType: null, // pre-defined drive will automatically set the drive type and start on page 'drive'
 
+		autoHeight: true,
+
 		constructor: function(props) {
 			props = props || {};
 			lang.mixin(this, {
@@ -87,7 +89,7 @@ define([
 					widgets: [{
 						name: 'driveTypeText',
 						type: Text,
-						content: _('For the drive a new image can be created or an existing one can be chosen. An existing image should only be used by one virtual machine at a time.'),
+						content: _('For the drive a new image can be created or an existing one can be chosen. An existing image should only be used by one virtual machine at a time.')
 					}, {
 						name: 'driveType',
 						type: HiddenInput,

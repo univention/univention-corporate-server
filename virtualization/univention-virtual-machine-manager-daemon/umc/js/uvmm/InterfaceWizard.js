@@ -41,6 +41,7 @@ define([
 ], function(declare, lang, domClass, Wizard, ComboBox, Text, TextBox, types, _) {
 
 	return declare("umc.modules.uvmm.InterfaceWizard", [ Wizard ], {
+		autoHeight: true,
 
 		constructor: function(props, values) {
 			values = values || {};
@@ -48,9 +49,11 @@ define([
 			lang.mixin(this, {
 				pages: [{
 					name: 'interface',
-					headerText: values.$id$ ? _('Edit network interface') : _('Add network interface'),
-					helpText: _('Two types of network interfaces are support. The first one is <i>Bridge</i> that requires a static network connection on the physical server that is configurated to be used for bridging. By default the network interface called eth0 is setup for such a case on each UVMM node. If a virtual machine should have more than one bridging network interface, additional network interfaces on the physical server must be configured first. The second type is <i>NAT</i> provides a private network for virtual machines on the physical server and permits access to the external network. This network typ is useful for computers with varying network connections like notebooks. For such an interface the network configuration of the UVMM node needs to be modified. This is done automatically by the UVMM service when starting the virtual machine. Further details about the network configuration can be found in <a target="_blank" href="http://docs.univention.de/manual-4.0.html#uvmm:networkinterfaces">the manual</a>.'),
 					widgets: [{
+						name: 'helpText',
+						type: Text,
+						content: _('Two types of network interfaces are support. The first one is <i>Bridge</i> that requires a static network connection on the physical server that is configurated to be used for bridging. By default the network interface called eth0 is setup for such a case on each UVMM node. If a virtual machine should have more than one bridging network interface, additional network interfaces on the physical server must be configured first. The second type is <i>NAT</i> provides a private network for virtual machines on the physical server and permits access to the external network. This network typ is useful for computers with varying network connections like notebooks. For such an interface the network configuration of the UVMM node needs to be modified. This is done automatically by the UVMM service when starting the virtual machine. Further details about the network configuration can be found in <a target="_blank" href="http://docs.univention.de/manual-4.0.html#uvmm:networkinterfaces">the manual</a>.')
+					}, {
 						name: 'type',
 						type: ComboBox,
 						sizeClass: 'OneThird',
@@ -92,7 +95,7 @@ define([
 						['type', 'model'],
 						'typeDescription',
 						['source', 'mac_address']
-						]
+					]
 				}]
 			});
 		},
