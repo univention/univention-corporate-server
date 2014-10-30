@@ -1,3 +1,9 @@
+univention-dvd (0.2.11-1) unstable; urgency=low
+
+  * Bug #35885: Added pulseaudio to maintained 
+
+ -- Felix Botner <botner@univention.de>  Thu, 30 Oct 2014 09:41:38 +0100
+
 univention-dvd (0.2.10-4) unstable; urgency=low
 
   * Bug #35537: Fix hook script directory
