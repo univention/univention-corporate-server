@@ -61,8 +61,9 @@ define([
 			this.inherited(arguments);
 			// mixin the page structure
 			this._pageContent = this._getWidgets(cloudtype, cloud);
+			this._helptext = this._getHelpText(cloudtype);
 			lang.mixin(this, {
-				pages: this.getPages(),
+				pages: this.getPages(cloudtype),
 				headerButtons: [{
 					name: 'close',
 					iconClass: 'umcCloseIconWhite',
@@ -72,11 +73,19 @@ define([
 			});
 		},
 
-		getPages: function() {
+		_getHelpText: function(cloudtype) {
+			if (cloudtype == 'OpenStack') {
+				return _('Please enter the corresponding details for the virtual machine instance.');
+			} else if (cloudtype == 'EC2') {
+				return _('Please enter the corresponding details for the virtual machine instance. <a href="https://aws.amazon.com/documentation/ec2/" target=_blank>Use this link for more information about Amazon EC2</a>');
+			}
+		},
+
+		getPages: function(cloudtype) {
 			return [{
 				name: 'details',
 				headerText: _('Create a new virtual machine instance.'),
-				helpText: _('Please enter the corresponding details for virtual machine instance. <a href="https://aws.amazon.com/documentation/ec2/" target=_blank>Use this link for more information about Amazon EC2</a>'),
+				helpText: this._helptext,
 				widgets: this._pageContent.widgets,
 				layout: this._pageContent.layout
 			}];
@@ -213,7 +222,7 @@ define([
 						name: 'keyname',
 						type: ComboBox,
 						label: _('Select a key pair'),
-						dynamicOptions: {conn_name: cloud},
+					dynamicOptions: {conn_name: cloud},
 						dynamicValues: types.getCloudListKeypair,
 						required: true
 					}, {

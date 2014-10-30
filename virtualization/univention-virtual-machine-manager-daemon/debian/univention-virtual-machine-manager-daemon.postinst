@@ -41,7 +41,7 @@ univention-config-registry set "uvmm/pool/default/path?/var/lib/libvirt/images" 
 	"uvmm/umc/autoupdate/interval?5" \
 	"uvmm/check/interval?2" \
 	"uvmm/check/timeout?10" \
-	"uvmm/debug?DEBUG" \
+	"uvmm/debug?INFO" \
 	"uvmm/debug/command?INFO" \
 	"uvmm/debug/ldap?WARNING" \
 	"uvmm/debug/node?INFO" \

@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (4.0.7-3) unstable; urgency=low
+
+  * Bug #36136: Increase default loglevel
+  * Bug #36053: Fix help texts
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 30 Oct 2014 16:37:03 +0100
+
 univention-virtual-machine-manager-daemon (4.0.7-2) unstable; urgency=low
 
   * Bug #36356: Remove edit from UVMM module and hide UDM module
