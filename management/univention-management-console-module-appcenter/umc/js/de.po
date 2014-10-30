@@ -1052,9 +1052,9 @@ msgid "You're editing the details of the component definition."
 msgstr "Sie bearbeiten die Details der Komponenten-Definition."
 
 #: umc/js/appcenter/requirements.js:220
-msgid "https://docs.univention.de/manual-3.2.html#ad-connector:password-dienst"
+msgid "https://docs.univention.de/manual.html#ad-connector:password-dienst"
 msgstr ""
-"https://docs.univention.de/handbuch-3.2.html#ad-connector:password-dienst"
+"https://docs.univention.de/handbuch.html#ad-connector:password-dienst"
 
 #: umc/js/appcenter/AppCenterPage.js:79
 msgid "https://www.univention.de/en/products/ucs/app-catalogue/vote-for-app/"

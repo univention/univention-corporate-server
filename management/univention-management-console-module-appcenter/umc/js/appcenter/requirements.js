@@ -217,7 +217,7 @@ define([
 				return _('Open the documentation');
 			},
 			solution: function() {
-				window.open(_('https://docs.univention.de/manual-3.2.html#ad-connector:password-dienst'));
+				window.open(_('https://docs.univention.de/manual.html#ad-connector:password-dienst'));
 			}
 		}),
 		shall_have_enough_ram: new Requirement({
