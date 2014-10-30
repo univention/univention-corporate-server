@@ -185,7 +185,7 @@ define([
 			} );
 
 			wizard = new DriveWizard({
-				style: 'width: 450px; height:450px;',
+				autoHeight: true,
 				domain: this.domain,
 				onFinished: _finished,
 				onCancel: _cleanup,
@@ -194,6 +194,7 @@ define([
 
 			_dialog = new Dialog({
 				title: _('Change medium'),
+				'class': 'umcLargeDialog',
 				content: wizard
 			});
 			_dialog.show();
@@ -239,16 +240,19 @@ define([
 					type: Text,
 					name: '__message',
 					content: msg,
+					size: 'Two',
 					label: ''
 				}, {
 					name: 'device',
 					type: ComboBox,
+					size: 'Two',
 					value: disk.device,
 					disabled: true,
 					staticValues: types.dict2list(types.blockDevices)
 				}, {
 					name: 'pool',
 					type: ComboBox,
+					size: 'Two',
 					label: _( 'Pool' ),
 					description: _('Each image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS).'),
 					dynamicOptions: lang.hitch( this, function( options ) {
@@ -261,23 +265,27 @@ define([
 				}, {
 					name: 'volumeFilename',
 					type: TextBox,
+					size: 'Two',
 					value: disk.source || '',
 					label: _( 'Filename' ),
 					disabled: true
 				}, {
 					name: 'readonly',
 					type: CheckBox,
+					size: 'Two',
 					value: disk.readonly || false,
 					label: _('Read only'),
 					description: _('The device cannot be modified by the guest.')
 				}, {
 					type: CheckBox,
+					size: 'Two',
 					name: 'paravirtual',
 					value: disk.paravirtual === undefined ? false : disk.paravirtual,
 					label: _( 'Paravirtual drive' )
 				}, {
 					name: 'driver_cache',
 					type: ComboBox,
+					size: 'Two',
 					value: disk.driver_cache || 'default',
 					label: _('Caching'),
 					description: _('Configure cache behaviour of host.'),
@@ -415,7 +423,7 @@ define([
 			});
 
 			wizard = new DriveWizard({
-				style: 'width: 450px; height:525px;',
+				autoHeight: true,
 				domain: this.domain,
 				onFinished: _finished,
 				onCancel: _cleanup
@@ -423,6 +431,7 @@ define([
 
 			_dialog = new Dialog({
 				title: _('Add a new drive'),
+				'class': 'umcLargeDialog',
 				content: wizard
 			});
 			_dialog.show();

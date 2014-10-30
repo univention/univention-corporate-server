@@ -58,25 +58,44 @@ define([
 			lang.mixin(this, {
 				pages: [{
 					name: 'driveType',
-					headerText: _('Add drive'),
-					helpText: _('What type of drive should be created?'),
 					widgets: [{
+						name: 'driveTypeText',
+						type: Text,
+						size: 'Two',
+						content: _('What type of drive should be created?')
+					}, {
 						name: 'driveType',
 						type: ComboBox,
+						size: 'Two',
 						value: 'disk',
 						staticValues: types.dict2list(types.blockDevices)
 					}]
 				}, {
 					name: 'drive',
-					headerText: _('Add a new drive'),
-					helpText: _('For the drive a new image can be created or an existing one can be chosen. An existing image should only be used by one virtual machine at a time.'),
+					layout: [
+						['driveTypeText', 'driveType'],
+						'volumeType',
+						'pool_new',
+						'driver_type_new',
+						['volumeFilename_new', 'size_new'],
+						'pool_exists',
+						'volumeFilename_exists',
+						'driver_type_exists',
+						'volumeFilename_block',
+						'hint'
+					],
 					widgets: [{
+						name: 'driveTypeText',
+						type: Text,
+						content: _('For the drive a new image can be created or an existing one can be chosen. An existing image should only be used by one virtual machine at a time.'),
+					}, {
 						name: 'driveType',
 						type: HiddenInput,
 						value: ''
 					}, {
 						name: 'volumeType',
 						type: ComboBox,
+						size: 'Two',
 						depends: ['driveType'],
 						label: _('Drive type'),
 						sortDynamicValues: false,
@@ -94,6 +113,7 @@ define([
 					}, {
 						name: 'pool_new',
 						type: ComboBox,
+						size: 'Two',
 						label: _('Pool'),
 						description: _('Each image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS).'),
 						dynamicOptions: lang.hitch(this, function(options) {
@@ -106,6 +126,7 @@ define([
 					}, {
 						name: 'driver_type_new',
 						type: ComboBox,
+						size: 'Two',
 						label: _('Image format'),
 						depends: ['driveType', 'pool_new'],
 						dynamicOptions: lang.hitch(this, function(options) {
@@ -119,6 +140,7 @@ define([
 					}, {
 						name: 'volumeFilename_new',
 						type: TextBox,
+						size: 'OneAndAHalf',
 						required: true,
 						label: _('Filename'),
 						validator: lang.hitch(this, function(val) {
@@ -164,6 +186,7 @@ define([
 					}, {
 						name: 'size_new',
 						type: MappedTextBox,
+						size: 'Half',
 						required: true,
 						depends: ['pool_new'],
 						constraints: {min: 1024*1024},
@@ -199,6 +222,7 @@ define([
 					}, {
 						name: 'pool_exists',
 						type: ComboBox,
+						size: 'Two',
 						label: _('Pool'),
 						description: _('Each image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list of available images is updated.'),
 						dynamicOptions: lang.hitch(this, function(options) {
@@ -225,6 +249,7 @@ define([
 					}, {
 						name: 'volumeFilename_exists',
 						type: ComboBox,
+						size: 'Two',
 						label: _('Drive image'),
 						description: _('If the required image is not found it might be added by copying the file into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool local directory. After that go to the previous page an return to this one. The image should now be listed.'),
 						depends: [ 'pool_exists', 'driveType' ],
@@ -251,6 +276,7 @@ define([
 					}, {
 						name: 'driver_type_exists',
 						type: ComboBox,
+						size: 'Two',
 						label: _('Image format'),
 						depends: ['driveType', 'pool_exists'],
 						dynamicOptions: lang.hitch(this, function(options) {
@@ -264,6 +290,7 @@ define([
 					}, {
 						name: 'volumeFilename_block',
 						type: TextBox,
+						size: 'Two',
 						label: _('Device filename'),
 						required: true,
 						description: _('To bind the drive to a local device the filename of the associated block device must be specified.'),
@@ -273,6 +300,7 @@ define([
 						}
 					}, {
 						type: Text,
+						size: 'Two',
 						name: 'hint',
 						content: lang.replace(
 							'<span><img src="{themeUrl}/icons/16x16/{icon}.png" height="{height}" width="{width}" style="float:left; margin-right:5px;"/>{label}</span>', {
@@ -286,6 +314,11 @@ define([
 					}]
 				}]
 			});
+		},
+		
+		postCreate: function() {
+			this.inherited(arguments);
+			this._updateDriveWidgets('new');
 		},
 
 		_getNodeURI: function() {
