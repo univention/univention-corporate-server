@@ -416,6 +416,16 @@
 		</itemizedlist>
 	</section>
 
+	<section id="changelog:umc:quota">
+		<title>Filesystem quota module</title>
+		<itemizedlist>
+			<listitem><simpara>
+				The handling of activation, deactivation and detection of filesystem quota has been improved
+				(<ulink url="&ucsbug;36207">Bug 36207</ulink>).
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
 	<section id="changelog:umc:ucr">
 		<title>Univention Configuration Registry module</title>
 		<itemizedlist>
