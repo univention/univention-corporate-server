@@ -36,7 +36,7 @@ dpkg-divert --rename --quiet --divert /etc/motd.debian --package univention-base
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=27759
 dpkg-divert --rename --quiet --divert /etc/motd.tail.debian --package univention-base-files --add /etc/motd.tail
 
-dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/keymap.py 4~
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/keymap.py 4~ -- "$@"
 rm -f /etc/univention/templates/modules/keymap.pyc
 
 #DEBHELPER#

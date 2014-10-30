@@ -35,7 +35,7 @@ set -e
 if test "$1" = "purge"; then
 	rm -rf /var/cache/univention-baseconfig
 fi
-dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/keymap.py 4~
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/keymap.py 4~ -- "$@"
 
 #DEBHELPER#
 

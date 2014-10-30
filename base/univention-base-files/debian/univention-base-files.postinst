@@ -127,7 +127,7 @@ fi
 if [ -n "$locale" ]; then
 	locale-gen || true
 fi
-dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/keymap.py 4~
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/keymap.py 4~ -- "$@"
 
 update-rc.d rdate defaults 21 >/dev/null 2>&1 || true
 
