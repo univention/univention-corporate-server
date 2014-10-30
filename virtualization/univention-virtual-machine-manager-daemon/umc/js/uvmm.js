@@ -258,7 +258,8 @@ define([
 
 			// add a context menu to edit/delete items
 			var menu = new Menu({});
-			menu.addChild(new MenuItem({
+			// TODO: Bug #36272
+			/*menu.addChild(new MenuItem({
 				label: _( 'Edit' ),
 				iconClass: 'umcIconEdit',
 				onClick: lang.hitch(this, function(e) {
@@ -270,7 +271,7 @@ define([
 						}
 					}
 				})}));
-	/*		menu.addChild(new MenuItem({
+			menu.addChild(new MenuItem({
 				label: _( 'Delete' ),
 				iconClass: 'umcIconDelete',
 				onClick: lang.hitch(this, function() {

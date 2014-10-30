@@ -4,7 +4,7 @@
 		<categories>
 			<category name="domain"/>
 		</categories>
-		<flavor priority="50" id="uvmm/cloudconnection">
+		<flavor priority="50" id="uvmm/cloudconnection" deactivated="yes">
 			<name>Cloud Connections (UVMM)</name>
 			<description>Manages Cloud Connections</description>
 			<keywords></keywords>
