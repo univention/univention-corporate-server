@@ -328,6 +328,10 @@
 					The SSH host key and the DH parameter files for postfix are re-created during the appliance setup
 					(<ulink url="&ucsbug;36033">Bug 36033</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+					The package <package>univention-system-setup-boot</package> is automatically removed after a successful installation
+					(<ulink url="&ucsbug;35727">Bug 35727</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
