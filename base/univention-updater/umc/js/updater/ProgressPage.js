@@ -274,7 +274,7 @@ define([
 						status = 'failed';
 					}
 					this._switch_headings(status);
-					this._log.scrollToBottom();		// jump to bottom a very last time
+					this._log.scrollToBottom(true);		// jump to bottom a very last time
 					this._log.onStopWatching();		// now log is freely scrollable manually
 
 					this._last_job = null;	// can be deleted, but this._job_key should be retained!

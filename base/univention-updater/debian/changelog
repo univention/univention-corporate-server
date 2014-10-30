@@ -1,3 +1,9 @@
+univention-updater (10.0.30-1) unstable; urgency=low
+
+  * Bug #36287: Adapted auto scrolling in software update module
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 30 Oct 2014 09:42:20 +0100
+
 univention-updater (10.0.29-1) unstable; urgency=medium
 
   * Bug #35654: use app.registerOnStartup instead of topic

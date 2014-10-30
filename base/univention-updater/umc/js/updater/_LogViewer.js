@@ -45,18 +45,19 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/dom-geometry",
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, tools, Text, ContainerWidget, _) {
+], function(declare, lang, domGeometry, tools, Text, ContainerWidget, _) {
 	return declare('umc.modules.updater._LogViewer', [ ContainerWidget ], {
 
-		_first_call: 3,
 		_last_stamp: 0,
 		_check_interval: 0,
 		_current_job: '',
 		_log_position: 0,
+		_initialise_scrollbar: true,
 		_max_number_of_lines: 2500, // ~ 200kB if one line ^= 80 chars
 		_all_lines: [], // hold all past _max_number_of_lines lines
 
@@ -92,16 +93,13 @@ define([
 		},
 
 		_fetch_log: function() {
-
 			tools.umcpCommand(this.query,{job:this._current_job, count:-1},false).then(lang.hitch(this,function(data) {
-
 				this.onQuerySuccess(this.query + " [count=-1]");
 				var stamp = data.result;
 				if (stamp != this._last_stamp)
 				{
 					this._last_stamp = stamp;
 					tools.umcpCommand(this.query,{job:this._current_job,count:this._log_position},false).then(lang.hitch(this, function(data) {
-
 						var contentLength = parseInt( data.result.length, 10 );
 						if( contentLength ) {
 							this._log_position += contentLength;
@@ -114,12 +112,11 @@ define([
 					})
 					);
 				}
-
 				if (this._check_interval)
 				{
 					window.setTimeout(lang.hitch(this,function() {
 						this._fetch_log();
-					}),this._check_interval);
+					}), this._check_interval);
 				}
 
 			}),
@@ -130,11 +127,10 @@ define([
 				{
 					window.setTimeout(lang.hitch(this,function() {
 						this._fetch_log();
-					}),this._check_interval);
+					}), this._check_interval);
 				}
 			})
 			);
-
 		},
 
 		// set content. Additionally checks if the current scroll position
@@ -157,47 +153,8 @@ define([
 				printable_lines = [logfile_exceeded].concat(this._all_lines);
 			}
 			var content = printable_lines.join('<br />\n');
-			try
-			{
-				var oldpos = this._get_positions();
-
-				// check if we should scroll to bottom. We avoid that if the current position
-				// is not at the end, indicating that the user has moved the pane manually.
-				//
-				// our height measure doesn't strictly reflect what we need, so we add a little tolerance:
-				// regard the positon 'at bottom' if its plus/minus 20px around zero
-				var to_scroll = false;
-				if ( (this._first_call > 0) || ( /* (oldpos['d_bottom'] > -20) && */ (oldpos.d_bottom < 20)))
-				{
-					to_scroll = true;
-				}
-
-				this._text.set('content', content);
-				if (to_scroll)
-				{
-					this.scrollToBottom();
-					if (this._first_call > 0)
-					{
-						this._first_call--;
-					}
-				}
-			}
-			catch(error)
-			{
-				console.error("SCROLL ERROR: " + error.message);
-			}
-		},
-
-		// gets the scrolling state of the text widget relative to its container
-		_get_positions: function() {
-
-			var result = {};
-			result.h_text = this._text.contentNode.scrollHeight;						// text height
-			result.h_container = this.domNode.clientHeight;							// container widget height
-			result.d_top = this._text.contentNode.parentNode.scrollTop;				// scroll distance from top
-			result.d_bottom = result.h_text - (result.h_container + result.d_top);	// scroll distance from bottom
-
-			return result;
+			this._text.set('content', content);
+			this.scrollToBottom();
 		},
 
 		// scrolls to the bottom of the scroll area. Will be called from different places:
@@ -205,37 +162,49 @@ define([
 		//	-	unconditionally when the ProgressPage is being opened
 		//	-	in the 'content' setter if the position is roughly at the bottom
 		//
-		scrollToBottom: function() {
-
-			// we ignore any calls to 'scrollToBottom()' if we're not currently
-			// watching. This makes the pane free movable at the 'return to overview'
-			// prompt when a job is finished.
-			if (this._check_interval === 0)
-			{
-				return;
-			}
-			var todo = true;
-			var node = this._text.contentNode.parentNode;
-			var skip = 1024;
-			while (todo)
-			{
-				var oldval = node.scrollTop;
-				node.scrollTop = oldval+skip;
-				var newval = node.scrollTop;
-
-				// manually changed?
-				// or new value not accepted?
-				if (newval != (oldval+skip))
-				{
-					if (skip > 1)
-					{
-						skip = Math.floor(skip / 2);
-					}
-					else
-					{
-						todo = false;
-					}
+		scrollToBottom: function(force_goto_bottom) {
+			var text_node = this._text.domNode;
+			var view_height = domGeometry.position(text_node).h; // height of the box which display the text
+			var content_height = text_node.scrollHeight; // the overall height of the text inside the view
+			var scroll_position = text_node.scrollTop; //  current position auf the scrollbar
+			console.log('### scrollToBottom, vh, ch, sp: ' + view_height + ' ' + content_height + ' ' + scroll_position);
+			// check if we got an parameter
+			force_goto_bottom = typeof force_goto_bottom !== 'undefined' ? force_goto_bottom : false;
+			if(force_goto_bottom || this._initialise_scrollbar || this.isAtBottom(scroll_position, content_height, view_height)){
+				text_node.scrollTop = content_height;
+				// check if we have initialised the scrollbar position
+				if(this._initialise_scrollbar) {
+					this._initialise_scrollbar = this.hasToBeInitialised(content_height, view_height);
 				}
+				console.log('### scrollToBottom, success, text_node.scrollTop: ' + text_node.scrollTop);
+				console.log('### scrollToBottom, this._initialise_scrollbar: ' + this._initialise_scrollbar);
+			}
+		},
+
+		// we want that the scrollbar goes to the bottom if it has reached a defined position
+		// this position is set to 75% of the scrollbar
+		isAtBottom: function(scroll_position, content_height, view_height) {
+			// calculating ratio between the scroll_position and the content_height
+			var ratio = scroll_position / (content_height - view_height); 
+			// if the ratio is greater than 0.75 we will say that we have reached the bottom and return true
+			if(ratio >= 0.75){
+				console.log('### isAtBottom true, ratio: ' + ratio);
+				return true;
+			} else { // otherwise we wouldn't say that we have reached the bottom
+				console.log('### isAtBottom false, ratio: ' + ratio);
+				return false;
+			}
+		},
+
+		// check if the scrollbar appears for the first time to initialise its position
+		// at the bottom of the view
+		hasToBeInitialised: function(content_height, view_height){
+			if(content_height <= view_height + 50) { 
+				console.log('### foobar true');
+				return true;
+			} else {
+				console.log('### foobar false');
+				return false;
 			}
 		},
 
@@ -249,7 +218,6 @@ define([
 			this._all_lines = [];
 			this._lines_exceeded = 0;
 
-			this._first_call = 3;
 			this._last_stamp = 0;
 
 			this._fetch_log();		// first call, will reschedule itself as long
