@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.15-1) unstable; urgency=medium
+
+  * Bug #36262: move buttons like "request new license" / "open join module" to the left
+
+ -- Florian Best <best@univention.de>  Thu, 30 Oct 2014 10:02:41 +0100
+
 univention-management-console-module-appcenter (4.1.14-2) unstable; urgency=low
 
   * Bug #36260: Catch App Center being called before LDAP is up and running

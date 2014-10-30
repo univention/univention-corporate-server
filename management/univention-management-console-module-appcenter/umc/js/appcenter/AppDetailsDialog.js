@@ -117,6 +117,7 @@ define([
 					open: true,
 					title: label
 				});
+				var navButtons = this.get('navButtons') || [];
 				array.forEach(foundRequirements, lang.hitch(this, function(foundRequirementArray, i) {
 					var foundRequirement = foundRequirementArray[0];
 					var details = foundRequirementArray[1];
@@ -124,8 +125,9 @@ define([
 					container.addChild(new Text({
 						content: foundRequirement.toHTML(this.app, details)
 					}));
+					titlePane.addChild(container);
 					if (foundRequirement.solution) {
-						var buttons = [{
+						navButtons.push({
 							name: 'solution' + i,
 							label: foundRequirement.buttonLabel(this.app, details),
 							defaultButton: true,
@@ -136,13 +138,10 @@ define([
 									when(deferred).always(lang.hitch(this, 'onBack', false));
 								}
 							})
-						}];
-						container.addChild(new Form({
-							buttons: buttons
-						}));
+						});
 					}
-					titlePane.addChild(container);
 				}));
+				this.set('navButtons', navButtons);
 				this._container.addChild(titlePane);
 			}
 		},
