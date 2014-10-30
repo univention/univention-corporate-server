@@ -37,10 +37,10 @@ try {
 catch(e) {}
 
 define([
-	"dojo/io-query",
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
 	"dojo/_base/array",
+	"dojo/io-query",
 	"dojo/query",
 	"dojo/dom",
 	"dojo/dom-construct",
@@ -59,16 +59,16 @@ define([
 	"./text!/ucs-overview/entries.json",
 	"./text!/ucs-overview/languages.json",
 	"./i18n!" + _l10nResources.join(',')
-], function(ioQuery, lang, kernel, array, query, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Menu, MenuItem, DropDownButton, DropDownMenu, CategoryButton, entries, availableLocales, _) {
+], function(lang, kernel, array, ioQuery, query, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, on, router, hash, Menu, MenuItem, DropDownButton, DropDownMenu, CategoryButton, entries, _availableLocales, _) {
 	// short cut
 	var ucr = entries.ucr;
 
 	// make sure that en-US exists
-	var existsEnUsLocale = array.some(availableLocales, function(ilocale) {
+	var existsEnUsLocale = array.some(_availableLocales, function(ilocale) {
 		return ilocale.id == 'en-US';
 	});
 	if (!existsEnUsLocale) {
-		availableLocales.push({
+		_availableLocales.push({
 			id: 'en-US',
 			label: 'English'
 		});
@@ -79,7 +79,7 @@ define([
 		adminButton: null,
 		_entries: entries,
 		_ucr: ucr,
-		_availableLocales: availableLocales,
+		_availableLocales: _availableLocales,
 		_localeLang: kernel.locale.split('-')[0],
 		_localeWithUnderscore: kernel.locale.replace('-', '_'),
 		_resizeTimeout: null,
@@ -257,6 +257,13 @@ define([
 //			return result;
 //		},
 
+		_getAvailableLocales: function() {
+			if (availableLocales) {
+				return availableLocales;	
+			}
+			return this._availableLocales;
+		},
+
 		_hasLanguagesDropDown: function() {
 			return dom.byId('dropDownButton');
 		},
@@ -266,14 +273,28 @@ define([
 				return;
 			}
 			var _languagesMenu = new DropDownMenu({ style: "display: none;"});
-			array.forEach(this._availableLocales, function(ilocale) {
+			array.forEach(this._getAvailableLocales(), function(ilocale) {
 				var newMenuItem = new MenuItem ({
 					label: ilocale.label,
 					id: ilocale.id,
-					onClick: function(){
-						if (ilocale.id != dojo.locale){
-							window.location.search = '?lang=' + ilocale.id;
+					onClick: function() {
+						if (ilocale.href) {
+							// full href link is given... go to this URL
+							window.location.href = ilocale.href;
+							return;
 						}
+
+						// adjust query string parameter and reload page
+						var queryObj = {};
+						var queryString = window.location.search;
+						if (queryString.length) {
+							// cut off the '?' character
+							queryObj = ioQuery.queryToObject(queryString.substring(1))
+						}
+						queryKey = ilocale.queryKey || 'lang';
+						queryObj[queryKey] = ilocale.id;
+						queryString = ioQuery.objectToQuery(queryObj);
+						window.location.search = '?' + queryString;
 					}
 				});
 				_languagesMenu.addChild(newMenuItem);
@@ -344,10 +365,11 @@ define([
 			this._createLinkEntries();
 			this._createLanguagesDropDown();
 			this._registerResizeHandling();
-			if (!this._hasServiceEntries()) {
-				router.startup("admin");
-			} else {
+			if (this._hasServiceEntries()) {
 				router.startup("service");
+			}
+			else if (this._hasTabs()) {
+				router.startup("admin");
 			}
 		}
 	};
