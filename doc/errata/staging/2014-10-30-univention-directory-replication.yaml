@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-3
 src: univention-directory-replication
-fix: 7.0.1-12.89.201410301433
+fix: 7.0.1-13.91.201410301732
 version: [3]
 desc: |
   This update fixes the following issue:
