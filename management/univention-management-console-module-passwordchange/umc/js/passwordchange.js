@@ -91,9 +91,9 @@ define([
 		},
 
 		save: function() {
-			tools.umcpCommand('set', {password: this._form.get('value')}, {
+			this.standbyDuring(tools.umcpCommand('set', {password: this._form.get('value')}, {
 				onValidationError: lang.hitch(this._form, 'onValidationError')
-			}).then(function() {
+			})).then(function() {
 				this.closeModule();
 			});
 			return false;
