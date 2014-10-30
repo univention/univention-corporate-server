@@ -82,7 +82,7 @@ define([
 	};
 
 	var canStart = function(item) {
-		return item.node_available && (item.state != 'RUNNING' && item.state != 'IDLE' && !isTerminated(item));
+		return item.node_available && (item.state != 'RUNNING' && item.state != 'IDLE' && !isTerminated(item) && item.state != 'PENDING');
 	};
 
 	var canVNC = function(item) {
@@ -424,16 +424,16 @@ define([
 
 			var _migrate = lang.hitch(this, function(name) {
 				// send the UMCP command
-				this.updateProgress(0, 1);
+				this.showProgress();
 				tools.umcpCommand('uvmm/domain/migrate', {
 					domainURI: ids[ 0 ],
 					targetNodeURI: name
 				}).then(lang.hitch(this, function() {
 					this.moduleStore.onChange();
-					this.updateProgress(1, 1);
+					this.hideProgress();
 				}), lang.hitch(this, function() {
 					this.moduleStore.onChange();
-					this.updateProgress(1, 1);
+					this.hideProgress();
 				}));
 			});
 
@@ -507,7 +507,7 @@ define([
 			};
 
 			var _remove = lang.hitch( this, function() {
-				this.updateProgress( 0, 1 );
+				this.showProgress();
 				var volumes = [];
 				tools.forIn( form._widgets, lang.hitch( this, function( iid, iwidget ) {
 					if ( iwidget instanceof CheckBox && iwidget.get( 'value' ) ) {
@@ -519,10 +519,10 @@ define([
 					domainURI: domainURI,
 					volumes: volumes
 				} ).then( lang.hitch( this, function( response ) {
-					this.updateProgress( 1, 1 );
+					this.hideProgress();
 					this.moduleStore.onChange();
 				} ), lang.hitch( this, function() {
-					this.updateProgress( 1, 1 );
+					this.hideProgress();
 				} ) );
 			} );
 
@@ -630,15 +630,15 @@ define([
 			};
 
 			var _remove = lang.hitch( this, function() {
-				this.updateProgress( 0, 1 );
+				this.showProgress();
 
 				tools.umcpCommand('uvmm/instance/remove', {
 					domainURI: domainURI
 				} ).then( lang.hitch( this, function( response ) {
-					this.updateProgress( 1, 1 );
+					this.hideProgress();
 					this.moduleStore.onChange();
 				} ), lang.hitch( this, function() {
-					this.updateProgress( 1, 1 );
+					this.hideProgress();
 				} ) );
 			} );
 
@@ -750,7 +750,7 @@ define([
 			var _finished = lang.hitch(this, function(response, values) {
 				// add cloud connection
 				var max = 60;
-				this.updateProgress(0, max);
+				this.showProgress();
 				// wait for available connection
 				var counter = 1;
 				var deferred = new Deferred();
@@ -761,13 +761,13 @@ define([
 						});
 						counter += 1;
 						if (connection[0].available) {
-							this.updateProgress(max, max);
+							this.hideProgress();
 							deferred.resolve();
 							_cleanup();
 							this._tree.reload();
 						}
 						if (counter >= max) {
-							this.updateProgress(max, max);
+							this.hideProgress();
 							deferred.resolve();
 							_cleanup();
 							this._tree.reload();
@@ -775,7 +775,6 @@ define([
 						if (!deferred.isResolved()) {
 							tools.defer(wait, 1000);
 						}
-						this.updateProgress(counter, max);
 					}));
 				});
 				tools.defer(wait, 1000);
@@ -816,16 +815,15 @@ define([
 				// add cloud instance
 				var addFailed = false;
 				var max = 60;
-				this.updateProgress(0, max);
+				this.showProgress();
 				tools.umcpCommand('uvmm/instance/add', {
 					conn_name: values.cloud,
 					name: values.name,
 					parameter: values
 				}).then( lang.hitch( this, function( response ) {
-					this.updateProgress(1, max);
 					this.moduleStore.onChange();
 				}), lang.hitch( this, function() {
-					this.updateProgress(1, max);
+					this.hideProgress();
 					addFailed = true; // failed umcp will display an error message, but the wizard should still be open.
 				}));
 				// wait for running instance
@@ -838,16 +836,16 @@ define([
 						});
 						counter += 1;
 						if (connection[0] && connection[0].state == "RUNNING") {
-							this.updateProgress(max, max);
+							this.hideProgress();
 							deferred.resolve();
 							_cleanup();
 						}
 						if (addFailed) {
-							this.updateProgress(max, max);
+							this.hideProgress();
 							deferred.resolve();
 						}
 						if (counter >= max) {
-							this.updateProgress(max, max);
+							this.hideProgress();
 							deferred.resolve();
 							_cleanup();
 							this.addNotification(lang.replace( _( 'The instance {label} is still not running. Please wait and to update the view, click on "Search".' ), {label: entities.encode(values.name)} ));
@@ -855,7 +853,6 @@ define([
 						if (!deferred.isResolved()) {
 							tools.defer(wait, 1000);
 						}
-						this.updateProgress(counter, max);
 						this.filter();
 					}));
 				});
@@ -1010,17 +1007,17 @@ define([
 
 			var _createClone = lang.hitch(this, function( name, mac_address ) {
 				// send the UMCP command
-				this.updateProgress(0, 1);
+				this.showProgress();
 				tools.umcpCommand('uvmm/domain/clone', {
 					domainURI: ids[ 0 ],
 					cloneName: name,
 					macAddress: mac_address
 				}).then(lang.hitch(this, function() {
 					this.moduleStore.onChange();
-					this.updateProgress(1, 1);
+					this.hideProgress();
 				}), lang.hitch(this, function(error) {
 					this.moduleStore.onChange();
-					this.updateProgress(1, 1);
+					this.hideProgress();
 				}));
 			});
 
@@ -1593,6 +1590,15 @@ define([
 				}));
 			}
 			this._itemCountChangedNoteShowed = false;
+		},
+
+		showProgress: function() {
+			this._progressBar.set('value', 'Infinity');
+			this.standby(true, this._progressContainer);
+		},
+
+		hideProgress: function() {
+			this.standby(false);
 		},
 
 		updateProgress: function(i, n) {

@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (4.0.6-1) unstable; urgency=low
+
+  * Bug #36144: Added infinite progress bar. It is shown in case the duration
+    respectively steps are not known when the progressbar is created.
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 30 Oct 2014 11:53:11 +0100
+
 univention-virtual-machine-manager-daemon (4.0.5-1) unstable; urgency=medium
 
   * Don't show a notification message that the settings are not
