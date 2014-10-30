@@ -204,10 +204,6 @@ Variables: interfaces/primary
 Type: file
 File: etc/bash.bashrc
 
-Type: module
-Module: keymap.py
-Variables: locale/keymap
-
 Type: file
 File: etc/default/keyboard
 Variables: xorg/keyboard/options/XkbModel

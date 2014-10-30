@@ -1,19 +1,16 @@
 @%@UCRWARNING=# @%@
+# KEYBOARD CONFIGURATION FILE
 
-# Check /usr/share/doc/keyboard-configuration/README.Debian for
-# documentation on what to do after having modified this file.
-
-# The following variables describe your keyboard and can have the same
-# values as the XkbModel, XkbLayout, XkbVariant and XkbOptions options
-# in /etc/X11/xorg.conf.
+# Consult the keyboard(5) manual page.
 
 XKBMODEL="@%@xorg/keyboard/options/XkbModel@%@"
 XKBLAYOUT="@%@xorg/keyboard/options/XkbLayout@%@"
 XKBVARIANT="@%@xorg/keyboard/options/XkbVariant@%@"
 XKBOPTIONS="@%@xorg/keyboard/options/XkbOptions@%@"
 
+BACKSPACE="guess"
+
 # If you don't want to use the XKB layout on the console, you can
 # specify an alternative keymap.  Make sure it will be accessible
 # before /usr is mounted.
 KMAP=/etc/console/boottime.kmap.gz
-

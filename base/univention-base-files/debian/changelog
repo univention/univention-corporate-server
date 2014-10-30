@@ -1,3 +1,9 @@
+univention-base-files (4.0.5-1) unstable; urgency=low
+
+  * Remove deprecated keyboard layout handling (Bug #35709)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 31 Jul 2014 14:49:40 +0200
+
 univention-base-files (4.0.4-4) unstable; urgency=low
 
   * removed last commit (Bug #36224) 

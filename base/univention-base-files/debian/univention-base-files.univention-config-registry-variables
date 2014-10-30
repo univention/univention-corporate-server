@@ -321,12 +321,6 @@ Description[en]=Localisation properties such as time/date formats and the prefer
 Type=str
 Categories=system-locale
 
-[locale/keymap]
-Description[de]=Die verwendete Tastaturbelegung. Sie kann über das UMC-Modul 'Systemeinstellungen' geändert werden.
-Description[en]=The keyboard layout in use. It can modified using the UMC module 'System settings'.
-Type=str
-Categories=system-locale
-
 [logrotate/rotate]
 Description[de]=Logdateien werden nach diesem Kriterium rotiert, z.B. "daily", "weekly", "monthly", oder eine Größenbegrenzung wie "size 100M". Siehe 'man logrotate.conf' für weitere Formate.
 Description[en]=Log files are rotated according to this criterion, e.g. "daily", "weekly", "monthly" or up to a size limit like "size 100M". See 'man logrotate.conf' for additional formats.

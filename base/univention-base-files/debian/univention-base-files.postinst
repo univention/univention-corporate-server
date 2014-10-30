@@ -124,33 +124,10 @@ if [ -e /etc/init.d/rdate ]; then
 	chmod +x /etc/init.d/rdate
 fi
 
-eval "$(univention-config-registry shell locale locale/keymap)"
-if [ "$locale" = "de_DE@euro" ]; then
-	locale="de_DE@euro:ISO-8859-15"
-	univention-config-registry set locale="$locale"
-elif [ "$locale" = "de_DE" ]; then
-	locale="de_DE:ISO-8859-15"
-	univention-config-registry set locale="$locale"
-fi
 if [ -n "$locale" ]; then
 	locale-gen || true
 fi
-if [ -z "$locale_keymap" ]; then
-	# try to catch the keymap from /etc/console/boottime.kmap.gz
-	if [ -e /etc/console/boottime.kmap.gz ]; then
-		md5_boottime=$(md5sum /etc/console/boottime.kmap.gz | sed -e 's| .*||')
-		for f in $(find /usr/share/keymaps/i386/); do
-			if [ -d "$f" ]; then
-				continue
-			fi
-			md5_file=$(md5sum "$f" | sed -e 's| .*||')
-			if [ "$md5_boottime" = "$md5_file" ]; then
-				univention-config-registry set locale/keymap=$(echo "$f" | sed -e 's|.*/||;s|.kmap.gz||')
-				break
-			fi
-		done
-	fi
-fi
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/keymap.py 4~
 
 update-rc.d rdate defaults 21 >/dev/null 2>&1 || true
 

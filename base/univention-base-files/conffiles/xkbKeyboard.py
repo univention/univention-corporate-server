@@ -32,5 +32,7 @@
 
 import os
 
+
 def handler(configRegistry, changes):
 	os.system('/sbin/udevadm trigger --subsystem-match=input --action=change')
+	os.system('/bin/setupcon --force --save')
