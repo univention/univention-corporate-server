@@ -15,9 +15,7 @@
 }
 
 .umc-diagnostic-description {
-	/*background-color: #e6e6e6; border: thin solid #d3d3d3;*/ 
-	white-space: pre;
-	word-break: break-all;
+	white-space: pre-wrap;
 	word-wrap: break-word;
 }
 .umc-diagnostic h1 {
