@@ -14,7 +14,8 @@ title = _('Nameserver(s) are not responsive')
 description = '\n'.join([
 	_('%d of the configured nameservers are not responding to DNS queries.'),
 	_('Please make sure the DNS settings in the {setup:network} are correctly set up.'),
-	_('If the problem persists make sure the nameserver is connected to the network.')
+	_('If the problem persists make sure the nameserver is connected to the network and the forwarders are able to reach the internet (www.univention.de).'),
+
 ])
 umc_modules = [{
 	'module': 'setup',

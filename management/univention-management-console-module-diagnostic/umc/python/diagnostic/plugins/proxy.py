@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from univention.management.console.config import ucr
-from univention.management.console.modules.diagnostic import Warning, Conflict, ProblemFixed, MODULE
-from univention.config_registry import handler_unset
+from univention.management.console.modules.diagnostic import Warning, Conflict, MODULE
 
 from urlparse import urlparse
 import pycurl
@@ -22,12 +21,6 @@ umc_modules = [{
 actions = {}
 
 
-def disable_proxy():
-	handler_unset(['proxy/http'])
-	raise ProblemFixed(_('The proxy has been disabled.'))
-actions['disable'] = disable_proxy
-
-
 def run(url='http://www.univention.de/', connecttimeout=30, timeout=30):
 	ucr.load()
 
@@ -35,16 +28,10 @@ def run(url='http://www.univention.de/', connecttimeout=30, timeout=30):
 	if not proxy:
 		return
 
-	buttons = [{
-		'label': _('Disable proxy'),
-		'action': 'disable'
-	}]
-
 	proxy = urlparse(proxy)
 	MODULE.info('The proxy is configured, using host=%r, port=%r' % (proxy.hostname, proxy.port))
 	curl = pycurl.Curl()
 	curl.setopt(pycurl.PROXYTYPE, pycurl.PROXYTYPE_HTTP)
-	curl.setopt(pycurl.PROXYAUTH, pycurl.PROXYAUTH_AVAIL)
 	curl.setopt(pycurl.PROXY, proxy.hostname)
 	curl.setopt(pycurl.PROXYPORT, proxy.port)
 	curl.setopt(pycurl.FOLLOWLOCATION, True)
@@ -52,10 +39,10 @@ def run(url='http://www.univention.de/', connecttimeout=30, timeout=30):
 	curl.setopt(pycurl.CONNECTTIMEOUT, connecttimeout)
 	curl.setopt(pycurl.TIMEOUT, 30)
 	if proxy.username:
-		credentials = '%s' % (proxy.username)
+		curl.setopt(pycurl.PROXYAUTH, pycurl.HTTPAUTH_ANY)
+		credentials = '%s' % (proxy.username,)
 		if proxy.password:
 			credentials = '%s:%s' % (proxy.username, proxy.password)
-		MODULE.error(credentials)
 		curl.setopt(pycurl.PROXYUSERPWD, credentials)
 
 	curl.setopt(pycurl.URL, url)
@@ -83,7 +70,7 @@ def run(url='http://www.univention.de/', connecttimeout=30, timeout=30):
 		elif code == 0:
 			MODULE.error(traceback.format_exc())
 
-		raise Conflict('\n'.join([description, msg]), buttons=buttons)
+		raise Conflict('\n'.join([description, msg]))
 	else:
 		#page = buf.getvalue()
 		#MODULE.info(page[:100])
@@ -94,7 +81,7 @@ def run(url='http://www.univention.de/', connecttimeout=30, timeout=30):
 				description,
 				_('The proxy server is reachable but the HTTP response status code (%d) does not indicate success.') % (http_status,),
 				_('This warning might be harmless. Nevertheless make sure the authentication credentials (if any) are correct and the proxy server ACLs do not forbid requests to %s.') % (url,)
-			]), buttons=buttons)
+			]))
 	finally:
 		curl.close()
 

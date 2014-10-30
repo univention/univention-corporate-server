@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-07 11:41+0200\n"
+"POT-Creation-Date: 2014-10-30 13:09+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 msgid "%d of the configured nameservers are not responding to DNS queries."
 msgstr "%d der konfigurierten Nameserver anworten nicht auf DNS-Anfragen."
 
-#: umc/python/diagnostic/plugins/nameserver.py:45
+#: umc/python/diagnostic/plugins/nameserver.py:46
 msgid "A timeout occured while reaching the nameserver (is it online?)."
 msgstr ""
 "Eine Zeitüberschreitung trat beim Erreichen des Nameservers auf (ist er "
@@ -27,20 +27,17 @@ msgstr ""
 msgid "Adjust to suggested limits"
 msgstr "An vorgeschlagene Limits anpassen"
 
-#: umc/python/diagnostic/plugins/proxy.py:39
-msgid "Disable proxy"
-msgstr "Proxy deaktivieren"
-
 #: umc/python/diagnostic/plugins/gateway.py:11
 msgid "Gateway is not reachable"
 msgstr "Gateway ist nicht erreichbar"
 
 #: umc/python/diagnostic/plugins/nameserver.py:17
 msgid ""
-"If the problem persists make sure the nameserver is connected to the network."
+"If the problem persists make sure the nameserver is connected to the network "
+"and the forwarders are able to reach the internet (www.univention.de)."
 msgstr ""
 "Falls das Problem bestehen bleibt stellen Sie sicher, dass der Nameserver "
-"mit dem Netzwerk verbunden ist."
+"mit dem Netzwerk verbunden ist und die DNS-Forwarder das Internet erreichen können (www.univention.de)."
 
 #: umc/python/diagnostic/plugins/gateway.py:14
 msgid "If these settings are correct the problem relies in the gateway itself:"
@@ -48,6 +45,7 @@ msgstr ""
 "Wenn diese Einstellungen richtig sind liegt das Problem im Gateway selbst:"
 
 #: umc/python/diagnostic/plugins/security_limits.py:20
+#, python-brace-format
 msgid ""
 "It is suggested to increase the security limits either manually by using "
 "{ucr} or to automatically adjust them to the suggested limits:"
@@ -82,7 +80,7 @@ msgstr "Proxy-Server-Fehler"
 msgid "Security limits exceeded"
 msgstr "Sicherheitslimits überschritten"
 
-#: umc/python/diagnostic/__init__.py:263
+#: umc/python/diagnostic/__init__.py:262
 msgid "Test again"
 msgstr "Erneut testen"
 
@@ -97,7 +95,7 @@ msgstr ""
 "{setup:network} sicherstellen, dass Gateway- und zusammengehörige "
 "Netzwerkeinstellungen korrekt konfiguriert sind."
 
-#: umc/python/diagnostic/plugins/proxy.py:80
+#: umc/python/diagnostic/plugins/proxy.py:69
 msgid ""
 "The hostname of the proxy could not be resolved. May check your DNS "
 "configuration."
@@ -109,16 +107,12 @@ msgstr ""
 msgid "The limits have been adjusted to the suggested value."
 msgstr "Die Limits wurden auf die empfohlenen Werte erhöht."
 
-#: umc/python/diagnostic/plugins/nameserver.py:42
+#: umc/python/diagnostic/plugins/nameserver.py:43
 #, python-format
 msgid "The nameserver %s (UCR variable %r) is not responsive:"
 msgstr "Der Nameserver %s (UCR Variable %r) ist nicht ansprechbar:"
 
-#: umc/python/diagnostic/plugins/proxy.py:27
-msgid "The proxy has been disabled."
-msgstr "Der Proxy wurde deaktiviert."
-
-#: umc/python/diagnostic/plugins/proxy.py:78
+#: umc/python/diagnostic/plugins/proxy.py:67
 #, python-format
 msgid ""
 "The proxy host could not be reached. Make sure that hostname (%r) and port "
@@ -127,7 +121,7 @@ msgstr ""
 "Der Proxy-Host konnte nicht erreicht werden. Bitte sicherstellen, dass "
 "Rechnername (%r) und Port (%r) korrekt eingestellt sind."
 
-#: umc/python/diagnostic/plugins/proxy.py:95
+#: umc/python/diagnostic/plugins/proxy.py:84
 #, python-format
 msgid ""
 "The proxy server is reachable but the HTTP response status code (%d) does "
@@ -144,7 +138,7 @@ msgstr ""
 "Die Sicherheitslimits (z.B. für max_open_files) sind derzeit nicht geeignet "
 "eingestellt."
 
-#: umc/python/diagnostic/plugins/proxy.py:82
+#: umc/python/diagnostic/plugins/proxy.py:71
 #, python-format
 msgid ""
 "The server did not respond within %d seconds. Please check your network "
@@ -171,7 +165,7 @@ msgstr ""
 "an Samba-Servern unmöglich, Dateioperationen (Kopieren, Verschieben) auf "
 "Freigaben kann fehlschlagen, uvm.)"
 
-#: umc/python/diagnostic/plugins/proxy.py:96
+#: umc/python/diagnostic/plugins/proxy.py:85
 #, python-format
 msgid ""
 "This warning might be harmless. Nevertheless make sure the authentication "
@@ -181,3 +175,9 @@ msgstr ""
 "Diese Warnung könnte harmlos sein. Trotzdem sollte sichergestellt werden, "
 "dass Authentifikations-Zugangsdaten (falls existierend) korrekt sind und die "
 "ACL's des Proxy-Servers nicht verbieten, Anfragen an %s zu stellen."
+
+#~ msgid "Disable proxy"
+#~ msgstr "Proxy deaktivieren"
+
+#~ msgid "The proxy has been disabled."
+#~ msgstr "Der Proxy wurde deaktiviert."

@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (1.0.11-1) unstable; urgency=medium
+
+  * Bug #35864: fix proxy authentication; remove 'disable proxy' button
+
+ -- Florian Best <best@univention.de>  Thu, 30 Oct 2014 13:50:59 +0100
+
 univention-management-console-module-diagnostic (1.0.10-1) unstable; urgency=medium
 
   * Bug #34765: fix word wrapping on small screens

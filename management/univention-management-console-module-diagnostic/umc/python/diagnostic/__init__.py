@@ -77,7 +77,6 @@ class Instance(Base, ProgressMixin):
 	)
 	@simple_response
 	def run(self, plugin, args=None):
-		MODULE.error('### plugin %r %r' % (plugin, args,))
 		plugin = self.get(plugin)
 		args = args or {}
 		def thread(self, request):
