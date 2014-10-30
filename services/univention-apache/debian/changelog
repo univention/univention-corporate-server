@@ -1,3 +1,12 @@
+univention-apache (7.0.10-2) unstable; urgency=low
+
+  Bug #36095:
+    * no-services waring is now hidden via dijitHidden
+  Bug #36316
+    * added removal of ucr icon entries to postinst script
+
+ -- Drees Dormann <dormann@univention.de>  Thu, 30 Oct 2014 15:08:44 +0100
+
 univention-apache (7.0.10-1) unstable; urgency=medium
 
   * Bug #36316: fix font styling

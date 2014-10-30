@@ -233,7 +233,7 @@ define([
 		},
 
 		_updateNoServiceHint: function() {
-			domClass.toggle('no-service', 'hidden', this._hasServiceEntries());
+			domClass.toggle('no-service', 'dijitHhidden', this._hasServiceEntries());
 		},
 
 		_createLinkEntries: function() {
