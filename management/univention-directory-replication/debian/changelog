@@ -1,3 +1,10 @@
+univention-directory-replication (7.0.1-12) unstable; urgency=medium
+
+  * Bug #36353: Update replication.py to filter out ppolicy attributes
+    during object replication.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Oct 2014 14:31:50 +0100
+
 univention-directory-replication (7.0.1-11) unstable; urgency=medium
 
   * Bug #36113: Work around ITS#4025

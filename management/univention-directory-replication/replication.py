@@ -124,7 +124,7 @@ univention.debug.debug(
 STATE_DIR = '/var/lib/univention-directory-replication'
 LDIF_FILE = os.path.join(STATE_DIR, 'failed.ldif')
 
-EXCLUDE_ATTRIBUTES=['subschemaSubentry', 'hasSubordinates', 'entryDN', 'MEMBEROF']
+EXCLUDE_ATTRIBUTES=['subschemaSubentry', 'hasSubordinates', 'entryDN', 'MEMBEROF', 'pwdChangedTime', 'PWDCHANGEDTIME', 'pwdAccountLockedTime',               'PWDACCOUNTLOCKEDTIME', 'pwdFailureTime', 'PWDFAILURETIME', 'pwdHistory', 'PWDHISTORY', 'pwdGraceUseTime', 'PWDGRACEUSETIME', 'pwdReset', 'PWDRESET',        'pwdPolicySubentry', 'PWDPOLICYSUBENTRY']
 
 # don't use built-in OIDs from slapd
 BUILTIN_OIDS=[
