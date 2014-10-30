@@ -1,3 +1,9 @@
+univention-directory-replication (7.0.1-13) unstable; urgency=medium
+
+  * Bug #36353: Fix whitespace
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Oct 2014 17:32:27 +0100
+
 univention-directory-replication (7.0.1-12) unstable; urgency=medium
 
   * Bug #36353: Update replication.py to filter out ppolicy attributes
