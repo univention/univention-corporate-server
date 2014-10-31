@@ -258,7 +258,7 @@ define([
 //		},
 
 		_getAvailableLocales: function() {
-			if (availableLocales) {
+			if ('availableLocales' in window) {
 				return availableLocales;	
 			}
 			return this._availableLocales;

@@ -1,3 +1,9 @@
+univention-apache (7.0.11-2) unstable; urgency=medium
+
+  * Bug #36095: fix reference error
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 01:02:08 +0100
+
 univention-apache (7.0.11-1) unstable; urgency=low
 
   * Bug #36095: added css classes for login elements 
