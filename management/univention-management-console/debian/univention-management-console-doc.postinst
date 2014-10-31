@@ -36,11 +36,13 @@
 univention-config-registry set \
 	ucs/web/overview/entries/admin/umc-doc/description/de?'Entwickler-Dokumentation zur Architektur, den Protokollen und der API der Univention Management Console' \
 	ucs/web/overview/entries/admin/umc-doc/description?'Development documentation of the architecture, protocols and the API for the Univention Management Console' \
-	ucs/web/overview/entries/admin/umc-doc/icon?'/icon/50x50/univention_dev_logo.png' \
 	ucs/web/overview/entries/admin/umc-doc/label?'Univention Management Console documentation' \
 	ucs/web/overview/entries/admin/umc-doc/label/de?'Univention Management Console Dokumentation' \
 	ucs/web/overview/entries/admin/umc-doc/link?'/documentation/umc' \
 	ucs/web/overview/entries/admin/umc-doc/priority?'81'
+
+univention-config-registry unset \
+	ucs/web/overview/entries/admin/umc-doc/icon
 
 univention-doc install umc
 

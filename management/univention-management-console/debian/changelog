@@ -1,3 +1,10 @@
+univention-management-console (7.1.59-2) unstable; urgency=low
+
+  * removed ucr entry for umc-overview icon / added unset of ucr entry
+   (Bug #36316)
+
+ -- Drees Dormann <dormann@univention.de>  Wed, 29 Oct 2014 14:52:59 +0100
+
 univention-management-console (7.1.59-1) unstable; urgency=medium
 
   * Bug #34765: Also traverse subdirectories when searching for translations of UMC python
