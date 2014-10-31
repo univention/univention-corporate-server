@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.20-2) unstable; urgency=medium
+
+  * Bug #36303: added missing translation
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 20:00:44 +0100
+
 univention-management-console-module-udm (5.1.20-1) unstable; urgency=medium
 
   * Bug #36303: adjust license dialogues to responsive design

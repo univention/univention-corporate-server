@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-29 10:59+0100\n"
+"POT-Creation-Date: 2014-10-31 20:00+0100\n"
 "PO-Revision-Date: 2011-11-03 12:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 msgid "%($dn$)s moved"
 msgstr "%($dn$)s verschoben"
 
-#: umc/python/udm/__init__.py:1169
+#: umc/python/udm/__init__.py:1174
 #, python-format
 msgid "An error occurred while sending the request: %s"
 msgstr "Ein Fehler ist während des Anforderns aufgetreten: %s"
@@ -26,7 +26,7 @@ msgstr "Ein Fehler ist während des Anforderns aufgetreten: %s"
 msgid "Cannot connect to the LDAP service."
 msgstr "Konnte nicht zum LDAP-Dienst verbinden."
 
-#: umc/python/udm/__init__.py:1153
+#: umc/python/udm/__init__.py:1158
 msgid "Cannot parse License from LDAP"
 msgstr "Fehler beim Auslesen der Lizenz aus dem LDAP"
 
@@ -36,7 +36,7 @@ msgid "Could not find a matching UDM module for the LDAP object %s"
 msgstr ""
 "Es konnte kein passendes UDM-Modul für das LDAP-Object %s gefunden werden"
 
-#: umc/python/udm/__init__.py:513 umc/python/udm/udm_ldap.py:364
+#: umc/python/udm/udm_ldap.py:364 umc/python/udm/__init__.py:518
 #, python-format
 msgid "Could not find an UDM module for the superordinate object %s"
 msgstr ""
@@ -113,11 +113,11 @@ msgstr "Keins"
 msgid "Objects referencing this policy object"
 msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
 
-#: umc/python/udm/__init__.py:579
+#: umc/python/udm/__init__.py:584
 msgid "PDF document"
 msgstr "PDF Dokument"
 
-#: umc/python/udm/__init__.py:855 umc/python/udm/udm_ldap.py:303
+#: umc/python/udm/udm_ldap.py:303 umc/python/udm/__init__.py:860
 #, python-format
 msgid "Property %s not found"
 msgstr "Die Eigenschaft %s wurde nicht gefunden"
@@ -318,7 +318,7 @@ msgstr ""
 msgid "manual"
 msgstr "handbuch"
 
-#: umc/python/udm/__init__.py:583
+#: umc/python/udm/__init__.py:588
 msgid "text file"
 msgstr "Textdatei"
 
