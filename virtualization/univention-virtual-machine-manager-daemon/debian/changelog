@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.9-2) unstable; urgency=low
+
+  * Bug #35946: Fix incorrect reboot handling for EC2 instances 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 31 Oct 2014 10:17:32 +0100
+
 univention-virtual-machine-manager-daemon (4.0.9-1) unstable; urgency=low
 
   * Bug #36315: added the bootstrap classes to DriveWizard

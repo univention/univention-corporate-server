@@ -322,7 +322,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 				(NodeState.PENDING,    "RUN"): None,
 				(NodeState.UNKNOWN,    "RUN"): self._boot_instance,
 				(NodeState.STOPPED,    "RUN"): self._boot_instance,
-				(NodeState.RUNNING,    "SOFTRESTART"): self._reboot_instance,
+				(NodeState.RUNNING,    "SOFTRESTART"): self._softreboot_instance,
 				(NodeState.PENDING,    "RESTART"): None,
 				(NodeState.RUNNING,    "SHUTDOWN"): self._shutdown_instance,
 				(NodeState.RUNNING,    "SHUTOFF"): self._shutoff_instance,
