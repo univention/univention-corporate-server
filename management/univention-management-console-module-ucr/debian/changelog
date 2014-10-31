@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (4.1.1-1) unstable; urgency=medium
+
+  * Bug #35654: UMC design adaptions
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 21:55:21 +0100
+
 univention-management-console-module-ucr (4.1.0-3) unstable; urgency=low
 
   * Bug #35654: UMC design adaptions

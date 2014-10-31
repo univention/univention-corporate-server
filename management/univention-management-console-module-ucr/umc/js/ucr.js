@@ -105,6 +105,7 @@ define([
 			var buttons = [{
 				name: 'submit',
 				label: _( 'Save' ),
+				style: 'float: right',
 				callback: lang.hitch(this, function() {
 					this._form.save();
 					this.hide();
@@ -314,7 +315,6 @@ define([
 					{ id: 'all', label: _('All') }
 				],
 				dynamicValues: 'ucr/categories',
-				size: 'TwoThirds'
 			}, {
 				type: ComboBox,
 				name: 'key',
@@ -327,13 +327,11 @@ define([
 					{ id: 'value', label: _( 'Value' ) },
 					{ id: 'description', label: _( 'Description' ) }
 				],
-				size: 'TwoThirds'
 			}, {
 				type: TextBox,
 				name: 'pattern',
 				value: '*',
 				label: _( 'Keyword' ),
-				size: 'TwoThirds'
 			}];
 
 			// generate the search widget
