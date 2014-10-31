@@ -1,3 +1,9 @@
+univention-lib (4.0.3-8) unstable; urgency=low
+
+  * Bug #35781: Allow double unlock of PackageManager
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Oct 2014 03:40:15 +0100
+
 univention-lib (4.0.3-7) unstable; urgency=low
 
   * Bug #36280: Remove unneeded comparison against Samba version

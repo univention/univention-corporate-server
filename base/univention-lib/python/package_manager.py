@@ -295,8 +295,11 @@ class PackageManager(object):
 		return return_value
 
 	def unlock(self):
-		release_lock(self.lock_fd)
-		self.lock_fd = None
+		if self.lock_fd is not None:
+			release_lock(self.lock_fd)
+			self.lock_fd = None
+			return True
+		return False
 
 	def is_locked(self):
 		return self.lock_fd is not None
