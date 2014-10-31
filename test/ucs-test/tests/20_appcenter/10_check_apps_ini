@@ -18,8 +18,8 @@ from univention.config_registry import handler_set, handler_unset
 from univention.management.console.modules.appcenter.app_center import Application, CACHE_DIR, ucr
 
 
-FAILURES_COUNTER = 0
-APP_IDS = set()
+failures_counter = 0
+app_ids = set()
 
 
 def set_locale(new_locale):
@@ -65,13 +65,13 @@ def check_file(filename):
     try:
         App = Application(filename)
 
-        global APP_IDS
-        APP_IDS.add(App.id)
+        global app_ids
+        app_ids.add(App.id)
         print "OK"
 
     except Exception as exc:
-        global FAILURES_COUNTER
-        FAILURES_COUNTER += 1
+        global failures_counter
+        failures_counter += 1
         print("\nAn error occured with an .ini file '%s' while trying to "
               "create App center 'Application' instance with it: '%s'\n"
               % (filename, exc))
@@ -81,9 +81,9 @@ def print_all_apps_versions(number_of_files):
     """
     Prints overall statistics and versions of all Apps that were found.
     """
-    print "\nTotal", number_of_files, ".ini files for", len(APP_IDS), "apps were found:\n"
+    print "\nTotal", number_of_files, ".ini files for", len(app_ids), "apps were found:\n"
 
-    for app_id in sorted(APP_IDS):
+    for app_id in sorted(app_ids):
         App = Application.find(app_id)
         print(" %s %r" % (App.id, list(reversed([a.version for a in App.versions]))))
 
@@ -140,9 +140,9 @@ if __name__ == '__main__':
     # find and check all .ini files, reset the original UCR setting:
     check_ini_files(ucr_appcenter_server_orig)
 
-    if FAILURES_COUNTER:
+    if failures_counter:
         utils.fail("There were App's .ini(s) that cannot be "
                    "evaluated correctly. Total: %d error(s)."
-                   % FAILURES_COUNTER)
+                   % failures_counter)
     else:
         print "\nNo errors were detected.\n"
