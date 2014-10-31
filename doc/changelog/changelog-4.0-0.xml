@@ -333,6 +333,10 @@
 					The package <package>univention-system-setup-boot</package> is automatically removed after a successful installation
 					(<ulink url="&ucsbug;35727">Bug 35727</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+					The keyboard settings have been improved
+					(<ulink url="&ucsbug;35709">Bug 35709</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
@@ -817,6 +821,14 @@
 		<listitem><simpara>
 				The syntax check for jpeg images has been fixed in &ucsUDM;
 				(<ulink url="&ucsbug;36304">Bug 36304</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+				The keyboard layout is now configured with the &ucsUCRV;
+				<envar>xorg/keyboard/options/XkbModel</envar>,
+				<envar>xorg/keyboard/options/XkbLayout</envar> and
+				<envar>xorg/keyboard/options/XkbVariant</envar>. The old 
+				&ucsUCRV; <envar>locale/keymap</envar> has been removed
+				(<ulink url="&ucsbug;35709">Bug 35709</ulink>).
 		</simpara></listitem>
 	</itemizedlist>
 </section>
