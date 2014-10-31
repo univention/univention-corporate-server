@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (2.0.5-1) unstable; urgency=medium
+
+  * Bug #35837: adjust icon files
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 21:32:28 +0100
+
 univention-management-console-module-adtakeover (2.0.4-1) unstable; urgency=medium
 
   * Bug #35654: fix wizard images
