@@ -1,3 +1,10 @@
+univention-management-console-frontend (4.1.83-1) unstable; urgency=medium
+
+  * Bug #36303: adjust pages used in StartupDialog and the UMC menu for
+    responsive design
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 04:18:43 +0100
+
 univention-management-console-frontend (4.1.82-1) unstable; urgency=medium
 
   * Bug #35654: fixes for bootstrap class handling in umc/widgets/Page
@@ -31,7 +38,8 @@ univention-management-console-frontend (4.1.80-5) unstable; urgency=medium
 
 univention-management-console-frontend (4.1.80-4) unstable; urgency=medium
 
-  * Bug #35654: add minimize button to modules instead of above, fix order of header menu entries
+  * Bug #35654: add minimize button to modules instead of above, fix order of
+    header menu entries
 
  -- Florian Best <best@univention.de>  Wed, 29 Oct 2014 12:46:23 +0100
 

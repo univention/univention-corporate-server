@@ -57,9 +57,9 @@ define([
 	"dojox/html/entities",
 	"dojox/gfx",
 	"dijit/registry",
-	"umc/tools",
-	"umc/dialog",
-	"umc/store",
+	"./tools",
+	"./dialog",
+	"./store",
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/PopupMenuItem",
@@ -67,21 +67,23 @@ define([
 	"dijit/Tooltip",
 	"dijit/form/DropDownButton",
 	"dijit/layout/StackContainer",
-	"umc/widgets/TabController",
-	"umc/widgets/LiveSearchSidebar",
-	"umc/widgets/GalleryPane",
-	"umc/widgets/ContainerWidget",
-	"umc/widgets/Page",
-	"umc/widgets/Button",
-	"umc/widgets/Text",
-	"umc/app/CategoryButton",
-	"umc/i18n!",
+	"./widgets/TabController",
+	"./widgets/LiveSearchSidebar",
+	"./widgets/GalleryPane",
+	"./widgets/ContainerWidget",
+	"./widgets/Page",
+	"./widgets/Form",
+	"./widgets/Button",
+	"./widgets/Text",
+	"./app/CategoryButton",
+	"./i18n!",
+	"xstyle/css!./app.css",
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseWin, win, on, aspect, has,
 		Evented, Deferred, when, all, cookie, topic, Memory, Observable,
 		dom, style, domAttr, domClass, domGeometry, domConstruct, locale, styles, entities, gfx, registry, tools, dialog, store,
 		Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
-		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Button, Text, CategoryButton, _
+		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, CategoryButton, _
 ) {
 	// cache UCR variables
 	var _ucr = {};
@@ -547,7 +549,8 @@ define([
 					$priority$: 60,
 					label: _('Settings'),
 					id: 'umcMenuSettings',
-					popup: new Menu({})
+					popup: new Menu({}),
+					'class': 'dijitHidden'
 				}));
 
 				// the help context menu
@@ -585,13 +588,25 @@ define([
 				} else if (item.isInstanceOf(DropDownButton)) {
 					this._menuMap[item.id] = item.dropDown;
 				}
-				var position = menu.getChildren().length;
-				array.forEach(menu.getChildren().reverse(), function(child, pos) {
-					if ((child.$priority$ || 0)	<= (menu.$priority$ || 0)) {
-						position = pos;
+
+				// unhide the parent menu in case it is hidden
+				var parentMenu = registry.byId(item.$parentMenu$);
+				if (parentMenu) {
+					domClass.remove(parentMenu.domNode, 'dijitHidden');
+				}
+
+				// find the correct position for the entry
+				var priorities = array.map(menu.getChildren(), function(ichild) {
+					return ichild.$priority$ || 0;
+				});
+				var itemPriority = item.$priority$ || 0;
+				var pos = 0;
+				for (; pos < priorities.length; ++pos) {
+					if (itemPriority > priorities[pos]) {
+						break;
 					}
-				}, this);
-				menu.addChild(item, position);
+				}
+				menu.addChild(item, pos);
 			}
 		},
 
@@ -637,13 +652,13 @@ define([
 			this.addMenuEntry(new MenuItem({
 				$parentMenu$: 'umcMenuHelp',
 				label: _('Help'),
-				onClick : lang.hitch(this, '_showHelpDialog')
+				onClick: lang.hitch(this, '_showPageDialog', 'HelpPage', 'help')
 			}));
 
 			this.addMenuEntry(new MenuItem({
 				$parentMenu$: 'umcMenuHelp',
 				label: _('Feedback'),
-				onClick : lang.hitch(this, '_showFeedbackPage')
+				onClick: lang.hitch(this, '_showFeedbackPage')
 			}));
 
 			this._insertPiwikMenuItem();
@@ -651,7 +666,7 @@ define([
 			this.addMenuEntry(new MenuItem({
 				$parentMenu$: 'umcMenuHelp',
 				label: _('About UMC'),
-				onClick : lang.hitch(this, '_showAboutDialog')
+				onClick: lang.hitch(this, '_showPageDialog', 'AboutPage!', 'about')
 			}));
 
 			this.addMenuEntry(new MenuSeparator({
@@ -687,17 +702,8 @@ define([
 			this.addMenuEntry(new MenuItem({
 				$parentMenu$: 'umcMenuHelp',
 				label: _('Usage statistics'),
-				onClick: lang.hitch(this, '_showPiwikDialog')
+				onClick: lang.hitch(this, '_showPageDialog', 'FeedbackPage', 'feedback')
 			}));
-		},
-
-		_showPiwikDialog: function() {
-			topic.publish('/umc/actions', 'menu-help', 'piwik');
-			dialog.templateDialog('umc/app', 'feedback.' + _getLang()  + '.html', {
-				path: require.toUrl('umc/app'),
-				hardwareStatisticsCheckboxDisplay: 'none',
-				version: tools.status('ucsVersion').split('-')[0]
-			}, _('Usage statistics'), _('Close'));
 		},
 
 		_setupHostInfoMenu: function() {
@@ -735,32 +741,29 @@ define([
 			tools.openRemoteSession(hostname);
 		},
 
-		_showAboutDialog: function() {
-			var _formatDate = function(timestamp) {
-				return locale.format(new Date(timestamp), {
-					fullYear: true,
-					timePattern: " ",
-					formatLength: "long"
-				});
-			};
-
+		_showPageDialog: function(_PageRef, key) {
 			// query data from server
-			topic.publish('/umc/actions', 'menu-help', 'about');
-			tools.umcpCommand('get/info').then(function(response) {
-				var data = response.result;
-				array.forEach(['ssl_validity_host', 'ssl_validity_root'], function(ikey) {
-					data[ikey] = _formatDate(data[ikey]);
+			topic.publish('/umc/actions', 'menu-help', key);
+			require(["umc/app/" + _PageRef], lang.hitch(this, function(_Page) {
+				var page = new Page(_Page);
+				page.addChild(new Form(lang.mixin({
+					region: 'main'
+				}, _Page)));
+				page.addChild(new Text({
+					'class': 'umcPageIcon',
+					region: 'nav'
+				}));
+				dialog.confirmForm({
+					form: page,
+					title: _Page.headerText,
+					'class': 'umcLargeDialog umcAppDialog',
+					buttons: [{
+						name: 'close',
+						'default': true,
+						label: _('Close')
+					}]
 				});
-				data.path = require.toUrl('umc/app');
-				dialog.templateDialog('umc/app', 'about.' + _getLang() + '.html', data, _('About UMC'), _('Close'));
-			});
-		},
-
-		_showHelpDialog: function() {
-			topic.publish('/umc/actions', 'menu-help', 'help');
-			dialog.templateDialog('umc/app', 'help.' + _getLang()  + '.html', {
-				path: require.toUrl('umc/app')
-			}, _('Help'), _('Close'));
+			}));
 		},
 
 		_showFeedbackPage: function() {

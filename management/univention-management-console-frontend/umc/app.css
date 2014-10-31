@@ -1,0 +1,56 @@
+.umc .umcAppDialogPage .umcPageHeader {
+	display: none;
+}
+
+.umc .umcAppWelcomePageLink {
+	margin-bottom: -20px
+}
+
+.umc .umcAppDialogPage .umcLayoutRow:last-child {
+	margin-bottom: -20px;
+}
+
+.umc .umcAppDialogPage .umcPageIcon {
+	height: 150px;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	margin-right: 10px;
+}
+
+.umc .umcAppDialogPage-welcome .umcPageIcon {
+	background-image: url(app/welcome.svg);
+}
+
+.umc .umcAppDialogPage-feedback .umcPageIcon {
+	background-image: url(app/feedback.svg);
+}
+
+.umc .umcAppDialogPage-activation .umcPageIcon {
+	background-image: url(app/activation.svg);
+}
+
+.umc .umcAppDialogPage-help .umcPageIcon {
+	background-image: url(app/help.svg);
+}
+
+.umc .umcAppDialogPage-finished .umcPageIcon {
+	background-image: url(app/finished.svg);
+}
+
+.umc .umcAppDialogPage-about .umcPageIcon {
+	background-image: url(app/about.svg);
+}
+
+@media (max-width: 549px) {
+	.umc .umcAppDialogPage .umcPageIcon {
+		left: 50px;
+		width: 170px;
+		margin: 0 auto;
+	}
+
+	.umc .umcAppDialogPage-activation .umcPageIcon {
+		width: 200px;
+	}
+}
+

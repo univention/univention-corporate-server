@@ -176,14 +176,12 @@ define([
 				var isVisible = ipage == this.selectedChildWidget;
 				if (!isVisible) {
 					// display page offscreen to determine the height
-					domClass.add(iwrapper, 'dijitOffScreen');
 					domClass.remove(iwrapper, 'dijitHidden');
 				}
 				var iheight = geometry.position(ipage._main.domNode).h;
 				if (!isVisible) {
 					// restore original state
 					domClass.add(iwrapper, 'dijitHidden');
-					domClass.remove(iwrapper, 'dijitOffScreen');
 				}
 				return iheight;
 			}));

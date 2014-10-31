@@ -26,89 +26,26 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define setTimeout console*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/_base/kernel",
 	"dojo/_base/array",
-	"dojo/query",
-	"dojo/parser",
-	"dojo/dom-attr",
-	"dojo/dom-class",
-	"dojo/dom-geometry",
-	"dojo/Deferred",
-	"dojo/when",
 	"dojo/topic",
-	"dijit/registry",
 	"dijit/Dialog",
-	"dijit/layout/StackContainer",
-	"dijit/form/RadioButton",
 	"umc/tools",
 	"umc/dialog",
+	"umc/widgets/Wizard",
 	"umc/widgets/Text",
-	"umc/widgets/ContainerWidget",
-	"umc/widgets/Button",
+	"./WelcomePage",
+	"./FeedbackPage",
+	"./ActivationPage!",  // needs to be loaded as AMD plugin
+	"./HelpPage",
+	"./FinishedPage",
 	"umc/i18n!"
-], function(declare, lang, kernel, array, query, parser, domAttr, domClass, domGeometry, Deferred, when, topic, registry, Dialog, StackContainer, RadioButton, tools, dialog, Text, ContainerWidget, Button, _) {
-	var _lang = kernel.locale.split('-')[0];
-	var _getDocumentDependency = function(key) {
-		return lang.replace('dojo/text!umc/app/{key}.{lang}.html', {
-			key: key,
-			lang: _lang
-		});
-	};
-
-	var isLicenseActivated = function() {
-		return tools.ucr(['uuid/license', 'ucs/web/license/requested']).then(function(ucr) {
-			return Boolean(ucr['uuid/license']) || tools.isTrue(ucr['ucs/web/license/requested']);
-		});
-	}
-
-	var _docDeferred = new Deferred();
-	var preloadTemplateDocuments = function() {
-		isLicenseActivated().then(function(activated) {
-			var docs = ['welcome', 'feedback', 'activation', 'help', 'finished'];
-			if (activated) {
-				// remove license activation page if system is already activated or
-				// the user has already insert an email adress for the activation
-				// during the the system setup
-				var indexActivation = array.indexOf(docs, 'activation');
-				if (indexActivation >= 0) {
-					docs.splice(indexActivation, 1);
-				}
-			}
-
-			// pre-load HTML template documents
-			var _docDependencies = array.map(docs, _getDocumentDependency);
-			require(_docDependencies, function(/*...*/) {
-				_docDeferred.resolve(arguments);
-			});
-		});
-	};
-
-	preloadTemplateDocuments();
-
-
-	var _replaceVariablesInDocument = function(piwikDisabled, doc) {
-		return lang.replace(doc, {
-			path: require.toUrl('umc/app'),
-			feedbackUrl: _('umcFeedbackUrl'),
-			hardwareStatisticsCheckboxDisplay: 'block',
-			version: tools.status('ucsVersion').split('-')[0]
-		});
-	};
-
-	var _extractTitleFromDocument = function(doc) {
-		var reH1 = /<h1>([^<]*)<\/h1>/;
-		var title = doc.match(reH1)[1] || '';
-		var doc = doc.replace(reH1, '');
-		return {
-			doc: doc,
-			title: title
-		};
-	};
+], function(declare, lang, array, topic, Dialog, tools, dialog, Wizard, Text,
+		WelcomePage, FeedbackPage, ActivationPage, HelpPage, FinishedPage, _) {
 
 	return declare(Dialog, {
 		// summary:
@@ -116,95 +53,40 @@ define([
 
 		title: _('Welcome to UMC'),
 
-		_stackContainer: null,
+		'class': 'umcLargeDialog',
 
-		_pages: null,
-
-		_pageTitle: null,
+		_wizard: null,
 
 		_wizardCompleted: false,
 
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._stackContainer = new StackContainer({
-				'class': 'umcPopup'
+			// some pages might return null
+			var pages = array.filter([WelcomePage, FeedbackPage, ActivationPage, HelpPage, FinishedPage], function(ipage) {
+				return ipage;
 			});
 
-			this._pages = [];
-			when(_docDeferred, lang.hitch(this, function(_docs) {
-				// note that way can only access 'piwikDisabled' here, as we cannot
-				// be sure that the variable has been set before (in umc/app)
-				var docs = array.map(_docs, lang.hitch(this, _replaceVariablesInDocument, tools.status('piwikDisabled')));
-				this._pageTitle = [];
-				var docs = array.map(docs, function(idoc) {
-					var result = _extractTitleFromDocument(idoc);
-					this._pageTitle.push(result.title);
-					return result.doc;
-				}, this);
+			this._wizard = new Wizard({
+				pages: pages,
+				autoHeight: true,
+				onFinished: lang.hitch(this, 'close', true),
+				onCancel: lang.hitch(this, 'close', false)
+			});
 
-				array.forEach(docs, function(idoc, idx) {
-					// build footer
-					var footer = new ContainerWidget({
-						'class': 'umcPageFooter'
-						//style: 'overflow:auto;'
-					});
+			// add CSS classes per page, add icon element
+			array.forEach(pages, function(ipageConf) {
+				var ipage = this._wizard._pages[ipageConf.name];
+				ipage.addChild(new Text({
+					'class': 'umcPageIcon',
+					region: 'nav'
+				}));
+			}, this);
 
-					var footerRight = new ContainerWidget({
-						style: 'float:right;'
-					});
+			this.addChild(this._wizard);
 
-					// 'cancel' button
-					if (idx < docs.length - 1) {
-						footer.addChild(new Button({
-							label: _('Cancel'),
-							callback: lang.hitch(this, 'close', false),
-							style: 'float:left'
-						}));
-					}
-
-					// 'back' button
-					if (idx > 0) {
-						footerRight.addChild(new Button({
-							label: _('Back'),
-							callback: lang.hitch(this, '_gotoPage', idx - 1)
-						}));
-					}
-
-					// 'next' button
-					if (idx < docs.length - 1) {
-						footerRight.addChild(new Button({
-							label: _('Next'),
-							callback: lang.hitch(this, '_gotoPage', idx + 1, idx),
-							defaultButton: true
-						}));
-					}
-
-					// 'close' button
-					if (idx == docs.length - 1) {
-						footerRight.addChild(new Button({
-							label: _('Close'),
-							callback: lang.hitch(this, 'close', true),
-							defaultButton: true
-						}));
-					}
-					footer.addChild(footerRight);
-
-					// create 'page'
-					var page = new ContainerWidget({});
-					var html = new Text({
-						content: idoc,
-						style: 'max-width:600px; max-height:280px; overflow:hidden;'
-					});
-					parser.parse(html.domNode);
-					page.addChild(html);
-					page.addChild(footer);
-					this._pages.push(page);
-					this._stackContainer.addChild(page);
-				}, this);
-
-				this._adjustWizardHeight();
-				this.set('title', this._pageTitle[0]);
+			this._wizard.watch('selectedChildWidget', lang.hitch(this, function(name, old, child) {
+				this.set('title', child.headerText);
 			}));
 
 			this.on('hide', lang.hitch(this, function() {
@@ -213,48 +95,14 @@ define([
 			}));
 		},
 
-		_adjustWizardHeight: function() {
-			domClass.add(this.domNode, 'dijitOffScreen');
+		postCreate: function() {
+			this.inherited(arguments);
 			this.show();
-			var height = this._getMaxHeight();
-			array.forEach(this._pages, function(ipage) {
-				var icontent = ipage.getChildren()[0];
-				domGeometry.setMarginBox(icontent.domNode, { h: height });
-			});
-			domClass.remove(this.domNode, 'dijitOffScreen');
-			this._position();
-		},
-
-		_getMaxHeight: function() {
-			this.set('content', this._stackContainer);
-			var heights = array.map(this._pages, lang.hitch(this, function(ipage) {
-				this._stackContainer.selectChild(ipage);
-				var icontent = ipage.getChildren()[0];
-				return domGeometry.getMarginBox(icontent.domNode).h;
-			}));
-			this._stackContainer.selectChild(this._pages[0]);
-			return Math.max.apply(window, heights);
 		},
 
 		close: function(closed) {
 			this._wizardCompleted = closed;
 			this.hide();
-		},
-
-		destroyRecursive: function() {
-			this.inherited(arguments);
-		},
-
-		_gotoPage: function(idx, oldIdx) {
-			if (oldIdx >= 0 && query('#umc_app_activation_email', this._pages[oldIdx].domNode).length) {
-				// activiation page is visible
-				if (this._isValidEmail() === false) {
-					dialog.alert(_('Please enter a valid email address!'));
-					return;
-				}
-			}
-			this._stackContainer.selectChild(this._pages[idx]);
-			this.set('title', this._pageTitle[idx]);
 		},
 
 		_evaluate: function() {
@@ -266,63 +114,56 @@ define([
 			this._evaluateWizardCompleted();
 		},
 
+		_getValue: function(page, widgetName) {
+			var widget = this._wizard.getWidget(page, widgetName);
+			if (!widget) {
+				return null;
+			}
+			return widget.get('value');
+		},
+
 		_evaluateFeedback: function() {
-			var installationOK = registry.byId('umc_app_startup_installation_ok').get('value');
-			var installationNotOK = registry.byId('umc_app_startup_installation_not_ok').get('value');
+			var installationOK = this._getValue('welcome', 'installation_ok');
+			var installationNotOK = this._getValue('welcome', 'installation_not_ok');
 			var label = 'none';
 			if (installationOK || installationNotOK) {
 				label = installationOK ? 'positive' : 'negative';
 			}
-			topic.publish('/umc/actions', 'startup-wizard', 'installation-feedback', label)
+			topic.publish('/umc/actions', 'startup-wizard', 'installation-feedback', label);
 		},
 
 		_evaluateHardwareStatistics: function() {
-			var enableHardwareStatistics = registry.byId('umc_app_feedback_Checkbox').get('checked');
-			if (enableHardwareStatistics) {
-				tools.umcpCommand('sysinfo/general', {}, false).then(function(response) {
-					var options = response.result;
-					options.comment = 'Sent via UMC startup wizard.';
-					return tools.umcpCommand('sysinfo/system', options, false);
-				}).then(function(response) {
-					// upload archive
-					return tools.umcpCommand('sysinfo/upload', {
-						archive: response.result.archive
-					}, false);
-				}).then(function() {}, function() {
-					// silently ignore errors
-					console.log('Hardware information could not be sent.');
-				});
+			var enableHardwareStatistics = this._getValue('feedback', 'enableHardwareStatistics');
+			if (!enableHardwareStatistics) {
+				return;
 			}
-		},
 
-		_getEmail: function() {
-			var emailWidget = registry.byId('umc_app_activation_email');
-			if (!emailWidget) {
-				return null;
-			}
-			return emailWidget.get('value');
-		},
-
-		_isValidEmail: function() {
-			var emailWidget = registry.byId('umc_app_activation_email');
-			if (!emailWidget) {
-				return null;
-			}
-			var email = emailWidget.get('value');
-			if (!email) {
-				return null;
-			}
-			return emailWidget.isValid();
+			tools.umcpCommand('sysinfo/general', {}, false).then(function(response) {
+				var options = response.result;
+				options.comment = 'Sent via UMC startup wizard.';
+				return tools.umcpCommand('sysinfo/system', options, false);
+			}).then(function(response) {
+				// upload archive
+				return tools.umcpCommand('sysinfo/upload', {
+					archive: response.result.archive
+				}, false);
+			}).then(function() {}, function() {
+				// silently ignore errors
+				console.log('Hardware information could not be sent.');
+			});
 		},
 
 		_evaluateActivation: function() {
-			if (this._isValidEmail()) {
-				tools.umcpCommand('udm/request_new_license', {
-					email: this._getEmail()
-				}, false).then(function() {}, lang.hitch(this, function() {
-					dialog.alert(_('The activation of UCS failed. Please re-try to perform the the activation again via the settings menu.'));
-				}));
+			var email = this._getValue('activation', 'umc_app_activation_email');
+			if (!email) {
+				return;
 			}
+
+			tools.umcpCommand('udm/request_new_license', {
+				email: email
+			}, false).then(function() {}, lang.hitch(this, function() {
+				dialog.alert(_('The activation of UCS failed. Please re-try to perform the the activation again via the settings menu.'));
+			}));
 		},
 
 		_evaluateWizardCompleted: function() {

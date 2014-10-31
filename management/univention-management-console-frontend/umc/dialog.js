@@ -190,7 +190,6 @@ define([
 			if (!this._alertDialog) {
 				this._alertDialog = new ConfirmDialog({
 					title: title || _('Notification'),
-					style: 'max-width: 650px;',
 					closable: true,
 					options: [{
 						label: buttonLabel || _('Ok'),
@@ -329,7 +328,8 @@ define([
 			// 		Object[] widgets: the form widgets
 			// 		Object[] layout: the form layout
 			// 		String title: the confirmation dialog title (default: 'Confirmation')
-			// 		String style: the confirmation dialog css style (default: 'max-width: 550px;')
+			// 		String style: the confirmation dialog css style
+			// 		String class: css classes for the confirmation dialog
 			// 		Object[] buttons: overwrite the default submit and cancel button
 			// 		String submit: the label for the default submit button (default: 'Submit')
 			// 		String cancel: the label for the default cancel button (default: 'Cancel')
@@ -355,7 +355,8 @@ define([
 			// create confirmation dialog
 			var confirmDialog = new ConfirmDialog({
 				title: options.title || _('Confirmation'),
-				style: options.style || 'max-width: 550px;',
+				style: options.style || '',
+				'class': options.class || '',
 				message: form,
 				options: buttons
 			});
