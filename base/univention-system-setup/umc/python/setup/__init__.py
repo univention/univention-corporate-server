@@ -139,6 +139,10 @@ class Instance(Base, ProgressMixin):
 		'''Set the systems x-keymap according to
 		request.options[keymap]'''
 
+		# Don't set in debian installer mode
+		if ucr.is_true('system/setup/boot/installer'):
+			return True
+
 		if keymap:
 			xkeymap = util._xkeymap(keymap)
 			subprocess.call(['/usr/bin/setxkbmap', '-display', ':0', '-layout', xkeymap['layout'], '-variant', xkeymap['variant']])

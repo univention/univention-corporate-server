@@ -1,3 +1,9 @@
+univention-system-setup (8.1.36-1) unstable; urgency=medium
+
+  * Don't reset keymap in debian installer mode (Bug #35709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 31 Oct 2014 09:38:20 +0100
+
 univention-system-setup (8.1.35-2) unstable; urgency=medium
 
   * Added python-lxml as build dependency (Bug #35709)
