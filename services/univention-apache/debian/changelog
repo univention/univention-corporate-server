@@ -1,3 +1,14 @@
+univention-apache (7.0.12-1) unstable; urgency=low
+
+  Bug #36337:
+  * added clearsans-1.00.zip
+  * added font.styl for clear sans  
+  Bug #36095: 
+  * renamed css class for samlapp 
+  * stickyfooter hidden on load via dijitHidden
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 31 Oct 2014 13:16:11 +0100
+
 univention-apache (7.0.11-3) unstable; urgency=low
 
   * removed unset of ucr icon entries to in joinscript

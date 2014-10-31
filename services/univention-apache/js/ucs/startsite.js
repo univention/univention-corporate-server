@@ -357,6 +357,11 @@ define([
 			this._resizeItemNames();
 		},
 
+		_showFooter: function() {
+			domClass.remove('footer', 'dijitHidden');
+		},
+
+
 		start: function() {
 			this._registerRouter();
 			this._translateDomElements();
@@ -365,6 +370,7 @@ define([
 			this._createLinkEntries();
 			this._createLanguagesDropDown();
 			this._registerResizeHandling();
+			this._showFooter();
 			if (this._hasServiceEntries()) {
 				router.startup("service");
 			}

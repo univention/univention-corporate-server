@@ -157,6 +157,12 @@ define([
 
 			var scopes = params.split(/\s*,\s*/);
 
+			// somehow in the built dojo file, a dependency to "ucs/i18n!ucs"
+			// is mapped to "ucs/i18n!ucs/main", fix this here
+			scopes = array.map(scopes, function(iscope) {
+				return iscope.replace(/\/main$/, '');
+			});
+
 			// ignore i18n files that could not be loaded previously
 			scopes = array.filter(scopes, function(iscope) {
 				return !_ignored(language, iscope);
