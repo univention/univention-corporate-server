@@ -94,7 +94,8 @@ UCR_VARIABLES = [
 	# language
 	'locale', 'locale/default',
 	# keyboard
-	'locale/keymap',
+	'xorg/keyboard/options/XkbLayout', 'xorg/keyboard/options/XkbModel',
+	'xorg/keyboard/options/XkbOptions',
 	# basis
 	'hostname', 'domainname', 'ldap/base', 'windows/domain',
 	# net: ipv4
@@ -191,12 +192,6 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		# get all packages that shall be installed
 		installComponents = list(allComponents & (selectedComponents - currentComponents))
 		newValues['packages_install'] = ' '.join(installComponents)
-
-	if 'locale/keymap' in newValues:
-		xkeymap = _xkeymap(newValues['locale/keymap'])
-		if xkeymap:
-			newValues['xorg/keyboard/options/XkbLayout'] = xkeymap['layout']
-			newValues['xorg/keyboard/options/XkbVariant'] = xkeymap['variant']
 
 	if newValues['server/role'] == 'domaincontroller_master':
 		# add newValues for SSL UCR variables

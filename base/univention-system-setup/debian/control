@@ -31,7 +31,8 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention-lib (>= 1.0.25-1),
  shell-univention-lib (>= 3.0.1-1),
  python-univention-lib (>= 3.0.1-1),
- univention-ipcalc (>= 5)
+ univention-ipcalc (>= 5),
+ python-lxml
 Recommends: univention-management-console-module-setup
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
@@ -114,7 +115,8 @@ Depends: univention-management-console-server,
  python-dnspython,
  python-psutil,
  python-apt,
- univention-ipcalc
+ univention-ipcalc,
+ xkb-data
 Description: UMC module for Univention System Setup
  This package contains the UMC module for the UCS System Setup.
  .

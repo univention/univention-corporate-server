@@ -41,6 +41,7 @@ import copy
 import subprocess
 import simplejson as json
 import locale as _locale
+import lxml.etree 
 
 import notifier
 import notifier.threads
@@ -543,19 +544,44 @@ class Instance(Base, ProgressMixin):
 			keymap = 'us'
 		self.finished(request.id, keymap)
 
-	def lang_keymaps(self, request):
+	def lang_keyboard_model(self, request):
+		'''Return a list of all available keyboard models.'''
+
+		tree = lxml.etree.parse(file('/usr/share/X11/xkb/rules/base.xml'))
+		models = tree.xpath("//model")
+
+		model_result = [ { 'label': model.xpath('./configItem/description')[0].text, 'id': model.xpath('./configItem/name')[0].text } for model in models ]
+
+		self.finished(request.id, model_result)
+
+	def lang_keyboard_layout(self, request):
 		'''Return a list of all available keyboard layouts.'''
-		try:
-			file = open('/usr/share/univention-system-setup/locale/all-kmaps')
-		except:
-			MODULE.error( 'Cannot find locale data for keymaps in /usr/share/univention-system-setup/locale' )
-			self.finished(request.id, None)
-			return
 
-		r = csv.reader(file, delimiter=':')
-		keymaps = [ { 'label': i[0], 'id': i[1] } for i in r if not i[0].startswith('#') ]
+		tree = lxml.etree.parse(file('/usr/share/X11/xkb/rules/base.xml'))
+		layouts = tree.xpath("//layout")
 
-		self.finished(request.id, keymaps)
+		layout_result = [ { 'label': layout.xpath('./configItem/description')[0].text, 'id': layout.xpath('./configItem/name')[0].text } for layout in layouts ]
+
+		self.finished(request.id, layout_result)
+
+	def lang_keyboard_variante(self, request):
+		'''Return a list of all available keyboard variantes.'''
+
+		keyboardlayout = request.options.get('keyboardlayout') or 'us'
+
+		variante_result = []
+		tree = lxml.etree.parse(file('/usr/share/X11/xkb/rules/base.xml'))
+		layouts = tree.xpath("//layout")
+
+		for layout in layouts:
+			layoutID = layout.xpath("./configItem/name")[0].text
+			if layoutID != keyboardlayout:
+				continue
+			variants = layout.xpath("./variantList/variant")
+			variante_result += [ { 'label': variant.xpath('./configItem/description')[0].text, 'id': variant.xpath('./configItem/name')[0].text } for variant in variants ]
+
+		variante_result.insert(0, { 'label': '', 'id': '' })
+		self.finished(request.id, variante_result)
 
 	def lang_countrycodes(self, request):
 		'''Return a list of all countries with their two letter chcountry codes.'''

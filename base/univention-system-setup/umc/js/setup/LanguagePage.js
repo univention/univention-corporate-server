@@ -78,10 +78,24 @@ define([
 				dynamicValues: 'setup/lang/timezones'
 			}, {
 				type: ComboBox,
-				name: 'locale/keymap',
+				name: 'xorg/keyboard/options/XkbModel',
+				label: _('Keyboard model'),
+				umcpCommand: this.umcpCommand,
+				dynamicValues: 'setup/lang/keyboard/model'
+			}, {
+				type: ComboBox,
+				name: 'xorg/keyboard/options/XkbLayout',
 				label: _('Keyboard layout'),
 				umcpCommand: this.umcpCommand,
-				dynamicValues: 'setup/lang/keymaps'
+				dynamicValues: 'setup/lang/keyboard/layout',
+				// TODO: on Change reload xorg/keyboard/options/XkbVariant
+			}, {
+				type: ComboBox,
+				name: 'xorg/keyboard/options/XkbVariant',
+				label: _('Keyboard variant'),
+				umcpCommand: this.umcpCommand,
+				dynamicValues: 'setup/lang/keyboard/variant',
+				// TODO: add a layout parameter to the umcpCommand, example keyboardlayout: us
 			}, {
 				type: MultiObjectSelect,
 				name: 'locale',
@@ -136,7 +150,7 @@ define([
 
 			var layout = [{
 				label: _('Time zone and keyboard settings'),
-				layout: ['timezone', 'locale/keymap']
+				layout: ['timezone', 'xorg/keyboard/options/XkbModel', 'xorg/keyboard/options/XkbLayout', 'xorg/keyboard/options/XkbVariant']
 			}, {
 				label: _('Language settings'),
 				layout: ['locale', 'locale/default']
@@ -189,9 +203,17 @@ define([
 				description: _('Time zone'),
 				values: vals['timezone']
 			}, {
-				variables: ['locale/keymap' ],
+				variables: ['xorg/keyboard/options/XkbModel'],
+				description: _('Keyboard model'),
+				values: vals['xorg/keyboard/options/XkbModel']
+			}, {
+				variables: ['xorg/keyboard/options/XkbLayout'],
 				description: _('Keyboard layout'),
-				values: vals['locale/keymap']
+				values: vals['xorg/keyboard/options/XkbLayout']
+			}, {
+				variables: ['xorg/keyboard/options/XkbVariant'],
+				description: _('Keyboard variant'),
+				values: vals['xorg/keyboard/options/XkbVariant']
 			}, {
 				variables: ['locale' ],
 				description: _('Installed system locales'),

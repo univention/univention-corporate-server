@@ -33,7 +33,9 @@
 		<command name="setup/lang/timezones" function="lang_timezones" />
 		<command name="setup/lang/locales" function="lang_locales" />
 		<command name="setup/lang/default_keymap" function="lang_default_keymap" />
-		<command name="setup/lang/keymaps" function="lang_keymaps" />
+		<command name="setup/lang/keyboard/model" function="lang_keyboard_model" />
+		<command name="setup/lang/keyboard/layout" function="lang_keyboard_layout" />
+		<command name="setup/lang/keyboard/variant" function="lang_keyboard_variante" />
 		<command name="setup/lang/countrycodes" function="lang_countrycodes" />
 		<command name="setup/net/interfaces" function="net_interfaces" />
 		<command name="setup/net/dhclient" function="net_dhclient" />

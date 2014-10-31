@@ -1,3 +1,9 @@
+univention-system-setup (8.1.35-1) unstable; urgency=medium
+
+  * Remove deprecated variable locale/keymap (Bug #35709)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 30 Oct 2014 10:49:02 +0100
+
 univention-system-setup (8.1.34-3) unstable; urgency=low
 
   * Bug #35805: Typo

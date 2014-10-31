@@ -334,10 +334,10 @@ define([
 					dynamicValues: 'setup/lang/timezones'
 				}, {
 					type: ComboBox,
-					name: 'locale/keymap',
+					name: 'xorg/keyboard/options/XkbLayout',
 					label: _('Keyboard layout'),
 					umcpCommand: lang.hitch(this, 'umcpCommand'),
-					dynamicValues: 'setup/lang/keymaps',
+					dynamicValues: 'setup/lang/keyboard/layout',
 					onChange: lang.hitch(this, function(value) {
 						if (this.local_mode) {
 							this.umcpCommand('setup/keymap/save', {keymap: value});
@@ -841,7 +841,7 @@ define([
 					disable.push(['welcome', '_search']);
 					disable.push(['welcome', 'result']);
 					disable.push(['locale', 'locale/default']);
-					disable.push(['locale', 'locale/keymap']);
+					disable.push(['locale', 'xorg/keyboard/options/XkbLayout']);
 					disable.push(['locale', 'timezone']);
 				} else if (field == 'reboot') {
 					this.getPage('done').set('helpText', _('<p>UCS has been successfully set up with the specified settings.</p>') + _('<p>After clicking on the button <i>Finish</i> the system will be prepared for the first boot procedure and will be rebooted.</p>'));
@@ -1112,7 +1112,7 @@ define([
 				this.getWidget('locale', 'locale/default').setInitialValue(data.locale);
 			}
 			if (data.keyboard) {
-				this.getWidget('locale', 'locale/keymap').setInitialValue(data.keyboard);
+				this.getWidget('locale', 'xorg/keyboard/options/XkbLayout').setInitialValue(data.keyboard);
 			}
 		},
 
@@ -1234,8 +1234,8 @@ define([
 
 			var defaultKeyboardLabel = unknownStr;
 			if (city.default_keyboard) {
-				city.keyboard = city.default_keyboard;
-				var layoutWidget = this.getWidget('locale', 'locale/keymap');
+				city.keyboard = city.default_lang;
+				var layoutWidget = this.getWidget('locale', 'xorg/keyboard/options/XkbLayout');
 				array.some(layoutWidget.getAllItems(), function(ilayout) {
 					 if (ilayout.id == city.keyboard) {
 						// found matching layout -> break loop
@@ -1388,7 +1388,7 @@ define([
 			if (isFieldShown('locale')) {
 				msg += '<p><b>' + _('Localization settings') + '</b></p>';
 				msg += '<ul>';
-				array.forEach(['locale/default', 'timezone', 'locale/keymap'], function(ikey) {
+				array.forEach(['locale/default', 'timezone', 'xorg/keyboard/options/XkbLayout'], function(ikey) {
 					var iwidget = this.getWidget('locale', ikey);
 					var item = _getItem(iwidget.getAllItems(), vals[ikey]);
 					_append(iwidget.label, item.label);
