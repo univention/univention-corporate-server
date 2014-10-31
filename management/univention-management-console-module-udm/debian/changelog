@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.20-1) unstable; urgency=medium
+
+  * Bug #36303: adjust license dialogues to responsive design
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 19:13:33 +0100
+
 univention-management-console-module-udm (5.1.19-2) unstable; urgency=low
 
   * Bug #36260: Fix opening App Center module

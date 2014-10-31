@@ -1,19 +1,29 @@
+.umc .umcUDMLicenseIcon,
+.umc .umcUDMLicenseImportIcon {
+	height: 150px;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	margin-bottom: 20px;
+}
+
 .umc .umcUDMLicenseIcon {
-	background: url(udm/license.svg) no-repeat;
-	background-position: 32px 15px;
-	padding-left: 200px;
-	min-height: 140px;
+	background-image: url(udm/license.svg);
+}
+
+.umc .umcUDMLicenseImportIcon {
+	background-image: url(udm/license-import.svg);
+	margin-top: 35px;
+}
+
+@media (max-width: 549px) {
+	.umc .umcUDMLicenseImportIcon {
+		margin-top: 0px;
+	}
 }
 
 .umc .umcUDMLicenseTitlePane {
 	margin-top: 2em;
-}
-
-.umc .umcUdmLicenseImportDialog .dijitDialogPaneContent > .umcContainerWidget{
-	background: url(udm/license-import.svg) no-repeat;
-	background-position: 45px 60px;
-	padding-left: 200px;
-	min-height: 140px;
 }
 
 .umc .umcUdmLicenseImportDialog textarea {
@@ -28,3 +38,15 @@
 .umc .umcUdmNewObjectDialog .dijitStackContainer {
 	height: auto !important;
 }
+
+.umc .umcUdmDialogPage .umcActivationLeaveFieldFreeMessage {
+	display: none;
+}
+
+@media (max-width: 991px) {
+	/* force the tree to have a fixed height in UDM modules */
+	.umc .umcModuleUDM .dijitTree {
+		height: 200px !important;
+	}
+}
+

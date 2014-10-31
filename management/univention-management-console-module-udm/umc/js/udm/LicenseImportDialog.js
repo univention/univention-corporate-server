@@ -31,9 +31,11 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/dom-class",
 	"umc/tools",
 	"umc/dialog",
 	"umc/render",
+	"umc/widgets/ContainerWidget",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/Text",
@@ -41,7 +43,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/Uploader",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, tools, dialog, render, ConfirmDialog, StandbyMixin, Text, TextArea, Button, Uploader, _) {
+], function(declare, lang, domClass, tools, dialog, render, ContainerWidget, ConfirmDialog, StandbyMixin, Text, TextArea, Button, Uploader, _) {
 
 	return declare('umc.modules.udm.LicenseImportDialog', [ConfirmDialog, StandbyMixin], {
 		// summary:
@@ -60,6 +62,14 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
+			// add icon container
+			this.message = new ContainerWidget({});
+			this.message.addChild(new Text({
+				'class': 'umcUDMLicenseImportIcon col-xxs-12 col-xs-4',
+				content : ''
+			}));
+
+			// add main content
 			this._widgets = render.widgets([{
 				type: Text,
 				name: 'message',
@@ -102,13 +112,15 @@ define([
 				})
 			}];
 
-			this.message = render.layout([
+			var content = render.layout([
 				'titleImport',
 				'message',
 				'licenseUpload',
 				'licenseText',
 				['btnLicenseText', 'submit']
 			], this._widgets, render.buttons(buttons));
+			domClass.add(content.domNode, 'col-xxs-12 col-xs-8');
+			this.message.addChild(content);
 		},
 
 		_handleUploaded: function(result) {

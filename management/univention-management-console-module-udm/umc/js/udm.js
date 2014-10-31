@@ -111,6 +111,8 @@ define([
 		//		'superordinate' (optional).
 		newObject: null,
 
+		'class': 'umcModuleUDM',
+
 		// the property field that acts as unique identifier: the LDAP DN
 		idProperty: '$dn$',
 

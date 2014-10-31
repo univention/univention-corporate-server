@@ -33,6 +33,7 @@ define([
 	"dojo/_base/kernel",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/query",
 	"dojo/Deferred",
 	"dojo/topic",
 	"dijit/registry",
@@ -43,7 +44,7 @@ define([
 	"umc/tools",
 	"umc/dialog",
 	"umc/i18n!umc/modules/udm"
-], function(declare, kernel, lang, array, Deferred, topic, registry, Menu, PopupMenuItem, MenuItem, app, tools, dialog, _) {
+], function(declare, kernel, lang, array, query, Deferred, topic, registry, Menu, PopupMenuItem, MenuItem, app, tools, dialog, _) {
 
 	var ucr = {};
 
@@ -74,67 +75,30 @@ define([
 		topic.publish('/umc/actions', 'menu-settings', 'license');
 		require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
 			var dlg = new LicenseDialog();
-			dlg.show();
 		});
 	};
 
-	var _reopenActivationDialog = function(_deferred) {
-		if (!_deferred) {
-			_deferred = new Deferred();
-		}
-		var _emailWidget = registry.byId('umc_app_activation_email');
-		if (!_emailWidget) {
-			_showActivationDialog();
-			_deferred.resolve();
-		} else {
-			// the previous dialog has not been destroyed completely...
-			// try again after a small timeout
-			setTimeout(lang.partial(_reopenActivationDialog, _deferred), 200);
-		}
-		return _deferred;
-	};
-
 	var _showActivationDialog = function() {
-		topic.publish('/umc/actions', 'menu-settings', 'activation');
-
-		/** The following check is only for if this dialogue is opened via topic.publish() **/
+		// The following check is only for if this dialogue is opened via topic.publish()
 		if (ucr['uuid/license']) {
 			dialog.alert(_('The license has already been activated.'));
 			return;
 		}
 
-		var confirmDeferred = dialog.templateDialog('umc/app', 'activation.' + _getLang()  + '.html', {
-			path: require.toUrl('umc/app'),
-			leaveFieldFreeDisplay: 'none',
-			version: tools.status('ucsVersion').split('-')[0]
-		}, _('Activation of UCS'), [{
+		app.showPageDialog('ActivationPage!', 'activation', [{
 			name: 'cancel',
 			label: _('Cancel')
 		}, {
-			name: 'activate',
+			name: 'submit',
 			label: _('Activate'),
 			'default': true
-		}]);
-
-		confirmDeferred.then(function(response) {
-			if (response != 'activate') {
-				return;
-			}
-
-			var emailWidget = registry.byId('umc_app_activation_email');
-			if (!emailWidget.isValid()) {
-				_reopenActivationDialog().then(function() {
-					dialog.alert(_('Please enter a valid email address!'));
-				});
-			} else {
+		}], 'umcUdmDialogPage').then(function(values) {
+			var email = values.email;
+			if (email) {
 				tools.umcpCommand('udm/request_new_license', {
-					email: emailWidget.get('value')
-				}, false).then(function() {
+					email: email
+				}).then(function() {
 					_showLicenseImportDialog();
-				}, function(error) {
-					_reopenActivationDialog().then(function() {
-						tools.handleErrorStatus(error.response);
-					});
 				});
 			}
 		});
