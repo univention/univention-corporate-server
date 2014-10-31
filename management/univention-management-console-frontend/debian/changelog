@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.84-3) unstable; urgency=medium
+
+  * Bug #36303: removed trailing comma + added missing semicolons
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 20:54:40 +0100
+
 univention-management-console-frontend (4.1.84-2) unstable; urgency=medium
 
   * Bug #36303: added missing translation

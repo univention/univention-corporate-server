@@ -55,7 +55,7 @@ define([
 			type: Text,
 			name: 'text2',
 			labelConf: {
-				'class': 'umcActivationLeaveFieldFreeMessage',
+				'class': 'umcActivationLeaveFieldFreeMessage'
 			},
 			content: _('<p>Leave the field empty to perform the activation at a later point in time via the settings menu.</p>')
 		}, {
@@ -75,7 +75,7 @@ define([
 			});
 		}
 		return _isLicenseActivatedDeferred;
-	}
+	};
 
 	// return an AMD plugin that resolves when the UCR variables have been loaded
 	return {
@@ -84,5 +84,5 @@ define([
 				load(activated ? null : pageConf);
 			});
 		}
-	}
+	};
 });
