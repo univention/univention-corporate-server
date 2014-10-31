@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.85-1) unstable; urgency=medium
+
+  * Bug #36302: adjust default positioning of tooltips
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 22:19:01 +0100
+
 univention-management-console-frontend (4.1.84-4) unstable; urgency=medium
 
   * Bug #36303: fixed jshint issues
