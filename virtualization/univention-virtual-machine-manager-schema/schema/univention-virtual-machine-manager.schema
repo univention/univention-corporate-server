@@ -229,10 +229,23 @@ attributetype ( uvmmCloudConnectionAttributetype:1 NAME 'univentionVirtualMachin
 	DESC 'reference to the type of the connection'
 	EQUALITY caseIgnoreIA5Match
 	SUBSTR caseIgnoreIA5SubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
 attributetype ( uvmmCloudConnectionAttributetype:2 NAME 'univentionVirtualMachineCloudConnectionParameter'
 	DESC 'Cloud Connection parameter stored as a key-value pair'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( uvmmCloudConnectionAttributetype:3 NAME 'univentionVirtualMachineCloudConnectionEnableImageSearch'
+	DESC 'Enable search for Images'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( uvmmCloudConnectionAttributetype:4 NAME 'univentionVirtualMachineCloudConnectionIncludeUCSImages'
+	DESC 'Should UCS Images be shown'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 ))
+
+attributetype ( uvmmCloudConnectionAttributetype:5 NAME 'univentionVirtualMachineCloudConnectionImageList'
+	DESC 'List of Image identifiers that are selectable for new instances'
 	EQUALITY caseExactMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
@@ -240,8 +253,11 @@ objectclass ( uvmmCloudConnectionObjectClass:1 NAME 'univentionVirtualMachineClo
 	DESC 'UCS Virtual Machine Cloud Connection objectclass'
 	STRUCTURAL
 	MUST ( cn )
-	MAY ( univentionVirtualMachineCloudConnectionTypeRef
-		$ univentionVirtualMachineCloudConnectionParameter
+	MAY ( univentionVirtualMachineCloudConnectionTypeRef $
+		univentionVirtualMachineCloudConnectionParameter $
+		univentionVirtualMachineCloudConnectionEnableImageSearch $
+		univentionVirtualMachineCloudConnectionIncludeUCSImages $
+		univentionVirtualMachineCloudConnectionImageList
 		)
 	)
 

@@ -72,6 +72,38 @@ property_descriptions = {
 			may_change=True,
 			identifies=False
 		),
+	'enableSearch': univention.admin.property(
+			short_description=_('Enable search for images'),
+			long_description=_('Enable the search for images when creating a new instance'),
+			syntax=udm_syntax.boolean,
+			multivalue=False,
+			options=[],
+			required=True,
+			may_change=True,
+			identifies=False,
+			default="1"
+		),
+	'includeUCSimages': univention.admin.property(
+			short_description=_('Show UCS images when creating a new instance'),
+			long_description=_('Show UCS images when creating a new instance'),
+			syntax=udm_syntax.boolean,
+			multivalue=False,
+			options=[],
+			required=True,
+			may_change=True,
+			identifies=False,
+			default="1"
+		),
+	'availableImages': univention.admin.property(
+			short_description=_('Add the listed images to the list of selectable images'),
+			long_description=_('The specified images are added to the list of selectable images in the instance wizard'),
+			syntax=udm_syntax.string,
+			multivalue=True,
+			options=[],
+			required=False,
+			may_change=True,
+			identifies=False,
+		),
 	'parameter': univention.admin.property(
 			short_description=_('Cloud Connection parameters'),
 			long_description=_('Key-value pair storing needed parameters for the Cloud Connection'),
@@ -91,6 +123,9 @@ layout = [
 		Group(_('General'), layout=[
 			"name",
 			"type",
+			"enableSearch",
+			"includeUCSimages",
+			"availableImages",
 			"parameter",
 		])
 	])
@@ -114,6 +149,9 @@ def unmapKeyAndValue(old):
 mapping = udm_mapping.mapping()
 mapping.register('name', 'cn', None, udm_mapping.ListToString)
 mapping.register('type', 'univentionVirtualMachineCloudConnectionTypeRef', None, udm_mapping.ListToString)
+mapping.register('enableSearch', 'univentionVirtualMachineCloudConnectionEnableImageSearch', None, udm_mapping.ListToString)
+mapping.register('includeUCSimages', 'univentionVirtualMachineCloudConnectionIncludeUCSImages', None, udm_mapping.ListToString)
+mapping.register('availableImages', 'univentionVirtualMachineCloudConnectionImageList')
 mapping.register('parameter', 'univentionVirtualMachineCloudConnectionParameter', mapKeyAndValue, unmapKeyAndValue)
 
 

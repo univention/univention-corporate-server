@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (5.0.3-1) unstable; urgency=low
+
+  * Bug #36154: Add attributes to configure image selection filters 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 31 Oct 2014 19:46:45 +0100
+
 univention-virtual-machine-manager-schema (5.0.2-1) unstable; urgency=medium
 
   * Give DCs and member server permissions to create cloud connection
