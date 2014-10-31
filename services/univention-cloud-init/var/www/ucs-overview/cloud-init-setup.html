@@ -1,34 +1,16 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title data-i18n="header"></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="viewport" content="width=device-width, -scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Welcome to Univention Corporate Server</title>
 		<link rel="shortcut icon" href="/favicon.ico" />
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/sticky-footer.css">
-		<link rel="stylesheet" href="css/style.css">
-		<link rel="stylesheet" href="css/univention-cloud-init.css">
-
+		<link rel="stylesheet" href="js/dijit/themes/dijit.css">
+		<link rel="stylesheet" href="css/bootstrap.css"/>
+		<link rel="stylesheet" href="css/ucs.css">
 		<script type="text/javascript">
-			//<!--
-			function getQuery(/*String*/ param, /*mixed*/ defaultVal) {
-				// parse the URI query string
-				var query = window.location.search.substring(1);
-				var vars = query.split('&');
-				for (var i = 0; i < vars.length; i++) {
-					// parse the tuple
-					var tuple = vars[i].split('=');
-
-					// check whether we found the particular parameter we are interested in
-					if (2 == tuple.length && param == tuple[0]) {
-						return tuple[1];
-					}
-				}
-
-				// otherwise return the specified default value
-				return defaultVal;
-			}
+			var l10nResources = ['ci-appliance'];
 
 			function pagerefresh() {
 				window.location.replace("/");
@@ -36,81 +18,52 @@
 
 			setInterval(function () {pagerefresh()}, 5000);
 
-			var locale = getQuery('lang');
-			if (locale) {
-				locale = locale.replace('_', '-');
-			}
-			var dojoConfig = {
-				isDebug: false,
-				locale: locale,
-				async: true
-			};
-
-			//-->
 		</script>
-		<script type="text/javascript" src="js/dojo.js"></script>
-		<script type="text/javascript">
-			require(["js/cloud-init-startsite", "dojo/domReady!"], function(startsite) {
-				startsite.start();
-			});
-		</script>
+		<script type="text/javascript" src="js/ucs/query.js"></script>
+		<script type="text/javascript" src="js/dojo/dojo.js"></script>
 	</head>
 	<body>
-		<div id="wrap">
+		<div id="wrapper">
 			<div id="site-header">
-				<div class="container">
-					<h1 id="site-title"></h1>
-					<h2 id="header-claim" data-i18n="claim"></h2>
-					<ul class="nav nav-tabs" style="display: none!important;">
-						<li class="active col-md-6"><a href="#service" data-i18n="services"></a></li>
-						<li class="col-md-6"><a href="#admin" data-i18n="admin"></a></li>
-					</ul>
+				<div id="header-top">
+					<div id="header-left">
+					</div>
 					<div id="header-right">
-						<div class="dropdown">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-								<span class="button-text"></span><span class="arrow"></span>
-							</button>
-							<ul id="language-switcher" class="dropdown-menu" role="menu"></ul>
-						</div>
+						<div class="dropdown" id="dropDownButton"></div>
 					</div>
 				</div>
 			</div>
-			<div class="container" id="content">
-				<noscript>
-					<div class="container tab-pane">
-						<ul class="items">
-							<li class="item col-md-6 warning">
-								<span class="wrapper">
-									<span class="icon"></span>
-									<span class="title">JavaScript required</span>
-									<span class="text">
-										A browser with JavaScript enabled is required in order to use this service.
-										<!--[if IE]>
-										<br /><br />
-										Please check your security settings and add this address to your trusted sites.
-										<![endif]-->
-									</span>
-								</span>
-							</li>
-						</ul>
-					</div>
-				</noscript>
-				<div class="setupwrapper">
-					<div class="setupicon" style="background-image: url(/ucs-overview/img/ci-welcome.png);"></span>
-					<span class="setuptitle" data-i18n="setupTitle"></span>
-					<span class="setuptext" data-i18n="setupText"></span>
-					<span class="setuptext" data-i18n="setupText2"></span>
-					<span id="setuplink" class="setuptext"><span data-i18n="setupText3"></span><a href="/ucs-overview/" data-i18n="setupLinkText"></a></span>
+			<div class="container">
+				<div id="title" class="dijitHidden">
+					<h1 data-i18n="Welcome to Univention Corporate Server"></h1>
+				</div>
+				<div id="content" class="tab-content">
+					<noscript>
+						<div>
+							<h1 class="no-js">Welcome to Univention Corporate Server</h1>
+						</div>
+						<div class="galleryTab">
+							<div class="warning" id="no-js">
+								<div class="wrapper">
+									<div class="icon"></div>
+									<div class="title">JavaScript required</div>
+									<p>A browser with JavaScript enabled is required in order to use this service.</p>
+									<p><!--[if IE]>Please check your security settings and add this address to your trusted sites.<![endif]--></p>
+								</div>
+							</div>
+						</div>
+					</noscript>
+					<div class="warning" style="max-width: 700px; min-height: 200px; height: auto;">
+						<div class="icon" style="margin: 15px 20px 0 5px"></div>
+						<div class="title" data-i18n="Welcome to UCS initial configuration"></div>
+						<p data-i18n="This machine is currently being configured by cloud-init."></p>
+						<p data-i18n="The configuration you selected is applied and the Univention Corporate Server installation is finished."></p>
+						<pre style="color: inherit; background: none; border: none; padding-left: 15px;"
+							data-i18n="ssh -i &amp;lt;path/to/privatekey&amp;gt; root@&amp;lt;serveraddress&amp;gt; passwd"></pre>
+							<span data-i18n="After the setup has finished, you will be redirected. Alternatively, after setup is finished, you can <a href='/ucs-overview/'>use this link to reach the overview page</a>."></span>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="bs-footer" id="footer" role="contentinfo">
-			<div class="container">
-			</div>
-    	</div>
-		<script type="text/javascript" src="js/jquery.min.js"></script>
-		<script type="text/javascript" src="js/bootstrap.min.js" charset="utf-8" async defer></script>
-		<script type="text/javascript" src="js/tab.js"></script>
 	</body>
 </html>

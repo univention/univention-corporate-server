@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-22 13:38+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2014-10-31 09:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,47 +16,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: var/www/ucs-overview/js/cloud-init-startsite.js:71
-#, python-brace-format
-msgid "UCS - {hostname}.{domainname}"
-msgstr "UCS - {hostname}.{domainname}"
+msgid ""
+"After the setup has finished, you will be redirected. Alternatively, after "
+"setup is finished, you can  "
+msgstr "Nachdem die Einrichtung fertig ist werden sie weitergeleitet. Alternativ können"
+"Sie nachdem die Einrichtung beendet wurde "
 
-#: var/www/ucs-overview/js/cloud-init-startsite.js:72
-#, python-brace-format
-msgid "Welcome to Univention Corporate Server <b>{hostname}.{domainname}</b>"
-msgstr ""
-"Willkommen auf Univention Corporate Server <b>{hostname}.{domainname}</b>"
+msgid "Language"
+msgstr "Sprache"
 
-#: var/www/ucs-overview/js/cloud-init-startsite.js:73
+msgid ""
+"The configuration you selected is applied and the Univention Corporate "
+"Server installation is finished."
+msgstr "Die Konfiguration die Sie gewählt haben wird angewendet und die "
+"Univention Corporate Server Installation  wird fertiggestellt."
+
+msgid "This machine is currently being configured by cloud-init."
+msgstr "Diese Maschine wird gerade von cloud-init eingerichtet."
+
 msgid "Welcome to UCS initial configuration"
 msgstr "Willkommen zum initialen UCS Konfigurationssetup"
 
-#: var/www/ucs-overview/js/cloud-init-startsite.js:74
-msgid ""
-"Before starting the setup wizard, an initial password for the <i>root</i> "
-"user must be set."
-msgstr ""
-"Bevor der Einrichtungsassistent gestartet werden kann, muss ein initiales "
-"Passwort für den <i>root</i> Benutzer gesetzt werden."
-
-#: var/www/ucs-overview/js/cloud-init-startsite.js:75
-msgid ""
-"Connect to this server instance as <i>root</i> via ssh and your selected "
-"private ssh key. Set a password with <i>passwd</i>, e.g., by issuing the "
-"following command:"
-msgstr ""
-"Verbinden Sie sich per ssh mit der Serverinstanz als <i>root</i> und dem "
-"gewählten privaten ssh Schlüssel. Setzen Sie ein Passwort mit <i>passwd</i>, "
-"beispielsweise mit folgendem Befehl:"
-
-#: var/www/ucs-overview/js/cloud-init-startsite.js:76
 msgid "ssh -i &lt;path/to/privatekey&gt; root@&lt;serveraddress&gt; passwd"
 msgstr "ssh -i &lt;pfad/zum/privatekey&gt; root@&lt;serveradresse&gt; passwd"
 
-#: var/www/ucs-overview/js/cloud-init-startsite.js:77
-msgid "If a password for <i>root</i> has been set, "
-msgstr "Wenn das Passwort für <i>root</i> gesetzt wurde, "
+msgid "use this link to reach the overview page"
+msgstr "diesen Link nutzen um zur Startseite zu gelangen"
 
-#: var/www/ucs-overview/js/cloud-init-startsite.js:78
-msgid "start the setup wizard"
-msgstr "starten Sie den Einrichtungsassistenten"
+msgid "After the setup has finished, you will be redirected. Alternatively,"
+" after setup is finished, you can <a href='/ucs-overview/'>"
+"use this link to reach the overview page</a>."
+msgstr "Nachdem die Einrichtung fertig ist werden sie weitergeleitet. Alternativ "
+"können Sie, nachdem die Einrichtung beendet wurde, <a href='/ucs-overview/'>"
+"diesen Link nutzen um zur Startseite zu gelangen</a>."
+
