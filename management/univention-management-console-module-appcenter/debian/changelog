@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (4.1.15-2) unstable; urgency=low
+
+  * Bug #35781: Fix installing master packages on localhost when installing
+    remotely on another server
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Oct 2014 03:41:33 +0100
+
 univention-management-console-module-appcenter (4.1.15-1) unstable; urgency=medium
 
   * Bug #36262: move buttons like "request new license" / "open join module" to the left

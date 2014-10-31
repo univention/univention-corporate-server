@@ -211,6 +211,7 @@ class Instance(umcm.Base):
 				if result['can_continue']:
 					def _thread_remote(_connection, _package_manager):
 						with _package_manager.locked(reset_status=True, set_finished=True):
+							_package_manager.unlock() # not really locked locally, but busy, so "with locked()" is appropriate
 							Application._query_remote_progress(_connection, _package_manager)
 					def _finished_remote(thread, result):
 						if isinstance(result, BaseException):
