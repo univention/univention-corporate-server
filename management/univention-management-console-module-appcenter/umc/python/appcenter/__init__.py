@@ -199,6 +199,7 @@ class Instance(umcm.Base):
 			try:
 				connection = UMCConnection(host, error_handler=MODULE.warn)
 				connection.auth(self._username, self._password)
+				result = connection.request('appcenter/invoke', request.options)
 			except HTTPException:
 				result = {
 					'unreachable' : [host],
@@ -207,7 +208,6 @@ class Instance(umcm.Base):
 					'software_changes_computed' : True, # not really...
 				}
 			else:
-				result = connection.request('appcenter/invoke', request.options)
 				if result['can_continue']:
 					def _thread_remote(_connection, _package_manager):
 						with _package_manager.locked(reset_status=True, set_finished=True):

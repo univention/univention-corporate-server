@@ -1418,7 +1418,7 @@ class Application(object):
 			steps = result['steps']
 			errors = ['%s: %s' % (host, error) for error in result['errors']]
 			if info:
-				package_manager.progress_state.info(_('Output from %(host)s: %(info)s') % {'host' : host, 'info' : info})
+				package_manager.progress_state.info(info)
 			if steps:
 				steps = float(steps) # bug in package_manager in 3.1-0: int will result in 0 because of division and steps < max_steps
 				package_manager.progress_state.percentage(steps)

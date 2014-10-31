@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-28 21:18+0100\n"
+"POT-Creation-Date: 2014-10-31 11:25+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/appcenter/__init__.py:314 umc/python/appcenter/__init__.py:464
+#: umc/python/appcenter/__init__.py:315 umc/python/appcenter/__init__.py:465
 msgid "Another package operation is in progress"
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 
@@ -32,21 +32,16 @@ msgstr "Konnte keine Applikation für %s finden"
 msgid "Could not query App Center: %s"
 msgstr "Konnte das App Center nicht erreichen: %s"
 
-#: umc/python/appcenter/app_center.py:1468
+#: umc/python/appcenter/app_center.py:1471
 #, python-format
 msgid "Installing LDAP packages on %s"
 msgstr "Installiere LDAP Pakete auf %s"
-
-#: umc/python/appcenter/app_center.py:1418
-#, python-format
-msgid "Output from %(host)s: %(info)s"
-msgstr "Ausgabe von %(host)s: %(info)s"
 
 #: umc/python/appcenter/__init__.py:72
 msgid "Package not found in repository"
 msgstr "Paket wurde in keinem Repository gefunden"
 
-#: umc/python/appcenter/app_center.py:1380
+#: umc/python/appcenter/app_center.py:1383
 msgid ""
 "Registration of the application in LDAP failed. It will be retried every "
 "time the App Center module is opened."
@@ -67,7 +62,7 @@ msgstr ""
 msgid "There already is a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
-#: umc/python/appcenter/__init__.py:660
+#: umc/python/appcenter/__init__.py:661
 msgid ""
 "There is no repository at this server (or at least none for the current UCS "
 "version)"
@@ -75,14 +70,17 @@ msgstr ""
 "Auf dem Server befindet sich kein Repository (oder zumindest keins für die "
 "aktuelle UCS Version)"
 
-#: umc/python/appcenter/__init__.py:508
+#: umc/python/appcenter/__init__.py:509
 msgid "installed"
 msgstr "installiert"
 
-#: umc/python/appcenter/__init__.py:510
+#: umc/python/appcenter/__init__.py:511
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/appcenter/__init__.py:506
+#: umc/python/appcenter/__init__.py:507
 msgid "upgradable"
 msgstr "aktualisierbar"
+
+#~ msgid "Output from %(host)s: %(info)s"
+#~ msgstr "Ausgabe von %(host)s: %(info)s"

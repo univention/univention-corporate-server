@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (4.1.15-3) unstable; urgency=low
+
+  * Bug #35781: Do not show the origin of the package information in the
+    progress bar (no host info)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Oct 2014 11:29:17 +0100
+
 univention-management-console-module-appcenter (4.1.15-2) unstable; urgency=low
 
   * Bug #35781: Fix installing master packages on localhost when installing
