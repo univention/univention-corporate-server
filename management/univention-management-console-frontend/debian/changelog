@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.84-4) unstable; urgency=medium
+
+  * Bug #36303: fixed jshint issues
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 21:19:44 +0100
+
 univention-management-console-frontend (4.1.84-3) unstable; urgency=medium
 
   * Bug #36303: removed trailing comma + added missing semicolons

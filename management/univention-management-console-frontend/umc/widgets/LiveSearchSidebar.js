@@ -91,7 +91,7 @@ define([
 			this._categoryContainer = new ContainerWidget({
 				'class': 'umcLiveSearchSidebarRadioButtonGroup'
 			});
-			this.addChild(this._categoryContainer)
+			this.addChild(this._categoryContainer);
 		},
 
 		postCreate: function() {

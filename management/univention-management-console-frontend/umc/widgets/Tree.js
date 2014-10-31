@@ -72,7 +72,7 @@ define([
 		},
 
 		resize: function() {
-			console.log('### Tree.resize');
+			//console.log('### Tree.resize');
 		},
 
 		/**

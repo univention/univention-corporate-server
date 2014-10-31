@@ -762,7 +762,7 @@ define([
 
 				// create a new form to render the widgets
 				var form = new Form(lang.mixin({
-					region: 'main',
+					region: 'main'
 				}, pageConf));
 
 				// create a page containing additional methods validate(),
@@ -789,7 +789,7 @@ define([
 				form.on('submit', lang.hitch(page, 'onSubmit'));
 
 				// add elements to page
-				page.addChild(form)
+				page.addChild(form);
 				page.addChild(new Text({
 					'class': 'umcPageIcon',
 					region: 'nav'

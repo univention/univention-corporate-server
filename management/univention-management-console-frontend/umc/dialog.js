@@ -427,7 +427,7 @@ define([
 				message = lang.replace( message, keys );
 				var reH1 = /<h1>([^<]*)<\/h1>/;
 				title = message.match(reH1)[1] || title || '';
-				var message = message.replace(reH1, '');
+				message = message.replace(reH1, '');
 				var widget = new Text( {  content : message } );
 				if (message.indexOf('data-dojo-type=') >= 0) {
 					// we need to parse the html code with the dojo parser

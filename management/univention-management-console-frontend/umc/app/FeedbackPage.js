@@ -54,4 +54,4 @@ define([
 			value: true
 		}]
 	};
-})
+});
