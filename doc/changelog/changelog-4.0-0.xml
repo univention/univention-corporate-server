@@ -62,7 +62,7 @@
 	<title>Univention Installer</title>
 	<itemizedlist>
 		<listitem><simpara>
-				The UCS installation DVD has been revised. The installation is now performed by an adapted version of the debian installer
+				The UCS installation DVD has been revised. The installation is now performed by an adapted version of the Debian installer
 				(<ulink url="&ucsbug;30547">Bug 30547</ulink>,
 				<ulink url="&ucsbug;34994">Bug 34994</ulink>,
 				<ulink url="&ucsbug;35370">Bug 35370</ulink>,
