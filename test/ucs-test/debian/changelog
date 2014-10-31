@@ -1,3 +1,10 @@
+ucs-test (5.0.39-1) unstable; urgency=low
+
+  * 20_appcenter/10_check_apps_ini: test script for validating Apps .ini(s).
+    (Bug #30508)
+
+ -- Dmitry Galkin <galkin@univention.de>  Fri, 31 Oct 2014 12:36:31 +0100
+
 ucs-test (5.0.38-1) unstable; urgency=low
 
   * 20_appcenter/17_app_status: perform 'non-strict' check of the servers
