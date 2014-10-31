@@ -673,6 +673,9 @@
 				The notification message about the changeability of instance settings has been 
 				removed (<ulink url="&ucsbug;36307">Bug 36307</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The default &ucsUVMM; loglevel has been increased to INFO (<ulink url="&ucsbug;36136">Bug 36136</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
