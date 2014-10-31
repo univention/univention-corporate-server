@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-31 03:55+0100\n"
+"POT-Creation-Date: 2014-10-31 19:58+0100\n"
 "PO-Revision-Date: 2012-02-23 16:18+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,14 +53,14 @@ msgstr ""
 msgid "<b>Host</b> "
 msgstr ""
 
-#: umc/app/WelcomePage.js:73
+#: umc/app/WelcomePage.js:72
 #, python-format
 msgid ""
 "<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Tell us you opinion!</"
 "a></p>"
 msgstr ""
 
-#: umc/app/WelcomePage.js:59
+#: umc/app/WelcomePage.js:58
 msgid ""
 "<p>Congratulations, you have successfully completed the configuration of "
 "your Univention Corporate Server (UCS), and you have logged into Univention "
@@ -76,7 +76,7 @@ msgid ""
 "available via the following links:</p>"
 msgstr ""
 
-#: umc/app/ActivationPage.js:61
+#: umc/app/ActivationPage.js:64
 #, python-format
 msgid ""
 "<p>Details about the activation of a UCS license can be found in the <a href="
@@ -84,7 +84,7 @@ msgid ""
 "target=\"_blank\">UCS manual</a>.</p>"
 msgstr ""
 
-#: umc/app/ActivationPage.js:57
+#: umc/app/ActivationPage.js:60
 msgid ""
 "<p>Leave the field empty to perform the activation at a later point in time "
 "via the settings menu.</p>"
@@ -107,8 +107,8 @@ msgstr ""
 #: umc/app/FinishedPage.js:44
 msgid ""
 "<p>The startup wizard has been completed now.</p><p>All listed information "
-"can be accessed at any later point in time via the help as well as the "
-"settings menu on the top right.</p>"
+"can be accessed at any later point in time via the application menu on the "
+"top right.</p>"
 msgstr ""
 
 #: umc/app/ActivationPage.js:46
@@ -156,12 +156,16 @@ msgstr ""
 msgid "Add objects"
 msgstr ""
 
-#: umc/app.js:1226
+#: umc/app.js:1270
 msgid "Add to favorites"
 msgstr ""
 
 #: umc/tools.js:881
 msgid "An assert statement failed"
+msgstr ""
+
+#: umc/tools.js:677 umc/tools.js:757
+msgid "An error occurred"
 msgstr ""
 
 #: umc/tools.js:685
@@ -200,8 +204,8 @@ msgstr ""
 msgid "Back to overview"
 msgstr ""
 
-#: umc/dialog.js:348 umc/tools.js:199 umc/widgets/Wizard.js:163
-#: umc/widgets/MultiObjectSelect.js:137 umc/app.js:1516
+#: umc/dialog.js:347 umc/tools.js:199 umc/widgets/Wizard.js:163
+#: umc/widgets/MultiObjectSelect.js:137 umc/app.js:1564
 msgid "Cancel"
 msgstr ""
 
@@ -213,7 +217,7 @@ msgstr ""
 msgid "Clear image data"
 msgstr ""
 
-#: umc/tools.js:733 umc/widgets/Module.js:161 umc/app.js:763
+#: umc/tools.js:733 umc/widgets/Module.js:161 umc/app.js:751
 msgid "Close"
 msgstr ""
 
@@ -221,7 +225,7 @@ msgstr ""
 msgid "Completion of startup wizard"
 msgstr ""
 
-#: umc/dialog.js:304 umc/dialog.js:357
+#: umc/dialog.js:304 umc/dialog.js:356
 msgid "Confirmation"
 msgstr ""
 
@@ -229,7 +233,7 @@ msgstr ""
 msgid "Could not fulfill the request."
 msgstr ""
 
-#: umc/app.js:1120
+#: umc/app.js:1164
 #, python-format
 msgid "Could not load module \"%s\"."
 msgstr ""
@@ -246,7 +250,7 @@ msgstr ""
 msgid "Date of expiry of the SSL root certificate"
 msgstr ""
 
-#: umc/app.js:1515
+#: umc/app.js:1563
 msgid "Do you really want to logout?"
 msgstr ""
 
@@ -258,7 +262,7 @@ msgstr ""
 msgid "Enable one-time statistic on hardware configuration."
 msgstr ""
 
-#: umc/app/WelcomePage.js:63
+#: umc/app/WelcomePage.js:62
 msgid "Everything worked great."
 msgstr ""
 
@@ -310,7 +314,7 @@ msgstr ""
 msgid "Hide server error message"
 msgstr ""
 
-#: umc/app/WelcomePage.js:68
+#: umc/app/WelcomePage.js:67
 msgid "I see potential for improvement."
 msgstr ""
 
@@ -374,7 +378,7 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: umc/app.js:570 umc/app.js:1518
+#: umc/app.js:570 umc/app.js:1566
 msgid "Logout"
 msgstr ""
 
@@ -428,7 +432,7 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: umc/app.js:1218
+#: umc/app.js:1262
 msgid "Open module"
 msgstr ""
 
@@ -463,7 +467,7 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: umc/app.js:1226
+#: umc/app.js:1270
 msgid "Remove from favorites"
 msgstr ""
 
@@ -479,7 +483,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: umc/app.js:1327
+#: umc/app.js:1371
 #, python-format
 msgid "Search query ›%s‹"
 msgstr ""
@@ -539,7 +543,7 @@ msgstr ""
 msgid "Sticky bit"
 msgstr ""
 
-#: umc/dialog.js:352
+#: umc/dialog.js:351
 msgid "Submit"
 msgstr ""
 
@@ -575,7 +579,7 @@ msgstr ""
 msgid "The total cost was %.2f EUR!"
 msgstr ""
 
-#: umc/app.js:1172
+#: umc/app.js:1216
 #, python-format
 msgid "There is no module available for the authenticated user %s."
 msgstr ""
@@ -679,7 +683,7 @@ msgstr ""
 msgid "Welcome to UMC"
 msgstr ""
 
-#: umc/app/WelcomePage.js:52
+#: umc/app/WelcomePage.js:51
 msgid "Welcome to Univention Management Console"
 msgstr ""
 
@@ -723,7 +727,7 @@ msgstr ""
 msgid "steps to reproduce the failure"
 msgstr ""
 
-#: umc/app/WelcomePage.js:73 umc/app.js:771
+#: umc/app/WelcomePage.js:72 umc/app.js:815
 msgid "umcFeedbackUrl"
 msgstr "http://www.univention.com/feedback"
 

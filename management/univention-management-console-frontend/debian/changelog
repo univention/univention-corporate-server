@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.84-2) unstable; urgency=medium
+
+  * Bug #36303: added missing translation
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 19:59:27 +0100
+
 univention-management-console-frontend (4.1.84-1) unstable; urgency=medium
 
   Bug #36303:
