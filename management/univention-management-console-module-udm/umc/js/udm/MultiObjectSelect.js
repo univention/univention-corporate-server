@@ -104,7 +104,6 @@ define([
 			this.queryWidgets = [{
 				type: 'ComboBox',
 				name: 'objectProperty',
-				description: _( 'The object property on which the query is filtered.' ),
 				label: _( 'Object property' ),
 				staticValues: [{id: 'None', label: _('Default properties')}],
 				dynamicValues: 'udm/properties',

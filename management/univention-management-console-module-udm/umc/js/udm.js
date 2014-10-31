@@ -619,7 +619,6 @@ define([
 				widgets.push({
 					type: ComboBox,
 					name: 'superordinate',
-					description: _( 'The superordinate in which the search is carried out.' ),
 					label: _('Superordinate'),
 					value: superordinates[0].id || superordinates[0],
 					staticValues: superordinates,
@@ -635,7 +634,6 @@ define([
 				widgets.push({
 					type: ComboBox,
 					name: 'container',
-					description: _( 'The container in which the query is executed.' ),
 					label: _('Search in:'),
 					value: containers[0].id || containers[0],
 					staticValues: containers,
@@ -656,7 +654,6 @@ define([
 			}, {
 				type: ComboBox,
 				name: 'objectType',
-				description: _( 'The type of the LDAP object.' ),
 				label: _('Type'),
 				//value: objTypes.length ? this.moduleFlavor : undefined,
 				staticValues: objTypes,
@@ -677,7 +674,6 @@ define([
 			}, {
 				type: ComboBox,
 				name: 'objectProperty',
-				description: _( 'The object property on which the query is filtered.' ),
 				label: _( 'Property' ),
 				staticValues: objProperties,
 				dynamicValues: lang.hitch(this, function(options) {

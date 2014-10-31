@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.21-1) unstable; urgency=medium
+
+  * Bug #36298: removed annyoing tooltips
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 22:17:07 +0100
+
 univention-management-console-module-udm (5.1.20-2) unstable; urgency=medium
 
   * Bug #36303: added missing translation
