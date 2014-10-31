@@ -224,7 +224,7 @@ class CloudConnection(object):
 
 		return keypairs
 
-	def list_images(self, pattern="*"):
+	def list_images(self, pattern="*", only_preselected_images=False, ucs_images=False):
 		# Expand pattern with *
 		pattern = "*%s*" % pattern
 		regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)

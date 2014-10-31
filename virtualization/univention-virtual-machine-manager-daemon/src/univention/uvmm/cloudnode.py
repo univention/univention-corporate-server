@@ -151,12 +151,12 @@ class CloudConnectionMananger(dict):
 
 		return instances
 
-	def list_conn_images(self, conn_name="*", pattern="*"):
+	def list_conn_images(self, conn_name="*", pattern="*", only_preselected_images=False, only_ucs_images=False):
 		connection_list = self._get_connections(conn_name)
 
 		images = {}
 		for connection in connection_list:
-			images[connection.publicdata.name] = connection.list_images(pattern)
+			images[connection.publicdata.name] = connection.list_images(pattern, only_preselected_images, only_ucs_images)
 
 		return images
 

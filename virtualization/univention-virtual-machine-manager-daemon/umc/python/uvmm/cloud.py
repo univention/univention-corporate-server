@@ -126,7 +126,7 @@ class Cloud(object):
 
 			if success:
 				# add cloud to ldap
-				ldap_cloud_connection_add(cloudtype, name, parameter)
+				ldap_cloud_connection_add(cloudtype, name, parameter, enable_search, ucs_images, preselected_images)
 
 				self.finished(request.id, data)
 			else:
@@ -144,10 +144,22 @@ class Cloud(object):
 		testconnection = request.options.get('testconnection')
 		parameter = request.options.get('parameter')
 
+		enable_search = False
+		if 'enable_search' in request.options and request.options.get('enable_search') in ["TRUE", "true", "True", "1"]:
+			enable_search = True
+		ucs_images = False
+		if 'ucs_images' in request.options and request.options.get('ucs_images') in ["TRUE", "true", "True", "1"]:
+			ucs_images = True
+
+		preselected_images = request.options.get('preselected_images', [])
+
 		# add cloud to uvmm
-		args = parameter
+		args = parameter.copy()
 		args['name'] = name
 		args['type'] = cloudtype
+		args['enable_search'] = request.options.get('enable_search')
+		args['preselected_images'] = preselected_images
+		args['only_ucs_images'] = request.options.get('ucs_images')
 
 		self.uvmm.send(
 				'L_CLOUD_ADD',
@@ -244,6 +256,12 @@ class Cloud(object):
 		self.required_options(request, 'conn_name')
 		conn_name = request.options.get('conn_name')
 		pattern = request.options.get('pattern')
+		only_preselected_images = False
+		if 'onlypreselected' in request.options and request.options.get('onlypreselected') in ["TRUE", "true", "True", "1"]:
+			only_preselected_images = True
+		ucs_images = False
+		if 'ucs_images' in request.options and request.options.get('ucs_images') in ["TRUE", "true", "True", "1"]:
+			ucs_images = True
 
 		def _finished(thread, result, request):
 			"""
@@ -273,7 +291,9 @@ class Cloud(object):
 				'L_CLOUD_IMAGE_LIST',
 				Callback(_finished, request),
 				conn_name=conn_name,
-				pattern=pattern
+				pattern=pattern,
+				only_preselected_images=only_preselected_images,
+				only_ucs_images=ucs_images
 				)
 
 	def cloud_list_secgroup(self, request):
