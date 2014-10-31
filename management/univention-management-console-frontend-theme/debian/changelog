@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.78-1) unstable; urgency=medium
+
+  * Bug #36302: adjust tooltip max-width
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 22:24:12 +0100
+
 univention-management-console-frontend-theme (0.0.77-1) unstable; urgency=medium
 
   Bug #36315:
