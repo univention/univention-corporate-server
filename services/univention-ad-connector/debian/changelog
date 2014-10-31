@@ -1,3 +1,9 @@
+univention-ad-connector (9.0.9-1) unstable; urgency=medium
+
+  * Bug #35837: adjust icon files
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 21:13:42 +0100
+
 univention-ad-connector (9.0.8-1) unstable; urgency=low
 
   * Bug #36321: moved label next to radio buttons
