@@ -1,3 +1,11 @@
+univention-apache (7.0.11-3) unstable; urgency=low
+
+  * removed unset of ucr icon entries to in joinscript
+    since they are now removed in postinst script
+    (Bug #36316)
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 31 Oct 2014 11:06:03 +0100
+
 univention-apache (7.0.11-2) unstable; urgency=medium
 
   * Bug #36095: fix reference error

@@ -60,9 +60,6 @@ if [ $server_role = "domaincontroller_master" ] || [ $server_role = "domaincontr
 		ucs/web/overview/entries/admin/invalid-certificate-list/description/de="Liste der widerrufenen Zertifikate" \
 		ucs/web/overview/entries/admin/invalid-certificate-list/link="../ucsCA.crl" \
 		ucs/web/overview/entries/admin/invalid-certificate-list/priority="91"
-	ucr unset \
-		ucs/web/overview/entries/admin/root-certificate/icon \
-		ucs/web/overview/entries/admin/invalid-certificate-list/icon
 fi
 
 if [ $server_role != "domaincontroller_master" ]; then
@@ -74,8 +71,6 @@ if [ $server_role != "domaincontroller_master" ]; then
 		ucs/web/overview/entries/admin/ldap-master/link="https://$ldap_master/ucs-overview/?lang=en" \
 		ucs/web/overview/entries/admin/ldap-master/link/de="https://$ldap_master/ucs-overview/?lang=de" \
 		ucs/web/overview/entries/admin/ldap-master/priority="09"
-	ucr unset \
-		ucs/web/overview/entries/admin/ldap-master/icon
 fi
 
 
