@@ -53,8 +53,6 @@ define([
 
 		driveType: null, // pre-defined drive will automatically set the drive type and start on page 'drive'
 
-		navBootstrapClasses: 'col-xs-12 col-sm-12 col-md-4 col-lg-4',
-		mainBootstrapClasses: 'col-xs-12 col-sm-12 col-md-8 col-lg-8',
 		autoHeight: true,
 
 		constructor: function(props) {
