@@ -18,6 +18,7 @@ Build-Depends: debhelper (>= 9),
  python-simplejson,
  unzip,
  po-debconf (>= 0.5.0),
+ python-lxml
 XS-Python-Version: 2.6, 2.7
 
 Package: univention-system-setup
@@ -32,7 +33,6 @@ Depends: ${misc:Depends}, ${python:Depends},
  shell-univention-lib (>= 3.0.1-1),
  python-univention-lib (>= 3.0.1-1),
  univention-ipcalc (>= 5),
- python-lxml
 Recommends: univention-management-console-module-setup
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
@@ -116,6 +116,7 @@ Depends: univention-management-console-server,
  python-psutil,
  python-apt,
  univention-ipcalc,
+ python-lxml,
  xkb-data
 Description: UMC module for Univention System Setup
  This package contains the UMC module for the UCS System Setup.
