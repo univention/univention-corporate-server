@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.19-2) unstable; urgency=low
+
+  * Bug #36260: Fix opening App Center module
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Oct 2014 11:19:18 +0100
+
 univention-management-console-module-udm (5.1.19-1) unstable; urgency=medium
 
   * Bug #36303: adjust new object wizard width

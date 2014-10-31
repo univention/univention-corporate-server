@@ -338,7 +338,8 @@ define([
 				tools.umcpCommand('appcenter/get', {application: required}, false).then(lang.hitch(this, function(data) {
 					var app = data.result;
 					if (!app.is_installed_anywhere) {
-						var link = sprintf('<a href="javascript:void(0)" onclick=\'require("umc/app").openModule(%s).then(function(mod) { mod.showApp(%s) })\'>%s</a>',
+						var link = sprintf('<a href="javascript:void(0)" onclick=\'require("umc/app").openModule(%s, %s).then(function(mod) { mod.showApp(%s) })\'>%s</a>',
+							json.stringify('appcenter'),
 							json.stringify('appcenter'),
 							json.stringify(app),
 							'Univention App Center'
