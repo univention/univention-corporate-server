@@ -356,7 +356,7 @@ define([
 			var confirmDialog = new ConfirmDialog({
 				title: options.title || _('Confirmation'),
 				style: options.style || '',
-				'class': options.class || '',
+				'class': options['class'] || '',
 				message: form,
 				options: buttons
 			});
