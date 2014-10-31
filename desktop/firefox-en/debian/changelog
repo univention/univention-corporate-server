@@ -1,3 +1,9 @@
+firefox-en (1:31.2.0esr-3) unstable; urgency=medium
+
+  * Bump version (Bug #36374)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 31 Oct 2014 23:28:57 +0100
+
 firefox-en (1:31.2.0esr-2) unstable; urgency=medium
 
   * Update to Firefox 31.2.0 ESR (Bug #36374)
