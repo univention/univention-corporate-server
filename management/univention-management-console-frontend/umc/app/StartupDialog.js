@@ -154,7 +154,7 @@ define([
 		},
 
 		_evaluateActivation: function() {
-			var email = this._getValue('activation', 'umc_app_activation_email');
+			var email = this._getValue('activation', 'email');
 			if (!email) {
 				return;
 			}

@@ -652,7 +652,7 @@ define([
 			this.addMenuEntry(new MenuItem({
 				$parentMenu$: 'umcMenuHelp',
 				label: _('Help'),
-				onClick: lang.hitch(this, '_showPageDialog', 'HelpPage', 'help')
+				onClick: lang.hitch(this, 'showPageDialog', 'HelpPage', 'help', null, null)
 			}));
 
 			this.addMenuEntry(new MenuItem({
@@ -666,7 +666,7 @@ define([
 			this.addMenuEntry(new MenuItem({
 				$parentMenu$: 'umcMenuHelp',
 				label: _('About UMC'),
-				onClick: lang.hitch(this, '_showPageDialog', 'AboutPage!', 'about')
+				onClick: lang.hitch(this, 'showPageDialog', 'AboutPage!', 'about', null, null)
 			}));
 
 			this.addMenuEntry(new MenuSeparator({
@@ -702,7 +702,7 @@ define([
 			this.addMenuEntry(new MenuItem({
 				$parentMenu$: 'umcMenuHelp',
 				label: _('Usage statistics'),
-				onClick: lang.hitch(this, '_showPageDialog', 'FeedbackPage', 'feedback')
+				onClick: lang.hitch(this, 'showPageDialog', 'FeedbackPage', 'feedback', null, null)
 			}));
 		},
 
@@ -741,29 +741,73 @@ define([
 			tools.openRemoteSession(hostname);
 		},
 
-		_showPageDialog: function(_PageRef, key) {
-			// query data from server
+		showPageDialog: function(_PageRef, key, buttonsConf, additionCssClasses) {
+			// publish action + set default values
 			topic.publish('/umc/actions', 'menu-help', key);
-			require(["umc/app/" + _PageRef], lang.hitch(this, function(_Page) {
-				var page = new Page(_Page);
-				page.addChild(new Form(lang.mixin({
-					region: 'main'
-				}, _Page)));
+			additionCssClasses = additionCssClasses || '';
+			buttonsConf = buttonsConf || [{
+				name: 'submit',
+				'default': true,
+				label: _('Close')
+			}];
+
+			// require given Page reference and display the dialog
+			var deferred = new Deferred();
+			require(["umc/app/" + _PageRef], lang.hitch(this, function(_pageConf) {
+				// prepare dict
+				var pageConf = lang.mixin({
+					'class': ''
+				}, _pageConf);
+				pageConf['class'] += ' ' + additionCssClasses;
+
+				// create a new form to render the widgets
+				var form = new Form(lang.mixin({
+					region: 'main',
+				}, pageConf));
+
+				// create a page containing additional methods validate(),
+				// _getValueAttr(), on() and onSubmit() in order to fake Form
+				// behaviour for umc/dialog::confirmForm()
+				var page = new Page(pageConf);
+				page = lang.delegate(page, {
+					validate: lang.hitch(form, 'validate'),
+					_getValueAttr: lang.hitch(form, '_getValueAttr'),
+					// fake call to on('submit', function)
+					_callbacks: null,
+					on: function(type, cb) {
+						if (type == 'submit') {
+							this._callbacks = this._callbacks || [];
+							this._callbacks.push(cb);
+						}
+					},
+					onSubmit: function(values) {
+						array.forEach(this._callbacks, function(icb) {
+							icb(values);
+						});
+					}
+				});
+				form.on('submit', lang.hitch(page, 'onSubmit'));
+
+				// add elements to page
+				page.addChild(form)
 				page.addChild(new Text({
 					'class': 'umcPageIcon',
 					region: 'nav'
 				}));
+
+				// show dialog
 				dialog.confirmForm({
 					form: page,
-					title: _Page.headerText,
+					title: pageConf.headerText,
 					'class': 'umcLargeDialog umcAppDialog',
-					buttons: [{
-						name: 'close',
-						'default': true,
-						label: _('Close')
-					}]
+					buttons: buttonsConf
+				}).then(function(response) {
+					deferred.resolve(response);
+				}, function() {
+					deferred.resolve(null);
 				});
 			}));
+			return deferred;
 		},
 
 		_showFeedbackPage: function() {
@@ -1505,6 +1549,10 @@ define([
 			if (this._header) {
 				this._header.addMenuEntry(item);
 			}
+		},
+
+		showPageDialog: function() {
+			return this._header.showPageDialog.apply(this, arguments);
 		},
 
 		registerOnStartup: function(/*Function*/ callback) {

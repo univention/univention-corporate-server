@@ -305,7 +305,6 @@ define([
 				message: message,
 				options: options
 			});
-			domStyle.set(confirmDialog.domNode, {maxWidth: '550px'});
 
 			// connect to 'confirm' event to close the dialog in any case
 			var deferred = new Deferred();
@@ -369,9 +368,18 @@ define([
 				});
 			}
 
+			var hasSubmitButton = array.some(buttons, function(ibutton) {
+				return ibutton.name == 'submit';
+			});
+
 			var deferred = new Deferred();
 			confirmDialog.on('confirm', function(response) {
-				if ('submit' === response) {
+				if (!hasSubmitButton || !form.validate || !form.get('value')) {
+					// no submit button or no real form -> simply return the response
+					deferred.resolve(response);
+					confirmDialog.close();
+				}
+				else if ('submit' === response) {
 					if (form.validate()) {
 						deferred.resolve(form.get('value'));
 						confirmDialog.close();

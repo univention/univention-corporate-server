@@ -36,8 +36,8 @@ define([
 		name: 'help',
 		headerText: _('Further Information'),
 		'class': 'umcAppDialogPage umcAppDialogPage-help',
-		navBootstrapClasses: 'col-xxs-12 col-xs-4 col-sm-4 col-md-4 col-lg-4',
-		mainBootstrapClasses: 'col-xxs-12 col-xs-8 col-sm-8 col-md-8 col-lg-8',
+		navBootstrapClasses: 'col-xxs-12 col-xs-4',
+		mainBootstrapClasses: 'col-xxs-12 col-xs-8',
 		widgets: [{
 			type: Text,
 			name: 'text',

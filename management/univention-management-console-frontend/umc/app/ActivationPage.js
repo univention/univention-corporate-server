@@ -38,22 +38,25 @@ define([
 		name: 'activation',
 		headerText: _('Activation of Univention Corporate Server'),
 		'class': 'umcAppDialogPage umcAppDialogPage-activation',
-		navBootstrapClasses: 'col-xxs-12 col-xs-4 col-sm-4 col-md-4 col-lg-4',
-		mainBootstrapClasses: 'col-xxs-12 col-xs-8 col-sm-8 col-md-8 col-lg-8',
+		navBootstrapClasses: 'col-xxs-12 col-xs-4',
+		mainBootstrapClasses: 'col-xxs-12 col-xs-8',
 		widgets: [{
 			type: Text,
 			name: 'text',
 			content: _('<p>You may now enter a valid e-mail address in order to activate the UCS system to use the App Center. Within a short time, you will receive an updated license key. This key can then be uploaded via the license dialog in the settings menu (on the top right).</p>')
 		}, {
 			type: TextBox,
-			name: 'umc_app_activation_email',
+			name: 'email',
 			inlineLabel: _('E-mail address'),
 			regExp: '.+@.+',
 			invalidMessage: _('No valid e-mail address.'),
 			size: 'Two'
 		}, {
 			type: Text,
-			name: 'leaveFieldFreeDisplay',
+			name: 'text2',
+			labelConf: {
+				'class': 'umcActivationLeaveFieldFreeMessage',
+			},
 			content: _('<p>Leave the field empty to perform the activation at a later point in time via the settings menu.</p>')
 		}, {
 			type: Text,

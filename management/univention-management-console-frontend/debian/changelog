@@ -1,3 +1,12 @@
+univention-management-console-frontend (4.1.84-1) unstable; urgency=medium
+
+  Bug #36303:
+  * removed unneeded CSS class from app pages
+  * adjust umc/app::showPageDialog() to be called by external modules
+  * adjust title for error dialogues
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 19:20:01 +0100
+
 univention-management-console-frontend (4.1.83-2) unstable; urgency=medium
 
   * Bug #36303: fixed missing escaping of keyword 'class'

@@ -674,7 +674,7 @@ define([
 				} else {
 					// all other cases
 					topic.publish('/umc/actions', 'error', status);
-					dialog.alert('<p>' + statusMessage + '</p>' + (message ? '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + message + '</p>' : ''));
+					dialog.alert('<p>' + statusMessage + '</p>' + (message ? '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + message + '</p>' : ''), _('An error occurred'));
 				}
 			} else if (undefined !== status) {
 				// unknown status code .. should not happen
@@ -754,7 +754,7 @@ define([
 			} else {
 				options[1]['default'] = true; // fallback: as_email is default
 			}
-			dialog.confirm(container, options, statusMessage);
+			dialog.confirm(container, options, _('An error occurred'));
 		},
 
 		forIn: function(/*Object*/ obj, /*Function*/ callback, /*Object?*/ scope, /*Boolean?*/ inheritedProperties) {
