@@ -1,3 +1,9 @@
+univention-system-setup (8.1.37-1) unstable; urgency=medium
+
+  * Bug #35709: added missing widget dependencies for LanguagePage
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 14:10:06 +0100
+
 univention-system-setup (8.1.36-1) unstable; urgency=medium
 
   * Don't reset keymap in debian installer mode (Bug #35709)

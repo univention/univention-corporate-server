@@ -548,7 +548,8 @@ class Instance(Base, ProgressMixin):
 			keymap = 'us'
 		self.finished(request.id, keymap)
 
-	def lang_keyboard_model(self, request):
+	@simple_response
+	def lang_keyboard_model(self):
 		'''Return a list of all available keyboard models.'''
 
 		tree = lxml.etree.parse(file('/usr/share/X11/xkb/rules/base.xml'))
@@ -556,9 +557,10 @@ class Instance(Base, ProgressMixin):
 
 		model_result = [ { 'label': model.xpath('./configItem/description')[0].text, 'id': model.xpath('./configItem/name')[0].text } for model in models ]
 
-		self.finished(request.id, model_result)
+		return model_result
 
-	def lang_keyboard_layout(self, request):
+	@simple_response
+	def lang_keyboard_layout(self):
 		'''Return a list of all available keyboard layouts.'''
 
 		tree = lxml.etree.parse(file('/usr/share/X11/xkb/rules/base.xml'))
@@ -566,12 +568,12 @@ class Instance(Base, ProgressMixin):
 
 		layout_result = [ { 'label': layout.xpath('./configItem/description')[0].text, 'id': layout.xpath('./configItem/name')[0].text } for layout in layouts ]
 
-		self.finished(request.id, layout_result)
+		return layout_result
 
-	def lang_keyboard_variante(self, request):
+	@sanitize(keyboardlayout=StringSanitizer(default='us'))
+	@simple_response
+	def lang_keyboard_variante(self, keyboardlayout):
 		'''Return a list of all available keyboard variantes.'''
-
-		keyboardlayout = request.options.get('keyboardlayout') or 'us'
 
 		variante_result = []
 		tree = lxml.etree.parse(file('/usr/share/X11/xkb/rules/base.xml'))
@@ -585,7 +587,8 @@ class Instance(Base, ProgressMixin):
 			variante_result += [ { 'label': variant.xpath('./configItem/description')[0].text, 'id': variant.xpath('./configItem/name')[0].text } for variant in variants ]
 
 		variante_result.insert(0, { 'label': '', 'id': '' })
-		self.finished(request.id, variante_result)
+
+		return variante_result
 
 	def lang_countrycodes(self, request):
 		'''Return a list of all countries with their two letter chcountry codes.'''

@@ -88,14 +88,20 @@ define([
 				label: _('Keyboard layout'),
 				umcpCommand: this.umcpCommand,
 				dynamicValues: 'setup/lang/keyboard/layout',
-				// TODO: on Change reload xorg/keyboard/options/XkbVariant
 			}, {
 				type: ComboBox,
 				name: 'xorg/keyboard/options/XkbVariant',
 				label: _('Keyboard variant'),
 				umcpCommand: this.umcpCommand,
+				depends: 'xorg/keyboard/options/XkbLayout',
 				dynamicValues: 'setup/lang/keyboard/variant',
-				// TODO: add a layout parameter to the umcpCommand, example keyboardlayout: us
+				dynamicOptions: function(options) {
+					// simple map from 'xorg/keyboard/options/XkbLayout' to the parameter
+					// 'keyboardlayout' which is expected by the backend method
+					return {
+						keyboardlayout: options['xorg/keyboard/options/XkbLayout']
+					};
+				}
 			}, {
 				type: MultiObjectSelect,
 				name: 'locale',
