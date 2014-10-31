@@ -1,3 +1,12 @@
+univention-management-console-frontend-theme (0.0.77-1) unstable; urgency=medium
+
+  Bug #36315:
+  * added styling of traceback dialgues
+  * fix sizes for form fields large than size 'One'
+  * added propert clear:both to CSS class umcButtonRow
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 19:26:38 +0100
+
 univention-management-console-frontend-theme (0.0.76-1) unstable; urgency=medium
 
   * Bug #36315: adjust button styling within grids

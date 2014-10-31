@@ -110,3 +110,29 @@
 	//margin-right: 4px;
 	vertical-align:text-top;
 }
+
+/* special styling of tracebacks */
+.umc .umcTracebackPane {
+	.dijitTitlePaneTitle {
+		font-weight: normal;
+		border: none;
+		font-size: $font-size-buttons;
+	}
+
+	.dijitArrowNode {
+		float: left;
+		margin-right: 5px;
+	}
+
+	.dijitTitlePaneTitleHover {
+		text-decoration: underline;
+	}
+
+	.dijitTitlePaneTitleClosed .dijitArrowNode {
+		background-position: -120px 0;
+	}
+
+	.dijitTitlePaneTitleClosed.dijitTitlePaneTitleHover .dijitArrowNode {
+		background-position: -140px 0;
+	}
+}
