@@ -747,3 +747,5 @@ libipmidetect0
 freeipmi-tools
 console-tools
 
+/* UCC 2 Bug 35891 */
+xorriso
