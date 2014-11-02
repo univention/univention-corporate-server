@@ -667,12 +667,12 @@ class Client(object):
 
 	def cloud_image_list(self, name="*", pattern="*", only_preselected_images=False, only_ucs_images=False):
 		"""
-		%prog cloud_image_list <name> [<pattern>]
+		%prog cloud_image_list <name> [<pattern> <only_preselected_images> <only_ucs_images>]
 
 		List available cloud images matching <pattern> to start new instances with
 		name is the cloud connection name. If empty, list information from all connections
-		only_preselected_images: Return images that were predefined during connection setup
-		only_ucs_images: Return only images by 'Univention'
+		only_preselected_images: If 'true', return images that were predefined during connection setup
+		only_ucs_images: If 'true', return only images by 'Univention'
 		"""
 		if isinstance(only_preselected_images, basestring) and only_preselected_images == "true":
 			only_preselected_images = True

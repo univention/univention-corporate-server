@@ -88,6 +88,8 @@ class Cloud(object):
 						'available': d.available,
 						'last_error_message': d.last_error_message,
 						'dn': d.dn,
+						'search_image_enabled': d.search_image_enabled,
+						'search_only_ucs_images': d.search_only_ucs_images,
 						})
 
 				MODULE.info('success: %s, data: %s' % (success, clouds))

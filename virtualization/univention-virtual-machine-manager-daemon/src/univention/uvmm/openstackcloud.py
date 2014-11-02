@@ -46,7 +46,7 @@ import ssl
 from node import PersistentCached
 from helpers import TranslatableException
 from cloudconnection import CloudConnection
-from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Secgroup_Rule, Cloud_Data_Size, Cloud_Data_Network
+from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Secgroup_Rule, Cloud_Data_Size, Cloud_Data_Network, Cloud_Data_Image
 import univention.config_registry as ucr
 
 configRegistry = ucr.ConfigRegistry()
@@ -266,6 +266,42 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			networks.append(s)
 
 		return networks
+
+	def list_images(self, pattern="*", only_preselected_images=False, ucs_images=False):
+		def _return_image(image):
+			i = Cloud_Data_Image()
+			i.name = "%s" % (image.name)
+			i.extra = image.extra
+			i.id = image.id
+			i.driver = image.driver.name
+			i.uuid = image.uuid
+			return i
+
+		# Expand pattern with *
+		pattern = "*%s*" % pattern
+		regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
+		images = []
+		# if the requested images are not restricted by
+		# only_preselected_images or ucs_images
+		# return all images
+		if not only_preselected_images and not ucs_images and self.publicdata.search_image_enabled:
+			for image in self._images:
+				if ((image.name and regex.match(image.name)) or
+					(image.id and regex.match(image.id))):
+					i = _return_image(image)
+					images.append(i)
+		else:
+			for image in self._images:
+				if ((image.name and regex.match(image.name)) or
+					(image.id and regex.match(image.id))):
+					if ucs_images:
+						logger.debug("ucs image definition not implemented, use preselected images")
+					if only_preselected_images and not self.publicdata.search_only_ucs_images:
+						if "%s" % image.id in self._preselected_images:
+							i = _return_image(image)
+							logger.debug("found and added %s" % (i.name))
+							images.append(i)
+		return images
 
 	def _boot_instance(self, instance):
 		self._exec_libcloud(lambda: self.driver.ex_hard_reboot_node(instance))

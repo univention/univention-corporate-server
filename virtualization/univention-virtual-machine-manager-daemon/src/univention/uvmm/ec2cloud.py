@@ -115,19 +115,6 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		super(EC2CloudConnection, self).__init__(cloud, cache_dir)
 
 		self.publicdata.url = cloud["region"]
-		self._search_images_enabled = True
-		if "enable_search" in cloud and cloud["enable_search"] in ["0", "", "false", "False"]:
-			self._search_images_enabled = False
-
-		logger.debug("###### constructor %s" % cloud)
-		self._preselected_images = []
-		if "preselected_images" in cloud:
-			logger.debug("Preselected iamges: %s" % cloud["preselected_images"])
-			self._preselected_images = cloud["preselected_images"]
-
-		self._only_ucs_images = True
-		if "only_ucs_images" in cloud:
-			self._only_ucs_images = cloud["only_ucs_images"]
 
 		self._locations = []
 		self._security_groups = []
@@ -295,7 +282,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		# if the requested images are not restricted by
 		# only_preselected_images or ucs_images
 		# return all images
-		if not only_preselected_images and not ucs_images and self._search_images_enabled:
+		if not only_preselected_images and not ucs_images and self.publicdata.search_image_enabled:
 			for image in self._images:
 				if ((image.name and regex.match(image.name)) or
 					(image.id and regex.match(image.id)) or
@@ -304,16 +291,19 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 					images.append(i)
 		else:
 			for image in self._images:
-				if ucs_images:
-					if image.extra['owner_id'] == "223093067001":
-						i = _return_image(image)
-						images.append(i)
-						continue
-				if only_preselected_images:
-					if "%s" % image.id in self._preselected_images:
-						i = _return_image(image)
-						logger.debug("found and added %s" % (i.name))
-						images.append(i)
+				if ((image.name and regex.match(image.name)) or
+					(image.id and regex.match(image.id)) or
+					(image.extra['owner_id'] and regex.match(image.extra['owner_id']))):
+					if ucs_images:
+						if image.extra['owner_id'] == "223093067001":
+							i = _return_image(image)
+							images.append(i)
+							continue
+					if only_preselected_images and not self.publicdata.search_only_ucs_images:
+						if "%s" % image.id in self._preselected_images:
+							i = _return_image(image)
+							logger.debug("found and added %s" % (i.name))
+							images.append(i)
 		return images
 
 	def _boot_instance(self, instance):
