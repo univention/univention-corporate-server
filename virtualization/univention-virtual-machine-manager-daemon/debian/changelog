@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.10-2) unstable; urgency=low
+
+  * WIP: Bug #36154; EC2 AMI selection (frontend)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 02 Nov 2014 01:32:03 +0100
+
 univention-virtual-machine-manager-daemon (4.0.10-1) unstable; urgency=low
 
   * Bug #36315: Removed bootstrap classes from DriveWizard

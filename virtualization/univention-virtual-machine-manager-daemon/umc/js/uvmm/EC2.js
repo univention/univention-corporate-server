@@ -1,40 +1,43 @@
+/*
+ * Copyright 2014 Univention GmbH
+ *
+ * http://www.univention.de/
+ *
+ * All rights reserved.
+ *
+ * The source code of this program is made available
+ * under the terms of the GNU Affero General Public License version 3
+ * (GNU AGPL V3) as published by the Free Software Foundation.
+ *
+ * Binary versions of this program provided by Univention to you as
+ * well as other copyrighted, protected or trademarked materials like
+ * Logos, graphics, fonts, specific documentations and configurations,
+ * cryptographic keys etc. are subject to a license agreement between
+ * you and Univention and not subject to the GNU AGPL V3.
+ *
+ * In the case you use this program under the terms of the GNU AGPL V3,
+ * the program is provided in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License with the Debian GNU/Linux or Univention distribution in file
+ * /usr/share/common-licenses/AGPL-3; if not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+/*global define*/
+
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
-	"dojo/_base/array",
-	"dojo/string",
-	"dojo/query",
-	"dojo/Deferred",
-	"dojo/on",
-	"dojo/aspect",
-	"dojox/html/entities",
-	"dijit/Menu",
-	"dijit/MenuItem",
-	"dijit/ProgressBar",
-	"dijit/Dialog",
-	"dijit/form/_TextBoxMixin",
-	"umc/tools",
-	"umc/dialog",
-	"umc/widgets/Module",
-	"umc/widgets/Page",
-	"umc/widgets/Form",
-	"umc/widgets/Grid",
-	"umc/widgets/SearchForm",
-	"umc/widgets/Tree",
-	"umc/widgets/Tooltip",
-	"umc/widgets/Text",
-	"umc/widgets/ContainerWidget",
-	"umc/widgets/CheckBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/TextBox",
-	"umc/widgets/Button",
 	"umc/widgets/HiddenInput",
 	"umc/widgets/PasswordBox",
 	"umc/modules/uvmm/CloudConnectionWizard",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, string, query, Deferred, on, aspect, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
-	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
-	CheckBox, ComboBox, TextBox, Button, HiddenInput, PasswordBox, CloudConnectionWizard, _) {
+], function(declare,
+	ComboBox, TextBox, HiddenInput, PasswordBox, CloudConnectionWizard, _) {
 	return declare('umc.modules.uvmm.EC2', [CloudConnectionWizard], {
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -46,7 +49,7 @@ define([
 					'name',
 					'region',
 					'access_id',
-					'password',
+					'password'
 				],
 				widgets: [{
 					name: 'name',

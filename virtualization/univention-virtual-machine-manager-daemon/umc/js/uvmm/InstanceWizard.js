@@ -32,25 +32,16 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/store/Memory",
-	"dojo/store/Observable",
-	"dijit/form/MappedTextBox",
-	"umc/tools",
-	"umc/dialog",
-	"umc/widgets/TitlePane",
-	"umc/widgets/TextArea",
+	"dojo/_base/event",
+	"dojo/keys",
 	"umc/widgets/TextBox",
 	"umc/widgets/Text",
 	"umc/widgets/ComboBox",
-	"umc/widgets/CheckBox",
 	"umc/widgets/HiddenInput",
 	"umc/widgets/Wizard",
-	"umc/widgets/Form",
-	"umc/widgets/ContainerWidget",
-	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Memory, Observable, MappedTextBox, tools, dialog, TitlePane, TextArea, TextBox, Text, ComboBox, CheckBox, HiddenInput, Wizard, Form, ContainerWidget, DriveGrid, types, _) {
+], function(declare, lang, array, event, keys, TextBox, Text, ComboBox, HiddenInput, Wizard, types, _) {
 
 	return declare("umc.modules.uvmm.InstanceWizard", [ Wizard ], {
 		autoValidate: true,
@@ -60,6 +51,7 @@ define([
 		constructor: function(props, cloudtype, cloud) {
 			this.inherited(arguments);
 			// mixin the page structure
+			this._cloud = cloud;
 			this._pageContent = this._getWidgets(cloudtype, cloud);
 			this._helptext = this._getHelpText(cloudtype);
 			lang.mixin(this, {
@@ -81,12 +73,13 @@ define([
 			}
 		},
 
-		getPages: function(cloudtype) {
+		getPages: function() {
 			return [{
 				name: 'details',
 				headerText: _('Create a new virtual machine instance.'),
 				helpText: this._helptext,
 				widgets: this._pageContent.widgets,
+				buttons: this._pageContent.buttons,
 				layout: this._pageContent.layout
 			}];
 		},
@@ -194,11 +187,11 @@ define([
 				};
 			}
 			if (cloudtype == 'EC2') {
-				var owner_id = 223093067001; // univention images
 				return {
 					layout: [
 						'name',
-						'image_univention',
+						'image_filter',
+						['image_filter_search', 'image_filter_search_submit'],
 						'image_id',
 						'size_id',
 						'size_info_text',
@@ -222,7 +215,7 @@ define([
 						name: 'keyname',
 						type: ComboBox,
 						label: _('Select a key pair'),
-					dynamicOptions: {conn_name: cloud},
+						dynamicOptions: {conn_name: cloud},
 						dynamicValues: types.getCloudListKeypair,
 						required: true
 					}, {
@@ -247,24 +240,50 @@ define([
 						type: ComboBox,
 						label: _('Search for and choose an AMI'),
 						sortDynamicValues: false,
-						dynamicOptions: {conn_name: cloud, pattern: owner_id},
+						dynamicOptions: this._ec2ImageDynamicOptions(),
 						dynamicValues: lang.hitch(this, function(options) {
 							return this.standbyDuring(types.getCloudListImage(options));
 						}),
 						required: true,
 						size: 'Two'
 					}, {
-						name: 'image_univention',
-						type: CheckBox,
-						value: true,
-						label: _('Only show Univention AMIs'),
-						description: _('Show only AMIs which are provided by Univention.'),
+						name: 'image_filter',
+						type: ComboBox,
+						staticValues: [
+							{ id: 'univention', label: _('Show only Univention AMIs') },
+							//{ id: 'preselection', label: _('Select AMI from a predefined set') },
+							{ id: 'search', label: _('Search all available AMIs') }
+						],
+						label: _('Filter AMIs'),
 						onChange: lang.hitch(this, function(newVal) {
 							var widget = this.getWidget('details', 'image_id');
-							var options = widget.get('dynamicOptions');
-							options.pattern = newVal ? owner_id : '';
-							widget.set('dynamicOptions', options);
+							var imageSearch = this.getWidget('details', 'image_filter_search');
+							var imageSearchButton = this.getPage('details')._form.getButton('image_filter_search_submit');
+							imageSearch.set('visible', false);
+							imageSearchButton.set('visible', false);
+
+							var options = this._ec2ImageDynamicOptions();
+							if (newVal == 'univention') {
+								widget.set('dynamicOptions', options);
+							} else if (newVal == 'preselection') {
+								options.selection = cloud.selection;
+							} else if (newVal == 'search') {
+								imageSearch.set('visible', true);
+								imageSearchButton.set('visible', true);
+							}
 						})
+					}, {
+						name: 'image_filter_search',
+						type: TextBox,
+						label: _('Search pattern'),
+						onKeyDown: lang.hitch(this, function(e) {
+							if (e.keyCode == keys.ENTER) {
+								this.filterAMIs();
+								e.preventDefault();
+								event.stop(e);
+							}
+						}),
+						visible: false
 					}, {
 						name: 'security_group_ids',
 						type: ComboBox,
@@ -272,16 +291,31 @@ define([
 						dynamicOptions: {conn_name: cloud},
 						dynamicValues: types.getCloudListSecgroup,
 						required: true
+					}],
+					buttons: [{
+						name: 'image_filter_search_submit',
+						label: _('Search'),
+						visible: false,
+						style: 'position: relative; bottom: 2.4em;',
+						callback: lang.hitch(this, 'filterAMIs')
 					}]
 				};
 			}
 			return {};
 		},
 
-		_finish: function(pageName) {
-			this.inherited(arguments);
+		_ec2ImageDynamicOptions: function() {
+			var owner_id = 223093067001; // univention images
+			return {conn_name: this._cloud, pattern: owner_id};
 		},
-		
+
+		filterAMIs: function() {
+			var widget = this.getWidget('details', 'image_id');
+			var options = this._ec2ImageDynamicOptions();
+			options.pattern = this.getWidget('details', 'image_filter_search').get('value');
+			widget.set('dynamicOptions', options);
+		},
+
 		onFinished: function() {
 			// event stub
 		}
