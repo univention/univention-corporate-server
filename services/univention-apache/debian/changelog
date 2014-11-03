@@ -1,3 +1,10 @@
+univention-apache (7.0.12-2) unstable; urgency=low
+
+  Bug #36095:
+  * fixed text not displayed correctly in admin-tab tiles
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 03 Nov 2014 12:18:36 +0100
+
 univention-apache (7.0.12-1) unstable; urgency=low
 
   Bug #36337:

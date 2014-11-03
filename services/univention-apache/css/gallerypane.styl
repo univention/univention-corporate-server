@@ -51,7 +51,7 @@
 	.umcGalleryItem {
 		position: relative;
 		outline: none;
-		padding: 5px;
+		padding: 5px 5px 10px 5px;
 		background-color: rgba(255, 255, 255, 0.5);
 		transition-duration: 0.25s;
 		transition-property: background-color, opacity, border;
@@ -70,8 +70,8 @@
 			min-height: 55%;
 			transition-duration: inherit;
 			transition-property: color, border;
-			word-break: break-word;
-			margin-right: 20px;
+			word-wrap: break-word;
+			//margin-right: 20px;
 		}
 
 		.umcGalleryDescription {
@@ -163,13 +163,13 @@
 }
 
 // no left/right padding for full size item
-@media (max-width: 549px) {
+@media (max-width: 600px) {
 	.galleryTab .umcGalleryWrapperItem {
 		padding-left: 0;
 		padding-right: 0;
 	}
 }
-@media (max-width: 549px) {
+@media (max-width: 600px) {
 	.col-xxs-12 {
 		width: 100%
 	}
