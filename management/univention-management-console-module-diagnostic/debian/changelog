@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (1.0.12-1) unstable; urgency=medium
+
+  * Bug #35866: read logfiles line wise
+
+ -- Florian Best <best@univention.de>  Mon, 03 Nov 2014 11:26:28 +0100
+
 univention-management-console-module-diagnostic (1.0.11-1) unstable; urgency=medium
 
   * Bug #35864: fix proxy authentication; remove 'disable proxy' button

@@ -38,9 +38,11 @@ actions = {}  # filled at bottom
 
 def run():
 	MODULE.info('Checking samba logfiles for "Too many open files" messages')
+	counter = 0
 	try:
 		with open('/var/log/samba/log.smbd', 'rb') as fd:
-			counter = len(re.findall('Too many open files', fd.read()))
+			for line in fd:
+				counter += len(re.findall('Too many open files', line))
 	except (OSError, IOError):
 		return # logfile does not exists
 
