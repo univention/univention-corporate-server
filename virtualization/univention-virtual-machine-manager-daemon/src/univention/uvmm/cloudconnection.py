@@ -85,9 +85,11 @@ class CloudConnection(object):
 			self.publicdata.search_image_enabled = False
 
 		self._preselected_images = []
-		if "preselected_images" in cloud:
+		self.publicdata.preselected_images_available = False
+		if "preselected_images" in cloud and cloud["preselected_images"]:
 			logger.debug("Preselected images: %s" % cloud["preselected_images"])
 			self._preselected_images = cloud["preselected_images"]
+			self.publicdata.preselected_images_available = True
 
 		self.publicdata.search_only_ucs_images = False
 		if "only_ucs_images" in cloud and cloud["only_ucs_images"] in ["1", "", "true", "True"]:

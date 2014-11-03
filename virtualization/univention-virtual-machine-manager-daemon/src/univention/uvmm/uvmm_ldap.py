@@ -248,6 +248,16 @@ def ldap_cloud_connection_add(cloudtype, name, parameter, only_ucs_images="1", e
 		dn = 'cn=%s,%s,%s' % (name, LDAP_CLOUD_CONNECTION_RDN, position.getDn())
 		dn_typeref = 'cn=%s,%s,%s' % (cloudtype, LDAP_CLOUD_TYPE_RDN, position.getDn())
 		parameter_lst = []
+
+		if only_ucs_images is True:
+			only_ucs_images="1"
+		if only_ucs_images is False:
+			only_ucs_images="0"
+		if enableSearch is True:
+			enableSearch="1"
+		if enableSearch is False:
+			enableSearch="0"
+
 		for k,v in parameter.items():
 			if (k and v):
 				parameter_lst.append('%s=%s' % (k,v))

@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (4.0.13-1) unstable; urgency=low
+
+  * Bug #36154:; EC2 AMI selection. Fix adding connections to LDAP
+  * cloud query returns new parameter preselected_images_available 
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 03 Nov 2014 15:29:13 +0100
+
 univention-virtual-machine-manager-daemon (4.0.12-1) unstable; urgency=medium
 
   * Bug #35654: fix opening of DomainPage

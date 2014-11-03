@@ -89,6 +89,7 @@ class Cloud(object):
 						'dn': d.dn,
 						'search_image_enabled': d.search_image_enabled,
 						'search_only_ucs_images': d.search_only_ucs_images,
+						'preselected_images_available': d.preselected_images_available,
 						})
 
 				MODULE.info('success: %s, data: %s' % (success, clouds))
@@ -127,7 +128,7 @@ class Cloud(object):
 
 			if success:
 				# add cloud to ldap
-				ldap_cloud_connection_add(cloudtype, name, parameter, enable_search, ucs_images, preselected_images)
+				ldap_cloud_connection_add(cloudtype, name, parameter, only_ucs_images, enable_search, preselected_images)
 
 				self.finished(request.id, data)
 			else:
@@ -138,20 +139,22 @@ class Cloud(object):
 						status=MODULE_ERR_COMMAND_FAILED
 						)
 
-
 		self.required_options(request, 'cloudtype', 'name', 'parameter', 'testconnection')
 		cloudtype = request.options.get('cloudtype')
 		name = request.options.get('name')
 		testconnection = request.options.get('testconnection')
 		parameter = request.options.get('parameter')
+		enable_search = request.options.get('enable_search', True)
+		preselected_images = request.options.get('preselected_images', [])
+		only_ucs_images = request.options.get('ucs_images', True)
 
 		# add cloud to uvmm
 		args = parameter.copy()
 		args['name'] = name
 		args['type'] = cloudtype
-		args['enable_search'] = request.options.get('enable_search', True)
-		args['preselected_images'] = request.options.get('preselected_images', [])
-		args['only_ucs_images'] = request.options.get('ucs_images', True)
+		args['enable_search'] = enable_search
+		args['preselected_images'] = preselected_images
+		args['only_ucs_images'] = only_ucs_images
 
 		self.uvmm.send(
 				'L_CLOUD_ADD',
@@ -159,7 +162,6 @@ class Cloud(object):
 				args=args,
 				testconnection=testconnection
 				)
-
 
 	def cloud_list_keypair(self, request):
 		"""
