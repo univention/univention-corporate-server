@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.14-2) unstable; urgency=low
+
+  * Bug #36154: EC2 AMI selection (frontend)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 03 Nov 2014 16:44:01 +0100
+
 univention-virtual-machine-manager-daemon (4.0.14-1) unstable; urgency=low
 
   * Bug #35654: fix header buttons
@@ -26,26 +32,26 @@ univention-virtual-machine-manager-daemon (4.0.11-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (4.0.10-5) unstable; urgency=low
 
-  * WIP: Bug #36154; EC2 AMI selection (frontend)
+  * WIP: Bug #36154: EC2 AMI selection (frontend)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 03 Nov 2014 11:58:14 +0100
 
 univention-virtual-machine-manager-daemon (4.0.10-4) unstable; urgency=low
 
-  * WIP: Bug #36154; EC2 AMI selection (frontend)
+  * WIP: Bug #36154: EC2 AMI selection (frontend)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 03 Nov 2014 02:06:20 +0100
 
 univention-virtual-machine-manager-daemon (4.0.10-3) unstable; urgency=low
 
-  * WIP: Bug #36154; EC2 AMI selection. Make connection flags available
+  * WIP: Bug #36154: EC2 AMI selection. Make connection flags available
     to frontend, refactoring
 
  -- Erik Damrose <damrose@univention.de>  Sun, 02 Nov 2014 18:49:56 +0100
 
 univention-virtual-machine-manager-daemon (4.0.10-2) unstable; urgency=low
 
-  * WIP: Bug #36154; EC2 AMI selection (frontend)
+  * WIP: Bug #36154: EC2 AMI selection (frontend)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 02 Nov 2014 01:32:03 +0100
 

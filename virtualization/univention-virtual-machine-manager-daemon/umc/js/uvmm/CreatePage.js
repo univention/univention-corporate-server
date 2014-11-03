@@ -52,7 +52,7 @@ define([
 
 	return declare("umc.modules.uvmm.CreatePage", [ Wizard ], {
 		umcpCommand: null,
-		_navContextItem: null,
+		item: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -68,7 +68,7 @@ define([
 					array.forEach(results, lang.hitch(this, function(iresult) {
 						array.forEach(iresult.result, lang.hitch(this, function(iserver) {
 							if (tools.isTrue(iserver.available)) {
-								if (this._navContextItem && iserver.label.indexOf(this._navContextItem.label) == 0) {
+								if (this.item && iserver.label.indexOf(this.item.label) === 0) {
 									iserver.preselected = true;
 								}
 								servers.push(iserver);
@@ -119,13 +119,13 @@ define([
 						radioButtonGroup: 'type',
 						name: 'vm',
 						checked: true,
-						label: _('Create a new virtual machine instance.'),
+						label: _('Create a new virtual machine instance.')
 					}, {
 						type: ComboBox,
 						name: 'server',
 						dynamicValues: _getNodes,
 						onDynamicValuesLoaded: lang.hitch(this, function(values) {
-							if(values.length == 0) {
+							if (values.length === 0) {
 								this.getWidget('general', 'server').set('visible', false);
 								this.getWidget('general', 'vm').set('visible', false);
 								this.getWidget('general', 'cloud').set('checked', true);
@@ -139,7 +139,7 @@ define([
 						type: RadioButton,
 						radioButtonGroup: 'type',
 						name: 'cloud',
-						label: _('Create a new cloud connection service account.'),
+						label: _('Create a new cloud connection service account.')
 					}, {
 						type: ComboBox,
 						name: 'cloudtype',
@@ -147,8 +147,8 @@ define([
 						disabled: true,
 						label: _('Which type of connection should be created'),
 						labelConf: {'style': 'margin-left: 27px;'}
-					}],
-				}],
+					}]
+				}]
 			});
 		},
 
@@ -199,6 +199,9 @@ define([
 				values.type = 'instance';
 				values.cloud = server.id;
 				values.cloudtype = server.cloudtype;
+				values.search_only_ucs_images = server.search_only_ucs_images;
+				values.preselected_images_available = server.preselected_images_available;
+				values.search_image_enabled = server.search_image_enabled;
 			}
 			else if (type == 'vm' && server.type == 'node') {
 				values.type = 'domain';
@@ -222,6 +225,6 @@ define([
 		_finish: function() {
 			// trigger finished event
 			this.onFinished(this.getValues());
-		},
+		}
 	});
 });

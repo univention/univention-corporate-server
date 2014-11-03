@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/event",
 	"dojo/keys",
+	"dojo/Deferred",
 	"umc/widgets/TextBox",
 	"umc/widgets/Text",
 	"umc/widgets/ComboBox",
@@ -41,7 +42,7 @@ define([
 	"umc/widgets/Wizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, event, keys, TextBox, Text, ComboBox, HiddenInput, Wizard, types, _) {
+], function(declare, lang, array, event, keys, Deferred, TextBox, Text, ComboBox, HiddenInput, Wizard, types, _) {
 
 	return declare("umc.modules.uvmm.InstanceWizard", [ Wizard ], {
 		autoValidate: true,
@@ -54,6 +55,7 @@ define([
 			this.inherited(arguments);
 			// mixin the page structure
 			this.cloud = props.cloud;
+			this._ready = new Deferred();
 			lang.mixin(this, {
 				pages: this.getPages(),
 				headerButtons: [{
@@ -94,6 +96,7 @@ define([
 				this._size_id = value;
 				this._update_size_info_text(value[0].id);
 			}));
+			this._ready.resolve();
 		},
 
 		_get_size_id: function(newVal) {
@@ -193,7 +196,7 @@ define([
 				if (this.cloud.showUnivention) {
 					filterOptions.push({ id: 'univention', label: _('Show only Univention AMIs') });
 				}
-				if (this.cloud.preSelection.length) {
+				if (this.cloud.preSelection) {
 					filterOptions.push({ id: 'preselection', label: _('Select AMI from a predefined set') });
 				}
 				if (this.cloud.allowsSearch) {
@@ -254,10 +257,14 @@ define([
 					}, {
 						name: 'image_id',
 						type: ComboBox,
-						label: _('Search for and choose an AMI'),
+						label: _('Choose an AMI'),
 						sortDynamicValues: false,
 						dynamicOptions: this._ec2ImageDynamicOptions(defaultFilterOption),
 						dynamicValues: lang.hitch(this, function(options) {
+							console.log(options);
+							if (options.cancel) {
+								return [];
+							}
 							return this.standbyDuring(types.getCloudListImage(options));
 						}),
 						required: true,
@@ -275,7 +282,10 @@ define([
 							imageSearchButton.set('visible', false);
 
 							var options = this._ec2ImageDynamicOptions(newVal);
-							if (newVal != 'search') {
+							if (newVal == 'search') {
+								imageSearch.set('visible', true);
+								imageSearchButton.set('visible', true);
+							} else {
 								widget.set('dynamicOptions', options);
 							}
 						})
@@ -290,7 +300,7 @@ define([
 								event.stop(e);
 							}
 						}),
-						visible: false
+						visible: defaultFilterOption == 'search'
 					}, {
 						name: 'security_group_ids',
 						type: ComboBox,
@@ -302,7 +312,7 @@ define([
 					buttons: [{
 						name: 'image_filter_search_submit',
 						label: _('Search'),
-						visible: false,
+						visible: defaultFilterOption == 'search',
 						style: 'position: relative; bottom: 2.4em;',
 						callback: lang.hitch(this, 'filterAMIs')
 					}]
@@ -313,18 +323,18 @@ define([
 
 		_ec2ImageDynamicOptions: function(filterOption) {
 			var options = {conn_name: this.cloud.name};
-			if (filterOption == 'univention') {
-				options.ucs_images = true;
-			} else if (filterOption == 'preselection') {
-				options.onlypreselected = true;
-			} else if (filterOption == 'search') {
-				var imageSearch = this.getWidget('details', 'image_filter_search');
-				var imageSearchButton = this.getPage('details')._form.getButton('image_filter_search_submit');
-				imageSearch.set('visible', true);
-				imageSearchButton.set('visible', true);
-				var value = imageSearch.get('value');
-				if (value) {
-					options.pattern = value;
+			options.ucs_images = filterOption == 'univention';
+			options.onlypreselected = filterOption == 'preselection';
+			if (filterOption == 'search') {
+				if (this._ready.isResolved()) { // check for initialized
+					var imageSearch = this.getWidget('details', 'image_filter_search');
+					var visible = imageSearch.get('visible');
+					var value = imageSearch.get('value');
+					if (visible) {
+						options.pattern = value;
+					}
+				} else {
+					options.cancel = true;
 				}
 			}
 			return options;

@@ -170,7 +170,7 @@ define([
 			{ id: 'tr', label: _('Turkish') }
 		],
 		getCPUs: function(options) {
-			// query the domain's node and get its number of CPUs
+			// query the node of the domain and get its number of CPUs
 			var nodeURI = options.nodeURI || options.domainURI.split('#')[0];
 			return tools.umcpCommand('uvmm/node/query', {
 				nodePattern: nodeURI

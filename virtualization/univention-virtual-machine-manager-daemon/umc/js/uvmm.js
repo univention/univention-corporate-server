@@ -697,7 +697,7 @@ define([
 			});
 
 			page = new CreatePage({
-				_navContextItem: this._navContextItem,
+				item: this._navContextItem,
 				onCancel: _cleanup,
 				onFinished: _finished,
 				umcpCommand: lang.hitch(this, 'umcpCommand')
@@ -869,9 +869,9 @@ define([
 			var cloud = {
 				name: values.cloud,
 				type: values.cloudtype,
-				showUnivention: true,
-				preSelection: [],
-				allowsSearch: true
+				showUnivention: values.search_only_ucs_images,
+				preSelection: values.preselected_images_available,
+				allowsSearch: values.search_image_enabled
 			};
 			wizard = new InstanceWizard({
 				onFinished: _finished,
@@ -1164,7 +1164,7 @@ define([
 			var cells = [this._grid._grid.getCellByField('start'), this._grid._grid.getCellByField('vnc')];
 			array.forEach(cells, function(cell) {
 				if (!cell) {
-					// probably we're currently searching for nodes
+					// currently we are probably searching for nodes
 					return;
 				}
 				var cellId = cell.index;
