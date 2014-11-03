@@ -1,3 +1,10 @@
+ucs-test (5.0.41-1) unstable; urgency=low
+
+  * 20_appcenter/17_app_status: new test version that considers App's server role 
+    (Bug #32546).
+
+ -- Dmitry Galkin <galkin@univention.de>  Mon, 03 Nov 2014 16:37:50 +0100
+
 ucs-test (5.0.40-1) unstable; urgency=low
 
   * Bug #35537: removed test for computer property "reinstalltext" - the
