@@ -64,7 +64,7 @@ define([
 
 			// some pages might return null
 			var pages = array.filter([WelcomePage, FeedbackPage, ActivationPage, HelpPage, FinishedPage], function(ipage) {
-				return ipage;
+				return ipage.showInStartupDialog !== false;
 			});
 
 			this._wizard = new Wizard({

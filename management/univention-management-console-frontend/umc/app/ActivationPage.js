@@ -29,11 +29,12 @@
 
 /*global define*/
 define([
+	"dojo/_base/lang",
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
 	"umc/i18n!"
-], function(tools, Text, TextBox, _) {
+], function(lang, tools, Text, TextBox, _) {
 	var pageConf = {
 		name: 'activation',
 		headerText: _('Activation of Univention Corporate Server'),
@@ -67,21 +68,26 @@ define([
 		}]
 	};
 
-	var _isLicenseActivatedDeferred = null;
-	var isLicenseActivated = function() {
-		if (!_isLicenseActivatedDeferred) {
-			_isLicenseActivatedDeferred = tools.ucr(['uuid/license', 'ucs/web/license/requested']).then(function(ucr) {
-				return Boolean(ucr['uuid/license']) || tools.isTrue(ucr['ucs/web/license/requested']);
+	var _ucrDeferred = null;
+	var ucr = function() {
+		if (!_ucrDeferred) {
+			_ucrDeferred = tools.ucr(['uuid/license', 'ucs/web/license/requested']).then(function(ucr) {
+				var res = {
+					hasLicense: Boolean(ucr['uuid/license']),
+					hasLicenseRequested: tools.isTrue(ucr['ucs/web/license/requested'])
+				};
+				res.showInStartupDialog = !res.hasLicenseRequested && !res.hasLicenseRequested;
+				return res;
 			});
 		}
-		return _isLicenseActivatedDeferred;
+		return _ucrDeferred;
 	};
 
 	// return an AMD plugin that resolves when the UCR variables have been loaded
 	return {
 		load: function (params, req, load, config) {
-			isLicenseActivated().then(function(activated) {
-				load(activated ? null : pageConf);
+			ucr().then(function(info) {
+				load(lang.mixin({}, info, pageConf));
 			});
 		}
 	};
