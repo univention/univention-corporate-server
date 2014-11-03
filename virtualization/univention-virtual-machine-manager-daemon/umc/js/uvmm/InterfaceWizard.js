@@ -74,7 +74,7 @@ define([
 						sizeClass: 'One',
 						type: ComboBox,
 						label: _('Driver'),
-						staticValues: types.interfaceModels,
+						staticValues: types.dict2list(types.interfaceModels),
 						value: values.model || 'rtl8139'
 					}, {
 						name: 'source',
