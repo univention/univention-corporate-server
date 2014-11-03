@@ -431,6 +431,15 @@
 		</itemizedlist>
 	</section>
 
+	<section id="changelog:umc:mail">
+		<title>Mail</title>
+		<itemizedlist>
+			<listitem><simpara>
+					The text fields got more precise names (<ulink url="&ucsbug;36301">Bug 36301</ulink>). 
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
 	<section id="changelog:umc:quota">
 		<title>Filesystem quota module</title>
 		<itemizedlist>
