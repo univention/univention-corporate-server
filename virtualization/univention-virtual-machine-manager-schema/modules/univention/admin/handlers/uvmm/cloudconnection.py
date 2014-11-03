@@ -72,16 +72,16 @@ property_descriptions = {
 			may_change=True,
 			identifies=False
 		),
-	'enableSearch': univention.admin.property(
-			short_description=_('Enable search for images'),
-			long_description=_('Enable the search for images when creating a new instance'),
-			syntax=udm_syntax.boolean,
+	'searchPattern': univention.admin.property(
+			short_description=_('Pattern for filtering images'),
+			long_description=_('When creating new instances, this pattern is used to further filter all available Images'),
+			syntax=udm_syntax.string,
 			multivalue=False,
 			options=[],
 			required=True,
 			may_change=True,
 			identifies=False,
-			default="1"
+			default='*'
 		),
 	'includeUCSimages': univention.admin.property(
 			short_description=_('Show UCS images when creating a new instance'),
@@ -92,7 +92,7 @@ property_descriptions = {
 			required=True,
 			may_change=True,
 			identifies=False,
-			default="1"
+			default=1
 		),
 	'availableImages': univention.admin.property(
 			short_description=_('Add the listed images to the list of selectable images'),
@@ -123,7 +123,7 @@ layout = [
 		Group(_('General'), layout=[
 			"name",
 			"type",
-			"enableSearch",
+			"searchPattern",
 			"includeUCSimages",
 			"availableImages",
 			"parameter",
@@ -149,7 +149,7 @@ def unmapKeyAndValue(old):
 mapping = udm_mapping.mapping()
 mapping.register('name', 'cn', None, udm_mapping.ListToString)
 mapping.register('type', 'univentionVirtualMachineCloudConnectionTypeRef', None, udm_mapping.ListToString)
-mapping.register('enableSearch', 'univentionVirtualMachineCloudConnectionEnableImageSearch', None, udm_mapping.ListToString)
+mapping.register('searchPattern', 'univentionVirtualMachineCloudConnectionImageSearchPattern', None, udm_mapping.ListToString)
 mapping.register('includeUCSimages', 'univentionVirtualMachineCloudConnectionIncludeUCSImages', None, udm_mapping.ListToString)
 mapping.register('availableImages', 'univentionVirtualMachineCloudConnectionImageList')
 mapping.register('parameter', 'univentionVirtualMachineCloudConnectionParameter', mapKeyAndValue, unmapKeyAndValue)
