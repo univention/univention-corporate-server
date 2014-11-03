@@ -194,6 +194,7 @@ xserver-xorg-input-vmmouse
 ttf-liberation
 xterm
 phonon-backend-xine
+phonon-backend-vlc
 
 /* Development + Packaging Tools */
 univention-directory-manager-module-example

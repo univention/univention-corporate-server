@@ -1,3 +1,9 @@
+univention-dvd (0.2.11-3) unstable; urgency=low
+
+  * Bug #36365: Added phonon-backend-vlc to maintained 
+
+ -- Felix Botner <botner@univention.de>  Mon, 03 Nov 2014 10:59:40 +0100
+
 univention-dvd (0.2.11-2) unstable; urgency=low
 
   * Bug #35891: Added xorriso to maintained 
