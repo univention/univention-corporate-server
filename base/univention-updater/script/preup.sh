@@ -255,7 +255,7 @@ check_for_postgresql83
 
 ## Check for Cyrus-2.2 (Bug #36372)
 check_for_cyrus22 () {
-	case "$(dpkg-query -W -f '${Status}' cyrus-2.2 2>/dev/null)" in
+	case "$(dpkg-query -W -f '${Status}' cyrus-common-2.2 2>/dev/null)" in
 	install*) ;;
 	*) return 0 ;;
 	esac
