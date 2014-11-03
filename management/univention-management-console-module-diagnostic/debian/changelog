@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (1.0.14-1) unstable; urgency=medium
+
+  * Bug #35866: fix typo
+
+ -- Florian Best <best@univention.de>  Mon, 03 Nov 2014 17:55:55 +0100
+
 univention-management-console-module-diagnostic (1.0.13-1) unstable; urgency=medium
 
   * Bug #35866: reset default of max_open_files to 32808
