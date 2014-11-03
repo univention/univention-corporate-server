@@ -50,14 +50,15 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, domGeometry, tools, Text, ContainerWidget, _) {
+], function(declare, lang, geometry, tools, Text, ContainerWidget, _) {
 	return declare('umc.modules.updater._LogViewer', [ ContainerWidget ], {
 
+		_oldScrollPosition: 0,
+		_goToBottom: true,
 		_last_stamp: 0,
 		_check_interval: 0,
 		_current_job: '',
 		_log_position: 0,
-		_initialise_scrollbar: true,
 		_max_number_of_lines: 2500, // ~ 200kB if one line ^= 80 chars
 		_all_lines: [], // hold all past _max_number_of_lines lines
 
@@ -93,13 +94,16 @@ define([
 		},
 
 		_fetch_log: function() {
+
 			tools.umcpCommand(this.query,{job:this._current_job, count:-1},false).then(lang.hitch(this,function(data) {
+
 				this.onQuerySuccess(this.query + " [count=-1]");
 				var stamp = data.result;
 				if (stamp != this._last_stamp)
 				{
 					this._last_stamp = stamp;
 					tools.umcpCommand(this.query,{job:this._current_job,count:this._log_position},false).then(lang.hitch(this, function(data) {
+
 						var contentLength = parseInt( data.result.length, 10 );
 						if( contentLength ) {
 							this._log_position += contentLength;
@@ -112,11 +116,12 @@ define([
 					})
 					);
 				}
+
 				if (this._check_interval)
 				{
 					window.setTimeout(lang.hitch(this,function() {
 						this._fetch_log();
-					}), this._check_interval);
+					}),this._check_interval);
 				}
 
 			}),
@@ -127,10 +132,11 @@ define([
 				{
 					window.setTimeout(lang.hitch(this,function() {
 						this._fetch_log();
-					}), this._check_interval);
+					}),this._check_interval);
 				}
 			})
 			);
+
 		},
 
 		// set content. Additionally checks if the current scroll position
@@ -157,49 +163,43 @@ define([
 			this.scrollToBottom();
 		},
 
-		// scrolls to the bottom of the scroll area. Will be called from different places:
-		//
-		//	-	unconditionally when the ProgressPage is being opened
-		//	-	in the 'content' setter if the position is roughly at the bottom
-		//
-		scrollToBottom: function(force_goto_bottom) {
+		// 3 cases we want to scroll to the bottom
+		// (1) module has been just loaded --> this._goToBottom
+		// (2) someone tells us to do so --> forceScrollToBottom
+		// (3) the user scrolls to a defined position --> isAtBottom()
+		scrollToBottom: function(forceScrollToBottom) {
 			var text_node = this._text.domNode;
-			var view_height = domGeometry.position(text_node).h; // height of the box which display the text
+			if(forceScrollToBottom === true) {
+				this._goToBottom = true;
+			}
+			this.hasUserMovedScrollbar(this._oldScrollPosition, text_node.scrollTop);
+			this.isAtBottom(text_node);
+			if(this._goToBottom){
+				text_node.scrollTop = text_node.scrollHeight;
+			}
+			this._oldScrollPosition = text_node.scrollTop;
+		},
+
+		// if the old scrollbar postion isn't the new one, the user has changed it
+		hasUserMovedScrollbar: function(oldPos, newPos){
+			if(oldPos != newPos){
+				this._goToBottom = false;
+			}
+		},
+
+		// if the user scrolls to a defined position of the scrollbar, we are guessing
+		// that the user wants the scrollbar to auto-scroll again
+		// this point is defined at a ratio of 75%
+		isAtBottom: function(text_node){
+			var view_height = geometry.position(text_node).h; // height of the box which display the text
 			var content_height = text_node.scrollHeight; // the overall height of the text inside the view
 			var scroll_position = text_node.scrollTop; //  current position auf the scrollbar
-			// check if we got an parameter
-			force_goto_bottom = typeof force_goto_bottom !== 'undefined' ? force_goto_bottom : false;
-			if(force_goto_bottom || this._initialise_scrollbar || this.isAtBottom(scroll_position, content_height, view_height)){
-				text_node.scrollTop = content_height;
-				// check if we have initialised the scrollbar position
-				if(this._initialise_scrollbar) {
-					this._initialise_scrollbar = this.hasToBeInitialised(content_height, view_height);
-				}
-			}
-		},
-
-		// we want that the scrollbar goes to the bottom if it has reached a defined position
-		// this position is set to 75% of the scrollbar
-		isAtBottom: function(scroll_position, content_height, view_height) {
-			// calculating ratio between the scroll_position and the content_height
 			var ratio = scroll_position / (content_height - view_height); 
-			// if the ratio is greater than 0.75 we will say that we have reached the bottom and return true
 			if(ratio >= 0.75){
-				return true;
-			} else { // otherwise we wouldn't say that we have reached the bottom
-				return false;
+				this._goToBottom = true;
 			}
 		},
 
-		// check if the scrollbar appears for the first time to initialise its position
-		// at the bottom of the view
-		hasToBeInitialised: function(content_height, view_height){
-			if(content_height <= view_height + 50) { 
-				return true;
-			} else {
-				return false;
-			}
-		},
 
 		// Called from ProgressPage when the log file polling is to be started.
 		// job key can't be an argument here as we don't know it.
@@ -210,7 +210,7 @@ define([
 			this.set('content', _("... loading log file ..."));
 			this._all_lines = [];
 			this._lines_exceeded = 0;
-
+			this._goToBottom = true;
 			this._last_stamp = 0;
 
 			this._fetch_log();		// first call, will reschedule itself as long
