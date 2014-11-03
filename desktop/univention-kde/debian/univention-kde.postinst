@@ -66,6 +66,10 @@ dpkg-statoverride --update --add root root 4755 /usr/lib/kde4/libexec/kcheckpass
 ldconfig
 
 #cleaup old profiles
+if [ ! -h /usr/share/univention-kde-profiles/ucs-3.0 -a -d /usr/share/univention-kde-profiles/ucs-3.0 ]; then
+	mv /usr/share/univention-kde-profiles/ucs-3.0 /usr/share/univention-kde-profiles/ucs-3.0.old
+	ln -sf /usr/share/univention-kde-profiles/ucs-4.0 /usr/share/univention-kde-profiles/ucs-3.0
+fi
 if [ ! -h /usr/share/univention-kde-profiles/ucs-23 -a -d /usr/share/univention-kde-profiles/ucs-23 ]; then
 	mv /usr/share/univention-kde-profiles/ucs-23 /usr/share/univention-kde-profiles/ucs-23.old
 	ln -sf /usr/share/univention-kde-profiles/kde4-ucs2.3 /usr/share/univention-kde-profiles/ucs-23
