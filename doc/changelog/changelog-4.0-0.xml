@@ -711,6 +711,10 @@
 			<listitem><simpara>
 				The default &ucsUVMM; loglevel has been increased to INFO (<ulink url="&ucsbug;36136">Bug 36136</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The CPU field is no longer flagged as invalid when creating a virtual machine
+				(<ulink url="&ucsbug;34515">Bug 34515</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
