@@ -79,10 +79,7 @@ class CloudConnection(object):
 		self.publicdata.last_update_try = -1
 		self.publicdata.available = False
 		self.publicdata.last_error_message = ""
-		self.publicdata.search_image_enabled = True
-		if "enable_search" in cloud and cloud["enable_search"] in ["0", "", "false", "False"]:
-			logger.debug("self.publicdata.search_image_enabled = False")
-			self.publicdata.search_image_enabled = False
+		self.publicdata.search_pattern = cloud['search_pattern']
 
 		self._preselected_images = []
 		self.publicdata.preselected_images_available = False

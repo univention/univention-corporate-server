@@ -282,7 +282,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 		# if the requested images are not restricted by
 		# only_preselected_images or ucs_images
 		# return all images
-		if not only_preselected_images and not ucs_images and self.publicdata.search_image_enabled:
+		if not only_preselected_images and not ucs_images:
 			for image in self._images:
 				if ((image.name and regex.match(image.name)) or
 					(image.id and regex.match(image.id)) or

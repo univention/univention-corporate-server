@@ -872,7 +872,7 @@ define([
 				type: values.cloudtype,
 				showUnivention: values.search_only_ucs_images,
 				preSelection: values.preselected_images_available,
-				allowsSearch: values.search_image_enabled
+				searchPattern: values.search_pattern
 			};
 			wizard = new InstanceWizard({
 				onFinished: _finished,

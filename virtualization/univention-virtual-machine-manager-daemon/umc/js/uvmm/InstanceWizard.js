@@ -194,25 +194,10 @@ define([
 				};
 			}
 			if (this.cloud.type == 'EC2') {
-				var filterOptions = [];
-				if (this.cloud.showUnivention) {
-					filterOptions.push({ id: 'univention', label: _('Show only Univention AMIs') });
-				}
-				if (this.cloud.preSelection) {
-					filterOptions.push({ id: 'preselection', label: _('Select AMI from a predefined set') });
-				}
-				if (this.cloud.allowsSearch) {
-					filterOptions.push({ id: 'search', label: _('Search all available AMIs') });
-				}
-				var defaultFilterOption = null;
-				if (filterOptions.length) {
-					defaultFilterOption = filterOptions[0].id;
-				}
 				return {
 					layout: [
 						'name',
 						'image_filter',
-						['image_filter_search', 'image_filter_search_submit'],
 						'image_id',
 						'size_id',
 						'size_info_text',
@@ -261,48 +246,12 @@ define([
 						type: ComboBox,
 						label: _('Choose an AMI'),
 						sortDynamicValues: false,
-						dynamicOptions: this._ec2ImageDynamicOptions(defaultFilterOption),
+						dynamicOptions: this._ec2ImageDynamicOptions(),
 						dynamicValues: lang.hitch(this, function(options) {
-							console.log(options);
-							if (options.cancel) {
-								return [];
-							}
 							return this.standbyDuring(types.getCloudListImage(options));
 						}),
 						required: true,
 						size: 'Two'
-					}, {
-						name: 'image_filter',
-						type: ComboBox,
-						staticValues: filterOptions,
-						label: _('Filter AMIs'),
-						onChange: lang.hitch(this, function(newVal) {
-							var widget = this.getWidget('details', 'image_id');
-							var imageSearch = this.getWidget('details', 'image_filter_search');
-							var imageSearchButton = this.getPage('details')._form.getButton('image_filter_search_submit');
-							imageSearch.set('visible', false);
-							imageSearchButton.set('visible', false);
-
-							var options = this._ec2ImageDynamicOptions(newVal);
-							if (newVal == 'search') {
-								imageSearch.set('visible', true);
-								imageSearchButton.set('visible', true);
-							} else {
-								widget.set('dynamicOptions', options);
-							}
-						})
-					}, {
-						name: 'image_filter_search',
-						type: TextBox,
-						label: _('Search pattern'),
-						onKeyDown: lang.hitch(this, function(e) {
-							if (e.keyCode == keys.ENTER) {
-								this.filterAMIs();
-								e.preventDefault();
-								event.stop(e);
-							}
-						}),
-						visible: defaultFilterOption == 'search'
 					}, {
 						name: 'security_group_ids',
 						type: ComboBox,
@@ -310,42 +259,20 @@ define([
 						dynamicOptions: {conn_name: this.cloud.name},
 						dynamicValues: types.getCloudListSecgroup,
 						required: true
-					}],
-					buttons: [{
-						name: 'image_filter_search_submit',
-						label: _('Search'),
-						visible: defaultFilterOption == 'search',
-						style: 'position: relative; bottom: 2.4em;',
-						callback: lang.hitch(this, 'filterAMIs')
 					}]
 				};
 			}
 			return {};
 		},
 
-		_ec2ImageDynamicOptions: function(filterOption) {
-			var options = {conn_name: this.cloud.name};
-			options.ucs_images = filterOption == 'univention';
-			options.onlypreselected = filterOption == 'preselection';
-			if (filterOption == 'search') {
-				if (this._ready.isResolved()) { // check for initialized
-					var imageSearch = this.getWidget('details', 'image_filter_search');
-					var visible = imageSearch.get('visible');
-					var value = imageSearch.get('value');
-					if (visible) {
-						options.pattern = value;
-					}
-				} else {
-					options.cancel = true;
-				}
-			}
+		_ec2ImageDynamicOptions: function() {
+			var options = {
+				conn_name: this.cloud.name,
+				ucs_images: this.cloud.showUnivention,
+				onlypreselected: this.cloud.preSelection,
+				pattern: this.cloud.searchPattern
+			};
 			return options;
-		},
-
-		filterAMIs: function() {
-			var widget = this.getWidget('details', 'image_id');
-			var options = this._ec2ImageDynamicOptions('search');
-			widget.set('dynamicOptions', options);
 		},
 
 		onFinished: function() {

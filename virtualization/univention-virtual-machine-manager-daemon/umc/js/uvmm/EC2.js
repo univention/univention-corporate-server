@@ -49,7 +49,8 @@ define([
 					'name',
 					'region',
 					'access_id',
-					'password'
+					'password',
+					'search_pattern'
 				],
 				widgets: [{
 					name: 'name',
@@ -81,15 +82,17 @@ define([
 					],
 					label: _('EC2 Region'),
 					required: true
-				/*}, {
+				}, {/*
 					name: 'ucs_images',
 					type: CheckBox,
 					value: true
+				}, {*/
+					name: 'search_pattern',
+					type: TextBox,
+					value: '*',
+					label: _('Search pattern for AMIs'),
+					description: _('When creating new instances in this cloud, the list of available AMIs may get very long and take a considerable amount of time to load. This pattern filters the list before loading it. It can also be used to specify the use case of this cloud connection.')
 				}, {
-					name: 'enable_search',
-					type: CheckBox,
-					value: true
-				*/}, {
 					name: 'cloudtype',
 					type: HiddenInput,
 					value: this.cloudtype
