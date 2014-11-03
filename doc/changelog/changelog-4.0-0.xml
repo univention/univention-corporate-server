@@ -674,7 +674,7 @@
 					<ulink url="&ucsbug;36305">Bug 36305</ulink>,
 					<ulink url="&ucsbug;36306">Bug 36306</ulink>,
 					<ulink url="&ucsbug;36146">Bug 36146</ulink>)
-		</simpara></listitem>
+			</simpara></listitem>
 			<listitem><simpara>
 					Several packages related to virtualization have been updated to newer versions:
 					<package>libiscsi</package> (1.12.0.2),
@@ -687,7 +687,7 @@
 					<package>qemu</package> (2.1),
 					<package>libvirt</package> (1.2.7),
 					<package>libvirt-python</package> (1.2.6)
-					(<ulink url="&ucsbug;35768">Bug 35768</ulink>).
+					(<ulink url="&ucsbug;35768">Bug 35768</ulink>, <ulink url="&ucsbug;36388">Bug 36388</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The <package>VirtIO</package> drivers for Windows have been updated to version 0.1.81 (<ulink url="&ucsbug;36122">Bug 36122</ulink>).
