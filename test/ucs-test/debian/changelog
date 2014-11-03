@@ -1,3 +1,9 @@
+ucs-test (5.0.42-3) unstable; urgency=medium
+
+  * Bug #35985: Explicitly choose language for UMC request
+
+ -- Arvid Requate <requate@univention.de>  Mon, 03 Nov 2014 17:40:06 +0100
+
 ucs-test (5.0.42-2) unstable; urgency=medium
 
   * Bug #35985: Add tests for login with invalid username or password
