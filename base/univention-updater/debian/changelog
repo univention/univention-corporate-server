@@ -1,6 +1,7 @@
 univention-updater (10.0.33-2) unstable; urgency=low
 
   * Bug #36371: Block update on postgresql-8.3
+  * Bug #36372: Block update on cyrus-2.2
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 03 Nov 2014 14:07:19 +0100
 

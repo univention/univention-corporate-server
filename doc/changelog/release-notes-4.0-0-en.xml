@@ -93,6 +93,13 @@
 						The procedure is described in the <ulink url="http://sdb.univention.de/1220">SDB article 1220</ulink>.
 					</para>
 				</listitem>
+				<listitem>
+					<para>
+						<application>Cyrus-2.2</application> has been removed in UCS 4.0.
+						Mail must be migrated by hand to a newer version.
+						The procedure is described in the <ulink url="http://sdb.univention.de/1213">SDB article 1213</ulink>.
+					</para>
+				</listitem>
 			</itemizedlist>
 		</section>
 

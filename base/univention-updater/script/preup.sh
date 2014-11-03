@@ -253,6 +253,23 @@ check_for_postgresql83 () {
 }
 check_for_postgresql83
 
+## Check for Cyrus-2.2 (Bug #36372)
+check_for_cyrus22 () {
+	case "$(dpkg-query -W -f '${Status}' cyrus-2.2 2>/dev/null)" in
+	install*) ;;
+	*) return 0 ;;
+	esac
+	echo "WARNING: Cyrus-2.2 is no longer supported by UCS-4 and must be migrated to a"
+	echo "         newer version of Cyrus-IMAPd. See <http://sdb.univention.de/1213> for"
+	echo "         more details."
+	if is_ucr_true update40/ignore_cyrus22; then
+		echo "WARNING: update40/ignore_cyrus22 is set to true. Skipped as requested."
+	else
+		exit 1
+	fi
+}
+check_for_cyrus22
+
 #################### Bug #22093
 
 list_passive_kernels () {

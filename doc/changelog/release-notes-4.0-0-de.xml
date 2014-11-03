@@ -93,6 +93,13 @@
 						Das Vorgehen ist in dem <ulink url="http://sdb.univention.de/1220">SDB-Artikel 1220</ulink> beschrieben.
 					</para>
 				</listitem>
+				<listitem>
+					<para>
+						<application>Cyrus-2.2</application> wurde in UCS 4.0 entfernt.
+						Die Emails müssen von Hand in eine neuere Version migriert werden.
+						Das Vorgehen ist in dem <ulink url="http://sdb.univention.de/1213">SDB-Artikel 1213</ulink> beschrieben.
+					</para>
+				</listitem>
 			</itemizedlist>
 		</section>
 	</chapter>
