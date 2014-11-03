@@ -100,6 +100,7 @@ define([
 					label: _('Select the host where you want to install the application'),
 					name: 'host',
 					required: true,
+					size: 'Two',
 					staticValues: hosts
 				}, {
 					type: Text,

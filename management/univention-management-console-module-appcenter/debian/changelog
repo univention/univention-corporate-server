@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (4.1.15-4) unstable; urgency=low
+
+  * Bug #36370: Better layout when choosing host for app installation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 03 Nov 2014 09:35:18 +0100
+
 univention-management-console-module-appcenter (4.1.15-3) unstable; urgency=low
 
   * Bug #35781: Do not show the origin of the package information in the
