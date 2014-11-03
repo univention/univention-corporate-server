@@ -1,3 +1,10 @@
+ucs-test (5.0.40-1) unstable; urgency=low
+
+  * Bug #35537: removed test for computer property "reinstalltext" - the
+    property has been removed
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 28 Oct 2014 09:31:53 +0100
+
 ucs-test (5.0.39-1) unstable; urgency=low
 
   * 20_appcenter/10_check_apps_ini: test script for validating Apps .ini(s).
