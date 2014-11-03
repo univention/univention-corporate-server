@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.16-1) unstable; urgency=medium
+
+  * Use udm.handlers.src_record.unmapName (Bug #36101)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 03 Nov 2014 13:08:21 +0100
+
 univention-s4-connector (9.0.15-1) unstable; urgency=medium
 
   * Don't use the auto reconnect feature of python-ldap/univention.uldap
