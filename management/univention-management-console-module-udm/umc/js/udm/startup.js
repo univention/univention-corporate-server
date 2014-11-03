@@ -43,8 +43,9 @@ define([
 	"umc/app",
 	"umc/tools",
 	"umc/dialog",
+	"umc/app/ActivationPage!",  // page needs to be loaded as plugin
 	"umc/i18n!umc/modules/udm"
-], function(declare, kernel, lang, array, query, Deferred, topic, registry, Menu, PopupMenuItem, MenuItem, app, tools, dialog, _) {
+], function(declare, kernel, lang, array, query, Deferred, topic, registry, Menu, PopupMenuItem, MenuItem, app, tools, dialog, ActivationPage, _) {
 
 	var ucr = {};
 
@@ -106,7 +107,7 @@ define([
 
 	var addLicenseMenu = function() {
 		var licenseMenu = new Menu({});
-		if (!ucr['uuid/license']) {
+		if (!ActivationPage.hasLicense) {
 			// license has not been activated yet
 			licenseMenu.addChild(new MenuItem({
 				label: _('Activation of UCS'),

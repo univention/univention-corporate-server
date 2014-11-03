@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.22-1) unstable; urgency=medium
+
+  * Bug #35654: fixed handling of ActivationPage
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 03 Nov 2014 14:24:21 +0100
+
 univention-management-console-module-udm (5.1.21-1) unstable; urgency=medium
 
   * Bug #36298: removed annyoing tooltips
