@@ -104,8 +104,6 @@ univention-debmirror
 univention-debootstrap-3
 univention-firewall
 univention-grub
-grub-efi
-efibootmgr
 libunivention-debug1
 libunivention-debug-dev
 python-univention-debug
@@ -123,7 +121,10 @@ univention-log-collector-client
 gdisk
 
 /* UEFI */
-univention-uefi-secureboot
+grub-efi
+efibootmgr
+shim-signed
+grub-efi-amd64-signed
 
 /* Heimdal */
 univention-heimdal-kdc
