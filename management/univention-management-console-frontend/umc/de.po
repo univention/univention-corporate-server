@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-31 19:58+0100\n"
+"POT-Creation-Date: 2014-11-03 13:39+0100\n"
 "PO-Revision-Date: 2013-09-12 11:31+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: umc/tools.js:1503
+#, python-brace-format
 msgid "\"${moduleName}\" module"
 msgstr "Modul \"${moduleName}\""
 
@@ -248,8 +249,8 @@ msgstr "Zurück"
 msgid "Back to overview"
 msgstr "Zurück zur Übersicht"
 
-#: umc/dialog.js:347 umc/tools.js:199 umc/widgets/Wizard.js:163
-#: umc/widgets/MultiObjectSelect.js:137 umc/app.js:1564
+#: umc/tools.js:199 umc/app.js:1564 umc/widgets/MultiObjectSelect.js:137
+#: umc/widgets/Wizard.js:163 umc/dialog.js:347
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -261,7 +262,7 @@ msgstr "Daten leeren"
 msgid "Clear image data"
 msgstr "Bilddaten leeren"
 
-#: umc/tools.js:733 umc/widgets/Module.js:161 umc/app.js:751
+#: umc/tools.js:733 umc/app.js:751 umc/widgets/Module.js:161
 msgid "Close"
 msgstr "Schließen"
 
@@ -352,7 +353,7 @@ msgstr "Hello %(last)s, %(first)s!"
 msgid "Hello %s %s!"
 msgstr "Hello %s %s!"
 
-#: umc/widgets/Module.js:151 umc/app.js:560 umc/app.js:654
+#: umc/app.js:560 umc/app.js:654 umc/widgets/Module.js:151
 msgid "Help"
 msgstr "Hilfe"
 
@@ -591,6 +592,7 @@ msgstr ""
 "probiert."
 
 #: umc/tools.js:257
+#, python-brace-format
 msgid ""
 "So far, the connection to the server could not be established after {time} "
 "seconds. This can be a normal behavior. In any case, the process will "
@@ -696,8 +698,8 @@ msgstr "Univention Webseite"
 msgid "Unknown error while performing automatic login at host "
 msgstr "Unbekannter Fehler während des automatischen Logins an Rechner "
 
-#: umc/widgets/Uploader.js:109 umc/widgets/MultiUploader.js:104
-#: umc/widgets/InfoUploader.js:43
+#: umc/widgets/InfoUploader.js:43 umc/widgets/MultiUploader.js:104
+#: umc/widgets/Uploader.js:109
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -821,6 +823,7 @@ msgid "umcUserInfo"
 msgstr "<b>Benutzer</b> %(username)s"
 
 #: umc/widgets/ProgressBar.js:176
+#, python-brace-format
 msgid "{number} errors occurred: "
 msgstr "{number} Fehler sind aufgetreten: "
 

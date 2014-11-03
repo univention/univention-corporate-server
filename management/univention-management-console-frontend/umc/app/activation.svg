@@ -235,6 +235,13 @@
          style="stop-color:#d2cdcc;stop-opacity:1"
          offset="1" />
     </linearGradient>
+    <filter
+       color-interpolation-filters="sRGB"
+       id="filter3863">
+      <feGaussianBlur
+         id="feGaussianBlur3865"
+         stdDeviation="1.1969716" />
+    </filter>
   </defs>
   <metadata
      id="metadata3856">
@@ -322,12 +329,7 @@
                id="g698">
               <g
                  clip-path="url(#clipPath694)"
-                 id="g700">
-                <path
-                   d="m 644.621,598.14 47.88,0 0,-54.36 -47.88,0 0,54.36 z"
-                   id="path702"
-                   style="fill:#000000;fill-opacity:0.10000598;fill-rule:nonzero;stroke:none" />
-              </g>
+                 id="g700" />
             </g>
           </g>
         </g>
@@ -348,6 +350,10 @@
                 <g
                    transform="translate(665.0272,588.4115)"
                    id="g754">
+                  <path
+                     d="m 0,0 -10.439,-10.439 c -1.921,-1.921 -1.92,-5.033 -0.003,-6.955 l -0.003,-0.004 0.004,-0.003 c -1.918,-1.924 -1.918,-5.035 0.003,-6.956 L 0,-34.796 c 1.923,-1.922 5.039,-1.922 6.96,0 l 10.439,10.439 c 1.922,1.922 1.921,5.037 -0.001,6.959 1.922,1.921 1.922,5.037 0,6.959 L 6.959,0 C 5.038,1.921 1.922,1.922 0,0"
+                     id="path3079"
+                     style="opacity:0.25;fill:#282828;fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#filter3863)" />
                   <path
                      d="m 0,0 -10.439,-10.439 c -1.921,-1.921 -1.92,-5.033 -0.003,-6.955 l -0.003,-0.004 0.004,-0.003 c -1.918,-1.924 -1.918,-5.035 0.003,-6.956 L 0,-34.796 c 1.923,-1.922 5.039,-1.922 6.96,0 l 10.439,10.439 c 1.922,1.922 1.921,5.037 -0.001,6.959 1.922,1.921 1.922,5.037 0,6.959 L 6.959,0 C 5.038,1.921 1.922,1.922 0,0"
                      id="path756"

@@ -42,6 +42,14 @@
 	background-image: url(app/about.svg);
 }
 
+.umc .umcAppDialogPage-feedback .umcFeedbackHardwareStatistics {
+	display: none;
+}
+
+.umc .umcStartupDialog .umcAppDialogPage-feedback .umcFeedbackHardwareStatistics {
+	display: block;
+}
+
 @media (max-width: 549px) {
 	.umc .umcAppDialogPage .umcPageIcon {
 		left: 50px;

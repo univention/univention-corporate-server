@@ -53,7 +53,7 @@ define([
 
 		title: _('Welcome to UMC'),
 
-		'class': 'umcLargeDialog',
+		'class': 'umcStartupDialog umcLargeDialog',
 
 		_wizard: null,
 

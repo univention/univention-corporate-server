@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-31 19:58+0100\n"
+"POT-Creation-Date: 2014-11-03 13:39+0100\n"
 "PO-Revision-Date: 2012-02-23 16:18+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: umc/tools.js:1503
+#, python-brace-format
 msgid "\"${moduleName}\" module"
 msgstr ""
 
@@ -204,8 +205,8 @@ msgstr ""
 msgid "Back to overview"
 msgstr ""
 
-#: umc/dialog.js:347 umc/tools.js:199 umc/widgets/Wizard.js:163
-#: umc/widgets/MultiObjectSelect.js:137 umc/app.js:1564
+#: umc/tools.js:199 umc/app.js:1564 umc/widgets/MultiObjectSelect.js:137
+#: umc/widgets/Wizard.js:163 umc/dialog.js:347
 msgid "Cancel"
 msgstr ""
 
@@ -217,7 +218,7 @@ msgstr ""
 msgid "Clear image data"
 msgstr ""
 
-#: umc/tools.js:733 umc/widgets/Module.js:161 umc/app.js:751
+#: umc/tools.js:733 umc/app.js:751 umc/widgets/Module.js:161
 msgid "Close"
 msgstr ""
 
@@ -306,7 +307,7 @@ msgstr ""
 msgid "Hello %s %s!"
 msgstr ""
 
-#: umc/widgets/Module.js:151 umc/app.js:560 umc/app.js:654
+#: umc/app.js:560 umc/app.js:654 umc/widgets/Module.js:151
 msgid "Help"
 msgstr ""
 
@@ -529,6 +530,7 @@ msgid "So far the authentification failed. Continuing nevertheless."
 msgstr ""
 
 #: umc/tools.js:257
+#, python-brace-format
 msgid ""
 "So far, the connection to the server could not be established after {time} "
 "seconds. This can be a normal behavior. In any case, the process will "
@@ -624,8 +626,8 @@ msgstr ""
 msgid "Unknown error while performing automatic login at host "
 msgstr ""
 
-#: umc/widgets/Uploader.js:109 umc/widgets/MultiUploader.js:104
-#: umc/widgets/InfoUploader.js:43
+#: umc/widgets/InfoUploader.js:43 umc/widgets/MultiUploader.js:104
+#: umc/widgets/Uploader.js:109
 msgid "Upload"
 msgstr ""
 
@@ -740,6 +742,7 @@ msgid "umcUserInfo"
 msgstr "<b>User</b> %(username)s"
 
 #: umc/widgets/ProgressBar.js:176
+#, python-brace-format
 msgid "{number} errors occurred: "
 msgstr ""
 
