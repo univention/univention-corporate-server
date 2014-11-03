@@ -281,11 +281,6 @@
 		<title>Univention Management Console server</title>
 		<itemizedlist>
 			<listitem><simpara>
-					The UMC server and modules now run without a restrictive umask.
-					Sensitive files are protected manually (<ulink
-						url="&ucsbug;33241">Bug 33241</ulink>).
-			</simpara></listitem>
-			<listitem><simpara>
 				Changing of an expired password via UMC has been fixed
 				(<ulink url="&ucsbug;35985">Bug 35985</ulink>).
 			</simpara></listitem>
