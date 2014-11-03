@@ -479,6 +479,11 @@
 				The UMC menu now contains buttons for rebooting and shutting down the server.
 				(<ulink url="&ucsbug;36281">Bug 36281</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				Graphics containing the Windows logo have been replaced with alternate icons in the modules
+				Active Directory Connection and Active Directory Takeover
+				(<ulink url="&ucsbug;35837">Bug 35837</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
