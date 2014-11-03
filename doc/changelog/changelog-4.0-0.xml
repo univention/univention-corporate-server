@@ -515,10 +515,11 @@
 				).
 		</simpara></listitem>
 		<listitem><simpara>
-			The updater postup.sh script now runs <command>apt-get autoremove</command> to
+			Before and after the update, the updater now runs <command>apt-get autoremove</command> to
 			deinstall obsolete packages (e.g. packages that were automatically installed
-			but are now no longer referenced by other packages,
-			<ulink url="&ucsbug;36265">Bug 36265</ulink>).
+			but are now no longer referenced by other packages). This can be disabled by setting
+			the &ucsUCRV; <envar>update40/skip/autoremove</envar> to <emphasis>true</emphasis>.
+			(<ulink url="&ucsbug;36265">Bug 36265</ulink>).
 		</simpara></listitem>
 	</itemizedlist>
 
@@ -839,6 +840,10 @@
 		<listitem><simpara>
 				The package <package>ocfs2-tools</package> has been updated to 1.6.4-3
 				(<ulink url="&ucsbug;36377">Bug 36377</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+				The KDE design has been adapted to UCS 4.0
+				(<ulink url="&ucsbug;35936">Bug 35936</ulink>).
 		</simpara></listitem>
 	</itemizedlist>
 </section>
