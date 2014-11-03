@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (1.0.13-1) unstable; urgency=medium
+
+  * Bug #35866: reset default of max_open_files to 32808
+
+ -- Florian Best <best@univention.de>  Mon, 03 Nov 2014 13:33:31 +0100
+
 univention-management-console-module-diagnostic (1.0.12-1) unstable; urgency=medium
 
   * Bug #35866: read logfiles line wise

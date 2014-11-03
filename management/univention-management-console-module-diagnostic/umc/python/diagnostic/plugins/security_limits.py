@@ -9,7 +9,7 @@ from univention.config_registry import handler_set
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-suggested_max_open_files = 32768
+suggested_max_open_files = 32808
 
 title = _('Security limits exceeded')
 #(Samba often uses too many opened file descriptors')
@@ -46,7 +46,7 @@ def run():
 
 	ucr.load()
 	try:
-		max_open_files = int(ucr.get('samba/max_open_files', 0))
+		max_open_files = int(ucr.get('samba/max_open_files', 32808))
 	except ValueError:
 		max_open_files = 0
 
