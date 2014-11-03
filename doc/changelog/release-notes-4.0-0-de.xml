@@ -86,6 +86,13 @@
 						aus dem LDAP-Verzeichnis entfernt werden.
 					</para>
 				</listitem>
+				<listitem>
+					<para>
+						<application>PostgreSQL-8.3</application> wurde in UCS 4.0 entfernt.
+						Die Daten müssen von Hand in eine neuere Version migriert werden.
+						Das Vorgehen ist in dem <ulink url="http://sdb.univention.de/1220">SDB-Artikel 1220</ulink> beschrieben.
+					</para>
+				</listitem>
 			</itemizedlist>
 		</section>
 	</chapter>

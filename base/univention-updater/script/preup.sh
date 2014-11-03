@@ -125,7 +125,6 @@ is_ucr_true () {
 }
 
 check_scalix_schema_present() {
-
 	attributes=( scalixScalixObject scalixMailnode scalixAdministrator scalixMailboxAdministrator scalixServerLanguage scalixEmailAddress scalixLimitMailboxSize scalixLimitOutboundMail scalixLimitInboundMail scalixLimitNotifyUser scalixHideUserEntry scalixMailboxClass )
 
 	objectclasses=( scalixUserClass scalixGroupClass )
@@ -150,7 +149,6 @@ check_scalix_schema_present() {
 		fi
 	done
 }
-
 check_scalix_schema_present
 
 ## Check for univention-horde4 (UCS version), univention-horde4 has been
@@ -237,6 +235,23 @@ check_for_xen () {
 	exit 1
 }
 check_for_xen
+
+## Check for PostgreSQL-8.3 (Bug #36371)
+check_for_postgresql83 () {
+	case "$(dpkg-query -W -f '${Status}' postgresql-8.3 2>/dev/null)" in
+	install*) ;;
+	*) return 0 ;;
+	esac
+	echo "WARNING: PostgreSQL-8.3 is no longer supported by UCS-4 and must be migrated to"
+	echo "         a newer version of PostgreSQL. See <http://sdb.univention.de/1220> for"
+	echo "         more details."
+	if is_ucr_true update40/ignore_postgresql83; then
+		echo "WARNING: update40/ignore_postgresql83 is set to true. Skipped as requested."
+	else
+		exit 1
+	fi
+}
+check_for_postgresql83
 
 #################### Bug #22093
 
