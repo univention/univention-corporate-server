@@ -81,7 +81,15 @@ define([
 					],
 					label: _('EC2 Region'),
 					required: true
+				/*}, {
+					name: 'ucs_images',
+					type: CheckBox,
+					value: true
 				}, {
+					name: 'enable_search',
+					type: CheckBox,
+					value: true
+				*/}, {
 					name: 'cloudtype',
 					type: HiddenInput,
 					value: this.cloudtype

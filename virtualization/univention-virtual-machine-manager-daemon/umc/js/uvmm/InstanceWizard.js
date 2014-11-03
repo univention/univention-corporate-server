@@ -199,6 +199,10 @@ define([
 				if (this.cloud.allowsSearch) {
 					filterOptions.push({ id: 'search', label: _('Search all available AMIs') });
 				}
+				var defaultFilterOption = null;
+				if (filterOptions.length) {
+					defaultFilterOption = filterOptions[0].id;
+				}
 				return {
 					layout: [
 						'name',
@@ -252,7 +256,7 @@ define([
 						type: ComboBox,
 						label: _('Search for and choose an AMI'),
 						sortDynamicValues: false,
-						dynamicOptions: this._ec2ImageDynamicOptions({ucs_images: true}),
+						dynamicOptions: this._ec2ImageDynamicOptions(defaultFilterOption),
 						dynamicValues: lang.hitch(this, function(options) {
 							return this.standbyDuring(types.getCloudListImage(options));
 						}),
@@ -270,16 +274,9 @@ define([
 							imageSearch.set('visible', false);
 							imageSearchButton.set('visible', false);
 
-							var options = this._ec2ImageDynamicOptions();
-							if (newVal == 'univention') {
-								options.ucs_images = true;
+							var options = this._ec2ImageDynamicOptions(newVal);
+							if (newVal != 'search') {
 								widget.set('dynamicOptions', options);
-							} else if (newVal == 'preselection') {
-								options.onlypreselected = true;
-								widget.set('dynamicOptions', options);
-							} else if (newVal == 'search') {
-								imageSearch.set('visible', true);
-								imageSearchButton.set('visible', true);
 							}
 						})
 					}, {
@@ -314,14 +311,28 @@ define([
 			return {};
 		},
 
-		_ec2ImageDynamicOptions: function(props) {
-			return lang.mixin({conn_name: this.cloud.name}, props);
+		_ec2ImageDynamicOptions: function(filterOption) {
+			var options = {conn_name: this.cloud.name};
+			if (filterOption == 'univention') {
+				options.ucs_images = true;
+			} else if (filterOption == 'preselection') {
+				options.onlypreselected = true;
+			} else if (filterOption == 'search') {
+				var imageSearch = this.getWidget('details', 'image_filter_search');
+				var imageSearchButton = this.getPage('details')._form.getButton('image_filter_search_submit');
+				imageSearch.set('visible', true);
+				imageSearchButton.set('visible', true);
+				var value = imageSearch.get('value');
+				if (value) {
+					options.pattern = value;
+				}
+			}
+			return options;
 		},
 
 		filterAMIs: function() {
 			var widget = this.getWidget('details', 'image_id');
-			var options = this._ec2ImageDynamicOptions();
-			options.pattern = this.getWidget('details', 'image_filter_search').get('value');
+			var options = this._ec2ImageDynamicOptions('search');
 			widget.set('dynamicOptions', options);
 		},
 
