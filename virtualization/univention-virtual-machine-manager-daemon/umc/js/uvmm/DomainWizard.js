@@ -204,6 +204,12 @@ define([
 					name: 'drives',
 					headerText: _('Add drive'),
 					helpText: _('To finalize the creation of the virtual machine, please add one or more drives by clicking on "Add drive".')
+				}],
+				headerButtons: [{
+					iconClass: 'umcCloseIconWhite',
+					name: 'close',
+					label: _('Back to overview'),
+					callback: lang.hitch(this, 'onCancel')
 				}]
 			});
 		},
@@ -218,6 +224,16 @@ define([
 			this.own(aspect.after(this._pages.drives, '_onShow', lang.hitch(this, function() {
 				this._driveGrid.resize();
 			})));
+		},
+
+		getFooterButtons: function() {
+			var buttons = this.inherited(arguments);
+			return array.filter(buttons, function(button) {
+				if (button.name == 'cancel') {
+					return false;
+				}
+				return true;
+			});
 		},
 
 		next: function(pageName) {

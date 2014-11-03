@@ -41,7 +41,8 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/Form",
 	"umc/widgets/ContainerWidget",
-	"umc/widgets/TabContainer",
+	"umc/widgets/TabController",
+	"dijit/layout/StackContainer",
 	"umc/widgets/TitlePane",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/TextBox",
@@ -56,10 +57,10 @@ define([
 	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Memory, Observable, MappedTextBox, tools, dialog, store, Page, Form, ContainerWidget, TabContainer, TitlePane, StandbyMixin,
+], function(declare, lang, array, Memory, Observable, MappedTextBox, tools, dialog, store, Page, Form, ContainerWidget, TabController, StackContainer, TitlePane, StandbyMixin,
 	TextBox, TextArea, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, InterfaceGrid, DriveGrid, types, _) {
 
-	return declare("umc.modules.uvmm.DomainPage", [ TabContainer, StandbyMixin ], {
+	return declare("umc.modules.uvmm.DomainPage", [ Page, StandbyMixin ], {
 		nested: true,
 
 		_generalForm: null,
@@ -168,17 +169,7 @@ define([
 
 			this._advancedPage = new Page({
 				headerText: _('Advanced settings'),
-				title: _('Advanced'),
-				footerButtons: [{
-					label: _('Back to overview'),
-					name: 'cancel',
-					callback: lang.hitch(this, 'onClose')
-				}, {
-					label: _('Save'),
-					defaultButton: true,
-					name: 'save',
-					callback: lang.hitch(this, 'save')
-				}]
+				title: _('Advanced')
 			});
 
 			this._advancedForm = new Form({
@@ -284,17 +275,7 @@ define([
 
 			this._devicesPage = new Page({
 				headerText: _('Settings for devices'),
-				title: _('Devices'),
-				footerButtons: [{
-					label: _('Back to overview'),
-					name: 'cancel',
-					callback: lang.hitch(this, 'onClose')
-				}, {
-					label: _('Save'),
-					defaultButton: true,
-					name: 'save',
-					callback: lang.hitch(this, 'save')
-				}]
+				title: _('Devices')
 			});
 			var container = new ContainerWidget({
 				scrollable: true
@@ -343,17 +324,7 @@ define([
 
 			this._snapshotPage = new Page({
 				headerText: _('Snapshots settings'),
-				title: _('Snapshots'),
-				footerButtons: [{
-					label: _('Back to overview'),
-					name: 'cancel',
-					callback: lang.hitch(this, 'onClose')
-				}, {
-					label: _('Save'),
-					defaultButton: true,
-					name: 'save',
-					callback: lang.hitch(this, 'save')
-				}]
+				title: _('Snapshots')
 			});
 
 			// grid for the snapshots
@@ -364,11 +335,35 @@ define([
 			});
 			this._snapshotPage.addChild(this._snapshotGrid);
 
+			this._stack = new StackContainer({});
 			// add pages in the correct order
-			this.addChild(this._generalPage);
-			this.addChild(this._devicesPage);
-			this.addChild(this._snapshotPage);
-			this.addChild(this._advancedPage);
+			this.addSubPage(this._generalPage);
+			this.addSubPage(this._devicesPage);
+			this.addSubPage(this._snapshotPage);
+			this.addSubPage(this._advancedPage);
+			this.addChild(this._stack);
+		},
+
+		addSubPage: function(page) {
+			page.tabController = new TabController({
+				containerId: this._stack.id,
+				region: 'nav'
+				
+			});
+			page.addChild(page.tabController);
+			this._stack.addChild(page);
+		},
+
+		hideChild: function(page) {
+			array.forEach(this._stack.getChildren(), function(child) {
+				child.tabController.hideChild(page);
+			});
+		},
+
+		showChild: function(page) {
+			array.forEach(this._stack.getChildren(), function(child) {
+				child.tabController.showChild(page);
+			});
 		},
 
 		save: function() {
@@ -483,7 +478,7 @@ define([
 							iwidget.set( 'disabled', domainActive );
 						}
 					} ) );
-					this.selectChild( this._generalPage, true);
+					this._stack.selectChild( this._generalPage, true);
 
 					// force a refresh of the grids
 					this._interfaceGrid.filter();

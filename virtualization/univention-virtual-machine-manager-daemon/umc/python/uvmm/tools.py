@@ -51,10 +51,11 @@ def object2dict(obj):
 		if isinstance(attr, (int, float, long, bool, NoneType)):
 			attrs[slot] = attr
 		elif isinstance(attr, basestring):
-			if attr in ('0', 'FALSE'):
-				attr = False
-			elif attr in ('1', 'TRUE'):
-				attr = True
+			if slot not in ('cpus',):
+				if attr in ('0', 'FALSE'):
+					attr = False
+				elif attr in ('1', 'TRUE'):
+					attr = True
 			attrs[slot] = attr
 		elif isinstance(attr, (list, tuple)):
 			attrs[slot] = [object2dict(_) for _ in attr]
