@@ -1,3 +1,9 @@
+univention-system-setup (8.1.38-1) unstable; urgency=medium
+
+  * Activate onlien repository in 90_postjoin/20upgrade (Bug #36116)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 03 Nov 2014 16:15:50 +0100
+
 univention-system-setup (8.1.37-1) unstable; urgency=medium
 
   * Bug #35709: added missing widget dependencies for LanguagePage

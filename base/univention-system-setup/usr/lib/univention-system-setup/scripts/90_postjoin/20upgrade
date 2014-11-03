@@ -43,6 +43,9 @@ progress_msg "$(gettext "This might take a while depending on the number of pend
 
 eval "$(ucr shell)"
 
+# Activate the online repository
+/usr/sbin/ucr repository/online=yes
+
 if [ "$server_role" = "domaincontroller_master" ]; then
 	# Update to latest patchlevel
 	echo "Running upgrade on DC Master: univention-upgrade --noninteractive --updateto $version_version-99"
