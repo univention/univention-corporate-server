@@ -116,7 +116,7 @@ create_hvm_profile() {
 		--set virttech="${virttech}-hvm" \
 		--set ram="${ram}" \
 		--set diskspace="${diskspace}" \
-		--set interface=eth0 \
+		--set interface=br0 \
 		--append bootdev=cdrom \
 		--append bootdev=hd \
 		--set rtcoffset="$rtcoffset" \

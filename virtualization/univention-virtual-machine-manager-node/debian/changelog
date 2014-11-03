@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (3.0.2-2) unstable; urgency=low
+
+  * Bug #36388: Add dependency on qemu-utils
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 03 Nov 2014 11:56:59 +0100
+
 univention-virtual-machine-manager-node (3.0.2-1) unstable; urgency=low
 
   * Bug #33694: Disable bridge creation by default

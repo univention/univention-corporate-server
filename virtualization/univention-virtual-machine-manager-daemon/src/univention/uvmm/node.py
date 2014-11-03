@@ -147,7 +147,7 @@ class DomainTemplate(object):
 					elif child.nodeName == 'nonpae':
 						if 'pae' not in f_names:
 							f_names.append('nonpae')
-					elif child.getAttribute('default') == 'on':
+					elif child.getAttribute('default') == 'on' and child.nodeName in ('acpi', 'apic'):
 						f_names.append(child.nodeName)
 		return f_names
 
@@ -1201,35 +1201,6 @@ def _domain_edit(node, dom_stat, xml):
 			models = set()
 		models &= set(['e1000', 'ne2k_isa', 'ne2k_pci', 'pcnet', 'rtl8139', 'virtio'])
 		roms = set(['%s-%s.bin' % (QEMU_PXE_PREFIX, model) for model in models])
-
-		# install XML Name Space mapping: prefix must be qemu!
-		ET._namespace_map[QEMU_URI] = 'qemu'
-		domain.attrib['xmlns:qemu'] = QEMU_URI
-
-		# /domain/qemu:commandline/
-		QEMU_COMMANDLINE = '{%s}commandline' % QEMU_URI
-		domain_qemu_commandline = update(domain, QEMU_COMMANDLINE, '')
-		# /domain/qemu:commandline/qemu:arg
-		QEMU_ARG = '{%s}arg' % QEMU_URI
-		i = 0
-		i_option_rom = None
-		while i < len(domain_qemu_commandline):
-			if domain_qemu_commandline[i].tag == QEMU_ARG:
-				val = domain_qemu_commandline[i].attrib['value']
-				if val == '-option-rom':
-					i_option_rom = i
-				elif i_option_rom is not None and val.startswith(QEMU_PXE_PREFIX):
-					try:
-						roms.remove(val)
-					except LookupError:
-						del domain_qemu_commandline[i]
-						del domain_qemu_commandline[i_option_rom]
-						i -= 2
-						i_option_rom = None
-			i += 1
-		for rom in roms:
-			domain_qemu_commandline_arg = ET.SubElement(domain_qemu_commandline, QEMU_ARG, value='-option-rom')
-			domain_qemu_commandline_arg = ET.SubElement(domain_qemu_commandline, QEMU_ARG, value=rom)
 
 	# Make ET happy and cleanup None values
 	for n in domain.getiterator():

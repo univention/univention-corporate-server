@@ -83,7 +83,7 @@ UMCC uvmm/domain/add -e -o "{
 		'os' : 'UCS 4.1',
 		'description' : 'testing UMC module',
 		'rtc_offset' : 'utc',
-		'interface' : 'eth0',
+		'interface' : 'br0',
 		'pvinterface' : True,
 		'disks' : [],
 		'\$profile\$' : 'cn=UCS 3.0,cn=kvm,cn=Profiles,cn=Virtual Machine Manager,$ldap_base'
