@@ -1,6 +1,12 @@
+univention-management-console-frontend (4.1.90-1) unstable; urgency=medium
+
+  * Bug #35654: fixed noscript warning message
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 03 Nov 2014 17:26:30 +0100
+
 univention-management-console-frontend (4.1.89-1) unstable; urgency=medium
 
-  * Bug #35654: fiy typo
+  * Bug #35654: fix typo
 
  -- Florian Best <best@univention.de>  Mon, 03 Nov 2014 15:03:33 +0100
 
