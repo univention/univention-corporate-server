@@ -174,15 +174,16 @@ define([
 				delete child.$headerButtons$;
 			}
 
+			child._headerButtons = null;
 			if (headerButtons && headerButtons.length) {
 				var container = new ContainerWidget({
 					style: 'display: inline-block; margin: 0; padding: 0;'
 				});
 				child.own(container);
 
-				var buttons = render.buttons(headerButtons.reverse(), container);
-				array.forEach(buttons.$order$.reverse(), function(btn) {
-					container.addChild(buttons[btn.name]); // important! allow overwriting of button names (e.g close)
+				child._headerButtons = render.child._headerButtons(headerButtons.reverse(), container);
+				array.forEach(child._headerButtons.$order$.reverse(), function(btn) {
+					container.addChild(child._headerButtons[btn.name]); // important! allow overwriting of button names (e.g close)
 				});
 
 				this._top._right.addChild(container, 0);

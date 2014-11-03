@@ -81,15 +81,9 @@ define([
 
 		addNotification: dialog.notify,
 
-		buildRendering: function() {
+		postMixInProperties: function() {
 			this.inherited(arguments);
-			//
-			// general settings page
-			//
-
-			this._generalPage = new Page({
-				headerText: _('General settings'),
-				title: _('General'),
+			lang.mixin(this, {
 				headerButtons: [{
 					iconClass: 'umcCloseIconWhite',
 					name: 'close',
@@ -102,6 +96,18 @@ define([
 					defaultButton: true,
 					callback: lang.hitch(this, 'save')
 				}]
+			});
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			//
+			// general settings page
+			//
+
+			this._generalPage = new Page({
+				headerText: _('General settings'),
+				title: _('General')
 			});
 
 			this._generalForm = new Form({
@@ -424,7 +430,7 @@ define([
 						this.hideChild( this._devicesPage );
 						this.hideChild( this._snapshotPage );
 						this.hideChild( this._advancedPage );
-						this._generalPage._footerButtons.save.set( 'disabled', true );
+						this._headerButtons.save.set( 'disabled', true );
 						// name should not be editable
 						this._generalForm._widgets.name.set( 'disabled', true );
 						this.standby( false );
@@ -432,7 +438,7 @@ define([
 					} else {
 						this.showChild( this._advancedPage );
 						this.showChild( this._devicesPage );
-						this._generalPage._footerButtons.save.set( 'disabled', false );
+						this._headerButtons.save.set( 'disabled', false );
 					}
 					this._advancedForm.setFormValues(this._domain);
 

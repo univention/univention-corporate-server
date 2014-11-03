@@ -1,3 +1,8 @@
+univention-management-console-frontend (4.1.87-1) unstable; urgency=low
+  * Bug #35654: Add a private reference to the header buttons for UVMM
+
+ -- Florian Best <best@univention.de>  Mon, 03 Nov 2014 14:12:07 +0100
+
 univention-management-console-frontend (4.1.86-1) unstable; urgency=medium
 
   Bug #35654:
