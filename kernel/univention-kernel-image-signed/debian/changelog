@@ -1,0 +1,5 @@
+univention-kernel-image-signed (1.0.1-1) unstable; urgency=medium
+
+  * Initial release. (Bug #35916)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 03 Nov 2014 16:49:52 +0100
