@@ -299,7 +299,7 @@
 			<listitem><simpara>
 					The Univention App Center now allows to install, uninstall, update
 					applications domain wide. Each App Center module can manage any
-					application (<ulink url="&ucsbug;35781">Bug 35781</ulink>).
+					application (<ulink url="&ucsbug;35781">Bug 35781</ulink>, <ulink url="&ucsbug;36370">Bug 36370</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
