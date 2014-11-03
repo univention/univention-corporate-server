@@ -181,7 +181,7 @@ define([
 				});
 				child.own(container);
 
-				child._headerButtons = render.child._headerButtons(headerButtons.reverse(), container);
+				child._headerButtons = render.buttons(headerButtons.reverse(), container);
 				array.forEach(child._headerButtons.$order$.reverse(), function(btn) {
 					container.addChild(child._headerButtons[btn.name]); // important! allow overwriting of button names (e.g close)
 				});
