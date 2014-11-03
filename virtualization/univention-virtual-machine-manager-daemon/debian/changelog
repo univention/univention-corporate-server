@@ -1,4 +1,4 @@
-univention-virtual-machine-manager-daemon (4.0.10-3) unstable; urgency=low
+univention-virtual-machine-manager-daemon (4.0.10-4) unstable; urgency=low
 
   * WIP: Bug #36154; EC2 AMI selection (frontend)
 
