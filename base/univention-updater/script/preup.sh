@@ -375,6 +375,15 @@ then
 	fi
 fi
 
+# Update to UCS 4.0-0 remove pnm2ppa as this breaks univention-printserver Bug #36365
+dpkg --purge pnm2ppa >>"$UPDATER_LOG" 2>&1
+# End Update to UCS 4.0-0 remove pnm2ppa, can be removed after 4.0.0
+
+# autoremove before the update
+if ! is_ucr_true update40/skip/autoremove; then
+    DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
+fi
+
 # Added python2.7 to the supported versions
 egrep -q '^supported-versions.*python2.7' /usr/share/python/debian_defaults ||\
 	sed -i 's|\(^supported-versions.*\)|\1, python2.7|' /usr/share/python/debian_defaults

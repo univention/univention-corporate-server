@@ -149,8 +149,9 @@ fi
 # End Update to UCS 4.0-0 remove gdm packages and favour kdm, can be removed after 4.0.0
 
 # Update to UCS 4.0-0 autoremove Bug #36265
-DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
-# End Update to UCS 4.0-0 autoremove, can be removed after 4.0.0
+if ! is_ucr_true update40/skip/autoremove; then
+	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
+fi
 
 # removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then

@@ -1,3 +1,10 @@
+univention-updater (10.0.33-1) unstable; urgency=low
+
+  * Bug #36365: Added autoremove to preup, 
+    purge pnm2ppa in preup 
+
+ -- Felix Botner <botner@univention.de>  Mon, 03 Nov 2014 11:52:25 +0100
+
 univention-updater (10.0.32-1) unstable; urgency=low
 
   * Bug #36322: Moved the button declaration
