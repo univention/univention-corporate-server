@@ -266,7 +266,7 @@
 				The web interface design has been completely revised also with respect to
 				its rendering on mobile devices (responsive design). Along with this change
 				many details of UMC have been adapted accordingly
-				(<ulink url="&ucsbug;35654">Bug 35654</ulink>).
+				(<ulink url="&ucsbug;35654">Bug 35654</ulink>, <ulink url="&ucsbug;35499">Bug 35499</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The browser compatibility list has been updated to Chrome as of version 33, Firefox
@@ -309,7 +309,7 @@
 		<itemizedlist>
 			<listitem><simpara>
 					An option to configure the system as a member of an existing AD domain has been added
-					(<ulink url="&ucsbug;35653">Bug 35653</ulink>, <ulink url="&ucsbug;36049">Bug 36049</ulink>).
+					(<ulink url="&ucsbug;35653">Bug 35653</ulink>, <ulink url="&ucsbug;36110">Bug 36110</ulink>, <ulink url="&ucsbug;36049">Bug 36049</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 					An option to configure the system as a basesystem without any domain integration has been added
@@ -326,6 +326,10 @@
 			<listitem><simpara>
 					The dpkg messages presented in the progress bar when installing software packages have been reduced
 					(<ulink url="&ucsbug;35716">Bug 35716</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+					Changed a misleading error message when joining the domain failed
+					(<ulink url="&ucsbug;35703">Bug 35703</ulink>).
 			</simpara></listitem>
 			<listitem><simpara>
 					An option to upgrade the system right after the configuration has been added
