@@ -1,3 +1,9 @@
+ucs-test (5.0.42-1) unstable; urgency=medium
+
+  * Bug #35985: 60_umc/07_expired_password
+
+ -- Arvid Requate <requate@univention.de>  Mon, 03 Nov 2014 17:15:31 +0100
+
 ucs-test (5.0.41-1) unstable; urgency=low
 
   * 20_appcenter/17_app_status: new test version that considers App's server role 
