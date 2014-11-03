@@ -514,6 +514,12 @@
 				<ulink url="&ucsbug;36229">Bug 36229</ulink>,
 				).
 		</simpara></listitem>
+		<listitem><simpara>
+			The updater postup.sh script now runs <command>apt-get autoremove</command> to
+			deinstall obsolete packages (e.g. packages that were automatically installed
+			but are now no longer referenced by other packages,
+			<ulink url="&ucsbug;36265">Bug 36265</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 
 	<section id="changelog:deployment:cli">
