@@ -263,6 +263,12 @@
 		<title>Univention Management Console web interface</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The web interface design has been completely revised also with respect to
+				its rendering on mobile devices (responsive design). Along with this change
+				many details of UMC have been adapted accordingly
+				(<ulink url="&ucsbug;35654">Bug 35654</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
 				The browser compatibility list has been updated to Chrome as of version 33, Firefox
 				as of version 24, Internet Explorer as of version 9 and Safari and Safari Mobile as
 				of version 7 (<ulink url="&ucsbug;33970">Bug 33970</ulink>).
