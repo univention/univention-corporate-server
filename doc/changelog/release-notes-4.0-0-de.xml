@@ -120,6 +120,19 @@
 				Windows AD Domänendienste empfohlen.
 			</para>
 		</section>
+		<section id="relnotes:ppolicy">
+			<title>Optionales ppolicy LDAP Overlay setzt UCS 4.0 auf allen DCs voraus</title>
+			<para>
+				Auf Domänencontrollern mit MDB LDAP Backend
+				(z.B. Systeme, die mit UCS 4.0 installiert worden sind)
+				kann nun optional das ppolicy LDAP Overlay aktiviert werden
+				um automatisierte Kontosperrungen bei wiederholten Authentisierungsfehlern
+				zu implementieren.
+				Die Implementation dieser Funktionalität setzt voraus, dass alle
+				Domänencontroller auf UCS 4.0 aktualisiert sind. Dies ist notwendig um
+				Replikationsprobleme zu vermeiden.
+			</para>
+		</section>
 	</chapter>
 
 	<chapter id="relnotes:changelog">

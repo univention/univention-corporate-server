@@ -120,6 +120,18 @@
 				for the setup of new UCS domains.
 			</para>
 		</section>
+		<section id="relnotes:ppolicy">
+			<title>Optional ppolicy LDAP overlay requires all DCs to be UCS 4.0</title>
+			<para>
+				On domain controllers using the MDB LDAP backend
+				(e.g. systems installed with UCS 4.0)
+				the ppolicy LDAP overlay can now optionally be activated
+				to implement account lockout in cases of repeated LDAP
+				authentication failures.
+				All domaincontrollers need to be updated to UCS 4.0 before activating this
+				on any UCS domaincontroller. This is required to avoid replication issues.
+			</para>
+		</section>
 	</chapter>
 
 	<chapter id="relnotes:changelog">
