@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-uvmm 2.0.40-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-16 17:49+0200\n"
+"POT-Creation-Date: 2014-11-02 21:36+0100\n"
 "PO-Revision-Date: 2013-05-23 09:17+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -43,7 +43,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/uvmm/cloud.py:85
+#: umc/python/uvmm/cloud.py:84
 msgid "Cloud connection"
 msgstr "Cloud-Verbindung"
 
@@ -87,7 +87,7 @@ msgstr "Voll-Virtualisierung (KVM)"
 msgid "Invalid domain state: %s"
 msgstr "Ungültiger Domain Status: %s"
 
-#: umc/python/uvmm/__init__.py:149 umc/python/uvmm/nodes.py:98
+#: umc/python/uvmm/nodes.py:98 umc/python/uvmm/__init__.py:149
 msgid "Physical servers"
 msgstr "Physikalische Server"
 

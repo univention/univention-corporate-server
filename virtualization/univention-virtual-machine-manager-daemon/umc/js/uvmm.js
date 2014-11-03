@@ -169,7 +169,7 @@ define([
 				staticValues: [
 					{ id: 'domain', label: _('Virtual machine') },
 					{ id: 'node', label: _('Physical server') },
-					{ id: 'instance', label: _('Cloud instance') },
+					{ id: 'instance', label: _('Cloud instance') }
 					//{ id: 'cloud', label: _('Cloud connection') }
 				],
 				size: 'One'
@@ -866,10 +866,18 @@ define([
 				tools.defer(wait, 1000);
 			});
 
+			var cloud = {
+				name: values.cloud,
+				type: values.cloudtype,
+				showUnivention: true,
+				preSelection: [],
+				allowsSearch: true
+			};
 			wizard = new InstanceWizard({
 				onFinished: _finished,
-				onCancel: _cleanup
-			}, values.cloudtype, values.cloud);
+				onCancel: _cleanup,
+				cloud: cloud
+			});
 			this.addChild(wizard);
 			this.selectChild(wizard);
 		},

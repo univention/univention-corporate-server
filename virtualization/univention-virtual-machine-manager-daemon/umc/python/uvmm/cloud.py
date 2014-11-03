@@ -37,7 +37,6 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import sanitize
 from univention.management.console.modules.sanitizers import SearchSanitizer, ChoicesSanitizer
 from univention.uvmm.uvmm_ldap import ldap_cloud_types, ldap_cloud_connection_add
-from subprocess import call
 
 from notifier import Callback
 from urlparse import urldefrag
@@ -258,12 +257,8 @@ class Cloud(object):
 		self.required_options(request, 'conn_name')
 		conn_name = request.options.get('conn_name')
 		pattern = request.options.get('pattern')
-		only_preselected_images = False
-		if 'onlypreselected' in request.options and request.options.get('onlypreselected') in ["TRUE", "true", "True", "1"]:
-			only_preselected_images = True
-		ucs_images = False
-		if 'ucs_images' in request.options and request.options.get('ucs_images') in ["TRUE", "true", "True", "1"]:
-			ucs_images = True
+		only_preselected_images = request.options.get('onlypreselected')
+		ucs_images = request.options.get('ucs_images')
 
 		def _finished(thread, result, request):
 			"""

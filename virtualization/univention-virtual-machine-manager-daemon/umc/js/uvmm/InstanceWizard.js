@@ -47,15 +47,15 @@ define([
 		autoValidate: true,
 
 		_size_id: null,
+		
+		cloud: null,
 
-		constructor: function(props, cloudtype, cloud) {
+		constructor: function(props) {
 			this.inherited(arguments);
 			// mixin the page structure
-			this._cloud = cloud;
-			this._pageContent = this._getWidgets(cloudtype, cloud);
-			this._helptext = this._getHelpText(cloudtype);
+			this.cloud = props.cloud;
 			lang.mixin(this, {
-				pages: this.getPages(cloudtype),
+				pages: this.getPages(),
 				headerButtons: [{
 					name: 'close',
 					iconClass: 'umcCloseIconWhite',
@@ -65,22 +65,24 @@ define([
 			});
 		},
 
-		_getHelpText: function(cloudtype) {
-			if (cloudtype == 'OpenStack') {
+		_getHelpText: function() {
+			if (this.cloud.type == 'OpenStack') {
 				return _('Please enter the corresponding details for the virtual machine instance.');
-			} else if (cloudtype == 'EC2') {
+			} else if (this.cloud.type == 'EC2') {
 				return _('Please enter the corresponding details for the virtual machine instance. <a href="https://aws.amazon.com/documentation/ec2/" target=_blank>Use this link for more information about Amazon EC2</a>');
 			}
 		},
 
 		getPages: function() {
+			var content = this._getWidgets();
+			var helpText = this._getHelpText();
 			return [{
 				name: 'details',
 				headerText: _('Create a new virtual machine instance.'),
-				helpText: this._helptext,
-				widgets: this._pageContent.widgets,
-				buttons: this._pageContent.buttons,
-				layout: this._pageContent.layout
+				helpText: helpText,
+				widgets: content.widgets,
+				buttons: content.buttons,
+				layout: content.layout
 			}];
 		},
 
@@ -117,8 +119,8 @@ define([
 			}
 		},
 
-		_getWidgets: function(cloudtype, cloud) {
-			if (cloudtype == 'OpenStack') {
+		_getWidgets: function() {
+			if (this.cloud.type == 'OpenStack') {
 				return {
 					layout: [
 						'name',
@@ -131,11 +133,11 @@ define([
 					widgets: [{
 						name: 'cloudtype',
 						type: HiddenInput,
-						value: cloudtype
+						value: this.cloud.type
 					}, {
 						name: 'cloud',
 						type: HiddenInput,
-						value: cloud
+						value: this.cloud.name
 					}, {
 						name: 'name',
 						type: TextBox,
@@ -146,14 +148,14 @@ define([
 						name: 'keyname',
 						type: ComboBox,
 						label: _('Select a key pair'),
-						dynamicOptions: {conn_name: cloud},
+						dynamicOptions: {conn_name: this.cloud.name},
 						dynamicValues: types.getCloudListKeypair,
 						required: true
 					}, {
 						name: 'image_id',
 						type: ComboBox,
 						label: _('Choose an Image'),
-						dynamicOptions: {conn_name: cloud},
+						dynamicOptions: {conn_name: this.cloud.name},
 						dynamicValues: lang.hitch(this, function(options) {
 							return this.standbyDuring(types.getCloudListImage(options));
 						}),
@@ -164,7 +166,7 @@ define([
 						type: ComboBox,
 						label: _('Choose an Instance Size'),
 						sortDynamicValues: false,
-						dynamicOptions: {conn_name: cloud},
+						dynamicOptions: {conn_name: this.cloud.name},
 						dynamicValues: types.getCloudListSize,
 						required: true,
 						size: 'Two',
@@ -180,13 +182,23 @@ define([
 						name: 'security_group_ids',
 						type: ComboBox,
 						label: _('Configure Security Group'),
-						dynamicOptions: {conn_name: cloud},
+						dynamicOptions: {conn_name: this.cloud.name},
 						dynamicValues: types.getCloudListSecgroup,
 						required: true
 					}]
 				};
 			}
-			if (cloudtype == 'EC2') {
+			if (this.cloud.type == 'EC2') {
+				var filterOptions = [];
+				if (this.cloud.showUnivention) {
+					filterOptions.push({ id: 'univention', label: _('Show only Univention AMIs') });
+				}
+				if (this.cloud.preSelection.length) {
+					filterOptions.push({ id: 'preselection', label: _('Select AMI from a predefined set') });
+				}
+				if (this.cloud.allowsSearch) {
+					filterOptions.push({ id: 'search', label: _('Search all available AMIs') });
+				}
 				return {
 					layout: [
 						'name',
@@ -200,11 +212,11 @@ define([
 					widgets: [{
 						name: 'cloudtype',
 						type: HiddenInput,
-						value: cloudtype
+						value: this.cloud.type
 					}, {
 						name: 'cloud',
 						type: HiddenInput,
-						value: cloud
+						value: this.cloud.name
 					}, {
 						name: 'name',
 						type: TextBox,
@@ -215,7 +227,7 @@ define([
 						name: 'keyname',
 						type: ComboBox,
 						label: _('Select a key pair'),
-						dynamicOptions: {conn_name: cloud},
+						dynamicOptions: {conn_name: this.cloud.name},
 						dynamicValues: types.getCloudListKeypair,
 						required: true
 					}, {
@@ -223,7 +235,7 @@ define([
 						type: ComboBox,
 						label: _('Choose an Instance Size'),
 						sortDynamicValues: false,
-						dynamicOptions: {conn_name: cloud},
+						dynamicOptions: {conn_name: this.cloud.name},
 						dynamicValues: types.getCloudListSize,
 						required: true,
 						size: 'Two',
@@ -240,7 +252,7 @@ define([
 						type: ComboBox,
 						label: _('Search for and choose an AMI'),
 						sortDynamicValues: false,
-						dynamicOptions: this._ec2ImageDynamicOptions(),
+						dynamicOptions: this._ec2ImageDynamicOptions({ucs_images: true}),
 						dynamicValues: lang.hitch(this, function(options) {
 							return this.standbyDuring(types.getCloudListImage(options));
 						}),
@@ -249,11 +261,7 @@ define([
 					}, {
 						name: 'image_filter',
 						type: ComboBox,
-						staticValues: [
-							{ id: 'univention', label: _('Show only Univention AMIs') },
-							//{ id: 'preselection', label: _('Select AMI from a predefined set') },
-							{ id: 'search', label: _('Search all available AMIs') }
-						],
+						staticValues: filterOptions,
 						label: _('Filter AMIs'),
 						onChange: lang.hitch(this, function(newVal) {
 							var widget = this.getWidget('details', 'image_id');
@@ -264,9 +272,11 @@ define([
 
 							var options = this._ec2ImageDynamicOptions();
 							if (newVal == 'univention') {
+								options.ucs_images = true;
 								widget.set('dynamicOptions', options);
 							} else if (newVal == 'preselection') {
-								options.selection = cloud.selection;
+								options.onlypreselected = true;
+								widget.set('dynamicOptions', options);
 							} else if (newVal == 'search') {
 								imageSearch.set('visible', true);
 								imageSearchButton.set('visible', true);
@@ -288,7 +298,7 @@ define([
 						name: 'security_group_ids',
 						type: ComboBox,
 						label: _('Configure Security Group'),
-						dynamicOptions: {conn_name: cloud},
+						dynamicOptions: {conn_name: this.cloud.name},
 						dynamicValues: types.getCloudListSecgroup,
 						required: true
 					}],
@@ -304,9 +314,8 @@ define([
 			return {};
 		},
 
-		_ec2ImageDynamicOptions: function() {
-			var owner_id = 223093067001; // univention images
-			return {conn_name: this._cloud, pattern: owner_id};
+		_ec2ImageDynamicOptions: function(props) {
+			return lang.mixin({conn_name: this.cloud.name}, props);
 		},
 
 		filterAMIs: function() {
