@@ -1,3 +1,9 @@
+univention-cloud-init (2.0.1-1) unstable; urgency=medium
+
+  * Bug #36092: fixed error noscript error message for Internet Explorer
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 03 Nov 2014 17:27:58 +0100
+
 univention-cloud-init (2.0.0-6) unstable; urgency=low
 
   * Adapted design, updated translation (Bug #36092)
