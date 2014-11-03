@@ -1,3 +1,11 @@
+univention-apache (7.0.12-3) unstable; urgency=low
+
+  Bug #36095:
+  * removed margin-right for element .umcGalleryName 
+    in css/gallerypane.styl
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 03 Nov 2014 16:30:01 +0100
+
 univention-apache (7.0.12-2) unstable; urgency=low
 
   Bug #36095:
