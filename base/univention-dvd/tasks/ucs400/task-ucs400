@@ -196,6 +196,7 @@ ttf-liberation
 xterm
 phonon-backend-xine
 phonon-backend-vlc
+vlc-nox
 
 /* Development + Packaging Tools */
 univention-directory-manager-module-example

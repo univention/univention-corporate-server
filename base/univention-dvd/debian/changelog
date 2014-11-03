@@ -1,3 +1,9 @@
+univention-dvd (0.2.13-1) unstable; urgency=low
+
+  * Bug #36365: Added vlc-nox to maintained
+
+ -- Felix Botner <botner@univention.de>  Mon, 03 Nov 2014 16:30:34 +0100
+
 univention-dvd (0.2.12-1) unstable; urgency=low
 
   * Bug #35918: added shim-signed and grub-efi-amd64-signed to DVD
