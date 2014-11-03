@@ -1,3 +1,11 @@
+univention-management-console-frontend (4.1.85-2) unstable; urgency=low
+
+  Bug #36095:
+  * fixed text not displayed correctly in admin-tab tile
+    (removed domain and hostname from tile)
+
+ -- Drees Dormann <dormann@univention.de>  Mon, 03 Nov 2014 12:23:39 +0100
+
 univention-management-console-frontend (4.1.85-1) unstable; urgency=medium
 
   * Bug #36302: adjust default positioning of tooltips
