@@ -81,7 +81,7 @@ define([
 				this.getWidget('general', 'nodeURI').set('value', nodeURI);
 				this.getWidget('profile').set('value', profileDN);
 				this.getWidget('name').set('value', this._profile.name_prefix || '');
-				this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
+				this.getWidget('name').set('pattern', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
 				this.getWidget('maxMem').set('value', types.parseCapacity(this._profile.ram || '4 MiB'));
 				this.getWidget('vcpus').set('value', this._profile.cpus);
 				this.getWidget('vnc').set('value', this._profile.vnc);
@@ -265,7 +265,7 @@ define([
 					this.getWidget('general', 'nodeURI').set('value', nodeURI);
 					this.getWidget('profile').set('value', profileDN);
 					this.getWidget('name').set('value', this._profile.name_prefix || '');
-					this.getWidget('name').set('regExp', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
+					this.getWidget('name').set('pattern', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
 					this.getWidget('maxMem').set('value', types.parseCapacity(this._profile.ram || '4 MiB'));
 					this.getWidget('vcpus').set('value', this._profile.cpus);
 					this.getWidget('vnc').set('value', this._profile.vnc);

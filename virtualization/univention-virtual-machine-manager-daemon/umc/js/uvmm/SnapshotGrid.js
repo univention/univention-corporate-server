@@ -161,7 +161,7 @@ define([
 					name: 'name',
 					type: TextBox,
 					label: _('Please enter the name for the snapshot:'),
-					regExp: '^[^./&<][^/&<]*$',
+					pattern: '^[^./&<][^/&<]*$',
 					invalidMessage: _('A valid snapshot name cannot contain "/", "&" or "<", and may not start with "." .')
 				}],
 				buttons: [{

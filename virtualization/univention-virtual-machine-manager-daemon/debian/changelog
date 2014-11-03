@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (4.0.16-1) unstable; urgency=medium
+
+  * Bug #36399: fix sizes of wizard input boxes
+  * replace deprecated regExp by pattern
+
+ -- Florian Best <best@univention.de>  Mon, 03 Nov 2014 19:24:47 +0100
+
 univention-virtual-machine-manager-daemon (4.0.15-1) unstable; urgency=medium
 
   * Bug #35656: fix driver type dropdown

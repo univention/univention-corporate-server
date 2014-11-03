@@ -1042,7 +1042,7 @@ define([
 					name: 'name',
 					type: TextBox,
 					label: _('Please enter the name for the clone:'),
-					regExp: '^[^./][^/]*$',
+					pattern: '^[^./][^/]*$',
 					invalidMessage: _('A valid clone name cannot contain "/" and may not start with "." .')
 				}, {
 					name: 'mac_address',

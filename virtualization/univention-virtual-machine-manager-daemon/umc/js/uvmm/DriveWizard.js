@@ -143,12 +143,12 @@ define([
 					}, {
 						name: 'volumeFilename_new',
 						type: TextBox,
-						size: 'OneAndAHalf',
+						size: 'FourThirds',
 						required: true,
 						label: _('Filename'),
 						validator: lang.hitch(this, function(val) {
-							var regExp = /^[^.\/][^\/]*$/;
-							return regExp.test(val) && (!this._volumes || !(val in this._volumes));
+							var pattern = /^[^.\/][^\/]*$/;
+							return pattern.test(val) && (!this._volumes || !(val in this._volumes));
 						}),
 						invalidMessage: _('A valid filename cannot contain "/", may not start with "." and may not already exist in the storage pool.'),
 						depends: ['driver_type_new'], // 'pool_new' by transition
@@ -189,7 +189,7 @@ define([
 					}, {
 						name: 'size_new',
 						type: MappedTextBox,
-						size: 'Half',
+						size: 'TwoThirds',
 						required: true,
 						depends: ['pool_new'],
 						constraints: {min: 1024*1024},

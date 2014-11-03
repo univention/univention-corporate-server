@@ -58,7 +58,7 @@ define([
 					}, {
 						name: 'type',
 						type: ComboBox,
-						sizeClass: 'OneThird',
+						sizeClass: 'Half',
 						label: _('Type'),
 						staticValues: types.interfaceTypes,
 						onChange: lang.hitch( this, '_typeDescription' ),
@@ -71,14 +71,14 @@ define([
 						content: ''
 					}, {
 						name: 'model',
-						sizeClass: 'One',
+						sizeClass: 'OneAndAHalf',
 						type: ComboBox,
 						label: _('Driver'),
 						staticValues: types.dict2list(types.interfaceModels),
 						value: values.model || 'rtl8139'
 					}, {
 						name: 'source',
-						sizeClass: 'OneThird',
+						sizeClass: 'Half',
 						type: TextBox,
 						label: _('Source'),
 						description: _('The source is the name of the network interface on the phyiscal server that is configured for bridging. By default it is br0.'),
@@ -86,9 +86,9 @@ define([
 						required: true
 					}, {
 						name: 'mac_address',
-						sizeClass: 'One',
+						sizeClass: 'OneAndAHalf',
 						type: TextBox,
-						regExp: '^([0-9A-Fa-f]?[02468AaCcEe])([:-]?[0-9A-Fa-f]{1,2}){5}$',
+						pattern: '^([0-9A-Fa-f]?[02468AaCcEe])([:-]?[0-9A-Fa-f]{1,2}){5}$',
 						invalidMessage: _('Invalid MAC address: The address must be unicast and should have the form "02:23:45:67:89:AB".'),
 						label: _('MAC address'),
 						value: values.mac_address || ''
