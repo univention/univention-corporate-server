@@ -3,8 +3,9 @@ univention-management-console-frontend (4.1.85-2) unstable; urgency=low
   Bug #36095:
   * fixed text not displayed correctly in admin-tab tile
     (removed domain and hostname from tile)
+  * bumped joinscript version
 
- -- Drees Dormann <dormann@univention.de>  Mon, 03 Nov 2014 12:23:39 +0100
+ -- Drees Dormann <dormann@univention.de>  Mon, 03 Nov 2014 12:28:35 +0100
 
 univention-management-console-frontend (4.1.85-1) unstable; urgency=medium
 
