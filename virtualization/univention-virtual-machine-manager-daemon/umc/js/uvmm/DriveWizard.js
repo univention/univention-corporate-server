@@ -55,8 +55,9 @@ define([
 
 		autoHeight: true,
 
-		constructor: function(props) {
-			props = props || {};
+		postMixInProperties: function() {
+			this.inherited(arguments);
+
 			lang.mixin(this, {
 				pages: [{
 					name: 'driveType',
@@ -220,7 +221,7 @@ define([
 						invalidMessage: _('The volume capacity is invalid'),
 						missingMessage: _('The volume capacity must be specified'),
 						label: _('Size (default unit MB)'),
-						value: types.parseCapacity(lang.getObject('domain.profileData.diskspace', false, props) || '12 GiB')
+						value: types.parseCapacity(lang.getObject('profileData.diskspace', false, this.domain) || '12 GiB')
 					}, {
 						name: 'pool_exists',
 						type: ComboBox,

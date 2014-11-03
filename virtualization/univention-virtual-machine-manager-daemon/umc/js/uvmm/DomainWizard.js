@@ -52,6 +52,7 @@ define([
 
 	return declare("umc.modules.uvmm.DomainWizard", [ Wizard ], {
 		_profile: null,
+		nodeURI: null,
 
 		_driveStore: null,
 		_driveGrid: null,
@@ -95,7 +96,10 @@ define([
 			}));
 		},
 
-		constructor: function(props, nodeURI) {
+		postMixInProperties: function() {
+			this.inherited(arguments);
+
+			var nodeURI = this.nodeURI;
 			// grid for the drives
 			this._driveStore = new Observable(new Memory({
 				idProperty: '$id$'

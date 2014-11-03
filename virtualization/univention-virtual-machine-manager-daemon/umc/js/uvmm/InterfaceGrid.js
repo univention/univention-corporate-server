@@ -51,7 +51,7 @@ define([
 
 		style: 'width: 100%; height: 200px;',
 
-		constructor: function() {
+		postMixInProperties: function() {
 			lang.mixin(this, {
 				cacheRowWidgets: false,
 				columns: [{
@@ -117,6 +117,7 @@ define([
 					callback: lang.hitch(this, '_editInterface')
 				}]
 			});
+			this.inherited(arguments);
 		},
 
 		_removeInterface: function(ids) {
@@ -178,9 +179,10 @@ define([
 			});
 
 			wizard = new InterfaceWizard({
+				props: item,
 				onFinished: _finished,
 				onCancel: _cleanup
-			}, item);
+			});
 			_dialog = new Dialog({
 				'class': 'umcLargeDialog',
 				title: item ? _('Edit network interface') : _('Add network interface'),

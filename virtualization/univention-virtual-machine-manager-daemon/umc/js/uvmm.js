@@ -739,8 +739,9 @@ define([
 			} catch (err) { }*/
 			wizard = new DomainWizard({
 				onFinished: _finished,
-				onCancel: _cleanup
-			}, values.nodeURI);
+				onCancel: _cleanup,
+				nodeURI: values.nodeURI
+			});
 			this.addChild(wizard);
 			this.selectChild(wizard);
 		},

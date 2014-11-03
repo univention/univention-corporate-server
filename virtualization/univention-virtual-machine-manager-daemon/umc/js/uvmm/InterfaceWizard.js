@@ -43,8 +43,10 @@ define([
 	return declare("umc.modules.uvmm.InterfaceWizard", [ Wizard ], {
 		autoHeight: true,
 
-		constructor: function(props, values) {
-			values = values || {};
+		postMixInProperties: function() {
+			this.inherited(arguments);
+
+			values = this.props || {};
 			// mixin the page structure
 			lang.mixin(this, {
 				pages: [{

@@ -51,11 +51,13 @@ define([
 		
 		cloud: null,
 
-		constructor: function(props) {
+		postMixInProperties: function() {
 			this.inherited(arguments);
+
 			// mixin the page structure
 			this.cloud = props.cloud;
 			this._ready = new Deferred();
+
 			lang.mixin(this, {
 				pages: this.getPages(),
 				headerButtons: [{

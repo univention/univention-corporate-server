@@ -48,7 +48,7 @@ define([
 
 		sortIndex: -2,
 
-		constructor: function() {
+		postMixInProperties: function() {
 			lang.mixin(this, {
 				cacheRowWidgets: false,
 				columns: [{
@@ -81,6 +81,7 @@ define([
 					callback: lang.hitch(this, '_addSnapshot')
 				}]
 			});
+			this.inherited(arguments);
 		},
 
 		_setDomainAttr: function(newDomain) {

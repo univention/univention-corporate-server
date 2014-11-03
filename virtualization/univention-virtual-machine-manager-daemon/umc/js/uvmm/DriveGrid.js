@@ -61,7 +61,7 @@ define([
 
 		style: 'width: 100%; height: 200px;',
 
-		constructor: function() {
+		postMixInProperties: function() {
 			lang.mixin(this, {
 				cacheRowWidgets: false,
 				columns: [{
@@ -125,6 +125,7 @@ define([
 					callback: lang.hitch(this, '_addDrive')
 				}]
 			});
+			this.inherited(arguments);
 		},
 
 		_setDomainActiveAttr: function(value) {
