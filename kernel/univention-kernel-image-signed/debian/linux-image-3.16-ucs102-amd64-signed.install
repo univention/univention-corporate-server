@@ -1,1 +1,1 @@
-vmlinuz-3.16-ucs102-amd64.signed /boot
+vmlinuz-3.16-ucs102-amd64.efi.signed /boot

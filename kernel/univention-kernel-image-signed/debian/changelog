@@ -1,3 +1,9 @@
+univention-kernel-image-signed (1.0.1-2) unstable; urgency=medium
+
+  * rename to *.efi.signed (Bug #35916)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 03 Nov 2014 17:47:35 +0100
+
 univention-kernel-image-signed (1.0.1-1) unstable; urgency=medium
 
   * Initial release. (Bug #35916)
