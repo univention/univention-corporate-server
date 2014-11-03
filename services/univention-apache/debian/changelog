@@ -1,3 +1,15 @@
+univention-apache (7.0.13-1) unstable; urgency=low
+  
+  Bug #35890:
+  * added css class for saml-app login authentication
+  * replaced old login-image with saml-login.svg
+  * adjusted line-height for the loginDialog
+  Bug #36095:
+  * replaced "IF IE" check from index.html
+  	(now shows it generally)
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 03 Nov 2014 17:18:45 +0100
+
 univention-apache (7.0.12-3) unstable; urgency=low
 
   Bug #36095:

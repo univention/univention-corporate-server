@@ -253,17 +253,15 @@
 	width: 400px;
 	height: auto;
 	box-shadow: 0 0px 25px rgba(0,0,0,0.15);
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 30px;
+	margin: 30px auto 0;
 
 	.loginlogo {
-		background-image: url(images/login_logo.png);
-		height: 125px;
+		background-image: url(images/saml-login.svg);
+		height: 100px;
 		margin: 30px auto 20px auto;
 		background-size: contain;
 		background-repeat: no-repeat;
-		background-position-x: center
+		background-position: center
 	}	
 
 	.logintext {
@@ -286,13 +284,10 @@
 			font-weight: normal;
 		}
 		input[type=submit] {
-			background-image: url(icons/icons.svg);
-			background-position-x: 0px;
-			background-position-y: -160px;
+			background: url(icons/icons.svg) 0px -160px;
+			background-repeat: no-repeat;
 			width: 20px;
 			height: 20px;
-			background-repeat: no-repeat;
-			//icon-image(0, -160, "../", "-white");
 			color: transparent;
 			float: right;
 		}
@@ -308,6 +303,22 @@
 	}
 	a {
 		color: #7db523;
+	}
+}
+.errorbox {
+	margin: 0 auto;
+	padding: 1.3em;
+	background-color: #696969;
+	border: thin solid #a8a8a8;
+	box-shadow: 2px 2px 5px #888;
+	width: 400px;
+	height: auto;
+	color: white;
+	
+	h1 {
+		border-bottom: solid thin #fff;
+		margin-bottom: 0.3em;
+		font-weight: bold;
 	}
 }
 
