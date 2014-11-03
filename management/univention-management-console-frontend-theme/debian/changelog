@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (0.0.79-1) unstable; urgency=medium
+
+  * Bug #35654: fix position of inline labels
+
+ -- Florian Best <best@univention.de>  Mon, 03 Nov 2014 21:26:15 +0100
+
 univention-management-console-frontend-theme (0.0.78-1) unstable; urgency=medium
 
   * Bug #36302: adjust tooltip max-width
