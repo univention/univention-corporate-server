@@ -9,8 +9,7 @@ from univention.config_registry import handler_set
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-suggested_limit_hard = 32828
-suggested_limit_soft = 32828
+suggested_max_open_files = 32768
 
 title = _('Security limits exceeded')
 #(Samba often uses too many opened file descriptors')
@@ -18,8 +17,7 @@ description = '\n'.join([
 	_('The security limits (e.g. for max_open_files) are currently not configured properly.'),
 	_('This can cause several different serious problems (e.g. the login at samba servers may be impossible, file operations (copy, move) on shares can fail, etc.)'),
 	_('It is suggested to increase the security limits either manually by using {ucr} or to automatically adjust them to the suggested limits:'),
-	'<pre>security/limits/user/*/soft/nofile=%s' % (suggested_limit_soft,),
-	'security/limits/user/*/hard/nofile=%s</pre>' % (suggested_limit_hard,),
+	'<pre>samba/max_open_files=%s</pre>' % (suggested_max_open_files,),
 #	_('More related information can be found at the "{sdb}".'),
 ])
 # SDB article not published yet, Bug #35868
@@ -48,19 +46,17 @@ def run():
 
 	ucr.load()
 	try:
-		soft = int(ucr.get('security/limits/user/*/soft/nofile', 0))
-		hard = int(ucr.get('security/limits/user/*/hard/nofile', 0))
+		max_open_files = int(ucr.get('samba/max_open_files', 0))
 	except ValueError:
-		soft = hard = 0
+		max_open_files = 0
 
-	if counter and hard < suggested_limit_hard or soft < suggested_limit_soft:
+	if counter and max_open_files < suggested_max_open_files:
 		raise Critical(umc_modules=[{'module': 'ucr'}])
 
 
 def adjust():
 	handler_set([
-		'security/limits/user/*/soft/nofile=%d' % (suggested_limit_soft,),
-		'security/limits/user/*/hard/nofile=%d' % (suggested_limit_hard,)
+		'samba/max_open_files=%d' % (suggested_limit_hard,)
 	])
 	raise ProblemFixed(_('The limits have been adjusted to the suggested value.'), buttons=[])
 actions['adjust'] = adjust
