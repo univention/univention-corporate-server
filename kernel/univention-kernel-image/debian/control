@@ -8,7 +8,7 @@ Standards-Version: 3.8.2
 Package: univention-kernel-image
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersion},
+Depends: linux-image-${F:KernelVersion}-signed,
  univention-initrd (>= 6.0.0-2),
  xfsprogs,
  libc6-i686 [i386],
