@@ -1,3 +1,11 @@
+univention-apache (7.0.14-1) unstable; urgency=low
+
+  Bug #35890:
+  * reduced font size for the login error message
+  * adjusted box-shadow slightly 
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 04 Nov 2014 12:30:55 +0100
+
 univention-apache (7.0.13-2) unstable; urgency=low
 
   Bug #36095:
