@@ -1,3 +1,10 @@
+univention-system-setup (8.1.41-1) unstable; urgency=low
+
+  * Bug #36328: added double escaping for ssh in 
+    initialsetup.html so that code is shown correctly
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 04 Nov 2014 12:12:08 +0100
+
 univention-system-setup (8.1.40-1) unstable; urgency=medium
 
   * Bug #33839: fix system upgrade on DC slaves
