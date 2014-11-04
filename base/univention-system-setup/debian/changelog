@@ -1,3 +1,9 @@
+univention-system-setup (8.1.43-1) unstable; urgency=medium
+
+  * Bug #36418: trying to fix running of cleanup scripts
+
+ -- Florian Best <best@univention.de>  Tue, 04 Nov 2014 16:09:09 +0100
+
 univention-system-setup (8.1.42-1) unstable; urgency=medium
 
   * Bug #35654: updated UCS icon

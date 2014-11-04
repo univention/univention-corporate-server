@@ -131,11 +131,6 @@ then # call self in xinit as nobody, then start gdm
 	# Remove 'hide tab bar' addon
 	rm /opt/firefox/distribution/bundles/{e5bbc237-c99b-4ced-a061-0be27703295f}
 
-	# Remove univention-system-setup-boot after successfull run
-	if [ -s /var/cache/univention-system-setup/profile ]
-	then
-		aptitude -q -y markauto univention-system-setup-boot- univention-management-console-web-server univention-management-console-module-setup </dev/null
-	fi
 	exit
 fi
 
