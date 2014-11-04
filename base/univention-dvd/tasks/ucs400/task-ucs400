@@ -421,6 +421,9 @@ php5-pgsql
 php5-tidy
 php5-xsl
 
+/* univention-saml */
+php5-mcrypt
+
 /* perl */
 libauthen-sasl-perl
 libcarp-clan-perl

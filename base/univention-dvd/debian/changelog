@@ -1,3 +1,9 @@
+univention-dvd (0.2.17-1) unstable; urgency=low
+
+  * Bug #35890: Added php5-mcrypt to maintained 
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 04 Nov 2014 16:56:29 +0100
+
 univention-dvd (0.2.16-1) unstable; urgency=low
 
   * Added packages for pulse App (Bug #36426)
