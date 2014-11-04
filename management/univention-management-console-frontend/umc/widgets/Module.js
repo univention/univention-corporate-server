@@ -144,6 +144,10 @@ define([
 			return this.__container.addChild(child, idx);
 		},
 
+		removeChild: function(child) {
+			return this.__container.removeChild(child);
+		},
+
 		_addHeaderButtonsToChild: function(child) {
 			// some default buttons (e.g. close)
 			var headerButtons = [/*{

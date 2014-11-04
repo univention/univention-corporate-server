@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.92-1) unstable; urgency=medium
+
+  * Bug #36422: added explicit referral for removeChild in umc/widgets/Module
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 04 Nov 2014 16:32:15 +0100
+
 univention-management-console-frontend (4.1.91-1) unstable; urgency=medium
 
   * Bug #35654: cleaned up UCS SVG file
