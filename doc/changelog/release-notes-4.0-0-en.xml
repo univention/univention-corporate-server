@@ -90,7 +90,7 @@
 					<para>
 						<application>PostgreSQL-8.3</application> has been removed in UCS 4.0.
 						The data must be migrated by hand to a newer version.
-						The procedure is described in the <ulink url="http://sdb.univention.de/1220">SDB article 1220</ulink>.
+						The procedure is described in the <ulink url="http://sdb.univention.de/1249">SDB article 1249</ulink>.
 					</para>
 				</listitem>
 				<listitem>
