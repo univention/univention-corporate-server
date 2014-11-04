@@ -657,7 +657,7 @@
 				Univention Virtual Machine Manager now supports connections to Cloud Service Providers.
 				Create and manage Amazon EC2 or Openstack connections and virtual machines 
 				(<ulink url="&ucsbug;32842">Bug 32842</ulink>).
-				The following additional Bugs were discovered and fixed during UCS 4 UVMM development: (
+				The following additional Bugs were discovered and fixed during UCS 4 &ucsUVMM; development: (
 					<ulink url="&ucsbug;36139">Bug 36139</ulink>,
 					<ulink url="&ucsbug;36145">Bug 36145</ulink>,
 					<ulink url="&ucsbug;35824">Bug 35824</ulink>,
@@ -714,6 +714,16 @@
 			<listitem><simpara>
 				The CPU field is no longer flagged as invalid when creating a virtual machine
 				(<ulink url="&ucsbug;34515">Bug 34515</ulink>).
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:virt:operation">
+		<title>Operate UCS as virtual machine</title>
+		<itemizedlist>
+			<listitem><simpara>
+				The new package <package>univention-cloud-init</package> provides support when setting up UCS as a virtual machine guest
+				in an environment which offers cloud-init compatible services (<ulink url="&ucsbug;36092">Bug 36092</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
