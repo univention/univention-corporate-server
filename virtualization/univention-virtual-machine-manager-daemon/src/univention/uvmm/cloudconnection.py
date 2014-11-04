@@ -82,16 +82,11 @@ class CloudConnection(object):
 		self.publicdata.search_pattern = cloud['search_pattern']
 
 		self._preselected_images = []
-		self.publicdata.preselected_images_available = False
 		if "preselected_images" in cloud and cloud["preselected_images"]:
 			logger.debug("Preselected images: %s" % cloud["preselected_images"])
 			self._preselected_images = cloud["preselected_images"]
-			self.publicdata.preselected_images_available = True
 
-		self.publicdata.search_only_ucs_images = False
-		if "only_ucs_images" in cloud and cloud["only_ucs_images"] in ["1", "", "true", "True"]:
-			logger.debug("self.publicdata.search_only_ucs_images = True")
-			self.publicdata.search_only_ucs_images = True
+		self.publicdata.ucs_images = cloud['ucs_images']
 
 		self._last_expensive_update = -1000000
 
@@ -238,22 +233,35 @@ class CloudConnection(object):
 
 		return keypairs
 
-	def list_images(self, pattern="*", only_preselected_images=False, ucs_images=False):
-		# Expand pattern with *
-		pattern = "*%s*" % pattern
-		regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
+	def to_cloud_data_image(self, image):
+		cloud_data_image = Cloud_Data_Image()
+		cloud_data_image.name = image.name
+		cloud_data_image.extra = image.extra
+		cloud_data_image.id = image.id
+		cloud_data_image.driver = image.driver.name
+		cloud_data_image.uuid = image.uuid
+		return cloud_data_image
+
+	def list_images(self):
+		# Copied from ucs2cloud.list_images, but without ucs_images and without extra['owner_id'] and a different name attribute
+		regex = None
+		if self.publicdata.search_pattern:
+			# Expand pattern with *
+			regex = re.compile(fnmatch.translate('*%s*' % self.publicdata.search_pattern), re.IGNORECASE)
 		images = []
 		for image in self._images:
-			if image.name and regex.match(image.name):
-				i = Cloud_Data_Image()
-				i.name = image.name
-				i.extra = image.extra
-				i.id = image.id
-				i.driver = image.driver.name
-				i.uuid = image.uuid
-
-				images.append(i)
-
+			include = False
+			if self.publicdata.ucs_images:
+				logger.debug("ucs image definition not implemented, use preselected images")
+			if '%s' % image.id in self._preselected_images:
+				include = True
+			if regex:
+				for attr in [image.name, image.id]:
+					if attr and regex.match(attr):
+						include = True
+						break
+			if include:
+				images.append(self.to_cloud_data_image(image))
 		return images
 
 	def logerror(self, logger, msg):

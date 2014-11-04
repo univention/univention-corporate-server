@@ -47,7 +47,7 @@ import ssl
 from node import PersistentCached
 from helpers import TranslatableException
 from cloudconnection import CloudConnection
-from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Size, Cloud_Data_Network, Cloud_Data_Image
+from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Size, Cloud_Data_Network
 import univention.config_registry as ucr
 
 configRegistry = ucr.ConfigRegistry()
@@ -265,45 +265,30 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 
 		return networks
 
-	def list_images(self, pattern="*", only_preselected_images=False, ucs_images=False):
-		def _return_image(image):
-			i = Cloud_Data_Image()
-			i.name = "%s (%s)" % (image.name, image.id)
-			i.extra = image.extra
-			i.id = image.id
-			i.driver = image.driver.name
-			i.uuid = image.uuid
-			return i
+	def to_cloud_data_image(self, image):
+		cloud_data_image = super(EC2CloudConnection, self).to_cloud_data_image(image)
+		cloud_data_image.name = "%s (%s)" % (image.name, image.id)
+		return cloud_data_image
 
-		# Expand pattern with *
-		pattern = "*%s*" % pattern
-		regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
+	def list_images(self):
+		regex = None
+		if self.publicdata.search_pattern:
+			# Expand pattern with *
+			regex = re.compile(fnmatch.translate('*%s*' % self.publicdata.search_pattern), re.IGNORECASE)
 		images = []
-		# if the requested images are not restricted by
-		# only_preselected_images or ucs_images
-		# return all images
-		if not only_preselected_images and not ucs_images:
-			for image in self._images:
-				if ((image.name and regex.match(image.name)) or
-					(image.id and regex.match(image.id)) or
-					(image.extra['owner_id'] and regex.match(image.extra['owner_id']))):
-					i = _return_image(image)
-					images.append(i)
-		else:
-			for image in self._images:
-				if ((image.name and regex.match(image.name)) or
-					(image.id and regex.match(image.id)) or
-					(image.extra['owner_id'] and regex.match(image.extra['owner_id']))):
-					if ucs_images:
-						if image.extra['owner_id'] == "223093067001":
-							i = _return_image(image)
-							images.append(i)
-							continue
-					if only_preselected_images and not self.publicdata.search_only_ucs_images:
-						if "%s" % image.id in self._preselected_images:
-							i = _return_image(image)
-							logger.debug("found and added %s" % (i.name))
-							images.append(i)
+		for image in self._images:
+			include = False
+			if self.publicdata.ucs_images and image.extra['owner_id'] == '223093067001':
+				include = True
+			if '%s' % image.id in self._preselected_images:
+				include = True
+			if regex:
+				for attr in [image.name, image.id, image.extra['owner_id']]:
+					if attr and regex.match(attr):
+						include = True
+						break
+			if include:
+				images.append(self.to_cloud_data_image(image))
 		return images
 
 	def _boot_instance(self, instance):

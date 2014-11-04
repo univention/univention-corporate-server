@@ -88,8 +88,7 @@ class Cloud(object):
 						'last_error_message': d.last_error_message,
 						'dn': d.dn,
 						'search_pattern': d.search_pattern,
-						'search_only_ucs_images': d.search_only_ucs_images,
-						'preselected_images_available': d.preselected_images_available,
+						'ucs_images': d.ucs_images,
 						})
 
 				MODULE.info('success: %s, data: %s' % (success, clouds))
@@ -128,7 +127,7 @@ class Cloud(object):
 
 			if success:
 				# add cloud to ldap
-				ldap_cloud_connection_add(cloudtype, name, parameter, only_ucs_images, search_pattern, preselected_images)
+				ldap_cloud_connection_add(cloudtype, name, parameter, ucs_images, search_pattern, preselected_images)
 
 				self.finished(request.id, data)
 			else:
@@ -143,10 +142,10 @@ class Cloud(object):
 		cloudtype = request.options.get('cloudtype')
 		name = request.options.get('name')
 		testconnection = request.options.get('testconnection')
-		parameter = request.options.get('parameter')
-		search_pattern = request.options.get('search_pattern', '*')
-		preselected_images = request.options.get('preselected_images', [])
-		only_ucs_images = request.options.get('ucs_images', False)
+		parameter = request.options.get('parameter', {})
+		search_pattern = parameter.pop('search_pattern', '')
+		preselected_images = parameter.pop('preselected_images', [])
+		ucs_images = parameter.pop('ucs_images', True)
 
 		# add cloud to uvmm
 		args = parameter.copy()
@@ -154,7 +153,7 @@ class Cloud(object):
 		args['type'] = cloudtype
 		args['search_pattern'] = search_pattern
 		args['preselected_images'] = preselected_images
-		args['only_ucs_images'] = only_ucs_images
+		args['ucs_images'] = ucs_images
 
 		self.uvmm.send(
 				'L_CLOUD_ADD',
@@ -249,9 +248,6 @@ class Cloud(object):
 		"""
 		self.required_options(request, 'conn_name')
 		conn_name = request.options.get('conn_name')
-		pattern = request.options.get('pattern')
-		only_preselected_images = request.options.get('onlypreselected')
-		ucs_images = request.options.get('ucs_images')
 
 		def _finished(thread, result, request):
 			"""
@@ -280,10 +276,7 @@ class Cloud(object):
 		self.uvmm.send(
 				'L_CLOUD_IMAGE_LIST',
 				Callback(_finished, request),
-				conn_name=conn_name,
-				pattern=pattern,
-				only_preselected_images=only_preselected_images,
-				only_ucs_images=ucs_images
+				conn_name=conn_name
 				)
 
 	def cloud_list_secgroup(self, request):

@@ -130,16 +130,10 @@ class _Commands:
 		logger.debug('L_CLOUD_IMAGE_LIST')
 		if not isinstance(request.conn_name, basestring):
 			raise CommandError('L_CLOUD_IMAGE_LIST', _('conn_name != string: %(conn_name)s'), conn_name=request.conn_name)
-		if not isinstance(request.pattern, basestring):
-			raise CommandError('L_CLOUD_IMAGE_LIST', _('pattern != string: %(pattern)s'), pattern=request.pattern)
-		if not isinstance(request.only_preselected_images, bool):
-			raise CommandError('L_CLOUD_IMAGE_LIST', _('only_preselected_images is not a bool %(only_preselected_images)s'), only_preselected_images=request.only_preselected_images)
-		if not isinstance(request.only_ucs_images, bool):
-			raise CommandError('L_CLOUD_IMAGE_LIST', _('only_ucs_images is not a bool %(only_ucs_images)s'), only_ucs_images=request.only_ucs_images)
 
 		try:
 			res = protocol.Response_DUMP()
-			res.data = cloudnode.cloudconnections.list_conn_images(request.conn_name, request.pattern, request.only_preselected_images, request.only_ucs_images)
+			res.data = cloudnode.cloudconnections.list_conn_images(request.conn_name)
 			return res
 		except cloudnode.CloudConnectionError, e:
 			raise CommandError('L_CLOUD_IMAGE_LIST', e)

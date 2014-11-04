@@ -34,7 +34,6 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/event",
 	"dojo/keys",
-	"dojo/Deferred",
 	"umc/widgets/TextBox",
 	"umc/widgets/Text",
 	"umc/widgets/ComboBox",
@@ -42,7 +41,7 @@ define([
 	"umc/widgets/Wizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, event, keys, Deferred, TextBox, Text, ComboBox, HiddenInput, Wizard, types, _) {
+], function(declare, lang, array, event, keys, TextBox, Text, ComboBox, HiddenInput, Wizard, types, _) {
 
 	return declare("umc.modules.uvmm.InstanceWizard", [ Wizard ], {
 		autoValidate: true,
@@ -55,9 +54,6 @@ define([
 			this.inherited(arguments);
 
 			// mixin the page structure
-			this.cloud = props.cloud;
-			this._ready = new Deferred();
-
 			lang.mixin(this, {
 				pages: this.getPages(),
 				headerButtons: [{
@@ -98,7 +94,6 @@ define([
 				this._size_id = value;
 				this._update_size_info_text(value[0].id);
 			}));
-			this._ready.resolve();
 		},
 
 		_get_size_id: function(newVal) {
@@ -246,7 +241,7 @@ define([
 						type: ComboBox,
 						label: _('Choose an AMI'),
 						sortDynamicValues: false,
-						dynamicOptions: this._ec2ImageDynamicOptions(),
+						dynamicOptions: {conn_name: this.cloud.name},
 						dynamicValues: lang.hitch(this, function(options) {
 							return this.standbyDuring(types.getCloudListImage(options));
 						}),
@@ -263,16 +258,6 @@ define([
 				};
 			}
 			return {};
-		},
-
-		_ec2ImageDynamicOptions: function() {
-			var options = {
-				conn_name: this.cloud.name,
-				ucs_images: this.cloud.showUnivention,
-				onlypreselected: this.cloud.preSelection,
-				pattern: this.cloud.searchPattern
-			};
-			return options;
 		},
 
 		onFinished: function() {

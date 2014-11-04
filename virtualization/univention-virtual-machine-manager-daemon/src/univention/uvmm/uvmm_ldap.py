@@ -230,7 +230,7 @@ def ldap_cloud_connections():
 					p_name = p.split('=', 1)[0]
 					p_value = p.split('=', 1)[1]
 					c[p_name] = p_value
-				c['only_ucs_images'] = data['univentionVirtualMachineCloudConnectionIncludeUCSImages'][0]
+				c['ucs_images'] = data['univentionVirtualMachineCloudConnectionIncludeUCSImages'][0]
 				c['search_pattern'] = data['univentionVirtualMachineCloudConnectionImageSearchPattern'][0]
 				c['preselected_images'] = []
 				if 'univentionVirtualMachineCloudConnectionImageList' in data:
@@ -241,7 +241,7 @@ def ldap_cloud_connections():
 	except LDAPError, e:
 		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
 
-def ldap_cloud_connection_add(cloudtype, name, parameter, only_ucs_images="1", search_pattern="*", preselected_images=[]):
+def ldap_cloud_connection_add(cloudtype, name, parameter, ucs_images="1", search_pattern="*", preselected_images=[]):
 	""" Add a new cloud connection."""
 	try:
 		lo, position = univention.admin.uldap.getMachineConnection()
@@ -249,10 +249,10 @@ def ldap_cloud_connection_add(cloudtype, name, parameter, only_ucs_images="1", s
 		dn_typeref = 'cn=%s,%s,%s' % (cloudtype, LDAP_CLOUD_TYPE_RDN, position.getDn())
 		parameter_lst = []
 
-		if only_ucs_images is True:
-			only_ucs_images="1"
-		if only_ucs_images is False:
-			only_ucs_images="0"
+		if ucs_images is True:
+			ucs_images = "1"
+		if ucs_images is False:
+			ucs_images = "0"
 
 		for k,v in parameter.items():
 			if (k and v):
@@ -263,7 +263,7 @@ def ldap_cloud_connection_add(cloudtype, name, parameter, only_ucs_images="1", s
 			'cn': name,
 			'univentionVirtualMachineCloudConnectionTypeRef': dn_typeref,
 			'univentionVirtualMachineCloudConnectionParameter': parameter_lst,
-			'univentionVirtualMachineCloudConnectionIncludeUCSImages': only_ucs_images,
+			'univentionVirtualMachineCloudConnectionIncludeUCSImages': ucs_images,
 			'univentionVirtualMachineCloudConnectionImageSearchPattern': search_pattern
 		}
 		if preselected_images:

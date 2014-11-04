@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.16-3) unstable; urgency=low
+
+  * Bug #36154: EC2 AMI selection
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 04 Nov 2014 12:19:04 +0100
+
 univention-virtual-machine-manager-daemon (4.0.16-2) unstable; urgency=low
 
   * Bug #36154: EC2 AMI selection (frontend)

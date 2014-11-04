@@ -199,9 +199,6 @@ define([
 				values.type = 'instance';
 				values.cloud = server.id;
 				values.cloudtype = server.cloudtype;
-				values.search_only_ucs_images = server.search_only_ucs_images;
-				values.preselected_images_available = server.preselected_images_available;
-				values.search_pattern = server.search_pattern;
 			}
 			else if (type == 'vm' && server.type == 'node') {
 				values.type = 'domain';

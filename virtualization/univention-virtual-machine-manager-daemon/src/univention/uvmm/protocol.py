@@ -309,9 +309,6 @@ class Request_L_CLOUD_IMAGE_LIST(Request):
 	def _default(self):
 		self.command = 'L_CLOUD_IMAGE_LIST'
 		self.conn_name = None
-		self.pattern = None
-		self.only_preselected_images = False
-		self.only_ucs_images = False
 
 class Request_L_CLOUD_SIZE_LIST(Request):
 	"""List available cloud instance sizes of cloud connections"""

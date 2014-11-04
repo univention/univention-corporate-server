@@ -89,9 +89,9 @@ define([
 				}, {*/
 					name: 'search_pattern',
 					type: TextBox,
-					value: '*',
+					value: '',
 					label: _('Search pattern for AMIs'),
-					description: _('When creating new instances in this cloud, the list of available AMIs may get very long and take a considerable amount of time to load. This pattern filters the list before loading it. It can also be used to specify the use case of this cloud connection.')
+					description: _('Optional. By default, all UCS images are shown when creating a new cloud instance. If a search pattern is specified, AMIs matching this pattern are also available. "*" finds all images, but the list of available AMIs may get very long and take a considerable amount of time to load.')
 				}, {
 					name: 'cloudtype',
 					type: HiddenInput,

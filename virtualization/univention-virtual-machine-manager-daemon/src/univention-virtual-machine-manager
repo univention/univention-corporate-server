@@ -665,25 +665,14 @@ class Client(object):
 		"""
 		return protocol.Request_L_CLOUD_FREQUENCY(freq=frequency, name=name)
 
-	def cloud_image_list(self, name="*", pattern="*", only_preselected_images=False, only_ucs_images=False):
+	def cloud_image_list(self, name="*"):
 		"""
-		%prog cloud_image_list <name> [<pattern> <only_preselected_images> <only_ucs_images>]
+		%prog cloud_image_list <name>
 
 		List available cloud images matching <pattern> to start new instances with
 		name is the cloud connection name. If empty, list information from all connections
-		only_preselected_images: If 'true', return images that were predefined during connection setup
-		only_ucs_images: If 'true', return only images by 'Univention'
 		"""
-		if isinstance(only_preselected_images, basestring) and only_preselected_images == "true":
-			only_preselected_images = True
-		else:
-			only_preselected_images = False
-		if isinstance(only_ucs_images, basestring) and only_ucs_images == "true":
-			only_ucs_images = True
-		else:
-			only_ucs_images = False
-
-		return protocol.Request_L_CLOUD_IMAGE_LIST(conn_name=name, pattern=pattern, only_preselected_images=only_preselected_images, only_ucs_images=only_ucs_images)
+		return protocol.Request_L_CLOUD_IMAGE_LIST(conn_name=name)
 
 	def cloud_size_list(self, name="*"):
 		"""

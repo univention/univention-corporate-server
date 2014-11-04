@@ -869,10 +869,7 @@ define([
 
 			var cloud = {
 				name: values.cloud,
-				type: values.cloudtype,
-				showUnivention: values.search_only_ucs_images,
-				preSelection: values.preselected_images_available,
-				searchPattern: values.search_pattern
+				type: values.cloudtype
 			};
 			wizard = new InstanceWizard({
 				onFinished: _finished,
