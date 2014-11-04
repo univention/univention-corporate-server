@@ -1,3 +1,9 @@
+univention-system-setup (8.1.40-1) unstable; urgency=medium
+
+  * Bug #33839: fix system upgrade on DC slaves
+
+ -- Florian Best <best@univention.de>  Tue, 04 Nov 2014 11:27:02 +0100
+
 univention-system-setup (8.1.39-1) unstable; urgency=medium
 
   * Bug #35654: fixed error noscript error message for Internet Explorer

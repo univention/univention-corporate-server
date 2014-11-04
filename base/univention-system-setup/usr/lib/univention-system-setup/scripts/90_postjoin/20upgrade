@@ -53,7 +53,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 else
 	# Try to update to the same version as DC master
 	if [ -e /var/univention-join/joined ]; then
-		version=$(/usr/sbin/univention-ssh /etc/machine.secret $hostname\$@$ldap_server_name "echo $(/usr/sbin/ucr get version/version)-$(/usr/sbin/ucr get version/patchlevel)" 2>&1)
+		version=$(/usr/sbin/univention-ssh /etc/machine.secret $hostname\$@$ldap_server_name "echo $(/usr/sbin/ucr get version/version)-$(/usr/sbin/ucr get version/patchlevel)" 2>>/var/log/univention/setup.log)
 		if [ $? = 0 ]; then
 			echo "Running upgrade to DC Master version: univention-upgrade --noninteractive --updateto $version"
 			/usr/sbin/univention-upgrade --noninteractive --updateto "$version"
