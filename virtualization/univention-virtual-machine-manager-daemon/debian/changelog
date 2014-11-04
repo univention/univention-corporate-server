@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.16-4) unstable; urgency=low
+
+  * Bug #35946: Add openstack state transition paused->restart
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 04 Nov 2014 16:05:46 +0100
+
 univention-virtual-machine-manager-daemon (4.0.16-3) unstable; urgency=low
 
   * Bug #36154: EC2 AMI selection

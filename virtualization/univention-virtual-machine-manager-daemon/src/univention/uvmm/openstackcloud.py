@@ -312,6 +312,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 				(NodeState.REBOOTING,  "RESTART"): None,
 				(NodeState.PENDING,    "RESTART"): None,
 				(NodeState.UNKNOWN,    "RESTART"): self._reboot_instance,
+				(NodeState.PAUSED,     "RESTART"): self._reboot_instance,
 				(NodeState.STOPPED,    "RESTART"): self._reboot_instance,
 				(NodeState.RUNNING,    "PAUSE"): self._pause_instance,
 				(NodeState.RUNNING,    "SHUTDOWN"): self._shutdown_instance,
