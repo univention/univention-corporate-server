@@ -119,6 +119,11 @@
 				The packages <package>virtualbox</package>, <package>open-vm-tools</package>, <package>iscsitarget</package>, <package>openafs</package>, <package>xtables-addons</package>, <package>ndiswrapper</package>, <package>blktap</package> have been updates to newer versions from Debian to support the newer Linux kernel 3.16.
 				The package <package>openswan</package> has been removed as it's incompatible with said kernel and is unmaintained (<ulink url="&ucsbug;35875">Bug #35875</ulink>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The kernel modules are signed
+				to support boot on SecureBoot UEFI systems
+				(<ulink url="&ucsbug;36335">Bug 36335</ulink>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
@@ -160,6 +165,23 @@
 					gfxmode (&ucsUCRV; <envar>grub/gfxmode</envar>) is now
 					set to "text", otherwise the grub menu is invisible
 					(<ulink url="&ucsbug;30978">Bug 30978</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				If UCS 4.0 is installed on an UEFI system, the boot
+				process includes a shim which is signed by Microsoft
+				to support boot on SecureBoot UEFI systems
+				(<ulink url="&ucsbug;35914">Bug 35914</ulink> <ulink url="&ucsbug;35915">Bug 35915</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				If UCS 4.0 is installed on an UEFI system, the boot
+				process includes a signed GRUB bootloader
+				to support boot on SecureBoot UEFI systems
+				(<ulink url="&ucsbug;35917">Bug 35917</ulink>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The boot process includes a signed Linux kernel
+				to support boot on SecureBoot UEFI systems
+				(<ulink url="&ucsbug;35916">Bug 35916</ulink>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
