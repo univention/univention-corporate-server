@@ -153,6 +153,12 @@ if ! is_ucr_true update40/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
 fi
 
+# Update to UCS 4.0-0, update univention-xrdp if installed (kept back during update) Bug #35885
+if [ "$(dpkg-query -W -f '${Status}' univention-xrdp 2>/dev/null)" = "install ok installed" ]; then
+	install univention-xrdp xrdp >>"$UPDATER_LOG" 2>&1
+fi
+# End Update to UCS 4.0-0 , update univention-xrdp if installed, can be removed after 4.0.0
+
 # removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
