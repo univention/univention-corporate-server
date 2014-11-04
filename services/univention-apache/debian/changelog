@@ -1,3 +1,12 @@
+univention-apache (7.0.13-2) unstable; urgency=low
+
+  Bug #36095:
+  * reactivated disabled variables declarations in 
+    css/variables.styl so variables can
+    be resolved again
+
+ -- Drees Dormann <dormann@univention.de>  Tue, 04 Nov 2014 10:30:00 +0100
+
 univention-apache (7.0.13-1) unstable; urgency=low
   
   Bug #35890:
