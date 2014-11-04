@@ -1,3 +1,9 @@
+univention-dvd (0.2.14-1) unstable; urgency=low
+
+  * Bug #35974: Strip down menu titles
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 04 Nov 2014 09:10:18 +0100
+
 univention-dvd (0.2.13-2) unstable; urgency=low
 
   * Bug #36365: Added amarok to maintained 

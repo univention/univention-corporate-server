@@ -94,7 +94,7 @@ sub create_theme_file {
     my $filename = shift;
     my @args;
     push(@args, @cpp_and_opts);
-    push(@args, "-DTITLE=\"$tl_distro $tl_kernel $tl_version\"");
+    push(@args, "-DTITLE=\"$tl_distro $tl_version\"");
     for (my $i = 0; $i < $menudepth; $i++) {
 	push(@args, "-DMENU$i=\"" . $menu_title[$i] . "\"");
     }
@@ -117,7 +117,7 @@ parse_file("isolinux.cfg");
 
 $menu{"number"} = "1";
 $menu{"label"} = "top";
-$menu{"title"} = "$tl_distro $tl_kernel Installer menu";
+$menu{"title"} = "$tl_distro Installer menu";
 $menu_title[$menudepth] = $menu{"title"};
 
 my %kernel;

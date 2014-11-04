@@ -12,7 +12,7 @@ terminal-font: "Sans Regular 12"
   left = 45%
   width = 60%
   height = 100
-#ifdef MENU0
+#ifdef MENU0_DISABLED
   + hbox {
     left = 0
     + label {text = MENU0 font = "Sans 10" color = "#3c3c3c" align = "left"}
