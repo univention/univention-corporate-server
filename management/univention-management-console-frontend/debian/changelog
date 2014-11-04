@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.91-1) unstable; urgency=medium
+
+  * Bug #35654: cleaned up UCS SVG file
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 04 Nov 2014 11:45:44 +0100
+
 univention-management-console-frontend (4.1.90-1) unstable; urgency=medium
 
   * Bug #35654: fixed noscript warning message
